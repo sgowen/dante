@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <RootNamespace>NosFURatu</RootNamespace>
+    <ProjectGuid>{1e90d1bf-1b47-49d4-b52c-c6a91279df34}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <WindowsTargetPlatformVersion>10.0.14393.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PrecompiledHeaderFile>
+      </PrecompiledHeaderFile>
+      <FloatingPointModel>Fast</FloatingPointModel>
+      <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
+      <AdditionalIncludeDirectories>../../../3rdparty/;../../../core/framework/entity/;../../../core/framework/file/portable/;../../../core/framework/file/windows/;../../../core/framework/math/;../../../core/framework/network/client/;../../../core/framework/sound/portable/;../../../core/framework/sound/windows/;../../../core/framework/state/;../../../core/framework/ui/direct3d/portable/;../../../core/framework/ui/direct3d/win32/;../../../core/framework/ui/portable/;../../../core/framework/util/portable/;../../../core/framework/util/windows/;../../../core/game/logic/;../../../core/game/ui/direct3d/;../../../core/game/ui/portable/;</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>d3d11.lib;dxgi.lib;dxguid.lib;uuid.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PrecompiledHeaderFile>
+      </PrecompiledHeaderFile>
+      <FloatingPointModel>Fast</FloatingPointModel>
+      <AdditionalIncludeDirectories>../../../3rdparty/;../../../core/framework/entity/;../../../core/framework/file/portable/;../../../core/framework/file/windows/;../../../core/framework/math/;../../../core/framework/network/client/;../../../core/framework/sound/portable/;../../../core/framework/sound/windows/;../../../core/framework/state/;../../../core/framework/ui/direct3d/portable/;../../../core/framework/ui/direct3d/win32/;../../../core/framework/ui/portable/;../../../core/framework/util/portable/;../../../core/framework/util/windows/;../../../core/game/logic/;../../../core/game/ui/direct3d/;../../../core/game/ui/portable/;</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>d3d11.lib;dxgi.lib;dxguid.lib;uuid.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PrecompiledHeaderFile>
+      </PrecompiledHeaderFile>
+      <FloatingPointModel>Fast</FloatingPointModel>
+      <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
+      <AdditionalIncludeDirectories>../../../3rdparty/;../../../core/framework/entity/;../../../core/framework/file/portable/;../../../core/framework/file/windows/;../../../core/framework/math/;../../../core/framework/network/client/;../../../core/framework/sound/portable/;../../../core/framework/sound/windows/;../../../core/framework/state/;../../../core/framework/ui/direct3d/portable/;../../../core/framework/ui/direct3d/win32/;../../../core/framework/ui/portable/;../../../core/framework/util/portable/;../../../core/framework/util/windows/;../../../core/game/logic/;../../../core/game/ui/direct3d/;../../../core/game/ui/portable/;</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>d3d11.lib;dxgi.lib;dxguid.lib;uuid.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PrecompiledHeaderFile>
+      </PrecompiledHeaderFile>
+      <FloatingPointModel>Fast</FloatingPointModel>
+      <AdditionalIncludeDirectories>../../../3rdparty/;../../../core/framework/entity/;../../../core/framework/file/portable/;../../../core/framework/file/windows/;../../../core/framework/math/;../../../core/framework/network/client/;../../../core/framework/sound/portable/;../../../core/framework/sound/windows/;../../../core/framework/state/;../../../core/framework/ui/direct3d/portable/;../../../core/framework/ui/direct3d/win32/;../../../core/framework/ui/portable/;../../../core/framework/util/portable/;../../../core/framework/util/windows/;../../../core/game/logic/;../../../core/game/ui/direct3d/;../../../core/game/ui/portable/;</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>d3d11.lib;dxgi.lib;dxguid.lib;uuid.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\core\framework\entity\*.h" />
+    <ClInclude Include="..\..\..\core\framework\file\portable\*.h" />
+    <ClInclude Include="..\..\..\core\framework\file\windows\*.h" />
+    <ClInclude Include="..\..\..\core\framework\math\*.h" />
+    <ClInclude Include="..\..\..\core\framework\sound\portable\*.h" />
+    <ClInclude Include="..\..\..\core\framework\sound\windows\*.h" />
+    <ClInclude Include="..\..\..\core\framework\state\*.h" />
+    <ClInclude Include="..\..\..\core\framework\ui\direct3d\portable\*.h" />
+    <ClInclude Include="..\..\..\core\framework\ui\direct3d\win32\*.h" />
+    <ClInclude Include="..\..\..\core\framework\ui\portable\*.h" />
+    <ClInclude Include="..\..\..\core\framework\util\portable\*.h" />
+    <ClInclude Include="..\..\..\core\framework\util\windows\*.h" />
+    <ClInclude Include="..\..\..\core\game\logic\*.h" />
+    <ClInclude Include="..\..\..\core\game\ui\direct3d\*.h" />
+    <ClInclude Include="..\..\..\core\game\ui\portable\*.h" />
+    <ClInclude Include="*.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\core\framework\entity\*.cpp" />
+    <ClCompile Include="..\..\..\core\framework\file\portable\*.cpp" />
+    <ClCompile Include="..\..\..\core\framework\file\windows\*.cpp" />
+    <ClCompile Include="..\..\..\core\framework\math\*.cpp" />
+    <ClCompile Include="..\..\..\core\framework\sound\portable\*.cpp" />
+    <ClCompile Include="..\..\..\core\framework\sound\windows\*.cpp" />
+    <ClCompile Include="..\..\..\core\framework\state\*.cpp" />
+    <ClCompile Include="..\..\..\core\framework\ui\direct3d\portable\*.cpp" />
+    <ClCompile Include="..\..\..\core\framework\ui\direct3d\win32\*.cpp" />
+    <ClCompile Include="..\..\..\core\framework\ui\portable\*.cpp" />
+    <ClCompile Include="..\..\..\core\framework\util\portable\*.cpp" />
+    <ClCompile Include="..\..\..\core\framework\util\windows\*.cpp" />
+    <ClCompile Include="..\..\..\core\game\logic\*.cpp" />
+    <ClCompile Include="..\..\..\core\game\ui\direct3d\*.cpp" />
+    <ClCompile Include="..\..\..\core\game\ui\portable\*.cpp" />
+    <ClCompile Include="*.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="..\..\..\..\assets\textures\*.png">
+      <ExcludedFromBuild>false</ExcludedFromBuild>
+      <DeploymentContent>false</DeploymentContent>
+      <Command>..\..\..\3rdparty\Texconv\texconv.exe -m 1 -nologo -srgb -f BC3_UNORM %(Identity)</Command>
+      <Message>Converting to DDS %(Identity)</Message>
+      <Outputs>%(Filename).dds</Outputs>
+      <TreatOutputAsContent>true</TreatOutputAsContent>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\..\assets\textures\desktop\*.png">
+      <ExcludedFromBuild>false</ExcludedFromBuild>
+      <DeploymentContent>false</DeploymentContent>
+      <Command>..\..\..\3rdparty\Texconv\texconv.exe -m 1 -nologo -srgb -f BC3_UNORM %(Identity)</Command>
+      <Message>Converting to DDS %(Identity)</Message>
+      <Outputs>%(Filename).dds</Outputs>
+      <TreatOutputAsContent>true</TreatOutputAsContent>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\..\assets\textures\level_editor\*.png">
+      <ExcludedFromBuild>false</ExcludedFromBuild>
+      <DeploymentContent>false</DeploymentContent>
+      <Command>..\..\..\3rdparty\Texconv\texconv.exe -m 1 -nologo -srgb -f BC3_UNORM %(Identity)</Command>
+      <Message>Converting to DDS %(Identity)</Message>
+      <Outputs>%(Filename).dds</Outputs>
+      <TreatOutputAsContent>true</TreatOutputAsContent>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="..\..\..\core\framework\ui\direct3d\shader\*PixelShader.hlsl">
+      <ShaderType>Pixel</ShaderType>
+      <ShaderModel>4.0_level_9_3</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="..\..\..\core\framework\ui\direct3d\shader\*VertexShader.hlsl">
+      <ShaderType>Vertex</ShaderType>
+      <ShaderModel>4.0_level_9_3</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="..\..\..\core\game\ui\direct3d\shader\*PixelShader.hlsl">
+      <ShaderType>Pixel</ShaderType>
+      <ShaderModel>4.0_level_9_3</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="..\..\..\core\game\ui\direct3d\shader\*VertexShader.hlsl">
+      <ShaderType>Vertex</ShaderType>
+      <ShaderModel>4.0_level_9_3</ShaderModel>
+    </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="..\..\..\..\assets\music\*.wav">
+      <ExcludedFromBuild>false</ExcludedFromBuild>
+      <DeploymentContent>false</DeploymentContent>
+      <Command>xcopy /y %(Identity) $(SolutionDir)</Command>
+      <Message>Copying %(Identity) to sln folder</Message>
+      <Outputs>%(Filename).wav</Outputs>
+      <TreatOutputAsContent>true</TreatOutputAsContent>
+      <LinkObjects>false</LinkObjects>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\..\assets\sounds\*.wav">
+      <ExcludedFromBuild>false</ExcludedFromBuild>
+      <DeploymentContent>false</DeploymentContent>
+      <Command>xcopy /y %(Identity) $(SolutionDir)</Command>
+      <Message>Copying %(Identity) to sln folder</Message>
+      <Outputs>%(Filename).wav</Outputs>
+      <TreatOutputAsContent>true</TreatOutputAsContent>
+      <LinkObjects>false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="resource.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="directx.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Manifest Include="settings.manifest" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

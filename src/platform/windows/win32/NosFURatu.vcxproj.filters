@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Assets">
+      <UniqueIdentifier>3abefd9f-583e-42a5-a923-d8efb46319e3</UniqueIdentifier>
+      <Extensions>wav;png</Extensions>
+    </Filter>
+    <Filter Include="Shaders">
+      <UniqueIdentifier>{b18237f9-8ca2-4fab-bf24-da4b112010b6}</UniqueIdentifier>
+      <Extensions>hlsl</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\core\framework\entity\*.h" />
+    <ClInclude Include="..\..\..\core\framework\file\portable\*.h" />
+    <ClInclude Include="..\..\..\core\framework\file\windows\*.h" />
+    <ClInclude Include="..\..\..\core\framework\math\*.h" />
+    <ClInclude Include="..\..\..\core\framework\sound\portable\*.h" />
+    <ClInclude Include="..\..\..\core\framework\sound\windows\*.h" />
+    <ClInclude Include="..\..\..\core\framework\state\*.h" />
+    <ClInclude Include="..\..\..\core\framework\ui\direct3d\portable\*.h" />
+    <ClInclude Include="..\..\..\core\framework\ui\direct3d\win32\*.h" />
+    <ClInclude Include="..\..\..\core\framework\ui\portable\*.h" />
+    <ClInclude Include="..\..\..\core\framework\util\portable\*.h" />
+    <ClInclude Include="..\..\..\core\framework\util\windows\*.h" />
+    <ClInclude Include="..\..\..\core\game\logic\*.h" />
+    <ClInclude Include="..\..\..\core\game\ui\direct3d\*.h" />
+    <ClInclude Include="..\..\..\core\game\ui\portable\*.h" />
+    <ClInclude Include="*.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\core\framework\entity\*.cpp" />
+    <ClCompile Include="..\..\..\core\framework\file\portable\*.cpp" />
+    <ClCompile Include="..\..\..\core\framework\file\windows\*.cpp" />
+    <ClCompile Include="..\..\..\core\framework\math\*.cpp" />
+    <ClCompile Include="..\..\..\core\framework\sound\portable\*.cpp" />
+    <ClCompile Include="..\..\..\core\framework\sound\windows\*.cpp" />
+    <ClCompile Include="..\..\..\core\framework\state\*.cpp" />
+    <ClCompile Include="..\..\..\core\framework\ui\direct3d\portable\*.cpp" />
+    <ClCompile Include="..\..\..\core\framework\ui\direct3d\win32\*.cpp" />
+    <ClCompile Include="..\..\..\core\framework\ui\portable\*.cpp" />
+    <ClCompile Include="..\..\..\core\framework\util\portable\*.cpp" />
+    <ClCompile Include="..\..\..\core\framework\util\windows\*.cpp" />
+    <ClCompile Include="..\..\..\core\game\logic\*.cpp" />
+    <ClCompile Include="..\..\..\core\game\ui\direct3d\*.cpp" />
+    <ClCompile Include="..\..\..\core\game\ui\portable\*.cpp" />
+    <ClCompile Include="*.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="resource.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="directx.ico">
+      <Filter>Assets</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Manifest Include="settings.manifest">
+      <Filter>Assets</Filter>
+    </Manifest>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="..\..\..\core\framework\ui\direct3d\shader\*PixelShader.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="..\..\..\core\framework\ui\direct3d\shader\*VertexShader.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="..\..\..\core\game\ui\direct3d\shader\*PixelShader.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="..\..\..\core\game\ui\direct3d\shader\*VertexShader.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="..\..\..\..\assets\textures\*.png">
+      <Filter>Assets</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\..\assets\textures\desktop\*.png">
+      <Filter>Assets</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\..\assets\textures\level_editor\*.png">
+      <Filter>Assets</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\..\assets\music\*.wav">
+      <Filter>Assets</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\..\assets\sounds\*.wav">
+      <Filter>Assets</Filter>
+    </CustomBuild>
+  </ItemGroup>
+</Project>
