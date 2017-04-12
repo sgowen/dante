@@ -14,12 +14,27 @@
 
 OpenGLRendererHelper::OpenGLRendererHelper() : IRendererHelper()
 {
-    // Empty
+    OpenGLManager::create();
 }
 
 OpenGLRendererHelper::~OpenGLRendererHelper()
 {
-    // Empty
+    OpenGLManager::destroy();
+}
+
+void OpenGLRendererHelper::createDeviceDependentResources(int maxBatchSize)
+{
+    OGLManager->createDeviceDependentResources(maxBatchSize);
+}
+
+void OpenGLRendererHelper::createWindowSizeDependentResources(int renderWidth, int renderHeight, int numFramebuffers)
+{
+    OGLManager->createWindowSizeDependentResources(renderWidth, renderHeight, numFramebuffers);
+}
+
+void OpenGLRendererHelper::releaseDeviceDependentResources()
+{
+    OGLManager->releaseDeviceDependentResources();
 }
 
 void OpenGLRendererHelper::beginFrame()

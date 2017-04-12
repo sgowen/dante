@@ -18,6 +18,12 @@ public:
     
     virtual ~OpenGLRendererHelper();
     
+    virtual void createDeviceDependentResources(int maxBatchSize);
+    
+    virtual void createWindowSizeDependentResources(int renderWidth, int renderHeight, int numFramebuffers);
+    
+    virtual void releaseDeviceDependentResources();
+    
     virtual void beginFrame();
     
     virtual void endFrame();
