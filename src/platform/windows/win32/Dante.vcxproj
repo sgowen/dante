@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -19,8 +19,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <RootNamespace>NosFURatu</RootNamespace>
-    <ProjectGuid>{1e90d1bf-1b47-49d4-b52c-c6a91279df34}</ProjectGuid>
+    <RootNamespace>Dante</RootNamespace>
+    <ProjectGuid>{fa65a632-8e02-4696-a1cd-9d48b4d1ac94}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <WindowsTargetPlatformVersion>10.0.14393.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
@@ -85,11 +85,10 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <PrecompiledHeaderFile>
-      </PrecompiledHeaderFile>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <FloatingPointModel>Fast</FloatingPointModel>
       <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
-      <AdditionalIncludeDirectories>../../../3rdparty/;../../../core/framework/entity/;../../../core/framework/file/portable/;../../../core/framework/file/windows/;../../../core/framework/math/;../../../core/framework/network/client/;../../../core/framework/sound/portable/;../../../core/framework/sound/windows/;../../../core/framework/state/;../../../core/framework/ui/direct3d/portable/;../../../core/framework/ui/direct3d/win32/;../../../core/framework/ui/portable/;../../../core/framework/util/portable/;../../../core/framework/util/windows/;../../../core/game/logic/;../../../core/game/ui/direct3d/;../../../core/game/ui/portable/;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../shared/;../../../3rdparty/;../../../core/framework/entity/;../../../core/framework/file/portable/;../../../core/framework/file/windows/;../../../core/framework/math/;../../../core/framework/network/client/;../../../core/framework/sound/portable/;../../../core/framework/sound/windows/;../../../core/framework/state/;../../../core/framework/ui/direct3d/portable/;../../../core/framework/ui/direct3d/win32/;../../../core/framework/ui/portable/;../../../core/framework/util/portable/;../../../core/framework/util/windows/;../../../core/game/logic/;../../../core/game/ui/direct3d/;../../../core/game/ui/portable/;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -103,10 +102,9 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <PrecompiledHeaderFile>
-      </PrecompiledHeaderFile>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <FloatingPointModel>Fast</FloatingPointModel>
-      <AdditionalIncludeDirectories>../../../3rdparty/;../../../core/framework/entity/;../../../core/framework/file/portable/;../../../core/framework/file/windows/;../../../core/framework/math/;../../../core/framework/network/client/;../../../core/framework/sound/portable/;../../../core/framework/sound/windows/;../../../core/framework/state/;../../../core/framework/ui/direct3d/portable/;../../../core/framework/ui/direct3d/win32/;../../../core/framework/ui/portable/;../../../core/framework/util/portable/;../../../core/framework/util/windows/;../../../core/game/logic/;../../../core/game/ui/direct3d/;../../../core/game/ui/portable/;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../shared/;../../../3rdparty/;../../../core/framework/entity/;../../../core/framework/file/portable/;../../../core/framework/file/windows/;../../../core/framework/math/;../../../core/framework/network/client/;../../../core/framework/sound/portable/;../../../core/framework/sound/windows/;../../../core/framework/state/;../../../core/framework/ui/direct3d/portable/;../../../core/framework/ui/direct3d/win32/;../../../core/framework/ui/portable/;../../../core/framework/util/portable/;../../../core/framework/util/windows/;../../../core/game/logic/;../../../core/game/ui/direct3d/;../../../core/game/ui/portable/;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -122,11 +120,10 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <PrecompiledHeaderFile>
-      </PrecompiledHeaderFile>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <FloatingPointModel>Fast</FloatingPointModel>
       <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
-      <AdditionalIncludeDirectories>../../../3rdparty/;../../../core/framework/entity/;../../../core/framework/file/portable/;../../../core/framework/file/windows/;../../../core/framework/math/;../../../core/framework/network/client/;../../../core/framework/sound/portable/;../../../core/framework/sound/windows/;../../../core/framework/state/;../../../core/framework/ui/direct3d/portable/;../../../core/framework/ui/direct3d/win32/;../../../core/framework/ui/portable/;../../../core/framework/util/portable/;../../../core/framework/util/windows/;../../../core/game/logic/;../../../core/game/ui/direct3d/;../../../core/game/ui/portable/;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../shared/;../../../3rdparty/;../../../core/framework/entity/;../../../core/framework/file/portable/;../../../core/framework/file/windows/;../../../core/framework/math/;../../../core/framework/network/client/;../../../core/framework/sound/portable/;../../../core/framework/sound/windows/;../../../core/framework/state/;../../../core/framework/ui/direct3d/portable/;../../../core/framework/ui/direct3d/win32/;../../../core/framework/ui/portable/;../../../core/framework/util/portable/;../../../core/framework/util/windows/;../../../core/game/logic/;../../../core/game/ui/direct3d/;../../../core/game/ui/portable/;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -144,10 +141,9 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <PrecompiledHeaderFile>
-      </PrecompiledHeaderFile>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <FloatingPointModel>Fast</FloatingPointModel>
-      <AdditionalIncludeDirectories>../../../3rdparty/;../../../core/framework/entity/;../../../core/framework/file/portable/;../../../core/framework/file/windows/;../../../core/framework/math/;../../../core/framework/network/client/;../../../core/framework/sound/portable/;../../../core/framework/sound/windows/;../../../core/framework/state/;../../../core/framework/ui/direct3d/portable/;../../../core/framework/ui/direct3d/win32/;../../../core/framework/ui/portable/;../../../core/framework/util/portable/;../../../core/framework/util/windows/;../../../core/game/logic/;../../../core/game/ui/direct3d/;../../../core/game/ui/portable/;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../shared/;../../../3rdparty/;../../../core/framework/entity/;../../../core/framework/file/portable/;../../../core/framework/file/windows/;../../../core/framework/math/;../../../core/framework/network/client/;../../../core/framework/sound/portable/;../../../core/framework/sound/windows/;../../../core/framework/state/;../../../core/framework/ui/direct3d/portable/;../../../core/framework/ui/direct3d/win32/;../../../core/framework/ui/portable/;../../../core/framework/util/portable/;../../../core/framework/util/windows/;../../../core/game/logic/;../../../core/game/ui/direct3d/;../../../core/game/ui/portable/;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -173,6 +169,7 @@
     <ClInclude Include="..\..\..\core\game\logic\*.h" />
     <ClInclude Include="..\..\..\core\game\ui\direct3d\*.h" />
     <ClInclude Include="..\..\..\core\game\ui\portable\*.h" />
+    <ClInclude Include="..\shared\*.h" />
     <ClInclude Include="*.h" />
   </ItemGroup>
   <ItemGroup>
@@ -191,26 +188,11 @@
     <ClCompile Include="..\..\..\core\game\logic\*.cpp" />
     <ClCompile Include="..\..\..\core\game\ui\direct3d\*.cpp" />
     <ClCompile Include="..\..\..\core\game\ui\portable\*.cpp" />
+    <ClCompile Include="..\shared\*.cpp" />
     <ClCompile Include="*.cpp" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="..\..\..\..\assets\textures\*.png">
-      <ExcludedFromBuild>false</ExcludedFromBuild>
-      <DeploymentContent>false</DeploymentContent>
-      <Command>..\..\..\3rdparty\Texconv\texconv.exe -m 1 -nologo -srgb -f BC3_UNORM %(Identity)</Command>
-      <Message>Converting to DDS %(Identity)</Message>
-      <Outputs>%(Filename).dds</Outputs>
-      <TreatOutputAsContent>true</TreatOutputAsContent>
-    </CustomBuild>
-    <CustomBuild Include="..\..\..\..\assets\textures\desktop\*.png">
-      <ExcludedFromBuild>false</ExcludedFromBuild>
-      <DeploymentContent>false</DeploymentContent>
-      <Command>..\..\..\3rdparty\Texconv\texconv.exe -m 1 -nologo -srgb -f BC3_UNORM %(Identity)</Command>
-      <Message>Converting to DDS %(Identity)</Message>
-      <Outputs>%(Filename).dds</Outputs>
-      <TreatOutputAsContent>true</TreatOutputAsContent>
-    </CustomBuild>
-    <CustomBuild Include="..\..\..\..\assets\textures\level_editor\*.png">
       <ExcludedFromBuild>false</ExcludedFromBuild>
       <DeploymentContent>false</DeploymentContent>
       <Command>..\..\..\3rdparty\Texconv\texconv.exe -m 1 -nologo -srgb -f BC3_UNORM %(Identity)</Command>

@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest" xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" IgnorableNamespaces="uap mp">
-  <Identity Name="NoctisGames.NosFURatu" Publisher="CN=E18CD061-BE36-4AB8-AFD1-44C2793FCDD3" Version="1.2.0.0" />
-  <mp:PhoneIdentity PhoneProductId="44ba4cff-a51f-4312-95b1-49c093c87da7" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
+  <Identity Name="cd70baa8-65f9-4906-a6fd-61c5b2728d3d" Publisher="CN=sgowe" Version="0.0.1.0" />
+  <mp:PhoneIdentity PhoneProductId="cd70baa8-65f9-4906-a6fd-61c5b2728d3d" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
-    <DisplayName>NosFURatu</DisplayName>
+    <DisplayName>Dante</DisplayName>
     <PublisherDisplayName>Noctis Games</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
@@ -14,11 +14,11 @@
     <Resource Language="x-generate" />
   </Resources>
   <Applications>
-    <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="NosFURatu.App">
-      <uap:VisualElements DisplayName="NosFURatu" Square150x150Logo="Assets\Logo.png" Square44x44Logo="Assets\SmallLogo.png" Description="NosFURatu" BackgroundColor="transparent">
+    <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="Dante.App">
+      <uap:VisualElements DisplayName="Dante" Square150x150Logo="Assets\Logo.png" Square44x44Logo="Assets\SmallLogo.png" Description="Dante" BackgroundColor="transparent">
         <uap:DefaultTile Wide310x150Logo="Assets\WideLogo.png">
         </uap:DefaultTile>
-        <uap:SplashScreen Image="Assets\SplashScreen.png" BackgroundColor="black" />
+        <uap:SplashScreen Image="Assets\SplashScreen.png" />
         <uap:InitialRotationPreference>
           <uap:Rotation Preference="landscape" />
         </uap:InitialRotationPreference>

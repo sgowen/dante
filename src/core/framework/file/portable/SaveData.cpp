@@ -67,7 +67,7 @@ void SaveData::save()
 #endif
     
     FILE *file;
-#ifdef WIN32
+#ifdef _WIN32
     errno_t err;
     if((err = fopen_s(&file, finalPath, "w+")) != 0)
     {
@@ -135,7 +135,7 @@ void SaveData::load()
 #endif
     
     FILE *file;
-#ifdef WIN32
+#ifdef _WIN32
     errno_t err;
     if((err = fopen_s(&file, finalPath, "r")) != 0)
 #else

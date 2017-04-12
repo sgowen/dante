@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="Assets">
@@ -26,6 +26,7 @@
     <ClInclude Include="..\..\..\core\game\logic\*.h" />
     <ClInclude Include="..\..\..\core\game\ui\direct3d\*.h" />
     <ClInclude Include="..\..\..\core\game\ui\portable\*.h" />
+    <ClInclude Include="..\shared\*.h" />
     <ClInclude Include="*.h" />
   </ItemGroup>
   <ItemGroup>
@@ -44,6 +45,7 @@
     <ClCompile Include="..\..\..\core\game\logic\*.cpp" />
     <ClCompile Include="..\..\..\core\game\ui\direct3d\*.cpp" />
     <ClCompile Include="..\..\..\core\game\ui\portable\*.cpp" />
+    <ClCompile Include="..\shared\*.cpp" />
     <ClCompile Include="*.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -75,12 +77,6 @@
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="..\..\..\..\assets\textures\*.png">
-      <Filter>Assets</Filter>
-    </CustomBuild>
-    <CustomBuild Include="..\..\..\..\assets\textures\desktop\*.png">
-      <Filter>Assets</Filter>
-    </CustomBuild>
-    <CustomBuild Include="..\..\..\..\assets\textures\level_editor\*.png">
       <Filter>Assets</Filter>
     </CustomBuild>
     <CustomBuild Include="..\..\..\..\assets\music\*.wav">
