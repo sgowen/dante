@@ -21,10 +21,6 @@ public:
     virtual void createDeviceDependentResources();
     
     virtual void releaseDeviceDependentResources();
-    
-    virtual void beginFrame();
-    
-    void renderToScreen();
 };
 
 #endif /* defined(__dante__MainRenderer__) */

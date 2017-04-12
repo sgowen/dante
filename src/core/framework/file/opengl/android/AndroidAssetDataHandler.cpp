@@ -8,6 +8,7 @@
 
 #include "AndroidAssetDataHandler.h"
 
+#include <sstream>
 #include <assert.h>
 
 AndroidAssetDataHandler* AndroidAssetDataHandler::getInstance()
@@ -19,6 +20,8 @@ AndroidAssetDataHandler* AndroidAssetDataHandler::getInstance()
 
 void AndroidAssetDataHandler::init(JNIEnv* jni, jobject activity)
 {
+    jni->GetJavaVM(&m_jvm);
+    
     jclass class_activity = jni->GetObjectClass(activity);
     jmethodID mid_getAssets = jni->GetMethodID(class_activity, "getAssets", "()Landroid/content/res/AssetManager;");
     assert(mid_getAssets != 0);
@@ -26,6 +29,51 @@ void AndroidAssetDataHandler::init(JNIEnv* jni, jobject activity)
     jobject java_AssetManager = jni->CallObjectMethod(activity, mid_getAssets);
     
     mAssetManager = AAssetManager_fromJava(jni, java_AssetManager);
+    
+    jmethodID mid_getApplicationContext = jni->GetMethodID(class_activity, "getApplicationContext", "()Landroid/content/Context;");
+    assert(mid_getApplicationContext != 0);
+    
+    jobject java_appContext = jni->CallObjectMethod(activity, mid_getApplicationContext);
+    
+    jclass class_appContext = jni->GetObjectClass(java_appContext);
+    jmethodID mid_getFilesDir = jni->GetMethodID(class_appContext, "getFilesDir", "()Ljava/io/File;");
+    assert(mid_getFilesDir != 0);
+    
+    jobject java_file = jni->CallObjectMethod(java_appContext, mid_getFilesDir);
+    
+    jclass class_file = jni->GetObjectClass(java_file);
+    jmethodID mid_getAbsolutePath = jni->GetMethodID(class_file, "getAbsolutePath", "()Ljava/lang/String;");
+    assert(mid_getAbsolutePath != 0);
+    
+    m_javaApkFilesDirPath = (jstring) jni->CallObjectMethod(java_file, mid_getAbsolutePath);
+    m_ApkFilesDirPath = jni->GetStringUTFChars(m_javaApkFilesDirPath, JNI_FALSE);
+}
+
+void AndroidAssetDataHandler::deinit()
+{
+    JNIEnv* jni;
+    
+    jint status = m_jvm->GetEnv((void**)&jni, JNI_VERSION_1_6);
+    if (status != JNI_OK)
+    {
+        m_jvm->AttachCurrentThread(&jni, NULL);
+    }
+    
+    jni->ReleaseStringUTFChars(m_javaApkFilesDirPath, m_ApkFilesDirPath);
+    
+    if (status != JNI_OK)
+    {
+        m_jvm->DetachCurrentThread();
+    }
+}
+
+const char* AndroidAssetDataHandler::getPathInsideApk(const char* filePath)
+{
+    std::stringstream ss;
+    ss << m_ApkFilesDirPath << "/" << filePath;
+    m_pathInsideApk = ss.str();
+    
+    return m_pathInsideApk.c_str();
 }
 
 FileData AndroidAssetDataHandler::getAssetData(const char* relativePath)
@@ -51,7 +99,7 @@ void AndroidAssetDataHandler::releaseAssetData(const FileData* fileData)
     AAsset_close((AAsset*)fileData->file_handle);
 }
 
-AndroidAssetDataHandler::AndroidAssetDataHandler() : AssetDataHandler()
+AndroidAssetDataHandler::AndroidAssetDataHandler() : AssetDataHandler(), m_jvm(nullptr)
 {
     // Empty
 }

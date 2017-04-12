@@ -8,9 +8,15 @@
 
 #include "MainAssets.h"
 
-#include "Assets.h"
-
 #include "TextureRegion.h"
+
+#include "Assets.h"
+#include "FlagUtil.h"
+
+#define FLAG_TEXTURE_SET_COMPRESSED 1
+#define FLAG_TEXTURE_SET_DESKTOP 2
+#define FLAG_TEXTURE_SET_GAME_PAD 4
+
 
 MainAssets* MainAssets::getInstance()
 {
@@ -20,35 +26,56 @@ MainAssets* MainAssets::getInstance()
 
 bool MainAssets::isUsingCompressedTextureSet()
 {
-    return m_isUsingCompressedTextureSet;
+    return FlagUtil::isFlagSet(m_iTextureSetFlag, FLAG_TEXTURE_SET_COMPRESSED);
 }
 
 void MainAssets::setUsingCompressedTextureSet(bool isUsingCompressedTextureSet)
 {
-    m_isUsingCompressedTextureSet = isUsingCompressedTextureSet;
+    if (isUsingCompressedTextureSet)
+    {
+        FlagUtil::setFlag(m_iTextureSetFlag, FLAG_TEXTURE_SET_COMPRESSED);
+    }
+    else
+    {
+        FlagUtil::removeFlag(m_iTextureSetFlag, FLAG_TEXTURE_SET_COMPRESSED);
+    }
 }
 
 bool MainAssets::isUsingDesktopTextureSet()
 {
-    return m_isUsingDesktopTextureSet;
+    return FlagUtil::isFlagSet(m_iTextureSetFlag, FLAG_TEXTURE_SET_DESKTOP);
 }
 
 void MainAssets::setUsingDesktopTextureSet(bool isUsingDesktopTextureSet)
 {
-    m_isUsingDesktopTextureSet = isUsingDesktopTextureSet;
+    if (isUsingDesktopTextureSet)
+    {
+        FlagUtil::setFlag(m_iTextureSetFlag, FLAG_TEXTURE_SET_DESKTOP);
+    }
+    else
+    {
+        FlagUtil::removeFlag(m_iTextureSetFlag, FLAG_TEXTURE_SET_DESKTOP);
+    }
 }
 
 bool MainAssets::isUsingGamePadTextureSet()
 {
-    return m_isUsingGamePadTextureSet;
+    return FlagUtil::isFlagSet(m_iTextureSetFlag, FLAG_TEXTURE_SET_GAME_PAD);
 }
 
 void MainAssets::setUsingGamePadTextureSet(bool isUsingGamePadTextureSet)
 {
-    m_isUsingGamePadTextureSet = isUsingGamePadTextureSet;
+    if (isUsingGamePadTextureSet)
+    {
+        FlagUtil::setFlag(m_iTextureSetFlag, FLAG_TEXTURE_SET_GAME_PAD);
+    }
+    else
+    {
+        FlagUtil::removeFlag(m_iTextureSetFlag, FLAG_TEXTURE_SET_GAME_PAD);
+    }
 }
 
-MainAssets::MainAssets() : m_isUsingCompressedTextureSet(false), m_isUsingDesktopTextureSet(false), m_isUsingGamePadTextureSet(false)
+MainAssets::MainAssets() : m_iTextureSetFlag(0)
 {
     // Empty
 }

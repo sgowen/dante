@@ -21,8 +21,6 @@
 #include "macros.h"
 #include "NGAudioEngine.h"
 
-#include <sstream>
-
 extern void ExitGame();
 
 using namespace DirectX;

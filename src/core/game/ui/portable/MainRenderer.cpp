@@ -18,7 +18,7 @@ MainRenderer::MainRenderer(int maxBatchSize) : Renderer(maxBatchSize)
 
 MainRenderer::~MainRenderer()
 {
-    releaseDeviceDependentResources();
+    // Empty
 }
 
 void MainRenderer::createDeviceDependentResources()
@@ -29,18 +29,4 @@ void MainRenderer::createDeviceDependentResources()
 void MainRenderer::releaseDeviceDependentResources()
 {
     Renderer::releaseDeviceDependentResources();
-}
-
-void MainRenderer::beginFrame()
-{
-    Renderer::beginFrame();
-    
-    setFramebuffer(0);
-}
-
-void MainRenderer::renderToScreen()
-{
-	/// Render everything to the screen
-    
-    renderFramebufferToScreen(m_iFramebufferIndex);
 }

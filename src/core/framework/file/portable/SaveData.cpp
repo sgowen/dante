@@ -19,6 +19,10 @@
 #include "apple_asset_data_handler.h"
 #endif
 
+#if defined __ANDROID__
+#include "AndroidAssetDataHandler.h"
+#endif
+
 #include "rapidjson/document.h"
 #include "rapidjson/writer.h"
 #include "rapidjson/stringbuffer.h"
@@ -47,7 +51,9 @@ void SaveData::save()
     using namespace std;
     
     const char* finalPath;
-#if TARGET_OS_IPHONE
+#if defined __ANDROID__
+    finalPath = ANDROID_ASSETS->getPathInsideApk(m_filePath);
+#elif TARGET_OS_IPHONE
     finalPath = getPathInsideNSDocuments(m_filePath);
 #elif defined _WIN32
 	#if !defined(WINAPI_FAMILY) || (WINAPI_FAMILY == WINAPI_FAMILY_DESKTOP_APP)
@@ -115,7 +121,10 @@ void SaveData::load()
     using namespace std;
     
     const char* finalPath;
-#if TARGET_OS_IPHONE
+
+#if defined __ANDROID__
+    finalPath = ANDROID_ASSETS->getPathInsideApk(m_filePath);
+#elif TARGET_OS_IPHONE
     finalPath = getPathInsideNSDocuments(m_filePath);
 #elif defined _WIN32
 	#if !defined(WINAPI_FAMILY) || (WINAPI_FAMILY == WINAPI_FAMILY_DESKTOP_APP)
@@ -205,7 +214,7 @@ std::map<std::string, std::string>& SaveData::getKeyValues()
     return m_keyValues;
 }
 
-SaveData::SaveData() : m_filePath(nullptr)
+SaveData::SaveData() : m_filePath("data.sav")
 {
     // Empty
 }

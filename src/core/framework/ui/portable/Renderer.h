@@ -42,7 +42,7 @@ public:
     
     void setFramebuffer(int framebufferIndex);
     
-    void renderFramebufferToScreen(int framebufferIndex);
+    void renderToScreen();
     
     void endFrame();
     

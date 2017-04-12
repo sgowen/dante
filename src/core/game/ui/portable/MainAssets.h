@@ -31,9 +31,7 @@ public:
     void setUsingGamePadTextureSet(bool isUsingGamePadTextureSet);
 
 private:
-    bool m_isUsingCompressedTextureSet;
-    bool m_isUsingDesktopTextureSet;
-    bool m_isUsingGamePadTextureSet;
+    int m_iTextureSetFlag;
     
     // ctor, copy ctor, and assignment should be private in a Singleton
     MainAssets();

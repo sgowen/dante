@@ -13,15 +13,13 @@
 
 #include "GameConstants.h"
 #include "ScreenInputManager.h"
-#include "KeyboardInputManager.h"
-#include "GamePadInputManager.h"
-#include "KeyboardEvent.h"
-#include "GamePadEvent.h"
-#include "TouchConverter.h"
-#include "MainRenderer.h"
 #include "ScreenEvent.h"
+#include "TouchConverter.h"
+#include "KeyboardInputManager.h"
+#include "KeyboardEvent.h"
+#include "GamePadInputManager.h"
+#include "GamePadEvent.h"
 #include "NGAudioEngine.h"
-#include "SaveData.h"
 
 #define FRAME_RATE 0.01666666666667f // 60 frames per second
 
@@ -32,11 +30,7 @@ m_touchPointDown2(new Vector2D()),
 m_fFrameStateTime(0),
 m_iRequestedAction(REQUESTED_ACTION_UPDATE)
 {
-#if defined __ANDROID__
-    NG_SAVE_DATA->config("/data/data/com.noctisgames.dante/files/data.sav");
-#else
-    NG_SAVE_DATA->config("data.sav");
-#endif
+    // Empty
 }
 
 MainScreen::~MainScreen()
@@ -77,11 +71,21 @@ void MainScreen::onPause()
 void MainScreen::update(float deltaTime)
 {
     m_fFrameStateTime += deltaTime;
-    while (m_fFrameStateTime >= FRAME_RATE)
+    
+    if (m_fFrameStateTime >= FRAME_RATE)
     {
-        m_fFrameStateTime -= FRAME_RATE;
+        SCREEN_INPUT_MANAGER->process();
+        KEYBOARD_INPUT_MANAGER->process();
+        GAME_PAD_INPUT_MANAGER->process();
         
-        internalUpdate();
+        while (m_fFrameStateTime >= FRAME_RATE)
+        {
+            m_fFrameStateTime -= FRAME_RATE;
+            
+            // TODO, update
+        }
+        
+        NG_AUDIO_ENGINE->update();
     }
 }
 
@@ -89,7 +93,9 @@ void MainScreen::render()
 {
     m_renderer->beginFrame();
     
-    // TODO
+    // TODO, render stuff
+    
+    m_renderer->renderToScreen();
     
     m_renderer->endFrame();
 }
@@ -102,17 +108,6 @@ int MainScreen::getRequestedAction()
 void MainScreen::clearRequestedAction()
 {
     m_iRequestedAction = REQUESTED_ACTION_UPDATE;
-}
-
-void MainScreen::internalUpdate()
-{
-    SCREEN_INPUT_MANAGER->process();
-    KEYBOARD_INPUT_MANAGER->process();
-    GAME_PAD_INPUT_MANAGER->process();
-    
-    // TODO
-    
-    NG_AUDIO_ENGINE->update();
 }
 
 RTTI_IMPL(MainScreen, IScreen);

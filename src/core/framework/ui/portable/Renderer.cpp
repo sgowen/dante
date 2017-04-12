@@ -106,6 +106,8 @@ void Renderer::beginFrame()
     handleAsyncTextureLoads();
     
     m_rendererHelper->beginFrame();
+    
+    setFramebuffer(0);
 }
 
 void Renderer::setFramebuffer(int framebufferIndex)
@@ -115,12 +117,12 @@ void Renderer::setFramebuffer(int framebufferIndex)
     m_iFramebufferIndex = framebufferIndex;
     
     m_rendererHelper->bindToOffscreenFramebuffer(m_iFramebufferIndex);
-    m_rendererHelper->clearFramebufferWithColor(0, 0, 0, 1);
+    m_rendererHelper->clearFramebufferWithColor(1, 0, 0, 1);
 }
 
-void Renderer::renderFramebufferToScreen(int framebufferIndex)
+void Renderer::renderToScreen()
 {
-    assert(framebufferIndex >= 0);
+    assert(m_iFramebufferIndex >= 0);
     
     m_rendererHelper->bindToScreenFramebuffer();
     m_rendererHelper->clearFramebufferWithColor(0, 0, 0, 1);
@@ -129,7 +131,7 @@ void Renderer::renderFramebufferToScreen(int framebufferIndex)
     
     m_spriteBatcher->beginBatch();
     m_spriteBatcher->drawSprite(0, 0, 2, 2, 0, tr);
-    m_spriteBatcher->endBatch(*m_rendererHelper->getFramebuffer(framebufferIndex), *m_framebufferToScreenGpuProgramWrapper);
+    m_spriteBatcher->endBatch(*m_rendererHelper->getFramebuffer(m_iFramebufferIndex), *m_framebufferToScreenGpuProgramWrapper);
 }
 
 void Renderer::endFrame()

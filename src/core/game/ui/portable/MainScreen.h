@@ -50,8 +50,6 @@ private:
     
     int m_iRequestedAction;
     float m_fFrameStateTime;
-    
-    void internalUpdate();
 };
 
 #endif /* defined(__dante__MainScreen__) */
