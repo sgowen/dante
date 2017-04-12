@@ -17,6 +17,12 @@ public:
     IRendererHelper();
     
     virtual ~IRendererHelper();
+
+	virtual void createDeviceDependentResources(int maxBatchSize) = 0;
+
+	virtual void createWindowSizeDependentResources(int renderWidth, int renderHeight, int numFramebuffers) = 0;
+
+	virtual void releaseDeviceDependentResources() = 0;
     
     virtual void beginFrame() = 0;
     

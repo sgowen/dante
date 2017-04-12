@@ -13,12 +13,27 @@
 
 Direct3DRendererHelper::Direct3DRendererHelper() : IRendererHelper(), m_iFramebufferIndex(0), m_isBoundToScreen(false)
 {
-    // Empty
+	Direct3DManager::create();
 }
 
 Direct3DRendererHelper::~Direct3DRendererHelper()
 {
-    // Empty
+	Direct3DManager::destroy();
+}
+
+void Direct3DRendererHelper::createDeviceDependentResources(int maxBatchSize)
+{
+	D3DManager->createDeviceDependentResources(maxBatchSize);
+}
+
+void Direct3DRendererHelper::createWindowSizeDependentResources(int renderWidth, int renderHeight, int numFramebuffers)
+{
+	D3DManager->createWindowSizeDependentResources(renderWidth, renderHeight, numFramebuffers);
+}
+
+void Direct3DRendererHelper::releaseDeviceDependentResources()
+{
+	D3DManager->releaseDeviceDependentResources();
 }
 
 void Direct3DRendererHelper::beginFrame()

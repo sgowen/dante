@@ -17,6 +17,12 @@ public:
     Direct3DRendererHelper();
     
     virtual ~Direct3DRendererHelper();
+
+	virtual void createDeviceDependentResources(int maxBatchSize);
+
+	virtual void createWindowSizeDependentResources(int renderWidth, int renderHeight, int numFramebuffers);
+
+	virtual void releaseDeviceDependentResources();
     
     virtual void beginFrame();
     

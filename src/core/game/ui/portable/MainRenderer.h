@@ -14,7 +14,7 @@
 class MainRenderer : public Renderer
 {
 public:
-    MainRenderer();
+    MainRenderer(int maxBatchSize);
     
     virtual ~MainRenderer();
     

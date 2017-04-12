@@ -11,7 +11,7 @@
 #include "Assets.h"
 #include "MainAssetsMapper.h"
 
-MainRenderer::MainRenderer() : Renderer()
+MainRenderer::MainRenderer(int maxBatchSize) : Renderer(maxBatchSize)
 {
     ASSETS->init(new MainAssetsMapper());
 }

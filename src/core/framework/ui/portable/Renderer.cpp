@@ -35,7 +35,7 @@
 #include <string>
 #include <assert.h>
 
-Renderer::Renderer() :
+Renderer::Renderer(int maxBatchSize) :
 m_spriteBatcher(SPRITE_BATCHER_FACTORY->createSpriteBatcher()),
 m_fillNGRectBatcher(RECTANGLE_BATCHER_FACTORY->createNGRectBatcher(true)),
 m_boundsNGRectBatcher(RECTANGLE_BATCHER_FACTORY->createNGRectBatcher(false)),
@@ -47,6 +47,7 @@ m_textureGpuProgramWrapper(nullptr),
 m_colorGpuProgramWrapper(nullptr),
 m_framebufferToScreenGpuProgramWrapper(nullptr),
 m_iFramebufferIndex(0),
+m_iMaxBatchSize(maxBatchSize),
 m_areDeviceDependentResourcesCreated(false)
 {
     // Empty
@@ -66,6 +67,8 @@ Renderer::~Renderer()
 
 void Renderer::createDeviceDependentResources()
 {
+	m_rendererHelper->createDeviceDependentResources(m_iMaxBatchSize);
+
     m_textureGpuProgramWrapper = GPU_PROGRAM_WRAPPER_FACTORY->createTextureGpuProgramWrapper();
     m_colorGpuProgramWrapper = GPU_PROGRAM_WRAPPER_FACTORY->createColorGpuProgramWrapper();
     m_framebufferToScreenGpuProgramWrapper = GPU_PROGRAM_WRAPPER_FACTORY->createFramebufferToScreenGpuProgramWrapper();
@@ -73,8 +76,15 @@ void Renderer::createDeviceDependentResources()
     m_areDeviceDependentResourcesCreated = true;
 }
 
+void Renderer::createWindowSizeDependentResources(int renderWidth, int renderHeight, int numFramebuffers)
+{
+	m_rendererHelper->createWindowSizeDependentResources(renderWidth, renderHeight, numFramebuffers);
+}
+
 void Renderer::releaseDeviceDependentResources()
 {
+	m_rendererHelper->releaseDeviceDependentResources();
+
     m_areDeviceDependentResourcesCreated = false;
 
 	m_loadingTextures.clear();

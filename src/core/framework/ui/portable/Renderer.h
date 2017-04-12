@@ -28,11 +28,13 @@ class TextureWrapper;
 class Renderer
 {
 public:
-    Renderer();
+    Renderer(int maxBatchSize);
     
     virtual ~Renderer();
     
     virtual void createDeviceDependentResources();
+
+	virtual void createWindowSizeDependentResources(int renderWidth, int renderHeight, int numFramebuffers);
     
     virtual void releaseDeviceDependentResources();
     
@@ -83,6 +85,7 @@ protected:
 private:
     std::vector<TextureWrapper *> m_loadingTextures;
     std::vector<std::thread *> m_textureDataLoadingThreads;
+	int m_iMaxBatchSize;
     bool m_areDeviceDependentResourcesCreated;
     
     void handleAsyncTextureLoads();

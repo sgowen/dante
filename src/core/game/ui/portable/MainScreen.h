@@ -13,7 +13,6 @@
 
 #include "RTTI.h"
 
-class IDeviceHelper;
 class MainRenderer;
 class Vector2D;
 
@@ -45,7 +44,6 @@ public:
     void clearRequestedAction();
     
 private:
-    IDeviceHelper* m_deviceHelper;
     MainRenderer* m_renderer;
     Vector2D* m_touchPointDown;
     Vector2D* m_touchPointDown2;
