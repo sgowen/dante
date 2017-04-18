@@ -18,7 +18,7 @@ WinSoundWrapper::WinSoundWrapper(int soundId, const char *path, DirectX::AudioEn
     
     char* wavFileName = new char[len + 5];
     
-	strcpy_s(wavFileName, len + 6, path);
+	strcpy_s(wavFileName, len + 5, path);
     wavFileName[len] = '.';
     wavFileName[len + 1] = 'w';
     wavFileName[len + 2] = 'a';

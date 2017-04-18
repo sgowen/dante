@@ -34,7 +34,7 @@ GpuTextureDataWrapper* Direct3DTextureLoader::loadTextureData(const char* textur
     
     char* textureFileName = new char[len + 5];
     
-	strcpy_s(textureFileName, len + 6, textureName);
+	strcpy_s(textureFileName, len + 5, textureName);
     textureFileName[len] = '.';
     textureFileName[len + 1] = 'd';
     textureFileName[len + 2] = 'd';
