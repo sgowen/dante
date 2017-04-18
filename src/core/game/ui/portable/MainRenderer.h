@@ -11,6 +11,8 @@
 
 #include "Renderer.h"
 
+class TextureWrapper;
+
 class MainRenderer : public Renderer
 {
 public:
@@ -21,6 +23,11 @@ public:
     virtual void createDeviceDependentResources();
     
     virtual void releaseDeviceDependentResources();
+    
+    void tempDraw(float stateTime, float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4);
+    
+private:
+    TextureWrapper* m_samus;
 };
 
 #endif /* defined(__dante__MainRenderer__) */

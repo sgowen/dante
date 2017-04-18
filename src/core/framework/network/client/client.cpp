@@ -64,7 +64,7 @@ void error(const char *msg)
 static volatile float xPos = 0;
 static volatile float yPos = 0;
 
-void updateTouchPos(float x, float y)
+void updateCoords(float x, float y)
 {
     xPos = x;
     yPos = y;
@@ -74,7 +74,7 @@ char latestMessage[MAX_DATA_SIZE];
 
 char * getLatestMessage()
 {
-    return &latestMessage;
+    return latestMessage;
 }
 
 int clientStatus = 0;
@@ -90,9 +90,10 @@ size_t numbytes;
 int sockfd;
 ssize_t numbytes;
 #endif
-struct addrinfo hints, *servinfo, *servinforead, *p;
+struct addrinfo hints, *servinfo, *servinforead;
+static struct addrinfo *p;
 int rv;
-char buffer[MAX_DATA_SIZE];
+static char buffer[MAX_DATA_SIZE];
 struct sockaddr_storage server_addr;
 socklen_t addr_len;
 char s[INET6_ADDRSTRLEN];
@@ -151,7 +152,7 @@ int startClientUDP()
     printf("Generated Client GUID: %s\n", CLIENT_GUID);
     
     static const char * hostname = "208.97.168.138";
-//        static const char * hostname = "10.0.0.98"; // my computer
+//        static const char * hostname = "localhost"; // my computer
     if ((rv = getaddrinfo(hostname, PORT, &hints, &servinfo)) != 0)
     {
         fprintf(stderr, "getaddrinfo: %s\n", gai_strerror(rv));
@@ -211,7 +212,7 @@ int startClientUDP()
     return 1;
 }
 
-int sendTouchInput()
+int sendCoords()
 {
     clientStatus = 2;
     

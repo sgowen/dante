@@ -1,12 +1,12 @@
 //
-//  SaveData.cpp
+//  JsonFile.cpp
 //  noctisgames-framework
 //
 //  Created by Stephen Gowen on 3/9/17.
 //  Copyright (c) 2017 Noctis Games. All rights reserved.
 //
 
-#include "SaveData.h"
+#include "JsonFile.h"
 
 #include "StringUtil.h"
 #include "macros.h"
@@ -32,18 +32,12 @@
 #include <stdlib.h>
 #include <sstream>
 
-SaveData* SaveData::getInstance()
+JsonFile::JsonFile(const char* filePath, bool useEncryption) : m_filePath(filePath), m_useEncryption(useEncryption)
 {
-    static SaveData instance = SaveData();
-    return &instance;
+    // Empty
 }
 
-void SaveData::config(const char* filePath)
-{
-    m_filePath = filePath;
-}
-
-void SaveData::save()
+void JsonFile::save()
 {
     assert(m_filePath);
     
@@ -103,9 +97,9 @@ void SaveData::save()
         const char* data = s.GetString();
         
         std::string rawData = std::string(data);
-        std::string encryptedData = StringUtil::encryptDecrypt(rawData);
+        std::string dataToWrite = m_useEncryption ? StringUtil::encryptDecrypt(rawData) : rawData;
         
-        int sum = fprintf(file, "%s", encryptedData.c_str());
+        int sum = fprintf(file, "%s", dataToWrite.c_str());
         
         UNUSED(sum);
         
@@ -113,7 +107,7 @@ void SaveData::save()
     }
 }
 
-void SaveData::load()
+void JsonFile::load()
 {
     assert(m_filePath);
     
@@ -161,24 +155,24 @@ void SaveData::load()
         // get current file position which is end from seek
         size_t size = ftell(file);
         
-        std::string encryptedData;
+        std::string rawData;
         
         // allocate string space and set length
-        encryptedData.resize(size);
+        rawData.resize(size);
         
         // go back to beginning of file for read
         rewind(file);
         
         // read 1*size bytes from sfile into ss
-        fread(&encryptedData[0], 1, size, file);
+        fread(&rawData[0], 1, size, file);
         
         // close the file
         fclose(file);
         
-        std::string rawData = StringUtil::encryptDecrypt(encryptedData);
+        std::string dataToRead = m_useEncryption ? StringUtil::encryptDecrypt(rawData) : rawData;
         
         rapidjson::Document d;
-        d.Parse<0>(rawData.c_str());
+        d.Parse<0>(dataToRead.c_str());
         
         if (d.IsObject())
         {
@@ -190,14 +184,14 @@ void SaveData::load()
     }
 }
     
-void SaveData::clear()
+void JsonFile::clear()
 {
     m_keyValues.clear();
     
     save();
 }
     
-std::string SaveData::findValue(std::string key)
+std::string JsonFile::findValue(std::string key)
 {
     auto q = m_keyValues.find(key);
     
@@ -209,12 +203,7 @@ std::string SaveData::findValue(std::string key)
     return "";
 }
 
-std::map<std::string, std::string>& SaveData::getKeyValues()
+void JsonFile::setValue(std::string key, std::string value)
 {
-    return m_keyValues;
-}
-
-SaveData::SaveData() : m_filePath("data.sav")
-{
-    // Empty
+    m_keyValues[key] = value;
 }

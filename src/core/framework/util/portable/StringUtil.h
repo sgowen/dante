@@ -36,17 +36,18 @@ public:
         return ss.str();
     }
     
-    static int stringToInt(const std::string &str)
+    template<typename T>
+    static T stringToNumber(const std::string &str)
     {
         std::stringstream ss(str);
-        int num;
-        if ((ss >> num).fail())
+        T value;
+        if ((ss >> value).fail())
         {
             // ERROR
             return 0;
         }
         
-        return num;
+        return value;
     }
 };
 

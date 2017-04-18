@@ -13,8 +13,12 @@
 
 #include "RTTI.h"
 
+#include <thread>
+
+class JsonFile;
 class MainRenderer;
 class Vector2D;
+class PhysicalEntity;
 
 class MainScreen : public IScreen
 {
@@ -44,12 +48,23 @@ public:
     void clearRequestedAction();
     
 private:
+    JsonFile* m_config;
     MainRenderer* m_renderer;
     Vector2D* m_touchPointDown;
     Vector2D* m_touchPointDown2;
     
-    int m_iRequestedAction;
     float m_fFrameStateTime;
+    int m_iRequestedAction;
+    
+    // temp
+    std::string m_serverAddress;
+    std::thread* m_thread1;
+    std::thread* m_thread2;
+    std::thread* m_thread3;
+    PhysicalEntity* m_samus;
+    int m_iNetworkAction;
+    
+    void tempUpdate(float deltaTime);
 };
 
 #endif /* defined(__dante__MainScreen__) */

@@ -117,7 +117,7 @@ void Renderer::setFramebuffer(int framebufferIndex)
     m_iFramebufferIndex = framebufferIndex;
     
     m_rendererHelper->bindToOffscreenFramebuffer(m_iFramebufferIndex);
-    m_rendererHelper->clearFramebufferWithColor(1, 0, 0, 1);
+    m_rendererHelper->clearFramebufferWithColor(0, 0, 0, 1);
 }
 
 void Renderer::renderToScreen()
