@@ -203,6 +203,7 @@
     <ClInclude Include="..\..\..\core\framework\file\portable\*.h" />
     <ClInclude Include="..\..\..\core\framework\file\windows\*.h" />
     <ClInclude Include="..\..\..\core\framework\math\*.h" />
+    <ClInclude Include="..\..\..\core\framework\network\client\*.h" />
     <ClInclude Include="..\..\..\core\framework\sound\portable\*.h" />
     <ClInclude Include="..\..\..\core\framework\sound\windows\*.h" />
     <ClInclude Include="..\..\..\core\framework\state\*.h" />
@@ -222,6 +223,7 @@
     <ClCompile Include="..\..\..\core\framework\file\portable\*.cpp" />
     <ClCompile Include="..\..\..\core\framework\file\windows\*.cpp" />
     <ClCompile Include="..\..\..\core\framework\math\*.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\client\*.cpp" />
     <ClCompile Include="..\..\..\core\framework\sound\portable\*.cpp" />
     <ClCompile Include="..\..\..\core\framework\sound\windows\*.cpp" />
     <ClCompile Include="..\..\..\core\framework\state\*.cpp" />

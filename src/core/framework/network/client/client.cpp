@@ -186,7 +186,7 @@ int startClientUDP()
     
 #ifdef _WIN32
 	DWORD dwTime = 100;
-	if (setsockopt(sockfd, SOL_SOCKET, SO_RCVTIMEO, &dwTime, sizeof(dwTime)) < 0)
+	if (setsockopt(sockfd, SOL_SOCKET, SO_RCVTIMEO, (const char *)(&dwTime), sizeof(dwTime)) < 0)
 	{
 		perror("talker: setsockopt");
 
