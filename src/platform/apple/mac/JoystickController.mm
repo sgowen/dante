@@ -239,6 +239,16 @@
         // Circle on PS4 controller
         GAME_PAD_INPUT_MANAGER->onInput(GamePadEventType_B_BUTTON, index, 1, 0);
     }
+    else if (buttonNumber == 4)
+    {
+        // Left Bumper on PS4 controller
+        GAME_PAD_INPUT_MANAGER->onInput(GamePadEventType_BUMPER_LEFT, index, 1, 0);
+    }
+    else if (buttonNumber == 5)
+    {
+        // Right Bumper on PS4 controller
+        GAME_PAD_INPUT_MANAGER->onInput(GamePadEventType_BUMPER_RIGHT, index, 1, 0);
+    }
     else if (buttonNumber == 6)
     {
         // Left Trigger on PS4 controller
@@ -282,6 +292,16 @@
     {
         // Circle on PS4 controller
         GAME_PAD_INPUT_MANAGER->onInput(GamePadEventType_B_BUTTON, index, 0, 0);
+    }
+    else if (buttonNumber == 4)
+    {
+        // Left Bumper on PS4 controller
+        GAME_PAD_INPUT_MANAGER->onInput(GamePadEventType_BUMPER_LEFT, index, 0, 0);
+    }
+    else if (buttonNumber == 5)
+    {
+        // Right Bumper on PS4 controller
+        GAME_PAD_INPUT_MANAGER->onInput(GamePadEventType_BUMPER_RIGHT, index, 0, 0);
     }
     else if (buttonNumber == 6)
     {
