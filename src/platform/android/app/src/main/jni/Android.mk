@@ -28,28 +28,25 @@ endef
 PROJECT_ROOT_PATH := $(LOCAL_PATH)/../../../../../../
 
 # Game Framework
-LOCAL_C_INCLUDES += $(PROJECT_ROOT_PATH)/core/framework/
 LOCAL_C_INCLUDES += $(PROJECT_ROOT_PATH)/core/framework/entity/
-LOCAL_C_INCLUDES += $(PROJECT_ROOT_PATH)/core/framework/file/portable/
 LOCAL_C_INCLUDES += $(PROJECT_ROOT_PATH)/core/framework/file/opengl/android/
 LOCAL_C_INCLUDES += $(PROJECT_ROOT_PATH)/core/framework/file/opengl/portable/
+LOCAL_C_INCLUDES += $(PROJECT_ROOT_PATH)/core/framework/file/portable/
+LOCAL_C_INCLUDES += $(PROJECT_ROOT_PATH)/core/framework/graphics/opengl/
+LOCAL_C_INCLUDES += $(PROJECT_ROOT_PATH)/core/framework/graphics/portable/
+LOCAL_C_INCLUDES += $(PROJECT_ROOT_PATH)/core/framework/input/portable/
 LOCAL_C_INCLUDES += $(PROJECT_ROOT_PATH)/core/framework/math/
 LOCAL_C_INCLUDES += $(PROJECT_ROOT_PATH)/core/framework/network/client/
 LOCAL_C_INCLUDES += $(PROJECT_ROOT_PATH)/core/framework/sound/portable/
 LOCAL_C_INCLUDES += $(PROJECT_ROOT_PATH)/core/framework/sound/superpowered/android/
 LOCAL_C_INCLUDES += $(PROJECT_ROOT_PATH)/core/framework/sound/superpowered/portable/
 LOCAL_C_INCLUDES += $(PROJECT_ROOT_PATH)/core/framework/state/
-LOCAL_C_INCLUDES += $(PROJECT_ROOT_PATH)/core/framework/ui/opengl/
-LOCAL_C_INCLUDES += $(PROJECT_ROOT_PATH)/core/framework/ui/portable/
+LOCAL_C_INCLUDES += $(PROJECT_ROOT_PATH)/core/framework/ui/
 LOCAL_C_INCLUDES += $(PROJECT_ROOT_PATH)/core/framework/util/portable/
 
 ENTITY_FILES = $(call walk, $(PROJECT_ROOT_PATH)/core/framework/entity)
 FILE_LIST := $(filter %.cpp, $(ENTITY_FILES))
 LOCAL_SRC_FILES := $(FILE_LIST:$(LOCAL_PATH)/%=%)
-
-FILE_PORTABLE_FILES = $(call walk, $(PROJECT_ROOT_PATH)/core/framework/file/portable)
-FILE_LIST := $(filter %.cpp, $(FILE_PORTABLE_FILES))
-LOCAL_SRC_FILES += $(FILE_LIST:$(LOCAL_PATH)/%=%)
 
 FILE_OGL_ANDROID_FILES = $(call walk, $(PROJECT_ROOT_PATH)/core/framework/file/opengl/android)
 FILE_LIST := $(filter %.cpp, $(FILE_OGL_ANDROID_FILES))
@@ -57,6 +54,22 @@ LOCAL_SRC_FILES += $(FILE_LIST:$(LOCAL_PATH)/%=%)
 
 FILE_OGL_PORTABLE_FILES = $(call walk, $(PROJECT_ROOT_PATH)/core/framework/file/opengl/portable)
 FILE_LIST := $(filter %.cpp, $(FILE_OGL_PORTABLE_FILES))
+LOCAL_SRC_FILES += $(FILE_LIST:$(LOCAL_PATH)/%=%)
+
+FILE_PORTABLE_FILES = $(call walk, $(PROJECT_ROOT_PATH)/core/framework/file/portable)
+FILE_LIST := $(filter %.cpp, $(FILE_PORTABLE_FILES))
+LOCAL_SRC_FILES += $(FILE_LIST:$(LOCAL_PATH)/%=%)
+
+FW_GRAPHICS_OGL_FILES = $(call walk, $(PROJECT_ROOT_PATH)/core/framework/graphics/opengl)
+FILE_LIST := $(filter %.cpp, $(FW_GRAPHICS_OGL_FILES))
+LOCAL_SRC_FILES += $(FILE_LIST:$(LOCAL_PATH)/%=%)
+
+FW_GRAPHICS_PORTABLE_FILES = $(call walk, $(PROJECT_ROOT_PATH)/core/framework/graphics/portable)
+FILE_LIST := $(filter %.cpp, $(FW_GRAPHICS_PORTABLE_FILES))
+LOCAL_SRC_FILES += $(FILE_LIST:$(LOCAL_PATH)/%=%)
+
+FW_INPUT_FILES = $(call walk, $(PROJECT_ROOT_PATH)/core/framework/input/portable)
+FILE_LIST := $(filter %.cpp, $(FW_INPUT_FILES))
 LOCAL_SRC_FILES += $(FILE_LIST:$(LOCAL_PATH)/%=%)
 
 MATH_FILES = $(call walk, $(PROJECT_ROOT_PATH)/core/framework/math)
@@ -83,12 +96,8 @@ STATE_FILES = $(call walk, $(PROJECT_ROOT_PATH)/core/framework/state)
 FILE_LIST := $(filter %.cpp, $(STATE_FILES))
 LOCAL_SRC_FILES += $(FILE_LIST:$(LOCAL_PATH)/%=%)
 
-UI_OPENGL_FILES = $(call walk, $(PROJECT_ROOT_PATH)/core/framework/ui/opengl)
-FILE_LIST := $(filter %.cpp, $(UI_OPENGL_FILES))
-LOCAL_SRC_FILES += $(FILE_LIST:$(LOCAL_PATH)/%=%)
-
-UI_PORTABLE_FILES = $(call walk, $(PROJECT_ROOT_PATH)/core/framework/ui/portable)
-FILE_LIST := $(filter %.cpp, $(UI_PORTABLE_FILES))
+FW_UI_FILES = $(call walk, $(PROJECT_ROOT_PATH)/core/framework/ui)
+FILE_LIST := $(filter %.cpp, $(FW_UI_FILES))
 LOCAL_SRC_FILES += $(FILE_LIST:$(LOCAL_PATH)/%=%)
 
 UTIL_PORTABLE_FILES = $(call walk, $(PROJECT_ROOT_PATH)/core/framework/util/portable)
@@ -96,20 +105,25 @@ FILE_LIST := $(filter %.cpp, $(UTIL_PORTABLE_FILES))
 LOCAL_SRC_FILES += $(FILE_LIST:$(LOCAL_PATH)/%=%)
 
 # Game
+LOCAL_C_INCLUDES += $(PROJECT_ROOT_PATH)/core/game/graphics/opengl/
+LOCAL_C_INCLUDES += $(PROJECT_ROOT_PATH)/core/game/graphics/portable/
 LOCAL_C_INCLUDES += $(PROJECT_ROOT_PATH)/core/game/logic/
-LOCAL_C_INCLUDES += $(PROJECT_ROOT_PATH)/core/game/ui/opengl/
-LOCAL_C_INCLUDES += $(PROJECT_ROOT_PATH)/core/game/ui/portable/
+LOCAL_C_INCLUDES += $(PROJECT_ROOT_PATH)/core/game/ui/
+
+GAME_UI_OPENGL_FILES = $(call walk, $(PROJECT_ROOT_PATH)/core/game/graphics/opengl)
+FILE_LIST := $(filter %.cpp, $(GAME_UI_OPENGL_FILES))
+LOCAL_SRC_FILES += $(FILE_LIST:$(LOCAL_PATH)/%=%)
+
+GAME_UI_PORTABLE_FILES = $(call walk, $(PROJECT_ROOT_PATH)/core/game/graphics/portable)
+FILE_LIST := $(filter %.cpp, $(GAME_UI_PORTABLE_FILES))
+LOCAL_SRC_FILES += $(FILE_LIST:$(LOCAL_PATH)/%=%)
 
 GAME_LOGIC_FILES = $(call walk, $(PROJECT_ROOT_PATH)/core/game/logic)
 FILE_LIST := $(filter %.cpp, $(GAME_LOGIC_FILES))
 LOCAL_SRC_FILES += $(FILE_LIST:$(LOCAL_PATH)/%=%)
 
-GAME_UI_OPENGL_FILES = $(call walk, $(PROJECT_ROOT_PATH)/core/game/ui/opengl)
-FILE_LIST := $(filter %.cpp, $(GAME_UI_OPENGL_FILES))
-LOCAL_SRC_FILES += $(FILE_LIST:$(LOCAL_PATH)/%=%)
-
-GAME_UI_PORTABLE_FILES = $(call walk, $(PROJECT_ROOT_PATH)/core/game/ui/portable)
-FILE_LIST := $(filter %.cpp, $(GAME_UI_PORTABLE_FILES))
+GAME_UI_FILES = $(call walk, $(PROJECT_ROOT_PATH)/core/game/ui)
+FILE_LIST := $(filter %.cpp, $(GAME_UI_FILES))
 LOCAL_SRC_FILES += $(FILE_LIST:$(LOCAL_PATH)/%=%)
 
 # Android
