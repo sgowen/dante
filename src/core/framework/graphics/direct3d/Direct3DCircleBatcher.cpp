@@ -74,12 +74,12 @@ void Direct3DCircleBatcher::renderPartialCircle(Circle &circle, int arcDegrees, 
 void Direct3DCircleBatcher::endBatch(GpuProgramWrapper &gpuProgramWrapper)
 {
 	// set the primitive topology
-	DX::DeviceResources* deviceResources = Direct3DManager::getDeviceResources();
-	deviceResources->GetD3DDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
+	ID3D11DeviceContext* d3dContext = Direct3DManager::getD3dContext();
+	d3dContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 
 	gpuProgramWrapper.bind();
 
-	deviceResources->GetD3DDeviceContext()->Draw(m_iNumPoints, 0);
+	d3dContext->Draw(m_iNumPoints, 0);
 
 	gpuProgramWrapper.unbind();
 }

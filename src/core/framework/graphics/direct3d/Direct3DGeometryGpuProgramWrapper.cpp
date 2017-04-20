@@ -11,7 +11,6 @@
 #include "Direct3DGeometryGpuProgramWrapper.h"
 
 #include "Direct3DGeometryProgram.h"
-#include "DeviceResources.h"
 #include "Direct3DManager.h"
 
 Direct3DGeometryGpuProgramWrapper::Direct3DGeometryGpuProgramWrapper() : GpuProgramWrapper(),

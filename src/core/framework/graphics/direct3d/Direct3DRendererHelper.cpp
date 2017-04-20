@@ -58,9 +58,9 @@ void Direct3DRendererHelper::updateMatrix(float left, float right, float bottom,
 
 void Direct3DRendererHelper::bindToOffscreenFramebuffer(int index)
 {
-	DX::DeviceResources* deviceResources = Direct3DManager::getDeviceResources();
+	ID3D11DeviceContext* d3dContext = Direct3DManager::getD3dContext();
 
-	deviceResources->GetD3DDeviceContext()->OMSetRenderTargets(1, &D3DManager->getOffscreenRenderTargetViews().at(index), nullptr);
+	d3dContext->OMSetRenderTargets(1, &D3DManager->getOffscreenRenderTargetViews().at(index), nullptr);
     
 	m_iFramebufferIndex = index;
     m_isBoundToScreen = false;
@@ -69,28 +69,31 @@ void Direct3DRendererHelper::bindToOffscreenFramebuffer(int index)
 void Direct3DRendererHelper::clearFramebufferWithColor(float r, float g, float b, float a)
 {
     float color[] = { r, g, b, a };
-    
-	DX::DeviceResources* deviceResources = Direct3DManager::getDeviceResources();
 
     ID3D11RenderTargetView * targets[1] = {};
     if (m_isBoundToScreen)
     {
-        targets[0] = deviceResources->GetRenderTargetView();
+		ID3D11RenderTargetView* d3dRenderTargetView = Direct3DManager::getD3dRenderTargetView();
+        targets[0] = d3dRenderTargetView;
     }
     else
     {
         targets[0] = D3DManager->getOffscreenRenderTargetViews().at(m_iFramebufferIndex);
     }
     
-	deviceResources->GetD3DDeviceContext()->ClearRenderTargetView(targets[0], color);
+	ID3D11DeviceContext* d3dContext = Direct3DManager::getD3dContext();
+
+	d3dContext->ClearRenderTargetView(targets[0], color);
 }
 
 void Direct3DRendererHelper::bindToScreenFramebuffer()
 {
-	DX::DeviceResources* deviceResources = Direct3DManager::getDeviceResources();
+	ID3D11DeviceContext* d3dContext = Direct3DManager::getD3dContext();
 
-    ID3D11RenderTargetView *const targets[1] = { deviceResources->GetRenderTargetView() };
-	deviceResources->GetD3DDeviceContext()->OMSetRenderTargets(1, targets, nullptr);
+	ID3D11RenderTargetView* d3dRenderTargetView = Direct3DManager::getD3dRenderTargetView();
+
+    ID3D11RenderTargetView *const targets[1] = { d3dRenderTargetView };
+	d3dContext->OMSetRenderTargets(1, targets, nullptr);
     
     m_isBoundToScreen = true;
 }

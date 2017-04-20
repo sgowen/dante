@@ -23,20 +23,33 @@
 using namespace DirectX;
 
 Direct3DManager* Direct3DManager::s_pInstance = nullptr;
-DX::DeviceResources* Direct3DManager::s_pDeviceResources = nullptr;
 
-void Direct3DManager::setDeviceResources(DX::DeviceResources* deviceResources)
+ID3D11Device* Direct3DManager::s_d3dDevice = nullptr;
+ID3D11DeviceContext* Direct3DManager::s_d3dContext = nullptr;
+ID3D11RenderTargetView* Direct3DManager::s_d3dRenderTargetView = nullptr;
+XMFLOAT4X4 Direct3DManager::s_orientation;
+
+void Direct3DManager::init(ID3D11Device* d3dDevice, ID3D11DeviceContext* d3dContext, ID3D11RenderTargetView* d3dRenderTargetView, XMFLOAT4X4 orientation)
 {
-	assert(!s_pDeviceResources);
-
-	s_pDeviceResources = deviceResources;
+	s_d3dDevice = d3dDevice;
+	s_d3dContext = d3dContext;
+	s_d3dRenderTargetView = d3dRenderTargetView;
+	s_orientation = orientation;
 }
 
-DX::DeviceResources* Direct3DManager::getDeviceResources()
+ID3D11Device* Direct3DManager::getD3dDevice()
 {
-	assert(s_pDeviceResources);
+	return s_d3dDevice;
+}
 
-	return s_pDeviceResources;
+ID3D11DeviceContext* Direct3DManager::getD3dContext()
+{
+	return s_d3dContext;
+}
+
+ID3D11RenderTargetView* Direct3DManager::getD3dRenderTargetView()
+{
+	return s_d3dRenderTargetView;
 }
 
 void Direct3DManager::create()
@@ -102,16 +115,10 @@ void Direct3DManager::updateMatrix(float left, float right, float bottom, float 
 {
 	using namespace DirectX;
 
-	XMMATRIX matFinal;
-#if !defined(WINAPI_FAMILY) || (WINAPI_FAMILY == WINAPI_FAMILY_DESKTOP_APP)
-	matFinal = XMMatrixOrthographicOffCenterRH(left, right, bottom, top, -1.0, 1.0);
-#else
-	XMFLOAT4X4 orientation = s_pDeviceResources->GetOrientationTransform3D();
+	XMMATRIX orientationMatrix = XMLoadFloat4x4(&s_orientation);
 
-	XMMATRIX orientationMatrix = XMLoadFloat4x4(&orientation);
+	XMMATRIX matFinal = XMMatrixOrthographicOffCenterRH(left, right, bottom, top, -1.0, 1.0) * orientationMatrix;
 
-	matFinal = XMMatrixOrthographicOffCenterRH(left, right, bottom, top, -1.0, 1.0) * orientationMatrix;
-#endif
 	XMStoreFloat4x4(&m_matFinal, matFinal);
 }
 
@@ -129,12 +136,12 @@ void Direct3DManager::addVertexCoordinate(float x, float y, float z, float r, fl
 
 void Direct3DManager::useNormalBlending()
 {
-    s_pDeviceResources->GetD3DDeviceContext()->OMSetBlendState(D3DManager->m_blendState.Get(), 0, 0xffffffff);
+    s_d3dContext->OMSetBlendState(D3DManager->m_blendState.Get(), 0, 0xffffffff);
 }
 
 void Direct3DManager::useScreenBlending()
 {
-    s_pDeviceResources->GetD3DDeviceContext()->OMSetBlendState(D3DManager->m_screenBlendState.Get(), 0, 0xffffffff);
+    s_d3dContext->OMSetBlendState(D3DManager->m_screenBlendState.Get(), 0, 0xffffffff);
 }
 
 std::vector<ID3D11Texture2D*>& Direct3DManager::getOffscreenRenderTargets()
@@ -234,7 +241,7 @@ void Direct3DManager::createBlendStates()
 		bd.IndependentBlendEnable = FALSE;
 		bd.AlphaToCoverageEnable = FALSE;
 
-		s_pDeviceResources->GetD3DDevice()->CreateBlendState(&bd, &m_blendState);
+		s_d3dDevice->CreateBlendState(&bd, &m_blendState);
 	}
 
 	{
@@ -250,7 +257,7 @@ void Direct3DManager::createBlendStates()
 		bd.IndependentBlendEnable = FALSE;
 		bd.AlphaToCoverageEnable = FALSE;
 
-		s_pDeviceResources->GetD3DDevice()->CreateBlendState(&bd, &m_screenBlendState);
+		s_d3dDevice->CreateBlendState(&bd, &m_screenBlendState);
 	}
 }
 
@@ -273,7 +280,7 @@ void Direct3DManager::createSamplerStates()
 		sd.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR; // linear filtering
 		sd.MinLOD = 5.0f; // mip level 5 will appear blurred
 
-		s_pDeviceResources->GetD3DDevice()->CreateSamplerState(&sd, m_sbSamplerState.GetAddressOf());
+		s_d3dDevice->CreateSamplerState(&sd, m_sbSamplerState.GetAddressOf());
 	}
 
 	{
@@ -293,7 +300,7 @@ void Direct3DManager::createSamplerStates()
 		sd.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR; // linear filtering
 		sd.MinLOD = 5.0f; // mip level 5 will appear blurred
 
-		s_pDeviceResources->GetD3DDevice()->CreateSamplerState(&sd, m_sbWrapSamplerState.GetAddressOf());
+		s_d3dDevice->CreateSamplerState(&sd, m_sbWrapSamplerState.GetAddressOf());
 	}
 }
 
@@ -319,7 +326,7 @@ void Direct3DManager::createVertexBufferForSpriteBatcher(int maxBatchSize)
 	vertexBufferData.SysMemPitch = 0;
 	vertexBufferData.SysMemSlicePitch = 0;
 
-	DirectX::ThrowIfFailed(s_pDeviceResources->GetD3DDevice()->CreateBuffer(&vertexBufferDesc, &vertexBufferData, &m_sbVertexBuffer));
+	DirectX::ThrowIfFailed(s_d3dDevice->CreateBuffer(&vertexBufferDesc, &vertexBufferData, &m_sbVertexBuffer));
 }
 
 void Direct3DManager::createVertexBufferForGeometryBatchers(int maxBatchSize)
@@ -344,7 +351,7 @@ void Direct3DManager::createVertexBufferForGeometryBatchers(int maxBatchSize)
 	vertexBufferData.SysMemPitch = 0;
 	vertexBufferData.SysMemSlicePitch = 0;
 
-	DirectX::ThrowIfFailed(s_pDeviceResources->GetD3DDevice()->CreateBuffer(&vertexBufferDesc, &vertexBufferData, &m_gbVertexBuffer));
+	DirectX::ThrowIfFailed(s_d3dDevice->CreateBuffer(&vertexBufferDesc, &vertexBufferData, &m_gbVertexBuffer));
 }
 
 void Direct3DManager::createIndexBuffer(int maxBatchSize)
@@ -361,9 +368,9 @@ void Direct3DManager::createIndexBuffer(int maxBatchSize)
 
 	indexDataDesc.pSysMem = &indexValues.front();
 
-	s_pDeviceResources->GetD3DDevice()->CreateBuffer(&indexBufferDesc, &indexDataDesc, &m_indexbuffer);
+	s_d3dDevice->CreateBuffer(&indexBufferDesc, &indexDataDesc, &m_indexbuffer);
 
-	s_pDeviceResources->GetD3DDeviceContext()->IASetIndexBuffer(m_indexbuffer.Get(), DXGI_FORMAT_R16_UINT, 0);
+	s_d3dContext->IASetIndexBuffer(m_indexbuffer.Get(), DXGI_FORMAT_R16_UINT, 0);
 }
 
 void Direct3DManager::createConstantBuffer()
@@ -374,7 +381,7 @@ void Direct3DManager::createConstantBuffer()
 	bd.ByteWidth = 64;
 	bd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
 
-	DirectX::ThrowIfFailed(s_pDeviceResources->GetD3DDevice()->CreateBuffer(&bd, nullptr, &m_matrixConstantbuffer));
+	DirectX::ThrowIfFailed(s_d3dDevice->CreateBuffer(&bd, nullptr, &m_matrixConstantbuffer));
 }
 
 std::vector<short> Direct3DManager::createIndexValues(int maxBatchSize)
@@ -431,7 +438,7 @@ void Direct3DManager::createFramebufferObject()
     textureDesc.MiscFlags = 0;
     
     // Create the render target texture.
-    DirectX::ThrowIfFailed(s_pDeviceResources->GetD3DDevice()->CreateTexture2D(&textureDesc, NULL, &m_offscreenRenderTarget));
+    DirectX::ThrowIfFailed(s_d3dDevice->CreateTexture2D(&textureDesc, NULL, &m_offscreenRenderTarget));
     
     // Setup the description of the render target view.
     renderTargetViewDesc.Format = textureDesc.Format;
@@ -439,7 +446,7 @@ void Direct3DManager::createFramebufferObject()
     renderTargetViewDesc.Texture2D.MipSlice = 0;
     
     // Create the render target view.
-    DirectX::ThrowIfFailed(s_pDeviceResources->GetD3DDevice()->CreateRenderTargetView(m_offscreenRenderTarget, &renderTargetViewDesc, &m_offscreenRenderTargetView));
+    DirectX::ThrowIfFailed(s_d3dDevice->CreateRenderTargetView(m_offscreenRenderTarget, &renderTargetViewDesc, &m_offscreenRenderTargetView));
     
     // Setup the description of the shader resource view.
     shaderResourceViewDesc.Format = textureDesc.Format;
@@ -448,7 +455,7 @@ void Direct3DManager::createFramebufferObject()
     shaderResourceViewDesc.Texture2D.MipLevels = 1;
     
     // Create the shader resource view.
-    DirectX::ThrowIfFailed(s_pDeviceResources->GetD3DDevice()->CreateShaderResourceView(m_offscreenRenderTarget, &shaderResourceViewDesc, &m_offscreenShaderResourceView));
+    DirectX::ThrowIfFailed(s_d3dDevice->CreateShaderResourceView(m_offscreenRenderTarget, &shaderResourceViewDesc, &m_offscreenShaderResourceView));
     
     m_offscreenRenderTargets.push_back(m_offscreenRenderTarget);
     m_offscreenRenderTargetViews.push_back(m_offscreenRenderTargetView);

@@ -34,12 +34,12 @@ void Direct3DNGRectBatcher::endBatch(GpuProgramWrapper &gpuProgramWrapper)
 	if (m_iNumNGRects > 0)
 	{
 		// set the primitive topology
-		DX::DeviceResources* deviceResources = Direct3DManager::getDeviceResources();
-		deviceResources->GetD3DDeviceContext()->IASetPrimitiveTopology(m_isFill ? D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST : D3D11_PRIMITIVE_TOPOLOGY_LINESTRIP);
+		ID3D11DeviceContext* d3dContext = Direct3DManager::getD3dContext();
+		d3dContext->IASetPrimitiveTopology(m_isFill ? D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST : D3D11_PRIMITIVE_TOPOLOGY_LINESTRIP);
 
 		gpuProgramWrapper.bind();
 
-		deviceResources->GetD3DDeviceContext()->DrawIndexed(m_iNumNGRects * INDICES_PER_RECTANGLE, 0, 0);
+		d3dContext->DrawIndexed(m_iNumNGRects * INDICES_PER_RECTANGLE, 0, 0);
 
 		gpuProgramWrapper.unbind();
 	}

@@ -46,8 +46,8 @@ GpuTextureDataWrapper* Direct3DTextureLoader::loadTextureData(const char* textur
     
     ID3D11ShaderResourceView *pShaderResourceView;
     
-	DX::DeviceResources* deviceResources = Direct3DManager::getDeviceResources();
-    DirectX::ThrowIfFailed(DirectX::CreateDDSTextureFromFile(deviceResources->GetD3DDevice(), wString, nullptr, &pShaderResourceView));
+	ID3D11Device* d3dDevice = Direct3DManager::getD3dDevice();
+    DirectX::ThrowIfFailed(DirectX::CreateDDSTextureFromFile(d3dDevice, wString, nullptr, &pShaderResourceView));
     
     GpuTextureDataWrapper* tdw = new GpuTextureDataWrapper(pShaderResourceView);
     

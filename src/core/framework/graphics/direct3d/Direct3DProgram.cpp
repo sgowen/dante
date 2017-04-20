@@ -10,18 +10,17 @@
 
 #include "Direct3DProgram.h"
 
-#include "DeviceResources.h"
 #include "Direct3DManager.h"
 #include "PlatformHelpers.h"
 #include "ReadData.h"
 
 Direct3DProgram::Direct3DProgram(_In_z_ const wchar_t* vertexShaderName, _In_z_ const wchar_t* pixelShaderName, bool useTextureCoords)
 {
-	DX::DeviceResources* deviceResources = Direct3DManager::getDeviceResources();
+	ID3D11Device* d3dDevice = Direct3DManager::getD3dDevice();
 
 	auto blob = DX::ReadData(vertexShaderName);
 	DirectX::ThrowIfFailed(
-		deviceResources->GetD3DDevice()->CreateVertexShader(
+		d3dDevice->CreateVertexShader(
 			blob.data(),
 			blob.size(),
 			nullptr,
@@ -43,7 +42,7 @@ Direct3DProgram::Direct3DProgram(_In_z_ const wchar_t* vertexShaderName, _In_z_ 
 	};
 
 	DirectX::ThrowIfFailed(
-		deviceResources->GetD3DDevice()->CreateInputLayout(
+		d3dDevice->CreateInputLayout(
             useTextureCoords ? textureVertexDesc : geometryVertexDesc,
 			useTextureCoords ? ARRAYSIZE(textureVertexDesc) : ARRAYSIZE(geometryVertexDesc),
 			blob.data(),
@@ -54,7 +53,7 @@ Direct3DProgram::Direct3DProgram(_In_z_ const wchar_t* vertexShaderName, _In_z_ 
 
 	blob = DX::ReadData(pixelShaderName);
 	DirectX::ThrowIfFailed(
-		deviceResources->GetD3DDevice()->CreatePixelShader(
+		d3dDevice->CreatePixelShader(
 			blob.data(),
 			blob.size(),
 			nullptr,
@@ -72,42 +71,42 @@ Direct3DProgram::~Direct3DProgram()
 
 void Direct3DProgram::bindShaders()
 {
-    DX::DeviceResources* deviceResources = Direct3DManager::getDeviceResources();
+    ID3D11DeviceContext* d3dContext = Direct3DManager::getD3dContext();
     
-    deviceResources->GetD3DDeviceContext()->IASetInputLayout(m_inputLayout.Get());
+    d3dContext->IASetInputLayout(m_inputLayout.Get());
     
     // set the shader objects as the active shaders
-    deviceResources->GetD3DDeviceContext()->VSSetShader(m_vertexShader.Get(), nullptr, 0);
-    deviceResources->GetD3DDeviceContext()->PSSetShader(m_pixelShader.Get(), nullptr, 0);
+    d3dContext->VSSetShader(m_vertexShader.Get(), nullptr, 0);
+    d3dContext->PSSetShader(m_pixelShader.Get(), nullptr, 0);
 }
 
 void Direct3DProgram::bindMatrix()
 {
-    DX::DeviceResources* deviceResources = Direct3DManager::getDeviceResources();
+    ID3D11DeviceContext* d3dContext = Direct3DManager::getD3dContext();
     
-    deviceResources->GetD3DDeviceContext()->VSSetConstantBuffers(0, 1, D3DManager->getMatrixConstantbuffer().GetAddressOf());
+    d3dContext->VSSetConstantBuffers(0, 1, D3DManager->getMatrixConstantbuffer().GetAddressOf());
     
     // send the final matrix to video memory
-    deviceResources->GetD3DDeviceContext()->UpdateSubresource(D3DManager->getMatrixConstantbuffer().Get(), 0, 0, &D3DManager->getMatFinal(), 0, 0);
+    d3dContext->UpdateSubresource(D3DManager->getMatrixConstantbuffer().Get(), 0, 0, &D3DManager->getMatFinal(), 0, 0);
 }
 
 void Direct3DProgram::bindNormalSamplerState()
 {
-    DX::DeviceResources* deviceResources = Direct3DManager::getDeviceResources();
+    ID3D11DeviceContext* d3dContext = Direct3DManager::getD3dContext();
     
-    deviceResources->GetD3DDeviceContext()->PSSetSamplers(0, 1, D3DManager->getSbSamplerState().GetAddressOf());
+    d3dContext->PSSetSamplers(0, 1, D3DManager->getSbSamplerState().GetAddressOf());
 }
 
 void Direct3DProgram::bindWrapSamplerState()
 {
-    DX::DeviceResources* deviceResources = Direct3DManager::getDeviceResources();
+    ID3D11DeviceContext* d3dContext = Direct3DManager::getD3dContext();
     
-    deviceResources->GetD3DDeviceContext()->PSSetSamplers(0, 1, D3DManager->getSbWrapSamplerState().GetAddressOf());
+    d3dContext->PSSetSamplers(0, 1, D3DManager->getSbWrapSamplerState().GetAddressOf());
 }
 
 void Direct3DProgram::createConstantBuffer(_COM_Outptr_opt_  ID3D11Buffer **ppBuffer)
 {
-	DX::DeviceResources* deviceResources = Direct3DManager::getDeviceResources();
+	ID3D11Device* d3dDevice = Direct3DManager::getD3dDevice();
 
 	D3D11_BUFFER_DESC bd = { 0 };
 
@@ -115,5 +114,5 @@ void Direct3DProgram::createConstantBuffer(_COM_Outptr_opt_  ID3D11Buffer **ppBu
 	bd.ByteWidth = 16;
 	bd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
 
-	deviceResources->GetD3DDevice()->CreateBuffer(&bd, nullptr, ppBuffer);
+	d3dDevice->CreateBuffer(&bd, nullptr, ppBuffer);
 }

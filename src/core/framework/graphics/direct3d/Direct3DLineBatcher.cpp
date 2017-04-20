@@ -34,12 +34,12 @@ void Direct3DLineBatcher::endBatch(GpuProgramWrapper &gpuProgramWrapper)
 	if (m_iNumLines > 0)
 	{
 		// set the primitive topology
-		DX::DeviceResources* deviceResources = Direct3DManager::getDeviceResources();
-		deviceResources->GetD3DDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
+		ID3D11DeviceContext* d3dContext = Direct3DManager::getD3dContext();
+		d3dContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
 
 		gpuProgramWrapper.bind();
 
-		deviceResources->GetD3DDeviceContext()->Draw(m_iNumLines * VERTICES_PER_LINE, 0);
+		d3dContext->Draw(m_iNumLines * VERTICES_PER_LINE, 0);
 
 		gpuProgramWrapper.unbind();
 	}

@@ -32,11 +32,17 @@ Direct3DMain::Direct3DMain() : m_screen(nullptr), m_fDPI(0), m_iRequestedAction(
     m_deviceResources = std::make_unique<DX::DeviceResources>();
 	m_deviceResources->RegisterDeviceNotify(this);
 
-	Direct3DManager::setDeviceResources(m_deviceResources.get());
-
 #if !defined(WINAPI_FAMILY) || (WINAPI_FAMILY == WINAPI_FAMILY_DESKTOP_APP)
+	static const XMFLOAT4X4 Rotation0(
+		1.0f, 0.0f, 0.0f, 0.0f,
+		0.0f, 1.0f, 0.0f, 0.0f,
+		0.0f, 0.0f, 1.0f, 0.0f,
+		0.0f, 0.0f, 0.0f, 1.0f
+	);
+	Direct3DManager::init(m_deviceResources->GetD3DDevice(), m_deviceResources->GetD3DDeviceContext(), m_deviceResources->GetRenderTargetView(), Rotation0);
 	m_isWindowsMobile = false;
 #else
+	Direct3DManager::init(m_deviceResources->GetD3DDevice(), m_deviceResources->GetD3DDeviceContext(), m_deviceResources->GetRenderTargetView(), m_deviceResources->GetOrientationTransform3D());
 	Windows::System::Profile::AnalyticsVersionInfo^ api = Windows::System::Profile::AnalyticsInfo::VersionInfo;
 	m_isWindowsMobile = api->DeviceFamily->Equals("Windows.Mobile");
 #endif
@@ -317,6 +323,23 @@ void Direct3DMain::Update(DX::StepTimer const& timer)
 			GAME_PAD_INPUT_MANAGER->onInput(GamePadEventType_Y_BUTTON, 0);
 		}
 
+		if (m_buttons.rightShoulder == GamePad::ButtonStateTracker::PRESSED)
+		{
+			GAME_PAD_INPUT_MANAGER->onInput(GamePadEventType_BUMPER_RIGHT, 0, 1);
+		}
+		else if (m_buttons.rightShoulder == GamePad::ButtonStateTracker::RELEASED)
+		{
+			GAME_PAD_INPUT_MANAGER->onInput(GamePadEventType_BUMPER_RIGHT, 0);
+		}
+		if (m_buttons.leftShoulder == GamePad::ButtonStateTracker::PRESSED)
+		{
+			GAME_PAD_INPUT_MANAGER->onInput(GamePadEventType_BUMPER_LEFT, 0, 1);
+		}
+		else if (m_buttons.leftShoulder == GamePad::ButtonStateTracker::RELEASED)
+		{
+			GAME_PAD_INPUT_MANAGER->onInput(GamePadEventType_BUMPER_LEFT, 0);
+		}
+
 		if (m_buttons.start == GamePad::ButtonStateTracker::PRESSED)
 		{
 			GAME_PAD_INPUT_MANAGER->onInput(GamePadEventType_START_BUTTON, 0, 1);
@@ -346,7 +369,9 @@ void Direct3DMain::Update(DX::StepTimer const& timer)
 	switch (requestedAction)
 	{
 	case REQUESTED_ACTION_UPDATE:
+		break;
 	default:
+		m_screen->clearRequestedAction();
 		break;
 	}
 
@@ -530,12 +555,36 @@ void Direct3DMain::clearRequestedAction()
 // These are the resources that depend on the device.
 void Direct3DMain::CreateDeviceDependentResources()
 {
+#if !defined(WINAPI_FAMILY) || (WINAPI_FAMILY == WINAPI_FAMILY_DESKTOP_APP)
+	static const XMFLOAT4X4 Rotation0(
+		1.0f, 0.0f, 0.0f, 0.0f,
+		0.0f, 1.0f, 0.0f, 0.0f,
+		0.0f, 0.0f, 1.0f, 0.0f,
+		0.0f, 0.0f, 0.0f, 1.0f
+	);
+	Direct3DManager::init(m_deviceResources->GetD3DDevice(), m_deviceResources->GetD3DDeviceContext(), m_deviceResources->GetRenderTargetView(), Rotation0);
+#else
+	Direct3DManager::init(m_deviceResources->GetD3DDevice(), m_deviceResources->GetD3DDeviceContext(), m_deviceResources->GetRenderTargetView(), m_deviceResources->GetOrientationTransform3D());
+#endif
+
 	m_screen->createDeviceDependentResources();
 }
 
 // Allocate all memory resources that change on a window SizeChanged event.
 void Direct3DMain::CreateWindowSizeDependentResources()
 {
+#if !defined(WINAPI_FAMILY) || (WINAPI_FAMILY == WINAPI_FAMILY_DESKTOP_APP)
+	static const XMFLOAT4X4 Rotation0(
+		1.0f, 0.0f, 0.0f, 0.0f,
+		0.0f, 1.0f, 0.0f, 0.0f,
+		0.0f, 0.0f, 1.0f, 0.0f,
+		0.0f, 0.0f, 0.0f, 1.0f
+	);
+	Direct3DManager::init(m_deviceResources->GetD3DDevice(), m_deviceResources->GetD3DDeviceContext(), m_deviceResources->GetRenderTargetView(), Rotation0);
+#else
+	Direct3DManager::init(m_deviceResources->GetD3DDevice(), m_deviceResources->GetD3DDeviceContext(), m_deviceResources->GetRenderTargetView(), m_deviceResources->GetOrientationTransform3D());
+#endif
+
 	RECT outputSize = m_deviceResources->GetOutputSize();
 	LONG width = outputSize.right - outputSize.left;
 	LONG height = outputSize.bottom - outputSize.top;

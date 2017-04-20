@@ -11,7 +11,6 @@
 #include "Direct3DTextureGpuProgramWrapper.h"
 
 #include "Direct3DTextureProgram.h"
-#include "DeviceResources.h"
 #include "Direct3DManager.h"
 #include "GpuTextureWrapper.h"
 

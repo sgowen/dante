@@ -35,20 +35,20 @@ void Direct3DSpriteBatcher::endBatch(GpuTextureWrapper& textureWrapper, GpuProgr
 	if (m_iNumSprites > 0)
 	{
 		// tell the GPU which texture to use
-		DX::DeviceResources* deviceResources = Direct3DManager::getDeviceResources();
-		deviceResources->GetD3DDeviceContext()->PSSetShaderResources(0, 1, &textureWrapper.texture);
+		ID3D11DeviceContext* d3dContext = Direct3DManager::getD3dContext();
+		d3dContext->PSSetShaderResources(0, 1, &textureWrapper.texture);
 
 		// set the primitive topology
-		deviceResources->GetD3DDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+		d3dContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 		gpuProgramWrapper.bind();
 
-		deviceResources->GetD3DDeviceContext()->DrawIndexed(m_iNumSprites * INDICES_PER_RECTANGLE, 0, 0);
+		d3dContext->DrawIndexed(m_iNumSprites * INDICES_PER_RECTANGLE, 0, 0);
 
 		gpuProgramWrapper.unbind();
 
 		ID3D11ShaderResourceView *pSRV[1] = { NULL };
-		deviceResources->GetD3DDeviceContext()->PSSetShaderResources(0, 1, pSRV);
+		d3dContext->PSSetShaderResources(0, 1, pSRV);
 	}
 }
 

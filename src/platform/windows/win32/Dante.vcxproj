@@ -88,7 +88,7 @@
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <FloatingPointModel>Fast</FloatingPointModel>
       <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
-      <AdditionalIncludeDirectories>../shared/;../../../3rdparty/;../../../core/framework/entity/;../../../core/framework/file/portable/;../../../core/framework/file/windows/;../../../core/framework/math/;../../../core/framework/network/client/;../../../core/framework/sound/portable/;../../../core/framework/sound/windows/;../../../core/framework/state/;../../../core/framework/ui/direct3d/portable/;../../../core/framework/ui/direct3d/win32/;../../../core/framework/ui/portable/;../../../core/framework/util/portable/;../../../core/framework/util/windows/;../../../core/game/logic/;../../../core/game/ui/direct3d/;../../../core/game/ui/portable/;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../../3rdparty/;../../../core/framework/entity/;../../../core/framework/file/portable/;../../../core/framework/file/windows/;../../../core/framework/graphics/direct3d/;../../../core/framework/graphics/portable/;../../../core/framework/input/portable/;../../../core/framework/input/windows/10/;../../../core/framework/math/;../../../core/framework/network/client/;../../../core/framework/sound/portable/;../../../core/framework/sound/windows/10/;../../../core/framework/state/;../../../core/framework/ui/;../../../core/framework/util/portable/;../../../core/framework/util/windows/;../../../core/game/graphics/direct3d/;../../../core/game/graphics/portable/;../../../core/game/logic/;../../../core/game/ui/;../shared/;$(ProjectDir);</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -104,7 +104,7 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <FloatingPointModel>Fast</FloatingPointModel>
-      <AdditionalIncludeDirectories>../shared/;../../../3rdparty/;../../../core/framework/entity/;../../../core/framework/file/portable/;../../../core/framework/file/windows/;../../../core/framework/math/;../../../core/framework/network/client/;../../../core/framework/sound/portable/;../../../core/framework/sound/windows/;../../../core/framework/state/;../../../core/framework/ui/direct3d/portable/;../../../core/framework/ui/direct3d/win32/;../../../core/framework/ui/portable/;../../../core/framework/util/portable/;../../../core/framework/util/windows/;../../../core/game/logic/;../../../core/game/ui/direct3d/;../../../core/game/ui/portable/;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../../3rdparty/;../../../core/framework/entity/;../../../core/framework/file/portable/;../../../core/framework/file/windows/;../../../core/framework/graphics/direct3d/;../../../core/framework/graphics/portable/;../../../core/framework/input/portable/;../../../core/framework/input/windows/10/;../../../core/framework/math/;../../../core/framework/network/client/;../../../core/framework/sound/portable/;../../../core/framework/sound/windows/10/;../../../core/framework/state/;../../../core/framework/ui/;../../../core/framework/util/portable/;../../../core/framework/util/windows/;../../../core/game/graphics/direct3d/;../../../core/game/graphics/portable/;../../../core/game/logic/;../../../core/game/ui/;../shared/;$(ProjectDir);</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -123,7 +123,7 @@
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <FloatingPointModel>Fast</FloatingPointModel>
       <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
-      <AdditionalIncludeDirectories>../shared/;../../../3rdparty/;../../../core/framework/entity/;../../../core/framework/file/portable/;../../../core/framework/file/windows/;../../../core/framework/math/;../../../core/framework/network/client/;../../../core/framework/sound/portable/;../../../core/framework/sound/windows/;../../../core/framework/state/;../../../core/framework/ui/direct3d/portable/;../../../core/framework/ui/direct3d/win32/;../../../core/framework/ui/portable/;../../../core/framework/util/portable/;../../../core/framework/util/windows/;../../../core/game/logic/;../../../core/game/ui/direct3d/;../../../core/game/ui/portable/;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../../3rdparty/;../../../core/framework/entity/;../../../core/framework/file/portable/;../../../core/framework/file/windows/;../../../core/framework/graphics/direct3d/;../../../core/framework/graphics/portable/;../../../core/framework/input/portable/;../../../core/framework/input/windows/10/;../../../core/framework/math/;../../../core/framework/network/client/;../../../core/framework/sound/portable/;../../../core/framework/sound/windows/10/;../../../core/framework/state/;../../../core/framework/ui/;../../../core/framework/util/portable/;../../../core/framework/util/windows/;../../../core/game/graphics/direct3d/;../../../core/game/graphics/portable/;../../../core/game/logic/;../../../core/game/ui/;../shared/;$(ProjectDir);</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -143,7 +143,7 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <FloatingPointModel>Fast</FloatingPointModel>
-      <AdditionalIncludeDirectories>../shared/;../../../3rdparty/;../../../core/framework/entity/;../../../core/framework/file/portable/;../../../core/framework/file/windows/;../../../core/framework/math/;../../../core/framework/network/client/;../../../core/framework/sound/portable/;../../../core/framework/sound/windows/;../../../core/framework/state/;../../../core/framework/ui/direct3d/portable/;../../../core/framework/ui/direct3d/win32/;../../../core/framework/ui/portable/;../../../core/framework/util/portable/;../../../core/framework/util/windows/;../../../core/game/logic/;../../../core/game/ui/direct3d/;../../../core/game/ui/portable/;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../../3rdparty/;../../../core/framework/entity/;../../../core/framework/file/portable/;../../../core/framework/file/windows/;../../../core/framework/graphics/direct3d/;../../../core/framework/graphics/portable/;../../../core/framework/input/portable/;../../../core/framework/input/windows/10/;../../../core/framework/math/;../../../core/framework/network/client/;../../../core/framework/sound/portable/;../../../core/framework/sound/windows/10/;../../../core/framework/state/;../../../core/framework/ui/;../../../core/framework/util/portable/;../../../core/framework/util/windows/;../../../core/game/graphics/direct3d/;../../../core/game/graphics/portable/;../../../core/game/logic/;../../../core/game/ui/;../shared/;$(ProjectDir);</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -157,19 +157,22 @@
     <ClInclude Include="..\..\..\core\framework\entity\*.h" />
     <ClInclude Include="..\..\..\core\framework\file\portable\*.h" />
     <ClInclude Include="..\..\..\core\framework\file\windows\*.h" />
+    <ClInclude Include="..\..\..\core\framework\graphics\direct3d\*.h" />
+    <ClInclude Include="..\..\..\core\framework\graphics\portable\*.h" />
+    <ClInclude Include="..\..\..\core\framework\input\portable\*.h" />
+    <ClInclude Include="..\..\..\core\framework\input\windows\10\*.h" />
     <ClInclude Include="..\..\..\core\framework\math\*.h" />
     <ClInclude Include="..\..\..\core\framework\network\client\*.h" />
     <ClInclude Include="..\..\..\core\framework\sound\portable\*.h" />
-    <ClInclude Include="..\..\..\core\framework\sound\windows\*.h" />
+    <ClInclude Include="..\..\..\core\framework\sound\windows\10\*.h" />
     <ClInclude Include="..\..\..\core\framework\state\*.h" />
-    <ClInclude Include="..\..\..\core\framework\ui\direct3d\portable\*.h" />
-    <ClInclude Include="..\..\..\core\framework\ui\direct3d\win32\*.h" />
-    <ClInclude Include="..\..\..\core\framework\ui\portable\*.h" />
+    <ClInclude Include="..\..\..\core\framework\ui\*.h" />
     <ClInclude Include="..\..\..\core\framework\util\portable\*.h" />
     <ClInclude Include="..\..\..\core\framework\util\windows\*.h" />
+    <ClInclude Include="..\..\..\core\game\graphics\direct3d\*.h" />
+    <ClInclude Include="..\..\..\core\game\graphics\portable\*.h" />
     <ClInclude Include="..\..\..\core\game\logic\*.h" />
-    <ClInclude Include="..\..\..\core\game\ui\direct3d\*.h" />
-    <ClInclude Include="..\..\..\core\game\ui\portable\*.h" />
+    <ClInclude Include="..\..\..\core\game\ui\*.h" />
     <ClInclude Include="..\shared\*.h" />
     <ClInclude Include="*.h" />
   </ItemGroup>
@@ -177,19 +180,22 @@
     <ClCompile Include="..\..\..\core\framework\entity\*.cpp" />
     <ClCompile Include="..\..\..\core\framework\file\portable\*.cpp" />
     <ClCompile Include="..\..\..\core\framework\file\windows\*.cpp" />
+    <ClCompile Include="..\..\..\core\framework\graphics\direct3d\*.cpp" />
+    <ClCompile Include="..\..\..\core\framework\graphics\portable\*.cpp" />
+    <ClCompile Include="..\..\..\core\framework\input\portable\*.cpp" />
+    <ClCompile Include="..\..\..\core\framework\input\windows\10\*.cpp" />
     <ClCompile Include="..\..\..\core\framework\math\*.cpp" />
     <ClCompile Include="..\..\..\core\framework\network\client\*.cpp" />
     <ClCompile Include="..\..\..\core\framework\sound\portable\*.cpp" />
-    <ClCompile Include="..\..\..\core\framework\sound\windows\*.cpp" />
+    <ClCompile Include="..\..\..\core\framework\sound\windows\10\*.cpp" />
     <ClCompile Include="..\..\..\core\framework\state\*.cpp" />
-    <ClCompile Include="..\..\..\core\framework\ui\direct3d\portable\*.cpp" />
-    <ClCompile Include="..\..\..\core\framework\ui\direct3d\win32\*.cpp" />
-    <ClCompile Include="..\..\..\core\framework\ui\portable\*.cpp" />
+    <ClCompile Include="..\..\..\core\framework\ui\*.cpp" />
     <ClCompile Include="..\..\..\core\framework\util\portable\*.cpp" />
     <ClCompile Include="..\..\..\core\framework\util\windows\*.cpp" />
+    <ClCompile Include="..\..\..\core\game\graphics\direct3d\*.cpp" />
+    <ClCompile Include="..\..\..\core\game\graphics\portable\*.cpp" />
     <ClCompile Include="..\..\..\core\game\logic\*.cpp" />
-    <ClCompile Include="..\..\..\core\game\ui\direct3d\*.cpp" />
-    <ClCompile Include="..\..\..\core\game\ui\portable\*.cpp" />
+    <ClCompile Include="..\..\..\core\game\ui\*.cpp" />
     <ClCompile Include="..\shared\*.cpp" />
     <ClCompile Include="*.cpp" />
   </ItemGroup>
@@ -204,19 +210,19 @@
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="..\..\..\core\framework\ui\direct3d\shader\*PixelShader.hlsl">
+    <FxCompile Include="..\..\..\core\framework\graphics\direct3d\shader\*PixelShader.hlsl">
       <ShaderType>Pixel</ShaderType>
       <ShaderModel>4.0_level_9_3</ShaderModel>
     </FxCompile>
-    <FxCompile Include="..\..\..\core\framework\ui\direct3d\shader\*VertexShader.hlsl">
+    <FxCompile Include="..\..\..\core\framework\graphics\direct3d\shader\*VertexShader.hlsl">
       <ShaderType>Vertex</ShaderType>
       <ShaderModel>4.0_level_9_3</ShaderModel>
     </FxCompile>
-    <FxCompile Include="..\..\..\core\game\ui\direct3d\shader\*PixelShader.hlsl">
+    <FxCompile Include="..\..\..\core\game\graphics\direct3d\shader\*PixelShader.hlsl">
       <ShaderType>Pixel</ShaderType>
       <ShaderModel>4.0_level_9_3</ShaderModel>
     </FxCompile>
-    <FxCompile Include="..\..\..\core\game\ui\direct3d\shader\*VertexShader.hlsl">
+    <FxCompile Include="..\..\..\core\game\graphics\direct3d\shader\*VertexShader.hlsl">
       <ShaderType>Vertex</ShaderType>
       <ShaderModel>4.0_level_9_3</ShaderModel>
     </FxCompile>

@@ -16,7 +16,7 @@
 #define D3DManager (Direct3DManager::getInstance())
 
 #include "Direct3DProgramInput.h"
-#include "DeviceResources.h"
+#include "pch.h"
 
 #include <vector>
 
@@ -25,9 +25,13 @@ struct GpuTextureWrapper;
 class Direct3DManager
 {
 public:
-	static void setDeviceResources(DX::DeviceResources* deviceResources);
+	static void init(ID3D11Device* d3dDevice, ID3D11DeviceContext* d3dContext, ID3D11RenderTargetView* d3dRenderTargetView, DirectX::XMFLOAT4X4 orientation);
 
-	static DX::DeviceResources* getDeviceResources();
+	static ID3D11Device* getD3dDevice();
+
+	static ID3D11DeviceContext* getD3dContext();
+
+	static ID3D11RenderTargetView* getD3dRenderTargetView();
 
     static void create();
     
@@ -71,7 +75,10 @@ private:
     static Direct3DManager* s_pInstance;
     
 	// Cached pointer to device resources.
-	static DX::DeviceResources* s_pDeviceResources;
+	static ID3D11Device* s_d3dDevice;
+	static ID3D11DeviceContext* s_d3dContext;
+	static ID3D11RenderTargetView* s_d3dRenderTargetView;
+	static DirectX::XMFLOAT4X4 s_orientation;
 
 	std::vector<ID3D11Texture2D*> m_offscreenRenderTargets; // the offscreen render target texture
 	std::vector<ID3D11RenderTargetView*> m_offscreenRenderTargetViews; // the offscreen render target interface

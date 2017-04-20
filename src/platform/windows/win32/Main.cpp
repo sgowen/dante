@@ -56,7 +56,7 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, 
         wcex.hCursor = LoadCursor(nullptr, IDC_ARROW);
         wcex.hbrBackground = (HBRUSH) (COLOR_WINDOW + 1);
         wcex.lpszMenuName = nullptr;
-        wcex.lpszClassName = L"NosFURatuWindowClass";
+        wcex.lpszClassName = L"DanteWindowClass";
         wcex.hIconSm = LoadIcon(wcex.hInstance, L"IDI_ICON");
 		if (!RegisterClassEx(&wcex))
 		{
@@ -75,7 +75,7 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, 
 
         AdjustWindowRect(&rc, WS_OVERLAPPEDWINDOW, FALSE);
 
-        HWND hwnd = CreateWindowEx(WS_EX_TOPMOST, L"NosFURatuWindowClass", L"NosFURatu", WS_POPUP,
+        HWND hwnd = CreateWindowEx(WS_EX_TOPMOST, L"DanteWindowClass", L"Dante", WS_POPUP,
             CW_USEDEFAULT, CW_USEDEFAULT, rc.right - rc.left, rc.bottom - rc.top, nullptr, nullptr, hInstance,
             nullptr);
 
