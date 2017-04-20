@@ -138,6 +138,7 @@ void MainScreen::update(float deltaTime)
 #include <iomanip>
 #include <map>
 #include <vector>
+#include <stdlib.h>
 
 std::vector<std::string> split(const std::string& str, const std::string& delim)
 {
@@ -184,26 +185,26 @@ void MainScreen::render()
         std::vector<std::string> coords = split(input, delim);
         if (coords.size() >= 3)
         {
-            x1 = ::atoi(coords.at(1).c_str()) / 100.0f;
-            y1 = ::atoi(coords.at(2).c_str()) / 100.0f;
+            x1 = atoi(coords.at(1).c_str()) / 100.0f;
+            y1 = atoi(coords.at(2).c_str()) / 100.0f;
         }
         
         if (coords.size() >= 6)
         {
-            x2 = ::atoi(coords.at(4).c_str()) / 100.0f;
-            y2 = ::atoi(coords.at(5).c_str()) / 100.0f;
+            x2 = atoi(coords.at(4).c_str()) / 100.0f;
+            y2 = atoi(coords.at(5).c_str()) / 100.0f;
         }
         
         if (coords.size() >= 9)
         {
-            x3 = ::atoi(coords.at(7).c_str()) / 100.0f;
-            y3 = ::atoi(coords.at(8).c_str()) / 100.0f;
+            x3 = atoi(coords.at(7).c_str()) / 100.0f;
+            y3 = atoi(coords.at(8).c_str()) / 100.0f;
         }
         
         if (coords.size() >= 12)
         {
-            x4 = ::atoi(coords.at(10).c_str()) / 100.0f;
-            y4 = ::atoi(coords.at(11).c_str()) / 100.0f;
+            x4 = atoi(coords.at(10).c_str()) / 100.0f;
+            y4 = atoi(coords.at(11).c_str()) / 100.0f;
         }
     }
     
