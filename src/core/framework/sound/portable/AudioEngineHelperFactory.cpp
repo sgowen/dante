@@ -8,6 +8,8 @@
 
 #include "AudioEngineHelperFactory.h"
 
+#include <winapifamily.h>
+
 #if defined __APPLE__
 #include "AppleAudioEngineHelper.h"
 #elif defined __ANDROID__
