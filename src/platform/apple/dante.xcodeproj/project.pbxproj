@@ -418,6 +418,22 @@
 		BB7639511E21B5A200534DAB /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		BB7639561E21B6DC00534DAB /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		BB7639581E21B6E000534DAB /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
+		BB95CAAC1EAAAA24007E0BD0 /* GameSound.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = GameSound.cpp; sourceTree = "<group>"; };
+		BB95CAAD1EAAAA24007E0BD0 /* GameSound.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GameSound.h; sourceTree = "<group>"; };
+		BB95CAAE1EAAAA24007E0BD0 /* MediaEnginePlayer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = MediaEnginePlayer.cpp; sourceTree = "<group>"; };
+		BB95CAAF1EAAAA24007E0BD0 /* MediaEnginePlayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MediaEnginePlayer.h; sourceTree = "<group>"; };
+		BB95CAB01EAAAA24007E0BD0 /* RandomAccessReader.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = RandomAccessReader.cpp; sourceTree = "<group>"; };
+		BB95CAB11EAAAA24007E0BD0 /* RandomAccessReader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RandomAccessReader.h; sourceTree = "<group>"; };
+		BB95CAB21EAAAA24007E0BD0 /* SoundFileReader.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SoundFileReader.cpp; sourceTree = "<group>"; };
+		BB95CAB31EAAAA24007E0BD0 /* SoundFileReader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SoundFileReader.h; sourceTree = "<group>"; };
+		BB95CAB41EAAAA24007E0BD0 /* Win81AudioEngineHelper.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Win81AudioEngineHelper.cpp; sourceTree = "<group>"; };
+		BB95CAB51EAAAA24007E0BD0 /* Win81AudioEngineHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Win81AudioEngineHelper.h; sourceTree = "<group>"; };
+		BB95CAB61EAAAA24007E0BD0 /* Win81Sound.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Win81Sound.cpp; sourceTree = "<group>"; };
+		BB95CAB71EAAAA24007E0BD0 /* Win81Sound.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Win81Sound.h; sourceTree = "<group>"; };
+		BB95CAB81EAAAA24007E0BD0 /* Win81SoundWrapper.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Win81SoundWrapper.cpp; sourceTree = "<group>"; };
+		BB95CAB91EAAAA24007E0BD0 /* Win81SoundWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Win81SoundWrapper.h; sourceTree = "<group>"; };
+		BB95CABA1EAAAA24007E0BD0 /* XAudio2SoundPlayer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = XAudio2SoundPlayer.cpp; sourceTree = "<group>"; };
+		BB95CABB1EAAAA24007E0BD0 /* XAudio2SoundPlayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XAudio2SoundPlayer.h; sourceTree = "<group>"; };
 		BBAEF0BF1EA94ED900F0866E /* Entity.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Entity.cpp; sourceTree = "<group>"; };
 		BBAEF0C01EA94ED900F0866E /* Entity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Entity.h; sourceTree = "<group>"; };
 		BBAEF0C11EA94ED900F0866E /* EntityManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EntityManager.cpp; sourceTree = "<group>"; };
@@ -617,12 +633,6 @@
 		BBAEF3001EA94F8A00F0866E /* WinSound.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WinSound.h; sourceTree = "<group>"; };
 		BBAEF3011EA94F8A00F0866E /* WinSoundWrapper.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = WinSoundWrapper.cpp; sourceTree = "<group>"; };
 		BBAEF3021EA94F8A00F0866E /* WinSoundWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WinSoundWrapper.h; sourceTree = "<group>"; };
-		BBAEF3041EA94F8A00F0866E /* GameSound.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = GameSound.cpp; sourceTree = "<group>"; };
-		BBAEF3051EA94F8A00F0866E /* GameSound.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GameSound.h; sourceTree = "<group>"; };
-		BBAEF3061EA94F8A00F0866E /* MediaEnginePlayer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = MediaEnginePlayer.cpp; sourceTree = "<group>"; };
-		BBAEF3071EA94F8A00F0866E /* MediaEnginePlayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MediaEnginePlayer.h; sourceTree = "<group>"; };
-		BBAEF3081EA94F8A00F0866E /* XAudio2SoundPlayer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = XAudio2SoundPlayer.cpp; sourceTree = "<group>"; };
-		BBAEF3091EA94F8A00F0866E /* XAudio2SoundPlayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XAudio2SoundPlayer.h; sourceTree = "<group>"; };
 		BBAEF30B1EA94F9900F0866E /* server.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = server.cpp; sourceTree = "<group>"; };
 		BBAEF30C1EA94F9900F0866E /* server.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = server.h; sourceTree = "<group>"; };
 		BBAEF30E1EA94FAC00F0866E /* JoystickController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JoystickController.h; sourceTree = "<group>"; };
@@ -1497,8 +1507,8 @@
 		BBAEF2EF1EA94F8A00F0866E /* windows */ = {
 			isa = PBXGroup;
 			children = (
-				BBAEF2F01EA94F8A00F0866E /* 10 */,
 				BBAEF3031EA94F8A00F0866E /* 8.1 */,
+				BBAEF2F01EA94F8A00F0866E /* 10 */,
 			);
 			path = windows;
 			sourceTree = "<group>";
@@ -1531,12 +1541,22 @@
 		BBAEF3031EA94F8A00F0866E /* 8.1 */ = {
 			isa = PBXGroup;
 			children = (
-				BBAEF3041EA94F8A00F0866E /* GameSound.cpp */,
-				BBAEF3051EA94F8A00F0866E /* GameSound.h */,
-				BBAEF3061EA94F8A00F0866E /* MediaEnginePlayer.cpp */,
-				BBAEF3071EA94F8A00F0866E /* MediaEnginePlayer.h */,
-				BBAEF3081EA94F8A00F0866E /* XAudio2SoundPlayer.cpp */,
-				BBAEF3091EA94F8A00F0866E /* XAudio2SoundPlayer.h */,
+				BB95CAAC1EAAAA24007E0BD0 /* GameSound.cpp */,
+				BB95CAAD1EAAAA24007E0BD0 /* GameSound.h */,
+				BB95CAAE1EAAAA24007E0BD0 /* MediaEnginePlayer.cpp */,
+				BB95CAAF1EAAAA24007E0BD0 /* MediaEnginePlayer.h */,
+				BB95CAB01EAAAA24007E0BD0 /* RandomAccessReader.cpp */,
+				BB95CAB11EAAAA24007E0BD0 /* RandomAccessReader.h */,
+				BB95CAB21EAAAA24007E0BD0 /* SoundFileReader.cpp */,
+				BB95CAB31EAAAA24007E0BD0 /* SoundFileReader.h */,
+				BB95CAB41EAAAA24007E0BD0 /* Win81AudioEngineHelper.cpp */,
+				BB95CAB51EAAAA24007E0BD0 /* Win81AudioEngineHelper.h */,
+				BB95CAB61EAAAA24007E0BD0 /* Win81Sound.cpp */,
+				BB95CAB71EAAAA24007E0BD0 /* Win81Sound.h */,
+				BB95CAB81EAAAA24007E0BD0 /* Win81SoundWrapper.cpp */,
+				BB95CAB91EAAAA24007E0BD0 /* Win81SoundWrapper.h */,
+				BB95CABA1EAAAA24007E0BD0 /* XAudio2SoundPlayer.cpp */,
+				BB95CABB1EAAAA24007E0BD0 /* XAudio2SoundPlayer.h */,
 			);
 			path = 8.1;
 			sourceTree = "<group>";
