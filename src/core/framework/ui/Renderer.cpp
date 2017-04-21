@@ -48,7 +48,8 @@ m_colorGpuProgramWrapper(nullptr),
 m_framebufferToScreenGpuProgramWrapper(nullptr),
 m_iFramebufferIndex(0),
 m_iMaxBatchSize(maxBatchSize),
-m_areDeviceDependentResourcesCreated(false)
+m_areDeviceDependentResourcesCreated(false),
+m_areWindowSizeDependentResourcesCreated(false)
 {
     // Empty
 }
@@ -79,6 +80,8 @@ void Renderer::createDeviceDependentResources()
 void Renderer::createWindowSizeDependentResources(int renderWidth, int renderHeight, int numFramebuffers)
 {
 	m_rendererHelper->createWindowSizeDependentResources(renderWidth, renderHeight, numFramebuffers);
+
+	m_areWindowSizeDependentResourcesCreated = true;
 }
 
 void Renderer::releaseDeviceDependentResources()
@@ -86,6 +89,7 @@ void Renderer::releaseDeviceDependentResources()
 	m_rendererHelper->releaseDeviceDependentResources();
 
     m_areDeviceDependentResourcesCreated = false;
+	m_areWindowSizeDependentResourcesCreated = false;
 
 	m_loadingTextures.clear();
 
@@ -142,6 +146,11 @@ void Renderer::endFrame()
 bool Renderer::isLoadingData()
 {
     return m_loadingTextures.size() > 0;
+}
+
+bool Renderer::isReadyForRendering()
+{
+	return m_areDeviceDependentResourcesCreated && m_areWindowSizeDependentResourcesCreated;
 }
 
 #pragma mark protected

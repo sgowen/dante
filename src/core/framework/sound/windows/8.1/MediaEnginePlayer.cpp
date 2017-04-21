@@ -11,7 +11,7 @@
 */ 
 #include "pch.h" 
 #include "MediaEnginePlayer.h" 
- 
+#include "PlatformHelpers.h"
  
 //----------------------------------------------------------------------------- 
 // MediaEngineNotify 
@@ -121,34 +121,34 @@ void MediaEnginePlayer::Initialize(
     ComPtr<IMFAttributes> spAttributes; 
     ComPtr<MediaEngineNotify> spNotify; 
  
-    DX::ThrowIfFailed(MFStartup(MF_VERSION));    
+    DirectX::ThrowIfFailed(MFStartup(MF_VERSION));    
  
     UINT resetToken; 
     ComPtr<IMFDXGIDeviceManager> DXGIManager; 
-    DX::ThrowIfFailed(MFCreateDXGIDeviceManager(&resetToken, &DXGIManager)); 
-    DX::ThrowIfFailed(DXGIManager->ResetDevice(device.Get(), resetToken)); 
+    DirectX::ThrowIfFailed(MFCreateDXGIDeviceManager(&resetToken, &DXGIManager)); 
+    DirectX::ThrowIfFailed(DXGIManager->ResetDevice(device.Get(), resetToken)); 
  
     // Create our event callback object. 
     spNotify = new MediaEngineNotify(); 
     if (spNotify == nullptr) 
     { 
-        DX::ThrowIfFailed(E_OUTOFMEMORY);     
+        DirectX::ThrowIfFailed(E_OUTOFMEMORY);     
     } 
  
     spNotify->MediaEngineNotifyCallback(this); 
  
     // Set configuration attribiutes. 
-    DX::ThrowIfFailed(MFCreateAttributes(&spAttributes, 1)); 
-    DX::ThrowIfFailed(spAttributes->SetUnknown(MF_MEDIA_ENGINE_DXGI_MANAGER, (IUnknown*) DXGIManager.Get())); 
-    DX::ThrowIfFailed(spAttributes->SetUnknown(MF_MEDIA_ENGINE_CALLBACK, (IUnknown*) spNotify.Get())); 
-    DX::ThrowIfFailed(spAttributes->SetUINT32(MF_MEDIA_ENGINE_VIDEO_OUTPUT_FORMAT, d3dFormat)); 
+    DirectX::ThrowIfFailed(MFCreateAttributes(&spAttributes, 1)); 
+    DirectX::ThrowIfFailed(spAttributes->SetUnknown(MF_MEDIA_ENGINE_DXGI_MANAGER, (IUnknown*) DXGIManager.Get())); 
+    DirectX::ThrowIfFailed(spAttributes->SetUnknown(MF_MEDIA_ENGINE_CALLBACK, (IUnknown*) spNotify.Get())); 
+    DirectX::ThrowIfFailed(spAttributes->SetUINT32(MF_MEDIA_ENGINE_VIDEO_OUTPUT_FORMAT, d3dFormat)); 
  
     // Create MediaEngine. 
-    DX::ThrowIfFailed(CoCreateInstance(CLSID_MFMediaEngineClassFactory, nullptr, CLSCTX_ALL, IID_PPV_ARGS(&spFactory))); 
-    DX::ThrowIfFailed(spFactory->CreateInstance(0, spAttributes.Get(), &m_spMediaEngine)); 
+    DirectX::ThrowIfFailed(CoCreateInstance(CLSID_MFMediaEngineClassFactory, nullptr, CLSCTX_ALL, IID_PPV_ARGS(&spFactory))); 
+    DirectX::ThrowIfFailed(spFactory->CreateInstance(0, spAttributes.Get(), &m_spMediaEngine)); 
  
     // Create MediaEngineEx 
-    DX::ThrowIfFailed(m_spMediaEngine.Get()->QueryInterface(__uuidof(IMFMediaEngine), (void**) &m_spEngineEx));         
+    DirectX::ThrowIfFailed(m_spMediaEngine.Get()->QueryInterface(__uuidof(IMFMediaEngine), (void**) &m_spEngineEx));         
     return; 
 } 
  
@@ -180,7 +180,7 @@ void MediaEnginePlayer::SetSource(Platform::String^ fileName)
  
     if (bstrURL == 0) 
     { 
-        DX::ThrowIfFailed(E_OUTOFMEMORY); 
+        DirectX::ThrowIfFailed(E_OUTOFMEMORY); 
     } 
  
     StringCchCopyW(bstrURL, cchAllocationSize, fullPath->Data()); 
@@ -216,13 +216,13 @@ void MediaEnginePlayer::SetBytestream(IRandomAccessStream^ streamHandle, Platfor
  
     if (bstrURL == 0) 
     { 
-        DX::ThrowIfFailed(E_OUTOFMEMORY); 
+        DirectX::ThrowIfFailed(E_OUTOFMEMORY); 
     } 
  
     StringCchCopyW(bstrURL, cchAllocationSize, szURL->Data()); 
  
-    DX::ThrowIfFailed(MFCreateMFByteStreamOnStreamEx((IUnknown*)streamHandle, &spMFByteStream)); 
-    DX::ThrowIfFailed(m_spEngineEx->SetSourceFromByteStream(spMFByteStream.Get(), bstrURL));   
+    DirectX::ThrowIfFailed(MFCreateMFByteStreamOnStreamEx((IUnknown*)streamHandle, &spMFByteStream)); 
+    DirectX::ThrowIfFailed(m_spEngineEx->SetSourceFromByteStream(spMFByteStream.Get(), bstrURL));   
  
     return; 
 } 
@@ -287,9 +287,9 @@ void MediaEnginePlayer::Play(bool isLooping)
     {
 		m_isLooping = isLooping;
 
-		DX::ThrowIfFailed(m_spMediaEngine->SetLoop(m_isLooping));
-        DX::ThrowIfFailed(m_spMediaEngine->Play());
-		DX::ThrowIfFailed(m_spMediaEngine->SetVolume(0.5));
+		DirectX::ThrowIfFailed(m_spMediaEngine->SetLoop(m_isLooping));
+        DirectX::ThrowIfFailed(m_spMediaEngine->Play());
+		DirectX::ThrowIfFailed(m_spMediaEngine->SetVolume(0.5));
         m_isPlaying = true;     
 
 		m_hasCalledPlay = true;
@@ -307,7 +307,7 @@ void MediaEnginePlayer::Pause()
 {     
     if (m_spMediaEngine) 
     { 
-        DX::ThrowIfFailed(m_spMediaEngine->Pause()); 
+        DirectX::ThrowIfFailed(m_spMediaEngine->Pause()); 
         m_isPlaying = false; 
     } 
     return; 
@@ -317,7 +317,7 @@ void MediaEnginePlayer::SetVolume(double volume)
 {
 	if (m_spMediaEngine)
 	{
-		DX::ThrowIfFailed(m_spMediaEngine->SetVolume(volume));
+		DirectX::ThrowIfFailed(m_spMediaEngine->SetVolume(volume));
 	}
 }
  
@@ -330,7 +330,7 @@ void MediaEnginePlayer::SetMuted(bool muted)
 {     
     if (m_spMediaEngine) 
     { 
-        DX::ThrowIfFailed(m_spMediaEngine->SetMuted(muted)); 
+        DirectX::ThrowIfFailed(m_spMediaEngine->SetMuted(muted)); 
     }
 } 
 
@@ -343,7 +343,7 @@ void MediaEnginePlayer::SetCurrentTime(double seekTime)
 
 	if (m_spMediaEngine)
 	{
-		DX::ThrowIfFailed(m_spMediaEngine->SetCurrentTime(seekTime));
+		DirectX::ThrowIfFailed(m_spMediaEngine->SetCurrentTime(seekTime));
 	}
 }
  
@@ -386,7 +386,7 @@ void MediaEnginePlayer::TransferFrame(ComPtr<ID3D11Texture2D> texture, MFVideoNo
         if (m_spMediaEngine->OnVideoStreamTick(&pts) == S_OK) 
         { 
             // new frame available at the media engine so get it  
-            DX::ThrowIfFailed( 
+            DirectX::ThrowIfFailed( 
                 m_spMediaEngine->TransferVideoFrame(texture.Get(), &rect, &rcTarget, &m_bkgColor) 
                 ); 
         } 

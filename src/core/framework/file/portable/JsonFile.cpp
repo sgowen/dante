@@ -50,7 +50,7 @@ void JsonFile::save()
 #elif TARGET_OS_IPHONE
     finalPath = getPathInsideNSDocuments(m_filePath);
 #elif defined _WIN32
-	#if !defined(WINAPI_FAMILY) || (WINAPI_FAMILY == WINAPI_FAMILY_DESKTOP_APP)
+	#if !defined(WINAPI_FAMILY) || WINAPI_FAMILY == WINAPI_FAMILY_DESKTOP_APP
 		finalPath = m_filePath;
 	#else
 		Windows::Storage::StorageFolder^ localFolder = Windows::Storage::ApplicationData::Current->LocalFolder;
@@ -58,9 +58,10 @@ void JsonFile::save()
 		std::string s_path(ps_path->Begin(), ps_path->End());
 		const char* path = s_path.c_str(); // std::string to const
 		std::stringstream ss;
-		ss << s_path << "\\" << m_filePath;
+		ss << path << "\\" << m_filePath;
 
-		finalPath = ss.str().c_str();
+		std::string finalPathS = ss.str();
+		finalPath = finalPathS.c_str();
 	#endif
 #else
     finalPath = m_filePath;
@@ -121,7 +122,7 @@ void JsonFile::load()
 #elif TARGET_OS_IPHONE
     finalPath = getPathInsideNSDocuments(m_filePath);
 #elif defined _WIN32
-	#if !defined(WINAPI_FAMILY) || (WINAPI_FAMILY == WINAPI_FAMILY_DESKTOP_APP)
+	#if !defined(WINAPI_FAMILY) || WINAPI_FAMILY == WINAPI_FAMILY_DESKTOP_APP
 		finalPath = m_filePath;
 	#else
 		Windows::Storage::StorageFolder^ localFolder = Windows::Storage::ApplicationData::Current->LocalFolder;
@@ -129,9 +130,10 @@ void JsonFile::load()
 		std::string s_path(ps_path->Begin(), ps_path->End());
 		const char* path = s_path.c_str(); // std::string to const
 		std::stringstream ss;
-		ss << s_path << "\\" << m_filePath;
+		ss << path << "\\" << m_filePath;
 
-		finalPath = ss.str().c_str();
+		std::string finalPathS = ss.str();
+		finalPath = finalPathS.c_str();
 	#endif
 #else
     finalPath = m_filePath;

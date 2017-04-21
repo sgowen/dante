@@ -13,7 +13,7 @@
 #elif defined __ANDROID__
 #include "AndroidAudioEngineHelper.h"
 #elif defined _WIN32
-	#if WINAPI_PARTITION_PHONE_APP
+	#if defined (WINAPI_FAMILY_SYSTEM)
 	#include "WinAudioEngineHelper.h"
 	#else
 	#include "Win81AudioEngineHelper.h"
@@ -35,7 +35,7 @@ IAudioEngineHelper* AudioEngineHelperFactory::createAudioEngineHelper()
 #elif defined __ANDROID__
     return AndroidAudioEngineHelper::getInstance();
 #elif defined _WIN32
-    #if WINAPI_PARTITION_PHONE_APP
+    #if defined (WINAPI_FAMILY_SYSTEM)
         return WinAudioEngineHelper::getInstance();
     #else
         return Win81AudioEngineHelper::getInstance();

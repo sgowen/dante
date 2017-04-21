@@ -66,10 +66,6 @@ namespace DirectX
 
 
     // Helper smart-pointers
-#if (_WIN32_WINNT >= _WIN32_WINNT_WIN10) || (defined(_XBOX_ONE) && defined(_TITLE)) || !defined(WINAPI_FAMILY) || (WINAPI_FAMILY == WINAPI_FAMILY_DESKTOP_APP)
-    struct virtual_deleter { void operator()(void* p) { if (p) VirtualFree(p, 0, MEM_RELEASE); } };
-#endif
-
     struct aligned_deleter { void operator()(void* p) { _aligned_free(p); } };
 
     struct handle_closer { void operator()(HANDLE h) { if (h) CloseHandle(h); } };

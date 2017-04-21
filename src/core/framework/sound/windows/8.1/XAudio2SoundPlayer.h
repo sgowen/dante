@@ -7,6 +7,8 @@
 
 #pragma once
 
+#include <windows.h>
+#include "pch.h"
 #include "mmreg.h"
 #include <vector>
 #include <memory>

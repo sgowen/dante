@@ -47,6 +47,8 @@ public:
     void endFrame();
     
     bool isLoadingData();
+
+	bool isReadyForRendering();
     
 protected:
     SpriteBatcher* m_spriteBatcher;
@@ -87,6 +89,7 @@ private:
     std::vector<std::thread *> m_textureDataLoadingThreads;
 	int m_iMaxBatchSize;
     bool m_areDeviceDependentResourcesCreated;
+	bool m_areWindowSizeDependentResourcesCreated;
     
     void handleAsyncTextureLoads();
     

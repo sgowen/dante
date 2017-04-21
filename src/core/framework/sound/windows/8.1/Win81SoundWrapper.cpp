@@ -35,7 +35,7 @@ Win81SoundWrapper::Win81SoundWrapper(int soundId, const char *path, MediaEngineP
     
     for (int i = 0; i < m_iNumInstances; ++i)
     {
-        m_sounds.push_back(new Win81Sound(soundId, mediaPlayer, *m_sound));
+        m_sounds.push_back(new Win81Sound(soundId, mediaPlayer));
     }
 }
 

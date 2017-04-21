@@ -12,6 +12,7 @@
 #include "MediaEnginePlayer.h"
 
 #include "Win81SoundWrapper.h"
+#include "Direct3DManager.h"
 
 Win81AudioEngineHelper* Win81AudioEngineHelper::getInstance()
 {
@@ -27,8 +28,9 @@ void Win81AudioEngineHelper::update(int flags)
         && !m_mediaPlayer)
     {
         // Load Media Player
+		ID3D11Device* d3dDevice = Direct3DManager::getD3dDevice();
         m_mediaPlayer = std::unique_ptr<MediaEnginePlayer>(new MediaEnginePlayer);
-        m_mediaPlayer->Initialize(m_deviceResources->GetD3DDevice(), DXGI_FORMAT_B8G8R8A8_UNORM);
+        m_mediaPlayer->Initialize(d3dDevice, DXGI_FORMAT_B8G8R8A8_UNORM);
     }
     else if (flags == -1
              && m_mediaPlayer)

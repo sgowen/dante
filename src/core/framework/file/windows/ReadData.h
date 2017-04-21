@@ -28,7 +28,7 @@ namespace DX
 	{
 		std::ifstream inFile(name, std::ios::in | std::ios::binary | std::ios::ate);
 
-#if !defined(WINAPI_FAMILY) || (WINAPI_FAMILY == WINAPI_FAMILY_DESKTOP_APP)
+#if !defined(WINAPI_FAMILY) || WINAPI_FAMILY == WINAPI_FAMILY_DESKTOP_APP
 		if (!inFile)
 		{
 			wchar_t moduleName[_MAX_PATH];

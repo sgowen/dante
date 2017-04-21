@@ -7,7 +7,7 @@
 
 #include "pch.h"
 #include "XAudio2SoundPlayer.h"
-#include "DirectXHelper.h"
+#include "PlatformHelpers.h"
 #include <xaudio2.h>
 
 namespace
@@ -111,12 +111,12 @@ m_soundList()
 {
 	// Create the XAudio2 Engine
 	UINT32 flags = 0;
-	DX::ThrowIfFailed(
+	DirectX::ThrowIfFailed(
 		XAudio2Create(&m_audioEngine, flags)
 		);
 
 	// Create the mastering voice
-	DX::ThrowIfFailed(
+	DirectX::ThrowIfFailed(
 		m_audioEngine->CreateMasteringVoice(
 		&m_masteringVoice,
 		XAUDIO2_DEFAULT_CHANNELS,
@@ -163,7 +163,7 @@ size_t XAudio2SoundPlayer::AddSound(
 	//
 	// Create the source voice
 	//
-	DX::ThrowIfFailed(
+	DirectX::ThrowIfFailed(
 		m_audioEngine->CreateSourceVoice(
 		&implData->sourceVoice,
 		format,
@@ -270,7 +270,7 @@ void XAudio2SoundPlayer::Suspend()
 //--------------------------------------------------------------------------------------
 void XAudio2SoundPlayer::Resume()
 {
-	DX::ThrowIfFailed(
+	DirectX::ThrowIfFailed(
 		m_audioEngine->StartEngine()
 		);
 }

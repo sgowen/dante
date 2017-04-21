@@ -495,11 +495,13 @@ m_iNumFramebuffers(-1),
 m_isWindowsMobile(false)
 {
 	// Hide Constructor for Singleton
-#if !defined(WINAPI_FAMILY) || (WINAPI_FAMILY == WINAPI_FAMILY_DESKTOP_APP)
+#if !defined(WINAPI_FAMILY) || WINAPI_FAMILY == WINAPI_FAMILY_DESKTOP_APP || WINAPI_FAMILY == WINAPI_FAMILY_PC_APP
 	m_isWindowsMobile = false;
-#else
+#elif defined (WINAPI_FAMILY_SYSTEM)
 	Windows::System::Profile::AnalyticsVersionInfo^ api = Windows::System::Profile::AnalyticsInfo::VersionInfo;
 	m_isWindowsMobile = api->DeviceFamily->Equals("Windows.Mobile");
+#else
+	m_isWindowsMobile = true;
 #endif
 }
 

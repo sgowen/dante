@@ -11,7 +11,8 @@
 */
 #pragma once 
 
-#include "DirectXHelper.h"
+#include "pch.h"
+
 #include <wrl.h> 
 #include <mfmediaengine.h> 
 #include <strsafe.h> 
