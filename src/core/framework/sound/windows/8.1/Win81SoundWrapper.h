@@ -16,7 +16,7 @@ class MediaEnginePlayer;
 class Win81SoundWrapper : public ISoundWrapper
 {
 public:
-    Win81SoundWrapper(int soundId, const char *path, MediaEnginePlayer* mediaPlayer, int numInstances = 1);
+    Win81SoundWrapper(int soundId, const char *path, int numInstances = 1, MediaEnginePlayer* mediaPlayer = nullptr);
     
     virtual ~Win81SoundWrapper();
 };

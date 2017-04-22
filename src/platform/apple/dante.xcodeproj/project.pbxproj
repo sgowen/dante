@@ -418,8 +418,6 @@
 		BB7639511E21B5A200534DAB /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		BB7639561E21B6DC00534DAB /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		BB7639581E21B6E000534DAB /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
-		BB95CAAC1EAAAA24007E0BD0 /* GameSound.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = GameSound.cpp; sourceTree = "<group>"; };
-		BB95CAAD1EAAAA24007E0BD0 /* GameSound.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GameSound.h; sourceTree = "<group>"; };
 		BB95CAAE1EAAAA24007E0BD0 /* MediaEnginePlayer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = MediaEnginePlayer.cpp; sourceTree = "<group>"; };
 		BB95CAAF1EAAAA24007E0BD0 /* MediaEnginePlayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MediaEnginePlayer.h; sourceTree = "<group>"; };
 		BB95CAB01EAAAA24007E0BD0 /* RandomAccessReader.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = RandomAccessReader.cpp; sourceTree = "<group>"; };
@@ -1541,8 +1539,6 @@
 		BBAEF3031EA94F8A00F0866E /* 8.1 */ = {
 			isa = PBXGroup;
 			children = (
-				BB95CAAC1EAAAA24007E0BD0 /* GameSound.cpp */,
-				BB95CAAD1EAAAA24007E0BD0 /* GameSound.h */,
 				BB95CAAE1EAAAA24007E0BD0 /* MediaEnginePlayer.cpp */,
 				BB95CAAF1EAAAA24007E0BD0 /* MediaEnginePlayer.h */,
 				BB95CAB01EAAAA24007E0BD0 /* RandomAccessReader.cpp */,

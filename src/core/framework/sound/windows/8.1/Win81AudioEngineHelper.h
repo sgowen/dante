@@ -18,10 +18,13 @@
 #include <memory>
 
 class MediaEnginePlayer;
+class Win81SoundWrapper;
 
 class Win81AudioEngineHelper : public IAudioEngineHelper
 {
 public:
+    static XAudio2SoundPlayer * getSoundPlayerInstance();
+    
 	static Win81AudioEngineHelper* getInstance();
     
     virtual void update(int flags = 0);
@@ -35,9 +38,8 @@ public:
     virtual ISoundWrapper* loadMusic(const char* path);
 
 private:
-    static XAudio2SoundPlayer * getSoundPlayerInstance();
-    
     std::unique_ptr<MediaEnginePlayer> m_mediaPlayer;
+	Win81SoundWrapper* m_music;
     
     // ctor, copy ctor, and assignment should be private in a Singleton
     Win81AudioEngineHelper();

@@ -289,7 +289,7 @@ void MediaEnginePlayer::Play(bool isLooping)
 
 		DirectX::ThrowIfFailed(m_spMediaEngine->SetLoop(m_isLooping));
         DirectX::ThrowIfFailed(m_spMediaEngine->Play());
-		DirectX::ThrowIfFailed(m_spMediaEngine->SetVolume(0.5));
+		DirectX::ThrowIfFailed(m_spMediaEngine->SetVolume(1.0));
         m_isPlaying = true;     
 
 		m_hasCalledPlay = true;
