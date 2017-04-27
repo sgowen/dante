@@ -42,7 +42,7 @@ LOCAL_C_INCLUDES += $(PROJECT_ROOT_PATH)/core/framework/sound/superpowered/andro
 LOCAL_C_INCLUDES += $(PROJECT_ROOT_PATH)/core/framework/sound/superpowered/portable/
 LOCAL_C_INCLUDES += $(PROJECT_ROOT_PATH)/core/framework/state/
 LOCAL_C_INCLUDES += $(PROJECT_ROOT_PATH)/core/framework/ui/
-LOCAL_C_INCLUDES += $(PROJECT_ROOT_PATH)/core/framework/util/portable/
+LOCAL_C_INCLUDES += $(PROJECT_ROOT_PATH)/core/framework/util/
 
 ENTITY_FILES = $(call walk, $(PROJECT_ROOT_PATH)/core/framework/entity)
 FILE_LIST := $(filter %.cpp, $(ENTITY_FILES))
@@ -100,8 +100,8 @@ FW_UI_FILES = $(call walk, $(PROJECT_ROOT_PATH)/core/framework/ui)
 FILE_LIST := $(filter %.cpp, $(FW_UI_FILES))
 LOCAL_SRC_FILES += $(FILE_LIST:$(LOCAL_PATH)/%=%)
 
-UTIL_PORTABLE_FILES = $(call walk, $(PROJECT_ROOT_PATH)/core/framework/util/portable)
-FILE_LIST := $(filter %.cpp, $(UTIL_PORTABLE_FILES))
+UTIL_FILES = $(call walk, $(PROJECT_ROOT_PATH)/core/framework/util)
+FILE_LIST := $(filter %.cpp, $(UTIL_FILES))
 LOCAL_SRC_FILES += $(FILE_LIST:$(LOCAL_PATH)/%=%)
 
 # Game
