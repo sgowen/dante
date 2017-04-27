@@ -79,6 +79,8 @@
 		BB6DB1BB1E76FD7F005C0FAD /* MainViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = BB6DB1BA1E76FD7F005C0FAD /* MainViewController.mm */; };
 		BB7305E2189C6BFA009F6DF4 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB7305E1189C6BFA009F6DF4 /* AudioToolbox.framework */; };
 		BB7305E4189C6C06009F6DF4 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB7305E3189C6C06009F6DF4 /* AVFoundation.framework */; };
+		BB7428401EB2AF4200B7628D /* RTTI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB74283D1EB2AF4200B7628D /* RTTI.cpp */; };
+		BB7428411EB2AF4200B7628D /* RTTI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB74283D1EB2AF4200B7628D /* RTTI.cpp */; };
 		BB7639431E21B4B800534DAB /* libicucore.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = BB7639421E21B4B800534DAB /* libicucore.tbd */; };
 		BB7639451E21B4C400534DAB /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB7639441E21B4C400534DAB /* CFNetwork.framework */; };
 		BB7639471E21B4CD00534DAB /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB7639461E21B4CD00534DAB /* Security.framework */; };
@@ -430,16 +432,16 @@
 		BB74282A1EB2A96100B7628D /* WinSound.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WinSound.h; sourceTree = "<group>"; };
 		BB74282B1EB2A96100B7628D /* WinSoundWrapper.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = WinSoundWrapper.cpp; sourceTree = "<group>"; };
 		BB74282C1EB2A96100B7628D /* WinSoundWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WinSoundWrapper.h; sourceTree = "<group>"; };
-		BB74282E1EB2A96C00B7628D /* FlagUtil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FlagUtil.h; sourceTree = "<group>"; };
-		BB74282F1EB2A96C00B7628D /* macros.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = macros.h; sourceTree = "<group>"; };
-		BB7428301EB2A96C00B7628D /* NGRollingPool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NGRollingPool.h; sourceTree = "<group>"; };
-		BB7428311EB2A96C00B7628D /* NGSTDUtil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NGSTDUtil.h; sourceTree = "<group>"; };
-		BB7428321EB2A96C00B7628D /* RTTI.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = RTTI.cpp; sourceTree = "<group>"; };
-		BB7428331EB2A96C00B7628D /* RTTI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RTTI.h; sourceTree = "<group>"; };
-		BB7428341EB2A96C00B7628D /* StringUtil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StringUtil.h; sourceTree = "<group>"; };
 		BB7428351EB2A97C00B7628D /* pch.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = pch.h; sourceTree = "<group>"; };
 		BB7428361EB2A98500B7628D /* pch.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = pch.h; sourceTree = "<group>"; };
 		BB7428371EB2A99300B7628D /* pch.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = pch.h; sourceTree = "<group>"; };
+		BB7428391EB2AF4200B7628D /* FlagUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlagUtil.h; sourceTree = "<group>"; };
+		BB74283A1EB2AF4200B7628D /* macros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = macros.h; sourceTree = "<group>"; };
+		BB74283B1EB2AF4200B7628D /* NGRollingPool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NGRollingPool.h; sourceTree = "<group>"; };
+		BB74283C1EB2AF4200B7628D /* NGSTDUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NGSTDUtil.h; sourceTree = "<group>"; };
+		BB74283D1EB2AF4200B7628D /* RTTI.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RTTI.cpp; sourceTree = "<group>"; };
+		BB74283E1EB2AF4200B7628D /* RTTI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTTI.h; sourceTree = "<group>"; };
+		BB74283F1EB2AF4200B7628D /* StringUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StringUtil.h; sourceTree = "<group>"; };
 		BB7639421E21B4B800534DAB /* libicucore.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libicucore.tbd; path = usr/lib/libicucore.tbd; sourceTree = SDKROOT; };
 		BB7639441E21B4C400534DAB /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		BB7639461E21B4CD00534DAB /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
@@ -1098,16 +1100,16 @@
 			path = windows;
 			sourceTree = "<group>";
 		};
-		BB74282D1EB2A96C00B7628D /* util */ = {
+		BB7428381EB2AF4100B7628D /* util */ = {
 			isa = PBXGroup;
 			children = (
-				BB74282E1EB2A96C00B7628D /* FlagUtil.h */,
-				BB74282F1EB2A96C00B7628D /* macros.h */,
-				BB7428301EB2A96C00B7628D /* NGRollingPool.h */,
-				BB7428311EB2A96C00B7628D /* NGSTDUtil.h */,
-				BB7428321EB2A96C00B7628D /* RTTI.cpp */,
-				BB7428331EB2A96C00B7628D /* RTTI.h */,
-				BB7428341EB2A96C00B7628D /* StringUtil.h */,
+				BB7428391EB2AF4200B7628D /* FlagUtil.h */,
+				BB74283A1EB2AF4200B7628D /* macros.h */,
+				BB74283B1EB2AF4200B7628D /* NGRollingPool.h */,
+				BB74283C1EB2AF4200B7628D /* NGSTDUtil.h */,
+				BB74283D1EB2AF4200B7628D /* RTTI.cpp */,
+				BB74283E1EB2AF4200B7628D /* RTTI.h */,
+				BB74283F1EB2AF4200B7628D /* StringUtil.h */,
 			);
 			path = util;
 			sourceTree = "<group>";
@@ -1134,7 +1136,7 @@
 				BBAEF18C1EA94ED900F0866E /* sound */,
 				BBAEF1C31EA94ED900F0866E /* state */,
 				BBAEF1C61EA94ED900F0866E /* ui */,
-				BB74282D1EB2A96C00B7628D /* util */,
+				BB7428381EB2AF4100B7628D /* util */,
 			);
 			path = framework;
 			sourceTree = "<group>";
@@ -1809,6 +1811,7 @@
 				BB09CE1D1DBD3779006A3E49 /* SuperpoweredIOSAudioIO.mm in Sources */,
 				BB44C8811DB03A7E003E633F /* pngtrans.c in Sources */,
 				BBAEF2891EA94EDA00F0866E /* ScreenInputManager.cpp in Sources */,
+				BB7428401EB2AF4200B7628D /* RTTI.cpp in Sources */,
 				BBAEF22D1EA94EDA00F0866E /* OpenGLCircleBatcher.cpp in Sources */,
 				BBAEF2331EA94EDA00F0866E /* OpenGLGeometryGpuProgramWrapper.cpp in Sources */,
 				BBAEF1EF1EA94EDA00F0866E /* Entity.cpp in Sources */,
@@ -1895,6 +1898,7 @@
 				BBAEF2721EA94EDA00F0866E /* SpriteBatcher.cpp in Sources */,
 				BBAEF1FE1EA94EDA00F0866E /* AppleAssetDataHandler.cpp in Sources */,
 				BBAEF2AA1EA94EDA00F0866E /* ISoundWrapper.cpp in Sources */,
+				BB7428411EB2AF4200B7628D /* RTTI.cpp in Sources */,
 				BBAEF2401EA94EDA00F0866E /* OpenGLRendererHelper.cpp in Sources */,
 				BBAEF25E1EA94EDA00F0866E /* Font.cpp in Sources */,
 				BBAEF27A1EA94EDA00F0866E /* TextureWrapper.cpp in Sources */,
