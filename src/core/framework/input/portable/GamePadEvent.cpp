@@ -6,6 +6,8 @@
 //  Copyright (c) 2017 Noctis Games. All rights reserved.
 //
 
+#include "pch.h"
+
 #include "GamePadEvent.h"
 
 GamePadEvent::GamePadEvent(GamePadEventType type, int index, float x, float y) :

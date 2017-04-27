@@ -6,11 +6,12 @@
 //  Copyright (c) 2017 Noctis Games. All rights reserved.
 //
 
+#include "pch.h"
+
 #include "OpenGLRendererHelper.h"
 
 #include "GpuTextureWrapper.h"
 #include "OpenGLManager.h"
-#include "platform_gl.h"
 
 OpenGLRendererHelper::OpenGLRendererHelper() : IRendererHelper()
 {

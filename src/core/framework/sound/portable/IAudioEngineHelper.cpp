@@ -6,6 +6,8 @@
 //  Copyright (c) 2017 Noctis Games. All rights reserved.
 //
 
+#include "pch.h"
+
 #include "IAudioEngineHelper.h"
 
 IAudioEngineHelper::IAudioEngineHelper()

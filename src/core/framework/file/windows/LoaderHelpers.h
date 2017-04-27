@@ -840,30 +840,5 @@ namespace DirectX
         private:
             HANDLE m_handle;
         };
-
-        class auto_delete_file_wic
-        {
-        public:
-            auto_delete_file_wic(Microsoft::WRL::ComPtr<IWICStream>& hFile, LPCWSTR szFile) : m_handle(hFile), m_filename(szFile) {}
-
-            auto_delete_file_wic(const auto_delete_file_wic&) = delete;
-            auto_delete_file_wic& operator=(const auto_delete_file_wic&) = delete;
-
-            ~auto_delete_file_wic()
-            {
-                if (m_filename)
-                {
-                    m_handle.Reset();
-                    DeleteFileW(m_filename);
-                }
-            }
-
-            void clear() { m_filename = 0; }
-
-        private:
-            LPCWSTR m_filename;
-            Microsoft::WRL::ComPtr<IWICStream>& m_handle;
-        };
-
     }
 }

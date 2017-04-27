@@ -6,11 +6,10 @@
 //  Copyright (c) 2017 Noctis Games. All rights reserved.
 //
 
-#define DEGREE_SPACING 6
+#include "pch.h"
 
 #include "Direct3DCircleBatcher.h"
 
-#include "pch.h"
 #include "Circle.h"
 #include "Vector2D.h"
 #include "Direct3DProgramInput.h"
@@ -19,6 +18,8 @@
 #include "GpuProgramWrapper.h"
 #include "Direct3DGeometryGpuProgramWrapper.h"
 #include "Color.h"
+
+#define DEGREE_SPACING 6
 
 Direct3DCircleBatcher::Direct3DCircleBatcher() : CircleBatcher()
 {

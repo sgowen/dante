@@ -6,6 +6,8 @@
 //  Copyright © 2017 Noctis Games. All rights reserved.
 //
 
+#include "pch.h"
+
 #include "ISound.h"
 
 ISound::ISound(int soundId) : m_iSoundId(soundId)

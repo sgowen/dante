@@ -6,6 +6,8 @@
 //  Copyright (c) 2017 Noctis Games. All rights reserved.
 //
 
+#include "pch.h"
+
 #include "KeyboardEvent.h"
 
 KeyboardEvent::KeyboardEvent(KeyboardEventType type, bool isUp) :

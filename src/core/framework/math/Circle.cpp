@@ -6,6 +6,8 @@
 //  Copyright (c) 2017 Noctis Games. All rights reserved.
 //
 
+#include "pch.h"
+
 #include "Circle.h"
 
 Circle::Circle(float x, float y, float radius) : m_center(x, y), m_fRadius(radius)

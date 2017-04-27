@@ -6,6 +6,8 @@
 //  Copyright (c) 2017 Noctis Games. All rights reserved.
 //
 
+#include "pch.h"
+
 #include "NGRect.h"
 
 NGRect::NGRect(float x, float y, float width, float height, float angle)

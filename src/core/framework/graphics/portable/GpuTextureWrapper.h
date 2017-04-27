@@ -9,11 +9,7 @@
 #ifndef __noctisgames__GpuTextureWrapper__
 #define __noctisgames__GpuTextureWrapper__
 
-#if defined __APPLE__ || defined __ANDROID__
-#include "platform_gl.h"
-#elif defined _WIN32
 #include "pch.h"
-#endif
 
 struct GpuTextureWrapper
 {

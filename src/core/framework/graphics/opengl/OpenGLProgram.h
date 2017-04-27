@@ -9,7 +9,7 @@
 #ifndef __noctisgames__OpenGLProgram__
 #define __noctisgames__OpenGLProgram__
 
-#include "platform_gl.h"
+#include "pch.h"
 
 #include <vector>
 

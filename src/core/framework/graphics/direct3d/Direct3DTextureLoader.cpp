@@ -6,9 +6,10 @@
 //  Copyright (c) 2017 Noctis Games. All rights reserved.
 //
 
+#include "pch.h"
+
 #include "Direct3DTextureLoader.h"
 
-#include "pch.h"
 #include "DDSTextureLoader.h"
 #include "macros.h"
 #include "Direct3DManager.h"

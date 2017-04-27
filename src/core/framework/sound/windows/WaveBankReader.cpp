@@ -14,6 +14,7 @@
 //-------------------------------------------------------------------------------------
 
 #include "pch.h"
+
 #include "WaveBankReader.h"
 #include "Audio.h"
 #include "PlatformHelpers.h"
@@ -22,6 +23,8 @@
 #include <apu.h>
 #endif
 
+#include <map>
+#include <set>
 
 namespace
 {

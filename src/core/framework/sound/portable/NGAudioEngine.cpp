@@ -6,6 +6,8 @@
 //  Copyright © 2017 Noctis Games. All rights reserved.
 //
 
+#include "pch.h"
+
 #include "NGAudioEngine.h"
 
 #include "ISoundWrapper.h"

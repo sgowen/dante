@@ -6,6 +6,8 @@
 //  Copyright (c) 2017 Noctis Games. All rights reserved.
 //
 
+#include "pch.h"
+
 #include "WinSound.h"
 
 WinSound::WinSound(int soundId, DirectX::SoundEffect& sound, float volume) : ISound(soundId),

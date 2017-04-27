@@ -9,9 +9,10 @@
 #ifndef __noctisgames__OpenGLTextureLoader__
 #define __noctisgames__OpenGLTextureLoader__
 
+#include "pch.h"
+
 #include "ITextureLoader.h"
 
-#include "platform_gl.h"
 #include "PngImageData.h"
 
 class OpenGLTextureLoader : public ITextureLoader

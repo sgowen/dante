@@ -76,7 +76,7 @@ namespace
 }
 
 
-#if (_WIN32_WINNT >= _WIN32_WINNT_WIN10)
+#if defined (WINAPI_FAMILY_SYSTEM) && (_WIN32_WINNT >= _WIN32_WINNT_WIN10)
 
 //======================================================================================
 // Windows::Gaming::Input (Windows 10)

@@ -6,6 +6,8 @@
 //  Copyright (c) 2017 Noctis Games. All rights reserved.
 //
 
+#include "pch.h"
+
 #include "SpriteBatcher.h"
 
 SpriteBatcher::SpriteBatcher() : m_iNumSprites(0)

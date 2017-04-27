@@ -6,6 +6,8 @@
 //  Copyright (c) 2017 Noctis Games. All rights reserved.
 //
 
+#include "pch.h"
+
 #include "Line.h"
 
 Line::Line(float x1, float y1, float x2, float y2) : m_origin(x1, y1), m_end(x2, y2)

@@ -12,11 +12,14 @@
 //--------------------------------------------------------------------------------------
 
 #include "pch.h"
+
 #include "Audio.h"
 #include "SoundCommon.h"
 
 #include <list>
 #include <unordered_map>
+#include <map>
+#include <set>
 
 using namespace DirectX;
 using Microsoft::WRL::ComPtr;

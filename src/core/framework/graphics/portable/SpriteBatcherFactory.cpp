@@ -6,6 +6,8 @@
 //  Copyright (c) 2017 Noctis Games. All rights reserved.
 //
 
+#include "pch.h"
+
 #include "SpriteBatcherFactory.h"
 
 SpriteBatcherFactory* SpriteBatcherFactory::getInstance()
