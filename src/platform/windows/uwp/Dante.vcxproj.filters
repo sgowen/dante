@@ -17,15 +17,13 @@
     <ClInclude Include="..\..\..\core\framework\graphics\direct3d\*.h" />
     <ClInclude Include="..\..\..\core\framework\graphics\portable\*.h" />
     <ClInclude Include="..\..\..\core\framework\input\portable\*.h" />
-    <ClInclude Include="..\..\..\core\framework\input\windows\10\*.h" />
+    <ClInclude Include="..\..\..\core\framework\input\windows\*.h" />
     <ClInclude Include="..\..\..\core\framework\math\*.h" />
-    <ClInclude Include="..\..\..\core\framework\network\client\*.h" />
     <ClInclude Include="..\..\..\core\framework\sound\portable\*.h" />
-    <ClInclude Include="..\..\..\core\framework\sound\windows\10\*.h" />
+    <ClInclude Include="..\..\..\core\framework\sound\windows\*.h" />
     <ClInclude Include="..\..\..\core\framework\state\*.h" />
     <ClInclude Include="..\..\..\core\framework\ui\*.h" />
-    <ClInclude Include="..\..\..\core\framework\util\portable\*.h" />
-    <ClInclude Include="..\..\..\core\framework\util\windows\*.h" />
+    <ClInclude Include="..\..\..\core\framework\util\*.h" />
     <ClInclude Include="..\..\..\core\game\graphics\direct3d\*.h" />
     <ClInclude Include="..\..\..\core\game\graphics\portable\*.h" />
     <ClInclude Include="..\..\..\core\game\logic\*.h" />
@@ -40,21 +38,47 @@
     <ClCompile Include="..\..\..\core\framework\graphics\direct3d\*.cpp" />
     <ClCompile Include="..\..\..\core\framework\graphics\portable\*.cpp" />
     <ClCompile Include="..\..\..\core\framework\input\portable\*.cpp" />
-    <ClCompile Include="..\..\..\core\framework\input\windows\10\*.cpp" />
+    <ClCompile Include="..\..\..\core\framework\input\windows\*.cpp" />
     <ClCompile Include="..\..\..\core\framework\math\*.cpp" />
-    <ClCompile Include="..\..\..\core\framework\network\client\*.cpp" />
     <ClCompile Include="..\..\..\core\framework\sound\portable\*.cpp" />
-    <ClCompile Include="..\..\..\core\framework\sound\windows\10\*.cpp" />
+    <ClCompile Include="..\..\..\core\framework\sound\windows\*.cpp" />
     <ClCompile Include="..\..\..\core\framework\state\*.cpp" />
     <ClCompile Include="..\..\..\core\framework\ui\*.cpp" />
-    <ClCompile Include="..\..\..\core\framework\util\portable\*.cpp" />
-    <ClCompile Include="..\..\..\core\framework\util\windows\*.cpp" />
+    <ClCompile Include="..\..\..\core\framework\util\*.cpp" />
     <ClCompile Include="..\..\..\core\game\graphics\direct3d\*.cpp" />
     <ClCompile Include="..\..\..\core\game\graphics\portable\*.cpp" />
     <ClCompile Include="..\..\..\core\game\logic\*.cpp" />
     <ClCompile Include="..\..\..\core\game\ui\*.cpp" />
     <ClCompile Include="..\shared\*.cpp" />
-    <ClCompile Include="*.cpp" />
+    <ClCompile Include="DeviceResources.cpp" />
+    <ClCompile Include="Main.cpp" />
+    <ClCompile Include="pch.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Assets\Logo.scale-200.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\SmallLogo.scale-200.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\SplashScreen.scale-200.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\StoreLogo.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\WideLogo.scale-200.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\SmallLogo.targetsize-24.png">
+      <Filter>Assets</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <AppxManifest Include="Package.appxmanifest" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Dante_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\..\..\core\framework\graphics\direct3d\shader\*PixelShader.hlsl">
@@ -80,28 +104,5 @@
     <CustomBuild Include="..\..\..\..\assets\sounds\*.wav">
       <Filter>Assets</Filter>
     </CustomBuild>
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="Assets\Logo.scale-200.png">
-      <Filter>Assets</Filter>
-    </Image>
-    <Image Include="Assets\SmallLogo.scale-200.png">
-      <Filter>Assets</Filter>
-    </Image>
-    <Image Include="Assets\SplashScreen.scale-200.png">
-      <Filter>Assets</Filter>
-    </Image>
-    <Image Include="Assets\StoreLogo.png">
-      <Filter>Assets</Filter>
-    </Image>
-    <Image Include="Assets\WideLogo.scale-200.png">
-      <Filter>Assets</Filter>
-    </Image>
-  </ItemGroup>
-  <ItemGroup>
-    <AppxManifest Include="Package.appxmanifest" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Dante_TemporaryKey.pfx" />
   </ItemGroup>
 </Project>
