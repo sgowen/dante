@@ -225,7 +225,12 @@ int sendCoords()
     
     printf("client: sending xPos: %f and yPos: %f as xPosInt: %d and yPosInt: %d\n", xPos, yPos, xPosInt, yPosInt);
     
-    sprintf(buffer, "%s,%d,%d", CLIENT_GUID, xPosInt, yPosInt);
+#ifdef _WIN32
+	sprintf_s(buffer, "%s,%d,%d", CLIENT_GUID, xPosInt, yPosInt);
+#else
+	sprintf(buffer, "%s,%d,%d", CLIENT_GUID, xPosInt, yPosInt);
+#endif
+    
     unsigned long len = strlen(buffer);
     buffer[len] = '\0';
     

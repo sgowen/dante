@@ -273,13 +273,12 @@
       <Outputs>%(Filename).dds</Outputs>
       <TreatOutputAsContent>true</TreatOutputAsContent>
     </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
     <Image Include="Assets\Logo.scale-200.png">
       <DeploymentContent>true</DeploymentContent>
     </Image>
     <Image Include="Assets\SmallLogo.scale-200.png">
-      <DeploymentContent>true</DeploymentContent>
-    </Image>
-    <Image Include="Assets\SmallLogo.targetsize-24.png">
       <DeploymentContent>true</DeploymentContent>
     </Image>
     <Image Include="Assets\SplashScreen.scale-200.png" />
@@ -287,6 +286,12 @@
     <Image Include="Assets\WideLogo.scale-200.png">
       <DeploymentContent>true</DeploymentContent>
     </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <AppxManifest Include="Package.appxmanifest">
+      <SubType>Designer</SubType>
+    </AppxManifest>
+    <None Include="Dante_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\..\..\core\framework\graphics\direct3d\shader\*PixelShader.hlsl">
