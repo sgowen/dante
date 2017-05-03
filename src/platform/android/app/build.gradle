@@ -82,9 +82,9 @@ android {
         include('*.wav')
     }
 
-    preBuild.dependsOn(copyShaders)
-    preBuild.dependsOn(copyTextures)
-    preBuild.dependsOn(copySounds)
+    copyShaders.dependsOn(runEncryptionBeforeBuild)
+    copyTextures.dependsOn(runEncryptionBeforeBuild)
+    copySounds.dependsOn(runEncryptionBeforeBuild)
 }
 
 dependencies {
