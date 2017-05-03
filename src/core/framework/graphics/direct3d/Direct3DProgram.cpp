@@ -13,6 +13,7 @@
 #include "Direct3DManager.h"
 #include "PlatformHelpers.h"
 #include "ReadData.h"
+#include "StringUtil.h"
 
 Direct3DProgram::Direct3DProgram(const char* vertexShaderName, const char* pixelShaderName, bool useTextureCoords)
 {
@@ -24,9 +25,9 @@ Direct3DProgram::Direct3DProgram(const char* vertexShaderName, const char* pixel
 
 		strcpy_s(vertexShaderFileName, len + 5, vertexShaderName);
 		vertexShaderFileName[len] = '.';
-		vertexShaderFileName[len + 1] = 'c';
-		vertexShaderFileName[len + 2] = 's';
-		vertexShaderFileName[len + 3] = 'o';
+		vertexShaderFileName[len + 1] = 'n';
+		vertexShaderFileName[len + 2] = 'g';
+		vertexShaderFileName[len + 3] = 's';
 		vertexShaderFileName[len + 4] = '\0';
 	}
 
@@ -38,9 +39,9 @@ Direct3DProgram::Direct3DProgram(const char* vertexShaderName, const char* pixel
 
 		strcpy_s(pixelShaderFileName, len + 5, pixelShaderName);
 		pixelShaderFileName[len] = '.';
-		pixelShaderFileName[len + 1] = 'c';
-		pixelShaderFileName[len + 2] = 's';
-		pixelShaderFileName[len + 3] = 'o';
+		pixelShaderFileName[len + 1] = 'n';
+		pixelShaderFileName[len + 2] = 'g';
+		pixelShaderFileName[len + 3] = 's';
 		pixelShaderFileName[len + 4] = '\0';
 	}
 
@@ -68,9 +69,12 @@ Direct3DProgram::Direct3DProgram(const char* vertexShaderName, const char* pixel
 	ID3D11Device* d3dDevice = Direct3DManager::getD3dDevice();
 
 	auto blob = DX::ReadData(finalVertexShaderFileName);
+    unsigned char* vertex_shader_source_output = (unsigned char*) malloc(blob.size());
+    StringUtil::encryptDecrypt((unsigned char*)blob.data(), vertex_shader_source_output, blob.size());
+    
 	DirectX::ThrowIfFailed(
 		d3dDevice->CreateVertexShader(
-			blob.data(),
+			vertex_shader_source_output,
 			blob.size(),
 			nullptr,
 			&m_vertexShader
@@ -94,16 +98,20 @@ Direct3DProgram::Direct3DProgram(const char* vertexShaderName, const char* pixel
 		d3dDevice->CreateInputLayout(
             useTextureCoords ? textureVertexDesc : geometryVertexDesc,
 			useTextureCoords ? ARRAYSIZE(textureVertexDesc) : ARRAYSIZE(geometryVertexDesc),
-			blob.data(),
+			vertex_shader_source_output,
 			blob.size(),
 			&m_inputLayout
 		)
 	);
 
 	blob = DX::ReadData(finalPixelShaderFileName);
+    
+    unsigned char* fragment_shader_source_output = (unsigned char*) malloc(blob.size());
+    StringUtil::encryptDecrypt((unsigned char*)blob.data(), fragment_shader_source_output, blob.size());
+    
 	DirectX::ThrowIfFailed(
 		d3dDevice->CreatePixelShader(
-			blob.data(),
+			fragment_shader_source_output,
 			blob.size(),
 			nullptr,
 			&m_pixelShader
@@ -114,6 +122,9 @@ Direct3DProgram::Direct3DProgram(const char* vertexShaderName, const char* pixel
 	delete pixelShaderFileName;
 	delete wString1;
 	delete wString2;
+    
+    free((void *)vertex_shader_source_output);
+    free((void *)fragment_shader_source_output);
 }
 
 Direct3DProgram::~Direct3DProgram()

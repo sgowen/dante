@@ -28,6 +28,16 @@ public:
         return output;
     }
     
+    static void encryptDecrypt(unsigned char* input, unsigned char* output, const long dataLength)
+    {
+        char key[3] = {'N', 'G', 'S'}; // Any chars will work, in an array of any size
+        
+        for (unsigned int i = 0; i < dataLength; ++i)
+        {
+            output[i] = input[i] ^ key[i % (sizeof(key) / sizeof(char))];
+        }
+    }
+    
     template<typename T>
     static std::string toString(const T& n)
     {

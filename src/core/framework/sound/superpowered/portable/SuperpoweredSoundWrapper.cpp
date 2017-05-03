@@ -20,3 +20,8 @@ SuperpoweredSoundWrapper::SuperpoweredSoundWrapper(SuperpoweredSoundManager* man
         m_sounds.push_back(new SuperpoweredSound(manager, soundId, path, sampleRate, fileOffset, fileLength));
     }
 }
+
+SuperpoweredSoundWrapper::~SuperpoweredSoundWrapper()
+{
+    NGSTDUtil::cleanUpVectorOfPointers(m_sounds);
+}

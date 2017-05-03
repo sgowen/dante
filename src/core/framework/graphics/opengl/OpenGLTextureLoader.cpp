@@ -13,6 +13,7 @@
 #include "AssetDataHandler.h"
 #include "FileData.h"
 #include "PngImageData.h"
+#include "StringUtil.h"
 
 extern "C"
 {
@@ -41,19 +42,24 @@ GpuTextureDataWrapper* OpenGLTextureLoader::loadTextureData(const char* textureN
     
     strcpy(textureFileName, textureName);
     textureFileName[len] = '.';
-    textureFileName[len+1] = 'p';
-    textureFileName[len+2] = 'n';
-    textureFileName[len+3] = 'g';
+    textureFileName[len+1] = 'n';
+    textureFileName[len+2] = 'g';
+    textureFileName[len+3] = 't';
     textureFileName[len+4] = '\0';
     
     const FileData png_file = AssetDataHandler::getAssetDataHandler()->getAssetData(textureFileName);
-    const PngImageData raw_image_data = getPngImageDataFromFileData(png_file.data, (int)png_file.data_length);
+    unsigned char* output = (unsigned char*) malloc(png_file.data_length);
+    StringUtil::encryptDecrypt((unsigned char*)png_file.data, output, png_file.data_length);
+    
+    const PngImageData raw_image_data = getPngImageDataFromFileData(output, (int)png_file.data_length);
     
     AssetDataHandler::getAssetDataHandler()->releaseAssetData(&png_file);
     
     GpuTextureDataWrapper* tdw = new GpuTextureDataWrapper(raw_image_data);
     
     delete[] textureFileName;
+    
+    free((void *)output);
     
     return tdw;
 }
