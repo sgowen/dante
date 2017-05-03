@@ -85,8 +85,6 @@
 		BB44CB9A1DB054B8003E633F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB44CB991DB054B8003E633F /* Foundation.framework */; };
 		BB44CB9E1DB054F9003E633F /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = BB44CB9D1DB054F9003E633F /* libz.tbd */; };
 		BB66EC201C0E575E006DE4F5 /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB66EC1F1C0E575D006DE4F5 /* OpenAL.framework */; };
-		BB6D25761EA031BF00CEE4CF /* samus.png in Resources */ = {isa = PBXBuildFile; fileRef = BB6D25731EA031BF00CEE4CF /* samus.png */; };
-		BB6D25771EA031BF00CEE4CF /* samus.png in Resources */ = {isa = PBXBuildFile; fileRef = BB6D25731EA031BF00CEE4CF /* samus.png */; };
 		BB6DB1B81E76FCCF005C0FAD /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BB6DB1B51E76FCCF005C0FAD /* Main.storyboard */; };
 		BB6DB1BB1E76FD7F005C0FAD /* MainViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = BB6DB1BA1E76FD7F005C0FAD /* MainViewController.mm */; };
 		BB7305E2189C6BFA009F6DF4 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB7305E1189C6BFA009F6DF4 /* AudioToolbox.framework */; };
@@ -263,6 +261,8 @@
 		BBCCA84A1DB346C100452FA1 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBCCA8491DB346C100452FA1 /* CoreAudio.framework */; };
 		BBCCA8FD1DB36EB600452FA1 /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBCCA8FC1DB36EB600452FA1 /* OpenAL.framework */; };
 		BBCCA9001DB36F0F00452FA1 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB44CB001DB04C67003E633F /* AVFoundation.framework */; };
+		BBE53BF11EB96E5B0010EE8E /* texture_001.png in Resources */ = {isa = PBXBuildFile; fileRef = BBE53BF01EB96E5B0010EE8E /* texture_001.png */; };
+		BBE53BF21EB96E5B0010EE8E /* texture_001.png in Resources */ = {isa = PBXBuildFile; fileRef = BBE53BF01EB96E5B0010EE8E /* texture_001.png */; };
 		BEDBEB10667F7565A72E937B /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 05945F36F017190884FC7FB9 /* AssetsLibrary.framework */; };
 		C2FAA41A7EE7DD75E14DA2A1 /* BuddyBuildSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84C9C279DA1CE27EE81A6958 /* BuddyBuildSDK.framework */; };
 		EF21A84F90D23B88CD7E3542 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FFF3C8B3638A1D58F89D067F /* SystemConfiguration.framework */; };
@@ -414,7 +414,6 @@
 		BB51314F1E625BD700204148 /* libSuperpoweredAndroidarm64-v8a.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libSuperpoweredAndroidarm64-v8a.a"; sourceTree = "<group>"; };
 		BB5131501E625BD700204148 /* libSuperpoweredAndroidarmeabi-v7a.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libSuperpoweredAndroidarmeabi-v7a.a"; sourceTree = "<group>"; };
 		BB66EC1F1C0E575D006DE4F5 /* OpenAL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenAL.framework; path = System/Library/Frameworks/OpenAL.framework; sourceTree = SDKROOT; };
-		BB6D25731EA031BF00CEE4CF /* samus.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = samus.png; sourceTree = "<group>"; };
 		BB6DB1B61E76FCCF005C0FAD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Main.storyboard; sourceTree = "<group>"; };
 		BB6DB1B91E76FD7F005C0FAD /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
 		BB6DB1BA1E76FD7F005C0FAD /* MainViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MainViewController.mm; sourceTree = "<group>"; };
@@ -682,6 +681,7 @@
 		BBCCA8461DB3469500452FA1 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.12.sdk/System/Library/Frameworks/CoreMedia.framework; sourceTree = DEVELOPER_DIR; };
 		BBCCA8491DB346C100452FA1 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.12.sdk/System/Library/Frameworks/CoreAudio.framework; sourceTree = DEVELOPER_DIR; };
 		BBCCA8FC1DB36EB600452FA1 /* OpenAL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenAL.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.12.sdk/System/Library/Frameworks/OpenAL.framework; sourceTree = DEVELOPER_DIR; };
+		BBE53BF01EB96E5B0010EE8E /* texture_001.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = texture_001.png; sourceTree = "<group>"; };
 		FFF3C8B3638A1D58F89D067F /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -982,7 +982,7 @@
 		BB44C3B01DB03276003E633F /* textures */ = {
 			isa = PBXGroup;
 			children = (
-				BB6D25731EA031BF00CEE4CF /* samus.png */,
+				BBE53BF01EB96E5B0010EE8E /* texture_001.png */,
 			);
 			path = textures;
 			sourceTree = "<group>";
@@ -1717,10 +1717,10 @@
 				BB1CC77E1EB9662A00696C06 /* shader_002_vert.vsh in Resources */,
 				BB1CC7821EB9662A00696C06 /* shader_003_vert.vsh in Resources */,
 				BB1CC7801EB9662A00696C06 /* shader_003_frag.fsh in Resources */,
+				BBE53BF11EB96E5B0010EE8E /* texture_001.png in Resources */,
 				BB1CC7781EB9662A00696C06 /* shader_001_frag.fsh in Resources */,
 				BB44C93B1DB03A7E003E633F /* rapidjson_readme.txt in Resources */,
 				BB1CC77C1EB9662A00696C06 /* shader_002_frag.fsh in Resources */,
-				BB6D25761EA031BF00CEE4CF /* samus.png in Resources */,
 				BB1CC77A1EB9662A00696C06 /* shader_001_vert.vsh in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1734,8 +1734,8 @@
 				BB1CC77F1EB9662A00696C06 /* shader_002_vert.vsh in Resources */,
 				BB1CC7831EB9662A00696C06 /* shader_003_vert.vsh in Resources */,
 				BB1CC7811EB9662A00696C06 /* shader_003_frag.fsh in Resources */,
+				BBE53BF21EB96E5B0010EE8E /* texture_001.png in Resources */,
 				BB1CC7791EB9662A00696C06 /* shader_001_frag.fsh in Resources */,
-				BB6D25771EA031BF00CEE4CF /* samus.png in Resources */,
 				BB1CC77D1EB9662A00696C06 /* shader_002_frag.fsh in Resources */,
 				BB44C93C1DB03A7E003E633F /* rapidjson_readme.txt in Resources */,
 				BB1CC77B1EB9662A00696C06 /* shader_001_vert.vsh in Resources */,
