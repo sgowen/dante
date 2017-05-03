@@ -22,7 +22,7 @@
 #include "TextureRegion.h"
 
 MainRenderer::MainRenderer(int maxBatchSize) : Renderer(maxBatchSize),
-m_samus(new TextureWrapper("samus"))
+m_samus(new TextureWrapper("texture_001"))
 {
     ASSETS->init(new MainAssetsMapper());
     

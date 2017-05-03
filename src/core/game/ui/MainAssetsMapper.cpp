@@ -30,5 +30,5 @@ void MainAssetsMapper::mapAssets()
     // TODO
     
     /// Animations
-    ASSETS->getAnimationsMap()["Samus_Running"] = new Animation("samus", 0, 0, 36, 46, 720, 46, TEXTURE_SIZE_2048, true, 0.1f, 20);
+    ASSETS->getAnimationsMap()["Samus_Running"] = new Animation("texture_001", 0, 0, 36, 46, 720, 46, TEXTURE_SIZE_2048, true, 0.1f, 20);
 }

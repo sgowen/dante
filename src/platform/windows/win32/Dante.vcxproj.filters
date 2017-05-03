@@ -68,16 +68,16 @@
     </Manifest>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="..\..\..\core\framework\graphics\direct3d\shader\*PixelShader.hlsl">
+    <FxCompile Include="..\..\..\core\framework\graphics\direct3d\shader\*frag.hlsl">
       <Filter>Shaders</Filter>
     </FxCompile>
-    <FxCompile Include="..\..\..\core\framework\graphics\direct3d\shader\*VertexShader.hlsl">
+    <FxCompile Include="..\..\..\core\framework\graphics\direct3d\shader\*vert.hlsl">
       <Filter>Shaders</Filter>
     </FxCompile>
-    <FxCompile Include="..\..\..\core\game\graphics\direct3d\shader\*PixelShader.hlsl">
+    <FxCompile Include="..\..\..\core\game\graphics\direct3d\shader\*frag.hlsl">
       <Filter>Shaders</Filter>
     </FxCompile>
-    <FxCompile Include="..\..\..\core\game\graphics\direct3d\shader\*VertexShader.hlsl">
+    <FxCompile Include="..\..\..\core\game\graphics\direct3d\shader\*vert.hlsl">
       <Filter>Shaders</Filter>
     </FxCompile>
   </ItemGroup>
