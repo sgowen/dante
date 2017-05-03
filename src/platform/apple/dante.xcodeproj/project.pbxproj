@@ -309,8 +309,6 @@
 		BB052CD51EBA8AE9007FA789 /* shader_002_vert.vsh */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = shader_002_vert.vsh; sourceTree = "<group>"; };
 		BB052CD61EBA8AE9007FA789 /* shader_003_frag.fsh */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = shader_003_frag.fsh; sourceTree = "<group>"; };
 		BB052CD71EBA8AE9007FA789 /* shader_003_vert.vsh */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = shader_003_vert.vsh; sourceTree = "<group>"; };
-		BB052CD91EBA8AF4007FA789 /* encrypt_shaders_win32.bat */ = {isa = PBXFileReference; lastKnownFileType = text; path = encrypt_shaders_win32.bat; sourceTree = "<group>"; };
-		BB052CDA1EBA8AF4007FA789 /* encrypt_textures_win32.bat */ = {isa = PBXFileReference; lastKnownFileType = text; path = encrypt_textures_win32.bat; sourceTree = "<group>"; };
 		BB052CDB1EBA8AF4007FA789 /* XOREncryptDecrypt */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = XOREncryptDecrypt; sourceTree = "<group>"; };
 		BB052CDC1EBA8AF4007FA789 /* XOREncryptDecrypt.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = XOREncryptDecrypt.c; sourceTree = "<group>"; };
 		BB052CDD1EBA8AF4007FA789 /* XOREncryptDecrypt.exe */ = {isa = PBXFileReference; lastKnownFileType = file; path = XOREncryptDecrypt.exe; sourceTree = "<group>"; };
@@ -825,8 +823,6 @@
 		BB052CD81EBA8AF4007FA789 /* tools */ = {
 			isa = PBXGroup;
 			children = (
-				BB052CD91EBA8AF4007FA789 /* encrypt_shaders_win32.bat */,
-				BB052CDA1EBA8AF4007FA789 /* encrypt_textures_win32.bat */,
 				BB052CDB1EBA8AF4007FA789 /* XOREncryptDecrypt */,
 				BB052CDC1EBA8AF4007FA789 /* XOREncryptDecrypt.c */,
 				BB052CDD1EBA8AF4007FA789 /* XOREncryptDecrypt.exe */,
