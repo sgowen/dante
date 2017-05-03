@@ -14,7 +14,7 @@
 class Direct3DProgram
 {
 public:
-    Direct3DProgram(_In_z_ const wchar_t* vertexShaderName, _In_z_ const wchar_t* pixelShaderName, bool useTextureCoords);
+    Direct3DProgram(const char* vertexShaderName, const char* pixelShaderName, bool useTextureCoords);
     
     virtual ~Direct3DProgram();
     

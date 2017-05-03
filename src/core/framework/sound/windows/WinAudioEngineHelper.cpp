@@ -58,7 +58,16 @@ void WinAudioEngineHelper::resume()
 
 ISoundWrapper* WinAudioEngineHelper::loadSound(int soundId, const char *path, int numInstances)
 {
-    WinSoundWrapper* sound = new WinSoundWrapper(soundId, path, m_audEngine.get(), numInstances);
+	const char* finalPath;
+#if (_WIN32_WINNT == _WIN32_WINNT_WIN7)
+	std::string s(soundId == 1337 ? "data\\music\\" : "data\\sounds\\");
+	s += std::string(path);
+	finalPath = s.c_str();
+#else
+	finalPath = path;
+#endif
+
+    WinSoundWrapper* sound = new WinSoundWrapper(soundId, finalPath, m_audEngine.get(), numInstances);
     
     return sound;
 }

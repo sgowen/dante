@@ -10,7 +10,7 @@
 
 #include "OpenGLManager.h"
 
-OpenGLFramebufferToScreenProgram::OpenGLFramebufferToScreenProgram(const char* vertexShaderPath, const char* fragmentShaderPath) : OpenGLProgram(vertexShaderPath, fragmentShaderPath)
+OpenGLFramebufferToScreenProgram::OpenGLFramebufferToScreenProgram(const char* vertexShaderName, const char* fragmentShaderName) : OpenGLProgram(vertexShaderName, fragmentShaderName)
 {
     u_texture_unit_location = glGetUniformLocation(m_programObjectId, "u_TextureUnit");
     a_position_location = glGetAttribLocation(m_programObjectId, "a_Position");

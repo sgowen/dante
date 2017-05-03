@@ -12,7 +12,7 @@
 
 #include "Direct3DManager.h"
 
-Direct3DGeometryProgram::Direct3DGeometryProgram(_In_z_ const wchar_t* vertexShaderName, _In_z_ const wchar_t* pixelShaderName) : Direct3DProgram(vertexShaderName, pixelShaderName, false)
+Direct3DGeometryProgram::Direct3DGeometryProgram(const char* vertexShaderName, const char* pixelShaderName) : Direct3DProgram(vertexShaderName, pixelShaderName, false)
 {
     // Empty
 }

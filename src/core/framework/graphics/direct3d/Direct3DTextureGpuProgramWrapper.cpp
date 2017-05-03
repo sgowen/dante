@@ -13,9 +13,10 @@
 #include "Direct3DTextureProgram.h"
 #include "Direct3DManager.h"
 #include "GpuTextureWrapper.h"
+#include "FrameworkConstants.h"
 
 Direct3DTextureGpuProgramWrapper::Direct3DTextureGpuProgramWrapper() : GpuProgramWrapper(),
-m_program(new Direct3DTextureProgram(L"TextureVertexShader.cso", L"TexturePixelShader.cso"))
+m_program(new Direct3DTextureProgram(TEXTURE_VERTEX_SHADER, TEXTURE_FRAGMENT_SHADER))
 {
     // Empty
 }

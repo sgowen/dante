@@ -15,14 +15,43 @@
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string>
 
-OpenGLProgram::OpenGLProgram(const char* vertexShaderPath, const char* fragmentShaderPath)
+OpenGLProgram::OpenGLProgram(const char* vertexShaderName, const char* fragmentShaderName)
 {
-    assert(vertexShaderPath != NULL);
-    assert(fragmentShaderPath != NULL);
+    assert(vertexShaderName != NULL);
+    assert(fragmentShaderName != NULL);
     
-    const FileData vertex_shader_source = AssetDataHandler::getAssetDataHandler()->getAssetData(vertexShaderPath);
-    const FileData fragment_shader_source = AssetDataHandler::getAssetDataHandler()->getAssetData(fragmentShaderPath);
+    char* vertexShaderFileName;
+    {
+        size_t len = strlen(vertexShaderName);
+        
+        vertexShaderFileName = new char[len + 5];
+        
+        strcpy(vertexShaderFileName, vertexShaderName);
+        vertexShaderFileName[len] = '.';
+        vertexShaderFileName[len + 1] = 'v';
+        vertexShaderFileName[len + 2] = 's';
+        vertexShaderFileName[len + 3] = 'h';
+        vertexShaderFileName[len + 4] = '\0';
+    }
+    
+    char* fragmentShaderFileName;
+    {
+        size_t len = strlen(fragmentShaderName);
+        
+        fragmentShaderFileName = new char[len + 5];
+        
+        strcpy(fragmentShaderFileName, fragmentShaderName);
+        fragmentShaderFileName[len] = '.';
+        fragmentShaderFileName[len + 1] = 'f';
+        fragmentShaderFileName[len + 2] = 's';
+        fragmentShaderFileName[len + 3] = 'h';
+        fragmentShaderFileName[len + 4] = '\0';
+    }
+    
+    const FileData vertex_shader_source = AssetDataHandler::getAssetDataHandler()->getAssetData(vertexShaderFileName);
+    const FileData fragment_shader_source = AssetDataHandler::getAssetDataHandler()->getAssetData(fragmentShaderFileName);
     m_programObjectId = buildProgram(vertex_shader_source.data, (GLint)vertex_shader_source.data_length, fragment_shader_source.data, (GLint)fragment_shader_source.data_length);
     
     AssetDataHandler::getAssetDataHandler()->releaseAssetData(&vertex_shader_source);

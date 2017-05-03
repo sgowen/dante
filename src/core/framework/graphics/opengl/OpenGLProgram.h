@@ -18,7 +18,7 @@
 class OpenGLProgram
 {
 public:
-    OpenGLProgram(const char* vertexShaderPath, const char* fragmentShaderPath);
+    OpenGLProgram(const char* vertexShaderName, const char* fragmentShaderName);
     
     virtual ~OpenGLProgram();
     

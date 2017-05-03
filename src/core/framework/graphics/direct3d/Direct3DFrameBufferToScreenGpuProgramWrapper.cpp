@@ -13,9 +13,10 @@
 #include "Direct3DTextureProgram.h"
 #include "Direct3DManager.h"
 #include "GpuTextureWrapper.h"
+#include "FrameworkConstants.h"
 
 Direct3DFramebufferToScreenGpuProgramWrapper::Direct3DFramebufferToScreenGpuProgramWrapper() : GpuProgramWrapper(),
-m_program(new Direct3DTextureProgram(L"FramebufferToScreenVertexShader.cso", L"FramebufferToScreenPixelShader.cso"))
+m_program(new Direct3DTextureProgram(FRAMEBUFFER_TO_SCREEN_VERTEX_SHADER, FRAMEBUFFER_TO_SCREEN_FRAGMENT_SHADER))
 {
     // Empty
 }

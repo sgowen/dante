@@ -10,8 +10,11 @@
 
 #include "OpenGLTextureProgram.h"
 #include "OpenGLManager.h"
+#include "FrameworkConstants.h"
+#include "FrameworkConstants.h"
+#include "GameConstants.h"
 
-OpenGLTextureGpuProgramWrapper::OpenGLTextureGpuProgramWrapper() : GpuProgramWrapper(), m_program(new OpenGLTextureProgram("texture_shader.vsh", "texture_shader.fsh"))
+OpenGLTextureGpuProgramWrapper::OpenGLTextureGpuProgramWrapper() : GpuProgramWrapper(), m_program(new OpenGLTextureProgram(TEXTURE_VERTEX_SHADER, TEXTURE_FRAGMENT_SHADER))
 {
     // Empty
 }

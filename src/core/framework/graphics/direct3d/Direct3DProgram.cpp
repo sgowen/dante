@@ -14,11 +14,60 @@
 #include "PlatformHelpers.h"
 #include "ReadData.h"
 
-Direct3DProgram::Direct3DProgram(_In_z_ const wchar_t* vertexShaderName, _In_z_ const wchar_t* pixelShaderName, bool useTextureCoords)
+Direct3DProgram::Direct3DProgram(const char* vertexShaderName, const char* pixelShaderName, bool useTextureCoords)
 {
+	char* vertexShaderFileName;
+	{
+		size_t len = strlen(vertexShaderName);
+
+		vertexShaderFileName = new char[len + 5];
+
+		strcpy_s(vertexShaderFileName, len + 5, vertexShaderName);
+		vertexShaderFileName[len] = '.';
+		vertexShaderFileName[len + 1] = 'c';
+		vertexShaderFileName[len + 2] = 's';
+		vertexShaderFileName[len + 3] = 'o';
+		vertexShaderFileName[len + 4] = '\0';
+	}
+
+	char* pixelShaderFileName;
+	{
+		size_t len = strlen(pixelShaderName);
+
+		pixelShaderFileName = new char[len + 5];
+
+		strcpy_s(pixelShaderFileName, len + 5, pixelShaderName);
+		pixelShaderFileName[len] = '.';
+		pixelShaderFileName[len + 1] = 'c';
+		pixelShaderFileName[len + 2] = 's';
+		pixelShaderFileName[len + 3] = 'o';
+		pixelShaderFileName[len + 4] = '\0';
+	}
+
+	const wchar_t* finalVertexShaderFileName;
+	const wchar_t* finalPixelShaderFileName;
+	wchar_t* wString1 = new wchar_t[4096];
+	wchar_t* wString2 = new wchar_t[4096];
+#if (_WIN32_WINNT == _WIN32_WINNT_WIN7)
+	std::wstring s1(L"data\\shaders\\");
+	MultiByteToWideChar(CP_ACP, 0, vertexShaderFileName, -1, wString1, 4096);
+	s1 += std::wstring(wString1);
+	finalVertexShaderFileName = s1.c_str();
+
+	std::wstring s2(L"data\\shaders\\");
+	MultiByteToWideChar(CP_ACP, 0, pixelShaderFileName, -1, wString2, 4096);
+	s2 += std::wstring(wString2);
+	finalPixelShaderFileName = s2.c_str();
+#else
+	MultiByteToWideChar(CP_ACP, 0, vertexShaderFileName, -1, wString1, 4096);
+	finalVertexShaderFileName = wString1;
+	MultiByteToWideChar(CP_ACP, 0, pixelShaderFileName, -1, wString2, 4096);
+	finalPixelShaderFileName = wString2;
+#endif
+
 	ID3D11Device* d3dDevice = Direct3DManager::getD3dDevice();
 
-	auto blob = DX::ReadData(vertexShaderName);
+	auto blob = DX::ReadData(finalVertexShaderFileName);
 	DirectX::ThrowIfFailed(
 		d3dDevice->CreateVertexShader(
 			blob.data(),
@@ -51,7 +100,7 @@ Direct3DProgram::Direct3DProgram(_In_z_ const wchar_t* vertexShaderName, _In_z_ 
 		)
 	);
 
-	blob = DX::ReadData(pixelShaderName);
+	blob = DX::ReadData(finalPixelShaderFileName);
 	DirectX::ThrowIfFailed(
 		d3dDevice->CreatePixelShader(
 			blob.data(),
@@ -60,6 +109,11 @@ Direct3DProgram::Direct3DProgram(_In_z_ const wchar_t* vertexShaderName, _In_z_ 
 			&m_pixelShader
 		)
 	);
+
+	delete vertexShaderFileName;
+	delete pixelShaderFileName;
+	delete wString1;
+	delete wString2;
 }
 
 Direct3DProgram::~Direct3DProgram()

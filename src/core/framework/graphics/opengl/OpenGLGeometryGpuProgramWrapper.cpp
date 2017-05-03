@@ -10,8 +10,11 @@
 
 #include "OpenGLGeometryProgram.h"
 #include "OpenGLManager.h"
+#include "FrameworkConstants.h"
+#include "FrameworkConstants.h"
+#include "GameConstants.h"
 
-OpenGLGeometryGpuProgramWrapper::OpenGLGeometryGpuProgramWrapper() : GpuProgramWrapper(), m_program(new OpenGLGeometryProgram("color_shader.vsh", "color_shader.fsh"))
+OpenGLGeometryGpuProgramWrapper::OpenGLGeometryGpuProgramWrapper() : GpuProgramWrapper(), m_program(new OpenGLGeometryProgram(COLOR_VERTEX_SHADER, COLOR_FRAGMENT_SHADER))
 {
     // Empty
 }

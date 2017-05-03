@@ -14,7 +14,7 @@
 class Direct3DGeometryProgram : public Direct3DProgram
 {
 public:
-    Direct3DGeometryProgram(_In_z_ const wchar_t* vertexShaderName, _In_z_ const wchar_t* pixelShaderName);
+    Direct3DGeometryProgram(const char* vertexShaderName, const char* pixelShaderName);
     
     virtual void mapVertices();
 };

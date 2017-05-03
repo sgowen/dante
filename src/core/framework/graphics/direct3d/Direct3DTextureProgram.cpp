@@ -12,7 +12,7 @@
 
 #include "Direct3DManager.h"
 
-Direct3DTextureProgram::Direct3DTextureProgram(_In_z_ const wchar_t* vertexShaderName, _In_z_ const wchar_t* pixelShaderName) : Direct3DProgram(vertexShaderName, pixelShaderName, true)
+Direct3DTextureProgram::Direct3DTextureProgram(const char* vertexShaderName, const char* pixelShaderName) : Direct3DProgram(vertexShaderName, pixelShaderName, true)
 {
     // Empty
 }

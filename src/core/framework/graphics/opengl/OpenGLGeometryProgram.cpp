@@ -10,7 +10,7 @@
 
 #include "OpenGLManager.h"
 
-OpenGLGeometryProgram::OpenGLGeometryProgram(const char* vertexShaderPath, const char* fragmentShaderPath) : OpenGLProgram(vertexShaderPath, fragmentShaderPath)
+OpenGLGeometryProgram::OpenGLGeometryProgram(const char* vertexShaderName, const char* fragmentShaderName) : OpenGLProgram(vertexShaderName, fragmentShaderName)
 {
     u_mvp_matrix_location = glGetUniformLocation(m_programObjectId, "u_MvpMatrix");
     a_position_location = glGetAttribLocation(m_programObjectId, "a_Position");

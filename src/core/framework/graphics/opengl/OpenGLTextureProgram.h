@@ -14,7 +14,7 @@
 class OpenGLTextureProgram : public OpenGLProgram
 {
 public:
-    OpenGLTextureProgram(const char* vertexShaderPath, const char* fragmentShaderPath);
+    OpenGLTextureProgram(const char* vertexShaderName, const char* fragmentShaderName);
     
     virtual void bind();
     

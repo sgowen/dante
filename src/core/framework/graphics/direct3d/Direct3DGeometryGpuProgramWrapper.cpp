@@ -12,9 +12,10 @@
 
 #include "Direct3DGeometryProgram.h"
 #include "Direct3DManager.h"
+#include "FrameworkConstants.h"
 
 Direct3DGeometryGpuProgramWrapper::Direct3DGeometryGpuProgramWrapper() : GpuProgramWrapper(),
-m_program(new Direct3DGeometryProgram(L"ColorVertexShader.cso", L"ColorPixelShader.cso"))
+m_program(new Direct3DGeometryProgram(COLOR_VERTEX_SHADER, COLOR_FRAGMENT_SHADER))
 {
     // Empty
 }

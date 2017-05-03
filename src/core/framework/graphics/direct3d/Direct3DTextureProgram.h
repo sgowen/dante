@@ -14,7 +14,7 @@
 class Direct3DTextureProgram : public Direct3DProgram
 {
 public:
-    Direct3DTextureProgram(_In_z_ const wchar_t* vertexShaderName, _In_z_ const wchar_t* pixelShaderName);
+    Direct3DTextureProgram(const char* vertexShaderName, const char* pixelShaderName);
     
     virtual void mapVertices();
 };
