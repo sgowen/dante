@@ -3,3 +3,7 @@
 
 # Windows
 Thumbs.db
+
+# Generated Files
+*.ngt
+*.ngs

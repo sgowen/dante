@@ -81,23 +81,16 @@
     <None Include="Dante_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="..\..\..\core\framework\graphics\direct3d\shader\*PixelShader.hlsl">
-      <Filter>Shaders</Filter>
-    </FxCompile>
-    <FxCompile Include="..\..\..\core\framework\graphics\direct3d\shader\*VertexShader.hlsl">
-      <Filter>Shaders</Filter>
-    </FxCompile>
-    <FxCompile Include="..\..\..\core\game\graphics\direct3d\shader\*PixelShader.hlsl">
-      <Filter>Shaders</Filter>
-    </FxCompile>
-    <FxCompile Include="..\..\..\core\game\graphics\direct3d\shader\*VertexShader.hlsl">
-      <Filter>Shaders</Filter>
-    </FxCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <CustomBuild Include="..\..\..\..\assets\textures\*.png">
+    <CustomBuild Include="..\win32\data\textures\*.ngt">
       <Filter>Assets</Filter>
     </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="..\win32\data\shaders\*.ngs">
+      <Filter>Shaders</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
     <CustomBuild Include="..\..\..\..\assets\music\*.wav">
       <Filter>Assets</Filter>
     </CustomBuild>
