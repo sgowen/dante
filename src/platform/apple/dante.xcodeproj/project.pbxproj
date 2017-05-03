@@ -313,6 +313,8 @@
 		BB052CDC1EBA8AF4007FA789 /* XOREncryptDecrypt.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = XOREncryptDecrypt.c; sourceTree = "<group>"; };
 		BB052CDD1EBA8AF4007FA789 /* XOREncryptDecrypt.exe */ = {isa = PBXFileReference; lastKnownFileType = file; path = XOREncryptDecrypt.exe; sourceTree = "<group>"; };
 		BB052CE51EBA9044007FA789 /* encrypt_textures_and_shaders.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = encrypt_textures_and_shaders.sh; sourceTree = "<group>"; };
+		BB052CE81EBA9298007FA789 /* encrypt_shaders_win32.bat */ = {isa = PBXFileReference; lastKnownFileType = text; path = encrypt_shaders_win32.bat; sourceTree = "<group>"; };
+		BB052CE91EBA9298007FA789 /* encrypt_textures_win32.bat */ = {isa = PBXFileReference; lastKnownFileType = text; path = encrypt_textures_win32.bat; sourceTree = "<group>"; };
 		BB09703519C3A3180086B30F /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
 		BB09CDD41DBD3779006A3E49 /* SuperpoweredAndroidAudioIO.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SuperpoweredAndroidAudioIO.cpp; sourceTree = "<group>"; };
 		BB09CDD51DBD3779006A3E49 /* SuperpoweredAndroidAudioIO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SuperpoweredAndroidAudioIO.h; sourceTree = "<group>"; };
@@ -833,7 +835,9 @@
 		BB052CE41EBA9044007FA789 /* tools */ = {
 			isa = PBXGroup;
 			children = (
+				BB052CE81EBA9298007FA789 /* encrypt_shaders_win32.bat */,
 				BB052CE51EBA9044007FA789 /* encrypt_textures_and_shaders.sh */,
+				BB052CE91EBA9298007FA789 /* encrypt_textures_win32.bat */,
 			);
 			path = tools;
 			sourceTree = "<group>";

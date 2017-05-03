@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -107,7 +107,7 @@
       <Command>rd /s /q $(SolutionDir)data\textures &amp; MD $(SolutionDir)data\textures</Command>
     </PreBuildEvent>
     <PreLinkEvent>
-      <Command>xcopy /y "$(OutDir)*.cso" $(SolutionDir)data\shaders\ &amp; cd $(SolutionDir)..\..\..\core\framework\tools &amp; encrypt_shaders_win32.bat &amp; cd $(SolutionDir)..\..\..\core\framework\tools &amp; encrypt_textures_win32.bat</Command>
+      <Command>xcopy /y "$(OutDir)*.cso" $(SolutionDir)data\shaders\ &amp; cd $(SolutionDir)..\..\..\core\game\tools &amp; encrypt_shaders_win32.bat &amp; cd $(SolutionDir)..\..\..\core\game\tools &amp; encrypt_textures_win32.bat</Command>
     </PreLinkEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -133,7 +133,7 @@
       <Command>rd /s /q $(SolutionDir)data\textures &amp; MD $(SolutionDir)data\textures</Command>
     </PreBuildEvent>
     <PreLinkEvent>
-      <Command>xcopy /y "$(OutDir)*.cso" $(SolutionDir)data\shaders\ &amp; cd $(SolutionDir)..\..\..\core\framework\tools &amp; encrypt_shaders_win32.bat &amp; cd $(SolutionDir)..\..\..\core\framework\tools &amp; encrypt_textures_win32.bat</Command>
+      <Command>xcopy /y "$(OutDir)*.cso" $(SolutionDir)data\shaders\ &amp; cd $(SolutionDir)..\..\..\core\game\tools &amp; encrypt_shaders_win32.bat &amp; cd $(SolutionDir)..\..\..\core\game\tools &amp; encrypt_textures_win32.bat</Command>
     </PreLinkEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -164,7 +164,7 @@
       <Command>rd /s /q $(SolutionDir)data\textures &amp; MD $(SolutionDir)data\textures</Command>
     </PreBuildEvent>
     <PreLinkEvent>
-      <Command>xcopy /y "$(OutDir)*.cso" $(SolutionDir)data\shaders\ &amp; cd $(SolutionDir)..\..\..\core\framework\tools &amp; encrypt_shaders_win32.bat &amp; cd $(SolutionDir)..\..\..\core\framework\tools &amp; encrypt_textures_win32.bat</Command>
+      <Command>xcopy /y "$(OutDir)*.cso" $(SolutionDir)data\shaders\ &amp; cd $(SolutionDir)..\..\..\core\game\tools &amp; encrypt_shaders_win32.bat &amp; cd $(SolutionDir)..\..\..\core\game\tools &amp; encrypt_textures_win32.bat</Command>
     </PreLinkEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -194,7 +194,7 @@
       <Command>rd /s /q $(SolutionDir)data\textures &amp; MD $(SolutionDir)data\textures</Command>
     </PreBuildEvent>
     <PreLinkEvent>
-      <Command>xcopy /y "$(OutDir)*.cso" $(SolutionDir)data\shaders\ &amp; cd $(SolutionDir)..\..\..\core\framework\tools &amp; encrypt_shaders_win32.bat &amp; cd $(SolutionDir)..\..\..\core\framework\tools &amp; encrypt_textures_win32.bat</Command>
+      <Command>xcopy /y "$(OutDir)*.cso" $(SolutionDir)data\shaders\ &amp; cd $(SolutionDir)..\..\..\core\game\tools &amp; encrypt_shaders_win32.bat &amp; cd $(SolutionDir)..\..\..\core\game\tools &amp; encrypt_textures_win32.bat</Command>
     </PreLinkEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
