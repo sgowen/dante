@@ -1,24 +1,24 @@
-//
-//  server.h
-//  noctisgames-framework
-//
-//  Created by Stephen Gowen on 1/5/17.
-//  Copyright (c) 2017 Noctis Games. All rights reserved.
-//
+class Server : public Engine
+{
+public:
 
-#ifndef __noctisgames__server__
-#define __noctisgames__server__
+	static bool StaticInit();
 
-#define MAX_DATA_SIZE 512 // max number of bytes we can get at once
+	virtual void DoFrame() override;
 
-int startServerUDP();
+	virtual int Run();
 
-const char * readFromClient(char * buffer); // Returns client id
+	void HandleNewClient( ClientProxyPtr inClientProxy );
+	void HandleLostClient( ClientProxyPtr inClientProxy );
 
-int writeToClients(const char * buffer); // Returns 1 for success, -1 otherwise
+	RoboCatPtr	GetCatForPlayer( int inPlayerId );
+	void	SpawnCatForPlayer( int inPlayerId );
 
-void shutDownServer();
 
-void runServer();
+private:
+	Server();
 
-#endif /* defined(__noctisgames__server__) */
+	bool	InitNetworkManager();
+	void	SetupWorld();
+
+};

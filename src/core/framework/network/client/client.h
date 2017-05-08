@@ -1,28 +1,18 @@
-//
-//  client.h
-//  noctisgames-framework
-//
-//  Created by Stephen Gowen on 1/5/17.
-//  Copyright (c) 2017 Noctis Games. All rights reserved.
-//
+class Client : public Engine
+{
+public:
 
-#ifndef __noctisgames__client__
-#define __noctisgames__client__
+	static bool StaticInit( );
 
-#define MAX_DATA_SIZE 512 // max number of bytes we can get at once
+protected:
 
-void updateCoords(float x, float y);
+	Client();
 
-char * getLatestMessage();
+	virtual void	DoFrame() override;
+	virtual void	HandleEvent( SDL_Event* inEvent ) override;
 
-int getClientStatus();
+private:
 
-int startClientUDP();
 
-int sendCoords();
 
-int readFromServer();
-
-void shutDownClient();
-
-#endif /* defined(__noctisgames__client__) */
+};
