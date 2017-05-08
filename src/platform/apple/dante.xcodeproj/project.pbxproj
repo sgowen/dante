@@ -1395,12 +1395,12 @@
 		BBAEF0BD1EA94ED900F0866E /* framework */ = {
 			isa = PBXGroup;
 			children = (
-				BBF2251E1EC120AD00573356 /* network */,
 				BBAEF0BE1EA94ED900F0866E /* entity */,
 				BBAEF0C91EA94ED900F0866E /* file */,
 				BBAEF0E31EA94ED900F0866E /* graphics */,
 				BBAEF1591EA94ED900F0866E /* input */,
 				BBAEF1771EA94ED900F0866E /* math */,
+				BBF2251E1EC120AD00573356 /* network */,
 				BBAEF18C1EA94ED900F0866E /* sound */,
 				BBAEF1C31EA94ED900F0866E /* state */,
 				BB052CD81EBA8AF4007FA789 /* tools */,
@@ -2658,6 +2658,7 @@
 				HEADER_SEARCH_PATHS = (
 					"\"$(SRCROOT)/../../core\"/**",
 					"\"$(SRCROOT)/../../3rdparty\"/**",
+					"\"$(SRCROOT)mac\"",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/mac/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
@@ -2706,6 +2707,7 @@
 				HEADER_SEARCH_PATHS = (
 					"\"$(SRCROOT)/../../core\"/**",
 					"\"$(SRCROOT)/../../3rdparty\"/**",
+					"\"$(SRCROOT)mac\"",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/mac/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";

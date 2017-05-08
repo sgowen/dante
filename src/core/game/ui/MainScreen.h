@@ -55,7 +55,7 @@ private:
     int m_iRequestedAction;
     
     // temp
-    PhysicalEntity* m_samus;
+    PhysicalEntity* m_avatar;
     
     void tempUpdateInput();
     

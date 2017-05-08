@@ -37,7 +37,7 @@ m_touchPointDown(new Vector2D()),
 m_touchPointDown2(new Vector2D()),
 m_fFrameStateTime(0),
 m_iRequestedAction(REQUESTED_ACTION_UPDATE),
-m_samus(new PhysicalEntity(3, 3, 1.173913043478261f, 1.5f))
+m_avatar(new PhysicalEntity(3, 3, 1.173913043478261f, 1.5f))
 {
     m_config->load();
     
@@ -53,7 +53,7 @@ m_samus(new PhysicalEntity(3, 3, 1.173913043478261f, 1.5f))
         userId = std::string("accounts@noctisgames.com");
     }
     
-    CLIENT->init(serverAddress, userId);
+//    CLIENT->init(serverAddress, userId);
 }
 
 MainScreen::~MainScreen()
@@ -63,7 +63,7 @@ MainScreen::~MainScreen()
     delete m_touchPointDown;
     delete m_touchPointDown2;
     
-    CLIENT->deinit();
+//    CLIENT->deinit();
 }
 
 void MainScreen::createDeviceDependentResources()
@@ -100,7 +100,7 @@ void MainScreen::update(float deltaTime)
     
     if (m_fFrameStateTime >= FRAME_RATE)
     {
-        CLIENT->beginFrame();
+//        CLIENT->beginFrame();
         
         tempUpdateInput();
         
@@ -113,7 +113,7 @@ void MainScreen::update(float deltaTime)
         
         NG_AUDIO_ENGINE->update();
         
-        CLIENT->endFrame();
+//        CLIENT->endFrame();
     }
 }
 
@@ -133,7 +133,7 @@ void MainScreen::render()
     float x4 = 0;
     float y4 = 0;
     
-    m_renderer->tempDraw(m_samus->getStateTime(), x1, y1, x2, y2, x3, y3, x4, y4);
+    m_renderer->tempDraw(m_avatar->getStateTime(), x1, y1, x2, y2, x3, y3, x4, y4);
     
     m_renderer->renderToScreen();
     
@@ -162,11 +162,11 @@ void MainScreen::tempUpdateInput()
         {
             case KeyboardEventType_D:
             case KeyboardEventType_ARROW_KEY_RIGHT:
-                m_samus->getPosition().add(0.1f, 0);
+                m_avatar->getPosition().add(0.1f, 0);
                 continue;
             case KeyboardEventType_A:
             case KeyboardEventType_ARROW_KEY_LEFT:
-                m_samus->getPosition().sub(0.1f, 0);
+                m_avatar->getPosition().sub(0.1f, 0);
                 continue;
             default:
                 continue;
@@ -178,10 +178,10 @@ void MainScreen::tempUpdateInput()
         switch ((*i)->getType())
         {
             case GamePadEventType_D_PAD_RIGHT:
-                m_samus->getPosition().add(0.1f, 0);
+                m_avatar->getPosition().add(0.1f, 0);
                 continue;
             case GamePadEventType_D_PAD_LEFT:
-                m_samus->getPosition().sub(0.1f, 0);
+                m_avatar->getPosition().sub(0.1f, 0);
                 continue;
             default:
                 continue;
@@ -198,11 +198,11 @@ void MainScreen::tempUpdateInput()
             case ScreenEventType_DRAGGED:
                 if (touchPoint.getX() > CAM_WIDTH / 2)
                 {
-                    m_samus->getPosition().add(0.1f, 0);
+                    m_avatar->getPosition().add(0.1f, 0);
                 }
                 else
                 {
-                    m_samus->getPosition().sub(0.1f, 0);
+                    m_avatar->getPosition().sub(0.1f, 0);
                 }
                 continue;
             case ScreenEventType_UP:
@@ -213,10 +213,10 @@ void MainScreen::tempUpdateInput()
 
 void MainScreen::tempUpdate(float deltaTime)
 {
-    m_samus->update(FRAME_RATE);
+    m_avatar->update(FRAME_RATE);
     
-    m_samus->getPosition().setX(clamp(m_samus->getPosition().getX(), CAM_WIDTH, 0));
-    m_samus->getPosition().setY(clamp(m_samus->getPosition().getY(), CAM_HEIGHT, 0));
+    m_avatar->getPosition().setX(clamp(m_avatar->getPosition().getX(), CAM_WIDTH, 0));
+    m_avatar->getPosition().setY(clamp(m_avatar->getPosition().getY(), CAM_HEIGHT, 0));
 }
 
 RTTI_IMPL(MainScreen, IScreen);

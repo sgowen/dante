@@ -22,16 +22,16 @@
 #include "TextureRegion.h"
 
 MainRenderer::MainRenderer(int maxBatchSize) : Renderer(maxBatchSize),
-m_samus(new TextureWrapper("texture_001"))
+m_demo(new TextureWrapper("texture_001"))
 {
     ASSETS->init(new MainAssetsMapper());
     
-    loadTextureSync(m_samus);
+    loadTextureSync(m_demo);
 }
 
 MainRenderer::~MainRenderer()
 {
-    unloadTexture(m_samus);
+    unloadTexture(m_demo);
 }
 
 void MainRenderer::createDeviceDependentResources()
@@ -48,25 +48,25 @@ void MainRenderer::tempDraw(float stateTime, float x1, float y1, float x2, float
 {
     m_rendererHelper->updateMatrix(0, CAM_WIDTH, 0, CAM_HEIGHT);
     
-    if (ensureTexture(m_samus))
+    if (ensureTexture(m_demo))
     {
         m_spriteBatcher->beginBatch();
         {
-            TextureRegion tr = ASSETS->findTextureRegion("Samus_Running", stateTime);
-            m_spriteBatcher->drawSprite(x1, y1, 1.173913043478261f, 1.5f, 0, tr);
+            TextureRegion tr = ASSETS->findTextureRegion("CharacterHoldingGun", stateTime);
+            m_spriteBatcher->drawSprite(x1, y1, 1.5f, 1.15f, 0, tr);
         }
         {
-            TextureRegion tr = ASSETS->findTextureRegion("Samus_Running", stateTime);
-            m_spriteBatcher->drawSprite(x2, y2, 1.173913043478261f, 1.5f, 0, tr);
+            TextureRegion tr = ASSETS->findTextureRegion("CharacterHoldingGun", stateTime);
+            m_spriteBatcher->drawSprite(x2, y2, 1.5f, 1.15f, 0, tr);
         }
         {
-            TextureRegion tr = ASSETS->findTextureRegion("Samus_Running", stateTime);
-            m_spriteBatcher->drawSprite(x3, y3, 1.173913043478261f, 1.5f, 0, tr);
+            TextureRegion tr = ASSETS->findTextureRegion("CharacterHoldingGun", stateTime);
+            m_spriteBatcher->drawSprite(x3, y3, 1.5f, 1.15f, 0, tr);
         }
         {
-            TextureRegion tr = ASSETS->findTextureRegion("Samus_Running", stateTime);
-            m_spriteBatcher->drawSprite(x4, y4, 1.173913043478261f, 1.5f, 0, tr);
+            TextureRegion tr = ASSETS->findTextureRegion("CharacterHoldingGun", stateTime);
+            m_spriteBatcher->drawSprite(x4, y4, 1.5f, 1.15f, 0, tr);
         }
-        m_spriteBatcher->endBatch(*m_samus->gpuTextureWrapper, *m_textureGpuProgramWrapper);
+        m_spriteBatcher->endBatch(*m_demo->gpuTextureWrapper, *m_textureGpuProgramWrapper);
     }
 }
