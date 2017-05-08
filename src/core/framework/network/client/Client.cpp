@@ -6,17 +6,6 @@ bool Client::StaticInit( )
 	// Create the Client pointer first because it initializes SDL
 	Client* client = new Client();
 
-	if( WindowManager::StaticInit() == false )
-	{
-		return false;
-	}
-	
-	if( GraphicsDriver::StaticInit( WindowManager::sInstance->GetMainWindow() ) == false )
-	{
-		return false;
-	}
-
-	TextureManager::StaticInit();
 	RenderManager::StaticInit();
 	InputManager::StaticInit();
 
@@ -61,15 +50,15 @@ void Client::DoFrame()
 	NetworkManagerClient::sInstance->SendOutgoingPackets();
 }
 
-void Client::HandleEvent( SDL_Event* inEvent )
+void Client::HandleEvent( int inEvent )
 {
-	switch( inEvent->type )
+	switch (inEvent)
 	{
-	case SDL_KEYDOWN:
-		InputManager::sInstance->HandleInput( EIA_Pressed, inEvent->key.keysym.sym );
+	case 0:
+		InputManager::sInstance->HandleInput( EIA_Pressed, 'D');
 		break;
-	case SDL_KEYUP:
-		InputManager::sInstance->HandleInput( EIA_Released, inEvent->key.keysym.sym );
+	case 1:
+		InputManager::sInstance->HandleInput( EIA_Released, 'W');
 		break;
 	default:
 		break;

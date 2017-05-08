@@ -27,7 +27,7 @@ void HUD::StaticInit()
 
 void HUD::Render()
 {
-	//RenderBandWidth();
+	RenderBandWidth();
 	RenderRoundTripTime();
 	RenderScoreBoard();
 	RenderHealth();

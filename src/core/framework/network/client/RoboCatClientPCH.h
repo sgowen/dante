@@ -1,7 +1,5 @@
 #include <RoboCatShared.h>
 
-#include <SDL.h>
-
 #include <InputManager.h>
 
 #include <Texture.h>
