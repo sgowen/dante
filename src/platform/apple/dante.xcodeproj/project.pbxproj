@@ -431,6 +431,24 @@
 		BB2BB0851DB81ECF000CE5E5 /* dante.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = dante.entitlements; sourceTree = "<group>"; };
 		BB3218741EC1418E007ED106 /* HUD.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HUD.cpp; sourceTree = "<group>"; };
 		BB3218751EC1418E007ED106 /* HUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUD.h; sourceTree = "<group>"; };
+		BB32189A1EC14543007ED106 /* ClientProxy.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ClientProxy.cpp; sourceTree = "<group>"; };
+		BB32189B1EC14543007ED106 /* ClientProxy.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ClientProxy.h; sourceTree = "<group>"; };
+		BB32189C1EC14543007ED106 /* MouseServer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = MouseServer.cpp; sourceTree = "<group>"; };
+		BB32189D1EC14543007ED106 /* MouseServer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MouseServer.h; sourceTree = "<group>"; };
+		BB32189E1EC14543007ED106 /* NetworkManagerServer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = NetworkManagerServer.cpp; sourceTree = "<group>"; };
+		BB32189F1EC14543007ED106 /* NetworkManagerServer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NetworkManagerServer.h; sourceTree = "<group>"; };
+		BB3218A01EC14543007ED106 /* ReplicationManagerServer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ReplicationManagerServer.cpp; sourceTree = "<group>"; };
+		BB3218A11EC14543007ED106 /* ReplicationManagerServer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ReplicationManagerServer.h; sourceTree = "<group>"; };
+		BB3218A21EC14543007ED106 /* ReplicationManagerTransmissionData.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ReplicationManagerTransmissionData.cpp; sourceTree = "<group>"; };
+		BB3218A31EC14543007ED106 /* ReplicationManagerTransmissionData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ReplicationManagerTransmissionData.h; sourceTree = "<group>"; };
+		BB3218A41EC14543007ED106 /* RoboCatServer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = RoboCatServer.cpp; sourceTree = "<group>"; };
+		BB3218A51EC14543007ED106 /* RoboCatServer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RoboCatServer.h; sourceTree = "<group>"; };
+		BB3218A61EC14543007ED106 /* RoboCatServerPCH.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = RoboCatServerPCH.cpp; sourceTree = "<group>"; };
+		BB3218A71EC14543007ED106 /* RoboCatServerPCH.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RoboCatServerPCH.h; sourceTree = "<group>"; };
+		BB3218A81EC14543007ED106 /* Server.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Server.cpp; sourceTree = "<group>"; };
+		BB3218A91EC14543007ED106 /* Server.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Server.h; sourceTree = "<group>"; };
+		BB3218AA1EC14543007ED106 /* YarnServer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = YarnServer.cpp; sourceTree = "<group>"; };
+		BB3218AB1EC14543007ED106 /* YarnServer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YarnServer.h; sourceTree = "<group>"; };
 		BB34FD711E565A7400AC8197 /* Android.mk */ = {isa = PBXFileReference; lastKnownFileType = text; path = Android.mk; sourceTree = "<group>"; };
 		BB34FD721E565A7400AC8197 /* Application.mk */ = {isa = PBXFileReference; lastKnownFileType = text; path = Application.mk; sourceTree = "<group>"; };
 		BB44C30A1DB0303F003E633F /* Dante.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Dante.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1076,6 +1094,31 @@
 				BB052CD71EBA8AE9007FA789 /* shader_003_vert.vsh */,
 			);
 			path = shader;
+			sourceTree = "<group>";
+		};
+		BB3218991EC14543007ED106 /* server */ = {
+			isa = PBXGroup;
+			children = (
+				BB32189A1EC14543007ED106 /* ClientProxy.cpp */,
+				BB32189B1EC14543007ED106 /* ClientProxy.h */,
+				BB32189C1EC14543007ED106 /* MouseServer.cpp */,
+				BB32189D1EC14543007ED106 /* MouseServer.h */,
+				BB32189E1EC14543007ED106 /* NetworkManagerServer.cpp */,
+				BB32189F1EC14543007ED106 /* NetworkManagerServer.h */,
+				BB3218A01EC14543007ED106 /* ReplicationManagerServer.cpp */,
+				BB3218A11EC14543007ED106 /* ReplicationManagerServer.h */,
+				BB3218A21EC14543007ED106 /* ReplicationManagerTransmissionData.cpp */,
+				BB3218A31EC14543007ED106 /* ReplicationManagerTransmissionData.h */,
+				BB3218A41EC14543007ED106 /* RoboCatServer.cpp */,
+				BB3218A51EC14543007ED106 /* RoboCatServer.h */,
+				BB3218A61EC14543007ED106 /* RoboCatServerPCH.cpp */,
+				BB3218A71EC14543007ED106 /* RoboCatServerPCH.h */,
+				BB3218A81EC14543007ED106 /* Server.cpp */,
+				BB3218A91EC14543007ED106 /* Server.h */,
+				BB3218AA1EC14543007ED106 /* YarnServer.cpp */,
+				BB3218AB1EC14543007ED106 /* YarnServer.h */,
+			);
+			path = server;
 			sourceTree = "<group>";
 		};
 		BB34FD701E565A7400AC8197 /* jni */ = {
@@ -1779,6 +1822,7 @@
 			children = (
 				BBF226631EC12C9C00573356 /* client */,
 				BBF225F71EC12C6100573356 /* portable */,
+				BB3218991EC14543007ED106 /* server */,
 			);
 			path = network;
 			sourceTree = "<group>";
