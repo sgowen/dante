@@ -2,8 +2,8 @@
 
 YarnClient::YarnClient()
 {
-	mSpriteComponent.reset( new SpriteComponent( this ) );
-	mSpriteComponent->SetTexture( TextureManager::sInstance->GetTexture( "yarn" ) );
+//	mSpriteComponent.reset( new SpriteComponent( this ) );
+//	mSpriteComponent->SetTexture( TextureManager::sInstance->GetTexture( "yarn" ) );
 }
 
 
@@ -55,7 +55,7 @@ bool YarnClient::HandleCollisionWithCat( RoboCat* inCat )
 {
 	if( GetPlayerId() != inCat->GetPlayerId() )
 	{
-		RenderManager::sInstance->RemoveComponent( mSpriteComponent.get() );
+//		RenderManager::sInstance->RemoveComponent( mSpriteComponent.get() );
 	}
 	return false;
 }

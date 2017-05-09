@@ -1,3 +1,5 @@
+#include <RoboCatShared.h>
+
 class Mouse : public GameObject
 {
 public:

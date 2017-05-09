@@ -1,3 +1,5 @@
+#include <RoboCatClientPCH.h>
+
 class RoboCatClient : public RoboCat
 {
 public:
@@ -24,5 +26,5 @@ private:
 	float				mTimeLocationBecameOutOfSync;
 	float				mTimeVelocityBecameOutOfSync;
 	
-	SpriteComponentPtr	mSpriteComponent;
+//	SpriteComponentPtr	mSpriteComponent;
 };

@@ -6,7 +6,6 @@ bool Client::StaticInit( )
 	// Create the Client pointer first because it initializes SDL
 	Client* client = new Client();
 
-	RenderManager::StaticInit();
 	InputManager::StaticInit();
 
 	HUD::StaticInit();
@@ -21,9 +20,6 @@ Client::Client()
 	GameObjectRegistry::sInstance->RegisterCreationFunction( 'RCAT', RoboCatClient::StaticCreate );
 	GameObjectRegistry::sInstance->RegisterCreationFunction( 'MOUS', MouseClient::StaticCreate );
 	GameObjectRegistry::sInstance->RegisterCreationFunction( 'YARN', YarnClient::StaticCreate );
-
-	string destination = StringUtils::GetCommandLineArg( 1 );
-	string name = StringUtils::GetCommandLineArg( 2 );
 
 	SocketAddressPtr serverAddress = SocketAddressFactory::CreateIPv4FromString("localhost:9999");
 
@@ -45,7 +41,7 @@ void Client::DoFrame()
 
 	NetworkManagerClient::sInstance->ProcessIncomingPackets();
 
-	RenderManager::sInstance->Render();
+//	RenderManager::sInstance->Render();
 
 	NetworkManagerClient::sInstance->SendOutgoingPackets();
 }

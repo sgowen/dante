@@ -1,4 +1,4 @@
-
+#include <RoboCatClientPCH.h>
 
 
 class NetworkManagerClient : public NetworkManager

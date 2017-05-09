@@ -1,3 +1,5 @@
+#include <RoboCatShared.h>
+
 typedef unordered_map< int, GameObjectPtr > IntToGameObjectMap;
 
 class NetworkManager

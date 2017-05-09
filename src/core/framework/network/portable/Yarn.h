@@ -1,3 +1,5 @@
+#include <RoboCatShared.h>
+
 class Yarn : public GameObject
 {
 public:

@@ -1,3 +1,4 @@
+#include <RoboCatShared.h>
 
 typedef GameObjectPtr ( *GameObjectCreationFunc )();
 

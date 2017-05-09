@@ -1,3 +1,5 @@
+#include <RoboCatClientPCH.h>
+
 class YarnClient : public Yarn
 {
 public:
@@ -11,5 +13,5 @@ protected:
 
 private:
 
-	SpriteComponentPtr	mSpriteComponent;
+//	SpriteComponentPtr	mSpriteComponent;
 };

@@ -1,3 +1,4 @@
+#include <RoboCatShared.h>
 
 #include <cstdint>
 #include <cstdlib>

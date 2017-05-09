@@ -1,3 +1,5 @@
+#include <RoboCatShared.h>
+
 enum SocketAddressFamily
 {
 	INET = AF_INET,

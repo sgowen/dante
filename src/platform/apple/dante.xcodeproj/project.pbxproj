@@ -39,6 +39,8 @@
 		BB12EDD41A1CF6D9006D385B /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB12EDD31A1CF6D9006D385B /* QuartzCore.framework */; };
 		BB13BD471E58E04D0073C08F /* DDHidLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB13BD461E58E04D0073C08F /* DDHidLib.framework */; };
 		BB13BD521E58E7350073C08F /* DDHidLib.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = BB13BD461E58E04D0073C08F /* DDHidLib.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		BB3218761EC1418E007ED106 /* HUD.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB3218741EC1418E007ED106 /* HUD.cpp */; };
+		BB3218771EC1418E007ED106 /* HUD.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB3218741EC1418E007ED106 /* HUD.cpp */; };
 		BB44C3281DB030B3003E633F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = BB44C3201DB030B3003E633F /* AppDelegate.m */; };
 		BB44C3291DB030B3003E633F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BB44C3211DB030B3003E633F /* Assets.xcassets */; };
 		BB44C32A1DB030B3003E633F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BB44C3221DB030B3003E633F /* Main.storyboard */; };
@@ -265,20 +267,12 @@
 		BBF226361EC12C6100573356 /* Engine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF225FD1EC12C6100573356 /* Engine.cpp */; };
 		BBF226831EC12C9C00573356 /* Client.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF226641EC12C9C00573356 /* Client.cpp */; };
 		BBF226841EC12C9C00573356 /* Client.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF226641EC12C9C00573356 /* Client.cpp */; };
-		BBF226C01EC12CDE00573356 /* ClientMain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF226A31EC12CDE00573356 /* ClientMain.cpp */; };
-		BBF226C11EC12CDE00573356 /* ClientMain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF226A31EC12CDE00573356 /* ClientMain.cpp */; };
-		BBF226C21EC12CDE00573356 /* GraphicsDriver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF226A41EC12CDE00573356 /* GraphicsDriver.cpp */; };
-		BBF226C31EC12CDE00573356 /* GraphicsDriver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF226A41EC12CDE00573356 /* GraphicsDriver.cpp */; };
-		BBF226C41EC12CDE00573356 /* HUD.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF226A61EC12CDE00573356 /* HUD.cpp */; };
-		BBF226C51EC12CDE00573356 /* HUD.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF226A61EC12CDE00573356 /* HUD.cpp */; };
 		BBF226C61EC12CDE00573356 /* InputManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF226A81EC12CDE00573356 /* InputManager.cpp */; };
 		BBF226C71EC12CDE00573356 /* InputManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF226A81EC12CDE00573356 /* InputManager.cpp */; };
 		BBF226C81EC12CDE00573356 /* MouseClient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF226AA1EC12CDE00573356 /* MouseClient.cpp */; };
 		BBF226C91EC12CDE00573356 /* MouseClient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF226AA1EC12CDE00573356 /* MouseClient.cpp */; };
 		BBF226CA1EC12CDE00573356 /* NetworkManagerClient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF226AC1EC12CDE00573356 /* NetworkManagerClient.cpp */; };
 		BBF226CB1EC12CDE00573356 /* NetworkManagerClient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF226AC1EC12CDE00573356 /* NetworkManagerClient.cpp */; };
-		BBF226CC1EC12CDE00573356 /* RenderManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF226AE1EC12CDE00573356 /* RenderManager.cpp */; };
-		BBF226CD1EC12CDE00573356 /* RenderManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF226AE1EC12CDE00573356 /* RenderManager.cpp */; };
 		BBF226CE1EC12CDE00573356 /* ReplicationManagerClient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF226B01EC12CDE00573356 /* ReplicationManagerClient.cpp */; };
 		BBF226CF1EC12CDE00573356 /* ReplicationManagerClient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF226B01EC12CDE00573356 /* ReplicationManagerClient.cpp */; };
 		BBF226D01EC12CDE00573356 /* RoboCatClient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF226B21EC12CDE00573356 /* RoboCatClient.cpp */; };
@@ -311,8 +305,6 @@
 		BBF2272A1EC12CEA00573356 /* NetworkManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF226F51EC12CEA00573356 /* NetworkManager.cpp */; };
 		BBF2272B1EC12CEA00573356 /* RoboCat.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF226F81EC12CEA00573356 /* RoboCat.cpp */; };
 		BBF2272C1EC12CEA00573356 /* RoboCat.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF226F81EC12CEA00573356 /* RoboCat.cpp */; };
-		BBF2272D1EC12CEA00573356 /* RoboCatPCH.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF226FA1EC12CEA00573356 /* RoboCatPCH.cpp */; };
-		BBF2272E1EC12CEA00573356 /* RoboCatPCH.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF226FA1EC12CEA00573356 /* RoboCatPCH.cpp */; };
 		BBF2272F1EC12CEA00573356 /* RoboMath.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF226FD1EC12CEA00573356 /* RoboMath.cpp */; };
 		BBF227301EC12CEA00573356 /* RoboMath.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF226FD1EC12CEA00573356 /* RoboMath.cpp */; };
 		BBF227311EC12CEA00573356 /* ScoreBoardManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF226FF1EC12CEA00573356 /* ScoreBoardManager.cpp */; };
@@ -437,6 +429,8 @@
 		BB1CC76F1EB9661100696C06 /* shader_003_frag.hlsl */ = {isa = PBXFileReference; lastKnownFileType = text; path = shader_003_frag.hlsl; sourceTree = "<group>"; };
 		BB1CC7701EB9661100696C06 /* shader_003_vert.hlsl */ = {isa = PBXFileReference; lastKnownFileType = text; path = shader_003_vert.hlsl; sourceTree = "<group>"; };
 		BB2BB0851DB81ECF000CE5E5 /* dante.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = dante.entitlements; sourceTree = "<group>"; };
+		BB3218741EC1418E007ED106 /* HUD.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HUD.cpp; sourceTree = "<group>"; };
+		BB3218751EC1418E007ED106 /* HUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUD.h; sourceTree = "<group>"; };
 		BB34FD711E565A7400AC8197 /* Android.mk */ = {isa = PBXFileReference; lastKnownFileType = text; path = Android.mk; sourceTree = "<group>"; };
 		BB34FD721E565A7400AC8197 /* Application.mk */ = {isa = PBXFileReference; lastKnownFileType = text; path = Application.mk; sourceTree = "<group>"; };
 		BB44C30A1DB0303F003E633F /* Dante.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Dante.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -767,19 +761,12 @@
 		BBF225FE1EC12C6100573356 /* Engine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Engine.h; sourceTree = "<group>"; };
 		BBF226641EC12C9C00573356 /* Client.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Client.cpp; sourceTree = "<group>"; };
 		BBF226651EC12C9C00573356 /* Client.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Client.h; sourceTree = "<group>"; };
-		BBF226A31EC12CDE00573356 /* ClientMain.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ClientMain.cpp; sourceTree = "<group>"; };
-		BBF226A41EC12CDE00573356 /* GraphicsDriver.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GraphicsDriver.cpp; sourceTree = "<group>"; };
-		BBF226A51EC12CDE00573356 /* GraphicsDriver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GraphicsDriver.h; sourceTree = "<group>"; };
-		BBF226A61EC12CDE00573356 /* HUD.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HUD.cpp; sourceTree = "<group>"; };
-		BBF226A71EC12CDE00573356 /* HUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUD.h; sourceTree = "<group>"; };
 		BBF226A81EC12CDE00573356 /* InputManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = InputManager.cpp; sourceTree = "<group>"; };
 		BBF226A91EC12CDE00573356 /* InputManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InputManager.h; sourceTree = "<group>"; };
 		BBF226AA1EC12CDE00573356 /* MouseClient.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MouseClient.cpp; sourceTree = "<group>"; };
 		BBF226AB1EC12CDE00573356 /* MouseClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MouseClient.h; sourceTree = "<group>"; };
 		BBF226AC1EC12CDE00573356 /* NetworkManagerClient.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NetworkManagerClient.cpp; sourceTree = "<group>"; };
 		BBF226AD1EC12CDE00573356 /* NetworkManagerClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkManagerClient.h; sourceTree = "<group>"; };
-		BBF226AE1EC12CDE00573356 /* RenderManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RenderManager.cpp; sourceTree = "<group>"; };
-		BBF226AF1EC12CDE00573356 /* RenderManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RenderManager.h; sourceTree = "<group>"; };
 		BBF226B01EC12CDE00573356 /* ReplicationManagerClient.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ReplicationManagerClient.cpp; sourceTree = "<group>"; };
 		BBF226B11EC12CDE00573356 /* ReplicationManagerClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReplicationManagerClient.h; sourceTree = "<group>"; };
 		BBF226B21EC12CDE00573356 /* RoboCatClient.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RoboCatClient.cpp; sourceTree = "<group>"; };
@@ -816,8 +803,6 @@
 		BBF226F71EC12CEA00573356 /* ReplicationCommand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReplicationCommand.h; sourceTree = "<group>"; };
 		BBF226F81EC12CEA00573356 /* RoboCat.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RoboCat.cpp; sourceTree = "<group>"; };
 		BBF226F91EC12CEA00573356 /* RoboCat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoboCat.h; sourceTree = "<group>"; };
-		BBF226FA1EC12CEA00573356 /* RoboCatPCH.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RoboCatPCH.cpp; sourceTree = "<group>"; };
-		BBF226FB1EC12CEA00573356 /* RoboCatPCH.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoboCatPCH.h; sourceTree = "<group>"; };
 		BBF226FC1EC12CEA00573356 /* RoboCatShared.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoboCatShared.h; sourceTree = "<group>"; };
 		BBF226FD1EC12CEA00573356 /* RoboMath.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RoboMath.cpp; sourceTree = "<group>"; };
 		BBF226FE1EC12CEA00573356 /* RoboMath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoboMath.h; sourceTree = "<group>"; };
@@ -1831,8 +1816,6 @@
 				BBF226F71EC12CEA00573356 /* ReplicationCommand.h */,
 				BBF226F81EC12CEA00573356 /* RoboCat.cpp */,
 				BBF226F91EC12CEA00573356 /* RoboCat.h */,
-				BBF226FA1EC12CEA00573356 /* RoboCatPCH.cpp */,
-				BBF226FB1EC12CEA00573356 /* RoboCatPCH.h */,
 				BBF226FC1EC12CEA00573356 /* RoboCatShared.h */,
 				BBF226FD1EC12CEA00573356 /* RoboMath.cpp */,
 				BBF226FE1EC12CEA00573356 /* RoboMath.h */,
@@ -1867,19 +1850,14 @@
 			children = (
 				BBF226641EC12C9C00573356 /* Client.cpp */,
 				BBF226651EC12C9C00573356 /* Client.h */,
-				BBF226A31EC12CDE00573356 /* ClientMain.cpp */,
-				BBF226A41EC12CDE00573356 /* GraphicsDriver.cpp */,
-				BBF226A51EC12CDE00573356 /* GraphicsDriver.h */,
-				BBF226A61EC12CDE00573356 /* HUD.cpp */,
-				BBF226A71EC12CDE00573356 /* HUD.h */,
+				BB3218741EC1418E007ED106 /* HUD.cpp */,
+				BB3218751EC1418E007ED106 /* HUD.h */,
 				BBF226A81EC12CDE00573356 /* InputManager.cpp */,
 				BBF226A91EC12CDE00573356 /* InputManager.h */,
 				BBF226AA1EC12CDE00573356 /* MouseClient.cpp */,
 				BBF226AB1EC12CDE00573356 /* MouseClient.h */,
 				BBF226AC1EC12CDE00573356 /* NetworkManagerClient.cpp */,
 				BBF226AD1EC12CDE00573356 /* NetworkManagerClient.h */,
-				BBF226AE1EC12CDE00573356 /* RenderManager.cpp */,
-				BBF226AF1EC12CDE00573356 /* RenderManager.h */,
 				BBF226B01EC12CDE00573356 /* ReplicationManagerClient.cpp */,
 				BBF226B11EC12CDE00573356 /* ReplicationManagerClient.h */,
 				BBF226B21EC12CDE00573356 /* RoboCatClient.cpp */,
@@ -2052,18 +2030,15 @@
 				BBAEF23B1EA94EDA00F0866E /* OpenGLNGRectBatcher.cpp in Sources */,
 				BBF227431EC12CEA00573356 /* Yarn.cpp in Sources */,
 				BBAEF22F1EA94EDA00F0866E /* OpenGLFramebufferToScreenGpuProgramWrapper.cpp in Sources */,
-				BBF226C21EC12CDE00573356 /* GraphicsDriver.cpp in Sources */,
 				BB6DB1BB1E76FD7F005C0FAD /* MainViewController.mm in Sources */,
 				BBF226D21EC12CDE00573356 /* RoboCatClientPCH.cpp in Sources */,
 				BBF226DC1EC12CDE00573356 /* YarnClient.cpp in Sources */,
 				BB44C8691DB03A7E003E633F /* pngerror.c in Sources */,
-				BBF226C01EC12CDE00573356 /* ClientMain.cpp in Sources */,
 				BBAEF1F51EA94EDA00F0866E /* GridManager.cpp in Sources */,
 				BBAEF2771EA94EDA00F0866E /* TextureRegion.cpp in Sources */,
 				BBAEF28B1EA94EDA00F0866E /* TouchConverter.cpp in Sources */,
 				BBF2271F1EC12CEA00573356 /* InputState.cpp in Sources */,
 				BBF227311EC12CEA00573356 /* ScoreBoardManager.cpp in Sources */,
-				BBF226CC1EC12CDE00573356 /* RenderManager.cpp in Sources */,
 				BBAEF2D91EA94EDA00F0866E /* IScreen.cpp in Sources */,
 				BBAEF2971EA94EDA00F0866E /* NGRect.cpp in Sources */,
 				BBAEF2851EA94EDA00F0866E /* KeyboardInputManager.cpp in Sources */,
@@ -2075,7 +2050,6 @@
 				BBAEF2DB1EA94EDA00F0866E /* Renderer.cpp in Sources */,
 				BBAEF2951EA94EDA00F0866E /* Line.cpp in Sources */,
 				BBF227211EC12CEA00573356 /* MemoryBitStream.cpp in Sources */,
-				BBF2272D1EC12CEA00573356 /* RoboCatPCH.cpp in Sources */,
 				BBF226CE1EC12CDE00573356 /* ReplicationManagerClient.cpp in Sources */,
 				BBAEF2311EA94EDA00F0866E /* OpenGLFramebufferToScreenProgram.cpp in Sources */,
 				BBF2272F1EC12CEA00573356 /* RoboMath.cpp in Sources */,
@@ -2139,12 +2113,12 @@
 				BBAEF1EF1EA94EDA00F0866E /* Entity.cpp in Sources */,
 				BBF226C61EC12CDE00573356 /* InputManager.cpp in Sources */,
 				BB44C8771DB03A7E003E633F /* pngrtran.c in Sources */,
+				BB3218761EC1418E007ED106 /* HUD.cpp in Sources */,
 				BBAEF25F1EA94EDA00F0866E /* GpuProgramWrapper.cpp in Sources */,
 				BBAEF26D1EA94EDA00F0866E /* NGRectBatcherFactory.cpp in Sources */,
 				BB44C3351DB0317E003E633F /* AppDelegate.m in Sources */,
 				BBF227231EC12CEA00573356 /* Mouse.cpp in Sources */,
 				BBAEF2A51EA94EDA00F0866E /* IAudioEngineHelper.cpp in Sources */,
-				BBF226C41EC12CDE00573356 /* HUD.cpp in Sources */,
 				BBF2272B1EC12CEA00573356 /* RoboCat.cpp in Sources */,
 				BBAEF2B51EA94EDA00F0866E /* SuperpoweredSoundManager.cpp in Sources */,
 				BBAEF1FF1EA94EDA00F0866E /* AssetDataHandler.cpp in Sources */,
@@ -2185,6 +2159,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BB3218771EC1418E007ED106 /* HUD.cpp in Sources */,
 				BBAEF2941EA94EDA00F0866E /* Circle.cpp in Sources */,
 				BBAEF2701EA94EDA00F0866E /* RendererHelperFactory.cpp in Sources */,
 				BBAEF23C1EA94EDA00F0866E /* OpenGLNGRectBatcher.cpp in Sources */,
@@ -2205,7 +2180,6 @@
 				BBAEF2441EA94EDA00F0866E /* OpenGLTextureGpuProgramWrapper.cpp in Sources */,
 				BBAEF2DC1EA94EDA00F0866E /* Renderer.cpp in Sources */,
 				BBF227381EC12CEA00573356 /* SocketUtil.cpp in Sources */,
-				BBF226C11EC12CDE00573356 /* ClientMain.cpp in Sources */,
 				BBAEF2961EA94EDA00F0866E /* Line.cpp in Sources */,
 				BBAEF2321EA94EDA00F0866E /* OpenGLFramebufferToScreenProgram.cpp in Sources */,
 				BBF227421EC12CEA00573356 /* World.cpp in Sources */,
@@ -2216,7 +2190,6 @@
 				BBAEF29C1EA94EDA00F0866E /* Triangle.cpp in Sources */,
 				BBAEF2681EA94EDA00F0866E /* LineBatcher.cpp in Sources */,
 				BBF227201EC12CEA00573356 /* InputState.cpp in Sources */,
-				BBF226C51EC12CDE00573356 /* HUD.cpp in Sources */,
 				BBF227321EC12CEA00573356 /* ScoreBoardManager.cpp in Sources */,
 				BBF227401EC12CEA00573356 /* UDPSocket.cpp in Sources */,
 				BBAEF29E1EA94EDA00F0866E /* Vector2D.cpp in Sources */,
@@ -2243,7 +2216,6 @@
 				BBF226CF1EC12CDE00573356 /* ReplicationManagerClient.cpp in Sources */,
 				BBAEF1FE1EA94EDA00F0866E /* AppleAssetDataHandler.cpp in Sources */,
 				BBF227441EC12CEA00573356 /* Yarn.cpp in Sources */,
-				BBF226C31EC12CDE00573356 /* GraphicsDriver.cpp in Sources */,
 				BBAEF2AA1EA94EDA00F0866E /* ISoundWrapper.cpp in Sources */,
 				BB7428411EB2AF4200B7628D /* RTTI.cpp in Sources */,
 				BBAEF2401EA94EDA00F0866E /* OpenGLRendererHelper.cpp in Sources */,
@@ -2290,7 +2262,6 @@
 				BBAEF2581EA94EDA00F0866E /* CircleBatcher.cpp in Sources */,
 				BBAEF23A1EA94EDA00F0866E /* OpenGLManager.cpp in Sources */,
 				BBF226D31EC12CDE00573356 /* RoboCatClientPCH.cpp in Sources */,
-				BBF226CD1EC12CDE00573356 /* RenderManager.cpp in Sources */,
 				BBAEF2381EA94EDA00F0866E /* OpenGLLineBatcher.cpp in Sources */,
 				BB44CB8C1DB053C0003E633F /* pngwio.c in Sources */,
 				BBAEF2801EA94EDA00F0866E /* GamePadEvent.cpp in Sources */,
@@ -2308,7 +2279,6 @@
 				BBAEF2461EA94EDA00F0866E /* OpenGLTextureLoader.cpp in Sources */,
 				BB44CB8F1DB053C0003E633F /* pngwutil.c in Sources */,
 				BB09CE231DBD3779006A3E49 /* SuperpoweredOSXAudioIO.mm in Sources */,
-				BBF2272E1EC12CEA00573356 /* RoboCatPCH.cpp in Sources */,
 				BBF226DD1EC12CDE00573356 /* YarnClient.cpp in Sources */,
 				BB44CB091DB04C83003E633F /* NGOpenGLView.mm in Sources */,
 				BBF227241EC12CEA00573356 /* Mouse.cpp in Sources */,

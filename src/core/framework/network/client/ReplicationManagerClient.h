@@ -1,3 +1,5 @@
+#include <RoboCatClientPCH.h>
+
 class ReplicationManagerClient
 {
 public:

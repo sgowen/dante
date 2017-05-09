@@ -1,3 +1,6 @@
+#ifndef __noctisgames__RoboCatShared__
+#define __noctisgames__RoboCatShared__
+
 #ifdef _WIN32
 	#define WIN32_LEAN_AND_MEAN
 	#define NOMINMAX
@@ -6,7 +9,6 @@
 	#include "WinSock2.h"
 	#include "Ws2tcpip.h"
 	typedef int socklen_t;
-	//typedef char* receiveBufer_t;
 #else
 	#include <sys/socket.h>
 	#include <netinet/in.h>
@@ -15,7 +17,6 @@
 	#include <errno.h>
 	#include <fcntl.h>
 	#include <unistd.h>
-	//typedef void* receiveBufer_t;
 	typedef int SOCKET;
 	const int NO_ERROR = 0;
 	const int INVALID_SOCKET = -1;
@@ -85,3 +86,5 @@ class GameObject;
 #include "ReplicationCommand.h"
 #include "NetworkManager.h"
 #include "Engine.h"
+
+#endif /* defined(__noctisgames__RoboCatShared__) */

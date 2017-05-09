@@ -1,3 +1,5 @@
+#include <RoboCatShared.h>
+
 namespace StringUtils
 {
 	string GetCommandLineArg( int inIndex );

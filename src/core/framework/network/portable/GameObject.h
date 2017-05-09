@@ -1,3 +1,4 @@
+#include <RoboCatShared.h>
 
 #define CLASS_IDENTIFICATION( inCode, inClass ) \
 enum { kClassId = inCode }; \

@@ -1,3 +1,5 @@
+#include <RoboCatShared.h>
+
 enum ReplicationAction
 {
 	RA_Create,

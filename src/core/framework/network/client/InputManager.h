@@ -1,3 +1,4 @@
+#include <RoboCatClientPCH.h>
 
 class InputManager
 {

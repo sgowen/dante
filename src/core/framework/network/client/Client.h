@@ -1,3 +1,6 @@
+#ifndef __noctisgames__Client__
+#define __noctisgames__Client__
+
 #include <RoboCatClientPCH.h>
 
 class Client : public Engine
@@ -18,3 +21,5 @@ private:
 
 
 };
+
+#endif /* defined(__noctisgames__Client__) */

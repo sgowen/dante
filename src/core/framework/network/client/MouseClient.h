@@ -1,3 +1,5 @@
+#include <RoboCatClientPCH.h>
+
 class MouseClient : public Mouse
 {
 public:
@@ -8,5 +10,5 @@ protected:
 
 private:
 
-	SpriteComponentPtr	mSpriteComponent;
+//	SpriteComponentPtr	mSpriteComponent;
 };
