@@ -40,23 +40,23 @@ namespace
 	}
 }
 
-void InputManager::HandleInput( EInputAction inInputAction, int inKeyCode )
+void InputManager::HandleInput( EInputAction inInputAction, char inKeyCode )
 {
 	switch( inKeyCode )
 	{
-	case 'a':
+	case 'D':
 		UpdateDesireFloatFromKey( inInputAction, mCurrentState.mDesiredLeftAmount );
 		break;
-	case 'd':
+	case 'A':
 		UpdateDesireFloatFromKey( inInputAction, mCurrentState.mDesiredRightAmount );
 		break;
-	case 'w':
+	case 'W':
 		UpdateDesireFloatFromKey( inInputAction, mCurrentState.mDesiredForwardAmount );
 		break;
-	case 's':
+	case 'S':
 		UpdateDesireFloatFromKey( inInputAction, mCurrentState.mDesiredBackAmount );
 		break;
-	case 'k':
+	case 'K':
 		UpdateDesireVariableFromKey( inInputAction, mCurrentState.mIsShooting );
 		break;
 	}

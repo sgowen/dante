@@ -1,3 +1,6 @@
+#ifndef __noctisgames__World__
+#define __noctisgames__World__
+
 #include <RoboCatShared.h>
 
 /*
@@ -5,9 +8,7 @@
 */
 class World
 {
-
 public:
-
 	static void StaticInit();
 
 	static std::unique_ptr< World >		sInstance;
@@ -20,13 +21,11 @@ public:
 	const std::vector< GameObjectPtr >&	GetGameObjects()	const	{ return mGameObjects; }
 
 private:
-
-
 	World();
 
 	int	GetIndexOfGameObject( GameObjectPtr inGameObject );
 
 	std::vector< GameObjectPtr >	mGameObjects;
-
-
 };
+
+#endif /* defined(__noctisgames__World__) */

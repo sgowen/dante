@@ -1,7 +1,6 @@
-
 #include <RoboCatClientPCH.h>
 
-bool Client::StaticInit( )
+bool Client::StaticInit()
 {
 	// Create the Client pointer first because it initializes SDL
 	Client* client = new Client();
@@ -10,7 +9,7 @@ bool Client::StaticInit( )
 
 	HUD::StaticInit();
 
-	sInstance.reset( client );
+	sInstance.reset(client);
 
 	return true;
 }
@@ -31,33 +30,7 @@ Client::Client()
 	//NetworkManagerClient::sInstance->SetSimulatedLatency( 0.1f );
 }
 
-
-
 void Client::DoFrame()
 {
-	InputManager::sInstance->Update();
-
-	Engine::DoFrame();
-
-	NetworkManagerClient::sInstance->ProcessIncomingPackets();
-
-//	RenderManager::sInstance->Render();
-
-	NetworkManagerClient::sInstance->SendOutgoingPackets();
+    Engine::DoFrame();
 }
-
-void Client::HandleEvent( int inEvent )
-{
-	switch (inEvent)
-	{
-	case 0:
-		InputManager::sInstance->HandleInput( EIA_Pressed, 'D');
-		break;
-	case 1:
-		InputManager::sInstance->HandleInput( EIA_Released, 'W');
-		break;
-	default:
-		break;
-	}
-}
-

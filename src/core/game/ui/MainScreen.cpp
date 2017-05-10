@@ -53,7 +53,7 @@ m_avatar(new PhysicalEntity(3, 3, 1.173913043478261f, 1.5f))
         userId = std::string("accounts@noctisgames.com");
     }
     
-//    CLIENT->init(serverAddress, userId);
+    Client::StaticInit();
 }
 
 MainScreen::~MainScreen()
@@ -62,8 +62,6 @@ MainScreen::~MainScreen()
     delete m_renderer;
     delete m_touchPointDown;
     delete m_touchPointDown2;
-    
-//    CLIENT->deinit();
 }
 
 void MainScreen::createDeviceDependentResources()
@@ -100,9 +98,9 @@ void MainScreen::update(float deltaTime)
     
     if (m_fFrameStateTime >= FRAME_RATE)
     {
-//        CLIENT->beginFrame();
-        
         tempUpdateInput();
+        
+        NetworkManagerClient::sInstance->ProcessIncomingPackets();
         
         while (m_fFrameStateTime >= FRAME_RATE)
         {
@@ -113,7 +111,7 @@ void MainScreen::update(float deltaTime)
         
         NG_AUDIO_ENGINE->update();
         
-//        CLIENT->endFrame();
+        NetworkManagerClient::sInstance->SendOutgoingPackets();
     }
 }
 
@@ -121,19 +119,7 @@ void MainScreen::render()
 {
     m_renderer->beginFrame();
     
-    float x1 = 0;
-    float y1 = 0;
-    
-    float x2 = 0;
-    float y2 = 0;
-    
-    float x3 = 0;
-    float y3 = 0;
-    
-    float x4 = 0;
-    float y4 = 0;
-    
-    m_renderer->tempDraw(m_avatar->getStateTime(), x1, y1, x2, y2, x3, y3, x4, y4);
+    m_renderer->tempDraw(m_avatar->getStateTime());
     
     m_renderer->renderToScreen();
     
@@ -160,13 +146,20 @@ void MainScreen::tempUpdateInput()
     {
         switch ((*i)->getType())
         {
-            case KeyboardEventType_D:
-            case KeyboardEventType_ARROW_KEY_RIGHT:
-                m_avatar->getPosition().add(0.1f, 0);
+            case KeyboardEventType_W:
+                InputManager::sInstance->HandleInput((*i)->isUp() ? EIA_Released : EIA_Pressed, 'W');
                 continue;
             case KeyboardEventType_A:
-            case KeyboardEventType_ARROW_KEY_LEFT:
-                m_avatar->getPosition().sub(0.1f, 0);
+                InputManager::sInstance->HandleInput((*i)->isUp() ? EIA_Released : EIA_Pressed, 'A');
+                continue;
+            case KeyboardEventType_S:
+                InputManager::sInstance->HandleInput((*i)->isUp() ? EIA_Released : EIA_Pressed, 'S');
+                continue;
+            case KeyboardEventType_D:
+                InputManager::sInstance->HandleInput((*i)->isUp() ? EIA_Released : EIA_Pressed, 'D');
+                continue;
+            case KeyboardEventType_SPACE:
+                InputManager::sInstance->HandleInput((*i)->isUp() ? EIA_Released : EIA_Pressed, 'K');
                 continue;
             default:
                 continue;
@@ -177,46 +170,34 @@ void MainScreen::tempUpdateInput()
     {
         switch ((*i)->getType())
         {
-            case GamePadEventType_D_PAD_RIGHT:
-                m_avatar->getPosition().add(0.1f, 0);
+            case GamePadEventType_D_PAD_UP:
+                InputManager::sInstance->HandleInput((*i)->isButtonPressed() ? EIA_Pressed : EIA_Released, 'W');
                 continue;
             case GamePadEventType_D_PAD_LEFT:
-                m_avatar->getPosition().sub(0.1f, 0);
+                InputManager::sInstance->HandleInput((*i)->isButtonPressed() ? EIA_Pressed : EIA_Released, 'A');
+                continue;
+            case GamePadEventType_D_PAD_DOWN:
+                InputManager::sInstance->HandleInput((*i)->isButtonPressed() ? EIA_Pressed : EIA_Released, 'S');
+                continue;
+            case GamePadEventType_D_PAD_RIGHT:
+                InputManager::sInstance->HandleInput((*i)->isButtonPressed() ? EIA_Pressed : EIA_Released, 'D');
+                continue;
+            case GamePadEventType_A_BUTTON:
+                InputManager::sInstance->HandleInput((*i)->isButtonPressed() ? EIA_Pressed : EIA_Released, 'K');
                 continue;
             default:
                 continue;
         }
     }
     
-    for (std::vector<ScreenEvent *>::iterator i = SCREEN_INPUT_MANAGER->getEvents().begin(); i != SCREEN_INPUT_MANAGER->getEvents().end(); ++i)
-    {
-        Vector2D& touchPoint = TOUCH_CONVERTER->touchToWorld(*(*i));
-        
-        switch ((*i)->getType())
-        {
-            case ScreenEventType_DOWN:
-            case ScreenEventType_DRAGGED:
-                if (touchPoint.getX() > CAM_WIDTH / 2)
-                {
-                    m_avatar->getPosition().add(0.1f, 0);
-                }
-                else
-                {
-                    m_avatar->getPosition().sub(0.1f, 0);
-                }
-                continue;
-            case ScreenEventType_UP:
-                break;
-        }
-    }
+    InputManager::sInstance->Update();
 }
 
 void MainScreen::tempUpdate(float deltaTime)
 {
-    m_avatar->update(FRAME_RATE);
+    Client::sInstance->DoFrame();
     
-    m_avatar->getPosition().setX(clamp(m_avatar->getPosition().getX(), CAM_WIDTH, 0));
-    m_avatar->getPosition().setY(clamp(m_avatar->getPosition().getY(), CAM_HEIGHT, 0));
+    m_avatar->update(FRAME_RATE);
 }
 
 RTTI_IMPL(MainScreen, IScreen);

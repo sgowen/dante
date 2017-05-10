@@ -1,8 +1,8 @@
 #include <RoboCatShared.h>
 
 //zoom hardcoded at 100...if we want to lock players on screen, this could be calculated from zoom
-const float HALF_WORLD_HEIGHT = 3.6f;
-const float HALF_WORLD_WIDTH = 6.4f;
+const float WORLD_HEIGHT = 7.2f;
+const float WORLD_WIDTH = 12.8f;
 
 RoboCat::RoboCat() :
 	GameObject(),
@@ -148,29 +148,29 @@ void RoboCat::ProcessCollisionsWithScreenWalls()
 	float radius = GetCollisionRadius();
 
 	//if the cat collides against a wall, the quick solution is to push it off
-	if( ( y + radius ) >= HALF_WORLD_HEIGHT && vy > 0 )
+	if( ( y + radius ) >= WORLD_HEIGHT && vy > 0 )
 	{
 		mVelocity.mY = -vy * mWallRestitution;
-		location.mY = HALF_WORLD_HEIGHT - radius;
+		location.mY = WORLD_HEIGHT - radius;
 		SetLocation( location );
 	}
-	else if( y <= ( -HALF_WORLD_HEIGHT - radius ) && vy < 0 )
+	else if( y <= ( 0 ) && vy < 0 )
 	{
 		mVelocity.mY = -vy * mWallRestitution;
-		location.mY = -HALF_WORLD_HEIGHT - radius;
+		location.mY = 0;
 		SetLocation( location );
 	}
 
-	if( ( x + radius ) >= HALF_WORLD_WIDTH && vx > 0 )
+	if( ( x + radius ) >= WORLD_WIDTH && vx > 0 )
 	{
 		mVelocity.mX = -vx * mWallRestitution;
-		location.mX = HALF_WORLD_WIDTH - radius;
+		location.mX = WORLD_WIDTH - radius;
 		SetLocation( location );
 	}
-	else if(  x <= ( -HALF_WORLD_WIDTH - radius ) && vx < 0 )
+	else if(  x <= ( 0 ) && vx < 0 )
 	{
 		mVelocity.mX = -vx * mWallRestitution;
-		location.mX = -HALF_WORLD_WIDTH - radius;
+		location.mX = 0;
 		SetLocation( location );
 	}
 }

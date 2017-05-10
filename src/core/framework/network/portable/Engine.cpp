@@ -12,7 +12,6 @@ mShouldKeepRunning( true )
 	
 	GameObjectRegistry::StaticInit();
 
-
 	World::StaticInit();
 
 	ScoreBoardManager::StaticInit();
@@ -25,47 +24,13 @@ Engine::~Engine()
 
 int Engine::Run()
 {
-	return DoRunLoop();
-}
-
-void Engine::HandleEvent( int inEvent )
-{
-	// Default implementation does nothing, up to derived classes to handle them, if they so choose
-	( void )inEvent;
-}
-
-int Engine::DoRunLoop()
-{
-	// Main message loop
-//	bool quit = false;
-//	SDL_Event event;
-//	memset( &event, 0, sizeof( SDL_Event ) );
-//
-//	while( !quit && mShouldKeepRunning )
-//	{
-//		if( SDL_PollEvent( &event ) )
-//		{
-//			if( event.type == SDL_QUIT )
-//			{
-//				quit = true;
-//			}
-//			else
-//			{
-//				HandleEvent( &event );
-//			}
-//		}
-//		else
-//		{
-//			Timing::sInstance.Update();
-//
-//			DoFrame();
-//		}
-//	}
-
-    return -1;//event.type;
+    // Override this
+    return -2;
 }
 
 void Engine::DoFrame()
 {
+    Timing::sInstance.Update();
+    
 	World::sInstance->Update();
 }

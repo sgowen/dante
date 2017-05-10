@@ -1,6 +1,5 @@
 #include <RoboCatShared.h>
 
-
 #include <ReplicationManagerTransmissionData.h>
 #include <ReplicationManagerServer.h>
 

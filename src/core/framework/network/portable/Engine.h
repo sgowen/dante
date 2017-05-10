@@ -3,28 +3,17 @@
 class Engine
 {
 public:
-
 	virtual ~Engine();
-	static std::unique_ptr< Engine >	sInstance;
+	static std::unique_ptr< Engine > sInstance;
+    
+    virtual int Run();
 
-	virtual int		Run();
-	void			SetShouldKeepRunning( bool inShouldKeepRunning ) { mShouldKeepRunning = inShouldKeepRunning; }
-	virtual void	HandleEvent( int inEvent );
+	void SetShouldKeepRunning( bool inShouldKeepRunning ) { mShouldKeepRunning = inShouldKeepRunning; }
 
+    virtual void DoFrame();
+    
 protected:
-
+    bool mShouldKeepRunning;
+    
 	Engine();
-
-	virtual void	DoFrame();
-
-private:
-
-
-			
-			int		DoRunLoop();
-
-			bool	mShouldKeepRunning;
-
-
-
 };

@@ -1,9 +1,8 @@
-
 #include <RoboCatServerPCH.h>
 
-
-
 //uncomment this when you begin working on the server
+
+#define FRAME_RATE 0.01666666666667f // 60 frames per second
 
 bool Server::StaticInit()
 {
@@ -12,9 +11,8 @@ bool Server::StaticInit()
 	return true;
 }
 
-Server::Server()
+Server::Server() : m_fFrameStateTime(0)
 {
-
 	GameObjectRegistry::sInstance->RegisterCreationFunction( 'RCAT', RoboCatServer::StaticCreate );
 	GameObjectRegistry::sInstance->RegisterCreationFunction( 'MOUS', MouseServer::StaticCreate );
 	GameObjectRegistry::sInstance->RegisterCreationFunction( 'YARN', YarnServer::StaticCreate );
@@ -25,15 +23,38 @@ Server::Server()
 	//NetworkManagerServer::sInstance->SetSimulatedLatency( 0.25f );
 	//NetworkManagerServer::sInstance->SetSimulatedLatency( 0.5f );
 	//NetworkManagerServer::sInstance->SetSimulatedLatency( 0.1f );
-
 }
-
 
 int Server::Run()
 {
 	SetupWorld();
 
-	return Engine::Run();
+    while (mShouldKeepRunning)
+    {
+        Timing::sInstance.Update();
+        
+        m_fFrameStateTime += Timing::sInstance.GetDeltaTime();
+        
+        if (m_fFrameStateTime >= FRAME_RATE)
+        {
+            NetworkManagerServer::sInstance->ProcessIncomingPackets();
+            
+            NetworkManagerServer::sInstance->CheckForDisconnects();
+            
+            NetworkManagerServer::sInstance->RespawnCats();
+            
+            while (m_fFrameStateTime >= FRAME_RATE)
+            {
+                m_fFrameStateTime -= FRAME_RATE;
+                
+                DoFrame();
+            }
+            
+            NetworkManagerServer::sInstance->SendOutgoingPackets();
+        }
+    }
+    
+    return 1;
 }
 
 bool Server::InitNetworkManager()
@@ -44,14 +65,12 @@ bool Server::InitNetworkManager()
 	return NetworkManagerServer::StaticInit( port );
 }
 
-
 namespace
 {
-	
 	void CreateRandomMice( int inMouseCount )
 	{
-		Vector3 mouseMin( -5.f, -3.f, 0.f );
-		Vector3 mouseMax( 5.f, 3.f, 0.f );
+		Vector3 mouseMin( 0, 0, 0.f );
+		Vector3 mouseMax( 10.f, 6.0f, 0.f );
 		GameObjectPtr go;
 
 		//make a mouse somewhere- where will these come from?
@@ -62,10 +81,7 @@ namespace
 			go->SetLocation( mouseLocation );
 		}
 	}
-
-
 }
-
 
 void Server::SetupWorld()
 {
@@ -76,23 +92,8 @@ void Server::SetupWorld()
 	CreateRandomMice( 10 );
 }
 
-void Server::DoFrame()
-{
-	NetworkManagerServer::sInstance->ProcessIncomingPackets();
-
-	NetworkManagerServer::sInstance->CheckForDisconnects();
-
-	NetworkManagerServer::sInstance->RespawnCats();
-
-	Engine::DoFrame();
-
-	NetworkManagerServer::sInstance->SendOutgoingPackets();
-
-}
-
 void Server::HandleNewClient( ClientProxyPtr inClientProxy )
 {
-	
 	int playerId = inClientProxy->GetPlayerId();
 	
 	ScoreBoardManager::sInstance->AddEntry( playerId, inClientProxy->GetName() );
@@ -106,7 +107,6 @@ void Server::SpawnCatForPlayer( int inPlayerId )
 	cat->SetPlayerId( inPlayerId );
 	//gotta pick a better spawn location than this...
 	cat->SetLocation( Vector3( 1.f - static_cast< float >( inPlayerId ), 0.f, 0.f ) );
-
 }
 
 void Server::HandleLostClient( ClientProxyPtr inClientProxy )
@@ -141,5 +141,4 @@ RoboCatPtr Server::GetCatForPlayer( int inPlayerId )
 	}
 
 	return nullptr;
-
 }

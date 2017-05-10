@@ -105,6 +105,88 @@
 		BB7639521E21B5A200534DAB /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB7639511E21B5A200534DAB /* MobileCoreServices.framework */; };
 		BB7639571E21B6DC00534DAB /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = BB7639561E21B6DC00534DAB /* libz.tbd */; };
 		BB7639591E21B6E000534DAB /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB7639581E21B6E000534DAB /* AddressBook.framework */; };
+		BB8307E81EC2AB7B00435E7E /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8307E71EC2AB7B00435E7E /* main.cpp */; };
+		BB8307FF1EC2AC0900435E7E /* ClientProxy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8307ED1EC2AC0900435E7E /* ClientProxy.cpp */; };
+		BB8308001EC2AC0900435E7E /* MouseServer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8307EF1EC2AC0900435E7E /* MouseServer.cpp */; };
+		BB8308011EC2AC0900435E7E /* NetworkManagerServer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8307F11EC2AC0900435E7E /* NetworkManagerServer.cpp */; };
+		BB8308021EC2AC0900435E7E /* ReplicationManagerServer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8307F31EC2AC0900435E7E /* ReplicationManagerServer.cpp */; };
+		BB8308031EC2AC0900435E7E /* ReplicationManagerTransmissionData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8307F51EC2AC0900435E7E /* ReplicationManagerTransmissionData.cpp */; };
+		BB8308041EC2AC0900435E7E /* RoboCatServer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8307F71EC2AC0900435E7E /* RoboCatServer.cpp */; };
+		BB8308051EC2AC0900435E7E /* RoboCatServerPCH.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8307F91EC2AC0900435E7E /* RoboCatServerPCH.cpp */; };
+		BB8308061EC2AC0900435E7E /* Server.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8307FB1EC2AC0900435E7E /* Server.cpp */; };
+		BB8308071EC2AC0900435E7E /* YarnServer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8307FD1EC2AC0900435E7E /* YarnServer.cpp */; };
+		BB8308401EC2AD1F00435E7E /* AckRange.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8308091EC2AD1F00435E7E /* AckRange.cpp */; };
+		BB8308411EC2AD1F00435E7E /* AckRange.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8308091EC2AD1F00435E7E /* AckRange.cpp */; };
+		BB8308421EC2AD1F00435E7E /* AckRange.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8308091EC2AD1F00435E7E /* AckRange.cpp */; };
+		BB8308431EC2AD1F00435E7E /* DeliveryNotificationManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB83080C1EC2AD1F00435E7E /* DeliveryNotificationManager.cpp */; };
+		BB8308441EC2AD1F00435E7E /* DeliveryNotificationManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB83080C1EC2AD1F00435E7E /* DeliveryNotificationManager.cpp */; };
+		BB8308451EC2AD1F00435E7E /* DeliveryNotificationManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB83080C1EC2AD1F00435E7E /* DeliveryNotificationManager.cpp */; };
+		BB8308461EC2AD1F00435E7E /* Engine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB83080E1EC2AD1F00435E7E /* Engine.cpp */; };
+		BB8308471EC2AD1F00435E7E /* Engine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB83080E1EC2AD1F00435E7E /* Engine.cpp */; };
+		BB8308481EC2AD1F00435E7E /* Engine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB83080E1EC2AD1F00435E7E /* Engine.cpp */; };
+		BB8308491EC2AD1F00435E7E /* GameObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8308101EC2AD1F00435E7E /* GameObject.cpp */; };
+		BB83084A1EC2AD1F00435E7E /* GameObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8308101EC2AD1F00435E7E /* GameObject.cpp */; };
+		BB83084B1EC2AD1F00435E7E /* GameObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8308101EC2AD1F00435E7E /* GameObject.cpp */; };
+		BB83084C1EC2AD1F00435E7E /* GameObjectRegistry.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8308121EC2AD1F00435E7E /* GameObjectRegistry.cpp */; };
+		BB83084D1EC2AD1F00435E7E /* GameObjectRegistry.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8308121EC2AD1F00435E7E /* GameObjectRegistry.cpp */; };
+		BB83084E1EC2AD1F00435E7E /* GameObjectRegistry.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8308121EC2AD1F00435E7E /* GameObjectRegistry.cpp */; };
+		BB83084F1EC2AD1F00435E7E /* InFlightPacket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8308141EC2AD1F00435E7E /* InFlightPacket.cpp */; };
+		BB8308501EC2AD1F00435E7E /* InFlightPacket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8308141EC2AD1F00435E7E /* InFlightPacket.cpp */; };
+		BB8308511EC2AD1F00435E7E /* InFlightPacket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8308141EC2AD1F00435E7E /* InFlightPacket.cpp */; };
+		BB8308521EC2AD1F00435E7E /* InputState.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8308171EC2AD1F00435E7E /* InputState.cpp */; };
+		BB8308531EC2AD1F00435E7E /* InputState.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8308171EC2AD1F00435E7E /* InputState.cpp */; };
+		BB8308541EC2AD1F00435E7E /* InputState.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8308171EC2AD1F00435E7E /* InputState.cpp */; };
+		BB8308551EC2AD1F00435E7E /* MemoryBitStream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB83081A1EC2AD1F00435E7E /* MemoryBitStream.cpp */; };
+		BB8308561EC2AD1F00435E7E /* MemoryBitStream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB83081A1EC2AD1F00435E7E /* MemoryBitStream.cpp */; };
+		BB8308571EC2AD1F00435E7E /* MemoryBitStream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB83081A1EC2AD1F00435E7E /* MemoryBitStream.cpp */; };
+		BB8308581EC2AD1F00435E7E /* Mouse.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB83081C1EC2AD1F00435E7E /* Mouse.cpp */; };
+		BB8308591EC2AD1F00435E7E /* Mouse.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB83081C1EC2AD1F00435E7E /* Mouse.cpp */; };
+		BB83085A1EC2AD1F00435E7E /* Mouse.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB83081C1EC2AD1F00435E7E /* Mouse.cpp */; };
+		BB83085B1EC2AD1F00435E7E /* Move.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB83081E1EC2AD1F00435E7E /* Move.cpp */; };
+		BB83085C1EC2AD1F00435E7E /* Move.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB83081E1EC2AD1F00435E7E /* Move.cpp */; };
+		BB83085D1EC2AD1F00435E7E /* Move.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB83081E1EC2AD1F00435E7E /* Move.cpp */; };
+		BB83085E1EC2AD1F00435E7E /* MoveList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8308201EC2AD1F00435E7E /* MoveList.cpp */; };
+		BB83085F1EC2AD1F00435E7E /* MoveList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8308201EC2AD1F00435E7E /* MoveList.cpp */; };
+		BB8308601EC2AD1F00435E7E /* MoveList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8308201EC2AD1F00435E7E /* MoveList.cpp */; };
+		BB8308611EC2AD1F00435E7E /* NetworkManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8308221EC2AD1F00435E7E /* NetworkManager.cpp */; };
+		BB8308621EC2AD1F00435E7E /* NetworkManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8308221EC2AD1F00435E7E /* NetworkManager.cpp */; };
+		BB8308631EC2AD1F00435E7E /* NetworkManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8308221EC2AD1F00435E7E /* NetworkManager.cpp */; };
+		BB8308641EC2AD1F00435E7E /* RoboCat.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8308251EC2AD1F00435E7E /* RoboCat.cpp */; };
+		BB8308651EC2AD1F00435E7E /* RoboCat.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8308251EC2AD1F00435E7E /* RoboCat.cpp */; };
+		BB8308661EC2AD1F00435E7E /* RoboCat.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8308251EC2AD1F00435E7E /* RoboCat.cpp */; };
+		BB8308671EC2AD1F00435E7E /* RoboMath.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8308281EC2AD1F00435E7E /* RoboMath.cpp */; };
+		BB8308681EC2AD1F00435E7E /* RoboMath.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8308281EC2AD1F00435E7E /* RoboMath.cpp */; };
+		BB8308691EC2AD1F00435E7E /* RoboMath.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8308281EC2AD1F00435E7E /* RoboMath.cpp */; };
+		BB83086A1EC2AD1F00435E7E /* ScoreBoardManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB83082A1EC2AD1F00435E7E /* ScoreBoardManager.cpp */; };
+		BB83086B1EC2AD1F00435E7E /* ScoreBoardManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB83082A1EC2AD1F00435E7E /* ScoreBoardManager.cpp */; };
+		BB83086C1EC2AD1F00435E7E /* ScoreBoardManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB83082A1EC2AD1F00435E7E /* ScoreBoardManager.cpp */; };
+		BB83086D1EC2AD1F00435E7E /* SocketAddress.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB83082C1EC2AD1F00435E7E /* SocketAddress.cpp */; };
+		BB83086E1EC2AD1F00435E7E /* SocketAddress.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB83082C1EC2AD1F00435E7E /* SocketAddress.cpp */; };
+		BB83086F1EC2AD1F00435E7E /* SocketAddress.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB83082C1EC2AD1F00435E7E /* SocketAddress.cpp */; };
+		BB8308701EC2AD1F00435E7E /* SocketAddressFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB83082E1EC2AD1F00435E7E /* SocketAddressFactory.cpp */; };
+		BB8308711EC2AD1F00435E7E /* SocketAddressFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB83082E1EC2AD1F00435E7E /* SocketAddressFactory.cpp */; };
+		BB8308721EC2AD1F00435E7E /* SocketAddressFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB83082E1EC2AD1F00435E7E /* SocketAddressFactory.cpp */; };
+		BB8308731EC2AD1F00435E7E /* SocketUtil.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8308301EC2AD1F00435E7E /* SocketUtil.cpp */; };
+		BB8308741EC2AD1F00435E7E /* SocketUtil.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8308301EC2AD1F00435E7E /* SocketUtil.cpp */; };
+		BB8308751EC2AD1F00435E7E /* SocketUtil.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8308301EC2AD1F00435E7E /* SocketUtil.cpp */; };
+		BB8308761EC2AD1F00435E7E /* StringUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8308321EC2AD1F00435E7E /* StringUtils.cpp */; };
+		BB8308771EC2AD1F00435E7E /* StringUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8308321EC2AD1F00435E7E /* StringUtils.cpp */; };
+		BB8308781EC2AD1F00435E7E /* StringUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8308321EC2AD1F00435E7E /* StringUtils.cpp */; };
+		BB8308791EC2AD1F00435E7E /* TCPSocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8308341EC2AD1F00435E7E /* TCPSocket.cpp */; };
+		BB83087A1EC2AD1F00435E7E /* TCPSocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8308341EC2AD1F00435E7E /* TCPSocket.cpp */; };
+		BB83087B1EC2AD1F00435E7E /* TCPSocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8308341EC2AD1F00435E7E /* TCPSocket.cpp */; };
+		BB83087C1EC2AD1F00435E7E /* Timing.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8308361EC2AD1F00435E7E /* Timing.cpp */; };
+		BB83087D1EC2AD1F00435E7E /* Timing.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8308361EC2AD1F00435E7E /* Timing.cpp */; };
+		BB83087E1EC2AD1F00435E7E /* Timing.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8308361EC2AD1F00435E7E /* Timing.cpp */; };
+		BB83087F1EC2AD1F00435E7E /* UDPSocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8308391EC2AD1F00435E7E /* UDPSocket.cpp */; };
+		BB8308801EC2AD1F00435E7E /* UDPSocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8308391EC2AD1F00435E7E /* UDPSocket.cpp */; };
+		BB8308811EC2AD1F00435E7E /* UDPSocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8308391EC2AD1F00435E7E /* UDPSocket.cpp */; };
+		BB8308821EC2AD1F00435E7E /* World.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB83083C1EC2AD1F00435E7E /* World.cpp */; };
+		BB8308831EC2AD1F00435E7E /* World.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB83083C1EC2AD1F00435E7E /* World.cpp */; };
+		BB8308841EC2AD1F00435E7E /* World.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB83083C1EC2AD1F00435E7E /* World.cpp */; };
+		BB8308851EC2AD1F00435E7E /* Yarn.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB83083E1EC2AD1F00435E7E /* Yarn.cpp */; };
+		BB8308861EC2AD1F00435E7E /* Yarn.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB83083E1EC2AD1F00435E7E /* Yarn.cpp */; };
+		BB8308871EC2AD1F00435E7E /* Yarn.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB83083E1EC2AD1F00435E7E /* Yarn.cpp */; };
 		BBAEF1EF1EA94EDA00F0866E /* Entity.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF0BF1EA94ED900F0866E /* Entity.cpp */; };
 		BBAEF1F01EA94EDA00F0866E /* Entity.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF0BF1EA94ED900F0866E /* Entity.cpp */; };
 		BBAEF1F11EA94EDA00F0866E /* EntityManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF0C11EA94ED900F0866E /* EntityManager.cpp */; };
@@ -263,8 +345,6 @@
 		BBCCA84A1DB346C100452FA1 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBCCA8491DB346C100452FA1 /* CoreAudio.framework */; };
 		BBCCA8FD1DB36EB600452FA1 /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBCCA8FC1DB36EB600452FA1 /* OpenAL.framework */; };
 		BBCCA9001DB36F0F00452FA1 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB44CB001DB04C67003E633F /* AVFoundation.framework */; };
-		BBF226351EC12C6100573356 /* Engine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF225FD1EC12C6100573356 /* Engine.cpp */; };
-		BBF226361EC12C6100573356 /* Engine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF225FD1EC12C6100573356 /* Engine.cpp */; };
 		BBF226831EC12C9C00573356 /* Client.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF226641EC12C9C00573356 /* Client.cpp */; };
 		BBF226841EC12C9C00573356 /* Client.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF226641EC12C9C00573356 /* Client.cpp */; };
 		BBF226C61EC12CDE00573356 /* InputManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF226A81EC12CDE00573356 /* InputManager.cpp */; };
@@ -281,52 +361,6 @@
 		BBF226D31EC12CDE00573356 /* RoboCatClientPCH.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF226B41EC12CDE00573356 /* RoboCatClientPCH.cpp */; };
 		BBF226DC1EC12CDE00573356 /* YarnClient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF226BE1EC12CDE00573356 /* YarnClient.cpp */; };
 		BBF226DD1EC12CDE00573356 /* YarnClient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF226BE1EC12CDE00573356 /* YarnClient.cpp */; };
-		BBF227151EC12CEA00573356 /* AckRange.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF226DE1EC12CEA00573356 /* AckRange.cpp */; };
-		BBF227161EC12CEA00573356 /* AckRange.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF226DE1EC12CEA00573356 /* AckRange.cpp */; };
-		BBF227171EC12CEA00573356 /* DeliveryNotificationManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF226E11EC12CEA00573356 /* DeliveryNotificationManager.cpp */; };
-		BBF227181EC12CEA00573356 /* DeliveryNotificationManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF226E11EC12CEA00573356 /* DeliveryNotificationManager.cpp */; };
-		BBF227191EC12CEA00573356 /* GameObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF226E31EC12CEA00573356 /* GameObject.cpp */; };
-		BBF2271A1EC12CEA00573356 /* GameObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF226E31EC12CEA00573356 /* GameObject.cpp */; };
-		BBF2271B1EC12CEA00573356 /* GameObjectRegistry.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF226E51EC12CEA00573356 /* GameObjectRegistry.cpp */; };
-		BBF2271C1EC12CEA00573356 /* GameObjectRegistry.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF226E51EC12CEA00573356 /* GameObjectRegistry.cpp */; };
-		BBF2271D1EC12CEA00573356 /* InFlightPacket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF226E71EC12CEA00573356 /* InFlightPacket.cpp */; };
-		BBF2271E1EC12CEA00573356 /* InFlightPacket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF226E71EC12CEA00573356 /* InFlightPacket.cpp */; };
-		BBF2271F1EC12CEA00573356 /* InputState.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF226EA1EC12CEA00573356 /* InputState.cpp */; };
-		BBF227201EC12CEA00573356 /* InputState.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF226EA1EC12CEA00573356 /* InputState.cpp */; };
-		BBF227211EC12CEA00573356 /* MemoryBitStream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF226ED1EC12CEA00573356 /* MemoryBitStream.cpp */; };
-		BBF227221EC12CEA00573356 /* MemoryBitStream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF226ED1EC12CEA00573356 /* MemoryBitStream.cpp */; };
-		BBF227231EC12CEA00573356 /* Mouse.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF226EF1EC12CEA00573356 /* Mouse.cpp */; };
-		BBF227241EC12CEA00573356 /* Mouse.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF226EF1EC12CEA00573356 /* Mouse.cpp */; };
-		BBF227251EC12CEA00573356 /* Move.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF226F11EC12CEA00573356 /* Move.cpp */; };
-		BBF227261EC12CEA00573356 /* Move.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF226F11EC12CEA00573356 /* Move.cpp */; };
-		BBF227271EC12CEA00573356 /* MoveList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF226F31EC12CEA00573356 /* MoveList.cpp */; };
-		BBF227281EC12CEA00573356 /* MoveList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF226F31EC12CEA00573356 /* MoveList.cpp */; };
-		BBF227291EC12CEA00573356 /* NetworkManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF226F51EC12CEA00573356 /* NetworkManager.cpp */; };
-		BBF2272A1EC12CEA00573356 /* NetworkManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF226F51EC12CEA00573356 /* NetworkManager.cpp */; };
-		BBF2272B1EC12CEA00573356 /* RoboCat.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF226F81EC12CEA00573356 /* RoboCat.cpp */; };
-		BBF2272C1EC12CEA00573356 /* RoboCat.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF226F81EC12CEA00573356 /* RoboCat.cpp */; };
-		BBF2272F1EC12CEA00573356 /* RoboMath.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF226FD1EC12CEA00573356 /* RoboMath.cpp */; };
-		BBF227301EC12CEA00573356 /* RoboMath.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF226FD1EC12CEA00573356 /* RoboMath.cpp */; };
-		BBF227311EC12CEA00573356 /* ScoreBoardManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF226FF1EC12CEA00573356 /* ScoreBoardManager.cpp */; };
-		BBF227321EC12CEA00573356 /* ScoreBoardManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF226FF1EC12CEA00573356 /* ScoreBoardManager.cpp */; };
-		BBF227331EC12CEA00573356 /* SocketAddress.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF227011EC12CEA00573356 /* SocketAddress.cpp */; };
-		BBF227341EC12CEA00573356 /* SocketAddress.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF227011EC12CEA00573356 /* SocketAddress.cpp */; };
-		BBF227351EC12CEA00573356 /* SocketAddressFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF227031EC12CEA00573356 /* SocketAddressFactory.cpp */; };
-		BBF227361EC12CEA00573356 /* SocketAddressFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF227031EC12CEA00573356 /* SocketAddressFactory.cpp */; };
-		BBF227371EC12CEA00573356 /* SocketUtil.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF227051EC12CEA00573356 /* SocketUtil.cpp */; };
-		BBF227381EC12CEA00573356 /* SocketUtil.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF227051EC12CEA00573356 /* SocketUtil.cpp */; };
-		BBF227391EC12CEA00573356 /* StringUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF227071EC12CEA00573356 /* StringUtils.cpp */; };
-		BBF2273A1EC12CEA00573356 /* StringUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF227071EC12CEA00573356 /* StringUtils.cpp */; };
-		BBF2273B1EC12CEA00573356 /* TCPSocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF227091EC12CEA00573356 /* TCPSocket.cpp */; };
-		BBF2273C1EC12CEA00573356 /* TCPSocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF227091EC12CEA00573356 /* TCPSocket.cpp */; };
-		BBF2273D1EC12CEA00573356 /* Timing.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF2270B1EC12CEA00573356 /* Timing.cpp */; };
-		BBF2273E1EC12CEA00573356 /* Timing.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF2270B1EC12CEA00573356 /* Timing.cpp */; };
-		BBF2273F1EC12CEA00573356 /* UDPSocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF2270E1EC12CEA00573356 /* UDPSocket.cpp */; };
-		BBF227401EC12CEA00573356 /* UDPSocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF2270E1EC12CEA00573356 /* UDPSocket.cpp */; };
-		BBF227411EC12CEA00573356 /* World.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF227111EC12CEA00573356 /* World.cpp */; };
-		BBF227421EC12CEA00573356 /* World.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF227111EC12CEA00573356 /* World.cpp */; };
-		BBF227431EC12CEA00573356 /* Yarn.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF227131EC12CEA00573356 /* Yarn.cpp */; };
-		BBF227441EC12CEA00573356 /* Yarn.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF227131EC12CEA00573356 /* Yarn.cpp */; };
 		BEDBEB10667F7565A72E937B /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 05945F36F017190884FC7FB9 /* AssetsLibrary.framework */; };
 		C2FAA41A7EE7DD75E14DA2A1 /* BuddyBuildSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84C9C279DA1CE27EE81A6958 /* BuddyBuildSDK.framework */; };
 		EF21A84F90D23B88CD7E3542 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FFF3C8B3638A1D58F89D067F /* SystemConfiguration.framework */; };
@@ -343,6 +377,15 @@
 				BB13BD521E58E7350073C08F /* DDHidLib.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BB8307E31EC2AB7B00435E7E /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
@@ -431,24 +474,6 @@
 		BB2BB0851DB81ECF000CE5E5 /* dante.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = dante.entitlements; sourceTree = "<group>"; };
 		BB3218741EC1418E007ED106 /* HUD.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HUD.cpp; sourceTree = "<group>"; };
 		BB3218751EC1418E007ED106 /* HUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUD.h; sourceTree = "<group>"; };
-		BB32189A1EC14543007ED106 /* ClientProxy.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ClientProxy.cpp; sourceTree = "<group>"; };
-		BB32189B1EC14543007ED106 /* ClientProxy.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ClientProxy.h; sourceTree = "<group>"; };
-		BB32189C1EC14543007ED106 /* MouseServer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = MouseServer.cpp; sourceTree = "<group>"; };
-		BB32189D1EC14543007ED106 /* MouseServer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MouseServer.h; sourceTree = "<group>"; };
-		BB32189E1EC14543007ED106 /* NetworkManagerServer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = NetworkManagerServer.cpp; sourceTree = "<group>"; };
-		BB32189F1EC14543007ED106 /* NetworkManagerServer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NetworkManagerServer.h; sourceTree = "<group>"; };
-		BB3218A01EC14543007ED106 /* ReplicationManagerServer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ReplicationManagerServer.cpp; sourceTree = "<group>"; };
-		BB3218A11EC14543007ED106 /* ReplicationManagerServer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ReplicationManagerServer.h; sourceTree = "<group>"; };
-		BB3218A21EC14543007ED106 /* ReplicationManagerTransmissionData.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ReplicationManagerTransmissionData.cpp; sourceTree = "<group>"; };
-		BB3218A31EC14543007ED106 /* ReplicationManagerTransmissionData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ReplicationManagerTransmissionData.h; sourceTree = "<group>"; };
-		BB3218A41EC14543007ED106 /* RoboCatServer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = RoboCatServer.cpp; sourceTree = "<group>"; };
-		BB3218A51EC14543007ED106 /* RoboCatServer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RoboCatServer.h; sourceTree = "<group>"; };
-		BB3218A61EC14543007ED106 /* RoboCatServerPCH.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = RoboCatServerPCH.cpp; sourceTree = "<group>"; };
-		BB3218A71EC14543007ED106 /* RoboCatServerPCH.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RoboCatServerPCH.h; sourceTree = "<group>"; };
-		BB3218A81EC14543007ED106 /* Server.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Server.cpp; sourceTree = "<group>"; };
-		BB3218A91EC14543007ED106 /* Server.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Server.h; sourceTree = "<group>"; };
-		BB3218AA1EC14543007ED106 /* YarnServer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = YarnServer.cpp; sourceTree = "<group>"; };
-		BB3218AB1EC14543007ED106 /* YarnServer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YarnServer.h; sourceTree = "<group>"; };
 		BB34FD711E565A7400AC8197 /* Android.mk */ = {isa = PBXFileReference; lastKnownFileType = text; path = Android.mk; sourceTree = "<group>"; };
 		BB34FD721E565A7400AC8197 /* Application.mk */ = {isa = PBXFileReference; lastKnownFileType = text; path = Application.mk; sourceTree = "<group>"; };
 		BB44C30A1DB0303F003E633F /* Dante.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Dante.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -561,6 +586,81 @@
 		BB7639511E21B5A200534DAB /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		BB7639561E21B6DC00534DAB /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		BB7639581E21B6E000534DAB /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
+		BB8307E51EC2AB7B00435E7E /* dante server */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "dante server"; sourceTree = BUILT_PRODUCTS_DIR; };
+		BB8307E71EC2AB7B00435E7E /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = ../server/main.cpp; sourceTree = "<group>"; };
+		BB8307ED1EC2AC0900435E7E /* ClientProxy.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ClientProxy.cpp; sourceTree = "<group>"; };
+		BB8307EE1EC2AC0900435E7E /* ClientProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClientProxy.h; sourceTree = "<group>"; };
+		BB8307EF1EC2AC0900435E7E /* MouseServer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MouseServer.cpp; sourceTree = "<group>"; };
+		BB8307F01EC2AC0900435E7E /* MouseServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MouseServer.h; sourceTree = "<group>"; };
+		BB8307F11EC2AC0900435E7E /* NetworkManagerServer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NetworkManagerServer.cpp; sourceTree = "<group>"; };
+		BB8307F21EC2AC0900435E7E /* NetworkManagerServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkManagerServer.h; sourceTree = "<group>"; };
+		BB8307F31EC2AC0900435E7E /* ReplicationManagerServer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ReplicationManagerServer.cpp; sourceTree = "<group>"; };
+		BB8307F41EC2AC0900435E7E /* ReplicationManagerServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReplicationManagerServer.h; sourceTree = "<group>"; };
+		BB8307F51EC2AC0900435E7E /* ReplicationManagerTransmissionData.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ReplicationManagerTransmissionData.cpp; sourceTree = "<group>"; };
+		BB8307F61EC2AC0900435E7E /* ReplicationManagerTransmissionData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReplicationManagerTransmissionData.h; sourceTree = "<group>"; };
+		BB8307F71EC2AC0900435E7E /* RoboCatServer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RoboCatServer.cpp; sourceTree = "<group>"; };
+		BB8307F81EC2AC0900435E7E /* RoboCatServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoboCatServer.h; sourceTree = "<group>"; };
+		BB8307F91EC2AC0900435E7E /* RoboCatServerPCH.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RoboCatServerPCH.cpp; sourceTree = "<group>"; };
+		BB8307FA1EC2AC0900435E7E /* RoboCatServerPCH.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoboCatServerPCH.h; sourceTree = "<group>"; };
+		BB8307FB1EC2AC0900435E7E /* Server.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Server.cpp; sourceTree = "<group>"; };
+		BB8307FC1EC2AC0900435E7E /* Server.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Server.h; sourceTree = "<group>"; };
+		BB8307FD1EC2AC0900435E7E /* YarnServer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = YarnServer.cpp; sourceTree = "<group>"; };
+		BB8307FE1EC2AC0900435E7E /* YarnServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YarnServer.h; sourceTree = "<group>"; };
+		BB8308091EC2AD1F00435E7E /* AckRange.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AckRange.cpp; sourceTree = "<group>"; };
+		BB83080A1EC2AD1F00435E7E /* AckRange.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AckRange.h; sourceTree = "<group>"; };
+		BB83080B1EC2AD1F00435E7E /* ByteSwap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ByteSwap.h; sourceTree = "<group>"; };
+		BB83080C1EC2AD1F00435E7E /* DeliveryNotificationManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DeliveryNotificationManager.cpp; sourceTree = "<group>"; };
+		BB83080D1EC2AD1F00435E7E /* DeliveryNotificationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeliveryNotificationManager.h; sourceTree = "<group>"; };
+		BB83080E1EC2AD1F00435E7E /* Engine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Engine.cpp; sourceTree = "<group>"; };
+		BB83080F1EC2AD1F00435E7E /* Engine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Engine.h; sourceTree = "<group>"; };
+		BB8308101EC2AD1F00435E7E /* GameObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameObject.cpp; sourceTree = "<group>"; };
+		BB8308111EC2AD1F00435E7E /* GameObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameObject.h; sourceTree = "<group>"; };
+		BB8308121EC2AD1F00435E7E /* GameObjectRegistry.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameObjectRegistry.cpp; sourceTree = "<group>"; };
+		BB8308131EC2AD1F00435E7E /* GameObjectRegistry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameObjectRegistry.h; sourceTree = "<group>"; };
+		BB8308141EC2AD1F00435E7E /* InFlightPacket.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = InFlightPacket.cpp; sourceTree = "<group>"; };
+		BB8308151EC2AD1F00435E7E /* InFlightPacket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InFlightPacket.h; sourceTree = "<group>"; };
+		BB8308161EC2AD1F00435E7E /* InputAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InputAction.h; sourceTree = "<group>"; };
+		BB8308171EC2AD1F00435E7E /* InputState.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = InputState.cpp; sourceTree = "<group>"; };
+		BB8308181EC2AD1F00435E7E /* InputState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InputState.h; sourceTree = "<group>"; };
+		BB8308191EC2AD1F00435E7E /* LinkingContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LinkingContext.h; sourceTree = "<group>"; };
+		BB83081A1EC2AD1F00435E7E /* MemoryBitStream.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MemoryBitStream.cpp; sourceTree = "<group>"; };
+		BB83081B1EC2AD1F00435E7E /* MemoryBitStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MemoryBitStream.h; sourceTree = "<group>"; };
+		BB83081C1EC2AD1F00435E7E /* Mouse.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Mouse.cpp; sourceTree = "<group>"; };
+		BB83081D1EC2AD1F00435E7E /* Mouse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Mouse.h; sourceTree = "<group>"; };
+		BB83081E1EC2AD1F00435E7E /* Move.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Move.cpp; sourceTree = "<group>"; };
+		BB83081F1EC2AD1F00435E7E /* Move.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Move.h; sourceTree = "<group>"; };
+		BB8308201EC2AD1F00435E7E /* MoveList.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MoveList.cpp; sourceTree = "<group>"; };
+		BB8308211EC2AD1F00435E7E /* MoveList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoveList.h; sourceTree = "<group>"; };
+		BB8308221EC2AD1F00435E7E /* NetworkManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NetworkManager.cpp; sourceTree = "<group>"; };
+		BB8308231EC2AD1F00435E7E /* NetworkManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkManager.h; sourceTree = "<group>"; };
+		BB8308241EC2AD1F00435E7E /* ReplicationCommand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReplicationCommand.h; sourceTree = "<group>"; };
+		BB8308251EC2AD1F00435E7E /* RoboCat.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RoboCat.cpp; sourceTree = "<group>"; };
+		BB8308261EC2AD1F00435E7E /* RoboCat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoboCat.h; sourceTree = "<group>"; };
+		BB8308271EC2AD1F00435E7E /* RoboCatShared.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoboCatShared.h; sourceTree = "<group>"; };
+		BB8308281EC2AD1F00435E7E /* RoboMath.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RoboMath.cpp; sourceTree = "<group>"; };
+		BB8308291EC2AD1F00435E7E /* RoboMath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoboMath.h; sourceTree = "<group>"; };
+		BB83082A1EC2AD1F00435E7E /* ScoreBoardManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ScoreBoardManager.cpp; sourceTree = "<group>"; };
+		BB83082B1EC2AD1F00435E7E /* ScoreBoardManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScoreBoardManager.h; sourceTree = "<group>"; };
+		BB83082C1EC2AD1F00435E7E /* SocketAddress.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SocketAddress.cpp; sourceTree = "<group>"; };
+		BB83082D1EC2AD1F00435E7E /* SocketAddress.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SocketAddress.h; sourceTree = "<group>"; };
+		BB83082E1EC2AD1F00435E7E /* SocketAddressFactory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SocketAddressFactory.cpp; sourceTree = "<group>"; };
+		BB83082F1EC2AD1F00435E7E /* SocketAddressFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SocketAddressFactory.h; sourceTree = "<group>"; };
+		BB8308301EC2AD1F00435E7E /* SocketUtil.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SocketUtil.cpp; sourceTree = "<group>"; };
+		BB8308311EC2AD1F00435E7E /* SocketUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SocketUtil.h; sourceTree = "<group>"; };
+		BB8308321EC2AD1F00435E7E /* StringUtils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StringUtils.cpp; sourceTree = "<group>"; };
+		BB8308331EC2AD1F00435E7E /* StringUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StringUtils.h; sourceTree = "<group>"; };
+		BB8308341EC2AD1F00435E7E /* TCPSocket.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TCPSocket.cpp; sourceTree = "<group>"; };
+		BB8308351EC2AD1F00435E7E /* TCPSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCPSocket.h; sourceTree = "<group>"; };
+		BB8308361EC2AD1F00435E7E /* Timing.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Timing.cpp; sourceTree = "<group>"; };
+		BB8308371EC2AD1F00435E7E /* Timing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Timing.h; sourceTree = "<group>"; };
+		BB8308381EC2AD1F00435E7E /* TransmissionData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransmissionData.h; sourceTree = "<group>"; };
+		BB8308391EC2AD1F00435E7E /* UDPSocket.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = UDPSocket.cpp; sourceTree = "<group>"; };
+		BB83083A1EC2AD1F00435E7E /* UDPSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UDPSocket.h; sourceTree = "<group>"; };
+		BB83083B1EC2AD1F00435E7E /* WeightedTimedMovingAverage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WeightedTimedMovingAverage.h; sourceTree = "<group>"; };
+		BB83083C1EC2AD1F00435E7E /* World.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = World.cpp; sourceTree = "<group>"; };
+		BB83083D1EC2AD1F00435E7E /* World.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = World.h; sourceTree = "<group>"; };
+		BB83083E1EC2AD1F00435E7E /* Yarn.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Yarn.cpp; sourceTree = "<group>"; };
+		BB83083F1EC2AD1F00435E7E /* Yarn.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Yarn.h; sourceTree = "<group>"; };
 		BBAEF0BF1EA94ED900F0866E /* Entity.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Entity.cpp; sourceTree = "<group>"; };
 		BBAEF0C01EA94ED900F0866E /* Entity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Entity.h; sourceTree = "<group>"; };
 		BBAEF0C11EA94ED900F0866E /* EntityManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EntityManager.cpp; sourceTree = "<group>"; };
@@ -775,8 +875,6 @@
 		BBCCA8461DB3469500452FA1 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.12.sdk/System/Library/Frameworks/CoreMedia.framework; sourceTree = DEVELOPER_DIR; };
 		BBCCA8491DB346C100452FA1 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.12.sdk/System/Library/Frameworks/CoreAudio.framework; sourceTree = DEVELOPER_DIR; };
 		BBCCA8FC1DB36EB600452FA1 /* OpenAL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenAL.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.12.sdk/System/Library/Frameworks/OpenAL.framework; sourceTree = DEVELOPER_DIR; };
-		BBF225FD1EC12C6100573356 /* Engine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Engine.cpp; sourceTree = "<group>"; };
-		BBF225FE1EC12C6100573356 /* Engine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Engine.h; sourceTree = "<group>"; };
 		BBF226641EC12C9C00573356 /* Client.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Client.cpp; sourceTree = "<group>"; };
 		BBF226651EC12C9C00573356 /* Client.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Client.h; sourceTree = "<group>"; };
 		BBF226A81EC12CDE00573356 /* InputManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = InputManager.cpp; sourceTree = "<group>"; };
@@ -793,59 +891,6 @@
 		BBF226B51EC12CDE00573356 /* RoboCatClientPCH.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoboCatClientPCH.h; sourceTree = "<group>"; };
 		BBF226BE1EC12CDE00573356 /* YarnClient.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = YarnClient.cpp; sourceTree = "<group>"; };
 		BBF226BF1EC12CDE00573356 /* YarnClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YarnClient.h; sourceTree = "<group>"; };
-		BBF226DE1EC12CEA00573356 /* AckRange.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AckRange.cpp; sourceTree = "<group>"; };
-		BBF226DF1EC12CEA00573356 /* AckRange.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AckRange.h; sourceTree = "<group>"; };
-		BBF226E01EC12CEA00573356 /* ByteSwap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ByteSwap.h; sourceTree = "<group>"; };
-		BBF226E11EC12CEA00573356 /* DeliveryNotificationManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DeliveryNotificationManager.cpp; sourceTree = "<group>"; };
-		BBF226E21EC12CEA00573356 /* DeliveryNotificationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeliveryNotificationManager.h; sourceTree = "<group>"; };
-		BBF226E31EC12CEA00573356 /* GameObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameObject.cpp; sourceTree = "<group>"; };
-		BBF226E41EC12CEA00573356 /* GameObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameObject.h; sourceTree = "<group>"; };
-		BBF226E51EC12CEA00573356 /* GameObjectRegistry.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameObjectRegistry.cpp; sourceTree = "<group>"; };
-		BBF226E61EC12CEA00573356 /* GameObjectRegistry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameObjectRegistry.h; sourceTree = "<group>"; };
-		BBF226E71EC12CEA00573356 /* InFlightPacket.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = InFlightPacket.cpp; sourceTree = "<group>"; };
-		BBF226E81EC12CEA00573356 /* InFlightPacket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InFlightPacket.h; sourceTree = "<group>"; };
-		BBF226E91EC12CEA00573356 /* InputAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InputAction.h; sourceTree = "<group>"; };
-		BBF226EA1EC12CEA00573356 /* InputState.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = InputState.cpp; sourceTree = "<group>"; };
-		BBF226EB1EC12CEA00573356 /* InputState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InputState.h; sourceTree = "<group>"; };
-		BBF226EC1EC12CEA00573356 /* LinkingContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LinkingContext.h; sourceTree = "<group>"; };
-		BBF226ED1EC12CEA00573356 /* MemoryBitStream.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MemoryBitStream.cpp; sourceTree = "<group>"; };
-		BBF226EE1EC12CEA00573356 /* MemoryBitStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MemoryBitStream.h; sourceTree = "<group>"; };
-		BBF226EF1EC12CEA00573356 /* Mouse.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Mouse.cpp; sourceTree = "<group>"; };
-		BBF226F01EC12CEA00573356 /* Mouse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Mouse.h; sourceTree = "<group>"; };
-		BBF226F11EC12CEA00573356 /* Move.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Move.cpp; sourceTree = "<group>"; };
-		BBF226F21EC12CEA00573356 /* Move.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Move.h; sourceTree = "<group>"; };
-		BBF226F31EC12CEA00573356 /* MoveList.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MoveList.cpp; sourceTree = "<group>"; };
-		BBF226F41EC12CEA00573356 /* MoveList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoveList.h; sourceTree = "<group>"; };
-		BBF226F51EC12CEA00573356 /* NetworkManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NetworkManager.cpp; sourceTree = "<group>"; };
-		BBF226F61EC12CEA00573356 /* NetworkManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkManager.h; sourceTree = "<group>"; };
-		BBF226F71EC12CEA00573356 /* ReplicationCommand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReplicationCommand.h; sourceTree = "<group>"; };
-		BBF226F81EC12CEA00573356 /* RoboCat.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RoboCat.cpp; sourceTree = "<group>"; };
-		BBF226F91EC12CEA00573356 /* RoboCat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoboCat.h; sourceTree = "<group>"; };
-		BBF226FC1EC12CEA00573356 /* RoboCatShared.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoboCatShared.h; sourceTree = "<group>"; };
-		BBF226FD1EC12CEA00573356 /* RoboMath.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RoboMath.cpp; sourceTree = "<group>"; };
-		BBF226FE1EC12CEA00573356 /* RoboMath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoboMath.h; sourceTree = "<group>"; };
-		BBF226FF1EC12CEA00573356 /* ScoreBoardManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ScoreBoardManager.cpp; sourceTree = "<group>"; };
-		BBF227001EC12CEA00573356 /* ScoreBoardManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScoreBoardManager.h; sourceTree = "<group>"; };
-		BBF227011EC12CEA00573356 /* SocketAddress.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SocketAddress.cpp; sourceTree = "<group>"; };
-		BBF227021EC12CEA00573356 /* SocketAddress.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SocketAddress.h; sourceTree = "<group>"; };
-		BBF227031EC12CEA00573356 /* SocketAddressFactory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SocketAddressFactory.cpp; sourceTree = "<group>"; };
-		BBF227041EC12CEA00573356 /* SocketAddressFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SocketAddressFactory.h; sourceTree = "<group>"; };
-		BBF227051EC12CEA00573356 /* SocketUtil.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SocketUtil.cpp; sourceTree = "<group>"; };
-		BBF227061EC12CEA00573356 /* SocketUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SocketUtil.h; sourceTree = "<group>"; };
-		BBF227071EC12CEA00573356 /* StringUtils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StringUtils.cpp; sourceTree = "<group>"; };
-		BBF227081EC12CEA00573356 /* StringUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StringUtils.h; sourceTree = "<group>"; };
-		BBF227091EC12CEA00573356 /* TCPSocket.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TCPSocket.cpp; sourceTree = "<group>"; };
-		BBF2270A1EC12CEA00573356 /* TCPSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCPSocket.h; sourceTree = "<group>"; };
-		BBF2270B1EC12CEA00573356 /* Timing.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Timing.cpp; sourceTree = "<group>"; };
-		BBF2270C1EC12CEA00573356 /* Timing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Timing.h; sourceTree = "<group>"; };
-		BBF2270D1EC12CEA00573356 /* TransmissionData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransmissionData.h; sourceTree = "<group>"; };
-		BBF2270E1EC12CEA00573356 /* UDPSocket.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = UDPSocket.cpp; sourceTree = "<group>"; };
-		BBF2270F1EC12CEA00573356 /* UDPSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UDPSocket.h; sourceTree = "<group>"; };
-		BBF227101EC12CEA00573356 /* WeightedTimedMovingAverage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WeightedTimedMovingAverage.h; sourceTree = "<group>"; };
-		BBF227111EC12CEA00573356 /* World.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = World.cpp; sourceTree = "<group>"; };
-		BBF227121EC12CEA00573356 /* World.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = World.h; sourceTree = "<group>"; };
-		BBF227131EC12CEA00573356 /* Yarn.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Yarn.cpp; sourceTree = "<group>"; };
-		BBF227141EC12CEA00573356 /* Yarn.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Yarn.h; sourceTree = "<group>"; };
 		FFF3C8B3638A1D58F89D067F /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -910,6 +955,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		BB8307E21EC2AB7B00435E7E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -922,6 +974,7 @@
 				BB34FD701E565A7400AC8197 /* jni */,
 				BB44C31E1DB030B3003E633F /* mac */,
 				0ADF1875178E2185005DA99E /* Products */,
+				BB8307E61EC2AB7B00435E7E /* server */,
 				BBB6C0281E9E80CB00D68409 /* shared */,
 				BB44C34A1DB03267003E633F /* shared */,
 			);
@@ -932,6 +985,7 @@
 			children = (
 				0ADF1874178E2185005DA99E /* NosFURatu.app */,
 				BB44C30A1DB0303F003E633F /* Dante.app */,
+				BB8307E51EC2AB7B00435E7E /* dante server */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1094,31 +1148,6 @@
 				BB052CD71EBA8AE9007FA789 /* shader_003_vert.vsh */,
 			);
 			path = shader;
-			sourceTree = "<group>";
-		};
-		BB3218991EC14543007ED106 /* server */ = {
-			isa = PBXGroup;
-			children = (
-				BB32189A1EC14543007ED106 /* ClientProxy.cpp */,
-				BB32189B1EC14543007ED106 /* ClientProxy.h */,
-				BB32189C1EC14543007ED106 /* MouseServer.cpp */,
-				BB32189D1EC14543007ED106 /* MouseServer.h */,
-				BB32189E1EC14543007ED106 /* NetworkManagerServer.cpp */,
-				BB32189F1EC14543007ED106 /* NetworkManagerServer.h */,
-				BB3218A01EC14543007ED106 /* ReplicationManagerServer.cpp */,
-				BB3218A11EC14543007ED106 /* ReplicationManagerServer.h */,
-				BB3218A21EC14543007ED106 /* ReplicationManagerTransmissionData.cpp */,
-				BB3218A31EC14543007ED106 /* ReplicationManagerTransmissionData.h */,
-				BB3218A41EC14543007ED106 /* RoboCatServer.cpp */,
-				BB3218A51EC14543007ED106 /* RoboCatServer.h */,
-				BB3218A61EC14543007ED106 /* RoboCatServerPCH.cpp */,
-				BB3218A71EC14543007ED106 /* RoboCatServerPCH.h */,
-				BB3218A81EC14543007ED106 /* Server.cpp */,
-				BB3218A91EC14543007ED106 /* Server.h */,
-				BB3218AA1EC14543007ED106 /* YarnServer.cpp */,
-				BB3218AB1EC14543007ED106 /* YarnServer.h */,
-			);
-			path = server;
 			sourceTree = "<group>";
 		};
 		BB34FD701E565A7400AC8197 /* jni */ = {
@@ -1353,6 +1382,102 @@
 				BB74283F1EB2AF4200B7628D /* StringUtil.h */,
 			);
 			path = util;
+			sourceTree = "<group>";
+		};
+		BB8307E61EC2AB7B00435E7E /* server */ = {
+			isa = PBXGroup;
+			children = (
+				BB8307E71EC2AB7B00435E7E /* main.cpp */,
+			);
+			name = server;
+			path = "dante server";
+			sourceTree = "<group>";
+		};
+		BB8307EC1EC2AC0900435E7E /* server */ = {
+			isa = PBXGroup;
+			children = (
+				BB8307ED1EC2AC0900435E7E /* ClientProxy.cpp */,
+				BB8307EE1EC2AC0900435E7E /* ClientProxy.h */,
+				BB8307EF1EC2AC0900435E7E /* MouseServer.cpp */,
+				BB8307F01EC2AC0900435E7E /* MouseServer.h */,
+				BB8307F11EC2AC0900435E7E /* NetworkManagerServer.cpp */,
+				BB8307F21EC2AC0900435E7E /* NetworkManagerServer.h */,
+				BB8307F31EC2AC0900435E7E /* ReplicationManagerServer.cpp */,
+				BB8307F41EC2AC0900435E7E /* ReplicationManagerServer.h */,
+				BB8307F51EC2AC0900435E7E /* ReplicationManagerTransmissionData.cpp */,
+				BB8307F61EC2AC0900435E7E /* ReplicationManagerTransmissionData.h */,
+				BB8307F71EC2AC0900435E7E /* RoboCatServer.cpp */,
+				BB8307F81EC2AC0900435E7E /* RoboCatServer.h */,
+				BB8307F91EC2AC0900435E7E /* RoboCatServerPCH.cpp */,
+				BB8307FA1EC2AC0900435E7E /* RoboCatServerPCH.h */,
+				BB8307FB1EC2AC0900435E7E /* Server.cpp */,
+				BB8307FC1EC2AC0900435E7E /* Server.h */,
+				BB8307FD1EC2AC0900435E7E /* YarnServer.cpp */,
+				BB8307FE1EC2AC0900435E7E /* YarnServer.h */,
+			);
+			path = server;
+			sourceTree = "<group>";
+		};
+		BB8308081EC2AD1F00435E7E /* portable */ = {
+			isa = PBXGroup;
+			children = (
+				BB8308091EC2AD1F00435E7E /* AckRange.cpp */,
+				BB83080A1EC2AD1F00435E7E /* AckRange.h */,
+				BB83080B1EC2AD1F00435E7E /* ByteSwap.h */,
+				BB83080C1EC2AD1F00435E7E /* DeliveryNotificationManager.cpp */,
+				BB83080D1EC2AD1F00435E7E /* DeliveryNotificationManager.h */,
+				BB83080E1EC2AD1F00435E7E /* Engine.cpp */,
+				BB83080F1EC2AD1F00435E7E /* Engine.h */,
+				BB8308101EC2AD1F00435E7E /* GameObject.cpp */,
+				BB8308111EC2AD1F00435E7E /* GameObject.h */,
+				BB8308121EC2AD1F00435E7E /* GameObjectRegistry.cpp */,
+				BB8308131EC2AD1F00435E7E /* GameObjectRegistry.h */,
+				BB8308141EC2AD1F00435E7E /* InFlightPacket.cpp */,
+				BB8308151EC2AD1F00435E7E /* InFlightPacket.h */,
+				BB8308161EC2AD1F00435E7E /* InputAction.h */,
+				BB8308171EC2AD1F00435E7E /* InputState.cpp */,
+				BB8308181EC2AD1F00435E7E /* InputState.h */,
+				BB8308191EC2AD1F00435E7E /* LinkingContext.h */,
+				BB83081A1EC2AD1F00435E7E /* MemoryBitStream.cpp */,
+				BB83081B1EC2AD1F00435E7E /* MemoryBitStream.h */,
+				BB83081C1EC2AD1F00435E7E /* Mouse.cpp */,
+				BB83081D1EC2AD1F00435E7E /* Mouse.h */,
+				BB83081E1EC2AD1F00435E7E /* Move.cpp */,
+				BB83081F1EC2AD1F00435E7E /* Move.h */,
+				BB8308201EC2AD1F00435E7E /* MoveList.cpp */,
+				BB8308211EC2AD1F00435E7E /* MoveList.h */,
+				BB8308221EC2AD1F00435E7E /* NetworkManager.cpp */,
+				BB8308231EC2AD1F00435E7E /* NetworkManager.h */,
+				BB8308241EC2AD1F00435E7E /* ReplicationCommand.h */,
+				BB8308251EC2AD1F00435E7E /* RoboCat.cpp */,
+				BB8308261EC2AD1F00435E7E /* RoboCat.h */,
+				BB8308271EC2AD1F00435E7E /* RoboCatShared.h */,
+				BB8308281EC2AD1F00435E7E /* RoboMath.cpp */,
+				BB8308291EC2AD1F00435E7E /* RoboMath.h */,
+				BB83082A1EC2AD1F00435E7E /* ScoreBoardManager.cpp */,
+				BB83082B1EC2AD1F00435E7E /* ScoreBoardManager.h */,
+				BB83082C1EC2AD1F00435E7E /* SocketAddress.cpp */,
+				BB83082D1EC2AD1F00435E7E /* SocketAddress.h */,
+				BB83082E1EC2AD1F00435E7E /* SocketAddressFactory.cpp */,
+				BB83082F1EC2AD1F00435E7E /* SocketAddressFactory.h */,
+				BB8308301EC2AD1F00435E7E /* SocketUtil.cpp */,
+				BB8308311EC2AD1F00435E7E /* SocketUtil.h */,
+				BB8308321EC2AD1F00435E7E /* StringUtils.cpp */,
+				BB8308331EC2AD1F00435E7E /* StringUtils.h */,
+				BB8308341EC2AD1F00435E7E /* TCPSocket.cpp */,
+				BB8308351EC2AD1F00435E7E /* TCPSocket.h */,
+				BB8308361EC2AD1F00435E7E /* Timing.cpp */,
+				BB8308371EC2AD1F00435E7E /* Timing.h */,
+				BB8308381EC2AD1F00435E7E /* TransmissionData.h */,
+				BB8308391EC2AD1F00435E7E /* UDPSocket.cpp */,
+				BB83083A1EC2AD1F00435E7E /* UDPSocket.h */,
+				BB83083B1EC2AD1F00435E7E /* WeightedTimedMovingAverage.h */,
+				BB83083C1EC2AD1F00435E7E /* World.cpp */,
+				BB83083D1EC2AD1F00435E7E /* World.h */,
+				BB83083E1EC2AD1F00435E7E /* Yarn.cpp */,
+				BB83083F1EC2AD1F00435E7E /* Yarn.h */,
+			);
+			path = portable;
 			sourceTree = "<group>";
 		};
 		BBAEF0BC1EA94ED900F0866E /* core */ = {
@@ -1821,72 +1946,10 @@
 			isa = PBXGroup;
 			children = (
 				BBF226631EC12C9C00573356 /* client */,
-				BBF225F71EC12C6100573356 /* portable */,
-				BB3218991EC14543007ED106 /* server */,
+				BB8308081EC2AD1F00435E7E /* portable */,
+				BB8307EC1EC2AC0900435E7E /* server */,
 			);
 			path = network;
-			sourceTree = "<group>";
-		};
-		BBF225F71EC12C6100573356 /* portable */ = {
-			isa = PBXGroup;
-			children = (
-				BBF226DE1EC12CEA00573356 /* AckRange.cpp */,
-				BBF226DF1EC12CEA00573356 /* AckRange.h */,
-				BBF226E01EC12CEA00573356 /* ByteSwap.h */,
-				BBF226E11EC12CEA00573356 /* DeliveryNotificationManager.cpp */,
-				BBF226E21EC12CEA00573356 /* DeliveryNotificationManager.h */,
-				BBF225FD1EC12C6100573356 /* Engine.cpp */,
-				BBF225FE1EC12C6100573356 /* Engine.h */,
-				BBF226E31EC12CEA00573356 /* GameObject.cpp */,
-				BBF226E41EC12CEA00573356 /* GameObject.h */,
-				BBF226E51EC12CEA00573356 /* GameObjectRegistry.cpp */,
-				BBF226E61EC12CEA00573356 /* GameObjectRegistry.h */,
-				BBF226E71EC12CEA00573356 /* InFlightPacket.cpp */,
-				BBF226E81EC12CEA00573356 /* InFlightPacket.h */,
-				BBF226E91EC12CEA00573356 /* InputAction.h */,
-				BBF226EA1EC12CEA00573356 /* InputState.cpp */,
-				BBF226EB1EC12CEA00573356 /* InputState.h */,
-				BBF226EC1EC12CEA00573356 /* LinkingContext.h */,
-				BBF226ED1EC12CEA00573356 /* MemoryBitStream.cpp */,
-				BBF226EE1EC12CEA00573356 /* MemoryBitStream.h */,
-				BBF226EF1EC12CEA00573356 /* Mouse.cpp */,
-				BBF226F01EC12CEA00573356 /* Mouse.h */,
-				BBF226F11EC12CEA00573356 /* Move.cpp */,
-				BBF226F21EC12CEA00573356 /* Move.h */,
-				BBF226F31EC12CEA00573356 /* MoveList.cpp */,
-				BBF226F41EC12CEA00573356 /* MoveList.h */,
-				BBF226F51EC12CEA00573356 /* NetworkManager.cpp */,
-				BBF226F61EC12CEA00573356 /* NetworkManager.h */,
-				BBF226F71EC12CEA00573356 /* ReplicationCommand.h */,
-				BBF226F81EC12CEA00573356 /* RoboCat.cpp */,
-				BBF226F91EC12CEA00573356 /* RoboCat.h */,
-				BBF226FC1EC12CEA00573356 /* RoboCatShared.h */,
-				BBF226FD1EC12CEA00573356 /* RoboMath.cpp */,
-				BBF226FE1EC12CEA00573356 /* RoboMath.h */,
-				BBF226FF1EC12CEA00573356 /* ScoreBoardManager.cpp */,
-				BBF227001EC12CEA00573356 /* ScoreBoardManager.h */,
-				BBF227011EC12CEA00573356 /* SocketAddress.cpp */,
-				BBF227021EC12CEA00573356 /* SocketAddress.h */,
-				BBF227031EC12CEA00573356 /* SocketAddressFactory.cpp */,
-				BBF227041EC12CEA00573356 /* SocketAddressFactory.h */,
-				BBF227051EC12CEA00573356 /* SocketUtil.cpp */,
-				BBF227061EC12CEA00573356 /* SocketUtil.h */,
-				BBF227071EC12CEA00573356 /* StringUtils.cpp */,
-				BBF227081EC12CEA00573356 /* StringUtils.h */,
-				BBF227091EC12CEA00573356 /* TCPSocket.cpp */,
-				BBF2270A1EC12CEA00573356 /* TCPSocket.h */,
-				BBF2270B1EC12CEA00573356 /* Timing.cpp */,
-				BBF2270C1EC12CEA00573356 /* Timing.h */,
-				BBF2270D1EC12CEA00573356 /* TransmissionData.h */,
-				BBF2270E1EC12CEA00573356 /* UDPSocket.cpp */,
-				BBF2270F1EC12CEA00573356 /* UDPSocket.h */,
-				BBF227101EC12CEA00573356 /* WeightedTimedMovingAverage.h */,
-				BBF227111EC12CEA00573356 /* World.cpp */,
-				BBF227121EC12CEA00573356 /* World.h */,
-				BBF227131EC12CEA00573356 /* Yarn.cpp */,
-				BBF227141EC12CEA00573356 /* Yarn.h */,
-			);
-			path = portable;
 			sourceTree = "<group>";
 		};
 		BBF226631EC12C9C00573356 /* client */ = {
@@ -1954,6 +2017,23 @@
 			productReference = BB44C30A1DB0303F003E633F /* Dante.app */;
 			productType = "com.apple.product-type.application";
 		};
+		BB8307E41EC2AB7B00435E7E /* dante server */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BB8307E91EC2AB7B00435E7E /* Build configuration list for PBXNativeTarget "dante server" */;
+			buildPhases = (
+				BB8307E11EC2AB7B00435E7E /* Sources */,
+				BB8307E21EC2AB7B00435E7E /* Frameworks */,
+				BB8307E31EC2AB7B00435E7E /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "dante server";
+			productName = "dante server";
+			productReference = BB8307E51EC2AB7B00435E7E /* dante server */;
+			productType = "com.apple.product-type.tool";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -1976,6 +2056,11 @@
 							};
 						};
 					};
+					BB8307E41EC2AB7B00435E7E = {
+						CreatedOnToolsVersion = 8.3.2;
+						DevelopmentTeam = 7V5EV5R3XG;
+						ProvisioningStyle = Automatic;
+					};
 				};
 			};
 			buildConfigurationList = 0ADF186F178E2185005DA99E /* Build configuration list for PBXProject "dante" */;
@@ -1993,6 +2078,7 @@
 			targets = (
 				0ADF1873178E2185005DA99E /* dante ios */,
 				BB44C3091DB0303F003E633F /* dante mac */,
+				BB8307E41EC2AB7B00435E7E /* dante server */,
 			);
 		};
 /* End PBXProject section */
@@ -2068,60 +2154,65 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BBF227411EC12CEA00573356 /* World.cpp in Sources */,
+				BB8308611EC2AD1F00435E7E /* NetworkManager.cpp in Sources */,
 				BBAEF2931EA94EDA00F0866E /* Circle.cpp in Sources */,
 				BBAEF26F1EA94EDA00F0866E /* RendererHelperFactory.cpp in Sources */,
 				BBAEF23B1EA94EDA00F0866E /* OpenGLNGRectBatcher.cpp in Sources */,
-				BBF227431EC12CEA00573356 /* Yarn.cpp in Sources */,
 				BBAEF22F1EA94EDA00F0866E /* OpenGLFramebufferToScreenGpuProgramWrapper.cpp in Sources */,
 				BB6DB1BB1E76FD7F005C0FAD /* MainViewController.mm in Sources */,
 				BBF226D21EC12CDE00573356 /* RoboCatClientPCH.cpp in Sources */,
+				BB83084F1EC2AD1F00435E7E /* InFlightPacket.cpp in Sources */,
+				BB83087F1EC2AD1F00435E7E /* UDPSocket.cpp in Sources */,
 				BBF226DC1EC12CDE00573356 /* YarnClient.cpp in Sources */,
+				BB83086D1EC2AD1F00435E7E /* SocketAddress.cpp in Sources */,
 				BB44C8691DB03A7E003E633F /* pngerror.c in Sources */,
+				BB8308491EC2AD1F00435E7E /* GameObject.cpp in Sources */,
 				BBAEF1F51EA94EDA00F0866E /* GridManager.cpp in Sources */,
 				BBAEF2771EA94EDA00F0866E /* TextureRegion.cpp in Sources */,
+				BB8308701EC2AD1F00435E7E /* SocketAddressFactory.cpp in Sources */,
+				BB8308521EC2AD1F00435E7E /* InputState.cpp in Sources */,
 				BBAEF28B1EA94EDA00F0866E /* TouchConverter.cpp in Sources */,
-				BBF2271F1EC12CEA00573356 /* InputState.cpp in Sources */,
-				BBF227311EC12CEA00573356 /* ScoreBoardManager.cpp in Sources */,
 				BBAEF2D91EA94EDA00F0866E /* IScreen.cpp in Sources */,
+				BB8308851EC2AD1F00435E7E /* Yarn.cpp in Sources */,
+				BB8308461EC2AD1F00435E7E /* Engine.cpp in Sources */,
+				BB8308641EC2AD1F00435E7E /* RoboCat.cpp in Sources */,
+				BB8308401EC2AD1F00435E7E /* AckRange.cpp in Sources */,
+				BB83085E1EC2AD1F00435E7E /* MoveList.cpp in Sources */,
 				BBAEF2971EA94EDA00F0866E /* NGRect.cpp in Sources */,
 				BBAEF2851EA94EDA00F0866E /* KeyboardInputManager.cpp in Sources */,
 				BBAEF2E51EA94EDA00F0866E /* MainAssetsMapper.cpp in Sources */,
 				BBAEF26B1EA94EDA00F0866E /* NGRectBatcher.cpp in Sources */,
-				BBF227351EC12CEA00573356 /* SocketAddressFactory.cpp in Sources */,
 				BBAEF25B1EA94EDA00F0866E /* DummyGpuProgramWrapper.cpp in Sources */,
 				BBAEF2431EA94EDA00F0866E /* OpenGLTextureGpuProgramWrapper.cpp in Sources */,
 				BBAEF2DB1EA94EDA00F0866E /* Renderer.cpp in Sources */,
 				BBAEF2951EA94EDA00F0866E /* Line.cpp in Sources */,
-				BBF227211EC12CEA00573356 /* MemoryBitStream.cpp in Sources */,
+				BB8308581EC2AD1F00435E7E /* Mouse.cpp in Sources */,
 				BBF226CE1EC12CDE00573356 /* ReplicationManagerClient.cpp in Sources */,
 				BBAEF2311EA94EDA00F0866E /* OpenGLFramebufferToScreenProgram.cpp in Sources */,
-				BBF2272F1EC12CEA00573356 /* RoboMath.cpp in Sources */,
-				BBF226351EC12C6100573356 /* Engine.cpp in Sources */,
 				BBAEF2B71EA94EDA00F0866E /* SuperpoweredSoundWrapper.cpp in Sources */,
+				BB83084C1EC2AD1F00435E7E /* GameObjectRegistry.cpp in Sources */,
+				BB83085B1EC2AD1F00435E7E /* Move.cpp in Sources */,
 				BB44C8891DB03A7E003E633F /* pngwutil.c in Sources */,
 				BBAEF29B1EA94EDA00F0866E /* Triangle.cpp in Sources */,
 				BBAEF2671EA94EDA00F0866E /* LineBatcher.cpp in Sources */,
 				BBAEF29D1EA94EDA00F0866E /* Vector2D.cpp in Sources */,
+				BB8308431EC2AD1F00435E7E /* DeliveryNotificationManager.cpp in Sources */,
 				BB44C8711DB03A7E003E633F /* pngpread.c in Sources */,
 				BBAEF2651EA94EDA00F0866E /* ITextureLoader.cpp in Sources */,
 				BBAEF1F71EA94EDA00F0866E /* PhysicalEntity.cpp in Sources */,
 				BBAEF2A71EA94EDA00F0866E /* ISound.cpp in Sources */,
 				BB44C87B1DB03A7E003E633F /* pngset.c in Sources */,
 				BBAEF2691EA94EDA00F0866E /* LineBatcherFactory.cpp in Sources */,
-				BBF2273B1EC12CEA00573356 /* TCPSocket.cpp in Sources */,
 				BBAEF2D51EA94EDA00F0866E /* Assets.cpp in Sources */,
+				BB8308761EC2AD1F00435E7E /* StringUtils.cpp in Sources */,
 				BBF226C81EC12CDE00573356 /* MouseClient.cpp in Sources */,
+				BB8308791EC2AD1F00435E7E /* TCPSocket.cpp in Sources */,
 				BBAEF2DD1EA94EDA00F0866E /* Text.cpp in Sources */,
 				BBAEF2551EA94EDA00F0866E /* Animation.cpp in Sources */,
-				BBF227371EC12CEA00573356 /* SocketUtil.cpp in Sources */,
 				BBAEF23D1EA94EDA00F0866E /* OpenGLProgram.cpp in Sources */,
-				BBF227191EC12CEA00573356 /* GameObject.cpp in Sources */,
-				BBF227391EC12CEA00573356 /* StringUtils.cpp in Sources */,
 				BBAEF2E31EA94EDA00F0866E /* MainAssets.cpp in Sources */,
 				BBAEF2471EA94EDA00F0866E /* OpenGLTextureProgram.cpp in Sources */,
 				BBAEF2411EA94EDA00F0866E /* OpenGLSpriteBatcher.cpp in Sources */,
-				BBF227291EC12CEA00573356 /* NetworkManager.cpp in Sources */,
 				BBAEF2991EA94EDA00F0866E /* OverlapTester.cpp in Sources */,
 				BBF226831EC12C9C00573356 /* Client.cpp in Sources */,
 				BBAEF2351EA94EDA00F0866E /* OpenGLGeometryProgram.cpp in Sources */,
@@ -2130,7 +2221,6 @@
 				BBAEF1FD1EA94EDA00F0866E /* AppleAssetDataHandler.cpp in Sources */,
 				BBF226D01EC12CDE00573356 /* RoboCatClient.cpp in Sources */,
 				BBAEF2A91EA94EDA00F0866E /* ISoundWrapper.cpp in Sources */,
-				BBF2271B1EC12CEA00573356 /* GameObjectRegistry.cpp in Sources */,
 				BBAEF23F1EA94EDA00F0866E /* OpenGLRendererHelper.cpp in Sources */,
 				BBAEF25D1EA94EDA00F0866E /* Font.cpp in Sources */,
 				BBAEF2791EA94EDA00F0866E /* TextureWrapper.cpp in Sources */,
@@ -2139,44 +2229,42 @@
 				BBAEF2A31EA94EDA00F0866E /* AudioEngineHelperFactory.cpp in Sources */,
 				BBAEF1F31EA94EDA00F0866E /* GridLockedPhysicalEntity.cpp in Sources */,
 				BBAEF2B31EA94EDA00F0866E /* SuperpoweredSound.cpp in Sources */,
-				BBF2273F1EC12CEA00573356 /* UDPSocket.cpp in Sources */,
-				BBF2273D1EC12CEA00573356 /* Timing.cpp in Sources */,
 				BBAEF27B1EA94EDA00F0866E /* TransitionGpuProgramWrapper.cpp in Sources */,
 				BB44C8871DB03A7E003E633F /* pngwtran.c in Sources */,
 				BBAEF2B11EA94EDA00F0866E /* AppleAudioEngineHelper.cpp in Sources */,
-				BBF2271D1EC12CEA00573356 /* InFlightPacket.cpp in Sources */,
 				BBAEF1FB1EA94EDA00F0866E /* apple_asset_data_handler.mm in Sources */,
 				BBAEF2AF1EA94EDA00F0866E /* apple_audio_engine_helper.mm in Sources */,
-				BBF227251EC12CEA00573356 /* Move.cpp in Sources */,
 				BB09CE1D1DBD3779006A3E49 /* SuperpoweredIOSAudioIO.mm in Sources */,
 				BB44C8811DB03A7E003E633F /* pngtrans.c in Sources */,
+				BB8308821EC2AD1F00435E7E /* World.cpp in Sources */,
 				BBAEF2891EA94EDA00F0866E /* ScreenInputManager.cpp in Sources */,
+				BB83086A1EC2AD1F00435E7E /* ScoreBoardManager.cpp in Sources */,
 				BB7428401EB2AF4200B7628D /* RTTI.cpp in Sources */,
 				BBAEF22D1EA94EDA00F0866E /* OpenGLCircleBatcher.cpp in Sources */,
 				BBAEF2331EA94EDA00F0866E /* OpenGLGeometryGpuProgramWrapper.cpp in Sources */,
 				BBAEF1EF1EA94EDA00F0866E /* Entity.cpp in Sources */,
 				BBF226C61EC12CDE00573356 /* InputManager.cpp in Sources */,
 				BB44C8771DB03A7E003E633F /* pngrtran.c in Sources */,
+				BB8308671EC2AD1F00435E7E /* RoboMath.cpp in Sources */,
 				BB3218761EC1418E007ED106 /* HUD.cpp in Sources */,
 				BBAEF25F1EA94EDA00F0866E /* GpuProgramWrapper.cpp in Sources */,
 				BBAEF26D1EA94EDA00F0866E /* NGRectBatcherFactory.cpp in Sources */,
 				BB44C3351DB0317E003E633F /* AppDelegate.m in Sources */,
-				BBF227231EC12CEA00573356 /* Mouse.cpp in Sources */,
 				BBAEF2A51EA94EDA00F0866E /* IAudioEngineHelper.cpp in Sources */,
-				BBF2272B1EC12CEA00573356 /* RoboCat.cpp in Sources */,
 				BBAEF2B51EA94EDA00F0866E /* SuperpoweredSoundManager.cpp in Sources */,
 				BBAEF1FF1EA94EDA00F0866E /* AssetDataHandler.cpp in Sources */,
 				BBAEF2E71EA94EDA00F0866E /* MainRenderer.cpp in Sources */,
 				BBAEF2611EA94EDA00F0866E /* GpuProgramWrapperFactory.cpp in Sources */,
 				BB44C8751DB03A7E003E633F /* pngrio.c in Sources */,
+				BB8308551EC2AD1F00435E7E /* MemoryBitStream.cpp in Sources */,
 				BB44C8831DB03A7E003E633F /* pngwio.c in Sources */,
 				BBAEF2571EA94EDA00F0866E /* CircleBatcher.cpp in Sources */,
 				BBAEF2391EA94EDA00F0866E /* OpenGLManager.cpp in Sources */,
-				BBF227271EC12CEA00573356 /* MoveList.cpp in Sources */,
 				BBAEF2371EA94EDA00F0866E /* OpenGLLineBatcher.cpp in Sources */,
 				BB44C8791DB03A7E003E633F /* pngrutil.c in Sources */,
 				BBAEF27F1EA94EDA00F0866E /* GamePadEvent.cpp in Sources */,
 				BB44C8851DB03A7E003E633F /* pngwrite.c in Sources */,
+				BB83087C1EC2AD1F00435E7E /* Timing.cpp in Sources */,
 				BBAEF2811EA94EDA00F0866E /* GamePadInputManager.cpp in Sources */,
 				BBAEF2871EA94EDA00F0866E /* ScreenEvent.cpp in Sources */,
 				BBAEF2751EA94EDA00F0866E /* TextureLoaderFactory.cpp in Sources */,
@@ -2187,14 +2275,12 @@
 				BB44C8631DB03A7E003E633F /* png.c in Sources */,
 				BB44C86B1DB03A7E003E633F /* pngget.c in Sources */,
 				BB44C35D1DB03267003E633F /* main.m in Sources */,
-				BBF227171EC12CEA00573356 /* DeliveryNotificationManager.cpp in Sources */,
 				BBAEF2831EA94EDA00F0866E /* KeyboardEvent.cpp in Sources */,
-				BBF227331EC12CEA00573356 /* SocketAddress.cpp in Sources */,
 				BBF226CA1EC12CDE00573356 /* NetworkManagerClient.cpp in Sources */,
 				BBAEF1F11EA94EDA00F0866E /* EntityManager.cpp in Sources */,
+				BB8308731EC2AD1F00435E7E /* SocketUtil.cpp in Sources */,
 				BBAEF2011EA94EDA00F0866E /* JsonFile.cpp in Sources */,
 				BB44C86D1DB03A7E003E633F /* pngmem.c in Sources */,
-				BBF227151EC12CEA00573356 /* AckRange.cpp in Sources */,
 				BBAEF2AB1EA94EDA00F0866E /* NGAudioEngine.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2205,43 +2291,45 @@
 			files = (
 				BB3218771EC1418E007ED106 /* HUD.cpp in Sources */,
 				BBAEF2941EA94EDA00F0866E /* Circle.cpp in Sources */,
+				BB8308831EC2AD1F00435E7E /* World.cpp in Sources */,
 				BBAEF2701EA94EDA00F0866E /* RendererHelperFactory.cpp in Sources */,
 				BBAEF23C1EA94EDA00F0866E /* OpenGLNGRectBatcher.cpp in Sources */,
 				BBAEF2301EA94EDA00F0866E /* OpenGLFramebufferToScreenGpuProgramWrapper.cpp in Sources */,
 				BB44C35E1DB03267003E633F /* main.m in Sources */,
+				BB8308441EC2AD1F00435E7E /* DeliveryNotificationManager.cpp in Sources */,
+				BB83086E1EC2AD1F00435E7E /* SocketAddress.cpp in Sources */,
 				BB44CB811DB053C0003E633F /* png.c in Sources */,
 				BBAEF1F61EA94EDA00F0866E /* GridManager.cpp in Sources */,
 				BBAEF2781EA94EDA00F0866E /* TextureRegion.cpp in Sources */,
-				BBF2271C1EC12CEA00573356 /* GameObjectRegistry.cpp in Sources */,
 				BBAEF28C1EA94EDA00F0866E /* TouchConverter.cpp in Sources */,
+				BB8308501EC2AD1F00435E7E /* InFlightPacket.cpp in Sources */,
 				BBAEF2DA1EA94EDA00F0866E /* IScreen.cpp in Sources */,
+				BB8308861EC2AD1F00435E7E /* Yarn.cpp in Sources */,
+				BB8308411EC2AD1F00435E7E /* AckRange.cpp in Sources */,
+				BB8308651EC2AD1F00435E7E /* RoboCat.cpp in Sources */,
 				BBAEF2981EA94EDA00F0866E /* NGRect.cpp in Sources */,
 				BBAEF2861EA94EDA00F0866E /* KeyboardInputManager.cpp in Sources */,
+				BB8308741EC2AD1F00435E7E /* SocketUtil.cpp in Sources */,
 				BBF226C71EC12CDE00573356 /* InputManager.cpp in Sources */,
 				BBAEF2E61EA94EDA00F0866E /* MainAssetsMapper.cpp in Sources */,
 				BBAEF26C1EA94EDA00F0866E /* NGRectBatcher.cpp in Sources */,
 				BBAEF25C1EA94EDA00F0866E /* DummyGpuProgramWrapper.cpp in Sources */,
 				BBAEF2441EA94EDA00F0866E /* OpenGLTextureGpuProgramWrapper.cpp in Sources */,
 				BBAEF2DC1EA94EDA00F0866E /* Renderer.cpp in Sources */,
-				BBF227381EC12CEA00573356 /* SocketUtil.cpp in Sources */,
 				BBAEF2961EA94EDA00F0866E /* Line.cpp in Sources */,
 				BBAEF2321EA94EDA00F0866E /* OpenGLFramebufferToScreenProgram.cpp in Sources */,
-				BBF227421EC12CEA00573356 /* World.cpp in Sources */,
 				BBAEF2B81EA94EDA00F0866E /* SuperpoweredSoundWrapper.cpp in Sources */,
-				BBF2272C1EC12CEA00573356 /* RoboCat.cpp in Sources */,
-				BBF227161EC12CEA00573356 /* AckRange.cpp in Sources */,
 				BB44CB821DB053C0003E633F /* pngerror.c in Sources */,
+				BB8308471EC2AD1F00435E7E /* Engine.cpp in Sources */,
 				BBAEF29C1EA94EDA00F0866E /* Triangle.cpp in Sources */,
 				BBAEF2681EA94EDA00F0866E /* LineBatcher.cpp in Sources */,
-				BBF227201EC12CEA00573356 /* InputState.cpp in Sources */,
-				BBF227321EC12CEA00573356 /* ScoreBoardManager.cpp in Sources */,
-				BBF227401EC12CEA00573356 /* UDPSocket.cpp in Sources */,
+				BB8308801EC2AD1F00435E7E /* UDPSocket.cpp in Sources */,
 				BBAEF29E1EA94EDA00F0866E /* Vector2D.cpp in Sources */,
-				BBF2272A1EC12CEA00573356 /* NetworkManager.cpp in Sources */,
 				BB44CB831DB053C0003E633F /* pngget.c in Sources */,
 				BBAEF2661EA94EDA00F0866E /* ITextureLoader.cpp in Sources */,
 				BBAEF1F81EA94EDA00F0866E /* PhysicalEntity.cpp in Sources */,
 				BBAEF2A81EA94EDA00F0866E /* ISound.cpp in Sources */,
+				BB8308561EC2AD1F00435E7E /* MemoryBitStream.cpp in Sources */,
 				BB44CB841DB053C0003E633F /* pngmem.c in Sources */,
 				BBAEF26A1EA94EDA00F0866E /* LineBatcherFactory.cpp in Sources */,
 				BBAEF2D61EA94EDA00F0866E /* Assets.cpp in Sources */,
@@ -2249,60 +2337,61 @@
 				BBAEF2561EA94EDA00F0866E /* Animation.cpp in Sources */,
 				BBAEF23E1EA94EDA00F0866E /* OpenGLProgram.cpp in Sources */,
 				BBAEF2E41EA94EDA00F0866E /* MainAssets.cpp in Sources */,
-				BBF227341EC12CEA00573356 /* SocketAddress.cpp in Sources */,
 				BBAEF2481EA94EDA00F0866E /* OpenGLTextureProgram.cpp in Sources */,
 				BBAEF2421EA94EDA00F0866E /* OpenGLSpriteBatcher.cpp in Sources */,
+				BB83086B1EC2AD1F00435E7E /* ScoreBoardManager.cpp in Sources */,
 				BBAEF29A1EA94EDA00F0866E /* OverlapTester.cpp in Sources */,
+				BB83084A1EC2AD1F00435E7E /* GameObject.cpp in Sources */,
+				BB8308621EC2AD1F00435E7E /* NetworkManager.cpp in Sources */,
 				BBAEF2361EA94EDA00F0866E /* OpenGLGeometryProgram.cpp in Sources */,
 				BBAEF2D81EA94EDA00F0866E /* IAssetsMapper.cpp in Sources */,
-				BBF2273C1EC12CEA00573356 /* TCPSocket.cpp in Sources */,
 				BBAEF2721EA94EDA00F0866E /* SpriteBatcher.cpp in Sources */,
+				BB8308531EC2AD1F00435E7E /* InputState.cpp in Sources */,
 				BBF226CF1EC12CDE00573356 /* ReplicationManagerClient.cpp in Sources */,
 				BBAEF1FE1EA94EDA00F0866E /* AppleAssetDataHandler.cpp in Sources */,
-				BBF227441EC12CEA00573356 /* Yarn.cpp in Sources */,
 				BBAEF2AA1EA94EDA00F0866E /* ISoundWrapper.cpp in Sources */,
 				BB7428411EB2AF4200B7628D /* RTTI.cpp in Sources */,
 				BBAEF2401EA94EDA00F0866E /* OpenGLRendererHelper.cpp in Sources */,
-				BBF227261EC12CEA00573356 /* Move.cpp in Sources */,
 				BBAEF25E1EA94EDA00F0866E /* Font.cpp in Sources */,
 				BBAEF27A1EA94EDA00F0866E /* TextureWrapper.cpp in Sources */,
 				BBAEF2EA1EA94EDA00F0866E /* MainScreen.cpp in Sources */,
 				BBAEF25A1EA94EDA00F0866E /* CircleBatcherFactory.cpp in Sources */,
-				BBF2271A1EC12CEA00573356 /* GameObject.cpp in Sources */,
 				BBAEF2A41EA94EDA00F0866E /* AudioEngineHelperFactory.cpp in Sources */,
+				BB83087D1EC2AD1F00435E7E /* Timing.cpp in Sources */,
 				BBAEF1F41EA94EDA00F0866E /* GridLockedPhysicalEntity.cpp in Sources */,
 				BBAEF2B41EA94EDA00F0866E /* SuperpoweredSound.cpp in Sources */,
 				BBAEF3101EA94FAC00F0866E /* JoystickController.mm in Sources */,
-				BBF226361EC12C6100573356 /* Engine.cpp in Sources */,
 				BBAEF27C1EA94EDA00F0866E /* TransitionGpuProgramWrapper.cpp in Sources */,
-				BBF227361EC12CEA00573356 /* SocketAddressFactory.cpp in Sources */,
 				BB44CB851DB053C0003E633F /* pngpread.c in Sources */,
 				BBF226C91EC12CDE00573356 /* MouseClient.cpp in Sources */,
 				BBAEF2B21EA94EDA00F0866E /* AppleAudioEngineHelper.cpp in Sources */,
 				BBF226841EC12C9C00573356 /* Client.cpp in Sources */,
-				BBF2273E1EC12CEA00573356 /* Timing.cpp in Sources */,
+				BB83085F1EC2AD1F00435E7E /* MoveList.cpp in Sources */,
 				BBAEF1FC1EA94EDA00F0866E /* apple_asset_data_handler.mm in Sources */,
 				BBAEF2B01EA94EDA00F0866E /* apple_audio_engine_helper.mm in Sources */,
 				BB44CB861DB053C0003E633F /* pngread.c in Sources */,
 				BB44CB871DB053C0003E633F /* pngrio.c in Sources */,
-				BBF227301EC12CEA00573356 /* RoboMath.cpp in Sources */,
 				BBAEF28A1EA94EDA00F0866E /* ScreenInputManager.cpp in Sources */,
 				BBAEF22E1EA94EDA00F0866E /* OpenGLCircleBatcher.cpp in Sources */,
+				BB83085C1EC2AD1F00435E7E /* Move.cpp in Sources */,
 				BBAEF2341EA94EDA00F0866E /* OpenGLGeometryGpuProgramWrapper.cpp in Sources */,
 				BBAEF1F01EA94EDA00F0866E /* Entity.cpp in Sources */,
 				BB44CB881DB053C0003E633F /* pngrtran.c in Sources */,
 				BBAEF2601EA94EDA00F0866E /* GpuProgramWrapper.cpp in Sources */,
 				BBAEF26E1EA94EDA00F0866E /* NGRectBatcherFactory.cpp in Sources */,
 				BB44CB891DB053C0003E633F /* pngrutil.c in Sources */,
+				BB83084D1EC2AD1F00435E7E /* GameObjectRegistry.cpp in Sources */,
+				BB8308771EC2AD1F00435E7E /* StringUtils.cpp in Sources */,
 				BBAEF2A61EA94EDA00F0866E /* IAudioEngineHelper.cpp in Sources */,
 				BBAEF2B61EA94EDA00F0866E /* SuperpoweredSoundManager.cpp in Sources */,
 				BBF226CB1EC12CDE00573356 /* NetworkManagerClient.cpp in Sources */,
 				BBAEF2001EA94EDA00F0866E /* AssetDataHandler.cpp in Sources */,
 				BBAEF2E81EA94EDA00F0866E /* MainRenderer.cpp in Sources */,
 				BBAEF2621EA94EDA00F0866E /* GpuProgramWrapperFactory.cpp in Sources */,
-				BBF227221EC12CEA00573356 /* MemoryBitStream.cpp in Sources */,
+				BB8308591EC2AD1F00435E7E /* Mouse.cpp in Sources */,
 				BB44CB8A1DB053C0003E633F /* pngset.c in Sources */,
 				BB44CB8B1DB053C0003E633F /* pngtrans.c in Sources */,
+				BB83087A1EC2AD1F00435E7E /* TCPSocket.cpp in Sources */,
 				BBAEF2581EA94EDA00F0866E /* CircleBatcher.cpp in Sources */,
 				BBAEF23A1EA94EDA00F0866E /* OpenGLManager.cpp in Sources */,
 				BBF226D31EC12CDE00573356 /* RoboCatClientPCH.cpp in Sources */,
@@ -2313,25 +2402,63 @@
 				BBAEF2821EA94EDA00F0866E /* GamePadInputManager.cpp in Sources */,
 				BBF226D11EC12CDE00573356 /* RoboCatClient.cpp in Sources */,
 				BBAEF2881EA94EDA00F0866E /* ScreenEvent.cpp in Sources */,
-				BBF2273A1EC12CEA00573356 /* StringUtils.cpp in Sources */,
 				BBAEF2761EA94EDA00F0866E /* TextureLoaderFactory.cpp in Sources */,
 				BBAEF2741EA94EDA00F0866E /* SpriteBatcherFactory.cpp in Sources */,
-				BBF2271E1EC12CEA00573356 /* InFlightPacket.cpp in Sources */,
-				BBF227281EC12CEA00573356 /* MoveList.cpp in Sources */,
 				BBAEF2641EA94EDA00F0866E /* IRendererHelper.cpp in Sources */,
 				BB44CB8E1DB053C0003E633F /* pngwtran.c in Sources */,
+				BB8308711EC2AD1F00435E7E /* SocketAddressFactory.cpp in Sources */,
 				BBAEF2461EA94EDA00F0866E /* OpenGLTextureLoader.cpp in Sources */,
 				BB44CB8F1DB053C0003E633F /* pngwutil.c in Sources */,
 				BB09CE231DBD3779006A3E49 /* SuperpoweredOSXAudioIO.mm in Sources */,
 				BBF226DD1EC12CDE00573356 /* YarnClient.cpp in Sources */,
 				BB44CB091DB04C83003E633F /* NGOpenGLView.mm in Sources */,
-				BBF227241EC12CEA00573356 /* Mouse.cpp in Sources */,
 				BBAEF2841EA94EDA00F0866E /* KeyboardEvent.cpp in Sources */,
 				BBAEF1F21EA94EDA00F0866E /* EntityManager.cpp in Sources */,
 				BBAEF2021EA94EDA00F0866E /* JsonFile.cpp in Sources */,
 				BB44C3281DB030B3003E633F /* AppDelegate.m in Sources */,
 				BBAEF2AC1EA94EDA00F0866E /* NGAudioEngine.cpp in Sources */,
-				BBF227181EC12CEA00573356 /* DeliveryNotificationManager.cpp in Sources */,
+				BB8308681EC2AD1F00435E7E /* RoboMath.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BB8307E11EC2AB7B00435E7E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BB8308511EC2AD1F00435E7E /* InFlightPacket.cpp in Sources */,
+				BB83087E1EC2AD1F00435E7E /* Timing.cpp in Sources */,
+				BB83086F1EC2AD1F00435E7E /* SocketAddress.cpp in Sources */,
+				BB8308661EC2AD1F00435E7E /* RoboCat.cpp in Sources */,
+				BB8308001EC2AC0900435E7E /* MouseServer.cpp in Sources */,
+				BB8308051EC2AC0900435E7E /* RoboCatServerPCH.cpp in Sources */,
+				BB8308071EC2AC0900435E7E /* YarnServer.cpp in Sources */,
+				BB83085D1EC2AD1F00435E7E /* Move.cpp in Sources */,
+				BB8308541EC2AD1F00435E7E /* InputState.cpp in Sources */,
+				BB8308011EC2AC0900435E7E /* NetworkManagerServer.cpp in Sources */,
+				BB8308041EC2AC0900435E7E /* RoboCatServer.cpp in Sources */,
+				BB8308061EC2AC0900435E7E /* Server.cpp in Sources */,
+				BB83086C1EC2AD1F00435E7E /* ScoreBoardManager.cpp in Sources */,
+				BB8308871EC2AD1F00435E7E /* Yarn.cpp in Sources */,
+				BB83084B1EC2AD1F00435E7E /* GameObject.cpp in Sources */,
+				BB83084E1EC2AD1F00435E7E /* GameObjectRegistry.cpp in Sources */,
+				BB8308601EC2AD1F00435E7E /* MoveList.cpp in Sources */,
+				BB8308811EC2AD1F00435E7E /* UDPSocket.cpp in Sources */,
+				BB8308841EC2AD1F00435E7E /* World.cpp in Sources */,
+				BB8308031EC2AC0900435E7E /* ReplicationManagerTransmissionData.cpp in Sources */,
+				BB83085A1EC2AD1F00435E7E /* Mouse.cpp in Sources */,
+				BB8307E81EC2AB7B00435E7E /* main.cpp in Sources */,
+				BB8308421EC2AD1F00435E7E /* AckRange.cpp in Sources */,
+				BB8308781EC2AD1F00435E7E /* StringUtils.cpp in Sources */,
+				BB8308691EC2AD1F00435E7E /* RoboMath.cpp in Sources */,
+				BB8308021EC2AC0900435E7E /* ReplicationManagerServer.cpp in Sources */,
+				BB8308451EC2AD1F00435E7E /* DeliveryNotificationManager.cpp in Sources */,
+				BB8308631EC2AD1F00435E7E /* NetworkManager.cpp in Sources */,
+				BB8308481EC2AD1F00435E7E /* Engine.cpp in Sources */,
+				BB8308571EC2AD1F00435E7E /* MemoryBitStream.cpp in Sources */,
+				BB8308721EC2AD1F00435E7E /* SocketAddressFactory.cpp in Sources */,
+				BB8308751EC2AD1F00435E7E /* SocketUtil.cpp in Sources */,
+				BB83087B1EC2AD1F00435E7E /* TCPSocket.cpp in Sources */,
+				BB8307FF1EC2AC0900435E7E /* ClientProxy.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2621,6 +2748,66 @@
 			};
 			name = Release;
 		};
+		BB8307EA1EC2AB7B00435E7E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CODE_SIGN_IDENTITY = "-";
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = 7V5EV5R3XG;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				HEADER_SEARCH_PATHS = (
+					"\"$(SRCROOT)/../../core\"",
+					"\"$(SRCROOT)/../../3rdparty\"",
+					"\"$(SRCROOT)server\"",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		BB8307EB1EC2AB7B00435E7E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 7V5EV5R3XG;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				HEADER_SEARCH_PATHS = (
+					"\"$(SRCROOT)/../../core\"",
+					"\"$(SRCROOT)/../../3rdparty\"",
+					"\"$(SRCROOT)server\"",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -2650,6 +2837,14 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
+		};
+		BB8307E91EC2AB7B00435E7E /* Build configuration list for PBXNativeTarget "dante server" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BB8307EA1EC2AB7B00435E7E /* Debug */,
+				BB8307EB1EC2AB7B00435E7E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
 		};
 /* End XCConfigurationList section */
 	};

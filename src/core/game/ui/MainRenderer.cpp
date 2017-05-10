@@ -21,6 +21,9 @@
 #include "SpriteBatcher.h"
 #include "TextureRegion.h"
 
+#include "World.h"
+#include "macros.h"
+
 MainRenderer::MainRenderer(int maxBatchSize) : Renderer(maxBatchSize),
 m_demo(new TextureWrapper("texture_001"))
 {
@@ -44,28 +47,57 @@ void MainRenderer::releaseDeviceDependentResources()
     Renderer::releaseDeviceDependentResources();
 }
 
-void MainRenderer::tempDraw(float stateTime, float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4)
+void MainRenderer::tempDraw(float stateTime)
 {
     m_rendererHelper->updateMatrix(0, CAM_WIDTH, 0, CAM_HEIGHT);
     
     if (ensureTexture(m_demo))
     {
         m_spriteBatcher->beginBatch();
+        
+        const auto& gameObjects = World::sInstance->GetGameObjects();
+        
+        for (GameObjectPtr go : gameObjects)
         {
-            TextureRegion tr = ASSETS->findTextureRegion("CharacterHoldingGun", stateTime);
-            m_spriteBatcher->drawSprite(x1, y1, 1.5f, 1.15f, 0, tr);
-        }
-        {
-            TextureRegion tr = ASSETS->findTextureRegion("CharacterHoldingGun", stateTime);
-            m_spriteBatcher->drawSprite(x2, y2, 1.5f, 1.15f, 0, tr);
-        }
-        {
-            TextureRegion tr = ASSETS->findTextureRegion("CharacterHoldingGun", stateTime);
-            m_spriteBatcher->drawSprite(x3, y3, 1.5f, 1.15f, 0, tr);
-        }
-        {
-            TextureRegion tr = ASSETS->findTextureRegion("CharacterHoldingGun", stateTime);
-            m_spriteBatcher->drawSprite(x4, y4, 1.5f, 1.15f, 0, tr);
+            if (go->GetClassId() == 'MOUS')
+            {
+                TextureRegion tr = ASSETS->findTextureRegion("TopSecretFolder");
+                m_spriteBatcher->drawSprite(go->GetLocation().mX, go->GetLocation().mY, go->GetScale(), go->GetScale(), 0, tr);
+            }
+            else if (go->GetClassId() == 'RCAT')
+            {
+                static Color c1 = Color(1, 1, 1, 1);
+                static Color c2 = Color(1, 0, 0, 1);
+                static Color c3 = Color(0, 1, 0, 1);
+                static Color c4 = Color(0, 0, 1, 1);
+                
+                Color* c = &c1;
+                switch (go->GetNetworkId())
+                {
+                    case 21:
+                        c = &c1;
+                        break;
+                    case 22:
+                        c = &c2;
+                        break;
+                    case 23:
+                        c = &c3;
+                        break;
+                    case 24:
+                        c = &c4;
+                        break;
+                    default:
+                        break;
+                }
+                
+                TextureRegion tr = ASSETS->findTextureRegion("CharacterHoldingGun", stateTime);
+                m_spriteBatcher->drawSprite(go->GetLocation().mX, go->GetLocation().mY, go->GetScale(), go->GetScale(), RADIANS_TO_DEGREES(go->GetRotation()) - 90, *c, tr);
+            }
+            else if (go->GetClassId() == 'YARN')
+            {
+                TextureRegion tr = ASSETS->findTextureRegion("Pellet");
+                m_spriteBatcher->drawSprite(go->GetLocation().mX, go->GetLocation().mY, go->GetScale(), go->GetScale(), 0, tr);
+            }
         }
         m_spriteBatcher->endBatch(*m_demo->gpuTextureWrapper, *m_textureGpuProgramWrapper);
     }
