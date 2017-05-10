@@ -94,14 +94,14 @@ void MainScreen::onPause()
 
 void MainScreen::update(float deltaTime)
 {
+    tempUpdateInput();
+    
+    NetworkManagerClient::sInstance->ProcessIncomingPackets();
+    
     m_fFrameStateTime += deltaTime;
     
     if (m_fFrameStateTime >= FRAME_RATE)
     {
-        tempUpdateInput();
-        
-        NetworkManagerClient::sInstance->ProcessIncomingPackets();
-        
         while (m_fFrameStateTime >= FRAME_RATE)
         {
             m_fFrameStateTime -= FRAME_RATE;
@@ -110,9 +110,9 @@ void MainScreen::update(float deltaTime)
         }
         
         NG_AUDIO_ENGINE->update();
-        
-        NetworkManagerClient::sInstance->SendOutgoingPackets();
     }
+    
+    NetworkManagerClient::sInstance->SendOutgoingPackets();
 }
 
 void MainScreen::render()
