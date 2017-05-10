@@ -2845,6 +2845,7 @@
 				BB8307EB1EC2AB7B00435E7E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
