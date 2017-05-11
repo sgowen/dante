@@ -66,6 +66,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/_ext/1089092933/RoboCatServer.o \
 	${OBJECTDIR}/_ext/1089092933/RoboCatServerPCH.o \
 	${OBJECTDIR}/_ext/1089092933/RodentServer.o \
+	${OBJECTDIR}/_ext/1089092933/Server.o \
 	${OBJECTDIR}/_ext/1089092933/YarnServer.o \
 	${OBJECTDIR}/main.o
 
@@ -248,6 +249,11 @@ ${OBJECTDIR}/_ext/1089092933/RodentServer.o: ../../core/framework/network/server
 	${MKDIR} -p ${OBJECTDIR}/_ext/1089092933
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -s -D_POSIX_C_SOURCE -I../../core/framework/network/server -I../../core/framework/network/portable -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/1089092933/RodentServer.o ../../core/framework/network/server/RodentServer.cpp
+
+${OBJECTDIR}/_ext/1089092933/Server.o: ../../core/framework/network/server/Server.cpp 
+	${MKDIR} -p ${OBJECTDIR}/_ext/1089092933
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -s -D_POSIX_C_SOURCE -I../../core/framework/network/server -I../../core/framework/network/portable -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/1089092933/Server.o ../../core/framework/network/server/Server.cpp
 
 ${OBJECTDIR}/_ext/1089092933/YarnServer.o: ../../core/framework/network/server/YarnServer.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/1089092933

@@ -31,6 +31,7 @@
       <itemPath>../../core/framework/network/portable/Rodent.h</itemPath>
       <itemPath>../../core/framework/network/server/RodentServer.h</itemPath>
       <itemPath>../../core/framework/network/portable/ScoreBoardManager.h</itemPath>
+      <itemPath>../../core/framework/network/server/Server.h</itemPath>
       <itemPath>../../core/framework/network/portable/SocketAddress.h</itemPath>
       <itemPath>../../core/framework/network/portable/SocketAddressFactory.h</itemPath>
       <itemPath>../../core/framework/network/portable/SocketUtil.h</itemPath>
@@ -73,6 +74,7 @@
       <itemPath>../../core/framework/network/portable/Rodent.cpp</itemPath>
       <itemPath>../../core/framework/network/server/RodentServer.cpp</itemPath>
       <itemPath>../../core/framework/network/portable/ScoreBoardManager.cpp</itemPath>
+      <itemPath>../../core/framework/network/server/Server.cpp</itemPath>
       <itemPath>../../core/framework/network/portable/SocketAddress.cpp</itemPath>
       <itemPath>../../core/framework/network/portable/SocketAddressFactory.cpp</itemPath>
       <itemPath>../../core/framework/network/portable/SocketUtil.cpp</itemPath>
@@ -476,6 +478,16 @@
             tool="3"
             flavor2="0">
       </item>
+      <item path="../../core/framework/network/server/Server.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/server/Server.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
       <item path="../../core/framework/network/server/YarnServer.cpp"
             ex="false"
             tool="1"
@@ -850,6 +862,16 @@
             flavor2="0">
       </item>
       <item path="../../core/framework/network/server/RodentServer.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/server/Server.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/server/Server.h"
             ex="false"
             tool="3"
             flavor2="0">
