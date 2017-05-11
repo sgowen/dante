@@ -10,3 +10,4 @@ cd ../../framework/graphics/opengl/shader
 cd ../../../../../../assets/textures/
 
 ../../src/core/framework/tools/XOREncryptDecrypt texture_001.png texture_001.ngt
+../../src/core/framework/tools/XOREncryptDecrypt texture_002.png texture_002.ngt

@@ -88,6 +88,7 @@
 		BB44CB961DB05486003E633F /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB44CB951DB05486003E633F /* QuartzCore.framework */; };
 		BB44CB9A1DB054B8003E633F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB44CB991DB054B8003E633F /* Foundation.framework */; };
 		BB44CB9E1DB054F9003E633F /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = BB44CB9D1DB054F9003E633F /* libz.tbd */; };
+		BB57737E1EC409B2005C480C /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB57737D1EC409B2005C480C /* main.cpp */; };
 		BB66EC201C0E575E006DE4F5 /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB66EC1F1C0E575D006DE4F5 /* OpenAL.framework */; };
 		BB6DB1B81E76FCCF005C0FAD /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BB6DB1B51E76FCCF005C0FAD /* Main.storyboard */; };
 		BB6DB1BB1E76FD7F005C0FAD /* MainViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = BB6DB1BA1E76FD7F005C0FAD /* MainViewController.mm */; };
@@ -105,7 +106,6 @@
 		BB7639521E21B5A200534DAB /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB7639511E21B5A200534DAB /* MobileCoreServices.framework */; };
 		BB7639571E21B6DC00534DAB /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = BB7639561E21B6DC00534DAB /* libz.tbd */; };
 		BB7639591E21B6E000534DAB /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB7639581E21B6E000534DAB /* AddressBook.framework */; };
-		BB8307E81EC2AB7B00435E7E /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8307E71EC2AB7B00435E7E /* main.cpp */; };
 		BB8307FF1EC2AC0900435E7E /* ClientProxy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8307ED1EC2AC0900435E7E /* ClientProxy.cpp */; };
 		BB8308001EC2AC0900435E7E /* MouseServer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8307EF1EC2AC0900435E7E /* MouseServer.cpp */; };
 		BB8308011EC2AC0900435E7E /* NetworkManagerServer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8307F11EC2AC0900435E7E /* NetworkManagerServer.cpp */; };
@@ -345,6 +345,8 @@
 		BBCCA84A1DB346C100452FA1 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBCCA8491DB346C100452FA1 /* CoreAudio.framework */; };
 		BBCCA8FD1DB36EB600452FA1 /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBCCA8FC1DB36EB600452FA1 /* OpenAL.framework */; };
 		BBCCA9001DB36F0F00452FA1 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB44CB001DB04C67003E633F /* AVFoundation.framework */; };
+		BBD909D61EC38FC80075FB11 /* texture_002.ngt in Resources */ = {isa = PBXBuildFile; fileRef = BBD909D51EC38FC80075FB11 /* texture_002.ngt */; };
+		BBD909D71EC38FC80075FB11 /* texture_002.ngt in Resources */ = {isa = PBXBuildFile; fileRef = BBD909D51EC38FC80075FB11 /* texture_002.ngt */; };
 		BBF226831EC12C9C00573356 /* Client.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF226641EC12C9C00573356 /* Client.cpp */; };
 		BBF226841EC12C9C00573356 /* Client.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF226641EC12C9C00573356 /* Client.cpp */; };
 		BBF226C61EC12CDE00573356 /* InputManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF226A81EC12CDE00573356 /* InputManager.cpp */; };
@@ -536,6 +538,90 @@
 		BB4BF1E11E7C899500534219 /* MainNativeActivity.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = MainNativeActivity.cpp; sourceTree = "<group>"; };
 		BB51314F1E625BD700204148 /* libSuperpoweredAndroidarm64-v8a.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libSuperpoweredAndroidarm64-v8a.a"; sourceTree = "<group>"; };
 		BB5131501E625BD700204148 /* libSuperpoweredAndroidarmeabi-v7a.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libSuperpoweredAndroidarmeabi-v7a.a"; sourceTree = "<group>"; };
+		BB57731E1EC409A0005C480C /* .dep.inc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.pascal; path = .dep.inc; sourceTree = "<group>"; };
+		BB57731F1EC409A0005C480C /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
+		BB5773251EC409A0005C480C /* ClientProxy.o */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.objfile"; path = ClientProxy.o; sourceTree = "<group>"; };
+		BB5773261EC409A0005C480C /* ClientProxy.o.d */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.dtrace; path = ClientProxy.o.d; sourceTree = "<group>"; };
+		BB5773271EC409A0005C480C /* MouseServer.o */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.objfile"; path = MouseServer.o; sourceTree = "<group>"; };
+		BB5773281EC409A0005C480C /* MouseServer.o.d */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.dtrace; path = MouseServer.o.d; sourceTree = "<group>"; };
+		BB5773291EC409A0005C480C /* NetworkManagerServer.o */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.objfile"; path = NetworkManagerServer.o; sourceTree = "<group>"; };
+		BB57732A1EC409A0005C480C /* NetworkManagerServer.o.d */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.dtrace; path = NetworkManagerServer.o.d; sourceTree = "<group>"; };
+		BB57732B1EC409A0005C480C /* ReplicationManagerServer.o */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.objfile"; path = ReplicationManagerServer.o; sourceTree = "<group>"; };
+		BB57732C1EC409A0005C480C /* ReplicationManagerServer.o.d */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.dtrace; path = ReplicationManagerServer.o.d; sourceTree = "<group>"; };
+		BB57732D1EC409A0005C480C /* ReplicationManagerTransmissionData.o */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.objfile"; path = ReplicationManagerTransmissionData.o; sourceTree = "<group>"; };
+		BB57732E1EC409A0005C480C /* ReplicationManagerTransmissionData.o.d */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.dtrace; path = ReplicationManagerTransmissionData.o.d; sourceTree = "<group>"; };
+		BB57732F1EC409A0005C480C /* RoboCatServer.o */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.objfile"; path = RoboCatServer.o; sourceTree = "<group>"; };
+		BB5773301EC409A0005C480C /* RoboCatServer.o.d */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.dtrace; path = RoboCatServer.o.d; sourceTree = "<group>"; };
+		BB5773311EC409A0005C480C /* RoboCatServerPCH.o */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.objfile"; path = RoboCatServerPCH.o; sourceTree = "<group>"; };
+		BB5773321EC409A0005C480C /* RoboCatServerPCH.o.d */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.dtrace; path = RoboCatServerPCH.o.d; sourceTree = "<group>"; };
+		BB5773331EC409A0005C480C /* server.o */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.objfile"; path = server.o; sourceTree = "<group>"; };
+		BB5773341EC409A0005C480C /* server.o.d */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.dtrace; path = server.o.d; sourceTree = "<group>"; };
+		BB5773351EC409A0005C480C /* YarnServer.o */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.objfile"; path = YarnServer.o; sourceTree = "<group>"; };
+		BB5773361EC409A0005C480C /* YarnServer.o.d */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.dtrace; path = YarnServer.o.d; sourceTree = "<group>"; };
+		BB5773381EC409A0005C480C /* AckRange.o */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.objfile"; path = AckRange.o; sourceTree = "<group>"; };
+		BB5773391EC409A0005C480C /* AckRange.o.d */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.dtrace; path = AckRange.o.d; sourceTree = "<group>"; };
+		BB57733A1EC409A0005C480C /* DeliveryNotificationManager.o */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.objfile"; path = DeliveryNotificationManager.o; sourceTree = "<group>"; };
+		BB57733B1EC409A0005C480C /* DeliveryNotificationManager.o.d */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.dtrace; path = DeliveryNotificationManager.o.d; sourceTree = "<group>"; };
+		BB57733C1EC409A0005C480C /* Engine.o */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.objfile"; path = Engine.o; sourceTree = "<group>"; };
+		BB57733D1EC409A0005C480C /* Engine.o.d */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.dtrace; path = Engine.o.d; sourceTree = "<group>"; };
+		BB57733E1EC409A0005C480C /* GameObject.o */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.objfile"; path = GameObject.o; sourceTree = "<group>"; };
+		BB57733F1EC409A0005C480C /* GameObject.o.d */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.dtrace; path = GameObject.o.d; sourceTree = "<group>"; };
+		BB5773401EC409A1005C480C /* GameObjectRegistry.o */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.objfile"; path = GameObjectRegistry.o; sourceTree = "<group>"; };
+		BB5773411EC409A1005C480C /* GameObjectRegistry.o.d */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.dtrace; path = GameObjectRegistry.o.d; sourceTree = "<group>"; };
+		BB5773421EC409A1005C480C /* InFlightPacket.o */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.objfile"; path = InFlightPacket.o; sourceTree = "<group>"; };
+		BB5773431EC409A1005C480C /* InFlightPacket.o.d */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.dtrace; path = InFlightPacket.o.d; sourceTree = "<group>"; };
+		BB5773441EC409A1005C480C /* InputState.o */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.objfile"; path = InputState.o; sourceTree = "<group>"; };
+		BB5773451EC409A1005C480C /* InputState.o.d */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.dtrace; path = InputState.o.d; sourceTree = "<group>"; };
+		BB5773461EC409A1005C480C /* MemoryBitStream.o */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.objfile"; path = MemoryBitStream.o; sourceTree = "<group>"; };
+		BB5773471EC409A1005C480C /* MemoryBitStream.o.d */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.dtrace; path = MemoryBitStream.o.d; sourceTree = "<group>"; };
+		BB5773481EC409A1005C480C /* Mouse.o */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.objfile"; path = Mouse.o; sourceTree = "<group>"; };
+		BB5773491EC409A1005C480C /* Mouse.o.d */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.dtrace; path = Mouse.o.d; sourceTree = "<group>"; };
+		BB57734A1EC409A1005C480C /* Move.o */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.objfile"; path = Move.o; sourceTree = "<group>"; };
+		BB57734B1EC409A1005C480C /* Move.o.d */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.dtrace; path = Move.o.d; sourceTree = "<group>"; };
+		BB57734C1EC409A1005C480C /* MoveList.o */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.objfile"; path = MoveList.o; sourceTree = "<group>"; };
+		BB57734D1EC409A1005C480C /* MoveList.o.d */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.dtrace; path = MoveList.o.d; sourceTree = "<group>"; };
+		BB57734E1EC409A1005C480C /* NetworkManager.o */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.objfile"; path = NetworkManager.o; sourceTree = "<group>"; };
+		BB57734F1EC409A1005C480C /* NetworkManager.o.d */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.dtrace; path = NetworkManager.o.d; sourceTree = "<group>"; };
+		BB5773501EC409A1005C480C /* RoboCat.o */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.objfile"; path = RoboCat.o; sourceTree = "<group>"; };
+		BB5773511EC409A1005C480C /* RoboCat.o.d */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.dtrace; path = RoboCat.o.d; sourceTree = "<group>"; };
+		BB5773521EC409A1005C480C /* RoboMath.o */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.objfile"; path = RoboMath.o; sourceTree = "<group>"; };
+		BB5773531EC409A1005C480C /* RoboMath.o.d */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.dtrace; path = RoboMath.o.d; sourceTree = "<group>"; };
+		BB5773541EC409A1005C480C /* ScoreBoardManager.o */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.objfile"; path = ScoreBoardManager.o; sourceTree = "<group>"; };
+		BB5773551EC409A1005C480C /* ScoreBoardManager.o.d */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.dtrace; path = ScoreBoardManager.o.d; sourceTree = "<group>"; };
+		BB5773561EC409A1005C480C /* SocketAddress.o */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.objfile"; path = SocketAddress.o; sourceTree = "<group>"; };
+		BB5773571EC409A1005C480C /* SocketAddress.o.d */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.dtrace; path = SocketAddress.o.d; sourceTree = "<group>"; };
+		BB5773581EC409A1005C480C /* SocketAddressFactory.o */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.objfile"; path = SocketAddressFactory.o; sourceTree = "<group>"; };
+		BB5773591EC409A1005C480C /* SocketAddressFactory.o.d */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.dtrace; path = SocketAddressFactory.o.d; sourceTree = "<group>"; };
+		BB57735A1EC409A1005C480C /* SocketUtil.o */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.objfile"; path = SocketUtil.o; sourceTree = "<group>"; };
+		BB57735B1EC409A1005C480C /* SocketUtil.o.d */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.dtrace; path = SocketUtil.o.d; sourceTree = "<group>"; };
+		BB57735C1EC409A1005C480C /* StringUtils.o */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.objfile"; path = StringUtils.o; sourceTree = "<group>"; };
+		BB57735D1EC409A1005C480C /* StringUtils.o.d */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.dtrace; path = StringUtils.o.d; sourceTree = "<group>"; };
+		BB57735E1EC409A1005C480C /* TCPSocket.o */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.objfile"; path = TCPSocket.o; sourceTree = "<group>"; };
+		BB57735F1EC409A1005C480C /* TCPSocket.o.d */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.dtrace; path = TCPSocket.o.d; sourceTree = "<group>"; };
+		BB5773601EC409A1005C480C /* Timing.o */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.objfile"; path = Timing.o; sourceTree = "<group>"; };
+		BB5773611EC409A1005C480C /* Timing.o.d */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.dtrace; path = Timing.o.d; sourceTree = "<group>"; };
+		BB5773621EC409A1005C480C /* UDPSocket.o */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.objfile"; path = UDPSocket.o; sourceTree = "<group>"; };
+		BB5773631EC409A1005C480C /* UDPSocket.o.d */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.dtrace; path = UDPSocket.o.d; sourceTree = "<group>"; };
+		BB5773641EC409A1005C480C /* World.o */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.objfile"; path = World.o; sourceTree = "<group>"; };
+		BB5773651EC409A1005C480C /* World.o.d */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.dtrace; path = World.o.d; sourceTree = "<group>"; };
+		BB5773661EC409A1005C480C /* Yarn.o */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.objfile"; path = Yarn.o; sourceTree = "<group>"; };
+		BB5773671EC409A1005C480C /* Yarn.o.d */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.dtrace; path = Yarn.o.d; sourceTree = "<group>"; };
+		BB5773681EC409A1005C480C /* main.o.d */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.dtrace; path = main.o.d; sourceTree = "<group>"; };
+		BB57736C1EC409A1005C480C /* dante */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = dante; sourceTree = "<group>"; };
+		BB57736E1EC409A1005C480C /* Makefile */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
+		BB5773701EC409A1005C480C /* configurations.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = configurations.xml; sourceTree = "<group>"; };
+		BB5773711EC409A1005C480C /* Makefile-Debug.mk */ = {isa = PBXFileReference; lastKnownFileType = text; path = "Makefile-Debug.mk"; sourceTree = "<group>"; };
+		BB5773721EC409A1005C480C /* Makefile-impl.mk */ = {isa = PBXFileReference; lastKnownFileType = text; path = "Makefile-impl.mk"; sourceTree = "<group>"; };
+		BB5773731EC409A1005C480C /* Makefile-Release.mk */ = {isa = PBXFileReference; lastKnownFileType = text; path = "Makefile-Release.mk"; sourceTree = "<group>"; };
+		BB5773741EC409A1005C480C /* Makefile-variables.mk */ = {isa = PBXFileReference; lastKnownFileType = text; path = "Makefile-variables.mk"; sourceTree = "<group>"; };
+		BB5773751EC409A1005C480C /* Package-Debug.bash */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = "Package-Debug.bash"; sourceTree = "<group>"; };
+		BB5773761EC409A1005C480C /* Package-Release.bash */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = "Package-Release.bash"; sourceTree = "<group>"; };
+		BB5773781EC409A1005C480C /* configurations.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = configurations.xml; sourceTree = "<group>"; };
+		BB5773791EC409A1005C480C /* launcher.properties */ = {isa = PBXFileReference; lastKnownFileType = text; path = launcher.properties; sourceTree = "<group>"; };
+		BB57737A1EC409A1005C480C /* Makefile-variables.mk */ = {isa = PBXFileReference; lastKnownFileType = text; path = "Makefile-variables.mk"; sourceTree = "<group>"; };
+		BB57737B1EC409A1005C480C /* private.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = private.xml; sourceTree = "<group>"; };
+		BB57737C1EC409A1005C480C /* project.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = project.xml; sourceTree = "<group>"; };
+		BB57737D1EC409B2005C480C /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		BB66EC1F1C0E575D006DE4F5 /* OpenAL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenAL.framework; path = System/Library/Frameworks/OpenAL.framework; sourceTree = SDKROOT; };
 		BB6DB1B61E76FCCF005C0FAD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Main.storyboard; sourceTree = "<group>"; };
 		BB6DB1B91E76FD7F005C0FAD /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
@@ -587,7 +673,6 @@
 		BB7639561E21B6DC00534DAB /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		BB7639581E21B6E000534DAB /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
 		BB8307E51EC2AB7B00435E7E /* dante server */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "dante server"; sourceTree = BUILT_PRODUCTS_DIR; };
-		BB8307E71EC2AB7B00435E7E /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = ../server/main.cpp; sourceTree = "<group>"; };
 		BB8307ED1EC2AC0900435E7E /* ClientProxy.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ClientProxy.cpp; sourceTree = "<group>"; };
 		BB8307EE1EC2AC0900435E7E /* ClientProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClientProxy.h; sourceTree = "<group>"; };
 		BB8307EF1EC2AC0900435E7E /* MouseServer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MouseServer.cpp; sourceTree = "<group>"; };
@@ -875,6 +960,8 @@
 		BBCCA8461DB3469500452FA1 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.12.sdk/System/Library/Frameworks/CoreMedia.framework; sourceTree = DEVELOPER_DIR; };
 		BBCCA8491DB346C100452FA1 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.12.sdk/System/Library/Frameworks/CoreAudio.framework; sourceTree = DEVELOPER_DIR; };
 		BBCCA8FC1DB36EB600452FA1 /* OpenAL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenAL.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.12.sdk/System/Library/Frameworks/OpenAL.framework; sourceTree = DEVELOPER_DIR; };
+		BBD909D51EC38FC80075FB11 /* texture_002.ngt */ = {isa = PBXFileReference; lastKnownFileType = file; path = texture_002.ngt; sourceTree = "<group>"; };
+		BBD909D81EC38FD00075FB11 /* texture_002.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = texture_002.png; sourceTree = "<group>"; };
 		BBF226641EC12C9C00573356 /* Client.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Client.cpp; sourceTree = "<group>"; };
 		BBF226651EC12C9C00573356 /* Client.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Client.h; sourceTree = "<group>"; };
 		BBF226A81EC12CDE00573356 /* InputManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = InputManager.cpp; sourceTree = "<group>"; };
@@ -974,7 +1061,7 @@
 				BB34FD701E565A7400AC8197 /* jni */,
 				BB44C31E1DB030B3003E633F /* mac */,
 				0ADF1875178E2185005DA99E /* Products */,
-				BB8307E61EC2AB7B00435E7E /* server */,
+				BB57731D1EC409A0005C480C /* server */,
 				BBB6C0281E9E80CB00D68409 /* shared */,
 				BB44C34A1DB03267003E633F /* shared */,
 			);
@@ -1228,6 +1315,8 @@
 			children = (
 				BB052CBA1EBA8771007FA789 /* texture_001.ngt */,
 				BB052CBD1EBA8777007FA789 /* texture_001.png */,
+				BBD909D51EC38FC80075FB11 /* texture_002.ngt */,
+				BBD909D81EC38FD00075FB11 /* texture_002.png */,
 			);
 			path = textures;
 			sourceTree = "<group>";
@@ -1324,6 +1413,186 @@
 			path = ..;
 			sourceTree = "<group>";
 		};
+		BB57731D1EC409A0005C480C /* server */ = {
+			isa = PBXGroup;
+			children = (
+				BB57731E1EC409A0005C480C /* .dep.inc */,
+				BB57731F1EC409A0005C480C /* .gitignore */,
+				BB5773201EC409A0005C480C /* build */,
+				BB5773691EC409A1005C480C /* dist */,
+				BB57737D1EC409B2005C480C /* main.cpp */,
+				BB57736E1EC409A1005C480C /* Makefile */,
+				BB57736F1EC409A1005C480C /* nbproject */,
+			);
+			name = server;
+			path = ../server;
+			sourceTree = "<group>";
+		};
+		BB5773201EC409A0005C480C /* build */ = {
+			isa = PBXGroup;
+			children = (
+				BB5773211EC409A0005C480C /* Debug */,
+			);
+			path = build;
+			sourceTree = "<group>";
+		};
+		BB5773211EC409A0005C480C /* Debug */ = {
+			isa = PBXGroup;
+			children = (
+				BB5773221EC409A0005C480C /* GNU-MacOSX */,
+			);
+			path = Debug;
+			sourceTree = "<group>";
+		};
+		BB5773221EC409A0005C480C /* GNU-MacOSX */ = {
+			isa = PBXGroup;
+			children = (
+				BB5773231EC409A0005C480C /* _ext */,
+				BB5773681EC409A1005C480C /* main.o.d */,
+			);
+			path = "GNU-MacOSX";
+			sourceTree = "<group>";
+		};
+		BB5773231EC409A0005C480C /* _ext */ = {
+			isa = PBXGroup;
+			children = (
+				BB5773241EC409A0005C480C /* 1089092933 */,
+				BB5773371EC409A0005C480C /* 2004051235 */,
+			);
+			path = _ext;
+			sourceTree = "<group>";
+		};
+		BB5773241EC409A0005C480C /* 1089092933 */ = {
+			isa = PBXGroup;
+			children = (
+				BB5773251EC409A0005C480C /* ClientProxy.o */,
+				BB5773261EC409A0005C480C /* ClientProxy.o.d */,
+				BB5773271EC409A0005C480C /* MouseServer.o */,
+				BB5773281EC409A0005C480C /* MouseServer.o.d */,
+				BB5773291EC409A0005C480C /* NetworkManagerServer.o */,
+				BB57732A1EC409A0005C480C /* NetworkManagerServer.o.d */,
+				BB57732B1EC409A0005C480C /* ReplicationManagerServer.o */,
+				BB57732C1EC409A0005C480C /* ReplicationManagerServer.o.d */,
+				BB57732D1EC409A0005C480C /* ReplicationManagerTransmissionData.o */,
+				BB57732E1EC409A0005C480C /* ReplicationManagerTransmissionData.o.d */,
+				BB57732F1EC409A0005C480C /* RoboCatServer.o */,
+				BB5773301EC409A0005C480C /* RoboCatServer.o.d */,
+				BB5773311EC409A0005C480C /* RoboCatServerPCH.o */,
+				BB5773321EC409A0005C480C /* RoboCatServerPCH.o.d */,
+				BB5773331EC409A0005C480C /* server.o */,
+				BB5773341EC409A0005C480C /* server.o.d */,
+				BB5773351EC409A0005C480C /* YarnServer.o */,
+				BB5773361EC409A0005C480C /* YarnServer.o.d */,
+			);
+			path = 1089092933;
+			sourceTree = "<group>";
+		};
+		BB5773371EC409A0005C480C /* 2004051235 */ = {
+			isa = PBXGroup;
+			children = (
+				BB5773381EC409A0005C480C /* AckRange.o */,
+				BB5773391EC409A0005C480C /* AckRange.o.d */,
+				BB57733A1EC409A0005C480C /* DeliveryNotificationManager.o */,
+				BB57733B1EC409A0005C480C /* DeliveryNotificationManager.o.d */,
+				BB57733C1EC409A0005C480C /* Engine.o */,
+				BB57733D1EC409A0005C480C /* Engine.o.d */,
+				BB57733E1EC409A0005C480C /* GameObject.o */,
+				BB57733F1EC409A0005C480C /* GameObject.o.d */,
+				BB5773401EC409A1005C480C /* GameObjectRegistry.o */,
+				BB5773411EC409A1005C480C /* GameObjectRegistry.o.d */,
+				BB5773421EC409A1005C480C /* InFlightPacket.o */,
+				BB5773431EC409A1005C480C /* InFlightPacket.o.d */,
+				BB5773441EC409A1005C480C /* InputState.o */,
+				BB5773451EC409A1005C480C /* InputState.o.d */,
+				BB5773461EC409A1005C480C /* MemoryBitStream.o */,
+				BB5773471EC409A1005C480C /* MemoryBitStream.o.d */,
+				BB5773481EC409A1005C480C /* Mouse.o */,
+				BB5773491EC409A1005C480C /* Mouse.o.d */,
+				BB57734A1EC409A1005C480C /* Move.o */,
+				BB57734B1EC409A1005C480C /* Move.o.d */,
+				BB57734C1EC409A1005C480C /* MoveList.o */,
+				BB57734D1EC409A1005C480C /* MoveList.o.d */,
+				BB57734E1EC409A1005C480C /* NetworkManager.o */,
+				BB57734F1EC409A1005C480C /* NetworkManager.o.d */,
+				BB5773501EC409A1005C480C /* RoboCat.o */,
+				BB5773511EC409A1005C480C /* RoboCat.o.d */,
+				BB5773521EC409A1005C480C /* RoboMath.o */,
+				BB5773531EC409A1005C480C /* RoboMath.o.d */,
+				BB5773541EC409A1005C480C /* ScoreBoardManager.o */,
+				BB5773551EC409A1005C480C /* ScoreBoardManager.o.d */,
+				BB5773561EC409A1005C480C /* SocketAddress.o */,
+				BB5773571EC409A1005C480C /* SocketAddress.o.d */,
+				BB5773581EC409A1005C480C /* SocketAddressFactory.o */,
+				BB5773591EC409A1005C480C /* SocketAddressFactory.o.d */,
+				BB57735A1EC409A1005C480C /* SocketUtil.o */,
+				BB57735B1EC409A1005C480C /* SocketUtil.o.d */,
+				BB57735C1EC409A1005C480C /* StringUtils.o */,
+				BB57735D1EC409A1005C480C /* StringUtils.o.d */,
+				BB57735E1EC409A1005C480C /* TCPSocket.o */,
+				BB57735F1EC409A1005C480C /* TCPSocket.o.d */,
+				BB5773601EC409A1005C480C /* Timing.o */,
+				BB5773611EC409A1005C480C /* Timing.o.d */,
+				BB5773621EC409A1005C480C /* UDPSocket.o */,
+				BB5773631EC409A1005C480C /* UDPSocket.o.d */,
+				BB5773641EC409A1005C480C /* World.o */,
+				BB5773651EC409A1005C480C /* World.o.d */,
+				BB5773661EC409A1005C480C /* Yarn.o */,
+				BB5773671EC409A1005C480C /* Yarn.o.d */,
+			);
+			path = 2004051235;
+			sourceTree = "<group>";
+		};
+		BB5773691EC409A1005C480C /* dist */ = {
+			isa = PBXGroup;
+			children = (
+				BB57736A1EC409A1005C480C /* Debug */,
+			);
+			path = dist;
+			sourceTree = "<group>";
+		};
+		BB57736A1EC409A1005C480C /* Debug */ = {
+			isa = PBXGroup;
+			children = (
+				BB57736B1EC409A1005C480C /* GNU-MacOSX */,
+			);
+			path = Debug;
+			sourceTree = "<group>";
+		};
+		BB57736B1EC409A1005C480C /* GNU-MacOSX */ = {
+			isa = PBXGroup;
+			children = (
+				BB57736C1EC409A1005C480C /* dante */,
+			);
+			path = "GNU-MacOSX";
+			sourceTree = "<group>";
+		};
+		BB57736F1EC409A1005C480C /* nbproject */ = {
+			isa = PBXGroup;
+			children = (
+				BB5773701EC409A1005C480C /* configurations.xml */,
+				BB5773711EC409A1005C480C /* Makefile-Debug.mk */,
+				BB5773721EC409A1005C480C /* Makefile-impl.mk */,
+				BB5773731EC409A1005C480C /* Makefile-Release.mk */,
+				BB5773741EC409A1005C480C /* Makefile-variables.mk */,
+				BB5773751EC409A1005C480C /* Package-Debug.bash */,
+				BB5773761EC409A1005C480C /* Package-Release.bash */,
+				BB5773771EC409A1005C480C /* private */,
+				BB57737C1EC409A1005C480C /* project.xml */,
+			);
+			path = nbproject;
+			sourceTree = "<group>";
+		};
+		BB5773771EC409A1005C480C /* private */ = {
+			isa = PBXGroup;
+			children = (
+				BB5773781EC409A1005C480C /* configurations.xml */,
+				BB5773791EC409A1005C480C /* launcher.properties */,
+				BB57737A1EC409A1005C480C /* Makefile-variables.mk */,
+				BB57737B1EC409A1005C480C /* private.xml */,
+			);
+			path = private;
+			sourceTree = "<group>";
+		};
 		BB6DB1B21E76FCCF005C0FAD /* Base.lproj */ = {
 			isa = PBXGroup;
 			children = (
@@ -1382,15 +1651,6 @@
 				BB74283F1EB2AF4200B7628D /* StringUtil.h */,
 			);
 			path = util;
-			sourceTree = "<group>";
-		};
-		BB8307E61EC2AB7B00435E7E /* server */ = {
-			isa = PBXGroup;
-			children = (
-				BB8307E71EC2AB7B00435E7E /* main.cpp */,
-			);
-			name = server;
-			path = "dante server";
 			sourceTree = "<group>";
 		};
 		BB8307EC1EC2AC0900435E7E /* server */ = {
@@ -2091,6 +2351,7 @@
 				BB44C3481DB0323F003E633F /* Images.xcassets in Resources */,
 				BB052CCC1EBA8ADD007FA789 /* shader_002_vert.ngs in Resources */,
 				BB6DB1B81E76FCCF005C0FAD /* Main.storyboard in Resources */,
+				BBD909D61EC38FC80075FB11 /* texture_002.ngt in Resources */,
 				BB052CCA1EBA8ADD007FA789 /* shader_002_frag.ngs in Resources */,
 				BB052CC81EBA8ADD007FA789 /* shader_001_vert.ngs in Resources */,
 				BB44C93B1DB03A7E003E633F /* rapidjson_readme.txt in Resources */,
@@ -2108,6 +2369,7 @@
 				BB44C3291DB030B3003E633F /* Assets.xcassets in Resources */,
 				BB052CCD1EBA8ADD007FA789 /* shader_002_vert.ngs in Resources */,
 				BB44C32A1DB030B3003E633F /* Main.storyboard in Resources */,
+				BBD909D71EC38FC80075FB11 /* texture_002.ngt in Resources */,
 				BB052CCB1EBA8ADD007FA789 /* shader_002_frag.ngs in Resources */,
 				BB052CC91EBA8ADD007FA789 /* shader_001_vert.ngs in Resources */,
 				BB44C93C1DB03A7E003E633F /* rapidjson_readme.txt in Resources */,
@@ -2446,7 +2708,6 @@
 				BB8308841EC2AD1F00435E7E /* World.cpp in Sources */,
 				BB8308031EC2AC0900435E7E /* ReplicationManagerTransmissionData.cpp in Sources */,
 				BB83085A1EC2AD1F00435E7E /* Mouse.cpp in Sources */,
-				BB8307E81EC2AB7B00435E7E /* main.cpp in Sources */,
 				BB8308421EC2AD1F00435E7E /* AckRange.cpp in Sources */,
 				BB8308781EC2AD1F00435E7E /* StringUtils.cpp in Sources */,
 				BB8308691EC2AD1F00435E7E /* RoboMath.cpp in Sources */,
@@ -2455,6 +2716,7 @@
 				BB8308631EC2AD1F00435E7E /* NetworkManager.cpp in Sources */,
 				BB8308481EC2AD1F00435E7E /* Engine.cpp in Sources */,
 				BB8308571EC2AD1F00435E7E /* MemoryBitStream.cpp in Sources */,
+				BB57737E1EC409B2005C480C /* main.cpp in Sources */,
 				BB8308721EC2AD1F00435E7E /* SocketAddressFactory.cpp in Sources */,
 				BB8308751EC2AD1F00435E7E /* SocketUtil.cpp in Sources */,
 				BB83087B1EC2AD1F00435E7E /* TCPSocket.cpp in Sources */,

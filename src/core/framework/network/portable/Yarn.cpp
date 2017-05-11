@@ -1,4 +1,4 @@
-#include <RoboCatShared.h>
+#include "RoboCatShared.h"
 
 Yarn::Yarn() :
 	mMuzzleSpeed( 3.f ),
@@ -6,7 +6,7 @@ Yarn::Yarn() :
 	mPlayerId( 0 )
 {
 	SetScale( GetScale() * 0.25f );
-	SetCollisionRadius( 0.125f );
+	SetCollisionRadius( 1 );
 }
 
 

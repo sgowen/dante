@@ -1,4 +1,4 @@
-#include <RoboCatClientPCH.h>
+#include "RoboCatClientPCH.h"
 
 bool Client::StaticInit()
 {
@@ -20,7 +20,8 @@ Client::Client()
 	GameObjectRegistry::sInstance->RegisterCreationFunction( 'MOUS', MouseClient::StaticCreate );
 	GameObjectRegistry::sInstance->RegisterCreationFunction( 'YARN', YarnClient::StaticCreate );
 
-	SocketAddressPtr serverAddress = SocketAddressFactory::CreateIPv4FromString("localhost:9999");
+//	SocketAddressPtr serverAddress = SocketAddressFactory::CreateIPv4FromString("208.97.168.138:9999");
+    SocketAddressPtr serverAddress = SocketAddressFactory::CreateIPv4FromString("localhost:9999");
 
 	NetworkManagerClient::StaticInit( *serverAddress, "Stephen" );
 
