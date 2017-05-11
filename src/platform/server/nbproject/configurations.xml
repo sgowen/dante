@@ -16,8 +16,6 @@
       <itemPath>../../core/framework/network/portable/InputState.h</itemPath>
       <itemPath>../../core/framework/network/portable/LinkingContext.h</itemPath>
       <itemPath>../../core/framework/network/portable/MemoryBitStream.h</itemPath>
-      <itemPath>../../core/framework/network/portable/Mouse.h</itemPath>
-      <itemPath>../../core/framework/network/server/MouseServer.h</itemPath>
       <itemPath>../../core/framework/network/portable/Move.h</itemPath>
       <itemPath>../../core/framework/network/portable/MoveList.h</itemPath>
       <itemPath>../../core/framework/network/portable/NetworkManager.h</itemPath>
@@ -30,6 +28,8 @@
       <itemPath>../../core/framework/network/server/RoboCatServerPCH.h</itemPath>
       <itemPath>../../core/framework/network/portable/RoboCatShared.h</itemPath>
       <itemPath>../../core/framework/network/portable/RoboMath.h</itemPath>
+      <itemPath>../../core/framework/network/portable/Rodent.h</itemPath>
+      <itemPath>../../core/framework/network/server/RodentServer.h</itemPath>
       <itemPath>../../core/framework/network/portable/ScoreBoardManager.h</itemPath>
       <itemPath>../../core/framework/network/portable/SocketAddress.h</itemPath>
       <itemPath>../../core/framework/network/portable/SocketAddressFactory.h</itemPath>
@@ -61,8 +61,6 @@
       <itemPath>../../core/framework/network/portable/InFlightPacket.cpp</itemPath>
       <itemPath>../../core/framework/network/portable/InputState.cpp</itemPath>
       <itemPath>../../core/framework/network/portable/MemoryBitStream.cpp</itemPath>
-      <itemPath>../../core/framework/network/portable/Mouse.cpp</itemPath>
-      <itemPath>../../core/framework/network/server/MouseServer.cpp</itemPath>
       <itemPath>../../core/framework/network/portable/Move.cpp</itemPath>
       <itemPath>../../core/framework/network/portable/MoveList.cpp</itemPath>
       <itemPath>../../core/framework/network/portable/NetworkManager.cpp</itemPath>
@@ -73,6 +71,8 @@
       <itemPath>../../core/framework/network/server/RoboCatServer.cpp</itemPath>
       <itemPath>../../core/framework/network/server/RoboCatServerPCH.cpp</itemPath>
       <itemPath>../../core/framework/network/portable/RoboMath.cpp</itemPath>
+      <itemPath>../../core/framework/network/portable/Rodent.cpp</itemPath>
+      <itemPath>../../core/framework/network/server/RodentServer.cpp</itemPath>
       <itemPath>../../core/framework/network/portable/ScoreBoardManager.cpp</itemPath>
       <itemPath>../../core/framework/network/portable/SocketAddress.cpp</itemPath>
       <itemPath>../../core/framework/network/portable/SocketAddressFactory.cpp</itemPath>
@@ -228,16 +228,6 @@
             tool="3"
             flavor2="0">
       </item>
-      <item path="../../core/framework/network/portable/Mouse.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
-      <item path="../../core/framework/network/portable/Mouse.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
       <item path="../../core/framework/network/portable/Move.cpp"
             ex="false"
             tool="1"
@@ -294,6 +284,16 @@
             flavor2="0">
       </item>
       <item path="../../core/framework/network/portable/RoboMath.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/portable/Rodent.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/portable/Rodent.h"
             ex="false"
             tool="3"
             flavor2="0">
@@ -418,16 +418,6 @@
             tool="3"
             flavor2="0">
       </item>
-      <item path="../../core/framework/network/server/MouseServer.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
-      <item path="../../core/framework/network/server/MouseServer.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
       <item path="../../core/framework/network/server/NetworkManagerServer.cpp"
             ex="false"
             tool="1"
@@ -474,6 +464,16 @@
             flavor2="0">
       </item>
       <item path="../../core/framework/network/server/RoboCatServerPCH.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/server/RodentServer.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/server/RodentServer.h"
             ex="false"
             tool="3"
             flavor2="0">
@@ -616,16 +616,6 @@
             tool="3"
             flavor2="0">
       </item>
-      <item path="../../core/framework/network/portable/Mouse.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
-      <item path="../../core/framework/network/portable/Mouse.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
       <item path="../../core/framework/network/portable/Move.cpp"
             ex="false"
             tool="1"
@@ -682,6 +672,16 @@
             flavor2="0">
       </item>
       <item path="../../core/framework/network/portable/RoboMath.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/portable/Rodent.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/portable/Rodent.h"
             ex="false"
             tool="3"
             flavor2="0">
@@ -806,16 +806,6 @@
             tool="3"
             flavor2="0">
       </item>
-      <item path="../../core/framework/network/server/MouseServer.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
-      <item path="../../core/framework/network/server/MouseServer.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
       <item path="../../core/framework/network/server/NetworkManagerServer.cpp"
             ex="false"
             tool="1"
@@ -862,6 +852,16 @@
             flavor2="0">
       </item>
       <item path="../../core/framework/network/server/RoboCatServerPCH.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/server/RodentServer.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/server/RodentServer.h"
             ex="false"
             tool="3"
             flavor2="0">

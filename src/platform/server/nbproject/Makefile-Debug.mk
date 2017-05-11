@@ -43,12 +43,12 @@ OBJECTFILES= \
 	${OBJECTDIR}/_ext/2004051235/InFlightPacket.o \
 	${OBJECTDIR}/_ext/2004051235/InputState.o \
 	${OBJECTDIR}/_ext/2004051235/MemoryBitStream.o \
-	${OBJECTDIR}/_ext/2004051235/Mouse.o \
 	${OBJECTDIR}/_ext/2004051235/Move.o \
 	${OBJECTDIR}/_ext/2004051235/MoveList.o \
 	${OBJECTDIR}/_ext/2004051235/NetworkManager.o \
 	${OBJECTDIR}/_ext/2004051235/RoboCat.o \
 	${OBJECTDIR}/_ext/2004051235/RoboMath.o \
+	${OBJECTDIR}/_ext/2004051235/Rodent.o \
 	${OBJECTDIR}/_ext/2004051235/ScoreBoardManager.o \
 	${OBJECTDIR}/_ext/2004051235/SocketAddress.o \
 	${OBJECTDIR}/_ext/2004051235/SocketAddressFactory.o \
@@ -60,12 +60,12 @@ OBJECTFILES= \
 	${OBJECTDIR}/_ext/2004051235/World.o \
 	${OBJECTDIR}/_ext/2004051235/Yarn.o \
 	${OBJECTDIR}/_ext/1089092933/ClientProxy.o \
-	${OBJECTDIR}/_ext/1089092933/MouseServer.o \
 	${OBJECTDIR}/_ext/1089092933/NetworkManagerServer.o \
 	${OBJECTDIR}/_ext/1089092933/ReplicationManagerServer.o \
 	${OBJECTDIR}/_ext/1089092933/ReplicationManagerTransmissionData.o \
 	${OBJECTDIR}/_ext/1089092933/RoboCatServer.o \
 	${OBJECTDIR}/_ext/1089092933/RoboCatServerPCH.o \
+	${OBJECTDIR}/_ext/1089092933/RodentServer.o \
 	${OBJECTDIR}/_ext/1089092933/YarnServer.o \
 	${OBJECTDIR}/_ext/1089092933/server.o \
 	${OBJECTDIR}/main.o
@@ -135,11 +135,6 @@ ${OBJECTDIR}/_ext/2004051235/MemoryBitStream.o: ../../core/framework/network/por
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -s -D_POSIX_C_SOURCE -I../../core/framework/network/server -I../../core/framework/network/portable -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/2004051235/MemoryBitStream.o ../../core/framework/network/portable/MemoryBitStream.cpp
 
-${OBJECTDIR}/_ext/2004051235/Mouse.o: ../../core/framework/network/portable/Mouse.cpp 
-	${MKDIR} -p ${OBJECTDIR}/_ext/2004051235
-	${RM} "$@.d"
-	$(COMPILE.cc) -g -s -D_POSIX_C_SOURCE -I../../core/framework/network/server -I../../core/framework/network/portable -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/2004051235/Mouse.o ../../core/framework/network/portable/Mouse.cpp
-
 ${OBJECTDIR}/_ext/2004051235/Move.o: ../../core/framework/network/portable/Move.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/2004051235
 	${RM} "$@.d"
@@ -164,6 +159,11 @@ ${OBJECTDIR}/_ext/2004051235/RoboMath.o: ../../core/framework/network/portable/R
 	${MKDIR} -p ${OBJECTDIR}/_ext/2004051235
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -s -D_POSIX_C_SOURCE -I../../core/framework/network/server -I../../core/framework/network/portable -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/2004051235/RoboMath.o ../../core/framework/network/portable/RoboMath.cpp
+
+${OBJECTDIR}/_ext/2004051235/Rodent.o: ../../core/framework/network/portable/Rodent.cpp 
+	${MKDIR} -p ${OBJECTDIR}/_ext/2004051235
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -s -D_POSIX_C_SOURCE -I../../core/framework/network/server -I../../core/framework/network/portable -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/2004051235/Rodent.o ../../core/framework/network/portable/Rodent.cpp
 
 ${OBJECTDIR}/_ext/2004051235/ScoreBoardManager.o: ../../core/framework/network/portable/ScoreBoardManager.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/2004051235
@@ -220,11 +220,6 @@ ${OBJECTDIR}/_ext/1089092933/ClientProxy.o: ../../core/framework/network/server/
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -s -D_POSIX_C_SOURCE -I../../core/framework/network/server -I../../core/framework/network/portable -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/1089092933/ClientProxy.o ../../core/framework/network/server/ClientProxy.cpp
 
-${OBJECTDIR}/_ext/1089092933/MouseServer.o: ../../core/framework/network/server/MouseServer.cpp 
-	${MKDIR} -p ${OBJECTDIR}/_ext/1089092933
-	${RM} "$@.d"
-	$(COMPILE.cc) -g -s -D_POSIX_C_SOURCE -I../../core/framework/network/server -I../../core/framework/network/portable -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/1089092933/MouseServer.o ../../core/framework/network/server/MouseServer.cpp
-
 ${OBJECTDIR}/_ext/1089092933/NetworkManagerServer.o: ../../core/framework/network/server/NetworkManagerServer.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/1089092933
 	${RM} "$@.d"
@@ -249,6 +244,11 @@ ${OBJECTDIR}/_ext/1089092933/RoboCatServerPCH.o: ../../core/framework/network/se
 	${MKDIR} -p ${OBJECTDIR}/_ext/1089092933
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -s -D_POSIX_C_SOURCE -I../../core/framework/network/server -I../../core/framework/network/portable -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/1089092933/RoboCatServerPCH.o ../../core/framework/network/server/RoboCatServerPCH.cpp
+
+${OBJECTDIR}/_ext/1089092933/RodentServer.o: ../../core/framework/network/server/RodentServer.cpp 
+	${MKDIR} -p ${OBJECTDIR}/_ext/1089092933
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -s -D_POSIX_C_SOURCE -I../../core/framework/network/server -I../../core/framework/network/portable -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/1089092933/RodentServer.o ../../core/framework/network/server/RodentServer.cpp
 
 ${OBJECTDIR}/_ext/1089092933/YarnServer.o: ../../core/framework/network/server/YarnServer.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/1089092933
