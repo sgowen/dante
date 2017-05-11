@@ -1,5 +1,7 @@
 #include "RoboCatShared.h"
 
+#include <stdarg.h>
+
 #if !_WIN32
 void OutputDebugString( const char* inString )
 {
