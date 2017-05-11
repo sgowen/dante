@@ -5,7 +5,7 @@
 #include <stdarg.h>
 
 #if !_WIN32
-void OutputDebugString( const char* inString )
+void OutputDebugStringA( const char* inString )
 {
 	printf( "%s", inString );
 }
@@ -40,6 +40,6 @@ void StringUtils::Log( const char* inFormat, ... )
 #else
 	vsnprintf(temp, 4096, inFormat, args);
 #endif
-	OutputDebugString( temp );
-	OutputDebugString( "\n" );
+	OutputDebugStringA( temp );
+	OutputDebugStringA( "\n" );
 }
