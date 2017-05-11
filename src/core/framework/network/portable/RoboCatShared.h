@@ -39,6 +39,7 @@
 
 #include <math.h>
 #include <string>
+#include <cstring>
 
 using std::shared_ptr;
 using std::unique_ptr;
