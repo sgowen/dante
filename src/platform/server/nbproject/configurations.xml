@@ -43,7 +43,6 @@
       <itemPath>../../core/framework/network/portable/World.h</itemPath>
       <itemPath>../../core/framework/network/portable/Yarn.h</itemPath>
       <itemPath>../../core/framework/network/server/YarnServer.h</itemPath>
-      <itemPath>../../core/framework/network/server/server.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
@@ -85,7 +84,6 @@
       <itemPath>../../core/framework/network/portable/Yarn.cpp</itemPath>
       <itemPath>../../core/framework/network/server/YarnServer.cpp</itemPath>
       <itemPath>main.cpp</itemPath>
-      <itemPath>../../core/framework/network/server/server.cpp</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"
                    displayName="Test Files"
@@ -488,16 +486,6 @@
             tool="3"
             flavor2="0">
       </item>
-      <item path="../../core/framework/network/server/server.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
-      <item path="../../core/framework/network/server/server.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
       </item>
     </conf>
@@ -872,16 +860,6 @@
             flavor2="0">
       </item>
       <item path="../../core/framework/network/server/YarnServer.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="../../core/framework/network/server/server.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
-      <item path="../../core/framework/network/server/server.h"
             ex="false"
             tool="3"
             flavor2="0">
