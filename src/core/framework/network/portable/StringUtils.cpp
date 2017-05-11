@@ -1,3 +1,5 @@
+#include "pch.h"
+
 #include "RoboCatShared.h"
 
 #include <stdarg.h>

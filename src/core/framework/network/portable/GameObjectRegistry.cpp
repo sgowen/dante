@@ -1,5 +1,6 @@
-#include "RoboCatShared.h"
+#include "pch.h"
 
+#include "RoboCatShared.h"
 
 std::unique_ptr< GameObjectRegistry >	GameObjectRegistry::sInstance;
 

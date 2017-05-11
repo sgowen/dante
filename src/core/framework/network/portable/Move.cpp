@@ -1,3 +1,5 @@
+#include "pch.h"
+
 #include "RoboCatShared.h"
 
 bool Move::Write( OutputMemoryBitStream& inOutputStream ) const

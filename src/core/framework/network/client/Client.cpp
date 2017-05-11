@@ -1,3 +1,5 @@
+#include "pch.h"
+
 #include "RoboCatClientPCH.h"
 
 bool Client::StaticInit()

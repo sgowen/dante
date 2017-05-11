@@ -1,6 +1,6 @@
+#include "pch.h"
+
 #include "RoboCatClientPCH.h"
-
-
 
 RoboCatClient::RoboCatClient() :
 	mTimeLocationBecameOutOfSync( 0.f ),

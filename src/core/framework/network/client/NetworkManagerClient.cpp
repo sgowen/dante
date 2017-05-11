@@ -1,3 +1,5 @@
+#include "pch.h"
+
 #include "RoboCatClientPCH.h"
 
 NetworkManagerClient*	NetworkManagerClient::sInstance;
