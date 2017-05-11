@@ -283,7 +283,7 @@ void NetworkManagerServer::HandleClientDisconnected( ClientProxyPtr inClientProx
 	//was that the last client? if so, bye!
 	if( mAddressToClientMap.empty() )
 	{
-		Engine::sInstance->SetShouldKeepRunning( false );
+//		Engine::sInstance->SetShouldKeepRunning( false );
 	}
 }
 
