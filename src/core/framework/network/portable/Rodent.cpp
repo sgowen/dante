@@ -1,13 +1,13 @@
 #include "RoboCatShared.h"
 
-Mouse::Mouse()
+Rodent::Rodent()
 {
 	SetScale( GetScale() * 0.5f );
 	SetCollisionRadius( 0.25f );
 }
 
 
-bool Mouse::HandleCollisionWithCat( RoboCat* inCat )
+bool Rodent::HandleCollisionWithCat( RoboCat* inCat )
 {
 	( void ) inCat;
 	return false;
@@ -15,7 +15,7 @@ bool Mouse::HandleCollisionWithCat( RoboCat* inCat )
 
 
 
-uint32_t Mouse::Write( OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState ) const 
+uint32_t Rodent::Write( OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState ) const 
 {
 	uint32_t writtenState = 0;
 
@@ -53,7 +53,7 @@ uint32_t Mouse::Write( OutputMemoryBitStream& inOutputStream, uint32_t inDirtySt
 	return writtenState;
 }
 
-void Mouse::Read( InputMemoryBitStream& inInputStream )
+void Rodent::Read( InputMemoryBitStream& inInputStream )
 {
 	bool stateBit;
 

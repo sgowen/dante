@@ -1,11 +1,11 @@
 #include "RoboCatShared.h"
 
-class Mouse : public GameObject
+class Rodent : public GameObject
 {
 public:
 	CLASS_IDENTIFICATION( 'MOUS', GameObject )
 
-	enum EMouseReplicationState
+	enum ERodentReplicationState
 	{
 		EMRS_Pose		= 1 << 0,
 		EMRS_Color		= 1 << 1,
@@ -13,7 +13,7 @@ public:
 		EMRS_AllState	= EMRS_Pose | EMRS_Color
 	};
 
-	static	GameObject*	StaticCreate() { return new Mouse(); }
+	static	GameObject*	StaticCreate() { return new Rodent(); }
 
 	virtual uint32_t	GetAllStateMask()	const override	{ return EMRS_AllState; }
 
@@ -23,6 +23,6 @@ public:
 	virtual bool HandleCollisionWithCat( RoboCat* inCat ) override;
 
 protected:
-	Mouse();
+	Rodent();
 
 };

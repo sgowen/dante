@@ -17,7 +17,7 @@ bool Client::StaticInit()
 Client::Client()
 {
 	GameObjectRegistry::sInstance->RegisterCreationFunction( 'RCAT', RoboCatClient::StaticCreate );
-	GameObjectRegistry::sInstance->RegisterCreationFunction( 'MOUS', MouseClient::StaticCreate );
+	GameObjectRegistry::sInstance->RegisterCreationFunction( 'MOUS', RodentClient::StaticCreate );
 	GameObjectRegistry::sInstance->RegisterCreationFunction( 'YARN', YarnClient::StaticCreate );
 
 	SocketAddressPtr serverAddress = SocketAddressFactory::CreateIPv4FromString("208.97.168.138:9999");

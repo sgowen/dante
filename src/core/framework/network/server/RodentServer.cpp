@@ -1,17 +1,17 @@
 #include "RoboCatServerPCH.h"
 
 
-MouseServer::MouseServer()
+RodentServer::RodentServer()
 {
 }
 
-void MouseServer::HandleDying()
+void RodentServer::HandleDying()
 {
 	NetworkManagerServer::sInstance->UnregisterGameObject( this );
 }
 
 
-bool MouseServer::HandleCollisionWithCat( RoboCat* inCat )
+bool RodentServer::HandleCollisionWithCat( RoboCat* inCat )
 {
 	//kill yourself!
 	SetDoesWantToDie( true );

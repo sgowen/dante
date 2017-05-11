@@ -1,6 +1,6 @@
 #include "RoboCatClientPCH.h"
 
-MouseClient::MouseClient()
+RodentClient::RodentClient()
 {
 //	mSpriteComponent.reset( new SpriteComponent( this ) );
 //	mSpriteComponent->SetTexture( TextureManager::sInstance->GetTexture( "mouse" ) );

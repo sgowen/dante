@@ -8,7 +8,7 @@
 #include <HUD.h>
 
 #include <RoboCatClient.h>
-#include <MouseClient.h>
+#include <RodentClient.h>
 #include <YarnClient.h>
 
 #include <ReplicationManagerClient.h>

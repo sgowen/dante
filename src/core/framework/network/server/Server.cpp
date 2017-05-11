@@ -14,7 +14,7 @@ bool Server::StaticInit()
 Server::Server() : m_fFrameStateTime(0)
 {
 	GameObjectRegistry::sInstance->RegisterCreationFunction( 'RCAT', RoboCatServer::StaticCreate );
-	GameObjectRegistry::sInstance->RegisterCreationFunction( 'MOUS', MouseServer::StaticCreate );
+	GameObjectRegistry::sInstance->RegisterCreationFunction( 'MOUS', RodentServer::StaticCreate );
 	GameObjectRegistry::sInstance->RegisterCreationFunction( 'YARN', YarnServer::StaticCreate );
 
 	InitNetworkManager();
@@ -67,14 +67,14 @@ bool Server::InitNetworkManager()
 
 namespace
 {
-	void CreateRandomMice( int inMouseCount )
+	void CreateRandomMice( int inRodentCount )
 	{
 		Vector3 mouseMin( 0, 0, 0.f );
 		Vector3 mouseMax( 10.f, 6.0f, 0.f );
 		GameObjectPtr go;
 
 		//make a mouse somewhere- where will these come from?
-		for( int i = 0; i < inMouseCount; ++i )
+		for( int i = 0; i < inRodentCount; ++i )
 		{
 			go = GameObjectRegistry::sInstance->CreateGameObject( 'MOUS' );
 			Vector3 mouseLocation = RoboMath::GetRandomVector( mouseMin, mouseMax );

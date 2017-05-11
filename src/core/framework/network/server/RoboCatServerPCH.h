@@ -8,5 +8,5 @@
 #include <Server.h>
 
 #include <RoboCatServer.h>
-#include <MouseServer.h>
+#include <RodentServer.h>
 #include <YarnServer.h>
