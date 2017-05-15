@@ -29,8 +29,8 @@
 
 //// Matrix Definitions ////
 
-#define CAM_WIDTH 16.0f
-#define CAM_HEIGHT 9.0f
+#define CAM_WIDTH 12.8f
+#define CAM_HEIGHT 7.2f
 
 //// World Definitions ////
 

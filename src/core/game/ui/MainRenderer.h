@@ -11,7 +11,12 @@
 
 #include "Renderer.h"
 
+#include "RoboCatClientPCH.h"
+
+#include <string>
+
 class TextureWrapper;
+class Font;
 
 class MainRenderer : public Renderer
 {
@@ -24,10 +29,18 @@ public:
     
     virtual void releaseDeviceDependentResources();
     
-    void tempDraw(float stateTime, float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4);
+    void tempDraw(float stateTime);
     
 private:
-    TextureWrapper* m_samus;
+    TextureWrapper* m_demo;
+    TextureWrapper* m_misc;
+    Font* m_font;
+    
+    void RenderBandWidth();
+    void RenderRoundTripTime();
+    void RenderScoreBoard();
+    void RenderHealth();
+    void RenderText(const std::string& inStr, const Vector3& origin, const Vector3& inColor);
 };
 
 #endif /* defined(__dante__MainRenderer__) */

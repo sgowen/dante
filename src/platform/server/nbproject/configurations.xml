@@ -4,7 +4,47 @@
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
                    projectFiles="true">
-      <itemPath>../../core/framework/network/server/server.h</itemPath>
+      <itemPath>../../core/framework/network/portable/AckRange.h</itemPath>
+      <itemPath>../../core/framework/network/portable/ByteSwap.h</itemPath>
+      <itemPath>../../core/framework/network/server/ClientProxy.h</itemPath>
+      <itemPath>../../core/framework/network/portable/DeliveryNotificationManager.h</itemPath>
+      <itemPath>../../core/framework/network/portable/Engine.h</itemPath>
+      <itemPath>../../core/framework/network/portable/GameObject.h</itemPath>
+      <itemPath>../../core/framework/network/portable/GameObjectRegistry.h</itemPath>
+      <itemPath>../../core/framework/network/portable/InFlightPacket.h</itemPath>
+      <itemPath>../../core/framework/network/portable/InputAction.h</itemPath>
+      <itemPath>../../core/framework/network/portable/InputState.h</itemPath>
+      <itemPath>../../core/framework/network/portable/LinkingContext.h</itemPath>
+      <itemPath>../../core/framework/network/portable/MemoryBitStream.h</itemPath>
+      <itemPath>../../core/framework/network/portable/Move.h</itemPath>
+      <itemPath>../../core/framework/network/portable/MoveList.h</itemPath>
+      <itemPath>../../core/framework/network/portable/NetworkManager.h</itemPath>
+      <itemPath>../../core/framework/network/server/NetworkManagerServer.h</itemPath>
+      <itemPath>../../core/framework/network/portable/ReplicationCommand.h</itemPath>
+      <itemPath>../../core/framework/network/server/ReplicationManagerServer.h</itemPath>
+      <itemPath>../../core/framework/network/server/ReplicationManagerTransmissionData.h</itemPath>
+      <itemPath>../../core/framework/network/portable/RoboCat.h</itemPath>
+      <itemPath>../../core/framework/network/server/RoboCatServer.h</itemPath>
+      <itemPath>../../core/framework/network/server/RoboCatServerPCH.h</itemPath>
+      <itemPath>../../core/framework/network/portable/RoboCatShared.h</itemPath>
+      <itemPath>../../core/framework/network/portable/RoboMath.h</itemPath>
+      <itemPath>../../core/framework/network/portable/Rodent.h</itemPath>
+      <itemPath>../../core/framework/network/server/RodentServer.h</itemPath>
+      <itemPath>../../core/framework/network/portable/ScoreBoardManager.h</itemPath>
+      <itemPath>../../core/framework/network/server/Server.h</itemPath>
+      <itemPath>../../core/framework/network/portable/SocketAddress.h</itemPath>
+      <itemPath>../../core/framework/network/portable/SocketAddressFactory.h</itemPath>
+      <itemPath>../../core/framework/network/portable/SocketUtil.h</itemPath>
+      <itemPath>../../core/framework/network/portable/StringUtils.h</itemPath>
+      <itemPath>../../core/framework/network/portable/TCPSocket.h</itemPath>
+      <itemPath>../../core/framework/network/portable/Timing.h</itemPath>
+      <itemPath>../../core/framework/network/portable/TransmissionData.h</itemPath>
+      <itemPath>../../core/framework/network/portable/UDPSocket.h</itemPath>
+      <itemPath>../../core/framework/network/portable/WeightedTimedMovingAverage.h</itemPath>
+      <itemPath>../../core/framework/network/portable/World.h</itemPath>
+      <itemPath>../../core/framework/network/portable/Yarn.h</itemPath>
+      <itemPath>../../core/framework/network/server/YarnServer.h</itemPath>
+      <itemPath>pch.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
@@ -13,8 +53,40 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
+      <itemPath>../../core/framework/network/portable/AckRange.cpp</itemPath>
+      <itemPath>../../core/framework/network/server/ClientProxy.cpp</itemPath>
+      <itemPath>../../core/framework/network/portable/DeliveryNotificationManager.cpp</itemPath>
+      <itemPath>../../core/framework/network/portable/Engine.cpp</itemPath>
+      <itemPath>../../core/framework/network/portable/GameObject.cpp</itemPath>
+      <itemPath>../../core/framework/network/portable/GameObjectRegistry.cpp</itemPath>
+      <itemPath>../../core/framework/network/portable/InFlightPacket.cpp</itemPath>
+      <itemPath>../../core/framework/network/portable/InputState.cpp</itemPath>
+      <itemPath>../../core/framework/network/portable/MemoryBitStream.cpp</itemPath>
+      <itemPath>../../core/framework/network/portable/Move.cpp</itemPath>
+      <itemPath>../../core/framework/network/portable/MoveList.cpp</itemPath>
+      <itemPath>../../core/framework/network/portable/NetworkManager.cpp</itemPath>
+      <itemPath>../../core/framework/network/server/NetworkManagerServer.cpp</itemPath>
+      <itemPath>../../core/framework/network/server/ReplicationManagerServer.cpp</itemPath>
+      <itemPath>../../core/framework/network/server/ReplicationManagerTransmissionData.cpp</itemPath>
+      <itemPath>../../core/framework/network/portable/RoboCat.cpp</itemPath>
+      <itemPath>../../core/framework/network/server/RoboCatServer.cpp</itemPath>
+      <itemPath>../../core/framework/network/server/RoboCatServerPCH.cpp</itemPath>
+      <itemPath>../../core/framework/network/portable/RoboMath.cpp</itemPath>
+      <itemPath>../../core/framework/network/portable/Rodent.cpp</itemPath>
+      <itemPath>../../core/framework/network/server/RodentServer.cpp</itemPath>
+      <itemPath>../../core/framework/network/portable/ScoreBoardManager.cpp</itemPath>
+      <itemPath>../../core/framework/network/server/Server.cpp</itemPath>
+      <itemPath>../../core/framework/network/portable/SocketAddress.cpp</itemPath>
+      <itemPath>../../core/framework/network/portable/SocketAddressFactory.cpp</itemPath>
+      <itemPath>../../core/framework/network/portable/SocketUtil.cpp</itemPath>
+      <itemPath>../../core/framework/network/portable/StringUtils.cpp</itemPath>
+      <itemPath>../../core/framework/network/portable/TCPSocket.cpp</itemPath>
+      <itemPath>../../core/framework/network/portable/Timing.cpp</itemPath>
+      <itemPath>../../core/framework/network/portable/UDPSocket.cpp</itemPath>
+      <itemPath>../../core/framework/network/portable/World.cpp</itemPath>
+      <itemPath>../../core/framework/network/portable/Yarn.cpp</itemPath>
+      <itemPath>../../core/framework/network/server/YarnServer.cpp</itemPath>
       <itemPath>main.cpp</itemPath>
-      <itemPath>../../core/framework/network/server/server.cpp</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"
                    displayName="Test Files"
@@ -30,6 +102,7 @@
   </logicalFolder>
   <sourceRootList>
     <Elem>../../core/framework/network/server</Elem>
+    <Elem>../../core/framework/network/portable</Elem>
   </sourceRootList>
   <projectmakefile>Makefile</projectmakefile>
   <confs>
@@ -53,26 +126,383 @@
           <standard>8</standard>
           <commandlineTool>g++</commandlineTool>
           <incDir>
-            <pElem>../../core/framework/file/portable</pElem>
             <pElem>../../core/framework/network/server</pElem>
-            <pElem>../../core/framework/util/portable</pElem>
+            <pElem>../../core/framework/network/portable</pElem>
+            <pElem>.</pElem>
           </incDir>
           <preprocessorList>
             <Elem>_POSIX_C_SOURCE</Elem>
           </preprocessorList>
         </ccTool>
       </compileType>
-      <item path="../../core/framework/network/server/server.cpp"
+      <item path="../../core/framework/network/portable/AckRange.cpp"
             ex="false"
             tool="1"
             flavor2="0">
       </item>
-      <item path="../../core/framework/network/server/server.h"
+      <item path="../../core/framework/network/portable/AckRange.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/portable/ByteSwap.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/portable/DeliveryNotificationManager.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/portable/DeliveryNotificationManager.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/portable/Engine.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/portable/Engine.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/portable/GameObject.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/portable/GameObject.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/portable/GameObjectRegistry.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/portable/GameObjectRegistry.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/portable/InFlightPacket.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/portable/InFlightPacket.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/portable/InputAction.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/portable/InputState.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/portable/InputState.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/portable/LinkingContext.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/portable/MemoryBitStream.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/portable/MemoryBitStream.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/portable/Move.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/portable/Move.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/portable/MoveList.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/portable/MoveList.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/portable/NetworkManager.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/portable/NetworkManager.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/portable/ReplicationCommand.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/portable/RoboCat.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/portable/RoboCat.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/portable/RoboCatShared.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/portable/RoboMath.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/portable/RoboMath.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/portable/Rodent.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/portable/Rodent.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/portable/ScoreBoardManager.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/portable/ScoreBoardManager.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/portable/SocketAddress.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/portable/SocketAddress.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/portable/SocketAddressFactory.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/portable/SocketAddressFactory.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/portable/SocketUtil.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/portable/SocketUtil.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/portable/StringUtils.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/portable/StringUtils.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/portable/TCPSocket.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/portable/TCPSocket.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/portable/Timing.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/portable/Timing.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/portable/TransmissionData.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/portable/UDPSocket.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/portable/UDPSocket.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/portable/WeightedTimedMovingAverage.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/portable/World.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/portable/World.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/portable/Yarn.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/portable/Yarn.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/server/ClientProxy.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/server/ClientProxy.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/server/NetworkManagerServer.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/server/NetworkManagerServer.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/server/ReplicationManagerServer.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/server/ReplicationManagerServer.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/server/ReplicationManagerTransmissionData.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/server/ReplicationManagerTransmissionData.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/server/RoboCatServer.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/server/RoboCatServer.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/server/RoboCatServerPCH.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/server/RoboCatServerPCH.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/server/RodentServer.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/server/RodentServer.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/server/Server.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/server/Server.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/server/YarnServer.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/server/YarnServer.h"
             ex="false"
             tool="3"
             flavor2="0">
       </item>
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="pch.h" ex="false" tool="3" flavor2="0">
       </item>
     </conf>
     <conf name="Release" type="1">
@@ -95,17 +525,374 @@
           <developmentMode>5</developmentMode>
         </asmTool>
       </compileType>
-      <item path="../../core/framework/network/server/server.cpp"
+      <item path="../../core/framework/network/portable/AckRange.cpp"
             ex="false"
             tool="1"
             flavor2="0">
       </item>
-      <item path="../../core/framework/network/server/server.h"
+      <item path="../../core/framework/network/portable/AckRange.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/portable/ByteSwap.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/portable/DeliveryNotificationManager.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/portable/DeliveryNotificationManager.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/portable/Engine.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/portable/Engine.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/portable/GameObject.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/portable/GameObject.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/portable/GameObjectRegistry.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/portable/GameObjectRegistry.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/portable/InFlightPacket.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/portable/InFlightPacket.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/portable/InputAction.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/portable/InputState.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/portable/InputState.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/portable/LinkingContext.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/portable/MemoryBitStream.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/portable/MemoryBitStream.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/portable/Move.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/portable/Move.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/portable/MoveList.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/portable/MoveList.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/portable/NetworkManager.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/portable/NetworkManager.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/portable/ReplicationCommand.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/portable/RoboCat.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/portable/RoboCat.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/portable/RoboCatShared.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/portable/RoboMath.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/portable/RoboMath.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/portable/Rodent.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/portable/Rodent.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/portable/ScoreBoardManager.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/portable/ScoreBoardManager.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/portable/SocketAddress.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/portable/SocketAddress.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/portable/SocketAddressFactory.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/portable/SocketAddressFactory.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/portable/SocketUtil.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/portable/SocketUtil.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/portable/StringUtils.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/portable/StringUtils.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/portable/TCPSocket.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/portable/TCPSocket.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/portable/Timing.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/portable/Timing.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/portable/TransmissionData.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/portable/UDPSocket.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/portable/UDPSocket.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/portable/WeightedTimedMovingAverage.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/portable/World.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/portable/World.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/portable/Yarn.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/portable/Yarn.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/server/ClientProxy.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/server/ClientProxy.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/server/NetworkManagerServer.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/server/NetworkManagerServer.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/server/ReplicationManagerServer.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/server/ReplicationManagerServer.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/server/ReplicationManagerTransmissionData.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/server/ReplicationManagerTransmissionData.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/server/RoboCatServer.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/server/RoboCatServer.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/server/RoboCatServerPCH.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/server/RoboCatServerPCH.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/server/RodentServer.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/server/RodentServer.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/server/Server.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/server/Server.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/server/YarnServer.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../core/framework/network/server/YarnServer.h"
             ex="false"
             tool="3"
             flavor2="0">
       </item>
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="pch.h" ex="false" tool="3" flavor2="0">
       </item>
     </conf>
   </confs>

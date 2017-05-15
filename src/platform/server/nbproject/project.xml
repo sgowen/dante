@@ -11,6 +11,7 @@
             <make-dep-projects/>
             <sourceRootList>
                 <sourceRootElem>../../core/framework/network/server</sourceRootElem>
+                <sourceRootElem>../../core/framework/network/portable</sourceRootElem>
             </sourceRootList>
             <confList>
                 <confElem>

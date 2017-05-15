@@ -13,8 +13,6 @@
 
 #include "RTTI.h"
 
-#include <thread>
-
 class JsonFile;
 class MainRenderer;
 class Vector2D;
@@ -57,12 +55,9 @@ private:
     int m_iRequestedAction;
     
     // temp
-    std::string m_serverAddress;
-    std::thread* m_thread1;
-    std::thread* m_thread2;
-    std::thread* m_thread3;
-    PhysicalEntity* m_samus;
-    int m_iNetworkAction;
+    PhysicalEntity* m_avatar;
+    
+    void tempUpdateInput();
     
     void tempUpdate(float deltaTime);
 };
