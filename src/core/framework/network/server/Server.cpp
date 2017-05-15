@@ -31,27 +31,27 @@ int Server::Run()
 
     while (mShouldKeepRunning)
     {
-        NetworkManagerServer::sInstance->ProcessIncomingPackets();
-        
-        NetworkManagerServer::sInstance->CheckForDisconnects();
-        
-        NetworkManagerServer::sInstance->RespawnCats();
-        
         Timing::sInstance.Update();
         
         m_fFrameStateTime += Timing::sInstance.GetDeltaTime();
         
         if (m_fFrameStateTime >= FRAME_RATE)
         {
+            NetworkManagerServer::sInstance->ProcessIncomingPackets();
+            
+            NetworkManagerServer::sInstance->CheckForDisconnects();
+            
+            NetworkManagerServer::sInstance->RespawnCats();
+            
             while (m_fFrameStateTime >= FRAME_RATE)
             {
                 m_fFrameStateTime -= FRAME_RATE;
                 
                 DoFrame();
             }
+            
+            NetworkManagerServer::sInstance->SendOutgoingPackets();
         }
-        
-        NetworkManagerServer::sInstance->SendOutgoingPackets();
     }
     
     return 1;

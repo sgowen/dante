@@ -51,6 +51,7 @@ private:
     Vector2D* m_touchPointDown;
     Vector2D* m_touchPointDown2;
     
+    float m_fStateTime;
     float m_fFrameStateTime;
     int m_iRequestedAction;
     

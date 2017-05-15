@@ -35,6 +35,7 @@ m_config(new JsonFile("dante.cfg")),
 m_renderer(new MainRenderer(MAX_BATCH_SIZE)),
 m_touchPointDown(new Vector2D()),
 m_touchPointDown2(new Vector2D()),
+m_fStateTime(0),
 m_fFrameStateTime(0),
 m_iRequestedAction(REQUESTED_ACTION_UPDATE),
 m_avatar(new PhysicalEntity(3, 3, 1.173913043478261f, 1.5f))
@@ -94,13 +95,16 @@ void MainScreen::onPause()
 
 void MainScreen::update(float deltaTime)
 {
+    m_fStateTime += deltaTime;
     m_fFrameStateTime += deltaTime;
+    
+    Timing::sInstance.updateManual(m_fStateTime, deltaTime);
     
     if (m_fFrameStateTime >= FRAME_RATE)
     {
-        tempUpdateInput();
-        
         NetworkManagerClient::sInstance->ProcessIncomingPackets();
+        
+        tempUpdateInput();
         
         while (m_fFrameStateTime >= FRAME_RATE)
         {

@@ -33,7 +33,5 @@ int Engine::Run()
 
 void Engine::DoFrame()
 {
-    Timing::sInstance.Update();
-    
-	World::sInstance->Update();
+    World::sInstance->Update();
 }

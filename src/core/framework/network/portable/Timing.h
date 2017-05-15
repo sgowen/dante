@@ -7,8 +7,12 @@ public:
 	Timing();
 	
 	void Update();
+    
+    void updateManual(float stateTime, float deltaTime);
 
 	float GetDeltaTime() const { return mDeltaTime; }
+    
+    void setDeltaTime(float deltaTime) { mDeltaTime = deltaTime; }
 
 	double GetTime() const;
 

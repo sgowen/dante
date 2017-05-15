@@ -196,7 +196,7 @@ void RoboCatClient::InterpolateClientSidePrediction(float inOldRotation, const V
 
 	if (!RoboMath::Is2DVectorEqual(inOldLocation, GetLocation()))
 	{
-		//LOG("ERROR! Move replay ended with incorrect location!", 0);
+		LOG("ERROR! Move replay ended with incorrect location!", 0);
 
 		//have we been out of sync, or did we just become out of sync?
 		float time = Timing::sInstance.GetFrameStartTime();
@@ -220,7 +220,7 @@ void RoboCatClient::InterpolateClientSidePrediction(float inOldRotation, const V
 
 	if (!RoboMath::Is2DVectorEqual(inOldVelocity, GetVelocity()))
 	{
-		//LOG("ERROR! Move replay ended with incorrect velocity!", 0);
+		LOG("ERROR! Move replay ended with incorrect velocity!", 0);
 
 		//have we been out of sync, or did we just become out of sync?
 		float time = Timing::sInstance.GetFrameStartTime();

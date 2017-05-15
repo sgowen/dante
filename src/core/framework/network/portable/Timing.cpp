@@ -46,6 +46,14 @@ void Timing::Update()
 
 }
 
+void Timing::updateManual(float stateTime, float deltaTime)
+{
+    mDeltaTime = deltaTime;
+    
+    mLastFrameStartTime = stateTime;
+    mFrameStartTimef = static_cast< float > (mLastFrameStartTime);
+}
+
 double Timing::GetTime() const
 {
 #if _WIN32
