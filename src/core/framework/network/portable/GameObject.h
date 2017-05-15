@@ -1,3 +1,14 @@
+//
+//  GameObject.h
+//  noctisgames-framework
+//
+//  Created by Stephen Gowen on 5/15/17.
+//  Copyright (c) 2017 Noctis Games. All rights reserved.
+//
+
+#ifndef __noctisgames__GameObject__
+#define __noctisgames__GameObject__
+
 #include "RoboCatShared.h"
 
 #define CLASS_IDENTIFICATION(inCode, inClass) \
@@ -76,3 +87,5 @@ private:
 };
 
 typedef shared_ptr< GameObject >	GameObjectPtr;
+
+#endif /* defined(__noctisgames__GameObject__) */

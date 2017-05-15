@@ -1,3 +1,14 @@
+//
+//  AckRange.h
+//  noctisgames-framework
+//
+//  Created by Stephen Gowen on 5/15/17.
+//  Copyright (c) 2017 Noctis Games. All rights reserved.
+//
+
+#ifndef __noctisgames__AckRange__
+#define __noctisgames__AckRange__
+
 #include "RoboCatShared.h"
 
 class AckRange
@@ -33,3 +44,5 @@ inline bool AckRange::ExtendIfShould(PacketSequenceNumber inSequenceNumber)
 		return false;
 	}
 }
+
+#endif /* defined(__noctisgames__AckRange__) */

@@ -6,8 +6,8 @@
 //  Copyright (c) 2014 com.JoshuaGlazer.Book. All rights reserved.
 //
 
-#ifndef RoboCat_ByteSwap_h
-#define RoboCat_ByteSwap_h
+#ifndef __noctisgames__ByteSwap__
+#define __noctisgames__ByteSwap__
 
 inline uint16_t ByteSwap2(uint16_t inData)
 {
@@ -121,4 +121,4 @@ inline void TestByteSwap()
 	printf("swapped 0x%x is 0x%x\n", TypeAliaser< float, uint32_t >(floatTest).Get(), TypeAliaser< float, uint32_t >(ByteSwap(floatTest)).Get());
 }
 
-#endif
+#endif /* defined(__noctisgames__ByteSwap__) */

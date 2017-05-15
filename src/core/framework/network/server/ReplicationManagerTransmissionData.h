@@ -1,3 +1,13 @@
+//
+//  ReplicationManagerTransmissionData.h
+//  noctisgames-framework
+//
+//  Created by Stephen Gowen on 5/15/17.
+//  Copyright (c) 2017 Noctis Games. All rights reserved.
+//
+
+#ifndef __noctisgames__ReplicationManagerTransmissionData__
+#define __noctisgames__ReplicationManagerTransmissionData__
 
 class ReplicationManagerServer;
 
@@ -49,3 +59,5 @@ private:
 };
 
 typedef shared_ptr< ReplicationManagerTransmissionData > ReplicationManagerTransmissionDataPtr;
+
+#endif /* defined(__noctisgames__ReplicationManagerTransmissionData__) */

@@ -1,3 +1,14 @@
+//
+//  RodentClient.h
+//  noctisgames-framework
+//
+//  Created by Stephen Gowen on 5/15/17.
+//  Copyright (c) 2017 Noctis Games. All rights reserved.
+//
+
+#ifndef __noctisgames__RodentClient__
+#define __noctisgames__RodentClient__
+
 #include "RoboCatClientPCH.h"
 
 class RodentClient : public Rodent
@@ -7,8 +18,6 @@ public:
 
 protected:
 	RodentClient();
-
-private:
-
-//	SpriteComponentPtr	mSpriteComponent;
 };
+
+#endif /* defined(__noctisgames__RodentClient__) */

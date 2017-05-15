@@ -1,3 +1,14 @@
+//
+//  MoveList.h
+//  noctisgames-framework
+//
+//  Created by Stephen Gowen on 5/15/17.
+//  Copyright (c) 2017 Noctis Games. All rights reserved.
+//
+
+#ifndef __noctisgames__MoveList__
+#define __noctisgames__MoveList__
+
 #include "RoboCatShared.h"
 
 class MoveList
@@ -29,11 +40,8 @@ public:
 	const_iterator	end()					const	{ return mMoves.end(); }
 
 private:
-
 	float			mLastMoveTimestamp;
 	deque< Move >	mMoves;
-
-
-
-
 };
+
+#endif /* defined(__noctisgames__MoveList__) */

@@ -1,3 +1,14 @@
+//
+//  InFlightPacket.h
+//  noctisgames-framework
+//
+//  Created by Stephen Gowen on 5/15/17.
+//  Copyright (c) 2017 Noctis Games. All rights reserved.
+//
+
+#ifndef __noctisgames__InFlightPacket__
+#define __noctisgames__InFlightPacket__
+
 #include "RoboCatShared.h"
 
 class DeliveryNotificationManager;
@@ -33,3 +44,5 @@ private:
 	
 	unordered_map< int, TransmissionDataPtr >	mTransmissionDataMap;
 };
+
+#endif /* defined(__noctisgames__InFlightPacket__) */

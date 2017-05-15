@@ -1,3 +1,11 @@
+//
+//  RoboCatClient.cpp
+//  noctisgames-framework
+//
+//  Created by Stephen Gowen on 5/15/17.
+//  Copyright (c) 2017 Noctis Games. All rights reserved.
+//
+
 #include "pch.h"
 
 #include "RoboCatClientPCH.h"
@@ -6,8 +14,7 @@ RoboCatClient::RoboCatClient() :
 	mTimeLocationBecameOutOfSync(0.f),
 	mTimeVelocityBecameOutOfSync(0.f)
 {
-//	mSpriteComponent.reset(new SpriteComponent(this));
-//	mSpriteComponent->SetTexture(TextureManager::sInstance->GetTexture("cat"));
+    // Empty
 }
 
 void RoboCatClient::HandleDying()
@@ -275,5 +282,4 @@ void RoboCatClient::DoClientSidePredictionAfterReplicationForRemoteCat(uint32_t 
 			}
 		}
 	}
-
 }

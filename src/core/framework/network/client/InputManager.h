@@ -1,3 +1,14 @@
+//
+//  InputManager.h
+//  noctisgames-framework
+//
+//  Created by Stephen Gowen on 5/15/17.
+//  Copyright (c) 2017 Noctis Games. All rights reserved.
+//
+
+#ifndef __noctisgames__InputManager__
+#define __noctisgames__InputManager__
+
 #include "RoboCatClientPCH.h"
 
 class InputManager
@@ -31,3 +42,5 @@ private:
 	float			mNextTimeToSampleInput;
 	const Move*		mPendingMove;
 };
+
+#endif /* defined(__noctisgames__InputManager__) */

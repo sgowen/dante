@@ -1,3 +1,14 @@
+//
+//  NetworkManagerServer.h
+//  noctisgames-framework
+//
+//  Created by Stephen Gowen on 5/15/17.
+//  Copyright (c) 2017 Noctis Games. All rights reserved.
+//
+
+#ifndef __noctisgames__NetworkManagerServer__
+#define __noctisgames__NetworkManagerServer__
+
 class NetworkManagerServer : public NetworkManager
 {
 public:
@@ -62,3 +73,5 @@ inline GameObjectPtr NetworkManagerServer::RegisterAndReturn(GameObject* inGameO
 	RegisterGameObject(toRet);
 	return toRet;
 }
+
+#endif /* defined(__noctisgames__NetworkManagerServer__) */

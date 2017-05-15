@@ -1,3 +1,14 @@
+//
+//  ReplicationCommand.h
+//  noctisgames-framework
+//
+//  Created by Stephen Gowen on 5/15/17.
+//  Copyright (c) 2017 Noctis Games. All rights reserved.
+//
+
+#ifndef __noctisgames__ReplicationCommand__
+#define __noctisgames__ReplicationCommand__
+
 #include "RoboCatShared.h"
 
 enum ReplicationAction
@@ -49,3 +60,5 @@ inline void	 ReplicationCommand::ClearDirtyState(uint32_t inStateToClear)
 		mAction = RA_Update;
 	}
 }
+
+#endif /* defined(__noctisgames__ReplicationCommand__) */

@@ -1,3 +1,14 @@
+//
+//  MemoryBitStream.h
+//  noctisgames-framework
+//
+//  Created by Stephen Gowen on 5/15/17.
+//  Copyright (c) 2017 Noctis Games. All rights reserved.
+//
+
+#ifndef __noctisgames__MemoryBitStream__
+#define __noctisgames__MemoryBitStream__
+
 #include "RoboCatShared.h"
 
 #include <cstdint>
@@ -160,3 +171,4 @@ private:
 
 };
 
+#endif /* defined(__noctisgames__MemoryBitStream__) */

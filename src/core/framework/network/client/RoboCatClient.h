@@ -1,3 +1,14 @@
+//
+//  RoboCatClient.h
+//  noctisgames-framework
+//
+//  Created by Stephen Gowen on 5/15/17.
+//  Copyright (c) 2017 Noctis Games. All rights reserved.
+//
+
+#ifndef __noctisgames__RoboCatClient__
+#define __noctisgames__RoboCatClient__
+
 #include "RoboCatClientPCH.h"
 
 class RoboCatClient : public RoboCat
@@ -13,11 +24,8 @@ public:
 	void DoClientSidePredictionAfterReplicationForLocalCat(uint32_t inReadState);
 	void DoClientSidePredictionAfterReplicationForRemoteCat(uint32_t inReadState);
 
-
-
 protected:
 	RoboCatClient();
-
 
 private:
 
@@ -25,6 +33,6 @@ private:
 
 	float				mTimeLocationBecameOutOfSync;
 	float				mTimeVelocityBecameOutOfSync;
-	
-//	SpriteComponentPtr	mSpriteComponent;
 };
+
+#endif /* defined(__noctisgames__RoboCatClient__) */

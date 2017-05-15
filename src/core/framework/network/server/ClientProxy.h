@@ -1,3 +1,14 @@
+//
+//  ClientProxy.h
+//  noctisgames-framework
+//
+//  Created by Stephen Gowen on 5/15/17.
+//  Copyright (c) 2017 Noctis Games. All rights reserved.
+//
+
+#ifndef __noctisgames__ClientProxy__
+#define __noctisgames__ClientProxy__
+
 class ClientProxy
 {
 public:
@@ -49,3 +60,5 @@ private:
 };
 
 typedef shared_ptr< ClientProxy >	ClientProxyPtr;
+
+#endif /* defined(__noctisgames__ClientProxy__) */

@@ -1,3 +1,14 @@
+//
+//  Server.h
+//  noctisgames-framework
+//
+//  Created by Stephen Gowen on 5/15/17.
+//  Copyright (c) 2017 Noctis Games. All rights reserved.
+//
+
+#ifndef __noctisgames__Server__
+#define __noctisgames__Server__
+
 class Server : public Engine
 {
 public:
@@ -12,7 +23,6 @@ public:
 	RoboCatPtr	GetCatForPlayer(int inPlayerId);
 	void	SpawnCatForPlayer(int inPlayerId);
 
-
 private:
     float m_fFrameStateTime;
     
@@ -20,5 +30,6 @@ private:
 
 	bool	InitNetworkManager();
 	void	SetupWorld();
-
 };
+
+#endif /* defined(__noctisgames__Server__) */

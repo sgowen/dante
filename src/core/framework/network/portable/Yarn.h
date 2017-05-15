@@ -1,3 +1,14 @@
+//
+//  Yarn.h
+//  noctisgames-framework
+//
+//  Created by Stephen Gowen on 5/15/17.
+//  Copyright (c) 2017 Noctis Games. All rights reserved.
+//
+
+#ifndef __noctisgames__Yarn__
+#define __noctisgames__Yarn__
+
 #include "RoboCatShared.h"
 
 class Yarn : public GameObject
@@ -45,3 +56,5 @@ protected:
 };
 
 typedef shared_ptr< Yarn >	YarnPtr;
+
+#endif /* defined(__noctisgames__Yarn__) */

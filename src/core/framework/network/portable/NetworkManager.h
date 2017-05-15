@@ -1,3 +1,14 @@
+//
+//  NetworkManager.h
+//  noctisgames-framework
+//
+//  Created by Stephen Gowen on 5/15/17.
+//  Copyright (c) 2017 Noctis Games. All rights reserved.
+//
+
+#ifndef __noctisgames__NetworkManager__
+#define __noctisgames__NetworkManager__
+
 #include "RoboCatShared.h"
 
 typedef unordered_map< int, GameObjectPtr > IntToGameObjectMap;
@@ -87,3 +98,5 @@ inline	GameObjectPtr NetworkManager::GetGameObject(int inNetworkId) const
 		return GameObjectPtr();
 	}
 }
+
+#endif /* defined(__noctisgames__NetworkManager__) */

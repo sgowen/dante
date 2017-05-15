@@ -1,9 +1,16 @@
+//
+//  ReplicationManagerServer.h
+//  noctisgames-framework
+//
+//  Created by Stephen Gowen on 5/15/17.
+//  Copyright (c) 2017 Noctis Games. All rights reserved.
+//
 
+#ifndef __noctisgames__ReplicationManagerServer__
+#define __noctisgames__ReplicationManagerServer__
 
 class ReplicationManagerServer
 {
-	
-
 public:
 	void ReplicateCreate(int inNetworkId, uint32_t inInitialDirtyState);
 	void ReplicateDestroy(int inNetworkId);
@@ -20,7 +27,6 @@ private:
 	uint32_t WriteDestroyAction(OutputMemoryBitStream& inOutputStream, int inNetworkId, uint32_t inDirtyState);
 
 	unordered_map< int, ReplicationCommand >	mNetworkIdToReplicationCommand;
-
-
-
 };
+
+#endif /* defined(__noctisgames__ReplicationManagerServer__) */

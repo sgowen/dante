@@ -1,3 +1,14 @@
+//
+//  RoboCat.h
+//  noctisgames-framework
+//
+//  Created by Stephen Gowen on 5/15/17.
+//  Copyright (c) 2017 Noctis Games. All rights reserved.
+//
+
+#ifndef __noctisgames__RoboCat__
+#define __noctisgames__RoboCat__
+
 #include "RoboCatShared.h"
 
 class RoboCat : public GameObject
@@ -69,11 +80,8 @@ protected:
 	int					mHealth;
 
 	bool				mIsShooting;
-
-	
-
-
-
 };
 
 typedef shared_ptr< RoboCat >	RoboCatPtr;
+
+#endif /* defined(__noctisgames__RoboCat__) */

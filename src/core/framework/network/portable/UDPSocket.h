@@ -1,3 +1,14 @@
+//
+//  UDPSocket.h
+//  noctisgames-framework
+//
+//  Created by Stephen Gowen on 5/15/17.
+//  Copyright (c) 2017 Noctis Games. All rights reserved.
+//
+
+#ifndef __noctisgames__UDPSocket__
+#define __noctisgames__UDPSocket__
+
 #include "RoboCatShared.h"
 
 class UDPSocket
@@ -25,3 +36,5 @@ private:
 };
 
 typedef shared_ptr< UDPSocket >	UDPSocketPtr;
+
+#endif /* defined(__noctisgames__UDPSocket__) */

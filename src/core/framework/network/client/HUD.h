@@ -1,3 +1,14 @@
+//
+//  HUD.h
+//  noctisgames-framework
+//
+//  Created by Stephen Gowen on 5/15/17.
+//  Copyright (c) 2017 Noctis Games. All rights reserved.
+//
+
+#ifndef __noctisgames__HUD__
+#define __noctisgames__HUD__
+
 #include "RoboCatClientPCH.h"
 
 class HUD
@@ -18,3 +29,5 @@ public:
 private:
 	HUD();
 };
+
+#endif /* defined(__noctisgames__HUD__) */

@@ -1,10 +1,19 @@
+//
+//  DeliveryNotificationManager.h
+//  noctisgames-framework
+//
+//  Created by Stephen Gowen on 5/15/17.
+//  Copyright (c) 2017 Noctis Games. All rights reserved.
+//
+
+#ifndef __noctisgames__DeliveryNotificationManager__
+#define __noctisgames__DeliveryNotificationManager__
+
 #include "RoboCatShared.h"
 
 class DeliveryNotificationManager
 {
 public:
-	
-	
 	DeliveryNotificationManager(bool inShouldSendAcks, bool inShouldProcessAcks);
 	~DeliveryNotificationManager();
 	
@@ -20,8 +29,6 @@ public:
 	const deque< InFlightPacket >&	GetInFlightPackets()	const	{ return mInFlightPackets; }
 	
 private:
-	
-	
 	
 	InFlightPacket*		WriteSequenceNumber(OutputMemoryBitStream& inOutputStream);
 	void				WriteAckData(OutputMemoryBitStream& inOutputStream);
@@ -47,10 +54,7 @@ private:
 	uint32_t		mDeliveredPacketCount;
 	uint32_t		mDroppedPacketCount;
 	uint32_t		mDispatchedPacketCount;
-	
 };
-
-
 
 inline InFlightPacket* DeliveryNotificationManager::WriteState(OutputMemoryBitStream& inOutputStream)
 {
@@ -71,3 +75,5 @@ inline bool	DeliveryNotificationManager::ReadAndProcessState(InputMemoryBitStrea
 	}
 	return toRet;
 }
+
+#endif /* defined(__noctisgames__DeliveryNotificationManager__) */

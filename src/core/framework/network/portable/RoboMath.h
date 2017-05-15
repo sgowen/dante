@@ -1,3 +1,14 @@
+//
+//  RoboMath.h
+//  noctisgames-framework
+//
+//  Created by Joshua Glazer on 6/13/15.
+//  Copyright (c) 2015 com.JoshuaGlazer.Book. All rights reserved.
+//
+
+#ifndef __noctisgames__RoboMath__
+#define __noctisgames__RoboMath__
+
 class Vector3
 {
 public:
@@ -197,3 +208,5 @@ namespace Colors
 	static const Vector3 LightPink(1.0f, 0.71f, 0.76f);
 	static const Vector3 LightGreen(0.56f, 0.93f, 0.56f);
 }
+
+#endif /* defined(__noctisgames__RoboMath__) */

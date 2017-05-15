@@ -1,7 +1,13 @@
+//
+//  LinkingContext.h
+//  noctisgames-framework
+//
+//  Created by Stephen Gowen on 5/15/17.
+//  Copyright (c) 2017 Noctis Games. All rights reserved.
+//
 
-
-#ifndef RoboCat_LinkingContext_h
-#define RoboCat_LinkingContext_h
+#ifndef __noctisgames__LinkingContext__
+#define __noctisgames__LinkingContext__
 
 #include "RoboCatShared.h"
 
@@ -67,4 +73,4 @@ private:
 	uint32_t mNextNetworkId;
 };
 
-#endif
+#endif /* defined(__noctisgames__LinkingContext__) */
