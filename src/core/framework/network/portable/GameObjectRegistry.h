@@ -1,6 +1,6 @@
 #include "RoboCatShared.h"
 
-typedef GameObjectPtr ( *GameObjectCreationFunc )();
+typedef GameObjectPtr (*GameObjectCreationFunc)();
 
 class GameObjectRegistry
 {
@@ -10,9 +10,9 @@ public:
 
 	static std::unique_ptr< GameObjectRegistry >		sInstance;
 
-	void RegisterCreationFunction( uint32_t inFourCCName, GameObjectCreationFunc inCreationFunction );
+	void RegisterCreationFunction(uint32_t inFourCCName, GameObjectCreationFunc inCreationFunction);
 
-	GameObjectPtr CreateGameObject( uint32_t inFourCCName );
+	GameObjectPtr CreateGameObject(uint32_t inFourCCName);
 
 private:
 

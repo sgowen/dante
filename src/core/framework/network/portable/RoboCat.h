@@ -3,7 +3,7 @@
 class RoboCat : public GameObject
 {
 public:
-	CLASS_IDENTIFICATION( 'RCAT', GameObject )
+	CLASS_IDENTIFICATION('RCAT', GameObject)
 
 	enum ECatReplicationState
 	{
@@ -24,19 +24,19 @@ public:
 
 	virtual void Update()	override;
 
-	void ProcessInput( float inDeltaTime, const InputState& inInputState );
-	void SimulateMovement( float inDeltaTime );
+	void ProcessInput(float inDeltaTime, const InputState& inInputState);
+	void SimulateMovement(float inDeltaTime);
 
 	void ProcessCollisions();
 	void ProcessCollisionsWithScreenWalls();
 
-	void		SetPlayerId( uint32_t inPlayerId )			{ mPlayerId = inPlayerId; }
+	void		SetPlayerId(uint32_t inPlayerId)			{ mPlayerId = inPlayerId; }
 	uint32_t	GetPlayerId()						const 	{ return mPlayerId; }
 
-	void			SetVelocity( const Vector3& inVelocity )	{ mVelocity = inVelocity; }
+	void			SetVelocity(const Vector3& inVelocity)	{ mVelocity = inVelocity; }
 	const Vector3&	GetVelocity()						const	{ return mVelocity; }
 
-	virtual uint32_t	Write( OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState ) const override;
+	virtual uint32_t	Write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState) const override;
 
 protected:
 	RoboCat();
@@ -44,7 +44,7 @@ protected:
 private:
 
 
-	void	AdjustVelocityByThrust( float inDeltaTime );
+	void	AdjustVelocityByThrust(float inDeltaTime);
 
 	Vector3				mVelocity;
 

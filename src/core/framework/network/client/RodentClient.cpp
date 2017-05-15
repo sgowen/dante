@@ -4,6 +4,6 @@
 
 RodentClient::RodentClient()
 {
-//	mSpriteComponent.reset( new SpriteComponent( this ) );
-//	mSpriteComponent->SetTexture( TextureManager::sInstance->GetTexture( "mouse" ) );
+//	mSpriteComponent.reset(new SpriteComponent(this));
+//	mSpriteComponent->SetTexture(TextureManager::sInstance->GetTexture("mouse"));
 }

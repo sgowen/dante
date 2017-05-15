@@ -14,7 +14,7 @@ public:
 
 	float GetTimef() const
 	{
-		return static_cast< float >( GetTime() );
+		return static_cast< float >(GetTime());
 	}
 
 	float GetFrameStartTime() const { return mFrameStartTimef; }

@@ -9,7 +9,7 @@ bool SocketUtil::StaticInit()
 #if _WIN32
 	WSADATA wsaData;
 	int iResult = WSAStartup(MAKEWORD(2, 2), &wsaData);
-	if ( iResult != NO_ERROR )
+	if (iResult != NO_ERROR)
 	{
 		ReportError ("Starting Up");
 		return false;
@@ -26,7 +26,7 @@ void SocketUtil::CleanUp()
 }
 
 
-void SocketUtil::ReportError( const char* inOperationDesc )
+void SocketUtil::ReportError(const char* inOperationDesc)
 {
 #if _WIN32
 	LPVOID lpMsgBuf;
@@ -40,12 +40,12 @@ void SocketUtil::ReportError( const char* inOperationDesc )
 				  errorNum,
 				  MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
 				  (LPTSTR) &lpMsgBuf,
-				  0, NULL );
+				  0, NULL);
 	
 	
-	LOG( "Error %s: %d- %s", inOperationDesc, errorNum, lpMsgBuf );
+	LOG("Error %s: %d- %s", inOperationDesc, errorNum, lpMsgBuf);
 #else
-	LOG( "Error: %hs", inOperationDesc );
+	LOG("Error: %hs", inOperationDesc);
 #endif
 }
 
@@ -59,47 +59,47 @@ int SocketUtil::GetLastError()
 	
 }
 
-UDPSocketPtr SocketUtil::CreateUDPSocket( SocketAddressFamily inFamily )
+UDPSocketPtr SocketUtil::CreateUDPSocket(SocketAddressFamily inFamily)
 {
-	SOCKET s = socket( inFamily, SOCK_DGRAM, IPPROTO_UDP );
+	SOCKET s = socket(inFamily, SOCK_DGRAM, IPPROTO_UDP);
 	
-	if( s != INVALID_SOCKET )
+	if (s != INVALID_SOCKET)
 	{
-		return UDPSocketPtr( new UDPSocket( s ) );
+		return UDPSocketPtr(new UDPSocket(s));
 	}
 	else
 	{
-		ReportError( "SocketUtil::CreateUDPSocket" );
+		ReportError("SocketUtil::CreateUDPSocket");
 		return nullptr;
 	}
 }
 
-TCPSocketPtr SocketUtil::CreateTCPSocket( SocketAddressFamily inFamily )
+TCPSocketPtr SocketUtil::CreateTCPSocket(SocketAddressFamily inFamily)
 {
-	SOCKET s = socket( inFamily, SOCK_STREAM, IPPROTO_TCP );
+	SOCKET s = socket(inFamily, SOCK_STREAM, IPPROTO_TCP);
 	
-	if( s != INVALID_SOCKET )
+	if (s != INVALID_SOCKET)
 	{
-		return TCPSocketPtr( new TCPSocket( s ) );
+		return TCPSocketPtr(new TCPSocket(s));
 	}
 	else
 	{
-		ReportError( "SocketUtil::CreateTCPSocket" );
+		ReportError("SocketUtil::CreateTCPSocket");
 		return nullptr;
 	}
 }
 
-fd_set* SocketUtil::FillSetFromVector( fd_set& outSet, const vector< TCPSocketPtr >* inSockets, int& ioNaxNfds )
+fd_set* SocketUtil::FillSetFromVector(fd_set& outSet, const vector< TCPSocketPtr >* inSockets, int& ioNaxNfds)
 {
-	if( inSockets )
+	if (inSockets)
 	{
-		FD_ZERO( &outSet );
+		FD_ZERO(&outSet);
 		
-		for( const TCPSocketPtr& socket : *inSockets )
+		for (const TCPSocketPtr& socket : *inSockets)
 		{
-			FD_SET( socket->mSocket, &outSet );
+			FD_SET(socket->mSocket, &outSet);
 #if !_WIN32
-			ioNaxNfds = std::max( ioNaxNfds, socket->mSocket );
+			ioNaxNfds = std::max(ioNaxNfds, socket->mSocket);
 #endif
 		}
 		return &outSet;
@@ -110,44 +110,44 @@ fd_set* SocketUtil::FillSetFromVector( fd_set& outSet, const vector< TCPSocketPt
 	}
 }
 
-void SocketUtil::FillVectorFromSet( vector< TCPSocketPtr >* outSockets, const vector< TCPSocketPtr >* inSockets, const fd_set& inSet )
+void SocketUtil::FillVectorFromSet(vector< TCPSocketPtr >* outSockets, const vector< TCPSocketPtr >* inSockets, const fd_set& inSet)
 {
-	if( inSockets && outSockets )
+	if (inSockets && outSockets)
 	{
 		outSockets->clear();
-		for( const TCPSocketPtr& socket : *inSockets )
+		for (const TCPSocketPtr& socket : *inSockets)
 		{
-			if( FD_ISSET( socket->mSocket, &inSet ) )
+			if (FD_ISSET(socket->mSocket, &inSet))
 			{
-				outSockets->push_back( socket );
+				outSockets->push_back(socket);
 			}
 		}
 	}
 }
 
-int SocketUtil::Select( const vector< TCPSocketPtr >* inReadSet,
+int SocketUtil::Select(const vector< TCPSocketPtr >* inReadSet,
 					   vector< TCPSocketPtr >* outReadSet,
 					   const vector< TCPSocketPtr >* inWriteSet,
 					   vector< TCPSocketPtr >* outWriteSet,
 					   const vector< TCPSocketPtr >* inExceptSet,
-					   vector< TCPSocketPtr >* outExceptSet )
+					   vector< TCPSocketPtr >* outExceptSet)
 {
 	//build up some sets from our vectors
 	fd_set read, write, except;
 	
 	int nfds = 0;
 	
-	fd_set *readPtr = FillSetFromVector( read, inReadSet, nfds );
-	fd_set *writePtr = FillSetFromVector( read, inWriteSet, nfds );
-	fd_set *exceptPtr = FillSetFromVector( read, inExceptSet, nfds );
+	fd_set *readPtr = FillSetFromVector(read, inReadSet, nfds);
+	fd_set *writePtr = FillSetFromVector(read, inWriteSet, nfds);
+	fd_set *exceptPtr = FillSetFromVector(read, inExceptSet, nfds);
 	
-	int toRet = select( nfds + 1, readPtr, writePtr, exceptPtr, nullptr );
+	int toRet = select(nfds + 1, readPtr, writePtr, exceptPtr, nullptr);
 	
-	if( toRet > 0 )
+	if (toRet > 0)
 	{
-		FillVectorFromSet( outReadSet, inReadSet, read );
-		FillVectorFromSet( outWriteSet, inWriteSet, write );
-		FillVectorFromSet( outExceptSet, inExceptSet, except );
+		FillVectorFromSet(outReadSet, inReadSet, read);
+		FillVectorFromSet(outWriteSet, inWriteSet, write);
+		FillVectorFromSet(outExceptSet, inExceptSet, except);
 	}
 	return toRet;
 }

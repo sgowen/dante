@@ -7,11 +7,11 @@
 std::unique_ptr< Engine >	Engine::sInstance;
 
 Engine::Engine() :
-mShouldKeepRunning( true )
+mShouldKeepRunning(true)
 {
 	SocketUtil::StaticInit();
 
-	srand( static_cast< uint32_t >( time( nullptr ) ) );
+	srand(static_cast< uint32_t >(time(nullptr)));
 	
 	GameObjectRegistry::StaticInit();
 

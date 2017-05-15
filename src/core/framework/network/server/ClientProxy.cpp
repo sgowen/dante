@@ -5,13 +5,13 @@ namespace
 	const float kRespawnDelay = 3.f;
 }
 
-ClientProxy::ClientProxy( const SocketAddress& inSocketAddress, const string& inName, int inPlayerId ) :
-mSocketAddress( inSocketAddress ),
-mName( inName ),
-mPlayerId( inPlayerId ),
-mDeliveryNotificationManager( false, true ),
-mIsLastMoveTimestampDirty( false ),
-mTimeToRespawn( 0.f )
+ClientProxy::ClientProxy(const SocketAddress& inSocketAddress, const string& inName, int inPlayerId) :
+mSocketAddress(inSocketAddress),
+mName(inName),
+mPlayerId(inPlayerId),
+mDeliveryNotificationManager(false, true),
+mIsLastMoveTimestampDirty(false),
+mTimeToRespawn(0.f)
 {
 	UpdateLastPacketTime();
 }
@@ -29,9 +29,9 @@ void	ClientProxy::HandleCatDied()
 
 void	ClientProxy::RespawnCatIfNecessary()
 {
-	if( mTimeToRespawn != 0.f && Timing::sInstance.GetFrameStartTime() > mTimeToRespawn )
+	if (mTimeToRespawn != 0.f && Timing::sInstance.GetFrameStartTime() > mTimeToRespawn)
 	{
-		static_cast< Server* > ( Engine::sInstance.get() )->SpawnCatForPlayer( mPlayerId );
+		static_cast< Server* > (Engine::sInstance.get())->SpawnCatForPlayer(mPlayerId);
 		mTimeToRespawn = 0.f;
 	}
 }

@@ -8,7 +8,7 @@ public:
 	static void StaticInit();
 	static unique_ptr< InputManager >	sInstance;
 
-	void HandleInput( EInputAction inInputAction, char inKeyCode );
+	void HandleInput(EInputAction inInputAction, char inKeyCode);
 
 	const InputState& GetState()	const	{ return mCurrentState; }
 

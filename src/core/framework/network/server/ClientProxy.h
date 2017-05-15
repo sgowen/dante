@@ -2,13 +2,13 @@ class ClientProxy
 {
 public:
 
-	ClientProxy( const SocketAddress& inSocketAddress, const string& inName, int inPlayerId );
+	ClientProxy(const SocketAddress& inSocketAddress, const string& inName, int inPlayerId);
 
 	const	SocketAddress&	GetSocketAddress()	const	{ return mSocketAddress; }
 			int				GetPlayerId()		const	{ return mPlayerId; }
 	const	string&		GetName()			const	{ return mName; }
 
-			void			SetInputState( const InputState& inInputState )		{ mInputState = inInputState; }
+			void			SetInputState(const InputState& inInputState)		{ mInputState = inInputState; }
 	const	InputState&		GetInputState()		const	{ return mInputState; }
 
 			void			UpdateLastPacketTime();
@@ -20,7 +20,7 @@ public:
 			const	MoveList&				GetUnprocessedMoveList() const		{ return mUnprocessedMoveList; }
 					MoveList&				GetUnprocessedMoveList()			{ return mUnprocessedMoveList; }
 
-			void	SetIsLastMoveTimestampDirty( bool inIsDirty )				{ mIsLastMoveTimestampDirty = inIsDirty; }
+			void	SetIsLastMoveTimestampDirty(bool inIsDirty)				{ mIsLastMoveTimestampDirty = inIsDirty; }
 			bool	IsLastMoveTimestampDirty()						const		{ return mIsLastMoveTimestampDirty; }
 
 			void	HandleCatDied();

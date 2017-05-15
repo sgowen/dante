@@ -7,14 +7,14 @@ enum ECatControlType
 class RoboCatServer : public RoboCat
 {
 public:
-	static GameObjectPtr	StaticCreate() { return NetworkManagerServer::sInstance->RegisterAndReturn( new RoboCatServer() ); }
+	static GameObjectPtr	StaticCreate() { return NetworkManagerServer::sInstance->RegisterAndReturn(new RoboCatServer()); }
 	virtual void HandleDying() override;
 
 	virtual void Update();
 
-	void SetCatControlType( ECatControlType inCatControlType ) { mCatControlType = inCatControlType; }
+	void SetCatControlType(ECatControlType inCatControlType) { mCatControlType = inCatControlType; }
 
-	void TakeDamage( int inDamagingPlayerId );
+	void TakeDamage(int inDamagingPlayerId);
 
 protected:
 	RoboCatServer();

@@ -122,25 +122,25 @@ void MainRenderer::RenderHealth()
 {
     if (HUD::sInstance->mHealth > 0)
     {
-        string healthString = StringUtils::Sprintf( "Health %d", HUD::sInstance->mHealth );
-        RenderText( healthString, HUD::sInstance->mHealthOffset, Colors::Red );
+        string healthString = StringUtils::Sprintf("Health %d", HUD::sInstance->mHealth);
+        RenderText(healthString, HUD::sInstance->mHealthOffset, Colors::Red);
     }
 }
 
 void MainRenderer::RenderBandWidth()
 {
-    string bandwidth = StringUtils::Sprintf( "In %d  Bps, Out %d Bps",
-                                            static_cast< int >( NetworkManagerClient::sInstance->GetBytesReceivedPerSecond().GetValue() ),
-                                            static_cast< int >( NetworkManagerClient::sInstance->GetBytesSentPerSecond().GetValue() ) );
-    RenderText( bandwidth, HUD::sInstance->mBandwidthOrigin, Colors::White );
+    string bandwidth = StringUtils::Sprintf("In %d  Bps, Out %d Bps",
+                                            static_cast< int >(NetworkManagerClient::sInstance->GetBytesReceivedPerSecond().GetValue()),
+                                            static_cast< int >(NetworkManagerClient::sInstance->GetBytesSentPerSecond().GetValue()));
+    RenderText(bandwidth, HUD::sInstance->mBandwidthOrigin, Colors::White);
 }
 
 void MainRenderer::RenderRoundTripTime()
 {
     float rttMS = NetworkManagerClient::sInstance->GetAvgRoundTripTime().GetValue() * 1000.f;
     
-    string roundTripTime = StringUtils::Sprintf( "RTT %d ms", ( int ) rttMS  );
-    RenderText( roundTripTime, HUD::sInstance->mRoundTripTimeOrigin, Colors::White );
+    string roundTripTime = StringUtils::Sprintf("RTT %d ms", (int) rttMS);
+    RenderText(roundTripTime, HUD::sInstance->mRoundTripTimeOrigin, Colors::White);
 }
 
 void MainRenderer::RenderScoreBoard()
@@ -148,15 +148,15 @@ void MainRenderer::RenderScoreBoard()
     const vector< ScoreBoardManager::Entry >& entries = ScoreBoardManager::sInstance->GetEntries();
     Vector3 offset = HUD::sInstance->mScoreBoardOrigin;
     
-    for( const auto& entry: entries )
+    for (const auto& entry: entries)
     {
-        RenderText( entry.GetFormattedNameScore(), offset, entry.GetColor() );
+        RenderText(entry.GetFormattedNameScore(), offset, entry.GetColor());
         offset.mX += HUD::sInstance->mScoreOffset.mX;
         offset.mY += HUD::sInstance->mScoreOffset.mY;
     }
 }
 
-void MainRenderer::RenderText( const string& inStr, const Vector3& origin, const Vector3& inColor )
+void MainRenderer::RenderText(const string& inStr, const Vector3& origin, const Vector3& inColor)
 {
     Color fontColor = Color(inColor.mX, inColor.mY, inColor.mZ, 1);
     float fgWidth = CAM_WIDTH / 60;

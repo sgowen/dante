@@ -8,13 +8,13 @@ public:
 	typedef deque< Move >::const_reverse_iterator	const_reverse_iterator;
 	
 	MoveList():
-		mLastMoveTimestamp( -1.f )
+		mLastMoveTimestamp(-1.f)
 	{}
 	
-	const	Move&	AddMove( const InputState& inInputState, float inTimestamp );
-			bool	AddMoveIfNew( const Move& inMove );
+	const	Move&	AddMove(const InputState& inInputState, float inTimestamp);
+			bool	AddMoveIfNew(const Move& inMove);
 
-			void	RemovedProcessedMoves( float inLastMoveProcessedOnServerTimestamp );
+			void	RemovedProcessedMoves(float inLastMoveProcessedOnServerTimestamp);
 
 	float			GetLastMoveTimestamp()	const	{ return mLastMoveTimestamp; } 
 

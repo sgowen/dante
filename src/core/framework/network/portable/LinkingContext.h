@@ -12,20 +12,20 @@ class LinkingContext
 public:
 	
 	LinkingContext() : 
-	mNextNetworkId( 1 )
+	mNextNetworkId(1)
 	{}
 
-	uint32_t GetNetworkId( GameObject* inGameObject, bool inShouldCreateIfNotFound )
+	uint32_t GetNetworkId(GameObject* inGameObject, bool inShouldCreateIfNotFound)
 	{
-		auto it = mGameObjectToNetworkIdMap.find( inGameObject );
-		if( it != mGameObjectToNetworkIdMap.end() )
+		auto it = mGameObjectToNetworkIdMap.find(inGameObject);
+		if (it != mGameObjectToNetworkIdMap.end())
 		{
 			return it->second;
 		}
-		else if( inShouldCreateIfNotFound )
+		else if (inShouldCreateIfNotFound)
 		{
 			uint32_t newNetworkId = mNextNetworkId++;
-			AddGameObject( inGameObject, newNetworkId );
+			AddGameObject(inGameObject, newNetworkId);
 			return newNetworkId;
 		}
 		else
@@ -34,10 +34,10 @@ public:
 		}
 	}
 	
-	GameObject* GetGameObject( uint32_t inNetworkId ) const
+	GameObject* GetGameObject(uint32_t inNetworkId) const
 	{
-		auto it = mNetworkIdToGameObjectMap.find( inNetworkId );
-		if( it != mNetworkIdToGameObjectMap.end() )
+		auto it = mNetworkIdToGameObjectMap.find(inNetworkId);
+		if (it != mNetworkIdToGameObjectMap.end())
 		{
 			return it->second;
 		}
@@ -47,17 +47,17 @@ public:
 		}
 	}
 
-	void AddGameObject( GameObject* inGameObject, uint32_t inNetworkId )
+	void AddGameObject(GameObject* inGameObject, uint32_t inNetworkId)
 	{
 		mNetworkIdToGameObjectMap[ inNetworkId ] = inGameObject;
 		mGameObjectToNetworkIdMap[ inGameObject ] = inNetworkId;
 	}
 	
-	void RemoveGameObject( GameObject *inGameObject )
+	void RemoveGameObject(GameObject *inGameObject)
 	{
 		uint32_t networkId = mGameObjectToNetworkIdMap[ inGameObject ];
-		mGameObjectToNetworkIdMap.erase( inGameObject );
-		mNetworkIdToGameObjectMap.erase( networkId );
+		mGameObjectToNetworkIdMap.erase(inGameObject);
+		mNetworkIdToGameObjectMap.erase(networkId);
 	}
 	
 private:

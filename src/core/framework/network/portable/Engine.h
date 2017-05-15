@@ -8,7 +8,7 @@ public:
     
     virtual int Run();
 
-	void SetShouldKeepRunning( bool inShouldKeepRunning ) { mShouldKeepRunning = inShouldKeepRunning; }
+	void SetShouldKeepRunning(bool inShouldKeepRunning) { mShouldKeepRunning = inShouldKeepRunning; }
 
     virtual void DoFrame();
     

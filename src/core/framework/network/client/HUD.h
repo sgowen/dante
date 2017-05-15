@@ -6,7 +6,7 @@ public:
 	static void StaticInit();
 	static std::unique_ptr< HUD > sInstance;
 
-	void SetPlayerHealth( int inHealth ) { mHealth = inHealth; }
+	void SetPlayerHealth(int inHealth) { mHealth = inHealth; }
 
     Vector3 mBandwidthOrigin;
     Vector3 mRoundTripTimeOrigin;

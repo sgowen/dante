@@ -27,8 +27,8 @@ typedef vec4 mat4x4[4];
 static inline void mat4x4_identity(mat4x4 M)
 {
     int i, j;
-    for(i=0; i<4; ++i)
-        for(j=0; j<4; ++j)
+    for (i=0; i<4; ++i)
+        for (j=0; j<4; ++j)
             M[i][j] = i==j ? 1.f : 0.f;
 }
 

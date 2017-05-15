@@ -5,11 +5,11 @@ class DeliveryNotificationManager
 public:
 	
 	
-	DeliveryNotificationManager( bool inShouldSendAcks, bool inShouldProcessAcks );
+	DeliveryNotificationManager(bool inShouldSendAcks, bool inShouldProcessAcks);
 	~DeliveryNotificationManager();
 	
-	inline	InFlightPacket*		WriteState( OutputMemoryBitStream& inOutputStream );
-	inline	bool				ReadAndProcessState( InputMemoryBitStream& inInputStream );
+	inline	InFlightPacket*		WriteState(OutputMemoryBitStream& inOutputStream);
+	inline	bool				ReadAndProcessState(InputMemoryBitStream& inInputStream);
 	
 	void				ProcessTimedOutPackets();
 	
@@ -23,17 +23,17 @@ private:
 	
 	
 	
-	InFlightPacket*		WriteSequenceNumber( OutputMemoryBitStream& inOutputStream );
-	void				WriteAckData( OutputMemoryBitStream& inOutputStream );
+	InFlightPacket*		WriteSequenceNumber(OutputMemoryBitStream& inOutputStream);
+	void				WriteAckData(OutputMemoryBitStream& inOutputStream);
 	
 	//returns wether to drop the packet- if sequence number is too low!
-	bool				ProcessSequenceNumber( InputMemoryBitStream& inInputStream );
-	void				ProcessAcks( InputMemoryBitStream& inInputStream );
+	bool				ProcessSequenceNumber(InputMemoryBitStream& inInputStream);
+	void				ProcessAcks(InputMemoryBitStream& inInputStream);
 	
 	
-	void				AddPendingAck( PacketSequenceNumber inSequenceNumber );
-	void				HandlePacketDeliveryFailure( const InFlightPacket& inFlightPacket );
-	void				HandlePacketDeliverySuccess( const InFlightPacket& inFlightPacket );
+	void				AddPendingAck(PacketSequenceNumber inSequenceNumber);
+	void				HandlePacketDeliveryFailure(const InFlightPacket& inFlightPacket);
+	void				HandlePacketDeliverySuccess(const InFlightPacket& inFlightPacket);
 	
 	PacketSequenceNumber	mNextOutgoingSequenceNumber;
 	PacketSequenceNumber	mNextExpectedSequenceNumber;
@@ -52,22 +52,22 @@ private:
 
 
 
-inline InFlightPacket* DeliveryNotificationManager::WriteState( OutputMemoryBitStream& inOutputStream )
+inline InFlightPacket* DeliveryNotificationManager::WriteState(OutputMemoryBitStream& inOutputStream)
 {
-	InFlightPacket* toRet = WriteSequenceNumber( inOutputStream );
-	if( mShouldSendAcks )
+	InFlightPacket* toRet = WriteSequenceNumber(inOutputStream);
+	if (mShouldSendAcks)
 	{
-		WriteAckData( inOutputStream );
+		WriteAckData(inOutputStream);
 	}
 	return toRet;
 }
 
-inline bool	DeliveryNotificationManager::ReadAndProcessState( InputMemoryBitStream& inInputStream )
+inline bool	DeliveryNotificationManager::ReadAndProcessState(InputMemoryBitStream& inInputStream)
 {
-	bool toRet = ProcessSequenceNumber( inInputStream );
-	if( mShouldProcessAcks )
+	bool toRet = ProcessSequenceNumber(inInputStream);
+	if (mShouldProcessAcks)
 	{
-		ProcessAcks( inInputStream );
+		ProcessAcks(inInputStream);
 	}
 	return toRet;
 }

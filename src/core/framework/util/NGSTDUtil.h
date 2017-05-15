@@ -41,7 +41,7 @@ public:
     template<typename K, typename T>
     static void cleanUpMapOfPointerValues(std::map<K, T*>& items)
     {
-        for(typename std::map<K, T*>::iterator i = items.begin(); i != items.end(); )
+        for (typename std::map<K, T*>::iterator i = items.begin(); i != items.end(); )
         {
             delete i->second;
             

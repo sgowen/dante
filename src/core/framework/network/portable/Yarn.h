@@ -4,7 +4,7 @@ class Yarn : public GameObject
 {
 public:
 
-	CLASS_IDENTIFICATION( 'YARN', GameObject )
+	CLASS_IDENTIFICATION('YARN', GameObject)
 
 	enum EYarnReplicationState
 	{
@@ -19,19 +19,19 @@ public:
 
 	virtual uint32_t	GetAllStateMask()	const override	{ return EYRS_AllState; }
 
-	virtual uint32_t	Write( OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState ) const override;
+	virtual uint32_t	Write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState) const override;
 
-	void			SetVelocity( const Vector3& inVelocity )	{ mVelocity = inVelocity; }
+	void			SetVelocity(const Vector3& inVelocity)	{ mVelocity = inVelocity; }
 	const Vector3&	GetVelocity() const					{ return mVelocity; }
 
-	void		SetPlayerId( int inPlayerId )	{ mPlayerId = inPlayerId; }
+	void		SetPlayerId(int inPlayerId)	{ mPlayerId = inPlayerId; }
 	int			GetPlayerId() const				{ return mPlayerId; }
 
-	void		InitFromShooter( RoboCat* inShooter );
+	void		InitFromShooter(RoboCat* inShooter);
 
 	virtual void Update() override;
 
-	virtual bool HandleCollisionWithCat( RoboCat* inCat ) override;
+	virtual bool HandleCollisionWithCat(RoboCat* inCat) override;
 
 protected:
 	Yarn();

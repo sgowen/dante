@@ -2,26 +2,26 @@
 
 #include "RoboCatShared.h"
 
-InFlightPacket::InFlightPacket( PacketSequenceNumber inSequenceNumber ) :
-mSequenceNumber( inSequenceNumber ),
-mTimeDispatched( Timing::sInstance.GetTimef() )
+InFlightPacket::InFlightPacket(PacketSequenceNumber inSequenceNumber) :
+mSequenceNumber(inSequenceNumber),
+mTimeDispatched(Timing::sInstance.GetTimef())
 {
 	//null out other transmision data params...
 }
 
 
-void InFlightPacket::HandleDeliveryFailure( DeliveryNotificationManager* inDeliveryNotificationManager ) const
+void InFlightPacket::HandleDeliveryFailure(DeliveryNotificationManager* inDeliveryNotificationManager) const
 {
-	for( const auto& pair : mTransmissionDataMap )
+	for (const auto& pair : mTransmissionDataMap)
 	{
-		pair.second->HandleDeliveryFailure( inDeliveryNotificationManager );
+		pair.second->HandleDeliveryFailure(inDeliveryNotificationManager);
 	}
 }
 
-void InFlightPacket::HandleDeliverySuccess( DeliveryNotificationManager* inDeliveryNotificationManager ) const
+void InFlightPacket::HandleDeliverySuccess(DeliveryNotificationManager* inDeliveryNotificationManager) const
 {
-	for( const auto& pair : mTransmissionDataMap )
+	for (const auto& pair : mTransmissionDataMap)
 	{
-		pair.second->HandleDeliverySuccess( inDeliveryNotificationManager );
+		pair.second->HandleDeliverySuccess(inDeliveryNotificationManager);
 	}
 }

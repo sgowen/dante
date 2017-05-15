@@ -13,21 +13,21 @@ public:
 	static bool			StaticInit();
 	static void			CleanUp();
 
-	static void			ReportError( const char* inOperationDesc );
+	static void			ReportError(const char* inOperationDesc);
 	static int			GetLastError();
 
-	static int			Select( const vector< TCPSocketPtr >* inReadSet,
+	static int			Select(const vector< TCPSocketPtr >* inReadSet,
 								vector< TCPSocketPtr >* outReadSet,
 								const vector< TCPSocketPtr >* inWriteSet,
 								vector< TCPSocketPtr >* outWriteSet,
 								const vector< TCPSocketPtr >* inExceptSet,
-								vector< TCPSocketPtr >* outExceptSet );
+								vector< TCPSocketPtr >* outExceptSet);
 
-	static UDPSocketPtr	CreateUDPSocket( SocketAddressFamily inFamily );
-	static TCPSocketPtr	CreateTCPSocket( SocketAddressFamily inFamily );
+	static UDPSocketPtr	CreateUDPSocket(SocketAddressFamily inFamily);
+	static TCPSocketPtr	CreateTCPSocket(SocketAddressFamily inFamily);
 
 private:
 
-	inline static fd_set* FillSetFromVector( fd_set& outSet, const vector< TCPSocketPtr >* inSockets, int& ioNaxNfds );
-	inline static void FillVectorFromSet( vector< TCPSocketPtr >* outSockets, const vector< TCPSocketPtr >* inSockets, const fd_set& inSet );
+	inline static fd_set* FillSetFromVector(fd_set& outSet, const vector< TCPSocketPtr >* inSockets, int& ioNaxNfds);
+	inline static void FillVectorFromSet(vector< TCPSocketPtr >* outSockets, const vector< TCPSocketPtr >* inSockets, const fd_set& inSet);
 };

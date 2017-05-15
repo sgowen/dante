@@ -9,7 +9,7 @@ YarnServer::YarnServer()
 
 void YarnServer::HandleDying()
 {
-	NetworkManagerServer::sInstance->UnregisterGameObject( this );
+	NetworkManagerServer::sInstance->UnregisterGameObject(this);
 }
 
 
@@ -17,21 +17,21 @@ void YarnServer::Update()
 {
 	Yarn::Update();
 
-	if( Timing::sInstance.GetFrameStartTime() > mTimeToDie )
+	if (Timing::sInstance.GetFrameStartTime() > mTimeToDie)
 	{
-		SetDoesWantToDie( true );
+		SetDoesWantToDie(true);
 	}
 
 }
 
-bool YarnServer::HandleCollisionWithCat( RoboCat* inCat )
+bool YarnServer::HandleCollisionWithCat(RoboCat* inCat)
 {
-	if( inCat->GetPlayerId() != GetPlayerId() )
+	if (inCat->GetPlayerId() != GetPlayerId())
 	{
 		//kill yourself!
-		SetDoesWantToDie( true );
+		SetDoesWantToDie(true);
 
-		static_cast< RoboCatServer* >( inCat )->TakeDamage( GetPlayerId() );
+		static_cast< RoboCatServer* >(inCat)->TakeDamage(GetPlayerId());
 
 	}
 

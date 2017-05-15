@@ -35,7 +35,7 @@ int main(int argc, const char * argv[])
     FILE *inputFile;
 #ifdef _WIN32
     errno_t err;
-    if((err = fopen_s(&inputFile, argv[1], "rb")) != 0)
+    if ((err = fopen_s(&inputFile, argv[1], "rb")) != 0)
 #else
     if ((inputFile = fopen(argv[1], "rb")) == NULL)
 #endif
@@ -45,7 +45,7 @@ int main(int argc, const char * argv[])
     
     FILE *outputFile;
 #ifdef _WIN32
-    if((err = fopen_s(&outputFile, argv[2], "w+b")) != 0)
+    if ((err = fopen_s(&outputFile, argv[2], "w+b")) != 0)
 #else
     if ((outputFile = fopen(argv[2], "w+b")) == NULL)
 #endif

@@ -72,7 +72,7 @@ void JsonFile::save()
     FILE *file;
 #ifdef _WIN32
     errno_t err;
-    if((err = fopen_s(&file, finalPath, "w+")) != 0)
+    if ((err = fopen_s(&file, finalPath, "w+")) != 0)
     {
 #else
     if ((file = fopen(finalPath, "w+")) == NULL)
@@ -144,7 +144,7 @@ void JsonFile::load()
     FILE *file;
 #ifdef _WIN32
     errno_t err;
-    if((err = fopen_s(&file, finalPath, "r")) != 0)
+    if ((err = fopen_s(&file, finalPath, "r")) != 0)
 #else
     if ((file = fopen(finalPath, "r")) == NULL)
 #endif

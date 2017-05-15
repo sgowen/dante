@@ -10,7 +10,7 @@
 
 int main(int argc, const char * argv[])
 {
-    if( Server::StaticInit() )
+    if (Server::StaticInit())
     {
         return Server::sInstance->Run();
     }

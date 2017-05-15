@@ -3,7 +3,7 @@
 class RodentClient : public Rodent
 {
 public:
-	static	GameObjectPtr	StaticCreate()		{ return GameObjectPtr( new RodentClient() ); }
+	static	GameObjectPtr	StaticCreate()		{ return GameObjectPtr(new RodentClient()); }
 
 protected:
 	RodentClient();

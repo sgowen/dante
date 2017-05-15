@@ -56,7 +56,7 @@ public:
 #endif
     
     // Properties
-    void GetDefaultSize( int& width, int& height ) const;
+    void GetDefaultSize(int& width, int& height) const;
 
 	MainScreen* getMainScreen();
 	int getRequestedAction();
