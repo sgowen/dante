@@ -11,7 +11,6 @@
 #include "OpenGLFramebufferToScreenProgram.h"
 #include "OpenGLManager.h"
 #include "FrameworkConstants.h"
-#include "FrameworkConstants.h"
 #include "GameConstants.h"
 
 OpenGLFramebufferToScreenGpuProgramWrapper::OpenGLFramebufferToScreenGpuProgramWrapper() : GpuProgramWrapper(), m_program(new OpenGLFramebufferToScreenProgram(FRAMEBUFFER_TO_SCREEN_VERTEX_SHADER, FRAMEBUFFER_TO_SCREEN_FRAGMENT_SHADER))
