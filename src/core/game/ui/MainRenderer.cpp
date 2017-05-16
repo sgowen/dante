@@ -33,9 +33,6 @@ m_misc(new TextureWrapper("texture_002")),
 m_font(new Font("texture_002", 0, 0, 16, 64, 75, TEXTURE_SIZE_1024))
 {
     ASSETS->init(new MainAssetsMapper());
-    
-    loadTextureSync(m_demo);
-    loadTextureSync(m_misc);
 }
 
 MainRenderer::~MainRenderer()
@@ -51,6 +48,9 @@ MainRenderer::~MainRenderer()
 void MainRenderer::createDeviceDependentResources()
 {
     Renderer::createDeviceDependentResources();
+    
+    loadTextureSync(m_demo);
+    loadTextureSync(m_misc);
 }
 
 void MainRenderer::releaseDeviceDependentResources()
