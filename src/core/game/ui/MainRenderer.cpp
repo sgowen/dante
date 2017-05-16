@@ -40,8 +40,12 @@ m_font(new Font("texture_002", 0, 0, 16, 64, 75, TEXTURE_SIZE_1024))
 
 MainRenderer::~MainRenderer()
 {
-    unloadTexture(m_demo);
-    unloadTexture(m_misc);
+	releaseDeviceDependentResources();
+
+	delete m_font;
+
+	delete m_demo;
+	delete m_misc;
 }
 
 void MainRenderer::createDeviceDependentResources()
@@ -52,6 +56,9 @@ void MainRenderer::createDeviceDependentResources()
 void MainRenderer::releaseDeviceDependentResources()
 {
     Renderer::releaseDeviceDependentResources();
+
+	unloadTexture(m_demo);
+	unloadTexture(m_misc);
 }
 
 void MainRenderer::tempDraw(float stateTime)
