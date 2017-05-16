@@ -21,10 +21,6 @@ public:
 
 protected:
 	YarnClient();
-
-private:
-
-//	SpriteComponentPtr	mSpriteComponent;
 };
 
 #endif /* defined(__noctisgames__YarnClient__) */
