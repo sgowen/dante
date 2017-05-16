@@ -8,6 +8,8 @@
 
 #include "pch.h"
 
+#include "YarnServer.h"
+
 
 YarnServer::YarnServer()
 {

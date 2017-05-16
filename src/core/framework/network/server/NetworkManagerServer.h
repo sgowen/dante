@@ -9,6 +9,8 @@
 #ifndef __noctisgames__NetworkManagerServer__
 #define __noctisgames__NetworkManagerServer__
 
+#include "ClientProxy.h"
+
 class NetworkManagerServer : public NetworkManager
 {
 public:

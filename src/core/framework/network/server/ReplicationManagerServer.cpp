@@ -8,6 +8,8 @@
 
 #include "pch.h"
 
+#include "ReplicationManagerTransmissionData.h"
+
 void ReplicationManagerServer::ReplicateCreate(int inNetworkId, uint32_t inInitialDirtyState)
 {
 	mNetworkIdToReplicationCommand[ inNetworkId ] = ReplicationCommand(inInitialDirtyState);

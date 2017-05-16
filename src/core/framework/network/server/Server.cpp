@@ -8,6 +8,10 @@
 
 #include "pch.h"
 
+#include "Server.h"
+#include "RodentServer.h"
+#include "YarnServer.h"
+
 //uncomment this when you begin working on the server
 
 #define FRAME_RATE 0.01666666666667f // 60 frames per second

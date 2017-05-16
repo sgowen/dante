@@ -9,6 +9,9 @@
 #ifndef __noctisgames__RoboCatServer__
 #define __noctisgames__RoboCatServer__
 
+#include "RoboCat.h"
+#include "NetworkManagerServer.h"
+
 enum ECatControlType
 {
 	ESCT_Human,

@@ -8,6 +8,8 @@
 
 #include "pch.h"
 
+#include "ReplicationManagerTransmissionData.h"
+
 void ReplicationManagerTransmissionData::AddTransmission(int inNetworkId, ReplicationAction inAction, uint32_t inState)
 {
 	/*

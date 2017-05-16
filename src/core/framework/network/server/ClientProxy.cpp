@@ -8,6 +8,8 @@
 
 #include "pch.h"
 
+#include "Server.h"
+
 namespace
 {
 	const float kRespawnDelay = 3.f;

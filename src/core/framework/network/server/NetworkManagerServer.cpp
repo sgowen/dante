@@ -8,6 +8,9 @@
 
 #include "pch.h"
 
+#include "Server.h"
+#include "ReplicationManagerTransmissionData.h"
+
 NetworkManagerServer*	NetworkManagerServer::sInstance;
 
 

@@ -9,6 +9,8 @@
 #ifndef __noctisgames__ClientProxy__
 #define __noctisgames__ClientProxy__
 
+#include "ReplicationManagerServer.h"
+
 class ClientProxy
 {
 public:

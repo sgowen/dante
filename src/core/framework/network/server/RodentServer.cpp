@@ -8,6 +8,8 @@
 
 #include "pch.h"
 
+#include "RodentServer.h"
+
 
 RodentServer::RodentServer()
 {
