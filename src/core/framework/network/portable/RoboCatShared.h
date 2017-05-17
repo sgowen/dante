@@ -72,7 +72,6 @@ class GameObject;
 #include "SocketAddress.h"
 #include "SocketAddressFactory.h"
 #include "UDPSocket.h"
-#include "TCPSocket.h"
 #include "SocketUtil.h"
 
 #include "ByteSwap.h"

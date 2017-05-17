@@ -172,9 +172,6 @@
 		BB8308761EC2AD1F00435E7E /* StringUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8308321EC2AD1F00435E7E /* StringUtils.cpp */; };
 		BB8308771EC2AD1F00435E7E /* StringUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8308321EC2AD1F00435E7E /* StringUtils.cpp */; };
 		BB8308781EC2AD1F00435E7E /* StringUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8308321EC2AD1F00435E7E /* StringUtils.cpp */; };
-		BB8308791EC2AD1F00435E7E /* TCPSocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8308341EC2AD1F00435E7E /* TCPSocket.cpp */; };
-		BB83087A1EC2AD1F00435E7E /* TCPSocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8308341EC2AD1F00435E7E /* TCPSocket.cpp */; };
-		BB83087B1EC2AD1F00435E7E /* TCPSocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8308341EC2AD1F00435E7E /* TCPSocket.cpp */; };
 		BB83087C1EC2AD1F00435E7E /* Timing.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8308361EC2AD1F00435E7E /* Timing.cpp */; };
 		BB83087D1EC2AD1F00435E7E /* Timing.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8308361EC2AD1F00435E7E /* Timing.cpp */; };
 		BB83087E1EC2AD1F00435E7E /* Timing.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8308361EC2AD1F00435E7E /* Timing.cpp */; };
@@ -653,8 +650,6 @@
 		BB8308311EC2AD1F00435E7E /* SocketUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SocketUtil.h; sourceTree = "<group>"; };
 		BB8308321EC2AD1F00435E7E /* StringUtils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StringUtils.cpp; sourceTree = "<group>"; };
 		BB8308331EC2AD1F00435E7E /* StringUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StringUtils.h; sourceTree = "<group>"; };
-		BB8308341EC2AD1F00435E7E /* TCPSocket.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TCPSocket.cpp; sourceTree = "<group>"; };
-		BB8308351EC2AD1F00435E7E /* TCPSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCPSocket.h; sourceTree = "<group>"; };
 		BB8308361EC2AD1F00435E7E /* Timing.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Timing.cpp; sourceTree = "<group>"; };
 		BB8308371EC2AD1F00435E7E /* Timing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Timing.h; sourceTree = "<group>"; };
 		BB8308381EC2AD1F00435E7E /* TransmissionData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransmissionData.h; sourceTree = "<group>"; };
@@ -1474,8 +1469,6 @@
 				BB8308311EC2AD1F00435E7E /* SocketUtil.h */,
 				BB8308321EC2AD1F00435E7E /* StringUtils.cpp */,
 				BB8308331EC2AD1F00435E7E /* StringUtils.h */,
-				BB8308341EC2AD1F00435E7E /* TCPSocket.cpp */,
-				BB8308351EC2AD1F00435E7E /* TCPSocket.h */,
 				BB8308361EC2AD1F00435E7E /* Timing.cpp */,
 				BB8308371EC2AD1F00435E7E /* Timing.h */,
 				BB8308381EC2AD1F00435E7E /* TransmissionData.h */,
@@ -2218,7 +2211,6 @@
 				BBAEF2D51EA94EDA00F0866E /* Assets.cpp in Sources */,
 				BB8308761EC2AD1F00435E7E /* StringUtils.cpp in Sources */,
 				BBF226C81EC12CDE00573356 /* RodentClient.cpp in Sources */,
-				BB8308791EC2AD1F00435E7E /* TCPSocket.cpp in Sources */,
 				BBAEF2DD1EA94EDA00F0866E /* Text.cpp in Sources */,
 				BBAEF2551EA94EDA00F0866E /* Animation.cpp in Sources */,
 				BBAEF23D1EA94EDA00F0866E /* OpenGLProgram.cpp in Sources */,
@@ -2403,7 +2395,6 @@
 				BB8308591EC2AD1F00435E7E /* Rodent.cpp in Sources */,
 				BB44CB8A1DB053C0003E633F /* pngset.c in Sources */,
 				BB44CB8B1DB053C0003E633F /* pngtrans.c in Sources */,
-				BB83087A1EC2AD1F00435E7E /* TCPSocket.cpp in Sources */,
 				BBAEF2581EA94EDA00F0866E /* CircleBatcher.cpp in Sources */,
 				BBAEF23A1EA94EDA00F0866E /* OpenGLManager.cpp in Sources */,
 				BBF226D31EC12CDE00573356 /* RoboCatClientPCH.cpp in Sources */,
@@ -2469,7 +2460,6 @@
 				BB57737E1EC409B2005C480C /* main.cpp in Sources */,
 				BB8308721EC2AD1F00435E7E /* SocketAddressFactory.cpp in Sources */,
 				BB8308751EC2AD1F00435E7E /* SocketUtil.cpp in Sources */,
-				BB83087B1EC2AD1F00435E7E /* TCPSocket.cpp in Sources */,
 				BB8307FF1EC2AC0900435E7E /* ClientProxy.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
