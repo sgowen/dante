@@ -35,8 +35,6 @@ protected:
 
 private:
 
-	void HandleShooting();
-
 	ECatControlType	mCatControlType;
 
 

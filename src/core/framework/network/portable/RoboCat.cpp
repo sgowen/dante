@@ -23,7 +23,6 @@ RoboCat::RoboCat() :
 	mCatRestitution(0.1f),
 	mThrustDir(0.f),
 	mPlayerId(0),
-	mIsShooting(false),
 	mHealth(10)
 {
 	SetCollisionRadius(0.5f);
@@ -40,10 +39,6 @@ void RoboCat::ProcessInput(float inDeltaTime, const InputState& inInputState)
 	//moving...
 	float inputForwardDelta = inInputState.GetDesiredVerticalDelta();
 	mThrustDir = inputForwardDelta;
-
-
-	mIsShooting = inInputState.IsShooting(); 
-
 }
 
 void RoboCat::AdjustVelocityByThrust(float inDeltaTime)
@@ -258,15 +253,5 @@ uint32_t RoboCat::Write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyS
 		inOutputStream.Write((bool)false);
 	}
 
-
-	
-
-
-	
-
 	return writtenState;
-	
-
 }
-
-

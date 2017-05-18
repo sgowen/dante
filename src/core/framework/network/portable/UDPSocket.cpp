@@ -10,7 +10,6 @@
 
 #include "RoboCatShared.h"
 
-
 int UDPSocket::Bind(const SocketAddress& inBindAddress)
 {
 	int error = bind(mSocket, &inBindAddress.mSockAddr, inBindAddress.GetSize());
@@ -85,7 +84,6 @@ UDPSocket::~UDPSocket()
 #endif
 }
 
-
 int UDPSocket::SetNonBlockingMode(bool inShouldBeNonBlocking)
 {
 #if _WIN32
@@ -107,4 +105,3 @@ int UDPSocket::SetNonBlockingMode(bool inShouldBeNonBlocking)
 		return NO_ERROR;
 	}
 }
-

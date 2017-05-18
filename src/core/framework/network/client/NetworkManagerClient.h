@@ -51,8 +51,6 @@ private:
 			void	SendInputPacket();
 
 			void	DestroyGameObjectsInMap(const IntToGameObjectMap& inObjectsToDestroy);
-
-
 	
 	DeliveryNotificationManager	mDeliveryNotificationManager;
 	ReplicationManagerClient	mReplicationManagerClient;
@@ -71,7 +69,6 @@ private:
 
 	WeightedTimedMovingAverage	mAvgRoundTripTime;
 	float						mLastRoundTripTime;
-
 };
 
 #endif /* defined(__noctisgames__NetworkManagerClient__) */

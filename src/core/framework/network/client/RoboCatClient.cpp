@@ -28,7 +28,6 @@ void RoboCatClient::HandleDying()
 	}
 }
 
-
 void RoboCatClient::Update()
 {
 	//is this the cat owned by us?
@@ -158,14 +157,8 @@ void RoboCatClient::Read(InputMemoryBitStream& inInputStream)
 		{
 			InterpolateClientSidePrediction(oldRotation, oldLocation, oldVelocity, true);
 		}
-
 	}
-
-	
 }
-
-
-
 
 void RoboCatClient::DoClientSidePredictionAfterReplicationForLocalCat(uint32_t inReadState)
 {
@@ -186,11 +179,7 @@ void RoboCatClient::DoClientSidePredictionAfterReplicationForLocalCat(uint32_t i
 			SimulateMovement(deltaTime);
 		}
 	}
-
-	
-
 }
-
 
 void RoboCatClient::InterpolateClientSidePrediction(float inOldRotation, const Vector3& inOldLocation, const Vector3& inOldVelocity, bool inIsForRemoteCat)
 {
@@ -224,7 +213,6 @@ void RoboCatClient::InterpolateClientSidePrediction(float inOldRotation, const V
 		mTimeLocationBecameOutOfSync = 0.f;
 	}
 
-
 	if (!RoboMath::Is2DVectorEqual(inOldVelocity, GetVelocity()))
 	{
 		LOG("ERROR! Move replay ended with incorrect velocity!", 0);
@@ -243,16 +231,13 @@ void RoboCatClient::InterpolateClientSidePrediction(float inOldRotation, const V
 			SetVelocity(Lerp(inOldVelocity, GetVelocity(), inIsForRemoteCat ? (durationOutOfSync / roundTripTime) : 0.1f));
 		}
 		//otherwise, fine...
-		
 	}
 	else
 	{
 		//we're in sync
 		mTimeVelocityBecameOutOfSync = 0.f;
 	}
-	
 }
-
 
 //so what do we want to do here? need to do some kind of interpolation...
 
@@ -260,7 +245,6 @@ void RoboCatClient::DoClientSidePredictionAfterReplicationForRemoteCat(uint32_t 
 {
 	if ((inReadState & ECRS_Pose) != 0)
 	{
-
 		//simulate movement for an additional RTT
 		float rtt = NetworkManagerClient::sInstance->GetRoundTripTime();
 		//LOG("Other cat came in, simulating for an extra %f", rtt);

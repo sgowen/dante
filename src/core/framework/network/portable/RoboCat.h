@@ -78,8 +78,6 @@ protected:
 
 	float				mThrustDir;
 	int					mHealth;
-
-	bool				mIsShooting;
 };
 
 typedef shared_ptr< RoboCat >	RoboCatPtr;

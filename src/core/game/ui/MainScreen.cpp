@@ -162,9 +162,6 @@ void MainScreen::tempUpdateInput()
             case KeyboardEventType_D:
                 InputManager::sInstance->HandleInput((*i)->isUp() ? EIA_Released : EIA_Pressed, 'D');
                 continue;
-            case KeyboardEventType_SPACE:
-                InputManager::sInstance->HandleInput((*i)->isUp() ? EIA_Released : EIA_Pressed, 'K');
-                continue;
             default:
                 continue;
         }
@@ -185,9 +182,6 @@ void MainScreen::tempUpdateInput()
                 continue;
             case GamePadEventType_D_PAD_RIGHT:
                 InputManager::sInstance->HandleInput((*i)->isButtonPressed() ? EIA_Pressed : EIA_Released, 'D');
-                continue;
-            case GamePadEventType_A_BUTTON:
-                InputManager::sInstance->HandleInput((*i)->isButtonPressed() ? EIA_Pressed : EIA_Released, 'K');
                 continue;
             default:
                 continue;

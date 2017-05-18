@@ -9,8 +9,6 @@
 #include "pch.h"
 
 #include "Server.h"
-#include "RodentServer.h"
-#include "YarnServer.h"
 
 //uncomment this when you begin working on the server
 
@@ -26,21 +24,12 @@ bool Server::StaticInit()
 Server::Server() : m_fFrameStateTime(0)
 {
 	GameObjectRegistry::sInstance->RegisterCreationFunction('RCAT', RoboCatServer::StaticCreate);
-	GameObjectRegistry::sInstance->RegisterCreationFunction('MOUS', RodentServer::StaticCreate);
-	GameObjectRegistry::sInstance->RegisterCreationFunction('YARN', YarnServer::StaticCreate);
 
 	InitNetworkManager();
-	
-	//NetworkManagerServer::sInstance->SetDropPacketChance(0.8f);
-	//NetworkManagerServer::sInstance->SetSimulatedLatency(0.25f);
-	//NetworkManagerServer::sInstance->SetSimulatedLatency(0.5f);
-	//NetworkManagerServer::sInstance->SetSimulatedLatency(0.1f);
 }
 
 int Server::Run()
 {
-	SetupWorld();
-
     while (mShouldKeepRunning)
     {
         Timing::sInstance.Update();
@@ -71,37 +60,10 @@ int Server::Run()
 
 bool Server::InitNetworkManager()
 {
-	string portString = "9999";//StringUtils::GetCommandLineArg(1);
+	string portString = "9999";
 	uint16_t port = stoi(portString);
 
 	return NetworkManagerServer::StaticInit(port);
-}
-
-namespace
-{
-	void CreateRandomMice(int inRodentCount)
-	{
-		Vector3 mouseMin(0, 0, 0.f);
-		Vector3 mouseMax(10.f, 6.0f, 0.f);
-		GameObjectPtr go;
-
-		//make a mouse somewhere- where will these come from?
-		for (int i = 0; i < inRodentCount; ++i)
-		{
-			go = GameObjectRegistry::sInstance->CreateGameObject('MOUS');
-			Vector3 mouseLocation = RoboMath::GetRandomVector(mouseMin, mouseMax);
-			go->SetLocation(mouseLocation);
-		}
-	}
-}
-
-void Server::SetupWorld()
-{
-	//spawn some random mice
-	CreateRandomMice(10);
-	
-	//spawn more random mice!
-	CreateRandomMice(10);
 }
 
 void Server::HandleNewClient(ClientProxyPtr inClientProxy)
@@ -118,7 +80,7 @@ void Server::SpawnCatForPlayer(int inPlayerId)
 	cat->SetColor(ScoreBoardManager::sInstance->GetEntry(inPlayerId)->GetColor());
 	cat->SetPlayerId(inPlayerId);
 	//gotta pick a better spawn location than this...
-	cat->SetLocation(Vector3(1.f - static_cast< float >(inPlayerId), 0.f, 0.f));
+	cat->SetLocation(Vector3(8.f - static_cast< float >(inPlayerId), 4.f, 0.f));
 }
 
 void Server::HandleLostClient(ClientProxyPtr inClientProxy)

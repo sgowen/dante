@@ -22,22 +22,9 @@ void InputManager::StaticInit()
 	sInstance.reset(new InputManager());
 }
 
-
 namespace
 {
-	inline void UpdateDesireVariableFromKey(EInputAction inInputAction, bool& ioVariable)
-	{
-		if (inInputAction == EIA_Pressed)
-		{
-			ioVariable = true;
-		}
-		else if (inInputAction == EIA_Released)
-		{
-			ioVariable = false;
-		}
-	}
-
-	inline void UpdateDesireFloatFromKey(EInputAction inInputAction, float& ioVariable)
+    inline void UpdateDesireFloatFromKey(EInputAction inInputAction, float& ioVariable)
 	{
 		if (inInputAction == EIA_Pressed)
 		{
@@ -66,13 +53,8 @@ void InputManager::HandleInput(EInputAction inInputAction, char inKeyCode)
 	case 'S':
 		UpdateDesireFloatFromKey(inInputAction, mCurrentState.mDesiredBackAmount);
 		break;
-	case 'K':
-		UpdateDesireVariableFromKey(inInputAction, mCurrentState.mIsShooting);
-		break;
 	}
-
 }
-
 
 InputManager::InputManager() :
 	mNextTimeToSampleInput(0.f),

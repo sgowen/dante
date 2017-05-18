@@ -107,14 +107,12 @@
 		BB7639571E21B6DC00534DAB /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = BB7639561E21B6DC00534DAB /* libz.tbd */; };
 		BB7639591E21B6E000534DAB /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB7639581E21B6E000534DAB /* AddressBook.framework */; };
 		BB8307FF1EC2AC0900435E7E /* ClientProxy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8307ED1EC2AC0900435E7E /* ClientProxy.cpp */; };
-		BB8308001EC2AC0900435E7E /* RodentServer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8307EF1EC2AC0900435E7E /* RodentServer.cpp */; };
 		BB8308011EC2AC0900435E7E /* NetworkManagerServer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8307F11EC2AC0900435E7E /* NetworkManagerServer.cpp */; };
 		BB8308021EC2AC0900435E7E /* ReplicationManagerServer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8307F31EC2AC0900435E7E /* ReplicationManagerServer.cpp */; };
 		BB8308031EC2AC0900435E7E /* ReplicationManagerTransmissionData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8307F51EC2AC0900435E7E /* ReplicationManagerTransmissionData.cpp */; };
 		BB8308041EC2AC0900435E7E /* RoboCatServer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8307F71EC2AC0900435E7E /* RoboCatServer.cpp */; };
 		BB8308051EC2AC0900435E7E /* RoboCatServerPCH.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8307F91EC2AC0900435E7E /* RoboCatServerPCH.cpp */; };
 		BB8308061EC2AC0900435E7E /* Server.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8307FB1EC2AC0900435E7E /* Server.cpp */; };
-		BB8308071EC2AC0900435E7E /* YarnServer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8307FD1EC2AC0900435E7E /* YarnServer.cpp */; };
 		BB8308401EC2AD1F00435E7E /* AckRange.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8308091EC2AD1F00435E7E /* AckRange.cpp */; };
 		BB8308411EC2AD1F00435E7E /* AckRange.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8308091EC2AD1F00435E7E /* AckRange.cpp */; };
 		BB8308421EC2AD1F00435E7E /* AckRange.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8308091EC2AD1F00435E7E /* AckRange.cpp */; };
@@ -139,9 +137,6 @@
 		BB8308551EC2AD1F00435E7E /* MemoryBitStream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB83081A1EC2AD1F00435E7E /* MemoryBitStream.cpp */; };
 		BB8308561EC2AD1F00435E7E /* MemoryBitStream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB83081A1EC2AD1F00435E7E /* MemoryBitStream.cpp */; };
 		BB8308571EC2AD1F00435E7E /* MemoryBitStream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB83081A1EC2AD1F00435E7E /* MemoryBitStream.cpp */; };
-		BB8308581EC2AD1F00435E7E /* Rodent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB83081C1EC2AD1F00435E7E /* Rodent.cpp */; };
-		BB8308591EC2AD1F00435E7E /* Rodent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB83081C1EC2AD1F00435E7E /* Rodent.cpp */; };
-		BB83085A1EC2AD1F00435E7E /* Rodent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB83081C1EC2AD1F00435E7E /* Rodent.cpp */; };
 		BB83085B1EC2AD1F00435E7E /* Move.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB83081E1EC2AD1F00435E7E /* Move.cpp */; };
 		BB83085C1EC2AD1F00435E7E /* Move.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB83081E1EC2AD1F00435E7E /* Move.cpp */; };
 		BB83085D1EC2AD1F00435E7E /* Move.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB83081E1EC2AD1F00435E7E /* Move.cpp */; };
@@ -181,9 +176,6 @@
 		BB8308821EC2AD1F00435E7E /* World.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB83083C1EC2AD1F00435E7E /* World.cpp */; };
 		BB8308831EC2AD1F00435E7E /* World.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB83083C1EC2AD1F00435E7E /* World.cpp */; };
 		BB8308841EC2AD1F00435E7E /* World.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB83083C1EC2AD1F00435E7E /* World.cpp */; };
-		BB8308851EC2AD1F00435E7E /* Yarn.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB83083E1EC2AD1F00435E7E /* Yarn.cpp */; };
-		BB8308861EC2AD1F00435E7E /* Yarn.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB83083E1EC2AD1F00435E7E /* Yarn.cpp */; };
-		BB8308871EC2AD1F00435E7E /* Yarn.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB83083E1EC2AD1F00435E7E /* Yarn.cpp */; };
 		BBAEF1EF1EA94EDA00F0866E /* Entity.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF0BF1EA94ED900F0866E /* Entity.cpp */; };
 		BBAEF1F01EA94EDA00F0866E /* Entity.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF0BF1EA94ED900F0866E /* Entity.cpp */; };
 		BBAEF1F11EA94EDA00F0866E /* EntityManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF0C11EA94ED900F0866E /* EntityManager.cpp */; };
@@ -348,8 +340,6 @@
 		BBF226841EC12C9C00573356 /* Client.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF226641EC12C9C00573356 /* Client.cpp */; };
 		BBF226C61EC12CDE00573356 /* InputManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF226A81EC12CDE00573356 /* InputManager.cpp */; };
 		BBF226C71EC12CDE00573356 /* InputManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF226A81EC12CDE00573356 /* InputManager.cpp */; };
-		BBF226C81EC12CDE00573356 /* RodentClient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF226AA1EC12CDE00573356 /* RodentClient.cpp */; };
-		BBF226C91EC12CDE00573356 /* RodentClient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF226AA1EC12CDE00573356 /* RodentClient.cpp */; };
 		BBF226CA1EC12CDE00573356 /* NetworkManagerClient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF226AC1EC12CDE00573356 /* NetworkManagerClient.cpp */; };
 		BBF226CB1EC12CDE00573356 /* NetworkManagerClient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF226AC1EC12CDE00573356 /* NetworkManagerClient.cpp */; };
 		BBF226CE1EC12CDE00573356 /* ReplicationManagerClient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF226B01EC12CDE00573356 /* ReplicationManagerClient.cpp */; };
@@ -358,8 +348,6 @@
 		BBF226D11EC12CDE00573356 /* RoboCatClient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF226B21EC12CDE00573356 /* RoboCatClient.cpp */; };
 		BBF226D21EC12CDE00573356 /* RoboCatClientPCH.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF226B41EC12CDE00573356 /* RoboCatClientPCH.cpp */; };
 		BBF226D31EC12CDE00573356 /* RoboCatClientPCH.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF226B41EC12CDE00573356 /* RoboCatClientPCH.cpp */; };
-		BBF226DC1EC12CDE00573356 /* YarnClient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF226BE1EC12CDE00573356 /* YarnClient.cpp */; };
-		BBF226DD1EC12CDE00573356 /* YarnClient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF226BE1EC12CDE00573356 /* YarnClient.cpp */; };
 		BEDBEB10667F7565A72E937B /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 05945F36F017190884FC7FB9 /* AssetsLibrary.framework */; };
 		C2FAA41A7EE7DD75E14DA2A1 /* BuddyBuildSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84C9C279DA1CE27EE81A6958 /* BuddyBuildSDK.framework */; };
 		EF21A84F90D23B88CD7E3542 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FFF3C8B3638A1D58F89D067F /* SystemConfiguration.framework */; };
@@ -591,8 +579,6 @@
 		BB8307E51EC2AB7B00435E7E /* dante server */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "dante server"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BB8307ED1EC2AC0900435E7E /* ClientProxy.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ClientProxy.cpp; sourceTree = "<group>"; };
 		BB8307EE1EC2AC0900435E7E /* ClientProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClientProxy.h; sourceTree = "<group>"; };
-		BB8307EF1EC2AC0900435E7E /* RodentServer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RodentServer.cpp; sourceTree = "<group>"; };
-		BB8307F01EC2AC0900435E7E /* RodentServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RodentServer.h; sourceTree = "<group>"; };
 		BB8307F11EC2AC0900435E7E /* NetworkManagerServer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NetworkManagerServer.cpp; sourceTree = "<group>"; };
 		BB8307F21EC2AC0900435E7E /* NetworkManagerServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkManagerServer.h; sourceTree = "<group>"; };
 		BB8307F31EC2AC0900435E7E /* ReplicationManagerServer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ReplicationManagerServer.cpp; sourceTree = "<group>"; };
@@ -605,8 +591,6 @@
 		BB8307FA1EC2AC0900435E7E /* RoboCatServerPCH.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoboCatServerPCH.h; sourceTree = "<group>"; };
 		BB8307FB1EC2AC0900435E7E /* Server.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Server.cpp; sourceTree = "<group>"; };
 		BB8307FC1EC2AC0900435E7E /* Server.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Server.h; sourceTree = "<group>"; };
-		BB8307FD1EC2AC0900435E7E /* YarnServer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = YarnServer.cpp; sourceTree = "<group>"; };
-		BB8307FE1EC2AC0900435E7E /* YarnServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YarnServer.h; sourceTree = "<group>"; };
 		BB8308091EC2AD1F00435E7E /* AckRange.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AckRange.cpp; sourceTree = "<group>"; };
 		BB83080A1EC2AD1F00435E7E /* AckRange.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AckRange.h; sourceTree = "<group>"; };
 		BB83080B1EC2AD1F00435E7E /* ByteSwap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ByteSwap.h; sourceTree = "<group>"; };
@@ -626,8 +610,6 @@
 		BB8308191EC2AD1F00435E7E /* LinkingContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LinkingContext.h; sourceTree = "<group>"; };
 		BB83081A1EC2AD1F00435E7E /* MemoryBitStream.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MemoryBitStream.cpp; sourceTree = "<group>"; };
 		BB83081B1EC2AD1F00435E7E /* MemoryBitStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MemoryBitStream.h; sourceTree = "<group>"; };
-		BB83081C1EC2AD1F00435E7E /* Rodent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Rodent.cpp; sourceTree = "<group>"; };
-		BB83081D1EC2AD1F00435E7E /* Rodent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Rodent.h; sourceTree = "<group>"; };
 		BB83081E1EC2AD1F00435E7E /* Move.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Move.cpp; sourceTree = "<group>"; };
 		BB83081F1EC2AD1F00435E7E /* Move.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Move.h; sourceTree = "<group>"; };
 		BB8308201EC2AD1F00435E7E /* MoveList.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MoveList.cpp; sourceTree = "<group>"; };
@@ -658,8 +640,6 @@
 		BB83083B1EC2AD1F00435E7E /* WeightedTimedMovingAverage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WeightedTimedMovingAverage.h; sourceTree = "<group>"; };
 		BB83083C1EC2AD1F00435E7E /* World.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = World.cpp; sourceTree = "<group>"; };
 		BB83083D1EC2AD1F00435E7E /* World.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = World.h; sourceTree = "<group>"; };
-		BB83083E1EC2AD1F00435E7E /* Yarn.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Yarn.cpp; sourceTree = "<group>"; };
-		BB83083F1EC2AD1F00435E7E /* Yarn.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Yarn.h; sourceTree = "<group>"; };
 		BBAEF0BF1EA94ED900F0866E /* Entity.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Entity.cpp; sourceTree = "<group>"; };
 		BBAEF0C01EA94ED900F0866E /* Entity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Entity.h; sourceTree = "<group>"; };
 		BBAEF0C11EA94ED900F0866E /* EntityManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EntityManager.cpp; sourceTree = "<group>"; };
@@ -880,8 +860,6 @@
 		BBF226651EC12C9C00573356 /* Client.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Client.h; sourceTree = "<group>"; };
 		BBF226A81EC12CDE00573356 /* InputManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = InputManager.cpp; sourceTree = "<group>"; };
 		BBF226A91EC12CDE00573356 /* InputManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InputManager.h; sourceTree = "<group>"; };
-		BBF226AA1EC12CDE00573356 /* RodentClient.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RodentClient.cpp; sourceTree = "<group>"; };
-		BBF226AB1EC12CDE00573356 /* RodentClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RodentClient.h; sourceTree = "<group>"; };
 		BBF226AC1EC12CDE00573356 /* NetworkManagerClient.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NetworkManagerClient.cpp; sourceTree = "<group>"; };
 		BBF226AD1EC12CDE00573356 /* NetworkManagerClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkManagerClient.h; sourceTree = "<group>"; };
 		BBF226B01EC12CDE00573356 /* ReplicationManagerClient.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ReplicationManagerClient.cpp; sourceTree = "<group>"; };
@@ -890,8 +868,6 @@
 		BBF226B31EC12CDE00573356 /* RoboCatClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoboCatClient.h; sourceTree = "<group>"; };
 		BBF226B41EC12CDE00573356 /* RoboCatClientPCH.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RoboCatClientPCH.cpp; sourceTree = "<group>"; };
 		BBF226B51EC12CDE00573356 /* RoboCatClientPCH.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoboCatClientPCH.h; sourceTree = "<group>"; };
-		BBF226BE1EC12CDE00573356 /* YarnClient.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = YarnClient.cpp; sourceTree = "<group>"; };
-		BBF226BF1EC12CDE00573356 /* YarnClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YarnClient.h; sourceTree = "<group>"; };
 		FFF3C8B3638A1D58F89D067F /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -1413,12 +1389,8 @@
 				BB8307F81EC2AC0900435E7E /* RoboCatServer.h */,
 				BB8307F91EC2AC0900435E7E /* RoboCatServerPCH.cpp */,
 				BB8307FA1EC2AC0900435E7E /* RoboCatServerPCH.h */,
-				BB8307EF1EC2AC0900435E7E /* RodentServer.cpp */,
-				BB8307F01EC2AC0900435E7E /* RodentServer.h */,
 				BB8307FB1EC2AC0900435E7E /* Server.cpp */,
 				BB8307FC1EC2AC0900435E7E /* Server.h */,
-				BB8307FD1EC2AC0900435E7E /* YarnServer.cpp */,
-				BB8307FE1EC2AC0900435E7E /* YarnServer.h */,
 			);
 			path = server;
 			sourceTree = "<group>";
@@ -1457,8 +1429,6 @@
 				BB8308271EC2AD1F00435E7E /* RoboCatShared.h */,
 				BB8308281EC2AD1F00435E7E /* RoboMath.cpp */,
 				BB8308291EC2AD1F00435E7E /* RoboMath.h */,
-				BB83081C1EC2AD1F00435E7E /* Rodent.cpp */,
-				BB83081D1EC2AD1F00435E7E /* Rodent.h */,
 				BB83082A1EC2AD1F00435E7E /* ScoreBoardManager.cpp */,
 				BB83082B1EC2AD1F00435E7E /* ScoreBoardManager.h */,
 				BB83082C1EC2AD1F00435E7E /* SocketAddress.cpp */,
@@ -1477,8 +1447,6 @@
 				BB83083B1EC2AD1F00435E7E /* WeightedTimedMovingAverage.h */,
 				BB83083C1EC2AD1F00435E7E /* World.cpp */,
 				BB83083D1EC2AD1F00435E7E /* World.h */,
-				BB83083E1EC2AD1F00435E7E /* Yarn.cpp */,
-				BB83083F1EC2AD1F00435E7E /* Yarn.h */,
 			);
 			path = portable;
 			sourceTree = "<group>";
@@ -1972,10 +1940,6 @@
 				BBF226B31EC12CDE00573356 /* RoboCatClient.h */,
 				BBF226B41EC12CDE00573356 /* RoboCatClientPCH.cpp */,
 				BBF226B51EC12CDE00573356 /* RoboCatClientPCH.h */,
-				BBF226AA1EC12CDE00573356 /* RodentClient.cpp */,
-				BBF226AB1EC12CDE00573356 /* RodentClient.h */,
-				BBF226BE1EC12CDE00573356 /* YarnClient.cpp */,
-				BBF226BF1EC12CDE00573356 /* YarnClient.h */,
 			);
 			path = client;
 			sourceTree = "<group>";
@@ -2168,7 +2132,6 @@
 				BBF226D21EC12CDE00573356 /* RoboCatClientPCH.cpp in Sources */,
 				BB83084F1EC2AD1F00435E7E /* InFlightPacket.cpp in Sources */,
 				BB83087F1EC2AD1F00435E7E /* UDPSocket.cpp in Sources */,
-				BBF226DC1EC12CDE00573356 /* YarnClient.cpp in Sources */,
 				BB83086D1EC2AD1F00435E7E /* SocketAddress.cpp in Sources */,
 				BB44C8691DB03A7E003E633F /* pngerror.c in Sources */,
 				BB8308491EC2AD1F00435E7E /* GameObject.cpp in Sources */,
@@ -2178,7 +2141,6 @@
 				BB8308521EC2AD1F00435E7E /* InputState.cpp in Sources */,
 				BBAEF28B1EA94EDA00F0866E /* TouchConverter.cpp in Sources */,
 				BBAEF2D91EA94EDA00F0866E /* IScreen.cpp in Sources */,
-				BB8308851EC2AD1F00435E7E /* Yarn.cpp in Sources */,
 				BB8308461EC2AD1F00435E7E /* Engine.cpp in Sources */,
 				BB8308641EC2AD1F00435E7E /* RoboCat.cpp in Sources */,
 				BB8308401EC2AD1F00435E7E /* AckRange.cpp in Sources */,
@@ -2191,7 +2153,6 @@
 				BBAEF2431EA94EDA00F0866E /* OpenGLTextureGpuProgramWrapper.cpp in Sources */,
 				BBAEF2DB1EA94EDA00F0866E /* Renderer.cpp in Sources */,
 				BBAEF2951EA94EDA00F0866E /* Line.cpp in Sources */,
-				BB8308581EC2AD1F00435E7E /* Rodent.cpp in Sources */,
 				BBF226CE1EC12CDE00573356 /* ReplicationManagerClient.cpp in Sources */,
 				BBAEF2311EA94EDA00F0866E /* OpenGLFramebufferToScreenProgram.cpp in Sources */,
 				BBAEF2B71EA94EDA00F0866E /* SuperpoweredSoundWrapper.cpp in Sources */,
@@ -2210,7 +2171,6 @@
 				BBAEF2691EA94EDA00F0866E /* LineBatcherFactory.cpp in Sources */,
 				BBAEF2D51EA94EDA00F0866E /* Assets.cpp in Sources */,
 				BB8308761EC2AD1F00435E7E /* StringUtils.cpp in Sources */,
-				BBF226C81EC12CDE00573356 /* RodentClient.cpp in Sources */,
 				BBAEF2DD1EA94EDA00F0866E /* Text.cpp in Sources */,
 				BBAEF2551EA94EDA00F0866E /* Animation.cpp in Sources */,
 				BBAEF23D1EA94EDA00F0866E /* OpenGLProgram.cpp in Sources */,
@@ -2308,7 +2268,6 @@
 				BBAEF28C1EA94EDA00F0866E /* TouchConverter.cpp in Sources */,
 				BB8308501EC2AD1F00435E7E /* InFlightPacket.cpp in Sources */,
 				BBAEF2DA1EA94EDA00F0866E /* IScreen.cpp in Sources */,
-				BB8308861EC2AD1F00435E7E /* Yarn.cpp in Sources */,
 				BB8308411EC2AD1F00435E7E /* AckRange.cpp in Sources */,
 				BB8308651EC2AD1F00435E7E /* RoboCat.cpp in Sources */,
 				BBAEF2981EA94EDA00F0866E /* NGRect.cpp in Sources */,
@@ -2367,7 +2326,6 @@
 				BBAEF3101EA94FAC00F0866E /* JoystickController.mm in Sources */,
 				BBAEF27C1EA94EDA00F0866E /* TransitionGpuProgramWrapper.cpp in Sources */,
 				BB44CB851DB053C0003E633F /* pngpread.c in Sources */,
-				BBF226C91EC12CDE00573356 /* RodentClient.cpp in Sources */,
 				BBAEF2B21EA94EDA00F0866E /* AppleAudioEngineHelper.cpp in Sources */,
 				BBF226841EC12C9C00573356 /* Client.cpp in Sources */,
 				BB83085F1EC2AD1F00435E7E /* MoveList.cpp in Sources */,
@@ -2392,7 +2350,6 @@
 				BBAEF2001EA94EDA00F0866E /* AssetDataHandler.cpp in Sources */,
 				BBAEF2E81EA94EDA00F0866E /* MainRenderer.cpp in Sources */,
 				BBAEF2621EA94EDA00F0866E /* GpuProgramWrapperFactory.cpp in Sources */,
-				BB8308591EC2AD1F00435E7E /* Rodent.cpp in Sources */,
 				BB44CB8A1DB053C0003E633F /* pngset.c in Sources */,
 				BB44CB8B1DB053C0003E633F /* pngtrans.c in Sources */,
 				BBAEF2581EA94EDA00F0866E /* CircleBatcher.cpp in Sources */,
@@ -2413,7 +2370,6 @@
 				BBAEF2461EA94EDA00F0866E /* OpenGLTextureLoader.cpp in Sources */,
 				BB44CB8F1DB053C0003E633F /* pngwutil.c in Sources */,
 				BB09CE231DBD3779006A3E49 /* SuperpoweredOSXAudioIO.mm in Sources */,
-				BBF226DD1EC12CDE00573356 /* YarnClient.cpp in Sources */,
 				BB44CB091DB04C83003E633F /* NGOpenGLView.mm in Sources */,
 				BBAEF2841EA94EDA00F0866E /* KeyboardEvent.cpp in Sources */,
 				BBAEF1F21EA94EDA00F0866E /* EntityManager.cpp in Sources */,
@@ -2432,23 +2388,19 @@
 				BB83087E1EC2AD1F00435E7E /* Timing.cpp in Sources */,
 				BB83086F1EC2AD1F00435E7E /* SocketAddress.cpp in Sources */,
 				BB8308661EC2AD1F00435E7E /* RoboCat.cpp in Sources */,
-				BB8308001EC2AC0900435E7E /* RodentServer.cpp in Sources */,
 				BB8308051EC2AC0900435E7E /* RoboCatServerPCH.cpp in Sources */,
-				BB8308071EC2AC0900435E7E /* YarnServer.cpp in Sources */,
 				BB83085D1EC2AD1F00435E7E /* Move.cpp in Sources */,
 				BB8308541EC2AD1F00435E7E /* InputState.cpp in Sources */,
 				BB8308011EC2AC0900435E7E /* NetworkManagerServer.cpp in Sources */,
 				BB8308041EC2AC0900435E7E /* RoboCatServer.cpp in Sources */,
 				BB8308061EC2AC0900435E7E /* Server.cpp in Sources */,
 				BB83086C1EC2AD1F00435E7E /* ScoreBoardManager.cpp in Sources */,
-				BB8308871EC2AD1F00435E7E /* Yarn.cpp in Sources */,
 				BB83084B1EC2AD1F00435E7E /* GameObject.cpp in Sources */,
 				BB83084E1EC2AD1F00435E7E /* GameObjectRegistry.cpp in Sources */,
 				BB8308601EC2AD1F00435E7E /* MoveList.cpp in Sources */,
 				BB8308811EC2AD1F00435E7E /* UDPSocket.cpp in Sources */,
 				BB8308841EC2AD1F00435E7E /* World.cpp in Sources */,
 				BB8308031EC2AC0900435E7E /* ReplicationManagerTransmissionData.cpp in Sources */,
-				BB83085A1EC2AD1F00435E7E /* Rodent.cpp in Sources */,
 				BB8308421EC2AD1F00435E7E /* AckRange.cpp in Sources */,
 				BB8308781EC2AD1F00435E7E /* StringUtils.cpp in Sources */,
 				BB8308691EC2AD1F00435E7E /* RoboMath.cpp in Sources */,

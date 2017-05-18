@@ -61,17 +61,18 @@ void NetworkManagerClient::ProcessPacket(InputMemoryBitStream& inInputStream, co
 	}
 }
 
-
 void NetworkManagerClient::SendOutgoingPackets()
 {
-	switch(mState)
+	switch (mState)
 	{
-	case NCS_SayingHello:
-		UpdateSayingHello();
-		break;
-	case NCS_Welcomed:
-		UpdateSendingInputPacket();
-		break;
+        case NCS_SayingHello:
+            UpdateSayingHello();
+            break;
+        case NCS_Welcomed:
+            UpdateSendingInputPacket();
+            break;
+        case NCS_Uninitialized:
+            break;
 	}
 }
 
