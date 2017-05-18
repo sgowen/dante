@@ -3,7 +3,7 @@
 //  noctisgames-framework
 //
 //  Created by Stephen Gowen on 2/2/17.
-//  Copyright © 2017 Noctis Games. All rights reserved.
+//  Copyright (c) 2017 Noctis Games. All rights reserved.
 //
 
 #ifndef __noctisgames__NGRollingPool__

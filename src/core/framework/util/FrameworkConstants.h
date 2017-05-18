@@ -1,13 +1,13 @@
 //
 //  FrameworkConstants.h
-//  nosfuratu
+//  noctisgames-framework
 //
 //  Created by Stephen Gowen on 5/2/17.
 //  Copyright (c) 2017 Noctis Games. All rights reserved.
 //
 
-#ifndef __nosfuratu__FrameworkConstants__
-#define __nosfuratu__FrameworkConstants__
+#ifndef __noctisgames__FrameworkConstants__
+#define __noctisgames__FrameworkConstants__
 
 //// Shader Definitions ////
 
@@ -18,4 +18,4 @@
 #define TEXTURE_VERTEX_SHADER "shader_003_vert"
 #define TEXTURE_FRAGMENT_SHADER "shader_003_frag"
 
-#endif /* defined(__nosfuratu__FrameworkConstants__) */
+#endif /* defined(__noctisgames__FrameworkConstants__) */
