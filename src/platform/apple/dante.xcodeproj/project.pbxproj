@@ -312,8 +312,6 @@
 		BBAEF2DA1EA94EDA00F0866E /* IScreen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF1CD1EA94ED900F0866E /* IScreen.cpp */; };
 		BBAEF2DB1EA94EDA00F0866E /* Renderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF1D11EA94ED900F0866E /* Renderer.cpp */; };
 		BBAEF2DC1EA94EDA00F0866E /* Renderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF1D11EA94ED900F0866E /* Renderer.cpp */; };
-		BBAEF2DD1EA94EDA00F0866E /* Text.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF1D31EA94ED900F0866E /* Text.cpp */; };
-		BBAEF2DE1EA94EDA00F0866E /* Text.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF1D31EA94ED900F0866E /* Text.cpp */; };
 		BBAEF2E71EA94EDA00F0866E /* MainRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF1EA1EA94EDA00F0866E /* MainRenderer.cpp */; };
 		BBAEF2E81EA94EDA00F0866E /* MainRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF1EA1EA94EDA00F0866E /* MainRenderer.cpp */; };
 		BBAEF2E91EA94EDA00F0866E /* MainScreen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF1EC1EA94EDA00F0866E /* MainScreen.cpp */; };
@@ -787,8 +785,6 @@
 		BBAEF1CE1EA94ED900F0866E /* IScreen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IScreen.h; sourceTree = "<group>"; };
 		BBAEF1D11EA94ED900F0866E /* Renderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Renderer.cpp; sourceTree = "<group>"; };
 		BBAEF1D21EA94ED900F0866E /* Renderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Renderer.h; sourceTree = "<group>"; };
-		BBAEF1D31EA94ED900F0866E /* Text.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Text.cpp; sourceTree = "<group>"; };
-		BBAEF1D41EA94ED900F0866E /* Text.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Text.h; sourceTree = "<group>"; };
 		BBAEF1E41EA94ED900F0866E /* GameConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameConstants.h; sourceTree = "<group>"; };
 		BBAEF1EA1EA94EDA00F0866E /* MainRenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MainRenderer.cpp; sourceTree = "<group>"; };
 		BBAEF1EB1EA94EDA00F0866E /* MainRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainRenderer.h; sourceTree = "<group>"; };
@@ -1778,8 +1774,6 @@
 				BBAEF1CE1EA94ED900F0866E /* IScreen.h */,
 				BBAEF1D11EA94ED900F0866E /* Renderer.cpp */,
 				BBAEF1D21EA94ED900F0866E /* Renderer.h */,
-				BBAEF1D31EA94ED900F0866E /* Text.cpp */,
-				BBAEF1D41EA94ED900F0866E /* Text.h */,
 			);
 			path = ui;
 			sourceTree = "<group>";
@@ -2186,7 +2180,6 @@
 				BB44C87B1DB03A7E003E633F /* pngset.c in Sources */,
 				BBAEF2691EA94EDA00F0866E /* LineBatcherFactory.cpp in Sources */,
 				BB8308761EC2AD1F00435E7E /* StringUtils.cpp in Sources */,
-				BBAEF2DD1EA94EDA00F0866E /* Text.cpp in Sources */,
 				BBAEF2551EA94EDA00F0866E /* Animation.cpp in Sources */,
 				BBAEF23D1EA94EDA00F0866E /* OpenGLProgram.cpp in Sources */,
 				BBAEF2471EA94EDA00F0866E /* OpenGLTextureProgram.cpp in Sources */,
@@ -2311,7 +2304,6 @@
 				BB8308561EC2AD1F00435E7E /* MemoryBitStream.cpp in Sources */,
 				BB44CB841DB053C0003E633F /* pngmem.c in Sources */,
 				BBAEF26A1EA94EDA00F0866E /* LineBatcherFactory.cpp in Sources */,
-				BBAEF2DE1EA94EDA00F0866E /* Text.cpp in Sources */,
 				BBAEF2561EA94EDA00F0866E /* Animation.cpp in Sources */,
 				BBAEF23E1EA94EDA00F0866E /* OpenGLProgram.cpp in Sources */,
 				BBAEF2481EA94EDA00F0866E /* OpenGLTextureProgram.cpp in Sources */,
