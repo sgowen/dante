@@ -10,8 +10,7 @@
 
 #include "RoboCatShared.h"
 
-
-string	SocketAddress::ToString() const
+std::string	SocketAddress::ToString() const
 {
 #if _WIN32
 	//const sockaddr_in* s = GetAsSockAddrIn();
@@ -20,10 +19,10 @@ string	SocketAddress::ToString() const
 	//return StringUtils::Sprintf("%s:%d",
 	//							destinationBuffer,
 	//							ntohs(s->sin_port));
-	return string("not implemented on windows for now");
+	return std::string("not implemented on windows for now");
 #else
 	//not implement on mac for now...
-	return string("not implemented on mac for now");
+	return std::string("not implemented on mac for now");
 #endif
 }
 

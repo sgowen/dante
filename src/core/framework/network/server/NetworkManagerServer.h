@@ -54,8 +54,8 @@ private:
 
 			int		GetNewNetworkId();
 
-	typedef unordered_map< int, ClientProxyPtr >	IntToClientMap;
-	typedef unordered_map< SocketAddress, ClientProxyPtr >	AddressToClientMap;
+	typedef std::unordered_map< int, ClientProxyPtr >	IntToClientMap;
+	typedef std::unordered_map< SocketAddress, ClientProxyPtr >	AddressToClientMap;
 
 	AddressToClientMap		mAddressToClientMap;
 	IntToClientMap			mPlayerIdToClientMap;

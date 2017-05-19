@@ -15,8 +15,8 @@ class MoveList
 {
 public:
 
-	typedef deque< Move >::const_iterator			const_iterator;
-	typedef deque< Move >::const_reverse_iterator	const_reverse_iterator;
+	typedef std::deque< Move >::const_iterator			const_iterator;
+	typedef std::deque< Move >::const_reverse_iterator	const_reverse_iterator;
 	
 	MoveList():
 		mLastMoveTimestamp(-1.f)
@@ -41,7 +41,7 @@ public:
 
 private:
 	float			mLastMoveTimestamp;
-	deque< Move >	mMoves;
+	std::deque< Move >	mMoves;
 };
 
 #endif /* defined(__noctisgames__MoveList__) */

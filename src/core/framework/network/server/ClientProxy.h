@@ -15,11 +15,11 @@ class ClientProxy
 {
 public:
 
-	ClientProxy(const SocketAddress& inSocketAddress, const string& inName, int inPlayerId);
+	ClientProxy(const SocketAddress& inSocketAddress, const std::string& inName, int inPlayerId);
 
 	const	SocketAddress&	GetSocketAddress()	const	{ return mSocketAddress; }
 			int				GetPlayerId()		const	{ return mPlayerId; }
-	const	string&		GetName()			const	{ return mName; }
+	const	std::string&		GetName()			const	{ return mName; }
 
 			void			SetInputState(const InputState& inInputState)		{ mInputState = inInputState; }
 	const	InputState&		GetInputState()		const	{ return mInputState; }
@@ -45,7 +45,7 @@ private:
 	ReplicationManagerServer	mReplicationManagerServer;
 
 	SocketAddress	mSocketAddress;
-	string			mName;
+	std::string			mName;
 	int				mPlayerId;
 
 	//going away!
@@ -61,6 +61,6 @@ private:
 
 };
 
-typedef shared_ptr< ClientProxy >	ClientProxyPtr;
+typedef  std::shared_ptr< ClientProxy >	ClientProxyPtr;
 
 #endif /* defined(__noctisgames__ClientProxy__) */

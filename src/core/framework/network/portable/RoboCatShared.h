@@ -30,6 +30,7 @@
 	#include <errno.h>
 	#include <fcntl.h>
 	#include <unistd.h>
+
 	typedef int SOCKET;
 	const int NO_ERROR = 0;
 	const int INVALID_SOCKET = -1;
@@ -38,33 +39,17 @@
 	const int SOCKET_ERROR = -1;
 #endif
 
-#include "memory"
-
-#include "vector"
-#include "unordered_map"
-#include "string"
-#include "list"
-#include "queue"
-#include "deque"
-#include "unordered_set"
-#include "cassert"
-
-#include <math.h>
+#include <memory>
+#include <vector>
+#include <unordered_map>
 #include <string>
+#include <list>
+#include <queue>
+#include <deque>
+#include <unordered_set>
+#include <cassert>
+#include <math.h>
 #include <cstring>
-
-using std::shared_ptr;
-using std::unique_ptr;
-using std::vector;
-using std::queue;
-using std::list;
-using std::deque;
-using std::unordered_map;
-using std::string;
-using std::unordered_set;
-
-class RoboCat;
-class GameObject;
 
 #include "RoboMath.h"
 

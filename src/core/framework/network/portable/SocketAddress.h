@@ -11,6 +11,8 @@
 
 #include "RoboCatShared.h"
 
+class RoboCat;
+
 class SocketAddress
 {
 public:
@@ -50,7 +52,7 @@ public:
 
 	uint32_t				GetSize()			const	{ return sizeof(sockaddr); }
 
-	string					ToString()			const;
+	std::string					ToString()			const;
 
 private:
 	friend class UDPSocket;
@@ -69,7 +71,7 @@ private:
 
 };
 
-typedef shared_ptr< SocketAddress > SocketAddressPtr;
+typedef  std::shared_ptr< SocketAddress > SocketAddressPtr;
 
 namespace std
 {

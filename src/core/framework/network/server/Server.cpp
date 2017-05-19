@@ -60,7 +60,7 @@ int Server::Run()
 
 bool Server::InitNetworkManager()
 {
-	string portString = "9999";
+	std::string portString = "9999";
 	uint16_t port = stoi(portString);
 
 	return NetworkManagerServer::StaticInit(port);

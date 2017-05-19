@@ -23,7 +23,7 @@ class NetworkManagerClient : public NetworkManager
 public:
 	static NetworkManagerClient*	sInstance;
 
-	static	void	StaticInit(const SocketAddress& inServerAddress, const string& inName);
+	static	void	StaticInit(const SocketAddress& inServerAddress, const std::string& inName);
 
 			void	SendOutgoingPackets();
 
@@ -35,7 +35,7 @@ public:
 			float	GetLastMoveProcessedByServerTimestamp()					const	{ return mLastMoveProcessedByServerTimestamp; }
 private:
 			NetworkManagerClient();
-			void Init(const SocketAddress& inServerAddress, const string& inName);
+			void Init(const SocketAddress& inServerAddress, const std::string& inName);
 
 			void	UpdateSayingHello();
 			void	SendHelloPacket();
@@ -62,7 +62,7 @@ private:
 	float				mTimeOfLastHello;
 	float				mTimeOfLastInputPacket;
 
-	string				mName;
+	std::string				mName;
 	int					mPlayerId;
 
 	float				mLastMoveProcessedByServerTimestamp;

@@ -26,7 +26,7 @@ public:
 	uint32_t			GetDeliveredPacketCount()	const	{ return mDeliveredPacketCount; }
 	uint32_t			GetDispatchedPacketCount()	const	{ return mDispatchedPacketCount; }
 	
-	const deque< InFlightPacket >&	GetInFlightPackets()	const	{ return mInFlightPackets; }
+    const std::deque< InFlightPacket >&	GetInFlightPackets()	const	{ return mInFlightPackets; }
 	
 private:
 	
@@ -45,8 +45,8 @@ private:
 	PacketSequenceNumber	mNextOutgoingSequenceNumber;
 	PacketSequenceNumber	mNextExpectedSequenceNumber;
 	
-	deque< InFlightPacket >	mInFlightPackets;
-	deque< AckRange >		mPendingAcks;
+	std::deque< InFlightPacket >	mInFlightPackets;
+	std::deque< AckRange >		mPendingAcks;
 	
 	bool					mShouldSendAcks;
 	bool					mShouldProcessAcks;

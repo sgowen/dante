@@ -11,11 +11,11 @@
 #include "RoboCatShared.h"
 
 
-SocketAddressPtr SocketAddressFactory::CreateIPv4FromString(const string& inString)
+SocketAddressPtr SocketAddressFactory::CreateIPv4FromString(const std::string& inString)
 {
 	auto pos = inString.find_last_of(':');
-	string host, service;
-	if (pos != string::npos)
+	std::string host, service;
+	if (pos != std::string::npos)
 	{
 		host = inString.substr(0, pos);
 		service = inString.substr(pos + 1);

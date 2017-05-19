@@ -26,7 +26,7 @@ private:
 	uint32_t WriteUpdateAction(OutputMemoryBitStream& inOutputStream, int inNetworkId, uint32_t inDirtyState);
 	uint32_t WriteDestroyAction(OutputMemoryBitStream& inOutputStream, int inNetworkId, uint32_t inDirtyState);
 
-	unordered_map< int, ReplicationCommand >	mNetworkIdToReplicationCommand;
+	std::unordered_map< int, ReplicationCommand >	mNetworkIdToReplicationCommand;
 };
 
 #endif /* defined(__noctisgames__ReplicationManagerServer__) */

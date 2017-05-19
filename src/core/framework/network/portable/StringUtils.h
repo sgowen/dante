@@ -13,9 +13,9 @@
 
 namespace StringUtils
 {
-	string GetCommandLineArg(int inIndex);
+	std::string GetCommandLineArg(int inIndex);
 
-	string Sprintf(const char* inFormat, ...);
+	std::string Sprintf(const char* inFormat, ...);
 
 	void	Log(const char* inFormat);
 	void	Log(const char* inFormat, ...);

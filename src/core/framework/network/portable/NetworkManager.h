@@ -11,7 +11,7 @@
 
 #include "RoboCatShared.h"
 
-typedef unordered_map< int, GameObjectPtr > IntToGameObjectMap;
+typedef std::unordered_map< int, GameObjectPtr > IntToGameObjectMap;
 
 class NetworkManager
 {
@@ -70,7 +70,7 @@ private:
 			void	ReadIncomingPacketsIntoQueue();
 			void	ProcessQueuedPackets();
 
-	queue< ReceivedPacket, list< ReceivedPacket > >	mPacketQueue;
+    std::queue< ReceivedPacket, std::list< ReceivedPacket > >	mPacketQueue;
 
 	UDPSocketPtr	mSocket;
 

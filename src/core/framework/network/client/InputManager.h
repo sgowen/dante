@@ -17,7 +17,7 @@ public:
 
 
 	static void StaticInit();
-	static unique_ptr< InputManager >	sInstance;
+    static std::unique_ptr< InputManager >	sInstance;
 
 	void HandleInput(EInputAction inInputAction, char inKeyCode);
 

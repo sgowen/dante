@@ -42,7 +42,7 @@ private:
 	PacketSequenceNumber	mSequenceNumber;
 	float			mTimeDispatched;
 	
-	unordered_map< int, TransmissionDataPtr >	mTransmissionDataMap;
+	std::unordered_map< int, TransmissionDataPtr >	mTransmissionDataMap;
 };
 
 #endif /* defined(__noctisgames__InFlightPacket__) */

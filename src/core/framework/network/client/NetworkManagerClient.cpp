@@ -25,13 +25,13 @@ NetworkManagerClient::NetworkManagerClient() :
 {
 }
 
-void NetworkManagerClient::StaticInit(const SocketAddress& inServerAddress, const string& inName)
+void NetworkManagerClient::StaticInit(const SocketAddress& inServerAddress, const std::string& inName)
 {
 	sInstance = new NetworkManagerClient();
 	return sInstance->Init(inServerAddress, inName);
 }
 
-void NetworkManagerClient::Init(const SocketAddress& inServerAddress, const string& inName)
+void NetworkManagerClient::Init(const SocketAddress& inServerAddress, const std::string& inName)
 {
 	NetworkManager::Init(0);
 

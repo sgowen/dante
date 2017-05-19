@@ -19,7 +19,7 @@ void OutputDebugStringA(const char* inString)
 }
 #endif
 
-string StringUtils::Sprintf(const char* inFormat, ...)
+std::string StringUtils::Sprintf(const char* inFormat, ...)
 {
 	//not thread safe...
 	static char temp[ 4096 ];
@@ -32,7 +32,7 @@ string StringUtils::Sprintf(const char* inFormat, ...)
 #else
 	vsnprintf(temp, 4096, inFormat, args);
 #endif
-	return string(temp);
+	return std::string(temp);
 }
 
 void StringUtils::Log(const char* inFormat, ...)
