@@ -9,6 +9,8 @@
 #ifndef __noctisgames__WeightedTimedMovingAverage__
 #define __noctisgames__WeightedTimedMovingAverage__
 
+#include "Timing.h"
+
 class WeightedTimedMovingAverage
 {
 public:

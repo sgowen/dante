@@ -9,7 +9,11 @@
 #ifndef __noctisgames__GameObject__
 #define __noctisgames__GameObject__
 
-#include "RoboCatShared.h"
+#include "RoboMath.h"
+
+#include <memory>
+
+class RoboCat;
 
 #define CLASS_IDENTIFICATION(inCode, inClass) \
 enum { kClassId = inCode }; \

@@ -11,6 +11,8 @@
 
 #include "RoboCatShared.h"
 
+#include "InputState.h"
+
 class MoveList
 {
 public:

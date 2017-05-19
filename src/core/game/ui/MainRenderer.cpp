@@ -12,6 +12,7 @@
 
 #include "TextureWrapper.h"
 #include "Font.h"
+#include "RoboMath.h"
 
 #include "Assets.h"
 #include "MainAssetsMapper.h"
@@ -22,6 +23,8 @@
 #include "SpriteBatcher.h"
 #include "TextureRegion.h"
 
+#include "NetworkManagerClient.h"
+#include "HUD.h"
 #include "World.h"
 #include "macros.h"
 

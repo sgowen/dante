@@ -344,8 +344,6 @@
 		BBF226CF1EC12CDE00573356 /* ReplicationManagerClient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF226B01EC12CDE00573356 /* ReplicationManagerClient.cpp */; };
 		BBF226D01EC12CDE00573356 /* RoboCatClient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF226B21EC12CDE00573356 /* RoboCatClient.cpp */; };
 		BBF226D11EC12CDE00573356 /* RoboCatClient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF226B21EC12CDE00573356 /* RoboCatClient.cpp */; };
-		BBF226D21EC12CDE00573356 /* RoboCatClientPCH.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF226B41EC12CDE00573356 /* RoboCatClientPCH.cpp */; };
-		BBF226D31EC12CDE00573356 /* RoboCatClientPCH.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF226B41EC12CDE00573356 /* RoboCatClientPCH.cpp */; };
 		BEDBEB10667F7565A72E937B /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 05945F36F017190884FC7FB9 /* AssetsLibrary.framework */; };
 		C2FAA41A7EE7DD75E14DA2A1 /* BuddyBuildSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84C9C279DA1CE27EE81A6958 /* BuddyBuildSDK.framework */; };
 		EF21A84F90D23B88CD7E3542 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FFF3C8B3638A1D58F89D067F /* SystemConfiguration.framework */; };
@@ -833,6 +831,7 @@
 		BBAEF34A1EA94FF200F0866E /* AndroidAssetDataHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AndroidAssetDataHandler.h; sourceTree = "<group>"; };
 		BBB6C0291E9E80CB00D68409 /* Direct3DMain.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Direct3DMain.cpp; sourceTree = "<group>"; };
 		BBB6C02A1E9E80CB00D68409 /* Direct3DMain.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Direct3DMain.h; sourceTree = "<group>"; };
+		BBC1BE371ECF736A0045AF93 /* NetworkConstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NetworkConstants.h; sourceTree = "<group>"; };
 		BBCB71C81DB6A218006430B6 /* texconv.exe */ = {isa = PBXFileReference; lastKnownFileType = file; path = texconv.exe; sourceTree = "<group>"; };
 		BBCB71C91DB6A218006430B6 /* Texconv_readme.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = Texconv_readme.txt; sourceTree = "<group>"; };
 		BBCCA8381DB343AB00452FA1 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
@@ -862,8 +861,6 @@
 		BBF226B11EC12CDE00573356 /* ReplicationManagerClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReplicationManagerClient.h; sourceTree = "<group>"; };
 		BBF226B21EC12CDE00573356 /* RoboCatClient.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RoboCatClient.cpp; sourceTree = "<group>"; };
 		BBF226B31EC12CDE00573356 /* RoboCatClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoboCatClient.h; sourceTree = "<group>"; };
-		BBF226B41EC12CDE00573356 /* RoboCatClientPCH.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RoboCatClientPCH.cpp; sourceTree = "<group>"; };
-		BBF226B51EC12CDE00573356 /* RoboCatClientPCH.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoboCatClientPCH.h; sourceTree = "<group>"; };
 		FFF3C8B3638A1D58F89D067F /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -1417,6 +1414,7 @@
 				BB83081F1EC2AD1F00435E7E /* Move.h */,
 				BB8308201EC2AD1F00435E7E /* MoveList.cpp */,
 				BB8308211EC2AD1F00435E7E /* MoveList.h */,
+				BBC1BE371ECF736A0045AF93 /* NetworkConstants.h */,
 				BB8308221EC2AD1F00435E7E /* NetworkManager.cpp */,
 				BB8308231EC2AD1F00435E7E /* NetworkManager.h */,
 				BB8308241EC2AD1F00435E7E /* ReplicationCommand.h */,
@@ -1948,8 +1946,6 @@
 				BBF226B11EC12CDE00573356 /* ReplicationManagerClient.h */,
 				BBF226B21EC12CDE00573356 /* RoboCatClient.cpp */,
 				BBF226B31EC12CDE00573356 /* RoboCatClient.h */,
-				BBF226B41EC12CDE00573356 /* RoboCatClientPCH.cpp */,
-				BBF226B51EC12CDE00573356 /* RoboCatClientPCH.h */,
 			);
 			path = client;
 			sourceTree = "<group>";
@@ -2140,7 +2136,6 @@
 				BBCFF1CE1ECD316D003EE520 /* MainAssetsMapper.cpp in Sources */,
 				BBAEF22F1EA94EDA00F0866E /* OpenGLFramebufferToScreenGpuProgramWrapper.cpp in Sources */,
 				BB6DB1BB1E76FD7F005C0FAD /* MainViewController.mm in Sources */,
-				BBF226D21EC12CDE00573356 /* RoboCatClientPCH.cpp in Sources */,
 				BB83084F1EC2AD1F00435E7E /* InFlightPacket.cpp in Sources */,
 				BB83087F1EC2AD1F00435E7E /* UDPSocket.cpp in Sources */,
 				BB83086D1EC2AD1F00435E7E /* SocketAddress.cpp in Sources */,
@@ -2361,7 +2356,6 @@
 				BB44CB8B1DB053C0003E633F /* pngtrans.c in Sources */,
 				BBAEF2581EA94EDA00F0866E /* CircleBatcher.cpp in Sources */,
 				BBAEF23A1EA94EDA00F0866E /* OpenGLManager.cpp in Sources */,
-				BBF226D31EC12CDE00573356 /* RoboCatClientPCH.cpp in Sources */,
 				BBAEF2381EA94EDA00F0866E /* OpenGLLineBatcher.cpp in Sources */,
 				BB44CB8C1DB053C0003E633F /* pngwio.c in Sources */,
 				BBAEF2801EA94EDA00F0866E /* GamePadEvent.cpp in Sources */,

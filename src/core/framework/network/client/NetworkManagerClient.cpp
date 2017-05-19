@@ -8,9 +8,11 @@
 
 #include "pch.h"
 
-#include "RoboCatClientPCH.h"
+#include "NetworkManagerClient.h"
 
-NetworkManagerClient*	NetworkManagerClient::sInstance;
+#include "InputManager.h"
+
+NetworkManagerClient* NetworkManagerClient::sInstance;
 
 namespace
 {
@@ -140,7 +142,6 @@ void NetworkManagerClient::ReadLastMoveProcessedOnServerTimestamp(InputMemoryBit
 		mAvgRoundTripTime.Update(rtt);
 
 		InputManager::sInstance->GetMoveList().RemovedProcessedMoves(mLastMoveProcessedByServerTimestamp);
-
 	}
 }
 

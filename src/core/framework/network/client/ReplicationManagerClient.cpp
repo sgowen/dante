@@ -8,7 +8,12 @@
 
 #include "pch.h"
 
-#include "RoboCatClientPCH.h"
+#include "ReplicationManagerClient.h"
+
+#include "MemoryBitStream.h"
+
+#include "NetworkManagerClient.h"
+#include "GameObject.h"
 
 #include <cassert>
 

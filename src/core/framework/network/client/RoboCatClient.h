@@ -9,7 +9,7 @@
 #ifndef __noctisgames__RoboCatClient__
 #define __noctisgames__RoboCatClient__
 
-#include "RoboCatClientPCH.h"
+#include "RoboCat.h"
 
 class RoboCatClient : public RoboCat
 {

@@ -11,10 +11,11 @@
 
 #include "RoboCatShared.h"
 
+#include "InputState.h"
+
 class Move
 {
 public:
-
 	Move() {}
 
 	Move(const InputState& inInputState, float inTimestamp, float inDeltaTime) :
@@ -22,7 +23,6 @@ public:
 		mTimestamp(inTimestamp),
 		mDeltaTime(inDeltaTime)
 	{}
-
 
 	const InputState&	GetInputState()	const		{ return mInputState; }
 	float				GetTimestamp()	const		{ return mTimestamp; }
@@ -35,7 +35,6 @@ private:
 	InputState	mInputState;
 	float		mTimestamp;
 	float		mDeltaTime;
-
 };
 
 #endif /* defined(__noctisgames__Move__) */

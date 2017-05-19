@@ -9,7 +9,9 @@
 #ifndef __noctisgames__NetworkManagerClient__
 #define __noctisgames__NetworkManagerClient__
 
-#include "RoboCatClientPCH.h"
+#include "NetworkManager.h"
+
+#include "ReplicationManagerClient.h"
 
 class NetworkManagerClient : public NetworkManager
 {

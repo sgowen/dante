@@ -8,7 +8,12 @@
 
 #include "pch.h"
 
-#include "RoboCatClientPCH.h"
+#include "RoboCatClient.h"
+
+#include "NetworkManagerClient.h"
+#include "HUD.h"
+#include "Move.h"
+#include "InputManager.h"
 
 RoboCatClient::RoboCatClient() :
 	mTimeLocationBecameOutOfSync(0.f),

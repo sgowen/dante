@@ -9,13 +9,17 @@
 #ifndef __noctisgames__InputManager__
 #define __noctisgames__InputManager__
 
-#include "RoboCatClientPCH.h"
+#include "InputAction.h"
+#include "InputState.h"
+#include "MoveList.h"
+
+#include <memory>
+
+class Move;
 
 class InputManager
 {
 public:
-
-
 	static void StaticInit();
     static std::unique_ptr< InputManager >	sInstance;
 
@@ -23,24 +27,24 @@ public:
 
 	const InputState& GetState()	const	{ return mCurrentState; }
 
-	MoveList&			GetMoveList()		{ return mMoveList; }
+	MoveList& GetMoveList()		{ return mMoveList; }
 
-	const Move*			GetAndClearPendingMove()	{ auto toRet = mPendingMove; mPendingMove = nullptr; return toRet; }
+	const Move* GetAndClearPendingMove()	{ auto toRet = mPendingMove; mPendingMove = nullptr; return toRet; }
 
-	void				Update();
+	void Update();
 
 private:
 
-	InputState							mCurrentState;
+	InputState mCurrentState;
 
 	InputManager();
 
-	bool				IsTimeToSampleInput();
-	const Move&			SampleInputAsMove();
+	bool IsTimeToSampleInput();
+	const Move& SampleInputAsMove();
 	
-	MoveList		mMoveList;
-	float			mNextTimeToSampleInput;
-	const Move*		mPendingMove;
+	MoveList mMoveList;
+	float mNextTimeToSampleInput;
+	const Move* mPendingMove;
 };
 
 #endif /* defined(__noctisgames__InputManager__) */

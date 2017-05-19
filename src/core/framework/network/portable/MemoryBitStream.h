@@ -9,14 +9,14 @@
 #ifndef __noctisgames__MemoryBitStream__
 #define __noctisgames__MemoryBitStream__
 
-#include "RoboCatShared.h"
-
 #include <cstdint>
 #include <cstdlib>
 #include <string>
 
 class GameObject;
 class LinkingContext;
+class Vector3;
+class Quaternion;
 
 inline uint32_t ConvertToFixed(float inNumber, float inMin, float inPrecision)
 {

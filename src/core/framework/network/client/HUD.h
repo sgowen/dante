@@ -9,7 +9,9 @@
 #ifndef __noctisgames__HUD__
 #define __noctisgames__HUD__
 
-#include "RoboCatClientPCH.h"
+#include "RoboMath.h"
+
+#include <memory>
 
 class HUD
 {

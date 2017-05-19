@@ -9,7 +9,8 @@
 #ifndef __noctisgames__InputState__
 #define __noctisgames__InputState__
 
-#include "RoboCatShared.h"
+class OutputMemoryBitStream;
+class InputMemoryBitStream;
 
 class InputState
 {

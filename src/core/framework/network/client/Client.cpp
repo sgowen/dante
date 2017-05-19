@@ -8,7 +8,13 @@
 
 #include "pch.h"
 
-#include "RoboCatClientPCH.h"
+#include "Client.h"
+
+#include "RoboCatClient.h"
+#include "GameObjectRegistry.h"
+#include "NetworkManagerClient.h"
+#include "InputManager.h"
+#include "HUD.h"
 
 bool Client::StaticInit()
 {

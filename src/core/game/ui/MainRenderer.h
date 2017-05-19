@@ -11,12 +11,11 @@
 
 #include "Renderer.h"
 
-#include "RoboCatClientPCH.h"
-
 #include <string>
 
 class TextureWrapper;
 class Font;
+class Vector3;
 
 class MainRenderer : public Renderer
 {

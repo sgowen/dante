@@ -9,7 +9,16 @@
 #ifndef __noctisgames__NetworkManager__
 #define __noctisgames__NetworkManager__
 
-#include "RoboCatShared.h"
+#include "MemoryBitStream.h"
+
+#include "GameObject.h"
+#include "SocketAddress.h"
+#include "UDPSocket.h"
+#include "WeightedTimedMovingAverage.h"
+
+#include <unordered_map>
+#include <queue>
+#include <list>
 
 typedef std::unordered_map< int, GameObjectPtr > IntToGameObjectMap;
 

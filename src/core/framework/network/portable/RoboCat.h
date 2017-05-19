@@ -11,6 +11,10 @@
 
 #include "RoboCatShared.h"
 
+#include "GameObject.h"
+
+#include "InputState.h"
+
 class RoboCat : public GameObject
 {
 public:

@@ -9,6 +9,8 @@
 #ifndef __noctisgames__RoboMath__
 #define __noctisgames__RoboMath__
 
+#include <math.h>
+
 class Vector3
 {
 public:

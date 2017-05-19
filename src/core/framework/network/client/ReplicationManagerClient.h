@@ -9,7 +9,7 @@
 #ifndef __noctisgames__ReplicationManagerClient__
 #define __noctisgames__ReplicationManagerClient__
 
-#include "RoboCatClientPCH.h"
+class InputMemoryBitStream;
 
 class ReplicationManagerClient
 {

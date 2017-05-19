@@ -9,7 +9,9 @@
 #ifndef __noctisgames__SocketAddressFactory__
 #define __noctisgames__SocketAddressFactory__
 
-#include "RoboCatShared.h"
+#include "SocketAddress.h"
+
+#include <string>
 
 class SocketAddressFactory
 {

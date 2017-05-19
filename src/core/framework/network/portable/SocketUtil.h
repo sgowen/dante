@@ -9,7 +9,7 @@
 #ifndef __noctisgames__SocketUtil__
 #define __noctisgames__SocketUtil__
 
-#include "RoboCatShared.h"
+#include "UDPSocket.h"
 
 enum SocketAddressFamily
 {

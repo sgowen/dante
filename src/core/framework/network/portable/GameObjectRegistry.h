@@ -9,7 +9,7 @@
 #ifndef __noctisgames__GameObjectRegistry__
 #define __noctisgames__GameObjectRegistry__
 
-#include "RoboCatShared.h"
+#include "GameObject.h"
 
 typedef GameObjectPtr (*GameObjectCreationFunc)();
 

@@ -8,7 +8,11 @@
 
 #include "pch.h"
 
-#include "RoboCatClientPCH.h"
+#include "InputManager.h"
+
+#include "Move.h"
+
+#include "Timing.h"
 
 std::unique_ptr< InputManager >	InputManager::sInstance;
 

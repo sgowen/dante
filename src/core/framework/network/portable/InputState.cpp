@@ -8,7 +8,9 @@
 
 #include "pch.h"
 
-#include "RoboCatShared.h"
+#include "InputState.h"
+
+#include "MemoryBitStream.h"
 
 namespace
 {

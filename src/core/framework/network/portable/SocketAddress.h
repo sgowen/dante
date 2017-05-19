@@ -9,9 +9,9 @@
 #ifndef __noctisgames__SocketAddress__
 #define __noctisgames__SocketAddress__
 
-#include "RoboCatShared.h"
+#include "NetworkConstants.h"
 
-class RoboCat;
+#include <memory>
 
 class SocketAddress
 {
