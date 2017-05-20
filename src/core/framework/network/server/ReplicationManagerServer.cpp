@@ -66,16 +66,21 @@ void ReplicationManagerServer::Write(OutputMemoryBitStream& inOutputStream, Repl
 			//now do what?
 			switch(action)
 			{
-			case RA_Create:
-				writtenState = WriteCreateAction(inOutputStream, networkId, dirtyState);
-				break;
-			case RA_Update:
-				writtenState = WriteUpdateAction(inOutputStream, networkId, dirtyState);
-				break;
-			case RA_Destroy:
-				//don't need anything other than state!
-				writtenState = WriteDestroyAction(inOutputStream, networkId, dirtyState);
-				break;
+                case RA_Create:
+                    writtenState = WriteCreateAction(inOutputStream, networkId, dirtyState);
+                    break;
+                case RA_Update:
+                    writtenState = WriteUpdateAction(inOutputStream, networkId, dirtyState);
+                    break;
+                case RA_Destroy:
+                    //don't need anything other than state!
+                    writtenState = WriteDestroyAction(inOutputStream, networkId, dirtyState);
+                    break;
+                case RA_RPC:
+                case RA_MAX:
+                default:
+                    // TODO?
+                    break;
 			}
 		
 			ioTransmissinData->AddTransmission(networkId, action, writtenState);
@@ -86,7 +91,6 @@ void ReplicationManagerServer::Write(OutputMemoryBitStream& inOutputStream, Repl
 		}
 	}
 }
-
 
 uint32_t ReplicationManagerServer::WriteCreateAction(OutputMemoryBitStream& inOutputStream, int inNetworkId, uint32_t inDirtyState)
 {

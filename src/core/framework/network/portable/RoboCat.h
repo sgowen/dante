@@ -84,6 +84,6 @@ protected:
 	int					mHealth;
 };
 
-typedef  std::shared_ptr<RoboCat >	RoboCatPtr;
+typedef  std::shared_ptr<RoboCat> RoboCatPtr;
 
 #endif /* defined(__noctisgames__RoboCat__) */

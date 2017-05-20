@@ -12,7 +12,7 @@
 
 #include "World.h"
 
-std::unique_ptr<GameObjectRegistry >	GameObjectRegistry::sInstance;
+std::unique_ptr<GameObjectRegistry>	GameObjectRegistry::sInstance;
 
 void GameObjectRegistry::StaticInit()
 {

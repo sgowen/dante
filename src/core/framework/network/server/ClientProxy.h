@@ -17,7 +17,6 @@
 class ClientProxy
 {
 public:
-
 	ClientProxy(const SocketAddress& inSocketAddress, const std::string& inName, int inPlayerId);
 
 	const	SocketAddress&	GetSocketAddress()	const	{ return mSocketAddress; }
@@ -43,27 +42,23 @@ public:
 			void	RespawnCatIfNecessary();
 
 private:
-
 	DeliveryNotificationManager	mDeliveryNotificationManager;
-	ReplicationManagerServer	mReplicationManagerServer;
+	ReplicationManagerServer mReplicationManagerServer;
 
-	SocketAddress	mSocketAddress;
-	std::string			mName;
-	int				mPlayerId;
+	SocketAddress mSocketAddress;
+	std::string mName;
+	int mPlayerId;
 
 	//going away!
-	InputState		mInputState;
+	InputState mInputState;
 
-	float			mLastPacketFromClientTime;
-	float			mTimeToRespawn;
+	float mLastPacketFromClientTime;
+	float mTimeToRespawn;
 
-	MoveList		mUnprocessedMoveList;
-	bool			mIsLastMoveTimestampDirty;
-
-
-
+	MoveList mUnprocessedMoveList;
+	bool mIsLastMoveTimestampDirty;
 };
 
-typedef  std::shared_ptr<ClientProxy >	ClientProxyPtr;
+typedef std::shared_ptr<ClientProxy> ClientProxyPtr;
 
 #endif /* defined(__noctisgames__ClientProxy__) */

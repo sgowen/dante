@@ -69,10 +69,9 @@ private:
 
 	sockaddr_in*			GetAsSockAddrIn()			{ return reinterpret_cast< sockaddr_in* >(&mSockAddr); }
 	const	sockaddr_in*	GetAsSockAddrIn()	const	{ return reinterpret_cast< const sockaddr_in* >(&mSockAddr); }
-
 };
 
-typedef  std::shared_ptr<SocketAddress > SocketAddressPtr;
+typedef std::shared_ptr<SocketAddress> SocketAddressPtr;
 
 namespace std
 {

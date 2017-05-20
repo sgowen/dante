@@ -10,7 +10,7 @@
 
 #include "World.h"
 
-std::unique_ptr<World >	World::sInstance;
+std::unique_ptr<World> World::sInstance;
 
 void World::StaticInit()
 {

@@ -14,7 +14,7 @@
 
 #include "NetworkManagerClient.h"
 #include "GameObject.h"
-#include "ReplicationCommand.h"
+#include "ReplicationAction.h"
 #include "GameObjectRegistry.h"
 
 #include <cassert>

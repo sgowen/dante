@@ -89,9 +89,8 @@ private:
 	bool											mDoesWantToDie;
 
 	int												mNetworkId;
-
 };
 
-typedef  std::shared_ptr<GameObject >	GameObjectPtr;
+typedef  std::shared_ptr<GameObject> GameObjectPtr;
 
 #endif /* defined(__noctisgames__GameObject__) */
