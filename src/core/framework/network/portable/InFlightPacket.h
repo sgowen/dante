@@ -9,7 +9,7 @@
 #ifndef __noctisgames__InFlightPacket__
 #define __noctisgames__InFlightPacket__
 
-#include "RoboCatShared.h"
+#include "TransmissionData.h"
 
 class DeliveryNotificationManager;
 

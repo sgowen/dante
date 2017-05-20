@@ -9,7 +9,7 @@
 #ifndef __noctisgames__TransmissionData__
 #define __noctisgames__TransmissionData__
 
-#include "RoboCatShared.h"
+#include <memory>
 
 class DeliveryNotificationManager;
 

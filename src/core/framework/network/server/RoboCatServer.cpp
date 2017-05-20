@@ -8,6 +8,8 @@
 
 #include "pch.h"
 
+#include "RoboCatServer.h"
+
 RoboCatServer::RoboCatServer() :
 	mCatControlType(ESCT_Human),
 	mTimeOfNextShot(0.f),

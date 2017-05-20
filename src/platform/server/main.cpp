@@ -8,6 +8,8 @@
 
 #include "pch.h"
 
+#include "Server.h"
+
 int main(int argc, const char * argv[])
 {
     if (Server::StaticInit())

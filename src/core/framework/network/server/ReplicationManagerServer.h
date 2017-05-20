@@ -9,6 +9,15 @@
 #ifndef __noctisgames__ReplicationManagerServer__
 #define __noctisgames__ReplicationManagerServer__
 
+#include "NetworkConstants.h"
+
+#include "ReplicationCommand.h"
+
+#include <unordered_map>
+
+class OutputMemoryBitStream;
+class ReplicationManagerTransmissionData;
+
 class ReplicationManagerServer
 {
 public:

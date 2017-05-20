@@ -9,10 +9,14 @@
 #ifndef __noctisgames__Server__
 #define __noctisgames__Server__
 
+#include "Engine.h"
+
+#include "ClientProxy.h"
+#include "RoboCatServer.h"
+
 class Server : public Engine
 {
 public:
-
 	static bool StaticInit();
 
 	virtual int Run();
@@ -20,16 +24,16 @@ public:
 	void HandleNewClient(ClientProxyPtr inClientProxy);
 	void HandleLostClient(ClientProxyPtr inClientProxy);
 
-	RoboCatPtr	GetCatForPlayer(int inPlayerId);
-	void	SpawnCatForPlayer(int inPlayerId);
+	RoboCatPtr GetCatForPlayer(int inPlayerId);
+	void SpawnCatForPlayer(int inPlayerId);
 
 private:
     float m_fFrameStateTime;
     
 	Server();
 
-	bool	InitNetworkManager();
-	void	SetupWorld();
+	bool InitNetworkManager();
+	void SetupWorld();
 };
 
 #endif /* defined(__noctisgames__Server__) */

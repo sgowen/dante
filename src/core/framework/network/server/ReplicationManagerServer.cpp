@@ -8,7 +8,13 @@
 
 #include "pch.h"
 
+#include "ReplicationManagerServer.h"
+
+#include "MemoryBitStream.h"
 #include "ReplicationManagerTransmissionData.h"
+
+#include "ReplicationManagerTransmissionData.h"
+#include "NetworkManagerServer.h"
 
 void ReplicationManagerServer::ReplicateCreate(int inNetworkId, uint32_t inInitialDirtyState)
 {

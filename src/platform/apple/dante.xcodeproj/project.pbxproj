@@ -111,7 +111,6 @@
 		BB8308021EC2AC0900435E7E /* ReplicationManagerServer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8307F31EC2AC0900435E7E /* ReplicationManagerServer.cpp */; };
 		BB8308031EC2AC0900435E7E /* ReplicationManagerTransmissionData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8307F51EC2AC0900435E7E /* ReplicationManagerTransmissionData.cpp */; };
 		BB8308041EC2AC0900435E7E /* RoboCatServer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8307F71EC2AC0900435E7E /* RoboCatServer.cpp */; };
-		BB8308051EC2AC0900435E7E /* RoboCatServerPCH.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8307F91EC2AC0900435E7E /* RoboCatServerPCH.cpp */; };
 		BB8308061EC2AC0900435E7E /* Server.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8307FB1EC2AC0900435E7E /* Server.cpp */; };
 		BB8308401EC2AD1F00435E7E /* AckRange.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8308091EC2AD1F00435E7E /* AckRange.cpp */; };
 		BB8308411EC2AD1F00435E7E /* AckRange.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8308091EC2AD1F00435E7E /* AckRange.cpp */; };
@@ -583,8 +582,6 @@
 		BB8307F61EC2AC0900435E7E /* ReplicationManagerTransmissionData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReplicationManagerTransmissionData.h; sourceTree = "<group>"; };
 		BB8307F71EC2AC0900435E7E /* RoboCatServer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RoboCatServer.cpp; sourceTree = "<group>"; };
 		BB8307F81EC2AC0900435E7E /* RoboCatServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoboCatServer.h; sourceTree = "<group>"; };
-		BB8307F91EC2AC0900435E7E /* RoboCatServerPCH.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RoboCatServerPCH.cpp; sourceTree = "<group>"; };
-		BB8307FA1EC2AC0900435E7E /* RoboCatServerPCH.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoboCatServerPCH.h; sourceTree = "<group>"; };
 		BB8307FB1EC2AC0900435E7E /* Server.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Server.cpp; sourceTree = "<group>"; };
 		BB8307FC1EC2AC0900435E7E /* Server.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Server.h; sourceTree = "<group>"; };
 		BB8308091EC2AD1F00435E7E /* AckRange.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AckRange.cpp; sourceTree = "<group>"; };
@@ -1380,8 +1377,6 @@
 				BB8307F61EC2AC0900435E7E /* ReplicationManagerTransmissionData.h */,
 				BB8307F71EC2AC0900435E7E /* RoboCatServer.cpp */,
 				BB8307F81EC2AC0900435E7E /* RoboCatServer.h */,
-				BB8307F91EC2AC0900435E7E /* RoboCatServerPCH.cpp */,
-				BB8307FA1EC2AC0900435E7E /* RoboCatServerPCH.h */,
 				BB8307FB1EC2AC0900435E7E /* Server.cpp */,
 				BB8307FC1EC2AC0900435E7E /* Server.h */,
 			);
@@ -2390,7 +2385,6 @@
 				BB83087E1EC2AD1F00435E7E /* Timing.cpp in Sources */,
 				BB83086F1EC2AD1F00435E7E /* SocketAddress.cpp in Sources */,
 				BB8308661EC2AD1F00435E7E /* RoboCat.cpp in Sources */,
-				BB8308051EC2AC0900435E7E /* RoboCatServerPCH.cpp in Sources */,
 				BB83085D1EC2AD1F00435E7E /* Move.cpp in Sources */,
 				BB8308541EC2AD1F00435E7E /* InputState.cpp in Sources */,
 				BB8308011EC2AC0900435E7E /* NetworkManagerServer.cpp in Sources */,

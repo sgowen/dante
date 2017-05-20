@@ -10,6 +10,8 @@
 
 #include "ReplicationManagerTransmissionData.h"
 
+#include "NetworkManagerServer.h"
+
 void ReplicationManagerTransmissionData::AddTransmission(int inNetworkId, ReplicationAction inAction, uint32_t inState)
 {
 	/*
@@ -42,7 +44,6 @@ void ReplicationManagerTransmissionData::HandleDeliveryFailure(DeliveryNotificat
 			HandleDestroyDeliveryFailure(networkId);
 			break;
 		}
-		
 	}
 }
 
@@ -62,9 +63,6 @@ void ReplicationManagerTransmissionData::HandleDeliverySuccess(DeliveryNotificat
 		}
 	}
 }
-
-
-
 
 void ReplicationManagerTransmissionData::HandleCreateDeliveryFailure(int inNetworkId) const
 {
