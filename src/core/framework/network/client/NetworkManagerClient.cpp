@@ -11,6 +11,8 @@
 #include "NetworkManagerClient.h"
 
 #include "InputManager.h"
+#include "StringUtils.h"
+#include "GameObjectRegistry.h"
 
 NetworkManagerClient* NetworkManagerClient::sInstance;
 

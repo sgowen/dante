@@ -12,6 +12,8 @@
 #include "NetworkManager.h"
 
 #include "ReplicationManagerClient.h"
+#include "DeliveryNotificationManager.h"
+#include "SocketAddress.h"
 
 class NetworkManagerClient : public NetworkManager
 {

@@ -23,10 +23,12 @@
 #include "SpriteBatcher.h"
 #include "TextureRegion.h"
 
+#include "macros.h"
 #include "NetworkManagerClient.h"
 #include "HUD.h"
 #include "World.h"
-#include "macros.h"
+#include "RoboCat.h"
+#include "StringUtils.h"
 
 #include <sstream>
 
@@ -122,7 +124,6 @@ void MainRenderer::tempDraw(float stateTime)
         m_spriteBatcher->beginBatch();
         RenderBandWidth();
         RenderRoundTripTime();
-        RenderScoreBoard();
         RenderHealth();
         m_spriteBatcher->endBatch(*m_misc->gpuTextureWrapper, *m_textureGpuProgramWrapper);
     }
@@ -151,19 +152,6 @@ void MainRenderer::RenderRoundTripTime()
     
     std::string roundTripTime = StringUtils::Sprintf("RTT %d ms", (int) rttMS);
     RenderText(roundTripTime, HUD::sInstance->mRoundTripTimeOrigin, Colors::White);
-}
-
-void MainRenderer::RenderScoreBoard()
-{
-    const std::vector< ScoreBoardManager::Entry >& entries = ScoreBoardManager::sInstance->GetEntries();
-    Vector3 offset = HUD::sInstance->mScoreBoardOrigin;
-    
-    for (const auto& entry: entries)
-    {
-        RenderText(entry.GetFormattedNameScore(), offset, entry.GetColor());
-        offset.mX += HUD::sInstance->mScoreOffset.mX;
-        offset.mY += HUD::sInstance->mScoreOffset.mY;
-    }
 }
 
 void MainRenderer::RenderText(const std::string& inStr, const Vector3& origin, const Vector3& inColor)

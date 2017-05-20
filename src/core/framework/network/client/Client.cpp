@@ -15,6 +15,7 @@
 #include "NetworkManagerClient.h"
 #include "InputManager.h"
 #include "HUD.h"
+#include "SocketAddressFactory.h"
 
 bool Client::StaticInit()
 {
