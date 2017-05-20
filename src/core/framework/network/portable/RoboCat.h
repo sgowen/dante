@@ -9,11 +9,11 @@
 #ifndef __noctisgames__RoboCat__
 #define __noctisgames__RoboCat__
 
-#include "RoboCatShared.h"
-
 #include "GameObject.h"
 
 #include "InputState.h"
+
+class OutputMemoryBitStream;
 
 class RoboCat : public GameObject
 {
@@ -84,6 +84,6 @@ protected:
 	int					mHealth;
 };
 
-typedef  std::shared_ptr< RoboCat >	RoboCatPtr;
+typedef  std::shared_ptr<RoboCat >	RoboCatPtr;
 
 #endif /* defined(__noctisgames__RoboCat__) */

@@ -8,11 +8,14 @@
 
 #include "pch.h"
 
+#include "NetworkManagerServer.h"
+
 #include "Server.h"
 #include "ReplicationManagerTransmissionData.h"
+#include "StringUtils.h"
+#include "World.h"
 
-NetworkManagerServer*	NetworkManagerServer::sInstance;
-
+NetworkManagerServer* NetworkManagerServer::sInstance;
 
 NetworkManagerServer::NetworkManagerServer() :
 	mNewPlayerId(1),
@@ -99,7 +102,7 @@ void NetworkManagerServer::HandlePacketFromNewClient(InputMemoryBitStream& inInp
 		//tell the server about this client, spawn a cat, etc...
 		//if we had a generic message system, this would be a good use for it...
 		//instead we'll just tell the server directly
-		static_cast< Server* > (Engine::sInstance.get())->HandleNewClient(newClientProxy);
+		static_cast<Server*> (Engine::sInstance.get())->HandleNewClient(newClientProxy);
 
 		//and welcome the client...
 		SendWelcomePacket(newClientProxy);
@@ -180,8 +183,6 @@ void NetworkManagerServer::SendStatePacketToClient(ClientProxyPtr inClientProxy)
 
 	WriteLastMoveTimestampIfDirty(statePacket, inClientProxy);
 
-	AddScoreBoardStateToPacket(statePacket);
-
 	ReplicationManagerTransmissionData* rmtd = new ReplicationManagerTransmissionData(&inClientProxy->GetReplicationManagerServer());
 	inClientProxy->GetReplicationManagerServer().Write(statePacket, rmtd);
 	ifp->SetTransmissionData('RPLM', TransmissionDataPtr(rmtd));
@@ -217,12 +218,6 @@ void NetworkManagerServer::AddWorldStateToPacket(OutputMemoryBitStream& inOutput
 		gameObject->Write(inOutputStream, 0xffffffff);
 	}
 }
-
-void NetworkManagerServer::AddScoreBoardStateToPacket(OutputMemoryBitStream& inOutputStream)
-{
-	ScoreBoardManager::sInstance->Write(inOutputStream);
-}
-
 
 int NetworkManagerServer::GetNewNetworkId()
 {
@@ -267,7 +262,7 @@ ClientProxyPtr NetworkManagerServer::GetClientProxy(int inPlayerId) const
 
 void NetworkManagerServer::CheckForDisconnects()
 {
-    std::vector< ClientProxyPtr > clientsToDC;
+    std::vector<ClientProxyPtr > clientsToDC;
 
 	float minAllowedLastPacketFromClientTime = Timing::sInstance.GetTimef() - mClientDisconnectTimeout;
 	for (const auto& pair: mAddressToClientMap)
@@ -289,7 +284,7 @@ void NetworkManagerServer::HandleClientDisconnected(ClientProxyPtr inClientProxy
 {
 	mPlayerIdToClientMap.erase(inClientProxy->GetPlayerId());
 	mAddressToClientMap.erase(inClientProxy->GetSocketAddress());
-	static_cast< Server* > (Engine::sInstance.get())->HandleLostClient(inClientProxy);
+	static_cast<Server*> (Engine::sInstance.get())->HandleLostClient(inClientProxy);
 
 	//was that the last client? if so, bye!
 	if (mAddressToClientMap.empty())

@@ -10,7 +10,7 @@
 
 #include "HUD.h"
 
-std::unique_ptr< HUD >	HUD::sInstance;
+std::unique_ptr<HUD >	HUD::sInstance;
 
 HUD::HUD() :
 mScoreBoardOrigin(1.f, 7.f, 0.0f),

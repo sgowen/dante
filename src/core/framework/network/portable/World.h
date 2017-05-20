@@ -9,31 +9,31 @@
 #ifndef __noctisgames__World__
 #define __noctisgames__World__
 
-#include "RoboCatShared.h"
+#include "GameObject.h"
 
-/*
-* the world tracks all the live game objects. Failry inefficient for now, but not that much of a problem
-*/
+#include <memory>
+#include <vector>
+
 class World
 {
 public:
 	static void StaticInit();
 
-	static std::unique_ptr< World >		sInstance;
+	static std::unique_ptr<World >		sInstance;
 
 	void AddGameObject(GameObjectPtr inGameObject);
 	void RemoveGameObject(GameObjectPtr inGameObject);
 
 	void Update();
 
-	const std::vector< GameObjectPtr >&	GetGameObjects()	const	{ return mGameObjects; }
+	const std::vector<GameObjectPtr >&	GetGameObjects()	const	{ return mGameObjects; }
 
 private:
 	World();
 
 	int	GetIndexOfGameObject(GameObjectPtr inGameObject);
 
-	std::vector< GameObjectPtr >	mGameObjects;
+	std::vector<GameObjectPtr > mGameObjects;
 };
 
 #endif /* defined(__noctisgames__World__) */

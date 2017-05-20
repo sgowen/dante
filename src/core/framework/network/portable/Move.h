@@ -9,9 +9,10 @@
 #ifndef __noctisgames__Move__
 #define __noctisgames__Move__
 
-#include "RoboCatShared.h"
-
 #include "InputState.h"
+
+class OutputMemoryBitStream;
+class InputMemoryBitStream;
 
 class Move
 {

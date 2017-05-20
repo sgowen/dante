@@ -9,7 +9,7 @@
 #ifndef __noctisgames__Timing__
 #define __noctisgames__Timing__
 
-#include "RoboCatShared.h"
+#include "NetworkConstants.h"
 
 class Timing
 {
@@ -29,7 +29,7 @@ public:
 
 	float GetTimef() const
 	{
-		return static_cast< float >(GetTime());
+		return static_cast<float>(GetTime());
 	}
 
 	float GetFrameStartTime() const { return mFrameStartTimef; }

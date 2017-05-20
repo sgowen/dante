@@ -8,7 +8,9 @@
 
 #include "pch.h"
 
-#include "RoboCatShared.h"
+#include "Move.h"
+
+#include "MemoryBitStream.h"
 
 bool Move::Write(OutputMemoryBitStream& inOutputStream) const
 {

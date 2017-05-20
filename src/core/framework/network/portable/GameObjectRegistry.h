@@ -11,6 +11,10 @@
 
 #include "GameObject.h"
 
+#include "NetworkConstants.h"
+
+#include <unordered_map>
+
 typedef GameObjectPtr (*GameObjectCreationFunc)();
 
 class GameObjectRegistry
@@ -19,7 +23,7 @@ public:
 
 	static void StaticInit();
 
-	static std::unique_ptr< GameObjectRegistry >		sInstance;
+	static std::unique_ptr<GameObjectRegistry >		sInstance;
 
 	void RegisterCreationFunction(uint32_t inFourCCName, GameObjectCreationFunc inCreationFunction);
 

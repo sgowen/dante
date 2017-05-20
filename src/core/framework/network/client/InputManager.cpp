@@ -14,7 +14,7 @@
 
 #include "Timing.h"
 
-std::unique_ptr< InputManager >	InputManager::sInstance;
+std::unique_ptr<InputManager >	InputManager::sInstance;
 
 namespace
 {

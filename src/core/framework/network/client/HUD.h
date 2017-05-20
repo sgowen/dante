@@ -17,7 +17,7 @@ class HUD
 {
 public:
 	static void StaticInit();
-	static std::unique_ptr< HUD > sInstance;
+	static std::unique_ptr<HUD > sInstance;
 
 	void SetPlayerHealth(int inHealth) { mHealth = inHealth; }
 

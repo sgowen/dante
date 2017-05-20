@@ -8,7 +8,12 @@
 
 #include "pch.h"
 
-#include "RoboCatShared.h"
+#include "UDPSocket.h"
+
+#include "SocketAddress.h"
+
+#include "SocketUtil.h"
+#include "StringUtils.h"
 
 int UDPSocket::Bind(const SocketAddress& inBindAddress)
 {
@@ -25,7 +30,7 @@ int UDPSocket::Bind(const SocketAddress& inBindAddress)
 int UDPSocket::SendTo(const void* inToSend, int inLength, const SocketAddress& inToAddress)
 {
 	int byteSentCount = sendto(mSocket,
-							   static_cast< const char* >(inToSend),
+							   static_cast<const char*>(inToSend),
 							   inLength,
 							   0, &inToAddress.mSockAddr, inToAddress.GetSize());
 	if (byteSentCount <= 0)
@@ -45,7 +50,7 @@ int UDPSocket::ReceiveFrom(void* inToReceive, int inMaxLength, SocketAddress& ou
 	socklen_t fromLength = outFromAddress.GetSize();
 	
 	int readByteCount = recvfrom(mSocket,
-								 static_cast< char* >(inToReceive),
+								 static_cast<char*>(inToReceive),
 								 inMaxLength,
 								 0, &outFromAddress.mSockAddr, &fromLength);
 	if (readByteCount >= 0)

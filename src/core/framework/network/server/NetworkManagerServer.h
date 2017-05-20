@@ -9,7 +9,11 @@
 #ifndef __noctisgames__NetworkManagerServer__
 #define __noctisgames__NetworkManagerServer__
 
+#include "NetworkManager.h"
+
 #include "ClientProxy.h"
+
+class InputMemoryBitStream;
 
 class NetworkManagerServer : public NetworkManager
 {
@@ -43,7 +47,6 @@ private:
 			void	UpdateAllClients();
 			
 			void	AddWorldStateToPacket(OutputMemoryBitStream& inOutputStream);
-			void	AddScoreBoardStateToPacket(OutputMemoryBitStream& inOutputStream);
 
 			void	SendStatePacketToClient(ClientProxyPtr inClientProxy);
 			void	WriteLastMoveTimestampIfDirty(OutputMemoryBitStream& inOutputStream, ClientProxyPtr inClientProxy);

@@ -8,9 +8,11 @@
 
 #include "pch.h"
 
-#include "RoboCatShared.h"
+#include "GameObjectRegistry.h"
 
-std::unique_ptr< GameObjectRegistry >	GameObjectRegistry::sInstance;
+#include "World.h"
+
+std::unique_ptr<GameObjectRegistry >	GameObjectRegistry::sInstance;
 
 void GameObjectRegistry::StaticInit()
 {

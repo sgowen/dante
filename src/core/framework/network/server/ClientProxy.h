@@ -10,6 +10,9 @@
 #define __noctisgames__ClientProxy__
 
 #include "ReplicationManagerServer.h"
+#include "SocketAddress.h"
+#include "DeliveryNotificationManager.h"
+#include "MoveList.h"
 
 class ClientProxy
 {
@@ -61,6 +64,6 @@ private:
 
 };
 
-typedef  std::shared_ptr< ClientProxy >	ClientProxyPtr;
+typedef  std::shared_ptr<ClientProxy >	ClientProxyPtr;
 
 #endif /* defined(__noctisgames__ClientProxy__) */

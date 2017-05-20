@@ -120,10 +120,6 @@ void NetworkManagerClient::HandleStatePacket(InputMemoryBitStream& inInputStream
 	{
 		ReadLastMoveProcessedOnServerTimestamp(inInputStream);
 
-		//old
-		//HandleGameObjectState(inPacketBuffer);
-		HandleScoreBoardState(inInputStream);
-
 		//tell the replication manager to handle the rest...
 		mReplicationManagerClient.Read(inInputStream);
 	}
@@ -184,11 +180,6 @@ void NetworkManagerClient::HandleGameObjectState(InputMemoryBitStream& inInputSt
 
 	//anything left gets the axe
 	DestroyGameObjectsInMap(objectsToDestroy);
-}
-
-void NetworkManagerClient::HandleScoreBoardState(InputMemoryBitStream& inInputStream)
-{
-	ScoreBoardManager::sInstance->Read(inInputStream);
 }
  
 void NetworkManagerClient::DestroyGameObjectsInMap(const IntToGameObjectMap& inObjectsToDestroy)

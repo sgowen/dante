@@ -8,7 +8,10 @@
 
 #include "pch.h"
 
-#include "RoboCatShared.h"
+#include "SocketUtil.h"
+
+#include "NetworkConstants.h"
+#include "StringUtils.h"
 
 bool SocketUtil::StaticInit()
 {

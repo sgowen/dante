@@ -12,6 +12,7 @@
 #include "NetworkConstants.h"
 
 #include <memory>
+#include <string>
 
 class SocketAddress
 {
@@ -45,7 +46,7 @@ public:
 	size_t GetHash() const
 	{
 		return (GetIP4Ref()) |
-			((static_cast< uint32_t >(GetAsSockAddrIn()->sin_port)) << 13) |
+			((static_cast<uint32_t>(GetAsSockAddrIn()->sin_port)) << 13) |
 			mSockAddr.sa_family;
 	}
 
@@ -71,7 +72,7 @@ private:
 
 };
 
-typedef  std::shared_ptr< SocketAddress > SocketAddressPtr;
+typedef  std::shared_ptr<SocketAddress > SocketAddressPtr;
 
 namespace std
 {

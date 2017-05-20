@@ -8,8 +8,9 @@
 
 #include "pch.h"
 
-#include "RoboCatShared.h"
+#include "SocketAddressFactory.h"
 
+#include "SocketUtil.h"
 
 SocketAddressPtr SocketAddressFactory::CreateIPv4FromString(const std::string& inString)
 {

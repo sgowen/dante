@@ -9,7 +9,9 @@
 #ifndef __noctisgames__ReplicationCommand__
 #define __noctisgames__ReplicationCommand__
 
-#include "RoboCatShared.h"
+class ReplicationManagerTransmissionData;
+class OutputMemoryBitStream;
+class InputMemoryBitStream;
 
 enum ReplicationAction
 {
@@ -19,9 +21,6 @@ enum ReplicationAction
 	RA_RPC,
 	RA_MAX
 };
-
-
-class ReplicationManagerTransmissionData;
 
 struct ReplicationCommand
 {

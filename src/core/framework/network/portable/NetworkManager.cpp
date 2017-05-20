@@ -8,7 +8,10 @@
 
 #include "pch.h"
 
-#include "RoboCatShared.h"
+#include "NetworkManager.h"
+
+#include "SocketUtil.h"
+#include "StringUtils.h"
 
 NetworkManager::NetworkManager() :
 	mBytesSentThisFrame(0),
@@ -113,7 +116,7 @@ void NetworkManager::ReadIncomingPacketsIntoQueue()
 
 	if (totalReadByteCount > 0)
 	{
-		mBytesReceivedPerSecond.UpdatePerSecond(static_cast< float >(totalReadByteCount));
+		mBytesReceivedPerSecond.UpdatePerSecond(static_cast<float>(totalReadByteCount));
 	}
 }
 
@@ -150,7 +153,7 @@ void NetworkManager::UpdateBytesSentLastFrame()
 {
 	if (mBytesSentThisFrame > 0)
 	{
-		mBytesSentPerSecond.UpdatePerSecond(static_cast< float >(mBytesSentThisFrame));
+		mBytesSentPerSecond.UpdatePerSecond(static_cast<float>(mBytesSentThisFrame));
 
 		mBytesSentThisFrame = 0;
 	}

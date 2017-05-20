@@ -151,9 +151,6 @@
 		BB8308671EC2AD1F00435E7E /* RoboMath.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8308281EC2AD1F00435E7E /* RoboMath.cpp */; };
 		BB8308681EC2AD1F00435E7E /* RoboMath.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8308281EC2AD1F00435E7E /* RoboMath.cpp */; };
 		BB8308691EC2AD1F00435E7E /* RoboMath.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8308281EC2AD1F00435E7E /* RoboMath.cpp */; };
-		BB83086A1EC2AD1F00435E7E /* ScoreBoardManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB83082A1EC2AD1F00435E7E /* ScoreBoardManager.cpp */; };
-		BB83086B1EC2AD1F00435E7E /* ScoreBoardManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB83082A1EC2AD1F00435E7E /* ScoreBoardManager.cpp */; };
-		BB83086C1EC2AD1F00435E7E /* ScoreBoardManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB83082A1EC2AD1F00435E7E /* ScoreBoardManager.cpp */; };
 		BB83086D1EC2AD1F00435E7E /* SocketAddress.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB83082C1EC2AD1F00435E7E /* SocketAddress.cpp */; };
 		BB83086E1EC2AD1F00435E7E /* SocketAddress.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB83082C1EC2AD1F00435E7E /* SocketAddress.cpp */; };
 		BB83086F1EC2AD1F00435E7E /* SocketAddress.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB83082C1EC2AD1F00435E7E /* SocketAddress.cpp */; };
@@ -612,11 +609,8 @@
 		BB8308241EC2AD1F00435E7E /* ReplicationCommand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReplicationCommand.h; sourceTree = "<group>"; };
 		BB8308251EC2AD1F00435E7E /* RoboCat.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RoboCat.cpp; sourceTree = "<group>"; };
 		BB8308261EC2AD1F00435E7E /* RoboCat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoboCat.h; sourceTree = "<group>"; };
-		BB8308271EC2AD1F00435E7E /* RoboCatShared.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoboCatShared.h; sourceTree = "<group>"; };
 		BB8308281EC2AD1F00435E7E /* RoboMath.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RoboMath.cpp; sourceTree = "<group>"; };
 		BB8308291EC2AD1F00435E7E /* RoboMath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoboMath.h; sourceTree = "<group>"; };
-		BB83082A1EC2AD1F00435E7E /* ScoreBoardManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ScoreBoardManager.cpp; sourceTree = "<group>"; };
-		BB83082B1EC2AD1F00435E7E /* ScoreBoardManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScoreBoardManager.h; sourceTree = "<group>"; };
 		BB83082C1EC2AD1F00435E7E /* SocketAddress.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SocketAddress.cpp; sourceTree = "<group>"; };
 		BB83082D1EC2AD1F00435E7E /* SocketAddress.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SocketAddress.h; sourceTree = "<group>"; };
 		BB83082E1EC2AD1F00435E7E /* SocketAddressFactory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SocketAddressFactory.cpp; sourceTree = "<group>"; };
@@ -1415,11 +1409,8 @@
 				BB8308241EC2AD1F00435E7E /* ReplicationCommand.h */,
 				BB8308251EC2AD1F00435E7E /* RoboCat.cpp */,
 				BB8308261EC2AD1F00435E7E /* RoboCat.h */,
-				BB8308271EC2AD1F00435E7E /* RoboCatShared.h */,
 				BB8308281EC2AD1F00435E7E /* RoboMath.cpp */,
 				BB8308291EC2AD1F00435E7E /* RoboMath.h */,
-				BB83082A1EC2AD1F00435E7E /* ScoreBoardManager.cpp */,
-				BB83082B1EC2AD1F00435E7E /* ScoreBoardManager.h */,
 				BB83082C1EC2AD1F00435E7E /* SocketAddress.cpp */,
 				BB83082D1EC2AD1F00435E7E /* SocketAddress.h */,
 				BB83082E1EC2AD1F00435E7E /* SocketAddressFactory.cpp */,
@@ -2199,7 +2190,6 @@
 				BB44C8811DB03A7E003E633F /* pngtrans.c in Sources */,
 				BB8308821EC2AD1F00435E7E /* World.cpp in Sources */,
 				BBAEF2891EA94EDA00F0866E /* ScreenInputManager.cpp in Sources */,
-				BB83086A1EC2AD1F00435E7E /* ScoreBoardManager.cpp in Sources */,
 				BB7428401EB2AF4200B7628D /* RTTI.cpp in Sources */,
 				BBAEF22D1EA94EDA00F0866E /* OpenGLCircleBatcher.cpp in Sources */,
 				BBAEF2331EA94EDA00F0866E /* OpenGLGeometryGpuProgramWrapper.cpp in Sources */,
@@ -2298,7 +2288,6 @@
 				BBAEF23E1EA94EDA00F0866E /* OpenGLProgram.cpp in Sources */,
 				BBAEF2481EA94EDA00F0866E /* OpenGLTextureProgram.cpp in Sources */,
 				BBAEF2421EA94EDA00F0866E /* OpenGLSpriteBatcher.cpp in Sources */,
-				BB83086B1EC2AD1F00435E7E /* ScoreBoardManager.cpp in Sources */,
 				BBAEF29A1EA94EDA00F0866E /* OverlapTester.cpp in Sources */,
 				BB83084A1EC2AD1F00435E7E /* GameObject.cpp in Sources */,
 				BB8308621EC2AD1F00435E7E /* NetworkManager.cpp in Sources */,
@@ -2390,7 +2379,6 @@
 				BB8308011EC2AC0900435E7E /* NetworkManagerServer.cpp in Sources */,
 				BB8308041EC2AC0900435E7E /* RoboCatServer.cpp in Sources */,
 				BB8308061EC2AC0900435E7E /* Server.cpp in Sources */,
-				BB83086C1EC2AD1F00435E7E /* ScoreBoardManager.cpp in Sources */,
 				BB83084B1EC2AD1F00435E7E /* GameObject.cpp in Sources */,
 				BB83084E1EC2AD1F00435E7E /* GameObjectRegistry.cpp in Sources */,
 				BB8308601EC2AD1F00435E7E /* MoveList.cpp in Sources */,

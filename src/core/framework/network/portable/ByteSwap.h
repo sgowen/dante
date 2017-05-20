@@ -35,7 +35,7 @@ inline uint64_t ByteSwap8(uint64_t inData)
 }
 
 
-template < typename tFrom, typename tTo >
+template <typename tFrom, typename tTo>
 class TypeAliaser
 {
 public:
@@ -51,11 +51,11 @@ public:
 };
 
 
-template <typename T, size_t tSize > class ByteSwapper;
+template <typename T, size_t tSize> class ByteSwapper;
 
 //specialize for 1...
 template <typename T>
-class ByteSwapper< T, 1 >
+class ByteSwapper<T, 1>
 {
 public:
 	T Swap(T inData) const
@@ -67,48 +67,48 @@ public:
 
 //specialize for 2...
 template <typename T>
-class ByteSwapper< T, 2 >
+class ByteSwapper<T, 2>
 {
 public:
 	T Swap(T inData) const
 	{
 		uint16_t result =
-			ByteSwap2(TypeAliaser< T, uint16_t >(inData).Get());
-		return TypeAliaser< uint16_t, T >(result).Get();
+			ByteSwap2(TypeAliaser<T, uint16_t>(inData).Get());
+		return TypeAliaser<uint16_t, T>(result).Get();
 	}
 };
 
 //specialize for 4...
 template <typename T>
-class ByteSwapper< T, 4 >
+class ByteSwapper<T, 4>
 {
 public:
 	T Swap(T inData) const
 	{
 		uint32_t result =
-			ByteSwap4(TypeAliaser< T, uint32_t >(inData).Get());
-		return TypeAliaser< uint32_t, T >(result).Get();
+			ByteSwap4(TypeAliaser<T, uint32_t>(inData).Get());
+		return TypeAliaser<uint32_t, T>(result).Get();
 	}
 };
 
 
 //specialize for 8...
 template <typename T>
-class ByteSwapper< T, 8 >
+class ByteSwapper<T, 8>
 {
 public:
 	T Swap(T inData) const
 	{
 		uint64_t result =
-			ByteSwap8(TypeAliaser< T, uint64_t >(inData).Get());
-		return TypeAliaser< uint64_t, T >(result).Get();
+			ByteSwap8(TypeAliaser<T, uint64_t>(inData).Get());
+		return TypeAliaser<uint64_t, T>(result).Get();
 	}
 };
 
-template < typename T >
+template <typename T>
 T ByteSwap(T inData)
 {
-	return ByteSwapper< T, sizeof(T) >().Swap(inData);
+	return ByteSwapper<T, sizeof(T)>().Swap(inData);
 }
 
 inline void TestByteSwap()
@@ -118,7 +118,7 @@ inline void TestByteSwap()
 	
 	printf("swapped 0x%x is 0x%x\n", test, ByteSwap(test));
 	printf("swapped %f is %f\n", floatTest, ByteSwap(floatTest));
-	printf("swapped 0x%x is 0x%x\n", TypeAliaser< float, uint32_t >(floatTest).Get(), TypeAliaser< float, uint32_t >(ByteSwap(floatTest)).Get());
+	printf("swapped 0x%x is 0x%x\n", TypeAliaser<float, uint32_t>(floatTest).Get(), TypeAliaser<float, uint32_t>(ByteSwap(floatTest)).Get());
 }
 
 #endif /* defined(__noctisgames__ByteSwap__) */

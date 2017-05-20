@@ -8,11 +8,9 @@
 
 #include "pch.h"
 
-#include "RoboCatShared.h"
+#include "World.h"
 
-
-
-std::unique_ptr< World >	World::sInstance;
+std::unique_ptr<World >	World::sInstance;
 
 void World::StaticInit()
 {
@@ -21,15 +19,14 @@ void World::StaticInit()
 
 World::World()
 {
+    // Empty
 }
-
 
 void World::AddGameObject(GameObjectPtr inGameObject)
 {
 	mGameObjects.push_back(inGameObject);
 	inGameObject->SetIndexInWorld(mGameObjects.size() - 1);
 }
-
 
 void World::RemoveGameObject(GameObjectPtr inGameObject)
 {
@@ -47,7 +44,6 @@ void World::RemoveGameObject(GameObjectPtr inGameObject)
 	mGameObjects.pop_back();
 }
 
-
 void World::Update()
 {
 	//update all game objects- sometimes they want to die, so we need to tread carefully...
@@ -55,12 +51,12 @@ void World::Update()
 	for (int i = 0, c = mGameObjects.size(); i < c; ++i)
 	{
 		GameObjectPtr go = mGameObjects[ i ];
-		
 
 		if (!go->DoesWantToDie())
 		{
 			go->Update();
 		}
+        
 		//you might suddenly want to die after your update, so check again
 		if (go->DoesWantToDie())
 		{

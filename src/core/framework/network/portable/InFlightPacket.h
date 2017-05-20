@@ -11,6 +11,8 @@
 
 #include "TransmissionData.h"
 
+#include <unordered_map>
+
 class DeliveryNotificationManager;
 
 //in case we decide to change the type of the sequence number to use fewer or more bits
@@ -39,10 +41,10 @@ public:
 	void			HandleDeliverySuccess(DeliveryNotificationManager* inDeliveryNotificationManager) const;
 	
 private:
-	PacketSequenceNumber	mSequenceNumber;
-	float			mTimeDispatched;
+	PacketSequenceNumber mSequenceNumber;
+	float mTimeDispatched;
 	
-	std::unordered_map< int, TransmissionDataPtr >	mTransmissionDataMap;
+	std::unordered_map< int, TransmissionDataPtr > mTransmissionDataMap;
 };
 
 #endif /* defined(__noctisgames__InFlightPacket__) */

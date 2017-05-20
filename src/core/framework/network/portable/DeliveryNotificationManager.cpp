@@ -8,7 +8,11 @@
 
 #include "pch.h"
 
-#include "RoboCatShared.h"
+#include "DeliveryNotificationManager.h"
+
+#include "MemoryBitStream.h"
+#include "StringUtils.h"
+#include "Timing.h"
 
 namespace
 {

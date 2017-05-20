@@ -9,9 +9,11 @@
 #ifndef __noctisgames__MoveList__
 #define __noctisgames__MoveList__
 
-#include "RoboCatShared.h"
-
 #include "InputState.h"
+
+#include "Move.h"
+
+#include <deque>
 
 class MoveList
 {

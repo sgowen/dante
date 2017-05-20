@@ -8,7 +8,11 @@
 
 #include "pch.h"
 
-#include "RoboCatShared.h"
+#include "RoboCat.h"
+
+#include "MemoryBitStream.h"
+
+#include "World.h"
 
 //zoom hardcoded at 100...if we want to lock players on screen, this could be calculated from zoom
 const float WORLD_HEIGHT = 7.2f;

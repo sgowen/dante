@@ -9,8 +9,6 @@
 #ifndef __noctisgames__LinkingContext__
 #define __noctisgames__LinkingContext__
 
-#include "RoboCatShared.h"
-
 class GameObject;
 
 class LinkingContext

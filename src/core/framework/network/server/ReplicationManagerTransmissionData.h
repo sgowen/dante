@@ -13,6 +13,8 @@
 
 #include "ReplicationCommand.h"
 
+#include <vector>
+
 class ReplicationManagerServer;
 
 class ReplicationManagerTransmissionData : public TransmissionData
@@ -58,9 +60,9 @@ private:
 
 	ReplicationManagerServer*	mReplicationManagerServer;
 	
-    std::vector< ReplicationTransmission >		mTransmissions;
+    std::vector<ReplicationTransmission >		mTransmissions;
 };
 
-typedef  std::shared_ptr< ReplicationManagerTransmissionData > ReplicationManagerTransmissionDataPtr;
+typedef  std::shared_ptr<ReplicationManagerTransmissionData > ReplicationManagerTransmissionDataPtr;
 
 #endif /* defined(__noctisgames__ReplicationManagerTransmissionData__) */

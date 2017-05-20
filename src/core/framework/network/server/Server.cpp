@@ -10,6 +10,9 @@
 
 #include "Server.h"
 
+#include "GameObjectRegistry.h"
+#include "World.h"
+
 //uncomment this when you begin working on the server
 
 #define FRAME_RATE 0.01666666666667f // 60 frames per second
@@ -70,17 +73,15 @@ void Server::HandleNewClient(ClientProxyPtr inClientProxy)
 {
 	int playerId = inClientProxy->GetPlayerId();
 	
-	ScoreBoardManager::sInstance->AddEntry(playerId, inClientProxy->GetName());
 	SpawnCatForPlayer(playerId);
 }
 
 void Server::SpawnCatForPlayer(int inPlayerId)
 {
 	RoboCatPtr cat = std::static_pointer_cast< RoboCat >(GameObjectRegistry::sInstance->CreateGameObject('RCAT'));
-	cat->SetColor(ScoreBoardManager::sInstance->GetEntry(inPlayerId)->GetColor());
 	cat->SetPlayerId(inPlayerId);
 	//gotta pick a better spawn location than this...
-	cat->SetLocation(Vector3(8.f - static_cast< float >(inPlayerId), 4.f, 0.f));
+	cat->SetLocation(Vector3(8.f - static_cast<float>(inPlayerId), 4.f, 0.f));
 }
 
 void Server::HandleLostClient(ClientProxyPtr inClientProxy)
@@ -89,7 +90,6 @@ void Server::HandleLostClient(ClientProxyPtr inClientProxy)
 	//remove client from scoreboard
 	int playerId = inClientProxy->GetPlayerId();
 
-	ScoreBoardManager::sInstance->RemoveEntry(playerId);
 	RoboCatPtr cat = GetCatForPlayer(playerId);
 	if (cat)
 	{

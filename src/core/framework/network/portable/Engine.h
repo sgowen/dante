@@ -9,13 +9,13 @@
 #ifndef __noctisgames__Engine__
 #define __noctisgames__Engine__
 
-#include "RoboCatShared.h"
+#include <memory>
 
 class Engine
 {
 public:
 	virtual ~Engine();
-	static std::unique_ptr< Engine > sInstance;
+	static std::unique_ptr<Engine > sInstance;
     
     virtual int Run();
 

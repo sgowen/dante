@@ -8,12 +8,14 @@
 
 #include "pch.h"
 
-#include "RoboCatShared.h"
+#include "MemoryBitStream.h"
+
+#include "RoboMath.h"
 
 void OutputMemoryBitStream::WriteBits(uint8_t inData,
 									  uint32_t inBitCount)
 {
-	uint32_t nextBitHead = mBitHead + static_cast< uint32_t >(inBitCount);
+	uint32_t nextBitHead = mBitHead + static_cast<uint32_t>(inBitCount);
 	
 	if (nextBitHead > mBitCapacity)
 	{
@@ -45,7 +47,7 @@ void OutputMemoryBitStream::WriteBits(uint8_t inData,
 
 void OutputMemoryBitStream::WriteBits(const void* inData, uint32_t inBitCount)
 {
-	const char* srcByte = static_cast< const char* >(inData);
+	const char* srcByte = static_cast<const char*>(inData);
 	//write all the bytes
 	while (inBitCount > 8)
 	{
@@ -83,8 +85,6 @@ void OutputMemoryBitStream::Write(const Quaternion& inQuat)
 	Write(inQuat.mW < 0);
 }
 
-
-
 void OutputMemoryBitStream::ReallocBuffer(uint32_t inNewBitLength)
 {
 	if (mBuffer == nullptr)
@@ -108,7 +108,6 @@ void OutputMemoryBitStream::ReallocBuffer(uint32_t inNewBitLength)
 	mBitCapacity = inNewBitLength;
 }
 
-
 void test1()
 {
 	OutputMemoryBitStream mbs;
@@ -122,13 +121,13 @@ void InputMemoryBitStream::ReadBits(uint8_t& outData, uint32_t inBitCount)
 	uint32_t byteOffset = mBitHead >> 3;
 	uint32_t bitOffset = mBitHead & 0x7;
 	
-	outData = static_cast< uint8_t >(mBuffer[ byteOffset ]) >> bitOffset;
+	outData = static_cast<uint8_t>(mBuffer[ byteOffset ]) >> bitOffset;
 	
 	uint32_t bitsFreeThisByte = 8 - bitOffset;
 	if (bitsFreeThisByte < inBitCount)
 	{
 		//we need another byte
-		outData |= static_cast< uint8_t >(mBuffer[ byteOffset + 1 ]) << bitsFreeThisByte;
+		outData |= static_cast<uint8_t>(mBuffer[ byteOffset + 1 ]) << bitsFreeThisByte;
 	}
 	
 	//don't forget a mask so that we only read the bit we wanted...

@@ -14,11 +14,13 @@
 #include <memory>
 
 class RoboCat;
+class OutputMemoryBitStream;
+class InputMemoryBitStream;
 
 #define CLASS_IDENTIFICATION(inCode, inClass) \
 enum { kClassId = inCode }; \
 virtual uint32_t GetClassId() const { return kClassId; } \
-static GameObject* CreateInstance() { return static_cast< GameObject* >(new inClass()); } \
+static GameObject* CreateInstance() { return static_cast<GameObject*>(new inClass()); } \
 
 class GameObject
 {
@@ -90,6 +92,6 @@ private:
 
 };
 
-typedef  std::shared_ptr< GameObject >	GameObjectPtr;
+typedef  std::shared_ptr<GameObject >	GameObjectPtr;
 
 #endif /* defined(__noctisgames__GameObject__) */

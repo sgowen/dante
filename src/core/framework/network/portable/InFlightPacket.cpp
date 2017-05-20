@@ -8,7 +8,9 @@
 
 #include "pch.h"
 
-#include "RoboCatShared.h"
+#include "InFlightPacket.h"
+
+#include "Timing.h"
 
 InFlightPacket::InFlightPacket(PacketSequenceNumber inSequenceNumber) :
 mSequenceNumber(inSequenceNumber),

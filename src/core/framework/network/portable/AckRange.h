@@ -9,7 +9,10 @@
 #ifndef __noctisgames__AckRange__
 #define __noctisgames__AckRange__
 
-#include "RoboCatShared.h"
+#include "InFlightPacket.h"
+
+class OutputMemoryBitStream;
+class InputMemoryBitStream;
 
 class AckRange
 {

@@ -20,12 +20,12 @@ class Quaternion;
 
 inline uint32_t ConvertToFixed(float inNumber, float inMin, float inPrecision)
 {
-	return static_cast< int > ((inNumber - inMin) / inPrecision);
+	return static_cast<int> ((inNumber - inMin) / inPrecision);
 }
 
 inline float ConvertFromFixed(uint32_t inNumber, float inMin, float inPrecision)
 {
-	return static_cast< float >(inNumber) * inPrecision + inMin;
+	return static_cast<float>(inNumber) * inPrecision + inMin;
 }
 
 
@@ -78,7 +78,7 @@ public:
 
 	void Write(const std::string& inString)
 	{
-		uint32_t elementCount = static_cast< uint32_t >(inString.size());
+		uint32_t elementCount = static_cast<uint32_t>(inString.size());
 		Write(elementCount);
 		for (const auto& element : inString)
 		{
@@ -111,7 +111,7 @@ public:
 	{
 		//allocate buffer of right size
 		int byteCount = mBitCapacity / 8;
-		mBuffer = static_cast< char* >(malloc(byteCount));
+		mBuffer = static_cast<char*>(malloc(byteCount));
 		//copy
 		memcpy(mBuffer, inOther.mBuffer, byteCount);
 	}

@@ -8,7 +8,9 @@
 
 #include "pch.h"
 
-#include "RoboCatShared.h"
+#include "GameObject.h"
+
+#include "MemoryBitStream.h"
 
 GameObject::GameObject() :
 	mIndexInWorld(-1),

@@ -8,7 +8,9 @@
 
 #include "pch.h"
 
-#include "RoboCatShared.h"
+#include "AckRange.h"
+
+#include "MemoryBitStream.h"
 
 void AckRange::Write(OutputMemoryBitStream& inOutputStream) const
 {
@@ -19,7 +21,7 @@ void AckRange::Write(OutputMemoryBitStream& inOutputStream) const
 	{
 		//most you can ack is 255...
 		uint32_t countMinusOne = mCount - 1;
-		uint8_t countToAck = countMinusOne > 255 ? 255 : static_cast< uint8_t >(countMinusOne);
+		uint8_t countToAck = countMinusOne > 255 ? 255 : static_cast<uint8_t>(countMinusOne);
 		inOutputStream.Write(countToAck);
 	}
 }

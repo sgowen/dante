@@ -9,7 +9,13 @@
 #ifndef __noctisgames__DeliveryNotificationManager__
 #define __noctisgames__DeliveryNotificationManager__
 
-#include "RoboCatShared.h"
+#include "InFlightPacket.h"
+#include "AckRange.h"
+
+#include <deque>
+
+class OutputMemoryBitStream;
+class InputMemoryBitStream;
 
 class DeliveryNotificationManager
 {

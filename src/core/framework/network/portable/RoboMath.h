@@ -165,11 +165,11 @@ public:
 template< int tValue, int tBits >
 struct GetRequiredBitsHelper
 {
-	enum { Value = GetRequiredBitsHelper< (tValue >> 1), tBits + 1 >::Value };
+	enum { Value = GetRequiredBitsHelper<(tValue >> 1), tBits + 1 >::Value };
 };
 
 template< int tBits >
-struct GetRequiredBitsHelper< 0, tBits >
+struct GetRequiredBitsHelper<0, tBits >
 {
 	enum { Value = tBits };
 };
@@ -177,7 +177,7 @@ struct GetRequiredBitsHelper< 0, tBits >
 template< int tValue >
 struct GetRequiredBits
 {
-	enum { Value = GetRequiredBitsHelper< tValue, 0 >::Value };
+	enum { Value = GetRequiredBitsHelper<tValue, 0 >::Value };
 };
 
 namespace RoboMath

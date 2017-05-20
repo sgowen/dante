@@ -9,7 +9,7 @@
 #ifndef __noctisgames__StringUtils__
 #define __noctisgames__StringUtils__
 
-#include "RoboCatShared.h"
+#include <string>
 
 namespace StringUtils
 {
