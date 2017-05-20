@@ -29,7 +29,7 @@ void OutputMemoryBitStream::WriteBits(uint8_t inData,
 	uint32_t bitOffset = mBitHead & 0x7;
 	
 	uint8_t currentMask = ~(0xff << bitOffset);
-	mBuffer[ byteOffset ] = (mBuffer[ byteOffset ] & currentMask) | (inData << bitOffset);
+	mBuffer[byteOffset] = (mBuffer[byteOffset] & currentMask) | (inData << bitOffset);
 	
 	//calculate how many bits were not yet used in
 	//our target byte in the buffer
@@ -39,7 +39,7 @@ void OutputMemoryBitStream::WriteBits(uint8_t inData,
 	if (bitsFreeThisByte < inBitCount)
 	{
 		//we need another byte
-		mBuffer[ byteOffset + 1 ] = inData >> bitsFreeThisByte;
+		mBuffer[byteOffset + 1] = inData >> bitsFreeThisByte;
 	}
 	
 	mBitHead = nextBitHead;
@@ -121,13 +121,13 @@ void InputMemoryBitStream::ReadBits(uint8_t& outData, uint32_t inBitCount)
 	uint32_t byteOffset = mBitHead >> 3;
 	uint32_t bitOffset = mBitHead & 0x7;
 	
-	outData = static_cast<uint8_t>(mBuffer[ byteOffset ]) >> bitOffset;
+	outData = static_cast<uint8_t>(mBuffer[byteOffset]) >> bitOffset;
 	
 	uint32_t bitsFreeThisByte = 8 - bitOffset;
 	if (bitsFreeThisByte < inBitCount)
 	{
 		//we need another byte
-		outData |= static_cast<uint8_t>(mBuffer[ byteOffset + 1 ]) << bitsFreeThisByte;
+		outData |= static_cast<uint8_t>(mBuffer[byteOffset + 1]) << bitsFreeThisByte;
 	}
 	
 	//don't forget a mask so that we only read the bit we wanted...

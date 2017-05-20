@@ -10,6 +10,8 @@
 
 #include "RoboCatServer.h"
 
+#include "Timing.h"
+
 RoboCatServer::RoboCatServer() :
 	mCatControlType(ESCT_Human),
 	mTimeOfNextShot(0.f),

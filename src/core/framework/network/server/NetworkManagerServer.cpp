@@ -14,6 +14,7 @@
 #include "ReplicationManagerTransmissionData.h"
 #include "StringUtils.h"
 #include "World.h"
+#include "Timing.h"
 
 NetworkManagerServer* NetworkManagerServer::sInstance;
 
@@ -96,8 +97,8 @@ void NetworkManagerServer::HandlePacketFromNewClient(InputMemoryBitStream& inInp
 		std::string name;
 		inInputStream.Read(name);
 		ClientProxyPtr newClientProxy = std::make_shared< ClientProxy >(inFromAddress, name, mNewPlayerId++);
-		mAddressToClientMap[ inFromAddress ] = newClientProxy;
-		mPlayerIdToClientMap[ newClientProxy->GetPlayerId() ] = newClientProxy;
+		mAddressToClientMap[inFromAddress] = newClientProxy;
+		mPlayerIdToClientMap[newClientProxy->GetPlayerId()] = newClientProxy;
 		
 		//tell the server about this client, spawn a cat, etc...
 		//if we had a generic message system, this would be a good use for it...
@@ -301,7 +302,7 @@ void NetworkManagerServer::RegisterGameObject(GameObjectPtr inGameObject)
 	inGameObject->SetNetworkId(newNetworkId);
 
 	//add mapping from network id to game object
-	mNetworkIdToGameObjectMap[ newNetworkId ] = inGameObject;
+	mNetworkIdToGameObjectMap[newNetworkId] = inGameObject;
 
 	//tell all client proxies this is new...
 	for (const auto& pair: mAddressToClientMap)

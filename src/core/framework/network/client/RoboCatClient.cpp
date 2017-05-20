@@ -15,6 +15,7 @@
 #include "Move.h"
 #include "InputManager.h"
 #include "StringUtils.h"
+#include "Timing.h"
 
 RoboCatClient::RoboCatClient() :
 	mTimeLocationBecameOutOfSync(0.f),

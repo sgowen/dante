@@ -22,7 +22,7 @@ void OutputDebugStringA(const char* inString)
 std::string StringUtils::Sprintf(const char* inFormat, ...)
 {
 	//not thread safe...
-	static char temp[ 4096 ];
+	static char temp[4096];
 	
 	va_list args;
 	va_start (args, inFormat);
@@ -38,7 +38,7 @@ std::string StringUtils::Sprintf(const char* inFormat, ...)
 void StringUtils::Log(const char* inFormat, ...)
 {
 	//not thread safe...
-	static char temp[ 4096 ];
+	static char temp[4096];
 	
 	va_list args;
 	va_start (args, inFormat);

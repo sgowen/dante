@@ -13,6 +13,7 @@
 #include "InputManager.h"
 #include "StringUtils.h"
 #include "GameObjectRegistry.h"
+#include "Timing.h"
 
 NetworkManagerClient* NetworkManagerClient::sInstance;
 

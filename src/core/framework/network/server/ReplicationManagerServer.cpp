@@ -15,16 +15,17 @@
 
 #include "ReplicationManagerTransmissionData.h"
 #include "NetworkManagerServer.h"
+#include "ReplicationAction.h"
 
 void ReplicationManagerServer::ReplicateCreate(int inNetworkId, uint32_t inInitialDirtyState)
 {
-	mNetworkIdToReplicationCommand[ inNetworkId ] = ReplicationCommand(inInitialDirtyState);
+	mNetworkIdToReplicationCommand[inNetworkId] = ReplicationCommand(inInitialDirtyState);
 }
 
 void ReplicationManagerServer::ReplicateDestroy(int inNetworkId)
 {
 	//it's broken if we don't find it...
-	mNetworkIdToReplicationCommand[ inNetworkId ].SetDestroy();
+	mNetworkIdToReplicationCommand[inNetworkId].SetDestroy();
 }
 
 void ReplicationManagerServer::RemoveFromReplication(int inNetworkId)
@@ -34,12 +35,12 @@ void ReplicationManagerServer::RemoveFromReplication(int inNetworkId)
 
 void ReplicationManagerServer::SetStateDirty(int inNetworkId, uint32_t inDirtyState)
 {
-	mNetworkIdToReplicationCommand[ inNetworkId ].AddDirtyState(inDirtyState);
+	mNetworkIdToReplicationCommand[inNetworkId].AddDirtyState(inDirtyState);
 }
 
 void ReplicationManagerServer::HandleCreateAckd(int inNetworkId)
 {
-	mNetworkIdToReplicationCommand[ inNetworkId ].HandleCreateAckd();
+	mNetworkIdToReplicationCommand[inNetworkId].HandleCreateAckd();
 }
 
 void ReplicationManagerServer::Write(OutputMemoryBitStream& inOutputStream, ReplicationManagerTransmissionData* ioTransmissinData)

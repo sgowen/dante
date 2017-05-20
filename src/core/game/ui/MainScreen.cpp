@@ -26,9 +26,11 @@
 #include "NGAudioEngine.h"
 #include "StringUtil.h"
 #include "MathUtil.h"
+
 #include "Client.h"
 #include "NetworkManagerClient.h"
 #include "InputManager.h"
+#include "Timing.h"
 
 #define FRAME_RATE 0.01666666666667f // 60 frames per second
 

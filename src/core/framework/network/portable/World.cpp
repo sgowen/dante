@@ -35,8 +35,8 @@ void World::RemoveGameObject(GameObjectPtr inGameObject)
 	int lastIndex = mGameObjects.size() - 1;
 	if (index != lastIndex)
 	{
-		mGameObjects[ index ] = mGameObjects[ lastIndex ];
-		mGameObjects[ index ]->SetIndexInWorld(index);
+		mGameObjects[index] = mGameObjects[lastIndex];
+		mGameObjects[index]->SetIndexInWorld(index);
 	}
 
 	inGameObject->SetIndexInWorld(-1);
@@ -50,7 +50,7 @@ void World::Update()
 
 	for (int i = 0, c = mGameObjects.size(); i < c; ++i)
 	{
-		GameObjectPtr go = mGameObjects[ i ];
+		GameObjectPtr go = mGameObjects[i];
 
 		if (!go->DoesWantToDie())
 		{

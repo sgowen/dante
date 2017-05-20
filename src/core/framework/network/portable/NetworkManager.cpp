@@ -12,6 +12,7 @@
 
 #include "SocketUtil.h"
 #include "StringUtils.h"
+#include "Timing.h"
 
 NetworkManager::NetworkManager() :
 	mBytesSentThisFrame(0),
@@ -63,7 +64,7 @@ void NetworkManager::ReadIncomingPacketsIntoQueue()
 {
 	//should we just keep a static one?
 	//should we just keep a static one?
-	char packetMem[ 1500 ];
+	char packetMem[1500];
 	int packetSize = sizeof(packetMem);
 	InputMemoryBitStream inputStream(packetMem, packetSize * 8);
 	SocketAddress fromAddress;
@@ -171,7 +172,7 @@ NetworkManager::ReceivedPacket::ReceivedPacket(float inReceivedTime, InputMemory
 
 void NetworkManager::AddToNetworkIdToGameObjectMap(GameObjectPtr inGameObject)
 {
-	mNetworkIdToGameObjectMap[ inGameObject->GetNetworkId() ] = inGameObject;
+	mNetworkIdToGameObjectMap[inGameObject->GetNetworkId()] = inGameObject;
 }
 
 void NetworkManager::RemoveFromNetworkIdToGameObjectMap(GameObjectPtr inGameObject)

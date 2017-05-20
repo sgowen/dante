@@ -9,18 +9,12 @@
 #ifndef __noctisgames__ReplicationCommand__
 #define __noctisgames__ReplicationCommand__
 
+#include "ReplicationAction.h"
+#include "NetworkConstants.h"
+
 class ReplicationManagerTransmissionData;
 class OutputMemoryBitStream;
 class InputMemoryBitStream;
-
-enum ReplicationAction
-{
-	RA_Create,
-	RA_Update,
-	RA_Destroy,
-	RA_RPC,
-	RA_MAX
-};
 
 struct ReplicationCommand
 {

@@ -29,7 +29,7 @@ public:
 	
 	void 				 SetTransmissionData(int inKey, TransmissionDataPtr	inTransmissionData)
 	{
-		mTransmissionDataMap[ inKey ] = inTransmissionData;
+		mTransmissionDataMap[inKey] = inTransmissionData;
 	}
 	const TransmissionDataPtr GetTransmissionData(int inKey) const
 	{

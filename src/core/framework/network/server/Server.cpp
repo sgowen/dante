@@ -12,6 +12,7 @@
 
 #include "GameObjectRegistry.h"
 #include "World.h"
+#include "Timing.h"
 
 //uncomment this when you begin working on the server
 
@@ -106,7 +107,7 @@ RoboCatPtr Server::GetCatForPlayer(int inPlayerId)
 	const auto& gameObjects = World::sInstance->GetGameObjects();
 	for (int i = 0, c = gameObjects.size(); i < c; ++i)
 	{
-		GameObjectPtr go = gameObjects[ i ];
+		GameObjectPtr go = gameObjects[i];
 		RoboCat* cat = go->GetAsCat();
 		if (cat && cat->GetPlayerId() == inPlayerId)
 		{

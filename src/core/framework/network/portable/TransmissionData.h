@@ -19,6 +19,7 @@ public:
 	virtual void HandleDeliveryFailure(DeliveryNotificationManager* inDeliveryNotificationManager) const = 0;
 	virtual void HandleDeliverySuccess(DeliveryNotificationManager* inDeliveryNotificationManager) const = 0;
 };
-typedef  std::shared_ptr<TransmissionData> TransmissionDataPtr;
+
+typedef std::shared_ptr<TransmissionData> TransmissionDataPtr;
 
 #endif /* defined(__noctisgames__TransmissionData__) */

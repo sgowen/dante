@@ -12,6 +12,7 @@
 #include "TransmissionData.h"
 
 #include "ReplicationCommand.h"
+#include "ReplicationAction.h"
 
 #include <vector>
 
