@@ -24,15 +24,15 @@ public:
 	//if this is the next in sequence, just extend the range
 	inline bool ExtendIfShould(PacketSequenceNumber inSequenceNumber);
 	
-	PacketSequenceNumber	GetStart() const { return mStart; }
-	uint32_t		GetCount() const { return mCount; }
+	PacketSequenceNumber GetStart() const { return mStart; }
+	uint32_t GetCount() const { return mCount; }
 	
 	void Write(OutputMemoryBitStream& inOutputStream) const;
 	void Read(InputMemoryBitStream& inInputStream);
 	
 private:
-	PacketSequenceNumber	mStart;
-	uint32_t		mCount;
+	PacketSequenceNumber mStart;
+	uint32_t mCount;
 };
 
 inline bool AckRange::ExtendIfShould(PacketSequenceNumber inSequenceNumber)

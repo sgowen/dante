@@ -26,14 +26,14 @@ public:
 
 	void Update();
 
-	const std::vector<GameObjectPtr >&	GetGameObjects()	const	{ return mGameObjects; }
+	const std::vector<GameObjectPtr>& GetGameObjects() const { return mGameObjects; }
 
 private:
 	World();
 
 	int	GetIndexOfGameObject(GameObjectPtr inGameObject);
 
-	std::vector<GameObjectPtr > mGameObjects;
+	std::vector<GameObjectPtr> mGameObjects;
 };
 
 #endif /* defined(__noctisgames__World__) */

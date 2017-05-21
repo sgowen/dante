@@ -50,8 +50,9 @@ void NetworkManagerClient::Init(const SocketAddress& inServerAddress, const std:
 
 void NetworkManagerClient::ProcessPacket(InputMemoryBitStream& inInputStream, const SocketAddress& inFromAddress)
 {
-	uint32_t	packetType;
+	uint32_t packetType;
 	inInputStream.Read(packetType);
+    
 	switch(packetType)
 	{
 	case kWelcomeCC:
@@ -114,8 +115,6 @@ void NetworkManagerClient::HandleWelcomePacket(InputMemoryBitStream& inInputStre
 		LOG("'%s' was welcomed on client as player %d", mName.c_str(), mPlayerId);
 	}
 }
-
-
 
 void NetworkManagerClient::HandleStatePacket(InputMemoryBitStream& inInputStream)
 {
@@ -193,10 +192,7 @@ void NetworkManagerClient::DestroyGameObjectsInMap(const IntToGameObjectMap& inO
 		//and remove from our map!
 		mNetworkIdToGameObjectMap.erase(pair.first);
 	}
-
-	
 }
-
 
 void NetworkManagerClient::UpdateSendingInputPacket()
 {

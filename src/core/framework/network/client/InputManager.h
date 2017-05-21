@@ -25,16 +25,15 @@ public:
 
 	void HandleInput(EInputAction inInputAction, char inKeyCode);
 
-	const InputState& GetState()	const	{ return mCurrentState; }
+	const InputState& GetState() const { return mCurrentState; }
 
-	MoveList& GetMoveList()		{ return mMoveList; }
+	MoveList& GetMoveList() { return mMoveList; }
 
-	const Move* GetAndClearPendingMove()	{ auto toRet = mPendingMove; mPendingMove = nullptr; return toRet; }
+	const Move* GetAndClearPendingMove() { auto toRet = mPendingMove; mPendingMove = nullptr; return toRet; }
 
 	void Update();
 
 private:
-
 	InputState mCurrentState;
 
 	InputManager();

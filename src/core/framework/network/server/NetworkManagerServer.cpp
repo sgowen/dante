@@ -263,7 +263,7 @@ ClientProxyPtr NetworkManagerServer::GetClientProxy(int inPlayerId) const
 
 void NetworkManagerServer::CheckForDisconnects()
 {
-    std::vector<ClientProxyPtr > clientsToDC;
+    std::vector<ClientProxyPtr> clientsToDC;
 
 	float minAllowedLastPacketFromClientTime = Timing::sInstance.GetTimef() - mClientDisconnectTimeout;
 	for (const auto& pair: mAddressToClientMap)

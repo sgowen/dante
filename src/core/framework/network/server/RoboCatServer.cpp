@@ -11,6 +11,7 @@
 #include "RoboCatServer.h"
 
 #include "Timing.h"
+#include "StringUtils.h"
 
 RoboCatServer::RoboCatServer() :
 	mCatControlType(ESCT_Human),
@@ -48,8 +49,7 @@ void RoboCatServer::Update()
 				ProcessInput(deltaTime, currentState);
 				SimulateMovement(deltaTime);
 
-				//LOG("Server Move Time: %3.4f deltaTime: %3.4f left rot at %3.4f", unprocessedMove.GetTimestamp(), deltaTime, GetRotation());
-
+				LOG("Server Move Time: %3.4f deltaTime: %3.4f left rot at %3.4f", unprocessedMove.GetTimestamp(), deltaTime, GetRotation());
 			}
 
 			moveList.Clear();
@@ -67,7 +67,6 @@ void RoboCatServer::Update()
 	{
 		NetworkManagerServer::sInstance->SetStateDirty(GetNetworkId(), ECRS_Pose);
 	}
-
 }
 
 void RoboCatServer::TakeDamage(int inDamagingPlayerId)

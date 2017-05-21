@@ -31,7 +31,7 @@ public:
 private:
 	GameObjectRegistry();
 
-    std::unordered_map<uint32_t, GameObjectCreationFunc>	mNameToGameObjectCreationFunctionMap;
+    std::unordered_map<uint32_t, GameObjectCreationFunc> mNameToGameObjectCreationFunctionMap;
 };
 
 #endif /* defined(__noctisgames__GameObjectRegistry__) */

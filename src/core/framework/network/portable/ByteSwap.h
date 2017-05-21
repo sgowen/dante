@@ -34,22 +34,19 @@ inline uint64_t ByteSwap8(uint64_t inData)
 			((inData << 56) & 0xff00000000000000);
 }
 
-
 template <typename tFrom, typename tTo>
 class TypeAliaser
 {
 public:
-	TypeAliaser(tFrom inFromValue) :
-		mAsFromType(inFromValue) {}
+	TypeAliaser(tFrom inFromValue) : mAsFromType(inFromValue) {}
 	tTo& Get() { return mAsToType; }
 	
 	union
 	{
-		tFrom 	mAsFromType;
-		tTo		mAsToType;
+		tFrom mAsFromType;
+		tTo mAsToType;
 	};
 };
-
 
 template <typename T, size_t tSize> class ByteSwapper;
 
@@ -64,7 +61,6 @@ public:
 	}
 };
 
-
 //specialize for 2...
 template <typename T>
 class ByteSwapper<T, 2>
@@ -72,8 +68,7 @@ class ByteSwapper<T, 2>
 public:
 	T Swap(T inData) const
 	{
-		uint16_t result =
-			ByteSwap2(TypeAliaser<T, uint16_t>(inData).Get());
+		uint16_t result = ByteSwap2(TypeAliaser<T, uint16_t>(inData).Get());
 		return TypeAliaser<uint16_t, T>(result).Get();
 	}
 };
@@ -85,12 +80,10 @@ class ByteSwapper<T, 4>
 public:
 	T Swap(T inData) const
 	{
-		uint32_t result =
-			ByteSwap4(TypeAliaser<T, uint32_t>(inData).Get());
+		uint32_t result = ByteSwap4(TypeAliaser<T, uint32_t>(inData).Get());
 		return TypeAliaser<uint32_t, T>(result).Get();
 	}
 };
-
 
 //specialize for 8...
 template <typename T>
@@ -99,8 +92,7 @@ class ByteSwapper<T, 8>
 public:
 	T Swap(T inData) const
 	{
-		uint64_t result =
-			ByteSwap8(TypeAliaser<T, uint64_t>(inData).Get());
+		uint64_t result = ByteSwap8(TypeAliaser<T, uint64_t>(inData).Get());
 		return TypeAliaser<uint64_t, T>(result).Get();
 	}
 };
