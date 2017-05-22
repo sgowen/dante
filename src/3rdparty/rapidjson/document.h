@@ -350,7 +350,6 @@ public:
 
 	//! Get an element from array by index.
 	/*! \param index Zero-based index of element.
-		\note
 \code
 Value a(kArrayType);
 a.PushBack(123);
@@ -685,7 +684,7 @@ typedef GenericValue<UTF8<> > Value;
 /*!
 	\implements Handler
 	\tparam Encoding encoding for both parsing and string storage.
-	\tparam Alloactor allocator for allocating memory for the DOM, and the stack during parsing.
+	\tparam Allocator allocator for allocating memory for the DOM, and the stack during parsing.
 */
 template <typename Encoding, typename Allocator = MemoryPoolAllocator<> >
 class GenericDocument : public GenericValue<Encoding, Allocator> {

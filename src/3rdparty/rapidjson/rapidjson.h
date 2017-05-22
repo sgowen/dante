@@ -390,7 +390,7 @@ struct UTF16 {
 
 //! UTF-32 encoding. 
 /*! http://en.wikipedia.org/wiki/UTF-32
-	\tparam Ch Type for storing 32-bit UTF-32 data. Default is unsigned. C++11 may use char32_t instead.
+	\tparam CharType Type for storing 32-bit UTF-32 data. Default is unsigned. C++11 may use char32_t instead.
 	\implements Encoding
 */
 template<typename CharType = unsigned>
