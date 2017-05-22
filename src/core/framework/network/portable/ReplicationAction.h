@@ -11,11 +11,11 @@
 
 enum ReplicationAction
 {
-	RA_Create,
-	RA_Update,
-	RA_Destroy,
-	RA_RPC,
-	RA_MAX
+    RA_Create,
+    RA_Update,
+    RA_Destroy,
+    RA_RPC,
+    RA_MAX
 };
 
 #endif /* defined(__noctisgames__ReplicationAction__) */

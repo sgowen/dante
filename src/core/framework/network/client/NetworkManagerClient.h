@@ -18,16 +18,16 @@
 class NetworkManagerClient : public NetworkManager
 {
     enum NetworkClientState
-	{
-		NCS_Uninitialized,
-		NCS_SayingHello,
-		NCS_Welcomed
-	};
-
+    {
+        NCS_Uninitialized,
+        NCS_SayingHello,
+        NCS_Welcomed
+    };
+    
 public:
-	static NetworkManagerClient* sInstance;
-
-	static void	StaticInit(const SocketAddress& inServerAddress, const std::string& inName);
+    static NetworkManagerClient* sInstance;
+    
+    static void	StaticInit(const SocketAddress& inServerAddress, const std::string& inName);
     
     void SendOutgoingPackets();
     

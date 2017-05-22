@@ -14,30 +14,30 @@
 
 enum ECatControlType
 {
-	ESCT_Human,
-	ESCT_AI
+    ESCT_Human,
+    ESCT_AI
 };
 
 class RoboCatServer : public RoboCat
 {
 public:
-	static GameObjectPtr StaticCreate() { return NetworkManagerServer::sInstance->RegisterAndReturn(new RoboCatServer()); }
-	virtual void HandleDying() override;
-
-	virtual void Update();
-
-	void SetCatControlType(ECatControlType inCatControlType) { mCatControlType = inCatControlType; }
-
-	void TakeDamage(int inDamagingPlayerId);
-
+    static GameObjectPtr StaticCreate() { return NetworkManagerServer::sInstance->RegisterAndReturn(new RoboCatServer()); }
+    virtual void HandleDying() override;
+    
+    virtual void Update();
+    
+    void SetCatControlType(ECatControlType inCatControlType) { mCatControlType = inCatControlType; }
+    
+    void TakeDamage(int inDamagingPlayerId);
+    
 protected:
-	RoboCatServer();
-
+    RoboCatServer();
+    
 private:
-	ECatControlType	mCatControlType;
-
-	float mTimeOfNextShot;
-	float mTimeBetweenShots;
+    ECatControlType	mCatControlType;
+    
+    float mTimeOfNextShot;
+    float mTimeBetweenShots;
 };
 
 #endif /* defined(__noctisgames__RoboCatServer__) */

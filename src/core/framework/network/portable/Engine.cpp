@@ -22,18 +22,18 @@ std::unique_ptr<Engine>	Engine::sInstance;
 Engine::Engine() :
 mShouldKeepRunning(true)
 {
-	SocketUtil::StaticInit();
-
-	srand(static_cast<uint32_t>(time(nullptr)));
-	
-	GameObjectRegistry::StaticInit();
-
-	World::StaticInit();
+    SocketUtil::StaticInit();
+    
+    srand(static_cast<uint32_t>(time(nullptr)));
+    
+    GameObjectRegistry::StaticInit();
+    
+    World::StaticInit();
 }
 
 Engine::~Engine()
 {
-	SocketUtil::CleanUp();
+    SocketUtil::CleanUp();
 }
 
 int Engine::Run()

@@ -14,12 +14,12 @@
 class Client : public Engine
 {
 public:
-	static bool StaticInit();
-
+    static bool StaticInit();
+    
     virtual void DoFrame() override;
     
 protected:
-	Client();
+    Client();
 };
 
 #endif /* defined(__noctisgames__Client__) */

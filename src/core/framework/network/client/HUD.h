@@ -16,11 +16,11 @@
 class HUD
 {
 public:
-	static void StaticInit();
-	static std::unique_ptr<HUD> sInstance;
-
-	void SetPlayerHealth(int inHealth) { mHealth = inHealth; }
-
+    static void StaticInit();
+    static std::unique_ptr<HUD> sInstance;
+    
+    void SetPlayerHealth(int inHealth) { mHealth = inHealth; }
+    
     Vector3 mBandwidthOrigin;
     Vector3 mRoundTripTimeOrigin;
     Vector3 mScoreBoardOrigin;
@@ -29,7 +29,7 @@ public:
     int mHealth;
     
 private:
-	HUD();
+    HUD();
 };
 
 #endif /* defined(__noctisgames__HUD__) */

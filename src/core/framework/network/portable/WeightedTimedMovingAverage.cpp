@@ -47,7 +47,7 @@ void WeightedTimedMovingAverage::Update(float inValue)
     mValue = mValue * (1.f - fractionOfDuration) + inValue * fractionOfDuration;
     
     mTimeLastEntryMade = time;
-} 
+}
 
 float WeightedTimedMovingAverage::GetValue() const
 {

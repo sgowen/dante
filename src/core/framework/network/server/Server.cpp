@@ -20,16 +20,16 @@
 
 bool Server::StaticInit()
 {
-	sInstance.reset(new Server());
-
-	return true;
+    sInstance.reset(new Server());
+    
+    return true;
 }
 
 Server::Server() : m_fFrameStateTime(0)
 {
-	GameObjectRegistry::sInstance->RegisterCreationFunction('RCAT', RoboCatServer::StaticCreate);
-
-	InitNetworkManager();
+    GameObjectRegistry::sInstance->RegisterCreationFunction('RCAT', RoboCatServer::StaticCreate);
+    
+    InitNetworkManager();
 }
 
 int Server::Run()
@@ -64,56 +64,56 @@ int Server::Run()
 
 bool Server::InitNetworkManager()
 {
-	std::string portString = "9999";
-	uint16_t port = stoi(portString);
-
-	return NetworkManagerServer::StaticInit(port);
+    std::string portString = "9999";
+    uint16_t port = stoi(portString);
+    
+    return NetworkManagerServer::StaticInit(port);
 }
 
 void Server::HandleNewClient(ClientProxyPtr inClientProxy)
 {
-	int playerId = inClientProxy->GetPlayerId();
-	
-	SpawnCatForPlayer(playerId);
+    int playerId = inClientProxy->GetPlayerId();
+    
+    SpawnCatForPlayer(playerId);
 }
 
 void Server::SpawnCatForPlayer(int inPlayerId)
 {
-	RoboCatPtr cat = std::static_pointer_cast< RoboCat >(GameObjectRegistry::sInstance->CreateGameObject('RCAT'));
-	cat->SetPlayerId(inPlayerId);
-	//gotta pick a better spawn location than this...
-	cat->SetLocation(Vector3(8.f - static_cast<float>(inPlayerId), 4.f, 0.f));
+    RoboCatPtr cat = std::static_pointer_cast< RoboCat >(GameObjectRegistry::sInstance->CreateGameObject('RCAT'));
+    cat->SetPlayerId(inPlayerId);
+    //gotta pick a better spawn location than this...
+    cat->SetLocation(Vector3(8.f - static_cast<float>(inPlayerId), 4.f, 0.f));
 }
 
 void Server::HandleLostClient(ClientProxyPtr inClientProxy)
 {
-	//kill client's cat
-	//remove client from scoreboard
-	int playerId = inClientProxy->GetPlayerId();
-
-	RoboCatPtr cat = GetCatForPlayer(playerId);
-	if (cat)
-	{
-		cat->SetDoesWantToDie(true);
-	}
+    //kill client's cat
+    //remove client from scoreboard
+    int playerId = inClientProxy->GetPlayerId();
+    
+    RoboCatPtr cat = GetCatForPlayer(playerId);
+    if (cat)
+    {
+        cat->SetDoesWantToDie(true);
+    }
 }
 
 RoboCatPtr Server::GetCatForPlayer(int inPlayerId)
 {
-	//run through the objects till we find the cat...
-	//it would be nice if we kept a pointer to the cat on the clientproxy
-	//but then we'd have to clean it up when the cat died, etc.
-	//this will work for now until it's a perf issue
-	const auto& gameObjects = World::sInstance->GetGameObjects();
-	for (int i = 0, c = gameObjects.size(); i < c; ++i)
-	{
-		GameObjectPtr go = gameObjects[i];
-		RoboCat* cat = go->GetAsCat();
-		if (cat && cat->GetPlayerId() == inPlayerId)
-		{
-			return std::static_pointer_cast< RoboCat >(go);
-		}
-	}
-
-	return nullptr;
+    //run through the objects till we find the cat...
+    //it would be nice if we kept a pointer to the cat on the clientproxy
+    //but then we'd have to clean it up when the cat died, etc.
+    //this will work for now until it's a perf issue
+    const auto& gameObjects = World::sInstance->GetGameObjects();
+    for (int i = 0, c = gameObjects.size(); i < c; ++i)
+    {
+        GameObjectPtr go = gameObjects[i];
+        RoboCat* cat = go->GetAsCat();
+        if (cat && cat->GetPlayerId() == inPlayerId)
+        {
+            return std::static_pointer_cast< RoboCat >(go);
+        }
+    }
+    
+    return nullptr;
 }

@@ -14,19 +14,19 @@
 class Engine
 {
 public:
-	virtual ~Engine();
-	static std::unique_ptr<Engine> sInstance;
+    virtual ~Engine();
+    static std::unique_ptr<Engine> sInstance;
     
     virtual int Run();
-
-	void SetShouldKeepRunning(bool inShouldKeepRunning) { mShouldKeepRunning = inShouldKeepRunning; }
-
+    
+    void SetShouldKeepRunning(bool inShouldKeepRunning) { mShouldKeepRunning = inShouldKeepRunning; }
+    
     virtual void DoFrame();
     
 protected:
     bool mShouldKeepRunning;
     
-	Engine();
+    Engine();
 };
 
 #endif /* defined(__noctisgames__Engine__) */

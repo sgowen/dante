@@ -25,5 +25,5 @@ mHealth(0)
 
 void HUD::StaticInit()
 {
-	sInstance.reset(new HUD());
+    sInstance.reset(new HUD());
 }
