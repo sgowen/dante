@@ -22,6 +22,11 @@ enum { kClassId = inCode }; \
 virtual uint32_t GetClassId() const { return kClassId; } \
 static GameObject* CreateInstance() { return static_cast<GameObject*>(new inClass()); } \
 
+#define SUB_CLASS_IDENTIFICATION(inCode, inClass) \
+enum { kClassId = inCode }; \
+virtual uint32_t GetClassId() const override { return kClassId; } \
+static GameObject* CreateInstance() { return static_cast<GameObject*>(new inClass()); } \
+
 class GameObject
 {
 public:

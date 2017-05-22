@@ -146,7 +146,7 @@ void NetworkManagerClient::ReadLastMoveProcessedOnServerTimestamp(InputMemoryBit
 void NetworkManagerClient::HandleGameObjectState(InputMemoryBitStream& inInputStream)
 {
     //copy the mNetworkIdToGameObjectMap so that anything that doesn't get an updated can be destroyed...
-    IntToGameObjectMap	objectsToDestroy = mNetworkIdToGameObjectMap;
+    std::unordered_map<int, GameObjectPtr> objectsToDestroy = mNetworkIdToGameObjectMap;
     
     int stateCount;
     inInputStream.Read(stateCount);
@@ -184,7 +184,7 @@ void NetworkManagerClient::HandleGameObjectState(InputMemoryBitStream& inInputSt
     DestroyGameObjectsInMap(objectsToDestroy);
 }
 
-void NetworkManagerClient::DestroyGameObjectsInMap(const IntToGameObjectMap& inObjectsToDestroy)
+void NetworkManagerClient::DestroyGameObjectsInMap(const std::unordered_map<int, GameObjectPtr>& inObjectsToDestroy)
 {
     for (auto& pair: inObjectsToDestroy)
     {

@@ -9,14 +9,12 @@
 #ifndef __noctisgames__InFlightPacket__
 #define __noctisgames__InFlightPacket__
 
+#include "NetworkConstants.h"
 #include "TransmissionData.h"
 
 #include <unordered_map>
 
 class DeliveryNotificationManager;
-
-//in case we decide to change the type of the sequence number to use fewer or more bits
-typedef uint16_t PacketSequenceNumber;
 
 class InFlightPacket
 {

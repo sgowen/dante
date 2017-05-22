@@ -18,7 +18,7 @@ class OutputMemoryBitStream;
 class RoboCat : public GameObject
 {
 public:
-    CLASS_IDENTIFICATION('RCAT', GameObject)
+    SUB_CLASS_IDENTIFICATION('RCAT', GameObject)
     
     enum ECatReplicationState
     {
@@ -34,7 +34,7 @@ public:
     
     virtual uint32_t GetAllStateMask() const override { return ECRS_AllState; }
     
-    virtual	RoboCat* GetAsCat()	{ return this; }
+    virtual	RoboCat* GetAsCat()	override { return this; }
     
     virtual void Update() override;
     

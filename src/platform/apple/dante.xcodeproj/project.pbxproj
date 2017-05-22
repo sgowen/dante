@@ -526,6 +526,7 @@
 		BB5131501E625BD700204148 /* libSuperpoweredAndroidarmeabi-v7a.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libSuperpoweredAndroidarmeabi-v7a.a"; sourceTree = "<group>"; };
 		BB57737D1EC409B2005C480C /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		BB5774271EC41B58005C480C /* pch.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = pch.h; sourceTree = "<group>"; };
+		BB5F46FA1ED38D61005FEC0C /* SocketAddressFamily.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SocketAddressFamily.h; sourceTree = "<group>"; };
 		BB61CB581EC9FA1B000E0291 /* FrameworkConstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FrameworkConstants.h; sourceTree = "<group>"; };
 		BB66EC1F1C0E575D006DE4F5 /* OpenAL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenAL.framework; path = System/Library/Frameworks/OpenAL.framework; sourceTree = SDKROOT; };
 		BB6DB1B61E76FCCF005C0FAD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Main.storyboard; sourceTree = "<group>"; };
@@ -1431,6 +1432,7 @@
 				BB83082D1EC2AD1F00435E7E /* SocketAddress.h */,
 				BB83082E1EC2AD1F00435E7E /* SocketAddressFactory.cpp */,
 				BB83082F1EC2AD1F00435E7E /* SocketAddressFactory.h */,
+				BB5F46FA1ED38D61005FEC0C /* SocketAddressFamily.h */,
 				BB8308301EC2AD1F00435E7E /* SocketUtil.cpp */,
 				BB8308311EC2AD1F00435E7E /* SocketUtil.h */,
 				BB8308321EC2AD1F00435E7E /* StringUtils.cpp */,

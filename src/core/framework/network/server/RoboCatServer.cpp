@@ -14,7 +14,6 @@
 #include "StringUtils.h"
 
 RoboCatServer::RoboCatServer() :
-mCatControlType(ESCT_Human),
 mTimeOfNextShot(0.f),
 mTimeBetweenShots(0.2f)
 {}
@@ -32,33 +31,24 @@ void RoboCatServer::Update()
     Vector3 oldVelocity = GetVelocity();
     float oldRotation = GetRotation();
     
-    //are you controlled by a player?
-    //if so, is there a move we haven't processed yet?
-    if (mCatControlType == ESCT_Human)
+    // is there a move we haven't processed yet?
+    ClientProxyPtr client = NetworkManagerServer::sInstance->GetClientProxy(GetPlayerId());
+    if (client)
     {
-        ClientProxyPtr client = NetworkManagerServer::sInstance->GetClientProxy(GetPlayerId());
-        if (client)
+        MoveList& moveList = client->GetUnprocessedMoveList();
+        for (const Move& unprocessedMove : moveList)
         {
-            MoveList& moveList = client->GetUnprocessedMoveList();
-            for (const Move& unprocessedMove : moveList)
-            {
-                const InputState& currentState = unprocessedMove.GetInputState();
-                
-                float deltaTime = unprocessedMove.GetDeltaTime();
-                
-                ProcessInput(deltaTime, currentState);
-                SimulateMovement(deltaTime);
-                
-                LOG("Server Move Time: %3.4f deltaTime: %3.4f left rot at %3.4f", unprocessedMove.GetTimestamp(), deltaTime, GetRotation());
-            }
+            const InputState& currentState = unprocessedMove.GetInputState();
             
-            moveList.Clear();
+            float deltaTime = unprocessedMove.GetDeltaTime();
+            
+            ProcessInput(deltaTime, currentState);
+            SimulateMovement(deltaTime);
+            
+            LOG("Server Move Time: %3.4f deltaTime: %3.4f left rot at %3.4f", unprocessedMove.GetTimestamp(), deltaTime, GetRotation());
         }
-    }
-    else
-    {
-        //do some AI stuff
-        SimulateMovement(Timing::sInstance.GetDeltaTime());
+        
+        moveList.Clear();
     }
     
     if (!RoboMath::Is2DVectorEqual(oldLocation, GetLocation()) ||

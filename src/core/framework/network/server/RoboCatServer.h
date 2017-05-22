@@ -10,13 +10,8 @@
 #define __noctisgames__RoboCatServer__
 
 #include "RoboCat.h"
-#include "NetworkManagerServer.h"
 
-enum ECatControlType
-{
-    ESCT_Human,
-    ESCT_AI
-};
+#include "NetworkManagerServer.h"
 
 class RoboCatServer : public RoboCat
 {
@@ -24,9 +19,7 @@ public:
     static GameObjectPtr StaticCreate() { return NetworkManagerServer::sInstance->RegisterAndReturn(new RoboCatServer()); }
     virtual void HandleDying() override;
     
-    virtual void Update();
-    
-    void SetCatControlType(ECatControlType inCatControlType) { mCatControlType = inCatControlType; }
+    virtual void Update() override;
     
     void TakeDamage(int inDamagingPlayerId);
     
@@ -34,8 +27,6 @@ protected:
     RoboCatServer();
     
 private:
-    ECatControlType	mCatControlType;
-    
     float mTimeOfNextShot;
     float mTimeBetweenShots;
 };

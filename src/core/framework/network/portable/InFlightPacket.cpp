@@ -19,7 +19,6 @@ mTimeDispatched(Timing::sInstance.GetTimef())
     //null out other transmision data params...
 }
 
-
 void InFlightPacket::HandleDeliveryFailure(DeliveryNotificationManager* inDeliveryNotificationManager) const
 {
     for (const auto& pair : mTransmissionDataMap)

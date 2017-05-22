@@ -16,17 +16,6 @@
 class GameObject;
 class LinkingContext;
 class Vector3;
-class Quaternion;
-
-inline uint32_t ConvertToFixed(float inNumber, float inMin, float inPrecision)
-{
-    return static_cast<int> ((inNumber - inMin) / inPrecision);
-}
-
-inline float ConvertFromFixed(uint32_t inNumber, float inMin, float inPrecision)
-{
-    return static_cast<float>(inNumber) * inPrecision + inMin;
-}
 
 class OutputMemoryBitStream
 {
@@ -49,17 +38,6 @@ public:
     
     void WriteBytes(const void* inData, uint32_t inByteCount)	{ WriteBits(inData, inByteCount << 3); }
     
-    /*
-     void Write(uint32_t inData, uint32_t inBitCount = 32)	{ WriteBits(&inData, inBitCount); }
-     void Write(int inData, uint32_t inBitCount = 32)		{ WriteBits(&inData, inBitCount); }
-     void Write(float inData)								{ WriteBits(&inData, 32); }
-     
-     void Write(uint16_t inData, uint32_t inBitCount = 16)	{ WriteBits(&inData, inBitCount); }
-     void Write(int16_t inData, uint32_t inBitCount = 16)	{ WriteBits(&inData, inBitCount); }
-     
-     void Write(uint8_t inData, uint32_t inBitCount = 8)	{ WriteBits(&inData, inBitCount); }
-     */
-    
     template< typename T >
     void Write(T inData, uint32_t inBitCount = sizeof(T) * 8)
     {
@@ -72,7 +50,6 @@ public:
     void 		Write(bool inData)								{ WriteBits(&inData, 1); }
     
     void		Write(const Vector3& inVector);
-    void		Write(const Quaternion& inQuat);
     
     void Write(const std::string& inString)
     {
@@ -141,8 +118,6 @@ public:
     
     void		Read(uint8_t& outData, uint32_t inBitCount = 8)		{ ReadBits(&outData, inBitCount); }
     void		Read(bool& outData)									{ ReadBits(&outData, 1); }
-    
-    void		Read(Quaternion& outQuat);
     
     void		ResetToCapacity(uint32_t inByteCapacity)				{ mBitCapacity = inByteCapacity << 3; mBitHead = 0; }
     

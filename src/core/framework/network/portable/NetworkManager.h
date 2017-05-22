@@ -20,8 +20,6 @@
 #include <queue>
 #include <list>
 
-typedef std::unordered_map<int, GameObjectPtr> IntToGameObjectMap;
-
 class NetworkManager
 {
 public:
@@ -53,7 +51,7 @@ public:
     void	RemoveFromNetworkIdToGameObjectMap(GameObjectPtr inGameObject);
     
 protected:
-    IntToGameObjectMap mNetworkIdToGameObjectMap;
+    std::unordered_map<int, GameObjectPtr> mNetworkIdToGameObjectMap;
     
 private:
     class ReceivedPacket

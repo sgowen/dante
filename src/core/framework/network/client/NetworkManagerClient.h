@@ -17,13 +17,6 @@
 
 class NetworkManagerClient : public NetworkManager
 {
-    enum NetworkClientState
-    {
-        NCS_Uninitialized,
-        NCS_SayingHello,
-        NCS_Welcomed
-    };
-    
 public:
     static NetworkManagerClient* sInstance;
     
@@ -39,6 +32,13 @@ public:
     float GetLastMoveProcessedByServerTimestamp() const	{ return mLastMoveProcessedByServerTimestamp; }
     
 private:
+    enum NetworkClientState
+    {
+        NCS_Uninitialized,
+        NCS_SayingHello,
+        NCS_Welcomed
+    };
+    
     DeliveryNotificationManager mDeliveryNotificationManager;
     ReplicationManagerClient mReplicationManagerClient;
     
@@ -73,7 +73,7 @@ private:
     void UpdateSendingInputPacket();
     void SendInputPacket();
     
-    void DestroyGameObjectsInMap(const IntToGameObjectMap& inObjectsToDestroy);
+    void DestroyGameObjectsInMap(const std::unordered_map<int, GameObjectPtr>& inObjectsToDestroy);
 };
 
 #endif /* defined(__noctisgames__NetworkManagerClient__) */

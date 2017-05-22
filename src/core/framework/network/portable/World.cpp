@@ -25,14 +25,16 @@ World::World()
 void World::AddGameObject(GameObjectPtr inGameObject)
 {
     mGameObjects.push_back(inGameObject);
-    inGameObject->SetIndexInWorld(mGameObjects.size() - 1);
+    int index = static_cast<int>(mGameObjects.size() - 1);
+    inGameObject->SetIndexInWorld(index);
 }
 
 void World::RemoveGameObject(GameObjectPtr inGameObject)
 {
     int index = inGameObject->GetIndexInWorld();
     
-    int lastIndex = mGameObjects.size() - 1;
+    int lastIndex = static_cast<int>(mGameObjects.size() - 1);
+    
     if (index != lastIndex)
     {
         mGameObjects[index] = mGameObjects[lastIndex];
@@ -48,7 +50,8 @@ void World::Update()
 {
     //update all game objects- sometimes they want to die, so we need to tread carefully...
     
-    for (int i = 0, c = mGameObjects.size(); i < c; ++i)
+    int len = static_cast<int>(mGameObjects.size());
+    for (int i = 0, c = len; i < c; ++i)
     {
         GameObjectPtr go = mGameObjects[i];
         

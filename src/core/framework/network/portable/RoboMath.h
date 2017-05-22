@@ -151,12 +151,6 @@ public:
     static const Vector3 UnitZ;
 };
 
-class Quaternion
-{
-public:
-    float mX, mY, mZ, mW;
-};
-
 template< int tValue, int tBits >
 struct GetRequiredBitsHelper
 {

@@ -105,7 +105,8 @@ RoboCatPtr Server::GetCatForPlayer(int inPlayerId)
     //but then we'd have to clean it up when the cat died, etc.
     //this will work for now until it's a perf issue
     const auto& gameObjects = World::sInstance->GetGameObjects();
-    for (int i = 0, c = gameObjects.size(); i < c; ++i)
+    int len = static_cast<int>(gameObjects.size());
+    for (int i = 0, c = len; i < c; ++i)
     {
         GameObjectPtr go = gameObjects[i];
         RoboCat* cat = go->GetAsCat();

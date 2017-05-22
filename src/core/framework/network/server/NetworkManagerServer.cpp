@@ -143,8 +143,6 @@ void NetworkManagerServer::RespawnCats()
 
 void NetworkManagerServer::SendOutgoingPackets()
 {
-    float time = Timing::sInstance.GetTimef();
-    
     //let's send a client a state packet whenever their move has come in...
     for (auto it = mAddressToClientMap.begin(), end = mAddressToClientMap.end(); it != end; ++it)
     {

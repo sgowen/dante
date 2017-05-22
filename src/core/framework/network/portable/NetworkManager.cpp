@@ -13,6 +13,7 @@
 #include "SocketUtil.h"
 #include "StringUtils.h"
 #include "Timing.h"
+#include "SocketAddressFamily.h"
 
 NetworkManager::NetworkManager() :
 mBytesSentThisFrame(0),

@@ -18,9 +18,6 @@
 class MoveList
 {
 public:
-    typedef std::deque< Move >::const_iterator			const_iterator;
-    typedef std::deque< Move >::const_reverse_iterator	const_reverse_iterator;
-    
     MoveList():
     mLastMoveTimestamp(-1.f)
     {}
@@ -36,11 +33,10 @@ public:
     
     void			Clear()							{ mMoves.clear(); }
     bool			HasMoves()				const	{ return !mMoves.empty(); }
-    int				GetMoveCount()			const	{ return mMoves.size(); }
+    int				GetMoveCount()			const	{ return static_cast<int>(mMoves.size()); }
     
-    //for for each, we have to match stl calling convention
-    const_iterator	begin()					const	{ return mMoves.begin(); }
-    const_iterator	end()					const	{ return mMoves.end(); }
+    std::deque< Move >::const_iterator	begin()					const	{ return mMoves.begin(); }
+    std::deque< Move >::const_iterator	end()					const	{ return mMoves.end(); }
     
 private:
     float			mLastMoveTimestamp;
