@@ -19,7 +19,7 @@ namespace
 ClientProxy::ClientProxy(const SocketAddress& inSocketAddress, const std::string& inName, int inPlayerId) :
 mSocketAddress(inSocketAddress),
 mName(inName),
-mPlayerId(inPlayerId),
+m_iPlayerId(inPlayerId),
 mDeliveryNotificationManager(false, true),
 mIsLastMoveTimestampDirty(false),
 m_fTimeToRespawn(0.f)
@@ -41,7 +41,7 @@ void ClientProxy::RespawnCatIfNecessary()
 {
     if (m_fTimeToRespawn != 0.f && Timing::sInstance.GetFrameStartTime() > m_fTimeToRespawn)
     {
-        static_cast<Server*>(Engine::sInstance.get())->SpawnCatForPlayer(mPlayerId);
+        static_cast<Server*>(Engine::sInstance.get())->SpawnCatForPlayer(m_iPlayerId);
         m_fTimeToRespawn = 0.f;
     }
 }

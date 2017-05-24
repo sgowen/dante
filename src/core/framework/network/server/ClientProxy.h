@@ -20,7 +20,7 @@ public:
     ClientProxy(const SocketAddress& inSocketAddress, const std::string& inName, int inPlayerId);
     
     const SocketAddress& GetSocketAddress()	const { return mSocketAddress; }
-    int GetPlayerId() const	{ return mPlayerId; }
+    int GetPlayerId() const	{ return m_iPlayerId; }
     const std::string& GetName() const	{ return mName; }
     
     void SetInputState(const InputState& inInputState) { mInputState = inInputState; }
@@ -47,7 +47,7 @@ private:
     
     SocketAddress mSocketAddress;
     std::string mName;
-    int mPlayerId;
+    int m_iPlayerId;
     
     //going away!
     InputState mInputState;

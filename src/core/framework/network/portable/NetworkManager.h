@@ -48,10 +48,10 @@ public:
     
     inline	GameObjectPtr	GetGameObject(int inNetworkId) const;
     void	AddToNetworkIdToGameObjectMap(GameObjectPtr inGameObject);
-    void	RemoveFromNetworkIdToGameObjectMap(GameObjectPtr inGameObject);
+    void	RemoveFrom_networkIdToGameObjectMap(GameObjectPtr inGameObject);
     
 protected:
-    std::unordered_map<int, GameObjectPtr> mNetworkIdToGameObjectMap;
+    std::unordered_map<int, GameObjectPtr> m_networkIdToGameObjectMap;
     
 private:
     class ReceivedPacket
@@ -90,8 +90,8 @@ private:
 
 inline GameObjectPtr NetworkManager::GetGameObject(int inNetworkId) const
 {
-    auto gameObjectIt = mNetworkIdToGameObjectMap.find(inNetworkId);
-    if (gameObjectIt != mNetworkIdToGameObjectMap.end())
+    auto gameObjectIt = m_networkIdToGameObjectMap.find(inNetworkId);
+    if (gameObjectIt != m_networkIdToGameObjectMap.end())
     {
         return gameObjectIt->second;
     }

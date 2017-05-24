@@ -19,34 +19,34 @@
 
 void ReplicationManagerServer::ReplicateCreate(int inNetworkId, uint32_t inInitialDirtyState)
 {
-    mNetworkIdToReplicationCommand[inNetworkId] = ReplicationCommand(inInitialDirtyState);
+    m_iNetworkIdToReplicationCommand[inNetworkId] = ReplicationCommand(inInitialDirtyState);
 }
 
 void ReplicationManagerServer::ReplicateDestroy(int inNetworkId)
 {
     //it's broken if we don't find it...
-    mNetworkIdToReplicationCommand[inNetworkId].SetDestroy();
+    m_iNetworkIdToReplicationCommand[inNetworkId].SetDestroy();
 }
 
 void ReplicationManagerServer::RemoveFromReplication(int inNetworkId)
 {
-    mNetworkIdToReplicationCommand.erase(inNetworkId);
+    m_iNetworkIdToReplicationCommand.erase(inNetworkId);
 }
 
 void ReplicationManagerServer::SetStateDirty(int inNetworkId, uint32_t inDirtyState)
 {
-    mNetworkIdToReplicationCommand[inNetworkId].AddDirtyState(inDirtyState);
+    m_iNetworkIdToReplicationCommand[inNetworkId].AddDirtyState(inDirtyState);
 }
 
 void ReplicationManagerServer::HandleCreateAckd(int inNetworkId)
 {
-    mNetworkIdToReplicationCommand[inNetworkId].HandleCreateAckd();
+    m_iNetworkIdToReplicationCommand[inNetworkId].HandleCreateAckd();
 }
 
 void ReplicationManagerServer::Write(OutputMemoryBitStream& inOutputStream, ReplicationManagerTransmissionData* ioTransmissinData)
 {
     //run through each replication command and do something...
-    for (auto& pair: mNetworkIdToReplicationCommand)
+    for (auto& pair: m_iNetworkIdToReplicationCommand)
     {
         ReplicationCommand& replicationCommand = pair.second;
         if (replicationCommand.HasDirtyState())

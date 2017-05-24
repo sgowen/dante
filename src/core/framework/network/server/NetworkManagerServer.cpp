@@ -19,8 +19,8 @@
 NetworkManagerServer* NetworkManagerServer::sInstance;
 
 NetworkManagerServer::NetworkManagerServer() :
-mNewPlayerId(1),
-mNewNetworkId(1),
+m_iNewPlayerId(1),
+m_iNewNetworkId(1),
 m_fTimeBetweenStatePackets(0.033f),
 m_fClientDisconnectTimeout(3.f)
 {
@@ -94,9 +94,9 @@ void NetworkManagerServer::HandlePacketFromNewClient(InputMemoryBitStream& inInp
         //read the name
         std::string name;
         inInputStream.Read(name);
-        ClientProxyPtr newClientProxy = std::make_shared< ClientProxy >(inFromAddress, name, mNewPlayerId++);
+        ClientProxyPtr newClientProxy = std::make_shared< ClientProxy >(inFromAddress, name, m_iNewPlayerId++);
         mAddressToClientMap[inFromAddress] = newClientProxy;
-        mPlayerIdToClientMap[newClientProxy->GetPlayerId()] = newClientProxy;
+        m_iPlayerIdToClientMap[newClientProxy->GetPlayerId()] = newClientProxy;
         
         //tell the server about this client, spawn a cat, etc...
         //if we had a generic message system, this would be a good use for it...
@@ -107,7 +107,7 @@ void NetworkManagerServer::HandlePacketFromNewClient(InputMemoryBitStream& inInp
         SendWelcomePacket(newClientProxy);
         
         //and now init the replication manager with everything we know about!
-        for (const auto& pair: mNetworkIdToGameObjectMap)
+        for (const auto& pair: m_networkIdToGameObjectMap)
         {
             newClientProxy->GetReplicationManagerServer().ReplicateCreate(pair.first, pair.second->GetAllStateMask());
         }
@@ -217,8 +217,8 @@ void NetworkManagerServer::AddWorldStateToPacket(OutputMemoryBitStream& inOutput
 
 int NetworkManagerServer::GetNewNetworkId()
 {
-    int toRet = mNewNetworkId++;
-    if (mNewNetworkId < toRet)
+    int toRet = m_iNewNetworkId++;
+    if (m_iNewNetworkId < toRet)
     {
         LOG("Network ID Wrap Around!!! You've been playing way too long...", 0);
     }
@@ -246,8 +246,8 @@ void NetworkManagerServer::HandleInputPacket(ClientProxyPtr inClientProxy, Input
 
 ClientProxyPtr NetworkManagerServer::GetClientProxy(int inPlayerId) const
 {
-    auto it = mPlayerIdToClientMap.find(inPlayerId);
-    if (it != mPlayerIdToClientMap.end())
+    auto it = m_iPlayerIdToClientMap.find(inPlayerId);
+    if (it != m_iPlayerIdToClientMap.end())
     {
         return it->second;
     }
@@ -277,14 +277,14 @@ void NetworkManagerServer::CheckForDisconnects()
 
 void NetworkManagerServer::HandleClientDisconnected(ClientProxyPtr inClientProxy)
 {
-    mPlayerIdToClientMap.erase(inClientProxy->GetPlayerId());
+    m_iPlayerIdToClientMap.erase(inClientProxy->GetPlayerId());
     mAddressToClientMap.erase(inClientProxy->GetSocketAddress());
     static_cast<Server*> (Engine::sInstance.get())->HandleLostClient(inClientProxy);
     
     //was that the last client? if so, bye!
     if (mAddressToClientMap.empty())
     {
-        mNewPlayerId = 1;
+        m_iNewPlayerId = 1;
         // Engine::sInstance->SetShouldKeepRunning(false);
     }
 }
@@ -296,7 +296,7 @@ void NetworkManagerServer::RegisterGameObject(GameObjectPtr inGameObject)
     inGameObject->SetNetworkId(newNetworkId);
     
     //add mapping from network id to game object
-    mNetworkIdToGameObjectMap[newNetworkId] = inGameObject;
+    m_networkIdToGameObjectMap[newNetworkId] = inGameObject;
     
     //tell all client proxies this is new...
     for (const auto& pair: mAddressToClientMap)
@@ -308,7 +308,7 @@ void NetworkManagerServer::RegisterGameObject(GameObjectPtr inGameObject)
 void NetworkManagerServer::UnregisterGameObject(GameObject* inGameObject)
 {
     int networkId = inGameObject->GetNetworkId();
-    mNetworkIdToGameObjectMap.erase(networkId);
+    m_networkIdToGameObjectMap.erase(networkId);
     
     //tell all client proxies to STOP replicating!
     //tell all client proxies this is new...

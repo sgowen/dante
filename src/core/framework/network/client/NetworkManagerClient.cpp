@@ -110,9 +110,9 @@ void NetworkManagerClient::HandleWelcomePacket(InputMemoryBitStream& inInputStre
         //if we got a player id, we've been welcomed!
         int playerId;
         inInputStream.Read(playerId);
-        mPlayerId = playerId;
+        m_iPlayerId = playerId;
         mState = NCS_Welcomed;
-        LOG("'%s' was welcomed on client as player %d", mName.c_str(), mPlayerId);
+        LOG("'%s' was welcomed on client as player %d", mName.c_str(), m_iPlayerId);
     }
 }
 
@@ -145,8 +145,8 @@ void NetworkManagerClient::ReadLastMoveProcessedOnServerTimestamp(InputMemoryBit
 
 void NetworkManagerClient::HandleGameObjectState(InputMemoryBitStream& inInputStream)
 {
-    //copy the mNetworkIdToGameObjectMap so that anything that doesn't get an updated can be destroyed...
-    std::unordered_map<int, GameObjectPtr> objectsToDestroy = mNetworkIdToGameObjectMap;
+    //copy the m_networkIdToGameObjectMap so that anything that doesn't get an updated can be destroyed...
+    std::unordered_map<int, GameObjectPtr> objectsToDestroy = m_networkIdToGameObjectMap;
     
     int stateCount;
     inInputStream.Read(stateCount);
@@ -160,9 +160,9 @@ void NetworkManagerClient::HandleGameObjectState(InputMemoryBitStream& inInputSt
             inInputStream.Read(networkId);
             inInputStream.Read(fourCC);
             GameObjectPtr go;
-            auto itGO = mNetworkIdToGameObjectMap.find(networkId);
+            auto itGO = m_networkIdToGameObjectMap.find(networkId);
             //didn't find it, better create it!
-            if (itGO == mNetworkIdToGameObjectMap.end())
+            if (itGO == m_networkIdToGameObjectMap.end())
             {
                 go = GameObjectRegistry::sInstance->CreateGameObject(fourCC);
                 go->SetNetworkId(networkId);
@@ -190,7 +190,7 @@ void NetworkManagerClient::DestroyGameObjectsInMap(const std::unordered_map<int,
     {
         pair.second->SetDoesWantToDie(true);
         //and remove from our map!
-        mNetworkIdToGameObjectMap.erase(pair.first);
+        m_networkIdToGameObjectMap.erase(pair.first);
     }
 }
 

@@ -134,8 +134,8 @@ void RoboCatClient::Read(InputMemoryBitStream& inInputStream)
     inInputStream.Read(stateBit);
     if (stateBit)
     {
-        mHealth = 0;
-        inInputStream.Read(mHealth, 4);
+        m_iHealth = 0;
+        inInputStream.Read(m_iHealth, 4);
         readState |= ECRS_Health;
     }
     
@@ -144,7 +144,7 @@ void RoboCatClient::Read(InputMemoryBitStream& inInputStream)
         //did we get health? if so, tell the hud!
         if ((readState & ECRS_Health) != 0)
         {
-            HUD::sInstance->SetPlayerHealth(mHealth);
+            HUD::sInstance->SetPlayerHealth(m_iHealth);
         }
         
         DoClientSidePredictionAfterReplicationForLocalCat(readState);

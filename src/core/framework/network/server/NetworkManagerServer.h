@@ -61,10 +61,10 @@ private:
     typedef std::unordered_map<SocketAddress, ClientProxyPtr> AddressToClientMap;
     
     AddressToClientMap mAddressToClientMap;
-    IntToClientMap mPlayerIdToClientMap;
+    IntToClientMap m_iPlayerIdToClientMap;
     
-    int mNewPlayerId;
-    int mNewNetworkId;
+    int m_iNewPlayerId;
+    int m_iNewNetworkId;
     
     float m_fTimeOfLastSatePacket;
     float m_fTimeBetweenStatePackets;

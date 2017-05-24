@@ -13,11 +13,11 @@
 #include "MemoryBitStream.h"
 
 GameObject::GameObject() :
-mIndexInWorld(-1),
+m_iIndexInWorld(-1),
 m_fCollisionRadius(0.5f),
 mDoesWantToDie(false),
 m_fRotation(0.f),
-mNetworkId(0),
+m_iNetworkId(0),
 mColor(Colors::White),
 m_fScale(1.0f)
 {
@@ -37,7 +37,7 @@ Vector3 GameObject::GetForwardVector()	const
 void GameObject::SetNetworkId(int inNetworkId)
 {
     //this doesn't put you in the map or remove you from it
-    mNetworkId = inNetworkId;
+    m_iNetworkId = inNetworkId;
 }
 
 void GameObject::SetRotation(float inRotation)

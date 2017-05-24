@@ -28,7 +28,7 @@ public:
     
     const WeightedTimedMovingAverage& GetAvgRoundTripTime()	const { return mAvgRoundTripTime; }
     float GetRoundTripTime() const { return mAvgRoundTripTime.GetValue(); }
-    int GetPlayerId() const	{ return mPlayerId; }
+    int GetPlayerId() const	{ return m_iPlayerId; }
     float GetLastMoveProcessedByServerTimestamp() const	{ return m_fLastMoveProcessedByServerTimestamp; }
     
 private:
@@ -50,7 +50,7 @@ private:
     float m_fTimeOfLastInputPacket;
     
     std::string mName;
-    int mPlayerId;
+    int m_iPlayerId;
     
     float m_fLastMoveProcessedByServerTimestamp;
     

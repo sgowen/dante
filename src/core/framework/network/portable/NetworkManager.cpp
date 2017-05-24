@@ -167,10 +167,10 @@ mPacketBuffer(ioInputMemoryBitStream)
 
 void NetworkManager::AddToNetworkIdToGameObjectMap(GameObjectPtr inGameObject)
 {
-    mNetworkIdToGameObjectMap[inGameObject->GetNetworkId()] = inGameObject;
+    m_networkIdToGameObjectMap[inGameObject->GetNetworkId()] = inGameObject;
 }
 
-void NetworkManager::RemoveFromNetworkIdToGameObjectMap(GameObjectPtr inGameObject)
+void NetworkManager::RemoveFrom_networkIdToGameObjectMap(GameObjectPtr inGameObject)
 {
-    mNetworkIdToGameObjectMap.erase(inGameObject->GetNetworkId());
+    m_networkIdToGameObjectMap.erase(inGameObject->GetNetworkId());
 }

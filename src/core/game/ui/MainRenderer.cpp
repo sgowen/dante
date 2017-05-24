@@ -131,10 +131,10 @@ void MainRenderer::tempDraw(float stateTime)
 
 void MainRenderer::RenderHealth()
 {
-    if (HUD::sInstance->mHealth > 0)
+    if (HUD::sInstance->m_iHealth > 0)
     {
-        std::string healthString = StringUtils::Sprintf("Health %d", HUD::sInstance->mHealth);
-        RenderText(healthString, HUD::sInstance->mHealthOffset, Colors::Red);
+        std::string healthString = StringUtils::Sprintf("Health %d", HUD::sInstance->m_iHealth);
+        RenderText(healthString, HUD::sInstance->m_iHealthOffset, Colors::Red);
     }
 }
 

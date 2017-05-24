@@ -27,7 +27,7 @@ public:
     void RemoveGameObject(GameObject *inGameObject);
     
 private:
-    std::unordered_map<uint32_t, GameObject*> mNetworkIdToGameObjectMap;
+    std::unordered_map<uint32_t, GameObject*> m_networkIdToGameObjectMap;
     std::unordered_map<const GameObject*, uint32_t> mGameObjectToNetworkIdMap;
     
     uint32_t mNextNetworkId;

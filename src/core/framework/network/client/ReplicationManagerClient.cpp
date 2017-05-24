@@ -86,6 +86,6 @@ void ReplicationManagerClient::ReadAndDoDestroyAction(InputMemoryBitStream& inIn
     if (gameObject)
     {
         gameObject->SetDoesWantToDie(true);
-        NetworkManagerClient::sInstance->RemoveFromNetworkIdToGameObjectMap(gameObject);
+        NetworkManagerClient::sInstance->RemoveFrom_networkIdToGameObjectMap(gameObject);
     }
 }

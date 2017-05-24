@@ -44,8 +44,8 @@ public:
     void ProcessCollisions();
     void ProcessCollisionsWithScreenWalls();
     
-    void SetPlayerId(uint32_t inPlayerId) { mPlayerId = inPlayerId; }
-    uint32_t GetPlayerId() const { return mPlayerId; }
+    void SetPlayerId(uint32_t inPlayerId) { m_iPlayerId = inPlayerId; }
+    uint32_t GetPlayerId() const { return m_iPlayerId; }
     
     void SetVelocity(const Vector3& inVelocity)	{ mVelocity = inVelocity; }
     const Vector3& GetVelocity() const { return mVelocity; }
@@ -67,7 +67,7 @@ private:
     float m_fWallRestitution;
     float m_fCatRestitution;
     
-    uint32_t mPlayerId;
+    uint32_t m_iPlayerId;
     
 protected:
     ///move down here for padding reasons...
@@ -75,7 +75,7 @@ protected:
     float m_fLastMoveTimestamp;
     
     float m_fThrustDir;
-    int mHealth;
+    int m_iHealth;
 };
 
 typedef std::shared_ptr<RoboCat> RoboCatPtr;

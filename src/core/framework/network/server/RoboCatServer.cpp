@@ -61,8 +61,8 @@ void RoboCatServer::Update()
 
 void RoboCatServer::TakeDamage(int inDamagingPlayerId)
 {
-    mHealth--;
-    if (mHealth <= 0.f)
+    m_iHealth--;
+    if (m_iHealth <= 0.f)
     {
         //and you want to die
         SetDoesWantToDie(true);

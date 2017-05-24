@@ -46,8 +46,8 @@ public:
     
     virtual void HandleDying() {}
     
-    void SetIndexInWorld(int inIndex) { mIndexInWorld = inIndex; }
-    int GetIndexInWorld() const { return mIndexInWorld; }
+    void SetIndexInWorld(int inIndex) { m_iIndexInWorld = inIndex; }
+    int GetIndexInWorld() const { return m_iIndexInWorld; }
     
     void SetRotation(float inRotation);
     float GetRotation() const { return m_fRotation; }
@@ -69,7 +69,7 @@ public:
     bool DoesWantToDie() const { return mDoesWantToDie; }
     void SetDoesWantToDie(bool inWants) { mDoesWantToDie = inWants; }
     
-    int GetNetworkId() const { return mNetworkId; }
+    int GetNetworkId() const { return m_iNetworkId; }
     void SetNetworkId(int inNetworkId);
     
     virtual uint32_t Write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState) const { (void)inOutputStream; (void)inDirtyState; return 0; }
@@ -83,11 +83,11 @@ private:
     
     float m_fRotation;
     float m_fScale;
-    int mIndexInWorld;
+    int m_iIndexInWorld;
     
     bool mDoesWantToDie;
     
-    int mNetworkId;
+    int m_iNetworkId;
 };
 
 typedef std::shared_ptr<GameObject> GameObjectPtr;

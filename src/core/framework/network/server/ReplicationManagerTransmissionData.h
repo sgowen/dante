@@ -29,17 +29,17 @@ public:
     {
     public:
         ReplicationTransmission(int inNetworkId, ReplicationAction inAction, uint32_t inState) :
-        mNetworkId(inNetworkId),
+        m_iNetworkId(inNetworkId),
         mAction(inAction),
         mState(inState)
         {}
         
-        int GetNetworkId() const { return mNetworkId; }
+        int GetNetworkId() const { return m_iNetworkId; }
         ReplicationAction GetAction() const	{ return mAction; }
         uint32_t GetState() const { return mState; }
         
     private:
-        int mNetworkId;
+        int m_iNetworkId;
         ReplicationAction mAction;
         uint32_t mState;
     };
