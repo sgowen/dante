@@ -50,16 +50,16 @@ public:
     int GetIndexInWorld() const { return mIndexInWorld; }
     
     void SetRotation(float inRotation);
-    float GetRotation() const { return mRotation; }
+    float GetRotation() const { return m_fRotation; }
     
-    void SetScale(float inScale) { mScale = inScale; }
-    float GetScale() const { return mScale; }
+    void SetScale(float inScale) { m_fScale = inScale; }
+    float GetScale() const { return m_fScale; }
     
     const Vector3& GetLocation() const { return mLocation; }
     void SetLocation(const Vector3& inLocation) { mLocation = inLocation; }
     
-    float GetCollisionRadius() const { return mCollisionRadius; }
-    void SetCollisionRadius(float inRadius) { mCollisionRadius = inRadius; }
+    float GetCollisionRadius() const { return m_fCollisionRadius; }
+    void SetCollisionRadius(float inRadius) { m_fCollisionRadius = inRadius; }
     
     Vector3 GetForwardVector() const;
     
@@ -79,10 +79,10 @@ private:
     Vector3 mLocation;
     Vector3 mColor;
     
-    float mCollisionRadius;
+    float m_fCollisionRadius;
     
-    float mRotation;
-    float mScale;
+    float m_fRotation;
+    float m_fScale;
     int mIndexInWorld;
     
     bool mDoesWantToDie;

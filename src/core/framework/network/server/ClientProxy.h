@@ -27,7 +27,7 @@ public:
     const InputState& GetInputState() const	{ return mInputState; }
     
     void UpdateLastPacketTime();
-    float GetLastPacketFromClientTime()	const { return mLastPacketFromClientTime; }
+    float GetLastPacketFromClientTime()	const { return m_fLastPacketFromClientTime; }
     
     DeliveryNotificationManager& GetDeliveryNotificationManager() { return mDeliveryNotificationManager; }
     ReplicationManagerServer& GetReplicationManagerServer() { return mReplicationManagerServer; }
@@ -52,8 +52,8 @@ private:
     //going away!
     InputState mInputState;
     
-    float mLastPacketFromClientTime;
-    float mTimeToRespawn;
+    float m_fLastPacketFromClientTime;
+    float m_fTimeToRespawn;
     
     MoveList mUnprocessedMoveList;
     bool mIsLastMoveTimestampDirty;

@@ -22,26 +22,26 @@ mName(inName),
 mPlayerId(inPlayerId),
 mDeliveryNotificationManager(false, true),
 mIsLastMoveTimestampDirty(false),
-mTimeToRespawn(0.f)
+m_fTimeToRespawn(0.f)
 {
     UpdateLastPacketTime();
 }
 
 void ClientProxy::UpdateLastPacketTime()
 {
-    mLastPacketFromClientTime = Timing::sInstance.GetTimef();
+    m_fLastPacketFromClientTime = Timing::sInstance.GetTimef();
 }
 
 void ClientProxy::HandleCatDied()
 {
-    mTimeToRespawn = Timing::sInstance.GetFrameStartTime() + kRespawnDelay;
+    m_fTimeToRespawn = Timing::sInstance.GetFrameStartTime() + kRespawnDelay;
 }
 
 void ClientProxy::RespawnCatIfNecessary()
 {
-    if (mTimeToRespawn != 0.f && Timing::sInstance.GetFrameStartTime() > mTimeToRespawn)
+    if (m_fTimeToRespawn != 0.f && Timing::sInstance.GetFrameStartTime() > m_fTimeToRespawn)
     {
         static_cast<Server*>(Engine::sInstance.get())->SpawnCatForPlayer(mPlayerId);
-        mTimeToRespawn = 0.f;
+        m_fTimeToRespawn = 0.f;
     }
 }

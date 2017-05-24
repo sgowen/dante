@@ -60,21 +60,21 @@ private:
     
     Vector3 mVelocity;
     
-    float mMaxLinearSpeed;
-    float mMaxRotationSpeed;
+    float m_fMaxLinearSpeed;
+    float m_fMaxRotationSpeed;
     
     //bounce fraction when hitting various things
-    float mWallRestitution;
-    float mCatRestitution;
+    float m_fWallRestitution;
+    float m_fCatRestitution;
     
     uint32_t mPlayerId;
     
 protected:
     ///move down here for padding reasons...
     
-    float mLastMoveTimestamp;
+    float m_fLastMoveTimestamp;
     
-    float mThrustDir;
+    float m_fThrustDir;
     int mHealth;
 };
 

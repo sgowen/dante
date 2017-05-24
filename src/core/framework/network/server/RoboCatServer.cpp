@@ -14,8 +14,8 @@
 #include "StringUtils.h"
 
 RoboCatServer::RoboCatServer() :
-mTimeOfNextShot(0.f),
-mTimeBetweenShots(0.2f)
+m_fTimeOfNextShot(0.f),
+m_fTimeBetweenShots(0.2f)
 {}
 
 void RoboCatServer::HandleDying()

@@ -30,8 +30,8 @@ protected:
 private:
     void InterpolateClientSidePrediction(float inOldRotation, const Vector3& inOldLocation, const Vector3& inOldVelocity, bool inIsForRemoteCat);
     
-    float mTimeLocationBecameOutOfSync;
-    float mTimeVelocityBecameOutOfSync;
+    float m_fTimeLocationBecameOutOfSync;
+    float m_fTimeVelocityBecameOutOfSync;
 };
 
 #endif /* defined(__noctisgames__RoboCatClient__) */

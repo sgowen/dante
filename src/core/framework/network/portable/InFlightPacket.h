@@ -22,7 +22,7 @@ public:
     InFlightPacket(PacketSequenceNumber inSequenceNumber);
     
     PacketSequenceNumber GetSequenceNumber() const { return mSequenceNumber; }
-    float GetTimeDispatched() const	{ return mTimeDispatched; }
+    float GetTimeDispatched() const	{ return m_fTimeDispatched; }
     
     void SetTransmissionData(int inKey, TransmissionDataPtr	inTransmissionData)
     {
@@ -40,7 +40,7 @@ public:
     
 private:
     PacketSequenceNumber mSequenceNumber;
-    float mTimeDispatched;
+    float m_fTimeDispatched;
     
     std::unordered_map<int, TransmissionDataPtr> mTransmissionDataMap;
 };

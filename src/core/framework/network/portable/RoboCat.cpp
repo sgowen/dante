@@ -20,12 +20,12 @@ const float WORLD_WIDTH = 12.8f;
 
 RoboCat::RoboCat() :
 GameObject(),
-mMaxRotationSpeed(5.f),
-mMaxLinearSpeed(50.f),
+m_fMaxRotationSpeed(5.f),
+m_fMaxLinearSpeed(50.f),
 mVelocity(Vector3::Zero),
-mWallRestitution(0.1f),
-mCatRestitution(0.1f),
-mThrustDir(0.f),
+m_fWallRestitution(0.1f),
+m_fCatRestitution(0.1f),
+m_fThrustDir(0.f),
 mPlayerId(0),
 mHealth(10)
 {
@@ -37,12 +37,12 @@ void RoboCat::ProcessInput(float inDeltaTime, const InputState& inInputState)
     //process our input....
     
     //turning...
-    float newRotation = GetRotation() + inInputState.GetDesiredHorizontalDelta() * mMaxRotationSpeed * inDeltaTime;
+    float newRotation = GetRotation() + inInputState.GetDesiredHorizontalDelta() * m_fMaxRotationSpeed * inDeltaTime;
     SetRotation(newRotation);
     
     //moving...
     float inputForwardDelta = inInputState.GetDesiredVerticalDelta();
-    mThrustDir = inputForwardDelta;
+    m_fThrustDir = inputForwardDelta;
 }
 
 void RoboCat::AdjustVelocityByThrust(float inDeltaTime)
@@ -50,7 +50,7 @@ void RoboCat::AdjustVelocityByThrust(float inDeltaTime)
     //just set the velocity based on the thrust direction -- no thrust will lead to 0 velocity
     //simulating acceleration makes the client prediction a bit more complex
     Vector3 forwardVector = GetForwardVector();
-    mVelocity = forwardVector * (mThrustDir * inDeltaTime * mMaxLinearSpeed);
+    mVelocity = forwardVector * (m_fThrustDir * inDeltaTime * m_fMaxLinearSpeed);
 }
 
 void RoboCat::SimulateMovement(float inDeltaTime)
@@ -128,12 +128,12 @@ void RoboCat::ProcessCollisions()
                         if (targetCat)
                         {
                             mVelocity -= impulse;
-                            mVelocity *= mCatRestitution;
+                            mVelocity *= m_fCatRestitution;
                         }
                         else
                         {
                             mVelocity -= impulse * 2.f;
-                            mVelocity *= mWallRestitution;
+                            mVelocity *= m_fWallRestitution;
                         }
                     }
                 }
@@ -145,38 +145,38 @@ void RoboCat::ProcessCollisions()
 void RoboCat::ProcessCollisionsWithScreenWalls()
 {
     Vector3 location = GetLocation();
-    float x = location.mX;
-    float y = location.mY;
+    float x = location.m_fX;
+    float y = location.m_fY;
     
-    float vx = mVelocity.mX;
-    float vy = mVelocity.mY;
+    float vx = mVelocity.m_fX;
+    float vy = mVelocity.m_fY;
     
     float radius = GetCollisionRadius();
     
     //if the cat collides against a wall, the quick solution is to push it off
     if ((y + radius) >= WORLD_HEIGHT && vy > 0)
     {
-        mVelocity.mY = -vy * mWallRestitution;
-        location.mY = WORLD_HEIGHT - radius;
+        mVelocity.m_fY = -vy * m_fWallRestitution;
+        location.m_fY = WORLD_HEIGHT - radius;
         SetLocation(location);
     }
     else if (y <= (0) && vy < 0)
     {
-        mVelocity.mY = -vy * mWallRestitution;
-        location.mY = 0;
+        mVelocity.m_fY = -vy * m_fWallRestitution;
+        location.m_fY = 0;
         SetLocation(location);
     }
     
     if ((x + radius) >= WORLD_WIDTH && vx > 0)
     {
-        mVelocity.mX = -vx * mWallRestitution;
-        location.mX = WORLD_WIDTH - radius;
+        mVelocity.m_fX = -vx * m_fWallRestitution;
+        location.m_fX = WORLD_WIDTH - radius;
         SetLocation(location);
     }
     else if (x <= (0) && vx < 0)
     {
-        mVelocity.mX = -vx * mWallRestitution;
-        location.mX = 0;
+        mVelocity.m_fX = -vx * m_fWallRestitution;
+        location.m_fX = 0;
         SetLocation(location);
     }
 }
@@ -202,12 +202,12 @@ uint32_t RoboCat::Write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyS
         inOutputStream.Write((bool)true);
         
         Vector3 velocity = mVelocity;
-        inOutputStream.Write(velocity.mX);
-        inOutputStream.Write(velocity.mY);
+        inOutputStream.Write(velocity.m_fX);
+        inOutputStream.Write(velocity.m_fY);
         
         Vector3 location = GetLocation();
-        inOutputStream.Write(location.mX);
-        inOutputStream.Write(location.mY);
+        inOutputStream.Write(location.m_fX);
+        inOutputStream.Write(location.m_fY);
         
         inOutputStream.Write(GetRotation());
         
@@ -219,10 +219,10 @@ uint32_t RoboCat::Write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyS
     }
     
     //always write mThrustDir- it's just two bits
-    if (mThrustDir != 0.f)
+    if (m_fThrustDir != 0.f)
     {
         inOutputStream.Write(true);
-        inOutputStream.Write(mThrustDir > 0.f);
+        inOutputStream.Write(m_fThrustDir > 0.f);
     }
     else
     {

@@ -29,7 +29,7 @@ public:
     const WeightedTimedMovingAverage& GetAvgRoundTripTime()	const { return mAvgRoundTripTime; }
     float GetRoundTripTime() const { return mAvgRoundTripTime.GetValue(); }
     int GetPlayerId() const	{ return mPlayerId; }
-    float GetLastMoveProcessedByServerTimestamp() const	{ return mLastMoveProcessedByServerTimestamp; }
+    float GetLastMoveProcessedByServerTimestamp() const	{ return m_fLastMoveProcessedByServerTimestamp; }
     
 private:
     enum NetworkClientState
@@ -46,16 +46,16 @@ private:
     
     NetworkClientState mState;
     
-    float mTimeOfLastHello;
-    float mTimeOfLastInputPacket;
+    float m_fTimeOfLastHello;
+    float m_fTimeOfLastInputPacket;
     
     std::string mName;
     int mPlayerId;
     
-    float mLastMoveProcessedByServerTimestamp;
+    float m_fLastMoveProcessedByServerTimestamp;
     
     WeightedTimedMovingAverage mAvgRoundTripTime;
-    float mLastRoundTripTime;
+    float m_fLastRoundTripTime;
     
     NetworkManagerClient();
     

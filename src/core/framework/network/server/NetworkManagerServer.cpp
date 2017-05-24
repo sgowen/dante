@@ -21,8 +21,8 @@ NetworkManagerServer* NetworkManagerServer::sInstance;
 NetworkManagerServer::NetworkManagerServer() :
 mNewPlayerId(1),
 mNewNetworkId(1),
-mTimeBetweenStatePackets(0.033f),
-mClientDisconnectTimeout(3.f)
+m_fTimeBetweenStatePackets(0.033f),
+m_fClientDisconnectTimeout(3.f)
 {
 }
 
@@ -259,7 +259,7 @@ void NetworkManagerServer::CheckForDisconnects()
 {
     std::vector<ClientProxyPtr> clientsToDC;
     
-    float minAllowedLastPacketFromClientTime = Timing::sInstance.GetTimef() - mClientDisconnectTimeout;
+    float minAllowedLastPacketFromClientTime = Timing::sInstance.GetTimef() - m_fClientDisconnectTimeout;
     for (const auto& pair: mAddressToClientMap)
     {
         if (pair.second->GetLastPacketFromClientTime() < minAllowedLastPacketFromClientTime)

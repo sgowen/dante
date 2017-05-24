@@ -61,7 +61,7 @@ void InputManager::HandleInput(EInputAction inInputAction, char inKeyCode)
 }
 
 InputManager::InputManager() :
-mNextTimeToSampleInput(0.f),
+m_fNextTimeToSampleInput(0.f),
 mPendingMove(nullptr)
 {
     
@@ -75,9 +75,9 @@ const Move& InputManager::SampleInputAsMove()
 bool InputManager::IsTimeToSampleInput()
 {
     float time = Timing::sInstance.GetFrameStartTime();
-    if (time > mNextTimeToSampleInput)
+    if (time > m_fNextTimeToSampleInput)
     {
-        mNextTimeToSampleInput = mNextTimeToSampleInput + kTimeBetweenInputSamples;
+        m_fNextTimeToSampleInput = m_fNextTimeToSampleInput + kTimeBetweenInputSamples;
         return true;
     }
     

@@ -26,7 +26,7 @@ namespace
 NetworkManagerClient::NetworkManagerClient() :
 mState(NCS_Uninitialized),
 mDeliveryNotificationManager(true, false),
-mLastRoundTripTime(0.f)
+m_fLastRoundTripTime(0.f)
 {
 }
 
@@ -42,7 +42,7 @@ void NetworkManagerClient::Init(const SocketAddress& inServerAddress, const std:
     
     mServerAddress = inServerAddress;
     mState = NCS_SayingHello;
-    mTimeOfLastHello = 0.f;
+    m_fTimeOfLastHello = 0.f;
     mName = inName;
     
     mAvgRoundTripTime = WeightedTimedMovingAverage(1.f);
@@ -86,10 +86,10 @@ void NetworkManagerClient::UpdateSayingHello()
 {
     float time = Timing::sInstance.GetTimef();
     
-    if (time > mTimeOfLastHello + kTimeBetweenHellos)
+    if (time > m_fTimeOfLastHello + kTimeBetweenHellos)
     {
         SendHelloPacket();
-        mTimeOfLastHello = time;
+        m_fTimeOfLastHello = time;
     }
 }
 
@@ -133,13 +133,13 @@ void NetworkManagerClient::ReadLastMoveProcessedOnServerTimestamp(InputMemoryBit
     inInputStream.Read(isTimestampDirty);
     if (isTimestampDirty)
     {
-        inInputStream.Read(mLastMoveProcessedByServerTimestamp);
+        inInputStream.Read(m_fLastMoveProcessedByServerTimestamp);
         
-        float rtt = Timing::sInstance.GetFrameStartTime() - mLastMoveProcessedByServerTimestamp;
-        mLastRoundTripTime = rtt;
+        float rtt = Timing::sInstance.GetFrameStartTime() - m_fLastMoveProcessedByServerTimestamp;
+        m_fLastRoundTripTime = rtt;
         mAvgRoundTripTime.Update(rtt);
         
-        InputManager::sInstance->GetMoveList().RemovedProcessedMoves(mLastMoveProcessedByServerTimestamp);
+        InputManager::sInstance->GetMoveList().RemovedProcessedMoves(m_fLastMoveProcessedByServerTimestamp);
     }
 }
 
@@ -198,10 +198,10 @@ void NetworkManagerClient::UpdateSendingInputPacket()
 {
     float time = Timing::sInstance.GetTimef();
     
-    if (time > mTimeOfLastInputPacket + kTimeBetweenInputPackets)
+    if (time > m_fTimeOfLastInputPacket + kTimeBetweenInputPackets)
     {
         SendInputPacket();
-        mTimeOfLastInputPacket = time;
+        m_fTimeOfLastInputPacket = time;
     }
 }
 

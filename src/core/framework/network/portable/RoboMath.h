@@ -14,129 +14,129 @@
 class Vector3
 {
 public:
-    float mX, mY, mZ;
+    float m_fX, m_fY, m_fZ;
     
     Vector3(float x, float y, float z) :
-    mX(x),
-    mY(y),
-    mZ(z)
+    m_fX(x),
+    m_fY(y),
+    m_fZ(z)
     {}
     
     Vector3() :
-    mX(0.0f),
-    mY(0.0f),
-    mZ(0.0f)
+    m_fX(0.0f),
+    m_fY(0.0f),
+    m_fZ(0.0f)
     {}
     
     void Set(float x, float y, float z)
     {
-        mX = x;
-        mY = y;
-        mZ = z;
+        m_fX = x;
+        m_fY = y;
+        m_fZ = z;
     }
     
     friend Vector3 operator+(const Vector3& inLeft, const Vector3& inRight)
     {
-        return Vector3(inLeft.mX + inRight.mX, inLeft.mY + inRight.mY, inLeft.mZ + inRight.mZ);
+        return Vector3(inLeft.m_fX + inRight.m_fX, inLeft.m_fY + inRight.m_fY, inLeft.m_fZ + inRight.m_fZ);
     }
     
     friend Vector3 operator-(const Vector3& inLeft, const Vector3& inRight)
     {
-        return Vector3(inLeft.mX - inRight.mX, inLeft.mY - inRight.mY, inLeft.mZ - inRight.mZ);
+        return Vector3(inLeft.m_fX - inRight.m_fX, inLeft.m_fY - inRight.m_fY, inLeft.m_fZ - inRight.m_fZ);
     }
     
     // Component-wise multiplication
     friend Vector3 operator*(const Vector3& inLeft, const Vector3& inRight)
     {
-        return Vector3(inLeft.mX * inRight.mX, inLeft.mY * inRight.mY, inLeft.mZ * inRight.mZ);
+        return Vector3(inLeft.m_fX * inRight.m_fX, inLeft.m_fY * inRight.m_fY, inLeft.m_fZ * inRight.m_fZ);
     }
     
     // Scalar multiply
     friend Vector3 operator*(float inScalar, const Vector3& inVec)
     {
-        return Vector3(inVec.mX * inScalar, inVec.mY * inScalar, inVec.mZ * inScalar);
+        return Vector3(inVec.m_fX * inScalar, inVec.m_fY * inScalar, inVec.m_fZ * inScalar);
     }
     
     friend Vector3 operator*(const Vector3& inVec, float inScalar)
     {
-        return Vector3(inVec.mX * inScalar, inVec.mY * inScalar, inVec.mZ * inScalar);
+        return Vector3(inVec.m_fX * inScalar, inVec.m_fY * inScalar, inVec.m_fZ * inScalar);
     }
     
     Vector3& operator*=(float inScalar)
     {
-        mX *= inScalar;
-        mY *= inScalar;
-        mZ *= inScalar;
+        m_fX *= inScalar;
+        m_fY *= inScalar;
+        m_fZ *= inScalar;
         return *this;
     }
     
     Vector3& operator+=(const Vector3& inRight)
     {
-        mX += inRight.mX;
-        mY += inRight.mY;
-        mZ += inRight.mZ;
+        m_fX += inRight.m_fX;
+        m_fY += inRight.m_fY;
+        m_fZ += inRight.m_fZ;
         return *this;
     }
     
     Vector3& operator-=(const Vector3& inRight)
     {
-        mX -= inRight.mX;
-        mY -= inRight.mY;
-        mZ -= inRight.mZ;
+        m_fX -= inRight.m_fX;
+        m_fY -= inRight.m_fY;
+        m_fZ -= inRight.m_fZ;
         return *this;
     }
     
     float Length()
     {
-        return sqrtf(mX * mX + mY * mY + mZ * mZ);
+        return sqrtf(m_fX * m_fX + m_fY * m_fY + m_fZ * m_fZ);
     }
     
     float LengthSq()
     {
-        return mX * mX + mY * mY + mZ * mZ;
+        return m_fX * m_fX + m_fY * m_fY + m_fZ * m_fZ;
     }
     
     float Length2D()
     {
-        return sqrtf(mX * mX + mY * mY);
+        return sqrtf(m_fX * m_fX + m_fY * m_fY);
     }
     
     float LengthSq2D()
     {
-        return mX * mX + mY * mY;
+        return m_fX * m_fX + m_fY * m_fY;
     }
     
     void Normalize()
     {
         float length = Length();
-        mX /= length;
-        mY /= length;
-        mZ /= length;
+        m_fX /= length;
+        m_fY /= length;
+        m_fZ /= length;
     }
     
     void Normalize2D()
     {
         float length = Length2D();
-        mX /= length;
-        mY /= length;
+        m_fX /= length;
+        m_fY /= length;
     }
     
     friend float Dot(const Vector3& inLeft, const Vector3& inRight)
     {
-        return (inLeft.mX * inRight.mX + inLeft.mY * inRight.mY + inLeft.mZ * inRight.mZ);
+        return (inLeft.m_fX * inRight.m_fX + inLeft.m_fY * inRight.m_fY + inLeft.m_fZ * inRight.m_fZ);
     }
     
     friend float Dot2D(const Vector3& inLeft, const Vector3& inRight)
     {
-        return (inLeft.mX * inRight.mX + inLeft.mY * inRight.mY);
+        return (inLeft.m_fX * inRight.m_fX + inLeft.m_fY * inRight.m_fY);
     }
     
     friend Vector3 Cross(const Vector3& inLeft, const Vector3& inRight)
     {
         Vector3 temp;
-        temp.mX = inLeft.mY * inRight.mZ - inLeft.mZ * inRight.mY;
-        temp.mY = inLeft.mZ * inRight.mX - inLeft.mX * inRight.mZ;
-        temp.mZ = inLeft.mX * inRight.mY - inLeft.mY * inRight.mX;
+        temp.m_fX = inLeft.m_fY * inRight.m_fZ - inLeft.m_fZ * inRight.m_fY;
+        temp.m_fY = inLeft.m_fZ * inRight.m_fX - inLeft.m_fX * inRight.m_fZ;
+        temp.m_fZ = inLeft.m_fX * inRight.m_fY - inLeft.m_fY * inRight.m_fX;
         return temp;
     }
     
@@ -178,7 +178,7 @@ namespace RoboMath
     
     inline bool	Is2DVectorEqual(const Vector3& inA, const Vector3& inB)
     {
-        return (inA.mX == inB.mX && inA.mY == inB.mY);
+        return (inA.m_fX == inB.m_fX && inA.m_fY == inB.m_fY);
     }
     
     inline float ToDegrees(float inRadians)

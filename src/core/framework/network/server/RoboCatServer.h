@@ -27,8 +27,8 @@ protected:
     RoboCatServer();
     
 private:
-    float mTimeOfNextShot;
-    float mTimeBetweenShots;
+    float m_fTimeOfNextShot;
+    float m_fTimeBetweenShots;
 };
 
 #endif /* defined(__noctisgames__RoboCatServer__) */

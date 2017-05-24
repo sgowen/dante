@@ -63,16 +63,16 @@ void OutputMemoryBitStream::WriteBits(const void* inData, uint32_t inBitCount)
 
 void OutputMemoryBitStream::Write(const Vector3& inVector)
 {
-    Write(inVector.mX);
-    Write(inVector.mY);
-    Write(inVector.mZ);
+    Write(inVector.m_fX);
+    Write(inVector.m_fY);
+    Write(inVector.m_fZ);
 }
 
 void InputMemoryBitStream::Read(Vector3& outVector)
 {
-    Read(outVector.mX);
-    Read(outVector.mY);
-    Read(outVector.mZ);
+    Read(outVector.m_fX);
+    Read(outVector.m_fY);
+    Read(outVector.m_fZ);
 }
 
 void OutputMemoryBitStream::ReallocBuffer(uint32_t inNewBitLength)

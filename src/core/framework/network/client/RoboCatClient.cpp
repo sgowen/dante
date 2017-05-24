@@ -18,8 +18,8 @@
 #include "Timing.h"
 
 RoboCatClient::RoboCatClient() :
-mTimeLocationBecameOutOfSync(0.f),
-mTimeVelocityBecameOutOfSync(0.f)
+m_fTimeLocationBecameOutOfSync(0.f),
+m_fTimeVelocityBecameOutOfSync(0.f)
 {
     // Empty
 }
@@ -64,7 +64,7 @@ void RoboCatClient::Update()
         if (RoboMath::Is2DVectorEqual(GetVelocity(), Vector3::Zero))
         {
             //we're in sync if our velocity is 0
-            mTimeLocationBecameOutOfSync = 0.f;
+            m_fTimeLocationBecameOutOfSync = 0.f;
         }
     }
 }
@@ -95,13 +95,13 @@ void RoboCatClient::Read(InputMemoryBitStream& inInputStream)
     inInputStream.Read(stateBit);
     if (stateBit)
     {
-        inInputStream.Read(replicatedVelocity.mX);
-        inInputStream.Read(replicatedVelocity.mY);
+        inInputStream.Read(replicatedVelocity.m_fX);
+        inInputStream.Read(replicatedVelocity.m_fY);
         
         SetVelocity(replicatedVelocity);
         
-        inInputStream.Read(replicatedLocation.mX);
-        inInputStream.Read(replicatedLocation.mY);
+        inInputStream.Read(replicatedLocation.m_fX);
+        inInputStream.Read(replicatedLocation.m_fY);
         
         SetLocation(replicatedLocation);
         
@@ -115,11 +115,11 @@ void RoboCatClient::Read(InputMemoryBitStream& inInputStream)
     if (stateBit)
     {
         inInputStream.Read(stateBit);
-        mThrustDir = stateBit ? 1.f : -1.f;
+        m_fThrustDir = stateBit ? 1.f : -1.f;
     }
     else
     {
-        mThrustDir = 0.f;
+        m_fThrustDir = 0.f;
     }
     
     inInputStream.Read(stateBit);
@@ -203,12 +203,12 @@ void RoboCatClient::InterpolateClientSidePrediction(float inOldRotation, const V
         
         //have we been out of sync, or did we just become out of sync?
         float time = Timing::sInstance.GetFrameStartTime();
-        if (mTimeLocationBecameOutOfSync == 0.f)
+        if (m_fTimeLocationBecameOutOfSync == 0.f)
         {
-            mTimeLocationBecameOutOfSync = time;
+            m_fTimeLocationBecameOutOfSync = time;
         }
         
-        float durationOutOfSync = time - mTimeLocationBecameOutOfSync;
+        float durationOutOfSync = time - m_fTimeLocationBecameOutOfSync;
         if (durationOutOfSync < roundTripTime)
         {
             SetLocation(Lerp(inOldLocation, GetLocation(), inIsForRemoteCat ? (durationOutOfSync / roundTripTime) : 0.1f));
@@ -217,7 +217,7 @@ void RoboCatClient::InterpolateClientSidePrediction(float inOldRotation, const V
     else
     {
         //we're in sync
-        mTimeLocationBecameOutOfSync = 0.f;
+        m_fTimeLocationBecameOutOfSync = 0.f;
     }
     
     if (!RoboMath::Is2DVectorEqual(inOldVelocity, GetVelocity()))
@@ -226,13 +226,13 @@ void RoboCatClient::InterpolateClientSidePrediction(float inOldRotation, const V
         
         //have we been out of sync, or did we just become out of sync?
         float time = Timing::sInstance.GetFrameStartTime();
-        if (mTimeVelocityBecameOutOfSync == 0.f)
+        if (m_fTimeVelocityBecameOutOfSync == 0.f)
         {
-            mTimeVelocityBecameOutOfSync = time;
+            m_fTimeVelocityBecameOutOfSync = time;
         }
         
         //now interpolate to the correct value...
-        float durationOutOfSync = time - mTimeVelocityBecameOutOfSync;
+        float durationOutOfSync = time - m_fTimeVelocityBecameOutOfSync;
         if (durationOutOfSync < roundTripTime)
         {
             SetVelocity(Lerp(inOldVelocity, GetVelocity(), inIsForRemoteCat ? (durationOutOfSync / roundTripTime) : 0.1f));
@@ -242,7 +242,7 @@ void RoboCatClient::InterpolateClientSidePrediction(float inOldRotation, const V
     else
     {
         //we're in sync
-        mTimeVelocityBecameOutOfSync = 0.f;
+        m_fTimeVelocityBecameOutOfSync = 0.f;
     }
 }
 

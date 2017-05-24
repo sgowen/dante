@@ -82,7 +82,7 @@ void MainRenderer::tempDraw(float stateTime)
             if (go->GetClassId() == 'MOUS')
             {
                 TextureRegion tr = ASSETS->findTextureRegion("TopSecretFolder");
-                m_spriteBatcher->drawSprite(go->GetLocation().mX, go->GetLocation().mY, go->GetScale(), go->GetScale(), 0, tr);
+                m_spriteBatcher->drawSprite(go->GetLocation().m_fX, go->GetLocation().m_fY, go->GetScale(), go->GetScale(), 0, tr);
             }
             else if (go->GetClassId() == 'RCAT')
             {
@@ -111,12 +111,12 @@ void MainRenderer::tempDraw(float stateTime)
                 }
                 
                 TextureRegion tr = ASSETS->findTextureRegion("CharacterHoldingGun", stateTime);
-                m_spriteBatcher->drawSprite(go->GetLocation().mX, go->GetLocation().mY, go->GetScale(), go->GetScale(), RADIANS_TO_DEGREES(go->GetRotation()) - 90, *c, tr);
+                m_spriteBatcher->drawSprite(go->GetLocation().m_fX, go->GetLocation().m_fY, go->GetScale(), go->GetScale(), RADIANS_TO_DEGREES(go->GetRotation()) - 90, *c, tr);
             }
             else if (go->GetClassId() == 'YARN')
             {
                 TextureRegion tr = ASSETS->findTextureRegion("Pellet");
-                m_spriteBatcher->drawSprite(go->GetLocation().mX, go->GetLocation().mY, go->GetScale(), go->GetScale(), 0, tr);
+                m_spriteBatcher->drawSprite(go->GetLocation().m_fX, go->GetLocation().m_fY, go->GetScale(), go->GetScale(), 0, tr);
             }
         }
         m_spriteBatcher->endBatch(*m_demo->gpuTextureWrapper, *m_textureGpuProgramWrapper);
@@ -156,7 +156,7 @@ void MainRenderer::RenderRoundTripTime()
 
 void MainRenderer::RenderText(const std::string& inStr, const Vector3& origin, const Vector3& inColor)
 {
-    Color fontColor = Color(inColor.mX, inColor.mY, inColor.mZ, 1);
+    Color fontColor = Color(inColor.m_fX, inColor.m_fY, inColor.m_fZ, 1);
     float fgWidth = CAM_WIDTH / 60;
     float fgHeight = fgWidth * 1.171875f;
     
@@ -164,5 +164,5 @@ void MainRenderer::RenderText(const std::string& inStr, const Vector3& origin, c
     ss << inStr;
     std::string text = ss.str();
     
-    m_font->renderText(*m_spriteBatcher, text, origin.mX, origin.mY, fgWidth, fgHeight, fontColor, false, false);
+    m_font->renderText(*m_spriteBatcher, text, origin.m_fX, origin.m_fY, fgWidth, fgHeight, fontColor, false, false);
 }

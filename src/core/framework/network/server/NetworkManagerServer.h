@@ -66,9 +66,9 @@ private:
     int mNewPlayerId;
     int mNewNetworkId;
     
-    float mTimeOfLastSatePacket;
-    float mTimeBetweenStatePackets;
-    float mClientDisconnectTimeout;
+    float m_fTimeOfLastSatePacket;
+    float m_fTimeBetweenStatePackets;
+    float m_fClientDisconnectTimeout;
 };
 
 inline GameObjectPtr NetworkManagerServer::RegisterAndReturn(GameObject* inGameObject)

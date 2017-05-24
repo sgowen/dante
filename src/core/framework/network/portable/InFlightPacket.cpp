@@ -14,7 +14,7 @@
 
 InFlightPacket::InFlightPacket(PacketSequenceNumber inSequenceNumber) :
 mSequenceNumber(inSequenceNumber),
-mTimeDispatched(Timing::sInstance.GetTimef())
+m_fTimeDispatched(Timing::sInstance.GetTimef())
 {
     //null out other transmision data params...
 }

@@ -42,7 +42,7 @@ private:
     const Move& SampleInputAsMove();
     
     MoveList mMoveList;
-    float mNextTimeToSampleInput;
+    float m_fNextTimeToSampleInput;
     const Move* mPendingMove;
 };
 
