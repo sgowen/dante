@@ -32,5 +32,5 @@ void MainAssetsMapper::mapAssets()
     
     /// Animations
     ASSETS->getAnimationsMap()["Samus_Running"] = new Animation("texture_001", 0, 0, 36, 46, 720, 46, TEXTURE_SIZE_2048, true, 0.1f, 20);
-    ASSETS->getAnimationsMap()["CharacterHoldingGun"] = new Animation("texture_001", 0, 128, 198, 152, 1980, 304, TEXTURE_SIZE_2048, true, 0.1f, 11);
+    ASSETS->getAnimationsMap()["CharacterHoldingGun"] = new Animation("texture_001", 0, 1664, 198, 152, 1980, 304, TEXTURE_SIZE_2048, true, 0.1f, 11);
 }

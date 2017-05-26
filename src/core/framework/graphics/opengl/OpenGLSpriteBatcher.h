@@ -20,14 +20,8 @@ public:
     
     virtual void endBatch(GpuTextureWrapper& textureWrapper, GpuProgramWrapper &gpuProgramWrapper);
     
-    virtual void drawSprite(float x, float y, float width, float height, float angle, TextureRegion tr);
-    
-    virtual void drawSprite(float x, float y, float width, float height, float angle, Color &c, TextureRegion tr);
-    
 protected:
-    virtual void drawSprite(float x, float y, float width, float height, TextureRegion tr);
-    
-    virtual void drawSprite(float x, float y, float width, float height, Color &c, TextureRegion tr);
+    virtual void addVertexCoordinate(float x, float y, float z, float r, float g, float b, float a, float u, float v);
 };
 
 #endif /* defined(__noctisgames__OpenGLSpriteBatcher__) */

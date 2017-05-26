@@ -9,10 +9,9 @@
 #ifndef __noctisgames__SpriteBatcher__
 #define __noctisgames__SpriteBatcher__
 
-#include "GpuTextureWrapper.h"
-
-class TextureRegion;
+struct GpuTextureWrapper;
 class GpuProgramWrapper;
+class TextureRegion;
 struct Color;
 
 class SpriteBatcher
@@ -26,16 +25,23 @@ public:
 
     virtual void endBatch(GpuTextureWrapper& textureWrapper, GpuProgramWrapper &gpuProgramWrapper) = 0;
 
-    virtual void drawSprite(float x, float y, float width, float height, float angle, TextureRegion tr) = 0;
+    void drawSprite(float x, float y, float width, float height, float angle, TextureRegion& tr);
 
-    virtual void drawSprite(float x, float y, float width, float height, float angle, Color &c, TextureRegion tr) = 0;
+    void drawSprite(float x, float y, float width, float height, float angle, Color &c, TextureRegion& tr);
+    
+    void renderSprite(float x, float y, float width, float height, float angle, bool flipX, TextureRegion& tr);
+    
+    void renderSprite(float x, float y, float width, float height, float angle, bool flipX, Color &c, TextureRegion& tr);
 
 protected:
     int m_iNumSprites;
-
-    virtual void drawSprite(float x, float y, float width, float height, TextureRegion tr) = 0;
-
-    virtual void drawSprite(float x, float y, float width, float height, Color &c, TextureRegion tr) = 0;
+    
+    virtual void addVertexCoordinate(float x, float y, float z, float r, float g, float b, float a, float u, float v) = 0;
+    
+private:
+    void renderSprite(float x, float y, float width, float height, bool flipX, TextureRegion& tr);
+    
+    void renderSprite(float x, float y, float width, float height, bool flipX, Color &c, TextureRegion& tr);
 };
 
 #endif /* defined(__noctisgames__SpriteBatcher__) */
