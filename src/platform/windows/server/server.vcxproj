@@ -146,9 +146,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <Text Include="ReadMe.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="..\..\..\core\framework\network\portable\AckRange.h" />
     <ClInclude Include="..\..\..\core\framework\network\portable\ByteSwap.h" />
     <ClInclude Include="..\..\..\core\framework\network\portable\DeliveryNotificationManager.h" />
@@ -162,33 +159,28 @@
     <ClInclude Include="..\..\..\core\framework\network\portable\MemoryBitStream.h" />
     <ClInclude Include="..\..\..\core\framework\network\portable\Move.h" />
     <ClInclude Include="..\..\..\core\framework\network\portable\MoveList.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\NetworkConstants.h" />
     <ClInclude Include="..\..\..\core\framework\network\portable\NetworkManager.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\ReplicationAction.h" />
     <ClInclude Include="..\..\..\core\framework\network\portable\ReplicationCommand.h" />
     <ClInclude Include="..\..\..\core\framework\network\portable\RoboCat.h" />
-    <ClInclude Include="..\..\..\core\framework\network\portable\RoboCatShared.h" />
     <ClInclude Include="..\..\..\core\framework\network\portable\RoboMath.h" />
-    <ClInclude Include="..\..\..\core\framework\network\portable\Rodent.h" />
-    <ClInclude Include="..\..\..\core\framework\network\portable\ScoreBoardManager.h" />
     <ClInclude Include="..\..\..\core\framework\network\portable\SocketAddress.h" />
     <ClInclude Include="..\..\..\core\framework\network\portable\SocketAddressFactory.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\SocketAddressFamily.h" />
     <ClInclude Include="..\..\..\core\framework\network\portable\SocketUtil.h" />
     <ClInclude Include="..\..\..\core\framework\network\portable\StringUtils.h" />
-    <ClInclude Include="..\..\..\core\framework\network\portable\TCPSocket.h" />
     <ClInclude Include="..\..\..\core\framework\network\portable\Timing.h" />
     <ClInclude Include="..\..\..\core\framework\network\portable\TransmissionData.h" />
     <ClInclude Include="..\..\..\core\framework\network\portable\UDPSocket.h" />
     <ClInclude Include="..\..\..\core\framework\network\portable\WeightedTimedMovingAverage.h" />
     <ClInclude Include="..\..\..\core\framework\network\portable\World.h" />
-    <ClInclude Include="..\..\..\core\framework\network\portable\Yarn.h" />
     <ClInclude Include="..\..\..\core\framework\network\server\ClientProxy.h" />
     <ClInclude Include="..\..\..\core\framework\network\server\NetworkManagerServer.h" />
     <ClInclude Include="..\..\..\core\framework\network\server\ReplicationManagerServer.h" />
     <ClInclude Include="..\..\..\core\framework\network\server\ReplicationManagerTransmissionData.h" />
     <ClInclude Include="..\..\..\core\framework\network\server\RoboCatServer.h" />
-    <ClInclude Include="..\..\..\core\framework\network\server\RoboCatServerPCH.h" />
-    <ClInclude Include="..\..\..\core\framework\network\server\RodentServer.h" />
     <ClInclude Include="..\..\..\core\framework\network\server\Server.h" />
-    <ClInclude Include="..\..\..\core\framework\network\server\YarnServer.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
@@ -200,33 +192,29 @@
     <ClCompile Include="..\..\..\core\framework\network\portable\GameObjectRegistry.cpp" />
     <ClCompile Include="..\..\..\core\framework\network\portable\InFlightPacket.cpp" />
     <ClCompile Include="..\..\..\core\framework\network\portable\InputState.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\LinkingContext.cpp" />
     <ClCompile Include="..\..\..\core\framework\network\portable\MemoryBitStream.cpp" />
     <ClCompile Include="..\..\..\core\framework\network\portable\Move.cpp" />
     <ClCompile Include="..\..\..\core\framework\network\portable\MoveList.cpp" />
     <ClCompile Include="..\..\..\core\framework\network\portable\NetworkManager.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\ReplicationCommand.cpp" />
     <ClCompile Include="..\..\..\core\framework\network\portable\RoboCat.cpp" />
     <ClCompile Include="..\..\..\core\framework\network\portable\RoboMath.cpp" />
-    <ClCompile Include="..\..\..\core\framework\network\portable\Rodent.cpp" />
-    <ClCompile Include="..\..\..\core\framework\network\portable\ScoreBoardManager.cpp" />
     <ClCompile Include="..\..\..\core\framework\network\portable\SocketAddress.cpp" />
     <ClCompile Include="..\..\..\core\framework\network\portable\SocketAddressFactory.cpp" />
     <ClCompile Include="..\..\..\core\framework\network\portable\SocketUtil.cpp" />
     <ClCompile Include="..\..\..\core\framework\network\portable\StringUtils.cpp" />
-    <ClCompile Include="..\..\..\core\framework\network\portable\TCPSocket.cpp" />
     <ClCompile Include="..\..\..\core\framework\network\portable\Timing.cpp" />
     <ClCompile Include="..\..\..\core\framework\network\portable\UDPSocket.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\WeightedTimedMovingAverage.cpp" />
     <ClCompile Include="..\..\..\core\framework\network\portable\World.cpp" />
-    <ClCompile Include="..\..\..\core\framework\network\portable\Yarn.cpp" />
     <ClCompile Include="..\..\..\core\framework\network\server\ClientProxy.cpp" />
     <ClCompile Include="..\..\..\core\framework\network\server\NetworkManagerServer.cpp" />
     <ClCompile Include="..\..\..\core\framework\network\server\ReplicationManagerServer.cpp" />
     <ClCompile Include="..\..\..\core\framework\network\server\ReplicationManagerTransmissionData.cpp" />
     <ClCompile Include="..\..\..\core\framework\network\server\RoboCatServer.cpp" />
-    <ClCompile Include="..\..\..\core\framework\network\server\RoboCatServerPCH.cpp" />
-    <ClCompile Include="..\..\..\core\framework\network\server\RodentServer.cpp" />
     <ClCompile Include="..\..\..\core\framework\network\server\Server.cpp" />
-    <ClCompile Include="..\..\..\core\framework\network\server\YarnServer.cpp" />
-    <ClCompile Include="main.cpp" />
+    <ClCompile Include="..\..\server\main.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

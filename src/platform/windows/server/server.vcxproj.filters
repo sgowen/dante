@@ -15,44 +15,11 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="ReadMe.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="targetver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\core\framework\network\server\NetworkManagerServer.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\core\framework\network\server\ReplicationManagerServer.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\core\framework\network\server\ReplicationManagerTransmissionData.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\core\framework\network\server\RoboCatServer.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\core\framework\network\server\RoboCatServerPCH.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\core\framework\network\server\RodentServer.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\core\framework\network\server\Server.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\core\framework\network\server\YarnServer.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\core\framework\network\server\ClientProxy.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\core\framework\network\portable\AckRange.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\core\framework\network\portable\ByteSwap.h">
-      <Filter>Source Files</Filter>
+    <ClInclude Include="pch.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\core\framework\network\portable\DeliveryNotificationManager.h">
       <Filter>Source Files</Filter>
@@ -87,7 +54,13 @@
     <ClInclude Include="..\..\..\core\framework\network\portable\MoveList.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\core\framework\network\portable\NetworkConstants.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\..\core\framework\network\portable\NetworkManager.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\core\framework\network\portable\ReplicationAction.h">
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\core\framework\network\portable\ReplicationCommand.h">
@@ -96,16 +69,7 @@
     <ClInclude Include="..\..\..\core\framework\network\portable\RoboCat.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\core\framework\network\portable\RoboCatShared.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\core\framework\network\portable\RoboMath.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\core\framework\network\portable\Rodent.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\core\framework\network\portable\ScoreBoardManager.h">
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\core\framework\network\portable\SocketAddress.h">
@@ -114,13 +78,13 @@
     <ClInclude Include="..\..\..\core\framework\network\portable\SocketAddressFactory.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\core\framework\network\portable\SocketAddressFamily.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\..\core\framework\network\portable\SocketUtil.h">
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\core\framework\network\portable\StringUtils.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\core\framework\network\portable\TCPSocket.h">
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\core\framework\network\portable\Timing.h">
@@ -138,42 +102,36 @@
     <ClInclude Include="..\..\..\core\framework\network\portable\World.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\core\framework\network\portable\Yarn.h">
+    <ClInclude Include="..\..\..\core\framework\network\portable\AckRange.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="pch.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="..\..\..\core\framework\network\portable\ByteSwap.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\core\framework\network\server\ReplicationManagerServer.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\core\framework\network\server\ReplicationManagerTransmissionData.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\core\framework\network\server\RoboCatServer.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\core\framework\network\server\Server.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\core\framework\network\server\ClientProxy.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\core\framework\network\server\NetworkManagerServer.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\core\framework\network\server\NetworkManagerServer.cpp">
+    <ClCompile Include="pch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\core\framework\network\server\ReplicationManagerServer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\core\framework\network\server\ReplicationManagerTransmissionData.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\core\framework\network\server\RoboCatServer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\core\framework\network\server\RoboCatServerPCH.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\core\framework\network\server\RodentServer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\core\framework\network\server\Server.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\core\framework\network\server\YarnServer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\core\framework\network\server\ClientProxy.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\core\framework\network\portable\DeliveryNotificationManager.cpp">
+    <ClCompile Include="..\..\server\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\core\framework\network\portable\Engine.cpp">
@@ -191,6 +149,9 @@
     <ClCompile Include="..\..\..\core\framework\network\portable\InputState.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\core\framework\network\portable\LinkingContext.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\core\framework\network\portable\MemoryBitStream.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -203,16 +164,13 @@
     <ClCompile Include="..\..\..\core\framework\network\portable\NetworkManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\core\framework\network\portable\ReplicationCommand.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\core\framework\network\portable\RoboCat.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\core\framework\network\portable\RoboMath.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\core\framework\network\portable\Rodent.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\core\framework\network\portable\ScoreBoardManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\core\framework\network\portable\SocketAddress.cpp">
@@ -227,28 +185,40 @@
     <ClCompile Include="..\..\..\core\framework\network\portable\StringUtils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\core\framework\network\portable\TCPSocket.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\core\framework\network\portable\Timing.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\core\framework\network\portable\UDPSocket.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\core\framework\network\portable\World.cpp">
+    <ClCompile Include="..\..\..\core\framework\network\portable\WeightedTimedMovingAverage.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\core\framework\network\portable\Yarn.cpp">
+    <ClCompile Include="..\..\..\core\framework\network\portable\World.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\core\framework\network\portable\AckRange.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="main.cpp">
+    <ClCompile Include="..\..\..\core\framework\network\portable\DeliveryNotificationManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="pch.cpp">
+    <ClCompile Include="..\..\..\core\framework\network\server\ReplicationManagerServer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\core\framework\network\server\ReplicationManagerTransmissionData.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\core\framework\network\server\RoboCatServer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\core\framework\network\server\Server.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\core\framework\network\server\ClientProxy.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\core\framework\network\server\NetworkManagerServer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
