@@ -14,8 +14,6 @@
 #include "World.h"
 #include "Timing.h"
 
-//uncomment this when you begin working on the server
-
 #define FRAME_RATE 0.01666666666667f // 60 frames per second
 
 bool Server::StaticInit()
@@ -34,7 +32,7 @@ Server::Server() : m_fFrameStateTime(0)
 
 int Server::Run()
 {
-    while (mShouldKeepRunning)
+    while (true)
     {
         Timing::sInstance.Update();
         

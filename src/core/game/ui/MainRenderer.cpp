@@ -25,7 +25,6 @@
 
 #include "macros.h"
 #include "NetworkManagerClient.h"
-#include "HUD.h"
 #include "World.h"
 #include "RoboCat.h"
 #include "StringUtils.h"
@@ -124,34 +123,28 @@ void MainRenderer::tempDraw(float stateTime)
         m_spriteBatcher->beginBatch();
         RenderBandWidth();
         RenderRoundTripTime();
-        RenderHealth();
         m_spriteBatcher->endBatch(*m_misc->gpuTextureWrapper, *m_textureGpuProgramWrapper);
-    }
-}
-
-void MainRenderer::RenderHealth()
-{
-    if (HUD::sInstance->m_iHealth > 0)
-    {
-        std::string healthString = StringUtils::Sprintf("Health %d", HUD::sInstance->m_iHealth);
-        RenderText(healthString, HUD::sInstance->m_iHealthOffset, Colors::Red);
     }
 }
 
 void MainRenderer::RenderBandWidth()
 {
+    static Vector3 bandwidthOrigin = Vector3(4.f, 6.6f, 0.0f);
+    
     std::string bandwidth = StringUtils::Sprintf("In %d  Bps, Out %d Bps",
                                             static_cast< int >(NetworkManagerClient::sInstance->GetBytesReceivedPerSecond().GetValue()),
                                             static_cast< int >(NetworkManagerClient::sInstance->GetBytesSentPerSecond().GetValue()));
-    RenderText(bandwidth, HUD::sInstance->mBandwidthOrigin, Colors::White);
+    RenderText(bandwidth, bandwidthOrigin, Colors::White);
 }
 
 void MainRenderer::RenderRoundTripTime()
 {
+    static Vector3 roundTripTimeOrigin = Vector3(5.f, 7.f, 0.0f);
+    
     float rttMS = NetworkManagerClient::sInstance->GetAvgRoundTripTime().GetValue() * 1000.f;
     
     std::string roundTripTime = StringUtils::Sprintf("RTT %d ms", (int) rttMS);
-    RenderText(roundTripTime, HUD::sInstance->mRoundTripTimeOrigin, Colors::White);
+    RenderText(roundTripTime, roundTripTimeOrigin, Colors::White);
 }
 
 void MainRenderer::RenderText(const std::string& inStr, const Vector3& origin, const Vector3& inColor)

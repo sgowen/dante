@@ -49,16 +49,19 @@ m_avatar(new PhysicalEntity(3, 3, 1.173913043478261f, 1.5f))
     std::string serverAddress = m_config->findValue("server_ip");
     if (serverAddress.length() == 0)
     {
-        serverAddress = std::string("208.97.168.138:9999");
+        //serverAddress = std::string("208.97.168.138:9999");
+        serverAddress = std::string("localhost:9999");
     }
     
     std::string userId = m_config->findValue("user_id");
     if (userId.length() == 0)
     {
-        userId = std::string("accounts@noctisgames.com");
+        userId = std::string("Noctis Games");
     }
     
-    Client::StaticInit();
+    InputManager::StaticInit();
+    
+    Client::getInstance()->init(serverAddress, userId);
 }
 
 MainScreen::~MainScreen()
@@ -197,7 +200,7 @@ void MainScreen::tempUpdateInput()
 
 void MainScreen::tempUpdate(float deltaTime)
 {
-    Client::sInstance->DoFrame();
+    Client::getInstance()->DoFrame();
     
     m_avatar->update(FRAME_RATE);
 }

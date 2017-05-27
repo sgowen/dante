@@ -19,13 +19,9 @@ public:
     
     virtual int Run();
     
-    void SetShouldKeepRunning(bool inShouldKeepRunning) { mShouldKeepRunning = inShouldKeepRunning; }
-    
     virtual void DoFrame();
     
 protected:
-    bool mShouldKeepRunning;
-    
     Engine();
 };
 

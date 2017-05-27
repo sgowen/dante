@@ -39,8 +39,6 @@
 		BB12EDD41A1CF6D9006D385B /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB12EDD31A1CF6D9006D385B /* QuartzCore.framework */; };
 		BB13BD471E58E04D0073C08F /* DDHidLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB13BD461E58E04D0073C08F /* DDHidLib.framework */; };
 		BB13BD521E58E7350073C08F /* DDHidLib.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = BB13BD461E58E04D0073C08F /* DDHidLib.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		BB3218761EC1418E007ED106 /* HUD.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB3218741EC1418E007ED106 /* HUD.cpp */; };
-		BB3218771EC1418E007ED106 /* HUD.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB3218741EC1418E007ED106 /* HUD.cpp */; };
 		BB44C3281DB030B3003E633F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = BB44C3201DB030B3003E633F /* AppDelegate.m */; };
 		BB44C3291DB030B3003E633F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BB44C3211DB030B3003E633F /* Assets.xcassets */; };
 		BB44C32A1DB030B3003E633F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BB44C3221DB030B3003E633F /* Main.storyboard */; };
@@ -460,8 +458,6 @@
 		BB1CC76F1EB9661100696C06 /* shader_003_frag.hlsl */ = {isa = PBXFileReference; lastKnownFileType = text; path = shader_003_frag.hlsl; sourceTree = "<group>"; };
 		BB1CC7701EB9661100696C06 /* shader_003_vert.hlsl */ = {isa = PBXFileReference; lastKnownFileType = text; path = shader_003_vert.hlsl; sourceTree = "<group>"; };
 		BB2BB0851DB81ECF000CE5E5 /* dante.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = dante.entitlements; sourceTree = "<group>"; };
-		BB3218741EC1418E007ED106 /* HUD.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HUD.cpp; sourceTree = "<group>"; };
-		BB3218751EC1418E007ED106 /* HUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUD.h; sourceTree = "<group>"; };
 		BB34FD711E565A7400AC8197 /* Android.mk */ = {isa = PBXFileReference; lastKnownFileType = text; path = Android.mk; sourceTree = "<group>"; };
 		BB34FD721E565A7400AC8197 /* Application.mk */ = {isa = PBXFileReference; lastKnownFileType = text; path = Application.mk; sourceTree = "<group>"; };
 		BB44C30A1DB0303F003E633F /* Dante.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Dante.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1941,8 +1937,6 @@
 			children = (
 				BBF226641EC12C9C00573356 /* Client.cpp */,
 				BBF226651EC12C9C00573356 /* Client.h */,
-				BB3218741EC1418E007ED106 /* HUD.cpp */,
-				BB3218751EC1418E007ED106 /* HUD.h */,
 				BBF226A81EC12CDE00573356 /* InputManager.cpp */,
 				BBF226A91EC12CDE00573356 /* InputManager.h */,
 				BBF226AC1EC12CDE00573356 /* NetworkManagerClient.cpp */,
@@ -2217,7 +2211,6 @@
 				BBF226C61EC12CDE00573356 /* InputManager.cpp in Sources */,
 				BB44C8771DB03A7E003E633F /* pngrtran.c in Sources */,
 				BB8308671EC2AD1F00435E7E /* RoboMath.cpp in Sources */,
-				BB3218761EC1418E007ED106 /* HUD.cpp in Sources */,
 				BBCFF1CC1ECD316D003EE520 /* MainAssets.cpp in Sources */,
 				BBAEF25F1EA94EDA00F0866E /* GpuProgramWrapper.cpp in Sources */,
 				BBAEF26D1EA94EDA00F0866E /* NGRectBatcherFactory.cpp in Sources */,
@@ -2264,7 +2257,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BB3218771EC1418E007ED106 /* HUD.cpp in Sources */,
 				BBAEF2941EA94EDA00F0866E /* Circle.cpp in Sources */,
 				BB8308831EC2AD1F00435E7E /* World.cpp in Sources */,
 				BBAEF2701EA94EDA00F0866E /* RendererHelperFactory.cpp in Sources */,

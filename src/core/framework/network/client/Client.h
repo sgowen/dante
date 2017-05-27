@@ -14,12 +14,15 @@
 class Client : public Engine
 {
 public:
-    static bool StaticInit();
+    static Client* getInstance();
     
-    virtual void DoFrame() override;
+    void init(std::string& serverIPAddress, std::string& userID);
     
-protected:
+private:
+    // ctor, copy ctor, and assignment should be private in a Singleton
     Client();
+    Client(const Client&);
+    Client& operator=(const Client&);
 };
 
 #endif /* defined(__noctisgames__Client__) */

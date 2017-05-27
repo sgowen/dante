@@ -37,7 +37,6 @@ private:
     
     void RenderBandWidth();
     void RenderRoundTripTime();
-    void RenderHealth();
     void RenderText(const std::string& inStr, const Vector3& origin, const Vector3& inColor);
 };
 

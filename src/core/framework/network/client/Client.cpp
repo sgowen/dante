@@ -13,35 +13,25 @@
 #include "RoboCatClient.h"
 #include "GameObjectRegistry.h"
 #include "NetworkManagerClient.h"
-#include "InputManager.h"
-#include "HUD.h"
 #include "SocketAddressFactory.h"
 
-bool Client::StaticInit()
+Client* Client::getInstance()
 {
-    // Create the Client pointer first because it initializes SDL
-    Client* client = new Client();
+    static Client client = Client();
     
-    InputManager::StaticInit();
+    return &client;
+}
+
+void Client::init(std::string& serverIPAddress, std::string& userID)
+{
+    GameObjectRegistry::sInstance->RegisterCreationFunction('RCAT', RoboCatClient::StaticCreate);
     
-    HUD::StaticInit();
+    SocketAddressPtr serverAddress = SocketAddressFactory::CreateIPv4FromString(serverIPAddress);
     
-    sInstance.reset(client);
-    
-    return true;
+    NetworkManagerClient::StaticInit(*serverAddress, userID);
 }
 
 Client::Client()
 {
-    GameObjectRegistry::sInstance->RegisterCreationFunction('RCAT', RoboCatClient::StaticCreate);
-    
-    //	SocketAddressPtr serverAddress = SocketAddressFactory::CreateIPv4FromString("208.97.168.138:9999");
-    SocketAddressPtr serverAddress = SocketAddressFactory::CreateIPv4FromString("localhost:9999");
-    
-    NetworkManagerClient::StaticInit(*serverAddress, "Stephen");
-}
-
-void Client::DoFrame()
-{
-    Engine::DoFrame();
+    // Empty
 }

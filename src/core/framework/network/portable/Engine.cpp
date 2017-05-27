@@ -19,8 +19,7 @@
 
 std::unique_ptr<Engine>	Engine::sInstance;
 
-Engine::Engine() :
-mShouldKeepRunning(true)
+Engine::Engine()
 {
     SocketUtil::StaticInit();
     

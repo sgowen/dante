@@ -11,7 +11,6 @@
 #include "RoboCatClient.h"
 
 #include "NetworkManagerClient.h"
-#include "HUD.h"
 #include "Move.h"
 #include "InputManager.h"
 #include "StringUtils.h"
@@ -31,7 +30,7 @@ void RoboCatClient::HandleDying()
     //and if we're local, tell the hud so our health goes away!
     if (GetPlayerId() == NetworkManagerClient::sInstance->GetPlayerId())
     {
-        HUD::sInstance->SetPlayerHealth(0);
+        //HUD::sInstance->SetPlayerHealth(0);
     }
 }
 
@@ -144,7 +143,7 @@ void RoboCatClient::Read(InputMemoryBitStream& inInputStream)
         //did we get health? if so, tell the hud!
         if ((readState & ECRS_Health) != 0)
         {
-            HUD::sInstance->SetPlayerHealth(m_iHealth);
+            //HUD::sInstance->SetPlayerHealth(m_iHealth);
         }
         
         DoClientSidePredictionAfterReplicationForLocalCat(readState);
