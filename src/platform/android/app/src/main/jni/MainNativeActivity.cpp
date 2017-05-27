@@ -15,7 +15,7 @@
 #include "MainAssets.h"
 #include "OpenGLManager.h"
 #include "GameConstants.h"
-#include "Vector2D.h"
+#include "Vector2.h"
 #include "MathUtil.h"
 
 #include "NDKHelper.h"

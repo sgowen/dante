@@ -259,7 +259,7 @@ void NetworkManagerServer::CheckForDisconnects()
 {
     std::vector<ClientProxyPtr> clientsToDC;
     
-    float minAllowedLastPacketFromClientTime = Timing::sInstance.GetTimef() - m_fClientDisconnectTimeout;
+    float minAllowedLastPacketFromClientTime = Timing::sInstance.GetTime() - m_fClientDisconnectTimeout;
     for (const auto& pair: mAddressToClientMap)
     {
         if (pair.second->GetLastPacketFromClientTime() < minAllowedLastPacketFromClientTime)

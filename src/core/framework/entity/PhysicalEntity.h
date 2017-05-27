@@ -11,7 +11,7 @@
 
 #include "Entity.h"
 
-#include "Vector2D.h"
+#include "Vector2.h"
 
 #include "RTTI.h"
 
@@ -36,11 +36,11 @@ public:
 
 	virtual void placeOn(float itemTopY);
 
-    Vector2D& getPosition();
+    Vector2& getPosition();
     
-    Vector2D& getVelocity();
+    Vector2& getVelocity();
     
-    Vector2D& getAcceleration();
+    Vector2& getAcceleration();
 
     std::vector<NGRect *>& getBounds();
     
@@ -59,9 +59,9 @@ public:
     void log();
     
 protected:
-    Vector2D m_position;
-    Vector2D m_velocity;
-    Vector2D m_acceleration;
+    Vector2 m_position;
+    Vector2 m_velocity;
+    Vector2 m_acceleration;
 	std::vector<NGRect *> m_bounds;
     float m_fWidth;
     float m_fHeight;

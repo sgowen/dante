@@ -11,7 +11,7 @@
 #include "OpenGLCircleBatcher.h"
 #include "macros.h"
 #include "Circle.h"
-#include "Vector2D.h"
+#include "Vector2.h"
 #include "OpenGLManager.h"
 #include "DummyGpuProgramWrapper.h"
 #include "Color.h"

@@ -11,7 +11,7 @@
 
 #include "Line.h"
 
-class Vector2D;
+class Vector2;
 
 class Triangle
 {
@@ -20,11 +20,11 @@ public:
     
     void set(float x1, float y1, float x2, float y2, float x3, float y3);
     
-    Vector2D& getPointA();
+    Vector2& getPointA();
     
-    Vector2D& getPointB();
+    Vector2& getPointB();
     
-    Vector2D& getPointC();
+    Vector2& getPointC();
     
     Line& getSideA();
     

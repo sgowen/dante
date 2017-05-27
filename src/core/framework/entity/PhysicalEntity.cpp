@@ -42,7 +42,7 @@ void PhysicalEntity::update(float deltaTime)
 
 void PhysicalEntity::resetBounds(float width, float height)
 {
-    Vector2D &lowerLeft = m_bounds.at(0)->getLowerLeft();
+    Vector2 &lowerLeft = m_bounds.at(0)->getLowerLeft();
     lowerLeft.set(m_position.getX() - width / 2, m_position.getY() - height / 2);
     m_bounds.at(0)->setWidth(width);
     m_bounds.at(0)->setHeight(height);
@@ -50,7 +50,7 @@ void PhysicalEntity::resetBounds(float width, float height)
 
 void PhysicalEntity::updateBounds()
 {
-    Vector2D &lowerLeft = m_bounds.at(0)->getLowerLeft();
+    Vector2 &lowerLeft = m_bounds.at(0)->getLowerLeft();
     lowerLeft.set(m_position.getX() - m_bounds.at(0)->getWidth() / 2, m_position.getY() - m_bounds.at(0)->getHeight() / 2);
 }
 
@@ -61,17 +61,17 @@ void PhysicalEntity::placeOn(float itemTopY)
 	updateBounds();
 }
 
-Vector2D& PhysicalEntity::getPosition()
+Vector2& PhysicalEntity::getPosition()
 {
     return m_position;
 }
 
-Vector2D& PhysicalEntity::getVelocity()
+Vector2& PhysicalEntity::getVelocity()
 {
     return m_velocity;
 }
 
-Vector2D& PhysicalEntity::getAcceleration()
+Vector2& PhysicalEntity::getAcceleration()
 {
     return m_acceleration;
 }

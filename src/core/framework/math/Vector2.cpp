@@ -1,5 +1,5 @@
 //
-//  Vector2D.cpp
+//  Vector2.cpp
 //  noctisgames-framework
 //
 //  Created by Stephen Gowen on 2/22/14.
@@ -8,24 +8,24 @@
 
 #include "pch.h"
 
-#include "Vector2D.h"
+#include "Vector2.h"
 
 #include "macros.h"
 
 #include <math.h>
 
-Vector2D::Vector2D(float x, float y) : m_fX(x), m_fY(y)
+Vector2::Vector2(float x, float y) : m_fX(x), m_fY(y)
 {
     // Empty
 }
 
-Vector2D::Vector2D(const Vector2D &cSource)
+Vector2::Vector2(const Vector2 &cSource)
 {
     m_fX = cSource.getX();
     m_fY = cSource.getY();
 }
 
-Vector2D Vector2D::set(const Vector2D &other)
+Vector2 Vector2::set(const Vector2 &other)
 {
     m_fX = other.getX();
     m_fY = other.getY();
@@ -33,7 +33,7 @@ Vector2D Vector2D::set(const Vector2D &other)
     return *this;
 }
 
-Vector2D Vector2D::set(float x, float y)
+Vector2 Vector2::set(float x, float y)
 {
     m_fX = x;
     m_fY = y;
@@ -41,31 +41,31 @@ Vector2D Vector2D::set(float x, float y)
     return *this;
 }
 
-Vector2D Vector2D::setX(float x)
+Vector2 Vector2::setX(float x)
 {
 	m_fX = x;
     
     return *this;
 }
 
-Vector2D Vector2D::setY(float y)
+Vector2 Vector2::setY(float y)
 {
 	m_fY = y;
     
     return *this;
 }
 
-Vector2D Vector2D::cpy()
+Vector2 Vector2::cpy()
 {
-	return Vector2D(m_fX, m_fY);
+	return Vector2(m_fX, m_fY);
 }
 
-void Vector2D::operator+= (const Vector2D &other)
+void Vector2::operator+= (const Vector2 &other)
 {
     add(other.getX(), other.getY());
 }
 
-Vector2D Vector2D::add(float x, float y)
+Vector2 Vector2::add(float x, float y)
 {
     m_fX += x;
     m_fY += y;
@@ -73,12 +73,12 @@ Vector2D Vector2D::add(float x, float y)
     return *this;
 }
 
-void Vector2D::operator-= (const Vector2D &other)
+void Vector2::operator-= (const Vector2 &other)
 {
     sub(other.getX(), other.getY());
 }
 
-Vector2D Vector2D::sub(float x, float y)
+Vector2 Vector2::sub(float x, float y)
 {
     m_fX -= x;
     m_fY -= y;
@@ -86,12 +86,12 @@ Vector2D Vector2D::sub(float x, float y)
     return *this;
 }
 
-Vector2D Vector2D::operator*= (float scalar)
+Vector2 Vector2::operator*= (float scalar)
 {
     return mul(scalar);
 }
 
-Vector2D Vector2D::mul(float scalar)
+Vector2 Vector2::mul(float scalar)
 {
     m_fX *= scalar;
     m_fY *= scalar;
@@ -99,12 +99,12 @@ Vector2D Vector2D::mul(float scalar)
     return *this;
 }
 
-float Vector2D::len()
+float Vector2::len()
 {
     return sqrtf(m_fX * m_fX + m_fY * m_fY);
 }
 
-Vector2D Vector2D::nor()
+Vector2 Vector2::nor()
 {
     float l = len();
     
@@ -117,7 +117,7 @@ Vector2D Vector2D::nor()
     return *this;
 }
 
-float Vector2D::angle()
+float Vector2::angle()
 {
     float radians = atan2f(m_fY, m_fX);
     float angle = RADIANS_TO_DEGREES(radians);
@@ -130,7 +130,7 @@ float Vector2D::angle()
     return angle;
 }
 
-Vector2D Vector2D::rotate(float angle)
+Vector2 Vector2::rotate(float angle)
 {
     float rad = DEGREES_TO_RADIANS(angle);
     float cos = cosf(rad);
@@ -145,22 +145,22 @@ Vector2D Vector2D::rotate(float angle)
     return *this;
 }
 
-float Vector2D::dist(const Vector2D &other) const
+float Vector2::dist(const Vector2 &other) const
 {
     return dist(other.getX(), other.getY());
 }
 
-float Vector2D::dist(float x, float y) const
+float Vector2::dist(float x, float y) const
 {
     return sqrtf(distSquared(x, y));
 }
 
-float Vector2D::distSquared(const Vector2D &other) const
+float Vector2::distSquared(const Vector2 &other) const
 {
     return distSquared(other.getX(), other.getY());
 }
 
-float Vector2D::distSquared(float x, float y) const
+float Vector2::distSquared(float x, float y) const
 {
     float distX = m_fX - x;
     float distY = m_fY - y;
@@ -168,12 +168,12 @@ float Vector2D::distSquared(float x, float y) const
     return distX * distX + distY * distY;
 }
 
-float Vector2D::getX() const
+float Vector2::getX() const
 {
     return m_fX;
 }
 
-float Vector2D::getY() const
+float Vector2::getY() const
 {
     return m_fY;
 }

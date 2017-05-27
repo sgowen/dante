@@ -22,7 +22,7 @@ namespace
 #if _WIN32
     LARGE_INTEGER sStartTime = { 0 };
 #else
-    high_resolution_clock::time_point sStartTime;
+    steady_clock::time_point sStartTime;
 #endif
 }
 
@@ -34,11 +34,11 @@ Timing::Timing()
     mPerfCountDuration = 1.0 / perfFreq.QuadPart;
     
     QueryPerformanceCounter(&sStartTime);
+#else
+    sStartTime = steady_clock::now();
+#endif
     
     mLastFrameStartTime = GetTime();
-#else
-    sStartTime = high_resolution_clock::now();
-#endif
 }
 
 void Timing::Update()
@@ -59,7 +59,7 @@ void Timing::updateManual(float stateTime, float deltaTime)
     mFrameStartTimef = static_cast<float> (mLastFrameStartTime);
 }
 
-double Timing::GetTime() const
+float Timing::GetTime() const
 {
 #if _WIN32
     LARGE_INTEGER curTime, timeSinceStart;
@@ -69,9 +69,9 @@ double Timing::GetTime() const
     
     return timeSinceStart.QuadPart * mPerfCountDuration;
 #else
-    auto now = high_resolution_clock::now();
+    auto now = steady_clock::now();
     auto ms = duration_cast< milliseconds >(now - sStartTime).count();
-    //a little uncool to then convert into a double just to go back, but oh well.
-    return static_cast<double>(ms) / 1000;
+    
+    return static_cast<float>(ms) / 1000;
 #endif
 }

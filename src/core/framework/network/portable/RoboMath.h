@@ -146,9 +146,6 @@ public:
     }
     
     static const Vector3 Zero;
-    static const Vector3 UnitX;
-    static const Vector3 UnitY;
-    static const Vector3 UnitZ;
 };
 
 template< int tValue, int tBits >
@@ -171,33 +168,26 @@ struct GetRequiredBits
 
 namespace RoboMath
 {
-    const float PI = 3.1415926535f;
-    float GetRandomFloat();
-    
-    Vector3 GetRandomVector(const Vector3& inMin, const Vector3& inMax);
-    
     inline bool	Is2DVectorEqual(const Vector3& inA, const Vector3& inB)
     {
         return (inA.m_fX == inB.m_fX && inA.m_fY == inB.m_fY);
     }
-    
-    inline float ToDegrees(float inRadians)
-    {
-        return inRadians * 180.0f / PI;
-    }
 }
+
+#include "Color.h"
 
 namespace Colors
 {
-    static const Vector3 Black(0.0f, 0.0f, 0.0f);
-    static const Vector3 White(1.0f, 1.0f, 1.0f);
-    static const Vector3 Red(1.0f, 0.0f, 0.0f);
-    static const Vector3 Green(0.0f, 1.0f, 0.0f);
-    static const Vector3 Blue(0.0f, 0.0f, 1.0f);
-    static const Vector3 LightYellow(1.0f, 1.0f, 0.88f);
-    static const Vector3 LightBlue(0.68f, 0.85f, 0.9f);
-    static const Vector3 LightPink(1.0f, 0.71f, 0.76f);
-    static const Vector3 LightGreen(0.56f, 0.93f, 0.56f);
+    static Color Black(0.0f, 0.0f, 0.0f, 1);
+    static Color White(1.0f, 1.0f, 1.0f, 1);
+    static Color Red(1.0f, 0.0f, 0.0f, 1);
+    static Color RedHalfVisible(1.0f, 0.0f, 0.0f, 0.3f);
+    static Color Green(0.0f, 1.0f, 0.0f, 1);
+    static Color Blue(0.0f, 0.0f, 1.0f, 1);
+    static Color LightYellow(1.0f, 1.0f, 0.88f, 1);
+    static Color LightBlue(0.68f, 0.85f, 0.9f, 1);
+    static Color LightPink(1.0f, 0.71f, 0.76f, 1);
+    static Color LightGreen(0.56f, 0.93f, 0.56f, 1);
 }
 
 #endif /* defined(__noctisgames__RoboMath__) */

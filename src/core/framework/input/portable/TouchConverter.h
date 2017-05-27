@@ -9,7 +9,7 @@
 #ifndef __noctisgames__TouchConverter__
 #define __noctisgames__TouchConverter__
 
-#include "Vector2D.h"
+#include "Vector2.h"
 
 #define TOUCH_CONVERTER (TouchConverter::getInstance())
 
@@ -20,14 +20,14 @@ class TouchConverter
 public:
     static TouchConverter* getInstance();
     
-    Vector2D& touchToWorld(ScreenEvent& touchEvent);
+    Vector2& touchToWorld(ScreenEvent& touchEvent);
     
     void setTouchScreenSize(int width, int height);
     
     void setCamSize(float camWidth, float camHeight);
     
 private:
-    Vector2D m_touchPoint;
+    Vector2 m_touchPoint;
     float m_fTouchScreenWidth;
     float m_fTouchScreenHeight;
     float m_fCamWidth;

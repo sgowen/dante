@@ -21,8 +21,6 @@ public:
     
     virtual void Update() override;
     
-    void TakeDamage(int inDamagingPlayerId);
-    
 protected:
     RoboCatServer();
     

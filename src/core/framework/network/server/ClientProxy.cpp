@@ -29,7 +29,7 @@ m_fTimeToRespawn(0.f)
 
 void ClientProxy::UpdateLastPacketTime()
 {
-    m_fLastPacketFromClientTime = Timing::sInstance.GetTimef();
+    m_fLastPacketFromClientTime = Timing::sInstance.GetTime();
 }
 
 void ClientProxy::HandleCatDied()

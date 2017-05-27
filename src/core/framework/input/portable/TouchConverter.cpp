@@ -32,7 +32,7 @@ m_fCamHeight(1)
     // Empty
 }
 
-Vector2D& TouchConverter::touchToWorld(ScreenEvent& touchEvent)
+Vector2& TouchConverter::touchToWorld(ScreenEvent& touchEvent)
 {
 #if TARGET_OS_IPHONE
     m_touchPoint.set((touchEvent.getX() / m_fTouchScreenWidth) * m_fCamWidth, (1 - touchEvent.getY() / m_fTouchScreenHeight) * m_fCamHeight);

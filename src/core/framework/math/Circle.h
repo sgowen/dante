@@ -9,19 +9,19 @@
 #ifndef __noctisgames__Circle__
 #define __noctisgames__Circle__
 
-#include "Vector2D.h"
+#include "Vector2.h"
 
 class Circle
 {
 public:
 	Circle(float x, float y, float radius);
     
-	Vector2D& getCenter();
+	Vector2& getCenter();
     
     float getRadius();
 
 private:
-    Vector2D m_center;
+    Vector2 m_center;
     float m_fRadius;
 };
 

@@ -11,7 +11,7 @@
 #include "LineBatcher.h"
 
 #include "Line.h"
-#include "Vector2D.h"
+#include "Vector2.h"
 #include "Color.h"
 
 LineBatcher::LineBatcher() : m_iNumLines(0)

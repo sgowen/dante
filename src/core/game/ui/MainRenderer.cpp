@@ -69,53 +69,18 @@ void MainRenderer::tempDraw(float stateTime)
 {
     m_rendererHelper->updateMatrix(0, CAM_WIDTH, 0, CAM_HEIGHT);
     
+    m_rendererHelper->clearFramebufferWithColor(0.5f, 0.5f, 0.5f, 1);
+    
     if (ensureTexture(m_demo)
         && ensureTexture(m_misc))
     {
         m_spriteBatcher->beginBatch();
-        
-        const auto& gameObjects = World::sInstance->GetGameObjects();
-        
-        for (GameObjectPtr go : gameObjects)
+        for (GameObjectPtr go : World::sInstance->GetGameObjects())
         {
-            if (go->GetClassId() == 'MOUS')
+            if (go->GetClassId() == 'RCAT')
             {
-                TextureRegion tr = ASSETS->findTextureRegion("TopSecretFolder");
-                m_spriteBatcher->drawSprite(go->GetLocation().m_fX, go->GetLocation().m_fY, go->GetScale(), go->GetScale(), 0, tr);
-            }
-            else if (go->GetClassId() == 'RCAT')
-            {
-                static Color c1 = Color(1, 1, 1, 1);
-                static Color c2 = Color(1, 0, 0, 1);
-                static Color c3 = Color(0, 1, 0, 1);
-                static Color c4 = Color(0, 0, 1, 1);
-                
-                Color* c = &c1;
-                switch (go->GetAsCat()->GetPlayerId())
-                {
-                    case 1:
-                        c = &c1;
-                        break;
-                    case 2:
-                        c = &c2;
-                        break;
-                    case 3:
-                        c = &c3;
-                        break;
-                    case 4:
-                        c = &c4;
-                        break;
-                    default:
-                        break;
-                }
-                
                 TextureRegion tr = ASSETS->findTextureRegion("CharacterHoldingGun", stateTime);
-                m_spriteBatcher->drawSprite(go->GetLocation().m_fX, go->GetLocation().m_fY, go->GetScale(), go->GetScale(), RADIANS_TO_DEGREES(go->GetRotation()) - 90, *c, tr);
-            }
-            else if (go->GetClassId() == 'YARN')
-            {
-                TextureRegion tr = ASSETS->findTextureRegion("Pellet");
-                m_spriteBatcher->drawSprite(go->GetLocation().m_fX, go->GetLocation().m_fY, go->GetScale(), go->GetScale(), 0, tr);
+                m_spriteBatcher->drawSprite(go->GetLocation().m_fX, go->GetLocation().m_fY, go->GetScale(), go->GetScale(), RADIANS_TO_DEGREES(go->GetRotation()) - 90, go->GetColor(), tr);
             }
         }
         m_spriteBatcher->endBatch(*m_demo->gpuTextureWrapper, *m_textureGpuProgramWrapper);
@@ -127,13 +92,20 @@ void MainRenderer::tempDraw(float stateTime)
     }
 }
 
+#include "WeightedTimedMovingAverage.h"
+
 void MainRenderer::RenderBandWidth()
 {
     static Vector3 bandwidthOrigin = Vector3(4.f, 6.6f, 0.0f);
     
-    std::string bandwidth = StringUtils::Sprintf("In %d  Bps, Out %d Bps",
-                                            static_cast< int >(NetworkManagerClient::sInstance->GetBytesReceivedPerSecond().GetValue()),
-                                            static_cast< int >(NetworkManagerClient::sInstance->GetBytesSentPerSecond().GetValue()));
+    const WeightedTimedMovingAverage& bpsIn = NetworkManagerClient::sInstance->GetBytesReceivedPerSecond();
+    int bpsInInt = static_cast< int >(bpsIn.GetValue());
+    
+    const WeightedTimedMovingAverage& bpsOut = NetworkManagerClient::sInstance->GetBytesSentPerSecond();
+    int bpsOutInt = static_cast< int >(bpsOut.GetValue());
+    
+    std::string bandwidth = StringUtils::Sprintf("In %d Bps, Out %d Bps", bpsInInt, bpsOutInt);
+    
     RenderText(bandwidth, bandwidthOrigin, Colors::White);
 }
 
@@ -147,9 +119,9 @@ void MainRenderer::RenderRoundTripTime()
     RenderText(roundTripTime, roundTripTimeOrigin, Colors::White);
 }
 
-void MainRenderer::RenderText(const std::string& inStr, const Vector3& origin, const Vector3& inColor)
+void MainRenderer::RenderText(const std::string& inStr, const Vector3& origin, const Color& inColor)
 {
-    Color fontColor = Color(inColor.m_fX, inColor.m_fY, inColor.m_fZ, 1);
+    Color fontColor = Color(inColor.red, inColor.green, inColor.blue, inColor.alpha);
     float fgWidth = CAM_WIDTH / 60;
     float fgHeight = fgWidth * 1.171875f;
     

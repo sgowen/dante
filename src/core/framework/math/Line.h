@@ -9,20 +9,20 @@
 #ifndef __noctisgames__Line__
 #define __noctisgames__Line__
 
-#include "Vector2D.h"
+#include "Vector2.h"
 
 class Line
 {
 public:
     Line(float x1, float y1, float x2, float y2);
     
-    Vector2D& getOrigin();
+    Vector2& getOrigin();
     
-    Vector2D& getEnd();
+    Vector2& getEnd();
     
 private:
-    Vector2D m_origin;
-    Vector2D m_end;
+    Vector2 m_origin;
+    Vector2 m_end;
 };
 
 #endif /* defined(__noctisgames__Line__) */

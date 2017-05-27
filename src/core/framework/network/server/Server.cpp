@@ -81,6 +81,23 @@ void Server::SpawnCatForPlayer(int inPlayerId)
     cat->SetPlayerId(inPlayerId);
     //gotta pick a better spawn location than this...
     cat->SetLocation(Vector3(8.f - static_cast<float>(inPlayerId), 4.f, 0.f));
+    switch (inPlayerId)
+    {
+        case 1:
+            cat->SetColor(Colors::Red);
+            break;
+        case 2:
+            cat->SetColor(Colors::Blue);
+            break;
+        case 3:
+            cat->SetColor(Colors::LightGreen);
+            break;
+        case 4:
+            cat->SetColor(Colors::LightYellow);
+            break;
+        default:
+            break;
+    }
 }
 
 void Server::HandleLostClient(ClientProxyPtr inClientProxy)

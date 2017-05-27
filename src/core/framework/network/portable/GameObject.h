@@ -11,6 +11,8 @@
 
 #include "RoboMath.h"
 
+#include "Color.h"
+
 #include <memory>
 
 class RoboCat;
@@ -63,8 +65,8 @@ public:
     
     Vector3 GetForwardVector() const;
     
-    void SetColor(const Vector3& inColor) { mColor = inColor; }
-    const Vector3& GetColor() const { return mColor; }
+    void SetColor(Color& inColor) { mColor = inColor; }
+    Color& GetColor() { return mColor; }
     
     bool DoesWantToDie() const { return mDoesWantToDie; }
     void SetDoesWantToDie(bool inWants) { mDoesWantToDie = inWants; }
@@ -72,12 +74,12 @@ public:
     int GetNetworkId() const { return m_iNetworkId; }
     void SetNetworkId(int inNetworkId);
     
-    virtual uint32_t Write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState) const { (void)inOutputStream; (void)inDirtyState; return 0; }
+    virtual uint32_t Write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState) { (void)inOutputStream; (void)inDirtyState; return 0; }
     virtual void Read(InputMemoryBitStream& inInputStream) { (void)inInputStream; }
     
 private:
     Vector3 mLocation;
-    Vector3 mColor;
+    Color mColor;
     
     float m_fCollisionRadius;
     

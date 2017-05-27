@@ -22,26 +22,19 @@ public:
     
     float GetDeltaTime() const { return mDeltaTime; }
     
-    void setDeltaTime(float deltaTime) { mDeltaTime = deltaTime; }
-    
-    double GetTime() const;
-    
-    float GetTimef() const
-    {
-        return static_cast<float>(GetTime());
-    }
+    float GetTime() const;
     
     float GetFrameStartTime() const { return mFrameStartTimef; }
     
     static Timing sInstance;
     
 private:
-    float		mDeltaTime;
-    uint64_t	mDeltaTick;
+    float mDeltaTime;
+    uint64_t mDeltaTick;
     
-    double		mLastFrameStartTime;
-    float		mFrameStartTimef;
-    double		mPerfCountDuration;
+    double mLastFrameStartTime;
+    float mFrameStartTimef;
+    double mPerfCountDuration;
 };
 
 #endif /* defined(__noctisgames__Timing__) */

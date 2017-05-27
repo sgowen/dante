@@ -16,9 +16,7 @@
 #include "SocketAddressFamily.h"
 
 NetworkManager::NetworkManager() :
-mBytesSentThisFrame(0),
-mDropPacketChance(0.f),
-mSimulatedLatency(0.f)
+mBytesSentThisFrame(0)
 {
 }
 
@@ -92,22 +90,13 @@ void NetworkManager::ReadIncomingPacketsIntoQueue()
             ++receivedPackedCount;
             totalReadByteCount += readByteCount;
             
-            //now, should we drop the packet?
-            if (RoboMath::GetRandomFloat() >= mDropPacketChance)
-            {
-                //we made it
-                //shove the packet into the queue and we'll handle it as soon as we should...
-                //we'll pretend it wasn't received until simulated latency from now
-                //this doesn't sim jitter, for that we would need to.....
-                
-                float simulatedReceivedTime = Timing::sInstance.GetTimef() + mSimulatedLatency;
-                mPacketQueue.emplace(simulatedReceivedTime, inputStream, fromAddress);
-            }
-            else
-            {
-                LOG("Dropped packet!", 0);
-                //dropped!
-            }
+            //we made it
+            //shove the packet into the queue and we'll handle it as soon as we should...
+            //we'll pretend it wasn't received until simulated latency from now
+            //this doesn't sim jitter, for that we would need to.....
+            
+            float simulatedReceivedTime = Timing::sInstance.GetTime();
+            mPacketQueue.emplace(simulatedReceivedTime, inputStream, fromAddress);
         }
         else
         {
@@ -127,7 +116,7 @@ void NetworkManager::ProcessQueuedPackets()
     while (!mPacketQueue.empty())
     {
         ReceivedPacket& nextPacket = mPacketQueue.front();
-        if (Timing::sInstance.GetTimef() > nextPacket.GetReceivedTime())
+        if (Timing::sInstance.GetTime() > nextPacket.GetReceivedTime())
         {
             ProcessPacket(nextPacket.GetPacketBuffer(), nextPacket.GetFromAddress());
             mPacketQueue.pop();

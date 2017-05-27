@@ -43,9 +43,6 @@ public:
     const WeightedTimedMovingAverage& GetBytesReceivedPerSecond()	const	{ return mBytesReceivedPerSecond; }
     const WeightedTimedMovingAverage& GetBytesSentPerSecond()		const	{ return mBytesSentPerSecond; }
     
-    void	SetDropPacketChance(float inChance)	{ mDropPacketChance = inChance; }
-    void	SetSimulatedLatency(float inLatency)	{ mSimulatedLatency = inLatency; }
-    
     inline	GameObjectPtr	GetGameObject(int inNetworkId) const;
     void	AddToNetworkIdToGameObjectMap(GameObjectPtr inGameObject);
     void	RemoveFrom_networkIdToGameObjectMap(GameObjectPtr inGameObject);
@@ -83,9 +80,6 @@ private:
     WeightedTimedMovingAverage	mBytesSentPerSecond;
     
     int							mBytesSentThisFrame;
-    
-    float						mDropPacketChance;
-    float						mSimulatedLatency;
 };
 
 inline GameObjectPtr NetworkManager::GetGameObject(int inNetworkId) const

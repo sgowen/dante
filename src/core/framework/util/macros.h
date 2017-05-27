@@ -9,7 +9,7 @@
 #ifndef __noctisgames__macros__
 #define __noctisgames__macros__
 
-#define NG_M_PI 3.14159265358979323846
+#define NG_M_PI 3.1415926535f
 
 #define UNUSED(x) (void)(x)
 

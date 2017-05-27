@@ -25,9 +25,8 @@ public:
         ECRS_Pose = 1 << 0,
         ECRS_Color = 1 << 1,
         ECRS_PlayerId = 1 << 2,
-        ECRS_Health = 1 << 3,
         
-        ECRS_AllState = ECRS_Pose | ECRS_Color | ECRS_PlayerId | ECRS_Health
+        ECRS_AllState = ECRS_Pose | ECRS_Color | ECRS_PlayerId
     };
     
     static	GameObject*	StaticCreate() { return new RoboCat(); }
@@ -50,7 +49,7 @@ public:
     void SetVelocity(const Vector3& inVelocity)	{ mVelocity = inVelocity; }
     const Vector3& GetVelocity() const { return mVelocity; }
     
-    virtual uint32_t Write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState) const override;
+    virtual uint32_t Write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState) override;
     
 protected:
     RoboCat();

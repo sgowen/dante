@@ -12,13 +12,13 @@
 
 NGRect::NGRect(float x, float y, float width, float height, float angle)
 {
-    m_lowerLeft = Vector2D(x, y);
+    m_lowerLeft = Vector2(x, y);
     m_fWidth = width;
     m_fHeight = height;
     m_fAngle = angle;
 }
 
-Vector2D& NGRect::getLowerLeft()
+Vector2& NGRect::getLowerLeft()
 {
     return m_lowerLeft;
 }

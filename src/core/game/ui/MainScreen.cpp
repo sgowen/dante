@@ -12,7 +12,7 @@
 
 #include "JsonFile.h"
 #include "MainRenderer.h"
-#include "Vector2D.h"
+#include "Vector2.h"
 #include "PhysicalEntity.h"
 
 #include "GameConstants.h"
@@ -37,8 +37,8 @@
 MainScreen::MainScreen() : IScreen(),
 m_config(new JsonFile("dante.cfg")),
 m_renderer(new MainRenderer(MAX_BATCH_SIZE)),
-m_touchPointDown(new Vector2D()),
-m_touchPointDown2(new Vector2D()),
+m_touchPointDown(new Vector2()),
+m_touchPointDown2(new Vector2()),
 m_fStateTime(0),
 m_fFrameStateTime(0),
 m_iRequestedAction(REQUESTED_ACTION_UPDATE),

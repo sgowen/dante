@@ -9,7 +9,7 @@
 #ifndef __noctisgames__OverlapTester__
 #define __noctisgames__OverlapTester__
 
-class Vector2D;
+class Vector2;
 class Circle;
 class NGRect;
 class Triangle;
@@ -26,11 +26,11 @@ public:
     
     static bool overlapCircleNGRect(Circle &c, NGRect &r);
     
-    static bool isPointInNGRect(Vector2D p, NGRect &r);
+    static bool isPointInNGRect(Vector2 p, NGRect &r);
     
-    static bool isPointInCircle(Vector2D &p, Circle &c);
+    static bool isPointInCircle(Vector2 &p, Circle &c);
     
-    static bool isPointInTriangle(Vector2D &p, Triangle &t);
+    static bool isPointInTriangle(Vector2 &p, Triangle &t);
     
     static bool doLineAndNGRectOverlap(Line &l, NGRect &r);
 

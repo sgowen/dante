@@ -11,7 +11,7 @@
 #include "Direct3DNGRectBatcher.h"
 
 #include "NGRect.h"
-#include "Vector2D.h"
+#include "Vector2.h"
 #include "Direct3DProgramInput.h"
 #include "Direct3DManager.h"
 #include "GpuProgramWrapper.h"

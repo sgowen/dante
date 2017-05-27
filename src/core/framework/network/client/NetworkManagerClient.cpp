@@ -84,7 +84,7 @@ void NetworkManagerClient::SendOutgoingPackets()
 
 void NetworkManagerClient::UpdateSayingHello()
 {
-    float time = Timing::sInstance.GetTimef();
+    float time = Timing::sInstance.GetTime();
     
     if (time > m_fTimeOfLastHello + kTimeBetweenHellos)
     {
@@ -196,7 +196,7 @@ void NetworkManagerClient::DestroyGameObjectsInMap(const std::unordered_map<int,
 
 void NetworkManagerClient::UpdateSendingInputPacket()
 {
-    float time = Timing::sInstance.GetTimef();
+    float time = Timing::sInstance.GetTime();
     
     if (time > m_fTimeOfLastInputPacket + kTimeBetweenInputPackets)
     {

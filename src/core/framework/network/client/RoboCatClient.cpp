@@ -15,6 +15,7 @@
 #include "InputManager.h"
 #include "StringUtils.h"
 #include "Timing.h"
+#include "Color.h"
 
 RoboCatClient::RoboCatClient() :
 m_fTimeLocationBecameOutOfSync(0.f),
@@ -124,28 +125,14 @@ void RoboCatClient::Read(InputMemoryBitStream& inInputStream)
     inInputStream.Read(stateBit);
     if (stateBit)
     {
-        Vector3 color;
+        Color color;
         inInputStream.Read(color);
         SetColor(color);
         readState |= ECRS_Color;
     }
     
-    inInputStream.Read(stateBit);
-    if (stateBit)
-    {
-        m_iHealth = 0;
-        inInputStream.Read(m_iHealth, 4);
-        readState |= ECRS_Health;
-    }
-    
     if (GetPlayerId() == NetworkManagerClient::sInstance->GetPlayerId())
     {
-        //did we get health? if so, tell the hud!
-        if ((readState & ECRS_Health) != 0)
-        {
-            //HUD::sInstance->SetPlayerHealth(m_iHealth);
-        }
-        
         DoClientSidePredictionAfterReplicationForLocalCat(readState);
         
         //if this is a create packet, don't interpolate

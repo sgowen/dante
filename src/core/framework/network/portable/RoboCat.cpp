@@ -181,7 +181,7 @@ void RoboCat::ProcessCollisionsWithScreenWalls()
     }
 }
 
-uint32_t RoboCat::Write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState) const
+uint32_t RoboCat::Write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState)
 {
     uint32_t writtenState = 0;
     
@@ -235,18 +235,6 @@ uint32_t RoboCat::Write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyS
         inOutputStream.Write(GetColor());
         
         writtenState |= ECRS_Color;
-    }
-    else
-    {
-        inOutputStream.Write((bool)false);
-    }
-    
-    if (inDirtyState & ECRS_Health)
-    {
-        inOutputStream.Write((bool)true);
-        inOutputStream.Write(m_iHealth, 4);
-        
-        writtenState |= ECRS_Health;
     }
     else
     {

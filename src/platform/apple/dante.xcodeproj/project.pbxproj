@@ -280,8 +280,8 @@
 		BBAEF29A1EA94EDA00F0866E /* OverlapTester.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF17F1EA94ED900F0866E /* OverlapTester.cpp */; };
 		BBAEF29B1EA94EDA00F0866E /* Triangle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF1811EA94ED900F0866E /* Triangle.cpp */; };
 		BBAEF29C1EA94EDA00F0866E /* Triangle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF1811EA94ED900F0866E /* Triangle.cpp */; };
-		BBAEF29D1EA94EDA00F0866E /* Vector2D.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF1831EA94ED900F0866E /* Vector2D.cpp */; };
-		BBAEF29E1EA94EDA00F0866E /* Vector2D.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF1831EA94ED900F0866E /* Vector2D.cpp */; };
+		BBAEF29D1EA94EDA00F0866E /* Vector2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF1831EA94ED900F0866E /* Vector2.cpp */; };
+		BBAEF29E1EA94EDA00F0866E /* Vector2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF1831EA94ED900F0866E /* Vector2.cpp */; };
 		BBAEF2A31EA94EDA00F0866E /* AudioEngineHelperFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF18E1EA94ED900F0866E /* AudioEngineHelperFactory.cpp */; };
 		BBAEF2A41EA94EDA00F0866E /* AudioEngineHelperFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF18E1EA94ED900F0866E /* AudioEngineHelperFactory.cpp */; };
 		BBAEF2A51EA94EDA00F0866E /* IAudioEngineHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF1901EA94ED900F0866E /* IAudioEngineHelper.cpp */; };
@@ -752,8 +752,8 @@
 		BBAEF1801EA94ED900F0866E /* OverlapTester.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OverlapTester.h; sourceTree = "<group>"; };
 		BBAEF1811EA94ED900F0866E /* Triangle.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Triangle.cpp; sourceTree = "<group>"; };
 		BBAEF1821EA94ED900F0866E /* Triangle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Triangle.h; sourceTree = "<group>"; };
-		BBAEF1831EA94ED900F0866E /* Vector2D.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Vector2D.cpp; sourceTree = "<group>"; };
-		BBAEF1841EA94ED900F0866E /* Vector2D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Vector2D.h; sourceTree = "<group>"; };
+		BBAEF1831EA94ED900F0866E /* Vector2.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Vector2.cpp; sourceTree = "<group>"; };
+		BBAEF1841EA94ED900F0866E /* Vector2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Vector2.h; sourceTree = "<group>"; };
 		BBAEF18E1EA94ED900F0866E /* AudioEngineHelperFactory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AudioEngineHelperFactory.cpp; sourceTree = "<group>"; };
 		BBAEF18F1EA94ED900F0866E /* AudioEngineHelperFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AudioEngineHelperFactory.h; sourceTree = "<group>"; };
 		BBAEF1901EA94ED900F0866E /* IAudioEngineHelper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = IAudioEngineHelper.cpp; sourceTree = "<group>"; };
@@ -1690,8 +1690,8 @@
 				BBAEF1801EA94ED900F0866E /* OverlapTester.h */,
 				BBAEF1811EA94ED900F0866E /* Triangle.cpp */,
 				BBAEF1821EA94ED900F0866E /* Triangle.h */,
-				BBAEF1831EA94ED900F0866E /* Vector2D.cpp */,
-				BBAEF1841EA94ED900F0866E /* Vector2D.h */,
+				BBAEF1831EA94ED900F0866E /* Vector2.cpp */,
+				BBAEF1841EA94ED900F0866E /* Vector2.h */,
 			);
 			path = math;
 			sourceTree = "<group>";
@@ -2166,7 +2166,7 @@
 				BB44C8891DB03A7E003E633F /* pngwutil.c in Sources */,
 				BBAEF29B1EA94EDA00F0866E /* Triangle.cpp in Sources */,
 				BBAEF2671EA94EDA00F0866E /* LineBatcher.cpp in Sources */,
-				BBAEF29D1EA94EDA00F0866E /* Vector2D.cpp in Sources */,
+				BBAEF29D1EA94EDA00F0866E /* Vector2.cpp in Sources */,
 				BB8308431EC2AD1F00435E7E /* DeliveryNotificationManager.cpp in Sources */,
 				BB44C8711DB03A7E003E633F /* pngpread.c in Sources */,
 				BBAEF2651EA94EDA00F0866E /* ITextureLoader.cpp in Sources */,
@@ -2290,7 +2290,7 @@
 				BBAEF29C1EA94EDA00F0866E /* Triangle.cpp in Sources */,
 				BBAEF2681EA94EDA00F0866E /* LineBatcher.cpp in Sources */,
 				BB8308801EC2AD1F00435E7E /* UDPSocket.cpp in Sources */,
-				BBAEF29E1EA94EDA00F0866E /* Vector2D.cpp in Sources */,
+				BBAEF29E1EA94EDA00F0866E /* Vector2.cpp in Sources */,
 				BB44CB831DB053C0003E633F /* pngget.c in Sources */,
 				BBAEF2661EA94EDA00F0866E /* ITextureLoader.cpp in Sources */,
 				BBAEF1F81EA94EDA00F0866E /* PhysicalEntity.cpp in Sources */,

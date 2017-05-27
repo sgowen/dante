@@ -20,6 +20,11 @@ struct Color
 	{
 		// Empty
 	}
+    
+    Color() : red(0), green(0), blue(0), alpha(0)
+    {
+        // Empty
+    }
 };
 
 #endif /* defined(__noctisgames__Color__) */

@@ -15,7 +15,7 @@
 
 class JsonFile;
 class MainRenderer;
-class Vector2D;
+class Vector2;
 class PhysicalEntity;
 
 class MainScreen : public IScreen
@@ -48,8 +48,8 @@ public:
 private:
     JsonFile* m_config;
     MainRenderer* m_renderer;
-    Vector2D* m_touchPointDown;
-    Vector2D* m_touchPointDown2;
+    Vector2* m_touchPointDown;
+    Vector2* m_touchPointDown2;
     
     float m_fStateTime;
     float m_fFrameStateTime;

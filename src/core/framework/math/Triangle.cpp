@@ -10,7 +10,7 @@
 
 #include "Triangle.h"
 
-#include "Vector2D.h"
+#include "Vector2.h"
 
 Triangle::Triangle(float x1, float y1, float x2, float y2, float x3, float y3) :
 m_sideA(x1, y1, x2, y2),
@@ -30,17 +30,17 @@ void Triangle::set(float x1, float y1, float x2, float y2, float x3, float y3)
     m_sideC.getEnd().set(x1, y1);
 }
 
-Vector2D& Triangle::getPointA()
+Vector2& Triangle::getPointA()
 {
     return m_sideA.getOrigin();
 }
 
-Vector2D& Triangle::getPointB()
+Vector2& Triangle::getPointB()
 {
     return m_sideB.getOrigin();
 }
 
-Vector2D& Triangle::getPointC()
+Vector2& Triangle::getPointC()
 {
     return m_sideC.getOrigin();
 }

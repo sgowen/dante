@@ -13,7 +13,7 @@
 #include "macros.h"
 #include "NGRect.h"
 #include "Circle.h"
-#include "Vector2D.h"
+#include "Vector2.h"
 #include "Triangle.h"
 #include "Line.h"
 
@@ -23,8 +23,8 @@
 
 bool OverlapTester::doCirclesOverlap(Circle &c1, Circle &c2)
 {
-    Vector2D c1Center = c1.getCenter();
-    Vector2D c2Center = c2.getCenter();
+    Vector2 c1Center = c1.getCenter();
+    Vector2 c2Center = c2.getCenter();
     float distance = c1Center.distSquared(c2Center);
     float radiusSum = c1.getRadius() + c2.getRadius();
     
@@ -69,7 +69,7 @@ bool OverlapTester::doNGRectsOverlap(NGRect &r1, NGRect &r2)
         x4 += x;
         y4 += y;
         
-        return isPointInNGRect(Vector2D(x1, y1), r2) || isPointInNGRect(Vector2D(x2, y2), r2) || isPointInNGRect(Vector2D(x3, y3), r2) || isPointInNGRect(Vector2D(x4, y4), r2);
+        return isPointInNGRect(Vector2(x1, y1), r2) || isPointInNGRect(Vector2(x2, y2), r2) || isPointInNGRect(Vector2(x3, y3), r2) || isPointInNGRect(Vector2(x4, y4), r2);
     }
     else
     {
@@ -108,17 +108,17 @@ bool OverlapTester::doesNGRectOverlapTriangle(NGRect &r, Triangle &t)
     return doLineAndNGRectOverlap(t.getSideA(), r) || doLineAndNGRectOverlap(t.getSideB(), r) || doLineAndNGRectOverlap(t.getSideC(), r);
 }
 
-bool OverlapTester::isPointInNGRect(Vector2D p, NGRect &r)
+bool OverlapTester::isPointInNGRect(Vector2 p, NGRect &r)
 {
     return r.getLeft() <= p.getX() && r.getLeft() + r.getWidth() >= p.getX() && r.getBottom() <= p.getY() && r.getTop() >= p.getY();
 }
 
-bool OverlapTester::isPointInCircle(Vector2D &p, Circle &c)
+bool OverlapTester::isPointInCircle(Vector2 &p, Circle &c)
 {
     return c.getCenter().distSquared(p) < c.getRadius() * c.getRadius();
 }
 
-bool OverlapTester::isPointInTriangle(Vector2D &p, Triangle &tr)
+bool OverlapTester::isPointInTriangle(Vector2 &p, Triangle &tr)
 {
     float pX = p.getX();
     float pY = p.getY();

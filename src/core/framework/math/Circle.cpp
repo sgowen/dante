@@ -15,7 +15,7 @@ Circle::Circle(float x, float y, float radius) : m_center(x, y), m_fRadius(radiu
     // Empty
 }
 
-Vector2D& Circle::getCenter()
+Vector2& Circle::getCenter()
 {
     return m_center;
 }

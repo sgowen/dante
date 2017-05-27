@@ -9,14 +9,14 @@
 #ifndef __noctisgames__NGRect__
 #define __noctisgames__NGRect__
 
-#include "Vector2D.h"
+#include "Vector2.h"
 
 class NGRect
 {
 public:
     NGRect(float x, float y, float width, float height, float angle = 0);
     
-    Vector2D& getLowerLeft();
+    Vector2& getLowerLeft();
     
     float getRight();
     
@@ -39,7 +39,7 @@ public:
     void setAngle(float angle);
     
 private:
-    Vector2D m_lowerLeft;
+    Vector2 m_lowerLeft;
     float m_fWidth;
     float m_fHeight;
     float m_fAngle;

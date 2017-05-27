@@ -10,7 +10,7 @@
 
 #include "macros.h"
 #include "Line.h"
-#include "Vector2D.h"
+#include "Vector2.h"
 #include "OpenGLManager.h"
 #include "GpuProgramWrapper.h"
 #include "Color.h"

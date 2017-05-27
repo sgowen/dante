@@ -11,6 +11,7 @@
 #include "MemoryBitStream.h"
 
 #include "RoboMath.h"
+#include "Color.h"
 
 void OutputMemoryBitStream::WriteBits(uint8_t inData, uint32_t inBitCount)
 {
@@ -75,6 +76,22 @@ void InputMemoryBitStream::Read(Vector3& outVector)
     Read(outVector.m_fZ);
 }
 
+void OutputMemoryBitStream::Write(Color& inColor)
+{
+    Write(inColor.red);
+    Write(inColor.green);
+    Write(inColor.blue);
+    Write(inColor.alpha);
+}
+
+void InputMemoryBitStream::Read(Color& outColor)
+{
+    Read(outColor.red);
+    Read(outColor.green);
+    Read(outColor.blue);
+    Read(outColor.alpha);
+}
+
 void OutputMemoryBitStream::ReallocBuffer(uint32_t inNewBitLength)
 {
     if (mBuffer == nullptr)
@@ -129,14 +146,14 @@ void InputMemoryBitStream::ReadBits(uint8_t& outData, uint32_t inBitCount)
 void InputMemoryBitStream::ReadBits(void* outData, uint32_t inBitCount)
 {
     uint8_t* destByte = reinterpret_cast< uint8_t* >(outData);
-    //write all the bytes
+    // read all the bytes
     while (inBitCount > 8)
     {
         ReadBits(*destByte, 8);
         ++destByte;
         inBitCount -= 8;
     }
-    //write anything left
+    // read anything left
     if (inBitCount > 0)
     {
         ReadBits(*destByte, inBitCount);

@@ -16,12 +16,12 @@ WeightedTimedMovingAverage::WeightedTimedMovingAverage(float inDuration) :
 m_fDuration(inDuration),
 m_fValue(0.f)
 {
-    m_fTimeLastEntryMade = Timing::sInstance.GetTimef();
+    m_fTimeLastEntryMade = Timing::sInstance.GetTime();
 }
 
 void WeightedTimedMovingAverage::UpdatePerSecond(float inValue)
 {
-    float time = Timing::sInstance.GetTimef();
+    float time = Timing::sInstance.GetTime();
     float timeSinceLastEntry = time - m_fTimeLastEntryMade;
     
     float valueOverTime = inValue / timeSinceLastEntry;
@@ -30,14 +30,14 @@ void WeightedTimedMovingAverage::UpdatePerSecond(float inValue)
     float fractionOfDuration  = (timeSinceLastEntry / m_fDuration);
     if (fractionOfDuration > 1.f) { fractionOfDuration = 1.f; }
     
-    inValue = m_fValue * (1.f - fractionOfDuration) + valueOverTime * fractionOfDuration;
+    m_fValue = m_fValue * ( 1.f - fractionOfDuration ) + valueOverTime * fractionOfDuration;
     
     m_fTimeLastEntryMade = time;
 }
 
 void WeightedTimedMovingAverage::Update(float inValue)
 {
-    float time = Timing::sInstance.GetTimef();
+    float time = Timing::sInstance.GetTime();
     float timeSinceLastEntry = time - m_fTimeLastEntryMade;
     
     //now update our value by whatever amount of the duration that was..

@@ -13,9 +13,8 @@
 #include <cstdlib>
 #include <string>
 
-class GameObject;
-class LinkingContext;
 class Vector3;
+struct Color;
 
 class OutputMemoryBitStream
 {
@@ -50,6 +49,8 @@ public:
     void 		Write(bool inData)								{ WriteBits(&inData, 1); }
     
     void		Write(const Vector3& inVector);
+    
+    void		Write(Color& inColor);
     
     void Write(const std::string& inString)
     {
@@ -132,7 +133,9 @@ public:
         }
     }
     
-    void Read(Vector3& inVector);
+    void Read(Vector3& outVector);
+    
+    void Read(Color& outColor);
     
 private:
     char*		mBuffer;

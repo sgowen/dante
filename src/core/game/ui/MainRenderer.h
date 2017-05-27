@@ -37,7 +37,7 @@ private:
     
     void RenderBandWidth();
     void RenderRoundTripTime();
-    void RenderText(const std::string& inStr, const Vector3& origin, const Vector3& inColor);
+    void RenderText(const std::string& inStr, const Vector3& origin, const Color& inColor);
 };
 
 #endif /* defined(__dante__MainRenderer__) */
