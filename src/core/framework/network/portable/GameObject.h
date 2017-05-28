@@ -9,9 +9,8 @@
 #ifndef __noctisgames__GameObject__
 #define __noctisgames__GameObject__
 
-#include "RoboMath.h"
-
 #include "Color.h"
+#include "Vector2.h"
 
 #include <memory>
 
@@ -57,13 +56,13 @@ public:
     void SetScale(float inScale) { m_fScale = inScale; }
     float GetScale() const { return m_fScale; }
     
-    const Vector3& GetLocation() const { return mLocation; }
-    void SetLocation(const Vector3& inLocation) { mLocation = inLocation; }
+    Vector2& GetLocation() { return mLocation; }
+    void SetLocation(Vector2 inLocation) { mLocation = inLocation; }
     
     float GetCollisionRadius() const { return m_fCollisionRadius; }
     void SetCollisionRadius(float inRadius) { m_fCollisionRadius = inRadius; }
     
-    Vector3 GetForwardVector() const;
+    Vector2 GetForwardVector() const;
     
     void SetColor(Color& inColor) { mColor = inColor; }
     Color& GetColor() { return mColor; }
@@ -78,7 +77,7 @@ public:
     virtual void Read(InputMemoryBitStream& inInputStream) { (void)inInputStream; }
     
 private:
-    Vector3 mLocation;
+    Vector2 mLocation;
     Color mColor;
     
     float m_fCollisionRadius;

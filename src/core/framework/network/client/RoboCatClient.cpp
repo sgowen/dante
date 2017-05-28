@@ -16,6 +16,7 @@
 #include "StringUtils.h"
 #include "Timing.h"
 #include "Color.h"
+#include "Vector2.h"
 
 RoboCatClient::RoboCatClient() :
 m_fTimeLocationBecameOutOfSync(0.f),
@@ -61,7 +62,7 @@ void RoboCatClient::Update()
     {
         SimulateMovement(Timing::sInstance.GetDeltaTime());
         
-        if (RoboMath::Is2DVectorEqual(GetVelocity(), Vector3::Zero))
+        if (GetVelocity().isEqualTo(Vector2::Zero))
         {
             //we're in sync if our velocity is 0
             m_fTimeLocationBecameOutOfSync = 0.f;
@@ -85,23 +86,23 @@ void RoboCatClient::Read(InputMemoryBitStream& inInputStream)
     }
     
     float oldRotation = GetRotation();
-    Vector3 oldLocation = GetLocation();
-    Vector3 oldVelocity = GetVelocity();
+    Vector2 oldLocation = GetLocation();
+    Vector2 oldVelocity = GetVelocity();
     
     float replicatedRotation;
-    Vector3 replicatedLocation;
-    Vector3 replicatedVelocity;
+    Vector2 replicatedLocation;
+    Vector2 replicatedVelocity;
     
     inInputStream.Read(stateBit);
     if (stateBit)
     {
-        inInputStream.Read(replicatedVelocity.m_fX);
-        inInputStream.Read(replicatedVelocity.m_fY);
+        inInputStream.Read(replicatedVelocity.getXRef());
+        inInputStream.Read(replicatedVelocity.getYRef());
         
         SetVelocity(replicatedVelocity);
         
-        inInputStream.Read(replicatedLocation.m_fX);
-        inInputStream.Read(replicatedLocation.m_fY);
+        inInputStream.Read(replicatedLocation.getXRef());
+        inInputStream.Read(replicatedLocation.getYRef());
         
         SetLocation(replicatedLocation);
         
@@ -174,7 +175,7 @@ void RoboCatClient::DoClientSidePredictionAfterReplicationForLocalCat(uint32_t i
     }
 }
 
-void RoboCatClient::InterpolateClientSidePrediction(float inOldRotation, const Vector3& inOldLocation, const Vector3& inOldVelocity, bool inIsForRemoteCat)
+void RoboCatClient::InterpolateClientSidePrediction(float inOldRotation, Vector2& inOldLocation, Vector2& inOldVelocity, bool inIsForRemoteCat)
 {
     if (inOldRotation != GetRotation() && !inIsForRemoteCat)
     {
@@ -183,7 +184,7 @@ void RoboCatClient::InterpolateClientSidePrediction(float inOldRotation, const V
     
     float roundTripTime = NetworkManagerClient::sInstance->GetRoundTripTime();
     
-    if (!RoboMath::Is2DVectorEqual(inOldLocation, GetLocation()))
+    if (!inOldLocation.isEqualTo(GetLocation()))
     {
         LOG("ERROR! Move replay ended with incorrect location!", 0);
         
@@ -197,7 +198,7 @@ void RoboCatClient::InterpolateClientSidePrediction(float inOldRotation, const V
         float durationOutOfSync = time - m_fTimeLocationBecameOutOfSync;
         if (durationOutOfSync < roundTripTime)
         {
-            SetLocation(Lerp(inOldLocation, GetLocation(), inIsForRemoteCat ? (durationOutOfSync / roundTripTime) : 0.1f));
+            SetLocation(lerp(inOldLocation, GetLocation(), inIsForRemoteCat ? (durationOutOfSync / roundTripTime) : 0.1f));
         }
     }
     else
@@ -206,7 +207,7 @@ void RoboCatClient::InterpolateClientSidePrediction(float inOldRotation, const V
         m_fTimeLocationBecameOutOfSync = 0.f;
     }
     
-    if (!RoboMath::Is2DVectorEqual(inOldVelocity, GetVelocity()))
+    if (!inOldVelocity.isEqualTo(GetVelocity()))
     {
         LOG("ERROR! Move replay ended with incorrect velocity!", 0);
         
@@ -221,7 +222,7 @@ void RoboCatClient::InterpolateClientSidePrediction(float inOldRotation, const V
         float durationOutOfSync = time - m_fTimeVelocityBecameOutOfSync;
         if (durationOutOfSync < roundTripTime)
         {
-            SetVelocity(Lerp(inOldVelocity, GetVelocity(), inIsForRemoteCat ? (durationOutOfSync / roundTripTime) : 0.1f));
+            SetVelocity(lerp(inOldVelocity, GetVelocity(), inIsForRemoteCat ? (durationOutOfSync / roundTripTime) : 0.1f));
         }
         //otherwise, fine...
     }

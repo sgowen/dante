@@ -10,7 +10,7 @@
 
 #include "MemoryBitStream.h"
 
-#include "RoboMath.h"
+#include "Vector2.h"
 #include "Color.h"
 
 void OutputMemoryBitStream::WriteBits(uint8_t inData, uint32_t inBitCount)
@@ -62,18 +62,16 @@ void OutputMemoryBitStream::WriteBits(const void* inData, uint32_t inBitCount)
     }
 }
 
-void OutputMemoryBitStream::Write(const Vector3& inVector)
+void OutputMemoryBitStream::Write(const Vector2& inVector)
 {
-    Write(inVector.m_fX);
-    Write(inVector.m_fY);
-    Write(inVector.m_fZ);
+    Write(inVector.getX());
+    Write(inVector.getY());
 }
 
-void InputMemoryBitStream::Read(Vector3& outVector)
+void InputMemoryBitStream::Read(Vector2& outVector)
 {
-    Read(outVector.m_fX);
-    Read(outVector.m_fY);
-    Read(outVector.m_fZ);
+    Read(outVector.getXRef());
+    Read(outVector.getYRef());
 }
 
 void OutputMemoryBitStream::Write(Color& inColor)
@@ -115,14 +113,6 @@ void OutputMemoryBitStream::ReallocBuffer(uint32_t inNewBitLength)
     mBitCapacity = inNewBitLength;
 }
 
-void test1()
-{
-    OutputMemoryBitStream mbs;
-    
-    mbs.WriteBits(11, 5);
-    mbs.WriteBits(52, 6);
-}
-
 void InputMemoryBitStream::ReadBits(uint8_t& outData, uint32_t inBitCount)
 {
     uint32_t byteOffset = mBitHead >> 3;
@@ -153,6 +143,7 @@ void InputMemoryBitStream::ReadBits(void* outData, uint32_t inBitCount)
         ++destByte;
         inBitCount -= 8;
     }
+    
     // read anything left
     if (inBitCount > 0)
     {

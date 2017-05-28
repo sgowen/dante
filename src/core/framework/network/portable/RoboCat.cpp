@@ -13,16 +13,16 @@
 #include "MemoryBitStream.h"
 
 #include "World.h"
+#include "Vector2.h"
 
 //zoom hardcoded at 100...if we want to lock players on screen, this could be calculated from zoom
 const float WORLD_HEIGHT = 7.2f;
 const float WORLD_WIDTH = 12.8f;
 
-RoboCat::RoboCat() :
-GameObject(),
+RoboCat::RoboCat() : GameObject(),
 m_fMaxRotationSpeed(5.f),
 m_fMaxLinearSpeed(50.f),
-mVelocity(Vector3::Zero),
+mVelocity(0.0f, 0.0f),
 m_fWallRestitution(0.1f),
 m_fCatRestitution(0.1f),
 m_fThrustDir(0.f),
@@ -49,7 +49,7 @@ void RoboCat::AdjustVelocityByThrust(float inDeltaTime)
 {
     //just set the velocity based on the thrust direction -- no thrust will lead to 0 velocity
     //simulating acceleration makes the client prediction a bit more complex
-    Vector3 forwardVector = GetForwardVector();
+    Vector2 forwardVector = GetForwardVector();
     mVelocity = forwardVector * (m_fThrustDir * inDeltaTime * m_fMaxLinearSpeed);
 }
 
@@ -65,7 +65,7 @@ void RoboCat::SimulateMovement(float inDeltaTime)
 
 void RoboCat::Update()
 {
-    
+    // Empty
 }
 
 void RoboCat::ProcessCollisions()
@@ -74,7 +74,7 @@ void RoboCat::ProcessCollisions()
     ProcessCollisionsWithScreenWalls();
     
     float sourceRadius = GetCollisionRadius();
-    Vector3 sourceLocation = GetLocation();
+    Vector2 sourceLocation = GetLocation();
     
     //now let's iterate through the world and see what we hit...
     //note: since there's a small number of objects in our game, this is fine.
@@ -87,11 +87,11 @@ void RoboCat::ProcessCollisions()
         if (target != this && !target->DoesWantToDie())
         {
             //simple collision test for spheres- are the radii summed less than the distance?
-            Vector3 targetLocation = target->GetLocation();
+            Vector2 targetLocation = target->GetLocation();
             float targetRadius = target->GetCollisionRadius();
             
-            Vector3 delta = targetLocation - sourceLocation;
-            float distSq = delta.LengthSq2D();
+            Vector2 delta = targetLocation - sourceLocation;
+            float distSq = delta.lenSquared();
             float collisionDist = (sourceRadius + targetRadius);
             if (distSq < (collisionDist * collisionDist))
             {
@@ -101,14 +101,14 @@ void RoboCat::ProcessCollisions()
                 {
                     //okay, you hit something!
                     //so, project your location far enough that you're not colliding
-                    Vector3 dirToTarget = delta;
-                    dirToTarget.Normalize2D();
-                    Vector3 acceptableDeltaFromSourceToTarget = dirToTarget * collisionDist;
+                    Vector2 dirToTarget = delta;
+                    dirToTarget.nor();
+                    Vector2 acceptableDeltaFromSourceToTarget = dirToTarget * collisionDist;
                     //important note- we only move this cat. the other cat can take care of moving itself
                     SetLocation(targetLocation - acceptableDeltaFromSourceToTarget);
                     
                     
-                    Vector3 relVel = mVelocity;
+                    Vector2 relVel = mVelocity;
                     
                     //if other object is a cat, it might have velocity, so there might be relative velocity...
                     RoboCat* targetCat = target->GetAsCat();
@@ -119,11 +119,11 @@ void RoboCat::ProcessCollisions()
                     
                     //got vel with dir between objects to figure out if they're moving towards each other
                     //and if so, the magnitude of the impulse (since they're both just balls)
-                    float relVelDotDir = Dot2D(relVel, dirToTarget);
+                    float relVelDotDir = relVel.dot(dirToTarget);
                     
                     if (relVelDotDir > 0.f)
                     {
-                        Vector3 impulse = relVelDotDir * dirToTarget;
+                        Vector2 impulse = relVelDotDir * dirToTarget;
                         
                         if (targetCat)
                         {
@@ -144,39 +144,39 @@ void RoboCat::ProcessCollisions()
 
 void RoboCat::ProcessCollisionsWithScreenWalls()
 {
-    Vector3 location = GetLocation();
-    float x = location.m_fX;
-    float y = location.m_fY;
+    Vector2 location = GetLocation();
+    float x = location.getX();
+    float y = location.getY();
     
-    float vx = mVelocity.m_fX;
-    float vy = mVelocity.m_fY;
+    float vx = mVelocity.getX();
+    float vy = mVelocity.getY();
     
     float radius = GetCollisionRadius();
     
     //if the cat collides against a wall, the quick solution is to push it off
     if ((y + radius) >= WORLD_HEIGHT && vy > 0)
     {
-        mVelocity.m_fY = -vy * m_fWallRestitution;
-        location.m_fY = WORLD_HEIGHT - radius;
+        mVelocity.setY(-vy * m_fWallRestitution);
+        location.setY(WORLD_HEIGHT - radius);
         SetLocation(location);
     }
     else if (y <= (0) && vy < 0)
     {
-        mVelocity.m_fY = -vy * m_fWallRestitution;
-        location.m_fY = 0;
+        mVelocity.setY(-vy * m_fWallRestitution);
+        location.setY(0);
         SetLocation(location);
     }
     
     if ((x + radius) >= WORLD_WIDTH && vx > 0)
     {
-        mVelocity.m_fX = -vx * m_fWallRestitution;
-        location.m_fX = WORLD_WIDTH - radius;
+        mVelocity.setX(-vx * m_fWallRestitution);
+        location.setX(WORLD_WIDTH - radius);
         SetLocation(location);
     }
     else if (x <= (0) && vx < 0)
     {
-        mVelocity.m_fX = -vx * m_fWallRestitution;
-        location.m_fX = 0;
+        mVelocity.setX(-vx * m_fWallRestitution);
+        location.setX(0);
         SetLocation(location);
     }
 }
@@ -201,13 +201,13 @@ uint32_t RoboCat::Write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyS
     {
         inOutputStream.Write((bool)true);
         
-        Vector3 velocity = mVelocity;
-        inOutputStream.Write(velocity.m_fX);
-        inOutputStream.Write(velocity.m_fY);
+        Vector2 velocity = mVelocity;
+        inOutputStream.Write(velocity.getX());
+        inOutputStream.Write(velocity.getY());
         
-        Vector3 location = GetLocation();
-        inOutputStream.Write(location.m_fX);
-        inOutputStream.Write(location.m_fY);
+        Vector2 location = GetLocation();
+        inOutputStream.Write(location.getX());
+        inOutputStream.Write(location.getY());
         
         inOutputStream.Write(GetRotation());
         

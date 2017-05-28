@@ -80,20 +80,26 @@ void Server::SpawnCatForPlayer(int inPlayerId)
     RoboCatPtr cat = std::static_pointer_cast< RoboCat >(GameObjectRegistry::sInstance->CreateGameObject('RCAT'));
     cat->SetPlayerId(inPlayerId);
     //gotta pick a better spawn location than this...
-    cat->SetLocation(Vector3(8.f - static_cast<float>(inPlayerId), 4.f, 0.f));
+    cat->SetLocation(Vector2(8.f - static_cast<float>(inPlayerId), 4.0f));
+    
+    static Color Red(1.0f, 0.0f, 0.0f, 1);
+    static Color Blue(0.0f, 0.0f, 1.0f, 1);
+    static Color Green(0.0f, 1.0f, 0.0f, 1);
+    static Color LightYellow(1.0f, 1.0f, 0.88f, 1);
+    
     switch (inPlayerId)
     {
         case 1:
-            cat->SetColor(Colors::Red);
+            cat->SetColor(Red);
             break;
         case 2:
-            cat->SetColor(Colors::Blue);
+            cat->SetColor(Blue);
             break;
         case 3:
-            cat->SetColor(Colors::LightGreen);
+            cat->SetColor(Green);
             break;
         case 4:
-            cat->SetColor(Colors::LightYellow);
+            cat->SetColor(LightYellow);
             break;
         default:
             break;

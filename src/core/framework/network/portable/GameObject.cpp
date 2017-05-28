@@ -10,7 +10,11 @@
 
 #include "GameObject.h"
 
+#include "RoboCat.h"
 #include "MemoryBitStream.h"
+#include "Vector2.h"
+
+#include <math.h>
 
 GameObject::GameObject() :
 m_iIndexInWorld(-1),
@@ -18,9 +22,10 @@ m_fCollisionRadius(0.5f),
 mDoesWantToDie(false),
 m_fRotation(0.f),
 m_iNetworkId(0),
-mColor(Colors::White),
+mColor(1.0f, 1.0f, 1.0f, 1.0f),
 m_fScale(1.0f)
 {
+    // Empty
 }
 
 void GameObject::Update()
@@ -28,10 +33,10 @@ void GameObject::Update()
     //object don't do anything by default...
 }
 
-Vector3 GameObject::GetForwardVector()	const
+Vector2 GameObject::GetForwardVector()	const
 {
     //should we cache this when you turn?
-    return Vector3(sinf(m_fRotation), -cosf(m_fRotation), 0.f);
+    return Vector2(sinf(m_fRotation), -cosf(m_fRotation));
 }
 
 void GameObject::SetNetworkId(int inNetworkId)

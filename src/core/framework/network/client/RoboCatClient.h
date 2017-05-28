@@ -28,7 +28,7 @@ protected:
     RoboCatClient();
     
 private:
-    void InterpolateClientSidePrediction(float inOldRotation, const Vector3& inOldLocation, const Vector3& inOldVelocity, bool inIsForRemoteCat);
+    void InterpolateClientSidePrediction(float inOldRotation, Vector2& inOldLocation, Vector2& inOldVelocity, bool inIsForRemoteCat);
     
     float m_fTimeLocationBecameOutOfSync;
     float m_fTimeVelocityBecameOutOfSync;

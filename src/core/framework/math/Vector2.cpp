@@ -14,6 +14,38 @@
 
 #include <math.h>
 
+const Vector2 Vector2::Zero(0.0f, 0.0f);
+
+Vector2 operator+(const Vector2& inA, const Vector2& inB)
+{
+    return Vector2(inA.m_fX + inB.m_fX, inA.m_fY + inB.m_fY);
+}
+
+Vector2 operator-(const Vector2& inA, const Vector2& inB)
+{
+    return Vector2(inA.m_fX - inB.m_fX, inA.m_fY - inB.m_fY);
+}
+
+Vector2 operator*(float inScalar, const Vector2& inVec)
+{
+    return Vector2(inVec.getX() * inScalar, inVec.getY() * inScalar);
+}
+
+Vector2 operator*(const Vector2& inVec, float inScalar)
+{
+    return Vector2(inVec.getX() * inScalar, inVec.getY() * inScalar);
+}
+
+Vector2 operator*(const Vector2& inA, const Vector2& inB)
+{
+    return Vector2(inA.m_fX * inB.m_fX, inA.m_fY * inB.m_fY);
+}
+
+Vector2 lerp(Vector2& inA, Vector2& inB, float t)
+{
+    return Vector2(inA + t * (inB - inA));
+}
+
 Vector2::Vector2(float x, float y) : m_fX(x), m_fY(y)
 {
     // Empty
@@ -60,7 +92,7 @@ Vector2 Vector2::cpy()
 	return Vector2(m_fX, m_fY);
 }
 
-void Vector2::operator+= (const Vector2 &other)
+void Vector2::operator+=(const Vector2 &other)
 {
     add(other.getX(), other.getY());
 }
@@ -73,7 +105,7 @@ Vector2 Vector2::add(float x, float y)
     return *this;
 }
 
-void Vector2::operator-= (const Vector2 &other)
+void Vector2::operator-=(const Vector2 &other)
 {
     sub(other.getX(), other.getY());
 }
@@ -86,7 +118,7 @@ Vector2 Vector2::sub(float x, float y)
     return *this;
 }
 
-Vector2 Vector2::operator*= (float scalar)
+Vector2 Vector2::operator*=(float scalar)
 {
     return mul(scalar);
 }
@@ -102,6 +134,11 @@ Vector2 Vector2::mul(float scalar)
 float Vector2::len()
 {
     return sqrtf(m_fX * m_fX + m_fY * m_fY);
+}
+
+float Vector2::lenSquared()
+{
+    return m_fX * m_fX + m_fY * m_fY;
 }
 
 Vector2 Vector2::nor()
@@ -145,6 +182,11 @@ Vector2 Vector2::rotate(float angle)
     return *this;
 }
 
+float Vector2::dot(const Vector2 &other)
+{
+    return (m_fX * other.m_fX + m_fY * other.m_fY);
+}
+
 float Vector2::dist(const Vector2 &other) const
 {
     return dist(other.getX(), other.getY());
@@ -168,12 +210,27 @@ float Vector2::distSquared(float x, float y) const
     return distX * distX + distY * distY;
 }
 
+bool Vector2::isEqualTo(const Vector2& other)
+{
+    return (m_fX == other.m_fX && m_fY == other.m_fY);
+}
+
 float Vector2::getX() const
 {
     return m_fX;
 }
 
 float Vector2::getY() const
+{
+    return m_fY;
+}
+
+float& Vector2::getXRef()
+{
+    return m_fX;
+}
+
+float& Vector2::getYRef()
 {
     return m_fY;
 }

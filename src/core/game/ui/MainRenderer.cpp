@@ -12,7 +12,6 @@
 
 #include "TextureWrapper.h"
 #include "Font.h"
-#include "RoboMath.h"
 
 #include "Assets.h"
 #include "MainAssetsMapper.h"
@@ -80,7 +79,7 @@ void MainRenderer::tempDraw(float stateTime)
             if (go->GetClassId() == 'RCAT')
             {
                 TextureRegion tr = ASSETS->findTextureRegion("CharacterHoldingGun", stateTime);
-                m_spriteBatcher->drawSprite(go->GetLocation().m_fX, go->GetLocation().m_fY, go->GetScale(), go->GetScale(), RADIANS_TO_DEGREES(go->GetRotation()) - 90, go->GetColor(), tr);
+                m_spriteBatcher->drawSprite(go->GetLocation().getX(), go->GetLocation().getY(), go->GetScale(), go->GetScale(), RADIANS_TO_DEGREES(go->GetRotation()) - 90, go->GetColor(), tr);
             }
         }
         m_spriteBatcher->endBatch(*m_demo->gpuTextureWrapper, *m_textureGpuProgramWrapper);
@@ -96,7 +95,7 @@ void MainRenderer::tempDraw(float stateTime)
 
 void MainRenderer::RenderBandWidth()
 {
-    static Vector3 bandwidthOrigin = Vector3(4.f, 6.6f, 0.0f);
+    static Vector2 bandwidthOrigin = Vector2(4.f, 6.6f);
     
     const WeightedTimedMovingAverage& bpsIn = NetworkManagerClient::sInstance->GetBytesReceivedPerSecond();
     int bpsInInt = static_cast< int >(bpsIn.GetValue());
@@ -106,20 +105,25 @@ void MainRenderer::RenderBandWidth()
     
     std::string bandwidth = StringUtils::Sprintf("In %d Bps, Out %d Bps", bpsInInt, bpsOutInt);
     
-    RenderText(bandwidth, bandwidthOrigin, Colors::White);
+    static Color whiteColor = Color(1.0f, 1.0f, 1.0f, 1.0f);
+    
+    RenderText(bandwidth, bandwidthOrigin, whiteColor);
 }
 
 void MainRenderer::RenderRoundTripTime()
 {
-    static Vector3 roundTripTimeOrigin = Vector3(5.f, 7.f, 0.0f);
+    static Vector2 roundTripTimeOrigin = Vector2(5.f, 7.f);
     
     float rttMS = NetworkManagerClient::sInstance->GetAvgRoundTripTime().GetValue() * 1000.f;
     
     std::string roundTripTime = StringUtils::Sprintf("RTT %d ms", (int) rttMS);
-    RenderText(roundTripTime, roundTripTimeOrigin, Colors::White);
+    
+    static Color whiteColor = Color(1.0f, 1.0f, 1.0f, 1.0f);
+    
+    RenderText(roundTripTime, roundTripTimeOrigin, whiteColor);
 }
 
-void MainRenderer::RenderText(const std::string& inStr, const Vector3& origin, const Color& inColor)
+void MainRenderer::RenderText(const std::string& inStr, const Vector2& origin, const Color& inColor)
 {
     Color fontColor = Color(inColor.red, inColor.green, inColor.blue, inColor.alpha);
     float fgWidth = CAM_WIDTH / 60;
@@ -129,5 +133,5 @@ void MainRenderer::RenderText(const std::string& inStr, const Vector3& origin, c
     ss << inStr;
     std::string text = ss.str();
     
-    m_font->renderText(*m_spriteBatcher, text, origin.m_fX, origin.m_fY, fgWidth, fgHeight, fontColor, false, false);
+    m_font->renderText(*m_spriteBatcher, text, origin.getX(), origin.getY(), fgWidth, fgHeight, fontColor, false, false);
 }

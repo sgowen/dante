@@ -15,7 +15,7 @@
 
 class TextureWrapper;
 class Font;
-class Vector3;
+class Vector2;
 
 class MainRenderer : public Renderer
 {
@@ -37,7 +37,7 @@ private:
     
     void RenderBandWidth();
     void RenderRoundTripTime();
-    void RenderText(const std::string& inStr, const Vector3& origin, const Color& inColor);
+    void RenderText(const std::string& inStr, const Vector2& origin, const Color& inColor);
 };
 
 #endif /* defined(__dante__MainRenderer__) */

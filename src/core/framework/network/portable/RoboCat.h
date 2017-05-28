@@ -46,8 +46,8 @@ public:
     void SetPlayerId(uint32_t inPlayerId) { m_iPlayerId = inPlayerId; }
     uint32_t GetPlayerId() const { return m_iPlayerId; }
     
-    void SetVelocity(const Vector3& inVelocity)	{ mVelocity = inVelocity; }
-    const Vector3& GetVelocity() const { return mVelocity; }
+    void SetVelocity(Vector2 inVelocity) { mVelocity = inVelocity; }
+    Vector2& GetVelocity() { return mVelocity; }
     
     virtual uint32_t Write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState) override;
     
@@ -57,7 +57,7 @@ protected:
 private:
     void AdjustVelocityByThrust(float inDeltaTime);
     
-    Vector3 mVelocity;
+    Vector2 mVelocity;
     
     float m_fMaxLinearSpeed;
     float m_fMaxRotationSpeed;

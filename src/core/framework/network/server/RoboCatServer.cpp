@@ -27,8 +27,8 @@ void RoboCatServer::Update()
 {
     RoboCat::Update();
     
-    Vector3 oldLocation = GetLocation();
-    Vector3 oldVelocity = GetVelocity();
+    Vector2 oldLocation = GetLocation();
+    Vector2 oldVelocity = GetVelocity();
     float oldRotation = GetRotation();
     
     // is there a move we haven't processed yet?
@@ -51,8 +51,8 @@ void RoboCatServer::Update()
         moveList.Clear();
     }
     
-    if (!RoboMath::Is2DVectorEqual(oldLocation, GetLocation()) ||
-        !RoboMath::Is2DVectorEqual(oldVelocity, GetVelocity()) ||
+    if (!oldLocation.isEqualTo(GetLocation()) ||
+        !oldVelocity.isEqualTo(GetVelocity()) ||
         oldRotation != GetRotation())
     {
         NetworkManagerServer::sInstance->SetStateDirty(GetNetworkId(), ECRS_Pose);
