@@ -1,5 +1,5 @@
 //
-//  GridLockedPhysicalEntity.cpp
+//  GridManager.cpp
 //  noctisgames-framework
 //
 //  Created by Stephen Gowen on 2/6/16.
