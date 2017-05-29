@@ -10,7 +10,7 @@
 #define __noctisgames__InFlightPacket__
 
 #include "NetworkConstants.h"
-#include "TransmissionData.h"
+#include "ITransmissionData.h"
 
 #include <unordered_map>
 

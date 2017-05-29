@@ -9,7 +9,7 @@
 #ifndef __noctisgames__ReplicationManagerTransmissionData__
 #define __noctisgames__ReplicationManagerTransmissionData__
 
-#include "TransmissionData.h"
+#include "ITransmissionData.h"
 
 #include "ReplicationCommand.h"
 #include "ReplicationAction.h"
@@ -18,7 +18,7 @@
 
 class ReplicationManagerServer;
 
-class ReplicationManagerTransmissionData : public TransmissionData
+class ReplicationManagerTransmissionData : public ITransmissionData
 {
 public:
     ReplicationManagerTransmissionData(ReplicationManagerServer* inReplicationManagerServer) :

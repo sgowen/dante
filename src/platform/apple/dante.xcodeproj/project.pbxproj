@@ -626,7 +626,7 @@
 		BB8308331EC2AD1F00435E7E /* StringUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StringUtils.h; sourceTree = "<group>"; };
 		BB8308361EC2AD1F00435E7E /* Timing.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Timing.cpp; sourceTree = "<group>"; };
 		BB8308371EC2AD1F00435E7E /* Timing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Timing.h; sourceTree = "<group>"; };
-		BB8308381EC2AD1F00435E7E /* TransmissionData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransmissionData.h; sourceTree = "<group>"; };
+		BB8308381EC2AD1F00435E7E /* ITransmissionData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ITransmissionData.h; sourceTree = "<group>"; };
 		BB8308391EC2AD1F00435E7E /* UDPSocket.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = UDPSocket.cpp; sourceTree = "<group>"; };
 		BB83083A1EC2AD1F00435E7E /* UDPSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UDPSocket.h; sourceTree = "<group>"; };
 		BB83083B1EC2AD1F00435E7E /* WeightedTimedMovingAverage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WeightedTimedMovingAverage.h; sourceTree = "<group>"; };
@@ -1403,6 +1403,7 @@
 				BB8308161EC2AD1F00435E7E /* InputAction.h */,
 				BB8308171EC2AD1F00435E7E /* InputState.cpp */,
 				BB8308181EC2AD1F00435E7E /* InputState.h */,
+				BB8308381EC2AD1F00435E7E /* ITransmissionData.h */,
 				BBD43A071ED0BC76001D5EB4 /* LinkingContext.cpp */,
 				BB8308191EC2AD1F00435E7E /* LinkingContext.h */,
 				BB83081A1EC2AD1F00435E7E /* MemoryBitStream.cpp */,
@@ -1430,7 +1431,6 @@
 				BB8308331EC2AD1F00435E7E /* StringUtils.h */,
 				BB8308361EC2AD1F00435E7E /* Timing.cpp */,
 				BB8308371EC2AD1F00435E7E /* Timing.h */,
-				BB8308381EC2AD1F00435E7E /* TransmissionData.h */,
 				BB8308391EC2AD1F00435E7E /* UDPSocket.cpp */,
 				BB83083A1EC2AD1F00435E7E /* UDPSocket.h */,
 				BBD43A141ED0BD4B001D5EB4 /* WeightedTimedMovingAverage.cpp */,
