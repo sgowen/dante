@@ -14,19 +14,19 @@
 class Timing
 {
 public:
+    static Timing sInstance;
+    
     Timing();
     
     void Update();
     
     void updateManual(float stateTime, float deltaTime);
     
-    float GetDeltaTime() const { return mDeltaTime; }
-    
     float GetTime() const;
     
-    float GetFrameStartTime() const { return mFrameStartTimef; }
+    float GetDeltaTime() const;
     
-    static Timing sInstance;
+    float GetFrameStartTime() const;
     
 private:
     float mDeltaTime;

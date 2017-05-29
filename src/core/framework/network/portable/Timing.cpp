@@ -75,3 +75,13 @@ float Timing::GetTime() const
     return static_cast<float>(ms) / 1000;
 #endif
 }
+
+float Timing::GetDeltaTime() const
+{
+    return mDeltaTime;
+}
+
+float Timing::GetFrameStartTime() const
+{
+    return mFrameStartTimef;
+}
