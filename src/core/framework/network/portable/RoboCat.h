@@ -18,7 +18,7 @@ class OutputMemoryBitStream;
 class RoboCat : public GameObject
 {
 public:
-    SUB_CLASS_IDENTIFICATION('RCAT', GameObject)
+    SUB_CLASS_IDENTIFICATION('PLYR', GameObject)
     
     enum ECatReplicationState
     {

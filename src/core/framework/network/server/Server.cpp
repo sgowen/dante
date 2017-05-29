@@ -25,7 +25,7 @@ bool Server::StaticInit()
 
 Server::Server() : m_fFrameStateTime(0)
 {
-    GameObjectRegistry::sInstance->RegisterCreationFunction('RCAT', RoboCatServer::StaticCreate);
+    GameObjectRegistry::sInstance->RegisterCreationFunction('PLYR', RoboCatServer::StaticCreate);
     
     InitNetworkManager();
 }
@@ -77,7 +77,7 @@ void Server::HandleNewClient(ClientProxyPtr inClientProxy)
 
 void Server::SpawnCatForPlayer(int inPlayerId)
 {
-    RoboCatPtr cat = std::static_pointer_cast< RoboCat >(GameObjectRegistry::sInstance->CreateGameObject('RCAT'));
+    RoboCatPtr cat = std::static_pointer_cast< RoboCat >(GameObjectRegistry::sInstance->CreateGameObject('PLYR'));
     cat->SetPlayerId(inPlayerId);
     //gotta pick a better spawn location than this...
     cat->SetLocation(Vector2(8.f - static_cast<float>(inPlayerId), 4.0f));

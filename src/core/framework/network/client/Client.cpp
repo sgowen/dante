@@ -24,7 +24,7 @@ Client* Client::getInstance()
 
 void Client::init(std::string& serverIPAddress, std::string& userID)
 {
-    GameObjectRegistry::sInstance->RegisterCreationFunction('RCAT', RoboCatClient::StaticCreate);
+    GameObjectRegistry::sInstance->RegisterCreationFunction('PLYR', RoboCatClient::StaticCreate);
     
     SocketAddressPtr serverAddress = SocketAddressFactory::CreateIPv4FromString(serverIPAddress);
     

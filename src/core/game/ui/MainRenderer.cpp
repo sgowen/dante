@@ -76,7 +76,7 @@ void MainRenderer::tempDraw(float stateTime)
         m_spriteBatcher->beginBatch();
         for (GameObjectPtr go : World::sInstance->GetGameObjects())
         {
-            if (go->GetClassId() == 'RCAT')
+            if (go->GetClassId() == 'PLYR')
             {
                 TextureRegion tr = ASSETS->findTextureRegion("CharacterHoldingGun", stateTime);
                 m_spriteBatcher->drawSprite(go->GetLocation().getX(), go->GetLocation().getY(), go->GetScale(), go->GetScale(), RADIANS_TO_DEGREES(go->GetRotation()) - 90, go->GetColor(), tr);
