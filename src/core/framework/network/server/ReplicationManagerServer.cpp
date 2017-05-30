@@ -76,11 +76,6 @@ void ReplicationManagerServer::Write(OutputMemoryBitStream& inOutputStream, Repl
                     //don't need anything other than state!
                     writtenState = WriteDestroyAction(inOutputStream, networkId, dirtyState);
                     break;
-                case RA_RPC:
-                case RA_MAX:
-                default:
-                    // TODO?
-                    break;
             }
             
             ioTransmissinData->AddTransmission(networkId, action, writtenState);

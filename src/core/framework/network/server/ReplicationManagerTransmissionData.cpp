@@ -44,11 +44,6 @@ void ReplicationManagerTransmissionData::HandleDeliveryFailure(DeliveryNotificat
             case RA_Destroy:
                 HandleDestroyDeliveryFailure(networkId);
                 break;
-            case RA_RPC:
-            case RA_MAX:
-            default:
-                // TODO?
-                break;
         }
     }
 }
@@ -67,10 +62,6 @@ void ReplicationManagerTransmissionData::HandleDeliverySuccess(DeliveryNotificat
                 HandleDestroyDeliverySuccess(rt.GetNetworkId());
                 break;
             case RA_Update:
-            case RA_RPC:
-            case RA_MAX:
-            default:
-                // TODO?
                 break;
         }
     }
