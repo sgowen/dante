@@ -18,6 +18,7 @@ PhysicalEntity::PhysicalEntity(float x, float y, float width, float height) : En
 m_position(x, y),
 m_velocity(),
 m_acceleration(),
+m_color(1.0f, 1.0f, 1.0f, 1.0f),
 m_fWidth(width),
 m_fHeight(height),
 m_fAngle(0)
@@ -77,6 +78,11 @@ std::vector<NGRect *>& PhysicalEntity::getBounds()
 NGRect& PhysicalEntity::getMainBounds()
 {
     return *m_bounds.at(0);
+}
+
+Color& PhysicalEntity::getColor()
+{
+    return m_color;
 }
 
 const float& PhysicalEntity::getWidth()

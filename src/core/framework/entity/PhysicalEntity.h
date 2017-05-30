@@ -12,6 +12,7 @@
 #include "Entity.h"
 
 #include "Vector2.h"
+#include "Color.h"
 
 #include "RTTI.h"
 
@@ -44,6 +45,8 @@ public:
     
     NGRect& getMainBounds();
     
+    Color& getColor();
+    
     const float& getWidth();
     
     void setWidth(float width);
@@ -54,13 +57,12 @@ public:
     
     float getAngle();
     
-    void log();
-    
 protected:
     Vector2 m_position;
     Vector2 m_velocity;
     Vector2 m_acceleration;
 	std::vector<NGRect *> m_bounds;
+    Color m_color;
     float m_fWidth;
     float m_fHeight;
     float m_fAngle;
