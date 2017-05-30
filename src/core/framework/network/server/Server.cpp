@@ -10,6 +10,7 @@
 
 #include "Server.h"
 
+#include "NetworkManagerServer.h"
 #include "GameObjectRegistry.h"
 #include "World.h"
 #include "Timing.h"
@@ -25,7 +26,7 @@ bool Server::StaticInit()
 
 Server::Server() : m_fFrameStateTime(0)
 {
-    GameObjectRegistry::sInstance->RegisterCreationFunction('PLYR', RoboCatServer::StaticCreate);
+    GameObjectRegistry::sInstance->RegisterCreationFunction('PLYR', RoboCatServer::staticCreate);
     
     InitNetworkManager();
 }

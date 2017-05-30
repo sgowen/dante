@@ -10,13 +10,19 @@
 
 #include "RoboCatServer.h"
 
+#include "NetworkManagerServer.h"
 #include "Timing.h"
 #include "StringUtils.h"
 
-RoboCatServer::RoboCatServer() :
-m_fTimeOfNextShot(0.f),
-m_fTimeBetweenShots(0.2f)
-{}
+GameObjectPtr RoboCatServer::staticCreate()
+{
+    return NetworkManagerServer::sInstance->RegisterAndReturn(new RoboCatServer());
+}
+
+RoboCatServer::RoboCatServer() : RoboCat()
+{
+    // Empty
+}
 
 void RoboCatServer::HandleDying()
 {
@@ -57,4 +63,67 @@ void RoboCatServer::Update()
     {
         NetworkManagerServer::sInstance->SetStateDirty(GetNetworkId(), ECRS_Pose);
     }
+}
+
+uint32_t RoboCatServer::Write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState)
+{
+    uint32_t writtenState = 0;
+    
+    if (inDirtyState & ECRS_PlayerId)
+    {
+        inOutputStream.Write((bool)true);
+        inOutputStream.Write(GetPlayerId());
+        
+        writtenState |= ECRS_PlayerId;
+    }
+    else
+    {
+        inOutputStream.Write((bool)false);
+    }
+    
+    if (inDirtyState & ECRS_Pose)
+    {
+        inOutputStream.Write((bool)true);
+        
+        Vector2 velocity = mVelocity;
+        inOutputStream.Write(velocity.getX());
+        inOutputStream.Write(velocity.getY());
+        
+        Vector2 location = GetLocation();
+        inOutputStream.Write(location.getX());
+        inOutputStream.Write(location.getY());
+        
+        inOutputStream.Write(GetRotation());
+        
+        writtenState |= ECRS_Pose;
+    }
+    else
+    {
+        inOutputStream.Write((bool)false);
+    }
+    
+    //always write mThrustDir- it's just two bits
+    if (m_fThrustDir != 0.f)
+    {
+        inOutputStream.Write(true);
+        inOutputStream.Write(m_fThrustDir > 0.f);
+    }
+    else
+    {
+        inOutputStream.Write(false);
+    }
+    
+    if (inDirtyState & ECRS_Color)
+    {
+        inOutputStream.Write((bool)true);
+        inOutputStream.Write(GetColor());
+        
+        writtenState |= ECRS_Color;
+    }
+    else
+    {
+        inOutputStream.Write((bool)false);
+    }
+    
+    return writtenState;
 }

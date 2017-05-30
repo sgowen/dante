@@ -13,8 +13,6 @@
 
 #include "InputState.h"
 
-class OutputMemoryBitStream;
-
 class RoboCat : public GameObject
 {
 public:
@@ -29,7 +27,7 @@ public:
         ECRS_AllState = ECRS_Pose | ECRS_Color | ECRS_PlayerId
     };
     
-    static	GameObject*	StaticCreate() { return new RoboCat(); }
+    static	GameObject*	staticCreate() { return new RoboCat(); }
     
     virtual uint32_t GetAllStateMask() const override { return ECRS_AllState; }
     
@@ -49,14 +47,7 @@ public:
     void SetVelocity(Vector2 inVelocity) { mVelocity = inVelocity; }
     Vector2& GetVelocity() { return mVelocity; }
     
-    virtual uint32_t Write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState) override;
-    
 protected:
-    RoboCat();
-    
-private:
-    void AdjustVelocityByThrust(float inDeltaTime);
-    
     Vector2 mVelocity;
     
     float m_fMaxLinearSpeed;
@@ -67,6 +58,10 @@ private:
     float m_fCatRestitution;
     
     uint32_t m_iPlayerId;
+    
+    RoboCat();
+    
+    void AdjustVelocityByThrust(float inDeltaTime);
     
 protected:
     ///move down here for padding reasons...

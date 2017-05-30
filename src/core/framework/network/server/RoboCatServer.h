@@ -11,22 +11,19 @@
 
 #include "RoboCat.h"
 
-#include "NetworkManagerServer.h"
-
 class RoboCatServer : public RoboCat
 {
 public:
-    static GameObjectPtr StaticCreate() { return NetworkManagerServer::sInstance->RegisterAndReturn(new RoboCatServer()); }
+    static GameObjectPtr staticCreate();
+    
     virtual void HandleDying() override;
     
     virtual void Update() override;
     
+    virtual uint32_t Write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState) override;
+    
 protected:
     RoboCatServer();
-    
-private:
-    float m_fTimeOfNextShot;
-    float m_fTimeBetweenShots;
 };
 
 #endif /* defined(__noctisgames__RoboCatServer__) */

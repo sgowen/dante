@@ -55,7 +55,7 @@ void RoboCatClient::Update()
             
             SimulateMovement(deltaTime);
             
-            LOG("Client Move Time: %3.4f deltaTime: %3.4f left rot at %3.4f", latestMove.GetTimestamp(), deltaTime, GetRotation());
+            LOG("Client Move Time: %3.4f deltaTime: %3.4f left rot at %3.4f", pendingMove->GetTimestamp(), deltaTime, GetRotation());
         }
     }
     else

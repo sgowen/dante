@@ -10,8 +10,6 @@
 
 #include "RoboCat.h"
 
-#include "MemoryBitStream.h"
-
 #include "World.h"
 #include "Vector2.h"
 
@@ -179,67 +177,4 @@ void RoboCat::ProcessCollisionsWithScreenWalls()
         location.setX(0);
         SetLocation(location);
     }
-}
-
-uint32_t RoboCat::Write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState)
-{
-    uint32_t writtenState = 0;
-    
-    if (inDirtyState & ECRS_PlayerId)
-    {
-        inOutputStream.Write((bool)true);
-        inOutputStream.Write(GetPlayerId());
-        
-        writtenState |= ECRS_PlayerId;
-    }
-    else
-    {
-        inOutputStream.Write((bool)false);
-    }
-    
-    if (inDirtyState & ECRS_Pose)
-    {
-        inOutputStream.Write((bool)true);
-        
-        Vector2 velocity = mVelocity;
-        inOutputStream.Write(velocity.getX());
-        inOutputStream.Write(velocity.getY());
-        
-        Vector2 location = GetLocation();
-        inOutputStream.Write(location.getX());
-        inOutputStream.Write(location.getY());
-        
-        inOutputStream.Write(GetRotation());
-        
-        writtenState |= ECRS_Pose;
-    }
-    else
-    {
-        inOutputStream.Write((bool)false);
-    }
-    
-    //always write mThrustDir- it's just two bits
-    if (m_fThrustDir != 0.f)
-    {
-        inOutputStream.Write(true);
-        inOutputStream.Write(m_fThrustDir > 0.f);
-    }
-    else
-    {
-        inOutputStream.Write(false);
-    }
-    
-    if (inDirtyState & ECRS_Color)
-    {
-        inOutputStream.Write((bool)true);
-        inOutputStream.Write(GetColor());
-        
-        writtenState |= ECRS_Color;
-    }
-    else
-    {
-        inOutputStream.Write((bool)false);
-    }
-    
-    return writtenState;
 }
