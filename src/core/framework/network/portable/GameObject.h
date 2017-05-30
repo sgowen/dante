@@ -53,9 +53,6 @@ public:
     void SetRotation(float inRotation);
     float GetRotation() const { return m_fRotation; }
     
-    void SetScale(float inScale) { m_fScale = inScale; }
-    float GetScale() const { return m_fScale; }
-    
     Vector2& GetLocation() { return mLocation; }
     void SetLocation(Vector2 inLocation) { mLocation = inLocation; }
     
@@ -83,7 +80,6 @@ private:
     float m_fCollisionRadius;
     
     float m_fRotation;
-    float m_fScale;
     int m_iIndexInWorld;
     
     bool mDoesWantToDie;

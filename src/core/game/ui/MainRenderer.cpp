@@ -79,7 +79,7 @@ void MainRenderer::tempDraw(float stateTime)
             if (go->GetClassId() == 'PLYR')
             {
                 TextureRegion tr = ASSETS->findTextureRegion("CharacterHoldingGun", stateTime);
-                m_spriteBatcher->drawSprite(go->GetLocation().getX(), go->GetLocation().getY(), go->GetScale(), go->GetScale(), RADIANS_TO_DEGREES(go->GetRotation()) - 90, go->GetColor(), tr);
+                m_spriteBatcher->drawSprite(go->GetLocation().getX(), go->GetLocation().getY(), 1.0f, 1.0f, RADIANS_TO_DEGREES(go->GetRotation()) - 90, go->GetColor(), tr);
             }
         }
         m_spriteBatcher->endBatch(*m_demo->gpuTextureWrapper, *m_textureGpuProgramWrapper);

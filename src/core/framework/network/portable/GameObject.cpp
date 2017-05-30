@@ -22,8 +22,7 @@ m_fCollisionRadius(0.5f),
 mDoesWantToDie(false),
 m_fRotation(0.f),
 m_iNetworkId(0),
-mColor(1.0f, 1.0f, 1.0f, 1.0f),
-m_fScale(1.0f)
+mColor(1.0f, 1.0f, 1.0f, 1.0f)
 {
     // Empty
 }
