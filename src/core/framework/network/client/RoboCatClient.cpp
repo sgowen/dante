@@ -266,3 +266,5 @@ void RoboCatClient::InterpolateClientSidePrediction(float inOldRotation, Vector2
         m_fTimeVelocityBecameOutOfSync = 0.f;
     }
 }
+
+RTTI_IMPL(RoboCatClient, RoboCat);

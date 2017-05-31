@@ -63,7 +63,7 @@ void ReplicationManagerClient::ReadAndDoCreateAction(InputMemoryBitStream& inInp
         NetworkManagerClient::getInstance()->AddToNetworkIdToGameObjectMap(gameObject);
         
         //it had really be the rigth type...
-        assert(gameObject->GetClassId() == fourCCName);
+        assert(gameObject->getNetworkType() == fourCCName);
     }
     
     //and read state

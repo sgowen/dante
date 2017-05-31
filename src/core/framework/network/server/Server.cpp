@@ -131,7 +131,7 @@ RoboCat* Server::GetCatForPlayer(int inPlayerId)
     for (int i = 0, c = len; i < c; ++i)
     {
         GameObject* go = gameObjects[i];
-        RoboCat* cat = go->GetAsCat();
+        RoboCat* cat = go->getRTTI().derivesFrom(RoboCat::rtti) ? (RoboCat*)go : nullptr;
         if (cat && cat->GetPlayerId() == inPlayerId)
         {
             return static_cast<RoboCat*>(go);

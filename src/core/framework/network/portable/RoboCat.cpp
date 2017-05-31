@@ -106,11 +106,10 @@ void RoboCat::ProcessCollisions()
                     //important note- we only move this cat. the other cat can take care of moving itself
                     SetLocation(targetLocation - acceptableDeltaFromSourceToTarget);
                     
-                    
                     Vector2 relVel = mVelocity;
                     
                     //if other object is a cat, it might have velocity, so there might be relative velocity...
-                    RoboCat* targetCat = target->GetAsCat();
+                    RoboCat* targetCat = target->getRTTI().derivesFrom(RoboCat::rtti) ? (RoboCat*)target : nullptr;
                     if (targetCat)
                     {
                         relVel -= targetCat->mVelocity;
@@ -179,3 +178,7 @@ void RoboCat::ProcessCollisionsWithScreenWalls()
         SetLocation(location);
     }
 }
+
+RTTI_IMPL(RoboCat, GameObject);
+
+NETWORK_TYPE_IMPL(RoboCat);

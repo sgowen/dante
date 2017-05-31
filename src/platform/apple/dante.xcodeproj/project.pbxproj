@@ -173,6 +173,7 @@
 		BB8308821EC2AD1F00435E7E /* World.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB83083C1EC2AD1F00435E7E /* World.cpp */; };
 		BB8308831EC2AD1F00435E7E /* World.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB83083C1EC2AD1F00435E7E /* World.cpp */; };
 		BB8308841EC2AD1F00435E7E /* World.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB83083C1EC2AD1F00435E7E /* World.cpp */; };
+		BBA337BD1EDF8046000C8F2B /* RTTI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB74283D1EB2AF4200B7628D /* RTTI.cpp */; };
 		BBAEF1EF1EA94EDA00F0866E /* Entity.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF0BF1EA94ED900F0866E /* Entity.cpp */; };
 		BBAEF1F01EA94EDA00F0866E /* Entity.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF0BF1EA94ED900F0866E /* Entity.cpp */; };
 		BBAEF1F11EA94EDA00F0866E /* EntityManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF0C11EA94ED900F0866E /* EntityManager.cpp */; };
@@ -2388,6 +2389,7 @@
 				BB8308811EC2AD1F00435E7E /* UDPSocket.cpp in Sources */,
 				BB8308841EC2AD1F00435E7E /* World.cpp in Sources */,
 				BB8308031EC2AC0900435E7E /* ReplicationManagerTransmissionData.cpp in Sources */,
+				BBA337BD1EDF8046000C8F2B /* RTTI.cpp in Sources */,
 				BB8308421EC2AD1F00435E7E /* AckRange.cpp in Sources */,
 				BB8308781EC2AD1F00435E7E /* StringUtils.cpp in Sources */,
 				BBD43A0F1ED0BD00001D5EB4 /* ReplicationCommand.cpp in Sources */,

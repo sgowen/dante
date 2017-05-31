@@ -252,7 +252,7 @@ void NetworkManagerServer::AddWorldStateToPacket(OutputMemoryBitStream& inOutput
     for (GameObject* go : gameObjects)
     {
         inOutputStream.Write(go->GetNetworkId());
-        inOutputStream.Write(go->GetClassId());
+        inOutputStream.Write(go->getNetworkType());
         go->Write(inOutputStream, 0xffffffff);
     }
 }

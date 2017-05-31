@@ -16,9 +16,11 @@
 
 class RoboCat : public GameObject
 {
-public:
-    SUB_CLASS_IDENTIFICATION(NETWORK_TYPE_RoboCat, RoboCat)
+    RTTI_DECL;
     
+    NETWORK_TYPE_DECL(NETWORK_TYPE_RoboCat);
+    
+public:
     enum ECatReplicationState
     {
         ECRS_Pose = 1 << 0,
@@ -31,8 +33,6 @@ public:
     static GameObject* create() { return new RoboCat(); }
     
     virtual uint32_t GetAllStateMask() const override { return ECRS_AllState; }
-    
-    virtual	RoboCat* GetAsCat()	override { return this; }
     
     virtual void Update() override;
     

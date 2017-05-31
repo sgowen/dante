@@ -91,7 +91,7 @@ uint32_t ReplicationManagerServer::WriteCreateAction(OutputMemoryBitStream& inOu
     //need object
     GameObject* gameObject = NetworkManagerServer::getInstance()->GetGameObject(inNetworkId);
     //need 4 cc
-    inOutputStream.Write(gameObject->GetClassId());
+    inOutputStream.Write(gameObject->getNetworkType());
     return gameObject->Write(inOutputStream, inDirtyState);
 }
 

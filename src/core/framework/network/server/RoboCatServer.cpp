@@ -130,3 +130,5 @@ uint32_t RoboCatServer::Write(OutputMemoryBitStream& inOutputStream, uint32_t in
     
     return writtenState;
 }
+
+RTTI_IMPL(RoboCatServer, RoboCat);

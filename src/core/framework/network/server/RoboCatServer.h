@@ -13,6 +13,8 @@
 
 class RoboCatServer : public RoboCat
 {
+    RTTI_DECL;
+    
 public:
     static GameObject* create();
     

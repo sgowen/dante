@@ -13,27 +13,22 @@
 #include "Color.h"
 #include "Vector2.h"
 
+#include "RTTI.h"
+
 class RoboCat;
 class OutputMemoryBitStream;
 class InputMemoryBitStream;
 
-#define CLASS_IDENTIFICATION(inCode, inClass) \
-enum { kClassId = inCode }; \
-virtual uint32_t GetClassId() const { return kClassId; } \
-
-#define SUB_CLASS_IDENTIFICATION(inCode, inClass) \
-enum { kClassId = inCode }; \
-virtual uint32_t GetClassId() const override { return kClassId; } \
-
 class GameObject
 {
+    RTTI_DECL;
+    
+    NETWORK_TYPE_DECL(NETWORK_TYPE_GameObject);
+    
 public:
-    CLASS_IDENTIFICATION(NETWORK_TYPE_GameObject, GameObject)
-    
     GameObject();
-    virtual ~GameObject() {}
     
-    virtual	RoboCat* GetAsCat()	{ return nullptr; }
+    virtual ~GameObject() {}
     
     virtual uint32_t GetAllStateMask() const { return 0; }
     

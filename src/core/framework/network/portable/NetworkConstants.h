@@ -45,4 +45,12 @@ typedef uint16_t PacketSequenceNumber;
 #define NETWORK_TYPE_GameObject 'GOBJ'
 #define NETWORK_TYPE_RoboCat 'PLYR'
 
+#define NETWORK_TYPE_DECL(inCode) \
+public: \
+    enum { kClassId = inCode }; \
+    virtual uint32_t getNetworkType();
+
+#define NETWORK_TYPE_IMPL(name) \
+uint32_t name::getNetworkType() { return kClassId; }
+
 #endif /* defined(__noctisgames__NetworkConstants__) */

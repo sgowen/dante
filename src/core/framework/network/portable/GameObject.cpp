@@ -49,3 +49,7 @@ void GameObject::SetRotation(float inRotation)
     //should we normalize using fmodf?
     m_fRotation = inRotation;
 }
+
+RTTI_IMPL_NOPARENT(GameObject);
+
+NETWORK_TYPE_IMPL(GameObject);

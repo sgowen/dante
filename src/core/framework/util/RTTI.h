@@ -36,12 +36,14 @@ private:
 #define RTTI_DECL \
 public: \
     static const RTTI rtti; \
-    virtual const RTTI& getRTTI() { return rtti; }
+    virtual const RTTI& getRTTI();
 
 #define RTTI_IMPL_NOPARENT(name) \
-    const RTTI name::rtti(#name);
+    const RTTI name::rtti(#name); \
+    const RTTI& name::getRTTI() { return rtti; }
 
 #define RTTI_IMPL(name,parent) \
-    const RTTI name::rtti(#name, parent::rtti);
+    const RTTI name::rtti(#name, parent::rtti); \
+    const RTTI& name::getRTTI() { return rtti; }
 
 #endif /* defined(__noctisgames__RTTI__) */
