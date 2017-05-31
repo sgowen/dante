@@ -39,6 +39,19 @@ public:
     
     virtual void HandleDying() {}
     
+    virtual uint32_t Write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState)
+    {
+        (void)inOutputStream;
+        (void)inDirtyState;
+        
+        return 0;
+    }
+    
+    virtual void Read(InputMemoryBitStream& inInputStream)
+    {
+        (void)inInputStream;
+    }
+    
     void SetIndexInWorld(int inIndex) { m_iIndexInWorld = inIndex; }
     int GetIndexInWorld() const { return m_iIndexInWorld; }
     
@@ -61,9 +74,6 @@ public:
     
     int GetNetworkId() const { return m_iNetworkId; }
     void SetNetworkId(int inNetworkId);
-    
-    virtual uint32_t Write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState) { (void)inOutputStream; (void)inDirtyState; return 0; }
-    virtual void Read(InputMemoryBitStream& inInputStream) { (void)inInputStream; }
     
 private:
     Vector2 mLocation;
