@@ -10,9 +10,11 @@
 
 #include "SocketAddressFactory.h"
 
+#include "SocketAddress.h"
+
 #include "SocketUtil.h"
 
-SocketAddressPtr SocketAddressFactory::CreateIPv4FromString(const std::string& inString)
+SocketAddress* SocketAddressFactory::CreateIPv4FromString(const std::string& inString)
 {
     auto pos = inString.find_last_of(':');
     std::string host, service;
@@ -49,7 +51,7 @@ SocketAddressPtr SocketAddressFactory::CreateIPv4FromString(const std::string& i
         return nullptr;
     }
     
-    auto toRet = std::make_shared< SocketAddress >(*result->ai_addr);
+    auto toRet = new SocketAddress(*result->ai_addr);
     
     freeaddrinfo(result);
     

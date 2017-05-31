@@ -26,7 +26,7 @@ void Client::init(std::string& serverIPAddress, std::string& userID)
 {
     GameObjectRegistry::sInstance->RegisterCreationFunction(NETWORK_TYPE_RoboCat, RoboCatClient::create);
     
-    SocketAddressPtr serverAddress = SocketAddressFactory::CreateIPv4FromString(serverIPAddress);
+    SocketAddress* serverAddress = SocketAddressFactory::CreateIPv4FromString(serverIPAddress);
     
     NetworkManagerClient::StaticInit(*serverAddress, userID);
 }

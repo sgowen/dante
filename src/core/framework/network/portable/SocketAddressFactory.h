@@ -9,14 +9,14 @@
 #ifndef __noctisgames__SocketAddressFactory__
 #define __noctisgames__SocketAddressFactory__
 
-#include "SocketAddress.h"
-
 #include <string>
+
+class SocketAddress;
 
 class SocketAddressFactory
 {
 public:
-    static SocketAddressPtr CreateIPv4FromString(const std::string& inString);
+    static SocketAddress* CreateIPv4FromString(const std::string& inString);
 };
 
 #endif /* defined(__noctisgames__SocketAddressFactory__) */

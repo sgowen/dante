@@ -11,7 +11,6 @@
 
 #include "NetworkConstants.h"
 
-#include <memory>
 #include <string>
 
 class SocketAddress
@@ -42,8 +41,6 @@ private:
     sockaddr_in* GetAsSockAddrIn();
     const sockaddr_in* GetAsSockAddrIn() const;
 };
-
-typedef std::shared_ptr<SocketAddress> SocketAddressPtr;
 
 namespace std
 {
