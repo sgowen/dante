@@ -182,7 +182,7 @@ void NetworkManagerServer::SendStatePacketToClient(ClientProxy* inClientProxy)
     
     ReplicationManagerTransmissionData* rmtd = new ReplicationManagerTransmissionData(&inClientProxy->GetReplicationManagerServer());
     inClientProxy->GetReplicationManagerServer().Write(statePacket, rmtd);
-    ifp->SetTransmissionData('RPLM', TransmissionDataPtr(rmtd));
+    ifp->SetTransmissionData('RPLM', rmtd);
     
     SendPacket(statePacket, inClientProxy->GetSocketAddress());
 }

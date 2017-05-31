@@ -24,12 +24,12 @@ public:
     PacketSequenceNumber GetSequenceNumber() const { return mSequenceNumber; }
     float GetTimeDispatched() const	{ return m_fTimeDispatched; }
     
-    void SetTransmissionData(int inKey, TransmissionDataPtr	inTransmissionData)
+    void SetTransmissionData(int inKey, ITransmissionData* inTransmissionData)
     {
         mTransmissionDataMap[inKey] = inTransmissionData;
     }
     
-    const TransmissionDataPtr GetTransmissionData(int inKey) const
+    ITransmissionData* GetTransmissionData(int inKey) const
     {
         auto it = mTransmissionDataMap.find(inKey);
         return (it != mTransmissionDataMap.end()) ? it->second : nullptr;
@@ -42,7 +42,7 @@ private:
     PacketSequenceNumber mSequenceNumber;
     float m_fTimeDispatched;
     
-    std::unordered_map<int, TransmissionDataPtr> mTransmissionDataMap;
+    std::unordered_map<int, ITransmissionData*> mTransmissionDataMap;
 };
 
 #endif /* defined(__noctisgames__InFlightPacket__) */

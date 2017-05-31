@@ -91,7 +91,7 @@ void ReplicationManagerTransmissionData::HandleUpdateStateDeliveryFailure(int in
         //remove written state from dirty state
         for (const auto& inFlightPacket: inDeliveryNotificationManager->GetInFlightPackets())
         {
-            ReplicationManagerTransmissionDataPtr rmtdp = std::static_pointer_cast< ReplicationManagerTransmissionData >(inFlightPacket.GetTransmissionData('RPLM'));
+            ReplicationManagerTransmissionData* rmtdp = static_cast<ReplicationManagerTransmissionData*>(inFlightPacket.GetTransmissionData('RPLM'));
             
             for (const ReplicationTransmission& otherRT: rmtdp->mTransmissions)
             {

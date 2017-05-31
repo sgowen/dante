@@ -61,6 +61,4 @@ private:
     std::vector<ReplicationTransmission> mTransmissions;
 };
 
-typedef std::shared_ptr<ReplicationManagerTransmissionData> ReplicationManagerTransmissionDataPtr;
-
 #endif /* defined(__noctisgames__ReplicationManagerTransmissionData__) */
