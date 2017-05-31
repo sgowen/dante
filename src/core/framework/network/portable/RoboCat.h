@@ -17,7 +17,7 @@
 class RoboCat : public GameObject
 {
 public:
-    SUB_CLASS_IDENTIFICATION(NETWORK_TYPE_RoboCat, GameObject)
+    SUB_CLASS_IDENTIFICATION(NETWORK_TYPE_RoboCat, RoboCat)
     
     enum ECatReplicationState
     {
@@ -72,7 +72,5 @@ protected:
     float m_fThrustDir;
     int m_iHealth;
 };
-
-typedef std::shared_ptr<RoboCat> RoboCatPtr;
 
 #endif /* defined(__noctisgames__RoboCat__) */

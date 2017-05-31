@@ -89,7 +89,7 @@ void ReplicationManagerServer::Write(OutputMemoryBitStream& inOutputStream, Repl
 uint32_t ReplicationManagerServer::WriteCreateAction(OutputMemoryBitStream& inOutputStream, int inNetworkId, uint32_t inDirtyState)
 {
     //need object
-    GameObjectPtr gameObject = NetworkManagerServer::sInstance->GetGameObject(inNetworkId);
+    GameObject* gameObject = NetworkManagerServer::getInstance()->GetGameObject(inNetworkId);
     //need 4 cc
     inOutputStream.Write(gameObject->GetClassId());
     return gameObject->Write(inOutputStream, inDirtyState);
@@ -98,7 +98,7 @@ uint32_t ReplicationManagerServer::WriteCreateAction(OutputMemoryBitStream& inOu
 uint32_t ReplicationManagerServer::WriteUpdateAction(OutputMemoryBitStream& inOutputStream, int inNetworkId, uint32_t inDirtyState)
 {
     //need object
-    GameObjectPtr gameObject = NetworkManagerServer::sInstance->GetGameObject(inNetworkId);
+    GameObject* gameObject = NetworkManagerServer::getInstance()->GetGameObject(inNetworkId);
     
     //if we can't find the gameObject on the other side, we won't be able to read the written data (since we won't know which class wrote it)
     //so we need to know how many bytes to skip.

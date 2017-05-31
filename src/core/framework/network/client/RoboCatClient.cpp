@@ -18,9 +18,9 @@
 #include "Color.h"
 #include "Vector2.h"
 
-GameObjectPtr RoboCatClient::create()
+GameObject* RoboCatClient::create()
 {
-    return GameObjectPtr(new RoboCatClient());
+    return static_cast<GameObject*>(new RoboCatClient());
 }
 
 void RoboCatClient::HandleDying()
@@ -28,7 +28,7 @@ void RoboCatClient::HandleDying()
     RoboCat::HandleDying();
     
     //and if we're local, tell the hud so our health goes away!
-    if (GetPlayerId() == NetworkManagerClient::sInstance->GetPlayerId())
+    if (GetPlayerId() == NetworkManagerClient::getInstance()->GetPlayerId())
     {
         //HUD::sInstance->SetPlayerHealth(0);
     }
@@ -37,7 +37,7 @@ void RoboCatClient::HandleDying()
 void RoboCatClient::Update()
 {
     //is this the cat owned by us?
-    if (GetPlayerId() == NetworkManagerClient::sInstance->GetPlayerId())
+    if (GetPlayerId() == NetworkManagerClient::getInstance()->GetPlayerId())
     {
         const Move* pendingMove = InputManager::sInstance->GetAndClearPendingMove();
         //in theory, only do this if we want to sample input this frame / if there's a new move (since we have to keep in sync with server)
@@ -130,7 +130,7 @@ void RoboCatClient::Read(InputMemoryBitStream& inInputStream)
         readState |= ECRS_Color;
     }
     
-    if (GetPlayerId() == NetworkManagerClient::sInstance->GetPlayerId())
+    if (GetPlayerId() == NetworkManagerClient::getInstance()->GetPlayerId())
     {
         DoClientSidePredictionAfterReplicationForLocalCat(readState);
         
@@ -180,7 +180,7 @@ void RoboCatClient::DoClientSidePredictionAfterReplicationForRemoteCat(uint32_t 
     if ((inReadState & ECRS_Pose) != 0)
     {
         //simulate movement for an additional RTT
-        float rtt = NetworkManagerClient::sInstance->GetRoundTripTime();
+        float rtt = NetworkManagerClient::getInstance()->GetRoundTripTime();
         //LOG("Other cat came in, simulating for an extra %f", rtt);
         
         //let's break into framerate sized chunks though so that we don't run through walls and do crazy things...
@@ -216,7 +216,7 @@ void RoboCatClient::InterpolateClientSidePrediction(float inOldRotation, Vector2
         LOG("ERROR! Move replay ended with incorrect rotation!", 0);
     }
     
-    float roundTripTime = NetworkManagerClient::sInstance->GetRoundTripTime();
+    float roundTripTime = NetworkManagerClient::getInstance()->GetRoundTripTime();
     
     if (!inOldLocation.isEqualTo(GetLocation()))
     {

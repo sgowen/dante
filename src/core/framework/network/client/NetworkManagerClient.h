@@ -18,7 +18,7 @@
 class NetworkManagerClient : public NetworkManager
 {
 public:
-    static NetworkManagerClient* sInstance;
+    static NetworkManagerClient* getInstance();
     
     static void	StaticInit(const SocketAddress& inServerAddress, const std::string& inName);
     
@@ -73,7 +73,7 @@ private:
     void UpdateSendingInputPacket();
     void SendInputPacket();
     
-    void DestroyGameObjectsInMap(const std::unordered_map<int, GameObjectPtr>& inObjectsToDestroy);
+    void DestroyGameObjectsInMap(const std::unordered_map<int, GameObject*>& inObjectsToDestroy);
 };
 
 #endif /* defined(__noctisgames__NetworkManagerClient__) */

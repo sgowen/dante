@@ -70,7 +70,7 @@ void ReplicationManagerTransmissionData::HandleDeliverySuccess(DeliveryNotificat
 void ReplicationManagerTransmissionData::HandleCreateDeliveryFailure(int inNetworkId) const
 {
     //does the object still exist? it might be dead, in which case we don't resend a create
-    GameObjectPtr gameObject = NetworkManagerServer::sInstance->GetGameObject(inNetworkId);
+    GameObject* gameObject = NetworkManagerServer::getInstance()->GetGameObject(inNetworkId);
     if (gameObject)
     {
         mReplicationManagerServer->ReplicateCreate(inNetworkId, gameObject->GetAllStateMask());
@@ -85,7 +85,7 @@ void ReplicationManagerTransmissionData::HandleDestroyDeliveryFailure(int inNetw
 void ReplicationManagerTransmissionData::HandleUpdateStateDeliveryFailure(int inNetworkId, uint32_t inState, DeliveryNotificationManager* inDeliveryNotificationManager) const
 {
     //does the object still exist? it might be dead, in which case we don't resend an update
-    if (NetworkManagerServer::sInstance->GetGameObject(inNetworkId))
+    if (NetworkManagerServer::getInstance()->GetGameObject(inNetworkId))
     {
         //look in all future in flight packets, in all transmissions
         //remove written state from dirty state

@@ -14,6 +14,9 @@
 #include "StringUtils.h"
 #include "Timing.h"
 #include "SocketAddressFamily.h"
+#include "World.h"
+
+NetworkManager* NetworkManager::sInstance;
 
 NetworkManager::NetworkManager() :
 mBytesSentThisFrame(0)
@@ -154,12 +157,17 @@ mPacketBuffer(ioInputMemoryBitStream)
 {
 }
 
-void NetworkManager::AddToNetworkIdToGameObjectMap(GameObjectPtr inGameObject)
+void NetworkManager::AddToNetworkIdToGameObjectMap(GameObject* inGameObject)
 {
     m_networkIdToGameObjectMap[inGameObject->GetNetworkId()] = inGameObject;
 }
 
-void NetworkManager::RemoveFrom_networkIdToGameObjectMap(GameObjectPtr inGameObject)
+void NetworkManager::RemoveFromNetworkIdToGameObjectMap(GameObject* inGameObject)
 {
+    World::sInstance->RemoveGameObject(inGameObject);
+    
     m_networkIdToGameObjectMap.erase(inGameObject->GetNetworkId());
+    
+    delete inGameObject;
+    inGameObject = nullptr;
 }

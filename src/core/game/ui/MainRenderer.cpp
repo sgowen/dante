@@ -74,7 +74,7 @@ void MainRenderer::tempDraw(float stateTime)
         && ensureTexture(m_misc))
     {
         m_spriteBatcher->beginBatch();
-        for (GameObjectPtr go : World::sInstance->GetGameObjects())
+        for (GameObject* go : World::sInstance->GetGameObjects())
         {
             if (go->GetClassId() == 'PLYR')
             {
@@ -114,7 +114,7 @@ void MainRenderer::RenderRoundTripTime()
 {
     static Vector2 roundTripTimeOrigin = Vector2(5.f, 7.f);
     
-    float rttMS = NetworkManagerClient::sInstance->GetAvgRoundTripTime().GetValue() * 1000.f;
+    float rttMS = NetworkManagerClient::getInstance()->GetAvgRoundTripTime().GetValue() * 1000.f;
     
     std::string roundTripTime = StringUtils::Sprintf("RTT %d ms", (int) rttMS);
     

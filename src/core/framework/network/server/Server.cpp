@@ -41,11 +41,11 @@ int Server::Run()
         
         if (m_fFrameStateTime >= FRAME_RATE)
         {
-            NetworkManagerServer::sInstance->ProcessIncomingPackets();
+            NetworkManagerServer::getInstance()->ProcessIncomingPackets();
             
-            NetworkManagerServer::sInstance->CheckForDisconnects();
+            NetworkManagerServer::getInstance()->CheckForDisconnects();
             
-            NetworkManagerServer::sInstance->RespawnCats();
+            NetworkManagerServer::getInstance()->RespawnCats();
             
             while (m_fFrameStateTime >= FRAME_RATE)
             {
@@ -54,7 +54,7 @@ int Server::Run()
                 DoFrame();
             }
             
-            NetworkManagerServer::sInstance->SendOutgoingPackets();
+            NetworkManagerServer::getInstance()->SendOutgoingPackets();
         }
     }
     
@@ -78,7 +78,7 @@ void Server::HandleNewClient(ClientProxy* inClientProxy)
 
 void Server::SpawnCatForPlayer(int inPlayerId)
 {
-    RoboCatPtr cat = std::static_pointer_cast< RoboCat >(GameObjectRegistry::sInstance->CreateGameObject(NETWORK_TYPE_RoboCat));
+    RoboCat* cat = static_cast<RoboCat*>(GameObjectRegistry::sInstance->CreateGameObject(NETWORK_TYPE_RoboCat));
     cat->SetPlayerId(inPlayerId);
     //gotta pick a better spawn location than this...
     cat->SetLocation(Vector2(8.f - static_cast<float>(inPlayerId), 4.0f));
@@ -113,14 +113,14 @@ void Server::HandleLostClient(ClientProxy* inClientProxy)
     //remove client from scoreboard
     int playerId = inClientProxy->GetPlayerId();
     
-    RoboCatPtr cat = GetCatForPlayer(playerId);
+    RoboCat* cat = GetCatForPlayer(playerId);
     if (cat)
     {
         cat->SetDoesWantToDie(true);
     }
 }
 
-RoboCatPtr Server::GetCatForPlayer(int inPlayerId)
+RoboCat* Server::GetCatForPlayer(int inPlayerId)
 {
     //run through the objects till we find the cat...
     //it would be nice if we kept a pointer to the cat on the clientproxy
@@ -130,11 +130,11 @@ RoboCatPtr Server::GetCatForPlayer(int inPlayerId)
     int len = static_cast<int>(gameObjects.size());
     for (int i = 0, c = len; i < c; ++i)
     {
-        GameObjectPtr go = gameObjects[i];
+        GameObject* go = gameObjects[i];
         RoboCat* cat = go->GetAsCat();
         if (cat && cat->GetPlayerId() == inPlayerId)
         {
-            return std::static_pointer_cast< RoboCat >(go);
+            return static_cast<RoboCat*>(go);
         }
     }
     

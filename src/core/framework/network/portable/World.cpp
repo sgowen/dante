@@ -22,28 +22,42 @@ World::World()
     // Empty
 }
 
-void World::AddGameObject(GameObjectPtr inGameObject)
+void World::AddGameObject(GameObject* inGameObject)
 {
     mGameObjects.push_back(inGameObject);
     int index = static_cast<int>(mGameObjects.size() - 1);
     inGameObject->SetIndexInWorld(index);
 }
 
-void World::RemoveGameObject(GameObjectPtr inGameObject)
+void World::RemoveGameObject(GameObject* inGameObject)
 {
-    int index = inGameObject->GetIndexInWorld();
-    
-    int lastIndex = static_cast<int>(mGameObjects.size() - 1);
-    
-    if (index != lastIndex)
+    bool isContained = false;
+    int len = static_cast<int>(mGameObjects.size());
+    for (int i = 0; i < len; ++i)
     {
-        mGameObjects[index] = mGameObjects[lastIndex];
-        mGameObjects[index]->SetIndexInWorld(index);
+        if (mGameObjects[i]->GetNetworkId() == inGameObject->GetNetworkId())
+        {
+            isContained = true;
+            break;
+        }
     }
     
-    inGameObject->SetIndexInWorld(-1);
-    
-    mGameObjects.pop_back();
+    if (isContained)
+    {
+        int index = inGameObject->GetIndexInWorld();
+        
+        int lastIndex = len - 1;
+        
+        if (index != lastIndex)
+        {
+            mGameObjects[index] = mGameObjects[lastIndex];
+            mGameObjects[index]->SetIndexInWorld(index);
+        }
+        
+        inGameObject->SetIndexInWorld(-1);
+        
+        mGameObjects.pop_back();
+    }
 }
 
 void World::Update()
@@ -53,7 +67,7 @@ void World::Update()
     int len = static_cast<int>(mGameObjects.size());
     for (int i = 0, c = len; i < c; ++i)
     {
-        GameObjectPtr go = mGameObjects[i];
+        GameObject* go = mGameObjects[i];
         
         if (!go->DoesWantToDie())
         {

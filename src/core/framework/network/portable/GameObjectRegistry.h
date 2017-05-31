@@ -15,7 +15,7 @@
 
 #include <unordered_map>
 
-typedef GameObjectPtr (*GameObjectCreationFunc)();
+typedef GameObject* (*GameObjectCreationFunc)();
 
 class GameObjectRegistry
 {
@@ -26,7 +26,7 @@ public:
     
     void RegisterCreationFunction(uint32_t inFourCCName, GameObjectCreationFunc inCreationFunction);
     
-    GameObjectPtr CreateGameObject(uint32_t inFourCCName);
+    GameObject* CreateGameObject(uint32_t inFourCCName);
     
 private:
     GameObjectRegistry();

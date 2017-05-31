@@ -14,7 +14,7 @@
 class RoboCatClient : public RoboCat
 {
 public:
-    static GameObjectPtr create();
+    static GameObject* create();
     
     virtual void Update() override;
     virtual void HandleDying() override;

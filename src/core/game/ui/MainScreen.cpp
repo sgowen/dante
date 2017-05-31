@@ -122,7 +122,7 @@ void MainScreen::update(float deltaTime)
         
         NG_AUDIO_ENGINE->update();
         
-        NetworkManagerClient::sInstance->SendOutgoingPackets();
+        NetworkManagerClient::getInstance()->SendOutgoingPackets();
     }
 }
 

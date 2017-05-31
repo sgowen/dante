@@ -16,6 +16,7 @@
 #include "GameObject.h"
 #include "ReplicationAction.h"
 #include "GameObjectRegistry.h"
+#include "World.h"
 
 #include <cassert>
 
@@ -52,13 +53,14 @@ void ReplicationManagerClient::ReadAndDoCreateAction(InputMemoryBitStream& inInp
     
     //we might already have this object- could happen if our ack of the create got dropped so server resends create request
     //(even though we might have created)
-    GameObjectPtr gameObject = NetworkManagerClient::sInstance->GetGameObject(inNetworkId);
+    GameObject* gameObject = NetworkManagerClient::getInstance()->GetGameObject(inNetworkId);
     if (!gameObject)
     {
         //create the object and map it...
         gameObject = GameObjectRegistry::sInstance->CreateGameObject(fourCCName);
         gameObject->SetNetworkId(inNetworkId);
-        NetworkManagerClient::sInstance->AddToNetworkIdToGameObjectMap(gameObject);
+        
+        NetworkManagerClient::getInstance()->AddToNetworkIdToGameObjectMap(gameObject);
         
         //it had really be the rigth type...
         assert(gameObject->GetClassId() == fourCCName);
@@ -71,7 +73,7 @@ void ReplicationManagerClient::ReadAndDoCreateAction(InputMemoryBitStream& inInp
 void ReplicationManagerClient::ReadAndDoUpdateAction(InputMemoryBitStream& inInputStream, int inNetworkId)
 {
     //need object
-    GameObjectPtr gameObject = NetworkManagerClient::sInstance->GetGameObject(inNetworkId);
+    GameObject* gameObject = NetworkManagerClient::getInstance()->GetGameObject(inNetworkId);
     
     //gameObject MUST be found, because create was ack'd if we're getting an update...
     //and read state
@@ -82,10 +84,10 @@ void ReplicationManagerClient::ReadAndDoDestroyAction(InputMemoryBitStream& inIn
 {
     //if something was destroyed before the create went through, we'll never get it
     //but we might get the destroy request, so be tolerant of being asked to destroy something that wasn't created
-    GameObjectPtr gameObject = NetworkManagerClient::sInstance->GetGameObject(inNetworkId);
+    GameObject* gameObject = NetworkManagerClient::getInstance()->GetGameObject(inNetworkId);
     if (gameObject)
     {
         gameObject->SetDoesWantToDie(true);
-        NetworkManagerClient::sInstance->RemoveFrom_networkIdToGameObjectMap(gameObject);
+        NetworkManagerClient::getInstance()->RemoveFromNetworkIdToGameObjectMap(gameObject);
     }
 }

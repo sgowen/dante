@@ -21,19 +21,19 @@ public:
     
     static std::unique_ptr<World> sInstance;
     
-    void AddGameObject(GameObjectPtr inGameObject);
-    void RemoveGameObject(GameObjectPtr inGameObject);
+    void AddGameObject(GameObject* inGameObject);
+    void RemoveGameObject(GameObject* inGameObject);
     
     void Update();
     
-    const std::vector<GameObjectPtr>& GetGameObjects() const { return mGameObjects; }
+    const std::vector<GameObject*>& GetGameObjects() const { return mGameObjects; }
     
 private:
     World();
     
-    int	GetIndexOfGameObject(GameObjectPtr inGameObject);
+    int	GetIndexOfGameObject(GameObject* inGameObject);
     
-    std::vector<GameObjectPtr> mGameObjects;
+    std::vector<GameObject*> mGameObjects;
 };
 
 #endif /* defined(__noctisgames__World__) */

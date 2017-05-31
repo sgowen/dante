@@ -10,6 +10,7 @@
 
 #include "RoboCat.h"
 
+#include "NetworkManager.h"
 #include "World.h"
 #include "Vector2.h"
 
@@ -81,7 +82,7 @@ void RoboCat::ProcessCollisions()
     //number of collisions that need to be tested.
     for (auto goIt = World::sInstance->GetGameObjects().begin(), end = World::sInstance->GetGameObjects().end(); goIt != end; ++goIt)
     {
-        GameObject* target = goIt->get();
+        GameObject* target = *goIt;
         if (target != this && !target->DoesWantToDie())
         {
             //simple collision test for spheres- are the radii summed less than the distance?

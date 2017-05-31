@@ -14,9 +14,12 @@
 #include "Timing.h"
 #include "StringUtils.h"
 
-GameObjectPtr RoboCatServer::create()
+GameObject* RoboCatServer::create()
 {
-    return NetworkManagerServer::sInstance->RegisterAndReturn(new RoboCatServer());
+    RoboCatServer* ret = new RoboCatServer();
+    NetworkManagerServer::getInstance()->RegisterGameObject(ret);
+    
+    return ret;
 }
 
 RoboCatServer::RoboCatServer() : RoboCat()
@@ -26,7 +29,7 @@ RoboCatServer::RoboCatServer() : RoboCat()
 
 void RoboCatServer::HandleDying()
 {
-    NetworkManagerServer::sInstance->UnregisterGameObject(this);
+    NetworkManagerServer::getInstance()->UnregisterGameObject(this);
 }
 
 void RoboCatServer::Update()
@@ -38,7 +41,7 @@ void RoboCatServer::Update()
     float oldRotation = GetRotation();
     
     // is there a move we haven't processed yet?
-    ClientProxy* client = NetworkManagerServer::sInstance->GetClientProxy(GetPlayerId());
+    ClientProxy* client = NetworkManagerServer::getInstance()->GetClientProxy(GetPlayerId());
     if (client)
     {
         MoveList& moveList = client->GetUnprocessedMoveList();
@@ -61,7 +64,7 @@ void RoboCatServer::Update()
         !oldVelocity.isEqualTo(GetVelocity()) ||
         oldRotation != GetRotation())
     {
-        NetworkManagerServer::sInstance->SetStateDirty(GetNetworkId(), ECRS_Pose);
+        NetworkManagerServer::getInstance()->SetStateDirty(GetNetworkId(), ECRS_Pose);
     }
 }
 

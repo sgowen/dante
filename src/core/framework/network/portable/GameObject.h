@@ -13,8 +13,6 @@
 #include "Color.h"
 #include "Vector2.h"
 
-#include <memory>
-
 class RoboCat;
 class OutputMemoryBitStream;
 class InputMemoryBitStream;
@@ -85,7 +83,5 @@ private:
     
     int m_iNetworkId;
 };
-
-typedef std::shared_ptr<GameObject> GameObjectPtr;
 
 #endif /* defined(__noctisgames__GameObject__) */

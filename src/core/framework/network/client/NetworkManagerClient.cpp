@@ -14,13 +14,17 @@
 #include "StringUtils.h"
 #include "GameObjectRegistry.h"
 #include "Timing.h"
-
-NetworkManagerClient* NetworkManagerClient::sInstance;
+#include "World.h"
 
 namespace
 {
     const float kTimeBetweenHellos = 1.f;
     const float kTimeBetweenInputPackets = 0.033f;
+}
+
+NetworkManagerClient* NetworkManagerClient::getInstance()
+{
+    return static_cast<NetworkManagerClient*>(NetworkManager::sInstance);
 }
 
 NetworkManagerClient::NetworkManagerClient() :
@@ -32,8 +36,11 @@ m_fLastRoundTripTime(0.f)
 
 void NetworkManagerClient::StaticInit(const SocketAddress& inServerAddress, const std::string& inName)
 {
-    sInstance = new NetworkManagerClient();
-    return sInstance->Init(inServerAddress, inName);
+    NetworkManagerClient* ret = new NetworkManagerClient();
+    
+    ret->Init(inServerAddress, inName);
+    
+    sInstance = ret;
 }
 
 void NetworkManagerClient::Init(const SocketAddress& inServerAddress, const std::string& inName)
@@ -146,7 +153,7 @@ void NetworkManagerClient::ReadLastMoveProcessedOnServerTimestamp(InputMemoryBit
 void NetworkManagerClient::HandleGameObjectState(InputMemoryBitStream& inInputStream)
 {
     //copy the m_networkIdToGameObjectMap so that anything that doesn't get an updated can be destroyed...
-    std::unordered_map<int, GameObjectPtr> objectsToDestroy = m_networkIdToGameObjectMap;
+    std::unordered_map<int, GameObject*> objectsToDestroy = m_networkIdToGameObjectMap;
     
     int stateCount;
     inInputStream.Read(stateCount);
@@ -159,7 +166,7 @@ void NetworkManagerClient::HandleGameObjectState(InputMemoryBitStream& inInputSt
             
             inInputStream.Read(networkId);
             inInputStream.Read(fourCC);
-            GameObjectPtr go;
+            GameObject* go;
             auto itGO = m_networkIdToGameObjectMap.find(networkId);
             //didn't find it, better create it!
             if (itGO == m_networkIdToGameObjectMap.end())
@@ -184,13 +191,13 @@ void NetworkManagerClient::HandleGameObjectState(InputMemoryBitStream& inInputSt
     DestroyGameObjectsInMap(objectsToDestroy);
 }
 
-void NetworkManagerClient::DestroyGameObjectsInMap(const std::unordered_map<int, GameObjectPtr>& inObjectsToDestroy)
+void NetworkManagerClient::DestroyGameObjectsInMap(const std::unordered_map<int, GameObject*>& inObjectsToDestroy)
 {
     for (auto& pair: inObjectsToDestroy)
     {
         pair.second->SetDoesWantToDie(true);
-        //and remove from our map!
-        m_networkIdToGameObjectMap.erase(pair.first);
+        
+        RemoveFromNetworkIdToGameObjectMap(pair.second);    
     }
 }
 

@@ -23,6 +23,8 @@
 class NetworkManager
 {
 public:
+    static NetworkManager* sInstance;
+    
     static const uint32_t	kHelloCC = 'HELO';
     static const uint32_t	kWelcomeCC = 'WLCM';
     static const uint32_t	kStateCC = 'STAT';
@@ -43,12 +45,12 @@ public:
     const WeightedTimedMovingAverage& GetBytesReceivedPerSecond()	const	{ return mBytesReceivedPerSecond; }
     const WeightedTimedMovingAverage& GetBytesSentPerSecond()		const	{ return mBytesSentPerSecond; }
     
-    inline	GameObjectPtr	GetGameObject(int inNetworkId) const;
-    void	AddToNetworkIdToGameObjectMap(GameObjectPtr inGameObject);
-    void	RemoveFrom_networkIdToGameObjectMap(GameObjectPtr inGameObject);
+    inline	GameObject*	GetGameObject(int inNetworkId) const;
+    void	AddToNetworkIdToGameObjectMap(GameObject* inGameObject);
+    void	RemoveFromNetworkIdToGameObjectMap(GameObject* inGameObject);
     
 protected:
-    std::unordered_map<int, GameObjectPtr> m_networkIdToGameObjectMap;
+    std::unordered_map<int, GameObject*> m_networkIdToGameObjectMap;
     
 private:
     class ReceivedPacket
@@ -82,17 +84,15 @@ private:
     int							mBytesSentThisFrame;
 };
 
-inline GameObjectPtr NetworkManager::GetGameObject(int inNetworkId) const
+inline GameObject* NetworkManager::GetGameObject(int inNetworkId) const
 {
     auto gameObjectIt = m_networkIdToGameObjectMap.find(inNetworkId);
     if (gameObjectIt != m_networkIdToGameObjectMap.end())
     {
         return gameObjectIt->second;
     }
-    else
-    {
-        return GameObjectPtr();
-    }
+    
+    return nullptr;
 }
 
 #endif /* defined(__noctisgames__NetworkManager__) */

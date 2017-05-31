@@ -24,7 +24,7 @@ public:
     void HandleNewClient(ClientProxy* inClientProxy);
     void HandleLostClient(ClientProxy* inClientProxy);
     
-    RoboCatPtr GetCatForPlayer(int inPlayerId);
+    RoboCat* GetCatForPlayer(int inPlayerId);
     void SpawnCatForPlayer(int inPlayerId);
     
 private:
