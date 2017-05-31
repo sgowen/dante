@@ -117,3 +117,8 @@ int UDPSocket::SetNonBlockingMode(bool inShouldBeNonBlocking)
         return NO_ERROR;
     }
 }
+
+UDPSocket::UDPSocket(SOCKET inSocket) : mSocket(inSocket)
+{
+    // Empty
+}

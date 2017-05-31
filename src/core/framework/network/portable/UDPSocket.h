@@ -25,10 +25,13 @@ public:
     int ReceiveFrom(void* inToReceive, int inMaxLength, SocketAddress& outFromAddress);
     
     int SetNonBlockingMode(bool inShouldBeNonBlocking);
+    
 private:
     friend class SocketUtil;
-    UDPSocket(SOCKET inSocket) : mSocket(inSocket) {}
+    
     SOCKET mSocket;
+    
+    UDPSocket(SOCKET inSocket);
 };
 
 typedef std::shared_ptr<UDPSocket> UDPSocketPtr;
