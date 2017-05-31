@@ -69,7 +69,7 @@ bool Server::InitNetworkManager()
     return NetworkManagerServer::StaticInit(port);
 }
 
-void Server::HandleNewClient(ClientProxyPtr inClientProxy)
+void Server::HandleNewClient(ClientProxy* inClientProxy)
 {
     int playerId = inClientProxy->GetPlayerId();
     
@@ -107,7 +107,7 @@ void Server::SpawnCatForPlayer(int inPlayerId)
     }
 }
 
-void Server::HandleLostClient(ClientProxyPtr inClientProxy)
+void Server::HandleLostClient(ClientProxy* inClientProxy)
 {
     //kill client's cat
     //remove client from scoreboard

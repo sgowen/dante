@@ -21,8 +21,8 @@ public:
     
     virtual int Run();
     
-    void HandleNewClient(ClientProxyPtr inClientProxy);
-    void HandleLostClient(ClientProxyPtr inClientProxy);
+    void HandleNewClient(ClientProxy* inClientProxy);
+    void HandleLostClient(ClientProxy* inClientProxy);
     
     RoboCatPtr GetCatForPlayer(int inPlayerId);
     void SpawnCatForPlayer(int inPlayerId);

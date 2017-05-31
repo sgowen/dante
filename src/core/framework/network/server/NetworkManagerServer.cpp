@@ -58,7 +58,7 @@ void NetworkManagerServer::ProcessPacket(InputMemoryBitStream& inInputStream, co
     }
 }
 
-void NetworkManagerServer::ProcessPacket(ClientProxyPtr inClientProxy, InputMemoryBitStream& inInputStream)
+void NetworkManagerServer::ProcessPacket(ClientProxy* inClientProxy, InputMemoryBitStream& inInputStream)
 {
     //remember we got a packet so we know not to disconnect for a bit
     inClientProxy->UpdateLastPacketTime();
@@ -94,7 +94,7 @@ void NetworkManagerServer::HandlePacketFromNewClient(InputMemoryBitStream& inInp
         //read the name
         std::string name;
         inInputStream.Read(name);
-        ClientProxyPtr newClientProxy = std::make_shared< ClientProxy >(inFromAddress, name, m_iNewPlayerId++);
+        ClientProxy* newClientProxy = new ClientProxy(inFromAddress, name, m_iNewPlayerId++);
         mAddressToClientMap[inFromAddress] = newClientProxy;
         m_iPlayerIdToClientMap[newClientProxy->GetPlayerId()] = newClientProxy;
         
@@ -119,7 +119,7 @@ void NetworkManagerServer::HandlePacketFromNewClient(InputMemoryBitStream& inInp
     }
 }
 
-void NetworkManagerServer::SendWelcomePacket(ClientProxyPtr inClientProxy)
+void NetworkManagerServer::SendWelcomePacket(ClientProxy* inClientProxy)
 {
     OutputMemoryBitStream welcomePacket;
     
@@ -135,7 +135,7 @@ void NetworkManagerServer::RespawnCats()
 {
     for (auto it = mAddressToClientMap.begin(), end = mAddressToClientMap.end(); it != end; ++it)
     {
-        ClientProxyPtr clientProxy = it->second;
+        ClientProxy* clientProxy = it->second;
         
         clientProxy->RespawnCatIfNecessary();
     }
@@ -146,7 +146,7 @@ void NetworkManagerServer::SendOutgoingPackets()
     //let's send a client a state packet whenever their move has come in...
     for (auto it = mAddressToClientMap.begin(), end = mAddressToClientMap.end(); it != end; ++it)
     {
-        ClientProxyPtr clientProxy = it->second;
+        ClientProxy* clientProxy = it->second;
         //process any timed out packets while we're going through the list
         clientProxy->GetDeliveryNotificationManager().ProcessTimedOutPackets();
         
@@ -168,7 +168,7 @@ void NetworkManagerServer::UpdateAllClients()
     }
 }
 
-void NetworkManagerServer::SendStatePacketToClient(ClientProxyPtr inClientProxy)
+void NetworkManagerServer::SendStatePacketToClient(ClientProxy* inClientProxy)
 {
     //build state packet
     OutputMemoryBitStream	statePacket;
@@ -187,7 +187,7 @@ void NetworkManagerServer::SendStatePacketToClient(ClientProxyPtr inClientProxy)
     SendPacket(statePacket, inClientProxy->GetSocketAddress());
 }
 
-void NetworkManagerServer::WriteLastMoveTimestampIfDirty(OutputMemoryBitStream& inOutputStream, ClientProxyPtr inClientProxy)
+void NetworkManagerServer::WriteLastMoveTimestampIfDirty(OutputMemoryBitStream& inOutputStream, ClientProxy* inClientProxy)
 {
     //first, dirty?
     bool isTimestampDirty = inClientProxy->IsLastMoveTimestampDirty();
@@ -226,7 +226,7 @@ int NetworkManagerServer::GetNewNetworkId()
     return toRet;
 }
 
-void NetworkManagerServer::HandleInputPacket(ClientProxyPtr inClientProxy, InputMemoryBitStream& inInputStream)
+void NetworkManagerServer::HandleInputPacket(ClientProxy* inClientProxy, InputMemoryBitStream& inInputStream)
 {
     uint32_t moveCount = 0;
     Move move;
@@ -244,7 +244,7 @@ void NetworkManagerServer::HandleInputPacket(ClientProxyPtr inClientProxy, Input
     }
 }
 
-ClientProxyPtr NetworkManagerServer::GetClientProxy(int inPlayerId) const
+ClientProxy* NetworkManagerServer::GetClientProxy(int inPlayerId) const
 {
     auto it = m_iPlayerIdToClientMap.find(inPlayerId);
     if (it != m_iPlayerIdToClientMap.end())
@@ -257,7 +257,7 @@ ClientProxyPtr NetworkManagerServer::GetClientProxy(int inPlayerId) const
 
 void NetworkManagerServer::CheckForDisconnects()
 {
-    std::vector<ClientProxyPtr> clientsToDC;
+    std::vector<ClientProxy*> clientsToDC;
     
     float minAllowedLastPacketFromClientTime = Timing::sInstance.GetTime() - m_fClientDisconnectTimeout;
     for (const auto& pair: mAddressToClientMap)
@@ -269,13 +269,13 @@ void NetworkManagerServer::CheckForDisconnects()
         }
     }
     
-    for (ClientProxyPtr client: clientsToDC)
+    for (ClientProxy* client: clientsToDC)
     {
         HandleClientDisconnected(client);
     }
 }
 
-void NetworkManagerServer::HandleClientDisconnected(ClientProxyPtr inClientProxy)
+void NetworkManagerServer::HandleClientDisconnected(ClientProxy* inClientProxy)
 {
     m_iPlayerIdToClientMap.erase(inClientProxy->GetPlayerId());
     mAddressToClientMap.erase(inClientProxy->GetSocketAddress());

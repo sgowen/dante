@@ -35,30 +35,30 @@ public:
     
     void RespawnCats();
     
-    ClientProxyPtr GetClientProxy(int inPlayerId) const;
+    ClientProxy* GetClientProxy(int inPlayerId) const;
     
 private:
     NetworkManagerServer();
     
     void HandlePacketFromNewClient(InputMemoryBitStream& inInputStream, const SocketAddress& inFromAddress);
-    void ProcessPacket(ClientProxyPtr inClientProxy, InputMemoryBitStream& inInputStream);
+    void ProcessPacket(ClientProxy* inClientProxy, InputMemoryBitStream& inInputStream);
     
-    void SendWelcomePacket(ClientProxyPtr inClientProxy);
+    void SendWelcomePacket(ClientProxy* inClientProxy);
     void UpdateAllClients();
     
     void AddWorldStateToPacket(OutputMemoryBitStream& inOutputStream);
     
-    void SendStatePacketToClient(ClientProxyPtr inClientProxy);
-    void WriteLastMoveTimestampIfDirty(OutputMemoryBitStream& inOutputStream, ClientProxyPtr inClientProxy);
+    void SendStatePacketToClient(ClientProxy* inClientProxy);
+    void WriteLastMoveTimestampIfDirty(OutputMemoryBitStream& inOutputStream, ClientProxy* inClientProxy);
     
-    void HandleInputPacket(ClientProxyPtr inClientProxy, InputMemoryBitStream& inInputStream);
+    void HandleInputPacket(ClientProxy* inClientProxy, InputMemoryBitStream& inInputStream);
     
-    void HandleClientDisconnected(ClientProxyPtr inClientProxy);
+    void HandleClientDisconnected(ClientProxy* inClientProxy);
     
     int GetNewNetworkId();
     
-    typedef std::unordered_map<int, ClientProxyPtr> IntToClientMap;
-    typedef std::unordered_map<SocketAddress, ClientProxyPtr> AddressToClientMap;
+    typedef std::unordered_map<int, ClientProxy*> IntToClientMap;
+    typedef std::unordered_map<SocketAddress, ClientProxy*> AddressToClientMap;
     
     AddressToClientMap mAddressToClientMap;
     IntToClientMap m_iPlayerIdToClientMap;

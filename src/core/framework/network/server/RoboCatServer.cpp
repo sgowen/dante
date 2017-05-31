@@ -38,7 +38,7 @@ void RoboCatServer::Update()
     float oldRotation = GetRotation();
     
     // is there a move we haven't processed yet?
-    ClientProxyPtr client = NetworkManagerServer::sInstance->GetClientProxy(GetPlayerId());
+    ClientProxy* client = NetworkManagerServer::sInstance->GetClientProxy(GetPlayerId());
     if (client)
     {
         MoveList& moveList = client->GetUnprocessedMoveList();

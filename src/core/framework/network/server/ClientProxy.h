@@ -23,9 +23,6 @@ public:
     int GetPlayerId() const	{ return m_iPlayerId; }
     const std::string& GetName() const	{ return mName; }
     
-    void SetInputState(const InputState& inInputState) { mInputState = inInputState; }
-    const InputState& GetInputState() const	{ return mInputState; }
-    
     void UpdateLastPacketTime();
     float GetLastPacketFromClientTime()	const { return m_fLastPacketFromClientTime; }
     
@@ -49,16 +46,11 @@ private:
     std::string mName;
     int m_iPlayerId;
     
-    //going away!
-    InputState mInputState;
-    
     float m_fLastPacketFromClientTime;
     float m_fTimeToRespawn;
     
     MoveList mUnprocessedMoveList;
     bool mIsLastMoveTimestampDirty;
 };
-
-typedef std::shared_ptr<ClientProxy> ClientProxyPtr;
 
 #endif /* defined(__noctisgames__ClientProxy__) */
