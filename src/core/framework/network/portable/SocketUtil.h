@@ -22,7 +22,7 @@ public:
     static void ReportError(const char* inOperationDesc);
     static int GetLastError();
     
-    static UDPSocketPtr	CreateUDPSocket(SocketAddressFamily inFamily);
+    static UDPSocket* CreateUDPSocket(SocketAddressFamily inFamily);
 };
 
 #endif /* defined(__noctisgames__SocketUtil__) */

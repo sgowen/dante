@@ -74,7 +74,7 @@ private:
     
     std::queue< ReceivedPacket, std::list< ReceivedPacket > >	mPacketQueue;
     
-    UDPSocketPtr	mSocket;
+    UDPSocket*	mSocket;
     
     WeightedTimedMovingAverage	mBytesReceivedPerSecond;
     WeightedTimedMovingAverage	mBytesSentPerSecond;

@@ -11,8 +11,6 @@
 
 #include "NetworkConstants.h"
 
-#include <memory>
-
 class SocketAddress;
 
 class UDPSocket
@@ -33,7 +31,5 @@ private:
     
     UDPSocket(SOCKET inSocket);
 };
-
-typedef std::shared_ptr<UDPSocket> UDPSocketPtr;
 
 #endif /* defined(__noctisgames__UDPSocket__) */
