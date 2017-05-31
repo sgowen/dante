@@ -42,4 +42,7 @@
 //in case we decide to change the type of the sequence number to use fewer or more bits
 typedef uint16_t PacketSequenceNumber;
 
+#define NETWORK_TYPE_GameObject 'GOBJ'
+#define NETWORK_TYPE_RoboCat 'PLYR'
+
 #endif /* defined(__noctisgames__NetworkConstants__) */

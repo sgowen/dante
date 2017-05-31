@@ -14,7 +14,7 @@
 #include "Timing.h"
 #include "StringUtils.h"
 
-GameObjectPtr RoboCatServer::staticCreate()
+GameObjectPtr RoboCatServer::create()
 {
     return NetworkManagerServer::sInstance->RegisterAndReturn(new RoboCatServer());
 }

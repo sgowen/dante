@@ -18,11 +18,9 @@
 #include "Color.h"
 #include "Vector2.h"
 
-RoboCatClient::RoboCatClient() :
-m_fTimeLocationBecameOutOfSync(0.f),
-m_fTimeVelocityBecameOutOfSync(0.f)
+GameObjectPtr RoboCatClient::create()
 {
-    // Empty
+    return GameObjectPtr(new RoboCatClient());
 }
 
 void RoboCatClient::HandleDying()
@@ -175,6 +173,42 @@ void RoboCatClient::DoClientSidePredictionAfterReplicationForLocalCat(uint32_t i
     }
 }
 
+//so what do we want to do here? need to do some kind of interpolation...
+
+void RoboCatClient::DoClientSidePredictionAfterReplicationForRemoteCat(uint32_t inReadState)
+{
+    if ((inReadState & ECRS_Pose) != 0)
+    {
+        //simulate movement for an additional RTT
+        float rtt = NetworkManagerClient::sInstance->GetRoundTripTime();
+        //LOG("Other cat came in, simulating for an extra %f", rtt);
+        
+        //let's break into framerate sized chunks though so that we don't run through walls and do crazy things...
+        float deltaTime = 1.f / 60.f;
+        
+        while (true)
+        {
+            if (rtt < deltaTime)
+            {
+                SimulateMovement(rtt);
+                break;
+            }
+            else
+            {
+                SimulateMovement(deltaTime);
+                rtt -= deltaTime;
+            }
+        }
+    }
+}
+
+RoboCatClient::RoboCatClient() :
+m_fTimeLocationBecameOutOfSync(0.f),
+m_fTimeVelocityBecameOutOfSync(0.f)
+{
+    // Empty
+}
+
 void RoboCatClient::InterpolateClientSidePrediction(float inOldRotation, Vector2& inOldLocation, Vector2& inOldVelocity, bool inIsForRemoteCat)
 {
     if (inOldRotation != GetRotation() && !inIsForRemoteCat)
@@ -230,34 +264,5 @@ void RoboCatClient::InterpolateClientSidePrediction(float inOldRotation, Vector2
     {
         //we're in sync
         m_fTimeVelocityBecameOutOfSync = 0.f;
-    }
-}
-
-//so what do we want to do here? need to do some kind of interpolation...
-
-void RoboCatClient::DoClientSidePredictionAfterReplicationForRemoteCat(uint32_t inReadState)
-{
-    if ((inReadState & ECRS_Pose) != 0)
-    {
-        //simulate movement for an additional RTT
-        float rtt = NetworkManagerClient::sInstance->GetRoundTripTime();
-        //LOG("Other cat came in, simulating for an extra %f", rtt);
-        
-        //let's break into framerate sized chunks though so that we don't run through walls and do crazy things...
-        float deltaTime = 1.f / 60.f;
-        
-        while (true)
-        {
-            if (rtt < deltaTime)
-            {
-                SimulateMovement(rtt);
-                break;
-            }
-            else
-            {
-                SimulateMovement(deltaTime);
-                rtt -= deltaTime;
-            }
-        }
     }
 }

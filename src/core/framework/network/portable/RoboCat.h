@@ -11,12 +11,13 @@
 
 #include "GameObject.h"
 
+#include "NetworkConstants.h"
 #include "InputState.h"
 
 class RoboCat : public GameObject
 {
 public:
-    SUB_CLASS_IDENTIFICATION('PLYR', GameObject)
+    SUB_CLASS_IDENTIFICATION(NETWORK_TYPE_RoboCat, GameObject)
     
     enum ECatReplicationState
     {
@@ -27,7 +28,7 @@ public:
         ECRS_AllState = ECRS_Pose | ECRS_Color | ECRS_PlayerId
     };
     
-    static	GameObject*	staticCreate() { return new RoboCat(); }
+    static GameObject* create() { return new RoboCat(); }
     
     virtual uint32_t GetAllStateMask() const override { return ECRS_AllState; }
     

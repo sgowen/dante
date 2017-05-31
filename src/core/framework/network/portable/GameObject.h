@@ -9,6 +9,7 @@
 #ifndef __noctisgames__GameObject__
 #define __noctisgames__GameObject__
 
+#include "NetworkConstants.h"
 #include "Color.h"
 #include "Vector2.h"
 
@@ -29,7 +30,7 @@ virtual uint32_t GetClassId() const override { return kClassId; } \
 class GameObject
 {
 public:
-    CLASS_IDENTIFICATION('GOBJ', GameObject)
+    CLASS_IDENTIFICATION(NETWORK_TYPE_GameObject, GameObject)
     
     GameObject();
     virtual ~GameObject() {}
