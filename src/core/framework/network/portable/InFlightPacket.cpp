@@ -19,6 +19,28 @@ m_fTimeDispatched(Timing::sInstance.GetTime())
     //null out other transmision data params...
 }
 
+void InFlightPacket::SetTransmissionData(int inKey, ITransmissionData* inTransmissionData)
+{
+    mTransmissionDataMap[inKey] = inTransmissionData;
+}
+
+ITransmissionData* InFlightPacket::GetTransmissionData(int inKey) const
+{
+    auto it = mTransmissionDataMap.find(inKey);
+    
+    return (it != mTransmissionDataMap.end()) ? it->second : nullptr;
+}
+
+PacketSequenceNumber InFlightPacket::GetSequenceNumber() const
+{
+    return mSequenceNumber;
+}
+
+float InFlightPacket::GetTimeDispatched() const
+{
+    return m_fTimeDispatched;
+}
+
 void InFlightPacket::HandleDeliveryFailure(DeliveryNotificationManager* inDeliveryNotificationManager) const
 {
     for (const auto& pair : mTransmissionDataMap)

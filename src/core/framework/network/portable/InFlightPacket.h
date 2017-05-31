@@ -21,19 +21,13 @@ class InFlightPacket
 public:
     InFlightPacket(PacketSequenceNumber inSequenceNumber);
     
-    PacketSequenceNumber GetSequenceNumber() const { return mSequenceNumber; }
-    float GetTimeDispatched() const	{ return m_fTimeDispatched; }
+    void SetTransmissionData(int inKey, ITransmissionData* inTransmissionData);
     
-    void SetTransmissionData(int inKey, ITransmissionData* inTransmissionData)
-    {
-        mTransmissionDataMap[inKey] = inTransmissionData;
-    }
+    ITransmissionData* GetTransmissionData(int inKey) const;
     
-    ITransmissionData* GetTransmissionData(int inKey) const
-    {
-        auto it = mTransmissionDataMap.find(inKey);
-        return (it != mTransmissionDataMap.end()) ? it->second : nullptr;
-    }
+    PacketSequenceNumber GetSequenceNumber() const;
+    
+    float GetTimeDispatched() const;
     
     void HandleDeliveryFailure(DeliveryNotificationManager* inDeliveryNotificationManager) const;
     void HandleDeliverySuccess(DeliveryNotificationManager* inDeliveryNotificationManager) const;
