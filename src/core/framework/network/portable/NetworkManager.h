@@ -15,6 +15,7 @@
 #include "SocketAddress.h"
 #include "UDPSocket.h"
 #include "WeightedTimedMovingAverage.h"
+#include "macros.h"
 
 #include <unordered_map>
 #include <queue>
@@ -34,11 +35,14 @@ public:
     NetworkManager();
     virtual ~NetworkManager();
     
-    bool	Init(uint16_t inPort);
-    void	ProcessIncomingPackets();
+    bool Init(uint16_t inPort);
+    void ProcessIncomingPackets();
     
-    virtual void	ProcessPacket(InputMemoryBitStream& inInputStream, const SocketAddress& inFromAddress) = 0;
-    virtual void	HandleConnectionReset(const SocketAddress& inFromAddress) { (void) inFromAddress; }
+    virtual void ProcessPacket(InputMemoryBitStream& inInputStream, const SocketAddress& inFromAddress) = 0;
+    virtual void HandleConnectionReset(const SocketAddress& inFromAddress)
+    {
+        UNUSED(inFromAddress);
+    }
     
     void	SendPacket(const OutputMemoryBitStream& inOutputStream, const SocketAddress& inFromAddress);
     

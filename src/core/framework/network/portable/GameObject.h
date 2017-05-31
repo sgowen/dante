@@ -12,6 +12,7 @@
 #include "NetworkConstants.h"
 #include "Color.h"
 #include "Vector2.h"
+#include "macros.h"
 
 #include "RTTI.h"
 
@@ -33,7 +34,12 @@ public:
     virtual uint32_t GetAllStateMask() const { return 0; }
     
     //return whether to keep processing collision
-    virtual bool HandleCollisionWithCat(RoboCat* inCat) { (void) inCat; return true; }
+    virtual bool HandleCollisionWithCat(RoboCat* inCat)
+    {
+        UNUSED(inCat);
+        
+        return true;
+    }
     
     virtual void Update();
     
@@ -41,15 +47,15 @@ public:
     
     virtual uint32_t Write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState)
     {
-        (void)inOutputStream;
-        (void)inDirtyState;
+        UNUSED(inOutputStream);
+        UNUSED(inDirtyState);
         
         return 0;
     }
     
     virtual void Read(InputMemoryBitStream& inInputStream)
     {
-        (void)inInputStream;
+        UNUSED(inInputStream);
     }
     
     void SetIndexInWorld(int inIndex) { m_iIndexInWorld = inIndex; }

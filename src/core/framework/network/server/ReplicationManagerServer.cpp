@@ -16,6 +16,7 @@
 #include "ReplicationManagerTransmissionData.h"
 #include "NetworkManagerServer.h"
 #include "ReplicationAction.h"
+#include "macros.h"
 
 void ReplicationManagerServer::ReplicateCreate(int inNetworkId, uint32_t inInitialDirtyState)
 {
@@ -112,9 +113,10 @@ uint32_t ReplicationManagerServer::WriteUpdateAction(OutputMemoryBitStream& inOu
 
 uint32_t ReplicationManagerServer::WriteDestroyAction(OutputMemoryBitStream& inOutputStream, int inNetworkId, uint32_t inDirtyState)
 {
-    (void)inOutputStream;
-    (void) inNetworkId;
-    (void) inDirtyState;
+    UNUSED(inOutputStream);
+    UNUSED(inNetworkId);
+    UNUSED(inDirtyState);
+    
     //don't have to do anything- action already written
     
     return inDirtyState;
