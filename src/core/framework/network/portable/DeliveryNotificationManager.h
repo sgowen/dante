@@ -9,7 +9,7 @@
 #ifndef __noctisgames__DeliveryNotificationManager__
 #define __noctisgames__DeliveryNotificationManager__
 
-#include "NetworkConstants.h"
+#include "NetworkType.h"
 #include "InFlightPacket.h"
 #include "AckRange.h"
 

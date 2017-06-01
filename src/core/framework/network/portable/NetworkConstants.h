@@ -39,18 +39,4 @@
     const int SOCKET_ERROR = -1;
 #endif
 
-//in case we decide to change the type of the sequence number to use fewer or more bits
-typedef uint16_t PacketSequenceNumber;
-
-#define NETWORK_TYPE_NWPhysicalEntity 'NWPE'
-#define NETWORK_TYPE_RoboCat 'PLYR'
-
-#define NETWORK_TYPE_DECL(inCode) \
-public: \
-    enum { kClassId = inCode }; \
-    virtual uint32_t getNetworkType();
-
-#define NETWORK_TYPE_IMPL(name) \
-uint32_t name::getNetworkType() { return kClassId; }
-
 #endif /* defined(__noctisgames__NetworkConstants__) */

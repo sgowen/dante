@@ -34,14 +34,12 @@ void RoboCatServer::onDeletion()
 
 void RoboCatServer::update()
 {
-    RoboCat::update();
-    
     Vector2 oldLocation = getPosition();
-    Vector2 oldVelocity = GetVelocity();
+    Vector2 oldVelocity = getVelocity();
     float oldRotation = getAngle();
     
     // is there a move we haven't processed yet?
-    ClientProxy* client = NetworkManagerServer::getInstance()->GetClientProxy(GetPlayerId());
+    ClientProxy* client = NetworkManagerServer::getInstance()->GetClientProxy(getPlayerId());
     if (client)
     {
         MoveList& moveList = client->GetUnprocessedMoveList();
@@ -61,7 +59,7 @@ void RoboCatServer::update()
     }
     
     if (!oldLocation.isEqualTo(getPosition()) ||
-        !oldVelocity.isEqualTo(GetVelocity()) ||
+        !oldVelocity.isEqualTo(getVelocity()) ||
         oldRotation != getAngle())
     {
         NetworkManagerServer::getInstance()->SetStateDirty(getID(), ECRS_Pose);
@@ -75,7 +73,7 @@ uint32_t RoboCatServer::write(OutputMemoryBitStream& inOutputStream, uint32_t in
     if (inDirtyState & ECRS_PlayerId)
     {
         inOutputStream.write((bool)true);
-        inOutputStream.write(GetPlayerId());
+        inOutputStream.write(getPlayerId());
         
         writtenState |= ECRS_PlayerId;
     }
@@ -88,7 +86,7 @@ uint32_t RoboCatServer::write(OutputMemoryBitStream& inOutputStream, uint32_t in
     {
         inOutputStream.write((bool)true);
         
-        Vector2 velocity = mVelocity;
+        Vector2 velocity = m_velocity;
         inOutputStream.write(velocity.getX());
         inOutputStream.write(velocity.getY());
         
@@ -132,3 +130,5 @@ uint32_t RoboCatServer::write(OutputMemoryBitStream& inOutputStream, uint32_t in
 }
 
 RTTI_IMPL(RoboCatServer, RoboCat);
+
+NETWORK_TYPE_IMPL(RoboCatServer);

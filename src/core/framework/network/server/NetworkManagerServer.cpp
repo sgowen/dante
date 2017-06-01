@@ -169,7 +169,7 @@ void NetworkManagerServer::HandlePacketFromNewClient(InputMemoryBitStream& inInp
         inInputStream.read(name);
         ClientProxy* newClientProxy = new ClientProxy(inFromAddress, name, m_iNewPlayerId++);
         mAddressToClientMap[inFromAddress] = newClientProxy;
-        m_iPlayerIdToClientMap[newClientProxy->GetPlayerId()] = newClientProxy;
+        m_iPlayerIdToClientMap[newClientProxy->getPlayerId()] = newClientProxy;
         
         //tell the server about this client, spawn a cat, etc...
         //if we had a generic message system, this would be a good use for it...
@@ -223,9 +223,9 @@ void NetworkManagerServer::SendWelcomePacket(ClientProxy* inClientProxy)
     OutputMemoryBitStream welcomePacket;
     
     welcomePacket.write(kWelcomeCC);
-    welcomePacket.write(inClientProxy->GetPlayerId());
+    welcomePacket.write(inClientProxy->getPlayerId());
     
-    LOG("Server Welcoming, new client '%s' as player %d", inClientProxy->GetName().c_str(), inClientProxy->GetPlayerId());
+    LOG("Server Welcoming, new client '%s' as player %d", inClientProxy->GetName().c_str(), inClientProxy->getPlayerId());
     
     SendPacket(welcomePacket, inClientProxy->GetSocketAddress());
 }
@@ -308,7 +308,7 @@ void NetworkManagerServer::HandleInputPacket(ClientProxy* inClientProxy, InputMe
 
 void NetworkManagerServer::HandleClientDisconnected(ClientProxy* inClientProxy)
 {
-    m_iPlayerIdToClientMap.erase(inClientProxy->GetPlayerId());
+    m_iPlayerIdToClientMap.erase(inClientProxy->getPlayerId());
     mAddressToClientMap.erase(inClientProxy->GetSocketAddress());
     static_cast<Server*> (Engine::sInstance.get())->HandleLostClient(inClientProxy);
     

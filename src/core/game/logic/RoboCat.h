@@ -11,14 +11,13 @@
 
 #include "NWPhysicalEntity.h"
 
-#include "NetworkConstants.h"
-#include "InputState.h"
+#include <stdint.h>
+
+class InputState;
 
 class RoboCat : public NWPhysicalEntity
 {
     RTTI_DECL;
-    
-    NETWORK_TYPE_DECL(NETWORK_TYPE_RoboCat);
     
 public:
     enum ECatReplicationState
@@ -30,9 +29,9 @@ public:
         ECRS_AllState = ECRS_Pose | ECRS_Color | ECRS_PlayerId
     };
     
-    static NWPhysicalEntity* create() { return new RoboCat(); }
+    static NWPhysicalEntity* create();
     
-    virtual uint32_t getAllStateMask() const override { return ECRS_AllState; }
+    virtual uint32_t getAllStateMask() const override;
     
     void ProcessInput(float inDeltaTime, const InputState& inInputState);
     void SimulateMovement(float inDeltaTime);
@@ -40,18 +39,13 @@ public:
     void ProcessCollisions();
     void ProcessCollisionsWithScreenWalls();
     
-    void SetPlayerId(uint32_t inPlayerId) { m_iPlayerId = inPlayerId; }
-    uint32_t GetPlayerId() const { return m_iPlayerId; }
-    
-    void SetVelocity(Vector2 inVelocity) { mVelocity = inVelocity; }
-    Vector2& GetVelocity() { return mVelocity; }
+    void setPlayerId(uint32_t inPlayerId);
+    uint32_t getPlayerId() const;
     
     void setIndexInWorld(int inIndex);
     int getIndexInWorld() const;
     
 protected:
-    Vector2 mVelocity;
-    
     float m_fMaxLinearSpeed;
     float m_fMaxRotationSpeed;
     
@@ -59,17 +53,14 @@ protected:
     float m_fWallRestitution;
     float m_fCatRestitution;
     
-    uint32_t m_iPlayerId;
+    float m_fLastMoveTimestamp;
+    float m_fThrustDir;
     
-    RoboCat();
+    uint32_t m_iPlayerId;
     
     void AdjustVelocityByThrust(float inDeltaTime);
     
-protected:
-    ///move down here for padding reasons...
-    float m_fLastMoveTimestamp;
-    
-    float m_fThrustDir;
+    RoboCat();
     
 private:
     int m_iIndexInWorld;

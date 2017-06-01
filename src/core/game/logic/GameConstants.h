@@ -40,4 +40,12 @@
 
 #define NUM_FRAMEBUFFERS 4
 
+//// Misc ////
+
+#define FRAME_RATE 0.01666666666667f // 60 frames per second
+
+//// Network ////
+
+#define NETWORK_TYPE_RoboCat 'PLYR'
+
 #endif /* defined(__dante__GameConstants__) */

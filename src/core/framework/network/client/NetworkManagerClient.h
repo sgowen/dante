@@ -28,7 +28,7 @@ public:
     
     const WeightedTimedMovingAverage& GetAvgRoundTripTime()	const { return mAvgRoundTripTime; }
     float GetRoundTripTime() const { return mAvgRoundTripTime.getValue(); }
-    int GetPlayerId() const	{ return m_iPlayerId; }
+    int getPlayerId() const	{ return m_iPlayerId; }
     float GetLastMoveProcessedByServerTimestamp() const	{ return m_fLastMoveProcessedByServerTimestamp; }
     
 private:

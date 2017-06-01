@@ -20,7 +20,7 @@ public:
     ClientProxy(const SocketAddress& inSocketAddress, const std::string& inName, int inPlayerId);
     
     const SocketAddress& GetSocketAddress()	const { return mSocketAddress; }
-    int GetPlayerId() const	{ return m_iPlayerId; }
+    int getPlayerId() const	{ return m_iPlayerId; }
     const std::string& GetName() const	{ return mName; }
     
     void UpdateLastPacketTime();

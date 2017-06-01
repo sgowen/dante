@@ -11,9 +11,14 @@
 
 #include "RoboCat.h"
 
+#include "NetworkType.h"
+#include "GameConstants.h"
+
 class RoboCatServer : public RoboCat
 {
     RTTI_DECL;
+    
+    NETWORK_TYPE_DECL(NETWORK_TYPE_RoboCat);
     
 public:
     static NWPhysicalEntity* create();

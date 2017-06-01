@@ -11,9 +11,12 @@
 
 #include "PhysicalEntity.h"
 
-#include "NetworkConstants.h"
+#include "NetworkType.h"
+#include "FrameworkConstants.h"
 
 #include "RTTI.h"
+
+#include <stdint.h>
 
 class OutputMemoryBitStream;
 class InputMemoryBitStream;

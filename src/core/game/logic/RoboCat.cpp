@@ -10,6 +10,8 @@
 
 #include "RoboCat.h"
 
+#include "InputState.h"
+
 #include "NetworkManager.h"
 #include "World.h"
 #include "Vector2.h"
@@ -19,17 +21,14 @@
 const float WORLD_HEIGHT = 7.2f;
 const float WORLD_WIDTH = 12.8f;
 
-RoboCat::RoboCat() : NWPhysicalEntity(),
-m_fMaxRotationSpeed(5.f),
-m_fMaxLinearSpeed(50.f),
-mVelocity(0.0f, 0.0f),
-m_fWallRestitution(0.1f),
-m_fCatRestitution(0.1f),
-m_fThrustDir(0.f),
-m_iPlayerId(0),
-m_iIndexInWorld(-1)
+NWPhysicalEntity* RoboCat::create()
 {
-    // Empty
+    return new RoboCat();
+}
+
+uint32_t RoboCat::getAllStateMask() const
+{
+    return ECRS_AllState;
 }
 
 void RoboCat::ProcessInput(float inDeltaTime, const InputState& inInputState)
@@ -45,20 +44,12 @@ void RoboCat::ProcessInput(float inDeltaTime, const InputState& inInputState)
     m_fThrustDir = inputForwardDelta;
 }
 
-void RoboCat::AdjustVelocityByThrust(float inDeltaTime)
-{
-    //just set the velocity based on the thrust direction -- no thrust will lead to 0 velocity
-    //simulating acceleration makes the client prediction a bit more complex
-    Vector2 forwardVector = Vector2(sinf(m_fAngle), -cosf(m_fAngle));
-    mVelocity = forwardVector * (m_fThrustDir * inDeltaTime * m_fMaxLinearSpeed);
-}
-
 void RoboCat::SimulateMovement(float inDeltaTime)
 {
     //simulate us...
     AdjustVelocityByThrust(inDeltaTime);
     
-    setPosition(getPosition() + mVelocity * inDeltaTime);
+    setPosition(getPosition() + m_velocity * inDeltaTime);
     
     ProcessCollisions();
 }
@@ -98,13 +89,13 @@ void RoboCat::ProcessCollisions()
                 //important note- we only move this cat. the other cat can take care of moving itself
                 setPosition(targetLocation - acceptableDeltaFromSourceToTarget);
                 
-                Vector2 relVel = mVelocity;
+                Vector2 relVel = m_velocity;
                 
                 //if other object is a cat, it might have velocity, so there might be relative velocity...
                 RoboCat* targetCat = target->getRTTI().derivesFrom(RoboCat::rtti) ? (RoboCat*)target : nullptr;
                 if (targetCat)
                 {
-                    relVel -= targetCat->mVelocity;
+                    relVel -= targetCat->m_velocity;
                 }
                 
                 //got vel with dir between objects to figure out if they're moving towards each other
@@ -117,13 +108,13 @@ void RoboCat::ProcessCollisions()
                     
                     if (targetCat)
                     {
-                        mVelocity -= impulse;
-                        mVelocity *= m_fCatRestitution;
+                        m_velocity -= impulse;
+                        m_velocity *= m_fCatRestitution;
                     }
                     else
                     {
-                        mVelocity -= impulse * 2.f;
-                        mVelocity *= m_fWallRestitution;
+                        m_velocity -= impulse * 2.f;
+                        m_velocity *= m_fWallRestitution;
                     }
                 }
             }
@@ -137,37 +128,47 @@ void RoboCat::ProcessCollisionsWithScreenWalls()
     float x = location.getX();
     float y = location.getY();
     
-    float vx = mVelocity.getX();
-    float vy = mVelocity.getY();
+    float vx = m_velocity.getX();
+    float vy = m_velocity.getY();
     
     float radius = 0.5f;
     
     //if the cat collides against a wall, the quick solution is to push it off
     if ((y + radius) >= WORLD_HEIGHT && vy > 0)
     {
-        mVelocity.setY(-vy * m_fWallRestitution);
+        m_velocity.setY(-vy * m_fWallRestitution);
         location.setY(WORLD_HEIGHT - radius);
         setPosition(location);
     }
     else if (y <= (0) && vy < 0)
     {
-        mVelocity.setY(-vy * m_fWallRestitution);
+        m_velocity.setY(-vy * m_fWallRestitution);
         location.setY(0);
         setPosition(location);
     }
     
     if ((x + radius) >= WORLD_WIDTH && vx > 0)
     {
-        mVelocity.setX(-vx * m_fWallRestitution);
+        m_velocity.setX(-vx * m_fWallRestitution);
         location.setX(WORLD_WIDTH - radius);
         setPosition(location);
     }
     else if (x <= (0) && vx < 0)
     {
-        mVelocity.setX(-vx * m_fWallRestitution);
+        m_velocity.setX(-vx * m_fWallRestitution);
         location.setX(0);
         setPosition(location);
     }
+}
+
+void RoboCat::setPlayerId(uint32_t inPlayerId)
+{
+    m_iPlayerId = inPlayerId;
+}
+
+uint32_t RoboCat::getPlayerId() const
+{
+    return m_iPlayerId;
 }
 
 void RoboCat::setIndexInWorld(int inIndex)
@@ -180,6 +181,24 @@ int RoboCat::getIndexInWorld() const
     return m_iIndexInWorld;
 }
 
-RTTI_IMPL(RoboCat, NWPhysicalEntity);
+void RoboCat::AdjustVelocityByThrust(float inDeltaTime)
+{
+    //just set the velocity based on the thrust direction -- no thrust will lead to 0 velocity
+    //simulating acceleration makes the client prediction a bit more complex
+    Vector2 forwardVector = Vector2(sinf(m_fAngle), -cosf(m_fAngle));
+    m_velocity = forwardVector * (m_fThrustDir * inDeltaTime * m_fMaxLinearSpeed);
+}
 
-NETWORK_TYPE_IMPL(RoboCat);
+RoboCat::RoboCat() : NWPhysicalEntity(),
+m_fMaxRotationSpeed(5.f),
+m_fMaxLinearSpeed(50.f),
+m_fWallRestitution(0.1f),
+m_fCatRestitution(0.1f),
+m_fThrustDir(0.f),
+m_iPlayerId(0),
+m_iIndexInWorld(-1)
+{
+    // Empty
+}
+
+RTTI_IMPL(RoboCat, NWPhysicalEntity);

@@ -29,7 +29,7 @@ public:
     
     virtual ~PhysicalEntity();
     
-    virtual void update();
+    virtual void update() override;
 
     virtual void resetBounds(float width, float height);
 

@@ -28,7 +28,7 @@ void RoboCatClient::onDeletion()
     RoboCat::onDeletion();
     
     //and if we're local, tell the hud so our health goes away!
-    if (GetPlayerId() == NetworkManagerClient::getInstance()->GetPlayerId())
+    if (getPlayerId() == NetworkManagerClient::getInstance()->getPlayerId())
     {
         // Show a death animation or something?
     }
@@ -37,7 +37,7 @@ void RoboCatClient::onDeletion()
 void RoboCatClient::update()
 {
     //is this the cat owned by us?
-    if (GetPlayerId() == NetworkManagerClient::getInstance()->GetPlayerId())
+    if (getPlayerId() == NetworkManagerClient::getInstance()->getPlayerId())
     {
         const Move* pendingMove = InputManager::getInstance()->getAndClearPendingMove();
         //in theory, only do this if we want to sample input this frame / if there's a new move (since we have to keep in sync with server)
@@ -60,7 +60,7 @@ void RoboCatClient::update()
     {
         SimulateMovement(Timing::getInstance()->getDeltaTime());
         
-        if (GetVelocity().isEqualTo(Vector2::Zero))
+        if (getVelocity().isEqualTo(Vector2::Zero))
         {
             //we're in sync if our velocity is 0
             m_fTimeLocationBecameOutOfSync = 0.f;
@@ -79,13 +79,13 @@ void RoboCatClient::read(InputMemoryBitStream& inInputStream)
     {
         uint32_t playerId;
         inInputStream.read(playerId);
-        SetPlayerId(playerId);
+        setPlayerId(playerId);
         readState |= ECRS_PlayerId;
     }
     
     float oldRotation = getAngle();
     Vector2 oldLocation = getPosition();
-    Vector2 oldVelocity = GetVelocity();
+    Vector2 oldVelocity = getVelocity();
     
     float replicatedRotation;
     Vector2 replicatedLocation;
@@ -97,7 +97,7 @@ void RoboCatClient::read(InputMemoryBitStream& inInputStream)
         inInputStream.read(replicatedVelocity.getXRef());
         inInputStream.read(replicatedVelocity.getYRef());
         
-        SetVelocity(replicatedVelocity);
+        m_velocity.set(replicatedVelocity);
         
         inInputStream.read(replicatedLocation.getXRef());
         inInputStream.read(replicatedLocation.getYRef());
@@ -130,7 +130,7 @@ void RoboCatClient::read(InputMemoryBitStream& inInputStream)
         readState |= ECRS_Color;
     }
     
-    if (GetPlayerId() == NetworkManagerClient::getInstance()->GetPlayerId())
+    if (getPlayerId() == NetworkManagerClient::getInstance()->getPlayerId())
     {
         doClientSidePredictionAfterReplicationForLocalCat(readState);
         
@@ -241,7 +241,7 @@ void RoboCatClient::interpolateClientSidePrediction(float inOldRotation, Vector2
         m_fTimeLocationBecameOutOfSync = 0.f;
     }
     
-    if (!inOldVelocity.isEqualTo(GetVelocity()))
+    if (!inOldVelocity.isEqualTo(getVelocity()))
     {
         LOG("ERROR! Move replay ended with incorrect velocity!", 0);
         
@@ -256,7 +256,7 @@ void RoboCatClient::interpolateClientSidePrediction(float inOldRotation, Vector2
         float durationOutOfSync = time - m_fTimeVelocityBecameOutOfSync;
         if (durationOutOfSync < roundTripTime)
         {
-            SetVelocity(lerp(inOldVelocity, GetVelocity(), inIsForRemoteCat ? (durationOutOfSync / roundTripTime) : 0.1f));
+            m_velocity.set(lerp(inOldVelocity, getVelocity(), inIsForRemoteCat ? (durationOutOfSync / roundTripTime) : 0.1f));
         }
         //otherwise, fine...
     }
@@ -268,3 +268,5 @@ void RoboCatClient::interpolateClientSidePrediction(float inOldRotation, Vector2
 }
 
 RTTI_IMPL(RoboCatClient, RoboCat);
+
+NETWORK_TYPE_IMPL(RoboCatClient);

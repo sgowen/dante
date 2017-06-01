@@ -27,11 +27,14 @@
 #include "StringUtil.h"
 #include "MathUtil.h"
 
-#include "Client.h"
+#include "RoboCatClient.h"
+#include "EntityRegistry.h"
 #include "NetworkManagerClient.h"
+#include "SocketAddressFactory.h"
+#include "SocketUtil.h"
 #include "InputManager.h"
 #include "Timing.h"
-#include "FrameworkConstants.h"
+#include "World.h"
 
 MainScreen::MainScreen() : IScreen(),
 m_config(new JsonFile("dante.cfg")),
@@ -45,20 +48,30 @@ m_avatar(new PhysicalEntity(3, 3, 1.173913043478261f, 1.5f))
 {
     m_config->load();
     
-    std::string serverAddress = m_config->findValue("server_ip");
-    if (serverAddress.length() == 0)
+    std::string serverIPAddress = m_config->findValue("server_ip");
+    if (serverIPAddress.length() == 0)
     {
         //serverAddress = std::string("208.97.168.138:9999");
-        serverAddress = std::string("localhost:9999");
+        serverIPAddress = std::string("localhost:9999");
     }
     
-    std::string userId = m_config->findValue("user_id");
-    if (userId.length() == 0)
+    std::string userID = m_config->findValue("user_id");
+    if (userID.length() == 0)
     {
-        userId = std::string("Noctis Games");
+        userID = std::string("Noctis Games");
     }
     
-    Client::getInstance()->init(serverAddress, userId);
+    SocketUtil::StaticInit();
+    
+    EntityRegistry::StaticInit();
+    
+    World::StaticInit();
+    
+    EntityRegistry::sInstance->RegisterCreationFunction(NETWORK_TYPE_RoboCat, RoboCatClient::create);
+    
+    SocketAddress* serverAddress = SocketAddressFactory::CreateIPv4FromString(serverIPAddress);
+    
+    NetworkManagerClient::StaticInit(*serverAddress, userID);
 }
 
 MainScreen::~MainScreen()
@@ -67,6 +80,8 @@ MainScreen::~MainScreen()
     delete m_renderer;
     delete m_touchPointDown;
     delete m_touchPointDown2;
+    
+    SocketUtil::CleanUp();
 }
 
 void MainScreen::createDeviceDependentResources()
@@ -197,9 +212,9 @@ void MainScreen::tempUpdateInput()
 
 void MainScreen::tempUpdate(float deltaTime)
 {
-    Client::getInstance()->DoFrame();
+    World::sInstance->update();
     
-    m_avatar->update();
+    //m_avatar->update();
 }
 
 RTTI_IMPL(MainScreen, IScreen);

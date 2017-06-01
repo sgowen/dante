@@ -70,7 +70,7 @@ bool Server::InitNetworkManager()
 
 void Server::HandleNewClient(ClientProxy* inClientProxy)
 {
-    int playerId = inClientProxy->GetPlayerId();
+    int playerId = inClientProxy->getPlayerId();
     
     SpawnCatForPlayer(playerId);
 }
@@ -78,7 +78,7 @@ void Server::HandleNewClient(ClientProxy* inClientProxy)
 void Server::SpawnCatForPlayer(int inPlayerId)
 {
     RoboCat* cat = static_cast<RoboCat*>(EntityRegistry::sInstance->CreateNWPhysicalEntity(NETWORK_TYPE_RoboCat));
-    cat->SetPlayerId(inPlayerId);
+    cat->setPlayerId(inPlayerId);
     //gotta pick a better spawn location than this...
     cat->setPosition(Vector2(8.f - static_cast<float>(inPlayerId), 4.0f));
     
@@ -110,7 +110,7 @@ void Server::HandleLostClient(ClientProxy* inClientProxy)
 {
     //kill client's cat
     //remove client from scoreboard
-    int playerId = inClientProxy->GetPlayerId();
+    int playerId = inClientProxy->getPlayerId();
     
     RoboCat* cat = GetCatForPlayer(playerId);
     if (cat)
@@ -131,7 +131,7 @@ RoboCat* Server::GetCatForPlayer(int inPlayerId)
     {
         NWPhysicalEntity* go = gameObjects[i];
         RoboCat* cat = go->getRTTI().derivesFrom(RoboCat::rtti) ? (RoboCat*)go : nullptr;
-        if (cat && cat->GetPlayerId() == inPlayerId)
+        if (cat && cat->getPlayerId() == inPlayerId)
         {
             return static_cast<RoboCat*>(go);
         }
