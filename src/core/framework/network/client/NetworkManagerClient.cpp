@@ -58,7 +58,7 @@ void NetworkManagerClient::Init(const SocketAddress& inServerAddress, const std:
 void NetworkManagerClient::ProcessPacket(InputMemoryBitStream& inInputStream, const SocketAddress& inFromAddress)
 {
     uint32_t packetType;
-    inInputStream.Read(packetType);
+    inInputStream.read(packetType);
     
     switch(packetType)
     {
@@ -91,7 +91,7 @@ void NetworkManagerClient::SendOutgoingPackets()
 
 void NetworkManagerClient::UpdateSayingHello()
 {
-    float time = Timing::getInstance()->GetTime();
+    float time = Timing::getInstance()->getTime();
     
     if (time > m_fTimeOfLastHello + kTimeBetweenHellos)
     {
@@ -104,8 +104,8 @@ void NetworkManagerClient::SendHelloPacket()
 {
     OutputMemoryBitStream helloPacket;
     
-    helloPacket.Write(kHelloCC);
-    helloPacket.Write(mName);
+    helloPacket.write(kHelloCC);
+    helloPacket.write(mName);
     
     SendPacket(helloPacket, mServerAddress);
 }
@@ -116,7 +116,7 @@ void NetworkManagerClient::HandleWelcomePacket(InputMemoryBitStream& inInputStre
     {
         //if we got a player id, we've been welcomed!
         int playerId;
-        inInputStream.Read(playerId);
+        inInputStream.read(playerId);
         m_iPlayerId = playerId;
         mState = NCS_Welcomed;
         LOG("'%s' was welcomed on client as player %d", mName.c_str(), m_iPlayerId);
@@ -130,23 +130,23 @@ void NetworkManagerClient::HandleStatePacket(InputMemoryBitStream& inInputStream
         ReadLastMoveProcessedOnServerTimestamp(inInputStream);
         
         //tell the replication manager to handle the rest...
-        mReplicationManagerClient.Read(inInputStream);
+        mReplicationManagerClient.read(inInputStream);
     }
 }
 
 void NetworkManagerClient::ReadLastMoveProcessedOnServerTimestamp(InputMemoryBitStream& inInputStream)
 {
     bool isTimestampDirty;
-    inInputStream.Read(isTimestampDirty);
+    inInputStream.read(isTimestampDirty);
     if (isTimestampDirty)
     {
-        inInputStream.Read(m_fLastMoveProcessedByServerTimestamp);
+        inInputStream.read(m_fLastMoveProcessedByServerTimestamp);
         
-        float rtt = Timing::getInstance()->GetFrameStartTime() - m_fLastMoveProcessedByServerTimestamp;
+        float rtt = Timing::getInstance()->getFrameStartTime() - m_fLastMoveProcessedByServerTimestamp;
         m_fLastRoundTripTime = rtt;
-        mAvgRoundTripTime.Update(rtt);
+        mAvgRoundTripTime.update(rtt);
         
-        InputManager::sInstance->GetMoveList().RemovedProcessedMoves(m_fLastMoveProcessedByServerTimestamp);
+        InputManager::getInstance()->getMoveList().RemovedProcessedMoves(m_fLastMoveProcessedByServerTimestamp);
     }
 }
 
@@ -156,7 +156,7 @@ void NetworkManagerClient::HandleGameObjectState(InputMemoryBitStream& inInputSt
     std::unordered_map<int, GameObject*> objectsToDestroy = m_networkIdToGameObjectMap;
     
     int stateCount;
-    inInputStream.Read(stateCount);
+    inInputStream.read(stateCount);
     if (stateCount > 0)
     {
         for (int stateIndex = 0; stateIndex < stateCount; ++stateIndex)
@@ -164,8 +164,8 @@ void NetworkManagerClient::HandleGameObjectState(InputMemoryBitStream& inInputSt
             int networkId;
             uint32_t fourCC;
             
-            inInputStream.Read(networkId);
-            inInputStream.Read(fourCC);
+            inInputStream.read(networkId);
+            inInputStream.read(fourCC);
             GameObject* go;
             auto itGO = m_networkIdToGameObjectMap.find(networkId);
             //didn't find it, better create it!
@@ -182,7 +182,7 @@ void NetworkManagerClient::HandleGameObjectState(InputMemoryBitStream& inInputSt
             }
             
             //now we can update into it
-            go->Read(inInputStream);
+            go->read(inInputStream);
             objectsToDestroy.erase(networkId);
         }
     }
@@ -203,7 +203,7 @@ void NetworkManagerClient::DestroyGameObjectsInMap(const std::unordered_map<int,
 
 void NetworkManagerClient::UpdateSendingInputPacket()
 {
-    float time = Timing::getInstance()->GetTime();
+    float time = Timing::getInstance()->getTime();
     
     if (time > m_fTimeOfLastInputPacket + kTimeBetweenInputPackets)
     {
@@ -215,13 +215,13 @@ void NetworkManagerClient::UpdateSendingInputPacket()
 void NetworkManagerClient::SendInputPacket()
 {
     //only send if there's any input to sent!
-    const MoveList& moveList = InputManager::sInstance->GetMoveList();
+    const MoveList& moveList = InputManager::getInstance()->getMoveList();
     
     if (moveList.HasMoves())
     {
         OutputMemoryBitStream inputPacket;
         
-        inputPacket.Write(kInputCC);
+        inputPacket.write(kInputCC);
         
         mDeliveryNotificationManager.WriteState(inputPacket);
         
@@ -235,12 +235,12 @@ void NetworkManagerClient::SendInputPacket()
         auto move = moveList.begin() + firstMoveIndex;
         
         //only need two bits to write the move count, because it's 0, 1, 2 or 3
-        inputPacket.Write(moveCount - firstMoveIndex, 2);
+        inputPacket.write(moveCount - firstMoveIndex, 2);
         
         for (; firstMoveIndex < moveCount; ++firstMoveIndex, ++move)
         {
             ///would be nice to optimize the time stamp...
-            move->Write(inputPacket);
+            move->write(inputPacket);
         }
         
         SendPacket(inputPacket, mServerAddress);

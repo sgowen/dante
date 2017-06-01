@@ -98,7 +98,7 @@ void NetworkManager::ReadIncomingPacketsIntoQueue()
             //we'll pretend it wasn't received until simulated latency from now
             //this doesn't sim jitter, for that we would need to.....
             
-            float simulatedReceivedTime = Timing::getInstance()->GetTime();
+            float simulatedReceivedTime = Timing::getInstance()->getTime();
             mPacketQueue.emplace(simulatedReceivedTime, inputStream, fromAddress);
         }
         else
@@ -109,7 +109,7 @@ void NetworkManager::ReadIncomingPacketsIntoQueue()
     
     if (totalReadByteCount > 0)
     {
-        mBytesReceivedPerSecond.UpdatePerSecond(static_cast<float>(totalReadByteCount));
+        mBytesReceivedPerSecond.updatePerSecond(static_cast<float>(totalReadByteCount));
     }
 }
 
@@ -119,7 +119,7 @@ void NetworkManager::ProcessQueuedPackets()
     while (!mPacketQueue.empty())
     {
         ReceivedPacket& nextPacket = mPacketQueue.front();
-        if (Timing::getInstance()->GetTime() > nextPacket.GetReceivedTime())
+        if (Timing::getInstance()->getTime() > nextPacket.GetReceivedTime())
         {
             ProcessPacket(nextPacket.GetPacketBuffer(), nextPacket.GetFromAddress());
             mPacketQueue.pop();
@@ -144,7 +144,7 @@ void NetworkManager::UpdateBytesSentLastFrame()
 {
     if (mBytesSentThisFrame > 0)
     {
-        mBytesSentPerSecond.UpdatePerSecond(static_cast<float>(mBytesSentThisFrame));
+        mBytesSentPerSecond.updatePerSecond(static_cast<float>(mBytesSentThisFrame));
         
         mBytesSentThisFrame = 0;
     }

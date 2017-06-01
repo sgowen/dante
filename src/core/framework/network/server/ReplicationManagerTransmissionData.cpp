@@ -73,7 +73,7 @@ void ReplicationManagerTransmissionData::HandleCreateDeliveryFailure(int inNetwo
     GameObject* gameObject = NetworkManagerServer::getInstance()->GetGameObject(inNetworkId);
     if (gameObject)
     {
-        mReplicationManagerServer->ReplicateCreate(inNetworkId, gameObject->GetAllStateMask());
+        mReplicationManagerServer->ReplicateCreate(inNetworkId, gameObject->getAllStateMask());
     }
 }
 

@@ -38,5 +38,5 @@ int Engine::Run()
 
 void Engine::DoFrame()
 {
-    World::sInstance->Update();
+    World::sInstance->update();
 }

@@ -27,7 +27,7 @@ public:
     virtual void ProcessPacket(InputMemoryBitStream& inInputStream, const SocketAddress& inFromAddress) override;
     
     const WeightedTimedMovingAverage& GetAvgRoundTripTime()	const { return mAvgRoundTripTime; }
-    float GetRoundTripTime() const { return mAvgRoundTripTime.GetValue(); }
+    float GetRoundTripTime() const { return mAvgRoundTripTime.getValue(); }
     int GetPlayerId() const	{ return m_iPlayerId; }
     float GetLastMoveProcessedByServerTimestamp() const	{ return m_fLastMoveProcessedByServerTimestamp; }
     

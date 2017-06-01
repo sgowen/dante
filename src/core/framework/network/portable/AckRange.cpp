@@ -12,29 +12,29 @@
 
 #include "MemoryBitStream.h"
 
-void AckRange::Write(OutputMemoryBitStream& inOutputStream) const
+void AckRange::write(OutputMemoryBitStream& inOutputStream) const
 {
-    inOutputStream.Write(mStart);
+    inOutputStream.write(mStart);
     bool hasCount = mCount > 1;
-    inOutputStream.Write(hasCount);
+    inOutputStream.write(hasCount);
     if (hasCount)
     {
         //most you can ack is 255...
         uint32_t countMinusOne = mCount - 1;
         uint8_t countToAck = countMinusOne > 255 ? 255 : static_cast<uint8_t>(countMinusOne);
-        inOutputStream.Write(countToAck);
+        inOutputStream.write(countToAck);
     }
 }
 
-void AckRange::Read(InputMemoryBitStream& inInputStream)
+void AckRange::read(InputMemoryBitStream& inInputStream)
 {
-    inInputStream.Read(mStart);
+    inInputStream.read(mStart);
     bool hasCount;
-    inInputStream.Read(hasCount);
+    inInputStream.read(hasCount);
     if (hasCount)
     {
         uint8_t countMinusOne;
-        inInputStream.Read(countMinusOne);
+        inInputStream.read(countMinusOne);
         mCount = countMinusOne + 1;
     }
     else

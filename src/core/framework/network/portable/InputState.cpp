@@ -14,24 +14,24 @@
 
 namespace
 {
-    void WriteSignedBinaryValue(OutputMemoryBitStream& inOutputStream, float inValue)
+    void writeSignedBinaryValue(OutputMemoryBitStream& inOutputStream, float inValue)
     {
         bool isNonZero = (inValue != 0.f);
-        inOutputStream.Write(isNonZero);
+        inOutputStream.write(isNonZero);
         if (isNonZero)
         {
-            inOutputStream.Write(inValue > 0.f);
+            inOutputStream.write(inValue > 0.f);
         }
     }
     
-    void ReadSignedBinaryValue(InputMemoryBitStream& inInputStream, float& outValue)
+    void readSignedBinaryValue(InputMemoryBitStream& inInputStream, float& outValue)
     {
         bool isNonZero;
-        inInputStream.Read(isNonZero);
+        inInputStream.read(isNonZero);
         if (isNonZero)
         {
             bool isPositive;
-            inInputStream.Read(isPositive);
+            inInputStream.read(isPositive);
             outValue = isPositive ? 1.f : -1.f;
         }
         else
@@ -41,18 +41,33 @@ namespace
     }
 }
 
-bool InputState::Write(OutputMemoryBitStream& inOutputStream) const
+InputState::InputState() : m_fDesiredRightAmount(0), m_fDesiredLeftAmount(0), m_fDesiredForwardAmount(0), m_fDesiredBackAmount(0)
 {
-    WriteSignedBinaryValue(inOutputStream, GetDesiredHorizontalDelta());
-    WriteSignedBinaryValue(inOutputStream, GetDesiredVerticalDelta());
+    // Empty
+}
+
+bool InputState::write(OutputMemoryBitStream& inOutputStream) const
+{
+    writeSignedBinaryValue(inOutputStream, getDesiredHorizontalDelta());
+    writeSignedBinaryValue(inOutputStream, getDesiredVerticalDelta());
     
     return false;
 }
 
-bool InputState::Read(InputMemoryBitStream& inInputStream)
+bool InputState::read(InputMemoryBitStream& inInputStream)
 {
-    ReadSignedBinaryValue(inInputStream, mDesiredRightAmount);
-    ReadSignedBinaryValue(inInputStream, mDesiredForwardAmount);
+    readSignedBinaryValue(inInputStream, m_fDesiredRightAmount);
+    readSignedBinaryValue(inInputStream, m_fDesiredForwardAmount);
     
     return true;
+}
+
+float InputState::getDesiredHorizontalDelta() const
+{
+    return m_fDesiredRightAmount - m_fDesiredLeftAmount;
+}
+
+float InputState::getDesiredVerticalDelta() const
+{
+    return m_fDesiredForwardAmount - m_fDesiredBackAmount;
 }

@@ -60,7 +60,7 @@ void World::RemoveGameObject(GameObject* inGameObject)
     }
 }
 
-void World::Update()
+void World::update()
 {
     //update all game objects- sometimes they want to die, so we need to tread carefully...
     
@@ -71,14 +71,14 @@ void World::Update()
         
         if (!go->DoesWantToDie())
         {
-            go->Update();
+            go->update();
         }
         
         //you might suddenly want to die after your update, so check again
         if (go->DoesWantToDie())
         {
             RemoveGameObject(go);
-            go->HandleDying();
+            go->handleDying();
             --i;
             --c;
         }

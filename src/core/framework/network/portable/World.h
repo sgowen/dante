@@ -24,7 +24,7 @@ public:
     void AddGameObject(GameObject* inGameObject);
     void RemoveGameObject(GameObject* inGameObject);
     
-    void Update();
+    void update();
     
     const std::vector<GameObject*>& GetGameObjects() const { return mGameObjects; }
     

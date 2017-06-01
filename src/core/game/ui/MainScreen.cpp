@@ -31,8 +31,7 @@
 #include "NetworkManagerClient.h"
 #include "InputManager.h"
 #include "Timing.h"
-
-#define FRAME_RATE 0.01666666666667f // 60 frames per second
+#include "FrameworkConstants.h"
 
 MainScreen::MainScreen() : IScreen(),
 m_config(new JsonFile("dante.cfg")),
@@ -58,8 +57,6 @@ m_avatar(new PhysicalEntity(3, 3, 1.173913043478261f, 1.5f))
     {
         userId = std::string("Noctis Games");
     }
-    
-    InputManager::StaticInit();
     
     Client::getInstance()->init(serverAddress, userId);
 }
@@ -158,16 +155,16 @@ void MainScreen::tempUpdateInput()
         switch ((*i)->getType())
         {
             case KeyboardEventType_W:
-                InputManager::sInstance->HandleInput((*i)->isUp() ? EIA_Released : EIA_Pressed, 'W');
+                InputManager::getInstance()->handleInput((*i)->isUp() ? EIA_Released : EIA_Pressed, 'W');
                 continue;
             case KeyboardEventType_A:
-                InputManager::sInstance->HandleInput((*i)->isUp() ? EIA_Released : EIA_Pressed, 'A');
+                InputManager::getInstance()->handleInput((*i)->isUp() ? EIA_Released : EIA_Pressed, 'A');
                 continue;
             case KeyboardEventType_S:
-                InputManager::sInstance->HandleInput((*i)->isUp() ? EIA_Released : EIA_Pressed, 'S');
+                InputManager::getInstance()->handleInput((*i)->isUp() ? EIA_Released : EIA_Pressed, 'S');
                 continue;
             case KeyboardEventType_D:
-                InputManager::sInstance->HandleInput((*i)->isUp() ? EIA_Released : EIA_Pressed, 'D');
+                InputManager::getInstance()->handleInput((*i)->isUp() ? EIA_Released : EIA_Pressed, 'D');
                 continue;
             default:
                 continue;
@@ -179,23 +176,23 @@ void MainScreen::tempUpdateInput()
         switch ((*i)->getType())
         {
             case GamePadEventType_D_PAD_UP:
-                InputManager::sInstance->HandleInput((*i)->isButtonPressed() ? EIA_Pressed : EIA_Released, 'W');
+                InputManager::getInstance()->handleInput((*i)->isButtonPressed() ? EIA_Pressed : EIA_Released, 'W');
                 continue;
             case GamePadEventType_D_PAD_LEFT:
-                InputManager::sInstance->HandleInput((*i)->isButtonPressed() ? EIA_Pressed : EIA_Released, 'A');
+                InputManager::getInstance()->handleInput((*i)->isButtonPressed() ? EIA_Pressed : EIA_Released, 'A');
                 continue;
             case GamePadEventType_D_PAD_DOWN:
-                InputManager::sInstance->HandleInput((*i)->isButtonPressed() ? EIA_Pressed : EIA_Released, 'S');
+                InputManager::getInstance()->handleInput((*i)->isButtonPressed() ? EIA_Pressed : EIA_Released, 'S');
                 continue;
             case GamePadEventType_D_PAD_RIGHT:
-                InputManager::sInstance->HandleInput((*i)->isButtonPressed() ? EIA_Pressed : EIA_Released, 'D');
+                InputManager::getInstance()->handleInput((*i)->isButtonPressed() ? EIA_Pressed : EIA_Released, 'D');
                 continue;
             default:
                 continue;
         }
     }
     
-    InputManager::sInstance->Update();
+    InputManager::getInstance()->update();
 }
 
 void MainScreen::tempUpdate(float deltaTime)

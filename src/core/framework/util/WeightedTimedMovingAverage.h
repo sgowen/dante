@@ -14,11 +14,11 @@ class WeightedTimedMovingAverage
 public:
     WeightedTimedMovingAverage(float inDuration = 5.f);
     
-    void UpdatePerSecond(float inValue);
+    void updatePerSecond(float inValue);
     
-    void Update(float inValue);
+    void update(float inValue);
     
-    float GetValue() const;
+    float getValue() const;
     
 private:
     float m_fTimeLastEntryMade;

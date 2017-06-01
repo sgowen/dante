@@ -28,8 +28,8 @@ public:
     PacketSequenceNumber GetStart() const { return mStart; }
     uint32_t GetCount() const { return mCount; }
     
-    void Write(OutputMemoryBitStream& inOutputStream) const;
-    void Read(InputMemoryBitStream& inInputStream);
+    void write(OutputMemoryBitStream& inOutputStream) const;
+    void read(InputMemoryBitStream& inInputStream);
     
 private:
     PacketSequenceNumber mStart;

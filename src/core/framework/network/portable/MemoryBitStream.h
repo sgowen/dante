@@ -36,7 +36,7 @@ public:
     void WriteBytes(const void* inData, uint32_t inByteCount) { WriteBits(inData, inByteCount << 3); }
     
     template <typename T>
-    void Write(T inData, uint32_t inBitCount = sizeof(T) * 8)
+    void write(T inData, uint32_t inBitCount = sizeof(T) * 8)
     {
         static_assert(std::is_arithmetic< T >::value ||
                       std::is_enum< T >::value,
@@ -44,19 +44,19 @@ public:
         WriteBits(&inData, inBitCount);
     }
     
-    void Write(bool inData) { WriteBits(&inData, 1); }
+    void write(bool inData) { WriteBits(&inData, 1); }
     
-    void Write(const Vector2& inVector);
+    void write(const Vector2& inVector);
     
-    void Write(Color& inColor);
+    void write(Color& inColor);
     
-    void Write(const std::string& inString)
+    void write(const std::string& inString)
     {
         uint32_t elementCount = static_cast<uint32_t>(inString.size());
-        Write(elementCount);
+        write(elementCount);
         for (const auto& element : inString)
         {
-            Write(element);
+            write(element);
         }
     }
     
@@ -100,7 +100,7 @@ public:
     void ReadBytes(void* outData, uint32_t inByteCount) { ReadBits(outData, inByteCount << 3); }
     
     template <typename T>
-    void Read(T& inData, uint32_t inBitCount = sizeof(T) * 8)
+    void read(T& inData, uint32_t inBitCount = sizeof(T) * 8)
     {
         static_assert(std::is_arithmetic< T >::value ||
                       std::is_enum< T >::value,
@@ -108,32 +108,32 @@ public:
         ReadBits(&inData, inBitCount);
     }
     
-    void Read(uint32_t& outData, uint32_t inBitCount = 32) { ReadBits(&outData, inBitCount); }
-    void Read(int& outData, uint32_t inBitCount = 32) { ReadBits(&outData, inBitCount); }
-    void Read(float& outData) { ReadBits(&outData, 32); }
+    void read(uint32_t& outData, uint32_t inBitCount = 32) { ReadBits(&outData, inBitCount); }
+    void read(int& outData, uint32_t inBitCount = 32) { ReadBits(&outData, inBitCount); }
+    void read(float& outData) { ReadBits(&outData, 32); }
     
-    void Read(uint16_t& outData, uint32_t inBitCount = 16) { ReadBits(&outData, inBitCount); }
-    void Read(int16_t& outData, uint32_t inBitCount = 16) { ReadBits(&outData, inBitCount); }
+    void read(uint16_t& outData, uint32_t inBitCount = 16) { ReadBits(&outData, inBitCount); }
+    void read(int16_t& outData, uint32_t inBitCount = 16) { ReadBits(&outData, inBitCount); }
     
-    void Read(uint8_t& outData, uint32_t inBitCount = 8) { ReadBits(&outData, inBitCount); }
-    void Read(bool& outData) { ReadBits(&outData, 1); }
+    void read(uint8_t& outData, uint32_t inBitCount = 8) { ReadBits(&outData, inBitCount); }
+    void read(bool& outData) { ReadBits(&outData, 1); }
     
     void ResetToCapacity(uint32_t inByteCapacity) { mBitCapacity = inByteCapacity << 3; mBitHead = 0; }
     
-    void Read(std::string& inString)
+    void read(std::string& inString)
     {
         uint32_t elementCount;
-        Read(elementCount);
+        read(elementCount);
         inString.resize(elementCount);
         for (auto& element : inString)
         {
-            Read(element);
+            read(element);
         }
     }
     
-    void Read(Vector2& outVector);
+    void read(Vector2& outVector);
     
-    void Read(Color& outColor);
+    void read(Color& outColor);
     
 private:
     char* mBuffer;

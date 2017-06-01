@@ -15,12 +15,12 @@
 
 WeightedTimedMovingAverage::WeightedTimedMovingAverage(float inDuration) : m_fDuration(inDuration), m_fValue(0.f)
 {
-    m_fTimeLastEntryMade = Timing::getInstance()->GetTime();
+    m_fTimeLastEntryMade = Timing::getInstance()->getTime();
 }
 
-void WeightedTimedMovingAverage::UpdatePerSecond(float inValue)
+void WeightedTimedMovingAverage::updatePerSecond(float inValue)
 {
-    float time = Timing::getInstance()->GetTime();
+    float time = Timing::getInstance()->getTime();
     float timeSinceLastEntry = clamp(time - m_fTimeLastEntryMade, 10, 0);
     
     float valueOverTime = inValue / timeSinceLastEntry;
@@ -37,9 +37,9 @@ void WeightedTimedMovingAverage::UpdatePerSecond(float inValue)
     m_fTimeLastEntryMade = time;
 }
 
-void WeightedTimedMovingAverage::Update(float inValue)
+void WeightedTimedMovingAverage::update(float inValue)
 {
-    float time = Timing::getInstance()->GetTime();
+    float time = Timing::getInstance()->getTime();
     float timeSinceLastEntry = clamp(time - m_fTimeLastEntryMade, 10, 0);
     
     // now update our value by whatever amount of the duration that was..
@@ -54,7 +54,7 @@ void WeightedTimedMovingAverage::Update(float inValue)
     m_fTimeLastEntryMade = time;
 }
 
-float WeightedTimedMovingAverage::GetValue() const
+float WeightedTimedMovingAverage::getValue() const
 {
     return m_fValue;
 }

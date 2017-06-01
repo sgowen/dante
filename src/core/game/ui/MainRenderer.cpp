@@ -98,10 +98,10 @@ void MainRenderer::RenderBandWidth()
     static Vector2 bandwidthOrigin = Vector2(4.f, 6.6f);
     
     const WeightedTimedMovingAverage& bpsIn = NetworkManagerClient::sInstance->GetBytesReceivedPerSecond();
-    int bpsInInt = static_cast< int >(bpsIn.GetValue());
+    int bpsInInt = static_cast< int >(bpsIn.getValue());
     
     const WeightedTimedMovingAverage& bpsOut = NetworkManagerClient::sInstance->GetBytesSentPerSecond();
-    int bpsOutInt = static_cast< int >(bpsOut.GetValue());
+    int bpsOutInt = static_cast< int >(bpsOut.getValue());
     
     std::string bandwidth = StringUtil::sprintf("In %d Bps, Out %d Bps", bpsInInt, bpsOutInt);
     
@@ -114,7 +114,7 @@ void MainRenderer::RenderRoundTripTime()
 {
     static Vector2 roundTripTimeOrigin = Vector2(5.f, 7.f);
     
-    float rttMS = NetworkManagerClient::getInstance()->GetAvgRoundTripTime().GetValue() * 1000.f;
+    float rttMS = NetworkManagerClient::getInstance()->GetAvgRoundTripTime().getValue() * 1000.f;
     
     std::string roundTripTime = StringUtil::sprintf("RTT %d ms", (int) rttMS);
     

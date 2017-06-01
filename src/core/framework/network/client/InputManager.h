@@ -13,37 +13,34 @@
 #include "InputState.h"
 #include "MoveList.h"
 
-#include <memory>
-
 class Move;
 
 class InputManager
 {
 public:
-    static void StaticInit();
-    static std::unique_ptr<InputManager> sInstance;
+    static InputManager* getInstance();
     
-    void HandleInput(EInputAction inInputAction, char inKeyCode);
+    void handleInput(EInputAction inInputAction, char inKeyCode);
     
-    const InputState& GetState() const { return mCurrentState; }
+    void update();
     
-    MoveList& GetMoveList() { return mMoveList; }
+    MoveList& getMoveList();
     
-    const Move* GetAndClearPendingMove() { auto toRet = mPendingMove; mPendingMove = nullptr; return toRet; }
-    
-    void Update();
+    const Move* getAndClearPendingMove();
     
 private:
-    InputState mCurrentState;
-    
-    InputManager();
-    
-    bool IsTimeToSampleInput();
-    const Move& SampleInputAsMove();
-    
-    MoveList mMoveList;
+    InputState m_currentState;
+    MoveList m_moveList;
     float m_fNextTimeToSampleInput;
-    const Move* mPendingMove;
+    const Move* m_pendingMove;
+    
+    bool isTimeToSampleInput();
+    const Move& sampleInputAsMove();
+    
+    // ctor, copy ctor, and assignment should be private in a Singleton
+    InputManager();
+    InputManager(const InputManager&);
+    InputManager& operator=(const InputManager&);
 };
 
 #endif /* defined(__noctisgames__InputManager__) */

@@ -30,25 +30,25 @@ Timing* Timing::getInstance()
     return &instance;
 }
 
-void Timing::Update()
+void Timing::update()
 {
-    double currentTime = GetTime();
+    double currentTime = getTime();
     
-    mDeltaTime = (float) (currentTime - mLastFrameStartTime);
+    m_fDeltaTime = (float) (currentTime - m_dLastFrameStartTime);
     
-    mLastFrameStartTime = currentTime;
-    mFrameStartTimef = static_cast<float> (mLastFrameStartTime);
+    m_dLastFrameStartTime = currentTime;
+    m_fFrameStartTimef = static_cast<float> (m_dLastFrameStartTime);
 }
 
 void Timing::updateManual(float stateTime, float deltaTime)
 {
-    mDeltaTime = deltaTime;
+    m_fDeltaTime = deltaTime;
     
-    mLastFrameStartTime = stateTime;
-    mFrameStartTimef = static_cast<float> (mLastFrameStartTime);
+    m_dLastFrameStartTime = stateTime;
+    m_fFrameStartTimef = static_cast<float> (m_dLastFrameStartTime);
 }
 
-float Timing::GetTime() const
+float Timing::getTime() const
 {
 #if _WIN32
     LARGE_INTEGER curTime, timeSinceStart;
@@ -56,7 +56,7 @@ float Timing::GetTime() const
     
     timeSinceStart.QuadPart = curTime.QuadPart - sStartTime.QuadPart;
     
-    return timeSinceStart.QuadPart * mPerfCountDuration;
+    return timeSinceStart.QuadPart * m_dPerfCountDuration;
 #else
     auto now = steady_clock::now();
     auto ms = duration_cast< milliseconds >(now - sStartTime).count();
@@ -65,14 +65,14 @@ float Timing::GetTime() const
 #endif
 }
 
-float Timing::GetDeltaTime() const
+float Timing::getDeltaTime() const
 {
-    return mDeltaTime;
+    return m_fDeltaTime;
 }
 
-float Timing::GetFrameStartTime() const
+float Timing::getFrameStartTime() const
 {
-    return mFrameStartTimef;
+    return m_fFrameStartTimef;
 }
 
 Timing::Timing()
@@ -80,12 +80,12 @@ Timing::Timing()
 #if _WIN32
     LARGE_INTEGER perfFreq;
     QueryPerformanceFrequency(&perfFreq);
-    mPerfCountDuration = 1.0 / perfFreq.QuadPart;
+    m_dPerfCountDuration = 1.0 / perfFreq.QuadPart;
     
     QueryPerformanceCounter(&sStartTime);
 #else
     sStartTime = steady_clock::now();
 #endif
     
-    mLastFrameStartTime = GetTime();
+    m_dLastFrameStartTime = getTime();
 }

@@ -18,19 +18,19 @@ class RoboCatClient : public RoboCat
 public:
     static GameObject* create();
     
-    virtual void Update() override;
-    virtual void HandleDying() override;
+    virtual void update() override;
+    virtual void handleDying() override;
     
-    virtual void Read(InputMemoryBitStream& inInputStream) override;
+    virtual void read(InputMemoryBitStream& inInputStream) override;
     
-    void DoClientSidePredictionAfterReplicationForLocalCat(uint32_t inReadState);
-    void DoClientSidePredictionAfterReplicationForRemoteCat(uint32_t inReadState);
+    void doClientSidePredictionAfterReplicationForLocalCat(uint32_t inReadState);
+    void doClientSidePredictionAfterReplicationForRemoteCat(uint32_t inReadState);
     
 protected:
     RoboCatClient();
     
 private:
-    void InterpolateClientSidePrediction(float inOldRotation, Vector2& inOldLocation, Vector2& inOldVelocity, bool inIsForRemoteCat);
+    void interpolateClientSidePrediction(float inOldRotation, Vector2& inOldLocation, Vector2& inOldVelocity, bool inIsForRemoteCat);
     
     float m_fTimeLocationBecameOutOfSync;
     float m_fTimeVelocityBecameOutOfSync;

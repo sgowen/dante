@@ -44,7 +44,7 @@ void ReplicationManagerServer::HandleCreateAckd(int inNetworkId)
     m_iNetworkIdToReplicationCommand[inNetworkId].HandleCreateAckd();
 }
 
-void ReplicationManagerServer::Write(OutputMemoryBitStream& inOutputStream, ReplicationManagerTransmissionData* ioTransmissinData)
+void ReplicationManagerServer::write(OutputMemoryBitStream& inOutputStream, ReplicationManagerTransmissionData* ioTransmissinData)
 {
     //run through each replication command and do something...
     for (auto& pair: m_iNetworkIdToReplicationCommand)
@@ -55,11 +55,11 @@ void ReplicationManagerServer::Write(OutputMemoryBitStream& inOutputStream, Repl
             int networkId = pair.first;
             
             //well, first write the network id...
-            inOutputStream.Write(networkId);
+            inOutputStream.write(networkId);
             
             //only need 2 bits for action...
             ReplicationAction action = replicationCommand.GetAction();
-            inOutputStream.Write(action, 2);
+            inOutputStream.write(action, 2);
             
             uint32_t writtenState = 0;
             uint32_t dirtyState = replicationCommand.GetDirtyState();
@@ -92,8 +92,8 @@ uint32_t ReplicationManagerServer::WriteCreateAction(OutputMemoryBitStream& inOu
     //need object
     GameObject* gameObject = NetworkManagerServer::getInstance()->GetGameObject(inNetworkId);
     //need 4 cc
-    inOutputStream.Write(gameObject->getNetworkType());
-    return gameObject->Write(inOutputStream, inDirtyState);
+    inOutputStream.write(gameObject->getNetworkType());
+    return gameObject->write(inOutputStream, inDirtyState);
 }
 
 uint32_t ReplicationManagerServer::WriteUpdateAction(OutputMemoryBitStream& inOutputStream, int inNetworkId, uint32_t inDirtyState)
@@ -106,7 +106,7 @@ uint32_t ReplicationManagerServer::WriteUpdateAction(OutputMemoryBitStream& inOu
     
     //this means we need byte sand each new object needs to be byte aligned
     
-    uint32_t writtenState = gameObject->Write(inOutputStream, inDirtyState);
+    uint32_t writtenState = gameObject->write(inOutputStream, inDirtyState);
     
     return writtenState;
 }

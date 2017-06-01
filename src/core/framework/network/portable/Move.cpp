@@ -12,18 +12,18 @@
 
 #include "MemoryBitStream.h"
 
-bool Move::Write(OutputMemoryBitStream& inOutputStream) const
+bool Move::write(OutputMemoryBitStream& inOutputStream) const
 {
-    mInputState.Write(inOutputStream);
-    inOutputStream.Write(mTimestamp);
+    mInputState.write(inOutputStream);
+    inOutputStream.write(mTimestamp);
     
     return true;
 }
 
-bool Move::Read(InputMemoryBitStream& inInputStream)
+bool Move::read(InputMemoryBitStream& inInputStream)
 {
-    mInputState.Read(inInputStream);
-    inInputStream.Read(mTimestamp);
+    mInputState.read(inInputStream);
+    inInputStream.read(mTimestamp);
     
     return true;
 }

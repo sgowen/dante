@@ -29,8 +29,8 @@ public:
     float				GetTimestamp()	const		{ return mTimestamp; }
     float				GetDeltaTime()	const		{ return mDeltaTime; }
     
-    bool Write(OutputMemoryBitStream& inOutputStream) const;
-    bool Read(InputMemoryBitStream& inInputStream);
+    bool write(OutputMemoryBitStream& inOutputStream) const;
+    bool read(InputMemoryBitStream& inInputStream);
     
 private:
     InputState	mInputState;

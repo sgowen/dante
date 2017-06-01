@@ -14,7 +14,7 @@ class InputMemoryBitStream;
 class ReplicationManagerClient
 {
 public:
-    void Read(InputMemoryBitStream& inInputStream);
+    void read(InputMemoryBitStream& inInputStream);
     
 private:
     void ReadAndDoCreateAction(InputMemoryBitStream& inInputStream, int inNetworkId);

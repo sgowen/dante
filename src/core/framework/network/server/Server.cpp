@@ -14,8 +14,7 @@
 #include "GameObjectRegistry.h"
 #include "World.h"
 #include "Timing.h"
-
-#define FRAME_RATE 0.01666666666667f // 60 frames per second
+#include "FrameworkConstants.h"
 
 bool Server::StaticInit()
 {
@@ -35,9 +34,9 @@ int Server::Run()
 {
     while (true)
     {
-        Timing::getInstance()->Update();
+        Timing::getInstance()->update();
         
-        m_fFrameStateTime += Timing::getInstance()->GetDeltaTime();
+        m_fFrameStateTime += Timing::getInstance()->getDeltaTime();
         
         if (m_fFrameStateTime >= FRAME_RATE)
         {

@@ -46,7 +46,7 @@ InFlightPacket* DeliveryNotificationManager::WriteSequenceNumber(OutputMemoryBit
 {
     //write the sequence number, but also create an inflight packet for this...
     PacketSequenceNumber sequenceNumber = mNextOutgoingSequenceNumber++;
-    inOutputStream.Write(sequenceNumber);
+    inOutputStream.write(sequenceNumber);
     
     ++mDispatchedPacketCount;
     
@@ -74,11 +74,11 @@ void DeliveryNotificationManager::WriteAckData(OutputMemoryBitStream& inOutputSt
     //otherwise, write 0 bit
     bool hasAcks = (mPendingAcks.size() > 0);
     
-    inOutputStream.Write(hasAcks);
+    inOutputStream.write(hasAcks);
     if (hasAcks)
     {
         //note, we could write all the acks
-        mPendingAcks.front().Write(inOutputStream);
+        mPendingAcks.front().write(inOutputStream);
         mPendingAcks.pop_front();
     }
 }
@@ -88,7 +88,7 @@ bool DeliveryNotificationManager::ProcessSequenceNumber(InputMemoryBitStream& in
 {
     PacketSequenceNumber sequenceNumber;
     
-    inInputStream.Read(sequenceNumber);
+    inInputStream.read(sequenceNumber);
     if (sequenceNumber == mNextExpectedSequenceNumber)
     {
         mNextExpectedSequenceNumber = sequenceNumber + 1;
@@ -131,11 +131,11 @@ bool DeliveryNotificationManager::ProcessSequenceNumber(InputMemoryBitStream& in
 void DeliveryNotificationManager::ProcessAcks(InputMemoryBitStream& inInputStream)
 {
     bool hasAcks;
-    inInputStream.Read(hasAcks);
+    inInputStream.read(hasAcks);
     if (hasAcks)
     {
         AckRange ackRange;
-        ackRange.Read(inInputStream);
+        ackRange.read(inInputStream);
         
         //for each InfilghtPacket with a sequence number less than the start, handle delivery failure...
         PacketSequenceNumber nextAckdSequenceNumber = ackRange.GetStart();
@@ -172,7 +172,7 @@ void DeliveryNotificationManager::ProcessAcks(InputMemoryBitStream& inInputStrea
 
 void DeliveryNotificationManager::ProcessTimedOutPackets()
 {
-    float timeoutTime = Timing::getInstance()->GetTime() - kDelayBeforeAckTimeout;
+    float timeoutTime = Timing::getInstance()->getTime() - kDelayBeforeAckTimeout;
     
     while (!mInFlightPackets.empty())
     {

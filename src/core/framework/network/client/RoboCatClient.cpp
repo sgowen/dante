@@ -23,9 +23,9 @@ GameObject* RoboCatClient::create()
     return static_cast<GameObject*>(new RoboCatClient());
 }
 
-void RoboCatClient::HandleDying()
+void RoboCatClient::handleDying()
 {
-    RoboCat::HandleDying();
+    RoboCat::handleDying();
     
     //and if we're local, tell the hud so our health goes away!
     if (GetPlayerId() == NetworkManagerClient::getInstance()->GetPlayerId())
@@ -34,12 +34,12 @@ void RoboCatClient::HandleDying()
     }
 }
 
-void RoboCatClient::Update()
+void RoboCatClient::update()
 {
     //is this the cat owned by us?
     if (GetPlayerId() == NetworkManagerClient::getInstance()->GetPlayerId())
     {
-        const Move* pendingMove = InputManager::sInstance->GetAndClearPendingMove();
+        const Move* pendingMove = InputManager::getInstance()->getAndClearPendingMove();
         //in theory, only do this if we want to sample input this frame / if there's a new move (since we have to keep in sync with server)
         if (pendingMove) //is it time to sample a new move...
         {
@@ -58,7 +58,7 @@ void RoboCatClient::Update()
     }
     else
     {
-        SimulateMovement(Timing::getInstance()->GetDeltaTime());
+        SimulateMovement(Timing::getInstance()->getDeltaTime());
         
         if (GetVelocity().isEqualTo(Vector2::Zero))
         {
@@ -68,17 +68,17 @@ void RoboCatClient::Update()
     }
 }
 
-void RoboCatClient::Read(InputMemoryBitStream& inInputStream)
+void RoboCatClient::read(InputMemoryBitStream& inInputStream)
 {
     bool stateBit;
     
     uint32_t readState = 0;
     
-    inInputStream.Read(stateBit);
+    inInputStream.read(stateBit);
     if (stateBit)
     {
         uint32_t playerId;
-        inInputStream.Read(playerId);
+        inInputStream.read(playerId);
         SetPlayerId(playerId);
         readState |= ECRS_PlayerId;
     }
@@ -91,29 +91,29 @@ void RoboCatClient::Read(InputMemoryBitStream& inInputStream)
     Vector2 replicatedLocation;
     Vector2 replicatedVelocity;
     
-    inInputStream.Read(stateBit);
+    inInputStream.read(stateBit);
     if (stateBit)
     {
-        inInputStream.Read(replicatedVelocity.getXRef());
-        inInputStream.Read(replicatedVelocity.getYRef());
+        inInputStream.read(replicatedVelocity.getXRef());
+        inInputStream.read(replicatedVelocity.getYRef());
         
         SetVelocity(replicatedVelocity);
         
-        inInputStream.Read(replicatedLocation.getXRef());
-        inInputStream.Read(replicatedLocation.getYRef());
+        inInputStream.read(replicatedLocation.getXRef());
+        inInputStream.read(replicatedLocation.getYRef());
         
         SetLocation(replicatedLocation);
         
-        inInputStream.Read(replicatedRotation);
+        inInputStream.read(replicatedRotation);
         SetRotation(replicatedRotation);
         
         readState |= ECRS_Pose;
     }
     
-    inInputStream.Read(stateBit);
+    inInputStream.read(stateBit);
     if (stateBit)
     {
-        inInputStream.Read(stateBit);
+        inInputStream.read(stateBit);
         m_fThrustDir = stateBit ? 1.f : -1.f;
     }
     else
@@ -121,38 +121,38 @@ void RoboCatClient::Read(InputMemoryBitStream& inInputStream)
         m_fThrustDir = 0.f;
     }
     
-    inInputStream.Read(stateBit);
+    inInputStream.read(stateBit);
     if (stateBit)
     {
         Color color;
-        inInputStream.Read(color);
+        inInputStream.read(color);
         SetColor(color);
         readState |= ECRS_Color;
     }
     
     if (GetPlayerId() == NetworkManagerClient::getInstance()->GetPlayerId())
     {
-        DoClientSidePredictionAfterReplicationForLocalCat(readState);
+        doClientSidePredictionAfterReplicationForLocalCat(readState);
         
         //if this is a create packet, don't interpolate
         if ((readState & ECRS_PlayerId) == 0)
         {
-            InterpolateClientSidePrediction(oldRotation, oldLocation, oldVelocity, false);
+            interpolateClientSidePrediction(oldRotation, oldLocation, oldVelocity, false);
         }
     }
     else
     {
-        DoClientSidePredictionAfterReplicationForRemoteCat(readState);
+        doClientSidePredictionAfterReplicationForRemoteCat(readState);
         
         //will this smooth us out too? it'll interpolate us just 10% of the way there...
         if ((readState & ECRS_PlayerId) == 0)
         {
-            InterpolateClientSidePrediction(oldRotation, oldLocation, oldVelocity, true);
+            interpolateClientSidePrediction(oldRotation, oldLocation, oldVelocity, true);
         }
     }
 }
 
-void RoboCatClient::DoClientSidePredictionAfterReplicationForLocalCat(uint32_t inReadState)
+void RoboCatClient::doClientSidePredictionAfterReplicationForLocalCat(uint32_t inReadState)
 {
     if ((inReadState & ECRS_Pose) != 0)
     {
@@ -161,7 +161,7 @@ void RoboCatClient::DoClientSidePredictionAfterReplicationForLocalCat(uint32_t i
         
         //all processed moves have been removed, so all that are left are unprocessed moves
         //so we must apply them...
-        const MoveList& moveList = InputManager::sInstance->GetMoveList();
+        const MoveList& moveList = InputManager::getInstance()->getMoveList();
         
         for (const Move& move : moveList)
         {
@@ -175,7 +175,7 @@ void RoboCatClient::DoClientSidePredictionAfterReplicationForLocalCat(uint32_t i
 
 //so what do we want to do here? need to do some kind of interpolation...
 
-void RoboCatClient::DoClientSidePredictionAfterReplicationForRemoteCat(uint32_t inReadState)
+void RoboCatClient::doClientSidePredictionAfterReplicationForRemoteCat(uint32_t inReadState)
 {
     if ((inReadState & ECRS_Pose) != 0)
     {
@@ -209,7 +209,7 @@ m_fTimeVelocityBecameOutOfSync(0.f)
     // Empty
 }
 
-void RoboCatClient::InterpolateClientSidePrediction(float inOldRotation, Vector2& inOldLocation, Vector2& inOldVelocity, bool inIsForRemoteCat)
+void RoboCatClient::interpolateClientSidePrediction(float inOldRotation, Vector2& inOldLocation, Vector2& inOldVelocity, bool inIsForRemoteCat)
 {
     if (inOldRotation != GetRotation() && !inIsForRemoteCat)
     {
@@ -223,7 +223,7 @@ void RoboCatClient::InterpolateClientSidePrediction(float inOldRotation, Vector2
         LOG("ERROR! Move replay ended with incorrect location!", 0);
         
         //have we been out of sync, or did we just become out of sync?
-        float time = Timing::getInstance()->GetFrameStartTime();
+        float time = Timing::getInstance()->getFrameStartTime();
         if (m_fTimeLocationBecameOutOfSync == 0.f)
         {
             m_fTimeLocationBecameOutOfSync = time;
@@ -246,7 +246,7 @@ void RoboCatClient::InterpolateClientSidePrediction(float inOldRotation, Vector2
         LOG("ERROR! Move replay ended with incorrect velocity!", 0);
         
         //have we been out of sync, or did we just become out of sync?
-        float time = Timing::getInstance()->GetFrameStartTime();
+        float time = Timing::getInstance()->getFrameStartTime();
         if (m_fTimeVelocityBecameOutOfSync == 0.f)
         {
             m_fTimeVelocityBecameOutOfSync = time;

@@ -27,7 +27,7 @@ public:
     void HandleCreateAckd(int inNetworkId);
     void RemoveFromReplication(int inNetworkId);
     
-    void Write(OutputMemoryBitStream& inOutputStream, ReplicationManagerTransmissionData* ioTransmissinData);
+    void write(OutputMemoryBitStream& inOutputStream, ReplicationManagerTransmissionData* ioTransmissinData);
     
 private:
     uint32_t WriteCreateAction(OutputMemoryBitStream& inOutputStream, int inNetworkId, uint32_t inDirtyState);

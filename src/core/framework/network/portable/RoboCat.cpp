@@ -36,11 +36,11 @@ void RoboCat::ProcessInput(float inDeltaTime, const InputState& inInputState)
     //process our input....
     
     //turning...
-    float newRotation = GetRotation() + inInputState.GetDesiredHorizontalDelta() * m_fMaxRotationSpeed * inDeltaTime;
+    float newRotation = GetRotation() + inInputState.getDesiredHorizontalDelta() * m_fMaxRotationSpeed * inDeltaTime;
     SetRotation(newRotation);
     
     //moving...
-    float inputForwardDelta = inInputState.GetDesiredVerticalDelta();
+    float inputForwardDelta = inInputState.getDesiredVerticalDelta();
     m_fThrustDir = inputForwardDelta;
 }
 
@@ -62,7 +62,7 @@ void RoboCat::SimulateMovement(float inDeltaTime)
     ProcessCollisions();
 }
 
-void RoboCat::Update()
+void RoboCat::update()
 {
     // Empty
 }
@@ -96,7 +96,7 @@ void RoboCat::ProcessCollisions()
             {
                 //first, tell the other guy there was a collision with a cat, so it can do something...
                 
-                if (target->HandleCollisionWithCat(this))
+                if (target->handleCollisionWithCat(this))
                 {
                     //okay, you hit something!
                     //so, project your location far enough that you're not colliding

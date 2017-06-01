@@ -20,15 +20,15 @@
 
 #include <cassert>
 
-void ReplicationManagerClient::Read(InputMemoryBitStream& inInputStream)
+void ReplicationManagerClient::read(InputMemoryBitStream& inInputStream)
 {
     while (inInputStream.GetRemainingBitCount() >= 32)
     {
         //read the network id...
-        int networkId; inInputStream.Read(networkId);
+        int networkId; inInputStream.read(networkId);
         
         //only need 2 bits for action...
-        uint8_t action; inInputStream.Read(action, 2);
+        uint8_t action; inInputStream.read(action, 2);
         
         switch(action)
         {
@@ -49,7 +49,7 @@ void ReplicationManagerClient::ReadAndDoCreateAction(InputMemoryBitStream& inInp
 {
     //need 4 cc
     uint32_t fourCCName;
-    inInputStream.Read(fourCCName);
+    inInputStream.read(fourCCName);
     
     //we might already have this object- could happen if our ack of the create got dropped so server resends create request
     //(even though we might have created)
@@ -67,7 +67,7 @@ void ReplicationManagerClient::ReadAndDoCreateAction(InputMemoryBitStream& inInp
     }
     
     //and read state
-    gameObject->Read(inInputStream);
+    gameObject->read(inInputStream);
 }
 
 void ReplicationManagerClient::ReadAndDoUpdateAction(InputMemoryBitStream& inInputStream, int inNetworkId)
@@ -77,7 +77,7 @@ void ReplicationManagerClient::ReadAndDoUpdateAction(InputMemoryBitStream& inInp
     
     //gameObject MUST be found, because create was ack'd if we're getting an update...
     //and read state
-    gameObject->Read(inInputStream);
+    gameObject->read(inInputStream);
 }
 
 void ReplicationManagerClient::ReadAndDoDestroyAction(InputMemoryBitStream& inInputStream, int inNetworkId)

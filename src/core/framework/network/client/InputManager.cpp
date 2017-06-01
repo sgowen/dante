@@ -13,17 +13,12 @@
 #include "Move.h"
 
 #include "Timing.h"
+#include "FrameworkConstants.h"
 
-std::unique_ptr<InputManager> InputManager::sInstance;
-
-namespace
+InputManager* InputManager::getInstance()
 {
-    float kTimeBetweenInputSamples = 0.03f;
-}
-
-void InputManager::StaticInit()
-{
-    sInstance.reset(new InputManager());
+    static InputManager instance = InputManager();
+    return &instance;
 }
 
 namespace
@@ -41,53 +36,67 @@ namespace
     }
 }
 
-void InputManager::HandleInput(EInputAction inInputAction, char inKeyCode)
+void InputManager::handleInput(EInputAction inInputAction, char inKeyCode)
 {
     switch(inKeyCode)
     {
         case 'D':
-            UpdateDesireFloatFromKey(inInputAction, mCurrentState.mDesiredLeftAmount);
+            UpdateDesireFloatFromKey(inInputAction, m_currentState.m_fDesiredLeftAmount);
             break;
         case 'A':
-            UpdateDesireFloatFromKey(inInputAction, mCurrentState.mDesiredRightAmount);
+            UpdateDesireFloatFromKey(inInputAction, m_currentState.m_fDesiredRightAmount);
             break;
         case 'W':
-            UpdateDesireFloatFromKey(inInputAction, mCurrentState.mDesiredForwardAmount);
+            UpdateDesireFloatFromKey(inInputAction, m_currentState.m_fDesiredForwardAmount);
             break;
         case 'S':
-            UpdateDesireFloatFromKey(inInputAction, mCurrentState.mDesiredBackAmount);
+            UpdateDesireFloatFromKey(inInputAction, m_currentState.m_fDesiredBackAmount);
             break;
     }
 }
 
-InputManager::InputManager() :
-m_fNextTimeToSampleInput(0.f),
-mPendingMove(nullptr)
+void InputManager::update()
 {
+    if (isTimeToSampleInput())
+    {
+        m_pendingMove = &sampleInputAsMove();
+    }
+}
+
+MoveList& InputManager::getMoveList()
+{
+    return m_moveList;
+}
+
+const Move* InputManager::getAndClearPendingMove()
+{
+    auto toRet = m_pendingMove;
+    m_pendingMove = nullptr;
     
+    return toRet;
 }
 
-const Move& InputManager::SampleInputAsMove()
+const Move& InputManager::sampleInputAsMove()
 {
-    return mMoveList.AddMove(GetState(), Timing::getInstance()->GetFrameStartTime());
+    return m_moveList.AddMove(m_currentState, Timing::getInstance()->getFrameStartTime());
 }
 
-bool InputManager::IsTimeToSampleInput()
+bool InputManager::isTimeToSampleInput()
 {
-    float time = Timing::getInstance()->GetFrameStartTime();
+    float time = Timing::getInstance()->getFrameStartTime();
     if (time > m_fNextTimeToSampleInput)
     {
+        static const float kTimeBetweenInputSamples = 0.03f;
+        
         m_fNextTimeToSampleInput = m_fNextTimeToSampleInput + kTimeBetweenInputSamples;
+        
         return true;
     }
     
     return false;
 }
 
-void InputManager::Update()
+InputManager::InputManager() : m_fNextTimeToSampleInput(0.f), m_pendingMove(nullptr)
 {
-    if (IsTimeToSampleInput())
-    {
-        mPendingMove = &SampleInputAsMove();
-    }
+    // Empty
 }

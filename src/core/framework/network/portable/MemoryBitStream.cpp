@@ -62,32 +62,32 @@ void OutputMemoryBitStream::WriteBits(const void* inData, uint32_t inBitCount)
     }
 }
 
-void OutputMemoryBitStream::Write(const Vector2& inVector)
+void OutputMemoryBitStream::write(const Vector2& inVector)
 {
-    Write(inVector.getX());
-    Write(inVector.getY());
+    write(inVector.getX());
+    write(inVector.getY());
 }
 
-void InputMemoryBitStream::Read(Vector2& outVector)
+void InputMemoryBitStream::read(Vector2& outVector)
 {
-    Read(outVector.getXRef());
-    Read(outVector.getYRef());
+    read(outVector.getXRef());
+    read(outVector.getYRef());
 }
 
-void OutputMemoryBitStream::Write(Color& inColor)
+void OutputMemoryBitStream::write(Color& inColor)
 {
-    Write(inColor.red);
-    Write(inColor.green);
-    Write(inColor.blue);
-    Write(inColor.alpha);
+    write(inColor.red);
+    write(inColor.green);
+    write(inColor.blue);
+    write(inColor.alpha);
 }
 
-void InputMemoryBitStream::Read(Color& outColor)
+void InputMemoryBitStream::read(Color& outColor)
 {
-    Read(outColor.red);
-    Read(outColor.green);
-    Read(outColor.blue);
-    Read(outColor.alpha);
+    read(outColor.red);
+    read(outColor.green);
+    read(outColor.blue);
+    read(outColor.alpha);
 }
 
 void OutputMemoryBitStream::ReallocBuffer(uint32_t inNewBitLength)

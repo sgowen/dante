@@ -15,24 +15,21 @@ class InputMemoryBitStream;
 class InputState
 {
 public:
-    InputState() :
-    mDesiredRightAmount(0),
-    mDesiredLeftAmount(0),
-    mDesiredForwardAmount(0),
-    mDesiredBackAmount(0)
-    {}
+    InputState();
     
-    float GetDesiredHorizontalDelta()	const { return mDesiredRightAmount - mDesiredLeftAmount; }
-    float GetDesiredVerticalDelta()		const { return mDesiredForwardAmount - mDesiredBackAmount; }
+    bool write(OutputMemoryBitStream& inOutputStream) const;
+    bool read(InputMemoryBitStream& inInputStream);
     
-    bool Write(OutputMemoryBitStream& inOutputStream) const;
-    bool Read(InputMemoryBitStream& inInputStream);
+    float getDesiredHorizontalDelta() const;
+    float getDesiredVerticalDelta() const;
     
 private:
     friend class InputManager;
     
-    float	mDesiredRightAmount, mDesiredLeftAmount;
-    float	mDesiredForwardAmount, mDesiredBackAmount;
+    float m_fDesiredRightAmount;
+    float m_fDesiredLeftAmount;
+    float m_fDesiredForwardAmount;
+    float m_fDesiredBackAmount;
 };
 
 #endif /* defined(__noctisgames__InputState__) */

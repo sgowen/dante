@@ -32,9 +32,9 @@ public:
     
     static GameObject* create() { return new RoboCat(); }
     
-    virtual uint32_t GetAllStateMask() const override { return ECRS_AllState; }
+    virtual uint32_t getAllStateMask() const override { return ECRS_AllState; }
     
-    virtual void Update() override;
+    virtual void update() override;
     
     void ProcessInput(float inDeltaTime, const InputState& inInputState);
     void SimulateMovement(float inDeltaTime);

@@ -18,11 +18,11 @@ class RoboCatServer : public RoboCat
 public:
     static GameObject* create();
     
-    virtual void HandleDying() override;
+    virtual void handleDying() override;
     
-    virtual void Update() override;
+    virtual void update() override;
     
-    virtual uint32_t Write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState) override;
+    virtual uint32_t write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState) override;
     
 protected:
     RoboCatServer();

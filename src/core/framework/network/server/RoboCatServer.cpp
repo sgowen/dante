@@ -27,14 +27,14 @@ RoboCatServer::RoboCatServer() : RoboCat()
     // Empty
 }
 
-void RoboCatServer::HandleDying()
+void RoboCatServer::handleDying()
 {
     NetworkManagerServer::getInstance()->UnregisterGameObject(this);
 }
 
-void RoboCatServer::Update()
+void RoboCatServer::update()
 {
-    RoboCat::Update();
+    RoboCat::update();
     
     Vector2 oldLocation = GetLocation();
     Vector2 oldVelocity = GetVelocity();
@@ -68,64 +68,64 @@ void RoboCatServer::Update()
     }
 }
 
-uint32_t RoboCatServer::Write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState)
+uint32_t RoboCatServer::write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState)
 {
     uint32_t writtenState = 0;
     
     if (inDirtyState & ECRS_PlayerId)
     {
-        inOutputStream.Write((bool)true);
-        inOutputStream.Write(GetPlayerId());
+        inOutputStream.write((bool)true);
+        inOutputStream.write(GetPlayerId());
         
         writtenState |= ECRS_PlayerId;
     }
     else
     {
-        inOutputStream.Write((bool)false);
+        inOutputStream.write((bool)false);
     }
     
     if (inDirtyState & ECRS_Pose)
     {
-        inOutputStream.Write((bool)true);
+        inOutputStream.write((bool)true);
         
         Vector2 velocity = mVelocity;
-        inOutputStream.Write(velocity.getX());
-        inOutputStream.Write(velocity.getY());
+        inOutputStream.write(velocity.getX());
+        inOutputStream.write(velocity.getY());
         
         Vector2 location = GetLocation();
-        inOutputStream.Write(location.getX());
-        inOutputStream.Write(location.getY());
+        inOutputStream.write(location.getX());
+        inOutputStream.write(location.getY());
         
-        inOutputStream.Write(GetRotation());
+        inOutputStream.write(GetRotation());
         
         writtenState |= ECRS_Pose;
     }
     else
     {
-        inOutputStream.Write((bool)false);
+        inOutputStream.write((bool)false);
     }
     
     //always write mThrustDir- it's just two bits
     if (m_fThrustDir != 0.f)
     {
-        inOutputStream.Write(true);
-        inOutputStream.Write(m_fThrustDir > 0.f);
+        inOutputStream.write(true);
+        inOutputStream.write(m_fThrustDir > 0.f);
     }
     else
     {
-        inOutputStream.Write(false);
+        inOutputStream.write(false);
     }
     
     if (inDirtyState & ECRS_Color)
     {
-        inOutputStream.Write((bool)true);
-        inOutputStream.Write(GetColor());
+        inOutputStream.write((bool)true);
+        inOutputStream.write(GetColor());
         
         writtenState |= ECRS_Color;
     }
     else
     {
-        inOutputStream.Write((bool)false);
+        inOutputStream.write((bool)false);
     }
     
     return writtenState;

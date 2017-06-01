@@ -31,21 +31,21 @@ public:
     
     virtual ~GameObject() {}
     
-    virtual uint32_t GetAllStateMask() const { return 0; }
+    virtual uint32_t getAllStateMask() const { return 0; }
     
     //return whether to keep processing collision
-    virtual bool HandleCollisionWithCat(RoboCat* inCat)
+    virtual bool handleCollisionWithCat(RoboCat* inCat)
     {
         UNUSED(inCat);
         
         return true;
     }
     
-    virtual void Update();
+    virtual void update();
     
-    virtual void HandleDying() {}
+    virtual void handleDying() {}
     
-    virtual uint32_t Write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState)
+    virtual uint32_t write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState)
     {
         UNUSED(inOutputStream);
         UNUSED(inDirtyState);
@@ -53,7 +53,7 @@ public:
         return 0;
     }
     
-    virtual void Read(InputMemoryBitStream& inInputStream)
+    virtual void read(InputMemoryBitStream& inInputStream)
     {
         UNUSED(inInputStream);
     }
@@ -64,33 +64,33 @@ public:
     void SetRotation(float inRotation);
     float GetRotation() const { return m_fRotation; }
     
-    Vector2& GetLocation() { return mLocation; }
-    void SetLocation(Vector2 inLocation) { mLocation = inLocation; }
+    Vector2& GetLocation() { return m_location; }
+    void SetLocation(Vector2 inLocation) { m_location = inLocation; }
     
     float GetCollisionRadius() const { return m_fCollisionRadius; }
     void SetCollisionRadius(float inRadius) { m_fCollisionRadius = inRadius; }
     
     Vector2 GetForwardVector() const;
     
-    void SetColor(Color& inColor) { mColor = inColor; }
-    Color& GetColor() { return mColor; }
+    void SetColor(Color& inColor) { m_color = inColor; }
+    Color& GetColor() { return m_color; }
     
-    bool DoesWantToDie() const { return mDoesWantToDie; }
-    void SetDoesWantToDie(bool inWants) { mDoesWantToDie = inWants; }
+    bool DoesWantToDie() const { return m_doesWantToDie; }
+    void SetDoesWantToDie(bool inWants) { m_doesWantToDie = inWants; }
     
     int GetNetworkId() const { return m_iNetworkId; }
     void SetNetworkId(int inNetworkId);
     
 private:
-    Vector2 mLocation;
-    Color mColor;
+    Vector2 m_location;
+    Color m_color;
     
     float m_fCollisionRadius;
     
     float m_fRotation;
     int m_iIndexInWorld;
     
-    bool mDoesWantToDie;
+    bool m_doesWantToDie;
     
     int m_iNetworkId;
 };

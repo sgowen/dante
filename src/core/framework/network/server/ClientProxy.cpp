@@ -29,17 +29,17 @@ m_fTimeToRespawn(0.f)
 
 void ClientProxy::UpdateLastPacketTime()
 {
-    m_fLastPacketFromClientTime = Timing::getInstance()->GetTime();
+    m_fLastPacketFromClientTime = Timing::getInstance()->getTime();
 }
 
 void ClientProxy::HandleCatDied()
 {
-    m_fTimeToRespawn = Timing::getInstance()->GetFrameStartTime() + kRespawnDelay;
+    m_fTimeToRespawn = Timing::getInstance()->getFrameStartTime() + kRespawnDelay;
 }
 
 void ClientProxy::RespawnCatIfNecessary()
 {
-    if (m_fTimeToRespawn != 0.f && Timing::getInstance()->GetFrameStartTime() > m_fTimeToRespawn)
+    if (m_fTimeToRespawn != 0.f && Timing::getInstance()->getFrameStartTime() > m_fTimeToRespawn)
     {
         static_cast<Server*>(Engine::sInstance.get())->SpawnCatForPlayer(m_iPlayerId);
         m_fTimeToRespawn = 0.f;

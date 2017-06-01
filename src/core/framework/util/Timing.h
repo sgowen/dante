@@ -9,30 +9,26 @@
 #ifndef __noctisgames__Timing__
 #define __noctisgames__Timing__
 
-#include <unistd.h>
-
 class Timing
 {
 public:
     static Timing* getInstance();
     
-    void Update();
+    void update();
     
     void updateManual(float stateTime, float deltaTime);
     
-    float GetTime() const;
+    float getTime() const;
     
-    float GetDeltaTime() const;
+    float getDeltaTime() const;
     
-    float GetFrameStartTime() const;
+    float getFrameStartTime() const;
     
 private:
-    float mDeltaTime;
-    uint64_t mDeltaTick;
-    
-    double mLastFrameStartTime;
-    float mFrameStartTimef;
-    double mPerfCountDuration;
+    double m_dLastFrameStartTime;
+    double m_dPerfCountDuration;
+    float m_fFrameStartTimef;
+    float m_fDeltaTime;
     
     // ctor, copy ctor, and assignment should be private in a Singleton
     Timing();
