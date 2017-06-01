@@ -11,7 +11,7 @@
 #include "Client.h"
 
 #include "RoboCatClient.h"
-#include "GameObjectRegistry.h"
+#include "EntityRegistry.h"
 #include "NetworkManagerClient.h"
 #include "SocketAddressFactory.h"
 
@@ -24,7 +24,7 @@ Client* Client::getInstance()
 
 void Client::init(std::string& serverIPAddress, std::string& userID)
 {
-    GameObjectRegistry::sInstance->RegisterCreationFunction(NETWORK_TYPE_RoboCat, RoboCatClient::create);
+    EntityRegistry::sInstance->RegisterCreationFunction(NETWORK_TYPE_RoboCat, RoboCatClient::create);
     
     SocketAddress* serverAddress = SocketAddressFactory::CreateIPv4FromString(serverIPAddress);
     

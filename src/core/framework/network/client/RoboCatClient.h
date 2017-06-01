@@ -16,10 +16,11 @@ class RoboCatClient : public RoboCat
     RTTI_DECL;
     
 public:
-    static GameObject* create();
+    static NWPhysicalEntity* create();
     
-    virtual void update() override;
-    virtual void handleDying() override;
+    virtual void update();
+    
+    virtual void onDeletion();
     
     virtual void read(InputMemoryBitStream& inInputStream) override;
     

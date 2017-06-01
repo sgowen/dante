@@ -19,7 +19,7 @@ void ReplicationManagerTransmissionData::AddTransmission(int inNetworkId, Replic
      //it would be silly if we already had a transmission for this network id in here...
      for (const auto& transmission: mTransmissions)
      {
-     assert(inNetworkId != transmission.GetNetworkId());
+     assert(inNetworkId != transmission.getID());
      }
      */
     mTransmissions.emplace_back(inNetworkId, inAction, inState);
@@ -31,7 +31,7 @@ void ReplicationManagerTransmissionData::HandleDeliveryFailure(DeliveryNotificat
     for (const ReplicationTransmission& rt: mTransmissions)
     {
         //is it a create? then we have to redo the create.
-        int networkId = rt.GetNetworkId();
+        int networkId = rt.getID();
         
         switch(rt.GetAction())
         {
@@ -56,10 +56,10 @@ void ReplicationManagerTransmissionData::HandleDeliverySuccess(DeliveryNotificat
         switch(rt.GetAction())
         {
             case RA_Create:
-                HandleCreateDeliverySuccess(rt.GetNetworkId());
+                HandleCreateDeliverySuccess(rt.getID());
                 break;
             case RA_Destroy:
-                HandleDestroyDeliverySuccess(rt.GetNetworkId());
+                HandleDestroyDeliverySuccess(rt.getID());
                 break;
             case RA_Update:
                 break;
@@ -70,7 +70,7 @@ void ReplicationManagerTransmissionData::HandleDeliverySuccess(DeliveryNotificat
 void ReplicationManagerTransmissionData::HandleCreateDeliveryFailure(int inNetworkId) const
 {
     //does the object still exist? it might be dead, in which case we don't resend a create
-    GameObject* gameObject = NetworkManagerServer::getInstance()->GetGameObject(inNetworkId);
+    NWPhysicalEntity* gameObject = NetworkManagerServer::getInstance()->GetNWPhysicalEntity(inNetworkId);
     if (gameObject)
     {
         mReplicationManagerServer->ReplicateCreate(inNetworkId, gameObject->getAllStateMask());
@@ -85,7 +85,7 @@ void ReplicationManagerTransmissionData::HandleDestroyDeliveryFailure(int inNetw
 void ReplicationManagerTransmissionData::HandleUpdateStateDeliveryFailure(int inNetworkId, uint32_t inState, DeliveryNotificationManager* inDeliveryNotificationManager) const
 {
     //does the object still exist? it might be dead, in which case we don't resend an update
-    if (NetworkManagerServer::getInstance()->GetGameObject(inNetworkId))
+    if (NetworkManagerServer::getInstance()->GetNWPhysicalEntity(inNetworkId))
     {
         //look in all future in flight packets, in all transmissions
         //remove written state from dirty state

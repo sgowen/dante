@@ -199,7 +199,7 @@ void MainScreen::tempUpdate(float deltaTime)
 {
     Client::getInstance()->DoFrame();
     
-    m_avatar->update(FRAME_RATE);
+    m_avatar->update();
 }
 
 RTTI_IMPL(MainScreen, IScreen);

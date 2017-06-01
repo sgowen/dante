@@ -11,7 +11,7 @@
 #include "Engine.h"
 
 #include "SocketUtil.h"
-#include "GameObjectRegistry.h"
+#include "EntityRegistry.h"
 #include "World.h"
 
 std::unique_ptr<Engine>	Engine::sInstance;
@@ -20,7 +20,7 @@ Engine::Engine()
 {
     SocketUtil::StaticInit();
     
-    GameObjectRegistry::StaticInit();
+    EntityRegistry::StaticInit();
     
     World::StaticInit();
 }

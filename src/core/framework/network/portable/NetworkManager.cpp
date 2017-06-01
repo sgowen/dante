@@ -15,6 +15,7 @@
 #include "Timing.h"
 #include "SocketAddressFamily.h"
 #include "World.h"
+#include "RoboCat.h"
 
 NetworkManager* NetworkManager::sInstance;
 
@@ -157,17 +158,20 @@ mPacketBuffer(ioInputMemoryBitStream)
 {
 }
 
-void NetworkManager::AddToNetworkIdToGameObjectMap(GameObject* inGameObject)
+void NetworkManager::AddToNetworkIdToNWPhysicalEntityMap(NWPhysicalEntity* inNWPhysicalEntity)
 {
-    m_networkIdToGameObjectMap[inGameObject->GetNetworkId()] = inGameObject;
+    m_networkIdToNWPhysicalEntityMap[inNWPhysicalEntity->getID()] = inNWPhysicalEntity;
 }
 
-void NetworkManager::RemoveFromNetworkIdToGameObjectMap(GameObject* inGameObject)
+void NetworkManager::RemoveFromNetworkIdToNWPhysicalEntityMap(NWPhysicalEntity* inNWPhysicalEntity)
 {
-    World::sInstance->RemoveGameObject(inGameObject);
+    if (inNWPhysicalEntity->getRTTI().derivesFrom(RoboCat::rtti))
+    {
+        World::sInstance->RemoveRoboCat((RoboCat*)inNWPhysicalEntity);
+    }
     
-    m_networkIdToGameObjectMap.erase(inGameObject->GetNetworkId());
+    m_networkIdToNWPhysicalEntityMap.erase(inNWPhysicalEntity->getID());
     
-    delete inGameObject;
-    inGameObject = nullptr;
+    delete inNWPhysicalEntity;
+    inNWPhysicalEntity = nullptr;
 }

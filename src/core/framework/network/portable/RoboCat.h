@@ -9,12 +9,12 @@
 #ifndef __noctisgames__RoboCat__
 #define __noctisgames__RoboCat__
 
-#include "GameObject.h"
+#include "NWPhysicalEntity.h"
 
 #include "NetworkConstants.h"
 #include "InputState.h"
 
-class RoboCat : public GameObject
+class RoboCat : public NWPhysicalEntity
 {
     RTTI_DECL;
     
@@ -30,11 +30,9 @@ public:
         ECRS_AllState = ECRS_Pose | ECRS_Color | ECRS_PlayerId
     };
     
-    static GameObject* create() { return new RoboCat(); }
+    static NWPhysicalEntity* create() { return new RoboCat(); }
     
     virtual uint32_t getAllStateMask() const override { return ECRS_AllState; }
-    
-    virtual void update() override;
     
     void ProcessInput(float inDeltaTime, const InputState& inInputState);
     void SimulateMovement(float inDeltaTime);
@@ -47,6 +45,9 @@ public:
     
     void SetVelocity(Vector2 inVelocity) { mVelocity = inVelocity; }
     Vector2& GetVelocity() { return mVelocity; }
+    
+    void setIndexInWorld(int inIndex);
+    int getIndexInWorld() const;
     
 protected:
     Vector2 mVelocity;
@@ -66,11 +67,12 @@ protected:
     
 protected:
     ///move down here for padding reasons...
-    
     float m_fLastMoveTimestamp;
     
     float m_fThrustDir;
-    int m_iHealth;
+    
+private:
+    int m_iIndexInWorld;
 };
 
 #endif /* defined(__noctisgames__RoboCat__) */

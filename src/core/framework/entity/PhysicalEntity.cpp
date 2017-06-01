@@ -13,6 +13,7 @@
 #include "macros.h"
 #include "NGRect.h"
 #include "NGSTDUtil.h"
+#include "Timing.h"
 
 PhysicalEntity::PhysicalEntity(float x, float y, float width, float height) : Entity(),
 m_position(x, y),
@@ -31,9 +32,11 @@ PhysicalEntity::~PhysicalEntity()
     NGSTDUtil::cleanUpVectorOfPointers(m_bounds);
 }
 
-void PhysicalEntity::update(float deltaTime)
+void PhysicalEntity::update()
 {
-    Entity::update(deltaTime);
+    Entity::update();
+    
+    float deltaTime = Timing::getInstance()->getDeltaTime();
     
     m_velocity.add(m_acceleration.getX() * deltaTime, m_acceleration.getY() * deltaTime);
     m_position.add(m_velocity.getX() * deltaTime, m_velocity.getY() * deltaTime);
@@ -53,6 +56,11 @@ void PhysicalEntity::updateBounds()
 {
     Vector2 &lowerLeft = m_bounds.at(0)->getLowerLeft();
     lowerLeft.set(m_position.getX() - m_bounds.at(0)->getWidth() / 2, m_position.getY() - m_bounds.at(0)->getHeight() / 2);
+}
+
+void PhysicalEntity::setPosition(Vector2 position)
+{
+    m_position = position;
 }
 
 Vector2& PhysicalEntity::getPosition()
@@ -80,6 +88,11 @@ NGRect& PhysicalEntity::getMainBounds()
     return *m_bounds.at(0);
 }
 
+void PhysicalEntity::setColor(Color color)
+{
+    m_color = color;
+}
+
 Color& PhysicalEntity::getColor()
 {
     return m_color;
@@ -103,6 +116,11 @@ const float& PhysicalEntity::getHeight()
 void PhysicalEntity::setHeight(float height)
 {
     m_fHeight = height;
+}
+
+void PhysicalEntity::setAngle(float angle)
+{
+    m_fAngle = angle;
 }
 
 float PhysicalEntity::getAngle()

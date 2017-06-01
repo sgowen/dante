@@ -10,6 +10,8 @@
 
 #include "Entity.h"
 
+#include "Timing.h"
+
 Entity::Entity() : m_fStateTime(0.0f), m_isRequestingDeletion(false), m_ID(getUniqueEntityID())
 {
     // Empty
@@ -20,14 +22,26 @@ Entity::~Entity()
     // Empty
 }
 
-void Entity::update(float deltaTime)
+void Entity::update()
 {
+    float deltaTime = Timing::getInstance()->getDeltaTime();
+    
     m_fStateTime += deltaTime;
+}
+
+void Entity::onDeletion()
+{
+    // Empty
 }
 
 int Entity::getID()
 {
     return m_ID;
+}
+
+void Entity::setID(int inID)
+{
+    m_ID = inID;
 }
 
 float Entity::getStateTime()

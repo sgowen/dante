@@ -28,8 +28,8 @@ public:
     void SendOutgoingPackets();
     void CheckForDisconnects();
     
-    void RegisterGameObject(GameObject* inGameObject);
-    void UnregisterGameObject(GameObject* inGameObject);
+    void RegisterNWPhysicalEntity(NWPhysicalEntity* inNWPhysicalEntity);
+    void UnregisterNWPhysicalEntity(NWPhysicalEntity* inNWPhysicalEntity);
     void SetStateDirty(int inNetworkId, uint32_t inDirtyState);
     
     void RespawnCats();

@@ -11,7 +11,7 @@
 
 #include "MemoryBitStream.h"
 
-#include "GameObject.h"
+#include "NWPhysicalEntity.h"
 #include "SocketAddress.h"
 #include "UDPSocket.h"
 #include "WeightedTimedMovingAverage.h"
@@ -49,12 +49,12 @@ public:
     const WeightedTimedMovingAverage& GetBytesReceivedPerSecond()	const	{ return mBytesReceivedPerSecond; }
     const WeightedTimedMovingAverage& GetBytesSentPerSecond()		const	{ return mBytesSentPerSecond; }
     
-    inline	GameObject*	GetGameObject(int inNetworkId) const;
-    void	AddToNetworkIdToGameObjectMap(GameObject* inGameObject);
-    void	RemoveFromNetworkIdToGameObjectMap(GameObject* inGameObject);
+    inline	NWPhysicalEntity*	GetNWPhysicalEntity(int inNetworkId) const;
+    void	AddToNetworkIdToNWPhysicalEntityMap(NWPhysicalEntity* inNWPhysicalEntity);
+    void	RemoveFromNetworkIdToNWPhysicalEntityMap(NWPhysicalEntity* inNWPhysicalEntity);
     
 protected:
-    std::unordered_map<int, GameObject*> m_networkIdToGameObjectMap;
+    std::unordered_map<int, NWPhysicalEntity*> m_networkIdToNWPhysicalEntityMap;
     
 private:
     class ReceivedPacket
@@ -88,10 +88,10 @@ private:
     int							mBytesSentThisFrame;
 };
 
-inline GameObject* NetworkManager::GetGameObject(int inNetworkId) const
+inline NWPhysicalEntity* NetworkManager::GetNWPhysicalEntity(int inNetworkId) const
 {
-    auto gameObjectIt = m_networkIdToGameObjectMap.find(inNetworkId);
-    if (gameObjectIt != m_networkIdToGameObjectMap.end())
+    auto gameObjectIt = m_networkIdToNWPhysicalEntityMap.find(inNetworkId);
+    if (gameObjectIt != m_networkIdToNWPhysicalEntityMap.end())
     {
         return gameObjectIt->second;
     }

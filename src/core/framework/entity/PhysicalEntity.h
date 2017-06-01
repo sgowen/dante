@@ -29,12 +29,14 @@ public:
     
     virtual ~PhysicalEntity();
     
-    virtual void update(float deltaTime);
+    virtual void update();
 
     virtual void resetBounds(float width, float height);
 
     virtual void updateBounds();
 
+    void setPosition(Vector2 position);
+    
     Vector2& getPosition();
     
     Vector2& getVelocity();
@@ -45,6 +47,8 @@ public:
     
     NGRect& getMainBounds();
     
+    void setColor(Color color);
+    
     Color& getColor();
     
     const float& getWidth();
@@ -54,6 +58,8 @@ public:
     const float& getHeight();
     
     void setHeight(float height);
+    
+    void setAngle(float angle);
     
     float getAngle();
     

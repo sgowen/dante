@@ -9,10 +9,10 @@
 #ifndef __noctisgames__World__
 #define __noctisgames__World__
 
-#include "GameObject.h"
-
 #include <memory>
 #include <vector>
+
+class RoboCat;
 
 class World
 {
@@ -21,19 +21,19 @@ public:
     
     static std::unique_ptr<World> sInstance;
     
-    void AddGameObject(GameObject* inGameObject);
-    void RemoveGameObject(GameObject* inGameObject);
+    void AddRoboCat(RoboCat* inRoboCat);
+    void RemoveRoboCat(RoboCat* inRoboCat);
     
     void update();
     
-    const std::vector<GameObject*>& GetGameObjects() const { return mGameObjects; }
+    const std::vector<RoboCat*>& GetRoboCats() const { return mRoboCats; }
     
 private:
     World();
     
-    int	GetIndexOfGameObject(GameObject* inGameObject);
+    int	GetIndexOfRoboCat(RoboCat* inRoboCat);
     
-    std::vector<GameObject*> mGameObjects;
+    std::vector<RoboCat*> mRoboCats;
 };
 
 #endif /* defined(__noctisgames__World__) */

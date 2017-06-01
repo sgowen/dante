@@ -18,19 +18,19 @@
 #include "Color.h"
 #include "Vector2.h"
 
-GameObject* RoboCatClient::create()
+NWPhysicalEntity* RoboCatClient::create()
 {
-    return static_cast<GameObject*>(new RoboCatClient());
+    return static_cast<NWPhysicalEntity*>(new RoboCatClient());
 }
 
-void RoboCatClient::handleDying()
+void RoboCatClient::onDeletion()
 {
-    RoboCat::handleDying();
+    RoboCat::onDeletion();
     
     //and if we're local, tell the hud so our health goes away!
     if (GetPlayerId() == NetworkManagerClient::getInstance()->GetPlayerId())
     {
-        //HUD::sInstance->SetPlayerHealth(0);
+        // Show a death animation or something?
     }
 }
 
@@ -53,7 +53,7 @@ void RoboCatClient::update()
             
             SimulateMovement(deltaTime);
             
-            LOG("Client Move Time: %3.4f deltaTime: %3.4f left rot at %3.4f", pendingMove->GetTimestamp(), deltaTime, GetRotation());
+            LOG("Client Move Time: %3.4f deltaTime: %3.4f left rot at %3.4f", pendingMove->GetTimestamp(), deltaTime, getAngle());
         }
     }
     else
@@ -83,8 +83,8 @@ void RoboCatClient::read(InputMemoryBitStream& inInputStream)
         readState |= ECRS_PlayerId;
     }
     
-    float oldRotation = GetRotation();
-    Vector2 oldLocation = GetLocation();
+    float oldRotation = getAngle();
+    Vector2 oldLocation = getPosition();
     Vector2 oldVelocity = GetVelocity();
     
     float replicatedRotation;
@@ -102,10 +102,10 @@ void RoboCatClient::read(InputMemoryBitStream& inInputStream)
         inInputStream.read(replicatedLocation.getXRef());
         inInputStream.read(replicatedLocation.getYRef());
         
-        SetLocation(replicatedLocation);
+        setPosition(replicatedLocation);
         
         inInputStream.read(replicatedRotation);
-        SetRotation(replicatedRotation);
+        setAngle(replicatedRotation);
         
         readState |= ECRS_Pose;
     }
@@ -126,7 +126,7 @@ void RoboCatClient::read(InputMemoryBitStream& inInputStream)
     {
         Color color;
         inInputStream.read(color);
-        SetColor(color);
+        setColor(color);
         readState |= ECRS_Color;
     }
     
@@ -211,14 +211,14 @@ m_fTimeVelocityBecameOutOfSync(0.f)
 
 void RoboCatClient::interpolateClientSidePrediction(float inOldRotation, Vector2& inOldLocation, Vector2& inOldVelocity, bool inIsForRemoteCat)
 {
-    if (inOldRotation != GetRotation() && !inIsForRemoteCat)
+    if (inOldRotation != getAngle() && !inIsForRemoteCat)
     {
         LOG("ERROR! Move replay ended with incorrect rotation!", 0);
     }
     
     float roundTripTime = NetworkManagerClient::getInstance()->GetRoundTripTime();
     
-    if (!inOldLocation.isEqualTo(GetLocation()))
+    if (!inOldLocation.isEqualTo(getPosition()))
     {
         LOG("ERROR! Move replay ended with incorrect location!", 0);
         
@@ -232,7 +232,7 @@ void RoboCatClient::interpolateClientSidePrediction(float inOldRotation, Vector2
         float durationOutOfSync = time - m_fTimeLocationBecameOutOfSync;
         if (durationOutOfSync < roundTripTime)
         {
-            SetLocation(lerp(inOldLocation, GetLocation(), inIsForRemoteCat ? (durationOutOfSync / roundTripTime) : 0.1f));
+            setPosition(lerp(inOldLocation, getPosition(), inIsForRemoteCat ? (durationOutOfSync / roundTripTime) : 0.1f));
         }
     }
     else

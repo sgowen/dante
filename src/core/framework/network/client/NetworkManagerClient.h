@@ -68,12 +68,12 @@ private:
     void HandleStatePacket(InputMemoryBitStream& inInputStream);
     void ReadLastMoveProcessedOnServerTimestamp(InputMemoryBitStream& inInputStream);
     
-    void HandleGameObjectState(InputMemoryBitStream& inInputStream);
+    void HandleNWPhysicalEntityState(InputMemoryBitStream& inInputStream);
     
     void UpdateSendingInputPacket();
     void SendInputPacket();
     
-    void DestroyGameObjectsInMap(const std::unordered_map<int, GameObject*>& inObjectsToDestroy);
+    void DestroyNWPhysicalEntitysInMap(const std::unordered_map<int, NWPhysicalEntity*>& inObjectsToDestroy);
 };
 
 #endif /* defined(__noctisgames__NetworkManagerClient__) */

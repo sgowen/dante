@@ -89,27 +89,27 @@ void NetworkManagerServer::CheckForDisconnects()
     }
 }
 
-void NetworkManagerServer::RegisterGameObject(GameObject* inGameObject)
+void NetworkManagerServer::RegisterNWPhysicalEntity(NWPhysicalEntity* inNWPhysicalEntity)
 {
     //assign network id
     int newNetworkId = GetNewNetworkId();
-    inGameObject->SetNetworkId(newNetworkId);
+    inNWPhysicalEntity->setID(newNetworkId);
     
     //add mapping from network id to game object
-    m_networkIdToGameObjectMap[newNetworkId] = inGameObject;
+    m_networkIdToNWPhysicalEntityMap[newNetworkId] = inNWPhysicalEntity;
     
     //tell all client proxies this is new...
     for (const auto& pair: mAddressToClientMap)
     {
-        pair.second->GetReplicationManagerServer().ReplicateCreate(newNetworkId, inGameObject->getAllStateMask());
+        pair.second->GetReplicationManagerServer().ReplicateCreate(newNetworkId, inNWPhysicalEntity->getAllStateMask());
     }
 }
 
-void NetworkManagerServer::UnregisterGameObject(GameObject* inGameObject)
+void NetworkManagerServer::UnregisterNWPhysicalEntity(NWPhysicalEntity* inNWPhysicalEntity)
 {
-    int networkId = inGameObject->GetNetworkId();
+    int networkId = inNWPhysicalEntity->getID();
     
-    RemoveFromNetworkIdToGameObjectMap(inGameObject);
+    RemoveFromNetworkIdToNWPhysicalEntityMap(inNWPhysicalEntity);
     
     //tell all client proxies to STOP replicating!
     //tell all client proxies this is new...
@@ -180,7 +180,7 @@ void NetworkManagerServer::HandlePacketFromNewClient(InputMemoryBitStream& inInp
         SendWelcomePacket(newClientProxy);
         
         //and now init the replication manager with everything we know about!
-        for (const auto& pair: m_networkIdToGameObjectMap)
+        for (const auto& pair: m_networkIdToNWPhysicalEntityMap)
         {
             newClientProxy->GetReplicationManagerServer().ReplicateCreate(pair.first, pair.second->getAllStateMask());
         }
@@ -244,14 +244,14 @@ void NetworkManagerServer::UpdateAllClients()
 //should we ask the server for this? or run through the world ourselves?
 void NetworkManagerServer::AddWorldStateToPacket(OutputMemoryBitStream& inOutputStream)
 {
-    const auto& gameObjects = World::sInstance->GetGameObjects();
+    const auto& gameObjects = World::sInstance->GetRoboCats();
     
     //now start writing objects- do we need to remember how many there are? we can check first...
     inOutputStream.write(gameObjects.size());
     
-    for (GameObject* go : gameObjects)
+    for (NWPhysicalEntity* go : gameObjects)
     {
-        inOutputStream.write(go->GetNetworkId());
+        inOutputStream.write(go->getID());
         inOutputStream.write(go->getNetworkType());
         go->write(inOutputStream, 0xffffffff);
     }

@@ -10,6 +10,8 @@
 
 #include "World.h"
 
+#include "RoboCat.h"
+
 std::unique_ptr<World> World::sInstance;
 
 void World::StaticInit()
@@ -22,20 +24,21 @@ World::World()
     // Empty
 }
 
-void World::AddGameObject(GameObject* inGameObject)
+void World::AddRoboCat(RoboCat* inRoboCat)
 {
-    mGameObjects.push_back(inGameObject);
-    int index = static_cast<int>(mGameObjects.size() - 1);
-    inGameObject->SetIndexInWorld(index);
+    mRoboCats.push_back(inRoboCat);
+    
+    int index = static_cast<int>(mRoboCats.size() - 1);
+    inRoboCat->setIndexInWorld(index);
 }
 
-void World::RemoveGameObject(GameObject* inGameObject)
+void World::RemoveRoboCat(RoboCat* inRoboCat)
 {
     bool isContained = false;
-    int len = static_cast<int>(mGameObjects.size());
+    int len = static_cast<int>(mRoboCats.size());
     for (int i = 0; i < len; ++i)
     {
-        if (mGameObjects[i]->GetNetworkId() == inGameObject->GetNetworkId())
+        if (mRoboCats[i]->getID() == inRoboCat->getID())
         {
             isContained = true;
             break;
@@ -44,19 +47,19 @@ void World::RemoveGameObject(GameObject* inGameObject)
     
     if (isContained)
     {
-        int index = inGameObject->GetIndexInWorld();
+        int index = inRoboCat->getIndexInWorld();
         
         int lastIndex = len - 1;
         
         if (index != lastIndex)
         {
-            mGameObjects[index] = mGameObjects[lastIndex];
-            mGameObjects[index]->SetIndexInWorld(index);
+            mRoboCats[index] = mRoboCats[lastIndex];
+            mRoboCats[index]->setIndexInWorld(index);
         }
         
-        inGameObject->SetIndexInWorld(-1);
+        inRoboCat->setIndexInWorld(-1);
         
-        mGameObjects.pop_back();
+        mRoboCats.pop_back();
     }
 }
 
@@ -64,21 +67,21 @@ void World::update()
 {
     //update all game objects- sometimes they want to die, so we need to tread carefully...
     
-    int len = static_cast<int>(mGameObjects.size());
+    int len = static_cast<int>(mRoboCats.size());
     for (int i = 0, c = len; i < c; ++i)
     {
-        GameObject* go = mGameObjects[i];
+        RoboCat* go = mRoboCats[i];
         
-        if (!go->DoesWantToDie())
+        if (!go->isRequestingDeletion())
         {
             go->update();
         }
         
         //you might suddenly want to die after your update, so check again
-        if (go->DoesWantToDie())
+        if (go->isRequestingDeletion())
         {
-            RemoveGameObject(go);
-            go->handleDying();
+            RemoveRoboCat(go);
+            go->onDeletion();
             --i;
             --c;
         }

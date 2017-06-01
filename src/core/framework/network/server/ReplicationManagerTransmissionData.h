@@ -34,7 +34,7 @@ public:
         mState(inState)
         {}
         
-        int GetNetworkId() const { return m_iNetworkId; }
+        int getID() const { return m_iNetworkId; }
         ReplicationAction GetAction() const	{ return mAction; }
         uint32_t GetState() const { return mState; }
         

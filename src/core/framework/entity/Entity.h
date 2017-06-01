@@ -20,9 +20,13 @@ public:
     
     virtual ~Entity();
     
-    virtual void update(float deltaTime);
+    virtual void update();
+    
+    virtual void onDeletion();
     
     int getID();
+    
+    void setID(int inID);
     
     float getStateTime();
     
@@ -34,12 +38,11 @@ public:
     
 protected:
     float m_fStateTime;
+    int m_ID;
     bool m_isRequestingDeletion;
     
 private:
     static int getUniqueEntityID();
-    
-    int m_ID;
 };
 
 #endif /* defined(__noctisgames__Entity__) */

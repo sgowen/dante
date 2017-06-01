@@ -125,12 +125,12 @@
 		BB8308461EC2AD1F00435E7E /* Engine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB83080E1EC2AD1F00435E7E /* Engine.cpp */; };
 		BB8308471EC2AD1F00435E7E /* Engine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB83080E1EC2AD1F00435E7E /* Engine.cpp */; };
 		BB8308481EC2AD1F00435E7E /* Engine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB83080E1EC2AD1F00435E7E /* Engine.cpp */; };
-		BB8308491EC2AD1F00435E7E /* GameObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8308101EC2AD1F00435E7E /* GameObject.cpp */; };
-		BB83084A1EC2AD1F00435E7E /* GameObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8308101EC2AD1F00435E7E /* GameObject.cpp */; };
-		BB83084B1EC2AD1F00435E7E /* GameObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8308101EC2AD1F00435E7E /* GameObject.cpp */; };
-		BB83084C1EC2AD1F00435E7E /* GameObjectRegistry.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8308121EC2AD1F00435E7E /* GameObjectRegistry.cpp */; };
-		BB83084D1EC2AD1F00435E7E /* GameObjectRegistry.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8308121EC2AD1F00435E7E /* GameObjectRegistry.cpp */; };
-		BB83084E1EC2AD1F00435E7E /* GameObjectRegistry.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8308121EC2AD1F00435E7E /* GameObjectRegistry.cpp */; };
+		BB8308491EC2AD1F00435E7E /* NWPhysicalEntity.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8308101EC2AD1F00435E7E /* NWPhysicalEntity.cpp */; };
+		BB83084A1EC2AD1F00435E7E /* NWPhysicalEntity.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8308101EC2AD1F00435E7E /* NWPhysicalEntity.cpp */; };
+		BB83084B1EC2AD1F00435E7E /* NWPhysicalEntity.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8308101EC2AD1F00435E7E /* NWPhysicalEntity.cpp */; };
+		BB83084C1EC2AD1F00435E7E /* EntityRegistry.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8308121EC2AD1F00435E7E /* EntityRegistry.cpp */; };
+		BB83084D1EC2AD1F00435E7E /* EntityRegistry.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8308121EC2AD1F00435E7E /* EntityRegistry.cpp */; };
+		BB83084E1EC2AD1F00435E7E /* EntityRegistry.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8308121EC2AD1F00435E7E /* EntityRegistry.cpp */; };
 		BB83084F1EC2AD1F00435E7E /* InFlightPacket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8308141EC2AD1F00435E7E /* InFlightPacket.cpp */; };
 		BB8308501EC2AD1F00435E7E /* InFlightPacket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8308141EC2AD1F00435E7E /* InFlightPacket.cpp */; };
 		BB8308511EC2AD1F00435E7E /* InFlightPacket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8308141EC2AD1F00435E7E /* InFlightPacket.cpp */; };
@@ -316,6 +316,8 @@
 		BBBD14991EE06BB3003F9307 /* WeightedTimedMovingAverage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBBD14941EE06BB3003F9307 /* WeightedTimedMovingAverage.cpp */; };
 		BBBD149A1EE06BB3003F9307 /* WeightedTimedMovingAverage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBBD14941EE06BB3003F9307 /* WeightedTimedMovingAverage.cpp */; };
 		BBBD149B1EE06BB3003F9307 /* WeightedTimedMovingAverage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBBD14941EE06BB3003F9307 /* WeightedTimedMovingAverage.cpp */; };
+		BBBD149C1EE08535003F9307 /* PhysicalEntity.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF0C71EA94ED900F0866E /* PhysicalEntity.cpp */; };
+		BBBD149D1EE08539003F9307 /* Entity.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF0BF1EA94ED900F0866E /* Entity.cpp */; };
 		BBCCA8391DB343AB00452FA1 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBCCA8381DB343AB00452FA1 /* Accelerate.framework */; };
 		BBCCA83D1DB3462E00452FA1 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBCCA83C1DB3462E00452FA1 /* Accelerate.framework */; };
 		BBCCA8411DB3466A00452FA1 /* AudioUnit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBCCA8401DB3466A00452FA1 /* AudioUnit.framework */; };
@@ -593,10 +595,10 @@
 		BB83080D1EC2AD1F00435E7E /* DeliveryNotificationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeliveryNotificationManager.h; sourceTree = "<group>"; };
 		BB83080E1EC2AD1F00435E7E /* Engine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Engine.cpp; sourceTree = "<group>"; };
 		BB83080F1EC2AD1F00435E7E /* Engine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Engine.h; sourceTree = "<group>"; };
-		BB8308101EC2AD1F00435E7E /* GameObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameObject.cpp; sourceTree = "<group>"; };
-		BB8308111EC2AD1F00435E7E /* GameObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameObject.h; sourceTree = "<group>"; };
-		BB8308121EC2AD1F00435E7E /* GameObjectRegistry.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameObjectRegistry.cpp; sourceTree = "<group>"; };
-		BB8308131EC2AD1F00435E7E /* GameObjectRegistry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameObjectRegistry.h; sourceTree = "<group>"; };
+		BB8308101EC2AD1F00435E7E /* NWPhysicalEntity.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NWPhysicalEntity.cpp; sourceTree = "<group>"; };
+		BB8308111EC2AD1F00435E7E /* NWPhysicalEntity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWPhysicalEntity.h; sourceTree = "<group>"; };
+		BB8308121EC2AD1F00435E7E /* EntityRegistry.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EntityRegistry.cpp; sourceTree = "<group>"; };
+		BB8308131EC2AD1F00435E7E /* EntityRegistry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EntityRegistry.h; sourceTree = "<group>"; };
 		BB8308141EC2AD1F00435E7E /* InFlightPacket.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = InFlightPacket.cpp; sourceTree = "<group>"; };
 		BB8308151EC2AD1F00435E7E /* InFlightPacket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InFlightPacket.h; sourceTree = "<group>"; };
 		BB8308161EC2AD1F00435E7E /* InputAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InputAction.h; sourceTree = "<group>"; };
@@ -1394,10 +1396,8 @@
 				BB83080D1EC2AD1F00435E7E /* DeliveryNotificationManager.h */,
 				BB83080E1EC2AD1F00435E7E /* Engine.cpp */,
 				BB83080F1EC2AD1F00435E7E /* Engine.h */,
-				BB8308101EC2AD1F00435E7E /* GameObject.cpp */,
-				BB8308111EC2AD1F00435E7E /* GameObject.h */,
-				BB8308121EC2AD1F00435E7E /* GameObjectRegistry.cpp */,
-				BB8308131EC2AD1F00435E7E /* GameObjectRegistry.h */,
+				BB8308121EC2AD1F00435E7E /* EntityRegistry.cpp */,
+				BB8308131EC2AD1F00435E7E /* EntityRegistry.h */,
 				BB8308141EC2AD1F00435E7E /* InFlightPacket.cpp */,
 				BB8308151EC2AD1F00435E7E /* InFlightPacket.h */,
 				BB8308161EC2AD1F00435E7E /* InputAction.h */,
@@ -1413,6 +1413,8 @@
 				BBC1BE371ECF736A0045AF93 /* NetworkConstants.h */,
 				BB8308221EC2AD1F00435E7E /* NetworkManager.cpp */,
 				BB8308231EC2AD1F00435E7E /* NetworkManager.h */,
+				BB8308101EC2AD1F00435E7E /* NWPhysicalEntity.cpp */,
+				BB8308111EC2AD1F00435E7E /* NWPhysicalEntity.h */,
 				BBD43A0B1ED0BCAD001D5EB4 /* ReplicationAction.h */,
 				BBD43A0C1ED0BD00001D5EB4 /* ReplicationCommand.cpp */,
 				BB8308241EC2AD1F00435E7E /* ReplicationCommand.h */,
@@ -2124,7 +2126,7 @@
 				BB83087F1EC2AD1F00435E7E /* UDPSocket.cpp in Sources */,
 				BB83086D1EC2AD1F00435E7E /* SocketAddress.cpp in Sources */,
 				BB44C8691DB03A7E003E633F /* pngerror.c in Sources */,
-				BB8308491EC2AD1F00435E7E /* GameObject.cpp in Sources */,
+				BB8308491EC2AD1F00435E7E /* NWPhysicalEntity.cpp in Sources */,
 				BBBD148F1EE06858003F9307 /* StringUtil.cpp in Sources */,
 				BBAEF1F51EA94EDA00F0866E /* GridManager.cpp in Sources */,
 				BBAEF2771EA94EDA00F0866E /* TextureRegion.cpp in Sources */,
@@ -2146,7 +2148,7 @@
 				BBF226CE1EC12CDE00573356 /* ReplicationManagerClient.cpp in Sources */,
 				BBAEF2311EA94EDA00F0866E /* OpenGLFramebufferToScreenProgram.cpp in Sources */,
 				BBAEF2B71EA94EDA00F0866E /* SuperpoweredSoundWrapper.cpp in Sources */,
-				BB83084C1EC2AD1F00435E7E /* GameObjectRegistry.cpp in Sources */,
+				BB83084C1EC2AD1F00435E7E /* EntityRegistry.cpp in Sources */,
 				BB83085B1EC2AD1F00435E7E /* Move.cpp in Sources */,
 				BB44C8891DB03A7E003E633F /* pngwutil.c in Sources */,
 				BBAEF29B1EA94EDA00F0866E /* Triangle.cpp in Sources */,
@@ -2286,7 +2288,7 @@
 				BBAEF2481EA94EDA00F0866E /* OpenGLTextureProgram.cpp in Sources */,
 				BBAEF2421EA94EDA00F0866E /* OpenGLSpriteBatcher.cpp in Sources */,
 				BBAEF29A1EA94EDA00F0866E /* OverlapTester.cpp in Sources */,
-				BB83084A1EC2AD1F00435E7E /* GameObject.cpp in Sources */,
+				BB83084A1EC2AD1F00435E7E /* NWPhysicalEntity.cpp in Sources */,
 				BB8308621EC2AD1F00435E7E /* NetworkManager.cpp in Sources */,
 				BBAEF2361EA94EDA00F0866E /* OpenGLGeometryProgram.cpp in Sources */,
 				BBAEF2721EA94EDA00F0866E /* SpriteBatcher.cpp in Sources */,
@@ -2324,7 +2326,7 @@
 				BBAEF26E1EA94EDA00F0866E /* NGRectBatcherFactory.cpp in Sources */,
 				BBCFF1C71ECD312E003EE520 /* IAssetsMapper.cpp in Sources */,
 				BB44CB891DB053C0003E633F /* pngrutil.c in Sources */,
-				BB83084D1EC2AD1F00435E7E /* GameObjectRegistry.cpp in Sources */,
+				BB83084D1EC2AD1F00435E7E /* EntityRegistry.cpp in Sources */,
 				BBBD149A1EE06BB3003F9307 /* WeightedTimedMovingAverage.cpp in Sources */,
 				BBAEF2A61EA94EDA00F0866E /* IAudioEngineHelper.cpp in Sources */,
 				BBAEF2B61EA94EDA00F0866E /* SuperpoweredSoundManager.cpp in Sources */,
@@ -2371,17 +2373,19 @@
 				BB32C9841EDB70F3005456EB /* NGRect.cpp in Sources */,
 				BB32C9861EDB70F3005456EB /* OverlapTester.cpp in Sources */,
 				BB32C9881EDB70F3005456EB /* Triangle.cpp in Sources */,
+				BBBD149D1EE08539003F9307 /* Entity.cpp in Sources */,
 				BB32C98A1EDB70F3005456EB /* Vector2.cpp in Sources */,
 				BB8308511EC2AD1F00435E7E /* InFlightPacket.cpp in Sources */,
 				BB83086F1EC2AD1F00435E7E /* SocketAddress.cpp in Sources */,
 				BB8308661EC2AD1F00435E7E /* RoboCat.cpp in Sources */,
 				BB83085D1EC2AD1F00435E7E /* Move.cpp in Sources */,
 				BB8308541EC2AD1F00435E7E /* InputState.cpp in Sources */,
+				BBBD149C1EE08535003F9307 /* PhysicalEntity.cpp in Sources */,
 				BB8308011EC2AC0900435E7E /* NetworkManagerServer.cpp in Sources */,
 				BB8308041EC2AC0900435E7E /* RoboCatServer.cpp in Sources */,
 				BB8308061EC2AC0900435E7E /* Server.cpp in Sources */,
-				BB83084B1EC2AD1F00435E7E /* GameObject.cpp in Sources */,
-				BB83084E1EC2AD1F00435E7E /* GameObjectRegistry.cpp in Sources */,
+				BB83084B1EC2AD1F00435E7E /* NWPhysicalEntity.cpp in Sources */,
+				BB83084E1EC2AD1F00435E7E /* EntityRegistry.cpp in Sources */,
 				BB8308601EC2AD1F00435E7E /* MoveList.cpp in Sources */,
 				BB8308811EC2AD1F00435E7E /* UDPSocket.cpp in Sources */,
 				BB8308841EC2AD1F00435E7E /* World.cpp in Sources */,

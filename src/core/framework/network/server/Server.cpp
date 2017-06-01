@@ -11,7 +11,7 @@
 #include "Server.h"
 
 #include "NetworkManagerServer.h"
-#include "GameObjectRegistry.h"
+#include "EntityRegistry.h"
 #include "World.h"
 #include "Timing.h"
 #include "FrameworkConstants.h"
@@ -25,7 +25,7 @@ bool Server::StaticInit()
 
 Server::Server() : m_fFrameStateTime(0)
 {
-    GameObjectRegistry::sInstance->RegisterCreationFunction(NETWORK_TYPE_RoboCat, RoboCatServer::create);
+    EntityRegistry::sInstance->RegisterCreationFunction(NETWORK_TYPE_RoboCat, RoboCatServer::create);
     
     InitNetworkManager();
 }
@@ -77,10 +77,10 @@ void Server::HandleNewClient(ClientProxy* inClientProxy)
 
 void Server::SpawnCatForPlayer(int inPlayerId)
 {
-    RoboCat* cat = static_cast<RoboCat*>(GameObjectRegistry::sInstance->CreateGameObject(NETWORK_TYPE_RoboCat));
+    RoboCat* cat = static_cast<RoboCat*>(EntityRegistry::sInstance->CreateNWPhysicalEntity(NETWORK_TYPE_RoboCat));
     cat->SetPlayerId(inPlayerId);
     //gotta pick a better spawn location than this...
-    cat->SetLocation(Vector2(8.f - static_cast<float>(inPlayerId), 4.0f));
+    cat->setPosition(Vector2(8.f - static_cast<float>(inPlayerId), 4.0f));
     
     static Color Red(1.0f, 0.0f, 0.0f, 1);
     static Color Blue(0.0f, 0.0f, 1.0f, 1);
@@ -90,16 +90,16 @@ void Server::SpawnCatForPlayer(int inPlayerId)
     switch (inPlayerId)
     {
         case 1:
-            cat->SetColor(Red);
+            cat->setColor(Red);
             break;
         case 2:
-            cat->SetColor(Blue);
+            cat->setColor(Blue);
             break;
         case 3:
-            cat->SetColor(Green);
+            cat->setColor(Green);
             break;
         case 4:
-            cat->SetColor(LightYellow);
+            cat->setColor(LightYellow);
             break;
         default:
             break;
@@ -115,7 +115,7 @@ void Server::HandleLostClient(ClientProxy* inClientProxy)
     RoboCat* cat = GetCatForPlayer(playerId);
     if (cat)
     {
-        cat->SetDoesWantToDie(true);
+        cat->requestDeletion();
     }
 }
 
@@ -125,11 +125,11 @@ RoboCat* Server::GetCatForPlayer(int inPlayerId)
     //it would be nice if we kept a pointer to the cat on the clientproxy
     //but then we'd have to clean it up when the cat died, etc.
     //this will work for now until it's a perf issue
-    const auto& gameObjects = World::sInstance->GetGameObjects();
+    const auto& gameObjects = World::sInstance->GetRoboCats();
     int len = static_cast<int>(gameObjects.size());
     for (int i = 0, c = len; i < c; ++i)
     {
-        GameObject* go = gameObjects[i];
+        NWPhysicalEntity* go = gameObjects[i];
         RoboCat* cat = go->getRTTI().derivesFrom(RoboCat::rtti) ? (RoboCat*)go : nullptr;
         if (cat && cat->GetPlayerId() == inPlayerId)
         {

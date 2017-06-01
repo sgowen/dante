@@ -14,10 +14,10 @@
 #include "Timing.h"
 #include "StringUtil.h"
 
-GameObject* RoboCatServer::create()
+NWPhysicalEntity* RoboCatServer::create()
 {
     RoboCatServer* ret = new RoboCatServer();
-    NetworkManagerServer::getInstance()->RegisterGameObject(ret);
+    NetworkManagerServer::getInstance()->RegisterNWPhysicalEntity(ret);
     
     return ret;
 }
@@ -27,18 +27,18 @@ RoboCatServer::RoboCatServer() : RoboCat()
     // Empty
 }
 
-void RoboCatServer::handleDying()
+void RoboCatServer::onDeletion()
 {
-    NetworkManagerServer::getInstance()->UnregisterGameObject(this);
+    NetworkManagerServer::getInstance()->UnregisterNWPhysicalEntity(this);
 }
 
 void RoboCatServer::update()
 {
     RoboCat::update();
     
-    Vector2 oldLocation = GetLocation();
+    Vector2 oldLocation = getPosition();
     Vector2 oldVelocity = GetVelocity();
-    float oldRotation = GetRotation();
+    float oldRotation = getAngle();
     
     // is there a move we haven't processed yet?
     ClientProxy* client = NetworkManagerServer::getInstance()->GetClientProxy(GetPlayerId());
@@ -54,17 +54,17 @@ void RoboCatServer::update()
             ProcessInput(deltaTime, currentState);
             SimulateMovement(deltaTime);
             
-            LOG("Server Move Time: %3.4f deltaTime: %3.4f left rot at %3.4f", unprocessedMove.GetTimestamp(), deltaTime, GetRotation());
+            LOG("Server Move Time: %3.4f deltaTime: %3.4f left rot at %3.4f", unprocessedMove.GetTimestamp(), deltaTime, getAngle());
         }
         
         moveList.Clear();
     }
     
-    if (!oldLocation.isEqualTo(GetLocation()) ||
+    if (!oldLocation.isEqualTo(getPosition()) ||
         !oldVelocity.isEqualTo(GetVelocity()) ||
-        oldRotation != GetRotation())
+        oldRotation != getAngle())
     {
-        NetworkManagerServer::getInstance()->SetStateDirty(GetNetworkId(), ECRS_Pose);
+        NetworkManagerServer::getInstance()->SetStateDirty(getID(), ECRS_Pose);
     }
 }
 
@@ -92,11 +92,11 @@ uint32_t RoboCatServer::write(OutputMemoryBitStream& inOutputStream, uint32_t in
         inOutputStream.write(velocity.getX());
         inOutputStream.write(velocity.getY());
         
-        Vector2 location = GetLocation();
+        Vector2 location = getPosition();
         inOutputStream.write(location.getX());
         inOutputStream.write(location.getY());
         
-        inOutputStream.write(GetRotation());
+        inOutputStream.write(getAngle());
         
         writtenState |= ECRS_Pose;
     }
@@ -119,7 +119,7 @@ uint32_t RoboCatServer::write(OutputMemoryBitStream& inOutputStream, uint32_t in
     if (inDirtyState & ECRS_Color)
     {
         inOutputStream.write((bool)true);
-        inOutputStream.write(GetColor());
+        inOutputStream.write(getColor());
         
         writtenState |= ECRS_Color;
     }

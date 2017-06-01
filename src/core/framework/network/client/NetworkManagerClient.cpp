@@ -12,7 +12,7 @@
 
 #include "InputManager.h"
 #include "StringUtil.h"
-#include "GameObjectRegistry.h"
+#include "EntityRegistry.h"
 #include "Timing.h"
 #include "World.h"
 
@@ -150,10 +150,10 @@ void NetworkManagerClient::ReadLastMoveProcessedOnServerTimestamp(InputMemoryBit
     }
 }
 
-void NetworkManagerClient::HandleGameObjectState(InputMemoryBitStream& inInputStream)
+void NetworkManagerClient::HandleNWPhysicalEntityState(InputMemoryBitStream& inInputStream)
 {
-    //copy the m_networkIdToGameObjectMap so that anything that doesn't get an updated can be destroyed...
-    std::unordered_map<int, GameObject*> objectsToDestroy = m_networkIdToGameObjectMap;
+    //copy the m_networkIdToNWPhysicalEntityMap so that anything that doesn't get an updated can be destroyed...
+    std::unordered_map<int, NWPhysicalEntity*> objectsToDestroy = m_networkIdToNWPhysicalEntityMap;
     
     int stateCount;
     inInputStream.read(stateCount);
@@ -166,14 +166,14 @@ void NetworkManagerClient::HandleGameObjectState(InputMemoryBitStream& inInputSt
             
             inInputStream.read(networkId);
             inInputStream.read(fourCC);
-            GameObject* go;
-            auto itGO = m_networkIdToGameObjectMap.find(networkId);
+            NWPhysicalEntity* go;
+            auto itGO = m_networkIdToNWPhysicalEntityMap.find(networkId);
             //didn't find it, better create it!
-            if (itGO == m_networkIdToGameObjectMap.end())
+            if (itGO == m_networkIdToNWPhysicalEntityMap.end())
             {
-                go = GameObjectRegistry::sInstance->CreateGameObject(fourCC);
-                go->SetNetworkId(networkId);
-                AddToNetworkIdToGameObjectMap(go);
+                go = EntityRegistry::sInstance->CreateNWPhysicalEntity(fourCC);
+                go->setID(networkId);
+                AddToNetworkIdToNWPhysicalEntityMap(go);
             }
             else
             {
@@ -188,16 +188,16 @@ void NetworkManagerClient::HandleGameObjectState(InputMemoryBitStream& inInputSt
     }
     
     //anything left gets the axe
-    DestroyGameObjectsInMap(objectsToDestroy);
+    DestroyNWPhysicalEntitysInMap(objectsToDestroy);
 }
 
-void NetworkManagerClient::DestroyGameObjectsInMap(const std::unordered_map<int, GameObject*>& inObjectsToDestroy)
+void NetworkManagerClient::DestroyNWPhysicalEntitysInMap(const std::unordered_map<int, NWPhysicalEntity*>& inObjectsToDestroy)
 {
     for (auto& pair: inObjectsToDestroy)
     {
-        pair.second->SetDoesWantToDie(true);
+        pair.second->requestDeletion();
         
-        RemoveFromNetworkIdToGameObjectMap(pair.second);    
+        RemoveFromNetworkIdToNWPhysicalEntityMap(pair.second);    
     }
 }
 
