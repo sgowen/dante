@@ -11,7 +11,7 @@
 #include "DeliveryNotificationManager.h"
 
 #include "MemoryBitStream.h"
-#include "StringUtils.h"
+#include "StringUtil.h"
 #include "Timing.h"
 
 namespace
@@ -172,7 +172,7 @@ void DeliveryNotificationManager::ProcessAcks(InputMemoryBitStream& inInputStrea
 
 void DeliveryNotificationManager::ProcessTimedOutPackets()
 {
-    float timeoutTime = Timing::sInstance.GetTime() - kDelayBeforeAckTimeout;
+    float timeoutTime = Timing::getInstance()->GetTime() - kDelayBeforeAckTimeout;
     
     while (!mInFlightPackets.empty())
     {

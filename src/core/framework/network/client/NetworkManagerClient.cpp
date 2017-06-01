@@ -11,7 +11,7 @@
 #include "NetworkManagerClient.h"
 
 #include "InputManager.h"
-#include "StringUtils.h"
+#include "StringUtil.h"
 #include "GameObjectRegistry.h"
 #include "Timing.h"
 #include "World.h"
@@ -91,7 +91,7 @@ void NetworkManagerClient::SendOutgoingPackets()
 
 void NetworkManagerClient::UpdateSayingHello()
 {
-    float time = Timing::sInstance.GetTime();
+    float time = Timing::getInstance()->GetTime();
     
     if (time > m_fTimeOfLastHello + kTimeBetweenHellos)
     {
@@ -142,7 +142,7 @@ void NetworkManagerClient::ReadLastMoveProcessedOnServerTimestamp(InputMemoryBit
     {
         inInputStream.Read(m_fLastMoveProcessedByServerTimestamp);
         
-        float rtt = Timing::sInstance.GetFrameStartTime() - m_fLastMoveProcessedByServerTimestamp;
+        float rtt = Timing::getInstance()->GetFrameStartTime() - m_fLastMoveProcessedByServerTimestamp;
         m_fLastRoundTripTime = rtt;
         mAvgRoundTripTime.Update(rtt);
         
@@ -203,7 +203,7 @@ void NetworkManagerClient::DestroyGameObjectsInMap(const std::unordered_map<int,
 
 void NetworkManagerClient::UpdateSendingInputPacket()
 {
-    float time = Timing::sInstance.GetTime();
+    float time = Timing::getInstance()->GetTime();
     
     if (time > m_fTimeOfLastInputPacket + kTimeBetweenInputPackets)
     {

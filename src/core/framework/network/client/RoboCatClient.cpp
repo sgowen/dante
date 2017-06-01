@@ -13,7 +13,7 @@
 #include "NetworkManagerClient.h"
 #include "Move.h"
 #include "InputManager.h"
-#include "StringUtils.h"
+#include "StringUtil.h"
 #include "Timing.h"
 #include "Color.h"
 #include "Vector2.h"
@@ -58,7 +58,7 @@ void RoboCatClient::Update()
     }
     else
     {
-        SimulateMovement(Timing::sInstance.GetDeltaTime());
+        SimulateMovement(Timing::getInstance()->GetDeltaTime());
         
         if (GetVelocity().isEqualTo(Vector2::Zero))
         {
@@ -223,7 +223,7 @@ void RoboCatClient::InterpolateClientSidePrediction(float inOldRotation, Vector2
         LOG("ERROR! Move replay ended with incorrect location!", 0);
         
         //have we been out of sync, or did we just become out of sync?
-        float time = Timing::sInstance.GetFrameStartTime();
+        float time = Timing::getInstance()->GetFrameStartTime();
         if (m_fTimeLocationBecameOutOfSync == 0.f)
         {
             m_fTimeLocationBecameOutOfSync = time;
@@ -246,7 +246,7 @@ void RoboCatClient::InterpolateClientSidePrediction(float inOldRotation, Vector2
         LOG("ERROR! Move replay ended with incorrect velocity!", 0);
         
         //have we been out of sync, or did we just become out of sync?
-        float time = Timing::sInstance.GetFrameStartTime();
+        float time = Timing::getInstance()->GetFrameStartTime();
         if (m_fTimeVelocityBecameOutOfSync == 0.f)
         {
             m_fTimeVelocityBecameOutOfSync = time;

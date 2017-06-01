@@ -13,16 +13,14 @@
 #include "Timing.h"
 #include "MathUtil.h"
 
-WeightedTimedMovingAverage::WeightedTimedMovingAverage(float inDuration) :
-m_fDuration(inDuration),
-m_fValue(0.f)
+WeightedTimedMovingAverage::WeightedTimedMovingAverage(float inDuration) : m_fDuration(inDuration), m_fValue(0.f)
 {
-    m_fTimeLastEntryMade = Timing::sInstance.GetTime();
+    m_fTimeLastEntryMade = Timing::getInstance()->GetTime();
 }
 
 void WeightedTimedMovingAverage::UpdatePerSecond(float inValue)
 {
-    float time = Timing::sInstance.GetTime();
+    float time = Timing::getInstance()->GetTime();
     float timeSinceLastEntry = clamp(time - m_fTimeLastEntryMade, 10, 0);
     
     float valueOverTime = inValue / timeSinceLastEntry;
@@ -41,7 +39,7 @@ void WeightedTimedMovingAverage::UpdatePerSecond(float inValue)
 
 void WeightedTimedMovingAverage::Update(float inValue)
 {
-    float time = Timing::sInstance.GetTime();
+    float time = Timing::getInstance()->GetTime();
     float timeSinceLastEntry = clamp(time - m_fTimeLastEntryMade, 10, 0);
     
     // now update our value by whatever amount of the duration that was..

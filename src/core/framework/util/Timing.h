@@ -9,14 +9,12 @@
 #ifndef __noctisgames__Timing__
 #define __noctisgames__Timing__
 
-#include "NetworkConstants.h"
+#include <unistd.h>
 
 class Timing
 {
 public:
-    static Timing sInstance;
-    
-    Timing();
+    static Timing* getInstance();
     
     void Update();
     
@@ -35,6 +33,11 @@ private:
     double mLastFrameStartTime;
     float mFrameStartTimef;
     double mPerfCountDuration;
+    
+    // ctor, copy ctor, and assignment should be private in a Singleton
+    Timing();
+    Timing(const Timing&);
+    Timing& operator=(const Timing&);
 };
 
 #endif /* defined(__noctisgames__Timing__) */

@@ -11,7 +11,7 @@
 #include "SocketUtil.h"
 
 #include "NetworkConstants.h"
-#include "StringUtils.h"
+#include "StringUtil.h"
 
 bool SocketUtil::StaticInit()
 {

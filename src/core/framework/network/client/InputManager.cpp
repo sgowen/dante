@@ -69,12 +69,12 @@ mPendingMove(nullptr)
 
 const Move& InputManager::SampleInputAsMove()
 {
-    return mMoveList.AddMove(GetState(), Timing::sInstance.GetFrameStartTime());
+    return mMoveList.AddMove(GetState(), Timing::getInstance()->GetFrameStartTime());
 }
 
 bool InputManager::IsTimeToSampleInput()
 {
-    float time = Timing::sInstance.GetFrameStartTime();
+    float time = Timing::getInstance()->GetFrameStartTime();
     if (time > m_fNextTimeToSampleInput)
     {
         m_fNextTimeToSampleInput = m_fNextTimeToSampleInput + kTimeBetweenInputSamples;

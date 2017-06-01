@@ -13,7 +13,7 @@
 #include "SocketAddress.h"
 
 #include "SocketUtil.h"
-#include "StringUtils.h"
+#include "StringUtil.h"
 
 int UDPSocket::Bind(const SocketAddress& inBindAddress)
 {

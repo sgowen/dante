@@ -11,7 +11,7 @@
 #include "NetworkManager.h"
 
 #include "SocketUtil.h"
-#include "StringUtils.h"
+#include "StringUtil.h"
 #include "Timing.h"
 #include "SocketAddressFamily.h"
 #include "World.h"
@@ -98,7 +98,7 @@ void NetworkManager::ReadIncomingPacketsIntoQueue()
             //we'll pretend it wasn't received until simulated latency from now
             //this doesn't sim jitter, for that we would need to.....
             
-            float simulatedReceivedTime = Timing::sInstance.GetTime();
+            float simulatedReceivedTime = Timing::getInstance()->GetTime();
             mPacketQueue.emplace(simulatedReceivedTime, inputStream, fromAddress);
         }
         else
@@ -119,7 +119,7 @@ void NetworkManager::ProcessQueuedPackets()
     while (!mPacketQueue.empty())
     {
         ReceivedPacket& nextPacket = mPacketQueue.front();
-        if (Timing::sInstance.GetTime() > nextPacket.GetReceivedTime())
+        if (Timing::getInstance()->GetTime() > nextPacket.GetReceivedTime())
         {
             ProcessPacket(nextPacket.GetPacketBuffer(), nextPacket.GetFromAddress());
             mPacketQueue.pop();

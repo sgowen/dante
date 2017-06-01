@@ -161,12 +161,6 @@
 		BB8308731EC2AD1F00435E7E /* SocketUtil.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8308301EC2AD1F00435E7E /* SocketUtil.cpp */; };
 		BB8308741EC2AD1F00435E7E /* SocketUtil.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8308301EC2AD1F00435E7E /* SocketUtil.cpp */; };
 		BB8308751EC2AD1F00435E7E /* SocketUtil.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8308301EC2AD1F00435E7E /* SocketUtil.cpp */; };
-		BB8308761EC2AD1F00435E7E /* StringUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8308321EC2AD1F00435E7E /* StringUtils.cpp */; };
-		BB8308771EC2AD1F00435E7E /* StringUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8308321EC2AD1F00435E7E /* StringUtils.cpp */; };
-		BB8308781EC2AD1F00435E7E /* StringUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8308321EC2AD1F00435E7E /* StringUtils.cpp */; };
-		BB83087C1EC2AD1F00435E7E /* Timing.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8308361EC2AD1F00435E7E /* Timing.cpp */; };
-		BB83087D1EC2AD1F00435E7E /* Timing.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8308361EC2AD1F00435E7E /* Timing.cpp */; };
-		BB83087E1EC2AD1F00435E7E /* Timing.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8308361EC2AD1F00435E7E /* Timing.cpp */; };
 		BB83087F1EC2AD1F00435E7E /* UDPSocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8308391EC2AD1F00435E7E /* UDPSocket.cpp */; };
 		BB8308801EC2AD1F00435E7E /* UDPSocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8308391EC2AD1F00435E7E /* UDPSocket.cpp */; };
 		BB8308811EC2AD1F00435E7E /* UDPSocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8308391EC2AD1F00435E7E /* UDPSocket.cpp */; };
@@ -313,6 +307,15 @@
 		BBAEF2E91EA94EDA00F0866E /* MainScreen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF1EC1EA94EDA00F0866E /* MainScreen.cpp */; };
 		BBAEF2EA1EA94EDA00F0866E /* MainScreen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF1EC1EA94EDA00F0866E /* MainScreen.cpp */; };
 		BBAEF3101EA94FAC00F0866E /* JoystickController.mm in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF30F1EA94FAC00F0866E /* JoystickController.mm */; };
+		BBBD148F1EE06858003F9307 /* StringUtil.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBBD148E1EE06858003F9307 /* StringUtil.cpp */; };
+		BBBD14901EE06858003F9307 /* StringUtil.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBBD148E1EE06858003F9307 /* StringUtil.cpp */; };
+		BBBD14911EE06858003F9307 /* StringUtil.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBBD148E1EE06858003F9307 /* StringUtil.cpp */; };
+		BBBD14961EE06BB3003F9307 /* Timing.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBBD14921EE06BB3003F9307 /* Timing.cpp */; };
+		BBBD14971EE06BB3003F9307 /* Timing.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBBD14921EE06BB3003F9307 /* Timing.cpp */; };
+		BBBD14981EE06BB3003F9307 /* Timing.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBBD14921EE06BB3003F9307 /* Timing.cpp */; };
+		BBBD14991EE06BB3003F9307 /* WeightedTimedMovingAverage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBBD14941EE06BB3003F9307 /* WeightedTimedMovingAverage.cpp */; };
+		BBBD149A1EE06BB3003F9307 /* WeightedTimedMovingAverage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBBD14941EE06BB3003F9307 /* WeightedTimedMovingAverage.cpp */; };
+		BBBD149B1EE06BB3003F9307 /* WeightedTimedMovingAverage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBBD14941EE06BB3003F9307 /* WeightedTimedMovingAverage.cpp */; };
 		BBCCA8391DB343AB00452FA1 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBCCA8381DB343AB00452FA1 /* Accelerate.framework */; };
 		BBCCA83D1DB3462E00452FA1 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBCCA83C1DB3462E00452FA1 /* Accelerate.framework */; };
 		BBCCA8411DB3466A00452FA1 /* AudioUnit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBCCA8401DB3466A00452FA1 /* AudioUnit.framework */; };
@@ -331,9 +334,6 @@
 		BBD43A0D1ED0BD00001D5EB4 /* ReplicationCommand.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBD43A0C1ED0BD00001D5EB4 /* ReplicationCommand.cpp */; };
 		BBD43A0E1ED0BD00001D5EB4 /* ReplicationCommand.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBD43A0C1ED0BD00001D5EB4 /* ReplicationCommand.cpp */; };
 		BBD43A0F1ED0BD00001D5EB4 /* ReplicationCommand.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBD43A0C1ED0BD00001D5EB4 /* ReplicationCommand.cpp */; };
-		BBD43A151ED0BD4B001D5EB4 /* WeightedTimedMovingAverage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBD43A141ED0BD4B001D5EB4 /* WeightedTimedMovingAverage.cpp */; };
-		BBD43A161ED0BD4B001D5EB4 /* WeightedTimedMovingAverage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBD43A141ED0BD4B001D5EB4 /* WeightedTimedMovingAverage.cpp */; };
-		BBD43A171ED0BD4B001D5EB4 /* WeightedTimedMovingAverage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBD43A141ED0BD4B001D5EB4 /* WeightedTimedMovingAverage.cpp */; };
 		BBD909D61EC38FC80075FB11 /* texture_002.ngt in Resources */ = {isa = PBXBuildFile; fileRef = BBD909D51EC38FC80075FB11 /* texture_002.ngt */; };
 		BBD909D71EC38FC80075FB11 /* texture_002.ngt in Resources */ = {isa = PBXBuildFile; fileRef = BBD909D51EC38FC80075FB11 /* texture_002.ngt */; };
 		BBF226831EC12C9C00573356 /* Client.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF226641EC12C9C00573356 /* Client.cpp */; };
@@ -619,14 +619,9 @@
 		BB83082F1EC2AD1F00435E7E /* SocketAddressFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SocketAddressFactory.h; sourceTree = "<group>"; };
 		BB8308301EC2AD1F00435E7E /* SocketUtil.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SocketUtil.cpp; sourceTree = "<group>"; };
 		BB8308311EC2AD1F00435E7E /* SocketUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SocketUtil.h; sourceTree = "<group>"; };
-		BB8308321EC2AD1F00435E7E /* StringUtils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StringUtils.cpp; sourceTree = "<group>"; };
-		BB8308331EC2AD1F00435E7E /* StringUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StringUtils.h; sourceTree = "<group>"; };
-		BB8308361EC2AD1F00435E7E /* Timing.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Timing.cpp; sourceTree = "<group>"; };
-		BB8308371EC2AD1F00435E7E /* Timing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Timing.h; sourceTree = "<group>"; };
 		BB8308381EC2AD1F00435E7E /* ITransmissionData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ITransmissionData.h; sourceTree = "<group>"; };
 		BB8308391EC2AD1F00435E7E /* UDPSocket.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = UDPSocket.cpp; sourceTree = "<group>"; };
 		BB83083A1EC2AD1F00435E7E /* UDPSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UDPSocket.h; sourceTree = "<group>"; };
-		BB83083B1EC2AD1F00435E7E /* WeightedTimedMovingAverage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WeightedTimedMovingAverage.h; sourceTree = "<group>"; };
 		BB83083C1EC2AD1F00435E7E /* World.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = World.cpp; sourceTree = "<group>"; };
 		BB83083D1EC2AD1F00435E7E /* World.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = World.h; sourceTree = "<group>"; };
 		BBAEF0BF1EA94ED900F0866E /* Entity.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Entity.cpp; sourceTree = "<group>"; };
@@ -822,6 +817,11 @@
 		BBAEF34A1EA94FF200F0866E /* AndroidAssetDataHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AndroidAssetDataHandler.h; sourceTree = "<group>"; };
 		BBB6C0291E9E80CB00D68409 /* Direct3DMain.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Direct3DMain.cpp; sourceTree = "<group>"; };
 		BBB6C02A1E9E80CB00D68409 /* Direct3DMain.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Direct3DMain.h; sourceTree = "<group>"; };
+		BBBD148E1EE06858003F9307 /* StringUtil.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StringUtil.cpp; sourceTree = "<group>"; };
+		BBBD14921EE06BB3003F9307 /* Timing.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Timing.cpp; sourceTree = "<group>"; };
+		BBBD14931EE06BB3003F9307 /* Timing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Timing.h; sourceTree = "<group>"; };
+		BBBD14941EE06BB3003F9307 /* WeightedTimedMovingAverage.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WeightedTimedMovingAverage.cpp; sourceTree = "<group>"; };
+		BBBD14951EE06BB3003F9307 /* WeightedTimedMovingAverage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WeightedTimedMovingAverage.h; sourceTree = "<group>"; };
 		BBC1BE371ECF736A0045AF93 /* NetworkConstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NetworkConstants.h; sourceTree = "<group>"; };
 		BBCB71C81DB6A218006430B6 /* texconv.exe */ = {isa = PBXFileReference; lastKnownFileType = file; path = texconv.exe; sourceTree = "<group>"; };
 		BBCB71C91DB6A218006430B6 /* Texconv_readme.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = Texconv_readme.txt; sourceTree = "<group>"; };
@@ -842,7 +842,6 @@
 		BBCFF1CB1ECD316D003EE520 /* MainAssetsMapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainAssetsMapper.h; sourceTree = "<group>"; };
 		BBD43A0B1ED0BCAD001D5EB4 /* ReplicationAction.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ReplicationAction.h; sourceTree = "<group>"; };
 		BBD43A0C1ED0BD00001D5EB4 /* ReplicationCommand.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ReplicationCommand.cpp; sourceTree = "<group>"; };
-		BBD43A141ED0BD4B001D5EB4 /* WeightedTimedMovingAverage.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WeightedTimedMovingAverage.cpp; sourceTree = "<group>"; };
 		BBD909D51EC38FC80075FB11 /* texture_002.ngt */ = {isa = PBXFileReference; lastKnownFileType = file; path = texture_002.ngt; sourceTree = "<group>"; };
 		BBD909D81EC38FD00075FB11 /* texture_002.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = texture_002.png; sourceTree = "<group>"; };
 		BBF226641EC12C9C00573356 /* Client.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Client.cpp; sourceTree = "<group>"; };
@@ -1356,7 +1355,12 @@
 				BB74283C1EB2AF4200B7628D /* NGSTDUtil.h */,
 				BB74283D1EB2AF4200B7628D /* RTTI.cpp */,
 				BB74283E1EB2AF4200B7628D /* RTTI.h */,
+				BBBD148E1EE06858003F9307 /* StringUtil.cpp */,
 				BB74283F1EB2AF4200B7628D /* StringUtil.h */,
+				BBBD14921EE06BB3003F9307 /* Timing.cpp */,
+				BBBD14931EE06BB3003F9307 /* Timing.h */,
+				BBBD14941EE06BB3003F9307 /* WeightedTimedMovingAverage.cpp */,
+				BBBD14951EE06BB3003F9307 /* WeightedTimedMovingAverage.h */,
 			);
 			path = util;
 			sourceTree = "<group>";
@@ -1421,14 +1425,8 @@
 				BB5F46FA1ED38D61005FEC0C /* SocketAddressFamily.h */,
 				BB8308301EC2AD1F00435E7E /* SocketUtil.cpp */,
 				BB8308311EC2AD1F00435E7E /* SocketUtil.h */,
-				BB8308321EC2AD1F00435E7E /* StringUtils.cpp */,
-				BB8308331EC2AD1F00435E7E /* StringUtils.h */,
-				BB8308361EC2AD1F00435E7E /* Timing.cpp */,
-				BB8308371EC2AD1F00435E7E /* Timing.h */,
 				BB8308391EC2AD1F00435E7E /* UDPSocket.cpp */,
 				BB83083A1EC2AD1F00435E7E /* UDPSocket.h */,
-				BBD43A141ED0BD4B001D5EB4 /* WeightedTimedMovingAverage.cpp */,
-				BB83083B1EC2AD1F00435E7E /* WeightedTimedMovingAverage.h */,
 				BB83083C1EC2AD1F00435E7E /* World.cpp */,
 				BB83083D1EC2AD1F00435E7E /* World.h */,
 			);
@@ -2127,6 +2125,7 @@
 				BB83086D1EC2AD1F00435E7E /* SocketAddress.cpp in Sources */,
 				BB44C8691DB03A7E003E633F /* pngerror.c in Sources */,
 				BB8308491EC2AD1F00435E7E /* GameObject.cpp in Sources */,
+				BBBD148F1EE06858003F9307 /* StringUtil.cpp in Sources */,
 				BBAEF1F51EA94EDA00F0866E /* GridManager.cpp in Sources */,
 				BBAEF2771EA94EDA00F0866E /* TextureRegion.cpp in Sources */,
 				BB8308701EC2AD1F00435E7E /* SocketAddressFactory.cpp in Sources */,
@@ -2145,7 +2144,6 @@
 				BBAEF2DB1EA94EDA00F0866E /* Renderer.cpp in Sources */,
 				BBAEF2951EA94EDA00F0866E /* Line.cpp in Sources */,
 				BBF226CE1EC12CDE00573356 /* ReplicationManagerClient.cpp in Sources */,
-				BBD43A151ED0BD4B001D5EB4 /* WeightedTimedMovingAverage.cpp in Sources */,
 				BBAEF2311EA94EDA00F0866E /* OpenGLFramebufferToScreenProgram.cpp in Sources */,
 				BBAEF2B71EA94EDA00F0866E /* SuperpoweredSoundWrapper.cpp in Sources */,
 				BB83084C1EC2AD1F00435E7E /* GameObjectRegistry.cpp in Sources */,
@@ -2161,7 +2159,6 @@
 				BBAEF2A71EA94EDA00F0866E /* ISound.cpp in Sources */,
 				BB44C87B1DB03A7E003E633F /* pngset.c in Sources */,
 				BBAEF2691EA94EDA00F0866E /* LineBatcherFactory.cpp in Sources */,
-				BB8308761EC2AD1F00435E7E /* StringUtils.cpp in Sources */,
 				BBAEF2551EA94EDA00F0866E /* Animation.cpp in Sources */,
 				BBAEF23D1EA94EDA00F0866E /* OpenGLProgram.cpp in Sources */,
 				BBAEF2471EA94EDA00F0866E /* OpenGLTextureProgram.cpp in Sources */,
@@ -2215,13 +2212,14 @@
 				BB44C8791DB03A7E003E633F /* pngrutil.c in Sources */,
 				BBAEF27F1EA94EDA00F0866E /* GamePadEvent.cpp in Sources */,
 				BB44C8851DB03A7E003E633F /* pngwrite.c in Sources */,
-				BB83087C1EC2AD1F00435E7E /* Timing.cpp in Sources */,
+				BBBD14991EE06BB3003F9307 /* WeightedTimedMovingAverage.cpp in Sources */,
 				BBAEF2811EA94EDA00F0866E /* GamePadInputManager.cpp in Sources */,
 				BBAEF2871EA94EDA00F0866E /* ScreenEvent.cpp in Sources */,
 				BBAEF2751EA94EDA00F0866E /* TextureLoaderFactory.cpp in Sources */,
 				BBAEF2731EA94EDA00F0866E /* SpriteBatcherFactory.cpp in Sources */,
 				BBAEF2631EA94EDA00F0866E /* IRendererHelper.cpp in Sources */,
 				BB44C8731DB03A7E003E633F /* pngread.c in Sources */,
+				BBBD14961EE06BB3003F9307 /* Timing.cpp in Sources */,
 				BBAEF2451EA94EDA00F0866E /* OpenGLTextureLoader.cpp in Sources */,
 				BB44C8631DB03A7E003E633F /* png.c in Sources */,
 				BB44C86B1DB03A7E003E633F /* pngget.c in Sources */,
@@ -2243,6 +2241,7 @@
 			files = (
 				BBAEF2941EA94EDA00F0866E /* Circle.cpp in Sources */,
 				BB8308831EC2AD1F00435E7E /* World.cpp in Sources */,
+				BBBD14901EE06858003F9307 /* StringUtil.cpp in Sources */,
 				BBAEF2701EA94EDA00F0866E /* RendererHelperFactory.cpp in Sources */,
 				BBAEF23C1EA94EDA00F0866E /* OpenGLNGRectBatcher.cpp in Sources */,
 				BBAEF2301EA94EDA00F0866E /* OpenGLFramebufferToScreenGpuProgramWrapper.cpp in Sources */,
@@ -2298,12 +2297,11 @@
 				BB7428411EB2AF4200B7628D /* RTTI.cpp in Sources */,
 				BBAEF2401EA94EDA00F0866E /* OpenGLRendererHelper.cpp in Sources */,
 				BBAEF25E1EA94EDA00F0866E /* Font.cpp in Sources */,
+				BBBD14971EE06BB3003F9307 /* Timing.cpp in Sources */,
 				BBAEF27A1EA94EDA00F0866E /* TextureWrapper.cpp in Sources */,
 				BBAEF2EA1EA94EDA00F0866E /* MainScreen.cpp in Sources */,
 				BBAEF25A1EA94EDA00F0866E /* CircleBatcherFactory.cpp in Sources */,
 				BBAEF2A41EA94EDA00F0866E /* AudioEngineHelperFactory.cpp in Sources */,
-				BB83087D1EC2AD1F00435E7E /* Timing.cpp in Sources */,
-				BBD43A161ED0BD4B001D5EB4 /* WeightedTimedMovingAverage.cpp in Sources */,
 				BBAEF2B41EA94EDA00F0866E /* SuperpoweredSound.cpp in Sources */,
 				BBAEF3101EA94FAC00F0866E /* JoystickController.mm in Sources */,
 				BBAEF27C1EA94EDA00F0866E /* TransitionGpuProgramWrapper.cpp in Sources */,
@@ -2327,7 +2325,7 @@
 				BBCFF1C71ECD312E003EE520 /* IAssetsMapper.cpp in Sources */,
 				BB44CB891DB053C0003E633F /* pngrutil.c in Sources */,
 				BB83084D1EC2AD1F00435E7E /* GameObjectRegistry.cpp in Sources */,
-				BB8308771EC2AD1F00435E7E /* StringUtils.cpp in Sources */,
+				BBBD149A1EE06BB3003F9307 /* WeightedTimedMovingAverage.cpp in Sources */,
 				BBAEF2A61EA94EDA00F0866E /* IAudioEngineHelper.cpp in Sources */,
 				BBAEF2B61EA94EDA00F0866E /* SuperpoweredSoundManager.cpp in Sources */,
 				BBF226CB1EC12CDE00573356 /* NetworkManagerClient.cpp in Sources */,
@@ -2375,7 +2373,6 @@
 				BB32C9881EDB70F3005456EB /* Triangle.cpp in Sources */,
 				BB32C98A1EDB70F3005456EB /* Vector2.cpp in Sources */,
 				BB8308511EC2AD1F00435E7E /* InFlightPacket.cpp in Sources */,
-				BB83087E1EC2AD1F00435E7E /* Timing.cpp in Sources */,
 				BB83086F1EC2AD1F00435E7E /* SocketAddress.cpp in Sources */,
 				BB8308661EC2AD1F00435E7E /* RoboCat.cpp in Sources */,
 				BB83085D1EC2AD1F00435E7E /* Move.cpp in Sources */,
@@ -2391,7 +2388,9 @@
 				BB8308031EC2AC0900435E7E /* ReplicationManagerTransmissionData.cpp in Sources */,
 				BBA337BD1EDF8046000C8F2B /* RTTI.cpp in Sources */,
 				BB8308421EC2AD1F00435E7E /* AckRange.cpp in Sources */,
-				BB8308781EC2AD1F00435E7E /* StringUtils.cpp in Sources */,
+				BBBD14911EE06858003F9307 /* StringUtil.cpp in Sources */,
+				BBBD14981EE06BB3003F9307 /* Timing.cpp in Sources */,
+				BBBD149B1EE06BB3003F9307 /* WeightedTimedMovingAverage.cpp in Sources */,
 				BBD43A0F1ED0BD00001D5EB4 /* ReplicationCommand.cpp in Sources */,
 				BB8308021EC2AC0900435E7E /* ReplicationManagerServer.cpp in Sources */,
 				BB8308451EC2AD1F00435E7E /* DeliveryNotificationManager.cpp in Sources */,
@@ -2402,7 +2401,6 @@
 				BB8308721EC2AD1F00435E7E /* SocketAddressFactory.cpp in Sources */,
 				BB8308751EC2AD1F00435E7E /* SocketUtil.cpp in Sources */,
 				BB8307FF1EC2AC0900435E7E /* ClientProxy.cpp in Sources */,
-				BBD43A171ED0BD4B001D5EB4 /* WeightedTimedMovingAverage.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

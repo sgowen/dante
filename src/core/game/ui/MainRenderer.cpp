@@ -26,7 +26,7 @@
 #include "NetworkManagerClient.h"
 #include "World.h"
 #include "RoboCat.h"
-#include "StringUtils.h"
+#include "StringUtil.h"
 
 #include <sstream>
 
@@ -103,7 +103,7 @@ void MainRenderer::RenderBandWidth()
     const WeightedTimedMovingAverage& bpsOut = NetworkManagerClient::sInstance->GetBytesSentPerSecond();
     int bpsOutInt = static_cast< int >(bpsOut.GetValue());
     
-    std::string bandwidth = StringUtils::Sprintf("In %d Bps, Out %d Bps", bpsInInt, bpsOutInt);
+    std::string bandwidth = StringUtil::sprintf("In %d Bps, Out %d Bps", bpsInInt, bpsOutInt);
     
     static Color whiteColor = Color(1.0f, 1.0f, 1.0f, 1.0f);
     
@@ -116,7 +116,7 @@ void MainRenderer::RenderRoundTripTime()
     
     float rttMS = NetworkManagerClient::getInstance()->GetAvgRoundTripTime().GetValue() * 1000.f;
     
-    std::string roundTripTime = StringUtils::Sprintf("RTT %d ms", (int) rttMS);
+    std::string roundTripTime = StringUtil::sprintf("RTT %d ms", (int) rttMS);
     
     static Color whiteColor = Color(1.0f, 1.0f, 1.0f, 1.0f);
     

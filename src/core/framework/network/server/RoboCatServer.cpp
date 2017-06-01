@@ -12,7 +12,7 @@
 
 #include "NetworkManagerServer.h"
 #include "Timing.h"
-#include "StringUtils.h"
+#include "StringUtil.h"
 
 GameObject* RoboCatServer::create()
 {

@@ -12,7 +12,7 @@
 
 #include "Server.h"
 #include "ReplicationManagerTransmissionData.h"
-#include "StringUtils.h"
+#include "StringUtil.h"
 #include "World.h"
 #include "Timing.h"
 
@@ -73,7 +73,7 @@ void NetworkManagerServer::CheckForDisconnects()
 {
     std::vector<ClientProxy*> clientsToDC;
     
-    float minAllowedLastPacketFromClientTime = Timing::sInstance.GetTime() - m_fClientDisconnectTimeout;
+    float minAllowedLastPacketFromClientTime = Timing::getInstance()->GetTime() - m_fClientDisconnectTimeout;
     for (const auto& pair: mAddressToClientMap)
     {
         if (pair.second->GetLastPacketFromClientTime() < minAllowedLastPacketFromClientTime)

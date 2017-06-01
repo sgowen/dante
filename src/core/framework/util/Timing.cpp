@@ -15,8 +15,6 @@
 using namespace std::chrono;
 #endif
 
-Timing Timing::sInstance;
-
 namespace
 {
 #if _WIN32
@@ -26,19 +24,10 @@ namespace
 #endif
 }
 
-Timing::Timing()
+Timing* Timing::getInstance()
 {
-#if _WIN32
-    LARGE_INTEGER perfFreq;
-    QueryPerformanceFrequency(&perfFreq);
-    mPerfCountDuration = 1.0 / perfFreq.QuadPart;
-    
-    QueryPerformanceCounter(&sStartTime);
-#else
-    sStartTime = steady_clock::now();
-#endif
-    
-    mLastFrameStartTime = GetTime();
+    static Timing instance = Timing();
+    return &instance;
 }
 
 void Timing::Update()
@@ -84,4 +73,19 @@ float Timing::GetDeltaTime() const
 float Timing::GetFrameStartTime() const
 {
     return mFrameStartTimef;
+}
+
+Timing::Timing()
+{
+#if _WIN32
+    LARGE_INTEGER perfFreq;
+    QueryPerformanceFrequency(&perfFreq);
+    mPerfCountDuration = 1.0 / perfFreq.QuadPart;
+    
+    QueryPerformanceCounter(&sStartTime);
+#else
+    sStartTime = steady_clock::now();
+#endif
+    
+    mLastFrameStartTime = GetTime();
 }

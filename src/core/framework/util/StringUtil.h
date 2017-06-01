@@ -12,32 +12,11 @@
 #include <string>
 #include <sstream>
 
+#define LOG(...) StringUtil::log(__VA_ARGS__);
+
 class StringUtil
 {
 public:
-    static std::string encryptDecrypt(std::string input)
-    {
-        char key[3] = {'N', 'G', 'S'}; // Any chars will work, in an array of any size
-        std::string output = input;
-        
-        for (unsigned int i = 0; i < input.size(); ++i)
-        {
-            output[i] = input[i] ^ key[i % (sizeof(key) / sizeof(char))];
-        }
-        
-        return output;
-    }
-    
-    static void encryptDecrypt(unsigned char* input, unsigned char* output, const long dataLength)
-    {
-        char key[3] = {'N', 'G', 'S'}; // Any chars will work, in an array of any size
-        
-        for (unsigned int i = 0; i < dataLength; ++i)
-        {
-            output[i] = input[i] ^ key[i % (sizeof(key) / sizeof(char))];
-        }
-    }
-    
     template<typename T>
     static std::string toString(const T& n)
     {
@@ -59,6 +38,20 @@ public:
         
         return value;
     }
+    
+    static std::string encryptDecrypt(std::string input);
+    
+    static void encryptDecrypt(unsigned char* input, unsigned char* output, const long dataLength);
+    
+    static std::string sprintf(const char* inFormat, ...);
+    
+    static void log(const char* inFormat, ...);
+    
+private:
+    // ctor, copy ctor, and assignment should be private in a Static Utility Class
+    StringUtil();
+    StringUtil(const StringUtil&);
+    StringUtil& operator=(const StringUtil&);
 };
 
 #endif /* defined(__noctisgames__StringUtil__) */

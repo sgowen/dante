@@ -105,7 +105,7 @@ void MainScreen::update(float deltaTime)
     m_fStateTime += deltaTime;
     m_fFrameStateTime += deltaTime;
     
-    Timing::sInstance.updateManual(m_fStateTime, deltaTime);
+    Timing::getInstance()->updateManual(m_fStateTime, deltaTime);
     
     if (m_fFrameStateTime >= FRAME_RATE)
     {

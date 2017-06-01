@@ -35,9 +35,9 @@ int Server::Run()
 {
     while (true)
     {
-        Timing::sInstance.Update();
+        Timing::getInstance()->Update();
         
-        m_fFrameStateTime += Timing::sInstance.GetDeltaTime();
+        m_fFrameStateTime += Timing::getInstance()->GetDeltaTime();
         
         if (m_fFrameStateTime >= FRAME_RATE)
         {
