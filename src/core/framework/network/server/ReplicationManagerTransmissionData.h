@@ -22,7 +22,7 @@ class ReplicationManagerTransmissionData : public ITransmissionData
 {
 public:
     ReplicationManagerTransmissionData(ReplicationManagerServer* inReplicationManagerServer) :
-    mReplicationManagerServer(inReplicationManagerServer)
+    m_replicationManagerServer(inReplicationManagerServer)
     {}
     
     class ReplicationTransmission
@@ -31,17 +31,17 @@ public:
         ReplicationTransmission(int inNetworkId, ReplicationAction inAction, uint32_t inState) :
         m_iNetworkId(inNetworkId),
         mAction(inAction),
-        mState(inState)
+        m_state(inState)
         {}
         
         int getID() const { return m_iNetworkId; }
         ReplicationAction GetAction() const	{ return mAction; }
-        uint32_t GetState() const { return mState; }
+        uint32_t GetState() const { return m_state; }
         
     private:
         int m_iNetworkId;
         ReplicationAction mAction;
-        uint32_t mState;
+        uint32_t m_state;
     };
     
     void AddTransmission(int inNetworkId, ReplicationAction inAction, uint32_t inState);
@@ -56,7 +56,7 @@ private:
     void HandleCreateDeliverySuccess(int inNetworkId) const;
     void HandleDestroyDeliverySuccess(int inNetworkId) const;
     
-    ReplicationManagerServer* mReplicationManagerServer;
+    ReplicationManagerServer* m_replicationManagerServer;
     
     std::vector<ReplicationTransmission> mTransmissions;
 };

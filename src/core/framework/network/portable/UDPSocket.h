@@ -27,7 +27,7 @@ public:
 private:
     friend class SocketUtil;
     
-    SOCKET mSocket;
+    SOCKET m_socket;
     
     UDPSocket(SOCKET inSocket);
 };

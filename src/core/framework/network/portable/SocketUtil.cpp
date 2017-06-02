@@ -13,7 +13,7 @@
 #include "NetworkConstants.h"
 #include "StringUtil.h"
 
-bool SocketUtil::StaticInit()
+bool SocketUtil::staticInit()
 {
 #if _WIN32
     WSADATA wsaData;

@@ -10,52 +10,22 @@
 
 #include "NetworkManagerClient.h"
 
+#include "Entity.h"
+
 #include "InputManager.h"
 #include "StringUtil.h"
 #include "EntityRegistry.h"
 #include "Timing.h"
-#include "World.h"
-
-namespace
-{
-    const float kTimeBetweenHellos = 1.f;
-    const float kTimeBetweenInputPackets = 0.033f;
-}
+#include "EntityManager.h"
+#include "OutputMemoryBitStream.h"
 
 NetworkManagerClient* NetworkManagerClient::getInstance()
 {
-    return static_cast<NetworkManagerClient*>(NetworkManager::sInstance);
+    static NetworkManagerClient instance = NetworkManagerClient();
+    return &instance;
 }
 
-NetworkManagerClient::NetworkManagerClient() :
-mState(NCS_Uninitialized),
-mDeliveryNotificationManager(true, false),
-m_fLastRoundTripTime(0.f)
-{
-}
-
-void NetworkManagerClient::StaticInit(const SocketAddress& inServerAddress, const std::string& inName)
-{
-    NetworkManagerClient* ret = new NetworkManagerClient();
-    
-    ret->Init(inServerAddress, inName);
-    
-    sInstance = ret;
-}
-
-void NetworkManagerClient::Init(const SocketAddress& inServerAddress, const std::string& inName)
-{
-    NetworkManager::Init(0);
-    
-    mServerAddress = inServerAddress;
-    mState = NCS_SayingHello;
-    m_fTimeOfLastHello = 0.f;
-    mName = inName;
-    
-    mAvgRoundTripTime = WeightedTimedMovingAverage(1.f);
-}
-
-void NetworkManagerClient::ProcessPacket(InputMemoryBitStream& inInputStream, const SocketAddress& inFromAddress)
+void NetworkManagerClient::processPacket(InputMemoryBitStream& inInputStream, const SocketAddress& inFromAddress)
 {
     uint32_t packetType;
     inInputStream.read(packetType);
@@ -63,78 +33,112 @@ void NetworkManagerClient::ProcessPacket(InputMemoryBitStream& inInputStream, co
     switch(packetType)
     {
         case kWelcomeCC:
-            HandleWelcomePacket(inInputStream);
+            handleWelcomePacket(inInputStream);
             break;
         case kStateCC:
-            if (mDeliveryNotificationManager.ReadAndProcessState(inInputStream))
+            if (m_deliveryNotificationManager.ReadAndProcessState(inInputStream))
             {
-                HandleStatePacket(inInputStream);
+                handleStatePacket(inInputStream);
             }
             break;
     }
 }
 
-void NetworkManagerClient::SendOutgoingPackets()
+bool NetworkManagerClient::init(const SocketAddress& inServerAddress, const std::string& inName, HandleEntityDeletion handleEntityDeletion)
 {
-    switch (mState)
+    m_serverAddress = inServerAddress;
+    m_state = NCS_SayingHello;
+    m_fTimeOfLastHello = 0.f;
+    m_name = inName;
+    
+    m_avgRoundTripTime = WeightedTimedMovingAverage(1.f);
+    
+    return INetworkManager::init(9999, handleEntityDeletion);
+}
+
+void NetworkManagerClient::sendOutgoingPackets()
+{
+    switch (m_state)
     {
         case NCS_SayingHello:
-            UpdateSayingHello();
+            updateSayingHello();
             break;
         case NCS_Welcomed:
-            UpdateSendingInputPacket();
+            updateSendingInputPacket();
             break;
         case NCS_Uninitialized:
             break;
     }
 }
 
-void NetworkManagerClient::UpdateSayingHello()
+const WeightedTimedMovingAverage& NetworkManagerClient::getAvgRoundTripTime() const
+{
+    return m_avgRoundTripTime;
+}
+
+float NetworkManagerClient::getRoundTripTime() const
+{
+    return m_avgRoundTripTime.getValue();
+}
+
+int NetworkManagerClient::getPlayerId() const
+{
+    return m_iPlayerId;
+}
+
+float NetworkManagerClient::getLastMoveProcessedByServerTimestamp() const
+{
+    return m_fLastMoveProcessedByServerTimestamp;
+}
+
+void NetworkManagerClient::updateSayingHello()
 {
     float time = Timing::getInstance()->getTime();
     
+    static const float kTimeBetweenHellos = 1.f;
+    
     if (time > m_fTimeOfLastHello + kTimeBetweenHellos)
     {
-        SendHelloPacket();
+        sendHelloPacket();
         m_fTimeOfLastHello = time;
     }
 }
 
-void NetworkManagerClient::SendHelloPacket()
+void NetworkManagerClient::sendHelloPacket()
 {
     OutputMemoryBitStream helloPacket;
     
     helloPacket.write(kHelloCC);
-    helloPacket.write(mName);
+    helloPacket.write(m_name);
     
-    SendPacket(helloPacket, mServerAddress);
+    sendPacket(helloPacket, m_serverAddress);
 }
 
-void NetworkManagerClient::HandleWelcomePacket(InputMemoryBitStream& inInputStream)
+void NetworkManagerClient::handleWelcomePacket(InputMemoryBitStream& inInputStream)
 {
-    if (mState == NCS_SayingHello)
+    if (m_state == NCS_SayingHello)
     {
         //if we got a player id, we've been welcomed!
         int playerId;
         inInputStream.read(playerId);
         m_iPlayerId = playerId;
-        mState = NCS_Welcomed;
-        LOG("'%s' was welcomed on client as player %d", mName.c_str(), m_iPlayerId);
+        m_state = NCS_Welcomed;
+        LOG("'%s' was welcomed on client as player %d", m_name.c_str(), m_iPlayerId);
     }
 }
 
-void NetworkManagerClient::HandleStatePacket(InputMemoryBitStream& inInputStream)
+void NetworkManagerClient::handleStatePacket(InputMemoryBitStream& inInputStream)
 {
-    if (mState == NCS_Welcomed)
+    if (m_state == NCS_Welcomed)
     {
-        ReadLastMoveProcessedOnServerTimestamp(inInputStream);
+        readLastMoveProcessedOnServerTimestamp(inInputStream);
         
         //tell the replication manager to handle the rest...
-        mReplicationManagerClient.read(inInputStream);
+        m_replicationManagerClient.read(inInputStream);
     }
 }
 
-void NetworkManagerClient::ReadLastMoveProcessedOnServerTimestamp(InputMemoryBitStream& inInputStream)
+void NetworkManagerClient::readLastMoveProcessedOnServerTimestamp(InputMemoryBitStream& inInputStream)
 {
     bool isTimestampDirty;
     inInputStream.read(isTimestampDirty);
@@ -144,19 +148,20 @@ void NetworkManagerClient::ReadLastMoveProcessedOnServerTimestamp(InputMemoryBit
         
         float rtt = Timing::getInstance()->getFrameStartTime() - m_fLastMoveProcessedByServerTimestamp;
         m_fLastRoundTripTime = rtt;
-        mAvgRoundTripTime.update(rtt);
+        m_avgRoundTripTime.update(rtt);
         
         InputManager::getInstance()->getMoveList().RemovedProcessedMoves(m_fLastMoveProcessedByServerTimestamp);
     }
 }
 
-void NetworkManagerClient::HandleNWPhysicalEntityState(InputMemoryBitStream& inInputStream)
+void NetworkManagerClient::handleEntityState(InputMemoryBitStream& inInputStream)
 {
-    //copy the m_networkIdToNWPhysicalEntityMap so that anything that doesn't get an updated can be destroyed...
-    std::unordered_map<int, NWPhysicalEntity*> objectsToDestroy = m_networkIdToNWPhysicalEntityMap;
+    // copy the map so that anything that doesn't get an updated can be destroyed...
+    std::unordered_map<int, Entity*> objectsToDestroy = ENTITY_MGR->getMapCopy();
     
     int stateCount;
     inInputStream.read(stateCount);
+    
     if (stateCount > 0)
     {
         for (int stateIndex = 0; stateIndex < stateCount; ++stateIndex)
@@ -166,14 +171,14 @@ void NetworkManagerClient::HandleNWPhysicalEntityState(InputMemoryBitStream& inI
             
             inInputStream.read(networkId);
             inInputStream.read(fourCC);
-            NWPhysicalEntity* go;
-            auto itGO = m_networkIdToNWPhysicalEntityMap.find(networkId);
+            Entity* go;
+            auto itGO = ENTITY_MGR->getMap().find(networkId);
             //didn't find it, better create it!
-            if (itGO == m_networkIdToNWPhysicalEntityMap.end())
+            if (itGO == ENTITY_MGR->getMap().end())
             {
-                go = EntityRegistry::sInstance->CreateNWPhysicalEntity(fourCC);
+                go = EntityRegistry::getInstance()->createEntity(fourCC);
                 go->setID(networkId);
-                AddToNetworkIdToNWPhysicalEntityMap(go);
+                addToNetworkIdToEntityMap(go);
             }
             else
             {
@@ -188,31 +193,33 @@ void NetworkManagerClient::HandleNWPhysicalEntityState(InputMemoryBitStream& inI
     }
     
     //anything left gets the axe
-    DestroyNWPhysicalEntitysInMap(objectsToDestroy);
+    destroyAllInMap(objectsToDestroy);
 }
 
-void NetworkManagerClient::DestroyNWPhysicalEntitysInMap(const std::unordered_map<int, NWPhysicalEntity*>& inObjectsToDestroy)
+void NetworkManagerClient::destroyAllInMap(const std::unordered_map<int, Entity*>& inObjectsToDestroy)
 {
     for (auto& pair: inObjectsToDestroy)
     {
         pair.second->requestDeletion();
         
-        RemoveFromNetworkIdToNWPhysicalEntityMap(pair.second);    
+        removeFromNetworkIdToEntityMap(pair.second);
     }
 }
 
-void NetworkManagerClient::UpdateSendingInputPacket()
+void NetworkManagerClient::updateSendingInputPacket()
 {
     float time = Timing::getInstance()->getTime();
     
+    static const float kTimeBetweenInputPackets = 0.033f;
+    
     if (time > m_fTimeOfLastInputPacket + kTimeBetweenInputPackets)
     {
-        SendInputPacket();
+        sendInputPacket();
         m_fTimeOfLastInputPacket = time;
     }
 }
 
-void NetworkManagerClient::SendInputPacket()
+void NetworkManagerClient::sendInputPacket()
 {
     //only send if there's any input to sent!
     const MoveList& moveList = InputManager::getInstance()->getMoveList();
@@ -223,7 +230,7 @@ void NetworkManagerClient::SendInputPacket()
         
         inputPacket.write(kInputCC);
         
-        mDeliveryNotificationManager.WriteState(inputPacket);
+        m_deliveryNotificationManager.WriteState(inputPacket);
         
         //eventually write the 3 latest moves so they have three chances to get through...
         int moveCount = moveList.GetMoveCount();
@@ -243,6 +250,16 @@ void NetworkManagerClient::SendInputPacket()
             move->write(inputPacket);
         }
         
-        SendPacket(inputPacket, mServerAddress);
+        sendPacket(inputPacket, m_serverAddress);
     }
+}
+
+NetworkManagerClient::NetworkManagerClient() : INetworkManager(), m_state(NCS_Uninitialized), m_deliveryNotificationManager(true, false), m_fLastRoundTripTime(0.f)
+{
+    // Empty
+}
+
+NetworkManagerClient::~NetworkManagerClient()
+{
+    // Empty
 }

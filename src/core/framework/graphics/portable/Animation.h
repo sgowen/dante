@@ -41,7 +41,7 @@ private:
     std::string m_textureName;
     float m_fCycleTime;
     int m_iFirstLoopingFrame;
-    bool m_looping;
+    bool m_isLooping;
     
     void loadTextureRegions(int x, int y, int regionWidth, int regionHeight, int animationWidth, int animationHeight, int textureWidth, int textureHeight, int numFrames, int xPadding = 0, int yPadding = 0);
 };

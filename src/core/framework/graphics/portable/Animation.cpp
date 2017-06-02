@@ -14,12 +14,12 @@
 
 #include <stdarg.h>
 
-Animation::Animation(std::string textureName, int x, int y, int regionWidth, int regionHeight, int animationWidth, int animationHeight, int textureWidth, int textureHeight, bool looping, int numFrames) : m_textureName(textureName), m_fCycleTime(0), m_iFirstLoopingFrame(0), m_looping(looping)
+Animation::Animation(std::string textureName, int x, int y, int regionWidth, int regionHeight, int animationWidth, int animationHeight, int textureWidth, int textureHeight, bool isLooping, int numFrames) : m_textureName(textureName), m_fCycleTime(0), m_iFirstLoopingFrame(0), m_isLooping(isLooping)
 {
 	loadTextureRegions(x, y, regionWidth, regionHeight, animationWidth, animationHeight, textureWidth, textureHeight, numFrames);
 }
 
-Animation::Animation(std::string textureName, int x, int y, int regionWidth, int regionHeight, int animationWidth, int animationHeight, int textureWidth, int textureHeight, bool looping, float frameTime, int numFrames, int firstLoopingFrame, int xPadding, int yPadding) : m_textureName(textureName), m_fCycleTime(0), m_iFirstLoopingFrame(firstLoopingFrame), m_looping(looping)
+Animation::Animation(std::string textureName, int x, int y, int regionWidth, int regionHeight, int animationWidth, int animationHeight, int textureWidth, int textureHeight, bool isLooping, float frameTime, int numFrames, int firstLoopingFrame, int xPadding, int yPadding) : m_textureName(textureName), m_fCycleTime(0), m_iFirstLoopingFrame(firstLoopingFrame), m_isLooping(isLooping)
 {
 	loadTextureRegions(x, y, regionWidth, regionHeight, animationWidth, animationHeight, textureWidth, textureHeight, numFrames, xPadding, yPadding);
 
@@ -70,7 +70,7 @@ int Animation::getKeyFrameNumber(float stateTime)
     
     if (stateTime > m_fCycleTime && m_fCycleTime > 0)
     {
-        if (m_looping)
+        if (m_isLooping)
         {
             float cycleTime = m_fCycleTime;
             for ( ; i < m_iFirstLoopingFrame; ++i)

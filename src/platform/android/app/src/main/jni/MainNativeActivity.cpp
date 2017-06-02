@@ -31,14 +31,14 @@
 
 struct android_app;
 
-class Engine
+class AndroidMain
 {
 public:
     static void handleCmd(struct android_app* app, int32_t cmd);
     static int32_t handleInput(android_app* app, AInputEvent* event);
     
-    Engine();
-    ~Engine();
+    AndroidMain();
+    ~AndroidMain();
     
     void setState(android_app* state);
     int initDisplay();
@@ -62,9 +62,9 @@ private:
     bool m_hasFocus;
 };
 
-void Engine::handleCmd(struct android_app* app, int32_t cmd)
+void AndroidMain::handleCmd(struct android_app* app, int32_t cmd)
 {
-    Engine* eng = (Engine*) app->userData;
+    AndroidMain* eng = (AndroidMain*) app->userData;
     switch (cmd)
     {
         case APP_CMD_SAVE_STATE:
@@ -133,9 +133,9 @@ void Engine::handleCmd(struct android_app* app, int32_t cmd)
     }
 }
 
-int32_t Engine::handleInput(android_app* app, AInputEvent* event)
+int32_t AndroidMain::handleInput(android_app* app, AInputEvent* event)
 {
-    Engine* eng = (Engine*) app->userData;
+    AndroidMain* eng = (AndroidMain*) app->userData;
     if (AInputEvent_getType(event) == AINPUT_EVENT_TYPE_MOTION)
     {
         int32_t action = AMotionEvent_getAction(event);
@@ -191,7 +191,7 @@ int32_t Engine::handleInput(android_app* app, AInputEvent* event)
     return 0;
 }
 
-Engine::Engine() :
+AndroidMain::AndroidMain() :
 m_glContext(ndk_helper::GLContext::GetInstance()),
 m_app(nullptr),
 m_screen(nullptr),
@@ -202,20 +202,20 @@ m_hasFocus(false)
     // Empty
 }
 
-Engine::~Engine()
+AndroidMain::~AndroidMain()
 {
 }
 
-void Engine::setState(android_app* state)
+void AndroidMain::setState(android_app* state)
 {
     m_app = state;
 }
 
-int Engine::initDisplay()
+int AndroidMain::initDisplay()
 {
     if (!m_hasInitializedResources)
     {
-        m_glContext->Init(m_app->window);
+        m_glContext->init(m_app->window);
         
         loadResources();
         m_hasInitializedResources = true;
@@ -235,7 +235,7 @@ int Engine::initDisplay()
     return 0;
 }
 
-void Engine::loadResources()
+void AndroidMain::loadResources()
 {
     JNIEnv *jni;
     m_app->activity->vm->AttachCurrentThread(&jni, NULL);
@@ -271,7 +271,7 @@ void Engine::loadResources()
     return;
 }
 
-void Engine::unloadResources()
+void AndroidMain::unloadResources()
 {
     ANDROID_AUDIO_ENGINE_HELPER->deinit();
     
@@ -293,7 +293,7 @@ inline float approxRollingAverage(float avg, float newSample)
     return avg;
 }
 
-void Engine::drawFrame()
+void AndroidMain::drawFrame()
 {
     float deltaTime;
     
@@ -335,19 +335,19 @@ void Engine::drawFrame()
     }
 }
 
-void Engine::termDisplay()
+void AndroidMain::termDisplay()
 {
     pause();
     
     m_glContext->Suspend();
 }
 
-void Engine::trimMemory()
+void AndroidMain::trimMemory()
 {
     m_glContext->Invalidate();
 }
 
-bool Engine::isReady()
+bool AndroidMain::isReady()
 {
     if (m_hasFocus)
     {
@@ -357,7 +357,7 @@ bool Engine::isReady()
     return false;
 }
 
-void Engine::resume()
+void AndroidMain::resume()
 {
     if (m_screen)
     {
@@ -367,7 +367,7 @@ void Engine::resume()
     }
 }
 
-void Engine::pause()
+void AndroidMain::pause()
 {
     if (m_screen)
     {
@@ -377,7 +377,7 @@ void Engine::pause()
     }
 }
 
-Engine g_engine;
+AndroidMain g_androidMain;
 
 /**
  * This is the main entry point of a native application that is using
@@ -388,11 +388,11 @@ void android_main(android_app* state)
 {
     app_dummy();
     
-    g_engine.setState(state);
+    g_androidMain.setState(state);
     
-    state->userData = &g_engine;
-    state->onAppCmd = Engine::handleCmd;
-    state->onInputEvent = Engine::handleInput;
+    state->userData = &g_androidMain;
+    state->onAppCmd = AndroidMain::handleCmd;
+    state->onInputEvent = AndroidMain::handleInput;
     
 #ifdef USE_NDK_PROFILER
     monstartup("libandroid_main.so");
@@ -408,7 +408,7 @@ void android_main(android_app* state)
         // If not animating, we will block forever waiting for events.
         // If animating, we loop until all events are read, then continue
         // to draw the next frame of animation.
-        while ((id = ALooper_pollAll(g_engine.isReady() ? 0 : -1, NULL, &events, (void**) &source)) >= 0)
+        while ((id = ALooper_pollAll(g_androidMain.isReady() ? 0 : -1, NULL, &events, (void**) &source)) >= 0)
         {
             if (source != NULL)
             {
@@ -417,14 +417,14 @@ void android_main(android_app* state)
             
             if (state->destroyRequested != 0)
             {
-                g_engine.termDisplay();
+                g_androidMain.termDisplay();
                 return;
             }
         }
         
-        if (g_engine.isReady())
+        if (g_androidMain.isReady())
         {
-            g_engine.drawFrame();
+            g_androidMain.drawFrame();
         }
     }
 }

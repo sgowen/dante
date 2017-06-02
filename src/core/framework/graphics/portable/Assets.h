@@ -9,14 +9,14 @@
 #ifndef __noctisgames__Assets__
 #define __noctisgames__Assets__
 
-#define ASSETS (Assets::getInstance())
-
-#include <map>
+#include <unordered_map>
 #include <string>
 
 class IAssetsMapper;
 class TextureRegion;
 class Animation;
+
+#define ASSETS (Assets::getInstance())
 
 class Assets
 {
@@ -31,15 +31,15 @@ public:
     
     Animation& findAnimation(std::string key);
     
-    std::map<std::string, TextureRegion*>& getTextureRegionMap();
+    std::unordered_map<std::string, TextureRegion*>& getTextureRegionMap();
     
-    std::map<std::string, Animation*>& getAnimationsMap();
+    std::unordered_map<std::string, Animation*>& getAnimationsMap();
     
     void initTextureRegion(TextureRegion& tr, int x, int regionWidth, int textureWidth); // Useful for parallax
 
 private:
-    std::map<std::string, TextureRegion*> m_textureRegions;
-    std::map<std::string, Animation*> m_animations;
+    std::unordered_map<std::string, TextureRegion*> m_textureRegions;
+    std::unordered_map<std::string, Animation*> m_animations;
     
     // ctor, copy ctor, and assignment should be private in a Singleton
     Assets();

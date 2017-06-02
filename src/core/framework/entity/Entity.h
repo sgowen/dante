@@ -9,11 +9,21 @@
 #ifndef __noctisgames__Entity__
 #define __noctisgames__Entity__
 
+#include "NetworkType.h"
+#include "FrameworkConstants.h"
+
 #include "RTTI.h"
+
+#include <stdint.h>
+
+class OutputMemoryBitStream;
+class InputMemoryBitStream;
 
 class Entity
 {
     RTTI_DECL;
+    
+    NETWORK_TYPE_DECL(NETWORK_TYPE_Entity);
     
 public:
     Entity();
@@ -23,6 +33,12 @@ public:
     virtual void update();
     
     virtual void onDeletion();
+    
+    virtual uint32_t getAllStateMask() const;
+    
+    virtual void read(InputMemoryBitStream& inInputStream);
+    
+    virtual uint32_t write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState);
     
     int getID();
     

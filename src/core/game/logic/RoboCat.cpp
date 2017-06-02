@@ -11,24 +11,141 @@
 #include "RoboCat.h"
 
 #include "InputState.h"
+#include "OutputMemoryBitStream.h"
+#include "InputMemoryBitStream.h"
 
-#include "NetworkManager.h"
 #include "World.h"
 #include "Vector2.h"
 #include "macros.h"
+#include "GameConstants.h"
 
-//zoom hardcoded at 100...if we want to lock players on screen, this could be calculated from zoom
-const float WORLD_HEIGHT = 7.2f;
-const float WORLD_WIDTH = 12.8f;
-
-NWPhysicalEntity* RoboCat::create()
-{
-    return new RoboCat();
-}
+#include <math.h>
 
 uint32_t RoboCat::getAllStateMask() const
 {
     return ECRS_AllState;
+}
+
+void RoboCat::read(InputMemoryBitStream& inInputStream)
+{
+    bool stateBit;
+    
+    m_iReadState = 0;
+    
+    inInputStream.read(stateBit);
+    if (stateBit)
+    {
+        uint32_t playerId;
+        inInputStream.read(playerId);
+        setPlayerId(playerId);
+        m_iReadState |= ECRS_PlayerId;
+    }
+    
+    float replicatedRotation;
+    Vector2 replicatedLocation;
+    Vector2 replicatedVelocity;
+    
+    inInputStream.read(stateBit);
+    if (stateBit)
+    {
+        inInputStream.read(replicatedVelocity.getXRef());
+        inInputStream.read(replicatedVelocity.getYRef());
+        
+        m_velocity.set(replicatedVelocity);
+        
+        inInputStream.read(replicatedLocation.getXRef());
+        inInputStream.read(replicatedLocation.getYRef());
+        
+        setPosition(replicatedLocation);
+        
+        inInputStream.read(replicatedRotation);
+        setAngle(replicatedRotation);
+        
+        m_iReadState |= ECRS_Pose;
+    }
+    
+    inInputStream.read(stateBit);
+    if (stateBit)
+    {
+        inInputStream.read(stateBit);
+        m_fThrustDir = stateBit ? 1.f : -1.f;
+    }
+    else
+    {
+        m_fThrustDir = 0.f;
+    }
+    
+    inInputStream.read(stateBit);
+    if (stateBit)
+    {
+        Color color;
+        inInputStream.read(color);
+        setColor(color);
+        m_iReadState |= ECRS_Color;
+    }
+}
+
+uint32_t RoboCat::write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState)
+{
+    uint32_t writtenState = 0;
+    
+    if (inDirtyState & ECRS_PlayerId)
+    {
+        inOutputStream.write((bool)true);
+        inOutputStream.write(getPlayerId());
+        
+        writtenState |= ECRS_PlayerId;
+    }
+    else
+    {
+        inOutputStream.write((bool)false);
+    }
+    
+    if (inDirtyState & ECRS_Pose)
+    {
+        inOutputStream.write((bool)true);
+        
+        Vector2 velocity = m_velocity;
+        inOutputStream.write(velocity.getX());
+        inOutputStream.write(velocity.getY());
+        
+        Vector2 location = getPosition();
+        inOutputStream.write(location.getX());
+        inOutputStream.write(location.getY());
+        
+        inOutputStream.write(getAngle());
+        
+        writtenState |= ECRS_Pose;
+    }
+    else
+    {
+        inOutputStream.write((bool)false);
+    }
+    
+    //always write mThrustDir- it's just two bits
+    if (m_fThrustDir != 0.f)
+    {
+        inOutputStream.write(true);
+        inOutputStream.write(m_fThrustDir > 0.f);
+    }
+    else
+    {
+        inOutputStream.write(false);
+    }
+    
+    if (inDirtyState & ECRS_Color)
+    {
+        inOutputStream.write((bool)true);
+        inOutputStream.write(getColor());
+        
+        writtenState |= ECRS_Color;
+    }
+    else
+    {
+        inOutputStream.write((bool)false);
+    }
+    
+    return writtenState;
 }
 
 void RoboCat::ProcessInput(float inDeltaTime, const InputState& inInputState)
@@ -69,7 +186,7 @@ void RoboCat::ProcessCollisions()
     //number of collisions that need to be tested.
     for (auto goIt = World::sInstance->GetRoboCats().begin(), end = World::sInstance->GetRoboCats().end(); goIt != end; ++goIt)
     {
-        NWPhysicalEntity* target = *goIt;
+        PhysicalEntity* target = *goIt;
         if (target != this && !target->isRequestingDeletion())
         {
             //simple collision test for spheres- are the radii summed less than the distance?
@@ -134,10 +251,10 @@ void RoboCat::ProcessCollisionsWithScreenWalls()
     float radius = 0.5f;
     
     //if the cat collides against a wall, the quick solution is to push it off
-    if ((y + radius) >= WORLD_HEIGHT && vy > 0)
+    if ((y + radius) >= CAM_HEIGHT && vy > 0)
     {
         m_velocity.setY(-vy * m_fWallRestitution);
-        location.setY(WORLD_HEIGHT - radius);
+        location.setY(CAM_HEIGHT - radius);
         setPosition(location);
     }
     else if (y <= (0) && vy < 0)
@@ -147,10 +264,10 @@ void RoboCat::ProcessCollisionsWithScreenWalls()
         setPosition(location);
     }
     
-    if ((x + radius) >= WORLD_WIDTH && vx > 0)
+    if ((x + radius) >= CAM_WIDTH && vx > 0)
     {
         m_velocity.setX(-vx * m_fWallRestitution);
-        location.setX(WORLD_WIDTH - radius);
+        location.setX(CAM_WIDTH - radius);
         setPosition(location);
     }
     else if (x <= (0) && vx < 0)
@@ -186,19 +303,22 @@ void RoboCat::AdjustVelocityByThrust(float inDeltaTime)
     //just set the velocity based on the thrust direction -- no thrust will lead to 0 velocity
     //simulating acceleration makes the client prediction a bit more complex
     Vector2 forwardVector = Vector2(sinf(m_fAngle), -cosf(m_fAngle));
-    m_velocity = forwardVector * (m_fThrustDir * inDeltaTime * m_fMaxLinearSpeed);
+    m_velocity = forwardVector * (m_fThrustDir * inDeltaTime * m_fSpeed);
 }
 
-RoboCat::RoboCat() : NWPhysicalEntity(),
+RoboCat::RoboCat() : PhysicalEntity(0, 0, 1.565217391304348f, 2.0f),
 m_fMaxRotationSpeed(5.f),
-m_fMaxLinearSpeed(50.f),
+m_fSpeed(50.f),
 m_fWallRestitution(0.1f),
 m_fCatRestitution(0.1f),
 m_fThrustDir(0.f),
 m_iPlayerId(0),
+m_iReadState(0),
 m_iIndexInWorld(-1)
 {
     // Empty
 }
 
-RTTI_IMPL(RoboCat, NWPhysicalEntity);
+RTTI_IMPL(RoboCat, PhysicalEntity);
+
+NETWORK_TYPE_IMPL(RoboCat);

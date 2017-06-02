@@ -18,9 +18,9 @@
 #include "Color.h"
 #include "Vector2.h"
 
-NWPhysicalEntity* RoboCatClient::create()
+Entity* RoboCatClient::create()
 {
-    return static_cast<NWPhysicalEntity*>(new RoboCatClient());
+    return new RoboCatClient();
 }
 
 void RoboCatClient::onDeletion()
@@ -36,7 +36,7 @@ void RoboCatClient::onDeletion()
 
 void RoboCatClient::update()
 {
-    //is this the cat owned by us?
+    // TODO, allow for multiple client inputs
     if (getPlayerId() == NetworkManagerClient::getInstance()->getPlayerId())
     {
         const Move* pendingMove = InputManager::getInstance()->getAndClearPendingMove();
@@ -70,82 +70,28 @@ void RoboCatClient::update()
 
 void RoboCatClient::read(InputMemoryBitStream& inInputStream)
 {
-    bool stateBit;
-    
-    uint32_t readState = 0;
-    
-    inInputStream.read(stateBit);
-    if (stateBit)
-    {
-        uint32_t playerId;
-        inInputStream.read(playerId);
-        setPlayerId(playerId);
-        readState |= ECRS_PlayerId;
-    }
-    
     float oldRotation = getAngle();
     Vector2 oldLocation = getPosition();
     Vector2 oldVelocity = getVelocity();
     
-    float replicatedRotation;
-    Vector2 replicatedLocation;
-    Vector2 replicatedVelocity;
-    
-    inInputStream.read(stateBit);
-    if (stateBit)
-    {
-        inInputStream.read(replicatedVelocity.getXRef());
-        inInputStream.read(replicatedVelocity.getYRef());
-        
-        m_velocity.set(replicatedVelocity);
-        
-        inInputStream.read(replicatedLocation.getXRef());
-        inInputStream.read(replicatedLocation.getYRef());
-        
-        setPosition(replicatedLocation);
-        
-        inInputStream.read(replicatedRotation);
-        setAngle(replicatedRotation);
-        
-        readState |= ECRS_Pose;
-    }
-    
-    inInputStream.read(stateBit);
-    if (stateBit)
-    {
-        inInputStream.read(stateBit);
-        m_fThrustDir = stateBit ? 1.f : -1.f;
-    }
-    else
-    {
-        m_fThrustDir = 0.f;
-    }
-    
-    inInputStream.read(stateBit);
-    if (stateBit)
-    {
-        Color color;
-        inInputStream.read(color);
-        setColor(color);
-        readState |= ECRS_Color;
-    }
+    RoboCat::read(inInputStream);
     
     if (getPlayerId() == NetworkManagerClient::getInstance()->getPlayerId())
     {
-        doClientSidePredictionAfterReplicationForLocalCat(readState);
+        doClientSidePredictionAfterReplicationForLocalCat(m_iReadState);
         
         //if this is a create packet, don't interpolate
-        if ((readState & ECRS_PlayerId) == 0)
+        if ((m_iReadState & ECRS_PlayerId) == 0)
         {
             interpolateClientSidePrediction(oldRotation, oldLocation, oldVelocity, false);
         }
     }
     else
     {
-        doClientSidePredictionAfterReplicationForRemoteCat(readState);
+        doClientSidePredictionAfterReplicationForRemoteCat(m_iReadState);
         
         //will this smooth us out too? it'll interpolate us just 10% of the way there...
-        if ((readState & ECRS_PlayerId) == 0)
+        if ((m_iReadState & ECRS_PlayerId) == 0)
         {
             interpolateClientSidePrediction(oldRotation, oldLocation, oldVelocity, true);
         }
@@ -179,24 +125,22 @@ void RoboCatClient::doClientSidePredictionAfterReplicationForRemoteCat(uint32_t 
 {
     if ((inReadState & ECRS_Pose) != 0)
     {
-        //simulate movement for an additional RTT
-        float rtt = NetworkManagerClient::getInstance()->GetRoundTripTime();
-        //LOG("Other cat came in, simulating for an extra %f", rtt);
+        // simulate movement for an additional RTT
+        float rtt = NetworkManagerClient::getInstance()->getRoundTripTime();
+        LOG("Other cat came in, simulating for an extra %f", rtt);
         
-        //let's break into framerate sized chunks though so that we don't run through walls and do crazy things...
-        float deltaTime = 1.f / 60.f;
-        
+        // let's break into framerate sized chunks so we don't run through walls and do crazy things...
         while (true)
         {
-            if (rtt < deltaTime)
+            if (rtt < FRAME_RATE)
             {
                 SimulateMovement(rtt);
                 break;
             }
             else
             {
-                SimulateMovement(deltaTime);
-                rtt -= deltaTime;
+                SimulateMovement(FRAME_RATE);
+                rtt -= FRAME_RATE;
             }
         }
     }
@@ -216,7 +160,7 @@ void RoboCatClient::interpolateClientSidePrediction(float inOldRotation, Vector2
         LOG("ERROR! Move replay ended with incorrect rotation!", 0);
     }
     
-    float roundTripTime = NetworkManagerClient::getInstance()->GetRoundTripTime();
+    float roundTripTime = NetworkManagerClient::getInstance()->getRoundTripTime();
     
     if (!inOldLocation.isEqualTo(getPosition()))
     {
@@ -268,5 +212,3 @@ void RoboCatClient::interpolateClientSidePrediction(float inOldRotation, Vector2
 }
 
 RTTI_IMPL(RoboCatClient, RoboCat);
-
-NETWORK_TYPE_IMPL(RoboCatClient);

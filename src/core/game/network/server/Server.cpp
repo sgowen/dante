@@ -10,27 +10,33 @@
 
 #include "Server.h"
 
+#include "ClientProxy.h"
+
+#include "RoboCatServer.h"
 #include "NetworkManagerServer.h"
 #include "EntityRegistry.h"
 #include "World.h"
 #include "Timing.h"
 #include "FrameworkConstants.h"
+#include "SocketUtil.h"
 
-bool Server::StaticInit()
+Server* Server::getInstance()
 {
-    sInstance.reset(new Server());
-    
-    return true;
+    static Server instance = Server();
+    return &instance;
 }
 
-Server::Server() : m_fFrameStateTime(0)
+void Server::staticHandleNewClient(ClientProxy* inClientProxy)
 {
-    EntityRegistry::sInstance->RegisterCreationFunction(NETWORK_TYPE_RoboCat, RoboCatServer::create);
-    
-    InitNetworkManager();
+    getInstance()->handleNewClient(inClientProxy);
 }
 
-int Server::Run()
+void Server::staticHandleLostClient(ClientProxy* inClientProxy)
+{
+    getInstance()->handleLostClient(inClientProxy);
+}
+
+int Server::run()
 {
     while (true)
     {
@@ -40,47 +46,52 @@ int Server::Run()
         
         if (m_fFrameStateTime >= FRAME_RATE)
         {
-            NetworkManagerServer::getInstance()->ProcessIncomingPackets();
+            NetworkManagerServer::getInstance()->processIncomingPackets();
             
-            NetworkManagerServer::getInstance()->CheckForDisconnects();
+            NetworkManagerServer::getInstance()->checkForDisconnects();
             
-            NetworkManagerServer::getInstance()->RespawnCats();
+            NetworkManagerServer::getInstance()->respawnCats();
             
             while (m_fFrameStateTime >= FRAME_RATE)
             {
                 m_fFrameStateTime -= FRAME_RATE;
                 
-                DoFrame();
+                World::sInstance->update();
             }
             
-            NetworkManagerServer::getInstance()->SendOutgoingPackets();
+            NetworkManagerServer::getInstance()->sendOutgoingPackets();
         }
     }
     
     return 1;
 }
 
-bool Server::InitNetworkManager()
-{
-    std::string portString = "9999";
-    uint16_t port = stoi(portString);
-    
-    return NetworkManagerServer::StaticInit(port);
-}
-
-void Server::HandleNewClient(ClientProxy* inClientProxy)
+void Server::handleNewClient(ClientProxy* inClientProxy)
 {
     int playerId = inClientProxy->getPlayerId();
     
-    SpawnCatForPlayer(playerId);
+    spawnCatForPlayer(playerId);
 }
 
-void Server::SpawnCatForPlayer(int inPlayerId)
+void Server::handleLostClient(ClientProxy* inClientProxy)
 {
-    RoboCat* cat = static_cast<RoboCat*>(EntityRegistry::sInstance->CreateNWPhysicalEntity(NETWORK_TYPE_RoboCat));
+    //kill client's cat
+    //remove client from scoreboard
+    int playerId = inClientProxy->getPlayerId();
+    
+    RoboCat* cat = getCatForPlayer(playerId);
+    if (cat)
+    {
+        cat->requestDeletion();
+    }
+}
+
+void Server::spawnCatForPlayer(int inPlayerId)
+{
+    RoboCat* cat = static_cast<RoboCat*>(EntityRegistry::getInstance()->createEntity(NETWORK_TYPE_RoboCat));
     cat->setPlayerId(inPlayerId);
     //gotta pick a better spawn location than this...
-    cat->setPosition(Vector2(8.f - static_cast<float>(inPlayerId), 4.0f));
+    cat->setPosition(Vector2(8.f - static_cast<float>(inPlayerId), 7.0f));
     
     static Color Red(1.0f, 0.0f, 0.0f, 1);
     static Color Blue(0.0f, 0.0f, 1.0f, 1);
@@ -106,20 +117,12 @@ void Server::SpawnCatForPlayer(int inPlayerId)
     }
 }
 
-void Server::HandleLostClient(ClientProxy* inClientProxy)
+bool Server::isInitialized()
 {
-    //kill client's cat
-    //remove client from scoreboard
-    int playerId = inClientProxy->getPlayerId();
-    
-    RoboCat* cat = GetCatForPlayer(playerId);
-    if (cat)
-    {
-        cat->requestDeletion();
-    }
+    return m_isInitialized;
 }
 
-RoboCat* Server::GetCatForPlayer(int inPlayerId)
+RoboCat* Server::getCatForPlayer(int inPlayerId)
 {
     //run through the objects till we find the cat...
     //it would be nice if we kept a pointer to the cat on the clientproxy
@@ -129,7 +132,7 @@ RoboCat* Server::GetCatForPlayer(int inPlayerId)
     int len = static_cast<int>(gameObjects.size());
     for (int i = 0, c = len; i < c; ++i)
     {
-        NWPhysicalEntity* go = gameObjects[i];
+        Entity* go = gameObjects[i];
         RoboCat* cat = go->getRTTI().derivesFrom(RoboCat::rtti) ? (RoboCat*)go : nullptr;
         if (cat && cat->getPlayerId() == inPlayerId)
         {
@@ -138,4 +141,22 @@ RoboCat* Server::GetCatForPlayer(int inPlayerId)
     }
     
     return nullptr;
+}
+
+Server::Server() : m_fFrameStateTime(0), m_isInitialized(false)
+{
+    SocketUtil::staticInit();
+    
+    World::staticInit();
+    
+    EntityRegistry::getInstance()->init(World::addEntityIfPossible);
+    
+    EntityRegistry::getInstance()->registerCreationFunction(NETWORK_TYPE_RoboCat, RoboCatServer::create);
+    
+    m_isInitialized = NetworkManagerServer::getInstance()->init(9999, World::removeEntityIfPossible, Server::staticHandleNewClient, Server::staticHandleLostClient);
+}
+
+Server::~Server()
+{
+    SocketUtil::CleanUp();
 }

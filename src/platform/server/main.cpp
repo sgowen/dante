@@ -12,9 +12,11 @@
 
 int main(int argc, const char * argv[])
 {
-    if (Server::StaticInit())
+    Server* server = Server::getInstance();
+    
+    if (server->isInitialized())
     {
-        return Server::sInstance->Run();
+        return server->run();
     }
     
     return -1;

@@ -10,7 +10,11 @@
 
 #include "Entity.h"
 
+#include "OutputMemoryBitStream.h"
+#include "InputMemoryBitStream.h"
+
 #include "Timing.h"
+#include "macros.h"
 
 Entity::Entity() : m_fStateTime(0.0f), m_isRequestingDeletion(false), m_ID(getUniqueEntityID())
 {
@@ -32,6 +36,24 @@ void Entity::update()
 void Entity::onDeletion()
 {
     // Empty
+}
+
+uint32_t Entity::getAllStateMask() const
+{
+    return 0;
+}
+
+void Entity::read(InputMemoryBitStream& inInputStream)
+{
+    UNUSED(inInputStream);
+}
+
+uint32_t Entity::write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState)
+{
+    UNUSED(inOutputStream);
+    UNUSED(inDirtyState);
+    
+    return 0;
 }
 
 int Entity::getID()
@@ -72,3 +94,5 @@ int Entity::getUniqueEntityID()
 }
 
 RTTI_IMPL_NOPARENT(Entity);
+
+NETWORK_TYPE_IMPL(Entity);

@@ -10,7 +10,8 @@
 
 #include "AckRange.h"
 
-#include "MemoryBitStream.h"
+#include "OutputMemoryBitStream.h"
+#include "InputMemoryBitStream.h"
 
 void AckRange::write(OutputMemoryBitStream& inOutputStream) const
 {

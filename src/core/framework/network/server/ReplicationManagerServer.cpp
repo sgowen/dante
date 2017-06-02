@@ -10,13 +10,14 @@
 
 #include "ReplicationManagerServer.h"
 
-#include "MemoryBitStream.h"
+#include "OutputMemoryBitStream.h"
 #include "ReplicationManagerTransmissionData.h"
 
 #include "ReplicationManagerTransmissionData.h"
 #include "NetworkManagerServer.h"
 #include "ReplicationAction.h"
 #include "macros.h"
+#include "Entity.h"
 
 void ReplicationManagerServer::ReplicateCreate(int inNetworkId, uint32_t inInitialDirtyState)
 {
@@ -34,7 +35,7 @@ void ReplicationManagerServer::RemoveFromReplication(int inNetworkId)
     m_iNetworkIdToReplicationCommand.erase(inNetworkId);
 }
 
-void ReplicationManagerServer::SetStateDirty(int inNetworkId, uint32_t inDirtyState)
+void ReplicationManagerServer::setStateDirty(int inNetworkId, uint32_t inDirtyState)
 {
     m_iNetworkIdToReplicationCommand[inNetworkId].AddDirtyState(inDirtyState);
 }
@@ -90,16 +91,17 @@ void ReplicationManagerServer::write(OutputMemoryBitStream& inOutputStream, Repl
 uint32_t ReplicationManagerServer::WriteCreateAction(OutputMemoryBitStream& inOutputStream, int inNetworkId, uint32_t inDirtyState)
 {
     //need object
-    NWPhysicalEntity* gameObject = NetworkManagerServer::getInstance()->GetNWPhysicalEntity(inNetworkId);
+    Entity* gameObject = NetworkManagerServer::getInstance()->getEntity(inNetworkId);
     //need 4 cc
     inOutputStream.write(gameObject->getNetworkType());
+    
     return gameObject->write(inOutputStream, inDirtyState);
 }
 
 uint32_t ReplicationManagerServer::WriteUpdateAction(OutputMemoryBitStream& inOutputStream, int inNetworkId, uint32_t inDirtyState)
 {
     //need object
-    NWPhysicalEntity* gameObject = NetworkManagerServer::getInstance()->GetNWPhysicalEntity(inNetworkId);
+    Entity* gameObject = NetworkManagerServer::getInstance()->getEntity(inNetworkId);
     
     //if we can't find the gameObject on the other side, we won't be able to read the written data (since we won't know which class wrote it)
     //so we need to know how many bytes to skip.

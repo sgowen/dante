@@ -9,7 +9,6 @@
 #ifndef __noctisgames__InputManager__
 #define __noctisgames__InputManager__
 
-#include "InputAction.h"
 #include "InputState.h"
 #include "MoveList.h"
 
@@ -19,8 +18,6 @@ class InputManager
 {
 public:
     static InputManager* getInstance();
-    
-    void handleInput(EInputAction inInputAction, char inKeyCode);
     
     void update();
     

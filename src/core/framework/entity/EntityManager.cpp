@@ -12,6 +12,8 @@
 
 #include "Entity.h"
 
+#include "StringUtil.h"
+
 #include <cassert>
 
 EntityManager* EntityManager::getInstance()
@@ -23,11 +25,16 @@ EntityManager* EntityManager::getInstance()
 
 Entity* EntityManager::getEntityFromID(int id)const
 {
-    std::map<int, Entity*>::const_iterator ent = m_entityMap.find(id);
+    auto q = m_entityMap.find(id);
     
-    assert((ent != m_entityMap.end()) && "<EntityManager::getEntityFromID>: invalid ID");
+    if (q != m_entityMap.end())
+    {
+        return q->second;
+    }
     
-    return ent->second;
+    LOG("<EntityManager::getEntityFromID>: invalid ID");
+    
+    return nullptr;
 }
 
 void EntityManager::registerEntity(Entity* entity)
@@ -37,12 +44,22 @@ void EntityManager::registerEntity(Entity* entity)
 
 void EntityManager::removeEntity(Entity* entity)
 {
-    m_entityMap.erase(m_entityMap.find(entity->getID()));
+    m_entityMap.erase(entity->getID());
 }
 
 void EntityManager::reset()
 {
     m_entityMap.clear();
+}
+
+std::unordered_map<int, Entity*>& EntityManager::getMap()
+{
+    return m_entityMap;
+}
+
+std::unordered_map<int, Entity*> EntityManager::getMapCopy()
+{
+    return m_entityMap;
 }
 
 EntityManager::EntityManager()

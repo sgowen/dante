@@ -11,23 +11,16 @@
 
 #include "RoboCat.h"
 
-#include "NetworkType.h"
-#include "GameConstants.h"
-
 class RoboCatServer : public RoboCat
 {
     RTTI_DECL;
     
-    NETWORK_TYPE_DECL(NETWORK_TYPE_RoboCat);
-    
 public:
-    static NWPhysicalEntity* create();
+    static Entity* create();
     
     virtual void onDeletion();
     
     virtual void update();
-    
-    virtual uint32_t write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState) override;
     
 protected:
     RoboCatServer();

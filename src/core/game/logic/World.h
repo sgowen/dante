@@ -13,13 +13,18 @@
 #include <vector>
 
 class RoboCat;
+class Entity;
 
 class World
 {
 public:
-    static void StaticInit();
-    
     static std::unique_ptr<World> sInstance;
+    
+    static void staticInit();
+    
+    static void addEntityIfPossible(Entity* inEntity);
+    
+    static void removeEntityIfPossible(Entity* inEntity);
     
     void AddRoboCat(RoboCat* inRoboCat);
     void RemoveRoboCat(RoboCat* inRoboCat);
@@ -29,11 +34,14 @@ public:
     const std::vector<RoboCat*>& GetRoboCats() const { return mRoboCats; }
     
 private:
-    World();
+    std::vector<RoboCat*> mRoboCats;
     
     int	GetIndexOfRoboCat(RoboCat* inRoboCat);
     
-    std::vector<RoboCat*> mRoboCats;
+    // ctor, copy ctor, and assignment should be private in a Singleton
+    World();
+    World(const World&);
+    World& operator=(const World&);
 };
 
 #endif /* defined(__noctisgames__World__) */

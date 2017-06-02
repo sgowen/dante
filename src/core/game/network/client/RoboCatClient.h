@@ -11,17 +11,12 @@
 
 #include "RoboCat.h"
 
-#include "NetworkType.h"
-#include "GameConstants.h"
-
 class RoboCatClient : public RoboCat
 {
     RTTI_DECL;
     
-    NETWORK_TYPE_DECL(NETWORK_TYPE_RoboCat);
-    
 public:
-    static NWPhysicalEntity* create();
+    static Entity* create();
     
     virtual void update();
     
@@ -30,6 +25,7 @@ public:
     virtual void read(InputMemoryBitStream& inInputStream) override;
     
     void doClientSidePredictionAfterReplicationForLocalCat(uint32_t inReadState);
+    
     void doClientSidePredictionAfterReplicationForRemoteCat(uint32_t inReadState);
     
 protected:

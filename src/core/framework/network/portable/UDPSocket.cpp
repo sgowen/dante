@@ -17,7 +17,7 @@
 
 int UDPSocket::Bind(const SocketAddress& inBindAddress)
 {
-    int error = bind(mSocket, &inBindAddress.mSockAddr, inBindAddress.GetSize());
+    int error = bind(m_socket, &inBindAddress.mSockAddr, inBindAddress.GetSize());
     if (error != 0)
     {
         SocketUtil::ReportError("UDPSocket::Bind");
@@ -30,7 +30,7 @@ int UDPSocket::Bind(const SocketAddress& inBindAddress)
 
 int UDPSocket::SendTo(const void* inToSend, int inLength, const SocketAddress& inToAddress)
 {
-    long byteSentCount = sendto(mSocket,
+    long byteSentCount = sendto(m_socket,
                                 static_cast<const char*>(inToSend),
                                 inLength,
                                 0, &inToAddress.mSockAddr, inToAddress.GetSize());
@@ -52,7 +52,7 @@ int UDPSocket::ReceiveFrom(void* inToReceive, int inMaxLength, SocketAddress& ou
 {
     socklen_t fromLength = outFromAddress.GetSize();
     
-    long readByteCount = recvfrom(mSocket,
+    long readByteCount = recvfrom(m_socket,
                                   static_cast<char*>(inToReceive),
                                   inMaxLength,
                                   0, &outFromAddress.mSockAddr, &fromLength);
@@ -89,9 +89,9 @@ int UDPSocket::ReceiveFrom(void* inToReceive, int inMaxLength, SocketAddress& ou
 UDPSocket::~UDPSocket()
 {
 #if _WIN32
-    closesocket(mSocket);
+    closesocket(m_socket);
 #else
-    close(mSocket);
+    close(m_socket);
 #endif
 }
 
@@ -99,11 +99,11 @@ int UDPSocket::SetNonBlockingMode(bool inShouldBeNonBlocking)
 {
 #if _WIN32
     u_long arg = inShouldBeNonBlocking ? 1 : 0;
-    int result = ioctlsocket(mSocket, FIONBIO, &arg);
+    int result = ioctlsocket(m_socket, FIONBIO, &arg);
 #else
-    int flags = fcntl(mSocket, F_GETFL, 0);
+    int flags = fcntl(m_socket, F_GETFL, 0);
     flags = inShouldBeNonBlocking ? (flags | O_NONBLOCK) : (flags & ~O_NONBLOCK);
-    int result = fcntl(mSocket, F_SETFL, flags);
+    int result = fcntl(m_socket, F_SETFL, flags);
 #endif
     
     if (result == SOCKET_ERROR)
@@ -118,7 +118,7 @@ int UDPSocket::SetNonBlockingMode(bool inShouldBeNonBlocking)
     }
 }
 
-UDPSocket::UDPSocket(SOCKET inSocket) : mSocket(inSocket)
+UDPSocket::UDPSocket(SOCKET inSocket) : m_socket(inSocket)
 {
     // Empty
 }

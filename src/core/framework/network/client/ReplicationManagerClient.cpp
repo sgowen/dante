@@ -10,13 +10,12 @@
 
 #include "ReplicationManagerClient.h"
 
-#include "MemoryBitStream.h"
+#include "InputMemoryBitStream.h"
 
 #include "NetworkManagerClient.h"
-#include "NWPhysicalEntity.h"
+#include "Entity.h"
 #include "ReplicationAction.h"
 #include "EntityRegistry.h"
-#include "World.h"
 
 #include <cassert>
 
@@ -53,14 +52,14 @@ void ReplicationManagerClient::ReadAndDoCreateAction(InputMemoryBitStream& inInp
     
     //we might already have this object- could happen if our ack of the create got dropped so server resends create request
     //(even though we might have created)
-    NWPhysicalEntity* gameObject = NetworkManagerClient::getInstance()->GetNWPhysicalEntity(inNetworkId);
+    Entity* gameObject = NetworkManagerClient::getInstance()->getEntity(inNetworkId);
     if (!gameObject)
     {
         //create the object and map it...
-        gameObject = EntityRegistry::sInstance->CreateNWPhysicalEntity(fourCCName);
+        gameObject = EntityRegistry::getInstance()->createEntity(fourCCName);
         gameObject->setID(inNetworkId);
         
-        NetworkManagerClient::getInstance()->AddToNetworkIdToNWPhysicalEntityMap(gameObject);
+        NetworkManagerClient::getInstance()->addToNetworkIdToEntityMap(gameObject);
         
         //it had really be the rigth type...
         assert(gameObject->getNetworkType() == fourCCName);
@@ -73,7 +72,7 @@ void ReplicationManagerClient::ReadAndDoCreateAction(InputMemoryBitStream& inInp
 void ReplicationManagerClient::ReadAndDoUpdateAction(InputMemoryBitStream& inInputStream, int inNetworkId)
 {
     //need object
-    NWPhysicalEntity* gameObject = NetworkManagerClient::getInstance()->GetNWPhysicalEntity(inNetworkId);
+    Entity* gameObject = NetworkManagerClient::getInstance()->getEntity(inNetworkId);
     
     //gameObject MUST be found, because create was ack'd if we're getting an update...
     //and read state
@@ -84,10 +83,10 @@ void ReplicationManagerClient::ReadAndDoDestroyAction(InputMemoryBitStream& inIn
 {
     //if something was destroyed before the create went through, we'll never get it
     //but we might get the destroy request, so be tolerant of being asked to destroy something that wasn't created
-    NWPhysicalEntity* gameObject = NetworkManagerClient::getInstance()->GetNWPhysicalEntity(inNetworkId);
+    Entity* gameObject = NetworkManagerClient::getInstance()->getEntity(inNetworkId);
     if (gameObject)
     {
         gameObject->requestDeletion();
-        NetworkManagerClient::getInstance()->RemoveFromNetworkIdToNWPhysicalEntityMap(gameObject);
+        NetworkManagerClient::getInstance()->removeFromNetworkIdToEntityMap(gameObject);
     }
 }

@@ -1,13 +1,13 @@
 //
-//  MemoryBitStream.h
+//  InputMemoryBitStream.h
 //  noctisgames-framework
 //
 //  Created by Stephen Gowen on 5/15/17.
 //  Copyright (c) 2017 Noctis Games. All rights reserved.
 //
 
-#ifndef __noctisgames__MemoryBitStream__
-#define __noctisgames__MemoryBitStream__
+#ifndef __noctisgames__InputMemoryBitStream__
+#define __noctisgames__InputMemoryBitStream__
 
 #include <cstdint>
 #include <cstdlib>
@@ -15,58 +15,6 @@
 
 class Vector2;
 struct Color;
-
-class OutputMemoryBitStream
-{
-public:
-    OutputMemoryBitStream() : mBitHead(0), mBuffer(nullptr)
-    {
-        ReallocBuffer(1500 * 8);
-    }
-    
-    ~OutputMemoryBitStream() { std::free(mBuffer); }
-    
-    void WriteBits(uint8_t inData, uint32_t inBitCount);
-    void WriteBits(const void* inData, uint32_t inBitCount);
-    
-    const char*	GetBufferPtr() const { return mBuffer; }
-    uint32_t GetBitLength() const { return mBitHead; }
-    uint32_t GetByteLength() const { return (mBitHead + 7) >> 3; }
-    
-    void WriteBytes(const void* inData, uint32_t inByteCount) { WriteBits(inData, inByteCount << 3); }
-    
-    template <typename T>
-    void write(T inData, uint32_t inBitCount = sizeof(T) * 8)
-    {
-        static_assert(std::is_arithmetic< T >::value ||
-                      std::is_enum< T >::value,
-                      "Generic Write only supports primitive data types");
-        WriteBits(&inData, inBitCount);
-    }
-    
-    void write(bool inData) { WriteBits(&inData, 1); }
-    
-    void write(const Vector2& inVector);
-    
-    void write(Color& inColor);
-    
-    void write(const std::string& inString)
-    {
-        uint32_t elementCount = static_cast<uint32_t>(inString.size());
-        write(elementCount);
-        for (const auto& element : inString)
-        {
-            write(element);
-        }
-    }
-    
-private:
-    void ReallocBuffer(uint32_t inNewBitCapacity);
-    
-    char* mBuffer;
-    uint32_t mBitHead;
-    uint32_t mBitCapacity;
-};
 
 class InputMemoryBitStream
 {
@@ -91,7 +39,7 @@ public:
     
     ~InputMemoryBitStream()	{ if (mIsBufferOwner) { free(mBuffer); }; }
     
-    const char*	GetBufferPtr() const { return mBuffer; }
+    const char*	getBufferPtr() const { return mBuffer; }
     uint32_t GetRemainingBitCount() const { return mBitCapacity - mBitHead; }
     
     void ReadBits(uint8_t& outData, uint32_t inBitCount);
@@ -142,4 +90,4 @@ private:
     bool mIsBufferOwner;
 };
 
-#endif /* defined(__noctisgames__MemoryBitStream__) */
+#endif /* defined(__noctisgames__InputMemoryBitStream__) */

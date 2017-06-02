@@ -9,15 +9,20 @@
 #ifndef __noctisgames__RoboCat__
 #define __noctisgames__RoboCat__
 
-#include "NWPhysicalEntity.h"
+#include "PhysicalEntity.h"
+
+#include "NetworkType.h"
+#include "GameConstants.h"
 
 #include <stdint.h>
 
 class InputState;
 
-class RoboCat : public NWPhysicalEntity
+class RoboCat : public PhysicalEntity
 {
     RTTI_DECL;
+    
+    NETWORK_TYPE_DECL(NETWORK_TYPE_RoboCat);
     
 public:
     enum ECatReplicationState
@@ -29,9 +34,11 @@ public:
         ECRS_AllState = ECRS_Pose | ECRS_Color | ECRS_PlayerId
     };
     
-    static NWPhysicalEntity* create();
+    virtual uint32_t getAllStateMask() const;
     
-    virtual uint32_t getAllStateMask() const override;
+    virtual void read(InputMemoryBitStream& inInputStream);
+    
+    virtual uint32_t write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState);
     
     void ProcessInput(float inDeltaTime, const InputState& inInputState);
     void SimulateMovement(float inDeltaTime);
@@ -46,7 +53,7 @@ public:
     int getIndexInWorld() const;
     
 protected:
-    float m_fMaxLinearSpeed;
+    float m_fSpeed;
     float m_fMaxRotationSpeed;
     
     //bounce fraction when hitting various things
@@ -57,6 +64,7 @@ protected:
     float m_fThrustDir;
     
     uint32_t m_iPlayerId;
+    uint32_t m_iReadState;
     
     void AdjustVelocityByThrust(float inDeltaTime);
     

@@ -20,6 +20,7 @@
 
 //// Network ////
 
-#define NETWORK_TYPE_NWPhysicalEntity 'NWPE'
+#define NETWORK_TYPE_Entity 'ENTI'
+#define NETWORK_TYPE_PhysicalEntity 'PENT'
 
 #endif /* defined(__noctisgames__FrameworkConstants__) */

@@ -10,7 +10,8 @@
 
 #include "Move.h"
 
-#include "MemoryBitStream.h"
+#include "OutputMemoryBitStream.h"
+#include "InputMemoryBitStream.h"
 
 bool Move::write(OutputMemoryBitStream& inOutputStream) const
 {

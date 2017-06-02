@@ -10,7 +10,8 @@
 
 #include "InputState.h"
 
-#include "MemoryBitStream.h"
+#include "OutputMemoryBitStream.h"
+#include "InputMemoryBitStream.h"
 
 namespace
 {

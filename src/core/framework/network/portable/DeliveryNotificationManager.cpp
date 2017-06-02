@@ -10,7 +10,8 @@
 
 #include "DeliveryNotificationManager.h"
 
-#include "MemoryBitStream.h"
+#include "OutputMemoryBitStream.h"
+#include "InputMemoryBitStream.h"
 #include "StringUtil.h"
 #include "Timing.h"
 

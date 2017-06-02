@@ -9,9 +9,11 @@
 #ifndef __noctisgames__EntityManager__
 #define __noctisgames__EntityManager__
 
-#include <map>
+#include <unordered_map>
 
 class Entity;
+
+#define ENTITY_MGR (EntityManager::getInstance())
 
 class EntityManager
 {
@@ -26,8 +28,12 @@ public:
     
     void reset();
     
+    std::unordered_map<int, Entity*>& getMap();
+    
+    std::unordered_map<int, Entity*> getMapCopy();
+    
 private:
-    std::map<int, Entity*> m_entityMap;
+    std::unordered_map<int, Entity*> m_entityMap;
     
     // ctor, copy ctor, and assignment should be private in a Singleton
     EntityManager();

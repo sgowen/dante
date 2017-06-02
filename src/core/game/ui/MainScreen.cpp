@@ -43,8 +43,7 @@ m_touchPointDown(new Vector2()),
 m_touchPointDown2(new Vector2()),
 m_fStateTime(0),
 m_fFrameStateTime(0),
-m_iRequestedAction(REQUESTED_ACTION_UPDATE),
-m_avatar(new PhysicalEntity(3, 3, 1.173913043478261f, 1.5f))
+m_iRequestedAction(REQUESTED_ACTION_UPDATE)
 {
     m_config->load();
     
@@ -61,17 +60,17 @@ m_avatar(new PhysicalEntity(3, 3, 1.173913043478261f, 1.5f))
         userID = std::string("Noctis Games");
     }
     
-    SocketUtil::StaticInit();
+    SocketUtil::staticInit();
     
-    EntityRegistry::StaticInit();
+    World::staticInit();
     
-    World::StaticInit();
+    EntityRegistry::getInstance()->init(World::addEntityIfPossible);
     
-    EntityRegistry::sInstance->RegisterCreationFunction(NETWORK_TYPE_RoboCat, RoboCatClient::create);
+    EntityRegistry::getInstance()->registerCreationFunction(NETWORK_TYPE_RoboCat, RoboCatClient::create);
     
     SocketAddress* serverAddress = SocketAddressFactory::CreateIPv4FromString(serverIPAddress);
     
-    NetworkManagerClient::StaticInit(*serverAddress, userID);
+    NetworkManagerClient::getInstance()->init(*serverAddress, userID, World::removeEntityIfPossible);
 }
 
 MainScreen::~MainScreen()
@@ -121,7 +120,7 @@ void MainScreen::update(float deltaTime)
     
     if (m_fFrameStateTime >= FRAME_RATE)
     {
-        NetworkManagerClient::sInstance->ProcessIncomingPackets();
+        NetworkManagerClient::getInstance()->processIncomingPackets();
         
         tempUpdateInput();
         
@@ -134,7 +133,7 @@ void MainScreen::update(float deltaTime)
         
         NG_AUDIO_ENGINE->update();
         
-        NetworkManagerClient::getInstance()->SendOutgoingPackets();
+        NetworkManagerClient::getInstance()->sendOutgoingPackets();
     }
 }
 
@@ -142,7 +141,7 @@ void MainScreen::render()
 {
     m_renderer->beginFrame();
     
-    m_renderer->tempDraw(m_avatar->getStateTime());
+    m_renderer->tempDraw(m_fStateTime);
     
     m_renderer->renderToScreen();
     
@@ -161,60 +160,12 @@ void MainScreen::clearRequestedAction()
 
 void MainScreen::tempUpdateInput()
 {
-    SCREEN_INPUT_MANAGER->process();
-    KEYBOARD_INPUT_MANAGER->process();
-    GAME_PAD_INPUT_MANAGER->process();
-    
-    for (std::vector<KeyboardEvent *>::iterator i = KEYBOARD_INPUT_MANAGER->getEvents().begin(); i != KEYBOARD_INPUT_MANAGER->getEvents().end(); ++i)
-    {
-        switch ((*i)->getType())
-        {
-            case KeyboardEventType_W:
-                InputManager::getInstance()->handleInput((*i)->isUp() ? EIA_Released : EIA_Pressed, 'W');
-                continue;
-            case KeyboardEventType_A:
-                InputManager::getInstance()->handleInput((*i)->isUp() ? EIA_Released : EIA_Pressed, 'A');
-                continue;
-            case KeyboardEventType_S:
-                InputManager::getInstance()->handleInput((*i)->isUp() ? EIA_Released : EIA_Pressed, 'S');
-                continue;
-            case KeyboardEventType_D:
-                InputManager::getInstance()->handleInput((*i)->isUp() ? EIA_Released : EIA_Pressed, 'D');
-                continue;
-            default:
-                continue;
-        }
-    }
-    
-    for (std::vector<GamePadEvent *>::iterator i = GAME_PAD_INPUT_MANAGER->getEvents().begin(); i != GAME_PAD_INPUT_MANAGER->getEvents().end(); ++i)
-    {
-        switch ((*i)->getType())
-        {
-            case GamePadEventType_D_PAD_UP:
-                InputManager::getInstance()->handleInput((*i)->isButtonPressed() ? EIA_Pressed : EIA_Released, 'W');
-                continue;
-            case GamePadEventType_D_PAD_LEFT:
-                InputManager::getInstance()->handleInput((*i)->isButtonPressed() ? EIA_Pressed : EIA_Released, 'A');
-                continue;
-            case GamePadEventType_D_PAD_DOWN:
-                InputManager::getInstance()->handleInput((*i)->isButtonPressed() ? EIA_Pressed : EIA_Released, 'S');
-                continue;
-            case GamePadEventType_D_PAD_RIGHT:
-                InputManager::getInstance()->handleInput((*i)->isButtonPressed() ? EIA_Pressed : EIA_Released, 'D');
-                continue;
-            default:
-                continue;
-        }
-    }
-    
     InputManager::getInstance()->update();
 }
 
 void MainScreen::tempUpdate(float deltaTime)
 {
     World::sInstance->update();
-    
-    //m_avatar->update();
 }
 
 RTTI_IMPL(MainScreen, IScreen);

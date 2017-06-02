@@ -14,6 +14,9 @@
 #include "Vector2.h"
 #include "Color.h"
 
+#include "NetworkType.h"
+#include "FrameworkConstants.h"
+
 #include "RTTI.h"
 
 #include <vector>
@@ -24,12 +27,14 @@ class PhysicalEntity : public Entity
 {
     RTTI_DECL;
     
+    NETWORK_TYPE_DECL(NETWORK_TYPE_PhysicalEntity);
+    
 public:
     PhysicalEntity(float x, float y, float width, float height);
     
     virtual ~PhysicalEntity();
     
-    virtual void update() override;
+    virtual void update();
 
     virtual void resetBounds(float width, float height);
 

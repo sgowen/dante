@@ -11,17 +11,29 @@
 #include "World.h"
 
 #include "RoboCat.h"
+#include "Entity.h"
 
 std::unique_ptr<World> World::sInstance;
 
-void World::StaticInit()
+void World::staticInit()
 {
     sInstance.reset(new World());
 }
 
-World::World()
+void World::addEntityIfPossible(Entity* inEntity)
 {
-    // Empty
+    if (inEntity->getRTTI().derivesFrom(RoboCat::rtti))
+    {
+        World::sInstance->AddRoboCat((RoboCat*)inEntity);
+    }
+}
+
+void World::removeEntityIfPossible(Entity* inEntity)
+{
+    if (inEntity->getRTTI().derivesFrom(RoboCat::rtti))
+    {
+        World::sInstance->RemoveRoboCat((RoboCat*)inEntity);
+    }
 }
 
 void World::AddRoboCat(RoboCat* inRoboCat)
@@ -86,4 +98,9 @@ void World::update()
             --c;
         }
     }
+}
+
+World::World()
+{
+    // Empty
 }

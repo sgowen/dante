@@ -16,7 +16,7 @@
 class SocketUtil
 {
 public:
-    static bool StaticInit();
+    static bool staticInit();
     static void CleanUp();
     
     static void ReportError(const char* inOperationDesc);

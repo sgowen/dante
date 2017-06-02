@@ -9,29 +9,34 @@
 #ifndef __noctisgames__EntityRegistry__
 #define __noctisgames__EntityRegistry__
 
-#include "NWPhysicalEntity.h"
+#include "Entity.h"
 
 #include "NetworkConstants.h"
 
 #include <unordered_map>
 
-typedef NWPhysicalEntity* (*NWPhysicalEntityCreationFunc)();
+typedef void (*HandleEntityCreatedFunc)(Entity* inEntity);
+typedef Entity* (*EntityCreationFunc)();
 
 class EntityRegistry
 {
 public:
-    static void StaticInit();
+    static EntityRegistry* getInstance();
     
-    static std::unique_ptr<EntityRegistry> sInstance;
+    void init(HandleEntityCreatedFunc handleEntityCreatedFunc);
     
-    void RegisterCreationFunction(uint32_t inFourCCName, NWPhysicalEntityCreationFunc inCreationFunction);
+    void registerCreationFunction(uint32_t inFourCCName, EntityCreationFunc inCreationFunction);
     
-    NWPhysicalEntity* CreateNWPhysicalEntity(uint32_t inFourCCName);
+    Entity* createEntity(uint32_t inFourCCName);
     
 private:
-    EntityRegistry();
+    std::unordered_map<uint32_t, EntityCreationFunc> m_nameToEntityCreationFunctionMap;
+    HandleEntityCreatedFunc m_handleEntityCreatedFunc;
     
-    std::unordered_map<uint32_t, NWPhysicalEntityCreationFunc> mNameToNWPhysicalEntityCreationFunctionMap;
+    // ctor, copy ctor, and assignment should be private in a Singleton
+    EntityRegistry();
+    EntityRegistry(const EntityRegistry&);
+    EntityRegistry& operator=(const EntityRegistry&);
 };
 
 #endif /* defined(__noctisgames__EntityRegistry__) */

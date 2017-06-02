@@ -10,10 +10,11 @@
 
 #include "PhysicalEntity.h"
 
-#include "macros.h"
 #include "NGRect.h"
+
 #include "NGSTDUtil.h"
 #include "Timing.h"
+#include "macros.h"
 
 PhysicalEntity::PhysicalEntity(float x, float y, float width, float height) : Entity(),
 m_position(x, y),
@@ -129,3 +130,5 @@ float PhysicalEntity::getAngle()
 }
 
 RTTI_IMPL(PhysicalEntity, Entity);
+
+NETWORK_TYPE_IMPL(PhysicalEntity);

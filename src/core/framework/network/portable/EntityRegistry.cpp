@@ -13,35 +13,35 @@
 #include "World.h"
 #include "RoboCat.h"
 
-std::unique_ptr<EntityRegistry>	EntityRegistry::sInstance;
-
-void EntityRegistry::StaticInit()
+EntityRegistry* EntityRegistry::getInstance()
 {
-    sInstance.reset(new EntityRegistry());
+    static EntityRegistry instance = EntityRegistry();
+    return &instance;
+}
+
+void EntityRegistry::init(HandleEntityCreatedFunc handleEntityCreatedFunc)
+{
+    m_handleEntityCreatedFunc = handleEntityCreatedFunc;
+}
+
+void EntityRegistry::registerCreationFunction(uint32_t inFourCCName, EntityCreationFunc inCreationFunction)
+{
+    m_nameToEntityCreationFunctionMap[inFourCCName] = inCreationFunction;
+}
+
+Entity* EntityRegistry::createEntity(uint32_t inFourCCName)
+{
+    //no error checking- if the name isn't there, exception!
+    EntityCreationFunc creationFunc = m_nameToEntityCreationFunctionMap[inFourCCName];
+    
+    Entity* entity = creationFunc();
+    
+    m_handleEntityCreatedFunc(entity);
+    
+    return entity;
 }
 
 EntityRegistry::EntityRegistry()
 {
-}
-
-void EntityRegistry::RegisterCreationFunction(uint32_t inFourCCName, NWPhysicalEntityCreationFunc inCreationFunction)
-{
-    mNameToNWPhysicalEntityCreationFunctionMap[inFourCCName] = inCreationFunction;
-}
-
-NWPhysicalEntity* EntityRegistry::CreateNWPhysicalEntity(uint32_t inFourCCName)
-{
-    //no error checking- if the name isn't there, exception!
-    NWPhysicalEntityCreationFunc creationFunc = mNameToNWPhysicalEntityCreationFunctionMap[inFourCCName];
-    
-    NWPhysicalEntity* entity = creationFunc();
-    
-    //should the registry depend on the world? this might be a little weird
-    //perhaps you should ask the world to spawn things? for now it will be like this
-    if (entity->getRTTI().derivesFrom(RoboCat::rtti))
-    {
-        World::sInstance->AddRoboCat((RoboCat*)entity);
-    }
-    
-    return entity;
+    // Empty
 }
