@@ -53,7 +53,7 @@ bool NetworkManagerClient::init(const SocketAddress& inServerAddress, const std:
     
     m_avgRoundTripTime = WeightedTimedMovingAverage(1.f);
     
-    return INetworkManager::init(9999, handleEntityDeletion);
+    return INetworkManager::init(1337, handleEntityDeletion);
 }
 
 void NetworkManagerClient::sendOutgoingPackets()

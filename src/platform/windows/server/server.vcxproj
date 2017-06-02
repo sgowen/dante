@@ -88,7 +88,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>../../../core/framework/network/server/;../../../core/framework/network/portable/;$(ProjectDir);</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../../3rdparty/;../../../core/framework/entity/;../../../core/framework/file/portable/;../../../core/framework/file/windows/;../../../core/framework/math/;../../../core/framework/network/server/;../../../core/framework/network/portable/;../../../core/framework/state/;../../../core/framework/util/;../../../core/game/logic/;../../../core/game/network/server/;../../../core/game/network/portable/;$(ProjectDir);</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -102,7 +102,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>../../../core/framework/network/server/;../../../core/framework/network/portable/;$(ProjectDir);</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../../3rdparty/;../../../core/framework/entity/;../../../core/framework/file/portable/;../../../core/framework/file/windows/;../../../core/framework/math/;../../../core/framework/network/server/;../../../core/framework/network/portable/;../../../core/framework/state/;../../../core/framework/util/;../../../core/game/logic/;../../../core/game/network/server/;../../../core/game/network/portable/;$(ProjectDir);</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -118,7 +118,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>../../../core/framework/network/server/;../../../core/framework/network/portable/;$(ProjectDir);</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../../3rdparty/;../../../core/framework/entity/;../../../core/framework/file/portable/;../../../core/framework/file/windows/;../../../core/framework/math/;../../../core/framework/network/server/;../../../core/framework/network/portable/;../../../core/framework/state/;../../../core/framework/util/;../../../core/game/logic/;../../../core/game/network/server/;../../../core/game/network/portable/;$(ProjectDir);</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -136,7 +136,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>../../../core/framework/network/server/;../../../core/framework/network/portable/;$(ProjectDir);</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../../3rdparty/;../../../core/framework/entity/;../../../core/framework/file/portable/;../../../core/framework/file/windows/;../../../core/framework/math/;../../../core/framework/network/server/;../../../core/framework/network/portable/;../../../core/framework/state/;../../../core/framework/util/;../../../core/game/logic/;../../../core/game/network/server/;../../../core/game/network/portable/;$(ProjectDir);</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -146,75 +146,30 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\core\framework\network\portable\AckRange.h" />
-    <ClInclude Include="..\..\..\core\framework\network\portable\ByteSwap.h" />
-    <ClInclude Include="..\..\..\core\framework\network\portable\DeliveryNotificationManager.h" />
-    <ClInclude Include="..\..\..\core\framework\network\portable\Engine.h" />
-    <ClInclude Include="..\..\..\core\framework\network\portable\GameObject.h" />
-    <ClInclude Include="..\..\..\core\framework\network\portable\GameObjectRegistry.h" />
-    <ClInclude Include="..\..\..\core\framework\network\portable\InFlightPacket.h" />
-    <ClInclude Include="..\..\..\core\framework\network\portable\InputAction.h" />
-    <ClInclude Include="..\..\..\core\framework\network\portable\InputState.h" />
-    <ClInclude Include="..\..\..\core\framework\network\portable\LinkingContext.h" />
-    <ClInclude Include="..\..\..\core\framework\network\portable\MemoryBitStream.h" />
-    <ClInclude Include="..\..\..\core\framework\network\portable\Move.h" />
-    <ClInclude Include="..\..\..\core\framework\network\portable\MoveList.h" />
-    <ClInclude Include="..\..\..\core\framework\network\portable\NetworkConstants.h" />
-    <ClInclude Include="..\..\..\core\framework\network\portable\NetworkManager.h" />
-    <ClInclude Include="..\..\..\core\framework\network\portable\ReplicationAction.h" />
-    <ClInclude Include="..\..\..\core\framework\network\portable\ReplicationCommand.h" />
-    <ClInclude Include="..\..\..\core\framework\network\portable\RoboCat.h" />
-    <ClInclude Include="..\..\..\core\framework\network\portable\RoboMath.h" />
-    <ClInclude Include="..\..\..\core\framework\network\portable\SocketAddress.h" />
-    <ClInclude Include="..\..\..\core\framework\network\portable\SocketAddressFactory.h" />
-    <ClInclude Include="..\..\..\core\framework\network\portable\SocketAddressFamily.h" />
-    <ClInclude Include="..\..\..\core\framework\network\portable\SocketUtil.h" />
-    <ClInclude Include="..\..\..\core\framework\network\portable\StringUtils.h" />
-    <ClInclude Include="..\..\..\core\framework\network\portable\Timing.h" />
-    <ClInclude Include="..\..\..\core\framework\network\portable\TransmissionData.h" />
-    <ClInclude Include="..\..\..\core\framework\network\portable\UDPSocket.h" />
-    <ClInclude Include="..\..\..\core\framework\network\portable\WeightedTimedMovingAverage.h" />
-    <ClInclude Include="..\..\..\core\framework\network\portable\World.h" />
-    <ClInclude Include="..\..\..\core\framework\network\server\ClientProxy.h" />
-    <ClInclude Include="..\..\..\core\framework\network\server\NetworkManagerServer.h" />
-    <ClInclude Include="..\..\..\core\framework\network\server\ReplicationManagerServer.h" />
-    <ClInclude Include="..\..\..\core\framework\network\server\ReplicationManagerTransmissionData.h" />
-    <ClInclude Include="..\..\..\core\framework\network\server\RoboCatServer.h" />
-    <ClInclude Include="..\..\..\core\framework\network\server\Server.h" />
+    <ClInclude Include="..\..\..\core\framework\entity\*.h" />
+    <ClInclude Include="..\..\..\core\framework\file\portable\*.h" />
+    <ClInclude Include="..\..\..\core\framework\math\*.h" />
+    <ClInclude Include="..\..\..\core\framework\network\server\*.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\*.h" />
+    <ClInclude Include="..\..\..\core\framework\state\*.h" />
+    <ClInclude Include="..\..\..\core\framework\util\*.h" />
+    <ClInclude Include="..\..\..\core\game\logic\*.h" />
+    <ClInclude Include="..\..\..\core\game\network\server\*.h" />
+    <ClInclude Include="..\..\..\core\game\network\portable\*.h" />
     <ClInclude Include="pch.h" />
-    <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\core\framework\network\portable\AckRange.cpp" />
-    <ClCompile Include="..\..\..\core\framework\network\portable\DeliveryNotificationManager.cpp" />
-    <ClCompile Include="..\..\..\core\framework\network\portable\Engine.cpp" />
-    <ClCompile Include="..\..\..\core\framework\network\portable\GameObject.cpp" />
-    <ClCompile Include="..\..\..\core\framework\network\portable\GameObjectRegistry.cpp" />
-    <ClCompile Include="..\..\..\core\framework\network\portable\InFlightPacket.cpp" />
-    <ClCompile Include="..\..\..\core\framework\network\portable\InputState.cpp" />
-    <ClCompile Include="..\..\..\core\framework\network\portable\LinkingContext.cpp" />
-    <ClCompile Include="..\..\..\core\framework\network\portable\MemoryBitStream.cpp" />
-    <ClCompile Include="..\..\..\core\framework\network\portable\Move.cpp" />
-    <ClCompile Include="..\..\..\core\framework\network\portable\MoveList.cpp" />
-    <ClCompile Include="..\..\..\core\framework\network\portable\NetworkManager.cpp" />
-    <ClCompile Include="..\..\..\core\framework\network\portable\ReplicationCommand.cpp" />
-    <ClCompile Include="..\..\..\core\framework\network\portable\RoboCat.cpp" />
-    <ClCompile Include="..\..\..\core\framework\network\portable\RoboMath.cpp" />
-    <ClCompile Include="..\..\..\core\framework\network\portable\SocketAddress.cpp" />
-    <ClCompile Include="..\..\..\core\framework\network\portable\SocketAddressFactory.cpp" />
-    <ClCompile Include="..\..\..\core\framework\network\portable\SocketUtil.cpp" />
-    <ClCompile Include="..\..\..\core\framework\network\portable\StringUtils.cpp" />
-    <ClCompile Include="..\..\..\core\framework\network\portable\Timing.cpp" />
-    <ClCompile Include="..\..\..\core\framework\network\portable\UDPSocket.cpp" />
-    <ClCompile Include="..\..\..\core\framework\network\portable\WeightedTimedMovingAverage.cpp" />
-    <ClCompile Include="..\..\..\core\framework\network\portable\World.cpp" />
-    <ClCompile Include="..\..\..\core\framework\network\server\ClientProxy.cpp" />
-    <ClCompile Include="..\..\..\core\framework\network\server\NetworkManagerServer.cpp" />
-    <ClCompile Include="..\..\..\core\framework\network\server\ReplicationManagerServer.cpp" />
-    <ClCompile Include="..\..\..\core\framework\network\server\ReplicationManagerTransmissionData.cpp" />
-    <ClCompile Include="..\..\..\core\framework\network\server\RoboCatServer.cpp" />
-    <ClCompile Include="..\..\..\core\framework\network\server\Server.cpp" />
-    <ClCompile Include="..\..\server\main.cpp" />
+    <ClCompile Include="..\..\..\core\framework\entity\*.cpp" />
+    <ClCompile Include="..\..\..\core\framework\file\portable\*.cpp" />
+    <ClCompile Include="..\..\..\core\framework\math\*.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\server\*.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\*.cpp" />
+    <ClCompile Include="..\..\..\core\framework\state\*.cpp" />
+    <ClCompile Include="..\..\..\core\framework\util\*.cpp" />
+    <ClCompile Include="..\..\..\core\game\logic\*.cpp" />
+    <ClCompile Include="..\..\..\core\game\network\server\*.cpp" />
+    <ClCompile Include="..\..\..\core\game\network\portable\*.cpp" />
+    <ClCompile Include="..\..\server\*.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

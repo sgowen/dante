@@ -1,225 +1,929 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
+    <Filter Include="Source">
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
-    </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+      <Extensions>cpp;h</Extensions>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="targetver.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="..\..\..\core\framework\entity\*.h" />
+    <ClInclude Include="..\..\..\core\framework\file\portable\*.h" />
+    <ClInclude Include="..\..\..\core\framework\math\*.h" />
+    <ClInclude Include="..\..\..\core\framework\network\server\*.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\*.h" />
+    <ClInclude Include="..\..\..\core\framework\state\*.h" />
+    <ClInclude Include="..\..\..\core\framework\util\*.h" />
+    <ClInclude Include="..\..\..\core\game\logic\*.h" />
+    <ClInclude Include="..\..\..\core\game\network\server\*.h" />
+    <ClInclude Include="..\..\..\core\game\network\portable\*.h" />
+    <ClInclude Include="*.h" />
+    <ClInclude Include="..\..\..\core\framework\entity\Entity.h">
+      <Filter>Source</Filter>
     </ClInclude>
-    <ClInclude Include="pch.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="..\..\..\core\framework\entity\EntityManager.h" />
+    <ClInclude Include="..\..\..\core\framework\entity\EntityRegistry.h" />
+    <ClInclude Include="..\..\..\core\framework\entity\GridManager.h" />
+    <ClInclude Include="..\..\..\core\framework\entity\PhysicalEntity.h" />
+    <ClInclude Include="..\..\..\core\framework\entity\Entity.h">
+      <Filter>Source</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\core\framework\network\portable\DeliveryNotificationManager.h">
-      <Filter>Source Files</Filter>
+    <ClInclude Include="..\..\..\core\framework\entity\EntityManager.h" />
+    <ClInclude Include="..\..\..\core\framework\entity\EntityRegistry.h" />
+    <ClInclude Include="..\..\..\core\framework\entity\GridManager.h" />
+    <ClInclude Include="..\..\..\core\framework\entity\PhysicalEntity.h" />
+    <ClInclude Include="..\..\..\core\framework\entity\Entity.h">
+      <Filter>Source</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\core\framework\network\portable\Engine.h">
-      <Filter>Source Files</Filter>
+    <ClInclude Include="..\..\..\core\framework\entity\EntityManager.h" />
+    <ClInclude Include="..\..\..\core\framework\entity\EntityRegistry.h" />
+    <ClInclude Include="..\..\..\core\framework\entity\GridManager.h" />
+    <ClInclude Include="..\..\..\core\framework\entity\PhysicalEntity.h" />
+    <ClInclude Include="..\..\..\core\framework\entity\Entity.h">
+      <Filter>Source</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\core\framework\network\portable\GameObject.h">
-      <Filter>Source Files</Filter>
+    <ClInclude Include="..\..\..\core\framework\entity\EntityManager.h" />
+    <ClInclude Include="..\..\..\core\framework\entity\EntityRegistry.h" />
+    <ClInclude Include="..\..\..\core\framework\entity\GridManager.h" />
+    <ClInclude Include="..\..\..\core\framework\entity\PhysicalEntity.h" />
+    <ClInclude Include="..\..\..\core\framework\math\Circle.h">
+      <Filter>Source</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\core\framework\network\portable\GameObjectRegistry.h">
-      <Filter>Source Files</Filter>
+    <ClInclude Include="..\..\..\core\framework\math\Color.h" />
+    <ClInclude Include="..\..\..\core\framework\math\Line.h" />
+    <ClInclude Include="..\..\..\core\framework\math\MathUtil.h" />
+    <ClInclude Include="..\..\..\core\framework\math\NGRect.h" />
+    <ClInclude Include="..\..\..\core\framework\math\OverlapTester.h" />
+    <ClInclude Include="..\..\..\core\framework\math\Triangle.h" />
+    <ClInclude Include="..\..\..\core\framework\math\Vector2.h" />
+    <ClInclude Include="..\..\..\core\framework\math\Circle.h">
+      <Filter>Source</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\core\framework\network\portable\InFlightPacket.h">
-      <Filter>Source Files</Filter>
+    <ClInclude Include="..\..\..\core\framework\math\Color.h" />
+    <ClInclude Include="..\..\..\core\framework\math\Line.h" />
+    <ClInclude Include="..\..\..\core\framework\math\MathUtil.h" />
+    <ClInclude Include="..\..\..\core\framework\math\NGRect.h" />
+    <ClInclude Include="..\..\..\core\framework\math\OverlapTester.h" />
+    <ClInclude Include="..\..\..\core\framework\math\Triangle.h" />
+    <ClInclude Include="..\..\..\core\framework\math\Vector2.h" />
+    <ClInclude Include="..\..\..\core\framework\math\Circle.h">
+      <Filter>Source</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\core\framework\network\portable\InputAction.h">
-      <Filter>Source Files</Filter>
+    <ClInclude Include="..\..\..\core\framework\math\Color.h" />
+    <ClInclude Include="..\..\..\core\framework\math\Line.h" />
+    <ClInclude Include="..\..\..\core\framework\math\MathUtil.h" />
+    <ClInclude Include="..\..\..\core\framework\math\NGRect.h" />
+    <ClInclude Include="..\..\..\core\framework\math\OverlapTester.h" />
+    <ClInclude Include="..\..\..\core\framework\math\Triangle.h" />
+    <ClInclude Include="..\..\..\core\framework\math\Vector2.h" />
+    <ClInclude Include="..\..\..\core\framework\math\Circle.h">
+      <Filter>Source</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\core\framework\network\portable\InputState.h">
-      <Filter>Source Files</Filter>
+    <ClInclude Include="..\..\..\core\framework\math\Color.h" />
+    <ClInclude Include="..\..\..\core\framework\math\Line.h" />
+    <ClInclude Include="..\..\..\core\framework\math\MathUtil.h" />
+    <ClInclude Include="..\..\..\core\framework\math\NGRect.h" />
+    <ClInclude Include="..\..\..\core\framework\math\OverlapTester.h" />
+    <ClInclude Include="..\..\..\core\framework\math\Triangle.h" />
+    <ClInclude Include="..\..\..\core\framework\math\Vector2.h" />
+    <ClInclude Include="..\..\..\core\framework\math\Circle.h">
+      <Filter>Source</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\core\framework\network\portable\LinkingContext.h">
-      <Filter>Source Files</Filter>
+    <ClInclude Include="..\..\..\core\framework\math\Color.h" />
+    <ClInclude Include="..\..\..\core\framework\math\Line.h" />
+    <ClInclude Include="..\..\..\core\framework\math\MathUtil.h" />
+    <ClInclude Include="..\..\..\core\framework\math\NGRect.h" />
+    <ClInclude Include="..\..\..\core\framework\math\OverlapTester.h" />
+    <ClInclude Include="..\..\..\core\framework\math\Triangle.h" />
+    <ClInclude Include="..\..\..\core\framework\math\Vector2.h" />
+    <ClInclude Include="..\..\..\core\framework\math\Circle.h">
+      <Filter>Source</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\core\framework\network\portable\MemoryBitStream.h">
-      <Filter>Source Files</Filter>
+    <ClInclude Include="..\..\..\core\framework\math\Color.h" />
+    <ClInclude Include="..\..\..\core\framework\math\Line.h" />
+    <ClInclude Include="..\..\..\core\framework\math\MathUtil.h" />
+    <ClInclude Include="..\..\..\core\framework\math\NGRect.h" />
+    <ClInclude Include="..\..\..\core\framework\math\OverlapTester.h" />
+    <ClInclude Include="..\..\..\core\framework\math\Triangle.h" />
+    <ClInclude Include="..\..\..\core\framework\math\Vector2.h" />
+    <ClInclude Include="..\..\..\core\framework\math\Circle.h">
+      <Filter>Source</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\core\framework\network\portable\Move.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\core\framework\network\portable\MoveList.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\core\framework\network\portable\NetworkConstants.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\core\framework\network\portable\NetworkManager.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\core\framework\network\portable\ReplicationAction.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\core\framework\network\portable\ReplicationCommand.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\core\framework\network\portable\RoboCat.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\core\framework\network\portable\RoboMath.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\core\framework\network\portable\SocketAddress.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\core\framework\network\portable\SocketAddressFactory.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\core\framework\network\portable\SocketAddressFamily.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\core\framework\network\portable\SocketUtil.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\core\framework\network\portable\StringUtils.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\core\framework\network\portable\Timing.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\core\framework\network\portable\TransmissionData.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\core\framework\network\portable\UDPSocket.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\core\framework\network\portable\WeightedTimedMovingAverage.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\core\framework\network\portable\World.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\core\framework\network\portable\AckRange.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\core\framework\network\portable\ByteSwap.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\core\framework\network\server\ReplicationManagerServer.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\core\framework\network\server\ReplicationManagerTransmissionData.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\core\framework\network\server\RoboCatServer.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\core\framework\network\server\Server.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
+    <ClInclude Include="..\..\..\core\framework\math\Color.h" />
+    <ClInclude Include="..\..\..\core\framework\math\Line.h" />
+    <ClInclude Include="..\..\..\core\framework\math\MathUtil.h" />
+    <ClInclude Include="..\..\..\core\framework\math\NGRect.h" />
+    <ClInclude Include="..\..\..\core\framework\math\OverlapTester.h" />
+    <ClInclude Include="..\..\..\core\framework\math\Triangle.h" />
+    <ClInclude Include="..\..\..\core\framework\math\Vector2.h" />
     <ClInclude Include="..\..\..\core\framework\network\server\ClientProxy.h">
-      <Filter>Source Files</Filter>
+      <Filter>Source</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\core\framework\network\server\NetworkManagerServer.h">
-      <Filter>Source Files</Filter>
+    <ClInclude Include="..\..\..\core\framework\network\server\NetworkManagerServer.h" />
+    <ClInclude Include="..\..\..\core\framework\network\server\ReplicationManagerServer.h" />
+    <ClInclude Include="..\..\..\core\framework\network\server\ReplicationManagerTransmissionData.h" />
+    <ClInclude Include="..\..\..\core\framework\network\server\ClientProxy.h">
+      <Filter>Source</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\core\framework\network\server\NetworkManagerServer.h" />
+    <ClInclude Include="..\..\..\core\framework\network\server\ReplicationManagerServer.h" />
+    <ClInclude Include="..\..\..\core\framework\network\server\ReplicationManagerTransmissionData.h" />
+    <ClInclude Include="..\..\..\core\framework\network\server\ClientProxy.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\core\framework\network\server\NetworkManagerServer.h" />
+    <ClInclude Include="..\..\..\core\framework\network\server\ReplicationManagerServer.h" />
+    <ClInclude Include="..\..\..\core\framework\network\server\ReplicationManagerTransmissionData.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\AckRange.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\core\framework\network\portable\DeliveryNotificationManager.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\IInputState.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\INetworkManager.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\InFlightPacket.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\InputMemoryBitStream.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\ITransmissionData.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\Move.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\MoveList.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\Network.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\OutputMemoryBitStream.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\ReplicationAction.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\ReplicationCommand.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\SocketAddress.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\SocketAddressFactory.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\SocketAddressFamily.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\SocketUtil.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\UDPSocket.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\AckRange.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\core\framework\network\portable\DeliveryNotificationManager.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\IInputState.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\INetworkManager.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\InFlightPacket.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\InputMemoryBitStream.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\ITransmissionData.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\Move.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\MoveList.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\Network.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\OutputMemoryBitStream.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\ReplicationAction.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\ReplicationCommand.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\SocketAddress.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\SocketAddressFactory.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\SocketAddressFamily.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\SocketUtil.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\UDPSocket.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\AckRange.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\core\framework\network\portable\DeliveryNotificationManager.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\IInputState.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\INetworkManager.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\InFlightPacket.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\InputMemoryBitStream.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\ITransmissionData.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\Move.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\MoveList.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\Network.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\OutputMemoryBitStream.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\ReplicationAction.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\ReplicationCommand.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\SocketAddress.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\SocketAddressFactory.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\SocketAddressFamily.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\SocketUtil.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\UDPSocket.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\AckRange.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\core\framework\network\portable\DeliveryNotificationManager.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\IInputState.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\INetworkManager.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\InFlightPacket.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\InputMemoryBitStream.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\ITransmissionData.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\Move.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\MoveList.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\Network.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\OutputMemoryBitStream.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\ReplicationAction.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\ReplicationCommand.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\SocketAddress.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\SocketAddressFactory.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\SocketAddressFamily.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\SocketUtil.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\UDPSocket.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\AckRange.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\core\framework\network\portable\DeliveryNotificationManager.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\IInputState.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\INetworkManager.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\InFlightPacket.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\InputMemoryBitStream.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\ITransmissionData.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\Move.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\MoveList.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\Network.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\OutputMemoryBitStream.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\ReplicationAction.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\ReplicationCommand.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\SocketAddress.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\SocketAddressFactory.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\SocketAddressFamily.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\SocketUtil.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\UDPSocket.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\AckRange.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\core\framework\network\portable\DeliveryNotificationManager.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\IInputState.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\INetworkManager.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\InFlightPacket.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\InputMemoryBitStream.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\ITransmissionData.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\Move.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\MoveList.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\Network.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\OutputMemoryBitStream.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\ReplicationAction.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\ReplicationCommand.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\SocketAddress.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\SocketAddressFactory.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\SocketAddressFamily.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\SocketUtil.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\UDPSocket.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\AckRange.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\core\framework\network\portable\DeliveryNotificationManager.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\IInputState.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\INetworkManager.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\InFlightPacket.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\InputMemoryBitStream.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\ITransmissionData.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\Move.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\MoveList.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\Network.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\OutputMemoryBitStream.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\ReplicationAction.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\ReplicationCommand.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\SocketAddress.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\SocketAddressFactory.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\SocketAddressFamily.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\SocketUtil.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\UDPSocket.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\AckRange.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\core\framework\network\portable\DeliveryNotificationManager.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\IInputState.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\INetworkManager.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\InFlightPacket.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\InputMemoryBitStream.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\ITransmissionData.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\Move.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\MoveList.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\Network.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\OutputMemoryBitStream.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\ReplicationAction.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\ReplicationCommand.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\SocketAddress.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\SocketAddressFactory.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\SocketAddressFamily.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\SocketUtil.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\UDPSocket.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\AckRange.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\core\framework\network\portable\DeliveryNotificationManager.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\IInputState.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\INetworkManager.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\InFlightPacket.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\InputMemoryBitStream.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\ITransmissionData.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\Move.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\MoveList.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\Network.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\OutputMemoryBitStream.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\ReplicationAction.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\ReplicationCommand.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\SocketAddress.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\SocketAddressFactory.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\SocketAddressFamily.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\SocketUtil.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\UDPSocket.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\AckRange.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\core\framework\network\portable\DeliveryNotificationManager.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\IInputState.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\INetworkManager.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\InFlightPacket.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\InputMemoryBitStream.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\ITransmissionData.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\Move.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\MoveList.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\Network.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\OutputMemoryBitStream.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\ReplicationAction.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\ReplicationCommand.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\SocketAddress.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\SocketAddressFactory.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\SocketAddressFamily.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\SocketUtil.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\UDPSocket.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\AckRange.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\core\framework\network\portable\DeliveryNotificationManager.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\IInputState.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\INetworkManager.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\InFlightPacket.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\InputMemoryBitStream.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\ITransmissionData.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\Move.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\MoveList.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\Network.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\OutputMemoryBitStream.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\ReplicationAction.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\ReplicationCommand.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\SocketAddress.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\SocketAddressFactory.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\SocketAddressFamily.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\SocketUtil.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\UDPSocket.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\AckRange.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\core\framework\network\portable\DeliveryNotificationManager.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\IInputState.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\INetworkManager.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\InFlightPacket.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\InputMemoryBitStream.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\ITransmissionData.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\Move.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\MoveList.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\Network.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\OutputMemoryBitStream.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\ReplicationAction.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\ReplicationCommand.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\SocketAddress.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\SocketAddressFactory.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\SocketAddressFamily.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\SocketUtil.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\UDPSocket.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\AckRange.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\core\framework\network\portable\DeliveryNotificationManager.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\IInputState.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\INetworkManager.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\InFlightPacket.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\InputMemoryBitStream.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\ITransmissionData.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\Move.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\MoveList.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\Network.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\OutputMemoryBitStream.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\ReplicationAction.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\ReplicationCommand.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\SocketAddress.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\SocketAddressFactory.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\SocketAddressFamily.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\SocketUtil.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\UDPSocket.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\AckRange.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\core\framework\network\portable\DeliveryNotificationManager.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\IInputState.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\INetworkManager.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\InFlightPacket.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\InputMemoryBitStream.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\ITransmissionData.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\Move.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\MoveList.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\Network.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\OutputMemoryBitStream.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\ReplicationAction.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\ReplicationCommand.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\SocketAddress.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\SocketAddressFactory.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\SocketAddressFamily.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\SocketUtil.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\UDPSocket.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\AckRange.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\core\framework\network\portable\DeliveryNotificationManager.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\IInputState.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\INetworkManager.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\InFlightPacket.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\InputMemoryBitStream.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\ITransmissionData.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\Move.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\MoveList.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\Network.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\OutputMemoryBitStream.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\ReplicationAction.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\ReplicationCommand.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\SocketAddress.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\SocketAddressFactory.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\SocketAddressFamily.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\SocketUtil.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\UDPSocket.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\AckRange.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\core\framework\network\portable\DeliveryNotificationManager.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\IInputState.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\INetworkManager.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\InFlightPacket.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\InputMemoryBitStream.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\ITransmissionData.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\Move.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\MoveList.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\Network.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\OutputMemoryBitStream.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\ReplicationAction.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\ReplicationCommand.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\SocketAddress.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\SocketAddressFactory.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\SocketAddressFamily.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\SocketUtil.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\UDPSocket.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\AckRange.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\core\framework\network\portable\DeliveryNotificationManager.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\IInputState.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\INetworkManager.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\InFlightPacket.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\InputMemoryBitStream.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\ITransmissionData.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\Move.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\MoveList.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\Network.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\OutputMemoryBitStream.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\ReplicationAction.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\ReplicationCommand.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\SocketAddress.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\SocketAddressFactory.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\SocketAddressFamily.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\SocketUtil.h" />
+    <ClInclude Include="..\..\..\core\framework\network\portable\UDPSocket.h" />
+    <ClInclude Include="..\..\..\core\framework\state\State.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\core\framework\state\StateMachine.h" />
+    <ClInclude Include="..\..\..\core\framework\util\FlagUtil.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\core\framework\util\FrameworkConstants.h" />
+    <ClInclude Include="..\..\..\core\framework\util\macros.h" />
+    <ClInclude Include="..\..\..\core\framework\util\NGRollingPool.h" />
+    <ClInclude Include="..\..\..\core\framework\util\NGSTDUtil.h" />
+    <ClInclude Include="..\..\..\core\framework\util\RTTI.h" />
+    <ClInclude Include="..\..\..\core\framework\util\StringUtil.h" />
+    <ClInclude Include="..\..\..\core\framework\util\Timing.h" />
+    <ClInclude Include="..\..\..\core\framework\util\WeightedTimedMovingAverage.h" />
+    <ClInclude Include="..\..\..\core\framework\util\FlagUtil.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\core\framework\util\FrameworkConstants.h" />
+    <ClInclude Include="..\..\..\core\framework\util\macros.h" />
+    <ClInclude Include="..\..\..\core\framework\util\NGRollingPool.h" />
+    <ClInclude Include="..\..\..\core\framework\util\NGSTDUtil.h" />
+    <ClInclude Include="..\..\..\core\framework\util\RTTI.h" />
+    <ClInclude Include="..\..\..\core\framework\util\StringUtil.h" />
+    <ClInclude Include="..\..\..\core\framework\util\Timing.h" />
+    <ClInclude Include="..\..\..\core\framework\util\WeightedTimedMovingAverage.h" />
+    <ClInclude Include="..\..\..\core\framework\util\FlagUtil.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\core\framework\util\FrameworkConstants.h" />
+    <ClInclude Include="..\..\..\core\framework\util\macros.h" />
+    <ClInclude Include="..\..\..\core\framework\util\NGRollingPool.h" />
+    <ClInclude Include="..\..\..\core\framework\util\NGSTDUtil.h" />
+    <ClInclude Include="..\..\..\core\framework\util\RTTI.h" />
+    <ClInclude Include="..\..\..\core\framework\util\StringUtil.h" />
+    <ClInclude Include="..\..\..\core\framework\util\Timing.h" />
+    <ClInclude Include="..\..\..\core\framework\util\WeightedTimedMovingAverage.h" />
+    <ClInclude Include="..\..\..\core\framework\util\FlagUtil.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\core\framework\util\FrameworkConstants.h" />
+    <ClInclude Include="..\..\..\core\framework\util\macros.h" />
+    <ClInclude Include="..\..\..\core\framework\util\NGRollingPool.h" />
+    <ClInclude Include="..\..\..\core\framework\util\NGSTDUtil.h" />
+    <ClInclude Include="..\..\..\core\framework\util\RTTI.h" />
+    <ClInclude Include="..\..\..\core\framework\util\StringUtil.h" />
+    <ClInclude Include="..\..\..\core\framework\util\Timing.h" />
+    <ClInclude Include="..\..\..\core\framework\util\WeightedTimedMovingAverage.h" />
+    <ClInclude Include="..\..\..\core\framework\util\FlagUtil.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\core\framework\util\FrameworkConstants.h" />
+    <ClInclude Include="..\..\..\core\framework\util\macros.h" />
+    <ClInclude Include="..\..\..\core\framework\util\NGRollingPool.h" />
+    <ClInclude Include="..\..\..\core\framework\util\NGSTDUtil.h" />
+    <ClInclude Include="..\..\..\core\framework\util\RTTI.h" />
+    <ClInclude Include="..\..\..\core\framework\util\StringUtil.h" />
+    <ClInclude Include="..\..\..\core\framework\util\Timing.h" />
+    <ClInclude Include="..\..\..\core\framework\util\WeightedTimedMovingAverage.h" />
+    <ClInclude Include="..\..\..\core\framework\util\FlagUtil.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\core\framework\util\FrameworkConstants.h" />
+    <ClInclude Include="..\..\..\core\framework\util\macros.h" />
+    <ClInclude Include="..\..\..\core\framework\util\NGRollingPool.h" />
+    <ClInclude Include="..\..\..\core\framework\util\NGSTDUtil.h" />
+    <ClInclude Include="..\..\..\core\framework\util\RTTI.h" />
+    <ClInclude Include="..\..\..\core\framework\util\StringUtil.h" />
+    <ClInclude Include="..\..\..\core\framework\util\Timing.h" />
+    <ClInclude Include="..\..\..\core\framework\util\WeightedTimedMovingAverage.h" />
+    <ClInclude Include="..\..\..\core\framework\util\FlagUtil.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\core\framework\util\FrameworkConstants.h" />
+    <ClInclude Include="..\..\..\core\framework\util\macros.h" />
+    <ClInclude Include="..\..\..\core\framework\util\NGRollingPool.h" />
+    <ClInclude Include="..\..\..\core\framework\util\NGSTDUtil.h" />
+    <ClInclude Include="..\..\..\core\framework\util\RTTI.h" />
+    <ClInclude Include="..\..\..\core\framework\util\StringUtil.h" />
+    <ClInclude Include="..\..\..\core\framework\util\Timing.h" />
+    <ClInclude Include="..\..\..\core\framework\util\WeightedTimedMovingAverage.h" />
+    <ClInclude Include="..\..\..\core\framework\util\FlagUtil.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\core\framework\util\FrameworkConstants.h" />
+    <ClInclude Include="..\..\..\core\framework\util\macros.h" />
+    <ClInclude Include="..\..\..\core\framework\util\NGRollingPool.h" />
+    <ClInclude Include="..\..\..\core\framework\util\NGSTDUtil.h" />
+    <ClInclude Include="..\..\..\core\framework\util\RTTI.h" />
+    <ClInclude Include="..\..\..\core\framework\util\StringUtil.h" />
+    <ClInclude Include="..\..\..\core\framework\util\Timing.h" />
+    <ClInclude Include="..\..\..\core\framework\util\WeightedTimedMovingAverage.h" />
+    <ClInclude Include="..\..\..\core\game\logic\GameConstants.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\core\game\logic\Robot.h" />
+    <ClInclude Include="..\..\..\core\game\logic\World.h" />
+    <ClInclude Include="..\..\..\core\game\logic\GameConstants.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\core\game\logic\Robot.h" />
+    <ClInclude Include="..\..\..\core\game\logic\World.h" />
+    <ClInclude Include="..\..\..\core\game\network\server\RobotServer.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\core\game\network\server\Server.h" />
+    <ClInclude Include="..\..\..\core\game\network\portable\InputState.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\core\game\network\portable\PooledObjectsManager.h" />
+    <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\core\framework\entity\*.cpp" />
+    <ClCompile Include="..\..\..\core\framework\file\portable\*.cpp" />
+    <ClCompile Include="..\..\..\core\framework\math\*.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\server\*.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\*.cpp" />
+    <ClCompile Include="..\..\..\core\framework\state\*.cpp" />
+    <ClCompile Include="..\..\..\core\framework\util\*.cpp" />
+    <ClCompile Include="..\..\..\core\game\logic\*.cpp" />
+    <ClCompile Include="..\..\..\core\game\network\server\*.cpp" />
+    <ClCompile Include="..\..\..\core\game\network\portable\*.cpp" />
+    <ClCompile Include="..\..\server\*.cpp" />
     <ClCompile Include="pch.cpp">
-      <Filter>Source Files</Filter>
+      <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="..\..\server\main.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="..\..\..\core\framework\entity\Entity.cpp">
+      <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\core\framework\network\portable\Engine.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="..\..\..\core\framework\entity\EntityManager.cpp" />
+    <ClCompile Include="..\..\..\core\framework\entity\EntityRegistry.cpp" />
+    <ClCompile Include="..\..\..\core\framework\entity\GridManager.cpp" />
+    <ClCompile Include="..\..\..\core\framework\entity\PhysicalEntity.cpp" />
+    <ClCompile Include="..\..\..\core\framework\entity\Entity.cpp">
+      <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\core\framework\network\portable\GameObject.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="..\..\..\core\framework\entity\EntityManager.cpp" />
+    <ClCompile Include="..\..\..\core\framework\entity\EntityRegistry.cpp" />
+    <ClCompile Include="..\..\..\core\framework\entity\GridManager.cpp" />
+    <ClCompile Include="..\..\..\core\framework\entity\PhysicalEntity.cpp" />
+    <ClCompile Include="..\..\..\core\framework\entity\Entity.cpp">
+      <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\core\framework\network\portable\GameObjectRegistry.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="..\..\..\core\framework\entity\EntityManager.cpp" />
+    <ClCompile Include="..\..\..\core\framework\entity\EntityRegistry.cpp" />
+    <ClCompile Include="..\..\..\core\framework\entity\GridManager.cpp" />
+    <ClCompile Include="..\..\..\core\framework\entity\PhysicalEntity.cpp" />
+    <ClCompile Include="..\..\..\core\framework\entity\Entity.cpp">
+      <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\core\framework\network\portable\InFlightPacket.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="..\..\..\core\framework\entity\EntityManager.cpp" />
+    <ClCompile Include="..\..\..\core\framework\entity\EntityRegistry.cpp" />
+    <ClCompile Include="..\..\..\core\framework\entity\GridManager.cpp" />
+    <ClCompile Include="..\..\..\core\framework\entity\PhysicalEntity.cpp" />
+    <ClCompile Include="..\..\..\core\framework\math\Circle.cpp">
+      <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\core\framework\network\portable\InputState.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="..\..\..\core\framework\math\Line.cpp" />
+    <ClCompile Include="..\..\..\core\framework\math\NGRect.cpp" />
+    <ClCompile Include="..\..\..\core\framework\math\OverlapTester.cpp" />
+    <ClCompile Include="..\..\..\core\framework\math\Triangle.cpp" />
+    <ClCompile Include="..\..\..\core\framework\math\Vector2.cpp" />
+    <ClCompile Include="..\..\..\core\framework\math\Circle.cpp">
+      <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\core\framework\network\portable\LinkingContext.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="..\..\..\core\framework\math\Line.cpp" />
+    <ClCompile Include="..\..\..\core\framework\math\NGRect.cpp" />
+    <ClCompile Include="..\..\..\core\framework\math\OverlapTester.cpp" />
+    <ClCompile Include="..\..\..\core\framework\math\Triangle.cpp" />
+    <ClCompile Include="..\..\..\core\framework\math\Vector2.cpp" />
+    <ClCompile Include="..\..\..\core\framework\math\Circle.cpp">
+      <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\core\framework\network\portable\MemoryBitStream.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="..\..\..\core\framework\math\Line.cpp" />
+    <ClCompile Include="..\..\..\core\framework\math\NGRect.cpp" />
+    <ClCompile Include="..\..\..\core\framework\math\OverlapTester.cpp" />
+    <ClCompile Include="..\..\..\core\framework\math\Triangle.cpp" />
+    <ClCompile Include="..\..\..\core\framework\math\Vector2.cpp" />
+    <ClCompile Include="..\..\..\core\framework\math\Circle.cpp">
+      <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\core\framework\network\portable\Move.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="..\..\..\core\framework\math\Line.cpp" />
+    <ClCompile Include="..\..\..\core\framework\math\NGRect.cpp" />
+    <ClCompile Include="..\..\..\core\framework\math\OverlapTester.cpp" />
+    <ClCompile Include="..\..\..\core\framework\math\Triangle.cpp" />
+    <ClCompile Include="..\..\..\core\framework\math\Vector2.cpp" />
+    <ClCompile Include="..\..\..\core\framework\math\Circle.cpp">
+      <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\core\framework\network\portable\MoveList.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\core\framework\network\portable\NetworkManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\core\framework\network\portable\ReplicationCommand.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\core\framework\network\portable\RoboCat.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\core\framework\network\portable\RoboMath.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\core\framework\network\portable\SocketAddress.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\core\framework\network\portable\SocketAddressFactory.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\core\framework\network\portable\SocketUtil.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\core\framework\network\portable\StringUtils.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\core\framework\network\portable\Timing.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\core\framework\network\portable\UDPSocket.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\core\framework\network\portable\WeightedTimedMovingAverage.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\core\framework\network\portable\World.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\core\framework\network\portable\AckRange.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\core\framework\network\portable\DeliveryNotificationManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\core\framework\network\server\ReplicationManagerServer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\core\framework\network\server\ReplicationManagerTransmissionData.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\core\framework\network\server\RoboCatServer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\core\framework\network\server\Server.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
+    <ClCompile Include="..\..\..\core\framework\math\Line.cpp" />
+    <ClCompile Include="..\..\..\core\framework\math\NGRect.cpp" />
+    <ClCompile Include="..\..\..\core\framework\math\OverlapTester.cpp" />
+    <ClCompile Include="..\..\..\core\framework\math\Triangle.cpp" />
+    <ClCompile Include="..\..\..\core\framework\math\Vector2.cpp" />
     <ClCompile Include="..\..\..\core\framework\network\server\ClientProxy.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\core\framework\network\server\NetworkManagerServer.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="..\..\..\core\framework\network\server\NetworkManagerServer.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\server\ReplicationManagerServer.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\server\ReplicationManagerTransmissionData.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\server\ClientProxy.cpp">
+      <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\core\framework\network\server\NetworkManagerServer.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\server\ReplicationManagerServer.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\server\ReplicationManagerTransmissionData.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\server\ClientProxy.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\core\framework\network\server\NetworkManagerServer.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\server\ReplicationManagerServer.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\server\ReplicationManagerTransmissionData.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\AckRange.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\core\framework\network\portable\DeliveryNotificationManager.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\IInputState.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\INetworkManager.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\InFlightPacket.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\InputMemoryBitStream.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\Move.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\MoveList.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\OutputMemoryBitStream.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\ReplicationCommand.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\SocketAddress.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\SocketAddressFactory.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\SocketUtil.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\UDPSocket.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\AckRange.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\core\framework\network\portable\DeliveryNotificationManager.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\IInputState.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\INetworkManager.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\InFlightPacket.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\InputMemoryBitStream.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\Move.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\MoveList.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\OutputMemoryBitStream.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\ReplicationCommand.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\SocketAddress.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\SocketAddressFactory.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\SocketUtil.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\UDPSocket.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\AckRange.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\core\framework\network\portable\DeliveryNotificationManager.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\IInputState.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\INetworkManager.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\InFlightPacket.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\InputMemoryBitStream.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\Move.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\MoveList.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\OutputMemoryBitStream.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\ReplicationCommand.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\SocketAddress.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\SocketAddressFactory.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\SocketUtil.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\UDPSocket.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\AckRange.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\core\framework\network\portable\DeliveryNotificationManager.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\IInputState.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\INetworkManager.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\InFlightPacket.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\InputMemoryBitStream.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\Move.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\MoveList.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\OutputMemoryBitStream.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\ReplicationCommand.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\SocketAddress.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\SocketAddressFactory.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\SocketUtil.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\UDPSocket.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\AckRange.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\core\framework\network\portable\DeliveryNotificationManager.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\IInputState.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\INetworkManager.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\InFlightPacket.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\InputMemoryBitStream.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\Move.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\MoveList.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\OutputMemoryBitStream.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\ReplicationCommand.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\SocketAddress.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\SocketAddressFactory.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\SocketUtil.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\UDPSocket.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\AckRange.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\core\framework\network\portable\DeliveryNotificationManager.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\IInputState.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\INetworkManager.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\InFlightPacket.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\InputMemoryBitStream.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\Move.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\MoveList.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\OutputMemoryBitStream.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\ReplicationCommand.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\SocketAddress.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\SocketAddressFactory.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\SocketUtil.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\UDPSocket.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\AckRange.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\core\framework\network\portable\DeliveryNotificationManager.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\IInputState.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\INetworkManager.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\InFlightPacket.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\InputMemoryBitStream.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\Move.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\MoveList.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\OutputMemoryBitStream.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\ReplicationCommand.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\SocketAddress.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\SocketAddressFactory.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\SocketUtil.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\UDPSocket.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\AckRange.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\core\framework\network\portable\DeliveryNotificationManager.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\IInputState.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\INetworkManager.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\InFlightPacket.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\InputMemoryBitStream.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\Move.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\MoveList.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\OutputMemoryBitStream.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\ReplicationCommand.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\SocketAddress.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\SocketAddressFactory.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\SocketUtil.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\UDPSocket.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\AckRange.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\core\framework\network\portable\DeliveryNotificationManager.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\IInputState.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\INetworkManager.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\InFlightPacket.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\InputMemoryBitStream.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\Move.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\MoveList.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\OutputMemoryBitStream.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\ReplicationCommand.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\SocketAddress.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\SocketAddressFactory.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\SocketUtil.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\UDPSocket.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\AckRange.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\core\framework\network\portable\DeliveryNotificationManager.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\IInputState.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\INetworkManager.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\InFlightPacket.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\InputMemoryBitStream.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\Move.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\MoveList.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\OutputMemoryBitStream.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\ReplicationCommand.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\SocketAddress.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\SocketAddressFactory.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\SocketUtil.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\UDPSocket.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\AckRange.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\core\framework\network\portable\DeliveryNotificationManager.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\IInputState.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\INetworkManager.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\InFlightPacket.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\InputMemoryBitStream.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\Move.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\MoveList.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\OutputMemoryBitStream.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\ReplicationCommand.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\SocketAddress.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\SocketAddressFactory.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\SocketUtil.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\UDPSocket.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\AckRange.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\core\framework\network\portable\DeliveryNotificationManager.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\IInputState.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\INetworkManager.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\InFlightPacket.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\InputMemoryBitStream.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\Move.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\MoveList.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\OutputMemoryBitStream.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\ReplicationCommand.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\SocketAddress.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\SocketAddressFactory.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\SocketUtil.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\UDPSocket.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\AckRange.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\core\framework\network\portable\DeliveryNotificationManager.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\IInputState.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\INetworkManager.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\InFlightPacket.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\InputMemoryBitStream.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\Move.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\MoveList.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\OutputMemoryBitStream.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\ReplicationCommand.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\SocketAddress.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\SocketAddressFactory.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\SocketUtil.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\portable\UDPSocket.cpp" />
+    <ClCompile Include="..\..\..\core\framework\util\RTTI.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\core\framework\util\StringUtil.cpp" />
+    <ClCompile Include="..\..\..\core\framework\util\Timing.cpp" />
+    <ClCompile Include="..\..\..\core\framework\util\WeightedTimedMovingAverage.cpp" />
+    <ClCompile Include="..\..\..\core\framework\util\RTTI.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\core\framework\util\StringUtil.cpp" />
+    <ClCompile Include="..\..\..\core\framework\util\Timing.cpp" />
+    <ClCompile Include="..\..\..\core\framework\util\WeightedTimedMovingAverage.cpp" />
+    <ClCompile Include="..\..\..\core\framework\util\RTTI.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\core\framework\util\StringUtil.cpp" />
+    <ClCompile Include="..\..\..\core\framework\util\Timing.cpp" />
+    <ClCompile Include="..\..\..\core\framework\util\WeightedTimedMovingAverage.cpp" />
+    <ClCompile Include="..\..\..\core\game\logic\Robot.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\core\game\logic\World.cpp" />
+    <ClCompile Include="..\..\..\core\game\network\server\RobotServer.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\core\game\network\server\Server.cpp" />
+    <ClCompile Include="..\..\..\core\game\network\portable\InputState.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\core\game\network\portable\PooledObjectsManager.cpp" />
   </ItemGroup>
 </Project>
