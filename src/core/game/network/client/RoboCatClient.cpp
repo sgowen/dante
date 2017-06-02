@@ -43,22 +43,22 @@ void RoboCatClient::update()
         //in theory, only do this if we want to sample input this frame / if there's a new move (since we have to keep in sync with server)
         if (pendingMove) //is it time to sample a new move...
         {
-            float deltaTime = pendingMove->GetDeltaTime();
+            float deltaTime = pendingMove->getDeltaTime();
             
             //apply that input
             
-            ProcessInput(deltaTime, pendingMove->GetInputState());
+            processInput(deltaTime, pendingMove->getInputState());
             
             //and simulate!
             
-            SimulateMovement(deltaTime);
+            simulateMovement(deltaTime);
             
-            LOG("Client Move Time: %3.4f deltaTime: %3.4f left rot at %3.4f", pendingMove->GetTimestamp(), deltaTime, getAngle());
+            LOG("Client Move Time: %3.4f deltaTime: %3.4f left rot at %3.4f", pendingMove->getTimestamp(), deltaTime, getAngle());
         }
     }
     else
     {
-        SimulateMovement(Timing::getInstance()->getDeltaTime());
+        simulateMovement(Timing::getInstance()->getDeltaTime());
         
         if (getVelocity().isEqualTo(Vector2::Zero))
         {
@@ -111,10 +111,10 @@ void RoboCatClient::doClientSidePredictionAfterReplicationForLocalCat(uint32_t i
         
         for (const Move& move : moveList)
         {
-            float deltaTime = move.GetDeltaTime();
-            ProcessInput(deltaTime, move.GetInputState());
+            float deltaTime = move.getDeltaTime();
+            processInput(deltaTime, move.getInputState());
             
-            SimulateMovement(deltaTime);
+            simulateMovement(deltaTime);
         }
     }
 }
@@ -134,12 +134,12 @@ void RoboCatClient::doClientSidePredictionAfterReplicationForRemoteCat(uint32_t 
         {
             if (rtt < FRAME_RATE)
             {
-                SimulateMovement(rtt);
+                simulateMovement(rtt);
                 break;
             }
             else
             {
-                SimulateMovement(FRAME_RATE);
+                simulateMovement(FRAME_RATE);
                 rtt -= FRAME_RATE;
             }
         }

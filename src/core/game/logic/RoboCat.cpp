@@ -148,33 +148,38 @@ uint32_t RoboCat::write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyS
     return writtenState;
 }
 
-void RoboCat::ProcessInput(float inDeltaTime, const InputState& inInputState)
+void RoboCat::processInput(float inDeltaTime, IInputState* inInputState)
 {
     //process our input....
+    InputState* inputState = (InputState*)inInputState;
+    if (!inputState)
+    {
+        return;
+    }
     
     //turning...
-    float newRotation = getAngle() + inInputState.getDesiredHorizontalDelta() * m_fMaxRotationSpeed * inDeltaTime;
+    float newRotation = getAngle() + inputState->getDesiredHorizontalDelta() * m_fMaxRotationSpeed * inDeltaTime;
     setAngle(newRotation);
     
     //moving...
-    float inputForwardDelta = inInputState.getDesiredVerticalDelta();
+    float inputForwardDelta = inputState->getDesiredVerticalDelta();
     m_fThrustDir = inputForwardDelta;
 }
 
-void RoboCat::SimulateMovement(float inDeltaTime)
+void RoboCat::simulateMovement(float inDeltaTime)
 {
     //simulate us...
-    AdjustVelocityByThrust(inDeltaTime);
+    adjustVelocityByThrust(inDeltaTime);
     
     setPosition(getPosition() + m_velocity * inDeltaTime);
     
-    ProcessCollisions();
+    processCollisions();
 }
 
-void RoboCat::ProcessCollisions()
+void RoboCat::processCollisions()
 {
     //right now just bounce off the sides..
-    ProcessCollisionsWithScreenWalls();
+    processCollisionsWithScreenWalls();
     
     float sourceRadius = 0.5f;
     Vector2 sourceLocation = getPosition();
@@ -239,7 +244,7 @@ void RoboCat::ProcessCollisions()
     }
 }
 
-void RoboCat::ProcessCollisionsWithScreenWalls()
+void RoboCat::processCollisionsWithScreenWalls()
 {
     Vector2 location = getPosition();
     float x = location.getX();
@@ -298,7 +303,7 @@ int RoboCat::getIndexInWorld() const
     return m_iIndexInWorld;
 }
 
-void RoboCat::AdjustVelocityByThrust(float inDeltaTime)
+void RoboCat::adjustVelocityByThrust(float inDeltaTime)
 {
     //just set the velocity based on the thrust direction -- no thrust will lead to 0 velocity
     //simulating acceleration makes the client prediction a bit more complex

@@ -150,7 +150,7 @@ void NetworkManagerClient::readLastMoveProcessedOnServerTimestamp(InputMemoryBit
         m_fLastRoundTripTime = rtt;
         m_avgRoundTripTime.update(rtt);
         
-        InputManager::getInstance()->getMoveList().RemovedProcessedMoves(m_fLastMoveProcessedByServerTimestamp);
+        InputManager::getInstance()->getMoveList().removedProcessedMoves(m_fLastMoveProcessedByServerTimestamp);
     }
 }
 
@@ -224,7 +224,7 @@ void NetworkManagerClient::sendInputPacket()
     //only send if there's any input to sent!
     const MoveList& moveList = InputManager::getInstance()->getMoveList();
     
-    if (moveList.HasMoves())
+    if (moveList.hasMoves())
     {
         OutputMemoryBitStream inputPacket;
         
@@ -233,7 +233,7 @@ void NetworkManagerClient::sendInputPacket()
         m_deliveryNotificationManager.WriteState(inputPacket);
         
         //eventually write the 3 latest moves so they have three chances to get through...
-        int moveCount = moveList.GetMoveCount();
+        int moveCount = moveList.getMoveCount();
         int firstMoveIndex = moveCount - 3;
         if (firstMoveIndex < 3)
         {

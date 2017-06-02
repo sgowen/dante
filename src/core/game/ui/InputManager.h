@@ -9,9 +9,9 @@
 #ifndef __noctisgames__InputManager__
 #define __noctisgames__InputManager__
 
-#include "InputState.h"
 #include "MoveList.h"
 
+class InputState;
 class Move;
 
 class InputManager
@@ -26,7 +26,7 @@ public:
     const Move* getAndClearPendingMove();
     
 private:
-    InputState m_currentState;
+    InputState* m_currentState;
     MoveList m_moveList;
     float m_fNextTimeToSampleInput;
     const Move* m_pendingMove;
@@ -36,6 +36,7 @@ private:
     
     // ctor, copy ctor, and assignment should be private in a Singleton
     InputManager();
+    ~InputManager();
     InputManager(const InputManager&);
     InputManager& operator=(const InputManager&);
 };

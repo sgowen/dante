@@ -14,9 +14,11 @@
 #include "NetworkType.h"
 #include "GameConstants.h"
 
+#include "RTTI.h"
+
 #include <stdint.h>
 
-class InputState;
+class IInputState;
 
 class RoboCat : public PhysicalEntity
 {
@@ -40,11 +42,11 @@ public:
     
     virtual uint32_t write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState);
     
-    void ProcessInput(float inDeltaTime, const InputState& inInputState);
-    void SimulateMovement(float inDeltaTime);
+    void processInput(float inDeltaTime, IInputState* inInputState);
+    void simulateMovement(float inDeltaTime);
     
-    void ProcessCollisions();
-    void ProcessCollisionsWithScreenWalls();
+    void processCollisions();
+    void processCollisionsWithScreenWalls();
     
     void setPlayerId(uint32_t inPlayerId);
     uint32_t getPlayerId() const;
@@ -66,7 +68,7 @@ protected:
     uint32_t m_iPlayerId;
     uint32_t m_iReadState;
     
-    void AdjustVelocityByThrust(float inDeltaTime);
+    void adjustVelocityByThrust(float inDeltaTime);
     
     RoboCat();
     

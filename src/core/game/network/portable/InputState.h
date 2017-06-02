@@ -12,13 +12,21 @@
 class OutputMemoryBitStream;
 class InputMemoryBitStream;
 
-class InputState
+#include "IInputState.h"
+
+#include "RTTI.h"
+
+class InputState : public IInputState
 {
+    RTTI_DECL;
+    
 public:
     InputState();
     
-    bool write(OutputMemoryBitStream& inOutputStream) const;
-    bool read(InputMemoryBitStream& inInputStream);
+    virtual ~InputState();
+    
+    virtual bool write(OutputMemoryBitStream& inOutputStream) const;
+    virtual bool read(InputMemoryBitStream& inInputStream);
     
     float getDesiredHorizontalDelta() const;
     float getDesiredVerticalDelta() const;

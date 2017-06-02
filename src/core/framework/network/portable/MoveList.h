@@ -13,28 +13,28 @@
 
 #include <deque>
 
-class InputState;
+class IInputState;
 
 class MoveList
 {
 public:
     MoveList();
     
-    const Move&	AddMove(const InputState& inInputState, float inTimestamp);
+    const Move&	addMove(IInputState* inInputState, float inTimestamp);
     
-    bool AddMoveIfNew(const Move& inMove);
+    bool addMoveIfNew(const Move& inMove);
     
-    void RemovedProcessedMoves(float inLastMoveProcessedOnServerTimestamp);
+    void removedProcessedMoves(float inLastMoveProcessedOnServerTimestamp);
     
-    float GetLastMoveTimestamp() const;
+    float getLastMoveTimestamp() const;
     
-    const Move& GetLatestMove() const;
+    const Move& getLatestMove() const;
     
-    void Clear();
+    void clear();
     
-    bool HasMoves() const;
+    bool hasMoves() const;
     
-    int GetMoveCount() const;
+    int getMoveCount() const;
     
     std::deque<Move>::const_iterator begin() const;
     

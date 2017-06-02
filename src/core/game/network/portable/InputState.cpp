@@ -42,7 +42,16 @@ namespace
     }
 }
 
-InputState::InputState() : m_fDesiredRightAmount(0), m_fDesiredLeftAmount(0), m_fDesiredForwardAmount(0), m_fDesiredBackAmount(0)
+InputState::InputState() : IInputState(),
+m_fDesiredRightAmount(0),
+m_fDesiredLeftAmount(0),
+m_fDesiredForwardAmount(0),
+m_fDesiredBackAmount(0)
+{
+    // Empty
+}
+
+InputState::~InputState()
 {
     // Empty
 }
@@ -72,3 +81,5 @@ float InputState::getDesiredVerticalDelta() const
 {
     return m_fDesiredForwardAmount - m_fDesiredBackAmount;
 }
+
+RTTI_IMPL(InputState, IInputState);

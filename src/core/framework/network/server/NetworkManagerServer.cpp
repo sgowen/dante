@@ -259,7 +259,7 @@ void NetworkManagerServer::writeLastMoveTimestampIfDirty(OutputMemoryBitStream& 
     inOutputStream.write(isTimestampDirty);
     if (isTimestampDirty)
     {
-        inOutputStream.write(inClientProxy->getUnprocessedMoveList().GetLastMoveTimestamp());
+        inOutputStream.write(inClientProxy->getUnprocessedMoveList().getLastMoveTimestamp());
         inClientProxy->SetIsLastMoveTimestampDirty(false);
     }
 }
@@ -274,7 +274,7 @@ void NetworkManagerServer::handleInputPacket(ClientProxy* inClientProxy, InputMe
     {
         if (move.read(inInputStream))
         {
-            if (inClientProxy->getUnprocessedMoveList().AddMoveIfNew(move))
+            if (inClientProxy->getUnprocessedMoveList().addMoveIfNew(move))
             {
                 inClientProxy->SetIsLastMoveTimestampDirty(true);
             }

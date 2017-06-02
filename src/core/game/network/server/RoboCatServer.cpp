@@ -46,17 +46,17 @@ void RoboCatServer::update()
         MoveList& moveList = client->getUnprocessedMoveList();
         for (const Move& unprocessedMove : moveList)
         {
-            const InputState& currentState = unprocessedMove.GetInputState();
+            IInputState* currentState = unprocessedMove.getInputState();
             
-            float deltaTime = unprocessedMove.GetDeltaTime();
+            float deltaTime = unprocessedMove.getDeltaTime();
             
-            ProcessInput(deltaTime, currentState);
-            SimulateMovement(deltaTime);
+            processInput(deltaTime, currentState);
+            simulateMovement(deltaTime);
             
-            LOG("Server Move Time: %3.4f deltaTime: %3.4f left rot at %3.4f", unprocessedMove.GetTimestamp(), deltaTime, getAngle());
+            LOG("Server Move Time: %3.4f deltaTime: %3.4f left rot at %3.4f", unprocessedMove.getTimestamp(), deltaTime, getAngle());
         }
         
-        moveList.Clear();
+        moveList.clear();
     }
     
     if (!oldLocation.isEqualTo(getPosition()) ||

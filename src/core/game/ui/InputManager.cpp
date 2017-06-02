@@ -10,6 +10,7 @@
 
 #include "InputManager.h"
 
+#include "InputState.h"
 #include "Move.h"
 
 #include "Timing.h"
@@ -33,48 +34,47 @@ void InputManager::update()
     KEYBOARD_INPUT_MANAGER->process();
     GAME_PAD_INPUT_MANAGER->process();
     
-//    for (std::vector<KeyboardEvent *>::iterator i = KEYBOARD_INPUT_MANAGER->getEvents().begin(); i != KEYBOARD_INPUT_MANAGER->getEvents().end(); ++i)
-//    {
-//        switch ((*i)->getType())
-//        {
-//            case KeyboardEventType_W:
-//                m_currentState.getDesiredVerticalDelta()
-//                InputManager::getInstance()->handleInput((*i)->isUp() ? EIA_Released : EIA_Pressed, 'W');
-//                continue;
-//            case KeyboardEventType_A:
-//                InputManager::getInstance()->handleInput((*i)->isUp() ? EIA_Released : EIA_Pressed, 'A');
-//                continue;
-//            case KeyboardEventType_S:
-//                InputManager::getInstance()->handleInput((*i)->isUp() ? EIA_Released : EIA_Pressed, 'S');
-//                continue;
-//            case KeyboardEventType_D:
-//                InputManager::getInstance()->handleInput((*i)->isUp() ? EIA_Released : EIA_Pressed, 'D');
-//                continue;
-//            default:
-//                continue;
-//        }
-//    }
-//    
-//    for (std::vector<GamePadEvent *>::iterator i = GAME_PAD_INPUT_MANAGER->getEvents().begin(); i != GAME_PAD_INPUT_MANAGER->getEvents().end(); ++i)
-//    {
-//        switch ((*i)->getType())
-//        {
-//            case GamePadEventType_D_PAD_UP:
-//                InputManager::getInstance()->handleInput((*i)->isButtonPressed() ? EIA_Pressed : EIA_Released, 'W');
-//                continue;
-//            case GamePadEventType_D_PAD_LEFT:
-//                InputManager::getInstance()->handleInput((*i)->isButtonPressed() ? EIA_Pressed : EIA_Released, 'A');
-//                continue;
-//            case GamePadEventType_D_PAD_DOWN:
-//                InputManager::getInstance()->handleInput((*i)->isButtonPressed() ? EIA_Pressed : EIA_Released, 'S');
-//                continue;
-//            case GamePadEventType_D_PAD_RIGHT:
-//                InputManager::getInstance()->handleInput((*i)->isButtonPressed() ? EIA_Pressed : EIA_Released, 'D');
-//                continue;
-//            default:
-//                continue;
-//        }
-//    }
+    for (std::vector<KeyboardEvent *>::iterator i = KEYBOARD_INPUT_MANAGER->getEvents().begin(); i != KEYBOARD_INPUT_MANAGER->getEvents().end(); ++i)
+    {
+        switch ((*i)->getType())
+        {
+            case KeyboardEventType_W:
+                m_currentState->m_fDesiredForwardAmount = (*i)->isUp() ? 0 : 1;
+                continue;
+            case KeyboardEventType_A:
+                m_currentState->m_fDesiredRightAmount = (*i)->isUp() ? 0 : 1;
+                continue;
+            case KeyboardEventType_S:
+                m_currentState->m_fDesiredBackAmount = (*i)->isUp() ? 0 : 1;
+                continue;
+            case KeyboardEventType_D:
+                m_currentState->m_fDesiredLeftAmount = (*i)->isUp() ? 0 : 1;
+                continue;
+            default:
+                continue;
+        }
+    }
+    
+    for (std::vector<GamePadEvent *>::iterator i = GAME_PAD_INPUT_MANAGER->getEvents().begin(); i != GAME_PAD_INPUT_MANAGER->getEvents().end(); ++i)
+    {
+        switch ((*i)->getType())
+        {
+            case GamePadEventType_D_PAD_UP:
+                m_currentState->m_fDesiredForwardAmount = (*i)->isButtonPressed() ? 1 : 0;
+                continue;
+            case GamePadEventType_D_PAD_LEFT:
+                m_currentState->m_fDesiredRightAmount = (*i)->isButtonPressed() ? 1 : 0;
+                continue;
+            case GamePadEventType_D_PAD_DOWN:
+                m_currentState->m_fDesiredBackAmount = (*i)->isButtonPressed() ? 1 : 0;
+                continue;
+            case GamePadEventType_D_PAD_RIGHT:
+                m_currentState->m_fDesiredLeftAmount = (*i)->isButtonPressed() ? 1 : 0;
+                continue;
+            default:
+                continue;
+        }
+    }
     
     if (isTimeToSampleInput())
     {
@@ -97,7 +97,7 @@ const Move* InputManager::getAndClearPendingMove()
 
 const Move& InputManager::sampleInputAsMove()
 {
-    return m_moveList.AddMove(m_currentState, Timing::getInstance()->getFrameStartTime());
+    return m_moveList.addMove(m_currentState, Timing::getInstance()->getFrameStartTime());
 }
 
 bool InputManager::isTimeToSampleInput()
@@ -115,7 +115,15 @@ bool InputManager::isTimeToSampleInput()
     return false;
 }
 
-InputManager::InputManager() : m_fNextTimeToSampleInput(0.f), m_pendingMove(nullptr)
+InputManager::InputManager() :
+m_currentState(new InputState()),
+m_fNextTimeToSampleInput(0.f),
+m_pendingMove(nullptr)
 {
     // Empty
+}
+
+InputManager::~InputManager()
+{
+    delete m_currentState;
 }
