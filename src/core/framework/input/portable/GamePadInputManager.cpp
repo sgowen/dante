@@ -52,3 +52,8 @@ GamePadInputManager::GamePadInputManager() : m_pool(new NGRollingPool<GamePadEve
 {
     // Empty
 }
+
+GamePadInputManager::~GamePadInputManager()
+{
+    delete m_pool;
+}

@@ -29,6 +29,9 @@
 		BB052CCF1EBA8ADD007FA789 /* shader_003_frag.ngs in Resources */ = {isa = PBXBuildFile; fileRef = BB052CC41EBA8ADD007FA789 /* shader_003_frag.ngs */; };
 		BB052CD01EBA8ADD007FA789 /* shader_003_vert.ngs in Resources */ = {isa = PBXBuildFile; fileRef = BB052CC51EBA8ADD007FA789 /* shader_003_vert.ngs */; };
 		BB052CD11EBA8ADD007FA789 /* shader_003_vert.ngs in Resources */ = {isa = PBXBuildFile; fileRef = BB052CC51EBA8ADD007FA789 /* shader_003_vert.ngs */; };
+		BB08646C1EE1B75900BCD9E0 /* PooledObjectsManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB08646A1EE1B75800BCD9E0 /* PooledObjectsManager.cpp */; };
+		BB08646D1EE1B75900BCD9E0 /* PooledObjectsManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB08646A1EE1B75800BCD9E0 /* PooledObjectsManager.cpp */; };
+		BB08646E1EE1B75900BCD9E0 /* PooledObjectsManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB08646A1EE1B75800BCD9E0 /* PooledObjectsManager.cpp */; };
 		BB09703619C3A3180086B30F /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB09703519C3A3180086B30F /* CoreFoundation.framework */; };
 		BB09CE111DBD3779006A3E49 /* libSuperpoweredAudioIOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BB09CDDB1DBD3779006A3E49 /* libSuperpoweredAudioIOS.a */; };
 		BB09CE171DBD3779006A3E49 /* libSuperpoweredAudioOSX.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BB09CDDC1DBD3779006A3E49 /* libSuperpoweredAudioOSX.a */; };
@@ -408,6 +411,8 @@
 		BB052CE51EBA9044007FA789 /* encrypt_textures_and_shaders.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = encrypt_textures_and_shaders.sh; sourceTree = "<group>"; };
 		BB052CE81EBA9298007FA789 /* encrypt_shaders_win32.bat */ = {isa = PBXFileReference; lastKnownFileType = text; path = encrypt_shaders_win32.bat; sourceTree = "<group>"; };
 		BB052CE91EBA9298007FA789 /* encrypt_textures_win32.bat */ = {isa = PBXFileReference; lastKnownFileType = text; path = encrypt_textures_win32.bat; sourceTree = "<group>"; };
+		BB08646A1EE1B75800BCD9E0 /* PooledObjectsManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PooledObjectsManager.cpp; sourceTree = "<group>"; };
+		BB08646B1EE1B75800BCD9E0 /* PooledObjectsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PooledObjectsManager.h; sourceTree = "<group>"; };
 		BB09703519C3A3180086B30F /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
 		BB09CDD41DBD3779006A3E49 /* SuperpoweredAndroidAudioIO.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SuperpoweredAndroidAudioIO.cpp; sourceTree = "<group>"; };
 		BB09CDD51DBD3779006A3E49 /* SuperpoweredAndroidAudioIO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SuperpoweredAndroidAudioIO.h; sourceTree = "<group>"; };
@@ -1908,6 +1913,8 @@
 			children = (
 				BBBD14DE1EE0ED71003F9307 /* InputState.cpp */,
 				BBBD14DF1EE0ED71003F9307 /* InputState.h */,
+				BB08646A1EE1B75800BCD9E0 /* PooledObjectsManager.cpp */,
+				BB08646B1EE1B75800BCD9E0 /* PooledObjectsManager.h */,
 			);
 			path = portable;
 			sourceTree = "<group>";
@@ -2179,6 +2186,7 @@
 				BBAEF29B1EA94EDA00F0866E /* Triangle.cpp in Sources */,
 				BBAEF2671EA94EDA00F0866E /* LineBatcher.cpp in Sources */,
 				BBAEF29D1EA94EDA00F0866E /* Vector2.cpp in Sources */,
+				BB08646C1EE1B75900BCD9E0 /* PooledObjectsManager.cpp in Sources */,
 				BB8308431EC2AD1F00435E7E /* DeliveryNotificationManager.cpp in Sources */,
 				BB44C8711DB03A7E003E633F /* pngpread.c in Sources */,
 				BBAEF2651EA94EDA00F0866E /* ITextureLoader.cpp in Sources */,
@@ -2370,6 +2378,7 @@
 				BBAEF2761EA94EDA00F0866E /* TextureLoaderFactory.cpp in Sources */,
 				BBD43A0E1ED0BD00001D5EB4 /* ReplicationCommand.cpp in Sources */,
 				BBAEF2741EA94EDA00F0866E /* SpriteBatcherFactory.cpp in Sources */,
+				BB08646D1EE1B75900BCD9E0 /* PooledObjectsManager.cpp in Sources */,
 				BBAEF2641EA94EDA00F0866E /* IRendererHelper.cpp in Sources */,
 				BB44CB8E1DB053C0003E633F /* pngwtran.c in Sources */,
 				BB8308711EC2AD1F00435E7E /* SocketAddressFactory.cpp in Sources */,
@@ -2418,6 +2427,7 @@
 				BBBD149B1EE06BB3003F9307 /* WeightedTimedMovingAverage.cpp in Sources */,
 				BBD43A0F1ED0BD00001D5EB4 /* ReplicationCommand.cpp in Sources */,
 				BB8308021EC2AC0900435E7E /* ReplicationManagerServer.cpp in Sources */,
+				BB08646E1EE1B75900BCD9E0 /* PooledObjectsManager.cpp in Sources */,
 				BB8308451EC2AD1F00435E7E /* DeliveryNotificationManager.cpp in Sources */,
 				BB8308631EC2AD1F00435E7E /* INetworkManager.cpp in Sources */,
 				BB72519A1EE1053F0024C71C /* ClientProxy.cpp in Sources */,

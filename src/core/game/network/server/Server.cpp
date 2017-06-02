@@ -19,6 +19,7 @@
 #include "Timing.h"
 #include "FrameworkConstants.h"
 #include "SocketUtil.h"
+#include "PooledObjectsManager.h"
 
 Server* Server::getInstance()
 {
@@ -153,7 +154,7 @@ Server::Server() : m_fFrameStateTime(0), m_isInitialized(false)
     
     EntityRegistry::getInstance()->registerCreationFunction(NETWORK_TYPE_RoboCat, RoboCatServer::create);
     
-    m_isInitialized = NetworkManagerServer::getInstance()->init(9999, World::removeEntityIfPossible, Server::staticHandleNewClient, Server::staticHandleLostClient);
+    m_isInitialized = NetworkManagerServer::getInstance()->init(9999, World::removeEntityIfPossible, Server::staticHandleNewClient, Server::staticHandleLostClient, PooledObjectsManager::borrowBaseType);
 }
 
 Server::~Server()

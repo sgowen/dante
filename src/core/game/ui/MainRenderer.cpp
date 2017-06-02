@@ -78,8 +78,8 @@ void MainRenderer::tempDraw(float stateTime)
         {
             if (go->getNetworkType() == 'PLYR')
             {
-                TextureRegion tr = ASSETS->findTextureRegion("CharacterHoldingGun", stateTime);
-                m_spriteBatcher->drawSprite(go->getPosition().getX(), go->getPosition().getY(), 1.0f, 1.0f, RADIANS_TO_DEGREES(go->getAngle()) - 90, go->getColor(), tr);
+                TextureRegion tr = ASSETS->findTextureRegion("Samus_Running", stateTime);
+                m_spriteBatcher->drawSprite(go->getPosition().getX(), go->getPosition().getY(), go->getWidth(), go->getHeight(), RADIANS_TO_DEGREES(go->getAngle()) - 90, go->getColor(), tr);
             }
         }
         m_spriteBatcher->endBatch(*m_demo->gpuTextureWrapper, *m_textureGpuProgramWrapper);
@@ -95,7 +95,7 @@ void MainRenderer::tempDraw(float stateTime)
 
 void MainRenderer::RenderBandWidth()
 {
-    static Vector2 bandwidthOrigin = Vector2(4.f, 6.6f);
+    static Vector2 bandwidthOrigin = Vector2(CAM_WIDTH / 2, CAM_HEIGHT - 1);
     
     const WeightedTimedMovingAverage& bpsIn = NetworkManagerClient::getInstance()->getBytesReceivedPerSecond();
     int bpsInInt = static_cast< int >(bpsIn.getValue());
@@ -112,7 +112,7 @@ void MainRenderer::RenderBandWidth()
 
 void MainRenderer::RenderRoundTripTime()
 {
-    static Vector2 roundTripTimeOrigin = Vector2(5.f, 7.f);
+    static Vector2 roundTripTimeOrigin = Vector2(CAM_WIDTH / 2, CAM_HEIGHT - 0.5);
     
     float rttMS = NetworkManagerClient::getInstance()->getAvgRoundTripTime().getValue() * 1000.f;
     
@@ -133,5 +133,5 @@ void MainRenderer::RenderText(const std::string& inStr, const Vector2& origin, c
     ss << inStr;
     std::string text = ss.str();
     
-    m_font->renderText(*m_spriteBatcher, text, origin.getX(), origin.getY(), fgWidth, fgHeight, fontColor, false, false);
+    m_font->renderText(*m_spriteBatcher, text, origin.getX(), origin.getY(), fgWidth, fgHeight, fontColor, true, false);
 }

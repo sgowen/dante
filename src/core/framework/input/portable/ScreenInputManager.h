@@ -36,6 +36,7 @@ private:
     
     // ctor, copy ctor, and assignment should be private in a Singleton
     ScreenInputManager();
+    ~ScreenInputManager();
     ScreenInputManager(const ScreenInputManager&);
     ScreenInputManager& operator=(const ScreenInputManager&);
 };

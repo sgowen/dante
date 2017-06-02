@@ -18,13 +18,16 @@ class Move
 public:
     Move(IInputState* inInputState, float inTimestamp, float inDeltaTime);
     
-    Move();
+    Move(IInputState* inInputState);
     
     bool write(OutputMemoryBitStream& inOutputStream) const;
+    
     bool read(InputMemoryBitStream& inInputStream);
     
     IInputState* getInputState() const;
+    
     float getTimestamp() const;
+    
     float getDeltaTime() const;
     
 private:

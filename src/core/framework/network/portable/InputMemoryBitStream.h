@@ -19,33 +19,43 @@ struct Color;
 class InputMemoryBitStream
 {
 public:
-    InputMemoryBitStream(char* inBuffer, uint32_t inBitCount) :
-    mBuffer(inBuffer),
-    mBitCapacity(inBitCount),
-    mBitHead(0),
-    mIsBufferOwner(false) {}
+    InputMemoryBitStream(char* inBuffer, uint32_t inBitCount);
     
-    InputMemoryBitStream(const InputMemoryBitStream& inOther) :
-    mBitCapacity(inOther.mBitCapacity),
-    mBitHead(inOther.mBitHead),
-    mIsBufferOwner(true)
-    {
-        //allocate buffer of right size
-        int byteCount = mBitCapacity / 8;
-        mBuffer = static_cast<char*>(malloc(byteCount));
-        //copy
-        memcpy(mBuffer, inOther.mBuffer, byteCount);
-    }
+    InputMemoryBitStream(const InputMemoryBitStream& inOther);
     
-    ~InputMemoryBitStream()	{ if (mIsBufferOwner) { free(mBuffer); }; }
+    ~InputMemoryBitStream();
     
-    const char*	getBufferPtr() const { return mBuffer; }
-    uint32_t GetRemainingBitCount() const { return mBitCapacity - mBitHead; }
+    const char*	getBufferPtr() const;
     
-    void ReadBits(uint8_t& outData, uint32_t inBitCount);
-    void ReadBits(void* outData, uint32_t inBitCount);
+    uint32_t getRemainingBitCount() const;
     
-    void ReadBytes(void* outData, uint32_t inByteCount) { ReadBits(outData, inByteCount << 3); }
+    void readBits(uint8_t& outData, uint32_t inBitCount);
+    
+    void readBits(void* outData, uint32_t inBitCount);
+    
+    void readBytes(void* outData, uint32_t inByteCount);
+    
+    void read(uint32_t& outData, uint32_t inBitCount = 32);
+    
+    void read(int& outData, uint32_t inBitCount = 32);
+    
+    void read(float& outData);
+    
+    void read(uint16_t& outData, uint32_t inBitCount = 16);
+    
+    void read(int16_t& outData, uint32_t inBitCount = 16);
+    
+    void read(uint8_t& outData, uint32_t inBitCount = 8);
+    
+    void read(bool& outData);
+    
+    void resetToCapacity(uint32_t inByteCapacity);
+    
+    void read(std::string& inString);
+    
+    void read(Vector2& outVector);
+    
+    void read(Color& outColor);
     
     template <typename T>
     void read(T& inData, uint32_t inBitCount = sizeof(T) * 8)
@@ -53,41 +63,14 @@ public:
         static_assert(std::is_arithmetic< T >::value ||
                       std::is_enum< T >::value,
                       "Generic Read only supports primitive data types");
-        ReadBits(&inData, inBitCount);
+        readBits(&inData, inBitCount);
     }
-    
-    void read(uint32_t& outData, uint32_t inBitCount = 32) { ReadBits(&outData, inBitCount); }
-    void read(int& outData, uint32_t inBitCount = 32) { ReadBits(&outData, inBitCount); }
-    void read(float& outData) { ReadBits(&outData, 32); }
-    
-    void read(uint16_t& outData, uint32_t inBitCount = 16) { ReadBits(&outData, inBitCount); }
-    void read(int16_t& outData, uint32_t inBitCount = 16) { ReadBits(&outData, inBitCount); }
-    
-    void read(uint8_t& outData, uint32_t inBitCount = 8) { ReadBits(&outData, inBitCount); }
-    void read(bool& outData) { ReadBits(&outData, 1); }
-    
-    void ResetToCapacity(uint32_t inByteCapacity) { mBitCapacity = inByteCapacity << 3; mBitHead = 0; }
-    
-    void read(std::string& inString)
-    {
-        uint32_t elementCount;
-        read(elementCount);
-        inString.resize(elementCount);
-        for (auto& element : inString)
-        {
-            read(element);
-        }
-    }
-    
-    void read(Vector2& outVector);
-    
-    void read(Color& outColor);
     
 private:
-    char* mBuffer;
-    uint32_t mBitHead;
-    uint32_t mBitCapacity;
-    bool mIsBufferOwner;
+    char* m_buffer;
+    uint32_t m_iBitHead;
+    uint32_t m_iBitCapacity;
+    bool m_isBufferOwner;
 };
 
 #endif /* defined(__noctisgames__InputMemoryBitStream__) */

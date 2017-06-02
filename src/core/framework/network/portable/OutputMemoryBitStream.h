@@ -53,11 +53,11 @@ public:
     }
     
 private:
-    void ReallocBuffer(uint32_t inNewBitCapacity);
+    void reallocBuffer(uint32_t inNewBitCapacity);
     
-    char* mBuffer;
-    uint32_t mBitHead;
-    uint32_t mBitCapacity;
+    char* m_buffer;
+    uint32_t m_iBitHead;
+    uint32_t m_iBitCapacity;
 };
 
 #endif /* defined(__noctisgames__OutputMemoryBitStream__) */

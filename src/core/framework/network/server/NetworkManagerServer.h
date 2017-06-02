@@ -13,8 +13,11 @@
 
 #include "ClientProxy.h"
 
+class IInputState;
+
 typedef void (*HandleNewClientFunc)(ClientProxy* inClientProxy);
 typedef void (*HandleLostClientFunc)(ClientProxy* inClientProxy);
+typedef IInputState* (*InputStateCreationFunc)();
 
 class NetworkManagerServer : public INetworkManager
 {
@@ -25,7 +28,7 @@ public:
     
     virtual void handleConnectionReset(const SocketAddress& inFromAddress) override;
     
-    bool init(uint16_t inPort, HandleEntityDeletion handleEntityDeletion, HandleNewClientFunc handleNewClientFunc, HandleLostClientFunc handleLostClientFunc);
+    bool init(uint16_t inPort, HandleEntityDeletion handleEntityDeletion, HandleNewClientFunc handleNewClientFunc, HandleLostClientFunc handleLostClientFunc, InputStateCreationFunc inputStateCreationFunc);
     
     void sendOutgoingPackets();
     
@@ -44,6 +47,7 @@ public:
 private:
     HandleNewClientFunc m_handleNewClientFunc;
     HandleLostClientFunc m_handleLostClientFunc;
+    InputStateCreationFunc m_inputStateCreationFunc;
     
     std::unordered_map<SocketAddress, ClientProxy*> m_addressToClientMap;
     std::unordered_map<int, ClientProxy*> m_playerIDToClientMap;

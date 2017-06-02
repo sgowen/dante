@@ -10,9 +10,6 @@
 
 #include "EntityRegistry.h"
 
-#include "World.h"
-#include "RoboCat.h"
-
 EntityRegistry* EntityRegistry::getInstance()
 {
     static EntityRegistry instance = EntityRegistry();
@@ -31,7 +28,6 @@ void EntityRegistry::registerCreationFunction(uint32_t inFourCCName, EntityCreat
 
 Entity* EntityRegistry::createEntity(uint32_t inFourCCName)
 {
-    //no error checking- if the name isn't there, exception!
     EntityCreationFunc creationFunc = m_nameToEntityCreationFunctionMap[inFourCCName];
     
     Entity* entity = creationFunc();

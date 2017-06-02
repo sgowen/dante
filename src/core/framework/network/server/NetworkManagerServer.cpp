@@ -10,6 +10,8 @@
 
 #include "NetworkManagerServer.h"
 
+#include "IInputState.h"
+
 #include "Server.h"
 #include "ReplicationManagerTransmissionData.h"
 #include "StringUtil.h"
@@ -50,10 +52,11 @@ void NetworkManagerServer::handleConnectionReset(const SocketAddress& inFromAddr
     }
 }
 
-bool NetworkManagerServer::init(uint16_t inPort, HandleEntityDeletion handleEntityDeletion, HandleNewClientFunc handleNewClientFunc, HandleLostClientFunc handleLostClientFunc)
+bool NetworkManagerServer::init(uint16_t inPort, HandleEntityDeletion handleEntityDeletion, HandleNewClientFunc handleNewClientFunc, HandleLostClientFunc handleLostClientFunc, InputStateCreationFunc inputStateCreationFunc)
 {
     m_handleNewClientFunc = handleNewClientFunc;
     m_handleLostClientFunc = handleLostClientFunc;
+    m_inputStateCreationFunc = inputStateCreationFunc;
     
     return INetworkManager::init(inPort, handleEntityDeletion);
 }
@@ -153,7 +156,7 @@ ClientProxy* NetworkManagerServer::getClientProxy(int inPlayerId) const
 void NetworkManagerServer::handlePacketFromNewClient(InputMemoryBitStream& inInputStream, const SocketAddress& inFromAddress)
 {
     //read the beginning- is it a hello?
-    uint32_t	packetType;
+    uint32_t packetType;
     inInputStream.read(packetType);
     if (packetType == kHelloCC)
     {
@@ -267,7 +270,7 @@ void NetworkManagerServer::writeLastMoveTimestampIfDirty(OutputMemoryBitStream& 
 void NetworkManagerServer::handleInputPacket(ClientProxy* inClientProxy, InputMemoryBitStream& inInputStream)
 {
     uint32_t moveCount = 0;
-    Move move;
+    Move move = Move(m_inputStateCreationFunc());
     inInputStream.read(moveCount, 2);
     
     for (; moveCount > 0; --moveCount)
@@ -289,11 +292,12 @@ void NetworkManagerServer::handleClientDisconnected(ClientProxy* inClientProxy)
     
     m_handleLostClientFunc(inClientProxy);
     
+    m_iNewPlayerId = m_addressToClientMap.size() + 1;
+    
     //was that the last client? if so, bye!
     if (m_addressToClientMap.empty())
     {
         // TODO, reset game whenever the first client joins, according to their individual progress
-        m_iNewPlayerId = 1;
     }
 }
 

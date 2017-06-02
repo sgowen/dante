@@ -22,31 +22,28 @@ m_fDeltaTime(inDeltaTime)
     // Empty
 }
 
-Move::Move() : m_inputState(nullptr), m_fTimestamp(0), m_fDeltaTime(0)
+Move::Move(IInputState* inInputState) :
+m_inputState(inInputState),
+m_fTimestamp(0),
+m_fDeltaTime(0)
 {
     // Empty
 }
 
 bool Move::write(OutputMemoryBitStream& inOutputStream) const
 {
-    if (m_inputState)
-    {
-        m_inputState->write(inOutputStream);
-    }
-    
     inOutputStream.write(m_fTimestamp);
+    
+    m_inputState->write(inOutputStream);
     
     return true;
 }
 
 bool Move::read(InputMemoryBitStream& inInputStream)
 {
-    if (m_inputState)
-    {
-        m_inputState->read(inInputStream);
-    }
-    
     inInputStream.read(m_fTimestamp);
+    
+    m_inputState->read(inInputStream);
     
     return true;
 }

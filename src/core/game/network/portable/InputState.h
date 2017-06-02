@@ -28,6 +28,8 @@ public:
     virtual bool write(OutputMemoryBitStream& inOutputStream) const;
     virtual bool read(InputMemoryBitStream& inInputStream);
     
+    void copyTo(InputState* inInputState);
+    
     float getDesiredHorizontalDelta() const;
     float getDesiredVerticalDelta() const;
     

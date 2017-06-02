@@ -36,6 +36,7 @@ private:
     
     // ctor, copy ctor, and assignment should be private in a Singleton
     GamePadInputManager();
+    ~GamePadInputManager();
     GamePadInputManager(const GamePadInputManager&);
     GamePadInputManager& operator=(const GamePadInputManager&);
 };

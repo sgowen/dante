@@ -9,10 +9,10 @@
 #ifndef __noctisgames__IInputState__
 #define __noctisgames__IInputState__
 
+#include "RTTI.h"
+
 class OutputMemoryBitStream;
 class InputMemoryBitStream;
-
-#include "RTTI.h"
 
 class IInputState
 {
@@ -25,6 +25,11 @@ public:
     
     virtual bool write(OutputMemoryBitStream& inOutputStream) const = 0;
     virtual bool read(InputMemoryBitStream& inInputStream) = 0;
+    
+protected:
+    void writeSignedBinaryValue(OutputMemoryBitStream& inOutputStream, float inValue) const;
+    
+    void readSignedBinaryValue(InputMemoryBitStream& inInputStream, float& outValue) const;
 };
 
 #endif /* defined(__noctisgames__IInputState__) */

@@ -21,7 +21,7 @@
 
 void ReplicationManagerClient::read(InputMemoryBitStream& inInputStream)
 {
-    while (inInputStream.GetRemainingBitCount() >= 32)
+    while (inInputStream.getRemainingBitCount() >= 32)
     {
         //read the network id...
         int networkId; inInputStream.read(networkId);

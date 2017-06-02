@@ -17,8 +17,6 @@
 #include "StringUtil.h"
 #include "Timing.h"
 #include "SocketAddressFamily.h"
-#include "World.h"
-#include "RoboCat.h"
 #include "EntityManager.h"
 #include "macros.h"
 
@@ -140,7 +138,7 @@ void INetworkManager::readIncomingPacketsIntoQueue()
         }
         else if (readByteCount > 0)
         {
-            inputStream.ResetToCapacity(readByteCount);
+            inputStream.resetToCapacity(readByteCount);
             ++receivedPackedCount;
             totalReadByteCount += readByteCount;
             

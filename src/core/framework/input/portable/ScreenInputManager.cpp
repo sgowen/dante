@@ -58,3 +58,8 @@ ScreenInputManager::ScreenInputManager() : m_pool(new NGRollingPool<ScreenEvent>
 {
     // Empty
 }
+
+ScreenInputManager::~ScreenInputManager()
+{
+    delete m_pool;
+}

@@ -50,3 +50,8 @@ KeyboardInputManager::KeyboardInputManager() : m_pool(new NGRollingPool<Keyboard
 {
     // Empty
 }
+
+KeyboardInputManager::~KeyboardInputManager()
+{
+    delete m_pool;
+}

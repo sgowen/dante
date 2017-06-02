@@ -36,6 +36,7 @@ private:
     
     // ctor, copy ctor, and assignment should be private in a Singleton
     KeyboardInputManager();
+    ~KeyboardInputManager();
     KeyboardInputManager(const KeyboardInputManager&);
     KeyboardInputManager& operator=(const KeyboardInputManager&);
 };

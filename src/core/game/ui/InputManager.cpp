@@ -21,6 +21,7 @@
 #include "KeyboardEvent.h"
 #include "GamePadInputManager.h"
 #include "GamePadEvent.h"
+#include "PooledObjectsManager.h"
 
 InputManager* InputManager::getInstance()
 {
@@ -97,7 +98,10 @@ const Move* InputManager::getAndClearPendingMove()
 
 const Move& InputManager::sampleInputAsMove()
 {
-    return m_moveList.addMove(m_currentState, Timing::getInstance()->getFrameStartTime());
+    InputState* inputState = POOLED_OBJ_MGR->borrow();
+    m_currentState->copyTo(inputState);
+    
+    return m_moveList.addMove(inputState, Timing::getInstance()->getFrameStartTime());
 }
 
 bool InputManager::isTimeToSampleInput()
@@ -116,7 +120,7 @@ bool InputManager::isTimeToSampleInput()
 }
 
 InputManager::InputManager() :
-m_currentState(new InputState()),
+m_currentState(POOLED_OBJ_MGR->borrow()),
 m_fNextTimeToSampleInput(0.f),
 m_pendingMove(nullptr)
 {
@@ -125,5 +129,5 @@ m_pendingMove(nullptr)
 
 InputManager::~InputManager()
 {
-    delete m_currentState;
+    // Empty
 }

@@ -13,35 +13,6 @@
 #include "OutputMemoryBitStream.h"
 #include "InputMemoryBitStream.h"
 
-namespace
-{
-    void writeSignedBinaryValue(OutputMemoryBitStream& inOutputStream, float inValue)
-    {
-        bool isNonZero = (inValue != 0.f);
-        inOutputStream.write(isNonZero);
-        if (isNonZero)
-        {
-            inOutputStream.write(inValue > 0.f);
-        }
-    }
-    
-    void readSignedBinaryValue(InputMemoryBitStream& inInputStream, float& outValue)
-    {
-        bool isNonZero;
-        inInputStream.read(isNonZero);
-        if (isNonZero)
-        {
-            bool isPositive;
-            inInputStream.read(isPositive);
-            outValue = isPositive ? 1.f : -1.f;
-        }
-        else
-        {
-            outValue = 0.f;
-        }
-    }
-}
-
 InputState::InputState() : IInputState(),
 m_fDesiredRightAmount(0),
 m_fDesiredLeftAmount(0),
@@ -70,6 +41,14 @@ bool InputState::read(InputMemoryBitStream& inInputStream)
     readSignedBinaryValue(inInputStream, m_fDesiredForwardAmount);
     
     return true;
+}
+
+void InputState::copyTo(InputState* inInputState)
+{
+    inInputState->m_fDesiredRightAmount = m_fDesiredRightAmount;
+    inInputState->m_fDesiredLeftAmount = m_fDesiredLeftAmount;
+    inInputState->m_fDesiredForwardAmount = m_fDesiredForwardAmount;
+    inInputState->m_fDesiredBackAmount = m_fDesiredBackAmount;
 }
 
 float InputState::getDesiredHorizontalDelta() const
