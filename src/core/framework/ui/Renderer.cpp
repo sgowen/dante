@@ -157,14 +157,14 @@ bool Renderer::isReadyForRendering()
 
 #pragma mark protected
 
-void Renderer::renderPhysicalEntity(PhysicalEntity &pe, TextureRegion& tr)
+void Renderer::renderPhysicalEntity(PhysicalEntity &pe, TextureRegion& tr, bool flipX)
 {
-    m_spriteBatcher->drawSprite(pe.getPosition().getX(), pe.getPosition().getY(), pe.getWidth(), pe.getHeight(), pe.getAngle(), tr);
+    m_spriteBatcher->renderSprite(pe.getPosition().getX(), pe.getPosition().getY(), pe.getWidth(), pe.getHeight(), pe.getAngle(), flipX, tr);
 }
 
-void Renderer::renderPhysicalEntityWithColor(PhysicalEntity &pe, TextureRegion& tr, Color c)
+void Renderer::renderPhysicalEntityWithColor(PhysicalEntity &pe, TextureRegion& tr, Color c, bool flipX)
 {
-    m_spriteBatcher->drawSprite(pe.getPosition().getX(), pe.getPosition().getY(), pe.getWidth(), pe.getHeight(), pe.getAngle(), c, tr);
+    m_spriteBatcher->renderSprite(pe.getPosition().getX(), pe.getPosition().getY(), pe.getWidth(), pe.getHeight(), pe.getAngle(), flipX, c, tr);
 }
 
 void Renderer::renderBoundsForPhysicalEntity(PhysicalEntity &pe)

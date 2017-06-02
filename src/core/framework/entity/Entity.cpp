@@ -30,6 +30,11 @@ void Entity::update()
 {
     float deltaTime = Timing::getInstance()->getDeltaTime();
     
+    update(deltaTime);
+}
+
+void Entity::update(float deltaTime)
+{
     m_fStateTime += deltaTime;
 }
 

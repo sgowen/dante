@@ -31,15 +31,15 @@ public:
     void copyTo(InputState* inInputState);
     
     float getDesiredHorizontalDelta() const;
-    float getDesiredVerticalDelta() const;
+    
+    float getDesiredJumpIntensity() const;
     
 private:
     friend class InputManager;
     
     float m_fDesiredRightAmount;
     float m_fDesiredLeftAmount;
-    float m_fDesiredForwardAmount;
-    float m_fDesiredBackAmount;
+    float m_fDesiredJumpIntensity;
 };
 
 #endif /* defined(__noctisgames__InputState__) */

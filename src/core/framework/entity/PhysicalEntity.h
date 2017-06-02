@@ -35,6 +35,8 @@ public:
     virtual ~PhysicalEntity();
     
     virtual void update();
+    
+    virtual void update(float deltaTime);
 
     virtual void resetBounds(float width, float height);
 

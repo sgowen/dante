@@ -16,8 +16,7 @@
 InputState::InputState() : IInputState(),
 m_fDesiredRightAmount(0),
 m_fDesiredLeftAmount(0),
-m_fDesiredForwardAmount(0),
-m_fDesiredBackAmount(0)
+m_fDesiredJumpIntensity(0)
 {
     // Empty
 }
@@ -30,7 +29,7 @@ InputState::~InputState()
 bool InputState::write(OutputMemoryBitStream& inOutputStream) const
 {
     writeSignedBinaryValue(inOutputStream, getDesiredHorizontalDelta());
-    writeSignedBinaryValue(inOutputStream, getDesiredVerticalDelta());
+    writeSignedBinaryValue(inOutputStream, m_fDesiredJumpIntensity);
     
     return false;
 }
@@ -38,7 +37,7 @@ bool InputState::write(OutputMemoryBitStream& inOutputStream) const
 bool InputState::read(InputMemoryBitStream& inInputStream)
 {
     readSignedBinaryValue(inInputStream, m_fDesiredRightAmount);
-    readSignedBinaryValue(inInputStream, m_fDesiredForwardAmount);
+    readSignedBinaryValue(inInputStream, m_fDesiredJumpIntensity);
     
     return true;
 }
@@ -47,8 +46,7 @@ void InputState::copyTo(InputState* inInputState)
 {
     inInputState->m_fDesiredRightAmount = m_fDesiredRightAmount;
     inInputState->m_fDesiredLeftAmount = m_fDesiredLeftAmount;
-    inInputState->m_fDesiredForwardAmount = m_fDesiredForwardAmount;
-    inInputState->m_fDesiredBackAmount = m_fDesiredBackAmount;
+    inInputState->m_fDesiredJumpIntensity = m_fDesiredJumpIntensity;
 }
 
 float InputState::getDesiredHorizontalDelta() const
@@ -56,9 +54,9 @@ float InputState::getDesiredHorizontalDelta() const
     return m_fDesiredRightAmount - m_fDesiredLeftAmount;
 }
 
-float InputState::getDesiredVerticalDelta() const
+float InputState::getDesiredJumpIntensity() const
 {
-    return m_fDesiredForwardAmount - m_fDesiredBackAmount;
+    return m_fDesiredJumpIntensity;
 }
 
 RTTI_IMPL(InputState, IInputState);

@@ -66,9 +66,9 @@ protected:
     
     int m_iFramebufferIndex;
     
-    void renderPhysicalEntity(PhysicalEntity &go, TextureRegion& tr);
+    void renderPhysicalEntity(PhysicalEntity &go, TextureRegion& tr, bool flipX = false);
 
-	void renderPhysicalEntityWithColor(PhysicalEntity &go, TextureRegion& tr, Color c);
+	void renderPhysicalEntityWithColor(PhysicalEntity &go, TextureRegion& tr, Color c, bool flipX = false);
     
     void renderBoundsForPhysicalEntity(PhysicalEntity &pe);
     

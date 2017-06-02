@@ -94,10 +94,10 @@ void Server::spawnCatForPlayer(int inPlayerId)
     //gotta pick a better spawn location than this...
     cat->setPosition(Vector2(8.f - static_cast<float>(inPlayerId), 7.0f));
     
-    static Color Red(1.0f, 0.0f, 0.0f, 1);
-    static Color Blue(0.0f, 0.0f, 1.0f, 1);
-    static Color Green(0.0f, 1.0f, 0.0f, 1);
-    static Color LightYellow(1.0f, 1.0f, 0.88f, 1);
+    static Color Red(0.5f, 0.0f, 0.0f, 1);
+    static Color Blue(0.0f, 0.0f, 0.5f, 1);
+    static Color Green(0.0f, 0.5f, 0.0f, 1);
+    static Color LightYellow(0.5f, 0.5f, 0.0f, 1);
     
     switch (inPlayerId)
     {

@@ -53,7 +53,7 @@ void RoboCatClient::update()
             
             simulateMovement(deltaTime);
             
-            LOG("Client Move Time: %3.4f deltaTime: %3.4f left rot at %3.4f", pendingMove->getTimestamp(), deltaTime, getAngle());
+            LOG("Client Move Time: %3.4f deltaTime: %3.4f", pendingMove->getTimestamp(), deltaTime);
         }
     }
     else
@@ -70,7 +70,6 @@ void RoboCatClient::update()
 
 void RoboCatClient::read(InputMemoryBitStream& inInputStream)
 {
-    float oldRotation = getAngle();
     Vector2 oldLocation = getPosition();
     Vector2 oldVelocity = getVelocity();
     
@@ -83,7 +82,7 @@ void RoboCatClient::read(InputMemoryBitStream& inInputStream)
         //if this is a create packet, don't interpolate
         if ((m_iReadState & ECRS_PlayerId) == 0)
         {
-            interpolateClientSidePrediction(oldRotation, oldLocation, oldVelocity, false);
+            interpolateClientSidePrediction(oldLocation, oldVelocity, false);
         }
     }
     else
@@ -93,7 +92,7 @@ void RoboCatClient::read(InputMemoryBitStream& inInputStream)
         //will this smooth us out too? it'll interpolate us just 10% of the way there...
         if ((m_iReadState & ECRS_PlayerId) == 0)
         {
-            interpolateClientSidePrediction(oldRotation, oldLocation, oldVelocity, true);
+            interpolateClientSidePrediction(oldLocation, oldVelocity, true);
         }
     }
 }
@@ -153,13 +152,8 @@ m_fTimeVelocityBecameOutOfSync(0.f)
     // Empty
 }
 
-void RoboCatClient::interpolateClientSidePrediction(float inOldRotation, Vector2& inOldLocation, Vector2& inOldVelocity, bool inIsForRemoteCat)
+void RoboCatClient::interpolateClientSidePrediction(Vector2& inOldLocation, Vector2& inOldVelocity, bool inIsForRemoteCat)
 {
-    if (inOldRotation != getAngle() && !inIsForRemoteCat)
-    {
-        LOG("ERROR! Move replay ended with incorrect rotation!", 0);
-    }
-    
     float roundTripTime = NetworkManagerClient::getInstance()->getRoundTripTime();
     
     if (!inOldLocation.isEqualTo(getPosition()))

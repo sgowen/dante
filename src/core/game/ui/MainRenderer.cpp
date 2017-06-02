@@ -64,7 +64,7 @@ void MainRenderer::releaseDeviceDependentResources()
 	unloadTexture(m_misc);
 }
 
-void MainRenderer::tempDraw(float stateTime)
+void MainRenderer::tempDraw()
 {
     m_rendererHelper->updateMatrix(0, CAM_WIDTH, 0, CAM_HEIGHT);
     
@@ -73,13 +73,20 @@ void MainRenderer::tempDraw(float stateTime)
     if (ensureTexture(m_demo)
         && ensureTexture(m_misc))
     {
+        {
+            m_spriteBatcher->beginBatch();
+            static TextureRegion tr = ASSETS->findTextureRegion("Mario_Backdrop");
+            m_spriteBatcher->drawSprite(CAM_WIDTH / 2, CAM_HEIGHT / 2, CAM_WIDTH, CAM_HEIGHT, 0, tr);
+            m_spriteBatcher->endBatch(*m_demo->gpuTextureWrapper, *m_textureGpuProgramWrapper);
+        }
+        
         m_spriteBatcher->beginBatch();
         for (RoboCat* go : World::sInstance->GetRoboCats())
         {
             if (go->getNetworkType() == 'PLYR')
             {
-                TextureRegion tr = ASSETS->findTextureRegion("Samus_Running", stateTime);
-                m_spriteBatcher->drawSprite(go->getPosition().getX(), go->getPosition().getY(), go->getWidth(), go->getHeight(), RADIANS_TO_DEGREES(go->getAngle()) - 90, go->getColor(), tr);
+                TextureRegion tr = ASSETS->findTextureRegion(go->isGrounded() ? "Samus_Running" : go->getVelocity().getY() > 0 ? "Samus_Jumping" : "Samus_Falling", go->getStateTime());
+                renderPhysicalEntityWithColor(*go, tr, go->getColor(), go->isFacingLeft());
             }
         }
         m_spriteBatcher->endBatch(*m_demo->gpuTextureWrapper, *m_textureGpuProgramWrapper);

@@ -27,10 +27,16 @@ MainAssetsMapper::~MainAssetsMapper()
 void MainAssetsMapper::mapAssets()
 {
     /// Texture Regions
-    ASSETS->getTextureRegionMap()["Pellet"] = new TextureRegion("texture_001", 0, 512, 16, 16, TEXTURE_SIZE_2048);
-    ASSETS->getTextureRegionMap()["TopSecretFolder"] = new TextureRegion("texture_001", 48, 512, 128, 128, TEXTURE_SIZE_2048);
+    ASSETS->getTextureRegionMap()["Mario_Backdrop"] = new TextureRegion("texture_001", 1024, 0, 512, 444, TEXTURE_SIZE_2048);
     
     /// Animations
-    ASSETS->getAnimationsMap()["Samus_Running"] = new Animation("texture_001", 0, 0, 36, 46, 720, 46, TEXTURE_SIZE_2048, true, 0.1f, 20);
-    ASSETS->getAnimationsMap()["CharacterHoldingGun"] = new Animation("texture_001", 0, 1664, 198, 152, 1980, 304, TEXTURE_SIZE_2048, true, 0.1f, 11);
+    ASSETS->getAnimationsMap()["Samus_Running"] = new Animation("texture_001", 630, 0, 36, 46, 144 + 16 * 3, 138 + 8 * 2, TEXTURE_SIZE_2048, true, 0.1f, 10, 0, 16, 8);
+    
+    ASSETS->getAnimationsMap()["Samus_Shooting"] = new Animation("texture_001", 630, 324, 36, 46, 144 + 16 * 3, 138 + 8 * 2, TEXTURE_SIZE_2048, true, 0.1f, 10, 0, 16, 8);
+    
+    ASSETS->getAnimationsMap()["Samus_Jumping"] = new Animation("texture_001", 630, 162, 36, 46, 144 + 16 * 3, 138 + 8 * 2, TEXTURE_SIZE_2048, false, 0.1f, 4, 0, 16, 8);
+    
+    ASSETS->getAnimationsMap()["Samus_Falling"] = new Animation("texture_001", 630, 216, 36, 46, 144 + 16 * 3, 138 + 8 * 2, TEXTURE_SIZE_2048, false, 0.1f, 4, 0, 16, 8);
+    
+    ASSETS->getAnimationsMap()["Samus_Landing"] = new Animation("texture_001", 630, 270, 36, 46, 144 + 16 * 3, 138 + 8 * 2, TEXTURE_SIZE_2048, false, 0.1f, 2, 0, 16, 8);
 }

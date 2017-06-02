@@ -28,7 +28,7 @@ public:
     
     virtual void releaseDeviceDependentResources();
     
-    void tempDraw(float stateTime);
+    void tempDraw();
     
 private:
     TextureWrapper* m_demo;

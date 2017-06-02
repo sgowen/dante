@@ -54,21 +54,24 @@ public:
     void setIndexInWorld(int inIndex);
     int getIndexInWorld() const;
     
+    bool isFacingLeft();
+    
+    bool isGrounded();
+    
 protected:
     float m_fSpeed;
-    float m_fMaxRotationSpeed;
+    float m_fJumpSpeed;
     
     //bounce fraction when hitting various things
     float m_fWallRestitution;
     float m_fCatRestitution;
     
-    float m_fLastMoveTimestamp;
-    float m_fThrustDir;
+    bool m_isFacingLeft;
+    bool m_isGrounded;
+    bool m_isFalling;
     
     uint32_t m_iPlayerId;
     uint32_t m_iReadState;
-    
-    void adjustVelocityByThrust(float inDeltaTime);
     
     RoboCat();
     

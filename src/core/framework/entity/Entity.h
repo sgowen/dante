@@ -32,6 +32,8 @@ public:
     
     virtual void update();
     
+    virtual void update(float deltaTime);
+    
     virtual void onDeletion();
     
     virtual uint32_t getAllStateMask() const;

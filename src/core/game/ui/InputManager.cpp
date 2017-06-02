@@ -40,16 +40,13 @@ void InputManager::update()
         switch ((*i)->getType())
         {
             case KeyboardEventType_W:
-                m_currentState->m_fDesiredForwardAmount = (*i)->isUp() ? 0 : 1;
+                m_currentState->m_fDesiredJumpIntensity = (*i)->isUp() ? 0 : 1;
                 continue;
             case KeyboardEventType_A:
-                m_currentState->m_fDesiredRightAmount = (*i)->isUp() ? 0 : 1;
-                continue;
-            case KeyboardEventType_S:
-                m_currentState->m_fDesiredBackAmount = (*i)->isUp() ? 0 : 1;
+                m_currentState->m_fDesiredLeftAmount = (*i)->isUp() ? 0 : 1;
                 continue;
             case KeyboardEventType_D:
-                m_currentState->m_fDesiredLeftAmount = (*i)->isUp() ? 0 : 1;
+                m_currentState->m_fDesiredRightAmount = (*i)->isUp() ? 0 : 1;
                 continue;
             default:
                 continue;
@@ -61,16 +58,13 @@ void InputManager::update()
         switch ((*i)->getType())
         {
             case GamePadEventType_D_PAD_UP:
-                m_currentState->m_fDesiredForwardAmount = (*i)->isButtonPressed() ? 1 : 0;
+                m_currentState->m_fDesiredJumpIntensity = (*i)->isButtonPressed() ? 1 : 0;
                 continue;
             case GamePadEventType_D_PAD_LEFT:
-                m_currentState->m_fDesiredRightAmount = (*i)->isButtonPressed() ? 1 : 0;
-                continue;
-            case GamePadEventType_D_PAD_DOWN:
-                m_currentState->m_fDesiredBackAmount = (*i)->isButtonPressed() ? 1 : 0;
+                m_currentState->m_fDesiredLeftAmount = (*i)->isButtonPressed() ? 1 : 0;
                 continue;
             case GamePadEventType_D_PAD_RIGHT:
-                m_currentState->m_fDesiredLeftAmount = (*i)->isButtonPressed() ? 1 : 0;
+                m_currentState->m_fDesiredRightAmount = (*i)->isButtonPressed() ? 1 : 0;
                 continue;
             default:
                 continue;

@@ -122,13 +122,13 @@ void MainScreen::update(float deltaTime)
     {
         NetworkManagerClient::getInstance()->processIncomingPackets();
         
-        tempUpdateInput();
+        InputManager::getInstance()->update();
         
         while (m_fFrameStateTime >= FRAME_RATE)
         {
             m_fFrameStateTime -= FRAME_RATE;
             
-            tempUpdate(FRAME_RATE);
+            World::sInstance->update();
         }
         
         NG_AUDIO_ENGINE->update();
@@ -141,7 +141,7 @@ void MainScreen::render()
 {
     m_renderer->beginFrame();
     
-    m_renderer->tempDraw(m_fStateTime);
+    m_renderer->tempDraw();
     
     m_renderer->renderToScreen();
     
@@ -156,16 +156,6 @@ int MainScreen::getRequestedAction()
 void MainScreen::clearRequestedAction()
 {
     m_iRequestedAction = REQUESTED_ACTION_UPDATE;
-}
-
-void MainScreen::tempUpdateInput()
-{
-    InputManager::getInstance()->update();
-}
-
-void MainScreen::tempUpdate(float deltaTime)
-{
-    World::sInstance->update();
 }
 
 RTTI_IMPL(MainScreen, IScreen);

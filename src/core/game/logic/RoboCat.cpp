@@ -41,13 +41,14 @@ void RoboCat::read(InputMemoryBitStream& inInputStream)
         m_iReadState |= ECRS_PlayerId;
     }
     
-    float replicatedRotation;
     Vector2 replicatedLocation;
     Vector2 replicatedVelocity;
     
     inInputStream.read(stateBit);
     if (stateBit)
     {
+        inInputStream.read(m_fStateTime);
+        
         inInputStream.read(replicatedVelocity.getXRef());
         inInputStream.read(replicatedVelocity.getYRef());
         
@@ -58,21 +59,9 @@ void RoboCat::read(InputMemoryBitStream& inInputStream)
         
         setPosition(replicatedLocation);
         
-        inInputStream.read(replicatedRotation);
-        setAngle(replicatedRotation);
+        inInputStream.read(m_isFacingLeft);
         
         m_iReadState |= ECRS_Pose;
-    }
-    
-    inInputStream.read(stateBit);
-    if (stateBit)
-    {
-        inInputStream.read(stateBit);
-        m_fThrustDir = stateBit ? 1.f : -1.f;
-    }
-    else
-    {
-        m_fThrustDir = 0.f;
     }
     
     inInputStream.read(stateBit);
@@ -105,6 +94,8 @@ uint32_t RoboCat::write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyS
     {
         inOutputStream.write((bool)true);
         
+        inOutputStream.write(m_fStateTime);
+        
         Vector2 velocity = m_velocity;
         inOutputStream.write(velocity.getX());
         inOutputStream.write(velocity.getY());
@@ -113,24 +104,13 @@ uint32_t RoboCat::write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyS
         inOutputStream.write(location.getX());
         inOutputStream.write(location.getY());
         
-        inOutputStream.write(getAngle());
+        inOutputStream.write(m_isFacingLeft);
         
         writtenState |= ECRS_Pose;
     }
     else
     {
         inOutputStream.write((bool)false);
-    }
-    
-    //always write mThrustDir- it's just two bits
-    if (m_fThrustDir != 0.f)
-    {
-        inOutputStream.write(true);
-        inOutputStream.write(m_fThrustDir > 0.f);
-    }
-    else
-    {
-        inOutputStream.write(false);
     }
     
     if (inDirtyState & ECRS_Color)
@@ -151,29 +131,41 @@ uint32_t RoboCat::write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyS
 void RoboCat::processInput(float inDeltaTime, IInputState* inInputState)
 {
     //process our input....
-    InputState* inputState = (InputState*)inInputState;
-    if (!inputState)
+    if (!inInputState)
     {
         return;
     }
     
-    //turning...
-    float newRotation = getAngle() + inputState->getDesiredHorizontalDelta() * m_fMaxRotationSpeed * inDeltaTime;
-    setAngle(newRotation);
+    InputState* inputState = (InputState*)inInputState;
     
-    //moving...
-    float inputForwardDelta = inputState->getDesiredVerticalDelta();
-    m_fThrustDir = inputForwardDelta;
+    // moving
+    m_velocity.setX(inputState->getDesiredHorizontalDelta() * m_fSpeed);
+    
+    m_isFacingLeft = m_velocity.getX() < 0 ? true : m_velocity.getX() > 0 ? false : m_isFacingLeft;
+    
+    // jumping
+    if (inputState->getDesiredJumpIntensity() > 0
+        && m_isGrounded)
+    {
+        m_velocity.setY(inputState->getDesiredJumpIntensity() * m_fJumpSpeed);
+        m_fStateTime = 0;
+        m_isGrounded = false;
+        m_isFalling = false;
+    }
 }
 
 void RoboCat::simulateMovement(float inDeltaTime)
 {
-    //simulate us...
-    adjustVelocityByThrust(inDeltaTime);
-    
-    setPosition(getPosition() + m_velocity * inDeltaTime);
+    update(inDeltaTime);
     
     processCollisions();
+    
+    if (m_velocity.getY() < 0
+        && !m_isFalling)
+    {
+        m_isFalling = true;
+        m_fStateTime = 0;
+    }
 }
 
 void RoboCat::processCollisions()
@@ -261,12 +253,17 @@ void RoboCat::processCollisionsWithScreenWalls()
         m_velocity.setY(-vy * m_fWallRestitution);
         location.setY(CAM_HEIGHT - radius);
         setPosition(location);
+        m_isGrounded = false;
+        m_isFalling = true;
     }
-    else if (y <= (0) && vy < 0)
+    else if (y <= 2.3f && vy < 0)
     {
+        m_acceleration.setY(-9.8f);
         m_velocity.setY(-vy * m_fWallRestitution);
-        location.setY(0);
+        location.setY(2.3f);
         setPosition(location);
+        m_isGrounded = true;
+        m_isFalling = false;
     }
     
     if ((x + radius) >= CAM_WIDTH && vx > 0)
@@ -303,25 +300,29 @@ int RoboCat::getIndexInWorld() const
     return m_iIndexInWorld;
 }
 
-void RoboCat::adjustVelocityByThrust(float inDeltaTime)
+bool RoboCat::isFacingLeft()
 {
-    //just set the velocity based on the thrust direction -- no thrust will lead to 0 velocity
-    //simulating acceleration makes the client prediction a bit more complex
-    Vector2 forwardVector = Vector2(sinf(m_fAngle), -cosf(m_fAngle));
-    m_velocity = forwardVector * (m_fThrustDir * inDeltaTime * m_fSpeed);
+    return m_isFacingLeft;
+}
+
+bool RoboCat::isGrounded()
+{
+    return m_isGrounded;
 }
 
 RoboCat::RoboCat() : PhysicalEntity(0, 0, 1.565217391304348f, 2.0f),
-m_fMaxRotationSpeed(5.f),
-m_fSpeed(50.f),
+m_fJumpSpeed(8.0f),
+m_fSpeed(7.5f),
 m_fWallRestitution(0.1f),
 m_fCatRestitution(0.1f),
-m_fThrustDir(0.f),
+m_isFacingLeft(false),
+m_isGrounded(false),
+m_isFalling(false),
 m_iPlayerId(0),
 m_iReadState(0),
 m_iIndexInWorld(-1)
 {
-    // Empty
+    m_acceleration.setY(-9.8f);
 }
 
 RTTI_IMPL(RoboCat, PhysicalEntity);

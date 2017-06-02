@@ -37,7 +37,6 @@ void RoboCatServer::update()
 {
     Vector2 oldLocation = getPosition();
     Vector2 oldVelocity = getVelocity();
-    float oldRotation = getAngle();
     
     // is there a move we haven't processed yet?
     ClientProxy* client = NetworkManagerServer::getInstance()->getClientProxy(getPlayerId());
@@ -53,15 +52,14 @@ void RoboCatServer::update()
             processInput(deltaTime, currentState);
             simulateMovement(deltaTime);
             
-            LOG("Server Move Time: %3.4f deltaTime: %3.4f left rot at %3.4f", unprocessedMove.getTimestamp(), deltaTime, getAngle());
+            LOG("Server Move Time: %3.4f deltaTime: %3.4f", unprocessedMove.getTimestamp(), deltaTime);
         }
         
         moveList.clear();
     }
     
     if (!oldLocation.isEqualTo(getPosition()) ||
-        !oldVelocity.isEqualTo(getVelocity()) ||
-        oldRotation != getAngle())
+        !oldVelocity.isEqualTo(getVelocity()))
     {
         NetworkManagerServer::getInstance()->setStateDirty(getID(), ECRS_Pose);
     }

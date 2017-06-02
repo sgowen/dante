@@ -35,9 +35,14 @@ PhysicalEntity::~PhysicalEntity()
 
 void PhysicalEntity::update()
 {
-    Entity::update();
-    
     float deltaTime = Timing::getInstance()->getDeltaTime();
+    
+    Entity::update(deltaTime);
+}
+
+void PhysicalEntity::update(float deltaTime)
+{
+    Entity::update(deltaTime);
     
     m_velocity.add(m_acceleration.getX() * deltaTime, m_acceleration.getY() * deltaTime);
     m_position.add(m_velocity.getX() * deltaTime, m_velocity.getY() * deltaTime);

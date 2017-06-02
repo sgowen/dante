@@ -45,7 +45,7 @@ void Timing::updateManual(float stateTime, float deltaTime)
     m_fDeltaTime = deltaTime;
     
     m_dLastFrameStartTime = stateTime;
-    m_fFrameStartTimef = static_cast<float> (m_dLastFrameStartTime);
+    m_fFrameStartTimef = stateTime;
 }
 
 float Timing::getTime() const

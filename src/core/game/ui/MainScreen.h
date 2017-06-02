@@ -54,13 +54,6 @@ private:
     float m_fStateTime;
     float m_fFrameStateTime;
     int m_iRequestedAction;
-    
-    // temp
-    PhysicalEntity* m_avatar;
-    
-    void tempUpdateInput();
-    
-    void tempUpdate(float deltaTime);
 };
 
 #endif /* defined(__dante__MainScreen__) */
