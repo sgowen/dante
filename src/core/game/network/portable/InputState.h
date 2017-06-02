@@ -34,12 +34,15 @@ public:
     
     float getDesiredJumpIntensity() const;
     
+    bool isShooting() const;
+    
 private:
     friend class InputManager;
     
     float m_fDesiredRightAmount;
     float m_fDesiredLeftAmount;
     float m_fDesiredJumpIntensity;
+    bool m_isShooting;
 };
 
 #endif /* defined(__noctisgames__InputState__) */

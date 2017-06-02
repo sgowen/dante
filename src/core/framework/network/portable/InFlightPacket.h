@@ -9,23 +9,23 @@
 #ifndef __noctisgames__InFlightPacket__
 #define __noctisgames__InFlightPacket__
 
-#include "NetworkType.h"
 #include "ITransmissionData.h"
 
 #include <unordered_map>
+#include <stdint.h>
 
 class DeliveryNotificationManager;
 
 class InFlightPacket
 {
 public:
-    InFlightPacket(PacketSequenceNumber inSequenceNumber);
+    InFlightPacket(uint16_t inSequenceNumber);
     
     void SetTransmissionData(int inKey, ITransmissionData* inTransmissionData);
     
     ITransmissionData* GetTransmissionData(int inKey) const;
     
-    PacketSequenceNumber GetSequenceNumber() const;
+    uint16_t GetSequenceNumber() const;
     
     float GetTimeDispatched() const;
     
@@ -33,7 +33,7 @@ public:
     void HandleDeliverySuccess(DeliveryNotificationManager* inDeliveryNotificationManager) const;
     
 private:
-    PacketSequenceNumber mSequenceNumber;
+    uint16_t mSequenceNumber;
     float m_fTimeDispatched;
     
     std::unordered_map<int, ITransmissionData*> mTransmissionDataMap;

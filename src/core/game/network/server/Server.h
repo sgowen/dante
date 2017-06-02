@@ -10,7 +10,7 @@
 #define __noctisgames__Server__
 
 class ClientProxy;
-class RoboCat;
+class Robot;
 
 class Server
 {
@@ -33,7 +33,7 @@ private:
     float m_fFrameStateTime;
     bool m_isInitialized;
     
-    RoboCat* getCatForPlayer(int inPlayerId);
+    Robot* getCatForPlayer(int inPlayerId);
     
     // ctor, copy ctor, and assignment should be private in a Singleton
     Server();

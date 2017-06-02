@@ -11,7 +11,7 @@
 
 #include "Entity.h"
 
-#include "NetworkConstants.h"
+#include "Network.h"
 
 #include <unordered_map>
 

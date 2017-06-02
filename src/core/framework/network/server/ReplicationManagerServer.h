@@ -9,7 +9,7 @@
 #ifndef __noctisgames__ReplicationManagerServer__
 #define __noctisgames__ReplicationManagerServer__
 
-#include "NetworkConstants.h"
+#include "Network.h"
 
 #include "ReplicationCommand.h"
 

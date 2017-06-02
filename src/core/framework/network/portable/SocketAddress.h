@@ -9,7 +9,7 @@
 #ifndef __noctisgames__SocketAddress__
 #define __noctisgames__SocketAddress__
 
-#include "NetworkConstants.h"
+#include "Network.h"
 
 #include <string>
 

@@ -12,7 +12,7 @@
 #include <memory>
 #include <vector>
 
-class RoboCat;
+class Robot;
 class Entity;
 
 class World
@@ -26,17 +26,17 @@ public:
     
     static void removeEntityIfPossible(Entity* inEntity);
     
-    void AddRoboCat(RoboCat* inRoboCat);
-    void RemoveRoboCat(RoboCat* inRoboCat);
+    void AddRobot(Robot* inRobot);
+    void RemoveRobot(Robot* inRobot);
     
     void update();
     
-    const std::vector<RoboCat*>& GetRoboCats() const { return mRoboCats; }
+    const std::vector<Robot*>& GetRobots() const { return mRobots; }
     
 private:
-    std::vector<RoboCat*> mRoboCats;
+    std::vector<Robot*> mRobots;
     
-    int	GetIndexOfRoboCat(RoboCat* inRoboCat);
+    int	GetIndexOfRobot(Robot* inRobot);
     
     // ctor, copy ctor, and assignment should be private in a Singleton
     World();

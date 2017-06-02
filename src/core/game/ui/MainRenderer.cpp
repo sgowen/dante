@@ -25,7 +25,7 @@
 #include "macros.h"
 #include "NetworkManagerClient.h"
 #include "World.h"
-#include "RoboCat.h"
+#include "Robot.h"
 #include "StringUtil.h"
 
 #include <sstream>
@@ -81,11 +81,15 @@ void MainRenderer::tempDraw()
         }
         
         m_spriteBatcher->beginBatch();
-        for (RoboCat* go : World::sInstance->GetRoboCats())
+        for (Robot* go : World::sInstance->GetRobots())
         {
-            if (go->getNetworkType() == 'PLYR')
+            if (go->getNetworkType() == NETWORK_TYPE_Robot)
             {
-                TextureRegion tr = ASSETS->findTextureRegion(go->isGrounded() ? "Samus_Running" : go->getVelocity().getY() > 0 ? "Samus_Jumping" : "Samus_Falling", go->getStateTime());
+                bool isMoving = go->getVelocity().getX() < -0.5f || go->getVelocity().getX() > 0.5f;
+                TextureRegion tr = ASSETS->findTextureRegion(
+                                                             go->isGrounded() ?
+                                                             isMoving ? go->isShooting() ? "Samus_Shooting" : "Samus_Running" : "Samus_Idle" :
+                                                             go->getVelocity().getY() > 0 ? "Samus_Jumping" : "Samus_Falling", go->getStateTime());
                 renderPhysicalEntityWithColor(*go, tr, go->getColor(), go->isFacingLeft());
             }
         }

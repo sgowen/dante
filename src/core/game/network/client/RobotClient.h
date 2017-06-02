@@ -1,17 +1,17 @@
 //
-//  RoboCatClient.h
+//  RobotClient.h
 //  noctisgames-framework
 //
 //  Created by Stephen Gowen on 5/15/17.
 //  Copyright (c) 2017 Noctis Games. All rights reserved.
 //
 
-#ifndef __noctisgames__RoboCatClient__
-#define __noctisgames__RoboCatClient__
+#ifndef __noctisgames__RobotClient__
+#define __noctisgames__RobotClient__
 
-#include "RoboCat.h"
+#include "Robot.h"
 
-class RoboCatClient : public RoboCat
+class RobotClient : public Robot
 {
     RTTI_DECL;
     
@@ -28,14 +28,13 @@ public:
     
     void doClientSidePredictionAfterReplicationForRemoteCat(uint32_t inReadState);
     
-protected:
-    RoboCatClient();
-    
 private:
-    void interpolateClientSidePrediction(Vector2& inOldLocation, Vector2& inOldVelocity, bool inIsForRemoteCat);
-    
     float m_fTimeLocationBecameOutOfSync;
     float m_fTimeVelocityBecameOutOfSync;
+    
+    void interpolateClientSidePrediction(Vector2& inOldLocation, Vector2& inOldVelocity, bool inIsForRemoteCat);
+    
+    RobotClient();
 };
 
-#endif /* defined(__noctisgames__RoboCatClient__) */
+#endif /* defined(__noctisgames__RobotClient__) */

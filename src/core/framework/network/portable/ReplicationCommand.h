@@ -10,7 +10,7 @@
 #define __noctisgames__ReplicationCommand__
 
 #include "ReplicationAction.h"
-#include "NetworkConstants.h"
+#include "Network.h"
 
 class ReplicationManagerTransmissionData;
 class OutputMemoryBitStream;

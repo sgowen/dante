@@ -1,5 +1,5 @@
 //
-//  RoboCatClient.cpp
+//  RobotClient.cpp
 //  noctisgames-framework
 //
 //  Created by Stephen Gowen on 5/15/17.
@@ -8,7 +8,7 @@
 
 #include "pch.h"
 
-#include "RoboCatClient.h"
+#include "RobotClient.h"
 
 #include "NetworkManagerClient.h"
 #include "Move.h"
@@ -18,14 +18,14 @@
 #include "Color.h"
 #include "Vector2.h"
 
-Entity* RoboCatClient::create()
+Entity* RobotClient::create()
 {
-    return new RoboCatClient();
+    return new RobotClient();
 }
 
-void RoboCatClient::onDeletion()
+void RobotClient::onDeletion()
 {
-    RoboCat::onDeletion();
+    Robot::onDeletion();
     
     //and if we're local, tell the hud so our health goes away!
     if (getPlayerId() == NetworkManagerClient::getInstance()->getPlayerId())
@@ -34,7 +34,7 @@ void RoboCatClient::onDeletion()
     }
 }
 
-void RoboCatClient::update()
+void RobotClient::update()
 {
     // TODO, allow for multiple client inputs
     if (getPlayerId() == NetworkManagerClient::getInstance()->getPlayerId())
@@ -68,19 +68,19 @@ void RoboCatClient::update()
     }
 }
 
-void RoboCatClient::read(InputMemoryBitStream& inInputStream)
+void RobotClient::read(InputMemoryBitStream& inInputStream)
 {
     Vector2 oldLocation = getPosition();
     Vector2 oldVelocity = getVelocity();
     
-    RoboCat::read(inInputStream);
+    Robot::read(inInputStream);
     
     if (getPlayerId() == NetworkManagerClient::getInstance()->getPlayerId())
     {
         doClientSidePredictionAfterReplicationForLocalCat(m_iReadState);
         
         //if this is a create packet, don't interpolate
-        if ((m_iReadState & ECRS_PlayerId) == 0)
+        if ((m_iReadState & RBRS_PlayerId) == 0)
         {
             interpolateClientSidePrediction(oldLocation, oldVelocity, false);
         }
@@ -90,16 +90,16 @@ void RoboCatClient::read(InputMemoryBitStream& inInputStream)
         doClientSidePredictionAfterReplicationForRemoteCat(m_iReadState);
         
         //will this smooth us out too? it'll interpolate us just 10% of the way there...
-        if ((m_iReadState & ECRS_PlayerId) == 0)
+        if ((m_iReadState & RBRS_PlayerId) == 0)
         {
             interpolateClientSidePrediction(oldLocation, oldVelocity, true);
         }
     }
 }
 
-void RoboCatClient::doClientSidePredictionAfterReplicationForLocalCat(uint32_t inReadState)
+void RobotClient::doClientSidePredictionAfterReplicationForLocalCat(uint32_t inReadState)
 {
-    if ((inReadState & ECRS_Pose) != 0)
+    if ((inReadState & RBRS_Pose) != 0)
     {
         //simulate pose only if we received new pose- might have just gotten thrustDir
         //in which case we don't need to replay moves because we haven't warped backwards
@@ -120,9 +120,9 @@ void RoboCatClient::doClientSidePredictionAfterReplicationForLocalCat(uint32_t i
 
 //so what do we want to do here? need to do some kind of interpolation...
 
-void RoboCatClient::doClientSidePredictionAfterReplicationForRemoteCat(uint32_t inReadState)
+void RobotClient::doClientSidePredictionAfterReplicationForRemoteCat(uint32_t inReadState)
 {
-    if ((inReadState & ECRS_Pose) != 0)
+    if ((inReadState & RBRS_Pose) != 0)
     {
         // simulate movement for an additional RTT
         float rtt = NetworkManagerClient::getInstance()->getRoundTripTime();
@@ -145,14 +145,7 @@ void RoboCatClient::doClientSidePredictionAfterReplicationForRemoteCat(uint32_t 
     }
 }
 
-RoboCatClient::RoboCatClient() :
-m_fTimeLocationBecameOutOfSync(0.f),
-m_fTimeVelocityBecameOutOfSync(0.f)
-{
-    // Empty
-}
-
-void RoboCatClient::interpolateClientSidePrediction(Vector2& inOldLocation, Vector2& inOldVelocity, bool inIsForRemoteCat)
+void RobotClient::interpolateClientSidePrediction(Vector2& inOldLocation, Vector2& inOldVelocity, bool inIsForRemoteCat)
 {
     float roundTripTime = NetworkManagerClient::getInstance()->getRoundTripTime();
     
@@ -205,4 +198,9 @@ void RoboCatClient::interpolateClientSidePrediction(Vector2& inOldLocation, Vect
     }
 }
 
-RTTI_IMPL(RoboCatClient, RoboCat);
+RobotClient::RobotClient() : m_fTimeLocationBecameOutOfSync(0.0f), m_fTimeVelocityBecameOutOfSync(0.0f)
+{
+    // Empty
+}
+
+RTTI_IMPL(RobotClient, Robot);

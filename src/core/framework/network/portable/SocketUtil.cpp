@@ -10,7 +10,7 @@
 
 #include "SocketUtil.h"
 
-#include "NetworkConstants.h"
+#include "Network.h"
 #include "StringUtil.h"
 
 bool SocketUtil::staticInit()

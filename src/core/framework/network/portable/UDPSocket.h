@@ -9,7 +9,7 @@
 #ifndef __noctisgames__UDPSocket__
 #define __noctisgames__UDPSocket__
 
-#include "NetworkConstants.h"
+#include "Network.h"
 
 class SocketAddress;
 

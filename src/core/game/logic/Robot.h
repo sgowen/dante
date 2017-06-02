@@ -1,17 +1,16 @@
 //
-//  RoboCat.h
+//  Robot.h
 //  noctisgames-framework
 //
 //  Created by Stephen Gowen on 5/15/17.
 //  Copyright (c) 2017 Noctis Games. All rights reserved.
 //
 
-#ifndef __noctisgames__RoboCat__
-#define __noctisgames__RoboCat__
+#ifndef __noctisgames__Robot__
+#define __noctisgames__Robot__
 
 #include "PhysicalEntity.h"
 
-#include "NetworkType.h"
 #include "GameConstants.h"
 
 #include "RTTI.h"
@@ -20,20 +19,21 @@
 
 class IInputState;
 
-class RoboCat : public PhysicalEntity
+class Robot : public PhysicalEntity
 {
     RTTI_DECL;
     
-    NETWORK_TYPE_DECL(NETWORK_TYPE_RoboCat);
+    NETWORK_TYPE_DECL(NETWORK_TYPE_Robot);
     
 public:
-    enum ECatReplicationState
+    enum RobotReplicationState
     {
-        ECRS_Pose = 1 << 0,
-        ECRS_Color = 1 << 1,
-        ECRS_PlayerId = 1 << 2,
+        RBRS_Pose = 1 << 0,
+        RBRS_Color = 1 << 1,
+        RBRS_PlayerId = 1 << 2,
+        RBRS_Health = 1 << 3,
         
-        ECRS_AllState = ECRS_Pose | ECRS_Color | ECRS_PlayerId
+        RBRS_AllState = RBRS_Pose | RBRS_Color | RBRS_PlayerId | RBRS_Health
     };
     
     virtual uint32_t getAllStateMask() const;
@@ -43,20 +43,26 @@ public:
     virtual uint32_t write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState);
     
     void processInput(float inDeltaTime, IInputState* inInputState);
+    
     void simulateMovement(float inDeltaTime);
     
     void processCollisions();
+    
     void processCollisionsWithScreenWalls();
     
     void setPlayerId(uint32_t inPlayerId);
+    
     uint32_t getPlayerId() const;
     
     void setIndexInWorld(int inIndex);
+    
     int getIndexInWorld() const;
     
     bool isFacingLeft();
     
     bool isGrounded();
+    
+    bool isShooting();
     
 protected:
     float m_fSpeed;
@@ -66,17 +72,20 @@ protected:
     float m_fWallRestitution;
     float m_fCatRestitution;
     
+    int m_iHealth;
+    
     bool m_isFacingLeft;
     bool m_isGrounded;
     bool m_isFalling;
+    bool m_isShooting;
     
     uint32_t m_iPlayerId;
     uint32_t m_iReadState;
     
-    RoboCat();
+    Robot();
     
 private:
     int m_iIndexInWorld;
 };
 
-#endif /* defined(__noctisgames__RoboCat__) */
+#endif /* defined(__noctisgames__Robot__) */

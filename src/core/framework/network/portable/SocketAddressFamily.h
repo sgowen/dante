@@ -9,7 +9,7 @@
 #ifndef __noctisgames__SocketAddressFamily__
 #define __noctisgames__SocketAddressFamily__
 
-#include "NetworkConstants.h"
+#include "Network.h"
 
 enum SocketAddressFamily
 {

@@ -46,6 +46,7 @@
 
 //// Network ////
 
-#define NETWORK_TYPE_RoboCat 'PLYR'
+#define NETWORK_TYPE_Robot 'RBTP'
+#define NETWORK_TYPE_Projectile 'PRJC'
 
 #endif /* defined(__dante__GameConstants__) */

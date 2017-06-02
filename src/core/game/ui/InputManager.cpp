@@ -48,6 +48,9 @@ void InputManager::update()
             case KeyboardEventType_D:
                 m_currentState->m_fDesiredRightAmount = (*i)->isUp() ? 0 : 1;
                 continue;
+            case KeyboardEventType_SPACE:
+                m_currentState->m_isShooting = (*i)->isUp() ? false : true;
+                continue;
             default:
                 continue;
         }
@@ -65,6 +68,9 @@ void InputManager::update()
                 continue;
             case GamePadEventType_D_PAD_RIGHT:
                 m_currentState->m_fDesiredRightAmount = (*i)->isButtonPressed() ? 1 : 0;
+                continue;
+            case GamePadEventType_A_BUTTON:
+                m_currentState->m_isShooting = (*i)->isButtonPressed() ? true : false;
                 continue;
             default:
                 continue;

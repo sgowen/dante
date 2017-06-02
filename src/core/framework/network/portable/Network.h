@@ -1,13 +1,13 @@
 //
-//  NetworkConstants.h
+//  Network.h
 //  noctisgames-framework
 //
 //  Created by Stephen Gowen on 5/15/17.
 //  Copyright (c) 2017 Noctis Games. All rights reserved.
 //
 
-#ifndef __noctisgames__NetworkConstants__
-#define __noctisgames__NetworkConstants__
+#ifndef __noctisgames__Network__
+#define __noctisgames__Network__
 
 #ifdef _WIN32
     #define WIN32_LEAN_AND_MEAN
@@ -39,4 +39,4 @@
     const int SOCKET_ERROR = -1;
 #endif
 
-#endif /* defined(__noctisgames__NetworkConstants__) */
+#endif /* defined(__noctisgames__Network__) */

@@ -1,5 +1,5 @@
 //
-//  RoboCat.cpp
+//  Robot.cpp
 //  noctisgames-framework
 //
 //  Created by Stephen Gowen on 5/15/17.
@@ -8,7 +8,7 @@
 
 #include "pch.h"
 
-#include "RoboCat.h"
+#include "Robot.h"
 
 #include "InputState.h"
 #include "OutputMemoryBitStream.h"
@@ -21,12 +21,12 @@
 
 #include <math.h>
 
-uint32_t RoboCat::getAllStateMask() const
+uint32_t Robot::getAllStateMask() const
 {
-    return ECRS_AllState;
+    return RBRS_AllState;
 }
 
-void RoboCat::read(InputMemoryBitStream& inInputStream)
+void Robot::read(InputMemoryBitStream& inInputStream)
 {
     bool stateBit;
     
@@ -38,7 +38,7 @@ void RoboCat::read(InputMemoryBitStream& inInputStream)
         uint32_t playerId;
         inInputStream.read(playerId);
         setPlayerId(playerId);
-        m_iReadState |= ECRS_PlayerId;
+        m_iReadState |= RBRS_PlayerId;
     }
     
     Vector2 replicatedLocation;
@@ -60,8 +60,11 @@ void RoboCat::read(InputMemoryBitStream& inInputStream)
         setPosition(replicatedLocation);
         
         inInputStream.read(m_isFacingLeft);
+        inInputStream.read(m_isGrounded);
+        inInputStream.read(m_isFalling);
+        inInputStream.read(m_isShooting);
         
-        m_iReadState |= ECRS_Pose;
+        m_iReadState |= RBRS_Pose;
     }
     
     inInputStream.read(stateBit);
@@ -70,27 +73,35 @@ void RoboCat::read(InputMemoryBitStream& inInputStream)
         Color color;
         inInputStream.read(color);
         setColor(color);
-        m_iReadState |= ECRS_Color;
+        m_iReadState |= RBRS_Color;
+    }
+    
+    inInputStream.read(stateBit);
+    if (stateBit)
+    {
+        m_iHealth = 0;
+        inInputStream.read(m_iHealth, 4); // Support up to 15 health points, for now...
+        m_iReadState |= RBRS_Health;
     }
 }
 
-uint32_t RoboCat::write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState)
+uint32_t Robot::write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState)
 {
     uint32_t writtenState = 0;
     
-    if (inDirtyState & ECRS_PlayerId)
+    if (inDirtyState & RBRS_PlayerId)
     {
         inOutputStream.write((bool)true);
         inOutputStream.write(getPlayerId());
         
-        writtenState |= ECRS_PlayerId;
+        writtenState |= RBRS_PlayerId;
     }
     else
     {
         inOutputStream.write((bool)false);
     }
     
-    if (inDirtyState & ECRS_Pose)
+    if (inDirtyState & RBRS_Pose)
     {
         inOutputStream.write((bool)true);
         
@@ -104,21 +115,36 @@ uint32_t RoboCat::write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyS
         inOutputStream.write(location.getX());
         inOutputStream.write(location.getY());
         
-        inOutputStream.write(m_isFacingLeft);
+        inOutputStream.write((bool)m_isFacingLeft);
+        inOutputStream.write((bool)m_isGrounded);
+        inOutputStream.write((bool)m_isFalling);
+        inOutputStream.write((bool)m_isShooting);
         
-        writtenState |= ECRS_Pose;
+        writtenState |= RBRS_Pose;
     }
     else
     {
         inOutputStream.write((bool)false);
     }
     
-    if (inDirtyState & ECRS_Color)
+    if (inDirtyState & RBRS_Color)
     {
         inOutputStream.write((bool)true);
         inOutputStream.write(getColor());
         
-        writtenState |= ECRS_Color;
+        writtenState |= RBRS_Color;
+    }
+    else
+    {
+        inOutputStream.write((bool)false);
+    }
+    
+    if (inDirtyState & RBRS_Health)
+    {
+        inOutputStream.write((bool)true);
+        inOutputStream.write(m_iHealth, 4);
+        
+        writtenState |= RBRS_Health;
     }
     else
     {
@@ -128,7 +154,7 @@ uint32_t RoboCat::write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyS
     return writtenState;
 }
 
-void RoboCat::processInput(float inDeltaTime, IInputState* inInputState)
+void Robot::processInput(float inDeltaTime, IInputState* inInputState)
 {
     //process our input....
     if (!inInputState)
@@ -152,9 +178,11 @@ void RoboCat::processInput(float inDeltaTime, IInputState* inInputState)
         m_isGrounded = false;
         m_isFalling = false;
     }
+    
+    m_isShooting = inputState->isShooting();
 }
 
-void RoboCat::simulateMovement(float inDeltaTime)
+void Robot::simulateMovement(float inDeltaTime)
 {
     update(inDeltaTime);
     
@@ -168,7 +196,7 @@ void RoboCat::simulateMovement(float inDeltaTime)
     }
 }
 
-void RoboCat::processCollisions()
+void Robot::processCollisions()
 {
     //right now just bounce off the sides..
     processCollisionsWithScreenWalls();
@@ -181,7 +209,7 @@ void RoboCat::processCollisions()
     //but in a real game, brute-force checking collisions against every other object is not efficient.
     //it would be preferable to use a quad tree or some other structure to minimize the
     //number of collisions that need to be tested.
-    for (auto goIt = World::sInstance->GetRoboCats().begin(), end = World::sInstance->GetRoboCats().end(); goIt != end; ++goIt)
+    for (auto goIt = World::sInstance->GetRobots().begin(), end = World::sInstance->GetRobots().end(); goIt != end; ++goIt)
     {
         PhysicalEntity* target = *goIt;
         if (target != this && !target->isRequestingDeletion())
@@ -206,7 +234,7 @@ void RoboCat::processCollisions()
                 Vector2 relVel = m_velocity;
                 
                 //if other object is a cat, it might have velocity, so there might be relative velocity...
-                RoboCat* targetCat = target->getRTTI().derivesFrom(RoboCat::rtti) ? (RoboCat*)target : nullptr;
+                Robot* targetCat = target->getRTTI().derivesFrom(Robot::rtti) ? (Robot*)target : nullptr;
                 if (targetCat)
                 {
                     relVel -= targetCat->m_velocity;
@@ -236,7 +264,7 @@ void RoboCat::processCollisions()
     }
 }
 
-void RoboCat::processCollisionsWithScreenWalls()
+void Robot::processCollisionsWithScreenWalls()
 {
     Vector2 location = getPosition();
     float x = location.getX();
@@ -280,44 +308,51 @@ void RoboCat::processCollisionsWithScreenWalls()
     }
 }
 
-void RoboCat::setPlayerId(uint32_t inPlayerId)
+void Robot::setPlayerId(uint32_t inPlayerId)
 {
     m_iPlayerId = inPlayerId;
 }
 
-uint32_t RoboCat::getPlayerId() const
+uint32_t Robot::getPlayerId() const
 {
     return m_iPlayerId;
 }
 
-void RoboCat::setIndexInWorld(int inIndex)
+void Robot::setIndexInWorld(int inIndex)
 {
     m_iIndexInWorld = inIndex;
 }
 
-int RoboCat::getIndexInWorld() const
+int Robot::getIndexInWorld() const
 {
     return m_iIndexInWorld;
 }
 
-bool RoboCat::isFacingLeft()
+bool Robot::isFacingLeft()
 {
     return m_isFacingLeft;
 }
 
-bool RoboCat::isGrounded()
+bool Robot::isGrounded()
 {
     return m_isGrounded;
 }
 
-RoboCat::RoboCat() : PhysicalEntity(0, 0, 1.565217391304348f, 2.0f),
+bool Robot::isShooting()
+{
+    return m_isShooting;
+}
+
+Robot::Robot() : PhysicalEntity(0, 0, 1.565217391304348f, 2.0f),
 m_fJumpSpeed(8.0f),
 m_fSpeed(7.5f),
 m_fWallRestitution(0.1f),
 m_fCatRestitution(0.1f),
+m_iHealth(5),
 m_isFacingLeft(false),
 m_isGrounded(false),
 m_isFalling(false),
+m_isShooting(false),
 m_iPlayerId(0),
 m_iReadState(0),
 m_iIndexInWorld(-1)
@@ -325,6 +360,6 @@ m_iIndexInWorld(-1)
     m_acceleration.setY(-9.8f);
 }
 
-RTTI_IMPL(RoboCat, PhysicalEntity);
+RTTI_IMPL(Robot, PhysicalEntity);
 
-NETWORK_TYPE_IMPL(RoboCat);
+NETWORK_TYPE_IMPL(Robot);

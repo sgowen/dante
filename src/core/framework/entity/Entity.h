@@ -9,7 +9,6 @@
 #ifndef __noctisgames__Entity__
 #define __noctisgames__Entity__
 
-#include "NetworkType.h"
 #include "FrameworkConstants.h"
 
 #include "RTTI.h"
@@ -18,6 +17,14 @@
 
 class OutputMemoryBitStream;
 class InputMemoryBitStream;
+
+#define NETWORK_TYPE_DECL(inCode) \
+public: \
+enum { kClassId = inCode }; \
+virtual uint32_t getNetworkType();
+
+#define NETWORK_TYPE_IMPL(name) \
+uint32_t name::getNetworkType() { return kClassId; }
 
 class Entity
 {

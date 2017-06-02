@@ -9,11 +9,11 @@
 #ifndef __noctisgames__DeliveryNotificationManager__
 #define __noctisgames__DeliveryNotificationManager__
 
-#include "NetworkType.h"
 #include "InFlightPacket.h"
 #include "AckRange.h"
 
 #include <deque>
+#include <stdint.h>
 
 class OutputMemoryBitStream;
 class InputMemoryBitStream;
@@ -45,12 +45,12 @@ private:
     void				ProcessAcks(InputMemoryBitStream& inInputStream);
     
     
-    void				AddPendingAck(PacketSequenceNumber inSequenceNumber);
+    void				AddPendingAck(uint16_t inSequenceNumber);
     void				HandlePacketDeliveryFailure(const InFlightPacket& inFlightPacket);
     void				HandlePacketDeliverySuccess(const InFlightPacket& inFlightPacket);
     
-    PacketSequenceNumber	mNextOutgoingSequenceNumber;
-    PacketSequenceNumber	mNextExpectedSequenceNumber;
+    uint16_t	mNextOutgoingSequenceNumber;
+    uint16_t	mNextExpectedSequenceNumber;
     
     std::deque< InFlightPacket >	mInFlightPackets;
     std::deque< AckRange >		mPendingAcks;

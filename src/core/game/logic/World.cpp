@@ -10,7 +10,7 @@
 
 #include "World.h"
 
-#include "RoboCat.h"
+#include "Robot.h"
 #include "Entity.h"
 
 std::unique_ptr<World> World::sInstance;
@@ -22,35 +22,35 @@ void World::staticInit()
 
 void World::addEntityIfPossible(Entity* inEntity)
 {
-    if (inEntity->getRTTI().derivesFrom(RoboCat::rtti))
+    if (inEntity->getRTTI().derivesFrom(Robot::rtti))
     {
-        World::sInstance->AddRoboCat((RoboCat*)inEntity);
+        World::sInstance->AddRobot((Robot*)inEntity);
     }
 }
 
 void World::removeEntityIfPossible(Entity* inEntity)
 {
-    if (inEntity->getRTTI().derivesFrom(RoboCat::rtti))
+    if (inEntity->getRTTI().derivesFrom(Robot::rtti))
     {
-        World::sInstance->RemoveRoboCat((RoboCat*)inEntity);
+        World::sInstance->RemoveRobot((Robot*)inEntity);
     }
 }
 
-void World::AddRoboCat(RoboCat* inRoboCat)
+void World::AddRobot(Robot* inRobot)
 {
-    mRoboCats.push_back(inRoboCat);
+    mRobots.push_back(inRobot);
     
-    int index = static_cast<int>(mRoboCats.size() - 1);
-    inRoboCat->setIndexInWorld(index);
+    int index = static_cast<int>(mRobots.size() - 1);
+    inRobot->setIndexInWorld(index);
 }
 
-void World::RemoveRoboCat(RoboCat* inRoboCat)
+void World::RemoveRobot(Robot* inRobot)
 {
     bool isContained = false;
-    int len = static_cast<int>(mRoboCats.size());
+    int len = static_cast<int>(mRobots.size());
     for (int i = 0; i < len; ++i)
     {
-        if (mRoboCats[i]->getID() == inRoboCat->getID())
+        if (mRobots[i]->getID() == inRobot->getID())
         {
             isContained = true;
             break;
@@ -59,19 +59,19 @@ void World::RemoveRoboCat(RoboCat* inRoboCat)
     
     if (isContained)
     {
-        int index = inRoboCat->getIndexInWorld();
+        int index = inRobot->getIndexInWorld();
         
         int lastIndex = len - 1;
         
         if (index != lastIndex)
         {
-            mRoboCats[index] = mRoboCats[lastIndex];
-            mRoboCats[index]->setIndexInWorld(index);
+            mRobots[index] = mRobots[lastIndex];
+            mRobots[index]->setIndexInWorld(index);
         }
         
-        inRoboCat->setIndexInWorld(-1);
+        inRobot->setIndexInWorld(-1);
         
-        mRoboCats.pop_back();
+        mRobots.pop_back();
     }
 }
 
@@ -79,10 +79,10 @@ void World::update()
 {
     //update all game objects- sometimes they want to die, so we need to tread carefully...
     
-    int len = static_cast<int>(mRoboCats.size());
+    int len = static_cast<int>(mRobots.size());
     for (int i = 0, c = len; i < c; ++i)
     {
-        RoboCat* go = mRoboCats[i];
+        Robot* go = mRobots[i];
         
         if (!go->isRequestingDeletion())
         {
@@ -92,7 +92,7 @@ void World::update()
         //you might suddenly want to die after your update, so check again
         if (go->isRequestingDeletion())
         {
-            RemoveRoboCat(go);
+            RemoveRobot(go);
             go->onDeletion();
             --i;
             --c;

@@ -46,7 +46,7 @@ DeliveryNotificationManager::~DeliveryNotificationManager()
 InFlightPacket* DeliveryNotificationManager::WriteSequenceNumber(OutputMemoryBitStream& inOutputStream)
 {
     //write the sequence number, but also create an inflight packet for this...
-    PacketSequenceNumber sequenceNumber = mNextOutgoingSequenceNumber++;
+    uint16_t sequenceNumber = mNextOutgoingSequenceNumber++;
     inOutputStream.write(sequenceNumber);
     
     ++mDispatchedPacketCount;
@@ -87,7 +87,7 @@ void DeliveryNotificationManager::WriteAckData(OutputMemoryBitStream& inOutputSt
 //returns wether to drop the packet- if sequence number is too low!
 bool DeliveryNotificationManager::ProcessSequenceNumber(InputMemoryBitStream& inInputStream)
 {
-    PacketSequenceNumber sequenceNumber;
+    uint16_t sequenceNumber;
     
     inInputStream.read(sequenceNumber);
     if (sequenceNumber == mNextExpectedSequenceNumber)
@@ -139,21 +139,21 @@ void DeliveryNotificationManager::ProcessAcks(InputMemoryBitStream& inInputStrea
         ackRange.read(inInputStream);
         
         //for each InfilghtPacket with a sequence number less than the start, handle delivery failure...
-        PacketSequenceNumber nextAckdSequenceNumber = ackRange.GetStart();
+        uint16_t nextAckdSequenceNumber = ackRange.GetStart();
         uint32_t onePastAckdSequenceNumber = nextAckdSequenceNumber + ackRange.GetCount();
         while (nextAckdSequenceNumber < onePastAckdSequenceNumber && !mInFlightPackets.empty())
         {
             const auto& nextInFlightPacket = mInFlightPackets.front();
             //if the packet has a lower sequence number, we didn't get an ack for it, so it probably wasn't delivered
-            PacketSequenceNumber nextInFlightPacketSequenceNumber = nextInFlightPacket.GetSequenceNumber();
-            if (nextInFlightPacketSequenceNumber < nextAckdSequenceNumber)
+            uint16_t nextInFlightuint16_t = nextInFlightPacket.GetSequenceNumber();
+            if (nextInFlightuint16_t < nextAckdSequenceNumber)
             {
                 //copy this so we can remove it before handling the failure- we don't want to find it when checking for state
                 auto copyOfInFlightPacket = nextInFlightPacket;
                 mInFlightPackets.pop_front();
                 HandlePacketDeliveryFailure(copyOfInFlightPacket);
             }
-            else if (nextInFlightPacketSequenceNumber == nextAckdSequenceNumber)
+            else if (nextInFlightuint16_t == nextAckdSequenceNumber)
             {
                 HandlePacketDeliverySuccess(nextInFlightPacket);
                 //received!
@@ -161,7 +161,7 @@ void DeliveryNotificationManager::ProcessAcks(InputMemoryBitStream& inInputStrea
                 //decrement count, advance nextAckdSequenceNumber
                 ++nextAckdSequenceNumber;
             }
-            else if (nextInFlightPacketSequenceNumber > nextAckdSequenceNumber)
+            else if (nextInFlightuint16_t > nextAckdSequenceNumber)
             {
                 //we've already ackd some packets in here.
                 //keep this packet in flight, but keep going through the ack...
@@ -194,7 +194,7 @@ void DeliveryNotificationManager::ProcessTimedOutPackets()
     }
 }
 
-void DeliveryNotificationManager::AddPendingAck(PacketSequenceNumber inSequenceNumber)
+void DeliveryNotificationManager::AddPendingAck(uint16_t inSequenceNumber)
 {
     //if you don't have a range yet, or you can't correctly extend the final range with the sequence number,
     //start a new range

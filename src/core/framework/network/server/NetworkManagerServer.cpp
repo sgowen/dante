@@ -292,7 +292,7 @@ void NetworkManagerServer::handleClientDisconnected(ClientProxy* inClientProxy)
     
     m_handleLostClientFunc(inClientProxy);
     
-    m_iNewPlayerId = m_addressToClientMap.size() + 1;
+    m_iNewPlayerId = static_cast<int>(m_addressToClientMap.size()) + 1;
     
     //was that the last client? if so, bye!
     if (m_addressToClientMap.empty())

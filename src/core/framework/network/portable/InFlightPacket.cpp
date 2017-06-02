@@ -12,7 +12,7 @@
 
 #include "Timing.h"
 
-InFlightPacket::InFlightPacket(PacketSequenceNumber inSequenceNumber) :
+InFlightPacket::InFlightPacket(uint16_t inSequenceNumber) :
 mSequenceNumber(inSequenceNumber),
 m_fTimeDispatched(Timing::getInstance()->getTime())
 {
@@ -31,7 +31,7 @@ ITransmissionData* InFlightPacket::GetTransmissionData(int inKey) const
     return (it != mTransmissionDataMap.end()) ? it->second : nullptr;
 }
 
-PacketSequenceNumber InFlightPacket::GetSequenceNumber() const
+uint16_t InFlightPacket::GetSequenceNumber() const
 {
     return mSequenceNumber;
 }

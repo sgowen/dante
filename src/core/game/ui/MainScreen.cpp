@@ -27,7 +27,7 @@
 #include "StringUtil.h"
 #include "MathUtil.h"
 
-#include "RoboCatClient.h"
+#include "RobotClient.h"
 #include "EntityRegistry.h"
 #include "NetworkManagerClient.h"
 #include "SocketAddressFactory.h"
@@ -66,7 +66,7 @@ m_iRequestedAction(REQUESTED_ACTION_UPDATE)
     
     EntityRegistry::getInstance()->init(World::addEntityIfPossible);
     
-    EntityRegistry::getInstance()->registerCreationFunction(NETWORK_TYPE_RoboCat, RoboCatClient::create);
+    EntityRegistry::getInstance()->registerCreationFunction(NETWORK_TYPE_Robot, RobotClient::create);
     
     SocketAddress* serverAddress = SocketAddressFactory::CreateIPv4FromString(serverIPAddress);
     

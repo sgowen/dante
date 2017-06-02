@@ -14,7 +14,6 @@
 #include "Vector2.h"
 #include "Color.h"
 
-#include "NetworkType.h"
 #include "FrameworkConstants.h"
 
 #include "RTTI.h"

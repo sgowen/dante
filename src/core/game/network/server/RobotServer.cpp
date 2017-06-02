@@ -1,5 +1,5 @@
 //
-//  RoboCatServer.cpp
+//  RobotServer.cpp
 //  noctisgames-framework
 //
 //  Created by Stephen Gowen on 5/15/17.
@@ -8,32 +8,28 @@
 
 #include "pch.h"
 
-#include "RoboCatServer.h"
+#include "RobotServer.h"
 
 #include "NetworkManagerServer.h"
 #include "Timing.h"
 #include "StringUtil.h"
+#include "Server.h"
 
-Entity* RoboCatServer::create()
+Entity* RobotServer::create()
 {
-    RoboCatServer* ret = new RoboCatServer();
+    RobotServer* ret = new RobotServer();
     
     NetworkManagerServer::getInstance()->registerEntity(ret);
     
     return ret;
 }
 
-RoboCatServer::RoboCatServer() : RoboCat()
-{
-    // Empty
-}
-
-void RoboCatServer::onDeletion()
+void RobotServer::onDeletion()
 {
     NetworkManagerServer::getInstance()->unregisterEntity(this);
 }
 
-void RoboCatServer::update()
+void RobotServer::update()
 {
     Vector2 oldLocation = getPosition();
     Vector2 oldVelocity = getVelocity();
@@ -58,11 +54,50 @@ void RoboCatServer::update()
         moveList.clear();
     }
     
+    handleShooting();
+    
     if (!oldLocation.isEqualTo(getPosition()) ||
         !oldVelocity.isEqualTo(getVelocity()))
     {
-        NetworkManagerServer::getInstance()->setStateDirty(getID(), ECRS_Pose);
+        NetworkManagerServer::getInstance()->setStateDirty(getID(), RBRS_Pose);
     }
 }
 
-RTTI_IMPL(RoboCatServer, RoboCat);
+void RobotServer::takeDamage()
+{
+    m_iHealth--;
+    
+    if (m_iHealth <= 0)
+    {
+        requestDeletion();
+        
+        ClientProxy* clientProxy = NetworkManagerServer::getInstance()->getClientProxy(getPlayerId());
+        
+        Server::staticHandleNewClient(clientProxy);
+    }
+    
+    // tell the world our health dropped
+    NetworkManagerServer::getInstance()->setStateDirty(getID(), RBRS_Health);
+}
+
+void RobotServer::handleShooting()
+{
+    float time = Timing::getInstance()->getFrameStartTime();
+    
+    if (m_isShooting && Timing::getInstance()->getFrameStartTime() > m_fTimeOfNextShot)
+    {
+        //not exact, but okay
+        m_fTimeOfNextShot = time + 0.25f;
+        
+        //fire!
+//        YarnPtr yarn = std::static_pointer_cast< Yarn >( GameObjectRegistry::sInstance->CreateGameObject( 'YARN' ) );
+//        yarn->InitFromShooter( this );
+    }
+}
+
+RobotServer::RobotServer() : Robot(), m_fTimeOfNextShot(0)
+{
+    // Empty
+}
+
+RTTI_IMPL(RobotServer, Robot);
