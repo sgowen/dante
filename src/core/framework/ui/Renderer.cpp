@@ -17,7 +17,7 @@
 #include "ITextureLoader.h"
 #include "IRendererHelper.h"
 #include "GpuProgramWrapper.h"
-#include "PhysicalEntity.h"
+#include "Entity.h"
 #include "TextureRegion.h"
 #include "Color.h"
 #include "NGRect.h"
@@ -157,17 +157,17 @@ bool Renderer::isReadyForRendering()
 
 #pragma mark protected
 
-void Renderer::renderPhysicalEntity(PhysicalEntity &pe, TextureRegion& tr, bool flipX)
+void Renderer::renderEntity(Entity &pe, TextureRegion& tr, bool flipX)
 {
     m_spriteBatcher->renderSprite(pe.getPosition().getX(), pe.getPosition().getY(), pe.getWidth(), pe.getHeight(), pe.getAngle(), flipX, tr);
 }
 
-void Renderer::renderPhysicalEntityWithColor(PhysicalEntity &pe, TextureRegion& tr, Color c, bool flipX)
+void Renderer::renderEntityWithColor(Entity &pe, TextureRegion& tr, Color c, bool flipX)
 {
     m_spriteBatcher->renderSprite(pe.getPosition().getX(), pe.getPosition().getY(), pe.getWidth(), pe.getHeight(), pe.getAngle(), flipX, c, tr);
 }
 
-void Renderer::renderBoundsForPhysicalEntity(PhysicalEntity &pe)
+void Renderer::renderBoundsForEntity(Entity &pe)
 {
     static Color red = Color(1, 0, 0, 1);
     
@@ -179,7 +179,7 @@ void Renderer::renderBoundsWithColor(NGRect &r, Color& c)
     m_boundsNGRectBatcher->renderNGRect(r, c);
 }
 
-void Renderer::renderHighlightForPhysicalEntity(PhysicalEntity &pe, Color &c)
+void Renderer::renderHighlightForEntity(Entity &pe, Color &c)
 {
     m_fillNGRectBatcher->renderNGRect(pe.getMainBounds(), c);
 }

@@ -19,7 +19,7 @@ class ClientProxy
 public:
     ClientProxy(const SocketAddress& inSocketAddress, const std::string& inName, int inPlayerId);
     
-    const SocketAddress& getSocketAddress()	const;
+    const SocketAddress& getSocketAddress() const;
     
     int getPlayerId() const;
     
@@ -32,8 +32,6 @@ public:
     DeliveryNotificationManager& getDeliveryNotificationManager();
     
     ReplicationManagerServer& getReplicationManagerServer();
-    
-    const MoveList& getUnprocessedMoveList() const;
     
     MoveList& getUnprocessedMoveList();
     

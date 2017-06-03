@@ -39,7 +39,7 @@ SocketAddress* SocketAddressFactory::CreateIPv4FromString(const std::string& inS
     int error = getaddrinfo(host.c_str(), service.c_str(), &hint, &result);
     if (error != 0 && result != nullptr)
     {
-        SocketUtil::ReportError("SocketAddressFactory::CreateIPv4FromString");
+        SOCKET_UTIL->reportError("SocketAddressFactory::CreateIPv4FromString");
         return nullptr;
     }
     

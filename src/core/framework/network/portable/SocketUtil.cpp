@@ -13,32 +13,34 @@
 #include "Network.h"
 #include "StringUtil.h"
 
-bool SocketUtil::staticInit()
+SocketUtil* SocketUtil::getInstance()
+{
+    static SocketUtil instance = SocketUtil();
+    return &instance;
+}
+
+bool SocketUtil::init()
 {
 #if _WIN32
     WSADATA wsaData;
     int iResult = WSAStartup(MAKEWORD(2, 2), &wsaData);
     if (iResult != NO_ERROR)
     {
-        ReportError ("Starting Up");
+        reportError("Starting Up");
         return false;
     }
 #endif
+    
+    m_isInitialized = true;
+    
     return true;
 }
 
-void SocketUtil::CleanUp()
-{
-#if _WIN32
-    WSACleanup();
-#endif
-}
-
-void SocketUtil::ReportError(const char* inOperationDesc)
+void SocketUtil::reportError(const char* inOperationDesc)
 {
 #if _WIN32
     LPVOID lpMsgBuf;
-    DWORD errorNum = GetLastError();
+    DWORD errorNum = getLastError();
     
     FormatMessage(
                   FORMAT_MESSAGE_ALLOCATE_BUFFER |
@@ -57,16 +59,16 @@ void SocketUtil::ReportError(const char* inOperationDesc)
 #endif
 }
 
-int SocketUtil::GetLastError()
+int SocketUtil::getLastError()
 {
 #if _WIN32
-    return WSAGetLastError();
+    return WSAgetLastError();
 #else
     return errno;
 #endif
 }
 
-UDPSocket* SocketUtil::CreateUDPSocket(SocketAddressFamily inFamily)
+UDPSocket* SocketUtil::createUDPSocket(SocketAddressFamily inFamily)
 {
     SOCKET s = socket(inFamily, SOCK_DGRAM, IPPROTO_UDP);
     
@@ -76,7 +78,23 @@ UDPSocket* SocketUtil::CreateUDPSocket(SocketAddressFamily inFamily)
     }
     else
     {
-        ReportError("SocketUtil::CreateUDPSocket");
+        reportError("SocketUtil::createUDPSocket");
+        
         return nullptr;
+    }
+}
+
+SocketUtil::SocketUtil() : m_isInitialized(false)
+{
+    // Empty
+}
+
+SocketUtil::~SocketUtil()
+{
+    if (m_isInitialized)
+    {
+#if _WIN32
+        WSACleanup();
+#endif
     }
 }

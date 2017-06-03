@@ -24,7 +24,7 @@ public:
     
     virtual void processPacket(InputMemoryBitStream& inInputStream, const SocketAddress& inFromAddress) override;
     
-    bool init(const SocketAddress& inServerAddress, const std::string& inName, HandleEntityDeletion handleEntityDeletion);
+    bool init(const std::string& inServerIPAddress, const std::string& inName, HandleEntityDeletion handleEntityDeletion);
     
     void sendOutgoingPackets();
     
@@ -47,7 +47,7 @@ private:
     DeliveryNotificationManager m_deliveryNotificationManager;
     ReplicationManagerClient m_replicationManagerClient;
     
-    SocketAddress m_serverAddress;
+    SocketAddress* m_serverAddress;
     
     NetworkClientState m_state;
     

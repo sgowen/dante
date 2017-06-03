@@ -9,12 +9,16 @@
 #ifndef __noctisgames__Entity__
 #define __noctisgames__Entity__
 
+#include "Vector2.h"
+#include "Color.h"
 #include "FrameworkConstants.h"
 
 #include "RTTI.h"
 
 #include <stdint.h>
+#include <vector>
 
+class NGRect;
 class OutputMemoryBitStream;
 class InputMemoryBitStream;
 
@@ -33,15 +37,19 @@ class Entity
     NETWORK_TYPE_DECL(NETWORK_TYPE_Entity);
     
 public:
-    Entity();
+    Entity(float x, float y, float width, float height);
     
     virtual ~Entity();
     
+    virtual void onDeletion();
+    
     virtual void update();
     
-    virtual void update(float deltaTime);
+    virtual void update(float inDeltaTime);
     
-    virtual void onDeletion();
+    virtual void resetBounds(float width, float height);
+    
+    virtual void updateBounds();
     
     virtual uint32_t getAllStateMask() const;
     
@@ -49,13 +57,41 @@ public:
     
     virtual uint32_t write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState);
     
-    int getID();
-    
-    void setID(int inID);
-    
     float getStateTime();
     
     void setStateTime(float stateTime);
+    
+    void setPosition(Vector2 position);
+    
+    Vector2& getPosition();
+    
+    Vector2& getVelocity();
+    
+    Vector2& getAcceleration();
+    
+    std::vector<NGRect *>& getBounds();
+    
+    NGRect& getMainBounds();
+    
+    void setColor(Color color);
+    
+    Color& getColor();
+    
+    const float& getWidth();
+    
+    void setWidth(float width);
+    
+    const float& getHeight();
+    
+    void setHeight(float height);
+    
+    void setAngle(float angle);
+    
+    float getAngle();
+    
+    int getID();
+    
+    void setID(int inID);
     
     void requestDeletion();
     
@@ -63,10 +99,19 @@ public:
     
 protected:
     float m_fStateTime;
-    int m_ID;
-    bool m_isRequestingDeletion;
+    Vector2 m_position;
+    Vector2 m_velocity;
+    Vector2 m_acceleration;
+    std::vector<NGRect *> m_bounds;
+    Color m_color;
+    float m_fWidth;
+    float m_fHeight;
+    float m_fAngle;
     
 private:
+    int m_iID;
+    bool m_isRequestingDeletion;
+    
     static int getUniqueEntityID();
 };
 

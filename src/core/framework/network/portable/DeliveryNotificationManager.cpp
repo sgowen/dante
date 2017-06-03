@@ -20,42 +20,107 @@ namespace
     const float kDelayBeforeAckTimeout = 0.5f;
 }
 
-DeliveryNotificationManager::DeliveryNotificationManager(bool inShouldSendAcks, bool inShouldProcessAcks) :
-mNextOutgoingSequenceNumber(0),
-mNextExpectedSequenceNumber(0),
+DeliveryNotificationManager::DeliveryNotificationManager(bool inShouldSendAcks, bool inShouldprocessAcks) :
+m_iNextOutgoingSequenceNumber(0),
+m_iNextExpectedSequenceNumber(0),
 //everybody starts at 0...
-mShouldSendAcks(inShouldSendAcks),
-mShouldProcessAcks(inShouldProcessAcks),
-mDeliveredPacketCount(0),
-mDroppedPacketCount(0),
-mDispatchedPacketCount(0)
+m_shouldSendAcks(inShouldSendAcks),
+m_shouldprocessAcks(inShouldprocessAcks),
+m_iDeliveredPacketCount(0),
+m_iDroppedPacketCount(0),
+m_iDispatchedPacketCount(0)
 {
 }
 
 //we're going away- log how well we did...
 DeliveryNotificationManager::~DeliveryNotificationManager()
 {
-    if (mDispatchedPacketCount > 0)
+    if (m_iDispatchedPacketCount > 0)
     {
         LOG("DNM destructor. Delivery rate %d%%, Drop rate %d%%",
-            (100 * mDeliveredPacketCount) / mDispatchedPacketCount,
-            (100 * mDroppedPacketCount) / mDispatchedPacketCount);
+            (100 * m_iDeliveredPacketCount) / m_iDispatchedPacketCount,
+            (100 * m_iDroppedPacketCount) / m_iDispatchedPacketCount);
     }
 }
 
-InFlightPacket* DeliveryNotificationManager::WriteSequenceNumber(OutputMemoryBitStream& inOutputStream)
+InFlightPacket* DeliveryNotificationManager::writeState(OutputMemoryBitStream& inOutputStream)
+{
+    InFlightPacket* toRet = writeSequenceNumber(inOutputStream);
+    if (m_shouldSendAcks)
+    {
+        writeAckData(inOutputStream);
+    }
+    
+    return toRet;
+}
+
+bool DeliveryNotificationManager::readAndProcessState(InputMemoryBitStream& inInputStream)
+{
+    bool toRet = processSequenceNumber(inInputStream);
+    if (m_shouldprocessAcks)
+    {
+        processAcks(inInputStream);
+    }
+    
+    return toRet;
+}
+
+void DeliveryNotificationManager::processTimedOutPackets()
+{
+    float timeoutTime = Timing::getInstance()->getTime() - kDelayBeforeAckTimeout;
+    
+    while (!m_inFlightPackets.empty())
+    {
+        const auto& nextInFlightPacket = m_inFlightPackets.front();
+        
+        //was this packet dispatched before the current time minus the timeout duration?
+        if (nextInFlightPacket.getTimeDispatched() < timeoutTime)
+        {
+            //it failed! let us know about that
+            handlePacketDeliveryFailure(nextInFlightPacket);
+            m_inFlightPackets.pop_front();
+        }
+        else
+        {
+            //it wasn't, and packets are all in order by time here, so we know we don't have to check farther
+            break;
+        }
+    }
+}
+
+uint32_t DeliveryNotificationManager::getDroppedPacketCount() const
+{
+    return m_iDroppedPacketCount;
+}
+
+uint32_t DeliveryNotificationManager::getDeliveredPacketCount() const
+{
+    return m_iDeliveredPacketCount;
+}
+
+uint32_t DeliveryNotificationManager::getDispatchedPacketCount() const
+{
+    return m_iDispatchedPacketCount;
+}
+
+const std::deque<InFlightPacket>& DeliveryNotificationManager::getInFlightPackets() const
+{
+    return m_inFlightPackets;
+}
+
+InFlightPacket* DeliveryNotificationManager::writeSequenceNumber(OutputMemoryBitStream& inOutputStream)
 {
     //write the sequence number, but also create an inflight packet for this...
-    uint16_t sequenceNumber = mNextOutgoingSequenceNumber++;
+    uint16_t sequenceNumber = m_iNextOutgoingSequenceNumber++;
     inOutputStream.write(sequenceNumber);
     
-    ++mDispatchedPacketCount;
+    ++m_iDispatchedPacketCount;
     
-    if (mShouldProcessAcks)
+    if (m_shouldprocessAcks)
     {
-        mInFlightPackets.emplace_back(sequenceNumber);
+        m_inFlightPackets.emplace_back(sequenceNumber);
         
-        return &mInFlightPackets.back();
+        return &m_inFlightPackets.back();
     }
     else
     {
@@ -63,7 +128,7 @@ InFlightPacket* DeliveryNotificationManager::WriteSequenceNumber(OutputMemoryBit
     }
 }
 
-void DeliveryNotificationManager::WriteAckData(OutputMemoryBitStream& inOutputStream)
+void DeliveryNotificationManager::writeAckData(OutputMemoryBitStream& inOutputStream)
 {
     //we usually will only have one packet to ack
     //so we'll follow that with a 0 bit if that's the case
@@ -73,30 +138,30 @@ void DeliveryNotificationManager::WriteAckData(OutputMemoryBitStream& inOutputSt
     //do we have any pending acks?
     //if so, write a 1 bit and write the first range
     //otherwise, write 0 bit
-    bool hasAcks = (mPendingAcks.size() > 0);
+    bool hasAcks = (m_pendingAcks.size() > 0);
     
     inOutputStream.write(hasAcks);
     if (hasAcks)
     {
         //note, we could write all the acks
-        mPendingAcks.front().write(inOutputStream);
-        mPendingAcks.pop_front();
+        m_pendingAcks.front().write(inOutputStream);
+        m_pendingAcks.pop_front();
     }
 }
 
 //returns wether to drop the packet- if sequence number is too low!
-bool DeliveryNotificationManager::ProcessSequenceNumber(InputMemoryBitStream& inInputStream)
+bool DeliveryNotificationManager::processSequenceNumber(InputMemoryBitStream& inInputStream)
 {
     uint16_t sequenceNumber;
     
     inInputStream.read(sequenceNumber);
-    if (sequenceNumber == mNextExpectedSequenceNumber)
+    if (sequenceNumber == m_iNextExpectedSequenceNumber)
     {
-        mNextExpectedSequenceNumber = sequenceNumber + 1;
+        m_iNextExpectedSequenceNumber = sequenceNumber + 1;
         //is this what we expect? great, let's add an ack to our pending list
-        if (mShouldSendAcks)
+        if (m_shouldSendAcks)
         {
-            AddPendingAck(sequenceNumber);
+            addPendingAck(sequenceNumber);
         }
         //and let's continue processing this packet...
         return true;
@@ -104,21 +169,21 @@ bool DeliveryNotificationManager::ProcessSequenceNumber(InputMemoryBitStream& in
     //is the sequence number less than our current expected sequence? silently drop it.
     //if this is due to wrapping around, we might fail to ack some packets that we should ack, but they'll get resent, so it's not a big deal
     //note that we don't have to re-ack it because our system doesn't reuse sequence numbers
-    else if (sequenceNumber < mNextExpectedSequenceNumber)
+    else if (sequenceNumber < m_iNextExpectedSequenceNumber)
     {
         return false;
     }
-    else if (sequenceNumber > mNextExpectedSequenceNumber)
+    else if (sequenceNumber > m_iNextExpectedSequenceNumber)
     {
         //we missed a lot of packets!
         //so our next expected packet comes after this one...
-        mNextExpectedSequenceNumber = sequenceNumber + 1;
-        //we should nack the missing packets..this will happen automatically inside AddPendingAck because
+        m_iNextExpectedSequenceNumber = sequenceNumber + 1;
+        //we should nack the missing packets..this will happen automatically inside addPendingAck because
         //we're adding an unconsequitive ack
         //and then we can ack this and process it
-        if (mShouldSendAcks)
+        if (m_shouldSendAcks)
         {
-            AddPendingAck(sequenceNumber);
+            addPendingAck(sequenceNumber);
         }
         return true;
     }
@@ -129,7 +194,7 @@ bool DeliveryNotificationManager::ProcessSequenceNumber(InputMemoryBitStream& in
 
 //in each packet we can ack a range
 //anything in flight before the range will be considered nackd by the other side immediately
-void DeliveryNotificationManager::ProcessAcks(InputMemoryBitStream& inInputStream)
+void DeliveryNotificationManager::processAcks(InputMemoryBitStream& inInputStream)
 {
     bool hasAcks;
     inInputStream.read(hasAcks);
@@ -139,25 +204,25 @@ void DeliveryNotificationManager::ProcessAcks(InputMemoryBitStream& inInputStrea
         ackRange.read(inInputStream);
         
         //for each InfilghtPacket with a sequence number less than the start, handle delivery failure...
-        uint16_t nextAckdSequenceNumber = ackRange.GetStart();
-        uint32_t onePastAckdSequenceNumber = nextAckdSequenceNumber + ackRange.GetCount();
-        while (nextAckdSequenceNumber < onePastAckdSequenceNumber && !mInFlightPackets.empty())
+        uint16_t nextAckdSequenceNumber = ackRange.getStart();
+        uint32_t onePastAckdSequenceNumber = nextAckdSequenceNumber + ackRange.getCount();
+        while (nextAckdSequenceNumber < onePastAckdSequenceNumber && !m_inFlightPackets.empty())
         {
-            const auto& nextInFlightPacket = mInFlightPackets.front();
+            const auto& nextInFlightPacket = m_inFlightPackets.front();
             //if the packet has a lower sequence number, we didn't get an ack for it, so it probably wasn't delivered
-            uint16_t nextInFlightuint16_t = nextInFlightPacket.GetSequenceNumber();
+            uint16_t nextInFlightuint16_t = nextInFlightPacket.getSequenceNumber();
             if (nextInFlightuint16_t < nextAckdSequenceNumber)
             {
                 //copy this so we can remove it before handling the failure- we don't want to find it when checking for state
                 auto copyOfInFlightPacket = nextInFlightPacket;
-                mInFlightPackets.pop_front();
-                HandlePacketDeliveryFailure(copyOfInFlightPacket);
+                m_inFlightPackets.pop_front();
+                handlePacketDeliveryFailure(copyOfInFlightPacket);
             }
             else if (nextInFlightuint16_t == nextAckdSequenceNumber)
             {
-                HandlePacketDeliverySuccess(nextInFlightPacket);
+                handlePacketDeliverySuccess(nextInFlightPacket);
                 //received!
-                mInFlightPackets.pop_front();
+                m_inFlightPackets.pop_front();
                 //decrement count, advance nextAckdSequenceNumber
                 ++nextAckdSequenceNumber;
             }
@@ -171,47 +236,24 @@ void DeliveryNotificationManager::ProcessAcks(InputMemoryBitStream& inInputStrea
     }
 }
 
-void DeliveryNotificationManager::ProcessTimedOutPackets()
-{
-    float timeoutTime = Timing::getInstance()->getTime() - kDelayBeforeAckTimeout;
-    
-    while (!mInFlightPackets.empty())
-    {
-        const auto& nextInFlightPacket = mInFlightPackets.front();
-        
-        //was this packet dispatched before the current time minus the timeout duration?
-        if (nextInFlightPacket.GetTimeDispatched() < timeoutTime)
-        {
-            //it failed! let us know about that
-            HandlePacketDeliveryFailure(nextInFlightPacket);
-            mInFlightPackets.pop_front();
-        }
-        else
-        {
-            //it wasn't, and packets are all in order by time here, so we know we don't have to check farther
-            break;
-        }
-    }
-}
-
-void DeliveryNotificationManager::AddPendingAck(uint16_t inSequenceNumber)
+void DeliveryNotificationManager::addPendingAck(uint16_t inSequenceNumber)
 {
     //if you don't have a range yet, or you can't correctly extend the final range with the sequence number,
     //start a new range
-    if (mPendingAcks.size() == 0 || !mPendingAcks.back().ExtendIfShould(inSequenceNumber))
+    if (m_pendingAcks.size() == 0 || !m_pendingAcks.back().extendIfShould(inSequenceNumber))
     {
-        mPendingAcks.emplace_back(inSequenceNumber);
+        m_pendingAcks.emplace_back(inSequenceNumber);
     }
 }
 
-void DeliveryNotificationManager::HandlePacketDeliveryFailure(const InFlightPacket& inFlightPacket)
+void DeliveryNotificationManager::handlePacketDeliveryFailure(const InFlightPacket& inFlightPacket)
 {
-    ++mDroppedPacketCount;
-    inFlightPacket.HandleDeliveryFailure(this);
+    ++m_iDroppedPacketCount;
+    inFlightPacket.handleDeliveryFailure(this);
 }
 
-void DeliveryNotificationManager::HandlePacketDeliverySuccess(const InFlightPacket& inFlightPacket)
+void DeliveryNotificationManager::handlePacketDeliverySuccess(const InFlightPacket& inFlightPacket)
 {
-    ++mDeliveredPacketCount;
-    inFlightPacket.HandleDeliverySuccess(this);
+    ++m_iDeliveredPacketCount;
+    inFlightPacket.handleDeliverySuccess(this);
 }

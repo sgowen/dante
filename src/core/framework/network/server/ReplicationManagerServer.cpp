@@ -13,45 +13,44 @@
 #include "OutputMemoryBitStream.h"
 #include "ReplicationManagerTransmissionData.h"
 
-#include "ReplicationManagerTransmissionData.h"
 #include "NetworkManagerServer.h"
 #include "ReplicationAction.h"
 #include "macros.h"
 #include "Entity.h"
 
-void ReplicationManagerServer::ReplicateCreate(int inNetworkId, uint32_t inInitialDirtyState)
+void ReplicationManagerServer::replicateCreate(int inNetworkId, uint32_t inInitialDirtyState)
 {
-    m_iNetworkIdToReplicationCommand[inNetworkId] = ReplicationCommand(inInitialDirtyState);
+    m_networkIdToReplicationCommand[inNetworkId] = ReplicationCommand(inInitialDirtyState);
 }
 
-void ReplicationManagerServer::ReplicateDestroy(int inNetworkId)
+void ReplicationManagerServer::replicateDestroy(int inNetworkId)
 {
     //it's broken if we don't find it...
-    m_iNetworkIdToReplicationCommand[inNetworkId].SetDestroy();
+    m_networkIdToReplicationCommand[inNetworkId].setDestroy();
 }
 
-void ReplicationManagerServer::RemoveFromReplication(int inNetworkId)
+void ReplicationManagerServer::removeFromReplication(int inNetworkId)
 {
-    m_iNetworkIdToReplicationCommand.erase(inNetworkId);
+    m_networkIdToReplicationCommand.erase(inNetworkId);
 }
 
 void ReplicationManagerServer::setStateDirty(int inNetworkId, uint32_t inDirtyState)
 {
-    m_iNetworkIdToReplicationCommand[inNetworkId].AddDirtyState(inDirtyState);
+    m_networkIdToReplicationCommand[inNetworkId].addDirtyState(inDirtyState);
 }
 
-void ReplicationManagerServer::HandleCreateAckd(int inNetworkId)
+void ReplicationManagerServer::handleCreateAckd(int inNetworkId)
 {
-    m_iNetworkIdToReplicationCommand[inNetworkId].HandleCreateAckd();
+    m_networkIdToReplicationCommand[inNetworkId].handleCreateAckd();
 }
 
 void ReplicationManagerServer::write(OutputMemoryBitStream& inOutputStream, ReplicationManagerTransmissionData* ioTransmissinData)
 {
     //run through each replication command and do something...
-    for (auto& pair: m_iNetworkIdToReplicationCommand)
+    for (auto& pair: m_networkIdToReplicationCommand)
     {
         ReplicationCommand& replicationCommand = pair.second;
-        if (replicationCommand.HasDirtyState())
+        if (replicationCommand.hasDirtyState())
         {
             int networkId = pair.first;
             
@@ -59,36 +58,36 @@ void ReplicationManagerServer::write(OutputMemoryBitStream& inOutputStream, Repl
             inOutputStream.write(networkId);
             
             //only need 2 bits for action...
-            ReplicationAction action = replicationCommand.GetAction();
+            ReplicationAction action = replicationCommand.getAction();
             inOutputStream.write(action, 2);
             
             uint32_t writtenState = 0;
-            uint32_t dirtyState = replicationCommand.GetDirtyState();
+            uint32_t dirtyState = replicationCommand.getDirtyState();
             
             //now do what?
             switch(action)
             {
                 case RA_Create:
-                    writtenState = WriteCreateAction(inOutputStream, networkId, dirtyState);
+                    writtenState = writeCreateAction(inOutputStream, networkId, dirtyState);
                     break;
                 case RA_Update:
-                    writtenState = WriteUpdateAction(inOutputStream, networkId, dirtyState);
+                    writtenState = writeUpdateAction(inOutputStream, networkId, dirtyState);
                     break;
                 case RA_Destroy:
                     //don't need anything other than state!
-                    writtenState = WriteDestroyAction(inOutputStream, networkId, dirtyState);
+                    writtenState = writeDestroyAction(inOutputStream, networkId, dirtyState);
                     break;
             }
             
-            ioTransmissinData->AddTransmission(networkId, action, writtenState);
+            ioTransmissinData->addTransmission(networkId, action, writtenState);
             
             //let's pretend everything was written- don't make this too hard
-            replicationCommand.ClearDirtyState(writtenState);
+            replicationCommand.clearDirtyState(writtenState);
         }
     }
 }
 
-uint32_t ReplicationManagerServer::WriteCreateAction(OutputMemoryBitStream& inOutputStream, int inNetworkId, uint32_t inDirtyState)
+uint32_t ReplicationManagerServer::writeCreateAction(OutputMemoryBitStream& inOutputStream, int inNetworkId, uint32_t inDirtyState)
 {
     //need object
     Entity* gameObject = NetworkManagerServer::getInstance()->getEntity(inNetworkId);
@@ -98,7 +97,7 @@ uint32_t ReplicationManagerServer::WriteCreateAction(OutputMemoryBitStream& inOu
     return gameObject->write(inOutputStream, inDirtyState);
 }
 
-uint32_t ReplicationManagerServer::WriteUpdateAction(OutputMemoryBitStream& inOutputStream, int inNetworkId, uint32_t inDirtyState)
+uint32_t ReplicationManagerServer::writeUpdateAction(OutputMemoryBitStream& inOutputStream, int inNetworkId, uint32_t inDirtyState)
 {
     //need object
     Entity* gameObject = NetworkManagerServer::getInstance()->getEntity(inNetworkId);
@@ -113,7 +112,7 @@ uint32_t ReplicationManagerServer::WriteUpdateAction(OutputMemoryBitStream& inOu
     return writtenState;
 }
 
-uint32_t ReplicationManagerServer::WriteDestroyAction(OutputMemoryBitStream& inOutputStream, int inNetworkId, uint32_t inDirtyState)
+uint32_t ReplicationManagerServer::writeDestroyAction(OutputMemoryBitStream& inOutputStream, int inNetworkId, uint32_t inDirtyState)
 {
     UNUSED(inOutputStream);
     UNUSED(inNetworkId);

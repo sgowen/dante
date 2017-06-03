@@ -14,8 +14,8 @@ class DeliveryNotificationManager;
 class ITransmissionData
 {
 public:
-    virtual void HandleDeliveryFailure(DeliveryNotificationManager* inDeliveryNotificationManager) const = 0;
-    virtual void HandleDeliverySuccess(DeliveryNotificationManager* inDeliveryNotificationManager) const = 0;
+    virtual void handleDeliveryFailure(DeliveryNotificationManager* inDeliveryNotificationManager) const = 0;
+    virtual void handleDeliverySuccess(DeliveryNotificationManager* inDeliveryNotificationManager) const = 0;
 };
 
 #endif /* defined(__noctisgames__ITransmissionData__) */

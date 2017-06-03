@@ -23,9 +23,7 @@ class PooledObjectsManager
 public:
     static PooledObjectsManager* getInstance();
     
-    static IInputState* borrowBaseType();
-    
-    static InputState* borrow();
+    static IInputState* borrowInputState();
     
 private:
     NGRollingPool<InputState>* m_pool;

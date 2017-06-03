@@ -90,7 +90,7 @@ void MainRenderer::tempDraw()
                                                              go->isGrounded() ?
                                                              isMoving ? go->isShooting() ? "Samus_Shooting" : "Samus_Running" : "Samus_Idle" :
                                                              go->getVelocity().getY() > 0 ? "Samus_Jumping" : "Samus_Falling", go->getStateTime());
-                renderPhysicalEntityWithColor(*go, tr, go->getColor(), go->isFacingLeft());
+                renderEntityWithColor(*go, tr, go->getColor(), go->isFacingLeft());
             }
         }
         m_spriteBatcher->endBatch(*m_demo->gpuTextureWrapper, *m_textureGpuProgramWrapper);

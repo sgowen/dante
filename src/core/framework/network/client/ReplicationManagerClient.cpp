@@ -32,19 +32,19 @@ void ReplicationManagerClient::read(InputMemoryBitStream& inInputStream)
         switch(action)
         {
             case RA_Create:
-                ReadAndDoCreateAction(inInputStream, networkId);
+                readAndDoCreateAction(inInputStream, networkId);
                 break;
             case RA_Update:
-                ReadAndDoUpdateAction(inInputStream, networkId);
+                readAndDoUpdateAction(inInputStream, networkId);
                 break;
             case RA_Destroy:
-                ReadAndDoDestroyAction(inInputStream, networkId);
+                readAndDoDestroyAction(inInputStream, networkId);
                 break;
         }
     }
 }
 
-void ReplicationManagerClient::ReadAndDoCreateAction(InputMemoryBitStream& inInputStream, int inNetworkId)
+void ReplicationManagerClient::readAndDoCreateAction(InputMemoryBitStream& inInputStream, int inNetworkId)
 {
     //need 4 cc
     uint32_t fourCCName;
@@ -69,7 +69,7 @@ void ReplicationManagerClient::ReadAndDoCreateAction(InputMemoryBitStream& inInp
     gameObject->read(inInputStream);
 }
 
-void ReplicationManagerClient::ReadAndDoUpdateAction(InputMemoryBitStream& inInputStream, int inNetworkId)
+void ReplicationManagerClient::readAndDoUpdateAction(InputMemoryBitStream& inInputStream, int inNetworkId)
 {
     //need object
     Entity* gameObject = NetworkManagerClient::getInstance()->getEntity(inNetworkId);
@@ -79,7 +79,7 @@ void ReplicationManagerClient::ReadAndDoUpdateAction(InputMemoryBitStream& inInp
     gameObject->read(inInputStream);
 }
 
-void ReplicationManagerClient::ReadAndDoDestroyAction(InputMemoryBitStream& inInputStream, int inNetworkId)
+void ReplicationManagerClient::readAndDoDestroyAction(InputMemoryBitStream& inInputStream, int inNetworkId)
 {
     //if something was destroyed before the create went through, we'll never get it
     //but we might get the destroy request, so be tolerant of being asked to destroy something that wasn't created

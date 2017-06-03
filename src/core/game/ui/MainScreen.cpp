@@ -13,7 +13,7 @@
 #include "JsonFile.h"
 #include "MainRenderer.h"
 #include "Vector2.h"
-#include "PhysicalEntity.h"
+#include "Entity.h"
 
 #include "GameConstants.h"
 #include "ScreenInputManager.h"
@@ -27,7 +27,7 @@
 #include "StringUtil.h"
 #include "MathUtil.h"
 
-#include "RobotClient.h"
+#include "Robot.h"
 #include "EntityRegistry.h"
 #include "NetworkManagerClient.h"
 #include "SocketAddressFactory.h"
@@ -50,8 +50,9 @@ m_iRequestedAction(REQUESTED_ACTION_UPDATE)
     std::string serverIPAddress = m_config->findValue("server_ip");
     if (serverIPAddress.length() == 0)
     {
-        //serverAddress = std::string("208.97.168.138:9999");
-        serverIPAddress = std::string("localhost:9999");
+        //serverIPAddress = std::string("208.97.168.138:9999");
+        serverIPAddress = std::string("localhost:9997");
+        //serverIPAddress = std::string("10.0.0.231:9999");
     }
     
     std::string userID = m_config->findValue("user_id");
@@ -60,17 +61,15 @@ m_iRequestedAction(REQUESTED_ACTION_UPDATE)
         userID = std::string("Noctis Games");
     }
     
-    SocketUtil::staticInit();
+    SOCKET_UTIL->init();
+    
+    NetworkManagerClient::getInstance()->init(serverIPAddress, userID, World::removeEntityIfPossible);
     
     World::staticInit();
     
     EntityRegistry::getInstance()->init(World::addEntityIfPossible);
     
-    EntityRegistry::getInstance()->registerCreationFunction(NETWORK_TYPE_Robot, RobotClient::create);
-    
-    SocketAddress* serverAddress = SocketAddressFactory::CreateIPv4FromString(serverIPAddress);
-    
-    NetworkManagerClient::getInstance()->init(*serverAddress, userID, World::removeEntityIfPossible);
+    EntityRegistry::getInstance()->registerCreationFunction(NETWORK_TYPE_Robot, Robot::create);
 }
 
 MainScreen::~MainScreen()
@@ -79,8 +78,6 @@ MainScreen::~MainScreen()
     delete m_renderer;
     delete m_touchPointDown;
     delete m_touchPointDown2;
-    
-    SocketUtil::CleanUp();
 }
 
 void MainScreen::createDeviceDependentResources()
@@ -116,24 +113,24 @@ void MainScreen::update(float deltaTime)
     m_fStateTime += deltaTime;
     m_fFrameStateTime += deltaTime;
     
-    Timing::getInstance()->updateManual(m_fStateTime, deltaTime);
-    
     if (m_fFrameStateTime >= FRAME_RATE)
     {
-        NetworkManagerClient::getInstance()->processIncomingPackets();
-        
-        InputManager::getInstance()->update();
+        NG_AUDIO_ENGINE->update();
         
         while (m_fFrameStateTime >= FRAME_RATE)
         {
             m_fFrameStateTime -= FRAME_RATE;
             
+            Timing::getInstance()->updateManual(m_fStateTime, FRAME_RATE);
+            
+            NetworkManagerClient::getInstance()->processIncomingPackets();
+            
+            InputManager::getInstance()->update();
+            
             World::sInstance->update();
+            
+            NetworkManagerClient::getInstance()->sendOutgoingPackets();
         }
-        
-        NG_AUDIO_ENGINE->update();
-        
-        NetworkManagerClient::getInstance()->sendOutgoingPackets();
     }
 }
 

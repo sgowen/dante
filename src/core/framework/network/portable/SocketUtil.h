@@ -13,16 +13,31 @@
 
 #include "SocketAddressFamily.h"
 
+#define SOCKET_UTIL (SocketUtil::getInstance())
+
 class SocketUtil
 {
 public:
-    static bool staticInit();
-    static void CleanUp();
+    static SocketUtil* getInstance();
     
-    static void ReportError(const char* inOperationDesc);
-    static int GetLastError();
+    bool init();
     
-    static UDPSocket* CreateUDPSocket(SocketAddressFamily inFamily);
+    void reportError(const char* inOperationDesc);
+    
+    int getLastError();
+    
+    UDPSocket* createUDPSocket(SocketAddressFamily inFamily);
+    
+    bool isInitialized();
+    
+private:
+    bool m_isInitialized;
+    
+    // ctor, copy ctor, and assignment should be private in a Singleton
+    SocketUtil();
+    ~SocketUtil();
+    SocketUtil(const SocketUtil&);
+    SocketUtil& operator=(const SocketUtil&);
 };
 
 #endif /* defined(__noctisgames__SocketUtil__) */

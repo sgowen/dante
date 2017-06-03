@@ -1,6 +1,6 @@
 //
 //  Server.cpp
-//  noctisgames-framework
+//  dante
 //
 //  Created by Stephen Gowen on 5/15/17.
 //  Copyright (c) 2017 Noctis Games. All rights reserved.
@@ -12,7 +12,7 @@
 
 #include "ClientProxy.h"
 
-#include "RobotServer.h"
+#include "Robot.h"
 #include "NetworkManagerServer.h"
 #include "EntityRegistry.h"
 #include "World.h"
@@ -134,7 +134,7 @@ Robot* Server::getCatForPlayer(int inPlayerId)
     for (int i = 0, c = len; i < c; ++i)
     {
         Entity* go = gameObjects[i];
-        Robot* cat = go->getRTTI().derivesFrom(Robot::rtti) ? (Robot*)go : nullptr;
+        Robot* cat = go->getRTTI().derivesFrom(Robot::rtti) ? static_cast<Robot*>(go) : nullptr;
         if (cat && cat->getPlayerId() == inPlayerId)
         {
             return static_cast<Robot*>(go);
@@ -146,18 +146,16 @@ Robot* Server::getCatForPlayer(int inPlayerId)
 
 Server::Server() : m_fFrameStateTime(0), m_isInitialized(false)
 {
-    SocketUtil::staticInit();
+    m_isInitialized = SOCKET_UTIL->init() && NetworkManagerServer::getInstance()->init(9997, World::removeEntityIfPossible, Server::staticHandleNewClient, Server::staticHandleLostClient, PooledObjectsManager::borrowInputState);
     
     World::staticInit();
     
     EntityRegistry::getInstance()->init(World::addEntityIfPossible);
     
-    EntityRegistry::getInstance()->registerCreationFunction(NETWORK_TYPE_Robot, RobotServer::create);
-    
-    m_isInitialized = NetworkManagerServer::getInstance()->init(9999, World::removeEntityIfPossible, Server::staticHandleNewClient, Server::staticHandleLostClient, PooledObjectsManager::borrowBaseType);
+    EntityRegistry::getInstance()->registerCreationFunction(NETWORK_TYPE_Robot, Robot::create);
 }
 
 Server::~Server()
 {
-    SocketUtil::CleanUp();
+    // Empty
 }

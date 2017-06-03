@@ -29,8 +29,6 @@
     <ClInclude Include="..\..\..\core\game\graphics\direct3d\*.h" />
     <ClInclude Include="..\..\..\core\game\graphics\portable\*.h" />
     <ClInclude Include="..\..\..\core\game\logic\*.h" />
-    <ClInclude Include="..\..\..\core\game\network\client\*.h" />
-    <ClInclude Include="..\..\..\core\game\network\portable\*.h" />
     <ClInclude Include="..\..\..\core\game\ui\*.h" />
     <ClInclude Include="..\shared\*.h" />
     <ClInclude Include="*.h" />
@@ -54,8 +52,6 @@
     <ClCompile Include="..\..\..\core\game\graphics\direct3d\*.cpp" />
     <ClCompile Include="..\..\..\core\game\graphics\portable\*.cpp" />
     <ClCompile Include="..\..\..\core\game\logic\*.cpp" />
-    <ClCompile Include="..\..\..\core\game\network\client\*.cpp" />
-    <ClCompile Include="..\..\..\core\game\network\portable\*.cpp" />
     <ClCompile Include="..\..\..\core\game\ui\*.cpp" />
     <ClCompile Include="..\shared\*.cpp" />
     <ClCompile Include="*.cpp" />
