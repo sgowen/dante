@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -86,9 +86,9 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NG_SERVER;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>../../../3rdparty/;../../../core/framework/entity/;../../../core/framework/file/portable/;../../../core/framework/file/windows/;../../../core/framework/math/;../../../core/framework/network/server/;../../../core/framework/network/portable/;../../../core/framework/state/;../../../core/framework/util/;../../../core/game/logic/;../../../core/game/network/server/;../../../core/game/network/portable/;$(ProjectDir);</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../../3rdparty/;../../../core/framework/entity/;../../../core/framework/file/portable/;../../../core/framework/file/windows/;../../../core/framework/math/;../../../core/framework/network/server/;../../../core/framework/network/portable/;../../../core/framework/state/;../../../core/framework/util/;../../../core/game/logic/;../../../core/game/server/;$(ProjectDir);</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -100,9 +100,9 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NG_SERVER;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>../../../3rdparty/;../../../core/framework/entity/;../../../core/framework/file/portable/;../../../core/framework/file/windows/;../../../core/framework/math/;../../../core/framework/network/server/;../../../core/framework/network/portable/;../../../core/framework/state/;../../../core/framework/util/;../../../core/game/logic/;../../../core/game/network/server/;../../../core/game/network/portable/;$(ProjectDir);</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../../3rdparty/;../../../core/framework/entity/;../../../core/framework/file/portable/;../../../core/framework/file/windows/;../../../core/framework/math/;../../../core/framework/network/server/;../../../core/framework/network/portable/;../../../core/framework/state/;../../../core/framework/util/;../../../core/game/logic/;../../../core/game/server/;$(ProjectDir);</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -116,9 +116,9 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NG_SERVER;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>../../../3rdparty/;../../../core/framework/entity/;../../../core/framework/file/portable/;../../../core/framework/file/windows/;../../../core/framework/math/;../../../core/framework/network/server/;../../../core/framework/network/portable/;../../../core/framework/state/;../../../core/framework/util/;../../../core/game/logic/;../../../core/game/network/server/;../../../core/game/network/portable/;$(ProjectDir);</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../../3rdparty/;../../../core/framework/entity/;../../../core/framework/file/portable/;../../../core/framework/file/windows/;../../../core/framework/math/;../../../core/framework/network/server/;../../../core/framework/network/portable/;../../../core/framework/state/;../../../core/framework/util/;../../../core/game/logic/;../../../core/game/server/;$(ProjectDir);</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -134,9 +134,9 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NG_SERVER;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>../../../3rdparty/;../../../core/framework/entity/;../../../core/framework/file/portable/;../../../core/framework/file/windows/;../../../core/framework/math/;../../../core/framework/network/server/;../../../core/framework/network/portable/;../../../core/framework/state/;../../../core/framework/util/;../../../core/game/logic/;../../../core/game/network/server/;../../../core/game/network/portable/;$(ProjectDir);</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../../3rdparty/;../../../core/framework/entity/;../../../core/framework/file/portable/;../../../core/framework/file/windows/;../../../core/framework/math/;../../../core/framework/network/server/;../../../core/framework/network/portable/;../../../core/framework/state/;../../../core/framework/util/;../../../core/game/logic/;../../../core/game/server/;$(ProjectDir);</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -154,8 +154,7 @@
     <ClInclude Include="..\..\..\core\framework\state\*.h" />
     <ClInclude Include="..\..\..\core\framework\util\*.h" />
     <ClInclude Include="..\..\..\core\game\logic\*.h" />
-    <ClInclude Include="..\..\..\core\game\network\server\*.h" />
-    <ClInclude Include="..\..\..\core\game\network\portable\*.h" />
+    <ClInclude Include="..\..\..\core\game\server\*.h" />
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
@@ -167,8 +166,7 @@
     <ClCompile Include="..\..\..\core\framework\state\*.cpp" />
     <ClCompile Include="..\..\..\core\framework\util\*.cpp" />
     <ClCompile Include="..\..\..\core\game\logic\*.cpp" />
-    <ClCompile Include="..\..\..\core\game\network\server\*.cpp" />
-    <ClCompile Include="..\..\..\core\game\network\portable\*.cpp" />
+    <ClCompile Include="..\..\..\core\game\server\*.cpp" />
     <ClCompile Include="..\..\server\*.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

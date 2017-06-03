@@ -16,20 +16,23 @@ class SocketAddress;
 class UDPSocket
 {
 public:
-    ~UDPSocket();
+    int bindSocket(const SocketAddress& inToAddress);
     
-    int Bind(const SocketAddress& inToAddress);
-    int SendTo(const void* inToSend, int inLength, const SocketAddress& inToAddress);
-    int ReceiveFrom(void* inToReceive, int inMaxLength, SocketAddress& outFromAddress);
+    int sendToAddress(const void* inToSend, int inLength, const SocketAddress& inToAddress);
     
-    int SetNonBlockingMode(bool inShouldBeNonBlocking);
+    int receiveFromAddress(void* inToReceive, int inMaxLength, SocketAddress& outFromAddress);
+    
+    int setNonBlockingMode(bool inShouldBeNonBlocking);
     
 private:
     friend class SocketUtil;
+    friend class INetworkManager;
     
     SOCKET m_socket;
     
+    // Only allow SocketUtil/INetworkManager to create or delete an instance of UDPSocket
     UDPSocket(SOCKET inSocket);
+    ~UDPSocket();
 };
 
 #endif /* defined(__noctisgames__UDPSocket__) */

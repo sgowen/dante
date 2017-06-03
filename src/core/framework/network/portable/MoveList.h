@@ -20,7 +20,7 @@ class MoveList
 public:
     MoveList();
     
-    const Move&	addMove(IInputState* inInputState, float inTimestamp);
+    Move& addMove(IInputState* inInputState, float inTimestamp);
     
     bool addMoveIfNew(const Move& inMove);
     
@@ -36,9 +36,9 @@ public:
     
     int getMoveCount() const;
     
-    std::deque<Move>::const_iterator begin() const;
+    std::deque<Move>::iterator begin();
     
-    std::deque<Move>::const_iterator end() const;
+    std::deque<Move>::iterator end();
     
 private:
     float m_fLastMoveTimestamp;

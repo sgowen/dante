@@ -20,12 +20,7 @@ PooledObjectsManager* PooledObjectsManager::getInstance()
     return &instance;
 }
 
-IInputState* PooledObjectsManager::borrowBaseType()
-{
-    return POOLED_OBJ_MGR->m_pool->newObject();
-}
-
-InputState* PooledObjectsManager::borrow()
+IInputState* PooledObjectsManager::borrowInputState()
 {
     return POOLED_OBJ_MGR->m_pool->newObject();
 }

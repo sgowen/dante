@@ -57,11 +57,6 @@ ReplicationManagerServer& ClientProxy::getReplicationManagerServer()
     return m_replicationManagerServer;
 }
 
-const MoveList& ClientProxy::getUnprocessedMoveList() const
-{
-    return m_unprocessedMoveList;
-}
-
 MoveList& ClientProxy::getUnprocessedMoveList()
 {
     return m_unprocessedMoveList;

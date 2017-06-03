@@ -24,22 +24,22 @@ public:
     
     bool operator==(const SocketAddress& inOther) const;
     
-    size_t GetHash() const;
+    size_t getHash() const;
     
-    uint32_t GetSize() const;
+    uint32_t getSize() const;
     
-    std::string ToString() const;
+    std::string toString() const;
     
 private:
     friend class UDPSocket;
     
-    sockaddr mSockAddr;
+    sockaddr m_sockAddr;
     
-    uint32_t& GetIP4Ref();
-    const uint32_t& GetIP4Ref() const;
+    uint32_t& getIP4Ref();
+    const uint32_t& getIP4Ref() const;
     
-    sockaddr_in* GetAsSockAddrIn();
-    const sockaddr_in* GetAsSockAddrIn() const;
+    sockaddr_in* getAsSockAddrIn();
+    const sockaddr_in* getAsSockAddrIn() const;
 };
 
 namespace std
@@ -48,7 +48,7 @@ namespace std
     {
         size_t operator()(const SocketAddress& inAddress) const
         {
-            return inAddress.GetHash();
+            return inAddress.getHash();
         }
     };
 }

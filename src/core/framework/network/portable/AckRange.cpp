@@ -13,15 +13,25 @@
 #include "OutputMemoryBitStream.h"
 #include "InputMemoryBitStream.h"
 
+AckRange::AckRange() : m_iStart(0), m_iCount(0)
+{
+    // Empty
+}
+
+AckRange::AckRange(uint16_t inStart) : m_iStart(inStart), m_iCount(1)
+{
+    // Empty
+}
+
 void AckRange::write(OutputMemoryBitStream& inOutputStream) const
 {
-    inOutputStream.write(mStart);
-    bool hasCount = mCount > 1;
+    inOutputStream.write(m_iStart);
+    bool hasCount = m_iCount > 1;
     inOutputStream.write(hasCount);
     if (hasCount)
     {
         //most you can ack is 255...
-        uint32_t countMinusOne = mCount - 1;
+        uint32_t countMinusOne = m_iCount - 1;
         uint8_t countToAck = countMinusOne > 255 ? 255 : static_cast<uint8_t>(countMinusOne);
         inOutputStream.write(countToAck);
     }
@@ -29,18 +39,41 @@ void AckRange::write(OutputMemoryBitStream& inOutputStream) const
 
 void AckRange::read(InputMemoryBitStream& inInputStream)
 {
-    inInputStream.read(mStart);
+    inInputStream.read(m_iStart);
     bool hasCount;
     inInputStream.read(hasCount);
     if (hasCount)
     {
         uint8_t countMinusOne;
         inInputStream.read(countMinusOne);
-        mCount = countMinusOne + 1;
+        m_iCount = countMinusOne + 1;
     }
     else
     {
         //default!
-        mCount = 1;
+        m_iCount = 1;
     }
+}
+
+bool AckRange::extendIfShould(uint16_t inSequenceNumber)
+{
+    if (inSequenceNumber == m_iStart + m_iCount)
+    {
+        ++m_iCount;
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+uint16_t AckRange::getStart() const
+{
+    return m_iStart;
+}
+
+uint32_t AckRange::getCount() const
+{
+    return m_iCount;
 }

@@ -28,11 +28,15 @@ NetworkManagerServer* NetworkManagerServer::getInstance()
 
 void NetworkManagerServer::processPacket(InputMemoryBitStream& inInputStream, const SocketAddress& inFromAddress)
 {
+    LOG("Packet from %s", inFromAddress.toString().c_str());
+    
     //try to get the client proxy for this address
     //pass this to the client proxy to process
     auto it = m_addressToClientMap.find(inFromAddress);
     if (it == m_addressToClientMap.end())
     {
+        LOG("New Client %s", inFromAddress.toString().c_str());
+        
         //didn't find one? it's a new cilent..is the a HELO? if so, create a client proxy...
         handlePacketFromNewClient(inInputStream, inFromAddress);
     }
@@ -68,7 +72,7 @@ void NetworkManagerServer::sendOutgoingPackets()
     {
         ClientProxy* clientProxy = it->second;
         //process any timed out packets while we're going through the list
-        clientProxy->getDeliveryNotificationManager().ProcessTimedOutPackets();
+        clientProxy->getDeliveryNotificationManager().processTimedOutPackets();
         
         if (clientProxy->IsLastMoveTimestampDirty())
         {
@@ -105,7 +109,7 @@ void NetworkManagerServer::registerEntity(Entity* inEntity)
     //tell all client proxies this is new...
     for (const auto& pair: m_addressToClientMap)
     {
-        pair.second->getReplicationManagerServer().ReplicateCreate(inEntity->getID(), inEntity->getAllStateMask());
+        pair.second->getReplicationManagerServer().replicateCreate(inEntity->getID(), inEntity->getAllStateMask());
     }
 }
 
@@ -119,7 +123,7 @@ void NetworkManagerServer::unregisterEntity(Entity* inEntity)
     //tell all client proxies this is new...
     for (const auto& pair: m_addressToClientMap)
     {
-        pair.second->getReplicationManagerServer().ReplicateDestroy(networkId);
+        pair.second->getReplicationManagerServer().replicateDestroy(networkId);
     }
 }
 
@@ -163,6 +167,9 @@ void NetworkManagerServer::handlePacketFromNewClient(InputMemoryBitStream& inInp
         //read the name
         std::string name;
         inInputStream.read(name);
+        
+        LOG("Creating new Client Proxy %s", inFromAddress.toString().c_str());
+        
         ClientProxy* newClientProxy = new ClientProxy(inFromAddress, name, m_iNewPlayerId++);
         m_addressToClientMap[inFromAddress] = newClientProxy;
         m_playerIDToClientMap[newClientProxy->getPlayerId()] = newClientProxy;
@@ -177,13 +184,13 @@ void NetworkManagerServer::handlePacketFromNewClient(InputMemoryBitStream& inInp
         for (const auto& pair: ENTITY_MGR->getMap())
         {
             Entity* pe = pair.second;
-            newClientProxy->getReplicationManagerServer().ReplicateCreate(pair.first, pe->getAllStateMask());
+            newClientProxy->getReplicationManagerServer().replicateCreate(pair.first, pe->getAllStateMask());
         }
     }
     else
     {
         //bad incoming packet from unknown client- we're under attack!!
-        LOG("Bad incoming packet from unknown client at socket %s", inFromAddress.ToString().c_str());
+        LOG("Bad incoming packet from unknown client at socket %s", inFromAddress.toString().c_str());
     }
 }
 
@@ -202,13 +209,13 @@ void NetworkManagerServer::processPacket(ClientProxy* inClientProxy, InputMemory
             sendWelcomePacket(inClientProxy);
             break;
         case kInputCC:
-            if (inClientProxy->getDeliveryNotificationManager().ReadAndProcessState(inInputStream))
+            if (inClientProxy->getDeliveryNotificationManager().readAndProcessState(inInputStream))
             {
                 handleInputPacket(inClientProxy, inInputStream);
             }
             break;
         default:
-            LOG("Unknown packet type received from %s", inClientProxy->getSocketAddress().ToString().c_str());
+            LOG("Unknown packet type received from %s", inClientProxy->getSocketAddress().toString().c_str());
             break;
     }
 }
@@ -230,7 +237,7 @@ void NetworkManagerServer::UpdateAllClients()
     for (auto it = m_addressToClientMap.begin(), end = m_addressToClientMap.end(); it != end; ++it)
     {
         //process any timed out packets while we're going throug hthe list
-        it->second->getDeliveryNotificationManager().ProcessTimedOutPackets();
+        it->second->getDeliveryNotificationManager().processTimedOutPackets();
         
         sendStatePacketToClient(it->second);
     }
@@ -244,13 +251,13 @@ void NetworkManagerServer::sendStatePacketToClient(ClientProxy* inClientProxy)
     //it's state!
     statePacket.write(kStateCC);
     
-    InFlightPacket* ifp = inClientProxy->getDeliveryNotificationManager().WriteState(statePacket);
+    InFlightPacket* ifp = inClientProxy->getDeliveryNotificationManager().writeState(statePacket);
     
     writeLastMoveTimestampIfDirty(statePacket, inClientProxy);
     
     ReplicationManagerTransmissionData* rmtd = new ReplicationManagerTransmissionData(&inClientProxy->getReplicationManagerServer());
     inClientProxy->getReplicationManagerServer().write(statePacket, rmtd);
-    ifp->SetTransmissionData('RPLM', rmtd);
+    ifp->setTransmissionData('RPLM', rmtd);
     
     sendPacket(statePacket, inClientProxy->getSocketAddress());
 }

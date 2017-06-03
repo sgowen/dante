@@ -19,7 +19,7 @@ class CircleBatcher;
 class ITextureLoader;
 class IRendererHelper;
 class GpuProgramWrapper;
-class PhysicalEntity;
+class Entity;
 class TextureRegion;
 struct Color;
 class NGRect;
@@ -66,15 +66,15 @@ protected:
     
     int m_iFramebufferIndex;
     
-    void renderPhysicalEntity(PhysicalEntity &go, TextureRegion& tr, bool flipX = false);
+    void renderEntity(Entity &go, TextureRegion& tr, bool flipX = false);
 
-	void renderPhysicalEntityWithColor(PhysicalEntity &go, TextureRegion& tr, Color c, bool flipX = false);
+	void renderEntityWithColor(Entity &go, TextureRegion& tr, Color c, bool flipX = false);
     
-    void renderBoundsForPhysicalEntity(PhysicalEntity &pe);
+    void renderBoundsForEntity(Entity &pe);
     
     void renderBoundsWithColor(NGRect &r, Color& c);
     
-    void renderHighlightForPhysicalEntity(PhysicalEntity &pe, Color &c);
+    void renderHighlightForEntity(Entity &pe, Color &c);
     
     void loadTextureSync(TextureWrapper* textureWrapper);
     

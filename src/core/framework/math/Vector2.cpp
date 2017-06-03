@@ -12,7 +12,7 @@
 
 #include "macros.h"
 
-#include <math.h>
+#include "MathUtil.h"
 
 const Vector2 Vector2::Zero(0.0f, 0.0f);
 
@@ -212,7 +212,7 @@ float Vector2::distSquared(float x, float y) const
 
 bool Vector2::isEqualTo(const Vector2& other)
 {
-    return (m_fX == other.m_fX && m_fY == other.m_fY);
+    return areFloatsPracticallyEqual(m_fX, other.m_fX) && areFloatsPracticallyEqual(m_fY, other.m_fY);
 }
 
 float Vector2::getX() const

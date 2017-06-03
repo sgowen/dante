@@ -17,7 +17,7 @@ MoveList::MoveList(): m_fLastMoveTimestamp(-1.f)
     // Empty
 }
 
-const Move& MoveList::addMove(IInputState* inInputState, float inTimestamp)
+Move& MoveList::addMove(IInputState* inInputState, float inTimestamp)
 {
     //first move has 0 time. it's okay, it only happens once
     float deltaTime = m_fLastMoveTimestamp >= 0.f ? inTimestamp - m_fLastMoveTimestamp : 0.f;
@@ -84,12 +84,12 @@ int MoveList::getMoveCount() const
     return static_cast<int>(m_moves.size());
 }
 
-std::deque<Move>::const_iterator MoveList::begin() const
+std::deque<Move>::iterator MoveList::begin()
 {
     return m_moves.begin();
 }
 
-std::deque<Move>::const_iterator MoveList::end() const
+std::deque<Move>::iterator MoveList::end()
 {
     return m_moves.end();
 }

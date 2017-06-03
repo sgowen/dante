@@ -1,6 +1,6 @@
 //
 //  InputManager.h
-//  noctisgames-framework
+//  dante
 //
 //  Created by Stephen Gowen on 5/15/17.
 //  Copyright (c) 2017 Noctis Games. All rights reserved.
@@ -23,16 +23,14 @@ public:
     
     MoveList& getMoveList();
     
-    const Move* getAndClearPendingMove();
+    Move* getAndClearPendingMove();
     
 private:
     InputState* m_currentState;
     MoveList m_moveList;
-    float m_fNextTimeToSampleInput;
-    const Move* m_pendingMove;
+    Move* m_pendingMove;
     
-    bool isTimeToSampleInput();
-    const Move& sampleInputAsMove();
+    Move& sampleInputAsMove();
     
     // ctor, copy ctor, and assignment should be private in a Singleton
     InputManager();

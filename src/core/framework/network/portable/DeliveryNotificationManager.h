@@ -21,66 +21,52 @@ class InputMemoryBitStream;
 class DeliveryNotificationManager
 {
 public:
-    DeliveryNotificationManager(bool inShouldSendAcks, bool inShouldProcessAcks);
+    DeliveryNotificationManager(bool inShouldSendAcks, bool inShouldprocessAcks);
+    
     ~DeliveryNotificationManager();
     
-    inline	InFlightPacket*		WriteState(OutputMemoryBitStream& inOutputStream);
-    inline	bool				ReadAndProcessState(InputMemoryBitStream& inInputStream);
+    InFlightPacket* writeState(OutputMemoryBitStream& inOutputStream);
     
-    void				ProcessTimedOutPackets();
+    bool readAndProcessState(InputMemoryBitStream& inInputStream);
     
-    uint32_t			GetDroppedPacketCount()		const	{ return mDroppedPacketCount; }
-    uint32_t			GetDeliveredPacketCount()	const	{ return mDeliveredPacketCount; }
-    uint32_t			GetDispatchedPacketCount()	const	{ return mDispatchedPacketCount; }
+    void processTimedOutPackets();
     
-    const std::deque< InFlightPacket >&	GetInFlightPackets()	const	{ return mInFlightPackets; }
+    uint32_t getDroppedPacketCount() const;
+    
+    uint32_t getDeliveredPacketCount() const;
+    
+    uint32_t getDispatchedPacketCount() const;
+    
+    const std::deque<InFlightPacket>& getInFlightPackets() const;
     
 private:
+    std::deque<InFlightPacket> m_inFlightPackets;
+    std::deque<AckRange> m_pendingAcks;
     
-    InFlightPacket*		WriteSequenceNumber(OutputMemoryBitStream& inOutputStream);
-    void				WriteAckData(OutputMemoryBitStream& inOutputStream);
+    uint16_t m_iNextOutgoingSequenceNumber;
+    uint16_t m_iNextExpectedSequenceNumber;
+    
+    uint32_t m_iDeliveredPacketCount;
+    uint32_t m_iDroppedPacketCount;
+    uint32_t m_iDispatchedPacketCount;
+    
+    bool m_shouldSendAcks;
+    bool m_shouldprocessAcks;
+    
+    InFlightPacket* writeSequenceNumber(OutputMemoryBitStream& inOutputStream);
+    
+    void writeAckData(OutputMemoryBitStream& inOutputStream);
     
     //returns wether to drop the packet- if sequence number is too low!
-    bool				ProcessSequenceNumber(InputMemoryBitStream& inInputStream);
-    void				ProcessAcks(InputMemoryBitStream& inInputStream);
+    bool processSequenceNumber(InputMemoryBitStream& inInputStream);
     
+    void processAcks(InputMemoryBitStream& inInputStream);
     
-    void				AddPendingAck(uint16_t inSequenceNumber);
-    void				HandlePacketDeliveryFailure(const InFlightPacket& inFlightPacket);
-    void				HandlePacketDeliverySuccess(const InFlightPacket& inFlightPacket);
+    void addPendingAck(uint16_t inSequenceNumber);
     
-    uint16_t	mNextOutgoingSequenceNumber;
-    uint16_t	mNextExpectedSequenceNumber;
+    void handlePacketDeliveryFailure(const InFlightPacket& inFlightPacket);
     
-    std::deque< InFlightPacket >	mInFlightPackets;
-    std::deque< AckRange >		mPendingAcks;
-    
-    bool					mShouldSendAcks;
-    bool					mShouldProcessAcks;
-    
-    uint32_t		mDeliveredPacketCount;
-    uint32_t		mDroppedPacketCount;
-    uint32_t		mDispatchedPacketCount;
+    void handlePacketDeliverySuccess(const InFlightPacket& inFlightPacket);
 };
-
-inline InFlightPacket* DeliveryNotificationManager::WriteState(OutputMemoryBitStream& inOutputStream)
-{
-    InFlightPacket* toRet = WriteSequenceNumber(inOutputStream);
-    if (mShouldSendAcks)
-    {
-        WriteAckData(inOutputStream);
-    }
-    return toRet;
-}
-
-inline bool	DeliveryNotificationManager::ReadAndProcessState(InputMemoryBitStream& inInputStream)
-{
-    bool toRet = ProcessSequenceNumber(inInputStream);
-    if (mShouldProcessAcks)
-    {
-        ProcessAcks(inInputStream);
-    }
-    return toRet;
-}
 
 #endif /* defined(__noctisgames__DeliveryNotificationManager__) */

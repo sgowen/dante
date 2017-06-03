@@ -10,10 +10,34 @@
 #define __noctisgames__MathUtil__
 
 #include <math.h>
+#include <float.h>
 
 inline float clamp(float x, float upper, float lower)
 {
     return fminf(upper, fmaxf(x, lower));
+}
+
+inline bool areFloatsPracticallyEqual(float A, float B, float maxDiff = 0.000001f, float maxRelDiff = FLT_EPSILON)
+{
+    // Check if the numbers are really close -- needed
+    // when comparing numbers near zero.
+    float diff = fabs(A - B);
+    if (diff <= maxDiff)
+    {
+        return true;
+    }
+    
+    A = fabs(A);
+    B = fabs(B);
+    
+    float largest = (B > A) ? B : A;
+    
+    if (diff <= largest * maxRelDiff)
+    {
+        return true;
+    }
+    
+    return false;
 }
 
 #endif /* defined(__noctisgames__MathUtil__) */

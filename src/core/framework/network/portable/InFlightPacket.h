@@ -21,22 +21,23 @@ class InFlightPacket
 public:
     InFlightPacket(uint16_t inSequenceNumber);
     
-    void SetTransmissionData(int inKey, ITransmissionData* inTransmissionData);
+    void setTransmissionData(int inKey, ITransmissionData* inTransmissionData);
     
-    ITransmissionData* GetTransmissionData(int inKey) const;
+    ITransmissionData* getTransmissionData(int inKey) const;
     
-    uint16_t GetSequenceNumber() const;
+    uint16_t getSequenceNumber() const;
     
-    float GetTimeDispatched() const;
+    float getTimeDispatched() const;
     
-    void HandleDeliveryFailure(DeliveryNotificationManager* inDeliveryNotificationManager) const;
-    void HandleDeliverySuccess(DeliveryNotificationManager* inDeliveryNotificationManager) const;
+    void handleDeliveryFailure(DeliveryNotificationManager* inDeliveryNotificationManager) const;
+    
+    void handleDeliverySuccess(DeliveryNotificationManager* inDeliveryNotificationManager) const;
     
 private:
-    uint16_t mSequenceNumber;
+    uint16_t m_iSequenceNumber;
     float m_fTimeDispatched;
     
-    std::unordered_map<int, ITransmissionData*> mTransmissionDataMap;
+    std::unordered_map<int, ITransmissionData*> m_transmissionDataMap;
 };
 
 #endif /* defined(__noctisgames__InFlightPacket__) */

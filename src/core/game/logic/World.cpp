@@ -1,6 +1,6 @@
 //
 //  World.cpp
-//  noctisgames-framework
+//  dante
 //
 //  Created by Stephen Gowen on 5/15/17.
 //  Copyright (c) 2017 Noctis Games. All rights reserved.
@@ -24,7 +24,7 @@ void World::addEntityIfPossible(Entity* inEntity)
 {
     if (inEntity->getRTTI().derivesFrom(Robot::rtti))
     {
-        World::sInstance->AddRobot((Robot*)inEntity);
+        World::sInstance->AddRobot(static_cast<Robot*>(inEntity));
     }
 }
 
@@ -32,7 +32,7 @@ void World::removeEntityIfPossible(Entity* inEntity)
 {
     if (inEntity->getRTTI().derivesFrom(Robot::rtti))
     {
-        World::sInstance->RemoveRobot((Robot*)inEntity);
+        World::sInstance->RemoveRobot(static_cast<Robot*>(inEntity));
     }
 }
 

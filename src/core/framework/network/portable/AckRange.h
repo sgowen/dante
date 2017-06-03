@@ -19,35 +19,24 @@ class InputMemoryBitStream;
 class AckRange
 {
 public:
-    AckRange() : mStart(0), mCount(0) {}
+    AckRange();
     
-    AckRange(uint16_t inStart) : mStart(inStart), mCount(1) {}
-    
-    //if this is the next in sequence, just extend the range
-    inline bool ExtendIfShould(uint16_t inSequenceNumber);
-    
-    uint16_t GetStart() const { return mStart; }
-    uint32_t GetCount() const { return mCount; }
+    AckRange(uint16_t inStart);
     
     void write(OutputMemoryBitStream& inOutputStream) const;
+    
     void read(InputMemoryBitStream& inInputStream);
     
+    //if this is the next in sequence, just extend the range
+    bool extendIfShould(uint16_t inSequenceNumber);
+    
+    uint16_t getStart() const;
+    
+    uint32_t getCount() const;
+    
 private:
-    uint16_t mStart;
-    uint32_t mCount;
+    uint16_t m_iStart;
+    uint32_t m_iCount;
 };
-
-inline bool AckRange::ExtendIfShould(uint16_t inSequenceNumber)
-{
-    if (inSequenceNumber == mStart + mCount)
-    {
-        ++mCount;
-        return true;
-    }
-    else
-    {
-        return false;
-    }
-}
 
 #endif /* defined(__noctisgames__AckRange__) */

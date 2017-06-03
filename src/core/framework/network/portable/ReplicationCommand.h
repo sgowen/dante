@@ -20,22 +20,26 @@ class ReplicationCommand
 {
 public:
     ReplicationCommand();
+    
     ReplicationCommand(uint32_t inInitialDirtyState);
     
-    void HandleCreateAckd();
-    void AddDirtyState(uint32_t inState);
-    void SetDestroy();
+    void handleCreateAckd();
     
-    bool HasDirtyState() const;
+    void addDirtyState(uint32_t inState);
     
-    ReplicationAction GetAction() const;
-    uint32_t GetDirtyState() const;
+    void setDestroy();
     
-    void ClearDirtyState(uint32_t inStateToClear);
+    bool hasDirtyState() const;
+    
+    ReplicationAction getAction() const;
+    
+    uint32_t getDirtyState() const;
+    
+    void clearDirtyState(uint32_t inStateToClear);
     
 private:
-    uint32_t mDirtyState;
-    ReplicationAction mAction;
+    uint32_t m_iDirtyState;
+    ReplicationAction m_action;
 };
 
 #endif /* defined(__noctisgames__ReplicationCommand__) */

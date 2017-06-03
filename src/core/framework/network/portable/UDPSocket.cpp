@@ -15,32 +15,34 @@
 #include "SocketUtil.h"
 #include "StringUtil.h"
 
-int UDPSocket::Bind(const SocketAddress& inBindAddress)
+int UDPSocket::bindSocket(const SocketAddress& inBindAddress)
 {
-    int error = bind(m_socket, &inBindAddress.mSockAddr, inBindAddress.GetSize());
+    int error = bind(m_socket, &inBindAddress.m_sockAddr, inBindAddress.getSize());
     if (error != 0)
     {
-        SocketUtil::ReportError("UDPSocket::Bind");
+        SOCKET_UTIL->reportError("UDPSocket::Bind");
         
-        return SocketUtil::GetLastError();
+        return SOCKET_UTIL->getLastError();
     }
     
     return NO_ERROR;
 }
 
-int UDPSocket::SendTo(const void* inToSend, int inLength, const SocketAddress& inToAddress)
+int UDPSocket::sendToAddress(const void* inToSend, int inLength, const SocketAddress& inToAddress)
 {
     long byteSentCount = sendto(m_socket,
                                 static_cast<const char*>(inToSend),
                                 inLength,
-                                0, &inToAddress.mSockAddr, inToAddress.GetSize());
+                                0, &inToAddress.m_sockAddr, inToAddress.getSize());
     
     if (byteSentCount <= 0)
     {
         //we'll return error as negative number to indicate less than requested amount of bytes sent...
-        SocketUtil::ReportError("UDPSocket::SendTo");
+        SOCKET_UTIL->reportError("UDPSocket::SendTo");
         
-        return -SocketUtil::GetLastError();
+        LOG("Error UDPSocket::SendTo %s", inToAddress.toString().c_str());
+        
+        return -SOCKET_UTIL->getLastError();
     }
     else
     {
@@ -48,14 +50,14 @@ int UDPSocket::SendTo(const void* inToSend, int inLength, const SocketAddress& i
     }
 }
 
-int UDPSocket::ReceiveFrom(void* inToReceive, int inMaxLength, SocketAddress& outFromAddress)
+int UDPSocket::receiveFromAddress(void* inToReceive, int inMaxLength, SocketAddress& outFromAddress)
 {
-    socklen_t fromLength = outFromAddress.GetSize();
+    socklen_t fromLength = outFromAddress.getSize();
     
     long readByteCount = recvfrom(m_socket,
                                   static_cast<char*>(inToReceive),
                                   inMaxLength,
-                                  0, &outFromAddress.mSockAddr, &fromLength);
+                                  0, &outFromAddress.m_sockAddr, &fromLength);
     
     if (readByteCount >= 0)
     {
@@ -63,7 +65,7 @@ int UDPSocket::ReceiveFrom(void* inToReceive, int inMaxLength, SocketAddress& ou
     }
     else
     {
-        int error = SocketUtil::GetLastError();
+        int error = SOCKET_UTIL->getLastError();
         
         if (error == WSAEWOULDBLOCK)
         {
@@ -73,29 +75,20 @@ int UDPSocket::ReceiveFrom(void* inToReceive, int inMaxLength, SocketAddress& ou
         {
             //this can happen if a client closed and we haven't DC'd yet.
             //this is the ICMP message being sent back saying the port on that computer is closed
-            LOG("Connection reset from %s", outFromAddress.ToString().c_str());
+            LOG("Connection reset from %s", outFromAddress.toString().c_str());
             
             return -WSAECONNRESET;
         }
         else
         {
-            SocketUtil::ReportError("UDPSocket::ReceiveFrom");
+            SOCKET_UTIL->reportError("UDPSocket::ReceiveFrom");
             
             return -error;
         }
     }
 }
 
-UDPSocket::~UDPSocket()
-{
-#if _WIN32
-    closesocket(m_socket);
-#else
-    close(m_socket);
-#endif
-}
-
-int UDPSocket::SetNonBlockingMode(bool inShouldBeNonBlocking)
+int UDPSocket::setNonBlockingMode(bool inShouldBeNonBlocking)
 {
 #if _WIN32
     u_long arg = inShouldBeNonBlocking ? 1 : 0;
@@ -108,9 +101,9 @@ int UDPSocket::SetNonBlockingMode(bool inShouldBeNonBlocking)
     
     if (result == SOCKET_ERROR)
     {
-        SocketUtil::ReportError("UDPSocket::SetNonBlockingMode");
+        SOCKET_UTIL->reportError("UDPSocket::setNonBlockingMode");
         
-        return SocketUtil::GetLastError();
+        return SOCKET_UTIL->getLastError();
     }
     else
     {
@@ -121,4 +114,13 @@ int UDPSocket::SetNonBlockingMode(bool inShouldBeNonBlocking)
 UDPSocket::UDPSocket(SOCKET inSocket) : m_socket(inSocket)
 {
     // Empty
+}
+
+UDPSocket::~UDPSocket()
+{
+#if _WIN32
+    closesocket(m_socket);
+#else
+    close(m_socket);
+#endif
 }

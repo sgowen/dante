@@ -84,8 +84,10 @@ private:
     public:
         ReceivedPacket(float inReceivedTime, InputMemoryBitStream& inInputMemoryBitStream, const SocketAddress& inAddress);
         
-        const SocketAddress& getFromAddress() const;
+        const SocketAddress& getFromAddress();
+        
         float getReceivedTime()	const;
+        
         InputMemoryBitStream& getPacketBuffer();
         
     private:

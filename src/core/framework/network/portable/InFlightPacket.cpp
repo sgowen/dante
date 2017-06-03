@@ -13,46 +13,46 @@
 #include "Timing.h"
 
 InFlightPacket::InFlightPacket(uint16_t inSequenceNumber) :
-mSequenceNumber(inSequenceNumber),
+m_iSequenceNumber(inSequenceNumber),
 m_fTimeDispatched(Timing::getInstance()->getTime())
 {
     //null out other transmision data params...
 }
 
-void InFlightPacket::SetTransmissionData(int inKey, ITransmissionData* inTransmissionData)
+void InFlightPacket::setTransmissionData(int inKey, ITransmissionData* inTransmissionData)
 {
-    mTransmissionDataMap[inKey] = inTransmissionData;
+    m_transmissionDataMap[inKey] = inTransmissionData;
 }
 
-ITransmissionData* InFlightPacket::GetTransmissionData(int inKey) const
+ITransmissionData* InFlightPacket::getTransmissionData(int inKey) const
 {
-    auto it = mTransmissionDataMap.find(inKey);
+    auto it = m_transmissionDataMap.find(inKey);
     
-    return (it != mTransmissionDataMap.end()) ? it->second : nullptr;
+    return (it != m_transmissionDataMap.end()) ? it->second : nullptr;
 }
 
-uint16_t InFlightPacket::GetSequenceNumber() const
+uint16_t InFlightPacket::getSequenceNumber() const
 {
-    return mSequenceNumber;
+    return m_iSequenceNumber;
 }
 
-float InFlightPacket::GetTimeDispatched() const
+float InFlightPacket::getTimeDispatched() const
 {
     return m_fTimeDispatched;
 }
 
-void InFlightPacket::HandleDeliveryFailure(DeliveryNotificationManager* inDeliveryNotificationManager) const
+void InFlightPacket::handleDeliveryFailure(DeliveryNotificationManager* inDeliveryNotificationManager) const
 {
-    for (const auto& pair : mTransmissionDataMap)
+    for (const auto& pair : m_transmissionDataMap)
     {
-        pair.second->HandleDeliveryFailure(inDeliveryNotificationManager);
+        pair.second->handleDeliveryFailure(inDeliveryNotificationManager);
     }
 }
 
-void InFlightPacket::HandleDeliverySuccess(DeliveryNotificationManager* inDeliveryNotificationManager) const
+void InFlightPacket::handleDeliverySuccess(DeliveryNotificationManager* inDeliveryNotificationManager) const
 {
-    for (const auto& pair : mTransmissionDataMap)
+    for (const auto& pair : m_transmissionDataMap)
     {
-        pair.second->HandleDeliverySuccess(inDeliveryNotificationManager);
+        pair.second->handleDeliverySuccess(inDeliveryNotificationManager);
     }
 }

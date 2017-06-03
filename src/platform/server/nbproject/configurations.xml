@@ -11,7 +11,6 @@
             <itemPath>../../core/framework/entity/EntityManager.h</itemPath>
             <itemPath>../../core/framework/entity/EntityRegistry.h</itemPath>
             <itemPath>../../core/framework/entity/GridManager.h</itemPath>
-            <itemPath>../../core/framework/entity/PhysicalEntity.h</itemPath>
           </logicalFolder>
           <logicalFolder name="file" displayName="file" projectFiles="true">
             <logicalFolder name="portable" displayName="portable" projectFiles="true">
@@ -75,18 +74,13 @@
         <logicalFolder name="game" displayName="game" projectFiles="true">
           <logicalFolder name="logic" displayName="logic" projectFiles="true">
             <itemPath>../../core/game/logic/GameConstants.h</itemPath>
+            <itemPath>../../core/game/logic/InputState.h</itemPath>
+            <itemPath>../../core/game/logic/PooledObjectsManager.h</itemPath>
             <itemPath>../../core/game/logic/Robot.h</itemPath>
             <itemPath>../../core/game/logic/World.h</itemPath>
           </logicalFolder>
-          <logicalFolder name="network" displayName="network" projectFiles="true">
-            <logicalFolder name="portable" displayName="portable" projectFiles="true">
-              <itemPath>../../core/game/network/portable/InputState.h</itemPath>
-              <itemPath>../../core/game/network/portable/PooledObjectsManager.h</itemPath>
-            </logicalFolder>
-            <logicalFolder name="server" displayName="server" projectFiles="true">
-              <itemPath>../../core/game/network/server/RobotServer.h</itemPath>
-              <itemPath>../../core/game/network/server/Server.h</itemPath>
-            </logicalFolder>
+          <logicalFolder name="server" displayName="server" projectFiles="true">
+            <itemPath>../../core/game/server/Server.h</itemPath>
           </logicalFolder>
         </logicalFolder>
       </logicalFolder>
@@ -106,7 +100,6 @@
             <itemPath>../../core/framework/entity/EntityManager.cpp</itemPath>
             <itemPath>../../core/framework/entity/EntityRegistry.cpp</itemPath>
             <itemPath>../../core/framework/entity/GridManager.cpp</itemPath>
-            <itemPath>../../core/framework/entity/PhysicalEntity.cpp</itemPath>
           </logicalFolder>
           <logicalFolder name="file" displayName="file" projectFiles="true">
             <logicalFolder name="portable" displayName="portable" projectFiles="true">
@@ -156,18 +149,13 @@
         </logicalFolder>
         <logicalFolder name="game" displayName="game" projectFiles="true">
           <logicalFolder name="logic" displayName="logic" projectFiles="true">
+            <itemPath>../../core/game/logic/InputState.cpp</itemPath>
+            <itemPath>../../core/game/logic/PooledObjectsManager.cpp</itemPath>
             <itemPath>../../core/game/logic/Robot.cpp</itemPath>
             <itemPath>../../core/game/logic/World.cpp</itemPath>
           </logicalFolder>
-          <logicalFolder name="network" displayName="network" projectFiles="true">
-            <logicalFolder name="portable" displayName="portable" projectFiles="true">
-              <itemPath>../../core/game/network/portable/InputState.cpp</itemPath>
-              <itemPath>../../core/game/network/portable/PooledObjectsManager.cpp</itemPath>
-            </logicalFolder>
-            <logicalFolder name="server" displayName="server" projectFiles="true">
-              <itemPath>../../core/game/network/server/RobotServer.cpp</itemPath>
-              <itemPath>../../core/game/network/server/Server.cpp</itemPath>
-            </logicalFolder>
+          <logicalFolder name="server" displayName="server" projectFiles="true">
+            <itemPath>../../core/game/server/Server.cpp</itemPath>
           </logicalFolder>
         </logicalFolder>
       </logicalFolder>
@@ -185,9 +173,6 @@
       <itemPath>Makefile</itemPath>
     </logicalFolder>
   </logicalFolder>
-  <sourceRootList>
-    <Elem>../../core</Elem>
-  </sourceRootList>
   <projectmakefile>Makefile</projectmakefile>
   <confs>
     <conf name="Debug" type="1">
@@ -220,11 +205,10 @@
             <pElem>../../core/framework/util</pElem>
             <pElem>../../3rdparty</pElem>
             <pElem>../../core/game/logic</pElem>
-            <pElem>../../core/game/network/portable</pElem>
-            <pElem>../../core/game/network/server</pElem>
+            <pElem>../../core/game/server</pElem>
           </incDir>
           <preprocessorList>
-            <Elem>_POSIX_C_SOURCE</Elem>
+            <Elem>NG_SERVER;_POSIX_C_SOURCE</Elem>
           </preprocessorList>
         </ccTool>
       </compileType>
@@ -264,16 +248,6 @@
             flavor2="0">
       </item>
       <item path="../../core/framework/entity/GridManager.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="../../core/framework/entity/PhysicalEntity.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
-      <item path="../../core/framework/entity/PhysicalEntity.h"
             ex="false"
             tool="3"
             flavor2="0">
@@ -608,6 +582,23 @@
             tool="3"
             flavor2="0">
       </item>
+      <item path="../../core/game/logic/InputState.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../core/game/logic/InputState.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../../core/game/logic/PooledObjectsManager.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../core/game/logic/PooledObjectsManager.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
       <item path="../../core/game/logic/Robot.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="../../core/game/logic/Robot.h" ex="false" tool="3" flavor2="0">
@@ -616,45 +607,9 @@
       </item>
       <item path="../../core/game/logic/World.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="../../core/game/network/portable/InputState.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
+      <item path="../../core/game/server/Server.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="../../core/game/network/portable/InputState.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="../../core/game/network/portable/PooledObjectsManager.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
-      <item path="../../core/game/network/portable/PooledObjectsManager.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="../../core/game/network/server/RobotServer.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
-      <item path="../../core/game/network/server/RobotServer.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="../../core/game/network/server/Server.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
-      <item path="../../core/game/network/server/Server.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
+      <item path="../../core/game/server/Server.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -673,6 +628,22 @@
         </cTool>
         <ccTool>
           <developmentMode>5</developmentMode>
+          <incDir>
+            <pElem>.</pElem>
+            <pElem>../../core/framework/entity</pElem>
+            <pElem>../../core/framework/file/portable</pElem>
+            <pElem>../../core/framework/math</pElem>
+            <pElem>../../core/framework/network/portable</pElem>
+            <pElem>../../core/framework/network/server</pElem>
+            <pElem>../../core/framework/state</pElem>
+            <pElem>../../core/framework/util</pElem>
+            <pElem>../../3rdparty</pElem>
+            <pElem>../../core/game/logic</pElem>
+            <pElem>../../core/game/server</pElem>
+          </incDir>
+          <preprocessorList>
+            <Elem>NG_SERVER;_POSIX_C_SOURCE</Elem>
+          </preprocessorList>
         </ccTool>
         <fortranCompilerTool>
           <developmentMode>5</developmentMode>
@@ -721,16 +692,6 @@
             tool="3"
             flavor2="0">
       </item>
-      <item path="../../core/framework/entity/PhysicalEntity.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
-      <item path="../../core/framework/entity/PhysicalEntity.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
       <item path="../../core/framework/file/portable/JsonFile.cpp"
             ex="false"
             tool="1"
@@ -1061,6 +1022,23 @@
             tool="3"
             flavor2="0">
       </item>
+      <item path="../../core/game/logic/InputState.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../core/game/logic/InputState.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../../core/game/logic/PooledObjectsManager.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../core/game/logic/PooledObjectsManager.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
       <item path="../../core/game/logic/Robot.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="../../core/game/logic/Robot.h" ex="false" tool="3" flavor2="0">
@@ -1069,45 +1047,9 @@
       </item>
       <item path="../../core/game/logic/World.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="../../core/game/network/portable/InputState.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
+      <item path="../../core/game/server/Server.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="../../core/game/network/portable/InputState.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="../../core/game/network/portable/PooledObjectsManager.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
-      <item path="../../core/game/network/portable/PooledObjectsManager.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="../../core/game/network/server/RobotServer.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
-      <item path="../../core/game/network/server/RobotServer.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="../../core/game/network/server/Server.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
-      </item>
-      <item path="../../core/game/network/server/Server.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
+      <item path="../../core/game/server/Server.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
       </item>

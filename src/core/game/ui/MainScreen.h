@@ -16,7 +16,7 @@
 class JsonFile;
 class MainRenderer;
 class Vector2;
-class PhysicalEntity;
+class Entity;
 
 class MainScreen : public IScreen
 {

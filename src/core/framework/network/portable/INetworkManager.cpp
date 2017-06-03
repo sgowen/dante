@@ -29,9 +29,9 @@ bool INetworkManager::init(uint16_t inPort, HandleEntityDeletion handleEntityDel
 {
     m_handleEntityDeletion = handleEntityDeletion;
     
-    m_socket = SocketUtil::CreateUDPSocket(INET);
+    m_socket = SOCKET_UTIL->createUDPSocket(INET);
     SocketAddress ownAddress(INADDR_ANY, inPort);
-    m_socket->Bind(ownAddress);
+    m_socket->bindSocket(ownAddress);
     
     LOG("Initializing INetworkManager at port %d", inPort);
     
@@ -44,7 +44,7 @@ bool INetworkManager::init(uint16_t inPort, HandleEntityDeletion handleEntityDel
         return false;
     }
     
-    if (m_socket->SetNonBlockingMode(true) != NO_ERROR)
+    if (m_socket->setNonBlockingMode(true) != NO_ERROR)
     {
         return false;
     }
@@ -63,7 +63,7 @@ void INetworkManager::processIncomingPackets()
 
 void INetworkManager::sendPacket(const OutputMemoryBitStream& inOutputStream, const SocketAddress& inFromAddress)
 {
-    int sentByteCount = m_socket->SendTo(inOutputStream.getBufferPtr(), inOutputStream.getByteLength(), inFromAddress);
+    int sentByteCount = m_socket->sendToAddress(inOutputStream.getBufferPtr(), inOutputStream.getByteLength(), inFromAddress);
     if (sentByteCount > 0)
     {
         m_bytesSentThisFrame += sentByteCount;
@@ -125,7 +125,7 @@ void INetworkManager::readIncomingPacketsIntoQueue()
     
     while (receivedPackedCount < kMaxPacketsPerFrameCount)
     {
-        int readByteCount = m_socket->ReceiveFrom(packetMem, packetSize, fromAddress);
+        int readByteCount = m_socket->receiveFromAddress(packetMem, packetSize, fromAddress);
         if (readByteCount == 0)
         {
             //nothing to read
@@ -187,7 +187,7 @@ INetworkManager::INetworkManager() : m_bytesSentThisFrame(0)
 
 INetworkManager::~INetworkManager()
 {
-    // Empty
+    delete m_socket;
 }
 
 INetworkManager::ReceivedPacket::ReceivedPacket(float inReceivedTime, InputMemoryBitStream& ioInputMemoryBitStream, const SocketAddress& inFromAddress) :
@@ -197,12 +197,12 @@ m_packetBuffer(ioInputMemoryBitStream)
 {
 }
 
-const SocketAddress& INetworkManager::ReceivedPacket::getFromAddress() const
+const SocketAddress& INetworkManager::ReceivedPacket::getFromAddress()
 {
     return m_fromAddress;
 }
 
-float INetworkManager::ReceivedPacket::getReceivedTime()	const
+float INetworkManager::ReceivedPacket::getReceivedTime() const
 {
     return m_fReceivedTime;
 }

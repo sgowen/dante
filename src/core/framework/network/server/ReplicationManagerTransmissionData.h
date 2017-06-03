@@ -21,44 +21,47 @@ class ReplicationManagerServer;
 class ReplicationManagerTransmissionData : public ITransmissionData
 {
 public:
-    ReplicationManagerTransmissionData(ReplicationManagerServer* inReplicationManagerServer) :
-    m_replicationManagerServer(inReplicationManagerServer)
-    {}
+    ReplicationManagerTransmissionData(ReplicationManagerServer* inReplicationManagerServer);
+    
+    void addTransmission(int inNetworkId, ReplicationAction inAction, uint32_t inState);
+    
+    virtual void handleDeliveryFailure(DeliveryNotificationManager* inDeliveryNotificationManager) const override;
+    
+    virtual void handleDeliverySuccess(DeliveryNotificationManager* inDeliveryNotificationManager) const override;
+    
+private:
+    class ReplicationTransmission;
+    
+    ReplicationManagerServer* m_replicationManagerServer;
+    
+    std::vector<ReplicationTransmission> m_transmissions;
+    
+    void handleCreateDeliveryFailure(int inNetworkId) const;
+    
+    void handleUpdateStateDeliveryFailure(int inNetworkId, uint32_t inState, DeliveryNotificationManager* inDeliveryNotificationManager) const;
+    
+    void handleDestroyDeliveryFailure(int inNetworkId) const;
+    
+    void handleCreateDeliverySuccess(int inNetworkId) const;
+    
+    void handleDestroyDeliverySuccess(int inNetworkId) const;
     
     class ReplicationTransmission
     {
     public:
-        ReplicationTransmission(int inNetworkId, ReplicationAction inAction, uint32_t inState) :
-        m_iNetworkId(inNetworkId),
-        mAction(inAction),
-        m_state(inState)
-        {}
+        ReplicationTransmission(int inNetworkId, ReplicationAction inAction, uint32_t inState);
         
-        int getID() const { return m_iNetworkId; }
-        ReplicationAction GetAction() const	{ return mAction; }
-        uint32_t GetState() const { return m_state; }
+        int getID() const;
+        
+        ReplicationAction getAction() const;
+        
+        uint32_t getState() const;
         
     private:
         int m_iNetworkId;
-        ReplicationAction mAction;
-        uint32_t m_state;
+        ReplicationAction m_action;
+        uint32_t m_iState;
     };
-    
-    void AddTransmission(int inNetworkId, ReplicationAction inAction, uint32_t inState);
-    
-    virtual void HandleDeliveryFailure(DeliveryNotificationManager* inDeliveryNotificationManager) const override;
-    virtual void HandleDeliverySuccess(DeliveryNotificationManager* inDeliveryNotificationManager) const override;
-    
-private:
-    void HandleCreateDeliveryFailure(int inNetworkId) const;
-    void HandleUpdateStateDeliveryFailure(int inNetworkId, uint32_t inState, DeliveryNotificationManager* inDeliveryNotificationManager) const;
-    void HandleDestroyDeliveryFailure(int inNetworkId) const;
-    void HandleCreateDeliverySuccess(int inNetworkId) const;
-    void HandleDestroyDeliverySuccess(int inNetworkId) const;
-    
-    ReplicationManagerServer* m_replicationManagerServer;
-    
-    std::vector<ReplicationTransmission> mTransmissions;
 };
 
 #endif /* defined(__noctisgames__ReplicationManagerTransmissionData__) */

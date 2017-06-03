@@ -1,6 +1,6 @@
 //
 //  InputManager.cpp
-//  noctisgames-framework
+//  dante
 //
 //  Created by Stephen Gowen on 5/15/17.
 //  Copyright (c) 2017 Noctis Games. All rights reserved.
@@ -22,6 +22,7 @@
 #include "GamePadInputManager.h"
 #include "GamePadEvent.h"
 #include "PooledObjectsManager.h"
+#include "GameConstants.h"
 
 InputManager* InputManager::getInstance()
 {
@@ -77,10 +78,7 @@ void InputManager::update()
         }
     }
     
-    if (isTimeToSampleInput())
-    {
-        m_pendingMove = &sampleInputAsMove();
-    }
+    m_pendingMove = &sampleInputAsMove();
 }
 
 MoveList& InputManager::getMoveList()
@@ -88,7 +86,7 @@ MoveList& InputManager::getMoveList()
     return m_moveList;
 }
 
-const Move* InputManager::getAndClearPendingMove()
+Move* InputManager::getAndClearPendingMove()
 {
     auto toRet = m_pendingMove;
     m_pendingMove = nullptr;
@@ -96,32 +94,16 @@ const Move* InputManager::getAndClearPendingMove()
     return toRet;
 }
 
-const Move& InputManager::sampleInputAsMove()
+Move& InputManager::sampleInputAsMove()
 {
-    InputState* inputState = POOLED_OBJ_MGR->borrow();
+    InputState* inputState = static_cast<InputState*>(POOLED_OBJ_MGR->borrowInputState());
     m_currentState->copyTo(inputState);
     
     return m_moveList.addMove(inputState, Timing::getInstance()->getFrameStartTime());
 }
 
-bool InputManager::isTimeToSampleInput()
-{
-    float time = Timing::getInstance()->getFrameStartTime();
-    if (time > m_fNextTimeToSampleInput)
-    {
-        static const float kTimeBetweenInputSamples = 0.03f;
-        
-        m_fNextTimeToSampleInput = m_fNextTimeToSampleInput + kTimeBetweenInputSamples;
-        
-        return true;
-    }
-    
-    return false;
-}
-
 InputManager::InputManager() :
-m_currentState(POOLED_OBJ_MGR->borrow()),
-m_fNextTimeToSampleInput(0.f),
+m_currentState(static_cast<InputState*>(POOLED_OBJ_MGR->borrowInputState())),
 m_pendingMove(nullptr)
 {
     // Empty

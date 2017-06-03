@@ -18,6 +18,7 @@
 #include "Timing.h"
 #include "EntityManager.h"
 #include "OutputMemoryBitStream.h"
+#include "SocketAddressFactory.h"
 
 NetworkManagerClient* NetworkManagerClient::getInstance()
 {
@@ -36,7 +37,7 @@ void NetworkManagerClient::processPacket(InputMemoryBitStream& inInputStream, co
             handleWelcomePacket(inInputStream);
             break;
         case kStateCC:
-            if (m_deliveryNotificationManager.ReadAndProcessState(inInputStream))
+            if (m_deliveryNotificationManager.readAndProcessState(inInputStream))
             {
                 handleStatePacket(inInputStream);
             }
@@ -44,16 +45,24 @@ void NetworkManagerClient::processPacket(InputMemoryBitStream& inInputStream, co
     }
 }
 
-bool NetworkManagerClient::init(const SocketAddress& inServerAddress, const std::string& inName, HandleEntityDeletion handleEntityDeletion)
+bool NetworkManagerClient::init(const std::string& inServerIPAddress, const std::string& inName, HandleEntityDeletion handleEntityDeletion)
 {
-    m_serverAddress = inServerAddress;
+    m_serverAddress = SocketAddressFactory::CreateIPv4FromString(inServerIPAddress);
     m_state = NCS_SayingHello;
     m_fTimeOfLastHello = 0.f;
     m_name = inName;
     
     m_avgRoundTripTime = WeightedTimedMovingAverage(1.f);
     
-    return INetworkManager::init(1337, handleEntityDeletion);
+#if defined(DEBUG) || defined(_DEBUG)
+    uint16_t port = 1339;
+#else
+    uint16_t port = 1337;
+#endif
+    
+    // This allows us to run both a debug and a release client on the same machine
+    
+    return INetworkManager::init(port, handleEntityDeletion);
 }
 
 void NetworkManagerClient::sendOutgoingPackets()
@@ -111,7 +120,7 @@ void NetworkManagerClient::sendHelloPacket()
     helloPacket.write(kHelloCC);
     helloPacket.write(m_name);
     
-    sendPacket(helloPacket, m_serverAddress);
+    sendPacket(helloPacket, *m_serverAddress);
 }
 
 void NetworkManagerClient::handleWelcomePacket(InputMemoryBitStream& inInputStream)
@@ -222,7 +231,7 @@ void NetworkManagerClient::updateSendingInputPacket()
 void NetworkManagerClient::sendInputPacket()
 {
     //only send if there's any input to sent!
-    const MoveList& moveList = InputManager::getInstance()->getMoveList();
+    MoveList& moveList = InputManager::getInstance()->getMoveList();
     
     if (moveList.hasMoves())
     {
@@ -230,7 +239,7 @@ void NetworkManagerClient::sendInputPacket()
         
         inputPacket.write(kInputCC);
         
-        m_deliveryNotificationManager.WriteState(inputPacket);
+        m_deliveryNotificationManager.writeState(inputPacket);
         
         //eventually write the 3 latest moves so they have three chances to get through...
         int moveCount = moveList.getMoveCount();
@@ -250,16 +259,23 @@ void NetworkManagerClient::sendInputPacket()
             move->write(inputPacket);
         }
         
-        sendPacket(inputPacket, m_serverAddress);
+        sendPacket(inputPacket, *m_serverAddress);
     }
 }
 
-NetworkManagerClient::NetworkManagerClient() : INetworkManager(), m_state(NCS_Uninitialized), m_deliveryNotificationManager(true, false), m_fLastRoundTripTime(0.f)
+NetworkManagerClient::NetworkManagerClient() : INetworkManager(),
+m_serverAddress(nullptr),
+m_state(NCS_Uninitialized),
+m_deliveryNotificationManager(true, false),
+m_fLastRoundTripTime(0.f)
 {
     // Empty
 }
 
 NetworkManagerClient::~NetworkManagerClient()
 {
-    // Empty
+    if (m_serverAddress)
+    {
+        delete m_serverAddress;
+    }
 }
