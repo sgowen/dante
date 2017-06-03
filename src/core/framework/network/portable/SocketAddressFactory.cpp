@@ -14,6 +14,8 @@
 
 #include "SocketUtil.h"
 
+#include <cstring>	// memset()
+
 SocketAddress* SocketAddressFactory::CreateIPv4FromString(const std::string& inString)
 {
     auto pos = inString.find_last_of(':');
