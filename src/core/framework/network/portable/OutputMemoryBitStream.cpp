@@ -13,7 +13,7 @@
 #include "Vector2.h"
 #include "Color.h"
 
-#include <string>
+#include <cstring>	// memcpy()
 
 OutputMemoryBitStream::OutputMemoryBitStream() : m_iBitHead(0), m_buffer(nullptr)
 {
@@ -136,7 +136,7 @@ void OutputMemoryBitStream::reallocBuffer(uint32_t inNewBitLength)
         //need to memset, then copy the buffer
         char* tempBuffer = static_cast<char*>(std::malloc(inNewBitLength >> 3));
         memset(tempBuffer, 0, inNewBitLength >> 3);
-        std::memcpy(tempBuffer, m_buffer, m_iBitCapacity >> 3);
+        memcpy(tempBuffer, m_buffer, m_iBitCapacity >> 3);
         std::free(m_buffer);
         m_buffer = tempBuffer;
     }

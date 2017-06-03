@@ -13,7 +13,7 @@
 #include "Vector2.h"
 #include "Color.h"
 
-#include <string>
+#include <cstring>	// memcpy()
 
 InputMemoryBitStream::InputMemoryBitStream(char* inBuffer, uint32_t inBitCount) :
 m_buffer(inBuffer),
@@ -33,7 +33,7 @@ m_isBufferOwner(true)
     int byteCount = m_iBitCapacity / 8;
     m_buffer = static_cast<char*>(malloc(byteCount));
     //copy
-    std::memcpy(m_buffer, inOther.m_buffer, byteCount);
+    memcpy(m_buffer, inOther.m_buffer, byteCount);
 }
 
 InputMemoryBitStream::~InputMemoryBitStream()
