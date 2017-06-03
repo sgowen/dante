@@ -13,6 +13,8 @@
 #include "Vector2.h"
 #include "Color.h"
 
+#include <string>
+
 OutputMemoryBitStream::OutputMemoryBitStream() : m_iBitHead(0), m_buffer(nullptr)
 {
     reallocBuffer(1500 * 8);

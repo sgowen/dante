@@ -13,6 +13,8 @@
 #include "Vector2.h"
 #include "Color.h"
 
+#include <string>
+
 InputMemoryBitStream::InputMemoryBitStream(char* inBuffer, uint32_t inBitCount) :
 m_buffer(inBuffer),
 m_iBitCapacity(inBitCount),
