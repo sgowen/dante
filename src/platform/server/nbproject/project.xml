@@ -10,8 +10,7 @@
             <sourceEncoding>UTF-8</sourceEncoding>
             <make-dep-projects/>
             <sourceRootList>
-                <sourceRootElem>../../core/framework/network/server</sourceRootElem>
-                <sourceRootElem>../../core/framework/network/portable</sourceRootElem>
+                <sourceRootElem>../../core</sourceRootElem>
             </sourceRootList>
             <confList>
                 <confElem>
