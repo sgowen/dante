@@ -33,7 +33,7 @@ m_isBufferOwner(true)
     int byteCount = m_iBitCapacity / 8;
     m_buffer = static_cast<char*>(malloc(byteCount));
     //copy
-    memcpy(m_buffer, inOther.m_buffer, byteCount);
+    std::memcpy(m_buffer, inOther.m_buffer, byteCount);
 }
 
 InputMemoryBitStream::~InputMemoryBitStream()

@@ -19,7 +19,7 @@ SocketAddress::SocketAddress(uint32_t inAddress, uint16_t inPort)
 
 SocketAddress::SocketAddress(const sockaddr& inSockAddr)
 {
-    memcpy(&mSockAddr, &inSockAddr, sizeof(sockaddr));
+    std::memcpy(&mSockAddr, &inSockAddr, sizeof(sockaddr));
 }
 
 SocketAddress::SocketAddress()
