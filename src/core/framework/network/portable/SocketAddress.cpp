@@ -10,6 +10,8 @@
 
 #include "SocketAddress.h"
 
+#include <cstring>	// memcpy()
+
 SocketAddress::SocketAddress(uint32_t inAddress, uint16_t inPort)
 {
     GetAsSockAddrIn()->sin_family = AF_INET;
@@ -19,7 +21,7 @@ SocketAddress::SocketAddress(uint32_t inAddress, uint16_t inPort)
 
 SocketAddress::SocketAddress(const sockaddr& inSockAddr)
 {
-    std::memcpy(&mSockAddr, &inSockAddr, sizeof(sockaddr));
+    memcpy(&mSockAddr, &inSockAddr, sizeof(sockaddr));
 }
 
 SocketAddress::SocketAddress()
