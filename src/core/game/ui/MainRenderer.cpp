@@ -42,10 +42,9 @@ MainRenderer::~MainRenderer()
 {
 	releaseDeviceDependentResources();
 
-	delete m_font;
-
 	delete m_demo;
 	delete m_misc;
+    delete m_font;
 }
 
 void MainRenderer::createDeviceDependentResources()

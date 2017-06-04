@@ -21,6 +21,12 @@ m_fTimeDispatched(Timing::getInstance()->getTime())
 
 void InFlightPacket::setTransmissionData(int inKey, ITransmissionData* inTransmissionData)
 {
+    ITransmissionData* currentTransmissionData;
+    if ((currentTransmissionData = getTransmissionData(inKey)))
+    {
+        delete currentTransmissionData;
+    }
+    
     m_transmissionDataMap[inKey] = inTransmissionData;
 }
 

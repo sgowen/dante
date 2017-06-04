@@ -40,7 +40,7 @@ public:
     
     void setStateDirty(int inNetworkId, uint32_t inDirtyState);
     
-    void respawnCats();
+    void respawnRobots();
     
     ClientProxy* getClientProxy(int inPlayerId) const;
     
@@ -62,7 +62,7 @@ private:
     
     void sendWelcomePacket(ClientProxy* inClientProxy);
     
-    void UpdateAllClients();
+    void updateAllClients();
     
     void sendStatePacketToClient(ClientProxy* inClientProxy);
     

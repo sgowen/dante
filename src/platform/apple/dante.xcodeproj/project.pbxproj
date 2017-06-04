@@ -163,6 +163,9 @@
 		BB8308801EC2AD1F00435E7E /* UDPSocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8308391EC2AD1F00435E7E /* UDPSocket.cpp */; };
 		BB8308811EC2AD1F00435E7E /* UDPSocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8308391EC2AD1F00435E7E /* UDPSocket.cpp */; };
 		BBA337BD1EDF8046000C8F2B /* RTTI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB74283D1EB2AF4200B7628D /* RTTI.cpp */; };
+		BBAA69E41EE488DF00451615 /* ITransmissionData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAA69E31EE488DF00451615 /* ITransmissionData.cpp */; };
+		BBAA69E51EE488DF00451615 /* ITransmissionData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAA69E31EE488DF00451615 /* ITransmissionData.cpp */; };
+		BBAA69E61EE488DF00451615 /* ITransmissionData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAA69E31EE488DF00451615 /* ITransmissionData.cpp */; };
 		BBAEF1EF1EA94EDA00F0866E /* Entity.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF0BF1EA94ED900F0866E /* Entity.cpp */; };
 		BBAEF1F01EA94EDA00F0866E /* Entity.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF0BF1EA94ED900F0866E /* Entity.cpp */; };
 		BBAEF1F11EA94EDA00F0866E /* EntityManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF0C11EA94ED900F0866E /* EntityManager.cpp */; };
@@ -616,6 +619,7 @@
 		BB8308381EC2AD1F00435E7E /* ITransmissionData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ITransmissionData.h; sourceTree = "<group>"; };
 		BB8308391EC2AD1F00435E7E /* UDPSocket.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = UDPSocket.cpp; sourceTree = "<group>"; };
 		BB83083A1EC2AD1F00435E7E /* UDPSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UDPSocket.h; sourceTree = "<group>"; };
+		BBAA69E31EE488DF00451615 /* ITransmissionData.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ITransmissionData.cpp; sourceTree = "<group>"; };
 		BBAEF0BF1EA94ED900F0866E /* Entity.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Entity.cpp; sourceTree = "<group>"; };
 		BBAEF0C01EA94ED900F0866E /* Entity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Entity.h; sourceTree = "<group>"; };
 		BBAEF0C11EA94ED900F0866E /* EntityManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EntityManager.cpp; sourceTree = "<group>"; };
@@ -1394,6 +1398,7 @@
 				BB8308151EC2AD1F00435E7E /* InFlightPacket.h */,
 				BBBD14C11EE0C9B4003F9307 /* InputMemoryBitStream.cpp */,
 				BBBD14C21EE0C9B4003F9307 /* InputMemoryBitStream.h */,
+				BBAA69E31EE488DF00451615 /* ITransmissionData.cpp */,
 				BB8308381EC2AD1F00435E7E /* ITransmissionData.h */,
 				BB72519C1EE105490024C71C /* Move.cpp */,
 				BB72519D1EE105490024C71C /* Move.h */,
@@ -2150,6 +2155,7 @@
 				BB5697DB1EE3661400D03694 /* InputState.cpp in Sources */,
 				BBAEF2471EA94EDA00F0866E /* OpenGLTextureProgram.cpp in Sources */,
 				BBAEF2411EA94EDA00F0866E /* OpenGLSpriteBatcher.cpp in Sources */,
+				BBAA69E41EE488DF00451615 /* ITransmissionData.cpp in Sources */,
 				BBAEF2991EA94EDA00F0866E /* OverlapTester.cpp in Sources */,
 				BBAEF2351EA94EDA00F0866E /* OpenGLGeometryProgram.cpp in Sources */,
 				BBAEF2711EA94EDA00F0866E /* SpriteBatcher.cpp in Sources */,
@@ -2287,6 +2293,7 @@
 				BBAEF25E1EA94EDA00F0866E /* Font.cpp in Sources */,
 				BBBD14971EE06BB3003F9307 /* Timing.cpp in Sources */,
 				BBAEF27A1EA94EDA00F0866E /* TextureWrapper.cpp in Sources */,
+				BBAA69E51EE488DF00451615 /* ITransmissionData.cpp in Sources */,
 				BBAEF2EA1EA94EDA00F0866E /* MainScreen.cpp in Sources */,
 				BBAEF25A1EA94EDA00F0866E /* CircleBatcherFactory.cpp in Sources */,
 				BBAEF2A41EA94EDA00F0866E /* AudioEngineHelperFactory.cpp in Sources */,
@@ -2355,6 +2362,7 @@
 				BB7251A21EE105490024C71C /* Move.cpp in Sources */,
 				BB32C97F1EDB70F3005456EB /* Circle.cpp in Sources */,
 				BB5697D61EE360C900D03694 /* Server.cpp in Sources */,
+				BBAA69E61EE488DF00451615 /* ITransmissionData.cpp in Sources */,
 				BB32C9811EDB70F3005456EB /* Line.cpp in Sources */,
 				BBBD14A21EE08A20003F9307 /* World.cpp in Sources */,
 				BB32C9841EDB70F3005456EB /* NGRect.cpp in Sources */,

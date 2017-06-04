@@ -35,7 +35,7 @@ private:
     float m_fFrameStateTime;
     bool m_isInitialized;
     
-    Robot* getCatForPlayer(int inPlayerId);
+    Robot* getRobotForPlayer(int inPlayerId);
     
     // ctor, copy ctor, and assignment should be private in a Singleton
     Server();

@@ -189,7 +189,7 @@ void NGAudioEngine::resumeAllSounds()
 
 void NGAudioEngine::resetSounds()
 {
-    NGSTDUtil::cleanUpMapOfPointerValues(m_sounds);
+    NGSTDUtil::cleanUpMapOfPointers(m_sounds);
 }
 
 void NGAudioEngine::loadMusic(const char *path)

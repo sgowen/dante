@@ -12,6 +12,7 @@
 #include <vector>
 #include <memory>
 #include <map>
+#include <unordered_map>
 
 class NGSTDUtil
 {
@@ -39,9 +40,20 @@ public:
     }
     
     template<typename K, typename T>
-    static void cleanUpMapOfPointerValues(std::map<K, T*>& items)
+    static void cleanUpMapOfPointers(std::map<K, T*>& items)
     {
         for (typename std::map<K, T*>::iterator i = items.begin(); i != items.end(); )
+        {
+            delete i->second;
+            
+            i = items.erase(i);
+        }
+    }
+    
+    template<typename K, typename T>
+    static void cleanUpMapOfPointers(std::unordered_map<K, T*>& items)
+    {
+        for (typename std::unordered_map<K, T*>::iterator i = items.begin(); i != items.end(); )
         {
             delete i->second;
             

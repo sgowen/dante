@@ -13,6 +13,7 @@
 #include "IAssetsMapper.h"
 #include "TextureRegion.h"
 #include "Animation.h"
+#include "NGSTDUtil.h"
 
 #include <assert.h>
 
@@ -94,4 +95,10 @@ void Assets::initTextureRegion(TextureRegion& tr, int x, int regionWidth, int te
 Assets::Assets()
 {
     // Empty
+}
+
+Assets::~Assets()
+{
+    NGSTDUtil::cleanUpMapOfPointers(m_textureRegions);
+    NGSTDUtil::cleanUpMapOfPointers(m_animations);
 }

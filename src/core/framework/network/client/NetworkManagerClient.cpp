@@ -47,7 +47,7 @@ void NetworkManagerClient::processPacket(InputMemoryBitStream& inInputStream, co
 
 bool NetworkManagerClient::init(const std::string& inServerIPAddress, const std::string& inName, HandleEntityDeletion handleEntityDeletion)
 {
-    m_serverAddress = SocketAddressFactory::CreateIPv4FromString(inServerIPAddress);
+    m_serverAddress = SocketAddressFactory::createIPv4FromString(inServerIPAddress);
     m_state = NCS_SayingHello;
     m_fTimeOfLastHello = 0.f;
     m_name = inName;

@@ -115,22 +115,22 @@ void MainScreen::update(float deltaTime)
     
     if (m_fFrameStateTime >= FRAME_RATE)
     {
+        Timing::getInstance()->updateManual(m_fStateTime, FRAME_RATE);
+        
+        NetworkManagerClient::getInstance()->processIncomingPackets();
+        
+        InputManager::getInstance()->update();
+        
         NG_AUDIO_ENGINE->update();
         
         while (m_fFrameStateTime >= FRAME_RATE)
         {
             m_fFrameStateTime -= FRAME_RATE;
             
-            Timing::getInstance()->updateManual(m_fStateTime, FRAME_RATE);
-            
-            NetworkManagerClient::getInstance()->processIncomingPackets();
-            
-            InputManager::getInstance()->update();
-            
             World::sInstance->update();
-            
-            NetworkManagerClient::getInstance()->sendOutgoingPackets();
         }
+        
+        NetworkManagerClient::getInstance()->sendOutgoingPackets();
     }
 }
 

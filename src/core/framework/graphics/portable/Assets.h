@@ -43,6 +43,7 @@ private:
     
     // ctor, copy ctor, and assignment should be private in a Singleton
     Assets();
+    ~Assets();
     Assets(const Assets&);
     Assets& operator=(const Assets&);
 };

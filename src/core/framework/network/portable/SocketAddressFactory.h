@@ -16,7 +16,7 @@ class SocketAddress;
 class SocketAddressFactory
 {
 public:
-    static SocketAddress* CreateIPv4FromString(const std::string& inString);
+    static SocketAddress* createIPv4FromString(const std::string& inString);
 };
 
 #endif /* defined(__noctisgames__SocketAddressFactory__) */

@@ -16,7 +16,7 @@
 
 #include <cstring>	// memset()
 
-SocketAddress* SocketAddressFactory::CreateIPv4FromString(const std::string& inString)
+SocketAddress* SocketAddressFactory::createIPv4FromString(const std::string& inString)
 {
     auto pos = inString.find_last_of(':');
     std::string host, service;
@@ -39,7 +39,7 @@ SocketAddress* SocketAddressFactory::CreateIPv4FromString(const std::string& inS
     int error = getaddrinfo(host.c_str(), service.c_str(), &hint, &result);
     if (error != 0 && result != nullptr)
     {
-        SOCKET_UTIL->reportError("SocketAddressFactory::CreateIPv4FromString");
+        SOCKET_UTIL->reportError("SocketAddressFactory::createIPv4FromString");
         return nullptr;
     }
     

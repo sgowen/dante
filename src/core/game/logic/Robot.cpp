@@ -110,7 +110,7 @@ void Robot::read(InputMemoryBitStream& inInputStream)
     
     bool stateBit;
     
-    m_iReadState = 0;
+    uint32_t readState = 0;
     
     inInputStream.read(stateBit);
     if (stateBit)
@@ -118,7 +118,7 @@ void Robot::read(InputMemoryBitStream& inInputStream)
         uint32_t playerId;
         inInputStream.read(playerId);
         setPlayerId(playerId);
-        m_iReadState |= RBRS_PlayerId;
+        readState |= RBRS_PlayerId;
     }
     
     Vector2 replicatedLocation;
@@ -134,6 +134,13 @@ void Robot::read(InputMemoryBitStream& inInputStream)
         
         m_velocity.set(replicatedVelocity);
         
+#ifdef NG_CLIENT
+        if (getPlayerId() != NetworkManagerClient::getInstance()->getPlayerId())
+        {
+            LOG("read Remote Player Velocity %3.8f, %3.8f", getVelocity().getX(), getVelocity().getY());
+        }
+#endif
+        
         inInputStream.read(replicatedLocation.getXRef());
         inInputStream.read(replicatedLocation.getYRef());
         
@@ -144,7 +151,7 @@ void Robot::read(InputMemoryBitStream& inInputStream)
         inInputStream.read(m_isFalling);
         inInputStream.read(m_isShooting);
         
-        m_iReadState |= RBRS_Pose;
+        readState |= RBRS_Pose;
     }
     
     inInputStream.read(stateBit);
@@ -153,7 +160,7 @@ void Robot::read(InputMemoryBitStream& inInputStream)
         Color color;
         inInputStream.read(color);
         setColor(color);
-        m_iReadState |= RBRS_Color;
+        readState |= RBRS_Color;
     }
     
     inInputStream.read(stateBit);
@@ -161,29 +168,23 @@ void Robot::read(InputMemoryBitStream& inInputStream)
     {
         m_iHealth = 0;
         inInputStream.read(m_iHealth, 4); // Support up to 15 health points, for now...
-        m_iReadState |= RBRS_Health;
+        readState |= RBRS_Health;
     }
     
 #ifdef NG_CLIENT
     if (getPlayerId() == NetworkManagerClient::getInstance()->getPlayerId())
     {
-        doClientSidePredictionAfterReplicationForLocalCat(m_iReadState);
+        doClientSidePredictionAfterReplicationForLocalCat(readState);
         
-        //if this is a create packet, don't interpolate
-        if ((m_iReadState & RBRS_PlayerId) == 0)
+        // if this is a create packet, don't interpolate
+        if ((readState & RBRS_PlayerId) == 0)
         {
-            interpolateClientSidePrediction(oldLocation, oldVelocity, false);
+            interpolateClientSidePrediction(oldLocation, oldVelocity);
         }
     }
     else
     {
-        doClientSidePredictionAfterReplicationForRemoteCat(m_iReadState);
-        
-        //will this smooth us out too? it'll interpolate us just 10% of the way there...
-        if ((m_iReadState & RBRS_PlayerId) == 0)
-        {
-            interpolateClientSidePrediction(oldLocation, oldVelocity, true);
-        }
+        doClientSidePredictionAfterReplicationForRemoteCat(readState);
     }
 #endif
 }
@@ -319,7 +320,7 @@ void Robot::processMove(Move& inMove)
     
     updateInternal(deltaTime);
     
-    LOG("Move Time: %3.4f deltaTime: %3.4f", inMove.getTimestamp(), deltaTime);
+    //LOG("Move Time: %3.4f deltaTime: %3.4f", inMove.getTimestamp(), deltaTime);
 }
 
 void Robot::updateInternal(float inDeltaTime)
@@ -533,7 +534,7 @@ void Robot::doClientSidePredictionAfterReplicationForRemoteCat(uint32_t inReadSt
     }
 }
 
-void Robot::interpolateClientSidePrediction(Vector2& inOldLocation, Vector2& inOldVelocity, bool inIsForRemoteCat)
+void Robot::interpolateClientSidePrediction(Vector2& inOldLocation, Vector2& inOldVelocity)
 {
     float roundTripTime = NetworkManagerClient::getInstance()->getRoundTripTime();
     
@@ -551,7 +552,7 @@ void Robot::interpolateClientSidePrediction(Vector2& inOldLocation, Vector2& inO
         float durationOutOfSync = time - m_fTimePositionBecameOutOfSync;
         if (durationOutOfSync < roundTripTime)
         {
-            setPosition(lerp(inOldLocation, getPosition(), inIsForRemoteCat ? (durationOutOfSync / roundTripTime) : 0.1f));
+            setPosition(lerp(inOldLocation, getPosition(), 0.1f));
         }
     }
     else
@@ -575,7 +576,7 @@ void Robot::interpolateClientSidePrediction(Vector2& inOldLocation, Vector2& inO
         float durationOutOfSync = time - m_fTimeVelocityBecameOutOfSync;
         if (durationOutOfSync < roundTripTime)
         {
-            m_velocity.set(lerp(inOldVelocity, getVelocity(), inIsForRemoteCat ? (durationOutOfSync / roundTripTime) : 0.1f));
+            m_velocity.set(lerp(inOldVelocity, getVelocity(), 0.1f));
         }
         //otherwise, fine...
     }
@@ -601,7 +602,6 @@ m_isGrounded(false),
 m_isFalling(false),
 m_isShooting(false),
 m_iPlayerId(0),
-m_iReadState(0),
 m_iIndexInWorld(-1)
 {
     m_acceleration.setY(-9.8f);

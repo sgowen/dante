@@ -85,7 +85,6 @@ private:
     bool m_isShooting;
     
     uint32_t m_iPlayerId;
-    uint32_t m_iReadState;
     
     int m_iIndexInWorld;
     
@@ -106,7 +105,7 @@ private:
     
     void doClientSidePredictionAfterReplicationForRemoteCat(uint32_t inReadState);
     
-    void interpolateClientSidePrediction(Vector2& inOldLocation, Vector2& inOldVelocity, bool inIsForRemoteCat);
+    void interpolateClientSidePrediction(Vector2& inOldLocation, Vector2& inOldVelocity);
 #endif
     
     Robot();

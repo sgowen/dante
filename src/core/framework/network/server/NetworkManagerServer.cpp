@@ -28,12 +28,11 @@ NetworkManagerServer* NetworkManagerServer::getInstance()
 
 void NetworkManagerServer::processPacket(InputMemoryBitStream& inInputStream, const SocketAddress& inFromAddress)
 {
-    LOG("Packet from %s", inFromAddress.toString().c_str());
-    
     //try to get the client proxy for this address
     //pass this to the client proxy to process
     auto it = m_addressToClientMap.find(inFromAddress);
-    if (it == m_addressToClientMap.end())
+    if (it == m_addressToClientMap.end()
+        && m_addressToClientMap.size() < 4)
     {
         LOG("New Client %s", inFromAddress.toString().c_str());
         
@@ -136,7 +135,7 @@ void NetworkManagerServer::setStateDirty(int inNetworkId, uint32_t inDirtyState)
     }
 }
 
-void NetworkManagerServer::respawnCats()
+void NetworkManagerServer::respawnRobots()
 {
     for (auto it = m_addressToClientMap.begin(), end = m_addressToClientMap.end(); it != end; ++it)
     {
@@ -170,6 +169,9 @@ void NetworkManagerServer::handlePacketFromNewClient(InputMemoryBitStream& inInp
         
         LOG("Creating new Client Proxy %s", inFromAddress.toString().c_str());
         
+        // TODO, reset game whenever the first client joins, according to their individual progress, and set that client as the "owner"
+        // if the "owner" leaves the game, a new owner must be designated, and the world set accordingly
+        
         ClientProxy* newClientProxy = new ClientProxy(inFromAddress, name, m_iNewPlayerId++);
         m_addressToClientMap[inFromAddress] = newClientProxy;
         m_playerIDToClientMap[newClientProxy->getPlayerId()] = newClientProxy;
@@ -201,7 +203,7 @@ void NetworkManagerServer::processPacket(ClientProxy* inClientProxy, InputMemory
     
     uint32_t packetType;
     inInputStream.read(packetType);
-    switch(packetType)
+    switch (packetType)
     {
         case kHelloCC:
             //need to resend welcome. to be extra safe we should check the name is the one we expect from this address,
@@ -232,7 +234,7 @@ void NetworkManagerServer::sendWelcomePacket(ClientProxy* inClientProxy)
     sendPacket(welcomePacket, inClientProxy->getSocketAddress());
 }
 
-void NetworkManagerServer::UpdateAllClients()
+void NetworkManagerServer::updateAllClients()
 {
     for (auto it = m_addressToClientMap.begin(), end = m_addressToClientMap.end(); it != end; ++it)
     {
@@ -299,12 +301,13 @@ void NetworkManagerServer::handleClientDisconnected(ClientProxy* inClientProxy)
     
     m_handleLostClientFunc(inClientProxy);
     
-    m_iNewPlayerId = static_cast<int>(m_addressToClientMap.size()) + 1;
-    
-    //was that the last client? if so, bye!
-    if (m_addressToClientMap.empty())
+    m_iNewPlayerId = 1;
+    for (auto const &entry : m_addressToClientMap)
     {
-        // TODO, reset game whenever the first client joins, according to their individual progress
+        if (entry.second->getPlayerId() == m_iNewPlayerId)
+        {
+            ++m_iNewPlayerId;
+        }
     }
 }
 

@@ -51,7 +51,7 @@ int Server::run()
             
             NetworkManagerServer::getInstance()->checkForDisconnects();
             
-            NetworkManagerServer::getInstance()->respawnCats();
+            NetworkManagerServer::getInstance()->respawnRobots();
             
             while (m_fFrameStateTime >= FRAME_RATE)
             {
@@ -76,15 +76,15 @@ void Server::handleNewClient(ClientProxy* inClientProxy)
 
 void Server::handleLostClient(ClientProxy* inClientProxy)
 {
-    //kill client's cat
-    //remove client from scoreboard
     int playerId = inClientProxy->getPlayerId();
     
-    Robot* cat = getCatForPlayer(playerId);
-    if (cat)
+    Robot* robot = getRobotForPlayer(playerId);
+    if (robot)
     {
-        cat->requestDeletion();
+        robot->requestDeletion();
     }
+    
+    delete inClientProxy;
 }
 
 void Server::spawnCatForPlayer(int inPlayerId)
@@ -123,21 +123,17 @@ bool Server::isInitialized()
     return m_isInitialized;
 }
 
-Robot* Server::getCatForPlayer(int inPlayerId)
+Robot* Server::getRobotForPlayer(int inPlayerId)
 {
-    //run through the objects till we find the cat...
-    //it would be nice if we kept a pointer to the cat on the clientproxy
-    //but then we'd have to clean it up when the cat died, etc.
-    //this will work for now until it's a perf issue
     const auto& gameObjects = World::sInstance->GetRobots();
     int len = static_cast<int>(gameObjects.size());
     for (int i = 0, c = len; i < c; ++i)
     {
         Entity* go = gameObjects[i];
-        Robot* cat = go->getRTTI().derivesFrom(Robot::rtti) ? static_cast<Robot*>(go) : nullptr;
-        if (cat && cat->getPlayerId() == inPlayerId)
+        Robot* robot = go->getRTTI().derivesFrom(Robot::rtti) ? static_cast<Robot*>(go) : nullptr;
+        if (robot && robot->getPlayerId() == inPlayerId)
         {
-            return static_cast<Robot*>(go);
+            return robot;
         }
     }
     
