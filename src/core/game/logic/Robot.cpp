@@ -108,11 +108,13 @@ uint32_t Robot::getAllStateMask() const
 
 void Robot::read(InputMemoryBitStream& inInputStream)
 {
+#ifdef NG_CLIENT
     float oldStateTime = m_fStateTime;
     Vector2 oldAcceleration = getAcceleration();
     Vector2 oldVelocity = getVelocity();
     Vector2 oldPosition = getPosition();
     bool wasJumping = m_isJumping;
+#endif
     
     bool stateBit;
     
@@ -328,7 +330,9 @@ bool Robot::isShooting()
 
 void Robot::processMove(const Move& inMove)
 {
+#ifdef NG_CLIENT
     bool wasJumping = m_isJumping;
+#endif
     
     IInputState* currentState = inMove.getInputState();
     
