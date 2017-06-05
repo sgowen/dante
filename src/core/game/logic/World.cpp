@@ -46,19 +46,15 @@ Robot* World::staticGetRobotWithPlayerId(int inPlayerID)
 
 bool World::staticHasSpacePirates()
 {
-    const std::vector<Entity*>& entities = World::getInstance()->getEntities();
-    
-    int len = static_cast<int>(entities.size());
-    for (int i = 0, c = len; i < c; ++i)
-    {
-        Entity* ent = entities[i];
-        if (ent->getRTTI().derivesFrom(SpacePirate::rtti))
-        {
-            return true;
-        }
-    }
-    
-    return false;
+	for (Entity* entity : World::getInstance()->getEntities())
+	{
+		if (entity->getRTTI().derivesFrom(SpacePirate::rtti))
+		{
+			return true;
+		}
+	}
+
+	return false;
 }
 
 void World::addEntity(Entity* inEntity)
