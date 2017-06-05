@@ -578,12 +578,12 @@ void Robot::interpolateClientSidePrediction(float& inOldStateTime, Vector2& inOl
     
     if (interpolateVectorsIfNecessary(inOldVelocity, getVelocity(), m_fTimeVelocityBecameOutOfSync))
     {
-        LOG("ERROR! Move Replay Acceleration");
+        LOG("ERROR! Move Replay Velocity");
     }
     
     if (interpolateVectorsIfNecessary(inOldPos, getPosition(), m_fTimePositionBecameOutOfSync))
     {
-        LOG("ERROR! Move Replay Acceleration");
+        LOG("ERROR! Move Replay Position");
     }
 }
 
