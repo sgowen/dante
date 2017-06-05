@@ -64,7 +64,7 @@ private:
     void processCollisionsWithScreenWalls();
     
 #ifdef NG_CLIENT
-    void interpolateClientSidePrediction(float& inOldStateTime, Vector2& inOldAcceleration, Vector2& inOldVelocity, Vector2& inOldLocation);
+    void interpolateClientSidePrediction(float& inOldStateTime, Vector2& inOldVelocity, Vector2& inOldLocation);
 #endif
     
     Projectile();
