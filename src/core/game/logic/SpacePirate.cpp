@@ -201,7 +201,8 @@ void SpacePirate::processCollisions()
 #ifdef NG_SERVER
     bool targetFound = false;
     float shortestDistance = CAM_WIDTH;
-    for (Entity* target : World::getInstance()->getEntities())
+	std::vector<Entity*> entities = World::getInstance()->getEntities();
+    for (Entity* target : entities)
     {
         if (target != this && !target->isRequestingDeletion() && target->getRTTI().derivesFrom(Robot::rtti))
         {

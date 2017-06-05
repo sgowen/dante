@@ -39,8 +39,6 @@ public:
 private:
     std::vector<Entity*> m_objects;
     
-    int	getIndexOfEntity(Entity* inEntity);
-    
     // ctor, copy ctor, and assignment should be private in a Singleton
     World();
     World(const World&);
