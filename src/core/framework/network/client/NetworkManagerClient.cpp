@@ -45,22 +45,22 @@ void NetworkManagerClient::processPacket(InputMemoryBitStream& inInputStream, co
     }
 }
 
-bool NetworkManagerClient::init(const std::string& inServerIPAddress, const std::string& inName, HandleEntityDeletion handleEntityDeletion)
+bool NetworkManagerClient::init(const std::string& inServerIPAddress, const std::string& inName, float inFrameRate, HandleEntityDeletion handleEntityDeletion)
 {
     m_serverAddress = SocketAddressFactory::createIPv4FromString(inServerIPAddress);
     m_state = NCS_SayingHello;
     m_fTimeOfLastHello = 0.f;
     m_name = inName;
+    m_fFrameRate = inFrameRate;
     
     m_avgRoundTripTime = WeightedTimedMovingAverage(1.f);
     
+    // This allows us to run both a debug and a release client on the same machine
 #if defined(DEBUG) || defined(_DEBUG)
     uint16_t port = 1339;
 #else
     uint16_t port = 1337;
 #endif
-    
-    // This allows us to run both a debug and a release client on the same machine
     
     return INetworkManager::init(port, handleEntityDeletion);
 }
@@ -102,7 +102,7 @@ float NetworkManagerClient::getLastMoveProcessedByServerTimestamp() const
 
 void NetworkManagerClient::updateSayingHello()
 {
-    float time = Timing::getInstance()->getTime();
+    float time = Timing::getInstance()->getFrameStartTime();
     
     static const float kTimeBetweenHellos = 1.f;
     
@@ -132,6 +132,7 @@ void NetworkManagerClient::handleWelcomePacket(InputMemoryBitStream& inInputStre
         inInputStream.read(playerId);
         m_iPlayerId = playerId;
         m_state = NCS_Welcomed;
+        
         LOG("'%s' was welcomed on client as player %d", m_name.c_str(), m_iPlayerId);
     }
 }
@@ -217,11 +218,9 @@ void NetworkManagerClient::destroyAllInMap(const std::unordered_map<int, Entity*
 
 void NetworkManagerClient::updateSendingInputPacket()
 {
-    float time = Timing::getInstance()->getTime();
+    float time = Timing::getInstance()->getFrameStartTime();
     
-    static const float kTimeBetweenInputPackets = 0.033f;
-    
-    if (time > m_fTimeOfLastInputPacket + kTimeBetweenInputPackets)
+    if (time > m_fTimeOfLastInputPacket + m_fFrameRate)
     {
         sendInputPacket();
         m_fTimeOfLastInputPacket = time;

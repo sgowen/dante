@@ -18,25 +18,24 @@ class Entity;
 class World
 {
 public:
-    static std::unique_ptr<World> sInstance;
-    
-    static void staticInit();
+    static World* getInstance();
     
     static void addEntityIfPossible(Entity* inEntity);
     
     static void removeEntityIfPossible(Entity* inEntity);
     
-    void AddRobot(Robot* inRobot);
-    void RemoveRobot(Robot* inRobot);
+    void addRobot(Robot* inRobot);
+    
+    void removeRobot(Robot* inRobot);
     
     void update();
     
-    const std::vector<Robot*>& GetRobots() const { return mRobots; }
+    const std::vector<Robot*>& getRobots() const;
     
 private:
-    std::vector<Robot*> mRobots;
+    std::vector<Robot*> m_robots;
     
-    int	GetIndexOfRobot(Robot* inRobot);
+    int	getIndexOfRobot(Robot* inRobot);
     
     // ctor, copy ctor, and assignment should be private in a Singleton
     World();

@@ -18,8 +18,6 @@ public:
     
     void updateManual(float stateTime, float deltaTime);
     
-    float getTime() const;
-    
     float getDeltaTime() const;
     
     float getFrameStartTime() const;
@@ -29,6 +27,8 @@ private:
     double m_dPerfCountDuration;
     float m_fFrameStartTimef;
     float m_fDeltaTime;
+    
+    float getTime() const;
     
     // ctor, copy ctor, and assignment should be private in a Singleton
     Timing();

@@ -80,7 +80,7 @@ void MainRenderer::tempDraw()
         }
         
         m_spriteBatcher->beginBatch();
-        for (Robot* go : World::sInstance->GetRobots())
+        for (Robot* go : World::getInstance()->getRobots())
         {
             if (go->getNetworkType() == NETWORK_TYPE_Robot)
             {

@@ -24,7 +24,7 @@ public:
     
     virtual void processPacket(InputMemoryBitStream& inInputStream, const SocketAddress& inFromAddress) override;
     
-    bool init(const std::string& inServerIPAddress, const std::string& inName, HandleEntityDeletion handleEntityDeletion);
+    bool init(const std::string& inServerIPAddress, const std::string& inName, float inFrameRate, HandleEntityDeletion handleEntityDeletion);
     
     void sendOutgoingPackets();
     
@@ -56,6 +56,7 @@ private:
     
     std::string m_name;
     int m_iPlayerId;
+    float m_fFrameRate;
     
     float m_fLastMoveProcessedByServerTimestamp;
     

@@ -31,6 +31,7 @@ public:
     
 private:
     NGRollingPool<KeyboardEvent>* m_pool;
+    std::map<KeyboardEventType, bool> m_lastKnownKeyStates;
     
     void addEvent(KeyboardEventType type, bool isUp);
     

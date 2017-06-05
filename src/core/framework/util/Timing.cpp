@@ -48,6 +48,16 @@ void Timing::updateManual(float stateTime, float deltaTime)
     m_fFrameStartTimef = stateTime;
 }
 
+float Timing::getDeltaTime() const
+{
+    return m_fDeltaTime;
+}
+
+float Timing::getFrameStartTime() const
+{
+    return m_fFrameStartTimef;
+}
+
 float Timing::getTime() const
 {
 #if _WIN32
@@ -63,16 +73,6 @@ float Timing::getTime() const
     
     return static_cast<float>(ms) / 1000;
 #endif
-}
-
-float Timing::getDeltaTime() const
-{
-    return m_fDeltaTime;
-}
-
-float Timing::getFrameStartTime() const
-{
-    return m_fFrameStartTimef;
 }
 
 Timing::Timing()

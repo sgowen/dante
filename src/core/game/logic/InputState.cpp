@@ -45,6 +45,14 @@ bool InputState::read(InputMemoryBitStream& inInputStream)
     return true;
 }
 
+bool InputState::isEqualTo(InputState* inInputState)
+{
+    return inInputState->m_fDesiredRightAmount == m_fDesiredRightAmount
+    && inInputState->m_fDesiredLeftAmount == m_fDesiredLeftAmount
+    && inInputState->m_fDesiredJumpIntensity == m_fDesiredJumpIntensity
+    && inInputState->m_isShooting == m_isShooting;
+}
+
 void InputState::copyTo(InputState* inInputState)
 {
     inInputState->m_fDesiredRightAmount = m_fDesiredRightAmount;

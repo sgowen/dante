@@ -32,53 +32,56 @@ InputManager* InputManager::getInstance()
 
 void InputManager::update()
 {
-    SCREEN_INPUT_MANAGER->process();
-    KEYBOARD_INPUT_MANAGER->process();
-    GAME_PAD_INPUT_MANAGER->process();
-    
-    for (std::vector<KeyboardEvent *>::iterator i = KEYBOARD_INPUT_MANAGER->getEvents().begin(); i != KEYBOARD_INPUT_MANAGER->getEvents().end(); ++i)
+    if (isTimeToSampleInput())
     {
-        switch ((*i)->getType())
+        SCREEN_INPUT_MANAGER->process();
+        KEYBOARD_INPUT_MANAGER->process();
+        GAME_PAD_INPUT_MANAGER->process();
+        
+        for (std::vector<KeyboardEvent *>::iterator i = KEYBOARD_INPUT_MANAGER->getEvents().begin(); i != KEYBOARD_INPUT_MANAGER->getEvents().end(); ++i)
         {
-            case KeyboardEventType_W:
-                m_currentState->m_fDesiredJumpIntensity = (*i)->isUp() ? 0 : 1;
-                continue;
-            case KeyboardEventType_A:
-                m_currentState->m_fDesiredLeftAmount = (*i)->isUp() ? 0 : 1;
-                continue;
-            case KeyboardEventType_D:
-                m_currentState->m_fDesiredRightAmount = (*i)->isUp() ? 0 : 1;
-                continue;
-            case KeyboardEventType_SPACE:
-                m_currentState->m_isShooting = (*i)->isUp() ? false : true;
-                continue;
-            default:
-                continue;
+            switch ((*i)->getType())
+            {
+                case KeyboardEventType_W:
+                    m_currentState->m_fDesiredJumpIntensity = (*i)->isDown() ? 1 : 0;
+                    continue;
+                case KeyboardEventType_A:
+                    m_currentState->m_fDesiredLeftAmount = (*i)->isDown() || (*i)->isHeld() ? 1 : 0;
+                    continue;
+                case KeyboardEventType_D:
+                    m_currentState->m_fDesiredRightAmount = (*i)->isDown() || (*i)->isHeld() ? 1 : 0;
+                    continue;
+                case KeyboardEventType_SPACE:
+                    m_currentState->m_isShooting = (*i)->isDown() || (*i)->isHeld() ? true : false;
+                    continue;
+                default:
+                    continue;
+            }
         }
-    }
-    
-    for (std::vector<GamePadEvent *>::iterator i = GAME_PAD_INPUT_MANAGER->getEvents().begin(); i != GAME_PAD_INPUT_MANAGER->getEvents().end(); ++i)
-    {
-        switch ((*i)->getType())
+        
+        for (std::vector<GamePadEvent *>::iterator i = GAME_PAD_INPUT_MANAGER->getEvents().begin(); i != GAME_PAD_INPUT_MANAGER->getEvents().end(); ++i)
         {
-            case GamePadEventType_D_PAD_UP:
-                m_currentState->m_fDesiredJumpIntensity = (*i)->isButtonPressed() ? 1 : 0;
-                continue;
-            case GamePadEventType_D_PAD_LEFT:
-                m_currentState->m_fDesiredLeftAmount = (*i)->isButtonPressed() ? 1 : 0;
-                continue;
-            case GamePadEventType_D_PAD_RIGHT:
-                m_currentState->m_fDesiredRightAmount = (*i)->isButtonPressed() ? 1 : 0;
-                continue;
-            case GamePadEventType_A_BUTTON:
-                m_currentState->m_isShooting = (*i)->isButtonPressed() ? true : false;
-                continue;
-            default:
-                continue;
+            switch ((*i)->getType())
+            {
+                case GamePadEventType_D_PAD_UP:
+                    m_currentState->m_fDesiredJumpIntensity = (*i)->isPressed() ? 1 : 0;
+                    continue;
+                case GamePadEventType_D_PAD_LEFT:
+                    m_currentState->m_fDesiredLeftAmount = (*i)->isPressed() ? 1 : 0;
+                    continue;
+                case GamePadEventType_D_PAD_RIGHT:
+                    m_currentState->m_fDesiredRightAmount = (*i)->isPressed() ? 1 : 0;
+                    continue;
+                case GamePadEventType_A_BUTTON:
+                    m_currentState->m_isShooting = (*i)->isPressed() ? true : false;
+                    continue;
+                default:
+                    continue;
+            }
         }
+        
+        m_pendingMove = &sampleInputAsMove();
     }
-    
-    m_pendingMove = &sampleInputAsMove();
 }
 
 MoveList& InputManager::getMoveList()
@@ -86,7 +89,7 @@ MoveList& InputManager::getMoveList()
     return m_moveList;
 }
 
-Move* InputManager::getAndClearPendingMove()
+const Move* InputManager::getAndClearPendingMove()
 {
     auto toRet = m_pendingMove;
     m_pendingMove = nullptr;
@@ -94,7 +97,7 @@ Move* InputManager::getAndClearPendingMove()
     return toRet;
 }
 
-Move& InputManager::sampleInputAsMove()
+const Move& InputManager::sampleInputAsMove()
 {
     InputState* inputState = static_cast<InputState*>(POOLED_OBJ_MGR->borrowInputState());
     m_currentState->copyTo(inputState);
@@ -102,9 +105,23 @@ Move& InputManager::sampleInputAsMove()
     return m_moveList.addMove(inputState, Timing::getInstance()->getFrameStartTime());
 }
 
+bool InputManager::isTimeToSampleInput()
+{
+    float time = Timing::getInstance()->getFrameStartTime();
+    if (time > m_fNextTimeToSampleInput)
+    {
+        m_fNextTimeToSampleInput = time + FRAME_RATE;
+        
+        return true;
+    }
+    
+    return false;
+}
+
 InputManager::InputManager() :
 m_currentState(static_cast<InputState*>(POOLED_OBJ_MGR->borrowInputState())),
-m_pendingMove(nullptr)
+m_pendingMove(nullptr),
+m_fNextTimeToSampleInput(0.0f)
 {
     // Empty
 }

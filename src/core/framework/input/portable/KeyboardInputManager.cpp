@@ -39,9 +39,21 @@ std::vector<KeyboardEvent*>& KeyboardInputManager::getEvents()
 
 void KeyboardInputManager::addEvent(KeyboardEventType type, bool isUp)
 {
+    bool wasLastEventDown = false;
+    
+    auto q = m_lastKnownKeyStates.find(type);
+    
+    if (q != m_lastKnownKeyStates.end())
+    {
+        bool wasUp = q->second;
+        wasLastEventDown = !wasUp;
+    }
+    
+    m_lastKnownKeyStates[type] = isUp;
+    
     KeyboardEvent* e = m_pool->newObject();
     e->setType(type);
-    e->setUp(isUp);
+    e->setStatus(isUp ? KEYBOARD_STATUS_UP : wasLastEventDown ? KEYBOARD_STATUS_HELD : KEYBOARD_STATUS_DOWN);
     
     m_pool->add(e);
 }

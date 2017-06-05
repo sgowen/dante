@@ -74,8 +74,9 @@ private:
     float m_fWallRestitution;
     float m_fCatRestitution;
     
-    float m_fTimePositionBecameOutOfSync;
+    float m_fTimeAccelerationBecameOutOfSync;
     float m_fTimeVelocityBecameOutOfSync;
+    float m_fTimePositionBecameOutOfSync;
     
     int m_iHealth;
     
@@ -83,16 +84,19 @@ private:
     bool m_isGrounded;
     bool m_isFalling;
     bool m_isShooting;
+    bool m_isJumping;
     
     uint32_t m_iPlayerId;
     
     int m_iIndexInWorld;
     
-    void processMove(Move& inMove);
+    void processMove(const Move& inMove);
+    
+    void processInput(float inDeltaTime, IInputState* inInputState);
     
     void updateInternal(float inDeltaTime);
     
-    void processInput(float inDeltaTime, IInputState* inInputState);
+    void postUpdateCheck();
     
     void processCollisions();
     
@@ -105,7 +109,7 @@ private:
     
     void doClientSidePredictionAfterReplicationForRemoteCat(uint32_t inReadState);
     
-    void interpolateClientSidePrediction(Vector2& inOldLocation, Vector2& inOldVelocity);
+    void interpolateClientSidePrediction(float& inOldStateTime, Vector2& inOldAcceleration, Vector2& inOldVelocity, Vector2& inOldLocation);
 #endif
     
     Robot();

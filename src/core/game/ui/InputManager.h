@@ -23,14 +23,17 @@ public:
     
     MoveList& getMoveList();
     
-    Move* getAndClearPendingMove();
+    const Move* getAndClearPendingMove();
     
 private:
     InputState* m_currentState;
     MoveList m_moveList;
-    Move* m_pendingMove;
+    const Move* m_pendingMove;
+    float m_fNextTimeToSampleInput;
     
-    Move& sampleInputAsMove();
+    const Move& sampleInputAsMove();
+    
+    bool isTimeToSampleInput();
     
     // ctor, copy ctor, and assignment should be private in a Singleton
     InputManager();

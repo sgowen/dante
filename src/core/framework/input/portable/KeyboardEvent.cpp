@@ -10,9 +10,9 @@
 
 #include "KeyboardEvent.h"
 
-KeyboardEvent::KeyboardEvent(KeyboardEventType type, bool isUp) :
+KeyboardEvent::KeyboardEvent(KeyboardEventType type, int status) :
 m_type(type),
-m_isUp(isUp)
+m_iStatus(status)
 {
 	// Empty
 }
@@ -27,12 +27,27 @@ void KeyboardEvent::setType(KeyboardEventType touchType)
     m_type = touchType;
 }
 
-bool KeyboardEvent::isUp()
+void KeyboardEvent::setStatus(int status)
 {
-    return m_isUp;
+    m_iStatus = status;
 }
 
-void KeyboardEvent::setUp(bool isUp)
+int KeyboardEvent::getStatus()
 {
-    m_isUp = isUp;
+    return m_iStatus;
+}
+
+bool KeyboardEvent::isDown()
+{
+    return m_iStatus == KEYBOARD_STATUS_DOWN;
+}
+
+bool KeyboardEvent::isHeld()
+{
+    return m_iStatus == KEYBOARD_STATUS_HELD;
+}
+
+bool KeyboardEvent::isUp()
+{
+    return m_iStatus == KEYBOARD_STATUS_UP;
 }

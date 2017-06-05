@@ -162,6 +162,10 @@
 		BB83087F1EC2AD1F00435E7E /* UDPSocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8308391EC2AD1F00435E7E /* UDPSocket.cpp */; };
 		BB8308801EC2AD1F00435E7E /* UDPSocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8308391EC2AD1F00435E7E /* UDPSocket.cpp */; };
 		BB8308811EC2AD1F00435E7E /* UDPSocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8308391EC2AD1F00435E7E /* UDPSocket.cpp */; };
+		BB88026A1EE497BD00F1A37C /* music_001.wav in Resources */ = {isa = PBXBuildFile; fileRef = BB8802691EE497BD00F1A37C /* music_001.wav */; };
+		BB88026B1EE497BD00F1A37C /* music_001.wav in Resources */ = {isa = PBXBuildFile; fileRef = BB8802691EE497BD00F1A37C /* music_001.wav */; };
+		BB88026D1EE497CF00F1A37C /* sound_001.wav in Resources */ = {isa = PBXBuildFile; fileRef = BB88026C1EE497CF00F1A37C /* sound_001.wav */; };
+		BB88026E1EE497CF00F1A37C /* sound_001.wav in Resources */ = {isa = PBXBuildFile; fileRef = BB88026C1EE497CF00F1A37C /* sound_001.wav */; };
 		BBA337BD1EDF8046000C8F2B /* RTTI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB74283D1EB2AF4200B7628D /* RTTI.cpp */; };
 		BBAA69E41EE488DF00451615 /* ITransmissionData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAA69E31EE488DF00451615 /* ITransmissionData.cpp */; };
 		BBAA69E51EE488DF00451615 /* ITransmissionData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAA69E31EE488DF00451615 /* ITransmissionData.cpp */; };
@@ -619,6 +623,9 @@
 		BB8308381EC2AD1F00435E7E /* ITransmissionData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ITransmissionData.h; sourceTree = "<group>"; };
 		BB8308391EC2AD1F00435E7E /* UDPSocket.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = UDPSocket.cpp; sourceTree = "<group>"; };
 		BB83083A1EC2AD1F00435E7E /* UDPSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UDPSocket.h; sourceTree = "<group>"; };
+		BB8802691EE497BD00F1A37C /* music_001.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = music_001.wav; sourceTree = "<group>"; };
+		BB88026C1EE497CF00F1A37C /* sound_001.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = sound_001.wav; sourceTree = "<group>"; };
+		BB88026F1EE4A40400F1A37C /* Color.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Color.h; sourceTree = "<group>"; };
 		BBAA69E31EE488DF00451615 /* ITransmissionData.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ITransmissionData.cpp; sourceTree = "<group>"; };
 		BBAEF0BF1EA94ED900F0866E /* Entity.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Entity.cpp; sourceTree = "<group>"; };
 		BBAEF0C01EA94ED900F0866E /* Entity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Entity.h; sourceTree = "<group>"; };
@@ -670,7 +677,6 @@
 		BBAEF1311EA94ED900F0866E /* CircleBatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CircleBatcher.h; sourceTree = "<group>"; };
 		BBAEF1321EA94ED900F0866E /* CircleBatcherFactory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CircleBatcherFactory.cpp; sourceTree = "<group>"; };
 		BBAEF1331EA94ED900F0866E /* CircleBatcherFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CircleBatcherFactory.h; sourceTree = "<group>"; };
-		BBAEF1341EA94ED900F0866E /* Color.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Color.h; sourceTree = "<group>"; };
 		BBAEF1351EA94ED900F0866E /* DummyGpuProgramWrapper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DummyGpuProgramWrapper.cpp; sourceTree = "<group>"; };
 		BBAEF1361EA94ED900F0866E /* DummyGpuProgramWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DummyGpuProgramWrapper.h; sourceTree = "<group>"; };
 		BBAEF1371EA94ED900F0866E /* Font.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Font.cpp; sourceTree = "<group>"; };
@@ -1063,6 +1069,7 @@
 		BB0F7A0A1E5A35BE005FB0F3 /* music */ = {
 			isa = PBXGroup;
 			children = (
+				BB8802691EE497BD00F1A37C /* music_001.wav */,
 			);
 			path = music;
 			sourceTree = "<group>";
@@ -1176,6 +1183,7 @@
 		BB44C36C1DB03276003E633F /* sounds */ = {
 			isa = PBXGroup;
 			children = (
+				BB88026C1EE497CF00F1A37C /* sound_001.wav */,
 			);
 			path = sounds;
 			sourceTree = "<group>";
@@ -1574,7 +1582,6 @@
 				BBAEF1311EA94ED900F0866E /* CircleBatcher.h */,
 				BBAEF1321EA94ED900F0866E /* CircleBatcherFactory.cpp */,
 				BBAEF1331EA94ED900F0866E /* CircleBatcherFactory.h */,
-				BBAEF1341EA94ED900F0866E /* Color.h */,
 				BBAEF1351EA94ED900F0866E /* DummyGpuProgramWrapper.cpp */,
 				BBAEF1361EA94ED900F0866E /* DummyGpuProgramWrapper.h */,
 				BBAEF1371EA94ED900F0866E /* Font.cpp */,
@@ -1656,6 +1663,7 @@
 			children = (
 				BBAEF1781EA94ED900F0866E /* Circle.cpp */,
 				BBAEF1791EA94ED900F0866E /* Circle.h */,
+				BB88026F1EE4A40400F1A37C /* Color.h */,
 				BBAEF17A1EA94ED900F0866E /* Line.cpp */,
 				BBAEF17B1EA94ED900F0866E /* Line.h */,
 				BBAEF17C1EA94ED900F0866E /* MathUtil.h */,
@@ -2050,6 +2058,8 @@
 				BB052CCE1EBA8ADD007FA789 /* shader_003_frag.ngs in Resources */,
 				BB052CC61EBA8ADD007FA789 /* shader_001_frag.ngs in Resources */,
 				BB052CD01EBA8ADD007FA789 /* shader_003_vert.ngs in Resources */,
+				BB88026D1EE497CF00F1A37C /* sound_001.wav in Resources */,
+				BB88026A1EE497BD00F1A37C /* music_001.wav in Resources */,
 				BB052CBB1EBA8771007FA789 /* texture_001.ngt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2068,6 +2078,8 @@
 				BB052CCF1EBA8ADD007FA789 /* shader_003_frag.ngs in Resources */,
 				BB052CC71EBA8ADD007FA789 /* shader_001_frag.ngs in Resources */,
 				BB052CD11EBA8ADD007FA789 /* shader_003_vert.ngs in Resources */,
+				BB88026E1EE497CF00F1A37C /* sound_001.wav in Resources */,
+				BB88026B1EE497BD00F1A37C /* music_001.wav in Resources */,
 				BB052CBC1EBA8771007FA789 /* texture_001.ngt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

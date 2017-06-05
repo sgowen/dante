@@ -63,13 +63,16 @@ m_iRequestedAction(REQUESTED_ACTION_UPDATE)
     
     SOCKET_UTIL->init();
     
-    NetworkManagerClient::getInstance()->init(serverIPAddress, userID, World::removeEntityIfPossible);
-    
-    World::staticInit();
+    NetworkManagerClient::getInstance()->init(serverIPAddress, userID, FRAME_RATE, World::removeEntityIfPossible);
     
     EntityRegistry::getInstance()->init(World::addEntityIfPossible);
     
     EntityRegistry::getInstance()->registerCreationFunction(NETWORK_TYPE_Robot, Robot::create);
+    
+    NG_AUDIO_ENGINE->loadSound(SOUND_ID_ROBOT_JUMP, SOUND_ROBOT_JUMP, 4);
+    
+    //NG_AUDIO_ENGINE->loadMusic(MUSIC_DEMO);
+    //NG_AUDIO_ENGINE->playMusic(true);
 }
 
 MainScreen::~MainScreen()
@@ -100,7 +103,7 @@ void MainScreen::releaseDeviceDependentResources()
 
 void MainScreen::onResume()
 {
-    // TODO
+    NG_AUDIO_ENGINE->resume();
 }
 
 void MainScreen::onPause()
@@ -127,7 +130,7 @@ void MainScreen::update(float deltaTime)
         {
             m_fFrameStateTime -= FRAME_RATE;
             
-            World::sInstance->update();
+            World::getInstance()->update();
         }
         
         NetworkManagerClient::getInstance()->sendOutgoingPackets();

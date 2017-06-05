@@ -30,6 +30,8 @@ public:
     
     void copyTo(InputState* inInputState);
     
+    bool isEqualTo(InputState* inInputState);
+    
     float getDesiredHorizontalDelta() const;
     
     float getDesiredJumpIntensity() const;

@@ -40,8 +40,6 @@ public:
     
     void setStateDirty(int inNetworkId, uint32_t inDirtyState);
     
-    void respawnRobots();
-    
     ClientProxy* getClientProxy(int inPlayerId) const;
     
 private:
@@ -53,7 +51,6 @@ private:
     std::unordered_map<int, ClientProxy*> m_playerIDToClientMap;
     int m_iNewPlayerId;
     float m_fTimeOfLastSatePacket;
-    float m_fTimeBetweenStatePackets;
     float m_fClientDisconnectTimeout;
     
     void handlePacketFromNewClient(InputMemoryBitStream& inInputStream, const SocketAddress& inFromAddress);

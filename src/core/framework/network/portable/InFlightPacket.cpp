@@ -14,7 +14,7 @@
 
 InFlightPacket::InFlightPacket(uint16_t inSequenceNumber) :
 m_iSequenceNumber(inSequenceNumber),
-m_fTimeDispatched(Timing::getInstance()->getTime())
+m_fTimeDispatched(Timing::getInstance()->getFrameStartTime())
 {
     //null out other transmision data params...
 }

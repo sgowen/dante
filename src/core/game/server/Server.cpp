@@ -51,13 +51,11 @@ int Server::run()
             
             NetworkManagerServer::getInstance()->checkForDisconnects();
             
-            NetworkManagerServer::getInstance()->respawnRobots();
-            
             while (m_fFrameStateTime >= FRAME_RATE)
             {
                 m_fFrameStateTime -= FRAME_RATE;
                 
-                World::sInstance->update();
+                World::getInstance()->update();
             }
             
             NetworkManagerServer::getInstance()->sendOutgoingPackets();
@@ -125,7 +123,7 @@ bool Server::isInitialized()
 
 Robot* Server::getRobotForPlayer(int inPlayerId)
 {
-    const auto& gameObjects = World::sInstance->GetRobots();
+    const auto& gameObjects = World::getInstance()->getRobots();
     int len = static_cast<int>(gameObjects.size());
     for (int i = 0, c = len; i < c; ++i)
     {
@@ -143,8 +141,6 @@ Robot* Server::getRobotForPlayer(int inPlayerId)
 Server::Server() : m_fFrameStateTime(0), m_isInitialized(false)
 {
     m_isInitialized = SOCKET_UTIL->init() && NetworkManagerServer::getInstance()->init(9997, World::removeEntityIfPossible, Server::staticHandleNewClient, Server::staticHandleLostClient, PooledObjectsManager::borrowInputState);
-    
-    World::staticInit();
     
     EntityRegistry::getInstance()->init(World::addEntityIfPossible);
     

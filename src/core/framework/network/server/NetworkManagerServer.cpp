@@ -34,8 +34,6 @@ void NetworkManagerServer::processPacket(InputMemoryBitStream& inInputStream, co
     if (it == m_addressToClientMap.end()
         && m_addressToClientMap.size() < 4)
     {
-        LOG("New Client %s", inFromAddress.toString().c_str());
-        
         //didn't find one? it's a new cilent..is the a HELO? if so, create a client proxy...
         handlePacketFromNewClient(inInputStream, inFromAddress);
     }
@@ -84,7 +82,7 @@ void NetworkManagerServer::checkForDisconnects()
 {
     std::vector<ClientProxy*> clientsToDC;
     
-    float minAllowedLastPacketFromClientTime = Timing::getInstance()->getTime() - m_fClientDisconnectTimeout;
+    float minAllowedLastPacketFromClientTime = Timing::getInstance()->getFrameStartTime() - m_fClientDisconnectTimeout;
     for (const auto& pair: m_addressToClientMap)
     {
         if (pair.second->getLastPacketFromClientTime() < minAllowedLastPacketFromClientTime)
@@ -135,16 +133,6 @@ void NetworkManagerServer::setStateDirty(int inNetworkId, uint32_t inDirtyState)
     }
 }
 
-void NetworkManagerServer::respawnRobots()
-{
-    for (auto it = m_addressToClientMap.begin(), end = m_addressToClientMap.end(); it != end; ++it)
-    {
-        //ClientProxy* clientProxy = it->second;
-        
-        // TODO, respawn player character if necessary
-    }
-}
-
 ClientProxy* NetworkManagerServer::getClientProxy(int inPlayerId) const
 {
     auto it = m_playerIDToClientMap.find(inPlayerId);
@@ -167,8 +155,6 @@ void NetworkManagerServer::handlePacketFromNewClient(InputMemoryBitStream& inInp
         std::string name;
         inInputStream.read(name);
         
-        LOG("Creating new Client Proxy %s", inFromAddress.toString().c_str());
-        
         // TODO, reset game whenever the first client joins, according to their individual progress, and set that client as the "owner"
         // if the "owner" leaves the game, a new owner must be designated, and the world set accordingly
         
@@ -176,7 +162,7 @@ void NetworkManagerServer::handlePacketFromNewClient(InputMemoryBitStream& inInp
         m_addressToClientMap[inFromAddress] = newClientProxy;
         m_playerIDToClientMap[newClientProxy->getPlayerId()] = newClientProxy;
         
-        // tell the server about this client, spawn a cat, etc...
+        // tell the server about this client
         m_handleNewClientFunc(newClientProxy);
         
         //and welcome the client...
@@ -311,7 +297,7 @@ void NetworkManagerServer::handleClientDisconnected(ClientProxy* inClientProxy)
     }
 }
 
-NetworkManagerServer::NetworkManagerServer() : INetworkManager(), m_iNewPlayerId(1), m_fTimeBetweenStatePackets(0.033f), m_fClientDisconnectTimeout(3.f)
+NetworkManagerServer::NetworkManagerServer() : INetworkManager(), m_iNewPlayerId(1), m_fClientDisconnectTimeout(3.f)
 {
     // Empty
 }

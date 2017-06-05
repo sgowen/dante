@@ -32,7 +32,7 @@ public:
 
 	void setY(float y);
     
-    bool isButtonPressed();
+    bool isPressed();
     
 private:
     GamePadEventType m_type;

@@ -147,7 +147,7 @@ void INetworkManager::readIncomingPacketsIntoQueue()
             //we'll pretend it wasn't received until simulated latency from now
             //this doesn't sim jitter, for that we would need to.....
             
-            float simulatedReceivedTime = Timing::getInstance()->getTime();
+            float simulatedReceivedTime = Timing::getInstance()->getFrameStartTime();
             m_packetQueue.emplace(simulatedReceivedTime, inputStream, fromAddress);
         }
         else
@@ -168,7 +168,7 @@ void INetworkManager::processQueuedPackets()
     while (!m_packetQueue.empty())
     {
         ReceivedPacket& nextPacket = m_packetQueue.front();
-        if (Timing::getInstance()->getTime() > nextPacket.getReceivedTime())
+        if (Timing::getInstance()->getFrameStartTime() > nextPacket.getReceivedTime())
         {
             processPacket(nextPacket.getPacketBuffer(), nextPacket.getFromAddress());
             m_packetQueue.pop();

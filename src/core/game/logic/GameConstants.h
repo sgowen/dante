@@ -21,7 +21,14 @@
 
 //// Sound Definitions ////
 
-#define SOUND_NONE 0
+#define SOUND_ID_NONE 0
+#define SOUND_ID_ROBOT_JUMP 1
+
+#define SOUND_ROBOT_JUMP "sound_001"
+
+//// Music Definitions ////
+
+#define MUSIC_DEMO "music_001"
 
 //// Render Definitions ////
 

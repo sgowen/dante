@@ -37,7 +37,7 @@ DeliveryNotificationManager::~DeliveryNotificationManager()
 {
     if (m_iDispatchedPacketCount > 0)
     {
-        LOG("DNM destructor. Delivery rate %d%%, Drop rate %d%%",
+        LOG("DeliveryNotificationManager destructor. Delivery rate %d%%, Drop rate %d%%",
             (100 * m_iDeliveredPacketCount) / m_iDispatchedPacketCount,
             (100 * m_iDroppedPacketCount) / m_iDispatchedPacketCount);
     }
@@ -67,7 +67,7 @@ bool DeliveryNotificationManager::readAndProcessState(InputMemoryBitStream& inIn
 
 void DeliveryNotificationManager::processTimedOutPackets()
 {
-    float timeoutTime = Timing::getInstance()->getTime() - kDelayBeforeAckTimeout;
+    float timeoutTime = Timing::getInstance()->getFrameStartTime() - kDelayBeforeAckTimeout;
     
     while (!m_inFlightPackets.empty())
     {
