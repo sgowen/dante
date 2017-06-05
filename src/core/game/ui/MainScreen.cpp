@@ -28,6 +28,7 @@
 #include "MathUtil.h"
 
 #include "Robot.h"
+#include "Projectile.h"
 #include "EntityRegistry.h"
 #include "NetworkManagerClient.h"
 #include "SocketAddressFactory.h"
@@ -62,11 +63,12 @@ m_iRequestedAction(REQUESTED_ACTION_UPDATE)
     
     SOCKET_UTIL->init();
     
-    NetworkManagerClient::getInstance()->init(serverIPAddress, userID, FRAME_RATE, World::removeEntityIfPossible);
+    NetworkManagerClient::getInstance()->init(serverIPAddress, userID, FRAME_RATE, World::staticRemoveEntity);
     
-    EntityRegistry::getInstance()->init(World::addEntityIfPossible);
+    EntityRegistry::getInstance()->init(World::staticAddEntity);
     
     EntityRegistry::getInstance()->registerCreationFunction(NETWORK_TYPE_Robot, Robot::create);
+    EntityRegistry::getInstance()->registerCreationFunction(NETWORK_TYPE_Projectile, Projectile::create);
     
     NG_AUDIO_ENGINE->loadSound(SOUND_ID_ROBOT_JUMP, SOUND_ROBOT_JUMP, 4);
     

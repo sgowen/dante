@@ -29,12 +29,12 @@ class Robot : public Entity
 public:
     enum RobotReplicationState
     {
-        RBRS_Pose = 1 << 0,
-        RBRS_Color = 1 << 1,
-        RBRS_PlayerId = 1 << 2,
-        RBRS_Health = 1 << 3,
+        ROBT_Pose = 1 << 0,
+        ROBT_Color = 1 << 1,
+        ROBT_PlayerId = 1 << 2,
+        ROBT_Health = 1 << 3,
         
-        RBRS_AllState = RBRS_Pose | RBRS_Color | RBRS_PlayerId | RBRS_Health
+        ROBT_AllState = ROBT_Pose | ROBT_Color | ROBT_PlayerId | ROBT_Health
     };
     
     static Entity* create();
@@ -54,10 +54,6 @@ public:
     void setPlayerId(uint32_t inPlayerId);
     
     uint32_t getPlayerId() const;
-    
-    void setIndexInWorld(int inIndex);
-    
-    int getIndexInWorld() const;
     
     bool isFacingLeft();
     
@@ -88,15 +84,11 @@ private:
     
     uint32_t m_iPlayerId;
     
-    int m_iIndexInWorld;
-    
     void processMove(const Move& inMove);
     
     void processInput(float inDeltaTime, IInputState* inInputState);
     
     void updateInternal(float inDeltaTime);
-    
-    void postUpdateCheck();
     
     void processCollisions();
     
@@ -105,9 +97,9 @@ private:
 #ifdef NG_SERVER
     void handleShooting();
 #elif NG_CLIENT
-    void doClientSidePredictionAfterReplicationForLocalCat(uint32_t inReadState);
+    void doClientSidePredictionAfterReplicationForLocalRobot(uint32_t inReadState);
     
-    void doClientSidePredictionAfterReplicationForRemoteCat(uint32_t inReadState);
+    void doClientSidePredictionAfterReplicationForRemoteRobot(uint32_t inReadState);
     
     void interpolateClientSidePrediction(float& inOldStateTime, Vector2& inOldAcceleration, Vector2& inOldVelocity, Vector2& inOldLocation);
 #endif

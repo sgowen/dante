@@ -41,6 +41,8 @@ public:
     
     void read(float& outData);
     
+    void readSignedBinaryValue(float& outData);
+    
     void read(uint16_t& outData, uint32_t inBitCount = 16);
     
     void read(int16_t& outData, uint32_t inBitCount = 16);

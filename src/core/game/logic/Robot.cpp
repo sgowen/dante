@@ -21,9 +21,10 @@
 #include "Timing.h"
 #include "StringUtil.h"
 #include "Move.h"
-#include "NGAudioEngine.h"
 #include "MathUtil.h"
 #include "NGRect.h"
+#include "Projectile.h"
+#include "EntityRegistry.h"
 
 #ifdef NG_SERVER
 #include "NetworkManagerServer.h"
@@ -31,6 +32,7 @@
 #elif NG_CLIENT
 #include "NetworkManagerClient.h"
 #include "InputManager.h"
+#include "NGAudioEngine.h"
 #endif
 
 #include <math.h>
@@ -61,8 +63,9 @@ void Robot::onDeletion()
 void Robot::update()
 {
 #ifdef NG_SERVER
-    Vector2 oldPosition = getPosition();
+    Vector2 oldAcceleration = getAcceleration();
     Vector2 oldVelocity = getVelocity();
+    Vector2 oldPosition = getPosition();
     
     // is there a move we haven't processed yet?
     ClientProxy* client = NetworkManagerServer::getInstance()->getClientProxy(getPlayerId());
@@ -79,10 +82,11 @@ void Robot::update()
     
     handleShooting();
     
-    if (!oldPosition.isEqualTo(getPosition()) ||
-        !oldVelocity.isEqualTo(getVelocity()))
+    if (!oldAcceleration.isEqualTo(getAcceleration())
+        || !oldVelocity.isEqualTo(getVelocity())
+        || !oldPosition.isEqualTo(getPosition()))
     {
-        NetworkManagerServer::getInstance()->setStateDirty(getID(), RBRS_Pose);
+        NetworkManagerServer::getInstance()->setStateDirty(getID(), ROBT_Pose);
     }
 #elif NG_CLIENT
     // TODO, allow for multiple client inputs
@@ -103,7 +107,7 @@ void Robot::update()
 
 uint32_t Robot::getAllStateMask() const
 {
-    return RBRS_AllState;
+    return ROBT_AllState;
 }
 
 void Robot::read(InputMemoryBitStream& inInputStream)
@@ -126,7 +130,7 @@ void Robot::read(InputMemoryBitStream& inInputStream)
         uint32_t playerId;
         inInputStream.read(playerId);
         setPlayerId(playerId);
-        readState |= RBRS_PlayerId;
+        readState |= ROBT_PlayerId;
     }
     
     Vector2 replicatedAcceleration;
@@ -159,7 +163,7 @@ void Robot::read(InputMemoryBitStream& inInputStream)
         inInputStream.read(m_isShooting);
         inInputStream.read(m_isJumping);
         
-        readState |= RBRS_Pose;
+        readState |= ROBT_Pose;
     }
     
     inInputStream.read(stateBit);
@@ -168,7 +172,7 @@ void Robot::read(InputMemoryBitStream& inInputStream)
         Color color;
         inInputStream.read(color);
         setColor(color);
-        readState |= RBRS_Color;
+        readState |= ROBT_Color;
     }
     
     inInputStream.read(stateBit);
@@ -176,23 +180,23 @@ void Robot::read(InputMemoryBitStream& inInputStream)
     {
         m_iHealth = 0;
         inInputStream.read(m_iHealth, 4); // Support up to 15 health points, for now...
-        readState |= RBRS_Health;
+        readState |= ROBT_Health;
     }
     
 #ifdef NG_CLIENT
     if (getPlayerId() == NetworkManagerClient::getInstance()->getPlayerId())
     {
-        doClientSidePredictionAfterReplicationForLocalCat(readState);
+        doClientSidePredictionAfterReplicationForLocalRobot(readState);
         
         // if this is a create packet, don't interpolate
-        if ((readState & RBRS_PlayerId) == 0)
+        if ((readState & ROBT_PlayerId) == 0)
         {
             interpolateClientSidePrediction(oldStateTime, oldAcceleration, oldVelocity, oldPosition);
         }
     }
     else
     {
-        doClientSidePredictionAfterReplicationForRemoteCat(readState);
+        doClientSidePredictionAfterReplicationForRemoteRobot(readState);
         
         if (m_isJumping && !wasJumping)
         {
@@ -206,19 +210,19 @@ uint32_t Robot::write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtySta
 {
     uint32_t writtenState = 0;
     
-    if (inDirtyState & RBRS_PlayerId)
+    if (inDirtyState & ROBT_PlayerId)
     {
         inOutputStream.write((bool)true);
         inOutputStream.write(getPlayerId());
         
-        writtenState |= RBRS_PlayerId;
+        writtenState |= ROBT_PlayerId;
     }
     else
     {
         inOutputStream.write((bool)false);
     }
     
-    if (inDirtyState & RBRS_Pose)
+    if (inDirtyState & ROBT_Pose)
     {
         inOutputStream.write((bool)true);
         
@@ -242,31 +246,31 @@ uint32_t Robot::write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtySta
         inOutputStream.write((bool)m_isShooting);
         inOutputStream.write((bool)m_isJumping);
         
-        writtenState |= RBRS_Pose;
+        writtenState |= ROBT_Pose;
     }
     else
     {
         inOutputStream.write((bool)false);
     }
     
-    if (inDirtyState & RBRS_Color)
+    if (inDirtyState & ROBT_Color)
     {
         inOutputStream.write((bool)true);
         inOutputStream.write(getColor());
         
-        writtenState |= RBRS_Color;
+        writtenState |= ROBT_Color;
     }
     else
     {
         inOutputStream.write((bool)false);
     }
     
-    if (inDirtyState & RBRS_Health)
+    if (inDirtyState & ROBT_Health)
     {
         inOutputStream.write((bool)true);
         inOutputStream.write(m_iHealth, 4);
         
-        writtenState |= RBRS_Health;
+        writtenState |= ROBT_Health;
     }
     else
     {
@@ -290,7 +294,7 @@ void Robot::takeDamage()
     }
     
     // tell the world our health dropped
-//    NetworkManagerServer::getInstance()->setStateDirty(getID(), RBRS_Health);
+//    NetworkManagerServer::getInstance()->setStateDirty(getID(), ROBT_Health);
 }
 
 void Robot::setPlayerId(uint32_t inPlayerId)
@@ -301,16 +305,6 @@ void Robot::setPlayerId(uint32_t inPlayerId)
 uint32_t Robot::getPlayerId() const
 {
     return m_iPlayerId;
-}
-
-void Robot::setIndexInWorld(int inIndex)
-{
-    m_iIndexInWorld = inIndex;
-}
-
-int Robot::getIndexInWorld() const
-{
-    return m_iIndexInWorld;
 }
 
 bool Robot::isFacingLeft()
@@ -391,8 +385,6 @@ void Robot::processCollisions()
     //right now just bounce off the sides..
     processCollisionsWithScreenWalls();
     
-    static const float sourceRadius = m_fWidth / 2;
-    
     Vector2 sourcePosition = getPosition();
     
     //now let's iterate through the world and see what we hit...
@@ -400,18 +392,18 @@ void Robot::processCollisions()
     //but in a real game, brute-force checking collisions against every other object is not efficient.
     //it would be preferable to use a quad tree or some other structure to minimize the
     //number of collisions that need to be tested.
-    for (auto goIt = World::getInstance()->getRobots().begin(), end = World::getInstance()->getRobots().end(); goIt != end; ++goIt)
+    for (auto goIt = World::getInstance()->getEntities().begin(), end = World::getInstance()->getEntities().end(); goIt != end; ++goIt)
     {
         Entity* target = *goIt;
-        if (target != this && !target->isRequestingDeletion())
+        if (target != this && !target->isRequestingDeletion() && target->getRTTI().derivesFrom(Robot::rtti))
         {
             //simple collision test for spheres- are the radii summed less than the distance?
             Vector2 targetPosition = target->getPosition();
-            float targetRadius = 0.5f;
+            float targetRadius = target->getWidth() / 2;
             
             Vector2 delta = targetPosition - sourcePosition;
             float distSq = delta.lenSquared();
-            float collisionDist = (sourceRadius + targetRadius);
+            float collisionDist = (m_fWidth / 2 + targetRadius);
             if (distSq < (collisionDist * collisionDist))
             {
                 //okay, you hit something!
@@ -466,7 +458,7 @@ void Robot::processCollisionsWithScreenWalls()
     float vx = m_velocity.getX();
     float vy = m_velocity.getY();
     
-    float radius = 0.5f;
+    float radius = m_fWidth / 2;
     
     //if the robot collides against a wall, the quick solution is to push it off
     if ((y + radius) >= CAM_HEIGHT && vy > 0)
@@ -513,14 +505,14 @@ void Robot::handleShooting()
         m_fTimeOfNextShot = time + 0.25f;
         
         //fire!
-        //        YarnPtr yarn = std::static_pointer_cast< Yarn >( GameObjectRegistry::sInstance->CreateGameObject( 'YARN' ) );
-        //        yarn->InitFromShooter( this );
+        Projectile* projectile = static_cast<Projectile*>(EntityRegistry::getInstance()->createEntity(NETWORK_TYPE_Projectile));
+        projectile->initFromShooter(this);
     }
 }
 #elif NG_CLIENT
-void Robot::doClientSidePredictionAfterReplicationForLocalCat(uint32_t inReadState)
+void Robot::doClientSidePredictionAfterReplicationForLocalRobot(uint32_t inReadState)
 {
-    if ((inReadState & RBRS_Pose) != 0)
+    if ((inReadState & ROBT_Pose) != 0)
     {
         //simulate pose only if we received new pose- might have just gotten thrustDir
         //in which case we don't need to replay moves because we haven't warped backwards
@@ -541,9 +533,9 @@ void Robot::doClientSidePredictionAfterReplicationForLocalCat(uint32_t inReadSta
 
 //so what do we want to do here? need to do some kind of interpolation...
 
-void Robot::doClientSidePredictionAfterReplicationForRemoteCat(uint32_t inReadState)
+void Robot::doClientSidePredictionAfterReplicationForRemoteRobot(uint32_t inReadState)
 {
-    if ((inReadState & RBRS_Pose) != 0)
+    if ((inReadState & ROBT_Pose) != 0)
     {
         // simulate movement for an additional RTT
         float rtt = NetworkManagerClient::getInstance()->getRoundTripTime();
@@ -666,8 +658,7 @@ m_isGrounded(false),
 m_isFalling(false),
 m_isShooting(false),
 m_isJumping(false),
-m_iPlayerId(0),
-m_iIndexInWorld(-1)
+m_iPlayerId(0)
 {
     m_acceleration.setY(-9.8f);
 }

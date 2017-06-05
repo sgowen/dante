@@ -32,8 +32,6 @@ Entity* EntityManager::getEntityFromID(int id)const
         return q->second;
     }
     
-    LOG("<EntityManager::getEntityFromID>: invalid ID");
-    
     return nullptr;
 }
 

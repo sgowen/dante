@@ -43,6 +43,8 @@ public:
     
     void write(const std::string& inString);
     
+    void writeSignedBinaryValue(float inValue);
+    
     template <typename T>
     void write(T inData, uint32_t inBitCount = sizeof(T) * 8)
     {

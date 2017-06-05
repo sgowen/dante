@@ -27,7 +27,7 @@ public:
     
     void handleLostClient(ClientProxy* inClientProxy);
     
-    void spawnCatForPlayer(int inPlayerId);
+    void spawnRobotForPlayer(int inPlayerId);
     
     bool isInitialized();
 

@@ -123,6 +123,16 @@ void OutputMemoryBitStream::write(const std::string& inString)
     }
 }
 
+void OutputMemoryBitStream::writeSignedBinaryValue(float inValue)
+{
+    bool isNonZero = (inValue != 0.f);
+    write(isNonZero);
+    if (isNonZero)
+    {
+        write(inValue > 0.f);
+    }
+}
+
 void OutputMemoryBitStream::reallocBuffer(uint32_t inNewBitLength)
 {
     if (m_buffer == nullptr)

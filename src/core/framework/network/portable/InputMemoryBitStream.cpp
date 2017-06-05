@@ -112,6 +112,22 @@ void InputMemoryBitStream::read(float& outData)
     readBits(&outData, 32);
 }
 
+void InputMemoryBitStream::readSignedBinaryValue(float& outValue)
+{
+    bool isNonZero;
+    read(isNonZero);
+    if (isNonZero)
+    {
+        bool isPositive;
+        read(isPositive);
+        outValue = isPositive ? 1.f : -1.f;
+    }
+    else
+    {
+        outValue = 0.f;
+    }
+}
+
 void InputMemoryBitStream::read(uint16_t& outData, uint32_t inBitCount)
 {
     readBits(&outData, inBitCount);

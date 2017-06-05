@@ -25,11 +25,6 @@ public:
     
     virtual bool write(OutputMemoryBitStream& inOutputStream) const = 0;
     virtual bool read(InputMemoryBitStream& inInputStream) = 0;
-    
-protected:
-    void writeSignedBinaryValue(OutputMemoryBitStream& inOutputStream, float inValue) const;
-    
-    void readSignedBinaryValue(InputMemoryBitStream& inInputStream, float& outValue) const;
 };
 
 #endif /* defined(__noctisgames__IInputState__) */

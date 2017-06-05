@@ -50,6 +50,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/_ext/2004051235/DeliveryNotificationManager.o \
 	${OBJECTDIR}/_ext/2004051235/IInputState.o \
 	${OBJECTDIR}/_ext/2004051235/INetworkManager.o \
+	${OBJECTDIR}/_ext/2004051235/ITransmissionData.o \
 	${OBJECTDIR}/_ext/2004051235/InFlightPacket.o \
 	${OBJECTDIR}/_ext/2004051235/InputMemoryBitStream.o \
 	${OBJECTDIR}/_ext/2004051235/Move.o \
@@ -70,6 +71,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/_ext/274316221/WeightedTimedMovingAverage.o \
 	${OBJECTDIR}/_ext/190255569/InputState.o \
 	${OBJECTDIR}/_ext/190255569/PooledObjectsManager.o \
+	${OBJECTDIR}/_ext/190255569/Projectile.o \
 	${OBJECTDIR}/_ext/190255569/Robot.o \
 	${OBJECTDIR}/_ext/190255569/World.o \
 	${OBJECTDIR}/_ext/1794464560/Server.o \
@@ -175,6 +177,11 @@ ${OBJECTDIR}/_ext/2004051235/INetworkManager.o: ../../core/framework/network/por
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -DNG_SERVER\;_POSIX_C_SOURCE -I. -I../../core/framework/entity -I../../core/framework/file/portable -I../../core/framework/math -I../../core/framework/network/portable -I../../core/framework/network/server -I../../core/framework/state -I../../core/framework/util -I../../3rdparty -I../../core/game/logic -I../../core/game/server -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/2004051235/INetworkManager.o ../../core/framework/network/portable/INetworkManager.cpp
 
+${OBJECTDIR}/_ext/2004051235/ITransmissionData.o: ../../core/framework/network/portable/ITransmissionData.cpp 
+	${MKDIR} -p ${OBJECTDIR}/_ext/2004051235
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -DNG_SERVER\;_POSIX_C_SOURCE -I. -I../../core/framework/entity -I../../core/framework/file/portable -I../../core/framework/math -I../../core/framework/network/portable -I../../core/framework/network/server -I../../core/framework/state -I../../core/framework/util -I../../3rdparty -I../../core/game/logic -I../../core/game/server -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/2004051235/ITransmissionData.o ../../core/framework/network/portable/ITransmissionData.cpp
+
 ${OBJECTDIR}/_ext/2004051235/InFlightPacket.o: ../../core/framework/network/portable/InFlightPacket.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/2004051235
 	${RM} "$@.d"
@@ -274,6 +281,11 @@ ${OBJECTDIR}/_ext/190255569/PooledObjectsManager.o: ../../core/game/logic/Pooled
 	${MKDIR} -p ${OBJECTDIR}/_ext/190255569
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -DNG_SERVER\;_POSIX_C_SOURCE -I. -I../../core/framework/entity -I../../core/framework/file/portable -I../../core/framework/math -I../../core/framework/network/portable -I../../core/framework/network/server -I../../core/framework/state -I../../core/framework/util -I../../3rdparty -I../../core/game/logic -I../../core/game/server -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/190255569/PooledObjectsManager.o ../../core/game/logic/PooledObjectsManager.cpp
+
+${OBJECTDIR}/_ext/190255569/Projectile.o: ../../core/game/logic/Projectile.cpp 
+	${MKDIR} -p ${OBJECTDIR}/_ext/190255569
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -DNG_SERVER\;_POSIX_C_SOURCE -I. -I../../core/framework/entity -I../../core/framework/file/portable -I../../core/framework/math -I../../core/framework/network/portable -I../../core/framework/network/server -I../../core/framework/state -I../../core/framework/util -I../../3rdparty -I../../core/game/logic -I../../core/game/server -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/190255569/Projectile.o ../../core/game/logic/Projectile.cpp
 
 ${OBJECTDIR}/_ext/190255569/Robot.o: ../../core/game/logic/Robot.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/190255569

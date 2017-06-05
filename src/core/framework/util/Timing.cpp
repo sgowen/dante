@@ -48,6 +48,11 @@ void Timing::updateManual(float stateTime, float deltaTime)
     m_fFrameStartTimef = stateTime;
 }
 
+void Timing::setDeltaTime(float inDeltaTime)
+{
+    m_fDeltaTime = inDeltaTime;
+}
+
 float Timing::getDeltaTime() const
 {
     return m_fDeltaTime;

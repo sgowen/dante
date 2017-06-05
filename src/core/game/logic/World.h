@@ -12,7 +12,6 @@
 #include <memory>
 #include <vector>
 
-class Robot;
 class Entity;
 
 class World
@@ -20,22 +19,22 @@ class World
 public:
     static World* getInstance();
     
-    static void addEntityIfPossible(Entity* inEntity);
+    static void staticAddEntity(Entity* inEntity);
     
-    static void removeEntityIfPossible(Entity* inEntity);
+    static void staticRemoveEntity(Entity* inEntity);
     
-    void addRobot(Robot* inRobot);
+    void addEntity(Entity* inEntity);
     
-    void removeRobot(Robot* inRobot);
+    void removeEntity(Entity* inEntity);
     
     void update();
     
-    const std::vector<Robot*>& getRobots() const;
+    const std::vector<Entity*>& getEntities() const;
     
 private:
-    std::vector<Robot*> m_robots;
+    std::vector<Entity*> m_objects;
     
-    int	getIndexOfRobot(Robot* inRobot);
+    int	getIndexOfEntity(Entity* inEntity);
     
     // ctor, copy ctor, and assignment should be private in a Singleton
     World();

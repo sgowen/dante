@@ -29,8 +29,8 @@ InputState::~InputState()
 
 bool InputState::write(OutputMemoryBitStream& inOutputStream) const
 {
-    writeSignedBinaryValue(inOutputStream, getDesiredHorizontalDelta());
-    writeSignedBinaryValue(inOutputStream, m_fDesiredJumpIntensity);
+    inOutputStream.writeSignedBinaryValue(getDesiredHorizontalDelta());
+    inOutputStream.writeSignedBinaryValue(m_fDesiredJumpIntensity);
     inOutputStream.write(m_isShooting);
     
     return false;
@@ -38,8 +38,8 @@ bool InputState::write(OutputMemoryBitStream& inOutputStream) const
 
 bool InputState::read(InputMemoryBitStream& inInputStream)
 {
-    readSignedBinaryValue(inInputStream, m_fDesiredRightAmount);
-    readSignedBinaryValue(inInputStream, m_fDesiredJumpIntensity);
+    inInputStream.readSignedBinaryValue(m_fDesiredRightAmount);
+    inInputStream.readSignedBinaryValue(m_fDesiredJumpIntensity);
     inInputStream.read(m_isShooting);
     
     return true;

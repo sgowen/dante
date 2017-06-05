@@ -26,7 +26,9 @@
 #include "NetworkManagerClient.h"
 #include "World.h"
 #include "Robot.h"
+#include "Projectile.h"
 #include "StringUtil.h"
+#include "WeightedTimedMovingAverage.h"
 
 #include <sstream>
 
@@ -80,16 +82,23 @@ void MainRenderer::tempDraw()
         }
         
         m_spriteBatcher->beginBatch();
-        for (Robot* go : World::getInstance()->getRobots())
+        for (Entity* go : World::getInstance()->getEntities())
         {
             if (go->getNetworkType() == NETWORK_TYPE_Robot)
             {
+                Robot* robot = static_cast<Robot*>(go);
                 bool isMoving = go->getVelocity().getX() < -0.5f || go->getVelocity().getX() > 0.5f;
                 TextureRegion tr = ASSETS->findTextureRegion(
-                                                             go->isGrounded() ?
-                                                             isMoving ? go->isShooting() ? "Samus_Shooting" : "Samus_Running" : "Samus_Idle" :
+                                                             robot->isGrounded() ?
+                                                             isMoving ? robot->isShooting() ? "Samus_Shooting" : "Samus_Running" : "Samus_Idle" :
                                                              go->getVelocity().getY() > 0 ? "Samus_Jumping" : "Samus_Falling", go->getStateTime());
-                renderEntityWithColor(*go, tr, go->getColor(), go->isFacingLeft());
+                renderEntityWithColor(*go, tr, go->getColor(), robot->isFacingLeft());
+            }
+            else if (go->getNetworkType() == NETWORK_TYPE_Projectile)
+            {
+                Projectile* proj = static_cast<Projectile*>(go);
+                TextureRegion tr = ASSETS->findTextureRegion("Projectile");
+                renderEntityWithColor(*go, tr, go->getColor(), proj->isFacingLeft());
             }
         }
         m_spriteBatcher->endBatch(*m_demo->gpuTextureWrapper, *m_textureGpuProgramWrapper);
@@ -100,8 +109,6 @@ void MainRenderer::tempDraw()
         m_spriteBatcher->endBatch(*m_misc->gpuTextureWrapper, *m_textureGpuProgramWrapper);
     }
 }
-
-#include "WeightedTimedMovingAverage.h"
 
 void MainRenderer::RenderBandWidth()
 {

@@ -13,6 +13,7 @@
 #include "ClientProxy.h"
 
 #include "Robot.h"
+#include "Projectile.h"
 #include "NetworkManagerServer.h"
 #include "EntityRegistry.h"
 #include "World.h"
@@ -47,6 +48,8 @@ int Server::run()
         
         if (m_fFrameStateTime >= FRAME_RATE)
         {
+            Timing::getInstance()->setDeltaTime(FRAME_RATE);
+            
             NetworkManagerServer::getInstance()->processIncomingPackets();
             
             NetworkManagerServer::getInstance()->checkForDisconnects();
@@ -69,7 +72,7 @@ void Server::handleNewClient(ClientProxy* inClientProxy)
 {
     int playerId = inClientProxy->getPlayerId();
     
-    spawnCatForPlayer(playerId);
+    spawnRobotForPlayer(playerId);
 }
 
 void Server::handleLostClient(ClientProxy* inClientProxy)
@@ -85,7 +88,7 @@ void Server::handleLostClient(ClientProxy* inClientProxy)
     delete inClientProxy;
 }
 
-void Server::spawnCatForPlayer(int inPlayerId)
+void Server::spawnRobotForPlayer(int inPlayerId)
 {
     Robot* cat = static_cast<Robot*>(EntityRegistry::getInstance()->createEntity(NETWORK_TYPE_Robot));
     cat->setPlayerId(inPlayerId);
@@ -123,7 +126,7 @@ bool Server::isInitialized()
 
 Robot* Server::getRobotForPlayer(int inPlayerId)
 {
-    const auto& gameObjects = World::getInstance()->getRobots();
+    const auto& gameObjects = World::getInstance()->getEntities();
     int len = static_cast<int>(gameObjects.size());
     for (int i = 0, c = len; i < c; ++i)
     {
@@ -140,11 +143,12 @@ Robot* Server::getRobotForPlayer(int inPlayerId)
 
 Server::Server() : m_fFrameStateTime(0), m_isInitialized(false)
 {
-    m_isInitialized = SOCKET_UTIL->init() && NetworkManagerServer::getInstance()->init(9997, World::removeEntityIfPossible, Server::staticHandleNewClient, Server::staticHandleLostClient, PooledObjectsManager::borrowInputState);
+    m_isInitialized = SOCKET_UTIL->init() && NetworkManagerServer::getInstance()->init(9997, World::staticRemoveEntity, Server::staticHandleNewClient, Server::staticHandleLostClient, PooledObjectsManager::borrowInputState);
     
-    EntityRegistry::getInstance()->init(World::addEntityIfPossible);
+    EntityRegistry::getInstance()->init(World::staticAddEntity);
     
     EntityRegistry::getInstance()->registerCreationFunction(NETWORK_TYPE_Robot, Robot::create);
+    EntityRegistry::getInstance()->registerCreationFunction(NETWORK_TYPE_Projectile, Projectile::create);
 }
 
 Server::~Server()

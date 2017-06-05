@@ -133,6 +133,9 @@
 		BB7639521E21B5A200534DAB /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB7639511E21B5A200534DAB /* MobileCoreServices.framework */; };
 		BB7639571E21B6DC00534DAB /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = BB7639561E21B6DC00534DAB /* libz.tbd */; };
 		BB7639591E21B6E000534DAB /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB7639581E21B6E000534DAB /* AddressBook.framework */; };
+		BB7E3E621EE4E44100E3D696 /* Projectile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB7E3E601EE4E44100E3D696 /* Projectile.cpp */; };
+		BB7E3E631EE4E44100E3D696 /* Projectile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB7E3E601EE4E44100E3D696 /* Projectile.cpp */; };
+		BB7E3E641EE4E44100E3D696 /* Projectile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB7E3E601EE4E44100E3D696 /* Projectile.cpp */; };
 		BB8308021EC2AC0900435E7E /* ReplicationManagerServer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8307F31EC2AC0900435E7E /* ReplicationManagerServer.cpp */; };
 		BB8308031EC2AC0900435E7E /* ReplicationManagerTransmissionData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8307F51EC2AC0900435E7E /* ReplicationManagerTransmissionData.cpp */; };
 		BB8308401EC2AD1F00435E7E /* AckRange.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8308091EC2AD1F00435E7E /* AckRange.cpp */; };
@@ -598,6 +601,8 @@
 		BB7639511E21B5A200534DAB /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		BB7639561E21B6DC00534DAB /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		BB7639581E21B6E000534DAB /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
+		BB7E3E601EE4E44100E3D696 /* Projectile.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Projectile.cpp; sourceTree = "<group>"; };
+		BB7E3E611EE4E44100E3D696 /* Projectile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Projectile.h; sourceTree = "<group>"; };
 		BB8307E51EC2AB7B00435E7E /* dante server */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "dante server"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BB8307F31EC2AC0900435E7E /* ReplicationManagerServer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ReplicationManagerServer.cpp; sourceTree = "<group>"; };
 		BB8307F41EC2AC0900435E7E /* ReplicationManagerServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReplicationManagerServer.h; sourceTree = "<group>"; };
@@ -1780,6 +1785,8 @@
 				BB5697D81EE3661400D03694 /* InputState.h */,
 				BB5697D91EE3661400D03694 /* PooledObjectsManager.cpp */,
 				BB5697DA1EE3661400D03694 /* PooledObjectsManager.h */,
+				BB7E3E601EE4E44100E3D696 /* Projectile.cpp */,
+				BB7E3E611EE4E44100E3D696 /* Projectile.h */,
 				BBBD14A31EE08C6F003F9307 /* Robot.cpp */,
 				BBBD14A41EE08C6F003F9307 /* Robot.h */,
 				BBBD149E1EE08A20003F9307 /* World.cpp */,
@@ -2217,6 +2224,7 @@
 				BBAEF2371EA94EDA00F0866E /* OpenGLLineBatcher.cpp in Sources */,
 				BB44C8791DB03A7E003E633F /* pngrutil.c in Sources */,
 				BBAEF27F1EA94EDA00F0866E /* GamePadEvent.cpp in Sources */,
+				BB7E3E621EE4E44100E3D696 /* Projectile.cpp in Sources */,
 				BB44C8851DB03A7E003E633F /* pngwrite.c in Sources */,
 				BBBD14991EE06BB3003F9307 /* WeightedTimedMovingAverage.cpp in Sources */,
 				BBAEF2811EA94EDA00F0866E /* GamePadInputManager.cpp in Sources */,
@@ -2277,6 +2285,7 @@
 				BB5697DF1EE3661400D03694 /* PooledObjectsManager.cpp in Sources */,
 				BB7251A41EE105490024C71C /* MoveList.cpp in Sources */,
 				BB44CB821DB053C0003E633F /* pngerror.c in Sources */,
+				BB7E3E631EE4E44100E3D696 /* Projectile.cpp in Sources */,
 				BBAEF29C1EA94EDA00F0866E /* Triangle.cpp in Sources */,
 				BBAEF2681EA94EDA00F0866E /* LineBatcher.cpp in Sources */,
 				BB5697DC1EE3661400D03694 /* InputState.cpp in Sources */,
@@ -2409,6 +2418,7 @@
 				BB72519B1EE1053F0024C71C /* NetworkManagerServer.cpp in Sources */,
 				BB8308751EC2AD1F00435E7E /* SocketUtil.cpp in Sources */,
 				BB7251A51EE105490024C71C /* MoveList.cpp in Sources */,
+				BB7E3E641EE4E44100E3D696 /* Projectile.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

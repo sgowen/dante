@@ -18,6 +18,8 @@ public:
     
     void updateManual(float stateTime, float deltaTime);
     
+    void setDeltaTime(float inDeltaTime);
+    
     float getDeltaTime() const;
     
     float getFrameStartTime() const;

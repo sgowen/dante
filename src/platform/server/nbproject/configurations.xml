@@ -76,6 +76,7 @@
             <itemPath>../../core/game/logic/GameConstants.h</itemPath>
             <itemPath>../../core/game/logic/InputState.h</itemPath>
             <itemPath>../../core/game/logic/PooledObjectsManager.h</itemPath>
+            <itemPath>../../core/game/logic/Projectile.h</itemPath>
             <itemPath>../../core/game/logic/Robot.h</itemPath>
             <itemPath>../../core/game/logic/World.h</itemPath>
           </logicalFolder>
@@ -120,6 +121,7 @@
               <itemPath>../../core/framework/network/portable/DeliveryNotificationManager.cpp</itemPath>
               <itemPath>../../core/framework/network/portable/IInputState.cpp</itemPath>
               <itemPath>../../core/framework/network/portable/INetworkManager.cpp</itemPath>
+              <itemPath>../../core/framework/network/portable/ITransmissionData.cpp</itemPath>
               <itemPath>../../core/framework/network/portable/InFlightPacket.cpp</itemPath>
               <itemPath>../../core/framework/network/portable/InputMemoryBitStream.cpp</itemPath>
               <itemPath>../../core/framework/network/portable/Move.cpp</itemPath>
@@ -151,6 +153,7 @@
           <logicalFolder name="logic" displayName="logic" projectFiles="true">
             <itemPath>../../core/game/logic/InputState.cpp</itemPath>
             <itemPath>../../core/game/logic/PooledObjectsManager.cpp</itemPath>
+            <itemPath>../../core/game/logic/Projectile.cpp</itemPath>
             <itemPath>../../core/game/logic/Robot.cpp</itemPath>
             <itemPath>../../core/game/logic/World.cpp</itemPath>
           </logicalFolder>
@@ -357,6 +360,11 @@
             tool="3"
             flavor2="0">
       </item>
+      <item path="../../core/framework/network/portable/ITransmissionData.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
       <item path="../../core/framework/network/portable/ITransmissionData.h"
             ex="false"
             tool="3"
@@ -598,6 +606,13 @@
             ex="false"
             tool="3"
             flavor2="0">
+      </item>
+      <item path="../../core/game/logic/Projectile.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../core/game/logic/Projectile.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="../../core/game/logic/Robot.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -797,6 +812,11 @@
             tool="3"
             flavor2="0">
       </item>
+      <item path="../../core/framework/network/portable/ITransmissionData.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
       <item path="../../core/framework/network/portable/ITransmissionData.h"
             ex="false"
             tool="3"
@@ -1038,6 +1058,13 @@
             ex="false"
             tool="3"
             flavor2="0">
+      </item>
+      <item path="../../core/game/logic/Projectile.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../core/game/logic/Projectile.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="../../core/game/logic/Robot.cpp" ex="false" tool="1" flavor2="0">
       </item>
