@@ -50,9 +50,8 @@ m_iRequestedAction(REQUESTED_ACTION_UPDATE)
     std::string serverIPAddress = m_config->findValue("server_ip");
     if (serverIPAddress.length() == 0)
     {
-        //serverIPAddress = std::string("208.97.168.138:9999");
+        //serverIPAddress = std::string("208.97.168.138:9997");
         serverIPAddress = std::string("localhost:9997");
-        //serverIPAddress = std::string("10.0.0.231:9999");
     }
     
     std::string userID = m_config->findValue("user_id");
