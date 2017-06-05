@@ -24,7 +24,7 @@ public:
     
     static void staticRemoveEntity(Entity* inEntity);
     
-    static Robot* staticGetRobotWithPlayerId(int playerId);
+    static Robot* staticGetRobotWithPlayerId(int inPlayerID);
     
     static bool staticHasSpacePirates();
     

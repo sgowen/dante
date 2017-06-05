@@ -90,7 +90,7 @@ void Server::handleLostClient(ClientProxy* inClientProxy)
 {
     int playerId = inClientProxy->getPlayerId();
     
-    Robot* robot = getRobotForPlayer(playerId);
+    Robot* robot = World::staticGetRobotWithPlayerId(playerId);
     if (robot)
     {
         robot->requestDeletion();
@@ -132,23 +132,6 @@ void Server::spawnRobotForPlayer(int inPlayerId)
 bool Server::isInitialized()
 {
     return m_isInitialized;
-}
-
-Robot* Server::getRobotForPlayer(int inPlayerId)
-{
-    const auto& gameObjects = World::getInstance()->getEntities();
-    int len = static_cast<int>(gameObjects.size());
-    for (int i = 0, c = len; i < c; ++i)
-    {
-        Entity* go = gameObjects[i];
-        Robot* robot = go->getRTTI().derivesFrom(Robot::rtti) ? static_cast<Robot*>(go) : nullptr;
-        if (robot && robot->getPlayerId() == inPlayerId)
-        {
-            return robot;
-        }
-    }
-    
-    return nullptr;
 }
 
 void Server::respawnEnemiesIfNecessary()

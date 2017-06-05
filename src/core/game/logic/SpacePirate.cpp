@@ -199,10 +199,10 @@ void SpacePirate::processCollisions()
     processCollisionsWithScreenWalls();
     
 #ifdef NG_SERVER
+    bool targetFound = false;
     float shortestDistance = CAM_WIDTH;
-    for (auto goIt = World::getInstance()->getEntities().begin(), end = World::getInstance()->getEntities().end(); goIt != end; ++goIt)
+    for (Entity* target : World::getInstance()->getEntities())
     {
-        Entity* target = *goIt;
         if (target != this && !target->isRequestingDeletion() && target->getRTTI().derivesFrom(Robot::rtti))
         {
             Robot* robot = static_cast<Robot*>(target);
@@ -212,6 +212,7 @@ void SpacePirate::processCollisions()
                 shortestDistance = dist;
                 m_isFacingLeft = robot->getPosition().getX() < getPosition().getX();
                 m_velocity.setX(m_isFacingLeft ? -m_fSpeed : m_fSpeed);
+                targetFound = true;
             }
             
             if (OverlapTester::doNGRectsOverlap(getMainBounds(), target->getMainBounds()))
@@ -220,6 +221,12 @@ void SpacePirate::processCollisions()
                 robot->takeDamage();
             }
         }
+    }
+    
+    if (!targetFound)
+    {
+        m_isFacingLeft = true;
+        m_velocity.setX(0);
     }
 #endif
 }

@@ -400,14 +400,8 @@ void Robot::processCollisions()
     
     Vector2 sourcePosition = getPosition();
     
-    //now let's iterate through the world and see what we hit...
-    //note: since there's a small number of objects in our game, this is fine.
-    //but in a real game, brute-force checking collisions against every other object is not efficient.
-    //it would be preferable to use a quad tree or some other structure to minimize the
-    //number of collisions that need to be tested.
-    for (auto goIt = World::getInstance()->getEntities().begin(), end = World::getInstance()->getEntities().end(); goIt != end; ++goIt)
+    for (Entity* target : World::getInstance()->getEntities())
     {
-        Entity* target = *goIt;
         if (target != this && !target->isRequestingDeletion() && target->getRTTI().derivesFrom(Robot::rtti))
         {
             //simple collision test for spheres- are the radii summed less than the distance?

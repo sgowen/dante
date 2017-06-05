@@ -30,21 +30,14 @@ void World::staticRemoveEntity(Entity* inEntity)
     World::getInstance()->removeEntity(inEntity);
 }
 
-Robot* World::staticGetRobotWithPlayerId(int playerId)
+Robot* World::staticGetRobotWithPlayerId(int inPlayerID)
 {
-    const std::vector<Entity*>& entities = World::getInstance()->getEntities();
-    
-    int len = static_cast<int>(entities.size());
-    for (int i = 0, c = len; i < c; ++i)
+    for (Entity* entity : World::getInstance()->getEntities())
     {
-        Entity* ent = entities[i];
-        if (ent->getRTTI().derivesFrom(Robot::rtti))
+        Robot* robot = entity->getRTTI().derivesFrom(Robot::rtti) ? static_cast<Robot*>(entity) : nullptr;
+        if (robot && robot->getPlayerId() == inPlayerID)
         {
-            Robot* robot = static_cast<Robot*>(ent);
-            if (robot->getPlayerId() == playerId)
-            {
-                return robot;
-            }
+            return robot;
         }
     }
     

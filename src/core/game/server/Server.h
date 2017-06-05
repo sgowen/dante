@@ -35,8 +35,6 @@ private:
     float m_fFrameStateTime;
     bool m_isInitialized;
     
-    Robot* getRobotForPlayer(int inPlayerId);
-    
     void respawnEnemiesIfNecessary();
     
     // ctor, copy ctor, and assignment should be private in a Singleton

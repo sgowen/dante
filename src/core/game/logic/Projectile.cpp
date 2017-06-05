@@ -224,9 +224,8 @@ void Projectile::processCollisions()
 {
     processCollisionsWithScreenWalls();
     
-	for (std::vector<Entity*>::iterator i = World::getInstance()->getEntities().begin(); i != World::getInstance()->getEntities().end(); ++i)
+	for (Entity* target : World::getInstance()->getEntities())
     {
-        Entity* target = *i;
         if (target != this && !target->isRequestingDeletion() && target->getRTTI().derivesFrom(SpacePirate::rtti))
         {
             if (OverlapTester::doNGRectsOverlap(getMainBounds(), target->getMainBounds()))
