@@ -400,7 +400,8 @@ void Robot::processCollisions()
     
     Vector2 sourcePosition = getPosition();
     
-    for (Entity* target : World::getInstance()->getEntities())
+    std::vector<Entity*> entities = World::getInstance()->getEntities();
+    for (Entity* target : entities)
     {
         if (target != this && !target->isRequestingDeletion() && target->getRTTI().derivesFrom(Robot::rtti))
         {

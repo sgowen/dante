@@ -83,7 +83,8 @@ void MainRenderer::tempDraw()
         }
         
         m_spriteBatcher->beginBatch();
-        for (Entity* go : World::getInstance()->getEntities())
+        std::vector<Entity*> entities = World::getInstance()->getEntities();
+        for (Entity* go : entities)
         {
             if (go->getNetworkType() == NETWORK_TYPE_Robot)
             {

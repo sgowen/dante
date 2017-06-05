@@ -32,7 +32,8 @@ void World::staticRemoveEntity(Entity* inEntity)
 
 Robot* World::staticGetRobotWithPlayerId(int inPlayerID)
 {
-    for (Entity* entity : World::getInstance()->getEntities())
+    std::vector<Entity*> entities = World::getInstance()->getEntities();
+    for (Entity* entity : entities)
     {
         Robot* robot = entity->getRTTI().derivesFrom(Robot::rtti) ? static_cast<Robot*>(entity) : nullptr;
         if (robot && robot->getPlayerId() == inPlayerID)
@@ -46,7 +47,8 @@ Robot* World::staticGetRobotWithPlayerId(int inPlayerID)
 
 bool World::staticHasSpacePirates()
 {
-	for (Entity* entity : World::getInstance()->getEntities())
+    std::vector<Entity*> entities = World::getInstance()->getEntities();
+    for (Entity* entity : entities)
 	{
 		if (entity->getRTTI().derivesFrom(SpacePirate::rtti))
 		{

@@ -224,7 +224,8 @@ void Projectile::processCollisions()
 {
     processCollisionsWithScreenWalls();
     
-	for (Entity* target : World::getInstance()->getEntities())
+    std::vector<Entity*> entities = World::getInstance()->getEntities();
+    for (Entity* target : entities)
     {
         if (target != this && !target->isRequestingDeletion() && target->getRTTI().derivesFrom(SpacePirate::rtti))
         {
