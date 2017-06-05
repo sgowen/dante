@@ -42,6 +42,10 @@
 		BB12EDD41A1CF6D9006D385B /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB12EDD31A1CF6D9006D385B /* QuartzCore.framework */; };
 		BB13BD471E58E04D0073C08F /* DDHidLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB13BD461E58E04D0073C08F /* DDHidLib.framework */; };
 		BB13BD521E58E7350073C08F /* DDHidLib.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = BB13BD461E58E04D0073C08F /* DDHidLib.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		BB1EAE8B1EE60D2000E2B23A /* sound_002.wav in Resources */ = {isa = PBXBuildFile; fileRef = BB1EAE891EE60D2000E2B23A /* sound_002.wav */; };
+		BB1EAE8C1EE60D2000E2B23A /* sound_002.wav in Resources */ = {isa = PBXBuildFile; fileRef = BB1EAE891EE60D2000E2B23A /* sound_002.wav */; };
+		BB1EAE8D1EE60D2000E2B23A /* sound_003.wav in Resources */ = {isa = PBXBuildFile; fileRef = BB1EAE8A1EE60D2000E2B23A /* sound_003.wav */; };
+		BB1EAE8E1EE60D2000E2B23A /* sound_003.wav in Resources */ = {isa = PBXBuildFile; fileRef = BB1EAE8A1EE60D2000E2B23A /* sound_003.wav */; };
 		BB32C97F1EDB70F3005456EB /* Circle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF1781EA94ED900F0866E /* Circle.cpp */; };
 		BB32C9811EDB70F3005456EB /* Line.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF17A1EA94ED900F0866E /* Line.cpp */; };
 		BB32C9841EDB70F3005456EB /* NGRect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF17D1EA94ED900F0866E /* NGRect.cpp */; };
@@ -133,6 +137,8 @@
 		BB7639521E21B5A200534DAB /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB7639511E21B5A200534DAB /* MobileCoreServices.framework */; };
 		BB7639571E21B6DC00534DAB /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = BB7639561E21B6DC00534DAB /* libz.tbd */; };
 		BB7639591E21B6E000534DAB /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB7639581E21B6E000534DAB /* AddressBook.framework */; };
+		BB7BAFC11EE6143100583D2D /* sound_004.wav in Resources */ = {isa = PBXBuildFile; fileRef = BB7BAFC01EE6143100583D2D /* sound_004.wav */; };
+		BB7BAFC21EE6143100583D2D /* sound_004.wav in Resources */ = {isa = PBXBuildFile; fileRef = BB7BAFC01EE6143100583D2D /* sound_004.wav */; };
 		BB7E3E621EE4E44100E3D696 /* Projectile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB7E3E601EE4E44100E3D696 /* Projectile.cpp */; };
 		BB7E3E631EE4E44100E3D696 /* Projectile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB7E3E601EE4E44100E3D696 /* Projectile.cpp */; };
 		BB7E3E641EE4E44100E3D696 /* Projectile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB7E3E601EE4E44100E3D696 /* Projectile.cpp */; };
@@ -469,6 +475,8 @@
 		BB1CC76E1EB9661100696C06 /* shader_002_vert.hlsl */ = {isa = PBXFileReference; lastKnownFileType = text; path = shader_002_vert.hlsl; sourceTree = "<group>"; };
 		BB1CC76F1EB9661100696C06 /* shader_003_frag.hlsl */ = {isa = PBXFileReference; lastKnownFileType = text; path = shader_003_frag.hlsl; sourceTree = "<group>"; };
 		BB1CC7701EB9661100696C06 /* shader_003_vert.hlsl */ = {isa = PBXFileReference; lastKnownFileType = text; path = shader_003_vert.hlsl; sourceTree = "<group>"; };
+		BB1EAE891EE60D2000E2B23A /* sound_002.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = sound_002.wav; sourceTree = "<group>"; };
+		BB1EAE8A1EE60D2000E2B23A /* sound_003.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = sound_003.wav; sourceTree = "<group>"; };
 		BB2BB0851DB81ECF000CE5E5 /* dante.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = dante.entitlements; sourceTree = "<group>"; };
 		BB34FD711E565A7400AC8197 /* Android.mk */ = {isa = PBXFileReference; lastKnownFileType = text; path = Android.mk; sourceTree = "<group>"; };
 		BB34FD721E565A7400AC8197 /* Application.mk */ = {isa = PBXFileReference; lastKnownFileType = text; path = Application.mk; sourceTree = "<group>"; };
@@ -604,6 +612,7 @@
 		BB7639511E21B5A200534DAB /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		BB7639561E21B6DC00534DAB /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		BB7639581E21B6E000534DAB /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
+		BB7BAFC01EE6143100583D2D /* sound_004.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = sound_004.wav; sourceTree = "<group>"; };
 		BB7E3E601EE4E44100E3D696 /* Projectile.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Projectile.cpp; sourceTree = "<group>"; };
 		BB7E3E611EE4E44100E3D696 /* Projectile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Projectile.h; sourceTree = "<group>"; };
 		BB8307E51EC2AB7B00435E7E /* dante server */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "dante server"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1194,6 +1203,9 @@
 			isa = PBXGroup;
 			children = (
 				BB88026C1EE497CF00F1A37C /* sound_001.wav */,
+				BB1EAE891EE60D2000E2B23A /* sound_002.wav */,
+				BB1EAE8A1EE60D2000E2B23A /* sound_003.wav */,
+				BB7BAFC01EE6143100583D2D /* sound_004.wav */,
 			);
 			path = sounds;
 			sourceTree = "<group>";
@@ -2067,10 +2079,13 @@
 				BB6DB1B81E76FCCF005C0FAD /* Main.storyboard in Resources */,
 				BBD909D61EC38FC80075FB11 /* texture_002.ngt in Resources */,
 				BB052CCA1EBA8ADD007FA789 /* shader_002_frag.ngs in Resources */,
+				BB7BAFC11EE6143100583D2D /* sound_004.wav in Resources */,
+				BB1EAE8B1EE60D2000E2B23A /* sound_002.wav in Resources */,
 				BB052CC81EBA8ADD007FA789 /* shader_001_vert.ngs in Resources */,
 				BB44C93B1DB03A7E003E633F /* rapidjson_readme.txt in Resources */,
 				BB052CCE1EBA8ADD007FA789 /* shader_003_frag.ngs in Resources */,
 				BB052CC61EBA8ADD007FA789 /* shader_001_frag.ngs in Resources */,
+				BB1EAE8D1EE60D2000E2B23A /* sound_003.wav in Resources */,
 				BB052CD01EBA8ADD007FA789 /* shader_003_vert.ngs in Resources */,
 				BB88026D1EE497CF00F1A37C /* sound_001.wav in Resources */,
 				BB88026A1EE497BD00F1A37C /* music_001.wav in Resources */,
@@ -2087,10 +2102,13 @@
 				BB44C32A1DB030B3003E633F /* Main.storyboard in Resources */,
 				BBD909D71EC38FC80075FB11 /* texture_002.ngt in Resources */,
 				BB052CCB1EBA8ADD007FA789 /* shader_002_frag.ngs in Resources */,
+				BB7BAFC21EE6143100583D2D /* sound_004.wav in Resources */,
+				BB1EAE8C1EE60D2000E2B23A /* sound_002.wav in Resources */,
 				BB052CC91EBA8ADD007FA789 /* shader_001_vert.ngs in Resources */,
 				BB44C93C1DB03A7E003E633F /* rapidjson_readme.txt in Resources */,
 				BB052CCF1EBA8ADD007FA789 /* shader_003_frag.ngs in Resources */,
 				BB052CC71EBA8ADD007FA789 /* shader_001_frag.ngs in Resources */,
+				BB1EAE8E1EE60D2000E2B23A /* sound_003.wav in Resources */,
 				BB052CD11EBA8ADD007FA789 /* shader_003_vert.ngs in Resources */,
 				BB88026E1EE497CF00F1A37C /* sound_001.wav in Resources */,
 				BB88026B1EE497BD00F1A37C /* music_001.wav in Resources */,

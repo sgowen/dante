@@ -46,6 +46,8 @@ Entity* Robot::create()
     NetworkManagerServer::getInstance()->registerEntity(ret);
 #endif
     
+    ret->playSound(SOUND_ID_DEATH);
+    
     return ret;
 }
 
@@ -211,7 +213,7 @@ void Robot::read(InputMemoryBitStream& inInputStream)
         
         if (m_isJumping && !wasJumping)
         {
-            playSoundForRemotePlayer(SOUND_ID_ROBOT_JUMP);
+            playSound(SOUND_ID_ROBOT_JUMP);
         }
     }
 #endif
@@ -291,9 +293,9 @@ uint32_t Robot::write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtySta
     return writtenState;
 }
 
-#ifdef NG_SERVER
 void Robot::takeDamage()
 {
+#ifdef NG_SERVER
     m_iHealth--;
     
     if (m_iHealth <= 0)
@@ -307,8 +309,8 @@ void Robot::takeDamage()
     
     // tell the world our health dropped
     NetworkManagerServer::getInstance()->setStateDirty(getID(), ROBT_Health);
-}
 #endif
+}
 
 void Robot::setPlayerId(uint32_t inPlayerId)
 {
@@ -337,9 +339,7 @@ bool Robot::isShooting()
 
 void Robot::processMove(const Move& inMove)
 {
-#ifdef NG_CLIENT
     bool wasJumping = m_isJumping;
-#endif
     
     IInputState* currentState = inMove.getInputState();
     
@@ -349,12 +349,10 @@ void Robot::processMove(const Move& inMove)
     
     updateInternal(deltaTime);
     
-#ifdef NG_CLIENT
     if (m_isJumping && !wasJumping)
     {
-        NG_AUDIO_ENGINE->playSound(SOUND_ID_ROBOT_JUMP);
+        playSound(SOUND_ID_ROBOT_JUMP);
     }
-#endif
 }
 
 void Robot::processInput(float inDeltaTime, IInputState* inInputState)
@@ -618,20 +616,27 @@ bool Robot::interpolateVectorsIfNecessary(Vector2& inA, Vector2& inB, float& syn
     
     return false;
 }
+#endif
 
-void Robot::playSoundForRemotePlayer(int soundId)
+void Robot::playSound(int soundId)
 {
-    Robot* playerRobot = World::staticGetRobotWithPlayerId(NetworkManagerClient::getInstance()->getPlayerId());
+#ifdef NG_CLIENT
     float volume = 1;
-    if (playerRobot)
+    
+    if (getPlayerId() != NetworkManagerClient::getInstance()->getPlayerId())
     {
-        float distance = playerRobot->getPosition().dist(getPosition());
-        volume = 1.0f / (distance / 4.0f);
+        Robot* playerRobot = World::staticGetRobotWithPlayerId(NetworkManagerClient::getInstance()->getPlayerId());
+        float volume = 1;
+        if (playerRobot)
+        {
+            float distance = playerRobot->getPosition().dist(getPosition());
+            volume = 1.0f / (distance / 4.0f);
+        }
     }
     
     NG_AUDIO_ENGINE->playSound(soundId, volume);
-}
 #endif
+}
 
 Robot::Robot() : Entity(0, 0, 1.565217391304348f, 2.0f),
 m_fJumpSpeed(10.0f),
@@ -642,7 +647,7 @@ m_fRobotRestitution(0.1f),
 m_fTimeAccelerationBecameOutOfSync(0.0f),
 m_fTimeVelocityBecameOutOfSync(0.0f),
 m_fTimePositionBecameOutOfSync(0.0f),
-m_iHealth(5),
+m_iHealth(1),
 m_isFacingLeft(false),
 m_isGrounded(false),
 m_isFalling(false),

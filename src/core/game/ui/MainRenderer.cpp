@@ -99,7 +99,8 @@ void MainRenderer::tempDraw()
             else if (go->getNetworkType() == NETWORK_TYPE_Projectile)
             {
                 Projectile* proj = static_cast<Projectile*>(go);
-                TextureRegion tr = ASSETS->findTextureRegion("Projectile");
+                bool isActive = proj->getState() == Projectile::ProjectileState::ProjectileState_Active;
+                TextureRegion tr = isActive ? ASSETS->findTextureRegion("Projectile") : ASSETS->findTextureRegion("Explosion", proj->getStateTime());
                 renderEntityWithColor(*proj, tr, proj->getColor(), proj->isFacingLeft());
             }
             else if (go->getNetworkType() == NETWORK_TYPE_SpacePirate)

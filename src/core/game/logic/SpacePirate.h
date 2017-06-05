@@ -49,9 +49,7 @@ public:
     
     void init(float x, float y, float speed);
     
-#ifdef NG_SERVER
     void takeDamage();
-#endif
     
     bool isFacingLeft();
     

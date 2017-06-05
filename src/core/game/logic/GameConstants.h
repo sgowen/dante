@@ -23,8 +23,14 @@
 
 #define SOUND_ID_NONE 0
 #define SOUND_ID_ROBOT_JUMP 1
+#define SOUND_ID_EXPLOSION 2
+#define SOUND_ID_DEATH 3
+#define SOUND_ID_FIRE_ROCKET 4
 
 #define SOUND_ROBOT_JUMP "sound_001"
+#define SOUND_EXPLOSION "sound_002"
+#define SOUND_DEATH "sound_003"
+#define SOUND_FIRE_ROCKET "sound_004"
 
 //// Music Definitions ////
 

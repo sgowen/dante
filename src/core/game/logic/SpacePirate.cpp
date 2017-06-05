@@ -167,9 +167,9 @@ void SpacePirate::init(float x, float y, float speed)
     m_fSpeed = speed;
 }
 
-#ifdef NG_SERVER
 void SpacePirate::takeDamage()
 {
+#ifdef NG_SERVER
     m_iHealth--;
     
     if (m_iHealth <= 0)
@@ -179,8 +179,8 @@ void SpacePirate::takeDamage()
     
     // tell the world our health dropped
     NetworkManagerServer::getInstance()->setStateDirty(getID(), SPCP_Health);
-}
 #endif
+}
 
 bool SpacePirate::isFacingLeft()
 {

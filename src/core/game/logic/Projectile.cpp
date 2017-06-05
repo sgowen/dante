@@ -29,6 +29,8 @@
 
 #ifdef NG_SERVER
 #include "NetworkManagerServer.h"
+#elif NG_CLIENT
+#include "NGAudioEngine.h"
 #endif
 
 #include <math.h>
@@ -36,6 +38,8 @@
 Entity* Projectile::create()
 {
     Projectile* ret = new Projectile();
+    
+    ret->playSound(SOUND_ID_FIRE_ROCKET);
     
 #ifdef NG_SERVER
     NetworkManagerServer::getInstance()->registerEntity(ret);
@@ -55,11 +59,13 @@ void Projectile::update()
 {
 #ifdef NG_SERVER
     Vector2 oldVelocity = getVelocity();
+    ProjectileState oldState = m_state;
     bool old_isFacingLeft = m_isFacingLeft;
     
     updateInternal(Timing::getInstance()->getDeltaTime());
     
     if (!oldVelocity.isEqualTo(getVelocity())
+        || oldState != m_state
         || old_isFacingLeft != m_isFacingLeft)
     {
         NetworkManagerServer::getInstance()->setStateDirty(getID(), PRJC_Pose);
@@ -75,7 +81,9 @@ uint32_t Projectile::getAllStateMask() const
 }
 
 void Projectile::read(InputMemoryBitStream& inInputStream)
-{    
+{
+    ProjectileState oldState = m_state;
+    
     bool stateBit;
     
     uint32_t readState = 0;
@@ -107,6 +115,8 @@ void Projectile::read(InputMemoryBitStream& inInputStream)
         
         setPosition(replicatedPosition);
         
+        inInputStream.read(m_state);
+        
         inInputStream.read(m_isFacingLeft);
         
         readState |= PRJC_Pose;
@@ -120,6 +130,14 @@ void Projectile::read(InputMemoryBitStream& inInputStream)
         setColor(color);
         readState |= PRJC_Color;
     }
+    
+#ifdef NG_CLIENT
+    if (oldState == ProjectileState_Active
+        && m_state == ProjectileState_Exploding)
+    {
+        playSound(SOUND_ID_EXPLOSION);
+    }
+#endif
 }
 
 uint32_t Projectile::write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState)
@@ -151,6 +169,8 @@ uint32_t Projectile::write(OutputMemoryBitStream& inOutputStream, uint32_t inDir
         Vector2 position = getPosition();
         inOutputStream.write(position.getX());
         inOutputStream.write(position.getY());
+        
+        inOutputStream.write(m_state);
         
         inOutputStream.write((bool)m_isFacingLeft);
         
@@ -208,6 +228,11 @@ void Projectile::initFromShooter(Robot* inRobot)
     }
 }
 
+Projectile::ProjectileState Projectile::getState()
+{
+    return m_state;
+}
+
 bool Projectile::isFacingLeft()
 {
     return m_isFacingLeft;
@@ -217,13 +242,24 @@ void Projectile::updateInternal(float inDeltaTime)
 {
     Entity::update(inDeltaTime);
     
-    processCollisions();
+    if (m_state == ProjectileState_Active)
+    {
+        processCollisions();
+    }
+    else if (m_state == ProjectileState_Exploding)
+    {
+        if (m_fStateTime > 0.5f)
+        {
+            requestDeletion();
+        }
+    }
 }
 
 void Projectile::processCollisions()
 {
     processCollisionsWithScreenWalls();
     
+#ifdef NG_SERVER
     std::vector<Entity*> entities = World::getInstance()->getEntities();
     for (Entity* target : entities)
     {
@@ -231,15 +267,16 @@ void Projectile::processCollisions()
         {
             if (OverlapTester::doNGRectsOverlap(getMainBounds(), target->getMainBounds()))
             {
-                requestDeletion();
+                m_state = ProjectileState_Exploding;
+                m_fStateTime = 0.0f;
+                m_velocity.set(Vector2::Zero);
                 
-#ifdef NG_SERVER
                 SpacePirate* spacePirate = static_cast<SpacePirate*>(target);
                 spacePirate->takeDamage();
-#endif
             }
         }
     }
+#endif
 }
 
 void Projectile::processCollisionsWithScreenWalls()
@@ -254,8 +291,18 @@ void Projectile::processCollisionsWithScreenWalls()
     }
 }
 
+void Projectile::playSound(int soundId)
+{
+#ifdef NG_CLIENT
+    float volume = 1;
+    
+    NG_AUDIO_ENGINE->playSound(soundId, volume);
+#endif
+}
+
 Projectile::Projectile() : Entity(0, 0, 1.565217391304348f * 0.444444444444444f, 2.0f * 0.544423440453686f),
 m_iPlayerId(0),
+m_state(ProjectileState_Active),
 m_isFacingLeft(false)
 {
     // Empty

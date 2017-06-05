@@ -49,9 +49,7 @@ public:
     
     virtual uint32_t write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState);
     
-#ifdef NG_SERVER
     void takeDamage();
-#endif
     
     void setPlayerId(uint32_t inPlayerId);
     
@@ -106,9 +104,9 @@ private:
     void interpolateClientSidePrediction(float& inOldStateTime, Vector2& inOldAcceleration, Vector2& inOldVelocity, Vector2& inOldPos);
     
     bool interpolateVectorsIfNecessary(Vector2& inA, Vector2& inB, float& syncTracker);
-    
-    void playSoundForRemotePlayer(int soundId);
 #endif
+    
+    void playSound(int soundId);
     
     Robot();
 };

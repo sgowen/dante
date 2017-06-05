@@ -35,6 +35,12 @@ public:
         PRJC_AllState = PRJC_Pose | PRJC_Color | PRJC_PlayerId
     };
     
+    enum ProjectileState
+    {
+        ProjectileState_Active = 1,
+        ProjectileState_Exploding = 2
+    };
+    
     static Entity* create();
     
     virtual void onDeletion();
@@ -49,10 +55,13 @@ public:
     
     void initFromShooter(Robot* inRobot);
     
+    ProjectileState getState();
+    
     bool isFacingLeft();
     
 private:
     uint32_t m_iPlayerId;
+    ProjectileState m_state;
     bool m_isFacingLeft;
     
     void updateInternal(float inDeltaTime);
@@ -60,6 +69,8 @@ private:
     void processCollisions();
     
     void processCollisionsWithScreenWalls();
+    
+    void playSound(int soundId);
     
     Projectile();
 };

@@ -148,7 +148,7 @@ void Server::respawnEnemiesIfNecessary()
 
 Server::Server() : m_fFrameStateTime(0), m_isInitialized(false)
 {
-    m_isInitialized = SOCKET_UTIL->init() && NetworkManagerServer::getInstance()->init(9996, World::staticRemoveEntity, Server::staticHandleNewClient, Server::staticHandleLostClient, PooledObjectsManager::borrowInputState);
+    m_isInitialized = SOCKET_UTIL->init() && NetworkManagerServer::getInstance()->init(9999, World::staticRemoveEntity, Server::staticHandleNewClient, Server::staticHandleLostClient, PooledObjectsManager::borrowInputState);
     
     EntityRegistry::getInstance()->init(World::staticAddEntity);
     
