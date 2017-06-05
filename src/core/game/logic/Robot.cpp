@@ -210,7 +210,7 @@ void Robot::read(InputMemoryBitStream& inInputStream)
         
         if (m_isJumping && !wasJumping)
         {
-            //playSoundForRemotePlayer(SOUND_ID_ROBOT_JUMP);
+            playSoundForRemotePlayer(SOUND_ID_ROBOT_JUMP);
         }
     }
 #endif
@@ -349,7 +349,7 @@ void Robot::processMove(const Move& inMove)
 #ifdef NG_CLIENT
     if (m_isJumping && !wasJumping)
     {
-        //NG_AUDIO_ENGINE->playSound(SOUND_ID_ROBOT_JUMP);
+        NG_AUDIO_ENGINE->playSound(SOUND_ID_ROBOT_JUMP);
     }
 #endif
 }
