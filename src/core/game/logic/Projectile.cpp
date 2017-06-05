@@ -28,11 +28,6 @@
 
 #ifdef NG_SERVER
 #include "NetworkManagerServer.h"
-#include "ClientProxy.h"
-#elif NG_CLIENT
-#include "NetworkManagerClient.h"
-#include "InputManager.h"
-#include "NGAudioEngine.h"
 #endif
 
 #include <math.h>
@@ -57,22 +52,7 @@ void Projectile::onDeletion()
 
 void Projectile::update()
 {
-#ifdef NG_SERVER
-    Vector2 oldAcceleration = getAcceleration();
-    Vector2 oldVelocity = getVelocity();
-    Vector2 oldPosition = getPosition();
-    
-    updateInternal(Timing::getInstance()->getDeltaTime());
-    
-    if (!oldAcceleration.isEqualTo(getAcceleration())
-        || !oldVelocity.isEqualTo(getVelocity())
-        || !oldPosition.isEqualTo(getPosition()))
-    {
-        NetworkManagerServer::getInstance()->setStateDirty(getID(), PRJC_Pose);
-    }
-#elif NG_CLIENT
-    updateInternal(Timing::getInstance()->getDeltaTime());
-#endif
+	updateInternal(Timing::getInstance()->getDeltaTime());
 }
 
 uint32_t Projectile::getAllStateMask() const
@@ -81,13 +61,7 @@ uint32_t Projectile::getAllStateMask() const
 }
 
 void Projectile::read(InputMemoryBitStream& inInputStream)
-{
-#ifdef NG_CLIENT
-    float oldStateTime = m_fStateTime;
-    Vector2 oldVelocity = getVelocity();
-    Vector2 oldPosition = getPosition();
-#endif
-    
+{    
     bool stateBit;
     
     uint32_t readState = 0;
@@ -133,14 +107,6 @@ void Projectile::read(InputMemoryBitStream& inInputStream)
         setColor(color);
         readState |= PRJC_Color;
     }
-    
-#ifdef NG_CLIENT
-    // if this is a create packet, don't interpolate
-    if ((readState & PRJC_PlayerId) == 0)
-    {
-        interpolateClientSidePrediction(oldStateTime, oldVelocity, oldPosition);
-    }
-#endif
 }
 
 uint32_t Projectile::write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState)
@@ -201,7 +167,7 @@ void Projectile::initFromShooter(Robot* inRobot)
 {
     m_iPlayerId = inRobot->getPlayerId();
     m_isFacingLeft = inRobot->isFacingLeft();
-    m_velocity.setX(m_isFacingLeft ? -12 : 12);
+    m_velocity.setX(m_isFacingLeft ? -20 : 20);
     m_position.set(inRobot->getPosition());
     m_position.add(m_isFacingLeft ? -0.5f : 0.5f, 0.4f);
 }
@@ -250,70 +216,8 @@ void Projectile::processCollisionsWithScreenWalls()
     }
 }
 
-#ifdef NG_CLIENT
-void Projectile::interpolateClientSidePrediction(float& inOldStateTime, Vector2& inOldVelocity, Vector2& inOldPosition)
-{
-    float roundTripTime = NetworkManagerClient::getInstance()->getRoundTripTime();
-    
-    if (!areFloatsPracticallyEqual(inOldStateTime, m_fStateTime))
-    {
-        m_fStateTime = inOldStateTime + 0.1f * (m_fStateTime - inOldStateTime);
-    }
-    
-    if (!inOldVelocity.isEqualTo(getVelocity()))
-    {
-        LOG("ERROR! Move replay ended with incorrect velocity! Old %3.8f, %3.8f - New %3.8f, %3.8f", inOldVelocity.getX(), inOldVelocity.getY(), getVelocity().getX(), getVelocity().getY());
-        
-        //have we been out of sync, or did we just become out of sync?
-        float time = Timing::getInstance()->getFrameStartTime();
-        if (m_fTimeVelocityBecameOutOfSync == 0.0f)
-        {
-            m_fTimeVelocityBecameOutOfSync = time;
-        }
-        
-        //now interpolate to the correct value...
-        float durationOutOfSync = time - m_fTimeVelocityBecameOutOfSync;
-        if (durationOutOfSync < roundTripTime)
-        {
-            m_velocity.set(lerp(inOldVelocity, getVelocity(), 0.1f));
-        }
-        //otherwise, fine...
-    }
-    else
-    {
-        //we're in sync
-        m_fTimeVelocityBecameOutOfSync = 0.0f;
-    }
-    
-    if (!inOldPosition.isEqualTo(getPosition()))
-    {
-        LOG("ERROR! Move replay ended with incorrect position! Old %3.8f, %3.8f - New %3.8f, %3.8f", inOldPosition.getX(), inOldPosition.getY(), getPosition().getX(), getPosition().getY());
-        
-        //have we been out of sync, or did we just become out of sync?
-        float time = Timing::getInstance()->getFrameStartTime();
-        if (m_fTimePositionBecameOutOfSync == 0.0f)
-        {
-            m_fTimePositionBecameOutOfSync = time;
-        }
-        
-        float durationOutOfSync = time - m_fTimePositionBecameOutOfSync;
-        if (durationOutOfSync < roundTripTime)
-        {
-            setPosition(lerp(inOldPosition, getPosition(), 0.1f));
-        }
-    }
-    else
-    {
-        //we're in sync
-        m_fTimePositionBecameOutOfSync = 0.0f;
-    }
-}
-#endif
-
 Projectile::Projectile() : Entity(0, 0, 1.565217391304348f * 0.444444444444444f, 2.0f * 0.544423440453686f),
 m_iPlayerId(0),
-m_fTimeVelocityBecameOutOfSync(0.0f),
-m_fTimePositionBecameOutOfSync(0.0f),
 m_isFacingLeft(false)
 {
     // Empty

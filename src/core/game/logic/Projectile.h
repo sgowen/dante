@@ -53,9 +53,6 @@ public:
     
 private:
     uint32_t m_iPlayerId;
-    float m_fTimeVelocityBecameOutOfSync;
-    float m_fTimePositionBecameOutOfSync;
-    
     bool m_isFacingLeft;
     
     void updateInternal(float inDeltaTime);
@@ -63,10 +60,6 @@ private:
     void processCollisions();
     
     void processCollisionsWithScreenWalls();
-    
-#ifdef NG_CLIENT
-    void interpolateClientSidePrediction(float& inOldStateTime, Vector2& inOldVelocity, Vector2& inOldLocation);
-#endif
     
     Projectile();
 };

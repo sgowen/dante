@@ -62,7 +62,7 @@ void SocketUtil::reportError(const char* inOperationDesc)
 int SocketUtil::getLastError()
 {
 #if _WIN32
-    return WSAgetLastError();
+    return WSAGetLastError();
 #else
     return errno;
 #endif
