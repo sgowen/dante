@@ -11,6 +11,7 @@
 #include "World.h"
 
 #include "Entity.h"
+#include "Robot.h"
 
 World* World::getInstance()
 {
@@ -26,6 +27,27 @@ void World::staticAddEntity(Entity* inEntity)
 void World::staticRemoveEntity(Entity* inEntity)
 {
     World::getInstance()->removeEntity(inEntity);
+}
+
+Robot* World::staticGetRobotWithPlayerId(int playerId)
+{
+    const std::vector<Entity*>& entities = World::getInstance()->getEntities();
+    
+    int len = static_cast<int>(entities.size());
+    for (int i = 0, c = len; i < c; ++i)
+    {
+        Entity* ent = entities[i];
+        if (ent->getRTTI().derivesFrom(Robot::rtti))
+        {
+            Robot* robot = static_cast<Robot*>(ent);
+            if (robot->getPlayerId() == playerId)
+            {
+                return robot;
+            }
+        }
+    }
+    
+    return nullptr;
 }
 
 void World::addEntity(Entity* inEntity)

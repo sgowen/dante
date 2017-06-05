@@ -66,6 +66,11 @@ void Robot::update()
     Vector2 oldAcceleration = getAcceleration();
     Vector2 oldVelocity = getVelocity();
     Vector2 oldPosition = getPosition();
+    bool old_isFacingLeft = m_isFacingLeft;
+    bool old_isGrounded = m_isGrounded;
+    bool old_isFalling = m_isFalling;
+    bool old_isShooting = m_isShooting;
+    bool old_isJumping = m_isJumping;
     
     // is there a move we haven't processed yet?
     ClientProxy* client = NetworkManagerServer::getInstance()->getClientProxy(getPlayerId());
@@ -84,7 +89,12 @@ void Robot::update()
     
     if (!oldAcceleration.isEqualTo(getAcceleration())
         || !oldVelocity.isEqualTo(getVelocity())
-        || !oldPosition.isEqualTo(getPosition()))
+        || !oldPosition.isEqualTo(getPosition())
+        || old_isFacingLeft != m_isFacingLeft
+        || old_isGrounded != m_isGrounded
+        || old_isFalling != m_isFalling
+        || old_isShooting != m_isShooting
+        || old_isJumping != m_isJumping)
     {
         NetworkManagerServer::getInstance()->setStateDirty(getID(), ROBT_Pose);
     }
@@ -200,7 +210,7 @@ void Robot::read(InputMemoryBitStream& inInputStream)
         
         if (m_isJumping && !wasJumping)
         {
-            NG_AUDIO_ENGINE->playSound(SOUND_ID_ROBOT_JUMP);
+            //playSoundForRemotePlayer(SOUND_ID_ROBOT_JUMP);
         }
     }
 #endif
@@ -339,7 +349,7 @@ void Robot::processMove(const Move& inMove)
 #ifdef NG_CLIENT
     if (m_isJumping && !wasJumping)
     {
-        NG_AUDIO_ENGINE->playSound(SOUND_ID_ROBOT_JUMP);
+        //NG_AUDIO_ENGINE->playSound(SOUND_ID_ROBOT_JUMP);
     }
 #endif
 }
@@ -540,8 +550,6 @@ void Robot::doClientSidePredictionAfterReplicationForRemoteRobot(uint32_t inRead
         // simulate movement for an additional RTT
         float rtt = NetworkManagerClient::getInstance()->getRoundTripTime();
         
-        LOG("Other robot came in, simulating for an extra %f", rtt);
-        
         // let's break into framerate sized chunks so we don't run through walls and do crazy things...
         while (true)
         {
@@ -640,6 +648,19 @@ void Robot::interpolateClientSidePrediction(float& inOldStateTime, Vector2& inOl
         //we're in sync
         m_fTimePositionBecameOutOfSync = 0.0f;
     }
+}
+
+void Robot::playSoundForRemotePlayer(int soundId)
+{
+    Robot* playerRobot = World::staticGetRobotWithPlayerId(NetworkManagerClient::getInstance()->getPlayerId());
+    float volume = 1;
+    if (playerRobot)
+    {
+        float distance = playerRobot->getPosition().dist(getPosition());
+        volume = 1.0f / (distance / 4.0f);
+    }
+    
+    NG_AUDIO_ENGINE->playSound(soundId, volume);
 }
 #endif
 

@@ -13,6 +13,7 @@
 #include <vector>
 
 class Entity;
+class Robot;
 
 class World
 {
@@ -22,6 +23,8 @@ public:
     static void staticAddEntity(Entity* inEntity);
     
     static void staticRemoveEntity(Entity* inEntity);
+    
+    static Robot* staticGetRobotWithPlayerId(int playerId);
     
     void addEntity(Entity* inEntity);
     

@@ -102,6 +102,8 @@ private:
     void doClientSidePredictionAfterReplicationForRemoteRobot(uint32_t inReadState);
     
     void interpolateClientSidePrediction(float& inOldStateTime, Vector2& inOldAcceleration, Vector2& inOldVelocity, Vector2& inOldLocation);
+    
+    void playSoundForRemotePlayer(int soundId);
 #endif
     
     Robot();

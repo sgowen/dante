@@ -16,6 +16,7 @@
 
 #include "AudioEngineHelperFactory.h"
 #include "NGSTDUtil.h"
+#include "MathUtil.h"
 
 #include <assert.h>
 
@@ -57,7 +58,7 @@ void NGAudioEngine::loadSound(int soundId, const char *path, int numInstances)
     m_sounds.insert(std::make_pair(soundId, sound));
 }
 
-void NGAudioEngine::playSound(int soundId, bool isLooping, float volume)
+void NGAudioEngine::playSound(int soundId, float volume, bool isLooping)
 {
     if (m_isSoundDisabled
         || soundId <= 0
@@ -70,6 +71,7 @@ void NGAudioEngine::playSound(int soundId, bool isLooping, float volume)
     
     ISound* sound = soundWrapper->getSoundInstance();
     
+    sound->setVolume(clamp(volume, 1, 0));
     sound->play(isLooping);
 }
 
