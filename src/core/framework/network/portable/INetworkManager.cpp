@@ -120,10 +120,10 @@ void INetworkManager::readIncomingPacketsIntoQueue()
     SocketAddress fromAddress;
     
     //keep reading until we don't have anything to read (or we hit a max number that we'll process per frame)
-    int receivedPackedCount = 0;
+    int receivedPacketCount = 0;
     int totalReadByteCount = 0;
     
-    while (receivedPackedCount < kMaxPacketsPerFrameCount)
+    while (receivedPacketCount < kMaxPacketsPerFrameCount)
     {
         int readByteCount = m_socket->receiveFromAddress(packetMem, packetSize, fromAddress);
         if (readByteCount == 0)
@@ -139,7 +139,7 @@ void INetworkManager::readIncomingPacketsIntoQueue()
         else if (readByteCount > 0)
         {
             inputStream.resetToCapacity(readByteCount);
-            ++receivedPackedCount;
+            ++receivedPacketCount;
             totalReadByteCount += readByteCount;
             
             //we made it
