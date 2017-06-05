@@ -42,6 +42,8 @@ public:
     
     ClientProxy* getClientProxy(int inPlayerId) const;
     
+    int getNumClientsConnected();
+    
 private:
     HandleNewClientFunc m_handleNewClientFunc;
     HandleLostClientFunc m_handleLostClientFunc;

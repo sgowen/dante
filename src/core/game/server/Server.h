@@ -37,6 +37,8 @@ private:
     
     Robot* getRobotForPlayer(int inPlayerId);
     
+    void respawnEnemiesIfNecessary();
+    
     // ctor, copy ctor, and assignment should be private in a Singleton
     Server();
     ~Server();

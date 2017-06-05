@@ -55,5 +55,6 @@
 
 #define NETWORK_TYPE_Robot 'ROBT'
 #define NETWORK_TYPE_Projectile 'PRJC'
+#define NETWORK_TYPE_SpacePirate 'SPCP'
 
 #endif /* defined(__dante__GameConstants__) */

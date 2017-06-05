@@ -29,6 +29,7 @@
 
 #include "Robot.h"
 #include "Projectile.h"
+#include "SpacePirate.h"
 #include "EntityRegistry.h"
 #include "NetworkManagerClient.h"
 #include "SocketAddressFactory.h"
@@ -51,8 +52,8 @@ m_iRequestedAction(REQUESTED_ACTION_UPDATE)
     std::string serverIPAddress = m_config->findValue("server_ip");
     if (serverIPAddress.length() == 0)
     {
-        //serverIPAddress = std::string("208.97.168.138:9997");
-        serverIPAddress = std::string("localhost:9997");
+        //serverIPAddress = std::string("208.97.168.138:9996");
+        serverIPAddress = std::string("localhost:9996");
     }
     
     std::string userID = m_config->findValue("user_id");
@@ -69,6 +70,7 @@ m_iRequestedAction(REQUESTED_ACTION_UPDATE)
     
     EntityRegistry::getInstance()->registerCreationFunction(NETWORK_TYPE_Robot, Robot::create);
     EntityRegistry::getInstance()->registerCreationFunction(NETWORK_TYPE_Projectile, Projectile::create);
+    EntityRegistry::getInstance()->registerCreationFunction(NETWORK_TYPE_SpacePirate, SpacePirate::create);
     
     NG_AUDIO_ENGINE->loadSound(SOUND_ID_ROBOT_JUMP, SOUND_ROBOT_JUMP, 4);
     

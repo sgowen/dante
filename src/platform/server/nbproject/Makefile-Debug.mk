@@ -73,6 +73,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/_ext/190255569/PooledObjectsManager.o \
 	${OBJECTDIR}/_ext/190255569/Projectile.o \
 	${OBJECTDIR}/_ext/190255569/Robot.o \
+	${OBJECTDIR}/_ext/190255569/SpacePirate.o \
 	${OBJECTDIR}/_ext/190255569/World.o \
 	${OBJECTDIR}/_ext/1794464560/Server.o \
 	${OBJECTDIR}/main.o
@@ -291,6 +292,11 @@ ${OBJECTDIR}/_ext/190255569/Robot.o: ../../core/game/logic/Robot.cpp
 	${MKDIR} -p ${OBJECTDIR}/_ext/190255569
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -s -DNG_SERVER\;_POSIX_C_SOURCE -I. -I../../core/framework/entity -I../../core/framework/file/portable -I../../core/framework/math -I../../core/framework/network/portable -I../../core/framework/network/server -I../../core/framework/state -I../../core/framework/util -I../../3rdparty -I../../core/game/logic -I../../core/game/server -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/190255569/Robot.o ../../core/game/logic/Robot.cpp
+
+${OBJECTDIR}/_ext/190255569/SpacePirate.o: ../../core/game/logic/SpacePirate.cpp 
+	${MKDIR} -p ${OBJECTDIR}/_ext/190255569
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -s -DNG_SERVER\;_POSIX_C_SOURCE -I. -I../../core/framework/entity -I../../core/framework/file/portable -I../../core/framework/math -I../../core/framework/network/portable -I../../core/framework/network/server -I../../core/framework/state -I../../core/framework/util -I../../3rdparty -I../../core/game/logic -I../../core/game/server -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/190255569/SpacePirate.o ../../core/game/logic/SpacePirate.cpp
 
 ${OBJECTDIR}/_ext/190255569/World.o: ../../core/game/logic/World.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/190255569

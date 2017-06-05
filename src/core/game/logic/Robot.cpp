@@ -29,6 +29,7 @@
 #ifdef NG_SERVER
 #include "NetworkManagerServer.h"
 #include "ClientProxy.h"
+#include "Server.h"
 #elif NG_CLIENT
 #include "NetworkManagerClient.h"
 #include "InputManager.h"
@@ -290,6 +291,7 @@ uint32_t Robot::write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtySta
     return writtenState;
 }
 
+#ifdef NG_SERVER
 void Robot::takeDamage()
 {
     m_iHealth--;
@@ -298,14 +300,15 @@ void Robot::takeDamage()
     {
         requestDeletion();
         
-//        ClientProxy* clientProxy = NetworkManagerServer::getInstance()->getClientProxy(getPlayerId());
-//        
-//        Server::staticHandleNewClient(clientProxy);
+        ClientProxy* clientProxy = NetworkManagerServer::getInstance()->getClientProxy(getPlayerId());
+        
+        Server::staticHandleNewClient(clientProxy);
     }
     
     // tell the world our health dropped
-//    NetworkManagerServer::getInstance()->setStateDirty(getID(), ROBT_Health);
+    NetworkManagerServer::getInstance()->setStateDirty(getID(), ROBT_Health);
 }
+#endif
 
 void Robot::setPlayerId(uint32_t inPlayerId)
 {
@@ -421,16 +424,16 @@ void Robot::processCollisions()
                 Vector2 dirToTarget = delta;
                 dirToTarget.nor();
                 Vector2 acceptableDeltaFromSourceToTarget = dirToTarget * collisionDist;
-                //important note- we only move this cat. the other cat can take care of moving itself
+                //important note- we only move this robot. the other robot can take care of moving itself
                 setPosition(targetPosition - acceptableDeltaFromSourceToTarget);
                 
                 Vector2 relVel = m_velocity;
                 
-                //if other object is a cat, it might have velocity, so there might be relative velocity...
-                Robot* targetCat = target->getRTTI().derivesFrom(Robot::rtti) ? static_cast<Robot*>(target) : nullptr;
-                if (targetCat)
+                //if other object is a robot, it might have velocity, so there might be relative velocity...
+                Robot* targetRobot = target->getRTTI().derivesFrom(Robot::rtti) ? static_cast<Robot*>(target) : nullptr;
+                if (targetRobot)
                 {
-                    relVel -= targetCat->m_velocity;
+                    relVel -= targetRobot->m_velocity;
                 }
                 
                 //got vel with dir between objects to figure out if they're moving towards each other
@@ -441,10 +444,10 @@ void Robot::processCollisions()
                 {
                     Vector2 impulse = relVelDotDir * dirToTarget;
                     
-                    if (targetCat)
+                    if (targetRobot)
                     {
                         m_velocity -= impulse;
-                        m_velocity *= m_fCatRestitution;
+                        m_velocity *= m_fRobotRestitution;
                     }
                     else
                     {
@@ -567,87 +570,58 @@ void Robot::doClientSidePredictionAfterReplicationForRemoteRobot(uint32_t inRead
     }
 }
 
-void Robot::interpolateClientSidePrediction(float& inOldStateTime, Vector2& inOldAcceleration, Vector2& inOldVelocity, Vector2& inOldPosition)
+void Robot::interpolateClientSidePrediction(float& inOldStateTime, Vector2& inOldAcceleration, Vector2& inOldVelocity, Vector2& inOldPos)
 {
-    float roundTripTime = NetworkManagerClient::getInstance()->getRoundTripTime();
-    
     if (!areFloatsPracticallyEqual(inOldStateTime, m_fStateTime))
     {
         m_fStateTime = inOldStateTime + 0.1f * (m_fStateTime - inOldStateTime);
     }
     
-    if (!inOldAcceleration.isEqualTo(getAcceleration()))
+    if (interpolateVectorsIfNecessary(inOldAcceleration, getAcceleration(), m_fTimeAccelerationBecameOutOfSync))
     {
-        LOG("ERROR! Move replay ended with incorrect acceleration! Old %3.8f, %3.8f - New %3.8f, %3.8f", inOldAcceleration.getX(), inOldAcceleration.getY(), getAcceleration().getX(), getAcceleration().getY());
+        LOG("ERROR! Move Replay Acceleration");
+    }
+    
+    if (interpolateVectorsIfNecessary(inOldVelocity, getVelocity(), m_fTimeVelocityBecameOutOfSync))
+    {
+        LOG("ERROR! Move Replay Acceleration");
+    }
+    
+    if (interpolateVectorsIfNecessary(inOldPos, getPosition(), m_fTimePositionBecameOutOfSync))
+    {
+        LOG("ERROR! Move Replay Acceleration");
+    }
+}
+
+bool Robot::interpolateVectorsIfNecessary(Vector2& inA, Vector2& inB, float& syncTracker)
+{
+    float roundTripTime = NetworkManagerClient::getInstance()->getRoundTripTime();
+    
+    if (!inA.isEqualTo(inB))
+    {
+        LOG("ERROR! Move replay ended with incorrect vector! Old %3.8f, %3.8f - New %3.8f, %3.8f", inA.getX(), inA.getY(), inB.getX(), inB.getY());
         
         //have we been out of sync, or did we just become out of sync?
         float time = Timing::getInstance()->getFrameStartTime();
-        if (m_fTimeAccelerationBecameOutOfSync == 0.0f)
+        if (syncTracker == 0.0f)
         {
-            m_fTimeAccelerationBecameOutOfSync = time;
+            syncTracker = time;
         }
         
         //now interpolate to the correct value...
-        float durationOutOfSync = time - m_fTimeAccelerationBecameOutOfSync;
+        float durationOutOfSync = time - syncTracker;
         if (durationOutOfSync < roundTripTime)
         {
-            m_acceleration.set(lerp(inOldAcceleration, getAcceleration(), 0.1f));
+            inB.set(lerp(inA, inB, 0.1f));
         }
-        //otherwise, fine...
-    }
-    else
-    {
-        //we're in sync
-        m_fTimeAccelerationBecameOutOfSync = 0.0f;
+        
+        return true;
     }
     
-    if (!inOldVelocity.isEqualTo(getVelocity()))
-    {
-        LOG("ERROR! Move replay ended with incorrect velocity! Old %3.8f, %3.8f - New %3.8f, %3.8f", inOldVelocity.getX(), inOldVelocity.getY(), getVelocity().getX(), getVelocity().getY());
-        
-        //have we been out of sync, or did we just become out of sync?
-        float time = Timing::getInstance()->getFrameStartTime();
-        if (m_fTimeVelocityBecameOutOfSync == 0.0f)
-        {
-            m_fTimeVelocityBecameOutOfSync = time;
-        }
-        
-        //now interpolate to the correct value...
-        float durationOutOfSync = time - m_fTimeVelocityBecameOutOfSync;
-        if (durationOutOfSync < roundTripTime)
-        {
-            m_velocity.set(lerp(inOldVelocity, getVelocity(), 0.1f));
-        }
-        //otherwise, fine...
-    }
-    else
-    {
-        //we're in sync
-        m_fTimeVelocityBecameOutOfSync = 0.0f;
-    }
+    //we're in sync
+    m_fTimeAccelerationBecameOutOfSync = 0.0f;
     
-    if (!inOldPosition.isEqualTo(getPosition()))
-    {
-        LOG("ERROR! Move replay ended with incorrect position! Old %3.8f, %3.8f - New %3.8f, %3.8f", inOldPosition.getX(), inOldPosition.getY(), getPosition().getX(), getPosition().getY());
-        
-        //have we been out of sync, or did we just become out of sync?
-        float time = Timing::getInstance()->getFrameStartTime();
-        if (m_fTimePositionBecameOutOfSync == 0.0f)
-        {
-            m_fTimePositionBecameOutOfSync = time;
-        }
-        
-        float durationOutOfSync = time - m_fTimePositionBecameOutOfSync;
-        if (durationOutOfSync < roundTripTime)
-        {
-            setPosition(lerp(inOldPosition, getPosition(), 0.1f));
-        }
-    }
-    else
-    {
-        //we're in sync
-        m_fTimePositionBecameOutOfSync = 0.0f;
-    }
+    return false;
 }
 
 void Robot::playSoundForRemotePlayer(int soundId)
@@ -665,11 +639,11 @@ void Robot::playSoundForRemotePlayer(int soundId)
 #endif
 
 Robot::Robot() : Entity(0, 0, 1.565217391304348f, 2.0f),
-m_fJumpSpeed(8.0f),
+m_fJumpSpeed(10.0f),
 m_fSpeed(7.5f),
 m_fTimeOfNextShot(0.0f),
 m_fWallRestitution(0.1f),
-m_fCatRestitution(0.1f),
+m_fRobotRestitution(0.1f),
 m_fTimeAccelerationBecameOutOfSync(0.0f),
 m_fTimeVelocityBecameOutOfSync(0.0f),
 m_fTimePositionBecameOutOfSync(0.0f),

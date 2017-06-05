@@ -24,6 +24,7 @@
 #include "MathUtil.h"
 #include "NGRect.h"
 #include "Robot.h"
+#include "SpacePirate.h"
 #include "OverlapTester.h"
 
 #ifdef NG_SERVER
@@ -52,7 +53,20 @@ void Projectile::onDeletion()
 
 void Projectile::update()
 {
-	updateInternal(Timing::getInstance()->getDeltaTime());
+#ifdef NG_SERVER
+    Vector2 oldVelocity = getVelocity();
+    bool old_isFacingLeft = m_isFacingLeft;
+    
+    updateInternal(Timing::getInstance()->getDeltaTime());
+    
+    if (!oldVelocity.isEqualTo(getVelocity())
+        || old_isFacingLeft != m_isFacingLeft)
+    {
+        NetworkManagerServer::getInstance()->setStateDirty(getID(), PRJC_Pose);
+    }
+#elif NG_CLIENT
+    updateInternal(Timing::getInstance()->getDeltaTime());
+#endif
 }
 
 uint32_t Projectile::getAllStateMask() const
@@ -75,7 +89,6 @@ void Projectile::read(InputMemoryBitStream& inInputStream)
         readState |= PRJC_PlayerId;
     }
     
-    Vector2 replicatedAcceleration;
     Vector2 replicatedVelocity;
     Vector2 replicatedPosition;
     
@@ -170,6 +183,29 @@ void Projectile::initFromShooter(Robot* inRobot)
     m_velocity.setX(m_isFacingLeft ? -20 : 20);
     m_position.set(inRobot->getPosition());
     m_position.add(m_isFacingLeft ? -0.5f : 0.5f, 0.4f);
+    
+    static Color White(1.0f, 1.0f, 1.0f, 1);
+    static Color Red(1.0f, 0.0f, 0.0f, 1);
+    static Color Blue(0.0f, 0.0f, 1.0f, 1);
+    static Color Green(0.0f, 1.0f, 0.0f, 1);
+    
+    switch (m_iPlayerId)
+    {
+        case 1:
+            setColor(White);
+            break;
+        case 2:
+            setColor(Red);
+            break;
+        case 3:
+            setColor(Green);
+            break;
+        case 4:
+            setColor(Blue);
+            break;
+        default:
+            break;
+    }
 }
 
 bool Projectile::isFacingLeft()
@@ -191,14 +227,16 @@ void Projectile::processCollisions()
     for (auto goIt = World::getInstance()->getEntities().begin(), end = World::getInstance()->getEntities().end(); goIt != end; ++goIt)
     {
         Entity* target = *goIt;
-        if (target != this && !target->isRequestingDeletion() && target->getRTTI().derivesFrom(Robot::rtti))
+        if (target != this && !target->isRequestingDeletion() && target->getRTTI().derivesFrom(SpacePirate::rtti))
         {
-            Robot* robot = static_cast<Robot*>(target);
-            
-            if (robot->getPlayerId() != m_iPlayerId
-                && OverlapTester::doNGRectsOverlap(getMainBounds(), target->getMainBounds()))
+            if (OverlapTester::doNGRectsOverlap(getMainBounds(), target->getMainBounds()))
             {
                 requestDeletion();
+                
+#ifdef NG_SERVER
+                SpacePirate* spacePirate = static_cast<SpacePirate*>(target);
+                spacePirate->takeDamage();
+#endif
             }
         }
     }

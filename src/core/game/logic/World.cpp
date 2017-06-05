@@ -12,6 +12,7 @@
 
 #include "Entity.h"
 #include "Robot.h"
+#include "SpacePirate.h"
 
 World* World::getInstance()
 {
@@ -48,6 +49,23 @@ Robot* World::staticGetRobotWithPlayerId(int playerId)
     }
     
     return nullptr;
+}
+
+bool World::staticHasSpacePirates()
+{
+    const std::vector<Entity*>& entities = World::getInstance()->getEntities();
+    
+    int len = static_cast<int>(entities.size());
+    for (int i = 0, c = len; i < c; ++i)
+    {
+        Entity* ent = entities[i];
+        if (ent->getRTTI().derivesFrom(SpacePirate::rtti))
+        {
+            return true;
+        }
+    }
+    
+    return false;
 }
 
 void World::addEntity(Entity* inEntity)

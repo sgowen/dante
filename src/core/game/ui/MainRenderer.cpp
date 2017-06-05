@@ -27,6 +27,7 @@
 #include "World.h"
 #include "Robot.h"
 #include "Projectile.h"
+#include "SpacePirate.h"
 #include "StringUtil.h"
 #include "WeightedTimedMovingAverage.h"
 
@@ -92,13 +93,19 @@ void MainRenderer::tempDraw()
                                                              robot->isGrounded() ?
                                                              isMoving ? robot->isShooting() ? "Samus_Shooting" : "Samus_Running" : "Samus_Idle" :
                                                              go->getVelocity().getY() > 0 ? "Samus_Jumping" : "Samus_Falling", go->getStateTime());
-                renderEntityWithColor(*go, tr, go->getColor(), robot->isFacingLeft());
+                renderEntityWithColor(*robot, tr, robot->getColor(), robot->isFacingLeft());
             }
             else if (go->getNetworkType() == NETWORK_TYPE_Projectile)
             {
                 Projectile* proj = static_cast<Projectile*>(go);
                 TextureRegion tr = ASSETS->findTextureRegion("Projectile");
-                renderEntityWithColor(*go, tr, go->getColor(), proj->isFacingLeft());
+                renderEntityWithColor(*proj, tr, proj->getColor(), proj->isFacingLeft());
+            }
+            else if (go->getNetworkType() == NETWORK_TYPE_SpacePirate)
+            {
+                SpacePirate* sp = static_cast<SpacePirate*>(go);
+                TextureRegion tr = ASSETS->findTextureRegion("Space_Pirate_Walking", sp->getStateTime());
+                renderEntityWithColor(*sp, tr, sp->getColor(), sp->isFacingLeft());
             }
         }
         m_spriteBatcher->endBatch(*m_demo->gpuTextureWrapper, *m_textureGpuProgramWrapper);

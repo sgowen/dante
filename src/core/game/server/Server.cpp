@@ -14,6 +14,7 @@
 
 #include "Robot.h"
 #include "Projectile.h"
+#include "SpacePirate.h"
 #include "NetworkManagerServer.h"
 #include "EntityRegistry.h"
 #include "World.h"
@@ -59,6 +60,8 @@ int Server::run()
                 m_fFrameStateTime -= FRAME_RATE;
                 
                 World::getInstance()->update();
+                
+                respawnEnemiesIfNecessary();
             }
             
             NetworkManagerServer::getInstance()->sendOutgoingPackets();
@@ -73,6 +76,14 @@ void Server::handleNewClient(ClientProxy* inClientProxy)
     int playerId = inClientProxy->getPlayerId();
     
     spawnRobotForPlayer(playerId);
+    
+    if (NetworkManagerServer::getInstance()->getNumClientsConnected() == 1)
+    {
+        // This is our first client!
+        // Let's spawn some nasty stuff for it to fight!
+        
+        respawnEnemiesIfNecessary();
+    }
 }
 
 void Server::handleLostClient(ClientProxy* inClientProxy)
@@ -90,10 +101,9 @@ void Server::handleLostClient(ClientProxy* inClientProxy)
 
 void Server::spawnRobotForPlayer(int inPlayerId)
 {
-    Robot* cat = static_cast<Robot*>(EntityRegistry::getInstance()->createEntity(NETWORK_TYPE_Robot));
-    cat->setPlayerId(inPlayerId);
-    //gotta pick a better spawn location than this...
-    cat->setPosition(Vector2(8.f - static_cast<float>(inPlayerId), 7.0f));
+    Robot* robot = static_cast<Robot*>(EntityRegistry::getInstance()->createEntity(NETWORK_TYPE_Robot));
+    robot->setPlayerId(inPlayerId);
+    robot->setPosition(Vector2(8.f - static_cast<float>(inPlayerId), 7.0f));
     
     static Color White(1.0f, 1.0f, 1.0f, 1);
     static Color Red(1.0f, 0.0f, 0.0f, 1);
@@ -103,16 +113,16 @@ void Server::spawnRobotForPlayer(int inPlayerId)
     switch (inPlayerId)
     {
         case 1:
-            cat->setColor(White);
+            robot->setColor(White);
             break;
         case 2:
-            cat->setColor(Red);
+            robot->setColor(Red);
             break;
         case 3:
-            cat->setColor(Green);
+            robot->setColor(Green);
             break;
         case 4:
-            cat->setColor(Blue);
+            robot->setColor(Blue);
             break;
         default:
             break;
@@ -141,14 +151,27 @@ Robot* Server::getRobotForPlayer(int inPlayerId)
     return nullptr;
 }
 
+void Server::respawnEnemiesIfNecessary()
+{
+    if (!World::staticHasSpacePirates())
+    {
+        for (int i = 0; i < 4; ++i)
+        {
+            SpacePirate* spacePirate = static_cast<SpacePirate*>(EntityRegistry::getInstance()->createEntity(NETWORK_TYPE_SpacePirate));
+            spacePirate->init(CAM_WIDTH - static_cast<float>(i + 2), 7.0f, 4.0f - i);
+        }
+    }
+}
+
 Server::Server() : m_fFrameStateTime(0), m_isInitialized(false)
 {
-    m_isInitialized = SOCKET_UTIL->init() && NetworkManagerServer::getInstance()->init(9997, World::staticRemoveEntity, Server::staticHandleNewClient, Server::staticHandleLostClient, PooledObjectsManager::borrowInputState);
+    m_isInitialized = SOCKET_UTIL->init() && NetworkManagerServer::getInstance()->init(9996, World::staticRemoveEntity, Server::staticHandleNewClient, Server::staticHandleLostClient, PooledObjectsManager::borrowInputState);
     
     EntityRegistry::getInstance()->init(World::staticAddEntity);
     
     EntityRegistry::getInstance()->registerCreationFunction(NETWORK_TYPE_Robot, Robot::create);
     EntityRegistry::getInstance()->registerCreationFunction(NETWORK_TYPE_Projectile, Projectile::create);
+    EntityRegistry::getInstance()->registerCreationFunction(NETWORK_TYPE_SpacePirate, SpacePirate::create);
 }
 
 Server::~Server()

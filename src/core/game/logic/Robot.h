@@ -49,7 +49,9 @@ public:
     
     virtual uint32_t write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState);
     
+#ifdef NG_SERVER
     void takeDamage();
+#endif
     
     void setPlayerId(uint32_t inPlayerId);
     
@@ -68,7 +70,7 @@ private:
     
     //bounce fraction when hitting various things
     float m_fWallRestitution;
-    float m_fCatRestitution;
+    float m_fRobotRestitution;
     
     float m_fTimeAccelerationBecameOutOfSync;
     float m_fTimeVelocityBecameOutOfSync;
@@ -101,7 +103,9 @@ private:
     
     void doClientSidePredictionAfterReplicationForRemoteRobot(uint32_t inReadState);
     
-    void interpolateClientSidePrediction(float& inOldStateTime, Vector2& inOldAcceleration, Vector2& inOldVelocity, Vector2& inOldLocation);
+    void interpolateClientSidePrediction(float& inOldStateTime, Vector2& inOldAcceleration, Vector2& inOldVelocity, Vector2& inOldPos);
+    
+    bool interpolateVectorsIfNecessary(Vector2& inA, Vector2& inB, float& syncTracker);
     
     void playSoundForRemotePlayer(int soundId);
 #endif

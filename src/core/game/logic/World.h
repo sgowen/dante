@@ -26,6 +26,8 @@ public:
     
     static Robot* staticGetRobotWithPlayerId(int playerId);
     
+    static bool staticHasSpacePirates();
+    
     void addEntity(Entity* inEntity);
     
     void removeEntity(Entity* inEntity);

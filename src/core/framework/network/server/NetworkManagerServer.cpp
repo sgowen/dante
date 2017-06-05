@@ -144,6 +144,11 @@ ClientProxy* NetworkManagerServer::getClientProxy(int inPlayerId) const
     return nullptr;
 }
 
+int NetworkManagerServer::getNumClientsConnected()
+{
+    return static_cast<int>(m_addressToClientMap.size());
+}
+
 void NetworkManagerServer::handlePacketFromNewClient(InputMemoryBitStream& inInputStream, const SocketAddress& inFromAddress)
 {
     //read the beginning- is it a hello?

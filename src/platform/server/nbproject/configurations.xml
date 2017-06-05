@@ -78,6 +78,7 @@
             <itemPath>../../core/game/logic/PooledObjectsManager.h</itemPath>
             <itemPath>../../core/game/logic/Projectile.h</itemPath>
             <itemPath>../../core/game/logic/Robot.h</itemPath>
+            <itemPath>../../core/game/logic/SpacePirate.h</itemPath>
             <itemPath>../../core/game/logic/World.h</itemPath>
           </logicalFolder>
           <logicalFolder name="server" displayName="server" projectFiles="true">
@@ -155,6 +156,7 @@
             <itemPath>../../core/game/logic/PooledObjectsManager.cpp</itemPath>
             <itemPath>../../core/game/logic/Projectile.cpp</itemPath>
             <itemPath>../../core/game/logic/Robot.cpp</itemPath>
+            <itemPath>../../core/game/logic/SpacePirate.cpp</itemPath>
             <itemPath>../../core/game/logic/World.cpp</itemPath>
           </logicalFolder>
           <logicalFolder name="server" displayName="server" projectFiles="true">
@@ -618,6 +620,16 @@
       </item>
       <item path="../../core/game/logic/Robot.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="../../core/game/logic/SpacePirate.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../core/game/logic/SpacePirate.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
       <item path="../../core/game/logic/World.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="../../core/game/logic/World.h" ex="false" tool="3" flavor2="0">
@@ -1069,6 +1081,16 @@
       <item path="../../core/game/logic/Robot.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="../../core/game/logic/Robot.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../../core/game/logic/SpacePirate.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="../../core/game/logic/SpacePirate.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
       </item>
       <item path="../../core/game/logic/World.cpp" ex="false" tool="1" flavor2="0">
       </item>

@@ -354,6 +354,9 @@
 		BBD909D71EC38FC80075FB11 /* texture_002.ngt in Resources */ = {isa = PBXBuildFile; fileRef = BBD909D51EC38FC80075FB11 /* texture_002.ngt */; };
 		BBF226CE1EC12CDE00573356 /* ReplicationManagerClient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF226B01EC12CDE00573356 /* ReplicationManagerClient.cpp */; };
 		BBF226CF1EC12CDE00573356 /* ReplicationManagerClient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF226B01EC12CDE00573356 /* ReplicationManagerClient.cpp */; };
+		BBFA22981EE5AE03002635D6 /* SpacePirate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBFA22961EE5AE03002635D6 /* SpacePirate.cpp */; };
+		BBFA22991EE5AE03002635D6 /* SpacePirate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBFA22961EE5AE03002635D6 /* SpacePirate.cpp */; };
+		BBFA229A1EE5AE03002635D6 /* SpacePirate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBFA22961EE5AE03002635D6 /* SpacePirate.cpp */; };
 		BEDBEB10667F7565A72E937B /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 05945F36F017190884FC7FB9 /* AssetsLibrary.framework */; };
 		C2FAA41A7EE7DD75E14DA2A1 /* BuddyBuildSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84C9C279DA1CE27EE81A6958 /* BuddyBuildSDK.framework */; };
 		EF21A84F90D23B88CD7E3542 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FFF3C8B3638A1D58F89D067F /* SystemConfiguration.framework */; };
@@ -859,6 +862,8 @@
 		BBD909D81EC38FD00075FB11 /* texture_002.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = texture_002.png; sourceTree = "<group>"; };
 		BBF226B01EC12CDE00573356 /* ReplicationManagerClient.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ReplicationManagerClient.cpp; sourceTree = "<group>"; };
 		BBF226B11EC12CDE00573356 /* ReplicationManagerClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReplicationManagerClient.h; sourceTree = "<group>"; };
+		BBFA22961EE5AE03002635D6 /* SpacePirate.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SpacePirate.cpp; sourceTree = "<group>"; };
+		BBFA22971EE5AE03002635D6 /* SpacePirate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpacePirate.h; sourceTree = "<group>"; };
 		FFF3C8B3638A1D58F89D067F /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -1789,6 +1794,8 @@
 				BB7E3E611EE4E44100E3D696 /* Projectile.h */,
 				BBBD14A31EE08C6F003F9307 /* Robot.cpp */,
 				BBBD14A41EE08C6F003F9307 /* Robot.h */,
+				BBFA22961EE5AE03002635D6 /* SpacePirate.cpp */,
+				BBFA22971EE5AE03002635D6 /* SpacePirate.h */,
 				BBBD149E1EE08A20003F9307 /* World.cpp */,
 				BBBD149F1EE08A20003F9307 /* World.h */,
 			);
@@ -2200,6 +2207,7 @@
 				BBAEF2891EA94EDA00F0866E /* ScreenInputManager.cpp in Sources */,
 				BB7428401EB2AF4200B7628D /* RTTI.cpp in Sources */,
 				BB0864741EE20CCA00BCD9E0 /* EntityRegistry.cpp in Sources */,
+				BBFA22981EE5AE03002635D6 /* SpacePirate.cpp in Sources */,
 				BBAEF22D1EA94EDA00F0866E /* OpenGLCircleBatcher.cpp in Sources */,
 				BBAEF2331EA94EDA00F0866E /* OpenGLGeometryGpuProgramWrapper.cpp in Sources */,
 				BBAEF1EF1EA94EDA00F0866E /* Entity.cpp in Sources */,
@@ -2314,6 +2322,7 @@
 				BBAEF25E1EA94EDA00F0866E /* Font.cpp in Sources */,
 				BBBD14971EE06BB3003F9307 /* Timing.cpp in Sources */,
 				BBAEF27A1EA94EDA00F0866E /* TextureWrapper.cpp in Sources */,
+				BBFA22991EE5AE03002635D6 /* SpacePirate.cpp in Sources */,
 				BBAA69E51EE488DF00451615 /* ITransmissionData.cpp in Sources */,
 				BBAEF2EA1EA94EDA00F0866E /* MainScreen.cpp in Sources */,
 				BBAEF25A1EA94EDA00F0866E /* CircleBatcherFactory.cpp in Sources */,
@@ -2413,6 +2422,7 @@
 				BB72519A1EE1053F0024C71C /* ClientProxy.cpp in Sources */,
 				BB8308571EC2AD1F00435E7E /* OutputMemoryBitStream.cpp in Sources */,
 				BBBD14A71EE08C6F003F9307 /* Robot.cpp in Sources */,
+				BBFA229A1EE5AE03002635D6 /* SpacePirate.cpp in Sources */,
 				BB57737E1EC409B2005C480C /* main.cpp in Sources */,
 				BB8308721EC2AD1F00435E7E /* SocketAddressFactory.cpp in Sources */,
 				BB72519B1EE1053F0024C71C /* NetworkManagerServer.cpp in Sources */,
@@ -2740,7 +2750,7 @@
 				HEADER_SEARCH_PATHS = (
 					"\"$(SRCROOT)/../../core\"/**",
 					"\"$(SRCROOT)/../../3rdparty\"/**",
-					"\"$(SRCROOT)server\"",
+					"\"$(SRCROOT)/../server\"",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				MTL_ENABLE_DEBUG_INFO = YES;
@@ -2772,7 +2782,7 @@
 				HEADER_SEARCH_PATHS = (
 					"\"$(SRCROOT)/../../core\"/**",
 					"\"$(SRCROOT)/../../3rdparty\"/**",
-					"\"$(SRCROOT)server\"",
+					"\"$(SRCROOT)/../server\"",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				MTL_ENABLE_DEBUG_INFO = NO;
