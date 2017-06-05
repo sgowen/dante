@@ -92,6 +92,15 @@ void Projectile::read(InputMemoryBitStream& inInputStream)
     
     uint32_t readState = 0;
     
+    inInputStream.read(stateBit);
+    if (stateBit)
+    {
+        uint32_t playerId;
+        inInputStream.read(playerId);
+        m_iPlayerId = playerId;
+        readState |= PRJC_PlayerId;
+    }
+    
     Vector2 replicatedAcceleration;
     Vector2 replicatedVelocity;
     Vector2 replicatedPosition;
@@ -127,7 +136,7 @@ void Projectile::read(InputMemoryBitStream& inInputStream)
     
 #ifdef NG_CLIENT
     // if this is a create packet, don't interpolate
-    if ((readState & PRJC_Color) == 0)
+    if ((readState & PRJC_PlayerId) == 0)
     {
         interpolateClientSidePrediction(oldStateTime, oldVelocity, oldPosition);
     }
@@ -137,6 +146,18 @@ void Projectile::read(InputMemoryBitStream& inInputStream)
 uint32_t Projectile::write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState)
 {
     uint32_t writtenState = 0;
+    
+    if (inDirtyState & PRJC_PlayerId)
+    {
+        inOutputStream.write((bool)true);
+        inOutputStream.write(m_iPlayerId);
+        
+        writtenState |= PRJC_PlayerId;
+    }
+    else
+    {
+        inOutputStream.write((bool)false);
+    }
     
     if (inDirtyState & PRJC_Pose)
     {
@@ -178,7 +199,7 @@ uint32_t Projectile::write(OutputMemoryBitStream& inOutputStream, uint32_t inDir
 
 void Projectile::initFromShooter(Robot* inRobot)
 {
-    m_owner = inRobot;
+    m_iPlayerId = inRobot->getPlayerId();
     m_isFacingLeft = inRobot->isFacingLeft();
     m_velocity.setX(m_isFacingLeft ? -12 : 12);
     m_position.set(inRobot->getPosition());
@@ -204,11 +225,14 @@ void Projectile::processCollisions()
     for (auto goIt = World::getInstance()->getEntities().begin(), end = World::getInstance()->getEntities().end(); goIt != end; ++goIt)
     {
         Entity* target = *goIt;
-        if (target != this && target != m_owner && !target->isRequestingDeletion() && target->getRTTI().derivesFrom(Robot::rtti))
+        if (target != this && !target->isRequestingDeletion() && target->getRTTI().derivesFrom(Robot::rtti))
         {
-            if (OverlapTester::doNGRectsOverlap(getMainBounds(), target->getMainBounds()))
+            Robot* robot = static_cast<Robot*>(target);
+            
+            if (robot->getPlayerId() != m_iPlayerId
+                && OverlapTester::doNGRectsOverlap(getMainBounds(), target->getMainBounds()))
             {
-                //requestDeletion();
+                requestDeletion();
             }
         }
     }
@@ -287,7 +311,7 @@ void Projectile::interpolateClientSidePrediction(float& inOldStateTime, Vector2&
 #endif
 
 Projectile::Projectile() : Entity(0, 0, 1.565217391304348f * 0.444444444444444f, 2.0f * 0.544423440453686f),
-m_owner(nullptr),
+m_iPlayerId(0),
 m_fTimeVelocityBecameOutOfSync(0.0f),
 m_fTimePositionBecameOutOfSync(0.0f),
 m_isFacingLeft(false)

@@ -30,8 +30,9 @@ public:
     {
         PRJC_Pose = 1 << 0,
         PRJC_Color = 1 << 1,
+        PRJC_PlayerId = 1 << 2,
         
-        PRJC_AllState = PRJC_Pose | PRJC_Color
+        PRJC_AllState = PRJC_Pose | PRJC_Color | PRJC_PlayerId
     };
     
     static Entity* create();
@@ -51,7 +52,7 @@ public:
     bool isFacingLeft();
     
 private:
-    Robot* m_owner;
+    uint32_t m_iPlayerId;
     float m_fTimeVelocityBecameOutOfSync;
     float m_fTimePositionBecameOutOfSync;
     
