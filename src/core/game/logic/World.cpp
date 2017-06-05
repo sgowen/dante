@@ -124,7 +124,7 @@ void World::update()
     }
 }
 
-const std::vector<Entity*>& World::getEntities() const
+std::vector<Entity*>& World::getEntities()
 {
     return m_objects;
 }

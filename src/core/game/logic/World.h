@@ -34,7 +34,7 @@ public:
     
     void update();
     
-    const std::vector<Entity*>& getEntities() const;
+    std::vector<Entity*>& getEntities();
     
 private:
     std::vector<Entity*> m_objects;
