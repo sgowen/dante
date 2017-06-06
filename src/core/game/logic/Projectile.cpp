@@ -30,6 +30,7 @@
 #ifdef NG_SERVER
 #include "NetworkManagerServer.h"
 #elif NG_CLIENT
+#include "NetworkManagerClient.h"
 #include "NGAudioEngine.h"
 #endif
 
@@ -93,7 +94,7 @@ void Projectile::read(InputMemoryBitStream& inInputStream)
     {
         uint32_t playerId;
         inInputStream.read(playerId);
-        m_iPlayerId = playerId;
+        setPlayerId(playerId);
         readState |= PRJC_PlayerId;
     }
     
@@ -131,13 +132,11 @@ void Projectile::read(InputMemoryBitStream& inInputStream)
         readState |= PRJC_Color;
     }
     
-#ifdef NG_CLIENT
     if (oldState == ProjectileState_Active
         && m_state == ProjectileState_Exploding)
     {
         playSound(SOUND_ID_EXPLOSION);
     }
-#endif
 }
 
 uint32_t Projectile::write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState)
@@ -147,7 +146,7 @@ uint32_t Projectile::write(OutputMemoryBitStream& inOutputStream, uint32_t inDir
     if (inDirtyState & PRJC_PlayerId)
     {
         inOutputStream.write((bool)true);
-        inOutputStream.write(m_iPlayerId);
+        inOutputStream.write(getPlayerId());
         
         writtenState |= PRJC_PlayerId;
     }
@@ -162,13 +161,11 @@ uint32_t Projectile::write(OutputMemoryBitStream& inOutputStream, uint32_t inDir
         
         inOutputStream.write(m_fStateTime);
         
-        Vector2 velocity = m_velocity;
-        inOutputStream.write(velocity.getX());
-        inOutputStream.write(velocity.getY());
+        inOutputStream.write(m_velocity.getX());
+        inOutputStream.write(m_velocity.getY());
         
-        Vector2 position = getPosition();
-        inOutputStream.write(position.getX());
-        inOutputStream.write(position.getY());
+        inOutputStream.write(m_position.getX());
+        inOutputStream.write(m_position.getY());
         
         inOutputStream.write(m_state);
         
@@ -204,33 +201,22 @@ void Projectile::initFromShooter(Robot* inRobot)
     m_position.set(inRobot->getPosition());
     m_position.add(m_isFacingLeft ? -0.5f : 0.5f, 0.4f);
     
-    static Color White(1.0f, 1.0f, 1.0f, 1);
-    static Color Red(1.0f, 0.0f, 0.0f, 1);
-    static Color Blue(0.0f, 0.0f, 1.0f, 1);
-    static Color Green(0.0f, 1.0f, 0.0f, 1);
-    
-    switch (m_iPlayerId)
-    {
-        case 1:
-            setColor(White);
-            break;
-        case 2:
-            setColor(Red);
-            break;
-        case 3:
-            setColor(Green);
-            break;
-        case 4:
-            setColor(Blue);
-            break;
-        default:
-            break;
-    }
+    setColor(inRobot->getColor());
 }
 
 Projectile::ProjectileState Projectile::getState()
 {
     return m_state;
+}
+
+void Projectile::setPlayerId(uint32_t inPlayerId)
+{
+    m_iPlayerId = inPlayerId;
+}
+
+uint32_t Projectile::getPlayerId() const
+{
+    return m_iPlayerId;
 }
 
 bool Projectile::isFacingLeft()
@@ -295,6 +281,17 @@ void Projectile::playSound(int soundId)
 {
 #ifdef NG_CLIENT
     float volume = 1;
+    
+    if (getPlayerId() != NetworkManagerClient::getInstance()->getPlayerId())
+    {
+        Robot* playerRobot = World::staticGetRobotWithPlayerId(NetworkManagerClient::getInstance()->getPlayerId());
+        if (playerRobot)
+        {
+            float distance = playerRobot->getPosition().dist(getPosition());
+            float factor = distance / 4.0f;
+            volume = 1.0f / (factor * factor);
+        }
+    }
     
     NG_AUDIO_ENGINE->playSound(soundId, volume);
 #endif

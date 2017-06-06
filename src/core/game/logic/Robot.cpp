@@ -211,6 +211,11 @@ void Robot::read(InputMemoryBitStream& inInputStream)
     {
         doClientSidePredictionAfterReplicationForRemoteRobot(readState);
         
+        if ((readState & ROBT_PlayerId) == 0)
+        {
+            interpolateClientSidePrediction(oldStateTime, oldPosition);
+        }
+        
         if (m_isJumping && !wasJumping)
         {
             playSound(SOUND_ID_ROBOT_JUMP);
@@ -241,17 +246,14 @@ uint32_t Robot::write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtySta
         
         inOutputStream.write(m_fStateTime);
         
-        Vector2 acceleration = m_acceleration;
-        inOutputStream.write(acceleration.getX());
-        inOutputStream.write(acceleration.getY());
+        inOutputStream.write(m_acceleration.getX());
+        inOutputStream.write(m_acceleration.getY());
         
-        Vector2 velocity = m_velocity;
-        inOutputStream.write(velocity.getX());
-        inOutputStream.write(velocity.getY());
+        inOutputStream.write(m_velocity.getX());
+        inOutputStream.write(m_velocity.getY());
         
-        Vector2 position = getPosition();
-        inOutputStream.write(position.getX());
-        inOutputStream.write(position.getY());
+        inOutputStream.write(m_position.getX());
+        inOutputStream.write(m_position.getY());
         
         inOutputStream.write((bool)m_isFacingLeft);
         inOutputStream.write((bool)m_isGrounded);
@@ -269,7 +271,7 @@ uint32_t Robot::write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtySta
     if (inDirtyState & ROBT_Color)
     {
         inOutputStream.write((bool)true);
-        inOutputStream.write(getColor());
+        inOutputStream.write(m_color);
         
         writtenState |= ROBT_Color;
     }
@@ -281,7 +283,7 @@ uint32_t Robot::write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtySta
     if (inDirtyState & ROBT_Health)
     {
         inOutputStream.write((bool)true);
-        inOutputStream.write(m_iHealth, 4);
+        inOutputStream.write(m_iHealth, 4); // Support up to 15 health points, for now...
         
         writtenState |= ROBT_Health;
     }
@@ -586,6 +588,19 @@ void Robot::interpolateClientSidePrediction(float& inOldStateTime, Vector2& inOl
     }
 }
 
+void Robot::interpolateClientSidePrediction(float& inOldStateTime, Vector2& inOldPos)
+{
+    if (!areFloatsPracticallyEqual(inOldStateTime, m_fStateTime))
+    {
+        m_fStateTime = inOldStateTime + 0.1f * (m_fStateTime - inOldStateTime);
+    }
+    
+    if (interpolateVectorsIfNecessary(inOldPos, getPosition(), m_fTimePositionBecameOutOfSync))
+    {
+        LOG("ERROR! Move Replay Position");
+    }
+}
+
 bool Robot::interpolateVectorsIfNecessary(Vector2& inA, Vector2& inB, float& syncTracker)
 {
     float roundTripTime = NetworkManagerClient::getInstance()->getRoundTripTime();
@@ -612,7 +627,7 @@ bool Robot::interpolateVectorsIfNecessary(Vector2& inA, Vector2& inB, float& syn
     }
     
     //we're in sync
-    m_fTimeAccelerationBecameOutOfSync = 0.0f;
+    syncTracker = 0.0f;
     
     return false;
 }
@@ -626,11 +641,11 @@ void Robot::playSound(int soundId)
     if (getPlayerId() != NetworkManagerClient::getInstance()->getPlayerId())
     {
         Robot* playerRobot = World::staticGetRobotWithPlayerId(NetworkManagerClient::getInstance()->getPlayerId());
-        float volume = 1;
         if (playerRobot)
         {
             float distance = playerRobot->getPosition().dist(getPosition());
-            volume = 1.0f / (distance / 4.0f);
+            float factor = distance / 4.0f;
+            volume = 1.0f / (factor * factor);
         }
     }
     

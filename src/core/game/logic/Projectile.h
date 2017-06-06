@@ -57,6 +57,10 @@ public:
     
     ProjectileState getState();
     
+    void setPlayerId(uint32_t inPlayerId);
+    
+    uint32_t getPlayerId() const;
+    
     bool isFacingLeft();
     
 private:

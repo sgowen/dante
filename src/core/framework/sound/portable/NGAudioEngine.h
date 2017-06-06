@@ -29,7 +29,7 @@ public:
     
     void loadSound(int soundId, const char *path, int numInstances = 1);
     
-    void playSound(int soundId, float volume = 1.0f, bool isLooping = false);
+    void playSound(int soundId, float inVolume = 1.0f, bool isLooping = false);
     
     void stopSound(int soundId);
     
@@ -47,7 +47,7 @@ public:
     
     void loadMusic(const char *path);
     
-    void playMusic(bool isLooping = true, float volume = 1.0f);
+    void playMusic(bool isLooping = true, float inVolume = 1.0f);
     
     void setMusicVolume(float volume);
     

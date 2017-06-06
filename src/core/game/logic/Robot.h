@@ -103,6 +103,8 @@ private:
     
     void interpolateClientSidePrediction(float& inOldStateTime, Vector2& inOldAcceleration, Vector2& inOldVelocity, Vector2& inOldPos);
     
+    void interpolateClientSidePrediction(float& inOldStateTime, Vector2& inOldPos);
+    
     bool interpolateVectorsIfNecessary(Vector2& inA, Vector2& inB, float& syncTracker);
 #endif
     

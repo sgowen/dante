@@ -64,11 +64,21 @@ private:
     float m_fWallRestitution;
     float m_fRobotRestitution;
     
+    float m_fTimeAccelerationBecameOutOfSync;
+    float m_fTimeVelocityBecameOutOfSync;
+    float m_fTimePositionBecameOutOfSync;
+    
     void updateInternal(float inDeltaTime);
     
     void processCollisions();
     
     void processCollisionsWithScreenWalls();
+    
+#ifdef NG_CLIENT
+    void interpolateClientSidePrediction(float& inOldStateTime, Vector2& inOldPos);
+    
+    bool interpolateVectorsIfNecessary(Vector2& inA, Vector2& inB, float& syncTracker);
+#endif
     
     SpacePirate();
 };

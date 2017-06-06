@@ -142,6 +142,29 @@ void Server::respawnEnemiesIfNecessary()
         {
             SpacePirate* spacePirate = static_cast<SpacePirate*>(EntityRegistry::getInstance()->createEntity(NETWORK_TYPE_SpacePirate));
             spacePirate->init(CAM_WIDTH - static_cast<float>(i + 2), 7.0f, 4.0f - i);
+            
+            static Color White(1.0f, 1.0f, 1.0f, 1);
+            static Color Red(1.0f, 0.0f, 0.0f, 1);
+            static Color Blue(0.0f, 0.0f, 1.0f, 1);
+            static Color Green(0.0f, 1.0f, 0.0f, 1);
+            
+            switch ((i + 1))
+            {
+                case 1:
+                    spacePirate->setColor(White);
+                    break;
+                case 2:
+                    spacePirate->setColor(Red);
+                    break;
+                case 3:
+                    spacePirate->setColor(Green);
+                    break;
+                case 4:
+                    spacePirate->setColor(Blue);
+                    break;
+                default:
+                    break;
+            }
         }
     }
 }

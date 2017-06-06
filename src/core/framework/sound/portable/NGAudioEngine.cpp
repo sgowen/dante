@@ -58,7 +58,7 @@ void NGAudioEngine::loadSound(int soundId, const char *path, int numInstances)
     m_sounds.insert(std::make_pair(soundId, sound));
 }
 
-void NGAudioEngine::playSound(int soundId, float volume, bool isLooping)
+void NGAudioEngine::playSound(int soundId, float inVolume, bool isLooping)
 {
     if (m_isSoundDisabled
         || soundId <= 0
@@ -71,7 +71,9 @@ void NGAudioEngine::playSound(int soundId, float volume, bool isLooping)
     
     ISound* sound = soundWrapper->getSoundInstance();
     
-    sound->setVolume(clamp(volume, 1, 0));
+    float volume = clamp(inVolume, 1, 0);
+    
+    sound->setVolume(volume);
     sound->play(isLooping);
 }
 
@@ -211,7 +213,7 @@ void NGAudioEngine::loadMusic(const char *path)
     m_music = m_audioEngineHelper->loadMusic(path);
 }
 
-void NGAudioEngine::playMusic(bool isLooping, float volume)
+void NGAudioEngine::playMusic(bool isLooping, float inVolume)
 {
     if (m_isMusicDisabled)
     {
@@ -220,6 +222,8 @@ void NGAudioEngine::playMusic(bool isLooping, float volume)
     
     if (m_music)
     {
+        float volume = clamp(inVolume, 1, 0);
+        
         m_music->getSoundInstance()->play(isLooping);
         m_music->getSoundInstance()->setVolume(volume);
     }

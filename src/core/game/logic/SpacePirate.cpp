@@ -28,6 +28,8 @@
 
 #ifdef NG_SERVER
 #include "NetworkManagerServer.h"
+#elif NG_CLIENT
+#include "NetworkManagerClient.h"
 #endif
 
 #include <math.h>
@@ -80,7 +82,12 @@ uint32_t SpacePirate::getAllStateMask() const
 }
 
 void SpacePirate::read(InputMemoryBitStream& inInputStream)
-{    
+{
+#ifdef NG_CLIENT
+    float oldStateTime = m_fStateTime;
+    Vector2 oldPosition = getPosition();
+#endif
+    
     bool stateBit;
     
     uint32_t readState = 0;
@@ -93,6 +100,11 @@ void SpacePirate::read(InputMemoryBitStream& inInputStream)
     if (stateBit)
     {
         inInputStream.read(m_fStateTime);
+        
+        inInputStream.read(replicatedAcceleration.getXRef());
+        inInputStream.read(replicatedAcceleration.getYRef());
+        
+        m_acceleration.set(replicatedAcceleration);
         
         inInputStream.read(replicatedVelocity.getXRef());
         inInputStream.read(replicatedVelocity.getYRef());
@@ -117,6 +129,22 @@ void SpacePirate::read(InputMemoryBitStream& inInputStream)
         setColor(color);
         readState |= SPCP_Color;
     }
+    
+    inInputStream.read(stateBit);
+    if (stateBit)
+    {
+        m_iHealth = 0;
+        inInputStream.read(m_iHealth, 4); // Support up to 15 health points, for now...
+        readState |= SPCP_Health;
+    }
+    
+#ifdef NG_CLIENT
+    // if this is a create packet, don't interpolate
+    if ((readState & SPCP_Color) == 0)
+    {
+        interpolateClientSidePrediction(oldStateTime, oldPosition);
+    }
+#endif
 }
 
 uint32_t SpacePirate::write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState)
@@ -129,13 +157,14 @@ uint32_t SpacePirate::write(OutputMemoryBitStream& inOutputStream, uint32_t inDi
         
         inOutputStream.write(m_fStateTime);
         
-        Vector2 velocity = m_velocity;
-        inOutputStream.write(velocity.getX());
-        inOutputStream.write(velocity.getY());
+        inOutputStream.write(m_acceleration.getX());
+        inOutputStream.write(m_acceleration.getY());
         
-        Vector2 position = getPosition();
-        inOutputStream.write(position.getX());
-        inOutputStream.write(position.getY());
+        inOutputStream.write(m_velocity.getX());
+        inOutputStream.write(m_velocity.getY());
+        
+        inOutputStream.write(m_position.getX());
+        inOutputStream.write(m_position.getY());
         
         inOutputStream.write((bool)m_isFacingLeft);
         
@@ -149,9 +178,22 @@ uint32_t SpacePirate::write(OutputMemoryBitStream& inOutputStream, uint32_t inDi
     if (inDirtyState & SPCP_Color)
     {
         inOutputStream.write((bool)true);
-        inOutputStream.write(getColor());
+        inOutputStream.write(m_color);
         
         writtenState |= SPCP_Color;
+    }
+    else
+    {
+        inOutputStream.write((bool)false);
+    }
+    
+    if (inDirtyState & SPCP_Health)
+    {
+        inOutputStream.write((bool)true);
+        
+        inOutputStream.write(m_iHealth, 4); // Support up to 15 health points, for now...
+        
+        writtenState |= SPCP_Health;
     }
     else
     {
@@ -278,6 +320,52 @@ void SpacePirate::processCollisionsWithScreenWalls()
     }
 }
 
+#ifdef NG_CLIENT
+void SpacePirate::interpolateClientSidePrediction(float& inOldStateTime, Vector2& inOldPos)
+{
+    if (!areFloatsPracticallyEqual(inOldStateTime, m_fStateTime))
+    {
+        m_fStateTime = inOldStateTime + 0.1f * (m_fStateTime - inOldStateTime);
+    }
+    
+    if (interpolateVectorsIfNecessary(inOldPos, getPosition(), m_fTimePositionBecameOutOfSync))
+    {
+        LOG("ERROR! Move Replay Position");
+    }
+}
+
+bool SpacePirate::interpolateVectorsIfNecessary(Vector2& inA, Vector2& inB, float& syncTracker)
+{
+    float roundTripTime = NetworkManagerClient::getInstance()->getRoundTripTime();
+    
+    if (!inA.isEqualTo(inB))
+    {
+        LOG("ERROR! Move replay ended with incorrect vector! Old %3.8f, %3.8f - New %3.8f, %3.8f", inA.getX(), inA.getY(), inB.getX(), inB.getY());
+        
+        //have we been out of sync, or did we just become out of sync?
+        float time = Timing::getInstance()->getFrameStartTime();
+        if (syncTracker == 0.0f)
+        {
+            syncTracker = time;
+        }
+        
+        //now interpolate to the correct value...
+        float durationOutOfSync = time - syncTracker;
+        if (durationOutOfSync < roundTripTime)
+        {
+            inB.set(lerp(inA, inB, 0.1f));
+        }
+        
+        return true;
+    }
+    
+    //we're in sync
+    syncTracker = 0.0f;
+    
+    return false;
+}
+#endif
+
 SpacePirate::SpacePirate() : Entity(0, 0, 1.565217391304348f * 1.277777777777778f, 2.0f * 1.173913043478261f),
 m_fSpeed(0.0),
 m_iHealth(10),
@@ -285,7 +373,10 @@ m_isFacingLeft(false),
 m_isGrounded(false),
 m_isFalling(false),
 m_fWallRestitution(0.1f),
-m_fRobotRestitution(0.1f)
+m_fRobotRestitution(0.1f),
+m_fTimeAccelerationBecameOutOfSync(0.0f),
+m_fTimeVelocityBecameOutOfSync(0.0f),
+m_fTimePositionBecameOutOfSync(0.0f)
 {
     m_acceleration.setY(-9.8f);
 }
