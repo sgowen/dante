@@ -40,8 +40,6 @@ Entity* Projectile::create()
 {
     Projectile* ret = new Projectile();
     
-    ret->playSound(SOUND_ID_FIRE_ROCKET);
-    
 #ifdef NG_SERVER
     NetworkManagerServer::getInstance()->registerEntity(ret);
 #endif
@@ -83,7 +81,11 @@ uint32_t Projectile::getAllStateMask() const
 
 void Projectile::read(InputMemoryBitStream& inInputStream)
 {
+#ifdef NG_CLIENT
+    float oldStateTime = m_fStateTime;
+    Vector2 oldPosition = m_position;
     ProjectileState oldState = m_state;
+#endif
     
     bool stateBit;
     
@@ -92,29 +94,20 @@ void Projectile::read(InputMemoryBitStream& inInputStream)
     inInputStream.read(stateBit);
     if (stateBit)
     {
-        uint32_t playerId;
-        inInputStream.read(playerId);
-        setPlayerId(playerId);
+        inInputStream.read(m_iPlayerId);
         readState |= PRJC_PlayerId;
     }
-    
-    Vector2 replicatedVelocity;
-    Vector2 replicatedPosition;
     
     inInputStream.read(stateBit);
     if (stateBit)
     {
         inInputStream.read(m_fStateTime);
         
-        inInputStream.read(replicatedVelocity.getXRef());
-        inInputStream.read(replicatedVelocity.getYRef());
+        inInputStream.read(m_velocity.getXRef());
+        inInputStream.read(m_velocity.getYRef());
         
-        m_velocity.set(replicatedVelocity);
-        
-        inInputStream.read(replicatedPosition.getXRef());
-        inInputStream.read(replicatedPosition.getYRef());
-        
-        setPosition(replicatedPosition);
+        inInputStream.read(m_position.getXRef());
+        inInputStream.read(m_position.getYRef());
         
         inInputStream.read(m_state);
         
@@ -126,10 +119,25 @@ void Projectile::read(InputMemoryBitStream& inInputStream)
     inInputStream.read(stateBit);
     if (stateBit)
     {
-        Color color;
-        inInputStream.read(color);
-        setColor(color);
+        inInputStream.read(m_color);
         readState |= PRJC_Color;
+    }
+    
+#ifdef NG_CLIENT
+    if (getPlayerId() == NetworkManagerClient::getInstance()->getPlayerId())
+    {
+        // if this is a create packet, don't interpolate
+        if ((readState & PRJC_PlayerId) == 0)
+        {
+            interpolateClientSidePrediction(oldPosition);
+        }
+    }
+    else
+    {
+        if ((readState & PRJC_PlayerId) == 0)
+        {
+            interpolateClientSidePrediction(oldPosition);
+        }
     }
     
     if (oldState == ProjectileState_Active
@@ -137,6 +145,13 @@ void Projectile::read(InputMemoryBitStream& inInputStream)
     {
         playSound(SOUND_ID_EXPLOSION);
     }
+    
+    if ((readState & PRJC_PlayerId) != 0)
+    {
+        // This projectile was just created
+        playSound(SOUND_ID_FIRE_ROCKET);
+    }
+#endif
 }
 
 uint32_t Projectile::write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState)
@@ -146,7 +161,7 @@ uint32_t Projectile::write(OutputMemoryBitStream& inOutputStream, uint32_t inDir
     if (inDirtyState & PRJC_PlayerId)
     {
         inOutputStream.write((bool)true);
-        inOutputStream.write(getPlayerId());
+        inOutputStream.write(m_iPlayerId);
         
         writtenState |= PRJC_PlayerId;
     }
@@ -181,7 +196,7 @@ uint32_t Projectile::write(OutputMemoryBitStream& inOutputStream, uint32_t inDir
     if (inDirtyState & PRJC_Color)
     {
         inOutputStream.write((bool)true);
-        inOutputStream.write(getColor());
+        inOutputStream.write(m_color);
         
         writtenState |= PRJC_Color;
     }
@@ -277,6 +292,47 @@ void Projectile::processCollisionsWithScreenWalls()
     }
 }
 
+#ifdef NG_CLIENT
+void Projectile::interpolateClientSidePrediction(Vector2& inOldPos)
+{
+    if (interpolateVectorsIfNecessary(inOldPos, getPosition(), m_fTimePositionBecameOutOfSync))
+    {
+        LOG("Robot ERROR! Move Replay Position");
+    }
+}
+
+bool Projectile::interpolateVectorsIfNecessary(Vector2& inA, Vector2& inB, float& syncTracker)
+{
+    float roundTripTime = NetworkManagerClient::getInstance()->getRoundTripTime();
+    
+    if (!inA.isEqualTo(inB))
+    {
+        LOG("Robot ERROR! Move replay ended with incorrect vector! Old %3.8f, %3.8f - New %3.8f, %3.8f", inA.getX(), inA.getY(), inB.getX(), inB.getY());
+        
+        //have we been out of sync, or did we just become out of sync?
+        float time = Timing::getInstance()->getFrameStartTime();
+        if (syncTracker == 0.0f)
+        {
+            syncTracker = time;
+        }
+        
+        //now interpolate to the correct value...
+        float durationOutOfSync = time - syncTracker;
+        if (durationOutOfSync < roundTripTime)
+        {
+            inB.set(lerp(inA, inB, 0.1f));
+        }
+        
+        return true;
+    }
+    
+    //we're in sync
+    syncTracker = 0.0f;
+    
+    return false;
+}
+#endif
+
 void Projectile::playSound(int soundId)
 {
 #ifdef NG_CLIENT
@@ -300,7 +356,8 @@ void Projectile::playSound(int soundId)
 Projectile::Projectile() : Entity(0, 0, 1.565217391304348f * 0.444444444444444f, 2.0f * 0.544423440453686f),
 m_iPlayerId(0),
 m_state(ProjectileState_Active),
-m_isFacingLeft(false)
+m_isFacingLeft(false),
+m_fTimePositionBecameOutOfSync(0.0f)
 {
     // Empty
 }

@@ -46,8 +46,6 @@ Entity* Robot::create()
     NetworkManagerServer::getInstance()->registerEntity(ret);
 #endif
     
-    ret->playSound(SOUND_ID_DEATH);
-    
     return ret;
 }
 
@@ -61,6 +59,8 @@ void Robot::onDeletion()
         // This robot is the current local player, so let's display something like "Respawning in 5, 4, 3..."
     }
 #endif
+    
+    LOG("Robot onDeletion");
 }
 
 void Robot::update()
@@ -127,9 +127,9 @@ void Robot::read(InputMemoryBitStream& inInputStream)
 {
 #ifdef NG_CLIENT
     float oldStateTime = m_fStateTime;
-    Vector2 oldAcceleration = getAcceleration();
-    Vector2 oldVelocity = getVelocity();
-    Vector2 oldPosition = getPosition();
+    Vector2 oldAcceleration = m_acceleration;
+    Vector2 oldVelocity = m_velocity;
+    Vector2 oldPosition = m_position;
     bool wasJumping = m_isJumping;
 #endif
     
@@ -140,35 +140,23 @@ void Robot::read(InputMemoryBitStream& inInputStream)
     inInputStream.read(stateBit);
     if (stateBit)
     {
-        uint32_t playerId;
-        inInputStream.read(playerId);
-        setPlayerId(playerId);
+        inInputStream.read(m_iPlayerId);
         readState |= ROBT_PlayerId;
     }
-    
-    Vector2 replicatedAcceleration;
-    Vector2 replicatedVelocity;
-    Vector2 replicatedPosition;
     
     inInputStream.read(stateBit);
     if (stateBit)
     {
         inInputStream.read(m_fStateTime);
         
-        inInputStream.read(replicatedAcceleration.getXRef());
-        inInputStream.read(replicatedAcceleration.getYRef());
+        inInputStream.read(m_acceleration.getXRef());
+        inInputStream.read(m_acceleration.getYRef());
         
-        m_acceleration.set(replicatedAcceleration);
+        inInputStream.read(m_velocity.getXRef());
+        inInputStream.read(m_velocity.getYRef());
         
-        inInputStream.read(replicatedVelocity.getXRef());
-        inInputStream.read(replicatedVelocity.getYRef());
-        
-        m_velocity.set(replicatedVelocity);
-        
-        inInputStream.read(replicatedPosition.getXRef());
-        inInputStream.read(replicatedPosition.getYRef());
-        
-        setPosition(replicatedPosition);
+        inInputStream.read(m_position.getXRef());
+        inInputStream.read(m_position.getYRef());
         
         inInputStream.read(m_isFacingLeft);
         inInputStream.read(m_isGrounded);
@@ -182,16 +170,13 @@ void Robot::read(InputMemoryBitStream& inInputStream)
     inInputStream.read(stateBit);
     if (stateBit)
     {
-        Color color;
-        inInputStream.read(color);
-        setColor(color);
+        inInputStream.read(m_color);
         readState |= ROBT_Color;
     }
     
     inInputStream.read(stateBit);
     if (stateBit)
     {
-        m_iHealth = 0;
         inInputStream.read(m_iHealth, 4); // Support up to 15 health points, for now...
         readState |= ROBT_Health;
     }
@@ -205,6 +190,10 @@ void Robot::read(InputMemoryBitStream& inInputStream)
         if ((readState & ROBT_PlayerId) == 0)
         {
             interpolateClientSidePrediction(oldStateTime, oldAcceleration, oldVelocity, oldPosition);
+        }
+        else
+        {
+            playSound(SOUND_ID_DEATH);
         }
     }
     else
@@ -231,7 +220,7 @@ uint32_t Robot::write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtySta
     if (inDirtyState & ROBT_PlayerId)
     {
         inOutputStream.write((bool)true);
-        inOutputStream.write(getPlayerId());
+        inOutputStream.write(m_iPlayerId);
         
         writtenState |= ROBT_PlayerId;
     }
@@ -569,12 +558,12 @@ void Robot::interpolateClientSidePrediction(float& inOldStateTime, Vector2& inOl
 {
     if (interpolateVectorsIfNecessary(inOldAcceleration, getAcceleration(), m_fTimeAccelerationBecameOutOfSync))
     {
-        LOG("ERROR! Move Replay Acceleration");
+        LOG("Robot ERROR! Move Replay Acceleration");
     }
     
     if (interpolateVectorsIfNecessary(inOldVelocity, getVelocity(), m_fTimeVelocityBecameOutOfSync))
     {
-        LOG("ERROR! Move Replay Velocity");
+        LOG("Robot ERROR! Move Replay Velocity");
     }
     
     interpolateClientSidePrediction(inOldStateTime, inOldPos);
@@ -589,7 +578,7 @@ void Robot::interpolateClientSidePrediction(float& inOldStateTime, Vector2& inOl
     
     if (interpolateVectorsIfNecessary(inOldPos, getPosition(), m_fTimePositionBecameOutOfSync))
     {
-        LOG("ERROR! Move Replay Position");
+        LOG("Robot ERROR! Move Replay Position");
     }
 }
 
@@ -599,7 +588,7 @@ bool Robot::interpolateVectorsIfNecessary(Vector2& inA, Vector2& inB, float& syn
     
     if (!inA.isEqualTo(inB))
     {
-        LOG("ERROR! Move replay ended with incorrect vector! Old %3.8f, %3.8f - New %3.8f, %3.8f", inA.getX(), inA.getY(), inB.getX(), inB.getY());
+        LOG("Robot ERROR! Move replay ended with incorrect vector! Old %3.8f, %3.8f - New %3.8f, %3.8f", inA.getX(), inA.getY(), inB.getX(), inB.getY());
         
         //have we been out of sync, or did we just become out of sync?
         float time = Timing::getInstance()->getFrameStartTime();

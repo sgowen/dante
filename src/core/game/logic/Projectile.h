@@ -68,11 +68,19 @@ private:
     ProjectileState m_state;
     bool m_isFacingLeft;
     
+    float m_fTimePositionBecameOutOfSync;
+    
     void updateInternal(float inDeltaTime);
     
     void processCollisions();
     
     void processCollisionsWithScreenWalls();
+    
+#ifdef NG_CLIENT
+    void interpolateClientSidePrediction(Vector2& inOldPos);
+    
+    bool interpolateVectorsIfNecessary(Vector2& inA, Vector2& inB, float& syncTracker);
+#endif
     
     void playSound(int soundId);
     

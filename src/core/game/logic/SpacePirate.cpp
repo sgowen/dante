@@ -85,36 +85,26 @@ void SpacePirate::read(InputMemoryBitStream& inInputStream)
 {
 #ifdef NG_CLIENT
     float oldStateTime = m_fStateTime;
-    Vector2 oldPosition = getPosition();
+    Vector2 oldPosition = m_position;
 #endif
     
     bool stateBit;
     
     uint32_t readState = 0;
     
-    Vector2 replicatedAcceleration;
-    Vector2 replicatedVelocity;
-    Vector2 replicatedPosition;
-    
     inInputStream.read(stateBit);
     if (stateBit)
     {
         inInputStream.read(m_fStateTime);
         
-        inInputStream.read(replicatedAcceleration.getXRef());
-        inInputStream.read(replicatedAcceleration.getYRef());
+        inInputStream.read(m_acceleration.getXRef());
+        inInputStream.read(m_acceleration.getYRef());
         
-        m_acceleration.set(replicatedAcceleration);
+        inInputStream.read(m_velocity.getXRef());
+        inInputStream.read(m_velocity.getYRef());
         
-        inInputStream.read(replicatedVelocity.getXRef());
-        inInputStream.read(replicatedVelocity.getYRef());
-        
-        m_velocity.set(replicatedVelocity);
-        
-        inInputStream.read(replicatedPosition.getXRef());
-        inInputStream.read(replicatedPosition.getYRef());
-        
-        setPosition(replicatedPosition);
+        inInputStream.read(m_position.getXRef());
+        inInputStream.read(m_position.getYRef());
         
         inInputStream.read(m_isFacingLeft);
         
@@ -124,16 +114,13 @@ void SpacePirate::read(InputMemoryBitStream& inInputStream)
     inInputStream.read(stateBit);
     if (stateBit)
     {
-        Color color;
-        inInputStream.read(color);
-        setColor(color);
+        inInputStream.read(m_color);
         readState |= SPCP_Color;
     }
     
     inInputStream.read(stateBit);
     if (stateBit)
     {
-        m_iHealth = 0;
         inInputStream.read(m_iHealth, 4); // Support up to 15 health points, for now...
         readState |= SPCP_Health;
     }
@@ -178,6 +165,7 @@ uint32_t SpacePirate::write(OutputMemoryBitStream& inOutputStream, uint32_t inDi
     if (inDirtyState & SPCP_Color)
     {
         inOutputStream.write((bool)true);
+        
         inOutputStream.write(m_color);
         
         writtenState |= SPCP_Color;
@@ -330,7 +318,7 @@ void SpacePirate::interpolateClientSidePrediction(float& inOldStateTime, Vector2
     
     if (interpolateVectorsIfNecessary(inOldPos, getPosition(), m_fTimePositionBecameOutOfSync))
     {
-        LOG("ERROR! Move Replay Position");
+        LOG("Space Pirate ERROR! Move Replay Position");
     }
 }
 
@@ -340,7 +328,7 @@ bool SpacePirate::interpolateVectorsIfNecessary(Vector2& inA, Vector2& inB, floa
     
     if (!inA.isEqualTo(inB))
     {
-        LOG("ERROR! Move replay ended with incorrect vector! Old %3.8f, %3.8f - New %3.8f, %3.8f", inA.getX(), inA.getY(), inB.getX(), inB.getY());
+        LOG("Space Pirate ERROR! Move replay ended with incorrect vector! Old %3.8f, %3.8f - New %3.8f, %3.8f", inA.getX(), inA.getY(), inB.getX(), inB.getY());
         
         //have we been out of sync, or did we just become out of sync?
         float time = Timing::getInstance()->getFrameStartTime();
