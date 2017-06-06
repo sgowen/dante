@@ -567,11 +567,6 @@ void Robot::doClientSidePredictionAfterReplicationForRemoteRobot(uint32_t inRead
 
 void Robot::interpolateClientSidePrediction(float& inOldStateTime, Vector2& inOldAcceleration, Vector2& inOldVelocity, Vector2& inOldPos)
 {
-    if (!areFloatsPracticallyEqual(inOldStateTime, m_fStateTime))
-    {
-        m_fStateTime = inOldStateTime + 0.1f * (m_fStateTime - inOldStateTime);
-    }
-    
     if (interpolateVectorsIfNecessary(inOldAcceleration, getAcceleration(), m_fTimeAccelerationBecameOutOfSync))
     {
         LOG("ERROR! Move Replay Acceleration");
@@ -582,10 +577,7 @@ void Robot::interpolateClientSidePrediction(float& inOldStateTime, Vector2& inOl
         LOG("ERROR! Move Replay Velocity");
     }
     
-    if (interpolateVectorsIfNecessary(inOldPos, getPosition(), m_fTimePositionBecameOutOfSync))
-    {
-        LOG("ERROR! Move Replay Position");
-    }
+    interpolateClientSidePrediction(inOldStateTime, inOldPos);
 }
 
 void Robot::interpolateClientSidePrediction(float& inOldStateTime, Vector2& inOldPos)
