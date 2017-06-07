@@ -23,6 +23,8 @@
 #include "SocketUtil.h"
 #include "PooledObjectsManager.h"
 
+#include <ctime> // rand
+
 Server* Server::getInstance()
 {
     static Server instance = Server();
@@ -141,34 +143,38 @@ void Server::respawnEnemiesIfNecessary()
         m_fStateTimeNoEnemies += Timing::getInstance()->getDeltaTime();
         if (m_fStateTimeNoEnemies > 10)
         {
+            srand(static_cast<unsigned>(time(0)));
+            
             m_fStateTimeNoEnemies = 0;
             
-            for (int i = 0; i < 4; ++i)
+            int numSpacePirates = rand() % 12 + 1;
+            
+            for (int i = 0; i < numSpacePirates; ++i)
             {
                 SpacePirate* spacePirate = static_cast<SpacePirate*>(EntityRegistry::getInstance()->createEntity(NETWORK_TYPE_SpacePirate));
-                spacePirate->init(CAM_WIDTH - static_cast<float>(i + 2), 7.0f, 4.0f - i);
+                float speed = (rand() % 100) * 0.05f + 1.0f;
+                spacePirate->init(CAM_WIDTH - static_cast<float>(i), 7.0f, speed);
                 
                 static Color White(1.0f, 1.0f, 1.0f, 1);
                 static Color Red(1.0f, 0.0f, 0.0f, 1);
                 static Color Blue(0.0f, 0.0f, 1.0f, 1);
                 static Color Green(0.0f, 1.0f, 0.0f, 1);
                 
-                switch ((i + 1))
+                if (spacePirate->getSpeed() > 4)
                 {
-                    case 1:
-                    spacePirate->setColor(White);
-                    break;
-                    case 2:
                     spacePirate->setColor(Red);
-                    break;
-                    case 3:
+                }
+                else if (spacePirate->getSpeed() > 3)
+                {
                     spacePirate->setColor(Green);
-                    break;
-                    case 4:
+                }
+                else if (spacePirate->getSpeed() > 2)
+                {
                     spacePirate->setColor(Blue);
-                    break;
-                    default:
-                    break;
+                }
+                else
+                {
+                    spacePirate->setColor(White);
                 }
             }
         }

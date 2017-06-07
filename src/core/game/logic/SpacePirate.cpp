@@ -212,6 +212,11 @@ void SpacePirate::takeDamage()
 #endif
 }
 
+float SpacePirate::getSpeed()
+{
+    return m_fSpeed;
+}
+
 bool SpacePirate::isFacingLeft()
 {
     return m_isFacingLeft;

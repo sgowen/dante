@@ -51,6 +51,8 @@ public:
     
     void takeDamage();
     
+    float getSpeed();
+    
     bool isFacingLeft();
     
 private:
