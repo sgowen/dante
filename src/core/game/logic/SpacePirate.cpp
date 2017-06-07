@@ -349,7 +349,7 @@ bool SpacePirate::interpolateVectorsIfNecessary(Vector2& inA, Vector2& inB, floa
 
 SpacePirate::SpacePirate() : Entity(0, 0, 1.565217391304348f * 1.277777777777778f, 2.0f * 1.173913043478261f),
 m_fSpeed(0.0),
-m_iHealth(10),
+m_iHealth(8),
 m_isFacingLeft(false),
 m_isGrounded(false),
 m_isFalling(false),
