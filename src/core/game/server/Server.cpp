@@ -138,38 +138,44 @@ void Server::respawnEnemiesIfNecessary()
 {
     if (!World::staticHasSpacePirates())
     {
-        for (int i = 0; i < 4; ++i)
+        m_fStateTimeNoEnemies += Timing::getInstance()->getDeltaTime();
+        if (m_fStateTimeNoEnemies > 10)
         {
-            SpacePirate* spacePirate = static_cast<SpacePirate*>(EntityRegistry::getInstance()->createEntity(NETWORK_TYPE_SpacePirate));
-            spacePirate->init(CAM_WIDTH - static_cast<float>(i + 2), 7.0f, 4.0f - i);
+            m_fStateTimeNoEnemies = 0;
             
-            static Color White(1.0f, 1.0f, 1.0f, 1);
-            static Color Red(1.0f, 0.0f, 0.0f, 1);
-            static Color Blue(0.0f, 0.0f, 1.0f, 1);
-            static Color Green(0.0f, 1.0f, 0.0f, 1);
-            
-            switch ((i + 1))
+            for (int i = 0; i < 4; ++i)
             {
-                case 1:
+                SpacePirate* spacePirate = static_cast<SpacePirate*>(EntityRegistry::getInstance()->createEntity(NETWORK_TYPE_SpacePirate));
+                spacePirate->init(CAM_WIDTH - static_cast<float>(i + 2), 7.0f, 4.0f - i);
+                
+                static Color White(1.0f, 1.0f, 1.0f, 1);
+                static Color Red(1.0f, 0.0f, 0.0f, 1);
+                static Color Blue(0.0f, 0.0f, 1.0f, 1);
+                static Color Green(0.0f, 1.0f, 0.0f, 1);
+                
+                switch ((i + 1))
+                {
+                    case 1:
                     spacePirate->setColor(White);
                     break;
-                case 2:
+                    case 2:
                     spacePirate->setColor(Red);
                     break;
-                case 3:
+                    case 3:
                     spacePirate->setColor(Green);
                     break;
-                case 4:
+                    case 4:
                     spacePirate->setColor(Blue);
                     break;
-                default:
+                    default:
                     break;
+                }
             }
         }
     }
 }
 
-Server::Server() : m_fFrameStateTime(0), m_isInitialized(false)
+Server::Server() : m_fFrameStateTime(0), m_fStateTimeNoEnemies(0), m_isInitialized(false)
 {
     m_isInitialized = SOCKET_UTIL->init() && NetworkManagerServer::getInstance()->init(9999, World::staticRemoveEntity, Server::staticHandleNewClient, Server::staticHandleLostClient, PooledObjectsManager::borrowInputState);
     

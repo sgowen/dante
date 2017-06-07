@@ -33,6 +33,7 @@ public:
 
 private:
     float m_fFrameStateTime;
+    float m_fStateTimeNoEnemies;
     bool m_isInitialized;
     
     void respawnEnemiesIfNecessary();
