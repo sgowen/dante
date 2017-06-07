@@ -92,7 +92,7 @@ void MainRenderer::tempDraw()
                 bool isMoving = go->getVelocity().getX() < -0.5f || go->getVelocity().getX() > 0.5f;
                 TextureRegion tr = ASSETS->findTextureRegion(
                                                              robot->isGrounded() ?
-                                                             isMoving ? robot->isShooting() ? "Samus_Shooting" : "Samus_Running" : "Samus_Idle" :
+                                                             isMoving ? robot->isShooting() ? "Samus_Shooting" : "Samus_Running_Old" : "Samus_Idle" :
                                                              go->getVelocity().getY() > 0 ? "Samus_Jumping" : "Samus_Falling", go->getStateTime());
                 renderEntityWithColor(*robot, tr, robot->getColor(), robot->isFacingLeft());
             }

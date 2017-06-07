@@ -87,6 +87,7 @@ void ReplicationManagerClient::readAndDoDestroyAction(InputMemoryBitStream& inIn
     if (gameObject)
     {
         gameObject->requestDeletion();
+        gameObject->onDeletion();
         NetworkManagerClient::getInstance()->removeFromNetworkIdToEntityMap(gameObject);
     }
 }
