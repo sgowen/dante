@@ -443,7 +443,6 @@ void Robot::processCollisionsWithScreenWalls()
 {
     Vector2 position = getPosition();
     float x = position.getX();
-    float y = position.getY();
     
     float boundsY = getMainBounds().getBottom();
     
@@ -452,16 +451,7 @@ void Robot::processCollisionsWithScreenWalls()
     
     float radius = m_fWidth / 2;
     
-    //if the robot collides against a wall, the quick solution is to push it off
-    if ((y + radius) >= CAM_HEIGHT && vy > 0)
-    {
-        m_velocity.setY(-vy * m_fWallRestitution);
-        position.setY(CAM_HEIGHT - radius);
-        setPosition(position);
-        m_isGrounded = false;
-        m_isFalling = true;
-    }
-    else if (boundsY <= 0.875f && vy < 0)
+    if (boundsY <= 0.875f && vy < 0)
     {
         m_velocity.setY(0);
         m_acceleration.setY(0);
@@ -474,13 +464,11 @@ void Robot::processCollisionsWithScreenWalls()
     
     if ((x + radius) >= CAM_WIDTH && vx > 0)
     {
-        m_velocity.setX(-vx * m_fWallRestitution);
         position.setX(CAM_WIDTH - radius);
         setPosition(position);
     }
-    else if (x <= (0) && vx < 0)
+    else if (x <= 0 && vx < 0)
     {
-        m_velocity.setX(-vx * m_fWallRestitution);
         position.setX(0);
         setPosition(position);
     }
