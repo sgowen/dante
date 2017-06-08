@@ -32,6 +32,7 @@
 #include "WeightedTimedMovingAverage.h"
 
 #include <sstream>
+#include <ctime> // rand
 
 MainRenderer::MainRenderer(int maxBatchSize) : Renderer(maxBatchSize),
 m_demo(new TextureWrapper("texture_001")),
@@ -89,12 +90,22 @@ void MainRenderer::tempDraw()
             if (go->getNetworkType() == NETWORK_TYPE_Robot)
             {
                 Robot* robot = static_cast<Robot*>(go);
+                Color c = robot->getColor();
+                if (robot->isSprinting())
+                {
+                    c = Color();
+                    c.red = (rand() % 100) * 0.01f;
+                    c.green = (rand() % 100) * 0.01f;
+                    c.blue = (rand() % 100) * 0.01f;
+                    c.alpha = 0.75f;
+                }
+                
                 bool isMoving = go->getVelocity().getX() < -0.5f || go->getVelocity().getX() > 0.5f;
                 TextureRegion tr = ASSETS->findTextureRegion(
                                                              robot->isGrounded() ?
-                                                             isMoving ? robot->isShooting() ? "Samus_Shooting" : "Samus_Running_Old" : "Samus_Idle" :
+                                                             isMoving ? robot->isShooting() ? "Samus_Shooting" : (robot->isSprinting() ? "Samus_Running_Fast" : "Samus_Running") : "Samus_Idle" :
                                                              go->getVelocity().getY() > 0 ? "Samus_Jumping" : "Samus_Falling", go->getStateTime());
-                renderEntityWithColor(*robot, tr, robot->getColor(), robot->isFacingLeft());
+                renderEntityWithColor(*robot, tr, c, robot->isFacingLeft());
             }
             else if (go->getNetworkType() == NETWORK_TYPE_Projectile)
             {

@@ -281,6 +281,16 @@ void NGAudioEngine::resumeMusic()
     }
 }
 
+bool NGAudioEngine::isMusicPlaying()
+{
+    if (m_music)
+    {
+        return m_music->getSoundInstance()->isPlaying();
+    }
+    
+    return false;
+}
+
 bool NGAudioEngine::isMusicLoaded()
 {
     return m_music ? true : false;

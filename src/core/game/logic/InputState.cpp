@@ -32,6 +32,7 @@ bool InputState::write(OutputMemoryBitStream& inOutputStream) const
     inOutputStream.writeSignedBinaryValue(getDesiredHorizontalDelta());
     inOutputStream.writeSignedBinaryValue(m_fDesiredJumpIntensity);
     inOutputStream.write(m_isShooting);
+    inOutputStream.write(m_isSprinting);
     
     return false;
 }
@@ -41,16 +42,9 @@ bool InputState::read(InputMemoryBitStream& inInputStream)
     inInputStream.readSignedBinaryValue(m_fDesiredRightAmount);
     inInputStream.readSignedBinaryValue(m_fDesiredJumpIntensity);
     inInputStream.read(m_isShooting);
+    inInputStream.read(m_isSprinting);
     
     return true;
-}
-
-bool InputState::isEqualTo(InputState* inInputState)
-{
-    return inInputState->m_fDesiredRightAmount == m_fDesiredRightAmount
-    && inInputState->m_fDesiredLeftAmount == m_fDesiredLeftAmount
-    && inInputState->m_fDesiredJumpIntensity == m_fDesiredJumpIntensity
-    && inInputState->m_isShooting == m_isShooting;
 }
 
 void InputState::copyTo(InputState* inInputState)
@@ -59,6 +53,7 @@ void InputState::copyTo(InputState* inInputState)
     inInputState->m_fDesiredLeftAmount = m_fDesiredLeftAmount;
     inInputState->m_fDesiredJumpIntensity = m_fDesiredJumpIntensity;
     inInputState->m_isShooting = m_isShooting;
+    inInputState->m_isSprinting = m_isSprinting;
 }
 
 float InputState::getDesiredHorizontalDelta() const
@@ -74,6 +69,11 @@ float InputState::getDesiredJumpIntensity() const
 bool InputState::isShooting() const
 {
     return m_isShooting;
+}
+
+bool InputState::isSprinting() const
+{
+    return m_isSprinting;
 }
 
 RTTI_IMPL(InputState, IInputState);

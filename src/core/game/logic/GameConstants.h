@@ -26,11 +26,13 @@
 #define SOUND_ID_EXPLOSION 2
 #define SOUND_ID_DEATH 3
 #define SOUND_ID_FIRE_ROCKET 4
+#define SOUND_ID_ACTIVATE_SPRINT 5
 
 #define SOUND_ROBOT_JUMP "sound_001"
 #define SOUND_EXPLOSION "sound_002"
 #define SOUND_DEATH "sound_003"
 #define SOUND_FIRE_ROCKET "sound_004"
+#define SOUND_ACTIVATE_SPRINT "sound_005"
 
 //// Music Definitions ////
 

@@ -39,7 +39,7 @@ int KeyboardEvent::getStatus()
 
 bool KeyboardEvent::isDown()
 {
-    return m_iStatus == KEYBOARD_STATUS_DOWN;
+    return m_iStatus == KEYBOARD_STATUS_DOWN || m_iStatus == KEYBOARD_STATUS_HELD;
 }
 
 bool KeyboardEvent::isHeld()

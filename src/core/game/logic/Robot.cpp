@@ -130,6 +130,7 @@ void Robot::read(InputMemoryBitStream& inInputStream)
     Vector2 oldVelocity = m_velocity;
     Vector2 oldPosition = m_position;
     bool wasJumping = m_isJumping;
+    bool wasSprinting = m_isSprinting;
 #endif
     
     bool stateBit;
@@ -162,6 +163,7 @@ void Robot::read(InputMemoryBitStream& inInputStream)
         inInputStream.read(m_isFalling);
         inInputStream.read(m_isShooting);
         inInputStream.read(m_isJumping);
+        inInputStream.read(m_isSprinting);
         
         readState |= ROBT_Pose;
     }
@@ -204,6 +206,11 @@ void Robot::read(InputMemoryBitStream& inInputStream)
         {
             playSound(SOUND_ID_ROBOT_JUMP);
         }
+        
+        if (m_isSprinting && !wasSprinting)
+        {
+            playSound(SOUND_ID_ACTIVATE_SPRINT);
+        }
     }
 #endif
 }
@@ -244,6 +251,7 @@ uint32_t Robot::write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtySta
         inOutputStream.write((bool)m_isFalling);
         inOutputStream.write((bool)m_isShooting);
         inOutputStream.write((bool)m_isJumping);
+        inOutputStream.write((bool)m_isSprinting);
         
         writtenState |= ROBT_Pose;
     }
@@ -323,9 +331,15 @@ bool Robot::isShooting()
     return m_isShooting;
 }
 
+bool Robot::isSprinting()
+{
+    return m_isSprinting;
+}
+
 void Robot::processMove(const Move& inMove)
 {
     bool wasJumping = m_isJumping;
+    bool wasSprinting = m_isSprinting;
     
     IInputState* currentState = inMove.getInputState();
     
@@ -339,6 +353,11 @@ void Robot::processMove(const Move& inMove)
     {
         playSound(SOUND_ID_ROBOT_JUMP);
     }
+    
+    if (m_isSprinting && !wasSprinting)
+    {
+        playSound(SOUND_ID_ACTIVATE_SPRINT);
+    }
 }
 
 void Robot::processInput(float inDeltaTime, IInputState* inInputState)
@@ -348,6 +367,13 @@ void Robot::processInput(float inDeltaTime, IInputState* inInputState)
     m_velocity.setX(inputState->getDesiredHorizontalDelta() * m_fSpeed);
     
     m_isFacingLeft = m_velocity.getX() < 0 ? true : m_velocity.getX() > 0 ? false : m_isFacingLeft;
+    
+    m_isSprinting = inputState->isSprinting();
+    
+    if (m_isSprinting && m_isGrounded)
+    {
+        m_velocity.add(inputState->getDesiredHorizontalDelta() * m_fSpeed / 2, 0);
+    }
     
     if (inputState->getDesiredJumpIntensity() > 0
         && m_isGrounded)
@@ -632,6 +658,7 @@ m_isGrounded(false),
 m_isFalling(false),
 m_isShooting(false),
 m_isJumping(false),
+m_isSprinting(false),
 m_iPlayerId(0)
 {
     m_acceleration.setY(-9.8f);

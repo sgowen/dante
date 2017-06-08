@@ -38,6 +38,8 @@ public:
     
     bool isShooting() const;
     
+    bool isSprinting() const;
+    
 private:
     friend class InputManager;
     
@@ -45,6 +47,7 @@ private:
     float m_fDesiredLeftAmount;
     float m_fDesiredJumpIntensity;
     bool m_isShooting;
+    bool m_isSprinting;
 };
 
 #endif /* defined(__noctisgames__InputState__) */

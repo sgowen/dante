@@ -61,6 +61,8 @@ public:
     
     bool isShooting();
     
+    bool isSprinting();
+    
 private:
     float m_fSpeed;
     float m_fJumpSpeed;
@@ -81,6 +83,7 @@ private:
     bool m_isFalling;
     bool m_isShooting;
     bool m_isJumping;
+    bool m_isSprinting;
     
     uint32_t m_iPlayerId;
     

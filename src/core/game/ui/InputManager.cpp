@@ -23,6 +23,7 @@
 #include "GamePadEvent.h"
 #include "PooledObjectsManager.h"
 #include "GameConstants.h"
+#include "NGAudioEngine.h"
 
 InputManager* InputManager::getInstance()
 {
@@ -43,16 +44,32 @@ void InputManager::update()
             switch ((*i)->getType())
             {
                 case KeyboardEventType_W:
-                    m_currentState->m_fDesiredJumpIntensity = (*i)->isDown() ? 1 : 0;
+                    m_currentState->m_fDesiredJumpIntensity = (*i)->isDown() && !(*i)->isHeld() ? 1 : 0;
                     continue;
                 case KeyboardEventType_A:
-                    m_currentState->m_fDesiredLeftAmount = (*i)->isDown() || (*i)->isHeld() ? 1 : 0;
+                    m_currentState->m_fDesiredLeftAmount = (*i)->isDown() ? 1 : 0;
                     continue;
                 case KeyboardEventType_D:
-                    m_currentState->m_fDesiredRightAmount = (*i)->isDown() || (*i)->isHeld() ? 1 : 0;
+                    m_currentState->m_fDesiredRightAmount = (*i)->isDown() ? 1 : 0;
+                    continue;
+                case KeyboardEventType_ARROW_KEY_DOWN:
+                    m_currentState->m_isSprinting = (*i)->isDown() ? true : false;
                     continue;
                 case KeyboardEventType_SPACE:
-                    m_currentState->m_isShooting = (*i)->isDown() || (*i)->isHeld() ? true : false;
+                    m_currentState->m_isShooting = (*i)->isDown() ? true : false;
+                    continue;
+                case KeyboardEventType_M:
+                    if ((*i)->isUp())
+                    {
+                        if (NG_AUDIO_ENGINE->isMusicPlaying())
+                        {
+                            NG_AUDIO_ENGINE->stopMusic();
+                        }
+                        else
+                        {
+                            NG_AUDIO_ENGINE->playMusic(true);
+                        }
+                    }
                     continue;
                 default:
                     continue;
@@ -72,8 +89,25 @@ void InputManager::update()
                 case GamePadEventType_D_PAD_RIGHT:
                     m_currentState->m_fDesiredRightAmount = (*i)->isPressed() ? 1 : 0;
                     continue;
+                case GamePadEventType_BUMPER_RIGHT:
+                case GamePadEventType_BUMPER_LEFT:
+                    m_currentState->m_isSprinting = (*i)->isPressed() ? true : false;
+                    continue;
                 case GamePadEventType_A_BUTTON:
                     m_currentState->m_isShooting = (*i)->isPressed() ? true : false;
+                    continue;
+                case GamePadEventType_BACK_BUTTON:
+                    if ((*i)->isPressed())
+                    {
+                        if (NG_AUDIO_ENGINE->isMusicPlaying())
+                        {
+                            NG_AUDIO_ENGINE->stopMusic();
+                        }
+                        else
+                        {
+                            NG_AUDIO_ENGINE->playMusic(true);
+                        }
+                    }
                     continue;
                 default:
                     continue;

@@ -32,9 +32,8 @@ void MainAssetsMapper::mapAssets()
     ASSETS->getTextureRegionMap()["Projectile"] = new TextureRegion("texture_001", 0, 138, 16, 16, TEXTURE_SIZE_2048);
     
     /// Animations
-    ASSETS->getAnimationsMap()["Samus_Running"] = new Animation("texture_001", 630, 0, 36, 46, 144 + 16 * 3, 138 + 8 * 2, TEXTURE_SIZE_2048, true, 0.1f, 10, 0, 16, 8);
-    
-    ASSETS->getAnimationsMap()["Samus_Running_Old"] = new Animation("texture_001", 0, 0, 36, 46, 360, 46, TEXTURE_SIZE_2048, true, 0.1f, 10, 0, 2);
+    ASSETS->getAnimationsMap()["Samus_Running"] = new Animation("texture_001", 0, 0, 36, 46, 360, 46, TEXTURE_SIZE_2048, true, 0.1f, 10, 0, 2);
+    ASSETS->getAnimationsMap()["Samus_Running_Fast"] = new Animation("texture_001", 0, 0, 36, 46, 360, 46, TEXTURE_SIZE_2048, true, 0.075f, 10, 0, 2);
     
     ASSETS->getAnimationsMap()["Samus_Idle"] = new Animation("texture_001", 118, 58, 36, 46, 144 + 16 * 3, 138 + 8 * 2, TEXTURE_SIZE_2048, true, 0.1f, 3, 0, 16, 8);
     

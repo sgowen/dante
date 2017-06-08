@@ -107,6 +107,8 @@
 		BB5697DF1EE3661400D03694 /* PooledObjectsManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB5697D91EE3661400D03694 /* PooledObjectsManager.cpp */; };
 		BB5697E01EE3661400D03694 /* PooledObjectsManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB5697D91EE3661400D03694 /* PooledObjectsManager.cpp */; };
 		BB57737E1EC409B2005C480C /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB57737D1EC409B2005C480C /* main.cpp */; };
+		BB60F5541EE9AAA900817527 /* sound_005.wav in Resources */ = {isa = PBXBuildFile; fileRef = BB60F5531EE9AAA900817527 /* sound_005.wav */; };
+		BB60F5551EE9AAA900817527 /* sound_005.wav in Resources */ = {isa = PBXBuildFile; fileRef = BB60F5531EE9AAA900817527 /* sound_005.wav */; };
 		BB66EC201C0E575E006DE4F5 /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB66EC1F1C0E575D006DE4F5 /* OpenAL.framework */; };
 		BB6DB1B81E76FCCF005C0FAD /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BB6DB1B51E76FCCF005C0FAD /* Main.storyboard */; };
 		BB6DB1BB1E76FD7F005C0FAD /* MainViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = BB6DB1BA1E76FD7F005C0FAD /* MainViewController.mm */; };
@@ -549,6 +551,7 @@
 		BB57737D1EC409B2005C480C /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		BB5774271EC41B58005C480C /* pch.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = pch.h; sourceTree = "<group>"; };
 		BB5F46FA1ED38D61005FEC0C /* SocketAddressFamily.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SocketAddressFamily.h; sourceTree = "<group>"; };
+		BB60F5531EE9AAA900817527 /* sound_005.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = sound_005.wav; sourceTree = "<group>"; };
 		BB61CB581EC9FA1B000E0291 /* FrameworkConstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FrameworkConstants.h; sourceTree = "<group>"; };
 		BB66EC1F1C0E575D006DE4F5 /* OpenAL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenAL.framework; path = System/Library/Frameworks/OpenAL.framework; sourceTree = SDKROOT; };
 		BB6DB1B61E76FCCF005C0FAD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Main.storyboard; sourceTree = "<group>"; };
@@ -1202,6 +1205,7 @@
 		BB44C36C1DB03276003E633F /* sounds */ = {
 			isa = PBXGroup;
 			children = (
+				BB60F5531EE9AAA900817527 /* sound_005.wav */,
 				BB88026C1EE497CF00F1A37C /* sound_001.wav */,
 				BB1EAE891EE60D2000E2B23A /* sound_002.wav */,
 				BB1EAE8A1EE60D2000E2B23A /* sound_003.wav */,
@@ -2076,6 +2080,7 @@
 			files = (
 				BB44C3481DB0323F003E633F /* Images.xcassets in Resources */,
 				BB052CCC1EBA8ADD007FA789 /* shader_002_vert.ngs in Resources */,
+				BB60F5541EE9AAA900817527 /* sound_005.wav in Resources */,
 				BB6DB1B81E76FCCF005C0FAD /* Main.storyboard in Resources */,
 				BBD909D61EC38FC80075FB11 /* texture_002.ngt in Resources */,
 				BB052CCA1EBA8ADD007FA789 /* shader_002_frag.ngs in Resources */,
@@ -2099,6 +2104,7 @@
 			files = (
 				BB44C3291DB030B3003E633F /* Assets.xcassets in Resources */,
 				BB052CCD1EBA8ADD007FA789 /* shader_002_vert.ngs in Resources */,
+				BB60F5551EE9AAA900817527 /* sound_005.wav in Resources */,
 				BB44C32A1DB030B3003E633F /* Main.storyboard in Resources */,
 				BBD909D71EC38FC80075FB11 /* texture_002.ngt in Resources */,
 				BB052CCB1EBA8ADD007FA789 /* shader_002_frag.ngs in Resources */,
