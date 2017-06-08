@@ -73,6 +73,7 @@ void Robot::update()
     bool old_isFalling = m_isFalling;
     bool old_isShooting = m_isShooting;
     bool old_isJumping = m_isJumping;
+    bool old_isSprinting = m_isSprinting;
     
     // is there a move we haven't processed yet?
     ClientProxy* client = NetworkManagerServer::getInstance()->getClientProxy(getPlayerId());
@@ -96,7 +97,8 @@ void Robot::update()
         || old_isGrounded != m_isGrounded
         || old_isFalling != m_isFalling
         || old_isShooting != m_isShooting
-        || old_isJumping != m_isJumping)
+        || old_isJumping != m_isJumping
+        || old_isSprinting != m_isSprinting)
     {
         NetworkManagerServer::getInstance()->setStateDirty(getID(), ROBT_Pose);
     }
