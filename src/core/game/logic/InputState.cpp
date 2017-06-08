@@ -17,7 +17,8 @@ InputState::InputState() : IInputState(),
 m_fDesiredRightAmount(0),
 m_fDesiredLeftAmount(0),
 m_fDesiredJumpIntensity(0),
-m_isShooting(false)
+m_isShooting(false),
+m_isSprinting(false)
 {
     // Empty
 }
