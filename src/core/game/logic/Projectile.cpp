@@ -82,7 +82,6 @@ uint32_t Projectile::getAllStateMask() const
 void Projectile::read(InputMemoryBitStream& inInputStream)
 {
 #ifdef NG_CLIENT
-    float oldStateTime = m_fStateTime;
     Vector2 oldPosition = m_position;
     ProjectileState oldState = m_state;
 #endif
@@ -297,7 +296,7 @@ void Projectile::interpolateClientSidePrediction(Vector2& inOldPos)
 {
     if (interpolateVectorsIfNecessary(inOldPos, getPosition(), m_fTimePositionBecameOutOfSync))
     {
-        LOG("Robot ERROR! Move Replay Position");
+        LOG("Projectile ERROR! Move Replay Position");
     }
 }
 
@@ -307,7 +306,7 @@ bool Projectile::interpolateVectorsIfNecessary(Vector2& inA, Vector2& inB, float
     
     if (!inA.isEqualTo(inB))
     {
-        LOG("Robot ERROR! Move replay ended with incorrect vector! Old %3.8f, %3.8f - New %3.8f, %3.8f", inA.getX(), inA.getY(), inB.getX(), inB.getY());
+        LOG("Projectile ERROR! Move replay ended with incorrect vector! Old %3.8f, %3.8f - New %3.8f, %3.8f", inA.getX(), inA.getY(), inB.getX(), inB.getY());
         
         //have we been out of sync, or did we just become out of sync?
         float time = Timing::getInstance()->getFrameStartTime();

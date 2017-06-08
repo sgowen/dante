@@ -107,16 +107,12 @@ void Server::spawnRobotForPlayer(int inPlayerId)
     robot->setPlayerId(inPlayerId);
     robot->setPosition(Vector2(8.f - static_cast<float>(inPlayerId), 7.0f));
     
-    static Color White(1.0f, 1.0f, 1.0f, 1);
     static Color Red(1.0f, 0.0f, 0.0f, 1);
-    static Color Blue(0.0f, 0.0f, 1.0f, 1);
     static Color Green(0.0f, 1.0f, 0.0f, 1);
+    static Color Yellow(1.0f, 1.0f, 0.0f, 1);
     
     switch (inPlayerId)
     {
-        case 1:
-            robot->setColor(White);
-            break;
         case 2:
             robot->setColor(Red);
             break;
@@ -124,7 +120,7 @@ void Server::spawnRobotForPlayer(int inPlayerId)
             robot->setColor(Green);
             break;
         case 4:
-            robot->setColor(Blue);
+            robot->setColor(Yellow);
             break;
         default:
             break;
@@ -155,7 +151,6 @@ void Server::respawnEnemiesIfNecessary()
                 float speed = (rand() % 100) * 0.05f + 1.0f;
                 spacePirate->init(CAM_WIDTH - static_cast<float>(i), 7.0f, speed);
                 
-                static Color White(1.0f, 1.0f, 1.0f, 1);
                 static Color Red(1.0f, 0.0f, 0.0f, 1);
                 static Color Blue(0.0f, 0.0f, 1.0f, 1);
                 static Color Green(0.0f, 1.0f, 0.0f, 1);
@@ -171,10 +166,6 @@ void Server::respawnEnemiesIfNecessary()
                 else if (spacePirate->getSpeed() > 2)
                 {
                     spacePirate->setColor(Blue);
-                }
-                else
-                {
-                    spacePirate->setColor(White);
                 }
             }
         }
