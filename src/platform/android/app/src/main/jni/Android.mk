@@ -108,6 +108,7 @@ LOCAL_SRC_FILES += $(FILE_LIST:$(LOCAL_PATH)/%=%)
 LOCAL_C_INCLUDES += $(PROJECT_ROOT_PATH)/core/game/graphics/opengl/
 LOCAL_C_INCLUDES += $(PROJECT_ROOT_PATH)/core/game/graphics/portable/
 LOCAL_C_INCLUDES += $(PROJECT_ROOT_PATH)/core/game/logic/
+LOCAL_C_INCLUDES += $(PROJECT_ROOT_PATH)/core/game/network/
 LOCAL_C_INCLUDES += $(PROJECT_ROOT_PATH)/core/game/ui/
 
 GAME_UI_OPENGL_FILES = $(call walk, $(PROJECT_ROOT_PATH)/core/game/graphics/opengl)
@@ -120,6 +121,10 @@ LOCAL_SRC_FILES += $(FILE_LIST:$(LOCAL_PATH)/%=%)
 
 GAME_LOGIC_FILES = $(call walk, $(PROJECT_ROOT_PATH)/core/game/logic)
 FILE_LIST := $(filter %.cpp, $(GAME_LOGIC_FILES))
+LOCAL_SRC_FILES += $(FILE_LIST:$(LOCAL_PATH)/%=%)
+
+GAME_NETWORK_FILES = $(call walk, $(PROJECT_ROOT_PATH)/core/game/network)
+FILE_LIST := $(filter %.cpp, $(GAME_NETWORK_FILES))
 LOCAL_SRC_FILES += $(FILE_LIST:$(LOCAL_PATH)/%=%)
 
 GAME_UI_FILES = $(call walk, $(PROJECT_ROOT_PATH)/core/game/ui)

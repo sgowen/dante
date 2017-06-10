@@ -92,7 +92,7 @@
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <FloatingPointModel>Fast</FloatingPointModel>
       <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
-      <AdditionalIncludeDirectories>../../../3rdparty/;../../../core/framework/entity/;../../../core/framework/file/portable/;../../../core/framework/file/windows/;../../../core/framework/graphics/direct3d/;../../../core/framework/graphics/portable/;../../../core/framework/input/portable/;../../../core/framework/input/windows/;../../../core/framework/math/;../../../core/framework/network/client/;../../../core/framework/network/portable/;../../../core/framework/network/portable/;../../../core/framework/sound/portable/;../../../core/framework/sound/windows/;../../../core/framework/state/;../../../core/framework/ui/;../../../core/framework/util/;../../../core/game/graphics/direct3d/;../../../core/game/graphics/portable/;../../../core/game/logic/;../../../core/game/ui/;../shared/;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;$(ProjectDir);</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../../3rdparty/;../../../core/framework/entity/;../../../core/framework/file/portable/;../../../core/framework/file/windows/;../../../core/framework/graphics/direct3d/;../../../core/framework/graphics/portable/;../../../core/framework/input/portable/;../../../core/framework/input/windows/;../../../core/framework/math/;../../../core/framework/network/client/;../../../core/framework/network/portable/;../../../core/framework/network/portable/;../../../core/framework/sound/portable/;../../../core/framework/sound/windows/;../../../core/framework/state/;../../../core/framework/ui/;../../../core/framework/util/;../../../core/game/graphics/direct3d/;../../../core/game/graphics/portable/;../../../core/game/logic/;../../../core/game/network/;../../../core/game/ui/;../shared/;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;$(ProjectDir);</AdditionalIncludeDirectories>
       <PrecompiledHeaderOutputFile>$(IntDir)$(TargetName).pch</PrecompiledHeaderOutputFile>
     </ClCompile>
     <Link>
@@ -118,7 +118,7 @@
       <PreprocessorDefinitions>NG_CLIENT;WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <FloatingPointModel>Fast</FloatingPointModel>
-      <AdditionalIncludeDirectories>../../../3rdparty/;../../../core/framework/entity/;../../../core/framework/file/portable/;../../../core/framework/file/windows/;../../../core/framework/graphics/direct3d/;../../../core/framework/graphics/portable/;../../../core/framework/input/portable/;../../../core/framework/input/windows/;../../../core/framework/math/;../../../core/framework/network/client/;../../../core/framework/network/portable/;../../../core/framework/network/portable/;../../../core/framework/sound/portable/;../../../core/framework/sound/windows/;../../../core/framework/state/;../../../core/framework/ui/;../../../core/framework/util/;../../../core/game/graphics/direct3d/;../../../core/game/graphics/portable/;../../../core/game/logic/;../../../core/game/ui/;../shared/;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;$(ProjectDir);</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../../3rdparty/;../../../core/framework/entity/;../../../core/framework/file/portable/;../../../core/framework/file/windows/;../../../core/framework/graphics/direct3d/;../../../core/framework/graphics/portable/;../../../core/framework/input/portable/;../../../core/framework/input/windows/;../../../core/framework/math/;../../../core/framework/network/client/;../../../core/framework/network/portable/;../../../core/framework/network/portable/;../../../core/framework/sound/portable/;../../../core/framework/sound/windows/;../../../core/framework/state/;../../../core/framework/ui/;../../../core/framework/util/;../../../core/game/graphics/direct3d/;../../../core/game/graphics/portable/;../../../core/game/logic/;../../../core/game/network/;../../../core/game/ui/;../shared/;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;$(ProjectDir);</AdditionalIncludeDirectories>
       <PrecompiledHeaderOutputFile>$(IntDir)$(TargetName).pch</PrecompiledHeaderOutputFile>
     </ClCompile>
     <Link>
@@ -147,7 +147,7 @@
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <FloatingPointModel>Fast</FloatingPointModel>
       <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
-      <AdditionalIncludeDirectories>../../../3rdparty/;../../../core/framework/entity/;../../../core/framework/file/portable/;../../../core/framework/file/windows/;../../../core/framework/graphics/direct3d/;../../../core/framework/graphics/portable/;../../../core/framework/input/portable/;../../../core/framework/input/windows/;../../../core/framework/math/;../../../core/framework/network/client/;../../../core/framework/network/portable/;../../../core/framework/network/portable/;../../../core/framework/sound/portable/;../../../core/framework/sound/windows/;../../../core/framework/state/;../../../core/framework/ui/;../../../core/framework/util/;../../../core/game/graphics/direct3d/;../../../core/game/graphics/portable/;../../../core/game/logic/;../../../core/game/ui/;../shared/;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;$(ProjectDir);</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../../3rdparty/;../../../core/framework/entity/;../../../core/framework/file/portable/;../../../core/framework/file/windows/;../../../core/framework/graphics/direct3d/;../../../core/framework/graphics/portable/;../../../core/framework/input/portable/;../../../core/framework/input/windows/;../../../core/framework/math/;../../../core/framework/network/client/;../../../core/framework/network/portable/;../../../core/framework/network/portable/;../../../core/framework/sound/portable/;../../../core/framework/sound/windows/;../../../core/framework/state/;../../../core/framework/ui/;../../../core/framework/util/;../../../core/game/graphics/direct3d/;../../../core/game/graphics/portable/;../../../core/game/logic/;../../../core/game/network/;../../../core/game/ui/;../shared/;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;$(ProjectDir);</AdditionalIncludeDirectories>
       <PrecompiledHeaderOutputFile>$(IntDir)$(TargetName).pch</PrecompiledHeaderOutputFile>
     </ClCompile>
     <Link>
@@ -177,7 +177,7 @@
       <PreprocessorDefinitions>NG_CLIENT;WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <FloatingPointModel>Fast</FloatingPointModel>
-      <AdditionalIncludeDirectories>../../../3rdparty/;../../../core/framework/entity/;../../../core/framework/file/portable/;../../../core/framework/file/windows/;../../../core/framework/graphics/direct3d/;../../../core/framework/graphics/portable/;../../../core/framework/input/portable/;../../../core/framework/input/windows/;../../../core/framework/math/;../../../core/framework/network/client/;../../../core/framework/network/portable/;../../../core/framework/network/portable/;../../../core/framework/sound/portable/;../../../core/framework/sound/windows/;../../../core/framework/state/;../../../core/framework/ui/;../../../core/framework/util/;../../../core/game/graphics/direct3d/;../../../core/game/graphics/portable/;../../../core/game/logic/;../../../core/game/ui/;../shared/;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;$(ProjectDir);</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../../3rdparty/;../../../core/framework/entity/;../../../core/framework/file/portable/;../../../core/framework/file/windows/;../../../core/framework/graphics/direct3d/;../../../core/framework/graphics/portable/;../../../core/framework/input/portable/;../../../core/framework/input/windows/;../../../core/framework/math/;../../../core/framework/network/client/;../../../core/framework/network/portable/;../../../core/framework/network/portable/;../../../core/framework/sound/portable/;../../../core/framework/sound/windows/;../../../core/framework/state/;../../../core/framework/ui/;../../../core/framework/util/;../../../core/game/graphics/direct3d/;../../../core/game/graphics/portable/;../../../core/game/logic/;../../../core/game/network/;../../../core/game/ui/;../shared/;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;$(ProjectDir);</AdditionalIncludeDirectories>
       <PrecompiledHeaderOutputFile>$(IntDir)$(TargetName).pch</PrecompiledHeaderOutputFile>
     </ClCompile>
     <Link>
@@ -208,6 +208,7 @@
     <ClInclude Include="..\..\..\core\framework\math\*.h" />
     <ClInclude Include="..\..\..\core\framework\network\client\*.h" />
     <ClInclude Include="..\..\..\core\framework\network\portable\*.h" />
+    <ClInclude Include="..\..\..\core\framework\network\server\*.h" />
     <ClInclude Include="..\..\..\core\framework\sound\portable\*.h" />
     <ClInclude Include="..\..\..\core\framework\sound\windows\*.h" />
     <ClInclude Include="..\..\..\core\framework\state\*.h" />
@@ -216,6 +217,7 @@
     <ClInclude Include="..\..\..\core\game\graphics\direct3d\*.h" />
     <ClInclude Include="..\..\..\core\game\graphics\portable\*.h" />
     <ClInclude Include="..\..\..\core\game\logic\*.h" />
+    <ClInclude Include="..\..\..\core\game\network\*.h" />
     <ClInclude Include="..\..\..\core\game\ui\*.h" />
     <ClInclude Include="..\shared\*.h" />
     <ClInclude Include="*.h" />
@@ -231,6 +233,7 @@
     <ClCompile Include="..\..\..\core\framework\math\*.cpp" />
     <ClCompile Include="..\..\..\core\framework\network\client\*.cpp" />
     <ClCompile Include="..\..\..\core\framework\network\portable\*.cpp" />
+    <ClCompile Include="..\..\..\core\framework\network\server\*.cpp" />
     <ClCompile Include="..\..\..\core\framework\sound\portable\*.cpp" />
     <ClCompile Include="..\..\..\core\framework\sound\windows\*.cpp" />
     <ClCompile Include="..\..\..\core\framework\state\*.cpp" />
@@ -239,6 +242,7 @@
     <ClCompile Include="..\..\..\core\game\graphics\direct3d\*.cpp" />
     <ClCompile Include="..\..\..\core\game\graphics\portable\*.cpp" />
     <ClCompile Include="..\..\..\core\game\logic\*.cpp" />
+    <ClCompile Include="..\..\..\core\game\network\*.cpp" />
     <ClCompile Include="..\..\..\core\game\ui\*.cpp" />
     <ClCompile Include="..\shared\*.cpp" />
     <ClCompile Include="DeviceResources.cpp" />
