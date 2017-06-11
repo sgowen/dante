@@ -16,3 +16,9 @@ AppPackages/
 *.wav
 *VC.db
 .vs/
+
+# Noctis Games
+*.ngt
+*.wav
+*.cso
+*.exe

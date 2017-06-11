@@ -1,0 +1,54 @@
+//
+//  MainEngine.h
+//  dante
+//
+//  Created by Stephen Gowen on 2/22/14.
+//  Copyright (c) 2017 Noctis Games. All rights reserved.
+//
+
+#ifndef __dante__MainEngine__
+#define __dante__MainEngine__
+
+#include "IEngine.h"
+
+#include "RTTI.h"
+
+class JsonFile;
+class MainRenderer;
+class Vector2;
+class Entity;
+
+class MainEngine : public IEngine
+{
+    RTTI_DECL;
+    
+public:
+    MainEngine();
+    
+    virtual ~MainEngine();
+    
+    virtual void createDeviceDependentResources();
+    
+    virtual void createWindowSizeDependentResources(int renderWidth, int renderHeight, int touchScreenWidth, int touchScreenHeight);
+    
+    virtual void releaseDeviceDependentResources();
+
+	virtual void onResume();
+	
+	virtual void onPause();
+    
+	virtual void update(float deltaTime);
+    
+    virtual void render();
+    
+private:
+    JsonFile* m_config;
+    MainRenderer* m_renderer;
+    Vector2* m_touchPointDown;
+    Vector2* m_touchPointDown2;
+    
+    float m_fStateTime;
+    float m_fFrameStateTime;
+};
+
+#endif /* defined(__dante__MainEngine__) */

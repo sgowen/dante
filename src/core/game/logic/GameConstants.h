@@ -15,10 +15,6 @@
 #define VERSION_MINOR 2
 #define VERSION_BUILD 0
 
-//// Requested Action Definitions ////
-
-#define REQUESTED_ACTION_UPDATE 0
-
 //// Sound Definitions ////
 
 #define SOUND_ID_NONE 0

@@ -11,11 +11,11 @@
 #import "JoystickController.h"
 
 // C++
-#include "MainScreen.h"
+#include "MainEngine.h"
 #include "ScreenInputManager.h"
 #include "KeyboardInputManager.h"
 #include "MainAssets.h"
-#include "GameConstants.h"
+#include "FrameworkConstants.h"
 #include "OpenGLManager.h"
 
 #import <OpenGL/OpenGL.h>
@@ -25,7 +25,7 @@
 
 @interface NGOpenGLView ()
 {
-    MainScreen *_screen;
+    MainEngine *_engine;
     JoystickController* _joystickController;
     
     double m_fTimeSinceLastJoystickScan;
@@ -62,7 +62,7 @@ static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink,
 
 - (void)awakeFromNib
 {
-    _screen = new MainScreen();
+    _engine = new MainEngine();
     
     m_fTimeSinceLastJoystickScan = CFAbsoluteTimeGetCurrent();
     m_fLastTime = CFAbsoluteTimeGetCurrent();
@@ -165,7 +165,7 @@ static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink,
     
     MAIN_ASSETS->setUsingDesktopTextureSet(true);
     
-    _screen->createDeviceDependentResources();
+    _engine->createDeviceDependentResources();
 }
 
 - (void)reshape
@@ -214,7 +214,7 @@ static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink,
     
     OGLManager->setScreenSize(width, height);
     
-    _screen->createWindowSizeDependentResources(width > 1440 ? 1440 : width, height > 900 ? 900 : height, width, height);
+    _engine->createWindowSizeDependentResources(width > 1440 ? 1440 : width, height > 900 ? 900 : height, width, height);
     
     CGLUnlockContext([[self openGLContext] CGLContextObj]);
 }
@@ -256,17 +256,20 @@ static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink,
     double deltaTime = time - m_fLastTime;
     m_fLastTime = time;
     
-    int requestedAction = _screen->getRequestedAction();
+    int requestedAction = _engine->getRequestedAction();
     
     switch (requestedAction)
     {
+        case REQUESTED_ACTION_EXIT:
+            [NSApp terminate:self];
+            break;
         case REQUESTED_ACTION_UPDATE:
         default:
             break;
     }
     
-    _screen->update(deltaTime);
-    _screen->render();
+    _engine->update(deltaTime);
+    _engine->render();
     
     CGLFlushDrawable([[self openGLContext] CGLContextObj]);
     CGLUnlockContext([[self openGLContext] CGLContextObj]);
@@ -281,7 +284,7 @@ static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink,
     
     CVDisplayLinkRelease(displayLink);
     
-    delete _screen;
+    delete _engine;
 }
 
 - (BOOL)acceptsFirstResponder
