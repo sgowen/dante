@@ -18,17 +18,9 @@
 #include "steam/isteammatchmaking.h"
 #include "steam/steam_gameserver.h"
 
-//-----------------------------------------------------------------------------
-// Purpose: Helper to display critical errors
-//-----------------------------------------------------------------------------
-int alert(const char *lpCaption, const char *lpText)
+void alert(const char *lpCaption, const char *lpText)
 {
-#ifndef _WIN32
-    fprintf( stderr, "Message: '%s', Detail: '%s'\n", lpCaption, lpText );
-    return 0;
-#else
-    return ::MessageBox( NULL, lpText, lpCaption, MB_OK );
-#endif
+	LOG("Message: %s, Detail: %s", lpCaption, lpText);
 }
 
 //-----------------------------------------------------------------------------

@@ -264,7 +264,9 @@ static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink,
             [NSApp terminate:self];
             break;
         case REQUESTED_ACTION_UPDATE:
+            break;
         default:
+            _engine->clearRequestedAction();
             break;
     }
     

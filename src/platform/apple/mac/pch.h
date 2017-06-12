@@ -19,17 +19,6 @@
 #elif TARGET_OS_OSX
 #import <OpenGL/OpenGL.h>
 #import <OpenGL/gl.h>
-
-#ifdef STEAM_CEG
-// Steam DRM header file
-#include "cegclient.h"
-#else
-#define Steamworks_InitCEGLibrary() (true)
-#define Steamworks_TermCEGLibrary()
-#define Steamworks_TestSecret()
-#define Steamworks_SelfCheck()
-#endif
-
 #endif
 
 #endif /* defined(__noctisgames__pch__) */

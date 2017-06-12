@@ -59,10 +59,6 @@ public:
     // Properties
     void GetDefaultSize(int& width, int& height) const;
 
-	int getRequestedAction();
-    
-	void clearRequestedAction();
-
 private:
 	// Device resources.
 	std::unique_ptr<DX::DeviceResources> m_deviceResources;
@@ -79,7 +75,6 @@ private:
 	IEngine* m_engine;
 
 	float m_fDPI;
-	int m_iRequestedAction;
 	bool m_isPointerPressed;
 	bool m_isDeviceLost;
 	bool m_isWindowsMobile;

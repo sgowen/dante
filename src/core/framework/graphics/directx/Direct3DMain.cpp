@@ -17,7 +17,7 @@
 #include "KeyboardInputManager.h"
 #include "GamePadInputManager.h"
 #include "MainAssets.h"
-#include "GameConstants.h"
+#include "FrameworkConstants.h"
 #include "macros.h"
 #include "NGAudioEngine.h"
 
@@ -27,7 +27,7 @@ using namespace DirectX;
 
 using Microsoft::WRL::ComPtr;
 
-Direct3DMain::Direct3DMain() : m_engine(nullptr), m_fDPI(0), m_iRequestedAction(0), m_isPointerPressed(false), m_isDeviceLost(false)
+Direct3DMain::Direct3DMain() : m_engine(nullptr), m_fDPI(0), m_isPointerPressed(false), m_isDeviceLost(false)
 {
     m_deviceResources = std::make_unique<DX::DeviceResources>();
 	m_deviceResources->RegisterDeviceNotify(this);
@@ -368,6 +368,9 @@ void Direct3DMain::Update(DX::StepTimer const& timer)
 
 	switch (requestedAction)
 	{
+	case REQUESTED_ACTION_EXIT:
+		ExitGame();
+		return;
 	case REQUESTED_ACTION_UPDATE:
 		break;
 	default:
@@ -533,16 +536,6 @@ void Direct3DMain::GetDefaultSize(int& width, int& height) const
 {
 	width = 800;
     height = 600;
-}
-
-int Direct3DMain::getRequestedAction()
-{
-	return m_iRequestedAction;
-}
-
-void Direct3DMain::clearRequestedAction()
-{
-	m_iRequestedAction = 0;
 }
 #pragma endregion
 

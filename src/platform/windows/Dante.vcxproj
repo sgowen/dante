@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -69,19 +69,19 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <LibraryPath>C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Lib\x86;$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86</LibraryPath>
+    <LibraryPath>$(SolutionDir)..\..\3rdparty\steam\redistributable_bin;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Lib\x86;$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <LibraryPath>C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Lib\x64;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);$(NETFXKitsDir)Lib\um\x64</LibraryPath>
+    <LibraryPath>$(SolutionDir)..\..\3rdparty\steam\redistributable_bin\win64;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Lib\x64;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);$(NETFXKitsDir)Lib\um\x64</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <LibraryPath>C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Lib\x86;$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86</LibraryPath>
+    <LibraryPath>$(SolutionDir)..\..\3rdparty\steam\redistributable_bin;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Lib\x86;$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <LibraryPath>C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Lib\x64;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);$(NETFXKitsDir)Lib\um\x64</LibraryPath>
+    <LibraryPath>$(SolutionDir)..\..\3rdparty\steam\redistributable_bin\win64;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Lib\x64;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);$(NETFXKitsDir)Lib\um\x64</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -92,13 +92,13 @@
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <FloatingPointModel>Fast</FloatingPointModel>
       <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
-      <AdditionalIncludeDirectories>../../3rdparty/;../../core/framework/entity/;../../core/framework/file/portable/;../../core/framework/file/directx/;../../core/framework/graphics/directx/;../../core/framework/graphics/portable/;../../core/framework/input/portable/;../../core/framework/input/directx/;../../core/framework/math/;../../core/framework/network/client/;../../core/framework/network/portable/;../../core/framework/network/server/;../../core/framework/network/steam/;../../core/framework/sound/portable/;../../core/framework/sound/directx/;../../core/framework/state/;../../core/framework/util/;../../core/game/graphics/directx/;../../core/game/graphics/portable/;../../core/game/logic/;../../core/game/network/;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;$(ProjectDir);</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../3rdparty/;../../core/framework/entity/;../../core/framework/file/portable/;../../core/framework/file/directx/;../../core/framework/graphics/directx/;../../core/framework/graphics/portable/;../../core/framework/input/portable/;../../core/framework/input/directx/;../../core/framework/math/;../../core/framework/network/client/;../../core/framework/network/portable/;../../core/framework/network/server/;../../core/framework/network/steam/;../../core/framework/sound/portable/;../../core/framework/sound/directx/;../../core/framework/state/;../../core/framework/util/;../../core/game/graphics/directx/;../../core/game/graphics/portable/;../../core/game/logic/;../../core/game/network/;../../3rdparty/steam/;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;$(ProjectDir);</AdditionalIncludeDirectories>
       <PrecompiledHeaderOutputFile>$(IntDir)$(TargetName).pch</PrecompiledHeaderOutputFile>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>d3d11.lib;dxgi.lib;dxguid.lib;uuid.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>steam_api.lib;d3d11.lib;dxgi.lib;dxguid.lib;uuid.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>xcopy /y "$(TargetPath)" $(SolutionDir)</Command>
@@ -118,13 +118,13 @@
       <PreprocessorDefinitions>NG_CLIENT;WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <FloatingPointModel>Fast</FloatingPointModel>
-      <AdditionalIncludeDirectories>../../3rdparty/;../../core/framework/entity/;../../core/framework/file/portable/;../../core/framework/file/directx/;../../core/framework/graphics/directx/;../../core/framework/graphics/portable/;../../core/framework/input/portable/;../../core/framework/input/directx/;../../core/framework/math/;../../core/framework/network/client/;../../core/framework/network/portable/;../../core/framework/network/server/;../../core/framework/network/steam/;../../core/framework/sound/portable/;../../core/framework/sound/directx/;../../core/framework/state/;../../core/framework/util/;../../core/game/graphics/directx/;../../core/game/graphics/portable/;../../core/game/logic/;../../core/game/network/;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;$(ProjectDir);</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../3rdparty/;../../core/framework/entity/;../../core/framework/file/portable/;../../core/framework/file/directx/;../../core/framework/graphics/directx/;../../core/framework/graphics/portable/;../../core/framework/input/portable/;../../core/framework/input/directx/;../../core/framework/math/;../../core/framework/network/client/;../../core/framework/network/portable/;../../core/framework/network/server/;../../core/framework/network/steam/;../../core/framework/sound/portable/;../../core/framework/sound/directx/;../../core/framework/state/;../../core/framework/util/;../../core/game/graphics/directx/;../../core/game/graphics/portable/;../../core/game/logic/;../../core/game/network/;../../3rdparty/steam/;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;$(ProjectDir);</AdditionalIncludeDirectories>
       <PrecompiledHeaderOutputFile>$(IntDir)$(TargetName).pch</PrecompiledHeaderOutputFile>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>d3d11.lib;dxgi.lib;dxguid.lib;uuid.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>steam_api.lib;d3d11.lib;dxgi.lib;dxguid.lib;uuid.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>xcopy /y "$(TargetPath)" $(SolutionDir)</Command>
@@ -147,7 +147,7 @@
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <FloatingPointModel>Fast</FloatingPointModel>
       <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
-      <AdditionalIncludeDirectories>../../3rdparty/;../../core/framework/entity/;../../core/framework/file/portable/;../../core/framework/file/directx/;../../core/framework/graphics/directx/;../../core/framework/graphics/portable/;../../core/framework/input/portable/;../../core/framework/input/directx/;../../core/framework/math/;../../core/framework/network/client/;../../core/framework/network/portable/;../../core/framework/network/server/;../../core/framework/network/steam/;../../core/framework/sound/portable/;../../core/framework/sound/directx/;../../core/framework/state/;../../core/framework/util/;../../core/game/graphics/directx/;../../core/game/graphics/portable/;../../core/game/logic/;../../core/game/network/;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;$(ProjectDir);</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../3rdparty/;../../core/framework/entity/;../../core/framework/file/portable/;../../core/framework/file/directx/;../../core/framework/graphics/directx/;../../core/framework/graphics/portable/;../../core/framework/input/portable/;../../core/framework/input/directx/;../../core/framework/math/;../../core/framework/network/client/;../../core/framework/network/portable/;../../core/framework/network/server/;../../core/framework/network/steam/;../../core/framework/sound/portable/;../../core/framework/sound/directx/;../../core/framework/state/;../../core/framework/util/;../../core/game/graphics/directx/;../../core/game/graphics/portable/;../../core/game/logic/;../../core/game/network/;../../3rdparty/steam/;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;$(ProjectDir);</AdditionalIncludeDirectories>
       <PrecompiledHeaderOutputFile>$(IntDir)$(TargetName).pch</PrecompiledHeaderOutputFile>
     </ClCompile>
     <Link>
@@ -155,7 +155,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>d3d11.lib;dxgi.lib;dxguid.lib;uuid.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>steam_api.lib;d3d11.lib;dxgi.lib;dxguid.lib;uuid.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>xcopy /y "$(TargetPath)" $(SolutionDir)</Command>
@@ -177,7 +177,7 @@
       <PreprocessorDefinitions>NG_CLIENT;WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <FloatingPointModel>Fast</FloatingPointModel>
-      <AdditionalIncludeDirectories>../../3rdparty/;../../core/framework/entity/;../../core/framework/file/portable/;../../core/framework/file/directx/;../../core/framework/graphics/directx/;../../core/framework/graphics/portable/;../../core/framework/input/portable/;../../core/framework/input/directx/;../../core/framework/math/;../../core/framework/network/client/;../../core/framework/network/portable/;../../core/framework/network/server/;../../core/framework/network/steam/;../../core/framework/sound/portable/;../../core/framework/sound/directx/;../../core/framework/state/;../../core/framework/util/;../../core/game/graphics/directx/;../../core/game/graphics/portable/;../../core/game/logic/;../../core/game/network/;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;$(ProjectDir);</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../3rdparty/;../../core/framework/entity/;../../core/framework/file/portable/;../../core/framework/file/directx/;../../core/framework/graphics/directx/;../../core/framework/graphics/portable/;../../core/framework/input/portable/;../../core/framework/input/directx/;../../core/framework/math/;../../core/framework/network/client/;../../core/framework/network/portable/;../../core/framework/network/server/;../../core/framework/network/steam/;../../core/framework/sound/portable/;../../core/framework/sound/directx/;../../core/framework/state/;../../core/framework/util/;../../core/game/graphics/directx/;../../core/game/graphics/portable/;../../core/game/logic/;../../core/game/network/;../../3rdparty/steam/;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;$(ProjectDir);</AdditionalIncludeDirectories>
       <PrecompiledHeaderOutputFile>$(IntDir)$(TargetName).pch</PrecompiledHeaderOutputFile>
     </ClCompile>
     <Link>
@@ -185,7 +185,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>d3d11.lib;dxgi.lib;dxguid.lib;uuid.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>steam_api.lib;d3d11.lib;dxgi.lib;dxguid.lib;uuid.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>xcopy /y "$(TargetPath)" $(SolutionDir)</Command>

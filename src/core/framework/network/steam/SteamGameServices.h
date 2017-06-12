@@ -9,6 +9,16 @@
 #ifndef __noctisgames__SteamGameServices__
 #define __noctisgames__SteamGameServices__
 
+#ifdef STEAM_CEG
+// Steam DRM header file
+#include "cegclient.h"
+#else
+#define Steamworks_InitCEGLibrary() (true)
+#define Steamworks_TermCEGLibrary()
+#define Steamworks_TestSecret()
+#define Steamworks_SelfCheck()
+#endif
+
 class SteamGameServices
 {
 public:

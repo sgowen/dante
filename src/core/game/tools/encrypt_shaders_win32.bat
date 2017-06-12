@@ -1,6 +1,6 @@
 ECHO Encrypting Shaders...
 
-cd ..\..\platform\windows\win32\data\shaders
+cd ..\..\..\platform\windows\data\shaders
 
 ..\..\..\..\core\framework\tools\XOREncryptDecrypt.exe shader_001_frag.cso shader_001_frag.ngs
 ECHO .
