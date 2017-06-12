@@ -35,9 +35,11 @@ private:
     TextureWrapper* m_misc;
     Font* m_font;
     
-    void RenderBandWidth();
-    void RenderRoundTripTime();
-    void RenderText(const std::string& inStr, const Vector2& origin, const Color& inColor);
+    void renderBandWidth();
+    
+    void renderRoundTripTime();
+    
+    void renderText(const std::string& inStr, const Vector2& origin, const Color& inColor);
 };
 
 #endif /* defined(__dante__MainRenderer__) */

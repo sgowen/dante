@@ -21,7 +21,6 @@
 #include "Color.h"
 #include "SpriteBatcher.h"
 #include "TextureRegion.h"
-
 #include "macros.h"
 #include "NetworkManagerClient.h"
 #include "World.h"
@@ -30,6 +29,7 @@
 #include "SpacePirate.h"
 #include "StringUtil.h"
 #include "WeightedTimedMovingAverage.h"
+#include "NGSTDUtil.h"
 
 #include <sstream>
 #include <ctime> // rand
@@ -124,13 +124,13 @@ void MainRenderer::tempDraw()
         m_spriteBatcher->endBatch(*m_demo->gpuTextureWrapper, *m_textureGpuProgramWrapper);
         
         m_spriteBatcher->beginBatch();
-        RenderBandWidth();
-        RenderRoundTripTime();
+        renderBandWidth();
+        renderRoundTripTime();
         m_spriteBatcher->endBatch(*m_misc->gpuTextureWrapper, *m_textureGpuProgramWrapper);
     }
 }
 
-void MainRenderer::RenderBandWidth()
+void MainRenderer::renderBandWidth()
 {
     static Vector2 bandwidthOrigin = Vector2(CAM_WIDTH / 2, CAM_HEIGHT - 1);
     
@@ -144,10 +144,10 @@ void MainRenderer::RenderBandWidth()
     
     static Color whiteColor = Color(1.0f, 1.0f, 1.0f, 1.0f);
     
-    RenderText(bandwidth, bandwidthOrigin, whiteColor);
+    renderText(bandwidth, bandwidthOrigin, whiteColor);
 }
 
-void MainRenderer::RenderRoundTripTime()
+void MainRenderer::renderRoundTripTime()
 {
     static Vector2 roundTripTimeOrigin = Vector2(CAM_WIDTH / 2, CAM_HEIGHT - 0.5);
     
@@ -157,10 +157,10 @@ void MainRenderer::RenderRoundTripTime()
     
     static Color whiteColor = Color(1.0f, 1.0f, 1.0f, 1.0f);
     
-    RenderText(roundTripTime, roundTripTimeOrigin, whiteColor);
+    renderText(roundTripTime, roundTripTimeOrigin, whiteColor);
 }
 
-void MainRenderer::RenderText(const std::string& inStr, const Vector2& origin, const Color& inColor)
+void MainRenderer::renderText(const std::string& inStr, const Vector2& origin, const Color& inColor)
 {
     Color fontColor = Color(inColor.red, inColor.green, inColor.blue, inColor.alpha);
     float fgWidth = CAM_WIDTH / 60;

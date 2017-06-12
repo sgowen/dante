@@ -9,16 +9,10 @@
 #ifndef __noctisgames__pch__
 #define __noctisgames__pch__
 
-#ifdef __APPLE__
-#include "TargetConditionals.h"
-#endif
-
-#if TARGET_OS_IPHONE
-#include <OpenGLES/ES2/gl.h>
-#include <OpenGLES/ES2/glext.h>
-#elif TARGET_OS_OSX
 #import <OpenGL/OpenGL.h>
 #import <OpenGL/gl.h>
-#endif
+
+typedef unsigned char byte;
+typedef unsigned int uint32;
 
 #endif /* defined(__noctisgames__pch__) */

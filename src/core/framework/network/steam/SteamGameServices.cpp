@@ -26,7 +26,7 @@ void alert(const char *lpCaption, const char *lpText)
 //-----------------------------------------------------------------------------
 // Purpose: callback hook for debug text emitted from the Steam API
 //-----------------------------------------------------------------------------
-extern "C" void __cdecl SteamAPIDebugTextHook( int nSeverity, const char *pchDebugText )
+extern "C" void __cdecl steamAPIDebugTextHook(int nSeverity, const char *pchDebugText)
 {
     // if you're running in the debugger, only warnings (nSeverity >= 1) will be sent
     // if you add -debug_steamapi to the command-line, a lot of extra informational messages will also be sent
@@ -81,7 +81,7 @@ bool SteamGameServices::init()
     }
     
     // set our debug handler
-    SteamClient()->SetWarningMessageHook(&SteamAPIDebugTextHook);
+    SteamClient()->SetWarningMessageHook(&steamAPIDebugTextHook);
     
     // Ensure that the user has logged into Steam. This will always return true if the game is launched
     // from Steam, but if Steam is at the login prompt when you run your game from the debugger, it

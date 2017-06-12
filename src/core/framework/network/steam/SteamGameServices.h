@@ -29,7 +29,6 @@ public:
     void deinit();
     
 private:
-    
     // ctor, copy ctor, and assignment should be private in a Singleton
     SteamGameServices();
     virtual ~SteamGameServices();
