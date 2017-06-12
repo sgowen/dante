@@ -48,7 +48,7 @@ m_fFrameStateTime(0)
 {
     m_config->load();
     
-    if (!SteamGameServices::getInstance()->init())
+    if (SteamGameServices::getInstance()->init() < 0)
     {
         m_iRequestedAction = REQUESTED_ACTION_EXIT;
         return;

@@ -10,9 +10,11 @@
 
 #include "Robot.h"
 
-#include "InputState.h"
 #include "OutputMemoryBitStream.h"
 #include "InputMemoryBitStream.h"
+#include "InputState.h"
+#include "Move.h"
+#include "SpaceWarServer.h"
 
 #include "World.h"
 #include "Vector2.h"
@@ -20,21 +22,16 @@
 #include "GameConstants.h"
 #include "Timing.h"
 #include "StringUtil.h"
-#include "Move.h"
 #include "MathUtil.h"
 #include "NGRect.h"
 #include "Projectile.h"
 #include "EntityRegistry.h"
-
-#ifdef NG_SERVER
 #include "NetworkManagerServer.h"
 #include "ClientProxy.h"
 #include "Server.h"
-#elif NG_CLIENT
 #include "NetworkManagerClient.h"
 #include "InputManager.h"
 #include "NGAudioEngine.h"
-#endif
 
 #include <math.h>
 
@@ -42,81 +39,88 @@ Entity* Robot::create()
 {
     Robot* ret = new Robot();
     
-#ifdef NG_SERVER
-    NetworkManagerServer::getInstance()->registerEntity(ret);
-#endif
+    if (ret->m_server)
+    {
+        NetworkManagerServer::getInstance()->registerEntity(ret);
+    }
     
     return ret;
 }
 
 void Robot::onDeletion()
 {
-#ifdef NG_SERVER
-    NetworkManagerServer::getInstance()->unregisterEntity(this);
-#elif NG_CLIENT
-    if (getPlayerId() == NetworkManagerClient::getInstance()->getPlayerId())
+    if (m_server)
     {
-        // This robot is the current local player, so let's display something like "Respawning in 5, 4, 3..."
-        playSound(SOUND_ID_DEATH);
+        NetworkManagerServer::getInstance()->unregisterEntity(this);
     }
-#endif
+    else
+    {
+        if (getPlayerId() == NetworkManagerClient::getInstance()->getPlayerId())
+        {
+            // This robot is the current local player, so let's display something like "Respawning in 5, 4, 3..."
+            playSound(SOUND_ID_DEATH);
+        }
+    }
 }
 
 void Robot::update()
 {
-#ifdef NG_SERVER
-    Vector2 oldAcceleration = getAcceleration();
-    Vector2 oldVelocity = getVelocity();
-    Vector2 oldPosition = getPosition();
-    bool old_isFacingLeft = m_isFacingLeft;
-    bool old_isGrounded = m_isGrounded;
-    bool old_isFalling = m_isFalling;
-    bool old_isShooting = m_isShooting;
-    bool old_isJumping = m_isJumping;
-    bool old_isSprinting = m_isSprinting;
-    
-    // is there a move we haven't processed yet?
-    ClientProxy* client = NetworkManagerServer::getInstance()->getClientProxy(getPlayerId());
-    if (client)
+    if (m_server)
     {
-        MoveList& moveList = client->getUnprocessedMoveList();
-        for (const Move& unprocessedMove : moveList)
+        Vector2 oldAcceleration = getAcceleration();
+        Vector2 oldVelocity = getVelocity();
+        Vector2 oldPosition = getPosition();
+        bool old_isFacingLeft = m_isFacingLeft;
+        bool old_isGrounded = m_isGrounded;
+        bool old_isFalling = m_isFalling;
+        bool old_isShooting = m_isShooting;
+        bool old_isJumping = m_isJumping;
+        bool old_isSprinting = m_isSprinting;
+        
+        // is there a move we haven't processed yet?
+        ClientProxy* client = NetworkManagerServer::getInstance()->getClientProxy(getPlayerId());
+        if (client)
         {
-            processMove(unprocessedMove);
+            MoveList& moveList = client->getUnprocessedMoveList();
+            for (const Move& unprocessedMove : moveList)
+            {
+                processMove(unprocessedMove);
+            }
+            
+            moveList.clear();
         }
         
-        moveList.clear();
-    }
-    
-    handleShooting();
-    
-    if (!oldAcceleration.isEqualTo(getAcceleration())
-        || !oldVelocity.isEqualTo(getVelocity())
-        || !oldPosition.isEqualTo(getPosition())
-        || old_isFacingLeft != m_isFacingLeft
-        || old_isGrounded != m_isGrounded
-        || old_isFalling != m_isFalling
-        || old_isShooting != m_isShooting
-        || old_isJumping != m_isJumping
-        || old_isSprinting != m_isSprinting)
-    {
-        NetworkManagerServer::getInstance()->setStateDirty(getID(), ROBT_Pose);
-    }
-#elif NG_CLIENT
-    // TODO, allow for multiple client inputs
-    if (getPlayerId() == NetworkManagerClient::getInstance()->getPlayerId())
-    {
-        const Move* pendingMove = InputManager::getInstance()->getAndClearPendingMove();
-        if (pendingMove)
+        handleShooting();
+        
+        if (!oldAcceleration.isEqualTo(getAcceleration())
+            || !oldVelocity.isEqualTo(getVelocity())
+            || !oldPosition.isEqualTo(getPosition())
+            || old_isFacingLeft != m_isFacingLeft
+            || old_isGrounded != m_isGrounded
+            || old_isFalling != m_isFalling
+            || old_isShooting != m_isShooting
+            || old_isJumping != m_isJumping
+            || old_isSprinting != m_isSprinting)
         {
-            processMove(*pendingMove);
+            NetworkManagerServer::getInstance()->setStateDirty(getID(), ROBT_Pose);
         }
     }
     else
     {
-        updateInternal(Timing::getInstance()->getDeltaTime());
+        // TODO, allow for multiple client inputs
+        if (getPlayerId() == NetworkManagerClient::getInstance()->getPlayerId())
+        {
+            const Move* pendingMove = InputManager::getInstance()->getAndClearPendingMove();
+            if (pendingMove)
+            {
+                processMove(*pendingMove);
+            }
+        }
+        else
+        {
+            updateInternal(Timing::getInstance()->getDeltaTime());
+        }
     }
-#endif
 }
 
 uint32_t Robot::getAllStateMask() const
@@ -126,14 +130,12 @@ uint32_t Robot::getAllStateMask() const
 
 void Robot::read(InputMemoryBitStream& inInputStream)
 {
-#ifdef NG_CLIENT
     float oldStateTime = m_fStateTime;
     Vector2 oldAcceleration = m_acceleration;
     Vector2 oldVelocity = m_velocity;
     Vector2 oldPosition = m_position;
     bool wasJumping = m_isJumping;
     bool wasSprinting = m_isSprinting;
-#endif
     
     bool stateBit;
     
@@ -184,7 +186,6 @@ void Robot::read(InputMemoryBitStream& inInputStream)
         readState |= ROBT_Health;
     }
     
-#ifdef NG_CLIENT
     if (getPlayerId() == NetworkManagerClient::getInstance()->getPlayerId())
     {
         doClientSidePredictionAfterReplicationForLocalRobot(readState);
@@ -214,7 +215,6 @@ void Robot::read(InputMemoryBitStream& inInputStream)
             playSound(SOUND_ID_ACTIVATE_SPRINT);
         }
     }
-#endif
 }
 
 uint32_t Robot::write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState)
@@ -291,21 +291,22 @@ uint32_t Robot::write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtySta
 
 void Robot::takeDamage()
 {
-#ifdef NG_SERVER
-    m_iHealth--;
-    
-    if (m_iHealth <= 0)
+    if (m_server)
     {
-        requestDeletion();
+        m_iHealth--;
         
-        ClientProxy* clientProxy = NetworkManagerServer::getInstance()->getClientProxy(getPlayerId());
+        if (m_iHealth <= 0)
+        {
+            requestDeletion();
+            
+            ClientProxy* clientProxy = NetworkManagerServer::getInstance()->getClientProxy(getPlayerId());
+            
+            Server::staticHandleNewClient(clientProxy);
+        }
         
-        Server::staticHandleNewClient(clientProxy);
+        // tell the world our health dropped
+        NetworkManagerServer::getInstance()->setStateDirty(getID(), ROBT_Health);
     }
-    
-    // tell the world our health dropped
-    NetworkManagerServer::getInstance()->setStateDirty(getID(), ROBT_Health);
-#endif
 }
 
 void Robot::setPlayerId(uint32_t inPlayerId)
@@ -502,7 +503,6 @@ void Robot::processCollisionsWithScreenWalls()
     }
 }
 
-#ifdef NG_SERVER
 void Robot::handleShooting()
 {
     float time = Timing::getInstance()->getFrameStartTime();
@@ -517,7 +517,7 @@ void Robot::handleShooting()
         projectile->initFromShooter(this);
     }
 }
-#elif NG_CLIENT
+
 void Robot::doClientSidePredictionAfterReplicationForLocalRobot(uint32_t inReadState)
 {
     if ((inReadState & ROBT_Pose) != 0)
@@ -623,11 +623,15 @@ bool Robot::interpolateVectorsIfNecessary(Vector2& inA, Vector2& inB, float& syn
     
     return false;
 }
-#endif
 
 void Robot::playSound(int soundId)
 {
-#ifdef NG_CLIENT
+    if (m_server)
+    {
+        // Don't play sounds on the server
+        return;
+    }
+    
     float volume = 1;
     
     if (getPlayerId() != NetworkManagerClient::getInstance()->getPlayerId())
@@ -642,10 +646,10 @@ void Robot::playSound(int soundId)
     }
     
     NG_AUDIO_ENGINE->playSound(soundId, volume);
-#endif
 }
 
 Robot::Robot() : Entity(0, 0, 1.565217391304348f, 2.0f),
+m_server(nullptr),
 m_fJumpSpeed(10.0f),
 m_fSpeed(7.5f),
 m_fTimeOfNextShot(0.0f),

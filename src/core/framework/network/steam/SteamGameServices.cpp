@@ -11,6 +11,7 @@
 #include "SteamGameServices.h"
 
 #include "StringUtil.h"
+#include "FrameworkConstants.h"
 
 #include "steam/steam_api.h"
 #include "steam/isteamuserstats.h"
@@ -46,7 +47,7 @@ SteamGameServices* SteamGameServices::getInstance()
     return &instance;
 }
 
-bool SteamGameServices::init()
+int SteamGameServices::init()
 {
     if (SteamAPI_RestartAppIfNecessary(k_uAppIdInvalid))
     {
@@ -55,7 +56,8 @@ bool SteamGameServices::init()
         
         // Once you get a public Steam AppID assigned for this game, you need to replace k_uAppIdInvalid with it and
         // removed steam_appid.txt from the game depot.
-        return false;
+        m_iStatus = STEAM_INIT_FAIL_NOT_RUNNING;
+        return m_iStatus;
     }
     
     // Init Steam CEG
@@ -63,7 +65,8 @@ bool SteamGameServices::init()
     {
         LOG("Steamworks_InitCEGLibrary() failed\n");
         alert("Fatal Error", "Steam must be running to play this game (InitDrmLibrary() failed).\n");
-        return false;
+        m_iStatus = STEAM_INIT_FAIL_DRM;
+        return m_iStatus;
     }
     
     // Initialize SteamAPI, if this fails we bail out since we depend on Steam for lots of stuff.
@@ -77,7 +80,8 @@ bool SteamGameServices::init()
     {
         LOG("SteamAPI_Init() failed\n");
         alert("Fatal Error", "Steam must be running to play this game (SteamAPI_Init() failed).\n");
-        return false;
+        m_iStatus = STEAM_INIT_FAIL_API_INIT;
+        return m_iStatus;
     }
     
     // set our debug handler
@@ -90,7 +94,8 @@ bool SteamGameServices::init()
     {
         LOG("Steam user is not logged in\n");
         alert("Fatal Error", "Steam user must be logged in to play this game (SteamUser()->BLoggedOn() returned false).\n");
-        return false;
+        m_iStatus = STEAM_INIT_FAIL_LOGGED_ON;
+        return m_iStatus;
     }
     
     // do a DRM self check
@@ -100,10 +105,14 @@ bool SteamGameServices::init()
     {
         LOG("SteamController()->Init failed.\n");
         alert("Fatal Error", "SteamController()->Init failed.\n");
-        return false;
+        m_iStatus = STEAM_INIT_FAIL_CONTROLLER_INIT;
+        return m_iStatus;
     }
     
-    return true;
+    m_steamRemoteStorage = SteamRemoteStorage();
+    
+    m_iStatus = STEAM_INIT_SUCCESS;
+    return m_iStatus;
 }
 
 void SteamGameServices::deinit()
@@ -113,6 +122,23 @@ void SteamGameServices::deinit()
     
     // Shutdown Steam CEG
     Steamworks_TermCEGLibrary();
+}
+
+void SteamGameServices::writeFile(const char *inFileName, const void *inData, int32 inDataLength)
+{
+    m_ulBytesQuota = 0;
+    m_ulAvailableBytes = 0;
+    m_nNumFilesInCloud = m_steamRemoteStorage->GetFileCount();
+    m_steamRemoteStorage->GetQuota(&m_ulBytesQuota, &m_ulAvailableBytes);
+    
+    
+}
+
+int32 SteamGameServices::readFile(const char *inFileName, void *inData, int32 inDataLength)
+{
+    int32 cubRead = m_steamRemoteStorage->FileRead(inFileName, m_rgchGreeting, sizeof( m_rgchGreeting ) - 1 );
+    
+    m_rgchGreeting[cubRead] = 0; // null-terminate
 }
 
 SteamGameServices::SteamGameServices()

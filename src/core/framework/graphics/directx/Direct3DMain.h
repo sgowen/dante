@@ -29,9 +29,9 @@ public:
 
 	// Initialization and management
 #if !defined(WINAPI_FAMILY) || (WINAPI_FAMILY == WINAPI_FAMILY_DESKTOP_APP)
-	void Initialize(IEngine* screen, HWND window, int width, int height);
+	void Initialize(IEngine* engine, HWND window, int width, int height);
 #else
-	void Initialize(IEngine* screen, IUnknown* window, int width, int height, float dpi, DXGI_MODE_ROTATION rotation);
+	void Initialize(IEngine* engine, IUnknown* window, int width, int height, float dpi, DXGI_MODE_ROTATION rotation);
 #endif
 	
 	void OnNewAudioDevice();

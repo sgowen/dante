@@ -10,9 +10,10 @@
 
 #include "SpacePirate.h"
 
-#include "InputState.h"
 #include "OutputMemoryBitStream.h"
 #include "InputMemoryBitStream.h"
+#include "Robot.h"
+#include "SpaceWarServer.h"
 
 #include "World.h"
 #include "Vector2.h"
@@ -23,14 +24,9 @@
 #include "Move.h"
 #include "MathUtil.h"
 #include "NGRect.h"
-#include "Robot.h"
 #include "OverlapTester.h"
-
-#ifdef NG_SERVER
 #include "NetworkManagerServer.h"
-#elif NG_CLIENT
 #include "NetworkManagerClient.h"
-#endif
 
 #include <math.h>
 
@@ -38,42 +34,47 @@ Entity* SpacePirate::create()
 {
     SpacePirate* ret = new SpacePirate();
     
-#ifdef NG_SERVER
-    NetworkManagerServer::getInstance()->registerEntity(ret);
-#endif
+    if (ret->m_server)
+    {
+        NetworkManagerServer::getInstance()->registerEntity(ret);
+    }
     
     return ret;
 }
 
 void SpacePirate::onDeletion()
 {
-#ifdef NG_SERVER
-    NetworkManagerServer::getInstance()->unregisterEntity(this);
-#endif
+    if (m_server)
+    {
+        NetworkManagerServer::getInstance()->unregisterEntity(this);
+    }
 }
 
 void SpacePirate::update()
 {
-#ifdef NG_SERVER
-    Vector2 oldAcceleration = getAcceleration();
-    Vector2 oldVelocity = getVelocity();
-    bool old_isFacingLeft = m_isFacingLeft;
-    bool old_isGrounded = m_isGrounded;
-    bool old_isFalling = m_isFalling;
-    
-    updateInternal(Timing::getInstance()->getDeltaTime());
-    
-    if (!oldAcceleration.isEqualTo(getAcceleration())
-        || !oldVelocity.isEqualTo(getVelocity())
-        || old_isFacingLeft != m_isFacingLeft
-        || old_isGrounded != m_isGrounded
-        || old_isFalling != m_isFalling)
+    if (m_server)
     {
-        NetworkManagerServer::getInstance()->setStateDirty(getID(), SPCP_Pose);
+        Vector2 oldAcceleration = getAcceleration();
+        Vector2 oldVelocity = getVelocity();
+        bool old_isFacingLeft = m_isFacingLeft;
+        bool old_isGrounded = m_isGrounded;
+        bool old_isFalling = m_isFalling;
+        
+        updateInternal(Timing::getInstance()->getDeltaTime());
+        
+        if (!oldAcceleration.isEqualTo(getAcceleration())
+            || !oldVelocity.isEqualTo(getVelocity())
+            || old_isFacingLeft != m_isFacingLeft
+            || old_isGrounded != m_isGrounded
+            || old_isFalling != m_isFalling)
+        {
+            NetworkManagerServer::getInstance()->setStateDirty(getID(), SPCP_Pose);
+        }
     }
-#elif NG_CLIENT
-    updateInternal(Timing::getInstance()->getDeltaTime());
-#endif
+    else
+    {
+        updateInternal(Timing::getInstance()->getDeltaTime());
+    }
 }
 
 uint32_t SpacePirate::getAllStateMask() const
@@ -186,7 +187,6 @@ void SpacePirate::init(float x, float y, float speed)
 
 void SpacePirate::takeDamage()
 {
-#ifdef NG_SERVER
     m_iHealth--;
     
     if (m_iHealth <= 0)
@@ -196,7 +196,6 @@ void SpacePirate::takeDamage()
     
     // tell the world our health dropped
     NetworkManagerServer::getInstance()->setStateDirty(getID(), SPCP_Health);
-#endif
 }
 
 float SpacePirate::getSpeed()
@@ -220,38 +219,39 @@ void SpacePirate::processCollisions()
 {
     processCollisionsWithScreenWalls();
     
-#ifdef NG_SERVER
-    bool targetFound = false;
-    float shortestDistance = CAM_WIDTH;
-	std::vector<Entity*> entities = World::getInstance()->getEntities();
-    for (Entity* target : entities)
+    if (m_server)
     {
-        if (target != this && !target->isRequestingDeletion() && target->getRTTI().derivesFrom(Robot::rtti))
+        bool targetFound = false;
+        float shortestDistance = CAM_WIDTH;
+        std::vector<Entity*> entities = World::getInstance()->getEntities();
+        for (Entity* target : entities)
         {
-            Robot* robot = static_cast<Robot*>(target);
-            float dist = robot->getPosition().dist(getPosition());
-            if (dist < shortestDistance)
+            if (target != this && !target->isRequestingDeletion() && target->getRTTI().derivesFrom(Robot::rtti))
             {
-                shortestDistance = dist;
-                m_isFacingLeft = robot->getPosition().getX() < getPosition().getX();
-                m_velocity.setX(m_isFacingLeft ? -m_fSpeed : m_fSpeed);
-                targetFound = true;
-            }
-            
-            if (OverlapTester::doNGRectsOverlap(getMainBounds(), target->getMainBounds()))
-            {
-                // Deal Damage to player robot
-                robot->takeDamage();
+                Robot* robot = static_cast<Robot*>(target);
+                float dist = robot->getPosition().dist(getPosition());
+                if (dist < shortestDistance)
+                {
+                    shortestDistance = dist;
+                    m_isFacingLeft = robot->getPosition().getX() < getPosition().getX();
+                    m_velocity.setX(m_isFacingLeft ? -m_fSpeed : m_fSpeed);
+                    targetFound = true;
+                }
+                
+                if (OverlapTester::doNGRectsOverlap(getMainBounds(), target->getMainBounds()))
+                {
+                    // Deal Damage to player robot
+                    robot->takeDamage();
+                }
             }
         }
+        
+        if (!targetFound)
+        {
+            m_isFacingLeft = true;
+            m_velocity.setX(0);
+        }
     }
-    
-    if (!targetFound)
-    {
-        m_isFacingLeft = true;
-        m_velocity.setX(0);
-    }
-#endif
 }
 
 void SpacePirate::processCollisionsWithScreenWalls()
@@ -289,6 +289,7 @@ void SpacePirate::processCollisionsWithScreenWalls()
 }
 
 SpacePirate::SpacePirate() : Entity(0, 0, 1.565217391304348f * 1.277777777777778f, 2.0f * 1.173913043478261f),
+m_server(nullptr),
 m_fSpeed(0.0),
 m_iHealth(8),
 m_isFacingLeft(false),

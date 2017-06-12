@@ -19,6 +19,7 @@
 
 class IInputState;
 class Move;
+class SpaceWarServer;
 
 class Robot : public Entity
 {
@@ -64,6 +65,7 @@ public:
     bool isSprinting();
     
 private:
+    SpaceWarServer* m_server;
     float m_fSpeed;
     float m_fJumpSpeed;
     float m_fTimeOfNextShot;
@@ -97,9 +99,8 @@ private:
     
     void processCollisionsWithScreenWalls();
     
-#ifdef NG_SERVER
     void handleShooting();
-#elif NG_CLIENT
+
     void doClientSidePredictionAfterReplicationForLocalRobot(uint32_t inReadState);
     
     void doClientSidePredictionAfterReplicationForRemoteRobot(uint32_t inReadState);
@@ -109,7 +110,6 @@ private:
     void interpolateClientSidePrediction(float& inOldStateTime, Vector2& inOldPos);
     
     bool interpolateVectorsIfNecessary(Vector2& inA, Vector2& inB, float& syncTracker);
-#endif
     
     void playSound(int soundId);
     

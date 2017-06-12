@@ -63,6 +63,11 @@ static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink,
 - (void)awakeFromNib
 {
     _engine = new MainEngine();
+    if (_engine->getRequestedAction() == REQUESTED_ACTION_EXIT)
+    {
+        [NSApp terminate:self];
+        return;
+    }
     
     m_fTimeSinceLastJoystickScan = CFAbsoluteTimeGetCurrent();
     m_fLastTime = CFAbsoluteTimeGetCurrent();

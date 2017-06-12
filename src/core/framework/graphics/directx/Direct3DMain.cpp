@@ -21,7 +21,7 @@
 #include "macros.h"
 #include "NGAudioEngine.h"
 
-extern void ExitGame();
+extern void exitGame();
 
 using namespace DirectX;
 
@@ -59,17 +59,22 @@ Direct3DMain::~Direct3DMain()
 
 // Initialize the Direct3D resources required to run.
 #if !defined(WINAPI_FAMILY) || (WINAPI_FAMILY == WINAPI_FAMILY_DESKTOP_APP)
-void Direct3DMain::Initialize(IEngine* screen, HWND window, int width, int height)
+void Direct3DMain::Initialize(IEngine* engine, HWND window, int width, int height)
 {
 	m_deviceResources->SetWindow(window, width, height);
 #else
-void Direct3DMain::Initialize(IEngine* screen, IUnknown* window, int width, int height, float dpi, DXGI_MODE_ROTATION rotation)
+void Direct3DMain::Initialize(IEngine* engine, IUnknown* window, int width, int height, float dpi, DXGI_MODE_ROTATION rotation)
 {
 	m_fDPI = dpi;
 	m_deviceResources->SetWindow(window, width, height, rotation);
 #endif
     
-    m_engine = screen;
+    m_engine = engine;
+    if (m_engine->getRequestedAction() == REQUESTED_ACTION_EXIT)
+    {
+        exitGame();
+        return;
+    }
 
 	m_deviceResources->CreateDeviceResources();
 	CreateDeviceDependentResources();
@@ -369,7 +374,7 @@ void Direct3DMain::Update(DX::StepTimer const& timer)
 	switch (requestedAction)
 	{
 	case REQUESTED_ACTION_EXIT:
-		ExitGame();
+		exitGame();
 		return;
 	case REQUESTED_ACTION_UPDATE:
 		break;
@@ -645,8 +650,7 @@ void Direct3DMain::OnDeviceRestored()
 }
 #pragma endregion
 
-// Exit helper
-void ExitGame()
+void exitGame()
 {
 #if !defined(WINAPI_FAMILY) || (WINAPI_FAMILY == WINAPI_FAMILY_DESKTOP_APP)
 	PostQuitMessage(0);
