@@ -2089,7 +2089,6 @@
 				LIBRARY_SEARCH_PATHS = (
 					"\"$(SRCROOT)/../../3rdparty/DDHidLib\"",
 					"\"$(SRCROOT)/../../3rdparty/Superpowered\"",
-					"\"$(SRCROOT)/../../3rdparty/steam/lib/osx32\"",
 					"\"$(SRCROOT)/../../3rdparty/steam/redistributable_bin/osx32\"",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
@@ -2146,7 +2145,6 @@
 				LIBRARY_SEARCH_PATHS = (
 					"\"$(SRCROOT)/../../3rdparty/DDHidLib\"",
 					"\"$(SRCROOT)/../../3rdparty/Superpowered\"",
-					"\"$(SRCROOT)/../../3rdparty/steam/lib/osx32\"",
 					"\"$(SRCROOT)/../../3rdparty/steam/redistributable_bin/osx32\"",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
