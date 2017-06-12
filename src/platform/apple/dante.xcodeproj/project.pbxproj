@@ -71,7 +71,6 @@
 		BB59793E1EEF3F9A0047BEC6 /* RemoteStorage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB5979101EEF3F9A0047BEC6 /* RemoteStorage.cpp */; };
 		BB5979401EEF3F9A0047BEC6 /* ServerBrowser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB5979141EEF3F9A0047BEC6 /* ServerBrowser.cpp */; };
 		BB5979431EEF3F9A0047BEC6 /* SpaceWarClient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB59791C1EEF3F9A0047BEC6 /* SpaceWarClient.cpp */; };
-		BB5979441EEF3F9A0047BEC6 /* SpaceWarEntity.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB59791E1EEF3F9A0047BEC6 /* SpaceWarEntity.cpp */; };
 		BB5979451EEF3F9A0047BEC6 /* SpaceWarServer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB5979211EEF3F9A0047BEC6 /* SpaceWarServer.cpp */; };
 		BB59794D1EEF454B0047BEC6 /* pch.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB59794C1EEF454B0047BEC6 /* pch.cpp */; };
 		BB5979501EEF56830047BEC6 /* stdafx.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB59794E1EEF56830047BEC6 /* stdafx.cpp */; };
@@ -433,8 +432,6 @@
 		BB59791B1EEF3F9A0047BEC6 /* SpaceWar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpaceWar.h; sourceTree = "<group>"; };
 		BB59791C1EEF3F9A0047BEC6 /* SpaceWarClient.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SpaceWarClient.cpp; sourceTree = "<group>"; };
 		BB59791D1EEF3F9A0047BEC6 /* SpaceWarClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpaceWarClient.h; sourceTree = "<group>"; };
-		BB59791E1EEF3F9A0047BEC6 /* SpaceWarEntity.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SpaceWarEntity.cpp; sourceTree = "<group>"; };
-		BB59791F1EEF3F9A0047BEC6 /* SpaceWarEntity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpaceWarEntity.h; sourceTree = "<group>"; };
 		BB5979211EEF3F9A0047BEC6 /* SpaceWarServer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SpaceWarServer.cpp; sourceTree = "<group>"; };
 		BB5979221EEF3F9A0047BEC6 /* SpaceWarServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpaceWarServer.h; sourceTree = "<group>"; };
 		BB59794C1EEF454B0047BEC6 /* pch.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = pch.cpp; sourceTree = "<group>"; };
@@ -1192,8 +1189,6 @@
 				BB59791B1EEF3F9A0047BEC6 /* SpaceWar.h */,
 				BB59791C1EEF3F9A0047BEC6 /* SpaceWarClient.cpp */,
 				BB59791D1EEF3F9A0047BEC6 /* SpaceWarClient.h */,
-				BB59791E1EEF3F9A0047BEC6 /* SpaceWarEntity.cpp */,
-				BB59791F1EEF3F9A0047BEC6 /* SpaceWarEntity.h */,
 				BB5979211EEF3F9A0047BEC6 /* SpaceWarServer.cpp */,
 				BB5979221EEF3F9A0047BEC6 /* SpaceWarServer.h */,
 			);
@@ -1938,7 +1933,6 @@
 				BBAEF27A1EA94EDA00F0866E /* TextureWrapper.cpp in Sources */,
 				BBFA22991EE5AE03002635D6 /* SpacePirate.cpp in Sources */,
 				BBAA69E51EE488DF00451615 /* ITransmissionData.cpp in Sources */,
-				BB5979441EEF3F9A0047BEC6 /* SpaceWarEntity.cpp in Sources */,
 				BB5833D31EEDDB5C0084DA20 /* InputManager.cpp in Sources */,
 				BBAEF25A1EA94EDA00F0866E /* CircleBatcherFactory.cpp in Sources */,
 				BBAEF2A41EA94EDA00F0866E /* AudioEngineHelperFactory.cpp in Sources */,
