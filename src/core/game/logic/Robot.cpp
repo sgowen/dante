@@ -14,7 +14,7 @@
 #include "InputMemoryBitStream.h"
 #include "InputState.h"
 #include "Move.h"
-#include "SpaceWarServer.h"
+#include "DanteServer.h"
 
 #include "World.h"
 #include "Vector2.h"
@@ -52,14 +52,6 @@ void Robot::onDeletion()
     if (m_server)
     {
         NetworkManagerServer::getInstance()->unregisterEntity(this);
-    }
-    else
-    {
-        if (getPlayerId() == NetworkManagerClient::getInstance()->getPlayerId())
-        {
-            // This robot is the current local player, so let's display something like "Respawning in 5, 4, 3..."
-            playSound(SOUND_ID_DEATH);
-        }
     }
 }
 
@@ -136,6 +128,7 @@ void Robot::read(InputMemoryBitStream& inInputStream)
     Vector2 oldPosition = m_position;
     bool wasJumping = m_isJumping;
     bool wasSprinting = m_isSprinting;
+    int oldHealth = m_iHealth;
     
     bool stateBit;
     
@@ -194,6 +187,12 @@ void Robot::read(InputMemoryBitStream& inInputStream)
         if ((readState & ROBT_PlayerId) == 0)
         {
             interpolateClientSidePrediction(oldStateTime, oldAcceleration, oldVelocity, oldPosition);
+        }
+        
+        if (m_iHealth != oldHealth && m_iHealth <= 0)
+        {
+            // This robot is the current local player, so let's display something like "Respawning in 5, 4, 3..."
+            playSound(SOUND_ID_DEATH);
         }
     }
     else
@@ -289,19 +288,40 @@ uint32_t Robot::write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtySta
     return writtenState;
 }
 
+void Robot::init()
+{
+    setPosition(Vector2(8.f - static_cast<float>(m_iPlayerId), 7.0f));
+    
+    m_fJumpSpeed = 10.0f;
+    m_fSpeed = 7.5f;
+    m_fTimeOfNextShot = 0.0f;
+    m_fWallRestitution = 0.1f;
+    m_fRobotRestitution = 0.1f;
+    m_fTimeAccelerationBecameOutOfSync = 0.0f;
+    m_fTimeVelocityBecameOutOfSync = 0.0f;
+    m_fTimePositionBecameOutOfSync = 0.0f;
+    m_iHealth = 1;
+    m_isFacingLeft = false;
+    m_isGrounded = false;
+    m_isFalling = false;
+    m_isShooting = false;
+    m_isJumping = false;
+    m_isSprinting = false;
+    
+    m_acceleration.setY(-9.8f);
+    
+    NetworkManagerServer::getInstance()->setStateDirty(getID(), ROBT_AllState);
+}
+
 void Robot::takeDamage()
 {
     if (m_server)
     {
         m_iHealth--;
         
-        if (m_iHealth <= 0)
+        if (m_iHealth == 0)
         {
-            requestDeletion();
-            
-            ClientProxy* clientProxy = NetworkManagerServer::getInstance()->getClientProxy(getPlayerId());
-            
-            Server::staticHandleNewClient(clientProxy);
+            m_fStateTime = 0;
         }
         
         // tell the world our health dropped
@@ -317,6 +337,11 @@ void Robot::setPlayerId(uint32_t inPlayerId)
 uint32_t Robot::getPlayerId() const
 {
     return m_iPlayerId;
+}
+
+int Robot::getHealth()
+{
+    return m_iHealth;
 }
 
 bool Robot::isFacingLeft()
@@ -337,6 +362,11 @@ bool Robot::isShooting()
 bool Robot::isSprinting()
 {
     return m_isSprinting;
+}
+
+bool Robot::isAlive()
+{
+    return m_iHealth > 0;
 }
 
 void Robot::processMove(const Move& inMove)
@@ -396,13 +426,20 @@ void Robot::updateInternal(float inDeltaTime)
 {
     Entity::update(inDeltaTime);
     
-    processCollisions();
-    
-    if (m_velocity.getY() < 0
-        && !m_isFalling)
+    if (isAlive())
     {
-        m_isFalling = true;
-        m_fStateTime = 0;
+        processCollisions();
+        
+        if (m_velocity.getY() < 0
+            && !m_isFalling)
+        {
+            m_isFalling = true;
+            m_fStateTime = 0;
+        }
+    }
+    else if (m_fStateTime > 3)
+    {
+        init();
     }
 }
 

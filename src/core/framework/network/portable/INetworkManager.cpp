@@ -114,7 +114,8 @@ void INetworkManager::readIncomingPacketsIntoQueue()
 {
     //should we just keep a static one?
     //should we just keep a static one?
-    char packetMem[1500];
+    static char packetMem[1500];
+    bzero(packetMem, 1500);
     int packetSize = sizeof(packetMem);
     InputMemoryBitStream inputStream(packetMem, packetSize * 8);
     SocketAddress fromAddress;

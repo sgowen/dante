@@ -1,20 +1,20 @@
-//========= Copyright © 1996-2008, Valve LLC, All rights reserved. ============
 //
-// Purpose: Main class for the space war game server
+//  DanteServer.h
+//  dante
 //
-// $NoKeywords: $
-//=============================================================================
+//  Created by Stephen Gowen on 6/13/17.
+//  Copyright (c) 2017 Noctis Games. All rights reserved.
+//
 
-#ifndef SPACEWARSERVER_H
-#define SPACEWARSERVER_H
+#ifndef __noctisgames__DanteServer__
+#define __noctisgames__DanteServer__
 
-#include "GameEngine.h"
-#include "SpaceWar.h"
-#include "Ship.h"
-#include "Sun.h"
+#include "GameConstants.h"
+
+#include <string>
 
 // Forward declaration
-class CSpaceWarClient;
+class DanteClient;
 
 struct ClientConnectionData_t
 {
@@ -23,20 +23,18 @@ struct ClientConnectionData_t
 	uint64 m_ulTickCountLastData;	// What was the last time we got data from the player?
 };
 
-class CSpaceWarServer
+class DanteServer
 {
 public:
-	//Constructor
-	CSpaceWarServer( IGameEngine *pEngine );
+	DanteServer();
 
-	// Destructor
-	~CSpaceWarServer();
+	~DanteServer();
 
 	// Run a game frame
 	void RunFrame();
 
 	// Set game state
-	void SetGameState( EServerGameState eState );
+	void SetGameState(EServerGameState eState);
 
 	// Checks for any incoming network data, then dispatches it
 	void ReceiveNetworkData();
@@ -51,11 +49,12 @@ public:
 	void CheckForCollisions();
 
 	// Kicks a given player off the server
-	void KickPlayerOffServer( CSteamID steamID );
+	void kickPlayerOffServer(CSteamID steamID);
 
 	// data accessors
-	bool IsConnectedToSteam()		{ return m_bConnectedToSteam; }
-	CSteamID GetSteamID();
+	bool IsConnectedToSteam() { return m_bConnectedToSteam; }
+	
+    CSteamID GetSteamID();
 
 private:
 	//
@@ -65,16 +64,16 @@ private:
 
 
 	// Tells us when we have successfully connected to Steam
-	STEAM_GAMESERVER_CALLBACK( CSpaceWarServer, OnSteamServersConnected, SteamServersConnected_t );
+	STEAM_GAMESERVER_CALLBACK(DanteServer, OnSteamServersConnected, SteamServersConnected_t);
 
 	// Tells us when there was a failure to connect to Steam
-	STEAM_GAMESERVER_CALLBACK( CSpaceWarServer, OnSteamServersConnectFailure, SteamServerConnectFailure_t );
+	STEAM_GAMESERVER_CALLBACK(DanteServer, OnSteamServersConnectFailure, SteamServerConnectFailure_t);
 
 	// Tells us when we have been logged out of Steam
-	STEAM_GAMESERVER_CALLBACK( CSpaceWarServer, OnSteamServersDisconnected, SteamServersDisconnected_t );
+	STEAM_GAMESERVER_CALLBACK(DanteServer, OnSteamServersDisconnected, SteamServersDisconnected_t);
 
 	// Tells us that Steam has set our security policy (VAC on or off)
-	STEAM_GAMESERVER_CALLBACK( CSpaceWarServer, OnPolicyResponse, GSPolicyResponse_t );
+	STEAM_GAMESERVER_CALLBACK(DanteServer, OnPolicyResponse, GSPolicyResponse_t);
 
 	//
 	// Various callback functions that Steam will call to let us know about whether we should
@@ -82,35 +81,35 @@ private:
 	//
 
 	// Tells us a client has been authenticated and approved to play by Steam (passes auth, license check, VAC status, etc...)
-	STEAM_GAMESERVER_CALLBACK( CSpaceWarServer, OnValidateAuthTicketResponse, ValidateAuthTicketResponse_t );
+	STEAM_GAMESERVER_CALLBACK(DanteServer, OnValidateAuthTicketResponse, ValidateAuthTicketResponse_t);
 
 	// client connection state
-	STEAM_GAMESERVER_CALLBACK( CSpaceWarServer, OnP2PSessionRequest, P2PSessionRequest_t );
-	STEAM_GAMESERVER_CALLBACK( CSpaceWarServer, OnP2PSessionConnectFail, P2PSessionConnectFail_t );
+	STEAM_GAMESERVER_CALLBACK(DanteServer, OnP2PSessionRequest, P2PSessionRequest_t);
+	STEAM_GAMESERVER_CALLBACK(DanteServer, OnP2PSessionConnectFail, P2PSessionConnectFail_t);
 
 	// Function to tell Steam about our servers details
 	void SendUpdatedServerDetailsToSteam();
 
 	// Receive updates from client
-	void OnReceiveClientUpdateData( uint32 uShipIndex, ClientSpaceWarUpdateData_t *pUpdateData );
+	void OnReceiveClientUpdateData(uint32 uShipIndex, ClientDanteUpdateData_t *pUpdateData);
 
 	// Send data to a client at the given ship index
-	bool BSendDataToClient( uint32 uShipIndex, char *pData, uint32 nSizeOfData );
+	bool BSendDataToClient(uint32 uShipIndex, char *pData, uint32 nSizeOfData);
 
 	// Send data to a client at the given pending index
-	bool BSendDataToPendingClient( uint32 uShipIndex, char *pData, uint32 nSizeOfData );
+	bool BSendDataToPendingClient(uint32 uShipIndex, char *pData, uint32 nSizeOfData);
 
 	// Connect a client, will send a success/failure response to the client
-	void OnClientBeginAuthentication( CSteamID steamIDClient, void *pToken, uint32 uTokenLen );
+	void OnClientBeginAuthentication(CSteamID steamIDClient, void *pToken, uint32 uTokenLen);
 
 	// Handles authentication completing for a client
-	void OnAuthCompleted( bool bAuthSuccess, uint32 iPendingAuthIndex );
+	void OnAuthCompleted(bool bAuthSuccess, uint32 iPendingAuthIndex);
 
 	// Adds/initializes a new player ship at the given position
-	void AddPlayerShip( uint32 uShipPosition );
+	void AddPlayerShip(uint32 uShipPosition);
 
 	// Removes a player from the server
-	void RemovePlayerFromServer( uint32 uShipPosition );
+	void RemovePlayerFromServer(uint32 uShipPosition);
 
 	// Send world update to all clients
 	void SendUpdateDataToAllClients();
@@ -120,10 +119,7 @@ private:
 	bool m_bConnectedToSteam;
 
 	// Ships for players, doubles as a way to check for open slots (pointer is NULL meaning open)
-	CShip *m_rgpShips[MAX_PLAYERS_PER_SERVER];
-
-	// Player scores
-	uint32 m_rguPlayerScores[MAX_PLAYERS_PER_SERVER];
+	CShip *m_robots[MAX_PLAYERS_PER_SERVER];
 
 	// server name
 	std::string m_sServerName;
@@ -143,12 +139,6 @@ private:
 	// Current game state
 	EServerGameState m_eGameState;
 
-	// Sun instance
-	CSun *m_pSun;
-
-	// pointer to game engine instance we are running under
-	IGameEngine *m_pGameEngine;
-
 	// Vector to keep track of client connections
 	ClientConnectionData_t m_rgClientData[MAX_PLAYERS_PER_SERVER];
 
@@ -156,5 +146,4 @@ private:
 	ClientConnectionData_t m_rgPendingClientData[MAX_PLAYERS_PER_SERVER];
 };
 
-
-#endif // SPACEWARSERVER_H
+#endif /* defined(__noctisgames__DanteServer__) */

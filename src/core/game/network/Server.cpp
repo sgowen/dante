@@ -105,7 +105,7 @@ void Server::spawnRobotForPlayer(int inPlayerId)
 {
     Robot* robot = static_cast<Robot*>(EntityRegistry::getInstance()->createEntity(NETWORK_TYPE_Robot));
     robot->setPlayerId(inPlayerId);
-    robot->setPosition(Vector2(8.f - static_cast<float>(inPlayerId), 7.0f));
+    robot->init();
     
     static Color Red(1.0f, 0.0f, 0.0f, 1);
     static Color Green(0.0f, 1.0f, 0.0f, 1);

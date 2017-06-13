@@ -18,7 +18,7 @@
 #include <stdint.h>
 
 class Robot;
-class SpaceWarServer;
+class DanteServer;
 
 class Projectile : public Entity
 {
@@ -65,7 +65,7 @@ public:
     bool isFacingLeft();
     
 private:
-    SpaceWarServer* m_server;
+    DanteServer* m_server;
     uint32_t m_iPlayerId;
     ProjectileState m_state;
     bool m_isFacingLeft;

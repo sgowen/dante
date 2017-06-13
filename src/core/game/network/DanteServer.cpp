@@ -1,13 +1,14 @@
-//========= Copyright � 1996-2008, Valve LLC, All rights reserved. ============
 //
-// Purpose: Main class for the space war game server
+//  DanteServer.cpp
+//  dante
 //
-// $NoKeywords: $
-//=============================================================================
+//  Created by Stephen Gowen on 6/13/17.
+//  Copyright (c) 2017 Noctis Games. All rights reserved.
+//
 
-#include "stdafx.h"
-#include "SpaceWarServer.h"
-#include "SpaceWarClient.h"
+#include "NGSteam.h"
+#include "DanteServer.h"
+#include "DanteClient.h"
 #include "stdlib.h"
 #include "time.h"
 #include <math.h>
@@ -17,14 +18,14 @@
 //-----------------------------------------------------------------------------
 // Purpose: Constructor -- note the syntax for setting up Steam API callback handlers
 //-----------------------------------------------------------------------------
-CSpaceWarServer::CSpaceWarServer( IGameEngine *pGameEngine ) 
+DanteServer::DanteServer(IGameEngine *pGameEngine) 
 {
 	m_bConnectedToSteam = false;
 
 
-	const char *pchGameDir = "spacewar";
+	const char *pchGameDir = "projectdante";
 	uint32 unIP = INADDR_ANY;
-	uint16 usMasterServerUpdaterPort = SPACEWAR_MASTER_SERVER_UPDATER_PORT;
+	uint16 usMasterServerUpdaterPort = DANTE_MASTER_SERVER_UPDATER_PORT;
 
     EServerMode eMode = eServerModeAuthenticationAndSecure;
     
@@ -34,9 +35,9 @@ CSpaceWarServer::CSpaceWarServer( IGameEngine *pGameEngine )
 
 	// !FIXME! We need a way to pass the dedicated server flag here!
 
-	if ( !SteamGameServer_Init( unIP, SPACEWAR_AUTHENTICATION_PORT, SPACEWAR_SERVER_PORT, usMasterServerUpdaterPort, eMode, DANTE_SERVER_VERSION ) )
+	if (!SteamGameServer_Init(unIP, DANTE_AUTHENTICATION_PORT, DANTE_SERVER_PORT, usMasterServerUpdaterPort, eMode, DANTE_SERVER_VERSION))
 	{
-		LOG("SteamGameServer_Init call failed\n");
+		LOG("SteamGameServer_Init call failed");
 	}
 
 	if (SteamGameServer())
@@ -46,17 +47,12 @@ CSpaceWarServer::CSpaceWarServer( IGameEngine *pGameEngine )
 		// This is currently required for all games.  However, soon we will be
 		// using the AppID for most purposes, and this string will only be needed
 		// for mods.  it may not be changed after the server has logged on
-		SteamGameServer()->SetModDir( pchGameDir );
+		SteamGameServer()->SetModDir(pchGameDir);
 
 		// These fields are currently required, but will go away soon.
 		// See their documentation for more info
-		SteamGameServer()->SetProduct( "SteamworksExample");
-		SteamGameServer()->SetGameDescription( "Steamworks Example");
-
-		// We don't support specators in our game.
-		// .... but if we did:
-		//SteamGameServer()->SetSpectatorPort( ... );
-		//SteamGameServer()->SetSpectatorServerName( ... );
+		SteamGameServer()->SetProduct("Project Dante");
+		SteamGameServer()->SetGameDescription("Project Dante");
 
 		// Initiate Anonymous logon.
 		// Coming soon: Logging into authenticated, persistent game server account
@@ -64,21 +60,21 @@ CSpaceWarServer::CSpaceWarServer( IGameEngine *pGameEngine )
 
 		// We want to actively update the master server with our presence so players can
 		// find us via the steam matchmaking/server browser interfaces
-		SteamGameServer()->EnableHeartbeats( true );
+		SteamGameServer()->EnableHeartbeats(true);
 	}
 	else
 	{
-		LOG("SteamGameServer() interface is invalid\n");
+		LOG("SteamGameServer() interface is invalid");
 	}
 
 	m_uPlayerCount = 0;
 	m_pGameEngine = pGameEngine;
 	m_eGameState = k_EServerWaitingForPlayers;
 
-	for( uint32 i = 0; i < MAX_PLAYERS_PER_SERVER; ++i )
+	for(uint32 i = 0; i < MAX_PLAYERS_PER_SERVER; ++i)
 	{
 		m_rguPlayerScores[i] = 0;
-		m_rgpShips[i] = NULL;
+		m_robots[i] = NULL;
 	}
 
 	// No one has won
@@ -87,14 +83,14 @@ CSpaceWarServer::CSpaceWarServer( IGameEngine *pGameEngine )
 	m_ulLastServerUpdateTick = 0;
 
 	// zero the client connection data
-	memset( &m_rgClientData, 0, sizeof( m_rgClientData ) );
-	memset( &m_rgPendingClientData, 0, sizeof( m_rgPendingClientData ) );
+	memset(&m_rgClientData, 0, sizeof(m_rgClientData));
+	memset(&m_rgPendingClientData, 0, sizeof(m_rgPendingClientData));
 
 	// Seed random num generator
-	srand( (uint32)time( NULL ) );
+	srand((uint32)time(NULL));
 
 	// Initialize sun
-	m_pSun = new CSun( pGameEngine );
+	m_pSun = new CSun(pGameEngine);
 
 	// Initialize ships
 	ResetPlayerShips();
@@ -104,23 +100,23 @@ CSpaceWarServer::CSpaceWarServer( IGameEngine *pGameEngine )
 //-----------------------------------------------------------------------------
 // Purpose: Destructor
 //-----------------------------------------------------------------------------
-CSpaceWarServer::~CSpaceWarServer()
+DanteServer::~DanteServer()
 {
     // Notify Steam master server we are going offline
-    SteamGameServer()->EnableHeartbeats( false );
+    SteamGameServer()->EnableHeartbeats(false);
 
 	delete m_pSun;
 
-	for( uint32 i=0; i < MAX_PLAYERS_PER_SERVER; ++i )
+	for(uint32 i=0; i < MAX_PLAYERS_PER_SERVER; ++i)
 	{
-		if ( m_rgpShips[i] )
+		if (m_robots[i])
 		{
 			// Tell this client we are exiting
 			MsgServerExiting_t msg;
-			BSendDataToClient( i, (char*)&msg, sizeof(msg) );
+			BSendDataToClient(i, (char*)&msg, sizeof(msg));
 
-			delete m_rgpShips[i];
-			m_rgpShips[i] = NULL;
+			delete m_robots[i];
+			m_robots[i] = NULL;
 		}
 	}
 
@@ -135,29 +131,29 @@ CSpaceWarServer::~CSpaceWarServer()
 //-----------------------------------------------------------------------------
 // Purpose: Handle clients connecting
 //-----------------------------------------------------------------------------
-void CSpaceWarServer::OnP2PSessionRequest( P2PSessionRequest_t *pCallback )
+void DanteServer::OnP2PSessionRequest(P2PSessionRequest_t *pCallback)
 {
 	// we'll accept a connection from anyone
-	SteamGameServerNetworking()->AcceptP2PSessionWithUser( pCallback->m_steamIDRemote );
+	SteamGameServerNetworking()->AcceptP2PSessionWithUser(pCallback->m_steamIDRemote);
 }
 
 
 //-----------------------------------------------------------------------------
 // Purpose: Handle clients disconnecting
 //-----------------------------------------------------------------------------
-void CSpaceWarServer::OnP2PSessionConnectFail( P2PSessionConnectFail_t *pCallback )
+void DanteServer::OnP2PSessionConnectFail(P2PSessionConnectFail_t *pCallback)
 {
 	// socket has closed, kick the user associated with it
-	for( uint32 i = 0; i < MAX_PLAYERS_PER_SERVER; ++i )
+	for(uint32 i = 0; i < MAX_PLAYERS_PER_SERVER; ++i)
 	{
 		// If there is no ship, skip
-		if ( !m_rgClientData[i].m_bActive )
+		if (!m_rgClientData[i].m_bActive)
 			continue;
 
-		if ( m_rgClientData[i].m_SteamIDUser == pCallback->m_steamIDRemote )
+		if (m_rgClientData[i].m_SteamIDUser == pCallback->m_steamIDRemote)
 		{
-			LOG("Disconnected dropped user\n");
-			RemovePlayerFromServer( i );
+			LOG("Disconnected dropped user");
+			RemovePlayerFromServer(i);
 			break;
 		}
 	}
@@ -167,15 +163,15 @@ void CSpaceWarServer::OnP2PSessionConnectFail( P2PSessionConnectFail_t *pCallbac
 //-----------------------------------------------------------------------------
 // Purpose: Handle sending data to a client at a given index
 //-----------------------------------------------------------------------------
-bool CSpaceWarServer::BSendDataToClient( uint32 uShipIndex, char *pData, uint32 nSizeOfData )
+bool DanteServer::BSendDataToClient(uint32 uShipIndex, char *pData, uint32 nSizeOfData)
 {
 	// Validate index
-	if ( uShipIndex >= MAX_PLAYERS_PER_SERVER )
+	if (uShipIndex >= MAX_PLAYERS_PER_SERVER)
 		return false;
 
-	if ( !SteamGameServerNetworking()->SendP2PPacket( m_rgClientData[uShipIndex].m_SteamIDUser, pData, nSizeOfData, k_EP2PSendUnreliable ) )
+	if (!SteamGameServerNetworking()->SendP2PPacket(m_rgClientData[uShipIndex].m_SteamIDUser, pData, nSizeOfData, k_EP2PSendUnreliable))
 	{
-		LOG("Failed sending data to a client\n");
+		LOG("Failed sending data to a client");
 		return false;
 	}
 	return true;
@@ -185,15 +181,15 @@ bool CSpaceWarServer::BSendDataToClient( uint32 uShipIndex, char *pData, uint32 
 //-----------------------------------------------------------------------------
 // Purpose: Handle sending data to a pending client at a given index
 //-----------------------------------------------------------------------------
-bool CSpaceWarServer::BSendDataToPendingClient( uint32 uShipIndex, char *pData, uint32 nSizeOfData )
+bool DanteServer::BSendDataToPendingClient(uint32 uShipIndex, char *pData, uint32 nSizeOfData)
 {
 	// Validate index
-	if ( uShipIndex >= MAX_PLAYERS_PER_SERVER )
+	if (uShipIndex >= MAX_PLAYERS_PER_SERVER)
 		return false;
 
-	if ( !SteamGameServerNetworking()->SendP2PPacket( m_rgPendingClientData[uShipIndex].m_SteamIDUser, pData, nSizeOfData, k_EP2PSendReliable ) )
+	if (!SteamGameServerNetworking()->SendP2PPacket(m_rgPendingClientData[uShipIndex].m_SteamIDUser, pData, nSizeOfData, k_EP2PSendReliable))
 	{
-		LOG("Failed sending data to a pending client\n");
+		LOG("Failed sending data to a pending client");
 		return false;
 	}
 	return true;
@@ -203,12 +199,12 @@ bool CSpaceWarServer::BSendDataToPendingClient( uint32 uShipIndex, char *pData, 
 //-----------------------------------------------------------------------------
 // Purpose: Handle a new client connecting
 //-----------------------------------------------------------------------------
-void CSpaceWarServer::OnClientBeginAuthentication( CSteamID steamIDClient, void *pToken, uint32 uTokenLen )
+void DanteServer::OnClientBeginAuthentication(CSteamID steamIDClient, void *pToken, uint32 uTokenLen)
 {
 	// First, check this isn't a duplicate and we already have a user logged on from the same steamid
-	for( uint32 i = 0; i < MAX_PLAYERS_PER_SERVER; ++i ) 
+	for(uint32 i = 0; i < MAX_PLAYERS_PER_SERVER; ++i) 
 	{
-		if ( m_rgClientData[i].m_SteamIDUser == steamIDClient )
+		if (m_rgClientData[i].m_SteamIDUser == steamIDClient)
 		{
 			// We already logged them on... (should maybe tell them again incase they don't know?)
 			return;
@@ -217,34 +213,34 @@ void CSpaceWarServer::OnClientBeginAuthentication( CSteamID steamIDClient, void 
 
 	// Second, do we have room?
 	uint32 nPendingOrActivePlayerCount = 0;
-	for ( uint32 i = 0; i < MAX_PLAYERS_PER_SERVER; ++i )
+	for (uint32 i = 0; i < MAX_PLAYERS_PER_SERVER; ++i)
 	{
-		if ( m_rgPendingClientData[i].m_bActive )
+		if (m_rgPendingClientData[i].m_bActive)
 			++nPendingOrActivePlayerCount;
 		
-		if ( m_rgClientData[i].m_bActive )
+		if (m_rgClientData[i].m_bActive)
 			++nPendingOrActivePlayerCount;
 	}
 
 	// We are full (or will be if the pending players auth), deny new login
-	if ( nPendingOrActivePlayerCount >=  MAX_PLAYERS_PER_SERVER )
+	if (nPendingOrActivePlayerCount >=  MAX_PLAYERS_PER_SERVER)
 	{
 		MsgServerFailAuthentication_t msg;
-		SteamGameServerNetworking()->SendP2PPacket( steamIDClient, &msg, sizeof( msg ), k_EP2PSendReliable );
+		SteamGameServerNetworking()->SendP2PPacket(steamIDClient, &msg, sizeof(msg), k_EP2PSendReliable);
 	}
 
 	// If we get here there is room, add the player as pending
-	for( uint32 i = 0; i < MAX_PLAYERS_PER_SERVER; ++i ) 
+	for(uint32 i = 0; i < MAX_PLAYERS_PER_SERVER; ++i) 
 	{
-		if ( !m_rgPendingClientData[i].m_bActive )
+		if (!m_rgPendingClientData[i].m_bActive)
 		{
 			m_rgPendingClientData[i].m_ulTickCountLastData = m_pGameEngine->GetGameTickCount();
             
             // authenticate the user with the Steam back-end servers
-            if ( k_EBeginAuthSessionResultOK != SteamGameServer()->BeginAuthSession( pToken, uTokenLen, steamIDClient ) )
+            if (k_EBeginAuthSessionResultOK != SteamGameServer()->BeginAuthSession(pToken, uTokenLen, steamIDClient))
             {
                 MsgServerFailAuthentication_t msg;
-                SteamGameServerNetworking()->SendP2PPacket( steamIDClient, &msg, sizeof( msg ), k_EP2PSendReliable );
+                SteamGameServerNetworking()->SendP2PPacket(steamIDClient, &msg, sizeof(msg), k_EP2PSendReliable);
                 break;
             }
             
@@ -258,44 +254,44 @@ void CSpaceWarServer::OnClientBeginAuthentication( CSteamID steamIDClient, void 
 //-----------------------------------------------------------------------------
 // Purpose: A new client that connected has had their authentication processed
 //-----------------------------------------------------------------------------
-void CSpaceWarServer::OnAuthCompleted( bool bAuthSuccessful, uint32 iPendingAuthIndex )
+void DanteServer::OnAuthCompleted(bool bAuthSuccessful, uint32 iPendingAuthIndex)
 {
-	if ( !m_rgPendingClientData[iPendingAuthIndex].m_bActive )
+	if (!m_rgPendingClientData[iPendingAuthIndex].m_bActive)
 	{
-		LOG("Got auth completed callback for client who is not pending\n");
+		LOG("Got auth completed callback for client who is not pending");
 		return;
 	}
 
-	if ( !bAuthSuccessful )
+	if (!bAuthSuccessful)
 	{
         // Tell the GS the user is leaving the server
-        SteamGameServer()->EndAuthSession( m_rgPendingClientData[iPendingAuthIndex].m_SteamIDUser );
+        SteamGameServer()->EndAuthSession(m_rgPendingClientData[iPendingAuthIndex].m_SteamIDUser);
         
 		// Send a deny for the client, and zero out the pending data
 		MsgServerFailAuthentication_t msg;
-		SteamGameServerNetworking()->SendP2PPacket( m_rgPendingClientData[iPendingAuthIndex].m_SteamIDUser, &msg, sizeof( msg ), k_EP2PSendReliable );
-		memset( &m_rgPendingClientData[iPendingAuthIndex], 0, sizeof( ClientConnectionData_t ) );
+		SteamGameServerNetworking()->SendP2PPacket(m_rgPendingClientData[iPendingAuthIndex].m_SteamIDUser, &msg, sizeof(msg), k_EP2PSendReliable);
+		memset(&m_rgPendingClientData[iPendingAuthIndex], 0, sizeof(ClientConnectionData_t));
 		return;
 	}
 
 
 	bool bAddedOk = false;
-	for( uint32 i = 0; i < MAX_PLAYERS_PER_SERVER; ++i ) 
+	for(uint32 i = 0; i < MAX_PLAYERS_PER_SERVER; ++i) 
 	{
-		if ( !m_rgClientData[i].m_bActive )
+		if (!m_rgClientData[i].m_bActive)
 		{
 			// copy over the data from the pending array
-			memcpy( &m_rgClientData[i], &m_rgPendingClientData[iPendingAuthIndex], sizeof( ClientConnectionData_t ) );
-			memset( &m_rgPendingClientData[iPendingAuthIndex], 0, sizeof( ClientConnectionData_t	) );
+			memcpy(&m_rgClientData[i], &m_rgPendingClientData[iPendingAuthIndex], sizeof(ClientConnectionData_t));
+			memset(&m_rgPendingClientData[iPendingAuthIndex], 0, sizeof(ClientConnectionData_t	));
 			m_rgClientData[i].m_ulTickCountLastData = m_pGameEngine->GetGameTickCount();
 
 			// Add a new ship, make it dead immediately
-			AddPlayerShip( i );
-			m_rgpShips[i]->SetDisabled( true );
+			AddPlayerShip(i);
+			m_robots[i]->SetDisabled(true);
 
 			MsgServerPassAuthentication_t msg;
-			msg.SetPlayerPosition( i );
-			BSendDataToClient( i, (char*)&msg, sizeof( msg ) );
+			msg.SetPlayerPosition(i);
+			BSendDataToClient(i, (char*)&msg, sizeof(msg));
 
 			bAddedOk = true;
 
@@ -304,22 +300,22 @@ void CSpaceWarServer::OnAuthCompleted( bool bAuthSuccessful, uint32 iPendingAuth
 	}
 
 	// If we just successfully added the player, check if they are #2 so we can restart the round
-	if ( bAddedOk )
+	if (bAddedOk)
 	{
 		uint32 uPlayers = 0;
-		for( uint32 i = 0; i < MAX_PLAYERS_PER_SERVER; ++i ) 
+		for(uint32 i = 0; i < MAX_PLAYERS_PER_SERVER; ++i) 
 		{
-			if ( m_rgClientData[i].m_bActive )
+			if (m_rgClientData[i].m_bActive)
 				++uPlayers;
 		}
 
 		// If we just got the second player, immediately reset round as a draw.  This will prevent
 		// the existing player getting a win, and it will cause a new round to start right off
 		// so that the one player can't just float around not letting the new one get into the game.
-		if ( uPlayers == 2 )
+		if (uPlayers == 2)
 		{
-			if ( m_eGameState != k_EServerWaitingForPlayers )
-				SetGameState( k_EServerDraw );
+			if (m_eGameState != k_EServerWaitingForPlayers)
+				SetGameState(k_EServerDraw);
 		}
 	}
 }
@@ -328,9 +324,9 @@ void CSpaceWarServer::OnAuthCompleted( bool bAuthSuccessful, uint32 iPendingAuth
 //-----------------------------------------------------------------------------
 // Purpose: Used to reset scores (at start of a new game usually)
 //-----------------------------------------------------------------------------
-void CSpaceWarServer::ResetScores()
+void DanteServer::ResetScores()
 {
-	for( uint32 i=0; i < MAX_PLAYERS_PER_SERVER; ++i )
+	for(uint32 i=0; i < MAX_PLAYERS_PER_SERVER; ++i)
 	{
 		m_rguPlayerScores[i] = 0;
 	}
@@ -339,17 +335,17 @@ void CSpaceWarServer::ResetScores()
 //-----------------------------------------------------------------------------
 // Purpose: Add a new player ship at given position
 //-----------------------------------------------------------------------------
-void CSpaceWarServer::AddPlayerShip( uint32 uShipPosition )
+void DanteServer::AddPlayerShip(uint32 uShipPosition)
 {
-	if ( uShipPosition >= MAX_PLAYERS_PER_SERVER )
+	if (uShipPosition >= MAX_PLAYERS_PER_SERVER)
 	{
-		LOG("Trying to add ship at invalid positon\n");
+		LOG("Trying to add ship at invalid positon");
 		return;
 	}
 
-	if ( m_rgpShips[uShipPosition] )
+	if (m_robots[uShipPosition])
 	{
-		LOG("Trying to add a ship where one already exists\n");
+		LOG("Trying to add a ship where one already exists");
 		return;
 	}
 
@@ -358,37 +354,37 @@ void CSpaceWarServer::AddPlayerShip( uint32 uShipPosition )
 	float flXOffset = flWidth*0.12f;
 	float flYOffset = flHeight*0.12f;
 
-	float flAngle = atan( flHeight/flWidth ) + PI_VALUE/2.0f;
-	switch( uShipPosition )
+	float flAngle = atan(flHeight/flWidth) + PI_VALUE/2.0f;
+	switch(uShipPosition)
 	{
 	case 0:
-		m_rgpShips[uShipPosition] = new CShip( m_pGameEngine, true, flXOffset, flYOffset, g_rgPlayerColors[uShipPosition] );
-		m_rgpShips[uShipPosition]->SetInitialRotation( flAngle );
+		m_robots[uShipPosition] = new CShip(m_pGameEngine, true, flXOffset, flYOffset, g_rgPlayerColors[uShipPosition]);
+		m_robots[uShipPosition]->SetInitialRotation(flAngle);
 		break;
 	case 1:
-		m_rgpShips[uShipPosition] = new CShip( m_pGameEngine, true, flWidth-flXOffset, flYOffset, g_rgPlayerColors[uShipPosition] );
-		m_rgpShips[uShipPosition]->SetInitialRotation( -1.0f*flAngle );
+		m_robots[uShipPosition] = new CShip(m_pGameEngine, true, flWidth-flXOffset, flYOffset, g_rgPlayerColors[uShipPosition]);
+		m_robots[uShipPosition]->SetInitialRotation(-1.0f*flAngle);
 		break;
 	case 2:
-		m_rgpShips[uShipPosition] = new CShip( m_pGameEngine, true, flXOffset, flHeight-flYOffset, g_rgPlayerColors[uShipPosition] );
-		m_rgpShips[uShipPosition]->SetInitialRotation( PI_VALUE-flAngle );
+		m_robots[uShipPosition] = new CShip(m_pGameEngine, true, flXOffset, flHeight-flYOffset, g_rgPlayerColors[uShipPosition]);
+		m_robots[uShipPosition]->SetInitialRotation(PI_VALUE-flAngle);
 		break;
 	case 3:
-		m_rgpShips[uShipPosition] = new CShip( m_pGameEngine, true, flWidth-flXOffset, flHeight-flYOffset, g_rgPlayerColors[uShipPosition] );
-		m_rgpShips[uShipPosition]->SetInitialRotation( -1.0f*(PI_VALUE-flAngle) );
+		m_robots[uShipPosition] = new CShip(m_pGameEngine, true, flWidth-flXOffset, flHeight-flYOffset, g_rgPlayerColors[uShipPosition]);
+		m_robots[uShipPosition]->SetInitialRotation(-1.0f*(PI_VALUE-flAngle));
 		break;
 	default:
-		LOG("AddPlayerShip() code needs updating for more than 4 players\n");
+		LOG("AddPlayerShip() code needs updating for more than 4 players");
 	}
 
-	if ( m_rgpShips[uShipPosition] )
+	if (m_robots[uShipPosition])
 	{
 		// Setup key bindings... don't even really need these on server?
-		m_rgpShips[uShipPosition]->SetVKBindingLeft( 0x41 ); // A key
-		m_rgpShips[uShipPosition]->SetVKBindingRight( 0x44 ); // D key
-		m_rgpShips[uShipPosition]->SetVKBindingForwardThrusters( 0x57 ); // W key
-		m_rgpShips[uShipPosition]->SetVKBindingReverseThrusters( 0x53 ); // S key
-		m_rgpShips[uShipPosition]->SetVKBindingFire( VK_SPACE ); 
+		m_robots[uShipPosition]->SetVKBindingLeft(0x41); // A key
+		m_robots[uShipPosition]->SetVKBindingRight(0x44); // D key
+		m_robots[uShipPosition]->SetVKBindingForwardThrusters(0x57); // W key
+		m_robots[uShipPosition]->SetVKBindingReverseThrusters(0x53); // S key
+		m_robots[uShipPosition]->SetVKBindingFire(VK_SPACE); 
 	}
 }
 
@@ -396,46 +392,46 @@ void CSpaceWarServer::AddPlayerShip( uint32 uShipPosition )
 //-----------------------------------------------------------------------------
 // Purpose: Removes a player at the given position
 //-----------------------------------------------------------------------------
-void CSpaceWarServer::RemovePlayerFromServer( uint32 uShipPosition )
+void DanteServer::RemovePlayerFromServer(uint32 uShipPosition)
 {
-	if ( uShipPosition >= MAX_PLAYERS_PER_SERVER )
+	if (uShipPosition >= MAX_PLAYERS_PER_SERVER)
 	{
-		LOG("Trying to remove ship at invalid position\n");
+		LOG("Trying to remove ship at invalid position");
 		return;
 	}
 
-	if ( !m_rgpShips[uShipPosition] )
+	if (!m_robots[uShipPosition])
 	{
-		LOG("Trying to remove a ship that does not exist\n");
+		LOG("Trying to remove a ship that does not exist");
 		return;
 	}
 
-	LOG("Removing a ship\n");
-	delete m_rgpShips[uShipPosition];
-	m_rgpShips[uShipPosition] = NULL;
+	LOG("Removing a ship");
+	delete m_robots[uShipPosition];
+	m_robots[uShipPosition] = NULL;
 	m_rguPlayerScores[uShipPosition] = 0;
 
     // Tell the GS the user is leaving the server
-    SteamGameServer()->EndAuthSession( m_rgClientData[uShipPosition].m_SteamIDUser );
+    SteamGameServer()->EndAuthSession(m_rgClientData[uShipPosition].m_SteamIDUser);
     
-	memset( &m_rgClientData[uShipPosition], 0, sizeof( ClientConnectionData_t ) );
+	memset(&m_rgClientData[uShipPosition], 0, sizeof(ClientConnectionData_t));
 }
 
 
 //-----------------------------------------------------------------------------
 // Purpose: Used to reset player ship positions for a new round
 //-----------------------------------------------------------------------------
-void CSpaceWarServer::ResetPlayerShips()
+void DanteServer::ResetPlayerShips()
 {
 	// Delete any currently active ships, but immediately recreate 
 	// (which causes all ship state/position to reset)
-	for( uint32 i=0; i < MAX_PLAYERS_PER_SERVER; ++i )
+	for(uint32 i=0; i < MAX_PLAYERS_PER_SERVER; ++i)
 	{
-		if ( m_rgpShips[i] )
+		if (m_robots[i])
 		{		
-			delete m_rgpShips[i];
-			m_rgpShips[i] = NULL;
-			AddPlayerShip( i );
+			delete m_robots[i];
+			m_robots[i] = NULL;
+			AddPlayerShip(i);
 		}
 	}
 }
@@ -444,13 +440,13 @@ void CSpaceWarServer::ResetPlayerShips()
 //-----------------------------------------------------------------------------
 // Purpose: Used to transition game state
 //-----------------------------------------------------------------------------
-void CSpaceWarServer::SetGameState( EServerGameState eState )
+void DanteServer::SetGameState(EServerGameState eState)
 {
-	if ( m_eGameState == eState )
+	if (m_eGameState == eState)
 		return;
 
 	// If we were in waiting for players and are now going active clear old scores
-	if ( m_eGameState == k_EServerWaitingForPlayers && eState == k_EServerActive )
+	if (m_eGameState == k_EServerWaitingForPlayers && eState == k_EServerActive)
 	{
 		ResetScores();
 		ResetPlayerShips();
@@ -464,138 +460,138 @@ void CSpaceWarServer::SetGameState( EServerGameState eState )
 //-----------------------------------------------------------------------------
 // Purpose: Receives incoming network data
 //-----------------------------------------------------------------------------
-void CSpaceWarServer::ReceiveNetworkData()
+void DanteServer::ReceiveNetworkData()
 {
 	char *pchRecvBuf = NULL;
 	uint32 cubMsgSize;
 	CSteamID steamIDRemote;
-	while ( SteamGameServerNetworking()->IsP2PPacketAvailable( &cubMsgSize ) )
+	while (SteamGameServerNetworking()->IsP2PPacketAvailable(&cubMsgSize))
 	{
 		// free any previous receive buffer
-		if ( pchRecvBuf )
-			free( pchRecvBuf );
+		if (pchRecvBuf)
+			free(pchRecvBuf);
 
 		// alloc a new receive buffer of the right size
-		pchRecvBuf = (char *)malloc( cubMsgSize );
+		pchRecvBuf = (char *)malloc(cubMsgSize);
 
 		// see if there is any data waiting on the socket
-		if ( !SteamGameServerNetworking()->ReadP2PPacket( pchRecvBuf, cubMsgSize, &cubMsgSize, &steamIDRemote ) )
+		if (!SteamGameServerNetworking()->ReadP2PPacket(pchRecvBuf, cubMsgSize, &cubMsgSize, &steamIDRemote))
 			break;
 
-		if ( cubMsgSize < sizeof( DWORD ) )
+		if (cubMsgSize < sizeof(DWORD))
 		{
-			LOG("Got garbage on server socket, too short\n");
+			LOG("Got garbage on server socket, too short");
 			continue;
 		}
 
-		EMessage eMsg = (EMessage)LittleDWord( *(DWORD*)pchRecvBuf );
-		switch ( eMsg )
+		EMessage eMsg = (EMessage)LittleDWord(*(DWORD*)pchRecvBuf);
+		switch (eMsg)
 		{
 		case k_EMsgClientInitiateConnection:
 			{
 				// We always let clients do this without even checking for room on the server since we reserve that for 
 				// the authentication phase of the connection which comes next
 				MsgServerSendInfo_t msg;
-				msg.SetSteamIDServer( SteamGameServer()->GetSteamID().ConvertToUint64() );
+				msg.SetSteamIDServer(SteamGameServer()->GetSteamID().ConvertToUint64());
                 
                 // You can only make use of VAC when using the Steam authentication system
-                msg.SetSecure( SteamGameServer()->BSecure() );
+                msg.SetSecure(SteamGameServer()->BSecure());
                 
-				msg.SetServerName( m_sServerName.c_str() );
-				SteamGameServerNetworking()->SendP2PPacket( steamIDRemote, &msg, sizeof( MsgServerSendInfo_t ), k_EP2PSendReliable );
+				msg.SetServerName(m_sServerName.c_str());
+				SteamGameServerNetworking()->SendP2PPacket(steamIDRemote, &msg, sizeof(MsgServerSendInfo_t), k_EP2PSendReliable);
 			}
 			break;
 		case k_EMsgClientBeginAuthentication:
 			{
-				if ( cubMsgSize != sizeof( MsgClientBeginAuthentication_t ) )
+				if (cubMsgSize != sizeof(MsgClientBeginAuthentication_t))
 				{
-					LOG("Bad connection attempt msg\n");
+					LOG("Bad connection attempt msg");
 					continue;
 				}
 				MsgClientBeginAuthentication_t *pMsg = (MsgClientBeginAuthentication_t*)pchRecvBuf;
 
-                OnClientBeginAuthentication( steamIDRemote, (void*)pMsg->GetTokenPtr(), pMsg->GetTokenLen() );
+                OnClientBeginAuthentication(steamIDRemote, (void*)pMsg->GetTokenPtr(), pMsg->GetTokenLen());
 			}
 			break;
 		case k_EMsgClientSendLocalUpdate:
 			{
-				if ( cubMsgSize != sizeof( MsgClientSendLocalUpdate_t ) )
+				if (cubMsgSize != sizeof(MsgClientSendLocalUpdate_t))
 				{
-					LOG("Bad client update msg\n");
+					LOG("Bad client update msg");
 					continue;
 				}
 
 				// Find the connection that should exist for this users address
 				bool bFound = false;
-				for( uint32 i=0; i<MAX_PLAYERS_PER_SERVER; ++i )
+				for(uint32 i=0; i<MAX_PLAYERS_PER_SERVER; ++i)
 				{
-					if ( m_rgClientData[i].m_SteamIDUser == steamIDRemote ) 
+					if (m_rgClientData[i].m_SteamIDUser == steamIDRemote) 
 					{
 						bFound = true;
 						MsgClientSendLocalUpdate_t *pMsg = (MsgClientSendLocalUpdate_t*)pchRecvBuf;
-						OnReceiveClientUpdateData( i, pMsg->AccessUpdateData() );
+						OnReceiveClientUpdateData(i, pMsg->AccessUpdateData());
 						break;
 					}
 				}
-				if ( !bFound )
-					LOG("Got a client data update, but couldn't find a matching client\n");
+				if (!bFound)
+					LOG("Got a client data update, but couldn't find a matching client");
 			}
 			break;
 		case k_EMsgClientPing:
 			{
 				// send back a response
 				MsgServerPingResponse_t msg;
-				SteamGameServerNetworking()->SendP2PPacket( steamIDRemote, &msg, sizeof( msg ), k_EP2PSendUnreliable );
+				SteamGameServerNetworking()->SendP2PPacket(steamIDRemote, &msg, sizeof(msg), k_EP2PSendUnreliable);
 			}
 			break;
 		case k_EMsgClientLeavingServer:
 			{
-				if ( cubMsgSize != sizeof( MsgClientLeavingServer_t ) )
+				if (cubMsgSize != sizeof(MsgClientLeavingServer_t))
 				{
-					LOG("Bad leaving server msg\n");
+					LOG("Bad leaving server msg");
 					continue;
 				}
 				// Find the connection that should exist for this users address
 				bool bFound = false;
-				for( uint32 i=0; i<MAX_PLAYERS_PER_SERVER; ++i )
+				for(uint32 i=0; i<MAX_PLAYERS_PER_SERVER; ++i)
 				{
-					if ( m_rgClientData[i].m_SteamIDUser == steamIDRemote )
+					if (m_rgClientData[i].m_SteamIDUser == steamIDRemote)
 					{
 						bFound = true;
-						RemovePlayerFromServer( i );
+						RemovePlayerFromServer(i);
 						break;
 					}
 
 					// Also check for pending connections that may match
-					if ( m_rgPendingClientData[i].m_SteamIDUser == steamIDRemote )
+					if (m_rgPendingClientData[i].m_SteamIDUser == steamIDRemote)
 					{
                         // Tell the GS the user is leaving the server
-                        SteamGameServer()->SendUserDisconnect( m_rgPendingClientData[i].m_SteamIDUser );
+                        SteamGameServer()->SendUserDisconnect(m_rgPendingClientData[i].m_SteamIDUser);
                         
 						// Clear our data on the user
-						memset( &m_rgPendingClientData[i], 0 , sizeof( ClientConnectionData_t ) );
+						memset(&m_rgPendingClientData[i], 0 , sizeof(ClientConnectionData_t));
 						break;
 					}
 				}
-				if ( !bFound )
-					LOG("Got a client leaving server msg, but couldn't find a matching client\n");
+				if (!bFound)
+					LOG("Got a client leaving server msg, but couldn't find a matching client");
 			}
 		default:
 			char rgch[128];
-			StringUtil::sprintf_safe( rgch, "Invalid message %x\n", eMsg );
+			StringUtil::sprintf_safe(rgch, "Invalid message %x\n", eMsg);
 			rgch[ sizeof(rgch) - 1 ] = 0;
-			OutputDebugString( rgch );
+			OutputDebugString(rgch);
 		}
 	}
 
-	if ( pchRecvBuf )
-		free( pchRecvBuf );
+	if (pchRecvBuf)
+		free(pchRecvBuf);
 }
 
 //-----------------------------------------------------------------------------
 // Purpose: Main frame function, updates the state of the world and performs rendering
 //-----------------------------------------------------------------------------
-void CSpaceWarServer::RunFrame()
+void DanteServer::RunFrame()
 {
 	// Run any Steam Game Server API callbacks
 	SteamGameServer_RunCallbacks();
@@ -605,16 +601,16 @@ void CSpaceWarServer::RunFrame()
 
 	// Timeout stale player connections, also update player count data
 	uint32 uPlayerCount = 0;
-	for( uint32 i=0; i < MAX_PLAYERS_PER_SERVER; ++i )
+	for(uint32 i=0; i < MAX_PLAYERS_PER_SERVER; ++i)
 	{
 		// If there is no ship, skip
-		if ( !m_rgClientData[i].m_bActive )
+		if (!m_rgClientData[i].m_bActive)
 			continue;
 
-		if ( m_pGameEngine->GetGameTickCount() - m_rgClientData[i].m_ulTickCountLastData > SERVER_TIMEOUT_MILLISECONDS )
+		if (m_pGameEngine->GetGameTickCount() - m_rgClientData[i].m_ulTickCountLastData > SERVER_TIMEOUT_MILLISECONDS)
 		{
-			LOG("Timing out player connection\n");
-			RemovePlayerFromServer( i );
+			LOG("Timing out player connection");
+			RemovePlayerFromServer(i);
 		}
 		else
 		{
@@ -623,20 +619,20 @@ void CSpaceWarServer::RunFrame()
 	}
 	m_uPlayerCount = uPlayerCount;
 
-	switch ( m_eGameState )
+	switch (m_eGameState)
 	{
 	case k_EServerWaitingForPlayers:
 		// Wait a few seconds (so everyone can join if a lobby just started this server)
-		if ( m_pGameEngine->GetGameTickCount() - m_ulStateTransitionTime >= MILLISECONDS_BETWEEN_ROUNDS )
+		if (m_pGameEngine->GetGameTickCount() - m_ulStateTransitionTime >= MILLISECONDS_BETWEEN_ROUNDS)
 		{
 			// Just keep waiting until at least one ship is active
-			for( uint32 i = 0; i < MAX_PLAYERS_PER_SERVER; ++i )
+			for(uint32 i = 0; i < MAX_PLAYERS_PER_SERVER; ++i)
 			{
-				if ( m_rgClientData[i].m_bActive )
+				if (m_rgClientData[i].m_bActive)
 				{
 					// Transition to active
-					LOG("Server going active after waiting for players\n");
-					SetGameState( k_EServerActive );
+					LOG("Server going active after waiting for players");
+					SetGameState(k_EServerActive);
 				}
 			}
 		}
@@ -645,19 +641,19 @@ void CSpaceWarServer::RunFrame()
 	case k_EServerWinner:
 		// Update all the entities...
 		m_pSun->RunFrame();
-		for( uint32 i=0; i<MAX_PLAYERS_PER_SERVER; ++i )
+		for(uint32 i=0; i<MAX_PLAYERS_PER_SERVER; ++i)
 		{
-			if ( m_rgpShips[i] )
-				m_rgpShips[i]->RunFrame();
+			if (m_robots[i])
+				m_robots[i]->RunFrame();
 		}
 
 		// NOTE: no collision detection, because the round is really over, objects are now invulnerable
 
 		// After 5 seconds start the next round
-		if ( m_pGameEngine->GetGameTickCount() - m_ulStateTransitionTime >= MILLISECONDS_BETWEEN_ROUNDS )
+		if (m_pGameEngine->GetGameTickCount() - m_ulStateTransitionTime >= MILLISECONDS_BETWEEN_ROUNDS)
 		{
 			ResetPlayerShips();
-			SetGameState( k_EServerActive );
+			SetGameState(k_EServerActive);
 		}
 
 		break;
@@ -665,10 +661,10 @@ void CSpaceWarServer::RunFrame()
 	case k_EServerActive:
 		// Update all the entities...
 		m_pSun->RunFrame();
-		for( uint32 i=0; i<MAX_PLAYERS_PER_SERVER; ++i )
+		for(uint32 i=0; i<MAX_PLAYERS_PER_SERVER; ++i)
 		{
-			if ( m_rgpShips[i] )
-				m_rgpShips[i]->RunFrame();
+			if (m_robots[i])
+				m_robots[i]->RunFrame();
 		}
 
 		// Check for collisions which could lead to a winner this round
@@ -678,7 +674,7 @@ void CSpaceWarServer::RunFrame()
 	case k_EServerExiting:
 		break;
 	default:
-		LOG("Unhandled game state in CSpaceWarServer::RunFrame\n");
+		LOG("Unhandled game state in DanteServer::RunFrame");
 	}
 
 	// Send client updates (will internal limit itself to the tick rate desired)
@@ -689,37 +685,37 @@ void CSpaceWarServer::RunFrame()
 //-----------------------------------------------------------------------------
 // Purpose: Sends updates to all connected clients
 //-----------------------------------------------------------------------------
-void CSpaceWarServer::SendUpdateDataToAllClients()
+void DanteServer::SendUpdateDataToAllClients()
 {
 	// Limit the rate at which we update, even if our internal frame rate is higher
-	if ( m_pGameEngine->GetGameTickCount() - m_ulLastServerUpdateTick < 1000.0f/SERVER_UPDATE_SEND_RATE )
+	if (m_pGameEngine->GetGameTickCount() - m_ulLastServerUpdateTick < 1000.0f/SERVER_UPDATE_SEND_RATE)
 		return;
 
 	m_ulLastServerUpdateTick = m_pGameEngine->GetGameTickCount();
 
 	MsgServerUpdateWorld_t msg;
 
-	msg.AccessUpdateData()->SetServerGameState( m_eGameState );
-	for( int i=0; i<MAX_PLAYERS_PER_SERVER; ++i )
+	msg.AccessUpdateData()->SetServerGameState(m_eGameState);
+	for(int i=0; i<MAX_PLAYERS_PER_SERVER; ++i)
 	{
-		msg.AccessUpdateData()->SetPlayerActive( i, m_rgClientData[i].m_bActive );
-		msg.AccessUpdateData()->SetPlayerScore( i, m_rguPlayerScores[i]  );
-		msg.AccessUpdateData()->SetPlayerSteamID( i, m_rgClientData[i].m_SteamIDUser.ConvertToUint64() );
+		msg.AccessUpdateData()->SetPlayerActive(i, m_rgClientData[i].m_bActive);
+		msg.AccessUpdateData()->SetPlayerScore(i, m_rguPlayerScores[i] );
+		msg.AccessUpdateData()->SetPlayerSteamID(i, m_rgClientData[i].m_SteamIDUser.ConvertToUint64());
 
-		if ( m_rgpShips[i] )
+		if (m_robots[i])
 		{
-			m_rgpShips[i]->BuildServerUpdate( msg.AccessUpdateData()->AccessShipUpdateData( i ) );
+			m_robots[i]->BuildServerUpdate(msg.AccessUpdateData()->AccessShipUpdateData(i));
 		}
 	}
 
-	msg.AccessUpdateData()->SetPlayerWhoWon( m_uPlayerWhoWonGame );
+	msg.AccessUpdateData()->SetPlayerWhoWon(m_uPlayerWhoWonGame);
 	
-	for( int i=0; i<MAX_PLAYERS_PER_SERVER; ++i )
+	for(int i=0; i<MAX_PLAYERS_PER_SERVER; ++i)
 	{
-		if ( !m_rgClientData[i].m_bActive ) 
+		if (!m_rgClientData[i].m_bActive) 
 			continue;
 
-		BSendDataToClient( i, (char*)&msg, sizeof( msg ) );
+		BSendDataToClient(i, (char*)&msg, sizeof(msg));
 	}
 }
 
@@ -727,12 +723,12 @@ void CSpaceWarServer::SendUpdateDataToAllClients()
 //-----------------------------------------------------------------------------
 // Purpose: Receives update data from clients
 //-----------------------------------------------------------------------------
-void CSpaceWarServer::OnReceiveClientUpdateData( uint32 uShipIndex, ClientSpaceWarUpdateData_t *pUpdateData )
+void DanteServer::OnReceiveClientUpdateData(uint32 uShipIndex, ClientDanteUpdateData_t *pUpdateData)
 {
-	if ( m_rgClientData[uShipIndex].m_bActive && m_rgpShips[uShipIndex] )
+	if (m_rgClientData[uShipIndex].m_bActive && m_robots[uShipIndex])
 	{
 		m_rgClientData[uShipIndex].m_ulTickCountLastData = m_pGameEngine->GetGameTickCount();
-		m_rgpShips[uShipIndex]->OnReceiveClientUpdate( pUpdateData );
+		m_robots[uShipIndex]->OnReceiveClientUpdate(pUpdateData);
 	}
 }
 
@@ -741,47 +737,47 @@ void CSpaceWarServer::OnReceiveClientUpdateData( uint32 uShipIndex, ClientSpaceW
 // Purpose: Checks various game objects for collisions and updates state 
 //			appropriately if they have occurred
 //-----------------------------------------------------------------------------
-void CSpaceWarServer::CheckForCollisions()
+void DanteServer::CheckForCollisions()
 {
 	// Make the ships check their photons for ones that have hit the sun and remove
 	// them before we go and check for them hitting the opponent
-	for ( uint32 i=0; i<MAX_PLAYERS_PER_SERVER; ++i )
+	for (uint32 i=0; i<MAX_PLAYERS_PER_SERVER; ++i)
 	{
-		if ( m_rgpShips[i] )
-			m_rgpShips[i]->DestroyPhotonsColldingWith( m_pSun );
+		if (m_robots[i])
+			m_robots[i]->DestroyPhotonsColldingWith(m_pSun);
 	}
 
 	// Array to track who exploded, can't set the ship exploding within the loop below,
 	// or it will prevent that ship from colliding with later ships in the sequence
 	bool rgbExplodingShips[MAX_PLAYERS_PER_SERVER];
-	memset( rgbExplodingShips, 0, sizeof( rgbExplodingShips ) );
+	memset(rgbExplodingShips, 0, sizeof(rgbExplodingShips));
 
 	// Check each ship for colliding with the sun or another ships photons
-	for ( uint32 i=0; i<MAX_PLAYERS_PER_SERVER; ++i )
+	for (uint32 i=0; i<MAX_PLAYERS_PER_SERVER; ++i)
 	{
 		// If the pointer is invalid skip the ship
-		if ( !m_rgpShips[i] )
+		if (!m_robots[i])
 			continue;
 
-		if ( m_rgpShips[i]->BCollidesWith( m_pSun ) )
+		if (m_robots[i]->BCollidesWith(m_pSun))
 		{
 			rgbExplodingShips[i] |= 1;
 		}
 
-		for( uint32 j=0; j<MAX_PLAYERS_PER_SERVER; ++j )
+		for(uint32 j=0; j<MAX_PLAYERS_PER_SERVER; ++j)
 		{
 			// Don't check against your own photons, or NULL pointers!
-			if ( j == i || !m_rgpShips[j] )
+			if (j == i || !m_robots[j])
 				continue;
 			
-			rgbExplodingShips[i] |= m_rgpShips[i]->BCollidesWith( m_rgpShips[j] );
-			if ( m_rgpShips[j]->BCheckForPhotonsCollidingWith( m_rgpShips[i] ) )
+			rgbExplodingShips[i] |= m_robots[i]->BCollidesWith(m_robots[j]);
+			if (m_robots[j]->BCheckForPhotonsCollidingWith(m_robots[i]))
 			{
-				if ( m_rgpShips[i]->GetShieldStrength() > 200 )
+				if (m_robots[i]->GetShieldStrength() > 200)
 				{
 					// Shield protects from the hit
-					m_rgpShips[i]->SetShieldStrength( 0 );
-					m_rgpShips[j]->DestroyPhotonsColldingWith( m_rgpShips[i] );
+					m_robots[i]->SetShieldStrength(0);
+					m_robots[j]->DestroyPhotonsColldingWith(m_robots[i]);
 				}
 				else
 				{
@@ -791,27 +787,27 @@ void CSpaceWarServer::CheckForCollisions()
 		}
 	}
 
-	for ( uint32 i=0; i<MAX_PLAYERS_PER_SERVER; ++i )
+	for (uint32 i=0; i<MAX_PLAYERS_PER_SERVER; ++i)
 	{
-		if ( rgbExplodingShips[i] && m_rgpShips[i] )
-			m_rgpShips[i]->SetExploding( true );
+		if (rgbExplodingShips[i] && m_robots[i])
+			m_robots[i]->SetExploding(true);
 	}
 
 	// Count how many ships are active, and how many are exploding
 	uint32 uActiveShips = 0;
 	uint32 uShipsExploding = 0;
 	uint32 uLastShipFoundAlive = 0;
-	for ( uint32 i = 0; i < MAX_PLAYERS_PER_SERVER; ++i )
+	for (uint32 i = 0; i < MAX_PLAYERS_PER_SERVER; ++i)
 	{
-		if ( m_rgpShips[i] )
+		if (m_robots[i])
 		{
 			// Disabled ships don't count at all
-			if ( m_rgpShips[i]->BIsDisabled() )
+			if (m_robots[i]->BIsDisabled())
 				continue;
 
 			++uActiveShips;
 		
-			if ( m_rgpShips[i]->BIsExploding() )
+			if (m_robots[i]->BIsExploding())
 				++uShipsExploding;
 			else
 				uLastShipFoundAlive = i;
@@ -819,16 +815,16 @@ void CSpaceWarServer::CheckForCollisions()
 	}
 
 	// If exploding == active, then its a draw, everyone is dead
-	if ( uActiveShips == uShipsExploding )
+	if (uActiveShips == uShipsExploding)
 	{
-		SetGameState( k_EServerDraw );
+		SetGameState(k_EServerDraw);
 	}
-	else if ( uActiveShips > 1 && uActiveShips - uShipsExploding == 1 )
+	else if (uActiveShips > 1 && uActiveShips - uShipsExploding == 1)
 	{
 		// If only one ship is alive they win
 		m_uPlayerWhoWonGame = uLastShipFoundAlive;
 		m_rguPlayerScores[uLastShipFoundAlive]++;
-		SetGameState( k_EServerWinner );
+		SetGameState(k_EServerWinner);
 	}
 }
 
@@ -836,9 +832,9 @@ void CSpaceWarServer::CheckForCollisions()
 //-----------------------------------------------------------------------------
 // Purpose: Take any action we need to on Steam notifying us we are now logged in
 //-----------------------------------------------------------------------------
-void CSpaceWarServer::OnSteamServersConnected( SteamServersConnected_t *pLogonSuccess )
+void DanteServer::OnSteamServersConnected(SteamServersConnected_t *pLogonSuccess)
 {
-	LOG("SpaceWarServer connected to Steam successfully\n");
+	LOG("DanteServer connected to Steam successfully");
 	m_bConnectedToSteam = true;
 
 	// log on is not finished until OnPolicyResponse() is called
@@ -851,16 +847,16 @@ void CSpaceWarServer::OnSteamServersConnected( SteamServersConnected_t *pLogonSu
 //-----------------------------------------------------------------------------
 // Purpose: Callback from Steam when logon is fully completed and VAC secure policy is set
 //-----------------------------------------------------------------------------
-void CSpaceWarServer::OnPolicyResponse( GSPolicyResponse_t *pPolicyResponse )
+void DanteServer::OnPolicyResponse(GSPolicyResponse_t *pPolicyResponse)
 {
     // Check if we were able to go VAC secure or not
     if (SteamGameServer()->BSecure())
     {
-        LOG("SpaceWarServer is VAC Secure!\n");
+        LOG("DanteServer is VAC Secure!");
     }
     else
     {
-        LOG("SpaceWarServer is not VAC Secure!\n");
+        LOG("DanteServer is not VAC Secure!");
     }
     
     char rgch[128];
@@ -872,40 +868,40 @@ void CSpaceWarServer::OnPolicyResponse( GSPolicyResponse_t *pPolicyResponse )
 //-----------------------------------------------------------------------------
 // Purpose: Called when we were previously logged into steam but get logged out
 //-----------------------------------------------------------------------------
-void CSpaceWarServer::OnSteamServersDisconnected( SteamServersDisconnected_t *pLoggedOff )
+void DanteServer::OnSteamServersDisconnected(SteamServersDisconnected_t *pLoggedOff)
 {
 	m_bConnectedToSteam = false;
-	LOG("SpaceWarServer got logged out of Steam\n");
+	LOG("DanteServer got logged out of Steam");
 }
 
 
 //-----------------------------------------------------------------------------
 // Purpose: Called when an attempt to login to Steam fails
 //-----------------------------------------------------------------------------
-void CSpaceWarServer::OnSteamServersConnectFailure( SteamServerConnectFailure_t *pConnectFailure )
+void DanteServer::OnSteamServersConnectFailure(SteamServerConnectFailure_t *pConnectFailure)
 {
 	m_bConnectedToSteam = false;
-	LOG("SpaceWarServer failed to connect to Steam\n");
+	LOG("DanteServer failed to connect to Steam");
 }
 
 
 //-----------------------------------------------------------------------------
 // Purpose: Called once we are connected to Steam to tell it about our details
 //-----------------------------------------------------------------------------
-void CSpaceWarServer::SendUpdatedServerDetailsToSteam()
+void DanteServer::SendUpdatedServerDetailsToSteam()
 {
 
 	// Tell the Steam authentication servers about our game
 	char rgchServerName[128];
-	if ( SpaceWarClient() )
+	if (DanteClient())
 	{
 		// If a client is running (should always be since we don't support a dedicated server)
 		// then we'll form the name based off of it
-		StringUtil::sprintf_safe( rgchServerName, "%s's game", SpaceWarClient()->GetLocalPlayerName() );
+		StringUtil::sprintf_safe(rgchServerName, "%s's game", DanteClient()->GetLocalPlayerName());
 	}
 	else
 	{
-		StringUtil::sprintf_safe( rgchServerName, "%s", "Spacewar!");
+		StringUtil::sprintf_safe(rgchServerName, "%s", "Spacewar!");
 	}
 	m_sServerName = rgchServerName;
 
@@ -916,48 +912,48 @@ void CSpaceWarServer::SendUpdatedServerDetailsToSteam()
 	// These server state variables may be changed at any time.  Note that there is no lnoger a mechanism
 	// to send the player count.  The player count is maintained by steam and you should use the player
 	// creation/authentication functions to maintain your player count.
-	SteamGameServer()->SetMaxPlayerCount( 4 );
-	SteamGameServer()->SetPasswordProtected( false );
-	SteamGameServer()->SetServerName( m_sServerName.c_str() );
-	SteamGameServer()->SetBotPlayerCount( 0 ); // optional, defaults to zero
-	SteamGameServer()->SetMapName( "MilkyWay");
+	SteamGameServer()->SetMaxPlayerCount(4);
+	SteamGameServer()->SetPasswordProtected(false);
+	SteamGameServer()->SetServerName(m_sServerName.c_str());
+	SteamGameServer()->SetBotPlayerCount(0); // optional, defaults to zero
+	SteamGameServer()->SetMapName("MilkyWay");
 
     // Update all the players names/scores
-    for( uint32 i=0; i < MAX_PLAYERS_PER_SERVER; ++i )
+    for(uint32 i=0; i < MAX_PLAYERS_PER_SERVER; ++i)
     {
-        if ( m_rgClientData[i].m_bActive && m_rgpShips[i] )
+        if (m_rgClientData[i].m_bActive && m_robots[i])
         {
-            SteamGameServer()->BUpdateUserData( m_rgClientData[i].m_SteamIDUser, m_rgpShips[i]->GetPlayerName(), m_rguPlayerScores[i] );
+            SteamGameServer()->BUpdateUserData(m_rgClientData[i].m_SteamIDUser, m_robots[i]->GetPlayerName(), m_rguPlayerScores[i]);
         }
     }
 
 	// game type is a special string you can use for your game to differentiate different game play types occurring on the same maps
 	// When users search for this parameter they do a sub-string search of this string 
 	// (i.e if you report "abc" and a client requests "ab" they return your server)
-	//SteamGameServer()->SetGameType( "dm");
+	//SteamGameServer()->SetGameType("dm");
 
 	// update any rule values we publish
-	//SteamMasterServerUpdater()->SetKeyValue( "rule1_setting", "value");
-	//SteamMasterServerUpdater()->SetKeyValue( "rule2_setting", "value2");
+	//SteamMasterServerUpdater()->SetKeyValue("rule1_setting", "value");
+	//SteamMasterServerUpdater()->SetKeyValue("rule2_setting", "value2");
 }
 
 
 //-----------------------------------------------------------------------------
 // Purpose: Tells us Steam3 (VAC and newer license checking) has accepted the user connection
 //-----------------------------------------------------------------------------
-void CSpaceWarServer::OnValidateAuthTicketResponse( ValidateAuthTicketResponse_t *pResponse )
+void DanteServer::OnValidateAuthTicketResponse(ValidateAuthTicketResponse_t *pResponse)
 {
-	if ( pResponse->m_eAuthSessionResponse == k_EAuthSessionResponseOK )
+	if (pResponse->m_eAuthSessionResponse == k_EAuthSessionResponseOK)
 	{
 		// This is the final approval, and means we should let the client play (find the pending auth by steamid)
-		for ( uint32 i = 0; i<MAX_PLAYERS_PER_SERVER; ++i )
+		for (uint32 i = 0; i<MAX_PLAYERS_PER_SERVER; ++i)
 		{
-			if ( !m_rgPendingClientData[i].m_bActive )
+			if (!m_rgPendingClientData[i].m_bActive)
 				continue;
-			else if ( m_rgPendingClientData[i].m_SteamIDUser == pResponse->m_SteamID )
+			else if (m_rgPendingClientData[i].m_SteamIDUser == pResponse->m_SteamID)
 			{
-				LOG("Auth completed for a client\n");
-				OnAuthCompleted( true, i );
+				LOG("Auth completed for a client");
+				OnAuthCompleted(true, i);
 				return;
 			}
 		}
@@ -965,14 +961,14 @@ void CSpaceWarServer::OnValidateAuthTicketResponse( ValidateAuthTicketResponse_t
 	else
 	{
 		// Looks like we shouldn't let this user play, kick them
-		for ( uint32 i = 0; i<MAX_PLAYERS_PER_SERVER; ++i )
+		for (uint32 i = 0; i<MAX_PLAYERS_PER_SERVER; ++i)
 		{
-			if ( !m_rgPendingClientData[i].m_bActive )
+			if (!m_rgPendingClientData[i].m_bActive)
 				continue;
-			else if ( m_rgPendingClientData[i].m_SteamIDUser == pResponse->m_SteamID )
+			else if (m_rgPendingClientData[i].m_SteamIDUser == pResponse->m_SteamID)
 			{
-				LOG("Auth failed for a client\n");
-				OnAuthCompleted( false, i );
+				LOG("Auth failed for a client");
+				OnAuthCompleted(false, i);
 				return;
 			}
 		}
@@ -982,7 +978,7 @@ void CSpaceWarServer::OnValidateAuthTicketResponse( ValidateAuthTicketResponse_t
 //-----------------------------------------------------------------------------
 // Purpose: Returns the SteamID of the game server
 //-----------------------------------------------------------------------------
-CSteamID CSpaceWarServer::GetSteamID()
+CSteamID DanteServer::GetSteamID()
 {
     return SteamGameServer()->GetSteamID();
 }
@@ -990,22 +986,22 @@ CSteamID CSpaceWarServer::GetSteamID()
 //-----------------------------------------------------------------------------
 // Purpose: Kicks a player off the server
 //-----------------------------------------------------------------------------
-void CSpaceWarServer::KickPlayerOffServer( CSteamID steamID )
+void DanteServer::kickPlayerOffServer(CSteamID steamID)
 {
 	uint32 uPlayerCount = 0;
-	for( uint32 i=0; i < MAX_PLAYERS_PER_SERVER; ++i )
+	for(uint32 i=0; i < MAX_PLAYERS_PER_SERVER; ++i)
 	{
 		// If there is no ship, skip
-		if ( !m_rgClientData[i].m_bActive )
+		if (!m_rgClientData[i].m_bActive)
 			continue;
 
-		if ( m_rgClientData[i].m_SteamIDUser == steamID )
+		if (m_rgClientData[i].m_SteamIDUser == steamID)
 		{
-			LOG("Kicking player\n");
-			RemovePlayerFromServer( i );
+			LOG("Kicking player");
+			RemovePlayerFromServer(i);
 			// send him a kick message
 			MsgServerFailAuthentication_t msg;
-			SteamGameServerNetworking()->SendP2PPacket( steamID, &msg, sizeof( msg ), k_EP2PSendReliable );
+			SteamGameServerNetworking()->SendP2PPacket(steamID, &msg, sizeof(msg), k_EP2PSendReliable);
 		}
 		else
 		{

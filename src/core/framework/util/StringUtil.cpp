@@ -35,7 +35,7 @@ void StringUtil::encryptDecrypt(unsigned char* input, unsigned char* output, con
     }
 }
 
-#if !_WIN32
+#ifndef _WIN32
 void OutputDebugStringA(const char* inString)
 {
     printf("%s", inString);
@@ -44,32 +44,18 @@ void OutputDebugStringA(const char* inString)
 
 std::string StringUtil::sprintf(const char* inFormat, ...)
 {
-    //not thread safe...
     static char temp[4096];
     
-    va_list args;
-    va_start (args, inFormat);
+    sprintf_safe(temp, inFormat);
     
-#if _WIN32
-    _vsnprintf_s(temp, 4096, 4096, inFormat, args);
-#else
-    vsnprintf(temp, 4096, inFormat, args);
-#endif
     return std::string(temp);
 }
 
 void StringUtil::log(const char* inFormat, ...)
 {
-    char temp[4096];
+    static char temp[4096];
     
-    va_list args;
-    va_start (args, inFormat);
-    
-#if _WIN32
-    _vsnprintf_s(temp, 4096, 4096, inFormat, args);
-#else
-    vsnprintf(temp, 4096, inFormat, args);
-#endif
+    sprintf_safe(temp, inFormat);
     
     OutputDebugStringA(temp);
     OutputDebugStringA("\n");

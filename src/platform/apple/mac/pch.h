@@ -12,6 +12,4 @@
 #import <OpenGL/OpenGL.h>
 #import <OpenGL/gl.h>
 
-#include "stdafx.h"
-
 #endif /* defined(__noctisgames__pch__) */

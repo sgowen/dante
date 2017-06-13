@@ -18,7 +18,7 @@
 #include <stdint.h>
 
 class Robot;
-class SpaceWarServer;
+class DanteServer;
 
 class SpacePirate : public Entity
 {
@@ -57,7 +57,7 @@ public:
     bool isFacingLeft();
     
 private:
-    SpaceWarServer* m_server;
+    DanteServer* m_server;
     float m_fSpeed;
     int m_iHealth;
     bool m_isFacingLeft;

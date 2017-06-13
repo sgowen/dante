@@ -13,7 +13,7 @@
 #include "OutputMemoryBitStream.h"
 #include "InputMemoryBitStream.h"
 #include "Robot.h"
-#include "SpaceWarServer.h"
+#include "DanteServer.h"
 
 #include "World.h"
 #include "Vector2.h"

@@ -36,7 +36,7 @@
 #include "InputManager.h"
 #include "Timing.h"
 #include "World.h"
-#include "SteamGameServices.h"
+#include "NGSteamGameServices.h"
 
 MainEngine::MainEngine() : IEngine(),
 m_config(new JsonFile("dante.cfg")),
@@ -48,7 +48,7 @@ m_fFrameStateTime(0)
 {
     m_config->load();
     
-    if (SteamGameServices::getInstance()->init() < 0)
+    if (NG_STEAM_GAME_SERVICES->init() < 0)
     {
         m_iRequestedAction = REQUESTED_ACTION_EXIT;
         return;
@@ -78,7 +78,7 @@ MainEngine::~MainEngine()
     delete m_touchPointDown;
     delete m_touchPointDown2;
     
-    SteamGameServices::getInstance()->deinit();
+    NG_STEAM_GAME_SERVICES->deinit();
 }
 
 void MainEngine::createDeviceDependentResources()

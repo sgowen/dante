@@ -19,7 +19,7 @@
 
 class IInputState;
 class Move;
-class SpaceWarServer;
+class DanteServer;
 
 class Robot : public Entity
 {
@@ -50,11 +50,15 @@ public:
     
     virtual uint32_t write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState);
     
+    void init();
+    
     void takeDamage();
     
     void setPlayerId(uint32_t inPlayerId);
     
     uint32_t getPlayerId() const;
+    
+    int getHealth();
     
     bool isFacingLeft();
     
@@ -64,8 +68,10 @@ public:
     
     bool isSprinting();
     
+    bool isAlive();
+    
 private:
-    SpaceWarServer* m_server;
+    DanteServer* m_server;
     float m_fSpeed;
     float m_fJumpSpeed;
     float m_fTimeOfNextShot;

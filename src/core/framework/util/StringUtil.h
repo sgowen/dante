@@ -42,14 +42,13 @@ public:
     }
     
     template<typename T>
-    static T stringToNumber(const std::string &str)
+    static T stringToNumber(const std::string &str, T defVal = 0)
     {
         std::stringstream ss(str);
         T value;
         if ((ss >> value).fail())
         {
-            // ERROR
-            return 0;
+            return defVal;
         }
         
         return value;
@@ -59,13 +58,16 @@ public:
     static void sprintf_safe(OUT_Z_ARRAY char (&pDest)[maxLenInChars], const char *pFormat, ... )
     {
         va_list params;
-        va_start( params, pFormat );
-#ifdef POSIX
-        vsnprintf( pDest, maxLenInChars, pFormat, params );
+        va_start(params, pFormat);
+        
+#ifdef _WIN32
+        _vsnprintf_s(pDest, maxLenInChars, maxLenInChars, pFormat, params);
 #else
-        _vsnprintf( pDest, maxLenInChars, pFormat, params );
+        vsnprintf(pDest, maxLenInChars, pFormat, params);
 #endif
+        
         pDest[maxLenInChars - 1] = '\0';
+        
         va_end( params );
     }
     
