@@ -258,8 +258,7 @@ bool NGSteamGameServices::writeFileToSteamCloud(const char *inFileName, const ch
 
 std::string NGSteamGameServices::readFileFromSteamCloud(const char *inFileName)
 {
-    static char temp[4096];
-    bzero(temp, 4096);
+	char temp[4096];
     
     int32 numBytesRead = 0;
     
