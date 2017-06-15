@@ -28,6 +28,8 @@ public:
     virtual bool write(OutputMemoryBitStream& inOutputStream) const;
     virtual bool read(InputMemoryBitStream& inInputStream);
     
+    virtual void reset();
+    
     void copyTo(InputState* inInputState);
     
     bool isEqualTo(InputState* inInputState);
@@ -40,6 +42,10 @@ public:
     
     bool isSprinting() const;
     
+    bool isStartingServer() const;
+    
+    bool isJoiningServer() const;
+    
 private:
     friend class InputManager;
     
@@ -48,6 +54,8 @@ private:
     float m_fDesiredJumpIntensity;
     bool m_isShooting;
     bool m_isSprinting;
+    bool m_isStartingServer;
+    bool m_isJoiningServer;
 };
 
 #endif /* defined(__noctisgames__InputState__) */

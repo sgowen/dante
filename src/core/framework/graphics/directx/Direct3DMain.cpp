@@ -209,6 +209,14 @@ void Direct3DMain::Update(DX::StepTimer const& timer)
 	{
 		KEYBOARD_INPUT_MANAGER->onInput(KeyboardEventType_P, true);
 	}
+    if (m_keys.IsKeyPressed(DirectX::Keyboard::Keys::J))
+    {
+        KEYBOARD_INPUT_MANAGER->onInput(KeyboardEventType_J);
+    }
+    else if (m_keys.IsKeyReleased(DirectX::Keyboard::Keys::J))
+    {
+        KEYBOARD_INPUT_MANAGER->onInput(KeyboardEventType_J, true);
+    }
 	if (m_keys.IsKeyPressed(DirectX::Keyboard::Keys::Enter))
 	{
 		KEYBOARD_INPUT_MANAGER->onInput(KeyboardEventType_ENTER);

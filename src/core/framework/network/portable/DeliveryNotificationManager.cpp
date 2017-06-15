@@ -13,7 +13,6 @@
 #include "OutputMemoryBitStream.h"
 #include "InputMemoryBitStream.h"
 #include "StringUtil.h"
-#include "Timing.h"
 
 namespace
 {
@@ -65,9 +64,9 @@ bool DeliveryNotificationManager::readAndProcessState(InputMemoryBitStream& inIn
     return toRet;
 }
 
-void DeliveryNotificationManager::processTimedOutPackets()
+void DeliveryNotificationManager::processTimedOutPackets(float frameStartTime)
 {
-    float timeoutTime = Timing::getInstance()->getFrameStartTime() - kDelayBeforeAckTimeout;
+    float timeoutTime = frameStartTime - kDelayBeforeAckTimeout;
     
     while (!m_inFlightPackets.empty())
     {
@@ -118,7 +117,7 @@ InFlightPacket* DeliveryNotificationManager::writeSequenceNumber(OutputMemoryBit
     
     if (m_shouldprocessAcks)
     {
-        m_inFlightPackets.emplace_back(sequenceNumber);
+        m_inFlightPackets.emplace_back(InFlightPacket(sequenceNumber));
         
         return &m_inFlightPackets.back();
     }

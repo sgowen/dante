@@ -43,7 +43,7 @@ public:
     
     virtual void onDeletion();
     
-    virtual void update();
+    virtual void update() = 0;
     
     virtual void update(float inDeltaTime);
     

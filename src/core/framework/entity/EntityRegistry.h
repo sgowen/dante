@@ -21,7 +21,7 @@ typedef Entity* (*EntityCreationFunc)();
 class EntityRegistry
 {
 public:
-    static EntityRegistry* getInstance();
+    EntityRegistry();
     
     void init(HandleEntityCreatedFunc handleEntityCreatedFunc);
     
@@ -32,11 +32,6 @@ public:
 private:
     std::unordered_map<uint32_t, EntityCreationFunc> m_nameToEntityCreationFunctionMap;
     HandleEntityCreatedFunc m_handleEntityCreatedFunc;
-    
-    // ctor, copy ctor, and assignment should be private in a Singleton
-    EntityRegistry();
-    EntityRegistry(const EntityRegistry&);
-    EntityRegistry& operator=(const EntityRegistry&);
 };
 
 #endif /* defined(__noctisgames__EntityRegistry__) */

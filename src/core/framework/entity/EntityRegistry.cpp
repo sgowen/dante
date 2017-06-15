@@ -10,10 +10,9 @@
 
 #include "EntityRegistry.h"
 
-EntityRegistry* EntityRegistry::getInstance()
+EntityRegistry::EntityRegistry()
 {
-    static EntityRegistry instance = EntityRegistry();
-    return &instance;
+    // Empty
 }
 
 void EntityRegistry::init(HandleEntityCreatedFunc handleEntityCreatedFunc)
@@ -35,9 +34,4 @@ Entity* EntityRegistry::createEntity(uint32_t inFourCCName)
     m_handleEntityCreatedFunc(entity);
     
     return entity;
-}
-
-EntityRegistry::EntityRegistry()
-{
-    // Empty
 }

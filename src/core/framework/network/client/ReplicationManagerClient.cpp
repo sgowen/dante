@@ -10,14 +10,19 @@
 
 #include "ReplicationManagerClient.h"
 
+#include "EntityRegistry.h"
 #include "InputMemoryBitStream.h"
 
 #include "NetworkManagerClient.h"
 #include "Entity.h"
 #include "ReplicationAction.h"
-#include "EntityRegistry.h"
 
 #include <cassert>
+
+ReplicationManagerClient::ReplicationManagerClient(EntityRegistry* entityRegistry) : m_entityRegistry(entityRegistry)
+{
+    // Empty
+}
 
 void ReplicationManagerClient::read(InputMemoryBitStream& inInputStream)
 {
@@ -56,7 +61,7 @@ void ReplicationManagerClient::readAndDoCreateAction(InputMemoryBitStream& inInp
     if (!gameObject)
     {
         //create the object and map it...
-        gameObject = EntityRegistry::getInstance()->createEntity(fourCCName);
+        gameObject = m_entityRegistry->createEntity(fourCCName);
         gameObject->setID(inNetworkId);
         
         NetworkManagerClient::getInstance()->addToNetworkIdToEntityMap(gameObject);

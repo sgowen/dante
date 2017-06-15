@@ -10,14 +10,15 @@
 
 #include "INetworkManager.h"
 
+#include "EntityManager.h"
 #include "OutputMemoryBitStream.h"
 #include "Entity.h"
+#include "WeightedTimedMovingAverage.h"
 
 #include "SocketUtil.h"
 #include "StringUtil.h"
 #include "Timing.h"
 #include "SocketAddressFamily.h"
-#include "EntityManager.h"
 #include "macros.h"
 
 void INetworkManager::handleConnectionReset(const SocketAddress& inFromAddress)
@@ -25,18 +26,16 @@ void INetworkManager::handleConnectionReset(const SocketAddress& inFromAddress)
     UNUSED(inFromAddress);
 }
 
-bool INetworkManager::init(uint16_t inPort, HandleEntityDeletion handleEntityDeletion)
+bool INetworkManager::init(uint16_t inPort, HandleEntityDeletionFunc handleEntityDeletion)
 {
+    m_entityManager = new EntityManager();
     m_handleEntityDeletion = handleEntityDeletion;
     
     m_socket = SOCKET_UTIL->createUDPSocket(INET);
     SocketAddress ownAddress(INADDR_ANY, inPort);
     m_socket->bindSocket(ownAddress);
     
-    LOG("Initializing INetworkManager at port %d", inPort);
-    
-    m_bytesReceivedPerSecond = WeightedTimedMovingAverage(1.f);
-    m_bytesSentPerSecond = WeightedTimedMovingAverage(1.f);
+    LOG("Initializing INetworkManager at port %hu", inPort);
     
     //did we bind okay?
     if (m_socket == nullptr)
@@ -49,11 +48,18 @@ bool INetworkManager::init(uint16_t inPort, HandleEntityDeletion handleEntityDel
         return false;
     }
     
+    m_isInitialized = true;
+    
     return true;
 }
 
 void INetworkManager::processIncomingPackets()
 {
+    if (!m_isInitialized)
+    {
+        return;
+    }
+    
     readIncomingPacketsIntoQueue();
     
     processQueuedPackets();
@@ -72,29 +78,29 @@ void INetworkManager::sendPacket(const OutputMemoryBitStream& inOutputStream, co
 
 const WeightedTimedMovingAverage& INetworkManager::getBytesReceivedPerSecond() const
 {
-    return m_bytesReceivedPerSecond;
+    return *m_bytesReceivedPerSecond;
 }
 
 const WeightedTimedMovingAverage& INetworkManager::getBytesSentPerSecond() const
 {
-    return m_bytesSentPerSecond;
+    return *m_bytesSentPerSecond;
 }
 
 Entity* INetworkManager::getEntity(int inNetworkId) const
 {
-    return ENTITY_MGR->getEntityFromID(inNetworkId);
+    return m_entityManager->getEntityFromID(inNetworkId);
 }
 
 void INetworkManager::addToNetworkIdToEntityMap(Entity* inEntity)
 {
-    ENTITY_MGR->registerEntity(inEntity);
+    m_entityManager->registerEntity(inEntity);
 }
 
 void INetworkManager::removeFromNetworkIdToEntityMap(Entity* inEntity)
 {
     m_handleEntityDeletion(inEntity);
     
-    ENTITY_MGR->removeEntity(inEntity);
+    m_entityManager->removeEntity(inEntity);
     
     delete inEntity;
     inEntity = nullptr;
@@ -104,7 +110,7 @@ void INetworkManager::updateBytesSentLastFrame()
 {
     if (m_bytesSentThisFrame > 0)
     {
-        m_bytesSentPerSecond.updatePerSecond(static_cast<float>(m_bytesSentThisFrame));
+        m_bytesSentPerSecond->updatePerSecond(static_cast<float>(m_bytesSentThisFrame));
         
         m_bytesSentThisFrame = 0;
     }
@@ -112,7 +118,6 @@ void INetworkManager::updateBytesSentLastFrame()
 
 void INetworkManager::readIncomingPacketsIntoQueue()
 {
-    //should we just keep a static one?
     //should we just keep a static one?
     static char packetMem[1500];
     bzero(packetMem, 1500);
@@ -159,7 +164,7 @@ void INetworkManager::readIncomingPacketsIntoQueue()
     
     if (totalReadByteCount > 0)
     {
-        m_bytesReceivedPerSecond.updatePerSecond(static_cast<float>(totalReadByteCount));
+        m_bytesReceivedPerSecond->updatePerSecond(static_cast<float>(totalReadByteCount));
     }
 }
 
@@ -181,14 +186,25 @@ void INetworkManager::processQueuedPackets()
     }
 }
 
-INetworkManager::INetworkManager() : m_bytesSentThisFrame(0)
+INetworkManager::INetworkManager() :
+m_socket(nullptr),
+m_bytesReceivedPerSecond(new WeightedTimedMovingAverage(1.f)),
+m_bytesSentPerSecond(new WeightedTimedMovingAverage(1.f)),
+m_bytesSentThisFrame(0),
+m_isInitialized(false)
 {
     // Empty
 }
 
 INetworkManager::~INetworkManager()
 {
-    delete m_socket;
+    if (m_socket)
+    {
+        delete m_socket;
+    }
+    
+    delete m_bytesReceivedPerSecond;
+    delete m_bytesSentPerSecond;
 }
 
 INetworkManager::ReceivedPacket::ReceivedPacket(float inReceivedTime, InputMemoryBitStream& ioInputMemoryBitStream, const SocketAddress& inFromAddress) :

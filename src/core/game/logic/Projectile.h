@@ -18,7 +18,7 @@
 #include <stdint.h>
 
 class Robot;
-class DanteServer;
+class Server;
 
 class Projectile : public Entity
 {
@@ -42,7 +42,9 @@ public:
         ProjectileState_Exploding = 2
     };
     
-    static Entity* create();
+    static Entity* staticCreateClient();
+    
+    static Entity* staticCreateServer();
     
     virtual void onDeletion();
     
@@ -65,7 +67,7 @@ public:
     bool isFacingLeft();
     
 private:
-    DanteServer* m_server;
+    Server* m_server;
     uint32_t m_iPlayerId;
     ProjectileState m_state;
     bool m_isFacingLeft;
@@ -84,7 +86,7 @@ private:
     
     void playSound(int soundId);
     
-    Projectile();
+    Projectile(Server* server);
 };
 
 #endif /* defined(__noctisgames__Projectile__) */

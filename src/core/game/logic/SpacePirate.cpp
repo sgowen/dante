@@ -13,7 +13,7 @@
 #include "OutputMemoryBitStream.h"
 #include "InputMemoryBitStream.h"
 #include "Robot.h"
-#include "DanteServer.h"
+#include "Server.h"
 
 #include "World.h"
 #include "Vector2.h"
@@ -27,19 +27,18 @@
 #include "OverlapTester.h"
 #include "NetworkManagerServer.h"
 #include "NetworkManagerClient.h"
+#include "InstanceManager.h"
 
 #include <math.h>
 
-Entity* SpacePirate::create()
+Entity* SpacePirate::staticCreateClient()
 {
-    SpacePirate* ret = new SpacePirate();
-    
-    if (ret->m_server)
-    {
-        NetworkManagerServer::getInstance()->registerEntity(ret);
-    }
-    
-    return ret;
+    return new SpacePirate(nullptr);
+}
+
+Entity* SpacePirate::staticCreateServer()
+{
+    return new SpacePirate(Server::getInstance());
 }
 
 void SpacePirate::onDeletion()
@@ -52,6 +51,8 @@ void SpacePirate::onDeletion()
 
 void SpacePirate::update()
 {
+    Timing* timing = m_server ? Timing::getInstance() : Timing::getInstance();
+    
     if (m_server)
     {
         Vector2 oldAcceleration = getAcceleration();
@@ -60,7 +61,7 @@ void SpacePirate::update()
         bool old_isGrounded = m_isGrounded;
         bool old_isFalling = m_isFalling;
         
-        updateInternal(Timing::getInstance()->getDeltaTime());
+        updateInternal(timing->getDeltaTime());
         
         if (!oldAcceleration.isEqualTo(getAcceleration())
             || !oldVelocity.isEqualTo(getVelocity())
@@ -73,7 +74,7 @@ void SpacePirate::update()
     }
     else
     {
-        updateInternal(Timing::getInstance()->getDeltaTime());
+        updateInternal(timing->getDeltaTime());
     }
 }
 
@@ -223,12 +224,16 @@ void SpacePirate::processCollisions()
     {
         bool targetFound = false;
         float shortestDistance = CAM_WIDTH;
-        std::vector<Entity*> entities = World::getInstance()->getEntities();
+        Robot* robot = nullptr;
+        std::vector<Entity*> entities = InstanceManager::getServerWorld()->getEntities();
         for (Entity* target : entities)
         {
-            if (target != this && !target->isRequestingDeletion() && target->getRTTI().derivesFrom(Robot::rtti))
+            robot = nullptr;
+            if (target != this
+                && !target->isRequestingDeletion()
+                && target->getRTTI().derivesFrom(Robot::rtti)
+                && (robot = static_cast<Robot*>(target)))
             {
-                Robot* robot = static_cast<Robot*>(target);
                 float dist = robot->getPosition().dist(getPosition());
                 if (dist < shortestDistance)
                 {
@@ -288,17 +293,21 @@ void SpacePirate::processCollisionsWithScreenWalls()
     }
 }
 
-SpacePirate::SpacePirate() : Entity(0, 0, 1.565217391304348f * 1.277777777777778f, 2.0f * 1.173913043478261f),
-m_server(nullptr),
+SpacePirate::SpacePirate(Server* server) : Entity(0, 0, 1.565217391304348f * 1.277777777777778f, 2.0f * 1.173913043478261f),
+m_server(server),
 m_fSpeed(0.0),
 m_iHealth(8),
 m_isFacingLeft(false),
 m_isGrounded(false),
 m_isFalling(false),
-m_fWallRestitution(0.1f),
 m_fRobotRestitution(0.1f)
 {
     m_acceleration.setY(-9.8f);
+    
+    if (m_server)
+    {
+        NetworkManagerServer::getInstance()->registerEntity(this);
+    }
 }
 
 RTTI_IMPL(SpacePirate, Entity);

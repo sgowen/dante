@@ -19,6 +19,7 @@
 #include "EntityManager.h"
 #include "Entity.h"
 #include "OutputMemoryBitStream.h"
+#include "StringUtil.h"
 
 NetworkManagerServer* NetworkManagerServer::getInstance()
 {
@@ -34,6 +35,8 @@ void NetworkManagerServer::processPacket(InputMemoryBitStream& inInputStream, co
     if (it == m_addressToClientMap.end()
         && m_addressToClientMap.size() < 4)
     {
+        LOG("Client socket %s", inFromAddress.toString().c_str());
+        
         //didn't find one? it's a new cilent..is the a HELO? if so, create a client proxy...
         handlePacketFromNewClient(inInputStream, inFromAddress);
     }
@@ -53,7 +56,7 @@ void NetworkManagerServer::handleConnectionReset(const SocketAddress& inFromAddr
     }
 }
 
-bool NetworkManagerServer::init(uint16_t inPort, HandleEntityDeletion handleEntityDeletion, HandleNewClientFunc handleNewClientFunc, HandleLostClientFunc handleLostClientFunc, InputStateCreationFunc inputStateCreationFunc)
+bool NetworkManagerServer::init(uint16_t inPort, HandleEntityDeletionFunc handleEntityDeletion, HandleNewClientFunc handleNewClientFunc, HandleLostClientFunc handleLostClientFunc, InputStateCreationFunc inputStateCreationFunc)
 {
     m_handleNewClientFunc = handleNewClientFunc;
     m_handleLostClientFunc = handleLostClientFunc;
@@ -69,7 +72,7 @@ void NetworkManagerServer::sendOutgoingPackets()
     {
         ClientProxy* clientProxy = it->second;
         //process any timed out packets while we're going through the list
-        clientProxy->getDeliveryNotificationManager().processTimedOutPackets();
+        clientProxy->getDeliveryNotificationManager().processTimedOutPackets(Timing::getInstance()->getFrameStartTime());
         
         if (clientProxy->IsLastMoveTimestampDirty())
         {
@@ -101,7 +104,7 @@ void NetworkManagerServer::checkForDisconnects()
 void NetworkManagerServer::registerEntity(Entity* inEntity)
 {
     //add mapping from network id to game object
-    ENTITY_MGR->registerEntity(inEntity);
+    m_entityManager->registerEntity(inEntity);
     
     //tell all client proxies this is new...
     for (const auto& pair: m_addressToClientMap)
@@ -160,9 +163,6 @@ void NetworkManagerServer::handlePacketFromNewClient(InputMemoryBitStream& inInp
         std::string name;
         inInputStream.read(name);
         
-        // TODO, reset game whenever the first client joins, according to their individual progress, and set that client as the "owner"
-        // if the "owner" leaves the game, a new owner must be designated, and the world set accordingly
-        
         ClientProxy* newClientProxy = new ClientProxy(inFromAddress, name, m_iNewPlayerId++);
         m_addressToClientMap[inFromAddress] = newClientProxy;
         m_playerIDToClientMap[newClientProxy->getPlayerId()] = newClientProxy;
@@ -174,7 +174,7 @@ void NetworkManagerServer::handlePacketFromNewClient(InputMemoryBitStream& inInp
         sendWelcomePacket(newClientProxy);
         
         //and now init the replication manager with everything we know about!
-        for (const auto& pair: ENTITY_MGR->getMap())
+        for (const auto& pair: m_entityManager->getMap())
         {
             Entity* pe = pair.second;
             newClientProxy->getReplicationManagerServer().replicateCreate(pair.first, pe->getAllStateMask());
@@ -230,7 +230,7 @@ void NetworkManagerServer::updateAllClients()
     for (auto it = m_addressToClientMap.begin(), end = m_addressToClientMap.end(); it != end; ++it)
     {
         //process any timed out packets while we're going throug hthe list
-        it->second->getDeliveryNotificationManager().processTimedOutPackets();
+        it->second->getDeliveryNotificationManager().processTimedOutPackets(Timing::getInstance()->getFrameStartTime());
         
         sendStatePacketToClient(it->second);
     }

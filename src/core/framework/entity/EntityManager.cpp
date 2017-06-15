@@ -16,11 +16,9 @@
 
 #include <cassert>
 
-EntityManager* EntityManager::getInstance()
+EntityManager::EntityManager()
 {
-    static EntityManager instance = EntityManager();
-
-    return &instance;
+    // Empty
 }
 
 Entity* EntityManager::getEntityFromID(int id)const
@@ -58,9 +56,4 @@ std::unordered_map<int, Entity*>& EntityManager::getMap()
 std::unordered_map<int, Entity*> EntityManager::getMapCopy()
 {
     return m_entityMap;
-}
-
-EntityManager::EntityManager()
-{
-    // Hide Constructor for Singleton
 }

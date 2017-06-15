@@ -12,7 +12,7 @@
 
 #include "OutputMemoryBitStream.h"
 #include "InputMemoryBitStream.h"
-#include "DanteServer.h"
+#include "Server.h"
 
 #include "World.h"
 #include "Vector2.h"
@@ -29,19 +29,18 @@
 #include "NetworkManagerServer.h"
 #include "NetworkManagerClient.h"
 #include "NGAudioEngine.h"
+#include "InstanceManager.h"
 
 #include <math.h>
 
-Entity* Projectile::create()
+Entity* Projectile::staticCreateClient()
 {
-    Projectile* ret = new Projectile();
-    
-    if (ret->m_server)
-    {
-        NetworkManagerServer::getInstance()->registerEntity(ret);
-    }
-    
-    return ret;
+    return new Projectile(nullptr);
+}
+
+Entity* Projectile::staticCreateServer()
+{
+    return new Projectile(Server::getInstance());
 }
 
 void Projectile::onDeletion()
@@ -54,7 +53,7 @@ void Projectile::onDeletion()
 
 void Projectile::update()
 {
-    if (ret->m_server)
+    if (m_server)
     {
         Vector2 oldVelocity = getVelocity();
         ProjectileState oldState = m_state;
@@ -258,7 +257,7 @@ void Projectile::processCollisions()
     
     if (m_server)
     {
-        std::vector<Entity*> entities = World::getInstance()->getEntities();
+        std::vector<Entity*> entities = InstanceManager::getServerWorld()->getEntities();
         for (Entity* target : entities)
         {
             if (target != this && !target->isRequestingDeletion() && target->getRTTI().derivesFrom(SpacePirate::rtti))
@@ -316,7 +315,7 @@ bool Projectile::interpolateVectorsIfNecessary(Vector2& inA, Vector2& inB, float
         float durationOutOfSync = time - syncTracker;
         if (durationOutOfSync < roundTripTime)
         {
-            inB.set(lerp(inA, inB, 0.1f));
+            inB.set(lerp(inA, inB, roundTripTime));
         }
         
         return true;
@@ -340,7 +339,7 @@ void Projectile::playSound(int soundId)
     
     if (getPlayerId() != NetworkManagerClient::getInstance()->getPlayerId())
     {
-        Robot* playerRobot = World::staticGetRobotWithPlayerId(NetworkManagerClient::getInstance()->getPlayerId());
+        Robot* playerRobot = InstanceManager::getClientWorld()->getRobotWithPlayerId(NetworkManagerClient::getInstance()->getPlayerId());
         if (playerRobot)
         {
             float distance = playerRobot->getPosition().dist(getPosition());
@@ -352,14 +351,17 @@ void Projectile::playSound(int soundId)
     NG_AUDIO_ENGINE->playSound(soundId, volume);
 }
 
-Projectile::Projectile() : Entity(0, 0, 1.565217391304348f * 0.444444444444444f, 2.0f * 0.544423440453686f),
-m_server(nullptr),
+Projectile::Projectile(Server* server) : Entity(0, 0, 1.565217391304348f * 0.444444444444444f, 2.0f * 0.544423440453686f),
+m_server(server),
 m_iPlayerId(0),
 m_state(ProjectileState_Active),
 m_isFacingLeft(false),
 m_fTimePositionBecameOutOfSync(0.0f)
 {
-    // Empty
+    if (m_server)
+    {
+        NetworkManagerServer::getInstance()->registerEntity(this);
+    }
 }
 
 RTTI_IMPL(Projectile, Entity);

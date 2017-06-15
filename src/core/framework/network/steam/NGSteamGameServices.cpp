@@ -10,6 +10,8 @@
 
 #include "NGSteamGameServices.h"
 
+#include "OutputMemoryBitStream.h"
+
 #include "StringUtil.h"
 #include "FrameworkConstants.h"
 #include "macros.h"
@@ -131,6 +133,12 @@ void NGSteamGameServices::deinit()
         SteamMatchmakingServers()->ReleaseRequest(m_hServerListRequest);
         m_hServerListRequest = nullptr;
     }
+}
+
+void NGSteamGameServices::update()
+{
+    //without this, callbacks will never fire
+    SteamAPI_RunCallbacks();
 }
 
 void NGSteamGameServices::refreshInternetServers()
@@ -276,6 +284,66 @@ std::string NGSteamGameServices::readFileFromSteamCloud(const char *inFileName)
     return std::string(temp);
 }
 
+#pragma mark General Player Functions
+
+uint64_t NGSteamGameServices::getLocalPlayerId()
+{
+    CSteamID myID = SteamUser()->GetSteamID();
+    return myID.ConvertToUint64();
+}
+
+std::string NGSteamGameServices::getLocalPlayerName()
+{
+    return std::string(SteamFriends()->GetPersonaName());
+}
+
+std::string NGSteamGameServices::getRemotePlayerName(uint64_t inPlayerId)
+{
+    return std::string(SteamFriends()->GetFriendPersonaName(inPlayerId));
+}
+
+#pragma mark P2P Networking
+
+void NGSteamGameServices::onP2PSessionRequest(P2PSessionRequest_t* inCallback)
+{
+//    CSteamID playerId = inCallback->m_steamIDRemote;
+//    if(NetworkManager::sInstance->IsPlayerInGame(playerId.ConvertToUint64()))
+//    {
+//        SteamNetworking()->AcceptP2PSessionWithUser(playerId);
+//    }
+}
+
+void NGSteamGameServices::onP2PSessionFail(P2PSessionConnectFail_t* inCallback)
+{
+    //we've lost this player, so let the network manager know
+//    NetworkManager::sInstance->HandleConnectionReset(inCallback->m_steamIDRemote.ConvertToUint64());
+}
+
+bool NGSteamGameServices::sendP2PReliable(const OutputMemoryBitStream& inOutputStream, uint64_t inToPlayer)
+{
+    return SteamNetworking()->SendP2PPacket(inToPlayer, inOutputStream.getBufferPtr(), inOutputStream.getByteLength(), k_EP2PSendReliable);
+}
+
+bool NGSteamGameServices::sendP2PUnreliable(const OutputMemoryBitStream& inOutputStream, uint64_t inToPlayer)
+{
+    return SteamNetworking()->SendP2PPacket(inToPlayer, inOutputStream.getBufferPtr(), inOutputStream.getByteLength(), k_EP2PSendUnreliable);
+}
+
+bool NGSteamGameServices::isP2PPacketAvailable(uint32_t& outPacketSize)
+{
+    return SteamNetworking()->IsP2PPacketAvailable(&outPacketSize);
+}
+
+uint32_t NGSteamGameServices::readP2PPacket(void* inToReceive, uint32_t inMaxLength, uint64_t& outFromPlayer)
+{
+    uint32_t packetSize;
+    CSteamID fromId;
+    SteamNetworking()->ReadP2PPacket(inToReceive, inMaxLength, &packetSize, &fromId);
+    outFromPlayer = fromId.ConvertToUint64();
+    
+    return packetSize;
+}
+
 void NGSteamGameServices::refreshSteamCloudFileStats()
 {
     m_ulBytesQuota = 0;
@@ -294,6 +362,8 @@ m_nNumFilesInCloud(0),
 m_nServers(0),
 m_bRequestingServers(false),
 m_hServerListRequest(nullptr),
+m_sessionRequestCallback(this, &::NGSteamGameServices::onP2PSessionRequest),
+m_sessionFailCallback(this, &::NGSteamGameServices::onP2PSessionFail),
 m_iStatus(STEAM_INIT_NOT_CALLED)
 {
     // Empty

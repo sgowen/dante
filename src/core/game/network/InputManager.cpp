@@ -31,6 +31,16 @@ InputManager* InputManager::getInstance()
     return &instance;
 }
 
+void InputManager::staticRemoveProcessedMoves(float inLastMoveProcessedOnServerTimestamp)
+{
+    getInstance()->getMoveList().removeProcessedMoves(inLastMoveProcessedOnServerTimestamp);
+}
+
+MoveList& InputManager::staticGetMoveList()
+{
+    return getInstance()->getMoveList();
+}
+
 void InputManager::update()
 {
     if (isTimeToSampleInput())
@@ -53,10 +63,10 @@ void InputManager::update()
                     m_currentState->m_fDesiredRightAmount = (*i)->isDown() ? 1 : 0;
                     continue;
                 case KeyboardEventType_ARROW_KEY_DOWN:
-                    m_currentState->m_isSprinting = (*i)->isDown() ? true : false;
+                    m_currentState->m_isSprinting = (*i)->isDown();
                     continue;
                 case KeyboardEventType_SPACE:
-                    m_currentState->m_isShooting = (*i)->isDown() ? true : false;
+                    m_currentState->m_isShooting = (*i)->isDown();
                     continue;
                 case KeyboardEventType_M:
                     if ((*i)->isUp())
@@ -70,6 +80,12 @@ void InputManager::update()
                             NG_AUDIO_ENGINE->playMusic(true);
                         }
                     }
+                    continue;
+                case KeyboardEventType_S:
+                    m_currentState->m_isStartingServer = (*i)->isDown();
+                    continue;
+                case KeyboardEventType_J:
+                    m_currentState->m_isJoiningServer = (*i)->isDown();
                     continue;
                 default:
                     continue;
@@ -91,12 +107,12 @@ void InputManager::update()
                     continue;
                 case GamePadEventType_BUMPER_RIGHT:
                 case GamePadEventType_BUMPER_LEFT:
-                    m_currentState->m_isSprinting = (*i)->isPressed() ? true : false;
+                    m_currentState->m_isSprinting = (*i)->isPressed();
                     continue;
                 case GamePadEventType_A_BUTTON:
-                    m_currentState->m_isShooting = (*i)->isPressed() ? true : false;
+                    m_currentState->m_isShooting = (*i)->isPressed();
                     continue;
-                case GamePadEventType_BACK_BUTTON:
+                case GamePadEventType_Y_BUTTON:
                     if ((*i)->isPressed())
                     {
                         if (NG_AUDIO_ENGINE->isMusicPlaying())
@@ -108,6 +124,12 @@ void InputManager::update()
                             NG_AUDIO_ENGINE->playMusic(true);
                         }
                     }
+                    continue;
+                case GamePadEventType_START_BUTTON:
+                    m_currentState->m_isStartingServer = (*i)->isPressed();
+                    continue;
+                case GamePadEventType_BACK_BUTTON:
+                    m_currentState->m_isJoiningServer = (*i)->isPressed();
                     continue;
                 default:
                     continue;

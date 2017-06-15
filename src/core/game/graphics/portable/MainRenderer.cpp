@@ -30,6 +30,7 @@
 #include "StringUtil.h"
 #include "WeightedTimedMovingAverage.h"
 #include "NGSTDUtil.h"
+#include "InstanceManager.h"
 
 #include <sstream>
 #include <ctime> // rand
@@ -84,12 +85,13 @@ void MainRenderer::tempDraw()
         }
         
         m_spriteBatcher->beginBatch();
-        std::vector<Entity*> entities = World::getInstance()->getEntities();
+        std::vector<Entity*> entities = InstanceManager::getClientWorld()->getEntities();
         for (Entity* go : entities)
         {
             if (go->getNetworkType() == NETWORK_TYPE_Robot)
             {
                 Robot* robot = static_cast<Robot*>(go);
+                
                 Color c = robot->getColor();
                 if (robot->isSprinting())
                 {
@@ -140,7 +142,7 @@ void MainRenderer::renderBandWidth()
     const WeightedTimedMovingAverage& bpsOut = NetworkManagerClient::getInstance()->getBytesSentPerSecond();
     int bpsOutInt = static_cast< int >(bpsOut.getValue());
     
-    std::string bandwidth = StringUtil::sprintf("In %d Bps, Out %d Bps", bpsInInt, bpsOutInt);
+    std::string bandwidth = StringUtil::format("In %d Bps, Out %d Bps", bpsInInt, bpsOutInt);
     
     static Color whiteColor = Color(1.0f, 1.0f, 1.0f, 1.0f);
     
@@ -153,7 +155,7 @@ void MainRenderer::renderRoundTripTime()
     
     float rttMS = NetworkManagerClient::getInstance()->getAvgRoundTripTime().getValue() * 1000.f;
     
-    std::string roundTripTime = StringUtil::sprintf("RTT %d ms", (int) rttMS);
+    std::string roundTripTime = StringUtil::format("RTT %d ms", (int) rttMS);
     
     static Color whiteColor = Color(1.0f, 1.0f, 1.0f, 1.0f);
     

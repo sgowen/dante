@@ -13,12 +13,10 @@
 
 class Entity;
 
-#define ENTITY_MGR (EntityManager::getInstance())
-
 class EntityManager
 {
 public:
-    static EntityManager* getInstance();
+    EntityManager();
     
     Entity* getEntityFromID(int id)const;
     
@@ -34,11 +32,6 @@ public:
     
 private:
     std::unordered_map<int, Entity*> m_entityMap;
-    
-    // ctor, copy ctor, and assignment should be private in a Singleton
-    EntityManager();
-    EntityManager(const EntityManager&);
-    EntityManager& operator=(const EntityManager&);
 };
 
 #endif /* defined(__noctisgames__EntityManager__) */

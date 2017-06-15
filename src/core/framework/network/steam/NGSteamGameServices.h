@@ -15,6 +15,7 @@
 #include <string>
 #include <list>
 
+class OutputMemoryBitStream;
 class ISteamRemoteStorage;
 
 #define NG_STEAM_GAME_SERVICES (NGSteamGameServices::getInstance())
@@ -36,6 +37,8 @@ public:
     
     void deinit();
     
+    void update();
+    
     void refreshInternetServers();
     
     void refreshLANServers();
@@ -47,8 +50,20 @@ public:
     
 #pragma mark Steam Cloud
     bool writeFileToSteamCloud(const char *inFileName, const char *inData);
-    
     std::string readFileFromSteamCloud(const char *inFileName);
+    
+#pragma mark General Player Functions
+    uint64_t getLocalPlayerId();
+    std::string getLocalPlayerName();
+    std::string getRemotePlayerName(uint64_t inPlayerId);
+    
+#pragma mark P2P Networking
+    STEAM_CALLBACK(NGSteamGameServices, onP2PSessionRequest, P2PSessionRequest_t, m_sessionRequestCallback);
+    STEAM_CALLBACK(NGSteamGameServices, onP2PSessionFail, P2PSessionConnectFail_t, m_sessionFailCallback);
+    bool sendP2PReliable(const OutputMemoryBitStream& inOutputStream, uint64_t inToPlayer);
+    bool sendP2PUnreliable(const OutputMemoryBitStream& inOutputStream, uint64_t inToPlayer);
+    bool isP2PPacketAvailable(uint32_t& outPacketSize);
+    uint32_t readP2PPacket(void* inToReceive, uint32_t inMaxLength, uint64_t& outFromPlayer);
     
 private:
     ISteamRemoteStorage* m_steamRemoteStorage;

@@ -29,7 +29,7 @@ public:
     
     bool readAndProcessState(InputMemoryBitStream& inInputStream);
     
-    void processTimedOutPackets();
+    void processTimedOutPackets(float frameStartTime);
     
     uint32_t getDroppedPacketCount() const;
     

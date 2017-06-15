@@ -10,6 +10,7 @@
 
 #include "MainEngine.h"
 
+#include "Server.h"
 #include "JsonFile.h"
 #include "MainRenderer.h"
 #include "Vector2.h"
@@ -37,6 +38,18 @@
 #include "Timing.h"
 #include "World.h"
 #include "NGSteamGameServices.h"
+#include "InstanceManager.h"
+#include "InputState.h"
+
+void MainEngine::staticAddEntity(Entity* inEntity)
+{
+    InstanceManager::getClientWorld()->addEntity(inEntity);
+}
+
+void MainEngine::staticRemoveEntity(Entity* inEntity)
+{
+    InstanceManager::getClientWorld()->removeEntity(inEntity);
+}
 
 MainEngine::MainEngine() : IEngine(),
 m_config(new JsonFile("dante.cfg")),
@@ -44,23 +57,22 @@ m_renderer(new MainRenderer(MAX_BATCH_SIZE)),
 m_touchPointDown(new Vector2()),
 m_touchPointDown2(new Vector2()),
 m_fStateTime(0),
-m_fFrameStateTime(0)
+m_fFrameStateTime(0),
+m_fTimeSinceServerStarted(0),
+m_isConnected(false)
 {
     m_config->load();
     
-    if (NG_STEAM_GAME_SERVICES->init() < 0)
-    {
-        m_iRequestedAction = REQUESTED_ACTION_EXIT;
-        return;
-    }
+//    if (NG_STEAM_GAME_SERVICES->init() < 0)
+//    {
+//        m_iRequestedAction = REQUESTED_ACTION_EXIT;
+//        return;
+//    }
     
-//    NetworkManagerClient::getInstance()->init(serverIPAddress, userID, FRAME_RATE, World::staticRemoveEntity);
-    
-    EntityRegistry::getInstance()->init(World::staticAddEntity);
-    
-    EntityRegistry::getInstance()->registerCreationFunction(NETWORK_TYPE_Robot, Robot::create);
-    EntityRegistry::getInstance()->registerCreationFunction(NETWORK_TYPE_Projectile, Projectile::create);
-    EntityRegistry::getInstance()->registerCreationFunction(NETWORK_TYPE_SpacePirate, SpacePirate::create);
+    InstanceManager::getClientEntityRegistry()->init(MainEngine::staticAddEntity);
+    InstanceManager::getClientEntityRegistry()->registerCreationFunction(NETWORK_TYPE_Robot, Robot::staticCreateClient);
+    InstanceManager::getClientEntityRegistry()->registerCreationFunction(NETWORK_TYPE_Projectile, Projectile::staticCreateClient);
+    InstanceManager::getClientEntityRegistry()->registerCreationFunction(NETWORK_TYPE_SpacePirate, SpacePirate::staticCreateClient);
     
     NG_AUDIO_ENGINE->loadSound(SOUND_ID_ROBOT_JUMP, SOUND_ROBOT_JUMP, 4);
     NG_AUDIO_ENGINE->loadSound(SOUND_ID_EXPLOSION, SOUND_EXPLOSION, 8);
@@ -77,6 +89,11 @@ MainEngine::~MainEngine()
     delete m_renderer;
     delete m_touchPointDown;
     delete m_touchPointDown2;
+    
+    if (Server::getInstance())
+    {
+        Server::destroy();
+    }
     
     NG_STEAM_GAME_SERVICES->deinit();
 }
@@ -118,7 +135,7 @@ void MainEngine::update(float deltaTime)
     {
         Timing::getInstance()->updateManual(m_fStateTime, FRAME_RATE);
         
-//        NetworkManagerClient::getInstance()->processIncomingPackets();
+        NetworkManagerClient::getInstance()->processIncomingPackets();
         
         InputManager::getInstance()->update();
         
@@ -128,10 +145,32 @@ void MainEngine::update(float deltaTime)
         {
             m_fFrameStateTime -= FRAME_RATE;
             
-            World::getInstance()->update();
+            InstanceManager::getClientWorld()->update();
         }
         
-//        NetworkManagerClient::getInstance()->sendOutgoingPackets();
+        NetworkManagerClient::getInstance()->sendOutgoingPackets();
+        
+        if (!m_isConnected)
+        {
+            const Move* move = InputManager::getInstance()->getAndClearPendingMove();
+            if (move)
+            {
+                InputState* inputState = static_cast<InputState*>(move->getInputState());
+                if (inputState->isStartingServer())
+                {
+                    startServer();
+                }
+                else if (inputState->isJoiningServer())
+                {
+                    joinServer();
+                }
+            }
+        }
+    }
+    
+    if (Server::getInstance())
+    {
+        Server::getInstance()->update(deltaTime);
     }
 }
 
@@ -144,6 +183,21 @@ void MainEngine::render()
     m_renderer->renderToScreen();
     
     m_renderer->endFrame();
+}
+
+void MainEngine::startServer()
+{
+    if (!Server::getInstance())
+    {
+        Server::create();
+    }
+}
+
+void MainEngine::joinServer()
+{
+    NetworkManagerClient::getInstance()->init(InstanceManager::getClientEntityRegistry(), "localhost:9999", "Noctis Games", FRAME_RATE, MainEngine::staticRemoveEntity, InputManager::staticRemoveProcessedMoves, InputManager::staticGetMoveList);
+    
+    m_isConnected = true;
 }
 
 RTTI_IMPL(MainEngine, IEngine);

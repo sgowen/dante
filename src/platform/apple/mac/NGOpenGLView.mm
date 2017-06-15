@@ -74,7 +74,7 @@ static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink,
     
     NSWindow *mainWindow = [[[NSApplication sharedApplication] windows] objectAtIndex:0];
 
-    [mainWindow toggleFullScreen:self];
+    //[mainWindow toggleFullScreen:self];
     
     _joystickController = [[JoystickController alloc] init];
     [_joystickController performSelector:@selector(scan) withObject:nil afterDelay:1];
@@ -426,6 +426,10 @@ static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink,
                 case 'P':
                 case 'p':
                     KEYBOARD_INPUT_MANAGER->onInput(KeyboardEventType_P, isUp);
+                    return;
+                case 'J':
+                case 'j':
+                    KEYBOARD_INPUT_MANAGER->onInput(KeyboardEventType_J, isUp);
                     return;
                 case NSEnterCharacter:
                 case NSCarriageReturnCharacter:

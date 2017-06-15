@@ -12,16 +12,17 @@
 #include "InputMemoryBitStream.h"
 #include "SocketAddress.h"
 #include "UDPSocket.h"
-#include "WeightedTimedMovingAverage.h"
 
 #include <unordered_map>
 #include <queue>
 #include <list>
 
+class EntityManager;
 class OutputMemoryBitStream;
 class Entity;
+class WeightedTimedMovingAverage;
 
-typedef void (*HandleEntityDeletion)(Entity* inEntity);
+typedef void (*HandleEntityDeletionFunc)(Entity* inEntity);
 
 class INetworkManager
 {
@@ -36,7 +37,7 @@ public:
     
     virtual void handleConnectionReset(const SocketAddress& inFromAddress);
     
-    bool init(uint16_t inPort, HandleEntityDeletion handleEntityDeletion);
+    bool init(uint16_t inPort, HandleEntityDeletionFunc handleEntityDeletion);
     
     void processIncomingPackets();
     
@@ -53,6 +54,9 @@ public:
     void removeFromNetworkIdToEntityMap(Entity* inEntity);
     
 protected:
+    EntityManager* m_entityManager;
+    bool m_isInitialized;
+    
     // ctor, copy ctor, and assignment should be private in a Singleton
     INetworkManager();
     virtual ~INetworkManager();
@@ -62,14 +66,14 @@ protected:
 private:
     class ReceivedPacket;
     
-    HandleEntityDeletion m_handleEntityDeletion;
+    HandleEntityDeletionFunc m_handleEntityDeletion;
     
     std::queue<ReceivedPacket, std::list<ReceivedPacket>> m_packetQueue;
     
     UDPSocket* m_socket;
     
-    WeightedTimedMovingAverage m_bytesReceivedPerSecond;
-    WeightedTimedMovingAverage m_bytesSentPerSecond;
+    WeightedTimedMovingAverage* m_bytesReceivedPerSecond;
+    WeightedTimedMovingAverage* m_bytesSentPerSecond;
     
     int m_bytesSentThisFrame;
     

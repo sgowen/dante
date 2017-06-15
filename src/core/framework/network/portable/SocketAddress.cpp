@@ -54,7 +54,7 @@ std::string	SocketAddress::toString() const
     //const sockaddr_in* s = getAsSockAddrIn();
     //char destinationBuffer[128];
     //InetNtop(s->sin_family, const_cast< in_addr* >(&s->sin_addr), destinationBuffer, sizeof(destinationBuffer));
-    //return StringUtil::sprintf("%s:%d",
+    //return StringUtil::format("%s:%d",
     //							destinationBuffer,
     //							ntohs(s->sin_port));
     return std::string(StringUtil::toString(getHash()));

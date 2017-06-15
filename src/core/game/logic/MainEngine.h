@@ -13,6 +13,7 @@
 
 #include "RTTI.h"
 
+class Server;
 class JsonFile;
 class MainRenderer;
 class Vector2;
@@ -23,6 +24,10 @@ class MainEngine : public IEngine
     RTTI_DECL;
     
 public:
+    static void staticAddEntity(Entity* inEntity);
+    
+    static void staticRemoveEntity(Entity* inEntity);
+    
     MainEngine();
     
     virtual ~MainEngine();
@@ -49,6 +54,12 @@ private:
     
     float m_fStateTime;
     float m_fFrameStateTime;
+    float m_fTimeSinceServerStarted;
+    bool m_isConnected;
+    
+    void startServer();
+    
+    void joinServer();
 };
 
 #endif /* defined(__dante__MainEngine__) */

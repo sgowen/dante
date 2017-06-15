@@ -42,20 +42,34 @@ void OutputDebugStringA(const char* inString)
 }
 #endif
 
-std::string StringUtil::sprintf(const char* inFormat, ...)
+std::string StringUtil::format(const char* inFormat, ...)
 {
+    //not thread safe...
     static char temp[4096];
     
-    sprintf_safe(temp, inFormat);
+    va_list args;
+    va_start (args, inFormat);
     
+#if _WIN32
+    _vsnprintf_s(temp, 4096, 4096, inFormat, args);
+#else
+    vsnprintf(temp, 4096, inFormat, args);
+#endif
     return std::string(temp);
 }
 
 void StringUtil::log(const char* inFormat, ...)
 {
-    static char temp[4096];
+    char temp[4096];
     
-    sprintf_safe(temp, inFormat);
+    va_list args;
+    va_start (args, inFormat);
+    
+#if _WIN32
+    _vsnprintf_s(temp, 4096, 4096, inFormat, args);
+#else
+    vsnprintf(temp, 4096, inFormat, args);
+#endif
     
     OutputDebugStringA(temp);
     OutputDebugStringA("\n");

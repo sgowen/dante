@@ -18,7 +18,7 @@
 #include <stdint.h>
 
 class Robot;
-class DanteServer;
+class Server;
 
 class SpacePirate : public Entity
 {
@@ -36,7 +36,9 @@ public:
         SPCP_AllState = SPCP_Pose | SPCP_Color | SPCP_Health
     };
     
-    static Entity* create();
+    static Entity* staticCreateClient();
+    
+    static Entity* staticCreateServer();
     
     virtual void onDeletion();
     
@@ -57,7 +59,7 @@ public:
     bool isFacingLeft();
     
 private:
-    DanteServer* m_server;
+    Server* m_server;
     float m_fSpeed;
     int m_iHealth;
     bool m_isFacingLeft;
@@ -65,7 +67,6 @@ private:
     bool m_isFalling;
     
     //bounce fraction when hitting various things
-    float m_fWallRestitution;
     float m_fRobotRestitution;
     
     void updateInternal(float inDeltaTime);
@@ -74,7 +75,7 @@ private:
     
     void processCollisionsWithScreenWalls();
     
-    SpacePirate();
+    SpacePirate(Server* server);
 };
 
 #endif /* defined(__noctisgames__SpacePirate__) */

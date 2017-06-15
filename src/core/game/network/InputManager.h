@@ -19,6 +19,10 @@ class InputManager
 public:
     static InputManager* getInstance();
     
+    static void staticRemoveProcessedMoves(float inLastMoveProcessedOnServerTimestamp);
+    
+    static MoveList& staticGetMoveList();
+    
     void update();
     
     MoveList& getMoveList();

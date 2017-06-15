@@ -11,11 +11,16 @@
 
 #include "INetworkManager.h"
 
-#include "ReplicationManagerClient.h"
 #include "DeliveryNotificationManager.h"
 #include "SocketAddress.h"
 
+class EntityRegistry;
 class Entity;
+class MoveList;
+class ReplicationManagerClient;
+
+typedef void (*RemoveProcessedMovesFunc)(float lastMoveProcessedByServerTimestamp);
+typedef MoveList& (*GetMoveListFunc)();
 
 class NetworkManagerClient : public INetworkManager
 {
@@ -24,7 +29,7 @@ public:
     
     virtual void processPacket(InputMemoryBitStream& inInputStream, const SocketAddress& inFromAddress) override;
     
-    bool init(const std::string& inServerIPAddress, const std::string& inName, float inFrameRate, HandleEntityDeletion handleEntityDeletion);
+    bool init(EntityRegistry* entityRegistry, const std::string& inServerIPAddress, const std::string& inName, float inFrameRate, HandleEntityDeletionFunc handleEntityDeletion, RemoveProcessedMovesFunc removeProcessedMovesFunc, GetMoveListFunc getMoveListFunc);
     
     void sendOutgoingPackets();
     
@@ -44,8 +49,12 @@ private:
         NCS_Welcomed
     };
     
+    EntityRegistry* m_entityRegistry;
+    RemoveProcessedMovesFunc m_removeProcessedMovesFunc;
+    GetMoveListFunc m_getMoveListFunc;
+    
     DeliveryNotificationManager m_deliveryNotificationManager;
-    ReplicationManagerClient m_replicationManagerClient;
+    ReplicationManagerClient* m_replicationManagerClient;
     
     SocketAddress* m_serverAddress;
     
@@ -60,7 +69,7 @@ private:
     
     float m_fLastMoveProcessedByServerTimestamp;
     
-    WeightedTimedMovingAverage m_avgRoundTripTime;
+    WeightedTimedMovingAverage* m_avgRoundTripTime;
     float m_fLastRoundTripTime;
     
     void updateSayingHello();

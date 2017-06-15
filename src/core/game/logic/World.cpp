@@ -14,63 +14,23 @@
 #include "Robot.h"
 #include "SpacePirate.h"
 
-World* World::getInstance()
+World::World()
 {
-    static World instance = World();
-    return &instance;
-}
-
-void World::staticAddEntity(Entity* inEntity)
-{
-    World::getInstance()->addEntity(inEntity);
-}
-
-void World::staticRemoveEntity(Entity* inEntity)
-{
-    World::getInstance()->removeEntity(inEntity);
-}
-
-Robot* World::staticGetRobotWithPlayerId(int inPlayerID)
-{
-    std::vector<Entity*> entities = World::getInstance()->getEntities();
-    for (Entity* entity : entities)
-    {
-        Robot* robot = entity->getRTTI().derivesFrom(Robot::rtti) ? static_cast<Robot*>(entity) : nullptr;
-        if (robot && robot->getPlayerId() == inPlayerID)
-        {
-            return robot;
-        }
-    }
-    
-    return nullptr;
-}
-
-bool World::staticHasSpacePirates()
-{
-    std::vector<Entity*> entities = World::getInstance()->getEntities();
-    for (Entity* entity : entities)
-	{
-		if (entity->getRTTI().derivesFrom(SpacePirate::rtti))
-		{
-			return true;
-		}
-	}
-
-	return false;
+    // Empty
 }
 
 void World::addEntity(Entity* inEntity)
 {
-    m_objects.push_back(inEntity);
+    m_entities.push_back(inEntity);
 }
 
 void World::removeEntity(Entity* inEntity)
 {
-    int len = static_cast<int>(m_objects.size());
+    int len = static_cast<int>(m_entities.size());
     int indexToRemove = -1;
     for (int i = 0; i < len; ++i)
     {
-        if (m_objects[i]->getID() == inEntity->getID())
+        if (m_entities[i]->getID() == inEntity->getID())
         {
             indexToRemove = i;
             break;
@@ -83,10 +43,10 @@ void World::removeEntity(Entity* inEntity)
         
         if (indexToRemove != lastIndex)
         {
-            m_objects[indexToRemove] = m_objects[lastIndex];
+            m_entities[indexToRemove] = m_entities[lastIndex];
         }
         
-        m_objects.pop_back();
+        m_entities.pop_back();
     }
 }
 
@@ -94,10 +54,10 @@ void World::update()
 {
     //update all game objects- sometimes they want to die, so we need to tread carefully...
     
-    int len = static_cast<int>(m_objects.size());
+    int len = static_cast<int>(m_entities.size());
     for (int i = 0, c = len; i < c; ++i)
     {
-        Entity* go = m_objects[i];
+        Entity* go = m_entities[i];
         
         if (!go->isRequestingDeletion())
         {
@@ -115,12 +75,34 @@ void World::update()
     }
 }
 
-std::vector<Entity*>& World::getEntities()
+Robot* World::getRobotWithPlayerId(int inPlayerID)
 {
-    return m_objects;
+    for (Entity* entity : m_entities)
+    {
+        Robot* robot = entity->getRTTI().derivesFrom(Robot::rtti) ? static_cast<Robot*>(entity) : nullptr;
+        if (robot && robot->getPlayerId() == inPlayerID)
+        {
+            return robot;
+        }
+    }
+    
+    return nullptr;
 }
 
-World::World()
+bool World::hasSpacePirates()
 {
-    // Empty
+    for (Entity* entity : m_entities)
+    {
+        if (entity->getRTTI().derivesFrom(SpacePirate::rtti))
+        {
+            return true;
+        }
+    }
+    
+    return false;
+}
+
+std::vector<Entity*>& World::getEntities()
+{
+    return m_entities;
 }

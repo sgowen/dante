@@ -28,7 +28,7 @@ public:
     
     virtual void handleConnectionReset(const SocketAddress& inFromAddress) override;
     
-    bool init(uint16_t inPort, HandleEntityDeletion handleEntityDeletion, HandleNewClientFunc handleNewClientFunc, HandleLostClientFunc handleLostClientFunc, InputStateCreationFunc inputStateCreationFunc);
+    bool init(uint16_t inPort, HandleEntityDeletionFunc handleEntityDeletion, HandleNewClientFunc handleNewClientFunc, HandleLostClientFunc handleLostClientFunc, InputStateCreationFunc inputStateCreationFunc);
     
     void sendOutgoingPackets();
     

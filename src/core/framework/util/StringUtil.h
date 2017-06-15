@@ -55,27 +55,27 @@ public:
     }
     
     template<size_t maxLenInChars>
-    static void sprintf_safe(OUT_Z_ARRAY char (&pDest)[maxLenInChars], const char *pFormat, ... )
+    static void sprintf_safe(OUT_Z_ARRAY char (&pDest)[maxLenInChars], const char *pFormat, ...)
     {
         va_list params;
         va_start(params, pFormat);
         
-#ifdef _WIN32
-        _vsnprintf_s(pDest, maxLenInChars, maxLenInChars, pFormat, params);
-#else
+#ifdef POSIX
         vsnprintf(pDest, maxLenInChars, pFormat, params);
+#else
+        _vsnprintf(pDest, maxLenInChars, pFormat, params);
 #endif
         
         pDest[maxLenInChars - 1] = '\0';
         
-        va_end( params );
+        va_end(params);
     }
     
     static std::string encryptDecrypt(std::string input);
     
     static void encryptDecrypt(unsigned char* input, unsigned char* output, const long dataLength);
     
-    static std::string sprintf(const char* inFormat, ...);
+    static std::string format(const char* inFormat, ...);
     
     static void log(const char* inFormat, ...);
     

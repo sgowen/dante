@@ -10,13 +10,15 @@
 
 #include "NetworkManagerClient.h"
 
+#include "EntityManager.h"
 #include "Entity.h"
+#include "MoveList.h"
+#include "ReplicationManagerClient.h"
+#include "WeightedTimedMovingAverage.h"
 
-#include "InputManager.h"
 #include "StringUtil.h"
 #include "EntityRegistry.h"
 #include "Timing.h"
-#include "EntityManager.h"
 #include "OutputMemoryBitStream.h"
 #include "SocketAddressFactory.h"
 
@@ -45,15 +47,17 @@ void NetworkManagerClient::processPacket(InputMemoryBitStream& inInputStream, co
     }
 }
 
-bool NetworkManagerClient::init(const std::string& inServerIPAddress, const std::string& inName, float inFrameRate, HandleEntityDeletion handleEntityDeletion)
+bool NetworkManagerClient::init(EntityRegistry* entityRegistry, const std::string& inServerIPAddress, const std::string& inName, float inFrameRate, HandleEntityDeletionFunc handleEntityDeletion, RemoveProcessedMovesFunc removeProcessedMovesFunc, GetMoveListFunc getMoveListFunc)
 {
+    m_entityRegistry = entityRegistry;
+    m_removeProcessedMovesFunc = removeProcessedMovesFunc;
+    m_getMoveListFunc = getMoveListFunc;
+    m_replicationManagerClient = new ReplicationManagerClient(m_entityRegistry);
     m_serverAddress = SocketAddressFactory::createIPv4FromString(inServerIPAddress);
     m_state = NCS_SayingHello;
     m_fTimeOfLastHello = 0.f;
     m_name = inName;
     m_fFrameRate = inFrameRate;
-    
-    m_avgRoundTripTime = WeightedTimedMovingAverage(1.f);
     
     // This allows us to run both a debug and a release client on the same machine
 #if defined(DEBUG) || defined(_DEBUG)
@@ -67,6 +71,11 @@ bool NetworkManagerClient::init(const std::string& inServerIPAddress, const std:
 
 void NetworkManagerClient::sendOutgoingPackets()
 {
+    if (!m_isInitialized)
+    {
+        return;
+    }
+    
     switch (m_state)
     {
         case NCS_SayingHello:
@@ -82,12 +91,12 @@ void NetworkManagerClient::sendOutgoingPackets()
 
 const WeightedTimedMovingAverage& NetworkManagerClient::getAvgRoundTripTime() const
 {
-    return m_avgRoundTripTime;
+    return *m_avgRoundTripTime;
 }
 
 float NetworkManagerClient::getRoundTripTime() const
 {
-    return m_avgRoundTripTime.getValue();
+    return m_avgRoundTripTime->getValue();
 }
 
 int NetworkManagerClient::getPlayerId() const
@@ -144,7 +153,7 @@ void NetworkManagerClient::handleStatePacket(InputMemoryBitStream& inInputStream
         readLastMoveProcessedOnServerTimestamp(inInputStream);
         
         //tell the replication manager to handle the rest...
-        m_replicationManagerClient.read(inInputStream);
+        m_replicationManagerClient->read(inInputStream);
     }
 }
 
@@ -158,16 +167,16 @@ void NetworkManagerClient::readLastMoveProcessedOnServerTimestamp(InputMemoryBit
         
         float rtt = Timing::getInstance()->getFrameStartTime() - m_fLastMoveProcessedByServerTimestamp;
         m_fLastRoundTripTime = rtt;
-        m_avgRoundTripTime.update(rtt);
+        m_avgRoundTripTime->update(rtt);
         
-        InputManager::getInstance()->getMoveList().removedProcessedMoves(m_fLastMoveProcessedByServerTimestamp);
+        m_removeProcessedMovesFunc(m_fLastMoveProcessedByServerTimestamp);
     }
 }
 
 void NetworkManagerClient::handleEntityState(InputMemoryBitStream& inInputStream)
 {
     // copy the map so that anything that doesn't get an updated can be destroyed...
-    std::unordered_map<int, Entity*> objectsToDestroy = ENTITY_MGR->getMapCopy();
+    std::unordered_map<int, Entity*> objectsToDestroy = m_entityManager->getMapCopy();
     
     int stateCount;
     inInputStream.read(stateCount);
@@ -182,11 +191,11 @@ void NetworkManagerClient::handleEntityState(InputMemoryBitStream& inInputStream
             inInputStream.read(networkId);
             inInputStream.read(fourCC);
             Entity* go;
-            auto itGO = ENTITY_MGR->getMap().find(networkId);
+            auto itGO = m_entityManager->getMap().find(networkId);
             //didn't find it, better create it!
-            if (itGO == ENTITY_MGR->getMap().end())
+            if (itGO == m_entityManager->getMap().end())
             {
-                go = EntityRegistry::getInstance()->createEntity(fourCC);
+                go = m_entityRegistry->createEntity(fourCC);
                 go->setID(networkId);
                 addToNetworkIdToEntityMap(go);
             }
@@ -230,7 +239,7 @@ void NetworkManagerClient::updateSendingInputPacket()
 void NetworkManagerClient::sendInputPacket()
 {
     //only send if there's any input to sent!
-    MoveList& moveList = InputManager::getInstance()->getMoveList();
+    MoveList& moveList = m_getMoveListFunc();
     
     if (moveList.hasMoves())
     {
@@ -264,6 +273,7 @@ void NetworkManagerClient::sendInputPacket()
 
 NetworkManagerClient::NetworkManagerClient() : INetworkManager(),
 m_serverAddress(nullptr),
+m_avgRoundTripTime(new WeightedTimedMovingAverage(1.f)),
 m_state(NCS_Uninitialized),
 m_deliveryNotificationManager(true, false),
 m_fLastRoundTripTime(0.f)
@@ -277,4 +287,11 @@ NetworkManagerClient::~NetworkManagerClient()
     {
         delete m_serverAddress;
     }
+    
+    if (m_replicationManagerClient)
+    {
+        delete m_replicationManagerClient;
+    }
+    
+    delete m_avgRoundTripTime;
 }

@@ -10,31 +10,45 @@
 #define __noctisgames__Server__
 
 class ClientProxy;
+class Entity;
 class Robot;
 
 class Server
 {
 public:
+    static void create();
+    
+    static void destroy();
+    
     static Server* getInstance();
     
     static void staticHandleNewClient(ClientProxy* inClientProxy);
     
     static void staticHandleLostClient(ClientProxy* inClientProxy);
     
+    static void staticAddEntity(Entity* inEntity);
+    
+    static void staticRemoveEntity(Entity* inEntity);
+    
     int run();
+    
+    void update(float deltaTime);
+    
+    bool isInitialized();
+
+private:
+    static Server* s_pInstance;
+    
+    float m_fStateTime;
+    float m_fFrameStateTime;
+    float m_fStateTimeNoEnemies;
+    bool m_isInitialized;
     
     void handleNewClient(ClientProxy* inClientProxy);
     
     void handleLostClient(ClientProxy* inClientProxy);
     
     void spawnRobotForPlayer(int inPlayerId);
-    
-    bool isInitialized();
-
-private:
-    float m_fFrameStateTime;
-    float m_fStateTimeNoEnemies;
-    bool m_isInitialized;
     
     void respawnEnemiesIfNecessary();
     

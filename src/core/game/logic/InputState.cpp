@@ -18,7 +18,9 @@ m_fDesiredRightAmount(0),
 m_fDesiredLeftAmount(0),
 m_fDesiredJumpIntensity(0),
 m_isShooting(false),
-m_isSprinting(false)
+m_isSprinting(false),
+m_isStartingServer(false),
+m_isJoiningServer(false)
 {
     // Empty
 }
@@ -48,6 +50,15 @@ bool InputState::read(InputMemoryBitStream& inInputStream)
     return true;
 }
 
+void InputState::reset()
+{
+    m_fDesiredRightAmount = 0;
+    m_fDesiredLeftAmount = 0;
+    m_fDesiredJumpIntensity = 0;
+    m_isShooting = false;
+    m_isSprinting = false;
+}
+
 void InputState::copyTo(InputState* inInputState)
 {
     inInputState->m_fDesiredRightAmount = m_fDesiredRightAmount;
@@ -55,6 +66,8 @@ void InputState::copyTo(InputState* inInputState)
     inInputState->m_fDesiredJumpIntensity = m_fDesiredJumpIntensity;
     inInputState->m_isShooting = m_isShooting;
     inInputState->m_isSprinting = m_isSprinting;
+    inInputState->m_isStartingServer = m_isStartingServer;
+    inInputState->m_isJoiningServer = m_isJoiningServer;
 }
 
 float InputState::getDesiredHorizontalDelta() const
@@ -75,6 +88,16 @@ bool InputState::isShooting() const
 bool InputState::isSprinting() const
 {
     return m_isSprinting;
+}
+
+bool InputState::isStartingServer() const
+{
+    return m_isStartingServer;
+}
+
+bool InputState::isJoiningServer() const
+{
+    return m_isJoiningServer;
 }
 
 RTTI_IMPL(InputState, IInputState);

@@ -34,7 +34,7 @@ void WinAudioEngineHelper::update(int flags)
         m_retryAudio = false;
         if (m_audEngine->Reset())
         {
-            // TODO: restart any looped sounds here
+            // TODO, restart any looped sounds here
         }
     }
     else if (!m_audEngine->Update())

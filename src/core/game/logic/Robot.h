@@ -19,7 +19,7 @@
 
 class IInputState;
 class Move;
-class DanteServer;
+class Server;
 
 class Robot : public Entity
 {
@@ -38,7 +38,9 @@ public:
         ROBT_AllState = ROBT_Pose | ROBT_Color | ROBT_PlayerId | ROBT_Health
     };
     
-    static Entity* create();
+    static Entity* staticCreateClient();
+    
+    static Entity* staticCreateServer();
     
     virtual void onDeletion();
     
@@ -49,8 +51,6 @@ public:
     virtual void read(InputMemoryBitStream& inInputStream);
     
     virtual uint32_t write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState);
-    
-    void init();
     
     void takeDamage();
     
@@ -68,16 +68,13 @@ public:
     
     bool isSprinting();
     
-    bool isAlive();
-    
 private:
-    DanteServer* m_server;
+    Server* m_server;
     float m_fSpeed;
     float m_fJumpSpeed;
     float m_fTimeOfNextShot;
     
     //bounce fraction when hitting various things
-    float m_fWallRestitution;
     float m_fRobotRestitution;
     
     float m_fTimeAccelerationBecameOutOfSync;
@@ -119,7 +116,7 @@ private:
     
     void playSound(int soundId);
     
-    Robot();
+    Robot(Server* server);
 };
 
 #endif /* defined(__noctisgames__Robot__) */

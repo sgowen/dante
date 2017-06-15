@@ -14,7 +14,7 @@
 #include "InputMemoryBitStream.h"
 #include "InputState.h"
 #include "Move.h"
-#include "DanteServer.h"
+#include "Server.h"
 
 #include "World.h"
 #include "Vector2.h"
@@ -32,19 +32,18 @@
 #include "NetworkManagerClient.h"
 #include "InputManager.h"
 #include "NGAudioEngine.h"
+#include "InstanceManager.h"
 
 #include <math.h>
 
-Entity* Robot::create()
+Entity* Robot::staticCreateClient()
 {
-    Robot* ret = new Robot();
-    
-    if (ret->m_server)
-    {
-        NetworkManagerServer::getInstance()->registerEntity(ret);
-    }
-    
-    return ret;
+    return new Robot(nullptr);
+}
+
+Entity* Robot::staticCreateServer()
+{
+    return new Robot(Server::getInstance());
 }
 
 void Robot::onDeletion()
@@ -52,6 +51,14 @@ void Robot::onDeletion()
     if (m_server)
     {
         NetworkManagerServer::getInstance()->unregisterEntity(this);
+    }
+    else
+    {
+        if (getPlayerId() == NetworkManagerClient::getInstance()->getPlayerId())
+        {
+            // This robot is the current local player, so let's display something like "Respawning in 5, 4, 3..."
+            playSound(SOUND_ID_DEATH);
+        }
     }
 }
 
@@ -128,7 +135,6 @@ void Robot::read(InputMemoryBitStream& inInputStream)
     Vector2 oldPosition = m_position;
     bool wasJumping = m_isJumping;
     bool wasSprinting = m_isSprinting;
-    int oldHealth = m_iHealth;
     
     bool stateBit;
     
@@ -187,12 +193,6 @@ void Robot::read(InputMemoryBitStream& inInputStream)
         if ((readState & ROBT_PlayerId) == 0)
         {
             interpolateClientSidePrediction(oldStateTime, oldAcceleration, oldVelocity, oldPosition);
-        }
-        
-        if (m_iHealth != oldHealth && m_iHealth <= 0)
-        {
-            // This robot is the current local player, so let's display something like "Respawning in 5, 4, 3..."
-            playSound(SOUND_ID_DEATH);
         }
     }
     else
@@ -288,40 +288,19 @@ uint32_t Robot::write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtySta
     return writtenState;
 }
 
-void Robot::init()
-{
-    setPosition(Vector2(8.f - static_cast<float>(m_iPlayerId), 7.0f));
-    
-    m_fJumpSpeed = 10.0f;
-    m_fSpeed = 7.5f;
-    m_fTimeOfNextShot = 0.0f;
-    m_fWallRestitution = 0.1f;
-    m_fRobotRestitution = 0.1f;
-    m_fTimeAccelerationBecameOutOfSync = 0.0f;
-    m_fTimeVelocityBecameOutOfSync = 0.0f;
-    m_fTimePositionBecameOutOfSync = 0.0f;
-    m_iHealth = 1;
-    m_isFacingLeft = false;
-    m_isGrounded = false;
-    m_isFalling = false;
-    m_isShooting = false;
-    m_isJumping = false;
-    m_isSprinting = false;
-    
-    m_acceleration.setY(-9.8f);
-    
-    NetworkManagerServer::getInstance()->setStateDirty(getID(), ROBT_AllState);
-}
-
 void Robot::takeDamage()
 {
     if (m_server)
     {
         m_iHealth--;
         
-        if (m_iHealth == 0)
+        if (m_iHealth <= 0)
         {
-            m_fStateTime = 0;
+            requestDeletion();
+            
+            ClientProxy* clientProxy = NetworkManagerServer::getInstance()->getClientProxy(getPlayerId());
+            
+            Server::staticHandleNewClient(clientProxy);
         }
         
         // tell the world our health dropped
@@ -362,11 +341,6 @@ bool Robot::isShooting()
 bool Robot::isSprinting()
 {
     return m_isSprinting;
-}
-
-bool Robot::isAlive()
-{
-    return m_iHealth > 0;
 }
 
 void Robot::processMove(const Move& inMove)
@@ -426,20 +400,13 @@ void Robot::updateInternal(float inDeltaTime)
 {
     Entity::update(inDeltaTime);
     
-    if (isAlive())
+    processCollisions();
+    
+    if (m_velocity.getY() < 0
+        && !m_isFalling)
     {
-        processCollisions();
-        
-        if (m_velocity.getY() < 0
-            && !m_isFalling)
-        {
-            m_isFalling = true;
-            m_fStateTime = 0;
-        }
-    }
-    else if (m_fStateTime > 3)
-    {
-        init();
+        m_isFalling = true;
+        m_fStateTime = 0;
     }
 }
 
@@ -450,14 +417,23 @@ void Robot::processCollisions()
     
     Vector2 sourcePosition = getPosition();
     
-    std::vector<Entity*> entities = World::getInstance()->getEntities();
+    World* world = m_server ? InstanceManager::getServerWorld() : InstanceManager::getClientWorld();
+    
+    std::vector<Entity*> entities = world->getEntities();
+    
+    Robot* robot = nullptr;
+    
     for (Entity* target : entities)
     {
-        if (target != this && !target->isRequestingDeletion() && target->getRTTI().derivesFrom(Robot::rtti))
+        robot = nullptr;
+        if (target != this
+            && !target->isRequestingDeletion()
+            && target->getRTTI().derivesFrom(Robot::rtti)
+            && (robot = static_cast<Robot*>(target)))
         {
             //simple collision test for spheres- are the radii summed less than the distance?
-            Vector2 targetPosition = target->getPosition();
-            float targetRadius = target->getWidth() / 2;
+            Vector2 targetPosition = robot->getPosition();
+            float targetRadius = robot->getWidth() / 2;
             
             Vector2 delta = targetPosition - sourcePosition;
             float distSq = delta.lenSquared();
@@ -475,10 +451,9 @@ void Robot::processCollisions()
                 Vector2 relVel = m_velocity;
                 
                 //if other object is a robot, it might have velocity, so there might be relative velocity...
-                Robot* targetRobot = target->getRTTI().derivesFrom(Robot::rtti) ? static_cast<Robot*>(target) : nullptr;
-                if (targetRobot)
+                if (robot)
                 {
-                    relVel -= targetRobot->m_velocity;
+                    relVel -= robot->m_velocity;
                 }
                 
                 //got vel with dir between objects to figure out if they're moving towards each other
@@ -489,16 +464,8 @@ void Robot::processCollisions()
                 {
                     Vector2 impulse = relVelDotDir * dirToTarget;
                     
-                    if (targetRobot)
-                    {
-                        m_velocity -= impulse;
-                        m_velocity *= m_fRobotRestitution;
-                    }
-                    else
-                    {
-                        m_velocity -= impulse * 2.f;
-                        m_velocity *= m_fWallRestitution;
-                    }
+                    m_velocity -= impulse;
+                    m_velocity *= m_fRobotRestitution;
                 }
             }
         }
@@ -544,13 +511,13 @@ void Robot::handleShooting()
 {
     float time = Timing::getInstance()->getFrameStartTime();
     
-    if (m_isShooting && Timing::getInstance()->getFrameStartTime() > m_fTimeOfNextShot)
+    if (m_isShooting && time > m_fTimeOfNextShot)
     {
         //not exact, but okay
         m_fTimeOfNextShot = time + 0.25f;
         
         //fire!
-        Projectile* projectile = static_cast<Projectile*>(EntityRegistry::getInstance()->createEntity(NETWORK_TYPE_Projectile));
+        Projectile* projectile = static_cast<Projectile*>(InstanceManager::getServerEntityRegistry()->createEntity(NETWORK_TYPE_Projectile));
         projectile->initFromShooter(this);
     }
 }
@@ -619,9 +586,11 @@ void Robot::interpolateClientSidePrediction(float& inOldStateTime, Vector2& inOl
 
 void Robot::interpolateClientSidePrediction(float& inOldStateTime, Vector2& inOldPos)
 {
+    float roundTripTime = NetworkManagerClient::getInstance()->getRoundTripTime();
+    
     if (!areFloatsPracticallyEqual(inOldStateTime, m_fStateTime))
     {
-        m_fStateTime = inOldStateTime + 0.1f * (m_fStateTime - inOldStateTime);
+        m_fStateTime = inOldStateTime + roundTripTime * (m_fStateTime - inOldStateTime);
     }
     
     if (interpolateVectorsIfNecessary(inOldPos, getPosition(), m_fTimePositionBecameOutOfSync))
@@ -649,7 +618,7 @@ bool Robot::interpolateVectorsIfNecessary(Vector2& inA, Vector2& inB, float& syn
         float durationOutOfSync = time - syncTracker;
         if (durationOutOfSync < roundTripTime)
         {
-            inB.set(lerp(inA, inB, 0.1f));
+            inB.set(lerp(inA, inB, roundTripTime));
         }
         
         return true;
@@ -673,7 +642,7 @@ void Robot::playSound(int soundId)
     
     if (getPlayerId() != NetworkManagerClient::getInstance()->getPlayerId())
     {
-        Robot* playerRobot = World::staticGetRobotWithPlayerId(NetworkManagerClient::getInstance()->getPlayerId());
+        Robot* playerRobot = InstanceManager::getClientWorld()->getRobotWithPlayerId(NetworkManagerClient::getInstance()->getPlayerId());
         if (playerRobot)
         {
             float distance = playerRobot->getPosition().dist(getPosition());
@@ -685,12 +654,11 @@ void Robot::playSound(int soundId)
     NG_AUDIO_ENGINE->playSound(soundId, volume);
 }
 
-Robot::Robot() : Entity(0, 0, 1.565217391304348f, 2.0f),
-m_server(nullptr),
+Robot::Robot(Server* server) : Entity(0, 0, 1.565217391304348f, 2.0f),
+m_server(server),
 m_fJumpSpeed(10.0f),
 m_fSpeed(7.5f),
 m_fTimeOfNextShot(0.0f),
-m_fWallRestitution(0.1f),
 m_fRobotRestitution(0.1f),
 m_fTimeAccelerationBecameOutOfSync(0.0f),
 m_fTimeVelocityBecameOutOfSync(0.0f),
@@ -705,6 +673,11 @@ m_isSprinting(false),
 m_iPlayerId(0)
 {
     m_acceleration.setY(-9.8f);
+    
+    if (m_server)
+    {
+        NetworkManagerServer::getInstance()->registerEntity(this);
+    }
 }
 
 RTTI_IMPL(Robot, Entity);

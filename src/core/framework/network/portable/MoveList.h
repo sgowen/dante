@@ -24,7 +24,7 @@ public:
     
     bool addMoveIfNew(const Move& inMove);
     
-    void removedProcessedMoves(float inLastMoveProcessedOnServerTimestamp);
+    void removeProcessedMoves(float inLastMoveProcessedOnServerTimestamp);
     
     float getLastMoveTimestamp() const;
     
