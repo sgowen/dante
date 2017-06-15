@@ -22,6 +22,7 @@
 #import <OpenGL/gl.h>
 
 #define SUPPORT_RETINA_RESOLUTION 1
+#define FULL_SCREEN_BY_DEFAULT 0
 
 @interface NGOpenGLView ()
 {
@@ -74,7 +75,9 @@ static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink,
     
     NSWindow *mainWindow = [[[NSApplication sharedApplication] windows] objectAtIndex:0];
 
-    //[mainWindow toggleFullScreen:self];
+#if FULL_SCREEN_BY_DEFAULT
+    [mainWindow toggleFullScreen:self];
+#endif
     
     _joystickController = [[JoystickController alloc] init];
     [_joystickController performSelector:@selector(scan) withObject:nil afterDelay:1];
