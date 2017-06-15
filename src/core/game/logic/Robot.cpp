@@ -33,6 +33,7 @@
 #include "InputManager.h"
 #include "NGAudioEngine.h"
 #include "InstanceManager.h"
+#include "Util.h"
 
 #include <math.h>
 
@@ -618,7 +619,7 @@ bool Robot::interpolateVectorsIfNecessary(Vector2& inA, Vector2& inB, float& syn
         float durationOutOfSync = time - syncTracker;
         if (durationOutOfSync < roundTripTime)
         {
-            inB.set(lerp(inA, inB, roundTripTime));
+            inB.set(lerp(inA, inB, roundTripTime / 2));
         }
         
         return true;
@@ -632,26 +633,7 @@ bool Robot::interpolateVectorsIfNecessary(Vector2& inA, Vector2& inB, float& syn
 
 void Robot::playSound(int soundId)
 {
-    if (m_server)
-    {
-        // Don't play sounds on the server
-        return;
-    }
-    
-    float volume = 1;
-    
-    if (getPlayerId() != NetworkManagerClient::getInstance()->getPlayerId())
-    {
-        Robot* playerRobot = InstanceManager::getClientWorld()->getRobotWithPlayerId(NetworkManagerClient::getInstance()->getPlayerId());
-        if (playerRobot)
-        {
-            float distance = playerRobot->getPosition().dist(getPosition());
-            float factor = distance / 4.0f;
-            volume = 1.0f / (factor * factor);
-        }
-    }
-    
-    NG_AUDIO_ENGINE->playSound(soundId, volume);
+    Util::playSound(soundId, getPlayerId(), getPosition(), m_server);
 }
 
 Robot::Robot(Server* server) : Entity(0, 0, 1.565217391304348f, 2.0f),

@@ -28,6 +28,11 @@ void INetworkManager::handleConnectionReset(const SocketAddress& inFromAddress)
 
 bool INetworkManager::init(uint16_t inPort, HandleEntityDeletionFunc handleEntityDeletion)
 {
+    if (!SOCKET_UTIL->init())
+    {
+        return false;
+    }
+    
     m_entityManager = new EntityManager();
     m_handleEntityDeletion = handleEntityDeletion;
     

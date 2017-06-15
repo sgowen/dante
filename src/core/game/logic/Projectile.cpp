@@ -30,6 +30,7 @@
 #include "NetworkManagerClient.h"
 #include "NGAudioEngine.h"
 #include "InstanceManager.h"
+#include "Util.h"
 
 #include <math.h>
 
@@ -118,22 +119,6 @@ void Projectile::read(InputMemoryBitStream& inInputStream)
     {
         inInputStream.read(m_color);
         readState |= PRJC_Color;
-    }
-    
-    if (getPlayerId() == NetworkManagerClient::getInstance()->getPlayerId())
-    {
-        // if this is a create packet, don't interpolate
-        if ((readState & PRJC_PlayerId) == 0)
-        {
-            interpolateClientSidePrediction(oldPosition);
-        }
-    }
-    else
-    {
-        if ((readState & PRJC_PlayerId) == 0)
-        {
-            interpolateClientSidePrediction(oldPosition);
-        }
     }
     
     if (oldState == ProjectileState_Active
@@ -288,67 +273,9 @@ void Projectile::processCollisionsWithScreenWalls()
     }
 }
 
-void Projectile::interpolateClientSidePrediction(Vector2& inOldPos)
-{
-    if (interpolateVectorsIfNecessary(inOldPos, getPosition(), m_fTimePositionBecameOutOfSync))
-    {
-        LOG("Projectile ERROR! Move Replay Position");
-    }
-}
-
-bool Projectile::interpolateVectorsIfNecessary(Vector2& inA, Vector2& inB, float& syncTracker)
-{
-    float roundTripTime = NetworkManagerClient::getInstance()->getRoundTripTime();
-    
-    if (!inA.isEqualTo(inB))
-    {
-        LOG("Projectile ERROR! Move replay ended with incorrect vector! Old %3.8f, %3.8f - New %3.8f, %3.8f", inA.getX(), inA.getY(), inB.getX(), inB.getY());
-        
-        //have we been out of sync, or did we just become out of sync?
-        float time = Timing::getInstance()->getFrameStartTime();
-        if (syncTracker == 0.0f)
-        {
-            syncTracker = time;
-        }
-        
-        //now interpolate to the correct value...
-        float durationOutOfSync = time - syncTracker;
-        if (durationOutOfSync < roundTripTime)
-        {
-            inB.set(lerp(inA, inB, roundTripTime));
-        }
-        
-        return true;
-    }
-    
-    //we're in sync
-    syncTracker = 0.0f;
-    
-    return false;
-}
-
 void Projectile::playSound(int soundId)
 {
-    if (m_server)
-    {
-        // Don't play sounds on the server
-        return;
-    }
-    
-    float volume = 1;
-    
-    if (getPlayerId() != NetworkManagerClient::getInstance()->getPlayerId())
-    {
-        Robot* playerRobot = InstanceManager::getClientWorld()->getRobotWithPlayerId(NetworkManagerClient::getInstance()->getPlayerId());
-        if (playerRobot)
-        {
-            float distance = playerRobot->getPosition().dist(getPosition());
-            float factor = distance / 4.0f;
-            volume = 1.0f / (factor * factor);
-        }
-    }
-    
-    NG_AUDIO_ENGINE->playSound(soundId, volume);
+    Util::playSound(soundId, getPlayerId(), getPosition(), m_server);
 }
 
 Projectile::Projectile(Server* server) : Entity(0, 0, 1.565217391304348f * 0.444444444444444f, 2.0f * 0.544423440453686f),

@@ -12,7 +12,7 @@
 
 #include "InputState.h"
 
-#define POOL_SIZE 14400
+#define POOL_SIZE 3000
 
 PooledObjectsManager* PooledObjectsManager::getInstance()
 {

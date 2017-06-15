@@ -21,6 +21,11 @@ SocketUtil* SocketUtil::getInstance()
 
 bool SocketUtil::init()
 {
+    if (m_isInitialized)
+    {
+        return true;
+    }
+    
 #if _WIN32
     WSADATA wsaData;
     int iResult = WSAStartup(MAKEWORD(2, 2), &wsaData);

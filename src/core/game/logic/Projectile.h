@@ -80,10 +80,6 @@ private:
     
     void processCollisionsWithScreenWalls();
     
-    void interpolateClientSidePrediction(Vector2& inOldPos);
-    
-    bool interpolateVectorsIfNecessary(Vector2& inA, Vector2& inB, float& syncTracker);
-    
     void playSound(int soundId);
     
     Projectile(Server* server);
