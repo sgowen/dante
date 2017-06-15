@@ -16,7 +16,7 @@
 InputState::InputState() : IInputState(),
 m_fDesiredRightAmount(0),
 m_fDesiredLeftAmount(0),
-m_fDesiredJumpIntensity(0),
+m_isJumping(false),
 m_isShooting(false),
 m_isSprinting(false),
 m_isStartingServer(false),
@@ -33,7 +33,7 @@ InputState::~InputState()
 bool InputState::write(OutputMemoryBitStream& inOutputStream) const
 {
     inOutputStream.writeSignedBinaryValue(getDesiredHorizontalDelta());
-    inOutputStream.writeSignedBinaryValue(m_fDesiredJumpIntensity);
+    inOutputStream.write(m_isJumping);
     inOutputStream.write(m_isShooting);
     inOutputStream.write(m_isSprinting);
     
@@ -43,7 +43,7 @@ bool InputState::write(OutputMemoryBitStream& inOutputStream) const
 bool InputState::read(InputMemoryBitStream& inInputStream)
 {
     inInputStream.readSignedBinaryValue(m_fDesiredRightAmount);
-    inInputStream.readSignedBinaryValue(m_fDesiredJumpIntensity);
+    inInputStream.read(m_isJumping);
     inInputStream.read(m_isShooting);
     inInputStream.read(m_isSprinting);
     
@@ -54,7 +54,7 @@ void InputState::reset()
 {
     m_fDesiredRightAmount = 0;
     m_fDesiredLeftAmount = 0;
-    m_fDesiredJumpIntensity = 0;
+    m_isJumping = false;
     m_isShooting = false;
     m_isSprinting = false;
 }
@@ -63,7 +63,7 @@ void InputState::copyTo(InputState* inInputState)
 {
     inInputState->m_fDesiredRightAmount = m_fDesiredRightAmount;
     inInputState->m_fDesiredLeftAmount = m_fDesiredLeftAmount;
-    inInputState->m_fDesiredJumpIntensity = m_fDesiredJumpIntensity;
+    inInputState->m_isJumping = m_isJumping;
     inInputState->m_isShooting = m_isShooting;
     inInputState->m_isSprinting = m_isSprinting;
     inInputState->m_isStartingServer = m_isStartingServer;
@@ -75,9 +75,9 @@ float InputState::getDesiredHorizontalDelta() const
     return m_fDesiredRightAmount - m_fDesiredLeftAmount;
 }
 
-float InputState::getDesiredJumpIntensity() const
+bool InputState::isJumping() const
 {
-    return m_fDesiredJumpIntensity;
+    return m_isJumping;
 }
 
 bool InputState::isShooting() const

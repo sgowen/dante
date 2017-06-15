@@ -12,7 +12,7 @@
 
 #include "InputState.h"
 
-#define POOL_SIZE 3000
+#define POOL_SIZE 512
 
 PooledObjectsManager* PooledObjectsManager::getInstance()
 {
@@ -22,9 +22,15 @@ PooledObjectsManager* PooledObjectsManager::getInstance()
 
 IInputState* PooledObjectsManager::borrowInputState()
 {
-    IInputState* ret = POOLED_OBJ_MGR->m_pool->newObject();
+    IInputState* ret = nullptr;
+    while ((ret = POOLED_OBJ_MGR->m_pool->newObject())->isInUse())
+    {
+        // Continue
+    }
     
     ret->reset();
+    
+    ret->setInUse(true);
     
     return ret;
 }

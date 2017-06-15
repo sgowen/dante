@@ -36,7 +36,7 @@ public:
     
     float getDesiredHorizontalDelta() const;
     
-    float getDesiredJumpIntensity() const;
+    bool isJumping() const;
     
     bool isShooting() const;
     
@@ -51,7 +51,7 @@ private:
     
     float m_fDesiredRightAmount;
     float m_fDesiredLeftAmount;
-    float m_fDesiredJumpIntensity;
+    bool m_isJumping;
     bool m_isShooting;
     bool m_isSprinting;
     bool m_isStartingServer;

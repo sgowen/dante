@@ -188,7 +188,7 @@ void Robot::read(InputMemoryBitStream& inInputStream)
     
     if (getPlayerId() == NetworkManagerClient::getInstance()->getPlayerId())
     {
-        doClientSidePredictionAfterReplicationForLocalRobot(readState);
+        doClientSidePredictionForLocalRobot(readState);
         
         // if this is a create packet, don't interpolate
         if ((readState & ROBT_PlayerId) == 0)
@@ -198,12 +198,7 @@ void Robot::read(InputMemoryBitStream& inInputStream)
     }
     else
     {
-        doClientSidePredictionAfterReplicationForRemoteRobot(readState);
-        
-        if ((readState & ROBT_PlayerId) == 0)
-        {
-            interpolateClientSidePrediction(oldStateTime, oldPosition);
-        }
+        doClientSidePredictionForRemoteRobot(readState);
         
         if (m_isJumping && !wasJumping)
         {
@@ -383,15 +378,22 @@ void Robot::processInput(float inDeltaTime, IInputState* inInputState)
         m_velocity.add(inputState->getDesiredHorizontalDelta() * m_fSpeed / 2, 0);
     }
     
-    if (inputState->getDesiredJumpIntensity() > 0
-        && m_isGrounded)
+    if (inputState->isJumping())
     {
-        m_velocity.setY(inputState->getDesiredJumpIntensity() * m_fJumpSpeed);
-        m_acceleration.setY(-9.8f);
-        m_fStateTime = 0;
-        m_isGrounded = false;
-        m_isFalling = false;
-        m_isJumping = true;
+        if (m_isGrounded)
+        {
+            m_fStateTime = 0;
+            m_isGrounded = false;
+            m_isFalling = false;
+            m_isJumping = true;
+            
+            m_acceleration.setY(-9.8f);
+            m_velocity.setY(m_fJumpSpeed);
+        }
+    }
+    else if (m_velocity.getY() > (m_fJumpSpeed / 2.0f))
+    {
+        m_velocity.setY(m_fJumpSpeed / 2.0f);
     }
     
     m_isShooting = inputState->isShooting();
@@ -523,7 +525,7 @@ void Robot::handleShooting()
     }
 }
 
-void Robot::doClientSidePredictionAfterReplicationForLocalRobot(uint32_t inReadState)
+void Robot::doClientSidePredictionForLocalRobot(uint32_t inReadState)
 {
     if ((inReadState & ROBT_Pose) != 0)
     {
@@ -546,7 +548,7 @@ void Robot::doClientSidePredictionAfterReplicationForLocalRobot(uint32_t inReadS
 
 //so what do we want to do here? need to do some kind of interpolation...
 
-void Robot::doClientSidePredictionAfterReplicationForRemoteRobot(uint32_t inReadState)
+void Robot::doClientSidePredictionForRemoteRobot(uint32_t inReadState)
 {
     if ((inReadState & ROBT_Pose) != 0)
     {
@@ -572,41 +574,18 @@ void Robot::doClientSidePredictionAfterReplicationForRemoteRobot(uint32_t inRead
 
 void Robot::interpolateClientSidePrediction(float& inOldStateTime, Vector2& inOldAcceleration, Vector2& inOldVelocity, Vector2& inOldPos)
 {
-    if (interpolateVectorsIfNecessary(inOldAcceleration, getAcceleration(), m_fTimeAccelerationBecameOutOfSync))
-    {
-        LOG("Robot ERROR! Move Replay Acceleration");
-    }
-    
-    if (interpolateVectorsIfNecessary(inOldVelocity, getVelocity(), m_fTimeVelocityBecameOutOfSync))
-    {
-        LOG("Robot ERROR! Move Replay Velocity");
-    }
-    
-    interpolateClientSidePrediction(inOldStateTime, inOldPos);
+    interpolateVectorsIfNecessary(inOldAcceleration, getAcceleration(), m_fTimeAccelerationBecameOutOfSync, "acceleration");
+    interpolateVectorsIfNecessary(inOldVelocity, getVelocity(), m_fTimeVelocityBecameOutOfSync, "velocity");
+    interpolateVectorsIfNecessary(inOldPos, getPosition(), m_fTimePositionBecameOutOfSync, "position");
 }
 
-void Robot::interpolateClientSidePrediction(float& inOldStateTime, Vector2& inOldPos)
-{
-    float roundTripTime = NetworkManagerClient::getInstance()->getRoundTripTime();
-    
-    if (!areFloatsPracticallyEqual(inOldStateTime, m_fStateTime))
-    {
-        m_fStateTime = inOldStateTime + roundTripTime * (m_fStateTime - inOldStateTime);
-    }
-    
-    if (interpolateVectorsIfNecessary(inOldPos, getPosition(), m_fTimePositionBecameOutOfSync))
-    {
-        LOG("Robot ERROR! Move Replay Position");
-    }
-}
-
-bool Robot::interpolateVectorsIfNecessary(Vector2& inA, Vector2& inB, float& syncTracker)
+void Robot::interpolateVectorsIfNecessary(Vector2& inA, Vector2& inB, float& syncTracker, const char* vectorType)
 {
     float roundTripTime = NetworkManagerClient::getInstance()->getRoundTripTime();
     
     if (!inA.isEqualTo(inB))
     {
-        LOG("Robot ERROR! Move replay ended with incorrect vector! Old %3.8f, %3.8f - New %3.8f, %3.8f", inA.getX(), inA.getY(), inB.getX(), inB.getY());
+        LOG("WARN: Robot move replay ended with incorrect %s! Old %3.8f, %3.8f - New %3.8f, %3.8f", vectorType, inA.getX(), inA.getY(), inB.getX(), inB.getY());
         
         //have we been out of sync, or did we just become out of sync?
         float time = Timing::getInstance()->getFrameStartTime();
@@ -621,14 +600,11 @@ bool Robot::interpolateVectorsIfNecessary(Vector2& inA, Vector2& inB, float& syn
         {
             inB.set(lerp(inA, inB, roundTripTime / 2));
         }
-        
-        return true;
     }
-    
-    //we're in sync
-    syncTracker = 0.0f;
-    
-    return false;
+    else
+    {
+        syncTracker = 0.0f;
+    }
 }
 
 void Robot::playSound(int soundId)

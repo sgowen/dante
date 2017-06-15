@@ -25,6 +25,10 @@ public:
     
     void update();
     
+    void onConnected();
+    
+    InputState* getInputState();
+    
     MoveList& getMoveList();
     
     const Move* getAndClearPendingMove();
@@ -34,6 +38,7 @@ private:
     MoveList m_moveList;
     const Move* m_pendingMove;
     float m_fNextTimeToSampleInput;
+    bool m_isConnected;
     
     const Move& sampleInputAsMove();
     

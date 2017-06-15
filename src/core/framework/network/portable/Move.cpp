@@ -30,6 +30,11 @@ m_fDeltaTime(0)
     // Empty
 }
 
+Move::~Move()
+{
+    m_inputState->setInUse(false);
+}
+
 bool Move::write(OutputMemoryBitStream& inOutputStream) const
 {
     inOutputStream.write(m_fTimestamp);

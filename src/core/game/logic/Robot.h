@@ -104,15 +104,13 @@ private:
     
     void handleShooting();
 
-    void doClientSidePredictionAfterReplicationForLocalRobot(uint32_t inReadState);
+    void doClientSidePredictionForLocalRobot(uint32_t inReadState);
     
-    void doClientSidePredictionAfterReplicationForRemoteRobot(uint32_t inReadState);
+    void doClientSidePredictionForRemoteRobot(uint32_t inReadState);
     
     void interpolateClientSidePrediction(float& inOldStateTime, Vector2& inOldAcceleration, Vector2& inOldVelocity, Vector2& inOldPos);
     
-    void interpolateClientSidePrediction(float& inOldStateTime, Vector2& inOldPos);
-    
-    bool interpolateVectorsIfNecessary(Vector2& inA, Vector2& inB, float& syncTracker);
+    void interpolateVectorsIfNecessary(Vector2& inA, Vector2& inB, float& syncTracker, const char* vectorType);
     
     void playSound(int soundId);
     

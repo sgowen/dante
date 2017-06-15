@@ -152,18 +152,14 @@ void MainEngine::update(float deltaTime)
         
         if (!m_isConnected)
         {
-            const Move* move = InputManager::getInstance()->getAndClearPendingMove();
-            if (move)
+            InputState* inputState = InputManager::getInstance()->getInputState();
+            if (inputState->isStartingServer())
             {
-                InputState* inputState = static_cast<InputState*>(move->getInputState());
-                if (inputState->isStartingServer())
-                {
-                    startServer();
-                }
-                else if (inputState->isJoiningServer())
-                {
-                    joinServer();
-                }
+                startServer();
+            }
+            else if (inputState->isJoiningServer())
+            {
+                joinServer();
             }
         }
     }
@@ -196,6 +192,8 @@ void MainEngine::startServer()
 void MainEngine::joinServer()
 {
     NetworkManagerClient::getInstance()->init(InstanceManager::getClientEntityRegistry(), "localhost:9999", "Noctis Games", FRAME_RATE, MainEngine::staticRemoveEntity, InputManager::staticRemoveProcessedMoves, InputManager::staticGetMoveList);
+    
+    InputManager::getInstance()->onConnected();
     
     m_isConnected = true;
 }
