@@ -271,11 +271,11 @@ void SpacePirate::processCollisionsWithScreenWalls()
     
     float radius = m_fWidth / 2;
     
-    if (boundsY <= 0.875f && vy < 0)
+    if (boundsY <= 1.0f && vy < 0)
     {
         m_velocity.setY(0);
         m_acceleration.setY(0);
-        position.setY(0.875f + getMainBounds().getHeight() / 2);
+        position.setY(1.0f + getMainBounds().getHeight() / 2);
         setPosition(position);
         m_isGrounded = true;
         m_isFalling = false;

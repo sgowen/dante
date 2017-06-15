@@ -28,6 +28,7 @@ void MainAssetsMapper::mapAssets()
 {
     /// Texture Regions
     ASSETS->getTextureRegionMap()["Mario_Backdrop"] = new TextureRegion("texture_001", 1024, 0, 640, 480, TEXTURE_SIZE_2048);
+    ASSETS->getTextureRegionMap()["Background_Merged"] = new TextureRegion("texture_001", 1024, 512, 1024, 1024, TEXTURE_SIZE_2048);
     
     ASSETS->getTextureRegionMap()["Projectile"] = new TextureRegion("texture_001", 0, 138, 16, 16, TEXTURE_SIZE_2048);
     

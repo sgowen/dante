@@ -79,7 +79,7 @@ void MainRenderer::tempDraw()
     {
         {
             m_spriteBatcher->beginBatch();
-            static TextureRegion tr = ASSETS->findTextureRegion("Mario_Backdrop");
+            static TextureRegion tr = ASSETS->findTextureRegion("Background_Merged");
             m_spriteBatcher->drawSprite(CAM_WIDTH / 2, CAM_HEIGHT / 2, CAM_WIDTH, CAM_HEIGHT, 0, tr);
             m_spriteBatcher->endBatch(*m_demo->gpuTextureWrapper, *m_textureGpuProgramWrapper);
         }
