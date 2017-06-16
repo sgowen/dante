@@ -144,7 +144,7 @@ void NGSteamGameServices::update()
 void NGSteamGameServices::refreshInternetServers()
 {
     // If we are still finishing the previous refresh, then ignore this new request
-    if (m_bRequestingServers)
+    if (m_isRequestingServers)
     {
         return;
     }
@@ -159,9 +159,9 @@ void NGSteamGameServices::refreshInternetServers()
     LOG("Refreshing internet servers");
     
     // Track that we are now in a refresh, what type of refresh, and reset our server count
-    m_bRequestingServers = true;
-    m_nServers = 0;
-    m_ListGameServers.clear();
+    m_isRequestingServers = true;
+    m_iNumServers = 0;
+    m_gameServers.clear();
     
     Steamworks_TestSecret();
     
@@ -188,7 +188,7 @@ void NGSteamGameServices::refreshInternetServers()
 void NGSteamGameServices::refreshLANServers()
 {
     // If we are still finishing the previous refresh, then ignore this new request
-    if (m_bRequestingServers)
+    if (m_isRequestingServers)
     {
         return;
     }
@@ -203,9 +203,9 @@ void NGSteamGameServices::refreshLANServers()
     LOG("Refreshing LAN servers");
     
     // Track that we are now in a refresh, what type of refresh, and reset our server count
-    m_bRequestingServers = true;
-    m_nServers = 0;
-    m_ListGameServers.clear();
+    m_isRequestingServers = true;
+    m_iNumServers = 0;
+    m_gameServers.clear();
     
     // LAN refresh doesn't accept filters like internet above does
     m_hServerListRequest = SteamMatchmakingServers()->RequestLANServerList(SteamUtils()->GetAppID(), this);
@@ -221,8 +221,8 @@ void NGSteamGameServices::ServerResponded(HServerListRequest hReq, int iServer)
         // Filter out servers that don't match our appid here (might get these in LAN calls since we can't put more filters on it)
         if (pServer->m_nAppID == SteamUtils()->GetAppID())
         {
-            m_ListGameServers.push_back(NGSteamGameServer(pServer));
-            m_nServers++;
+            m_gameServers.push_back(NGSteamGameServer(pServer));
+            m_iNumServers++;
         }
     }
 }
@@ -237,7 +237,7 @@ void NGSteamGameServices::ServerFailedToRespond(HServerListRequest hReq, int iSe
 
 void NGSteamGameServices::RefreshComplete(HServerListRequest hReq, EMatchMakingServerResponse response)
 {
-    m_bRequestingServers = false;
+    m_isRequestingServers = false;
 }
 
 #pragma mark Steam Cloud
@@ -303,44 +303,39 @@ std::string NGSteamGameServices::getRemotePlayerName(uint64_t inPlayerId)
 
 #pragma mark P2P Networking
 
-void NGSteamGameServices::onP2PSessionRequest(P2PSessionRequest_t* inCallback)
-{
-//    CSteamID playerId = inCallback->m_steamIDRemote;
-//    if(NetworkManager::sInstance->IsPlayerInGame(playerId.ConvertToUint64()))
-//    {
-//        SteamNetworking()->AcceptP2PSessionWithUser(playerId);
-//    }
-}
-
-void NGSteamGameServices::onP2PSessionFail(P2PSessionConnectFail_t* inCallback)
-{
-    //we've lost this player, so let the network manager know
-//    NetworkManager::sInstance->HandleConnectionReset(inCallback->m_steamIDRemote.ConvertToUint64());
-}
-
 bool NGSteamGameServices::sendP2PReliable(const OutputMemoryBitStream& inOutputStream, uint64_t inToPlayer)
 {
-    return SteamNetworking()->SendP2PPacket(inToPlayer, inOutputStream.getBufferPtr(), inOutputStream.getByteLength(), k_EP2PSendReliable);
+    return SteamGameServerNetworking()->SendP2PPacket(inToPlayer, inOutputStream.getBufferPtr(), inOutputStream.getByteLength(), k_EP2PSendReliable);
 }
 
 bool NGSteamGameServices::sendP2PUnreliable(const OutputMemoryBitStream& inOutputStream, uint64_t inToPlayer)
 {
-    return SteamNetworking()->SendP2PPacket(inToPlayer, inOutputStream.getBufferPtr(), inOutputStream.getByteLength(), k_EP2PSendUnreliable);
+    return SteamGameServerNetworking()->SendP2PPacket(inToPlayer, inOutputStream.getBufferPtr(), inOutputStream.getByteLength(), k_EP2PSendUnreliable);
 }
 
 bool NGSteamGameServices::isP2PPacketAvailable(uint32_t& outPacketSize)
 {
-    return SteamNetworking()->IsP2PPacketAvailable(&outPacketSize);
+    return SteamGameServerNetworking()->IsP2PPacketAvailable(&outPacketSize);
 }
 
 uint32_t NGSteamGameServices::readP2PPacket(void* inToReceive, uint32_t inMaxLength, uint64_t& outFromPlayer)
 {
     uint32_t packetSize;
     CSteamID fromId;
-    SteamNetworking()->ReadP2PPacket(inToReceive, inMaxLength, &packetSize, &fromId);
+    SteamGameServerNetworking()->ReadP2PPacket(inToReceive, inMaxLength, &packetSize, &fromId);
     outFromPlayer = fromId.ConvertToUint64();
     
     return packetSize;
+}
+
+std::list<NGSteamGameServer>& NGSteamGameServices::getGameServers()
+{
+    return m_gameServers;
+}
+
+bool NGSteamGameServices::isRequestingServers()
+{
+    return m_isRequestingServers;
 }
 
 void NGSteamGameServices::refreshSteamCloudFileStats()
@@ -358,11 +353,9 @@ m_steamRemoteStorage(nullptr),
 m_ulBytesQuota(0),
 m_ulAvailableBytes(0),
 m_nNumFilesInCloud(0),
-m_nServers(0),
-m_bRequestingServers(false),
+m_iNumServers(0),
+m_isRequestingServers(false),
 m_hServerListRequest(nullptr),
-m_sessionRequestCallback(this, &::NGSteamGameServices::onP2PSessionRequest),
-m_sessionFailCallback(this, &::NGSteamGameServices::onP2PSessionFail),
 m_iStatus(STEAM_INIT_NOT_CALLED)
 {
     // Empty

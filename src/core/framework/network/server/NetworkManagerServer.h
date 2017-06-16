@@ -61,8 +61,6 @@ private:
     
     void sendWelcomePacket(ClientProxy* inClientProxy);
     
-    void updateAllClients();
-    
     void sendStatePacketToClient(ClientProxy* inClientProxy);
     
     void writeLastMoveTimestampIfDirty(OutputMemoryBitStream& inOutputStream, ClientProxy* inClientProxy);

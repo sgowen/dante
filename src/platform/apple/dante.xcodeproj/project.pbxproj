@@ -155,6 +155,7 @@
 		BBAEF2B61EA94EDA00F0866E /* SuperpoweredSoundManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF1A41EA94ED900F0866E /* SuperpoweredSoundManager.cpp */; };
 		BBAEF2B81EA94EDA00F0866E /* SuperpoweredSoundWrapper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF1A61EA94ED900F0866E /* SuperpoweredSoundWrapper.cpp */; };
 		BBAEF3101EA94FAC00F0866E /* JoystickController.mm in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF30F1EA94FAC00F0866E /* JoystickController.mm */; };
+		BBAFD3271EF42F2E004F2742 /* InstanceManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAFD3251EF42F2E004F2742 /* InstanceManager.cpp */; };
 		BBBCB2EB1EF090E900B77938 /* NGSteam.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBBCB2EA1EF090E900B77938 /* NGSteam.cpp */; };
 		BBBCB2EE1EF0993000B77938 /* NGSteamGameServer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBBCB2EC1EF0993000B77938 /* NGSteamGameServer.cpp */; };
 		BBBCB2F11EF0A65E00B77938 /* NGSteamGameServerPing.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBBCB2EF1EF0A65E00B77938 /* NGSteamGameServerPing.cpp */; };
@@ -176,7 +177,6 @@
 		BBCFF1CD1ECD316D003EE520 /* MainAssets.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBCFF1C81ECD316D003EE520 /* MainAssets.cpp */; };
 		BBCFF1CF1ECD316D003EE520 /* MainAssetsMapper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBCFF1CA1ECD316D003EE520 /* MainAssetsMapper.cpp */; };
 		BBD43A0E1ED0BD00001D5EB4 /* ReplicationCommand.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBD43A0C1ED0BD00001D5EB4 /* ReplicationCommand.cpp */; };
-		BBE39D591EF1B7D500265D7F /* InstanceManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBE39D571EF1B7D500265D7F /* InstanceManager.cpp */; };
 		BBF226CF1EC12CDE00573356 /* ReplicationManagerClient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF226B01EC12CDE00573356 /* ReplicationManagerClient.cpp */; };
 		BBFA22991EE5AE03002635D6 /* SpacePirate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBFA22961EE5AE03002635D6 /* SpacePirate.cpp */; };
 /* End PBXBuildFile section */
@@ -661,6 +661,14 @@
 		BBAEF3471EA94FE500F0866E /* AndroidAudioEngineHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AndroidAudioEngineHelper.h; sourceTree = "<group>"; };
 		BBAEF3491EA94FF200F0866E /* AndroidAssetDataHandler.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = AndroidAssetDataHandler.cpp; sourceTree = "<group>"; };
 		BBAEF34A1EA94FF200F0866E /* AndroidAssetDataHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AndroidAssetDataHandler.h; sourceTree = "<group>"; };
+		BBAFD3131EF42904004F2742 /* DanteClient.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = DanteClient.cpp; sourceTree = "<group>"; };
+		BBAFD3141EF42904004F2742 /* DanteClient.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DanteClient.h; sourceTree = "<group>"; };
+		BBAFD3151EF42904004F2742 /* DanteServer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = DanteServer.cpp; sourceTree = "<group>"; };
+		BBAFD3161EF42904004F2742 /* DanteServer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DanteServer.h; sourceTree = "<group>"; };
+		BBAFD3171EF42904004F2742 /* P2PAuth.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = P2PAuth.cpp; sourceTree = "<group>"; };
+		BBAFD3181EF42904004F2742 /* P2PAuth.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = P2PAuth.h; sourceTree = "<group>"; };
+		BBAFD3251EF42F2E004F2742 /* InstanceManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = InstanceManager.cpp; sourceTree = "<group>"; };
+		BBAFD3261EF42F2E004F2742 /* InstanceManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InstanceManager.h; sourceTree = "<group>"; };
 		BBBCB2EA1EF090E900B77938 /* NGSteam.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NGSteam.cpp; sourceTree = "<group>"; };
 		BBBCB2EC1EF0993000B77938 /* NGSteamGameServer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NGSteamGameServer.cpp; sourceTree = "<group>"; };
 		BBBCB2ED1EF0993000B77938 /* NGSteamGameServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NGSteamGameServer.h; sourceTree = "<group>"; };
@@ -698,8 +706,6 @@
 		BBCFF1CB1ECD316D003EE520 /* MainAssetsMapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainAssetsMapper.h; sourceTree = "<group>"; };
 		BBD43A0B1ED0BCAD001D5EB4 /* ReplicationAction.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ReplicationAction.h; sourceTree = "<group>"; };
 		BBD43A0C1ED0BD00001D5EB4 /* ReplicationCommand.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ReplicationCommand.cpp; sourceTree = "<group>"; };
-		BBE39D571EF1B7D500265D7F /* InstanceManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = InstanceManager.cpp; sourceTree = "<group>"; };
-		BBE39D581EF1B7D500265D7F /* InstanceManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InstanceManager.h; sourceTree = "<group>"; };
 		BBF226B01EC12CDE00573356 /* ReplicationManagerClient.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ReplicationManagerClient.cpp; sourceTree = "<group>"; };
 		BBF226B11EC12CDE00573356 /* ReplicationManagerClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReplicationManagerClient.h; sourceTree = "<group>"; };
 		BBFA22961EE5AE03002635D6 /* SpacePirate.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SpacePirate.cpp; sourceTree = "<group>"; };
@@ -1179,8 +1185,16 @@
 		BB7267A21EEC6903004F33F9 /* network */ = {
 			isa = PBXGroup;
 			children = (
+				BBAFD3131EF42904004F2742 /* DanteClient.cpp */,
+				BBAFD3141EF42904004F2742 /* DanteClient.h */,
+				BBAFD3151EF42904004F2742 /* DanteServer.cpp */,
+				BBAFD3161EF42904004F2742 /* DanteServer.h */,
 				BB5833D11EEDDB5C0084DA20 /* InputManager.cpp */,
 				BB5833D21EEDDB5C0084DA20 /* InputManager.h */,
+				BBAFD3251EF42F2E004F2742 /* InstanceManager.cpp */,
+				BBAFD3261EF42F2E004F2742 /* InstanceManager.h */,
+				BBAFD3171EF42904004F2742 /* P2PAuth.cpp */,
+				BBAFD3181EF42904004F2742 /* P2PAuth.h */,
 				BB7267A31EEC6903004F33F9 /* Server.cpp */,
 				BB7267A41EEC6903004F33F9 /* Server.h */,
 			);
@@ -1647,8 +1661,6 @@
 				BBAEF1E41EA94ED900F0866E /* GameConstants.h */,
 				BB5697D71EE3661400D03694 /* InputState.cpp */,
 				BB5697D81EE3661400D03694 /* InputState.h */,
-				BBE39D571EF1B7D500265D7F /* InstanceManager.cpp */,
-				BBE39D581EF1B7D500265D7F /* InstanceManager.h */,
 				BB5833D71EEDDBEB0084DA20 /* MainEngine.cpp */,
 				BB5833D81EEDDBEB0084DA20 /* MainEngine.h */,
 				BB5697D91EE3661400D03694 /* PooledObjectsManager.cpp */,
@@ -1911,10 +1923,10 @@
 				BBAEF2421EA94EDA00F0866E /* OpenGLSpriteBatcher.cpp in Sources */,
 				BBAEF29A1EA94EDA00F0866E /* OverlapTester.cpp in Sources */,
 				BB8308621EC2AD1F00435E7E /* INetworkManager.cpp in Sources */,
-				BBE39D591EF1B7D500265D7F /* InstanceManager.cpp in Sources */,
 				BBAEF2361EA94EDA00F0866E /* OpenGLGeometryProgram.cpp in Sources */,
 				BB5833781EEDBF7E0084DA20 /* NGSteamGameServices.cpp in Sources */,
 				BBAEF2721EA94EDA00F0866E /* SpriteBatcher.cpp in Sources */,
+				BBAFD3271EF42F2E004F2742 /* InstanceManager.cpp in Sources */,
 				BB59794D1EEF454B0047BEC6 /* pch.cpp in Sources */,
 				BBBD14A11EE08A20003F9307 /* World.cpp in Sources */,
 				BBF226CF1EC12CDE00573356 /* ReplicationManagerClient.cpp in Sources */,

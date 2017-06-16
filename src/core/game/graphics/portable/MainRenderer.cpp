@@ -68,7 +68,7 @@ void MainRenderer::releaseDeviceDependentResources()
 	unloadTexture(m_misc);
 }
 
-void MainRenderer::tempDraw()
+void MainRenderer::tempDraw(int engineState)
 {
     m_rendererHelper->updateMatrix(0, CAM_WIDTH, 0, CAM_HEIGHT);
     
@@ -126,15 +126,61 @@ void MainRenderer::tempDraw()
         m_spriteBatcher->endBatch(*m_demo->gpuTextureWrapper, *m_textureGpuProgramWrapper);
         
         m_spriteBatcher->beginBatch();
-        renderBandWidth();
-        renderRoundTripTime();
+        if (engineState == 5)
+        {
+            renderRoundTripTime();
+            renderBandWidth();
+        }
+        else if (engineState == 1)
+        {
+            renderServerStartedInstructions();
+        }
+        else
+        {
+            renderInstructions();
+        }
         m_spriteBatcher->endBatch(*m_misc->gpuTextureWrapper, *m_textureGpuProgramWrapper);
     }
 }
 
+void MainRenderer::renderServerStartedInstructions()
+{
+    static Vector2 origin = Vector2(CAM_WIDTH / 2, CAM_HEIGHT - 4);
+    
+    std::string roundTripTime = std::string("Server started, 'J' to join it");
+    
+    static Color c = Color(0.0f, 0.0f, 0.0f, 1.0f);
+    
+    renderText(roundTripTime, origin, c);
+}
+
+void MainRenderer::renderInstructions()
+{
+    static Vector2 origin = Vector2(CAM_WIDTH / 2, CAM_HEIGHT - 4);
+    
+    std::string roundTripTime = std::string("'S' to start server, 'J' to join first available");
+    
+    static Color c = Color(0.0f, 0.0f, 0.0f, 1.0f);
+    
+    renderText(roundTripTime, origin, c);
+}
+
+void MainRenderer::renderRoundTripTime()
+{
+    static Vector2 origin = Vector2(CAM_WIDTH / 2, CAM_HEIGHT - 0.5);
+    
+    float rttMS = NetworkManagerClient::getInstance()->getAvgRoundTripTime().getValue() * 1000.f;
+    
+    std::string roundTripTime = StringUtil::format("RTT %d ms", (int) rttMS);
+    
+    static Color c = Color(0.0f, 0.0f, 0.0f, 1.0f);
+    
+    renderText(roundTripTime, origin, c);
+}
+
 void MainRenderer::renderBandWidth()
 {
-    static Vector2 bandwidthOrigin = Vector2(CAM_WIDTH / 2, CAM_HEIGHT - 1);
+    static Vector2 origin = Vector2(CAM_WIDTH / 2, CAM_HEIGHT - 1);
     
     const WeightedTimedMovingAverage& bpsIn = NetworkManagerClient::getInstance()->getBytesReceivedPerSecond();
     int bpsInInt = static_cast< int >(bpsIn.getValue());
@@ -144,22 +190,9 @@ void MainRenderer::renderBandWidth()
     
     std::string bandwidth = StringUtil::format("In %d Bps, Out %d Bps", bpsInInt, bpsOutInt);
     
-    static Color whiteColor = Color(1.0f, 1.0f, 1.0f, 1.0f);
+    static Color c = Color(0.0f, 0.0f, 0.0f, 1.0f);
     
-    renderText(bandwidth, bandwidthOrigin, whiteColor);
-}
-
-void MainRenderer::renderRoundTripTime()
-{
-    static Vector2 roundTripTimeOrigin = Vector2(CAM_WIDTH / 2, CAM_HEIGHT - 0.5);
-    
-    float rttMS = NetworkManagerClient::getInstance()->getAvgRoundTripTime().getValue() * 1000.f;
-    
-    std::string roundTripTime = StringUtil::format("RTT %d ms", (int) rttMS);
-    
-    static Color whiteColor = Color(1.0f, 1.0f, 1.0f, 1.0f);
-    
-    renderText(roundTripTime, roundTripTimeOrigin, whiteColor);
+    renderText(bandwidth, origin, c);
 }
 
 void MainRenderer::renderText(const std::string& inStr, const Vector2& origin, const Color& inColor)

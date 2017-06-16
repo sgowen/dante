@@ -229,13 +229,13 @@ void Server::respawnEnemiesIfNecessary()
 
 Server::Server() : m_fStateTime(0), m_fFrameStateTime(0), m_fStateTimeNoEnemies(0), m_isInitialized(false)
 {
-    m_isInitialized = NetworkManagerServer::getInstance()->init(9999, Server::staticRemoveEntity, Server::staticHandleNewClient, Server::staticHandleLostClient, PooledObjectsManager::borrowInputState);
-    
     InstanceManager::getServerEntityRegistry()->init(Server::staticAddEntity);
     
     InstanceManager::getServerEntityRegistry()->registerCreationFunction(NETWORK_TYPE_Robot, Robot::staticCreateServer);
     InstanceManager::getServerEntityRegistry()->registerCreationFunction(NETWORK_TYPE_Projectile, Projectile::staticCreateServer);
     InstanceManager::getServerEntityRegistry()->registerCreationFunction(NETWORK_TYPE_SpacePirate, SpacePirate::staticCreateServer);
+    
+    m_isInitialized = NetworkManagerServer::getInstance()->init(9999, Server::staticRemoveEntity, Server::staticHandleNewClient, Server::staticHandleLostClient, PooledObjectsManager::borrowInputState);
 }
 
 Server::~Server()

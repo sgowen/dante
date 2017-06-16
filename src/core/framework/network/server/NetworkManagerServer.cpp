@@ -225,17 +225,6 @@ void NetworkManagerServer::sendWelcomePacket(ClientProxy* inClientProxy)
     sendPacket(welcomePacket, inClientProxy->getSocketAddress());
 }
 
-void NetworkManagerServer::updateAllClients()
-{
-    for (auto it = m_addressToClientMap.begin(), end = m_addressToClientMap.end(); it != end; ++it)
-    {
-        //process any timed out packets while we're going throug hthe list
-        it->second->getDeliveryNotificationManager().processTimedOutPackets(Timing::getInstance()->getFrameStartTime());
-        
-        sendStatePacketToClient(it->second);
-    }
-}
-
 void NetworkManagerServer::sendStatePacketToClient(ClientProxy* inClientProxy)
 {
     //build state packet

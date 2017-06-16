@@ -28,16 +28,20 @@ public:
     
     virtual void releaseDeviceDependentResources();
     
-    void tempDraw();
+    void tempDraw(int engineState);
     
 private:
     TextureWrapper* m_demo;
     TextureWrapper* m_misc;
     Font* m_font;
     
-    void renderBandWidth();
+    void renderServerStartedInstructions();
+    
+    void renderInstructions();
     
     void renderRoundTripTime();
+    
+    void renderBandWidth();
     
     void renderText(const std::string& inStr, const Vector2& origin, const Color& inColor);
 };

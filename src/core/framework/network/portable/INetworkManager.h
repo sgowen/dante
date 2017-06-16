@@ -33,19 +33,9 @@ public:
     static const uint32_t kInputCC = 'INPT';
     static const int kMaxPacketsPerFrameCount = 10;
     
-    virtual void processPacket(InputMemoryBitStream& inInputStream, const SocketAddress& inFromAddress) = 0;
-    
-    virtual void handleConnectionReset(const SocketAddress& inFromAddress);
-    
     bool init(uint16_t inPort, HandleEntityDeletionFunc handleEntityDeletion);
     
     void processIncomingPackets();
-    
-    void sendPacket(const OutputMemoryBitStream& inOutputStream, const SocketAddress& inFromAddress);
-    
-    const WeightedTimedMovingAverage& getBytesReceivedPerSecond() const;
-    
-    const WeightedTimedMovingAverage& getBytesSentPerSecond() const;
     
     Entity* getEntity(int inNetworkId) const;
     
@@ -53,9 +43,19 @@ public:
     
     void removeFromNetworkIdToEntityMap(Entity* inEntity);
     
+    const WeightedTimedMovingAverage& getBytesReceivedPerSecond() const;
+    
+    const WeightedTimedMovingAverage& getBytesSentPerSecond() const;
+    
 protected:
     EntityManager* m_entityManager;
     bool m_isInitialized;
+    
+    virtual void processPacket(InputMemoryBitStream& inInputStream, const SocketAddress& inFromAddress) = 0;
+    
+    virtual void handleConnectionReset(const SocketAddress& inFromAddress);
+    
+    void sendPacket(const OutputMemoryBitStream& inOutputStream, const SocketAddress& inFromAddress);
     
     // ctor, copy ctor, and assignment should be private in a Singleton
     INetworkManager();
@@ -77,11 +77,11 @@ private:
     
     int m_bytesSentThisFrame;
     
-    void updateBytesSentLastFrame();
-    
     void readIncomingPacketsIntoQueue();
     
     void processQueuedPackets();
+    
+    void updateBytesSentLastFrame();
     
     class ReceivedPacket
     {

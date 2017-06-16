@@ -21,11 +21,6 @@
 #include "SocketAddressFamily.h"
 #include "macros.h"
 
-void INetworkManager::handleConnectionReset(const SocketAddress& inFromAddress)
-{
-    UNUSED(inFromAddress);
-}
-
 bool INetworkManager::init(uint16_t inPort, HandleEntityDeletionFunc handleEntityDeletion)
 {
     if (!SOCKET_UTIL->init())
@@ -72,25 +67,6 @@ void INetworkManager::processIncomingPackets()
     updateBytesSentLastFrame();
 }
 
-void INetworkManager::sendPacket(const OutputMemoryBitStream& inOutputStream, const SocketAddress& inFromAddress)
-{
-    int sentByteCount = m_socket->sendToAddress(inOutputStream.getBufferPtr(), inOutputStream.getByteLength(), inFromAddress);
-    if (sentByteCount > 0)
-    {
-        m_bytesSentThisFrame += sentByteCount;
-    }
-}
-
-const WeightedTimedMovingAverage& INetworkManager::getBytesReceivedPerSecond() const
-{
-    return *m_bytesReceivedPerSecond;
-}
-
-const WeightedTimedMovingAverage& INetworkManager::getBytesSentPerSecond() const
-{
-    return *m_bytesSentPerSecond;
-}
-
 Entity* INetworkManager::getEntity(int inNetworkId) const
 {
     return m_entityManager->getEntityFromID(inNetworkId);
@@ -109,6 +85,51 @@ void INetworkManager::removeFromNetworkIdToEntityMap(Entity* inEntity)
     
     delete inEntity;
     inEntity = nullptr;
+}
+
+const WeightedTimedMovingAverage& INetworkManager::getBytesReceivedPerSecond() const
+{
+    return *m_bytesReceivedPerSecond;
+}
+
+const WeightedTimedMovingAverage& INetworkManager::getBytesSentPerSecond() const
+{
+    return *m_bytesSentPerSecond;
+}
+
+void INetworkManager::handleConnectionReset(const SocketAddress& inFromAddress)
+{
+    UNUSED(inFromAddress);
+}
+
+void INetworkManager::sendPacket(const OutputMemoryBitStream& inOutputStream, const SocketAddress& inFromAddress)
+{
+    int sentByteCount = m_socket->sendToAddress(inOutputStream.getBufferPtr(), inOutputStream.getByteLength(), inFromAddress);
+    if (sentByteCount > 0)
+    {
+        m_bytesSentThisFrame += sentByteCount;
+    }
+}
+
+INetworkManager::INetworkManager() :
+m_socket(nullptr),
+m_bytesReceivedPerSecond(new WeightedTimedMovingAverage(1.f)),
+m_bytesSentPerSecond(new WeightedTimedMovingAverage(1.f)),
+m_bytesSentThisFrame(0),
+m_isInitialized(false)
+{
+    // Empty
+}
+
+INetworkManager::~INetworkManager()
+{
+    if (m_socket)
+    {
+        delete m_socket;
+    }
+    
+    delete m_bytesReceivedPerSecond;
+    delete m_bytesSentPerSecond;
 }
 
 void INetworkManager::updateBytesSentLastFrame()
@@ -188,27 +209,6 @@ void INetworkManager::processQueuedPackets()
             break;
         }
     }
-}
-
-INetworkManager::INetworkManager() :
-m_socket(nullptr),
-m_bytesReceivedPerSecond(new WeightedTimedMovingAverage(1.f)),
-m_bytesSentPerSecond(new WeightedTimedMovingAverage(1.f)),
-m_bytesSentThisFrame(0),
-m_isInitialized(false)
-{
-    // Empty
-}
-
-INetworkManager::~INetworkManager()
-{
-    if (m_socket)
-    {
-        delete m_socket;
-    }
-    
-    delete m_bytesReceivedPerSecond;
-    delete m_bytesSentPerSecond;
 }
 
 INetworkManager::ReceivedPacket::ReceivedPacket(float inReceivedTime, InputMemoryBitStream& ioInputMemoryBitStream, const SocketAddress& inFromAddress) :

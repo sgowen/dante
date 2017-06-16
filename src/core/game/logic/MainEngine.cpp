@@ -173,7 +173,7 @@ void MainEngine::render()
 {
     m_renderer->beginFrame();
     
-    m_renderer->tempDraw();
+    m_renderer->tempDraw(m_isConnected ? 5 : Server::getInstance() ? 1 : 0);
     
     m_renderer->renderToScreen();
     
@@ -185,16 +185,22 @@ void MainEngine::startServer()
     if (!Server::getInstance())
     {
         Server::create();
+        
+        if (!Server::getInstance()->isInitialized())
+        {
+            Server::destroy();
+        }
     }
 }
 
 void MainEngine::joinServer()
 {
-    NetworkManagerClient::getInstance()->init(InstanceManager::getClientEntityRegistry(), "localhost:9999", "Noctis Games", FRAME_RATE, MainEngine::staticRemoveEntity, InputManager::staticRemoveProcessedMoves, InputManager::staticGetMoveList);
+    m_isConnected = NetworkManagerClient::getInstance()->init(InstanceManager::getClientEntityRegistry(), "localhost:9999", "Noctis Games", FRAME_RATE, MainEngine::staticRemoveEntity, InputManager::staticRemoveProcessedMoves, InputManager::staticGetMoveList);
     
-    InputManager::getInstance()->onConnected();
-    
-    m_isConnected = true;
+    if (m_isConnected)
+    {
+        InputManager::getInstance()->onConnected();
+    }
 }
 
 RTTI_IMPL(MainEngine, IEngine);

@@ -58,12 +58,14 @@ public:
     std::string getRemotePlayerName(uint64_t inPlayerId);
     
 #pragma mark P2P Networking
-    STEAM_CALLBACK(NGSteamGameServices, onP2PSessionRequest, P2PSessionRequest_t, m_sessionRequestCallback);
-    STEAM_CALLBACK(NGSteamGameServices, onP2PSessionFail, P2PSessionConnectFail_t, m_sessionFailCallback);
     bool sendP2PReliable(const OutputMemoryBitStream& inOutputStream, uint64_t inToPlayer);
     bool sendP2PUnreliable(const OutputMemoryBitStream& inOutputStream, uint64_t inToPlayer);
     bool isP2PPacketAvailable(uint32_t& outPacketSize);
     uint32_t readP2PPacket(void* inToReceive, uint32_t inMaxLength, uint64_t& outFromPlayer);
+    
+    std::list<NGSteamGameServer>& getGameServers();
+    
+    bool isRequestingServers();
     
 private:
     ISteamRemoteStorage* m_steamRemoteStorage;
@@ -71,10 +73,10 @@ private:
     uint64 m_ulBytesQuota;
     uint64 m_ulAvailableBytes;
     
-    int m_nServers; // Track the number of servers we know about
-    bool m_bRequestingServers; // Track whether we are in the middle of a refresh or not
+    int m_iNumServers; // Track the number of servers we know about
+    bool m_isRequestingServers; // Track whether we are in the middle of a refresh or not
     HServerListRequest m_hServerListRequest; // Track what server list request is currently running
-    std::list<NGSteamGameServer> m_ListGameServers;
+    std::list<NGSteamGameServer> m_gameServers;
     
     int m_iStatus;
     
