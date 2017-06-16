@@ -168,6 +168,10 @@ void MainEngine::update(float deltaTime)
             {
                 joinServer();
             }
+			else if (inputState->isLeavingServer())
+			{
+				m_iRequestedAction = REQUESTED_ACTION_EXIT;
+			}
         }
     }
     

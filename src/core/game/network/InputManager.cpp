@@ -46,6 +46,10 @@ void InputManager::update()
     SCREEN_INPUT_MANAGER->process();
     KEYBOARD_INPUT_MANAGER->process();
     GAME_PAD_INPUT_MANAGER->process();
+
+	m_currentState->m_isStartingServer = false;
+	m_currentState->m_isJoiningServer = false;
+	m_currentState->m_isLeavingServer = false;
     
     for (std::vector<KeyboardEvent *>::iterator i = KEYBOARD_INPUT_MANAGER->getEvents().begin(); i != KEYBOARD_INPUT_MANAGER->getEvents().end(); ++i)
     {
@@ -80,13 +84,13 @@ void InputManager::update()
                 }
                 continue;
             case KeyboardEventType_S:
-                m_currentState->m_isStartingServer = (*i)->isDown() && !(*i)->isHeld();
+				m_currentState->m_isStartingServer = (*i)->isUp();
                 continue;
             case KeyboardEventType_J:
-                m_currentState->m_isJoiningServer = (*i)->isDown() && !(*i)->isHeld();
+                m_currentState->m_isJoiningServer = (*i)->isUp();
                 continue;
             case KeyboardEventType_ESCAPE:
-                m_currentState->m_isLeavingServer = (*i)->isDown() && !(*i)->isHeld();
+                m_currentState->m_isLeavingServer = (*i)->isUp();
                 continue;
             default:
                 continue;
