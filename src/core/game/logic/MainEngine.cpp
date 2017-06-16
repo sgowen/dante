@@ -58,7 +58,6 @@ m_touchPointDown(new Vector2()),
 m_touchPointDown2(new Vector2()),
 m_fStateTime(0),
 m_fFrameStateTime(0),
-m_fTimeSinceServerStarted(0),
 m_isConnected(false)
 {
     m_config->load();

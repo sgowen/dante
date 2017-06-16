@@ -54,7 +54,6 @@ private:
     
     float m_fStateTime;
     float m_fFrameStateTime;
-    float m_fTimeSinceServerStarted;
     bool m_isConnected;
     
     void startServer();

@@ -200,6 +200,12 @@ void Robot::read(InputMemoryBitStream& inInputStream)
     {
         doClientSidePredictionForRemoteRobot(readState);
         
+        // if this is a create packet, don't interpolate
+        if ((readState & ROBT_PlayerId) == 0)
+        {
+            interpolateVectorsIfNecessary(oldPosition, getPosition(), m_fTimePositionBecameOutOfSync, "remote position");
+        }
+        
         if (m_isJumping && !wasJumping)
         {
             playSound(SOUND_ID_ROBOT_JUMP);
