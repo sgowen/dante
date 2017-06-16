@@ -51,16 +51,35 @@ uint32_t SocketAddress::getSize() const
 std::string	SocketAddress::toString() const
 {
 #if _WIN32
-    //const sockaddr_in* s = getAsSockAddrIn();
-    //char destinationBuffer[128];
-    //InetNtop(s->sin_family, const_cast< in_addr* >(&s->sin_addr), destinationBuffer, sizeof(destinationBuffer));
-    //return StringUtil::format("%s:%d",
-    //							destinationBuffer,
-    //							ntohs(s->sin_port));
-    return std::string(StringUtil::toString(getHash()));
+    const sockaddr_in* s = getAsSockAddrIn();
+    static char buffer[256];
+    InetNtop(s->sin_family, const_cast< in_addr* >(&s->sin_addr), buffer, sizeof(buffer));
+    
+    return StringUtil::format("%s:%d", buffer, ntohs(s->sin_port));
 #else
-    //not implement on mac for now...
-    return std::string(StringUtil::toString(getHash()));
+    static char buffer[256];
+    in_port_t port;
+    switch(m_sockAddr.sa_family)
+    {
+        case AF_INET:
+        {
+            const sockaddr_in *addr_in = getAsSockAddrIn();
+            inet_ntop(AF_INET, &(addr_in->sin_addr), buffer, INET_ADDRSTRLEN);
+            port = addr_in->sin_port;
+        }
+            break;
+        case AF_INET6:
+        {
+            const sockaddr_in6 *addr_in6 = getAsSockAddrIn6();
+            inet_ntop(AF_INET6, &(addr_in6->sin6_addr), buffer, INET6_ADDRSTRLEN);
+            port = addr_in6->sin6_port;
+        }
+            break;
+        default:
+            break;
+    }
+    
+    return StringUtil::format("%s:%d", buffer, ntohs(port));
 #endif
 }
 
@@ -94,4 +113,14 @@ sockaddr_in* SocketAddress::getAsSockAddrIn()
 const sockaddr_in* SocketAddress::getAsSockAddrIn() const
 {
     return reinterpret_cast< const sockaddr_in* >(&m_sockAddr);
+}
+
+sockaddr_in6* SocketAddress::getAsSockAddrIn6()
+{
+    return reinterpret_cast< sockaddr_in6* >(&m_sockAddr);
+}
+
+const sockaddr_in6* SocketAddress::getAsSockAddrIn6() const
+{
+    return reinterpret_cast< const sockaddr_in6* >(&m_sockAddr);
 }

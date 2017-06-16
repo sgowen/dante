@@ -22,7 +22,6 @@ namespace
 DeliveryNotificationManager::DeliveryNotificationManager(bool inShouldSendAcks, bool inShouldprocessAcks) :
 m_iNextOutgoingSequenceNumber(0),
 m_iNextExpectedSequenceNumber(0),
-//everybody starts at 0...
 m_shouldSendAcks(inShouldSendAcks),
 m_shouldprocessAcks(inShouldprocessAcks),
 m_iDeliveredPacketCount(0),

@@ -208,7 +208,7 @@ void NetworkManagerServer::processPacket(ClientProxy* inClientProxy, InputMemory
             }
             break;
         default:
-            LOG("Unknown packet type received from %s", inClientProxy->getSocketAddress().toString().c_str());
+            LOG("Unknown packet type received from %s", inClientProxy->toString().c_str());
             break;
     }
 }

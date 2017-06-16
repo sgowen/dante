@@ -15,6 +15,7 @@ class ITransmissionData
 {
 public:
     ITransmissionData();
+    
     virtual ~ITransmissionData();
     
     virtual void handleDeliveryFailure(DeliveryNotificationManager* inDeliveryNotificationManager) const = 0;

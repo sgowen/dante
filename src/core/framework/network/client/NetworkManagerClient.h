@@ -31,7 +31,7 @@ public:
     
     bool init(EntityRegistry* entityRegistry, const std::string& inServerIPAddress, const std::string& inName, float inFrameRate, HandleEntityDeletionFunc handleEntityDeletion, RemoveProcessedMovesFunc removeProcessedMovesFunc, GetMoveListFunc getMoveListFunc);
     
-    void sendOutgoingPackets();
+    virtual void sendOutgoingPackets();
     
     const WeightedTimedMovingAverage& getAvgRoundTripTime()	const;
     

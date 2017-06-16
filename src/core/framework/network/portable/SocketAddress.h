@@ -40,6 +40,9 @@ private:
     
     sockaddr_in* getAsSockAddrIn();
     const sockaddr_in* getAsSockAddrIn() const;
+    
+    sockaddr_in6* getAsSockAddrIn6();
+    const sockaddr_in6* getAsSockAddrIn6() const;
 };
 
 namespace std

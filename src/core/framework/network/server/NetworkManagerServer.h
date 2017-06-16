@@ -30,7 +30,7 @@ public:
     
     bool init(uint16_t inPort, HandleEntityDeletionFunc handleEntityDeletion, HandleNewClientFunc handleNewClientFunc, HandleLostClientFunc handleLostClientFunc, InputStateCreationFunc inputStateCreationFunc);
     
-    void sendOutgoingPackets();
+    virtual void sendOutgoingPackets();
     
     void checkForDisconnects();
     

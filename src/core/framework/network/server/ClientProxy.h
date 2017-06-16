@@ -19,6 +19,8 @@ class ClientProxy
 public:
     ClientProxy(const SocketAddress& inSocketAddress, const std::string& inName, int inPlayerId);
     
+    ~ClientProxy();
+    
     const SocketAddress& getSocketAddress() const;
     
     int getPlayerId() const;
@@ -38,6 +40,8 @@ public:
     void SetIsLastMoveTimestampDirty(bool inIsDirty);
     
     bool IsLastMoveTimestampDirty() const;
+    
+    std::string toString() const;
     
 private:
     DeliveryNotificationManager	m_deliveryNotificationManager;

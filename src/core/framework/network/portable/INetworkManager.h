@@ -37,6 +37,8 @@ public:
     
     void processIncomingPackets();
     
+    virtual void sendOutgoingPackets() = 0;
+    
     Entity* getEntity(int inNetworkId) const;
     
     void addToNetworkIdToEntityMap(Entity* inEntity);

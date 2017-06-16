@@ -22,6 +22,11 @@ m_isLastMoveTimestampDirty(false)
     updateLastPacketTime();
 }
 
+ClientProxy::~ClientProxy()
+{
+    // TODO
+}
+
 const SocketAddress& ClientProxy::getSocketAddress() const
 {
     return m_socketAddress;
@@ -70,4 +75,9 @@ void ClientProxy::SetIsLastMoveTimestampDirty(bool inIsDirty)
 bool ClientProxy::IsLastMoveTimestampDirty() const
 {
     return m_isLastMoveTimestampDirty;
+}
+
+std::string ClientProxy::toString() const
+{
+    return m_socketAddress.toString();
 }
