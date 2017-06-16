@@ -16,6 +16,8 @@
 
 class IInputState;
 
+#define NG_SERVER (NetworkManagerServer::getInstance())
+
 typedef void (*HandleNewClientFunc)(ClientProxy* inClientProxy);
 typedef void (*HandleLostClientFunc)(ClientProxy* inClientProxy);
 typedef IInputState* (*InputStateCreationFunc)();
@@ -23,13 +25,15 @@ typedef IInputState* (*InputStateCreationFunc)();
 class NetworkManagerServer : public INetworkManager
 {
 public:
+    static void create(uint16_t inPort, HandleNewClientFunc handleNewClientFunc, HandleLostClientFunc handleLostClientFunc, InputStateCreationFunc inputStateCreationFunc);
+    
+    static void destroy();
+    
     static NetworkManagerServer* getInstance();
     
     virtual void processPacket(InputMemoryBitStream& inInputStream, SocketAddress* inFromAddress) override;
     
     virtual void handleConnectionReset(SocketAddress* inFromAddress) override;
-    
-    bool init(uint16_t inPort, HandleNewClientFunc handleNewClientFunc, HandleLostClientFunc handleLostClientFunc, InputStateCreationFunc inputStateCreationFunc);
     
     virtual void sendOutgoingPackets();
     
@@ -46,6 +50,8 @@ public:
     int getNumClientsConnected();
     
 private:
+    static NetworkManagerServer* s_instance;
+    
     HandleNewClientFunc m_handleNewClientFunc;
     HandleLostClientFunc m_handleLostClientFunc;
     InputStateCreationFunc m_inputStateCreationFunc;
@@ -54,7 +60,6 @@ private:
     std::unordered_map<int, ClientProxy*> m_playerIDToClientMap;
     int m_iNewPlayerId;
     float m_fTimeOfLastSatePacket;
-    float m_fClientDisconnectTimeout;
     
     void handlePacketFromNewClient(InputMemoryBitStream& inInputStream, SocketAddress* inFromAddress);
     
@@ -71,7 +76,7 @@ private:
     void handleClientDisconnected(ClientProxy* inClientProxy);
     
     // ctor, copy ctor, and assignment should be private in a Singleton
-    NetworkManagerServer();
+    NetworkManagerServer(uint16_t inPort, HandleNewClientFunc handleNewClientFunc, HandleLostClientFunc handleLostClientFunc, InputStateCreationFunc inputStateCreationFunc);
     virtual ~NetworkManagerServer();
     NetworkManagerServer(const NetworkManagerServer&);
     NetworkManagerServer& operator=(const NetworkManagerServer&);

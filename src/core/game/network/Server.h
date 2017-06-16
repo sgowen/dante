@@ -30,19 +30,14 @@ public:
     
     static void staticRemoveEntity(Entity* inEntity);
     
-    int run();
-    
     void update(float deltaTime);
-    
-    bool isInitialized();
 
 private:
-    static Server* s_pInstance;
+    static Server* s_instance;
     
     float m_fStateTime;
     float m_fFrameStateTime;
     float m_fStateTimeNoEnemies;
-    bool m_isInitialized;
     
     void handleNewClient(ClientProxy* inClientProxy);
     

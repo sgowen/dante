@@ -59,7 +59,17 @@ void EntityManager::removeEntity(Entity* inEntity)
 
 void EntityManager::reset()
 {
-    m_entityMap.clear();
+    for (std::unordered_map<int, Entity*>::iterator i = m_entityMap.begin(); i != m_entityMap.end(); )
+    {
+        if (m_isInitialized)
+        {
+            m_handleEntityDeletion(i->second);
+        }
+        
+        delete i->second;
+        
+        i = m_entityMap.erase(i);
+    }
 }
 
 std::unordered_map<int, Entity*>& EntityManager::getMap()

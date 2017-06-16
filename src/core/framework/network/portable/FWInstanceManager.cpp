@@ -10,7 +10,20 @@
 
 #include "FWInstanceManager.h"
 
+#include "EntityRegistry.h"
 #include "EntityManager.h"
+
+EntityRegistry* FWInstanceManager::getClientEntityRegistry()
+{
+    static EntityRegistry instance = EntityRegistry();
+    return &instance;
+}
+
+EntityRegistry* FWInstanceManager::getServerEntityRegistry()
+{
+    static EntityRegistry instance = EntityRegistry();
+    return &instance;
+}
 
 EntityManager* FWInstanceManager::getClientEntityManager()
 {

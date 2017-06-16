@@ -20,7 +20,7 @@
 
 #include <cassert>
 
-ReplicationManagerClient::ReplicationManagerClient(EntityRegistry* entityRegistry) : m_entityRegistry(entityRegistry)
+ReplicationManagerClient::ReplicationManagerClient()
 {
     // Empty
 }
@@ -62,7 +62,7 @@ void ReplicationManagerClient::readAndDoCreateAction(InputMemoryBitStream& inInp
     if (!gameObject)
     {
         //create the object and map it...
-        gameObject = m_entityRegistry->createEntity(fourCCName);
+        gameObject = FWInstanceManager::getClientEntityRegistry()->createEntity(fourCCName);
         gameObject->setID(inNetworkId);
         
         FWInstanceManager::getClientEntityManager()->registerEntity(gameObject);

@@ -9,15 +9,11 @@
 #ifndef __noctisgames__InstanceManager__
 #define __noctisgames__InstanceManager__
 
-class EntityRegistry;
 class World;
 
 class InstanceManager
 {
 public:
-    static EntityRegistry* getClientEntityRegistry();
-    static EntityRegistry* getServerEntityRegistry();
-    
     static World* getClientWorld();
     static World* getServerWorld();
     

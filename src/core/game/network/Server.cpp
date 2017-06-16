@@ -30,26 +30,26 @@
 #include <ctime> // rand
 #include <assert.h>
 
-Server* Server::s_pInstance = nullptr;
+Server* Server::s_instance = nullptr;
 
 void Server::create()
 {
-    assert(!s_pInstance);
+    assert(!s_instance);
     
-    s_pInstance = new Server();
+    s_instance = new Server();
 }
 
 void Server::destroy()
 {
-    assert(s_pInstance);
+    assert(s_instance);
     
-    delete s_pInstance;
-    s_pInstance = nullptr;
+    delete s_instance;
+    s_instance = nullptr;
 }
 
 Server * Server::getInstance()
 {
-    return s_pInstance;
+    return s_instance;
 }
 
 void Server::staticHandleNewClient(ClientProxy* inClientProxy)
@@ -72,38 +72,6 @@ void Server::staticRemoveEntity(Entity* inEntity)
     InstanceManager::getServerWorld()->removeEntity(inEntity);
 }
 
-int Server::run()
-{
-    while (true)
-    {
-        Timing::getInstance()->update();
-        
-        m_fFrameStateTime += Timing::getInstance()->getDeltaTime();
-        
-        if (m_fFrameStateTime >= FRAME_RATE)
-        {
-            Timing::getInstance()->setDeltaTime(FRAME_RATE);
-            
-            NetworkManagerServer::getInstance()->processIncomingPackets();
-            
-            NetworkManagerServer::getInstance()->checkForDisconnects();
-            
-            while (m_fFrameStateTime >= FRAME_RATE)
-            {
-                m_fFrameStateTime -= FRAME_RATE;
-                
-                InstanceManager::getServerWorld()->update();
-                
-                respawnEnemiesIfNecessary();
-            }
-            
-            NetworkManagerServer::getInstance()->sendOutgoingPackets();
-        }
-    }
-    
-    return 1;
-}
-
 void Server::update(float deltaTime)
 {
     m_fStateTime += deltaTime;
@@ -113,9 +81,9 @@ void Server::update(float deltaTime)
     {
         Timing::getInstance()->updateManual(m_fStateTime, FRAME_RATE);
         
-        NetworkManagerServer::getInstance()->processIncomingPackets();
+        NG_SERVER->processIncomingPackets();
         
-        NetworkManagerServer::getInstance()->checkForDisconnects();
+        NG_SERVER->checkForDisconnects();
         
         while (m_fFrameStateTime >= FRAME_RATE)
         {
@@ -126,13 +94,8 @@ void Server::update(float deltaTime)
             respawnEnemiesIfNecessary();
         }
         
-        NetworkManagerServer::getInstance()->sendOutgoingPackets();
+        NG_SERVER->sendOutgoingPackets();
     }
-}
-
-bool Server::isInitialized()
-{
-    return m_isInitialized;
 }
 
 void Server::handleNewClient(ClientProxy* inClientProxy)
@@ -141,7 +104,7 @@ void Server::handleNewClient(ClientProxy* inClientProxy)
     
     spawnRobotForPlayer(playerId);
     
-    if (NetworkManagerServer::getInstance()->getNumClientsConnected() == 1)
+    if (NG_SERVER->getNumClientsConnected() == 1)
     {
         // This is our first client!
         // Let's spawn some nasty stuff for it to fight!
@@ -165,7 +128,7 @@ void Server::handleLostClient(ClientProxy* inClientProxy)
 
 void Server::spawnRobotForPlayer(int inPlayerId)
 {
-    Robot* robot = static_cast<Robot*>(InstanceManager::getServerEntityRegistry()->createEntity(NETWORK_TYPE_Robot));
+    Robot* robot = static_cast<Robot*>(FWInstanceManager::getServerEntityRegistry()->createEntity(NETWORK_TYPE_Robot));
     robot->setPlayerId(inPlayerId);
     robot->setPosition(Vector2(8.f - static_cast<float>(inPlayerId), 7.0f));
     
@@ -204,7 +167,7 @@ void Server::respawnEnemiesIfNecessary()
             
             for (int i = 0; i < numSpacePirates; ++i)
             {
-                SpacePirate* spacePirate = static_cast<SpacePirate*>(InstanceManager::getServerEntityRegistry()->createEntity(NETWORK_TYPE_SpacePirate));
+                SpacePirate* spacePirate = static_cast<SpacePirate*>(FWInstanceManager::getServerEntityRegistry()->createEntity(NETWORK_TYPE_SpacePirate));
                 float speed = (rand() % 100) * 0.05f + 1.0f;
                 spacePirate->init(CAM_WIDTH - static_cast<float>(i), 7.0f, speed);
                 
@@ -229,20 +192,22 @@ void Server::respawnEnemiesIfNecessary()
     }
 }
 
-Server::Server() : m_fStateTime(0), m_fFrameStateTime(0), m_fStateTimeNoEnemies(0), m_isInitialized(false)
+Server::Server() : m_fStateTime(0), m_fFrameStateTime(0), m_fStateTimeNoEnemies(0)
 {
     FWInstanceManager::getServerEntityManager()->init(Server::staticRemoveEntity);
     
-    InstanceManager::getServerEntityRegistry()->init(Server::staticAddEntity);
+    FWInstanceManager::getServerEntityRegistry()->init(Server::staticAddEntity);
     
-    InstanceManager::getServerEntityRegistry()->registerCreationFunction(NETWORK_TYPE_Robot, Robot::staticCreateServer);
-    InstanceManager::getServerEntityRegistry()->registerCreationFunction(NETWORK_TYPE_Projectile, Projectile::staticCreateServer);
-    InstanceManager::getServerEntityRegistry()->registerCreationFunction(NETWORK_TYPE_SpacePirate, SpacePirate::staticCreateServer);
+    FWInstanceManager::getServerEntityRegistry()->registerCreationFunction(NETWORK_TYPE_Robot, Robot::staticCreateServer);
+    FWInstanceManager::getServerEntityRegistry()->registerCreationFunction(NETWORK_TYPE_Projectile, Projectile::staticCreateServer);
+    FWInstanceManager::getServerEntityRegistry()->registerCreationFunction(NETWORK_TYPE_SpacePirate, SpacePirate::staticCreateServer);
     
-    m_isInitialized = NetworkManagerServer::getInstance()->init(9999, Server::staticHandleNewClient, Server::staticHandleLostClient, PooledObjectsManager::borrowInputState);
+    NetworkManagerServer::create(9999, Server::staticHandleNewClient, Server::staticHandleLostClient, PooledObjectsManager::borrowInputState);
 }
 
 Server::~Server()
 {
-    // Empty
+    NetworkManagerServer::destroy();
+    
+    FWInstanceManager::getServerEntityManager()->reset();
 }

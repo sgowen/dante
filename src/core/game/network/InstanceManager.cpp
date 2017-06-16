@@ -10,20 +10,7 @@
 
 #include "InstanceManager.h"
 
-#include "EntityRegistry.h"
 #include "World.h"
-
-EntityRegistry* InstanceManager::getClientEntityRegistry()
-{
-    static EntityRegistry instance = EntityRegistry();
-    return &instance;
-}
-
-EntityRegistry* InstanceManager::getServerEntityRegistry()
-{
-    static EntityRegistry instance = EntityRegistry();
-    return &instance;
-}
 
 World* InstanceManager::getClientWorld()
 {

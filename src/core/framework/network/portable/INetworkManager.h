@@ -32,8 +32,6 @@ public:
     static const uint32_t kInputCC = 'INPT';
     static const int kMaxPacketsPerFrameCount = 10;
     
-    bool init(uint16_t inPort);
-    
     void processIncomingPackets();
     
     virtual void sendOutgoingPackets() = 0;
@@ -43,8 +41,6 @@ public:
     const WeightedTimedMovingAverage& getBytesSentPerSecond() const;
     
 protected:
-    bool m_isInitialized;
-    
     virtual void processPacket(InputMemoryBitStream& inInputStream, SocketAddress* inFromAddress) = 0;
     
     virtual void handleConnectionReset(SocketAddress* inFromAddress);
@@ -52,7 +48,7 @@ protected:
     void sendPacket(const OutputMemoryBitStream& inOutputStream, IMachineAddress* inFromAddress);
     
     // ctor, copy ctor, and assignment should be private in a Singleton
-    INetworkManager();
+    INetworkManager(uint16_t inPort);
     virtual ~INetworkManager();
     INetworkManager(const INetworkManager&);
     INetworkManager& operator=(const INetworkManager&);

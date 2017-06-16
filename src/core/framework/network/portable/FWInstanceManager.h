@@ -9,11 +9,15 @@
 #ifndef __noctisgames__FWInstanceManager__
 #define __noctisgames__FWInstanceManager__
 
+class EntityRegistry;
 class EntityManager;
 
 class FWInstanceManager
 {
 public:
+    static EntityRegistry* getClientEntityRegistry();
+    static EntityRegistry* getServerEntityRegistry();
+    
     static EntityManager* getClientEntityManager();
     static EntityManager* getServerEntityManager();
     

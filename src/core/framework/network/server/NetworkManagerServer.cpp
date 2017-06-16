@@ -21,11 +21,32 @@
 #include "OutputMemoryBitStream.h"
 #include "StringUtil.h"
 #include "FWInstanceManager.h"
+#include "NGSTDUtil.h"
 
-NetworkManagerServer* NetworkManagerServer::getInstance()
+#include <assert.h>
+
+#define CLIENT_DISCONNECT_AFTER_X_SECONDS 3.0f
+
+NetworkManagerServer* NetworkManagerServer::s_instance = nullptr;
+
+void NetworkManagerServer::create(uint16_t inPort, HandleNewClientFunc handleNewClientFunc, HandleLostClientFunc handleLostClientFunc, InputStateCreationFunc inputStateCreationFunc)
 {
-    static NetworkManagerServer instance = NetworkManagerServer();
-    return &instance;
+    assert(!s_instance);
+    
+    s_instance = new NetworkManagerServer(inPort, handleNewClientFunc, handleLostClientFunc, inputStateCreationFunc);
+}
+
+void NetworkManagerServer::destroy()
+{
+    assert(s_instance);
+    
+    delete s_instance;
+    s_instance = nullptr;
+}
+
+NetworkManagerServer * NetworkManagerServer::getInstance()
+{
+    return s_instance;
 }
 
 void NetworkManagerServer::processPacket(InputMemoryBitStream& inInputStream, SocketAddress* inFromAddress)
@@ -57,15 +78,6 @@ void NetworkManagerServer::handleConnectionReset(SocketAddress* inFromAddress)
     }
 }
 
-bool NetworkManagerServer::init(uint16_t inPort, HandleNewClientFunc handleNewClientFunc, HandleLostClientFunc handleLostClientFunc, InputStateCreationFunc inputStateCreationFunc)
-{
-    m_handleNewClientFunc = handleNewClientFunc;
-    m_handleLostClientFunc = handleLostClientFunc;
-    m_inputStateCreationFunc = inputStateCreationFunc;
-    
-    return INetworkManager::init(inPort);
-}
-
 void NetworkManagerServer::sendOutgoingPackets()
 {
     //let's send a client a state packet whenever their move has come in...
@@ -86,7 +98,7 @@ void NetworkManagerServer::checkForDisconnects()
 {
     std::vector<ClientProxy*> clientsToDC;
     
-    float minAllowedLastPacketFromClientTime = Timing::getInstance()->getFrameStartTime() - m_fClientDisconnectTimeout;
+    float minAllowedLastPacketFromClientTime = Timing::getInstance()->getFrameStartTime() - CLIENT_DISCONNECT_AFTER_X_SECONDS;
     for (const auto& pair: m_addressHashToClientMap)
     {
         if (pair.second->getLastPacketFromClientTime() < minAllowedLastPacketFromClientTime)
@@ -293,12 +305,18 @@ void NetworkManagerServer::handleClientDisconnected(ClientProxy* inClientProxy)
     }
 }
 
-NetworkManagerServer::NetworkManagerServer() : INetworkManager(), m_iNewPlayerId(1), m_fClientDisconnectTimeout(3.f)
+NetworkManagerServer::NetworkManagerServer(uint16_t inPort, HandleNewClientFunc handleNewClientFunc, HandleLostClientFunc handleLostClientFunc, InputStateCreationFunc inputStateCreationFunc) : INetworkManager(inPort),
+m_handleNewClientFunc(handleNewClientFunc),
+m_handleLostClientFunc(handleLostClientFunc),
+m_inputStateCreationFunc(inputStateCreationFunc),
+m_iNewPlayerId(1)
 {
     // Empty
 }
 
 NetworkManagerServer::~NetworkManagerServer()
 {
-    // Empty
+    NGSTDUtil::cleanUpMapOfPointers(m_addressHashToClientMap);
+    
+    m_playerIDToClientMap.clear();
 }

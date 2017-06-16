@@ -28,7 +28,7 @@ void Util::playSound(int soundId, uint32_t playerId, Vector2& position, bool isS
     
     float volume = 1;
     
-    uint32_t clientPlayerId = NetworkManagerClient::getInstance()->getPlayerId();
+    uint32_t clientPlayerId = NG_CLIENT->getPlayerId();
     if (playerId != clientPlayerId)
     {
         Robot* playerRobot = InstanceManager::getClientWorld()->getRobotWithPlayerId(clientPlayerId);

@@ -25,7 +25,8 @@ typedef enum
     KeyboardEventType_J,
     KeyboardEventType_SPACE,
     KeyboardEventType_ENTER,
-    KeyboardEventType_BACK
+    KeyboardEventType_BACK,
+    KeyboardEventType_ESCAPE
 } KeyboardEventType;
 
 #endif /* defined(__noctisgames__KeyboardEventType__) */

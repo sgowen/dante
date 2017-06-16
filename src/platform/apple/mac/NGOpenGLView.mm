@@ -448,6 +448,17 @@ static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink,
                 default:
                     break;
             }
+            
+            unsigned short keyCode = [event keyCode];
+            
+            switch (keyCode)
+            {
+                case 53:
+                    KEYBOARD_INPUT_MANAGER->onInput(KeyboardEventType_ESCAPE, isUp);
+                    return;
+                default:
+                    break;
+            }
         }
     }
 }

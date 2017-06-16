@@ -25,7 +25,7 @@ public:
     
     void update();
     
-    void onConnected();
+    void setConnected(bool isConnected);
     
     InputState* getInputState();
     

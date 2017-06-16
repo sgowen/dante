@@ -21,42 +21,8 @@
 #include "SocketAddressFamily.h"
 #include "macros.h"
 
-bool INetworkManager::init(uint16_t inPort)
-{
-    if (!SOCKET_UTIL->init())
-    {
-        return false;
-    }
-    
-    m_socket = SOCKET_UTIL->createUDPSocket(INET);
-    SocketAddress ownAddress(INADDR_ANY, inPort);
-    m_socket->bindSocket(ownAddress);
-    
-    LOG("Initializing INetworkManager at port %hu", inPort);
-    
-    //did we bind okay?
-    if (m_socket == nullptr)
-    {
-        return false;
-    }
-    
-    if (m_socket->setNonBlockingMode(true) != NO_ERROR)
-    {
-        return false;
-    }
-    
-    m_isInitialized = true;
-    
-    return true;
-}
-
 void INetworkManager::processIncomingPackets()
 {
-    if (!m_isInitialized)
-    {
-        return;
-    }
-    
     readIncomingPacketsIntoQueue();
     
     processQueuedPackets();
@@ -92,14 +58,32 @@ void INetworkManager::sendPacket(const OutputMemoryBitStream& inOutputStream, IM
     }
 }
 
-INetworkManager::INetworkManager() :
+INetworkManager::INetworkManager(uint16_t inPort) :
 m_socket(nullptr),
 m_bytesReceivedPerSecond(new WeightedTimedMovingAverage(1.f)),
 m_bytesSentPerSecond(new WeightedTimedMovingAverage(1.f)),
-m_bytesSentThisFrame(0),
-m_isInitialized(false)
+m_bytesSentThisFrame(0)
 {
-    // Empty
+    if (!SOCKET_UTIL->init())
+    {
+        return;
+    }
+    
+    m_socket = SOCKET_UTIL->createUDPSocket(INET);
+    SocketAddress ownAddress(INADDR_ANY, inPort);
+    m_socket->bindSocket(ownAddress);
+    
+    LOG("Initializing INetworkManager at port %hu", inPort);
+    
+    if (m_socket == nullptr)
+    {
+        return;
+    }
+    
+    if (m_socket->setNonBlockingMode(true) != NO_ERROR)
+    {
+        return;
+    }
 }
 
 INetworkManager::~INetworkManager()
@@ -107,20 +91,11 @@ INetworkManager::~INetworkManager()
     if (m_socket)
     {
         delete m_socket;
+        m_socket = nullptr;
     }
     
     delete m_bytesReceivedPerSecond;
     delete m_bytesSentPerSecond;
-}
-
-void INetworkManager::updateBytesSentLastFrame()
-{
-    if (m_bytesSentThisFrame > 0)
-    {
-        m_bytesSentPerSecond->updatePerSecond(static_cast<float>(m_bytesSentThisFrame));
-        
-        m_bytesSentThisFrame = 0;
-    }
 }
 
 void INetworkManager::readIncomingPacketsIntoQueue()
@@ -189,6 +164,16 @@ void INetworkManager::processQueuedPackets()
         {
             break;
         }
+    }
+}
+
+void INetworkManager::updateBytesSentLastFrame()
+{
+    if (m_bytesSentThisFrame > 0)
+    {
+        m_bytesSentPerSecond->updatePerSecond(static_cast<float>(m_bytesSentThisFrame));
+        
+        m_bytesSentThisFrame = 0;
     }
 }
 

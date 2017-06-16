@@ -20,7 +20,8 @@ m_isJumping(false),
 m_isShooting(false),
 m_isSprinting(false),
 m_isStartingServer(false),
-m_isJoiningServer(false)
+m_isJoiningServer(false),
+m_isLeavingServer(false)
 {
     // Empty
 }
@@ -66,8 +67,6 @@ void InputState::copyTo(InputState* inInputState)
     inInputState->m_isJumping = m_isJumping;
     inInputState->m_isShooting = m_isShooting;
     inInputState->m_isSprinting = m_isSprinting;
-    inInputState->m_isStartingServer = m_isStartingServer;
-    inInputState->m_isJoiningServer = m_isJoiningServer;
 }
 
 float InputState::getDesiredHorizontalDelta() const
@@ -98,6 +97,11 @@ bool InputState::isStartingServer() const
 bool InputState::isJoiningServer() const
 {
     return m_isJoiningServer;
+}
+
+bool InputState::isLeavingServer() const
+{
+    return m_isLeavingServer;
 }
 
 RTTI_IMPL(InputState, IInputState);

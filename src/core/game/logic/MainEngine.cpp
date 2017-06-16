@@ -32,6 +32,7 @@
 #include "SpacePirate.h"
 #include "EntityRegistry.h"
 #include "NetworkManagerClient.h"
+#include "NetworkManagerServer.h"
 #include "SocketAddressFactory.h"
 #include "SocketUtil.h"
 #include "InputManager.h"
@@ -56,11 +57,8 @@ void MainEngine::staticRemoveEntity(Entity* inEntity)
 MainEngine::MainEngine() : IEngine(),
 m_config(new JsonFile("dante.cfg")),
 m_renderer(new MainRenderer(MAX_BATCH_SIZE)),
-m_touchPointDown(new Vector2()),
-m_touchPointDown2(new Vector2()),
 m_fStateTime(0),
-m_fFrameStateTime(0),
-m_isConnected(false)
+m_fFrameStateTime(0)
 {
     m_config->load();
     
@@ -72,10 +70,10 @@ m_isConnected(false)
     
     FWInstanceManager::getClientEntityManager()->init(MainEngine::staticRemoveEntity);
     
-    InstanceManager::getClientEntityRegistry()->init(MainEngine::staticAddEntity);
-    InstanceManager::getClientEntityRegistry()->registerCreationFunction(NETWORK_TYPE_Robot, Robot::staticCreateClient);
-    InstanceManager::getClientEntityRegistry()->registerCreationFunction(NETWORK_TYPE_Projectile, Projectile::staticCreateClient);
-    InstanceManager::getClientEntityRegistry()->registerCreationFunction(NETWORK_TYPE_SpacePirate, SpacePirate::staticCreateClient);
+    FWInstanceManager::getClientEntityRegistry()->init(MainEngine::staticAddEntity);
+    FWInstanceManager::getClientEntityRegistry()->registerCreationFunction(NETWORK_TYPE_Robot, Robot::staticCreateClient);
+    FWInstanceManager::getClientEntityRegistry()->registerCreationFunction(NETWORK_TYPE_Projectile, Projectile::staticCreateClient);
+    FWInstanceManager::getClientEntityRegistry()->registerCreationFunction(NETWORK_TYPE_SpacePirate, SpacePirate::staticCreateClient);
     
     NG_AUDIO_ENGINE->loadSound(SOUND_ID_ROBOT_JUMP, SOUND_ROBOT_JUMP, 4);
     NG_AUDIO_ENGINE->loadSound(SOUND_ID_EXPLOSION, SOUND_EXPLOSION, 8);
@@ -90,15 +88,10 @@ MainEngine::~MainEngine()
 {
     delete m_config;
     delete m_renderer;
-    delete m_touchPointDown;
-    delete m_touchPointDown2;
     
-    if (Server::getInstance())
-    {
-        Server::destroy();
-    }
+    leaveServer();
     
-    NG_STEAM_GAME_SERVICES->deinit();
+    //NG_STEAM_GAME_SERVICES->deinit();
 }
 
 void MainEngine::createDeviceDependentResources()
@@ -138,7 +131,10 @@ void MainEngine::update(float deltaTime)
     {
         Timing::getInstance()->updateManual(m_fStateTime, FRAME_RATE);
         
-        NetworkManagerClient::getInstance()->processIncomingPackets();
+        if (NG_CLIENT)
+        {
+            NG_CLIENT->processIncomingPackets();
+        }
         
         InputManager::getInstance()->update();
         
@@ -151,9 +147,17 @@ void MainEngine::update(float deltaTime)
             InstanceManager::getClientWorld()->update();
         }
         
-        NetworkManagerClient::getInstance()->sendOutgoingPackets();
-        
-        if (!m_isConnected)
+        if (NG_CLIENT)
+        {
+            NG_CLIENT->sendOutgoingPackets();
+            
+            InputState* inputState = InputManager::getInstance()->getInputState();
+            if (inputState->isLeavingServer())
+            {
+                leaveServer();
+            }
+        }
+        else
         {
             InputState* inputState = InputManager::getInstance()->getInputState();
             if (inputState->isStartingServer())
@@ -177,7 +181,7 @@ void MainEngine::render()
 {
     m_renderer->beginFrame();
     
-    m_renderer->tempDraw(m_isConnected ? 5 : Server::getInstance() ? 1 : 0);
+    m_renderer->tempDraw(NG_CLIENT ? 5 : Server::getInstance() ? 1 : 0);
     
     m_renderer->renderToScreen();
     
@@ -190,7 +194,7 @@ void MainEngine::startServer()
     {
         Server::create();
         
-        if (!Server::getInstance()->isInitialized())
+        if (!NG_SERVER)
         {
             Server::destroy();
         }
@@ -199,11 +203,25 @@ void MainEngine::startServer()
 
 void MainEngine::joinServer()
 {
-    m_isConnected = NetworkManagerClient::getInstance()->init(InstanceManager::getClientEntityRegistry(), "localhost:9999", "Noctis Games", FRAME_RATE, InputManager::staticRemoveProcessedMoves, InputManager::staticGetMoveList);
+    NetworkManagerClient::create("localhost:9999", "Noctis Games", FRAME_RATE, InputManager::staticRemoveProcessedMoves, InputManager::staticGetMoveList);
     
-    if (m_isConnected)
+    InputManager::getInstance()->setConnected(NG_CLIENT);
+}
+
+void MainEngine::leaveServer()
+{
+    if (NG_CLIENT)
     {
-        InputManager::getInstance()->onConnected();
+        NetworkManagerClient::destroy();
+        
+        FWInstanceManager::getClientEntityManager()->reset();
+    }
+    
+    InputManager::getInstance()->setConnected(NG_CLIENT);
+    
+    if (Server::getInstance())
+    {
+        Server::destroy();
     }
 }
 

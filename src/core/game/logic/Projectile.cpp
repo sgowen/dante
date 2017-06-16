@@ -48,7 +48,7 @@ void Projectile::onDeletion()
 {
     if (m_server)
     {
-        NetworkManagerServer::getInstance()->unregisterEntity(this);
+        NG_SERVER->unregisterEntity(this);
     }
 }
 
@@ -66,7 +66,7 @@ void Projectile::update()
             || oldState != m_state
             || old_isFacingLeft != m_isFacingLeft)
         {
-            NetworkManagerServer::getInstance()->setStateDirty(getID(), PRJC_Pose);
+            NG_SERVER->setStateDirty(getID(), PRJC_Pose);
         }
     }
     else
@@ -287,7 +287,7 @@ m_fTimePositionBecameOutOfSync(0.0f)
 {
     if (m_server)
     {
-        NetworkManagerServer::getInstance()->registerEntity(this);
+        NG_SERVER->registerEntity(this);
     }
 }
 

@@ -80,10 +80,13 @@ void InputManager::update()
                 }
                 continue;
             case KeyboardEventType_S:
-                m_currentState->m_isStartingServer = (*i)->isDown();
+                m_currentState->m_isStartingServer = (*i)->isDown() && !(*i)->isHeld();
                 continue;
             case KeyboardEventType_J:
-                m_currentState->m_isJoiningServer = (*i)->isDown();
+                m_currentState->m_isJoiningServer = (*i)->isDown() && !(*i)->isHeld();
+                continue;
+            case KeyboardEventType_ESCAPE:
+                m_currentState->m_isLeavingServer = (*i)->isDown() && !(*i)->isHeld();
                 continue;
             default:
                 continue;
@@ -95,6 +98,7 @@ void InputManager::update()
         switch ((*i)->getType())
         {
             case GamePadEventType_D_PAD_UP:
+            case GamePadEventType_A_BUTTON:
                 m_currentState->m_isJumping = (*i)->isPressed();
                 continue;
             case GamePadEventType_D_PAD_LEFT:
@@ -103,11 +107,14 @@ void InputManager::update()
             case GamePadEventType_D_PAD_RIGHT:
                 m_currentState->m_fDesiredRightAmount = (*i)->isPressed() ? 1 : 0;
                 continue;
+            case GamePadEventType_STICK_LEFT:
+                m_currentState->m_fDesiredRightAmount = (*i)->getX();
+                continue;
             case GamePadEventType_BUMPER_RIGHT:
             case GamePadEventType_BUMPER_LEFT:
                 m_currentState->m_isSprinting = (*i)->isPressed();
                 continue;
-            case GamePadEventType_A_BUTTON:
+            case GamePadEventType_X_BUTTON:
                 m_currentState->m_isShooting = (*i)->isPressed();
                 continue;
             case GamePadEventType_Y_BUTTON:
@@ -124,10 +131,13 @@ void InputManager::update()
                 }
                 continue;
             case GamePadEventType_START_BUTTON:
-                m_currentState->m_isStartingServer = (*i)->isPressed();
+                m_currentState->m_isJoiningServer = (*i)->isPressed();
                 continue;
             case GamePadEventType_BACK_BUTTON:
-                m_currentState->m_isJoiningServer = (*i)->isPressed();
+                m_currentState->m_isStartingServer = (*i)->isPressed();
+                continue;
+            case GamePadEventType_B_BUTTON:
+                m_currentState->m_isLeavingServer = (*i)->isPressed();
                 continue;
             default:
                 continue;
@@ -140,9 +150,14 @@ void InputManager::update()
     }
 }
 
-void InputManager::onConnected()
+void InputManager::setConnected(bool isConnected)
 {
-    m_isConnected = true;
+    m_isConnected = isConnected;
+    
+    if (!m_isConnected)
+    {
+        m_moveList.clear();
+    }
 }
 
 InputState* InputManager::getInputState()

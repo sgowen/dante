@@ -23,10 +23,28 @@
 #include "SocketAddressFactory.h"
 #include "FWInstanceManager.h"
 
-NetworkManagerClient* NetworkManagerClient::getInstance()
+#include <assert.h>
+
+NetworkManagerClient* NetworkManagerClient::s_instance = nullptr;
+
+void NetworkManagerClient::create(const std::string& inServerIPAddress, const std::string& inName, float inFrameRate, RemoveProcessedMovesFunc removeProcessedMovesFunc, GetMoveListFunc getMoveListFunc)
 {
-    static NetworkManagerClient instance = NetworkManagerClient();
-    return &instance;
+    assert(!s_instance);
+    
+    s_instance = new NetworkManagerClient(inServerIPAddress, inName, inFrameRate, removeProcessedMovesFunc, getMoveListFunc);
+}
+
+void NetworkManagerClient::destroy()
+{
+    assert(s_instance);
+    
+    delete s_instance;
+    s_instance = nullptr;
+}
+
+NetworkManagerClient * NetworkManagerClient::getInstance()
+{
+    return s_instance;
 }
 
 void NetworkManagerClient::processPacket(InputMemoryBitStream& inInputStream, SocketAddress* inFromAddress)
@@ -48,35 +66,8 @@ void NetworkManagerClient::processPacket(InputMemoryBitStream& inInputStream, So
     }
 }
 
-bool NetworkManagerClient::init(EntityRegistry* entityRegistry, const std::string& inServerIPAddress, const std::string& inName, float inFrameRate, RemoveProcessedMovesFunc removeProcessedMovesFunc, GetMoveListFunc getMoveListFunc)
-{
-    m_entityRegistry = entityRegistry;
-    m_removeProcessedMovesFunc = removeProcessedMovesFunc;
-    m_getMoveListFunc = getMoveListFunc;
-    m_replicationManagerClient = new ReplicationManagerClient(m_entityRegistry);
-    m_serverAddress = SocketAddressFactory::createIPv4FromString(inServerIPAddress);
-    m_state = NCS_SayingHello;
-    m_fTimeOfLastHello = 0.f;
-    m_name = inName;
-    m_fFrameRate = inFrameRate;
-    
-    // This allows us to run both a debug and a release client on the same machine
-#if defined(DEBUG) || defined(_DEBUG)
-    uint16_t port = 1339;
-#else
-    uint16_t port = 1337;
-#endif
-    
-    return INetworkManager::init(port);
-}
-
 void NetworkManagerClient::sendOutgoingPackets()
 {
-    if (!m_isInitialized)
-    {
-        return;
-    }
-    
     switch (m_state)
     {
         case NCS_SayingHello:
@@ -105,16 +96,11 @@ int NetworkManagerClient::getPlayerId() const
     return m_iPlayerId;
 }
 
-float NetworkManagerClient::getLastMoveProcessedByServerTimestamp() const
-{
-    return m_fLastMoveProcessedByServerTimestamp;
-}
-
 void NetworkManagerClient::updateSayingHello()
 {
     float time = Timing::getInstance()->getFrameStartTime();
     
-    static const float kTimeBetweenHellos = 1.f;
+    static const float kTimeBetweenHellos = 1.0f;
     
     if (time > m_fTimeOfLastHello + kTimeBetweenHellos)
     {
@@ -167,7 +153,6 @@ void NetworkManagerClient::readLastMoveProcessedOnServerTimestamp(InputMemoryBit
         inInputStream.read(m_fLastMoveProcessedByServerTimestamp);
         
         float rtt = Timing::getInstance()->getFrameStartTime() - m_fLastMoveProcessedByServerTimestamp;
-        m_fLastRoundTripTime = rtt;
         m_avgRoundTripTime->update(rtt);
         
         m_removeProcessedMovesFunc(m_fLastMoveProcessedByServerTimestamp);
@@ -198,7 +183,7 @@ void NetworkManagerClient::handleEntityState(InputMemoryBitStream& inInputStream
             //didn't find it, better create it!
             if (itGO == entityManager->getMap().end())
             {
-                go = m_entityRegistry->createEntity(fourCC);
+                go = FWInstanceManager::getClientEntityRegistry()->createEntity(fourCC);
                 go->setID(networkId);
                 entityManager->registerEntity(go);
             }
@@ -276,27 +261,31 @@ void NetworkManagerClient::sendInputPacket()
     }
 }
 
-NetworkManagerClient::NetworkManagerClient() : INetworkManager(),
-m_serverAddress(nullptr),
+NetworkManagerClient::NetworkManagerClient(const std::string& inServerIPAddress, const std::string& inName, float inFrameRate, RemoveProcessedMovesFunc removeProcessedMovesFunc, GetMoveListFunc getMoveListFunc) :
+// This allows us to run both a debug and a release client on the same machine
+#if defined(DEBUG) || defined(_DEBUG)
+INetworkManager(1339),
+#else
+INetworkManager(1337),
+#endif
+m_removeProcessedMovesFunc(removeProcessedMovesFunc),
+m_getMoveListFunc(getMoveListFunc),
+m_replicationManagerClient(new ReplicationManagerClient()),
 m_avgRoundTripTime(new WeightedTimedMovingAverage(1.f)),
-m_state(NCS_Uninitialized),
-m_deliveryNotificationManager(true, false),
-m_fLastRoundTripTime(0.f)
+m_serverAddress(SocketAddressFactory::createIPv4FromString(inServerIPAddress)),
+m_state(NCS_SayingHello),
+m_deliveryNotificationManager(DeliveryNotificationManager(true, false)),
+m_fTimeOfLastHello(0.0f),
+m_fTimeOfLastInputPacket(0.0f),
+m_name(inName),
+m_fFrameRate(inFrameRate)
 {
     // Empty
 }
 
 NetworkManagerClient::~NetworkManagerClient()
 {
-    if (m_serverAddress)
-    {
-        delete m_serverAddress;
-    }
-    
-    if (m_replicationManagerClient)
-    {
-        delete m_replicationManagerClient;
-    }
-    
+    delete m_replicationManagerClient;
+    delete m_serverAddress;
     delete m_avgRoundTripTime;
 }

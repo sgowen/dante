@@ -45,7 +45,7 @@ void SpacePirate::onDeletion()
 {
     if (m_server)
     {
-        NetworkManagerServer::getInstance()->unregisterEntity(this);
+        NG_SERVER->unregisterEntity(this);
     }
 }
 
@@ -69,7 +69,7 @@ void SpacePirate::update()
             || old_isGrounded != m_isGrounded
             || old_isFalling != m_isFalling)
         {
-            NetworkManagerServer::getInstance()->setStateDirty(getID(), SPCP_Pose);
+            NG_SERVER->setStateDirty(getID(), SPCP_Pose);
         }
     }
     else
@@ -196,7 +196,7 @@ void SpacePirate::takeDamage()
     }
     
     // tell the world our health dropped
-    NetworkManagerServer::getInstance()->setStateDirty(getID(), SPCP_Health);
+    NG_SERVER->setStateDirty(getID(), SPCP_Health);
 }
 
 float SpacePirate::getSpeed()
@@ -306,7 +306,7 @@ m_fRobotRestitution(0.1f)
     
     if (m_server)
     {
-        NetworkManagerServer::getInstance()->registerEntity(this);
+        NG_SERVER->registerEntity(this);
     }
 }
 

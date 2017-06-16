@@ -19,17 +19,21 @@ class Entity;
 class MoveList;
 class ReplicationManagerClient;
 
+#define NG_CLIENT (NetworkManagerClient::getInstance())
+
 typedef void (*RemoveProcessedMovesFunc)(float lastMoveProcessedByServerTimestamp);
 typedef MoveList& (*GetMoveListFunc)();
 
 class NetworkManagerClient : public INetworkManager
 {
 public:
+    static void create(const std::string& inServerIPAddress, const std::string& inName, float inFrameRate, RemoveProcessedMovesFunc removeProcessedMovesFunc, GetMoveListFunc getMoveListFunc);
+    
+    static void destroy();
+    
     static NetworkManagerClient* getInstance();
     
     virtual void processPacket(InputMemoryBitStream& inInputStream, SocketAddress* inFromAddress) override;
-    
-    bool init(EntityRegistry* entityRegistry, const std::string& inServerIPAddress, const std::string& inName, float inFrameRate, RemoveProcessedMovesFunc removeProcessedMovesFunc, GetMoveListFunc getMoveListFunc);
     
     virtual void sendOutgoingPackets();
     
@@ -39,9 +43,9 @@ public:
     
     int getPlayerId() const;
     
-    float getLastMoveProcessedByServerTimestamp() const;
-    
 private:
+    static NetworkManagerClient* s_instance;
+    
     enum NetworkClientState
     {
         NCS_Uninitialized,
@@ -49,7 +53,6 @@ private:
         NCS_Welcomed
     };
     
-    EntityRegistry* m_entityRegistry;
     RemoveProcessedMovesFunc m_removeProcessedMovesFunc;
     GetMoveListFunc m_getMoveListFunc;
     
@@ -70,7 +73,6 @@ private:
     float m_fLastMoveProcessedByServerTimestamp;
     
     WeightedTimedMovingAverage* m_avgRoundTripTime;
-    float m_fLastRoundTripTime;
     
     void updateSayingHello();
     
@@ -91,7 +93,7 @@ private:
     void destroyAllInMap(const std::unordered_map<int, Entity*>& inObjectsToDestroy);
     
     // ctor, copy ctor, and assignment should be private in a Singleton
-    NetworkManagerClient();
+    NetworkManagerClient(const std::string& inServerIPAddress, const std::string& inName, float inFrameRate, RemoveProcessedMovesFunc removeProcessedMovesFunc, GetMoveListFunc getMoveListFunc);
     virtual ~NetworkManagerClient();
     NetworkManagerClient(const NetworkManagerClient&);
     NetworkManagerClient& operator=(const NetworkManagerClient&);

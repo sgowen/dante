@@ -130,6 +130,7 @@ void MainRenderer::tempDraw(int engineState)
         {
             renderRoundTripTime();
             renderBandWidth();
+            renderServerJoinedInstructions();
         }
         else if (engineState == 1)
         {
@@ -143,9 +144,20 @@ void MainRenderer::tempDraw(int engineState)
     }
 }
 
+void MainRenderer::renderServerJoinedInstructions()
+{
+    static Vector2 origin = Vector2(CAM_WIDTH / 2, CAM_HEIGHT - 2);
+    
+    std::string roundTripTime = std::string("Server joined, 'ESC' to exit");
+    
+    static Color c = Color(0.0f, 0.0f, 0.0f, 1.0f);
+    
+    renderText(roundTripTime, origin, c);
+}
+
 void MainRenderer::renderServerStartedInstructions()
 {
-    static Vector2 origin = Vector2(CAM_WIDTH / 2, CAM_HEIGHT - 4);
+    static Vector2 origin = Vector2(CAM_WIDTH / 2, CAM_HEIGHT - 2);
     
     std::string roundTripTime = std::string("Server started, 'J' to join it");
     
@@ -156,7 +168,7 @@ void MainRenderer::renderServerStartedInstructions()
 
 void MainRenderer::renderInstructions()
 {
-    static Vector2 origin = Vector2(CAM_WIDTH / 2, CAM_HEIGHT - 4);
+    static Vector2 origin = Vector2(CAM_WIDTH / 2, CAM_HEIGHT - 2);
     
     std::string roundTripTime = std::string("'S' to start server, 'J' to join first available");
     
@@ -169,7 +181,7 @@ void MainRenderer::renderRoundTripTime()
 {
     static Vector2 origin = Vector2(CAM_WIDTH / 2, CAM_HEIGHT - 0.5);
     
-    float rttMS = NetworkManagerClient::getInstance()->getAvgRoundTripTime().getValue() * 1000.f;
+    float rttMS = NG_CLIENT->getAvgRoundTripTime().getValue() * 1000.f;
     
     std::string roundTripTime = StringUtil::format("RTT %d ms", (int) rttMS);
     
@@ -182,10 +194,10 @@ void MainRenderer::renderBandWidth()
 {
     static Vector2 origin = Vector2(CAM_WIDTH / 2, CAM_HEIGHT - 1);
     
-    const WeightedTimedMovingAverage& bpsIn = NetworkManagerClient::getInstance()->getBytesReceivedPerSecond();
+    const WeightedTimedMovingAverage& bpsIn = NG_CLIENT->getBytesReceivedPerSecond();
     int bpsInInt = static_cast< int >(bpsIn.getValue());
     
-    const WeightedTimedMovingAverage& bpsOut = NetworkManagerClient::getInstance()->getBytesSentPerSecond();
+    const WeightedTimedMovingAverage& bpsOut = NG_CLIENT->getBytesSentPerSecond();
     int bpsOutInt = static_cast< int >(bpsOut.getValue());
     
     std::string bandwidth = StringUtil::format("In %d Bps, Out %d Bps", bpsInInt, bpsOutInt);

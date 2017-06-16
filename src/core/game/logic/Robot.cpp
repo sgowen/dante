@@ -33,6 +33,7 @@
 #include "InputManager.h"
 #include "NGAudioEngine.h"
 #include "InstanceManager.h"
+#include "FWInstanceManager.h"
 #include "Util.h"
 
 #include <math.h>
@@ -51,11 +52,11 @@ void Robot::onDeletion()
 {
     if (m_server)
     {
-        NetworkManagerServer::getInstance()->unregisterEntity(this);
+        NG_SERVER->unregisterEntity(this);
     }
     else
     {
-        if (getPlayerId() == NetworkManagerClient::getInstance()->getPlayerId())
+        if (getPlayerId() == NG_CLIENT->getPlayerId())
         {
             // This robot is the current local player, so let's display something like "Respawning in 5, 4, 3..."
             playSound(SOUND_ID_DEATH);
@@ -78,7 +79,7 @@ void Robot::update()
         bool old_isSprinting = m_isSprinting;
         
         // is there a move we haven't processed yet?
-        ClientProxy* client = NetworkManagerServer::getInstance()->getClientProxy(getPlayerId());
+        ClientProxy* client = NG_SERVER->getClientProxy(getPlayerId());
         if (client)
         {
             MoveList& moveList = client->getUnprocessedMoveList();
@@ -102,13 +103,13 @@ void Robot::update()
             || old_isJumping != m_isJumping
             || old_isSprinting != m_isSprinting)
         {
-            NetworkManagerServer::getInstance()->setStateDirty(getID(), ROBT_Pose);
+            NG_SERVER->setStateDirty(getID(), ROBT_Pose);
         }
     }
     else
     {
         // TODO, allow for multiple client inputs
-        if (getPlayerId() == NetworkManagerClient::getInstance()->getPlayerId())
+        if (getPlayerId() == NG_CLIENT->getPlayerId())
         {
             const Move* pendingMove = InputManager::getInstance()->getAndClearPendingMove();
             if (pendingMove)
@@ -186,7 +187,7 @@ void Robot::read(InputMemoryBitStream& inInputStream)
         readState |= ROBT_Health;
     }
     
-    if (getPlayerId() == NetworkManagerClient::getInstance()->getPlayerId())
+    if (getPlayerId() == NG_CLIENT->getPlayerId())
     {
         doClientSidePredictionForLocalRobot(readState);
         
@@ -300,13 +301,13 @@ void Robot::takeDamage()
         {
             requestDeletion();
             
-            ClientProxy* clientProxy = NetworkManagerServer::getInstance()->getClientProxy(getPlayerId());
+            ClientProxy* clientProxy = NG_SERVER->getClientProxy(getPlayerId());
             
             Server::staticHandleNewClient(clientProxy);
         }
         
         // tell the world our health dropped
-        NetworkManagerServer::getInstance()->setStateDirty(getID(), ROBT_Health);
+        NG_SERVER->setStateDirty(getID(), ROBT_Health);
     }
 }
 
@@ -526,7 +527,7 @@ void Robot::handleShooting()
         m_fTimeOfNextShot = time + 0.25f;
         
         //fire!
-        Projectile* projectile = static_cast<Projectile*>(InstanceManager::getServerEntityRegistry()->createEntity(NETWORK_TYPE_Projectile));
+        Projectile* projectile = static_cast<Projectile*>(FWInstanceManager::getServerEntityRegistry()->createEntity(NETWORK_TYPE_Projectile));
         projectile->initFromShooter(this);
     }
 }
@@ -559,7 +560,7 @@ void Robot::doClientSidePredictionForRemoteRobot(uint32_t inReadState)
     if ((inReadState & ROBT_Pose) != 0)
     {
         // simulate movement for an additional RTT
-        float rtt = NetworkManagerClient::getInstance()->getRoundTripTime();
+        float rtt = NG_CLIENT->getRoundTripTime();
         
         // let's break into framerate sized chunks so we don't run through walls and do crazy things...
         while (true)
@@ -587,7 +588,7 @@ void Robot::interpolateClientSidePrediction(float& inOldStateTime, Vector2& inOl
 
 void Robot::interpolateVectorsIfNecessary(Vector2& inA, Vector2& inB, float& syncTracker, const char* vectorType)
 {
-    float roundTripTime = NetworkManagerClient::getInstance()->getRoundTripTime();
+    float roundTripTime = NG_CLIENT->getRoundTripTime();
     
     if (!inA.isEqualTo(inB))
     {
@@ -640,7 +641,7 @@ m_iPlayerId(0)
     
     if (m_server)
     {
-        NetworkManagerServer::getInstance()->registerEntity(this);
+        NG_SERVER->registerEntity(this);
     }
 }
 

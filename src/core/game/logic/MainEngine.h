@@ -49,16 +49,15 @@ public:
 private:
     JsonFile* m_config;
     MainRenderer* m_renderer;
-    Vector2* m_touchPointDown;
-    Vector2* m_touchPointDown2;
     
     float m_fStateTime;
     float m_fFrameStateTime;
-    bool m_isConnected;
     
     void startServer();
     
     void joinServer();
+    
+    void leaveServer();
 };
 
 #endif /* defined(__dante__MainEngine__) */

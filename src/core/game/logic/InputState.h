@@ -46,6 +46,8 @@ public:
     
     bool isJoiningServer() const;
     
+    bool isLeavingServer() const;
+    
 private:
     friend class InputManager;
     
@@ -56,6 +58,7 @@ private:
     bool m_isSprinting;
     bool m_isStartingServer;
     bool m_isJoiningServer;
+    bool m_isLeavingServer;
 };
 
 #endif /* defined(__noctisgames__InputState__) */
