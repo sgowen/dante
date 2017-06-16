@@ -12,6 +12,7 @@
 #include "INetworkManager.h"
 
 #include "ClientProxy.h"
+#include "IMachineAddress.h"
 
 class IInputState;
 
@@ -24,9 +25,9 @@ class NetworkManagerServer : public INetworkManager
 public:
     static NetworkManagerServer* getInstance();
     
-    virtual void processPacket(InputMemoryBitStream& inInputStream, const SocketAddress& inFromAddress) override;
+    virtual void processPacket(InputMemoryBitStream& inInputStream, SocketAddress* inFromAddress) override;
     
-    virtual void handleConnectionReset(const SocketAddress& inFromAddress) override;
+    virtual void handleConnectionReset(SocketAddress* inFromAddress) override;
     
     bool init(uint16_t inPort, HandleEntityDeletionFunc handleEntityDeletion, HandleNewClientFunc handleNewClientFunc, HandleLostClientFunc handleLostClientFunc, InputStateCreationFunc inputStateCreationFunc);
     
@@ -49,13 +50,13 @@ private:
     HandleLostClientFunc m_handleLostClientFunc;
     InputStateCreationFunc m_inputStateCreationFunc;
     
-    std::unordered_map<SocketAddress, ClientProxy*> m_addressToClientMap;
+    std::unordered_map<size_t, ClientProxy*> m_addressHashToClientMap;
     std::unordered_map<int, ClientProxy*> m_playerIDToClientMap;
     int m_iNewPlayerId;
     float m_fTimeOfLastSatePacket;
     float m_fClientDisconnectTimeout;
     
-    void handlePacketFromNewClient(InputMemoryBitStream& inInputStream, const SocketAddress& inFromAddress);
+    void handlePacketFromNewClient(InputMemoryBitStream& inInputStream, SocketAddress* inFromAddress);
     
     void processPacket(ClientProxy* inClientProxy, InputMemoryBitStream& inInputStream);
     

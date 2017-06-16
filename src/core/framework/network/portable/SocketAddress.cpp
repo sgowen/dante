@@ -14,19 +14,24 @@
 
 #include <cstring>	// memcpy()
 
-SocketAddress::SocketAddress(uint32_t inAddress, uint16_t inPort)
+SocketAddress::SocketAddress(uint32_t inAddress, uint16_t inPort) : IMachineAddress()
 {
     getAsSockAddrIn()->sin_family = AF_INET;
     getIP4Ref() = htonl(inAddress);
     getAsSockAddrIn()->sin_port = htons(inPort);
 }
 
-SocketAddress::SocketAddress(const sockaddr& inSockAddr)
+SocketAddress::SocketAddress(const sockaddr& inSockAddr) : IMachineAddress()
 {
     memcpy(&m_sockAddr, &inSockAddr, sizeof(sockaddr));
 }
 
-SocketAddress::SocketAddress()
+SocketAddress::SocketAddress(sockaddr& inSockAddr) : IMachineAddress()
+{
+    memcpy(&m_sockAddr, &inSockAddr, sizeof(sockaddr));
+}
+
+SocketAddress::SocketAddress() : IMachineAddress()
 {
     getAsSockAddrIn()->sin_family = AF_INET;
     getIP4Ref() = INADDR_ANY;
@@ -40,7 +45,7 @@ bool SocketAddress::operator==(const SocketAddress& inOther) const
 
 size_t SocketAddress::getHash() const
 {
-    return (getIP4Ref()) | ((static_cast<uint32_t>(getAsSockAddrIn()->sin_port)) << 13) | m_sockAddr.sa_family;
+    return (getIP4Ref()) | ((static_cast<uint32_t>(getAsSockAddrIn()->sin_port)) <<13) | m_sockAddr.sa_family;
 }
 
 uint32_t SocketAddress::getSize() const
@@ -53,7 +58,7 @@ std::string	SocketAddress::toString() const
 #if _WIN32
     const sockaddr_in* s = getAsSockAddrIn();
     static char buffer[256];
-    InetNtop(s->sin_family, const_cast< in_addr* >(&s->sin_addr), buffer, sizeof(buffer));
+    InetNtop(s->sin_family, const_cast<in_addr*>(&s->sin_addr), buffer, sizeof(buffer));
     
     return StringUtil::format("%s:%d", buffer, ntohs(s->sin_port));
 #else
@@ -83,15 +88,20 @@ std::string	SocketAddress::toString() const
 #endif
 }
 
+sockaddr& SocketAddress::getsockaddr()
+{
+    return m_sockAddr;
+}
+
 #if _WIN32
 uint32_t& SocketAddress::getIP4Ref()
 {
-    return *reinterpret_cast< uint32_t* >(&getAsSockAddrIn()->sin_addr.S_un.S_addr);
+    return *reinterpret_cast<uint32_t*>(&getAsSockAddrIn()->sin_addr.S_un.S_addr);
 }
 
 const uint32_t& SocketAddress::getIP4Ref() const
 {
-    return *reinterpret_cast< const uint32_t* >(&getAsSockAddrIn()->sin_addr.S_un.S_addr);
+    return *reinterpret_cast<const uint32_t*>(&getAsSockAddrIn()->sin_addr.S_un.S_addr);
 }
 #else
 uint32_t& SocketAddress::getIP4Ref()
@@ -107,20 +117,22 @@ const uint32_t& SocketAddress::getIP4Ref() const
 
 sockaddr_in* SocketAddress::getAsSockAddrIn()
 {
-    return reinterpret_cast< sockaddr_in* >(&m_sockAddr);
+    return reinterpret_cast<sockaddr_in*>(&m_sockAddr);
 }
 
 const sockaddr_in* SocketAddress::getAsSockAddrIn() const
 {
-    return reinterpret_cast< const sockaddr_in* >(&m_sockAddr);
+    return reinterpret_cast<const sockaddr_in*>(&m_sockAddr);
 }
 
 sockaddr_in6* SocketAddress::getAsSockAddrIn6()
 {
-    return reinterpret_cast< sockaddr_in6* >(&m_sockAddr);
+    return reinterpret_cast<sockaddr_in6*>(&m_sockAddr);
 }
 
 const sockaddr_in6* SocketAddress::getAsSockAddrIn6() const
 {
-    return reinterpret_cast< const sockaddr_in6* >(&m_sockAddr);
+    return reinterpret_cast<const sockaddr_in6*>(&m_sockAddr);
 }
+
+RTTI_IMPL(SocketAddress, IMachineAddress);

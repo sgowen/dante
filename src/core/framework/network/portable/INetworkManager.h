@@ -21,6 +21,8 @@ class EntityManager;
 class OutputMemoryBitStream;
 class Entity;
 class WeightedTimedMovingAverage;
+class SocketAddress;
+class IMachineAddress;
 
 typedef void (*HandleEntityDeletionFunc)(Entity* inEntity);
 
@@ -53,11 +55,11 @@ protected:
     EntityManager* m_entityManager;
     bool m_isInitialized;
     
-    virtual void processPacket(InputMemoryBitStream& inInputStream, const SocketAddress& inFromAddress) = 0;
+    virtual void processPacket(InputMemoryBitStream& inInputStream, SocketAddress* inFromAddress) = 0;
     
-    virtual void handleConnectionReset(const SocketAddress& inFromAddress);
+    virtual void handleConnectionReset(SocketAddress* inFromAddress);
     
-    void sendPacket(const OutputMemoryBitStream& inOutputStream, const SocketAddress& inFromAddress);
+    void sendPacket(const OutputMemoryBitStream& inOutputStream, IMachineAddress* inFromAddress);
     
     // ctor, copy ctor, and assignment should be private in a Singleton
     INetworkManager();
@@ -88,9 +90,9 @@ private:
     class ReceivedPacket
     {
     public:
-        ReceivedPacket(float inReceivedTime, InputMemoryBitStream& inInputMemoryBitStream, const SocketAddress& inAddress);
+        ReceivedPacket(float inReceivedTime, InputMemoryBitStream& inInputMemoryBitStream, SocketAddress inFromAddress);
         
-        const SocketAddress& getFromAddress();
+        SocketAddress& getFromAddress();
         
         float getReceivedTime()	const;
         

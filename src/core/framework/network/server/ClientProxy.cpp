@@ -10,10 +10,12 @@
 
 #include "ClientProxy.h"
 
+#include "IMachineAddress.h"
+
 #include "Timing.h"
 
-ClientProxy::ClientProxy(const SocketAddress& inSocketAddress, const std::string& inName, int inPlayerId) :
-m_socketAddress(inSocketAddress),
+ClientProxy::ClientProxy(IMachineAddress* inMachineAddress, const std::string& inName, int inPlayerId) :
+m_machineAddress(inMachineAddress),
 m_name(inName),
 m_iPlayerId(inPlayerId),
 m_deliveryNotificationManager(false, true),
@@ -24,12 +26,12 @@ m_isLastMoveTimestampDirty(false)
 
 ClientProxy::~ClientProxy()
 {
-    // TODO
+    delete m_machineAddress;
 }
 
-const SocketAddress& ClientProxy::getSocketAddress() const
+IMachineAddress* ClientProxy::getMachineAddress() const
 {
-    return m_socketAddress;
+    return m_machineAddress;
 }
 
 int ClientProxy::getPlayerId() const
@@ -79,5 +81,5 @@ bool ClientProxy::IsLastMoveTimestampDirty() const
 
 std::string ClientProxy::toString() const
 {
-    return m_socketAddress.toString();
+    return m_machineAddress->toString();
 }

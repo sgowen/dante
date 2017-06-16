@@ -14,6 +14,7 @@
 #include "OutputMemoryBitStream.h"
 #include "Entity.h"
 #include "WeightedTimedMovingAverage.h"
+#include "IMachineAddress.h"
 
 #include "SocketUtil.h"
 #include "StringUtil.h"
@@ -97,17 +98,21 @@ const WeightedTimedMovingAverage& INetworkManager::getBytesSentPerSecond() const
     return *m_bytesSentPerSecond;
 }
 
-void INetworkManager::handleConnectionReset(const SocketAddress& inFromAddress)
+void INetworkManager::handleConnectionReset(SocketAddress* inFromAddress)
 {
     UNUSED(inFromAddress);
 }
 
-void INetworkManager::sendPacket(const OutputMemoryBitStream& inOutputStream, const SocketAddress& inFromAddress)
+void INetworkManager::sendPacket(const OutputMemoryBitStream& inOutputStream, IMachineAddress* inFromAddress)
 {
-    int sentByteCount = m_socket->sendToAddress(inOutputStream.getBufferPtr(), inOutputStream.getByteLength(), inFromAddress);
-    if (sentByteCount > 0)
+    if (inFromAddress->getRTTI().derivesFrom(SocketAddress::rtti))
     {
-        m_bytesSentThisFrame += sentByteCount;
+        SocketAddress* inFromSocketAddress = reinterpret_cast<SocketAddress*>(inFromAddress);
+        int sentByteCount = m_socket->sendToAddress(inOutputStream.getBufferPtr(), inOutputStream.getByteLength(), *inFromSocketAddress);
+        if (sentByteCount > 0)
+        {
+            m_bytesSentThisFrame += sentByteCount;
+        }
     }
 }
 
@@ -165,7 +170,7 @@ void INetworkManager::readIncomingPacketsIntoQueue()
         else if (readByteCount == -WSAECONNRESET)
         {
             //port closed on other end, so DC this person immediately
-            handleConnectionReset(fromAddress);
+            handleConnectionReset(&fromAddress);
         }
         else if (readByteCount > 0)
         {
@@ -179,7 +184,7 @@ void INetworkManager::readIncomingPacketsIntoQueue()
             //this doesn't sim jitter, for that we would need to.....
             
             float simulatedReceivedTime = Timing::getInstance()->getFrameStartTime();
-            m_packetQueue.emplace(simulatedReceivedTime, inputStream, fromAddress);
+            m_packetQueue.emplace(ReceivedPacket(simulatedReceivedTime, inputStream, fromAddress));
         }
         else
         {
@@ -201,7 +206,7 @@ void INetworkManager::processQueuedPackets()
         ReceivedPacket& nextPacket = m_packetQueue.front();
         if (Timing::getInstance()->getFrameStartTime() > nextPacket.getReceivedTime())
         {
-            processPacket(nextPacket.getPacketBuffer(), nextPacket.getFromAddress());
+            processPacket(nextPacket.getPacketBuffer(), &nextPacket.getFromAddress());
             m_packetQueue.pop();
         }
         else
@@ -211,14 +216,15 @@ void INetworkManager::processQueuedPackets()
     }
 }
 
-INetworkManager::ReceivedPacket::ReceivedPacket(float inReceivedTime, InputMemoryBitStream& ioInputMemoryBitStream, const SocketAddress& inFromAddress) :
+INetworkManager::ReceivedPacket::ReceivedPacket(float inReceivedTime, InputMemoryBitStream& ioInputMemoryBitStream, SocketAddress inFromAddress) :
 m_fReceivedTime(inReceivedTime),
 m_fromAddress(inFromAddress),
 m_packetBuffer(ioInputMemoryBitStream)
 {
+    // Empty
 }
 
-const SocketAddress& INetworkManager::ReceivedPacket::getFromAddress()
+SocketAddress& INetworkManager::ReceivedPacket::getFromAddress()
 {
     return m_fromAddress;
 }

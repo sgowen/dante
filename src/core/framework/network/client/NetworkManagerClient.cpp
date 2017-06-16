@@ -28,7 +28,7 @@ NetworkManagerClient* NetworkManagerClient::getInstance()
     return &instance;
 }
 
-void NetworkManagerClient::processPacket(InputMemoryBitStream& inInputStream, const SocketAddress& inFromAddress)
+void NetworkManagerClient::processPacket(InputMemoryBitStream& inInputStream, SocketAddress* inFromAddress)
 {
     uint32_t packetType;
     inInputStream.read(packetType);
@@ -129,7 +129,7 @@ void NetworkManagerClient::sendHelloPacket()
     helloPacket.write(kHelloCC);
     helloPacket.write(m_name);
     
-    sendPacket(helloPacket, *m_serverAddress);
+    sendPacket(helloPacket, m_serverAddress);
 }
 
 void NetworkManagerClient::handleWelcomePacket(InputMemoryBitStream& inInputStream)
@@ -267,7 +267,7 @@ void NetworkManagerClient::sendInputPacket()
             move->write(inputPacket);
         }
         
-        sendPacket(inputPacket, *m_serverAddress);
+        sendPacket(inputPacket, m_serverAddress);
     }
 }
 

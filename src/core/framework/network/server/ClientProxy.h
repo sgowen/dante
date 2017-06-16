@@ -10,18 +10,21 @@
 #define __noctisgames__ClientProxy__
 
 #include "ReplicationManagerServer.h"
-#include "SocketAddress.h"
 #include "DeliveryNotificationManager.h"
 #include "MoveList.h"
+
+#include <string>
+
+class IMachineAddress;
 
 class ClientProxy
 {
 public:
-    ClientProxy(const SocketAddress& inSocketAddress, const std::string& inName, int inPlayerId);
+    ClientProxy(IMachineAddress* inMachineAddress, const std::string& inName, int inPlayerId);
     
     ~ClientProxy();
     
-    const SocketAddress& getSocketAddress() const;
+    IMachineAddress* getMachineAddress() const;
     
     int getPlayerId() const;
     
@@ -47,7 +50,7 @@ private:
     DeliveryNotificationManager	m_deliveryNotificationManager;
     ReplicationManagerServer m_replicationManagerServer;
     
-    SocketAddress m_socketAddress;
+    IMachineAddress* m_machineAddress;
     std::string m_name;
     int m_iPlayerId;
     
