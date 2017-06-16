@@ -20,6 +20,7 @@
 #include "Entity.h"
 #include "OutputMemoryBitStream.h"
 #include "StringUtil.h"
+#include "FWInstanceManager.h"
 
 NetworkManagerServer* NetworkManagerServer::getInstance()
 {
@@ -56,13 +57,13 @@ void NetworkManagerServer::handleConnectionReset(SocketAddress* inFromAddress)
     }
 }
 
-bool NetworkManagerServer::init(uint16_t inPort, HandleEntityDeletionFunc handleEntityDeletion, HandleNewClientFunc handleNewClientFunc, HandleLostClientFunc handleLostClientFunc, InputStateCreationFunc inputStateCreationFunc)
+bool NetworkManagerServer::init(uint16_t inPort, HandleNewClientFunc handleNewClientFunc, HandleLostClientFunc handleLostClientFunc, InputStateCreationFunc inputStateCreationFunc)
 {
     m_handleNewClientFunc = handleNewClientFunc;
     m_handleLostClientFunc = handleLostClientFunc;
     m_inputStateCreationFunc = inputStateCreationFunc;
     
-    return INetworkManager::init(inPort, handleEntityDeletion);
+    return INetworkManager::init(inPort);
 }
 
 void NetworkManagerServer::sendOutgoingPackets()
@@ -104,7 +105,7 @@ void NetworkManagerServer::checkForDisconnects()
 void NetworkManagerServer::registerEntity(Entity* inEntity)
 {
     //add mapping from network id to game object
-    m_entityManager->registerEntity(inEntity);
+    FWInstanceManager::getServerEntityManager()->registerEntity(inEntity);
     
     //tell all client proxies this is new...
     for (const auto& pair: m_addressHashToClientMap)
@@ -117,7 +118,7 @@ void NetworkManagerServer::unregisterEntity(Entity* inEntity)
 {
     int networkId = inEntity->getID();
     
-    removeFromNetworkIdToEntityMap(inEntity);
+    FWInstanceManager::getServerEntityManager()->removeEntity(inEntity);
     
     //tell all client proxies to STOP replicating!
     //tell all client proxies this is new...
@@ -175,7 +176,7 @@ void NetworkManagerServer::handlePacketFromNewClient(InputMemoryBitStream& inInp
         sendWelcomePacket(newClientProxy);
         
         //and now init the replication manager with everything we know about!
-        for (const auto& pair: m_entityManager->getMap())
+        for (const auto& pair: FWInstanceManager::getServerEntityManager()->getMap())
         {
             Entity* pe = pair.second;
             newClientProxy->getReplicationManagerServer().replicateCreate(pair.first, pe->getAllStateMask());

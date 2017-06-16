@@ -16,9 +16,15 @@
 
 #include <cassert>
 
-EntityManager::EntityManager()
+EntityManager::EntityManager() : m_isInitialized(false)
 {
     // Empty
+}
+
+void EntityManager::init(HandleEntityDeletionFunc handleEntityDeletionFunc)
+{
+    m_handleEntityDeletion = handleEntityDeletionFunc;
+    m_isInitialized = true;
 }
 
 Entity* EntityManager::getEntityFromID(int id)const
@@ -33,14 +39,22 @@ Entity* EntityManager::getEntityFromID(int id)const
     return nullptr;
 }
 
-void EntityManager::registerEntity(Entity* entity)
+void EntityManager::registerEntity(Entity* inEntity)
 {
-    m_entityMap.insert(std::make_pair(entity->getID(), entity));
+    m_entityMap.insert(std::make_pair(inEntity->getID(), inEntity));
 }
 
-void EntityManager::removeEntity(Entity* entity)
+void EntityManager::removeEntity(Entity* inEntity)
 {
-    m_entityMap.erase(entity->getID());
+    if (m_isInitialized)
+    {
+        m_handleEntityDeletion(inEntity);
+    }
+    
+    m_entityMap.erase(inEntity->getID());
+    
+    delete inEntity;
+    inEntity = nullptr;
 }
 
 void EntityManager::reset()

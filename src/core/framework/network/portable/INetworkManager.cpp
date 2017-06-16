@@ -10,7 +10,6 @@
 
 #include "INetworkManager.h"
 
-#include "EntityManager.h"
 #include "OutputMemoryBitStream.h"
 #include "Entity.h"
 #include "WeightedTimedMovingAverage.h"
@@ -22,15 +21,12 @@
 #include "SocketAddressFamily.h"
 #include "macros.h"
 
-bool INetworkManager::init(uint16_t inPort, HandleEntityDeletionFunc handleEntityDeletion)
+bool INetworkManager::init(uint16_t inPort)
 {
     if (!SOCKET_UTIL->init())
     {
         return false;
     }
-    
-    m_entityManager = new EntityManager();
-    m_handleEntityDeletion = handleEntityDeletion;
     
     m_socket = SOCKET_UTIL->createUDPSocket(INET);
     SocketAddress ownAddress(INADDR_ANY, inPort);
@@ -66,26 +62,6 @@ void INetworkManager::processIncomingPackets()
     processQueuedPackets();
     
     updateBytesSentLastFrame();
-}
-
-Entity* INetworkManager::getEntity(int inNetworkId) const
-{
-    return m_entityManager->getEntityFromID(inNetworkId);
-}
-
-void INetworkManager::addToNetworkIdToEntityMap(Entity* inEntity)
-{
-    m_entityManager->registerEntity(inEntity);
-}
-
-void INetworkManager::removeFromNetworkIdToEntityMap(Entity* inEntity)
-{
-    m_handleEntityDeletion(inEntity);
-    
-    m_entityManager->removeEntity(inEntity);
-    
-    delete inEntity;
-    inEntity = nullptr;
 }
 
 const WeightedTimedMovingAverage& INetworkManager::getBytesReceivedPerSecond() const

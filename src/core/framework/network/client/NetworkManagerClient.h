@@ -29,7 +29,7 @@ public:
     
     virtual void processPacket(InputMemoryBitStream& inInputStream, SocketAddress* inFromAddress) override;
     
-    bool init(EntityRegistry* entityRegistry, const std::string& inServerIPAddress, const std::string& inName, float inFrameRate, HandleEntityDeletionFunc handleEntityDeletion, RemoveProcessedMovesFunc removeProcessedMovesFunc, GetMoveListFunc getMoveListFunc);
+    bool init(EntityRegistry* entityRegistry, const std::string& inServerIPAddress, const std::string& inName, float inFrameRate, RemoveProcessedMovesFunc removeProcessedMovesFunc, GetMoveListFunc getMoveListFunc);
     
     virtual void sendOutgoingPackets();
     

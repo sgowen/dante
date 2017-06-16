@@ -40,6 +40,8 @@
 #include "NGSteamGameServices.h"
 #include "InstanceManager.h"
 #include "InputState.h"
+#include "FWInstanceManager.h"
+#include "EntityManager.h"
 
 void MainEngine::staticAddEntity(Entity* inEntity)
 {
@@ -67,6 +69,8 @@ m_isConnected(false)
 //        m_iRequestedAction = REQUESTED_ACTION_EXIT;
 //        return;
 //    }
+    
+    FWInstanceManager::getClientEntityManager()->init(MainEngine::staticRemoveEntity);
     
     InstanceManager::getClientEntityRegistry()->init(MainEngine::staticAddEntity);
     InstanceManager::getClientEntityRegistry()->registerCreationFunction(NETWORK_TYPE_Robot, Robot::staticCreateClient);
@@ -195,7 +199,7 @@ void MainEngine::startServer()
 
 void MainEngine::joinServer()
 {
-    m_isConnected = NetworkManagerClient::getInstance()->init(InstanceManager::getClientEntityRegistry(), "localhost:9999", "Noctis Games", FRAME_RATE, MainEngine::staticRemoveEntity, InputManager::staticRemoveProcessedMoves, InputManager::staticGetMoveList);
+    m_isConnected = NetworkManagerClient::getInstance()->init(InstanceManager::getClientEntityRegistry(), "localhost:9999", "Noctis Games", FRAME_RATE, InputManager::staticRemoveProcessedMoves, InputManager::staticGetMoveList);
     
     if (m_isConnected)
     {

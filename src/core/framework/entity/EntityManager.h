@@ -13,16 +13,20 @@
 
 class Entity;
 
+typedef void (*HandleEntityDeletionFunc)(Entity* inEntity);
+
 class EntityManager
 {
 public:
     EntityManager();
     
+    void init(HandleEntityDeletionFunc handleEntityDeletionFunc);
+    
     Entity* getEntityFromID(int id)const;
     
-    void registerEntity(Entity* entity);
+    void registerEntity(Entity* inEntity);
     
-    void removeEntity(Entity* entity);
+    void removeEntity(Entity* inEntity);
     
     void reset();
     
@@ -32,6 +36,8 @@ public:
     
 private:
     std::unordered_map<int, Entity*> m_entityMap;
+    HandleEntityDeletionFunc m_handleEntityDeletion;
+    bool m_isInitialized;
 };
 
 #endif /* defined(__noctisgames__EntityManager__) */

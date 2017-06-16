@@ -13,7 +13,8 @@
 #include "OutputMemoryBitStream.h"
 #include "ReplicationManagerTransmissionData.h"
 
-#include "NetworkManagerServer.h"
+#include "FWInstanceManager.h"
+#include "EntityManager.h"
 #include "ReplicationAction.h"
 #include "macros.h"
 #include "Entity.h"
@@ -90,7 +91,7 @@ void ReplicationManagerServer::write(OutputMemoryBitStream& inOutputStream, Repl
 uint32_t ReplicationManagerServer::writeCreateAction(OutputMemoryBitStream& inOutputStream, int inNetworkId, uint32_t inDirtyState)
 {
     //need object
-    Entity* gameObject = NetworkManagerServer::getInstance()->getEntity(inNetworkId);
+    Entity* gameObject = FWInstanceManager::getServerEntityManager()->getEntityFromID(inNetworkId);
     //need 4 cc
     inOutputStream.write(gameObject->getNetworkType());
     
@@ -100,7 +101,7 @@ uint32_t ReplicationManagerServer::writeCreateAction(OutputMemoryBitStream& inOu
 uint32_t ReplicationManagerServer::writeUpdateAction(OutputMemoryBitStream& inOutputStream, int inNetworkId, uint32_t inDirtyState)
 {
     //need object
-    Entity* gameObject = NetworkManagerServer::getInstance()->getEntity(inNetworkId);
+    Entity* gameObject = FWInstanceManager::getServerEntityManager()->getEntityFromID(inNetworkId);
     
     //if we can't find the gameObject on the other side, we won't be able to read the written data (since we won't know which class wrote it)
     //so we need to know how many bytes to skip.

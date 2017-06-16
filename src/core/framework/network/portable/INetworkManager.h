@@ -17,14 +17,11 @@
 #include <queue>
 #include <list>
 
-class EntityManager;
 class OutputMemoryBitStream;
 class Entity;
 class WeightedTimedMovingAverage;
 class SocketAddress;
 class IMachineAddress;
-
-typedef void (*HandleEntityDeletionFunc)(Entity* inEntity);
 
 class INetworkManager
 {
@@ -35,24 +32,17 @@ public:
     static const uint32_t kInputCC = 'INPT';
     static const int kMaxPacketsPerFrameCount = 10;
     
-    bool init(uint16_t inPort, HandleEntityDeletionFunc handleEntityDeletion);
+    bool init(uint16_t inPort);
     
     void processIncomingPackets();
     
     virtual void sendOutgoingPackets() = 0;
-    
-    Entity* getEntity(int inNetworkId) const;
-    
-    void addToNetworkIdToEntityMap(Entity* inEntity);
-    
-    void removeFromNetworkIdToEntityMap(Entity* inEntity);
     
     const WeightedTimedMovingAverage& getBytesReceivedPerSecond() const;
     
     const WeightedTimedMovingAverage& getBytesSentPerSecond() const;
     
 protected:
-    EntityManager* m_entityManager;
     bool m_isInitialized;
     
     virtual void processPacket(InputMemoryBitStream& inInputStream, SocketAddress* inFromAddress) = 0;
@@ -69,8 +59,6 @@ protected:
     
 private:
     class ReceivedPacket;
-    
-    HandleEntityDeletionFunc m_handleEntityDeletion;
     
     std::queue<ReceivedPacket, std::list<ReceivedPacket>> m_packetQueue;
     

@@ -21,6 +21,7 @@
 #include "Timing.h"
 #include "OutputMemoryBitStream.h"
 #include "SocketAddressFactory.h"
+#include "FWInstanceManager.h"
 
 NetworkManagerClient* NetworkManagerClient::getInstance()
 {
@@ -47,7 +48,7 @@ void NetworkManagerClient::processPacket(InputMemoryBitStream& inInputStream, So
     }
 }
 
-bool NetworkManagerClient::init(EntityRegistry* entityRegistry, const std::string& inServerIPAddress, const std::string& inName, float inFrameRate, HandleEntityDeletionFunc handleEntityDeletion, RemoveProcessedMovesFunc removeProcessedMovesFunc, GetMoveListFunc getMoveListFunc)
+bool NetworkManagerClient::init(EntityRegistry* entityRegistry, const std::string& inServerIPAddress, const std::string& inName, float inFrameRate, RemoveProcessedMovesFunc removeProcessedMovesFunc, GetMoveListFunc getMoveListFunc)
 {
     m_entityRegistry = entityRegistry;
     m_removeProcessedMovesFunc = removeProcessedMovesFunc;
@@ -66,7 +67,7 @@ bool NetworkManagerClient::init(EntityRegistry* entityRegistry, const std::strin
     uint16_t port = 1337;
 #endif
     
-    return INetworkManager::init(port, handleEntityDeletion);
+    return INetworkManager::init(port);
 }
 
 void NetworkManagerClient::sendOutgoingPackets()
@@ -175,8 +176,10 @@ void NetworkManagerClient::readLastMoveProcessedOnServerTimestamp(InputMemoryBit
 
 void NetworkManagerClient::handleEntityState(InputMemoryBitStream& inInputStream)
 {
+    EntityManager* entityManager = FWInstanceManager::getClientEntityManager();
+    
     // copy the map so that anything that doesn't get an updated can be destroyed...
-    std::unordered_map<int, Entity*> objectsToDestroy = m_entityManager->getMapCopy();
+    std::unordered_map<int, Entity*> objectsToDestroy = entityManager->getMapCopy();
     
     int stateCount;
     inInputStream.read(stateCount);
@@ -191,13 +194,13 @@ void NetworkManagerClient::handleEntityState(InputMemoryBitStream& inInputStream
             inInputStream.read(networkId);
             inInputStream.read(fourCC);
             Entity* go;
-            auto itGO = m_entityManager->getMap().find(networkId);
+            auto itGO = entityManager->getMap().find(networkId);
             //didn't find it, better create it!
-            if (itGO == m_entityManager->getMap().end())
+            if (itGO == entityManager->getMap().end())
             {
                 go = m_entityRegistry->createEntity(fourCC);
                 go->setID(networkId);
-                addToNetworkIdToEntityMap(go);
+                entityManager->registerEntity(go);
             }
             else
             {
@@ -217,11 +220,13 @@ void NetworkManagerClient::handleEntityState(InputMemoryBitStream& inInputStream
 
 void NetworkManagerClient::destroyAllInMap(const std::unordered_map<int, Entity*>& inObjectsToDestroy)
 {
+    EntityManager* entityManager = FWInstanceManager::getClientEntityManager();
+    
     for (auto& pair: inObjectsToDestroy)
     {
         pair.second->requestDeletion();
         
-        removeFromNetworkIdToEntityMap(pair.second);
+        entityManager->removeEntity(pair.second);
     }
 }
 
