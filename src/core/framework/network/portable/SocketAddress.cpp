@@ -55,37 +55,44 @@ uint32_t SocketAddress::getSize() const
 
 std::string	SocketAddress::toString() const
 {
-#if _WIN32
-    const sockaddr_in* s = getAsSockAddrIn();
-    static char buffer[256];
-    InetNtop(s->sin_family, const_cast<in_addr*>(&s->sin_addr), buffer, sizeof(buffer));
-    
-    return StringUtil::format("%s:%d", buffer, ntohs(s->sin_port));
+	static char buffer[256];
+#ifdef _WIN32
+	USHORT port;
 #else
-    static char buffer[256];
-    in_port_t port;
-    switch(m_sockAddr.sa_family)
-    {
-        case AF_INET:
-        {
-            const sockaddr_in *addr_in = getAsSockAddrIn();
-            inet_ntop(AF_INET, &(addr_in->sin_addr), buffer, INET_ADDRSTRLEN);
-            port = addr_in->sin_port;
-        }
-            break;
-        case AF_INET6:
-        {
-            const sockaddr_in6 *addr_in6 = getAsSockAddrIn6();
-            inet_ntop(AF_INET6, &(addr_in6->sin6_addr), buffer, INET6_ADDRSTRLEN);
-            port = addr_in6->sin6_port;
-        }
-            break;
-        default:
-            break;
-    }
-    
-    return StringUtil::format("%s:%d", buffer, ntohs(port));
+	in_port_t port;
 #endif
+	
+	switch (m_sockAddr.sa_family)
+	{
+	case AF_INET:
+	{
+		const sockaddr_in *addr_in = getAsSockAddrIn();
+#ifdef _WIN32
+		void *addr = (void*) &(addr_in->sin_addr);
+		inet_ntop(AF_INET, addr, buffer, INET_ADDRSTRLEN);
+#else
+		inet_ntop(AF_INET, &(addr_in->sin_addr), buffer, INET_ADDRSTRLEN);
+#endif
+		port = addr_in->sin_port;
+	}
+		break;
+	case AF_INET6:
+	{
+		const sockaddr_in6 *addr_in6 = getAsSockAddrIn6();
+#ifdef _WIN32
+		void *addr = (void*) &(addr_in6->sin6_addr);
+		inet_ntop(AF_INET6, addr, buffer, INET6_ADDRSTRLEN);
+#else
+		inet_ntop(AF_INET6, &(addr_in6->sin6_addr), buffer, INET6_ADDRSTRLEN);
+#endif
+		port = addr_in6->sin6_port;
+	}
+		break;
+	default:
+		break;
+	}
+
+	return StringUtil::format("%s:%d", buffer, ntohs(port));
 }
 
 sockaddr& SocketAddress::getsockaddr()

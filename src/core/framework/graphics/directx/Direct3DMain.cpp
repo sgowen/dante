@@ -243,6 +243,14 @@ void Direct3DMain::Update(DX::StepTimer const& timer)
 	{
 		KEYBOARD_INPUT_MANAGER->onInput(KeyboardEventType_BACK, true);
 	}
+	if (m_keys.IsKeyPressed(DirectX::Keyboard::Keys::Escape))
+	{
+		KEYBOARD_INPUT_MANAGER->onInput(KeyboardEventType_ESCAPE);
+	}
+	else if (m_keys.IsKeyReleased(DirectX::Keyboard::Keys::Escape))
+	{
+		KEYBOARD_INPUT_MANAGER->onInput(KeyboardEventType_ESCAPE, true);
+	}
 
 	auto mouse = m_mouse->GetState();
 	if (mouse.positionMode == Mouse::MODE_ABSOLUTE)
