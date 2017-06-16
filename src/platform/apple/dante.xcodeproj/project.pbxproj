@@ -664,12 +664,6 @@
 		BBAEF3471EA94FE500F0866E /* AndroidAudioEngineHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AndroidAudioEngineHelper.h; sourceTree = "<group>"; };
 		BBAEF3491EA94FF200F0866E /* AndroidAssetDataHandler.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = AndroidAssetDataHandler.cpp; sourceTree = "<group>"; };
 		BBAEF34A1EA94FF200F0866E /* AndroidAssetDataHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AndroidAssetDataHandler.h; sourceTree = "<group>"; };
-		BBAFD3131EF42904004F2742 /* DanteClient.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = DanteClient.cpp; sourceTree = "<group>"; };
-		BBAFD3141EF42904004F2742 /* DanteClient.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DanteClient.h; sourceTree = "<group>"; };
-		BBAFD3151EF42904004F2742 /* DanteServer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = DanteServer.cpp; sourceTree = "<group>"; };
-		BBAFD3161EF42904004F2742 /* DanteServer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DanteServer.h; sourceTree = "<group>"; };
-		BBAFD3171EF42904004F2742 /* P2PAuth.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = P2PAuth.cpp; sourceTree = "<group>"; };
-		BBAFD3181EF42904004F2742 /* P2PAuth.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = P2PAuth.h; sourceTree = "<group>"; };
 		BBAFD3251EF42F2E004F2742 /* InstanceManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = InstanceManager.cpp; sourceTree = "<group>"; };
 		BBAFD3261EF42F2E004F2742 /* InstanceManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InstanceManager.h; sourceTree = "<group>"; };
 		BBAFD32B1EF44813004F2742 /* IMachineAddress.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = IMachineAddress.cpp; sourceTree = "<group>"; };
@@ -1196,16 +1190,10 @@
 		BB7267A21EEC6903004F33F9 /* network */ = {
 			isa = PBXGroup;
 			children = (
-				BBAFD3131EF42904004F2742 /* DanteClient.cpp */,
-				BBAFD3141EF42904004F2742 /* DanteClient.h */,
-				BBAFD3151EF42904004F2742 /* DanteServer.cpp */,
-				BBAFD3161EF42904004F2742 /* DanteServer.h */,
 				BB5833D11EEDDB5C0084DA20 /* InputManager.cpp */,
 				BB5833D21EEDDB5C0084DA20 /* InputManager.h */,
 				BBAFD3251EF42F2E004F2742 /* InstanceManager.cpp */,
 				BBAFD3261EF42F2E004F2742 /* InstanceManager.h */,
-				BBAFD3171EF42904004F2742 /* P2PAuth.cpp */,
-				BBAFD3181EF42904004F2742 /* P2PAuth.h */,
 				BB7267A31EEC6903004F33F9 /* Server.cpp */,
 				BB7267A41EEC6903004F33F9 /* Server.h */,
 			);
