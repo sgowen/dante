@@ -148,33 +148,45 @@ void MainRenderer::renderServerJoinedInstructions()
 {
     static Vector2 origin = Vector2(CAM_WIDTH / 2, CAM_HEIGHT - 2);
     
-    std::string roundTripTime = std::string("Server joined, 'ESC' to exit");
+    std::string text = std::string("Server joined, 'ESC' to exit");
     
     static Color c = Color(0.0f, 0.0f, 0.0f, 1.0f);
     
-    renderText(roundTripTime, origin, c);
+    renderText(text, origin, c);
 }
 
 void MainRenderer::renderServerStartedInstructions()
 {
     static Vector2 origin = Vector2(CAM_WIDTH / 2, CAM_HEIGHT - 2);
     
-    std::string roundTripTime = std::string("Server started, 'J' to join it");
+    std::string text = std::string("Server started, 'J' to join it");
     
     static Color c = Color(0.0f, 0.0f, 0.0f, 1.0f);
     
-    renderText(roundTripTime, origin, c);
+    renderText(text, origin, c);
 }
 
 void MainRenderer::renderInstructions()
 {
-    static Vector2 origin = Vector2(CAM_WIDTH / 2, CAM_HEIGHT - 2);
+    {
+        static Vector2 origin = Vector2(CAM_WIDTH / 2, CAM_HEIGHT - 2);
+        
+        std::string text = std::string("'S' to start server, 'J' to join first available");
+        
+        static Color c = Color(0.0f, 0.0f, 0.0f, 1.0f);
+        
+        renderText(text, origin, c);
+    }
     
-    std::string roundTripTime = std::string("'S' to start server, 'J' to join first available");
-    
-    static Color c = Color(0.0f, 0.0f, 0.0f, 1.0f);
-    
-    renderText(roundTripTime, origin, c);
+    {
+        static Vector2 origin = Vector2(CAM_WIDTH / 2, CAM_HEIGHT - 3);
+        
+        std::string text = std::string("'ESC' to exit game");
+        
+        static Color c = Color(0.0f, 0.0f, 0.0f, 1.0f);
+        
+        renderText(text, origin, c);
+    }
 }
 
 void MainRenderer::renderRoundTripTime()
@@ -183,11 +195,11 @@ void MainRenderer::renderRoundTripTime()
     
     float rttMS = NG_CLIENT->getAvgRoundTripTime().getValue() * 1000.f;
     
-    std::string roundTripTime = StringUtil::format("RTT %d ms", (int) rttMS);
+    std::string text = StringUtil::format("RTT %d ms", (int) rttMS);
     
     static Color c = Color(0.0f, 0.0f, 0.0f, 1.0f);
     
-    renderText(roundTripTime, origin, c);
+    renderText(text, origin, c);
 }
 
 void MainRenderer::renderBandWidth()
@@ -200,11 +212,11 @@ void MainRenderer::renderBandWidth()
     const WeightedTimedMovingAverage& bpsOut = NG_CLIENT->getBytesSentPerSecond();
     int bpsOutInt = static_cast< int >(bpsOut.getValue());
     
-    std::string bandwidth = StringUtil::format("In %d Bps, Out %d Bps", bpsInInt, bpsOutInt);
+    std::string text = StringUtil::format("In %d Bps, Out %d Bps", bpsInInt, bpsOutInt);
     
     static Color c = Color(0.0f, 0.0f, 0.0f, 1.0f);
     
-    renderText(bandwidth, origin, c);
+    renderText(text, origin, c);
 }
 
 void MainRenderer::renderText(const std::string& inStr, const Vector2& origin, const Color& inColor)
