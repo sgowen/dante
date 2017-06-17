@@ -20,7 +20,7 @@ class WeightedTimedMovingAverage;
 class IMachineAddress;
 
 typedef void (*HandleConnectionResetFunc)(IMachineAddress* inFromAddress);
-typedef void (*ProcessPacketFunc)(InputMemoryBitStream& inInputStream, SocketAddress* inFromAddress);
+typedef void (*ProcessPacketFunc)(InputMemoryBitStream& inInputStream, IMachineAddress* inFromAddress);
 
 class IPacketHandler
 {

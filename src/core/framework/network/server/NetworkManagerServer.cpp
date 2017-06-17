@@ -49,7 +49,7 @@ NetworkManagerServer * NetworkManagerServer::getInstance()
     return s_instance;
 }
 
-void NetworkManagerServer::staticProcessPacket(InputMemoryBitStream& inInputStream, SocketAddress* inFromAddress)
+void NetworkManagerServer::staticProcessPacket(InputMemoryBitStream& inInputStream, IMachineAddress* inFromAddress)
 {
     NG_SERVER->processPacket(inInputStream, static_cast<SocketAddress*>(inFromAddress));
 }

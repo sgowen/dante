@@ -32,7 +32,7 @@ public:
     
     static NetworkManagerServer* getInstance();
     
-    static void staticProcessPacket(InputMemoryBitStream& inInputStream, SocketAddress* inFromAddress);
+    static void staticProcessPacket(InputMemoryBitStream& inInputStream, IMachineAddress* inFromAddress);
     
     static void staticHandleConnectionReset(IMachineAddress* inFromAddress);
     

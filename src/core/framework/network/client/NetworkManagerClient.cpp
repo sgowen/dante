@@ -47,7 +47,7 @@ NetworkManagerClient * NetworkManagerClient::getInstance()
     return s_instance;
 }
 
-void NetworkManagerClient::staticProcessPacket(InputMemoryBitStream& inInputStream, SocketAddress* inFromAddress)
+void NetworkManagerClient::staticProcessPacket(InputMemoryBitStream& inInputStream, IMachineAddress* inFromAddress)
 {
     NG_CLIENT->processPacket(inInputStream, static_cast<SocketAddress*>(inFromAddress));
 }

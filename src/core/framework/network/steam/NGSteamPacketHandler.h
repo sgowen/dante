@@ -1,34 +1,33 @@
 //
-//  SocketPacketHandler.h
+//  NGSteamPacketHandler.h
 //  noctisgames-framework
 //
 //  Created by Stephen Gowen on 6/15/17.
 //  Copyright (c) 2017 Noctis Games. All rights reserved.
 //
 
-#ifndef __noctisgames__SocketPacketHandler__
-#define __noctisgames__SocketPacketHandler__
+#ifndef __noctisgames__NGSteamPacketHandler__
+#define __noctisgames__NGSteamPacketHandler__
 
 #include "IPacketHandler.h"
 
 #include "InputMemoryBitStream.h"
-#include "SocketAddress.h"
+#include "NGSteamAddress.h"
 
 #include <queue>
 #include <list>
 
 class OutputMemoryBitStream;
 class WeightedTimedMovingAverage;
-class UDPSocket;
 class IMachineAddress;
 
-class SocketPacketHandler : public IPacketHandler
+class NGSteamPacketHandler : public IPacketHandler
 {
 public:
     static const int kMaxPacketsPerFrameCount = 10;
     
-    SocketPacketHandler(uint16_t inPort, ProcessPacketFunc processPacketFunc, HandleConnectionResetFunc handleConnectionResetFunc);
-    virtual ~SocketPacketHandler();
+    NGSteamPacketHandler(ProcessPacketFunc processPacketFunc, HandleConnectionResetFunc handleConnectionResetFunc);
+    virtual ~NGSteamPacketHandler();
     
     void sendPacket(const OutputMemoryBitStream& inOutputStream, IMachineAddress* inFromAddress);
     
@@ -44,14 +43,12 @@ private:
     
     std::queue<ReceivedPacket, std::list<ReceivedPacket>> m_packetQueue;
     
-    UDPSocket* m_socket;
-    
     class ReceivedPacket
     {
     public:
-        ReceivedPacket(float inReceivedTime, InputMemoryBitStream& inInputMemoryBitStream, SocketAddress inFromAddress);
+        ReceivedPacket(float inReceivedTime, InputMemoryBitStream& inInputMemoryBitStream, NGSteamAddress inFromAddress);
         
-        SocketAddress& getFromAddress();
+        NGSteamAddress& getFromAddress();
         
         float getReceivedTime()	const;
         
@@ -60,8 +57,8 @@ private:
     private:
         float m_fReceivedTime;
         InputMemoryBitStream m_packetBuffer;
-        SocketAddress m_fromAddress;
+        NGSteamAddress m_fromAddress;
     };
 };
 
-#endif /* defined(__noctisgames__SocketPacketHandler__) */
+#endif /* defined(__noctisgames__NGSteamPacketHandler__) */
