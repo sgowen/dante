@@ -59,7 +59,7 @@ void NetworkManagerServer::staticHandleConnectionReset(IMachineAddress* inFromAd
     NG_SERVER->handleConnectionReset(static_cast<SocketAddress*>(inFromAddress));
 }
 
-void NetworkManagerServer::processPacket(InputMemoryBitStream& inInputStream, SocketAddress* inFromAddress)
+void NetworkManagerServer::processPacket(InputMemoryBitStream& inInputStream, IMachineAddress* inFromAddress)
 {
     //try to get the client proxy for this address
     //pass this to the client proxy to process
@@ -78,7 +78,7 @@ void NetworkManagerServer::processPacket(InputMemoryBitStream& inInputStream, So
     }
 }
 
-void NetworkManagerServer::handleConnectionReset(SocketAddress* inFromAddress)
+void NetworkManagerServer::handleConnectionReset(IMachineAddress* inFromAddress)
 {
     //just dc the client right away...
     auto it = m_addressHashToClientMap.find(inFromAddress->getHash());
@@ -175,12 +175,12 @@ int NetworkManagerServer::getNumClientsConnected()
     return static_cast<int>(m_addressHashToClientMap.size());
 }
 
-void NetworkManagerServer::handlePacketFromNewClient(InputMemoryBitStream& inInputStream, SocketAddress* inFromAddress)
+void NetworkManagerServer::handlePacketFromNewClient(InputMemoryBitStream& inInputStream, IMachineAddress* inFromAddress)
 {
     //read the beginning- is it a hello?
     uint32_t packetType;
     inInputStream.read(packetType);
-    if (packetType == kHelloCC)
+    if (packetType == NETWORK_PACKET_TYPE_HELLO)
     {
         //read the name
         std::string name;
@@ -220,12 +220,12 @@ void NetworkManagerServer::processPacket(ClientProxy* inClientProxy, InputMemory
     inInputStream.read(packetType);
     switch (packetType)
     {
-        case kHelloCC:
+        case NETWORK_PACKET_TYPE_HELLO:
             //need to resend welcome. to be extra safe we should check the name is the one we expect from this address,
             //otherwise something weird is going on...
             sendWelcomePacket(inClientProxy);
             break;
-        case kInputCC:
+        case NETWORK_PACKET_TYPE_INPUT:
             if (inClientProxy->getDeliveryNotificationManager().readAndProcessState(inInputStream))
             {
                 handleInputPacket(inClientProxy, inInputStream);
@@ -241,7 +241,7 @@ void NetworkManagerServer::sendWelcomePacket(ClientProxy* inClientProxy)
 {
     OutputMemoryBitStream welcomePacket;
     
-    welcomePacket.write(kWelcomeCC);
+    welcomePacket.write(NETWORK_PACKET_TYPE_WELCOME);
     welcomePacket.write(inClientProxy->getPlayerId());
     
     LOG("Server Welcoming, new client '%s' as player %d", inClientProxy->getName().c_str(), inClientProxy->getPlayerId());
@@ -255,7 +255,7 @@ void NetworkManagerServer::sendStatePacketToClient(ClientProxy* inClientProxy)
     OutputMemoryBitStream statePacket;
     
     //it's state!
-    statePacket.write(kStateCC);
+    statePacket.write(NETWORK_PACKET_TYPE_STATE);
     
     InFlightPacket* ifp = inClientProxy->getDeliveryNotificationManager().writeState(statePacket);
     

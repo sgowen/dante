@@ -21,6 +21,7 @@
 #include "Timing.h"
 #include "SocketAddressFamily.h"
 #include "macros.h"
+#include "FrameworkConstants.h"
 
 SocketPacketHandler::SocketPacketHandler(uint16_t inPort, ProcessPacketFunc processPacketFunc, HandleConnectionResetFunc handleConnectionResetFunc) :
 IPacketHandler(),
@@ -70,7 +71,6 @@ void SocketPacketHandler::sendPacket(const OutputMemoryBitStream& inOutputStream
 
 void SocketPacketHandler::readIncomingPacketsIntoQueue()
 {
-    //should we just keep a static one?
     char packetMem[1500];
     int packetSize = sizeof(packetMem);
     InputMemoryBitStream inputStream(packetMem, packetSize * 8);
@@ -80,7 +80,7 @@ void SocketPacketHandler::readIncomingPacketsIntoQueue()
     int receivedPacketCount = 0;
     int totalReadByteCount = 0;
     
-    while (receivedPacketCount < kMaxPacketsPerFrameCount)
+    while (receivedPacketCount < NETWORK_MAX_PACKETS_PER_FRAME)
     {
         int readByteCount = m_socket->receiveFromAddress(packetMem, packetSize, fromAddress);
         if (readByteCount == 0)

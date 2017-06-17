@@ -19,17 +19,11 @@
 
 class OutputMemoryBitStream;
 class WeightedTimedMovingAverage;
-class SocketAddress;
 class IMachineAddress;
 
 class INetworkManager
 {
 public:
-    static const uint32_t kHelloCC = 'HELO';
-    static const uint32_t kWelcomeCC = 'WLCM';
-    static const uint32_t kStateCC = 'STAT';
-    static const uint32_t kInputCC = 'INPT';
-    
     void processIncomingPackets();
     
     virtual void sendOutgoingPackets() = 0;
@@ -39,9 +33,9 @@ public:
     const WeightedTimedMovingAverage& getBytesSentPerSecond() const;
     
 protected:
-    virtual void processPacket(InputMemoryBitStream& inInputStream, SocketAddress* inFromAddress) = 0;
+    virtual void processPacket(InputMemoryBitStream& inInputStream, IMachineAddress* inFromAddress) = 0;
     
-    virtual void handleConnectionReset(SocketAddress* inFromAddress);
+    virtual void handleConnectionReset(IMachineAddress* inFromAddress);
     
     void sendPacket(const OutputMemoryBitStream& inOutputStream, IMachineAddress* inFromAddress);
     

@@ -57,12 +57,6 @@ public:
     std::string getLocalPlayerName();
     std::string getRemotePlayerName(uint64_t inPlayerId);
     
-#pragma mark P2P Networking
-    bool sendP2PReliable(const OutputMemoryBitStream& inOutputStream, uint64_t inToPlayer);
-    bool sendP2PUnreliable(const OutputMemoryBitStream& inOutputStream, uint64_t inToPlayer);
-    bool isP2PPacketAvailable(uint32_t& outPacketSize);
-    uint32_t readP2PPacket(void* inToReceive, uint32_t inMaxLength, uint64_t& outFromPlayer);
-    
     std::list<NGSteamGameServer>& getGameServers();
     
     bool isRequestingServers();

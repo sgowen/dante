@@ -301,33 +301,6 @@ std::string NGSteamGameServices::getRemotePlayerName(uint64_t inPlayerId)
     return std::string(SteamFriends()->GetFriendPersonaName(inPlayerId));
 }
 
-#pragma mark P2P Networking
-
-bool NGSteamGameServices::sendP2PReliable(const OutputMemoryBitStream& inOutputStream, uint64_t inToPlayer)
-{
-    return SteamGameServerNetworking()->SendP2PPacket(inToPlayer, inOutputStream.getBufferPtr(), inOutputStream.getByteLength(), k_EP2PSendReliable);
-}
-
-bool NGSteamGameServices::sendP2PUnreliable(const OutputMemoryBitStream& inOutputStream, uint64_t inToPlayer)
-{
-    return SteamGameServerNetworking()->SendP2PPacket(inToPlayer, inOutputStream.getBufferPtr(), inOutputStream.getByteLength(), k_EP2PSendUnreliable);
-}
-
-bool NGSteamGameServices::isP2PPacketAvailable(uint32_t& outPacketSize)
-{
-    return SteamGameServerNetworking()->IsP2PPacketAvailable(&outPacketSize);
-}
-
-uint32_t NGSteamGameServices::readP2PPacket(void* inToReceive, uint32_t inMaxLength, uint64_t& outFromPlayer)
-{
-    uint32_t packetSize;
-    CSteamID fromId;
-    SteamGameServerNetworking()->ReadP2PPacket(inToReceive, inMaxLength, &packetSize, &fromId);
-    outFromPlayer = fromId.ConvertToUint64();
-    
-    return packetSize;
-}
-
 std::list<NGSteamGameServer>& NGSteamGameServices::getGameServers()
 {
     return m_gameServers;

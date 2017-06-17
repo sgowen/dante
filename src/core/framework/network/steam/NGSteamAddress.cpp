@@ -36,3 +36,8 @@ std::string NGSteamAddress::toString() const
 {
     return StringUtil::toString(m_steamID.ConvertToUint64());
 }
+
+CSteamID& NGSteamAddress::getSteamID()
+{
+    return m_steamID;
+}

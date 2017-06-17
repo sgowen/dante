@@ -27,9 +27,10 @@
 
 #define NETWORK_TYPE_Entity 'ENTT'
 
-#define NETWORK_PACKET_TYPE_kHelloCC 'HELO'
-#define NETWORK_PACKET_TYPE_kWelcomeCC 'WLCM'
-#define NETWORK_PACKET_TYPE_kStateCC 'STAT'
-#define NETWORK_PACKET_TYPE_kInputCC 'INPT'
+#define NETWORK_PACKET_TYPE_HELLO 'HELO'
+#define NETWORK_PACKET_TYPE_WELCOME 'WLCM'
+#define NETWORK_PACKET_TYPE_STATE 'STAT'
+#define NETWORK_PACKET_TYPE_INPUT 'INPT'
+#define NETWORK_MAX_PACKETS_PER_FRAME 10
 
 #endif /* defined(__noctisgames__FrameworkConstants__) */

@@ -23,16 +23,15 @@ class IMachineAddress;
 class NGSteamPacketHandler : public IPacketHandler
 {
 public:
-    static const int kMaxPacketsPerFrameCount = 10;
-    
     NGSteamPacketHandler(ProcessPacketFunc processPacketFunc, HandleConnectionResetFunc handleConnectionResetFunc);
+    
     virtual ~NGSteamPacketHandler();
     
-    void sendPacket(const OutputMemoryBitStream& inOutputStream, IMachineAddress* inFromAddress);
+    virtual void sendPacket(const OutputMemoryBitStream& inOutputStream, IMachineAddress* inFromAddress);
     
-    void readIncomingPacketsIntoQueue();
+    virtual void readIncomingPacketsIntoQueue();
     
-    void processQueuedPackets();
+    virtual void processQueuedPackets();
     
 private:
     class ReceivedPacket;

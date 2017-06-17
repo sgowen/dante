@@ -15,6 +15,8 @@
 
 #include "InputMemoryBitStream.h"
 #include "Timing.h"
+#include "NGSteam.h"
+#include "FrameworkConstants.h"
 
 NGSteamPacketHandler::NGSteamPacketHandler(ProcessPacketFunc processPacketFunc, HandleConnectionResetFunc handleConnectionResetFunc) :
 IPacketHandler(),
@@ -31,12 +33,58 @@ NGSteamPacketHandler::~NGSteamPacketHandler()
 
 void NGSteamPacketHandler::sendPacket(const OutputMemoryBitStream& inOutputStream, IMachineAddress* inFromAddress)
 {
-    // TODO
+    NGSteamAddress* inFromSteamAddress = static_cast<NGSteamAddress*>(inFromAddress);
+    
+    if (SteamGameServerNetworking()->SendP2PPacket(inFromSteamAddress->getSteamID(), inOutputStream.getBufferPtr(), inOutputStream.getByteLength(), k_EP2PSendUnreliable))
+    {
+        int sentByteCount = inOutputStream.getByteLength();
+        if (sentByteCount > 0)
+        {
+            m_bytesSentThisFrame += sentByteCount;
+        }
+    }
 }
 
 void NGSteamPacketHandler::readIncomingPacketsIntoQueue()
 {
-    // TODO
+    char packetMem[1500];
+    size_t packetSize = sizeof(packetMem);
+    uint32_t incomingSize = 0;
+    InputMemoryBitStream inputStream(packetMem, packetSize * 8);
+    CSteamID fromId;
+    
+    //keep reading until we don't have anything to read (or we hit a max number that we'll process per frame)
+    int receivedPackedCount = 0;
+    int totalReadByteCount = 0;
+    
+    while (SteamNetworking()->IsP2PPacketAvailable(&incomingSize) &&
+          receivedPackedCount < NETWORK_MAX_PACKETS_PER_FRAME)
+    {
+        if (incomingSize <= packetSize)
+        {
+            uint32_t readByteCount;
+            
+            if (SteamGameServerNetworking()->ReadP2PPacket(packetMem, packetSize, &readByteCount, &fromId)
+                && readByteCount > 0)
+            {
+                inputStream.resetToCapacity(readByteCount);
+                ++receivedPackedCount;
+                totalReadByteCount += readByteCount;
+                
+                //shove the packet into the queue and we'll handle it as soon as we should...
+                //we'll pretend it wasn't received until simulated latency from now
+                //this doesn't sim jitter, for that we would need to.....
+                float simulatedReceivedTime = Timing::getInstance()->getFrameStartTime();
+                
+                m_packetQueue.emplace(simulatedReceivedTime, inputStream, fromId);
+            }
+        }
+    }
+    
+    if (totalReadByteCount > 0)
+    {
+        updateBytesReceivedLastFrame(totalReadByteCount);
+    }
 }
 
 void NGSteamPacketHandler::processQueuedPackets()

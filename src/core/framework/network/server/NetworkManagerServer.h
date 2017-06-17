@@ -36,9 +36,9 @@ public:
     
     static void staticHandleConnectionReset(IMachineAddress* inFromAddress);
     
-    virtual void processPacket(InputMemoryBitStream& inInputStream, SocketAddress* inFromAddress) override;
+    virtual void processPacket(InputMemoryBitStream& inInputStream, IMachineAddress* inFromAddress) override;
     
-    virtual void handleConnectionReset(SocketAddress* inFromAddress) override;
+    virtual void handleConnectionReset(IMachineAddress* inFromAddress) override;
     
     virtual void sendOutgoingPackets();
     
@@ -66,7 +66,7 @@ private:
     int m_iNewPlayerId;
     float m_fTimeOfLastSatePacket;
     
-    void handlePacketFromNewClient(InputMemoryBitStream& inInputStream, SocketAddress* inFromAddress);
+    void handlePacketFromNewClient(InputMemoryBitStream& inInputStream, IMachineAddress* inFromAddress);
     
     void processPacket(ClientProxy* inClientProxy, InputMemoryBitStream& inInputStream);
     

@@ -12,12 +12,13 @@
 #include "INetworkManager.h"
 
 #include "DeliveryNotificationManager.h"
-#include "SocketAddress.h"
 
 class EntityRegistry;
 class Entity;
 class MoveList;
 class ReplicationManagerClient;
+class WeightedTimedMovingAverage;
+class SocketAddress;
 
 #define NG_CLIENT (NetworkManagerClient::getInstance())
 
@@ -37,7 +38,7 @@ public:
     
     static void staticHandleConnectionReset(IMachineAddress* inFromAddress);
     
-    virtual void processPacket(InputMemoryBitStream& inInputStream, SocketAddress* inFromAddress) override;
+    virtual void processPacket(InputMemoryBitStream& inInputStream, IMachineAddress* inFromAddress) override;
     
     virtual void sendOutgoingPackets();
     

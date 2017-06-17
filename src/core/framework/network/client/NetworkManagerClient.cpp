@@ -15,6 +15,7 @@
 #include "MoveList.h"
 #include "ReplicationManagerClient.h"
 #include "WeightedTimedMovingAverage.h"
+#include "SocketAddress.h"
 
 #include "EntityManager.h"
 #include "StringUtil.h"
@@ -57,17 +58,17 @@ void NetworkManagerClient::staticHandleConnectionReset(IMachineAddress* inFromAd
     NG_CLIENT->handleConnectionReset(static_cast<SocketAddress*>(inFromAddress));
 }
 
-void NetworkManagerClient::processPacket(InputMemoryBitStream& inInputStream, SocketAddress* inFromAddress)
+void NetworkManagerClient::processPacket(InputMemoryBitStream& inInputStream, IMachineAddress* inFromAddress)
 {
     uint32_t packetType;
     inInputStream.read(packetType);
     
     switch(packetType)
     {
-        case kWelcomeCC:
+        case NETWORK_PACKET_TYPE_WELCOME:
             handleWelcomePacket(inInputStream);
             break;
-        case kStateCC:
+        case NETWORK_PACKET_TYPE_STATE:
             if (m_deliveryNotificationManager.readAndProcessState(inInputStream))
             {
                 handleStatePacket(inInputStream);
@@ -123,7 +124,7 @@ void NetworkManagerClient::sendHelloPacket()
 {
     OutputMemoryBitStream helloPacket;
     
-    helloPacket.write(kHelloCC);
+    helloPacket.write(NETWORK_PACKET_TYPE_HELLO);
     helloPacket.write(m_name);
     
     sendPacket(helloPacket, m_serverAddress);
@@ -245,7 +246,7 @@ void NetworkManagerClient::sendInputPacket()
     {
         OutputMemoryBitStream inputPacket;
         
-        inputPacket.write(kInputCC);
+        inputPacket.write(NETWORK_PACKET_TYPE_INPUT);
         
         m_deliveryNotificationManager.writeState(inputPacket);
         

@@ -24,16 +24,15 @@ class IMachineAddress;
 class SocketPacketHandler : public IPacketHandler
 {
 public:
-    static const int kMaxPacketsPerFrameCount = 10;
-    
     SocketPacketHandler(uint16_t inPort, ProcessPacketFunc processPacketFunc, HandleConnectionResetFunc handleConnectionResetFunc);
+    
     virtual ~SocketPacketHandler();
     
-    void sendPacket(const OutputMemoryBitStream& inOutputStream, IMachineAddress* inFromAddress);
+    virtual void sendPacket(const OutputMemoryBitStream& inOutputStream, IMachineAddress* inFromAddress);
     
-    void readIncomingPacketsIntoQueue();
+    virtual void readIncomingPacketsIntoQueue();
     
-    void processQueuedPackets();
+    virtual void processQueuedPackets();
     
 private:
     class ReceivedPacket;

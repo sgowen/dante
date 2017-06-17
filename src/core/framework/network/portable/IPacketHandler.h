@@ -25,8 +25,6 @@ typedef void (*ProcessPacketFunc)(InputMemoryBitStream& inInputStream, IMachineA
 class IPacketHandler
 {
 public:
-    static const int kMaxPacketsPerFrameCount = 10;
-    
     IPacketHandler();
     
     virtual ~IPacketHandler();

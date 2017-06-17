@@ -26,6 +26,8 @@ public:
     
     virtual std::string toString() const;
     
+    CSteamID& getSteamID();
+    
 private:
     CSteamID m_steamID;
 };

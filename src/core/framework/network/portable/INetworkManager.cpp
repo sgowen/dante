@@ -12,7 +12,6 @@
 
 #include "OutputMemoryBitStream.h"
 #include "WeightedTimedMovingAverage.h"
-#include "SocketAddress.h"
 #include "IMachineAddress.h"
 
 #include "SocketPacketHandler.h"
@@ -37,7 +36,7 @@ const WeightedTimedMovingAverage& INetworkManager::getBytesSentPerSecond() const
     return m_packetHandler->getBytesSentPerSecond();
 }
 
-void INetworkManager::handleConnectionReset(SocketAddress* inFromAddress)
+void INetworkManager::handleConnectionReset(IMachineAddress* inFromAddress)
 {
     UNUSED(inFromAddress);
 }
