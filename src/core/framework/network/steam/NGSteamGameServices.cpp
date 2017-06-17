@@ -52,6 +52,11 @@ NGSteamGameServices* NGSteamGameServices::getInstance()
 
 int NGSteamGameServices::init()
 {
+    if (m_iStatus != STEAM_UNINITIALIZED)
+    {
+        return m_iStatus;
+    }
+    
     if (SteamAPI_RestartAppIfNecessary(k_uAppIdInvalid))
     {
         // if Steam is not running or the game wasn't started through Steam, SteamAPI_RestartAppIfNecessary starts the
@@ -122,6 +127,11 @@ int NGSteamGameServices::init()
 
 void NGSteamGameServices::deinit()
 {
+    if (m_iStatus == STEAM_UNINITIALIZED)
+    {
+        return;
+    }
+    
     // Shutdown the SteamAPI
     SteamAPI_Shutdown();
     
@@ -133,6 +143,8 @@ void NGSteamGameServices::deinit()
         SteamMatchmakingServers()->ReleaseRequest(m_hServerListRequest);
         m_hServerListRequest = nullptr;
     }
+    
+    m_iStatus = STEAM_UNINITIALIZED;
 }
 
 void NGSteamGameServices::update()
@@ -329,7 +341,7 @@ m_nNumFilesInCloud(0),
 m_iNumServers(0),
 m_isRequestingServers(false),
 m_hServerListRequest(nullptr),
-m_iStatus(STEAM_INIT_NOT_CALLED)
+m_iStatus(STEAM_UNINITIALIZED)
 {
     // Empty
 }

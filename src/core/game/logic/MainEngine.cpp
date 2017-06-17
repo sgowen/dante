@@ -42,6 +42,8 @@
 #include "InputState.h"
 #include "FWInstanceManager.h"
 #include "EntityManager.h"
+#include "SocketClientHelper.h"
+#include "NGSteamClientHelper.h"
 
 void MainEngine::staticAddEntity(Entity* inEntity)
 {
@@ -57,7 +59,8 @@ MainEngine::MainEngine() : IEngine(),
 m_config(new JsonFile("dante.cfg")),
 m_renderer(new MainRenderer(MAX_BATCH_SIZE)),
 m_fStateTime(0),
-m_fFrameStateTime(0)
+m_fFrameStateTime(0),
+m_isSteam(false)
 {
     m_config->load();
     
@@ -160,7 +163,7 @@ void MainEngine::update(float deltaTime)
             InputState* inputState = InputManager::getInstance()->getInputState();
             if (inputState->isJoiningSteamServer())
             {
-                joinServer();
+                joinServer(m_isSteam);
             }
             else if (inputState->isLeavingServer())
             {
@@ -172,19 +175,19 @@ void MainEngine::update(float deltaTime)
             InputState* inputState = InputManager::getInstance()->getInputState();
             if (inputState->isStartingServer())
             {
-                startServer();
+                startServer(false);
             }
             else if (inputState->isJoiningServer())
             {
-                joinServer();
+                joinServer(false);
             }
             else if (inputState->isStartingSteamServer())
             {
-                // TODO
+                startServer(true);
             }
             else if (inputState->isJoiningSteamServer())
             {
-                // TODO
+                joinServer(true);
             }
 			else if (inputState->isLeavingServer())
 			{
@@ -210,11 +213,13 @@ void MainEngine::render()
     m_renderer->endFrame();
 }
 
-void MainEngine::startServer()
+void MainEngine::startServer(bool isSteam)
 {
+    m_isSteam = isSteam;
+    
     if (!Server::getInstance())
     {
-        Server::create();
+        Server::create(isSteam);
         
         if (!NG_SERVER)
         {
@@ -223,9 +228,25 @@ void MainEngine::startServer()
     }
 }
 
-void MainEngine::joinServer()
+void MainEngine::joinServer(bool isSteam)
 {
-    NetworkManagerClient::create("localhost:9999", "Noctis Games", FRAME_RATE, InputManager::staticRemoveProcessedMoves, InputManager::staticGetMoveList);
+    m_isSteam = isSteam;
+    
+    if (m_isSteam)
+    {
+        NetworkManagerClient::create(new NGSteamClientHelper(NetworkManagerClient::staticProcessPacket, NetworkManagerClient::staticHandleNoResponse, NetworkManagerClient::staticHandleConnectionReset), FRAME_RATE, InputManager::staticRemoveProcessedMoves, InputManager::staticGetMoveList);
+    }
+    else
+    {
+        // This allows us to run both a debug and a release socket-based client on the same machine
+#if defined(DEBUG) || defined(_DEBUG)
+        uint16_t port = 1339;
+#else
+        uint16_t port = 1337;
+#endif
+        
+        NetworkManagerClient::create(new SocketClientHelper("localhost:9999", "Noctis Games", port, NetworkManagerClient::staticProcessPacket, NetworkManagerClient::staticHandleNoResponse, NetworkManagerClient::staticHandleConnectionReset), FRAME_RATE, InputManager::staticRemoveProcessedMoves, InputManager::staticGetMoveList);
+    }
     
     InputManager::getInstance()->setConnected(NG_CLIENT);
 }

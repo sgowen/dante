@@ -52,10 +52,11 @@ private:
     
     float m_fStateTime;
     float m_fFrameStateTime;
+    bool m_isSteam;
     
-    void startServer();
+    void startServer(bool isSteam);
     
-    void joinServer();
+    void joinServer(bool isSteam);
     
     void leaveServer();
 };

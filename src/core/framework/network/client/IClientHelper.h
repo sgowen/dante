@@ -9,12 +9,20 @@
 #ifndef __noctisgames__IClientHelper__
 #define __noctisgames__IClientHelper__
 
-class IClientHelper
+#include "INetworkHelper.h"
+
+#include <string>
+
+class IClientHelper : public INetworkHelper
 {
 public:
-    IClientHelper();
+    IClientHelper(IPacketHandler* packetHandler);
     
     virtual ~IClientHelper();
+    
+    virtual void sendPacket(const OutputMemoryBitStream& inOutputStream) = 0;
+    
+    virtual std::string& getName() = 0;
 };
 
 #endif /* defined(__noctisgames__IClientHelper__) */

@@ -21,7 +21,7 @@ class ISteamRemoteStorage;
 #define NG_STEAM_GAME_SERVICES (NGSteamGameServices::getInstance())
 
 #define STEAM_INIT_SUCCESS 1
-#define STEAM_INIT_NOT_CALLED 0
+#define STEAM_UNINITIALIZED 0
 #define STEAM_INIT_FAIL_NOT_RUNNING -1
 #define STEAM_INIT_FAIL_DRM -2
 #define STEAM_INIT_FAIL_API_INIT -3

@@ -97,7 +97,7 @@ std::string	SocketAddress::toString() const
 		break;
 	}
 
-	return StringUtil::format("%s:%d", buffer, ntohs(port));
+	return StringUtil::format("Socket Address %s:%d", buffer, ntohs(port));
 }
 
 #if _WIN32

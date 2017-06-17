@@ -11,10 +11,12 @@
 
 #include "IServerHelper.h"
 
+#include "IPacketHandler.h"
+
 class NGSteamServerHelper : public IServerHelper
 {
 public:
-    NGSteamServerHelper();
+    NGSteamServerHelper(ProcessPacketFunc processPacketFunc, HandleNoResponseFunc handleNoResponseFunc, HandleConnectionResetFunc handleConnectionResetFunc);
     
     virtual ~NGSteamServerHelper();
 };

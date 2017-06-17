@@ -10,12 +10,11 @@
 
 #include "NetworkManagerServer.h"
 
-#include "SocketServerHelper.h"
+#include "IServerHelper.h"
 #include "InputMemoryBitStream.h"
 #include "OutputMemoryBitStream.h"
 #include "DeliveryNotificationManager.h"
 #include "IMachineAddress.h"
-#include "SocketPacketHandler.h"
 #include "ClientProxy.h"
 #include "IInputState.h"
 #include "Entity.h"
@@ -34,11 +33,11 @@
 
 NetworkManagerServer* NetworkManagerServer::s_instance = nullptr;
 
-void NetworkManagerServer::create(uint16_t inPort, HandleNewClientFunc handleNewClientFunc, HandleLostClientFunc handleLostClientFunc, InputStateCreationFunc inputStateCreationFunc)
+void NetworkManagerServer::create(IServerHelper* inServerHelper, HandleNewClientFunc inHandleNewClientFunc, HandleLostClientFunc inHandleLostClientFunc, InputStateCreationFunc inInputStateCreationFunc)
 {
     assert(!s_instance);
     
-    s_instance = new NetworkManagerServer(inPort, handleNewClientFunc, handleLostClientFunc, inputStateCreationFunc);
+    s_instance = new NetworkManagerServer(inServerHelper, inHandleNewClientFunc, inHandleLostClientFunc, inInputStateCreationFunc);
 }
 
 void NetworkManagerServer::destroy()
@@ -71,7 +70,7 @@ void NetworkManagerServer::staticHandleConnectionReset(IMachineAddress* inFromAd
 
 void NetworkManagerServer::processIncomingPackets()
 {
-    m_packetHandler->processIncomingPackets();
+    m_serverHelper->processIncomingPackets();
 }
 
 void NetworkManagerServer::checkForDisconnects()
@@ -169,7 +168,7 @@ void NetworkManagerServer::processPacket(InputMemoryBitStream& inInputStream, IM
     if (it == m_addressHashToClientMap.end()
         && m_addressHashToClientMap.size() < MAX_NUM_PLAYERS_PER_SERVER)
     {
-        LOG("Client socket %s", inFromAddress->toString().c_str());
+        LOG("Client %s", inFromAddress->toString().c_str());
         
         //didn't find one? it's a new cilent..is the a HELO? if so, create a client proxy...
         handlePacketFromNewClient(inInputStream, inFromAddress);
@@ -197,7 +196,7 @@ void NetworkManagerServer::handleConnectionReset(IMachineAddress* inFromAddress)
 
 void NetworkManagerServer::sendPacket(const OutputMemoryBitStream& inOutputStream, IMachineAddress* inFromAddress)
 {
-    m_packetHandler->sendPacket(inOutputStream, inFromAddress);
+    m_serverHelper->sendPacket(inOutputStream, inFromAddress);
 }
 
 void NetworkManagerServer::handlePacketFromNewClient(InputMemoryBitStream& inInputStream, IMachineAddress* inFromAddress)
@@ -232,7 +231,7 @@ void NetworkManagerServer::handlePacketFromNewClient(InputMemoryBitStream& inInp
     else
     {
         //bad incoming packet from unknown client- we're under attack!!
-        LOG("Bad incoming packet from unknown client at socket %s", inFromAddress->toString().c_str());
+        LOG("Bad incoming packet from unknown client at %s", inFromAddress->toString().c_str());
     }
 }
 
@@ -340,12 +339,11 @@ void NetworkManagerServer::handleClientDisconnected(ClientProxy* inClientProxy)
     }
 }
 
-NetworkManagerServer::NetworkManagerServer(uint16_t inPort, HandleNewClientFunc handleNewClientFunc, HandleLostClientFunc handleLostClientFunc, InputStateCreationFunc inputStateCreationFunc) :
-m_serverHelper(new SocketServerHelper()),
-m_packetHandler(new SocketPacketHandler(inPort, NetworkManagerServer::staticProcessPacket, NetworkManagerServer::staticHandleNoResponse, NetworkManagerServer::staticHandleConnectionReset)),
-m_handleNewClientFunc(handleNewClientFunc),
-m_handleLostClientFunc(handleLostClientFunc),
-m_inputStateCreationFunc(inputStateCreationFunc),
+NetworkManagerServer::NetworkManagerServer(IServerHelper* inServerHelper, HandleNewClientFunc inHandleNewClientFunc, HandleLostClientFunc inHandleLostClientFunc, InputStateCreationFunc inInputStateCreationFunc) :
+m_serverHelper(inServerHelper),
+m_handleNewClientFunc(inHandleNewClientFunc),
+m_handleLostClientFunc(inHandleLostClientFunc),
+m_inputStateCreationFunc(inInputStateCreationFunc),
 m_iNewPlayerId(1)
 {
     // Empty
@@ -354,7 +352,6 @@ m_iNewPlayerId(1)
 NetworkManagerServer::~NetworkManagerServer()
 {
     delete m_serverHelper;
-    delete m_packetHandler;
     
     NGSTDUtil::cleanUpMapOfPointers(m_addressHashToClientMap);
     

@@ -17,7 +17,6 @@ class InputMemoryBitStream;
 class OutputMemoryBitStream;
 class DeliveryNotificationManager;
 class IMachineAddress;
-class IPacketHandler;
 class EntityRegistry;
 class Entity;
 class MoveList;
@@ -41,7 +40,7 @@ enum NetworkClientState
 class NetworkManagerClient
 {
 public:
-    static void create(const std::string& inServerIPAddress, const std::string& inName, float inFrameRate, RemoveProcessedMovesFunc removeProcessedMovesFunc, GetMoveListFunc getMoveListFunc);
+    static void create(IClientHelper* inClientHelper, float inFrameRate, RemoveProcessedMovesFunc inRemoveProcessedMovesFunc, GetMoveListFunc inGetMoveListFunc);
     
     static void destroy();
     
@@ -65,6 +64,8 @@ public:
     
     float getRoundTripTime() const;
     
+    std::string& getClientUserName();
+    
     int getPlayerId() const;
     
     NetworkClientState getState() const;
@@ -72,8 +73,7 @@ public:
 private:
     static NetworkManagerClient* s_instance;
     
-    IClientHelper* m_clientHelper;
-    IPacketHandler* m_packetHandler;
+    IClientHelper* m_clientHelper;    
     
     RemoveProcessedMovesFunc m_removeProcessedMovesFunc;
     GetMoveListFunc m_getMoveListFunc;
@@ -81,14 +81,11 @@ private:
     DeliveryNotificationManager* m_deliveryNotificationManager;
     ReplicationManagerClient* m_replicationManagerClient;
     
-    SocketAddress* m_serverAddress;
-    
     NetworkClientState m_state;
     
     float m_fTimeOfLastHello;
     float m_fTimeOfLastInputPacket;
     
-    std::string m_name;
     int m_iPlayerId;
     float m_fFrameRate;
     
@@ -103,7 +100,7 @@ private:
     
     void handleConnectionReset(IMachineAddress* inFromAddress);
     
-    void sendPacket(const OutputMemoryBitStream& inOutputStream, IMachineAddress* inFromAddress);
+    void sendPacket(const OutputMemoryBitStream& inOutputStream);
     
     void updateSayingHello();
     
@@ -124,7 +121,7 @@ private:
     void destroyAllInMap(const std::unordered_map<int, Entity*>& inObjectsToDestroy);
     
     // ctor, copy ctor, and assignment should be private in a Singleton
-    NetworkManagerClient(const std::string& inServerIPAddress, const std::string& inName, float inFrameRate, RemoveProcessedMovesFunc removeProcessedMovesFunc, GetMoveListFunc getMoveListFunc);
+    NetworkManagerClient(IClientHelper* inClientHelper, float inFrameRate, RemoveProcessedMovesFunc inRemoveProcessedMovesFunc, GetMoveListFunc inGetMoveListFunc);
     ~NetworkManagerClient();
     NetworkManagerClient(const NetworkManagerClient&);
     NetworkManagerClient& operator=(const NetworkManagerClient&);

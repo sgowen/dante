@@ -10,12 +10,18 @@
 
 #include "NGSteamServerHelper.h"
 
-NGSteamServerHelper::NGSteamServerHelper() : IServerHelper()
+#include "NGSteamPacketHandler.h"
+
+#include "NGSteamGameServices.h"
+
+#include <assert.h>
+
+NGSteamServerHelper::NGSteamServerHelper(ProcessPacketFunc processPacketFunc, HandleNoResponseFunc handleNoResponseFunc, HandleConnectionResetFunc handleConnectionResetFunc) : IServerHelper(new NGSteamPacketHandler(processPacketFunc, handleNoResponseFunc, handleConnectionResetFunc))
 {
-    // Empty
+    assert(NG_STEAM_GAME_SERVICES->init() == STEAM_INIT_SUCCESS);
 }
 
 NGSteamServerHelper::~NGSteamServerHelper()
 {
-    // Empty
+    NG_STEAM_GAME_SERVICES->deinit();
 }

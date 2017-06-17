@@ -16,7 +16,6 @@ class InputMemoryBitStream;
 class OutputMemoryBitStream;
 class DeliveryNotificationManager;
 class IMachineAddress;
-class IPacketHandler;
 class ClientProxy;
 class IInputState;
 class Entity;
@@ -30,7 +29,7 @@ typedef IInputState* (*InputStateCreationFunc)();
 class NetworkManagerServer
 {
 public:
-    static void create(uint16_t inPort, HandleNewClientFunc handleNewClientFunc, HandleLostClientFunc handleLostClientFunc, InputStateCreationFunc inputStateCreationFunc);
+    static void create(IServerHelper* inServerHelper, HandleNewClientFunc inHandleNewClientFunc, HandleLostClientFunc inHandleLostClientFunc, InputStateCreationFunc inInputStateCreationFunc);
     
     static void destroy();
     
@@ -62,7 +61,6 @@ private:
     static NetworkManagerServer* s_instance;
     
     IServerHelper* m_serverHelper;
-    IPacketHandler* m_packetHandler;
     
     HandleNewClientFunc m_handleNewClientFunc;
     HandleLostClientFunc m_handleLostClientFunc;
@@ -96,7 +94,7 @@ private:
     void handleClientDisconnected(ClientProxy* inClientProxy);
     
     // ctor, copy ctor, and assignment should be private in a Singleton
-    NetworkManagerServer(uint16_t inPort, HandleNewClientFunc handleNewClientFunc, HandleLostClientFunc handleLostClientFunc, InputStateCreationFunc inputStateCreationFunc);
+    NetworkManagerServer(IServerHelper* inServerHelper, HandleNewClientFunc inHandleNewClientFunc, HandleLostClientFunc inHandleLostClientFunc, InputStateCreationFunc inInputStateCreationFunc);
     ~NetworkManagerServer();
     NetworkManagerServer(const NetworkManagerServer&);
     NetworkManagerServer& operator=(const NetworkManagerServer&);

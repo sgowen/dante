@@ -10,7 +10,7 @@
 
 #include "IClientHelper.h"
 
-IClientHelper::IClientHelper()
+IClientHelper::IClientHelper(IPacketHandler* packetHandler) : INetworkHelper(packetHandler)
 {
     // Empty
 }

@@ -28,6 +28,7 @@
 		BB4253DB1EF59793003F6D2A /* NGSteamServerHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB4253D81EF59793003F6D2A /* NGSteamServerHelper.cpp */; };
 		BB4253DE1EF598AC003F6D2A /* SocketServerHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB4253DC1EF598AC003F6D2A /* SocketServerHelper.cpp */; };
 		BB4253E11EF598C1003F6D2A /* SocketClientHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB4253DF1EF598C1003F6D2A /* SocketClientHelper.cpp */; };
+		BB4253E41EF5B078003F6D2A /* INetworkHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB4253E21EF5B078003F6D2A /* INetworkHelper.cpp */; };
 		BB44C3281DB030B3003E633F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = BB44C3201DB030B3003E633F /* AppDelegate.m */; };
 		BB44C3291DB030B3003E633F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BB44C3211DB030B3003E633F /* Assets.xcassets */; };
 		BB44C32A1DB030B3003E633F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BB44C3221DB030B3003E633F /* Main.storyboard */; };
@@ -293,6 +294,8 @@
 		BB4253DD1EF598AC003F6D2A /* SocketServerHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SocketServerHelper.h; sourceTree = "<group>"; };
 		BB4253DF1EF598C1003F6D2A /* SocketClientHelper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SocketClientHelper.cpp; sourceTree = "<group>"; };
 		BB4253E01EF598C1003F6D2A /* SocketClientHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SocketClientHelper.h; sourceTree = "<group>"; };
+		BB4253E21EF5B078003F6D2A /* INetworkHelper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = INetworkHelper.cpp; sourceTree = "<group>"; };
+		BB4253E31EF5B078003F6D2A /* INetworkHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INetworkHelper.h; sourceTree = "<group>"; };
 		BB44C30A1DB0303F003E633F /* Dante.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Dante.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BB44C31F1DB030B3003E633F /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		BB44C3201DB030B3003E633F /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -1321,6 +1324,8 @@
 				BB7251A71EE105780024C71C /* IInputState.h */,
 				BBAFD32B1EF44813004F2742 /* IMachineAddress.cpp */,
 				BBAFD32C1EF44813004F2742 /* IMachineAddress.h */,
+				BB4253E21EF5B078003F6D2A /* INetworkHelper.cpp */,
+				BB4253E31EF5B078003F6D2A /* INetworkHelper.h */,
 				BB8308141EC2AD1F00435E7E /* InFlightPacket.cpp */,
 				BB8308151EC2AD1F00435E7E /* InFlightPacket.h */,
 				BBBD14C11EE0C9B4003F9307 /* InputMemoryBitStream.cpp */,
@@ -2004,6 +2009,7 @@
 				BBBD14C41EE0C9B4003F9307 /* InputMemoryBitStream.cpp in Sources */,
 				BBAEF2601EA94EDA00F0866E /* GpuProgramWrapper.cpp in Sources */,
 				BBAEF26E1EA94EDA00F0866E /* NGRectBatcherFactory.cpp in Sources */,
+				BB4253E41EF5B078003F6D2A /* INetworkHelper.cpp in Sources */,
 				BBCFF1C71ECD312E003EE520 /* IAssetsMapper.cpp in Sources */,
 				BB44CB891DB053C0003E633F /* pngrutil.c in Sources */,
 				BB7251A91EE105780024C71C /* IInputState.cpp in Sources */,

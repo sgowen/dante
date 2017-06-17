@@ -9,10 +9,12 @@
 #ifndef __noctisgames__IServerHelper__
 #define __noctisgames__IServerHelper__
 
-class IServerHelper
+#include "INetworkHelper.h"
+
+class IServerHelper : public INetworkHelper
 {
 public:
-    IServerHelper();
+    IServerHelper(IPacketHandler* packetHandler);
     
     virtual ~IServerHelper();
 };

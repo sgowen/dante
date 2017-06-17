@@ -11,12 +11,25 @@
 
 #include "IClientHelper.h"
 
+#include "IPacketHandler.h"
+
+class NGSteamAddress;
+
 class NGSteamClientHelper : public IClientHelper
 {
 public:
-    NGSteamClientHelper();
+    NGSteamClientHelper(ProcessPacketFunc processPacketFunc, HandleNoResponseFunc handleNoResponseFunc, HandleConnectionResetFunc handleConnectionResetFunc);
     
     virtual ~NGSteamClientHelper();
+    
+    virtual void sendPacket(const OutputMemoryBitStream& inOutputStream);
+    
+    virtual std::string& getName();
+    
+private:
+    NGSteamAddress* m_clientSteamID;
+    NGSteamAddress* m_serverID;
+    std::string m_name;
 };
 
 #endif /* defined(__noctisgames__NGSteamClientHelper__) */

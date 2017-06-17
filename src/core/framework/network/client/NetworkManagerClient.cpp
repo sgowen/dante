@@ -15,7 +15,6 @@
 #include "OutputMemoryBitStream.h"
 #include "DeliveryNotificationManager.h"
 #include "IMachineAddress.h"
-#include "SocketPacketHandler.h"
 #include "EntityRegistry.h"
 #include "Entity.h"
 #include "MoveList.h"
@@ -34,11 +33,11 @@
 
 NetworkManagerClient* NetworkManagerClient::s_instance = nullptr;
 
-void NetworkManagerClient::create(const std::string& inServerIPAddress, const std::string& inName, float inFrameRate, RemoveProcessedMovesFunc removeProcessedMovesFunc, GetMoveListFunc getMoveListFunc)
+void NetworkManagerClient::create(IClientHelper* inClientHelper, float inFrameRate, RemoveProcessedMovesFunc inRemoveProcessedMovesFunc, GetMoveListFunc inGetMoveListFunc)
 {
     assert(!s_instance);
     
-    s_instance = new NetworkManagerClient(inServerIPAddress, inName, inFrameRate, removeProcessedMovesFunc, getMoveListFunc);
+    s_instance = new NetworkManagerClient(inClientHelper, inFrameRate, inRemoveProcessedMovesFunc, inGetMoveListFunc);
 }
 
 void NetworkManagerClient::destroy()
@@ -71,7 +70,7 @@ void NetworkManagerClient::staticHandleConnectionReset(IMachineAddress* inFromAd
 
 void NetworkManagerClient::processIncomingPackets()
 {
-    m_packetHandler->processIncomingPackets();
+    m_clientHelper->processIncomingPackets();
 }
 
 void NetworkManagerClient::sendOutgoingPackets()
@@ -92,12 +91,12 @@ void NetworkManagerClient::sendOutgoingPackets()
 
 const WeightedTimedMovingAverage& NetworkManagerClient::getBytesReceivedPerSecond() const
 {
-    return m_packetHandler->getBytesReceivedPerSecond();
+    return m_clientHelper->getBytesReceivedPerSecond();
 }
 
 const WeightedTimedMovingAverage& NetworkManagerClient::getBytesSentPerSecond() const
 {
-    return m_packetHandler->getBytesSentPerSecond();
+    return m_clientHelper->getBytesSentPerSecond();
 }
 
 const WeightedTimedMovingAverage& NetworkManagerClient::getAvgRoundTripTime() const
@@ -108,6 +107,11 @@ const WeightedTimedMovingAverage& NetworkManagerClient::getAvgRoundTripTime() co
 float NetworkManagerClient::getRoundTripTime() const
 {
     return m_avgRoundTripTime->getValue();
+}
+
+std::string& NetworkManagerClient::getClientUserName()
+{
+    return m_clientHelper->getName();
 }
 
 int NetworkManagerClient::getPlayerId() const
@@ -156,9 +160,9 @@ void NetworkManagerClient::handleConnectionReset(IMachineAddress* inFromAddress)
     UNUSED(inFromAddress);
 }
 
-void NetworkManagerClient::sendPacket(const OutputMemoryBitStream& inOutputStream, IMachineAddress* inFromAddress)
+void NetworkManagerClient::sendPacket(const OutputMemoryBitStream& inOutputStream)
 {
-    m_packetHandler->sendPacket(inOutputStream, inFromAddress);
+    m_clientHelper->sendPacket(inOutputStream);
 }
 
 void NetworkManagerClient::updateSayingHello()
@@ -177,9 +181,9 @@ void NetworkManagerClient::sendHelloPacket()
     OutputMemoryBitStream helloPacket;
     
     helloPacket.write(NETWORK_PACKET_TYPE_HELLO);
-    helloPacket.write(m_name);
+    helloPacket.write(m_clientHelper->getName());
     
-    sendPacket(helloPacket, m_serverAddress);
+    sendPacket(helloPacket);
 }
 
 void NetworkManagerClient::handleWelcomePacket(InputMemoryBitStream& inInputStream)
@@ -192,7 +196,7 @@ void NetworkManagerClient::handleWelcomePacket(InputMemoryBitStream& inInputStre
         m_iPlayerId = playerId;
         m_state = NCS_Welcomed;
         
-        LOG("'%s' was welcomed on client as player %d", m_name.c_str(), m_iPlayerId);
+        LOG("'%s' was welcomed on client as player %d", m_clientHelper->getName().c_str(), m_iPlayerId);
     }
 }
 
@@ -320,30 +324,22 @@ void NetworkManagerClient::sendInputPacket()
             move->write(inputPacket);
         }
         
-        sendPacket(inputPacket, m_serverAddress);
+        sendPacket(inputPacket);
     }
 }
 
-NetworkManagerClient::NetworkManagerClient(const std::string& inServerIPAddress, const std::string& inName, float inFrameRate, RemoveProcessedMovesFunc removeProcessedMovesFunc, GetMoveListFunc getMoveListFunc) :
-m_clientHelper(new SocketClientHelper()),
-// This allows us to run both a debug and a release client on the same machine
-#if defined(DEBUG) || defined(_DEBUG)
-m_packetHandler(new SocketPacketHandler(1339, NetworkManagerClient::staticProcessPacket, NetworkManagerClient::staticHandleNoResponse, NetworkManagerClient::staticHandleConnectionReset)),
-#else
-m_packetHandler(new SocketPacketHandler(1337, NetworkManagerClient::staticProcessPacket, NetworkManagerClient::staticHandleNoResponse, NetworkManagerClient::staticHandleConnectionReset)),
-#endif
-m_removeProcessedMovesFunc(removeProcessedMovesFunc),
-m_getMoveListFunc(getMoveListFunc),
+NetworkManagerClient::NetworkManagerClient(IClientHelper* inClientHelper, float inFrameRate, RemoveProcessedMovesFunc inRemoveProcessedMovesFunc, GetMoveListFunc inGetMoveListFunc) :
+m_clientHelper(inClientHelper),
+m_removeProcessedMovesFunc(inRemoveProcessedMovesFunc),
+m_getMoveListFunc(inGetMoveListFunc),
 m_replicationManagerClient(new ReplicationManagerClient()),
 m_avgRoundTripTime(new WeightedTimedMovingAverage(1.f)),
-m_serverAddress(SocketAddressFactory::createIPv4FromString(inServerIPAddress)),
 m_state(NCS_SayingHello),
 m_deliveryNotificationManager(new DeliveryNotificationManager(true, false)),
 m_fTimeOfLastHello(0.0f),
 m_fTimeOfLastInputPacket(0.0f),
 m_fLastMoveProcessedByServerTimestamp(0.0f),
 m_fLastServerCommunicationTimestamp(Timing::getInstance()->getFrameStartTime()),
-m_name(inName),
 m_fFrameRate(inFrameRate)
 {
     // Empty
@@ -352,9 +348,7 @@ m_fFrameRate(inFrameRate)
 NetworkManagerClient::~NetworkManagerClient()
 {
     delete m_clientHelper;
-    delete m_packetHandler;
     delete m_deliveryNotificationManager;
     delete m_replicationManagerClient;
-    delete m_serverAddress;
     delete m_avgRoundTripTime;
 }

@@ -16,7 +16,7 @@ class Robot;
 class Server
 {
 public:
-    static void create();
+    static void create(bool isSteam);
     
     static void destroy();
     
@@ -48,7 +48,7 @@ private:
     void respawnEnemiesIfNecessary();
     
     // ctor, copy ctor, and assignment should be private in a Singleton
-    Server();
+    Server(bool isSteam);
     ~Server();
     Server(const Server&);
     Server& operator=(const Server&);

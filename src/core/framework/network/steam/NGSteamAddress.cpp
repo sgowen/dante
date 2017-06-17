@@ -34,7 +34,7 @@ size_t NGSteamAddress::getHash() const
 
 std::string NGSteamAddress::toString() const
 {
-    return StringUtil::toString(m_steamID.ConvertToUint64());
+    return StringUtil::format("Steam ID %llu", m_steamID.ConvertToUint64());
 }
 
 CSteamID& NGSteamAddress::getSteamID()

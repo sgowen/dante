@@ -11,12 +11,24 @@
 
 #include "IClientHelper.h"
 
+#include "IPacketHandler.h"
+
+class SocketAddress;
+
 class SocketClientHelper : public IClientHelper
 {
 public:
-    SocketClientHelper();
+    SocketClientHelper(const std::string& inServerIPAddress, const std::string& inName, uint16_t inPort, ProcessPacketFunc processPacketFunc, HandleNoResponseFunc handleNoResponseFunc, HandleConnectionResetFunc handleConnectionResetFunc);
     
     virtual ~SocketClientHelper();
+    
+    virtual void sendPacket(const OutputMemoryBitStream& inOutputStream);
+    
+    virtual std::string& getName();
+    
+private:
+    SocketAddress* m_serverAddress;
+    std::string m_name;
 };
 
 #endif /* defined(__noctisgames__SocketClientHelper__) */

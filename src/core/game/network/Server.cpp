@@ -26,17 +26,19 @@
 #include "InstanceManager.h"
 #include "FWInstanceManager.h"
 #include "EntityManager.h"
+#include "SocketServerHelper.h"
+#include "NGSteamServerHelper.h"
 
 #include <ctime> // rand
 #include <assert.h>
 
 Server* Server::s_instance = nullptr;
 
-void Server::create()
+void Server::create(bool isSteam)
 {
     assert(!s_instance);
     
-    s_instance = new Server();
+    s_instance = new Server(isSteam);
 }
 
 void Server::destroy()
@@ -192,7 +194,7 @@ void Server::respawnEnemiesIfNecessary()
     }
 }
 
-Server::Server() : m_fStateTime(0), m_fFrameStateTime(0), m_fStateTimeNoEnemies(0)
+Server::Server(bool isSteam) : m_fStateTime(0), m_fFrameStateTime(0), m_fStateTimeNoEnemies(0)
 {
     FWInstanceManager::getServerEntityManager()->init(Server::staticRemoveEntity);
     
@@ -202,7 +204,14 @@ Server::Server() : m_fStateTime(0), m_fFrameStateTime(0), m_fStateTimeNoEnemies(
     FWInstanceManager::getServerEntityRegistry()->registerCreationFunction(NETWORK_TYPE_Projectile, Projectile::staticCreateServer);
     FWInstanceManager::getServerEntityRegistry()->registerCreationFunction(NETWORK_TYPE_SpacePirate, SpacePirate::staticCreateServer);
     
-    NetworkManagerServer::create(9999, Server::staticHandleNewClient, Server::staticHandleLostClient, PooledObjectsManager::borrowInputState);
+    if (isSteam)
+    {
+        NetworkManagerServer::create(new NGSteamServerHelper(NetworkManagerServer::staticProcessPacket, NetworkManagerServer::staticHandleNoResponse, NetworkManagerServer::staticHandleConnectionReset), Server::staticHandleNewClient, Server::staticHandleLostClient, PooledObjectsManager::borrowInputState);
+    }
+    else
+    {
+        NetworkManagerServer::create(new SocketServerHelper(9999, NetworkManagerServer::staticProcessPacket, NetworkManagerServer::staticHandleNoResponse, NetworkManagerServer::staticHandleConnectionReset), Server::staticHandleNewClient, Server::staticHandleLostClient, PooledObjectsManager::borrowInputState);
+    }
 }
 
 Server::~Server()

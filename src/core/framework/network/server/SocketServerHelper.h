@@ -11,10 +11,12 @@
 
 #include "IServerHelper.h"
 
+#include "IPacketHandler.h"
+
 class SocketServerHelper : public IServerHelper
 {
 public:
-    SocketServerHelper();
+    SocketServerHelper(uint16_t inPort, ProcessPacketFunc processPacketFunc, HandleNoResponseFunc handleNoResponseFunc, HandleConnectionResetFunc handleConnectionResetFunc);
     
     virtual ~SocketServerHelper();
 };
