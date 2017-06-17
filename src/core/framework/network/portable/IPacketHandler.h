@@ -10,7 +10,6 @@
 #define __noctisgames__IPacketHandler__
 
 #include "InputMemoryBitStream.h"
-#include "SocketAddress.h"
 
 #include <queue>
 #include <list>
@@ -25,7 +24,7 @@ typedef void (*ProcessPacketFunc)(InputMemoryBitStream& inInputStream, IMachineA
 class IPacketHandler
 {
 public:
-    IPacketHandler();
+    IPacketHandler(ProcessPacketFunc processPacketFunc, HandleConnectionResetFunc handleConnectionResetFunc);
     
     virtual ~IPacketHandler();
     
@@ -44,6 +43,8 @@ public:
     const WeightedTimedMovingAverage& getBytesSentPerSecond() const;
     
 protected:
+    ProcessPacketFunc m_processPacketFunc;
+    HandleConnectionResetFunc m_handleConnectionResetFunc;
     int m_bytesSentThisFrame;
     
 private:

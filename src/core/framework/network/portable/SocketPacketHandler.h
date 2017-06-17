@@ -35,14 +35,12 @@ public:
     virtual void processQueuedPackets();
     
 private:
+    UDPSocket* m_socket;
+    
     class ReceivedPacket;
-    
-    ProcessPacketFunc m_processPacketFunc;
-    HandleConnectionResetFunc m_handleConnectionResetFunc;
-    
     std::queue<ReceivedPacket, std::list<ReceivedPacket>> m_packetQueue;
     
-    UDPSocket* m_socket;
+    bool m_isInitialized;
     
     class ReceivedPacket
     {

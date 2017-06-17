@@ -11,9 +11,11 @@
 
 //// VERSION ////
 
-#define VERSION_MAJOR 1
-#define VERSION_MINOR 2
+#define VERSION_MAJOR 0
+#define VERSION_MINOR 1
 #define VERSION_BUILD 0
+
+#define VERSION_STRING "0.1.0.0"
 
 //// Sound Definitions ////
 
@@ -40,8 +42,8 @@
 
 //// Matrix Definitions ////
 
-#define CAM_WIDTH 24.0f // in meters
-#define CAM_HEIGHT 10.0f // in meters
+#define CAM_WIDTH 24.0f // meters
+#define CAM_HEIGHT 10.0f // meters
 
 //// World Definitions ////
 
@@ -61,9 +63,6 @@
 #define NETWORK_TYPE_Projectile 'PRJC'
 #define NETWORK_TYPE_SpacePirate 'SPCP'
 
-// Current game server version
-#define DANTE_SERVER_VERSION "0.0.1.0"
-
 // UDP port for the project dante server to do authentication on (ie, talk to Steam on)
 #define DANTE_AUTHENTICATION_PORT 8766
 
@@ -72,42 +71,5 @@
 
 // UDP port for the master server updater to listen on
 #define DANTE_MASTER_SERVER_UPDATER_PORT 27016
-
-// How long to wait for a client to send an update before we drop its connection server side
-#define SERVER_TIMEOUT_MILLISECONDS 5000
-
-// Maximum number of players who can join a server and play simultaneously
-#define MAX_PLAYERS_PER_SERVER 4
-
-// Time to pause wait after a round ends before starting a new one
-#define MILLISECONDS_BETWEEN_ROUNDS 4000
-
-// Time to timeout a connection attempt in
-#define MILLISECONDS_CONNECTION_TIMEOUT 30000
-
-// How many times a second does the server send world updates to clients
-#define SERVER_UPDATE_SEND_RATE 60
-
-enum EClientGameState
-{
-    k_EClientGameStartServer,
-    k_EClientGameActive,
-    k_EClientGameWaitingForPlayers,
-    k_EClientGameMenu,
-    k_EClientGameQuitMenu,
-    k_EClientGameExiting,
-    k_EClientGameConnecting,
-    k_EClientGameConnectionFailure,
-    k_EClientFindInternetServers,
-    k_EClientFindLANServers,
-    k_EClientConnectingToSteam
-};
-
-enum EServerGameState
-{
-    k_EServerWaitingForPlayers,
-    k_EServerActive,
-    k_EServerExiting
-};
 
 #endif /* defined(__dante__GameConstants__) */

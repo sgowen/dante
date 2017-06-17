@@ -23,10 +23,7 @@
 #include "macros.h"
 #include "FrameworkConstants.h"
 
-SocketPacketHandler::SocketPacketHandler(uint16_t inPort, ProcessPacketFunc processPacketFunc, HandleConnectionResetFunc handleConnectionResetFunc) :
-IPacketHandler(),
-m_processPacketFunc(processPacketFunc),
-m_handleConnectionResetFunc(handleConnectionResetFunc)
+SocketPacketHandler::SocketPacketHandler(uint16_t inPort, ProcessPacketFunc processPacketFunc, HandleConnectionResetFunc handleConnectionResetFunc) : IPacketHandler(processPacketFunc, handleConnectionResetFunc), m_socket(nullptr), m_isInitialized(false)
 {
     if (!SOCKET_UTIL->init())
     {
@@ -39,14 +36,9 @@ m_handleConnectionResetFunc(handleConnectionResetFunc)
     
     LOG("Initializing SocketPacketHandler at port %hu", inPort);
     
-    if (m_socket == nullptr)
+    if (m_socket && m_socket->setNonBlockingMode(true) == NO_ERROR)
     {
-        return;
-    }
-    
-    if (m_socket->setNonBlockingMode(true) != NO_ERROR)
-    {
-        return;
+        m_isInitialized = true;
     }
 }
 
@@ -61,6 +53,11 @@ SocketPacketHandler::~SocketPacketHandler()
 
 void SocketPacketHandler::sendPacket(const OutputMemoryBitStream& inOutputStream, IMachineAddress* inFromAddress)
 {
+    if (!m_isInitialized)
+    {
+        return;
+    }
+    
     SocketAddress* inFromSocketAddress = static_cast<SocketAddress*>(inFromAddress);
     int sentByteCount = m_socket->sendToAddress(inOutputStream.getBufferPtr(), inOutputStream.getByteLength(), *inFromSocketAddress);
     if (sentByteCount > 0)
@@ -71,6 +68,11 @@ void SocketPacketHandler::sendPacket(const OutputMemoryBitStream& inOutputStream
 
 void SocketPacketHandler::readIncomingPacketsIntoQueue()
 {
+    if (!m_isInitialized)
+    {
+        return;
+    }
+    
     char packetMem[1500];
     int packetSize = sizeof(packetMem);
     InputMemoryBitStream inputStream(packetMem, packetSize * 8);

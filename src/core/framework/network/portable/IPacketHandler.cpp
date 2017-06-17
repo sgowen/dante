@@ -12,7 +12,9 @@
 
 #include "WeightedTimedMovingAverage.h"
 
-IPacketHandler::IPacketHandler() :
+IPacketHandler::IPacketHandler(ProcessPacketFunc processPacketFunc, HandleConnectionResetFunc handleConnectionResetFunc) :
+m_processPacketFunc(processPacketFunc),
+m_handleConnectionResetFunc(handleConnectionResetFunc),
 m_bytesReceivedPerSecond(new WeightedTimedMovingAverage(1.f)),
 m_bytesSentPerSecond(new WeightedTimedMovingAverage(1.f)),
 m_bytesSentThisFrame(0)

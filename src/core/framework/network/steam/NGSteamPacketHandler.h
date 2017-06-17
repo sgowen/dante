@@ -35,10 +35,6 @@ public:
     
 private:
     class ReceivedPacket;
-    
-    ProcessPacketFunc m_processPacketFunc;
-    HandleConnectionResetFunc m_handleConnectionResetFunc;
-    
     std::queue<ReceivedPacket, std::list<ReceivedPacket>> m_packetQueue;
     
     class ReceivedPacket

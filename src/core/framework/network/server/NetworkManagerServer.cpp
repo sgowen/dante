@@ -25,7 +25,8 @@
 
 #include <assert.h>
 
-#define CLIENT_DISCONNECT_AFTER_X_SECONDS 3.0f
+#define CLIENT_DISCONNECT_AFTER_X_SECONDS 5.0f
+#define MAX_NUM_PLAYERS_PER_SERVER 4
 
 NetworkManagerServer* NetworkManagerServer::s_instance = nullptr;
 
@@ -51,12 +52,12 @@ NetworkManagerServer * NetworkManagerServer::getInstance()
 
 void NetworkManagerServer::staticProcessPacket(InputMemoryBitStream& inInputStream, IMachineAddress* inFromAddress)
 {
-    NG_SERVER->processPacket(inInputStream, static_cast<SocketAddress*>(inFromAddress));
+    NG_SERVER->processPacket(inInputStream, inFromAddress);
 }
 
 void NetworkManagerServer::staticHandleConnectionReset(IMachineAddress* inFromAddress)
 {
-    NG_SERVER->handleConnectionReset(static_cast<SocketAddress*>(inFromAddress));
+    NG_SERVER->handleConnectionReset(inFromAddress);
 }
 
 void NetworkManagerServer::processPacket(InputMemoryBitStream& inInputStream, IMachineAddress* inFromAddress)
@@ -65,7 +66,7 @@ void NetworkManagerServer::processPacket(InputMemoryBitStream& inInputStream, IM
     //pass this to the client proxy to process
     auto it = m_addressHashToClientMap.find(inFromAddress->getHash());
     if (it == m_addressHashToClientMap.end()
-        && m_addressHashToClientMap.size() < 4)
+        && m_addressHashToClientMap.size() < MAX_NUM_PLAYERS_PER_SERVER)
     {
         LOG("Client socket %s", inFromAddress->toString().c_str());
         

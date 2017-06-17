@@ -18,17 +18,14 @@
 #include "NGSteam.h"
 #include "FrameworkConstants.h"
 
-NGSteamPacketHandler::NGSteamPacketHandler(ProcessPacketFunc processPacketFunc, HandleConnectionResetFunc handleConnectionResetFunc) :
-IPacketHandler(),
-m_processPacketFunc(processPacketFunc),
-m_handleConnectionResetFunc(handleConnectionResetFunc)
+NGSteamPacketHandler::NGSteamPacketHandler(ProcessPacketFunc processPacketFunc, HandleConnectionResetFunc handleConnectionResetFunc) : IPacketHandler(processPacketFunc, handleConnectionResetFunc)
 {
-    // TODO
+    // Empty
 }
 
 NGSteamPacketHandler::~NGSteamPacketHandler()
 {
-    // TODO
+    // Empty
 }
 
 void NGSteamPacketHandler::sendPacket(const OutputMemoryBitStream& inOutputStream, IMachineAddress* inFromAddress)
