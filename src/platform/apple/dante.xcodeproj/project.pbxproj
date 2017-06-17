@@ -22,6 +22,8 @@
 		BB1E897B1EF4A81500B0D78A /* IPacketHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB1E89791EF4A81500B0D78A /* IPacketHandler.cpp */; };
 		BB1E89811EF4B2BA00B0D78A /* SocketPacketHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB1E897F1EF4B2BA00B0D78A /* SocketPacketHandler.cpp */; };
 		BB1E89841EF4B4F400B0D78A /* NGSteamPacketHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB1E89821EF4B4F400B0D78A /* NGSteamPacketHandler.cpp */; };
+		BB4253D21EF58DA5003F6D2A /* IClientHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB4253D01EF58DA5003F6D2A /* IClientHelper.cpp */; };
+		BB4253D51EF58E00003F6D2A /* IServerHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB4253D41EF58E00003F6D2A /* IServerHelper.cpp */; };
 		BB44C3281DB030B3003E633F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = BB44C3201DB030B3003E633F /* AppDelegate.m */; };
 		BB44C3291DB030B3003E633F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BB44C3211DB030B3003E633F /* Assets.xcassets */; };
 		BB44C32A1DB030B3003E633F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BB44C3221DB030B3003E633F /* Main.storyboard */; };
@@ -86,7 +88,6 @@
 		BB8308441EC2AD1F00435E7E /* DeliveryNotificationManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB83080C1EC2AD1F00435E7E /* DeliveryNotificationManager.cpp */; };
 		BB8308501EC2AD1F00435E7E /* InFlightPacket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8308141EC2AD1F00435E7E /* InFlightPacket.cpp */; };
 		BB8308561EC2AD1F00435E7E /* OutputMemoryBitStream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB83081A1EC2AD1F00435E7E /* OutputMemoryBitStream.cpp */; };
-		BB8308621EC2AD1F00435E7E /* INetworkManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8308221EC2AD1F00435E7E /* INetworkManager.cpp */; };
 		BB83086E1EC2AD1F00435E7E /* SocketAddress.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB83082C1EC2AD1F00435E7E /* SocketAddress.cpp */; };
 		BB8308711EC2AD1F00435E7E /* SocketAddressFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB83082E1EC2AD1F00435E7E /* SocketAddressFactory.cpp */; };
 		BB8308741EC2AD1F00435E7E /* SocketUtil.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8308301EC2AD1F00435E7E /* SocketUtil.cpp */; };
@@ -278,6 +279,10 @@
 		BB1E89801EF4B2BA00B0D78A /* SocketPacketHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SocketPacketHandler.h; sourceTree = "<group>"; };
 		BB1E89821EF4B4F400B0D78A /* NGSteamPacketHandler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NGSteamPacketHandler.cpp; sourceTree = "<group>"; };
 		BB1E89831EF4B4F400B0D78A /* NGSteamPacketHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NGSteamPacketHandler.h; sourceTree = "<group>"; };
+		BB4253D01EF58DA5003F6D2A /* IClientHelper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = IClientHelper.cpp; sourceTree = "<group>"; };
+		BB4253D11EF58DA5003F6D2A /* IClientHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IClientHelper.h; sourceTree = "<group>"; };
+		BB4253D31EF58E00003F6D2A /* IServerHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IServerHelper.h; sourceTree = "<group>"; };
+		BB4253D41EF58E00003F6D2A /* IServerHelper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = IServerHelper.cpp; sourceTree = "<group>"; };
 		BB44C30A1DB0303F003E633F /* Dante.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Dante.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BB44C31F1DB030B3003E633F /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		BB44C3201DB030B3003E633F /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -512,8 +517,6 @@
 		BB8308151EC2AD1F00435E7E /* InFlightPacket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InFlightPacket.h; sourceTree = "<group>"; };
 		BB83081A1EC2AD1F00435E7E /* OutputMemoryBitStream.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OutputMemoryBitStream.cpp; sourceTree = "<group>"; };
 		BB83081B1EC2AD1F00435E7E /* OutputMemoryBitStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OutputMemoryBitStream.h; sourceTree = "<group>"; };
-		BB8308221EC2AD1F00435E7E /* INetworkManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = INetworkManager.cpp; sourceTree = "<group>"; };
-		BB8308231EC2AD1F00435E7E /* INetworkManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INetworkManager.h; sourceTree = "<group>"; };
 		BB8308241EC2AD1F00435E7E /* ReplicationCommand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReplicationCommand.h; sourceTree = "<group>"; };
 		BB83082C1EC2AD1F00435E7E /* SocketAddress.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SocketAddress.cpp; sourceTree = "<group>"; };
 		BB83082D1EC2AD1F00435E7E /* SocketAddress.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SocketAddress.h; sourceTree = "<group>"; };
@@ -1285,6 +1288,8 @@
 			children = (
 				BB7251961EE1053F0024C71C /* ClientProxy.cpp */,
 				BB7251971EE1053F0024C71C /* ClientProxy.h */,
+				BB4253D31EF58E00003F6D2A /* IServerHelper.h */,
+				BB4253D41EF58E00003F6D2A /* IServerHelper.cpp */,
 				BB7251981EE1053F0024C71C /* NetworkManagerServer.cpp */,
 				BB7251991EE1053F0024C71C /* NetworkManagerServer.h */,
 				BB8307F31EC2AC0900435E7E /* ReplicationManagerServer.cpp */,
@@ -1308,8 +1313,6 @@
 				BB7251A71EE105780024C71C /* IInputState.h */,
 				BBAFD32B1EF44813004F2742 /* IMachineAddress.cpp */,
 				BBAFD32C1EF44813004F2742 /* IMachineAddress.h */,
-				BB8308221EC2AD1F00435E7E /* INetworkManager.cpp */,
-				BB8308231EC2AD1F00435E7E /* INetworkManager.h */,
 				BB8308141EC2AD1F00435E7E /* InFlightPacket.cpp */,
 				BB8308151EC2AD1F00435E7E /* InFlightPacket.h */,
 				BBBD14C11EE0C9B4003F9307 /* InputMemoryBitStream.cpp */,
@@ -1768,6 +1771,8 @@
 		BBF226631EC12C9C00573356 /* client */ = {
 			isa = PBXGroup;
 			children = (
+				BB4253D01EF58DA5003F6D2A /* IClientHelper.cpp */,
+				BB4253D11EF58DA5003F6D2A /* IClientHelper.h */,
 				BB7251921EE105330024C71C /* NetworkManagerClient.cpp */,
 				BB7251931EE105330024C71C /* NetworkManagerClient.h */,
 				BBF226B01EC12CDE00573356 /* ReplicationManagerClient.cpp */,
@@ -1910,6 +1915,7 @@
 				BB8308411EC2AD1F00435E7E /* AckRange.cpp in Sources */,
 				BBAEF2981EA94EDA00F0866E /* NGRect.cpp in Sources */,
 				BBAEF2861EA94EDA00F0866E /* KeyboardInputManager.cpp in Sources */,
+				BB4253D21EF58DA5003F6D2A /* IClientHelper.cpp in Sources */,
 				BB1E897B1EF4A81500B0D78A /* IPacketHandler.cpp in Sources */,
 				BB8308741EC2AD1F00435E7E /* SocketUtil.cpp in Sources */,
 				BB7251951EE105330024C71C /* NetworkManagerClient.cpp in Sources */,
@@ -1938,6 +1944,7 @@
 				BBAEF2A81EA94EDA00F0866E /* ISound.cpp in Sources */,
 				BB8308561EC2AD1F00435E7E /* OutputMemoryBitStream.cpp in Sources */,
 				BB44CB841DB053C0003E633F /* pngmem.c in Sources */,
+				BB4253D51EF58E00003F6D2A /* IServerHelper.cpp in Sources */,
 				BB5833D01EEDDAFC0084DA20 /* Renderer.cpp in Sources */,
 				BBAEF26A1EA94EDA00F0866E /* LineBatcherFactory.cpp in Sources */,
 				BBAEF2561EA94EDA00F0866E /* Animation.cpp in Sources */,
@@ -1945,7 +1952,6 @@
 				BBAEF2481EA94EDA00F0866E /* OpenGLTextureProgram.cpp in Sources */,
 				BBAEF2421EA94EDA00F0866E /* OpenGLSpriteBatcher.cpp in Sources */,
 				BBAEF29A1EA94EDA00F0866E /* OverlapTester.cpp in Sources */,
-				BB8308621EC2AD1F00435E7E /* INetworkManager.cpp in Sources */,
 				BBAEF2361EA94EDA00F0866E /* OpenGLGeometryProgram.cpp in Sources */,
 				BB5833781EEDBF7E0084DA20 /* NGSteamGameServices.cpp in Sources */,
 				BBAEF2721EA94EDA00F0866E /* SpriteBatcher.cpp in Sources */,

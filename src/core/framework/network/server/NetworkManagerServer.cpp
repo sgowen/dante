@@ -10,6 +10,12 @@
 
 #include "NetworkManagerServer.h"
 
+#include "InputMemoryBitStream.h"
+#include "OutputMemoryBitStream.h"
+#include "DeliveryNotificationManager.h"
+#include "IMachineAddress.h"
+#include "SocketPacketHandler.h"
+#include "ClientProxy.h"
 #include "IInputState.h"
 #include "Entity.h"
 
@@ -18,7 +24,6 @@
 #include "StringUtil.h"
 #include "Timing.h"
 #include "EntityManager.h"
-#include "OutputMemoryBitStream.h"
 #include "StringUtil.h"
 #include "FWInstanceManager.h"
 #include "NGSTDUtil.h"
@@ -58,49 +63,9 @@ void NetworkManagerServer::staticHandleConnectionReset(IMachineAddress* inFromAd
     NG_SERVER->handleConnectionReset(inFromAddress);
 }
 
-void NetworkManagerServer::processPacket(InputMemoryBitStream& inInputStream, IMachineAddress* inFromAddress)
+void NetworkManagerServer::processIncomingPackets()
 {
-    //try to get the client proxy for this address
-    //pass this to the client proxy to process
-    auto it = m_addressHashToClientMap.find(inFromAddress->getHash());
-    if (it == m_addressHashToClientMap.end()
-        && m_addressHashToClientMap.size() < MAX_NUM_PLAYERS_PER_SERVER)
-    {
-        LOG("Client socket %s", inFromAddress->toString().c_str());
-        
-        //didn't find one? it's a new cilent..is the a HELO? if so, create a client proxy...
-        handlePacketFromNewClient(inInputStream, inFromAddress);
-    }
-    else
-    {
-        processPacket((*it).second, inInputStream);
-    }
-}
-
-void NetworkManagerServer::handleConnectionReset(IMachineAddress* inFromAddress)
-{
-    //just dc the client right away...
-    auto it = m_addressHashToClientMap.find(inFromAddress->getHash());
-    if (it != m_addressHashToClientMap.end())
-    {
-        handleClientDisconnected(it->second);
-    }
-}
-
-void NetworkManagerServer::sendOutgoingPackets()
-{
-    //let's send a client a state packet whenever their move has come in...
-    for (auto it = m_addressHashToClientMap.begin(), end = m_addressHashToClientMap.end(); it != end; ++it)
-    {
-        ClientProxy* clientProxy = it->second;
-        //process any timed out packets while we're going through the list
-        clientProxy->getDeliveryNotificationManager().processTimedOutPackets(Timing::getInstance()->getFrameStartTime());
-        
-        if (clientProxy->IsLastMoveTimestampDirty())
-        {
-            sendStatePacketToClient(clientProxy);
-        }
-    }
+    m_packetHandler->processIncomingPackets();
 }
 
 void NetworkManagerServer::checkForDisconnects()
@@ -120,6 +85,22 @@ void NetworkManagerServer::checkForDisconnects()
     for (ClientProxy* client: clientsToDC)
     {
         handleClientDisconnected(client);
+    }
+}
+
+void NetworkManagerServer::sendOutgoingPackets()
+{
+    //let's send a client a state packet whenever their move has come in...
+    for (auto it = m_addressHashToClientMap.begin(), end = m_addressHashToClientMap.end(); it != end; ++it)
+    {
+        ClientProxy* clientProxy = it->second;
+        //process any timed out packets while we're going through the list
+        clientProxy->getDeliveryNotificationManager().processTimedOutPackets(Timing::getInstance()->getFrameStartTime());
+        
+        if (clientProxy->IsLastMoveTimestampDirty())
+        {
+            sendStatePacketToClient(clientProxy);
+        }
     }
 }
 
@@ -172,6 +153,40 @@ ClientProxy* NetworkManagerServer::getClientProxy(int inPlayerId) const
 int NetworkManagerServer::getNumClientsConnected()
 {
     return static_cast<int>(m_addressHashToClientMap.size());
+}
+
+void NetworkManagerServer::processPacket(InputMemoryBitStream& inInputStream, IMachineAddress* inFromAddress)
+{
+    //try to get the client proxy for this address
+    //pass this to the client proxy to process
+    auto it = m_addressHashToClientMap.find(inFromAddress->getHash());
+    if (it == m_addressHashToClientMap.end()
+        && m_addressHashToClientMap.size() < MAX_NUM_PLAYERS_PER_SERVER)
+    {
+        LOG("Client socket %s", inFromAddress->toString().c_str());
+        
+        //didn't find one? it's a new cilent..is the a HELO? if so, create a client proxy...
+        handlePacketFromNewClient(inInputStream, inFromAddress);
+    }
+    else
+    {
+        processPacket((*it).second, inInputStream);
+    }
+}
+
+void NetworkManagerServer::handleConnectionReset(IMachineAddress* inFromAddress)
+{
+    //just dc the client right away...
+    auto it = m_addressHashToClientMap.find(inFromAddress->getHash());
+    if (it != m_addressHashToClientMap.end())
+    {
+        handleClientDisconnected(it->second);
+    }
+}
+
+void NetworkManagerServer::sendPacket(const OutputMemoryBitStream& inOutputStream, IMachineAddress* inFromAddress)
+{
+    m_packetHandler->sendPacket(inOutputStream, inFromAddress);
 }
 
 void NetworkManagerServer::handlePacketFromNewClient(InputMemoryBitStream& inInputStream, IMachineAddress* inFromAddress)
@@ -314,7 +329,8 @@ void NetworkManagerServer::handleClientDisconnected(ClientProxy* inClientProxy)
     }
 }
 
-NetworkManagerServer::NetworkManagerServer(uint16_t inPort, HandleNewClientFunc handleNewClientFunc, HandleLostClientFunc handleLostClientFunc, InputStateCreationFunc inputStateCreationFunc) : INetworkManager(inPort, NetworkManagerServer::staticProcessPacket, NetworkManagerServer::staticHandleConnectionReset),
+NetworkManagerServer::NetworkManagerServer(uint16_t inPort, HandleNewClientFunc handleNewClientFunc, HandleLostClientFunc handleLostClientFunc, InputStateCreationFunc inputStateCreationFunc) :
+m_packetHandler(new SocketPacketHandler(inPort, NetworkManagerServer::staticProcessPacket, NetworkManagerServer::staticHandleConnectionReset)),
 m_handleNewClientFunc(handleNewClientFunc),
 m_handleLostClientFunc(handleLostClientFunc),
 m_inputStateCreationFunc(inputStateCreationFunc),
@@ -325,6 +341,8 @@ m_iNewPlayerId(1)
 
 NetworkManagerServer::~NetworkManagerServer()
 {
+    delete m_packetHandler;
+    
     NGSTDUtil::cleanUpMapOfPointers(m_addressHashToClientMap);
     
     m_playerIDToClientMap.clear();

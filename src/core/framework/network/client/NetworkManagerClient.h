@@ -9,10 +9,14 @@
 #ifndef __noctisgames__NetworkManagerClient__
 #define __noctisgames__NetworkManagerClient__
 
-#include "INetworkManager.h"
+#include <string>
+#include <unordered_map>
 
-#include "DeliveryNotificationManager.h"
-
+class InputMemoryBitStream;
+class OutputMemoryBitStream;
+class DeliveryNotificationManager;
+class IMachineAddress;
+class IPacketHandler;
 class EntityRegistry;
 class Entity;
 class MoveList;
@@ -25,7 +29,7 @@ class SocketAddress;
 typedef void (*RemoveProcessedMovesFunc)(float lastMoveProcessedByServerTimestamp);
 typedef MoveList& (*GetMoveListFunc)();
 
-class NetworkManagerClient : public INetworkManager
+class NetworkManagerClient
 {
 public:
     static void create(const std::string& inServerIPAddress, const std::string& inName, float inFrameRate, RemoveProcessedMovesFunc removeProcessedMovesFunc, GetMoveListFunc getMoveListFunc);
@@ -38,9 +42,13 @@ public:
     
     static void staticHandleConnectionReset(IMachineAddress* inFromAddress);
     
-    virtual void processPacket(InputMemoryBitStream& inInputStream, IMachineAddress* inFromAddress) override;
+    void processIncomingPackets();
     
-    virtual void sendOutgoingPackets();
+    void sendOutgoingPackets();
+    
+    const WeightedTimedMovingAverage& getBytesReceivedPerSecond() const;
+    
+    const WeightedTimedMovingAverage& getBytesSentPerSecond() const;
     
     const WeightedTimedMovingAverage& getAvgRoundTripTime()	const;
     
@@ -58,10 +66,12 @@ private:
         NCS_Welcomed
     };
     
+    IPacketHandler* m_packetHandler;
+    
     RemoveProcessedMovesFunc m_removeProcessedMovesFunc;
     GetMoveListFunc m_getMoveListFunc;
     
-    DeliveryNotificationManager m_deliveryNotificationManager;
+    DeliveryNotificationManager* m_deliveryNotificationManager;
     ReplicationManagerClient* m_replicationManagerClient;
     
     SocketAddress* m_serverAddress;
@@ -78,6 +88,12 @@ private:
     float m_fLastMoveProcessedByServerTimestamp;
     
     WeightedTimedMovingAverage* m_avgRoundTripTime;
+    
+    void processPacket(InputMemoryBitStream& inInputStream, IMachineAddress* inFromAddress);
+    
+    void handleConnectionReset(IMachineAddress* inFromAddress);
+    
+    void sendPacket(const OutputMemoryBitStream& inOutputStream, IMachineAddress* inFromAddress);
     
     void updateSayingHello();
     
@@ -99,7 +115,7 @@ private:
     
     // ctor, copy ctor, and assignment should be private in a Singleton
     NetworkManagerClient(const std::string& inServerIPAddress, const std::string& inName, float inFrameRate, RemoveProcessedMovesFunc removeProcessedMovesFunc, GetMoveListFunc getMoveListFunc);
-    virtual ~NetworkManagerClient();
+    ~NetworkManagerClient();
     NetworkManagerClient(const NetworkManagerClient&);
     NetworkManagerClient& operator=(const NetworkManagerClient&);
 };

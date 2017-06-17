@@ -9,11 +9,14 @@
 #ifndef __noctisgames__NetworkManagerServer__
 #define __noctisgames__NetworkManagerServer__
 
-#include "INetworkManager.h"
+#include <unordered_map>
 
-#include "ClientProxy.h"
-#include "IMachineAddress.h"
-
+class InputMemoryBitStream;
+class OutputMemoryBitStream;
+class DeliveryNotificationManager;
+class IMachineAddress;
+class IPacketHandler;
+class ClientProxy;
 class IInputState;
 class Entity;
 
@@ -23,7 +26,7 @@ typedef void (*HandleNewClientFunc)(ClientProxy* inClientProxy);
 typedef void (*HandleLostClientFunc)(ClientProxy* inClientProxy);
 typedef IInputState* (*InputStateCreationFunc)();
 
-class NetworkManagerServer : public INetworkManager
+class NetworkManagerServer
 {
 public:
     static void create(uint16_t inPort, HandleNewClientFunc handleNewClientFunc, HandleLostClientFunc handleLostClientFunc, InputStateCreationFunc inputStateCreationFunc);
@@ -36,13 +39,11 @@ public:
     
     static void staticHandleConnectionReset(IMachineAddress* inFromAddress);
     
-    virtual void processPacket(InputMemoryBitStream& inInputStream, IMachineAddress* inFromAddress) override;
-    
-    virtual void handleConnectionReset(IMachineAddress* inFromAddress) override;
-    
-    virtual void sendOutgoingPackets();
+    void processIncomingPackets();
     
     void checkForDisconnects();
+    
+    void sendOutgoingPackets();
     
     void registerEntity(Entity* inEntity);
     
@@ -57,6 +58,8 @@ public:
 private:
     static NetworkManagerServer* s_instance;
     
+    IPacketHandler* m_packetHandler;
+    
     HandleNewClientFunc m_handleNewClientFunc;
     HandleLostClientFunc m_handleLostClientFunc;
     InputStateCreationFunc m_inputStateCreationFunc;
@@ -65,6 +68,12 @@ private:
     std::unordered_map<int, ClientProxy*> m_playerIDToClientMap;
     int m_iNewPlayerId;
     float m_fTimeOfLastSatePacket;
+    
+    void processPacket(InputMemoryBitStream& inInputStream, IMachineAddress* inFromAddress);
+    
+    void handleConnectionReset(IMachineAddress* inFromAddress);
+    
+    void sendPacket(const OutputMemoryBitStream& inOutputStream, IMachineAddress* inFromAddress);
     
     void handlePacketFromNewClient(InputMemoryBitStream& inInputStream, IMachineAddress* inFromAddress);
     
@@ -82,7 +91,7 @@ private:
     
     // ctor, copy ctor, and assignment should be private in a Singleton
     NetworkManagerServer(uint16_t inPort, HandleNewClientFunc handleNewClientFunc, HandleLostClientFunc handleLostClientFunc, InputStateCreationFunc inputStateCreationFunc);
-    virtual ~NetworkManagerServer();
+    ~NetworkManagerServer();
     NetworkManagerServer(const NetworkManagerServer&);
     NetworkManagerServer& operator=(const NetworkManagerServer&);
 };

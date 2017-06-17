@@ -30,13 +30,7 @@ public:
     
     virtual void sendPacket(const OutputMemoryBitStream& inOutputStream, IMachineAddress* inFromAddress) = 0;
     
-    virtual void readIncomingPacketsIntoQueue() = 0;
-    
-    virtual void processQueuedPackets() = 0;
-    
-    void updateBytesSentLastFrame();
-    
-    void updateBytesReceivedLastFrame(int totalReadByteCount);
+    void processIncomingPackets();
     
     const WeightedTimedMovingAverage& getBytesReceivedPerSecond() const;
     
@@ -46,6 +40,14 @@ protected:
     ProcessPacketFunc m_processPacketFunc;
     HandleConnectionResetFunc m_handleConnectionResetFunc;
     int m_bytesSentThisFrame;
+    
+    virtual void readIncomingPacketsIntoQueue() = 0;
+    
+    virtual void processQueuedPackets() = 0;
+    
+    void updateBytesSentLastFrame();
+    
+    void updateBytesReceivedLastFrame(int totalReadByteCount);
     
 private:
     WeightedTimedMovingAverage* m_bytesReceivedPerSecond;

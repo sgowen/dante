@@ -28,6 +28,25 @@ IPacketHandler::~IPacketHandler()
     delete m_bytesSentPerSecond;
 }
 
+void IPacketHandler::processIncomingPackets()
+{
+    readIncomingPacketsIntoQueue();
+    
+    processQueuedPackets();
+    
+    updateBytesSentLastFrame();
+}
+
+const WeightedTimedMovingAverage& IPacketHandler::getBytesReceivedPerSecond() const
+{
+    return *m_bytesReceivedPerSecond;
+}
+
+const WeightedTimedMovingAverage& IPacketHandler::getBytesSentPerSecond() const
+{
+    return *m_bytesSentPerSecond;
+}
+
 void IPacketHandler::updateBytesSentLastFrame()
 {
     if (m_bytesSentThisFrame > 0)
@@ -41,14 +60,4 @@ void IPacketHandler::updateBytesSentLastFrame()
 void IPacketHandler::updateBytesReceivedLastFrame(int totalReadByteCount)
 {
     m_bytesReceivedPerSecond->updatePerSecond(static_cast<float>(totalReadByteCount));
-}
-
-const WeightedTimedMovingAverage& IPacketHandler::getBytesReceivedPerSecond() const
-{
-    return *m_bytesReceivedPerSecond;
-}
-
-const WeightedTimedMovingAverage& IPacketHandler::getBytesSentPerSecond() const
-{
-    return *m_bytesSentPerSecond;
 }

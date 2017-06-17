@@ -30,6 +30,7 @@ public:
     
     virtual void sendPacket(const OutputMemoryBitStream& inOutputStream, IMachineAddress* inFromAddress);
     
+protected:
     virtual void readIncomingPacketsIntoQueue();
     
     virtual void processQueuedPackets();
