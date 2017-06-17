@@ -82,7 +82,7 @@ void SocketPacketHandler::readIncomingPacketsIntoQueue()
     int receivedPacketCount = 0;
     int totalReadByteCount = 0;
     
-    while (receivedPacketCount < NETWORK_MAX_PACKETS_PER_FRAME)
+    while (receivedPacketCount < NETWORK_MAX_NUM_PACKETS_PER_FRAME)
     {
         int readByteCount = m_socket->receiveFromAddress(packetMem, packetSize, fromAddress);
         if (readByteCount == 0)

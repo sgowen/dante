@@ -55,7 +55,7 @@ void NGSteamPacketHandler::readIncomingPacketsIntoQueue()
     int totalReadByteCount = 0;
     
     while (SteamNetworking()->IsP2PPacketAvailable(&incomingSize) &&
-          receivedPackedCount < NETWORK_MAX_PACKETS_PER_FRAME)
+          receivedPackedCount < NETWORK_MAX_NUM_PACKETS_PER_FRAME)
     {
         if (incomingSize <= packetSize)
         {

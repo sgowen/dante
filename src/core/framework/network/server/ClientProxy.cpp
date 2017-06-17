@@ -18,7 +18,7 @@ ClientProxy::ClientProxy(IMachineAddress* inMachineAddress, const std::string& i
 m_machineAddress(inMachineAddress),
 m_name(inName),
 m_iPlayerId(inPlayerId),
-m_deliveryNotificationManager(false, true),
+m_deliveryNotificationManager(DeliveryNotificationManager(false, true)),
 m_isLastMoveTimestampDirty(false)
 {
     updateLastPacketTime();

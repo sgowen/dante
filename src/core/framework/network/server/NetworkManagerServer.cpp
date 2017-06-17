@@ -22,11 +22,9 @@
 #include "StringUtil.h"
 #include "FWInstanceManager.h"
 #include "NGSTDUtil.h"
+#include "FrameworkConstants.h"
 
 #include <assert.h>
-
-#define CLIENT_DISCONNECT_AFTER_X_SECONDS 5.0f
-#define MAX_NUM_PLAYERS_PER_SERVER 4
 
 NetworkManagerServer* NetworkManagerServer::s_instance = nullptr;
 
@@ -109,7 +107,7 @@ void NetworkManagerServer::checkForDisconnects()
 {
     std::vector<ClientProxy*> clientsToDC;
     
-    float minAllowedLastPacketFromClientTime = Timing::getInstance()->getFrameStartTime() - CLIENT_DISCONNECT_AFTER_X_SECONDS;
+    float minAllowedLastPacketFromClientTime = Timing::getInstance()->getFrameStartTime() - NETWORK_CLIENT_TIMEOUT;
     for (const auto& pair: m_addressHashToClientMap)
     {
         if (pair.second->getLastPacketFromClientTime() < minAllowedLastPacketFromClientTime)
