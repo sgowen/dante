@@ -18,7 +18,6 @@
 #include <list>
 
 class OutputMemoryBitStream;
-class WeightedTimedMovingAverage;
 class IMachineAddress;
 
 class NGSteamPacketHandler : public IPacketHandler

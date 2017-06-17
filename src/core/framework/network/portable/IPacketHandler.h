@@ -37,17 +37,20 @@ public:
     
     virtual void processQueuedPackets() = 0;
     
-    virtual void updateBytesSentLastFrame();
+    void updateBytesSentLastFrame();
     
-    virtual const WeightedTimedMovingAverage& getBytesReceivedPerSecond() const;
+    void updateBytesReceivedLastFrame(int totalReadByteCount);
     
-    virtual const WeightedTimedMovingAverage& getBytesSentPerSecond() const;
+    const WeightedTimedMovingAverage& getBytesReceivedPerSecond() const;
+    
+    const WeightedTimedMovingAverage& getBytesSentPerSecond() const;
     
 protected:
+    int m_bytesSentThisFrame;
+    
+private:
     WeightedTimedMovingAverage* m_bytesReceivedPerSecond;
     WeightedTimedMovingAverage* m_bytesSentPerSecond;
-    
-    int m_bytesSentThisFrame;
 };
 
 #endif /* defined(__noctisgames__IPacketHandler__) */

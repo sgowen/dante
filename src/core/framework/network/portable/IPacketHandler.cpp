@@ -36,6 +36,11 @@ void IPacketHandler::updateBytesSentLastFrame()
     }
 }
 
+void IPacketHandler::updateBytesReceivedLastFrame(int totalReadByteCount)
+{
+    m_bytesReceivedPerSecond->updatePerSecond(static_cast<float>(totalReadByteCount));
+}
+
 const WeightedTimedMovingAverage& IPacketHandler::getBytesReceivedPerSecond() const
 {
     return *m_bytesReceivedPerSecond;

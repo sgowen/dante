@@ -11,7 +11,6 @@
 #include "SocketPacketHandler.h"
 
 #include "OutputMemoryBitStream.h"
-#include "WeightedTimedMovingAverage.h"
 #include "UDPSocket.h"
 #include "IMachineAddress.h"
 
@@ -116,7 +115,7 @@ void SocketPacketHandler::readIncomingPacketsIntoQueue()
     
     if (totalReadByteCount > 0)
     {
-        m_bytesReceivedPerSecond->updatePerSecond(static_cast<float>(totalReadByteCount));
+        updateBytesReceivedLastFrame(totalReadByteCount);
     }
 }
 

@@ -11,7 +11,6 @@
 #include "NGSteamPacketHandler.h"
 
 #include "OutputMemoryBitStream.h"
-#include "WeightedTimedMovingAverage.h"
 #include "IMachineAddress.h"
 
 #include "InputMemoryBitStream.h"
