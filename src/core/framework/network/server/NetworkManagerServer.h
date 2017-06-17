@@ -15,6 +15,7 @@
 #include "IMachineAddress.h"
 
 class IInputState;
+class Entity;
 
 #define NG_SERVER (NetworkManagerServer::getInstance())
 
@@ -30,6 +31,10 @@ public:
     static void destroy();
     
     static NetworkManagerServer* getInstance();
+    
+    static void staticProcessPacket(InputMemoryBitStream& inInputStream, SocketAddress* inFromAddress);
+    
+    static void staticHandleConnectionReset(IMachineAddress* inFromAddress);
     
     virtual void processPacket(InputMemoryBitStream& inInputStream, SocketAddress* inFromAddress) override;
     

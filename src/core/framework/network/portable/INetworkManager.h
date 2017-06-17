@@ -10,15 +10,14 @@
 #define __noctisgames__INetworkManager__
 
 #include "InputMemoryBitStream.h"
-#include "SocketAddress.h"
-#include "UDPSocket.h"
+
+#include "IPacketHandler.h"
 
 #include <unordered_map>
 #include <queue>
 #include <list>
 
 class OutputMemoryBitStream;
-class Entity;
 class WeightedTimedMovingAverage;
 class SocketAddress;
 class IMachineAddress;
@@ -30,7 +29,6 @@ public:
     static const uint32_t kWelcomeCC = 'WLCM';
     static const uint32_t kStateCC = 'STAT';
     static const uint32_t kInputCC = 'INPT';
-    static const int kMaxPacketsPerFrameCount = 10;
     
     void processIncomingPackets();
     
@@ -48,45 +46,13 @@ protected:
     void sendPacket(const OutputMemoryBitStream& inOutputStream, IMachineAddress* inFromAddress);
     
     // ctor, copy ctor, and assignment should be private in a Singleton
-    INetworkManager(uint16_t inPort);
+    INetworkManager(uint16_t inPort, ProcessPacketFunc processPacketFunc, HandleConnectionResetFunc handleConnectionResetFunc);
     virtual ~INetworkManager();
     INetworkManager(const INetworkManager&);
     INetworkManager& operator=(const INetworkManager&);
     
 private:
-    class ReceivedPacket;
-    
-    std::queue<ReceivedPacket, std::list<ReceivedPacket>> m_packetQueue;
-    
-    UDPSocket* m_socket;
-    
-    WeightedTimedMovingAverage* m_bytesReceivedPerSecond;
-    WeightedTimedMovingAverage* m_bytesSentPerSecond;
-    
-    int m_bytesSentThisFrame;
-    
-    void readIncomingPacketsIntoQueue();
-    
-    void processQueuedPackets();
-    
-    void updateBytesSentLastFrame();
-    
-    class ReceivedPacket
-    {
-    public:
-        ReceivedPacket(float inReceivedTime, InputMemoryBitStream& inInputMemoryBitStream, SocketAddress inFromAddress);
-        
-        SocketAddress& getFromAddress();
-        
-        float getReceivedTime()	const;
-        
-        InputMemoryBitStream& getPacketBuffer();
-        
-    private:
-        float m_fReceivedTime;
-        InputMemoryBitStream m_packetBuffer;
-        SocketAddress m_fromAddress;
-    };
+    IPacketHandler* m_packetHandler;
 };
 
 #endif /* defined(__noctisgames__INetworkManager__) */

@@ -27,4 +27,9 @@
 
 #define NETWORK_TYPE_Entity 'ENTT'
 
+#define NETWORK_PACKET_TYPE_kHelloCC 'HELO'
+#define NETWORK_PACKET_TYPE_kWelcomeCC 'WLCM'
+#define NETWORK_PACKET_TYPE_kStateCC 'STAT'
+#define NETWORK_PACKET_TYPE_kInputCC 'INPT'
+
 #endif /* defined(__noctisgames__FrameworkConstants__) */

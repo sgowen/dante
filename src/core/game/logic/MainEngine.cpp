@@ -62,7 +62,7 @@ m_fFrameStateTime(0)
 {
     m_config->load();
     
-//    if (NG_STEAM_GAME_SERVICES->init() < 0)
+//    if (NG_STEAM_GAME_SERVICES->init() != STEAM_INIT_SUCCESS)
 //    {
 //        m_iRequestedAction = REQUESTED_ACTION_EXIT;
 //        return;
@@ -91,7 +91,7 @@ MainEngine::~MainEngine()
     
     leaveServer();
     
-    //NG_STEAM_GAME_SERVICES->deinit();
+    NG_STEAM_GAME_SERVICES->deinit();
 }
 
 void MainEngine::createDeviceDependentResources()

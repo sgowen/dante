@@ -38,6 +38,11 @@ SocketAddress::SocketAddress() : IMachineAddress()
     getAsSockAddrIn()->sin_port = 0;
 }
 
+IMachineAddress* SocketAddress::createCopy()
+{
+    return new SocketAddress(m_sockAddr);
+}
+
 bool SocketAddress::operator==(const SocketAddress& inOther) const
 {
     return (m_sockAddr.sa_family == AF_INET && getAsSockAddrIn()->sin_port == inOther.getAsSockAddrIn()->sin_port) && (getIP4Ref() == inOther.getIP4Ref());
@@ -93,11 +98,6 @@ std::string	SocketAddress::toString() const
 	}
 
 	return StringUtil::format("%s:%d", buffer, ntohs(port));
-}
-
-sockaddr& SocketAddress::getsockaddr()
-{
-    return m_sockAddr;
 }
 
 #if _WIN32

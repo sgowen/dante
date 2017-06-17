@@ -22,6 +22,11 @@ NGSteamAddress::~NGSteamAddress()
     // Empty
 }
 
+IMachineAddress* NGSteamAddress::createCopy()
+{
+    return new NGSteamAddress(m_steamID);
+}
+
 size_t NGSteamAddress::getHash() const
 {
     return m_steamID.ConvertToUint64();

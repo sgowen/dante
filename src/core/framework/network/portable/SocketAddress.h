@@ -30,6 +30,8 @@ public:
     
     SocketAddress();
     
+    virtual IMachineAddress* createCopy();
+    
     bool operator==(const SocketAddress& inOther) const;
     
     virtual size_t getHash() const;
@@ -37,8 +39,6 @@ public:
     uint32_t getSize() const;
     
     virtual std::string toString() const;
-    
-    sockaddr& getsockaddr();
     
 private:
     friend class UDPSocket;

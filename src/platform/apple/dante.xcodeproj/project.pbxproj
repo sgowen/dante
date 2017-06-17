@@ -19,6 +19,8 @@
 		BB09CE361DBD46B3006A3E49 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBCCA8461DB3469500452FA1 /* CoreMedia.framework */; };
 		BB13BD471E58E04D0073C08F /* DDHidLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB13BD461E58E04D0073C08F /* DDHidLib.framework */; };
 		BB13BD521E58E7350073C08F /* DDHidLib.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = BB13BD461E58E04D0073C08F /* DDHidLib.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		BB1E897B1EF4A81500B0D78A /* IPacketHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB1E89791EF4A81500B0D78A /* IPacketHandler.cpp */; };
+		BB1E89811EF4B2BA00B0D78A /* SocketPacketHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB1E897F1EF4B2BA00B0D78A /* SocketPacketHandler.cpp */; };
 		BB44C3281DB030B3003E633F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = BB44C3201DB030B3003E633F /* AppDelegate.m */; };
 		BB44C3291DB030B3003E633F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BB44C3211DB030B3003E633F /* Assets.xcassets */; };
 		BB44C32A1DB030B3003E633F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BB44C3221DB030B3003E633F /* Main.storyboard */; };
@@ -269,6 +271,10 @@
 		BB09CDFB1DBD3779006A3E49 /* SuperpoweredtvOSAudioIO.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SuperpoweredtvOSAudioIO.mm; sourceTree = "<group>"; };
 		BB09CDFC1DBD3779006A3E49 /* SuperpoweredWhoosh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SuperpoweredWhoosh.h; sourceTree = "<group>"; };
 		BB13BD461E58E04D0073C08F /* DDHidLib.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = DDHidLib.framework; sourceTree = "<group>"; };
+		BB1E89791EF4A81500B0D78A /* IPacketHandler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = IPacketHandler.cpp; sourceTree = "<group>"; };
+		BB1E897A1EF4A81500B0D78A /* IPacketHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IPacketHandler.h; sourceTree = "<group>"; };
+		BB1E897F1EF4B2BA00B0D78A /* SocketPacketHandler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SocketPacketHandler.cpp; sourceTree = "<group>"; };
+		BB1E89801EF4B2BA00B0D78A /* SocketPacketHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SocketPacketHandler.h; sourceTree = "<group>"; };
 		BB44C30A1DB0303F003E633F /* Dante.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Dante.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BB44C31F1DB030B3003E633F /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		BB44C3201DB030B3003E633F /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -1303,6 +1309,8 @@
 				BB8308151EC2AD1F00435E7E /* InFlightPacket.h */,
 				BBBD14C11EE0C9B4003F9307 /* InputMemoryBitStream.cpp */,
 				BBBD14C21EE0C9B4003F9307 /* InputMemoryBitStream.h */,
+				BB1E89791EF4A81500B0D78A /* IPacketHandler.cpp */,
+				BB1E897A1EF4A81500B0D78A /* IPacketHandler.h */,
 				BBAA69E31EE488DF00451615 /* ITransmissionData.cpp */,
 				BB8308381EC2AD1F00435E7E /* ITransmissionData.h */,
 				BB72519C1EE105490024C71C /* Move.cpp */,
@@ -1320,6 +1328,8 @@
 				BB83082E1EC2AD1F00435E7E /* SocketAddressFactory.cpp */,
 				BB83082F1EC2AD1F00435E7E /* SocketAddressFactory.h */,
 				BB5F46FA1ED38D61005FEC0C /* SocketAddressFamily.h */,
+				BB1E897F1EF4B2BA00B0D78A /* SocketPacketHandler.cpp */,
+				BB1E89801EF4B2BA00B0D78A /* SocketPacketHandler.h */,
 				BB8308301EC2AD1F00435E7E /* SocketUtil.cpp */,
 				BB8308311EC2AD1F00435E7E /* SocketUtil.h */,
 				BB8308391EC2AD1F00435E7E /* UDPSocket.cpp */,
@@ -1878,6 +1888,7 @@
 				BBAEF23C1EA94EDA00F0866E /* OpenGLNGRectBatcher.cpp in Sources */,
 				BBAEF2301EA94EDA00F0866E /* OpenGLFramebufferToScreenGpuProgramWrapper.cpp in Sources */,
 				BB8308441EC2AD1F00435E7E /* DeliveryNotificationManager.cpp in Sources */,
+				BB1E89811EF4B2BA00B0D78A /* SocketPacketHandler.cpp in Sources */,
 				BB83086E1EC2AD1F00435E7E /* SocketAddress.cpp in Sources */,
 				BB5833D91EEDDBEB0084DA20 /* MainEngine.cpp in Sources */,
 				BBAFD3301EF4496D004F2742 /* NGSteamAddress.cpp in Sources */,
@@ -1894,6 +1905,7 @@
 				BB8308411EC2AD1F00435E7E /* AckRange.cpp in Sources */,
 				BBAEF2981EA94EDA00F0866E /* NGRect.cpp in Sources */,
 				BBAEF2861EA94EDA00F0866E /* KeyboardInputManager.cpp in Sources */,
+				BB1E897B1EF4A81500B0D78A /* IPacketHandler.cpp in Sources */,
 				BB8308741EC2AD1F00435E7E /* SocketUtil.cpp in Sources */,
 				BB7251951EE105330024C71C /* NetworkManagerClient.cpp in Sources */,
 				BB5833CD1EEDDA330084DA20 /* main.m in Sources */,

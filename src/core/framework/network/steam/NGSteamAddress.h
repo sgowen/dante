@@ -20,6 +20,8 @@ public:
     
     virtual ~NGSteamAddress();
     
+    virtual IMachineAddress* createCopy();
+    
     virtual size_t getHash() const;
     
     virtual std::string toString() const;

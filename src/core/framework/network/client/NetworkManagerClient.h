@@ -33,6 +33,10 @@ public:
     
     static NetworkManagerClient* getInstance();
     
+    static void staticProcessPacket(InputMemoryBitStream& inInputStream, SocketAddress* inFromAddress);
+    
+    static void staticHandleConnectionReset(IMachineAddress* inFromAddress);
+    
     virtual void processPacket(InputMemoryBitStream& inInputStream, SocketAddress* inFromAddress) override;
     
     virtual void sendOutgoingPackets();

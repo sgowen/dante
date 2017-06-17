@@ -10,14 +10,14 @@
 
 #include "NetworkManagerClient.h"
 
-#include "EntityManager.h"
+#include "EntityRegistry.h"
 #include "Entity.h"
 #include "MoveList.h"
 #include "ReplicationManagerClient.h"
 #include "WeightedTimedMovingAverage.h"
 
+#include "EntityManager.h"
 #include "StringUtil.h"
-#include "EntityRegistry.h"
 #include "Timing.h"
 #include "OutputMemoryBitStream.h"
 #include "SocketAddressFactory.h"
@@ -45,6 +45,16 @@ void NetworkManagerClient::destroy()
 NetworkManagerClient * NetworkManagerClient::getInstance()
 {
     return s_instance;
+}
+
+void NetworkManagerClient::staticProcessPacket(InputMemoryBitStream& inInputStream, SocketAddress* inFromAddress)
+{
+    NG_CLIENT->processPacket(inInputStream, static_cast<SocketAddress*>(inFromAddress));
+}
+
+void NetworkManagerClient::staticHandleConnectionReset(IMachineAddress* inFromAddress)
+{
+    NG_CLIENT->handleConnectionReset(static_cast<SocketAddress*>(inFromAddress));
 }
 
 void NetworkManagerClient::processPacket(InputMemoryBitStream& inInputStream, SocketAddress* inFromAddress)
@@ -264,9 +274,9 @@ void NetworkManagerClient::sendInputPacket()
 NetworkManagerClient::NetworkManagerClient(const std::string& inServerIPAddress, const std::string& inName, float inFrameRate, RemoveProcessedMovesFunc removeProcessedMovesFunc, GetMoveListFunc getMoveListFunc) :
 // This allows us to run both a debug and a release client on the same machine
 #if defined(DEBUG) || defined(_DEBUG)
-INetworkManager(1339),
+INetworkManager(1339, NetworkManagerClient::staticProcessPacket, NetworkManagerClient::staticHandleConnectionReset),
 #else
-INetworkManager(1337),
+INetworkManager(1337, NetworkManagerClient::staticProcessPacket, NetworkManagerClient::staticHandleConnectionReset),
 #endif
 m_removeProcessedMovesFunc(removeProcessedMovesFunc),
 m_getMoveListFunc(getMoveListFunc),

@@ -11,13 +11,13 @@
 #include "NetworkManagerServer.h"
 
 #include "IInputState.h"
+#include "Entity.h"
 
 #include "Server.h"
 #include "ReplicationManagerTransmissionData.h"
 #include "StringUtil.h"
 #include "Timing.h"
 #include "EntityManager.h"
-#include "Entity.h"
 #include "OutputMemoryBitStream.h"
 #include "StringUtil.h"
 #include "FWInstanceManager.h"
@@ -47,6 +47,16 @@ void NetworkManagerServer::destroy()
 NetworkManagerServer * NetworkManagerServer::getInstance()
 {
     return s_instance;
+}
+
+void NetworkManagerServer::staticProcessPacket(InputMemoryBitStream& inInputStream, SocketAddress* inFromAddress)
+{
+    NG_SERVER->processPacket(inInputStream, static_cast<SocketAddress*>(inFromAddress));
+}
+
+void NetworkManagerServer::staticHandleConnectionReset(IMachineAddress* inFromAddress)
+{
+    NG_SERVER->handleConnectionReset(static_cast<SocketAddress*>(inFromAddress));
 }
 
 void NetworkManagerServer::processPacket(InputMemoryBitStream& inInputStream, SocketAddress* inFromAddress)
@@ -176,7 +186,7 @@ void NetworkManagerServer::handlePacketFromNewClient(InputMemoryBitStream& inInp
         std::string name;
         inInputStream.read(name);
         
-        SocketAddress* clientProxyInFromAddress = new SocketAddress(inFromAddress->getsockaddr());
+        IMachineAddress* clientProxyInFromAddress = inFromAddress->createCopy();
         ClientProxy* newClientProxy = new ClientProxy(clientProxyInFromAddress, name, m_iNewPlayerId++);
         m_addressHashToClientMap[clientProxyInFromAddress->getHash()] = newClientProxy;
         m_playerIDToClientMap[newClientProxy->getPlayerId()] = newClientProxy;
@@ -305,7 +315,7 @@ void NetworkManagerServer::handleClientDisconnected(ClientProxy* inClientProxy)
     }
 }
 
-NetworkManagerServer::NetworkManagerServer(uint16_t inPort, HandleNewClientFunc handleNewClientFunc, HandleLostClientFunc handleLostClientFunc, InputStateCreationFunc inputStateCreationFunc) : INetworkManager(inPort),
+NetworkManagerServer::NetworkManagerServer(uint16_t inPort, HandleNewClientFunc handleNewClientFunc, HandleLostClientFunc handleLostClientFunc, InputStateCreationFunc inputStateCreationFunc) : INetworkManager(inPort, NetworkManagerServer::staticProcessPacket, NetworkManagerServer::staticHandleConnectionReset),
 m_handleNewClientFunc(handleNewClientFunc),
 m_handleLostClientFunc(handleLostClientFunc),
 m_inputStateCreationFunc(inputStateCreationFunc),

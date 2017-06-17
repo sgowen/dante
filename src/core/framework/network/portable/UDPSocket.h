@@ -26,11 +26,11 @@ public:
     
 private:
     friend class SocketUtil;
-    friend class INetworkManager;
+    friend class SocketPacketHandler;
     
     SOCKET m_socket;
     
-    // Only allow SocketUtil/INetworkManager to create or delete an instance of UDPSocket
+    // Only allow SocketUtil/SocketPacketHandler to create or delete an instance of UDPSocket
     UDPSocket(SOCKET inSocket);
     ~UDPSocket();
 };
