@@ -38,7 +38,6 @@
 #include "InputManager.h"
 #include "Timing.h"
 #include "World.h"
-#include "NGSteamGameServices.h"
 #include "InstanceManager.h"
 #include "InputState.h"
 #include "FWInstanceManager.h"
@@ -62,12 +61,6 @@ m_fFrameStateTime(0)
 {
     m_config->load();
     
-//    if (NG_STEAM_GAME_SERVICES->init() != STEAM_INIT_SUCCESS)
-//    {
-//        m_iRequestedAction = REQUESTED_ACTION_EXIT;
-//        return;
-//    }
-    
     FWInstanceManager::getClientEntityManager()->init(MainEngine::staticRemoveEntity);
     
     FWInstanceManager::getClientEntityRegistry()->init(MainEngine::staticAddEntity);
@@ -90,8 +83,6 @@ MainEngine::~MainEngine()
     delete m_renderer;
     
     leaveServer();
-    
-    NG_STEAM_GAME_SERVICES->deinit();
 }
 
 void MainEngine::createDeviceDependentResources()
@@ -151,8 +142,27 @@ void MainEngine::update(float deltaTime)
         {
             NG_CLIENT->sendOutgoingPackets();
             
+            if (NG_CLIENT->getState() == NCS_Disconnected)
+            {
+                leaveServer();
+            }
+            else
+            {
+                InputState* inputState = InputManager::getInstance()->getInputState();
+                if (inputState->isLeavingServer())
+                {
+                    leaveServer();
+                }
+            }
+        }
+        else if (NG_SERVER)
+        {
             InputState* inputState = InputManager::getInstance()->getInputState();
-            if (inputState->isLeavingServer())
+            if (inputState->isJoiningSteamServer())
+            {
+                joinServer();
+            }
+            else if (inputState->isLeavingServer())
             {
                 leaveServer();
             }
@@ -167,6 +177,14 @@ void MainEngine::update(float deltaTime)
             else if (inputState->isJoiningServer())
             {
                 joinServer();
+            }
+            else if (inputState->isStartingSteamServer())
+            {
+                // TODO
+            }
+            else if (inputState->isJoiningSteamServer())
+            {
+                // TODO
             }
 			else if (inputState->isLeavingServer())
 			{

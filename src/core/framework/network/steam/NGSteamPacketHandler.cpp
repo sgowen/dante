@@ -18,7 +18,7 @@
 #include "NGSteam.h"
 #include "FrameworkConstants.h"
 
-NGSteamPacketHandler::NGSteamPacketHandler(ProcessPacketFunc processPacketFunc, HandleConnectionResetFunc handleConnectionResetFunc) : IPacketHandler(processPacketFunc, handleConnectionResetFunc)
+NGSteamPacketHandler::NGSteamPacketHandler(ProcessPacketFunc processPacketFunc, HandleNoResponseFunc handleNoResponseFunc, HandleConnectionResetFunc handleConnectionResetFunc) : IPacketHandler(processPacketFunc, handleNoResponseFunc, handleConnectionResetFunc)
 {
     // Empty
 }
@@ -61,19 +61,25 @@ void NGSteamPacketHandler::readIncomingPacketsIntoQueue()
         {
             uint32_t readByteCount;
             
-            if (SteamGameServerNetworking()->ReadP2PPacket(packetMem, packetSize, &readByteCount, &fromId)
-                && readByteCount > 0)
+            if (SteamGameServerNetworking()->ReadP2PPacket(packetMem, packetSize, &readByteCount, &fromId))
             {
-                inputStream.resetToCapacity(readByteCount);
-                ++receivedPackedCount;
-                totalReadByteCount += readByteCount;
-                
-                //shove the packet into the queue and we'll handle it as soon as we should...
-                //we'll pretend it wasn't received until simulated latency from now
-                //this doesn't sim jitter, for that we would need to.....
-                float simulatedReceivedTime = Timing::getInstance()->getFrameStartTime();
-                
-                m_packetQueue.emplace(simulatedReceivedTime, inputStream, fromId);
+                if (readByteCount > 0)
+                {
+                    inputStream.resetToCapacity(readByteCount);
+                    ++receivedPackedCount;
+                    totalReadByteCount += readByteCount;
+                    
+                    //shove the packet into the queue and we'll handle it as soon as we should...
+                    //we'll pretend it wasn't received until simulated latency from now
+                    //this doesn't sim jitter, for that we would need to.....
+                    float simulatedReceivedTime = Timing::getInstance()->getFrameStartTime();
+                    
+                    m_packetQueue.emplace(simulatedReceivedTime, inputStream, fromId);
+                }
+                else if (readByteCount == 0)
+                {
+                    m_handleNoResponseFunc();
+                }
             }
         }
     }

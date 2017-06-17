@@ -11,6 +11,7 @@
 
 #include <unordered_map>
 
+class IServerHelper;
 class InputMemoryBitStream;
 class OutputMemoryBitStream;
 class DeliveryNotificationManager;
@@ -37,6 +38,8 @@ public:
     
     static void staticProcessPacket(InputMemoryBitStream& inInputStream, IMachineAddress* inFromAddress);
     
+    static void staticHandleNoResponse();
+    
     static void staticHandleConnectionReset(IMachineAddress* inFromAddress);
     
     void processIncomingPackets();
@@ -58,6 +61,7 @@ public:
 private:
     static NetworkManagerServer* s_instance;
     
+    IServerHelper* m_serverHelper;
     IPacketHandler* m_packetHandler;
     
     HandleNewClientFunc m_handleNewClientFunc;
@@ -70,6 +74,8 @@ private:
     float m_fTimeOfLastSatePacket;
     
     void processPacket(InputMemoryBitStream& inInputStream, IMachineAddress* inFromAddress);
+    
+    void handleNoResponse();
     
     void handleConnectionReset(IMachineAddress* inFromAddress);
     

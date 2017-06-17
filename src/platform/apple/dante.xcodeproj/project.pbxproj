@@ -24,6 +24,10 @@
 		BB1E89841EF4B4F400B0D78A /* NGSteamPacketHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB1E89821EF4B4F400B0D78A /* NGSteamPacketHandler.cpp */; };
 		BB4253D21EF58DA5003F6D2A /* IClientHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB4253D01EF58DA5003F6D2A /* IClientHelper.cpp */; };
 		BB4253D51EF58E00003F6D2A /* IServerHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB4253D41EF58E00003F6D2A /* IServerHelper.cpp */; };
+		BB4253DA1EF59793003F6D2A /* NGSteamClientHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB4253D61EF59793003F6D2A /* NGSteamClientHelper.cpp */; };
+		BB4253DB1EF59793003F6D2A /* NGSteamServerHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB4253D81EF59793003F6D2A /* NGSteamServerHelper.cpp */; };
+		BB4253DE1EF598AC003F6D2A /* SocketServerHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB4253DC1EF598AC003F6D2A /* SocketServerHelper.cpp */; };
+		BB4253E11EF598C1003F6D2A /* SocketClientHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB4253DF1EF598C1003F6D2A /* SocketClientHelper.cpp */; };
 		BB44C3281DB030B3003E633F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = BB44C3201DB030B3003E633F /* AppDelegate.m */; };
 		BB44C3291DB030B3003E633F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BB44C3211DB030B3003E633F /* Assets.xcassets */; };
 		BB44C32A1DB030B3003E633F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BB44C3221DB030B3003E633F /* Main.storyboard */; };
@@ -163,10 +167,8 @@
 		BBAFD32D1EF44813004F2742 /* IMachineAddress.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAFD32B1EF44813004F2742 /* IMachineAddress.cpp */; };
 		BBAFD3301EF4496D004F2742 /* NGSteamAddress.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAFD32E1EF4496D004F2742 /* NGSteamAddress.cpp */; };
 		BBAFD3331EF45EEA004F2742 /* FWInstanceManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAFD3311EF45EEA004F2742 /* FWInstanceManager.cpp */; };
-		BBAFD3361EF4613A004F2742 /* INGSteamClient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAFD3341EF4613A004F2742 /* INGSteamClient.cpp */; };
 		BBBCB2EB1EF090E900B77938 /* NGSteam.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBBCB2EA1EF090E900B77938 /* NGSteam.cpp */; };
 		BBBCB2EE1EF0993000B77938 /* NGSteamGameServer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBBCB2EC1EF0993000B77938 /* NGSteamGameServer.cpp */; };
-		BBBCB2F11EF0A65E00B77938 /* NGSteamGameServerPing.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBBCB2EF1EF0A65E00B77938 /* NGSteamGameServerPing.cpp */; };
 		BBBD14901EE06858003F9307 /* StringUtil.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBBD148E1EE06858003F9307 /* StringUtil.cpp */; };
 		BBBD14971EE06BB3003F9307 /* Timing.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBBD14921EE06BB3003F9307 /* Timing.cpp */; };
 		BBBD149A1EE06BB3003F9307 /* WeightedTimedMovingAverage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBBD14941EE06BB3003F9307 /* WeightedTimedMovingAverage.cpp */; };
@@ -283,6 +285,14 @@
 		BB4253D11EF58DA5003F6D2A /* IClientHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IClientHelper.h; sourceTree = "<group>"; };
 		BB4253D31EF58E00003F6D2A /* IServerHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IServerHelper.h; sourceTree = "<group>"; };
 		BB4253D41EF58E00003F6D2A /* IServerHelper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = IServerHelper.cpp; sourceTree = "<group>"; };
+		BB4253D61EF59793003F6D2A /* NGSteamClientHelper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NGSteamClientHelper.cpp; sourceTree = "<group>"; };
+		BB4253D71EF59793003F6D2A /* NGSteamClientHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NGSteamClientHelper.h; sourceTree = "<group>"; };
+		BB4253D81EF59793003F6D2A /* NGSteamServerHelper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NGSteamServerHelper.cpp; sourceTree = "<group>"; };
+		BB4253D91EF59793003F6D2A /* NGSteamServerHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NGSteamServerHelper.h; sourceTree = "<group>"; };
+		BB4253DC1EF598AC003F6D2A /* SocketServerHelper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SocketServerHelper.cpp; sourceTree = "<group>"; };
+		BB4253DD1EF598AC003F6D2A /* SocketServerHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SocketServerHelper.h; sourceTree = "<group>"; };
+		BB4253DF1EF598C1003F6D2A /* SocketClientHelper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SocketClientHelper.cpp; sourceTree = "<group>"; };
+		BB4253E01EF598C1003F6D2A /* SocketClientHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SocketClientHelper.h; sourceTree = "<group>"; };
 		BB44C30A1DB0303F003E633F /* Dante.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Dante.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BB44C31F1DB030B3003E633F /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		BB44C3201DB030B3003E633F /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -684,13 +694,9 @@
 		BBAFD32F1EF4496D004F2742 /* NGSteamAddress.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NGSteamAddress.h; sourceTree = "<group>"; };
 		BBAFD3311EF45EEA004F2742 /* FWInstanceManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FWInstanceManager.cpp; sourceTree = "<group>"; };
 		BBAFD3321EF45EEA004F2742 /* FWInstanceManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FWInstanceManager.h; sourceTree = "<group>"; };
-		BBAFD3341EF4613A004F2742 /* INGSteamClient.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = INGSteamClient.cpp; sourceTree = "<group>"; };
-		BBAFD3351EF4613A004F2742 /* INGSteamClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INGSteamClient.h; sourceTree = "<group>"; };
 		BBBCB2EA1EF090E900B77938 /* NGSteam.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NGSteam.cpp; sourceTree = "<group>"; };
 		BBBCB2EC1EF0993000B77938 /* NGSteamGameServer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NGSteamGameServer.cpp; sourceTree = "<group>"; };
 		BBBCB2ED1EF0993000B77938 /* NGSteamGameServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NGSteamGameServer.h; sourceTree = "<group>"; };
-		BBBCB2EF1EF0A65E00B77938 /* NGSteamGameServerPing.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NGSteamGameServerPing.cpp; sourceTree = "<group>"; };
-		BBBCB2F01EF0A65E00B77938 /* NGSteamGameServerPing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NGSteamGameServerPing.h; sourceTree = "<group>"; };
 		BBBD148E1EE06858003F9307 /* StringUtil.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StringUtil.cpp; sourceTree = "<group>"; };
 		BBBD14921EE06BB3003F9307 /* Timing.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Timing.cpp; sourceTree = "<group>"; };
 		BBBD14931EE06BB3003F9307 /* Timing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Timing.h; sourceTree = "<group>"; };
@@ -1038,20 +1044,20 @@
 		BB5833761EEDBF7E0084DA20 /* steam */ = {
 			isa = PBXGroup;
 			children = (
-				BBAFD3341EF4613A004F2742 /* INGSteamClient.cpp */,
-				BBAFD3351EF4613A004F2742 /* INGSteamClient.h */,
 				BBBCB2EA1EF090E900B77938 /* NGSteam.cpp */,
 				BB59794F1EEF56830047BEC6 /* NGSteam.h */,
 				BBAFD32E1EF4496D004F2742 /* NGSteamAddress.cpp */,
 				BBAFD32F1EF4496D004F2742 /* NGSteamAddress.h */,
+				BB4253D61EF59793003F6D2A /* NGSteamClientHelper.cpp */,
+				BB4253D71EF59793003F6D2A /* NGSteamClientHelper.h */,
 				BBBCB2EC1EF0993000B77938 /* NGSteamGameServer.cpp */,
 				BBBCB2ED1EF0993000B77938 /* NGSteamGameServer.h */,
-				BBBCB2EF1EF0A65E00B77938 /* NGSteamGameServerPing.cpp */,
-				BBBCB2F01EF0A65E00B77938 /* NGSteamGameServerPing.h */,
 				BB5833771EEDBF7E0084DA20 /* NGSteamGameServices.cpp */,
 				BB5833791EEDBFB20084DA20 /* NGSteamGameServices.h */,
 				BB1E89821EF4B4F400B0D78A /* NGSteamPacketHandler.cpp */,
 				BB1E89831EF4B4F400B0D78A /* NGSteamPacketHandler.h */,
+				BB4253D81EF59793003F6D2A /* NGSteamServerHelper.cpp */,
+				BB4253D91EF59793003F6D2A /* NGSteamServerHelper.h */,
 			);
 			path = steam;
 			sourceTree = "<group>";
@@ -1288,14 +1294,16 @@
 			children = (
 				BB7251961EE1053F0024C71C /* ClientProxy.cpp */,
 				BB7251971EE1053F0024C71C /* ClientProxy.h */,
-				BB4253D31EF58E00003F6D2A /* IServerHelper.h */,
 				BB4253D41EF58E00003F6D2A /* IServerHelper.cpp */,
+				BB4253D31EF58E00003F6D2A /* IServerHelper.h */,
 				BB7251981EE1053F0024C71C /* NetworkManagerServer.cpp */,
 				BB7251991EE1053F0024C71C /* NetworkManagerServer.h */,
 				BB8307F31EC2AC0900435E7E /* ReplicationManagerServer.cpp */,
 				BB8307F41EC2AC0900435E7E /* ReplicationManagerServer.h */,
 				BB8307F51EC2AC0900435E7E /* ReplicationManagerTransmissionData.cpp */,
 				BB8307F61EC2AC0900435E7E /* ReplicationManagerTransmissionData.h */,
+				BB4253DC1EF598AC003F6D2A /* SocketServerHelper.cpp */,
+				BB4253DD1EF598AC003F6D2A /* SocketServerHelper.h */,
 			);
 			path = server;
 			sourceTree = "<group>";
@@ -1777,6 +1785,8 @@
 				BB7251931EE105330024C71C /* NetworkManagerClient.h */,
 				BBF226B01EC12CDE00573356 /* ReplicationManagerClient.cpp */,
 				BBF226B11EC12CDE00573356 /* ReplicationManagerClient.h */,
+				BB4253DF1EF598C1003F6D2A /* SocketClientHelper.cpp */,
+				BB4253E01EF598C1003F6D2A /* SocketClientHelper.h */,
 			);
 			path = client;
 			sourceTree = "<group>";
@@ -1918,6 +1928,7 @@
 				BB4253D21EF58DA5003F6D2A /* IClientHelper.cpp in Sources */,
 				BB1E897B1EF4A81500B0D78A /* IPacketHandler.cpp in Sources */,
 				BB8308741EC2AD1F00435E7E /* SocketUtil.cpp in Sources */,
+				BB4253E11EF598C1003F6D2A /* SocketClientHelper.cpp in Sources */,
 				BB7251951EE105330024C71C /* NetworkManagerClient.cpp in Sources */,
 				BB5833CD1EEDDA330084DA20 /* main.m in Sources */,
 				BBCFF1CF1ECD316D003EE520 /* MainAssetsMapper.cpp in Sources */,
@@ -1931,6 +1942,7 @@
 				BB7251A41EE105490024C71C /* MoveList.cpp in Sources */,
 				BB44CB821DB053C0003E633F /* pngerror.c in Sources */,
 				BBAFD3331EF45EEA004F2742 /* FWInstanceManager.cpp in Sources */,
+				BB4253DE1EF598AC003F6D2A /* SocketServerHelper.cpp in Sources */,
 				BB7E3E631EE4E44100E3D696 /* Projectile.cpp in Sources */,
 				BBAEF29C1EA94EDA00F0866E /* Triangle.cpp in Sources */,
 				BBAEF2681EA94EDA00F0866E /* LineBatcher.cpp in Sources */,
@@ -1975,10 +1987,8 @@
 				BB0864751EE20CCA00BCD9E0 /* EntityRegistry.cpp in Sources */,
 				BBAEF3101EA94FAC00F0866E /* JoystickController.mm in Sources */,
 				BBAEF27C1EA94EDA00F0866E /* TransitionGpuProgramWrapper.cpp in Sources */,
-				BBBCB2F11EF0A65E00B77938 /* NGSteamGameServerPing.cpp in Sources */,
 				BB44CB851DB053C0003E633F /* pngpread.c in Sources */,
 				BB8EE62B1EF2E2C1000A5C98 /* Util.cpp in Sources */,
-				BBAFD3361EF4613A004F2742 /* INGSteamClient.cpp in Sources */,
 				BBAEF2B21EA94EDA00F0866E /* AppleAudioEngineHelper.cpp in Sources */,
 				BBAEF1FC1EA94EDA00F0866E /* apple_asset_data_handler.mm in Sources */,
 				BBAEF2B01EA94EDA00F0866E /* apple_audio_engine_helper.mm in Sources */,
@@ -2021,8 +2031,10 @@
 				BBAEF2641EA94EDA00F0866E /* IRendererHelper.cpp in Sources */,
 				BB44CB8E1DB053C0003E633F /* pngwtran.c in Sources */,
 				BB8308711EC2AD1F00435E7E /* SocketAddressFactory.cpp in Sources */,
+				BB4253DB1EF59793003F6D2A /* NGSteamServerHelper.cpp in Sources */,
 				BBAEF2461EA94EDA00F0866E /* OpenGLTextureLoader.cpp in Sources */,
 				BB44CB8F1DB053C0003E633F /* pngwutil.c in Sources */,
+				BB4253DA1EF59793003F6D2A /* NGSteamClientHelper.cpp in Sources */,
 				BB7251A11EE105490024C71C /* Move.cpp in Sources */,
 				BB09CE231DBD3779006A3E49 /* SuperpoweredOSXAudioIO.mm in Sources */,
 				BB44CB091DB04C83003E633F /* NGOpenGLView.mm in Sources */,

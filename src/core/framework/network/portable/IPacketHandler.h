@@ -18,13 +18,14 @@ class OutputMemoryBitStream;
 class WeightedTimedMovingAverage;
 class IMachineAddress;
 
-typedef void (*HandleConnectionResetFunc)(IMachineAddress* inFromAddress);
 typedef void (*ProcessPacketFunc)(InputMemoryBitStream& inInputStream, IMachineAddress* inFromAddress);
+typedef void (*HandleNoResponseFunc)();
+typedef void (*HandleConnectionResetFunc)(IMachineAddress* inFromAddress);
 
 class IPacketHandler
 {
 public:
-    IPacketHandler(ProcessPacketFunc processPacketFunc, HandleConnectionResetFunc handleConnectionResetFunc);
+    IPacketHandler(ProcessPacketFunc processPacketFunc, HandleNoResponseFunc handleNoResponseFunc, HandleConnectionResetFunc handleConnectionResetFunc);
     
     virtual ~IPacketHandler();
     
@@ -38,6 +39,7 @@ public:
     
 protected:
     ProcessPacketFunc m_processPacketFunc;
+    HandleNoResponseFunc m_handleNoResponseFunc;
     HandleConnectionResetFunc m_handleConnectionResetFunc;
     int m_bytesSentThisFrame;
     

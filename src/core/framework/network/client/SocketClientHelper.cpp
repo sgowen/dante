@@ -1,5 +1,5 @@
 //
-//  IServerHelper.cpp
+//  SocketClientHelper.cpp
 //  noctisgames-framework
 //
 //  Created by Stephen Gowen on 6/17/17.
@@ -8,14 +8,14 @@
 
 #include "pch.h"
 
-#include "IServerHelper.h"
+#include "SocketClientHelper.h"
 
-IServerHelper::IServerHelper()
+SocketClientHelper::SocketClientHelper() : IClientHelper()
 {
     // Empty
 }
 
-IServerHelper::~IServerHelper()
+SocketClientHelper::~SocketClientHelper()
 {
     // Empty
 }

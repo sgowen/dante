@@ -12,6 +12,7 @@
 #include <string>
 #include <unordered_map>
 
+class IClientHelper;
 class InputMemoryBitStream;
 class OutputMemoryBitStream;
 class DeliveryNotificationManager;
@@ -29,6 +30,14 @@ class SocketAddress;
 typedef void (*RemoveProcessedMovesFunc)(float lastMoveProcessedByServerTimestamp);
 typedef MoveList& (*GetMoveListFunc)();
 
+enum NetworkClientState
+{
+    NCS_Uninitialized,
+    NCS_SayingHello,
+    NCS_Welcomed,
+    NCS_Disconnected
+};
+
 class NetworkManagerClient
 {
 public:
@@ -39,6 +48,8 @@ public:
     static NetworkManagerClient* getInstance();
     
     static void staticProcessPacket(InputMemoryBitStream& inInputStream, IMachineAddress* inFromAddress);
+    
+    static void staticHandleNoResponse();
     
     static void staticHandleConnectionReset(IMachineAddress* inFromAddress);
     
@@ -56,16 +67,12 @@ public:
     
     int getPlayerId() const;
     
+    NetworkClientState getState() const;
+    
 private:
     static NetworkManagerClient* s_instance;
     
-    enum NetworkClientState
-    {
-        NCS_Uninitialized,
-        NCS_SayingHello,
-        NCS_Welcomed
-    };
-    
+    IClientHelper* m_clientHelper;
     IPacketHandler* m_packetHandler;
     
     RemoveProcessedMovesFunc m_removeProcessedMovesFunc;
@@ -86,10 +93,13 @@ private:
     float m_fFrameRate;
     
     float m_fLastMoveProcessedByServerTimestamp;
+    float m_fLastServerCommunicationTimestamp;
     
     WeightedTimedMovingAverage* m_avgRoundTripTime;
     
     void processPacket(InputMemoryBitStream& inInputStream, IMachineAddress* inFromAddress);
+    
+    void handleNoResponse();
     
     void handleConnectionReset(IMachineAddress* inFromAddress);
     

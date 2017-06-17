@@ -10,6 +10,7 @@
 
 #include "NetworkManagerClient.h"
 
+#include "SocketClientHelper.h"
 #include "InputMemoryBitStream.h"
 #include "OutputMemoryBitStream.h"
 #include "DeliveryNotificationManager.h"
@@ -58,6 +59,11 @@ void NetworkManagerClient::staticProcessPacket(InputMemoryBitStream& inInputStre
     NG_CLIENT->processPacket(inInputStream, static_cast<SocketAddress*>(inFromAddress));
 }
 
+void NetworkManagerClient::staticHandleNoResponse()
+{
+    NG_CLIENT->handleNoResponse();
+}
+
 void NetworkManagerClient::staticHandleConnectionReset(IMachineAddress* inFromAddress)
 {
     NG_CLIENT->handleConnectionReset(static_cast<SocketAddress*>(inFromAddress));
@@ -79,6 +85,7 @@ void NetworkManagerClient::sendOutgoingPackets()
             updateSendingInputPacket();
             break;
         case NCS_Uninitialized:
+        case NCS_Disconnected:
             break;
     }
 }
@@ -108,8 +115,15 @@ int NetworkManagerClient::getPlayerId() const
     return m_iPlayerId;
 }
 
+NetworkClientState NetworkManagerClient::getState() const
+{
+    return m_state;
+}
+
 void NetworkManagerClient::processPacket(InputMemoryBitStream& inInputStream, IMachineAddress* inFromAddress)
 {
+    m_fLastServerCommunicationTimestamp = Timing::getInstance()->getFrameStartTime();
+    
     uint32_t packetType;
     inInputStream.read(packetType);
     
@@ -127,6 +141,16 @@ void NetworkManagerClient::processPacket(InputMemoryBitStream& inInputStream, IM
     }
 }
 
+void NetworkManagerClient::handleNoResponse()
+{
+    float time = Timing::getInstance()->getFrameStartTime();
+    
+    if (time > m_fLastServerCommunicationTimestamp + NETWORK_SERVER_TIMEOUT)
+    {
+        m_state = NCS_Disconnected;
+    }
+}
+
 void NetworkManagerClient::handleConnectionReset(IMachineAddress* inFromAddress)
 {
     UNUSED(inFromAddress);
@@ -141,9 +165,7 @@ void NetworkManagerClient::updateSayingHello()
 {
     float time = Timing::getInstance()->getFrameStartTime();
     
-    static const float kTimeBetweenHellos = 1.0f;
-    
-    if (time > m_fTimeOfLastHello + kTimeBetweenHellos)
+    if (time > m_fTimeOfLastHello + NETWORK_CLIENT_TIME_BETWEEN_HELLOS)
     {
         sendHelloPacket();
         m_fTimeOfLastHello = time;
@@ -303,11 +325,12 @@ void NetworkManagerClient::sendInputPacket()
 }
 
 NetworkManagerClient::NetworkManagerClient(const std::string& inServerIPAddress, const std::string& inName, float inFrameRate, RemoveProcessedMovesFunc removeProcessedMovesFunc, GetMoveListFunc getMoveListFunc) :
+m_clientHelper(new SocketClientHelper()),
 // This allows us to run both a debug and a release client on the same machine
 #if defined(DEBUG) || defined(_DEBUG)
-m_packetHandler(new SocketPacketHandler(1339, NetworkManagerClient::staticProcessPacket, NetworkManagerClient::staticHandleConnectionReset)),
+m_packetHandler(new SocketPacketHandler(1339, NetworkManagerClient::staticProcessPacket, NetworkManagerClient::staticHandleNoResponse, NetworkManagerClient::staticHandleConnectionReset)),
 #else
-m_packetHandler(new SocketPacketHandler(1337, NetworkManagerClient::staticProcessPacket, NetworkManagerClient::staticHandleConnectionReset)),
+m_packetHandler(new SocketPacketHandler(1337, NetworkManagerClient::staticProcessPacket, NetworkManagerClient::staticHandleNoResponse, NetworkManagerClient::staticHandleConnectionReset)),
 #endif
 m_removeProcessedMovesFunc(removeProcessedMovesFunc),
 m_getMoveListFunc(getMoveListFunc),
@@ -318,6 +341,8 @@ m_state(NCS_SayingHello),
 m_deliveryNotificationManager(new DeliveryNotificationManager(true, false)),
 m_fTimeOfLastHello(0.0f),
 m_fTimeOfLastInputPacket(0.0f),
+m_fLastMoveProcessedByServerTimestamp(0.0f),
+m_fLastServerCommunicationTimestamp(Timing::getInstance()->getFrameStartTime()),
 m_name(inName),
 m_fFrameRate(inFrameRate)
 {
@@ -326,6 +351,7 @@ m_fFrameRate(inFrameRate)
 
 NetworkManagerClient::~NetworkManagerClient()
 {
+    delete m_clientHelper;
     delete m_packetHandler;
     delete m_deliveryNotificationManager;
     delete m_replicationManagerClient;

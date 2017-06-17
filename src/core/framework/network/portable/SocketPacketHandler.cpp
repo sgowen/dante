@@ -23,7 +23,7 @@
 #include "macros.h"
 #include "FrameworkConstants.h"
 
-SocketPacketHandler::SocketPacketHandler(uint16_t inPort, ProcessPacketFunc processPacketFunc, HandleConnectionResetFunc handleConnectionResetFunc) : IPacketHandler(processPacketFunc, handleConnectionResetFunc), m_socket(nullptr), m_isInitialized(false)
+SocketPacketHandler::SocketPacketHandler(uint16_t inPort, ProcessPacketFunc processPacketFunc, HandleNoResponseFunc handleNoResponseFunc, HandleConnectionResetFunc handleConnectionResetFunc) : IPacketHandler(processPacketFunc, handleNoResponseFunc, handleConnectionResetFunc), m_socket(nullptr), m_isInitialized(false)
 {
     if (!SOCKET_UTIL->init())
     {
@@ -87,7 +87,8 @@ void SocketPacketHandler::readIncomingPacketsIntoQueue()
         int readByteCount = m_socket->receiveFromAddress(packetMem, packetSize, fromAddress);
         if (readByteCount == 0)
         {
-            //nothing to read
+            // nothing to read
+            m_handleNoResponseFunc();
             break;
         }
         else if (readByteCount == -WSAECONNRESET)
@@ -111,7 +112,7 @@ void SocketPacketHandler::readIncomingPacketsIntoQueue()
         }
         else
         {
-            //uhoh, error? exit or just keep going?
+            // uhoh, error? exit or just keep going?
         }
     }
     

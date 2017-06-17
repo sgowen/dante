@@ -1,5 +1,5 @@
 //
-//  IServerHelper.cpp
+//  NGSteamServerHelper.cpp
 //  noctisgames-framework
 //
 //  Created by Stephen Gowen on 6/17/17.
@@ -8,14 +8,14 @@
 
 #include "pch.h"
 
-#include "IServerHelper.h"
+#include "NGSteamServerHelper.h"
 
-IServerHelper::IServerHelper()
+NGSteamServerHelper::NGSteamServerHelper() : IServerHelper()
 {
     // Empty
 }
 
-IServerHelper::~IServerHelper()
+NGSteamServerHelper::~NGSteamServerHelper()
 {
     // Empty
 }

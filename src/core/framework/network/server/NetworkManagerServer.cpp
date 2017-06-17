@@ -10,6 +10,7 @@
 
 #include "NetworkManagerServer.h"
 
+#include "SocketServerHelper.h"
 #include "InputMemoryBitStream.h"
 #include "OutputMemoryBitStream.h"
 #include "DeliveryNotificationManager.h"
@@ -56,6 +57,11 @@ NetworkManagerServer * NetworkManagerServer::getInstance()
 void NetworkManagerServer::staticProcessPacket(InputMemoryBitStream& inInputStream, IMachineAddress* inFromAddress)
 {
     NG_SERVER->processPacket(inInputStream, inFromAddress);
+}
+
+void NetworkManagerServer::staticHandleNoResponse()
+{
+    NG_SERVER->handleNoResponse();
 }
 
 void NetworkManagerServer::staticHandleConnectionReset(IMachineAddress* inFromAddress)
@@ -172,6 +178,11 @@ void NetworkManagerServer::processPacket(InputMemoryBitStream& inInputStream, IM
     {
         processPacket((*it).second, inInputStream);
     }
+}
+
+void NetworkManagerServer::handleNoResponse()
+{
+    // Unused
 }
 
 void NetworkManagerServer::handleConnectionReset(IMachineAddress* inFromAddress)
@@ -330,7 +341,8 @@ void NetworkManagerServer::handleClientDisconnected(ClientProxy* inClientProxy)
 }
 
 NetworkManagerServer::NetworkManagerServer(uint16_t inPort, HandleNewClientFunc handleNewClientFunc, HandleLostClientFunc handleLostClientFunc, InputStateCreationFunc inputStateCreationFunc) :
-m_packetHandler(new SocketPacketHandler(inPort, NetworkManagerServer::staticProcessPacket, NetworkManagerServer::staticHandleConnectionReset)),
+m_serverHelper(new SocketServerHelper()),
+m_packetHandler(new SocketPacketHandler(inPort, NetworkManagerServer::staticProcessPacket, NetworkManagerServer::staticHandleNoResponse, NetworkManagerServer::staticHandleConnectionReset)),
 m_handleNewClientFunc(handleNewClientFunc),
 m_handleLostClientFunc(handleLostClientFunc),
 m_inputStateCreationFunc(inputStateCreationFunc),
@@ -341,6 +353,7 @@ m_iNewPlayerId(1)
 
 NetworkManagerServer::~NetworkManagerServer()
 {
+    delete m_serverHelper;
     delete m_packetHandler;
     
     NGSTDUtil::cleanUpMapOfPointers(m_addressHashToClientMap);

@@ -23,7 +23,7 @@ class IMachineAddress;
 class NGSteamPacketHandler : public IPacketHandler
 {
 public:
-    NGSteamPacketHandler(ProcessPacketFunc processPacketFunc, HandleConnectionResetFunc handleConnectionResetFunc);
+    NGSteamPacketHandler(ProcessPacketFunc processPacketFunc, HandleNoResponseFunc handleNoResponseFunc, HandleConnectionResetFunc handleConnectionResetFunc);
     
     virtual ~NGSteamPacketHandler();
     

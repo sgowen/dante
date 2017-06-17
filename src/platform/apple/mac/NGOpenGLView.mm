@@ -434,6 +434,10 @@ static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink,
                 case 'j':
                     KEYBOARD_INPUT_MANAGER->onInput(KeyboardEventType_J, isUp);
                     return;
+                case 'L':
+                case 'l':
+                    KEYBOARD_INPUT_MANAGER->onInput(KeyboardEventType_L, isUp);
+                    return;
                 case NSEnterCharacter:
                 case NSCarriageReturnCharacter:
                     KEYBOARD_INPUT_MANAGER->onInput(KeyboardEventType_ENTER, isUp);

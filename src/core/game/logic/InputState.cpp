@@ -21,6 +21,8 @@ m_isShooting(false),
 m_isSprinting(false),
 m_isStartingServer(false),
 m_isJoiningServer(false),
+m_isStartingSteamServer(false),
+m_isJoiningSteamServer(false),
 m_isLeavingServer(false)
 {
     // Empty
@@ -97,6 +99,16 @@ bool InputState::isStartingServer() const
 bool InputState::isJoiningServer() const
 {
     return m_isJoiningServer;
+}
+
+bool InputState::isStartingSteamServer() const
+{
+    return m_isStartingSteamServer;
+}
+
+bool InputState::isJoiningSteamServer() const
+{
+    return m_isJoiningSteamServer;
 }
 
 bool InputState::isLeavingServer() const
