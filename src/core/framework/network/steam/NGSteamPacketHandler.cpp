@@ -17,6 +17,7 @@
 #include "Timing.h"
 #include "NGSteam.h"
 #include "FrameworkConstants.h"
+#include "StringUtil.h"
 
 NGSteamPacketHandler::NGSteamPacketHandler(ProcessPacketFunc processPacketFunc, HandleNoResponseFunc handleNoResponseFunc, HandleConnectionResetFunc handleConnectionResetFunc) : IPacketHandler(processPacketFunc, handleNoResponseFunc, handleConnectionResetFunc)
 {
@@ -39,6 +40,10 @@ void NGSteamPacketHandler::sendPacket(const OutputMemoryBitStream& inOutputStrea
         {
             m_bytesSentThisFrame += sentByteCount;
         }
+    }
+    else
+    {
+        LOG("Failed sending data to server");
     }
 }
 

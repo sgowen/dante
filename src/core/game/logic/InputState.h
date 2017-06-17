@@ -48,7 +48,9 @@ public:
     
     bool isStartingSteamServer() const;
     
-    bool isJoiningSteamServer() const;
+    bool isJoiningOnlineSteamServer() const;
+    
+    bool isJoiningLANSteamServer() const;
     
     bool isLeavingServer() const;
     
@@ -63,7 +65,8 @@ private:
     bool m_isStartingServer;
     bool m_isJoiningServer;
     bool m_isStartingSteamServer;
-    bool m_isJoiningSteamServer;
+    bool m_isJoiningOnlineSteamServer;
+    bool m_isJoiningLANSteamServer;
     bool m_isLeavingServer;
 };
 

@@ -160,6 +160,11 @@ int NetworkManagerServer::getNumClientsConnected()
     return static_cast<int>(m_addressHashToClientMap.size());
 }
 
+bool NetworkManagerServer::isConnected()
+{
+    return m_serverHelper->isConnected();
+}
+
 void NetworkManagerServer::processPacket(InputMemoryBitStream& inInputStream, IMachineAddress* inFromAddress)
 {
     //try to get the client proxy for this address

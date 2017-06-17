@@ -191,7 +191,7 @@ void MainRenderer::renderInstructions()
     {
         static Vector2 origin = Vector2(CAM_WIDTH / 2, CAM_HEIGHT - 3);
         
-        std::string text = std::string("'S' to start steam server");
+        std::string text = std::string("'S' to start Steam server");
         
         static Color c = Color(0.0f, 0.0f, 0.0f, 1.0f);
         
@@ -201,7 +201,7 @@ void MainRenderer::renderInstructions()
     {
         static Vector2 origin = Vector2(CAM_WIDTH / 2, CAM_HEIGHT - 4);
         
-        std::string text = std::string("'J' to join the first available steam server");
+        std::string text = std::string("'J' to join the first available online Steam server");
         
         static Color c = Color(0.0f, 0.0f, 0.0f, 1.0f);
         
@@ -210,6 +210,16 @@ void MainRenderer::renderInstructions()
     
     {
         static Vector2 origin = Vector2(CAM_WIDTH / 2, CAM_HEIGHT - 5);
+        
+        std::string text = std::string("'K' to join the first available LAN Steam server");
+        
+        static Color c = Color(0.0f, 0.0f, 0.0f, 1.0f);
+        
+        renderText(text, origin, c);
+    }
+    
+    {
+        static Vector2 origin = Vector2(CAM_WIDTH / 2, CAM_HEIGHT - 6);
         
         std::string text = std::string("'ESC' to exit game");
         

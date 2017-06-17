@@ -161,9 +161,12 @@ void MainEngine::update(float deltaTime)
         else if (NG_SERVER)
         {
             InputState* inputState = InputManager::getInstance()->getInputState();
-            if (inputState->isJoiningSteamServer())
+            if (inputState->isJoiningOnlineSteamServer())
             {
-                joinServer(m_isSteam);
+                if (NG_SERVER->isConnected())
+                {
+                    joinServer(m_isSteam);
+                }
             }
             else if (inputState->isLeavingServer())
             {
@@ -185,9 +188,13 @@ void MainEngine::update(float deltaTime)
             {
                 startServer(true);
             }
-            else if (inputState->isJoiningSteamServer())
+            else if (inputState->isJoiningOnlineSteamServer())
             {
                 joinServer(true);
+            }
+            else if (inputState->isJoiningLANSteamServer())
+            {
+                joinServer(true, true);
             }
 			else if (inputState->isLeavingServer())
 			{
@@ -228,13 +235,13 @@ void MainEngine::startServer(bool isSteam)
     }
 }
 
-void MainEngine::joinServer(bool isSteam)
+void MainEngine::joinServer(bool isSteam, bool isSteamLAN)
 {
     m_isSteam = isSteam;
     
     if (m_isSteam)
     {
-        NetworkManagerClient::create(new NGSteamClientHelper(NetworkManagerClient::staticProcessPacket, NetworkManagerClient::staticHandleNoResponse, NetworkManagerClient::staticHandleConnectionReset), FRAME_RATE, InputManager::staticRemoveProcessedMoves, InputManager::staticGetMoveList);
+        NetworkManagerClient::create(new NGSteamClientHelper("projectdante", isSteamLAN, NetworkManagerClient::staticProcessPacket, NetworkManagerClient::staticHandleNoResponse, NetworkManagerClient::staticHandleConnectionReset), FRAME_RATE, InputManager::staticRemoveProcessedMoves, InputManager::staticGetMoveList);
     }
     else
     {

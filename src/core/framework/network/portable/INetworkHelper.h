@@ -21,15 +21,15 @@ public:
     
     virtual ~INetworkHelper();
     
-    void processIncomingPackets();
+    virtual void processIncomingPackets();
     
-    void sendPacket(const OutputMemoryBitStream& inOutputStream, IMachineAddress* inFromAddress);
+    virtual void sendPacket(const OutputMemoryBitStream& inOutputStream, IMachineAddress* inFromAddress);
     
     const WeightedTimedMovingAverage& getBytesReceivedPerSecond() const;
     
     const WeightedTimedMovingAverage& getBytesSentPerSecond() const;
     
-private:
+protected:
     IPacketHandler* m_packetHandler;
 };
 

@@ -11,14 +11,25 @@
 
 #include "IServerHelper.h"
 
+#include "NGSteam.h"
 #include "IPacketHandler.h"
 
 class NGSteamServerHelper : public IServerHelper
 {
 public:
-    NGSteamServerHelper(ProcessPacketFunc processPacketFunc, HandleNoResponseFunc handleNoResponseFunc, HandleConnectionResetFunc handleConnectionResetFunc);
+    NGSteamServerHelper(const char* inGameDir, const char* inVersionString, const char* inProductName, const char* inGameDescription, uint16 inPort, uint16 inAuthPort, uint16 inUpdaterPort, ProcessPacketFunc inProcessPacketFunc, HandleNoResponseFunc inHandleNoResponseFunc, HandleConnectionResetFunc inHandleConnectionResetFunc);
     
     virtual ~NGSteamServerHelper();
+    
+    virtual void processIncomingPackets();
+    
+    virtual bool isConnected();
+    
+private:
+    std::string m_serverName;
+    bool m_isConnectedToSteam; // Track whether our server is connected to Steam ok (meaning we can restrict who plays based on ownership and VAC bans, etc...)
+    
+    void sendUpdatedServerDetailsToSteam();
 };
 
 #endif /* defined(__noctisgames__NGSteamServerHelper__) */

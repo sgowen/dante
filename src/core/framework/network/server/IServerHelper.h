@@ -17,6 +17,8 @@ public:
     IServerHelper(IPacketHandler* packetHandler);
     
     virtual ~IServerHelper();
+    
+    virtual bool isConnected() = 0;
 };
 
 #endif /* defined(__noctisgames__IServerHelper__) */

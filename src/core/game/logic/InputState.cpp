@@ -22,7 +22,8 @@ m_isSprinting(false),
 m_isStartingServer(false),
 m_isJoiningServer(false),
 m_isStartingSteamServer(false),
-m_isJoiningSteamServer(false),
+m_isJoiningOnlineSteamServer(false),
+m_isJoiningLANSteamServer(false),
 m_isLeavingServer(false)
 {
     // Empty
@@ -106,9 +107,14 @@ bool InputState::isStartingSteamServer() const
     return m_isStartingSteamServer;
 }
 
-bool InputState::isJoiningSteamServer() const
+bool InputState::isJoiningOnlineSteamServer() const
 {
-    return m_isJoiningSteamServer;
+    return m_isJoiningOnlineSteamServer;
+}
+
+bool InputState::isJoiningLANSteamServer() const
+{
+    return m_isJoiningLANSteamServer;
 }
 
 bool InputState::isLeavingServer() const

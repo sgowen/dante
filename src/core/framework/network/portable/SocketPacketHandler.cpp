@@ -66,6 +66,11 @@ void SocketPacketHandler::sendPacket(const OutputMemoryBitStream& inOutputStream
     }
 }
 
+bool SocketPacketHandler::isInitialized()
+{
+    return m_isInitialized;
+}
+
 void SocketPacketHandler::readIncomingPacketsIntoQueue()
 {
     if (!m_isInitialized)

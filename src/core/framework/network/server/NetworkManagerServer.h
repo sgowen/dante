@@ -57,6 +57,8 @@ public:
     
     int getNumClientsConnected();
     
+    bool isConnected();
+    
 private:
     static NetworkManagerServer* s_instance;
     

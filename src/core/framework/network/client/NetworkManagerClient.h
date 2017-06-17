@@ -64,8 +64,6 @@ public:
     
     float getRoundTripTime() const;
     
-    std::string& getClientUserName();
-    
     int getPlayerId() const;
     
     NetworkClientState getState() const;

@@ -19,6 +19,8 @@ public:
     SocketServerHelper(uint16_t inPort, ProcessPacketFunc processPacketFunc, HandleNoResponseFunc handleNoResponseFunc, HandleConnectionResetFunc handleConnectionResetFunc);
     
     virtual ~SocketServerHelper();
+    
+    virtual bool isConnected();
 };
 
 #endif /* defined(__noctisgames__SocketServerHelper__) */

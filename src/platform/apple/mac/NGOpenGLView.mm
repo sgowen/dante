@@ -434,6 +434,10 @@ static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink,
                 case 'j':
                     KEYBOARD_INPUT_MANAGER->onInput(KeyboardEventType_J, isUp);
                     return;
+                case 'K':
+                case 'k':
+                    KEYBOARD_INPUT_MANAGER->onInput(KeyboardEventType_K, isUp);
+                    return;
                 case 'L':
                 case 'l':
                     KEYBOARD_INPUT_MANAGER->onInput(KeyboardEventType_L, isUp);

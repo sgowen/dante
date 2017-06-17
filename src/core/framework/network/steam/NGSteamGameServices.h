@@ -15,7 +15,6 @@
 #include <string>
 #include <list>
 
-class OutputMemoryBitStream;
 class ISteamRemoteStorage;
 
 #define NG_STEAM_GAME_SERVICES (NGSteamGameServices::getInstance())
@@ -28,7 +27,7 @@ class ISteamRemoteStorage;
 #define STEAM_INIT_FAIL_LOGGED_ON -4
 #define STEAM_INIT_FAIL_CONTROLLER_INIT -5
 
-class NGSteamGameServices : public ISteamMatchmakingServerListResponse
+class NGSteamGameServices
 {
 public:
     static NGSteamGameServices* getInstance();
@@ -36,17 +35,6 @@ public:
     int init();
     
     void deinit();
-    
-    void update();
-    
-    void refreshInternetServers();
-    
-    void refreshLANServers();
-    
-#pragma mark ISteamMatchmakingServerListResponse
-    virtual void ServerResponded(HServerListRequest hReq, int iServer);
-    virtual void ServerFailedToRespond(HServerListRequest hReq, int iServer);
-    virtual void RefreshComplete(HServerListRequest hReq, EMatchMakingServerResponse response);
     
 #pragma mark Steam Cloud
     bool writeFileToSteamCloud(const char *inFileName, const char *inData);
@@ -57,20 +45,11 @@ public:
     std::string getLocalPlayerName();
     std::string getRemotePlayerName(uint64_t inPlayerId);
     
-    std::list<NGSteamGameServer>& getGameServers();
-    
-    bool isRequestingServers();
-    
 private:
     ISteamRemoteStorage* m_steamRemoteStorage;
     int32 m_nNumFilesInCloud;
     uint64 m_ulBytesQuota;
     uint64 m_ulAvailableBytes;
-    
-    int m_iNumServers; // Track the number of servers we know about
-    bool m_isRequestingServers; // Track whether we are in the middle of a refresh or not
-    HServerListRequest m_hServerListRequest; // Track what server list request is currently running
-    std::list<NGSteamGameServer> m_gameServers;
     
     int m_iStatus;
     

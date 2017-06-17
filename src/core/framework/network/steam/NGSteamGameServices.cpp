@@ -10,17 +10,9 @@
 
 #include "NGSteamGameServices.h"
 
-#include "OutputMemoryBitStream.h"
-
 #include "StringUtil.h"
 #include "FrameworkConstants.h"
 #include "macros.h"
-
-#include "steam/steam_api.h"
-#include "steam/isteamuserstats.h"
-#include "steam/isteamremotestorage.h"
-#include "steam/isteammatchmaking.h"
-#include "steam/steam_gameserver.h"
 
 void alert(const char *lpCaption, const char *lpText)
 {
@@ -138,118 +130,7 @@ void NGSteamGameServices::deinit()
     // Shutdown Steam CEG
     Steamworks_TermCEGLibrary();
     
-    if (m_hServerListRequest)
-    {
-        SteamMatchmakingServers()->ReleaseRequest(m_hServerListRequest);
-        m_hServerListRequest = nullptr;
-    }
-    
     m_iStatus = STEAM_UNINITIALIZED;
-}
-
-void NGSteamGameServices::update()
-{
-    //without this, callbacks will never fire
-    SteamAPI_RunCallbacks();
-}
-
-void NGSteamGameServices::refreshInternetServers()
-{
-    // If we are still finishing the previous refresh, then ignore this new request
-    if (m_isRequestingServers)
-    {
-        return;
-    }
-    
-    // If another request is outstanding, make sure we release it properly
-    if (m_hServerListRequest)
-    {
-        SteamMatchmakingServers()->ReleaseRequest(m_hServerListRequest);
-        m_hServerListRequest = nullptr;
-    }
-    
-    LOG("Refreshing internet servers");
-    
-    // Track that we are now in a refresh, what type of refresh, and reset our server count
-    m_isRequestingServers = true;
-    m_iNumServers = 0;
-    m_gameServers.clear();
-    
-    Steamworks_TestSecret();
-    
-    // Allocate some filters, there are some common pre-defined values that can be used:
-    //
-    // "gamedir" -- this is used to specify mods inside or a single product/appid
-    // "secure" -- this is used to specify whether anti-cheat is enabled for a server
-    // "gametype" -- this is used to specify game type and is set to whatever your game server code sets
-    
-    MatchMakingKeyValuePair_t pFilters[2];
-    MatchMakingKeyValuePair_t *pFilter = pFilters;
-    
-    strncpy(pFilters[0].m_szKey, "gamedir", sizeof(pFilters[0].m_szKey));
-    strncpy(pFilters[0].m_szValue, "projectdante", sizeof(pFilters[0].m_szValue));
-    
-    strncpy(pFilters[1].m_szKey, "secure", sizeof(pFilters[1].m_szKey));
-    strncpy(pFilters[1].m_szValue, "1", sizeof(pFilters[1].m_szValue));
-    
-    // bugbug jmccaskey - passing just the appid without filters results in getting all servers rather than
-    // servers filtered by appid alone.  So, we'll use the filters to filter the results better.
-    m_hServerListRequest = SteamMatchmakingServers()->RequestInternetServerList(SteamUtils()->GetAppID(), &pFilter, ARRAYSIZE(pFilters), this);
-}
-
-void NGSteamGameServices::refreshLANServers()
-{
-    // If we are still finishing the previous refresh, then ignore this new request
-    if (m_isRequestingServers)
-    {
-        return;
-    }
-    
-    // If another request is outstanding, make sure we release it properly
-    if (m_hServerListRequest)
-    {
-        SteamMatchmakingServers()->ReleaseRequest(m_hServerListRequest);
-        m_hServerListRequest = nullptr;
-    }
-    
-    LOG("Refreshing LAN servers");
-    
-    // Track that we are now in a refresh, what type of refresh, and reset our server count
-    m_isRequestingServers = true;
-    m_iNumServers = 0;
-    m_gameServers.clear();
-    
-    // LAN refresh doesn't accept filters like internet above does
-    m_hServerListRequest = SteamMatchmakingServers()->RequestLANServerList(SteamUtils()->GetAppID(), this);
-}
-
-#pragma mark ISteamMatchmakingServerListResponse
-
-void NGSteamGameServices::ServerResponded(HServerListRequest hReq, int iServer)
-{
-    gameserveritem_t *pServer = SteamMatchmakingServers()->GetServerDetails(hReq, iServer);
-    if (pServer)
-    {
-        // Filter out servers that don't match our appid here (might get these in LAN calls since we can't put more filters on it)
-        if (pServer->m_nAppID == SteamUtils()->GetAppID())
-        {
-            m_gameServers.push_back(NGSteamGameServer(pServer));
-            m_iNumServers++;
-        }
-    }
-}
-
-void NGSteamGameServices::ServerFailedToRespond(HServerListRequest hReq, int iServer)
-{
-    // Unused
-    
-    UNUSED(hReq);
-    UNUSED(iServer);
-}
-
-void NGSteamGameServices::RefreshComplete(HServerListRequest hReq, EMatchMakingServerResponse response)
-{
-    m_isRequestingServers = false;
 }
 
 #pragma mark Steam Cloud
@@ -313,16 +194,6 @@ std::string NGSteamGameServices::getRemotePlayerName(uint64_t inPlayerId)
     return std::string(SteamFriends()->GetFriendPersonaName(inPlayerId));
 }
 
-std::list<NGSteamGameServer>& NGSteamGameServices::getGameServers()
-{
-    return m_gameServers;
-}
-
-bool NGSteamGameServices::isRequestingServers()
-{
-    return m_isRequestingServers;
-}
-
 void NGSteamGameServices::refreshSteamCloudFileStats()
 {
     m_ulBytesQuota = 0;
@@ -338,9 +209,6 @@ m_steamRemoteStorage(nullptr),
 m_ulBytesQuota(0),
 m_ulAvailableBytes(0),
 m_nNumFilesInCloud(0),
-m_iNumServers(0),
-m_isRequestingServers(false),
-m_hServerListRequest(nullptr),
 m_iStatus(STEAM_UNINITIALIZED)
 {
     // Empty

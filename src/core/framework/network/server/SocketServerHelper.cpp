@@ -21,3 +21,8 @@ SocketServerHelper::~SocketServerHelper()
 {
     // Empty
 }
+
+bool SocketServerHelper::isConnected()
+{
+    return (static_cast<SocketPacketHandler*>(m_packetHandler))->isInitialized();
+}

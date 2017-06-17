@@ -30,6 +30,8 @@ public:
     
     virtual void sendPacket(const OutputMemoryBitStream& inOutputStream, IMachineAddress* inFromAddress);
     
+    bool isInitialized();
+    
 protected:
     virtual void readIncomingPacketsIntoQueue();
     

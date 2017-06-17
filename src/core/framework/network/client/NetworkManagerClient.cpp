@@ -109,11 +109,6 @@ float NetworkManagerClient::getRoundTripTime() const
     return m_avgRoundTripTime->getValue();
 }
 
-std::string& NetworkManagerClient::getClientUserName()
-{
-    return m_clientHelper->getName();
-}
-
 int NetworkManagerClient::getPlayerId() const
 {
     return m_iPlayerId;

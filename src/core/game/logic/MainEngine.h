@@ -56,7 +56,7 @@ private:
     
     void startServer(bool isSteam);
     
-    void joinServer(bool isSteam);
+    void joinServer(bool isSteam, bool isSteamLAN = false);
     
     void leaveServer();
 };
