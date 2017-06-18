@@ -348,7 +348,7 @@ void MainRenderer::renderServerJoinedInstructions()
 {
     static Vector2 origin = Vector2(CAM_WIDTH / 2, CAM_HEIGHT - 2);
     
-    std::string text = std::string("Server joined, 'ESC' to exit");
+    std::string text = StringUtil::format("%s, 'ESC' to exit", NG_CLIENT->getState() == NCS_Welcomed ? "Server joined" : "Joining Server...");
     
     static Color c = Color(0.0f, 0.0f, 0.0f, 1.0f);
     

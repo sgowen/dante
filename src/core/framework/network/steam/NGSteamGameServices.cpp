@@ -216,5 +216,5 @@ m_iStatus(STEAM_UNINITIALIZED)
 
 NGSteamGameServices::~NGSteamGameServices()
 {
-    deinit();
+    // Empty
 }

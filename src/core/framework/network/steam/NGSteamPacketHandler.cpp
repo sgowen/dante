@@ -84,10 +84,6 @@ void NGSteamPacketHandler::readIncomingPacketsIntoQueue()
                     
                     m_packetQueue.emplace(simulatedReceivedTime, inputStream, fromId);
                 }
-                else if (readByteCount == 0)
-                {
-                    m_handleNoResponseFunc();
-                }
             }
         }
     }
@@ -95,6 +91,10 @@ void NGSteamPacketHandler::readIncomingPacketsIntoQueue()
     if (totalReadByteCount > 0)
     {
         updateBytesReceivedLastFrame(totalReadByteCount);
+    }
+    else
+    {
+        m_handleNoResponseFunc();
     }
 }
 

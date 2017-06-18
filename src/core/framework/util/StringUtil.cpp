@@ -44,8 +44,7 @@ void OutputDebugStringA(const char* inString)
 
 std::string StringUtil::format(const char* inFormat, ...)
 {
-    //not thread safe...
-    static char temp[4096];
+    char temp[4096];
     
     va_list args;
     va_start (args, inFormat);

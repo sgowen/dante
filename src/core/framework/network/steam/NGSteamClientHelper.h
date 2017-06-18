@@ -22,7 +22,7 @@ class NGSteamAddress;
 class NGSteamClientHelper : public IClientHelper, ISteamMatchmakingServerListResponse
 {
 public:
-    NGSteamClientHelper(const char* inGameDir, bool isLAN, ProcessPacketFunc processPacketFunc, HandleNoResponseFunc handleNoResponseFunc, HandleConnectionResetFunc handleConnectionResetFunc);
+    NGSteamClientHelper(const char* inGameDir, bool isLAN, ProcessPacketFunc processPacketFunc, HandleNoResponseFunc handleNoResponseFunc, HandleConnectionResetFunc handleConnectionResetFunc, NGSteamAddress* serverSteamAddress = nullptr);
     
     virtual ~NGSteamClientHelper();
     

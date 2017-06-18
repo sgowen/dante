@@ -44,6 +44,8 @@
 #include "EntityManager.h"
 #include "SocketClientHelper.h"
 #include "NGSteamClientHelper.h"
+#include "IMachineAddress.h"
+#include "NGSteamAddress.h"
 
 void MainEngine::staticAddEntity(Entity* inEntity)
 {
@@ -175,13 +177,10 @@ void MainEngine::handleNonMoveInput()
 {
     if (NG_CLIENT)
     {
-        if (NG_CLIENT->getState() == NCS_Welcomed)
+        InputState* inputState = InputManager::getInstance()->getInputState();
+        if (inputState->isLeavingServer())
         {
-            InputState* inputState = InputManager::getInstance()->getInputState();
-            if (inputState->isLeavingServer())
-            {
-                leaveServer();
-            }
+            leaveServer();
         }
     }
     else if (NG_SERVER)
@@ -303,7 +302,8 @@ void MainEngine::joinServer(bool isSteam, bool isSteamLAN)
     
     if (m_isSteam)
     {
-        NetworkManagerClient::create(new NGSteamClientHelper("projectdante", isSteamLAN, NetworkManagerClient::staticProcessPacket, NetworkManagerClient::staticHandleNoResponse, NetworkManagerClient::staticHandleConnectionReset), FRAME_RATE, InputManager::staticRemoveProcessedMoves, InputManager::staticGetMoveList);
+        NGSteamAddress* serverAddress = NG_SERVER && NG_SERVER->isConnected() ? static_cast<NGSteamAddress*>(NG_SERVER->getServerAddress()) : nullptr;
+        NetworkManagerClient::create(new NGSteamClientHelper("projectdante", isSteamLAN, NetworkManagerClient::staticProcessPacket, NetworkManagerClient::staticHandleNoResponse, NetworkManagerClient::staticHandleConnectionReset, serverAddress), FRAME_RATE, InputManager::staticRemoveProcessedMoves, InputManager::staticGetMoveList);
     }
     else
     {

@@ -16,13 +16,14 @@
 #include "NGSteamGameServices.h"
 #include "macros.h"
 #include "StringUtil.h"
+#include "Timing.h"
 
 #include <assert.h>
 
-NGSteamClientHelper::NGSteamClientHelper(const char* inGameDir, bool isLAN, ProcessPacketFunc processPacketFunc, HandleNoResponseFunc handleNoResponseFunc, HandleConnectionResetFunc handleConnectionResetFunc) : IClientHelper(new NGSteamPacketHandler(false, processPacketFunc, handleNoResponseFunc, handleConnectionResetFunc)),
+NGSteamClientHelper::NGSteamClientHelper(const char* inGameDir, bool isLAN, ProcessPacketFunc processPacketFunc, HandleNoResponseFunc handleNoResponseFunc, HandleConnectionResetFunc handleConnectionResetFunc, NGSteamAddress* serverSteamAddress) : IClientHelper(new NGSteamPacketHandler(false, processPacketFunc, handleNoResponseFunc, handleConnectionResetFunc)),
 m_gameDir(inGameDir),
 m_clientSteamAddress(nullptr),
-m_serverSteamAddress(nullptr),
+m_serverSteamAddress(serverSteamAddress ? static_cast<NGSteamAddress*>(serverSteamAddress->createCopy()) : nullptr),
 m_iNumServers(0),
 m_isRequestingServers(false),
 m_hServerListRequest(nullptr)
@@ -32,13 +33,16 @@ m_hServerListRequest(nullptr)
     m_clientSteamAddress = new NGSteamAddress(SteamUser()->GetSteamID());
     m_name = std::string(SteamFriends()->GetFriendPersonaName(m_clientSteamAddress->getSteamID()));
     
-    if (isLAN)
+    if (!m_serverSteamAddress)
     {
-        refreshLANServers();
-    }
-    else
-    {
-        refreshInternetServers();
+        if (isLAN)
+        {
+            refreshLANServers();
+        }
+        else
+        {
+            refreshInternetServers();
+        }
     }
 }
 
@@ -65,6 +69,8 @@ NGSteamClientHelper::~NGSteamClientHelper()
 
 void NGSteamClientHelper::processIncomingPackets()
 {
+    LOG("processIncomingPackets %f", Timing::getInstance()->getFrameStartTime());
+    
     INetworkHelper::processIncomingPackets();
     
     // without this, callbacks will never fire
@@ -88,6 +94,8 @@ std::string& NGSteamClientHelper::getName()
 
 void NGSteamClientHelper::ServerResponded(HServerListRequest hReq, int iServer)
 {
+    LOG("ServerResponded");
+    
     gameserveritem_t *pServer = SteamMatchmakingServers()->GetServerDetails(hReq, iServer);
     if (pServer)
     {
@@ -102,12 +110,16 @@ void NGSteamClientHelper::ServerResponded(HServerListRequest hReq, int iServer)
 
 void NGSteamClientHelper::ServerFailedToRespond(HServerListRequest hReq, int iServer)
 {
+    LOG("ServerFailedToRespond");
+    
     UNUSED(hReq);
     UNUSED(iServer);
 }
 
 void NGSteamClientHelper::RefreshComplete(HServerListRequest hReq, EMatchMakingServerResponse response)
 {
+    LOG("RefreshComplete");
+    
     m_isRequestingServers = false;
     
     NGSteamAddress* serverAddress = m_gameServers.size() > 0 ? new NGSteamAddress((*m_gameServers.begin()).getSteamID()) : nullptr;
