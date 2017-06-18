@@ -10,6 +10,8 @@
 
 #include "SocketServerHelper.h"
 
+#include "SocketAddress.h"
+
 #include "SocketPacketHandler.h"
 
 SocketServerHelper::SocketServerHelper(uint16_t inPort, ProcessPacketFunc processPacketFunc, HandleNoResponseFunc handleNoResponseFunc, HandleConnectionResetFunc handleConnectionResetFunc) : IServerHelper(new SocketPacketHandler(inPort, processPacketFunc, handleNoResponseFunc, handleConnectionResetFunc))
@@ -20,6 +22,11 @@ SocketServerHelper::SocketServerHelper(uint16_t inPort, ProcessPacketFunc proces
 SocketServerHelper::~SocketServerHelper()
 {
     // Empty
+}
+
+IMachineAddress* SocketServerHelper::getServerAddress()
+{
+    return (static_cast<SocketPacketHandler*>(m_packetHandler))->getSocketAddress();
 }
 
 bool SocketServerHelper::isConnected()

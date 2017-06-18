@@ -10,6 +10,8 @@
 
 #include "NGSteamServerHelper.h"
 
+#include "NGSteamAddress.h"
+
 #include "NGSteamPacketHandler.h"
 #include "NGSteamGameServices.h"
 #include "StringUtil.h"
@@ -17,7 +19,8 @@
 
 #include <assert.h>
 
-NGSteamServerHelper::NGSteamServerHelper(const char* inGameDir, const char* inVersionString, const char* inProductName, const char* inGameDescription, uint16 inPort, uint16 inAuthPort, uint16 inUpdaterPort, ProcessPacketFunc inProcessPacketFunc, HandleNoResponseFunc inHandleNoResponseFunc, HandleConnectionResetFunc inHandleConnectionResetFunc) : IServerHelper(new NGSteamPacketHandler(inProcessPacketFunc, inHandleNoResponseFunc, inHandleConnectionResetFunc)),
+NGSteamServerHelper::NGSteamServerHelper(const char* inGameDir, const char* inVersionString, const char* inProductName, const char* inGameDescription, uint16 inPort, uint16 inAuthPort, uint16 inUpdaterPort, ProcessPacketFunc inProcessPacketFunc, HandleNoResponseFunc inHandleNoResponseFunc, HandleConnectionResetFunc inHandleConnectionResetFunc) : IServerHelper(new NGSteamPacketHandler(true, inProcessPacketFunc, inHandleNoResponseFunc, inHandleConnectionResetFunc)),
+m_serverSteamAddress(nullptr),
 m_isConnectedToSteam(false)
 {
     assert(NG_STEAM_GAME_SERVICES->init() == STEAM_INIT_SUCCESS);
@@ -57,6 +60,8 @@ m_isConnectedToSteam(false)
         // find us via the steam matchmaking/server browser interfaces
         SteamGameServer()->EnableHeartbeats(true);
         
+        m_serverSteamAddress = new NGSteamAddress(SteamGameServer()->GetSteamID());
+        
         LOG("SteamGameServer() interface is valid");
     }
     else
@@ -67,6 +72,11 @@ m_isConnectedToSteam(false)
 
 NGSteamServerHelper::~NGSteamServerHelper()
 {
+    if (m_serverSteamAddress)
+    {
+        delete m_serverSteamAddress;
+    }
+    
     // Notify Steam master server we are going offline
     SteamGameServer()->EnableHeartbeats(false);
     
@@ -88,6 +98,11 @@ void NGSteamServerHelper::processIncomingPackets()
     
     // Update our server details
     sendUpdatedServerDetailsToSteam();
+}
+
+IMachineAddress* NGSteamServerHelper::getServerAddress()
+{
+    return m_serverSteamAddress;
 }
 
 bool NGSteamServerHelper::isConnected()

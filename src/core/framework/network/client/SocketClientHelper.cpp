@@ -15,7 +15,7 @@
 #include "SocketPacketHandler.h"
 #include "SocketAddressFactory.h"
 
-SocketClientHelper::SocketClientHelper(const std::string& inServerIPAddress, const std::string& inName, uint16_t inPort, ProcessPacketFunc processPacketFunc, HandleNoResponseFunc handleNoResponseFunc, HandleConnectionResetFunc handleConnectionResetFunc) :
+SocketClientHelper::SocketClientHelper(std::string inServerIPAddress, std::string inName, uint16_t inPort, ProcessPacketFunc processPacketFunc, HandleNoResponseFunc handleNoResponseFunc, HandleConnectionResetFunc handleConnectionResetFunc) :
 IClientHelper(new SocketPacketHandler(inPort, processPacketFunc, handleNoResponseFunc, handleConnectionResetFunc)),
 m_serverAddress(SocketAddressFactory::createIPv4FromString(inServerIPAddress)),
 m_name(inName)
@@ -30,7 +30,10 @@ SocketClientHelper::~SocketClientHelper()
 
 void SocketClientHelper::sendPacket(const OutputMemoryBitStream& inOutputStream)
 {
-    INetworkHelper::sendPacket(inOutputStream, m_serverAddress);
+    if (m_serverAddress)
+    {
+        INetworkHelper::sendPacket(inOutputStream, m_serverAddress);
+    }
 }
 
 std::string& SocketClientHelper::getName()

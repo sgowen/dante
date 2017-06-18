@@ -332,142 +332,20 @@ static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink,
 
 - (void)handleKeyEvent:(NSEvent *)event isUp:(bool)isUp
 {
-    if ([event modifierFlags] & NSNumericPadKeyMask)
+    NSString *characters = [[event characters] capitalizedString];
+    
+    if ([characters length] == 0)
     {
-        // arrow keys have this mask
-        NSString *theArrow = [event charactersIgnoringModifiers];
-        
-        unichar keyChar = 0;
-        
-        if ([theArrow length] == 0)
-        {
-            return; // reject dead keys
-        }
-        
-        if ([theArrow length] == 1)
-        {
-            keyChar = [theArrow characterAtIndex:0];
-            
-            if (keyChar == NSRightArrowFunctionKey)
-            {
-                KEYBOARD_INPUT_MANAGER->onInput(KeyboardEventType_ARROW_KEY_RIGHT, isUp);
-                
-                [[self window] invalidateCursorRectsForView:self];
-                
-                return;
-            }
-            
-            if (keyChar == NSUpArrowFunctionKey)
-            {
-                KEYBOARD_INPUT_MANAGER->onInput(KeyboardEventType_ARROW_KEY_UP, isUp);
-                
-                [[self window] invalidateCursorRectsForView:self];
-                
-                return;
-            }
-            
-            if (keyChar == NSLeftArrowFunctionKey)
-            {
-                KEYBOARD_INPUT_MANAGER->onInput(KeyboardEventType_ARROW_KEY_LEFT, isUp);
-                
-                [[self window] invalidateCursorRectsForView:self];
-                
-                return;
-            }
-            
-            if (keyChar == NSDownArrowFunctionKey)
-            {
-                KEYBOARD_INPUT_MANAGER->onInput(KeyboardEventType_ARROW_KEY_DOWN, isUp);
-                
-                [[self window] invalidateCursorRectsForView:self];
-                
-                return;
-            }
-        }
+        return; // reject dead keys
     }
-    else
+    
+    unichar keyChar = 0;
+    
+    if ([characters length] == 1)
     {
-        NSString *characters = [event characters];
+        keyChar = [characters characterAtIndex:0];
         
-        if ([characters length] == 0)
-        {
-            return; // reject dead keys
-        }
-        
-        unichar keyChar = 0;
-        
-        if ([characters length] == 1)
-        {
-            keyChar = [characters characterAtIndex:0];
-            
-            switch (keyChar)
-            {
-                case 'W':
-                case 'w':
-                    KEYBOARD_INPUT_MANAGER->onInput(KeyboardEventType_W, isUp);
-                    return;
-                case 'A':
-                case 'a':
-                    KEYBOARD_INPUT_MANAGER->onInput(KeyboardEventType_A, isUp);
-                    return;
-                case 'S':
-                case 's':
-                    KEYBOARD_INPUT_MANAGER->onInput(KeyboardEventType_S, isUp);
-                    return;
-                case 'D':
-                case 'd':
-                    KEYBOARD_INPUT_MANAGER->onInput(KeyboardEventType_D, isUp);
-                    return;
-                case 'V':
-                case 'v':
-                    KEYBOARD_INPUT_MANAGER->onInput(KeyboardEventType_V, isUp);
-                    return;
-                case 'M':
-                case 'm':
-                    KEYBOARD_INPUT_MANAGER->onInput(KeyboardEventType_M, isUp);
-                    return;
-                case 'P':
-                case 'p':
-                    KEYBOARD_INPUT_MANAGER->onInput(KeyboardEventType_P, isUp);
-                    return;
-                case 'J':
-                case 'j':
-                    KEYBOARD_INPUT_MANAGER->onInput(KeyboardEventType_J, isUp);
-                    return;
-                case 'K':
-                case 'k':
-                    KEYBOARD_INPUT_MANAGER->onInput(KeyboardEventType_K, isUp);
-                    return;
-                case 'L':
-                case 'l':
-                    KEYBOARD_INPUT_MANAGER->onInput(KeyboardEventType_L, isUp);
-                    return;
-                case NSEnterCharacter:
-                case NSCarriageReturnCharacter:
-                    KEYBOARD_INPUT_MANAGER->onInput(KeyboardEventType_ENTER, isUp);
-                    return;
-                case 32:
-                    KEYBOARD_INPUT_MANAGER->onInput(KeyboardEventType_SPACE, isUp);
-                    return;
-                case NSBackspaceCharacter:
-                case NSDeleteCharacter:
-                    KEYBOARD_INPUT_MANAGER->onInput(KeyboardEventType_BACK, isUp);
-                    return;
-                default:
-                    break;
-            }
-            
-            unsigned short keyCode = [event keyCode];
-            
-            switch (keyCode)
-            {
-                case 53:
-                    KEYBOARD_INPUT_MANAGER->onInput(KeyboardEventType_ESCAPE, isUp);
-                    return;
-                default:
-                    break;
-            }
-        }
+        KEYBOARD_INPUT_MANAGER->onInput(keyChar, isUp);
     }
 }
 

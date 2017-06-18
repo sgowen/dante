@@ -52,7 +52,11 @@ private:
     
     float m_fStateTime;
     float m_fFrameStateTime;
+    std::string m_serverIPAddress;
+    std::string m_name;
     bool m_isSteam;
+    
+    void handleNonMoveInput();
     
     void startServer(bool isSteam);
     

@@ -31,6 +31,9 @@
 #include "WeightedTimedMovingAverage.h"
 #include "NGSTDUtil.h"
 #include "InstanceManager.h"
+#include "InputManager.h"
+#include "NetworkManagerServer.h"
+#include "IMachineAddress.h"
 
 #include <sstream>
 #include <ctime> // rand
@@ -132,9 +135,21 @@ void MainRenderer::tempDraw(int engineState)
             renderBandWidth();
             renderServerJoinedInstructions();
         }
+        else if (engineState == 4)
+        {
+            renderTypeNameToJoinInstructions();
+        }
+        else if (engineState == 3)
+        {
+            renderSteamServerStartedInstructions();
+        }
+        else if (engineState == 2)
+        {
+            renderTypeServerToJoinInstructions();
+        }
         else if (engineState == 1)
         {
-            renderServerStartedInstructions();
+            renderLocalServerStartedInstructions();
         }
         else
         {
@@ -144,26 +159,96 @@ void MainRenderer::tempDraw(int engineState)
     }
 }
 
-void MainRenderer::renderServerJoinedInstructions()
+void MainRenderer::renderTypeServerToJoinInstructions()
 {
-    static Vector2 origin = Vector2(CAM_WIDTH / 2, CAM_HEIGHT - 2);
+    {
+        static Vector2 origin = Vector2(CAM_WIDTH / 2, CAM_HEIGHT - 2);
+        
+        std::string text = std::string("Enter Server Address to join, 'ESC' to exit");
+        
+        static Color c = Color(0.0f, 0.0f, 0.0f, 1.0f);
+        
+        renderText(text, origin, c);
+    }
     
-    std::string text = std::string("Server joined, 'ESC' to exit");
-    
-    static Color c = Color(0.0f, 0.0f, 0.0f, 1.0f);
-    
-    renderText(text, origin, c);
+    {
+        static Vector2 origin = Vector2(CAM_WIDTH / 2, CAM_HEIGHT - 4);
+        
+        std::string text = InputManager::getInstance()->getLiveInputRef();
+        
+        static Color c = Color(0.0f, 0.0f, 0.0f, 1.0f);
+        
+        renderText(text, origin, c);
+    }
 }
 
-void MainRenderer::renderServerStartedInstructions()
+void MainRenderer::renderTypeNameToJoinInstructions()
 {
-    static Vector2 origin = Vector2(CAM_WIDTH / 2, CAM_HEIGHT - 2);
+    {
+        static Vector2 origin = Vector2(CAM_WIDTH / 2, CAM_HEIGHT - 2);
+        
+        std::string text = std::string("Enter Username to join, 'ESC' to exit");
+        
+        static Color c = Color(0.0f, 0.0f, 0.0f, 1.0f);
+        
+        renderText(text, origin, c);
+    }
     
-    std::string text = std::string("Server started, 'J' to join it");
+    {
+        static Vector2 origin = Vector2(CAM_WIDTH / 2, CAM_HEIGHT - 4);
+        
+        std::string text = InputManager::getInstance()->getLiveInputRef();
+        
+        static Color c = Color(0.0f, 0.0f, 0.0f, 1.0f);
+        
+        renderText(text, origin, c);
+    }
+}
+
+void MainRenderer::renderLocalServerStartedInstructions()
+{
+    {
+        static Vector2 origin = Vector2(CAM_WIDTH / 2, CAM_HEIGHT - 2);
+        
+        std::string text = std::string("Server started, 'J' to join it");
+        
+        static Color c = Color(0.0f, 0.0f, 0.0f, 1.0f);
+        
+        renderText(text, origin, c);
+    }
     
-    static Color c = Color(0.0f, 0.0f, 0.0f, 1.0f);
+    {
+        static Vector2 origin = Vector2(CAM_WIDTH / 2, CAM_HEIGHT - 4);
+        
+        std::string text = std::string("Server Address: ");
+        
+        static Color c = Color(0.0f, 0.0f, 0.0f, 1.0f);
+        
+        renderText(text, origin, c);
+    }
     
-    renderText(text, origin, c);
+    {
+        static Vector2 origin = Vector2(CAM_WIDTH / 2, CAM_HEIGHT - 5);
+        
+        std::string text = NG_SERVER && NG_SERVER->getServerAddress() ? NG_SERVER->getServerAddress()->toString() : std::string("");
+        
+        static Color c = Color(0.0f, 0.0f, 0.0f, 1.0f);
+        
+        renderText(text, origin, c);
+    }
+}
+
+void MainRenderer::renderSteamServerStartedInstructions()
+{
+    {
+        static Vector2 origin = Vector2(CAM_WIDTH / 2, CAM_HEIGHT - 2);
+        
+        std::string text = std::string("Steam Server started, 'J' to join it");
+        
+        static Color c = Color(0.0f, 0.0f, 0.0f, 1.0f);
+        
+        renderText(text, origin, c);
+    }
 }
 
 void MainRenderer::renderInstructions()
@@ -253,6 +338,17 @@ void MainRenderer::renderBandWidth()
     int bpsOutInt = static_cast< int >(bpsOut.getValue());
     
     std::string text = StringUtil::format("In %d Bps, Out %d Bps", bpsInInt, bpsOutInt);
+    
+    static Color c = Color(0.0f, 0.0f, 0.0f, 1.0f);
+    
+    renderText(text, origin, c);
+}
+
+void MainRenderer::renderServerJoinedInstructions()
+{
+    static Vector2 origin = Vector2(CAM_WIDTH / 2, CAM_HEIGHT - 2);
+    
+    std::string text = std::string("Server joined, 'ESC' to exit");
     
     static Color c = Color(0.0f, 0.0f, 0.0f, 1.0f);
     

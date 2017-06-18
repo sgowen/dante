@@ -41,6 +41,10 @@ public:
     
     static void staticHandleConnectionReset(IMachineAddress* inFromAddress);
     
+//    static ClientProxy* staticGetClientProxy(int inPlayerId);
+//    
+//    static int staticGetNumClientsConnected();
+    
     void processIncomingPackets();
     
     void checkForDisconnects();
@@ -56,6 +60,8 @@ public:
     ClientProxy* getClientProxy(int inPlayerId) const;
     
     int getNumClientsConnected();
+    
+    IMachineAddress* getServerAddress();
     
     bool isConnected();
     

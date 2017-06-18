@@ -19,7 +19,7 @@
 #include "FrameworkConstants.h"
 #include "StringUtil.h"
 
-NGSteamPacketHandler::NGSteamPacketHandler(ProcessPacketFunc processPacketFunc, HandleNoResponseFunc handleNoResponseFunc, HandleConnectionResetFunc handleConnectionResetFunc) : IPacketHandler(processPacketFunc, handleNoResponseFunc, handleConnectionResetFunc)
+NGSteamPacketHandler::NGSteamPacketHandler(bool isServer, ProcessPacketFunc processPacketFunc, HandleNoResponseFunc handleNoResponseFunc, HandleConnectionResetFunc handleConnectionResetFunc) : IPacketHandler(processPacketFunc, handleNoResponseFunc, handleConnectionResetFunc), m_isServer(isServer)
 {
     // Empty
 }
@@ -33,7 +33,9 @@ void NGSteamPacketHandler::sendPacket(const OutputMemoryBitStream& inOutputStrea
 {
     NGSteamAddress* inFromSteamAddress = static_cast<NGSteamAddress*>(inFromAddress);
     
-    if (SteamGameServerNetworking()->SendP2PPacket(inFromSteamAddress->getSteamID(), inOutputStream.getBufferPtr(), inOutputStream.getByteLength(), k_EP2PSendUnreliable))
+    ISteamNetworking* steamNetworking = m_isServer ? SteamGameServerNetworking() : SteamNetworking();
+    
+    if (steamNetworking->SendP2PPacket(inFromSteamAddress->getSteamID(), inOutputStream.getBufferPtr(), inOutputStream.getByteLength(), k_EP2PSendUnreliable))
     {
         int sentByteCount = inOutputStream.getByteLength();
         if (sentByteCount > 0)
@@ -59,14 +61,15 @@ void NGSteamPacketHandler::readIncomingPacketsIntoQueue()
     int receivedPackedCount = 0;
     int totalReadByteCount = 0;
     
+    ISteamNetworking* steamNetworking = m_isServer ? SteamGameServerNetworking() : SteamNetworking();
+    
     while (SteamNetworking()->IsP2PPacketAvailable(&incomingSize) &&
           receivedPackedCount < NETWORK_MAX_NUM_PACKETS_PER_FRAME)
     {
         if (incomingSize <= packetSize)
         {
             uint32_t readByteCount;
-            
-            if (SteamGameServerNetworking()->ReadP2PPacket(packetMem, packetSize, &readByteCount, &fromId))
+            if (steamNetworking->ReadP2PPacket(packetMem, packetSize, &readByteCount, &fromId))
             {
                 if (readByteCount > 0)
                 {

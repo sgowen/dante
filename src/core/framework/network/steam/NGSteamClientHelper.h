@@ -44,7 +44,7 @@ public:
 private:
     const char* m_gameDir;
     NGSteamAddress* m_clientSteamAddress;
-    NGSteamAddress* m_serverAddress;
+    NGSteamAddress* m_serverSteamAddress;
     std::string m_name;
     int m_iNumServers; // Track the number of servers we know about
     bool m_isRequestingServers; // Track whether we are in the middle of a refresh or not

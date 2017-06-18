@@ -18,6 +18,8 @@ public:
     
     virtual ~IServerHelper();
     
+    virtual IMachineAddress* getServerAddress() = 0;
+    
     virtual bool isConnected() = 0;
 };
 

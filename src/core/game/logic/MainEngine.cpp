@@ -149,58 +149,9 @@ void MainEngine::update(float deltaTime)
             {
                 leaveServer();
             }
-            else
-            {
-                InputState* inputState = InputManager::getInstance()->getInputState();
-                if (inputState->isLeavingServer())
-                {
-                    leaveServer();
-                }
-            }
         }
-        else if (NG_SERVER)
-        {
-            InputState* inputState = InputManager::getInstance()->getInputState();
-            if (inputState->isJoiningOnlineSteamServer())
-            {
-                if (NG_SERVER->isConnected())
-                {
-                    joinServer(m_isSteam);
-                }
-            }
-            else if (inputState->isLeavingServer())
-            {
-                leaveServer();
-            }
-        }
-        else
-        {
-            InputState* inputState = InputManager::getInstance()->getInputState();
-            if (inputState->isStartingServer())
-            {
-                startServer(false);
-            }
-            else if (inputState->isJoiningServer())
-            {
-                joinServer(false);
-            }
-            else if (inputState->isStartingSteamServer())
-            {
-                startServer(true);
-            }
-            else if (inputState->isJoiningOnlineSteamServer())
-            {
-                joinServer(true);
-            }
-            else if (inputState->isJoiningLANSteamServer())
-            {
-                joinServer(true, true);
-            }
-			else if (inputState->isLeavingServer())
-			{
-				m_iRequestedAction = REQUESTED_ACTION_EXIT;
-			}
-        }
+        
+        handleNonMoveInput();
     }
     
     if (Server::getInstance())
@@ -213,11 +164,112 @@ void MainEngine::render()
 {
     m_renderer->beginFrame();
     
-    m_renderer->tempDraw(NG_CLIENT ? 5 : Server::getInstance() ? 1 : 0);
+    m_renderer->tempDraw(NG_CLIENT ? 5 : Server::getInstance() ? (m_isSteam ? 3 : InputManager::getInstance()->isLiveMode() ? 4 : 1) : InputManager::getInstance()->isLiveMode() ? 2 : 0);
     
     m_renderer->renderToScreen();
     
     m_renderer->endFrame();
+}
+
+void MainEngine::handleNonMoveInput()
+{
+    if (NG_CLIENT)
+    {
+        if (NG_CLIENT->getState() == NCS_Welcomed)
+        {
+            InputState* inputState = InputManager::getInstance()->getInputState();
+            if (inputState->isLeavingServer())
+            {
+                leaveServer();
+            }
+        }
+    }
+    else if (NG_SERVER)
+    {
+        if (InputManager::getInstance()->isLiveMode())
+        {
+            if (InputManager::getInstance()->isTimeToProcessInput())
+            {
+                if (m_serverIPAddress.length() == 0)
+                {
+                    m_serverIPAddress = std::string("localhost:9999");
+                    m_name = InputManager::getInstance()->getLiveInput();
+                    InputManager::getInstance()->setLiveMode(false);
+                    joinServer(m_isSteam);
+                }
+                
+                InputManager::getInstance()->resetLiveInput();
+            }
+        }
+        else
+        {
+            InputState* inputState = InputManager::getInstance()->getInputState();
+            if (inputState->isJoiningOnlineSteamServer())
+            {
+                if (NG_SERVER->isConnected())
+                {
+                    if (m_isSteam)
+                    {
+                        joinServer(m_isSteam);
+                    }
+                    else
+                    {
+                        InputManager::getInstance()->setLiveMode(true);
+                    }
+                }
+            }
+            else if (inputState->isLeavingServer())
+            {
+                leaveServer();
+            }
+        }
+    }
+    else if (InputManager::getInstance()->isLiveMode())
+    {
+        if (InputManager::getInstance()->isTimeToProcessInput())
+        {
+            if (m_serverIPAddress.length() == 0)
+            {
+                m_serverIPAddress = InputManager::getInstance()->getLiveInput();
+            }
+            else
+            {
+                m_name = InputManager::getInstance()->getLiveInput();
+                InputManager::getInstance()->setLiveMode(false);
+                joinServer(false);
+            }
+            
+            InputManager::getInstance()->resetLiveInput();
+        }
+    }
+    else
+    {
+        InputState* inputState = InputManager::getInstance()->getInputState();
+        if (inputState->isStartingServer())
+        {
+            startServer(false);
+        }
+        else if (inputState->isJoiningServer())
+        {
+            InputManager::getInstance()->setLiveMode(true);
+        }
+        else if (inputState->isStartingSteamServer())
+        {
+            startServer(true);
+        }
+        else if (inputState->isJoiningOnlineSteamServer())
+        {
+            joinServer(true);
+        }
+        else if (inputState->isJoiningLANSteamServer())
+        {
+            joinServer(true, true);
+        }
+        else if (inputState->isLeavingServer())
+        {
+            m_iRequestedAction = REQUESTED_ACTION_EXIT;
+        }
+    }
 }
 
 void MainEngine::startServer(bool isSteam)
@@ -252,7 +304,10 @@ void MainEngine::joinServer(bool isSteam, bool isSteamLAN)
         uint16_t port = 1337;
 #endif
         
-        NetworkManagerClient::create(new SocketClientHelper("localhost:9999", "Noctis Games", port, NetworkManagerClient::staticProcessPacket, NetworkManagerClient::staticHandleNoResponse, NetworkManagerClient::staticHandleConnectionReset), FRAME_RATE, InputManager::staticRemoveProcessedMoves, InputManager::staticGetMoveList);
+        NetworkManagerClient::create(new SocketClientHelper(m_serverIPAddress, m_name, port, NetworkManagerClient::staticProcessPacket, NetworkManagerClient::staticHandleNoResponse, NetworkManagerClient::staticHandleConnectionReset), FRAME_RATE, InputManager::staticRemoveProcessedMoves, InputManager::staticGetMoveList);
+        
+        m_serverIPAddress.clear();
+        m_name.clear();
     }
     
     InputManager::getInstance()->setConnected(NG_CLIENT);

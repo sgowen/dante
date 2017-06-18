@@ -23,7 +23,7 @@ class IMachineAddress;
 class NGSteamPacketHandler : public IPacketHandler
 {
 public:
-    NGSteamPacketHandler(ProcessPacketFunc processPacketFunc, HandleNoResponseFunc handleNoResponseFunc, HandleConnectionResetFunc handleConnectionResetFunc);
+    NGSteamPacketHandler(bool isServer, ProcessPacketFunc processPacketFunc, HandleNoResponseFunc handleNoResponseFunc, HandleConnectionResetFunc handleConnectionResetFunc);
     
     virtual ~NGSteamPacketHandler();
     
@@ -35,6 +35,8 @@ protected:
     virtual void processQueuedPackets();
     
 private:
+    bool m_isServer;
+    
     class ReceivedPacket;
     std::queue<ReceivedPacket, std::list<ReceivedPacket>> m_packetQueue;
     

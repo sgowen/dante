@@ -20,6 +20,8 @@ public:
     
     virtual ~SocketServerHelper();
     
+    virtual IMachineAddress* getServerAddress();
+    
     virtual bool isConnected();
 };
 
