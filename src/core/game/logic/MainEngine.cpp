@@ -179,9 +179,10 @@ void MainEngine::render()
 
 void MainEngine::handleNonMoveInput()
 {
+    InputState* inputState = InputManager::getInstance()->getInputState();
+    
     if (NG_CLIENT)
     {
-        InputState* inputState = InputManager::getInstance()->getInputState();
         if (inputState->getMenuState() == MENU_STATE_ESCAPE)
         {
             leaveServer();
@@ -191,10 +192,11 @@ void MainEngine::handleNonMoveInput()
     {
         if (InputManager::getInstance()->isLiveMode())
         {
-            if (InputManager::getInstance()->isEscapeKeyPressed())
+            if (inputState->getMenuState() == MENU_STATE_ESCAPE)
             {
                 InputManager::getInstance()->setLiveMode(false);
                 InputManager::getInstance()->resetLiveInput();
+                leaveServer();
             }
             else if (InputManager::getInstance()->isTimeToProcessInput())
             {
@@ -211,9 +213,10 @@ void MainEngine::handleNonMoveInput()
         }
         else
         {
-            InputState* inputState = InputManager::getInstance()->getInputState();
             if (inputState->getMenuState() == MENU_STATE_JOIN_LOCAL_SERVER)
             {
+                m_iEngineState = MAIN_ENGINE_STATE_MAIN_MENU_ENTERING_USERNAME;
+                
                 if (NG_SERVER->isConnected())
                 {
                     if (m_isSteam)
@@ -235,10 +238,11 @@ void MainEngine::handleNonMoveInput()
     }
     else if (InputManager::getInstance()->isLiveMode())
     {
-        if (InputManager::getInstance()->isEscapeKeyPressed())
+        if (inputState->getMenuState() == MENU_STATE_ESCAPE)
         {
             InputManager::getInstance()->setLiveMode(false);
             InputManager::getInstance()->resetLiveInput();
+            m_iEngineState = m_isSteam ? MAIN_ENGINE_STATE_MAIN_MENU_STEAM_ON : MAIN_ENGINE_STATE_MAIN_MENU_STEAM_OFF;
         }
         else if (InputManager::getInstance()->isTimeToProcessInput())
         {
@@ -259,7 +263,6 @@ void MainEngine::handleNonMoveInput()
     }
     else
     {
-        InputState* inputState = InputManager::getInstance()->getInputState();
         if (inputState->getMenuState() == MENU_STATE_ACTIVATE_STEAM)
         {
             activateSteam();

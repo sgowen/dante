@@ -51,6 +51,8 @@ void InputManager::update()
     KEYBOARD_INPUT_MANAGER->process();
     GAME_PAD_INPUT_MANAGER->process();
     
+    m_currentState->m_iMenuState = MENU_STATE_NONE;
+    
     if (m_isConnected)
     {
         for (std::vector<KeyboardEvent *>::iterator i = KEYBOARD_INPUT_MANAGER->getEvents().begin(); i != KEYBOARD_INPUT_MANAGER->getEvents().end(); ++i)
@@ -85,6 +87,9 @@ void InputManager::update()
                         }
                     }
                     continue;
+                case NG_KEY_ESCAPE:
+                    m_currentState->m_iMenuState = (*i)->isUp() ? MENU_STATE_ESCAPE : MENU_STATE_NONE;
+                    continue;
                 default:
                     continue;
             }
@@ -113,6 +118,9 @@ void InputManager::update()
                     continue;
                 case GamePadEventType_X_BUTTON:
                     m_currentState->m_isShooting = (*i)->isPressed();
+                    continue;
+                case GamePadEventType_BACK_BUTTON:
+                    m_currentState->m_iMenuState = (*i)->isPressed() ? MENU_STATE_ESCAPE : MENU_STATE_NONE;
                     continue;
                 default:
                     continue;
@@ -157,7 +165,7 @@ void InputManager::update()
                 {
                     if (keyboardEvent->getKey() == NG_KEY_ESCAPE)
                     {
-                        m_isEscapeKeyPressed = true;
+                        m_currentState->m_iMenuState = MENU_STATE_ESCAPE;
                         return;
                     }
                 }
@@ -169,8 +177,6 @@ void InputManager::update()
     }
     else
     {
-        m_currentState->m_iMenuState = MENU_STATE_NONE;
-        
         for (std::vector<KeyboardEvent *>::iterator i = KEYBOARD_INPUT_MANAGER->getEvents().begin(); i != KEYBOARD_INPUT_MANAGER->getEvents().end(); ++i)
         {
             if (!(*i)->isUp())
@@ -252,7 +258,6 @@ void InputManager::setLiveMode(bool isLiveMode)
     m_liveInput.clear();
     
     m_isTimeToProcessInput = false;
-    m_isEscapeKeyPressed = false;
 }
 
 void InputManager::resetLiveInput()
@@ -260,7 +265,6 @@ void InputManager::resetLiveInput()
     m_liveInput.clear();
     
     m_isTimeToProcessInput = false;
-    m_isEscapeKeyPressed = false;
 }
 
 bool InputManager::isLiveMode()
@@ -271,11 +275,6 @@ bool InputManager::isLiveMode()
 bool InputManager::isTimeToProcessInput()
 {
     return m_isTimeToProcessInput;
-}
-
-bool InputManager::isEscapeKeyPressed()
-{
-    return m_isEscapeKeyPressed;
 }
 
 InputState* InputManager::getInputState()
@@ -330,8 +329,7 @@ m_pendingMove(nullptr),
 m_fNextTimeToSampleInput(0.0f),
 m_isConnected(false),
 m_isLiveMode(false),
-m_isTimeToProcessInput(false),
-m_isEscapeKeyPressed(false)
+m_isTimeToProcessInput(false)
 {
     // Empty
 }

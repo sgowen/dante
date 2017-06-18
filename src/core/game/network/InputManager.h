@@ -39,8 +39,6 @@ public:
     
     bool isTimeToProcessInput();
     
-    bool isEscapeKeyPressed();
-    
     InputState* getInputState();
     
     MoveList& getMoveList();
@@ -58,7 +56,6 @@ private:
     bool m_isConnected;
     bool m_isLiveMode;
     bool m_isTimeToProcessInput;
-    bool m_isEscapeKeyPressed;
     
     const Move& sampleInputAsMove();
     
