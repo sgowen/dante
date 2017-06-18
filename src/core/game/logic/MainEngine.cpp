@@ -260,7 +260,15 @@ void MainEngine::handleNonMoveInput()
     else
     {
         InputState* inputState = InputManager::getInstance()->getInputState();
-        if (inputState->getMenuState() == MENU_STATE_START_SERVER)
+        if (inputState->getMenuState() == MENU_STATE_ACTIVATE_STEAM)
+        {
+            activateSteam();
+        }
+        else if (inputState->getMenuState() == MENU_STATE_DEACTIVATE_STEAM)
+        {
+            deactivateSteam();
+        }
+        else if (inputState->getMenuState() == MENU_STATE_START_SERVER)
         {
             startServer();
         }
@@ -278,7 +286,10 @@ void MainEngine::handleNonMoveInput()
 
 void MainEngine::activateSteam()
 {
-    NGSteamGameServices::create("projectdante");
+    if (!NGSteamGameServices::getInstance())
+    {
+        NGSteamGameServices::create("projectdante");
+    }
     
     m_isSteam = NG_STEAM_GAME_SERVICES->getStatus() == STEAM_INIT_SUCCESS;
     m_iEngineState = m_isSteam ? MAIN_ENGINE_STATE_MAIN_MENU_STEAM_ON : MAIN_ENGINE_STATE_MAIN_MENU_STEAM_OFF;
@@ -286,7 +297,10 @@ void MainEngine::activateSteam()
 
 void MainEngine::deactivateSteam()
 {
-    NGSteamGameServices::destroy();
+    if (NGSteamGameServices::getInstance())
+    {
+        NGSteamGameServices::destroy();
+    }
     
     m_isSteam = false;
     m_iEngineState = MAIN_ENGINE_STATE_MAIN_MENU_STEAM_OFF;
