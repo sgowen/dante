@@ -18,7 +18,6 @@
 #include <stdint.h>
 
 class Robot;
-class Server;
 
 class Projectile : public Entity
 {
@@ -67,7 +66,7 @@ public:
     bool isFacingLeft();
     
 private:
-    Server* m_server;
+    bool m_isServer;
     uint32_t m_iPlayerId;
     ProjectileState m_state;
     bool m_isFacingLeft;
@@ -82,7 +81,7 @@ private:
     
     void playSound(int soundId);
     
-    Projectile(Server* server);
+    Projectile(bool isServer);
 };
 
 #endif /* defined(__noctisgames__Projectile__) */

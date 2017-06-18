@@ -16,6 +16,19 @@ class InputMemoryBitStream;
 
 #include "RTTI.h"
 
+#define MENU_STATE_NONE 0
+#define MENU_STATE_ACTIVATE_STEAM 1
+#define MENU_STATE_DEACTIVATE_STEAM 2
+#define MENU_STATE_START_SERVER 3
+#define MENU_STATE_JOIN_LOCAL_SERVER 4
+#define MENU_STATE_STEAM_REFRESH_LAN_SERVERS 5
+#define MENU_STATE_STEAM_REFRESH_INTERNET_SERVERS 6
+#define MENU_STATE_STEAM_JOIN_SERVER_1 7
+#define MENU_STATE_STEAM_JOIN_SERVER_2 8
+#define MENU_STATE_STEAM_JOIN_SERVER_3 9
+#define MENU_STATE_STEAM_JOIN_SERVER_4 10
+#define MENU_STATE_ESCAPE 11
+
 class InputState : public IInputState
 {
     RTTI_DECL;
@@ -42,17 +55,7 @@ public:
     
     bool isSprinting() const;
     
-    bool isStartingServer() const;
-    
-    bool isJoiningServer() const;
-    
-    bool isStartingSteamServer() const;
-    
-    bool isJoiningOnlineSteamServer() const;
-    
-    bool isJoiningLANSteamServer() const;
-    
-    bool isLeavingServer() const;
+    int getMenuState() const;
     
 private:
     friend class InputManager;
@@ -62,12 +65,8 @@ private:
     bool m_isJumping;
     bool m_isShooting;
     bool m_isSprinting;
-    bool m_isStartingServer;
-    bool m_isJoiningServer;
-    bool m_isStartingSteamServer;
-    bool m_isJoiningOnlineSteamServer;
-    bool m_isJoiningLANSteamServer;
-    bool m_isLeavingServer;
+    
+    int m_iMenuState;
 };
 
 #endif /* defined(__noctisgames__InputState__) */

@@ -19,7 +19,6 @@
 
 class IInputState;
 class Move;
-class Server;
 
 class Robot : public Entity
 {
@@ -69,7 +68,7 @@ public:
     bool isSprinting();
     
 private:
-    Server* m_server;
+    bool m_isServer;
     float m_fSpeed;
     float m_fJumpSpeed;
     float m_fTimeOfNextShot;
@@ -114,7 +113,7 @@ private:
     
     void playSound(int soundId);
     
-    Robot(Server* server);
+    Robot(bool isServer);
 };
 
 #endif /* defined(__noctisgames__Robot__) */

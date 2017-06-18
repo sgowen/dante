@@ -28,28 +28,24 @@ public:
     
     virtual void releaseDeviceDependentResources();
     
-    void tempDraw(int engineState);
+    void renderWorld(int engineState);
     
 private:
     TextureWrapper* m_demo;
     TextureWrapper* m_misc;
     Font* m_font;
     
-    void renderTypeServerToJoinInstructions();
+    void renderMainMenuSteamOffText();
     
-    void renderTypeNameToJoinInstructions();
+    void renderMainMenuSteamOnText();
     
-    void renderLocalServerStartedInstructions();
+    void renderStartingServerText();
     
-    void renderSteamServerStartedInstructions();
+    void renderEnterUsernameText();
     
-    void renderServerJoinedInstructions();
+    void renderJoiningLocalServerByIPText();
     
-    void renderInstructions();
-    
-    void renderRoundTripTime();
-    
-    void renderBandWidth();
+    void renderJoiningServerText();
     
     void renderText(const std::string& inStr, const Vector2& origin, const Color& inColor);
 };

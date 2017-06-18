@@ -26,8 +26,6 @@ public:
     
     virtual std::string& getName();
     
-    virtual bool isConnected();
-    
 private:
     SocketAddress* m_serverAddress;
     std::string m_name;

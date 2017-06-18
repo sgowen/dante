@@ -14,6 +14,8 @@
 #include "FrameworkConstants.h"
 #include "macros.h"
 
+#include <assert.h>
+
 void alert(const char *lpCaption, const char *lpText)
 {
 	LOG("Message: %s, Detail: %s", lpCaption, lpText);
@@ -36,101 +38,203 @@ extern "C" void __cdecl steamAPIDebugTextHook(int nSeverity, const char *pchDebu
     }
 }
 
-NGSteamGameServices* NGSteamGameServices::getInstance()
+NGSteamGameServices* NGSteamGameServices::s_instance = nullptr;
+
+void NGSteamGameServices::create(const char* inGameDir)
 {
-    static NGSteamGameServices instance = NGSteamGameServices();
-    return &instance;
+    assert(!s_instance);
+    
+    s_instance = new NGSteamGameServices(inGameDir);
 }
 
-int NGSteamGameServices::init()
+void NGSteamGameServices::destroy()
 {
-    if (m_iStatus != STEAM_UNINITIALIZED)
+    assert(s_instance);
+    
+    delete s_instance;
+    s_instance = nullptr;
+}
+
+NGSteamGameServices * NGSteamGameServices::getInstance()
+{
+    return s_instance;
+}
+
+void NGSteamGameServices::parseCommandLine(const char *pchCmdLine, const char **ppchServerAddress)
+{
+    // Look for the +connect ipaddress:port parameter in the command line,
+    // Steam will pass this when a user has used the Steam Server browser to find
+    // a server for our game and is trying to join it.
+    const char *pchConnectParam = "+connect";
+    const char *pchConnect = strstr(pchCmdLine, pchConnectParam);
+    *ppchServerAddress = NULL;
+    if (pchConnect && strlen(pchCmdLine) > (pchConnect - pchCmdLine) + strlen(pchConnectParam) + 1)
     {
-        return m_iStatus;
+        // Address should be right after the +connect, +1 on the end to skip the space
+        *ppchServerAddress = pchCmdLine + (pchConnect - pchCmdLine) + strlen(pchConnectParam) + 1;
     }
-    
-    if (SteamAPI_RestartAppIfNecessary(k_uAppIdInvalid))
+}
+
+void NGSteamGameServices::connectToServerWithAddress(const char *pchServerAddress)
+{
+    if (pchServerAddress)
     {
-        // if Steam is not running or the game wasn't started through Steam, SteamAPI_RestartAppIfNecessary starts the
-        // local Steam client and also launches this game again.
-        
-        // Once you get a public Steam AppID assigned for this game, you need to replace k_uAppIdInvalid with it and
-        // removed steam_appid.txt from the game depot.
-        m_iStatus = STEAM_INIT_FAIL_NOT_RUNNING;
-        return m_iStatus;
+        int32 octet0 = 0, octet1 = 0, octet2 = 0, octet3 = 0;
+        int32 uPort = 0;
+        int nConverted = sscanf(pchServerAddress, "%d.%d.%d.%d:%d", &octet0, &octet1, &octet2, &octet3, &uPort);
+        if (nConverted == 5)
+        {
+            char rgchIPAddress[128];
+            StringUtil::sprintf_safe(rgchIPAddress, "%d.%d.%d.%d", octet0, octet1, octet2, octet3);
+            uint32 unIPAddress = (octet3) + (octet2 << 8) + (octet1 << 16) + (octet0 << 24);
+            
+            initiateServerConnection(unIPAddress, uPort);
+        }
     }
+}
+
+void NGSteamGameServices::initiateServerConnection(uint32 unServerAddress, const int32 nPort)
+{
+    // ping the server to find out what it's steamID is
+    m_unServerIP = unServerAddress;
+    m_usServerPort = (uint16)nPort;
     
-    // Init Steam CEG
-    if (!Steamworks_InitCEGLibrary())
-    {
-        LOG("Steamworks_InitCEGLibrary() failed");
-        alert("Fatal Error", "Steam must be running to play this game (InitDrmLibrary() failed).");
-        m_iStatus = STEAM_INIT_FAIL_DRM;
-        return m_iStatus;
-    }
+    m_gameServerPing.retrieveSteamIDFromGameServer(this, m_unServerIP, m_usServerPort);
+}
+
+void NGSteamGameServices::initiateServerConnection(CSteamID steamIDGameServer)
+{
+    m_steamIDGameServerToJoin = steamIDGameServer;
     
-    // Initialize SteamAPI, if this fails we bail out since we depend on Steam for lots of stuff.
-    // You don't necessarily have to though if you write your code to check whether all the Steam
-    // interfaces are NULL before using them and provide alternate paths when they are unavailable.
-    //
-    // This will also load the in-game steam overlay dll into your process.  That dll is normally
-    // injected by steam when it launches games, but by calling this you cause it to always load,
-    // even when not launched via steam.
-    if (!SteamAPI_Init())
-    {
-        LOG("SteamAPI_Init() failed");
-        alert("Fatal Error", "Steam must be running to play this game (SteamAPI_Init() failed).");
-        m_iStatus = STEAM_INIT_FAIL_API_INIT;
-        return m_iStatus;
-    }
-    
-    // set our debug handler
-    SteamClient()->SetWarningMessageHook(&steamAPIDebugTextHook);
-    
-    // Ensure that the user has logged into Steam. This will always return true if the game is launched
-    // from Steam, but if Steam is at the login prompt when you run your game from the debugger, it
-    // will return false.
-    if (!SteamUser()->BLoggedOn())
-    {
-        LOG("Steam user is not logged in");
-        alert("Fatal Error", "Steam user must be logged in to play this game (SteamUser()->BLoggedOn() returned false).");
-        m_iStatus = STEAM_INIT_FAIL_LOGGED_ON;
-        return m_iStatus;
-    }
-    
-    // do a DRM self check
-    Steamworks_SelfCheck();
-    
-    if (!SteamController()->Init())
-    {
-        LOG("SteamController()->Init failed.");
-        alert("Fatal Error", "SteamController()->Init failed.");
-        m_iStatus = STEAM_INIT_FAIL_CONTROLLER_INIT;
-        return m_iStatus;
-    }
-    
-    m_steamRemoteStorage = SteamRemoteStorage();
-    
-    refreshSteamCloudFileStats();
-    
-    m_iStatus = STEAM_INIT_SUCCESS;
+    m_isRequestingToJoinServer = true;
+}
+
+CSteamID NGSteamGameServices::getServerToJoinSteamID()
+{
+    return m_steamIDGameServerToJoin;
+}
+
+int NGSteamGameServices::getStatus()
+{
     return m_iStatus;
 }
 
-void NGSteamGameServices::deinit()
+bool NGSteamGameServices::isRequestingToJoinServer()
 {
-    if (m_iStatus == STEAM_UNINITIALIZED)
+    return m_isRequestingToJoinServer;
+}
+
+#pragma mark ISteamMatchmakingServerListResponse
+
+void NGSteamGameServices::ServerResponded(HServerListRequest hReq, int iServer)
+{
+    LOG("ServerResponded");
+    
+    gameserveritem_t *pServer = SteamMatchmakingServers()->GetServerDetails(hReq, iServer);
+    if (pServer)
+    {
+        // Filter out servers that don't match our appid here (might get these in LAN calls since we can't put more filters on it)
+        if (pServer->m_nAppID == SteamUtils()->GetAppID())
+        {
+            m_gameServers.push_back(NGSteamGameServer(pServer));
+            m_iNumServers++;
+        }
+    }
+}
+
+void NGSteamGameServices::ServerFailedToRespond(HServerListRequest hReq, int iServer)
+{
+    LOG("ServerFailedToRespond");
+    
+    UNUSED(hReq);
+    UNUSED(iServer);
+}
+
+void NGSteamGameServices::RefreshComplete(HServerListRequest hReq, EMatchMakingServerResponse response)
+{
+    LOG("RefreshComplete");
+    
+    m_isRequestingServers = false;
+}
+
+std::list<NGSteamGameServer>& NGSteamGameServices::getGameServers()
+{
+    return m_gameServers;
+}
+
+bool NGSteamGameServices::isRequestingServers()
+{
+    return m_isRequestingServers;
+}
+
+void NGSteamGameServices::refreshInternetServers()
+{
+    // If we are still finishing the previous refresh, then ignore this new request
+    if (m_isRequestingServers)
     {
         return;
     }
     
-    // Shutdown the SteamAPI
-    SteamAPI_Shutdown();
+    // If another request is outstanding, make sure we release it properly
+    if (m_hServerListRequest)
+    {
+        SteamMatchmakingServers()->ReleaseRequest(m_hServerListRequest);
+        m_hServerListRequest = nullptr;
+    }
     
-    // Shutdown Steam CEG
-    Steamworks_TermCEGLibrary();
+    LOG("Refreshing internet servers");
     
-    m_iStatus = STEAM_UNINITIALIZED;
+    // Track that we are now in a refresh, what type of refresh, and reset our server count
+    m_isRequestingServers = true;
+    m_iNumServers = 0;
+    m_gameServers.clear();
+    
+    Steamworks_TestSecret();
+    
+    // Allocate some filters, there are some common pre-defined values that can be used:
+    //
+    // "gamedir" -- this is used to specify mods inside or a single product/appid
+    // "secure" -- this is used to specify whether anti-cheat is enabled for a server
+    // "gametype" -- this is used to specify game type and is set to whatever your game server code sets
+    
+    MatchMakingKeyValuePair_t pFilters[2];
+    MatchMakingKeyValuePair_t *pFilter = pFilters;
+    
+    strncpy(pFilters[0].m_szKey, "gamedir", sizeof(pFilters[0].m_szKey));
+    strncpy(pFilters[0].m_szValue, m_gameDir, sizeof(pFilters[0].m_szValue));
+    
+    strncpy(pFilters[1].m_szKey, "secure", sizeof(pFilters[1].m_szKey));
+    strncpy(pFilters[1].m_szValue, "1", sizeof(pFilters[1].m_szValue));
+    
+    // bugbug jmccaskey - passing just the appid without filters results in getting all servers rather than
+    // servers filtered by appid alone.  So, we'll use the filters to filter the results better.
+    m_hServerListRequest = SteamMatchmakingServers()->RequestInternetServerList(SteamUtils()->GetAppID(), &pFilter, ARRAYSIZE(pFilters), this);
+}
+
+void NGSteamGameServices::refreshLANServers()
+{
+    // If we are still finishing the previous refresh, then ignore this new request
+    if (m_isRequestingServers)
+    {
+        return;
+    }
+    
+    // If another request is outstanding, make sure we release it properly
+    if (m_hServerListRequest)
+    {
+        SteamMatchmakingServers()->ReleaseRequest(m_hServerListRequest);
+        m_hServerListRequest = nullptr;
+    }
+    
+    LOG("Refreshing LAN servers");
+    
+    // Track that we are now in a refresh, what type of refresh, and reset our server count
+    m_isRequestingServers = true;
+    m_iNumServers = 0;
+    m_gameServers.clear();
+    
+    // LAN refresh doesn't accept filters like internet above does
+    m_hServerListRequest = SteamMatchmakingServers()->RequestLANServerList(SteamUtils()->GetAppID(), this);
 }
 
 #pragma mark Steam Cloud
@@ -204,17 +308,141 @@ void NGSteamGameServices::refreshSteamCloudFileStats()
     LOG("Quota: %llu bytes, %llu bytes remaining", m_ulBytesQuota, m_ulAvailableBytes);
 }
 
-NGSteamGameServices::NGSteamGameServices() :
+void NGSteamGameServices::onGameJoinRequested(GameRichPresenceJoinRequested_t *pCallback)
+{
+    LOG("onGameJoinRequested");
+    
+    // parse out the connect
+    const char *pchServerAddress;
+    parseCommandLine(pCallback->m_rgchConnect, &pchServerAddress);
+    
+    connectToServerWithAddress(pchServerAddress);
+}
+
+NGSteamGameServices::NGSteamGameServices(const char* inGameDir) :
+m_gameDir(inGameDir),
+m_unServerIP(0),
+m_usServerPort(0),
+m_iNumServers(0),
+m_isRequestingServers(false),
+m_hServerListRequest(nullptr),
 m_steamRemoteStorage(nullptr),
 m_ulBytesQuota(0),
 m_ulAvailableBytes(0),
 m_nNumFilesInCloud(0),
-m_iStatus(STEAM_UNINITIALIZED)
+m_iStatus(STEAM_UNINITIALIZED),
+m_isRequestingToJoinServer(false)
 {
-    // Empty
+    if (SteamAPI_RestartAppIfNecessary(k_uAppIdInvalid))
+    {
+        // if Steam is not running or the game wasn't started through Steam, SteamAPI_RestartAppIfNecessary starts the
+        // local Steam client and also launches this game again.
+        
+        // Once you get a public Steam AppID assigned for this game, you need to replace k_uAppIdInvalid with it and
+        // removed steam_appid.txt from the game depot.
+        m_iStatus = STEAM_INIT_FAIL_NOT_RUNNING;
+        return;
+    }
+    
+    // Init Steam CEG
+    if (!Steamworks_InitCEGLibrary())
+    {
+        LOG("Steamworks_InitCEGLibrary() failed");
+        alert("Fatal Error", "Steam must be running to play this game (InitDrmLibrary() failed).");
+        m_iStatus = STEAM_INIT_FAIL_DRM;
+        return;
+    }
+    
+    // Initialize SteamAPI, if this fails we bail out since we depend on Steam for lots of stuff.
+    // You don't necessarily have to though if you write your code to check whether all the Steam
+    // interfaces are NULL before using them and provide alternate paths when they are unavailable.
+    //
+    // This will also load the in-game steam overlay dll into your process.  That dll is normally
+    // injected by steam when it launches games, but by calling this you cause it to always load,
+    // even when not launched via steam.
+    if (!SteamAPI_Init())
+    {
+        LOG("SteamAPI_Init() failed");
+        alert("Fatal Error", "Steam must be running to play this game (SteamAPI_Init() failed).");
+        m_iStatus = STEAM_INIT_FAIL_API_INIT;
+        return;
+    }
+    
+    // set our debug handler
+    SteamClient()->SetWarningMessageHook(&steamAPIDebugTextHook);
+    
+    // Ensure that the user has logged into Steam. This will always return true if the game is launched
+    // from Steam, but if Steam is at the login prompt when you run your game from the debugger, it
+    // will return false.
+    if (!SteamUser()->BLoggedOn())
+    {
+        LOG("Steam user is not logged in");
+        alert("Fatal Error", "Steam user must be logged in to play this game (SteamUser()->BLoggedOn() returned false).");
+        m_iStatus = STEAM_INIT_FAIL_LOGGED_ON;
+        return;
+    }
+    
+    // do a DRM self check
+    Steamworks_SelfCheck();
+    
+    if (!SteamController()->Init())
+    {
+        LOG("SteamController()->Init failed.");
+        alert("Fatal Error", "SteamController()->Init failed.");
+        m_iStatus = STEAM_INIT_FAIL_CONTROLLER_INIT;
+        return;
+    }
+    
+    m_steamRemoteStorage = SteamRemoteStorage();
+    
+    refreshSteamCloudFileStats();
+    
+    m_iStatus = STEAM_INIT_SUCCESS;
 }
 
 NGSteamGameServices::~NGSteamGameServices()
 {
-    // Empty
+    if (m_hServerListRequest)
+    {
+        SteamMatchmakingServers()->ReleaseRequest(m_hServerListRequest);
+        m_hServerListRequest = nullptr;
+    }
+    
+    // Shutdown the SteamAPI
+    SteamAPI_Shutdown();
+    
+    // Shutdown Steam CEG
+    Steamworks_TermCEGLibrary();
+}
+
+NGSteamGameServices::GameServerPing::GameServerPing()
+{
+    m_hGameServerQuery = HSERVERQUERY_INVALID;
+    m_client = nullptr;
+}
+
+void NGSteamGameServices::GameServerPing::ServerResponded(gameserveritem_t &server)
+{
+    if (m_hGameServerQuery != HSERVERQUERY_INVALID && server.m_steamID.IsValid())
+    {
+        m_client->initiateServerConnection(server.m_steamID);
+    }
+    
+    m_hGameServerQuery = HSERVERQUERY_INVALID;
+}
+
+void NGSteamGameServices::GameServerPing::ServerFailedToRespond()
+{
+    m_hGameServerQuery = HSERVERQUERY_INVALID;
+}
+
+void NGSteamGameServices::GameServerPing::retrieveSteamIDFromGameServer(NGSteamGameServices *client, uint32 unIP, uint16 unPort)
+{
+    m_client = client;
+    m_hGameServerQuery = SteamMatchmakingServers()->PingServer(unIP, unPort, this);
+}
+
+void NGSteamGameServices::GameServerPing::cancelPing()
+{
+    m_hGameServerQuery = HSERVERQUERY_INVALID;
 }

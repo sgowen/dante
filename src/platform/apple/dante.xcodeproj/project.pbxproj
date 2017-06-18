@@ -730,6 +730,7 @@
 		BBCFF1CB1ECD316D003EE520 /* MainAssetsMapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainAssetsMapper.h; sourceTree = "<group>"; };
 		BBD43A0B1ED0BCAD001D5EB4 /* ReplicationAction.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ReplicationAction.h; sourceTree = "<group>"; };
 		BBD43A0C1ED0BD00001D5EB4 /* ReplicationCommand.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ReplicationCommand.cpp; sourceTree = "<group>"; };
+		BBD791D21EF6D401007E62E5 /* MainEngineState.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MainEngineState.h; sourceTree = "<group>"; };
 		BBF226B01EC12CDE00573356 /* ReplicationManagerClient.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ReplicationManagerClient.cpp; sourceTree = "<group>"; };
 		BBF226B11EC12CDE00573356 /* ReplicationManagerClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReplicationManagerClient.h; sourceTree = "<group>"; };
 		BBFA22961EE5AE03002635D6 /* SpacePirate.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SpacePirate.cpp; sourceTree = "<group>"; };
@@ -1697,6 +1698,7 @@
 				BB5697D81EE3661400D03694 /* InputState.h */,
 				BB5833D71EEDDBEB0084DA20 /* MainEngine.cpp */,
 				BB5833D81EEDDBEB0084DA20 /* MainEngine.h */,
+				BBD791D21EF6D401007E62E5 /* MainEngineState.h */,
 				BB5697D91EE3661400D03694 /* PooledObjectsManager.cpp */,
 				BB5697DA1EE3661400D03694 /* PooledObjectsManager.h */,
 				BB7E3E601EE4E44100E3D696 /* Projectile.cpp */,

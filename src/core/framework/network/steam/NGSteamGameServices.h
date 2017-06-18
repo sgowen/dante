@@ -27,14 +27,41 @@ class ISteamRemoteStorage;
 #define STEAM_INIT_FAIL_LOGGED_ON -4
 #define STEAM_INIT_FAIL_CONTROLLER_INIT -5
 
-class NGSteamGameServices
+class NGSteamGameServices : public ISteamMatchmakingServerListResponse
 {
 public:
+    static void create(const char* inGameDir);
+    
+    static void destroy();
+    
     static NGSteamGameServices* getInstance();
     
-    int init();
+    void refreshInternetServers();
     
-    void deinit();
+    void refreshLANServers();
+    
+    void parseCommandLine(const char *pchCmdLine, const char **ppchServerAddress);
+    
+    void connectToServerWithAddress(const char *pchServerAddress);
+    
+    void initiateServerConnection(uint32 unServerAddress, const int32 nPort);
+    
+    void initiateServerConnection(CSteamID steamIDGameServer);
+    
+    CSteamID getServerToJoinSteamID();
+    
+    int getStatus();
+    
+    bool isRequestingToJoinServer();
+    
+#pragma mark ISteamMatchmakingServerListResponse
+    virtual void ServerResponded(HServerListRequest hReq, int iServer);
+    virtual void ServerFailedToRespond(HServerListRequest hReq, int iServer);
+    virtual void RefreshComplete(HServerListRequest hReq, EMatchMakingServerResponse response);
+    
+    std::list<NGSteamGameServer>& getGameServers();
+    
+    bool isRequestingServers();
     
 #pragma mark Steam Cloud
     bool writeFileToSteamCloud(const char *inFileName, const char *inData);
@@ -46,17 +73,55 @@ public:
     std::string getRemotePlayerName(uint64_t inPlayerId);
     
 private:
+    static NGSteamGameServices* s_instance;
+    
+    const char* m_gameDir;
+    int m_iNumServers; // Track the number of servers we know about
+    bool m_isRequestingServers; // Track whether we are in the middle of a refresh or not
+    HServerListRequest m_hServerListRequest; // Track what server list request is currently running
+    std::list<NGSteamGameServer> m_gameServers;
+    
+    uint32 m_unServerIP;
+    uint16 m_usServerPort;
+    
+    class GameServerPing : public ISteamMatchmakingPingResponse
+    {
+    public:
+        GameServerPing();
+        
+        // Server has responded successfully and has updated data
+        virtual void ServerResponded(gameserveritem_t &server);
+        
+        // Server failed to respond to the ping request
+        virtual void ServerFailedToRespond();
+        
+        void retrieveSteamIDFromGameServer(NGSteamGameServices *client, uint32 unIP, uint16 unPort);
+        
+        void cancelPing();
+        
+    private:
+        HServerQuery m_hGameServerQuery; // we're ping a game server, so we can convert IP:Port to a steamID
+        NGSteamGameServices *m_client;
+    };
+    
+    GameServerPing m_gameServerPing;
+    
+    CSteamID m_steamIDGameServerToJoin;
+    
     ISteamRemoteStorage* m_steamRemoteStorage;
     int32 m_nNumFilesInCloud;
     uint64 m_ulBytesQuota;
     uint64 m_ulAvailableBytes;
     
     int m_iStatus;
+    bool m_isRequestingToJoinServer;
     
     void refreshSteamCloudFileStats();
     
+    STEAM_CALLBACK(NGSteamGameServices, onGameJoinRequested, GameRichPresenceJoinRequested_t);
+    
     // ctor, copy ctor, and assignment should be private in a Singleton
-    NGSteamGameServices();
+    NGSteamGameServices(const char* inGameDir);
     ~NGSteamGameServices();
     NGSteamGameServices(const NGSteamGameServices&);
     NGSteamGameServices& operator=(const NGSteamGameServices&);

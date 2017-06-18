@@ -40,8 +40,3 @@ std::string& SocketClientHelper::getName()
 {
     return m_name;
 }
-
-bool SocketClientHelper::isConnected()
-{
-    return m_serverAddress ? true : false;
-}

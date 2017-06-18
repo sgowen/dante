@@ -19,12 +19,7 @@ m_fDesiredLeftAmount(0),
 m_isJumping(false),
 m_isShooting(false),
 m_isSprinting(false),
-m_isStartingServer(false),
-m_isJoiningServer(false),
-m_isStartingSteamServer(false),
-m_isJoiningOnlineSteamServer(false),
-m_isJoiningLANSteamServer(false),
-m_isLeavingServer(false)
+m_iMenuState(MENU_STATE_NONE)
 {
     // Empty
 }
@@ -92,34 +87,9 @@ bool InputState::isSprinting() const
     return m_isSprinting;
 }
 
-bool InputState::isStartingServer() const
+int InputState::getMenuState() const
 {
-    return m_isStartingServer;
-}
-
-bool InputState::isJoiningServer() const
-{
-    return m_isJoiningServer;
-}
-
-bool InputState::isStartingSteamServer() const
-{
-    return m_isStartingSteamServer;
-}
-
-bool InputState::isJoiningOnlineSteamServer() const
-{
-    return m_isJoiningOnlineSteamServer;
-}
-
-bool InputState::isJoiningLANSteamServer() const
-{
-    return m_isJoiningLANSteamServer;
-}
-
-bool InputState::isLeavingServer() const
-{
-    return m_isLeavingServer;
+    return m_iMenuState;
 }
 
 RTTI_IMPL(InputState, IInputState);

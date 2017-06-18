@@ -13,7 +13,6 @@
 #include "OutputMemoryBitStream.h"
 #include "InputMemoryBitStream.h"
 #include "Robot.h"
-#include "Server.h"
 
 #include "World.h"
 #include "Vector2.h"
@@ -33,17 +32,17 @@
 
 Entity* SpacePirate::staticCreateClient()
 {
-    return new SpacePirate(nullptr);
+    return new SpacePirate(false);
 }
 
 Entity* SpacePirate::staticCreateServer()
 {
-    return new SpacePirate(Server::getInstance());
+    return new SpacePirate(true);
 }
 
 void SpacePirate::onDeletion()
 {
-    if (m_server)
+    if (m_isServer)
     {
         NG_SERVER->unregisterEntity(this);
     }
@@ -51,9 +50,9 @@ void SpacePirate::onDeletion()
 
 void SpacePirate::update()
 {
-    Timing* timing = m_server ? Timing::getInstance() : Timing::getInstance();
+    Timing* timing = m_isServer ? Timing::getInstance() : Timing::getInstance();
     
-    if (m_server)
+    if (m_isServer)
     {
         Vector2 oldAcceleration = getAcceleration();
         Vector2 oldVelocity = getVelocity();
@@ -220,7 +219,7 @@ void SpacePirate::processCollisions()
 {
     processCollisionsWithScreenWalls();
     
-    if (m_server)
+    if (m_isServer)
     {
         bool targetFound = false;
         float shortestDistance = CAM_WIDTH;
@@ -293,8 +292,8 @@ void SpacePirate::processCollisionsWithScreenWalls()
     }
 }
 
-SpacePirate::SpacePirate(Server* server) : Entity(0, 0, 1.565217391304348f * 1.277777777777778f, 2.0f * 1.173913043478261f),
-m_server(server),
+SpacePirate::SpacePirate(bool isServer) : Entity(0, 0, 1.565217391304348f * 1.277777777777778f, 2.0f * 1.173913043478261f),
+m_isServer(isServer),
 m_fSpeed(0.0),
 m_iHealth(8),
 m_isFacingLeft(false),
@@ -304,7 +303,7 @@ m_fRobotRestitution(0.1f)
 {
     m_acceleration.setY(-9.8f);
     
-    if (m_server)
+    if (m_isServer)
     {
         NG_SERVER->registerEntity(this);
     }

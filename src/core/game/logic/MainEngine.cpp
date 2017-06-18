@@ -46,6 +46,8 @@
 #include "NGSteamClientHelper.h"
 #include "IMachineAddress.h"
 #include "NGSteamAddress.h"
+#include "NGSteamGameServices.h"
+#include "MainEngineState.h"
 
 void MainEngine::staticAddEntity(Entity* inEntity)
 {
@@ -62,6 +64,7 @@ m_config(new JsonFile("dante.cfg")),
 m_renderer(new MainRenderer(MAX_BATCH_SIZE)),
 m_fStateTime(0),
 m_fFrameStateTime(0),
+m_iEngineState(MAIN_ENGINE_STATE_MAIN_MENU_STEAM_OFF),
 m_isSteam(false)
 {
     m_config->load();
@@ -166,7 +169,8 @@ void MainEngine::render()
 {
     m_renderer->beginFrame();
     
-    m_renderer->tempDraw(NG_CLIENT ? 5 : Server::getInstance() ? (m_isSteam ? 3 : InputManager::getInstance()->isLiveMode() ? 4 : 1) : InputManager::getInstance()->isLiveMode() ? (m_serverIPAddress.length() > 0 ? 4 : 2) : 0);
+    m_renderer->renderWorld(m_iEngineState);
+//    m_renderer->renderWorld(NG_CLIENT ? 5 : Server::getInstance() ? (m_isSteam ? 3 : InputManager::getInstance()->isLiveMode() ? 4 : 1) : InputManager::getInstance()->isLiveMode() ? (m_serverIPAddress.length() > 0 ? 4 : 2) : 0);
     
     m_renderer->renderToScreen();
     
@@ -178,7 +182,7 @@ void MainEngine::handleNonMoveInput()
     if (NG_CLIENT)
     {
         InputState* inputState = InputManager::getInstance()->getInputState();
-        if (inputState->isLeavingServer())
+        if (inputState->getMenuState() == MENU_STATE_ESCAPE)
         {
             leaveServer();
         }
@@ -199,7 +203,7 @@ void MainEngine::handleNonMoveInput()
                     m_serverIPAddress = std::string("localhost:9999");
                     m_name = InputManager::getInstance()->getLiveInput();
                     InputManager::getInstance()->setLiveMode(false);
-                    joinServer(false);
+                    joinServer();
                 }
                 
                 InputManager::getInstance()->resetLiveInput();
@@ -208,13 +212,14 @@ void MainEngine::handleNonMoveInput()
         else
         {
             InputState* inputState = InputManager::getInstance()->getInputState();
-            if (inputState->isJoiningOnlineSteamServer())
+            if (inputState->getMenuState() == MENU_STATE_JOIN_LOCAL_SERVER)
             {
                 if (NG_SERVER->isConnected())
                 {
                     if (m_isSteam)
                     {
-                        joinServer(m_isSteam);
+                        m_serverSteamID = static_cast<NGSteamAddress*>(NG_SERVER->getServerAddress())->getSteamID();
+                        joinServer();
                     }
                     else
                     {
@@ -222,7 +227,7 @@ void MainEngine::handleNonMoveInput()
                     }
                 }
             }
-            else if (inputState->isLeavingServer())
+            else if (inputState->getMenuState() == MENU_STATE_ESCAPE)
             {
                 leaveServer();
             }
@@ -237,15 +242,16 @@ void MainEngine::handleNonMoveInput()
         }
         else if (InputManager::getInstance()->isTimeToProcessInput())
         {
-            if (m_serverIPAddress.length() == 0)
+            if (m_iEngineState == MAIN_ENGINE_STATE_MAIN_MENU_JOINING_LOCAL_SERVER_BY_IP)
             {
                 m_serverIPAddress = InputManager::getInstance()->getLiveInput();
+                m_iEngineState = MAIN_ENGINE_STATE_MAIN_MENU_ENTERING_USERNAME;
             }
             else
             {
                 m_name = InputManager::getInstance()->getLiveInput();
                 InputManager::getInstance()->setLiveMode(false);
-                joinServer(false);
+                joinServer();
             }
             
             InputManager::getInstance()->resetLiveInput();
@@ -254,40 +260,45 @@ void MainEngine::handleNonMoveInput()
     else
     {
         InputState* inputState = InputManager::getInstance()->getInputState();
-        if (inputState->isStartingServer())
+        if (inputState->getMenuState() == MENU_STATE_START_SERVER)
         {
-            startServer(false);
+            startServer();
         }
-        else if (inputState->isJoiningServer())
+        else if (inputState->getMenuState() == MENU_STATE_JOIN_LOCAL_SERVER)
         {
+            m_iEngineState = MAIN_ENGINE_STATE_MAIN_MENU_JOINING_LOCAL_SERVER_BY_IP;
             InputManager::getInstance()->setLiveMode(true);
         }
-        else if (inputState->isStartingSteamServer())
-        {
-            startServer(true);
-        }
-        else if (inputState->isJoiningOnlineSteamServer())
-        {
-            joinServer(true);
-        }
-        else if (inputState->isJoiningLANSteamServer())
-        {
-            joinServer(true, true);
-        }
-        else if (inputState->isLeavingServer())
+        else if (inputState->getMenuState() == MENU_STATE_ESCAPE)
         {
             m_iRequestedAction = REQUESTED_ACTION_EXIT;
         }
     }
 }
 
-void MainEngine::startServer(bool isSteam)
+void MainEngine::activateSteam()
 {
-    m_isSteam = isSteam;
+    NGSteamGameServices::create("projectdante");
+    
+    m_isSteam = NG_STEAM_GAME_SERVICES->getStatus() == STEAM_INIT_SUCCESS;
+    m_iEngineState = m_isSteam ? MAIN_ENGINE_STATE_MAIN_MENU_STEAM_ON : MAIN_ENGINE_STATE_MAIN_MENU_STEAM_OFF;
+}
+
+void MainEngine::deactivateSteam()
+{
+    NGSteamGameServices::destroy();
+    
+    m_isSteam = false;
+    m_iEngineState = MAIN_ENGINE_STATE_MAIN_MENU_STEAM_OFF;
+}
+
+void MainEngine::startServer()
+{
+    m_iEngineState = MAIN_ENGINE_STATE_MAIN_MENU_STARTING_SERVER;
     
     if (!Server::getInstance())
     {
-        Server::create(isSteam);
+        Server::create(m_isSteam);
         
         if (!NG_SERVER)
         {
@@ -296,14 +307,13 @@ void MainEngine::startServer(bool isSteam)
     }
 }
 
-void MainEngine::joinServer(bool isSteam, bool isSteamLAN)
+void MainEngine::joinServer()
 {
-    m_isSteam = isSteam;
+    m_iEngineState = MAIN_ENGINE_STEAM_JOINING_SERVER;
     
     if (m_isSteam)
     {
-        NGSteamAddress* serverAddress = NG_SERVER && NG_SERVER->isConnected() ? static_cast<NGSteamAddress*>(NG_SERVER->getServerAddress()) : nullptr;
-        NetworkManagerClient::create(new NGSteamClientHelper("projectdante", isSteamLAN, NetworkManagerClient::staticProcessPacket, NetworkManagerClient::staticHandleNoResponse, NetworkManagerClient::staticHandleConnectionReset, serverAddress), FRAME_RATE, InputManager::staticRemoveProcessedMoves, InputManager::staticGetMoveList);
+        NetworkManagerClient::create(new NGSteamClientHelper(m_serverSteamID, NetworkManagerClient::staticProcessPacket, NetworkManagerClient::staticHandleNoResponse, NetworkManagerClient::staticHandleConnectionReset), FRAME_RATE, InputManager::staticRemoveProcessedMoves, InputManager::staticGetMoveList);
     }
     else
     {
@@ -338,6 +348,8 @@ void MainEngine::leaveServer()
     {
         Server::destroy();
     }
+    
+    m_iEngineState = m_isSteam ? MAIN_ENGINE_STATE_MAIN_MENU_STEAM_ON : MAIN_ENGINE_STATE_MAIN_MENU_STEAM_OFF;
 }
 
 RTTI_IMPL(MainEngine, IEngine);

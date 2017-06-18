@@ -27,8 +27,6 @@ m_handleConnectionResetFunc(inHandleConnectionResetFunc),
 m_serverSteamAddress(nullptr),
 m_isConnectedToSteam(false)
 {
-    assert(NG_STEAM_GAME_SERVICES->init() == STEAM_INIT_SUCCESS);
-    
     // Initialize the SteamGameServer interface, we tell it some info about us, and we request support
     // for both Authentication (making sure users own games) and secure mode, VAC running in our game
     // and kicking users who are VAC banned
@@ -89,8 +87,6 @@ NGSteamServerHelper::~NGSteamServerHelper()
     
     // release our reference to the steam client library
     SteamGameServer_Shutdown();
-    
-    NG_STEAM_GAME_SERVICES->deinit();
 }
 
 void NGSteamServerHelper::processIncomingPackets()

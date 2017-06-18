@@ -11,6 +11,8 @@
 
 #include "IEngine.h"
 
+#include "NGSteam.h"
+
 #include "RTTI.h"
 
 class Server;
@@ -54,13 +56,19 @@ private:
     float m_fFrameStateTime;
     std::string m_serverIPAddress;
     std::string m_name;
+    CSteamID m_serverSteamID;
+    int m_iEngineState;
     bool m_isSteam;
     
     void handleNonMoveInput();
     
-    void startServer(bool isSteam);
+    void activateSteam();
     
-    void joinServer(bool isSteam, bool isSteamLAN = false);
+    void deactivateSteam();
+    
+    void startServer();
+    
+    void joinServer();
     
     void leaveServer();
 };

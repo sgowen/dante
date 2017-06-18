@@ -14,7 +14,6 @@
 #include "InputMemoryBitStream.h"
 #include "InputState.h"
 #include "Move.h"
-#include "Server.h"
 
 #include "World.h"
 #include "Vector2.h"
@@ -28,29 +27,29 @@
 #include "EntityRegistry.h"
 #include "NetworkManagerServer.h"
 #include "ClientProxy.h"
-#include "Server.h"
 #include "NetworkManagerClient.h"
 #include "InputManager.h"
 #include "NGAudioEngine.h"
 #include "InstanceManager.h"
 #include "FWInstanceManager.h"
 #include "Util.h"
+#include "Server.h"
 
 #include <math.h>
 
 Entity* Robot::staticCreateClient()
 {
-    return new Robot(nullptr);
+    return new Robot(false);
 }
 
 Entity* Robot::staticCreateServer()
 {
-    return new Robot(Server::getInstance());
+    return new Robot(true);
 }
 
 void Robot::onDeletion()
 {
-    if (m_server)
+    if (m_isServer)
     {
         NG_SERVER->unregisterEntity(this);
     }
@@ -66,7 +65,7 @@ void Robot::onDeletion()
 
 void Robot::update()
 {
-    if (m_server)
+    if (m_isServer)
     {
         Vector2 oldAcceleration = getAcceleration();
         Vector2 oldVelocity = getVelocity();
@@ -293,7 +292,7 @@ uint32_t Robot::write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtySta
 
 void Robot::takeDamage()
 {
-    if (m_server)
+    if (m_isServer)
     {
         m_iHealth--;
         
@@ -427,7 +426,7 @@ void Robot::processCollisions()
     
     Vector2 sourcePosition = getPosition();
     
-    World* world = m_server ? InstanceManager::getServerWorld() : InstanceManager::getClientWorld();
+    World* world = m_isServer ? InstanceManager::getServerWorld() : InstanceManager::getClientWorld();
     
     std::vector<Entity*> entities = world->getEntities();
     
@@ -616,11 +615,11 @@ void Robot::interpolateVectorsIfNecessary(Vector2& inA, Vector2& inB, float& syn
 
 void Robot::playSound(int soundId)
 {
-    Util::playSound(soundId, getPlayerId(), getPosition(), m_server);
+    Util::playSound(soundId, getPlayerId(), getPosition(), m_isServer);
 }
 
-Robot::Robot(Server* server) : Entity(0, 0, 1.565217391304348f, 2.0f),
-m_server(server),
+Robot::Robot(bool isServer) : Entity(0, 0, 1.565217391304348f, 2.0f),
+m_isServer(isServer),
 m_fJumpSpeed(10.0f),
 m_fSpeed(7.5f),
 m_fTimeOfNextShot(0.0f),
@@ -639,7 +638,7 @@ m_iPlayerId(0)
 {
     m_acceleration.setY(-9.8f);
     
-    if (m_server)
+    if (m_isServer)
     {
         NG_SERVER->registerEntity(this);
     }

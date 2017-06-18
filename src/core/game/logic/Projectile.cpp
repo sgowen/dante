@@ -12,7 +12,6 @@
 
 #include "OutputMemoryBitStream.h"
 #include "InputMemoryBitStream.h"
-#include "Server.h"
 
 #include "World.h"
 #include "Vector2.h"
@@ -36,17 +35,17 @@
 
 Entity* Projectile::staticCreateClient()
 {
-    return new Projectile(nullptr);
+    return new Projectile(false);
 }
 
 Entity* Projectile::staticCreateServer()
 {
-    return new Projectile(Server::getInstance());
+    return new Projectile(true);
 }
 
 void Projectile::onDeletion()
 {
-    if (m_server)
+    if (m_isServer)
     {
         NG_SERVER->unregisterEntity(this);
     }
@@ -54,7 +53,7 @@ void Projectile::onDeletion()
 
 void Projectile::update()
 {
-    if (m_server)
+    if (m_isServer)
     {
         Vector2 oldVelocity = getVelocity();
         ProjectileState oldState = m_state;
@@ -240,7 +239,7 @@ void Projectile::processCollisions()
 {
     processCollisionsWithScreenWalls();
     
-    if (m_server)
+    if (m_isServer)
     {
         std::vector<Entity*> entities = InstanceManager::getServerWorld()->getEntities();
         for (Entity* target : entities)
@@ -275,17 +274,17 @@ void Projectile::processCollisionsWithScreenWalls()
 
 void Projectile::playSound(int soundId)
 {
-    Util::playSound(soundId, getPlayerId(), getPosition(), m_server);
+    Util::playSound(soundId, getPlayerId(), getPosition(), m_isServer);
 }
 
-Projectile::Projectile(Server* server) : Entity(0, 0, 1.565217391304348f * 0.444444444444444f, 2.0f * 0.544423440453686f),
-m_server(server),
+Projectile::Projectile(bool isServer) : Entity(0, 0, 1.565217391304348f * 0.444444444444444f, 2.0f * 0.544423440453686f),
+m_isServer(isServer),
 m_iPlayerId(0),
 m_state(ProjectileState_Active),
 m_isFacingLeft(false),
 m_fTimePositionBecameOutOfSync(0.0f)
 {
-    if (m_server)
+    if (m_isServer)
     {
         NG_SERVER->registerEntity(this);
     }

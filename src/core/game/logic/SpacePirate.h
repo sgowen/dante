@@ -18,7 +18,6 @@
 #include <stdint.h>
 
 class Robot;
-class Server;
 
 class SpacePirate : public Entity
 {
@@ -59,7 +58,7 @@ public:
     bool isFacingLeft();
     
 private:
-    Server* m_server;
+    bool m_isServer;
     float m_fSpeed;
     int m_iHealth;
     bool m_isFacingLeft;
@@ -75,7 +74,7 @@ private:
     
     void processCollisionsWithScreenWalls();
     
-    SpacePirate(Server* server);
+    SpacePirate(bool isServer);
 };
 
 #endif /* defined(__noctisgames__SpacePirate__) */
