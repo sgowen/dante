@@ -23,6 +23,8 @@ public:
     virtual void sendPacket(const OutputMemoryBitStream& inOutputStream) = 0;
     
     virtual std::string& getName() = 0;
+    
+    virtual bool isConnected() = 0;
 };
 
 #endif /* defined(__noctisgames__IClientHelper__) */

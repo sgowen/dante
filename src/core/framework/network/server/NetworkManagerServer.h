@@ -41,9 +41,7 @@ public:
     
     static void staticHandleConnectionReset(IMachineAddress* inFromAddress);
     
-//    static ClientProxy* staticGetClientProxy(int inPlayerId);
-//    
-//    static int staticGetNumClientsConnected();
+    static ClientProxy* staticGetClientProxy(int inPlayerId);
     
     void processIncomingPackets();
     

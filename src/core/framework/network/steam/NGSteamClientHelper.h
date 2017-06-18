@@ -32,6 +32,12 @@ public:
     
     virtual std::string& getName();
     
+    virtual bool isConnected();
+    
+    void parseCommandLine(const char *pchCmdLine, const char **ppchServerAddress);
+    
+    void execCommandLineConnect(const char *pchServerAddress);
+    
 #pragma mark ISteamMatchmakingServerListResponse
     virtual void ServerResponded(HServerListRequest hReq, int iServer);
     virtual void ServerFailedToRespond(HServerListRequest hReq, int iServer);
@@ -42,9 +48,20 @@ public:
     bool isRequestingServers();
     
 private:
+    enum EClientConnectionState
+    {
+        k_EClientNotConnected,
+        k_EClientConnectedPendingAuthentication,
+        k_EClientConnectedAndAuthenticated
+    };
+    EClientConnectionState m_connectionState;
     const char* m_gameDir;
     NGSteamAddress* m_clientSteamAddress;
     NGSteamAddress* m_serverSteamAddress;
+    uint32 m_unServerIP;
+    uint16 m_usServerPort;
+    float m_fLastNetworkDataReceivedTime;
+    float m_fLastConnectionAttemptRetryTime;
     std::string m_name;
     int m_iNumServers; // Track the number of servers we know about
     bool m_isRequestingServers; // Track whether we are in the middle of a refresh or not
@@ -54,6 +71,55 @@ private:
     void refreshInternetServers();
     
     void refreshLANServers();
+    
+    void onReceiveServerExiting();
+    
+    void initiateServerConnection(uint32 unServerAddress, const int32 nPort);
+    
+    void initiateServerConnection(CSteamID steamIDGameServer);
+    
+    // callback for when the lobby game server has started
+    STEAM_CALLBACK(NGSteamClientHelper, onGameJoinRequested, GameRichPresenceJoinRequested_t);
+    
+    // callbacks for Steam connection state
+    STEAM_CALLBACK(NGSteamClientHelper, onSteamServersConnected, SteamServersConnected_t);
+    
+    STEAM_CALLBACK(NGSteamClientHelper, onSteamServersDisconnected, SteamServersDisconnected_t);
+    
+    STEAM_CALLBACK(NGSteamClientHelper, onSteamServerConnectFailure, SteamServerConnectFailure_t);
+    
+    STEAM_CALLBACK(NGSteamClientHelper, onGameOverlayActivated, GameOverlayActivated_t);
+    
+    // connection handler
+    STEAM_CALLBACK(NGSteamClientHelper, onP2PSessionConnectFail, P2PSessionConnectFail_t);
+    
+    // ipc failure handler
+    STEAM_CALLBACK(NGSteamClientHelper, onIPCFailure, IPCFailure_t);
+    
+    // Steam wants to shut down, Game for Windows applications should shutdown too
+    STEAM_CALLBACK(NGSteamClientHelper, onSteamShutdown, SteamShutdown_t);
+    
+    class GameServerPing : public ISteamMatchmakingPingResponse
+    {
+    public:
+        GameServerPing();
+        
+        // Server has responded successfully and has updated data
+        virtual void ServerResponded(gameserveritem_t &server);
+        
+        // Server failed to respond to the ping request
+        virtual void ServerFailedToRespond();
+        
+        void retrieveSteamIDFromGameServer(NGSteamClientHelper *client, uint32 unIP, uint16 unPort);
+        
+        void cancelPing();
+        
+    private:
+        HServerQuery m_hGameServerQuery; // we're ping a game server, so we can convert IP:Port to a steamID
+        NGSteamClientHelper *m_client;
+    };
+    
+    GameServerPing m_gameServerPing;
 };
 
 #endif /* defined(__noctisgames__NGSteamClientHelper__) */

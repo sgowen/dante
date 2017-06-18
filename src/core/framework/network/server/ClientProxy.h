@@ -40,24 +40,24 @@ public:
     
     MoveList& getUnprocessedMoveList();
     
-    void SetIsLastMoveTimestampDirty(bool inIsDirty);
+    void setIsLastMoveTimestampDirty(bool inIsDirty);
     
-    bool IsLastMoveTimestampDirty() const;
+    bool isLastMoveTimestampDirty() const;
     
-    std::string toString() const;
+    void setAuthorized(bool isAuthorized);
+    
+    bool isAuthorized() const;
     
 private:
     DeliveryNotificationManager	m_deliveryNotificationManager;
     ReplicationManagerServer m_replicationManagerServer;
-    
     IMachineAddress* m_machineAddress;
     std::string m_name;
     int m_iPlayerId;
-    
     float m_fLastPacketFromClientTime;
-    
     MoveList m_unprocessedMoveList;
     bool m_isLastMoveTimestampDirty;
+    bool m_isAuthorized;
 };
 
 #endif /* defined(__noctisgames__ClientProxy__) */

@@ -19,7 +19,8 @@ m_machineAddress(inMachineAddress),
 m_name(inName),
 m_iPlayerId(inPlayerId),
 m_deliveryNotificationManager(DeliveryNotificationManager(false, true)),
-m_isLastMoveTimestampDirty(false)
+m_isLastMoveTimestampDirty(false),
+m_isAuthorized(false)
 {
     updateLastPacketTime();
 }
@@ -69,17 +70,22 @@ MoveList& ClientProxy::getUnprocessedMoveList()
     return m_unprocessedMoveList;
 }
 
-void ClientProxy::SetIsLastMoveTimestampDirty(bool inIsDirty)
+void ClientProxy::setIsLastMoveTimestampDirty(bool inIsDirty)
 {
     m_isLastMoveTimestampDirty = inIsDirty;
 }
 
-bool ClientProxy::IsLastMoveTimestampDirty() const
+bool ClientProxy::isLastMoveTimestampDirty() const
 {
     return m_isLastMoveTimestampDirty;
 }
 
-std::string ClientProxy::toString() const
+void ClientProxy::setAuthorized(bool isAuthorized)
 {
-    return m_machineAddress->toString();
+    m_isAuthorized = isAuthorized;
+}
+
+bool ClientProxy::isAuthorized() const
+{
+    return m_isAuthorized;
 }

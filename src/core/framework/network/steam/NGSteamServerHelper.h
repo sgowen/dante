@@ -15,11 +15,14 @@
 #include "IPacketHandler.h"
 
 class NGSteamAddress;
+class ClientProxy;
+
+typedef ClientProxy* (*GetClientProxyFunc)(int inPlayerId);
 
 class NGSteamServerHelper : public IServerHelper
 {
 public:
-    NGSteamServerHelper(const char* inGameDir, const char* inVersionString, const char* inProductName, const char* inGameDescription, uint16 inPort, uint16 inAuthPort, uint16 inUpdaterPort, ProcessPacketFunc inProcessPacketFunc, HandleNoResponseFunc inHandleNoResponseFunc, HandleConnectionResetFunc inHandleConnectionResetFunc);
+    NGSteamServerHelper(const char* inGameDir, const char* inVersionString, const char* inProductName, const char* inGameDescription, uint16 inPort, uint16 inAuthPort, uint16 inUpdaterPort, ProcessPacketFunc inProcessPacketFunc, HandleNoResponseFunc inHandleNoResponseFunc, HandleConnectionResetFunc inHandleConnectionResetFunc, GetClientProxyFunc inGetClientProxyFunc);
     
     virtual ~NGSteamServerHelper();
     
@@ -31,13 +34,17 @@ public:
     
 private:
     const char* m_inGameDir;
+    GetClientProxyFunc m_getClientProxyFunc;
+    HandleConnectionResetFunc m_handleConnectionResetFunc;
     NGSteamAddress* m_serverSteamAddress;
     std::string m_serverName;
     bool m_isConnectedToSteam; // Track whether our server is connected to Steam ok (meaning we can restrict who plays based on ownership and VAC bans, etc...)
     
     void sendUpdatedServerDetailsToSteam();
     
-    void onAuthCompleted(bool bAuthSuccessful, uint32 iPendingAuthIndex);
+    void onClientAuthCompleted(bool bAuthSuccessful, uint32 iPendingAuthIndex);
+    
+    void removePlayerFromServer(ClientProxy* clientProxy);
     
     // Tells us when we have successfully connected to Steam
     STEAM_GAMESERVER_CALLBACK(NGSteamServerHelper, onSteamServersConnected, SteamServersConnected_t);

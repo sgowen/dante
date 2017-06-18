@@ -71,6 +71,12 @@ void NetworkManagerClient::staticHandleConnectionReset(IMachineAddress* inFromAd
 void NetworkManagerClient::processIncomingPackets()
 {
     m_clientHelper->processIncomingPackets();
+    
+    if (m_state == NCS_Uninitialized
+        && m_clientHelper->isConnected())
+    {
+        m_state = NCS_SayingHello;
+    }
 }
 
 void NetworkManagerClient::sendOutgoingPackets()
@@ -329,7 +335,7 @@ m_removeProcessedMovesFunc(inRemoveProcessedMovesFunc),
 m_getMoveListFunc(inGetMoveListFunc),
 m_replicationManagerClient(new ReplicationManagerClient()),
 m_avgRoundTripTime(new WeightedTimedMovingAverage(1.f)),
-m_state(NCS_SayingHello),
+m_state(NCS_Uninitialized),
 m_deliveryNotificationManager(new DeliveryNotificationManager(true, false)),
 m_fTimeOfLastHello(0.0f),
 m_fTimeOfLastInputPacket(0.0f),

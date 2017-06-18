@@ -21,6 +21,8 @@ public:
     
     virtual ~INetworkHelper();
     
+    virtual bool isConnected() = 0;
+    
     virtual void processIncomingPackets();
     
     virtual void sendPacket(const OutputMemoryBitStream& inOutputStream, IMachineAddress* inFromAddress);

@@ -206,7 +206,7 @@ Server::Server(bool isSteam) : m_fStateTime(0), m_fFrameStateTime(0), m_fStateTi
     
     if (isSteam)
     {
-        NetworkManagerServer::create(new NGSteamServerHelper("projectdante", VERSION_STRING, "Project Dante", "A Multiplayer Dungeon Crawler set in a Steampunk Wasteland where you control mysterious robots", DANTE_SERVER_PORT, DANTE_AUTHENTICATION_PORT, DANTE_MASTER_SERVER_UPDATER_PORT, NetworkManagerServer::staticProcessPacket, NetworkManagerServer::staticHandleNoResponse, NetworkManagerServer::staticHandleConnectionReset), Server::staticHandleNewClient, Server::staticHandleLostClient, PooledObjectsManager::borrowInputState);
+        NetworkManagerServer::create(new NGSteamServerHelper("projectdante", VERSION_STRING, "Project Dante", "A Multiplayer Dungeon Crawler set in a Steampunk Wasteland where you control mysterious robots", DANTE_SERVER_PORT, DANTE_AUTHENTICATION_PORT, DANTE_MASTER_SERVER_UPDATER_PORT, NetworkManagerServer::staticProcessPacket, NetworkManagerServer::staticHandleNoResponse, NetworkManagerServer::staticHandleConnectionReset, NetworkManagerServer::staticGetClientProxy), Server::staticHandleNewClient, Server::staticHandleLostClient, PooledObjectsManager::borrowInputState);
     }
     else
     {

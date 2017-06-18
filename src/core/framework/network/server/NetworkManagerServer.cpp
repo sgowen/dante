@@ -68,6 +68,11 @@ void NetworkManagerServer::staticHandleConnectionReset(IMachineAddress* inFromAd
     NG_SERVER->handleConnectionReset(inFromAddress);
 }
 
+ClientProxy* NetworkManagerServer::staticGetClientProxy(int inPlayerId)
+{
+    return NG_SERVER->getClientProxy(inPlayerId);
+}
+
 void NetworkManagerServer::processIncomingPackets()
 {
     m_serverHelper->processIncomingPackets();
@@ -102,7 +107,7 @@ void NetworkManagerServer::sendOutgoingPackets()
         //process any timed out packets while we're going through the list
         clientProxy->getDeliveryNotificationManager().processTimedOutPackets(Timing::getInstance()->getFrameStartTime());
         
-        if (clientProxy->IsLastMoveTimestampDirty())
+        if (clientProxy->isLastMoveTimestampDirty())
         {
             sendStatePacketToClient(clientProxy);
         }
@@ -266,7 +271,7 @@ void NetworkManagerServer::processPacket(ClientProxy* inClientProxy, InputMemory
             }
             break;
         default:
-            LOG("Unknown packet type received from %s", inClientProxy->toString().c_str());
+            LOG("Unknown packet type received from %s", inClientProxy->getMachineAddress()->toString().c_str());
             break;
     }
 }
@@ -305,12 +310,12 @@ void NetworkManagerServer::sendStatePacketToClient(ClientProxy* inClientProxy)
 void NetworkManagerServer::writeLastMoveTimestampIfDirty(OutputMemoryBitStream& inOutputStream, ClientProxy* inClientProxy)
 {
     //first, dirty?
-    bool isTimestampDirty = inClientProxy->IsLastMoveTimestampDirty();
+    bool isTimestampDirty = inClientProxy->isLastMoveTimestampDirty();
     inOutputStream.write(isTimestampDirty);
     if (isTimestampDirty)
     {
         inOutputStream.write(inClientProxy->getUnprocessedMoveList().getLastMoveTimestamp());
-        inClientProxy->SetIsLastMoveTimestampDirty(false);
+        inClientProxy->setIsLastMoveTimestampDirty(false);
     }
 }
 
@@ -326,7 +331,7 @@ void NetworkManagerServer::handleInputPacket(ClientProxy* inClientProxy, InputMe
         {
             if (inClientProxy->getUnprocessedMoveList().addMoveIfNew(move))
             {
-                inClientProxy->SetIsLastMoveTimestampDirty(true);
+                inClientProxy->setIsLastMoveTimestampDirty(true);
             }
         }
     }
