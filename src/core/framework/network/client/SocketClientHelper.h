@@ -18,7 +18,7 @@ class SocketAddress;
 class SocketClientHelper : public IClientHelper
 {
 public:
-    SocketClientHelper(const std::string& inServerIPAddress, const std::string& inName, uint16_t inPort, ProcessPacketFunc processPacketFunc, HandleNoResponseFunc handleNoResponseFunc, HandleConnectionResetFunc handleConnectionResetFunc);
+    SocketClientHelper(std::string inServerIPAddress, std::string inName, uint16_t inPort, ProcessPacketFunc processPacketFunc, HandleNoResponseFunc handleNoResponseFunc, HandleConnectionResetFunc handleConnectionResetFunc);
     
     virtual ~SocketClientHelper();
     

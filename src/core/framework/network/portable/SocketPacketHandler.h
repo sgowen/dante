@@ -30,6 +30,8 @@ public:
     
     virtual void sendPacket(const OutputMemoryBitStream& inOutputStream, IMachineAddress* inFromAddress);
     
+    SocketAddress* getSocketAddress();
+    
     bool isInitialized();
     
 protected:
@@ -38,6 +40,7 @@ protected:
     virtual void processQueuedPackets();
     
 private:
+    SocketAddress* m_socketAddress;
     UDPSocket* m_socket;
     
     class ReceivedPacket;

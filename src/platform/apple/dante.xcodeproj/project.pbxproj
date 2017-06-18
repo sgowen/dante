@@ -454,6 +454,7 @@
 		BB5833F61EEDDD440084DA20 /* texture_002.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = texture_002.png; sourceTree = "<group>"; };
 		BB59794C1EEF454B0047BEC6 /* pch.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = pch.cpp; sourceTree = "<group>"; };
 		BB59794F1EEF56830047BEC6 /* NGSteam.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NGSteam.h; sourceTree = "<group>"; };
+		BB5C31921EF5F5C0000B98FC /* KeyboardLookup.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KeyboardLookup.h; sourceTree = "<group>"; };
 		BB5F46FA1ED38D61005FEC0C /* SocketAddressFamily.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SocketAddressFamily.h; sourceTree = "<group>"; };
 		BB61CB581EC9FA1B000E0291 /* FrameworkConstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FrameworkConstants.h; sourceTree = "<group>"; };
 		BB7251921EE105330024C71C /* NetworkManagerClient.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NetworkManagerClient.cpp; sourceTree = "<group>"; };
@@ -637,7 +638,6 @@
 		BBAEF1621EA94ED900F0866E /* GamePadInputManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GamePadInputManager.h; sourceTree = "<group>"; };
 		BBAEF1631EA94ED900F0866E /* KeyboardEvent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KeyboardEvent.cpp; sourceTree = "<group>"; };
 		BBAEF1641EA94ED900F0866E /* KeyboardEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeyboardEvent.h; sourceTree = "<group>"; };
-		BBAEF1651EA94ED900F0866E /* KeyboardEventType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeyboardEventType.h; sourceTree = "<group>"; };
 		BBAEF1661EA94ED900F0866E /* KeyboardInputManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KeyboardInputManager.cpp; sourceTree = "<group>"; };
 		BBAEF1671EA94ED900F0866E /* KeyboardInputManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeyboardInputManager.h; sourceTree = "<group>"; };
 		BBAEF1681EA94ED900F0866E /* ScreenEvent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ScreenEvent.cpp; sourceTree = "<group>"; };
@@ -1573,7 +1573,7 @@
 				BBAEF1621EA94ED900F0866E /* GamePadInputManager.h */,
 				BBAEF1631EA94ED900F0866E /* KeyboardEvent.cpp */,
 				BBAEF1641EA94ED900F0866E /* KeyboardEvent.h */,
-				BBAEF1651EA94ED900F0866E /* KeyboardEventType.h */,
+				BB5C31921EF5F5C0000B98FC /* KeyboardLookup.h */,
 				BBAEF1661EA94ED900F0866E /* KeyboardInputManager.cpp */,
 				BBAEF1671EA94ED900F0866E /* KeyboardInputManager.h */,
 				BBAEF1681EA94ED900F0866E /* ScreenEvent.cpp */,

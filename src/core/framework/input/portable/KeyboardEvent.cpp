@@ -10,21 +10,19 @@
 
 #include "KeyboardEvent.h"
 
-KeyboardEvent::KeyboardEvent(KeyboardEventType type, int status) :
-m_type(type),
-m_iStatus(status)
+KeyboardEvent::KeyboardEvent(unsigned short key, int status) : m_sKey(key), m_iStatus(status)
 {
 	// Empty
 }
 
-KeyboardEventType KeyboardEvent::getType()
+void KeyboardEvent::setKey(unsigned short key)
 {
-    return m_type;
+    m_sKey = key;
 }
 
-void KeyboardEvent::setType(KeyboardEventType touchType)
+unsigned short KeyboardEvent::getKey()
 {
-    m_type = touchType;
+    return m_sKey;
 }
 
 void KeyboardEvent::setStatus(int status)

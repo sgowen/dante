@@ -11,6 +11,8 @@
 
 #include "MoveList.h"
 
+#include <string>
+
 class InputState;
 class Move;
 
@@ -25,20 +27,35 @@ public:
     
     void update();
     
+    const Move* getAndClearPendingMove();
+    
     void setConnected(bool isConnected);
+    
+    void setLiveMode(bool isLiveMode);
+    
+    void resetLiveInput();
+    
+    bool isLiveMode();
+    
+    bool isTimeToProcessInput();
     
     InputState* getInputState();
     
     MoveList& getMoveList();
     
-    const Move* getAndClearPendingMove();
+    std::string& getLiveInputRef();
+    
+    std::string getLiveInput();
     
 private:
+    std::string m_liveInput;
     InputState* m_currentState;
     MoveList m_moveList;
     const Move* m_pendingMove;
     float m_fNextTimeToSampleInput;
     bool m_isConnected;
+    bool m_isLiveMode;
+    bool m_isTimeToProcessInput;
     
     const Move& sampleInputAsMove();
     

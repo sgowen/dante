@@ -9,8 +9,6 @@
 #ifndef __noctisgames__KeyboardEvent__
 #define __noctisgames__KeyboardEvent__
 
-#include "KeyboardEventType.h"
-
 #define KEYBOARD_STATUS_DOWN 1
 #define KEYBOARD_STATUS_HELD 2
 #define KEYBOARD_STATUS_UP 3
@@ -18,11 +16,11 @@
 class KeyboardEvent
 {
 public:
-    KeyboardEvent(KeyboardEventType type = KeyboardEventType_ARROW_KEY_RIGHT, int status = KEYBOARD_STATUS_DOWN);
+    KeyboardEvent(unsigned short key = 0, int status = KEYBOARD_STATUS_DOWN);
 
-    KeyboardEventType getType();
+    void setKey(unsigned short key);
     
-    void setType(KeyboardEventType type);
+    unsigned short getKey();
     
     void setStatus(int status);
     
@@ -35,7 +33,7 @@ public:
     bool isUp();
     
 private:
-    KeyboardEventType m_type;
+    unsigned short m_sKey;
     int m_iStatus;
 };
 

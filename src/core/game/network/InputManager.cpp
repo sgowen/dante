@@ -24,6 +24,10 @@
 #include "PooledObjectsManager.h"
 #include "GameConstants.h"
 #include "NGAudioEngine.h"
+#include "KeyboardLookup.h"
+#include "StringUtil.h"
+
+#include <sstream>
 
 InputManager* InputManager::getInstance()
 {
@@ -54,58 +58,95 @@ void InputManager::update()
     m_currentState->m_isJoiningLANSteamServer = false;
 	m_currentState->m_isLeavingServer = false;
     
-    for (std::vector<KeyboardEvent *>::iterator i = KEYBOARD_INPUT_MANAGER->getEvents().begin(); i != KEYBOARD_INPUT_MANAGER->getEvents().end(); ++i)
+    if (m_isLiveMode)
     {
-        switch ((*i)->getType())
+        std::stringstream ss;
+        
+        for (std::vector<KeyboardEvent *>::iterator i = KEYBOARD_INPUT_MANAGER->getEvents().begin(); i != KEYBOARD_INPUT_MANAGER->getEvents().end(); ++i)
         {
-            case KeyboardEventType_W:
-                m_currentState->m_isJumping = (*i)->isDown();
-                continue;
-            case KeyboardEventType_A:
-                m_currentState->m_fDesiredLeftAmount = (*i)->isDown() ? 1 : 0;
-                continue;
-            case KeyboardEventType_D:
-                m_currentState->m_fDesiredRightAmount = (*i)->isDown() ? 1 : 0;
-                continue;
-            case KeyboardEventType_ARROW_KEY_DOWN:
-                m_currentState->m_isSprinting = (*i)->isDown();
-                continue;
-            case KeyboardEventType_SPACE:
-                m_currentState->m_isShooting = (*i)->isDown();
-                continue;
-            case KeyboardEventType_M:
-                if ((*i)->isUp())
+            KeyboardEvent* keyboardEvent = (*i);
+            if (isKeySupported(keyboardEvent->getKey())
+                && keyboardEvent->isDown()
+                && !keyboardEvent->isHeld())
+            {
+                if (keyboardEvent->getKey() == NG_KEY_CARRIAGE_RETURN)
                 {
-                    if (NG_AUDIO_ENGINE->isMusicPlaying())
-                    {
-                        NG_AUDIO_ENGINE->stopMusic();
-                    }
-                    else
-                    {
-                        NG_AUDIO_ENGINE->playMusic(true);
-                    }
+                    m_isTimeToProcessInput = true;
+                    return;
                 }
-                continue;
-            case KeyboardEventType_S:
-				m_currentState->m_isStartingSteamServer = (*i)->isUp();
-                continue;
-            case KeyboardEventType_J:
-                m_currentState->m_isJoiningOnlineSteamServer = (*i)->isUp();
-                continue;
-            case KeyboardEventType_K:
-                m_currentState->m_isJoiningLANSteamServer = (*i)->isUp();
-                continue;
-            case KeyboardEventType_L:
-                m_currentState->m_isStartingServer = (*i)->isUp();
-                continue;
-            case KeyboardEventType_P:
-                m_currentState->m_isJoiningServer = (*i)->isUp();
-                continue;
-            case KeyboardEventType_ESCAPE:
-                m_currentState->m_isLeavingServer = (*i)->isUp();
-                continue;
-            default:
-                continue;
+                else if (keyboardEvent->getKey() == NG_KEY_BACK_SPACE
+                         || keyboardEvent->getKey() == NG_KEY_DELETE)
+                {
+                    std::string s = ss.str();
+                    m_liveInput += s;
+                    m_liveInput.erase(m_liveInput.end() - 1, m_liveInput.end());
+                    return;
+                }
+                else
+                {
+                    ss << StringUtil::format("%c", keyboardEvent->getKey());
+                }
+            }
+        }
+        
+        std::string s = ss.str();
+        m_liveInput += s;
+    }
+    else
+    {
+        for (std::vector<KeyboardEvent *>::iterator i = KEYBOARD_INPUT_MANAGER->getEvents().begin(); i != KEYBOARD_INPUT_MANAGER->getEvents().end(); ++i)
+        {
+            switch ((*i)->getKey())
+            {
+                case NG_KEY_W:
+                    m_currentState->m_isJumping = (*i)->isDown();
+                    continue;
+                case NG_KEY_A:
+                    m_currentState->m_fDesiredLeftAmount = (*i)->isDown() ? 1 : 0;
+                    continue;
+                case NG_KEY_D:
+                    m_currentState->m_fDesiredRightAmount = (*i)->isDown() ? 1 : 0;
+                    continue;
+                case NG_KEY_ARROW_DOWN:
+                    m_currentState->m_isSprinting = (*i)->isDown();
+                    continue;
+                case NG_KEY_SPACE_BAR:
+                    m_currentState->m_isShooting = (*i)->isDown();
+                    continue;
+                case NG_KEY_M:
+                    if ((*i)->isUp())
+                    {
+                        if (NG_AUDIO_ENGINE->isMusicPlaying())
+                        {
+                            NG_AUDIO_ENGINE->stopMusic();
+                        }
+                        else
+                        {
+                            NG_AUDIO_ENGINE->playMusic(true);
+                        }
+                    }
+                    continue;
+                case NG_KEY_S:
+                    m_currentState->m_isStartingSteamServer = (*i)->isUp();
+                    continue;
+                case NG_KEY_J:
+                    m_currentState->m_isJoiningOnlineSteamServer = (*i)->isUp();
+                    continue;
+                case NG_KEY_K:
+                    m_currentState->m_isJoiningLANSteamServer = (*i)->isUp();
+                    continue;
+                case NG_KEY_L:
+                    m_currentState->m_isStartingServer = (*i)->isUp();
+                    continue;
+                case NG_KEY_P:
+                    m_currentState->m_isJoiningServer = (*i)->isUp();
+                    continue;
+                case NG_KEY_ESCAPE:
+                    m_currentState->m_isLeavingServer = (*i)->isUp();
+                    continue;
+                default:
+                    continue;
+            }
         }
     }
     
@@ -166,6 +207,14 @@ void InputManager::update()
     }
 }
 
+const Move* InputManager::getAndClearPendingMove()
+{
+    auto toRet = m_pendingMove;
+    m_pendingMove = nullptr;
+    
+    return toRet;
+}
+
 void InputManager::setConnected(bool isConnected)
 {
     m_isConnected = isConnected;
@@ -174,6 +223,34 @@ void InputManager::setConnected(bool isConnected)
     {
         m_moveList.clear();
     }
+}
+
+void InputManager::setLiveMode(bool isLiveMode)
+{
+    m_isLiveMode = isLiveMode;
+    
+    m_moveList.clear();
+    
+    m_liveInput.clear();
+    
+    m_isTimeToProcessInput = false;
+}
+
+void InputManager::resetLiveInput()
+{
+    m_liveInput.clear();
+    
+    m_isTimeToProcessInput = false;
+}
+
+bool InputManager::isLiveMode()
+{
+    return m_isLiveMode;
+}
+
+bool InputManager::isTimeToProcessInput()
+{
+    return m_isTimeToProcessInput;
 }
 
 InputState* InputManager::getInputState()
@@ -186,12 +263,14 @@ MoveList& InputManager::getMoveList()
     return m_moveList;
 }
 
-const Move* InputManager::getAndClearPendingMove()
+std::string& InputManager::getLiveInputRef()
 {
-    auto toRet = m_pendingMove;
-    m_pendingMove = nullptr;
-    
-    return toRet;
+    return m_liveInput;
+}
+
+std::string InputManager::getLiveInput()
+{
+    return m_liveInput;
 }
 
 const Move& InputManager::sampleInputAsMove()
@@ -224,7 +303,9 @@ InputManager::InputManager() :
 m_currentState(static_cast<InputState*>(POOLED_OBJ_MGR->borrowInputState())),
 m_pendingMove(nullptr),
 m_fNextTimeToSampleInput(0.0f),
-m_isConnected(false)
+m_isConnected(false),
+m_isLiveMode(false),
+m_isTimeToProcessInput(false)
 {
     // Empty
 }

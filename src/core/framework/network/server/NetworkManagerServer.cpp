@@ -160,6 +160,11 @@ int NetworkManagerServer::getNumClientsConnected()
     return static_cast<int>(m_addressHashToClientMap.size());
 }
 
+IMachineAddress* NetworkManagerServer::getServerAddress()
+{
+    return m_serverHelper->getServerAddress();
+}
+
 bool NetworkManagerServer::isConnected()
 {
     return m_serverHelper->isConnected();

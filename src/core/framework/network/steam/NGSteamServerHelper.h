@@ -14,6 +14,8 @@
 #include "NGSteam.h"
 #include "IPacketHandler.h"
 
+class NGSteamAddress;
+
 class NGSteamServerHelper : public IServerHelper
 {
 public:
@@ -23,9 +25,12 @@ public:
     
     virtual void processIncomingPackets();
     
+    virtual IMachineAddress* getServerAddress();
+    
     virtual bool isConnected();
     
 private:
+    NGSteamAddress* m_serverSteamAddress;
     std::string m_serverName;
     bool m_isConnectedToSteam; // Track whether our server is connected to Steam ok (meaning we can restrict who plays based on ownership and VAC bans, etc...)
     

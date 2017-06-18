@@ -19,10 +19,10 @@
 
 #include <assert.h>
 
-NGSteamClientHelper::NGSteamClientHelper(const char* inGameDir, bool isLAN, ProcessPacketFunc processPacketFunc, HandleNoResponseFunc handleNoResponseFunc, HandleConnectionResetFunc handleConnectionResetFunc) : IClientHelper(new NGSteamPacketHandler(processPacketFunc, handleNoResponseFunc, handleConnectionResetFunc)),
+NGSteamClientHelper::NGSteamClientHelper(const char* inGameDir, bool isLAN, ProcessPacketFunc processPacketFunc, HandleNoResponseFunc handleNoResponseFunc, HandleConnectionResetFunc handleConnectionResetFunc) : IClientHelper(new NGSteamPacketHandler(false, processPacketFunc, handleNoResponseFunc, handleConnectionResetFunc)),
 m_gameDir(inGameDir),
 m_clientSteamAddress(nullptr),
-m_serverAddress(nullptr),
+m_serverSteamAddress(nullptr),
 m_iNumServers(0),
 m_isRequestingServers(false),
 m_hServerListRequest(nullptr)
@@ -49,9 +49,9 @@ NGSteamClientHelper::~NGSteamClientHelper()
         delete m_clientSteamAddress;
     }
     
-    if (m_serverAddress)
+    if (m_serverSteamAddress)
     {
-        delete m_serverAddress;
+        delete m_serverSteamAddress;
     }
     
     if (m_hServerListRequest)
@@ -73,9 +73,9 @@ void NGSteamClientHelper::processIncomingPackets()
 
 void NGSteamClientHelper::sendPacket(const OutputMemoryBitStream& inOutputStream)
 {
-    if (m_serverAddress)
+    if (m_serverSteamAddress)
     {
-        INetworkHelper::sendPacket(inOutputStream, m_serverAddress);
+        INetworkHelper::sendPacket(inOutputStream, m_serverSteamAddress);
     }
 }
 
@@ -114,12 +114,12 @@ void NGSteamClientHelper::RefreshComplete(HServerListRequest hReq, EMatchMakingS
     
     if (serverAddress)
     {
-        if (m_serverAddress)
+        if (m_serverSteamAddress)
         {
-            delete m_serverAddress;
+            delete m_serverSteamAddress;
         }
         
-        m_serverAddress = serverAddress;
+        m_serverSteamAddress = serverAddress;
     }
 }
 

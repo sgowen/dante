@@ -35,9 +35,15 @@ SocketAddress* SocketAddressFactory::createIPv4FromString(const std::string& inS
     memset(&hint, 0, sizeof(hint));
     hint.ai_family = AF_INET;
     
-    addrinfo* result;
+    addrinfo* result = nullptr;
     int error = getaddrinfo(host.c_str(), service.c_str(), &hint, &result);
     if (error != 0 && result != nullptr)
+    {
+        SOCKET_UTIL->reportError("SocketAddressFactory::createIPv4FromString");
+        return nullptr;
+    }
+    
+    if (result == nullptr)
     {
         SOCKET_UTIL->reportError("SocketAddressFactory::createIPv4FromString");
         return nullptr;

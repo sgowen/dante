@@ -23,7 +23,7 @@
 #include "macros.h"
 #include "FrameworkConstants.h"
 
-SocketPacketHandler::SocketPacketHandler(uint16_t inPort, ProcessPacketFunc processPacketFunc, HandleNoResponseFunc handleNoResponseFunc, HandleConnectionResetFunc handleConnectionResetFunc) : IPacketHandler(processPacketFunc, handleNoResponseFunc, handleConnectionResetFunc), m_socket(nullptr), m_isInitialized(false)
+SocketPacketHandler::SocketPacketHandler(uint16_t inPort, ProcessPacketFunc processPacketFunc, HandleNoResponseFunc handleNoResponseFunc, HandleConnectionResetFunc handleConnectionResetFunc) : IPacketHandler(processPacketFunc, handleNoResponseFunc, handleConnectionResetFunc), m_socketAddress(new SocketAddress(INADDR_ANY, inPort)), m_socket(nullptr), m_isInitialized(false)
 {
     if (!SOCKET_UTIL->init())
     {
@@ -31,8 +31,7 @@ SocketPacketHandler::SocketPacketHandler(uint16_t inPort, ProcessPacketFunc proc
     }
     
     m_socket = SOCKET_UTIL->createUDPSocket(INET);
-    SocketAddress ownAddress(INADDR_ANY, inPort);
-    m_socket->bindSocket(ownAddress);
+    m_socket->bindSocket(*m_socketAddress);
     
     LOG("Initializing SocketPacketHandler at port %hu", inPort);
     
@@ -44,6 +43,12 @@ SocketPacketHandler::SocketPacketHandler(uint16_t inPort, ProcessPacketFunc proc
 
 SocketPacketHandler::~SocketPacketHandler()
 {
+    if (m_socketAddress)
+    {
+        delete m_socketAddress;
+        m_socketAddress = nullptr;
+    }
+    
     if (m_socket)
     {
         delete m_socket;
@@ -64,6 +69,11 @@ void SocketPacketHandler::sendPacket(const OutputMemoryBitStream& inOutputStream
     {
         m_bytesSentThisFrame += sentByteCount;
     }
+}
+
+SocketAddress* SocketPacketHandler::getSocketAddress()
+{
+    return m_socketAddress;
 }
 
 bool SocketPacketHandler::isInitialized()

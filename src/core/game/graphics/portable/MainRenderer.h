@@ -35,9 +35,15 @@ private:
     TextureWrapper* m_misc;
     Font* m_font;
     
-    void renderServerJoinedInstructions();
+    void renderTypeServerToJoinInstructions();
     
-    void renderServerStartedInstructions();
+    void renderTypeNameToJoinInstructions();
+    
+    void renderLocalServerStartedInstructions();
+    
+    void renderSteamServerStartedInstructions();
+    
+    void renderServerJoinedInstructions();
     
     void renderInstructions();
     
