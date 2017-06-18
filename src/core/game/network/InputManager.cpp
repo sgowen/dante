@@ -65,26 +65,40 @@ void InputManager::update()
         for (std::vector<KeyboardEvent *>::iterator i = KEYBOARD_INPUT_MANAGER->getEvents().begin(); i != KEYBOARD_INPUT_MANAGER->getEvents().end(); ++i)
         {
             KeyboardEvent* keyboardEvent = (*i);
-            if (isKeySupported(keyboardEvent->getKey())
-                && keyboardEvent->isDown()
-                && !keyboardEvent->isHeld())
+            if (isKeySupported(keyboardEvent->getKey()))
             {
-                if (keyboardEvent->getKey() == NG_KEY_CARRIAGE_RETURN)
+                if (keyboardEvent->isDown()
+                    && !keyboardEvent->isHeld())
                 {
-                    m_isTimeToProcessInput = true;
-                    return;
+                    if (keyboardEvent->getKey() == NG_KEY_CARRIAGE_RETURN)
+                    {
+                        m_isTimeToProcessInput = true;
+                        return;
+                    }
+                    else if (keyboardEvent->getKey() == NG_KEY_ESCAPE)
+                    {
+                        return;
+                    }
+                    else if (keyboardEvent->getKey() == NG_KEY_BACK_SPACE
+                             || keyboardEvent->getKey() == NG_KEY_DELETE)
+                    {
+                        std::string s = ss.str();
+                        m_liveInput += s;
+                        m_liveInput.erase(m_liveInput.end() - 1, m_liveInput.end());
+                        return;
+                    }
+                    else
+                    {
+                        ss << StringUtil::format("%c", keyboardEvent->getKey());
+                    }
                 }
-                else if (keyboardEvent->getKey() == NG_KEY_BACK_SPACE
-                         || keyboardEvent->getKey() == NG_KEY_DELETE)
+                else if (keyboardEvent->isUp())
                 {
-                    std::string s = ss.str();
-                    m_liveInput += s;
-                    m_liveInput.erase(m_liveInput.end() - 1, m_liveInput.end());
-                    return;
-                }
-                else
-                {
-                    ss << StringUtil::format("%c", keyboardEvent->getKey());
+                    if (keyboardEvent->getKey() == NG_KEY_ESCAPE)
+                    {
+                        m_isEscapeKeyPressed = true;
+                        return;
+                    }
                 }
             }
         }
@@ -234,6 +248,7 @@ void InputManager::setLiveMode(bool isLiveMode)
     m_liveInput.clear();
     
     m_isTimeToProcessInput = false;
+    m_isEscapeKeyPressed = false;
 }
 
 void InputManager::resetLiveInput()
@@ -241,6 +256,7 @@ void InputManager::resetLiveInput()
     m_liveInput.clear();
     
     m_isTimeToProcessInput = false;
+    m_isEscapeKeyPressed = false;
 }
 
 bool InputManager::isLiveMode()
@@ -251,6 +267,11 @@ bool InputManager::isLiveMode()
 bool InputManager::isTimeToProcessInput()
 {
     return m_isTimeToProcessInput;
+}
+
+bool InputManager::isEscapeKeyPressed()
+{
+    return m_isEscapeKeyPressed;
 }
 
 InputState* InputManager::getInputState()
@@ -305,7 +326,8 @@ m_pendingMove(nullptr),
 m_fNextTimeToSampleInput(0.0f),
 m_isConnected(false),
 m_isLiveMode(false),
-m_isTimeToProcessInput(false)
+m_isTimeToProcessInput(false),
+m_isEscapeKeyPressed(false)
 {
     // Empty
 }

@@ -210,7 +210,7 @@ void MainRenderer::renderLocalServerStartedInstructions()
     {
         static Vector2 origin = Vector2(CAM_WIDTH / 2, CAM_HEIGHT - 2);
         
-        std::string text = std::string("Server started, 'J' to join it");
+        std::string text = std::string("Server started, 'J' to join it, 'ESC' to exit");
         
         static Color c = Color(0.0f, 0.0f, 0.0f, 1.0f);
         
@@ -243,7 +243,7 @@ void MainRenderer::renderSteamServerStartedInstructions()
     {
         static Vector2 origin = Vector2(CAM_WIDTH / 2, CAM_HEIGHT - 2);
         
-        std::string text = std::string("Steam Server started, 'J' to join it");
+        std::string text = std::string("Steam Server started, 'J' to join it, 'ESC' to exit");
         
         static Color c = Color(0.0f, 0.0f, 0.0f, 1.0f);
         

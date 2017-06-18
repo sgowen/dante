@@ -164,7 +164,7 @@ void MainEngine::render()
 {
     m_renderer->beginFrame();
     
-    m_renderer->tempDraw(NG_CLIENT ? 5 : Server::getInstance() ? (m_isSteam ? 3 : InputManager::getInstance()->isLiveMode() ? 4 : 1) : InputManager::getInstance()->isLiveMode() ? 2 : 0);
+    m_renderer->tempDraw(NG_CLIENT ? 5 : Server::getInstance() ? (m_isSteam ? 3 : InputManager::getInstance()->isLiveMode() ? 4 : 1) : InputManager::getInstance()->isLiveMode() ? (m_serverIPAddress.length() > 0 ? 4 : 2) : 0);
     
     m_renderer->renderToScreen();
     
@@ -188,14 +188,19 @@ void MainEngine::handleNonMoveInput()
     {
         if (InputManager::getInstance()->isLiveMode())
         {
-            if (InputManager::getInstance()->isTimeToProcessInput())
+            if (InputManager::getInstance()->isEscapeKeyPressed())
+            {
+                InputManager::getInstance()->setLiveMode(false);
+                InputManager::getInstance()->resetLiveInput();
+            }
+            else if (InputManager::getInstance()->isTimeToProcessInput())
             {
                 if (m_serverIPAddress.length() == 0)
                 {
                     m_serverIPAddress = std::string("localhost:9999");
                     m_name = InputManager::getInstance()->getLiveInput();
                     InputManager::getInstance()->setLiveMode(false);
-                    joinServer(m_isSteam);
+                    joinServer(false);
                 }
                 
                 InputManager::getInstance()->resetLiveInput();
@@ -226,7 +231,12 @@ void MainEngine::handleNonMoveInput()
     }
     else if (InputManager::getInstance()->isLiveMode())
     {
-        if (InputManager::getInstance()->isTimeToProcessInput())
+        if (InputManager::getInstance()->isEscapeKeyPressed())
+        {
+            InputManager::getInstance()->setLiveMode(false);
+            InputManager::getInstance()->resetLiveInput();
+        }
+        else if (InputManager::getInstance()->isTimeToProcessInput())
         {
             if (m_serverIPAddress.length() == 0)
             {
