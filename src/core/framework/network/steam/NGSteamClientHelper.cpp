@@ -69,8 +69,6 @@ NGSteamClientHelper::~NGSteamClientHelper()
 
 void NGSteamClientHelper::processIncomingPackets()
 {
-    LOG("processIncomingPackets %f", Timing::getInstance()->getFrameStartTime());
-    
     INetworkHelper::processIncomingPackets();
     
     // without this, callbacks will never fire
