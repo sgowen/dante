@@ -178,7 +178,7 @@ void NetworkManagerServer::processPacket(InputMemoryBitStream& inInputStream, IM
     if (it == m_addressHashToClientMap.end()
         && m_addressHashToClientMap.size() < MAX_NUM_PLAYERS_PER_SERVER)
     {
-        LOG("Client %s", inFromAddress->toString().c_str());
+        LOG("New Client %s", inFromAddress->toString().c_str());
         
         //didn't find one? it's a new cilent..is the a HELO? if so, create a client proxy...
         handlePacketFromNewClient(inInputStream, inFromAddress);
@@ -278,7 +278,7 @@ void NetworkManagerServer::sendWelcomePacket(ClientProxy* inClientProxy)
     welcomePacket.write(NETWORK_PACKET_TYPE_WELCOME);
     welcomePacket.write(inClientProxy->getPlayerId());
     
-    LOG("Server Welcoming, new client '%s' as player %d", inClientProxy->getName().c_str(), inClientProxy->getPlayerId());
+    LOG("Server welcoming new client '%s' as player %d", inClientProxy->getName().c_str(), inClientProxy->getPlayerId());
     
     sendPacket(welcomePacket, inClientProxy->getMachineAddress());
 }
