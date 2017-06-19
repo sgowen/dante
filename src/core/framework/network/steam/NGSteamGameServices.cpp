@@ -60,6 +60,16 @@ NGSteamGameServices * NGSteamGameServices::getInstance()
     return s_instance;
 }
 
+void NGSteamGameServices::update(bool isServer)
+{
+    SteamAPI_RunCallbacks();
+    
+    if (isServer)
+    {
+        SteamGameServer_RunCallbacks();
+    }
+}
+
 void NGSteamGameServices::parseCommandLine(const char *pchCmdLine, const char **ppchServerAddress)
 {
     // Look for the +connect ipaddress:port parameter in the command line,

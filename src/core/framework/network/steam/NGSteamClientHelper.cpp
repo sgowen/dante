@@ -31,13 +31,6 @@ NGSteamClientHelper::~NGSteamClientHelper()
     delete m_clientSteamAddress;
 }
 
-void NGSteamClientHelper::processIncomingPackets()
-{
-    INetworkHelper::processIncomingPackets();
-    
-    SteamAPI_RunCallbacks();
-}
-
 void NGSteamClientHelper::sendPacket(const OutputMemoryBitStream& inOutputStream)
 {
     INetworkHelper::sendPacket(inOutputStream, m_serverSteamAddress);

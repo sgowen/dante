@@ -130,6 +130,26 @@ void MainEngine::update(float deltaTime)
     {
         Timing::getInstance()->updateManual(m_fStateTime, FRAME_RATE);
         
+        if (NG_STEAM_GAME_SERVICES)
+        {
+            NG_STEAM_GAME_SERVICES->update();
+            
+            if (NG_STEAM_GAME_SERVICES->getStatus() == STEAM_INIT_SUCCESS)
+            {
+                if (NG_STEAM_GAME_SERVICES->isRequestingToJoinServer())
+                {
+                    leaveServer();
+                    m_serverSteamID = NG_STEAM_GAME_SERVICES->getServerToJoinSteamID();
+                    joinServer();
+                }
+            }
+            else
+            {
+                leaveServer();
+                deactivateSteam();
+            }
+        }
+        
         if (NG_CLIENT)
         {
             NG_CLIENT->processIncomingPackets();
@@ -153,24 +173,6 @@ void MainEngine::update(float deltaTime)
             if (NG_CLIENT->getState() == NCS_Disconnected)
             {
                 leaveServer();
-            }
-        }
-        
-        if (NG_STEAM_GAME_SERVICES)
-        {
-            if (NG_STEAM_GAME_SERVICES->getStatus() == STEAM_INIT_SUCCESS)
-            {
-                if (NG_STEAM_GAME_SERVICES->isRequestingToJoinServer())
-                {
-                    leaveServer();
-                    m_serverSteamID = NG_STEAM_GAME_SERVICES->getServerToJoinSteamID();
-                    joinServer();
-                }
-            }
-            else
-            {
-                leaveServer();
-                deactivateSteam();
             }
         }
         
@@ -319,8 +321,7 @@ void MainEngine::handleNonMoveInput()
                 std::vector<NGSteamGameServer> gameServers = NG_STEAM_GAME_SERVICES->getGameServers();
                 if (gameServers.size() > serverIndex)
                 {
-                    m_serverSteamID = gameServers[serverIndex].getSteamID();
-                    m_iEngineState = MAIN_ENGINE_STEAM_JOINING_SERVER;
+                    NG_STEAM_GAME_SERVICES->initiateServerConnection(gameServers[serverIndex].getSteamID());
                 }
             }
         }

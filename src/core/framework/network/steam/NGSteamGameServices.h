@@ -38,6 +38,8 @@ public:
     
     static NGSteamGameServices* getInstance();
     
+    void update(bool isServer);
+    
     void refreshInternetServers();
     
     void refreshLANServers();

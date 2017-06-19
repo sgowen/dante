@@ -92,8 +92,6 @@ void NGSteamServerHelper::processIncomingPackets()
 {
     INetworkHelper::processIncomingPackets();
     
-    SteamGameServer_RunCallbacks();
-    
     sendUpdatedServerDetailsToSteam();
 }
 

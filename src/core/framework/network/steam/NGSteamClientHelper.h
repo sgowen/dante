@@ -23,8 +23,6 @@ public:
     
     virtual ~NGSteamClientHelper();
     
-    virtual void processIncomingPackets();
-    
     virtual void sendPacket(const OutputMemoryBitStream& inOutputStream);
     
     virtual std::string& getName();
