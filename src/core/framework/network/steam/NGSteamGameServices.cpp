@@ -124,6 +124,11 @@ bool NGSteamGameServices::isRequestingToJoinServer()
     return m_isRequestingToJoinServer;
 }
 
+void NGSteamGameServices::onServerJoined()
+{
+    m_isRequestingToJoinServer = false;
+}
+
 #pragma mark ISteamMatchmakingServerListResponse
 
 void NGSteamGameServices::ServerResponded(HServerListRequest hReq, int iServer)

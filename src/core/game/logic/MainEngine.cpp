@@ -375,6 +375,8 @@ void MainEngine::joinServer()
     if (m_isSteam)
     {
         NetworkManagerClient::create(new NGSteamClientHelper(m_serverSteamID, NetworkManagerClient::staticProcessPacket, NetworkManagerClient::staticHandleNoResponse, NetworkManagerClient::staticHandleConnectionReset), FRAME_RATE, InputManager::staticRemoveProcessedMoves, InputManager::staticGetMoveList);
+        
+        NG_STEAM_GAME_SERVICES->onServerJoined();
     }
     else
     {

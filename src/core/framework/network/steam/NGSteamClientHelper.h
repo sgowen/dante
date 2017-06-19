@@ -36,13 +36,6 @@ private:
     NGSteamAddress* m_serverSteamAddress;
     NGSteamAddress* m_clientSteamAddress;
     std::string m_name;
-    
-    void onReceiveServerExiting();
-    
-    STEAM_CALLBACK(NGSteamClientHelper, onSteamServersConnected, SteamServersConnected_t);
-    STEAM_CALLBACK(NGSteamClientHelper, onSteamServersDisconnected, SteamServersDisconnected_t);
-    STEAM_CALLBACK(NGSteamClientHelper, onSteamServerConnectFailure, SteamServerConnectFailure_t);
-    STEAM_CALLBACK(NGSteamClientHelper, onP2PSessionConnectFail, P2PSessionConnectFail_t);
 };
 
 #endif /* defined(__noctisgames__NGSteamClientHelper__) */

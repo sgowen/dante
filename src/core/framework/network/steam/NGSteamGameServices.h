@@ -56,6 +56,8 @@ public:
     
     bool isRequestingToJoinServer();
     
+    void onServerJoined();
+    
 #pragma mark ISteamMatchmakingServerListResponse
     virtual void ServerResponded(HServerListRequest hReq, int iServer);
     virtual void ServerFailedToRespond(HServerListRequest hReq, int iServer);
