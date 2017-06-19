@@ -61,66 +61,80 @@
 
 #define NG_KEY_DELETE 0x007F
 
+#ifdef _WIN32
+#define NG_KEY_ARROW_LEFT 0x25
+#define NG_KEY_ARROW_UP 0x26
+#define NG_KEY_ARROW_RIGHT 0x27
+#define NG_KEY_ARROW_DOWN 0x28
+#else
 #define NG_KEY_ARROW_UP 0xF700
 #define NG_KEY_ARROW_DOWN 0xF701
 #define NG_KEY_ARROW_LEFT 0xF702
 #define NG_KEY_ARROW_RIGHT 0xF703
+#endif
+
+inline std::vector<unsigned short>& getAllSupportedKeys()
+{
+	static std::vector<unsigned short> keys;
+	if (keys.size() == 0)
+	{
+		keys.push_back(NG_KEY_BACK_SPACE);
+		keys.push_back(NG_KEY_CARRIAGE_RETURN);
+		keys.push_back(NG_KEY_ESCAPE);
+		keys.push_back(NG_KEY_SPACE_BAR);
+		keys.push_back(NG_KEY_PERIOD);
+		keys.push_back(NG_KEY_ZERO);
+		keys.push_back(NG_KEY_ONE);
+		keys.push_back(NG_KEY_TWO);
+		keys.push_back(NG_KEY_THREE);
+		keys.push_back(NG_KEY_FOUR);
+		keys.push_back(NG_KEY_FIVE);
+		keys.push_back(NG_KEY_SIX);
+		keys.push_back(NG_KEY_SEVEN);
+		keys.push_back(NG_KEY_EIGHT);
+		keys.push_back(NG_KEY_NINE);
+		keys.push_back(NG_KEY_COLON);
+		keys.push_back(NG_KEY_A);
+		keys.push_back(NG_KEY_B);
+		keys.push_back(NG_KEY_C);
+		keys.push_back(NG_KEY_D);
+		keys.push_back(NG_KEY_E);
+		keys.push_back(NG_KEY_F);
+		keys.push_back(NG_KEY_G);
+		keys.push_back(NG_KEY_H);
+		keys.push_back(NG_KEY_I);
+		keys.push_back(NG_KEY_J);
+		keys.push_back(NG_KEY_K);
+		keys.push_back(NG_KEY_L);
+		keys.push_back(NG_KEY_M);
+		keys.push_back(NG_KEY_N);
+		keys.push_back(NG_KEY_O);
+		keys.push_back(NG_KEY_P);
+		keys.push_back(NG_KEY_Q);
+		keys.push_back(NG_KEY_R);
+		keys.push_back(NG_KEY_S);
+		keys.push_back(NG_KEY_T);
+		keys.push_back(NG_KEY_U);
+		keys.push_back(NG_KEY_V);
+		keys.push_back(NG_KEY_W);
+		keys.push_back(NG_KEY_X);
+		keys.push_back(NG_KEY_Y);
+		keys.push_back(NG_KEY_Z);
+		keys.push_back(NG_KEY_DELETE);
+		keys.push_back(NG_KEY_ARROW_UP);
+		keys.push_back(NG_KEY_ARROW_DOWN);
+		keys.push_back(NG_KEY_ARROW_LEFT);
+		keys.push_back(NG_KEY_ARROW_RIGHT);
+	}
+
+	return keys;
+}
 
 inline bool isKeySupported(unsigned short key)
 {
-    switch (key)
-    {
-        case NG_KEY_BACK_SPACE:
-        case NG_KEY_CARRIAGE_RETURN:
-        case NG_KEY_ESCAPE:
-        case NG_KEY_SPACE_BAR:
-        case NG_KEY_PERIOD:
-        case NG_KEY_ZERO:
-        case NG_KEY_ONE:
-        case NG_KEY_TWO:
-        case NG_KEY_THREE:
-        case NG_KEY_FOUR:
-        case NG_KEY_FIVE:
-        case NG_KEY_SIX:
-        case NG_KEY_SEVEN:
-        case NG_KEY_EIGHT:
-        case NG_KEY_NINE:
-        case NG_KEY_COLON:
-        case NG_KEY_A:
-        case NG_KEY_B:
-        case NG_KEY_C:
-        case NG_KEY_D:
-        case NG_KEY_E:
-        case NG_KEY_F:
-        case NG_KEY_G:
-        case NG_KEY_H:
-        case NG_KEY_I:
-        case NG_KEY_J:
-        case NG_KEY_K:
-        case NG_KEY_L:
-        case NG_KEY_M:
-        case NG_KEY_N:
-        case NG_KEY_O:
-        case NG_KEY_P:
-        case NG_KEY_Q:
-        case NG_KEY_R:
-        case NG_KEY_S:
-        case NG_KEY_T:
-        case NG_KEY_U:
-        case NG_KEY_V:
-        case NG_KEY_W:
-        case NG_KEY_X:
-        case NG_KEY_Y:
-        case NG_KEY_Z:
-        case NG_KEY_DELETE:
-        case NG_KEY_ARROW_UP:
-        case NG_KEY_ARROW_DOWN:
-        case NG_KEY_ARROW_LEFT:
-        case NG_KEY_ARROW_RIGHT:
-            return true;
-        default:
-            return false;
-    }
+	std::vector<unsigned short>& keys = getAllSupportedKeys();
+
+	return std::find(keys.begin(), keys.end(), key) != keys.end();
 }
 
 #endif /* defined(__noctisgames__KeyboardLookup__) */

@@ -6,6 +6,8 @@
 //  Copyright (c) 2017 Noctis Games. All rights reserved.
 //
 
+#include "pch.h"
+
 #include "Color.h"
 
 Color Color::BLACK = Color(0.0f, 0.0f, 0.0f, 1.0f);

@@ -20,6 +20,7 @@
 #include "FrameworkConstants.h"
 #include "macros.h"
 #include "NGAudioEngine.h"
+#include "KeyboardLookup.h"
 
 extern void exitGame();
 
@@ -121,151 +122,16 @@ void Direct3DMain::Update(DX::StepTimer const& timer)
 {
 	auto kb = m_keyboard->GetState();
 	m_keys.Update(kb);
-	if (m_keys.IsKeyPressed(DirectX::Keyboard::Keys::Right))
+	for (unsigned short key : getAllSupportedKeys())
 	{
-		KEYBOARD_INPUT_MANAGER->onInput(KeyboardEventType_ARROW_KEY_RIGHT);
-	}
-	else if (m_keys.IsKeyReleased(DirectX::Keyboard::Keys::Right))
-	{
-		KEYBOARD_INPUT_MANAGER->onInput(KeyboardEventType_ARROW_KEY_RIGHT, true);
-	}
-	if (m_keys.IsKeyPressed(DirectX::Keyboard::Keys::Up))
-	{
-		KEYBOARD_INPUT_MANAGER->onInput(KeyboardEventType_ARROW_KEY_UP);
-	}
-	else if (m_keys.IsKeyReleased(DirectX::Keyboard::Keys::Up))
-	{
-		KEYBOARD_INPUT_MANAGER->onInput(KeyboardEventType_ARROW_KEY_UP, true);
-	}
-	if (m_keys.IsKeyPressed(DirectX::Keyboard::Keys::Left))
-	{
-		KEYBOARD_INPUT_MANAGER->onInput(KeyboardEventType_ARROW_KEY_LEFT);
-	}
-	else if (m_keys.IsKeyReleased(DirectX::Keyboard::Keys::Left))
-	{
-		KEYBOARD_INPUT_MANAGER->onInput(KeyboardEventType_ARROW_KEY_LEFT, true);
-	}
-	if (m_keys.IsKeyPressed(DirectX::Keyboard::Keys::Down))
-	{
-		KEYBOARD_INPUT_MANAGER->onInput(KeyboardEventType_ARROW_KEY_DOWN);
-	}
-	else if (m_keys.IsKeyReleased(DirectX::Keyboard::Keys::Down))
-	{
-		KEYBOARD_INPUT_MANAGER->onInput(KeyboardEventType_ARROW_KEY_DOWN, true);
-	}
-	if (m_keys.IsKeyPressed(DirectX::Keyboard::Keys::W))
-	{
-		KEYBOARD_INPUT_MANAGER->onInput(KeyboardEventType_W);
-	}
-	else if (m_keys.IsKeyReleased(DirectX::Keyboard::Keys::W))
-	{
-		KEYBOARD_INPUT_MANAGER->onInput(KeyboardEventType_W, true);
-	}
-	if (m_keys.IsKeyPressed(DirectX::Keyboard::Keys::A))
-	{
-		KEYBOARD_INPUT_MANAGER->onInput(KeyboardEventType_A);
-	}
-	else if (m_keys.IsKeyReleased(DirectX::Keyboard::Keys::A))
-	{
-		KEYBOARD_INPUT_MANAGER->onInput(KeyboardEventType_A, true);
-	}
-	if (m_keys.IsKeyPressed(DirectX::Keyboard::Keys::S))
-	{
-		KEYBOARD_INPUT_MANAGER->onInput(KeyboardEventType_S);
-	}
-	else if (m_keys.IsKeyReleased(DirectX::Keyboard::Keys::S))
-	{
-		KEYBOARD_INPUT_MANAGER->onInput(KeyboardEventType_S, true);
-	}
-	if (m_keys.IsKeyPressed(DirectX::Keyboard::Keys::D))
-	{
-		KEYBOARD_INPUT_MANAGER->onInput(KeyboardEventType_D);
-	}
-	else if (m_keys.IsKeyReleased(DirectX::Keyboard::Keys::D))
-	{
-		KEYBOARD_INPUT_MANAGER->onInput(KeyboardEventType_D, true);
-	}
-	if (m_keys.IsKeyPressed(DirectX::Keyboard::Keys::V))
-	{
-		KEYBOARD_INPUT_MANAGER->onInput(KeyboardEventType_V);
-	}
-	else if (m_keys.IsKeyReleased(DirectX::Keyboard::Keys::V))
-	{
-		KEYBOARD_INPUT_MANAGER->onInput(KeyboardEventType_V, true);
-	}
-	if (m_keys.IsKeyPressed(DirectX::Keyboard::Keys::M))
-	{
-		KEYBOARD_INPUT_MANAGER->onInput(KeyboardEventType_M);
-	}
-	else if (m_keys.IsKeyReleased(DirectX::Keyboard::Keys::M))
-	{
-		KEYBOARD_INPUT_MANAGER->onInput(KeyboardEventType_M, true);
-	}
-	if (m_keys.IsKeyPressed(DirectX::Keyboard::Keys::P))
-	{
-		KEYBOARD_INPUT_MANAGER->onInput(KeyboardEventType_P);
-	}
-	else if (m_keys.IsKeyReleased(DirectX::Keyboard::Keys::P))
-	{
-		KEYBOARD_INPUT_MANAGER->onInput(KeyboardEventType_P, true);
-	}
-    if (m_keys.IsKeyPressed(DirectX::Keyboard::Keys::J))
-    {
-        KEYBOARD_INPUT_MANAGER->onInput(KeyboardEventType_J);
-    }
-    else if (m_keys.IsKeyReleased(DirectX::Keyboard::Keys::J))
-    {
-        KEYBOARD_INPUT_MANAGER->onInput(KeyboardEventType_J, true);
-    }
-    if (m_keys.IsKeyPressed(DirectX::Keyboard::Keys::K))
-    {
-        KEYBOARD_INPUT_MANAGER->onInput(KeyboardEventType_K);
-    }
-    else if (m_keys.IsKeyReleased(DirectX::Keyboard::Keys::K))
-    {
-        KEYBOARD_INPUT_MANAGER->onInput(KeyboardEventType_K, true);
-    }
-    if (m_keys.IsKeyPressed(DirectX::Keyboard::Keys::L))
-    {
-        KEYBOARD_INPUT_MANAGER->onInput(KeyboardEventType_L);
-    }
-    else if (m_keys.IsKeyReleased(DirectX::Keyboard::Keys::L))
-    {
-        KEYBOARD_INPUT_MANAGER->onInput(KeyboardEventType_L, true);
-    }
-	if (m_keys.IsKeyPressed(DirectX::Keyboard::Keys::Enter))
-	{
-		KEYBOARD_INPUT_MANAGER->onInput(KeyboardEventType_ENTER);
-	}
-	else if (m_keys.IsKeyReleased(DirectX::Keyboard::Keys::Enter))
-	{
-		KEYBOARD_INPUT_MANAGER->onInput(KeyboardEventType_ENTER, true);
-	}
-	if (m_keys.IsKeyPressed(DirectX::Keyboard::Keys::Space))
-	{
-		KEYBOARD_INPUT_MANAGER->onInput(KeyboardEventType_SPACE);
-	}
-	else if (m_keys.IsKeyReleased(DirectX::Keyboard::Keys::Space))
-	{
-		KEYBOARD_INPUT_MANAGER->onInput(KeyboardEventType_SPACE, true);
-	}
-	if (m_keys.IsKeyPressed(DirectX::Keyboard::Keys::Back)
-		|| m_keys.IsKeyPressed(DirectX::Keyboard::Keys::Delete))
-	{
-		KEYBOARD_INPUT_MANAGER->onInput(KeyboardEventType_BACK);
-	}
-	else if (m_keys.IsKeyReleased(DirectX::Keyboard::Keys::Back)
-		|| m_keys.IsKeyReleased(DirectX::Keyboard::Keys::Delete))
-	{
-		KEYBOARD_INPUT_MANAGER->onInput(KeyboardEventType_BACK, true);
-	}
-	if (m_keys.IsKeyPressed(DirectX::Keyboard::Keys::Escape))
-	{
-		KEYBOARD_INPUT_MANAGER->onInput(KeyboardEventType_ESCAPE);
-	}
-	else if (m_keys.IsKeyReleased(DirectX::Keyboard::Keys::Escape))
-	{
-		KEYBOARD_INPUT_MANAGER->onInput(KeyboardEventType_ESCAPE, true);
+		if (m_keys.IsKeyPressed((DirectX::Keyboard::Keys)key))
+		{
+			KEYBOARD_INPUT_MANAGER->onInput(key);
+		}
+		else if (m_keys.IsKeyReleased((DirectX::Keyboard::Keys)key))
+		{
+			KEYBOARD_INPUT_MANAGER->onInput(key, true);
+		}
 	}
 
 	auto mouse = m_mouse->GetState();
