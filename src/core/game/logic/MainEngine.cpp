@@ -280,6 +280,30 @@ void MainEngine::handleNonMoveInput()
             m_iEngineState = MAIN_ENGINE_STATE_MAIN_MENU_JOINING_LOCAL_SERVER_BY_IP;
             InputManager::getInstance()->setLiveMode(true);
         }
+        else if (inputState->getMenuState() == MENU_STATE_STEAM_REFRESH_LAN_SERVERS)
+        {
+            NG_STEAM_GAME_SERVICES->refreshLANServers();
+        }
+        else if (inputState->getMenuState() == MENU_STATE_STEAM_REFRESH_INTERNET_SERVERS)
+        {
+            NG_STEAM_GAME_SERVICES->refreshInternetServers();
+        }
+        else if (inputState->getMenuState() == MENU_STATE_STEAM_JOIN_SERVER_1
+                 || inputState->getMenuState() == MENU_STATE_STEAM_JOIN_SERVER_2
+                 || inputState->getMenuState() == MENU_STATE_STEAM_JOIN_SERVER_3
+                 || inputState->getMenuState() == MENU_STATE_STEAM_JOIN_SERVER_4)
+        {
+            if (!NG_STEAM_GAME_SERVICES->isRequestingServers())
+            {
+                int serverIndex = inputState->getMenuState() - 7; // eh, hacky I know, but whatever
+                std::vector<NGSteamGameServer> gameServers = NG_STEAM_GAME_SERVICES->getGameServers();
+                if (gameServers.size() > serverIndex)
+                {
+                    m_serverSteamID = gameServers[serverIndex].getSteamID();
+                    m_iEngineState = MAIN_ENGINE_STEAM_JOINING_SERVER;
+                }
+            }
+        }
         else if (inputState->getMenuState() == MENU_STATE_ESCAPE)
         {
             m_iRequestedAction = REQUESTED_ACTION_EXIT;

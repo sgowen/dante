@@ -13,7 +13,7 @@
 #include "NGSteamGameServer.h"
 
 #include <string>
-#include <list>
+#include <vector>
 
 class ISteamRemoteStorage;
 
@@ -59,7 +59,7 @@ public:
     virtual void ServerFailedToRespond(HServerListRequest hReq, int iServer);
     virtual void RefreshComplete(HServerListRequest hReq, EMatchMakingServerResponse response);
     
-    std::list<NGSteamGameServer>& getGameServers();
+    std::vector<NGSteamGameServer>& getGameServers();
     
     bool isRequestingServers();
     
@@ -79,7 +79,7 @@ private:
     int m_iNumServers; // Track the number of servers we know about
     bool m_isRequestingServers; // Track whether we are in the middle of a refresh or not
     HServerListRequest m_hServerListRequest; // Track what server list request is currently running
-    std::list<NGSteamGameServer> m_gameServers;
+    std::vector<NGSteamGameServer> m_gameServers;
     
     uint32 m_unServerIP;
     uint16 m_usServerPort;

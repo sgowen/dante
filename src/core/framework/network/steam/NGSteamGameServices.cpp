@@ -157,7 +157,7 @@ void NGSteamGameServices::RefreshComplete(HServerListRequest hReq, EMatchMakingS
     m_isRequestingServers = false;
 }
 
-std::list<NGSteamGameServer>& NGSteamGameServices::getGameServers()
+std::vector<NGSteamGameServer>& NGSteamGameServices::getGameServers()
 {
     return m_gameServers;
 }

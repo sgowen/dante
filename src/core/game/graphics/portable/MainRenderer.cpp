@@ -35,6 +35,8 @@
 #include "NetworkManagerServer.h"
 #include "IMachineAddress.h"
 #include "MainEngineState.h"
+#include "NGSteamGameServer.h"
+#include "NGSteamGameServices.h"
 
 #include <sstream>
 #include <ctime> // rand
@@ -242,40 +244,13 @@ void MainRenderer::renderMainMenuSteamOnText()
         renderText(text, origin, c);
     }
     
+    std::vector<NGSteamGameServer> gameServers = NG_STEAM_GAME_SERVICES->getGameServers();
+    int index = 0;
+    for (NGSteamGameServer gameServer : gameServers)
     {
-        static Vector2 origin = Vector2(CAM_WIDTH / 2, CAM_HEIGHT - 5);
+        static Vector2 origin = Vector2(CAM_WIDTH / 2, CAM_HEIGHT - 5.5f - (index * 0.5f));
         
-        std::string text = std::string("'1' Server 1");
-        
-        static Color c = Color(0.0f, 0.0f, 0.0f, 1.0f);
-        
-        renderText(text, origin, c);
-    }
-    
-    {
-        static Vector2 origin = Vector2(CAM_WIDTH / 2, CAM_HEIGHT - 5.5f);
-        
-        std::string text = std::string("'2' Server 2");
-        
-        static Color c = Color(0.0f, 0.0f, 0.0f, 1.0f);
-        
-        renderText(text, origin, c);
-    }
-    
-    {
-        static Vector2 origin = Vector2(CAM_WIDTH / 2, CAM_HEIGHT - 6);
-        
-        std::string text = std::string("'3' Server 3");
-        
-        static Color c = Color(0.0f, 0.0f, 0.0f, 1.0f);
-        
-        renderText(text, origin, c);
-    }
-    
-    {
-        static Vector2 origin = Vector2(CAM_WIDTH / 2, CAM_HEIGHT - 6.5f);
-        
-        std::string text = std::string("'4' Server 4");
+        std::string text = StringUtil::format("'%i' %s", (index + 1), gameServer.getDisplayString());
         
         static Color c = Color(0.0f, 0.0f, 0.0f, 1.0f);
         
