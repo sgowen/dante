@@ -132,7 +132,7 @@ void MainEngine::update(float deltaTime)
         
         if (NG_STEAM_GAME_SERVICES)
         {
-            NG_STEAM_GAME_SERVICES->update();
+            NG_STEAM_GAME_SERVICES->update(NG_SERVER ? true : false);
             
             if (NG_STEAM_GAME_SERVICES->getStatus() == STEAM_INIT_SUCCESS)
             {
@@ -234,8 +234,6 @@ void MainEngine::handleNonMoveInput()
         {
             if (inputState->getMenuState() == MENU_STATE_JOIN_LOCAL_SERVER)
             {
-                m_iEngineState = MAIN_ENGINE_STATE_MAIN_MENU_ENTERING_USERNAME;
-                
                 if (NG_SERVER->isConnected())
                 {
                     if (m_isSteam)
@@ -245,6 +243,7 @@ void MainEngine::handleNonMoveInput()
                     }
                     else
                     {
+                        m_iEngineState = MAIN_ENGINE_STATE_MAIN_MENU_ENTERING_USERNAME;
                         InputManager::getInstance()->setLiveMode(true);
                     }
                 }
