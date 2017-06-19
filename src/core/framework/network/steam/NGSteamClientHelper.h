@@ -13,9 +13,6 @@
 
 #include "IPacketHandler.h"
 #include "NGSteam.h"
-#include "NGSteamGameServer.h"
-
-#include <list>
 
 class NGSteamAddress;
 
