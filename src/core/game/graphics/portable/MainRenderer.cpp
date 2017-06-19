@@ -163,42 +163,26 @@ void MainRenderer::renderMainMenuSteamOffText()
 {
     {
         static Vector2 origin = Vector2(CAM_WIDTH / 2, CAM_HEIGHT - 1);
-        
         std::string text = std::string("'A' to activate Steam");
-        
-        static Color c = Color(0.0f, 0.0f, 0.0f, 1.0f);
-        
-        renderText(text, origin, c);
+        renderText(text, origin, Color::BLACK);
     }
     
     {
         static Vector2 origin = Vector2(CAM_WIDTH / 2, CAM_HEIGHT - 2);
-        
         std::string text = std::string("'S' to start local server");
-        
-        static Color c = Color(0.0f, 0.0f, 0.0f, 1.0f);
-        
-        renderText(text, origin, c);
+        renderText(text, origin, Color::BLACK);
     }
     
     {
         static Vector2 origin = Vector2(CAM_WIDTH / 2, CAM_HEIGHT - 3);
-        
         std::string text = std::string("'J' to join server by IP");
-        
-        static Color c = Color(0.0f, 0.0f, 0.0f, 1.0f);
-        
-        renderText(text, origin, c);
+        renderText(text, origin, Color::BLACK);
     }
     
     {
         static Vector2 origin = Vector2(CAM_WIDTH / 2, CAM_HEIGHT - 8);
-        
         std::string text = std::string("'ESC' to exit game");
-        
-        static Color c = Color(0.0f, 0.0f, 0.0f, 1.0f);
-        
-        renderText(text, origin, c);
+        renderText(text, origin, Color::BLACK);
     }
 }
 
@@ -206,65 +190,41 @@ void MainRenderer::renderMainMenuSteamOnText()
 {
     {
         static Vector2 origin = Vector2(CAM_WIDTH / 2, CAM_HEIGHT - 1);
-        
         std::string text = std::string("'D' to deactivate Steam");
-        
-        static Color c = Color(0.0f, 0.0f, 0.0f, 1.0f);
-        
-        renderText(text, origin, c);
+        renderText(text, origin, Color::BLACK);
     }
     
     {
         static Vector2 origin = Vector2(CAM_WIDTH / 2, CAM_HEIGHT - 2);
-        
         std::string text = std::string("'S' to start steam server");
-        
-        static Color c = Color(0.0f, 0.0f, 0.0f, 1.0f);
-        
-        renderText(text, origin, c);
+        renderText(text, origin, Color::BLACK);
     }
     
     {
         static Vector2 origin = Vector2(CAM_WIDTH / 2, CAM_HEIGHT - 3);
-        
         std::string text = std::string("'L' to refresh list of LAN servers");
-        
-        static Color c = Color(0.0f, 0.0f, 0.0f, 1.0f);
-        
-        renderText(text, origin, c);
+        renderText(text, origin, Color::BLACK);
     }
     
     {
         static Vector2 origin = Vector2(CAM_WIDTH / 2, CAM_HEIGHT - 4);
-        
         std::string text = std::string("'I' to refresh list of Internet servers");
-        
-        static Color c = Color(0.0f, 0.0f, 0.0f, 1.0f);
-        
-        renderText(text, origin, c);
+        renderText(text, origin, Color::BLACK);
     }
     
     std::vector<NGSteamGameServer> gameServers = NG_STEAM_GAME_SERVICES->getGameServers();
     int index = 0;
     for (NGSteamGameServer gameServer : gameServers)
     {
-        static Vector2 origin = Vector2(CAM_WIDTH / 2, CAM_HEIGHT - 5.5f - (index * 0.5f));
-        
+        Vector2 origin = Vector2(CAM_WIDTH / 2, CAM_HEIGHT - 5.5f - (index * 0.5f));
         std::string text = StringUtil::format("'%i' %s", (index + 1), gameServer.getDisplayString());
-        
-        static Color c = Color(0.0f, 0.0f, 0.0f, 1.0f);
-        
-        renderText(text, origin, c);
+        renderText(text, origin, Color::BLACK);
     }
     
     {
         static Vector2 origin = Vector2(CAM_WIDTH / 2, CAM_HEIGHT - 8);
-        
         std::string text = std::string("'ESC' to exit game");
-        
-        static Color c = Color(0.0f, 0.0f, 0.0f, 1.0f);
-        
-        renderText(text, origin, c);
+        renderText(text, origin, Color::BLACK);
     }
 }
 
@@ -272,32 +232,20 @@ void MainRenderer::renderStartingServerText()
 {
     {
         static Vector2 origin = Vector2(CAM_WIDTH / 2, CAM_HEIGHT - 2);
-        
         std::string text = StringUtil::format("Server %s, 'ESC' to exit", NG_SERVER->isConnected() ? "started, 'J' to join it" : "starting");
-        
-        static Color c = Color(0.0f, 0.0f, 0.0f, 1.0f);
-        
-        renderText(text, origin, c);
+        renderText(text, origin, Color::BLACK);
     }
     
     {
         static Vector2 origin = Vector2(CAM_WIDTH / 2, CAM_HEIGHT - 4);
-        
         std::string text = std::string("-- Server Address --");
-        
-        static Color c = Color(0.0f, 0.0f, 0.0f, 1.0f);
-        
-        renderText(text, origin, c);
+        renderText(text, origin, Color::BLACK);
     }
     
     {
         static Vector2 origin = Vector2(CAM_WIDTH / 2, CAM_HEIGHT - 4.5f);
-        
         std::string text = NG_SERVER && NG_SERVER->getServerAddress() ? NG_SERVER->getServerAddress()->toString() : std::string("");
-        
-        static Color c = Color(0.0f, 0.0f, 0.0f, 1.0f);
-        
-        renderText(text, origin, c);
+        renderText(text, origin, Color::BLACK);
     }
 }
 
@@ -305,22 +253,14 @@ void MainRenderer::renderEnterUsernameText()
 {
     {
         static Vector2 origin = Vector2(CAM_WIDTH / 2, CAM_HEIGHT - 2);
-        
         std::string text = std::string("Enter Username to join, 'ESC' to exit");
-        
-        static Color c = Color(0.0f, 0.0f, 0.0f, 1.0f);
-        
-        renderText(text, origin, c);
+        renderText(text, origin, Color::BLACK);
     }
     
     {
         static Vector2 origin = Vector2(CAM_WIDTH / 2, CAM_HEIGHT - 4);
-        
         std::string text = InputManager::getInstance()->getLiveInputRef();
-        
-        static Color c = Color(0.0f, 0.0f, 0.0f, 1.0f);
-        
-        renderText(text, origin, c);
+        renderText(text, origin, Color::BLACK);
     }
 }
 
@@ -328,22 +268,14 @@ void MainRenderer::renderJoiningLocalServerByIPText()
 {
     {
         static Vector2 origin = Vector2(CAM_WIDTH / 2, CAM_HEIGHT - 2);
-        
         std::string text = std::string("Enter Server Address to join, 'ESC' to exit");
-        
-        static Color c = Color(0.0f, 0.0f, 0.0f, 1.0f);
-        
-        renderText(text, origin, c);
+        renderText(text, origin, Color::BLACK);
     }
     
     {
         static Vector2 origin = Vector2(CAM_WIDTH / 2, CAM_HEIGHT - 4);
-        
         std::string text = InputManager::getInstance()->getLiveInputRef();
-        
-        static Color c = Color(0.0f, 0.0f, 0.0f, 1.0f);
-        
-        renderText(text, origin, c);
+        renderText(text, origin, Color::BLACK);
     }
 }
 
@@ -351,12 +283,8 @@ void MainRenderer::renderJoiningServerText()
 {
     {
         static Vector2 origin = Vector2(CAM_WIDTH / 2, CAM_HEIGHT - 2);
-        
         std::string text = StringUtil::format("%s, 'ESC' to exit", NG_CLIENT->getState() == NCS_Welcomed ? "Server joined" : "Joining Server...");
-        
-        static Color c = Color(0.0f, 0.0f, 0.0f, 1.0f);
-        
-        renderText(text, origin, c);
+        renderText(text, origin, Color::BLACK);
     }
     
     if (NG_CLIENT->getState() != NCS_Welcomed)
@@ -366,14 +294,9 @@ void MainRenderer::renderJoiningServerText()
     
     {
         static Vector2 origin = Vector2(CAM_WIDTH / 2, CAM_HEIGHT - 0.5);
-        
         float rttMS = NG_CLIENT->getAvgRoundTripTime().getValue() * 1000.f;
-        
         std::string text = StringUtil::format("RTT %d ms", (int) rttMS);
-        
-        static Color c = Color(0.0f, 0.0f, 0.0f, 1.0f);
-        
-        renderText(text, origin, c);
+        renderText(text, origin, Color::BLACK);
     }
     
     {
@@ -386,14 +309,23 @@ void MainRenderer::renderJoiningServerText()
         int bpsOutInt = static_cast< int >(bpsOut.getValue());
         
         std::string text = StringUtil::format("In %d Bps, Out %d Bps", bpsInInt, bpsOutInt);
-        
-        static Color c = Color(0.0f, 0.0f, 0.0f, 1.0f);
-        
-        renderText(text, origin, c);
+        renderText(text, origin, Color::BLACK);
+    }
+    
+    std::vector<Entity*> entities = InstanceManager::getClientWorld()->getEntities();
+    for (Entity* go : entities)
+    {
+        if (go->getNetworkType() == NETWORK_TYPE_Robot)
+        {
+            Robot* robot = static_cast<Robot*>(go);
+            Vector2 origin = Vector2(0.5f, CAM_HEIGHT - (robot->getPlayerId() * 0.5f));
+            std::string text = StringUtil::format("%i|%s", robot->getPlayerId(), robot->getPlayerName().c_str());
+            renderText(text, origin, Color::BLACK, true);
+        }
     }
 }
 
-void MainRenderer::renderText(const std::string& inStr, const Vector2& origin, const Color& inColor)
+void MainRenderer::renderText(const std::string& inStr, const Vector2& origin, const Color& inColor, bool isLeftJustified)
 {
     Color fontColor = Color(inColor.red, inColor.green, inColor.blue, inColor.alpha);
     float fgWidth = CAM_WIDTH / 60;
@@ -403,5 +335,5 @@ void MainRenderer::renderText(const std::string& inStr, const Vector2& origin, c
     ss << inStr;
     std::string text = ss.str();
     
-    m_font->renderText(*m_spriteBatcher, text, origin.getX(), origin.getY(), fgWidth, fgHeight, fontColor, true, false);
+    m_font->renderText(*m_spriteBatcher, text, origin.getX(), origin.getY(), fgWidth, fgHeight, fontColor, !isLeftJustified, false);
 }

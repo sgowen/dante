@@ -103,8 +103,9 @@ void Server::update(float deltaTime)
 void Server::handleNewClient(ClientProxy* inClientProxy)
 {
     int playerId = inClientProxy->getPlayerId();
+    std::string playerName = inClientProxy->getName();
     
-    spawnRobotForPlayer(playerId);
+    spawnRobotForPlayer(playerId, playerName);
     
     if (NG_SERVER->getNumClientsConnected() == 1)
     {
@@ -128,10 +129,11 @@ void Server::handleLostClient(ClientProxy* inClientProxy)
     delete inClientProxy;
 }
 
-void Server::spawnRobotForPlayer(int inPlayerId)
+void Server::spawnRobotForPlayer(int inPlayerId, std::string inPlayerName)
 {
     Robot* robot = static_cast<Robot*>(FWInstanceManager::getServerEntityRegistry()->createEntity(NETWORK_TYPE_Robot));
     robot->setPlayerId(inPlayerId);
+    robot->setPlayerName(inPlayerName);
     robot->setPosition(Vector2(8.f - static_cast<float>(inPlayerId), 7.0f));
     
     static Color Red(1.0f, 0.0f, 0.0f, 1);

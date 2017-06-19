@@ -14,7 +14,7 @@
 #include <string>
 
 class Vector2;
-struct Color;
+class Color;
 
 class OutputMemoryBitStream
 {

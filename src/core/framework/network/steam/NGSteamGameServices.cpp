@@ -319,6 +319,20 @@ void NGSteamGameServices::onGameJoinRequested(GameRichPresenceJoinRequested_t *p
     connectToServerWithAddress(pchServerAddress);
 }
 
+void NGSteamGameServices::onIPCFailure(IPCFailure_t *failure)
+{
+    LOG("Steam IPC Failure, shutting down");
+    
+    m_iStatus = STEAM_IPC_FAILURE;
+}
+
+void NGSteamGameServices::onSteamShutdown(SteamShutdown_t *callback)
+{
+    LOG("Steam shutdown request, shutting down");
+    
+    m_iStatus = STEAM_SHUTDOWN;
+}
+
 NGSteamGameServices::NGSteamGameServices(const char* inGameDir) :
 m_gameDir(inGameDir),
 m_unServerIP(0),

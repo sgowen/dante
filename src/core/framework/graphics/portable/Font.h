@@ -14,7 +14,7 @@
 
 class SpriteBatcher;
 class TextureRegion;
-struct Color;
+class Color;
 
 class Font
 {

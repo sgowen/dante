@@ -11,7 +11,7 @@
 
 class Line;
 class GpuProgramWrapper;
-struct Color;
+class Color;
 
 class LineBatcher
 {

@@ -96,18 +96,6 @@ void NGSteamClientHelper::onSteamServerConnectFailure(SteamServerConnectFailure_
     LOG("onSteamServerConnectFailure: %d", callback->m_eResult);
 }
 
-void NGSteamClientHelper::onGameOverlayActivated(GameOverlayActivated_t *callback)
-{
-    if (callback->m_bActive)
-    {
-        LOG("Steam overlay now active");
-    }
-    else
-    {
-        LOG("Steam overlay now inactive");
-    }
-}
-
 void NGSteamClientHelper::onP2PSessionConnectFail(P2PSessionConnectFail_t *pCallback)
 {
     if (pCallback->m_steamIDRemote == m_serverSteamAddress->getSteamID())
@@ -115,31 +103,5 @@ void NGSteamClientHelper::onP2PSessionConnectFail(P2PSessionConnectFail_t *pCall
         // failed, error out
         LOG("Failed to make P2P connection, quiting server");
         onReceiveServerExiting();
-    }
-}
-
-void NGSteamClientHelper::onIPCFailure(IPCFailure_t *failure)
-{
-    static bool bExiting = false;
-    if (!bExiting)
-    {
-        LOG("Steam IPC Failure, shutting down");
-        
-        // TODO, exit back to main menu
-        
-        bExiting = true;
-    }
-}
-
-void NGSteamClientHelper::onSteamShutdown(SteamShutdown_t *callback)
-{
-    static bool bExiting = false;
-    if (!bExiting)
-    {
-        LOG("Steam shutdown request, shutting down");
-        
-        // TODO, exit back to main menu
-        
-        bExiting = true;
     }
 }

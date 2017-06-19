@@ -16,6 +16,7 @@
 #include "RTTI.h"
 
 #include <stdint.h>
+#include <string>
 
 class IInputState;
 class Move;
@@ -31,10 +32,10 @@ public:
     {
         ROBT_Pose = 1 << 0,
         ROBT_Color = 1 << 1,
-        ROBT_PlayerId = 1 << 2,
+        ROBT_PlayerInfo = 1 << 2,
         ROBT_Health = 1 << 3,
         
-        ROBT_AllState = ROBT_Pose | ROBT_Color | ROBT_PlayerId | ROBT_Health
+        ROBT_AllState = ROBT_Pose | ROBT_Color | ROBT_PlayerInfo | ROBT_Health
     };
     
     static Entity* staticCreateClient();
@@ -56,6 +57,10 @@ public:
     void setPlayerId(uint32_t inPlayerId);
     
     uint32_t getPlayerId() const;
+    
+    void setPlayerName(std::string playerName);
+    
+    std::string& getPlayerName();
     
     int getHealth();
     
@@ -89,6 +94,7 @@ private:
     bool m_isJumping;
     bool m_isSprinting;
     
+    std::string m_playerName;
     uint32_t m_iPlayerId;
     
     void processMove(const Move& inMove);
@@ -107,7 +113,7 @@ private:
     
     void doClientSidePredictionForRemoteRobot(uint32_t inReadState);
     
-    void interpolateClientSidePrediction(float& inOldStateTime, Vector2& inOldAcceleration, Vector2& inOldVelocity, Vector2& inOldPos);
+    void interpolateClientSidePrediction(Vector2& inOldAcceleration, Vector2& inOldVelocity, Vector2& inOldPos);
     
     void interpolateVectorsIfNecessary(Vector2& inA, Vector2& inB, float& syncTracker, const char* vectorType);
     

@@ -21,7 +21,7 @@ class IRendererHelper;
 class GpuProgramWrapper;
 class Entity;
 class TextureRegion;
-struct Color;
+class Color;
 class NGRect;
 class TextureWrapper;
 

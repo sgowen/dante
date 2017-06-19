@@ -26,6 +26,8 @@ class ISteamRemoteStorage;
 #define STEAM_INIT_FAIL_API_INIT -3
 #define STEAM_INIT_FAIL_LOGGED_ON -4
 #define STEAM_INIT_FAIL_CONTROLLER_INIT -5
+#define STEAM_IPC_FAILURE -6
+#define STEAM_SHUTDOWN -7
 
 class NGSteamGameServices : public ISteamMatchmakingServerListResponse
 {
@@ -119,6 +121,8 @@ private:
     void refreshSteamCloudFileStats();
     
     STEAM_CALLBACK(NGSteamGameServices, onGameJoinRequested, GameRichPresenceJoinRequested_t);
+    STEAM_CALLBACK(NGSteamGameServices, onIPCFailure, IPCFailure_t);
+    STEAM_CALLBACK(NGSteamGameServices, onSteamShutdown, SteamShutdown_t);
     
     // ctor, copy ctor, and assignment should be private in a Singleton
     NGSteamGameServices(const char* inGameDir);

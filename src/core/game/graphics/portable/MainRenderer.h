@@ -47,7 +47,7 @@ private:
     
     void renderJoiningServerText();
     
-    void renderText(const std::string& inStr, const Vector2& origin, const Color& inColor);
+    void renderText(const std::string& inStr, const Vector2& origin, const Color& inColor, bool isLeftJustified = false);
 };
 
 #endif /* defined(__dante__MainRenderer__) */

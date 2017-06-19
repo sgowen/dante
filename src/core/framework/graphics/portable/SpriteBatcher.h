@@ -12,7 +12,7 @@
 struct GpuTextureWrapper;
 class GpuProgramWrapper;
 class TextureRegion;
-struct Color;
+class Color;
 
 class SpriteBatcher
 {

@@ -130,7 +130,6 @@ uint32_t Robot::getAllStateMask() const
 
 void Robot::read(InputMemoryBitStream& inInputStream)
 {
-    float oldStateTime = m_fStateTime;
     Vector2 oldAcceleration = m_acceleration;
     Vector2 oldVelocity = m_velocity;
     Vector2 oldPosition = m_position;
@@ -145,7 +144,8 @@ void Robot::read(InputMemoryBitStream& inInputStream)
     if (stateBit)
     {
         inInputStream.read(m_iPlayerId);
-        readState |= ROBT_PlayerId;
+        inInputStream.read(m_playerName);
+        readState |= ROBT_PlayerInfo;
     }
     
     inInputStream.read(stateBit);
@@ -191,9 +191,9 @@ void Robot::read(InputMemoryBitStream& inInputStream)
         doClientSidePredictionForLocalRobot(readState);
         
         // if this is a create packet, don't interpolate
-        if ((readState & ROBT_PlayerId) == 0)
+        if ((readState & ROBT_PlayerInfo) == 0)
         {
-            interpolateClientSidePrediction(oldStateTime, oldAcceleration, oldVelocity, oldPosition);
+            interpolateClientSidePrediction(oldAcceleration, oldVelocity, oldPosition);
         }
     }
     else
@@ -201,7 +201,7 @@ void Robot::read(InputMemoryBitStream& inInputStream)
         doClientSidePredictionForRemoteRobot(readState);
         
         // if this is a create packet, don't interpolate
-        if ((readState & ROBT_PlayerId) == 0)
+        if ((readState & ROBT_PlayerInfo) == 0)
         {
             interpolateVectorsIfNecessary(oldPosition, getPosition(), m_fTimePositionBecameOutOfSync, "remote position");
         }
@@ -222,12 +222,13 @@ uint32_t Robot::write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtySta
 {
     uint32_t writtenState = 0;
     
-    if (inDirtyState & ROBT_PlayerId)
+    if (inDirtyState & ROBT_PlayerInfo)
     {
         inOutputStream.write((bool)true);
         inOutputStream.write(m_iPlayerId);
+        inOutputStream.write(m_playerName);
         
-        writtenState |= ROBT_PlayerId;
+        writtenState |= ROBT_PlayerInfo;
     }
     else
     {
@@ -318,6 +319,16 @@ void Robot::setPlayerId(uint32_t inPlayerId)
 uint32_t Robot::getPlayerId() const
 {
     return m_iPlayerId;
+}
+
+void Robot::setPlayerName(std::string playerName)
+{
+    m_playerName = playerName;
+}
+
+std::string& Robot::getPlayerName()
+{
+    return m_playerName;
 }
 
 int Robot::getHealth()
@@ -578,7 +589,7 @@ void Robot::doClientSidePredictionForRemoteRobot(uint32_t inReadState)
     }
 }
 
-void Robot::interpolateClientSidePrediction(float& inOldStateTime, Vector2& inOldAcceleration, Vector2& inOldVelocity, Vector2& inOldPos)
+void Robot::interpolateClientSidePrediction(Vector2& inOldAcceleration, Vector2& inOldVelocity, Vector2& inOldPos)
 {
     interpolateVectorsIfNecessary(inOldAcceleration, getAcceleration(), m_fTimeAccelerationBecameOutOfSync, "acceleration");
     interpolateVectorsIfNecessary(inOldVelocity, getVelocity(), m_fTimeVelocityBecameOutOfSync, "velocity");

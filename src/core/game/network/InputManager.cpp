@@ -174,6 +174,11 @@ void InputManager::update()
         
         std::string s = ss.str();
         m_liveInput += s;
+        if (m_liveInput.length() > 16)
+        {
+            int sub = m_liveInput.length() - 16;
+            m_liveInput.erase(m_liveInput.end() - sub, m_liveInput.end());
+        }
     }
     else
     {

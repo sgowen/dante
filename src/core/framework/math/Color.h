@@ -9,22 +9,19 @@
 #ifndef __noctisgames__Color__
 #define __noctisgames__Color__
 
-struct Color
+class Color
 {
+public:
+    static Color BLACK;
+    
     float red;
     float green;
     float blue;
     float alpha;
 
-	Color(float redIn, float greenIn, float blueIn, float alphaIn) : red(redIn), green(greenIn), blue(blueIn), alpha(alphaIn)
-	{
-		// Empty
-	}
+    Color(float redIn, float greenIn, float blueIn, float alphaIn);
     
-    Color() : red(0), green(0), blue(0), alpha(0)
-    {
-        // Empty
-    }
+    Color();
 };
 
 #endif /* defined(__noctisgames__Color__) */

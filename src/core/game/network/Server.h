@@ -9,6 +9,8 @@
 #ifndef __noctisgames__Server__
 #define __noctisgames__Server__
 
+#include <string>
+
 class ClientProxy;
 class Entity;
 class Robot;
@@ -43,7 +45,7 @@ private:
     
     void handleLostClient(ClientProxy* inClientProxy);
     
-    void spawnRobotForPlayer(int inPlayerId);
+    void spawnRobotForPlayer(int inPlayerId, std::string inPlayerName);
     
     void respawnEnemiesIfNecessary();
     

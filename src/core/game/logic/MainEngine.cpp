@@ -156,6 +156,24 @@ void MainEngine::update(float deltaTime)
             }
         }
         
+        if (NG_STEAM_GAME_SERVICES)
+        {
+            if (NG_STEAM_GAME_SERVICES->getStatus() == STEAM_INIT_SUCCESS)
+            {
+                if (NG_STEAM_GAME_SERVICES->isRequestingToJoinServer())
+                {
+                    leaveServer();
+                    m_serverSteamID = NG_STEAM_GAME_SERVICES->getServerToJoinSteamID();
+                    joinServer();
+                }
+            }
+            else
+            {
+                leaveServer();
+                deactivateSteam();
+            }
+        }
+        
         handleNonMoveInput();
     }
     
@@ -170,7 +188,6 @@ void MainEngine::render()
     m_renderer->beginFrame();
     
     m_renderer->renderWorld(m_iEngineState);
-//    m_renderer->renderWorld(NG_CLIENT ? 5 : Server::getInstance() ? (m_isSteam ? 3 : InputManager::getInstance()->isLiveMode() ? 4 : 1) : InputManager::getInstance()->isLiveMode() ? (m_serverIPAddress.length() > 0 ? 4 : 2) : 0);
     
     m_renderer->renderToScreen();
     
@@ -277,8 +294,11 @@ void MainEngine::handleNonMoveInput()
         }
         else if (inputState->getMenuState() == MENU_STATE_JOIN_LOCAL_SERVER)
         {
-            m_iEngineState = MAIN_ENGINE_STATE_MAIN_MENU_JOINING_LOCAL_SERVER_BY_IP;
-            InputManager::getInstance()->setLiveMode(true);
+            if (!m_isSteam)
+            {
+                m_iEngineState = MAIN_ENGINE_STATE_MAIN_MENU_JOINING_LOCAL_SERVER_BY_IP;
+                InputManager::getInstance()->setLiveMode(true);
+            }
         }
         else if (inputState->getMenuState() == MENU_STATE_STEAM_REFRESH_LAN_SERVERS)
         {
@@ -383,14 +403,14 @@ void MainEngine::leaveServer()
         FWInstanceManager::getClientEntityManager()->reset();
     }
     
-    InputManager::getInstance()->setConnected(NG_CLIENT);
-    
     if (Server::getInstance())
     {
         Server::destroy();
     }
     
     m_iEngineState = m_isSteam ? MAIN_ENGINE_STATE_MAIN_MENU_STEAM_ON : MAIN_ENGINE_STATE_MAIN_MENU_STEAM_OFF;
+    
+    InputManager::getInstance()->setConnected(false);
 }
 
 RTTI_IMPL(MainEngine, IEngine);
