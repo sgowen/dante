@@ -91,6 +91,7 @@ MainEngine::~MainEngine()
     delete m_renderer;
     
     disconnect();
+	deactivateSteam();
 }
 
 void MainEngine::createDeviceDependentResources()
