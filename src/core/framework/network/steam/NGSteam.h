@@ -53,8 +53,4 @@ typedef unsigned char uint8;
 #define Steamworks_SelfCheck()
 #endif
 
-//// Network ////
-
-#define NETWORK_PACKET_TYPE_STEAM_CLIENT_INITIATE_CONNECTION 'SCIC'
-
 #endif /* defined(__noctisgames__NGSteam__) */

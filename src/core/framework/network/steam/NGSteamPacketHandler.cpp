@@ -63,8 +63,7 @@ void NGSteamPacketHandler::readIncomingPacketsIntoQueue()
     
     ISteamNetworking* steamNetworking = m_isServer ? SteamGameServerNetworking() : SteamNetworking();
     
-    while (SteamNetworking()->IsP2PPacketAvailable(&incomingSize) &&
-          receivedPackedCount < NETWORK_MAX_NUM_PACKETS_PER_FRAME)
+    while (steamNetworking->IsP2PPacketAvailable(&incomingSize) && receivedPackedCount < NETWORK_MAX_NUM_PACKETS_PER_FRAME)
     {
         if (incomingSize <= packetSize)
         {
@@ -82,7 +81,7 @@ void NGSteamPacketHandler::readIncomingPacketsIntoQueue()
                     //this doesn't sim jitter, for that we would need to.....
                     float simulatedReceivedTime = Timing::getInstance()->getFrameStartTime();
                     
-                    m_packetQueue.emplace(simulatedReceivedTime, inputStream, fromId);
+                    m_packetQueue.emplace(ReceivedPacket(simulatedReceivedTime, inputStream, fromId));
                 }
             }
         }

@@ -84,6 +84,18 @@ void NetworkManagerClient::sendOutgoingPackets()
             updateSendingInputPacket();
             break;
         case NCS_Uninitialized:
+        {
+            int clientHelperState = m_clientHelper->handleUninitialized();
+            if (clientHelperState == CLIENT_READY_TO_SAY_HELLO)
+            {
+                m_state = NCS_SayingHello;
+            }
+            else if (clientHelperState == CLIENT_AUTH_FAILED)
+            {
+                m_state = NCS_Disconnected;
+            }
+        }
+            break;
         case NCS_Disconnected:
             break;
     }
@@ -126,7 +138,7 @@ void NetworkManagerClient::processPacket(InputMemoryBitStream& inInputStream, IM
     uint32_t packetType;
     inInputStream.read(packetType);
     
-    switch(packetType)
+    switch (packetType)
     {
         case NETWORK_PACKET_TYPE_WELCOME:
             handleWelcomePacket(inInputStream);
@@ -136,6 +148,9 @@ void NetworkManagerClient::processPacket(InputMemoryBitStream& inInputStream, IM
             {
                 handleStatePacket(inInputStream);
             }
+            break;
+        default:
+            m_clientHelper->processSpecialPacket(packetType, inInputStream, inFromAddress);
             break;
     }
 }
@@ -329,7 +344,7 @@ m_removeProcessedMovesFunc(inRemoveProcessedMovesFunc),
 m_getMoveListFunc(inGetMoveListFunc),
 m_replicationManagerClient(new ReplicationManagerClient()),
 m_avgRoundTripTime(new WeightedTimedMovingAverage(1.f)),
-m_state(NCS_SayingHello),
+m_state(NCS_Uninitialized),
 m_deliveryNotificationManager(new DeliveryNotificationManager(true, false)),
 m_fTimeOfLastHello(0.0f),
 m_fTimeOfLastInputPacket(0.0f),

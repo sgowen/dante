@@ -18,6 +18,8 @@ class NGSteamAddress : public IMachineAddress
 public:
     NGSteamAddress(CSteamID steamID);
     
+    NGSteamAddress();
+    
     virtual ~NGSteamAddress();
     
     virtual IMachineAddress* createCopy();
@@ -25,6 +27,8 @@ public:
     virtual size_t getHash() const;
     
     virtual std::string toString() const;
+    
+    void setSteamID(CSteamID steamID);
     
     CSteamID& getSteamID();
     

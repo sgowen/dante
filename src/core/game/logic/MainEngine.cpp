@@ -335,7 +335,7 @@ void MainEngine::activateSteam()
 {
     if (!NGSteamGameServices::getInstance())
     {
-        NGSteamGameServices::create("projectdante");
+        NGSteamGameServices::create(STEAM_GAME_DIR);
     }
     
     m_isSteam = NG_STEAM_GAME_SERVICES->getStatus() == STEAM_INIT_SUCCESS;

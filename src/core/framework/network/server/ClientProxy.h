@@ -44,10 +44,6 @@ public:
     
     bool isLastMoveTimestampDirty() const;
     
-    void setAuthorized(bool isAuthorized);
-    
-    bool isAuthorized() const;
-    
 private:
     DeliveryNotificationManager	m_deliveryNotificationManager;
     ReplicationManagerServer m_replicationManagerServer;
@@ -57,7 +53,6 @@ private:
     float m_fLastPacketFromClientTime;
     MoveList m_unprocessedMoveList;
     bool m_isLastMoveTimestampDirty;
-    bool m_isAuthorized;
 };
 
 #endif /* defined(__noctisgames__ClientProxy__) */

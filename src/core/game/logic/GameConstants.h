@@ -64,6 +64,7 @@
 #define NETWORK_TYPE_SpacePirate 'SPCP'
 
 //// Steam ////
+#define STEAM_GAME_DIR "projectdante"
 #define STEAM_PRODUCT_NAME "Project Dante"
 #define STEAM_PRODUCT_DESC "A 4 Player Co-Op Dungeon Crawler set in a Grim Wasteland"
 

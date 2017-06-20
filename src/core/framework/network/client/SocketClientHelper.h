@@ -22,6 +22,10 @@ public:
     
     virtual ~SocketClientHelper();
     
+    virtual void processSpecialPacket(uint32_t packetType, InputMemoryBitStream& inInputStream, IMachineAddress* inFromAddress);
+    
+    virtual int handleUninitialized();
+    
     virtual void sendPacket(const OutputMemoryBitStream& inOutputStream);
     
     virtual std::string& getName();

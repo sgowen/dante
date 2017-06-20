@@ -9,6 +9,7 @@
 #ifndef __noctisgames__INetworkHelper__
 #define __noctisgames__INetworkHelper__
 
+class InputMemoryBitStream;
 class OutputMemoryBitStream;
 class IMachineAddress;
 class WeightedTimedMovingAverage;
@@ -20,6 +21,8 @@ public:
     INetworkHelper(IPacketHandler* packetHandler);
     
     virtual ~INetworkHelper();
+    
+    virtual void processSpecialPacket(uint32_t packetType, InputMemoryBitStream& inInputStream, IMachineAddress* inFromAddress) = 0;
     
     virtual void processIncomingPackets();
     

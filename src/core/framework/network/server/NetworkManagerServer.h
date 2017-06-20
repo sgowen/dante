@@ -22,6 +22,10 @@ class Entity;
 
 #define NG_SERVER (NetworkManagerServer::getInstance())
 
+#define NG_SERVER_CALLBACKS NetworkManagerServer::staticProcessPacket, NetworkManagerServer::staticHandleNoResponse, NetworkManagerServer::staticHandleConnectionReset
+
+#define NG_SERVER_STEAM_CALLBACKS NetworkManagerServer::staticProcessPacket, NetworkManagerServer::staticHandleNoResponse, NetworkManagerServer::staticHandleConnectionReset, NetworkManagerServer::staticGetClientProxy, NetworkManagerServer::staticHandleClientDisconnected
+
 typedef void (*HandleNewClientFunc)(ClientProxy* inClientProxy);
 typedef void (*HandleLostClientFunc)(ClientProxy* inClientProxy);
 typedef IInputState* (*InputStateCreationFunc)();
@@ -42,6 +46,8 @@ public:
     static void staticHandleConnectionReset(IMachineAddress* inFromAddress);
     
     static ClientProxy* staticGetClientProxy(int inPlayerId);
+    
+    static void staticHandleClientDisconnected(ClientProxy* inClientProxy);
     
     void processIncomingPackets();
     

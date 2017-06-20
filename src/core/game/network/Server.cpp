@@ -208,11 +208,11 @@ Server::Server(bool isSteam) : m_fStateTime(0), m_fFrameStateTime(0), m_fStateTi
     
     if (isSteam)
     {
-        NetworkManagerServer::create(new NGSteamServerHelper("projectdante", VERSION_STRING, STEAM_PRODUCT_NAME, STEAM_PRODUCT_DESC, SERVER_PORT, AUTHENTICATION_PORT, MASTER_SERVER_UPDATER_PORT, NetworkManagerServer::staticProcessPacket, NetworkManagerServer::staticHandleNoResponse, NetworkManagerServer::staticHandleConnectionReset, NetworkManagerServer::staticGetClientProxy), Server::staticHandleNewClient, Server::staticHandleLostClient, PooledObjectsManager::borrowInputState);
+        NetworkManagerServer::create(new NGSteamServerHelper(STEAM_GAME_DIR, VERSION_STRING, STEAM_PRODUCT_NAME, STEAM_PRODUCT_DESC, SERVER_PORT, AUTHENTICATION_PORT, MASTER_SERVER_UPDATER_PORT, NG_SERVER_STEAM_CALLBACKS), Server::staticHandleNewClient, Server::staticHandleLostClient, PooledObjectsManager::borrowInputState);
     }
     else
     {
-        NetworkManagerServer::create(new SocketServerHelper(9999, NetworkManagerServer::staticProcessPacket, NetworkManagerServer::staticHandleNoResponse, NetworkManagerServer::staticHandleConnectionReset), Server::staticHandleNewClient, Server::staticHandleLostClient, PooledObjectsManager::borrowInputState);
+        NetworkManagerServer::create(new SocketServerHelper(9999, NG_SERVER_CALLBACKS), Server::staticHandleNewClient, Server::staticHandleLostClient, PooledObjectsManager::borrowInputState);
     }
 }
 

@@ -11,8 +11,9 @@
 #include "SocketServerHelper.h"
 
 #include "SocketAddress.h"
-
 #include "SocketPacketHandler.h"
+#include "macros.h"
+#include "StringUtil.h"
 
 SocketServerHelper::SocketServerHelper(uint16_t inPort, ProcessPacketFunc processPacketFunc, HandleNoResponseFunc handleNoResponseFunc, HandleConnectionResetFunc handleConnectionResetFunc) : IServerHelper(new SocketPacketHandler(inPort, processPacketFunc, handleNoResponseFunc, handleConnectionResetFunc))
 {
@@ -22,6 +23,16 @@ SocketServerHelper::SocketServerHelper(uint16_t inPort, ProcessPacketFunc proces
 SocketServerHelper::~SocketServerHelper()
 {
     // Empty
+}
+
+void SocketServerHelper::processSpecialPacket(uint32_t packetType, InputMemoryBitStream& inInputStream, IMachineAddress* inFromAddress)
+{
+    UNUSED(packetType);
+    UNUSED(inInputStream);
+    UNUSED(inFromAddress);
+    
+    // Socket based Networking doesn't have built-in auth, so there should never be special packets
+    LOG("Unknown packet type received from %s", inFromAddress->toString().c_str());
 }
 
 IMachineAddress* SocketServerHelper::getServerAddress()

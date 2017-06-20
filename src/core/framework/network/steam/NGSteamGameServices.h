@@ -124,6 +124,12 @@ private:
     
     void refreshSteamCloudFileStats();
     
+    void retrieveEncryptedAppTicket();
+    
+    // Called when SteamUser()->RequestEncryptedAppTicket() returns asynchronously
+    void onRequestEncryptedAppTicket(EncryptedAppTicketResponse_t *pEncryptedAppTicketResponse, bool bIOFailure);
+    CCallResult<NGSteamGameServices, EncryptedAppTicketResponse_t> m_SteamCallResultEncryptedAppTicket;
+    
     STEAM_CALLBACK(NGSteamGameServices, onGameJoinRequested, GameRichPresenceJoinRequested_t);
     STEAM_CALLBACK(NGSteamGameServices, onIPCFailure, IPCFailure_t);
     STEAM_CALLBACK(NGSteamGameServices, onSteamShutdown, SteamShutdown_t);

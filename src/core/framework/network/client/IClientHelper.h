@@ -13,12 +13,18 @@
 
 #include <string>
 
+#define CLIENT_NOT_READY_TO_SAY_HELLO 1
+#define CLIENT_READY_TO_SAY_HELLO 2
+#define CLIENT_AUTH_FAILED 3
+
 class IClientHelper : public INetworkHelper
 {
 public:
     IClientHelper(IPacketHandler* packetHandler);
     
     virtual ~IClientHelper();
+    
+    virtual int handleUninitialized() = 0;
     
     virtual void sendPacket(const OutputMemoryBitStream& inOutputStream) = 0;
     

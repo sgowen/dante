@@ -20,6 +20,8 @@ public:
     
     virtual ~SocketServerHelper();
     
+    virtual void processSpecialPacket(uint32_t packetType, InputMemoryBitStream& inInputStream, IMachineAddress* inFromAddress);
+    
     virtual IMachineAddress* getServerAddress();
     
     virtual bool isConnected();

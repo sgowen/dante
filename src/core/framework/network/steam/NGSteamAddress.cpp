@@ -17,6 +17,11 @@ NGSteamAddress::NGSteamAddress(CSteamID steamID) : IMachineAddress(), m_steamID(
     // Empty
 }
 
+NGSteamAddress::NGSteamAddress() : IMachineAddress(), m_steamID(CSteamID())
+{
+    // Empty
+}
+
 NGSteamAddress::~NGSteamAddress()
 {
     // Empty
@@ -35,6 +40,11 @@ size_t NGSteamAddress::getHash() const
 std::string NGSteamAddress::toString() const
 {
     return StringUtil::format("Steam ID %llu", m_steamID.ConvertToUint64());
+}
+
+void NGSteamAddress::setSteamID(CSteamID steamID)
+{
+    m_steamID = steamID;
 }
 
 CSteamID& NGSteamAddress::getSteamID()

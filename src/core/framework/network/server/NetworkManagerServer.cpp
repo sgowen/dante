@@ -73,6 +73,11 @@ ClientProxy* NetworkManagerServer::staticGetClientProxy(int inPlayerId)
     return NG_SERVER->getClientProxy(inPlayerId);
 }
 
+void NetworkManagerServer::staticHandleClientDisconnected(ClientProxy* inClientProxy)
+{
+    NG_SERVER->handleClientDisconnected(inClientProxy);
+}
+
 void NetworkManagerServer::processIncomingPackets()
 {
     m_serverHelper->processIncomingPackets();
@@ -87,7 +92,7 @@ void NetworkManagerServer::checkForDisconnects()
     {
         if (pair.second->getLastPacketFromClientTime() < minAllowedLastPacketFromClientTime)
         {
-            //can't remove from map while in iterator, so just remember for later...
+            // can't remove from map while in iterator, so just remember for later...
             clientsToDC.push_back(pair.second);
         }
     }
@@ -183,7 +188,7 @@ void NetworkManagerServer::processPacket(InputMemoryBitStream& inInputStream, IM
     if (it == m_addressHashToClientMap.end()
         && m_addressHashToClientMap.size() < MAX_NUM_PLAYERS_PER_SERVER)
     {
-        LOG("New Client %s", inFromAddress->toString().c_str());
+        LOG("New Client with %s", inFromAddress->toString().c_str());
         
         //didn't find one? it's a new cilent..is the a HELO? if so, create a client proxy...
         handlePacketFromNewClient(inInputStream, inFromAddress);
@@ -245,8 +250,7 @@ void NetworkManagerServer::handlePacketFromNewClient(InputMemoryBitStream& inInp
     }
     else
     {
-        //bad incoming packet from unknown client- we're under attack!!
-        LOG("Bad incoming packet from unknown client at %s", inFromAddress->toString().c_str());
+        m_serverHelper->processSpecialPacket(packetType, inInputStream, inFromAddress);
     }
 }
 
@@ -257,6 +261,7 @@ void NetworkManagerServer::processPacket(ClientProxy* inClientProxy, InputMemory
     
     uint32_t packetType;
     inInputStream.read(packetType);
+    
     switch (packetType)
     {
         case NETWORK_PACKET_TYPE_HELLO:
@@ -271,7 +276,7 @@ void NetworkManagerServer::processPacket(ClientProxy* inClientProxy, InputMemory
             }
             break;
         default:
-            LOG("Unknown packet type received from %s", inClientProxy->getMachineAddress()->toString().c_str());
+            m_serverHelper->processSpecialPacket(packetType, inInputStream, inClientProxy->getMachineAddress());
             break;
     }
 }

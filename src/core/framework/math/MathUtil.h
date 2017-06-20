@@ -12,6 +12,9 @@
 #include <math.h>
 #include <float.h>
 
+#define MAX(a, b) (((a) > (b)) ? (a) : (b))
+#define MIN(a, b) (((a) < (b)) ? (a) : (b))
+
 inline float clamp(float x, float upper, float lower)
 {
     return fminf(upper, fmaxf(x, lower));
