@@ -36,7 +36,7 @@ public:
     void endGame();
     void startAuthPlayer(int iSlot, CSteamID steamID);
     void registerPlayer(int iSlot, CSteamID steamID);
-    bool handleMessage(EMessage eMsg, InputMemoryBitStream& inInputStream);
+    bool handleMessage(uint32_t packetType, InputMemoryBitStream& inInputStream);
     void internalinitPlayer(int iSlot, CSteamID steamID, bool bStartAuthProcess);
 };
 
@@ -53,7 +53,7 @@ public:
 	void initPlayer(CSteamID steamID);
 	void startAuthPlayer();
 	bool isAuthOk();
-	bool handleMessage(EMessage eMsg, MsgP2PSendingTicket* msg);
+	bool handleMessage(MsgP2PSendingTicket* msg);
 
 	STEAM_CALLBACK(NGSteamP2PAuthPlayer, OnBeginAuthResponse, ValidateAuthTicketResponse_t, m_CallbackBeginAuthResponse);
     

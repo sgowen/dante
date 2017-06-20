@@ -13,6 +13,7 @@
 
 #include "IPacketHandler.h"
 #include "NGSteam.h"
+#include "FrameworkConstants.h"
 
 class NGSteamP2PAuth;
 class NGSteamAddress;
@@ -23,6 +24,8 @@ public:
     NGSteamClientHelper(CSteamID serverSteamID, ProcessPacketFunc processPacketFunc, HandleNoResponseFunc handleNoResponseFunc, HandleConnectionResetFunc handleConnectionResetFunc);
     
     virtual ~NGSteamClientHelper();
+    
+    virtual void processIncomingPackets();
     
     virtual void processSpecialPacket(uint32_t packetType, InputMemoryBitStream& inInputStream, IMachineAddress* inFromAddress);
     
@@ -40,6 +43,7 @@ private:
         k_EClientConnectedPendingAuthentication,		// We've established communication with the server, but it hasn't authed us yet
         k_EClientConnectedAndAuthenticated,				// Final phase, server has authed us, we are actually able to play on it
         k_EClientConnectionFailure,
+        k_EServerIsNotAuthorized,
         k_EServerShuttingDown
     };
     
@@ -48,6 +52,8 @@ private:
     NGSteamAddress* m_serverSteamAddress;
     std::string m_name;
     float m_fTimeOfLastMsgClientBeginAuthentication;
+    
+    CSteamID m_rgSteamIDPlayers[MAX_NUM_PLAYERS_PER_SERVER];
     
     // Server address data
     uint32 m_unServerIP;

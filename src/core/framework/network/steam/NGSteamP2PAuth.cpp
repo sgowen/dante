@@ -56,6 +56,7 @@ void NGSteamP2PAuth::endGame()
 		if (m_rgpP2PAuthPlayer[i])
 		{
 			m_rgpP2PAuthPlayer[i]->endGame();
+            
 			delete m_rgpP2PAuthPlayer[i];
 			m_rgpP2PAuthPlayer[i] = nullptr;
 		}
@@ -79,7 +80,7 @@ void NGSteamP2PAuth::internalinitPlayer(int iSlot, CSteamID steamID, bool bStart
 	{
 		if (m_rgpQueuedMessage[i] != NULL)
 		{
-			if (m_rgpP2PAuthPlayer[i]->handleMessage(k_EMsgP2PSendingTicket, m_rgpQueuedMessage[i]))
+			if (m_rgpP2PAuthPlayer[i]->handleMessage(m_rgpQueuedMessage[i]))
 			{
 				LOG("P2P:: Consumed queued message");
                 delete m_rgpQueuedMessage[i];
@@ -105,9 +106,9 @@ void NGSteamP2PAuth::startAuthPlayer(int iSlot, CSteamID steamID)
     }
 }
 
-bool NGSteamP2PAuth::handleMessage(EMessage eMsg, InputMemoryBitStream& inInputStream)
+bool NGSteamP2PAuth::handleMessage(uint32_t packetType, InputMemoryBitStream& inInputStream)
 {
-	switch (eMsg)
+	switch (packetType)
 	{
 		// message from another player providing his ticket
         case k_EMsgP2PSendingTicket:
@@ -129,7 +130,7 @@ bool NGSteamP2PAuth::handleMessage(EMessage eMsg, InputMemoryBitStream& inInputS
             {
                 if (m_rgpP2PAuthPlayer[i])
                 {
-                    if (m_rgpP2PAuthPlayer[i]->handleMessage(eMsg, msg))
+                    if (m_rgpP2PAuthPlayer[i]->handleMessage(msg))
                     {
                         return true; // message handled
                     }
@@ -290,38 +291,27 @@ void NGSteamP2PAuthPlayer::endGame()
     }
 }
 
-bool NGSteamP2PAuthPlayer::handleMessage(EMessage eMsg, MsgP2PSendingTicket* msg)
+bool NGSteamP2PAuthPlayer::handleMessage(MsgP2PSendingTicket* msg)
 {
-    switch (eMsg)
+    // message from another player providing his ticket
+    // is this message for me?
+    if (msg->getSteamID() != m_steamID.ConvertToUint64())
     {
-        case k_EMsgP2PSendingTicket:
-        {
-            // message from another player providing his ticket
-            // is this message for me?
-            if (msg->getSteamID() != m_steamID.ConvertToUint64())
-            {
-                return false;
-            }
-            
-            m_cubTicketHeGaveMe = msg->getTokenLen();
-            memcpy(m_rgubTicketHeGaveMe, msg->getTokenPtr(), m_cubTicketHeGaveMe);
-            m_eBeginAuthSessionResult = SteamUser()->BeginAuthSession(m_rgubTicketHeGaveMe, m_cubTicketHeGaveMe, m_steamID);
-            m_bSubmittedHisTicket = true;
-            char rgch[128];
-            sprintf(rgch, "P2P:: ReceivedTicket from account=%d \n", m_steamID.GetAccountID());
-            LOG(rgch);
-            if (!m_bSentTicket)
-            {
-                startAuthPlayer();
-            }
-            return true;
-        }
-        default:
-            LOG("P2P:: Received unknown message on our listen socket");
-            break;
+        return false;
     }
     
-    return false;
+    m_cubTicketHeGaveMe = msg->getTokenLen();
+    memcpy(m_rgubTicketHeGaveMe, msg->getTokenPtr(), m_cubTicketHeGaveMe);
+    m_eBeginAuthSessionResult = SteamUser()->BeginAuthSession(m_rgubTicketHeGaveMe, m_cubTicketHeGaveMe, m_steamID);
+    m_bSubmittedHisTicket = true;
+    char rgch[128];
+    sprintf(rgch, "P2P:: ReceivedTicket from account=%d \n", m_steamID.GetAccountID());
+    LOG(rgch);
+    if (!m_bSentTicket)
+    {
+        startAuthPlayer();
+    }
+    return true;
 }
 
 NGSteamP2PNetworkTransport::NGSteamP2PNetworkTransport(INetworkHelper* networkHelper) :

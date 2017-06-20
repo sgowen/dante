@@ -19,9 +19,11 @@
 #include "Timing.h"
 #include "OutputMemoryBitStream.h"
 #include "NGSteamGameServices.h"
+#include "NetworkManagerServer.h"
+#include "NGSteamServerHelper.h"
 
 NGSteamClientHelper::NGSteamClientHelper(CSteamID serverSteamID, ProcessPacketFunc processPacketFunc, HandleNoResponseFunc handleNoResponseFunc, HandleConnectionResetFunc handleConnectionResetFunc) : IClientHelper(new NGSteamPacketHandler(false, processPacketFunc, handleNoResponseFunc, handleConnectionResetFunc)),
-m_steamP2PAuth(nullptr),
+m_steamP2PAuth(new NGSteamP2PAuth(this)),
 m_eConnectedStatus(k_EClientNotConnected),
 m_serverSteamAddress(new NGSteamAddress(serverSteamID)),
 m_fTimeOfLastMsgClientBeginAuthentication(0.0f),
@@ -29,8 +31,6 @@ m_unServerIP(0),
 m_usServerPort(0),
 m_hAuthTicket(k_HAuthTicketInvalid)
 {
-    m_steamP2PAuth = new NGSteamP2PAuth(this);
-    
     m_name = std::string(SteamFriends()->GetFriendPersonaName(SteamUser()->GetSteamID()));
     
     LOG("Client %s is connecting to Game Server with Steam ID: %s", m_name.c_str(), m_serverSteamAddress->toString().c_str());
@@ -49,8 +49,10 @@ NGSteamClientHelper::~NGSteamClientHelper()
     packet.write(k_EMsgClientLeavingServer);
     sendPacket(packet);
     
-    // TODO, m_steamP2PAuth end game?
+    m_steamP2PAuth->endGame();
+    
     delete m_steamP2PAuth;
+    m_steamP2PAuth = nullptr;
     
     if (m_serverSteamAddress->getSteamID().IsValid())
     {
@@ -58,6 +60,88 @@ NGSteamClientHelper::~NGSteamClientHelper()
     }
     
     delete m_serverSteamAddress;
+}
+
+void NGSteamClientHelper::processIncomingPackets()
+{
+    INetworkHelper::processIncomingPackets();
+    
+    // TODO P2P Auth
+//    // has the player list changed?
+//    if (NG_SERVER)
+//    {
+//        // if i am the server owner i need to auth everyone who wants to play
+//        // assume i am in slot 0, so start at slot 1
+//        for (uint32 i = 0; i < MAX_NUM_PLAYERS_PER_SERVER; ++i)
+//        {
+//            CSteamID steamIDNew(pUpdateData->GetPlayerSteamID(i));
+//            if (steamIDNew == SteamUser()->GetSteamID())
+//            {
+//                LOG("Server player slot 0 is not server owner.");
+//            }
+//            else if (steamIDNew != m_rgSteamIDPlayers[i])
+//            {
+//                if (m_rgSteamIDPlayers[i].IsValid())
+//                {
+//                    m_steamP2PAuth->playerDisconnect(i);
+//                }
+//                if (steamIDNew.IsValid())
+//                {
+//                    m_steamP2PAuth->registerPlayer(i, steamIDNew);
+//                }
+//            }
+//        }
+//    }
+//    else
+//    {
+//        // i am just a client, i need to auth the game owner (slot 0)
+//        CSteamID steamIDNew(pUpdateData->GetPlayerSteamID(0));
+//        if (steamIDNew == SteamUser()->GetSteamID())
+//        {
+//            LOG("Server player slot 0 is not server owner.");
+//        }
+//        else if (steamIDNew != m_rgSteamIDPlayers[0])
+//        {
+//            if (m_rgSteamIDPlayers[0].IsValid())
+//            {
+//                LOG("Server player slot 0 has disconnected - but thats the server owner.");
+//                m_steamP2PAuth->playerDisconnect(0);
+//            }
+//            if (steamIDNew.IsValid())
+//            {
+//                m_steamP2PAuth->startAuthPlayer(0, steamIDNew);
+//            }
+//        }
+//    }
+//    
+//    if (NG_SERVER)
+//    {
+//        // Now if we are the owner of the game, lets make sure all of our players are legit.
+//        // if they are not, we tell the server to kick them off
+//        // Start at 1 to skip myself
+//        for (int i = 1; i < MAX_NUM_PLAYERS_PER_SERVER; i++)
+//        {
+//            if (m_steamP2PAuth->m_rgpP2PAuthPlayer[i] && !m_steamP2PAuth->m_rgpP2PAuthPlayer[i]->isAuthOk())
+//            {
+//                NGSteamServerHelper* helper = static_cast<NGSteamServerHelper*>(NG_SERVER->getServerHelper());
+//                helper->kickPlayerOffServer(m_steamP2PAuth->m_rgpP2PAuthPlayer[i]->m_steamID);
+//            }
+//        }
+//    }
+//    else
+//    {
+//        // If we are not the owner of the game, lets make sure the game owner is legit
+//        // if he is not, we leave the game
+//        if (m_steamP2PAuth->m_rgpP2PAuthPlayer[0])
+//        {
+//            if (!m_steamP2PAuth->m_rgpP2PAuthPlayer[0]->isAuthOk())
+//            {
+//                // leave the game
+//                m_eConnectedStatus = k_EServerIsNotAuthorized;
+//                updateState();
+//            }
+//        }
+//    }
 }
 
 void NGSteamClientHelper::processSpecialPacket(uint32_t packetType, InputMemoryBitStream& inInputStream, IMachineAddress* inFromAddress)
@@ -91,7 +175,10 @@ void NGSteamClientHelper::processSpecialPacket(uint32_t packetType, InputMemoryB
         case k_EMsgServerExiting:
             LOG("Server Shutting Down");
             m_eConnectedStatus = k_EServerShuttingDown;
+            
+            m_steamP2PAuth->endGame();
         default:
+            m_steamP2PAuth->handleMessage(packetType, inInputStream);
             break;
     }
     
@@ -189,5 +276,5 @@ void NGSteamClientHelper::updateRichPresenceConnectionInfo()
 
 void NGSteamClientHelper::updateState()
 {
-    m_iState = m_eConnectedStatus == k_EClientConnectedAndAuthenticated ? CLIENT_READY_TO_SAY_HELLO : (m_eConnectedStatus == k_EClientConnectionFailure || m_eConnectedStatus == k_EServerShuttingDown) ? CLIENT_AUTH_FAILED : CLIENT_NOT_READY_TO_SAY_HELLO;
+    m_iState = m_eConnectedStatus == k_EClientConnectedAndAuthenticated ? CLIENT_READY_TO_SAY_HELLO : (m_eConnectedStatus == k_EClientConnectionFailure || m_eConnectedStatus == k_EServerShuttingDown || m_eConnectedStatus == k_EServerIsNotAuthorized) ? CLIENT_AUTH_FAILED : CLIENT_NOT_READY_TO_SAY_HELLO;
 }
