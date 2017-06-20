@@ -46,6 +46,9 @@ NGSteamClientHelper::~NGSteamClientHelper()
     packet.write(k_EMsgClientLeavingServer);
     sendPacket(packet);
     
+    // TODO, m_steamP2PAuth end game?
+    delete m_steamP2PAuth;
+    
     if (m_serverSteamAddress->getSteamID().IsValid())
     {
         SteamNetworking()->CloseP2PSessionWithUser(m_serverSteamAddress->getSteamID());
