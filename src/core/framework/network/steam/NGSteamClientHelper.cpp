@@ -18,6 +18,7 @@
 #include "StringUtil.h"
 #include "Timing.h"
 #include "OutputMemoryBitStream.h"
+#include "NGSteamGameServices.h"
 
 NGSteamClientHelper::NGSteamClientHelper(CSteamID serverSteamID, ProcessPacketFunc processPacketFunc, HandleNoResponseFunc handleNoResponseFunc, HandleConnectionResetFunc handleConnectionResetFunc) : IClientHelper(new NGSteamPacketHandler(false, processPacketFunc, handleNoResponseFunc, handleConnectionResetFunc)),
 m_steamP2PAuth(nullptr),
@@ -33,6 +34,8 @@ m_hAuthTicket(k_HAuthTicketInvalid)
     m_name = std::string(SteamFriends()->GetFriendPersonaName(SteamUser()->GetSteamID()));
     
     LOG("Client %s is connecting to Game Server with Steam ID: %s", m_name.c_str(), m_serverSteamAddress->toString().c_str());
+    
+    NG_STEAM_GAME_SERVICES->onServerJoined();
 }
 
 NGSteamClientHelper::~NGSteamClientHelper()

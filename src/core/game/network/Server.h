@@ -28,10 +28,6 @@ public:
     
     static void staticHandleLostClient(ClientProxy* inClientProxy);
     
-    static void staticAddEntity(Entity* inEntity);
-    
-    static void staticRemoveEntity(Entity* inEntity);
-    
     void update(float deltaTime);
 
 private:

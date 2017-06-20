@@ -66,16 +66,6 @@ void Server::staticHandleLostClient(ClientProxy* inClientProxy)
     getInstance()->handleLostClient(inClientProxy);
 }
 
-void Server::staticAddEntity(Entity* inEntity)
-{
-    InstanceManager::getServerWorld()->addEntity(inEntity);
-}
-
-void Server::staticRemoveEntity(Entity* inEntity)
-{
-    InstanceManager::getServerWorld()->removeEntity(inEntity);
-}
-
 void Server::update(float deltaTime)
 {
     m_fStateTime += deltaTime;
@@ -198,9 +188,9 @@ void Server::respawnEnemiesIfNecessary()
 
 Server::Server(bool isSteam) : m_fStateTime(0), m_fFrameStateTime(0), m_fStateTimeNoEnemies(0)
 {
-    FWInstanceManager::getServerEntityManager()->init(Server::staticRemoveEntity);
+    FWInstanceManager::createServerEntityManager(InstanceManager::staticHandleEntityCreatedOnServer, InstanceManager::staticHandleEntityDeletedOnServer);
     
-    FWInstanceManager::getServerEntityRegistry()->init(Server::staticAddEntity);
+    InstanceManager::createServerWorld();
     
     FWInstanceManager::getServerEntityRegistry()->registerCreationFunction(NETWORK_TYPE_Robot, Robot::staticCreateServer);
     FWInstanceManager::getServerEntityRegistry()->registerCreationFunction(NETWORK_TYPE_Projectile, Projectile::staticCreateServer);
@@ -220,5 +210,7 @@ Server::~Server()
 {
     NetworkManagerServer::destroy();
     
-    FWInstanceManager::getServerEntityManager()->reset();
+    InstanceManager::destroyServerWorld();
+    
+    FWInstanceManager::destroyServerEntityManager();
 }

@@ -49,16 +49,6 @@
 #include "NGSteamGameServices.h"
 #include "MainEngineState.h"
 
-void MainEngine::staticAddEntity(Entity* inEntity)
-{
-    InstanceManager::getClientWorld()->addEntity(inEntity);
-}
-
-void MainEngine::staticRemoveEntity(Entity* inEntity)
-{
-    InstanceManager::getClientWorld()->removeEntity(inEntity);
-}
-
 MainEngine::MainEngine() : IEngine(),
 m_config(new JsonFile("dante.cfg")),
 m_renderer(new MainRenderer(MAX_BATCH_SIZE)),
@@ -67,11 +57,10 @@ m_fFrameStateTime(0),
 m_iEngineState(MAIN_ENGINE_STATE_MAIN_MENU_STEAM_OFF),
 m_isSteam(false)
 {
+    activateSteam();
+    
     m_config->load();
     
-    FWInstanceManager::getClientEntityManager()->init(MainEngine::staticRemoveEntity);
-    
-    FWInstanceManager::getClientEntityRegistry()->init(MainEngine::staticAddEntity);
     FWInstanceManager::getClientEntityRegistry()->registerCreationFunction(NETWORK_TYPE_Robot, Robot::staticCreateClient);
     FWInstanceManager::getClientEntityRegistry()->registerCreationFunction(NETWORK_TYPE_Projectile, Projectile::staticCreateClient);
     FWInstanceManager::getClientEntityRegistry()->registerCreationFunction(NETWORK_TYPE_SpacePirate, SpacePirate::staticCreateClient);
@@ -131,7 +120,7 @@ void MainEngine::update(float deltaTime)
     {
         Timing::getInstance()->updateManual(m_fStateTime, FRAME_RATE);
         
-        handleGameServices();
+        handleSteamGameServices();
         
         if (NG_CLIENT)
         {
@@ -146,7 +135,10 @@ void MainEngine::update(float deltaTime)
         {
             m_fFrameStateTime -= FRAME_RATE;
             
-            InstanceManager::getClientWorld()->update();
+            if (InstanceManager::getClientWorld())
+            {
+                InstanceManager::getClientWorld()->update();
+            }
         }
         
         if (NG_CLIENT)
@@ -177,29 +169,6 @@ void MainEngine::render()
     m_renderer->renderToScreen();
     
     m_renderer->endFrame();
-}
-
-void MainEngine::handleGameServices()
-{
-    if (NG_STEAM_GAME_SERVICES)
-    {
-        NG_STEAM_GAME_SERVICES->update(NG_SERVER ? true : false);
-        
-        if (NG_STEAM_GAME_SERVICES->getStatus() == STEAM_INIT_SUCCESS)
-        {
-            if (NG_STEAM_GAME_SERVICES->isRequestingToJoinServer())
-            {
-                disconnect();
-                m_serverSteamID = NG_STEAM_GAME_SERVICES->getServerToJoinSteamID();
-                joinServer();
-            }
-        }
-        else
-        {
-            disconnect();
-            deactivateSteam();
-        }
-    }
 }
 
 void MainEngine::handleNonMoveInput()
@@ -348,6 +317,29 @@ void MainEngine::activateSteam()
     m_iEngineState = m_isSteam ? MAIN_ENGINE_STATE_MAIN_MENU_STEAM_ON : MAIN_ENGINE_STATE_MAIN_MENU_STEAM_OFF;
 }
 
+void MainEngine::handleSteamGameServices()
+{
+    if (NG_STEAM_GAME_SERVICES)
+    {
+        NG_STEAM_GAME_SERVICES->update(NG_SERVER ? true : false);
+        
+        if (NG_STEAM_GAME_SERVICES->getStatus() == STEAM_INIT_SUCCESS)
+        {
+            if (NG_STEAM_GAME_SERVICES->isRequestingToJoinServer())
+            {
+                disconnect();
+                m_serverSteamID = NG_STEAM_GAME_SERVICES->getServerToJoinSteamID();
+                joinServer();
+            }
+        }
+        else
+        {
+            disconnect();
+            deactivateSteam();
+        }
+    }
+}
+
 void MainEngine::deactivateSteam()
 {
     if (NGSteamGameServices::getInstance())
@@ -378,22 +370,17 @@ void MainEngine::joinServer()
 {
     m_iEngineState = MAIN_ENGINE_STEAM_JOINING_SERVER;
     
+    FWInstanceManager::createClientEntityManager(InstanceManager::staticHandleEntityCreatedOnClient, InstanceManager::staticHandleEntityDeletedOnClient);
+    
+    InstanceManager::createClientWorld();
+    
     if (m_isSteam)
     {
-        NetworkManagerClient::create(new NGSteamClientHelper(m_serverSteamID, NetworkManagerClient::staticProcessPacket, NetworkManagerClient::staticHandleNoResponse, NetworkManagerClient::staticHandleConnectionReset), FRAME_RATE, InputManager::staticRemoveProcessedMoves, InputManager::staticGetMoveList);
-        
-        NG_STEAM_GAME_SERVICES->onServerJoined();
+        NetworkManagerClient::create(new NGSteamClientHelper(m_serverSteamID, NG_CLIENT_CALLBACKS), FRAME_RATE, INPUT_MANAGER_CALLBACKS);
     }
     else
     {
-        // This allows us to run both a debug and a release socket-based client on the same machine
-#if defined(DEBUG) || defined(_DEBUG)
-        uint16_t port = 1339;
-#else
-        uint16_t port = 1337;
-#endif
-        
-        NetworkManagerClient::create(new SocketClientHelper(m_serverIPAddress, m_name, port, NetworkManagerClient::staticProcessPacket, NetworkManagerClient::staticHandleNoResponse, NetworkManagerClient::staticHandleConnectionReset), FRAME_RATE, InputManager::staticRemoveProcessedMoves, InputManager::staticGetMoveList);
+        NetworkManagerClient::create(new SocketClientHelper(m_serverIPAddress, m_name, CLIENT_PORT, NG_CLIENT_CALLBACKS), FRAME_RATE, INPUT_MANAGER_CALLBACKS);
         
         m_serverIPAddress.clear();
         m_name.clear();
@@ -408,7 +395,9 @@ void MainEngine::disconnect()
     {
         NetworkManagerClient::destroy();
         
-        FWInstanceManager::getClientEntityManager()->reset();
+        InstanceManager::destroyClientWorld();
+        
+        FWInstanceManager::destroyClientEntityManager();
     }
     
     if (Server::getInstance())

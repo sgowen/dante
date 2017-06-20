@@ -15,11 +15,6 @@ EntityRegistry::EntityRegistry()
     // Empty
 }
 
-void EntityRegistry::init(HandleEntityCreatedFunc handleEntityCreatedFunc)
-{
-    m_handleEntityCreatedFunc = handleEntityCreatedFunc;
-}
-
 void EntityRegistry::registerCreationFunction(uint32_t inFourCCName, EntityCreationFunc inCreationFunction)
 {
     m_nameToEntityCreationFunctionMap[inFourCCName] = inCreationFunction;
@@ -29,9 +24,5 @@ Entity* EntityRegistry::createEntity(uint32_t inFourCCName)
 {
     EntityCreationFunc creationFunc = m_nameToEntityCreationFunctionMap[inFourCCName];
     
-    Entity* entity = creationFunc();
-    
-    m_handleEntityCreatedFunc(entity);
-    
-    return entity;
+    return creationFunc();
 }

@@ -13,21 +13,21 @@
 #include "Entity.h"
 
 #include "StringUtil.h"
+#include "NGSTDUtil.h"
 
 #include <cassert>
 
-EntityManager::EntityManager() : m_isInitialized(false)
+EntityManager::EntityManager(HandleEntityCreatedFunc handleEntityCreatedFunc, HandleEntityDeletionFunc handleEntityDeletionFunc) : m_handleEntityCreatedFunc(handleEntityCreatedFunc), m_handleEntityDeletionFunc(handleEntityDeletionFunc)
 {
     // Empty
 }
 
-void EntityManager::init(HandleEntityDeletionFunc handleEntityDeletionFunc)
+EntityManager::~EntityManager()
 {
-    m_handleEntityDeletion = handleEntityDeletionFunc;
-    m_isInitialized = true;
+    NGSTDUtil::cleanUpMapOfPointers(m_entityMap);
 }
 
-Entity* EntityManager::getEntityFromID(int id)const
+Entity* EntityManager::getEntityByID(int id)const
 {
     auto q = m_entityMap.find(id);
     
@@ -42,34 +42,18 @@ Entity* EntityManager::getEntityFromID(int id)const
 void EntityManager::registerEntity(Entity* inEntity)
 {
     m_entityMap.insert(std::make_pair(inEntity->getID(), inEntity));
+    
+    m_handleEntityCreatedFunc(inEntity);
 }
 
 void EntityManager::removeEntity(Entity* inEntity)
 {
-    if (m_isInitialized)
-    {
-        m_handleEntityDeletion(inEntity);
-    }
-    
     m_entityMap.erase(inEntity->getID());
+    
+    m_handleEntityDeletionFunc(inEntity);
     
     delete inEntity;
     inEntity = nullptr;
-}
-
-void EntityManager::reset()
-{
-    for (std::unordered_map<int, Entity*>::iterator i = m_entityMap.begin(); i != m_entityMap.end(); )
-    {
-        if (m_isInitialized)
-        {
-            m_handleEntityDeletion(i->second);
-        }
-        
-        delete i->second;
-        
-        i = m_entityMap.erase(i);
-    }
 }
 
 std::unordered_map<int, Entity*>& EntityManager::getMap()

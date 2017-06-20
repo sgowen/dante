@@ -16,6 +16,8 @@
 class InputState;
 class Move;
 
+#define INPUT_MANAGER_CALLBACKS InputManager::staticRemoveProcessedMoves, InputManager::staticGetMoveList
+
 class InputManager
 {
 public:

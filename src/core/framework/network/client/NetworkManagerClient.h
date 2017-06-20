@@ -26,6 +26,8 @@ class SocketAddress;
 
 #define NG_CLIENT (NetworkManagerClient::getInstance())
 
+#define NG_CLIENT_CALLBACKS NetworkManagerClient::staticProcessPacket, NetworkManagerClient::staticHandleNoResponse, NetworkManagerClient::staticHandleConnectionReset
+
 typedef void (*RemoveProcessedMovesFunc)(float lastMoveProcessedByServerTimestamp);
 typedef MoveList& (*GetMoveListFunc)();
 
@@ -110,13 +112,9 @@ private:
     
     void readLastMoveProcessedOnServerTimestamp(InputMemoryBitStream& inInputStream);
     
-    void handleEntityState(InputMemoryBitStream& inInputStream);
-    
     void updateSendingInputPacket();
     
     void sendInputPacket();
-    
-    void destroyAllInMap(const std::unordered_map<int, Entity*>& inObjectsToDestroy);
     
     // ctor, copy ctor, and assignment should be private in a Singleton
     NetworkManagerClient(IClientHelper* inClientHelper, float inFrameRate, RemoveProcessedMovesFunc inRemoveProcessedMovesFunc, GetMoveListFunc inGetMoveListFunc);

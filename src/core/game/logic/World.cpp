@@ -19,6 +19,11 @@ World::World()
     // Empty
 }
 
+World::~World()
+{
+    m_entities.clear();
+}
+
 void World::addEntity(Entity* inEntity)
 {
     m_entities.push_back(inEntity);

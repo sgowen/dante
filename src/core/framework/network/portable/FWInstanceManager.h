@@ -9,19 +9,27 @@
 #ifndef __noctisgames__FWInstanceManager__
 #define __noctisgames__FWInstanceManager__
 
+#include "EntityManager.h"
+
 class EntityRegistry;
-class EntityManager;
 
 class FWInstanceManager
 {
 public:
-    static EntityRegistry* getClientEntityRegistry();
-    static EntityRegistry* getServerEntityRegistry();
-    
+    static void createClientEntityManager(HandleEntityCreatedFunc handleEntityCreatedFunc, HandleEntityDeletionFunc handleEntityDeletionFunc);
+    static void createServerEntityManager(HandleEntityCreatedFunc handleEntityCreatedFunc, HandleEntityDeletionFunc handleEntityDeletionFunc);
+    static void destroyClientEntityManager();
+    static void destroyServerEntityManager();
     static EntityManager* getClientEntityManager();
     static EntityManager* getServerEntityManager();
     
+    static EntityRegistry* getClientEntityRegistry();
+    static EntityRegistry* getServerEntityRegistry();
+    
 private:
+    static EntityManager* s_clientEntityManagerInstance;
+    static EntityManager* s_serverEntityManagerInstance;
+    
     // ctor, copy ctor, and assignment should be private in a Singleton
     FWInstanceManager();
     ~FWInstanceManager();

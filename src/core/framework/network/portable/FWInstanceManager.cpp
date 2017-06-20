@@ -11,7 +11,51 @@
 #include "FWInstanceManager.h"
 
 #include "EntityRegistry.h"
-#include "EntityManager.h"
+
+#include <assert.h>
+
+EntityManager* FWInstanceManager::s_clientEntityManagerInstance = nullptr;
+EntityManager* FWInstanceManager::s_serverEntityManagerInstance = nullptr;
+
+void FWInstanceManager::createClientEntityManager(HandleEntityCreatedFunc handleEntityCreatedFunc, HandleEntityDeletionFunc handleEntityDeletionFunc)
+{
+    assert(!s_clientEntityManagerInstance);
+    
+    s_clientEntityManagerInstance = new EntityManager(handleEntityCreatedFunc, handleEntityDeletionFunc);
+}
+
+void FWInstanceManager::createServerEntityManager(HandleEntityCreatedFunc handleEntityCreatedFunc, HandleEntityDeletionFunc handleEntityDeletionFunc)
+{
+    assert(!s_serverEntityManagerInstance);
+    
+    s_serverEntityManagerInstance = new EntityManager(handleEntityCreatedFunc, handleEntityDeletionFunc);
+}
+
+void FWInstanceManager::destroyClientEntityManager()
+{
+    assert(s_clientEntityManagerInstance);
+    
+    delete s_clientEntityManagerInstance;
+    s_clientEntityManagerInstance = nullptr;
+}
+
+void FWInstanceManager::destroyServerEntityManager()
+{
+    assert(s_serverEntityManagerInstance);
+    
+    delete s_serverEntityManagerInstance;
+    s_serverEntityManagerInstance = nullptr;
+}
+
+EntityManager* FWInstanceManager::getClientEntityManager()
+{
+    return s_clientEntityManagerInstance;
+}
+
+EntityManager* FWInstanceManager::getServerEntityManager()
+{
+    return s_serverEntityManagerInstance;
+}
 
 EntityRegistry* FWInstanceManager::getClientEntityRegistry()
 {
@@ -22,18 +66,6 @@ EntityRegistry* FWInstanceManager::getClientEntityRegistry()
 EntityRegistry* FWInstanceManager::getServerEntityRegistry()
 {
     static EntityRegistry instance = EntityRegistry();
-    return &instance;
-}
-
-EntityManager* FWInstanceManager::getClientEntityManager()
-{
-    static EntityManager instance = EntityManager();
-    return &instance;
-}
-
-EntityManager* FWInstanceManager::getServerEntityManager()
-{
-    static EntityManager instance = EntityManager();
     return &instance;
 }
 

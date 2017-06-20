@@ -26,10 +26,6 @@ class MainEngine : public IEngine
     RTTI_DECL;
     
 public:
-    static void staticAddEntity(Entity* inEntity);
-    
-    static void staticRemoveEntity(Entity* inEntity);
-    
     MainEngine();
     
     virtual ~MainEngine();
@@ -60,11 +56,11 @@ private:
     int m_iEngineState;
     bool m_isSteam;
     
-    void handleGameServices();
-    
     void handleNonMoveInput();
     
     void activateSteam();
+    
+    void handleSteamGameServices();
     
     void deactivateSteam();
     

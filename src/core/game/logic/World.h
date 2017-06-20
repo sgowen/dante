@@ -20,6 +20,8 @@ class World
 public:
     World();
     
+    ~World();
+    
     void addEntity(Entity* inEntity);
     
     void removeEntity(Entity* inEntity);

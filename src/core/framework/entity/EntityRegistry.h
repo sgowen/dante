@@ -15,7 +15,6 @@
 
 #include <unordered_map>
 
-typedef void (*HandleEntityCreatedFunc)(Entity* inEntity);
 typedef Entity* (*EntityCreationFunc)();
 
 class EntityRegistry
@@ -23,15 +22,12 @@ class EntityRegistry
 public:
     EntityRegistry();
     
-    void init(HandleEntityCreatedFunc handleEntityCreatedFunc);
-    
     void registerCreationFunction(uint32_t inFourCCName, EntityCreationFunc inCreationFunction);
     
     Entity* createEntity(uint32_t inFourCCName);
     
 private:
     std::unordered_map<uint32_t, EntityCreationFunc> m_nameToEntityCreationFunctionMap;
-    HandleEntityCreatedFunc m_handleEntityCreatedFunc;
 };
 
 #endif /* defined(__noctisgames__EntityRegistry__) */

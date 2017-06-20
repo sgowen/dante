@@ -90,46 +90,49 @@ void MainRenderer::renderWorld(int engineState)
             m_spriteBatcher->endBatch(*m_demo->gpuTextureWrapper, *m_textureGpuProgramWrapper);
         }
         
-        m_spriteBatcher->beginBatch();
-        std::vector<Entity*> entities = InstanceManager::getClientWorld()->getEntities();
-        for (Entity* go : entities)
+        if (InstanceManager::getClientWorld())
         {
-            if (go->getNetworkType() == NETWORK_TYPE_Robot)
+            m_spriteBatcher->beginBatch();
+            std::vector<Entity*> entities = InstanceManager::getClientWorld()->getEntities();
+            for (Entity* go : entities)
             {
-                Robot* robot = static_cast<Robot*>(go);
-                
-                Color c = robot->getColor();
-                if (robot->isSprinting())
+                if (go->getNetworkType() == NETWORK_TYPE_Robot)
                 {
-                    c = Color();
-                    c.red = (rand() % 100) * 0.01f;
-                    c.green = (rand() % 100) * 0.01f;
-                    c.blue = (rand() % 100) * 0.01f;
-                    c.alpha = 0.75f;
+                    Robot* robot = static_cast<Robot*>(go);
+                    
+                    Color c = robot->getColor();
+                    if (robot->isSprinting())
+                    {
+                        c = Color();
+                        c.red = (rand() % 100) * 0.01f;
+                        c.green = (rand() % 100) * 0.01f;
+                        c.blue = (rand() % 100) * 0.01f;
+                        c.alpha = 0.75f;
+                    }
+                    
+                    bool isMoving = go->getVelocity().getX() < -0.5f || go->getVelocity().getX() > 0.5f;
+                    TextureRegion tr = ASSETS->findTextureRegion(
+                                                                 robot->isGrounded() ?
+                                                                 isMoving ? robot->isShooting() ? "Samus_Shooting" : (robot->isSprinting() ? "Samus_Running_Fast" : "Samus_Running") : "Samus_Idle" :
+                                                                 go->getVelocity().getY() > 0 ? "Samus_Jumping" : "Samus_Falling", go->getStateTime());
+                    renderEntityWithColor(*robot, tr, c, robot->isFacingLeft());
                 }
-                
-                bool isMoving = go->getVelocity().getX() < -0.5f || go->getVelocity().getX() > 0.5f;
-                TextureRegion tr = ASSETS->findTextureRegion(
-                                                             robot->isGrounded() ?
-                                                             isMoving ? robot->isShooting() ? "Samus_Shooting" : (robot->isSprinting() ? "Samus_Running_Fast" : "Samus_Running") : "Samus_Idle" :
-                                                             go->getVelocity().getY() > 0 ? "Samus_Jumping" : "Samus_Falling", go->getStateTime());
-                renderEntityWithColor(*robot, tr, c, robot->isFacingLeft());
+                else if (go->getNetworkType() == NETWORK_TYPE_Projectile)
+                {
+                    Projectile* proj = static_cast<Projectile*>(go);
+                    bool isActive = proj->getState() == Projectile::ProjectileState::ProjectileState_Active;
+                    TextureRegion tr = isActive ? ASSETS->findTextureRegion("Projectile") : ASSETS->findTextureRegion("Explosion", proj->getStateTime());
+                    renderEntityWithColor(*proj, tr, proj->getColor(), proj->isFacingLeft());
+                }
+                else if (go->getNetworkType() == NETWORK_TYPE_SpacePirate)
+                {
+                    SpacePirate* sp = static_cast<SpacePirate*>(go);
+                    TextureRegion tr = ASSETS->findTextureRegion("Space_Pirate_Walking", sp->getStateTime());
+                    renderEntityWithColor(*sp, tr, sp->getColor(), sp->isFacingLeft());
+                }
             }
-            else if (go->getNetworkType() == NETWORK_TYPE_Projectile)
-            {
-                Projectile* proj = static_cast<Projectile*>(go);
-                bool isActive = proj->getState() == Projectile::ProjectileState::ProjectileState_Active;
-                TextureRegion tr = isActive ? ASSETS->findTextureRegion("Projectile") : ASSETS->findTextureRegion("Explosion", proj->getStateTime());
-                renderEntityWithColor(*proj, tr, proj->getColor(), proj->isFacingLeft());
-            }
-            else if (go->getNetworkType() == NETWORK_TYPE_SpacePirate)
-            {
-                SpacePirate* sp = static_cast<SpacePirate*>(go);
-                TextureRegion tr = ASSETS->findTextureRegion("Space_Pirate_Walking", sp->getStateTime());
-                renderEntityWithColor(*sp, tr, sp->getColor(), sp->isFacingLeft());
-            }
+            m_spriteBatcher->endBatch(*m_demo->gpuTextureWrapper, *m_textureGpuProgramWrapper);
         }
-        m_spriteBatcher->endBatch(*m_demo->gpuTextureWrapper, *m_textureGpuProgramWrapper);
         
         m_spriteBatcher->beginBatch();
         switch (engineState)
@@ -217,7 +220,7 @@ void MainRenderer::renderMainMenuSteamOnText()
     for (NGSteamGameServer gameServer : gameServers)
     {
         Vector2 origin = Vector2(CAM_WIDTH / 2, CAM_HEIGHT - 5.5f - (index * 0.5f));
-        std::string text = StringUtil::format("'%i' %s", (index + 1), gameServer.getDisplayString());
+        std::string text = StringUtil::format("'%i' %s", (++index), gameServer.getDisplayString());
         renderText(text, origin, Color::BLACK);
     }
     
@@ -314,15 +317,18 @@ void MainRenderer::renderJoiningServerText()
         renderText(text, origin, Color::BLACK);
     }
     
-    std::vector<Entity*> entities = InstanceManager::getClientWorld()->getEntities();
-    for (Entity* go : entities)
+    if (InstanceManager::getClientWorld())
     {
-        if (go->getNetworkType() == NETWORK_TYPE_Robot)
+        std::vector<Entity*> entities = InstanceManager::getClientWorld()->getEntities();
+        for (Entity* go : entities)
         {
-            Robot* robot = static_cast<Robot*>(go);
-            Vector2 origin = Vector2(0.5f, CAM_HEIGHT - (robot->getPlayerId() * 0.5f));
-            std::string text = StringUtil::format("%i|%s", robot->getPlayerId(), robot->getPlayerName().c_str());
-            renderText(text, origin, Color::BLACK, true);
+            if (go->getNetworkType() == NETWORK_TYPE_Robot)
+            {
+                Robot* robot = static_cast<Robot*>(go);
+                Vector2 origin = Vector2(0.5f, CAM_HEIGHT - (robot->getPlayerId() * 0.5f));
+                std::string text = StringUtil::format("%i|%s", robot->getPlayerId(), robot->getPlayerName().c_str());
+                renderText(text, origin, Color::BLACK, true);
+            }
         }
     }
 }
