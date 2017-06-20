@@ -89,6 +89,7 @@
 		BB7268001EEC704E004F33F9 /* ReplicationManagerTransmissionData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8307F51EC2AC0900435E7E /* ReplicationManagerTransmissionData.cpp */; };
 		BB7428411EB2AF4200B7628D /* RTTI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB74283D1EB2AF4200B7628D /* RTTI.cpp */; };
 		BB7E3E631EE4E44100E3D696 /* Projectile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB7E3E601EE4E44100E3D696 /* Projectile.cpp */; };
+		BB80D2021EF97F89002B9448 /* NGSteamP2PAuth.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB80D2001EF97F89002B9448 /* NGSteamP2PAuth.cpp */; };
 		BB8308411EC2AD1F00435E7E /* AckRange.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8308091EC2AD1F00435E7E /* AckRange.cpp */; };
 		BB8308441EC2AD1F00435E7E /* DeliveryNotificationManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB83080C1EC2AD1F00435E7E /* DeliveryNotificationManager.cpp */; };
 		BB8308501EC2AD1F00435E7E /* InFlightPacket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8308141EC2AD1F00435E7E /* InFlightPacket.cpp */; };
@@ -520,6 +521,8 @@
 		BB74283F1EB2AF4200B7628D /* StringUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StringUtil.h; sourceTree = "<group>"; };
 		BB7E3E601EE4E44100E3D696 /* Projectile.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Projectile.cpp; sourceTree = "<group>"; };
 		BB7E3E611EE4E44100E3D696 /* Projectile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Projectile.h; sourceTree = "<group>"; };
+		BB80D2001EF97F89002B9448 /* NGSteamP2PAuth.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NGSteamP2PAuth.cpp; sourceTree = "<group>"; };
+		BB80D2011EF97F89002B9448 /* NGSteamP2PAuth.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NGSteamP2PAuth.h; sourceTree = "<group>"; };
 		BB8307F31EC2AC0900435E7E /* ReplicationManagerServer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ReplicationManagerServer.cpp; sourceTree = "<group>"; };
 		BB8307F41EC2AC0900435E7E /* ReplicationManagerServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReplicationManagerServer.h; sourceTree = "<group>"; };
 		BB8307F51EC2AC0900435E7E /* ReplicationManagerTransmissionData.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ReplicationManagerTransmissionData.cpp; sourceTree = "<group>"; };
@@ -1060,6 +1063,8 @@
 				BBBCB2ED1EF0993000B77938 /* NGSteamGameServer.h */,
 				BB5833771EEDBF7E0084DA20 /* NGSteamGameServices.cpp */,
 				BB5833791EEDBFB20084DA20 /* NGSteamGameServices.h */,
+				BB80D2001EF97F89002B9448 /* NGSteamP2PAuth.cpp */,
+				BB80D2011EF97F89002B9448 /* NGSteamP2PAuth.h */,
 				BB1E89821EF4B4F400B0D78A /* NGSteamPacketHandler.cpp */,
 				BB1E89831EF4B4F400B0D78A /* NGSteamPacketHandler.h */,
 				BB4253D81EF59793003F6D2A /* NGSteamServerHelper.cpp */,
@@ -1916,6 +1921,7 @@
 				BBBD14901EE06858003F9307 /* StringUtil.cpp in Sources */,
 				BBAEF2701EA94EDA00F0866E /* RendererHelperFactory.cpp in Sources */,
 				BBAEF23C1EA94EDA00F0866E /* OpenGLNGRectBatcher.cpp in Sources */,
+				BB80D2021EF97F89002B9448 /* NGSteamP2PAuth.cpp in Sources */,
 				BBAEF2301EA94EDA00F0866E /* OpenGLFramebufferToScreenGpuProgramWrapper.cpp in Sources */,
 				BB8308441EC2AD1F00435E7E /* DeliveryNotificationManager.cpp in Sources */,
 				BB1E89811EF4B2BA00B0D78A /* SocketPacketHandler.cpp in Sources */,

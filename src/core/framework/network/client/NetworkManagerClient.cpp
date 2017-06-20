@@ -84,20 +84,24 @@ void NetworkManagerClient::sendOutgoingPackets()
             updateSendingInputPacket();
             break;
         case NCS_Uninitialized:
-        {
-            int clientHelperState = m_clientHelper->handleUninitialized();
-            if (clientHelperState == CLIENT_READY_TO_SAY_HELLO)
-            {
-                m_state = NCS_SayingHello;
-            }
-            else if (clientHelperState == CLIENT_AUTH_FAILED)
-            {
-                m_state = NCS_Disconnected;
-            }
-        }
+            m_clientHelper->handleUninitialized();
             break;
         case NCS_Disconnected:
             break;
+    }
+    
+    if (m_state != NCS_Disconnected)
+    {
+        int clientHelperState = m_clientHelper->getState();
+        if (clientHelperState == CLIENT_READY_TO_SAY_HELLO
+            && m_state != NCS_Welcomed)
+        {
+            m_state = NCS_SayingHello;
+        }
+        else if (clientHelperState == CLIENT_AUTH_FAILED)
+        {
+            m_state = NCS_Disconnected;
+        }
     }
 }
 

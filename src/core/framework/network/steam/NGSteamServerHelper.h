@@ -18,9 +18,6 @@
 class NGSteamAddress;
 class ClientProxy;
 
-typedef ClientProxy* (*GetClientProxyFunc)(int inPlayerId);
-typedef void (*HandleClientDisconnectedFunc)(ClientProxy* inClientProxy);
-
 class NGSteamServerHelper : public IServerHelper
 {
 public:
@@ -42,8 +39,6 @@ public:
     
 private:
     const char* m_inGameDir;
-    GetClientProxyFunc m_getClientProxyFunc;
-    HandleClientDisconnectedFunc m_handleClientDisconnectedFunc;
     NGSteamAddress* m_serverSteamAddress;
     std::string m_serverName;
     bool m_isConnectedToSteam;
@@ -51,7 +46,7 @@ private:
     
     struct ClientConnectionData_t
     {
-        bool m_bActive;					// Is this slot in use? Or is it available for new connections?
+        bool m_isActive;					// Is this slot in use? Or is it available for new connections?
         CSteamID m_SteamIDUser;			// What is the steamid of the player?
     };
     

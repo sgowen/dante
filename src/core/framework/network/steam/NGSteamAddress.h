@@ -32,8 +32,13 @@ public:
     
     CSteamID& getSteamID();
     
+    void setReliable(bool isReliable);
+    
+    bool isReliable();
+    
 private:
     CSteamID m_steamID;
+    bool m_isReliable;
 };
 
 #endif /* defined(__noctisgames__NGSteamAddress__) */

@@ -12,12 +12,12 @@
 
 #include "StringUtil.h"
 
-NGSteamAddress::NGSteamAddress(CSteamID steamID) : IMachineAddress(), m_steamID(steamID)
+NGSteamAddress::NGSteamAddress(CSteamID steamID) : IMachineAddress(), m_steamID(steamID), m_isReliable(false)
 {
     // Empty
 }
 
-NGSteamAddress::NGSteamAddress() : IMachineAddress(), m_steamID(CSteamID())
+NGSteamAddress::NGSteamAddress() : IMachineAddress(), m_steamID(CSteamID()), m_isReliable(false)
 {
     // Empty
 }
@@ -50,4 +50,14 @@ void NGSteamAddress::setSteamID(CSteamID steamID)
 CSteamID& NGSteamAddress::getSteamID()
 {
     return m_steamID;
+}
+
+void NGSteamAddress::setReliable(bool isReliable)
+{
+    m_isReliable = isReliable;
+}
+
+bool NGSteamAddress::isReliable()
+{
+    return m_isReliable;
 }

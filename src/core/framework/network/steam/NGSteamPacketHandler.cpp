@@ -35,7 +35,7 @@ void NGSteamPacketHandler::sendPacket(const OutputMemoryBitStream& inOutputStrea
     
     ISteamNetworking* steamNetworking = m_isServer ? SteamGameServerNetworking() : SteamNetworking();
     
-    if (steamNetworking->SendP2PPacket(inFromSteamAddress->getSteamID(), inOutputStream.getBufferPtr(), inOutputStream.getByteLength(), k_EP2PSendUnreliable))
+    if (steamNetworking->SendP2PPacket(inFromSteamAddress->getSteamID(), inOutputStream.getBufferPtr(), inOutputStream.getByteLength(), inFromSteamAddress->isReliable() ? k_EP2PSendReliable : k_EP2PSendUnreliable))
     {
         int sentByteCount = inOutputStream.getByteLength();
         if (sentByteCount > 0)

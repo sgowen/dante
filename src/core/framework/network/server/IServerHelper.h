@@ -13,10 +13,13 @@
 
 class ClientProxy;
 
+typedef ClientProxy* (*GetClientProxyFunc)(int inPlayerId);
+typedef void (*HandleClientDisconnectedFunc)(ClientProxy* inClientProxy);
+
 class IServerHelper : public INetworkHelper
 {
 public:
-    IServerHelper(IPacketHandler* packetHandler);
+    IServerHelper(IPacketHandler* packetHandler, GetClientProxyFunc inGetClientProxyFunc, HandleClientDisconnectedFunc inHandleClientDisconnectedFunc);
     
     virtual ~IServerHelper();
     
@@ -25,6 +28,10 @@ public:
     virtual IMachineAddress* getServerAddress() = 0;
     
     virtual bool isConnected() = 0;
+    
+protected:
+    GetClientProxyFunc m_getClientProxyFunc;
+    HandleClientDisconnectedFunc m_handleClientDisconnectedFunc;
 };
 
 #endif /* defined(__noctisgames__IServerHelper__) */

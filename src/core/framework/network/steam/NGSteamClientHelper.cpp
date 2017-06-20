@@ -10,6 +10,7 @@
 
 #include "NGSteamClientHelper.h"
 
+#include "NGSteamP2PAuth.h"
 #include "NGSteamAddress.h"
 
 #include "NGSteamPacketHandler.h"
@@ -19,6 +20,7 @@
 #include "OutputMemoryBitStream.h"
 
 NGSteamClientHelper::NGSteamClientHelper(CSteamID serverSteamID, ProcessPacketFunc processPacketFunc, HandleNoResponseFunc handleNoResponseFunc, HandleConnectionResetFunc handleConnectionResetFunc) : IClientHelper(new NGSteamPacketHandler(false, processPacketFunc, handleNoResponseFunc, handleConnectionResetFunc)),
+m_steamP2PAuth(nullptr),
 m_eConnectedStatus(k_EClientNotConnected),
 m_serverSteamAddress(new NGSteamAddress(serverSteamID)),
 m_fTimeOfLastMsgClientBeginAuthentication(0.0f),
@@ -26,6 +28,8 @@ m_unServerIP(0),
 m_usServerPort(0),
 m_hAuthTicket(k_HAuthTicketInvalid)
 {
+    m_steamP2PAuth = new NGSteamP2PAuth(this);
+    
     m_name = std::string(SteamFriends()->GetFriendPersonaName(SteamUser()->GetSteamID()));
     
     LOG("Client %s is connecting to Game Server with Steam ID: %s", m_name.c_str(), m_serverSteamAddress->toString().c_str());
@@ -84,9 +88,11 @@ void NGSteamClientHelper::processSpecialPacket(uint32_t packetType, InputMemoryB
         default:
             break;
     }
+    
+    updateState();
 }
 
-int NGSteamClientHelper::handleUninitialized()
+void NGSteamClientHelper::handleUninitialized()
 {
     switch (m_eConnectedStatus)
     {
@@ -130,7 +136,7 @@ int NGSteamClientHelper::handleUninitialized()
             break;
     }
     
-    return m_eConnectedStatus == k_EClientConnectedAndAuthenticated ? CLIENT_READY_TO_SAY_HELLO : (m_eConnectedStatus == k_EClientConnectionFailure || m_eConnectedStatus == k_EServerShuttingDown) ? CLIENT_AUTH_FAILED : CLIENT_NOT_READY_TO_SAY_HELLO;
+    updateState();
 }
 
 void NGSteamClientHelper::sendPacket(const OutputMemoryBitStream& inOutputStream)
@@ -173,4 +179,9 @@ void NGSteamClientHelper::updateRichPresenceConnectionInfo()
         
         SteamFriends()->SetRichPresence("connect", rgchConnectString);
     }
+}
+
+void NGSteamClientHelper::updateState()
+{
+    m_iState = m_eConnectedStatus == k_EClientConnectedAndAuthenticated ? CLIENT_READY_TO_SAY_HELLO : (m_eConnectedStatus == k_EClientConnectionFailure || m_eConnectedStatus == k_EServerShuttingDown) ? CLIENT_AUTH_FAILED : CLIENT_NOT_READY_TO_SAY_HELLO;
 }

@@ -14,6 +14,7 @@
 #include "IPacketHandler.h"
 #include "NGSteam.h"
 
+class NGSteamP2PAuth;
 class NGSteamAddress;
 
 class NGSteamClientHelper : public IClientHelper
@@ -25,7 +26,7 @@ public:
     
     virtual void processSpecialPacket(uint32_t packetType, InputMemoryBitStream& inInputStream, IMachineAddress* inFromAddress);
     
-    virtual int handleUninitialized();
+    virtual void handleUninitialized();
     
     virtual void sendPacket(const OutputMemoryBitStream& inOutputStream);
     
@@ -42,6 +43,7 @@ private:
         k_EServerShuttingDown
     };
     
+    NGSteamP2PAuth* m_steamP2PAuth;
     EClientConnectionState m_eConnectedStatus;
     NGSteamAddress* m_serverSteamAddress;
     std::string m_name;
@@ -55,6 +57,8 @@ private:
     void onReceiveServerInfo(CSteamID steamIDGameServer, bool bVACSecure, const char *pchServerName);
     
     void updateRichPresenceConnectionInfo();
+    
+    void updateState();
 };
 
 #endif /* defined(__noctisgames__NGSteamClientHelper__) */

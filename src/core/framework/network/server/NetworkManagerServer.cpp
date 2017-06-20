@@ -180,6 +180,11 @@ bool NetworkManagerServer::isConnected()
     return m_serverHelper->isConnected();
 }
 
+IServerHelper* NetworkManagerServer::getServerHelper()
+{
+    return m_serverHelper;
+}
+
 void NetworkManagerServer::processPacket(InputMemoryBitStream& inInputStream, IMachineAddress* inFromAddress)
 {
     //try to get the client proxy for this address

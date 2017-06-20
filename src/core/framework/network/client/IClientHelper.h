@@ -24,11 +24,16 @@ public:
     
     virtual ~IClientHelper();
     
-    virtual int handleUninitialized() = 0;
+    virtual void handleUninitialized() = 0;
     
     virtual void sendPacket(const OutputMemoryBitStream& inOutputStream) = 0;
     
     virtual std::string& getName() = 0;
+    
+    int getState();
+    
+protected:
+    int m_iState;
 };
 
 #endif /* defined(__noctisgames__IClientHelper__) */

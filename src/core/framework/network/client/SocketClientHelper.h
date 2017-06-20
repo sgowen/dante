@@ -24,7 +24,7 @@ public:
     
     virtual void processSpecialPacket(uint32_t packetType, InputMemoryBitStream& inInputStream, IMachineAddress* inFromAddress);
     
-    virtual int handleUninitialized();
+    virtual void handleUninitialized();
     
     virtual void sendPacket(const OutputMemoryBitStream& inOutputStream);
     
@@ -33,6 +33,8 @@ public:
 private:
     SocketAddress* m_serverAddress;
     std::string m_name;
+    
+    void updateState();
 };
 
 #endif /* defined(__noctisgames__SocketClientHelper__) */

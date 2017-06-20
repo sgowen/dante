@@ -10,7 +10,9 @@
 
 #include "IServerHelper.h"
 
-IServerHelper::IServerHelper(IPacketHandler* packetHandler) : INetworkHelper(packetHandler)
+IServerHelper::IServerHelper(IPacketHandler* packetHandler, GetClientProxyFunc inGetClientProxyFunc, HandleClientDisconnectedFunc inHandleClientDisconnectedFunc) : INetworkHelper(packetHandler),
+m_getClientProxyFunc(inGetClientProxyFunc),
+m_handleClientDisconnectedFunc(inHandleClientDisconnectedFunc)
 {
     // Empty
 }

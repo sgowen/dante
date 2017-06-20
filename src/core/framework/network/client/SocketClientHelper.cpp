@@ -15,6 +15,9 @@
 #include "SocketPacketHandler.h"
 #include "SocketAddressFactory.h"
 #include "macros.h"
+#include "OutputMemoryBitStream.h"
+#include "FrameworkConstants.h"
+#include "StringUtil.h"
 
 SocketClientHelper::SocketClientHelper(std::string inServerIPAddress, std::string inName, uint16_t inPort, ProcessPacketFunc processPacketFunc, HandleNoResponseFunc handleNoResponseFunc, HandleConnectionResetFunc handleConnectionResetFunc) :
 IClientHelper(new SocketPacketHandler(inPort, processPacketFunc, handleNoResponseFunc, handleConnectionResetFunc)),
@@ -26,6 +29,10 @@ m_name(inName)
 
 SocketClientHelper::~SocketClientHelper()
 {
+    OutputMemoryBitStream packet;
+    packet.write(NETWORK_PACKET_TYPE_CLIENT_EXIT);
+    sendPacket(packet);
+    
     if (m_serverAddress)
     {
         delete m_serverAddress;
@@ -34,16 +41,27 @@ SocketClientHelper::~SocketClientHelper()
 
 void SocketClientHelper::processSpecialPacket(uint32_t packetType, InputMemoryBitStream& inInputStream, IMachineAddress* inFromAddress)
 {
-    UNUSED(inInputStream);
-    UNUSED(inFromAddress);
-    
-    // Socket based Networking doesn't have built-in auth, so there should never be special packets
+    switch (packetType)
+    {
+        case NETWORK_PACKET_TYPE_SERVER_EXIT:
+            LOG("Server Shutting Down");
+            
+            if (m_serverAddress)
+            {
+                delete m_serverAddress;
+                m_serverAddress = nullptr;
+            }
+            
+            updateState();
+        default:
+            // Socket based Networking doesn't have built-in auth, so there should never be special packets besides server exit
+            break;
+    }
 }
 
-int SocketClientHelper::handleUninitialized()
+void SocketClientHelper::handleUninitialized()
 {
-    // Socket based Networking doesn't have built-in auth, so we should be ready to say Hello to the server immediately
-    return m_serverAddress ? CLIENT_READY_TO_SAY_HELLO : CLIENT_AUTH_FAILED;
+    updateState();
 }
 
 void SocketClientHelper::sendPacket(const OutputMemoryBitStream& inOutputStream)
@@ -57,4 +75,10 @@ void SocketClientHelper::sendPacket(const OutputMemoryBitStream& inOutputStream)
 std::string& SocketClientHelper::getName()
 {
     return m_name;
+}
+
+void SocketClientHelper::updateState()
+{
+    // Socket based Networking doesn't have built-in auth, so we should be ready to say Hello to the server immediately
+    m_iState = m_serverAddress ? CLIENT_READY_TO_SAY_HELLO : CLIENT_AUTH_FAILED;
 }

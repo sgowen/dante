@@ -22,9 +22,7 @@ class Entity;
 
 #define NG_SERVER (NetworkManagerServer::getInstance())
 
-#define NG_SERVER_CALLBACKS NetworkManagerServer::staticProcessPacket, NetworkManagerServer::staticHandleNoResponse, NetworkManagerServer::staticHandleConnectionReset
-
-#define NG_SERVER_STEAM_CALLBACKS NetworkManagerServer::staticProcessPacket, NetworkManagerServer::staticHandleNoResponse, NetworkManagerServer::staticHandleConnectionReset, NetworkManagerServer::staticGetClientProxy, NetworkManagerServer::staticHandleClientDisconnected
+#define NG_SERVER_CALLBACKS NetworkManagerServer::staticProcessPacket, NetworkManagerServer::staticHandleNoResponse, NetworkManagerServer::staticHandleConnectionReset, NetworkManagerServer::staticGetClientProxy, NetworkManagerServer::staticHandleClientDisconnected
 
 typedef void (*HandleNewClientFunc)(ClientProxy* inClientProxy);
 typedef void (*HandleLostClientFunc)(ClientProxy* inClientProxy);
@@ -68,6 +66,8 @@ public:
     IMachineAddress* getServerAddress();
     
     bool isConnected();
+    
+    IServerHelper* getServerHelper();
     
 private:
     static NetworkManagerServer* s_instance;

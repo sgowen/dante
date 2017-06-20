@@ -10,7 +10,7 @@
 
 #include "IClientHelper.h"
 
-IClientHelper::IClientHelper(IPacketHandler* packetHandler) : INetworkHelper(packetHandler)
+IClientHelper::IClientHelper(IPacketHandler* packetHandler) : INetworkHelper(packetHandler), m_iState(CLIENT_NOT_READY_TO_SAY_HELLO)
 {
     // Empty
 }
@@ -18,4 +18,9 @@ IClientHelper::IClientHelper(IPacketHandler* packetHandler) : INetworkHelper(pac
 IClientHelper::~IClientHelper()
 {
     // Empty
+}
+
+int IClientHelper::getState()
+{
+    return m_iState;
 }
