@@ -90,7 +90,7 @@ MainEngine::~MainEngine()
     delete m_config;
     delete m_renderer;
     
-    leaveServer();
+    disconnect();
 }
 
 void MainEngine::createDeviceDependentResources()
@@ -154,7 +154,7 @@ void MainEngine::update(float deltaTime)
             
             if (NG_CLIENT->getState() == NCS_Disconnected)
             {
-                leaveServer();
+                disconnect();
             }
         }
         
@@ -188,14 +188,14 @@ void MainEngine::handleGameServices()
         {
             if (NG_STEAM_GAME_SERVICES->isRequestingToJoinServer())
             {
-                leaveServer();
+                disconnect();
                 m_serverSteamID = NG_STEAM_GAME_SERVICES->getServerToJoinSteamID();
                 joinServer();
             }
         }
         else
         {
-            leaveServer();
+            disconnect();
             deactivateSteam();
         }
     }
@@ -209,7 +209,7 @@ void MainEngine::handleNonMoveInput()
     {
         if (inputState->getMenuState() == MENU_STATE_ESCAPE)
         {
-            leaveServer();
+            disconnect();
         }
     }
     else if (NG_SERVER)
@@ -220,7 +220,7 @@ void MainEngine::handleNonMoveInput()
             {
                 InputManager::getInstance()->setLiveMode(false);
                 InputManager::getInstance()->resetLiveInput();
-                leaveServer();
+                disconnect();
             }
             else if (InputManager::getInstance()->isTimeToProcessInput())
             {
@@ -255,7 +255,7 @@ void MainEngine::handleNonMoveInput()
             }
             else if (inputState->getMenuState() == MENU_STATE_ESCAPE)
             {
-                leaveServer();
+                disconnect();
             }
         }
     }
@@ -401,7 +401,7 @@ void MainEngine::joinServer()
     InputManager::getInstance()->setConnected(NG_CLIENT);
 }
 
-void MainEngine::leaveServer()
+void MainEngine::disconnect()
 {
     if (NG_CLIENT)
     {

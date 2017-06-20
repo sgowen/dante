@@ -72,7 +72,7 @@ private:
     
     void joinServer();
     
-    void leaveServer();
+    void disconnect();
 };
 
 #endif /* defined(__dante__MainEngine__) */

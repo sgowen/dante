@@ -230,9 +230,11 @@ void MainRenderer::renderMainMenuSteamOnText()
 
 void MainRenderer::renderStartingServerText()
 {
+    bool isServerReady = NG_SERVER && NG_SERVER->isConnected() && NG_SERVER->getServerAddress();
+    
     {
         static Vector2 origin = Vector2(CAM_WIDTH / 2, CAM_HEIGHT - 2);
-        std::string text = StringUtil::format("Server %s, 'ESC' to exit", NG_SERVER->isConnected() ? "started, 'J' to join it" : "starting");
+        std::string text = StringUtil::format("Server %s, 'ESC' to exit", isServerReady ? "started, 'J' to join it" : "starting");
         renderText(text, origin, Color::BLACK);
     }
     
@@ -244,7 +246,7 @@ void MainRenderer::renderStartingServerText()
     
     {
         static Vector2 origin = Vector2(CAM_WIDTH / 2, CAM_HEIGHT - 4.5f);
-        std::string text = NG_SERVER && NG_SERVER->getServerAddress() ? NG_SERVER->getServerAddress()->toString() : std::string("");
+        std::string text = isServerReady ? NG_SERVER->getServerAddress()->toString() : std::string("");
         renderText(text, origin, Color::BLACK);
     }
 }
