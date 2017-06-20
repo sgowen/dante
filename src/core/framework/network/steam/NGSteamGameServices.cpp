@@ -136,6 +136,8 @@ bool NGSteamGameServices::isRequestingToJoinServer()
 
 void NGSteamGameServices::onServerJoined()
 {
+    SteamFriends()->SetRichPresence("status", "In game");
+    
     m_isRequestingToJoinServer = false;
 }
 
@@ -224,6 +226,8 @@ void NGSteamGameServices::refreshInternetServers()
     // bugbug jmccaskey - passing just the appid without filters results in getting all servers rather than
     // servers filtered by appid alone.  So, we'll use the filters to filter the results better.
     m_hServerListRequest = SteamMatchmakingServers()->RequestInternetServerList(SteamUtils()->GetAppID(), &pFilter, ARRAYSIZE(pFilters), this);
+    
+    SteamFriends()->SetRichPresence("status", "Finding an internet game");
 }
 
 void NGSteamGameServices::refreshLANServers()
@@ -250,6 +254,8 @@ void NGSteamGameServices::refreshLANServers()
     
     // LAN refresh doesn't accept filters like internet above does
     m_hServerListRequest = SteamMatchmakingServers()->RequestLANServerList(SteamUtils()->GetAppID(), this);
+    
+    SteamFriends()->SetRichPresence("status", "Finding a LAN game");
 }
 
 #pragma mark Steam Cloud
@@ -444,6 +450,8 @@ m_isRequestingToJoinServer(false)
         m_iStatus = STEAM_INIT_FAIL_CONTROLLER_INIT;
         return;
     }
+    
+    SteamFriends()->SetRichPresence("status", "Main menu");
     
     m_iStatus = STEAM_INIT_SUCCESS;
 }

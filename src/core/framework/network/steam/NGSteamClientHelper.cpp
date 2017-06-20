@@ -179,9 +179,9 @@ void NGSteamClientHelper::updateRichPresenceConnectionInfo()
     {
         // game server connection method
         StringUtil::sprintf_safe(rgchConnectString, "+connect %d:%d", m_unServerIP, m_usServerPort);
-        
-        SteamFriends()->SetRichPresence("connect", rgchConnectString);
     }
+    
+    SteamFriends()->SetRichPresence("connect", rgchConnectString);
 }
 
 void NGSteamClientHelper::updateState()
