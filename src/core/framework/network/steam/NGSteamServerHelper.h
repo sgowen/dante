@@ -32,7 +32,7 @@ public:
     
     virtual void processSpecialPacket(uint32_t packetType, InputMemoryBitStream& inInputStream, IMachineAddress* inFromAddress);
     
-    virtual void onClientProxyDeleted(ClientProxy* clientProxy);
+    virtual void onClientDisconnected(ClientProxy* clientProxy);
     
     virtual IMachineAddress* getServerAddress();
     

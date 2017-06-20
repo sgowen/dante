@@ -349,6 +349,11 @@ void NetworkManagerServer::handleClientDisconnected(ClientProxy* inClientProxy)
     
     m_handleLostClientFunc(inClientProxy);
     
+    m_serverHelper->onClientDisconnected(inClientProxy);
+    
+    delete inClientProxy;
+    
+    // Find the next available Player ID
     m_iNewPlayerId = 1;
     for (auto const &entry : m_addressHashToClientMap)
     {

@@ -34,7 +34,7 @@ void SocketServerHelper::processSpecialPacket(uint32_t packetType, InputMemoryBi
     LOG("Unknown packet type received from %s", inFromAddress->toString().c_str());
 }
 
-void SocketServerHelper::onClientProxyDeleted(ClientProxy* clientProxy)
+void SocketServerHelper::onClientDisconnected(ClientProxy* clientProxy)
 {
     UNUSED(clientProxy);
     

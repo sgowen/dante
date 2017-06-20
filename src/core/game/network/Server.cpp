@@ -125,8 +125,6 @@ void Server::handleLostClient(ClientProxy* inClientProxy)
     {
         robot->requestDeletion();
     }
-    
-    delete inClientProxy;
 }
 
 void Server::spawnRobotForPlayer(int inPlayerId, std::string inPlayerName)

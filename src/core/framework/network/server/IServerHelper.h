@@ -20,7 +20,7 @@ public:
     
     virtual ~IServerHelper();
     
-    virtual void onClientProxyDeleted(ClientProxy* clientProxy) = 0;
+    virtual void onClientDisconnected(ClientProxy* clientProxy) = 0;
     
     virtual IMachineAddress* getServerAddress() = 0;
     

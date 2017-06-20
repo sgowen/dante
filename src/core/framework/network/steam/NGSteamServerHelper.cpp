@@ -78,6 +78,9 @@ m_outgoingPacketAddress(new NGSteamAddress())
 
 NGSteamServerHelper::~NGSteamServerHelper()
 {
+    // Notify Steam master server we are going offline
+    SteamGameServer()->EnableHeartbeats(false);
+    
     for (uint32 i = 0; i < MAX_NUM_PLAYERS_PER_SERVER; ++i)
     {
         ClientProxy* clientProxy = m_getClientProxyFunc(i + 1);
@@ -94,9 +97,6 @@ NGSteamServerHelper::~NGSteamServerHelper()
     
     delete m_serverSteamAddress;
     delete m_outgoingPacketAddress;
-    
-    // Notify Steam master server we are going offline
-    SteamGameServer()->EnableHeartbeats(false);
     
     // Disconnect from the steam servers
     SteamGameServer()->LogOff();
@@ -185,7 +185,7 @@ void NGSteamServerHelper::processSpecialPacket(uint32_t packetType, InputMemoryB
     }
 }
 
-void NGSteamServerHelper::onClientProxyDeleted(ClientProxy* clientProxy)
+void NGSteamServerHelper::onClientDisconnected(ClientProxy* clientProxy)
 {
     NGSteamAddress* userAddress = static_cast<NGSteamAddress*>(clientProxy->getMachineAddress());
     
