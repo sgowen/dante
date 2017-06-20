@@ -26,7 +26,10 @@ m_name(inName)
 
 SocketClientHelper::~SocketClientHelper()
 {
-    delete m_serverAddress;
+    if (m_serverAddress)
+    {
+        delete m_serverAddress;
+    }
 }
 
 void SocketClientHelper::processSpecialPacket(uint32_t packetType, InputMemoryBitStream& inInputStream, IMachineAddress* inFromAddress)
@@ -40,7 +43,7 @@ void SocketClientHelper::processSpecialPacket(uint32_t packetType, InputMemoryBi
 int SocketClientHelper::handleUninitialized()
 {
     // Socket based Networking doesn't have built-in auth, so we should be ready to say Hello to the server immediately
-    return m_serverAddress ? CLIENT_READY_TO_SAY_HELLO : CLIENT_NOT_READY_TO_SAY_HELLO;
+    return m_serverAddress ? CLIENT_READY_TO_SAY_HELLO : CLIENT_AUTH_FAILED;
 }
 
 void SocketClientHelper::sendPacket(const OutputMemoryBitStream& inOutputStream)
