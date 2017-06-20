@@ -145,7 +145,7 @@ void NGSteamServerHelper::processSpecialPacket(uint32_t packetType, InputMemoryB
             uint32 uTokenLen;
             inInputStream.read(uTokenLen);
             
-            char token[uTokenLen];
+            char token[1024];
             inInputStream.readBytes(&token, uTokenLen);
             
             onClientBeginAuthentication(steamIDRemote, (void*)token, uTokenLen);
