@@ -130,7 +130,7 @@ int NGSteamClientHelper::handleUninitialized()
             break;
     }
     
-    return m_eConnectedStatus == k_EClientConnectedAndAuthenticated ? CLIENT_READY_TO_SAY_HELLO : m_eConnectedStatus == k_EClientConnectionFailure ? CLIENT_AUTH_FAILED : CLIENT_NOT_READY_TO_SAY_HELLO;
+    return m_eConnectedStatus == k_EClientConnectedAndAuthenticated ? CLIENT_READY_TO_SAY_HELLO : (m_eConnectedStatus == k_EClientConnectionFailure || m_eConnectedStatus == k_EServerShuttingDown) ? CLIENT_AUTH_FAILED : CLIENT_NOT_READY_TO_SAY_HELLO;
 }
 
 void NGSteamClientHelper::sendPacket(const OutputMemoryBitStream& inOutputStream)
