@@ -130,25 +130,7 @@ void MainEngine::update(float deltaTime)
     {
         Timing::getInstance()->updateManual(m_fStateTime, FRAME_RATE);
         
-        if (NG_STEAM_GAME_SERVICES)
-        {
-            NG_STEAM_GAME_SERVICES->update(NG_SERVER ? true : false);
-            
-            if (NG_STEAM_GAME_SERVICES->getStatus() == STEAM_INIT_SUCCESS)
-            {
-                if (NG_STEAM_GAME_SERVICES->isRequestingToJoinServer())
-                {
-                    leaveServer();
-                    m_serverSteamID = NG_STEAM_GAME_SERVICES->getServerToJoinSteamID();
-                    joinServer();
-                }
-            }
-            else
-            {
-                leaveServer();
-                deactivateSteam();
-            }
-        }
+        handleGameServices();
         
         if (NG_CLIENT)
         {
@@ -194,6 +176,29 @@ void MainEngine::render()
     m_renderer->renderToScreen();
     
     m_renderer->endFrame();
+}
+
+void MainEngine::handleGameServices()
+{
+    if (NG_STEAM_GAME_SERVICES)
+    {
+        NG_STEAM_GAME_SERVICES->update(NG_SERVER ? true : false);
+        
+        if (NG_STEAM_GAME_SERVICES->getStatus() == STEAM_INIT_SUCCESS)
+        {
+            if (NG_STEAM_GAME_SERVICES->isRequestingToJoinServer())
+            {
+                leaveServer();
+                m_serverSteamID = NG_STEAM_GAME_SERVICES->getServerToJoinSteamID();
+                joinServer();
+            }
+        }
+        else
+        {
+            leaveServer();
+            deactivateSteam();
+        }
+    }
 }
 
 void MainEngine::handleNonMoveInput()

@@ -32,9 +32,13 @@ public:
     
     virtual void processSpecialPacket(uint32_t packetType, InputMemoryBitStream& inInputStream, IMachineAddress* inFromAddress);
     
+    virtual void onClientProxyDeleted(ClientProxy* clientProxy);
+    
     virtual IMachineAddress* getServerAddress();
     
     virtual bool isConnected();
+    
+    void kickPlayerOffServer(CSteamID steamID);
     
 private:
     const char* m_inGameDir;
@@ -49,11 +53,7 @@ private:
     {
         bool m_bActive;					// Is this slot in use? Or is it available for new connections?
         CSteamID m_SteamIDUser;			// What is the steamid of the player?
-        float m_fTimeLastData;          // What was the last time we got data from the player?
     };
-    
-    // Vector to keep track of client connections
-    ClientConnectionData_t m_rgClientData[MAX_NUM_PLAYERS_PER_SERVER];
     
     // Vector to keep track of client connections which are pending auth
     ClientConnectionData_t m_rgPendingClientData[MAX_NUM_PLAYERS_PER_SERVER];
@@ -65,8 +65,6 @@ private:
     void onAuthCompleted(bool bAuthSuccessful, uint32 iPendingAuthIndex);
     
     void sendDataToClient(CSteamID steamIDUser, const OutputMemoryBitStream& inOutputStream);
-    
-    void removePlayerFromServer(uint32 uPosition);
     
     STEAM_GAMESERVER_CALLBACK(NGSteamServerHelper, onSteamServersConnected, SteamServersConnected_t);
     STEAM_GAMESERVER_CALLBACK(NGSteamServerHelper, onSteamServersConnectFailure, SteamServerConnectFailure_t);

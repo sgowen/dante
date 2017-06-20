@@ -38,7 +38,8 @@ private:
         k_EClientNotConnected,							// Initial state, not connected to a server
         k_EClientConnectedPendingAuthentication,		// We've established communication with the server, but it hasn't authed us yet
         k_EClientConnectedAndAuthenticated,				// Final phase, server has authed us, we are actually able to play on it
-        k_EClientConnectionFailure
+        k_EClientConnectionFailure,
+        k_EServerShuttingDown
     };
     
     EClientConnectionState m_eConnectedStatus;

@@ -22,6 +22,8 @@ public:
     
     virtual void processSpecialPacket(uint32_t packetType, InputMemoryBitStream& inInputStream, IMachineAddress* inFromAddress);
     
+    virtual void onClientProxyDeleted(ClientProxy* clientProxy);
+    
     virtual IMachineAddress* getServerAddress();
     
     virtual bool isConnected();

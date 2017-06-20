@@ -17,7 +17,6 @@
 #include "StringUtil.h"
 #include "Timing.h"
 #include "OutputMemoryBitStream.h"
-#include "Messages.h"
 
 NGSteamClientHelper::NGSteamClientHelper(CSteamID serverSteamID, ProcessPacketFunc processPacketFunc, HandleNoResponseFunc handleNoResponseFunc, HandleConnectionResetFunc handleConnectionResetFunc) : IClientHelper(new NGSteamPacketHandler(false, processPacketFunc, handleNoResponseFunc, handleConnectionResetFunc)),
 m_eConnectedStatus(k_EClientNotConnected),
@@ -40,10 +39,13 @@ NGSteamClientHelper::~NGSteamClientHelper()
     
     m_hAuthTicket = k_HAuthTicketInvalid;
     
+    OutputMemoryBitStream packet;
+    packet.write(k_EMsgClientLeavingServer);
+    sendPacket(packet);
+    
     if (m_serverSteamAddress->getSteamID().IsValid())
     {
         SteamNetworking()->CloseP2PSessionWithUser(m_serverSteamAddress->getSteamID());
-        m_serverSteamAddress->setSteamID(CSteamID());
     }
     
     delete m_serverSteamAddress;
@@ -78,6 +80,9 @@ void NGSteamClientHelper::processSpecialPacket(uint32_t packetType, InputMemoryB
             LOG("Connection failure. Multiplayer authentication failed");
             m_eConnectedStatus = k_EClientConnectionFailure;
             break;
+        case k_EMsgServerExiting:
+            LOG("Server Shutting Down");
+            m_eConnectedStatus = k_EServerShuttingDown;
         default:
             break;
     }
@@ -98,27 +103,25 @@ int NGSteamClientHelper::handleUninitialized()
         {
             float time = Timing::getInstance()->getFrameStartTime();
             
-            if (time > m_fTimeOfLastMsgClientBeginAuthentication + 5.0f)
+            if (time > m_fTimeOfLastMsgClientBeginAuthentication + 7.0f)
             {
-                MsgClientBeginAuthentication_t msg;
                 char rgchToken[1024];
                 uint32 unTokenLen = 0;
                 m_hAuthTicket = SteamUser()->GetAuthSessionTicket(rgchToken, sizeof(rgchToken), &unTokenLen);
-                msg.SetToken(rgchToken, unTokenLen);
                 
                 Steamworks_TestSecret();
                 
-                if (msg.GetTokenLen() < 1)
+                if (unTokenLen < 1)
                 {
                     LOG("Warning: Looks like GetAuthSessionTicket didn't give us a good ticket");
                 }
                 
-                LOG("MsgClientBeginAuthentication_t, uTokenLen: %i", msg.GetTokenLen());
+                LOG("MsgClientBeginAuthentication_t, uTokenLen: %i", unTokenLen);
                 
                 OutputMemoryBitStream packet;
-                packet.write(msg.GetMessageType());
-                packet.write(msg.GetTokenLen());
-                packet.writeBytes(msg.GetTokenPtr(), msg.GetTokenLen());
+                packet.write(k_EMsgClientBeginAuthentication);
+                packet.write(unTokenLen);
+                packet.writeBytes(rgchToken, unTokenLen);
                 sendPacket(packet);
                 
                 m_fTimeOfLastMsgClientBeginAuthentication = time;

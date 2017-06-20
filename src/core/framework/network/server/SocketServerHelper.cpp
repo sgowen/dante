@@ -29,10 +29,16 @@ void SocketServerHelper::processSpecialPacket(uint32_t packetType, InputMemoryBi
 {
     UNUSED(packetType);
     UNUSED(inInputStream);
-    UNUSED(inFromAddress);
     
     // Socket based Networking doesn't have built-in auth, so there should never be special packets
     LOG("Unknown packet type received from %s", inFromAddress->toString().c_str());
+}
+
+void SocketServerHelper::onClientProxyDeleted(ClientProxy* clientProxy)
+{
+    UNUSED(clientProxy);
+    
+    // Nothing to do here.
 }
 
 IMachineAddress* SocketServerHelper::getServerAddress()

@@ -11,12 +11,16 @@
 
 #include "INetworkHelper.h"
 
+class ClientProxy;
+
 class IServerHelper : public INetworkHelper
 {
 public:
     IServerHelper(IPacketHandler* packetHandler);
     
     virtual ~IServerHelper();
+    
+    virtual void onClientProxyDeleted(ClientProxy* clientProxy) = 0;
     
     virtual IMachineAddress* getServerAddress() = 0;
     

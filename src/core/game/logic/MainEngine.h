@@ -60,6 +60,8 @@ private:
     int m_iEngineState;
     bool m_isSteam;
     
+    void handleGameServices();
+    
     void handleNonMoveInput();
     
     void activateSteam();
