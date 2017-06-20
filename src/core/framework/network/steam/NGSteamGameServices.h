@@ -15,8 +15,6 @@
 #include <string>
 #include <vector>
 
-class ISteamRemoteStorage;
-
 #define NG_STEAM_GAME_SERVICES (NGSteamGameServices::getInstance())
 
 #define STEAM_INIT_SUCCESS 1
@@ -114,7 +112,6 @@ private:
     
     CSteamID m_steamIDGameServerToJoin;
     
-    ISteamRemoteStorage* m_steamRemoteStorage;
     int32 m_nNumFilesInCloud;
     uint64 m_ulBytesQuota;
     uint64 m_ulAvailableBytes;
@@ -124,6 +121,7 @@ private:
     
     void refreshSteamCloudFileStats();
     
+    STEAM_CALLBACK(NGSteamGameServices, onGameOverlayActivated, GameOverlayActivated_t);
     STEAM_CALLBACK(NGSteamGameServices, onGameJoinRequested, GameRichPresenceJoinRequested_t);
     STEAM_CALLBACK(NGSteamGameServices, onIPCFailure, IPCFailure_t);
     STEAM_CALLBACK(NGSteamGameServices, onSteamShutdown, SteamShutdown_t);

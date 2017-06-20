@@ -21,11 +21,12 @@
 NGSteamClientHelper::NGSteamClientHelper(CSteamID serverSteamID, ProcessPacketFunc processPacketFunc, HandleNoResponseFunc handleNoResponseFunc, HandleConnectionResetFunc handleConnectionResetFunc) : IClientHelper(new NGSteamPacketHandler(false, processPacketFunc, handleNoResponseFunc, handleConnectionResetFunc)),
 m_eConnectedStatus(k_EClientNotConnected),
 m_serverSteamAddress(new NGSteamAddress(serverSteamID)),
-m_clientSteamAddress(new NGSteamAddress(SteamUser()->GetSteamID())),
+m_fTimeOfLastMsgClientBeginAuthentication(0.0f),
 m_unServerIP(0),
-m_usServerPort(0)
+m_usServerPort(0),
+m_hAuthTicket(k_HAuthTicketInvalid)
 {
-    m_name = std::string(SteamFriends()->GetFriendPersonaName(m_clientSteamAddress->getSteamID()));
+    m_name = std::string(SteamFriends()->GetFriendPersonaName(SteamUser()->GetSteamID()));
     
     LOG("Client %s is connecting to Game Server with Steam ID: %s", m_name.c_str(), m_serverSteamAddress->toString().c_str());
 }
@@ -37,8 +38,6 @@ NGSteamClientHelper::~NGSteamClientHelper()
         SteamUser()->CancelAuthTicket(m_hAuthTicket);
     }
     
-    m_hAuthTicket = k_HAuthTicketInvalid;
-    
     OutputMemoryBitStream packet;
     packet.write(k_EMsgClientLeavingServer);
     sendPacket(packet);
@@ -49,7 +48,6 @@ NGSteamClientHelper::~NGSteamClientHelper()
     }
     
     delete m_serverSteamAddress;
-    delete m_clientSteamAddress;
 }
 
 void NGSteamClientHelper::processSpecialPacket(uint32_t packetType, InputMemoryBitStream& inInputStream, IMachineAddress* inFromAddress)

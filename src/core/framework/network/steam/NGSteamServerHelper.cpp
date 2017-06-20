@@ -26,7 +26,7 @@ NGSteamServerHelper::NGSteamServerHelper(const char* inGameDir, const char* inVe
 m_inGameDir(inGameDir),
 m_getClientProxyFunc(inGetClientProxyFunc),
 m_handleClientDisconnectedFunc(inHandleClientDisconnectedFunc),
-m_serverSteamAddress(new NGSteamAddress(CSteamID())),
+m_serverSteamAddress(new NGSteamAddress()),
 m_isConnectedToSteam(false),
 m_outgoingPacketAddress(new NGSteamAddress())
 {
@@ -92,11 +92,7 @@ NGSteamServerHelper::~NGSteamServerHelper()
         }
     }
     
-    if (m_serverSteamAddress)
-    {
-        delete m_serverSteamAddress;
-    }
-    
+    delete m_serverSteamAddress;
     delete m_outgoingPacketAddress;
     
     // Notify Steam master server we are going offline

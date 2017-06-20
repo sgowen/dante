@@ -256,11 +256,20 @@ void NGSteamGameServices::refreshLANServers()
 
 bool NGSteamGameServices::writeFileToSteamCloud(const char *inFileName, const char *inData)
 {
-    bool ret = m_steamRemoteStorage->FileWrite(inFileName, inData, (int) strlen(inData));
-    
     refreshSteamCloudFileStats();
     
-    if (!ret)
+    bool ret = false;
+    int dataSize = (int) strlen(inData);
+    if (dataSize < m_ulAvailableBytes)
+    {
+        ret = SteamRemoteStorage()->FileWrite(inFileName, inData, dataSize);
+    }
+    
+    if (ret)
+    {
+        LOG("NGSteamGameServices: File written successfully to Steam Remote Storage");
+    }
+    else
     {
         LOG("NGSteamGameServices: Failed to write file!");
     }
@@ -274,19 +283,19 @@ std::string NGSteamGameServices::readFileFromSteamCloud(const char *inFileName)
     
     int32 numBytesRead = 0;
     
-    if (m_steamRemoteStorage->FileExists(inFileName))
+    if (SteamRemoteStorage()->FileExists(inFileName))
     {
-        int32 fileByteSize = m_steamRemoteStorage->GetFileSize(inFileName);
+        int32 fileByteSize = SteamRemoteStorage()->GetFileSize(inFileName);
         if (fileByteSize >= sizeof(temp))
         {
             LOG("NGSteamGameServices: File was larger than expected, removing it...");
             
             char c = 0;
-            m_steamRemoteStorage->FileWrite(inFileName, &c, 1);
+            SteamRemoteStorage()->FileWrite(inFileName, &c, 1);
         }
         else
         {
-            numBytesRead = m_steamRemoteStorage->FileRead(inFileName, temp, sizeof(temp) - 1);
+            numBytesRead = SteamRemoteStorage()->FileRead(inFileName, temp, sizeof(temp) - 1);
         }
     }
     
@@ -317,13 +326,25 @@ void NGSteamGameServices::refreshSteamCloudFileStats()
 {
     m_ulBytesQuota = 0;
     m_ulAvailableBytes = 0;
-    m_nNumFilesInCloud = m_steamRemoteStorage->GetFileCount();
-    m_steamRemoteStorage->GetQuota(&m_ulBytesQuota, &m_ulAvailableBytes);
+    m_nNumFilesInCloud = SteamRemoteStorage()->GetFileCount();
+    SteamRemoteStorage()->GetQuota(&m_ulBytesQuota, &m_ulAvailableBytes);
     
     LOG("Quota: %llu bytes, %llu bytes remaining", m_ulBytesQuota, m_ulAvailableBytes);
 }
 
 #pragma mark - STEAM_CALLBACK
+
+void NGSteamGameServices::onGameOverlayActivated(GameOverlayActivated_t *callback)
+{
+    if (callback->m_bActive)
+    {
+        LOG("Steam overlay now active");
+    }
+    else
+    {
+        LOG("Steam overlay now inactive");
+    }
+}
 
 void NGSteamGameServices::onGameJoinRequested(GameRichPresenceJoinRequested_t *pCallback)
 {
@@ -352,15 +373,15 @@ void NGSteamGameServices::onSteamShutdown(SteamShutdown_t *callback)
 
 NGSteamGameServices::NGSteamGameServices(const char* inGameDir) :
 m_gameDir(inGameDir),
-m_unServerIP(0),
-m_usServerPort(0),
 m_iNumServers(0),
 m_isRequestingServers(false),
 m_hServerListRequest(nullptr),
-m_steamRemoteStorage(nullptr),
+m_unServerIP(0),
+m_usServerPort(0),
+m_steamIDGameServerToJoin(CSteamID()),
+m_nNumFilesInCloud(0),
 m_ulBytesQuota(0),
 m_ulAvailableBytes(0),
-m_nNumFilesInCloud(0),
 m_iStatus(STEAM_UNINITIALIZED),
 m_isRequestingToJoinServer(false)
 {
@@ -423,10 +444,6 @@ m_isRequestingToJoinServer(false)
         m_iStatus = STEAM_INIT_FAIL_CONTROLLER_INIT;
         return;
     }
-    
-    m_steamRemoteStorage = SteamRemoteStorage();
-    
-    refreshSteamCloudFileStats();
     
     m_iStatus = STEAM_INIT_SUCCESS;
 }

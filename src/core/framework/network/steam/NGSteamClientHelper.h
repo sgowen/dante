@@ -44,12 +44,10 @@ private:
     
     EClientConnectionState m_eConnectedStatus;
     NGSteamAddress* m_serverSteamAddress;
-    NGSteamAddress* m_clientSteamAddress;
     std::string m_name;
     float m_fTimeOfLastMsgClientBeginAuthentication;
     
     // Server address data
-    CSteamID m_steamIDGameServer;
     uint32 m_unServerIP;
     uint16 m_usServerPort;
     HAuthTicket m_hAuthTicket;
