@@ -11,7 +11,9 @@
 
 #include "SuperpoweredSoundManager.h"
 
-void initializeWithSuperpoweredSoundManager(SuperpoweredSoundManager* superpoweredSoundManager, int sampleRate = 44100);
+void initializeAudioSystemsWithSuperpoweredSoundManager(SuperpoweredSoundManager* superpoweredSoundManager, int sampleRate = 44100);
+
+void deinitializeAudioSystems();
 
 const char * getBundlePathForSoundWithName(const char* soundName);
 
