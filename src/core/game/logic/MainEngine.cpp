@@ -184,7 +184,11 @@ void MainEngine::handleNonMoveInput()
     }
     else if (NG_SERVER)
     {
-        if (m_isSteam)
+        if (inputState->getMenuState() == MENU_STATE_ESCAPE)
+        {
+            disconnect();
+        }
+        else if (m_isSteam)
         {
             if (NG_SERVER->isConnected())
             {
@@ -192,40 +196,12 @@ void MainEngine::handleNonMoveInput()
                 joinServer();
             }
         }
-        else if (InputManager::getInstance()->isLiveMode())
-        {
-            if (inputState->getMenuState() == MENU_STATE_ESCAPE)
-            {
-                InputManager::getInstance()->setLiveMode(false);
-                InputManager::getInstance()->resetLiveInput();
-                disconnect();
-            }
-            else if (InputManager::getInstance()->isTimeToProcessInput())
-            {
-                if (m_serverIPAddress.length() == 0)
-                {
-                    m_serverIPAddress = std::string("localhost:9999");
-                    m_name = InputManager::getInstance()->getLiveInput();
-                    InputManager::getInstance()->setLiveMode(false);
-                    joinServer();
-                }
-                
-                InputManager::getInstance()->resetLiveInput();
-            }
-        }
         else
         {
-            if (inputState->getMenuState() == MENU_STATE_JOIN_LOCAL_SERVER)
+            if (NG_SERVER->isConnected())
             {
-                if (NG_SERVER->isConnected())
-                {
-                    m_iEngineState = MAIN_ENGINE_STATE_MAIN_MENU_ENTERING_USERNAME;
-                    InputManager::getInstance()->setLiveMode(true);
-                }
-            }
-            else if (inputState->getMenuState() == MENU_STATE_ESCAPE)
-            {
-                disconnect();
+                m_serverIPAddress = std::string("localhost:9999");
+                joinServer();
             }
         }
     }
@@ -245,11 +221,19 @@ void MainEngine::handleNonMoveInput()
                 m_name.clear();
                 m_iEngineState = MAIN_ENGINE_STATE_MAIN_MENU_ENTERING_USERNAME;
             }
-            else
+            else if (m_iEngineState == MAIN_ENGINE_STATE_MAIN_MENU_ENTERING_USERNAME)
             {
                 m_name = InputManager::getInstance()->getLiveInput();
                 InputManager::getInstance()->setLiveMode(false);
-                joinServer();
+                
+                if (m_serverIPAddress.length() == 0)
+                {
+                    startServer();
+                }
+                else
+                {
+                    joinServer();
+                }
             }
             
             InputManager::getInstance()->resetLiveInput();
@@ -267,14 +251,24 @@ void MainEngine::handleNonMoveInput()
         }
         else if (inputState->getMenuState() == MENU_STATE_START_SERVER)
         {
-            startServer();
+            if (m_isSteam)
+            {
+                startServer();
+            }
+            else
+            {
+                m_serverIPAddress.clear();
+                m_name.clear();
+                m_iEngineState = MAIN_ENGINE_STATE_MAIN_MENU_ENTERING_USERNAME;
+                InputManager::getInstance()->setLiveMode(true);
+            }
         }
         else if (inputState->getMenuState() == MENU_STATE_JOIN_LOCAL_SERVER)
         {
             if (!m_isSteam)
             {
-                m_iEngineState = MAIN_ENGINE_STATE_MAIN_MENU_JOINING_LOCAL_SERVER_BY_IP;
                 m_serverIPAddress.clear();
+                m_iEngineState = MAIN_ENGINE_STATE_MAIN_MENU_JOINING_LOCAL_SERVER_BY_IP;
                 InputManager::getInstance()->setLiveMode(true);
             }
         }
