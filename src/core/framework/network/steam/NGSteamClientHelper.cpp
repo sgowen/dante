@@ -67,7 +67,7 @@ void NGSteamClientHelper::processIncomingPackets()
     INetworkHelper::processIncomingPackets();
     
     // TODO P2P Auth
-//    // has the player list changed?
+    // has the player list changed?
 //    if (NG_SERVER)
 //    {
 //        // if i am the server owner i need to auth everyone who wants to play
@@ -146,40 +146,46 @@ void NGSteamClientHelper::processIncomingPackets()
 
 void NGSteamClientHelper::processSpecialPacket(uint32_t packetType, InputMemoryBitStream& inInputStream, IMachineAddress* inFromAddress)
 {
-    switch (packetType)
+    if (inFromAddress->getHash() == m_serverSteamAddress->getHash())
     {
-        case k_EMsgServerSendInfo:
+        switch (packetType)
         {
-            if (m_eConnectedStatus == k_EClientNotConnected)
+            case k_EMsgServerSendInfo:
             {
-                uint64 steamIDGameServer;
-                bool bVACSecure;
-                std::string serverName;
-                inInputStream.read(steamIDGameServer);
-                inInputStream.read(bVACSecure);
-                inInputStream.read(serverName);
-                
-                onReceiveServerInfo(CSteamID(steamIDGameServer), bVACSecure, serverName.c_str());
+                if (m_eConnectedStatus == k_EClientNotConnected)
+                {
+                    uint64 steamIDGameServer;
+                    bool bVACSecure;
+                    std::string serverName;
+                    inInputStream.read(steamIDGameServer);
+                    inInputStream.read(bVACSecure);
+                    inInputStream.read(serverName);
+                    
+                    onReceiveServerInfo(CSteamID(steamIDGameServer), bVACSecure, serverName.c_str());
+                }
             }
+                break;
+            case k_EMsgServerPassAuthentication:
+                m_eConnectedStatus = k_EClientConnectedAndAuthenticated;
+                // set information so our friends can join the lobby
+                updateRichPresenceConnectionInfo();
+                break;
+            case k_EMsgServerFailAuthentication:
+                LOG("Connection failure. Multiplayer authentication failed");
+                m_eConnectedStatus = k_EClientConnectionFailure;
+                break;
+            case k_EMsgServerExiting:
+                LOG("Server Shutting Down");
+                m_eConnectedStatus = k_EServerShuttingDown;
+                
+                m_steamP2PAuth->endGame();
+            default:
+                break;
         }
-            break;
-        case k_EMsgServerPassAuthentication:
-            m_eConnectedStatus = k_EClientConnectedAndAuthenticated;
-            // set information so our friends can join the lobby
-            updateRichPresenceConnectionInfo();
-            break;
-        case k_EMsgServerFailAuthentication:
-            LOG("Connection failure. Multiplayer authentication failed");
-            m_eConnectedStatus = k_EClientConnectionFailure;
-            break;
-        case k_EMsgServerExiting:
-            LOG("Server Shutting Down");
-            m_eConnectedStatus = k_EServerShuttingDown;
-            
-            m_steamP2PAuth->endGame();
-        default:
-            m_steamP2PAuth->handleMessage(packetType, inInputStream);
-            break;
+    }
+    else
+    {
+        m_steamP2PAuth->handleMessage(packetType, inInputStream);
     }
     
     updateState();
