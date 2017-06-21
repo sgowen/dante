@@ -22,7 +22,13 @@
 
 #include <assert.h>
 
-NGSteamServerHelper::NGSteamServerHelper(const char* inGameDir, const char* inVersionString, const char* inProductName, const char* inGameDescription, uint16 inAuthPort, uint16 inUpdaterPort, uint16 inPort, ProcessPacketFunc inProcessPacketFunc, HandleNoResponseFunc inHandleNoResponseFunc, HandleConnectionResetFunc inHandleConnectionResetFunc, GetClientProxyFunc inGetClientProxyFunc, HandleClientDisconnectedFunc inHandleClientDisconnectedFunc) : IServerHelper(new NGSteamPacketHandler(true, inProcessPacketFunc, inHandleNoResponseFunc, inHandleConnectionResetFunc), inGetClientProxyFunc, inHandleClientDisconnectedFunc),
+// UDP port for the server to listen on
+#define STEAM_SERVER_PORT 27015
+
+// UDP port for the master server updater to listen on
+#define STEAM_MASTER_SERVER_UPDATER_PORT 27016
+
+NGSteamServerHelper::NGSteamServerHelper(const char* inGameDir, const char* inVersionString, const char* inProductName, const char* inGameDescription, uint16 inPort, ProcessPacketFunc inProcessPacketFunc, HandleNoResponseFunc inHandleNoResponseFunc, HandleConnectionResetFunc inHandleConnectionResetFunc, GetClientProxyFunc inGetClientProxyFunc, HandleClientDisconnectedFunc inHandleClientDisconnectedFunc) : IServerHelper(new NGSteamPacketHandler(true, inProcessPacketFunc, inHandleNoResponseFunc, inHandleConnectionResetFunc), inGetClientProxyFunc, inHandleClientDisconnectedFunc),
 m_inGameDir(inGameDir),
 m_serverSteamAddress(new NGSteamAddress()),
 m_isConnectedToSteam(false),
@@ -32,7 +38,7 @@ m_outgoingPacketAddress(new NGSteamAddress())
     // for both Authentication (making sure users own games) and secure mode, VAC running in our game
     // and kicking users who are VAC banned
     
-    if (!SteamGameServer_Init(INADDR_ANY, inAuthPort, inPort, inUpdaterPort, eServerModeAuthenticationAndSecure, inVersionString))
+    if (!SteamGameServer_Init(INADDR_ANY, STEAM_SERVER_PORT, inPort, STEAM_MASTER_SERVER_UPDATER_PORT, eServerModeAuthenticationAndSecure, inVersionString))
     {
         LOG("SteamGameServer_Init call failed");
     }

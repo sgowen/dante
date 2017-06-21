@@ -77,10 +77,4 @@ enum EMessage
     k_EForceDWORD  = 0x7fffffff, 
 };
 
-// UDP port for the server to listen on
-#define STEAM_SERVER_PORT 27015
-
-// UDP port for the master server updater to listen on
-#define STEAM_MASTER_SERVER_UPDATER_PORT 27016
-
 #endif /* defined(__noctisgames__NGSteam__) */
