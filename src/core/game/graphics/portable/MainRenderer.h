@@ -31,8 +31,11 @@ public:
     void renderWorld(int engineState);
     
 private:
-    TextureWrapper* m_demo;
+    TextureWrapper* m_characters;
     TextureWrapper* m_misc;
+    TextureWrapper* m_bg1;
+    TextureWrapper* m_bg2;
+    TextureWrapper* m_cover;
     Font* m_font;
     
     void renderMainMenuSteamOffText();

@@ -17,6 +17,9 @@
 		BB09CE171DBD3779006A3E49 /* libSuperpoweredAudioOSX.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BB09CDDC1DBD3779006A3E49 /* libSuperpoweredAudioOSX.a */; };
 		BB09CE231DBD3779006A3E49 /* SuperpoweredOSXAudioIO.mm in Sources */ = {isa = PBXBuildFile; fileRef = BB09CDF21DBD3779006A3E49 /* SuperpoweredOSXAudioIO.mm */; };
 		BB09CE361DBD46B3006A3E49 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBCCA8461DB3469500452FA1 /* CoreMedia.framework */; };
+		BB125E101EFAF61F00917328 /* texture_003.ngt in Resources */ = {isa = PBXBuildFile; fileRef = BB125E0D1EFAF61F00917328 /* texture_003.ngt */; };
+		BB125E111EFAF61F00917328 /* texture_004.ngt in Resources */ = {isa = PBXBuildFile; fileRef = BB125E0E1EFAF61F00917328 /* texture_004.ngt */; };
+		BB125E121EFAF61F00917328 /* texture_005.ngt in Resources */ = {isa = PBXBuildFile; fileRef = BB125E0F1EFAF61F00917328 /* texture_005.ngt */; };
 		BB13BD471E58E04D0073C08F /* DDHidLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB13BD461E58E04D0073C08F /* DDHidLib.framework */; };
 		BB13BD521E58E7350073C08F /* DDHidLib.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = BB13BD461E58E04D0073C08F /* DDHidLib.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BB1E897B1EF4A81500B0D78A /* IPacketHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB1E89791EF4A81500B0D78A /* IPacketHandler.cpp */; };
@@ -277,6 +280,12 @@
 		BB09CDFA1DBD3779006A3E49 /* SuperpoweredtvOSAudioIO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SuperpoweredtvOSAudioIO.h; sourceTree = "<group>"; };
 		BB09CDFB1DBD3779006A3E49 /* SuperpoweredtvOSAudioIO.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SuperpoweredtvOSAudioIO.mm; sourceTree = "<group>"; };
 		BB09CDFC1DBD3779006A3E49 /* SuperpoweredWhoosh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SuperpoweredWhoosh.h; sourceTree = "<group>"; };
+		BB125E0D1EFAF61F00917328 /* texture_003.ngt */ = {isa = PBXFileReference; lastKnownFileType = file; path = texture_003.ngt; sourceTree = "<group>"; };
+		BB125E0E1EFAF61F00917328 /* texture_004.ngt */ = {isa = PBXFileReference; lastKnownFileType = file; path = texture_004.ngt; sourceTree = "<group>"; };
+		BB125E0F1EFAF61F00917328 /* texture_005.ngt */ = {isa = PBXFileReference; lastKnownFileType = file; path = texture_005.ngt; sourceTree = "<group>"; };
+		BB125E131EFAF62800917328 /* texture_003.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = texture_003.png; sourceTree = "<group>"; };
+		BB125E141EFAF62800917328 /* texture_004.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = texture_004.png; sourceTree = "<group>"; };
+		BB125E151EFAF62900917328 /* texture_005.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = texture_005.png; sourceTree = "<group>"; };
 		BB13BD461E58E04D0073C08F /* DDHidLib.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = DDHidLib.framework; sourceTree = "<group>"; };
 		BB1E89791EF4A81500B0D78A /* IPacketHandler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = IPacketHandler.cpp; sourceTree = "<group>"; };
 		BB1E897A1EF4A81500B0D78A /* IPacketHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IPacketHandler.h; sourceTree = "<group>"; };
@@ -1214,6 +1223,12 @@
 				BB5833F51EEDDD440084DA20 /* texture_001.png */,
 				BB5833E91EEDDD330084DA20 /* texture_002.ngt */,
 				BB5833F61EEDDD440084DA20 /* texture_002.png */,
+				BB125E0D1EFAF61F00917328 /* texture_003.ngt */,
+				BB125E131EFAF62800917328 /* texture_003.png */,
+				BB125E0E1EFAF61F00917328 /* texture_004.ngt */,
+				BB125E141EFAF62800917328 /* texture_004.png */,
+				BB125E0F1EFAF61F00917328 /* texture_005.ngt */,
+				BB125E151EFAF62900917328 /* texture_005.png */,
 			);
 			path = textures;
 			sourceTree = "<group>";
@@ -1879,14 +1894,17 @@
 				BB052CCB1EBA8ADD007FA789 /* shader_002_frag.ngs in Resources */,
 				BB5833EE1EEDDD330084DA20 /* sound_003.wav in Resources */,
 				BB5833F11EEDDD330084DA20 /* texture_001.ngt in Resources */,
+				BB125E111EFAF61F00917328 /* texture_004.ngt in Resources */,
 				BB052CC91EBA8ADD007FA789 /* shader_001_vert.ngs in Resources */,
 				BB5833F01EEDDD330084DA20 /* sound_005.wav in Resources */,
 				BB5833EB1EEDDD330084DA20 /* music_001.wav in Resources */,
 				BB5833ED1EEDDD330084DA20 /* sound_002.wav in Resources */,
 				BB44C93C1DB03A7E003E633F /* rapidjson_readme.txt in Resources */,
 				BB5833F31EEDDD330084DA20 /* texture_002.ngt in Resources */,
+				BB125E121EFAF61F00917328 /* texture_005.ngt in Resources */,
 				BB052CCF1EBA8ADD007FA789 /* shader_003_frag.ngs in Resources */,
 				BB052CC71EBA8ADD007FA789 /* shader_001_frag.ngs in Resources */,
+				BB125E101EFAF61F00917328 /* texture_003.ngt in Resources */,
 				BB5833741EEDBBC50084DA20 /* steam_appid.txt in Resources */,
 				BB5833EC1EEDDD330084DA20 /* sound_001.wav in Resources */,
 				BB5833EF1EEDDD330084DA20 /* sound_004.wav in Resources */,
