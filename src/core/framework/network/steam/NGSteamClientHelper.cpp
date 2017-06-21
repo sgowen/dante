@@ -22,10 +22,11 @@
 #include "NetworkManagerServer.h"
 #include "NGSteamServerHelper.h"
 
-NGSteamClientHelper::NGSteamClientHelper(CSteamID serverSteamID, ProcessPacketFunc processPacketFunc, HandleNoResponseFunc handleNoResponseFunc, HandleConnectionResetFunc handleConnectionResetFunc) : IClientHelper(new NGSteamPacketHandler(false, processPacketFunc, handleNoResponseFunc, handleConnectionResetFunc)),
+NGSteamClientHelper::NGSteamClientHelper(CSteamID inServerSteamID, GetPlayerAddressHashFunc inGetPlayerAddressHashFunc, ProcessPacketFunc inProcessPacketFunc, HandleNoResponseFunc inHandleNoResponseFunc, HandleConnectionResetFunc inHandleConnectionResetFunc) : IClientHelper(new NGSteamPacketHandler(false, inProcessPacketFunc, inHandleNoResponseFunc, inHandleConnectionResetFunc)),
 m_steamP2PAuth(new NGSteamP2PAuth(this)),
+m_getPlayerAddressHashFunc(inGetPlayerAddressHashFunc),
 m_eConnectedStatus(k_EClientNotConnected),
-m_serverSteamAddress(new NGSteamAddress(serverSteamID)),
+m_serverSteamAddress(new NGSteamAddress(inServerSteamID)),
 m_fTimeOfLastMsgClientBeginAuthentication(0.0f),
 m_unServerIP(0),
 m_usServerPort(0),
@@ -54,6 +55,11 @@ NGSteamClientHelper::~NGSteamClientHelper()
     delete m_steamP2PAuth;
     m_steamP2PAuth = nullptr;
     
+    if (m_eConnectedStatus == k_EClientConnectedAndAuthenticated)
+    {
+        SteamUser()->TerminateGameConnection(m_unServerIP, m_usServerPort);
+    }
+    
     if (m_serverSteamAddress->getSteamID().IsValid())
     {
         SteamNetworking()->CloseP2PSessionWithUser(m_serverSteamAddress->getSteamID());
@@ -66,82 +72,90 @@ void NGSteamClientHelper::processIncomingPackets()
 {
     INetworkHelper::processIncomingPackets();
     
-    // TODO P2P Auth
     // has the player list changed?
-//    if (NG_SERVER)
-//    {
-//        // if i am the server owner i need to auth everyone who wants to play
-//        // assume i am in slot 0, so start at slot 1
-//        for (uint32 i = 0; i < MAX_NUM_PLAYERS_PER_SERVER; ++i)
-//        {
-//            CSteamID steamIDNew(pUpdateData->GetPlayerSteamID(i));
-//            if (steamIDNew == SteamUser()->GetSteamID())
-//            {
-//                LOG("Server player slot 0 is not server owner.");
-//            }
-//            else if (steamIDNew != m_rgSteamIDPlayers[i])
-//            {
-//                if (m_rgSteamIDPlayers[i].IsValid())
-//                {
-//                    m_steamP2PAuth->playerDisconnect(i);
-//                }
-//                if (steamIDNew.IsValid())
-//                {
-//                    m_steamP2PAuth->registerPlayer(i, steamIDNew);
-//                }
-//            }
-//        }
-//    }
-//    else
-//    {
-//        // i am just a client, i need to auth the game owner (slot 0)
-//        CSteamID steamIDNew(pUpdateData->GetPlayerSteamID(0));
-//        if (steamIDNew == SteamUser()->GetSteamID())
-//        {
-//            LOG("Server player slot 0 is not server owner.");
-//        }
-//        else if (steamIDNew != m_rgSteamIDPlayers[0])
-//        {
-//            if (m_rgSteamIDPlayers[0].IsValid())
-//            {
-//                LOG("Server player slot 0 has disconnected - but thats the server owner.");
-//                m_steamP2PAuth->playerDisconnect(0);
-//            }
-//            if (steamIDNew.IsValid())
-//            {
-//                m_steamP2PAuth->startAuthPlayer(0, steamIDNew);
-//            }
-//        }
-//    }
-//    
-//    if (NG_SERVER)
-//    {
-//        // Now if we are the owner of the game, lets make sure all of our players are legit.
-//        // if they are not, we tell the server to kick them off
-//        // Start at 1 to skip myself
-//        for (int i = 1; i < MAX_NUM_PLAYERS_PER_SERVER; i++)
-//        {
-//            if (m_steamP2PAuth->m_rgpP2PAuthPlayer[i] && !m_steamP2PAuth->m_rgpP2PAuthPlayer[i]->isAuthOk())
-//            {
-//                NGSteamServerHelper* helper = static_cast<NGSteamServerHelper*>(NG_SERVER->getServerHelper());
-//                helper->kickPlayerOffServer(m_steamP2PAuth->m_rgpP2PAuthPlayer[i]->m_steamID);
-//            }
-//        }
-//    }
-//    else
-//    {
-//        // If we are not the owner of the game, lets make sure the game owner is legit
-//        // if he is not, we leave the game
-//        if (m_steamP2PAuth->m_rgpP2PAuthPlayer[0])
-//        {
-//            if (!m_steamP2PAuth->m_rgpP2PAuthPlayer[0]->isAuthOk())
-//            {
-//                // leave the game
-//                m_eConnectedStatus = k_EServerIsNotAuthorized;
-//                updateState();
-//            }
-//        }
-//    }
+    if (NG_SERVER)
+    {
+        // if i am the server owner i need to auth everyone who wants to play
+        // assume i am in slot 0, so start at slot 1
+        for (uint32_t i = 1; i < MAX_NUM_PLAYERS_PER_SERVER; ++i)
+        {
+            CSteamID steamIDNew(m_getPlayerAddressHashFunc(i));
+            if (steamIDNew == SteamUser()->GetSteamID())
+            {
+                LOG("Server player slot 0 is not server owner.");
+            }
+            else if (steamIDNew != m_rgSteamIDPlayers[i])
+            {
+                if (m_rgSteamIDPlayers[i].IsValid())
+                {
+                    m_steamP2PAuth->playerDisconnect(i);
+                }
+                if (steamIDNew.IsValid())
+                {
+                    m_steamP2PAuth->registerPlayer(i, steamIDNew);
+                }
+            }
+        }
+    }
+    else
+    {
+        // i am just a client, i need to auth the game owner (slot 0)
+        CSteamID steamIDNew(m_getPlayerAddressHashFunc(0));
+        if (steamIDNew == SteamUser()->GetSteamID())
+        {
+            LOG("Server player slot 0 is not server owner.");
+        }
+        else if (steamIDNew != m_rgSteamIDPlayers[0])
+        {
+            if (m_rgSteamIDPlayers[0].IsValid())
+            {
+                LOG("Server player slot 0 has disconnected - but thats the server owner.");
+                m_steamP2PAuth->playerDisconnect(0);
+            }
+            if (steamIDNew.IsValid())
+            {
+                m_steamP2PAuth->startAuthPlayer(0, steamIDNew);
+            }
+        }
+    }
+    
+    for (uint32_t i = 0; i < MAX_NUM_PLAYERS_PER_SERVER; ++i)
+    {
+        // Update steamid array with data from server
+        // This is actually sort of hacky...
+        // It only works because we know that the hash of a NGSteamAddress
+        // object is actually the CSteamID in uint64 form
+        m_rgSteamIDPlayers[i].SetFromUint64(m_getPlayerAddressHashFunc(i));
+    }
+    
+    if (NG_SERVER)
+    {
+        // Now if we are the owner of the game, lets make sure all of our players are legit.
+        // if they are not, we tell the server to kick them off
+        // Start at 1 to skip myself
+        for (int i = 1; i < MAX_NUM_PLAYERS_PER_SERVER; ++i)
+        {
+            if (m_steamP2PAuth->m_rgpP2PAuthPlayer[i] && !m_steamP2PAuth->m_rgpP2PAuthPlayer[i]->isAuthOk())
+            {
+                NGSteamServerHelper* helper = static_cast<NGSteamServerHelper*>(NG_SERVER->getServerHelper());
+                helper->kickPlayerOffServer(m_steamP2PAuth->m_rgpP2PAuthPlayer[i]->m_steamID);
+            }
+        }
+    }
+    else
+    {
+        // If we are not the owner of the game, lets make sure the game owner is legit
+        // if he is not, we leave the game
+        if (m_steamP2PAuth->m_rgpP2PAuthPlayer[0])
+        {
+            if (!m_steamP2PAuth->m_rgpP2PAuthPlayer[0]->isAuthOk())
+            {
+                // leave the game
+                m_eConnectedStatus = k_EServerIsNotAuthorized;
+                updateState();
+            }
+        }
+    }
 }
 
 void NGSteamClientHelper::processSpecialPacket(uint32_t packetType, InputMemoryBitStream& inInputStream, IMachineAddress* inFromAddress)
@@ -209,7 +223,7 @@ void NGSteamClientHelper::handleUninitialized()
             if (time > m_fTimeOfLastMsgClientBeginAuthentication + 7.0f)
             {
                 char rgchToken[1024];
-                uint32 unTokenLen = 0;
+                uint32_t unTokenLen = 0;
                 m_hAuthTicket = SteamUser()->GetAuthSessionTicket(rgchToken, sizeof(rgchToken), &unTokenLen);
                 
                 Steamworks_TestSecret();

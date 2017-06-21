@@ -184,7 +184,15 @@ void MainEngine::handleNonMoveInput()
     }
     else if (NG_SERVER)
     {
-        if (InputManager::getInstance()->isLiveMode())
+        if (m_isSteam)
+        {
+            if (NG_SERVER->isConnected())
+            {
+                m_serverSteamID = static_cast<NGSteamAddress*>(NG_SERVER->getServerAddress())->getSteamID();
+                joinServer();
+            }
+        }
+        else if (InputManager::getInstance()->isLiveMode())
         {
             if (inputState->getMenuState() == MENU_STATE_ESCAPE)
             {
@@ -211,16 +219,8 @@ void MainEngine::handleNonMoveInput()
             {
                 if (NG_SERVER->isConnected())
                 {
-                    if (m_isSteam)
-                    {
-                        m_serverSteamID = static_cast<NGSteamAddress*>(NG_SERVER->getServerAddress())->getSteamID();
-                        joinServer();
-                    }
-                    else
-                    {
-                        m_iEngineState = MAIN_ENGINE_STATE_MAIN_MENU_ENTERING_USERNAME;
-                        InputManager::getInstance()->setLiveMode(true);
-                    }
+                    m_iEngineState = MAIN_ENGINE_STATE_MAIN_MENU_ENTERING_USERNAME;
+                    InputManager::getInstance()->setLiveMode(true);
                 }
             }
             else if (inputState->getMenuState() == MENU_STATE_ESCAPE)
@@ -242,6 +242,7 @@ void MainEngine::handleNonMoveInput()
             if (m_iEngineState == MAIN_ENGINE_STATE_MAIN_MENU_JOINING_LOCAL_SERVER_BY_IP)
             {
                 m_serverIPAddress = InputManager::getInstance()->getLiveInput();
+                m_name.clear();
                 m_iEngineState = MAIN_ENGINE_STATE_MAIN_MENU_ENTERING_USERNAME;
             }
             else
@@ -273,6 +274,7 @@ void MainEngine::handleNonMoveInput()
             if (!m_isSteam)
             {
                 m_iEngineState = MAIN_ENGINE_STATE_MAIN_MENU_JOINING_LOCAL_SERVER_BY_IP;
+                m_serverIPAddress.clear();
                 InputManager::getInstance()->setLiveMode(true);
             }
         }
@@ -374,17 +376,17 @@ void MainEngine::joinServer()
     
     InstanceManager::createClientWorld();
     
+    IClientHelper* clientHelper = nullptr;
     if (m_isSteam)
     {
-        NetworkManagerClient::create(new NGSteamClientHelper(m_serverSteamID, NG_CLIENT_CALLBACKS), FRAME_RATE, INPUT_MANAGER_CALLBACKS);
+        clientHelper = new NGSteamClientHelper(m_serverSteamID, InstanceManager::staticGetPlayerAddressHashOnClient, NG_CLIENT_CALLBACKS);
     }
     else
     {
-        NetworkManagerClient::create(new SocketClientHelper(m_serverIPAddress, m_name, CLIENT_PORT, NG_CLIENT_CALLBACKS), FRAME_RATE, INPUT_MANAGER_CALLBACKS);
-        
-        m_serverIPAddress.clear();
-        m_name.clear();
+        clientHelper = new SocketClientHelper(m_serverIPAddress, m_name, CLIENT_PORT, NG_CLIENT_CALLBACKS);
     }
+    
+    NetworkManagerClient::create(clientHelper, FRAME_RATE, INPUT_MANAGER_CALLBACKS);
     
     InputManager::getInstance()->setConnected(NG_CLIENT);
 }

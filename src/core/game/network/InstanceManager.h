@@ -15,18 +15,19 @@ class World;
 class InstanceManager
 {
 public:
-    static void staticHandleEntityCreatedOnClient(Entity* inEntity);
-    static void staticHandleEntityDeletedOnClient(Entity* inEntity);
-    
-    static void staticHandleEntityCreatedOnServer(Entity* inEntity);
-    static void staticHandleEntityDeletedOnServer(Entity* inEntity);
-    
     static void createClientWorld();
     static void createServerWorld();
     static void destroyClientWorld();
     static void destroyServerWorld();
     static World* getClientWorld();
     static World* getServerWorld();
+    
+    static void staticHandleEntityCreatedOnClient(Entity* inEntity);
+    static void staticHandleEntityDeletedOnClient(Entity* inEntity);
+    static uint64_t staticGetPlayerAddressHashOnClient(int inPlayerIndex);
+    
+    static void staticHandleEntityCreatedOnServer(Entity* inEntity);
+    static void staticHandleEntityDeletedOnServer(Entity* inEntity);
     
 private:
     static World* s_clientWorldInstance;

@@ -48,7 +48,7 @@ bool SocketAddress::operator==(const SocketAddress& inOther) const
     return (m_sockAddr.sa_family == AF_INET && getAsSockAddrIn()->sin_port == inOther.getAsSockAddrIn()->sin_port) && (getIP4Ref() == inOther.getIP4Ref());
 }
 
-size_t SocketAddress::getHash() const
+uint64_t SocketAddress::getHash() const
 {
     return (getIP4Ref()) | ((static_cast<uint32_t>(getAsSockAddrIn()->sin_port)) <<13) | m_sockAddr.sa_family;
 }

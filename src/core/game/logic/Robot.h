@@ -54,6 +54,10 @@ public:
     
     void takeDamage();
     
+    void setAddressHash(uint64_t addressHash);
+    
+    uint64_t getAddressHash() const;
+    
     void setPlayerId(uint32_t inPlayerId);
     
     uint32_t getPlayerId() const;
@@ -94,8 +98,9 @@ private:
     bool m_isJumping;
     bool m_isSprinting;
     
-    std::string m_playerName;
+    uint64_t m_iAddressHash;
     uint32_t m_iPlayerId;
+    std::string m_playerName;
     
     void processMove(const Move& inMove);
     

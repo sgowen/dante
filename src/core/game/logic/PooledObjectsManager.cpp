@@ -11,8 +11,10 @@
 #include "PooledObjectsManager.h"
 
 #include "InputState.h"
+#include "MathUtil.h"
+#include "FrameworkConstants.h"
 
-#define POOL_SIZE 512
+#define POOL_SIZE MAX(NETWORK_SERVER_TIMEOUT, NETWORK_CLIENT_TIMEOUT) * (MAX_NUM_PLAYERS_PER_SERVER + 1) * 60
 
 PooledObjectsManager* PooledObjectsManager::getInstance()
 {

@@ -27,7 +27,7 @@ SocketServerHelper::~SocketServerHelper()
 {
     for (int i = 0; i < MAX_NUM_PLAYERS_PER_SERVER; ++i)
     {
-        ClientProxy* clientProxy = m_getClientProxyFunc(i + 1);
+        ClientProxy* clientProxy = m_getClientProxyFunc(i);
         if (clientProxy)
         {
             SocketAddress* userAddress = static_cast<SocketAddress*>(clientProxy->getMachineAddress());
@@ -54,7 +54,7 @@ void SocketServerHelper::processSpecialPacket(uint32_t packetType, InputMemoryBi
             bool isFound = false;
             for (int i = 0; i < MAX_NUM_PLAYERS_PER_SERVER; ++i)
             {
-                ClientProxy* clientProxy = m_getClientProxyFunc(i + 1);
+                ClientProxy* clientProxy = m_getClientProxyFunc(i);
                 if (clientProxy)
                 {
                     SocketAddress* userAddress = static_cast<SocketAddress*>(clientProxy->getMachineAddress());

@@ -143,6 +143,7 @@ void Robot::read(InputMemoryBitStream& inInputStream)
     inInputStream.read(stateBit);
     if (stateBit)
     {
+        inInputStream.read(m_iAddressHash);
         inInputStream.read(m_iPlayerId);
         inInputStream.read(m_playerName);
         readState |= ROBT_PlayerInfo;
@@ -225,6 +226,7 @@ uint32_t Robot::write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtySta
     if (inDirtyState & ROBT_PlayerInfo)
     {
         inOutputStream.write((bool)true);
+        inOutputStream.write(m_iAddressHash);
         inOutputStream.write(m_iPlayerId);
         inOutputStream.write(m_playerName);
         
@@ -309,6 +311,16 @@ void Robot::takeDamage()
         // tell the world our health dropped
         NG_SERVER->setStateDirty(getID(), ROBT_Health);
     }
+}
+
+void Robot::setAddressHash(uint64_t addressHash)
+{
+    m_iAddressHash = addressHash;
+}
+
+uint64_t Robot::getAddressHash() const
+{
+    return m_iAddressHash;
 }
 
 void Robot::setPlayerId(uint32_t inPlayerId)

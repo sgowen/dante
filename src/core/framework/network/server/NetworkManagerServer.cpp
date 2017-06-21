@@ -68,9 +68,9 @@ void NetworkManagerServer::staticHandleConnectionReset(IMachineAddress* inFromAd
     NG_SERVER->handleConnectionReset(inFromAddress);
 }
 
-ClientProxy* NetworkManagerServer::staticGetClientProxy(int inPlayerId)
+ClientProxy* NetworkManagerServer::staticGetClientProxy(int inPlayerIndex)
 {
-    return NG_SERVER->getClientProxy(inPlayerId);
+    return NG_SERVER->getClientProxy(inPlayerIndex + 1);
 }
 
 void NetworkManagerServer::staticHandleClientDisconnected(ClientProxy* inClientProxy)

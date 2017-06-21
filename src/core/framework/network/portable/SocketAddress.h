@@ -34,7 +34,7 @@ public:
     
     bool operator==(const SocketAddress& inOther) const;
     
-    virtual size_t getHash() const;
+    virtual uint64_t getHash() const;
     
     uint32_t getSize() const;
     

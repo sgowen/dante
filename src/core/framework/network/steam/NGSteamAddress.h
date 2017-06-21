@@ -24,7 +24,7 @@ public:
     
     virtual IMachineAddress* createCopy();
     
-    virtual size_t getHash() const;
+    virtual uint64_t getHash() const;
     
     virtual std::string toString() const;
     

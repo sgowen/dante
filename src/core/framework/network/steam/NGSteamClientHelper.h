@@ -18,10 +18,12 @@
 class NGSteamP2PAuth;
 class NGSteamAddress;
 
+typedef uint64_t (*GetPlayerAddressHashFunc)(int inPlayerIndex);
+
 class NGSteamClientHelper : public IClientHelper
 {
 public:
-    NGSteamClientHelper(CSteamID serverSteamID, ProcessPacketFunc processPacketFunc, HandleNoResponseFunc handleNoResponseFunc, HandleConnectionResetFunc handleConnectionResetFunc);
+    NGSteamClientHelper(CSteamID serverSteamID, GetPlayerAddressHashFunc getPlayerAddressHashFunc, ProcessPacketFunc processPacketFunc, HandleNoResponseFunc handleNoResponseFunc, HandleConnectionResetFunc handleConnectionResetFunc);
     
     virtual ~NGSteamClientHelper();
     
@@ -48,6 +50,7 @@ private:
     };
     
     NGSteamP2PAuth* m_steamP2PAuth;
+    GetPlayerAddressHashFunc m_getPlayerAddressHashFunc;
     EClientConnectionState m_eConnectedStatus;
     NGSteamAddress* m_serverSteamAddress;
     std::string m_name;
@@ -56,7 +59,7 @@ private:
     CSteamID m_rgSteamIDPlayers[MAX_NUM_PLAYERS_PER_SERVER];
     
     // Server address data
-    uint32 m_unServerIP;
+    uint32_t m_unServerIP;
     uint16 m_usServerPort;
     HAuthTicket m_hAuthTicket;
     

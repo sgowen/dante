@@ -12,6 +12,7 @@
 
 #include "Entity.h"
 #include "World.h"
+#include "Robot.h"
 
 #include <assert.h>
 
@@ -72,6 +73,22 @@ void InstanceManager::staticHandleEntityDeletedOnClient(Entity* inEntity)
     {
         InstanceManager::getClientWorld()->removeEntity(inEntity);
     }
+}
+
+uint64_t InstanceManager::staticGetPlayerAddressHashOnClient(int inPlayerIndex)
+{
+    uint64_t ret = 0;
+    
+    if (InstanceManager::getClientWorld())
+    {
+        Robot* robot = InstanceManager::getClientWorld()->getRobotWithPlayerId(inPlayerIndex + 1);
+        if (robot)
+        {
+            ret = robot->getAddressHash();
+        }
+    }
+    
+    return ret;
 }
 
 void InstanceManager::staticHandleEntityCreatedOnServer(Entity* inEntity)

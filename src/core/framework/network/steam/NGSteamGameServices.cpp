@@ -116,6 +116,8 @@ void NGSteamGameServices::initiateServerConnection(CSteamID steamIDGameServer)
 {
     m_steamIDGameServerToJoin = steamIDGameServer;
     
+    m_gameServerPing.cancelPing();
+    
     m_isRequestingToJoinServer = true;
 }
 
