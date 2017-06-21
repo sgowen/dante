@@ -163,7 +163,8 @@ void NetworkManagerClient::handleNoResponse()
 {
     float time = Timing::getInstance()->getFrameStartTime();
     
-    if (time > m_fLastServerCommunicationTimestamp + NETWORK_SERVER_TIMEOUT)
+    float timeout = m_state == NCS_Uninitialized ? NETWORK_CONNECT_TO_SERVER_TIMEOUT : NETWORK_SERVER_TIMEOUT;
+    if (time > m_fLastServerCommunicationTimestamp + timeout)
     {
         m_state = NCS_Disconnected;
     }
