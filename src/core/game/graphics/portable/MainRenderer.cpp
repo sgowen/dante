@@ -437,28 +437,31 @@ void MainRenderer::renderText(const std::string& inStr, const Vector2& origin, c
 
 void MainRenderer::updateCamera()
 {
-    // TODO, eventually account for potentially multiple players on a single client machine
-    Robot* player = InstanceManager::staticGetPlayerRobotForIDOnClient(1);
-    
     m_camBounds->getLowerLeft().set(0, 0);
     m_camBounds->setWidth(CAM_WIDTH);
     m_camBounds->setHeight(CAM_HEIGHT);
     
-    if (player)
+    if (NG_CLIENT && NG_CLIENT->getState() == NCS_Welcomed)
     {
-        // Adjust camera based on the player position
+        // TODO, eventually account for potentially multiple players on a single client machine
+        Robot* player = InstanceManager::staticGetPlayerRobotForIDOnClient(NG_CLIENT->getPlayerId());
         
-        float pX = player->getPosition().getX();
-        float pY = player->getPosition().getY();
-        
-        static float twoThirds = 2.0f / 3.0f;
-        
-        float x = pX - CAM_WIDTH * twoThirds;
-        x = clamp(x, CAM_WIDTH * 2, 0);
-        
-        float y = pY - CAM_HEIGHT * twoThirds;
-        y = clamp(y, GAME_HEIGHT - CAM_HEIGHT, 0);
-        
-        m_camBounds->getLowerLeft().set(x, y);
+        if (player)
+        {
+            // Adjust camera based on the player position
+            
+            float pX = player->getPosition().getX();
+            float pY = player->getPosition().getY();
+            
+            static float twoThirds = 2.0f / 3.0f;
+            
+            float x = pX - CAM_WIDTH * twoThirds;
+            x = clamp(x, CAM_WIDTH * 2, 0);
+            
+            float y = pY - CAM_HEIGHT * twoThirds;
+            y = clamp(y, GAME_HEIGHT - CAM_HEIGHT, 0);
+            
+            m_camBounds->getLowerLeft().set(x, y);
+        }
     }
 }

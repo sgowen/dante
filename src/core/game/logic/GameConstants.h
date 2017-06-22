@@ -53,7 +53,7 @@
 #define GRID_CELL_SIZE 0.140625f
 
 // these values are temporary, the real game will have dynamic widths and heights
-#define GAME_WIDTH CAM_WIDTH * 3.0f // meters
+#define GAME_WIDTH CAM_WIDTH * 2.0f // meters
 #define GAME_HEIGHT 16.0f // meters
 #define GROUND_TOP 1.8f
 
