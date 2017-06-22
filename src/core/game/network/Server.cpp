@@ -124,7 +124,8 @@ void Server::spawnRobotForPlayer(int inPlayerId, std::string inPlayerName)
     Robot* robot = static_cast<Robot*>(FWInstanceManager::getServerEntityRegistry()->createEntity(NETWORK_TYPE_Robot));
     robot->setPlayerId(inPlayerId);
     robot->setPlayerName(inPlayerName);
-    robot->setPosition(Vector2(8.f - static_cast<float>(inPlayerId), 7.0f));
+    float posX = (rand() % static_cast<int>(GAME_WIDTH - robot->getWidth() * 2)) + (robot->getWidth() * 2);
+    robot->setPosition(Vector2(posX - static_cast<float>(inPlayerId), 8.0f));
     
     static Color Red(1.0f, 0.0f, 0.0f, 1);
     static Color Green(0.0f, 1.0f, 0.0f, 1);

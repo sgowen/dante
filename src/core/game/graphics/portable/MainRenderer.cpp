@@ -453,12 +453,10 @@ void MainRenderer::updateCamera()
             float pX = player->getPosition().getX();
             float pY = player->getPosition().getY();
             
-            static float twoThirds = 2.0f / 3.0f;
-            
-            float x = pX - CAM_WIDTH * twoThirds;
+            float x = pX - CAM_WIDTH * 0.5f;
             x = clamp(x, CAM_WIDTH * 2, 0);
             
-            float y = pY - CAM_HEIGHT * twoThirds;
+            float y = pY - CAM_HEIGHT * 0.5f;
             y = clamp(y, GAME_HEIGHT - CAM_HEIGHT, 0);
             
             m_camBounds->getLowerLeft().set(x, y);
