@@ -60,6 +60,8 @@ void SpacePirate::update()
         bool old_isGrounded = m_isGrounded;
         bool old_isFalling = m_isFalling;
         
+        processAI();
+        
         updateInternal(timing->getDeltaTime());
         
         if (!oldAcceleration.isEqualTo(getAcceleration())
@@ -103,6 +105,7 @@ void SpacePirate::read(InputMemoryBitStream& inInputStream)
         inInputStream.read(m_position.getYRef());
         
         inInputStream.read(m_isFacingLeft);
+        inInputStream.read(m_isJumping);
         
         readState |= SPCP_Pose;
     }
@@ -117,8 +120,16 @@ void SpacePirate::read(InputMemoryBitStream& inInputStream)
     inInputStream.read(stateBit);
     if (stateBit)
     {
-        inInputStream.read(m_iHealth, 4); // Support up to 15 health points, for now...
+        inInputStream.read(m_iHealth);
         readState |= SPCP_Health;
+    }
+    
+    inInputStream.read(stateBit);
+    if (stateBit)
+    {
+        inInputStream.read(m_fWidth);
+        inInputStream.read(m_fHeight);
+        readState |= SPCP_Size;
     }
 }
 
@@ -142,6 +153,7 @@ uint32_t SpacePirate::write(OutputMemoryBitStream& inOutputStream, uint32_t inDi
         inOutputStream.write(m_position.getY());
         
         inOutputStream.write((bool)m_isFacingLeft);
+        inOutputStream.write((bool)m_isJumping);
         
         writtenState |= SPCP_Pose;
     }
@@ -167,9 +179,23 @@ uint32_t SpacePirate::write(OutputMemoryBitStream& inOutputStream, uint32_t inDi
     {
         inOutputStream.write((bool)true);
         
-        inOutputStream.write(m_iHealth, 4); // Support up to 15 health points, for now...
+        inOutputStream.write(m_iHealth);
         
         writtenState |= SPCP_Health;
+    }
+    else
+    {
+        inOutputStream.write((bool)false);
+    }
+    
+    if (inDirtyState & SPCP_Size)
+    {
+        inOutputStream.write((bool)true);
+        
+        inOutputStream.write(m_fWidth);
+        inOutputStream.write(m_fHeight);
+        
+        writtenState |= SPCP_Size;
     }
     else
     {
@@ -179,29 +205,44 @@ uint32_t SpacePirate::write(OutputMemoryBitStream& inOutputStream, uint32_t inDi
     return writtenState;
 }
 
-void SpacePirate::init(float x, float y, float speed)
+void SpacePirate::init(float x, float y, float speed, int scale, uint8_t health)
 {
     setPosition(Vector2(x, y));
     m_fSpeed = speed;
+    
+    m_fWidth *= scale;
+    m_fHeight *= scale;
+    
+    resetBounds(m_fWidth, m_fHeight);
+    
+    m_iHealth = health;
+    m_fStartingHealth = m_iHealth;
 }
 
-void SpacePirate::takeDamage()
+void SpacePirate::takeDamage(bool isHeadshot)
 {
-    if (m_isServer)
+    if (!m_isServer)
     {
-        m_iHealth--;
-        
-        if (m_iHealth <= 0)
-        {
-            requestDeletion();
-        }
-        
-        // tell the world our health dropped
-        NG_SERVER->setStateDirty(getID(), SPCP_Health);
+        return;
     }
+    
+    m_iHealth -= isHeadshot ? 8 : 1;
+    if (m_iHealth > m_fStartingHealth)
+    {
+        // We are using unsigned values for health
+        m_iHealth = 0;
+    }
+    
+    if (m_iHealth == 0)
+    {
+        requestDeletion();
+    }
+    
+    // tell the world our health dropped
+    NG_SERVER->setStateDirty(getID(), SPCP_Health);
 }
 
-int SpacePirate::getHealth()
+uint8_t SpacePirate::getHealth()
 {
     return m_iHealth;
 }
@@ -216,6 +257,34 @@ bool SpacePirate::isFacingLeft()
     return m_isFacingLeft;
 }
 
+void SpacePirate::processAI()
+{
+    if (!m_isServer)
+    {
+        return;
+    }
+    
+    if (Timing::getInstance()->getFrameStartTime() > m_fTimeForNextJump)
+    {
+        if (m_isGrounded)
+        {
+            m_fTimeForNextJump = Timing::getInstance()->getFrameStartTime();
+            m_fTimeForNextJump += (rand() % 100) * 0.1f + 1.0f;
+            
+            m_fStateTime = 0;
+            m_isGrounded = false;
+            m_isFalling = false;
+            m_isJumping = true;
+            
+            m_acceleration.setY(-9.8f);
+            m_velocity.setY(m_fJumpSpeed);
+            
+            // tell the world our health dropped
+            NG_SERVER->setStateDirty(getID(), SPCP_Pose);
+        }
+    }
+}
+
 void SpacePirate::updateInternal(float inDeltaTime)
 {
     Entity::update(inDeltaTime);
@@ -227,42 +296,44 @@ void SpacePirate::processCollisions()
 {
     processCollisionsWithScreenWalls();
     
-    if (m_isServer)
+    if (!m_isServer)
     {
-        bool targetFound = false;
-        float shortestDistance = GAME_WIDTH;
-        Robot* robot = nullptr;
-        std::vector<Entity*> entities = InstanceManager::getServerWorld()->getEntities();
-        for (Entity* target : entities)
+        return;
+    }
+    
+    bool targetFound = false;
+    float shortestDistance = GAME_WIDTH;
+    Robot* robot = nullptr;
+    std::vector<Entity*> entities = InstanceManager::getServerWorld()->getEntities();
+    for (Entity* target : entities)
+    {
+        robot = nullptr;
+        if (target != this
+            && !target->isRequestingDeletion()
+            && target->getRTTI().derivesFrom(Robot::rtti)
+            && (robot = static_cast<Robot*>(target)))
         {
-            robot = nullptr;
-            if (target != this
-                && !target->isRequestingDeletion()
-                && target->getRTTI().derivesFrom(Robot::rtti)
-                && (robot = static_cast<Robot*>(target)))
+            float dist = robot->getPosition().dist(getPosition());
+            if (dist < shortestDistance)
             {
-                float dist = robot->getPosition().dist(getPosition());
-                if (dist < shortestDistance)
-                {
-                    shortestDistance = dist;
-                    m_isFacingLeft = robot->getPosition().getX() < getPosition().getX();
-                    m_velocity.setX(m_isFacingLeft ? -m_fSpeed : m_fSpeed);
-                    targetFound = true;
-                }
-                
-                if (OverlapTester::doNGRectsOverlap(getMainBounds(), target->getMainBounds()))
-                {
-                    // Deal Damage to player robot
-                    robot->takeDamage();
-                }
+                shortestDistance = dist;
+                m_isFacingLeft = robot->getPosition().getX() < getPosition().getX();
+                m_velocity.setX(m_isFacingLeft ? -m_fSpeed : m_fSpeed);
+                targetFound = true;
+            }
+            
+            if (OverlapTester::doNGRectsOverlap(getMainBounds(), target->getMainBounds()))
+            {
+                // Deal Damage to player robot
+                robot->takeDamage();
             }
         }
-        
-        if (!targetFound)
-        {
-            m_isFacingLeft = true;
-            m_velocity.setX(0);
-        }
+    }
+    
+    if (!targetFound)
+    {
+        m_isFacingLeft = true;
+        m_velocity.setX(0);
     }
 }
 
@@ -286,6 +357,7 @@ void SpacePirate::processCollisionsWithScreenWalls()
         setPosition(position);
         m_isGrounded = true;
         m_isFalling = false;
+        m_isJumping = false;
     }
     
     if ((x + radius) >= GAME_WIDTH && vx > 0)
@@ -300,16 +372,23 @@ void SpacePirate::processCollisionsWithScreenWalls()
     }
 }
 
-SpacePirate::SpacePirate(bool isServer) : Entity(0, 0, 1.565217391304348f * 1.277777777777778f, 2.0f * 1.173913043478261f),
+SpacePirate::SpacePirate(bool isServer) : Entity(0, 0, 2.0f, 2.347826086956522f),
 m_isServer(isServer),
 m_fSpeed(0.0),
 m_iHealth(8),
+m_fStartingHealth(8),
 m_isFacingLeft(false),
 m_isGrounded(false),
 m_isFalling(false),
-m_fRobotRestitution(0.1f)
+m_isJumping(false),
+m_fRobotRestitution(0.1f),
+m_fTimeForNextJump(0.0f),
+m_fJumpSpeed(7.0f)
 {
     m_acceleration.setY(-9.8f);
+    
+    m_fTimeForNextJump = Timing::getInstance()->getFrameStartTime();
+    m_fTimeForNextJump += (rand() % 100) * 0.1f + 1.0f;
     
     if (m_isServer)
     {

@@ -13,6 +13,8 @@ class Color
 {
 public:
     static Color BLACK;
+    static Color RED;
+    static Color DARK_RED;
     
     float red;
     float green;

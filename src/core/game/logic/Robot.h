@@ -55,7 +55,7 @@ public:
     
     void takeDamage();
     
-    void awardKill();
+    void awardKill(bool isHeadshot);
     
     void setAddressHash(uint64_t addressHash);
     
@@ -105,6 +105,7 @@ private:
     bool m_isShooting;
     bool m_isSprinting;
     bool m_isFirstJumpCompleted;
+    bool m_wasLastKillHeadshot;
     
     uint64_t m_iAddressHash;
     uint32_t m_iPlayerId;

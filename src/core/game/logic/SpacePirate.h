@@ -31,8 +31,9 @@ public:
         SPCP_Pose = 1 << 0,
         SPCP_Color = 1 << 1,
         SPCP_Health = 1 << 2,
+        SPCP_Size = 1 << 2,
         
-        SPCP_AllState = SPCP_Pose | SPCP_Color | SPCP_Health
+        SPCP_AllState = SPCP_Pose | SPCP_Color | SPCP_Health | SPCP_Size
     };
     
     static Entity* staticCreateClient();
@@ -49,11 +50,11 @@ public:
     
     virtual uint32_t write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState);
     
-    void init(float x, float y, float speed);
+    void init(float x, float y, float speed, int scale, uint8_t health);
     
-    void takeDamage();
+    void takeDamage(bool isHeadshot);
     
-    int getHealth();
+    uint8_t getHealth();
     
     float getSpeed();
     
@@ -62,13 +63,20 @@ public:
 private:
     bool m_isServer;
     float m_fSpeed;
-    int m_iHealth;
+    uint8_t m_iHealth;
     bool m_isFacingLeft;
     bool m_isGrounded;
     bool m_isFalling;
+    bool m_isJumping;
+    
+    float m_fTimeForNextJump;
+    float m_fJumpSpeed;
+    float m_fStartingHealth;
     
     //bounce fraction when hitting various things
     float m_fRobotRestitution;
+    
+    void processAI();
     
     void updateInternal(float inDeltaTime);
     

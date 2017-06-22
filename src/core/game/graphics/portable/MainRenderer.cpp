@@ -199,7 +199,7 @@ void MainRenderer::renderWorld()
             Vector2 origin = entity->getPosition().cpy();
             origin.add(0, entity->getHeight() / 2);
             std::string text = StringUtil::format("%i", entity->getHealth());
-            renderText(text, origin, Color::BLACK, FONT_ALIGN_CENTERED);
+            renderText(text, origin, Color::DARK_RED, FONT_ALIGN_CENTERED);
         }
     }
     m_spriteBatcher->endBatch(*m_misc, *m_textureGpuProgramWrapper);

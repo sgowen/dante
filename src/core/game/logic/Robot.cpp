@@ -135,6 +135,7 @@ void Robot::read(InputMemoryBitStream& inInputStream)
     Vector2 oldPosition = m_position;
     uint8_t oldNumJumps = m_iNumJumps;
     bool wasSprinting = m_isSprinting;
+    uint32_t old_m_iNumKills = m_iNumKills;
     
     bool stateBit;
     
@@ -192,6 +193,7 @@ void Robot::read(InputMemoryBitStream& inInputStream)
     if (stateBit)
     {
         inInputStream.read(m_iNumKills);
+        inInputStream.read(m_wasLastKillHeadshot);
         readState |= ROBT_NumKills;
     }
     
@@ -203,6 +205,11 @@ void Robot::read(InputMemoryBitStream& inInputStream)
         if ((readState & ROBT_PlayerInfo) == 0)
         {
             interpolateClientSidePrediction(oldAcceleration, oldVelocity, oldPosition);
+        }
+        
+        if (m_wasLastKillHeadshot && m_iNumKills != old_m_iNumKills)
+        {
+            NGAudioEngine::getInstance()->playSound(SOUND_ID_HEADSHOT);
         }
     }
     else
@@ -303,6 +310,7 @@ uint32_t Robot::write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtySta
     {
         inOutputStream.write((bool)true);
         inOutputStream.write(m_iNumKills);
+        inOutputStream.write((bool)m_wasLastKillHeadshot);
         
         writtenState |= ROBT_NumKills;
     }
@@ -316,33 +324,41 @@ uint32_t Robot::write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtySta
 
 void Robot::takeDamage()
 {
-    if (m_isServer)
+    if (!m_isServer)
     {
-        m_iHealth--;
-        
-        if (m_iHealth <= 0)
-        {
-            requestDeletion();
-            
-            ClientProxy* clientProxy = NG_SERVER->getClientProxy(getPlayerId());
-            
-            Server::staticHandleNewClient(clientProxy);
-        }
-        
-        // tell the world our health dropped
-        NG_SERVER->setStateDirty(getID(), ROBT_Health);
+        return;
     }
+    
+    m_iHealth--;
+    
+    if (m_iHealth <= 0)
+    {
+        // TODO, this is NOT the right way to handle the player dying
+        
+        requestDeletion();
+        
+        ClientProxy* clientProxy = NG_SERVER->getClientProxy(getPlayerId());
+        
+        Server::staticHandleNewClient(clientProxy);
+    }
+    
+    // tell the world our health dropped
+    NG_SERVER->setStateDirty(getID(), ROBT_Health);
 }
 
-void Robot::awardKill()
+void Robot::awardKill(bool isHeadshot)
 {
-    if (m_isServer)
+    if (!m_isServer)
     {
-        m_iNumKills++;
-        
-        // tell the world how bad ass we are
-        NG_SERVER->setStateDirty(getID(), ROBT_NumKills);
+        return;
     }
+    
+    m_iNumKills++;
+    
+    m_wasLastKillHeadshot = isHeadshot;
+    
+    // tell the world how bad ass we are
+    NG_SERVER->setStateDirty(getID(), ROBT_NumKills);
 }
 
 void Robot::setAddressHash(uint64_t addressHash)
@@ -698,12 +714,12 @@ void Robot::interpolateVectorsIfNecessary(Vector2& inA, Vector2& inB, float& syn
 
 void Robot::playSound(int soundId)
 {
-    Util::playSound(soundId, getPlayerId(), getPosition(), m_isServer);
+    Util::playSound(soundId, getPosition(), m_isServer);
 }
 
 Robot::Robot(bool isServer) : Entity(0, 0, 1.565217391304348f, 2.0f),
 m_isServer(isServer),
-m_fJumpSpeed(10.0f),
+m_fJumpSpeed(11.0f),
 m_fSpeed(7.5f),
 m_fTimeOfNextShot(0.0f),
 m_fRobotRestitution(0.1f),
@@ -719,6 +735,7 @@ m_isFalling(false),
 m_isShooting(false),
 m_isSprinting(false),
 m_isFirstJumpCompleted(false),
+m_wasLastKillHeadshot(false),
 m_iAddressHash(0),
 m_iPlayerId(0)
 {

@@ -18,7 +18,7 @@
 #include "World.h"
 #include "NGAudioEngine.h"
 
-void Util::playSound(int soundId, uint32_t playerId, Vector2& position, bool isServer)
+void Util::playSound(int soundId, Vector2& position, bool isServer)
 {
     if (isServer)
     {
@@ -28,16 +28,19 @@ void Util::playSound(int soundId, uint32_t playerId, Vector2& position, bool isS
     
     float volume = 1;
     
-    uint32_t clientPlayerId = NG_CLIENT->getPlayerId();
-    if (playerId != clientPlayerId
-        && InstanceManager::getClientWorld())
+    if (InstanceManager::getClientWorld())
     {
+        uint32_t clientPlayerId = NG_CLIENT->getPlayerId();
         Robot* playerRobot = InstanceManager::getClientWorld()->getRobotWithPlayerId(clientPlayerId);
+        
         if (playerRobot)
         {
             float distance = playerRobot->getPosition().dist(position);
             float factor = distance / 4.0f;
-            volume = 1.0f / (factor * factor);
+            if (factor > 0)
+            {
+                volume = 1.0f / (factor * factor);
+            }
         }
     }
     

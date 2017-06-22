@@ -16,7 +16,7 @@ class Vector2;
 class Util
 {
 public:
-    static void playSound(int soundId, uint32_t playerId, Vector2& position, bool isServer);
+    static void playSound(int soundId, Vector2& position, bool isServer);
     
 private:
     // ctor, copy ctor, and assignment should be private in a Singleton

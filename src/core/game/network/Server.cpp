@@ -166,8 +166,10 @@ void Server::respawnEnemiesIfNecessary()
                 float posX = (rand() % static_cast<int>(GAME_WIDTH - spacePirate->getWidth() * 2)) + (spacePirate->getWidth() * 2);
                 float posY = (rand() % static_cast<int>(GAME_HEIGHT - spacePirate->getHeight() * 2)) + (GROUND_TOP + spacePirate->getHeight() * 2);
                 float speed = (rand() % 100) * 0.05f + 1.0f;
+                int scale = static_cast<int>(rand() % 3) + 1;
+                uint8_t health = static_cast<uint8_t>(rand() % 9) + 4;
                 
-                spacePirate->init(posX, posY, speed);
+                spacePirate->init(posX, posY, speed, scale, health);
                 
                 static Color Red(1.0f, 0.0f, 0.0f, 1);
                 static Color Blue(0.0f, 0.0f, 1.0f, 1);

@@ -255,26 +255,34 @@ void Projectile::processCollisions()
 {
     processCollisionsWithScreenWalls();
     
-    if (m_isServer)
+    if (!m_isServer)
     {
-        std::vector<Entity*> entities = InstanceManager::getServerWorld()->getEntities();
-        for (Entity* target : entities)
+        return;
+    }
+    
+    std::vector<Entity*> entities = InstanceManager::getServerWorld()->getEntities();
+    for (Entity* target : entities)
+    {
+        if (target != this && !target->isRequestingDeletion() && target->getRTTI().derivesFrom(SpacePirate::rtti))
         {
-            if (target != this && !target->isRequestingDeletion() && target->getRTTI().derivesFrom(SpacePirate::rtti))
+            if (OverlapTester::doNGRectsOverlap(getMainBounds(), target->getMainBounds()))
             {
-                if (OverlapTester::doNGRectsOverlap(getMainBounds(), target->getMainBounds()))
+                float projBottom = getMainBounds().getBottom();
+                float targTop = target->getMainBounds().getTop();
+                float targHead = targTop - target->getMainBounds().getHeight() * 0.4f;
+                
+                m_state = ProjectileState_Exploding;
+                m_fStateTime = 0.0f;
+                m_velocity.set(Vector2::Zero);
+                
+                bool isHeadshot = projBottom > targHead;
+                
+                SpacePirate* spacePirate = static_cast<SpacePirate*>(target);
+                spacePirate->takeDamage(isHeadshot);
+                if (spacePirate->getHealth() == 0)
                 {
-                    m_state = ProjectileState_Exploding;
-                    m_fStateTime = 0.0f;
-                    m_velocity.set(Vector2::Zero);
-                    
-                    SpacePirate* spacePirate = static_cast<SpacePirate*>(target);
-                    spacePirate->takeDamage();
-                    if (spacePirate->getHealth() == 0)
-                    {
-                        Robot* robot = InstanceManager::getServerWorld()->getRobotWithPlayerId(getPlayerId());
-                        robot->awardKill();
-                    }
+                    Robot* robot = InstanceManager::getServerWorld()->getRobotWithPlayerId(getPlayerId());
+                    robot->awardKill(isHeadshot);
                 }
             }
         }
@@ -295,7 +303,7 @@ void Projectile::processCollisionsWithScreenWalls()
 
 void Projectile::playSound(int soundId)
 {
-    Util::playSound(soundId, getPlayerId(), getPosition(), m_isServer);
+    Util::playSound(soundId, getPosition(), m_isServer);
 }
 
 Projectile::Projectile(bool isServer) : Entity(0, 0, 1.565217391304348f * 0.444444444444444f, 2.0f * 0.544423440453686f),
