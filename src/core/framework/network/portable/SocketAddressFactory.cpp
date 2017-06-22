@@ -20,6 +20,7 @@ SocketAddress* SocketAddressFactory::createIPv4FromString(const std::string& inS
 {
     auto pos = inString.find_last_of(':');
     std::string host, service;
+    
     if (pos != std::string::npos)
     {
         host = inString.substr(0, pos);
@@ -31,13 +32,20 @@ SocketAddress* SocketAddressFactory::createIPv4FromString(const std::string& inS
         //use default port...
         service = "0";
     }
+    
     addrinfo hint;
     memset(&hint, 0, sizeof(hint));
     hint.ai_family = AF_INET;
     
-    addrinfo* result;
+    addrinfo* result = nullptr;
     int error = getaddrinfo(host.c_str(), service.c_str(), &hint, &result);
     if (error != 0 && result != nullptr)
+    {
+        SOCKET_UTIL->reportError("SocketAddressFactory::createIPv4FromString");
+        return nullptr;
+    }
+    
+    if (result == nullptr)
     {
         SOCKET_UTIL->reportError("SocketAddressFactory::createIPv4FromString");
         return nullptr;

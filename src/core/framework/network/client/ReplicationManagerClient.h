@@ -14,6 +14,8 @@ class InputMemoryBitStream;
 class ReplicationManagerClient
 {
 public:
+    ReplicationManagerClient();
+    
     void read(InputMemoryBitStream& inInputStream);
     
 private:

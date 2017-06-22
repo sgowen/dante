@@ -87,11 +87,6 @@ std::unordered_map<std::string, Animation*>& Assets::getAnimationsMap()
     return m_animations;
 }
 
-void Assets::initTextureRegion(TextureRegion& tr, int x, int regionWidth, int textureWidth)
-{
-    tr.init(x, regionWidth, textureWidth);
-}
-
 Assets::Assets()
 {
     // Empty

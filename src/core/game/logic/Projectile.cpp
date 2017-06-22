@@ -10,7 +10,6 @@
 
 #include "Projectile.h"
 
-#include "InputState.h"
 #include "OutputMemoryBitStream.h"
 #include "InputMemoryBitStream.h"
 
@@ -26,52 +25,53 @@
 #include "Robot.h"
 #include "SpacePirate.h"
 #include "OverlapTester.h"
-
-#ifdef NG_SERVER
 #include "NetworkManagerServer.h"
-#elif NG_CLIENT
 #include "NetworkManagerClient.h"
 #include "NGAudioEngine.h"
-#endif
+#include "InstanceManager.h"
+#include "Util.h"
 
 #include <math.h>
 
-Entity* Projectile::create()
+Entity* Projectile::staticCreateClient()
 {
-    Projectile* ret = new Projectile();
-    
-#ifdef NG_SERVER
-    NetworkManagerServer::getInstance()->registerEntity(ret);
-#endif
-    
-    return ret;
+    return new Projectile(false);
+}
+
+Entity* Projectile::staticCreateServer()
+{
+    return new Projectile(true);
 }
 
 void Projectile::onDeletion()
 {
-#ifdef NG_SERVER
-    NetworkManagerServer::getInstance()->unregisterEntity(this);
-#endif
+    if (m_isServer)
+    {
+        NG_SERVER->unregisterEntity(this);
+    }
 }
 
 void Projectile::update()
 {
-#ifdef NG_SERVER
-    Vector2 oldVelocity = getVelocity();
-    ProjectileState oldState = m_state;
-    bool old_isFacingLeft = m_isFacingLeft;
-    
-    updateInternal(Timing::getInstance()->getDeltaTime());
-    
-    if (!oldVelocity.isEqualTo(getVelocity())
-        || oldState != m_state
-        || old_isFacingLeft != m_isFacingLeft)
+    if (m_isServer)
     {
-        NetworkManagerServer::getInstance()->setStateDirty(getID(), PRJC_Pose);
+        Vector2 oldVelocity = getVelocity();
+        ProjectileState oldState = m_state;
+        bool old_isFacingLeft = m_isFacingLeft;
+        
+        updateInternal(Timing::getInstance()->getDeltaTime());
+        
+        if (!oldVelocity.isEqualTo(getVelocity())
+            || oldState != m_state
+            || old_isFacingLeft != m_isFacingLeft)
+        {
+            NG_SERVER->setStateDirty(getID(), PRJC_Pose);
+        }
     }
-#elif NG_CLIENT
-    updateInternal(Timing::getInstance()->getDeltaTime());
-#endif
+    else
+    {
+        updateInternal(Timing::getInstance()->getDeltaTime());
+    }
 }
 
 uint32_t Projectile::getAllStateMask() const
@@ -81,10 +81,8 @@ uint32_t Projectile::getAllStateMask() const
 
 void Projectile::read(InputMemoryBitStream& inInputStream)
 {
-#ifdef NG_CLIENT
     Vector2 oldPosition = m_position;
     ProjectileState oldState = m_state;
-#endif
     
     bool stateBit;
     
@@ -122,23 +120,6 @@ void Projectile::read(InputMemoryBitStream& inInputStream)
         readState |= PRJC_Color;
     }
     
-#ifdef NG_CLIENT
-    if (getPlayerId() == NetworkManagerClient::getInstance()->getPlayerId())
-    {
-        // if this is a create packet, don't interpolate
-        if ((readState & PRJC_PlayerId) == 0)
-        {
-            interpolateClientSidePrediction(oldPosition);
-        }
-    }
-    else
-    {
-        if ((readState & PRJC_PlayerId) == 0)
-        {
-            interpolateClientSidePrediction(oldPosition);
-        }
-    }
-    
     if (oldState == ProjectileState_Active
         && m_state == ProjectileState_Exploding)
     {
@@ -149,8 +130,23 @@ void Projectile::read(InputMemoryBitStream& inInputStream)
     {
         // This projectile was just created
         playSound(SOUND_ID_FIRE_ROCKET);
+        
+        float rtt = NG_CLIENT->getRoundTripTime() / 2;
+        
+        while (true)
+        {
+            if (rtt < FRAME_RATE)
+            {
+                updateInternal(rtt);
+                break;
+            }
+            else
+            {
+                updateInternal(FRAME_RATE);
+                rtt -= FRAME_RATE;
+            }
+        }
     }
-#endif
 }
 
 uint32_t Projectile::write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState)
@@ -259,106 +255,68 @@ void Projectile::processCollisions()
 {
     processCollisionsWithScreenWalls();
     
-#ifdef NG_SERVER
-    std::vector<Entity*> entities = World::getInstance()->getEntities();
+    if (!m_isServer)
+    {
+        return;
+    }
+    
+    std::vector<Entity*> entities = InstanceManager::getServerWorld()->getEntities();
     for (Entity* target : entities)
     {
         if (target != this && !target->isRequestingDeletion() && target->getRTTI().derivesFrom(SpacePirate::rtti))
         {
             if (OverlapTester::doNGRectsOverlap(getMainBounds(), target->getMainBounds()))
             {
+                float projBottom = getMainBounds().getBottom();
+                float targTop = target->getMainBounds().getTop();
+                float targHead = targTop - target->getMainBounds().getHeight() * 0.4f;
+                
                 m_state = ProjectileState_Exploding;
                 m_fStateTime = 0.0f;
                 m_velocity.set(Vector2::Zero);
                 
+                bool isHeadshot = projBottom > targHead;
+                
                 SpacePirate* spacePirate = static_cast<SpacePirate*>(target);
-                spacePirate->takeDamage();
+                spacePirate->takeDamage(isHeadshot);
+                if (spacePirate->getHealth() == 0)
+                {
+                    Robot* robot = InstanceManager::getServerWorld()->getRobotWithPlayerId(getPlayerId());
+                    robot->awardKill(isHeadshot);
+                }
             }
         }
     }
-#endif
 }
 
 void Projectile::processCollisionsWithScreenWalls()
 {
     NGRect& bounds = getMainBounds();
-    if (bounds.getBottom() > CAM_HEIGHT
+    if (bounds.getBottom() > GAME_HEIGHT
         || bounds.getTop() < 0
-        || bounds.getLeft() > CAM_WIDTH
+        || bounds.getLeft() > GAME_WIDTH
         || bounds.getRight() < 0)
     {
         requestDeletion();
     }
 }
 
-#ifdef NG_CLIENT
-void Projectile::interpolateClientSidePrediction(Vector2& inOldPos)
-{
-    if (interpolateVectorsIfNecessary(inOldPos, getPosition(), m_fTimePositionBecameOutOfSync))
-    {
-        LOG("Projectile ERROR! Move Replay Position");
-    }
-}
-
-bool Projectile::interpolateVectorsIfNecessary(Vector2& inA, Vector2& inB, float& syncTracker)
-{
-    float roundTripTime = NetworkManagerClient::getInstance()->getRoundTripTime();
-    
-    if (!inA.isEqualTo(inB))
-    {
-        LOG("Projectile ERROR! Move replay ended with incorrect vector! Old %3.8f, %3.8f - New %3.8f, %3.8f", inA.getX(), inA.getY(), inB.getX(), inB.getY());
-        
-        //have we been out of sync, or did we just become out of sync?
-        float time = Timing::getInstance()->getFrameStartTime();
-        if (syncTracker == 0.0f)
-        {
-            syncTracker = time;
-        }
-        
-        //now interpolate to the correct value...
-        float durationOutOfSync = time - syncTracker;
-        if (durationOutOfSync < roundTripTime)
-        {
-            inB.set(lerp(inA, inB, 0.1f));
-        }
-        
-        return true;
-    }
-    
-    //we're in sync
-    syncTracker = 0.0f;
-    
-    return false;
-}
-#endif
-
 void Projectile::playSound(int soundId)
 {
-#ifdef NG_CLIENT
-    float volume = 1;
-    
-    if (getPlayerId() != NetworkManagerClient::getInstance()->getPlayerId())
-    {
-        Robot* playerRobot = World::staticGetRobotWithPlayerId(NetworkManagerClient::getInstance()->getPlayerId());
-        if (playerRobot)
-        {
-            float distance = playerRobot->getPosition().dist(getPosition());
-            float factor = distance / 4.0f;
-            volume = 1.0f / (factor * factor);
-        }
-    }
-    
-    NG_AUDIO_ENGINE->playSound(soundId, volume);
-#endif
+    Util::playSound(soundId, getPosition(), m_isServer);
 }
 
-Projectile::Projectile() : Entity(0, 0, 1.565217391304348f * 0.444444444444444f, 2.0f * 0.544423440453686f),
+Projectile::Projectile(bool isServer) : Entity(0, 0, 1.565217391304348f * 0.444444444444444f, 2.0f * 0.544423440453686f),
+m_isServer(isServer),
 m_iPlayerId(0),
 m_state(ProjectileState_Active),
 m_isFacingLeft(false),
 m_fTimePositionBecameOutOfSync(0.0f)
 {
-    // Empty
+    if (m_isServer)
+    {
+        NG_SERVER->registerEntity(this);
+    }
 }
 
 RTTI_IMPL(Projectile, Entity);

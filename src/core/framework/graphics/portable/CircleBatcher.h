@@ -11,7 +11,7 @@
 
 class Circle;
 class GpuProgramWrapper;
-struct Color;
+class Color;
 
 class CircleBatcher
 {

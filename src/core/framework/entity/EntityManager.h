@@ -13,32 +13,31 @@
 
 class Entity;
 
-#define ENTITY_MGR (EntityManager::getInstance())
+typedef void (*HandleEntityCreatedFunc)(Entity* inEntity);
+typedef void (*HandleEntityDeletionFunc)(Entity* inEntity);
 
 class EntityManager
 {
 public:
-    static EntityManager* getInstance();
+    EntityManager(HandleEntityCreatedFunc handleEntityCreatedFunc, HandleEntityDeletionFunc handleEntityDeletionFunc);
     
-    Entity* getEntityFromID(int id)const;
+    ~EntityManager();
     
-    void registerEntity(Entity* entity);
+    Entity* getEntityByID(int id) const;
     
-    void removeEntity(Entity* entity);
+    void registerEntity(Entity* inEntity);
     
-    void reset();
+    void removeEntity(Entity* inEntity);
     
     std::unordered_map<int, Entity*>& getMap();
     
     std::unordered_map<int, Entity*> getMapCopy();
     
 private:
-    std::unordered_map<int, Entity*> m_entityMap;
+    HandleEntityCreatedFunc m_handleEntityCreatedFunc;
+    HandleEntityDeletionFunc m_handleEntityDeletionFunc;
     
-    // ctor, copy ctor, and assignment should be private in a Singleton
-    EntityManager();
-    EntityManager(const EntityManager&);
-    EntityManager& operator=(const EntityManager&);
+    std::unordered_map<int, Entity*> m_entityMap;
 };
 
 #endif /* defined(__noctisgames__EntityManager__) */

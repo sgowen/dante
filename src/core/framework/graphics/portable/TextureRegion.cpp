@@ -30,12 +30,23 @@ void TextureRegion::init(int x, int y, int regionWidth, int regionHeight, int te
     v2 = v1 + m_fRegionHeight / m_fTextureHeight;
 }
 
-void TextureRegion::init(int x, int regionWidth, int textureWidth)
+void TextureRegion::initX(int x)
 {
-    m_fX = (float)x;
-    m_fRegionWidth = (float) regionWidth;
-    m_fTextureWidth = (float)textureWidth;
+    m_fX = (float) x;
     
-    u1 = x / (float) textureWidth;
-    u2 = u1 + m_fRegionWidth / (float) textureWidth;
+    u1 = m_fX / m_fTextureWidth;
+    u2 = u1 + m_fRegionWidth / m_fTextureWidth;
+}
+
+void TextureRegion::initY(int y)
+{
+    m_fY = (float) y;
+    
+    v1 = m_fY / m_fTextureHeight;
+    v2 = v1 + m_fRegionHeight / m_fTextureHeight;
+}
+
+std::string& TextureRegion::getTextureName()
+{
+    return m_textureName;
 }

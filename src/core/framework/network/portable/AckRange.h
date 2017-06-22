@@ -9,8 +9,6 @@
 #ifndef __noctisgames__AckRange__
 #define __noctisgames__AckRange__
 
-#include "InFlightPacket.h"
-
 #include <stdint.h>
 
 class OutputMemoryBitStream;

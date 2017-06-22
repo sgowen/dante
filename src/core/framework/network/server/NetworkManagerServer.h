@@ -9,30 +9,49 @@
 #ifndef __noctisgames__NetworkManagerServer__
 #define __noctisgames__NetworkManagerServer__
 
-#include "INetworkManager.h"
+#include <unordered_map>
 
-#include "ClientProxy.h"
-
+class IServerHelper;
+class InputMemoryBitStream;
+class OutputMemoryBitStream;
+class DeliveryNotificationManager;
+class IMachineAddress;
+class ClientProxy;
 class IInputState;
+class Entity;
+
+#define NG_SERVER (NetworkManagerServer::getInstance())
+
+#define NG_SERVER_CALLBACKS NetworkManagerServer::staticProcessPacket, NetworkManagerServer::staticHandleNoResponse, NetworkManagerServer::staticHandleConnectionReset, NetworkManagerServer::staticGetClientProxy, NetworkManagerServer::staticHandleClientDisconnected
 
 typedef void (*HandleNewClientFunc)(ClientProxy* inClientProxy);
 typedef void (*HandleLostClientFunc)(ClientProxy* inClientProxy);
 typedef IInputState* (*InputStateCreationFunc)();
 
-class NetworkManagerServer : public INetworkManager
+class NetworkManagerServer
 {
 public:
+    static void create(IServerHelper* inServerHelper, HandleNewClientFunc inHandleNewClientFunc, HandleLostClientFunc inHandleLostClientFunc, InputStateCreationFunc inInputStateCreationFunc);
+    
+    static void destroy();
+    
     static NetworkManagerServer* getInstance();
     
-    virtual void processPacket(InputMemoryBitStream& inInputStream, const SocketAddress& inFromAddress) override;
+    static void staticProcessPacket(InputMemoryBitStream& inInputStream, IMachineAddress* inFromAddress);
     
-    virtual void handleConnectionReset(const SocketAddress& inFromAddress) override;
+    static void staticHandleNoResponse();
     
-    bool init(uint16_t inPort, HandleEntityDeletion handleEntityDeletion, HandleNewClientFunc handleNewClientFunc, HandleLostClientFunc handleLostClientFunc, InputStateCreationFunc inputStateCreationFunc);
+    static void staticHandleConnectionReset(IMachineAddress* inFromAddress);
     
-    void sendOutgoingPackets();
+    static ClientProxy* staticGetClientProxy(int inPlayerId);
+    
+    static void staticHandleClientDisconnected(ClientProxy* inClientProxy);
+    
+    void processIncomingPackets();
     
     void checkForDisconnects();
+    
+    void sendOutgoingPackets();
     
     void registerEntity(Entity* inEntity);
     
@@ -44,24 +63,41 @@ public:
     
     int getNumClientsConnected();
     
+    IMachineAddress* getServerAddress();
+    
+    bool isConnected();
+    
+    IServerHelper* getServerHelper();
+    
 private:
+    static NetworkManagerServer* s_instance;
+    
+    IServerHelper* m_serverHelper;
+    
     HandleNewClientFunc m_handleNewClientFunc;
     HandleLostClientFunc m_handleLostClientFunc;
     InputStateCreationFunc m_inputStateCreationFunc;
     
-    std::unordered_map<SocketAddress, ClientProxy*> m_addressToClientMap;
+    std::unordered_map<size_t, ClientProxy*> m_addressHashToClientMap;
     std::unordered_map<int, ClientProxy*> m_playerIDToClientMap;
     int m_iNewPlayerId;
     float m_fTimeOfLastSatePacket;
-    float m_fClientDisconnectTimeout;
     
-    void handlePacketFromNewClient(InputMemoryBitStream& inInputStream, const SocketAddress& inFromAddress);
+    void processPacket(InputMemoryBitStream& inInputStream, IMachineAddress* inFromAddress);
+    
+    void handleNoResponse();
+    
+    void handleConnectionReset(IMachineAddress* inFromAddress);
+    
+    void sendPacket(const OutputMemoryBitStream& inOutputStream, IMachineAddress* inFromAddress);
+    
+    void handlePacketFromNewClient(InputMemoryBitStream& inInputStream, IMachineAddress* inFromAddress);
     
     void processPacket(ClientProxy* inClientProxy, InputMemoryBitStream& inInputStream);
     
     void sendWelcomePacket(ClientProxy* inClientProxy);
     
-    void updateAllClients();
+    void sendDenyPacket(IMachineAddress* inToAddress, std::string name);
     
     void sendStatePacketToClient(ClientProxy* inClientProxy);
     
@@ -72,8 +108,8 @@ private:
     void handleClientDisconnected(ClientProxy* inClientProxy);
     
     // ctor, copy ctor, and assignment should be private in a Singleton
-    NetworkManagerServer();
-    virtual ~NetworkManagerServer();
+    NetworkManagerServer(IServerHelper* inServerHelper, HandleNewClientFunc inHandleNewClientFunc, HandleLostClientFunc inHandleLostClientFunc, InputStateCreationFunc inInputStateCreationFunc);
+    ~NetworkManagerServer();
     NetworkManagerServer(const NetworkManagerServer&);
     NetworkManagerServer& operator=(const NetworkManagerServer&);
 };

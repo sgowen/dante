@@ -10,59 +10,67 @@
 
 #include "NetworkManagerClient.h"
 
-#include "Entity.h"
-
-#include "InputManager.h"
-#include "StringUtil.h"
-#include "EntityRegistry.h"
-#include "Timing.h"
-#include "EntityManager.h"
+#include "SocketClientHelper.h"
+#include "InputMemoryBitStream.h"
 #include "OutputMemoryBitStream.h"
+#include "DeliveryNotificationManager.h"
+#include "IMachineAddress.h"
+#include "EntityRegistry.h"
+#include "Entity.h"
+#include "MoveList.h"
+#include "ReplicationManagerClient.h"
+#include "WeightedTimedMovingAverage.h"
+#include "SocketAddress.h"
+
+#include "EntityManager.h"
+#include "StringUtil.h"
+#include "Timing.h"
 #include "SocketAddressFactory.h"
+#include "FWInstanceManager.h"
+#include "macros.h"
 
-NetworkManagerClient* NetworkManagerClient::getInstance()
+#include <assert.h>
+
+NetworkManagerClient* NetworkManagerClient::s_instance = nullptr;
+
+void NetworkManagerClient::create(IClientHelper* inClientHelper, float inFrameRate, RemoveProcessedMovesFunc inRemoveProcessedMovesFunc, GetMoveListFunc inGetMoveListFunc)
 {
-    static NetworkManagerClient instance = NetworkManagerClient();
-    return &instance;
+    assert(!s_instance);
+    
+    s_instance = new NetworkManagerClient(inClientHelper, inFrameRate, inRemoveProcessedMovesFunc, inGetMoveListFunc);
 }
 
-void NetworkManagerClient::processPacket(InputMemoryBitStream& inInputStream, const SocketAddress& inFromAddress)
+void NetworkManagerClient::destroy()
 {
-    uint32_t packetType;
-    inInputStream.read(packetType);
+    assert(s_instance);
     
-    switch(packetType)
-    {
-        case kWelcomeCC:
-            handleWelcomePacket(inInputStream);
-            break;
-        case kStateCC:
-            if (m_deliveryNotificationManager.readAndProcessState(inInputStream))
-            {
-                handleStatePacket(inInputStream);
-            }
-            break;
-    }
+    delete s_instance;
+    s_instance = nullptr;
 }
 
-bool NetworkManagerClient::init(const std::string& inServerIPAddress, const std::string& inName, float inFrameRate, HandleEntityDeletion handleEntityDeletion)
+NetworkManagerClient * NetworkManagerClient::getInstance()
 {
-    m_serverAddress = SocketAddressFactory::createIPv4FromString(inServerIPAddress);
-    m_state = NCS_SayingHello;
-    m_fTimeOfLastHello = 0.f;
-    m_name = inName;
-    m_fFrameRate = inFrameRate;
-    
-    m_avgRoundTripTime = WeightedTimedMovingAverage(1.f);
-    
-    // This allows us to run both a debug and a release client on the same machine
-#if defined(DEBUG) || defined(_DEBUG)
-    uint16_t port = 1339;
-#else
-    uint16_t port = 1337;
-#endif
-    
-    return INetworkManager::init(port, handleEntityDeletion);
+    return s_instance;
+}
+
+void NetworkManagerClient::staticProcessPacket(InputMemoryBitStream& inInputStream, IMachineAddress* inFromAddress)
+{
+    NG_CLIENT->processPacket(inInputStream, static_cast<SocketAddress*>(inFromAddress));
+}
+
+void NetworkManagerClient::staticHandleNoResponse()
+{
+    NG_CLIENT->handleNoResponse();
+}
+
+void NetworkManagerClient::staticHandleConnectionReset(IMachineAddress* inFromAddress)
+{
+    NG_CLIENT->handleConnectionReset(static_cast<SocketAddress*>(inFromAddress));
+}
+
+void NetworkManagerClient::processIncomingPackets()
+{
+    m_clientHelper->processIncomingPackets();
 }
 
 void NetworkManagerClient::sendOutgoingPackets()
@@ -76,18 +84,45 @@ void NetworkManagerClient::sendOutgoingPackets()
             updateSendingInputPacket();
             break;
         case NCS_Uninitialized:
+            m_clientHelper->handleUninitialized();
+            break;
+        case NCS_Disconnected:
             break;
     }
+    
+    if (m_state != NCS_Disconnected)
+    {
+        int clientHelperState = m_clientHelper->getState();
+        if (clientHelperState == CLIENT_READY_TO_SAY_HELLO
+            && m_state != NCS_Welcomed)
+        {
+            m_state = NCS_SayingHello;
+        }
+        else if (clientHelperState == CLIENT_AUTH_FAILED)
+        {
+            m_state = NCS_Disconnected;
+        }
+    }
+}
+
+const WeightedTimedMovingAverage& NetworkManagerClient::getBytesReceivedPerSecond() const
+{
+    return m_clientHelper->getBytesReceivedPerSecond();
+}
+
+const WeightedTimedMovingAverage& NetworkManagerClient::getBytesSentPerSecond() const
+{
+    return m_clientHelper->getBytesSentPerSecond();
 }
 
 const WeightedTimedMovingAverage& NetworkManagerClient::getAvgRoundTripTime() const
 {
-    return m_avgRoundTripTime;
+    return *m_avgRoundTripTime;
 }
 
 float NetworkManagerClient::getRoundTripTime() const
 {
-    return m_avgRoundTripTime.getValue();
+    return m_avgRoundTripTime->getValue();
 }
 
 int NetworkManagerClient::getPlayerId() const
@@ -95,18 +130,69 @@ int NetworkManagerClient::getPlayerId() const
     return m_iPlayerId;
 }
 
-float NetworkManagerClient::getLastMoveProcessedByServerTimestamp() const
+std::string& NetworkManagerClient::getPlayerName()
 {
-    return m_fLastMoveProcessedByServerTimestamp;
+    return m_clientHelper->getName();
+}
+
+NetworkClientState NetworkManagerClient::getState() const
+{
+    return m_state;
+}
+
+void NetworkManagerClient::processPacket(InputMemoryBitStream& inInputStream, IMachineAddress* inFromAddress)
+{
+    m_fLastServerCommunicationTimestamp = Timing::getInstance()->getFrameStartTime();
+    
+    uint32_t packetType;
+    inInputStream.read(packetType);
+    
+    switch (packetType)
+    {
+        case NETWORK_PACKET_TYPE_WELCOME:
+            handleWelcomePacket(inInputStream);
+            break;
+        case NETWORK_PACKET_TYPE_DENY:
+            handleDenyPacket();
+            break;
+        case NETWORK_PACKET_TYPE_STATE:
+            if (m_deliveryNotificationManager->readAndProcessState(inInputStream))
+            {
+                handleStatePacket(inInputStream);
+            }
+            break;
+        default:
+            m_clientHelper->processSpecialPacket(packetType, inInputStream, inFromAddress);
+            break;
+    }
+}
+
+void NetworkManagerClient::handleNoResponse()
+{
+    float time = Timing::getInstance()->getFrameStartTime();
+    
+    float timeout = m_state == NCS_Uninitialized ? NETWORK_CONNECT_TO_SERVER_TIMEOUT : NETWORK_SERVER_TIMEOUT;
+    if (time > m_fLastServerCommunicationTimestamp + timeout)
+    {
+        m_state = NCS_Disconnected;
+    }
+}
+
+void NetworkManagerClient::handleConnectionReset(IMachineAddress* inFromAddress)
+{
+    UNUSED(inFromAddress);
+}
+
+void NetworkManagerClient::sendPacket(const OutputMemoryBitStream& inOutputStream)
+{
+    m_clientHelper->sendPacket(inOutputStream);
 }
 
 void NetworkManagerClient::updateSayingHello()
 {
     float time = Timing::getInstance()->getFrameStartTime();
     
-    static const float kTimeBetweenHellos = 1.f;
-    
-    if (time > m_fTimeOfLastHello + kTimeBetweenHellos)
+    if (time > m_fTimeOfLastHello + NETWORK_CLIENT_TIME_BETWEEN_HELLOS)
     {
         sendHelloPacket();
         m_fTimeOfLastHello = time;
@@ -117,24 +203,31 @@ void NetworkManagerClient::sendHelloPacket()
 {
     OutputMemoryBitStream helloPacket;
     
-    helloPacket.write(kHelloCC);
-    helloPacket.write(m_name);
+    helloPacket.write(NETWORK_PACKET_TYPE_HELLO);
+    helloPacket.write(getPlayerName());
     
-    sendPacket(helloPacket, *m_serverAddress);
+    sendPacket(helloPacket);
 }
 
 void NetworkManagerClient::handleWelcomePacket(InputMemoryBitStream& inInputStream)
 {
     if (m_state == NCS_SayingHello)
     {
-        //if we got a player id, we've been welcomed!
+        // if we got a player id, we've been welcomed!
         int playerId;
         inInputStream.read(playerId);
         m_iPlayerId = playerId;
         m_state = NCS_Welcomed;
         
-        LOG("'%s' was welcomed on client as player %d", m_name.c_str(), m_iPlayerId);
+        LOG("'%s' was welcomed on client as player %d", getPlayerName().c_str(), m_iPlayerId);
     }
+}
+
+void NetworkManagerClient::handleDenyPacket()
+{
+    LOG("'%s' was denied on client, disconnecting...", getPlayerName().c_str());
+    
+    m_state = NCS_Disconnected;
 }
 
 void NetworkManagerClient::handleStatePacket(InputMemoryBitStream& inInputStream)
@@ -144,7 +237,7 @@ void NetworkManagerClient::handleStatePacket(InputMemoryBitStream& inInputStream
         readLastMoveProcessedOnServerTimestamp(inInputStream);
         
         //tell the replication manager to handle the rest...
-        m_replicationManagerClient.read(inInputStream);
+        m_replicationManagerClient->read(inInputStream);
     }
 }
 
@@ -157,62 +250,9 @@ void NetworkManagerClient::readLastMoveProcessedOnServerTimestamp(InputMemoryBit
         inInputStream.read(m_fLastMoveProcessedByServerTimestamp);
         
         float rtt = Timing::getInstance()->getFrameStartTime() - m_fLastMoveProcessedByServerTimestamp;
-        m_fLastRoundTripTime = rtt;
-        m_avgRoundTripTime.update(rtt);
+        m_avgRoundTripTime->update(rtt);
         
-        InputManager::getInstance()->getMoveList().removedProcessedMoves(m_fLastMoveProcessedByServerTimestamp);
-    }
-}
-
-void NetworkManagerClient::handleEntityState(InputMemoryBitStream& inInputStream)
-{
-    // copy the map so that anything that doesn't get an updated can be destroyed...
-    std::unordered_map<int, Entity*> objectsToDestroy = ENTITY_MGR->getMapCopy();
-    
-    int stateCount;
-    inInputStream.read(stateCount);
-    
-    if (stateCount > 0)
-    {
-        for (int stateIndex = 0; stateIndex < stateCount; ++stateIndex)
-        {
-            int networkId;
-            uint32_t fourCC;
-            
-            inInputStream.read(networkId);
-            inInputStream.read(fourCC);
-            Entity* go;
-            auto itGO = ENTITY_MGR->getMap().find(networkId);
-            //didn't find it, better create it!
-            if (itGO == ENTITY_MGR->getMap().end())
-            {
-                go = EntityRegistry::getInstance()->createEntity(fourCC);
-                go->setID(networkId);
-                addToNetworkIdToEntityMap(go);
-            }
-            else
-            {
-                //found it
-                go = itGO->second;
-            }
-            
-            //now we can update into it
-            go->read(inInputStream);
-            objectsToDestroy.erase(networkId);
-        }
-    }
-    
-    //anything left gets the axe
-    destroyAllInMap(objectsToDestroy);
-}
-
-void NetworkManagerClient::destroyAllInMap(const std::unordered_map<int, Entity*>& inObjectsToDestroy)
-{
-    for (auto& pair: inObjectsToDestroy)
-    {
-        pair.second->requestDeletion();
-        
-        removeFromNetworkIdToEntityMap(pair.second);
+        m_removeProcessedMovesFunc(m_fLastMoveProcessedByServerTimestamp);
     }
 }
 
@@ -230,15 +270,15 @@ void NetworkManagerClient::updateSendingInputPacket()
 void NetworkManagerClient::sendInputPacket()
 {
     //only send if there's any input to sent!
-    MoveList& moveList = InputManager::getInstance()->getMoveList();
+    MoveList& moveList = m_getMoveListFunc();
     
     if (moveList.hasMoves())
     {
         OutputMemoryBitStream inputPacket;
         
-        inputPacket.write(kInputCC);
+        inputPacket.write(NETWORK_PACKET_TYPE_INPUT);
         
-        m_deliveryNotificationManager.writeState(inputPacket);
+        m_deliveryNotificationManager->writeState(inputPacket);
         
         //eventually write the 3 latest moves so they have three chances to get through...
         int moveCount = moveList.getMoveCount();
@@ -258,23 +298,31 @@ void NetworkManagerClient::sendInputPacket()
             move->write(inputPacket);
         }
         
-        sendPacket(inputPacket, *m_serverAddress);
+        sendPacket(inputPacket);
     }
 }
 
-NetworkManagerClient::NetworkManagerClient() : INetworkManager(),
-m_serverAddress(nullptr),
+NetworkManagerClient::NetworkManagerClient(IClientHelper* inClientHelper, float inFrameRate, RemoveProcessedMovesFunc inRemoveProcessedMovesFunc, GetMoveListFunc inGetMoveListFunc) :
+m_clientHelper(inClientHelper),
+m_removeProcessedMovesFunc(inRemoveProcessedMovesFunc),
+m_getMoveListFunc(inGetMoveListFunc),
+m_replicationManagerClient(new ReplicationManagerClient()),
+m_avgRoundTripTime(new WeightedTimedMovingAverage(1.f)),
 m_state(NCS_Uninitialized),
-m_deliveryNotificationManager(true, false),
-m_fLastRoundTripTime(0.f)
+m_deliveryNotificationManager(new DeliveryNotificationManager(true, false)),
+m_fTimeOfLastHello(0.0f),
+m_fTimeOfLastInputPacket(0.0f),
+m_fLastMoveProcessedByServerTimestamp(0.0f),
+m_fLastServerCommunicationTimestamp(Timing::getInstance()->getFrameStartTime()),
+m_fFrameRate(inFrameRate)
 {
     // Empty
 }
 
 NetworkManagerClient::~NetworkManagerClient()
 {
-    if (m_serverAddress)
-    {
-        delete m_serverAddress;
-    }
+    delete m_clientHelper;
+    delete m_deliveryNotificationManager;
+    delete m_replicationManagerClient;
+    delete m_avgRoundTripTime;
 }

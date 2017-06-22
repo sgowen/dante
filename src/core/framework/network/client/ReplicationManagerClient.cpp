@@ -10,14 +10,20 @@
 
 #include "ReplicationManagerClient.h"
 
+#include "EntityRegistry.h"
 #include "InputMemoryBitStream.h"
 
-#include "NetworkManagerClient.h"
+#include "FWInstanceManager.h"
+#include "EntityManager.h"
 #include "Entity.h"
 #include "ReplicationAction.h"
-#include "EntityRegistry.h"
 
 #include <cassert>
+
+ReplicationManagerClient::ReplicationManagerClient()
+{
+    // Empty
+}
 
 void ReplicationManagerClient::read(InputMemoryBitStream& inInputStream)
 {
@@ -52,14 +58,14 @@ void ReplicationManagerClient::readAndDoCreateAction(InputMemoryBitStream& inInp
     
     //we might already have this object- could happen if our ack of the create got dropped so server resends create request
     //(even though we might have created)
-    Entity* gameObject = NetworkManagerClient::getInstance()->getEntity(inNetworkId);
+    Entity* gameObject = FWInstanceManager::getClientEntityManager()->getEntityByID(inNetworkId);
     if (!gameObject)
     {
         //create the object and map it...
-        gameObject = EntityRegistry::getInstance()->createEntity(fourCCName);
+        gameObject = FWInstanceManager::getClientEntityRegistry()->createEntity(fourCCName);
         gameObject->setID(inNetworkId);
         
-        NetworkManagerClient::getInstance()->addToNetworkIdToEntityMap(gameObject);
+        FWInstanceManager::getClientEntityManager()->registerEntity(gameObject);
         
         //it had really be the rigth type...
         assert(gameObject->getNetworkType() == fourCCName);
@@ -72,7 +78,7 @@ void ReplicationManagerClient::readAndDoCreateAction(InputMemoryBitStream& inInp
 void ReplicationManagerClient::readAndDoUpdateAction(InputMemoryBitStream& inInputStream, int inNetworkId)
 {
     //need object
-    Entity* gameObject = NetworkManagerClient::getInstance()->getEntity(inNetworkId);
+    Entity* gameObject = FWInstanceManager::getClientEntityManager()->getEntityByID(inNetworkId);
     
     //gameObject MUST be found, because create was ack'd if we're getting an update...
     //and read state
@@ -83,11 +89,11 @@ void ReplicationManagerClient::readAndDoDestroyAction(InputMemoryBitStream& inIn
 {
     //if something was destroyed before the create went through, we'll never get it
     //but we might get the destroy request, so be tolerant of being asked to destroy something that wasn't created
-    Entity* gameObject = NetworkManagerClient::getInstance()->getEntity(inNetworkId);
+    Entity* gameObject = FWInstanceManager::getClientEntityManager()->getEntityByID(inNetworkId);
     if (gameObject)
     {
         gameObject->requestDeletion();
         gameObject->onDeletion();
-        NetworkManagerClient::getInstance()->removeFromNetworkIdToEntityMap(gameObject);
+        FWInstanceManager::getClientEntityManager()->removeEntity(gameObject);
     }
 }

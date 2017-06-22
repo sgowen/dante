@@ -20,6 +20,8 @@ public:
     
     Move(IInputState* inInputState);
     
+    ~Move();
+    
     bool write(OutputMemoryBitStream& inOutputStream) const;
     
     bool read(InputMemoryBitStream& inInputStream);

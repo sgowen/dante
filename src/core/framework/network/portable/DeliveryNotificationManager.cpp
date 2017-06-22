@@ -13,29 +13,24 @@
 #include "OutputMemoryBitStream.h"
 #include "InputMemoryBitStream.h"
 #include "StringUtil.h"
-#include "Timing.h"
-
-namespace
-{
-    const float kDelayBeforeAckTimeout = 0.5f;
-}
+#include "FrameworkConstants.h"
 
 DeliveryNotificationManager::DeliveryNotificationManager(bool inShouldSendAcks, bool inShouldprocessAcks) :
 m_iNextOutgoingSequenceNumber(0),
 m_iNextExpectedSequenceNumber(0),
-//everybody starts at 0...
 m_shouldSendAcks(inShouldSendAcks),
 m_shouldprocessAcks(inShouldprocessAcks),
 m_iDeliveredPacketCount(0),
 m_iDroppedPacketCount(0),
 m_iDispatchedPacketCount(0)
 {
+    // Empty
 }
 
-//we're going away- log how well we did...
 DeliveryNotificationManager::~DeliveryNotificationManager()
 {
-    if (m_iDispatchedPacketCount > 0)
+    if (m_iDispatchedPacketCount > 0
+        && m_shouldprocessAcks)
     {
         LOG("DeliveryNotificationManager destructor. Delivery rate %d%%, Drop rate %d%%",
             (100 * m_iDeliveredPacketCount) / m_iDispatchedPacketCount,
@@ -65,9 +60,9 @@ bool DeliveryNotificationManager::readAndProcessState(InputMemoryBitStream& inIn
     return toRet;
 }
 
-void DeliveryNotificationManager::processTimedOutPackets()
+void DeliveryNotificationManager::processTimedOutPackets(float frameStartTime)
 {
-    float timeoutTime = Timing::getInstance()->getFrameStartTime() - kDelayBeforeAckTimeout;
+    float timeoutTime = frameStartTime - NETWORK_ACK_TIMEOUT;
     
     while (!m_inFlightPackets.empty())
     {
@@ -118,7 +113,7 @@ InFlightPacket* DeliveryNotificationManager::writeSequenceNumber(OutputMemoryBit
     
     if (m_shouldprocessAcks)
     {
-        m_inFlightPackets.emplace_back(sequenceNumber);
+        m_inFlightPackets.emplace_back(InFlightPacket(sequenceNumber));
         
         return &m_inFlightPackets.back();
     }

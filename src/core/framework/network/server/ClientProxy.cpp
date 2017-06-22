@@ -10,21 +10,28 @@
 
 #include "ClientProxy.h"
 
+#include "IMachineAddress.h"
+
 #include "Timing.h"
 
-ClientProxy::ClientProxy(const SocketAddress& inSocketAddress, const std::string& inName, int inPlayerId) :
-m_socketAddress(inSocketAddress),
+ClientProxy::ClientProxy(IMachineAddress* inMachineAddress, const std::string& inName, int inPlayerId) :
+m_machineAddress(inMachineAddress),
 m_name(inName),
 m_iPlayerId(inPlayerId),
-m_deliveryNotificationManager(false, true),
+m_deliveryNotificationManager(DeliveryNotificationManager(false, true)),
 m_isLastMoveTimestampDirty(false)
 {
     updateLastPacketTime();
 }
 
-const SocketAddress& ClientProxy::getSocketAddress() const
+ClientProxy::~ClientProxy()
 {
-    return m_socketAddress;
+    delete m_machineAddress;
+}
+
+IMachineAddress* ClientProxy::getMachineAddress() const
+{
+    return m_machineAddress;
 }
 
 int ClientProxy::getPlayerId() const
@@ -62,12 +69,12 @@ MoveList& ClientProxy::getUnprocessedMoveList()
     return m_unprocessedMoveList;
 }
 
-void ClientProxy::SetIsLastMoveTimestampDirty(bool inIsDirty)
+void ClientProxy::setIsLastMoveTimestampDirty(bool inIsDirty)
 {
     m_isLastMoveTimestampDirty = inIsDirty;
 }
 
-bool ClientProxy::IsLastMoveTimestampDirty() const
+bool ClientProxy::isLastMoveTimestampDirty() const
 {
     return m_isLastMoveTimestampDirty;
 }

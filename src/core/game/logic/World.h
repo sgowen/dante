@@ -18,15 +18,9 @@ class Robot;
 class World
 {
 public:
-    static World* getInstance();
+    World();
     
-    static void staticAddEntity(Entity* inEntity);
-    
-    static void staticRemoveEntity(Entity* inEntity);
-    
-    static Robot* staticGetRobotWithPlayerId(int inPlayerID);
-    
-    static bool staticHasSpacePirates();
+    ~World();
     
     void addEntity(Entity* inEntity);
     
@@ -34,15 +28,14 @@ public:
     
     void update();
     
+    Robot* getRobotWithPlayerId(int inPlayerID);
+    
+    bool hasSpacePirates();
+    
     std::vector<Entity*>& getEntities();
     
 private:
-    std::vector<Entity*> m_objects;
-    
-    // ctor, copy ctor, and assignment should be private in a Singleton
-    World();
-    World(const World&);
-    World& operator=(const World&);
+    std::vector<Entity*> m_entities;
 };
 
 #endif /* defined(__noctisgames__World__) */

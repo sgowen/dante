@@ -41,7 +41,9 @@ public:
         ProjectileState_Exploding = 2
     };
     
-    static Entity* create();
+    static Entity* staticCreateClient();
+    
+    static Entity* staticCreateServer();
     
     virtual void onDeletion();
     
@@ -64,6 +66,7 @@ public:
     bool isFacingLeft();
     
 private:
+    bool m_isServer;
     uint32_t m_iPlayerId;
     ProjectileState m_state;
     bool m_isFacingLeft;
@@ -76,15 +79,9 @@ private:
     
     void processCollisionsWithScreenWalls();
     
-#ifdef NG_CLIENT
-    void interpolateClientSidePrediction(Vector2& inOldPos);
-    
-    bool interpolateVectorsIfNecessary(Vector2& inA, Vector2& inB, float& syncTracker);
-#endif
-    
     void playSound(int soundId);
     
-    Projectile();
+    Projectile(bool isServer);
 };
 
 #endif /* defined(__noctisgames__Projectile__) */

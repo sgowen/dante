@@ -8,6 +8,7 @@
 
 #include "OpenGLSpriteBatcher.h"
 
+#include "TextureWrapper.h"
 #include "GpuTextureWrapper.h"
 #include "GpuProgramWrapper.h"
 #include "TextureRegion.h"
@@ -27,13 +28,13 @@ void OpenGLSpriteBatcher::beginBatch()
     m_iNumSprites = 0;
 }
 
-void OpenGLSpriteBatcher::endBatch(GpuTextureWrapper& textureWrapper, GpuProgramWrapper &gpuProgramWrapper)
+void OpenGLSpriteBatcher::endBatch(TextureWrapper& textureWrapper, GpuProgramWrapper& gpuProgramWrapper)
 {
     if (m_iNumSprites > 0)
     {
         // tell the GPU which texture to use
         glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, textureWrapper.texture);
+        glBindTexture(GL_TEXTURE_2D, textureWrapper.gpuTextureWrapper->texture);
         
         gpuProgramWrapper.bind();
         

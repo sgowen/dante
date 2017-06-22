@@ -20,9 +20,9 @@ KeyboardInputManager* KeyboardInputManager::getInstance()
     return &instance;
 }
 
-void KeyboardInputManager::onInput(KeyboardEventType type, bool isUp)
+void KeyboardInputManager::onInput(unsigned short key, bool isUp)
 {
-    addEvent(type, isUp);
+    addEvent(key, isUp);
 }
 
 void KeyboardInputManager::process()
@@ -37,11 +37,11 @@ std::vector<KeyboardEvent*>& KeyboardInputManager::getEvents()
 
 #pragma mark private
 
-void KeyboardInputManager::addEvent(KeyboardEventType type, bool isUp)
+void KeyboardInputManager::addEvent(unsigned short key, bool isUp)
 {
     bool wasLastEventDown = false;
     
-    auto q = m_lastKnownKeyStates.find(type);
+    auto q = m_lastKnownKeyStates.find(key);
     
     if (q != m_lastKnownKeyStates.end())
     {
@@ -49,10 +49,10 @@ void KeyboardInputManager::addEvent(KeyboardEventType type, bool isUp)
         wasLastEventDown = !wasUp;
     }
     
-    m_lastKnownKeyStates[type] = isUp;
+    m_lastKnownKeyStates[key] = isUp;
     
     KeyboardEvent* e = m_pool->newObject();
-    e->setType(type);
+    e->setKey(key);
     e->setStatus(isUp ? KEYBOARD_STATUS_UP : wasLastEventDown ? KEYBOARD_STATUS_HELD : KEYBOARD_STATUS_DOWN);
     
     m_pool->add(e);

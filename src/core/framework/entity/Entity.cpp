@@ -43,13 +43,6 @@ void Entity::onDeletion()
     // Empty
 }
 
-void Entity::update()
-{
-    float deltaTime = Timing::getInstance()->getDeltaTime();
-    
-    update(deltaTime);
-}
-
 void Entity::update(float inDeltaTime)
 {
     m_fStateTime += inDeltaTime;

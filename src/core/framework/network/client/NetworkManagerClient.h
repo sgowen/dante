@@ -9,24 +9,58 @@
 #ifndef __noctisgames__NetworkManagerClient__
 #define __noctisgames__NetworkManagerClient__
 
-#include "INetworkManager.h"
+#include <string>
+#include <unordered_map>
 
-#include "ReplicationManagerClient.h"
-#include "DeliveryNotificationManager.h"
-#include "SocketAddress.h"
-
+class IClientHelper;
+class InputMemoryBitStream;
+class OutputMemoryBitStream;
+class DeliveryNotificationManager;
+class IMachineAddress;
+class EntityRegistry;
 class Entity;
+class MoveList;
+class ReplicationManagerClient;
+class WeightedTimedMovingAverage;
+class SocketAddress;
 
-class NetworkManagerClient : public INetworkManager
+#define NG_CLIENT (NetworkManagerClient::getInstance())
+
+#define NG_CLIENT_CALLBACKS NetworkManagerClient::staticProcessPacket, NetworkManagerClient::staticHandleNoResponse, NetworkManagerClient::staticHandleConnectionReset
+
+typedef void (*RemoveProcessedMovesFunc)(float lastMoveProcessedByServerTimestamp);
+typedef MoveList& (*GetMoveListFunc)();
+
+enum NetworkClientState
+{
+    NCS_Uninitialized,
+    NCS_SayingHello,
+    NCS_Welcomed,
+    NCS_Disconnected
+};
+
+class NetworkManagerClient
 {
 public:
+    static void create(IClientHelper* inClientHelper, float inFrameRate, RemoveProcessedMovesFunc inRemoveProcessedMovesFunc, GetMoveListFunc inGetMoveListFunc);
+    
+    static void destroy();
+    
     static NetworkManagerClient* getInstance();
     
-    virtual void processPacket(InputMemoryBitStream& inInputStream, const SocketAddress& inFromAddress) override;
+    static void staticProcessPacket(InputMemoryBitStream& inInputStream, IMachineAddress* inFromAddress);
     
-    bool init(const std::string& inServerIPAddress, const std::string& inName, float inFrameRate, HandleEntityDeletion handleEntityDeletion);
+    static void staticHandleNoResponse();
+    
+    static void staticHandleConnectionReset(IMachineAddress* inFromAddress);
+    
+    void processIncomingPackets();
     
     void sendOutgoingPackets();
+    
+    const WeightedTimedMovingAverage& getBytesReceivedPerSecond() const;
+    
+    const WeightedTimedMovingAverage& getBytesSentPerSecond() const;
     
     const WeightedTimedMovingAverage& getAvgRoundTripTime()	const;
     
@@ -34,34 +68,41 @@ public:
     
     int getPlayerId() const;
     
-    float getLastMoveProcessedByServerTimestamp() const;
+    std::string& getPlayerName();
+    
+    NetworkClientState getState() const;
     
 private:
-    enum NetworkClientState
-    {
-        NCS_Uninitialized,
-        NCS_SayingHello,
-        NCS_Welcomed
-    };
+    static NetworkManagerClient* s_instance;
     
-    DeliveryNotificationManager m_deliveryNotificationManager;
-    ReplicationManagerClient m_replicationManagerClient;
+    IClientHelper* m_clientHelper;    
     
-    SocketAddress* m_serverAddress;
+    RemoveProcessedMovesFunc m_removeProcessedMovesFunc;
+    GetMoveListFunc m_getMoveListFunc;
+    
+    DeliveryNotificationManager* m_deliveryNotificationManager;
+    ReplicationManagerClient* m_replicationManagerClient;
     
     NetworkClientState m_state;
     
     float m_fTimeOfLastHello;
     float m_fTimeOfLastInputPacket;
     
-    std::string m_name;
     int m_iPlayerId;
     float m_fFrameRate;
     
     float m_fLastMoveProcessedByServerTimestamp;
+    float m_fLastServerCommunicationTimestamp;
     
-    WeightedTimedMovingAverage m_avgRoundTripTime;
-    float m_fLastRoundTripTime;
+    WeightedTimedMovingAverage* m_avgRoundTripTime;
+    
+    void processPacket(InputMemoryBitStream& inInputStream, IMachineAddress* inFromAddress);
+    
+    void handleNoResponse();
+    
+    void handleConnectionReset(IMachineAddress* inFromAddress);
+    
+    void sendPacket(const OutputMemoryBitStream& inOutputStream);
     
     void updateSayingHello();
     
@@ -69,21 +110,19 @@ private:
     
     void handleWelcomePacket(InputMemoryBitStream& inInputStream);
     
+    void handleDenyPacket();
+    
     void handleStatePacket(InputMemoryBitStream& inInputStream);
     
     void readLastMoveProcessedOnServerTimestamp(InputMemoryBitStream& inInputStream);
-    
-    void handleEntityState(InputMemoryBitStream& inInputStream);
     
     void updateSendingInputPacket();
     
     void sendInputPacket();
     
-    void destroyAllInMap(const std::unordered_map<int, Entity*>& inObjectsToDestroy);
-    
     // ctor, copy ctor, and assignment should be private in a Singleton
-    NetworkManagerClient();
-    virtual ~NetworkManagerClient();
+    NetworkManagerClient(IClientHelper* inClientHelper, float inFrameRate, RemoveProcessedMovesFunc inRemoveProcessedMovesFunc, GetMoveListFunc inGetMoveListFunc);
+    ~NetworkManagerClient();
     NetworkManagerClient(const NetworkManagerClient&);
     NetworkManagerClient& operator=(const NetworkManagerClient&);
 };

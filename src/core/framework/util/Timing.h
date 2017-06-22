@@ -34,6 +34,7 @@ private:
     
     // ctor, copy ctor, and assignment should be private in a Singleton
     Timing();
+    ~Timing();
     Timing(const Timing&);
     Timing& operator=(const Timing&);
 };

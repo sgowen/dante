@@ -35,17 +35,16 @@ void StringUtil::encryptDecrypt(unsigned char* input, unsigned char* output, con
     }
 }
 
-#if !_WIN32
+#ifndef _WIN32
 void OutputDebugStringA(const char* inString)
 {
     printf("%s", inString);
 }
 #endif
 
-std::string StringUtil::sprintf(const char* inFormat, ...)
+std::string StringUtil::format(const char* inFormat, ...)
 {
-    //not thread safe...
-    static char temp[4096];
+    char temp[4096];
     
     va_list args;
     va_start (args, inFormat);

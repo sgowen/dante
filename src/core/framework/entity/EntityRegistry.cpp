@@ -10,15 +10,9 @@
 
 #include "EntityRegistry.h"
 
-EntityRegistry* EntityRegistry::getInstance()
+EntityRegistry::EntityRegistry()
 {
-    static EntityRegistry instance = EntityRegistry();
-    return &instance;
-}
-
-void EntityRegistry::init(HandleEntityCreatedFunc handleEntityCreatedFunc)
-{
-    m_handleEntityCreatedFunc = handleEntityCreatedFunc;
+    // Empty
 }
 
 void EntityRegistry::registerCreationFunction(uint32_t inFourCCName, EntityCreationFunc inCreationFunction)
@@ -30,14 +24,5 @@ Entity* EntityRegistry::createEntity(uint32_t inFourCCName)
 {
     EntityCreationFunc creationFunc = m_nameToEntityCreationFunctionMap[inFourCCName];
     
-    Entity* entity = creationFunc();
-    
-    m_handleEntityCreatedFunc(entity);
-    
-    return entity;
-}
-
-EntityRegistry::EntityRegistry()
-{
-    // Empty
+    return creationFunc();
 }

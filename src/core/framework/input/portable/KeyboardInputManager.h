@@ -9,7 +9,6 @@
 #ifndef __noctisgames__KeyboardInputManager__
 #define __noctisgames__KeyboardInputManager__
 
-#include "KeyboardEventType.h"
 #include "NGRollingPool.h"
 
 #include <vector>
@@ -23,7 +22,7 @@ class KeyboardInputManager
 public:
     static KeyboardInputManager* getInstance();
     
-    void onInput(KeyboardEventType type, bool isUp = false);
+    void onInput(unsigned short key, bool isUp = false);
     
     void process();
     
@@ -31,9 +30,9 @@ public:
     
 private:
     NGRollingPool<KeyboardEvent>* m_pool;
-    std::map<KeyboardEventType, bool> m_lastKnownKeyStates;
+    std::map<unsigned short, bool> m_lastKnownKeyStates;
     
-    void addEvent(KeyboardEventType type, bool isUp);
+    void addEvent(unsigned short key, bool isUp);
     
     // ctor, copy ctor, and assignment should be private in a Singleton
     KeyboardInputManager();

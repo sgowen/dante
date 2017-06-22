@@ -160,7 +160,7 @@ static bool audioProcessingSound11(void *clientData, float **inputBuffers, unsig
 
 NSMutableArray *gAudioSystems = nil;
 
-void initializeWithSuperpoweredSoundManager(SuperpoweredSoundManager* superpoweredSoundManager, int sampleRate)
+void initializeAudioSystemsWithSuperpoweredSoundManager(SuperpoweredSoundManager* superpoweredSoundManager, int sampleRate)
 {
     if (gAudioSystems)
     {
@@ -218,6 +218,19 @@ void initializeWithSuperpoweredSoundManager(SuperpoweredSoundManager* superpower
     for (NSObject *audioSystem in gAudioSystems)
     {
         [audioSystem performSelector:@selector(start) withObject:nil];
+    }
+}
+
+void deinitializeAudioSystems()
+{
+    if (gAudioSystems)
+    {
+        for (NSObject *audioSystem in gAudioSystems)
+        {
+            [audioSystem performSelector:@selector(stop) withObject:nil];
+        }
+        
+        [gAudioSystems removeAllObjects];
     }
 }
 

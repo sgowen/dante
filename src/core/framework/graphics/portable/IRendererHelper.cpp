@@ -10,7 +10,9 @@
 
 #include "IRendererHelper.h"
 
-IRendererHelper::IRendererHelper()
+#include "TextureWrapper.h"
+
+IRendererHelper::IRendererHelper() : m_framebuffer(new TextureWrapper("framebuffer", false))
 {
     // Empty
 }

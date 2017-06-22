@@ -9,12 +9,14 @@
 #ifndef __noctisgames__Font__
 #define __noctisgames__Font__
 
+#include "FontAlign.h"
+
 #include <vector>
 #include <string>
 
 class SpriteBatcher;
 class TextureRegion;
-struct Color;
+class Color;
 
 class Font
 {
@@ -23,7 +25,7 @@ public:
     
     ~Font();
     
-	void renderText(SpriteBatcher &spriteBatcher, std::string &text, float x, float y, float width, float height, Color color, bool isCentered = false, bool isRightJustified = false, int charOffset = 0);
+	void renderText(SpriteBatcher &spriteBatcher, std::string &text, float x, float y, float width, float height, Color color, int justification = FONT_ALIGN_LEFT);
     
     void renderText(SpriteBatcher &spriteBatcher, std::string &text, float x, float y, float width, float height, std::vector<Color>& charColors);
     

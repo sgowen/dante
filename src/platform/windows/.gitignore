@@ -3,16 +3,22 @@
 *.user
 *.*sdf
 *.suo
-*.sav
+*.exe
 ARM/
 Debug/
 Release/
-LevelEditor/
 Generated Files/
 BundleArtifacts/
 AppPackages/
 *VC.opendb
-*.dds
-*.wav
 *VC.db
 .vs/
+
+# Noctis Games
+*.ngt
+*.ngs
+*.dds
+*.wav
+*.cso
+*.sav
+*.dll

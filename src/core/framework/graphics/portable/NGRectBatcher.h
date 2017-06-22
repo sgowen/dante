@@ -11,7 +11,7 @@
 
 class GpuProgramWrapper;
 class NGRect;
-struct Color;
+class Color;
 
 class NGRectBatcher
 {

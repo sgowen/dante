@@ -10,16 +10,21 @@
 #define __noctisgames__ClientProxy__
 
 #include "ReplicationManagerServer.h"
-#include "SocketAddress.h"
 #include "DeliveryNotificationManager.h"
 #include "MoveList.h"
+
+#include <string>
+
+class IMachineAddress;
 
 class ClientProxy
 {
 public:
-    ClientProxy(const SocketAddress& inSocketAddress, const std::string& inName, int inPlayerId);
+    ClientProxy(IMachineAddress* inMachineAddress, const std::string& inName, int inPlayerId);
     
-    const SocketAddress& getSocketAddress() const;
+    ~ClientProxy();
+    
+    IMachineAddress* getMachineAddress() const;
     
     int getPlayerId() const;
     
@@ -35,20 +40,17 @@ public:
     
     MoveList& getUnprocessedMoveList();
     
-    void SetIsLastMoveTimestampDirty(bool inIsDirty);
+    void setIsLastMoveTimestampDirty(bool inIsDirty);
     
-    bool IsLastMoveTimestampDirty() const;
+    bool isLastMoveTimestampDirty() const;
     
 private:
     DeliveryNotificationManager	m_deliveryNotificationManager;
     ReplicationManagerServer m_replicationManagerServer;
-    
-    SocketAddress m_socketAddress;
+    IMachineAddress* m_machineAddress;
     std::string m_name;
     int m_iPlayerId;
-    
     float m_fLastPacketFromClientTime;
-    
     MoveList m_unprocessedMoveList;
     bool m_isLastMoveTimestampDirty;
 };

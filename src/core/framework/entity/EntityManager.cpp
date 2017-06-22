@@ -13,17 +13,21 @@
 #include "Entity.h"
 
 #include "StringUtil.h"
+#include "NGSTDUtil.h"
 
 #include <cassert>
 
-EntityManager* EntityManager::getInstance()
+EntityManager::EntityManager(HandleEntityCreatedFunc handleEntityCreatedFunc, HandleEntityDeletionFunc handleEntityDeletionFunc) : m_handleEntityCreatedFunc(handleEntityCreatedFunc), m_handleEntityDeletionFunc(handleEntityDeletionFunc)
 {
-    static EntityManager instance = EntityManager();
-
-    return &instance;
+    // Empty
 }
 
-Entity* EntityManager::getEntityFromID(int id)const
+EntityManager::~EntityManager()
+{
+    NGSTDUtil::cleanUpMapOfPointers(m_entityMap);
+}
+
+Entity* EntityManager::getEntityByID(int id)const
 {
     auto q = m_entityMap.find(id);
     
@@ -35,19 +39,21 @@ Entity* EntityManager::getEntityFromID(int id)const
     return nullptr;
 }
 
-void EntityManager::registerEntity(Entity* entity)
+void EntityManager::registerEntity(Entity* inEntity)
 {
-    m_entityMap.insert(std::make_pair(entity->getID(), entity));
+    m_entityMap.insert(std::make_pair(inEntity->getID(), inEntity));
+    
+    m_handleEntityCreatedFunc(inEntity);
 }
 
-void EntityManager::removeEntity(Entity* entity)
+void EntityManager::removeEntity(Entity* inEntity)
 {
-    m_entityMap.erase(entity->getID());
-}
-
-void EntityManager::reset()
-{
-    m_entityMap.clear();
+    m_entityMap.erase(inEntity->getID());
+    
+    m_handleEntityDeletionFunc(inEntity);
+    
+    delete inEntity;
+    inEntity = nullptr;
 }
 
 std::unordered_map<int, Entity*>& EntityManager::getMap()
@@ -58,9 +64,4 @@ std::unordered_map<int, Entity*>& EntityManager::getMap()
 std::unordered_map<int, Entity*> EntityManager::getMapCopy()
 {
     return m_entityMap;
-}
-
-EntityManager::EntityManager()
-{
-    // Hide Constructor for Singleton
 }

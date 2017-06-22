@@ -93,4 +93,10 @@ Timing::Timing()
 #endif
     
     m_dLastFrameStartTime = getTime();
+    m_fFrameStartTimef = static_cast<float> (m_dLastFrameStartTime);
+}
+
+Timing::~Timing()
+{
+    // Empty
 }

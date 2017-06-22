@@ -12,7 +12,7 @@
 #include "NGRectBatcher.h"
 
 class GpuProgramWrapper;
-struct Color;
+class Color;
 
 class OpenGLNGRectBatcher : public NGRectBatcher
 {

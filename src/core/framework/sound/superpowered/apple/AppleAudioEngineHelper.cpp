@@ -53,10 +53,12 @@ AppleAudioEngineHelper::AppleAudioEngineHelper() : IAudioEngineHelper(),
 m_superpoweredSoundManager(new SuperpoweredSoundManager(44100)),
 m_iSampleRate(44100)
 {
-    initializeWithSuperpoweredSoundManager(m_superpoweredSoundManager, m_iSampleRate);
+    initializeAudioSystemsWithSuperpoweredSoundManager(m_superpoweredSoundManager, m_iSampleRate);
 }
 
 AppleAudioEngineHelper::~AppleAudioEngineHelper()
 {
+    deinitializeAudioSystems();
+    
     delete m_superpoweredSoundManager;
 }

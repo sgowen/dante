@@ -28,7 +28,7 @@ public:
     
     virtual void endFrame();
     
-    virtual GpuTextureWrapper* getFramebuffer(int index);
+    virtual TextureWrapper* getFramebuffer(int index);
     
     virtual void updateMatrix(float left, float right, float bottom, float top);
     

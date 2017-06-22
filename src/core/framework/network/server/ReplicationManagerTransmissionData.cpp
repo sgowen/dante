@@ -10,9 +10,13 @@
 
 #include "ReplicationManagerTransmissionData.h"
 
-#include "NetworkManagerServer.h"
-#include "ReplicationAction.h"
+#include "ReplicationManagerServer.h"
+
+#include "FWInstanceManager.h"
+#include "EntityManager.h"
 #include "Entity.h"
+#include "ReplicationAction.h"
+#include "DeliveryNotificationManager.h"
 
 ReplicationManagerTransmissionData::ReplicationManagerTransmissionData(ReplicationManagerServer* inReplicationManagerServer) :
 m_replicationManagerServer(inReplicationManagerServer)
@@ -77,7 +81,7 @@ void ReplicationManagerTransmissionData::handleDeliverySuccess(DeliveryNotificat
 void ReplicationManagerTransmissionData::handleCreateDeliveryFailure(int inNetworkId) const
 {
     //does the object still exist? it might be dead, in which case we don't resend a create
-    Entity* gameObject = NetworkManagerServer::getInstance()->getEntity(inNetworkId);
+    Entity* gameObject = FWInstanceManager::getServerEntityManager()->getEntityByID(inNetworkId);
     if (gameObject)
     {
         m_replicationManagerServer->replicateCreate(inNetworkId, gameObject->getAllStateMask());
@@ -87,7 +91,7 @@ void ReplicationManagerTransmissionData::handleCreateDeliveryFailure(int inNetwo
 void ReplicationManagerTransmissionData::handleUpdateStateDeliveryFailure(int inNetworkId, uint32_t inState, DeliveryNotificationManager* inDeliveryNotificationManager) const
 {
     //does the object still exist? it might be dead, in which case we don't resend an update
-    if (NetworkManagerServer::getInstance()->getEntity(inNetworkId))
+    if (FWInstanceManager::getServerEntityManager()->getEntityByID(inNetworkId))
     {
         //look in all future in flight packets, in all transmissions
         //remove written state from dirty state

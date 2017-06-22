@@ -25,6 +25,15 @@ public:
     
     virtual bool write(OutputMemoryBitStream& inOutputStream) const = 0;
     virtual bool read(InputMemoryBitStream& inInputStream) = 0;
+    
+    virtual void reset() = 0;
+    
+    void setInUse(bool inUse);
+    
+    bool isInUse() const;
+    
+private:
+    bool m_isInUse;
 };
 
 #endif /* defined(__noctisgames__IInputState__) */
