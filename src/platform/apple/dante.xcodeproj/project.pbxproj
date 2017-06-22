@@ -36,7 +36,6 @@
 		BB44C3281DB030B3003E633F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = BB44C3201DB030B3003E633F /* AppDelegate.m */; };
 		BB44C3291DB030B3003E633F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BB44C3211DB030B3003E633F /* Assets.xcassets */; };
 		BB44C32A1DB030B3003E633F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BB44C3221DB030B3003E633F /* Main.storyboard */; };
-		BB44C93C1DB03A7E003E633F /* rapidjson_readme.txt in Resources */ = {isa = PBXBuildFile; fileRef = BB44C6081DB03A7D003E633F /* rapidjson_readme.txt */; };
 		BB44CAEE1DB04B13003E633F /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB44CAED1DB04B13003E633F /* Cocoa.framework */; };
 		BB44CB091DB04C83003E633F /* NGOpenGLView.mm in Sources */ = {isa = PBXBuildFile; fileRef = BB44CB051DB04C83003E633F /* NGOpenGLView.mm */; };
 		BB44CB0F1DB04E81003E633F /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB44CB0E1DB04E81003E633F /* OpenGL.framework */; };
@@ -1904,7 +1903,6 @@
 				BB5833F01EEDDD330084DA20 /* sound_005.wav in Resources */,
 				BB5833EB1EEDDD330084DA20 /* music_001.wav in Resources */,
 				BB5833ED1EEDDD330084DA20 /* sound_002.wav in Resources */,
-				BB44C93C1DB03A7E003E633F /* rapidjson_readme.txt in Resources */,
 				BB5833F31EEDDD330084DA20 /* texture_002.ngt in Resources */,
 				BB2AC5471EFC56330012B990 /* sound_006.wav in Resources */,
 				BB125E121EFAF61F00917328 /* texture_005.ngt in Resources */,
