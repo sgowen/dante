@@ -162,8 +162,12 @@ void Server::respawnEnemiesIfNecessary()
             for (int i = 0; i < numSpacePirates; ++i)
             {
                 SpacePirate* spacePirate = static_cast<SpacePirate*>(FWInstanceManager::getServerEntityRegistry()->createEntity(NETWORK_TYPE_SpacePirate));
+                
+                float posX = (rand() % static_cast<int>(GAME_WIDTH - spacePirate->getWidth() * 2)) + (spacePirate->getWidth() * 2);
+                float posY = (rand() % static_cast<int>(GAME_HEIGHT - spacePirate->getHeight() * 2)) + (GROUND_TOP + spacePirate->getHeight() * 2);
                 float speed = (rand() % 100) * 0.05f + 1.0f;
-                spacePirate->init(CAM_WIDTH - static_cast<float>(i), 7.0f, speed);
+                
+                spacePirate->init(posX, posY, speed);
                 
                 static Color Red(1.0f, 0.0f, 0.0f, 1);
                 static Color Blue(0.0f, 0.0f, 1.0f, 1);

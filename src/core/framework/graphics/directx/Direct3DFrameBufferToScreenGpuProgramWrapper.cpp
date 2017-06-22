@@ -31,8 +31,6 @@ void Direct3DFramebufferToScreenGpuProgramWrapper::bind()
     D3DManager->useScreenBlending();
 
     m_program->bindShaders();
-    
-    m_program->bindNormalSamplerState();
 
 	m_program->mapVertices();
 }

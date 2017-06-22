@@ -10,6 +10,7 @@
 
 #include "Direct3DRendererHelper.h"
 
+#include "TextureWrapper.h"
 #include "GpuTextureWrapper.h"
 #include "Direct3DManager.h"
 
@@ -48,9 +49,11 @@ void Direct3DRendererHelper::endFrame()
     // Empty
 }
 
-GpuTextureWrapper* Direct3DRendererHelper::getFramebuffer(int index)
+TextureWrapper* Direct3DRendererHelper::getFramebuffer(int index)
 {
-    return D3DManager->getFramebuffers().at(index);
+    m_framebuffer->gpuTextureWrapper = D3DManager->getFramebuffers().at(index);
+    
+    return m_framebuffer;
 }
 
 void Direct3DRendererHelper::updateMatrix(float left, float right, float bottom, float top)

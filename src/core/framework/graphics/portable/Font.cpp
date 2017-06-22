@@ -38,24 +38,24 @@ Font::~Font()
     m_glyphs.clear();
 }
 
-void Font::renderText(SpriteBatcher &spriteBatcher, std::string &text, float x, float y, float width, float height, Color color, bool isCentered, bool isRightJustified, int charOffset)
+void Font::renderText(SpriteBatcher &spriteBatcher, std::string &text, float x, float y, float width, float height, Color color, int justification)
 {
     unsigned long len = text.length();
     
-	if (isCentered)
+	if (justification == FONT_ALIGN_CENTERED)
 	{
         float result = width / 2;
 		x -= len * result;
 		x += width / 2;
 	}
-	else if (isRightJustified)
+	else if (justification == FONT_ALIGN_RIGHT)
 	{
 		x -= (text.length() - 1) * width;
 	}
 
 	for (unsigned int i = 0; i < len; ++i)
 	{
-		int c = ((int)text.at(i)) - charOffset;
+		int c = ((int)text.at(i));
 
         renderAsciiChar(spriteBatcher, c, x, y, width, height, color);
 

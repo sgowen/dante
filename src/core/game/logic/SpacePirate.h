@@ -53,6 +53,8 @@ public:
     
     void takeDamage();
     
+    int getHealth();
+    
     float getSpeed();
     
     bool isFacingLeft();

@@ -14,16 +14,18 @@
 class TextureRegion
 {
 public:
+    float u1, v1, u2, v2;
+    float m_fX, m_fY, m_fRegionWidth, m_fRegionHeight, m_fTextureWidth, m_fTextureHeight;
+    
     TextureRegion(std::string textureName, int x, int y, int regionWidth, int regionHeight, int textureWidth, int textureHeight);
     
     void init(int x, int y, int regionWidth, int regionHeight, int textureWidth, int textureHeight);
     
-    void init(int x, int regionWidth, int textureWidth);
+    // Useful for parallax
+    void initX(int x);
+    void initY(int y);
     
-    std::string& getTextureName() { return m_textureName; }
-    
-	float u1, v1, u2, v2;
-    float m_fX, m_fY, m_fRegionWidth, m_fRegionHeight, m_fTextureWidth, m_fTextureHeight;
+    std::string& getTextureName();
     
 private:
     std::string m_textureName;

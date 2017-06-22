@@ -28,6 +28,7 @@
 #include "FWInstanceManager.h"
 #include "NGSTDUtil.h"
 #include "FrameworkConstants.h"
+#include "NetworkManagerClient.h"
 
 #include <assert.h>
 
@@ -235,6 +236,16 @@ void NetworkManagerServer::handlePacketFromNewClient(InputMemoryBitStream& inInp
         std::string name;
         inInputStream.read(name);
         
+        if (m_addressHashToClientMap.size() == 0)
+        {
+            if (NG_CLIENT->getPlayerName().compare(name) != 0)
+            {
+                // The server host MUST be the first client to join
+                sendDenyPacket(inFromAddress, name);
+                return;
+            }
+        }
+        
         IMachineAddress* clientProxyInFromAddress = inFromAddress->createCopy();
         ClientProxy* newClientProxy = new ClientProxy(clientProxyInFromAddress, name, m_iNewPlayerId++);
         m_addressHashToClientMap[clientProxyInFromAddress->getHash()] = newClientProxy;
@@ -288,14 +299,25 @@ void NetworkManagerServer::processPacket(ClientProxy* inClientProxy, InputMemory
 
 void NetworkManagerServer::sendWelcomePacket(ClientProxy* inClientProxy)
 {
-    OutputMemoryBitStream welcomePacket;
+    OutputMemoryBitStream packet;
     
-    welcomePacket.write(NETWORK_PACKET_TYPE_WELCOME);
-    welcomePacket.write(inClientProxy->getPlayerId());
+    packet.write(NETWORK_PACKET_TYPE_WELCOME);
+    packet.write(inClientProxy->getPlayerId());
     
     LOG("Server welcoming new client '%s' as player %d", inClientProxy->getName().c_str(), inClientProxy->getPlayerId());
     
-    sendPacket(welcomePacket, inClientProxy->getMachineAddress());
+    sendPacket(packet, inClientProxy->getMachineAddress());
+}
+
+void NetworkManagerServer::sendDenyPacket(IMachineAddress* inToAddress, std::string name)
+{
+    OutputMemoryBitStream packet;
+    
+    packet.write(NETWORK_PACKET_TYPE_DENY);
+    
+    LOG("Server denying new client '%s'", name.c_str());
+    
+    sendPacket(packet, inToAddress);
 }
 
 void NetworkManagerServer::sendStatePacketToClient(ClientProxy* inClientProxy)

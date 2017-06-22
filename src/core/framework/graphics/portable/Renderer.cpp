@@ -198,7 +198,7 @@ void Renderer::loadTextureSync(TextureWrapper* textureWrapper)
     textureWrapper->isLoadingData = true;
     textureWrapper->gpuTextureDataWrapper = m_textureLoader->loadTextureData(textureWrapper->name.c_str());
     
-    textureWrapper->gpuTextureWrapper = m_textureLoader->loadTexture(textureWrapper->gpuTextureDataWrapper);
+    textureWrapper->gpuTextureWrapper = m_textureLoader->loadTexture(textureWrapper->gpuTextureDataWrapper, textureWrapper->repeatS);
     
     delete textureWrapper->gpuTextureDataWrapper;
     textureWrapper->gpuTextureDataWrapper = nullptr;

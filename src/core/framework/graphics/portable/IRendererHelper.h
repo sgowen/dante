@@ -9,6 +9,7 @@
 #ifndef __noctisgames__IRendererHelper__
 #define __noctisgames__IRendererHelper__
 
+class TextureWrapper;
 struct GpuTextureWrapper;
 
 class IRendererHelper
@@ -28,7 +29,7 @@ public:
     
     virtual void endFrame() = 0;
     
-    virtual GpuTextureWrapper* getFramebuffer(int index) = 0;
+    virtual TextureWrapper* getFramebuffer(int index) = 0;
     
     virtual void updateMatrix(float left, float right, float bottom, float top) = 0;
     
@@ -39,6 +40,9 @@ public:
     virtual void bindToScreenFramebuffer() = 0;
     
     virtual void destroyTexture(GpuTextureWrapper& textureWrapper) = 0;
+    
+protected:
+    TextureWrapper* m_framebuffer;
 };
 
 #endif /* defined(__noctisgames__IRendererHelper__) */

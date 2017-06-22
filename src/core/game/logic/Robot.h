@@ -34,8 +34,9 @@ public:
         ROBT_Color = 1 << 1,
         ROBT_PlayerInfo = 1 << 2,
         ROBT_Health = 1 << 3,
+        ROBT_NumKills = 1 << 4,
         
-        ROBT_AllState = ROBT_Pose | ROBT_Color | ROBT_PlayerInfo | ROBT_Health
+        ROBT_AllState = ROBT_Pose | ROBT_Color | ROBT_PlayerInfo | ROBT_Health | ROBT_NumKills
     };
     
     static Entity* staticCreateClient();
@@ -54,6 +55,8 @@ public:
     
     void takeDamage();
     
+    void awardKill();
+    
     void setAddressHash(uint64_t addressHash);
     
     uint64_t getAddressHash() const;
@@ -66,7 +69,9 @@ public:
     
     std::string& getPlayerName();
     
-    int getHealth();
+    uint32_t getNumKills();
+    
+    uint8_t getHealth();
     
     bool isFacingLeft();
     
@@ -89,14 +94,17 @@ private:
     float m_fTimeVelocityBecameOutOfSync;
     float m_fTimePositionBecameOutOfSync;
     
-    int m_iHealth;
+    uint32_t m_iNumKills;
+    
+    uint8_t m_iHealth;
+    uint8_t m_iNumJumps;
     
     bool m_isFacingLeft;
     bool m_isGrounded;
     bool m_isFalling;
     bool m_isShooting;
-    bool m_isJumping;
     bool m_isSprinting;
+    bool m_isFirstJumpCompleted;
     
     uint64_t m_iAddressHash;
     uint32_t m_iPlayerId;

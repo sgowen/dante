@@ -75,17 +75,26 @@ void InstanceManager::staticHandleEntityDeletedOnClient(Entity* inEntity)
     }
 }
 
-uint64_t InstanceManager::staticGetPlayerAddressHashOnClient(int inPlayerIndex)
+uint64_t InstanceManager::staticGetPlayerAddressHashForIndexOnClient(int inPlayerIndex)
 {
     uint64_t ret = 0;
+ 
+    Robot* robot = InstanceManager::staticGetPlayerRobotForIDOnClient(inPlayerIndex + 1);
+    if (robot)
+    {
+        ret = robot->getAddressHash();
+    }
+    
+    return ret;
+}
+
+Robot* InstanceManager::staticGetPlayerRobotForIDOnClient(int inPlayerID)
+{
+    Robot* ret = nullptr;
     
     if (InstanceManager::getClientWorld())
     {
-        Robot* robot = InstanceManager::getClientWorld()->getRobotWithPlayerId(inPlayerIndex + 1);
-        if (robot)
-        {
-            ret = robot->getAddressHash();
-        }
+        ret = InstanceManager::getClientWorld()->getRobotWithPlayerId(inPlayerID);
     }
     
     return ret;

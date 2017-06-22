@@ -23,10 +23,6 @@ public:
     void bindShaders();
     
     void bindMatrix();
-    
-    void bindNormalSamplerState();
-    
-    void bindWrapSamplerState();
 
 	void createConstantBuffer(_COM_Outptr_opt_  ID3D11Buffer **ppBuffer);
     

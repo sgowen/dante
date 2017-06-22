@@ -187,15 +187,23 @@ void SpacePirate::init(float x, float y, float speed)
 
 void SpacePirate::takeDamage()
 {
-    m_iHealth--;
-    
-    if (m_iHealth <= 0)
+    if (m_isServer)
     {
-        requestDeletion();
+        m_iHealth--;
+        
+        if (m_iHealth <= 0)
+        {
+            requestDeletion();
+        }
+        
+        // tell the world our health dropped
+        NG_SERVER->setStateDirty(getID(), SPCP_Health);
     }
-    
-    // tell the world our health dropped
-    NG_SERVER->setStateDirty(getID(), SPCP_Health);
+}
+
+int SpacePirate::getHealth()
+{
+    return m_iHealth;
 }
 
 float SpacePirate::getSpeed()
@@ -222,7 +230,7 @@ void SpacePirate::processCollisions()
     if (m_isServer)
     {
         bool targetFound = false;
-        float shortestDistance = CAM_WIDTH;
+        float shortestDistance = GAME_WIDTH;
         Robot* robot = nullptr;
         std::vector<Entity*> entities = InstanceManager::getServerWorld()->getEntities();
         for (Entity* target : entities)
@@ -270,19 +278,19 @@ void SpacePirate::processCollisionsWithScreenWalls()
     
     float radius = m_fWidth / 2;
     
-    if (boundsY <= 1.0f && vy < 0)
+    if (boundsY <= GROUND_TOP && vy < 0)
     {
         m_velocity.setY(0);
         m_acceleration.setY(0);
-        position.setY(1.0f + getMainBounds().getHeight() / 2);
+        position.setY(GROUND_TOP + getMainBounds().getHeight() / 2);
         setPosition(position);
         m_isGrounded = true;
         m_isFalling = false;
     }
     
-    if ((x + radius) >= CAM_WIDTH && vx > 0)
+    if ((x + radius) >= GAME_WIDTH && vx > 0)
     {
-        position.setX(CAM_WIDTH - radius);
+        position.setX(GAME_WIDTH - radius);
         setPosition(position);
     }
     else if (x <= 0 && vx < 0)

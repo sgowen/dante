@@ -280,7 +280,7 @@
 		BB09CDFA1DBD3779006A3E49 /* SuperpoweredtvOSAudioIO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SuperpoweredtvOSAudioIO.h; sourceTree = "<group>"; };
 		BB09CDFB1DBD3779006A3E49 /* SuperpoweredtvOSAudioIO.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SuperpoweredtvOSAudioIO.mm; sourceTree = "<group>"; };
 		BB09CDFC1DBD3779006A3E49 /* SuperpoweredWhoosh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SuperpoweredWhoosh.h; sourceTree = "<group>"; };
-		BB125E0D1EFAF61F00917328 /* texture_003.ngt */ = {isa = PBXFileReference; lastKnownFileType = file; path = texture_003.ngt; sourceTree = "<group>"; };
+		BB125E0D1EFAF61F00917328 /* texture_003.ngt */ = {isa = PBXFileReference; lastKnownFileType = text; path = texture_003.ngt; sourceTree = "<group>"; };
 		BB125E0E1EFAF61F00917328 /* texture_004.ngt */ = {isa = PBXFileReference; lastKnownFileType = file; path = texture_004.ngt; sourceTree = "<group>"; };
 		BB125E0F1EFAF61F00917328 /* texture_005.ngt */ = {isa = PBXFileReference; lastKnownFileType = file; path = texture_005.ngt; sourceTree = "<group>"; };
 		BB125E131EFAF62800917328 /* texture_003.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = texture_003.png; sourceTree = "<group>"; };
@@ -293,6 +293,7 @@
 		BB1E89801EF4B2BA00B0D78A /* SocketPacketHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SocketPacketHandler.h; sourceTree = "<group>"; };
 		BB1E89821EF4B4F400B0D78A /* NGSteamPacketHandler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NGSteamPacketHandler.cpp; sourceTree = "<group>"; };
 		BB1E89831EF4B4F400B0D78A /* NGSteamPacketHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NGSteamPacketHandler.h; sourceTree = "<group>"; };
+		BB2AC5451EFC382C0012B990 /* FontAlign.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FontAlign.h; sourceTree = "<group>"; };
 		BB4253D01EF58DA5003F6D2A /* IClientHelper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = IClientHelper.cpp; sourceTree = "<group>"; };
 		BB4253D11EF58DA5003F6D2A /* IClientHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IClientHelper.h; sourceTree = "<group>"; };
 		BB4253D31EF58E00003F6D2A /* IServerHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IServerHelper.h; sourceTree = "<group>"; };
@@ -1536,6 +1537,7 @@
 				BBAEF1361EA94ED900F0866E /* DummyGpuProgramWrapper.h */,
 				BBAEF1371EA94ED900F0866E /* Font.cpp */,
 				BBAEF1381EA94ED900F0866E /* Font.h */,
+				BB2AC5451EFC382C0012B990 /* FontAlign.h */,
 				BBAEF1391EA94ED900F0866E /* GpuProgramWrapper.cpp */,
 				BBAEF13A1EA94ED900F0866E /* GpuProgramWrapper.h */,
 				BBAEF13B1EA94ED900F0866E /* GpuProgramWrapperFactory.cpp */,

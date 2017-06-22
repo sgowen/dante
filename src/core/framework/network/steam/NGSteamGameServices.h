@@ -70,11 +70,7 @@ public:
 #pragma mark Steam Cloud
     bool writeFileToSteamCloud(const char *inFileName, const char *inData);
     std::string readFileFromSteamCloud(const char *inFileName);
-    
-#pragma mark General Player Functions
-    uint64_t getLocalPlayerId();
-    std::string getLocalPlayerName();
-    std::string getRemotePlayerName(uint64_t inPlayerId);
+    void refreshSteamCloudFileStats();
     
 private:
     static NGSteamGameServices* s_instance;
@@ -118,8 +114,6 @@ private:
     
     int m_iStatus;
     bool m_isRequestingToJoinServer;
-    
-    void refreshSteamCloudFileStats();
     
     STEAM_CALLBACK(NGSteamGameServices, onGameOverlayActivated, GameOverlayActivated_t);
     STEAM_CALLBACK(NGSteamGameServices, onGameJoinRequested, GameRichPresenceJoinRequested_t);

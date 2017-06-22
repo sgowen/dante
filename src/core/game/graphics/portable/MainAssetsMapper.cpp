@@ -27,7 +27,7 @@ MainAssetsMapper::~MainAssetsMapper()
 void MainAssetsMapper::mapAssets()
 {
     /// Texture Regions
-    ASSETS->getTextureRegionMap()["Background1"] = new TextureRegion("texture_003", 0, 0, 1024, 1024, TEXTURE_SIZE_1024);
+    ASSETS->getTextureRegionMap()["Background1"] = new TextureRegion("texture_003", 0, 384, 1024, 640, TEXTURE_SIZE_1024);
     ASSETS->getTextureRegionMap()["Background2"] = new TextureRegion("texture_004", 0, 644, 1024, 248, TEXTURE_SIZE_1024);
     ASSETS->getTextureRegionMap()["Background3"] = new TextureRegion("texture_004", 0, 896, 1024, 128, TEXTURE_SIZE_1024);
     ASSETS->getTextureRegionMap()["Cover"] = new TextureRegion("texture_005", 0, 0, 1024, 1024, TEXTURE_SIZE_1024);

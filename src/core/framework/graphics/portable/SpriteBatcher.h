@@ -9,7 +9,7 @@
 #ifndef __noctisgames__SpriteBatcher__
 #define __noctisgames__SpriteBatcher__
 
-struct GpuTextureWrapper;
+class TextureWrapper;
 class GpuProgramWrapper;
 class TextureRegion;
 class Color;
@@ -23,7 +23,7 @@ public:
 
     virtual void beginBatch() = 0;
 
-    virtual void endBatch(GpuTextureWrapper& textureWrapper, GpuProgramWrapper &gpuProgramWrapper) = 0;
+    virtual void endBatch(TextureWrapper& textureWrapper, GpuProgramWrapper& gpuProgramWrapper) = 0;
 
     void drawSprite(float x, float y, float width, float height, float angle, TextureRegion& tr);
 

@@ -130,6 +130,22 @@ void Projectile::read(InputMemoryBitStream& inInputStream)
     {
         // This projectile was just created
         playSound(SOUND_ID_FIRE_ROCKET);
+        
+        float rtt = NG_CLIENT->getRoundTripTime() / 2;
+        
+        while (true)
+        {
+            if (rtt < FRAME_RATE)
+            {
+                updateInternal(rtt);
+                break;
+            }
+            else
+            {
+                updateInternal(FRAME_RATE);
+                rtt -= FRAME_RATE;
+            }
+        }
     }
 }
 
@@ -254,6 +270,11 @@ void Projectile::processCollisions()
                     
                     SpacePirate* spacePirate = static_cast<SpacePirate*>(target);
                     spacePirate->takeDamage();
+                    if (spacePirate->getHealth() == 0)
+                    {
+                        Robot* robot = InstanceManager::getServerWorld()->getRobotWithPlayerId(getPlayerId());
+                        robot->awardKill();
+                    }
                 }
             }
         }
@@ -263,9 +284,9 @@ void Projectile::processCollisions()
 void Projectile::processCollisionsWithScreenWalls()
 {
     NGRect& bounds = getMainBounds();
-    if (bounds.getBottom() > CAM_HEIGHT
+    if (bounds.getBottom() > GAME_HEIGHT
         || bounds.getTop() < 0
-        || bounds.getLeft() > CAM_WIDTH
+        || bounds.getLeft() > GAME_WIDTH
         || bounds.getRight() < 0)
     {
         requestDeletion();

@@ -10,6 +10,7 @@
 
 #include "Direct3DSpriteBatcher.h"
 
+#include "TextureWrapper.h"
 #include "GpuTextureWrapper.h"
 #include "GpuProgramWrapper.h"
 #include "TextureRegion.h"
@@ -29,13 +30,22 @@ void Direct3DSpriteBatcher::beginBatch()
 	m_iNumSprites = 0;
 }
 
-void Direct3DSpriteBatcher::endBatch(GpuTextureWrapper& textureWrapper, GpuProgramWrapper &gpuProgramWrapper)
+void Direct3DSpriteBatcher::endBatch(TextureWrapper& textureWrapper, GpuProgramWrapper& gpuProgramWrapper)
 {
 	if (m_iNumSprites > 0)
 	{
 		// tell the GPU which texture to use
 		ID3D11DeviceContext* d3dContext = Direct3DManager::getD3dContext();
-		d3dContext->PSSetShaderResources(0, 1, &textureWrapper.texture);
+		d3dContext->PSSetShaderResources(0, 1, &textureWrapper.gpuTextureWrapper->texture);
+        
+        if (textureWrapper.repeatS)
+        {
+            bindWrapSamplerState();
+        }
+        else
+        {
+            bindNormalSamplerState();
+        }
 
 		d3dContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
@@ -53,4 +63,18 @@ void Direct3DSpriteBatcher::endBatch(GpuTextureWrapper& textureWrapper, GpuProgr
 void Direct3DSpriteBatcher::addVertexCoordinate(float x, float y, float z, float r, float g, float b, float a, float u, float v)
 {
     D3DManager->addVertexCoordinate(x, y, z, r, g, b, a, u, v);
+}
+
+void Direct3DSpriteBatcher::bindNormalSamplerState()
+{
+    ID3D11DeviceContext* d3dContext = Direct3DManager::getD3dContext();
+    
+    d3dContext->PSSetSamplers(0, 1, D3DManager->getSbSamplerState().GetAddressOf());
+}
+
+void Direct3DSpriteBatcher::bindWrapSamplerState()
+{
+    ID3D11DeviceContext* d3dContext = Direct3DManager::getD3dContext();
+    
+    d3dContext->PSSetSamplers(0, 1, D3DManager->getSbWrapSamplerState().GetAddressOf());
 }

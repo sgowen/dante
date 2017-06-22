@@ -97,6 +97,8 @@ private:
     
     void sendWelcomePacket(ClientProxy* inClientProxy);
     
+    void sendDenyPacket(IMachineAddress* inToAddress, std::string name);
+    
     void sendStatePacketToClient(ClientProxy* inClientProxy);
     
     void writeLastMoveTimestampIfDirty(OutputMemoryBitStream& inOutputStream, ClientProxy* inClientProxy);

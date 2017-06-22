@@ -34,8 +34,6 @@ public:
     std::unordered_map<std::string, TextureRegion*>& getTextureRegionMap();
     
     std::unordered_map<std::string, Animation*>& getAnimationsMap();
-    
-    void initTextureRegion(TextureRegion& tr, int x, int regionWidth, int textureWidth); // Useful for parallax
 
 private:
     std::unordered_map<std::string, TextureRegion*> m_textureRegions;

@@ -312,24 +312,6 @@ std::string NGSteamGameServices::readFileFromSteamCloud(const char *inFileName)
     return std::string(temp);
 }
 
-#pragma mark General Player Functions
-
-uint64_t NGSteamGameServices::getLocalPlayerId()
-{
-    CSteamID myID = SteamUser()->GetSteamID();
-    return myID.ConvertToUint64();
-}
-
-std::string NGSteamGameServices::getLocalPlayerName()
-{
-    return std::string(SteamFriends()->GetPersonaName());
-}
-
-std::string NGSteamGameServices::getRemotePlayerName(uint64_t inPlayerId)
-{
-    return std::string(SteamFriends()->GetFriendPersonaName(inPlayerId));
-}
-
 void NGSteamGameServices::refreshSteamCloudFileStats()
 {
     m_ulBytesQuota = 0;

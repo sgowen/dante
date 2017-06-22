@@ -155,20 +155,6 @@ void Direct3DProgram::bindMatrix()
     d3dContext->UpdateSubresource(D3DManager->getMatrixConstantbuffer().Get(), 0, 0, &D3DManager->getMatFinal(), 0, 0);
 }
 
-void Direct3DProgram::bindNormalSamplerState()
-{
-    ID3D11DeviceContext* d3dContext = Direct3DManager::getD3dContext();
-    
-    d3dContext->PSSetSamplers(0, 1, D3DManager->getSbSamplerState().GetAddressOf());
-}
-
-void Direct3DProgram::bindWrapSamplerState()
-{
-    ID3D11DeviceContext* d3dContext = Direct3DManager::getD3dContext();
-    
-    d3dContext->PSSetSamplers(0, 1, D3DManager->getSbWrapSamplerState().GetAddressOf());
-}
-
 void Direct3DProgram::createConstantBuffer(_COM_Outptr_opt_  ID3D11Buffer **ppBuffer)
 {
 	ID3D11Device* d3dDevice = Direct3DManager::getD3dDevice();

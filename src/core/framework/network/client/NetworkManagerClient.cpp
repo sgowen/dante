@@ -130,6 +130,11 @@ int NetworkManagerClient::getPlayerId() const
     return m_iPlayerId;
 }
 
+std::string& NetworkManagerClient::getPlayerName()
+{
+    return m_clientHelper->getName();
+}
+
 NetworkClientState NetworkManagerClient::getState() const
 {
     return m_state;
@@ -146,6 +151,9 @@ void NetworkManagerClient::processPacket(InputMemoryBitStream& inInputStream, IM
     {
         case NETWORK_PACKET_TYPE_WELCOME:
             handleWelcomePacket(inInputStream);
+            break;
+        case NETWORK_PACKET_TYPE_DENY:
+            handleDenyPacket();
             break;
         case NETWORK_PACKET_TYPE_STATE:
             if (m_deliveryNotificationManager->readAndProcessState(inInputStream))
@@ -196,7 +204,7 @@ void NetworkManagerClient::sendHelloPacket()
     OutputMemoryBitStream helloPacket;
     
     helloPacket.write(NETWORK_PACKET_TYPE_HELLO);
-    helloPacket.write(m_clientHelper->getName());
+    helloPacket.write(getPlayerName());
     
     sendPacket(helloPacket);
 }
@@ -205,14 +213,21 @@ void NetworkManagerClient::handleWelcomePacket(InputMemoryBitStream& inInputStre
 {
     if (m_state == NCS_SayingHello)
     {
-        //if we got a player id, we've been welcomed!
+        // if we got a player id, we've been welcomed!
         int playerId;
         inInputStream.read(playerId);
         m_iPlayerId = playerId;
         m_state = NCS_Welcomed;
         
-        LOG("'%s' was welcomed on client as player %d", m_clientHelper->getName().c_str(), m_iPlayerId);
+        LOG("'%s' was welcomed on client as player %d", getPlayerName().c_str(), m_iPlayerId);
     }
+}
+
+void NetworkManagerClient::handleDenyPacket()
+{
+    LOG("'%s' was denied on client, disconnecting...", getPlayerName().c_str());
+    
+    m_state = NCS_Disconnected;
 }
 
 void NetworkManagerClient::handleStatePacket(InputMemoryBitStream& inInputStream)

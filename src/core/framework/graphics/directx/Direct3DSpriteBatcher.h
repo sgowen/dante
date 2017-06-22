@@ -18,10 +18,15 @@ public:
     
 	virtual void beginBatch();
 
-	virtual void endBatch(GpuTextureWrapper& textureWrapper, GpuProgramWrapper &gpuProgramWrapper);
+	virtual void endBatch(TextureWrapper& textureWrapper, GpuProgramWrapper& gpuProgramWrapper);
     
 protected:
     virtual void addVertexCoordinate(float x, float y, float z, float r, float g, float b, float a, float u, float v);
+    
+private:
+    void bindNormalSamplerState();
+    
+    void bindWrapSamplerState();
 };
 
 #endif /* defined(__noctisgames__Direct3DSpriteBatcher__) */

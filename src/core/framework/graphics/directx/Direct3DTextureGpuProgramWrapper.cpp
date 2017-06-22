@@ -32,8 +32,6 @@ void Direct3DTextureGpuProgramWrapper::bind()
 
     m_program->bindShaders();
     
-    m_program->bindNormalSamplerState();
-    
 	m_program->bindMatrix();
 
 	m_program->mapVertices();

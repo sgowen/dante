@@ -10,6 +10,7 @@
 
 #include "OpenGLRendererHelper.h"
 
+#include "TextureWrapper.h"
 #include "GpuTextureWrapper.h"
 #include "OpenGLManager.h"
 
@@ -52,9 +53,11 @@ void OpenGLRendererHelper::endFrame()
     glDisable(GL_TEXTURE_2D);
 }
 
-GpuTextureWrapper* OpenGLRendererHelper::getFramebuffer(int index)
+TextureWrapper* OpenGLRendererHelper::getFramebuffer(int index)
 {
-    return OGLManager->getFramebuffers().at(index);
+    m_framebuffer->gpuTextureWrapper = OGLManager->getFramebuffers().at(index);
+    
+    return m_framebuffer;
 }
 
 void OpenGLRendererHelper::updateMatrix(float left, float right, float bottom, float top)

@@ -68,6 +68,8 @@ public:
     
     int getPlayerId() const;
     
+    std::string& getPlayerName();
+    
     NetworkClientState getState() const;
     
 private:
@@ -107,6 +109,8 @@ private:
     void sendHelloPacket();
     
     void handleWelcomePacket(InputMemoryBitStream& inInputStream);
+    
+    void handleDenyPacket();
     
     void handleStatePacket(InputMemoryBitStream& inInputStream);
     

@@ -164,7 +164,7 @@ void MainEngine::render()
 {
     m_renderer->beginFrame();
     
-    m_renderer->renderWorld(m_iEngineState);
+    m_renderer->render(m_iEngineState);
     
     m_renderer->renderToScreen();
     
@@ -373,7 +373,7 @@ void MainEngine::joinServer()
     IClientHelper* clientHelper = nullptr;
     if (m_isSteam)
     {
-        clientHelper = new NGSteamClientHelper(m_serverSteamID, InstanceManager::staticGetPlayerAddressHashOnClient, NG_CLIENT_CALLBACKS);
+        clientHelper = new NGSteamClientHelper(m_serverSteamID, InstanceManager::staticGetPlayerAddressHashForIndexOnClient, NG_CLIENT_CALLBACKS);
     }
     else
     {

@@ -11,6 +11,8 @@
 
 #include "Renderer.h"
 
+#include "FontAlign.h"
+
 #include <string>
 
 class TextureWrapper;
@@ -28,7 +30,7 @@ public:
     
     virtual void releaseDeviceDependentResources();
     
-    void renderWorld(int engineState);
+    void render(int engineState);
     
 private:
     TextureWrapper* m_characters;
@@ -37,6 +39,15 @@ private:
     TextureWrapper* m_bg2;
     TextureWrapper* m_cover;
     Font* m_font;
+    NGRect* m_camBounds;
+    
+    void renderBackground();
+    
+    void renderWorld();
+    
+    void renderAtmosphere();
+    
+    void renderUI(int engineState);
     
     void renderMainMenuSteamOffText();
     
@@ -50,7 +61,11 @@ private:
     
     void renderJoiningServerText();
     
-    void renderText(const std::string& inStr, const Vector2& origin, const Color& inColor, bool isLeftJustified = false);
+    void renderServerJoinedText();
+    
+    void renderText(const std::string& inStr, const Vector2& origin, const Color& inColor, int justification = FONT_ALIGN_LEFT);
+    
+    void updateCamera();
 };
 
 #endif /* defined(__dante__MainRenderer__) */
