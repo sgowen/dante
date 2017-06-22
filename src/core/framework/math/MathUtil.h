@@ -20,6 +20,16 @@ inline float clamp(float x, float upper, float lower)
     return fminf(upper, fmaxf(x, lower));
 }
 
+inline float sanitizeCloseToZeroValue(float x)
+{
+    if (x < 0.1f && x > -0.1f)
+    {
+        return 0.0f;
+    }
+    
+    return x;
+}
+
 inline bool areFloatsPracticallyEqual(float A, float B, float maxDiff = 0.000001f, float maxRelDiff = FLT_EPSILON)
 {
     // Check if the numbers are really close -- needed

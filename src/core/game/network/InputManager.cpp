@@ -26,6 +26,7 @@
 #include "NGAudioEngine.h"
 #include "KeyboardLookup.h"
 #include "StringUtil.h"
+#include "MathUtil.h"
 
 #include <sstream>
 
@@ -110,7 +111,7 @@ void InputManager::update()
                     m_currentState->m_fDesiredRightAmount = (*i)->isPressed() ? 1 : 0;
                     continue;
                 case GamePadEventType_STICK_LEFT:
-                    m_currentState->m_fDesiredRightAmount = (*i)->getX();
+                    m_currentState->m_fDesiredRightAmount = sanitizeCloseToZeroValue((*i)->getX());
                     continue;
                 case GamePadEventType_BUMPER_RIGHT:
                 case GamePadEventType_BUMPER_LEFT:
