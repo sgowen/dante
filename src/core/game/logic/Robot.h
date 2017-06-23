@@ -88,6 +88,8 @@ private:
     
     float m_fRtt;
     uint8_t m_iNumJumps;
+    bool m_isGrounded;
+    bool m_isFalling;
     bool m_isFacingLeft;
     bool m_isShooting;
     bool m_isSprinting;
@@ -106,8 +108,6 @@ private:
     float m_fTimePositionBecameOutOfSync;
     
     bool m_isServer;
-    bool m_isGrounded;
-    bool m_isFalling;
     bool m_isFirstJumpCompleted;
     
     void processMove(const Move& inMove);

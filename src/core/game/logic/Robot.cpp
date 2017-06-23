@@ -71,6 +71,8 @@ void Robot::update()
         Vector2 oldVelocity = getVelocity();
         Vector2 oldPosition = getPosition();
         uint8_t oldNumJumps = m_iNumJumps;
+        bool old_m_isGrounded = m_isGrounded;
+        bool old_m_isFalling = m_isFalling;
         bool old_isFacingLeft = m_isFacingLeft;
         bool old_isShooting = m_isShooting;
         bool old_isSprinting = m_isSprinting;
@@ -94,6 +96,8 @@ void Robot::update()
             || !oldVelocity.isEqualTo(getVelocity())
             || !oldPosition.isEqualTo(getPosition())
             || oldNumJumps != m_iNumJumps
+            || old_m_isGrounded != m_isGrounded
+            || old_m_isFalling != m_isFalling
             || old_isFacingLeft != m_isFacingLeft
             || old_isShooting != m_isShooting
             || old_isSprinting != m_isSprinting)
@@ -164,6 +168,8 @@ void Robot::read(InputMemoryBitStream& inInputStream)
         
         inInputStream.read(m_iNumJumps);
         
+        inInputStream.read(m_isGrounded);
+        inInputStream.read(m_isFalling);
         inInputStream.read(m_isFacingLeft);
         inInputStream.read(m_isShooting);
         inInputStream.read(m_isSprinting);
@@ -253,6 +259,8 @@ uint32_t Robot::write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtySta
         
         inOutputStream.write(m_iNumJumps);
         
+        inOutputStream.write((bool)m_isGrounded);
+        inOutputStream.write((bool)m_isFalling);
         inOutputStream.write((bool)m_isFacingLeft);
         inOutputStream.write((bool)m_isShooting);
         inOutputStream.write((bool)m_isSprinting);
