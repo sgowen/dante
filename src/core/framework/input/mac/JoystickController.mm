@@ -199,15 +199,15 @@
         {
             self.lastDPadEvent = GamePadEventType_D_PAD_UP;
         }
-        else if (value > 0 && value < 18000)
+        else if (value == 9000)
         {
             self.lastDPadEvent = GamePadEventType_D_PAD_RIGHT;
         }
-        else if (value > 9000 && value < 27000)
+        else if (value == 18000)
         {
             self.lastDPadEvent = GamePadEventType_D_PAD_DOWN;
         }
-        else if (value > 18000)
+        else if (value == 27000)
         {
             self.lastDPadEvent = GamePadEventType_D_PAD_LEFT;
         }
