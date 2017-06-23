@@ -374,7 +374,7 @@ void MainRenderer::renderServerJoinedText()
     {
         static Vector2 origin = Vector2(CAM_WIDTH - 0.5f, CAM_HEIGHT - 0.5);
         float rttMS = NG_CLIENT->getAvgRoundTripTime().getValue() * 1000.f;
-        std::string text = StringUtil::format("RTT %d ms", (int) rttMS);
+        std::string text = StringUtil::format("RTT %d ms", static_cast<int>(rttMS));
         renderText(text, origin, Color::BLACK, FONT_ALIGN_RIGHT);
     }
     
@@ -382,7 +382,7 @@ void MainRenderer::renderServerJoinedText()
         static Vector2 origin = Vector2(CAM_WIDTH - 0.5f, CAM_HEIGHT - 1);
         
         const WeightedTimedMovingAverage& bpsIn = NG_CLIENT->getBytesReceivedPerSecond();
-        int bpsInInt = static_cast< int >(bpsIn.getValue());
+        int bpsInInt = static_cast<int>(bpsIn.getValue());
         
         std::string text = StringUtil::format(" In %d Bps", bpsInInt);
         renderText(text, origin, Color::BLACK, FONT_ALIGN_RIGHT);
@@ -392,7 +392,7 @@ void MainRenderer::renderServerJoinedText()
         static Vector2 origin = Vector2(CAM_WIDTH - 0.5f, CAM_HEIGHT - 1.5f);
         
         const WeightedTimedMovingAverage& bpsOut = NG_CLIENT->getBytesSentPerSecond();
-        int bpsOutInt = static_cast< int >(bpsOut.getValue());
+        int bpsOutInt = static_cast<int>(bpsOut.getValue());
         
         std::string text = StringUtil::format("Out %d Bps", bpsOutInt);
         renderText(text, origin, Color::BLACK, FONT_ALIGN_RIGHT);

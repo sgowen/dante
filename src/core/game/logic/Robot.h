@@ -82,34 +82,33 @@ public:
     bool isSprinting();
     
 private:
-    bool m_isServer;
+    uint64_t m_iAddressHash;
+    uint32_t m_iPlayerId;
+    std::string m_playerName;
+    
+    float m_fRtt;
+    uint8_t m_iNumJumps;
+    bool m_isFacingLeft;
+    bool m_isShooting;
+    bool m_isSprinting;
+    
+    uint8_t m_iHealth;
+    
+    uint32_t m_iNumKills;
+    bool m_wasLastKillHeadshot;
+    
     float m_fSpeed;
     float m_fJumpSpeed;
     float m_fTimeOfNextShot;
-    
-    //bounce fraction when hitting various things
     float m_fRobotRestitution;
-    
     float m_fTimeAccelerationBecameOutOfSync;
     float m_fTimeVelocityBecameOutOfSync;
     float m_fTimePositionBecameOutOfSync;
     
-    uint32_t m_iNumKills;
-    
-    uint8_t m_iHealth;
-    uint8_t m_iNumJumps;
-    
-    bool m_isFacingLeft;
+    bool m_isServer;
     bool m_isGrounded;
     bool m_isFalling;
-    bool m_isShooting;
-    bool m_isSprinting;
     bool m_isFirstJumpCompleted;
-    bool m_wasLastKillHeadshot;
-    
-    uint64_t m_iAddressHash;
-    uint32_t m_iPlayerId;
-    std::string m_playerName;
     
     void processMove(const Move& inMove);
     
@@ -130,6 +129,8 @@ private:
     void interpolateClientSidePrediction(Vector2& inOldAcceleration, Vector2& inOldVelocity, Vector2& inOldPos);
     
     void interpolateVectorsIfNecessary(Vector2& inA, Vector2& inB, float& syncTracker, const char* vectorType);
+    
+    void playNetworkBoundSounds(uint8_t old_m_iNumJumps, bool old_m_isSprinting);
     
     void playSound(int soundId);
     

@@ -72,8 +72,6 @@ void Robot::update()
         Vector2 oldPosition = getPosition();
         uint8_t oldNumJumps = m_iNumJumps;
         bool old_isFacingLeft = m_isFacingLeft;
-        bool old_isGrounded = m_isGrounded;
-        bool old_isFalling = m_isFalling;
         bool old_isShooting = m_isShooting;
         bool old_isSprinting = m_isSprinting;
         
@@ -97,8 +95,6 @@ void Robot::update()
             || !oldPosition.isEqualTo(getPosition())
             || oldNumJumps != m_iNumJumps
             || old_isFacingLeft != m_isFacingLeft
-            || old_isGrounded != m_isGrounded
-            || old_isFalling != m_isFalling
             || old_isShooting != m_isShooting
             || old_isSprinting != m_isSprinting)
         {
@@ -133,8 +129,8 @@ void Robot::read(InputMemoryBitStream& inInputStream)
     Vector2 oldAcceleration = m_acceleration;
     Vector2 oldVelocity = m_velocity;
     Vector2 oldPosition = m_position;
-    uint8_t oldNumJumps = m_iNumJumps;
-    bool wasSprinting = m_isSprinting;
+    uint8_t old_m_iNumJumps = m_iNumJumps;
+    bool old_m_isSprinting = m_isSprinting;
     uint32_t old_m_iNumKills = m_iNumKills;
     
     bool stateBit;
@@ -164,11 +160,11 @@ void Robot::read(InputMemoryBitStream& inInputStream)
         inInputStream.read(m_position.getXRef());
         inInputStream.read(m_position.getYRef());
         
+        inInputStream.read(m_fRtt);
+        
         inInputStream.read(m_iNumJumps);
         
         inInputStream.read(m_isFacingLeft);
-        inInputStream.read(m_isGrounded);
-        inInputStream.read(m_isFalling);
         inInputStream.read(m_isShooting);
         inInputStream.read(m_isSprinting);
         
@@ -216,21 +212,7 @@ void Robot::read(InputMemoryBitStream& inInputStream)
     {
         doClientSidePredictionForRemoteRobot(readState);
         
-        // if this is a create packet, don't interpolate
-        if ((readState & ROBT_PlayerInfo) == 0)
-        {
-            interpolateVectorsIfNecessary(oldPosition, getPosition(), m_fTimePositionBecameOutOfSync, "remote position");
-        }
-        
-        if (m_iNumJumps && !oldNumJumps)
-        {
-            playSound(SOUND_ID_ROBOT_JUMP);
-        }
-        
-        if (m_isSprinting && !wasSprinting)
-        {
-            playSound(SOUND_ID_ACTIVATE_SPRINT);
-        }
+        playNetworkBoundSounds(old_m_iNumJumps, old_m_isSprinting);
     }
 }
 
@@ -267,11 +249,11 @@ uint32_t Robot::write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtySta
         inOutputStream.write(m_position.getX());
         inOutputStream.write(m_position.getY());
         
+        inOutputStream.write(m_fRtt);
+        
         inOutputStream.write(m_iNumJumps);
         
         inOutputStream.write((bool)m_isFacingLeft);
-        inOutputStream.write((bool)m_isGrounded);
-        inOutputStream.write((bool)m_isFalling);
         inOutputStream.write((bool)m_isShooting);
         inOutputStream.write((bool)m_isSprinting);
         
@@ -423,8 +405,8 @@ bool Robot::isSprinting()
 
 void Robot::processMove(const Move& inMove)
 {
-    uint8_t oldNumJumps = m_iNumJumps;
-    bool wasSprinting = m_isSprinting;
+    uint8_t old_m_iNumJumps = m_iNumJumps;
+    bool old_m_isSprinting = m_isSprinting;
     
     IInputState* currentState = inMove.getInputState();
     
@@ -434,15 +416,7 @@ void Robot::processMove(const Move& inMove)
     
     updateInternal(deltaTime);
     
-    if (m_iNumJumps && !oldNumJumps)
-    {
-        playSound(SOUND_ID_ROBOT_JUMP);
-    }
-    
-    if (m_isSprinting && !wasSprinting)
-    {
-        playSound(SOUND_ID_ACTIVATE_SPRINT);
-    }
+    playNetworkBoundSounds(old_m_iNumJumps, old_m_isSprinting);
 }
 
 void Robot::processInput(float inDeltaTime, IInputState* inInputState)
@@ -501,6 +475,8 @@ void Robot::processInput(float inDeltaTime, IInputState* inInputState)
     }
     
     m_isShooting = inputState->isShooting();
+    
+    m_fRtt = NG_CLIENT->getRoundTripTime();
 }
 
 void Robot::updateInternal(float inDeltaTime)
@@ -634,11 +610,9 @@ void Robot::doClientSidePredictionForLocalRobot(uint32_t inReadState)
 {
     if ((inReadState & ROBT_Pose) != 0)
     {
-        //simulate pose only if we received new pose- might have just gotten thrustDir
-        //in which case we don't need to replay moves because we haven't warped backwards
-        
-        //all processed moves have been removed, so all that are left are unprocessed moves
-        //so we must apply them...
+        // simulate pose only if we received new pose
+        // all processed moves have been removed, so all that are left are unprocessed moves
+        // so we must apply them...
         MoveList& moveList = InputManager::getInstance()->getMoveList();
         
         for (const Move& move : moveList)
@@ -651,16 +625,19 @@ void Robot::doClientSidePredictionForLocalRobot(uint32_t inReadState)
     }
 }
 
-//so what do we want to do here? need to do some kind of interpolation...
-
 void Robot::doClientSidePredictionForRemoteRobot(uint32_t inReadState)
 {
+    // so what do we want to do here? need to do some kind of interpolation...
+    
     if ((inReadState & ROBT_Pose) != 0)
     {
-        // simulate movement for an additional RTT
-        float rtt = NG_CLIENT->getRoundTripTime();
+        // simulate movement for an additional RTT/2
+        float myRtt = NG_CLIENT->getRoundTripTime() / 2;
+        float remoteRtt = m_fRtt / 2;
         
-        // let's break into framerate sized chunks so we don't run through walls and do crazy things...
+        float rtt = myRtt + remoteRtt;
+        
+        // break into framerate sized chunks so we don't run through walls and do crazy things...
         while (true)
         {
             if (rtt < FRAME_RATE)
@@ -684,13 +661,14 @@ void Robot::interpolateClientSidePrediction(Vector2& inOldAcceleration, Vector2&
     interpolateVectorsIfNecessary(inOldPos, getPosition(), m_fTimePositionBecameOutOfSync, "position");
 }
 
-void Robot::interpolateVectorsIfNecessary(Vector2& inA, Vector2& inB, float& syncTracker, const char* vectorType)
+void Robot::interpolateVectorsIfNecessary(Vector2& inOld, Vector2& inNew, float& syncTracker, const char* vectorType)
 {
-    float roundTripTime = NG_CLIENT->getRoundTripTime();
+    float rtt = NG_CLIENT->getRoundTripTime();
+    rtt /= 2; // Let's just measure the time from server to us
     
-    if (!inA.isEqualTo(inB))
+    if (!inOld.isEqualTo(inNew))
     {
-        LOG("WARN: Robot move replay ended with incorrect %s! Old %3.8f, %3.8f - New %3.8f, %3.8f", vectorType, inA.getX(), inA.getY(), inB.getX(), inB.getY());
+        LOG("WARN: Robot move replay ended with incorrect %s! Old %3.8f, %3.8f - New %3.8f, %3.8f", vectorType, inOld.getX(), inOld.getY(), inNew.getX(), inNew.getY());
         
         //have we been out of sync, or did we just become out of sync?
         float time = Timing::getInstance()->getFrameStartTime();
@@ -701,14 +679,27 @@ void Robot::interpolateVectorsIfNecessary(Vector2& inA, Vector2& inB, float& syn
         
         //now interpolate to the correct value...
         float durationOutOfSync = time - syncTracker;
-        if (durationOutOfSync < roundTripTime)
+        if (durationOutOfSync < rtt)
         {
-            inB.set(lerp(inA, inB, roundTripTime / 2));
+            inNew.set(lerp(inOld, inNew, rtt));
         }
     }
     else
     {
         syncTracker = 0.0f;
+    }
+}
+
+void Robot::playNetworkBoundSounds(uint8_t old_m_iNumJumps, bool old_m_isSprinting)
+{
+    if (old_m_iNumJumps != m_iNumJumps && m_iNumJumps > 0)
+    {
+        playSound(SOUND_ID_ROBOT_JUMP);
+    }
+    
+    if (!old_m_isSprinting && m_isSprinting)
+    {
+        playSound(SOUND_ID_ACTIVATE_SPRINT);
     }
 }
 
@@ -718,26 +709,28 @@ void Robot::playSound(int soundId)
 }
 
 Robot::Robot(bool isServer) : Entity(0, 0, 1.565217391304348f, 2.0f),
-m_isServer(isServer),
-m_fJumpSpeed(11.0f),
+m_iAddressHash(0),
+m_iPlayerId(0),
+m_playerName("Robot"),
+m_fRtt(0),
+m_iNumJumps(0),
+m_isFacingLeft(false),
+m_isShooting(false),
+m_isSprinting(false),
+m_iHealth(255),
+m_iNumKills(0),
+m_wasLastKillHeadshot(false),
 m_fSpeed(7.5f),
+m_fJumpSpeed(11.0f),
 m_fTimeOfNextShot(0.0f),
 m_fRobotRestitution(0.1f),
 m_fTimeAccelerationBecameOutOfSync(0.0f),
 m_fTimeVelocityBecameOutOfSync(0.0f),
 m_fTimePositionBecameOutOfSync(0.0f),
-m_iNumKills(0),
-m_iHealth(255),
-m_iNumJumps(0),
-m_isFacingLeft(false),
+m_isServer(isServer),
 m_isGrounded(false),
 m_isFalling(false),
-m_isShooting(false),
-m_isSprinting(false),
-m_isFirstJumpCompleted(false),
-m_wasLastKillHeadshot(false),
-m_iAddressHash(0),
-m_iPlayerId(0)
+m_isFirstJumpCompleted(false)
 {
     m_acceleration.setY(-9.8f);
     
