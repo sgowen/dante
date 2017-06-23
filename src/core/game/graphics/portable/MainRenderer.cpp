@@ -38,6 +38,7 @@
 #include "NGSteamGameServer.h"
 #include "NGSteamGameServices.h"
 #include "MathUtil.h"
+#include "NGAudioEngine.h"
 
 #include <sstream>
 #include <ctime> // rand
@@ -383,7 +384,7 @@ void MainRenderer::renderServerJoinedText()
         const WeightedTimedMovingAverage& bpsIn = NG_CLIENT->getBytesReceivedPerSecond();
         int bpsInInt = static_cast< int >(bpsIn.getValue());
         
-        std::string text = StringUtil::format("In %d Bps", bpsInInt);
+        std::string text = StringUtil::format(" In %d Bps", bpsInInt);
         renderText(text, origin, Color::BLACK, FONT_ALIGN_RIGHT);
     }
     
@@ -394,6 +395,13 @@ void MainRenderer::renderServerJoinedText()
         int bpsOutInt = static_cast< int >(bpsOut.getValue());
         
         std::string text = StringUtil::format("Out %d Bps", bpsOutInt);
+        renderText(text, origin, Color::BLACK, FONT_ALIGN_RIGHT);
+    }
+    
+    {
+        static Vector2 origin = Vector2(CAM_WIDTH - 0.5f, CAM_HEIGHT - 2.0f);
+        
+        std::string text = StringUtil::format("'S' Sound %s", NG_AUDIO_ENGINE->isSoundDisabled() ? "OFF" : " ON");
         renderText(text, origin, Color::BLACK, FONT_ALIGN_RIGHT);
     }
     

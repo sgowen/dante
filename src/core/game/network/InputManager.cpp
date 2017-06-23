@@ -88,6 +88,12 @@ void InputManager::update()
                         }
                     }
                     continue;
+                case NG_KEY_S:
+                    if ((*i)->isDown())
+                    {
+                        NG_AUDIO_ENGINE->setSoundDisabled(!NG_AUDIO_ENGINE->isSoundDisabled());
+                    }
+                    continue;
                 case NG_KEY_ESCAPE:
                     m_currentState->m_iMenuState = (*i)->isUp() ? MENU_STATE_ESCAPE : MENU_STATE_NONE;
                     continue;
