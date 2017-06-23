@@ -21,18 +21,18 @@ public:
     {
         for (int i = 0; i < m_iPoolSize; ++i)
         {
-            m_objectsPool.push_back(new T());
+            m_objectsPool.push_back(T());
         }
     }
     
     virtual ~NGRollingPool()
     {
-        NGSTDUtil::cleanUpVectorOfPointers(m_objectsPool);
+        m_objectsPool.clear();
     }
     
     T* newObject()
     {
-        T* obj = m_objectsPool.at(m_iIndex++);
+        T* obj = &m_objectsPool.at(m_iIndex++);
         
         if (m_iIndex >= m_iPoolSize)
         {
@@ -66,7 +66,7 @@ public:
     
 private:
     std::vector<T*> m_objects;
-    std::vector<T*> m_objectsPool;
+    std::vector<T> m_objectsPool;
     std::vector<T*> m_objectsBuffer;
     
     int m_iPoolSize;

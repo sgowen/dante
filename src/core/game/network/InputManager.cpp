@@ -160,7 +160,10 @@ void InputManager::update()
                     {
                         std::string s = ss.str();
                         m_liveInput += s;
-                        m_liveInput.erase(m_liveInput.end() - 1, m_liveInput.end());
+                        if (m_liveInput.end() > m_liveInput.begin())
+                        {
+                            m_liveInput.erase(m_liveInput.end() - 1, m_liveInput.end());
+                        }
                         return;
                     }
                     else
@@ -183,7 +186,7 @@ void InputManager::update()
         m_liveInput += s;
         if (m_liveInput.length() > 16)
         {
-            int sub = m_liveInput.length() - 16;
+            int sub = static_cast<int>(m_liveInput.length()) - 16;
             m_liveInput.erase(m_liveInput.end() - sub, m_liveInput.end());
         }
     }
