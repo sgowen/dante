@@ -27,7 +27,7 @@ NGSteamAddress::~NGSteamAddress()
     // Empty
 }
 
-IMachineAddress* NGSteamAddress::createCopy()
+IMachineAddress* NGSteamAddress::createNewCopy()
 {
     return new NGSteamAddress(m_steamID);
 }

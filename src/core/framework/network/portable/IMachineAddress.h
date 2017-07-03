@@ -24,7 +24,7 @@ public:
     
     virtual ~IMachineAddress();
     
-    virtual IMachineAddress* createCopy() = 0;
+    virtual IMachineAddress* createNewCopy() = 0;
     
     virtual uint64_t getHash() const = 0;
     

@@ -30,7 +30,7 @@ public:
     
     SocketAddress();
     
-    virtual IMachineAddress* createCopy();
+    virtual IMachineAddress* createNewCopy();
     
     bool operator==(const SocketAddress& inOther) const;
     

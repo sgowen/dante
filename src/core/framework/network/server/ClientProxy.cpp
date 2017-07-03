@@ -15,7 +15,7 @@
 #include "Timing.h"
 
 ClientProxy::ClientProxy(IMachineAddress* inMachineAddress, const std::string& inName, int inPlayerId) :
-m_machineAddress(inMachineAddress),
+m_machineAddress(inMachineAddress->createNewCopy()),
 m_name(inName),
 m_iPlayerId(inPlayerId),
 m_deliveryNotificationManager(DeliveryNotificationManager(false, true)),

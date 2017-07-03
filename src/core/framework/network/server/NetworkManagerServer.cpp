@@ -246,9 +246,8 @@ void NetworkManagerServer::handlePacketFromNewClient(InputMemoryBitStream& inInp
             }
         }
         
-        IMachineAddress* clientProxyInFromAddress = inFromAddress->createCopy();
-        ClientProxy* newClientProxy = new ClientProxy(clientProxyInFromAddress, name, m_iNewPlayerId++);
-        m_addressHashToClientMap[clientProxyInFromAddress->getHash()] = newClientProxy;
+        ClientProxy* newClientProxy = new ClientProxy(inFromAddress, name, m_iNewPlayerId++);
+        m_addressHashToClientMap[inFromAddress->getHash()] = newClientProxy;
         m_playerIDToClientMap[newClientProxy->getPlayerId()] = newClientProxy;
         
         // tell the server about this client
