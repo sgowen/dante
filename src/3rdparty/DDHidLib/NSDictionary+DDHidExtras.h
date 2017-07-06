@@ -24,38 +24,23 @@
 
 #import <Cocoa/Cocoa.h>
 
-#import <DDHidLib/DDHidLib.h>
 
-@interface JoystickController : NSObject
-{
-    NSMutableArray* mJoysticks;
-    NSMutableArray* mJoystickButtons;
-    NSMutableArray* mLastDPadEvents;
-    float mJoystickAxis[8];
-    NSUInteger mJoystickIndex;
-}
+@interface NSDictionary (DDHidExtras)
 
-- (void)scan;
+- (unsigned) ddhid_unsignedForKey: (NSString *) key;
 
-- (void)listenOnJoystick:(NSUInteger)index;
+- (id) ddhid_objectForString: (const char *) key;
 
-- (void)ddhidJoystick:(DDHidJoystick *)joystick
-                 stick:(unsigned)stick
-              xChanged:(int)value;
+- (NSString *) ddhid_stringForString: (const char *) key;
+- (long) ddhid_longForString: (const char *) key;
+- (unsigned int) ddhid_unsignedIntForString: (const char *) key;
+- (BOOL) ddhid_boolForString: (const char *) key;
 
-- (void)ddhidJoystick:(DDHidJoystick *)joystick
-                 stick:(unsigned)stick
-              yChanged:(int)value;
+@end
 
-- (void)ddhidJoystick:(DDHidJoystick *)joystick
-                 stick:(unsigned)stick
-             otherAxis:(unsigned)otherAxis
-          valueChanged:(int)value;
+@interface NSMutableDictionary (DDHidExtras)
 
-- (void)ddhidJoystick:(DDHidJoystick *)joystick
-            buttonDown:(unsigned)buttonNumber;
-
-- (void)ddhidJoystick:(DDHidJoystick *)joystick
-              buttonUp:(unsigned)buttonNumber;
+- (void) ddhid_setObject: (id) object forString: (const char *) key;
+- (void) ddhid_setInt: (int) i forKey: (id) key;
 
 @end

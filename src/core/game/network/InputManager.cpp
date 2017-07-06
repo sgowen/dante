@@ -270,6 +270,23 @@ void InputManager::update()
                     continue;
             }
         }
+        
+        for (std::vector<GamePadEvent *>::iterator i = GAME_PAD_INPUT_MANAGER->getEvents().begin(); i != GAME_PAD_INPUT_MANAGER->getEvents().end(); ++i)
+        {
+            switch ((*i)->getType())
+            {
+                case GamePadEventType_BACK_BUTTON:
+                {
+                    if ((*i)->getIndex() == 0)
+                    {
+                        m_currentState->m_iMenuState = (*i)->isPressed() ? MENU_STATE_ESCAPE : MENU_STATE_NONE;
+                    }
+                }
+                    continue;
+                default:
+                    continue;
+            }
+        }
     }
     
     if (isTimeToSampleInput())

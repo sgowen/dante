@@ -74,7 +74,7 @@ public:
     
     bool isPlayerIdLocal(uint8_t inPlayerId) const;
     
-    std::vector<uint8_t>& getPlayerIds();
+    std::unordered_map<uint8_t, uint8_t>& getPlayerIds();
     
     std::string& getPlayerName();
     
@@ -97,7 +97,8 @@ private:
     float m_fTimeOfLastHello;
     float m_fTimeOfLastInputPacket;
     
-    std::vector<uint8_t> m_playerIds;
+    std::unordered_map<uint8_t, uint8_t> m_indexToPlayerIdMap;
+    uint8_t m_iNextIndex;
     float m_fFrameRate;
     
     float m_fLastMoveProcessedByServerTimestamp;
@@ -135,6 +136,8 @@ private:
     void updateAddLocalPlayerRequest();
     
     void updateDropLocalPlayerRequest();
+    
+    void updateNextIndex();
     
     // ctor, copy ctor, and assignment should be private in a Singleton
     NetworkManagerClient(IClientHelper* inClientHelper, float inFrameRate, RemoveProcessedMovesFunc inRemoveProcessedMovesFunc, GetMoveListFunc inGetMoveListFunc, OnPlayerWelcomedFunc inOnPlayerWelcomedFunc);

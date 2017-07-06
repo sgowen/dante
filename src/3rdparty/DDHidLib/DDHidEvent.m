@@ -22,40 +22,60 @@
  * SOFTWARE.
  */
 
-#import <Cocoa/Cocoa.h>
+#import "DDHidEvent.h"
 
-#import <DDHidLib/DDHidLib.h>
 
-@interface JoystickController : NSObject
+@implementation DDHidEvent
+
++ (DDHidEvent *) eventWithIOHIDEvent: (IOHIDEventStruct *) event;
 {
-    NSMutableArray* mJoysticks;
-    NSMutableArray* mJoystickButtons;
-    NSMutableArray* mLastDPadEvents;
-    float mJoystickAxis[8];
-    NSUInteger mJoystickIndex;
+    return [[[self alloc] initWithIOHIDEvent: event] autorelease];
 }
 
-- (void)scan;
+- (id) initWithIOHIDEvent: (IOHIDEventStruct *) event;
+{
+    self = [super init];
+    if (self == nil)
+        return nil;
+    
+    mEvent = *event;
+    
+    return self;
+}
 
-- (void)listenOnJoystick:(NSUInteger)index;
+- (IOHIDElementType) type;
+{
+    return mEvent.type;
+}
 
-- (void)ddhidJoystick:(DDHidJoystick *)joystick
-                 stick:(unsigned)stick
-              xChanged:(int)value;
+- (IOHIDElementCookie) elementCookie;
+{
+    return mEvent.elementCookie;
+}
 
-- (void)ddhidJoystick:(DDHidJoystick *)joystick
-                 stick:(unsigned)stick
-              yChanged:(int)value;
+- (unsigned) elementCookieAsUnsigned;
+{
+    return (unsigned) mEvent.elementCookie;
+}
 
-- (void)ddhidJoystick:(DDHidJoystick *)joystick
-                 stick:(unsigned)stick
-             otherAxis:(unsigned)otherAxis
-          valueChanged:(int)value;
+- (SInt32) value;
+{
+    return mEvent.value;
+}
 
-- (void)ddhidJoystick:(DDHidJoystick *)joystick
-            buttonDown:(unsigned)buttonNumber;
+- (AbsoluteTime) timestamp;
+{
+    return mEvent.timestamp;
+}
 
-- (void)ddhidJoystick:(DDHidJoystick *)joystick
-              buttonUp:(unsigned)buttonNumber;
+- (UInt32) longValueSize;
+{
+    return mEvent.longValueSize;
+}
+
+- (void *) longValue;
+{
+    return mEvent.longValue;
+}
 
 @end

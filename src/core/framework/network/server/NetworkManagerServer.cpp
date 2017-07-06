@@ -376,13 +376,13 @@ void NetworkManagerServer::handleAddLocalPlayerPacket(ClientProxy* inClientProxy
     if (m_playerIDToClientMap.size() < MAX_NUM_PLAYERS_PER_SERVER)
     {
         // read the current number of local players for this client at the time when the request was made
-        int numLocalPlayers;
-        inInputStream.read(numLocalPlayers);
+        int requestedIndex;
+        inInputStream.read(requestedIndex);
         
-        int playerId = inClientProxy->getPlayerId(numLocalPlayers);
+        int playerId = inClientProxy->getPlayerId(requestedIndex);
         if (playerId == INPUT_UNASSIGNED)
         {
-            std::string localPlayerName = StringUtil::format("%s(%d)", inClientProxy->getName().c_str(), numLocalPlayers);
+            std::string localPlayerName = StringUtil::format("%s(%d)", inClientProxy->getName().c_str(), requestedIndex);
             
             int playerId = m_iNextPlayerId++;
             

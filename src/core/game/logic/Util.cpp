@@ -31,10 +31,12 @@ void Util::playSound(int soundId, Vector2& position, bool isServer)
     
     if (InstanceManager::getClientWorld())
     {
-        std::vector<uint8_t> playerIds = NG_CLIENT->getPlayerIds();
+        std::unordered_map<uint8_t, uint8_t> indexToPlayerIdMap = NG_CLIENT->getPlayerIds();
         
-        for (uint8_t playerId : playerIds)
+        for (auto const &entry : indexToPlayerIdMap)
         {
+            uint8_t playerId = entry.second;
+            
             Robot* playerRobot = InstanceManager::getClientWorld()->getRobotWithPlayerId(playerId);
             
             if (playerRobot)

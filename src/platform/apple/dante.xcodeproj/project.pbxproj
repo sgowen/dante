@@ -20,8 +20,6 @@
 		BB125E101EFAF61F00917328 /* texture_003.ngt in Resources */ = {isa = PBXBuildFile; fileRef = BB125E0D1EFAF61F00917328 /* texture_003.ngt */; };
 		BB125E111EFAF61F00917328 /* texture_004.ngt in Resources */ = {isa = PBXBuildFile; fileRef = BB125E0E1EFAF61F00917328 /* texture_004.ngt */; };
 		BB125E121EFAF61F00917328 /* texture_005.ngt in Resources */ = {isa = PBXBuildFile; fileRef = BB125E0F1EFAF61F00917328 /* texture_005.ngt */; };
-		BB13BD471E58E04D0073C08F /* DDHidLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB13BD461E58E04D0073C08F /* DDHidLib.framework */; };
-		BB13BD521E58E7350073C08F /* DDHidLib.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = BB13BD461E58E04D0073C08F /* DDHidLib.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BB1E897B1EF4A81500B0D78A /* IPacketHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB1E89791EF4A81500B0D78A /* IPacketHandler.cpp */; };
 		BB1E89811EF4B2BA00B0D78A /* SocketPacketHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB1E897F1EF4B2BA00B0D78A /* SocketPacketHandler.cpp */; };
 		BB1E89841EF4B4F400B0D78A /* NGSteamPacketHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB1E89821EF4B4F400B0D78A /* NGSteamPacketHandler.cpp */; };
@@ -91,6 +89,22 @@
 		BB7267FF1EEC704C004F33F9 /* ReplicationManagerServer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8307F31EC2AC0900435E7E /* ReplicationManagerServer.cpp */; };
 		BB7268001EEC704E004F33F9 /* ReplicationManagerTransmissionData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8307F51EC2AC0900435E7E /* ReplicationManagerTransmissionData.cpp */; };
 		BB7428411EB2AF4200B7628D /* RTTI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB74283D1EB2AF4200B7628D /* RTTI.cpp */; };
+		BB79C14F1F0EE37700A734CE /* DDHidAppleMikey.m in Sources */ = {isa = PBXBuildFile; fileRef = BB79C1331F0EE37700A734CE /* DDHidAppleMikey.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		BB79C1501F0EE37700A734CE /* DDHidAppleRemote.m in Sources */ = {isa = PBXBuildFile; fileRef = BB79C1351F0EE37700A734CE /* DDHidAppleRemote.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		BB79C1511F0EE37700A734CE /* DDHidDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = BB79C1371F0EE37700A734CE /* DDHidDevice.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		BB79C1521F0EE37700A734CE /* DDHidElement.m in Sources */ = {isa = PBXBuildFile; fileRef = BB79C1391F0EE37700A734CE /* DDHidElement.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		BB79C1531F0EE37700A734CE /* DDHidEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = BB79C13B1F0EE37700A734CE /* DDHidEvent.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		BB79C1541F0EE37700A734CE /* DDHidJoystick.m in Sources */ = {isa = PBXBuildFile; fileRef = BB79C13D1F0EE37700A734CE /* DDHidJoystick.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		BB79C1551F0EE37700A734CE /* DDHidKeyboard.m in Sources */ = {isa = PBXBuildFile; fileRef = BB79C13F1F0EE37700A734CE /* DDHidKeyboard.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		BB79C1561F0EE37700A734CE /* DDHidKeyboardBarcodeScanner.m in Sources */ = {isa = PBXBuildFile; fileRef = BB79C1411F0EE37700A734CE /* DDHidKeyboardBarcodeScanner.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		BB79C1581F0EE37700A734CE /* DDHidMouse.m in Sources */ = {isa = PBXBuildFile; fileRef = BB79C1451F0EE37700A734CE /* DDHidMouse.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		BB79C1591F0EE37700A734CE /* DDHidQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = BB79C1471F0EE37700A734CE /* DDHidQueue.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		BB79C15A1F0EE37700A734CE /* DDHidStandardUsages.plist in Resources */ = {isa = PBXBuildFile; fileRef = BB79C1481F0EE37700A734CE /* DDHidStandardUsages.plist */; };
+		BB79C15B1F0EE37700A734CE /* DDHidUsage.m in Sources */ = {isa = PBXBuildFile; fileRef = BB79C14A1F0EE37700A734CE /* DDHidUsage.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		BB79C15C1F0EE37700A734CE /* DDHidUsageTables.m in Sources */ = {isa = PBXBuildFile; fileRef = BB79C14C1F0EE37700A734CE /* DDHidUsageTables.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		BB79C15D1F0EE37700A734CE /* NSDictionary+DDHidExtras.m in Sources */ = {isa = PBXBuildFile; fileRef = BB79C14E1F0EE37700A734CE /* NSDictionary+DDHidExtras.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		BB79C1601F0EE3FD00A734CE /* NSXReturnThrowError.m in Sources */ = {isa = PBXBuildFile; fileRef = BB79C15F1F0EE3FD00A734CE /* NSXReturnThrowError.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		BB79C1631F0EE60100A734CE /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB79C1621F0EE60100A734CE /* IOKit.framework */; };
 		BB7E3E631EE4E44100E3D696 /* Projectile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB7E3E601EE4E44100E3D696 /* Projectile.cpp */; };
 		BB80D2021EF97F89002B9448 /* NGSteamP2PAuth.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB80D2001EF97F89002B9448 /* NGSteamP2PAuth.cpp */; };
 		BB8308411EC2AD1F00435E7E /* AckRange.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8308091EC2AD1F00435E7E /* AckRange.cpp */; };
@@ -203,7 +217,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				BB13BD521E58E7350073C08F /* DDHidLib.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -286,7 +299,6 @@
 		BB125E131EFAF62800917328 /* texture_003.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = texture_003.png; sourceTree = "<group>"; };
 		BB125E141EFAF62800917328 /* texture_004.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = texture_004.png; sourceTree = "<group>"; };
 		BB125E151EFAF62900917328 /* texture_005.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = texture_005.png; sourceTree = "<group>"; };
-		BB13BD461E58E04D0073C08F /* DDHidLib.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = DDHidLib.framework; sourceTree = "<group>"; };
 		BB1E89791EF4A81500B0D78A /* IPacketHandler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = IPacketHandler.cpp; sourceTree = "<group>"; };
 		BB1E897A1EF4A81500B0D78A /* IPacketHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IPacketHandler.h; sourceTree = "<group>"; };
 		BB1E897F1EF4B2BA00B0D78A /* SocketPacketHandler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SocketPacketHandler.cpp; sourceTree = "<group>"; };
@@ -530,6 +542,37 @@
 		BB74283D1EB2AF4200B7628D /* RTTI.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RTTI.cpp; sourceTree = "<group>"; };
 		BB74283E1EB2AF4200B7628D /* RTTI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTTI.h; sourceTree = "<group>"; };
 		BB74283F1EB2AF4200B7628D /* StringUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StringUtil.h; sourceTree = "<group>"; };
+		BB79C1321F0EE37700A734CE /* DDHidAppleMikey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDHidAppleMikey.h; sourceTree = "<group>"; };
+		BB79C1331F0EE37700A734CE /* DDHidAppleMikey.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDHidAppleMikey.m; sourceTree = "<group>"; };
+		BB79C1341F0EE37700A734CE /* DDHidAppleRemote.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDHidAppleRemote.h; sourceTree = "<group>"; };
+		BB79C1351F0EE37700A734CE /* DDHidAppleRemote.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDHidAppleRemote.m; sourceTree = "<group>"; };
+		BB79C1361F0EE37700A734CE /* DDHidDevice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDHidDevice.h; sourceTree = "<group>"; };
+		BB79C1371F0EE37700A734CE /* DDHidDevice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDHidDevice.m; sourceTree = "<group>"; };
+		BB79C1381F0EE37700A734CE /* DDHidElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDHidElement.h; sourceTree = "<group>"; };
+		BB79C1391F0EE37700A734CE /* DDHidElement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDHidElement.m; sourceTree = "<group>"; };
+		BB79C13A1F0EE37700A734CE /* DDHidEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDHidEvent.h; sourceTree = "<group>"; };
+		BB79C13B1F0EE37700A734CE /* DDHidEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDHidEvent.m; sourceTree = "<group>"; };
+		BB79C13C1F0EE37700A734CE /* DDHidJoystick.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDHidJoystick.h; sourceTree = "<group>"; };
+		BB79C13D1F0EE37700A734CE /* DDHidJoystick.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDHidJoystick.m; sourceTree = "<group>"; };
+		BB79C13E1F0EE37700A734CE /* DDHidKeyboard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDHidKeyboard.h; sourceTree = "<group>"; };
+		BB79C13F1F0EE37700A734CE /* DDHidKeyboard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDHidKeyboard.m; sourceTree = "<group>"; };
+		BB79C1401F0EE37700A734CE /* DDHidKeyboardBarcodeScanner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDHidKeyboardBarcodeScanner.h; sourceTree = "<group>"; };
+		BB79C1411F0EE37700A734CE /* DDHidKeyboardBarcodeScanner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDHidKeyboardBarcodeScanner.m; sourceTree = "<group>"; };
+		BB79C1431F0EE37700A734CE /* DDHidLib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDHidLib.h; sourceTree = "<group>"; };
+		BB79C1441F0EE37700A734CE /* DDHidMouse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDHidMouse.h; sourceTree = "<group>"; };
+		BB79C1451F0EE37700A734CE /* DDHidMouse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDHidMouse.m; sourceTree = "<group>"; };
+		BB79C1461F0EE37700A734CE /* DDHidQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDHidQueue.h; sourceTree = "<group>"; };
+		BB79C1471F0EE37700A734CE /* DDHidQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDHidQueue.m; sourceTree = "<group>"; };
+		BB79C1481F0EE37700A734CE /* DDHidStandardUsages.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = DDHidStandardUsages.plist; sourceTree = "<group>"; };
+		BB79C1491F0EE37700A734CE /* DDHidUsage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDHidUsage.h; sourceTree = "<group>"; };
+		BB79C14A1F0EE37700A734CE /* DDHidUsage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDHidUsage.m; sourceTree = "<group>"; };
+		BB79C14B1F0EE37700A734CE /* DDHidUsageTables.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDHidUsageTables.h; sourceTree = "<group>"; };
+		BB79C14C1F0EE37700A734CE /* DDHidUsageTables.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDHidUsageTables.m; sourceTree = "<group>"; };
+		BB79C14D1F0EE37700A734CE /* NSDictionary+DDHidExtras.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+DDHidExtras.h"; sourceTree = "<group>"; };
+		BB79C14E1F0EE37700A734CE /* NSDictionary+DDHidExtras.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+DDHidExtras.m"; sourceTree = "<group>"; };
+		BB79C15E1F0EE3FD00A734CE /* NSXReturnThrowError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSXReturnThrowError.h; sourceTree = "<group>"; };
+		BB79C15F1F0EE3FD00A734CE /* NSXReturnThrowError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSXReturnThrowError.m; sourceTree = "<group>"; };
+		BB79C1621F0EE60100A734CE /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.12.sdk/System/Library/Frameworks/IOKit.framework; sourceTree = DEVELOPER_DIR; };
 		BB7E3E601EE4E44100E3D696 /* Projectile.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Projectile.cpp; sourceTree = "<group>"; };
 		BB7E3E611EE4E44100E3D696 /* Projectile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Projectile.h; sourceTree = "<group>"; };
 		BB80D2001EF97F89002B9448 /* NGSteamP2PAuth.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NGSteamP2PAuth.cpp; sourceTree = "<group>"; };
@@ -758,10 +801,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BB79C1631F0EE60100A734CE /* IOKit.framework in Frameworks */,
 				BB09CE361DBD46B3006A3E49 /* CoreMedia.framework in Frameworks */,
 				BB58334C1EEDB1820084DA20 /* libsteam_api.dylib in Frameworks */,
 				BBCCA9001DB36F0F00452FA1 /* AVFoundation.framework in Frameworks */,
-				BB13BD471E58E04D0073C08F /* DDHidLib.framework in Frameworks */,
 				BBCCA8FD1DB36EB600452FA1 /* OpenAL.framework in Frameworks */,
 				BBCCA84A1DB346C100452FA1 /* CoreAudio.framework in Frameworks */,
 				BBCCA8451DB3468800452FA1 /* AudioToolbox.framework in Frameworks */,
@@ -788,6 +831,7 @@
 				BBAEF0BC1EA94ED900F0866E /* core */,
 				BB44C31E1DB030B3003E633F /* mac */,
 				0ADF1875178E2185005DA99E /* Products */,
+				BB79C1611F0EE60100A734CE /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -875,14 +919,6 @@
 			path = AndroidIO;
 			sourceTree = "<group>";
 		};
-		BB13BD451E58E04D0073C08F /* DDHidLib */ = {
-			isa = PBXGroup;
-			children = (
-				BB13BD461E58E04D0073C08F /* DDHidLib.framework */,
-			);
-			path = DDHidLib;
-			sourceTree = "<group>";
-		};
 		BB1CC7711EB9662A00696C06 /* shader */ = {
 			isa = PBXGroup;
 			children = (
@@ -925,10 +961,10 @@
 		BB44C4F61DB03A7C003E633F /* 3rdparty */ = {
 			isa = PBXGroup;
 			children = (
-				BB7267B71EEC6E99004F33F9 /* steam */,
-				BB13BD451E58E04D0073C08F /* DDHidLib */,
+				BB79C1311F0EE37700A734CE /* DDHidLib */,
 				BB44C4F71DB03A7C003E633F /* libpng */,
 				BB44C5FF1DB03A7D003E633F /* rapidjson */,
+				BB7267B71EEC6E99004F33F9 /* steam */,
 				BB09CDD21DBD3779006A3E49 /* Superpowered */,
 				BBCB71C71DB6A217006430B6 /* Texconv */,
 			);
@@ -1316,6 +1352,51 @@
 				BBBD14951EE06BB3003F9307 /* WeightedTimedMovingAverage.h */,
 			);
 			path = util;
+			sourceTree = "<group>";
+		};
+		BB79C1311F0EE37700A734CE /* DDHidLib */ = {
+			isa = PBXGroup;
+			children = (
+				BB79C1321F0EE37700A734CE /* DDHidAppleMikey.h */,
+				BB79C1331F0EE37700A734CE /* DDHidAppleMikey.m */,
+				BB79C1341F0EE37700A734CE /* DDHidAppleRemote.h */,
+				BB79C1351F0EE37700A734CE /* DDHidAppleRemote.m */,
+				BB79C1361F0EE37700A734CE /* DDHidDevice.h */,
+				BB79C1371F0EE37700A734CE /* DDHidDevice.m */,
+				BB79C1381F0EE37700A734CE /* DDHidElement.h */,
+				BB79C1391F0EE37700A734CE /* DDHidElement.m */,
+				BB79C13A1F0EE37700A734CE /* DDHidEvent.h */,
+				BB79C13B1F0EE37700A734CE /* DDHidEvent.m */,
+				BB79C13C1F0EE37700A734CE /* DDHidJoystick.h */,
+				BB79C13D1F0EE37700A734CE /* DDHidJoystick.m */,
+				BB79C13E1F0EE37700A734CE /* DDHidKeyboard.h */,
+				BB79C13F1F0EE37700A734CE /* DDHidKeyboard.m */,
+				BB79C1401F0EE37700A734CE /* DDHidKeyboardBarcodeScanner.h */,
+				BB79C1411F0EE37700A734CE /* DDHidKeyboardBarcodeScanner.m */,
+				BB79C1431F0EE37700A734CE /* DDHidLib.h */,
+				BB79C1441F0EE37700A734CE /* DDHidMouse.h */,
+				BB79C1451F0EE37700A734CE /* DDHidMouse.m */,
+				BB79C1461F0EE37700A734CE /* DDHidQueue.h */,
+				BB79C1471F0EE37700A734CE /* DDHidQueue.m */,
+				BB79C1481F0EE37700A734CE /* DDHidStandardUsages.plist */,
+				BB79C1491F0EE37700A734CE /* DDHidUsage.h */,
+				BB79C14A1F0EE37700A734CE /* DDHidUsage.m */,
+				BB79C14B1F0EE37700A734CE /* DDHidUsageTables.h */,
+				BB79C14C1F0EE37700A734CE /* DDHidUsageTables.m */,
+				BB79C14D1F0EE37700A734CE /* NSDictionary+DDHidExtras.h */,
+				BB79C14E1F0EE37700A734CE /* NSDictionary+DDHidExtras.m */,
+				BB79C15E1F0EE3FD00A734CE /* NSXReturnThrowError.h */,
+				BB79C15F1F0EE3FD00A734CE /* NSXReturnThrowError.m */,
+			);
+			path = DDHidLib;
+			sourceTree = "<group>";
+		};
+		BB79C1611F0EE60100A734CE /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				BB79C1621F0EE60100A734CE /* IOKit.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		BB8307EC1EC2AC0900435E7E /* server */ = {
@@ -1913,6 +1994,7 @@
 				BB5833EC1EEDDD330084DA20 /* sound_001.wav in Resources */,
 				BB5833EF1EEDDD330084DA20 /* sound_004.wav in Resources */,
 				BB052CD11EBA8ADD007FA789 /* shader_003_vert.ngs in Resources */,
+				BB79C15A1F0EE37700A734CE /* DDHidStandardUsages.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1961,15 +2043,18 @@
 				BB7268001EEC704E004F33F9 /* ReplicationManagerTransmissionData.cpp in Sources */,
 				BB7267FF1EEC704C004F33F9 /* ReplicationManagerServer.cpp in Sources */,
 				BB8308411EC2AD1F00435E7E /* AckRange.cpp in Sources */,
+				BB79C15D1F0EE37700A734CE /* NSDictionary+DDHidExtras.m in Sources */,
 				BBAEF2981EA94EDA00F0866E /* NGRect.cpp in Sources */,
 				BBAEF2861EA94EDA00F0866E /* KeyboardInputManager.cpp in Sources */,
 				BB4253D21EF58DA5003F6D2A /* IClientHelper.cpp in Sources */,
 				BB1E897B1EF4A81500B0D78A /* IPacketHandler.cpp in Sources */,
 				BB8308741EC2AD1F00435E7E /* SocketUtil.cpp in Sources */,
 				BB4253E11EF598C1003F6D2A /* SocketClientHelper.cpp in Sources */,
+				BB79C1531F0EE37700A734CE /* DDHidEvent.m in Sources */,
 				BB7251951EE105330024C71C /* NetworkManagerClient.cpp in Sources */,
 				BB5833CD1EEDDA330084DA20 /* main.m in Sources */,
 				BBCFF1CF1ECD316D003EE520 /* MainAssetsMapper.cpp in Sources */,
+				BB79C15C1F0EE37700A734CE /* DDHidUsageTables.m in Sources */,
 				BBAEF26C1EA94EDA00F0866E /* NGRectBatcher.cpp in Sources */,
 				BBAEF25C1EA94EDA00F0866E /* DummyGpuProgramWrapper.cpp in Sources */,
 				BBAEF2441EA94EDA00F0866E /* OpenGLTextureGpuProgramWrapper.cpp in Sources */,
@@ -1993,6 +2078,7 @@
 				BBAEF2661EA94EDA00F0866E /* ITextureLoader.cpp in Sources */,
 				BBAEF2A81EA94EDA00F0866E /* ISound.cpp in Sources */,
 				BB8308561EC2AD1F00435E7E /* OutputMemoryBitStream.cpp in Sources */,
+				BB79C15B1F0EE37700A734CE /* DDHidUsage.m in Sources */,
 				BB44CB841DB053C0003E633F /* pngmem.c in Sources */,
 				BB4253D51EF58E00003F6D2A /* IServerHelper.cpp in Sources */,
 				BB5833D01EEDDAFC0084DA20 /* Renderer.cpp in Sources */,
@@ -2004,9 +2090,11 @@
 				BBAEF29A1EA94EDA00F0866E /* OverlapTester.cpp in Sources */,
 				BBAEF2361EA94EDA00F0866E /* OpenGLGeometryProgram.cpp in Sources */,
 				BB5833781EEDBF7E0084DA20 /* NGSteamGameServices.cpp in Sources */,
+				BB79C1561F0EE37700A734CE /* DDHidKeyboardBarcodeScanner.m in Sources */,
 				BBAEF2721EA94EDA00F0866E /* SpriteBatcher.cpp in Sources */,
 				BBAFD3271EF42F2E004F2742 /* InstanceManager.cpp in Sources */,
 				BB59794D1EEF454B0047BEC6 /* pch.cpp in Sources */,
+				BB79C1511F0EE37700A734CE /* DDHidDevice.m in Sources */,
 				BBBD14A11EE08A20003F9307 /* World.cpp in Sources */,
 				BBF226CF1EC12CDE00573356 /* ReplicationManagerClient.cpp in Sources */,
 				BBAEF1FE1EA94EDA00F0866E /* AppleAssetDataHandler.cpp in Sources */,
@@ -2020,10 +2108,12 @@
 				BBAA69E51EE488DF00451615 /* ITransmissionData.cpp in Sources */,
 				BB5833D31EEDDB5C0084DA20 /* InputManager.cpp in Sources */,
 				BBAEF25A1EA94EDA00F0866E /* CircleBatcherFactory.cpp in Sources */,
+				BB79C1581F0EE37700A734CE /* DDHidMouse.m in Sources */,
 				BBAEF2A41EA94EDA00F0866E /* AudioEngineHelperFactory.cpp in Sources */,
 				BBAEF2B41EA94EDA00F0866E /* SuperpoweredSound.cpp in Sources */,
 				BB0864751EE20CCA00BCD9E0 /* EntityRegistry.cpp in Sources */,
 				BBAEF3101EA94FAC00F0866E /* JoystickController.mm in Sources */,
+				BB79C1521F0EE37700A734CE /* DDHidElement.m in Sources */,
 				BBAEF27C1EA94EDA00F0866E /* TransitionGpuProgramWrapper.cpp in Sources */,
 				BB44CB851DB053C0003E633F /* pngpread.c in Sources */,
 				BB8EE62B1EF2E2C1000A5C98 /* Util.cpp in Sources */,
@@ -2031,8 +2121,10 @@
 				BBAEF1FC1EA94EDA00F0866E /* apple_asset_data_handler.mm in Sources */,
 				BBAEF2B01EA94EDA00F0866E /* apple_audio_engine_helper.mm in Sources */,
 				BB44CB861DB053C0003E633F /* pngread.c in Sources */,
+				BB79C1591F0EE37700A734CE /* DDHidQueue.m in Sources */,
 				BB44CB871DB053C0003E633F /* pngrio.c in Sources */,
 				BBAEF28A1EA94EDA00F0866E /* ScreenInputManager.cpp in Sources */,
+				BB79C1601F0EE3FD00A734CE /* NSXReturnThrowError.m in Sources */,
 				BBAEF22E1EA94EDA00F0866E /* OpenGLCircleBatcher.cpp in Sources */,
 				BBCFF1C51ECD312E003EE520 /* Assets.cpp in Sources */,
 				BBAEF2341EA94EDA00F0866E /* OpenGLGeometryGpuProgramWrapper.cpp in Sources */,
@@ -2043,6 +2135,7 @@
 				BBBD14C41EE0C9B4003F9307 /* InputMemoryBitStream.cpp in Sources */,
 				BBAEF2601EA94EDA00F0866E /* GpuProgramWrapper.cpp in Sources */,
 				BBAEF26E1EA94EDA00F0866E /* NGRectBatcherFactory.cpp in Sources */,
+				BB79C14F1F0EE37700A734CE /* DDHidAppleMikey.m in Sources */,
 				BB4253E41EF5B078003F6D2A /* INetworkHelper.cpp in Sources */,
 				BBCFF1C71ECD312E003EE520 /* IAssetsMapper.cpp in Sources */,
 				BB44CB891DB053C0003E633F /* pngrutil.c in Sources */,
@@ -2058,6 +2151,8 @@
 				BBAEF23A1EA94EDA00F0866E /* OpenGLManager.cpp in Sources */,
 				BBAEF2381EA94EDA00F0866E /* OpenGLLineBatcher.cpp in Sources */,
 				BB44CB8C1DB053C0003E633F /* pngwio.c in Sources */,
+				BB79C1501F0EE37700A734CE /* DDHidAppleRemote.m in Sources */,
+				BB79C1551F0EE37700A734CE /* DDHidKeyboard.m in Sources */,
 				BB7267A61EEC6903004F33F9 /* Server.cpp in Sources */,
 				BBAEF2801EA94EDA00F0866E /* GamePadEvent.cpp in Sources */,
 				BB44CB8D1DB053C0003E633F /* pngwrite.c in Sources */,
@@ -2069,6 +2164,7 @@
 				BBBCB2EE1EF0993000B77938 /* NGSteamGameServer.cpp in Sources */,
 				BB5833D61EEDDB650084DA20 /* MainRenderer.cpp in Sources */,
 				BBAEF2641EA94EDA00F0866E /* IRendererHelper.cpp in Sources */,
+				BB79C1541F0EE37700A734CE /* DDHidJoystick.m in Sources */,
 				BB44CB8E1DB053C0003E633F /* pngwtran.c in Sources */,
 				BB8308711EC2AD1F00435E7E /* SocketAddressFactory.cpp in Sources */,
 				BB4253DB1EF59793003F6D2A /* NGSteamServerHelper.cpp in Sources */,
@@ -2188,7 +2284,7 @@
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = NO;
 				CLANG_WARN_CXX0X_EXTENSIONS = YES;
@@ -2203,7 +2299,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = 7V5EV5R3XG;
 				FRAMEWORK_SEARCH_PATHS = "\"$(SRCROOT)/../../3rdparty\"/**";
-				GCC_C_LANGUAGE_STANDARD = c11;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_ENABLE_CPP_RTTI = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = mac/pch.h;
@@ -2246,7 +2342,7 @@
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = NO;
 				CLANG_WARN_CXX0X_EXTENSIONS = YES;
@@ -2263,7 +2359,7 @@
 				DEVELOPMENT_TEAM = 7V5EV5R3XG;
 				ENABLE_NS_ASSERTIONS = NO;
 				FRAMEWORK_SEARCH_PATHS = "\"$(SRCROOT)/../../3rdparty\"/**";
-				GCC_C_LANGUAGE_STANDARD = c11;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_ENABLE_CPP_RTTI = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = mac/pch.h;

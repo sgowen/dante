@@ -80,7 +80,7 @@ static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink,
 #endif
     
     _joystickController = [[JoystickController alloc] init];
-    [_joystickController performSelector:@selector(scan) withObject:nil afterDelay:1];
+    [_joystickController performSelector:@selector(scan) withObject:nil afterDelay:5];
     
     NSOpenGLPixelFormatAttribute attrs[] =
     {
