@@ -83,6 +83,7 @@ void NetworkManagerClient::sendOutgoingPackets()
         case NCS_Welcomed:
             updateSendingInputPacket();
             updateAddLocalPlayerRequest();
+            updateDropLocalPlayerRequest();
             break;
         case NCS_Uninitialized:
             m_clientHelper->handleUninitialized();
@@ -109,6 +110,22 @@ void NetworkManagerClient::sendOutgoingPackets()
 void NetworkManagerClient::requestToAddLocalPlayer()
 {
     m_isRequestingToAddLocalPlayer = true;
+    
+    m_isRequestingToDropLocalPlayer = 0;
+}
+
+void NetworkManagerClient::requestToDropLocalPlayer(int index)
+{
+    if (index < 1)
+    {
+        return;
+    }
+    
+    m_isRequestingToDropLocalPlayer = index;
+    
+    m_isRequestingToAddLocalPlayer = false;
+    
+    m_playerIds.erase(m_playerIds.begin() + index);
 }
 
 const WeightedTimedMovingAverage& NetworkManagerClient::getBytesReceivedPerSecond() const
@@ -348,6 +365,8 @@ void NetworkManagerClient::updateAddLocalPlayerRequest()
 {
     if (m_isRequestingToAddLocalPlayer)
     {
+        m_isRequestingToDropLocalPlayer = 0;
+        
         float time = Timing::getInstance()->getFrameStartTime();
         
         if (time > m_fTimeOfLastHello + NETWORK_CLIENT_TIME_BETWEEN_HELLOS)
@@ -361,6 +380,23 @@ void NetworkManagerClient::updateAddLocalPlayerRequest()
             
             m_fTimeOfLastHello = time;
         }
+    }
+}
+
+void NetworkManagerClient::updateDropLocalPlayerRequest()
+{
+    if (m_isRequestingToDropLocalPlayer > 0)
+    {
+        m_isRequestingToAddLocalPlayer = false;
+        
+        OutputMemoryBitStream packet;
+        
+        packet.write(NETWORK_PACKET_TYPE_DROP_LOCAL_PLAYER);
+        packet.write(m_isRequestingToDropLocalPlayer);
+        
+        sendPacket(packet);
+        
+        m_isRequestingToDropLocalPlayer = 0;
     }
 }
 
@@ -378,7 +414,8 @@ m_fTimeOfLastInputPacket(0.0f),
 m_fLastMoveProcessedByServerTimestamp(0.0f),
 m_fLastServerCommunicationTimestamp(Timing::getInstance()->getFrameStartTime()),
 m_fFrameRate(inFrameRate),
-m_isRequestingToAddLocalPlayer(false)
+m_isRequestingToAddLocalPlayer(false),
+m_isRequestingToDropLocalPlayer(0)
 {
     // Empty
 }

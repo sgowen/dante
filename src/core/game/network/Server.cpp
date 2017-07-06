@@ -61,9 +61,9 @@ void Server::staticHandleNewClient(int playerId, std::string playerName)
     getInstance()->handleNewClient(playerId, playerName);
 }
 
-void Server::staticHandleLostClient(ClientProxy* inClientProxy)
+void Server::staticHandleLostClient(ClientProxy* inClientProxy, int index)
 {
-    getInstance()->handleLostClient(inClientProxy);
+    getInstance()->handleLostClient(inClientProxy, index);
 }
 
 void Server::update(float deltaTime)
@@ -107,16 +107,29 @@ void Server::handleNewClient(int playerId, std::string playerName)
     }
 }
 
-void Server::handleLostClient(ClientProxy* inClientProxy)
+void Server::handleLostClient(ClientProxy* inClientProxy, int index)
 {
-    for (int i = 0; i < inClientProxy->getNumPlayers(); ++i)
+    if (index >= 1)
     {
-        uint8_t playerId = inClientProxy->getPlayerId(i);
+        uint8_t playerId = inClientProxy->getPlayerId(index);
         
         Robot* robot = InstanceManager::getServerWorld()->getRobotWithPlayerId(playerId);
         if (robot)
         {
             robot->requestDeletion();
+        }
+    }
+    else
+    {
+        for (int i = 0; i < inClientProxy->getNumPlayers(); ++i)
+        {
+            uint8_t playerId = inClientProxy->getPlayerId(i);
+            
+            Robot* robot = InstanceManager::getServerWorld()->getRobotWithPlayerId(playerId);
+            if (robot)
+            {
+                robot->requestDeletion();
+            }
         }
     }
 }

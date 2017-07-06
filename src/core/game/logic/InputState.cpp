@@ -17,8 +17,6 @@
 
 #include <assert.h>
 
-#define INPUT_UNASSIGNED 255
-
 InputState::InputState() : IInputState(), m_iMenuState(MENU_STATE_NONE)
 {
     // Empty

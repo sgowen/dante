@@ -26,7 +26,7 @@ public:
     
     static void staticHandleNewClient(int playerId, std::string playerName);
     
-    static void staticHandleLostClient(ClientProxy* inClientProxy);
+    static void staticHandleLostClient(ClientProxy* inClientProxy, int index);
     
     void update(float deltaTime);
 
@@ -39,7 +39,7 @@ private:
     
     void handleNewClient(int playerId, std::string playerName);
     
-    void handleLostClient(ClientProxy* inClientProxy);
+    void handleLostClient(ClientProxy* inClientProxy, int index);
     
     void spawnRobotForPlayer(int inPlayerId, std::string inPlayerName);
     

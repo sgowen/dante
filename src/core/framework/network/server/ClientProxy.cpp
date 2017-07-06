@@ -13,6 +13,7 @@
 #include "IMachineAddress.h"
 
 #include "Timing.h"
+#include "FrameworkConstants.h"
 
 ClientProxy::ClientProxy(IMachineAddress* inMachineAddress, const std::string& inName, uint8_t inPlayerId) :
 m_deliveryNotificationManager(DeliveryNotificationManager(false, true)),
@@ -38,7 +39,7 @@ IMachineAddress* ClientProxy::getMachineAddress() const
 
 uint8_t ClientProxy::getPlayerId(int index) const
 {
-    return m_playerIds.size() > index ? m_playerIds[index] : 255;
+    return m_playerIds.size() > index ? m_playerIds[index] : INPUT_UNASSIGNED;
 }
 
 const std::string& ClientProxy::getName() const

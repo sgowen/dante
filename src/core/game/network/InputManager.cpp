@@ -27,6 +27,7 @@
 #include "KeyboardLookup.h"
 #include "StringUtil.h"
 #include "MathUtil.h"
+#include "FrameworkConstants.h"
 
 #include <sstream>
 
@@ -136,6 +137,29 @@ void InputManager::update()
                     continue;
                 case GamePadEventType_X_BUTTON:
                     m_currentState->getGameInputState((*i)->getIndex()).m_isShooting = (*i)->isPressed();
+                    continue;
+                case GamePadEventType_BACK_BUTTON:
+                {
+                    if ((*i)->getIndex() == 3)
+                    {
+                        m_currentState->getGameInputState((*i)->getIndex()).m_iPlayerId = INPUT_UNASSIGNED;
+                        m_currentState->m_iMenuState = !(*i)->isPressed() ? MENU_STATE_LOCAL_PLAYER_DROP_OUT_3 : MENU_STATE_NONE;
+                    }
+                    else if ((*i)->getIndex() == 2)
+                    {
+                        m_currentState->getGameInputState((*i)->getIndex()).m_iPlayerId = INPUT_UNASSIGNED;
+                        m_currentState->m_iMenuState = !(*i)->isPressed() ? MENU_STATE_LOCAL_PLAYER_DROP_OUT_2 : MENU_STATE_NONE;
+                    }
+                    else if ((*i)->getIndex() == 1)
+                    {
+                        m_currentState->getGameInputState((*i)->getIndex()).m_iPlayerId = INPUT_UNASSIGNED;
+                        m_currentState->m_iMenuState = !(*i)->isPressed() ? MENU_STATE_LOCAL_PLAYER_DROP_OUT_1 : MENU_STATE_NONE;
+                    }
+                    else
+                    {
+                        m_currentState->m_iMenuState = (*i)->isPressed() ? MENU_STATE_ESCAPE : MENU_STATE_NONE;
+                    }
+                }
                     continue;
                 default:
                     continue;

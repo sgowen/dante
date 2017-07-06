@@ -251,7 +251,7 @@ void NetworkManagerServer::handlePacketFromNewClient(InputMemoryBitStream& inInp
             }
         }
         
-        ClientProxy* newClientProxy = new ClientProxy(inFromAddress, name, m_iNewPlayerId++);
+        ClientProxy* newClientProxy = new ClientProxy(inFromAddress, name, m_iNextPlayerId++);
         m_addressHashToClientMap[inFromAddress->getHash()] = newClientProxy;
         m_playerIDToClientMap[newClientProxy->getPlayerId()] = newClientProxy;
         
@@ -300,6 +300,9 @@ void NetworkManagerServer::processPacket(ClientProxy* inClientProxy, InputMemory
             break;
         case NETWORK_PACKET_TYPE_ADD_LOCAL_PLAYER:
             handleAddLocalPlayerPacket(inClientProxy, inInputStream);
+            break;
+        case NETWORK_PACKET_TYPE_DROP_LOCAL_PLAYER:
+            handleDropLocalPlayerPacket(inClientProxy, inInputStream);
             break;
         default:
             m_serverHelper->processSpecialPacket(packetType, inInputStream, inClientProxy->getMachineAddress());
@@ -377,11 +380,11 @@ void NetworkManagerServer::handleAddLocalPlayerPacket(ClientProxy* inClientProxy
         inInputStream.read(numLocalPlayers);
         
         int playerId = inClientProxy->getPlayerId(numLocalPlayers);
-        if (playerId == 255)
+        if (playerId == INPUT_UNASSIGNED)
         {
             std::string localPlayerName = StringUtil::format("%s(%d)", inClientProxy->getName().c_str(), numLocalPlayers);
             
-            int playerId = m_iNewPlayerId++;
+            int playerId = m_iNextPlayerId++;
             
             inClientProxy->onLocalPlayerAdded(playerId);
             
@@ -419,6 +422,31 @@ void NetworkManagerServer::sendLocalPlayerAddedPacket(ClientProxy* inClientProxy
     sendPacket(packet, inClientProxy->getMachineAddress());
 }
 
+void NetworkManagerServer::handleDropLocalPlayerPacket(ClientProxy* inClientProxy, InputMemoryBitStream& inInputStream)
+{
+    // read the index to drop
+    int index;
+    inInputStream.read(index);
+    
+    if (index < 1)
+    {
+        // If the primary player on this client wants to drop, a disconnect request should be fired off instead of a drop
+        return;
+    }
+    
+    int playerId = inClientProxy->getPlayerId(index);
+    if (playerId != INPUT_UNASSIGNED)
+    {
+        m_playerIDToClientMap.erase(playerId);
+        
+        m_handleLostClientFunc(inClientProxy, index);
+        
+        inClientProxy->onLocalPlayerRemoved(playerId);
+        
+        updateNextPlayerId();
+    }
+}
+
 void NetworkManagerServer::handleClientDisconnected(ClientProxy* inClientProxy)
 {
     for (int i = 0; i < inClientProxy->getNumPlayers(); ++i)
@@ -428,19 +456,24 @@ void NetworkManagerServer::handleClientDisconnected(ClientProxy* inClientProxy)
     
     m_addressHashToClientMap.erase(inClientProxy->getMachineAddress()->getHash());
     
-    m_handleLostClientFunc(inClientProxy);
+    m_handleLostClientFunc(inClientProxy, 0);
     
     m_serverHelper->onClientDisconnected(inClientProxy);
     
     delete inClientProxy;
     
+    updateNextPlayerId();
+}
+
+void NetworkManagerServer::updateNextPlayerId()
+{
     // Find the next available Player ID
-    m_iNewPlayerId = 1;
+    m_iNextPlayerId = 1;
     for (auto const &entry : m_playerIDToClientMap)
     {
-        if (entry.first == m_iNewPlayerId)
+        if (entry.first == m_iNextPlayerId)
         {
-            ++m_iNewPlayerId;
+            ++m_iNextPlayerId;
         }
     }
 }
@@ -450,7 +483,7 @@ m_serverHelper(inServerHelper),
 m_handleNewClientFunc(inHandleNewClientFunc),
 m_handleLostClientFunc(inHandleLostClientFunc),
 m_inputStateCreationFunc(inInputStateCreationFunc),
-m_iNewPlayerId(1)
+m_iNextPlayerId(1)
 {
     // Empty
 }

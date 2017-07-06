@@ -188,6 +188,18 @@ void MainEngine::handleNonMoveInput()
         {
             disconnect();
         }
+        else if (inputState->getMenuState() == MENU_STATE_LOCAL_PLAYER_DROP_OUT_1)
+        {
+            NG_CLIENT->requestToDropLocalPlayer(1);
+        }
+        else if (inputState->getMenuState() == MENU_STATE_LOCAL_PLAYER_DROP_OUT_2)
+        {
+            NG_CLIENT->requestToDropLocalPlayer(2);
+        }
+        else if (inputState->getMenuState() == MENU_STATE_LOCAL_PLAYER_DROP_OUT_3)
+        {
+            NG_CLIENT->requestToDropLocalPlayer(3);
+        }
     }
     else if (NG_SERVER)
     {

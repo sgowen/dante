@@ -25,7 +25,7 @@ class Entity;
 #define NG_SERVER_CALLBACKS NetworkManagerServer::staticProcessPacket, NetworkManagerServer::staticHandleNoResponse, NetworkManagerServer::staticHandleConnectionReset, NetworkManagerServer::staticGetClientProxy, NetworkManagerServer::staticHandleClientDisconnected
 
 typedef void (*HandleNewClientFunc)(int playerId, std::string playerName);
-typedef void (*HandleLostClientFunc)(ClientProxy* inClientProxy);
+typedef void (*HandleLostClientFunc)(ClientProxy* inClientProxy, int index);
 typedef IInputState* (*InputStateCreationFunc)();
 
 class NetworkManagerServer
@@ -80,7 +80,7 @@ private:
     
     std::unordered_map<size_t, ClientProxy*> m_addressHashToClientMap;
     std::unordered_map<int, ClientProxy*> m_playerIDToClientMap;
-    uint8_t m_iNewPlayerId;
+    uint8_t m_iNextPlayerId;
     float m_fTimeOfLastSatePacket;
     
     void processPacket(InputMemoryBitStream& inInputStream, IMachineAddress* inFromAddress);
@@ -107,7 +107,11 @@ private:
     
     void handleAddLocalPlayerPacket(ClientProxy* inClientProxy, InputMemoryBitStream& inInputStream);
     
+    void handleDropLocalPlayerPacket(ClientProxy* inClientProxy, InputMemoryBitStream& inInputStream);
+    
     void handleClientDisconnected(ClientProxy* inClientProxy);
+    
+    void updateNextPlayerId();
     
     // ctor, copy ctor, and assignment should be private in a Singleton
     NetworkManagerServer(IServerHelper* inServerHelper, HandleNewClientFunc inHandleNewClientFunc, HandleLostClientFunc inHandleLostClientFunc, InputStateCreationFunc inInputStateCreationFunc);

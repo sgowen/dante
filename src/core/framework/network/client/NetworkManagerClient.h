@@ -62,6 +62,8 @@ public:
     
     void requestToAddLocalPlayer();
     
+    void requestToDropLocalPlayer(int index);
+    
     const WeightedTimedMovingAverage& getBytesReceivedPerSecond() const;
     
     const WeightedTimedMovingAverage& getBytesSentPerSecond() const;
@@ -104,6 +106,7 @@ private:
     WeightedTimedMovingAverage* m_avgRoundTripTime;
     
     bool m_isRequestingToAddLocalPlayer;
+    int m_isRequestingToDropLocalPlayer;
     
     void processPacket(InputMemoryBitStream& inInputStream, IMachineAddress* inFromAddress);
     
@@ -130,6 +133,8 @@ private:
     void sendInputPacket();
     
     void updateAddLocalPlayerRequest();
+    
+    void updateDropLocalPlayerRequest();
     
     // ctor, copy ctor, and assignment should be private in a Singleton
     NetworkManagerClient(IClientHelper* inClientHelper, float inFrameRate, RemoveProcessedMovesFunc inRemoveProcessedMovesFunc, GetMoveListFunc inGetMoveListFunc, OnPlayerWelcomedFunc inOnPlayerWelcomedFunc);
