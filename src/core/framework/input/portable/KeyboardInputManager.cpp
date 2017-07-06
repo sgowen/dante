@@ -11,6 +11,7 @@
 #include "KeyboardInputManager.h"
 
 #include "KeyboardEvent.h"
+#include "KeyboardLookup.h"
 
 #define POOL_SIZE 256
 
@@ -39,6 +40,13 @@ std::vector<KeyboardEvent*>& KeyboardInputManager::getEvents()
 
 void KeyboardInputManager::addEvent(unsigned short key, bool isUp)
 {
+#ifdef _WIN32
+	if (key == NG_KEY_PERIOD)
+	{
+		key = NG_KEY_ASCII_PERIOD;
+	}
+#endif
+
     bool wasLastEventDown = false;
     
     auto q = m_lastKnownKeyStates.find(key);

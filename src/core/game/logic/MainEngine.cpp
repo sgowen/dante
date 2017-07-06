@@ -224,7 +224,7 @@ void MainEngine::handleNonMoveInput()
         {
             if (m_iEngineState == MAIN_ENGINE_STATE_MAIN_MENU_JOINING_LOCAL_SERVER_BY_IP)
             {
-                m_serverIPAddress = InputManager::getInstance()->getLiveInput();
+                m_serverIPAddress = StringUtil::format("%s:%d", InputManager::getInstance()->getLiveInput().c_str(), SERVER_PORT);
                 m_name.clear();
                 m_iEngineState = MAIN_ENGINE_STATE_MAIN_MENU_ENTERING_USERNAME;
             }
