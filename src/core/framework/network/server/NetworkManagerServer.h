@@ -81,7 +81,6 @@ private:
     std::unordered_map<size_t, ClientProxy*> m_addressHashToClientMap;
     std::unordered_map<int, ClientProxy*> m_playerIDToClientMap;
     uint8_t m_iNewPlayerId;
-    int m_iNumPlayersConnected;
     float m_fTimeOfLastSatePacket;
     
     void processPacket(InputMemoryBitStream& inInputStream, IMachineAddress* inFromAddress);

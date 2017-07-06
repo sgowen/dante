@@ -193,8 +193,7 @@ void NetworkManagerServer::processPacket(InputMemoryBitStream& inInputStream, IM
     auto it = m_addressHashToClientMap.find(inFromAddress->getHash());
     if (it == m_addressHashToClientMap.end())
     {
-        if (m_addressHashToClientMap.size() < MAX_NUM_PLAYERS_PER_SERVER
-            && m_iNumPlayersConnected < MAX_NUM_PLAYERS_PER_SERVER)
+        if (m_playerIDToClientMap.size() < MAX_NUM_PLAYERS_PER_SERVER)
         {
             LOG("New Client with %s", inFromAddress->toString().c_str());
             
@@ -255,8 +254,6 @@ void NetworkManagerServer::handlePacketFromNewClient(InputMemoryBitStream& inInp
         ClientProxy* newClientProxy = new ClientProxy(inFromAddress, name, m_iNewPlayerId++);
         m_addressHashToClientMap[inFromAddress->getHash()] = newClientProxy;
         m_playerIDToClientMap[newClientProxy->getPlayerId()] = newClientProxy;
-        
-        m_iNumPlayersConnected++;
         
         int playerId = newClientProxy->getPlayerId();
         std::string playerName = newClientProxy->getName();
@@ -373,8 +370,7 @@ void NetworkManagerServer::handleInputPacket(ClientProxy* inClientProxy, InputMe
 
 void NetworkManagerServer::handleAddLocalPlayerPacket(ClientProxy* inClientProxy, InputMemoryBitStream& inInputStream)
 {
-    if (m_addressHashToClientMap.size() < MAX_NUM_PLAYERS_PER_SERVER
-        && m_iNumPlayersConnected < MAX_NUM_PLAYERS_PER_SERVER)
+    if (m_playerIDToClientMap.size() < MAX_NUM_PLAYERS_PER_SERVER)
     {
         // read the current number of local players for this client at the time when the request was made
         int numLocalPlayers;
@@ -385,11 +381,11 @@ void NetworkManagerServer::handleAddLocalPlayerPacket(ClientProxy* inClientProxy
         {
             std::string localPlayerName = StringUtil::format("%s(%d)", inClientProxy->getName().c_str(), numLocalPlayers);
             
-            m_iNumPlayersConnected++;
-            
             int playerId = m_iNewPlayerId++;
             
             inClientProxy->onLocalPlayerAdded(playerId);
+            
+            m_playerIDToClientMap[playerId] = inClientProxy;
             
             // tell the server about this client
             m_handleNewClientFunc(playerId, localPlayerName);
@@ -425,9 +421,11 @@ void NetworkManagerServer::sendLocalPlayerAddedPacket(ClientProxy* inClientProxy
 
 void NetworkManagerServer::handleClientDisconnected(ClientProxy* inClientProxy)
 {
-    m_iNumPlayersConnected -= inClientProxy->getNumPlayers();
+    for (int i = 0; i < inClientProxy->getNumPlayers(); ++i)
+    {
+        m_playerIDToClientMap.erase(inClientProxy->getPlayerId(i));
+    }
     
-    m_playerIDToClientMap.erase(inClientProxy->getPlayerId());
     m_addressHashToClientMap.erase(inClientProxy->getMachineAddress()->getHash());
     
     m_handleLostClientFunc(inClientProxy);
@@ -452,8 +450,7 @@ m_serverHelper(inServerHelper),
 m_handleNewClientFunc(inHandleNewClientFunc),
 m_handleLostClientFunc(inHandleLostClientFunc),
 m_inputStateCreationFunc(inInputStateCreationFunc),
-m_iNewPlayerId(1),
-m_iNumPlayersConnected(0)
+m_iNewPlayerId(1)
 {
     // Empty
 }

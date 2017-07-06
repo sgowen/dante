@@ -15,7 +15,7 @@
 #include "FrameworkConstants.h"
 #include "Timing.h"
 
-#define POOL_SIZE 1024
+#define POOL_SIZE 8192
 
 GamePadInputManager* GamePadInputManager::getInstance()
 {
