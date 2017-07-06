@@ -109,12 +109,15 @@ void Server::handleNewClient(int playerId, std::string playerName)
 
 void Server::handleLostClient(ClientProxy* inClientProxy)
 {
-    int playerId = inClientProxy->getPlayerId();
-    
-    Robot* robot = InstanceManager::getServerWorld()->getRobotWithPlayerId(playerId);
-    if (robot)
+    for (int i = 0; i < inClientProxy->getNumPlayers(); ++i)
     {
-        robot->requestDeletion();
+        uint8_t playerId = inClientProxy->getPlayerId(i);
+        
+        Robot* robot = InstanceManager::getServerWorld()->getRobotWithPlayerId(playerId);
+        if (robot)
+        {
+            robot->requestDeletion();
+        }
     }
 }
 
