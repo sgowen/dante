@@ -433,7 +433,7 @@ void MainRenderer::renderServerJoinedText()
             if (!activePlayerIds[i])
             {
                 Vector2 origin = Vector2(0.5f, CAM_HEIGHT - ((i + 1) * 0.5f));
-                std::string text = std::string("Connect a controller to join...");
+                std::string text = StringUtil::format("%i|%s", (i + 1), "Connect a controller to join...");
                 renderText(text, origin, Color::BLACK);
             }
         }
