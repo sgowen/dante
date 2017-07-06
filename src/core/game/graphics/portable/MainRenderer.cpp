@@ -116,34 +116,37 @@ void MainRenderer::render(int engineState)
 
 void MainRenderer::renderBackground()
 {
-    m_rendererHelper->updateMatrix(0, CAM_WIDTH, 0, CAM_HEIGHT);
-    
-    m_spriteBatcher->beginBatch();
+    for (int i = 0; i < 3; ++i)
     {
-        static TextureRegion tr = ASSETS->findTextureRegion("Background1");
-        tr.initX(m_camBounds->getLeft() * 42.667f / 3);
-        tr.initY(clamp(384 - m_camBounds->getBottom() * 32, 384, 0));
-        m_spriteBatcher->drawSprite(CAM_WIDTH / 2, CAM_HEIGHT / 2, CAM_WIDTH, CAM_HEIGHT, 0, tr);
+        m_rendererHelper->updateMatrix(0, GAME_WIDTH, 0, CAM_HEIGHT);
+        
+        m_spriteBatcher->beginBatch();
+        {
+            static TextureRegion tr = ASSETS->findTextureRegion("Background1");
+            tr.initX(m_camBounds->getLeft() * 42.667f / 3);
+            tr.initY(clamp(384 - m_camBounds->getBottom() * 32, 384, 0));
+            m_spriteBatcher->drawSprite(i * CAM_WIDTH + CAM_WIDTH / 2, CAM_HEIGHT / 2, CAM_WIDTH, CAM_HEIGHT, 0, tr);
+        }
+        m_spriteBatcher->endBatch(*m_bg1, *m_textureGpuProgramWrapper);
+        
+        m_spriteBatcher->beginBatch();
+        {
+            static TextureRegion tr = ASSETS->findTextureRegion("Background2");
+            tr.initX(m_camBounds->getLeft() * 42.667f / 2);
+            tr.initY(clamp(644 - m_camBounds->getBottom() * 48, 644, 0));
+            m_spriteBatcher->drawSprite(i * CAM_WIDTH + CAM_WIDTH / 2, CAM_HEIGHT * 0.3875f / 2, CAM_WIDTH, CAM_HEIGHT * 0.3875f, 0, tr);
+        }
+        m_spriteBatcher->endBatch(*m_bg2, *m_textureGpuProgramWrapper);
+        
+        m_rendererHelper->updateMatrix(0, GAME_WIDTH, m_camBounds->getBottom(), m_camBounds->getTop());
+        m_spriteBatcher->beginBatch();
+        {
+            static TextureRegion tr = ASSETS->findTextureRegion("Background3");
+            tr.initX(m_camBounds->getLeft() * 42.667f);
+            m_spriteBatcher->drawSprite(i * CAM_WIDTH + CAM_WIDTH / 2, CAM_HEIGHT * 0.2f / 2, CAM_WIDTH, CAM_HEIGHT * 0.2f, 0, tr);
+        }
+        m_spriteBatcher->endBatch(*m_bg2, *m_textureGpuProgramWrapper);
     }
-    m_spriteBatcher->endBatch(*m_bg1, *m_textureGpuProgramWrapper);
-    
-    m_spriteBatcher->beginBatch();
-    {
-        static TextureRegion tr = ASSETS->findTextureRegion("Background2");
-        tr.initX(m_camBounds->getLeft() * 42.667f / 2);
-        tr.initY(clamp(644 - m_camBounds->getBottom() * 48, 644, 0));
-        m_spriteBatcher->drawSprite(CAM_WIDTH / 2, CAM_HEIGHT * 0.3875f / 2, CAM_WIDTH, CAM_HEIGHT * 0.3875f, 0, tr);
-    }
-    m_spriteBatcher->endBatch(*m_bg2, *m_textureGpuProgramWrapper);
-    
-    m_rendererHelper->updateMatrix(0, CAM_WIDTH, m_camBounds->getBottom(), m_camBounds->getTop());
-    m_spriteBatcher->beginBatch();
-    {
-        static TextureRegion tr = ASSETS->findTextureRegion("Background3");
-        tr.initX(m_camBounds->getLeft() * 42.667f);
-        m_spriteBatcher->drawSprite(CAM_WIDTH / 2, CAM_HEIGHT * 0.2f / 2, CAM_WIDTH, CAM_HEIGHT * 0.2f, 0, tr);
-    }
-    m_spriteBatcher->endBatch(*m_bg2, *m_textureGpuProgramWrapper);
 }
 
 void MainRenderer::renderWorld()
@@ -467,33 +470,84 @@ void MainRenderer::updateCamera()
     {
         std::unordered_map<uint8_t, uint8_t> indexToPlayerIdMap = NG_CLIENT->getPlayerIds();
         
-        if (indexToPlayerIdMap.size() > 1)
+        float left = 0;
+        float right = 0;
+        float bottom = 0;
+        float top = 0;
+        
+        bool needsInit = true;
+        
+        for (auto const &entry : indexToPlayerIdMap)
         {
-            m_camBounds->setWidth(CAM_WIDTH * 3);
-            m_camBounds->setHeight(CAM_HEIGHT * 3);
-        }
-        else if (indexToPlayerIdMap.size() == 1)
-        {
-            for (auto const &entry : indexToPlayerIdMap)
+            Robot* player = InstanceManager::staticGetPlayerRobotForIDOnClient(entry.second);
+            
+            if (player)
             {
-                Robot* player = InstanceManager::staticGetPlayerRobotForIDOnClient(entry.second);
+                // Adjust camera based on the player position
                 
-                if (player)
+                float pX = player->getPosition().getX();
+                float pY = player->getPosition().getY();
+                
+                if (needsInit)
                 {
-                    // Adjust camera based on the player position
+                    left = pX;
+                    right = pX;
+                    bottom = pY;
+                    top = pY;
                     
-                    float pX = player->getPosition().getX();
-                    float pY = player->getPosition().getY();
+                    needsInit = false;
+                }
+                else
+                {
+                    left = MIN(pX, left);
+                    right = MAX(pX, right);
                     
-                    float x = pX - CAM_WIDTH * 0.5f;
-                    x = clamp(x, CAM_WIDTH * 2, 0);
-                    
-                    float y = pY - CAM_HEIGHT * 0.5f;
-                    y = clamp(y, GAME_HEIGHT - CAM_HEIGHT, 0);
-                    
-                    m_camBounds->getLowerLeft().set(x, y);
+                    bottom = MIN(pY, bottom);
+                    top = MAX(pY, top);
                 }
             }
+        }
+        
+        if (!needsInit)
+        {
+            left -= CAM_WIDTH * 0.33f;
+            right += CAM_WIDTH * 0.33f;
+            bottom -= CAM_HEIGHT * 0.33f;
+            top += CAM_HEIGHT * 0.33f;
+            
+            float pX = (left + right) / 2.0f;
+            float pY = (bottom + top) / 2.0f;
+            float w = right - left;
+            float h = top - bottom;
+            
+            if (w < CAM_WIDTH)
+            {
+                w = CAM_WIDTH;
+            }
+            
+            if (h < CAM_HEIGHT)
+            {
+                h = CAM_HEIGHT;
+            }
+            
+            if (w > CAM_WIDTH)
+            {
+                h = w * (CAM_HEIGHT / CAM_WIDTH);
+            }
+            else if (h > CAM_HEIGHT)
+            {
+                w = h * (CAM_WIDTH / CAM_HEIGHT);
+            }
+            
+            float x = pX - w * 0.5f;
+            x = clamp(x, GAME_WIDTH - w, 0);
+            
+            float y = pY - h * 0.5f;
+            y = clamp(y, GAME_HEIGHT - h, 0);
+            
+            m_camBounds->getLowerLeft().set(x, y);
+            m_camBounds->setWidth(w);
+            m_camBounds->setHeight(h);
         }
     }
 }
