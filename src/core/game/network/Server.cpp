@@ -56,9 +56,9 @@ Server * Server::getInstance()
     return s_instance;
 }
 
-void Server::staticHandleNewClient(ClientProxy* inClientProxy)
+void Server::staticHandleNewClient(int playerId, std::string playerName)
 {
-    getInstance()->handleNewClient(inClientProxy);
+    getInstance()->handleNewClient(playerId, playerName);
 }
 
 void Server::staticHandleLostClient(ClientProxy* inClientProxy)
@@ -86,17 +86,16 @@ void Server::update(float deltaTime)
             InstanceManager::getServerWorld()->update();
             
             respawnEnemiesIfNecessary();
+            
+            clearClientMoves();
         }
         
         NG_SERVER->sendOutgoingPackets();
     }
 }
 
-void Server::handleNewClient(ClientProxy* inClientProxy)
+void Server::handleNewClient(int playerId, std::string playerName)
 {
-    int playerId = inClientProxy->getPlayerId();
-    std::string playerName = inClientProxy->getName();
-    
     spawnRobotForPlayer(playerId, playerName);
     
     if (NG_SERVER->getNumClientsConnected() == 1)
@@ -129,7 +128,7 @@ void Server::spawnRobotForPlayer(int inPlayerId, std::string inPlayerName)
     
     static Color Red(1.0f, 0.0f, 0.0f, 1);
     static Color Green(0.0f, 1.0f, 0.0f, 1);
-    static Color Yellow(1.0f, 1.0f, 0.0f, 1);
+    static Color Blue(0.0f, 0.0f, 1.0f, 1);
     
     switch (inPlayerId)
     {
@@ -140,7 +139,7 @@ void Server::spawnRobotForPlayer(int inPlayerId, std::string inPlayerName)
             robot->setColor(Green);
             break;
         case 4:
-            robot->setColor(Yellow);
+            robot->setColor(Blue);
             break;
         default:
             break;
@@ -189,6 +188,19 @@ void Server::respawnEnemiesIfNecessary()
                     spacePirate->setColor(Blue);
                 }
             }
+        }
+    }
+}
+
+void Server::clearClientMoves()
+{
+    for (int i = 0; i < MAX_NUM_PLAYERS_PER_SERVER; ++i)
+    {
+        ClientProxy* client = NG_SERVER->getClientProxy(i + 1);
+        if (client)
+        {
+            MoveList& moveList = client->getUnprocessedMoveList();
+            moveList.clear();
         }
     }
 }

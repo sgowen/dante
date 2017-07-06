@@ -24,7 +24,7 @@ public:
     
     static Server* getInstance();
     
-    static void staticHandleNewClient(ClientProxy* inClientProxy);
+    static void staticHandleNewClient(int playerId, std::string playerName);
     
     static void staticHandleLostClient(ClientProxy* inClientProxy);
     
@@ -37,13 +37,15 @@ private:
     float m_fFrameStateTime;
     float m_fStateTimeNoEnemies;
     
-    void handleNewClient(ClientProxy* inClientProxy);
+    void handleNewClient(int playerId, std::string playerName);
     
     void handleLostClient(ClientProxy* inClientProxy);
     
     void spawnRobotForPlayer(int inPlayerId, std::string inPlayerName);
     
     void respawnEnemiesIfNecessary();
+    
+    void clearClientMoves();
     
     // ctor, copy ctor, and assignment should be private in a Singleton
     Server(bool isSteam);

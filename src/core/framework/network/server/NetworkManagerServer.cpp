@@ -191,13 +191,20 @@ void NetworkManagerServer::processPacket(InputMemoryBitStream& inInputStream, IM
     //try to get the client proxy for this address
     //pass this to the client proxy to process
     auto it = m_addressHashToClientMap.find(inFromAddress->getHash());
-    if (it == m_addressHashToClientMap.end()
-        && m_addressHashToClientMap.size() < MAX_NUM_PLAYERS_PER_SERVER)
+    if (it == m_addressHashToClientMap.end())
     {
-        LOG("New Client with %s", inFromAddress->toString().c_str());
-        
-        //didn't find one? it's a new cilent..is the a HELO? if so, create a client proxy...
-        handlePacketFromNewClient(inInputStream, inFromAddress);
+        if (m_addressHashToClientMap.size() < MAX_NUM_PLAYERS_PER_SERVER
+            && m_iNumPlayersConnected < MAX_NUM_PLAYERS_PER_SERVER)
+        {
+            LOG("New Client with %s", inFromAddress->toString().c_str());
+            
+            //didn't find one? it's a new cilent..is the a HELO? if so, create a client proxy...
+            handlePacketFromNewClient(inInputStream, inFromAddress);
+        }
+        else
+        {
+            LOG("Server is at max capacity, blocking new client...");
+        }
     }
     else
     {
@@ -227,12 +234,12 @@ void NetworkManagerServer::sendPacket(const OutputMemoryBitStream& inOutputStrea
 
 void NetworkManagerServer::handlePacketFromNewClient(InputMemoryBitStream& inInputStream, IMachineAddress* inFromAddress)
 {
-    //read the beginning- is it a hello?
+    // read the beginning- is it a hello?
     uint32_t packetType;
     inInputStream.read(packetType);
     if (packetType == NETWORK_PACKET_TYPE_HELLO)
     {
-        //read the name
+        // read the name
         std::string name;
         inInputStream.read(name);
         
@@ -241,7 +248,6 @@ void NetworkManagerServer::handlePacketFromNewClient(InputMemoryBitStream& inInp
             if (NG_CLIENT->getPlayerName().compare(name) != 0)
             {
                 // The server host MUST be the first client to join
-                sendDenyPacket(inFromAddress, name);
                 return;
             }
         }
@@ -250,13 +256,18 @@ void NetworkManagerServer::handlePacketFromNewClient(InputMemoryBitStream& inInp
         m_addressHashToClientMap[inFromAddress->getHash()] = newClientProxy;
         m_playerIDToClientMap[newClientProxy->getPlayerId()] = newClientProxy;
         
+        m_iNumPlayersConnected++;
+        
+        int playerId = newClientProxy->getPlayerId();
+        std::string playerName = newClientProxy->getName();
+        
         // tell the server about this client
-        m_handleNewClientFunc(newClientProxy);
+        m_handleNewClientFunc(playerId, playerName);
         
         //and welcome the client...
         sendWelcomePacket(newClientProxy);
         
-        //and now init the replication manager with everything we know about!
+        // and now init the replication manager with everything we know about!
         for (const auto& pair: FWInstanceManager::getServerEntityManager()->getMap())
         {
             Entity* pe = pair.second;
@@ -290,6 +301,9 @@ void NetworkManagerServer::processPacket(ClientProxy* inClientProxy, InputMemory
                 handleInputPacket(inClientProxy, inInputStream);
             }
             break;
+        case NETWORK_PACKET_TYPE_ADD_LOCAL_PLAYER:
+            handleAddLocalPlayerPacket(inClientProxy, inInputStream);
+            break;
         default:
             m_serverHelper->processSpecialPacket(packetType, inInputStream, inClientProxy->getMachineAddress());
             break;
@@ -306,17 +320,6 @@ void NetworkManagerServer::sendWelcomePacket(ClientProxy* inClientProxy)
     LOG("Server welcoming new client '%s' as player %d", inClientProxy->getName().c_str(), inClientProxy->getPlayerId());
     
     sendPacket(packet, inClientProxy->getMachineAddress());
-}
-
-void NetworkManagerServer::sendDenyPacket(IMachineAddress* inToAddress, std::string name)
-{
-    OutputMemoryBitStream packet;
-    
-    packet.write(NETWORK_PACKET_TYPE_DENY);
-    
-    LOG("Server denying new client '%s'", name.c_str());
-    
-    sendPacket(packet, inToAddress);
 }
 
 void NetworkManagerServer::sendStatePacketToClient(ClientProxy* inClientProxy)
@@ -368,8 +371,62 @@ void NetworkManagerServer::handleInputPacket(ClientProxy* inClientProxy, InputMe
     }
 }
 
+void NetworkManagerServer::handleAddLocalPlayerPacket(ClientProxy* inClientProxy, InputMemoryBitStream& inInputStream)
+{
+    if (m_addressHashToClientMap.size() < MAX_NUM_PLAYERS_PER_SERVER
+        && m_iNumPlayersConnected < MAX_NUM_PLAYERS_PER_SERVER)
+    {
+        // read the current number of local players for this client at the time when the request was made
+        int numLocalPlayers;
+        inInputStream.read(numLocalPlayers);
+        
+        int playerId = inClientProxy->getPlayerId(numLocalPlayers);
+        if (playerId == 255)
+        {
+            std::string localPlayerName = StringUtil::format("%s(%d)", inClientProxy->getName().c_str(), numLocalPlayers);
+            
+            m_iNumPlayersConnected++;
+            
+            int playerId = m_iNewPlayerId++;
+            
+            inClientProxy->onLocalPlayerAdded(playerId);
+            
+            // tell the server about this client
+            m_handleNewClientFunc(playerId, localPlayerName);
+        }
+        
+        // and welcome the new local player...
+        sendLocalPlayerAddedPacket(inClientProxy, inClientProxy->getNumPlayers() - 1);
+    }
+    else
+    {
+        OutputMemoryBitStream packet;
+        packet.write(NETWORK_PACKET_TYPE_LOCAL_PLAYER_DENIED);
+        
+        sendPacket(packet, inClientProxy->getMachineAddress());
+    }
+}
+
+void NetworkManagerServer::sendLocalPlayerAddedPacket(ClientProxy* inClientProxy, int index)
+{
+    int playerId = inClientProxy->getPlayerId(index);
+    
+    OutputMemoryBitStream packet;
+    
+    packet.write(NETWORK_PACKET_TYPE_LOCAL_PLAYER_ADDED);
+    packet.write(playerId);
+    
+    std::string localPlayerName = StringUtil::format("%s(%d)", inClientProxy->getName().c_str(), index);
+    
+    LOG("Server welcoming new client local player '%s' as player %d", localPlayerName.c_str(), playerId);
+    
+    sendPacket(packet, inClientProxy->getMachineAddress());
+}
+
 void NetworkManagerServer::handleClientDisconnected(ClientProxy* inClientProxy)
 {
+    m_iNumPlayersConnected -= inClientProxy->getNumPlayers();
+    
     m_playerIDToClientMap.erase(inClientProxy->getPlayerId());
     m_addressHashToClientMap.erase(inClientProxy->getMachineAddress()->getHash());
     
@@ -381,9 +438,9 @@ void NetworkManagerServer::handleClientDisconnected(ClientProxy* inClientProxy)
     
     // Find the next available Player ID
     m_iNewPlayerId = 1;
-    for (auto const &entry : m_addressHashToClientMap)
+    for (auto const &entry : m_playerIDToClientMap)
     {
-        if (entry.second->getPlayerId() == m_iNewPlayerId)
+        if (entry.first == m_iNewPlayerId)
         {
             ++m_iNewPlayerId;
         }
@@ -395,7 +452,8 @@ m_serverHelper(inServerHelper),
 m_handleNewClientFunc(inHandleNewClientFunc),
 m_handleLostClientFunc(inHandleLostClientFunc),
 m_inputStateCreationFunc(inInputStateCreationFunc),
-m_iNewPlayerId(1)
+m_iNewPlayerId(1),
+m_iNumPlayersConnected(0)
 {
     // Empty
 }

@@ -9,9 +9,6 @@
 #ifndef __noctisgames__InputState__
 #define __noctisgames__InputState__
 
-class OutputMemoryBitStream;
-class InputMemoryBitStream;
-
 #include "IInputState.h"
 
 #include "RTTI.h"
@@ -29,44 +26,71 @@ class InputMemoryBitStream;
 #define MENU_STATE_STEAM_JOIN_SERVER_4 10
 #define MENU_STATE_ESCAPE 11
 
+class OutputMemoryBitStream;
+class InputMemoryBitStream;
+
 class InputState : public IInputState
 {
     RTTI_DECL;
     
 public:
+    class GameInputState
+    {
+    public:
+        void write(OutputMemoryBitStream& inOutputStream) const;
+        
+        void read(InputMemoryBitStream& inInputStream);
+        
+        float getDesiredRightAmount();
+        
+        bool isJumping();
+        
+        bool isShooting();
+        
+        bool isSprinting();
+        
+    private:
+        friend class InputState;
+        friend class InputManager;
+        
+        uint8_t m_iPlayerId;
+        bool m_isMovingRight;
+        bool m_isMovingLeft;
+        bool m_isJumping;
+        bool m_isShooting;
+        bool m_isSprinting;
+        
+        GameInputState();
+    };
+    
     InputState();
     
     virtual ~InputState();
     
     virtual bool write(OutputMemoryBitStream& inOutputStream) const;
+    
     virtual bool read(InputMemoryBitStream& inInputStream);
     
     virtual void reset();
     
     void copyTo(InputState* inInputState);
     
-    bool isEqualTo(InputState* inInputState);
+    void activateNextPlayer(uint8_t playerId);
     
-    float getDesiredHorizontalDelta() const;
+    GameInputState* getGameInputStateForPlayerId(uint8_t playerId);
     
-    bool isJumping() const;
-    
-    bool isShooting() const;
-    
-    bool isSprinting() const;
+    bool isRequestingToAddLocalPlayer() const;
     
     int getMenuState() const;
     
 private:
     friend class InputManager;
     
-    float m_fDesiredRightAmount;
-    float m_fDesiredLeftAmount;
-    bool m_isJumping;
-    bool m_isShooting;
-    bool m_isSprinting;
+    GameInputState m_gameInputStates[4];
     
     int m_iMenuState;
+    
+    GameInputState& getGameInputState(int index);
 };
 
 #endif /* defined(__noctisgames__InputState__) */

@@ -407,6 +407,8 @@ void MainRenderer::renderServerJoinedText()
     
     if (InstanceManager::getClientWorld())
     {
+        bool activePlayerIds[] { false, false, false, false };
+        
         int enemyCount = 0;
         std::vector<Entity*> entities = InstanceManager::getClientWorld()->getEntities();
         for (Entity* go : entities)
@@ -417,10 +419,22 @@ void MainRenderer::renderServerJoinedText()
                 Vector2 origin = Vector2(0.5f, CAM_HEIGHT - (robot->getPlayerId() * 0.5f));
                 std::string text = StringUtil::format("%i|%s - %i HP, %i Kills", robot->getPlayerId(), robot->getPlayerName().c_str(), robot->getHealth(), robot->getNumKills());
                 renderText(text, origin, Color::BLACK);
+                
+                activePlayerIds[robot->getPlayerId() - 1] = true;
             }
             else if (go->getNetworkType() == NETWORK_TYPE_SpacePirate)
             {
                 enemyCount++;
+            }
+        }
+        
+        for (int i = 0; i < MAX_NUM_PLAYERS_PER_SERVER; ++i)
+        {
+            if (!activePlayerIds[i])
+            {
+                Vector2 origin = Vector2(0.5f, CAM_HEIGHT - ((i + 1) * 0.5f));
+                std::string text = std::string("Connect a controller to join...");
+                renderText(text, origin, Color::BLACK);
             }
         }
         
@@ -452,7 +466,7 @@ void MainRenderer::updateCamera()
     if (NG_CLIENT && NG_CLIENT->getState() == NCS_Welcomed)
     {
         // TODO, eventually account for potentially multiple players on a single client machine
-        Robot* player = InstanceManager::staticGetPlayerRobotForIDOnClient(NG_CLIENT->getPlayerId());
+        Robot* player = InstanceManager::staticGetPlayerRobotForIDOnClient(NG_CLIENT->getPlayerIds().at(0));
         
         if (player)
         {

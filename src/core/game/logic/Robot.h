@@ -61,9 +61,9 @@ public:
     
     uint64_t getAddressHash() const;
     
-    void setPlayerId(uint32_t inPlayerId);
+    void setPlayerId(uint8_t inPlayerId);
     
-    uint32_t getPlayerId() const;
+    uint8_t getPlayerId() const;
     
     void setPlayerName(std::string playerName);
     
@@ -83,10 +83,10 @@ public:
     
 private:
     uint64_t m_iAddressHash;
-    uint32_t m_iPlayerId;
+    uint8_t m_iPlayerId;
     std::string m_playerName;
     
-    float m_fRtt;
+    uint8_t m_iRttMs;
     uint8_t m_iNumJumps;
     bool m_isGrounded;
     bool m_isFalling;

@@ -24,7 +24,7 @@ class Entity;
 
 #define NG_SERVER_CALLBACKS NetworkManagerServer::staticProcessPacket, NetworkManagerServer::staticHandleNoResponse, NetworkManagerServer::staticHandleConnectionReset, NetworkManagerServer::staticGetClientProxy, NetworkManagerServer::staticHandleClientDisconnected
 
-typedef void (*HandleNewClientFunc)(ClientProxy* inClientProxy);
+typedef void (*HandleNewClientFunc)(int playerId, std::string playerName);
 typedef void (*HandleLostClientFunc)(ClientProxy* inClientProxy);
 typedef IInputState* (*InputStateCreationFunc)();
 
@@ -80,7 +80,8 @@ private:
     
     std::unordered_map<size_t, ClientProxy*> m_addressHashToClientMap;
     std::unordered_map<int, ClientProxy*> m_playerIDToClientMap;
-    int m_iNewPlayerId;
+    uint8_t m_iNewPlayerId;
+    int m_iNumPlayersConnected;
     float m_fTimeOfLastSatePacket;
     
     void processPacket(InputMemoryBitStream& inInputStream, IMachineAddress* inFromAddress);
@@ -97,13 +98,15 @@ private:
     
     void sendWelcomePacket(ClientProxy* inClientProxy);
     
-    void sendDenyPacket(IMachineAddress* inToAddress, std::string name);
+    void sendLocalPlayerAddedPacket(ClientProxy* inClientProxy, int index);
     
     void sendStatePacketToClient(ClientProxy* inClientProxy);
     
     void writeLastMoveTimestampIfDirty(OutputMemoryBitStream& inOutputStream, ClientProxy* inClientProxy);
     
     void handleInputPacket(ClientProxy* inClientProxy, InputMemoryBitStream& inInputStream);
+    
+    void handleAddLocalPlayerPacket(ClientProxy* inClientProxy, InputMemoryBitStream& inInputStream);
     
     void handleClientDisconnected(ClientProxy* inClientProxy);
     

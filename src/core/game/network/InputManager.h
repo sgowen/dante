@@ -16,7 +16,7 @@
 class InputState;
 class Move;
 
-#define INPUT_MANAGER_CALLBACKS InputManager::staticRemoveProcessedMoves, InputManager::staticGetMoveList
+#define INPUT_MANAGER_CALLBACKS InputManager::staticRemoveProcessedMoves, InputManager::staticGetMoveList, InputManager::staticOnPlayerWelcomed
 
 class InputManager
 {
@@ -27,9 +27,13 @@ public:
     
     static MoveList& staticGetMoveList();
     
+    static void staticOnPlayerWelcomed(uint8_t playerId);
+    
     void update();
     
-    const Move* getAndClearPendingMove();
+    const Move* getPendingMove();
+    
+    void clearPendingMove();
     
     void setConnected(bool isConnected);
     

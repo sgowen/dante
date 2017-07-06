@@ -139,6 +139,8 @@ void MainEngine::update(float deltaTime)
             if (InstanceManager::getClientWorld())
             {
                 InstanceManager::getClientWorld()->update();
+                
+                InputManager::getInstance()->clearPendingMove();
             }
         }
         
@@ -178,7 +180,11 @@ void MainEngine::handleNonMoveInput()
     
     if (NG_CLIENT)
     {
-        if (inputState->getMenuState() == MENU_STATE_ESCAPE)
+        if (inputState->isRequestingToAddLocalPlayer())
+        {
+            NG_CLIENT->requestToAddLocalPlayer();
+        }
+        else if (inputState->getMenuState() == MENU_STATE_ESCAPE)
         {
             disconnect();
         }

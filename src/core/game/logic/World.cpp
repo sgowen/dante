@@ -80,7 +80,7 @@ void World::update()
     }
 }
 
-Robot* World::getRobotWithPlayerId(int inPlayerID)
+Robot* World::getRobotWithPlayerId(uint8_t inPlayerID)
 {
     for (Entity* entity : m_entities)
     {

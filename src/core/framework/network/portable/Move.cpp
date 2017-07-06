@@ -39,18 +39,14 @@ bool Move::write(OutputMemoryBitStream& inOutputStream) const
 {
     inOutputStream.write(m_fTimestamp);
     
-    m_inputState->write(inOutputStream);
-    
-    return true;
+    return m_inputState->write(inOutputStream);
 }
 
 bool Move::read(InputMemoryBitStream& inInputStream)
 {
     inInputStream.read(m_fTimestamp);
     
-    m_inputState->read(inInputStream);
-    
-    return true;
+    return m_inputState->read(inInputStream);
 }
 
 IInputState* Move::getInputState() const

@@ -55,7 +55,7 @@ void Robot::onDeletion()
     }
     else
     {
-        if (getPlayerId() == NG_CLIENT->getPlayerId())
+        if (NG_CLIENT->isPlayerIdLocal(getPlayerId()))
         {
             // This robot is the current local player, so let's display something like "Respawning in 5, 4, 3..."
             playSound(SOUND_ID_DEATH);
@@ -86,8 +86,6 @@ void Robot::update()
             {
                 processMove(unprocessedMove);
             }
-            
-            moveList.clear();
         }
         
         handleShooting();
@@ -107,10 +105,9 @@ void Robot::update()
     }
     else
     {
-        // TODO, allow for multiple client inputs
-        if (getPlayerId() == NG_CLIENT->getPlayerId())
+        if (NG_CLIENT->isPlayerIdLocal(getPlayerId()))
         {
-            const Move* pendingMove = InputManager::getInstance()->getAndClearPendingMove();
+            const Move* pendingMove = InputManager::getInstance()->getPendingMove();
             if (pendingMove)
             {
                 processMove(*pendingMove);
@@ -164,7 +161,7 @@ void Robot::read(InputMemoryBitStream& inInputStream)
         inInputStream.read(m_position.getXRef());
         inInputStream.read(m_position.getYRef());
         
-        inInputStream.read(m_fRtt);
+        inInputStream.read(m_iRttMs);
         
         inInputStream.read(m_iNumJumps);
         
@@ -199,7 +196,7 @@ void Robot::read(InputMemoryBitStream& inInputStream)
         readState |= ROBT_NumKills;
     }
     
-    if (getPlayerId() == NG_CLIENT->getPlayerId())
+    if (NG_CLIENT->isPlayerIdLocal(getPlayerId()))
     {
         doClientSidePredictionForLocalRobot(readState);
         
@@ -255,7 +252,7 @@ uint32_t Robot::write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtySta
         inOutputStream.write(m_position.getX());
         inOutputStream.write(m_position.getY());
         
-        inOutputStream.write(m_fRtt);
+        inOutputStream.write(m_iRttMs);
         
         inOutputStream.write(m_iNumJumps);
         
@@ -327,9 +324,7 @@ void Robot::takeDamage()
         
         requestDeletion();
         
-        ClientProxy* clientProxy = NG_SERVER->getClientProxy(getPlayerId());
-        
-        Server::staticHandleNewClient(clientProxy);
+        Server::staticHandleNewClient(m_iPlayerId, m_playerName);
     }
     
     // tell the world our health dropped
@@ -361,12 +356,12 @@ uint64_t Robot::getAddressHash() const
     return m_iAddressHash;
 }
 
-void Robot::setPlayerId(uint32_t inPlayerId)
+void Robot::setPlayerId(uint8_t inPlayerId)
 {
     m_iPlayerId = inPlayerId;
 }
 
-uint32_t Robot::getPlayerId() const
+uint8_t Robot::getPlayerId() const
 {
     return m_iPlayerId;
 }
@@ -429,9 +424,15 @@ void Robot::processMove(const Move& inMove)
 
 void Robot::processInput(float inDeltaTime, IInputState* inInputState)
 {
-    InputState* inputState = static_cast<InputState*>(inInputState);
+    InputState* is = static_cast<InputState*>(inInputState);
+    uint8_t playerId = getPlayerId();
+    InputState::GameInputState* inputState = is->getGameInputStateForPlayerId(playerId);
+    if (inputState == nullptr)
+    {
+        return;
+    }
     
-    m_velocity.setX(inputState->getDesiredHorizontalDelta() * m_fSpeed);
+    m_velocity.setX(inputState->getDesiredRightAmount() * m_fSpeed);
     
     m_isFacingLeft = m_velocity.getX() < 0 ? true : m_velocity.getX() > 0 ? false : m_isFacingLeft;
     
@@ -439,7 +440,7 @@ void Robot::processInput(float inDeltaTime, IInputState* inInputState)
     
     if (m_isSprinting && m_isGrounded)
     {
-        m_velocity.add(inputState->getDesiredHorizontalDelta() * m_fSpeed / 2, 0);
+        m_velocity.add(inputState->getDesiredRightAmount() * m_fSpeed / 2, 0);
     }
     
     if (inputState->isJumping())
@@ -484,7 +485,7 @@ void Robot::processInput(float inDeltaTime, IInputState* inInputState)
     
     m_isShooting = inputState->isShooting();
     
-    m_fRtt = NG_CLIENT->getRoundTripTime();
+    m_iRttMs = NG_CLIENT->getRoundTripTime() * 1000;
 }
 
 void Robot::updateInternal(float inDeltaTime)
@@ -640,10 +641,7 @@ void Robot::doClientSidePredictionForRemoteRobot(uint32_t inReadState)
     if ((inReadState & ROBT_Pose) != 0)
     {
         // simulate movement for an additional RTT/2
-        float myRtt = NG_CLIENT->getRoundTripTime() / 2;
-        float remoteRtt = m_fRtt / 2;
-        
-        float rtt = myRtt + remoteRtt;
+        float rtt = NG_CLIENT->getRoundTripTime() / 2;
         
         // break into framerate sized chunks so we don't run through walls and do crazy things...
         while (true)
@@ -720,7 +718,7 @@ Robot::Robot(bool isServer) : Entity(0, 0, 1.565217391304348f, 2.0f),
 m_iAddressHash(0),
 m_iPlayerId(0),
 m_playerName("Robot"),
-m_fRtt(0),
+m_iRttMs(0),
 m_iNumJumps(0),
 m_isFacingLeft(false),
 m_isShooting(false),

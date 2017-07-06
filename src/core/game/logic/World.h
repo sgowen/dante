@@ -28,7 +28,7 @@ public:
     
     void update();
     
-    Robot* getRobotWithPlayerId(int inPlayerID);
+    Robot* getRobotWithPlayerId(uint8_t inPlayerID);
     
     bool hasSpacePirates();
     
