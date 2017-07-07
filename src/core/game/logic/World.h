@@ -30,6 +30,8 @@ public:
     
     Robot* getRobotWithPlayerId(uint8_t inPlayerID);
     
+    void killAllSpacePirates();
+    
     bool hasSpacePirates();
     
     std::vector<Entity*>& getEntities();

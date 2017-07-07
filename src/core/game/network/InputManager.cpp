@@ -23,7 +23,6 @@
 #include "GamePadEvent.h"
 #include "PooledObjectsManager.h"
 #include "GameConstants.h"
-#include "NGAudioEngine.h"
 #include "KeyboardLookup.h"
 #include "StringUtil.h"
 #include "MathUtil.h"
@@ -67,23 +66,13 @@ void InputManager::update()
             switch ((*i)->getKey())
             {
                 case NG_KEY_M:
-                    if ((*i)->isUp())
-                    {
-                        if (NG_AUDIO_ENGINE->isMusicPlaying())
-                        {
-                            NG_AUDIO_ENGINE->stopMusic();
-                        }
-                        else
-                        {
-                            NG_AUDIO_ENGINE->playMusic(true);
-                        }
-                    }
+                    m_currentState->m_iMenuState = (*i)->isUp() ? MENU_STATE_CLIENT_MAIN_TOGGLE_MUSIC : MENU_STATE_NONE;
                     continue;
                 case NG_KEY_S:
-                    if ((*i)->isDown())
-                    {
-                        NG_AUDIO_ENGINE->setSoundDisabled(!NG_AUDIO_ENGINE->isSoundDisabled());
-                    }
+                    m_currentState->m_iMenuState = (*i)->isUp() ? MENU_STATE_CLIENT_MAIN_TOGGLE_SOUND : MENU_STATE_NONE;
+                    continue;
+                case NG_KEY_T:
+                    m_currentState->m_iMenuState = (*i)->isUp() ? MENU_STATE_SERVER_TOGGLE_ENEMIES : MENU_STATE_NONE;
                     continue;
                 case NG_KEY_ESCAPE:
                     m_currentState->m_iMenuState = (*i)->isUp() ? MENU_STATE_ESCAPE : MENU_STATE_NONE;
@@ -276,12 +265,7 @@ void InputManager::update()
             switch ((*i)->getType())
             {
                 case GamePadEventType_BACK_BUTTON:
-                {
-                    if ((*i)->getIndex() == 0)
-                    {
-                        m_currentState->m_iMenuState = (*i)->isPressed() ? MENU_STATE_ESCAPE : MENU_STATE_NONE;
-                    }
-                }
+                    m_currentState->m_iMenuState = (*i)->isPressed() ? MENU_STATE_ESCAPE : MENU_STATE_NONE;
                     continue;
                 default:
                     continue;

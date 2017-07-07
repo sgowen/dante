@@ -29,6 +29,10 @@ public:
     static void staticHandleLostClient(ClientProxy* inClientProxy, int index);
     
     void update(float deltaTime);
+    
+    void toggleEnemies();
+    
+    bool isSpawningEnemies();
 
 private:
     static Server* s_instance;
@@ -36,6 +40,7 @@ private:
     float m_fStateTime;
     float m_fFrameStateTime;
     float m_fStateTimeNoEnemies;
+    bool m_isSpawningEnemies;
     
     void handleNewClient(int playerId, std::string playerName);
     

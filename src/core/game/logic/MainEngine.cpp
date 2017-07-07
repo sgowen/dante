@@ -178,8 +178,32 @@ void MainEngine::handleNonMoveInput()
 {
     InputState* inputState = InputManager::getInstance()->getInputState();
     
+    if (inputState->getMenuState() == MENU_STATE_CLIENT_MAIN_TOGGLE_MUSIC)
+    {
+        if (NG_AUDIO_ENGINE->isMusicPlaying())
+        {
+            NG_AUDIO_ENGINE->stopMusic();
+        }
+        else
+        {
+            NG_AUDIO_ENGINE->playMusic(true);
+        }
+    }
+    else if (inputState->getMenuState() == MENU_STATE_CLIENT_MAIN_TOGGLE_SOUND)
+    {
+        NG_AUDIO_ENGINE->setSoundDisabled(!NG_AUDIO_ENGINE->isSoundDisabled());
+    }
+    
     if (NG_CLIENT)
     {
+        if (Server::getInstance())
+        {
+            if (inputState->getMenuState() == MENU_STATE_SERVER_TOGGLE_ENEMIES)
+            {
+                Server::getInstance()->toggleEnemies();
+            }
+        }
+        
         if (inputState->isRequestingToAddLocalPlayer())
         {
             NG_CLIENT->requestToAddLocalPlayer();

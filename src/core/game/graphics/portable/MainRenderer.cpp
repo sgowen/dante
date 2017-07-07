@@ -39,6 +39,7 @@
 #include "NGSteamGameServices.h"
 #include "MathUtil.h"
 #include "NGAudioEngine.h"
+#include "Server.h"
 
 #include <sstream>
 #include <ctime> // rand
@@ -135,14 +136,6 @@ void MainRenderer::renderBackground()
             tr.initX(m_camBounds->getLeft() * 128.0f / 2);
             tr.initY(clamp(644 - m_camBounds->getBottom() * 48, 644, 0));
             m_spriteBatcher->drawSprite(i * CAM_WIDTH + CAM_WIDTH / 2, CAM_HEIGHT * 0.3875f / 2, CAM_WIDTH, CAM_HEIGHT * 0.3875f, 0, tr);
-        }
-        m_spriteBatcher->endBatch(*m_bg2, *m_textureGpuProgramWrapper);
-        
-        m_rendererHelper->updateMatrix(m_camBounds->getLeft(), m_camBounds->getRight(), m_camBounds->getBottom(), m_camBounds->getTop());
-        m_spriteBatcher->beginBatch();
-        {
-            static TextureRegion tr = ASSETS->findTextureRegion("Background3");
-            m_spriteBatcher->drawSprite(i * CAM_WIDTH + CAM_WIDTH / 2, CAM_HEIGHT * 0.2f / 2, CAM_WIDTH, CAM_HEIGHT * 0.2f, 0, tr);
         }
         m_spriteBatcher->endBatch(*m_bg2, *m_textureGpuProgramWrapper);
     }
@@ -412,6 +405,21 @@ void MainRenderer::renderServerJoinedText()
         static Vector2 origin = Vector2(CAM_WIDTH - 0.5f, CAM_HEIGHT - 2.0f);
         
         std::string text = StringUtil::format("'S' Sound %s", NG_AUDIO_ENGINE->isSoundDisabled() ? "OFF" : " ON");
+        renderText(text, origin, Color::BLACK, FONT_ALIGN_RIGHT);
+    }
+    
+    {
+        static Vector2 origin = Vector2(CAM_WIDTH - 0.5f, CAM_HEIGHT - 2.5f);
+        
+        std::string text = StringUtil::format("'M' Music %s", NG_AUDIO_ENGINE->isMusicPlaying() ? " ON" : "OFF");
+        renderText(text, origin, Color::BLACK, FONT_ALIGN_RIGHT);
+    }
+    
+    if (Server::getInstance())
+    {
+        static Vector2 origin = Vector2(CAM_WIDTH - 0.5f, CAM_HEIGHT - 3.0f);
+        
+        std::string text = StringUtil::format("'T' Enemies %s", Server::getInstance()->isSpawningEnemies() ? " ON" : "OFF");
         renderText(text, origin, Color::BLACK, FONT_ALIGN_RIGHT);
     }
     

@@ -94,6 +94,25 @@ void Server::update(float deltaTime)
     }
 }
 
+void Server::toggleEnemies()
+{
+    m_isSpawningEnemies = !m_isSpawningEnemies;
+    
+    if (m_isSpawningEnemies)
+    {
+        m_fStateTimeNoEnemies = 10; // Spawn em now!
+    }
+    else
+    {
+        InstanceManager::getServerWorld()->killAllSpacePirates();
+    }
+}
+
+bool Server::isSpawningEnemies()
+{
+    return m_isSpawningEnemies;
+}
+
 void Server::handleNewClient(int playerId, std::string playerName)
 {
     spawnRobotForPlayer(playerId, playerName);
@@ -164,7 +183,7 @@ void Server::spawnRobotForPlayer(int inPlayerId, std::string inPlayerName)
 
 void Server::respawnEnemiesIfNecessary()
 {
-    if (!InstanceManager::getServerWorld()->hasSpacePirates())
+    if (m_isSpawningEnemies && !InstanceManager::getServerWorld()->hasSpacePirates())
     {
         m_fStateTimeNoEnemies += Timing::getInstance()->getDeltaTime();
         if (m_fStateTimeNoEnemies > 10)
@@ -221,7 +240,7 @@ void Server::clearClientMoves()
     }
 }
 
-Server::Server(bool isSteam) : m_fStateTime(0), m_fFrameStateTime(0), m_fStateTimeNoEnemies(0)
+Server::Server(bool isSteam) : m_fStateTime(0), m_fFrameStateTime(0), m_fStateTimeNoEnemies(0), m_isSpawningEnemies(true)
 {
     FWInstanceManager::createServerEntityManager(InstanceManager::staticHandleEntityCreatedOnServer, InstanceManager::staticHandleEntityDeletedOnServer);
     

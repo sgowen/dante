@@ -62,18 +62,18 @@ void World::update()
     int len = static_cast<int>(m_entities.size());
     for (int i = 0, c = len; i < c; ++i)
     {
-        Entity* go = m_entities[i];
+        Entity* entity = m_entities[i];
         
-        if (!go->isRequestingDeletion())
+        if (!entity->isRequestingDeletion())
         {
-            go->update();
+            entity->update();
         }
         
         //you might suddenly want to die after your update, so check again
-        if (go->isRequestingDeletion())
+        if (entity->isRequestingDeletion())
         {
-            removeEntity(go);
-            go->onDeletion();
+            removeEntity(entity);
+            entity->onDeletion();
             --i;
             --c;
         }
@@ -92,6 +92,17 @@ Robot* World::getRobotWithPlayerId(uint8_t inPlayerID)
     }
     
     return nullptr;
+}
+
+void World::killAllSpacePirates()
+{
+    for (Entity* entity : m_entities)
+    {
+        if (entity->getRTTI().derivesFrom(SpacePirate::rtti))
+        {
+            entity->requestDeletion();
+        }
+    }
 }
 
 bool World::hasSpacePirates()

@@ -92,7 +92,6 @@ void ReplicationManagerClient::readAndDoDestroyAction(InputMemoryBitStream& inIn
     Entity* gameObject = FWInstanceManager::getClientEntityManager()->getEntityByID(inNetworkId);
     if (gameObject)
     {
-        gameObject->requestDeletion();
         gameObject->onDeletion();
         FWInstanceManager::getClientEntityManager()->removeEntity(gameObject);
     }
