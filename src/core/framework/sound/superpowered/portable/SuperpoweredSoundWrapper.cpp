@@ -1,5 +1,5 @@
 //
-//  SuperpoweredSoundManager.h
+//  SuperpoweredSoundWrapper.cpp
 //  noctisgames-framework
 //
 //  Created by Stephen Gowen on 10/20/16.
@@ -11,8 +11,6 @@
 #include "SuperpoweredSoundManager.h"
 #include "SuperpoweredSound.h"
 
-#include "NGSTDUtil.h"
-
 SuperpoweredSoundWrapper::SuperpoweredSoundWrapper(SuperpoweredSoundManager* manager, int soundId, const char *path, unsigned int sampleRate, int numInstances, int fileOffset, int fileLength) : ISoundWrapper(soundId, numInstances)
 {
     for (int i = 0; i < m_iNumInstances; ++i)
@@ -23,5 +21,5 @@ SuperpoweredSoundWrapper::SuperpoweredSoundWrapper(SuperpoweredSoundManager* man
 
 SuperpoweredSoundWrapper::~SuperpoweredSoundWrapper()
 {
-    NGSTDUtil::cleanUpVectorOfPointers(m_sounds);
+    // Empty
 }

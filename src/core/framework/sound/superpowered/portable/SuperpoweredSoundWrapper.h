@@ -1,5 +1,5 @@
 //
-//  SuperpoweredSoundManager.h
+//  SuperpoweredSoundWrapper.h
 //  noctisgames-framework
 //
 //  Created by Stephen Gowen on 10/20/16.

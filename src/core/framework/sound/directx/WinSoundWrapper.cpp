@@ -43,8 +43,6 @@ WinSoundWrapper::WinSoundWrapper(int soundId, const char *path, DirectX::AudioEn
 
 WinSoundWrapper::~WinSoundWrapper()
 {
-	NGSTDUtil::cleanUpVectorOfPointers(m_sounds);
-
     if (m_sound)
     {
         m_sound.reset();

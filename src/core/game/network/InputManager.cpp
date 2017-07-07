@@ -121,11 +121,13 @@ void InputManager::update()
                     m_currentState->getGameInputState((*i)->getIndex()).m_isMovingLeft = val < 0;
                 }
                     continue;
+                case GamePadEventType_BUMPER_LEFT:
                 case GamePadEventType_BUMPER_RIGHT:
                     m_currentState->getGameInputState((*i)->getIndex()).m_isSprinting = (*i)->isPressed();
                     continue;
                 case GamePadEventType_X_BUTTON:
-                    m_currentState->getGameInputState((*i)->getIndex()).m_isShooting = (*i)->isPressed();
+                case GamePadEventType_TRIGGER:
+                    m_currentState->getGameInputState((*i)->getIndex()).m_isShooting = (*i)->getX() > 0 || (*i)->getY() > 0;
                     continue;
                 case GamePadEventType_BACK_BUTTON:
                 {
