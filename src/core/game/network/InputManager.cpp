@@ -264,10 +264,18 @@ void InputManager::update()
         
         for (std::vector<GamePadEvent *>::iterator i = GAME_PAD_INPUT_MANAGER->getEvents().begin(); i != GAME_PAD_INPUT_MANAGER->getEvents().end(); ++i)
         {
+            if (!(*i)->isPressed())
+            {
+                continue;
+            }
+            
             switch ((*i)->getType())
             {
+                case GamePadEventType_START_BUTTON:
+                    m_currentState->m_iMenuState = MENU_STATE_START_SERVER;
+                    continue;
                 case GamePadEventType_BACK_BUTTON:
-                    m_currentState->m_iMenuState = (*i)->isPressed() ? MENU_STATE_ESCAPE : MENU_STATE_NONE;
+                    m_currentState->m_iMenuState = MENU_STATE_ESCAPE;
                     continue;
                 default:
                     continue;
