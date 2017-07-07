@@ -376,7 +376,7 @@ void NetworkManagerServer::handleAddLocalPlayerPacket(ClientProxy* inClientProxy
     if (m_playerIDToClientMap.size() < MAX_NUM_PLAYERS_PER_SERVER)
     {
         // read the current number of local players for this client at the time when the request was made
-        int requestedIndex;
+        uint8_t requestedIndex;
         inInputStream.read(requestedIndex);
         
         int playerId = inClientProxy->getPlayerId(requestedIndex);
