@@ -126,9 +126,9 @@ void InputManager::update()
                     m_currentState->getGameInputState((*i)->getIndex()).m_isSprinting = (*i)->isPressed();
                     continue;
                 case GamePadEventType_X_BUTTON:
-                case GamePadEventType_TRIGGER:
-                    m_currentState->getGameInputState((*i)->getIndex()).m_isShooting = (*i)->getX() > 0 || (*i)->getY() > 0;
-                    continue;
+				case GamePadEventType_TRIGGER:
+					m_currentState->getGameInputState((*i)->getIndex()).m_isShooting = (*i)->getX() > 0 || (*i)->getY() > 0;
+					continue;
                 case GamePadEventType_BACK_BUTTON:
                 {
                     if ((*i)->getIndex() == 3)
