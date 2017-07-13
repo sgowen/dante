@@ -11,6 +11,7 @@
 #include "InputMemoryBitStream.h"
 
 #include "Vector2.h"
+#include "Box2D/Box2D.h"
 #include "Color.h"
 
 #include <cstring>	// memcpy()
@@ -168,6 +169,12 @@ void InputMemoryBitStream::read(Vector2& outVector)
 {
     read(outVector.getXRef());
     read(outVector.getYRef());
+}
+
+void InputMemoryBitStream::read(b2Vec2& outVector)
+{
+    read(outVector.x);
+    read(outVector.y);
 }
 
 void InputMemoryBitStream::read(Color& outColor)

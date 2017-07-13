@@ -13,6 +13,7 @@
 #include <vector>
 
 class Entity;
+class b2World;
 class Robot;
 
 class World
@@ -47,7 +48,19 @@ public:
     
 private:
     std::vector<Entity*> m_entities;
+    b2World* m_world;
     bool m_isServer;
+    
+    b2World& getWorld();
+};
+
+#include "Box2D/Dynamics/b2WorldCallbacks.h"
+
+class b2Contact;
+
+class EntityContactListener : public b2ContactListener
+{
+    virtual void BeginContact(b2Contact* contact);
 };
 
 #endif /* defined(__noctisgames__World__) */

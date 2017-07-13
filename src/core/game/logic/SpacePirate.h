@@ -13,10 +13,6 @@
 
 #include "GameConstants.h"
 
-#include "RTTI.h"
-
-#include <stdint.h>
-
 class Robot;
 
 class SpacePirate : public Entity
@@ -36,9 +32,11 @@ public:
         SPCP_AllState = SPCP_Pose | SPCP_Color | SPCP_Health | SPCP_Size
     };
     
-    SpacePirate(bool isServer);
+    SpacePirate(b2World& world, bool isServer);
     
     virtual void update();
+    
+    virtual void handleContact(Entity* inEntity);
     
     virtual uint32_t getAllStateMask() const;
     
@@ -69,16 +67,7 @@ private:
     float m_fJumpSpeed;
     float m_fStartingHealth;
     
-    //bounce fraction when hitting various things
-    float m_fRobotRestitution;
-    
-    void processAI();
-    
     void updateInternal(float inDeltaTime);
-    
-    void processCollisions();
-    
-    void processCollisionsWithScreenWalls();
 };
 
 #endif /* defined(__noctisgames__SpacePirate__) */

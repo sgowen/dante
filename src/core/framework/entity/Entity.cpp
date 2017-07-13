@@ -10,6 +10,7 @@
 
 #include "Entity.h"
 
+#include "Box2D/Box2D.h"
 #include "NGRect.h"
 #include "OutputMemoryBitStream.h"
 #include "InputMemoryBitStream.h"
@@ -18,71 +19,66 @@
 #include "Timing.h"
 #include "macros.h"
 
-Entity::Entity(float x, float y, float width, float height) :
+Entity::Entity(b2World& world, float x, float y, float width, float height, bool isStaticBody) :
 m_fStateTime(0.0f),
-m_position(x, y),
-m_velocity(),
-m_acceleration(),
 m_color(1.0f, 1.0f, 1.0f, 1.0f),
 m_fWidth(width),
 m_fHeight(height),
-m_fAngle(0),
 m_iID(getUniqueEntityID()),
 m_isRequestingDeletion(false)
 {
-    m_bounds.push_back(new NGRect(x - width / 2, y - height / 2, width, height));
+    if (isStaticBody)
+    {
+        // Define the ground body.
+        b2BodyDef groundBodyDef;
+        groundBodyDef.position.Set(x, y);
+        
+        // Call the body factory which allocates memory for the ground body
+        // from a pool and creates the ground box shape (also from a pool).
+        // The body is also added to the world.
+        m_body = world.CreateBody(&groundBodyDef);
+        
+        // Define the ground box shape.
+        b2PolygonShape groundBox;
+        
+        // The extents are the half-widths of the box.
+        groundBox.SetAsBox(width / 2.0f, height / 2.0f);
+        
+        // Add the ground fixture to the ground body.
+        m_body->CreateFixture(&groundBox, 0.0f);
+    }
+    else
+    {
+        // Define the dynamic body. We set its position and call the body factory.
+        b2BodyDef bodyDef;
+        bodyDef.type = b2_dynamicBody;
+        bodyDef.position.Set(x, y);
+        m_body = world.CreateBody(&bodyDef);
+        
+        // Define another box shape for our dynamic body.
+        b2PolygonShape dynamicBox;
+        dynamicBox.SetAsBox(width / 2.0f, height / 2.0f);
+        
+        // Define the dynamic body fixture.
+        b2FixtureDef fixtureDef;
+        fixtureDef.shape = &dynamicBox;
+        
+        // Set the box density to be non-zero, so it will be dynamic.
+        fixtureDef.density = 1.0f;
+        
+        // Override the default friction.
+        fixtureDef.friction = 0.3f;
+        
+        // Add the shape to the body.
+        m_body->CreateFixture(&fixtureDef);
+    }
+    
+    m_body->SetUserData(this);
 }
 
 Entity::~Entity()
 {
-    NGSTDUtil::cleanUpVectorOfPointers(m_bounds);
-}
-
-void Entity::update(float inDeltaTime)
-{
-    m_fStateTime += inDeltaTime;
-    
-    m_velocity.add(m_acceleration.getX() * inDeltaTime, m_acceleration.getY() * inDeltaTime);
-    m_position.add(m_velocity.getX() * inDeltaTime, m_velocity.getY() * inDeltaTime);
-    
-    updateBounds();
-}
-
-void Entity::resetBounds(float width, float height)
-{
-    Vector2 &lowerLeft = m_bounds.at(0)->getLowerLeft();
-    lowerLeft.set(m_position.getX() - width / 2, m_position.getY() - height / 2);
-    m_bounds.at(0)->setWidth(width);
-    m_bounds.at(0)->setHeight(height);
-}
-
-void Entity::updateBounds()
-{
-    Vector2 &lowerLeft = m_bounds.at(0)->getLowerLeft();
-    lowerLeft.set(m_position.getX() - m_bounds.at(0)->getWidth() / 2, m_position.getY() - m_bounds.at(0)->getHeight() / 2);
-}
-
-uint32_t Entity::getAllStateMask() const
-{
-    return 0;
-}
-
-void Entity::read(InputMemoryBitStream& inInputStream)
-{
-    UNUSED(inInputStream);
-}
-
-uint32_t Entity::write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState)
-{
-    UNUSED(inOutputStream);
-    UNUSED(inDirtyState);
-    
-    return 0;
-}
-
-float Entity::getStateTime()
-{
-    return m_fStateTime;
+    // Empty
 }
 
 void Entity::setStateTime(float stateTime)
@@ -90,34 +86,29 @@ void Entity::setStateTime(float stateTime)
     m_fStateTime = stateTime;
 }
 
-void Entity::setPosition(Vector2 position)
+float Entity::getStateTime()
 {
-    m_position = position;
+    return m_fStateTime;
 }
 
-Vector2& Entity::getPosition()
+void Entity::setPosition(b2Vec2 position)
 {
-    return m_position;
+    m_body->SetTransform(position, m_body->GetAngle());
 }
 
-Vector2& Entity::getVelocity()
+const b2Vec2& Entity::getPosition()
 {
-    return m_velocity;
+    return m_body->GetPosition();
 }
 
-Vector2& Entity::getAcceleration()
+void Entity::setVelocity(b2Vec2 velocity)
 {
-    return m_acceleration;
+    m_body->SetLinearVelocity(velocity);
 }
 
-std::vector<NGRect *>& Entity::getBounds()
+const b2Vec2& Entity::getVelocity()
 {
-    return m_bounds;
-}
-
-NGRect& Entity::getMainBounds()
-{
-    return *m_bounds.at(0);
+    return m_body->GetLinearVelocity();
 }
 
 void Entity::setColor(Color color)
@@ -130,19 +121,14 @@ Color& Entity::getColor()
     return m_color;
 }
 
-const float& Entity::getWidth()
-{
-    return m_fWidth;
-}
-
 void Entity::setWidth(float width)
 {
     m_fWidth = width;
 }
 
-const float& Entity::getHeight()
+const float& Entity::getWidth()
 {
-    return m_fHeight;
+    return m_fWidth;
 }
 
 void Entity::setHeight(float height)
@@ -150,24 +136,29 @@ void Entity::setHeight(float height)
     m_fHeight = height;
 }
 
+const float& Entity::getHeight()
+{
+    return m_fHeight;
+}
+
 void Entity::setAngle(float angle)
 {
-    m_fAngle = angle;
+    m_body->SetTransform(m_body->GetPosition(), angle);
 }
 
 float Entity::getAngle()
 {
-    return m_fAngle;
-}
-
-int Entity::getID()
-{
-    return m_iID;
+    return m_body->GetAngle();
 }
 
 void Entity::setID(int inID)
 {
     m_iID = inID;
+}
+
+int Entity::getID()
+{
+    return m_iID;
 }
 
 void Entity::requestDeletion()

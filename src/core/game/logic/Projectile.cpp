@@ -10,11 +10,12 @@
 
 #include "Projectile.h"
 
+#include "Box2D/Box2D.h"
 #include "OutputMemoryBitStream.h"
 #include "InputMemoryBitStream.h"
+#include "Robot.h"
 
 #include "World.h"
-#include "Vector2.h"
 #include "macros.h"
 #include "GameConstants.h"
 #include "Timing.h"
@@ -22,7 +23,6 @@
 #include "Move.h"
 #include "MathUtil.h"
 #include "NGRect.h"
-#include "Robot.h"
 #include "SpacePirate.h"
 #include "OverlapTester.h"
 #include "NetworkManagerServer.h"
@@ -33,12 +33,11 @@
 
 #include <math.h>
 
-Projectile::Projectile(bool isServer) : Entity(0, 0, 1.565217391304348f * 0.444444444444444f, 2.0f * 0.544423440453686f),
+Projectile::Projectile(b2World& world, bool isServer) : Entity(world, 0, 0, 1.565217391304348f * 0.444444444444444f, 2.0f * 0.544423440453686f),
 m_isServer(isServer),
 m_iPlayerId(0),
 m_state(ProjectileState_Active),
-m_isFacingLeft(false),
-m_fTimePositionBecameOutOfSync(0.0f)
+m_isFacingLeft(false)
 {
     // Empty
 }
@@ -47,13 +46,13 @@ void Projectile::update()
 {
     if (m_isServer)
     {
-        Vector2 oldVelocity = getVelocity();
+        b2Vec2 oldVelocity = getVelocity();
         ProjectileState oldState = m_state;
         bool old_isFacingLeft = m_isFacingLeft;
         
         updateInternal(Timing::getInstance()->getDeltaTime());
         
-        if (!oldVelocity.isEqualTo(getVelocity())
+        if (!areBox2DVectorsEqual(oldVelocity, getVelocity())
             || oldState != m_state
             || old_isFacingLeft != m_isFacingLeft)
         {
@@ -66,6 +65,39 @@ void Projectile::update()
     }
 }
 
+void Projectile::handleContact(Entity* inEntity)
+{
+    if (inEntity != this
+        && !inEntity->isRequestingDeletion())
+    {
+        if (inEntity->getRTTI().derivesFrom(SpacePirate::rtti))
+        {
+            if (!m_isServer)
+            {
+                return;
+            }
+            
+            float projBottom = getPosition().y - (m_fHeight / 2.0f);
+            float targTop = inEntity->getPosition().y + (inEntity->getHeight() / 2.0f);
+            float targHead = targTop - inEntity->getHeight() * 0.4f;
+            
+            m_state = ProjectileState_Exploding;
+            m_fStateTime = 0.0f;
+            setVelocity(b2Vec2(0.0f, 0.0f));
+            
+            bool isHeadshot = projBottom > targHead;
+            
+            SpacePirate* spacePirate = static_cast<SpacePirate*>(inEntity);
+            spacePirate->takeDamage(isHeadshot);
+            if (spacePirate->getHealth() == 0)
+            {
+                Robot* robot = InstanceManager::getServerWorld()->getRobotWithPlayerId(getPlayerId());
+                robot->awardKill(isHeadshot);
+            }
+        }
+    }
+}
+
 uint32_t Projectile::getAllStateMask() const
 {
     return PRJC_AllState;
@@ -73,7 +105,6 @@ uint32_t Projectile::getAllStateMask() const
 
 void Projectile::read(InputMemoryBitStream& inInputStream)
 {
-    Vector2 oldPosition = m_position;
     ProjectileState oldState = m_state;
     
     bool stateBit;
@@ -92,11 +123,13 @@ void Projectile::read(InputMemoryBitStream& inInputStream)
     {
         inInputStream.read(m_fStateTime);
         
-        inInputStream.read(m_velocity.getXRef());
-        inInputStream.read(m_velocity.getYRef());
+        b2Vec2 velocity;
+        inInputStream.read(velocity);
+        setVelocity(velocity);
         
-        inInputStream.read(m_position.getXRef());
-        inInputStream.read(m_position.getYRef());
+        b2Vec2 position;
+        inInputStream.read(position);
+        setPosition(position);
         
         inInputStream.read(m_state);
         
@@ -163,11 +196,9 @@ uint32_t Projectile::write(OutputMemoryBitStream& inOutputStream, uint32_t inDir
         
         inOutputStream.write(m_fStateTime);
         
-        inOutputStream.write(m_velocity.getX());
-        inOutputStream.write(m_velocity.getY());
+        inOutputStream.write(getVelocity());
         
-        inOutputStream.write(m_position.getX());
-        inOutputStream.write(m_position.getY());
+        inOutputStream.write(getPosition());
         
         inOutputStream.write(m_state);
         
@@ -199,9 +230,12 @@ void Projectile::initFromShooter(Robot* inRobot)
 {
     m_iPlayerId = inRobot->getPlayerId();
     m_isFacingLeft = inRobot->isFacingLeft();
-    m_velocity.setX(m_isFacingLeft ? -20 : 20);
-    m_position.set(inRobot->getPosition());
-    m_position.add(m_isFacingLeft ? -0.5f : 0.5f, 0.4f);
+    
+    setVelocity(b2Vec2(m_isFacingLeft ? -20 : 20, getVelocity().y));
+    
+    b2Vec2 position = inRobot->getPosition();
+    position += b2Vec2(m_isFacingLeft ? -0.5f : 0.5f, 0.4f);
+    setPosition(position);
     
     setColor(inRobot->getColor());
 }
@@ -228,73 +262,19 @@ bool Projectile::isFacingLeft()
 
 void Projectile::updateInternal(float inDeltaTime)
 {
-    Entity::update(inDeltaTime);
+    m_fStateTime += inDeltaTime;
     
     if (!m_isServer)
     {
         return;
     }
     
-    if (m_state == ProjectileState_Active)
-    {
-        processCollisions();
-    }
-    else if (m_state == ProjectileState_Exploding)
+    if (m_state == ProjectileState_Exploding)
     {
         if (m_fStateTime > 0.5f)
         {
             requestDeletion();
         }
-    }
-}
-
-void Projectile::processCollisions()
-{
-    if (!m_isServer)
-    {
-        return;
-    }
-    
-    processCollisionsWithScreenWalls();
-    
-    std::vector<Entity*> entities = InstanceManager::getServerWorld()->getEntities();
-    for (Entity* target : entities)
-    {
-        if (target != this && !target->isRequestingDeletion() && target->getRTTI().derivesFrom(SpacePirate::rtti))
-        {
-            if (OverlapTester::doNGRectsOverlap(getMainBounds(), target->getMainBounds()))
-            {
-                float projBottom = getMainBounds().getBottom();
-                float targTop = target->getMainBounds().getTop();
-                float targHead = targTop - target->getMainBounds().getHeight() * 0.4f;
-                
-                m_state = ProjectileState_Exploding;
-                m_fStateTime = 0.0f;
-                m_velocity.set(Vector2::Zero);
-                
-                bool isHeadshot = projBottom > targHead;
-                
-                SpacePirate* spacePirate = static_cast<SpacePirate*>(target);
-                spacePirate->takeDamage(isHeadshot);
-                if (spacePirate->getHealth() == 0)
-                {
-                    Robot* robot = InstanceManager::getServerWorld()->getRobotWithPlayerId(getPlayerId());
-                    robot->awardKill(isHeadshot);
-                }
-            }
-        }
-    }
-}
-
-void Projectile::processCollisionsWithScreenWalls()
-{
-    NGRect& bounds = getMainBounds();
-    if (bounds.getBottom() > GAME_HEIGHT
-        || bounds.getTop() < 0
-        || bounds.getLeft() > GAME_WIDTH
-        || bounds.getRight() < 0)
-    {
-        requestDeletion();
     }
 }
 

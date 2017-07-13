@@ -10,12 +10,12 @@
 
 #include "SpacePirate.h"
 
+#include "Box2D/Box2D.h"
 #include "OutputMemoryBitStream.h"
 #include "InputMemoryBitStream.h"
 #include "Robot.h"
 
 #include "World.h"
-#include "Vector2.h"
 #include "macros.h"
 #include "GameConstants.h"
 #include "Timing.h"
@@ -27,10 +27,11 @@
 #include "NetworkManagerServer.h"
 #include "NetworkManagerClient.h"
 #include "InstanceManager.h"
+#include "Ground.h"
 
 #include <math.h>
 
-SpacePirate::SpacePirate(bool isServer) : Entity(0, 0, 2.0f, 2.347826086956522f),
+SpacePirate::SpacePirate(b2World& world, bool isServer) : Entity(world, 0, 0, 2.0f, 2.347826086956522f),
 m_isServer(isServer),
 m_fSpeed(0.0),
 m_iHealth(8),
@@ -39,12 +40,9 @@ m_isFacingLeft(false),
 m_isGrounded(false),
 m_isFalling(false),
 m_isJumping(false),
-m_fRobotRestitution(0.1f),
 m_fTimeForNextJump(0.0f),
 m_fJumpSpeed(7.0f)
 {
-    m_acceleration.setY(-9.8f);
-    
     m_fTimeForNextJump = Timing::getInstance()->getFrameStartTime();
     m_fTimeForNextJump += (rand() % 100) * 0.1f + 1.0f;
 }
@@ -55,18 +53,14 @@ void SpacePirate::update()
     
     if (m_isServer)
     {
-        Vector2 oldAcceleration = getAcceleration();
-        Vector2 oldVelocity = getVelocity();
+        b2Vec2 oldVelocity = getVelocity();
         bool old_isFacingLeft = m_isFacingLeft;
         bool old_isGrounded = m_isGrounded;
         bool old_isFalling = m_isFalling;
         
-        processAI();
-        
         updateInternal(timing->getDeltaTime());
         
-        if (!oldAcceleration.isEqualTo(getAcceleration())
-            || !oldVelocity.isEqualTo(getVelocity())
+        if (!areBox2DVectorsEqual(oldVelocity, getVelocity())
             || old_isFacingLeft != m_isFacingLeft
             || old_isGrounded != m_isGrounded
             || old_isFalling != m_isFalling)
@@ -77,6 +71,27 @@ void SpacePirate::update()
     else
     {
         updateInternal(timing->getDeltaTime());
+    }
+}
+
+void SpacePirate::handleContact(Entity* inEntity)
+{
+    if (inEntity != this
+        && !inEntity->isRequestingDeletion())
+    {
+        if (inEntity->getRTTI().derivesFrom(Robot::rtti))
+        {
+            Robot* robot = static_cast<Robot*>(inEntity);
+            
+            // Deal Damage to player robot
+            robot->takeDamage();
+        }
+        else if (inEntity->getRTTI().derivesFrom(Ground::rtti))
+        {
+            m_isGrounded = true;
+            m_isFalling = false;
+            m_isJumping = false;
+        }
     }
 }
 
@@ -96,14 +111,13 @@ void SpacePirate::read(InputMemoryBitStream& inInputStream)
     {
         inInputStream.read(m_fStateTime);
         
-        inInputStream.read(m_acceleration.getXRef());
-        inInputStream.read(m_acceleration.getYRef());
+        b2Vec2 velocity;
+        inInputStream.read(velocity);
+        setVelocity(velocity);
         
-        inInputStream.read(m_velocity.getXRef());
-        inInputStream.read(m_velocity.getYRef());
-        
-        inInputStream.read(m_position.getXRef());
-        inInputStream.read(m_position.getYRef());
+        b2Vec2 position;
+        inInputStream.read(position);
+        setPosition(position);
         
         inInputStream.read(m_isFacingLeft);
         inInputStream.read(m_isJumping);
@@ -144,14 +158,9 @@ uint32_t SpacePirate::write(OutputMemoryBitStream& inOutputStream, uint32_t inDi
         
         inOutputStream.write(m_fStateTime);
         
-        inOutputStream.write(m_acceleration.getX());
-        inOutputStream.write(m_acceleration.getY());
+        inOutputStream.write(getVelocity());
         
-        inOutputStream.write(m_velocity.getX());
-        inOutputStream.write(m_velocity.getY());
-        
-        inOutputStream.write(m_position.getX());
-        inOutputStream.write(m_position.getY());
+        inOutputStream.write(getPosition());
         
         inOutputStream.write((bool)m_isFacingLeft);
         inOutputStream.write((bool)m_isJumping);
@@ -208,13 +217,11 @@ uint32_t SpacePirate::write(OutputMemoryBitStream& inOutputStream, uint32_t inDi
 
 void SpacePirate::init(float x, float y, float speed, int scale, uint8_t health)
 {
-    setPosition(Vector2(x, y));
+    setPosition(b2Vec2(x, y));
     m_fSpeed = speed;
     
     m_fWidth *= scale;
     m_fHeight *= scale;
-    
-    resetBounds(m_fWidth, m_fHeight);
     
     m_iHealth = health;
     m_fStartingHealth = m_iHealth;
@@ -258,8 +265,10 @@ bool SpacePirate::isFacingLeft()
     return m_isFacingLeft;
 }
 
-void SpacePirate::processAI()
+void SpacePirate::updateInternal(float inDeltaTime)
 {
+    m_fStateTime += inDeltaTime;
+    
     if (!m_isServer)
     {
         return;
@@ -277,29 +286,11 @@ void SpacePirate::processAI()
             m_isFalling = false;
             m_isJumping = true;
             
-            m_acceleration.setY(-9.8f);
-            m_velocity.setY(m_fJumpSpeed);
+            setVelocity(b2Vec2(getVelocity().x, m_fJumpSpeed));
             
-            // tell the world our health dropped
+            // tell the world we just jumped
             NG_SERVER->setStateDirty(getID(), SPCP_Pose);
         }
-    }
-}
-
-void SpacePirate::updateInternal(float inDeltaTime)
-{
-    Entity::update(inDeltaTime);
-    
-    processCollisions();
-}
-
-void SpacePirate::processCollisions()
-{
-    processCollisionsWithScreenWalls();
-    
-    if (!m_isServer)
-    {
-        return;
     }
     
     bool targetFound = false;
@@ -314,19 +305,15 @@ void SpacePirate::processCollisions()
             && target->getRTTI().derivesFrom(Robot::rtti)
             && (robot = static_cast<Robot*>(target)))
         {
-            float dist = robot->getPosition().dist(getPosition());
+            float dist = b2Distance(robot->getPosition(), getPosition());
             if (dist < shortestDistance)
             {
                 shortestDistance = dist;
-                m_isFacingLeft = robot->getPosition().getX() < getPosition().getX();
-                m_velocity.setX(m_isFacingLeft ? -m_fSpeed : m_fSpeed);
+                m_isFacingLeft = robot->getPosition().x < getPosition().x;
+                
+                setVelocity(b2Vec2(m_isFacingLeft ? -m_fSpeed : m_fSpeed, getVelocity().y));
+                
                 targetFound = true;
-            }
-            
-            if (OverlapTester::doNGRectsOverlap(getMainBounds(), target->getMainBounds()))
-            {
-                // Deal Damage to player robot
-                robot->takeDamage();
             }
         }
     }
@@ -334,42 +321,8 @@ void SpacePirate::processCollisions()
     if (!targetFound)
     {
         m_isFacingLeft = true;
-        m_velocity.setX(0);
-    }
-}
-
-void SpacePirate::processCollisionsWithScreenWalls()
-{
-    Vector2 position = getPosition();
-    float x = position.getX();
-    
-    float boundsY = getMainBounds().getBottom();
-    
-    float vx = m_velocity.getX();
-    float vy = m_velocity.getY();
-    
-    float radius = m_fWidth / 2;
-    
-    if (boundsY <= GROUND_TOP && vy < 0)
-    {
-        m_velocity.setY(0);
-        m_acceleration.setY(0);
-        position.setY(GROUND_TOP + getMainBounds().getHeight() / 2);
-        setPosition(position);
-        m_isGrounded = true;
-        m_isFalling = false;
-        m_isJumping = false;
-    }
-    
-    if ((x + radius) >= GAME_WIDTH && vx > 0)
-    {
-        position.setX(GAME_WIDTH - radius);
-        setPosition(position);
-    }
-    else if (x <= 0 && vx < 0)
-    {
-        position.setX(0);
-        setPosition(position);
+        
+        setVelocity(b2Vec2(0, getVelocity().y));
     }
 }
 

@@ -70,12 +70,6 @@ protected:
 
 	void renderEntityWithColor(Entity &go, TextureRegion& tr, Color c, bool flipX = false);
     
-    void renderBoundsForEntity(Entity &pe);
-    
-    void renderBoundsWithColor(NGRect &r, Color& c);
-    
-    void renderHighlightForEntity(Entity &pe, Color &c);
-    
     void loadTextureSync(TextureWrapper* textureWrapper);
     
     void loadTextureAsync(TextureWrapper* textureWrapper);

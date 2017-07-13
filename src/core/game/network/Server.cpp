@@ -29,6 +29,8 @@
 #include "SocketServerHelper.h"
 #include "NGSteamServerHelper.h"
 
+#include "Box2D/Box2D.h"
+
 #include <ctime> // rand
 #include <assert.h>
 
@@ -160,7 +162,7 @@ void Server::spawnRobotForPlayer(int inPlayerId, std::string inPlayerName)
     robot->setPlayerId(inPlayerId);
     robot->setPlayerName(inPlayerName);
     float posX = (rand() % static_cast<int>(GAME_WIDTH - robot->getWidth() * 2)) + (robot->getWidth() * 2);
-    robot->setPosition(Vector2(posX - static_cast<float>(inPlayerId), 8.0f));
+    robot->setPosition(b2Vec2(posX - static_cast<float>(inPlayerId), 8.0f));
     
     static Color Red(1.0f, 0.0f, 0.0f, 1);
     static Color Green(0.0f, 1.0f, 0.0f, 1);

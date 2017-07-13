@@ -13,9 +13,6 @@
 
 #include "GameConstants.h"
 
-#include "RTTI.h"
-
-#include <stdint.h>
 #include <string>
 
 class IInputState;
@@ -39,9 +36,11 @@ public:
         ROBT_AllState = ROBT_Pose | ROBT_Color | ROBT_PlayerInfo | ROBT_Health | ROBT_NumKills
     };
     
-    Robot(bool isServer);
+    Robot(b2World& world, bool isServer);
     
     virtual void update();
+    
+    virtual void handleContact(Entity* inEntity);
     
     virtual uint32_t getAllStateMask() const;
     
@@ -82,7 +81,6 @@ private:
     uint8_t m_iPlayerId;
     std::string m_playerName;
     
-    uint8_t m_iRttMs;
     uint8_t m_iNumJumps;
     bool m_isGrounded;
     bool m_isFalling;
@@ -112,19 +110,15 @@ private:
     
     void updateInternal(float inDeltaTime);
     
-    void processCollisions();
-    
-    void processCollisionsWithScreenWalls();
-    
     void handleShooting();
 
     void doClientSidePredictionForLocalRobot(uint32_t inReadState);
     
     void doClientSidePredictionForRemoteRobot(uint32_t inReadState);
     
-    void interpolateClientSidePrediction(Vector2& inOldAcceleration, Vector2& inOldVelocity, Vector2& inOldPos);
+    void interpolateClientSidePrediction(b2Vec2& inOldVelocity, b2Vec2& inOldPos);
     
-    void interpolateVectorsIfNecessary(Vector2& inA, Vector2& inB, float& syncTracker, const char* vectorType);
+    bool interpolateVectorsIfNecessary(b2Vec2& inA, const b2Vec2& inB, float& syncTracker, const char* vectorType);
     
     void playNetworkBoundSounds(uint8_t old_m_iNumJumps, bool old_m_isSprinting);
     

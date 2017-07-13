@@ -10,13 +10,13 @@
 
 #include "Robot.h"
 
+#include "Box2D/Box2D.h"
 #include "OutputMemoryBitStream.h"
 #include "InputMemoryBitStream.h"
 #include "InputState.h"
 #include "Move.h"
 
 #include "World.h"
-#include "Vector2.h"
 #include "macros.h"
 #include "GameConstants.h"
 #include "Timing.h"
@@ -34,14 +34,14 @@
 #include "FWInstanceManager.h"
 #include "Util.h"
 #include "Server.h"
+#include "Ground.h"
 
 #include <math.h>
 
-Robot::Robot(bool isServer) : Entity(0, 0, 1.565217391304348f, 2.0f),
+Robot::Robot(b2World& world, bool isServer) : Entity(world, 0, 0, 1.565217391304348f, 2.0f),
 m_iAddressHash(0),
 m_iPlayerId(0),
 m_playerName("Robot"),
-m_iRttMs(0),
 m_iNumJumps(0),
 m_isFacingLeft(false),
 m_isShooting(false),
@@ -61,16 +61,15 @@ m_isGrounded(false),
 m_isFalling(false),
 m_isFirstJumpCompleted(false)
 {
-    m_acceleration.setY(-9.8f);
+    // Empty
 }
 
 void Robot::update()
 {
     if (m_isServer)
     {
-        Vector2 oldAcceleration = getAcceleration();
-        Vector2 oldVelocity = getVelocity();
-        Vector2 oldPosition = getPosition();
+        b2Vec2 oldVelocity = getVelocity();
+        b2Vec2 oldPosition = getPosition();
         uint8_t oldNumJumps = m_iNumJumps;
         bool old_m_isGrounded = m_isGrounded;
         bool old_m_isFalling = m_isFalling;
@@ -91,9 +90,8 @@ void Robot::update()
         
         handleShooting();
         
-        if (!oldAcceleration.isEqualTo(getAcceleration())
-            || !oldVelocity.isEqualTo(getVelocity())
-            || !oldPosition.isEqualTo(getPosition())
+        if (!areBox2DVectorsEqual(oldVelocity, getVelocity())
+            || !areBox2DVectorsEqual(oldPosition, getPosition())
             || oldNumJumps != m_iNumJumps
             || old_m_isGrounded != m_isGrounded
             || old_m_isFalling != m_isFalling
@@ -121,6 +119,20 @@ void Robot::update()
     }
 }
 
+void Robot::handleContact(Entity* inEntity)
+{
+    if (inEntity != this
+        && !inEntity->isRequestingDeletion())
+    {
+        if (inEntity->getRTTI().derivesFrom(Ground::rtti))
+        {
+            m_iNumJumps = 0;
+            m_isGrounded = true;
+            m_isFalling = false;
+        }
+    }
+}
+
 uint32_t Robot::getAllStateMask() const
 {
     return ROBT_AllState;
@@ -128,9 +140,8 @@ uint32_t Robot::getAllStateMask() const
 
 void Robot::read(InputMemoryBitStream& inInputStream)
 {
-    Vector2 oldAcceleration = m_acceleration;
-    Vector2 oldVelocity = m_velocity;
-    Vector2 oldPosition = m_position;
+    b2Vec2 oldVelocity = getVelocity();
+    b2Vec2 oldPosition = getPosition();
     uint8_t old_m_iNumJumps = m_iNumJumps;
     bool old_m_isSprinting = m_isSprinting;
     uint32_t old_m_iNumKills = m_iNumKills;
@@ -153,16 +164,13 @@ void Robot::read(InputMemoryBitStream& inInputStream)
     {
         inInputStream.read(m_fStateTime);
         
-        inInputStream.read(m_acceleration.getXRef());
-        inInputStream.read(m_acceleration.getYRef());
+        b2Vec2 velocity;
+        inInputStream.read(velocity);
+        setVelocity(velocity);
         
-        inInputStream.read(m_velocity.getXRef());
-        inInputStream.read(m_velocity.getYRef());
-        
-        inInputStream.read(m_position.getXRef());
-        inInputStream.read(m_position.getYRef());
-        
-        inInputStream.read(m_iRttMs);
+        b2Vec2 position;
+        inInputStream.read(position);
+        setPosition(position);
         
         inInputStream.read(m_iNumJumps);
         
@@ -204,7 +212,7 @@ void Robot::read(InputMemoryBitStream& inInputStream)
         // if this is a create packet, don't interpolate
         if ((readState & ROBT_PlayerInfo) == 0)
         {
-            interpolateClientSidePrediction(oldAcceleration, oldVelocity, oldPosition);
+            interpolateClientSidePrediction(oldVelocity, oldPosition);
         }
         else
         {
@@ -248,16 +256,9 @@ uint32_t Robot::write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtySta
         
         inOutputStream.write(m_fStateTime);
         
-        inOutputStream.write(m_acceleration.getX());
-        inOutputStream.write(m_acceleration.getY());
+        inOutputStream.write(getVelocity());
         
-        inOutputStream.write(m_velocity.getX());
-        inOutputStream.write(m_velocity.getY());
-        
-        inOutputStream.write(m_position.getX());
-        inOutputStream.write(m_position.getY());
-        
-        inOutputStream.write(m_iRttMs);
+        inOutputStream.write(getPosition());
         
         inOutputStream.write(m_iNumJumps);
         
@@ -437,15 +438,15 @@ void Robot::processInput(float inDeltaTime, IInputState* inInputState)
         return;
     }
     
-    m_velocity.setX(inputState->getDesiredRightAmount() * m_fSpeed);
+    b2Vec2 velocity = b2Vec2(inputState->getDesiredRightAmount() * m_fSpeed, getVelocity().y);
     
-    m_isFacingLeft = m_velocity.getX() < 0 ? true : m_velocity.getX() > 0 ? false : m_isFacingLeft;
+    m_isFacingLeft = velocity.x < 0 ? true : velocity.x > 0 ? false : m_isFacingLeft;
     
     m_isSprinting = inputState->isSprinting();
     
     if (m_isSprinting && m_isGrounded)
     {
-        m_velocity.add(inputState->getDesiredRightAmount() * m_fSpeed / 2, 0);
+        velocity += b2Vec2(inputState->getDesiredRightAmount() * m_fSpeed / 2, 0);
     }
     
     if (inputState->isJumping())
@@ -458,16 +459,14 @@ void Robot::processInput(float inDeltaTime, IInputState* inInputState)
             m_isFirstJumpCompleted = false;
             m_iNumJumps = 1;
             
-            m_acceleration.setY(-9.8f);
-            m_velocity.setY(m_fJumpSpeed);
+            velocity.Set(velocity.x, m_fJumpSpeed);
         }
         else if (m_iNumJumps == 1 && m_isFirstJumpCompleted)
         {
             m_fStateTime = 0;
             m_iNumJumps = 2;
             
-            m_acceleration.setY(-9.8f);
-            m_velocity.setY(m_fJumpSpeed - 3);
+            velocity.Set(velocity.x, m_fJumpSpeed - 3);
         }
     }
     else
@@ -476,132 +475,31 @@ void Robot::processInput(float inDeltaTime, IInputState* inInputState)
         {
             m_isFirstJumpCompleted = true;
             
-            if (m_velocity.getY() > (m_fJumpSpeed / 2.0f))
+            if (velocity.y > (m_fJumpSpeed / 2.0f))
             {
-                m_velocity.setY(m_fJumpSpeed / 2.0f);
+                velocity.Set(velocity.x, m_fJumpSpeed / 2.0f);
             }
         }
         
-        if (m_iNumJumps == 2 && m_velocity.getY() > ((m_fJumpSpeed - 2) / 2.0f))
+        if (m_iNumJumps == 2 && velocity.y > ((m_fJumpSpeed - 2) / 2.0f))
         {
-            m_velocity.setY((m_fJumpSpeed - 2) / 2.0f);
+            velocity.Set(velocity.x, (m_fJumpSpeed - 2) / 2.0f);
         }
     }
     
     m_isShooting = inputState->isShooting();
     
-    m_iRttMs = NG_CLIENT->getRoundTripTime() * 1000;
+    setVelocity(velocity);
 }
 
 void Robot::updateInternal(float inDeltaTime)
 {
-    Entity::update(inDeltaTime);
+    m_fStateTime += inDeltaTime;
     
-    processCollisions();
-    
-    if (m_velocity.getY() < 0
-        && !m_isFalling)
+    if (getVelocity().y < 0 && !m_isFalling)
     {
         m_isFalling = true;
         m_fStateTime = 0;
-    }
-}
-
-void Robot::processCollisions()
-{
-    //right now just bounce off the sides..
-    processCollisionsWithScreenWalls();
-    
-    Vector2 sourcePosition = getPosition();
-    
-    World* world = m_isServer ? InstanceManager::getServerWorld() : InstanceManager::getClientWorld();
-    
-    std::vector<Entity*> entities = world->getEntities();
-    
-    Robot* robot = nullptr;
-    
-    for (Entity* target : entities)
-    {
-        robot = nullptr;
-        if (target != this
-            && !target->isRequestingDeletion()
-            && target->getRTTI().derivesFrom(Robot::rtti)
-            && (robot = static_cast<Robot*>(target)))
-        {
-            //simple collision test for spheres- are the radii summed less than the distance?
-            Vector2 targetPosition = robot->getPosition();
-            float targetRadius = robot->getWidth() / 2;
-            
-            Vector2 delta = targetPosition - sourcePosition;
-            float distSq = delta.lenSquared();
-            float collisionDist = (m_fWidth / 2 + targetRadius);
-            if (distSq < (collisionDist * collisionDist))
-            {
-                //okay, you hit something!
-                //so, project your position far enough that you're not colliding
-                Vector2 dirToTarget = delta;
-                dirToTarget.nor();
-                Vector2 acceptableDeltaFromSourceToTarget = dirToTarget * collisionDist;
-                //important note- we only move this robot. the other robot can take care of moving itself
-                setPosition(targetPosition - acceptableDeltaFromSourceToTarget);
-                
-                Vector2 relVel = m_velocity;
-                
-                //if other object is a robot, it might have velocity, so there might be relative velocity...
-                if (robot)
-                {
-                    relVel -= robot->m_velocity;
-                }
-                
-                //got vel with dir between objects to figure out if they're moving towards each other
-                //and if so, the magnitude of the impulse (since they're both just balls)
-                float relVelDotDir = relVel.dot(dirToTarget);
-                
-                if (relVelDotDir > 0.f)
-                {
-                    Vector2 impulse = relVelDotDir * dirToTarget;
-                    
-                    m_velocity -= impulse;
-                    m_velocity *= m_fRobotRestitution;
-                }
-            }
-        }
-    }
-}
-
-void Robot::processCollisionsWithScreenWalls()
-{
-    Vector2 position = getPosition();
-    float x = position.getX();
-    
-    float boundsY = getMainBounds().getBottom();
-    
-    float vx = m_velocity.getX();
-    float vy = m_velocity.getY();
-    
-    float radius = m_fWidth / 2;
-    
-    if (boundsY <= GROUND_TOP && vy < 0)
-    {
-        m_velocity.setY(0);
-        m_acceleration.setY(0);
-        position.setY(GROUND_TOP + getMainBounds().getHeight() / 2);
-        setPosition(position);
-        
-        m_iNumJumps = 0;
-        m_isGrounded = true;
-        m_isFalling = false;
-    }
-    
-    if ((x + radius) >= GAME_WIDTH && vx > 0)
-    {
-        position.setX(GAME_WIDTH - radius);
-        setPosition(position);
-    }
-    else if (x <= 0 && vx < 0)
-    {
-        position.setX(0);
-        setPosition(position);
     }
 }
 
@@ -665,21 +563,27 @@ void Robot::doClientSidePredictionForRemoteRobot(uint32_t inReadState)
     }
 }
 
-void Robot::interpolateClientSidePrediction(Vector2& inOldAcceleration, Vector2& inOldVelocity, Vector2& inOldPos)
+void Robot::interpolateClientSidePrediction(b2Vec2& inOldVelocity, b2Vec2& inOldPos)
 {
-    interpolateVectorsIfNecessary(inOldAcceleration, getAcceleration(), m_fTimeAccelerationBecameOutOfSync, "acceleration");
-    interpolateVectorsIfNecessary(inOldVelocity, getVelocity(), m_fTimeVelocityBecameOutOfSync, "velocity");
-    interpolateVectorsIfNecessary(inOldPos, getPosition(), m_fTimePositionBecameOutOfSync, "position");
+    if (interpolateVectorsIfNecessary(inOldVelocity, getVelocity(), m_fTimeVelocityBecameOutOfSync, "velocity"))
+    {
+        setVelocity(inOldVelocity);
+    }
+    
+    if (interpolateVectorsIfNecessary(inOldPos, getPosition(), m_fTimePositionBecameOutOfSync, "position"))
+    {
+        setPosition(inOldPos);
+    }
 }
 
-void Robot::interpolateVectorsIfNecessary(Vector2& inOld, Vector2& inNew, float& syncTracker, const char* vectorType)
+bool Robot::interpolateVectorsIfNecessary(b2Vec2& inOld, const b2Vec2& inNew, float& syncTracker, const char* vectorType)
 {
     float rtt = NG_CLIENT->getRoundTripTime();
     rtt /= 2; // Let's just measure the time from server to us
     
-    if (!inOld.isEqualTo(inNew))
+    if (!areBox2DVectorsEqual(inOld, inNew))
     {
-        LOG("WARN: Robot move replay ended with incorrect %s! Old %3.8f, %3.8f - New %3.8f, %3.8f", vectorType, inOld.getX(), inOld.getY(), inNew.getX(), inNew.getY());
+        LOG("WARN: Robot move replay ended with incorrect %s! Old %3.8f, %3.8f - New %3.8f, %3.8f", vectorType, inOld.x, inOld.y, inNew.x, inNew.y);
         
         //have we been out of sync, or did we just become out of sync?
         float time = Timing::getInstance()->getFrameStartTime();
@@ -692,13 +596,18 @@ void Robot::interpolateVectorsIfNecessary(Vector2& inOld, Vector2& inNew, float&
         float durationOutOfSync = time - syncTracker;
         if (durationOutOfSync < rtt)
         {
-            inNew.set(lerp(inOld, inNew, rtt));
+            b2Vec2 vec = lerpBox2DVector(inOld, inNew, rtt);
+            inOld.Set(vec.x, vec.y);
+            
+            return true;
         }
     }
     else
     {
         syncTracker = 0.0f;
     }
+    
+    return false;
 }
 
 void Robot::playNetworkBoundSounds(uint8_t old_m_iNumJumps, bool old_m_isSprinting)

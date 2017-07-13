@@ -13,10 +13,6 @@
 
 #include "GameConstants.h"
 
-#include "RTTI.h"
-
-#include <stdint.h>
-
 class Robot;
 
 class Projectile : public Entity
@@ -41,9 +37,11 @@ public:
         ProjectileState_Exploding = 2
     };
     
-    Projectile(bool isServer);
+    Projectile(b2World& world, bool isServer);
     
     virtual void update();
+    
+    virtual void handleContact(Entity* inEntity);
     
     virtual uint32_t getAllStateMask() const;
     
@@ -67,13 +65,7 @@ private:
     ProjectileState m_state;
     bool m_isFacingLeft;
     
-    float m_fTimePositionBecameOutOfSync;
-    
     void updateInternal(float inDeltaTime);
-    
-    void processCollisions();
-    
-    void processCollisionsWithScreenWalls();
     
     void playSound(int soundId);
 };

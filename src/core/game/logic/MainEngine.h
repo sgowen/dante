@@ -18,7 +18,6 @@
 class Server;
 class JsonFile;
 class MainRenderer;
-class Vector2;
 class Entity;
 
 class MainEngine : public IEngine

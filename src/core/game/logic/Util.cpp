@@ -10,7 +10,7 @@
 
 #include "Util.h"
 
-#include "Vector2.h"
+#include "Box2D/Box2D.h"
 
 #include "NetworkManagerClient.h"
 #include "Robot.h"
@@ -18,7 +18,7 @@
 #include "World.h"
 #include "NGAudioEngine.h"
 
-void Util::playSound(int soundId, Vector2& position, bool isServer)
+void Util::playSound(int soundId, const b2Vec2& position, bool isServer)
 {
     if (isServer)
     {
@@ -41,7 +41,7 @@ void Util::playSound(int soundId, Vector2& position, bool isServer)
             
             if (playerRobot)
             {
-                float distance = playerRobot->getPosition().dist(position);
+                float distance = b2Distance(playerRobot->getPosition(), position);
                 
                 float factor = distance / 5.0f;
                 

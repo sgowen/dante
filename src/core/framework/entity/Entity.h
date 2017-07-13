@@ -9,16 +9,16 @@
 #ifndef __noctisgames__Entity__
 #define __noctisgames__Entity__
 
-#include "Vector2.h"
 #include "Color.h"
 #include "FrameworkConstants.h"
 
 #include "RTTI.h"
 
 #include <stdint.h>
-#include <vector>
 
-class NGRect;
+class b2World;
+class b2Vec2;
+class b2Body;
 class OutputMemoryBitStream;
 class InputMemoryBitStream;
 
@@ -37,59 +37,51 @@ class Entity
     NETWORK_TYPE_DECL(NETWORK_TYPE_Entity);
     
 public:
-    Entity(float x, float y, float width, float height);
+    Entity(b2World& world, float x, float y, float width, float height, bool isStaticBody = false);
     
     virtual ~Entity();
     
     virtual void update() = 0;
     
-    virtual void update(float inDeltaTime);
+    virtual void handleContact(Entity* inEntity) = 0;
     
-    virtual void resetBounds(float width, float height);
+    virtual uint32_t getAllStateMask() const = 0;
     
-    virtual void updateBounds();
+    virtual void read(InputMemoryBitStream& inInputStream) = 0;
     
-    virtual uint32_t getAllStateMask() const;
-    
-    virtual void read(InputMemoryBitStream& inInputStream);
-    
-    virtual uint32_t write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState);
-    
-    float getStateTime();
+    virtual uint32_t write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState) = 0;
     
     void setStateTime(float stateTime);
     
-    void setPosition(Vector2 position);
+    float getStateTime();
     
-    Vector2& getPosition();
+    void setPosition(b2Vec2 position);
     
-    Vector2& getVelocity();
+    const b2Vec2& getPosition();
     
-    Vector2& getAcceleration();
+    void setVelocity(b2Vec2 velocity);
     
-    std::vector<NGRect *>& getBounds();
-    
-    NGRect& getMainBounds();
+    const b2Vec2& getVelocity();
     
     void setColor(Color color);
     
     Color& getColor();
     
-    const float& getWidth();
-    
     void setWidth(float width);
     
-    const float& getHeight();
+    const float& getWidth();
     
     void setHeight(float height);
+    
+    const float& getHeight();
     
     void setAngle(float angle);
     
     float getAngle();
     
-    int getID();
-    
     void setID(int inID);
+    
+    int getID();
     
     void requestDeletion();
     
@@ -97,14 +89,10 @@ public:
     
 protected:
     float m_fStateTime;
-    Vector2 m_position;
-    Vector2 m_velocity;
-    Vector2 m_acceleration;
-    std::vector<NGRect *> m_bounds;
+    b2Body* m_body;
     Color m_color;
     float m_fWidth;
     float m_fHeight;
-    float m_fAngle;
     
 private:
     int m_iID;

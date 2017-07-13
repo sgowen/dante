@@ -11,62 +11,69 @@
 #include "World.h"
 
 #include "Entity.h"
+#include "Box2D/Box2D.h"
 #include "Robot.h"
+
 #include "Projectile.h"
 #include "SpacePirate.h"
 #include "NetworkManagerServer.h"
+#include "InstanceManager.h"
+#include "Timing.h"
+#include "Ground.h"
+
+#define WORLD_CREATE_CLIENT(name) \
+b2World& world = InstanceManager::getClientWorld()->getWorld(); \
+return new name(world, false);
+
+#define WORLD_CREATE_SERVER(name) \
+    b2World& world = InstanceManager::getServerWorld()->getWorld(); \
+    Entity* ret = new name(world, true); \
+    NG_SERVER->registerEntity(ret); \
+    return ret;
 
 Entity* World::sClientCreateRobot()
 {
-    // TODO, inject physics world from Box2D
-    return new Robot(false);
+    WORLD_CREATE_CLIENT(Robot);
 }
 
 Entity* World::sServerCreateRobot()
 {
-    // TODO, inject physics world from Box2D
-    Entity* ret = new Robot(true);
-    
-    NG_SERVER->registerEntity(ret);
-    
-    return ret;
+    WORLD_CREATE_SERVER(Robot);
 }
 
 Entity* World::sClientCreateProjectile()
 {
-    // TODO, inject physics world from Box2D
-    return new Projectile(false);
+    WORLD_CREATE_CLIENT(Projectile);
 }
 
 Entity* World::sServerCreateProjectile()
 {
-    // TODO, inject physics world from Box2D
-    Entity* ret = new Projectile(true);
-    
-    NG_SERVER->registerEntity(ret);
-    
-    return ret;
+    WORLD_CREATE_SERVER(Projectile);
 }
 
 Entity* World::sClientCreateSpacePirate()
 {
-    // TODO, inject physics world from Box2D
-    return new SpacePirate(false);
+    WORLD_CREATE_CLIENT(SpacePirate);
 }
 
 Entity* World::sServerCreateSpacePirate()
 {
-    // TODO, inject physics world from Box2D
-    Entity* ret = new SpacePirate(true);
-    
-    NG_SERVER->registerEntity(ret);
-    
-    return ret;
+    WORLD_CREATE_SERVER(SpacePirate);
 }
 
-World::World(bool isServer) : m_isServer(isServer)
+World::World(bool isServer) : m_world(nullptr), m_isServer(isServer)
 {
-    // Empty
+    // Define the gravity vector.
+    b2Vec2 gravity(0.0f, -9.8f);
+    
+    // Construct a world object, which will hold and simulate the rigid bodies.
+    m_world = new b2World(gravity);
+    
+    static Ground ground(*m_world);
+    
+    static EntityContactListener entityContactListener;
+    
+    m_world->SetContactListener(&entityContactListener);
 }
 
 World::~World()
@@ -112,7 +119,14 @@ void World::removeEntity(Entity* inEntity)
 
 void World::update()
 {
-    //update all game objects- sometimes they want to die, so we need to tread carefully...
+    static int32 velocityIterations = 6;
+    static int32 positionIterations = 2;
+    
+    // Instruct the world to perform a single step of simulation.
+    // It is generally best to keep the time step and iterations fixed.
+    m_world->Step(Timing::getInstance()->getDeltaTime(), velocityIterations, positionIterations);
+    
+    // Update all game objects- sometimes they want to die, so we need to tread carefully...
     
     int len = static_cast<int>(m_entities.size());
     for (int i = 0, c = len; i < c; ++i)
@@ -126,7 +140,7 @@ void World::update()
         
         if (m_isServer)
         {
-            // you might suddenly want to die after your update, so check again
+            // You might suddenly want to die after your update, so check again
             if (entity->isRequestingDeletion())
             {
                 removeEntity(entity);
@@ -178,4 +192,18 @@ bool World::hasSpacePirates()
 std::vector<Entity*>& World::getEntities()
 {
     return m_entities;
+}
+
+b2World& World::getWorld()
+{
+    return *m_world;
+}
+
+void EntityContactListener::BeginContact(b2Contact* contact)
+{
+    Entity* entityA = static_cast<Entity*>(contact->GetFixtureA()->GetBody()->GetUserData());
+    
+    Entity* entityB = static_cast<Entity*>(contact->GetFixtureB()->GetBody()->GetUserData());
+    
+    entityA->handleContact(entityB);
 }

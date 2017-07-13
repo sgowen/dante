@@ -14,6 +14,7 @@
 #include <string>
 
 class Vector2;
+class b2Vec2;
 class Color;
 
 class OutputMemoryBitStream
@@ -38,6 +39,8 @@ public:
     void write(bool inData);
     
     void write(const Vector2& inVector);
+    
+    void write(const b2Vec2& inVector);
     
     void write(Color& inColor);
     

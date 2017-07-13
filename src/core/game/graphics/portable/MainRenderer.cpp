@@ -171,11 +171,11 @@ void MainRenderer::renderWorld()
                 c.alpha = 0.75f;
             }
             
-            bool isMoving = go->getVelocity().getX() < -0.5f || go->getVelocity().getX() > 0.5f;
+            bool isMoving = go->getVelocity().x < -0.5f || go->getVelocity().x > 0.5f;
             TextureRegion tr = ASSETS->findTextureRegion(
                                                          robot->isGrounded() ?
                                                          isMoving ? robot->isShooting() ? "Samus_Shooting" : (robot->isSprinting() ? "Samus_Running_Fast" : "Samus_Running") : "Samus_Idle" :
-                                                         go->getVelocity().getY() > 0 ? "Samus_Jumping" : "Samus_Falling", go->getStateTime());
+                                                         go->getVelocity().y > 0 ? "Samus_Jumping" : "Samus_Falling", go->getStateTime());
             renderEntityWithColor(*robot, tr, c, robot->isFacingLeft());
         }
         else if (go->getNetworkType() == NETWORK_TYPE_Projectile)
@@ -200,8 +200,8 @@ void MainRenderer::renderWorld()
         if (go->getNetworkType() == NETWORK_TYPE_SpacePirate)
         {
             SpacePirate* entity = static_cast<SpacePirate*>(go);
-            Vector2 origin = entity->getPosition().cpy();
-            origin.add(0, entity->getHeight() / 2);
+            b2Vec2 origin = b2Vec2(entity->getPosition().x, entity->getPosition().y);
+            origin += b2Vec2(0, entity->getHeight() / 2);
             std::string text = StringUtil::format("%i", entity->getHealth());
             renderText(text, origin, Color::DARK_RED, FONT_ALIGN_CENTERED);
         }
@@ -260,25 +260,25 @@ void MainRenderer::renderUI(int engineState)
 void MainRenderer::renderMainMenuSteamOffText()
 {
     {
-        static Vector2 origin = Vector2(CAM_WIDTH / 2, CAM_HEIGHT - 1);
+        static b2Vec2 origin = b2Vec2(CAM_WIDTH / 2, CAM_HEIGHT - 1);
         std::string text = std::string("'A' to activate Steam");
         renderText(text, origin, Color::BLACK, FONT_ALIGN_CENTERED);
     }
     
     {
-        static Vector2 origin = Vector2(CAM_WIDTH / 2, CAM_HEIGHT - 2);
+        static b2Vec2 origin = b2Vec2(CAM_WIDTH / 2, CAM_HEIGHT - 2);
         std::string text = std::string("'S' to start local server");
         renderText(text, origin, Color::BLACK, FONT_ALIGN_CENTERED);
     }
     
     {
-        static Vector2 origin = Vector2(CAM_WIDTH / 2, CAM_HEIGHT - 3);
+        static b2Vec2 origin = b2Vec2(CAM_WIDTH / 2, CAM_HEIGHT - 3);
         std::string text = std::string("'J' to join server by IP");
         renderText(text, origin, Color::BLACK, FONT_ALIGN_CENTERED);
     }
     
     {
-        static Vector2 origin = Vector2(CAM_WIDTH / 2, CAM_HEIGHT - 8);
+        static b2Vec2 origin = b2Vec2(CAM_WIDTH / 2, CAM_HEIGHT - 8);
         std::string text = std::string("'ESC' to exit game");
         renderText(text, origin, Color::BLACK, FONT_ALIGN_CENTERED);
     }
@@ -287,25 +287,25 @@ void MainRenderer::renderMainMenuSteamOffText()
 void MainRenderer::renderMainMenuSteamOnText()
 {
     {
-        static Vector2 origin = Vector2(CAM_WIDTH / 2, CAM_HEIGHT - 1);
+        static b2Vec2 origin = b2Vec2(CAM_WIDTH / 2, CAM_HEIGHT - 1);
         std::string text = std::string("'D' to deactivate Steam");
         renderText(text, origin, Color::BLACK, FONT_ALIGN_CENTERED);
     }
     
     {
-        static Vector2 origin = Vector2(CAM_WIDTH / 2, CAM_HEIGHT - 2);
+        static b2Vec2 origin = b2Vec2(CAM_WIDTH / 2, CAM_HEIGHT - 2);
         std::string text = std::string("'S' to start steam server");
         renderText(text, origin, Color::BLACK, FONT_ALIGN_CENTERED);
     }
     
     {
-        static Vector2 origin = Vector2(CAM_WIDTH / 2, CAM_HEIGHT - 3);
+        static b2Vec2 origin = b2Vec2(CAM_WIDTH / 2, CAM_HEIGHT - 3);
         std::string text = std::string("'L' to refresh list of LAN servers");
         renderText(text, origin, Color::BLACK, FONT_ALIGN_CENTERED);
     }
     
     {
-        static Vector2 origin = Vector2(CAM_WIDTH / 2, CAM_HEIGHT - 4);
+        static b2Vec2 origin = b2Vec2(CAM_WIDTH / 2, CAM_HEIGHT - 4);
         std::string text = std::string("'I' to refresh list of Internet servers");
         renderText(text, origin, Color::BLACK, FONT_ALIGN_CENTERED);
     }
@@ -314,13 +314,13 @@ void MainRenderer::renderMainMenuSteamOnText()
     int index = 0;
     for (NGSteamGameServer gameServer : gameServers)
     {
-        Vector2 origin = Vector2(CAM_WIDTH / 2, CAM_HEIGHT - 5.5f - (index * 0.5f));
+        b2Vec2 origin = b2Vec2(CAM_WIDTH / 2, CAM_HEIGHT - 5.5f - (index * 0.5f));
         std::string text = StringUtil::format("'%i' %s", (++index), gameServer.getDisplayString());
         renderText(text, origin, Color::BLACK, FONT_ALIGN_CENTERED);
     }
     
     {
-        static Vector2 origin = Vector2(CAM_WIDTH / 2, CAM_HEIGHT - 8);
+        static b2Vec2 origin = b2Vec2(CAM_WIDTH / 2, CAM_HEIGHT - 8);
         std::string text = std::string("'ESC' to exit game");
         renderText(text, origin, Color::BLACK, FONT_ALIGN_CENTERED);
     }
@@ -328,7 +328,7 @@ void MainRenderer::renderMainMenuSteamOnText()
 
 void MainRenderer::renderStartingServerText()
 {
-    static Vector2 origin = Vector2(CAM_WIDTH / 2, CAM_HEIGHT - 2);
+    static b2Vec2 origin = b2Vec2(CAM_WIDTH / 2, CAM_HEIGHT - 2);
     std::string text = std::string("Server starting, 'ESC' to exit");
     renderText(text, origin, Color::BLACK, FONT_ALIGN_CENTERED);
 }
@@ -336,13 +336,13 @@ void MainRenderer::renderStartingServerText()
 void MainRenderer::renderEnterUsernameText()
 {
     {
-        static Vector2 origin = Vector2(CAM_WIDTH / 2, CAM_HEIGHT - 2);
+        static b2Vec2 origin = b2Vec2(CAM_WIDTH / 2, CAM_HEIGHT - 2);
         std::string text = std::string("Enter Username to join, 'ESC' to exit");
         renderText(text, origin, Color::BLACK, FONT_ALIGN_CENTERED);
     }
     
     {
-        static Vector2 origin = Vector2(CAM_WIDTH / 2, CAM_HEIGHT - 4);
+        static b2Vec2 origin = b2Vec2(CAM_WIDTH / 2, CAM_HEIGHT - 4);
         std::string text = InputManager::getInstance()->getLiveInputRef();
         renderText(text, origin, Color::BLACK, FONT_ALIGN_CENTERED);
     }
@@ -351,13 +351,13 @@ void MainRenderer::renderEnterUsernameText()
 void MainRenderer::renderJoiningLocalServerByIPText()
 {
     {
-        static Vector2 origin = Vector2(CAM_WIDTH / 2, CAM_HEIGHT - 2);
+        static b2Vec2 origin = b2Vec2(CAM_WIDTH / 2, CAM_HEIGHT - 2);
         std::string text = std::string("Enter Server Address to join, 'ESC' to exit");
         renderText(text, origin, Color::BLACK, FONT_ALIGN_CENTERED);
     }
     
     {
-        static Vector2 origin = Vector2(CAM_WIDTH / 2, CAM_HEIGHT - 4);
+        static b2Vec2 origin = b2Vec2(CAM_WIDTH / 2, CAM_HEIGHT - 4);
         std::string text = InputManager::getInstance()->getLiveInputRef();
         renderText(text, origin, Color::BLACK, FONT_ALIGN_CENTERED);
     }
@@ -366,7 +366,7 @@ void MainRenderer::renderJoiningLocalServerByIPText()
 void MainRenderer::renderJoiningServerText()
 {
     {
-        static Vector2 origin = Vector2(CAM_WIDTH / 2, CAM_HEIGHT / 2 + 1);
+        static b2Vec2 origin = b2Vec2(CAM_WIDTH / 2, CAM_HEIGHT / 2 + 1);
         std::string text = StringUtil::format("%s, 'ESC' to exit", NG_CLIENT->getState() == NCS_Welcomed ? "Server joined" : "Joining Server...");
         renderText(text, origin, Color::BLACK, FONT_ALIGN_CENTERED);
     }
@@ -375,14 +375,14 @@ void MainRenderer::renderJoiningServerText()
 void MainRenderer::renderServerJoinedText()
 {
     {
-        static Vector2 origin = Vector2(CAM_WIDTH - 0.5f, CAM_HEIGHT - 0.5);
+        static b2Vec2 origin = b2Vec2(CAM_WIDTH - 0.5f, CAM_HEIGHT - 0.5);
         float rttMS = NG_CLIENT->getAvgRoundTripTime().getValue() * 1000.f;
         std::string text = StringUtil::format("RTT %d ms", static_cast<int>(rttMS));
         renderText(text, origin, Color::BLACK, FONT_ALIGN_RIGHT);
     }
     
     {
-        static Vector2 origin = Vector2(CAM_WIDTH - 0.5f, CAM_HEIGHT - 1);
+        static b2Vec2 origin = b2Vec2(CAM_WIDTH - 0.5f, CAM_HEIGHT - 1);
         
         const WeightedTimedMovingAverage& bpsIn = NG_CLIENT->getBytesReceivedPerSecond();
         int bpsInInt = static_cast<int>(bpsIn.getValue());
@@ -392,7 +392,7 @@ void MainRenderer::renderServerJoinedText()
     }
     
     {
-        static Vector2 origin = Vector2(CAM_WIDTH - 0.5f, CAM_HEIGHT - 1.5f);
+        static b2Vec2 origin = b2Vec2(CAM_WIDTH - 0.5f, CAM_HEIGHT - 1.5f);
         
         const WeightedTimedMovingAverage& bpsOut = NG_CLIENT->getBytesSentPerSecond();
         int bpsOutInt = static_cast<int>(bpsOut.getValue());
@@ -402,14 +402,14 @@ void MainRenderer::renderServerJoinedText()
     }
     
     {
-        static Vector2 origin = Vector2(CAM_WIDTH - 0.5f, CAM_HEIGHT - 2.0f);
+        static b2Vec2 origin = b2Vec2(CAM_WIDTH - 0.5f, CAM_HEIGHT - 2.0f);
         
         std::string text = StringUtil::format("'S' Sound %s", NG_AUDIO_ENGINE->isSoundDisabled() ? "OFF" : " ON");
         renderText(text, origin, Color::BLACK, FONT_ALIGN_RIGHT);
     }
     
     {
-        static Vector2 origin = Vector2(CAM_WIDTH - 0.5f, CAM_HEIGHT - 2.5f);
+        static b2Vec2 origin = b2Vec2(CAM_WIDTH - 0.5f, CAM_HEIGHT - 2.5f);
         
         std::string text = StringUtil::format("'M' Music %s", NG_AUDIO_ENGINE->isMusicPlaying() ? " ON" : "OFF");
         renderText(text, origin, Color::BLACK, FONT_ALIGN_RIGHT);
@@ -417,7 +417,7 @@ void MainRenderer::renderServerJoinedText()
     
     if (Server::getInstance())
     {
-        static Vector2 origin = Vector2(CAM_WIDTH - 0.5f, CAM_HEIGHT - 3.0f);
+        static b2Vec2 origin = b2Vec2(CAM_WIDTH - 0.5f, CAM_HEIGHT - 3.0f);
         
         std::string text = StringUtil::format("'T' Enemies %s", Server::getInstance()->isSpawningEnemies() ? " ON" : "OFF");
         renderText(text, origin, Color::BLACK, FONT_ALIGN_RIGHT);
@@ -434,7 +434,7 @@ void MainRenderer::renderServerJoinedText()
             if (go->getNetworkType() == NETWORK_TYPE_Robot)
             {
                 Robot* robot = static_cast<Robot*>(go);
-                Vector2 origin = Vector2(0.5f, CAM_HEIGHT - (robot->getPlayerId() * 0.5f));
+                b2Vec2 origin = b2Vec2(0.5f, CAM_HEIGHT - (robot->getPlayerId() * 0.5f));
                 std::string text = StringUtil::format("%i|%s - %i HP, %i Kills", robot->getPlayerId(), robot->getPlayerName().c_str(), robot->getHealth(), robot->getNumKills());
                 renderText(text, origin, Color::BLACK);
                 
@@ -450,19 +450,19 @@ void MainRenderer::renderServerJoinedText()
         {
             if (!activePlayerIds[i])
             {
-                Vector2 origin = Vector2(0.5f, CAM_HEIGHT - ((i + 1) * 0.5f));
+                b2Vec2 origin = b2Vec2(0.5f, CAM_HEIGHT - ((i + 1) * 0.5f));
                 std::string text = StringUtil::format("%i|%s", (i + 1), "Connect a controller to join...");
                 renderText(text, origin, Color::BLACK);
             }
         }
         
-        Vector2 origin = Vector2(CAM_WIDTH / 2, CAM_HEIGHT / 2);
+        b2Vec2 origin = b2Vec2(CAM_WIDTH / 2, CAM_HEIGHT / 2);
         std::string text = StringUtil::format("Enemies: %i", enemyCount);
         renderText(text, origin, Color::BLACK, FONT_ALIGN_CENTERED);
     }
 }
 
-void MainRenderer::renderText(const std::string& inStr, const Vector2& origin, const Color& inColor, int justification)
+void MainRenderer::renderText(const std::string& inStr, const b2Vec2& origin, const Color& inColor, int justification)
 {
     Color fontColor = Color(inColor.red, inColor.green, inColor.blue, inColor.alpha);
     float fgWidth = CAM_WIDTH / 60;
@@ -472,7 +472,7 @@ void MainRenderer::renderText(const std::string& inStr, const Vector2& origin, c
     ss << inStr;
     std::string text = ss.str();
     
-    m_font->renderText(*m_spriteBatcher, text, origin.getX(), origin.getY(), fgWidth, fgHeight, fontColor, justification);
+    m_font->renderText(*m_spriteBatcher, text, origin.x, origin.y, fgWidth, fgHeight, fontColor, justification);
 }
 
 void MainRenderer::updateCamera()
@@ -500,8 +500,8 @@ void MainRenderer::updateCamera()
             {
                 // Adjust camera based on the player position
                 
-                float pX = player->getPosition().getX();
-                float pY = player->getPosition().getY();
+                float pX = player->getPosition().x;
+                float pY = player->getPosition().y;
                 
                 if (needsInit)
                 {

@@ -11,12 +11,12 @@
 
 #include "Network.h"
 
-class Vector2;
+class b2Vec2;
 
 class Util
 {
 public:
-    static void playSound(int soundId, Vector2& position, bool isServer);
+    static void playSound(int soundId, const b2Vec2& position, bool isServer);
     
 private:
     // ctor, copy ctor, and assignment should be private in a Singleton
