@@ -13,6 +13,8 @@
 
 class EntityRegistry;
 
+#define SERVER_ENTITY_REGISTRY FWInstanceManager::getServerEntityRegistry()
+
 class FWInstanceManager
 {
 public:

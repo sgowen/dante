@@ -606,11 +606,11 @@ void Robot::handleShooting()
     
     if (m_isShooting && time > m_fTimeOfNextShot)
     {
-        //not exact, but okay
+        // not exact, but okay
         m_fTimeOfNextShot = time + 0.25f;
         
-        //fire!
-        Projectile* projectile = static_cast<Projectile*>(FWInstanceManager::getServerEntityRegistry()->createEntity(NETWORK_TYPE_Projectile));
+        // fire!
+        Projectile* projectile = static_cast<Projectile*>(SERVER_ENTITY_REGISTRY->createEntity(NETWORK_TYPE_Projectile));
         projectile->initFromShooter(this);
     }
 }
