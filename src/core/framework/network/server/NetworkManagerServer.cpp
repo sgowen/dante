@@ -132,11 +132,11 @@ void NetworkManagerServer::registerEntity(Entity* inEntity)
     }
 }
 
-void NetworkManagerServer::unregisterEntity(Entity* inEntity)
+void NetworkManagerServer::deregisterEntity(Entity* inEntity)
 {
     int networkId = inEntity->getID();
     
-    FWInstanceManager::getServerEntityManager()->removeEntity(inEntity);
+    FWInstanceManager::getServerEntityManager()->deregisterEntity(inEntity);
     
     //tell all client proxies to STOP replicating!
     //tell all client proxies this is new...

@@ -46,7 +46,7 @@ void EntityManager::registerEntity(Entity* inEntity)
     m_handleEntityCreatedFunc(inEntity);
 }
 
-void EntityManager::removeEntity(Entity* inEntity)
+void EntityManager::deregisterEntity(Entity* inEntity)
 {
     m_entityMap.erase(inEntity->getID());
     

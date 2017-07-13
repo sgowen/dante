@@ -46,6 +46,8 @@ private:
     
     void handleLostClient(ClientProxy* inClientProxy, int index);
     
+    void deleteRobotWithPlayerId(uint8_t playerId);
+    
     void spawnRobotForPlayer(int inPlayerId, std::string inPlayerName);
     
     void respawnEnemiesIfNecessary();

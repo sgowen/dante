@@ -47,7 +47,7 @@ void Projectile::onDeletion()
 {
     if (m_isServer)
     {
-        NG_SERVER->unregisterEntity(this);
+        NG_SERVER->deregisterEntity(this);
     }
 }
 

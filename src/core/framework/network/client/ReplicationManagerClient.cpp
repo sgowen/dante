@@ -93,6 +93,6 @@ void ReplicationManagerClient::readAndDoDestroyAction(InputMemoryBitStream& inIn
     if (gameObject)
     {
         gameObject->onDeletion();
-        FWInstanceManager::getClientEntityManager()->removeEntity(gameObject);
+        FWInstanceManager::getClientEntityManager()->deregisterEntity(gameObject);
     }
 }

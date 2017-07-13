@@ -132,11 +132,7 @@ void Server::handleLostClient(ClientProxy* inClientProxy, int index)
     {
         uint8_t playerId = inClientProxy->getPlayerId(index);
         
-        Robot* robot = InstanceManager::getServerWorld()->getRobotWithPlayerId(playerId);
-        if (robot)
-        {
-            robot->requestDeletion();
-        }
+        deleteRobotWithPlayerId(playerId);
     }
     else
     {
@@ -144,12 +140,17 @@ void Server::handleLostClient(ClientProxy* inClientProxy, int index)
         {
             uint8_t playerId = inClientProxy->getPlayerId(i);
             
-            Robot* robot = InstanceManager::getServerWorld()->getRobotWithPlayerId(playerId);
-            if (robot)
-            {
-                robot->requestDeletion();
-            }
+            deleteRobotWithPlayerId(playerId);
         }
+    }
+}
+
+void Server::deleteRobotWithPlayerId(uint8_t playerId)
+{
+    Robot* robot = InstanceManager::getServerWorld()->getRobotWithPlayerId(playerId);
+    if (robot)
+    {
+        robot->requestDeletion();
     }
 }
 

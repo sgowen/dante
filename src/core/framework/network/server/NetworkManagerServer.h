@@ -55,7 +55,7 @@ public:
     
     void registerEntity(Entity* inEntity);
     
-    void unregisterEntity(Entity* inEntity);
+    void deregisterEntity(Entity* inEntity);
     
     void setStateDirty(int inNetworkId, uint32_t inDirtyState);
     
