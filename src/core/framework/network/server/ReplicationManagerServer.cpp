@@ -91,24 +91,24 @@ void ReplicationManagerServer::write(OutputMemoryBitStream& inOutputStream, Repl
 uint32_t ReplicationManagerServer::writeCreateAction(OutputMemoryBitStream& inOutputStream, int inNetworkId, uint32_t inDirtyState)
 {
     //need object
-    Entity* gameObject = FWInstanceManager::getServerEntityManager()->getEntityByID(inNetworkId);
+    Entity* entity = FWInstanceManager::getServerEntityManager()->getEntityByID(inNetworkId);
     //need 4 cc
-    inOutputStream.write(gameObject->getNetworkType());
+    inOutputStream.write(entity->getNetworkType());
     
-    return gameObject->write(inOutputStream, inDirtyState);
+    return entity->write(inOutputStream, inDirtyState);
 }
 
 uint32_t ReplicationManagerServer::writeUpdateAction(OutputMemoryBitStream& inOutputStream, int inNetworkId, uint32_t inDirtyState)
 {
     //need object
-    Entity* gameObject = FWInstanceManager::getServerEntityManager()->getEntityByID(inNetworkId);
+    Entity* entity = FWInstanceManager::getServerEntityManager()->getEntityByID(inNetworkId);
     
-    //if we can't find the gameObject on the other side, we won't be able to read the written data (since we won't know which class wrote it)
+    //if we can't find the entity on the other side, we won't be able to read the written data (since we won't know which class wrote it)
     //so we need to know how many bytes to skip.
     
     //this means we need byte sand each new object needs to be byte aligned
     
-    uint32_t writtenState = gameObject->write(inOutputStream, inDirtyState);
+    uint32_t writtenState = entity->write(inOutputStream, inDirtyState);
     
     return writtenState;
 }

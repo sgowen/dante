@@ -53,14 +53,6 @@ void Robot::onDeletion()
     {
         NG_SERVER->deregisterEntity(this);
     }
-    else
-    {
-        if (NG_CLIENT->isPlayerIdLocal(getPlayerId()))
-        {
-            // This robot is the current local player, so let's display something like "Respawning in 5, 4, 3..."
-            playSound(SOUND_ID_DEATH);
-        }
-    }
 }
 
 void Robot::update()
@@ -204,6 +196,10 @@ void Robot::read(InputMemoryBitStream& inInputStream)
         if ((readState & ROBT_PlayerInfo) == 0)
         {
             interpolateClientSidePrediction(oldAcceleration, oldVelocity, oldPosition);
+        }
+        else
+        {
+            playSound(SOUND_ID_DEATH);
         }
         
         if (m_wasLastKillHeadshot && m_iNumKills != old_m_iNumKills)
