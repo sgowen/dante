@@ -324,6 +324,8 @@ void Robot::handleContactWithGround(Ground* ground)
     m_iNumJumps = 0;
     m_isGrounded = true;
     m_isFalling = false;
+    
+    NG_SERVER->setStateDirty(getID(), ROBT_Pose);
 }
 
 void Robot::takeDamage()
