@@ -18,7 +18,16 @@ class Robot;
 class World
 {
 public:
-    World();
+    static Entity* sClientCreateRobot();
+    static Entity* sServerCreateRobot();
+    
+    static Entity* sClientCreateProjectile();
+    static Entity* sServerCreateProjectile();
+    
+    static Entity* sClientCreateSpacePirate();
+    static Entity* sServerCreateSpacePirate();
+    
+    World(bool isServer);
     
     ~World();
     
@@ -38,6 +47,7 @@ public:
     
 private:
     std::vector<Entity*> m_entities;
+    bool m_isServer;
 };
 
 #endif /* defined(__noctisgames__World__) */

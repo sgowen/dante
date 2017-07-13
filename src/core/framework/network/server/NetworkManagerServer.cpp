@@ -54,27 +54,27 @@ NetworkManagerServer * NetworkManagerServer::getInstance()
     return s_instance;
 }
 
-void NetworkManagerServer::staticProcessPacket(InputMemoryBitStream& inInputStream, IMachineAddress* inFromAddress)
+void NetworkManagerServer::sProcessPacket(InputMemoryBitStream& inInputStream, IMachineAddress* inFromAddress)
 {
     NG_SERVER->processPacket(inInputStream, inFromAddress);
 }
 
-void NetworkManagerServer::staticHandleNoResponse()
+void NetworkManagerServer::sHandleNoResponse()
 {
     NG_SERVER->handleNoResponse();
 }
 
-void NetworkManagerServer::staticHandleConnectionReset(IMachineAddress* inFromAddress)
+void NetworkManagerServer::sHandleConnectionReset(IMachineAddress* inFromAddress)
 {
     NG_SERVER->handleConnectionReset(inFromAddress);
 }
 
-ClientProxy* NetworkManagerServer::staticGetClientProxy(int inPlayerIndex)
+ClientProxy* NetworkManagerServer::sGetClientProxy(int inPlayerIndex)
 {
     return NG_SERVER->getClientProxy(inPlayerIndex + 1);
 }
 
-void NetworkManagerServer::staticHandleClientDisconnected(ClientProxy* inClientProxy)
+void NetworkManagerServer::sHandleClientDisconnected(ClientProxy* inClientProxy)
 {
     NG_SERVER->handleClientDisconnected(inClientProxy);
 }

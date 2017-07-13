@@ -24,9 +24,9 @@ public:
     
     static Server* getInstance();
     
-    static void staticHandleNewClient(int playerId, std::string playerName);
+    static void sHandleNewClient(int playerId, std::string playerName);
     
-    static void staticHandleLostClient(ClientProxy* inClientProxy, int index);
+    static void sHandleLostClient(ClientProxy* inClientProxy, int index);
     
     void update(float deltaTime);
     

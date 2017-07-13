@@ -53,17 +53,17 @@ NetworkManagerClient * NetworkManagerClient::getInstance()
     return s_instance;
 }
 
-void NetworkManagerClient::staticProcessPacket(InputMemoryBitStream& inInputStream, IMachineAddress* inFromAddress)
+void NetworkManagerClient::sProcessPacket(InputMemoryBitStream& inInputStream, IMachineAddress* inFromAddress)
 {
     NG_CLIENT->processPacket(inInputStream, static_cast<SocketAddress*>(inFromAddress));
 }
 
-void NetworkManagerClient::staticHandleNoResponse()
+void NetworkManagerClient::sHandleNoResponse()
 {
     NG_CLIENT->handleNoResponse();
 }
 
-void NetworkManagerClient::staticHandleConnectionReset(IMachineAddress* inFromAddress)
+void NetworkManagerClient::sHandleConnectionReset(IMachineAddress* inFromAddress)
 {
     NG_CLIENT->handleConnectionReset(static_cast<SocketAddress*>(inFromAddress));
 }

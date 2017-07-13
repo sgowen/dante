@@ -16,18 +16,18 @@
 class InputState;
 class Move;
 
-#define INPUT_MANAGER_CALLBACKS InputManager::staticRemoveProcessedMoves, InputManager::staticGetMoveList, InputManager::staticOnPlayerWelcomed
+#define INPUT_MANAGER_CALLBACKS InputManager::sRemoveProcessedMoves, InputManager::sGetMoveList, InputManager::sOnPlayerWelcomed
 
 class InputManager
 {
 public:
     static InputManager* getInstance();
     
-    static void staticRemoveProcessedMoves(float inLastMoveProcessedOnServerTimestamp);
+    static void sRemoveProcessedMoves(float inLastMoveProcessedOnServerTimestamp);
     
-    static MoveList& staticGetMoveList();
+    static MoveList& sGetMoveList();
     
-    static void staticOnPlayerWelcomed(uint8_t playerId);
+    static void sOnPlayerWelcomed(uint8_t playerId);
     
     void update();
     

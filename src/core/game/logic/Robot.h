@@ -39,11 +39,7 @@ public:
         ROBT_AllState = ROBT_Pose | ROBT_Color | ROBT_PlayerInfo | ROBT_Health | ROBT_NumKills
     };
     
-    static Entity* staticCreateClient();
-    
-    static Entity* staticCreateServer();
-    
-    virtual void onDeletion();
+    Robot(bool isServer);
     
     virtual void update();
     
@@ -133,8 +129,6 @@ private:
     void playNetworkBoundSounds(uint8_t old_m_iNumJumps, bool old_m_isSprinting);
     
     void playSound(int soundId);
-    
-    Robot(bool isServer);
 };
 
 #endif /* defined(__noctisgames__Robot__) */

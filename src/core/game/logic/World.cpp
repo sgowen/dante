@@ -12,9 +12,59 @@
 
 #include "Entity.h"
 #include "Robot.h"
+#include "Projectile.h"
 #include "SpacePirate.h"
+#include "NetworkManagerServer.h"
 
-World::World()
+Entity* World::sClientCreateRobot()
+{
+    // TODO, inject physics world from Box2D
+    return new Robot(false);
+}
+
+Entity* World::sServerCreateRobot()
+{
+    // TODO, inject physics world from Box2D
+    Entity* ret = new Robot(true);
+    
+    NG_SERVER->registerEntity(ret);
+    
+    return ret;
+}
+
+Entity* World::sClientCreateProjectile()
+{
+    // TODO, inject physics world from Box2D
+    return new Projectile(false);
+}
+
+Entity* World::sServerCreateProjectile()
+{
+    // TODO, inject physics world from Box2D
+    Entity* ret = new Projectile(true);
+    
+    NG_SERVER->registerEntity(ret);
+    
+    return ret;
+}
+
+Entity* World::sClientCreateSpacePirate()
+{
+    // TODO, inject physics world from Box2D
+    return new SpacePirate(false);
+}
+
+Entity* World::sServerCreateSpacePirate()
+{
+    // TODO, inject physics world from Box2D
+    Entity* ret = new SpacePirate(true);
+    
+    NG_SERVER->registerEntity(ret);
+    
+    return ret;
+}
+
+World::World(bool isServer) : m_isServer(isServer)
 {
     // Empty
 }
@@ -52,6 +102,11 @@ void World::removeEntity(Entity* inEntity)
         }
         
         m_entities.pop_back();
+        
+        if (m_isServer)
+        {
+            NG_SERVER->deregisterEntity(inEntity);
+        }
     }
 }
 
@@ -69,13 +124,15 @@ void World::update()
             entity->update();
         }
         
-        //you might suddenly want to die after your update, so check again
-        if (entity->isRequestingDeletion())
+        if (m_isServer)
         {
-            removeEntity(entity);
-            entity->onDeletion();
-            --i;
-            --c;
+            // you might suddenly want to die after your update, so check again
+            if (entity->isRequestingDeletion())
+            {
+                removeEntity(entity);
+                --i;
+                --c;
+            }
         }
     }
 }

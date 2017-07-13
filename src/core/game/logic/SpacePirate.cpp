@@ -30,22 +30,23 @@
 
 #include <math.h>
 
-Entity* SpacePirate::staticCreateClient()
+SpacePirate::SpacePirate(bool isServer) : Entity(0, 0, 2.0f, 2.347826086956522f),
+m_isServer(isServer),
+m_fSpeed(0.0),
+m_iHealth(8),
+m_fStartingHealth(8),
+m_isFacingLeft(false),
+m_isGrounded(false),
+m_isFalling(false),
+m_isJumping(false),
+m_fRobotRestitution(0.1f),
+m_fTimeForNextJump(0.0f),
+m_fJumpSpeed(7.0f)
 {
-    return new SpacePirate(false);
-}
-
-Entity* SpacePirate::staticCreateServer()
-{
-    return new SpacePirate(true);
-}
-
-void SpacePirate::onDeletion()
-{
-    if (m_isServer)
-    {
-        NG_SERVER->deregisterEntity(this);
-    }
+    m_acceleration.setY(-9.8f);
+    
+    m_fTimeForNextJump = Timing::getInstance()->getFrameStartTime();
+    m_fTimeForNextJump += (rand() % 100) * 0.1f + 1.0f;
 }
 
 void SpacePirate::update()
@@ -369,30 +370,6 @@ void SpacePirate::processCollisionsWithScreenWalls()
     {
         position.setX(0);
         setPosition(position);
-    }
-}
-
-SpacePirate::SpacePirate(bool isServer) : Entity(0, 0, 2.0f, 2.347826086956522f),
-m_isServer(isServer),
-m_fSpeed(0.0),
-m_iHealth(8),
-m_fStartingHealth(8),
-m_isFacingLeft(false),
-m_isGrounded(false),
-m_isFalling(false),
-m_isJumping(false),
-m_fRobotRestitution(0.1f),
-m_fTimeForNextJump(0.0f),
-m_fJumpSpeed(7.0f)
-{
-    m_acceleration.setY(-9.8f);
-    
-    m_fTimeForNextJump = Timing::getInstance()->getFrameStartTime();
-    m_fTimeForNextJump += (rand() % 100) * 0.1f + 1.0f;
-    
-    if (m_isServer)
-    {
-        NG_SERVER->registerEntity(this);
     }
 }
 

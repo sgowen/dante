@@ -61,9 +61,9 @@ m_isSteam(false)
     
     m_config->load();
     
-    FWInstanceManager::getClientEntityRegistry()->registerCreationFunction(NETWORK_TYPE_Robot, Robot::staticCreateClient);
-    FWInstanceManager::getClientEntityRegistry()->registerCreationFunction(NETWORK_TYPE_Projectile, Projectile::staticCreateClient);
-    FWInstanceManager::getClientEntityRegistry()->registerCreationFunction(NETWORK_TYPE_SpacePirate, SpacePirate::staticCreateClient);
+    FWInstanceManager::getClientEntityRegistry()->registerCreationFunction(NETWORK_TYPE_Robot, World::sClientCreateRobot);
+    FWInstanceManager::getClientEntityRegistry()->registerCreationFunction(NETWORK_TYPE_Projectile, World::sClientCreateProjectile);
+    FWInstanceManager::getClientEntityRegistry()->registerCreationFunction(NETWORK_TYPE_SpacePirate, World::sClientCreateSpacePirate);
     
     NG_AUDIO_ENGINE->loadSound(SOUND_ID_ROBOT_JUMP, SOUND_ROBOT_JUMP, 4);
     NG_AUDIO_ENGINE->loadSound(SOUND_ID_EXPLOSION, SOUND_EXPLOSION, 8);
@@ -409,14 +409,14 @@ void MainEngine::joinServer()
 {
     m_iEngineState = MAIN_ENGINE_STEAM_JOINING_SERVER;
     
-    FWInstanceManager::createClientEntityManager(InstanceManager::staticHandleEntityCreatedOnClient, InstanceManager::staticHandleEntityDeletedOnClient);
+    FWInstanceManager::createClientEntityManager(InstanceManager::sHandleEntityCreatedOnClient, InstanceManager::sHandleEntityDeletedOnClient);
     
     InstanceManager::createClientWorld();
     
     IClientHelper* clientHelper = nullptr;
     if (m_isSteam)
     {
-        clientHelper = new NGSteamClientHelper(m_serverSteamID, InstanceManager::staticGetPlayerAddressHashForIndexOnClient, NG_CLIENT_CALLBACKS);
+        clientHelper = new NGSteamClientHelper(m_serverSteamID, InstanceManager::sGetPlayerAddressHashForIndexOnClient, NG_CLIENT_CALLBACKS);
     }
     else
     {

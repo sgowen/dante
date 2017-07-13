@@ -38,11 +38,6 @@ Entity::~Entity()
     NGSTDUtil::cleanUpVectorOfPointers(m_bounds);
 }
 
-void Entity::onDeletion()
-{
-    // Empty
-}
-
 void Entity::update(float inDeltaTime)
 {
     m_fStateTime += inDeltaTime;

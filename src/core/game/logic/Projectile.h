@@ -41,11 +41,7 @@ public:
         ProjectileState_Exploding = 2
     };
     
-    static Entity* staticCreateClient();
-    
-    static Entity* staticCreateServer();
-    
-    virtual void onDeletion();
+    Projectile(bool isServer);
     
     virtual void update();
     
@@ -80,8 +76,6 @@ private:
     void processCollisionsWithScreenWalls();
     
     void playSound(int soundId);
-    
-    Projectile(bool isServer);
 };
 
 #endif /* defined(__noctisgames__Projectile__) */

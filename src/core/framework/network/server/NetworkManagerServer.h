@@ -22,7 +22,7 @@ class Entity;
 
 #define NG_SERVER (NetworkManagerServer::getInstance())
 
-#define NG_SERVER_CALLBACKS NetworkManagerServer::staticProcessPacket, NetworkManagerServer::staticHandleNoResponse, NetworkManagerServer::staticHandleConnectionReset, NetworkManagerServer::staticGetClientProxy, NetworkManagerServer::staticHandleClientDisconnected
+#define NG_SERVER_CALLBACKS NetworkManagerServer::sProcessPacket, NetworkManagerServer::sHandleNoResponse, NetworkManagerServer::sHandleConnectionReset, NetworkManagerServer::sGetClientProxy, NetworkManagerServer::sHandleClientDisconnected
 
 typedef void (*HandleNewClientFunc)(int playerId, std::string playerName);
 typedef void (*HandleLostClientFunc)(ClientProxy* inClientProxy, int index);
@@ -37,15 +37,15 @@ public:
     
     static NetworkManagerServer* getInstance();
     
-    static void staticProcessPacket(InputMemoryBitStream& inInputStream, IMachineAddress* inFromAddress);
+    static void sProcessPacket(InputMemoryBitStream& inInputStream, IMachineAddress* inFromAddress);
     
-    static void staticHandleNoResponse();
+    static void sHandleNoResponse();
     
-    static void staticHandleConnectionReset(IMachineAddress* inFromAddress);
+    static void sHandleConnectionReset(IMachineAddress* inFromAddress);
     
-    static ClientProxy* staticGetClientProxy(int inPlayerId);
+    static ClientProxy* sGetClientProxy(int inPlayerId);
     
-    static void staticHandleClientDisconnected(ClientProxy* inClientProxy);
+    static void sHandleClientDisconnected(ClientProxy* inClientProxy);
     
     void processIncomingPackets();
     

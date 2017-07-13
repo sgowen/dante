@@ -23,14 +23,14 @@ void InstanceManager::createClientWorld()
 {
     assert(!s_clientWorldInstance);
     
-    s_clientWorldInstance = new World();
+    s_clientWorldInstance = new World(false);
 }
 
 void InstanceManager::createServerWorld()
 {
     assert(!s_serverWorldInstance);
     
-    s_serverWorldInstance = new World();
+    s_serverWorldInstance = new World(true);
 }
 
 void InstanceManager::destroyClientWorld()
@@ -59,7 +59,7 @@ World* InstanceManager::getServerWorld()
     return s_serverWorldInstance;
 }
 
-void InstanceManager::staticHandleEntityCreatedOnClient(Entity* inEntity)
+void InstanceManager::sHandleEntityCreatedOnClient(Entity* inEntity)
 {
     if (InstanceManager::getClientWorld())
     {
@@ -67,7 +67,7 @@ void InstanceManager::staticHandleEntityCreatedOnClient(Entity* inEntity)
     }
 }
 
-void InstanceManager::staticHandleEntityDeletedOnClient(Entity* inEntity)
+void InstanceManager::sHandleEntityDeletedOnClient(Entity* inEntity)
 {
     if (InstanceManager::getClientWorld())
     {
@@ -75,11 +75,11 @@ void InstanceManager::staticHandleEntityDeletedOnClient(Entity* inEntity)
     }
 }
 
-uint64_t InstanceManager::staticGetPlayerAddressHashForIndexOnClient(int inPlayerIndex)
+uint64_t InstanceManager::sGetPlayerAddressHashForIndexOnClient(int inPlayerIndex)
 {
     uint64_t ret = 0;
  
-    Robot* robot = InstanceManager::staticGetPlayerRobotForIDOnClient(inPlayerIndex + 1);
+    Robot* robot = InstanceManager::sGetPlayerRobotForIDOnClient(inPlayerIndex + 1);
     if (robot)
     {
         ret = robot->getAddressHash();
@@ -88,7 +88,7 @@ uint64_t InstanceManager::staticGetPlayerAddressHashForIndexOnClient(int inPlaye
     return ret;
 }
 
-Robot* InstanceManager::staticGetPlayerRobotForIDOnClient(int inPlayerID)
+Robot* InstanceManager::sGetPlayerRobotForIDOnClient(int inPlayerID)
 {
     Robot* ret = nullptr;
     
@@ -100,7 +100,7 @@ Robot* InstanceManager::staticGetPlayerRobotForIDOnClient(int inPlayerID)
     return ret;
 }
 
-void InstanceManager::staticHandleEntityCreatedOnServer(Entity* inEntity)
+void InstanceManager::sHandleEntityCreatedOnServer(Entity* inEntity)
 {
     if (InstanceManager::getServerWorld())
     {
@@ -108,7 +108,7 @@ void InstanceManager::staticHandleEntityCreatedOnServer(Entity* inEntity)
     }
 }
 
-void InstanceManager::staticHandleEntityDeletedOnServer(Entity* inEntity)
+void InstanceManager::sHandleEntityDeletedOnServer(Entity* inEntity)
 {
     if (InstanceManager::getServerWorld())
     {

@@ -37,22 +37,31 @@
 
 #include <math.h>
 
-Entity* Robot::staticCreateClient()
+Robot::Robot(bool isServer) : Entity(0, 0, 1.565217391304348f, 2.0f),
+m_iAddressHash(0),
+m_iPlayerId(0),
+m_playerName("Robot"),
+m_iRttMs(0),
+m_iNumJumps(0),
+m_isFacingLeft(false),
+m_isShooting(false),
+m_isSprinting(false),
+m_iHealth(255),
+m_iNumKills(0),
+m_wasLastKillHeadshot(false),
+m_fSpeed(7.5f),
+m_fJumpSpeed(11.0f),
+m_fTimeOfNextShot(0.0f),
+m_fRobotRestitution(0.1f),
+m_fTimeAccelerationBecameOutOfSync(0.0f),
+m_fTimeVelocityBecameOutOfSync(0.0f),
+m_fTimePositionBecameOutOfSync(0.0f),
+m_isServer(isServer),
+m_isGrounded(false),
+m_isFalling(false),
+m_isFirstJumpCompleted(false)
 {
-    return new Robot(false);
-}
-
-Entity* Robot::staticCreateServer()
-{
-    return new Robot(true);
-}
-
-void Robot::onDeletion()
-{
-    if (m_isServer)
-    {
-        NG_SERVER->deregisterEntity(this);
-    }
+    m_acceleration.setY(-9.8f);
 }
 
 void Robot::update()
@@ -320,7 +329,7 @@ void Robot::takeDamage()
         
         requestDeletion();
         
-        Server::staticHandleNewClient(m_iPlayerId, m_playerName);
+        Server::sHandleNewClient(m_iPlayerId, m_playerName);
     }
     
     // tell the world our health dropped
@@ -606,7 +615,7 @@ void Robot::handleShooting()
         m_fTimeOfNextShot = time + 0.25f;
         
         // fire!
-        Projectile* projectile = static_cast<Projectile*>(SERVER_ENTITY_REGISTRY->createEntity(NETWORK_TYPE_Projectile));
+        Projectile* projectile = static_cast<Projectile*>(SERVER_ENTITY_REG->createEntity(NETWORK_TYPE_Projectile));
         projectile->initFromShooter(this);
     }
 }
@@ -708,38 +717,6 @@ void Robot::playNetworkBoundSounds(uint8_t old_m_iNumJumps, bool old_m_isSprinti
 void Robot::playSound(int soundId)
 {
     Util::playSound(soundId, getPosition(), m_isServer);
-}
-
-Robot::Robot(bool isServer) : Entity(0, 0, 1.565217391304348f, 2.0f),
-m_iAddressHash(0),
-m_iPlayerId(0),
-m_playerName("Robot"),
-m_iRttMs(0),
-m_iNumJumps(0),
-m_isFacingLeft(false),
-m_isShooting(false),
-m_isSprinting(false),
-m_iHealth(255),
-m_iNumKills(0),
-m_wasLastKillHeadshot(false),
-m_fSpeed(7.5f),
-m_fJumpSpeed(11.0f),
-m_fTimeOfNextShot(0.0f),
-m_fRobotRestitution(0.1f),
-m_fTimeAccelerationBecameOutOfSync(0.0f),
-m_fTimeVelocityBecameOutOfSync(0.0f),
-m_fTimePositionBecameOutOfSync(0.0f),
-m_isServer(isServer),
-m_isGrounded(false),
-m_isFalling(false),
-m_isFirstJumpCompleted(false)
-{
-    m_acceleration.setY(-9.8f);
-    
-    if (m_isServer)
-    {
-        NG_SERVER->registerEntity(this);
-    }
 }
 
 RTTI_IMPL(Robot, Entity);

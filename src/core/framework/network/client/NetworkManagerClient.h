@@ -27,7 +27,7 @@ class SocketAddress;
 
 #define NG_CLIENT (NetworkManagerClient::getInstance())
 
-#define NG_CLIENT_CALLBACKS NetworkManagerClient::staticProcessPacket, NetworkManagerClient::staticHandleNoResponse, NetworkManagerClient::staticHandleConnectionReset
+#define NG_CLIENT_CALLBACKS NetworkManagerClient::sProcessPacket, NetworkManagerClient::sHandleNoResponse, NetworkManagerClient::sHandleConnectionReset
 
 typedef void (*RemoveProcessedMovesFunc)(float lastMoveProcessedByServerTimestamp);
 typedef MoveList& (*GetMoveListFunc)();
@@ -50,11 +50,11 @@ public:
     
     static NetworkManagerClient* getInstance();
     
-    static void staticProcessPacket(InputMemoryBitStream& inInputStream, IMachineAddress* inFromAddress);
+    static void sProcessPacket(InputMemoryBitStream& inInputStream, IMachineAddress* inFromAddress);
     
-    static void staticHandleNoResponse();
+    static void sHandleNoResponse();
     
-    static void staticHandleConnectionReset(IMachineAddress* inFromAddress);
+    static void sHandleConnectionReset(IMachineAddress* inFromAddress);
     
     void processIncomingPackets();
     

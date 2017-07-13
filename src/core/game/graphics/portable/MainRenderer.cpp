@@ -494,7 +494,7 @@ void MainRenderer::updateCamera()
         
         for (auto const &entry : indexToPlayerIdMap)
         {
-            Robot* player = InstanceManager::staticGetPlayerRobotForIDOnClient(entry.second);
+            Robot* player = InstanceManager::sGetPlayerRobotForIDOnClient(entry.second);
             
             if (player)
             {

@@ -32,7 +32,7 @@
 #include <ctime> // rand
 #include <assert.h>
 
-#define SERVER_CALLBACKS Server::staticHandleNewClient, Server::staticHandleLostClient, PooledObjectsManager::borrowInputState
+#define SERVER_CALLBACKS Server::sHandleNewClient, Server::sHandleLostClient, PooledObjectsManager::borrowInputState
 
 Server* Server::s_instance = nullptr;
 
@@ -56,12 +56,12 @@ Server * Server::getInstance()
     return s_instance;
 }
 
-void Server::staticHandleNewClient(int playerId, std::string playerName)
+void Server::sHandleNewClient(int playerId, std::string playerName)
 {
     getInstance()->handleNewClient(playerId, playerName);
 }
 
-void Server::staticHandleLostClient(ClientProxy* inClientProxy, int index)
+void Server::sHandleLostClient(ClientProxy* inClientProxy, int index)
 {
     getInstance()->handleLostClient(inClientProxy, index);
 }
@@ -156,7 +156,7 @@ void Server::deleteRobotWithPlayerId(uint8_t playerId)
 
 void Server::spawnRobotForPlayer(int inPlayerId, std::string inPlayerName)
 {
-    Robot* robot = static_cast<Robot*>(SERVER_ENTITY_REGISTRY->createEntity(NETWORK_TYPE_Robot));
+    Robot* robot = static_cast<Robot*>(SERVER_ENTITY_REG->createEntity(NETWORK_TYPE_Robot));
     robot->setPlayerId(inPlayerId);
     robot->setPlayerName(inPlayerName);
     float posX = (rand() % static_cast<int>(GAME_WIDTH - robot->getWidth() * 2)) + (robot->getWidth() * 2);
@@ -197,7 +197,7 @@ void Server::respawnEnemiesIfNecessary()
             
             for (int i = 0; i < numSpacePirates; ++i)
             {
-                SpacePirate* spacePirate = static_cast<SpacePirate*>(SERVER_ENTITY_REGISTRY->createEntity(NETWORK_TYPE_SpacePirate));
+                SpacePirate* spacePirate = static_cast<SpacePirate*>(SERVER_ENTITY_REG->createEntity(NETWORK_TYPE_SpacePirate));
                 
                 float posX = (rand() % static_cast<int>(GAME_WIDTH - spacePirate->getWidth() * 2)) + (spacePirate->getWidth() * 2);
                 float posY = (rand() % static_cast<int>(GAME_HEIGHT - spacePirate->getHeight() * 2)) + (GROUND_TOP + spacePirate->getHeight() * 2);
@@ -243,13 +243,13 @@ void Server::clearClientMoves()
 
 Server::Server(bool isSteam) : m_fStateTime(0), m_fFrameStateTime(0), m_fStateTimeNoEnemies(0), m_isSpawningEnemies(true)
 {
-    FWInstanceManager::createServerEntityManager(InstanceManager::staticHandleEntityCreatedOnServer, InstanceManager::staticHandleEntityDeletedOnServer);
+    FWInstanceManager::createServerEntityManager(InstanceManager::sHandleEntityCreatedOnServer, InstanceManager::sHandleEntityDeletedOnServer);
     
     InstanceManager::createServerWorld();
     
-    SERVER_ENTITY_REGISTRY->registerCreationFunction(NETWORK_TYPE_Robot, Robot::staticCreateServer);
-    SERVER_ENTITY_REGISTRY->registerCreationFunction(NETWORK_TYPE_Projectile, Projectile::staticCreateServer);
-    SERVER_ENTITY_REGISTRY->registerCreationFunction(NETWORK_TYPE_SpacePirate, SpacePirate::staticCreateServer);
+    SERVER_ENTITY_REG->registerCreationFunction(NETWORK_TYPE_Robot, World::sServerCreateRobot);
+    SERVER_ENTITY_REG->registerCreationFunction(NETWORK_TYPE_Projectile, World::sServerCreateProjectile);
+    SERVER_ENTITY_REG->registerCreationFunction(NETWORK_TYPE_SpacePirate, World::sServerCreateSpacePirate);
     
     if (isSteam)
     {

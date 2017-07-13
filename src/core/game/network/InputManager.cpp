@@ -36,17 +36,17 @@ InputManager* InputManager::getInstance()
     return &instance;
 }
 
-void InputManager::staticRemoveProcessedMoves(float inLastMoveProcessedOnServerTimestamp)
+void InputManager::sRemoveProcessedMoves(float inLastMoveProcessedOnServerTimestamp)
 {
     getInstance()->getMoveList().removeProcessedMoves(inLastMoveProcessedOnServerTimestamp);
 }
 
-MoveList& InputManager::staticGetMoveList()
+MoveList& InputManager::sGetMoveList()
 {
     return getInstance()->getMoveList();
 }
 
-void InputManager::staticOnPlayerWelcomed(uint8_t playerId)
+void InputManager::sOnPlayerWelcomed(uint8_t playerId)
 {
     getInstance()->m_currentState->activateNextPlayer(playerId);
 }
