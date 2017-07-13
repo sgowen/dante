@@ -333,15 +333,9 @@ void Robot::takeDamage()
         return;
     }
     
-    m_iHealth--;
-    
-    if (m_iHealth <= 0)
+    if (m_iHealth > 0)
     {
-        // TODO, this is NOT the right way to handle the player dying
-        
-        requestDeletion();
-        
-        Server::sHandleNewClient(m_iPlayerId, m_playerName);
+        m_iHealth--;
     }
     
     // tell the world our health dropped
@@ -518,23 +512,26 @@ void Robot::updateInternal(float inDeltaTime)
         m_fStateTime = 0;
     }
     
+    if (!m_isServer)
+    {
+        return;
+    }
+    
     if (getPosition().y < -5)
     {
-        if (!m_isServer)
-        {
-            return;
-        }
-        
         if (m_iHealth > 0)
         {
             m_iHealth = 0;
-            
-            // TODO, this is NOT the right way to handle the player dying
-            
-            requestDeletion();
-            
-            Server::sHandleNewClient(m_iPlayerId, m_playerName);
         }
+    }
+    
+    if (m_iHealth == 0)
+    {
+        // TODO, this is NOT the right way to handle the player dying
+        
+        requestDeletion();
+        
+        Server::sHandleNewClient(m_iPlayerId, m_playerName);
     }
 }
 
