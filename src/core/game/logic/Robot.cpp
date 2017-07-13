@@ -529,6 +529,8 @@ void Robot::updateInternal(float inDeltaTime)
     {
         // TODO, this is NOT the right way to handle the player dying
         
+        m_iHealth = 255;
+        
         requestDeletion();
         
         Server::sHandleNewClient(m_iPlayerId, m_playerName);
