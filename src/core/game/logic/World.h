@@ -15,6 +15,9 @@
 class Entity;
 class b2World;
 class Robot;
+class Ground;
+
+class EntityContactListener;
 
 class World
 {
@@ -49,6 +52,8 @@ public:
 private:
     std::vector<Entity*> m_entities;
     b2World* m_world;
+    Ground* m_ground;
+    EntityContactListener* m_entityContactListener;
     bool m_isServer;
     
     b2World& getWorld();

@@ -69,16 +69,22 @@ World::World(bool isServer) : m_world(nullptr), m_isServer(isServer)
     // Construct a world object, which will hold and simulate the rigid bodies.
     m_world = new b2World(gravity);
     
-    static Ground ground(*m_world);
+    m_ground = new Ground(*m_world);
     
-    static EntityContactListener entityContactListener;
+    m_entityContactListener = new EntityContactListener();
     
-    m_world->SetContactListener(&entityContactListener);
+    m_world->SetContactListener(m_entityContactListener);
 }
 
 World::~World()
 {
     m_entities.clear();
+    
+    delete m_ground;
+    
+    delete m_entityContactListener;
+    
+    delete m_world;
 }
 
 void World::addEntity(Entity* inEntity)
@@ -205,5 +211,8 @@ void EntityContactListener::BeginContact(b2Contact* contact)
     
     Entity* entityB = static_cast<Entity*>(contact->GetFixtureB()->GetBody()->GetUserData());
     
-    entityA->handleContact(entityB);
+    if (entityA && entityB)
+    {
+        entityA->handleContact(entityB);
+    }
 }

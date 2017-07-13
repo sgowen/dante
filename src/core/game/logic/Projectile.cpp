@@ -14,6 +14,8 @@
 #include "OutputMemoryBitStream.h"
 #include "InputMemoryBitStream.h"
 #include "Robot.h"
+#include "SpacePirate.h"
+#include "Ground.h"
 
 #include "World.h"
 #include "macros.h"
@@ -46,7 +48,7 @@ void Projectile::update()
 {
     if (m_isServer)
     {
-        b2Vec2 oldVelocity = getVelocity();
+        b2Vec2 oldVelocity = b2Vec2(getVelocity().x, getVelocity().y);
         ProjectileState oldState = m_state;
         bool old_isFacingLeft = m_isFacingLeft;
         
@@ -72,28 +74,11 @@ void Projectile::handleContact(Entity* inEntity)
     {
         if (inEntity->getRTTI().derivesFrom(SpacePirate::rtti))
         {
-            if (!m_isServer)
-            {
-                return;
-            }
-            
-            float projBottom = getPosition().y - (m_fHeight / 2.0f);
-            float targTop = inEntity->getPosition().y + (inEntity->getHeight() / 2.0f);
-            float targHead = targTop - inEntity->getHeight() * 0.4f;
-            
-            m_state = ProjectileState_Exploding;
-            m_fStateTime = 0.0f;
-            setVelocity(b2Vec2(0.0f, 0.0f));
-            
-            bool isHeadshot = projBottom > targHead;
-            
-            SpacePirate* spacePirate = static_cast<SpacePirate*>(inEntity);
-            spacePirate->takeDamage(isHeadshot);
-            if (spacePirate->getHealth() == 0)
-            {
-                Robot* robot = InstanceManager::getServerWorld()->getRobotWithPlayerId(getPlayerId());
-                robot->awardKill(isHeadshot);
-            }
+            handleContactWithSpacePirate(static_cast<SpacePirate*>(inEntity));
+        }
+        else if (inEntity->getRTTI().derivesFrom(Ground::rtti))
+        {
+            handleContactWithGround(static_cast<Ground*>(inEntity));
         }
     }
 }
@@ -231,13 +216,56 @@ void Projectile::initFromShooter(Robot* inRobot)
     m_iPlayerId = inRobot->getPlayerId();
     m_isFacingLeft = inRobot->isFacingLeft();
     
-    setVelocity(b2Vec2(m_isFacingLeft ? -20 : 20, getVelocity().y));
+    setVelocity(b2Vec2(m_isFacingLeft ? -50 : 50, getVelocity().y));
     
     b2Vec2 position = inRobot->getPosition();
     position += b2Vec2(m_isFacingLeft ? -0.5f : 0.5f, 0.4f);
     setPosition(position);
     
     setColor(inRobot->getColor());
+}
+
+void Projectile::handleContactWithSpacePirate(SpacePirate* spacePirate)
+{
+    if (!m_isServer)
+    {
+        return;
+    }
+    
+    if (m_state == ProjectileState_Exploding)
+    {
+        return;
+    }
+    
+    float projBottom = getPosition().y - (m_fHeight / 2.0f);
+    float targTop = spacePirate->getPosition().y + (spacePirate->getHeight() / 2.0f);
+    float targHead = targTop - spacePirate->getHeight() * 0.4f;
+    
+    m_state = ProjectileState_Exploding;
+    m_fStateTime = 0.0f;
+    setVelocity(b2Vec2(0.0f, 0.0f));
+    
+    bool isHeadshot = projBottom > targHead;
+    
+    spacePirate->takeDamage(isHeadshot);
+    if (spacePirate->getHealth() == 0)
+    {
+        Robot* robot = InstanceManager::getServerWorld()->getRobotWithPlayerId(getPlayerId());
+        robot->awardKill(isHeadshot);
+    }
+    
+    NG_SERVER->setStateDirty(getID(), PRJC_Pose);
+}
+
+void Projectile::handleContactWithGround(Ground* ground)
+{
+    if (!m_isServer)
+    {
+        return;
+    }
+    
+    m_state = ProjectileState_Exploding;
+    m_fStateTime = 0.0f;
 }
 
 Projectile::ProjectileState Projectile::getState()
@@ -269,11 +297,20 @@ void Projectile::updateInternal(float inDeltaTime)
         return;
     }
     
+    if (getPosition().y < -5
+        || getPosition().x < -10
+        || getPosition().x > GAME_WIDTH + 10)
+    {
+        requestDeletion();
+        return;
+    }
+    
     if (m_state == ProjectileState_Exploding)
     {
         if (m_fStateTime > 0.5f)
         {
             requestDeletion();
+            return;
         }
     }
 }

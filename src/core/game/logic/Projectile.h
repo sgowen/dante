@@ -14,6 +14,8 @@
 #include "GameConstants.h"
 
 class Robot;
+class SpacePirate;
+class Ground;
 
 class Projectile : public Entity
 {
@@ -50,6 +52,10 @@ public:
     virtual uint32_t write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState);
     
     void initFromShooter(Robot* inRobot);
+    
+    void handleContactWithSpacePirate(SpacePirate* spacePirate);
+    
+    void handleContactWithGround(Ground* ground);
     
     ProjectileState getState();
     

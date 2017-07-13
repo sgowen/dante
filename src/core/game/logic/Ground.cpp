@@ -13,27 +13,14 @@
 #include "Box2D/Box2D.h"
 #include "OutputMemoryBitStream.h"
 #include "InputMemoryBitStream.h"
-#include "Robot.h"
 
-#include "World.h"
-#include "macros.h"
-#include "GameConstants.h"
-#include "Timing.h"
-#include "StringUtil.h"
-#include "Move.h"
-#include "MathUtil.h"
-#include "NGRect.h"
+#include "Robot.h"
+#include "Projectile.h"
 #include "SpacePirate.h"
-#include "OverlapTester.h"
-#include "NetworkManagerServer.h"
-#include "NetworkManagerClient.h"
-#include "NGAudioEngine.h"
-#include "InstanceManager.h"
-#include "Util.h"
 
 #include <math.h>
 
-Ground::Ground(b2World& world) : Entity(world, 0.0f, -10.0f, GAME_WIDTH, 20.0f, true)
+Ground::Ground(b2World& world) : Entity(world, GAME_WIDTH / 2.0f, -10.0f, GAME_WIDTH, 23.6f, true)
 {
     // Empty
 }
@@ -45,7 +32,22 @@ void Ground::update()
 
 void Ground::handleContact(Entity* inEntity)
 {
-    // Empty
+    if (inEntity != this
+        && !inEntity->isRequestingDeletion())
+    {
+        if (inEntity->getRTTI().derivesFrom(Robot::rtti))
+        {
+            (static_cast<Robot*>(inEntity))->handleContactWithGround(this);
+        }
+        else if (inEntity->getRTTI().derivesFrom(Projectile::rtti))
+        {
+            (static_cast<Projectile*>(inEntity))->handleContactWithGround(this);
+        }
+        else if (inEntity->getRTTI().derivesFrom(SpacePirate::rtti))
+        {
+            (static_cast<SpacePirate*>(inEntity))->handleContactWithGround(this);
+        }
+    }
 }
 
 uint32_t Ground::getAllStateMask() const

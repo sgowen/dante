@@ -555,7 +555,7 @@ void MainRenderer::updateCamera()
             }
             
             float x = pX - w * 0.5f;
-            x = clamp(x, GAME_WIDTH, 0);
+            //x = clamp(x, GAME_WIDTH, 0);
             
             float y = pY - h * 0.5f;
             y = clamp(y, GAME_HEIGHT, 0);

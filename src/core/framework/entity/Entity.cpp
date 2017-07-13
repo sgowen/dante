@@ -20,6 +20,9 @@
 #include "macros.h"
 
 Entity::Entity(b2World& world, float x, float y, float width, float height, bool isStaticBody) :
+m_worldRef(world),
+m_body(nullptr),
+m_fixture(nullptr),
 m_fStateTime(0.0f),
 m_color(1.0f, 1.0f, 1.0f, 1.0f),
 m_fWidth(width),
@@ -45,7 +48,7 @@ m_isRequestingDeletion(false)
         groundBox.SetAsBox(width / 2.0f, height / 2.0f);
         
         // Add the ground fixture to the ground body.
-        m_body->CreateFixture(&groundBox, 0.0f);
+        m_fixture = m_body->CreateFixture(&groundBox, 0.0f);
     }
     else
     {
@@ -70,7 +73,7 @@ m_isRequestingDeletion(false)
         fixtureDef.friction = 0.3f;
         
         // Add the shape to the body.
-        m_body->CreateFixture(&fixtureDef);
+        m_fixture = m_body->CreateFixture(&fixtureDef);
     }
     
     m_body->SetUserData(this);
@@ -78,7 +81,17 @@ m_isRequestingDeletion(false)
 
 Entity::~Entity()
 {
-    // Empty
+    if (m_fixture)
+    {
+        m_body->DestroyFixture(m_fixture);
+        m_fixture = nullptr;
+    }
+    
+    if (m_body)
+    {
+        m_worldRef.DestroyBody(m_body);
+        m_body = nullptr;
+    }
 }
 
 void Entity::setStateTime(float stateTime)
@@ -143,6 +156,7 @@ const float& Entity::getHeight()
 
 void Entity::setAngle(float angle)
 {
+    angle = DEGREES_TO_RADIANS(angle);
     m_body->SetTransform(m_body->GetPosition(), angle);
 }
 

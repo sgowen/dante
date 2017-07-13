@@ -15,6 +15,7 @@
 #include "InputMemoryBitStream.h"
 #include "InputState.h"
 #include "Move.h"
+#include "Ground.h"
 
 #include "World.h"
 #include "macros.h"
@@ -35,6 +36,7 @@
 #include "Util.h"
 #include "Server.h"
 #include "Ground.h"
+#include "SpacePirate.h"
 
 #include <math.h>
 
@@ -46,7 +48,7 @@ m_iNumJumps(0),
 m_isFacingLeft(false),
 m_isShooting(false),
 m_isSprinting(false),
-m_iHealth(255),
+m_iHealth(25),
 m_iNumKills(0),
 m_wasLastKillHeadshot(false),
 m_fSpeed(7.5f),
@@ -68,8 +70,8 @@ void Robot::update()
 {
     if (m_isServer)
     {
-        b2Vec2 oldVelocity = getVelocity();
-        b2Vec2 oldPosition = getPosition();
+        b2Vec2 oldVelocity = b2Vec2(getVelocity().x, getVelocity().y);
+        b2Vec2 oldPosition = b2Vec2(getPosition().x, getPosition().y);
         uint8_t oldNumJumps = m_iNumJumps;
         bool old_m_isGrounded = m_isGrounded;
         bool old_m_isFalling = m_isFalling;
@@ -124,11 +126,13 @@ void Robot::handleContact(Entity* inEntity)
     if (inEntity != this
         && !inEntity->isRequestingDeletion())
     {
-        if (inEntity->getRTTI().derivesFrom(Ground::rtti))
+        if (inEntity->getRTTI().derivesFrom(SpacePirate::rtti))
         {
-            m_iNumJumps = 0;
-            m_isGrounded = true;
-            m_isFalling = false;
+            (static_cast<SpacePirate*>(inEntity))->handleContactWithRobot(this);
+        }
+        else if (inEntity->getRTTI().derivesFrom(Ground::rtti))
+        {
+            handleContactWithGround(nullptr);
         }
     }
 }
@@ -140,8 +144,8 @@ uint32_t Robot::getAllStateMask() const
 
 void Robot::read(InputMemoryBitStream& inInputStream)
 {
-    b2Vec2 oldVelocity = getVelocity();
-    b2Vec2 oldPosition = getPosition();
+    b2Vec2 oldVelocity = b2Vec2(getVelocity().x, getVelocity().y);
+    b2Vec2 oldPosition = b2Vec2(getPosition().x, getPosition().y);
     uint8_t old_m_iNumJumps = m_iNumJumps;
     bool old_m_isSprinting = m_isSprinting;
     uint32_t old_m_iNumKills = m_iNumKills;
@@ -315,6 +319,13 @@ uint32_t Robot::write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtySta
     return writtenState;
 }
 
+void Robot::handleContactWithGround(Ground* ground)
+{
+    m_iNumJumps = 0;
+    m_isGrounded = true;
+    m_isFalling = false;
+}
+
 void Robot::takeDamage()
 {
     if (!m_isServer)
@@ -451,7 +462,7 @@ void Robot::processInput(float inDeltaTime, IInputState* inInputState)
     
     if (inputState->isJumping())
     {
-        if (m_isGrounded)
+        if (m_isGrounded && areFloatsPracticallyEqual(getAngle(), 0))
         {
             m_fStateTime = 0;
             m_isGrounded = false;
@@ -496,21 +507,50 @@ void Robot::updateInternal(float inDeltaTime)
 {
     m_fStateTime += inDeltaTime;
     
+    if (m_isGrounded)
+    {
+        setAngle(0);
+    }
+    
     if (getVelocity().y < 0 && !m_isFalling)
     {
         m_isFalling = true;
         m_fStateTime = 0;
     }
+    
+    if (getPosition().y < -5)
+    {
+        if (!m_isServer)
+        {
+            return;
+        }
+        
+        if (m_iHealth > 0)
+        {
+            m_iHealth = 0;
+            
+            // TODO, this is NOT the right way to handle the player dying
+            
+            requestDeletion();
+            
+            Server::sHandleNewClient(m_iPlayerId, m_playerName);
+        }
+    }
 }
 
 void Robot::handleShooting()
 {
+    if (!m_isServer)
+    {
+        return;
+    }
+    
     float time = Timing::getInstance()->getFrameStartTime();
     
     if (m_isShooting && time > m_fTimeOfNextShot)
     {
         // not exact, but okay
-        m_fTimeOfNextShot = time + 0.25f;
+        m_fTimeOfNextShot = time + 0.05f;
         
         // fire!
         Projectile* projectile = static_cast<Projectile*>(SERVER_ENTITY_REG->createEntity(NETWORK_TYPE_Projectile));

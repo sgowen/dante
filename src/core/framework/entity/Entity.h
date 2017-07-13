@@ -19,6 +19,7 @@
 class b2World;
 class b2Vec2;
 class b2Body;
+class b2Fixture;
 class OutputMemoryBitStream;
 class InputMemoryBitStream;
 
@@ -88,8 +89,10 @@ public:
     bool isRequestingDeletion();
     
 protected:
-    float m_fStateTime;
+    b2World& m_worldRef;
     b2Body* m_body;
+    b2Fixture* m_fixture;
+    float m_fStateTime;
     Color m_color;
     float m_fWidth;
     float m_fHeight;

@@ -17,6 +17,7 @@
 
 class IInputState;
 class Move;
+class Ground;
 
 class Robot : public Entity
 {
@@ -47,6 +48,8 @@ public:
     virtual void read(InputMemoryBitStream& inInputStream);
     
     virtual uint32_t write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState);
+    
+    void handleContactWithGround(Ground* ground);
     
     void takeDamage();
     

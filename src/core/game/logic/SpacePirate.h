@@ -14,6 +14,7 @@
 #include "GameConstants.h"
 
 class Robot;
+class Ground;
 
 class SpacePirate : public Entity
 {
@@ -45,6 +46,10 @@ public:
     virtual uint32_t write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState);
     
     void init(float x, float y, float speed, int scale, uint8_t health);
+    
+    void handleContactWithRobot(Robot* robot);
+    
+    void handleContactWithGround(Ground* ground);
     
     void takeDamage(bool isHeadshot);
     

@@ -28,6 +28,7 @@
 #include "NetworkManagerClient.h"
 #include "InstanceManager.h"
 #include "Ground.h"
+#include "Projectile.h"
 
 #include <math.h>
 
@@ -53,7 +54,7 @@ void SpacePirate::update()
     
     if (m_isServer)
     {
-        b2Vec2 oldVelocity = getVelocity();
+        b2Vec2 oldVelocity = b2Vec2(getVelocity().x, getVelocity().y);
         bool old_isFacingLeft = m_isFacingLeft;
         bool old_isGrounded = m_isGrounded;
         bool old_isFalling = m_isFalling;
@@ -83,14 +84,17 @@ void SpacePirate::handleContact(Entity* inEntity)
         {
             Robot* robot = static_cast<Robot*>(inEntity);
             
-            // Deal Damage to player robot
-            robot->takeDamage();
+            handleContactWithRobot(robot);
         }
         else if (inEntity->getRTTI().derivesFrom(Ground::rtti))
         {
-            m_isGrounded = true;
-            m_isFalling = false;
-            m_isJumping = false;
+            handleContactWithGround(nullptr);
+        }
+        else if (inEntity->getRTTI().derivesFrom(Projectile::rtti))
+        {
+            Projectile* projectile = static_cast<Projectile*>(inEntity);
+            
+            projectile->handleContactWithSpacePirate(this);
         }
     }
 }
@@ -218,13 +222,46 @@ uint32_t SpacePirate::write(OutputMemoryBitStream& inOutputStream, uint32_t inDi
 void SpacePirate::init(float x, float y, float speed, int scale, uint8_t health)
 {
     setPosition(b2Vec2(x, y));
+    
     m_fSpeed = speed;
     
     m_fWidth *= scale;
     m_fHeight *= scale;
     
+    // Define another box shape for our dynamic body.
+    b2PolygonShape dynamicBox;
+    dynamicBox.SetAsBox(m_fWidth / 2.0f, m_fHeight / 2.0f);
+    
+    // Define the dynamic body fixture.
+    b2FixtureDef fixtureDef;
+    fixtureDef.shape = &dynamicBox;
+    
+    // Set the box density to be non-zero, so it will be dynamic.
+    fixtureDef.density = 1.0f;
+    
+    // Override the default friction.
+    fixtureDef.friction = 0.3f;
+    
+    m_body->DestroyFixture(m_fixture);
+    
+    // Add the shape to the body.
+    m_body->CreateFixture(&fixtureDef);
+    
     m_iHealth = health;
     m_fStartingHealth = m_iHealth;
+}
+
+void SpacePirate::handleContactWithRobot(Robot* robot)
+{
+    // Deal Damage to player robot
+    robot->takeDamage();
+}
+
+void SpacePirate::handleContactWithGround(Ground* ground)
+{
+    m_isGrounded = true;
+    m_isFalling = false;
+    m_isJumping = false;
 }
 
 void SpacePirate::takeDamage(bool isHeadshot)
@@ -234,7 +271,7 @@ void SpacePirate::takeDamage(bool isHeadshot)
         return;
     }
     
-    m_iHealth -= isHeadshot ? 8 : 1;
+    m_iHealth -= isHeadshot ? 32 : 1;
     if (m_iHealth > m_fStartingHealth)
     {
         // We are using unsigned values for health
@@ -269,8 +306,26 @@ void SpacePirate::updateInternal(float inDeltaTime)
 {
     m_fStateTime += inDeltaTime;
     
+    if (m_isGrounded)
+    {
+        setAngle(0);
+    }
+    
+    if (getVelocity().y < 0 && !m_isFalling)
+    {
+        m_isFalling = true;
+        m_fStateTime = 0;
+    }
+    
     if (!m_isServer)
     {
+        return;
+    }
+    
+    if (getPosition().y < -5)
+    {
+        requestDeletion();
+        
         return;
     }
     
@@ -314,6 +369,8 @@ void SpacePirate::updateInternal(float inDeltaTime)
                 setVelocity(b2Vec2(m_isFacingLeft ? -m_fSpeed : m_fSpeed, getVelocity().y));
                 
                 targetFound = true;
+                
+                NG_SERVER->setStateDirty(getID(), SPCP_Pose);
             }
         }
     }
@@ -323,6 +380,8 @@ void SpacePirate::updateInternal(float inDeltaTime)
         m_isFacingLeft = true;
         
         setVelocity(b2Vec2(0, getVelocity().y));
+        
+        NG_SERVER->setStateDirty(getID(), SPCP_Pose);
     }
 }
 

@@ -433,9 +433,9 @@ void MainEngine::disconnect()
     {
         NetworkManagerClient::destroy();
         
-        InstanceManager::destroyClientWorld();
-        
         FWInstanceManager::destroyClientEntityManager();
+        
+        InstanceManager::destroyClientWorld();
     }
     
     if (Server::getInstance())
