@@ -125,6 +125,7 @@ void SpacePirate::read(InputMemoryBitStream& inInputStream)
         
         inInputStream.read(m_isFacingLeft);
         inInputStream.read(m_isJumping);
+        inInputStream.read(m_isGrounded);
         
         readState |= SPCP_Pose;
     }
@@ -168,6 +169,7 @@ uint32_t SpacePirate::write(OutputMemoryBitStream& inOutputStream, uint32_t inDi
         
         inOutputStream.write((bool)m_isFacingLeft);
         inOutputStream.write((bool)m_isJumping);
+        inOutputStream.write((bool)m_isGrounded);
         
         writtenState |= SPCP_Pose;
     }
