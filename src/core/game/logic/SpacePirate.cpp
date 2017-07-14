@@ -265,7 +265,10 @@ void SpacePirate::handleContactWithGround(Ground* ground)
     m_isFalling = false;
     m_isJumping = false;
     
-    NG_SERVER->setStateDirty(getID(), SPCP_Pose);
+    if (m_isServer)
+    {
+        NG_SERVER->setStateDirty(getID(), SPCP_Pose);
+    }
 }
 
 void SpacePirate::takeDamage(bool isHeadshot)

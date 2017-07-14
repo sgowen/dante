@@ -325,7 +325,10 @@ void Robot::handleContactWithGround(Ground* ground)
     m_isGrounded = true;
     m_isFalling = false;
     
-    NG_SERVER->setStateDirty(getID(), ROBT_Pose);
+    if (m_isServer)
+    {
+        NG_SERVER->setStateDirty(getID(), ROBT_Pose);
+    }
 }
 
 void Robot::takeDamage()
