@@ -28,20 +28,14 @@
 
 @interface JoystickController : NSObject
 {
-    NSArray * mJoysticks;
-    NSMutableArray * mJoystickButtons;
+    NSMutableArray* mJoysticks;
+    NSMutableArray* mJoystickButtons;
+    NSMutableArray* mLastDPadEvents;
     float mJoystickAxis[8];
-    float m_fStateTime;
     NSUInteger mJoystickIndex;
 }
 
 - (void)scan;
-
-- (NSArray *)joysticks;
-
-- (NSArray *)joystickButtons;
-
-- (NSUInteger)joystickIndex;
 
 - (void)listenOnJoystick:(NSUInteger)index;
 

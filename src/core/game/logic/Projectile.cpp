@@ -33,22 +33,14 @@
 
 #include <math.h>
 
-Entity* Projectile::staticCreateClient()
+Projectile::Projectile(bool isServer) : Entity(0, 0, 1.565217391304348f * 0.444444444444444f, 2.0f * 0.544423440453686f),
+m_isServer(isServer),
+m_iPlayerId(0),
+m_state(ProjectileState_Active),
+m_isFacingLeft(false),
+m_fTimePositionBecameOutOfSync(0.0f)
 {
-    return new Projectile(false);
-}
-
-Entity* Projectile::staticCreateServer()
-{
-    return new Projectile(true);
-}
-
-void Projectile::onDeletion()
-{
-    if (m_isServer)
-    {
-        NG_SERVER->unregisterEntity(this);
-    }
+    // Empty
 }
 
 void Projectile::update()
@@ -238,6 +230,11 @@ void Projectile::updateInternal(float inDeltaTime)
 {
     Entity::update(inDeltaTime);
     
+    if (!m_isServer)
+    {
+        return;
+    }
+    
     if (m_state == ProjectileState_Active)
     {
         processCollisions();
@@ -253,12 +250,12 @@ void Projectile::updateInternal(float inDeltaTime)
 
 void Projectile::processCollisions()
 {
-    processCollisionsWithScreenWalls();
-    
     if (!m_isServer)
     {
         return;
     }
+    
+    processCollisionsWithScreenWalls();
     
     std::vector<Entity*> entities = InstanceManager::getServerWorld()->getEntities();
     for (Entity* target : entities)
@@ -304,19 +301,6 @@ void Projectile::processCollisionsWithScreenWalls()
 void Projectile::playSound(int soundId)
 {
     Util::playSound(soundId, getPosition(), m_isServer);
-}
-
-Projectile::Projectile(bool isServer) : Entity(0, 0, 1.565217391304348f * 0.444444444444444f, 2.0f * 0.544423440453686f),
-m_isServer(isServer),
-m_iPlayerId(0),
-m_state(ProjectileState_Active),
-m_isFacingLeft(false),
-m_fTimePositionBecameOutOfSync(0.0f)
-{
-    if (m_isServer)
-    {
-        NG_SERVER->registerEntity(this);
-    }
 }
 
 RTTI_IMPL(Projectile, Entity);

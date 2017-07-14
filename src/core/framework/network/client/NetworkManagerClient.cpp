@@ -33,11 +33,11 @@
 
 NetworkManagerClient* NetworkManagerClient::s_instance = nullptr;
 
-void NetworkManagerClient::create(IClientHelper* inClientHelper, float inFrameRate, RemoveProcessedMovesFunc inRemoveProcessedMovesFunc, GetMoveListFunc inGetMoveListFunc)
+void NetworkManagerClient::create(IClientHelper* inClientHelper, float inFrameRate, RemoveProcessedMovesFunc inRemoveProcessedMovesFunc, GetMoveListFunc inGetMoveListFunc, OnPlayerWelcomedFunc inOnPlayerWelcomedFunc)
 {
     assert(!s_instance);
     
-    s_instance = new NetworkManagerClient(inClientHelper, inFrameRate, inRemoveProcessedMovesFunc, inGetMoveListFunc);
+    s_instance = new NetworkManagerClient(inClientHelper, inFrameRate, inRemoveProcessedMovesFunc, inGetMoveListFunc, inOnPlayerWelcomedFunc);
 }
 
 void NetworkManagerClient::destroy()
@@ -53,17 +53,17 @@ NetworkManagerClient * NetworkManagerClient::getInstance()
     return s_instance;
 }
 
-void NetworkManagerClient::staticProcessPacket(InputMemoryBitStream& inInputStream, IMachineAddress* inFromAddress)
+void NetworkManagerClient::sProcessPacket(InputMemoryBitStream& inInputStream, IMachineAddress* inFromAddress)
 {
     NG_CLIENT->processPacket(inInputStream, static_cast<SocketAddress*>(inFromAddress));
 }
 
-void NetworkManagerClient::staticHandleNoResponse()
+void NetworkManagerClient::sHandleNoResponse()
 {
     NG_CLIENT->handleNoResponse();
 }
 
-void NetworkManagerClient::staticHandleConnectionReset(IMachineAddress* inFromAddress)
+void NetworkManagerClient::sHandleConnectionReset(IMachineAddress* inFromAddress)
 {
     NG_CLIENT->handleConnectionReset(static_cast<SocketAddress*>(inFromAddress));
 }
@@ -82,6 +82,8 @@ void NetworkManagerClient::sendOutgoingPackets()
             break;
         case NCS_Welcomed:
             updateSendingInputPacket();
+            updateAddLocalPlayerRequest();
+            updateDropLocalPlayerRequest();
             break;
         case NCS_Uninitialized:
             m_clientHelper->handleUninitialized();
@@ -105,6 +107,29 @@ void NetworkManagerClient::sendOutgoingPackets()
     }
 }
 
+void NetworkManagerClient::requestToAddLocalPlayer()
+{
+    m_isRequestingToAddLocalPlayer = true;
+    
+    m_isRequestingToDropLocalPlayer = 0;
+}
+
+void NetworkManagerClient::requestToDropLocalPlayer(int index)
+{
+    if (index < 1)
+    {
+        return;
+    }
+    
+    m_isRequestingToDropLocalPlayer = index;
+    
+    m_isRequestingToAddLocalPlayer = false;
+    
+    m_indexToPlayerIdMap.erase(index);
+    
+    updateNextIndex();
+}
+
 const WeightedTimedMovingAverage& NetworkManagerClient::getBytesReceivedPerSecond() const
 {
     return m_clientHelper->getBytesReceivedPerSecond();
@@ -125,9 +150,22 @@ float NetworkManagerClient::getRoundTripTime() const
     return m_avgRoundTripTime->getValue();
 }
 
-int NetworkManagerClient::getPlayerId() const
+bool NetworkManagerClient::isPlayerIdLocal(uint8_t inPlayerId) const
 {
-    return m_iPlayerId;
+    for (auto const &entry : m_indexToPlayerIdMap)
+    {
+        if (entry.second == inPlayerId)
+        {
+            return true;
+        }
+    }
+    
+    return false;
+}
+
+std::unordered_map<uint8_t, uint8_t>& NetworkManagerClient::getPlayerIds()
+{
+    return m_indexToPlayerIdMap;
 }
 
 std::string& NetworkManagerClient::getPlayerName()
@@ -152,8 +190,11 @@ void NetworkManagerClient::processPacket(InputMemoryBitStream& inInputStream, IM
         case NETWORK_PACKET_TYPE_WELCOME:
             handleWelcomePacket(inInputStream);
             break;
-        case NETWORK_PACKET_TYPE_DENY:
-            handleDenyPacket();
+        case NETWORK_PACKET_TYPE_LOCAL_PLAYER_ADDED:
+            handleLocalPlayerAddedPacket(inInputStream);
+            break;
+        case NETWORK_PACKET_TYPE_LOCAL_PLAYER_DENIED:
+            handleLocalPlayerDeniedPacket();
             break;
         case NETWORK_PACKET_TYPE_STATE:
             if (m_deliveryNotificationManager->readAndProcessState(inInputStream))
@@ -194,19 +235,15 @@ void NetworkManagerClient::updateSayingHello()
     
     if (time > m_fTimeOfLastHello + NETWORK_CLIENT_TIME_BETWEEN_HELLOS)
     {
-        sendHelloPacket();
+        OutputMemoryBitStream helloPacket;
+        
+        helloPacket.write(NETWORK_PACKET_TYPE_HELLO);
+        helloPacket.write(getPlayerName());
+        
+        sendPacket(helloPacket);
+        
         m_fTimeOfLastHello = time;
     }
-}
-
-void NetworkManagerClient::sendHelloPacket()
-{
-    OutputMemoryBitStream helloPacket;
-    
-    helloPacket.write(NETWORK_PACKET_TYPE_HELLO);
-    helloPacket.write(getPlayerName());
-    
-    sendPacket(helloPacket);
 }
 
 void NetworkManagerClient::handleWelcomePacket(InputMemoryBitStream& inInputStream)
@@ -214,20 +251,48 @@ void NetworkManagerClient::handleWelcomePacket(InputMemoryBitStream& inInputStre
     if (m_state == NCS_SayingHello)
     {
         // if we got a player id, we've been welcomed!
-        int playerId;
+        uint8_t playerId;
         inInputStream.read(playerId);
-        m_iPlayerId = playerId;
+        
         m_state = NCS_Welcomed;
         
-        LOG("'%s' was welcomed on client as player %d", getPlayerName().c_str(), m_iPlayerId);
+        m_indexToPlayerIdMap.clear();
+        m_indexToPlayerIdMap[m_iNextIndex] = playerId;
+        
+        LOG("'%s' was welcomed on client as player %d", getPlayerName().c_str(), playerId);
+        
+        m_onPlayerWelcomedFunc(playerId);
+        
+        updateNextIndex();
     }
 }
 
-void NetworkManagerClient::handleDenyPacket()
+void NetworkManagerClient::handleLocalPlayerAddedPacket(InputMemoryBitStream& inInputStream)
 {
-    LOG("'%s' was denied on client, disconnecting...", getPlayerName().c_str());
+    if (m_state == NCS_Welcomed
+        && m_isRequestingToAddLocalPlayer)
+    {
+        // if we got a player id, our local player has been added!
+        uint8_t playerId;
+        inInputStream.read(playerId);
+        
+        m_indexToPlayerIdMap[m_iNextIndex] = playerId;
+        
+        LOG("'%s(%d)' was welcomed on client as player %d", getPlayerName().c_str(), m_iNextIndex, playerId);
+        
+        m_isRequestingToAddLocalPlayer = false;
+        
+        m_onPlayerWelcomedFunc(playerId);
+        
+        updateNextIndex();
+    }
+}
+
+void NetworkManagerClient::handleLocalPlayerDeniedPacket()
+{
+    LOG("'%s(%d)' was denied on client...", getPlayerName().c_str(), m_iNextIndex);
     
-    m_state = NCS_Disconnected;
+    m_isRequestingToAddLocalPlayer = false;
 }
 
 void NetworkManagerClient::handleStatePacket(InputMemoryBitStream& inInputStream)
@@ -302,10 +367,63 @@ void NetworkManagerClient::sendInputPacket()
     }
 }
 
-NetworkManagerClient::NetworkManagerClient(IClientHelper* inClientHelper, float inFrameRate, RemoveProcessedMovesFunc inRemoveProcessedMovesFunc, GetMoveListFunc inGetMoveListFunc) :
+void NetworkManagerClient::updateAddLocalPlayerRequest()
+{
+    if (m_isRequestingToAddLocalPlayer)
+    {
+        m_isRequestingToDropLocalPlayer = 0;
+        
+        float time = Timing::getInstance()->getFrameStartTime();
+        
+        if (time > m_fTimeOfLastHello + NETWORK_CLIENT_TIME_BETWEEN_HELLOS)
+        {
+            OutputMemoryBitStream packet;
+            
+            packet.write(NETWORK_PACKET_TYPE_ADD_LOCAL_PLAYER);
+            packet.write(m_iNextIndex);
+            
+            sendPacket(packet);
+            
+            m_fTimeOfLastHello = time;
+        }
+    }
+}
+
+void NetworkManagerClient::updateDropLocalPlayerRequest()
+{
+    if (m_isRequestingToDropLocalPlayer > 0)
+    {
+        m_isRequestingToAddLocalPlayer = false;
+        
+        OutputMemoryBitStream packet;
+        
+        packet.write(NETWORK_PACKET_TYPE_DROP_LOCAL_PLAYER);
+        packet.write(m_isRequestingToDropLocalPlayer);
+        
+        sendPacket(packet);
+        
+        m_isRequestingToDropLocalPlayer = 0;
+    }
+}
+
+void NetworkManagerClient::updateNextIndex()
+{
+    // Find the next available Player ID
+    m_iNextIndex = 0;
+    for (auto const &entry : m_indexToPlayerIdMap)
+    {
+        if (entry.first == m_iNextIndex)
+        {
+            ++m_iNextIndex;
+        }
+    }
+}
+
+NetworkManagerClient::NetworkManagerClient(IClientHelper* inClientHelper, float inFrameRate, RemoveProcessedMovesFunc inRemoveProcessedMovesFunc, GetMoveListFunc inGetMoveListFunc, OnPlayerWelcomedFunc inOnPlayerWelcomedFunc) :
 m_clientHelper(inClientHelper),
 m_removeProcessedMovesFunc(inRemoveProcessedMovesFunc),
 m_getMoveListFunc(inGetMoveListFunc),
+m_onPlayerWelcomedFunc(inOnPlayerWelcomedFunc),
 m_replicationManagerClient(new ReplicationManagerClient()),
 m_avgRoundTripTime(new WeightedTimedMovingAverage(1.f)),
 m_state(NCS_Uninitialized),
@@ -314,7 +432,10 @@ m_fTimeOfLastHello(0.0f),
 m_fTimeOfLastInputPacket(0.0f),
 m_fLastMoveProcessedByServerTimestamp(0.0f),
 m_fLastServerCommunicationTimestamp(Timing::getInstance()->getFrameStartTime()),
-m_fFrameRate(inFrameRate)
+m_fFrameRate(inFrameRate),
+m_isRequestingToAddLocalPlayer(false),
+m_isRequestingToDropLocalPlayer(0),
+m_iNextIndex(0)
 {
     // Empty
 }

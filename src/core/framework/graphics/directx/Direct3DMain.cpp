@@ -155,114 +155,133 @@ void Direct3DMain::Update(DX::StepTimer const& timer)
 		}
 	}
 
-	auto gamePadState = m_gamePad->GetState(0);
-	if (gamePadState.IsConnected())
+	for (int i = 0; i < MAX_NUM_PLAYERS_PER_SERVER; ++i)
 	{
-        m_buttons.Update(gamePadState);
+		auto gamePadState = m_gamePad->GetState(i);
+		if (gamePadState.IsConnected())
+		{
+			m_buttons[i].Update(gamePadState);
 
-		if (m_buttons.dpadRight == GamePad::ButtonStateTracker::PRESSED)
-		{
-			GAME_PAD_INPUT_MANAGER->onInput(GamePadEventType_D_PAD_RIGHT, 0, 1);
-		}
-		else if (m_buttons.dpadRight == GamePad::ButtonStateTracker::RELEASED)
-		{
-			GAME_PAD_INPUT_MANAGER->onInput(GamePadEventType_D_PAD_RIGHT, 0);
-		}
-		if (m_buttons.dpadUp == GamePad::ButtonStateTracker::PRESSED)
-		{
-			GAME_PAD_INPUT_MANAGER->onInput(GamePadEventType_D_PAD_UP, 0, 1);
-		}
-		else if (m_buttons.dpadUp == GamePad::ButtonStateTracker::RELEASED)
-		{
-			GAME_PAD_INPUT_MANAGER->onInput(GamePadEventType_D_PAD_UP, 0);
-		}
-		if (m_buttons.dpadLeft == GamePad::ButtonStateTracker::PRESSED)
-		{
-			GAME_PAD_INPUT_MANAGER->onInput(GamePadEventType_D_PAD_LEFT, 0, 1);
-		}
-		else if (m_buttons.dpadLeft == GamePad::ButtonStateTracker::RELEASED)
-		{
-			GAME_PAD_INPUT_MANAGER->onInput(GamePadEventType_D_PAD_LEFT, 0);
-		}
-		if (m_buttons.dpadDown == GamePad::ButtonStateTracker::PRESSED)
-		{
-			GAME_PAD_INPUT_MANAGER->onInput(GamePadEventType_D_PAD_DOWN, 0, 1);
-		}
-		else if (m_buttons.dpadDown == GamePad::ButtonStateTracker::RELEASED)
-		{
-			GAME_PAD_INPUT_MANAGER->onInput(GamePadEventType_D_PAD_DOWN, 0);
-		}
-        
-		if (m_buttons.a == GamePad::ButtonStateTracker::PRESSED)
-		{
-			GAME_PAD_INPUT_MANAGER->onInput(GamePadEventType_A_BUTTON, 0, 1);
-		}
-		else if (m_buttons.a == GamePad::ButtonStateTracker::RELEASED)
-		{
-			GAME_PAD_INPUT_MANAGER->onInput(GamePadEventType_A_BUTTON, 0);
-		}
-		if (m_buttons.b == GamePad::ButtonStateTracker::PRESSED)
-		{
-			GAME_PAD_INPUT_MANAGER->onInput(GamePadEventType_B_BUTTON, 0, 1);
-		}
-		else if (m_buttons.b == GamePad::ButtonStateTracker::RELEASED)
-		{
-			GAME_PAD_INPUT_MANAGER->onInput(GamePadEventType_B_BUTTON, 0);
-		}
-		if (m_buttons.x == GamePad::ButtonStateTracker::PRESSED)
-		{
-			GAME_PAD_INPUT_MANAGER->onInput(GamePadEventType_X_BUTTON, 0, 1);
-		}
-		else if (m_buttons.x == GamePad::ButtonStateTracker::RELEASED)
-		{
-			GAME_PAD_INPUT_MANAGER->onInput(GamePadEventType_X_BUTTON, 0);
-		}
-		if (m_buttons.y == GamePad::ButtonStateTracker::PRESSED)
-		{
-			GAME_PAD_INPUT_MANAGER->onInput(GamePadEventType_Y_BUTTON, 0, 1);
-		}
-		else if (m_buttons.y == GamePad::ButtonStateTracker::RELEASED)
-		{
-			GAME_PAD_INPUT_MANAGER->onInput(GamePadEventType_Y_BUTTON, 0);
-		}
+			if (m_buttons[i].dpadRight == GamePad::ButtonStateTracker::PRESSED)
+			{
+				GAME_PAD_INPUT_MANAGER->onInput(GamePadEventType_D_PAD_RIGHT, i, 1);
+			}
+			else if (m_buttons[i].dpadRight == GamePad::ButtonStateTracker::RELEASED)
+			{
+				GAME_PAD_INPUT_MANAGER->onInput(GamePadEventType_D_PAD_RIGHT, i);
+			}
+			if (m_buttons[i].dpadUp == GamePad::ButtonStateTracker::PRESSED)
+			{
+				GAME_PAD_INPUT_MANAGER->onInput(GamePadEventType_D_PAD_UP, i, 1);
+			}
+			else if (m_buttons[i].dpadUp == GamePad::ButtonStateTracker::RELEASED)
+			{
+				GAME_PAD_INPUT_MANAGER->onInput(GamePadEventType_D_PAD_UP, i);
+			}
+			if (m_buttons[i].dpadLeft == GamePad::ButtonStateTracker::PRESSED)
+			{
+				GAME_PAD_INPUT_MANAGER->onInput(GamePadEventType_D_PAD_LEFT, i, 1);
+			}
+			else if (m_buttons[i].dpadLeft == GamePad::ButtonStateTracker::RELEASED)
+			{
+				GAME_PAD_INPUT_MANAGER->onInput(GamePadEventType_D_PAD_LEFT, i);
+			}
+			if (m_buttons[i].dpadDown == GamePad::ButtonStateTracker::PRESSED)
+			{
+				GAME_PAD_INPUT_MANAGER->onInput(GamePadEventType_D_PAD_DOWN, i, 1);
+			}
+			else if (m_buttons[i].dpadDown == GamePad::ButtonStateTracker::RELEASED)
+			{
+				GAME_PAD_INPUT_MANAGER->onInput(GamePadEventType_D_PAD_DOWN, i);
+			}
 
-		if (m_buttons.rightShoulder == GamePad::ButtonStateTracker::PRESSED)
-		{
-			GAME_PAD_INPUT_MANAGER->onInput(GamePadEventType_BUMPER_RIGHT, 0, 1);
-		}
-		else if (m_buttons.rightShoulder == GamePad::ButtonStateTracker::RELEASED)
-		{
-			GAME_PAD_INPUT_MANAGER->onInput(GamePadEventType_BUMPER_RIGHT, 0);
-		}
-		if (m_buttons.leftShoulder == GamePad::ButtonStateTracker::PRESSED)
-		{
-			GAME_PAD_INPUT_MANAGER->onInput(GamePadEventType_BUMPER_LEFT, 0, 1);
-		}
-		else if (m_buttons.leftShoulder == GamePad::ButtonStateTracker::RELEASED)
-		{
-			GAME_PAD_INPUT_MANAGER->onInput(GamePadEventType_BUMPER_LEFT, 0);
-		}
+			if (m_buttons[i].a == GamePad::ButtonStateTracker::PRESSED)
+			{
+				GAME_PAD_INPUT_MANAGER->onInput(GamePadEventType_A_BUTTON, i, 1);
+			}
+			else if (m_buttons[i].a == GamePad::ButtonStateTracker::RELEASED)
+			{
+				GAME_PAD_INPUT_MANAGER->onInput(GamePadEventType_A_BUTTON, i);
+			}
+			if (m_buttons[i].b == GamePad::ButtonStateTracker::PRESSED)
+			{
+				GAME_PAD_INPUT_MANAGER->onInput(GamePadEventType_B_BUTTON, i, 1);
+			}
+			else if (m_buttons[i].b == GamePad::ButtonStateTracker::RELEASED)
+			{
+				GAME_PAD_INPUT_MANAGER->onInput(GamePadEventType_B_BUTTON, i);
+			}
+			if (m_buttons[i].x == GamePad::ButtonStateTracker::PRESSED)
+			{
+				GAME_PAD_INPUT_MANAGER->onInput(GamePadEventType_X_BUTTON, i, 1);
+			}
+			else if (m_buttons[i].x == GamePad::ButtonStateTracker::RELEASED)
+			{
+				GAME_PAD_INPUT_MANAGER->onInput(GamePadEventType_X_BUTTON, i);
+			}
+			if (m_buttons[i].y == GamePad::ButtonStateTracker::PRESSED)
+			{
+				GAME_PAD_INPUT_MANAGER->onInput(GamePadEventType_Y_BUTTON, i, 1);
+			}
+			else if (m_buttons[i].y == GamePad::ButtonStateTracker::RELEASED)
+			{
+				GAME_PAD_INPUT_MANAGER->onInput(GamePadEventType_Y_BUTTON, i);
+			}
 
-		if (m_buttons.start == GamePad::ButtonStateTracker::PRESSED)
-		{
-			GAME_PAD_INPUT_MANAGER->onInput(GamePadEventType_START_BUTTON, 0, 1);
+			if (m_buttons[i].rightShoulder == GamePad::ButtonStateTracker::PRESSED)
+			{
+				GAME_PAD_INPUT_MANAGER->onInput(GamePadEventType_BUMPER_RIGHT, i, 1);
+			}
+			else if (m_buttons[i].rightShoulder == GamePad::ButtonStateTracker::RELEASED)
+			{
+				GAME_PAD_INPUT_MANAGER->onInput(GamePadEventType_BUMPER_RIGHT, i);
+			}
+			if (m_buttons[i].leftShoulder == GamePad::ButtonStateTracker::PRESSED)
+			{
+				GAME_PAD_INPUT_MANAGER->onInput(GamePadEventType_BUMPER_LEFT, i, 1);
+			}
+			else if (m_buttons[i].leftShoulder == GamePad::ButtonStateTracker::RELEASED)
+			{
+				GAME_PAD_INPUT_MANAGER->onInput(GamePadEventType_BUMPER_LEFT, i);
+			}
+
+			if (m_buttons[i].start == GamePad::ButtonStateTracker::PRESSED)
+			{
+				GAME_PAD_INPUT_MANAGER->onInput(GamePadEventType_START_BUTTON, i, 1);
+			}
+			else if (m_buttons[i].start == GamePad::ButtonStateTracker::RELEASED)
+			{
+				GAME_PAD_INPUT_MANAGER->onInput(GamePadEventType_START_BUTTON, i);
+			}
+			if (m_buttons[i].back == GamePad::ButtonStateTracker::PRESSED)
+			{
+				GAME_PAD_INPUT_MANAGER->onInput(GamePadEventType_BACK_BUTTON, i, 1);
+			}
+			else if (m_buttons[i].back == GamePad::ButtonStateTracker::RELEASED)
+			{
+				GAME_PAD_INPUT_MANAGER->onInput(GamePadEventType_BACK_BUTTON, i);
+			}
+
+			if (m_buttons[i].leftTrigger == GamePad::ButtonStateTracker::PRESSED)
+			{
+				GAME_PAD_INPUT_MANAGER->onInput(GamePadEventType_TRIGGER, i, gamePadState.triggers.left);
+			}
+			else if (m_buttons[i].leftTrigger == GamePad::ButtonStateTracker::RELEASED)
+			{
+				GAME_PAD_INPUT_MANAGER->onInput(GamePadEventType_TRIGGER, i, 0);
+			}
+			if (m_buttons[i].rightTrigger == GamePad::ButtonStateTracker::PRESSED)
+			{
+				GAME_PAD_INPUT_MANAGER->onInput(GamePadEventType_TRIGGER, i, 0, gamePadState.triggers.right);
+			}
+			else if (m_buttons[i].rightTrigger == GamePad::ButtonStateTracker::RELEASED)
+			{
+				GAME_PAD_INPUT_MANAGER->onInput(GamePadEventType_TRIGGER, i, 0, 0);
+			}
+
+			GAME_PAD_INPUT_MANAGER->onInput(GamePadEventType_STICK_LEFT, i, gamePadState.thumbSticks.leftX, gamePadState.thumbSticks.leftY);
+			GAME_PAD_INPUT_MANAGER->onInput(GamePadEventType_STICK_RIGHT, i, gamePadState.thumbSticks.rightX, gamePadState.thumbSticks.rightY);
 		}
-		else if (m_buttons.start == GamePad::ButtonStateTracker::RELEASED)
-		{
-			GAME_PAD_INPUT_MANAGER->onInput(GamePadEventType_START_BUTTON, 0);
-		}
-		if (m_buttons.back == GamePad::ButtonStateTracker::PRESSED)
-		{
-			GAME_PAD_INPUT_MANAGER->onInput(GamePadEventType_BACK_BUTTON, 0, 1);
-		}
-		else if (m_buttons.back == GamePad::ButtonStateTracker::RELEASED)
-		{
-			GAME_PAD_INPUT_MANAGER->onInput(GamePadEventType_BACK_BUTTON, 0);
-		}
-        
-		GAME_PAD_INPUT_MANAGER->onInput(GamePadEventType_TRIGGER, 0, gamePadState.triggers.left, gamePadState.triggers.right);
-		GAME_PAD_INPUT_MANAGER->onInput(GamePadEventType_STICK_LEFT, 0, gamePadState.thumbSticks.leftX, gamePadState.thumbSticks.leftY);
-		GAME_PAD_INPUT_MANAGER->onInput(GamePadEventType_STICK_RIGHT, 0, gamePadState.thumbSticks.rightX, gamePadState.thumbSticks.rightY);
 	}
 
 	beginPixEvent(L"Update");
@@ -343,7 +362,11 @@ void Direct3DMain::OnActivated()
 
 	m_keys.Reset();
 	m_gamePad->Resume();
-	m_buttons.Reset();
+
+	for (DirectX::GamePad::ButtonStateTracker& button : m_buttons)
+	{
+		button.Reset();
+	}
 
 	if (m_isWindowsMobile
 		&& m_isDeviceLost)
@@ -360,7 +383,11 @@ void Direct3DMain::OnDeactivated()
 
 	m_keys.Reset();
 	m_gamePad->Suspend();
-	m_buttons.Reset();
+
+	for (DirectX::GamePad::ButtonStateTracker& button : m_buttons)
+	{
+		button.Reset();
+	}
 
 	if (m_isWindowsMobile)
 	{
@@ -378,7 +405,11 @@ void Direct3DMain::OnSuspending()
 
 	m_keys.Reset();
 	m_gamePad->Suspend();
-	m_buttons.Reset();
+	
+	for (DirectX::GamePad::ButtonStateTracker& button : m_buttons)
+	{
+		button.Reset();
+	}
 
 #if !defined(WINAPI_FAMILY) || (WINAPI_FAMILY == WINAPI_FAMILY_DESKTOP_APP)
 	// Empty
@@ -398,7 +429,11 @@ void Direct3DMain::OnResuming()
 
 	m_keys.Reset();
 	m_gamePad->Resume();
-	m_buttons.Reset();
+	
+	for (DirectX::GamePad::ButtonStateTracker& button : m_buttons)
+	{
+		button.Reset();
+	}
 
 	m_timer.ResetElapsedTime();
 	

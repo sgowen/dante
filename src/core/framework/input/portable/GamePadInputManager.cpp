@@ -12,7 +12,10 @@
 
 #include "GamePadEvent.h"
 
-#define POOL_SIZE 1024
+#include "FrameworkConstants.h"
+#include "Timing.h"
+
+#define POOL_SIZE 8192
 
 GamePadInputManager* GamePadInputManager::getInstance()
 {
@@ -35,10 +38,22 @@ std::vector<GamePadEvent*>& GamePadInputManager::getEvents()
     return m_pool->getObjects();
 }
 
+bool GamePadInputManager::isControllerConnected()
+{
+    float time = Timing::getInstance()->getFrameStartTime();
+    
+    return (time - m_fTimeSinceLastGamePadEvent) < 5;
+}
+
 #pragma mark private
 
 void GamePadInputManager::addEvent(GamePadEventType type, int index, float x, float y)
 {
+    if (index < 0 || index >= MAX_NUM_PLAYERS_PER_SERVER)
+    {
+        return;
+    }
+    
     GamePadEvent* e = m_pool->newObject();
     e->setType(type);
     e->setIndex(index);
@@ -46,9 +61,11 @@ void GamePadInputManager::addEvent(GamePadEventType type, int index, float x, fl
     e->setY(y);
     
     m_pool->add(e);
+    
+    m_fTimeSinceLastGamePadEvent = Timing::getInstance()->getFrameStartTime();
 }
 
-GamePadInputManager::GamePadInputManager() : m_pool(new NGRollingPool<GamePadEvent>(POOL_SIZE))
+GamePadInputManager::GamePadInputManager() : m_pool(new NGRollingPool<GamePadEvent>(POOL_SIZE)), m_fTimeSinceLastGamePadEvent(0)
 {
     // Empty
 }

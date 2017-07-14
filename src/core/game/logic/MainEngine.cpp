@@ -61,9 +61,9 @@ m_isSteam(false)
     
     m_config->load();
     
-    FWInstanceManager::getClientEntityRegistry()->registerCreationFunction(NETWORK_TYPE_Robot, Robot::staticCreateClient);
-    FWInstanceManager::getClientEntityRegistry()->registerCreationFunction(NETWORK_TYPE_Projectile, Projectile::staticCreateClient);
-    FWInstanceManager::getClientEntityRegistry()->registerCreationFunction(NETWORK_TYPE_SpacePirate, SpacePirate::staticCreateClient);
+    FWInstanceManager::getClientEntityRegistry()->registerCreationFunction(NETWORK_TYPE_Robot, World::sClientCreateRobot);
+    FWInstanceManager::getClientEntityRegistry()->registerCreationFunction(NETWORK_TYPE_Projectile, World::sClientCreateProjectile);
+    FWInstanceManager::getClientEntityRegistry()->registerCreationFunction(NETWORK_TYPE_SpacePirate, World::sClientCreateSpacePirate);
     
     NG_AUDIO_ENGINE->loadSound(SOUND_ID_ROBOT_JUMP, SOUND_ROBOT_JUMP, 4);
     NG_AUDIO_ENGINE->loadSound(SOUND_ID_EXPLOSION, SOUND_EXPLOSION, 8);
@@ -139,6 +139,8 @@ void MainEngine::update(float deltaTime)
             if (InstanceManager::getClientWorld())
             {
                 InstanceManager::getClientWorld()->update();
+                
+                InputManager::getInstance()->clearPendingMove();
             }
         }
         
@@ -176,11 +178,51 @@ void MainEngine::handleNonMoveInput()
 {
     InputState* inputState = InputManager::getInstance()->getInputState();
     
+    if (inputState->getMenuState() == MENU_STATE_CLIENT_MAIN_TOGGLE_MUSIC)
+    {
+        if (NG_AUDIO_ENGINE->isMusicPlaying())
+        {
+            NG_AUDIO_ENGINE->stopMusic();
+        }
+        else
+        {
+            NG_AUDIO_ENGINE->playMusic(true);
+        }
+    }
+    else if (inputState->getMenuState() == MENU_STATE_CLIENT_MAIN_TOGGLE_SOUND)
+    {
+        NG_AUDIO_ENGINE->setSoundDisabled(!NG_AUDIO_ENGINE->isSoundDisabled());
+    }
+    
     if (NG_CLIENT)
     {
-        if (inputState->getMenuState() == MENU_STATE_ESCAPE)
+        if (Server::getInstance())
+        {
+            if (inputState->getMenuState() == MENU_STATE_SERVER_TOGGLE_ENEMIES)
+            {
+                Server::getInstance()->toggleEnemies();
+            }
+        }
+        
+        if (inputState->isRequestingToAddLocalPlayer())
+        {
+            NG_CLIENT->requestToAddLocalPlayer();
+        }
+        else if (inputState->getMenuState() == MENU_STATE_ESCAPE)
         {
             disconnect();
+        }
+        else if (inputState->getMenuState() == MENU_STATE_LOCAL_PLAYER_DROP_OUT_1)
+        {
+            NG_CLIENT->requestToDropLocalPlayer(1);
+        }
+        else if (inputState->getMenuState() == MENU_STATE_LOCAL_PLAYER_DROP_OUT_2)
+        {
+            NG_CLIENT->requestToDropLocalPlayer(2);
+        }
+        else if (inputState->getMenuState() == MENU_STATE_LOCAL_PLAYER_DROP_OUT_3)
+        {
+            NG_CLIENT->requestToDropLocalPlayer(3);
         }
     }
     else if (NG_SERVER)
@@ -218,7 +260,7 @@ void MainEngine::handleNonMoveInput()
         {
             if (m_iEngineState == MAIN_ENGINE_STATE_MAIN_MENU_JOINING_LOCAL_SERVER_BY_IP)
             {
-                m_serverIPAddress = InputManager::getInstance()->getLiveInput();
+                m_serverIPAddress = StringUtil::format("%s:%d", InputManager::getInstance()->getLiveInput().c_str(), SERVER_PORT);
                 m_name.clear();
                 m_iEngineState = MAIN_ENGINE_STATE_MAIN_MENU_ENTERING_USERNAME;
             }
@@ -367,14 +409,14 @@ void MainEngine::joinServer()
 {
     m_iEngineState = MAIN_ENGINE_STEAM_JOINING_SERVER;
     
-    FWInstanceManager::createClientEntityManager(InstanceManager::staticHandleEntityCreatedOnClient, InstanceManager::staticHandleEntityDeletedOnClient);
+    FWInstanceManager::createClientEntityManager(InstanceManager::sHandleEntityCreatedOnClient, InstanceManager::sHandleEntityDeletedOnClient);
     
     InstanceManager::createClientWorld();
     
     IClientHelper* clientHelper = nullptr;
     if (m_isSteam)
     {
-        clientHelper = new NGSteamClientHelper(m_serverSteamID, InstanceManager::staticGetPlayerAddressHashForIndexOnClient, NG_CLIENT_CALLBACKS);
+        clientHelper = new NGSteamClientHelper(m_serverSteamID, InstanceManager::sGetPlayerAddressHashForIndexOnClient, NG_CLIENT_CALLBACKS);
     }
     else
     {

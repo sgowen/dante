@@ -11,6 +11,7 @@
 
 #include <string>
 #include <unordered_map>
+#include <vector>
 
 class IClientHelper;
 class InputMemoryBitStream;
@@ -26,10 +27,11 @@ class SocketAddress;
 
 #define NG_CLIENT (NetworkManagerClient::getInstance())
 
-#define NG_CLIENT_CALLBACKS NetworkManagerClient::staticProcessPacket, NetworkManagerClient::staticHandleNoResponse, NetworkManagerClient::staticHandleConnectionReset
+#define NG_CLIENT_CALLBACKS NetworkManagerClient::sProcessPacket, NetworkManagerClient::sHandleNoResponse, NetworkManagerClient::sHandleConnectionReset
 
 typedef void (*RemoveProcessedMovesFunc)(float lastMoveProcessedByServerTimestamp);
 typedef MoveList& (*GetMoveListFunc)();
+typedef void (*OnPlayerWelcomedFunc)(uint8_t playerId);
 
 enum NetworkClientState
 {
@@ -42,21 +44,25 @@ enum NetworkClientState
 class NetworkManagerClient
 {
 public:
-    static void create(IClientHelper* inClientHelper, float inFrameRate, RemoveProcessedMovesFunc inRemoveProcessedMovesFunc, GetMoveListFunc inGetMoveListFunc);
+    static void create(IClientHelper* inClientHelper, float inFrameRate, RemoveProcessedMovesFunc inRemoveProcessedMovesFunc, GetMoveListFunc inGetMoveListFunc, OnPlayerWelcomedFunc inOnPlayerWelcomedFunc);
     
     static void destroy();
     
     static NetworkManagerClient* getInstance();
     
-    static void staticProcessPacket(InputMemoryBitStream& inInputStream, IMachineAddress* inFromAddress);
+    static void sProcessPacket(InputMemoryBitStream& inInputStream, IMachineAddress* inFromAddress);
     
-    static void staticHandleNoResponse();
+    static void sHandleNoResponse();
     
-    static void staticHandleConnectionReset(IMachineAddress* inFromAddress);
+    static void sHandleConnectionReset(IMachineAddress* inFromAddress);
     
     void processIncomingPackets();
     
     void sendOutgoingPackets();
+    
+    void requestToAddLocalPlayer();
+    
+    void requestToDropLocalPlayer(int index);
     
     const WeightedTimedMovingAverage& getBytesReceivedPerSecond() const;
     
@@ -66,7 +72,9 @@ public:
     
     float getRoundTripTime() const;
     
-    int getPlayerId() const;
+    bool isPlayerIdLocal(uint8_t inPlayerId) const;
+    
+    std::unordered_map<uint8_t, uint8_t>& getPlayerIds();
     
     std::string& getPlayerName();
     
@@ -79,6 +87,7 @@ private:
     
     RemoveProcessedMovesFunc m_removeProcessedMovesFunc;
     GetMoveListFunc m_getMoveListFunc;
+    OnPlayerWelcomedFunc m_onPlayerWelcomedFunc;
     
     DeliveryNotificationManager* m_deliveryNotificationManager;
     ReplicationManagerClient* m_replicationManagerClient;
@@ -88,13 +97,17 @@ private:
     float m_fTimeOfLastHello;
     float m_fTimeOfLastInputPacket;
     
-    int m_iPlayerId;
+    std::unordered_map<uint8_t, uint8_t> m_indexToPlayerIdMap;
+    uint8_t m_iNextIndex;
     float m_fFrameRate;
     
     float m_fLastMoveProcessedByServerTimestamp;
     float m_fLastServerCommunicationTimestamp;
     
     WeightedTimedMovingAverage* m_avgRoundTripTime;
+    
+    bool m_isRequestingToAddLocalPlayer;
+    int m_isRequestingToDropLocalPlayer;
     
     void processPacket(InputMemoryBitStream& inInputStream, IMachineAddress* inFromAddress);
     
@@ -106,11 +119,11 @@ private:
     
     void updateSayingHello();
     
-    void sendHelloPacket();
-    
     void handleWelcomePacket(InputMemoryBitStream& inInputStream);
     
-    void handleDenyPacket();
+    void handleLocalPlayerAddedPacket(InputMemoryBitStream& inInputStream);
+    
+    void handleLocalPlayerDeniedPacket();
     
     void handleStatePacket(InputMemoryBitStream& inInputStream);
     
@@ -120,8 +133,14 @@ private:
     
     void sendInputPacket();
     
+    void updateAddLocalPlayerRequest();
+    
+    void updateDropLocalPlayerRequest();
+    
+    void updateNextIndex();
+    
     // ctor, copy ctor, and assignment should be private in a Singleton
-    NetworkManagerClient(IClientHelper* inClientHelper, float inFrameRate, RemoveProcessedMovesFunc inRemoveProcessedMovesFunc, GetMoveListFunc inGetMoveListFunc);
+    NetworkManagerClient(IClientHelper* inClientHelper, float inFrameRate, RemoveProcessedMovesFunc inRemoveProcessedMovesFunc, GetMoveListFunc inGetMoveListFunc, OnPlayerWelcomedFunc inOnPlayerWelcomedFunc);
     ~NetworkManagerClient();
     NetworkManagerClient(const NetworkManagerClient&);
     NetworkManagerClient& operator=(const NetworkManagerClient&);

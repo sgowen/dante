@@ -41,8 +41,6 @@ public:
     
     virtual ~Entity();
     
-    virtual void onDeletion();
-    
     virtual void update() = 0;
     
     virtual void update(float inDeltaTime);

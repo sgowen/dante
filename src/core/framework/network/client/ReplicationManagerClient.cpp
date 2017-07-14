@@ -58,42 +58,40 @@ void ReplicationManagerClient::readAndDoCreateAction(InputMemoryBitStream& inInp
     
     //we might already have this object- could happen if our ack of the create got dropped so server resends create request
     //(even though we might have created)
-    Entity* gameObject = FWInstanceManager::getClientEntityManager()->getEntityByID(inNetworkId);
-    if (!gameObject)
+    Entity* entity = FWInstanceManager::getClientEntityManager()->getEntityByID(inNetworkId);
+    if (!entity)
     {
         //create the object and map it...
-        gameObject = FWInstanceManager::getClientEntityRegistry()->createEntity(fourCCName);
-        gameObject->setID(inNetworkId);
+        entity = FWInstanceManager::getClientEntityRegistry()->createEntity(fourCCName);
+        entity->setID(inNetworkId);
         
-        FWInstanceManager::getClientEntityManager()->registerEntity(gameObject);
+        FWInstanceManager::getClientEntityManager()->registerEntity(entity);
         
         //it had really be the rigth type...
-        assert(gameObject->getNetworkType() == fourCCName);
+        assert(entity->getNetworkType() == fourCCName);
     }
     
     //and read state
-    gameObject->read(inInputStream);
+    entity->read(inInputStream);
 }
 
 void ReplicationManagerClient::readAndDoUpdateAction(InputMemoryBitStream& inInputStream, int inNetworkId)
 {
     //need object
-    Entity* gameObject = FWInstanceManager::getClientEntityManager()->getEntityByID(inNetworkId);
+    Entity* entity = FWInstanceManager::getClientEntityManager()->getEntityByID(inNetworkId);
     
-    //gameObject MUST be found, because create was ack'd if we're getting an update...
+    //entity MUST be found, because create was ack'd if we're getting an update...
     //and read state
-    gameObject->read(inInputStream);
+    entity->read(inInputStream);
 }
 
 void ReplicationManagerClient::readAndDoDestroyAction(InputMemoryBitStream& inInputStream, int inNetworkId)
 {
     //if something was destroyed before the create went through, we'll never get it
     //but we might get the destroy request, so be tolerant of being asked to destroy something that wasn't created
-    Entity* gameObject = FWInstanceManager::getClientEntityManager()->getEntityByID(inNetworkId);
-    if (gameObject)
+    Entity* entity = FWInstanceManager::getClientEntityManager()->getEntityByID(inNetworkId);
+    if (entity)
     {
-        gameObject->requestDeletion();
-        gameObject->onDeletion();
-        FWInstanceManager::getClientEntityManager()->removeEntity(gameObject);
+        FWInstanceManager::getClientEntityManager()->deregisterEntity(entity);
     }
 }

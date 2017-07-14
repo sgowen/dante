@@ -30,6 +30,7 @@
 // C++
 #include "GamePadInputManager.h"
 #include "GamePadEventType.h"
+#include "FrameworkConstants.h"
 
 @interface ButtonState : NSObject
 {
@@ -59,66 +60,111 @@
 
 @end
 
-@interface JoystickController ()
-
-@property (assign, nonatomic) GamePadEventType lastDPadEvent;
-
-@end
-
 @implementation JoystickController
 
 - (instancetype)init
 {
     self = [super init];
+    
     if (self)
     {
-        self.lastDPadEvent = GamePadEventType_NONE;
-        
+        mJoysticks = [[NSMutableArray alloc] init];
         mJoystickButtons = [[NSMutableArray alloc] init];
+        mLastDPadEvents = [[NSMutableArray alloc] init];
         
-        m_fStateTime = 0;
+        for (int i = 0; i < MAX_NUM_PLAYERS_PER_SERVER; ++i)
+        {
+            DDHidJoystick* placeHolder = [[DDHidJoystick alloc] init];
+            [placeHolder setTag:INPUT_UNASSIGNED];
+            [mJoysticks addObject:placeHolder];
+            
+            [mJoystickButtons addObject:[[NSMutableArray alloc] init]];
+            
+            [mLastDPadEvents addObject:[NSNumber numberWithInt:GamePadEventType_NONE]];
+        }
     }
     
     return self;
 }
 
+- (bool)isNewJoystick:(DDHidJoystick*)newJs
+{
+    for (DDHidJoystick* cjs in mJoysticks)
+    {
+        if ([cjs tag] != INPUT_UNASSIGNED && [cjs locationId] == [newJs locationId])
+        {
+            return false;
+        }
+    }
+    
+    return true;
+}
+
+- (bool)hasJoystickBeenRemoved:(NSArray*)master joystick:(DDHidJoystick*)js
+{
+    for (DDHidJoystick* mjs in master)
+    {
+        if ([mjs locationId] == [js locationId])
+        {
+            return false;
+        }
+    }
+    
+    return true;
+}
+
 - (void)scan
 {
-    NSArray * joysticks = [DDHidJoystick allJoysticks];
+    [self performSelector:@selector(scan) withObject:nil afterDelay:5];
     
-    [mJoystickButtons removeAllObjects];
+    NSArray* joysticks = [DDHidJoystick allJoysticks];
     
-    [joysticks makeObjectsPerformSelector: @selector(setDelegate:)
-                               withObject: self];
-    
-    mJoysticks = joysticks;
-    
-    unsigned long numPlayers = [mJoysticks count];
-    for (int i = 0; i < numPlayers; ++i)
+    for (DDHidJoystick* js in mJoysticks)
     {
-        [self listenOnJoystick:i];
+        int index = [js tag];
+        if (index == INPUT_UNASSIGNED)
+        {
+            continue;
+        }
+        
+        if ([self hasJoystickBeenRemoved:joysticks joystick:js])
+        {
+            if (index != INPUT_UNASSIGNED)
+            {
+                [mJoystickButtons[index] removeAllObjects];
+            }
+            
+            [js setTag:INPUT_UNASSIGNED];
+            
+            if ([js isListening])
+            {
+                [js stopListening];
+            }
+        }
+    }
+    
+    for (DDHidJoystick* js in joysticks)
+    {
+        if ([self isNewJoystick:js])
+        {
+            [self activate:js];
+        }
     }
 }
 
-//===========================================================
-//  joysticks 
-//=========================================================== 
-- (NSArray *) joysticks
+- (void)activate:(DDHidJoystick*)joystick
 {
-    return mJoysticks;
-}
-
-- (NSArray *) joystickButtons;
-{
-    return mJoystickButtons;
-}
-
-//=========================================================== 
-//  joystickIndex 
-//=========================================================== 
-- (NSUInteger) joystickIndex
-{
-    return mJoystickIndex;
+    for (int i = 0; i < [mJoysticks count]; ++i)
+    {
+        DDHidJoystick *currentJoystick = [mJoysticks objectAtIndex:i];
+        if ([currentJoystick tag] == INPUT_UNASSIGNED)
+        {
+            [joystick setDelegate:self];
+            [mJoysticks replaceObjectAtIndex:i withObject:joystick];
+            [self listenOnJoystick:i];
+            return;
+        }
+    }
 }
 
 - (void)listenOnJoystick:(NSUInteger)index
@@ -129,7 +175,7 @@
         [currentJoystick setTag:(int)index];
         [currentJoystick startListening];
         
-        [mJoystickButtons addObject:[[NSMutableArray alloc] init]];
+        [mJoystickButtons[index] removeAllObjects];
         
         NSArray * buttons = [currentJoystick buttonElements];
         NSEnumerator * e = [buttons objectEnumerator];
@@ -184,35 +230,37 @@
              povNumber:(unsigned)povNumber
           valueChanged:(int)value;
 {
+    int index = [joystick tag];
+    
     if (value == -1)
     {
-        if (self.lastDPadEvent != GamePadEventType_NONE)
+        if ([mLastDPadEvents[index] intValue] != GamePadEventType_NONE)
         {
-            GAME_PAD_INPUT_MANAGER->onInput(self.lastDPadEvent, [joystick tag], 0, 0);
+            GAME_PAD_INPUT_MANAGER->onInput((GamePadEventType)[mLastDPadEvents[index] intValue], [joystick tag], 0, 0);
         }
         
-        self.lastDPadEvent = GamePadEventType_NONE;
+        mLastDPadEvents[index] = [NSNumber numberWithInt:GamePadEventType_NONE];
     }
     else
     {
         if (value == 0)
         {
-            self.lastDPadEvent = GamePadEventType_D_PAD_UP;
+            mLastDPadEvents[index] = [NSNumber numberWithInt:GamePadEventType_D_PAD_UP];
         }
         else if (value == 9000)
         {
-            self.lastDPadEvent = GamePadEventType_D_PAD_RIGHT;
+            mLastDPadEvents[index] = [NSNumber numberWithInt:GamePadEventType_D_PAD_RIGHT];
         }
         else if (value == 18000)
         {
-            self.lastDPadEvent = GamePadEventType_D_PAD_DOWN;
+            mLastDPadEvents[index] = [NSNumber numberWithInt:GamePadEventType_D_PAD_DOWN];
         }
         else if (value == 27000)
         {
-            self.lastDPadEvent = GamePadEventType_D_PAD_LEFT;
+            mLastDPadEvents[index] = [NSNumber numberWithInt:GamePadEventType_D_PAD_LEFT];
         }
         
-        GAME_PAD_INPUT_MANAGER->onInput(self.lastDPadEvent, [joystick tag], 1, 0);
+        GAME_PAD_INPUT_MANAGER->onInput((GamePadEventType)[mLastDPadEvents[index] intValue], [joystick tag], 1, 0);
     }
 }
 

@@ -14,19 +14,20 @@
 #include "MoveList.h"
 
 #include <string>
+#include <vector>
 
 class IMachineAddress;
 
 class ClientProxy
 {
 public:
-    ClientProxy(IMachineAddress* inMachineAddress, const std::string& inName, int inPlayerId);
+    ClientProxy(IMachineAddress* inMachineAddress, const std::string& inName, uint8_t inPlayerId);
     
     ~ClientProxy();
     
     IMachineAddress* getMachineAddress() const;
     
-    int getPlayerId() const;
+    uint8_t getPlayerId(int index = 0) const;
     
     const std::string& getName() const;
     
@@ -44,12 +45,18 @@ public:
     
     bool isLastMoveTimestampDirty() const;
     
+    void onLocalPlayerAdded(uint8_t playerId);
+    
+    void onLocalPlayerRemoved(uint8_t playerId);
+    
+    int getNumPlayers();
+    
 private:
     DeliveryNotificationManager	m_deliveryNotificationManager;
     ReplicationManagerServer m_replicationManagerServer;
     IMachineAddress* m_machineAddress;
     std::string m_name;
-    int m_iPlayerId;
+    std::vector<uint8_t> m_playerIds;
     float m_fLastPacketFromClientTime;
     MoveList m_unprocessedMoveList;
     bool m_isLastMoveTimestampDirty;

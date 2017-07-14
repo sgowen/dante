@@ -12,9 +12,59 @@
 
 #include "Entity.h"
 #include "Robot.h"
+#include "Projectile.h"
 #include "SpacePirate.h"
+#include "NetworkManagerServer.h"
 
-World::World()
+Entity* World::sClientCreateRobot()
+{
+    // TODO, inject physics world from Box2D
+    return new Robot(false);
+}
+
+Entity* World::sServerCreateRobot()
+{
+    // TODO, inject physics world from Box2D
+    Entity* ret = new Robot(true);
+    
+    NG_SERVER->registerEntity(ret);
+    
+    return ret;
+}
+
+Entity* World::sClientCreateProjectile()
+{
+    // TODO, inject physics world from Box2D
+    return new Projectile(false);
+}
+
+Entity* World::sServerCreateProjectile()
+{
+    // TODO, inject physics world from Box2D
+    Entity* ret = new Projectile(true);
+    
+    NG_SERVER->registerEntity(ret);
+    
+    return ret;
+}
+
+Entity* World::sClientCreateSpacePirate()
+{
+    // TODO, inject physics world from Box2D
+    return new SpacePirate(false);
+}
+
+Entity* World::sServerCreateSpacePirate()
+{
+    // TODO, inject physics world from Box2D
+    Entity* ret = new SpacePirate(true);
+    
+    NG_SERVER->registerEntity(ret);
+    
+    return ret;
+}
+
+World::World(bool isServer) : m_isServer(isServer)
 {
     // Empty
 }
@@ -52,6 +102,11 @@ void World::removeEntity(Entity* inEntity)
         }
         
         m_entities.pop_back();
+        
+        if (m_isServer)
+        {
+            NG_SERVER->deregisterEntity(inEntity);
+        }
     }
 }
 
@@ -62,25 +117,27 @@ void World::update()
     int len = static_cast<int>(m_entities.size());
     for (int i = 0, c = len; i < c; ++i)
     {
-        Entity* go = m_entities[i];
+        Entity* entity = m_entities[i];
         
-        if (!go->isRequestingDeletion())
+        if (!entity->isRequestingDeletion())
         {
-            go->update();
+            entity->update();
         }
         
-        //you might suddenly want to die after your update, so check again
-        if (go->isRequestingDeletion())
+        if (m_isServer)
         {
-            removeEntity(go);
-            go->onDeletion();
-            --i;
-            --c;
+            // you might suddenly want to die after your update, so check again
+            if (entity->isRequestingDeletion())
+            {
+                removeEntity(entity);
+                --i;
+                --c;
+            }
         }
     }
 }
 
-Robot* World::getRobotWithPlayerId(int inPlayerID)
+Robot* World::getRobotWithPlayerId(uint8_t inPlayerID)
 {
     for (Entity* entity : m_entities)
     {
@@ -92,6 +149,17 @@ Robot* World::getRobotWithPlayerId(int inPlayerID)
     }
     
     return nullptr;
+}
+
+void World::killAllSpacePirates()
+{
+    for (Entity* entity : m_entities)
+    {
+        if (entity->getRTTI().derivesFrom(SpacePirate::rtti))
+        {
+            entity->requestDeletion();
+        }
+    }
 }
 
 bool World::hasSpacePirates()

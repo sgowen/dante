@@ -32,7 +32,7 @@
 #include <ctime> // rand
 #include <assert.h>
 
-#define SERVER_CALLBACKS Server::staticHandleNewClient, Server::staticHandleLostClient, PooledObjectsManager::borrowInputState
+#define SERVER_CALLBACKS Server::sHandleNewClient, Server::sHandleLostClient, PooledObjectsManager::borrowInputState
 
 Server* Server::s_instance = nullptr;
 
@@ -56,14 +56,14 @@ Server * Server::getInstance()
     return s_instance;
 }
 
-void Server::staticHandleNewClient(ClientProxy* inClientProxy)
+void Server::sHandleNewClient(int playerId, std::string playerName)
 {
-    getInstance()->handleNewClient(inClientProxy);
+    getInstance()->handleNewClient(playerId, playerName);
 }
 
-void Server::staticHandleLostClient(ClientProxy* inClientProxy)
+void Server::sHandleLostClient(ClientProxy* inClientProxy, int index)
 {
-    getInstance()->handleLostClient(inClientProxy);
+    getInstance()->handleLostClient(inClientProxy, index);
 }
 
 void Server::update(float deltaTime)
@@ -86,17 +86,35 @@ void Server::update(float deltaTime)
             InstanceManager::getServerWorld()->update();
             
             respawnEnemiesIfNecessary();
+            
+            clearClientMoves();
         }
         
         NG_SERVER->sendOutgoingPackets();
     }
 }
 
-void Server::handleNewClient(ClientProxy* inClientProxy)
+void Server::toggleEnemies()
 {
-    int playerId = inClientProxy->getPlayerId();
-    std::string playerName = inClientProxy->getName();
+    m_isSpawningEnemies = !m_isSpawningEnemies;
     
+    if (m_isSpawningEnemies)
+    {
+        m_fStateTimeNoEnemies = 10; // Spawn em now!
+    }
+    else
+    {
+        InstanceManager::getServerWorld()->killAllSpacePirates();
+    }
+}
+
+bool Server::isSpawningEnemies()
+{
+    return m_isSpawningEnemies;
+}
+
+void Server::handleNewClient(int playerId, std::string playerName)
+{
     spawnRobotForPlayer(playerId, playerName);
     
     if (NG_SERVER->getNumClientsConnected() == 1)
@@ -108,10 +126,27 @@ void Server::handleNewClient(ClientProxy* inClientProxy)
     }
 }
 
-void Server::handleLostClient(ClientProxy* inClientProxy)
+void Server::handleLostClient(ClientProxy* inClientProxy, int index)
 {
-    int playerId = inClientProxy->getPlayerId();
-    
+    if (index >= 1)
+    {
+        uint8_t playerId = inClientProxy->getPlayerId(index);
+        
+        deleteRobotWithPlayerId(playerId);
+    }
+    else
+    {
+        for (int i = 0; i < inClientProxy->getNumPlayers(); ++i)
+        {
+            uint8_t playerId = inClientProxy->getPlayerId(i);
+            
+            deleteRobotWithPlayerId(playerId);
+        }
+    }
+}
+
+void Server::deleteRobotWithPlayerId(uint8_t playerId)
+{
     Robot* robot = InstanceManager::getServerWorld()->getRobotWithPlayerId(playerId);
     if (robot)
     {
@@ -121,7 +156,7 @@ void Server::handleLostClient(ClientProxy* inClientProxy)
 
 void Server::spawnRobotForPlayer(int inPlayerId, std::string inPlayerName)
 {
-    Robot* robot = static_cast<Robot*>(FWInstanceManager::getServerEntityRegistry()->createEntity(NETWORK_TYPE_Robot));
+    Robot* robot = static_cast<Robot*>(SERVER_ENTITY_REG->createEntity(NETWORK_TYPE_Robot));
     robot->setPlayerId(inPlayerId);
     robot->setPlayerName(inPlayerName);
     float posX = (rand() % static_cast<int>(GAME_WIDTH - robot->getWidth() * 2)) + (robot->getWidth() * 2);
@@ -129,7 +164,7 @@ void Server::spawnRobotForPlayer(int inPlayerId, std::string inPlayerName)
     
     static Color Red(1.0f, 0.0f, 0.0f, 1);
     static Color Green(0.0f, 1.0f, 0.0f, 1);
-    static Color Yellow(1.0f, 1.0f, 0.0f, 1);
+    static Color Blue(0.0f, 0.0f, 1.0f, 1);
     
     switch (inPlayerId)
     {
@@ -140,7 +175,7 @@ void Server::spawnRobotForPlayer(int inPlayerId, std::string inPlayerName)
             robot->setColor(Green);
             break;
         case 4:
-            robot->setColor(Yellow);
+            robot->setColor(Blue);
             break;
         default:
             break;
@@ -149,7 +184,7 @@ void Server::spawnRobotForPlayer(int inPlayerId, std::string inPlayerName)
 
 void Server::respawnEnemiesIfNecessary()
 {
-    if (!InstanceManager::getServerWorld()->hasSpacePirates())
+    if (m_isSpawningEnemies && !InstanceManager::getServerWorld()->hasSpacePirates())
     {
         m_fStateTimeNoEnemies += Timing::getInstance()->getDeltaTime();
         if (m_fStateTimeNoEnemies > 10)
@@ -162,7 +197,7 @@ void Server::respawnEnemiesIfNecessary()
             
             for (int i = 0; i < numSpacePirates; ++i)
             {
-                SpacePirate* spacePirate = static_cast<SpacePirate*>(FWInstanceManager::getServerEntityRegistry()->createEntity(NETWORK_TYPE_SpacePirate));
+                SpacePirate* spacePirate = static_cast<SpacePirate*>(SERVER_ENTITY_REG->createEntity(NETWORK_TYPE_SpacePirate));
                 
                 float posX = (rand() % static_cast<int>(GAME_WIDTH - spacePirate->getWidth() * 2)) + (spacePirate->getWidth() * 2);
                 float posY = (rand() % static_cast<int>(GAME_HEIGHT - spacePirate->getHeight() * 2)) + (GROUND_TOP + spacePirate->getHeight() * 2);
@@ -193,15 +228,28 @@ void Server::respawnEnemiesIfNecessary()
     }
 }
 
-Server::Server(bool isSteam) : m_fStateTime(0), m_fFrameStateTime(0), m_fStateTimeNoEnemies(0)
+void Server::clearClientMoves()
 {
-    FWInstanceManager::createServerEntityManager(InstanceManager::staticHandleEntityCreatedOnServer, InstanceManager::staticHandleEntityDeletedOnServer);
+    for (int i = 0; i < MAX_NUM_PLAYERS_PER_SERVER; ++i)
+    {
+        ClientProxy* client = NG_SERVER->getClientProxy(i + 1);
+        if (client)
+        {
+            MoveList& moveList = client->getUnprocessedMoveList();
+            moveList.clear();
+        }
+    }
+}
+
+Server::Server(bool isSteam) : m_fStateTime(0), m_fFrameStateTime(0), m_fStateTimeNoEnemies(0), m_isSpawningEnemies(true)
+{
+    FWInstanceManager::createServerEntityManager(InstanceManager::sHandleEntityCreatedOnServer, InstanceManager::sHandleEntityDeletedOnServer);
     
     InstanceManager::createServerWorld();
     
-    FWInstanceManager::getServerEntityRegistry()->registerCreationFunction(NETWORK_TYPE_Robot, Robot::staticCreateServer);
-    FWInstanceManager::getServerEntityRegistry()->registerCreationFunction(NETWORK_TYPE_Projectile, Projectile::staticCreateServer);
-    FWInstanceManager::getServerEntityRegistry()->registerCreationFunction(NETWORK_TYPE_SpacePirate, SpacePirate::staticCreateServer);
+    SERVER_ENTITY_REG->registerCreationFunction(NETWORK_TYPE_Robot, World::sServerCreateRobot);
+    SERVER_ENTITY_REG->registerCreationFunction(NETWORK_TYPE_Projectile, World::sServerCreateProjectile);
+    SERVER_ENTITY_REG->registerCreationFunction(NETWORK_TYPE_SpacePirate, World::sServerCreateSpacePirate);
     
     if (isSteam)
     {

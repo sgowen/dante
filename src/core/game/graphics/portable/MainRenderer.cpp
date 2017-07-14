@@ -39,6 +39,7 @@
 #include "NGSteamGameServices.h"
 #include "MathUtil.h"
 #include "NGAudioEngine.h"
+#include "Server.h"
 
 #include <sstream>
 #include <ctime> // rand
@@ -116,39 +117,41 @@ void MainRenderer::render(int engineState)
 
 void MainRenderer::renderBackground()
 {
-    m_rendererHelper->updateMatrix(0, CAM_WIDTH, 0, CAM_HEIGHT);
-    
-    m_spriteBatcher->beginBatch();
+    for (int i = 0; i < 3; ++i)
     {
-        static TextureRegion tr = ASSETS->findTextureRegion("Background1");
-        tr.initX(m_camBounds->getLeft() * 42.667f / 3);
-        tr.initY(clamp(384 - m_camBounds->getBottom() * 32, 384, 0));
-        m_spriteBatcher->drawSprite(CAM_WIDTH / 2, CAM_HEIGHT / 2, CAM_WIDTH, CAM_HEIGHT, 0, tr);
+        m_rendererHelper->updateMatrix(0, GAME_WIDTH, 0, CAM_HEIGHT);
+        
+        m_spriteBatcher->beginBatch();
+        {
+            static TextureRegion tr = ASSETS->findTextureRegion("Background1");
+            tr.initX(m_camBounds->getLeft() * 128.0f / 3);
+            tr.initY(clamp(384 - m_camBounds->getBottom() * 32, 384, 0));
+            m_spriteBatcher->drawSprite(i * CAM_WIDTH + CAM_WIDTH / 2, CAM_HEIGHT / 2, CAM_WIDTH, CAM_HEIGHT, 0, tr);
+        }
+        m_spriteBatcher->endBatch(*m_bg1, *m_textureGpuProgramWrapper);
+        
+        m_spriteBatcher->beginBatch();
+        {
+            static TextureRegion tr = ASSETS->findTextureRegion("Background2");
+            tr.initX(m_camBounds->getLeft() * 128.0f / 2);
+            tr.initY(clamp(644 - m_camBounds->getBottom() * 48, 644, 0));
+            m_spriteBatcher->drawSprite(i * CAM_WIDTH + CAM_WIDTH / 2, CAM_HEIGHT * 0.3875f / 2, CAM_WIDTH, CAM_HEIGHT * 0.3875f, 0, tr);
+        }
+        m_spriteBatcher->endBatch(*m_bg2, *m_textureGpuProgramWrapper);
     }
-    m_spriteBatcher->endBatch(*m_bg1, *m_textureGpuProgramWrapper);
-    
-    m_spriteBatcher->beginBatch();
-    {
-        static TextureRegion tr = ASSETS->findTextureRegion("Background2");
-        tr.initX(m_camBounds->getLeft() * 42.667f / 2);
-        tr.initY(clamp(644 - m_camBounds->getBottom() * 48, 644, 0));
-        m_spriteBatcher->drawSprite(CAM_WIDTH / 2, CAM_HEIGHT * 0.3875f / 2, CAM_WIDTH, CAM_HEIGHT * 0.3875f, 0, tr);
-    }
-    m_spriteBatcher->endBatch(*m_bg2, *m_textureGpuProgramWrapper);
-    
-    m_rendererHelper->updateMatrix(0, CAM_WIDTH, m_camBounds->getBottom(), m_camBounds->getTop());
-    m_spriteBatcher->beginBatch();
-    {
-        static TextureRegion tr = ASSETS->findTextureRegion("Background3");
-        tr.initX(m_camBounds->getLeft() * 42.667f);
-        m_spriteBatcher->drawSprite(CAM_WIDTH / 2, CAM_HEIGHT * 0.2f / 2, CAM_WIDTH, CAM_HEIGHT * 0.2f, 0, tr);
-    }
-    m_spriteBatcher->endBatch(*m_bg2, *m_textureGpuProgramWrapper);
 }
 
 void MainRenderer::renderWorld()
 {
     m_rendererHelper->updateMatrix(m_camBounds->getLeft(), m_camBounds->getRight(), m_camBounds->getBottom(), m_camBounds->getTop());
+    
+    m_spriteBatcher->beginBatch();
+    for (int i = 0; i < 3; ++i)
+    {
+        static TextureRegion tr = ASSETS->findTextureRegion("Background3");
+        m_spriteBatcher->drawSprite(i * CAM_WIDTH + CAM_WIDTH / 2, CAM_HEIGHT * 0.2f / 2, CAM_WIDTH, CAM_HEIGHT * 0.2f, 0, tr);
+    }
+    m_spriteBatcher->endBatch(*m_bg2, *m_textureGpuProgramWrapper);
     
     m_spriteBatcher->beginBatch();
     std::vector<Entity*> entities = InstanceManager::getClientWorld()->getEntities();
@@ -405,8 +408,25 @@ void MainRenderer::renderServerJoinedText()
         renderText(text, origin, Color::BLACK, FONT_ALIGN_RIGHT);
     }
     
+    {
+        static Vector2 origin = Vector2(CAM_WIDTH - 0.5f, CAM_HEIGHT - 2.5f);
+        
+        std::string text = StringUtil::format("'M' Music %s", NG_AUDIO_ENGINE->isMusicPlaying() ? " ON" : "OFF");
+        renderText(text, origin, Color::BLACK, FONT_ALIGN_RIGHT);
+    }
+    
+    if (Server::getInstance())
+    {
+        static Vector2 origin = Vector2(CAM_WIDTH - 0.5f, CAM_HEIGHT - 3.0f);
+        
+        std::string text = StringUtil::format("'T' Enemies %s", Server::getInstance()->isSpawningEnemies() ? " ON" : "OFF");
+        renderText(text, origin, Color::BLACK, FONT_ALIGN_RIGHT);
+    }
+    
     if (InstanceManager::getClientWorld())
     {
+        bool activePlayerIds[] { false, false, false, false };
+        
         int enemyCount = 0;
         std::vector<Entity*> entities = InstanceManager::getClientWorld()->getEntities();
         for (Entity* go : entities)
@@ -417,10 +437,22 @@ void MainRenderer::renderServerJoinedText()
                 Vector2 origin = Vector2(0.5f, CAM_HEIGHT - (robot->getPlayerId() * 0.5f));
                 std::string text = StringUtil::format("%i|%s - %i HP, %i Kills", robot->getPlayerId(), robot->getPlayerName().c_str(), robot->getHealth(), robot->getNumKills());
                 renderText(text, origin, Color::BLACK);
+                
+                activePlayerIds[robot->getPlayerId() - 1] = true;
             }
             else if (go->getNetworkType() == NETWORK_TYPE_SpacePirate)
             {
                 enemyCount++;
+            }
+        }
+        
+        for (int i = 0; i < MAX_NUM_PLAYERS_PER_SERVER; ++i)
+        {
+            if (!activePlayerIds[i])
+            {
+                Vector2 origin = Vector2(0.5f, CAM_HEIGHT - ((i + 1) * 0.5f));
+                std::string text = StringUtil::format("%i|%s", (i + 1), "Connect a controller to join...");
+                renderText(text, origin, Color::BLACK);
             }
         }
         
@@ -451,23 +483,86 @@ void MainRenderer::updateCamera()
     
     if (NG_CLIENT && NG_CLIENT->getState() == NCS_Welcomed)
     {
-        // TODO, eventually account for potentially multiple players on a single client machine
-        Robot* player = InstanceManager::staticGetPlayerRobotForIDOnClient(NG_CLIENT->getPlayerId());
+        std::unordered_map<uint8_t, uint8_t> indexToPlayerIdMap = NG_CLIENT->getPlayerIds();
         
-        if (player)
+        float left = 0;
+        float right = 0;
+        float bottom = 0;
+        float top = 0;
+        
+        bool needsInit = true;
+        
+        for (auto const &entry : indexToPlayerIdMap)
         {
-            // Adjust camera based on the player position
+            Robot* player = InstanceManager::sGetPlayerRobotForIDOnClient(entry.second);
             
-            float pX = player->getPosition().getX();
-            float pY = player->getPosition().getY();
+            if (player)
+            {
+                // Adjust camera based on the player position
+                
+                float pX = player->getPosition().getX();
+                float pY = player->getPosition().getY();
+                
+                if (needsInit)
+                {
+                    left = pX;
+                    right = pX;
+                    bottom = pY;
+                    top = pY;
+                    
+                    needsInit = false;
+                }
+                else
+                {
+                    left = MIN(pX, left);
+                    right = MAX(pX, right);
+                    
+                    bottom = MIN(pY, bottom);
+                    top = MAX(pY, top);
+                }
+            }
+        }
+        
+        if (!needsInit)
+        {
+            left -= CAM_WIDTH * 0.33f;
+            right += CAM_WIDTH * 0.33f;
+            bottom -= CAM_HEIGHT * 0.33f;
+            top += CAM_HEIGHT * 0.33f;
             
-            float x = pX - CAM_WIDTH * 0.5f;
-            x = clamp(x, CAM_WIDTH * 2, 0);
+            float pX = (left + right) / 2.0f;
+            float pY = (bottom + top) / 2.0f;
+            float w = right - left;
+            float h = top - bottom;
             
-            float y = pY - CAM_HEIGHT * 0.5f;
-            y = clamp(y, GAME_HEIGHT - CAM_HEIGHT, 0);
+            if (w < CAM_WIDTH)
+            {
+                w = CAM_WIDTH;
+            }
+            
+            if (h < CAM_HEIGHT)
+            {
+                h = CAM_HEIGHT;
+            }
+            
+            if (w > CAM_WIDTH)
+            {
+                h = w * (CAM_HEIGHT / CAM_WIDTH);
+            }
+            else if (h > CAM_HEIGHT)
+            {
+                w = h * (CAM_WIDTH / CAM_HEIGHT);
+            }
+            
+            float x = pX - w * 0.5f;
+            x = clamp(x, GAME_WIDTH, 0);
+            
+            float y = pY - h * 0.5f;
+            y = clamp(y, GAME_HEIGHT, 0);
             
             m_camBounds->getLowerLeft().set(x, y);
+            m_camBounds->setWidth(w);
+            m_camBounds->setHeight(h);
         }
     }
 }

@@ -22,7 +22,7 @@ public:
     
     virtual ~NGSteamAddress();
     
-    virtual IMachineAddress* createCopy();
+    virtual IMachineAddress* createNewCopy();
     
     virtual uint64_t getHash() const;
     

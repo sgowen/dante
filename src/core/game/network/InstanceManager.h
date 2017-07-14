@@ -23,13 +23,13 @@ public:
     static World* getClientWorld();
     static World* getServerWorld();
     
-    static void staticHandleEntityCreatedOnClient(Entity* inEntity);
-    static void staticHandleEntityDeletedOnClient(Entity* inEntity);
-    static uint64_t staticGetPlayerAddressHashForIndexOnClient(int inPlayerIndex);
-    static Robot* staticGetPlayerRobotForIDOnClient(int inPlayerID);
+    static void sHandleEntityCreatedOnClient(Entity* inEntity);
+    static void sHandleEntityDeletedOnClient(Entity* inEntity);
+    static uint64_t sGetPlayerAddressHashForIndexOnClient(int inPlayerIndex);
+    static Robot* sGetPlayerRobotForIDOnClient(int inPlayerID);
     
-    static void staticHandleEntityCreatedOnServer(Entity* inEntity);
-    static void staticHandleEntityDeletedOnServer(Entity* inEntity);
+    static void sHandleEntityCreatedOnServer(Entity* inEntity);
+    static void sHandleEntityDeletedOnServer(Entity* inEntity);
     
 private:
     static World* s_clientWorldInstance;

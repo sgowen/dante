@@ -15,6 +15,7 @@
 #include "GamePad.h"
 
 #include <string>
+#include <vector>
 
 class IEngine;
 
@@ -70,7 +71,7 @@ private:
 	DirectX::Keyboard::KeyboardStateTracker m_keys;
 	std::unique_ptr<DirectX::Mouse> m_mouse;
 	std::unique_ptr<DirectX::GamePad> m_gamePad;
-	DirectX::GamePad::ButtonStateTracker m_buttons;
+	DirectX::GamePad::ButtonStateTracker m_buttons[4];
 
 	IEngine* m_engine;
 

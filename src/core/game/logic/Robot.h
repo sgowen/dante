@@ -39,11 +39,7 @@ public:
         ROBT_AllState = ROBT_Pose | ROBT_Color | ROBT_PlayerInfo | ROBT_Health | ROBT_NumKills
     };
     
-    static Entity* staticCreateClient();
-    
-    static Entity* staticCreateServer();
-    
-    virtual void onDeletion();
+    Robot(bool isServer);
     
     virtual void update();
     
@@ -61,9 +57,9 @@ public:
     
     uint64_t getAddressHash() const;
     
-    void setPlayerId(uint32_t inPlayerId);
+    void setPlayerId(uint8_t inPlayerId);
     
-    uint32_t getPlayerId() const;
+    uint8_t getPlayerId() const;
     
     void setPlayerName(std::string playerName);
     
@@ -83,10 +79,10 @@ public:
     
 private:
     uint64_t m_iAddressHash;
-    uint32_t m_iPlayerId;
+    uint8_t m_iPlayerId;
     std::string m_playerName;
     
-    float m_fRtt;
+    uint8_t m_iRttMs;
     uint8_t m_iNumJumps;
     bool m_isGrounded;
     bool m_isFalling;
@@ -133,8 +129,6 @@ private:
     void playNetworkBoundSounds(uint8_t old_m_iNumJumps, bool old_m_isSprinting);
     
     void playSound(int soundId);
-    
-    Robot(bool isServer);
 };
 
 #endif /* defined(__noctisgames__Robot__) */

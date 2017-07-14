@@ -81,10 +81,10 @@ void ReplicationManagerTransmissionData::handleDeliverySuccess(DeliveryNotificat
 void ReplicationManagerTransmissionData::handleCreateDeliveryFailure(int inNetworkId) const
 {
     //does the object still exist? it might be dead, in which case we don't resend a create
-    Entity* gameObject = FWInstanceManager::getServerEntityManager()->getEntityByID(inNetworkId);
-    if (gameObject)
+    Entity* entity = FWInstanceManager::getServerEntityManager()->getEntityByID(inNetworkId);
+    if (entity)
     {
-        m_replicationManagerServer->replicateCreate(inNetworkId, gameObject->getAllStateMask());
+        m_replicationManagerServer->replicateCreate(inNetworkId, entity->getAllStateMask());
     }
 }
 

@@ -36,11 +36,7 @@ public:
         SPCP_AllState = SPCP_Pose | SPCP_Color | SPCP_Health | SPCP_Size
     };
     
-    static Entity* staticCreateClient();
-    
-    static Entity* staticCreateServer();
-    
-    virtual void onDeletion();
+    SpacePirate(bool isServer);
     
     virtual void update();
     
@@ -83,8 +79,6 @@ private:
     void processCollisions();
     
     void processCollisionsWithScreenWalls();
-    
-    SpacePirate(bool isServer);
 };
 
 #endif /* defined(__noctisgames__SpacePirate__) */

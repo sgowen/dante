@@ -22,10 +22,10 @@ class Entity;
 
 #define NG_SERVER (NetworkManagerServer::getInstance())
 
-#define NG_SERVER_CALLBACKS NetworkManagerServer::staticProcessPacket, NetworkManagerServer::staticHandleNoResponse, NetworkManagerServer::staticHandleConnectionReset, NetworkManagerServer::staticGetClientProxy, NetworkManagerServer::staticHandleClientDisconnected
+#define NG_SERVER_CALLBACKS NetworkManagerServer::sProcessPacket, NetworkManagerServer::sHandleNoResponse, NetworkManagerServer::sHandleConnectionReset, NetworkManagerServer::sGetClientProxy, NetworkManagerServer::sHandleClientDisconnected
 
-typedef void (*HandleNewClientFunc)(ClientProxy* inClientProxy);
-typedef void (*HandleLostClientFunc)(ClientProxy* inClientProxy);
+typedef void (*HandleNewClientFunc)(int playerId, std::string playerName);
+typedef void (*HandleLostClientFunc)(ClientProxy* inClientProxy, int index);
 typedef IInputState* (*InputStateCreationFunc)();
 
 class NetworkManagerServer
@@ -37,15 +37,15 @@ public:
     
     static NetworkManagerServer* getInstance();
     
-    static void staticProcessPacket(InputMemoryBitStream& inInputStream, IMachineAddress* inFromAddress);
+    static void sProcessPacket(InputMemoryBitStream& inInputStream, IMachineAddress* inFromAddress);
     
-    static void staticHandleNoResponse();
+    static void sHandleNoResponse();
     
-    static void staticHandleConnectionReset(IMachineAddress* inFromAddress);
+    static void sHandleConnectionReset(IMachineAddress* inFromAddress);
     
-    static ClientProxy* staticGetClientProxy(int inPlayerId);
+    static ClientProxy* sGetClientProxy(int inPlayerId);
     
-    static void staticHandleClientDisconnected(ClientProxy* inClientProxy);
+    static void sHandleClientDisconnected(ClientProxy* inClientProxy);
     
     void processIncomingPackets();
     
@@ -55,7 +55,7 @@ public:
     
     void registerEntity(Entity* inEntity);
     
-    void unregisterEntity(Entity* inEntity);
+    void deregisterEntity(Entity* inEntity);
     
     void setStateDirty(int inNetworkId, uint32_t inDirtyState);
     
@@ -80,7 +80,7 @@ private:
     
     std::unordered_map<size_t, ClientProxy*> m_addressHashToClientMap;
     std::unordered_map<int, ClientProxy*> m_playerIDToClientMap;
-    int m_iNewPlayerId;
+    uint8_t m_iNextPlayerId;
     float m_fTimeOfLastSatePacket;
     
     void processPacket(InputMemoryBitStream& inInputStream, IMachineAddress* inFromAddress);
@@ -97,7 +97,7 @@ private:
     
     void sendWelcomePacket(ClientProxy* inClientProxy);
     
-    void sendDenyPacket(IMachineAddress* inToAddress, std::string name);
+    void sendLocalPlayerAddedPacket(ClientProxy* inClientProxy, int index);
     
     void sendStatePacketToClient(ClientProxy* inClientProxy);
     
@@ -105,7 +105,13 @@ private:
     
     void handleInputPacket(ClientProxy* inClientProxy, InputMemoryBitStream& inInputStream);
     
+    void handleAddLocalPlayerPacket(ClientProxy* inClientProxy, InputMemoryBitStream& inInputStream);
+    
+    void handleDropLocalPlayerPacket(ClientProxy* inClientProxy, InputMemoryBitStream& inInputStream);
+    
     void handleClientDisconnected(ClientProxy* inClientProxy);
+    
+    void updateNextPlayerId();
     
     // ctor, copy ctor, and assignment should be private in a Singleton
     NetworkManagerServer(IServerHelper* inServerHelper, HandleNewClientFunc inHandleNewClientFunc, HandleLostClientFunc inHandleLostClientFunc, InputStateCreationFunc inInputStateCreationFunc);

@@ -27,7 +27,7 @@ public:
     
     void registerEntity(Entity* inEntity);
     
-    void removeEntity(Entity* inEntity);
+    void deregisterEntity(Entity* inEntity);
     
     std::unordered_map<int, Entity*>& getMap();
     
