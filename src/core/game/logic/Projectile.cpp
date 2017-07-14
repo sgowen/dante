@@ -266,6 +266,8 @@ void Projectile::handleContactWithGround(Ground* ground)
     
     m_state = ProjectileState_Exploding;
     m_fStateTime = 0.0f;
+    
+    NG_SERVER->setStateDirty(getID(), PRJC_Pose);
 }
 
 Projectile::ProjectileState Projectile::getState()
