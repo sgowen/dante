@@ -17,7 +17,7 @@
 #include <stdint.h>
 
 class b2World;
-class b2Vec2;
+struct b2Vec2;
 class b2Body;
 class b2Fixture;
 class OutputMemoryBitStream;

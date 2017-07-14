@@ -11,7 +11,7 @@
 
 #include "Network.h"
 
-class b2Vec2;
+struct b2Vec2;
 
 class Util
 {

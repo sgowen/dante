@@ -17,7 +17,7 @@
 
 class TextureWrapper;
 class Font;
-class b2Vec2;
+struct b2Vec2;
 
 class MainRenderer : public Renderer
 {

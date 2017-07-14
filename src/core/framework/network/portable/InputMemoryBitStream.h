@@ -14,7 +14,7 @@
 #include <string>
 
 class Vector2;
-class b2Vec2;
+struct b2Vec2;
 class Color;
 
 class InputMemoryBitStream

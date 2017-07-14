@@ -527,11 +527,9 @@ void Robot::updateInternal(float inDeltaTime)
         }
     }
     
-    if (m_iHealth == 0)
+    if (m_iHealth == 0 && !isRequestingDeletion())
     {
         // TODO, this is NOT the right way to handle the player dying
-        
-        m_iHealth = 255;
         
         requestDeletion();
         
