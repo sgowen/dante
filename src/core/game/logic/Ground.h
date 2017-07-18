@@ -24,7 +24,11 @@ class Ground : public Entity
 public:
     Ground(b2World& world);
     
+    virtual EntityDef constructEntityDef();
+    
     virtual void update();
+    
+    virtual bool shouldCollide(Entity* inEntity);
     
     virtual void handleContact(Entity* inEntity);
     

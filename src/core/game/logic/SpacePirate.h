@@ -35,7 +35,11 @@ public:
     
     SpacePirate(b2World& world, bool isServer);
     
+    virtual EntityDef constructEntityDef();
+    
     virtual void update();
+    
+    virtual bool shouldCollide(Entity* inEntity);
     
     virtual void handleContact(Entity* inEntity);
     

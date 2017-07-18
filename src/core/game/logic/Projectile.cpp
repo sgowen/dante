@@ -35,13 +35,23 @@
 
 #include <math.h>
 
-Projectile::Projectile(b2World& world, bool isServer) : Entity(world, 0, 0, 1.565217391304348f * 0.444444444444444f, 2.0f * 0.544423440453686f),
+Projectile::Projectile(b2World& world, bool isServer) : Entity(world, 0, 0, 1.565217391304348f * 0.444444444444444f, 2.0f * 0.544423440453686f, constructEntityDef()),
 m_isServer(isServer),
 m_iPlayerId(0),
 m_state(ProjectileState_Active),
 m_isFacingLeft(false)
 {
     // Empty
+}
+
+EntityDef Projectile::constructEntityDef()
+{
+    EntityDef ret = EntityDef();
+    
+    ret.isStaticBody = false;
+    ret.bullet = true;
+    
+    return ret;
 }
 
 void Projectile::update()
@@ -65,6 +75,11 @@ void Projectile::update()
     {
         updateInternal(Timing::getInstance()->getDeltaTime());
     }
+}
+
+bool Projectile::shouldCollide(Entity *inEntity)
+{
+    return inEntity->getRTTI().derivesFrom(SpacePirate::rtti);
 }
 
 void Projectile::handleContact(Entity* inEntity)
@@ -133,6 +148,7 @@ void Projectile::read(InputMemoryBitStream& inInputStream)
     if (oldState == ProjectileState_Active
         && m_state == ProjectileState_Exploding)
     {
+        m_body->SetGravityScale(0);
         playSound(SOUND_ID_EXPLOSION);
     }
     
@@ -216,7 +232,7 @@ void Projectile::initFromShooter(Robot* inRobot)
     m_iPlayerId = inRobot->getPlayerId();
     m_isFacingLeft = inRobot->isFacingLeft();
     
-    setVelocity(b2Vec2(m_isFacingLeft ? -50 : 50, getVelocity().y));
+    setVelocity(b2Vec2(m_isFacingLeft ? -60 : 60, getVelocity().y));
     
     b2Vec2 position = inRobot->getPosition();
     position += b2Vec2(m_isFacingLeft ? -0.5f : 0.5f, 0.4f);
@@ -244,6 +260,7 @@ void Projectile::handleContactWithSpacePirate(SpacePirate* spacePirate)
     m_state = ProjectileState_Exploding;
     m_fStateTime = 0.0f;
     setVelocity(b2Vec2(0.0f, 0.0f));
+    m_body->SetGravityScale(0);
     
     bool isHeadshot = projBottom > targHead;
     
@@ -266,6 +283,8 @@ void Projectile::handleContactWithGround(Ground* ground)
     
     m_state = ProjectileState_Exploding;
     m_fStateTime = 0.0f;
+    setVelocity(b2Vec2(0.0f, 0.0f));
+    m_body->SetGravityScale(0);
     
     NG_SERVER->setStateDirty(getID(), PRJC_Pose);
 }
@@ -299,9 +318,9 @@ void Projectile::updateInternal(float inDeltaTime)
         return;
     }
     
-    if (getPosition().y < -5
-        || getPosition().x < -10
-        || getPosition().x > GAME_WIDTH + 10)
+    if (getPosition().y < -1
+        || getPosition().x < -1
+        || getPosition().x > GAME_WIDTH + 1)
     {
         requestDeletion();
         return;

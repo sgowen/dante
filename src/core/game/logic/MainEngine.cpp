@@ -72,6 +72,9 @@ m_isSteam(false)
     NG_AUDIO_ENGINE->loadSound(SOUND_ID_HEADSHOT, SOUND_HEADSHOT, 4);
     
     NG_AUDIO_ENGINE->loadMusic(MUSIC_DEMO);
+    
+    NG_AUDIO_ENGINE->setSoundDisabled(true);
+    NG_AUDIO_ENGINE->setMusicDisabled(true);
 }
 
 MainEngine::~MainEngine()
@@ -138,9 +141,9 @@ void MainEngine::update(float deltaTime)
             if (InstanceManager::getClientWorld())
             {
                 InstanceManager::getClientWorld()->update();
-                
-                InputManager::getInstance()->clearPendingMove();
             }
+            
+            InputManager::getInstance()->clearPendingMove();
         }
         
         if (NG_CLIENT)
@@ -179,14 +182,7 @@ void MainEngine::handleNonMoveInput()
     
     if (inputState->getMenuState() == MENU_STATE_CLIENT_MAIN_TOGGLE_MUSIC)
     {
-        if (NG_AUDIO_ENGINE->isMusicPlaying())
-        {
-            NG_AUDIO_ENGINE->stopMusic();
-        }
-        else
-        {
-            NG_AUDIO_ENGINE->playMusic(true);
-        }
+        NG_AUDIO_ENGINE->setMusicDisabled(!NG_AUDIO_ENGINE->isMusicDisabled());
     }
     else if (inputState->getMenuState() == MENU_STATE_CLIENT_MAIN_TOGGLE_SOUND)
     {

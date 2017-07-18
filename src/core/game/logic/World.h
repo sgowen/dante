@@ -18,6 +18,7 @@ class Robot;
 class Ground;
 
 class EntityContactListener;
+class EntityContactFilter;
 
 class World
 {
@@ -54,6 +55,7 @@ private:
     b2World* m_world;
     Ground* m_ground;
     EntityContactListener* m_entityContactListener;
+    EntityContactFilter* m_entityContactFilter;
     bool m_isServer;
     
     b2World& getWorld();
@@ -66,6 +68,13 @@ class b2Contact;
 class EntityContactListener : public b2ContactListener
 {
     virtual void BeginContact(b2Contact* contact);
+};
+
+class b2Fixture;
+
+class EntityContactFilter : public b2ContactFilter
+{
+    virtual bool ShouldCollide(b2Fixture* fixtureA, b2Fixture* fixtureB);
 };
 
 #endif /* defined(__noctisgames__World__) */

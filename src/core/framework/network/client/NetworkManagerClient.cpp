@@ -345,7 +345,7 @@ void NetworkManagerClient::sendInputPacket()
         
         m_deliveryNotificationManager->writeState(inputPacket);
         
-        //eventually write the 3 latest moves so they have three chances to get through...
+        // eventually write the 3 latest moves so they have three chances to get through...
         int moveCount = moveList.getMoveCount();
         int firstMoveIndex = moveCount - 3;
         if (firstMoveIndex < 3)
@@ -354,7 +354,7 @@ void NetworkManagerClient::sendInputPacket()
         }
         auto move = moveList.begin() + firstMoveIndex;
         
-        //only need two bits to write the move count, because it's 0, 1, 2 or 3
+        // only need two bits to write the move count, because it's 0, 1, 2 or 3
         inputPacket.write(moveCount - firstMoveIndex, 2);
         
         for (; firstMoveIndex < moveCount; ++firstMoveIndex, ++move)

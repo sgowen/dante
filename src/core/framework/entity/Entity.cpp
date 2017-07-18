@@ -19,7 +19,7 @@
 #include "Timing.h"
 #include "macros.h"
 
-Entity::Entity(b2World& world, float x, float y, float width, float height, bool isStaticBody) :
+Entity::Entity(b2World& world, float x, float y, float width, float height, EntityDef inEntityDef) :
 m_worldRef(world),
 m_body(nullptr),
 m_fixture(nullptr),
@@ -30,7 +30,7 @@ m_fHeight(height),
 m_iID(getUniqueEntityID()),
 m_isRequestingDeletion(false)
 {
-    if (isStaticBody)
+    if (inEntityDef.isStaticBody)
     {
         // Define the ground body.
         b2BodyDef groundBodyDef;
@@ -56,6 +56,8 @@ m_isRequestingDeletion(false)
         b2BodyDef bodyDef;
         bodyDef.type = b2_dynamicBody;
         bodyDef.position.Set(x, y);
+        bodyDef.fixedRotation = inEntityDef.fixedRotation;
+        bodyDef.bullet = inEntityDef.bullet;
         m_body = world.CreateBody(&bodyDef);
         
         // Define another box shape for our dynamic body.
@@ -65,6 +67,7 @@ m_isRequestingDeletion(false)
         // Define the dynamic body fixture.
         b2FixtureDef fixtureDef;
         fixtureDef.shape = &dynamicBox;
+        fixtureDef.isSensor = inEntityDef.isSensor;
         
         // Set the box density to be non-zero, so it will be dynamic.
         fixtureDef.density = 1.0f;
@@ -75,6 +78,8 @@ m_isRequestingDeletion(false)
         // Add the shape to the body.
         m_fixture = m_body->CreateFixture(&fixtureDef);
     }
+    
+    m_fixture->SetUserData(this);
     
     m_body->SetUserData(this);
 }

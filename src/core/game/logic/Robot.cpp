@@ -40,7 +40,7 @@
 
 #include <math.h>
 
-Robot::Robot(b2World& world, bool isServer) : Entity(world, 0, 0, 1.565217391304348f, 2.0f),
+Robot::Robot(b2World& world, bool isServer) : Entity(world, 0, 0, 1.565217391304348f, 2.0f, constructEntityDef()),
 m_iAddressHash(0),
 m_iPlayerId(0),
 m_playerName("Robot"),
@@ -54,8 +54,6 @@ m_wasLastKillHeadshot(false),
 m_fSpeed(7.5f),
 m_fJumpSpeed(11.0f),
 m_fTimeOfNextShot(0.0f),
-m_fRobotRestitution(0.1f),
-m_fTimeAccelerationBecameOutOfSync(0.0f),
 m_fTimeVelocityBecameOutOfSync(0.0f),
 m_fTimePositionBecameOutOfSync(0.0f),
 m_isServer(isServer),
@@ -64,6 +62,15 @@ m_isFalling(false),
 m_isFirstJumpCompleted(false)
 {
     // Empty
+}
+
+EntityDef Robot::constructEntityDef()
+{
+    EntityDef ret = EntityDef();
+    
+    ret.isStaticBody = false;
+    
+    return ret;
 }
 
 void Robot::update()
@@ -103,6 +110,8 @@ void Robot::update()
         {
             NG_SERVER->setStateDirty(getID(), ROBT_Pose);
         }
+        
+        NG_SERVER->setStateDirty(getID(), ROBT_Pose);
     }
     else
     {
@@ -119,6 +128,11 @@ void Robot::update()
             updateInternal(Timing::getInstance()->getDeltaTime());
         }
     }
+}
+
+bool Robot::shouldCollide(Entity *inEntity)
+{
+    return inEntity->getRTTI().derivesFrom(SpacePirate::rtti);
 }
 
 void Robot::handleContact(Entity* inEntity)
@@ -427,18 +441,14 @@ void Robot::processMove(const Move& inMove)
     uint8_t old_m_iNumJumps = m_iNumJumps;
     bool old_m_isSprinting = m_isSprinting;
     
-    IInputState* currentState = inMove.getInputState();
+    processInput(inMove.getInputState());
     
-    float deltaTime = inMove.getDeltaTime();
-    
-    processInput(deltaTime, currentState);
-    
-    updateInternal(deltaTime);
+    updateInternal(inMove.getDeltaTime());
     
     playNetworkBoundSounds(old_m_iNumJumps, old_m_isSprinting);
 }
 
-void Robot::processInput(float inDeltaTime, IInputState* inInputState)
+void Robot::processInput(IInputState* inInputState)
 {
     InputState* is = static_cast<InputState*>(inInputState);
     uint8_t playerId = getPlayerId();
@@ -522,7 +532,7 @@ void Robot::updateInternal(float inDeltaTime)
         return;
     }
     
-    if (getPosition().y < -5)
+    if (getPosition().y < -1)
     {
         if (m_iHealth > 0)
         {
@@ -571,10 +581,9 @@ void Robot::doClientSidePredictionForLocalRobot(uint32_t inReadState)
         
         for (const Move& move : moveList)
         {
-            float deltaTime = move.getDeltaTime();
-            processInput(deltaTime, move.getInputState());
+            processInput(move.getInputState());
             
-            updateInternal(deltaTime);
+            updateInternal(move.getDeltaTime());
         }
     }
 }
@@ -627,14 +636,14 @@ bool Robot::interpolateVectorsIfNecessary(b2Vec2& inOld, const b2Vec2& inNew, fl
     {
         LOG("WARN: Robot move replay ended with incorrect %s! Old %3.8f, %3.8f - New %3.8f, %3.8f", vectorType, inOld.x, inOld.y, inNew.x, inNew.y);
         
-        //have we been out of sync, or did we just become out of sync?
+        // have we been out of sync, or did we just become out of sync?
         float time = Timing::getInstance()->getFrameStartTime();
         if (syncTracker == 0.0f)
         {
             syncTracker = time;
         }
         
-        //now interpolate to the correct value...
+        // now interpolate to the correct value...
         float durationOutOfSync = time - syncTracker;
         if (durationOutOfSync < rtt)
         {

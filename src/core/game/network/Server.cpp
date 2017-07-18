@@ -205,7 +205,7 @@ void Server::respawnEnemiesIfNecessary()
                 float posY = (rand() % static_cast<int>(GAME_HEIGHT - spacePirate->getHeight() * 2)) + (2.0f + spacePirate->getHeight() * 2);
                 float speed = (rand() % 100) * 0.05f + 1.0f;
                 int scale = static_cast<int>(rand() % 3) + 1;
-                uint8_t health = static_cast<uint8_t>(rand() % 48) + 16;
+                uint8_t health = static_cast<uint8_t>(rand() % 12) + 4;
                 
                 spacePirate->init(posX, posY, speed, scale, health);
                 
@@ -243,7 +243,7 @@ void Server::clearClientMoves()
     }
 }
 
-Server::Server(bool isSteam) : m_fStateTime(0), m_fFrameStateTime(0), m_fStateTimeNoEnemies(0), m_isSpawningEnemies(true)
+Server::Server(bool isSteam) : m_fStateTime(0), m_fFrameStateTime(0), m_fStateTimeNoEnemies(0), m_isSpawningEnemies(false)
 {
     FWInstanceManager::createServerEntityManager(InstanceManager::sHandleEntityCreatedOnServer, InstanceManager::sHandleEntityDeletedOnServer);
     

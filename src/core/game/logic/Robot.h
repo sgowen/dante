@@ -39,7 +39,11 @@ public:
     
     Robot(b2World& world, bool isServer);
     
+    virtual EntityDef constructEntityDef();
+    
     virtual void update();
+    
+    virtual bool shouldCollide(Entity* inEntity);
     
     virtual void handleContact(Entity* inEntity);
     
@@ -99,8 +103,6 @@ private:
     float m_fSpeed;
     float m_fJumpSpeed;
     float m_fTimeOfNextShot;
-    float m_fRobotRestitution;
-    float m_fTimeAccelerationBecameOutOfSync;
     float m_fTimeVelocityBecameOutOfSync;
     float m_fTimePositionBecameOutOfSync;
     
@@ -109,7 +111,7 @@ private:
     
     void processMove(const Move& inMove);
     
-    void processInput(float inDeltaTime, IInputState* inInputState);
+    void processInput(IInputState* inInputState);
     
     void updateInternal(float inDeltaTime);
     

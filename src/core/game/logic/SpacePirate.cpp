@@ -29,10 +29,11 @@
 #include "InstanceManager.h"
 #include "Ground.h"
 #include "Projectile.h"
+#include "Util.h"
 
 #include <math.h>
 
-SpacePirate::SpacePirate(b2World& world, bool isServer) : Entity(world, 0, 0, 2.0f, 2.347826086956522f),
+SpacePirate::SpacePirate(b2World& world, bool isServer) : Entity(world, 0, 0, 2.0f, 2.347826086956522f, constructEntityDef()),
 m_isServer(isServer),
 m_fSpeed(0.0),
 m_iHealth(8),
@@ -46,6 +47,15 @@ m_fJumpSpeed(7.0f)
 {
     m_fTimeForNextJump = Timing::getInstance()->getFrameStartTime();
     m_fTimeForNextJump += (rand() % 100) * 0.1f + 1.0f;
+}
+
+EntityDef SpacePirate::constructEntityDef()
+{
+    EntityDef ret = EntityDef();
+    
+    ret.isStaticBody = false;
+    
+    return ret;
 }
 
 void SpacePirate::update()
@@ -73,6 +83,11 @@ void SpacePirate::update()
     {
         updateInternal(timing->getDeltaTime());
     }
+}
+
+bool SpacePirate::shouldCollide(Entity *inEntity)
+{
+    return inEntity->getRTTI().derivesFrom(Robot::rtti) || inEntity->getRTTI().derivesFrom(Projectile::rtti);
 }
 
 void SpacePirate::handleContact(Entity* inEntity)
@@ -247,7 +262,9 @@ void SpacePirate::init(float x, float y, float speed, int scale, uint8_t health)
     m_body->DestroyFixture(m_fixture);
     
     // Add the shape to the body.
-    m_body->CreateFixture(&fixtureDef);
+    m_fixture = m_body->CreateFixture(&fixtureDef);
+    
+    m_fixture->SetUserData(this);
     
     m_iHealth = health;
     m_fStartingHealth = m_iHealth;
@@ -278,7 +295,7 @@ void SpacePirate::takeDamage(bool isHeadshot)
         return;
     }
     
-    m_iHealth -= isHeadshot ? 32 : 1;
+    m_iHealth -= isHeadshot ? 8 : 1;
     if (m_iHealth > m_fStartingHealth)
     {
         // We are using unsigned values for health
@@ -329,7 +346,7 @@ void SpacePirate::updateInternal(float inDeltaTime)
         return;
     }
     
-    if (getPosition().y < -5)
+    if (getPosition().y < -1)
     {
         requestDeletion();
         

@@ -20,14 +20,24 @@
 
 #include <math.h>
 
-Ground::Ground(b2World& world) : Entity(world, GAME_WIDTH / 2.0f, -10.0f, GAME_WIDTH, 23.6f, true)
+Ground::Ground(b2World& world) : Entity(world, GAME_WIDTH / 2.0f, -10.0f, GAME_WIDTH, 23.6f, constructEntityDef())
 {
     // Empty
+}
+
+EntityDef Ground::constructEntityDef()
+{
+    return EntityDef();
 }
 
 void Ground::update()
 {
     // Empty
+}
+
+bool Ground::shouldCollide(Entity *inEntity)
+{
+    return true;
 }
 
 void Ground::handleContact(Entity* inEntity)

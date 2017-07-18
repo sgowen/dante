@@ -31,6 +31,22 @@ virtual uint32_t getNetworkType();
 #define NETWORK_TYPE_IMPL(name) \
 uint32_t name::getNetworkType() { return kClassId; }
 
+struct EntityDef
+{
+    EntityDef()
+    {
+        isStaticBody = true;
+        fixedRotation = true;
+        bullet = false;
+        isSensor = false;
+    }
+    
+    bool isStaticBody;
+    bool fixedRotation;
+    bool bullet;
+    bool isSensor;
+};
+
 class Entity
 {
     RTTI_DECL;
@@ -38,11 +54,15 @@ class Entity
     NETWORK_TYPE_DECL(NETWORK_TYPE_Entity);
     
 public:
-    Entity(b2World& world, float x, float y, float width, float height, bool isStaticBody = false);
+    Entity(b2World& world, float x, float y, float width, float height, EntityDef inEntityDef);
     
     virtual ~Entity();
     
+    virtual EntityDef constructEntityDef() = 0;
+    
     virtual void update() = 0;
+    
+    virtual bool shouldCollide(Entity* inEntity) = 0;
     
     virtual void handleContact(Entity* inEntity) = 0;
     

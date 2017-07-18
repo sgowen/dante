@@ -411,7 +411,7 @@ void MainRenderer::renderServerJoinedText()
     {
         static b2Vec2 origin = b2Vec2(CAM_WIDTH - 0.5f, CAM_HEIGHT - 2.5f);
         
-        std::string text = StringUtil::format("'M' Music %s", NG_AUDIO_ENGINE->isMusicPlaying() ? " ON" : "OFF");
+        std::string text = StringUtil::format("'M' Music %s", NG_AUDIO_ENGINE->isMusicDisabled() ? "OFF" : " ON");
         renderText(text, origin, Color::BLACK, FONT_ALIGN_RIGHT);
     }
     

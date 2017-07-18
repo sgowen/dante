@@ -72,8 +72,10 @@ World::World(bool isServer) : m_world(nullptr), m_isServer(isServer)
     m_ground = new Ground(*m_world);
     
     m_entityContactListener = new EntityContactListener();
+    m_entityContactFilter = new EntityContactFilter();
     
     m_world->SetContactListener(m_entityContactListener);
+    m_world->SetContactFilter(m_entityContactFilter);
 }
 
 World::~World()
@@ -83,6 +85,7 @@ World::~World()
     delete m_ground;
     
     delete m_entityContactListener;
+    delete m_entityContactFilter;
     
     delete m_world;
 }
@@ -125,8 +128,8 @@ void World::removeEntity(Entity* inEntity)
 
 void World::update()
 {
-    static int32 velocityIterations = 6;
-    static int32 positionIterations = 2;
+    static int32 velocityIterations = 12;
+    static int32 positionIterations = 4;
     
     // Instruct the world to perform a single step of simulation.
     // It is generally best to keep the time step and iterations fixed.
@@ -215,4 +218,13 @@ void EntityContactListener::BeginContact(b2Contact* contact)
     {
         entityA->handleContact(entityB);
     }
+}
+
+bool EntityContactFilter::ShouldCollide(b2Fixture* fixtureA, b2Fixture* fixtureB)
+{
+    Entity* entityA = static_cast<Entity*>(fixtureA->GetUserData());
+    
+    Entity* entityB = static_cast<Entity*>(fixtureB->GetUserData());
+    
+    return entityA->shouldCollide(entityB);
 }
