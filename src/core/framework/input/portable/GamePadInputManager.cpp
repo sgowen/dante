@@ -65,7 +65,7 @@ void GamePadInputManager::addEvent(GamePadEventType type, int index, float x, fl
     m_fTimeSinceLastGamePadEvent = Timing::getInstance()->getFrameStartTime();
 }
 
-GamePadInputManager::GamePadInputManager() : m_pool(new NGRollingPool<GamePadEvent>(POOL_SIZE)), m_fTimeSinceLastGamePadEvent(0)
+GamePadInputManager::GamePadInputManager() : m_pool(new NGRollingPool<GamePadEvent>(POOL_SIZE)), m_fTimeSinceLastGamePadEvent(-5)
 {
     // Empty
 }
