@@ -23,14 +23,14 @@
 
 #define WORLD_CREATE_CLIENT_IMPL(name) \
 Entity* World::sClientCreate##name() \
-{\
+{ \
     b2World& world = InstanceManager::getClientWorld()->getWorld(); \
     return new name(world, false); \
 }
 
 #define WORLD_CREATE_SERVER_IMPL(name) \
 Entity* World::sServerCreate##name() \
-{\
+{ \
     b2World& world = InstanceManager::getServerWorld()->getWorld(); \
     Entity* ret = new name(world, true); \
     NG_SERVER->registerEntity(ret); \
