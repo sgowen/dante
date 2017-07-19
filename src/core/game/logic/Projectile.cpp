@@ -260,7 +260,8 @@ void Projectile::handleContactWithSpacePirate(SpacePirate* spacePirate)
     spacePirate->takeDamage(isHeadshot);
     if (spacePirate->getHealth() == 0)
     {
-        Robot* robot = InstanceManager::getServerWorld()->getRobotWithPlayerId(getPlayerId());
+        World* world = m_isServer ? InstanceManager::getServerWorld() : InstanceManager::getClientWorld();
+        Robot* robot = world->getRobotWithPlayerId(getPlayerId());
         robot->awardKill(isHeadshot);
     }
     

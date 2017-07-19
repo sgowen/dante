@@ -45,7 +45,12 @@ WORLD_CREATE_SERVER_IMPL(Robot);
 WORLD_CREATE_SERVER_IMPL(Projectile);
 WORLD_CREATE_SERVER_IMPL(SpacePirate);
 
-World::World(bool isServer) : m_world(nullptr), m_isServer(isServer)
+World::World(bool isServer) :
+m_world(nullptr),
+m_ground(nullptr),
+m_entityContactListener(nullptr),
+m_entityContactFilter(nullptr),
+m_isServer(isServer)
 {
     // Define the gravity vector.
     b2Vec2 gravity(0.0f, -9.8f);

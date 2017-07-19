@@ -76,6 +76,8 @@ void SpacePirate::update()
         {
             NG_SERVER->setStateDirty(getID(), SPCP_Pose);
         }
+        
+        NG_SERVER->setStateDirty(getID(), SPCP_Pose);
     }
     else
     {
@@ -295,13 +297,13 @@ void SpacePirate::takeDamage(bool isHeadshot)
         m_iHealth = 0;
     }
     
+    if (m_iHealth == 0)
+    {
+        requestDeletion();
+    }
+    
     if (m_isServer)
     {
-        if (m_iHealth == 0)
-        {
-            requestDeletion();
-        }
-        
         // tell the world our health dropped
         NG_SERVER->setStateDirty(getID(), SPCP_Health);
     }
@@ -337,15 +339,15 @@ void SpacePirate::updateInternal(float inDeltaTime)
         m_fStateTime = 0;
     }
     
-    if (!m_isServer)
-    {
-        return;
-    }
-    
     if (getPosition().y < -1)
     {
         requestDeletion();
         
+        return;
+    }
+    
+    if (!m_isServer)
+    {
         return;
     }
     
@@ -362,9 +364,6 @@ void SpacePirate::updateInternal(float inDeltaTime)
             m_isJumping = true;
             
             setVelocity(b2Vec2(getVelocity().x, m_fJumpSpeed));
-            
-            // tell the world we just jumped
-            NG_SERVER->setStateDirty(getID(), SPCP_Pose);
         }
     }
     
@@ -389,8 +388,6 @@ void SpacePirate::updateInternal(float inDeltaTime)
                 setVelocity(b2Vec2(m_isFacingLeft ? -m_fSpeed : m_fSpeed, getVelocity().y));
                 
                 targetFound = true;
-                
-                NG_SERVER->setStateDirty(getID(), SPCP_Pose);
             }
         }
     }
@@ -400,8 +397,6 @@ void SpacePirate::updateInternal(float inDeltaTime)
         m_isFacingLeft = true;
         
         setVelocity(b2Vec2(0, getVelocity().y));
-        
-        NG_SERVER->setStateDirty(getID(), SPCP_Pose);
     }
 }
 
