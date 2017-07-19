@@ -347,33 +347,29 @@ void Robot::handleContactWithGround(Ground* ground)
 
 void Robot::takeDamage()
 {
-    if (!m_isServer)
-    {
-        return;
-    }
-    
     if (m_iHealth > 0)
     {
         m_iHealth--;
     }
     
-    // tell the world our health dropped
-    NG_SERVER->setStateDirty(getID(), ROBT_Health);
+    if (m_isServer)
+    {
+        // tell the world our health dropped
+        NG_SERVER->setStateDirty(getID(), ROBT_Health);
+    }
 }
 
 void Robot::awardKill(bool isHeadshot)
 {
-    if (!m_isServer)
-    {
-        return;
-    }
-    
     m_iNumKills++;
     
     m_wasLastKillHeadshot = isHeadshot;
     
-    // tell the world how bad ass we are
-    NG_SERVER->setStateDirty(getID(), ROBT_NumKills);
+    if (m_isServer)
+    {
+        // tell the world how bad ass we are
+        NG_SERVER->setStateDirty(getID(), ROBT_NumKills);
+    }
 }
 
 void Robot::setAddressHash(uint64_t addressHash)
@@ -516,6 +512,8 @@ void Robot::updateInternal(float inDeltaTime)
 {
     m_fStateTime += inDeltaTime;
     
+    stepPhysics(inDeltaTime);
+    
     if (m_isGrounded)
     {
         setAngle(0);
@@ -525,11 +523,6 @@ void Robot::updateInternal(float inDeltaTime)
     {
         m_isFalling = true;
         m_fStateTime = 0;
-    }
-    
-    if (!m_isServer)
-    {
-        return;
     }
     
     if (getPosition().y < -1)
@@ -542,12 +535,24 @@ void Robot::updateInternal(float inDeltaTime)
     
     if (m_iHealth == 0 && !isRequestingDeletion())
     {
-        // TODO, this is NOT the right way to handle the player dying
-        
-        requestDeletion();
-        
-        Server::sHandleNewClient(m_iPlayerId, m_playerName);
+        if (m_isServer)
+        {
+            // TODO, this is NOT the right way to handle the player dying
+            
+            requestDeletion();
+            
+            Server::sHandleNewClient(m_iPlayerId, m_playerName);
+        }
     }
+}
+void Robot::stepPhysics(float deltaTime)
+{
+    static int32 velocityIterations = 12;
+    static int32 positionIterations = 4;
+    
+    // Instruct the world to perform a single step of simulation.
+    // It is generally best to keep the time step and iterations fixed.
+    m_worldRef.Step(deltaTime, velocityIterations, positionIterations);
 }
 
 void Robot::handleShooting()

@@ -55,6 +55,8 @@ public:
     
     std::vector<Entity*>& getEntities();
     
+    b2World& getWorld();
+    
 private:
     std::vector<Entity*> m_entities;
     b2World* m_world;
@@ -63,7 +65,7 @@ private:
     EntityContactFilter* m_entityContactFilter;
     bool m_isServer;
     
-    b2World& getWorld();
+    void stepPhysics(float deltaTime);
 };
 
 #include "Box2D/Dynamics/b2WorldCallbacks.h"

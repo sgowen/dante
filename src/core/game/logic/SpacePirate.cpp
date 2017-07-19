@@ -60,8 +60,6 @@ EntityDef SpacePirate::constructEntityDef()
 
 void SpacePirate::update()
 {
-    Timing* timing = m_isServer ? Timing::getInstance() : Timing::getInstance();
-    
     if (m_isServer)
     {
         b2Vec2 oldVelocity = b2Vec2(getVelocity().x, getVelocity().y);
@@ -69,7 +67,7 @@ void SpacePirate::update()
         bool old_isGrounded = m_isGrounded;
         bool old_isFalling = m_isFalling;
         
-        updateInternal(timing->getDeltaTime());
+        updateInternal(Timing::getInstance()->getDeltaTime());
         
         if (!areBox2DVectorsEqual(oldVelocity, getVelocity())
             || old_isFacingLeft != m_isFacingLeft
@@ -81,7 +79,7 @@ void SpacePirate::update()
     }
     else
     {
-        updateInternal(timing->getDeltaTime());
+        updateInternal(Timing::getInstance()->getDeltaTime());
     }
 }
 
@@ -290,11 +288,6 @@ void SpacePirate::handleContactWithGround(Ground* ground)
 
 void SpacePirate::takeDamage(bool isHeadshot)
 {
-    if (!m_isServer)
-    {
-        return;
-    }
-    
     m_iHealth -= isHeadshot ? 8 : 1;
     if (m_iHealth > m_fStartingHealth)
     {
@@ -302,13 +295,16 @@ void SpacePirate::takeDamage(bool isHeadshot)
         m_iHealth = 0;
     }
     
-    if (m_iHealth == 0)
+    if (m_isServer)
     {
-        requestDeletion();
+        if (m_iHealth == 0)
+        {
+            requestDeletion();
+        }
+        
+        // tell the world our health dropped
+        NG_SERVER->setStateDirty(getID(), SPCP_Health);
     }
-    
-    // tell the world our health dropped
-    NG_SERVER->setStateDirty(getID(), SPCP_Health);
 }
 
 uint8_t SpacePirate::getHealth()

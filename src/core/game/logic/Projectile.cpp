@@ -50,6 +50,7 @@ EntityDef Projectile::constructEntityDef()
     
     ret.isStaticBody = false;
     ret.bullet = true;
+    ret.isSensor = true;
     
     return ret;
 }
@@ -243,11 +244,6 @@ void Projectile::initFromShooter(Robot* inRobot)
 
 void Projectile::handleContactWithSpacePirate(SpacePirate* spacePirate)
 {
-    if (!m_isServer)
-    {
-        return;
-    }
-    
     if (m_state == ProjectileState_Exploding)
     {
         return;
@@ -268,19 +264,20 @@ void Projectile::handleContactWithSpacePirate(SpacePirate* spacePirate)
         robot->awardKill(isHeadshot);
     }
     
-    NG_SERVER->setStateDirty(getID(), PRJC_Pose);
+    if (m_isServer)
+    {
+        NG_SERVER->setStateDirty(getID(), PRJC_Pose);
+    }
 }
 
 void Projectile::handleContactWithGround(Ground* ground)
 {
-    if (!m_isServer)
-    {
-        return;
-    }
-    
     explode();
     
-    NG_SERVER->setStateDirty(getID(), PRJC_Pose);
+    if (m_isServer)
+    {
+        NG_SERVER->setStateDirty(getID(), PRJC_Pose);
+    }
 }
 
 Projectile::ProjectileState Projectile::getState()
@@ -314,11 +311,6 @@ void Projectile::updateInternal(float inDeltaTime)
             requestDeletion();
         }
         
-        return;
-    }
-    
-    if (!m_isServer)
-    {
         return;
     }
     

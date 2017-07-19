@@ -135,13 +135,6 @@ void World::update()
             }
         }
     }
-    
-    static int32 velocityIterations = 12;
-    static int32 positionIterations = 4;
-    
-    // Instruct the world to perform a single step of simulation.
-    // It is generally best to keep the time step and iterations fixed.
-    m_world->Step(Timing::getInstance()->getDeltaTime(), velocityIterations, positionIterations);
 }
 
 Robot* World::getRobotWithPlayerId(uint8_t inPlayerID)
@@ -190,6 +183,16 @@ std::vector<Entity*>& World::getEntities()
 b2World& World::getWorld()
 {
     return *m_world;
+}
+
+void World::stepPhysics(float deltaTime)
+{
+    static int32 velocityIterations = 12;
+    static int32 positionIterations = 4;
+    
+    // Instruct the world to perform a single step of simulation.
+    // It is generally best to keep the time step and iterations fixed.
+    m_world->Step(deltaTime, velocityIterations, positionIterations);
 }
 
 void EntityContactListener::BeginContact(b2Contact* contact)

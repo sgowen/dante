@@ -115,6 +115,8 @@ private:
     
     void updateInternal(float inDeltaTime);
     
+    void stepPhysics(float deltaTime);
+    
     void handleShooting();
 
     void doClientSidePredictionForLocalRobot(uint32_t inReadState);
