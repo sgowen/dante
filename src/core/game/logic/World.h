@@ -20,17 +20,22 @@ class Ground;
 class EntityContactListener;
 class EntityContactFilter;
 
+#define WORLD_CREATE_CLIENT_DECL(name) \
+static Entity* sClientCreate##name()
+
+#define WORLD_CREATE_SERVER_DECL(name) \
+static Entity* sServerCreate##name()
+
 class World
 {
 public:
-    static Entity* sClientCreateRobot();
-    static Entity* sServerCreateRobot();
+    WORLD_CREATE_CLIENT_DECL(Robot);
+    WORLD_CREATE_CLIENT_DECL(Projectile);
+    WORLD_CREATE_CLIENT_DECL(SpacePirate);
     
-    static Entity* sClientCreateProjectile();
-    static Entity* sServerCreateProjectile();
-    
-    static Entity* sClientCreateSpacePirate();
-    static Entity* sServerCreateSpacePirate();
+    WORLD_CREATE_SERVER_DECL(Robot);
+    WORLD_CREATE_SERVER_DECL(Projectile);
+    WORLD_CREATE_SERVER_DECL(SpacePirate);
     
     World(bool isServer);
     

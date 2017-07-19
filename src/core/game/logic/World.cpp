@@ -21,45 +21,29 @@
 #include "Timing.h"
 #include "Ground.h"
 
-#define WORLD_CREATE_CLIENT(name) \
+#define WORLD_CREATE_CLIENT_IMPL(name) \
+Entity* World::sClientCreate##name() \
+{\
     b2World& world = InstanceManager::getClientWorld()->getWorld(); \
-    return new name(world, false);
+    return new name(world, false); \
+}
 
-#define WORLD_CREATE_SERVER(name) \
+#define WORLD_CREATE_SERVER_IMPL(name) \
+Entity* World::sServerCreate##name() \
+{\
     b2World& world = InstanceManager::getServerWorld()->getWorld(); \
     Entity* ret = new name(world, true); \
     NG_SERVER->registerEntity(ret); \
-    return ret;
-
-Entity* World::sClientCreateRobot()
-{
-    WORLD_CREATE_CLIENT(Robot);
+    return ret; \
 }
 
-Entity* World::sServerCreateRobot()
-{
-    WORLD_CREATE_SERVER(Robot);
-}
+WORLD_CREATE_CLIENT_IMPL(Robot);
+WORLD_CREATE_CLIENT_IMPL(Projectile);
+WORLD_CREATE_CLIENT_IMPL(SpacePirate);
 
-Entity* World::sClientCreateProjectile()
-{
-    WORLD_CREATE_CLIENT(Projectile);
-}
-
-Entity* World::sServerCreateProjectile()
-{
-    WORLD_CREATE_SERVER(Projectile);
-}
-
-Entity* World::sClientCreateSpacePirate()
-{
-    WORLD_CREATE_CLIENT(SpacePirate);
-}
-
-Entity* World::sServerCreateSpacePirate()
-{
-    WORLD_CREATE_SERVER(SpacePirate);
-}
+WORLD_CREATE_SERVER_IMPL(Robot);
+WORLD_CREATE_SERVER_IMPL(Projectile);
+WORLD_CREATE_SERVER_IMPL(SpacePirate);
 
 World::World(bool isServer) : m_world(nullptr), m_isServer(isServer)
 {
