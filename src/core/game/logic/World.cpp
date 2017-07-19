@@ -22,8 +22,8 @@
 #include "Ground.h"
 
 #define WORLD_CREATE_CLIENT(name) \
-b2World& world = InstanceManager::getClientWorld()->getWorld(); \
-return new name(world, false);
+    b2World& world = InstanceManager::getClientWorld()->getWorld(); \
+    return new name(world, false);
 
 #define WORLD_CREATE_SERVER(name) \
     b2World& world = InstanceManager::getServerWorld()->getWorld(); \
