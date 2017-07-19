@@ -187,16 +187,16 @@ void NetworkManagerClient::processPacket(InputMemoryBitStream& inInputStream, IM
     
     switch (packetType)
     {
-        case NETWORK_PACKET_TYPE_WELCOME:
+        case NW_PACKET_TYPE_WELCOME:
             handleWelcomePacket(inInputStream);
             break;
-        case NETWORK_PACKET_TYPE_LOCAL_PLAYER_ADDED:
+        case NW_PACKET_TYPE_LOCAL_PLAYER_ADDED:
             handleLocalPlayerAddedPacket(inInputStream);
             break;
-        case NETWORK_PACKET_TYPE_LOCAL_PLAYER_DENIED:
+        case NW_PACKET_TYPE_LOCAL_PLAYER_DENIED:
             handleLocalPlayerDeniedPacket();
             break;
-        case NETWORK_PACKET_TYPE_STATE:
+        case NW_PACKET_TYPE_STATE:
             if (m_deliveryNotificationManager->readAndProcessState(inInputStream))
             {
                 handleStatePacket(inInputStream);
@@ -212,7 +212,7 @@ void NetworkManagerClient::handleNoResponse()
 {
     float time = Timing::getInstance()->getFrameStartTime();
     
-    float timeout = m_state == NCS_Uninitialized ? NETWORK_CONNECT_TO_SERVER_TIMEOUT : NETWORK_SERVER_TIMEOUT;
+    float timeout = m_state == NCS_Uninitialized ? NW_CONNECT_TO_SERVER_TIMEOUT : NW_SERVER_TIMEOUT;
     if (time > m_fLastServerCommunicationTimestamp + timeout)
     {
         m_state = NCS_Disconnected;
@@ -233,11 +233,11 @@ void NetworkManagerClient::updateSayingHello()
 {
     float time = Timing::getInstance()->getFrameStartTime();
     
-    if (time > m_fTimeOfLastHello + NETWORK_CLIENT_TIME_BETWEEN_HELLOS)
+    if (time > m_fTimeOfLastHello + NW_CLIENT_TIME_BETWEEN_HELLOS)
     {
         OutputMemoryBitStream helloPacket;
         
-        helloPacket.write(NETWORK_PACKET_TYPE_HELLO);
+        helloPacket.write(NW_PACKET_TYPE_HELLO);
         helloPacket.write(getPlayerName());
         
         sendPacket(helloPacket);
@@ -341,7 +341,7 @@ void NetworkManagerClient::sendInputPacket()
     {
         OutputMemoryBitStream inputPacket;
         
-        inputPacket.write(NETWORK_PACKET_TYPE_INPUT);
+        inputPacket.write(NW_PACKET_TYPE_INPUT);
         
         m_deliveryNotificationManager->writeState(inputPacket);
         
@@ -375,11 +375,11 @@ void NetworkManagerClient::updateAddLocalPlayerRequest()
         
         float time = Timing::getInstance()->getFrameStartTime();
         
-        if (time > m_fTimeOfLastHello + NETWORK_CLIENT_TIME_BETWEEN_HELLOS)
+        if (time > m_fTimeOfLastHello + NW_CLIENT_TIME_BETWEEN_HELLOS)
         {
             OutputMemoryBitStream packet;
             
-            packet.write(NETWORK_PACKET_TYPE_ADD_LOCAL_PLAYER);
+            packet.write(NW_PACKET_TYPE_ADD_LOCAL_PLAYER);
             packet.write(m_iNextIndex);
             
             sendPacket(packet);
@@ -397,7 +397,7 @@ void NetworkManagerClient::updateDropLocalPlayerRequest()
         
         OutputMemoryBitStream packet;
         
-        packet.write(NETWORK_PACKET_TYPE_DROP_LOCAL_PLAYER);
+        packet.write(NW_PACKET_TYPE_DROP_LOCAL_PLAYER);
         packet.write(m_isRequestingToDropLocalPlayer);
         
         sendPacket(packet);

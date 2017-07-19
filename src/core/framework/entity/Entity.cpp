@@ -199,4 +199,4 @@ int Entity::getUniqueEntityID()
 
 RTTI_IMPL_NOPARENT(Entity);
 
-NETWORK_TYPE_IMPL(Entity);
+NW_TYPE_IMPL(Entity);

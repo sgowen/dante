@@ -565,7 +565,7 @@ void Robot::handleShooting()
         m_fTimeOfNextShot = time + 0.05f;
         
         // fire!
-        Projectile* projectile = static_cast<Projectile*>(SERVER_ENTITY_REG->createEntity(NETWORK_TYPE_Projectile));
+        Projectile* projectile = static_cast<Projectile*>(SERVER_ENTITY_REG->createEntity(NW_TYPE_Projectile));
         projectile->initFromShooter(this);
     }
 }
@@ -681,4 +681,4 @@ void Robot::playSound(int soundId)
 
 RTTI_IMPL(Robot, Entity);
 
-NETWORK_TYPE_IMPL(Robot);
+NW_TYPE_IMPL(Robot);

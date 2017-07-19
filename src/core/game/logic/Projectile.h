@@ -21,7 +21,7 @@ class Projectile : public Entity
 {
     RTTI_DECL;
     
-    NETWORK_TYPE_DECL(NETWORK_TYPE_Projectile);
+    NW_TYPE_DECL(NW_TYPE_Projectile);
     
 public:
     enum ProjectileReplicationState

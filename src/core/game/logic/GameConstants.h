@@ -66,10 +66,10 @@
 
 //// Network ////
 
-#define NETWORK_TYPE_Robot 'ROBT'
-#define NETWORK_TYPE_Projectile 'PRJC'
-#define NETWORK_TYPE_SpacePirate 'SPCP'
-#define NETWORK_TYPE_Ground 'GRND'
+#define NW_TYPE_Robot 'ROBT'
+#define NW_TYPE_Projectile 'PRJC'
+#define NW_TYPE_SpacePirate 'SPCP'
+#define NW_TYPE_Ground 'GRND'
 
 //// Non-Steam ////
 

@@ -23,7 +23,7 @@ class Robot : public Entity
 {
     RTTI_DECL;
     
-    NETWORK_TYPE_DECL(NETWORK_TYPE_Robot);
+    NW_TYPE_DECL(NW_TYPE_Robot);
     
 public:
     enum RobotReplicationState

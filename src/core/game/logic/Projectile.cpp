@@ -345,4 +345,4 @@ void Projectile::playSound(int soundId)
 
 RTTI_IMPL(Projectile, Entity);
 
-NETWORK_TYPE_IMPL(Projectile);
+NW_TYPE_IMPL(Projectile);

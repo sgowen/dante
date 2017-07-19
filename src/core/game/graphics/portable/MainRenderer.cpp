@@ -157,7 +157,7 @@ void MainRenderer::renderWorld()
     std::vector<Entity*> entities = InstanceManager::getClientWorld()->getEntities();
     for (Entity* go : entities)
     {
-        if (go->getNetworkType() == NETWORK_TYPE_Robot)
+        if (go->getNetworkType() == NW_TYPE_Robot)
         {
             Robot* robot = static_cast<Robot*>(go);
             
@@ -178,14 +178,14 @@ void MainRenderer::renderWorld()
                                                          go->getVelocity().y > 0 ? "Samus_Jumping" : "Samus_Falling", go->getStateTime());
             renderEntityWithColor(*robot, tr, c, robot->isFacingLeft());
         }
-        else if (go->getNetworkType() == NETWORK_TYPE_Projectile)
+        else if (go->getNetworkType() == NW_TYPE_Projectile)
         {
             Projectile* proj = static_cast<Projectile*>(go);
             bool isActive = proj->getState() == Projectile::ProjectileState::ProjectileState_Active;
             TextureRegion tr = isActive ? ASSETS->findTextureRegion("Projectile") : ASSETS->findTextureRegion("Explosion", proj->getStateTime());
             renderEntityWithColor(*proj, tr, proj->getColor(), proj->isFacingLeft());
         }
-        else if (go->getNetworkType() == NETWORK_TYPE_SpacePirate)
+        else if (go->getNetworkType() == NW_TYPE_SpacePirate)
         {
             SpacePirate* sp = static_cast<SpacePirate*>(go);
             TextureRegion tr = ASSETS->findTextureRegion("Space_Pirate_Walking", sp->getStateTime());
@@ -197,7 +197,7 @@ void MainRenderer::renderWorld()
     m_spriteBatcher->beginBatch();
     for (Entity* go : entities)
     {
-        if (go->getNetworkType() == NETWORK_TYPE_SpacePirate)
+        if (go->getNetworkType() == NW_TYPE_SpacePirate)
         {
             SpacePirate* entity = static_cast<SpacePirate*>(go);
             b2Vec2 origin = b2Vec2(entity->getPosition().x, entity->getPosition().y);
@@ -431,7 +431,7 @@ void MainRenderer::renderServerJoinedText()
         std::vector<Entity*> entities = InstanceManager::getClientWorld()->getEntities();
         for (Entity* go : entities)
         {
-            if (go->getNetworkType() == NETWORK_TYPE_Robot)
+            if (go->getNetworkType() == NW_TYPE_Robot)
             {
                 Robot* robot = static_cast<Robot*>(go);
                 b2Vec2 origin = b2Vec2(0.5f, CAM_HEIGHT - (robot->getPlayerId() * 0.5f));
@@ -440,7 +440,7 @@ void MainRenderer::renderServerJoinedText()
                 
                 activePlayerIds[robot->getPlayerId() - 1] = true;
             }
-            else if (go->getNetworkType() == NETWORK_TYPE_SpacePirate)
+            else if (go->getNetworkType() == NW_TYPE_SpacePirate)
             {
                 enemyCount++;
             }

@@ -33,7 +33,7 @@ SocketServerHelper::~SocketServerHelper()
             SocketAddress* userAddress = static_cast<SocketAddress*>(clientProxy->getMachineAddress());
             
             OutputMemoryBitStream packet;
-            packet.write(NETWORK_PACKET_TYPE_SERVER_EXIT);
+            packet.write(NW_PACKET_TYPE_SERVER_EXIT);
             
             sendPacket(packet, userAddress);
         }
@@ -44,7 +44,7 @@ void SocketServerHelper::processSpecialPacket(uint32_t packetType, InputMemoryBi
 {
     switch (packetType)
     {
-        case NETWORK_PACKET_TYPE_CLIENT_EXIT:
+        case NW_PACKET_TYPE_CLIENT_EXIT:
         {
             LOG("Client is leaving the server");
             

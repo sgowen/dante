@@ -411,4 +411,4 @@ void SpacePirate::updateInternal(float inDeltaTime)
 
 RTTI_IMPL(SpacePirate, Entity);
 
-NETWORK_TYPE_IMPL(SpacePirate);
+NW_TYPE_IMPL(SpacePirate);

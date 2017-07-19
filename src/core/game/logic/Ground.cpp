@@ -81,4 +81,4 @@ uint32_t Ground::write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtySt
 
 RTTI_IMPL(Ground, Entity);
 
-NETWORK_TYPE_IMPL(Ground);
+NW_TYPE_IMPL(Ground);

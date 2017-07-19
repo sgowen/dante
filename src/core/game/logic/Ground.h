@@ -19,7 +19,7 @@ class Ground : public Entity
 {
     RTTI_DECL;
     
-    NETWORK_TYPE_DECL(NETWORK_TYPE_Ground);
+    NW_TYPE_DECL(NW_TYPE_Ground);
     
 public:
     Ground(b2World& world);

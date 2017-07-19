@@ -63,7 +63,7 @@ void NGSteamPacketHandler::readIncomingPacketsIntoQueue()
     
     ISteamNetworking* steamNetworking = m_isServer ? SteamGameServerNetworking() : SteamNetworking();
     
-    while (steamNetworking->IsP2PPacketAvailable(&incomingSize) && receivedPackedCount < NETWORK_MAX_NUM_PACKETS_PER_FRAME)
+    while (steamNetworking->IsP2PPacketAvailable(&incomingSize) && receivedPackedCount < NW_MAX_NUM_PACKETS_PER_FRAME)
     {
         if (incomingSize <= packetSize)
         {

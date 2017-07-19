@@ -20,7 +20,7 @@ class SpacePirate : public Entity
 {
     RTTI_DECL;
     
-    NETWORK_TYPE_DECL(NETWORK_TYPE_SpacePirate);
+    NW_TYPE_DECL(NW_TYPE_SpacePirate);
     
 public:
     enum SpacePirateReplicationState

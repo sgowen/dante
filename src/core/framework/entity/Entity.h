@@ -23,12 +23,12 @@ class b2Fixture;
 class OutputMemoryBitStream;
 class InputMemoryBitStream;
 
-#define NETWORK_TYPE_DECL(inCode) \
+#define NW_TYPE_DECL(inCode) \
 public: \
 enum { kClassId = inCode }; \
 virtual uint32_t getNetworkType();
 
-#define NETWORK_TYPE_IMPL(name) \
+#define NW_TYPE_IMPL(name) \
 uint32_t name::getNetworkType() { return kClassId; }
 
 struct EntityDef
@@ -51,7 +51,7 @@ class Entity
 {
     RTTI_DECL;
     
-    NETWORK_TYPE_DECL(NETWORK_TYPE_Entity);
+    NW_TYPE_DECL(NW_TYPE_Entity);
     
 public:
     Entity(b2World& world, float x, float y, float width, float height, EntityDef inEntityDef);
