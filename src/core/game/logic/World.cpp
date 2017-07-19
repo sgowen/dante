@@ -128,13 +128,6 @@ void World::removeEntity(Entity* inEntity)
 
 void World::update()
 {
-    static int32 velocityIterations = 12;
-    static int32 positionIterations = 4;
-    
-    // Instruct the world to perform a single step of simulation.
-    // It is generally best to keep the time step and iterations fixed.
-    m_world->Step(Timing::getInstance()->getDeltaTime(), velocityIterations, positionIterations);
-    
     // Update all game objects- sometimes they want to die, so we need to tread carefully...
     
     int len = static_cast<int>(m_entities.size());
@@ -158,6 +151,13 @@ void World::update()
             }
         }
     }
+    
+    static int32 velocityIterations = 12;
+    static int32 positionIterations = 4;
+    
+    // Instruct the world to perform a single step of simulation.
+    // It is generally best to keep the time step and iterations fixed.
+    m_world->Step(Timing::getInstance()->getDeltaTime(), velocityIterations, positionIterations);
 }
 
 Robot* World::getRobotWithPlayerId(uint8_t inPlayerID)

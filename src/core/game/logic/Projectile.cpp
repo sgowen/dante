@@ -257,10 +257,7 @@ void Projectile::handleContactWithSpacePirate(SpacePirate* spacePirate)
     float targTop = spacePirate->getPosition().y + (spacePirate->getHeight() / 2.0f);
     float targHead = targTop - spacePirate->getHeight() * 0.4f;
     
-    m_state = ProjectileState_Exploding;
-    m_fStateTime = 0.0f;
-    setVelocity(b2Vec2(0.0f, 0.0f));
-    m_body->SetGravityScale(0);
+    explode();
     
     bool isHeadshot = projBottom > targHead;
     
@@ -281,10 +278,7 @@ void Projectile::handleContactWithGround(Ground* ground)
         return;
     }
     
-    m_state = ProjectileState_Exploding;
-    m_fStateTime = 0.0f;
-    setVelocity(b2Vec2(0.0f, 0.0f));
-    m_body->SetGravityScale(0);
+    explode();
     
     NG_SERVER->setStateDirty(getID(), PRJC_Pose);
 }
@@ -313,27 +307,35 @@ void Projectile::updateInternal(float inDeltaTime)
 {
     m_fStateTime += inDeltaTime;
     
+    if (m_state == ProjectileState_Exploding)
+    {
+        if (m_fStateTime > 0.5f)
+        {
+            requestDeletion();
+        }
+        
+        return;
+    }
+    
     if (!m_isServer)
     {
         return;
     }
     
     if (getPosition().y < -1
-        || getPosition().x < -1
-        || getPosition().x > GAME_WIDTH + 1)
+        || getPosition().x < -5
+        || getPosition().x > GAME_WIDTH + 5)
     {
-        requestDeletion();
-        return;
+        explode();
     }
-    
-    if (m_state == ProjectileState_Exploding)
-    {
-        if (m_fStateTime > 0.5f)
-        {
-            requestDeletion();
-            return;
-        }
-    }
+}
+
+void Projectile::explode()
+{
+    m_state = ProjectileState_Exploding;
+    m_fStateTime = 0.0f;
+    setVelocity(b2Vec2(0.0f, 0.0f));
+    m_body->SetGravityScale(0);
 }
 
 void Projectile::playSound(int soundId)

@@ -77,6 +77,8 @@ private:
     
     void updateInternal(float inDeltaTime);
     
+    void explode();
+    
     void playSound(int soundId);
 };
 
