@@ -527,26 +527,28 @@ void Robot::updateInternal(float inDeltaTime)
     
     if (getPosition().y < -1)
     {
-        if (m_iHealth > 0)
-        {
-            m_iHealth = 0;
-        }
+        m_iHealth = 0;
     }
     
     if (m_iHealth == 0 && !isRequestingDeletion())
     {
+        // TODO, this is NOT the right way to handle the player dying
+        
+        requestDeletion();
+        
         if (m_isServer)
         {
-            // TODO, this is NOT the right way to handle the player dying
-            
-            requestDeletion();
-            
             Server::sHandleNewClient(m_iPlayerId, m_playerName);
         }
     }
 }
 void Robot::stepPhysics(float deltaTime)
 {
+    if (getPlayerId() != 1)
+    {
+        return;
+    }
+    
     static int32 velocityIterations = 12;
     static int32 positionIterations = 4;
     
