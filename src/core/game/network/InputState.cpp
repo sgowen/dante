@@ -120,6 +120,11 @@ InputState::GameInputState* InputState::getGameInputStateForPlayerId(uint8_t pla
     return nullptr;
 }
 
+bool InputState::isPlayerIdLocalHost(uint8_t playerId)
+{
+    return m_gameInputStates[0].m_iPlayerId == playerId;
+}
+
 bool InputState::isRequestingToAddLocalPlayer() const
 {
     for (int i = 1; i < MAX_NUM_PLAYERS_PER_SERVER; ++i)

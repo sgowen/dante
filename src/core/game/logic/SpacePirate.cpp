@@ -14,6 +14,8 @@
 #include "OutputMemoryBitStream.h"
 #include "InputMemoryBitStream.h"
 #include "Robot.h"
+#include "Ground.h"
+#include "Crate.h"
 
 #include "World.h"
 #include "macros.h"
@@ -27,7 +29,6 @@
 #include "NetworkManagerServer.h"
 #include "NetworkManagerClient.h"
 #include "InstanceManager.h"
-#include "Ground.h"
 #include "Projectile.h"
 #include "Util.h"
 
@@ -87,7 +88,7 @@ void SpacePirate::update()
 
 bool SpacePirate::shouldCollide(Entity *inEntity)
 {
-    return inEntity->getRTTI().derivesFrom(Robot::rtti) || inEntity->getRTTI().derivesFrom(Projectile::rtti);
+    return inEntity->getRTTI().derivesFrom(Robot::rtti) || inEntity->getRTTI().derivesFrom(Projectile::rtti) || inEntity->getRTTI().derivesFrom(Crate::rtti);
 }
 
 void SpacePirate::handleContact(Entity* inEntity)
@@ -288,6 +289,11 @@ void SpacePirate::handleContactWithGround(Ground* ground)
     }
 }
 
+void SpacePirate::handleContactWithCrate(Crate* inCrate)
+{
+    // TODO
+}
+
 void SpacePirate::takeDamage(bool isHeadshot)
 {
     m_iHealth -= isHeadshot ? 8 : 1;
@@ -369,15 +375,12 @@ void SpacePirate::updateInternal(float inDeltaTime)
     
     bool targetFound = false;
     float shortestDistance = GAME_WIDTH;
-    Robot* robot = nullptr;
-    std::vector<Entity*> entities = InstanceManager::getServerWorld()->getEntities();
-    for (Entity* target : entities)
+    std::vector<Entity*> players = InstanceManager::getClientWorld()->getPlayers();
+    for (Entity* entity : players)
     {
-        robot = nullptr;
-        if (target != this
-            && !target->isRequestingDeletion()
-            && target->getRTTI().derivesFrom(Robot::rtti)
-            && (robot = static_cast<Robot*>(target)))
+        Robot* robot = static_cast<Robot*>(entity);
+        
+        if (!robot->isRequestingDeletion())
         {
             float dist = b2Distance(robot->getPosition(), getPosition());
             if (dist < shortestDistance)

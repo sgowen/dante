@@ -157,28 +157,7 @@ void MainRenderer::renderWorld()
     std::vector<Entity*> entities = InstanceManager::getClientWorld()->getEntities();
     for (Entity* go : entities)
     {
-        if (go->getNetworkType() == NW_TYPE_Robot)
-        {
-            Robot* robot = static_cast<Robot*>(go);
-            
-            Color c = robot->getColor();
-            if (robot->isSprinting())
-            {
-                c = Color();
-                c.red = (rand() % 100) * 0.01f;
-                c.green = (rand() % 100) * 0.01f;
-                c.blue = (rand() % 100) * 0.01f;
-                c.alpha = 0.75f;
-            }
-            
-            bool isMoving = go->getVelocity().x < -0.5f || go->getVelocity().x > 0.5f;
-            TextureRegion tr = ASSETS->findTextureRegion(
-                                                         robot->isGrounded() ?
-                                                         isMoving ? robot->isShooting() ? "Samus_Shooting" : (robot->isSprinting() ? "Samus_Running_Fast" : "Samus_Running") : "Samus_Idle" :
-                                                         go->getVelocity().y > 0 ? "Samus_Jumping" : "Samus_Falling", go->getStateTime());
-            renderEntityWithColor(*robot, tr, c, robot->isFacingLeft());
-        }
-        else if (go->getNetworkType() == NW_TYPE_Projectile)
+        if (go->getNetworkType() == NW_TYPE_Projectile)
         {
             Projectile* proj = static_cast<Projectile*>(go);
             bool isActive = proj->getState() == Projectile::ProjectileState::ProjectileState_Active;
@@ -191,7 +170,36 @@ void MainRenderer::renderWorld()
             TextureRegion tr = ASSETS->findTextureRegion("Space_Pirate_Walking", sp->getStateTime());
             renderEntityWithColor(*sp, tr, sp->getColor(), sp->isFacingLeft());
         }
+        else if (go->getNetworkType() == NW_TYPE_Crate)
+        {
+            TextureRegion tr = ASSETS->findTextureRegion("Crate", go->getStateTime());
+            renderEntityWithColor(*go, tr, go->getColor());
+        }
     }
+    
+    std::vector<Entity*> players = InstanceManager::getClientWorld()->getPlayers();
+    for (Entity* entity : players)
+    {
+        Robot* r = static_cast<Robot*>(entity);
+        
+        Color c = r->getColor();
+        if (r->isSprinting())
+        {
+            c = Color();
+            c.red = (rand() % 100) * 0.01f;
+            c.green = (rand() % 100) * 0.01f;
+            c.blue = (rand() % 100) * 0.01f;
+            c.alpha = 0.75f;
+        }
+        
+        bool isMoving = r->getVelocity().x < -0.5f || r->getVelocity().x > 0.5f;
+        TextureRegion tr = ASSETS->findTextureRegion(
+                                                     r->isGrounded() ?
+                                                     isMoving ? r->isShooting() ? "Samus_Shooting" : (r->isSprinting() ? "Samus_Running_Fast" : "Samus_Running") : "Samus_Idle" :
+                                                     r->getVelocity().y > 0 ? "Samus_Jumping" : "Samus_Falling", r->getStateTime());
+        renderEntityWithColor(*r, tr, c, r->isFacingLeft());
+    }
+    
     m_spriteBatcher->endBatch(*m_characters, *m_textureGpuProgramWrapper);
     
     m_spriteBatcher->beginBatch();
@@ -431,19 +439,22 @@ void MainRenderer::renderServerJoinedText()
         std::vector<Entity*> entities = InstanceManager::getClientWorld()->getEntities();
         for (Entity* go : entities)
         {
-            if (go->getNetworkType() == NW_TYPE_Robot)
-            {
-                Robot* robot = static_cast<Robot*>(go);
-                b2Vec2 origin = b2Vec2(0.5f, CAM_HEIGHT - (robot->getPlayerId() * 0.5f));
-                std::string text = StringUtil::format("%i|%s - %i HP, %i Kills", robot->getPlayerId(), robot->getPlayerName().c_str(), robot->getHealth(), robot->getNumKills());
-                renderText(text, origin, Color::BLACK);
-                
-                activePlayerIds[robot->getPlayerId() - 1] = true;
-            }
-            else if (go->getNetworkType() == NW_TYPE_SpacePirate)
+            if (go->getNetworkType() == NW_TYPE_SpacePirate)
             {
                 enemyCount++;
             }
+        }
+        
+        std::vector<Entity*> players = InstanceManager::getClientWorld()->getPlayers();
+        for (Entity* entity : players)
+        {
+            Robot* robot = static_cast<Robot*>(entity);
+            
+            b2Vec2 origin = b2Vec2(0.5f, CAM_HEIGHT - (robot->getPlayerId() * 0.5f));
+            std::string text = StringUtil::format("%i|%s - %i HP, %i Kills", robot->getPlayerId(), robot->getPlayerName().c_str(), robot->getHealth(), robot->getNumKills());
+            renderText(text, origin, Color::BLACK);
+            
+            activePlayerIds[robot->getPlayerId() - 1] = true;
         }
         
         for (int i = 0; i < MAX_NUM_PLAYERS_PER_SERVER; ++i)

@@ -356,6 +356,11 @@ std::string InputManager::getLiveInput()
     return m_liveInput;
 }
 
+bool InputManager::isPlayerIdLocalHost(uint8_t playerId)
+{
+    return m_currentState->isPlayerIdLocalHost(playerId);
+}
+
 const Move& InputManager::sampleInputAsMove()
 {
     InputState* inputState = static_cast<InputState*>(POOLED_OBJ_MGR->borrowInputState());

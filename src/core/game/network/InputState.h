@@ -85,6 +85,8 @@ public:
     
     GameInputState* getGameInputStateForPlayerId(uint8_t playerId);
     
+    bool isPlayerIdLocalHost(uint8_t playerId);
+    
     bool isRequestingToAddLocalPlayer() const;
     
     int getMenuState() const;

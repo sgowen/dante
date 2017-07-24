@@ -17,6 +17,7 @@
 #include "Robot.h"
 #include "Projectile.h"
 #include "SpacePirate.h"
+#include "Crate.h"
 
 #include <math.h>
 
@@ -56,6 +57,10 @@ void Ground::handleContact(Entity* inEntity)
         else if (inEntity->getRTTI().derivesFrom(SpacePirate::rtti))
         {
             (static_cast<SpacePirate*>(inEntity))->handleContactWithGround(this);
+        }
+        else if (inEntity->getRTTI().derivesFrom(Crate::rtti))
+        {
+            (static_cast<Crate*>(inEntity))->handleContactWithGround(this);
         }
     }
 }

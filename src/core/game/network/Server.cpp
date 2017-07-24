@@ -28,6 +28,7 @@
 #include "EntityManager.h"
 #include "SocketServerHelper.h"
 #include "NGSteamServerHelper.h"
+#include "Crate.h"
 
 #include "Box2D/Box2D.h"
 
@@ -96,6 +97,11 @@ void Server::update(float deltaTime)
     }
 }
 
+int Server::getPlayerIdForRobotBeingCreated()
+{
+    return m_iPlayerIdForRobotBeingCreated;
+}
+
 void Server::toggleEnemies()
 {
     m_isSpawningEnemies = !m_isSpawningEnemies;
@@ -125,6 +131,8 @@ void Server::handleNewClient(int playerId, std::string playerName)
         // Let's spawn some nasty stuff for it to fight!
         
         m_fStateTimeNoEnemies = 0;
+        
+        spawnCrates();
     }
 }
 
@@ -158,6 +166,7 @@ void Server::deleteRobotWithPlayerId(uint8_t playerId)
 
 void Server::spawnRobotForPlayer(int inPlayerId, std::string inPlayerName)
 {
+    m_iPlayerIdForRobotBeingCreated = inPlayerId;
     Robot* robot = static_cast<Robot*>(SERVER_ENTITY_REG->createEntity(NW_TYPE_Robot));
     robot->setPlayerId(inPlayerId);
     robot->setPlayerName(inPlayerName);
@@ -230,6 +239,23 @@ void Server::respawnEnemiesIfNecessary()
     }
 }
 
+void Server::spawnCrates()
+{
+    srand(static_cast<unsigned>(time(0)));
+    
+    int limit = rand() % 20 + 1;
+    
+    for (int i = 0; i < limit; ++i)
+    {
+        Crate* crate = static_cast<Crate*>(SERVER_ENTITY_REG->createEntity(NW_TYPE_Crate));
+        
+        float posX = (rand() % static_cast<int>(GAME_WIDTH - crate->getWidth() * 2)) + (crate->getWidth() * 2);
+        float posY = (rand() % static_cast<int>(GAME_HEIGHT - crate->getHeight() * 2)) + (2.0f + crate->getHeight() * 2);
+        
+        crate->setPosition(b2Vec2(posX, posY));
+    }
+}
+
 void Server::clearClientMoves()
 {
     for (int i = 0; i < MAX_NUM_PLAYERS_PER_SERVER; ++i)
@@ -243,7 +269,7 @@ void Server::clearClientMoves()
     }
 }
 
-Server::Server(bool isSteam) : m_fStateTime(0), m_fFrameStateTime(0), m_fStateTimeNoEnemies(0), m_isSpawningEnemies(false)
+Server::Server(bool isSteam) : m_fStateTime(0), m_fFrameStateTime(0), m_fStateTimeNoEnemies(0), m_iPlayerIdForRobotBeingCreated(0), m_isSpawningEnemies(false)
 {
     FWInstanceManager::createServerEntityManager(InstanceManager::sHandleEntityCreatedOnServer, InstanceManager::sHandleEntityDeletedOnServer);
     
@@ -252,6 +278,7 @@ Server::Server(bool isSteam) : m_fStateTime(0), m_fFrameStateTime(0), m_fStateTi
     SERVER_ENTITY_REG->registerCreationFunction(NW_TYPE_Robot, World::sServerCreateRobot);
     SERVER_ENTITY_REG->registerCreationFunction(NW_TYPE_Projectile, World::sServerCreateProjectile);
     SERVER_ENTITY_REG->registerCreationFunction(NW_TYPE_SpacePirate, World::sServerCreateSpacePirate);
+    SERVER_ENTITY_REG->registerCreationFunction(NW_TYPE_Crate, World::sServerCreateCrate);
     
     if (isSteam)
     {

@@ -16,6 +16,7 @@
 class Robot;
 class SpacePirate;
 class Ground;
+class Crate;
 
 class Projectile : public Entity
 {
@@ -59,7 +60,9 @@ public:
     
     void handleContactWithSpacePirate(SpacePirate* spacePirate);
     
-    void handleContactWithGround(Ground* ground);
+    void handleContactWithGround(Ground* inGround);
+    
+    void handleContactWithCrate(Crate* inCrate);
     
     ProjectileState getState();
     

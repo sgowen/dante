@@ -63,6 +63,7 @@ m_isSteam(false)
     FWInstanceManager::getClientEntityRegistry()->registerCreationFunction(NW_TYPE_Robot, World::sClientCreateRobot);
     FWInstanceManager::getClientEntityRegistry()->registerCreationFunction(NW_TYPE_Projectile, World::sClientCreateProjectile);
     FWInstanceManager::getClientEntityRegistry()->registerCreationFunction(NW_TYPE_SpacePirate, World::sClientCreateSpacePirate);
+    FWInstanceManager::getClientEntityRegistry()->registerCreationFunction(NW_TYPE_Crate, World::sClientCreateCrate);
     
     NG_AUDIO_ENGINE->loadSound(SOUND_ID_ROBOT_JUMP, SOUND_ROBOT_JUMP, 4);
     NG_AUDIO_ENGINE->loadSound(SOUND_ID_EXPLOSION, SOUND_EXPLOSION, 8);
@@ -128,6 +129,11 @@ void MainEngine::update(float deltaTime)
         if (NG_CLIENT)
         {
             NG_CLIENT->processIncomingPackets();
+            
+            if (InstanceManager::getClientWorld())
+            {
+                InstanceManager::getClientWorld()->postRead();
+            }
         }
         
         InputManager::getInstance()->update();

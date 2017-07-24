@@ -15,6 +15,7 @@
 
 class Robot;
 class Ground;
+class Crate;
 
 class SpacePirate : public Entity
 {
@@ -53,7 +54,9 @@ public:
     
     void handleContactWithRobot(Robot* robot);
     
-    void handleContactWithGround(Ground* ground);
+    void handleContactWithGround(Ground* inGround);
+    
+    void handleContactWithCrate(Crate* inCrate);
     
     void takeDamage(bool isHeadshot);
     

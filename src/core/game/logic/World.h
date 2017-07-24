@@ -9,13 +9,18 @@
 #ifndef __noctisgames__World__
 #define __noctisgames__World__
 
+#include "FrameworkConstants.h"
+
 #include <memory>
 #include <vector>
 
 class Entity;
-class b2World;
 class Robot;
+class Projectile;
+class SpacePirate;
+class Crate;
 class Ground;
+class b2World;
 
 class EntityContactListener;
 class EntityContactFilter;
@@ -32,10 +37,12 @@ public:
     WORLD_CREATE_CLIENT_DECL(Robot);
     WORLD_CREATE_CLIENT_DECL(Projectile);
     WORLD_CREATE_CLIENT_DECL(SpacePirate);
+    WORLD_CREATE_CLIENT_DECL(Crate);
     
     WORLD_CREATE_SERVER_DECL(Robot);
     WORLD_CREATE_SERVER_DECL(Projectile);
     WORLD_CREATE_SERVER_DECL(SpacePirate);
+    WORLD_CREATE_SERVER_DECL(Crate);
     
     World(bool isServer);
     
@@ -45,6 +52,8 @@ public:
     
     void removeEntity(Entity* inEntity);
     
+    void postRead();
+    
     void update();
     
     Robot* getRobotWithPlayerId(uint8_t inPlayerID);
@@ -53,14 +62,17 @@ public:
     
     bool hasSpacePirates();
     
+    std::vector<Entity*>& getPlayers();
+    
     std::vector<Entity*>& getEntities();
     
-    b2World& getWorld();
+    b2World& getWorld(int index);
     
 private:
+    std::vector<Entity*> m_players;
     std::vector<Entity*> m_entities;
-    b2World* m_world;
-    Ground* m_ground;
+    b2World* m_world[MAX_NUM_PLAYERS_PER_SERVER]; // If server, 1 instance per connected client; otherwise, only use the first index
+    Ground* m_ground[MAX_NUM_PLAYERS_PER_SERVER];
     EntityContactListener* m_entityContactListener;
     EntityContactFilter* m_entityContactFilter;
     bool m_isServer;

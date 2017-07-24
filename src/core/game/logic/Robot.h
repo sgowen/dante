@@ -12,12 +12,14 @@
 #include "Entity.h"
 
 #include "GameConstants.h"
+#include "Box2D/Common/b2Math.h"
 
 #include <string>
 
 class IInputState;
 class Move;
 class Ground;
+class Crate;
 
 class Robot : public Entity
 {
@@ -28,16 +30,15 @@ class Robot : public Entity
 public:
     enum RobotReplicationState
     {
-        ROBT_Pose = 1 << 0,
-        ROBT_Color = 1 << 1,
-        ROBT_PlayerInfo = 1 << 2,
-        ROBT_Health = 1 << 3,
-        ROBT_NumKills = 1 << 4,
+        ROBT_PlayerInfo = 1 << 0,
+        ROBT_Pose = 1 << 1,
         
-        ROBT_AllState = ROBT_Pose | ROBT_Color | ROBT_PlayerInfo | ROBT_Health | ROBT_NumKills
+        ROBT_AllState = ROBT_PlayerInfo
     };
     
     Robot(b2World& world, bool isServer);
+    
+    virtual ~Robot();
     
     virtual EntityDef constructEntityDef();
     
@@ -53,7 +54,13 @@ public:
     
     virtual uint32_t write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState);
     
-    void handleContactWithGround(Ground* ground);
+    void postRead();
+    
+    void syncToHost();
+    
+    void handleContactWithGround(Ground* inGround);
+    
+    void handleContactWithCrate(Crate* inCrate);
     
     void takeDamage();
     
@@ -100,6 +107,8 @@ private:
     uint32_t m_iNumKills;
     bool m_wasLastKillHeadshot;
     
+    uint32_t m_iReadState;
+    
     float m_fSpeed;
     float m_fJumpSpeed;
     float m_fTimeOfNextShot;
@@ -108,6 +117,16 @@ private:
     
     bool m_isServer;
     bool m_isFirstJumpCompleted;
+    
+    // Cached Values
+    b2Vec2 m_velocityOld;
+    b2Vec2 m_positionOld;
+    uint8_t m_iNumJumpsOld;
+    bool m_isSprintingOld;
+    
+    bool m_isHost;
+    b2Body* m_hostBody;
+    b2Fixture* m_hostFixture;
     
     void processMove(const Move& inMove);
     
@@ -119,9 +138,9 @@ private:
     
     void handleShooting();
 
-    void doClientSidePredictionForLocalRobot(uint32_t inReadState);
+    void doClientSidePredictionForLocalRobot();
     
-    void doClientSidePredictionForRemoteRobot(uint32_t inReadState);
+    void doClientSidePredictionForRemoteRobot();
     
     void interpolateClientSidePrediction(b2Vec2& inOldVelocity, b2Vec2& inOldPos);
     

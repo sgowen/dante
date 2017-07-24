@@ -53,6 +53,8 @@ public:
     
     std::string getLiveInput();
     
+    bool isPlayerIdLocalHost(uint8_t playerId);
+    
 private:
     std::string m_liveInput;
     InputState* m_currentState;

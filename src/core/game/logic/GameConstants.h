@@ -70,6 +70,7 @@
 #define NW_TYPE_Projectile 'PRJC'
 #define NW_TYPE_SpacePirate 'SPCP'
 #define NW_TYPE_Ground 'GRND'
+#define NW_TYPE_Crate 'CRAT'
 
 //// Non-Steam ////
 

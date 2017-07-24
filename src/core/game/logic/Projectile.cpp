@@ -16,6 +16,7 @@
 #include "Robot.h"
 #include "SpacePirate.h"
 #include "Ground.h"
+#include "Crate.h"
 
 #include "World.h"
 #include "macros.h"
@@ -80,7 +81,7 @@ void Projectile::update()
 
 bool Projectile::shouldCollide(Entity *inEntity)
 {
-    return inEntity->getRTTI().derivesFrom(SpacePirate::rtti);
+    return inEntity->getRTTI().derivesFrom(SpacePirate::rtti) || inEntity->getRTTI().derivesFrom(Crate::rtti);
 }
 
 void Projectile::handleContact(Entity* inEntity)
@@ -94,7 +95,7 @@ void Projectile::handleContact(Entity* inEntity)
         }
         else if (inEntity->getRTTI().derivesFrom(Ground::rtti))
         {
-            handleContactWithGround(static_cast<Ground*>(inEntity));
+            handleContactWithGround(nullptr);
         }
     }
 }
@@ -279,6 +280,11 @@ void Projectile::handleContactWithGround(Ground* ground)
     {
         NG_SERVER->setStateDirty(getID(), PRJC_Pose);
     }
+}
+
+void Projectile::handleContactWithCrate(Crate* inCrate)
+{
+    handleContactWithGround(nullptr);
 }
 
 Projectile::ProjectileState Projectile::getState()
