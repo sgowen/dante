@@ -19,10 +19,12 @@
 #include "Robot.h"
 #include "Projectile.h"
 #include "SpacePirate.h"
+#include "NetworkManagerServer.h"
+#include "MathUtil.h"
 
 #include <math.h>
 
-Crate::Crate(b2World& world, bool isServer) : Entity(world, 0.0f, 0.0f, 1.0f, 1.0f, constructEntityDef())
+Crate::Crate(b2World& world, bool isServer) : Entity(world, 0.0f, 0.0f, 1.0f, 1.0f, constructEntityDef()), m_isServer(isServer)
 {
     // Empty
 }
@@ -44,6 +46,20 @@ void Crate::update()
         || getPosition().x > GAME_WIDTH + 5)
     {
         requestDeletion();
+    }
+    else
+    {
+        if (m_isServer)
+        {
+            if (!areBox2DVectorsEqual(m_velocityOld, getVelocity())
+                || !areBox2DVectorsEqual(m_positionOld, getPosition()))
+            {
+                NG_SERVER->setStateDirty(getID(), CRAT_Pose);
+            }
+            
+            m_velocityOld = b2Vec2(getVelocity().x, getVelocity().y);
+            m_positionOld = b2Vec2(getPosition().x, getPosition().y);
+        }
     }
 }
 
@@ -89,9 +105,7 @@ void Crate::read(InputMemoryBitStream& inInputStream)
     
     inInputStream.read(stateBit);
     if (stateBit)
-    {
-        inInputStream.read(m_fStateTime);
-        
+    {        
         b2Vec2 velocity;
         inInputStream.read(velocity);
         setVelocity(velocity);
@@ -111,8 +125,6 @@ uint32_t Crate::write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtySta
     if (inDirtyState & CRAT_Pose)
     {
         inOutputStream.write((bool)true);
-        
-        inOutputStream.write(m_fStateTime);
         
         inOutputStream.write(getVelocity());
         

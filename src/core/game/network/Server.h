@@ -55,7 +55,7 @@ private:
     
     void respawnEnemiesIfNecessary();
     
-    void spawnCrates();
+    void spawnCratesIfNecessary();
     
     void clearClientMoves();
     

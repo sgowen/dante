@@ -247,6 +247,19 @@ bool World::hasSpacePirates()
     return false;
 }
 
+bool World::hasCrates()
+{
+    for (Entity* entity : m_entities)
+    {
+        if (entity->getRTTI().derivesFrom(Crate::rtti))
+        {
+            return true;
+        }
+    }
+    
+    return false;
+}
+
 std::vector<Entity*>& World::getPlayers()
 {
     return m_players;

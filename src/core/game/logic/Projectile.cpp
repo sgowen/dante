@@ -51,7 +51,6 @@ EntityDef Projectile::constructEntityDef()
     
     ret.isStaticBody = false;
     ret.bullet = true;
-    ret.isSensor = true;
     
     return ret;
 }
@@ -96,6 +95,10 @@ void Projectile::handleContact(Entity* inEntity)
         else if (inEntity->getRTTI().derivesFrom(Ground::rtti))
         {
             handleContactWithGround(nullptr);
+        }
+        else if (inEntity->getRTTI().derivesFrom(Crate::rtti))
+        {
+            handleContactWithCrate(nullptr);
         }
     }
 }
@@ -284,7 +287,7 @@ void Projectile::handleContactWithGround(Ground* ground)
 
 void Projectile::handleContactWithCrate(Crate* inCrate)
 {
-    handleContactWithGround(nullptr);
+    // TODO
 }
 
 Projectile::ProjectileState Projectile::getState()

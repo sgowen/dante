@@ -112,6 +112,10 @@ void SpacePirate::handleContact(Entity* inEntity)
             
             projectile->handleContactWithSpacePirate(this);
         }
+        else if (inEntity->getRTTI().derivesFrom(Crate::rtti))
+        {
+            handleContactWithCrate(nullptr);
+        }
     }
 }
 
@@ -291,7 +295,7 @@ void SpacePirate::handleContactWithGround(Ground* ground)
 
 void SpacePirate::handleContactWithCrate(Crate* inCrate)
 {
-    // TODO
+    handleContactWithGround(nullptr);
 }
 
 void SpacePirate::takeDamage(bool isHeadshot)

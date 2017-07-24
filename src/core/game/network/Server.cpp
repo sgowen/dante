@@ -89,6 +89,7 @@ void Server::update(float deltaTime)
             InstanceManager::getServerWorld()->update();
             
             respawnEnemiesIfNecessary();
+            spawnCratesIfNecessary();
             
             clearClientMoves();
         }
@@ -131,8 +132,6 @@ void Server::handleNewClient(int playerId, std::string playerName)
         // Let's spawn some nasty stuff for it to fight!
         
         m_fStateTimeNoEnemies = 0;
-        
-        spawnCrates();
     }
 }
 
@@ -239,11 +238,16 @@ void Server::respawnEnemiesIfNecessary()
     }
 }
 
-void Server::spawnCrates()
+void Server::spawnCratesIfNecessary()
 {
+    if (InstanceManager::getServerWorld()->hasCrates())
+    {
+        return;
+    }
+    
     srand(static_cast<unsigned>(time(0)));
     
-    int limit = rand() % 20 + 1;
+    int limit = 55;
     
     for (int i = 0; i < limit; ++i)
     {

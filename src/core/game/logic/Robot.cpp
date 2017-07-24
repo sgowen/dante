@@ -207,6 +207,10 @@ void Robot::handleContact(Entity* inEntity)
         {
             handleContactWithGround(nullptr);
         }
+        else if (inEntity->getRTTI().derivesFrom(Crate::rtti))
+        {
+            handleContactWithCrate(nullptr);
+        }
     }
 }
 
@@ -367,7 +371,7 @@ void Robot::handleContactWithGround(Ground* ground)
 
 void Robot::handleContactWithCrate(Crate* inCrate)
 {
-    // TODO
+    handleContactWithGround(nullptr);
 }
 
 void Robot::takeDamage()

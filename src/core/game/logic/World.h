@@ -62,6 +62,8 @@ public:
     
     bool hasSpacePirates();
     
+    bool hasCrates();
+    
     std::vector<Entity*>& getPlayers();
     
     std::vector<Entity*>& getEntities();
