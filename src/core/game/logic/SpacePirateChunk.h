@@ -16,7 +16,12 @@
 
 #include "RTTI.h"
 
-class Ground;
+class SpacePirate;
+
+#define Space_Pirate_Chunk_Top_Left 0
+#define Space_Pirate_Chunk_Top_Right 1
+#define Space_Pirate_Chunk_Bottom_Left 2
+#define Space_Pirate_Chunk_Bottom_Right 3
 
 class SpacePirateChunk : public Entity
 {
@@ -27,9 +32,9 @@ class SpacePirateChunk : public Entity
 public:
     enum SpacePirateChunkReplicationState
     {
-        CRAT_Pose = 1 << 0,
+        SPCH_Pose = 1 << 0,
         
-        CRAT_AllState = CRAT_Pose
+        SPCH_AllState = SPCH_Pose
     };
     
     SpacePirateChunk(b2World& world, bool isServer);
@@ -48,10 +53,16 @@ public:
     
     virtual uint32_t write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState);
     
-    void handleContactWithGround(Ground* inGround);
+    void initFromSpacePirate(SpacePirate* spacePirate, b2Vec2 force, int type);
+    
+    int getType();
+    
+    bool isFacingLeft();
     
 private:
+    int m_iType;
     bool m_isServer;
+    bool m_isFacingLeft;
     
     // Cached Values
     b2Vec2 m_velocityOld;

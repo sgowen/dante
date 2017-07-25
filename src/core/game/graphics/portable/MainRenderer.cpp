@@ -41,6 +41,7 @@
 #include "NGAudioEngine.h"
 #include "Server.h"
 #include "Crate.h"
+#include "SpacePirateChunk.h"
 #include "Box2D/Box2D.h"
 
 #include <sstream>
@@ -178,6 +179,38 @@ void MainRenderer::renderWorld()
             static Color activeColor = Color(1.0f, 0, 0, 1.0f);
             TextureRegion tr = ASSETS->findTextureRegion("Crate", go->getStateTime());
             renderEntityWithColor(*go, tr, crate->getBody()->IsAwake() ? activeColor : go->getColor());
+        }
+        else if (go->getNetworkType() == NW_TYPE_SpacePirateChunk)
+        {
+            SpacePirateChunk* spc = static_cast<SpacePirateChunk*>(go);
+            static Color activeColor = Color(1.0f, 0, 0, 1.0f);
+            activeColor.alpha = go->getColor().alpha;
+            int type = spc->getType();
+            static TextureRegion tr0 = ASSETS->findTextureRegion("Space_Pirate_Chunk_Top_Left");
+            static TextureRegion tr1 = ASSETS->findTextureRegion("Space_Pirate_Chunk_Top_Right");
+            static TextureRegion tr2 = ASSETS->findTextureRegion("Space_Pirate_Chunk_Bottom_Left");
+            static TextureRegion tr3 = ASSETS->findTextureRegion("Space_Pirate_Chunk_Bottom_Right");
+            
+            TextureRegion* tr = nullptr;
+            switch (type)
+            {
+                case Space_Pirate_Chunk_Top_Left:
+                    tr = &tr0;
+                    break;
+                case Space_Pirate_Chunk_Top_Right:
+                    tr = &tr1;
+                    break;
+                case Space_Pirate_Chunk_Bottom_Left:
+                    tr = &tr2;
+                    break;
+                case Space_Pirate_Chunk_Bottom_Right:
+                    tr = &tr3;
+                    break;
+                default:
+                    break;
+            }
+            
+            renderEntityWithColor(*go, *tr, go->getColor(), spc->isFacingLeft());
         }
     }
     

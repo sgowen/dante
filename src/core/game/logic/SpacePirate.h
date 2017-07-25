@@ -12,6 +12,7 @@
 #include "Entity.h"
 
 #include "GameConstants.h"
+#include "Box2D/Common/b2Math.h"
 
 class Robot;
 class Ground;
@@ -78,6 +79,8 @@ private:
     float m_fTimeForNextJump;
     float m_fJumpSpeed;
     float m_fStartingHealth;
+    
+    b2Vec2 m_lastForce;
     
     void updateInternal(float inDeltaTime);
 };

@@ -33,6 +33,7 @@
 #include "NGAudioEngine.h"
 #include "InstanceManager.h"
 #include "Util.h"
+#include "SpacePirateChunk.h"
 
 #include <math.h>
 
@@ -81,7 +82,7 @@ void Projectile::update()
 
 bool Projectile::shouldCollide(Entity *inEntity)
 {
-    return inEntity->getRTTI().derivesFrom(SpacePirate::rtti) || inEntity->getRTTI().derivesFrom(Crate::rtti);
+    return inEntity->getRTTI().derivesFrom(SpacePirate::rtti) || inEntity->getRTTI().derivesFrom(Crate::rtti) || inEntity->getRTTI().derivesFrom(SpacePirateChunk::rtti);
 }
 
 void Projectile::handleContact(Entity* inEntity)
@@ -267,7 +268,10 @@ void Projectile::handleContactWithSpacePirate(SpacePirate* spacePirate)
     {
         World* world = m_isServer ? InstanceManager::getServerWorld() : InstanceManager::getClientWorld();
         Robot* robot = world->getRobotWithPlayerId(getPlayerId());
-        robot->awardKill(isHeadshot);
+        if (robot)
+        {
+            robot->awardKill(isHeadshot);
+        }
     }
     
     if (m_isServer)

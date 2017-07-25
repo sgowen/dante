@@ -304,6 +304,7 @@ void SpacePirate::handleContactWithCrate(Crate* inCrate)
 
 void SpacePirate::takeDamage(b2Vec2 force, bool isHeadshot)
 {
+    m_lastForce.Set(force.x, force.y);
     m_iHealth -= isHeadshot ? 8 : 1;
     if (m_iHealth > m_fStartingHealth)
     {
@@ -311,20 +312,10 @@ void SpacePirate::takeDamage(b2Vec2 force, bool isHeadshot)
         m_iHealth = 0;
     }
     
-    if (m_iHealth == 0)
-    {
-        requestDeletion();
-    }
-    
     if (m_isServer)
     {
         // tell the world our health dropped
         NG_SERVER->setStateDirty(getID(), SPCP_Health);
-        
-        if (m_iHealth == 0)
-        {
-            //SpacePirateChunk* chunk1 = static_cast<SpacePirateChunk*>(SERVER_ENTITY_REG->createEntity(NW_TYPE_Projectile));
-        }
     }
 }
 
@@ -368,6 +359,20 @@ void SpacePirate::updateInternal(float inDeltaTime)
     if (!m_isServer)
     {
         return;
+    }
+    
+    if (m_iHealth == 0 && !isRequestingDeletion())
+    {
+        for (int i = 0; i < 4; ++i)
+        {
+            SpacePirateChunk* chunk = static_cast<SpacePirateChunk*>(SERVER_ENTITY_REG->createEntity(NW_TYPE_SpacePirateChunk));
+            chunk->initFromSpacePirate(this, m_lastForce, i);
+        }
+    }
+    
+    if (m_iHealth == 0)
+    {
+        requestDeletion();
     }
     
     if (Timing::getInstance()->getFrameStartTime() > m_fTimeForNextJump)

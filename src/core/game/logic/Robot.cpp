@@ -38,6 +38,7 @@
 #include "Server.h"
 #include "Ground.h"
 #include "SpacePirate.h"
+#include "SpacePirateChunk.h"
 
 #include <math.h>
 
@@ -194,7 +195,7 @@ void Robot::update()
 
 bool Robot::shouldCollide(Entity *inEntity)
 {
-    return inEntity->getRTTI().derivesFrom(SpacePirate::rtti) || inEntity->getRTTI().derivesFrom(Crate::rtti);
+    return inEntity->getRTTI().derivesFrom(SpacePirate::rtti) || inEntity->getRTTI().derivesFrom(Crate::rtti) || inEntity->getRTTI().derivesFrom(SpacePirateChunk::rtti);
 }
 
 void Robot::handleContact(Entity* inEntity)

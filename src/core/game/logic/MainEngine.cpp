@@ -60,10 +60,11 @@ m_isSteam(false)
     
     m_config->load();
     
-    FWInstanceManager::getClientEntityRegistry()->registerCreationFunction(NW_TYPE_Robot, World::sClientCreateRobot);
-    FWInstanceManager::getClientEntityRegistry()->registerCreationFunction(NW_TYPE_Projectile, World::sClientCreateProjectile);
-    FWInstanceManager::getClientEntityRegistry()->registerCreationFunction(NW_TYPE_SpacePirate, World::sClientCreateSpacePirate);
-    FWInstanceManager::getClientEntityRegistry()->registerCreationFunction(NW_TYPE_Crate, World::sClientCreateCrate);
+    CLIENT_ENTITY_REG->registerCreationFunction(NW_TYPE_Robot, World::sClientCreateRobot);
+    CLIENT_ENTITY_REG->registerCreationFunction(NW_TYPE_Projectile, World::sClientCreateProjectile);
+    CLIENT_ENTITY_REG->registerCreationFunction(NW_TYPE_SpacePirate, World::sClientCreateSpacePirate);
+    CLIENT_ENTITY_REG->registerCreationFunction(NW_TYPE_Crate, World::sClientCreateCrate);
+    CLIENT_ENTITY_REG->registerCreationFunction(NW_TYPE_SpacePirateChunk, World::sClientCreateSpacePirateChunk);
     
     NG_AUDIO_ENGINE->loadSound(SOUND_ID_ROBOT_JUMP, SOUND_ROBOT_JUMP, 4);
     NG_AUDIO_ENGINE->loadSound(SOUND_ID_EXPLOSION, SOUND_EXPLOSION, 8);

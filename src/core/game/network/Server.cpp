@@ -247,7 +247,7 @@ void Server::spawnCratesIfNecessary()
     
     srand(static_cast<unsigned>(time(0)));
     
-    int limit = 20;
+    int limit = 16;
     
     for (int i = 0; i < limit; ++i)
     {
@@ -284,6 +284,7 @@ Server::Server(bool isSteam) : m_fStateTime(0), m_fFrameStateTime(0), m_fStateTi
     SERVER_ENTITY_REG->registerCreationFunction(NW_TYPE_Projectile, World::sServerCreateProjectile);
     SERVER_ENTITY_REG->registerCreationFunction(NW_TYPE_SpacePirate, World::sServerCreateSpacePirate);
     SERVER_ENTITY_REG->registerCreationFunction(NW_TYPE_Crate, World::sServerCreateCrate);
+    SERVER_ENTITY_REG->registerCreationFunction(NW_TYPE_SpacePirateChunk, World::sServerCreateSpacePirateChunk);
     
     if (isSteam)
     {
