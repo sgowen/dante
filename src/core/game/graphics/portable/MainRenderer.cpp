@@ -40,6 +40,8 @@
 #include "MathUtil.h"
 #include "NGAudioEngine.h"
 #include "Server.h"
+#include "Crate.h"
+#include "Box2D/Box2D.h"
 
 #include <sstream>
 #include <ctime> // rand
@@ -172,8 +174,10 @@ void MainRenderer::renderWorld()
         }
         else if (go->getNetworkType() == NW_TYPE_Crate)
         {
+            Crate* crate = static_cast<Crate*>(go);
+            static Color activeColor = Color(1.0f, 0, 0, 1.0f);
             TextureRegion tr = ASSETS->findTextureRegion("Crate", go->getStateTime());
-            renderEntityWithColor(*go, tr, go->getColor());
+            renderEntityWithColor(*go, tr, crate->getBody()->IsAwake() ? activeColor : go->getColor());
         }
     }
     

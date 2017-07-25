@@ -58,7 +58,7 @@ public:
     
     void handleContactWithCrate(Crate* inCrate);
     
-    void takeDamage(bool isHeadshot);
+    void takeDamage(b2Vec2 force, bool isHeadshot);
     
     uint8_t getHealth();
     

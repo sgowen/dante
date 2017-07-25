@@ -203,7 +203,7 @@ void Server::respawnEnemiesIfNecessary()
             
             m_fStateTimeNoEnemies = 0;
             
-            int numSpacePirates = rand() % 12 + 1;
+            int numSpacePirates = 12;
             
             for (int i = 0; i < numSpacePirates; ++i)
             {
@@ -247,13 +247,14 @@ void Server::spawnCratesIfNecessary()
     
     srand(static_cast<unsigned>(time(0)));
     
-    int limit = 55;
+    int limit = 20;
     
     for (int i = 0; i < limit; ++i)
     {
         Crate* crate = static_cast<Crate*>(SERVER_ENTITY_REG->createEntity(NW_TYPE_Crate));
         
-        float posX = (rand() % static_cast<int>(GAME_WIDTH - crate->getWidth() * 2)) + (crate->getWidth() * 2);
+        int xSeed = rand() % 3 + 1;
+        float posX = xSeed * GAME_WIDTH / 4;
         float posY = (rand() % static_cast<int>(GAME_HEIGHT - crate->getHeight() * 2)) + (2.0f + crate->getHeight() * 2);
         
         crate->setPosition(b2Vec2(posX, posY));

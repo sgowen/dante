@@ -115,6 +115,7 @@
 		BB8308741EC2AD1F00435E7E /* SocketUtil.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8308301EC2AD1F00435E7E /* SocketUtil.cpp */; };
 		BB8308801EC2AD1F00435E7E /* UDPSocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8308391EC2AD1F00435E7E /* UDPSocket.cpp */; };
 		BB8EE62B1EF2E2C1000A5C98 /* Util.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8EE6291EF2E2C1000A5C98 /* Util.cpp */; };
+		BB91095C1F26996D0030E3DF /* SpacePirateChunk.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB91095A1F26996D0030E3DF /* SpacePirateChunk.cpp */; };
 		BB9578971F0FE0F400E89DE9 /* Box2D.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB9578321F0FE0F400E89DE9 /* Box2D.cpp */; };
 		BB9578981F0FE0F400E89DE9 /* b2BroadPhase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB9578351F0FE0F400E89DE9 /* b2BroadPhase.cpp */; };
 		BB9578991F0FE0F400E89DE9 /* b2CollideCircle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB9578371F0FE0F400E89DE9 /* b2CollideCircle.cpp */; };
@@ -634,6 +635,8 @@
 		BB88026F1EE4A40400F1A37C /* Color.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Color.h; sourceTree = "<group>"; };
 		BB8EE6291EF2E2C1000A5C98 /* Util.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Util.cpp; sourceTree = "<group>"; };
 		BB8EE62A1EF2E2C1000A5C98 /* Util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Util.h; sourceTree = "<group>"; };
+		BB91095A1F26996D0030E3DF /* SpacePirateChunk.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SpacePirateChunk.cpp; sourceTree = "<group>"; };
+		BB91095B1F26996D0030E3DF /* SpacePirateChunk.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpacePirateChunk.h; sourceTree = "<group>"; };
 		BB9578321F0FE0F400E89DE9 /* Box2D.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Box2D.cpp; sourceTree = "<group>"; };
 		BB9578331F0FE0F400E89DE9 /* Box2D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Box2D.h; sourceTree = "<group>"; };
 		BB9578351F0FE0F400E89DE9 /* b2BroadPhase.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = b2BroadPhase.cpp; sourceTree = "<group>"; };
@@ -2402,6 +2405,8 @@
 				BBBD14A41EE08C6F003F9307 /* Robot.h */,
 				BBFA22961EE5AE03002635D6 /* SpacePirate.cpp */,
 				BBFA22971EE5AE03002635D6 /* SpacePirate.h */,
+				BB91095A1F26996D0030E3DF /* SpacePirateChunk.cpp */,
+				BB91095B1F26996D0030E3DF /* SpacePirateChunk.h */,
 				BB8EE6291EF2E2C1000A5C98 /* Util.cpp */,
 				BB8EE62A1EF2E2C1000A5C98 /* Util.h */,
 				BBBD149E1EE08A20003F9307 /* World.cpp */,
@@ -2807,6 +2812,7 @@
 				BB79C1541F0EE37700A734CE /* DDHidJoystick.m in Sources */,
 				BB9578A51F0FE0F400E89DE9 /* b2Draw.cpp in Sources */,
 				BB44CB8E1DB053C0003E633F /* pngwtran.c in Sources */,
+				BB91095C1F26996D0030E3DF /* SpacePirateChunk.cpp in Sources */,
 				BB9578AA1F0FE0F400E89DE9 /* b2Body.cpp in Sources */,
 				BB8308711EC2AD1F00435E7E /* SocketAddressFactory.cpp in Sources */,
 				BB4253DB1EF59793003F6D2A /* NGSteamServerHelper.cpp in Sources */,

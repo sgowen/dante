@@ -51,7 +51,7 @@ void NGSteamPacketHandler::sendPacket(const OutputMemoryBitStream& inOutputStrea
 
 void NGSteamPacketHandler::readIncomingPacketsIntoQueue()
 {
-    char packetMem[1500];
+    char packetMem[NW_MAX_PACKET_SIZE];
     size_t packetSize = sizeof(packetMem);
     uint32_t incomingSize = 0;
     InputMemoryBitStream inputStream(packetMem, packetSize * 8);

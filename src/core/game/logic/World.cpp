@@ -15,6 +15,7 @@
 #include "Projectile.h"
 #include "SpacePirate.h"
 #include "Crate.h"
+#include "SpacePirateChunk.h"
 #include "Ground.h"
 #include "Box2D/Box2D.h"
 
@@ -43,6 +44,7 @@ WORLD_CREATE_CLIENT_IMPL(Robot);
 WORLD_CREATE_CLIENT_IMPL(Projectile);
 WORLD_CREATE_CLIENT_IMPL(SpacePirate);
 WORLD_CREATE_CLIENT_IMPL(Crate);
+WORLD_CREATE_CLIENT_IMPL(SpacePirateChunk);
 
 Entity* World::sServerCreateRobot()
 {
@@ -56,6 +58,7 @@ Entity* World::sServerCreateRobot()
 WORLD_CREATE_SERVER_IMPL(Projectile);
 WORLD_CREATE_SERVER_IMPL(SpacePirate);
 WORLD_CREATE_SERVER_IMPL(Crate);
+WORLD_CREATE_SERVER_IMPL(SpacePirateChunk);
 
 World::World(bool isServer) :
 m_entityContactListener(new EntityContactListener()),

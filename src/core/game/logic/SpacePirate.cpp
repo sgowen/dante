@@ -31,6 +31,9 @@
 #include "InstanceManager.h"
 #include "Projectile.h"
 #include "Util.h"
+#include "EntityRegistry.h"
+#include "FWInstanceManager.h"
+#include "SpacePirateChunk.h"
 
 #include <math.h>
 
@@ -55,6 +58,7 @@ EntityDef SpacePirate::constructEntityDef()
     EntityDef ret = EntityDef();
     
     ret.isStaticBody = false;
+    ret.restitution = 0.1f;
     
     return ret;
 }
@@ -298,7 +302,7 @@ void SpacePirate::handleContactWithCrate(Crate* inCrate)
     handleContactWithGround(nullptr);
 }
 
-void SpacePirate::takeDamage(bool isHeadshot)
+void SpacePirate::takeDamage(b2Vec2 force, bool isHeadshot)
 {
     m_iHealth -= isHeadshot ? 8 : 1;
     if (m_iHealth > m_fStartingHealth)
@@ -316,6 +320,11 @@ void SpacePirate::takeDamage(bool isHeadshot)
     {
         // tell the world our health dropped
         NG_SERVER->setStateDirty(getID(), SPCP_Health);
+        
+        if (m_iHealth == 0)
+        {
+            //SpacePirateChunk* chunk1 = static_cast<SpacePirateChunk*>(SERVER_ENTITY_REG->createEntity(NW_TYPE_Projectile));
+        }
     }
 }
 
@@ -349,7 +358,7 @@ void SpacePirate::updateInternal(float inDeltaTime)
         m_fStateTime = 0;
     }
     
-    if (getPosition().y < -1)
+    if (getPosition().y < DEAD_ZONE_BOTTOM)
     {
         requestDeletion();
         

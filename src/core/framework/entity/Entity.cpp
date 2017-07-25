@@ -70,10 +70,12 @@ m_isRequestingDeletion(false)
         fixtureDef.isSensor = inEntityDef.isSensor;
         
         // Set the box density to be non-zero, so it will be dynamic.
-        fixtureDef.density = 1.0f;
+        fixtureDef.density = inEntityDef.density;
         
         // Override the default friction.
         fixtureDef.friction = 0.3f;
+        
+        fixtureDef.restitution = inEntityDef.restitution;
         
         // Add the shape to the body.
         m_fixture = m_body->CreateFixture(&fixtureDef);
@@ -107,6 +109,11 @@ void Entity::setStateTime(float stateTime)
 float Entity::getStateTime()
 {
     return m_fStateTime;
+}
+
+b2Body* Entity::getBody()
+{
+    return m_body;
 }
 
 void Entity::setPosition(b2Vec2 position)

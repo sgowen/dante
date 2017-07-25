@@ -35,12 +35,16 @@ struct EntityDef
 {
     EntityDef()
     {
+        restitution = 0.0f;
+        density = 1.0f;
         isStaticBody = true;
         fixedRotation = true;
         bullet = false;
         isSensor = false;
     }
     
+    float restitution;
+    float density;
     bool isStaticBody;
     bool fixedRotation;
     bool bullet;
@@ -75,6 +79,8 @@ public:
     void setStateTime(float stateTime);
     
     float getStateTime();
+    
+    b2Body* getBody();
     
     void setPosition(b2Vec2 position);
     

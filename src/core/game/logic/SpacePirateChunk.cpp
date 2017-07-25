@@ -1,14 +1,14 @@
 //
-//  Crate.cpp
+//  SpacePirateChunk.cpp
 //  dante
 //
-//  Created by Stephen Gowen on 7/23/17.
+//  Created by Stephen Gowen on 7/24/17.
 //  Copyright (c) 2017 Noctis Games. All rights reserved.
 //
 
 #include "pch.h"
 
-#include "Crate.h"
+#include "SpacePirateChunk.h"
 
 #include "Box2D/Box2D.h"
 #include "OutputMemoryBitStream.h"
@@ -24,12 +24,12 @@
 
 #include <math.h>
 
-Crate::Crate(b2World& world, bool isServer) : Entity(world, 0.0f, 0.0f, 1.0f, 1.0f, constructEntityDef()), m_isServer(isServer)
+SpacePirateChunk::SpacePirateChunk(b2World& world, bool isServer) : Entity(world, 0.0f, 0.0f, 1.0f, 1.0f, constructEntityDef()), m_isServer(isServer)
 {
     // Empty
 }
 
-EntityDef Crate::constructEntityDef()
+EntityDef SpacePirateChunk::constructEntityDef()
 {
     EntityDef ret = EntityDef();
     
@@ -41,7 +41,7 @@ EntityDef Crate::constructEntityDef()
     return ret;
 }
 
-void Crate::update()
+void SpacePirateChunk::update()
 {
     if (getPosition().y < DEAD_ZONE_BOTTOM
         || getPosition().x < DEAD_ZONE_LEFT
@@ -65,41 +65,26 @@ void Crate::update()
     }
 }
 
-bool Crate::shouldCollide(Entity *inEntity)
+bool SpacePirateChunk::shouldCollide(Entity *inEntity)
 {
     return true;
 }
 
-void Crate::handleContact(Entity* inEntity)
+void SpacePirateChunk::handleContact(Entity* inEntity)
 {
     if (inEntity != this
         && !inEntity->isRequestingDeletion())
     {
-        if (inEntity->getRTTI().derivesFrom(Robot::rtti))
-        {
-            (static_cast<Robot*>(inEntity))->handleContactWithCrate(this);
-        }
-        else if (inEntity->getRTTI().derivesFrom(Projectile::rtti))
-        {
-            (static_cast<Projectile*>(inEntity))->handleContactWithCrate(this);
-        }
-        else if (inEntity->getRTTI().derivesFrom(SpacePirate::rtti))
-        {
-            (static_cast<SpacePirate*>(inEntity))->handleContactWithCrate(this);
-        }
-        else if (inEntity->getRTTI().derivesFrom(Ground::rtti))
-        {
-            handleContactWithGround(nullptr);
-        }
+        // TODO
     }
 }
 
-uint32_t Crate::getAllStateMask() const
+uint32_t SpacePirateChunk::getAllStateMask() const
 {
     return CRAT_AllState;
 }
 
-void Crate::read(InputMemoryBitStream& inInputStream)
+void SpacePirateChunk::read(InputMemoryBitStream& inInputStream)
 {
     bool stateBit;
     
@@ -120,7 +105,7 @@ void Crate::read(InputMemoryBitStream& inInputStream)
     }
 }
 
-uint32_t Crate::write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState)
+uint32_t SpacePirateChunk::write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState)
 {
     uint32_t writtenState = 0;
     
@@ -142,11 +127,11 @@ uint32_t Crate::write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtySta
     return writtenState;
 }
 
-void Crate::handleContactWithGround(Ground* inGround)
+void SpacePirateChunk::handleContactWithGround(Ground* inGround)
 {
     // TODO
 }
 
-RTTI_IMPL(Crate, Entity);
+RTTI_IMPL(SpacePirateChunk, Entity);
 
-NW_TYPE_IMPL(Crate);
+NW_TYPE_IMPL(SpacePirateChunk);

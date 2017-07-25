@@ -99,6 +99,8 @@ m_hostFixture(nullptr)
             // Override the default friction.
             fixtureDef.friction = m_fixture->GetFriction();
             
+            fixtureDef.restitution = m_fixture->GetRestitution();
+            
             // Add the shape to the body.
             m_hostFixture = m_hostBody->CreateFixture(&fixtureDef);
             
@@ -130,6 +132,7 @@ EntityDef Robot::constructEntityDef()
     EntityDef ret = EntityDef();
     
     ret.isStaticBody = false;
+    ret.restitution = 0.1f;
     
     return ret;
 }
@@ -487,15 +490,26 @@ void Robot::processInput(IInputState* inInputState)
         return;
     }
     
-    b2Vec2 velocity = b2Vec2(inputState->getDesiredRightAmount() * m_fSpeed, getVelocity().y);
+    b2Vec2 velocity = b2Vec2(getVelocity().x, getVelocity().y);
     
-    m_isFacingLeft = velocity.x < 0 ? true : velocity.x > 0 ? false : m_isFacingLeft;
-    
-    m_isSprinting = inputState->isSprinting();
-    
-    if (m_isSprinting && m_isGrounded)
+    if (m_isGrounded)
     {
-        velocity += b2Vec2(inputState->getDesiredRightAmount() * m_fSpeed / 2, 0);
+        velocity.Set(inputState->getDesiredRightAmount() * m_fSpeed, getVelocity().y);
+        
+        m_isFacingLeft = velocity.x < 0 ? true : velocity.x > 0 ? false : m_isFacingLeft;
+        
+        m_isSprinting = inputState->isSprinting();
+        
+        if (m_isSprinting)
+        {
+            velocity += b2Vec2(inputState->getDesiredRightAmount() * m_fSpeed / 2, 0);
+        }
+    }
+    else
+    {
+        velocity.Set(inputState->getDesiredRightAmount() * m_fSpeed / 2, getVelocity().y);
+        
+        m_isFacingLeft = velocity.x < 0 ? true : velocity.x > 0 ? false : m_isFacingLeft;
     }
     
     if (inputState->isJumping())
@@ -552,13 +566,13 @@ void Robot::updateInternal(float inDeltaTime)
         setAngle(0);
     }
     
-    if (getVelocity().y < 0 && !m_isFalling)
+    if (getVelocity().y < 0 && !m_isFalling && m_iNumJumps > 0)
     {
         m_isFalling = true;
         m_fStateTime = 0;
     }
     
-    if (getPosition().y < -1)
+    if (getPosition().y < DEAD_ZONE_BOTTOM)
     {
         m_iHealth = 0;
     }

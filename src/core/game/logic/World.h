@@ -19,6 +19,7 @@ class Robot;
 class Projectile;
 class SpacePirate;
 class Crate;
+class SpacePirateChunk;
 class Ground;
 class b2World;
 
@@ -38,11 +39,13 @@ public:
     WORLD_CREATE_CLIENT_DECL(Projectile);
     WORLD_CREATE_CLIENT_DECL(SpacePirate);
     WORLD_CREATE_CLIENT_DECL(Crate);
+    WORLD_CREATE_CLIENT_DECL(SpacePirateChunk);
     
     WORLD_CREATE_SERVER_DECL(Robot);
     WORLD_CREATE_SERVER_DECL(Projectile);
     WORLD_CREATE_SERVER_DECL(SpacePirate);
     WORLD_CREATE_SERVER_DECL(Crate);
+    WORLD_CREATE_SERVER_DECL(SpacePirateChunk);
     
     World(bool isServer);
     

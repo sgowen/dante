@@ -36,6 +36,11 @@ void MainAssetsMapper::mapAssets()
     
     ASSETS->getTextureRegionMap()["Crate"] = new TextureRegion("texture_001", 624, 0, 128, 128, TEXTURE_SIZE_2048);
     
+    ASSETS->getTextureRegionMap()["Space_Pirate_Chunk_Top_Left"] = new TextureRegion("texture_001", 394, 0, 24, 28, TEXTURE_SIZE_2048);
+    ASSETS->getTextureRegionMap()["Space_Pirate_Chunk_Top_Right"] = new TextureRegion("texture_001", 416, 0, 24, 28, TEXTURE_SIZE_2048);
+    ASSETS->getTextureRegionMap()["Space_Pirate_Chunk_Bottom_Left"] = new TextureRegion("texture_001", 394, 26, 24, 28, TEXTURE_SIZE_2048);
+    ASSETS->getTextureRegionMap()["Space_Pirate_Chunk_Bottom_Right"] = new TextureRegion("texture_001", 416, 26, 24, 28, TEXTURE_SIZE_2048);
+    
     /// Animations
     ASSETS->getAnimationsMap()["Samus_Running"] = new Animation("texture_001", 0, 0, 36, 46, 360, 46, TEXTURE_SIZE_2048, true, 0.1f, 10, 0, 2);
     ASSETS->getAnimationsMap()["Samus_Running_Fast"] = new Animation("texture_001", 0, 0, 36, 46, 360, 46, TEXTURE_SIZE_2048, true, 0.075f, 10, 0, 2);

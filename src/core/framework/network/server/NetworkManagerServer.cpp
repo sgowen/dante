@@ -357,7 +357,7 @@ void NetworkManagerServer::handleInputPacket(ClientProxy* inClientProxy, InputMe
 {
     uint32_t moveCount = 0;
     Move move = Move(m_inputStateCreationFunc());
-    inInputStream.read(moveCount, 2);
+    inInputStream.read(moveCount, 4);
     
     for (; moveCount > 0; --moveCount)
     {

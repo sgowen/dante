@@ -345,17 +345,17 @@ void NetworkManagerClient::sendInputPacket()
         
         m_deliveryNotificationManager->writeState(inputPacket);
         
-        // eventually write the 3 latest moves so they have three chances to get through...
+        // eventually write the 15 latest moves so they have 15 chances to get through...
         int moveCount = moveList.getMoveCount();
-        int firstMoveIndex = moveCount - 3;
-        if (firstMoveIndex < 3)
+        int firstMoveIndex = moveCount - 15;
+        if (firstMoveIndex < 0)
         {
             firstMoveIndex = 0;
         }
         auto move = moveList.begin() + firstMoveIndex;
         
-        // only need two bits to write the move count, because it's 0, 1, 2 or 3
-        inputPacket.write(moveCount - firstMoveIndex, 2);
+        // only need four bits to write the move count, because it's 0-15
+        inputPacket.write(moveCount - firstMoveIndex, 4);
         
         for (; firstMoveIndex < moveCount; ++firstMoveIndex, ++move)
         {

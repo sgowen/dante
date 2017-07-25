@@ -51,6 +51,7 @@ EntityDef Projectile::constructEntityDef()
     
     ret.isStaticBody = false;
     ret.bullet = true;
+    ret.restitution = 0.1f;
     
     return ret;
 }
@@ -98,7 +99,7 @@ void Projectile::handleContact(Entity* inEntity)
         }
         else if (inEntity->getRTTI().derivesFrom(Crate::rtti))
         {
-            handleContactWithCrate(nullptr);
+            handleContactWithCrate(static_cast<Crate*>(inEntity));
         }
     }
 }
@@ -261,7 +262,7 @@ void Projectile::handleContactWithSpacePirate(SpacePirate* spacePirate)
     
     bool isHeadshot = projBottom > targHead;
     
-    spacePirate->takeDamage(isHeadshot);
+    spacePirate->takeDamage(b2Vec2(getVelocity().x, getVelocity().y), isHeadshot);
     if (spacePirate->getHealth() == 0)
     {
         World* world = m_isServer ? InstanceManager::getServerWorld() : InstanceManager::getClientWorld();
@@ -287,7 +288,9 @@ void Projectile::handleContactWithGround(Ground* ground)
 
 void Projectile::handleContactWithCrate(Crate* inCrate)
 {
-    // TODO
+    inCrate->getBody()->ApplyLinearImpulseToCenter(b2Vec2(getVelocity().x, 0), true);
+    
+    handleContactWithGround(nullptr);
 }
 
 Projectile::ProjectileState Projectile::getState()
@@ -324,9 +327,9 @@ void Projectile::updateInternal(float inDeltaTime)
         return;
     }
     
-    if (getPosition().y < -1
-        || getPosition().x < -5
-        || getPosition().x > GAME_WIDTH + 5)
+    if (getPosition().y < DEAD_ZONE_BOTTOM
+        || getPosition().x < DEAD_ZONE_LEFT
+        || getPosition().x > DEAD_ZONE_RIGHT)
     {
         explode();
     }
