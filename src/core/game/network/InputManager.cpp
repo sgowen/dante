@@ -93,7 +93,7 @@ void InputManager::update()
                             case NG_KEY_D:
                                 m_currentState->getGameInputState(0).m_isMovingRight = (*i)->isDown();
                                 continue;
-                            case NG_KEY_SHIFT:
+                            case NG_KEY_B:
                                 m_currentState->getGameInputState(0).m_isSprinting = (*i)->isDown();
                                 continue;
                             case NG_KEY_SPACE_BAR:
@@ -113,7 +113,8 @@ void InputManager::update()
                             case NG_KEY_ARROW_DOWN:
                                 m_currentState->getGameInputState(1).m_isSprinting = (*i)->isDown();
                                 continue;
-                            case NG_KEY_CARRIAGE_RETURN:
+                            case NG_KEY_RIGHT_SHIFT:
+							case NG_KEY_CARRIAGE_RETURN:
                                 m_currentState->getGameInputState(1).m_isShooting = (*i)->isDown();
                                 continue;
 #endif
