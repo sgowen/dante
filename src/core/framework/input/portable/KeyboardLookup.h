@@ -13,6 +13,8 @@
 
 #define NG_KEY_CARRIAGE_RETURN 0x000D
 
+#define NG_KEY_SHIFT 0x0010
+
 #define NG_KEY_ESCAPE 0x001B
 
 #define NG_KEY_SPACE_BAR 0x0020
@@ -82,6 +84,7 @@ inline std::vector<unsigned short>& getAllSupportedKeys()
 	{
 		keys.push_back(NG_KEY_BACK_SPACE);
 		keys.push_back(NG_KEY_CARRIAGE_RETURN);
+        keys.push_back(NG_KEY_SHIFT);
 		keys.push_back(NG_KEY_ESCAPE);
 		keys.push_back(NG_KEY_SPACE_BAR);
 		keys.push_back(NG_KEY_ASCII_PERIOD);

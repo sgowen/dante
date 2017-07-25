@@ -83,6 +83,7 @@ void InputManager::update()
                     {
                         switch ((*i)->getKey())
                         {
+                            // Player 1
                             case NG_KEY_W:
                                 m_currentState->getGameInputState(0).m_isJumping = (*i)->isDown();
                                 continue;
@@ -92,12 +93,30 @@ void InputManager::update()
                             case NG_KEY_D:
                                 m_currentState->getGameInputState(0).m_isMovingRight = (*i)->isDown();
                                 continue;
-                            case NG_KEY_ARROW_DOWN:
+                            case NG_KEY_SHIFT:
                                 m_currentState->getGameInputState(0).m_isSprinting = (*i)->isDown();
                                 continue;
                             case NG_KEY_SPACE_BAR:
                                 m_currentState->getGameInputState(0).m_isShooting = (*i)->isDown();
                                 continue;
+#ifdef _DEBUG
+                            // Player 2, Debug Only
+                            case NG_KEY_ARROW_UP:
+                                m_currentState->getGameInputState(1).m_isJumping = (*i)->isDown();
+                                continue;
+                            case NG_KEY_ARROW_LEFT:
+                                m_currentState->getGameInputState(1).m_isMovingLeft = (*i)->isDown();
+                                continue;
+                            case NG_KEY_ARROW_RIGHT:
+                                m_currentState->getGameInputState(1).m_isMovingRight = (*i)->isDown();
+                                continue;
+                            case NG_KEY_ARROW_DOWN:
+                                m_currentState->getGameInputState(1).m_isSprinting = (*i)->isDown();
+                                continue;
+                            case NG_KEY_CARRIAGE_RETURN:
+                                m_currentState->getGameInputState(1).m_isShooting = (*i)->isDown();
+                                continue;
+#endif
                             default:
                                 continue;
                         }

@@ -183,7 +183,20 @@ void Robot::update()
         {
             if (NG_CLIENT->isPlayerIdLocal(getPlayerId()))
             {
-                processMove(*pendingMove);
+                if (InputManager::getInstance()->isPlayerIdLocalHost(getPlayerId()))
+                {
+                    for (Entity* entity : InstanceManager::getClientWorld()->getPlayers())
+                    {
+                        Robot* robot = static_cast<Robot*>(entity);
+                        robot->processInput(pendingMove->getInputState());
+                    }
+                    
+                    for (Entity* entity : InstanceManager::getClientWorld()->getPlayers())
+                    {
+                        Robot* robot = static_cast<Robot*>(entity);
+                        robot->updateInternal(pendingMove->getDeltaTime());
+                    }
+                }
             }
             else
             {
