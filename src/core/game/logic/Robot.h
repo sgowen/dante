@@ -112,8 +112,6 @@ private:
     float m_fSpeed;
     float m_fJumpSpeed;
     float m_fTimeOfNextShot;
-    float m_fTimeVelocityBecameOutOfSync;
-    float m_fTimePositionBecameOutOfSync;
     
     bool m_isServer;
     bool m_isFirstJumpCompleted;
@@ -141,10 +139,6 @@ private:
     void doClientSidePredictionForLocalRobot();
     
     void doClientSidePredictionForRemoteRobot();
-    
-    void interpolateClientSidePrediction(b2Vec2& inOldVelocity, b2Vec2& inOldPos);
-    
-    bool interpolateVectorsIfNecessary(b2Vec2& inA, const b2Vec2& inB, float& syncTracker, const char* vectorType);
     
     void playNetworkBoundSounds(uint8_t old_m_iNumJumps, bool old_m_isSprinting);
     

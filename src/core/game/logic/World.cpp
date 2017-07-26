@@ -237,6 +237,17 @@ void World::killAllSpacePirates()
     }
 }
 
+void World::removeAllCrates()
+{
+    for (Entity* entity : m_entities)
+    {
+        if (entity->getRTTI().derivesFrom(Crate::rtti))
+        {
+            entity->requestDeletion();
+        }
+    }
+}
+
 bool World::hasSpacePirates()
 {
     for (Entity* entity : m_entities)

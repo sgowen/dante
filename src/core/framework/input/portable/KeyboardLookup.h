@@ -17,6 +17,8 @@
 
 #define NG_KEY_SPACE_BAR 0x0020
 
+#define NG_KEY_COMMA 0x002C
+
 #define NG_KEY_ASCII_PERIOD 0x002E
 
 #define NG_KEY_ZERO 0x0030
@@ -61,9 +63,6 @@
 
 #define NG_KEY_DELETE 0x007F
 
-#define NG_KEY_LEFT_SHIFT 0x00A0
-#define NG_KEY_RIGHT_SHIFT 0x00A1
-
 #ifdef _WIN32
 #define NG_KEY_PERIOD 0x00BE
 #define NG_KEY_ARROW_LEFT 0x25
@@ -88,7 +87,8 @@ inline std::vector<unsigned short>& getAllSupportedKeys()
 		keys.push_back(NG_KEY_ESCAPE);
 		keys.push_back(NG_KEY_SPACE_BAR);
 		keys.push_back(NG_KEY_ASCII_PERIOD);
-		keys.push_back(NG_KEY_PERIOD);
+		keys.push_back(NG_KEY_COMMA);
+        keys.push_back(NG_KEY_PERIOD);
 		keys.push_back(NG_KEY_ZERO);
 		keys.push_back(NG_KEY_ONE);
 		keys.push_back(NG_KEY_TWO);
@@ -127,8 +127,6 @@ inline std::vector<unsigned short>& getAllSupportedKeys()
 		keys.push_back(NG_KEY_Y);
 		keys.push_back(NG_KEY_Z);
 		keys.push_back(NG_KEY_DELETE);
-		keys.push_back(NG_KEY_LEFT_SHIFT);
-		keys.push_back(NG_KEY_RIGHT_SHIFT);
 		keys.push_back(NG_KEY_ARROW_UP);
 		keys.push_back(NG_KEY_ARROW_DOWN);
 		keys.push_back(NG_KEY_ARROW_LEFT);

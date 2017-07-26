@@ -34,7 +34,11 @@ public:
     
     void toggleEnemies();
     
+    void toggleObjects();
+    
     bool isSpawningEnemies();
+    
+    bool isSpawningObjects();
 
 private:
     static Server* s_instance;
@@ -44,6 +48,7 @@ private:
     float m_fStateTimeNoEnemies;
     int m_iPlayerIdForRobotBeingCreated;
     bool m_isSpawningEnemies;
+    bool m_isSpawningObjects;
     
     void handleNewClient(int playerId, std::string playerName);
     

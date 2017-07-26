@@ -18,6 +18,9 @@
 #include "NGSTDUtil.h"
 #include "Timing.h"
 #include "macros.h"
+#include "NetworkManagerClient.h"
+#include "StringUtil.h"
+#include "MathUtil.h"
 
 Entity::Entity(b2World& world, float x, float y, float width, float height, EntityDef inEntityDef) :
 m_worldRef(world),
@@ -27,6 +30,8 @@ m_fStateTime(0.0f),
 m_color(1.0f, 1.0f, 1.0f, 1.0f),
 m_fWidth(width),
 m_fHeight(height),
+m_fTimeVelocityBecameOutOfSync(0.0f),
+m_fTimePositionBecameOutOfSync(0.0f),
 m_iID(getUniqueEntityID()),
 m_isRequestingDeletion(false)
 {
@@ -99,6 +104,53 @@ Entity::~Entity()
         m_worldRef.DestroyBody(m_body);
         m_body = nullptr;
     }
+}
+
+void Entity::interpolateClientSidePrediction(b2Vec2& inOldVelocity, b2Vec2& inOldPos)
+{
+    if (interpolateVectorsIfNecessary(inOldVelocity, getVelocity(), m_fTimeVelocityBecameOutOfSync, "velocity"))
+    {
+        setVelocity(inOldVelocity);
+    }
+    
+    if (interpolateVectorsIfNecessary(inOldPos, getPosition(), m_fTimePositionBecameOutOfSync, "position"))
+    {
+        setPosition(inOldPos);
+    }
+}
+
+bool Entity::interpolateVectorsIfNecessary(b2Vec2& inOld, const b2Vec2& inNew, float& syncTracker, const char* vectorType)
+{
+    float rtt = NG_CLIENT->getRoundTripTime();
+    rtt /= 2; // Let's just measure the time from server to us
+    
+    if (!areBox2DVectorsEqual(inOld, inNew))
+    {
+        LOG("WARN: Robot move replay ended with incorrect %s! Old %3.8f, %3.8f - New %3.8f, %3.8f", vectorType, inOld.x, inOld.y, inNew.x, inNew.y);
+        
+        // have we been out of sync, or did we just become out of sync?
+        float time = Timing::getInstance()->getFrameStartTime();
+        if (syncTracker == 0.0f)
+        {
+            syncTracker = time;
+        }
+        
+        // now interpolate to the correct value...
+        float durationOutOfSync = time - syncTracker;
+        if (durationOutOfSync < rtt)
+        {
+            b2Vec2 vec = lerpBox2DVector(inOld, inNew, rtt);
+            inOld.Set(vec.x, vec.y);
+            
+            return true;
+        }
+    }
+    else
+    {
+        syncTracker = 0.0f;
+    }
+    
+    return false;
 }
 
 void Entity::setStateTime(float stateTime)

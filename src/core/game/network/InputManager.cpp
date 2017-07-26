@@ -74,6 +74,9 @@ void InputManager::update()
                 case NG_KEY_T:
                     m_currentState->m_iMenuState = (*i)->isUp() ? MENU_STATE_SERVER_TOGGLE_ENEMIES : MENU_STATE_NONE;
                     continue;
+                case NG_KEY_C:
+                    m_currentState->m_iMenuState = (*i)->isUp() ? MENU_STATE_SERVER_TOGGLE_OBJECTS : MENU_STATE_NONE;
+                    continue;
                 case NG_KEY_ESCAPE:
                     m_currentState->m_iMenuState = (*i)->isUp() ? MENU_STATE_ESCAPE : MENU_STATE_NONE;
                     continue;
@@ -93,7 +96,7 @@ void InputManager::update()
                             case NG_KEY_D:
                                 m_currentState->getGameInputState(0).m_isMovingRight = (*i)->isDown();
                                 continue;
-                            case NG_KEY_B:
+                            case NG_KEY_ARROW_DOWN:
                                 m_currentState->getGameInputState(0).m_isSprinting = (*i)->isDown();
                                 continue;
                             case NG_KEY_SPACE_BAR:
@@ -110,12 +113,15 @@ void InputManager::update()
                             case NG_KEY_ARROW_RIGHT:
                                 m_currentState->getGameInputState(1).m_isMovingRight = (*i)->isDown();
                                 continue;
-                            case NG_KEY_ARROW_DOWN:
+                            case NG_KEY_COMMA:
                                 m_currentState->getGameInputState(1).m_isSprinting = (*i)->isDown();
                                 continue;
-                            case NG_KEY_RIGHT_SHIFT:
-							case NG_KEY_CARRIAGE_RETURN:
+							case NG_KEY_PERIOD:
                                 m_currentState->getGameInputState(1).m_isShooting = (*i)->isDown();
+                                continue;
+                            case NG_KEY_CARRIAGE_RETURN:
+                                m_currentState->getGameInputState(1).m_iPlayerId = INPUT_UNASSIGNED;
+                                m_currentState->m_iMenuState = (*i)->isDown() ? MENU_STATE_LOCAL_PLAYER_DROP_OUT_1 : MENU_STATE_NONE;
                                 continue;
 #endif
                             default:
@@ -396,21 +402,12 @@ bool InputManager::isTimeToSampleInput()
         return false;
     }
     
-    float time = Timing::getInstance()->getFrameStartTime();
-    if (time > m_fNextTimeToSampleInput)
-    {
-        m_fNextTimeToSampleInput = time + FRAME_RATE;
-        
-        return true;
-    }
-    
-    return false;
+    return true;
 }
 
 InputManager::InputManager() :
 m_currentState(static_cast<InputState*>(POOLED_OBJ_MGR->borrowInputState())),
 m_pendingMove(nullptr),
-m_fNextTimeToSampleInput(0.0f),
 m_isConnected(false),
 m_isLiveMode(false),
 m_isTimeToProcessInput(false)

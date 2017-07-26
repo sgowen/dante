@@ -18,6 +18,7 @@
 class TextureWrapper;
 class Font;
 struct b2Vec2;
+class World;
 
 class MainRenderer : public Renderer
 {
@@ -44,6 +45,8 @@ private:
     void renderBackground();
     
     void renderWorld();
+    
+    void internalRenderEntities(World* world, bool isServer);
     
     void renderAtmosphere();
     

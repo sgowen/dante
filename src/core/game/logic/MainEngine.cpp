@@ -204,6 +204,10 @@ void MainEngine::handleNonMoveInput()
             {
                 Server::getInstance()->toggleEnemies();
             }
+            else if (inputState->getMenuState() == MENU_STATE_SERVER_TOGGLE_OBJECTS)
+            {
+                Server::getInstance()->toggleObjects();
+            }
         }
         
         if (inputState->isRequestingToAddLocalPlayer())

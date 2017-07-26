@@ -60,7 +60,6 @@ private:
     InputState* m_currentState;
     MoveList m_moveList;
     const Move* m_pendingMove;
-    float m_fNextTimeToSampleInput;
     bool m_isConnected;
     bool m_isLiveMode;
     bool m_isTimeToProcessInput;

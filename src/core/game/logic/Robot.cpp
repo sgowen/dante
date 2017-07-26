@@ -57,8 +57,6 @@ m_iReadState(0),
 m_fSpeed(7.5f),
 m_fJumpSpeed(11.0f),
 m_fTimeOfNextShot(0.0f),
-m_fTimeVelocityBecameOutOfSync(0.0f),
-m_fTimePositionBecameOutOfSync(0.0f),
 m_isServer(isServer),
 m_isGrounded(false),
 m_isFalling(false),
@@ -194,13 +192,13 @@ void Robot::update()
                     for (Entity* entity : InstanceManager::getClientWorld()->getPlayers())
                     {
                         Robot* robot = static_cast<Robot*>(entity);
-                        robot->updateInternal(pendingMove->getDeltaTime());
+                        robot->updateInternal(FRAME_RATE);
                     }
                 }
             }
             else
             {
-                updateInternal(pendingMove->getDeltaTime());
+                updateInternal(FRAME_RATE);
             }
         }
     }
@@ -208,7 +206,7 @@ void Robot::update()
 
 bool Robot::shouldCollide(Entity *inEntity)
 {
-    return inEntity->getRTTI().derivesFrom(SpacePirate::rtti) || inEntity->getRTTI().derivesFrom(Crate::rtti) || inEntity->getRTTI().derivesFrom(SpacePirateChunk::rtti);
+    return inEntity->getRTTI().derivesFrom(SpacePirate::rtti) || inEntity->getRTTI().derivesFrom(Crate::rtti);
 }
 
 void Robot::handleContact(Entity* inEntity)
@@ -489,7 +487,7 @@ void Robot::processMove(const Move& inMove)
     
     processInput(inMove.getInputState());
     
-    updateInternal(inMove.getDeltaTime());
+    updateInternal(FRAME_RATE);
     
     playNetworkBoundSounds(old_m_iNumJumps, old_m_isSprinting);
 }
@@ -506,24 +504,15 @@ void Robot::processInput(IInputState* inInputState)
     
     b2Vec2 velocity = b2Vec2(getVelocity().x, getVelocity().y);
     
-    if (m_isGrounded)
+    velocity.Set(inputState->getDesiredRightAmount() * m_fSpeed, getVelocity().y);
+    
+    m_isFacingLeft = velocity.x < 0 ? true : velocity.x > 0 ? false : m_isFacingLeft;
+    
+    m_isSprinting = inputState->isSprinting();
+    
+    if (m_isSprinting)
     {
-        velocity.Set(inputState->getDesiredRightAmount() * m_fSpeed, getVelocity().y);
-        
-        m_isFacingLeft = velocity.x < 0 ? true : velocity.x > 0 ? false : m_isFacingLeft;
-        
-        m_isSprinting = inputState->isSprinting();
-        
-        if (m_isSprinting)
-        {
-            velocity += b2Vec2(inputState->getDesiredRightAmount() * m_fSpeed / 2, 0);
-        }
-    }
-    else
-    {
-        velocity.Set(inputState->getDesiredRightAmount() * m_fSpeed / 2, getVelocity().y);
-        
-        m_isFacingLeft = velocity.x < 0 ? true : velocity.x > 0 ? false : m_isFacingLeft;
+        velocity += b2Vec2(inputState->getDesiredRightAmount() * m_fSpeed / 2, 0);
     }
     
     if (inputState->isJumping())
@@ -670,7 +659,7 @@ void Robot::doClientSidePredictionForLocalRobot()
             for (Entity* entity : InstanceManager::getClientWorld()->getPlayers())
             {
                 Robot* robot = static_cast<Robot*>(entity);
-                robot->updateInternal(move.getDeltaTime());
+                robot->updateInternal(FRAME_RATE);
             }
         }
     }
@@ -700,53 +689,6 @@ void Robot::doClientSidePredictionForRemoteRobot()
             }
         }
     }
-}
-
-void Robot::interpolateClientSidePrediction(b2Vec2& inOldVelocity, b2Vec2& inOldPos)
-{
-    if (interpolateVectorsIfNecessary(inOldVelocity, getVelocity(), m_fTimeVelocityBecameOutOfSync, "velocity"))
-    {
-        setVelocity(inOldVelocity);
-    }
-    
-    if (interpolateVectorsIfNecessary(inOldPos, getPosition(), m_fTimePositionBecameOutOfSync, "position"))
-    {
-        setPosition(inOldPos);
-    }
-}
-
-bool Robot::interpolateVectorsIfNecessary(b2Vec2& inOld, const b2Vec2& inNew, float& syncTracker, const char* vectorType)
-{
-    float rtt = NG_CLIENT->getRoundTripTime();
-    rtt /= 2; // Let's just measure the time from server to us
-    
-    if (!areBox2DVectorsEqual(inOld, inNew))
-    {
-        LOG("WARN: Robot move replay ended with incorrect %s! Old %3.8f, %3.8f - New %3.8f, %3.8f", vectorType, inOld.x, inOld.y, inNew.x, inNew.y);
-        
-        // have we been out of sync, or did we just become out of sync?
-        float time = Timing::getInstance()->getFrameStartTime();
-        if (syncTracker == 0.0f)
-        {
-            syncTracker = time;
-        }
-        
-        // now interpolate to the correct value...
-        float durationOutOfSync = time - syncTracker;
-        if (durationOutOfSync < rtt)
-        {
-            b2Vec2 vec = lerpBox2DVector(inOld, inNew, rtt);
-            inOld.Set(vec.x, vec.y);
-            
-            return true;
-        }
-    }
-    else
-    {
-        syncTracker = 0.0f;
-    }
-    
-    return false;
 }
 
 void Robot::playNetworkBoundSounds(uint8_t old_m_iNumJumps, bool old_m_isSprinting)

@@ -123,7 +123,13 @@ protected:
     float m_fWidth;
     float m_fHeight;
     
+    void interpolateClientSidePrediction(b2Vec2& inOldVelocity, b2Vec2& inOldPos);
+    
+    bool interpolateVectorsIfNecessary(b2Vec2& inA, const b2Vec2& inB, float& syncTracker, const char* vectorType);
+    
 private:
+    float m_fTimeVelocityBecameOutOfSync;
+    float m_fTimePositionBecameOutOfSync;
     int m_iID;
     bool m_isRequestingDeletion;
     

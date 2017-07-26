@@ -12,6 +12,8 @@
 
 #include "TextureWrapper.h"
 #include "Font.h"
+#include "Box2D/Box2D.h"
+#include "World.h"
 
 #include "Assets.h"
 #include "MainAssetsMapper.h"
@@ -23,7 +25,6 @@
 #include "TextureRegion.h"
 #include "macros.h"
 #include "NetworkManagerClient.h"
-#include "World.h"
 #include "Robot.h"
 #include "Projectile.h"
 #include "SpacePirate.h"
@@ -42,7 +43,6 @@
 #include "Server.h"
 #include "Crate.h"
 #include "SpacePirateChunk.h"
-#include "Box2D/Box2D.h"
 
 #include <sstream>
 #include <ctime> // rand
@@ -156,8 +156,35 @@ void MainRenderer::renderWorld()
     }
     m_spriteBatcher->endBatch(*m_bg2, *m_textureGpuProgramWrapper);
     
+    internalRenderEntities(InstanceManager::getClientWorld(), false);
+    
+#ifdef _DEBUG
+    if (Server::getInstance())
+    {
+        internalRenderEntities(InstanceManager::getServerWorld(), true);
+    }
+#endif
+    
     m_spriteBatcher->beginBatch();
     std::vector<Entity*> entities = InstanceManager::getClientWorld()->getEntities();
+    for (Entity* go : entities)
+    {
+        if (go->getNetworkType() == NW_TYPE_SpacePirate)
+        {
+            SpacePirate* entity = static_cast<SpacePirate*>(go);
+            b2Vec2 origin = b2Vec2(entity->getPosition().x, entity->getPosition().y);
+            origin += b2Vec2(0, entity->getHeight() / 2);
+            std::string text = StringUtil::format("%i", entity->getHealth());
+            renderText(text, origin, Color::DARK_RED, FONT_ALIGN_CENTERED);
+        }
+    }
+    m_spriteBatcher->endBatch(*m_misc, *m_textureGpuProgramWrapper);
+}
+
+void MainRenderer::internalRenderEntities(World* world, bool isServer)
+{
+    m_spriteBatcher->beginBatch();
+    std::vector<Entity*> entities = world->getEntities();
     for (Entity* go : entities)
     {
         if (go->getNetworkType() == NW_TYPE_Projectile)
@@ -165,12 +192,24 @@ void MainRenderer::renderWorld()
             Projectile* proj = static_cast<Projectile*>(go);
             bool isActive = proj->getState() == Projectile::ProjectileState::ProjectileState_Active;
             TextureRegion tr = isActive ? ASSETS->findTextureRegion("Projectile") : ASSETS->findTextureRegion("Explosion", proj->getStateTime());
+            
+            if (isServer)
+            {
+                go->getColor().alpha = 0.5f;
+            }
+            
             renderEntityWithColor(*proj, tr, proj->getColor(), proj->isFacingLeft());
         }
         else if (go->getNetworkType() == NW_TYPE_SpacePirate)
         {
             SpacePirate* sp = static_cast<SpacePirate*>(go);
             TextureRegion tr = ASSETS->findTextureRegion("Space_Pirate_Walking", sp->getStateTime());
+            
+            if (isServer)
+            {
+                go->getColor().alpha = 0.5f;
+            }
+            
             renderEntityWithColor(*sp, tr, sp->getColor(), sp->isFacingLeft());
         }
         else if (go->getNetworkType() == NW_TYPE_Crate)
@@ -178,6 +217,14 @@ void MainRenderer::renderWorld()
             Crate* crate = static_cast<Crate*>(go);
             static Color activeColor = Color(1.0f, 0, 0, 1.0f);
             TextureRegion tr = ASSETS->findTextureRegion("Crate", go->getStateTime());
+            
+            activeColor.alpha = isServer ? 0.5f : 1.0f;
+            
+            if (isServer)
+            {
+                go->getColor().alpha = 0.5f;
+            }
+            
             renderEntityWithColor(*go, tr, crate->getBody()->IsAwake() ? activeColor : go->getColor());
         }
         else if (go->getNetworkType() == NW_TYPE_SpacePirateChunk)
@@ -210,11 +257,16 @@ void MainRenderer::renderWorld()
                     break;
             }
             
+            if (isServer)
+            {
+                go->getColor().alpha = 0.5f;
+            }
+            
             renderEntityWithColor(*go, *tr, go->getColor(), spc->isFacingLeft());
         }
     }
     
-    std::vector<Entity*> players = InstanceManager::getClientWorld()->getPlayers();
+    std::vector<Entity*> players = world->getPlayers();
     for (Entity* entity : players)
     {
         Robot* r = static_cast<Robot*>(entity);
@@ -234,24 +286,16 @@ void MainRenderer::renderWorld()
                                                      r->isGrounded() ?
                                                      isMoving ? r->isShooting() ? "Samus_Shooting" : (r->isSprinting() ? "Samus_Running_Fast" : "Samus_Running") : "Samus_Idle" :
                                                      r->getVelocity().y > 0 ? "Samus_Jumping" : "Samus_Falling", r->getStateTime());
+        
+        if (isServer)
+        {
+            c.alpha /= 2.0f;
+        }
+        
         renderEntityWithColor(*r, tr, c, r->isFacingLeft());
     }
     
     m_spriteBatcher->endBatch(*m_characters, *m_textureGpuProgramWrapper);
-    
-    m_spriteBatcher->beginBatch();
-    for (Entity* go : entities)
-    {
-        if (go->getNetworkType() == NW_TYPE_SpacePirate)
-        {
-            SpacePirate* entity = static_cast<SpacePirate*>(go);
-            b2Vec2 origin = b2Vec2(entity->getPosition().x, entity->getPosition().y);
-            origin += b2Vec2(0, entity->getHeight() / 2);
-            std::string text = StringUtil::format("%i", entity->getHealth());
-            renderText(text, origin, Color::DARK_RED, FONT_ALIGN_CENTERED);
-        }
-    }
-    m_spriteBatcher->endBatch(*m_misc, *m_textureGpuProgramWrapper);
 }
 
 void MainRenderer::renderAtmosphere()
@@ -462,10 +506,19 @@ void MainRenderer::renderServerJoinedText()
     
     if (Server::getInstance())
     {
-        static b2Vec2 origin = b2Vec2(CAM_WIDTH - 0.5f, CAM_HEIGHT - 3.0f);
+        {
+            static b2Vec2 origin = b2Vec2(CAM_WIDTH - 0.5f, CAM_HEIGHT - 3.0f);
+            
+            std::string text = StringUtil::format("'T' Enemies %s", Server::getInstance()->isSpawningEnemies() ? " ON" : "OFF");
+            renderText(text, origin, Color::BLACK, FONT_ALIGN_RIGHT);
+        }
         
-        std::string text = StringUtil::format("'T' Enemies %s", Server::getInstance()->isSpawningEnemies() ? " ON" : "OFF");
-        renderText(text, origin, Color::BLACK, FONT_ALIGN_RIGHT);
+        {
+            static b2Vec2 origin = b2Vec2(CAM_WIDTH - 0.5f, CAM_HEIGHT - 3.5f);
+            
+            std::string text = StringUtil::format("'C' Objects %s", Server::getInstance()->isSpawningObjects() ? " ON" : "OFF");
+            renderText(text, origin, Color::BLACK, FONT_ALIGN_RIGHT);
+        }
     }
     
     if (InstanceManager::getClientWorld())
@@ -603,7 +656,6 @@ void MainRenderer::updateCamera()
             }
             
             float x = pX - w * 0.5f;
-            //x = clamp(x, GAME_WIDTH, 0);
             
             float y = pY - h * 0.5f;
             y = clamp(y, GAME_HEIGHT, 0);

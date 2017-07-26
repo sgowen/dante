@@ -11,6 +11,7 @@
 #include "MoveList.h"
 
 #include "IInputState.h"
+#include "Timing.h"
 
 MoveList::MoveList(): m_fLastMoveTimestamp(-1.f)
 {
@@ -19,10 +20,7 @@ MoveList::MoveList(): m_fLastMoveTimestamp(-1.f)
 
 const Move& MoveList::addMove(IInputState* inInputState, float inTimestamp)
 {
-    //first move has 0 time. it's okay, it only happens once
-    float deltaTime = m_fLastMoveTimestamp >= 0.f ? inTimestamp - m_fLastMoveTimestamp : 0.f;
-    
-    m_moves.emplace_back(inInputState, inTimestamp, deltaTime);
+    m_moves.emplace_back(Move(inInputState, inTimestamp));
     
     m_fLastMoveTimestamp = inTimestamp;
     
@@ -39,11 +37,9 @@ bool MoveList::addMoveIfNew(const Move& inMove)
     
     if (timeStamp > m_fLastMoveTimestamp)
     {
-        float deltaTime = m_fLastMoveTimestamp >= 0.f ? timeStamp - m_fLastMoveTimestamp : 0.f;
-        
         m_fLastMoveTimestamp = timeStamp;
         
-        m_moves.emplace_back(inMove.getInputState(), timeStamp, deltaTime);
+        m_moves.emplace_back(Move(inMove.getInputState(), timeStamp));
         
         return true;
     }

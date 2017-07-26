@@ -63,6 +63,8 @@ public:
     
     void killAllSpacePirates();
     
+    void removeAllCrates();
+    
     bool hasSpacePirates();
     
     bool hasCrates();
