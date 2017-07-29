@@ -156,12 +156,12 @@ void MainRenderer::renderWorld()
     }
     m_spriteBatcher->endBatch(*m_bg2, *m_textureGpuProgramWrapper);
     
-    internalRenderEntities(InstanceManager::getClientWorld(), false);
+    renderEntities(InstanceManager::getClientWorld(), false);
     
 #ifdef _DEBUG
-    if (Server::getInstance())
+    if (Server::getInstance() && Server::getInstance()->isDisplaying())
     {
-        internalRenderEntities(InstanceManager::getServerWorld(), true);
+        renderEntities(InstanceManager::getServerWorld(), true);
     }
 #endif
     
@@ -181,7 +181,7 @@ void MainRenderer::renderWorld()
     m_spriteBatcher->endBatch(*m_misc, *m_textureGpuProgramWrapper);
 }
 
-void MainRenderer::internalRenderEntities(World* world, bool isServer)
+void MainRenderer::renderEntities(World* world, bool isServer)
 {
     m_spriteBatcher->beginBatch();
     std::vector<Entity*> entities = world->getEntities();
@@ -455,9 +455,9 @@ void MainRenderer::renderJoiningLocalServerByIPText()
 void MainRenderer::renderJoiningServerText()
 {
     {
-        static b2Vec2 origin = b2Vec2(CAM_WIDTH / 2, CAM_HEIGHT / 2 + 1);
+        static b2Vec2 origin = b2Vec2(0.5f, CAM_HEIGHT - 3.5f);
         std::string text = StringUtil::format("%s, 'ESC' to exit", NG_CLIENT->getState() == NCS_Welcomed ? "Server joined" : "Joining Server...");
-        renderText(text, origin, Color::BLACK, FONT_ALIGN_CENTERED);
+        renderText(text, origin, Color::BLACK, FONT_ALIGN_LEFT);
     }
 }
 
@@ -519,6 +519,15 @@ void MainRenderer::renderServerJoinedText()
             std::string text = StringUtil::format("'C' Objects %s", Server::getInstance()->isSpawningObjects() ? " ON" : "OFF");
             renderText(text, origin, Color::BLACK, FONT_ALIGN_RIGHT);
         }
+        
+#ifdef _DEBUG
+        {
+            static b2Vec2 origin = b2Vec2(CAM_WIDTH - 0.5f, CAM_HEIGHT - 4.0f);
+            
+            std::string text = StringUtil::format("'I'  DEBUG %s", Server::getInstance()->isDisplaying() ? " ON" : "OFF");
+            renderText(text, origin, Color::BLACK, FONT_ALIGN_RIGHT);
+        }
+#endif
     }
     
     if (InstanceManager::getClientWorld())
@@ -557,9 +566,9 @@ void MainRenderer::renderServerJoinedText()
             }
         }
         
-        b2Vec2 origin = b2Vec2(CAM_WIDTH / 2, CAM_HEIGHT / 2);
+        b2Vec2 origin = b2Vec2(0.5f, CAM_HEIGHT - 4.0f);
         std::string text = StringUtil::format("Enemies: %i", enemyCount);
-        renderText(text, origin, Color::BLACK, FONT_ALIGN_CENTERED);
+        renderText(text, origin, Color::BLACK, FONT_ALIGN_LEFT);
     }
 }
 

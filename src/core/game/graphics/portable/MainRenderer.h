@@ -46,7 +46,7 @@ private:
     
     void renderWorld();
     
-    void internalRenderEntities(World* world, bool isServer);
+    void renderEntities(World* world, bool isServer);
     
     void renderAtmosphere();
     

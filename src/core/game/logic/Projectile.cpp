@@ -165,22 +165,6 @@ void Projectile::read(InputMemoryBitStream& inInputStream)
     {
         // This projectile was just created
         playSound(SOUND_ID_FIRE_ROCKET);
-        
-        float rtt = NG_CLIENT->getRoundTripTime() / 2;
-        
-        while (true)
-        {
-            if (rtt < FRAME_RATE)
-            {
-                updateInternal(rtt);
-                break;
-            }
-            else
-            {
-                updateInternal(FRAME_RATE);
-                rtt -= FRAME_RATE;
-            }
-        }
     }
 }
 
