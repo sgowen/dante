@@ -112,22 +112,19 @@ void Robot::update()
             NG_SERVER->setStateDirty(getID(), ROBT_Pose);
         }
     }
-    else
+    
+    if (m_iHealth == 0 && !isRequestingDeletion())
     {
-        if (NG_CLIENT->isPlayerIdLocal(getPlayerId()))
-        {
-            // Only interpolate when new pose has been read in
-            if ((m_iReadState & ROBT_Pose) != 0)
-            {
-                interpolateClientSidePrediction(m_velocityLastKnown, m_positionLastKnown);
-            }
-        }
-        else
-        {
-            playNetworkBoundSounds();
-        }
+        playSound(SOUND_ID_DEATH);
         
-        m_iReadState = 0;
+        // TODO, this is NOT the right way to handle the player dying
+        
+        requestDeletion();
+        
+        if (m_isServer)
+        {
+            Server::sHandleNewClient(m_iPlayerId, m_playerName);
+        }
     }
     
     m_velocityLastKnown = b2Vec2(getVelocity().x, getVelocity().y);
@@ -272,6 +269,24 @@ uint32_t Robot::write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtySta
     return writtenState;
 }
 
+void Robot::postRead()
+{
+    if (NG_CLIENT->isPlayerIdLocal(getPlayerId()))
+    {
+        // Only interpolate when new pose has been read in
+        if ((m_iReadState & ROBT_Pose) != 0)
+        {
+            interpolateClientSidePrediction(m_velocityLastKnown, m_positionLastKnown);
+        }
+    }
+    else
+    {
+        playNetworkBoundSounds();
+    }
+    
+    m_iReadState = 0;
+}
+
 void Robot::processInput(IInputState* inInputState)
 {
     InputState* is = static_cast<InputState*>(inInputState);
@@ -356,20 +371,6 @@ void Robot::updateInternal(float inDeltaTime)
     if (getPosition().y < DEAD_ZONE_BOTTOM)
     {
         m_iHealth = 0;
-    }
-    
-    if (m_iHealth == 0 && !isRequestingDeletion())
-    {
-        playSound(SOUND_ID_DEATH);
-        
-        // TODO, this is NOT the right way to handle the player dying
-        
-        requestDeletion();
-        
-        if (m_isServer)
-        {
-            Server::sHandleNewClient(m_iPlayerId, m_playerName);
-        }
     }
 }
 

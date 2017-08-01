@@ -174,11 +174,20 @@ void World::postRead()
         
         for (Entity* entity : m_players)
         {
-            Robot* robot = static_cast<Robot*>(entity);
             if (needsReplay)
             {
+                Robot* robot = static_cast<Robot*>(entity);
                 robot->updateInternal(FRAME_RATE);
             }
+        }
+    }
+    
+    for (Entity* entity : m_players)
+    {
+        if (needsReplay)
+        {
+            Robot* robot = static_cast<Robot*>(entity);
+            robot->postRead();
         }
     }
 }

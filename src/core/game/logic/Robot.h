@@ -54,6 +54,8 @@ public:
     
     virtual uint32_t write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState);
     
+    void postRead();
+    
     void processInput(IInputState* inInputState);
     
     void updateInternal(float inDeltaTime);
