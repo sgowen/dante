@@ -150,23 +150,35 @@ void World::postRead()
     // all processed moves have been removed, so all that are left are unprocessed moves so we must apply them...
     MoveList& moveList = InputManager::getInstance()->getMoveList();
     
+    bool needsReplay = false;
     for (const Move& move : moveList)
     {
         for (Entity* entity : m_players)
         {
             Robot* robot = static_cast<Robot*>(entity);
-            if (NG_CLIENT->isPlayerIdLocal(robot->getPlayerId()))
+            if (robot->needsMoveReplay())
             {
-                robot->processInput(move.getInputState());
+                if (NG_CLIENT->isPlayerIdLocal(robot->getPlayerId()))
+                {
+                    needsReplay = true;
+                    
+                    robot->processInput(move.getInputState());
+                }
             }
         }
         
-        stepPhysics(FRAME_RATE);
+        if (needsReplay)
+        {
+            stepPhysics(FRAME_RATE);
+        }
         
         for (Entity* entity : m_players)
         {
             Robot* robot = static_cast<Robot*>(entity);
-            robot->updateInternal(FRAME_RATE);
+            if (needsReplay)
+            {
+                robot->updateInternal(FRAME_RATE);
+            }
         }
     }
 }

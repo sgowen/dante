@@ -593,8 +593,6 @@ void MainRenderer::updateCamera()
     
     if (NG_CLIENT && NG_CLIENT->getState() == NCS_Welcomed)
     {
-        std::unordered_map<uint8_t, uint8_t> indexToPlayerIdMap = NG_CLIENT->getPlayerIds();
-        
         float left = 0;
         float right = 0;
         float bottom = 0;
@@ -602,11 +600,11 @@ void MainRenderer::updateCamera()
         
         bool needsInit = true;
         
-        for (auto const &entry : indexToPlayerIdMap)
+        for (Entity* entity : InstanceManager::getClientWorld()->getPlayers())
         {
-            Robot* player = InstanceManager::sGetPlayerRobotForIDOnClient(entry.second);
+            Robot* player = static_cast<Robot*>(entity);
             
-            if (player)
+            if (NG_CLIENT->isPlayerIdLocal(player->getPlayerId()))
             {
                 // Adjust camera based on the player position
                 

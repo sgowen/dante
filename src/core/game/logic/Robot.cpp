@@ -126,6 +126,8 @@ void Robot::update()
         {
             playNetworkBoundSounds();
         }
+        
+        m_iReadState = 0;
     }
     
     m_velocityLastKnown = b2Vec2(getVelocity().x, getVelocity().y);
@@ -458,6 +460,11 @@ bool Robot::isShooting()
 bool Robot::isSprinting()
 {
     return m_isSprinting;
+}
+
+bool Robot::needsMoveReplay()
+{
+    return m_iReadState > 0;
 }
 
 void Robot::handleShooting()

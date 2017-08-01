@@ -90,6 +90,8 @@ public:
     
     bool isSprinting();
     
+    bool needsMoveReplay();
+    
 private:
     uint64_t m_iAddressHash;
     uint8_t m_iPlayerId;
