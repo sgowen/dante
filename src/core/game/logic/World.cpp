@@ -27,14 +27,14 @@
 #define WORLD_CREATE_CLIENT_IMPL(name) \
 Entity* World::sClientCreate##name() \
 { \
-    b2World& world = InstanceManager::getClientWorld()->getWorld(0); \
+    b2World& world = InstanceManager::getClientWorld()->getWorld(); \
     return new name(world, false); \
 }
 
 #define WORLD_CREATE_SERVER_IMPL(name) \
 Entity* World::sServerCreate##name() \
 { \
-    b2World& world = InstanceManager::getServerWorld()->getWorld(0); \
+    b2World& world = InstanceManager::getServerWorld()->getWorld(); \
     Entity* ret = new name(world, true); \
     NG_SERVER->registerEntity(ret); \
     return ret; \
@@ -46,15 +46,7 @@ WORLD_CREATE_CLIENT_IMPL(SpacePirate);
 WORLD_CREATE_CLIENT_IMPL(Crate);
 WORLD_CREATE_CLIENT_IMPL(SpacePirateChunk);
 
-Entity* World::sServerCreateRobot()
-{
-    int playerIdForRobotBeingCreated = Server::getInstance()->getPlayerIdForRobotBeingCreated();
-    b2World& world = InstanceManager::getServerWorld()->getWorld(playerIdForRobotBeingCreated - 1);
-    Entity* ret = new Robot(world, true);
-    NG_SERVER->registerEntity(ret);
-    return ret;
-}
-
+WORLD_CREATE_SERVER_IMPL(Robot);
 WORLD_CREATE_SERVER_IMPL(Projectile);
 WORLD_CREATE_SERVER_IMPL(SpacePirate);
 WORLD_CREATE_SERVER_IMPL(Crate);
@@ -68,16 +60,13 @@ m_isServer(isServer)
     // Define the gravity vector.
     b2Vec2 gravity(0.0f, -9.8f);
     
-    for (int i = 0; i < MAX_NUM_PLAYERS_PER_SERVER; ++i)
-    {
-        // Construct a world object, which will hold and simulate the rigid bodies.
-        m_world[i] = new b2World(gravity);
-        
-        m_ground[i] = new Ground(*m_world[i]);
-        
-        m_world[i]->SetContactListener(m_entityContactListener);
-        m_world[i]->SetContactFilter(m_entityContactFilter);
-    }
+    // Construct a world object, which will hold and simulate the rigid bodies.
+    m_world = new b2World(gravity);
+    
+    m_ground = new Ground(*m_world);
+    
+    m_world->SetContactListener(m_entityContactListener);
+    m_world->SetContactFilter(m_entityContactFilter);
 }
 
 World::~World()
@@ -87,11 +76,9 @@ World::~World()
     delete m_entityContactListener;
     delete m_entityContactFilter;
     
-    for (int i = 0; i < MAX_NUM_PLAYERS_PER_SERVER; ++i)
-    {
-        delete m_ground[i];
-        delete m_world[i];
-    }
+    delete m_ground;
+    
+    delete m_world;
 }
 
 void World::addEntity(Entity* inEntity)
@@ -148,17 +135,113 @@ void World::removeEntity(Entity* inEntity)
     }
 }
 
+#include "ClientProxy.h"
+#include "MoveList.h"
+#include "InputManager.h"
+#include "NetworkManagerClient.h"
+
 void World::postRead()
 {
-    for (Entity* entity : m_players)
+    if (m_isServer)
     {
-        Robot* robot = static_cast<Robot*>(entity);
-        robot->postRead();
+        return;
+    }
+    
+    // all processed moves have been removed, so all that are left are unprocessed moves so we must apply them...
+    MoveList& moveList = InputManager::getInstance()->getMoveList();
+    
+    for (const Move& move : moveList)
+    {
+        for (Entity* entity : m_players)
+        {
+            Robot* robot = static_cast<Robot*>(entity);
+            if (NG_CLIENT->isPlayerIdLocal(robot->getPlayerId()))
+            {
+                robot->processInput(move.getInputState());
+            }
+        }
+        
+        stepPhysics(FRAME_RATE);
+        
+        for (Entity* entity : m_players)
+        {
+            Robot* robot = static_cast<Robot*>(entity);
+            robot->updateInternal(FRAME_RATE);
+        }
     }
 }
 
+#include "StringUtil.h"
+
 void World::update()
 {
+    if (m_isServer)
+    {
+        bool needsToProcessMoreMoves = true;
+        
+        int j = 0;
+        
+        while (needsToProcessMoreMoves)
+        {
+            needsToProcessMoreMoves = false;
+            
+            for (Entity* entity : m_players)
+            {
+                Robot* robot = static_cast<Robot*>(entity);
+                
+                // is there a move we haven't processed yet?
+                ClientProxy* client = NG_SERVER->getClientProxy(robot->getPlayerId());
+                if (client)
+                {
+                    MoveList& moveList = client->getUnprocessedMoveList();
+                    Move* move = moveList.getMoveAtIndex(j);
+                    if (move)
+                    {
+                        needsToProcessMoreMoves = true;
+                        robot->processInput(move->getInputState());
+                    }
+                }
+            }
+            
+            if (needsToProcessMoreMoves)
+            {
+                stepPhysics(FRAME_RATE);
+                
+                for (Entity* entity : m_players)
+                {
+                    Robot* robot = static_cast<Robot*>(entity);
+                    
+                    robot->updateInternal(FRAME_RATE);
+                }
+            }
+            
+            ++j;
+        }
+    }
+    else
+    {
+        const Move* pendingMove = InputManager::getInstance()->getPendingMove();
+        if (pendingMove)
+        {
+            for (Entity* entity : m_players)
+            {
+                Robot* robot = static_cast<Robot*>(entity);
+                if (NG_CLIENT->isPlayerIdLocal(robot->getPlayerId()))
+                {
+                    robot->processInput(pendingMove->getInputState());
+                }
+            }
+            
+            stepPhysics(FRAME_RATE);
+            
+            for (Entity* entity : m_players)
+            {
+                Robot* robot = static_cast<Robot*>(entity);
+                robot->updateInternal(FRAME_RATE);
+            }
+        }
+    }
+    
     // Update all game objects- sometimes they want to die, so we need to tread carefully...
     
     int len = static_cast<int>(m_players.size());
@@ -181,12 +264,6 @@ void World::update()
                 --c;
             }
         }
-    }
-    
-    for (Entity* entity : m_players)
-    {
-        Robot* robot = static_cast<Robot*>(entity);
-        robot->syncToHost();
     }
     
     len = static_cast<int>(m_entities.size());
@@ -284,9 +361,19 @@ std::vector<Entity*>& World::getEntities()
     return m_entities;
 }
 
-b2World& World::getWorld(int index)
+b2World& World::getWorld()
 {
-    return *m_world[index];
+    return *m_world;
+}
+
+void World::stepPhysics(float deltaTime)
+{
+    static int32 velocityIterations = 12;
+    static int32 positionIterations = 4;
+    
+    // Instruct the world to perform a single step of simulation.
+    // It is generally best to keep the time step and iterations fixed.
+    m_world->Step(deltaTime, velocityIterations, positionIterations);
 }
 
 void EntityContactListener::BeginContact(b2Contact* contact)

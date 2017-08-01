@@ -114,6 +114,11 @@ void ClientProxy::onLocalPlayerRemoved(uint8_t playerId)
     }
 }
 
+std::vector<uint8_t>& ClientProxy::getPlayerIds()
+{
+    return m_playerIds;
+}
+
 int ClientProxy::getNumPlayers()
 {
     return static_cast<int>(m_playerIds.size());

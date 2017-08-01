@@ -47,83 +47,38 @@ m_iAddressHash(0),
 m_iPlayerId(0),
 m_playerName("Robot"),
 m_iNumJumps(0),
-m_isFacingLeft(false),
-m_isShooting(false),
-m_isSprinting(false),
 m_iHealth(25),
 m_iNumKills(0),
 m_wasLastKillHeadshot(false),
+m_isGrounded(false),
+m_isFalling(false),
+m_isFacingLeft(false),
+m_isShooting(false),
+m_isSprinting(false),
 m_iReadState(0),
 m_fSpeed(7.5f),
 m_fJumpSpeed(11.0f),
 m_fTimeOfNextShot(0.0f),
 m_isServer(isServer),
-m_isGrounded(false),
-m_isFalling(false),
 m_isFirstJumpCompleted(false),
-m_velocityOld(),
-m_positionOld(),
-m_iNumJumpsOld(0),
-m_isSprintingOld(false),
-m_isHost(false),
-m_hostBody(nullptr),
-m_hostFixture(nullptr)
+m_velocityLastKnown(),
+m_positionLastKnown(),
+m_iNumJumpsLastKnown(0),
+m_iHealthLastKnown(25),
+m_iNumKillsLastKnown(0),
+m_wasLastKillHeadshotLastKnown(false),
+m_isGroundedLastKnown(false),
+m_isFallingLastKnown(false),
+m_isFacingLeftLastKnown(false),
+m_isShootingLastKnown(false),
+m_isSprintingLastKnown(false)
 {
-    if (m_isServer)
-    {
-        b2World& hostWorld = InstanceManager::getServerWorld()->getWorld(0);
-        m_isHost = &hostWorld == &world;
-        if (!m_isHost)
-        {
-            // Define the dynamic body. We set its position and call the body factory.
-            b2BodyDef bodyDef;
-            bodyDef.type = b2_dynamicBody;
-            bodyDef.position.Set(getPosition().x, getPosition().y);
-            bodyDef.fixedRotation = m_body->IsFixedRotation();
-            bodyDef.bullet = m_body->IsBullet();
-            m_hostBody = hostWorld.CreateBody(&bodyDef);
-            
-            // Define another box shape for our dynamic body.
-            b2PolygonShape dynamicBox;
-            dynamicBox.SetAsBox(m_fWidth / 2.0f, m_fHeight / 2.0f);
-            
-            // Define the dynamic body fixture.
-            b2FixtureDef fixtureDef;
-            fixtureDef.shape = &dynamicBox;
-            fixtureDef.isSensor = m_fixture->IsSensor();
-            
-            // Set the box density to be non-zero, so it will be dynamic.
-            fixtureDef.density = m_fixture->GetDensity();
-            
-            // Override the default friction.
-            fixtureDef.friction = m_fixture->GetFriction();
-            
-            fixtureDef.restitution = m_fixture->GetRestitution();
-            
-            // Add the shape to the body.
-            m_hostFixture = m_hostBody->CreateFixture(&fixtureDef);
-            
-            m_hostFixture->SetUserData(this);
-            
-            m_hostBody->SetUserData(this);
-        }
-    }
+    // Empty
 }
 
 Robot::~Robot()
 {
-    if (m_hostFixture)
-    {
-        m_hostBody->DestroyFixture(m_hostFixture);
-        m_hostFixture = nullptr;
-    }
-    
-    if (m_hostBody)
-    {
-        b2World& hostWorld = InstanceManager::getServerWorld()->getWorld(0);
-        hostWorld.DestroyBody(m_hostBody);
-        m_hostBody = nullptr;
-    }
+    // Empty
 }
 
 EntityDef Robot::constructEntityDef()
@@ -140,68 +95,50 @@ void Robot::update()
 {
     if (m_isServer)
     {
-        b2Vec2 oldVelocity = b2Vec2(getVelocity().x, getVelocity().y);
-        b2Vec2 oldPosition = b2Vec2(getPosition().x, getPosition().y);
-        uint8_t oldNumJumps = m_iNumJumps;
-        bool old_m_isGrounded = m_isGrounded;
-        bool old_m_isFalling = m_isFalling;
-        bool old_isFacingLeft = m_isFacingLeft;
-        bool old_isShooting = m_isShooting;
-        bool old_isSprinting = m_isSprinting;
-        
-        // is there a move we haven't processed yet?
-        ClientProxy* client = NG_SERVER->getClientProxy(getPlayerId());
-        if (client)
-        {
-            MoveList& moveList = client->getUnprocessedMoveList();
-            for (const Move& unprocessedMove : moveList)
-            {
-                processMove(unprocessedMove);
-            }
-        }
-        
         handleShooting();
         
-        if (!areBox2DVectorsEqual(oldVelocity, getVelocity())
-            || !areBox2DVectorsEqual(oldPosition, getPosition())
-            || oldNumJumps != m_iNumJumps
-            || old_m_isGrounded != m_isGrounded
-            || old_m_isFalling != m_isFalling
-            || old_isFacingLeft != m_isFacingLeft
-            || old_isShooting != m_isShooting
-            || old_isSprinting != m_isSprinting)
+        if (!areBox2DVectorsEqual(m_velocityLastKnown, getVelocity())
+            || !areBox2DVectorsEqual(m_positionLastKnown, getPosition())
+            || m_iNumJumpsLastKnown != m_iNumJumps
+            || m_iHealthLastKnown != m_iHealth
+            || m_iNumKillsLastKnown != m_iNumKills
+            || m_wasLastKillHeadshotLastKnown != m_wasLastKillHeadshot
+            || m_isGroundedLastKnown != m_isGrounded
+            || m_isFallingLastKnown != m_isFalling
+            || m_isFacingLeftLastKnown != m_isFacingLeft
+            || m_isShootingLastKnown != m_isShooting
+            || m_isSprintingLastKnown != m_isSprinting)
         {
             NG_SERVER->setStateDirty(getID(), ROBT_Pose);
         }
     }
     else
     {
-        const Move* pendingMove = InputManager::getInstance()->getPendingMove();
-        if (pendingMove)
+        if (NG_CLIENT->isPlayerIdLocal(getPlayerId()))
         {
-            if (NG_CLIENT->isPlayerIdLocal(getPlayerId()))
+            // Only interpolate when new pose has been read in
+            if ((m_iReadState & ROBT_Pose) != 0)
             {
-                if (InputManager::getInstance()->isPlayerIdLocalHost(getPlayerId()))
-                {
-                    for (Entity* entity : InstanceManager::getClientWorld()->getPlayers())
-                    {
-                        Robot* robot = static_cast<Robot*>(entity);
-                        robot->processInput(pendingMove->getInputState());
-                    }
-                    
-                    for (Entity* entity : InstanceManager::getClientWorld()->getPlayers())
-                    {
-                        Robot* robot = static_cast<Robot*>(entity);
-                        robot->updateInternal(FRAME_RATE);
-                    }
-                }
-            }
-            else
-            {
-                updateInternal(FRAME_RATE);
+                interpolateClientSidePrediction(m_velocityLastKnown, m_positionLastKnown);
             }
         }
+        else
+        {
+            playNetworkBoundSounds();
+        }
     }
+    
+    m_velocityLastKnown = b2Vec2(getVelocity().x, getVelocity().y);
+    m_positionLastKnown = b2Vec2(getPosition().x, getPosition().y);
+    m_iNumJumpsLastKnown = m_iNumJumps;
+    m_iHealthLastKnown = m_iHealth;
+    m_iNumKillsLastKnown = m_iNumKills;
+    m_wasLastKillHeadshotLastKnown = m_wasLastKillHeadshot;
+    m_isGroundedLastKnown = m_isGrounded;
+    m_isFallingLastKnown = m_isFalling;
+    m_isFacingLeftLastKnown = m_isFacingLeft;
+    m_isShootingLastKnown = m_isShooting;
+    m_isSprintingLastKnown = m_isSprinting;
 }
 
 bool Robot::shouldCollide(Entity *inEntity)
@@ -236,11 +173,6 @@ uint32_t Robot::getAllStateMask() const
 
 void Robot::read(InputMemoryBitStream& inInputStream)
 {
-    m_velocityOld = b2Vec2(getVelocity().x, getVelocity().y);
-    m_positionOld = b2Vec2(getPosition().x, getPosition().y);
-    m_iNumJumpsOld = m_iNumJumps;
-    m_isSprintingOld = m_isSprinting;
-    
     bool stateBit;
     
     m_iReadState = 0;
@@ -338,160 +270,6 @@ uint32_t Robot::write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtySta
     return writtenState;
 }
 
-void Robot::postRead()
-{
-    if (m_iReadState > 0)
-    {
-        if (NG_CLIENT->isPlayerIdLocal(getPlayerId()))
-        {
-            doClientSidePredictionForLocalRobot();
-            
-            // if this is a create packet, don't interpolate
-            if ((m_iReadState & ROBT_PlayerInfo) == 0)
-            {
-                interpolateClientSidePrediction(m_velocityOld, m_positionOld);
-            }
-        }
-        else
-        {
-            doClientSidePredictionForRemoteRobot();
-            
-            playNetworkBoundSounds(m_iNumJumpsOld, m_isSprintingOld);
-        }
-        
-        m_iReadState = 0;
-    }
-}
-
-void Robot::syncToHost()
-{
-    if (!m_isHost && m_hostBody)
-    {
-        m_hostBody->SetTransform(b2Vec2(getPosition().x, getPosition().y), m_body->GetAngle());
-        m_hostBody->SetLinearVelocity(b2Vec2(getPosition().x, getPosition().y));
-    }
-}
-
-void Robot::handleContactWithGround(Ground* ground)
-{
-    m_iNumJumps = 0;
-    m_isGrounded = true;
-    m_isFalling = false;
-    
-    if (m_isServer)
-    {
-        NG_SERVER->setStateDirty(getID(), ROBT_Pose);
-    }
-}
-
-void Robot::handleContactWithCrate(Crate* inCrate)
-{
-    handleContactWithGround(nullptr);
-}
-
-void Robot::takeDamage()
-{
-    if (m_iHealth > 0)
-    {
-        m_iHealth--;
-    }
-    
-    if (m_isServer)
-    {
-        // tell the world our health dropped
-        NG_SERVER->setStateDirty(getID(), ROBT_Pose);
-    }
-}
-
-void Robot::awardKill(bool isHeadshot)
-{
-    m_iNumKills++;
-    
-    m_wasLastKillHeadshot = isHeadshot;
-    
-    if (m_isServer)
-    {
-        // tell the world how bad ass we are
-        NG_SERVER->setStateDirty(getID(), ROBT_Pose);
-    }
-    else
-    {
-        playSound(SOUND_ID_HEADSHOT);
-    }
-}
-
-void Robot::setAddressHash(uint64_t addressHash)
-{
-    m_iAddressHash = addressHash;
-}
-
-uint64_t Robot::getAddressHash() const
-{
-    return m_iAddressHash;
-}
-
-void Robot::setPlayerId(uint8_t inPlayerId)
-{
-    m_iPlayerId = inPlayerId;
-}
-
-uint8_t Robot::getPlayerId() const
-{
-    return m_iPlayerId;
-}
-
-void Robot::setPlayerName(std::string playerName)
-{
-    m_playerName = playerName;
-}
-
-std::string& Robot::getPlayerName()
-{
-    return m_playerName;
-}
-
-uint32_t Robot::getNumKills()
-{
-    return m_iNumKills;
-}
-
-uint8_t Robot::getHealth()
-{
-    return m_iHealth;
-}
-
-bool Robot::isFacingLeft()
-{
-    return m_isFacingLeft;
-}
-
-bool Robot::isGrounded()
-{
-    return m_isGrounded;
-}
-
-bool Robot::isShooting()
-{
-    return m_isShooting;
-}
-
-bool Robot::isSprinting()
-{
-    return m_isSprinting;
-}
-
-void Robot::processMove(const Move& inMove)
-{
-    uint8_t old_m_iNumJumps = m_iNumJumps;
-    bool old_m_isSprinting = m_isSprinting;
-    
-    processInput(inMove.getInputState());
-    
-    updateInternal(FRAME_RATE);
-    
-    playNetworkBoundSounds(old_m_iNumJumps, old_m_isSprinting);
-}
-
 void Robot::processInput(IInputState* inInputState)
 {
     InputState* is = static_cast<InputState*>(inInputState);
@@ -562,8 +340,6 @@ void Robot::updateInternal(float inDeltaTime)
 {
     m_fStateTime += inDeltaTime;
     
-    stepPhysics(inDeltaTime);
-    
     if (m_isGrounded)
     {
         setAngle(0);
@@ -594,23 +370,94 @@ void Robot::updateInternal(float inDeltaTime)
         }
     }
 }
-void Robot::stepPhysics(float deltaTime)
+
+void Robot::handleContactWithGround(Ground* ground)
 {
-    if (!m_isServer)
+    m_iNumJumps = 0;
+    m_isGrounded = true;
+    m_isFalling = false;
+}
+
+void Robot::handleContactWithCrate(Crate* inCrate)
+{
+    handleContactWithGround(nullptr);
+}
+
+void Robot::takeDamage()
+{
+    if (m_iHealth > 0)
     {
-        if (!NG_CLIENT->isPlayerIdLocal(getPlayerId())
-            || !InputManager::getInstance()->isPlayerIdLocalHost(getPlayerId()))
-        {
-            return;
-        }
+        m_iHealth--;
     }
+}
+
+void Robot::awardKill(bool isHeadshot)
+{
+    m_iNumKills++;
     
-    static int32 velocityIterations = 12;
-    static int32 positionIterations = 4;
+    m_wasLastKillHeadshot = isHeadshot;
     
-    // Instruct the world to perform a single step of simulation.
-    // It is generally best to keep the time step and iterations fixed.
-    m_worldRef.Step(deltaTime, velocityIterations, positionIterations);
+    playSound(SOUND_ID_HEADSHOT);
+}
+
+void Robot::setAddressHash(uint64_t addressHash)
+{
+    m_iAddressHash = addressHash;
+}
+
+uint64_t Robot::getAddressHash() const
+{
+    return m_iAddressHash;
+}
+
+void Robot::setPlayerId(uint8_t inPlayerId)
+{
+    m_iPlayerId = inPlayerId;
+}
+
+uint8_t Robot::getPlayerId() const
+{
+    return m_iPlayerId;
+}
+
+void Robot::setPlayerName(std::string playerName)
+{
+    m_playerName = playerName;
+}
+
+std::string& Robot::getPlayerName()
+{
+    return m_playerName;
+}
+
+uint32_t Robot::getNumKills()
+{
+    return m_iNumKills;
+}
+
+uint8_t Robot::getHealth()
+{
+    return m_iHealth;
+}
+
+bool Robot::isFacingLeft()
+{
+    return m_isFacingLeft;
+}
+
+bool Robot::isGrounded()
+{
+    return m_isGrounded;
+}
+
+bool Robot::isShooting()
+{
+    return m_isShooting;
+}
+
+bool Robot::isSprinting()
+{
+    return m_isSprinting;
 }
 
 void Robot::handleShooting()
@@ -633,72 +480,14 @@ void Robot::handleShooting()
     }
 }
 
-void Robot::doClientSidePredictionForLocalRobot()
+void Robot::playNetworkBoundSounds()
 {
-    if (!NG_CLIENT->isPlayerIdLocal(getPlayerId())
-        || !InputManager::getInstance()->isPlayerIdLocalHost(getPlayerId()))
-    {
-        return;
-    }
-    
-    if ((m_iReadState & ROBT_Pose) != 0)
-    {
-        // simulate pose only if we received new pose
-        // all processed moves have been removed, so all that are left are unprocessed moves
-        // so we must apply them...
-        MoveList& moveList = InputManager::getInstance()->getMoveList();
-        
-        for (const Move& move : moveList)
-        {
-            for (Entity* entity : InstanceManager::getClientWorld()->getPlayers())
-            {
-                Robot* robot = static_cast<Robot*>(entity);
-                robot->processInput(move.getInputState());
-            }
-            
-            for (Entity* entity : InstanceManager::getClientWorld()->getPlayers())
-            {
-                Robot* robot = static_cast<Robot*>(entity);
-                robot->updateInternal(FRAME_RATE);
-            }
-        }
-    }
-}
-
-void Robot::doClientSidePredictionForRemoteRobot()
-{
-    // so what do we want to do here? need to do some kind of interpolation...
-    
-    if ((m_iReadState & ROBT_Pose) != 0)
-    {
-        // simulate movement for an additional RTT/2
-        float rtt = NG_CLIENT->getRoundTripTime() / 2;
-        
-        // break into framerate sized chunks so we don't run through walls and do crazy things...
-        while (true)
-        {
-            if (rtt < FRAME_RATE)
-            {
-                updateInternal(rtt);
-                break;
-            }
-            else
-            {
-                updateInternal(FRAME_RATE);
-                rtt -= FRAME_RATE;
-            }
-        }
-    }
-}
-
-void Robot::playNetworkBoundSounds(uint8_t old_m_iNumJumps, bool old_m_isSprinting)
-{
-    if (old_m_iNumJumps != m_iNumJumps && m_iNumJumps > 0)
+    if (m_iNumJumpsLastKnown != m_iNumJumps && m_iNumJumps > 0)
     {
         playSound(SOUND_ID_ROBOT_JUMP);
     }
     
-    if (!old_m_isSprinting && m_isSprinting)
+    if (!m_isSprintingLastKnown && m_isSprinting)
     {
         playSound(SOUND_ID_ACTIVATE_SPRINT);
     }

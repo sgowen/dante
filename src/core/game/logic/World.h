@@ -73,13 +73,13 @@ public:
     
     std::vector<Entity*>& getEntities();
     
-    b2World& getWorld(int index);
+    b2World& getWorld();
     
 private:
     std::vector<Entity*> m_players;
     std::vector<Entity*> m_entities;
-    b2World* m_world[MAX_NUM_PLAYERS_PER_SERVER]; // If server, 1 instance per connected client; otherwise, only use the first index
-    Ground* m_ground[MAX_NUM_PLAYERS_PER_SERVER];
+    b2World* m_world;
+    Ground* m_ground;
     EntityContactListener* m_entityContactListener;
     EntityContactFilter* m_entityContactFilter;
     bool m_isServer;

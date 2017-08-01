@@ -131,10 +131,7 @@ void MainEngine::update(float deltaTime)
         {
             NG_CLIENT->processIncomingPackets();
             
-            if (InstanceManager::getClientWorld())
-            {
-                InstanceManager::getClientWorld()->postRead();
-            }
+            InstanceManager::getClientWorld()->postRead();
         }
         
         InputManager::getInstance()->update();
