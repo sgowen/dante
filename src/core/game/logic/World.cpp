@@ -23,6 +23,11 @@
 #include "InstanceManager.h"
 #include "Timing.h"
 #include "Server.h"
+#include "ClientProxy.h"
+#include "MoveList.h"
+#include "InputManager.h"
+#include "NetworkManagerClient.h"
+#include "StringUtil.h"
 
 #define WORLD_CREATE_CLIENT_IMPL(name) \
 Entity* World::sClientCreate##name() \
@@ -135,11 +140,6 @@ void World::removeEntity(Entity* inEntity)
     }
 }
 
-#include "ClientProxy.h"
-#include "MoveList.h"
-#include "InputManager.h"
-#include "NetworkManagerClient.h"
-
 void World::postRead()
 {
     if (m_isServer)
@@ -156,9 +156,9 @@ void World::postRead()
         for (Entity* entity : m_players)
         {
             Robot* robot = static_cast<Robot*>(entity);
-            if (robot->needsMoveReplay())
+            if (NG_CLIENT->isPlayerIdLocal(robot->getPlayerId()))
             {
-                if (NG_CLIENT->isPlayerIdLocal(robot->getPlayerId()))
+                if (robot->needsMoveReplay())
                 {
                     needsReplay = true;
                     
@@ -182,8 +182,6 @@ void World::postRead()
         }
     }
 }
-
-#include "StringUtil.h"
 
 void World::update()
 {
