@@ -77,7 +77,7 @@ void SpacePirateChunk::update()
 
 bool SpacePirateChunk::shouldCollide(Entity *inEntity)
 {
-    return !inEntity->getRTTI().derivesFrom(Robot::rtti);
+    return !inEntity->getRTTI().derivesFrom(Robot::rtti) && !inEntity->getRTTI().derivesFrom(SpacePirateChunk::rtti);
 }
 
 void SpacePirateChunk::handleContact(Entity* inEntity)

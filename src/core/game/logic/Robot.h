@@ -54,9 +54,9 @@ public:
     
     virtual uint32_t write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState);
     
-    void postRead();
+    void processInput(IInputState* inInputState);
     
-    void syncToHost();
+    void updateInternal(float inDeltaTime);
     
     void handleContactWithGround(Ground* inGround);
     
@@ -90,6 +90,8 @@ public:
     
     bool isSprinting();
     
+    bool needsMoveReplay();
+    
 private:
     uint64_t m_iAddressHash;
     uint8_t m_iPlayerId;
@@ -116,31 +118,22 @@ private:
     bool m_isServer;
     bool m_isFirstJumpCompleted;
     
-    // Cached Values
-    b2Vec2 m_velocityOld;
-    b2Vec2 m_positionOld;
-    uint8_t m_iNumJumpsOld;
-    bool m_isSprintingOld;
-    
-    bool m_isHost;
-    b2Body* m_hostBody;
-    b2Fixture* m_hostFixture;
-    
-    void processMove(const Move& inMove);
-    
-    void processInput(IInputState* inInputState);
-    
-    void updateInternal(float inDeltaTime);
-    
-    void stepPhysics(float deltaTime);
+    // Cached Last Known Values (from previous frame)
+    b2Vec2 m_velocityLastKnown;
+    b2Vec2 m_positionLastKnown;
+    uint8_t m_iNumJumpsLastKnown;
+    uint8_t m_iHealthLastKnown;
+    uint32_t m_iNumKillsLastKnown;
+    bool m_wasLastKillHeadshotLastKnown;
+    bool m_isGroundedLastKnown;
+    bool m_isFallingLastKnown;
+    bool m_isFacingLeftLastKnown;
+    bool m_isShootingLastKnown;
+    bool m_isSprintingLastKnown;
     
     void handleShooting();
-
-    void doClientSidePredictionForLocalRobot();
     
-    void doClientSidePredictionForRemoteRobot();
-    
-    void playNetworkBoundSounds(uint8_t old_m_iNumJumps, bool old_m_isSprinting);
+    void playNetworkBoundSounds();
     
     void playSound(int soundId);
 };

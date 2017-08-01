@@ -49,6 +49,8 @@ public:
     
     void onLocalPlayerRemoved(uint8_t playerId);
     
+    std::vector<uint8_t>& getPlayerIds();
+    
     int getNumPlayers();
     
 private:

@@ -80,6 +80,16 @@ int MoveList::getMoveCount() const
     return static_cast<int>(m_moves.size());
 }
 
+Move* MoveList::getMoveAtIndex(int index)
+{
+    if (index < getMoveCount())
+    {
+        return &m_moves.at(index);
+    }
+    
+    return nullptr;
+}
+
 std::deque<Move>::const_iterator MoveList::begin() const
 {
     return m_moves.begin();
