@@ -236,6 +236,11 @@ void Projectile::initFromShooter(Robot* inRobot)
 
 void Projectile::handleContactWithSpacePirate(SpacePirate* spacePirate)
 {
+    if (!m_isServer)
+    {
+        return;
+    }
+    
     if (m_state == ProjectileState_Exploding)
     {
         return;
@@ -260,10 +265,7 @@ void Projectile::handleContactWithSpacePirate(SpacePirate* spacePirate)
         }
     }
     
-    if (m_isServer)
-    {
-        NG_SERVER->setStateDirty(getID(), PRJC_Pose);
-    }
+    NG_SERVER->setStateDirty(getID(), PRJC_Pose);
 }
 
 void Projectile::handleContactWithGround(Ground* ground)

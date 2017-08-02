@@ -247,7 +247,7 @@ void World::update()
                 Robot* robot = static_cast<Robot*>(entity);
                 if (NG_CLIENT->isPlayerIdLocal(robot->getPlayerId()))
                 {
-                    robot->processInput(pendingMove->getInputState());
+                    robot->processInput(pendingMove->getInputState(), true);
                 }
             }
             

@@ -56,7 +56,7 @@ public:
     
     void postRead();
     
-    void processInput(IInputState* inInputState);
+    void processInput(IInputState* inInputState, bool isPending = false);
     
     void updateInternal(float inDeltaTime);
     

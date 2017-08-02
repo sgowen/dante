@@ -127,6 +127,14 @@ void Robot::update()
         }
     }
     
+    if (NG_CLIENT->isPlayerIdLocal(getPlayerId()))
+    {
+        if (m_iNumKills > m_iNumKillsLastKnown && m_wasLastKillHeadshot)
+        {
+            playSound(SOUND_ID_HEADSHOT);
+        }
+    }
+    
     m_velocityLastKnown = b2Vec2(getVelocity().x, getVelocity().y);
     m_positionLastKnown = b2Vec2(getPosition().x, getPosition().y);
     m_iNumJumpsLastKnown = m_iNumJumps;
@@ -287,7 +295,7 @@ void Robot::postRead()
     m_iReadState = 0;
 }
 
-void Robot::processInput(IInputState* inInputState)
+void Robot::processInput(IInputState* inInputState, bool isPending)
 {
     InputState* is = static_cast<InputState*>(inInputState);
     uint8_t playerId = getPlayerId();
@@ -302,6 +310,14 @@ void Robot::processInput(IInputState* inInputState)
     velocity.Set(inputState->getDesiredRightAmount() * m_fSpeed, getVelocity().y);
     
     m_isFacingLeft = velocity.x < 0 ? true : velocity.x > 0 ? false : m_isFacingLeft;
+    
+    if (!m_isSprinting && inputState->isSprinting())
+    {
+        if (isPending)
+        {
+            playSound(SOUND_ID_ACTIVATE_SPRINT);
+        }
+    }
     
     m_isSprinting = inputState->isSprinting();
     
@@ -321,6 +337,11 @@ void Robot::processInput(IInputState* inInputState)
             m_iNumJumps = 1;
             
             velocity.Set(velocity.x, m_fJumpSpeed);
+            
+            if (isPending)
+            {
+                playSound(SOUND_ID_ROBOT_JUMP);
+            }
         }
         else if (m_iNumJumps == 1 && m_isFirstJumpCompleted)
         {
@@ -328,6 +349,11 @@ void Robot::processInput(IInputState* inInputState)
             m_iNumJumps = 2;
             
             velocity.Set(velocity.x, m_fJumpSpeed - 3);
+            
+            if (isPending)
+            {
+                playSound(SOUND_ID_ROBOT_JUMP);
+            }
         }
     }
     else
@@ -396,11 +422,14 @@ void Robot::takeDamage()
 
 void Robot::awardKill(bool isHeadshot)
 {
+    if (!m_isServer)
+    {
+        return;
+    }
+    
     m_iNumKills++;
     
     m_wasLastKillHeadshot = isHeadshot;
-    
-    playSound(SOUND_ID_HEADSHOT);
 }
 
 void Robot::setAddressHash(uint64_t addressHash)
