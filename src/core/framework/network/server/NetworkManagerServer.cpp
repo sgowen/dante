@@ -251,7 +251,7 @@ void NetworkManagerServer::handlePacketFromNewClient(InputMemoryBitStream& inInp
             }
         }
         
-        ClientProxy* newClientProxy = new ClientProxy(inFromAddress, name, m_iNextPlayerId++);
+        ClientProxy* newClientProxy = new ClientProxy(inFromAddress, name, m_iNextPlayerId);
         m_addressHashToClientMap[inFromAddress->getHash()] = newClientProxy;
         m_playerIDToClientMap[newClientProxy->getPlayerId()] = newClientProxy;
         
@@ -270,6 +270,8 @@ void NetworkManagerServer::handlePacketFromNewClient(InputMemoryBitStream& inInp
             Entity* pe = pair.second;
             newClientProxy->getReplicationManagerServer().replicateCreate(pair.first, pe->getAllStateMask());
         }
+        
+        updateNextPlayerId();
     }
     else
     {
@@ -384,7 +386,7 @@ void NetworkManagerServer::handleAddLocalPlayerPacket(ClientProxy* inClientProxy
         {
             std::string localPlayerName = StringUtil::format("%s(%d)", inClientProxy->getName().c_str(), requestedIndex);
             
-            int playerId = m_iNextPlayerId++;
+            int playerId = m_iNextPlayerId;
             
             inClientProxy->onLocalPlayerAdded(playerId);
             
@@ -392,6 +394,8 @@ void NetworkManagerServer::handleAddLocalPlayerPacket(ClientProxy* inClientProxy
             
             // tell the server about this client
             m_handleNewClientFunc(playerId, localPlayerName);
+            
+            updateNextPlayerId();
         }
         
         // and welcome the new local player...
@@ -467,15 +471,21 @@ void NetworkManagerServer::handleClientDisconnected(ClientProxy* inClientProxy)
 
 void NetworkManagerServer::updateNextPlayerId()
 {
+    LOG("updateNextPlayerId");
+    
     // Find the next available Player ID
     m_iNextPlayerId = 1;
-    for (auto const &entry : m_playerIDToClientMap)
-    {
-        if (entry.first == m_iNextPlayerId)
+    for (int i = 0; i < MAX_NUM_PLAYERS_PER_SERVER; ++i) {
+        for (auto const &entry : m_playerIDToClientMap)
         {
-            ++m_iNextPlayerId;
+            if (entry.first == m_iNextPlayerId)
+            {
+                ++m_iNextPlayerId;
+            }
         }
     }
+    
+    LOG("m_iNextPlayerId: %d", m_iNextPlayerId);
 }
 
 NetworkManagerServer::NetworkManagerServer(IServerHelper* inServerHelper, HandleNewClientFunc inHandleNewClientFunc, HandleLostClientFunc inHandleLostClientFunc, InputStateCreationFunc inInputStateCreationFunc) :
