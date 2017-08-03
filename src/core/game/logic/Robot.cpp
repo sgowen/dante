@@ -112,6 +112,20 @@ void Robot::update()
             NG_SERVER->setStateDirty(getID(), ROBT_Pose);
         }
     }
+    else
+    {
+        if (NG_CLIENT->isPlayerIdLocal(getPlayerId()))
+        {
+            if (m_iNumKills > m_iNumKillsLastKnown && m_wasLastKillHeadshot)
+            {
+                playSound(SOUND_ID_HEADSHOT);
+            }
+        }
+        else
+        {
+            playNetworkBoundSounds();
+        }
+    }
     
     if (m_iHealth == 0 && !isRequestingDeletion())
     {
@@ -124,14 +138,6 @@ void Robot::update()
         if (m_isServer)
         {
             Server::sHandleNewClient(m_iPlayerId, m_playerName);
-        }
-    }
-    
-    if (NG_CLIENT->isPlayerIdLocal(getPlayerId()))
-    {
-        if (m_iNumKills > m_iNumKillsLastKnown && m_wasLastKillHeadshot)
-        {
-            playSound(SOUND_ID_HEADSHOT);
         }
     }
     
@@ -286,10 +292,6 @@ void Robot::postRead()
         {
             interpolateClientSidePrediction(m_velocityLastKnown, m_positionLastKnown);
         }
-    }
-    else
-    {
-        playNetworkBoundSounds();
     }
     
     m_iReadState = 0;
