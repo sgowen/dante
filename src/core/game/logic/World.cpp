@@ -387,8 +387,8 @@ b2World& World::getWorld()
 
 void World::stepPhysics(float deltaTime)
 {
-    static int32 velocityIterations = 12;
-    static int32 positionIterations = 4;
+    static int32 velocityIterations = 6;
+    static int32 positionIterations = 2;
     
     // Instruct the world to perform a single step of simulation.
     // It is generally best to keep the time step and iterations fixed.
@@ -397,21 +397,30 @@ void World::stepPhysics(float deltaTime)
 
 void EntityContactListener::BeginContact(b2Contact* contact)
 {
-    Entity* entityA = static_cast<Entity*>(contact->GetFixtureA()->GetBody()->GetUserData());
+    b2Fixture* fixtureA = contact->GetFixtureA();
+    b2Fixture* fixtureB = contact->GetFixtureB();
     
-    Entity* entityB = static_cast<Entity*>(contact->GetFixtureB()->GetBody()->GetUserData());
+    Entity* entityA = static_cast<Entity*>(fixtureA->GetBody()->GetUserData());
+    Entity* entityB = static_cast<Entity*>(fixtureB->GetBody()->GetUserData());
     
-    if (entityA && entityB)
-    {
-        entityA->handleContact(entityB);
-    }
+    entityA->handleBeginContact(entityB, fixtureA, fixtureB);
+}
+
+void EntityContactListener::EndContact(b2Contact* contact)
+{
+    b2Fixture* fixtureA = contact->GetFixtureA();
+    b2Fixture* fixtureB = contact->GetFixtureB();
+    
+    Entity* entityA = static_cast<Entity*>(fixtureA->GetBody()->GetUserData());
+    Entity* entityB = static_cast<Entity*>(fixtureB->GetBody()->GetUserData());
+    
+    entityA->handleEndContact(entityB, fixtureA, fixtureB);
 }
 
 bool EntityContactFilter::ShouldCollide(b2Fixture* fixtureA, b2Fixture* fixtureB)
 {
     Entity* entityA = static_cast<Entity*>(fixtureA->GetUserData());
-    
     Entity* entityB = static_cast<Entity*>(fixtureB->GetUserData());
     
-    return entityA->shouldCollide(entityB);
+    return entityA->shouldCollide(entityB, fixtureA, fixtureB);
 }

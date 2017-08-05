@@ -36,8 +36,9 @@ public:
     
     enum ProjectileState
     {
-        ProjectileState_Active = 1,
-        ProjectileState_Exploding = 2
+        ProjectileState_Waiting = 1,
+        ProjectileState_Active = 2,
+        ProjectileState_Exploding = 3
     };
     
     Projectile(b2World& world, bool isServer);
@@ -46,9 +47,11 @@ public:
     
     virtual void update();
     
-    virtual bool shouldCollide(Entity* inEntity);
+    virtual bool shouldCollide(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB);
     
-    virtual void handleContact(Entity* inEntity);
+    virtual void handleBeginContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB);
+    
+    virtual void handleEndContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB);
     
     virtual uint32_t getAllStateMask() const;
     
@@ -58,11 +61,11 @@ public:
     
     void initFromShooter(Robot* inRobot);
     
-    void handleContactWithSpacePirate(SpacePirate* spacePirate);
+    void handleBeginContactWithSpacePirate(SpacePirate* spacePirate);
     
-    void handleContactWithGround(Ground* inGround);
+    void handleBeginContactWithGround(Ground* inGround);
     
-    void handleContactWithCrate(Crate* inCrate);
+    void handleBeginContactWithCrate(Crate* inCrate);
     
     ProjectileState getState();
     

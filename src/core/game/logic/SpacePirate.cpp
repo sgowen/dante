@@ -43,8 +43,6 @@ m_fSpeed(0.0),
 m_iHealth(8),
 m_fStartingHealth(8),
 m_isFacingLeft(false),
-m_isGrounded(false),
-m_isFalling(false),
 m_isJumping(false),
 m_fTimeForNextJump(0.0f),
 m_fJumpSpeed(7.0f)
@@ -59,6 +57,7 @@ EntityDef SpacePirate::constructEntityDef()
     
     ret.isStaticBody = false;
     ret.restitution = 0.1f;
+    ret.isCharacter = true;
     
     return ret;
 }
@@ -69,15 +68,11 @@ void SpacePirate::update()
     {
         b2Vec2 oldVelocity = b2Vec2(getVelocity().x, getVelocity().y);
         bool old_isFacingLeft = m_isFacingLeft;
-        bool old_isGrounded = m_isGrounded;
-        bool old_isFalling = m_isFalling;
         
-        updateInternal(Timing::getInstance()->getDeltaTime());
+        updateInternal(FRAME_RATE);
         
         if (!areBox2DVectorsEqual(oldVelocity, getVelocity())
-            || old_isFacingLeft != m_isFacingLeft
-            || old_isGrounded != m_isGrounded
-            || old_isFalling != m_isFalling)
+            || old_isFacingLeft != m_isFacingLeft)
         {
             NG_SERVER->setStateDirty(getID(), SPCP_Pose);
         }
@@ -86,40 +81,60 @@ void SpacePirate::update()
     }
     else
     {
-        updateInternal(Timing::getInstance()->getDeltaTime());
+        updateInternal(FRAME_RATE);
     }
 }
 
-bool SpacePirate::shouldCollide(Entity *inEntity)
+bool SpacePirate::shouldCollide(Entity *inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB)
 {
-    return inEntity->getRTTI().derivesFrom(Robot::rtti) || inEntity->getRTTI().derivesFrom(Projectile::rtti) || inEntity->getRTTI().derivesFrom(Crate::rtti);
+    if (inFixtureA == m_footSensorFixture)
+    {
+        return inEntity->getRTTI().derivesFrom(Ground::rtti)
+        || inEntity->getRTTI().derivesFrom(Crate::rtti);
+    }
+    
+    return inEntity->getRTTI().derivesFrom(Robot::rtti)
+    || inEntity->getRTTI().derivesFrom(Projectile::rtti)
+    || inEntity->getRTTI().derivesFrom(Ground::rtti)
+    || inEntity->getRTTI().derivesFrom(Crate::rtti);
 }
 
-void SpacePirate::handleContact(Entity* inEntity)
+void SpacePirate::handleBeginContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB)
 {
-    if (inEntity != this
-        && !inEntity->isRequestingDeletion())
+    if (inFixtureA == m_footSensorFixture)
     {
-        if (inEntity->getRTTI().derivesFrom(Robot::rtti))
+        m_isJumping = false;
+        
+        handleBeginFootContact(inEntity);
+        
+        return;
+    }
+    
+    if (inEntity->getRTTI().derivesFrom(Robot::rtti))
+    {
+        Robot* robot = static_cast<Robot*>(inEntity);
+        
+        handleBeginContactWithRobot(robot);
+    }
+    else if (inEntity->getRTTI().derivesFrom(Projectile::rtti))
+    {
+        Projectile* projectile = static_cast<Projectile*>(inEntity);
+        
+        projectile->handleBeginContactWithSpacePirate(this);
+    }
+}
+
+void SpacePirate::handleEndContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB)
+{
+    if (inFixtureA == m_footSensorFixture)
+    {
+        if (inEntity->getRTTI().derivesFrom(Ground::rtti)
+            || inEntity->getRTTI().derivesFrom(Crate::rtti))
         {
-            Robot* robot = static_cast<Robot*>(inEntity);
-            
-            handleContactWithRobot(robot);
+            handleEndFootContact(inEntity);
         }
-        else if (inEntity->getRTTI().derivesFrom(Ground::rtti))
-        {
-            handleContactWithGround(nullptr);
-        }
-        else if (inEntity->getRTTI().derivesFrom(Projectile::rtti))
-        {
-            Projectile* projectile = static_cast<Projectile*>(inEntity);
-            
-            projectile->handleContactWithSpacePirate(this);
-        }
-        else if (inEntity->getRTTI().derivesFrom(Crate::rtti))
-        {
-            handleContactWithCrate(nullptr);
-        }
+        
+        return;
     }
 }
 
@@ -149,7 +164,6 @@ void SpacePirate::read(InputMemoryBitStream& inInputStream)
         
         inInputStream.read(m_isFacingLeft);
         inInputStream.read(m_isJumping);
-        inInputStream.read(m_isGrounded);
         
         readState |= SPCP_Pose;
     }
@@ -193,7 +207,6 @@ uint32_t SpacePirate::write(OutputMemoryBitStream& inOutputStream, uint32_t inDi
         
         inOutputStream.write((bool)m_isFacingLeft);
         inOutputStream.write((bool)m_isJumping);
-        inOutputStream.write((bool)m_isGrounded);
         
         writtenState |= SPCP_Pose;
     }
@@ -279,27 +292,10 @@ void SpacePirate::init(float x, float y, float speed, int scale, uint8_t health)
     m_fStartingHealth = m_iHealth;
 }
 
-void SpacePirate::handleContactWithRobot(Robot* robot)
+void SpacePirate::handleBeginContactWithRobot(Robot* robot)
 {
     // Deal Damage to player robot
     robot->takeDamage();
-}
-
-void SpacePirate::handleContactWithGround(Ground* ground)
-{
-    m_isGrounded = true;
-    m_isFalling = false;
-    m_isJumping = false;
-    
-    if (m_isServer)
-    {
-        NG_SERVER->setStateDirty(getID(), SPCP_Pose);
-    }
-}
-
-void SpacePirate::handleContactWithCrate(Crate* inCrate)
-{
-    handleContactWithGround(nullptr);
 }
 
 void SpacePirate::takeDamage(b2Vec2 force, bool isHeadshot)
@@ -338,14 +334,13 @@ void SpacePirate::updateInternal(float inDeltaTime)
 {
     m_fStateTime += inDeltaTime;
     
-    if (m_isGrounded)
+    if (isGrounded())
     {
         setAngle(0);
     }
     
-    if (getVelocity().y < 0 && !m_isFalling)
+    if (getVelocity().y < 0 && !isFalling())
     {
-        m_isFalling = true;
         m_fStateTime = 0;
     }
     
@@ -377,14 +372,12 @@ void SpacePirate::updateInternal(float inDeltaTime)
     
     if (Timing::getInstance()->getFrameStartTime() > m_fTimeForNextJump)
     {
-        if (m_isGrounded)
+        if (isGrounded())
         {
             m_fTimeForNextJump = Timing::getInstance()->getFrameStartTime();
             m_fTimeForNextJump += (rand() % 100) * 0.1f + 1.0f;
             
             m_fStateTime = 0;
-            m_isGrounded = false;
-            m_isFalling = false;
             m_isJumping = true;
             
             setVelocity(b2Vec2(getVelocity().x, m_fJumpSpeed));
@@ -392,8 +385,9 @@ void SpacePirate::updateInternal(float inDeltaTime)
     }
     
     bool targetFound = false;
+    
     float shortestDistance = GAME_WIDTH;
-    std::vector<Entity*> players = InstanceManager::getClientWorld()->getPlayers();
+    std::vector<Entity*> players = InstanceManager::getServerWorld()->getPlayers();
     for (Entity* entity : players)
     {
         Robot* robot = static_cast<Robot*>(entity);

@@ -61,6 +61,19 @@ public:
         }
     }
     
+    template<typename K, typename T>
+    static void cleanUpMapOfEntityPointers(std::unordered_map<K, T*>& items)
+    {
+        for (typename std::unordered_map<K, T*>::iterator i = items.begin(); i != items.end(); )
+        {
+            (i->second)->onDeletion();
+            
+            delete i->second;
+            
+            i = items.erase(i);
+        }
+    }
+    
 private:
     // ctor, copy ctor, and assignment should be private in a Singleton
     NGSTDUtil();

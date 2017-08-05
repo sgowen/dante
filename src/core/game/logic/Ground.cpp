@@ -36,32 +36,40 @@ void Ground::update()
     // Empty
 }
 
-bool Ground::shouldCollide(Entity *inEntity)
+bool Ground::shouldCollide(Entity *inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB)
 {
     return true;
 }
 
-void Ground::handleContact(Entity* inEntity)
+void Ground::handleBeginContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB)
 {
-    if (inEntity != this
-        && !inEntity->isRequestingDeletion())
+    if (inEntity->getRTTI().derivesFrom(Robot::rtti))
     {
-        if (inEntity->getRTTI().derivesFrom(Robot::rtti))
-        {
-            (static_cast<Robot*>(inEntity))->handleContactWithGround(this);
-        }
-        else if (inEntity->getRTTI().derivesFrom(Projectile::rtti))
-        {
-            (static_cast<Projectile*>(inEntity))->handleContactWithGround(this);
-        }
-        else if (inEntity->getRTTI().derivesFrom(SpacePirate::rtti))
-        {
-            (static_cast<SpacePirate*>(inEntity))->handleContactWithGround(this);
-        }
-        else if (inEntity->getRTTI().derivesFrom(Crate::rtti))
-        {
-            (static_cast<Crate*>(inEntity))->handleContactWithGround(this);
-        }
+        (static_cast<Robot*>(inEntity))->handleBeginContact(this, inFixtureB, inFixtureA);
+    }
+    else if (inEntity->getRTTI().derivesFrom(Projectile::rtti))
+    {
+        (static_cast<Projectile*>(inEntity))->handleBeginContactWithGround(this);
+    }
+    else if (inEntity->getRTTI().derivesFrom(SpacePirate::rtti))
+    {
+        (static_cast<SpacePirate*>(inEntity))->handleBeginContact(this, inFixtureB, inFixtureA);
+    }
+    else if (inEntity->getRTTI().derivesFrom(Crate::rtti))
+    {
+        (static_cast<Crate*>(inEntity))->handleBeginContactWithGround(this);
+    }
+}
+
+void Ground::handleEndContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB)
+{
+    if (inEntity->getRTTI().derivesFrom(Robot::rtti))
+    {
+        (static_cast<Robot*>(inEntity))->handleEndContact(this, inFixtureB, inFixtureA);
+    }
+    else if (inEntity->getRTTI().derivesFrom(SpacePirate::rtti))
+    {
+        (static_cast<SpacePirate*>(inEntity))->handleEndContact(this, inFixtureB, inFixtureA);
     }
 }
 

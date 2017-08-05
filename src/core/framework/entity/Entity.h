@@ -20,6 +20,7 @@ class b2World;
 struct b2Vec2;
 class b2Body;
 class b2Fixture;
+class b2Contact;
 class OutputMemoryBitStream;
 class InputMemoryBitStream;
 
@@ -41,6 +42,7 @@ struct EntityDef
         fixedRotation = true;
         bullet = false;
         isSensor = false;
+        isCharacter = false;
     }
     
     float restitution;
@@ -49,6 +51,7 @@ struct EntityDef
     bool fixedRotation;
     bool bullet;
     bool isSensor;
+    bool isCharacter;
 };
 
 class Entity
@@ -66,15 +69,23 @@ public:
     
     virtual void update() = 0;
     
-    virtual bool shouldCollide(Entity* inEntity) = 0;
+    virtual bool shouldCollide(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB) = 0;
     
-    virtual void handleContact(Entity* inEntity) = 0;
+    virtual void handleBeginContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB) = 0;
+    
+    virtual void handleEndContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB) = 0;
     
     virtual uint32_t getAllStateMask() const = 0;
     
     virtual void read(InputMemoryBitStream& inInputStream) = 0;
     
     virtual uint32_t write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState) = 0;
+    
+    void onDeletion();
+    
+    void handleBeginFootContact(Entity* inEntity);
+    
+    void handleEndFootContact(Entity* inEntity);
     
     void setStateTime(float stateTime);
     
@@ -110,6 +121,10 @@ public:
     
     int getID();
     
+    bool isGrounded();
+    
+    bool isFalling();
+    
     void requestDeletion();
     
     bool isRequestingDeletion();
@@ -118,6 +133,7 @@ protected:
     b2World& m_worldRef;
     b2Body* m_body;
     b2Fixture* m_fixture;
+    b2Fixture* m_footSensorFixture;
     float m_fStateTime;
     Color m_color;
     float m_fWidth;
@@ -131,6 +147,7 @@ private:
     float m_fTimeVelocityBecameOutOfSync;
     float m_fTimePositionBecameOutOfSync;
     int m_iID;
+    int m_iNumGroundContacts;
     bool m_isRequestingDeletion;
     
     static int getUniqueEntityID();

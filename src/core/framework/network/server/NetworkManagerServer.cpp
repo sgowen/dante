@@ -357,9 +357,9 @@ void NetworkManagerServer::writeLastMoveTimestampIfDirty(OutputMemoryBitStream& 
 
 void NetworkManagerServer::handleInputPacket(ClientProxy* inClientProxy, InputMemoryBitStream& inInputStream)
 {
-    uint32_t moveCount = 0;
+    uint8_t moveCount = 0;
     Move move = Move(m_inputStateCreationFunc());
-    inInputStream.read(moveCount, 4);
+    inInputStream.read(moveCount, 2);
     
     for (; moveCount > 0; --moveCount)
     {

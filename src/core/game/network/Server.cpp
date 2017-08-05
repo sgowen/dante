@@ -221,7 +221,7 @@ void Server::respawnEnemiesIfNecessary()
 {
     if (m_isSpawningEnemies && !InstanceManager::getServerWorld()->hasSpacePirates())
     {
-        m_fStateTimeNoEnemies += Timing::getInstance()->getDeltaTime();
+        m_fStateTimeNoEnemies += FRAME_RATE;
         if (m_fStateTimeNoEnemies > 10)
         {
             srand(static_cast<unsigned>(time(0)));

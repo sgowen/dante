@@ -50,8 +50,6 @@ m_iNumJumps(0),
 m_iHealth(25),
 m_iNumKills(0),
 m_wasLastKillHeadshot(false),
-m_isGrounded(false),
-m_isFalling(false),
 m_isFacingLeft(false),
 m_isShooting(false),
 m_isSprinting(false),
@@ -67,8 +65,6 @@ m_iNumJumpsLastKnown(0),
 m_iHealthLastKnown(25),
 m_iNumKillsLastKnown(0),
 m_wasLastKillHeadshotLastKnown(false),
-m_isGroundedLastKnown(false),
-m_isFallingLastKnown(false),
 m_isFacingLeftLastKnown(false),
 m_isShootingLastKnown(false),
 m_isSprintingLastKnown(false)
@@ -87,6 +83,7 @@ EntityDef Robot::constructEntityDef()
     
     ret.isStaticBody = false;
     ret.restitution = 0.1f;
+    ret.isCharacter = true;
     
     return ret;
 }
@@ -103,8 +100,6 @@ void Robot::update()
             || m_iHealthLastKnown != m_iHealth
             || m_iNumKillsLastKnown != m_iNumKills
             || m_wasLastKillHeadshotLastKnown != m_wasLastKillHeadshot
-            || m_isGroundedLastKnown != m_isGrounded
-            || m_isFallingLastKnown != m_isFalling
             || m_isFacingLeftLastKnown != m_isFacingLeft
             || m_isShootingLastKnown != m_isShooting
             || m_isSprintingLastKnown != m_isSprinting)
@@ -123,7 +118,7 @@ void Robot::update()
         }
         else
         {
-            playNetworkBoundSounds();
+            playNetworkBoundSounds(m_iNumJumpsLastKnown, m_isSprintingLastKnown);
         }
     }
     
@@ -147,35 +142,52 @@ void Robot::update()
     m_iHealthLastKnown = m_iHealth;
     m_iNumKillsLastKnown = m_iNumKills;
     m_wasLastKillHeadshotLastKnown = m_wasLastKillHeadshot;
-    m_isGroundedLastKnown = m_isGrounded;
-    m_isFallingLastKnown = m_isFalling;
     m_isFacingLeftLastKnown = m_isFacingLeft;
     m_isShootingLastKnown = m_isShooting;
     m_isSprintingLastKnown = m_isSprinting;
 }
 
-bool Robot::shouldCollide(Entity *inEntity)
+bool Robot::shouldCollide(Entity *inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB)
 {
-    return inEntity->getRTTI().derivesFrom(SpacePirate::rtti) || inEntity->getRTTI().derivesFrom(Crate::rtti);
+    if (inFixtureA == m_footSensorFixture)
+    {
+        return inEntity->getRTTI().derivesFrom(Ground::rtti)
+        || inEntity->getRTTI().derivesFrom(Crate::rtti);
+    }
+    
+    return inEntity->getRTTI().derivesFrom(SpacePirate::rtti)
+    || inEntity->getRTTI().derivesFrom(Ground::rtti)
+    || inEntity->getRTTI().derivesFrom(Crate::rtti);
 }
 
-void Robot::handleContact(Entity* inEntity)
+void Robot::handleBeginContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB)
 {
-    if (inEntity != this
-        && !inEntity->isRequestingDeletion())
+    if (inFixtureA == m_footSensorFixture)
     {
-        if (inEntity->getRTTI().derivesFrom(SpacePirate::rtti))
+        m_iNumJumps = 0;
+        
+        handleBeginFootContact(inEntity);
+        
+        return;
+    }
+    
+    if (inEntity->getRTTI().derivesFrom(SpacePirate::rtti))
+    {
+        (static_cast<SpacePirate*>(inEntity))->handleBeginContactWithRobot(this);
+    }
+}
+
+void Robot::handleEndContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB)
+{
+    if (inFixtureA == m_footSensorFixture)
+    {
+        if (inEntity->getRTTI().derivesFrom(Ground::rtti)
+            || inEntity->getRTTI().derivesFrom(Crate::rtti))
         {
-            (static_cast<SpacePirate*>(inEntity))->handleContactWithRobot(this);
+            handleEndFootContact(inEntity);
         }
-        else if (inEntity->getRTTI().derivesFrom(Ground::rtti))
-        {
-            handleContactWithGround(nullptr);
-        }
-        else if (inEntity->getRTTI().derivesFrom(Crate::rtti))
-        {
-            handleContactWithCrate(nullptr);
-        }
+        
+        return;
     }
 }
 
@@ -221,8 +233,6 @@ void Robot::read(InputMemoryBitStream& inInputStream)
         inInputStream.read(m_iNumKills);
         inInputStream.read(m_wasLastKillHeadshot);
         
-        inInputStream.read(m_isGrounded);
-        inInputStream.read(m_isFalling);
         inInputStream.read(m_isFacingLeft);
         inInputStream.read(m_isShooting);
         inInputStream.read(m_isSprinting);
@@ -267,8 +277,6 @@ uint32_t Robot::write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtySta
         inOutputStream.write(m_iNumKills);
         inOutputStream.write((bool)m_wasLastKillHeadshot);
         
-        inOutputStream.write((bool)m_isGrounded);
-        inOutputStream.write((bool)m_isFalling);
         inOutputStream.write((bool)m_isFacingLeft);
         inOutputStream.write((bool)m_isShooting);
         inOutputStream.write((bool)m_isSprinting);
@@ -307,19 +315,14 @@ void Robot::processInput(IInputState* inInputState, bool isPending)
         return;
     }
     
+    int numJumpsLastKnown = m_iNumJumps;
+    bool isSprintingLastKnown = m_isSprinting;
+    
     b2Vec2 velocity = b2Vec2(getVelocity().x, getVelocity().y);
     
     velocity.Set(inputState->getDesiredRightAmount() * m_fSpeed, getVelocity().y);
     
     m_isFacingLeft = velocity.x < 0 ? true : velocity.x > 0 ? false : m_isFacingLeft;
-    
-    if (!m_isSprinting && inputState->isSprinting())
-    {
-        if (isPending)
-        {
-            playSound(SOUND_ID_ACTIVATE_SPRINT);
-        }
-    }
     
     m_isSprinting = inputState->isSprinting();
     
@@ -330,20 +333,13 @@ void Robot::processInput(IInputState* inInputState, bool isPending)
     
     if (inputState->isJumping())
     {
-        if (m_isGrounded && areFloatsPracticallyEqual(getAngle(), 0))
+        if (isGrounded() && areFloatsPracticallyEqual(getAngle(), 0))
         {
             m_fStateTime = 0;
-            m_isGrounded = false;
-            m_isFalling = false;
             m_isFirstJumpCompleted = false;
             m_iNumJumps = 1;
             
             velocity.Set(velocity.x, m_fJumpSpeed);
-            
-            if (isPending)
-            {
-                playSound(SOUND_ID_ROBOT_JUMP);
-            }
         }
         else if (m_iNumJumps == 1 && m_isFirstJumpCompleted)
         {
@@ -351,11 +347,6 @@ void Robot::processInput(IInputState* inInputState, bool isPending)
             m_iNumJumps = 2;
             
             velocity.Set(velocity.x, m_fJumpSpeed - 3);
-            
-            if (isPending)
-            {
-                playSound(SOUND_ID_ROBOT_JUMP);
-            }
         }
     }
     else
@@ -379,20 +370,24 @@ void Robot::processInput(IInputState* inInputState, bool isPending)
     m_isShooting = inputState->isShooting();
     
     setVelocity(velocity);
+    
+    if (isPending)
+    {
+        playNetworkBoundSounds(numJumpsLastKnown, isSprintingLastKnown);
+    }
 }
 
 void Robot::updateInternal(float inDeltaTime)
 {
     m_fStateTime += inDeltaTime;
     
-    if (m_isGrounded)
+    if (isGrounded())
     {
         setAngle(0);
     }
     
-    if (getVelocity().y < 0 && !m_isFalling && m_iNumJumps > 0)
+    if (getVelocity().y < 0 && !isFalling() && m_iNumJumps > 0)
     {
-        m_isFalling = true;
         m_fStateTime = 0;
     }
     
@@ -400,18 +395,6 @@ void Robot::updateInternal(float inDeltaTime)
     {
         m_iHealth = 0;
     }
-}
-
-void Robot::handleContactWithGround(Ground* ground)
-{
-    m_iNumJumps = 0;
-    m_isGrounded = true;
-    m_isFalling = false;
-}
-
-void Robot::handleContactWithCrate(Crate* inCrate)
-{
-    handleContactWithGround(nullptr);
 }
 
 void Robot::takeDamage()
@@ -479,11 +462,6 @@ bool Robot::isFacingLeft()
     return m_isFacingLeft;
 }
 
-bool Robot::isGrounded()
-{
-    return m_isGrounded;
-}
-
 bool Robot::isShooting()
 {
     return m_isShooting;
@@ -511,7 +489,7 @@ void Robot::handleShooting()
     if (m_isShooting && time > m_fTimeOfNextShot)
     {
         // not exact, but okay
-        m_fTimeOfNextShot = time + 0.05f;
+        m_fTimeOfNextShot = time + FRAME_RATE * 4;
         
         // fire!
         Projectile* projectile = static_cast<Projectile*>(SERVER_ENTITY_REG->createEntity(NW_TYPE_Projectile));
@@ -519,14 +497,14 @@ void Robot::handleShooting()
     }
 }
 
-void Robot::playNetworkBoundSounds()
+void Robot::playNetworkBoundSounds(int numJumpsLastKnown, bool isSprintingLastKnown)
 {
-    if (m_iNumJumpsLastKnown != m_iNumJumps && m_iNumJumps > 0)
+    if (numJumpsLastKnown != m_iNumJumps && m_iNumJumps > 0)
     {
         playSound(SOUND_ID_ROBOT_JUMP);
     }
     
-    if (!m_isSprintingLastKnown && m_isSprinting)
+    if (!isSprintingLastKnown && m_isSprinting)
     {
         playSound(SOUND_ID_ACTIVATE_SPRINT);
     }

@@ -274,11 +274,8 @@ void MainRenderer::renderEntities(World* world, bool isServer)
         Color c = r->getColor();
         if (r->isSprinting())
         {
-            c = Color();
-            c.red = (rand() % 100) * 0.01f;
-            c.green = (rand() % 100) * 0.01f;
-            c.blue = (rand() % 100) * 0.01f;
-            c.alpha = 0.75f;
+            c = Color(c.red, c.green, c.blue, c.alpha);
+            c.alpha = (rand() % 50) * 0.01f + 0.25f;
         }
         
         bool isMoving = r->getVelocity().x < -0.5f || r->getVelocity().x > 0.5f;

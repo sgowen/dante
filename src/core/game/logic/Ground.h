@@ -28,9 +28,11 @@ public:
     
     virtual void update();
     
-    virtual bool shouldCollide(Entity* inEntity);
+    virtual bool shouldCollide(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB);
     
-    virtual void handleContact(Entity* inEntity);
+    virtual void handleBeginContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB);
+    
+    virtual void handleEndContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB);
     
     virtual uint32_t getAllStateMask() const;
     

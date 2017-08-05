@@ -65,32 +65,45 @@ void Crate::update()
     }
 }
 
-bool Crate::shouldCollide(Entity *inEntity)
+bool Crate::shouldCollide(Entity *inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB)
 {
+    if (inEntity->getRTTI().derivesFrom(Projectile::rtti))
+    {
+        return (static_cast<Projectile*>(inEntity))->getState() == Projectile::ProjectileState_Active;
+    }
+    
     return true;
 }
 
-void Crate::handleContact(Entity* inEntity)
+void Crate::handleBeginContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB)
 {
-    if (inEntity != this
-        && !inEntity->isRequestingDeletion())
+    if (inEntity->getRTTI().derivesFrom(Robot::rtti))
     {
-        if (inEntity->getRTTI().derivesFrom(Robot::rtti))
-        {
-            (static_cast<Robot*>(inEntity))->handleContactWithCrate(this);
-        }
-        else if (inEntity->getRTTI().derivesFrom(Projectile::rtti))
-        {
-            (static_cast<Projectile*>(inEntity))->handleContactWithCrate(this);
-        }
-        else if (inEntity->getRTTI().derivesFrom(SpacePirate::rtti))
-        {
-            (static_cast<SpacePirate*>(inEntity))->handleContactWithCrate(this);
-        }
-        else if (inEntity->getRTTI().derivesFrom(Ground::rtti))
-        {
-            handleContactWithGround(nullptr);
-        }
+        (static_cast<Robot*>(inEntity))->handleBeginContact(this, inFixtureB, inFixtureA);
+    }
+    else if (inEntity->getRTTI().derivesFrom(Projectile::rtti))
+    {
+        (static_cast<Projectile*>(inEntity))->handleBeginContactWithCrate(this);
+    }
+    else if (inEntity->getRTTI().derivesFrom(SpacePirate::rtti))
+    {
+        (static_cast<SpacePirate*>(inEntity))->handleBeginContact(this, inFixtureB, inFixtureA);
+    }
+    else if (inEntity->getRTTI().derivesFrom(Ground::rtti))
+    {
+        handleBeginContactWithGround(nullptr);
+    }
+}
+
+void Crate::handleEndContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB)
+{
+    if (inEntity->getRTTI().derivesFrom(Robot::rtti))
+    {
+        (static_cast<Robot*>(inEntity))->handleEndContact(this, inFixtureB, inFixtureA);
+    }
+    else if (inEntity->getRTTI().derivesFrom(SpacePirate::rtti))
+    {
+        (static_cast<SpacePirate*>(inEntity))->handleEndContact(this, inFixtureB, inFixtureA);
     }
 }
 
@@ -107,7 +120,7 @@ void Crate::read(InputMemoryBitStream& inInputStream)
     
     inInputStream.read(stateBit);
     if (stateBit)
-    {        
+    {
         b2Vec2 velocity;
         inInputStream.read(velocity);
         setVelocity(velocity);
@@ -142,7 +155,7 @@ uint32_t Crate::write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtySta
     return writtenState;
 }
 
-void Crate::handleContactWithGround(Ground* inGround)
+void Crate::handleBeginContactWithGround(Ground* inGround)
 {
     // TODO
 }

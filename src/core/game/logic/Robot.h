@@ -44,9 +44,11 @@ public:
     
     virtual void update();
     
-    virtual bool shouldCollide(Entity* inEntity);
+    virtual bool shouldCollide(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB);
     
-    virtual void handleContact(Entity* inEntity);
+    virtual void handleBeginContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB);
+    
+    virtual void handleEndContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB);
     
     virtual uint32_t getAllStateMask() const;
     
@@ -59,10 +61,6 @@ public:
     void processInput(IInputState* inInputState, bool isPending = false);
     
     void updateInternal(float inDeltaTime);
-    
-    void handleContactWithGround(Ground* inGround);
-    
-    void handleContactWithCrate(Crate* inCrate);
     
     void takeDamage();
     
@@ -86,8 +84,6 @@ public:
     
     bool isFacingLeft();
     
-    bool isGrounded();
-    
     bool isShooting();
     
     bool isSprinting();
@@ -100,8 +96,6 @@ private:
     std::string m_playerName;
     
     uint8_t m_iNumJumps;
-    bool m_isGrounded;
-    bool m_isFalling;
     bool m_isFacingLeft;
     bool m_isShooting;
     bool m_isSprinting;
@@ -127,15 +121,13 @@ private:
     uint8_t m_iHealthLastKnown;
     uint32_t m_iNumKillsLastKnown;
     bool m_wasLastKillHeadshotLastKnown;
-    bool m_isGroundedLastKnown;
-    bool m_isFallingLastKnown;
     bool m_isFacingLeftLastKnown;
     bool m_isShootingLastKnown;
     bool m_isSprintingLastKnown;
     
     void handleShooting();
     
-    void playNetworkBoundSounds();
+    void playNetworkBoundSounds(int numJumpsLastKnown, bool isSprintingLastKnown);
     
     void playSound(int soundId);
 };

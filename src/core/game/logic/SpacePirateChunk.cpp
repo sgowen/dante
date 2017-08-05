@@ -43,7 +43,7 @@ EntityDef SpacePirateChunk::constructEntityDef()
 
 void SpacePirateChunk::update()
 {
-    m_fStateTime += Timing::getInstance()->getDeltaTime();
+    m_fStateTime += FRAME_RATE;
     
     if (m_fStateTime > 5)
     {
@@ -75,14 +75,19 @@ void SpacePirateChunk::update()
     }
 }
 
-bool SpacePirateChunk::shouldCollide(Entity *inEntity)
+bool SpacePirateChunk::shouldCollide(Entity *inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB)
 {
     return !inEntity->getRTTI().derivesFrom(Robot::rtti) && !inEntity->getRTTI().derivesFrom(SpacePirateChunk::rtti);
 }
 
-void SpacePirateChunk::handleContact(Entity* inEntity)
+void SpacePirateChunk::handleBeginContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB)
 {
     // Empty
+}
+
+void SpacePirateChunk::handleEndContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB)
+{
+    // TODO
 }
 
 uint32_t SpacePirateChunk::getAllStateMask() const

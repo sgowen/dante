@@ -41,9 +41,11 @@ public:
     
     virtual void update();
     
-    virtual bool shouldCollide(Entity* inEntity);
+    virtual bool shouldCollide(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB);
     
-    virtual void handleContact(Entity* inEntity);
+    virtual void handleBeginContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB);
+    
+    virtual void handleEndContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB);
     
     virtual uint32_t getAllStateMask() const;
     
@@ -53,11 +55,7 @@ public:
     
     void init(float x, float y, float speed, int scale, uint8_t health);
     
-    void handleContactWithRobot(Robot* robot);
-    
-    void handleContactWithGround(Ground* inGround);
-    
-    void handleContactWithCrate(Crate* inCrate);
+    void handleBeginContactWithRobot(Robot* robot);
     
     void takeDamage(b2Vec2 force, bool isHeadshot);
     
@@ -72,8 +70,6 @@ private:
     float m_fSpeed;
     uint8_t m_iHealth;
     bool m_isFacingLeft;
-    bool m_isGrounded;
-    bool m_isFalling;
     bool m_isJumping;
     
     float m_fTimeForNextJump;

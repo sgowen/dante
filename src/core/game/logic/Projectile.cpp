@@ -40,7 +40,7 @@
 Projectile::Projectile(b2World& world, bool isServer) : Entity(world, 0, 0, 1.565217391304348f * 0.444444444444444f, 2.0f * 0.544423440453686f, constructEntityDef()),
 m_isServer(isServer),
 m_iPlayerId(0),
-m_state(ProjectileState_Active),
+m_state(ProjectileState_Waiting),
 m_isFacingLeft(false)
 {
     // Empty
@@ -52,7 +52,7 @@ EntityDef Projectile::constructEntityDef()
     
     ret.isStaticBody = false;
     ret.bullet = true;
-    ret.restitution = 0.1f;
+    ret.restitution = 0.5f;
     
     return ret;
 }
@@ -65,7 +65,7 @@ void Projectile::update()
         ProjectileState oldState = m_state;
         bool old_isFacingLeft = m_isFacingLeft;
         
-        updateInternal(Timing::getInstance()->getDeltaTime());
+        updateInternal(FRAME_RATE);
         
         if (!areBox2DVectorsEqual(oldVelocity, getVelocity())
             || oldState != m_state
@@ -78,33 +78,41 @@ void Projectile::update()
     }
     else
     {
-        updateInternal(Timing::getInstance()->getDeltaTime());
+        updateInternal(FRAME_RATE);
     }
 }
 
-bool Projectile::shouldCollide(Entity *inEntity)
+bool Projectile::shouldCollide(Entity *inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB)
 {
-    return inEntity->getRTTI().derivesFrom(SpacePirate::rtti) || inEntity->getRTTI().derivesFrom(Crate::rtti) || inEntity->getRTTI().derivesFrom(SpacePirateChunk::rtti);
-}
-
-void Projectile::handleContact(Entity* inEntity)
-{
-    if (inEntity != this
-        && !inEntity->isRequestingDeletion())
+    if (m_state == ProjectileState_Active)
     {
-        if (inEntity->getRTTI().derivesFrom(SpacePirate::rtti))
-        {
-            handleContactWithSpacePirate(static_cast<SpacePirate*>(inEntity));
-        }
-        else if (inEntity->getRTTI().derivesFrom(Ground::rtti))
-        {
-            handleContactWithGround(nullptr);
-        }
-        else if (inEntity->getRTTI().derivesFrom(Crate::rtti))
-        {
-            handleContactWithCrate(static_cast<Crate*>(inEntity));
-        }
+        return inEntity->getRTTI().derivesFrom(SpacePirate::rtti)
+        || inEntity->getRTTI().derivesFrom(Crate::rtti)
+        || inEntity->getRTTI().derivesFrom(SpacePirateChunk::rtti);
     }
+    
+    return false;
+}
+
+void Projectile::handleBeginContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB)
+{
+    if (inEntity->getRTTI().derivesFrom(SpacePirate::rtti))
+    {
+        handleBeginContactWithSpacePirate(static_cast<SpacePirate*>(inEntity));
+    }
+    else if (inEntity->getRTTI().derivesFrom(Ground::rtti))
+    {
+        handleBeginContactWithGround(nullptr);
+    }
+    else if (inEntity->getRTTI().derivesFrom(Crate::rtti))
+    {
+        handleBeginContactWithCrate(static_cast<Crate*>(inEntity));
+    }
+}
+
+void Projectile::handleEndContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB)
+{
+    // TODO
 }
 
 uint32_t Projectile::getAllStateMask() const
@@ -222,6 +230,8 @@ uint32_t Projectile::write(OutputMemoryBitStream& inOutputStream, uint32_t inDir
 
 void Projectile::initFromShooter(Robot* inRobot)
 {
+    m_state = ProjectileState_Active;
+    
     m_iPlayerId = inRobot->getPlayerId();
     m_isFacingLeft = inRobot->isFacingLeft();
     
@@ -234,7 +244,7 @@ void Projectile::initFromShooter(Robot* inRobot)
     setColor(inRobot->getColor());
 }
 
-void Projectile::handleContactWithSpacePirate(SpacePirate* spacePirate)
+void Projectile::handleBeginContactWithSpacePirate(SpacePirate* spacePirate)
 {
     if (!m_isServer)
     {
@@ -268,7 +278,7 @@ void Projectile::handleContactWithSpacePirate(SpacePirate* spacePirate)
     NG_SERVER->setStateDirty(getID(), PRJC_Pose);
 }
 
-void Projectile::handleContactWithGround(Ground* ground)
+void Projectile::handleBeginContactWithGround(Ground* ground)
 {
     explode();
     
@@ -278,11 +288,11 @@ void Projectile::handleContactWithGround(Ground* ground)
     }
 }
 
-void Projectile::handleContactWithCrate(Crate* inCrate)
+void Projectile::handleBeginContactWithCrate(Crate* inCrate)
 {
     inCrate->getBody()->ApplyLinearImpulseToCenter(b2Vec2(getVelocity().x, 0), true);
     
-    handleContactWithGround(nullptr);
+    handleBeginContactWithGround(nullptr);
 }
 
 Projectile::ProjectileState Projectile::getState()

@@ -26,6 +26,7 @@ Entity::Entity(b2World& world, float x, float y, float width, float height, Enti
 m_worldRef(world),
 m_body(nullptr),
 m_fixture(nullptr),
+m_footSensorFixture(nullptr),
 m_fStateTime(0.0f),
 m_color(1.0f, 1.0f, 1.0f, 1.0f),
 m_fWidth(width),
@@ -33,6 +34,7 @@ m_fHeight(height),
 m_fTimeVelocityBecameOutOfSync(0.0f),
 m_fTimePositionBecameOutOfSync(0.0f),
 m_iID(getUniqueEntityID()),
+m_iNumGroundContacts(0),
 m_isRequestingDeletion(false)
 {
     if (inEntityDef.isStaticBody)
@@ -84,6 +86,18 @@ m_isRequestingDeletion(false)
         
         // Add the shape to the body.
         m_fixture = m_body->CreateFixture(&fixtureDef);
+        
+        if (inEntityDef.isCharacter)
+        {
+            // Add foot sensor fixture
+            b2PolygonShape feet;
+            feet.SetAsBox(width / 3.0f, height / 8.0f, b2Vec2(x, -height / 2.0f), 0);
+            b2FixtureDef fixtureDefFeet;
+            fixtureDefFeet.shape = &feet;
+            fixtureDefFeet.isSensor = true;
+            m_footSensorFixture = m_body->CreateFixture(&fixtureDefFeet);
+            m_footSensorFixture->SetUserData(this);
+        }
     }
     
     m_fixture->SetUserData(this);
@@ -93,10 +107,21 @@ m_isRequestingDeletion(false)
 
 Entity::~Entity()
 {
+    onDeletion();
+}
+
+void Entity::onDeletion()
+{
     if (m_fixture)
     {
         m_body->DestroyFixture(m_fixture);
         m_fixture = nullptr;
+    }
+    
+    if (m_footSensorFixture)
+    {
+        m_body->DestroyFixture(m_footSensorFixture);
+        m_footSensorFixture = nullptr;
     }
     
     if (m_body)
@@ -106,51 +131,14 @@ Entity::~Entity()
     }
 }
 
-void Entity::interpolateClientSidePrediction(b2Vec2& inOldVelocity, b2Vec2& inOldPos)
+void Entity::handleBeginFootContact(Entity* inEntity)
 {
-    if (interpolateVectorsIfNecessary(inOldVelocity, getVelocity(), m_fTimeVelocityBecameOutOfSync, "velocity"))
-    {
-        setVelocity(inOldVelocity);
-    }
-    
-    if (interpolateVectorsIfNecessary(inOldPos, getPosition(), m_fTimePositionBecameOutOfSync, "position"))
-    {
-        setPosition(inOldPos);
-    }
+    ++m_iNumGroundContacts;
 }
 
-bool Entity::interpolateVectorsIfNecessary(b2Vec2& inOld, const b2Vec2& inNew, float& syncTracker, const char* vectorType)
+void Entity::handleEndFootContact(Entity* inEntity)
 {
-    float rtt = NG_CLIENT->getRoundTripTime();
-    rtt /= 2; // Let's just measure the time from server to us
-    
-    if (!areBox2DVectorsEqual(inOld, inNew))
-    {
-        LOG("WARN: Robot move replay ended with incorrect %s! Old %3.8f, %3.8f - New %3.8f, %3.8f", vectorType, inOld.x, inOld.y, inNew.x, inNew.y);
-        
-        // have we been out of sync, or did we just become out of sync?
-        float time = Timing::getInstance()->getFrameStartTime();
-        if (syncTracker == 0.0f)
-        {
-            syncTracker = time;
-        }
-        
-        // now interpolate to the correct value...
-        float durationOutOfSync = time - syncTracker;
-        if (durationOutOfSync < rtt)
-        {
-            b2Vec2 vec = lerpBox2DVector(inOld, inNew, rtt);
-            inOld.Set(vec.x, vec.y);
-            
-            return true;
-        }
-    }
-    else
-    {
-        syncTracker = 0.0f;
-    }
-    
-    return false;
+    --m_iNumGroundContacts;
 }
 
 void Entity::setStateTime(float stateTime)
@@ -239,6 +227,16 @@ int Entity::getID()
     return m_iID;
 }
 
+bool Entity::isGrounded()
+{
+    return m_iNumGroundContacts > 0;
+}
+
+bool Entity::isFalling()
+{
+    return m_iNumGroundContacts == 0;
+}
+
 void Entity::requestDeletion()
 {
     m_isRequestingDeletion = true;
@@ -248,6 +246,57 @@ bool Entity::isRequestingDeletion()
 {
     return m_isRequestingDeletion;
 }
+
+#pragma mark protected
+
+void Entity::interpolateClientSidePrediction(b2Vec2& inOldVelocity, b2Vec2& inOldPos)
+{
+    if (interpolateVectorsIfNecessary(inOldVelocity, getVelocity(), m_fTimeVelocityBecameOutOfSync, "velocity"))
+    {
+        setVelocity(inOldVelocity);
+    }
+    
+    if (interpolateVectorsIfNecessary(inOldPos, getPosition(), m_fTimePositionBecameOutOfSync, "position"))
+    {
+        setPosition(inOldPos);
+    }
+}
+
+bool Entity::interpolateVectorsIfNecessary(b2Vec2& inOld, const b2Vec2& inNew, float& syncTracker, const char* vectorType)
+{
+    float rtt = NG_CLIENT->getRoundTripTime();
+    rtt /= 2; // Let's just measure the time from server to us
+    
+    if (!areBox2DVectorsEqual(inOld, inNew))
+    {
+        LOG("WARN: Robot move replay ended with incorrect %s! Old %3.8f, %3.8f - New %3.8f, %3.8f", vectorType, inOld.x, inOld.y, inNew.x, inNew.y);
+        
+        // have we been out of sync, or did we just become out of sync?
+        float time = Timing::getInstance()->getFrameStartTime();
+        if (syncTracker == 0.0f)
+        {
+            syncTracker = time;
+        }
+        
+        // now interpolate to the correct value...
+        float durationOutOfSync = time - syncTracker;
+        if (durationOutOfSync < rtt)
+        {
+            b2Vec2 vec = lerpBox2DVector(inOld, inNew, rtt);
+            inOld.Set(vec.x, vec.y);
+            
+            return true;
+        }
+    }
+    else
+    {
+        syncTracker = 0.0f;
+    }
+    
+    return false;
+}
+
+#pragma mark private
 
 int Entity::getUniqueEntityID()
 {
