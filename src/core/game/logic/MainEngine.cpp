@@ -47,6 +47,7 @@
 #include "NGSteamAddress.h"
 #include "NGSteamGameServices.h"
 #include "MainEngineState.h"
+#include "FPSUtil.h"
 
 MainEngine::MainEngine() : IEngine(),
 m_config(new JsonFile("dante.cfg")),
@@ -118,6 +119,8 @@ void MainEngine::onPause()
 
 void MainEngine::update(float deltaTime)
 {
+    FPSUtil::getInstance()->update(deltaTime);
+    
     m_fStateTime += deltaTime;
     m_fFrameStateTime += deltaTime;
     

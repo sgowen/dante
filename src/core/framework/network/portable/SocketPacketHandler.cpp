@@ -88,7 +88,7 @@ void SocketPacketHandler::readIncomingPacketsIntoQueue()
         return;
     }
     
-    char packetMem[NW_MAX_PACKET_SIZE];
+    static char packetMem[NW_MAX_PACKET_SIZE];
     int packetSize = sizeof(packetMem);
     InputMemoryBitStream inputStream(packetMem, packetSize * 8);
     SocketAddress fromAddress;

@@ -43,6 +43,7 @@
 #include "Server.h"
 #include "Crate.h"
 #include "SpacePirateChunk.h"
+#include "FPSUtil.h"
 
 #include <sstream>
 #include <ctime> // rand
@@ -185,30 +186,26 @@ void MainRenderer::renderEntities(World* world, bool isServer)
     std::vector<Entity*> entities = world->getEntities();
     for (Entity* go : entities)
     {
+        Color c = Color(go->getColor().red, go->getColor().green, go->getColor().blue, go->getColor().alpha);
+        if (isServer)
+        {
+            c.alpha = 0.5f;
+        }
+        
         if (go->getNetworkType() == NW_TYPE_Projectile)
         {
             Projectile* proj = static_cast<Projectile*>(go);
             bool isActive = proj->getState() == Projectile::ProjectileState::ProjectileState_Active;
             TextureRegion tr = isActive ? ASSETS->findTextureRegion("Projectile") : ASSETS->findTextureRegion("Explosion", proj->getStateTime());
             
-            if (isServer)
-            {
-                go->getColor().alpha = 0.5f;
-            }
-            
-            renderEntityWithColor(*proj, tr, proj->getColor(), proj->isFacingLeft());
+            renderEntityWithColor(*proj, tr, c, proj->isFacingLeft());
         }
         else if (go->getNetworkType() == NW_TYPE_SpacePirate)
         {
             SpacePirate* sp = static_cast<SpacePirate*>(go);
             TextureRegion tr = ASSETS->findTextureRegion("Space_Pirate_Walking", sp->getStateTime());
             
-            if (isServer)
-            {
-                go->getColor().alpha = 0.5f;
-            }
-            
-            renderEntityWithColor(*sp, tr, sp->getColor(), sp->isFacingLeft());
+            renderEntityWithColor(*sp, tr, c, sp->isFacingLeft());
         }
         else if (go->getNetworkType() == NW_TYPE_Crate)
         {
@@ -218,18 +215,11 @@ void MainRenderer::renderEntities(World* world, bool isServer)
             
             activeColor.alpha = isServer ? 0.5f : 1.0f;
             
-            if (isServer)
-            {
-                go->getColor().alpha = 0.5f;
-            }
-            
-            renderEntityWithColor(*go, tr, crate->getBody()->IsAwake() ? activeColor : go->getColor());
+            renderEntityWithColor(*go, tr, crate->getBody()->IsAwake() ? activeColor : c);
         }
         else if (go->getNetworkType() == NW_TYPE_SpacePirateChunk)
         {
             SpacePirateChunk* spc = static_cast<SpacePirateChunk*>(go);
-            static Color activeColor = Color(1.0f, 0, 0, 1.0f);
-            activeColor.alpha = go->getColor().alpha;
             int type = spc->getType();
             static TextureRegion tr0 = ASSETS->findTextureRegion("Space_Pirate_Chunk_Top_Left");
             static TextureRegion tr1 = ASSETS->findTextureRegion("Space_Pirate_Chunk_Top_Right");
@@ -255,12 +245,7 @@ void MainRenderer::renderEntities(World* world, bool isServer)
                     break;
             }
             
-            if (isServer)
-            {
-                go->getColor().alpha = 0.5f;
-            }
-            
-            renderEntityWithColor(*go, *tr, go->getColor(), spc->isFacingLeft());
+            renderEntityWithColor(*go, *tr, c, spc->isFacingLeft());
         }
     }
     
@@ -458,15 +443,25 @@ void MainRenderer::renderJoiningServerText()
 
 void MainRenderer::renderServerJoinedText()
 {
+    static int row = 1;
+    static float padding = 0.5f;
+    
     {
-        static b2Vec2 origin = b2Vec2(CAM_WIDTH - 0.5f, CAM_HEIGHT - 0.5);
+        static b2Vec2 origin = b2Vec2(CAM_WIDTH - 0.5f, CAM_HEIGHT - (row++ * padding));
+        int fps = FPSUtil::getInstance()->getFPS();
+        std::string text = StringUtil::format("FPS %d", fps);
+        renderText(text, origin, Color::BLACK, FONT_ALIGN_RIGHT);
+    }
+    
+    {
+        static b2Vec2 origin = b2Vec2(CAM_WIDTH - 0.5f, CAM_HEIGHT - (row++ * padding));
         float rttMS = NG_CLIENT->getAvgRoundTripTime().getValue() * 1000.f;
         std::string text = StringUtil::format("RTT %d ms", static_cast<int>(rttMS));
         renderText(text, origin, Color::BLACK, FONT_ALIGN_RIGHT);
     }
     
     {
-        static b2Vec2 origin = b2Vec2(CAM_WIDTH - 0.5f, CAM_HEIGHT - 1);
+        static b2Vec2 origin = b2Vec2(CAM_WIDTH - 0.5f, CAM_HEIGHT - (row++ * padding));
         
         const WeightedTimedMovingAverage& bpsIn = NG_CLIENT->getBytesReceivedPerSecond();
         int bpsInInt = static_cast<int>(bpsIn.getValue());
@@ -476,7 +471,7 @@ void MainRenderer::renderServerJoinedText()
     }
     
     {
-        static b2Vec2 origin = b2Vec2(CAM_WIDTH - 0.5f, CAM_HEIGHT - 1.5f);
+        static b2Vec2 origin = b2Vec2(CAM_WIDTH - 0.5f, CAM_HEIGHT - (row++ * padding));
         
         const WeightedTimedMovingAverage& bpsOut = NG_CLIENT->getBytesSentPerSecond();
         int bpsOutInt = static_cast<int>(bpsOut.getValue());
@@ -485,40 +480,43 @@ void MainRenderer::renderServerJoinedText()
         renderText(text, origin, Color::BLACK, FONT_ALIGN_RIGHT);
     }
     
+    // Controls
+    ++row;
+    
     {
-        static b2Vec2 origin = b2Vec2(CAM_WIDTH - 0.5f, CAM_HEIGHT - 2.0f);
+        static b2Vec2 origin = b2Vec2(CAM_WIDTH - 0.5f, CAM_HEIGHT - (row++ * padding));
         
-        std::string text = StringUtil::format("'S' Sound %s", NG_AUDIO_ENGINE->isSoundDisabled() ? "OFF" : " ON");
+        std::string text = StringUtil::format("'S'   Sound %s", NG_AUDIO_ENGINE->isSoundDisabled() ? "OFF" : " ON");
         renderText(text, origin, Color::BLACK, FONT_ALIGN_RIGHT);
     }
     
     {
-        static b2Vec2 origin = b2Vec2(CAM_WIDTH - 0.5f, CAM_HEIGHT - 2.5f);
+        static b2Vec2 origin = b2Vec2(CAM_WIDTH - 0.5f, CAM_HEIGHT - (row++ * padding));
         
-        std::string text = StringUtil::format("'M' Music %s", NG_AUDIO_ENGINE->isMusicDisabled() ? "OFF" : " ON");
+        std::string text = StringUtil::format("'M'   Music %s", NG_AUDIO_ENGINE->isMusicDisabled() ? "OFF" : " ON");
         renderText(text, origin, Color::BLACK, FONT_ALIGN_RIGHT);
     }
     
     if (Server::getInstance())
     {
         {
-            static b2Vec2 origin = b2Vec2(CAM_WIDTH - 0.5f, CAM_HEIGHT - 3.0f);
+            static b2Vec2 origin = b2Vec2(CAM_WIDTH - 0.5f, CAM_HEIGHT - (row++ * padding));
             
             std::string text = StringUtil::format("'T' Enemies %s", Server::getInstance()->isSpawningEnemies() ? " ON" : "OFF");
             renderText(text, origin, Color::BLACK, FONT_ALIGN_RIGHT);
         }
         
         {
-            static b2Vec2 origin = b2Vec2(CAM_WIDTH - 0.5f, CAM_HEIGHT - 3.5f);
+            static b2Vec2 origin = b2Vec2(CAM_WIDTH - 0.5f, CAM_HEIGHT - (row++ * padding));
             
             std::string text = StringUtil::format("'C' Objects %s", Server::getInstance()->isSpawningObjects() ? " ON" : "OFF");
             renderText(text, origin, Color::BLACK, FONT_ALIGN_RIGHT);
         }
         
         {
-            static b2Vec2 origin = b2Vec2(CAM_WIDTH - 0.5f, CAM_HEIGHT - 4.0f);
+            static b2Vec2 origin = b2Vec2(CAM_WIDTH - 0.5f, CAM_HEIGHT - (row++ * padding));
             
-            std::string text = StringUtil::format("'I'  DEBUG %s", Server::getInstance()->isDisplaying() ? " ON" : "OFF");
+            std::string text = StringUtil::format("'I'   DEBUG %s", Server::getInstance()->isDisplaying() ? " ON" : "OFF");
             renderText(text, origin, Color::BLACK, FONT_ALIGN_RIGHT);
         }
     }

@@ -217,10 +217,10 @@ void Projectile::initFromShooter(Robot* inRobot)
     m_iPlayerId = inRobot->getPlayerId();
     m_isFacingLeft = inRobot->isFacingLeft();
     
-    setVelocity(b2Vec2(m_isFacingLeft ? -60 : 60, getVelocity().y));
+    setVelocity(b2Vec2(m_isFacingLeft ? -80 : 80, getVelocity().y));
     
     b2Vec2 position = inRobot->getPosition();
-    position += b2Vec2(m_isFacingLeft ? -0.5f : 0.5f, 0.4f);
+    position += b2Vec2(m_isFacingLeft ? -inRobot->getWidth() / 2 : inRobot->getWidth() / 2, inRobot->getHeight() / 4);
     setPosition(position);
     
     setColor(inRobot->getColor());
@@ -307,7 +307,7 @@ void Projectile::updateInternal(float inDeltaTime)
     }
     else if (m_state == ProjectileState_Active)
     {
-        if (m_fStateTime > 0.5f)
+        if (m_fStateTime > 0.25f)
         {
             explode();
             

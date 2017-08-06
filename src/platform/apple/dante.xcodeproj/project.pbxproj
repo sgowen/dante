@@ -272,6 +272,7 @@
 		BBCCA84A1DB346C100452FA1 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBCCA8491DB346C100452FA1 /* CoreAudio.framework */; };
 		BBCCA8FD1DB36EB600452FA1 /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBCCA8FC1DB36EB600452FA1 /* OpenAL.framework */; };
 		BBCCA9001DB36F0F00452FA1 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB44CB001DB04C67003E633F /* AVFoundation.framework */; };
+		BBCDF24F1F3796C3006E94B0 /* FPSUtil.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBCDF24D1F3796C3006E94B0 /* FPSUtil.cpp */; };
 		BBCFF1C51ECD312E003EE520 /* Assets.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBCFF1C01ECD312E003EE520 /* Assets.cpp */; };
 		BBCFF1C71ECD312E003EE520 /* IAssetsMapper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBCFF1C21ECD312E003EE520 /* IAssetsMapper.cpp */; };
 		BBCFF1CD1ECD316D003EE520 /* MainAssets.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBCFF1C81ECD316D003EE520 /* MainAssets.cpp */; };
@@ -1030,6 +1031,8 @@
 		BBCCA8461DB3469500452FA1 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.12.sdk/System/Library/Frameworks/CoreMedia.framework; sourceTree = DEVELOPER_DIR; };
 		BBCCA8491DB346C100452FA1 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.12.sdk/System/Library/Frameworks/CoreAudio.framework; sourceTree = DEVELOPER_DIR; };
 		BBCCA8FC1DB36EB600452FA1 /* OpenAL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenAL.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.12.sdk/System/Library/Frameworks/OpenAL.framework; sourceTree = DEVELOPER_DIR; };
+		BBCDF24D1F3796C3006E94B0 /* FPSUtil.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FPSUtil.cpp; sourceTree = "<group>"; };
+		BBCDF24E1F3796C3006E94B0 /* FPSUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FPSUtil.h; sourceTree = "<group>"; };
 		BBCFF1C01ECD312E003EE520 /* Assets.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Assets.cpp; sourceTree = "<group>"; };
 		BBCFF1C11ECD312E003EE520 /* Assets.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Assets.h; sourceTree = "<group>"; };
 		BBCFF1C21ECD312E003EE520 /* IAssetsMapper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = IAssetsMapper.cpp; sourceTree = "<group>"; };
@@ -1536,6 +1539,8 @@
 			isa = PBXGroup;
 			children = (
 				BB7428391EB2AF4200B7628D /* FlagUtil.h */,
+				BBCDF24D1F3796C3006E94B0 /* FPSUtil.cpp */,
+				BBCDF24E1F3796C3006E94B0 /* FPSUtil.h */,
 				BB61CB581EC9FA1B000E0291 /* FrameworkConstants.h */,
 				BB5833DA1EEDDC2B0084DA20 /* IEngine.cpp */,
 				BB5833DB1EEDDC2B0084DA20 /* IEngine.h */,
@@ -2737,6 +2742,7 @@
 				BB44CB851DB053C0003E633F /* pngpread.c in Sources */,
 				BB8EE62B1EF2E2C1000A5C98 /* Util.cpp in Sources */,
 				BBAEF1FC1EA94EDA00F0866E /* apple_asset_data_handler.mm in Sources */,
+				BBCDF24F1F3796C3006E94B0 /* FPSUtil.cpp in Sources */,
 				BB44CB861DB053C0003E633F /* pngread.c in Sources */,
 				BB79C1591F0EE37700A734CE /* DDHidQueue.m in Sources */,
 				BB44CB871DB053C0003E633F /* pngrio.c in Sources */,
