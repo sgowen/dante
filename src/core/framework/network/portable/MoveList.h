@@ -36,6 +36,8 @@ public:
     
     int getMoveCount() const;
     
+    Move* getMoveAtIndex(int index);
+    
     std::deque<Move>::const_iterator begin() const;
     
     std::deque<Move>::const_iterator end() const;

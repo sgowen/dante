@@ -24,7 +24,7 @@ EntityManager::EntityManager(HandleEntityCreatedFunc handleEntityCreatedFunc, Ha
 
 EntityManager::~EntityManager()
 {
-    NGSTDUtil::cleanUpMapOfPointers(m_entityMap);
+    NGSTDUtil::cleanUpMapOfEntityPointers(m_entityMap);
 }
 
 Entity* EntityManager::getEntityByID(int id)const
@@ -51,6 +51,8 @@ void EntityManager::deregisterEntity(Entity* inEntity)
     m_entityMap.erase(inEntity->getID());
     
     m_handleEntityDeletionFunc(inEntity);
+    
+    inEntity->onDeletion();
     
     delete inEntity;
     inEntity = nullptr;

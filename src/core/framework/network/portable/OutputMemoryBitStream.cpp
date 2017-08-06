@@ -11,6 +11,7 @@
 #include "OutputMemoryBitStream.h"
 
 #include "Vector2.h"
+#include "Box2D/Box2D.h"
 #include "Color.h"
 
 #include <cstring>	// memcpy()
@@ -103,6 +104,12 @@ void OutputMemoryBitStream::write(const Vector2& inVector)
 {
     write(inVector.getX());
     write(inVector.getY());
+}
+
+void OutputMemoryBitStream::write(const b2Vec2& inVector)
+{
+    write(inVector.x);
+    write(inVector.y);
 }
 
 void OutputMemoryBitStream::write(Color& inColor)

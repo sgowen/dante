@@ -29,8 +29,10 @@
 #define MENU_STATE_LOCAL_PLAYER_DROP_OUT_2 13
 #define MENU_STATE_LOCAL_PLAYER_DROP_OUT_3 14
 #define MENU_STATE_SERVER_TOGGLE_ENEMIES 15
-#define MENU_STATE_CLIENT_MAIN_TOGGLE_MUSIC 16
-#define MENU_STATE_CLIENT_MAIN_TOGGLE_SOUND 17
+#define MENU_STATE_SERVER_TOGGLE_OBJECTS 16
+#define MENU_STATE_SERVER_TOGGLE_SERVER_DISPLAY 17
+#define MENU_STATE_CLIENT_MAIN_TOGGLE_MUSIC 18
+#define MENU_STATE_CLIENT_MAIN_TOGGLE_SOUND 19
 
 class OutputMemoryBitStream;
 class InputMemoryBitStream;
@@ -84,6 +86,8 @@ public:
     void activateNextPlayer(uint8_t playerId);
     
     GameInputState* getGameInputStateForPlayerId(uint8_t playerId);
+    
+    bool isPlayerIdLocalHost(uint8_t playerId);
     
     bool isRequestingToAddLocalPlayer() const;
     

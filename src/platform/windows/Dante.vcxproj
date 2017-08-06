@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -198,6 +198,14 @@
     </PreLinkEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\3rdparty\Box2D\*.h" />
+    <ClInclude Include="..\..\3rdparty\Box2D\Collision\*.h" />
+    <ClInclude Include="..\..\3rdparty\Box2D\Collision\Shapes\*.h" />
+    <ClInclude Include="..\..\3rdparty\Box2D\Common\*.h" />
+    <ClInclude Include="..\..\3rdparty\Box2D\Dynamics\*.h" />
+    <ClInclude Include="..\..\3rdparty\Box2D\Dynamics\Contacts\*.h" />
+    <ClInclude Include="..\..\3rdparty\Box2D\Dynamics\Joints\*.h" />
+    <ClInclude Include="..\..\3rdparty\Box2D\Rope\*.h" />
     <ClInclude Include="..\..\core\framework\entity\*.h" />
     <ClInclude Include="..\..\core\framework\file\portable\*.h" />
     <ClInclude Include="..\..\core\framework\file\directx\*.h" />
@@ -222,6 +230,30 @@
     <ClInclude Include="*.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\3rdparty\Box2D\*.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\..\3rdparty\Box2D\Collision\*.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\..\3rdparty\Box2D\Collision\Shapes\*.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\..\3rdparty\Box2D\Common\*.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\..\3rdparty\Box2D\Dynamics\*.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\..\3rdparty\Box2D\Dynamics\Contacts\*.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\..\3rdparty\Box2D\Dynamics\Joints\*.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\..\3rdparty\Box2D\Rope\*.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="..\..\core\framework\entity\*.cpp" />
     <ClCompile Include="..\..\core\framework\file\portable\*.cpp" />
     <ClCompile Include="..\..\core\framework\file\directx\*.cpp" />

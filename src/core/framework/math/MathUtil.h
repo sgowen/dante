@@ -9,6 +9,8 @@
 #ifndef __noctisgames__MathUtil__
 #define __noctisgames__MathUtil__
 
+#include "Box2D/Common/b2Math.h"
+
 #include <math.h>
 #include <float.h>
 
@@ -51,6 +53,16 @@ inline bool areFloatsPracticallyEqual(float A, float B, float maxDiff = 0.000001
     }
     
     return false;
+}
+
+inline bool areBox2DVectorsEqual(const b2Vec2& inA, const b2Vec2& inB)
+{
+    return areFloatsPracticallyEqual(inA.x, inB.x) && areFloatsPracticallyEqual(inA.y, inB.y);
+}
+
+inline b2Vec2 lerpBox2DVector(b2Vec2& inA, const b2Vec2& inB, float t)
+{
+    return b2Vec2(inA + t * (inB - inA));
 }
 
 #endif /* defined(__noctisgames__MathUtil__) */

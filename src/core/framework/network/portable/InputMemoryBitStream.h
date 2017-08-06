@@ -14,6 +14,7 @@
 #include <string>
 
 class Vector2;
+struct b2Vec2;
 class Color;
 
 class InputMemoryBitStream
@@ -56,6 +57,8 @@ public:
     void read(std::string& inString);
     
     void read(Vector2& outVector);
+    
+    void read(b2Vec2& outVector);
     
     void read(Color& outColor);
     

@@ -51,7 +51,7 @@ void NGSteamPacketHandler::sendPacket(const OutputMemoryBitStream& inOutputStrea
 
 void NGSteamPacketHandler::readIncomingPacketsIntoQueue()
 {
-    char packetMem[1500];
+    char packetMem[NW_MAX_PACKET_SIZE];
     size_t packetSize = sizeof(packetMem);
     uint32_t incomingSize = 0;
     InputMemoryBitStream inputStream(packetMem, packetSize * 8);
@@ -63,7 +63,7 @@ void NGSteamPacketHandler::readIncomingPacketsIntoQueue()
     
     ISteamNetworking* steamNetworking = m_isServer ? SteamGameServerNetworking() : SteamNetworking();
     
-    while (steamNetworking->IsP2PPacketAvailable(&incomingSize) && receivedPackedCount < NETWORK_MAX_NUM_PACKETS_PER_FRAME)
+    while (steamNetworking->IsP2PPacketAvailable(&incomingSize) && receivedPackedCount < NW_MAX_NUM_PACKETS_PER_FRAME)
     {
         if (incomingSize <= packetSize)
         {

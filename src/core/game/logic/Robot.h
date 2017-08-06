@@ -13,41 +13,54 @@
 
 #include "GameConstants.h"
 
-#include "RTTI.h"
-
-#include <stdint.h>
 #include <string>
 
 class IInputState;
 class Move;
+class Ground;
+class Crate;
 
 class Robot : public Entity
 {
     RTTI_DECL;
     
-    NETWORK_TYPE_DECL(NETWORK_TYPE_Robot);
+    NW_TYPE_DECL(NW_TYPE_Robot);
     
 public:
     enum RobotReplicationState
     {
-        ROBT_Pose = 1 << 0,
-        ROBT_Color = 1 << 1,
-        ROBT_PlayerInfo = 1 << 2,
-        ROBT_Health = 1 << 3,
-        ROBT_NumKills = 1 << 4,
+        ROBT_PlayerInfo = 1 << 0,
+        ROBT_Pose = 1 << 1,
+        ROBT_Stats = 1 << 2,
         
-        ROBT_AllState = ROBT_Pose | ROBT_Color | ROBT_PlayerInfo | ROBT_Health | ROBT_NumKills
+        ROBT_AllState = ROBT_PlayerInfo | ROBT_Pose | ROBT_Stats
     };
     
-    Robot(bool isServer);
+    Robot(b2World& world, bool isServer);
+    
+    virtual ~Robot();
+    
+    virtual EntityDef constructEntityDef();
     
     virtual void update();
+    
+    virtual bool shouldCollide(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB);
+    
+    virtual void handleBeginContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB);
+    
+    virtual void handleEndContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB);
     
     virtual uint32_t getAllStateMask() const;
     
     virtual void read(InputMemoryBitStream& inInputStream);
     
     virtual uint32_t write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState);
+    
+    void postRead();
+    
+    void processInput(IInputState* inInputState, bool isPending = false);
+    
+    void updateInternal(float inDeltaTime);
     
     void takeDamage();
     
@@ -71,21 +84,18 @@ public:
     
     bool isFacingLeft();
     
-    bool isGrounded();
-    
     bool isShooting();
     
     bool isSprinting();
+    
+    bool needsMoveReplay();
     
 private:
     uint64_t m_iAddressHash;
     uint8_t m_iPlayerId;
     std::string m_playerName;
     
-    uint8_t m_iRttMs;
     uint8_t m_iNumJumps;
-    bool m_isGrounded;
-    bool m_isFalling;
     bool m_isFacingLeft;
     bool m_isShooting;
     bool m_isSprinting;
@@ -95,40 +105,26 @@ private:
     uint32_t m_iNumKills;
     bool m_wasLastKillHeadshot;
     
+    uint32_t m_iReadState;
+    
     float m_fSpeed;
     float m_fJumpSpeed;
     float m_fTimeOfNextShot;
-    float m_fRobotRestitution;
-    float m_fTimeAccelerationBecameOutOfSync;
-    float m_fTimeVelocityBecameOutOfSync;
-    float m_fTimePositionBecameOutOfSync;
     
-    bool m_isServer;
     bool m_isFirstJumpCompleted;
     
-    void processMove(const Move& inMove);
-    
-    void processInput(float inDeltaTime, IInputState* inInputState);
-    
-    void updateInternal(float inDeltaTime);
-    
-    void processCollisions();
-    
-    void processCollisionsWithScreenWalls();
+    // Cached Last Known Values (from previous frame)
+    uint8_t m_iNumJumpsLastKnown;
+    uint8_t m_iHealthLastKnown;
+    uint32_t m_iNumKillsLastKnown;
+    bool m_wasLastKillHeadshotLastKnown;
+    bool m_isFacingLeftLastKnown;
+    bool m_isShootingLastKnown;
+    bool m_isSprintingLastKnown;
     
     void handleShooting();
-
-    void doClientSidePredictionForLocalRobot(uint32_t inReadState);
     
-    void doClientSidePredictionForRemoteRobot(uint32_t inReadState);
-    
-    void interpolateClientSidePrediction(Vector2& inOldAcceleration, Vector2& inOldVelocity, Vector2& inOldPos);
-    
-    void interpolateVectorsIfNecessary(Vector2& inA, Vector2& inB, float& syncTracker, const char* vectorType);
-    
-    void playNetworkBoundSounds(uint8_t old_m_iNumJumps, bool old_m_isSprinting);
-    
-    void playSound(int soundId);
+    void playNetworkBoundSounds(int numJumpsLastKnown, bool isSprintingLastKnown);
 };
 
 #endif /* defined(__noctisgames__Robot__) */

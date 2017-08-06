@@ -13,37 +13,47 @@
 
 #include "GameConstants.h"
 
-#include "RTTI.h"
-
-#include <stdint.h>
+#include "Box2D/Common/b2Math.h"
 
 class Robot;
+class SpacePirate;
+class SpacePirateChunk;
+class Ground;
+class Crate;
 
 class Projectile : public Entity
 {
     RTTI_DECL;
     
-    NETWORK_TYPE_DECL(NETWORK_TYPE_Projectile);
+    NW_TYPE_DECL(NW_TYPE_Projectile);
     
 public:
     enum ProjectileReplicationState
     {
-        PRJC_Pose = 1 << 0,
-        PRJC_Color = 1 << 1,
-        PRJC_PlayerId = 1 << 2,
+        PRJC_PlayerInfo = 1 << 0,
+        PRJC_Pose = 1 << 1,
         
-        PRJC_AllState = PRJC_Pose | PRJC_Color | PRJC_PlayerId
+        PRJC_AllState = PRJC_PlayerInfo | PRJC_Pose
     };
     
     enum ProjectileState
     {
-        ProjectileState_Active = 1,
-        ProjectileState_Exploding = 2
+        ProjectileState_Waiting = 1,
+        ProjectileState_Active = 2,
+        ProjectileState_Exploding = 3
     };
     
-    Projectile(bool isServer);
+    Projectile(b2World& world, bool isServer);
+    
+    virtual EntityDef constructEntityDef();
     
     virtual void update();
+    
+    virtual bool shouldCollide(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB);
+    
+    virtual void handleBeginContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB);
+    
+    virtual void handleEndContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB);
     
     virtual uint32_t getAllStateMask() const;
     
@@ -52,6 +62,16 @@ public:
     virtual uint32_t write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState);
     
     void initFromShooter(Robot* inRobot);
+    
+    void handleBeginContactWithSpacePirate(SpacePirate* inEntity);
+    
+    void handleBeginContactWithSpacePirateChunk(SpacePirateChunk* inEntity);
+    
+    void handleBeginContactWithGround(Ground* inEntity);
+    
+    void handleBeginContactWithCrate(Crate* inEntity);
+    
+    void updateInternal(float inDeltaTime);
     
     ProjectileState getState();
     
@@ -62,20 +82,15 @@ public:
     bool isFacingLeft();
     
 private:
-    bool m_isServer;
     uint32_t m_iPlayerId;
-    ProjectileState m_state;
     bool m_isFacingLeft;
     
-    float m_fTimePositionBecameOutOfSync;
+    ProjectileState m_state;
     
-    void updateInternal(float inDeltaTime);
+    // Cached Last Known Values (from previous frame)
+    ProjectileState m_stateLastKnown;
     
-    void processCollisions();
-    
-    void processCollisionsWithScreenWalls();
-    
-    void playSound(int soundId);
+    void explode();
 };
 
 #endif /* defined(__noctisgames__Projectile__) */

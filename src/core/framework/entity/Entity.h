@@ -9,105 +9,152 @@
 #ifndef __noctisgames__Entity__
 #define __noctisgames__Entity__
 
-#include "Vector2.h"
 #include "Color.h"
 #include "FrameworkConstants.h"
+
+#include "Box2D/Common/b2Math.h"
 
 #include "RTTI.h"
 
 #include <stdint.h>
-#include <vector>
 
-class NGRect;
+class b2World;
+struct b2Vec2;
+class b2Body;
+class b2Fixture;
+class b2Contact;
 class OutputMemoryBitStream;
 class InputMemoryBitStream;
 
-#define NETWORK_TYPE_DECL(inCode) \
+#define NW_TYPE_DECL(inCode) \
 public: \
 enum { kClassId = inCode }; \
 virtual uint32_t getNetworkType();
 
-#define NETWORK_TYPE_IMPL(name) \
+#define NW_TYPE_IMPL(name) \
 uint32_t name::getNetworkType() { return kClassId; }
+
+struct EntityDef
+{
+    EntityDef()
+    {
+        restitution = 0.0f;
+        density = 1.0f;
+        isStaticBody = true;
+        fixedRotation = true;
+        bullet = false;
+        isSensor = false;
+        isCharacter = false;
+    }
+    
+    float restitution;
+    float density;
+    bool isStaticBody;
+    bool fixedRotation;
+    bool bullet;
+    bool isSensor;
+    bool isCharacter;
+};
 
 class Entity
 {
     RTTI_DECL;
     
-    NETWORK_TYPE_DECL(NETWORK_TYPE_Entity);
+    NW_TYPE_DECL(NW_TYPE_Entity);
     
 public:
-    Entity(float x, float y, float width, float height);
+    Entity(b2World& world, float x, float y, float width, float height, bool isServer, EntityDef inEntityDef);
     
     virtual ~Entity();
     
+    virtual EntityDef constructEntityDef() = 0;
+    
     virtual void update() = 0;
     
-    virtual void update(float inDeltaTime);
+    virtual bool shouldCollide(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB) = 0;
     
-    virtual void resetBounds(float width, float height);
+    virtual void handleBeginContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB) = 0;
     
-    virtual void updateBounds();
+    virtual void handleEndContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB) = 0;
     
-    virtual uint32_t getAllStateMask() const;
+    virtual uint32_t getAllStateMask() const = 0;
     
-    virtual void read(InputMemoryBitStream& inInputStream);
+    virtual void read(InputMemoryBitStream& inInputStream) = 0;
     
-    virtual uint32_t write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState);
+    virtual uint32_t write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState) = 0;
     
-    float getStateTime();
+    void onDeletion();
+    
+    void handleBeginFootContact(Entity* inEntity);
+    
+    void handleEndFootContact(Entity* inEntity);
     
     void setStateTime(float stateTime);
     
-    void setPosition(Vector2 position);
+    float getStateTime();
     
-    Vector2& getPosition();
+    b2Body* getBody();
     
-    Vector2& getVelocity();
+    void setPosition(b2Vec2 position);
     
-    Vector2& getAcceleration();
+    const b2Vec2& getPosition();
     
-    std::vector<NGRect *>& getBounds();
+    void setVelocity(b2Vec2 velocity);
     
-    NGRect& getMainBounds();
+    const b2Vec2& getVelocity();
     
     void setColor(Color color);
     
     Color& getColor();
     
-    const float& getWidth();
-    
     void setWidth(float width);
     
-    const float& getHeight();
+    const float& getWidth();
     
     void setHeight(float height);
+    
+    const float& getHeight();
     
     void setAngle(float angle);
     
     float getAngle();
     
+    void setID(int inID);
+    
     int getID();
     
-    void setID(int inID);
+    bool isGrounded();
+    
+    bool isFalling();
     
     void requestDeletion();
     
     bool isRequestingDeletion();
     
 protected:
+    b2World& m_worldRef;
+    b2Body* m_body;
+    b2Fixture* m_fixture;
+    b2Fixture* m_footSensorFixture;
     float m_fStateTime;
-    Vector2 m_position;
-    Vector2 m_velocity;
-    Vector2 m_acceleration;
-    std::vector<NGRect *> m_bounds;
     Color m_color;
     float m_fWidth;
     float m_fHeight;
-    float m_fAngle;
+    bool m_isServer;
+    
+    // Cached Last Known Values (from previous frame)
+    b2Vec2 m_velocityLastKnown;
+    b2Vec2 m_positionLastKnown;
+    
+    void interpolateClientSidePrediction(b2Vec2& inOldVelocity, b2Vec2& inOldPos);
+    
+    bool interpolateVectorsIfNecessary(b2Vec2& inA, const b2Vec2& inB, float& syncTracker, const char* vectorType);
     
 private:
+    float m_fTimeVelocityBecameOutOfSync;
+    float m_fTimePositionBecameOutOfSync;
     int m_iID;
+    int m_iNumGroundContacts;
     bool m_isRequestingDeletion;
     
     static int getUniqueEntityID();

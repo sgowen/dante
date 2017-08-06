@@ -53,12 +53,13 @@ public:
     
     std::string getLiveInput();
     
+    bool isPlayerIdLocalHost(uint8_t playerId);
+    
 private:
     std::string m_liveInput;
     InputState* m_currentState;
     MoveList m_moveList;
     const Move* m_pendingMove;
-    float m_fNextTimeToSampleInput;
     bool m_isConnected;
     bool m_isLiveMode;
     bool m_isTimeToProcessInput;

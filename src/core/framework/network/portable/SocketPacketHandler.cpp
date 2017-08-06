@@ -88,7 +88,7 @@ void SocketPacketHandler::readIncomingPacketsIntoQueue()
         return;
     }
     
-    char packetMem[1500];
+    static char packetMem[NW_MAX_PACKET_SIZE];
     int packetSize = sizeof(packetMem);
     InputMemoryBitStream inputStream(packetMem, packetSize * 8);
     SocketAddress fromAddress;
@@ -97,7 +97,7 @@ void SocketPacketHandler::readIncomingPacketsIntoQueue()
     int receivedPacketCount = 0;
     int totalReadByteCount = 0;
     
-    while (receivedPacketCount < NETWORK_MAX_NUM_PACKETS_PER_FRAME)
+    while (receivedPacketCount < NW_MAX_NUM_PACKETS_PER_FRAME)
     {
         int readByteCount = m_socket->receiveFromAddress(packetMem, packetSize, fromAddress);
         if (readByteCount == 0)

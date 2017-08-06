@@ -109,6 +109,8 @@ void MacSound::stop()
 
 void MacSound::setVolume(float volume)
 {
+    m_fVolume = volume;
+    
     if (m_isMusic)
     {
         setMusicVolume(volume);

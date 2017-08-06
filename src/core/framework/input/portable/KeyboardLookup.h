@@ -17,6 +17,8 @@
 
 #define NG_KEY_SPACE_BAR 0x0020
 
+#define NG_KEY_COMMA 0x002C
+
 #define NG_KEY_ASCII_PERIOD 0x002E
 
 #define NG_KEY_ZERO 0x0030
@@ -85,7 +87,8 @@ inline std::vector<unsigned short>& getAllSupportedKeys()
 		keys.push_back(NG_KEY_ESCAPE);
 		keys.push_back(NG_KEY_SPACE_BAR);
 		keys.push_back(NG_KEY_ASCII_PERIOD);
-		keys.push_back(NG_KEY_PERIOD);
+		keys.push_back(NG_KEY_COMMA);
+        keys.push_back(NG_KEY_PERIOD);
 		keys.push_back(NG_KEY_ZERO);
 		keys.push_back(NG_KEY_ONE);
 		keys.push_back(NG_KEY_TWO);

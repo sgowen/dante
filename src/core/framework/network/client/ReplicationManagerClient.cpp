@@ -82,7 +82,11 @@ void ReplicationManagerClient::readAndDoUpdateAction(InputMemoryBitStream& inInp
     
     //entity MUST be found, because create was ack'd if we're getting an update...
     //and read state
-    entity->read(inInputStream);
+    
+    if (entity)
+    {
+        entity->read(inInputStream);
+    }
 }
 
 void ReplicationManagerClient::readAndDoDestroyAction(InputMemoryBitStream& inInputStream, int inNetworkId)

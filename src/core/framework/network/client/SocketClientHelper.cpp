@@ -30,7 +30,7 @@ m_name(inName)
 SocketClientHelper::~SocketClientHelper()
 {
     OutputMemoryBitStream packet;
-    packet.write(NETWORK_PACKET_TYPE_CLIENT_EXIT);
+    packet.write(NW_PACKET_TYPE_CLIENT_EXIT);
     sendPacket(packet);
     
     if (m_serverAddress)
@@ -43,7 +43,7 @@ void SocketClientHelper::processSpecialPacket(uint32_t packetType, InputMemoryBi
 {
     switch (packetType)
     {
-        case NETWORK_PACKET_TYPE_SERVER_EXIT:
+        case NW_PACKET_TYPE_SERVER_EXIT:
             LOG("Server Shutting Down");
             
             if (m_serverAddress)

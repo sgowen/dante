@@ -55,7 +55,10 @@
 // these values are temporary, the real game will have dynamic widths and heights
 #define GAME_WIDTH CAM_WIDTH * 3.0f // meters
 #define GAME_HEIGHT 16.0f // meters
-#define GROUND_TOP 1.8f
+
+#define DEAD_ZONE_LEFT -10.0f // meters
+#define DEAD_ZONE_RIGHT GAME_WIDTH + 10.0f // meters
+#define DEAD_ZONE_BOTTOM -2.0f // meters
 
 //// Render Definitions ////
 
@@ -67,9 +70,12 @@
 
 //// Network ////
 
-#define NETWORK_TYPE_Robot 'ROBT'
-#define NETWORK_TYPE_Projectile 'PRJC'
-#define NETWORK_TYPE_SpacePirate 'SPCP'
+#define NW_TYPE_Robot 'ROBT'
+#define NW_TYPE_Projectile 'PRJC'
+#define NW_TYPE_SpacePirate 'SPCP'
+#define NW_TYPE_Ground 'GRND'
+#define NW_TYPE_Crate 'CRAT'
+#define NW_TYPE_SpacePirateChunk 'SPCH'
 
 //// Non-Steam ////
 

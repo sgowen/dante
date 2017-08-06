@@ -14,78 +14,108 @@
 #include "Robot.h"
 #include "Projectile.h"
 #include "SpacePirate.h"
+#include "Crate.h"
+#include "SpacePirateChunk.h"
+#include "Ground.h"
+#include "Box2D/Box2D.h"
+
 #include "NetworkManagerServer.h"
+#include "InstanceManager.h"
+#include "Timing.h"
+#include "Server.h"
+#include "ClientProxy.h"
+#include "MoveList.h"
+#include "InputManager.h"
+#include "NetworkManagerClient.h"
+#include "StringUtil.h"
 
-Entity* World::sClientCreateRobot()
-{
-    // TODO, inject physics world from Box2D
-    return new Robot(false);
+#define WORLD_CREATE_CLIENT_IMPL(name) \
+Entity* World::sClientCreate##name() \
+{ \
+    b2World& world = InstanceManager::getClientWorld()->getWorld(); \
+    return new name(world, false); \
 }
 
-Entity* World::sServerCreateRobot()
-{
-    // TODO, inject physics world from Box2D
-    Entity* ret = new Robot(true);
-    
-    NG_SERVER->registerEntity(ret);
-    
-    return ret;
+#define WORLD_CREATE_SERVER_IMPL(name) \
+Entity* World::sServerCreate##name() \
+{ \
+    b2World& world = InstanceManager::getServerWorld()->getWorld(); \
+    Entity* ret = new name(world, true); \
+    NG_SERVER->registerEntity(ret); \
+    return ret; \
 }
 
-Entity* World::sClientCreateProjectile()
-{
-    // TODO, inject physics world from Box2D
-    return new Projectile(false);
-}
+WORLD_CREATE_CLIENT_IMPL(Robot);
+WORLD_CREATE_CLIENT_IMPL(Projectile);
+WORLD_CREATE_CLIENT_IMPL(SpacePirate);
+WORLD_CREATE_CLIENT_IMPL(Crate);
+WORLD_CREATE_CLIENT_IMPL(SpacePirateChunk);
 
-Entity* World::sServerCreateProjectile()
-{
-    // TODO, inject physics world from Box2D
-    Entity* ret = new Projectile(true);
-    
-    NG_SERVER->registerEntity(ret);
-    
-    return ret;
-}
+WORLD_CREATE_SERVER_IMPL(Robot);
+WORLD_CREATE_SERVER_IMPL(Projectile);
+WORLD_CREATE_SERVER_IMPL(SpacePirate);
+WORLD_CREATE_SERVER_IMPL(Crate);
+WORLD_CREATE_SERVER_IMPL(SpacePirateChunk);
 
-Entity* World::sClientCreateSpacePirate()
+World::World(bool isServer) :
+m_entityContactListener(new EntityContactListener()),
+m_entityContactFilter(new EntityContactFilter()),
+m_isServer(isServer)
 {
-    // TODO, inject physics world from Box2D
-    return new SpacePirate(false);
-}
-
-Entity* World::sServerCreateSpacePirate()
-{
-    // TODO, inject physics world from Box2D
-    Entity* ret = new SpacePirate(true);
+    // Define the gravity vector.
+    b2Vec2 gravity(0.0f, -9.8f);
     
-    NG_SERVER->registerEntity(ret);
+    // Construct a world object, which will hold and simulate the rigid bodies.
+    m_world = new b2World(gravity);
     
-    return ret;
-}
-
-World::World(bool isServer) : m_isServer(isServer)
-{
-    // Empty
+    m_ground = new Ground(*m_world, m_isServer);
+    
+    m_world->SetContactListener(m_entityContactListener);
+    m_world->SetContactFilter(m_entityContactFilter);
 }
 
 World::~World()
 {
     m_entities.clear();
+    
+    delete m_entityContactListener;
+    delete m_entityContactFilter;
+    
+    delete m_ground;
+    
+    delete m_world;
 }
 
 void World::addEntity(Entity* inEntity)
 {
-    m_entities.push_back(inEntity);
+    if (inEntity->getRTTI().derivesFrom(Robot::rtti))
+    {
+        m_players.push_back(inEntity);
+    }
+    else
+    {
+        m_entities.push_back(inEntity);
+    }
 }
 
 void World::removeEntity(Entity* inEntity)
 {
-    int len = static_cast<int>(m_entities.size());
+    std::vector<Entity*>* pEntities = nullptr;
+    if (inEntity->getRTTI().derivesFrom(Robot::rtti))
+    {
+        pEntities = &m_players;
+    }
+    else
+    {
+        pEntities = &m_entities;
+    }
+    
+    std::vector<Entity*>& entities = *pEntities;
+    int len = static_cast<int>(entities.size());
     int indexToRemove = -1;
     for (int i = 0; i < len; ++i)
     {
-        if (m_entities[i]->getID() == inEntity->getID())
+        if (entities[i]->getID() == inEntity->getID())
         {
             indexToRemove = i;
             break;
@@ -98,10 +128,10 @@ void World::removeEntity(Entity* inEntity)
         
         if (indexToRemove != lastIndex)
         {
-            m_entities[indexToRemove] = m_entities[lastIndex];
+            entities[indexToRemove] = entities[lastIndex];
         }
         
-        m_entities.pop_back();
+        entities.pop_back();
         
         if (m_isServer)
         {
@@ -110,11 +140,152 @@ void World::removeEntity(Entity* inEntity)
     }
 }
 
+void World::postRead()
+{
+    if (m_isServer)
+    {
+        return;
+    }
+    
+    // all processed moves have been removed, so all that are left are unprocessed moves so we must apply them...
+    MoveList& moveList = InputManager::getInstance()->getMoveList();
+    
+    bool needsReplay = false;
+    for (const Move& move : moveList)
+    {
+        for (Entity* entity : m_players)
+        {
+            Robot* robot = static_cast<Robot*>(entity);
+            if (NG_CLIENT->isPlayerIdLocal(robot->getPlayerId()))
+            {
+                if (robot->needsMoveReplay())
+                {
+                    needsReplay = true;
+                    
+                    robot->processInput(move.getInputState());
+                }
+            }
+        }
+        
+        if (needsReplay)
+        {
+            stepPhysics(FRAME_RATE);
+        }
+        
+        for (Entity* entity : m_players)
+        {
+            if (needsReplay)
+            {
+                Robot* robot = static_cast<Robot*>(entity);
+                robot->updateInternal(FRAME_RATE);
+            }
+        }
+    }
+    
+    for (Entity* entity : m_players)
+    {
+        if (needsReplay)
+        {
+            Robot* robot = static_cast<Robot*>(entity);
+            robot->postRead();
+        }
+    }
+}
+
 void World::update()
 {
-    //update all game objects- sometimes they want to die, so we need to tread carefully...
+    if (m_isServer)
+    {
+        bool needsToProcessMoreMoves = true;
+        
+        int j = 0;
+        
+        while (needsToProcessMoreMoves)
+        {
+            needsToProcessMoreMoves = false;
+            
+            for (Entity* entity : m_players)
+            {
+                Robot* robot = static_cast<Robot*>(entity);
+                
+                // is there a move we haven't processed yet?
+                ClientProxy* client = NG_SERVER->getClientProxy(robot->getPlayerId());
+                if (client)
+                {
+                    MoveList& moveList = client->getUnprocessedMoveList();
+                    Move* move = moveList.getMoveAtIndex(j);
+                    if (move)
+                    {
+                        needsToProcessMoreMoves = true;
+                        robot->processInput(move->getInputState());
+                    }
+                }
+            }
+            
+            if (needsToProcessMoreMoves)
+            {
+                stepPhysics(FRAME_RATE);
+                
+                for (Entity* entity : m_players)
+                {
+                    Robot* robot = static_cast<Robot*>(entity);
+                    
+                    robot->updateInternal(FRAME_RATE);
+                }
+            }
+            
+            ++j;
+        }
+    }
+    else
+    {
+        const Move* pendingMove = InputManager::getInstance()->getPendingMove();
+        if (pendingMove)
+        {
+            for (Entity* entity : m_players)
+            {
+                Robot* robot = static_cast<Robot*>(entity);
+                if (NG_CLIENT->isPlayerIdLocal(robot->getPlayerId()))
+                {
+                    robot->processInput(pendingMove->getInputState(), true);
+                }
+            }
+            
+            stepPhysics(FRAME_RATE);
+            
+            for (Entity* entity : m_players)
+            {
+                Robot* robot = static_cast<Robot*>(entity);
+                robot->updateInternal(FRAME_RATE);
+            }
+        }
+    }
     
-    int len = static_cast<int>(m_entities.size());
+    // Update all game objects- sometimes they want to die, so we need to tread carefully...
+    
+    int len = static_cast<int>(m_players.size());
+    for (int i = 0, c = len; i < c; ++i)
+    {
+        Entity* entity = m_players[i];
+        
+        if (!entity->isRequestingDeletion())
+        {
+            entity->update();
+        }
+        
+        if (m_isServer)
+        {
+            // You might suddenly want to die after your update, so check again
+            if (entity->isRequestingDeletion())
+            {
+                removeEntity(entity);
+                --i;
+                --c;
+            }
+        }
+    }
+    
+    len = static_cast<int>(m_entities.size());
     for (int i = 0, c = len; i < c; ++i)
     {
         Entity* entity = m_entities[i];
@@ -126,7 +297,7 @@ void World::update()
         
         if (m_isServer)
         {
-            // you might suddenly want to die after your update, so check again
+            // You might suddenly want to die after your update, so check again
             if (entity->isRequestingDeletion())
             {
                 removeEntity(entity);
@@ -139,10 +310,10 @@ void World::update()
 
 Robot* World::getRobotWithPlayerId(uint8_t inPlayerID)
 {
-    for (Entity* entity : m_entities)
+    for (Entity* entity : m_players)
     {
-        Robot* robot = entity->getRTTI().derivesFrom(Robot::rtti) ? static_cast<Robot*>(entity) : nullptr;
-        if (robot && robot->getPlayerId() == inPlayerID)
+        Robot* robot = static_cast<Robot*>(entity);
+        if (robot->getPlayerId() == inPlayerID)
         {
             return robot;
         }
@@ -162,6 +333,17 @@ void World::killAllSpacePirates()
     }
 }
 
+void World::removeAllCrates()
+{
+    for (Entity* entity : m_entities)
+    {
+        if (entity->getRTTI().derivesFrom(Crate::rtti))
+        {
+            entity->requestDeletion();
+        }
+    }
+}
+
 bool World::hasSpacePirates()
 {
     for (Entity* entity : m_entities)
@@ -175,7 +357,70 @@ bool World::hasSpacePirates()
     return false;
 }
 
+bool World::hasCrates()
+{
+    for (Entity* entity : m_entities)
+    {
+        if (entity->getRTTI().derivesFrom(Crate::rtti))
+        {
+            return true;
+        }
+    }
+    
+    return false;
+}
+
+std::vector<Entity*>& World::getPlayers()
+{
+    return m_players;
+}
+
 std::vector<Entity*>& World::getEntities()
 {
     return m_entities;
+}
+
+b2World& World::getWorld()
+{
+    return *m_world;
+}
+
+void World::stepPhysics(float deltaTime)
+{
+    static int32 velocityIterations = 6;
+    static int32 positionIterations = 2;
+    
+    // Instruct the world to perform a single step of simulation.
+    // It is generally best to keep the time step and iterations fixed.
+    m_world->Step(deltaTime, velocityIterations, positionIterations);
+}
+
+void EntityContactListener::BeginContact(b2Contact* contact)
+{
+    b2Fixture* fixtureA = contact->GetFixtureA();
+    b2Fixture* fixtureB = contact->GetFixtureB();
+    
+    Entity* entityA = static_cast<Entity*>(fixtureA->GetBody()->GetUserData());
+    Entity* entityB = static_cast<Entity*>(fixtureB->GetBody()->GetUserData());
+    
+    entityA->handleBeginContact(entityB, fixtureA, fixtureB);
+}
+
+void EntityContactListener::EndContact(b2Contact* contact)
+{
+    b2Fixture* fixtureA = contact->GetFixtureA();
+    b2Fixture* fixtureB = contact->GetFixtureB();
+    
+    Entity* entityA = static_cast<Entity*>(fixtureA->GetBody()->GetUserData());
+    Entity* entityB = static_cast<Entity*>(fixtureB->GetBody()->GetUserData());
+    
+    entityA->handleEndContact(entityB, fixtureA, fixtureB);
+}
+
+bool EntityContactFilter::ShouldCollide(b2Fixture* fixtureA, b2Fixture* fixtureB)
+{
+    Entity* entityA = static_cast<Entity*>(fixtureA->GetUserData());
+    Entity* entityB = static_cast<Entity*>(fixtureB->GetUserData());
+    
+    return entityA->shouldCollide(entityB, fixtureA, fixtureB);
 }

@@ -12,33 +12,39 @@
 #include "Entity.h"
 
 #include "GameConstants.h"
-
-#include "RTTI.h"
-
-#include <stdint.h>
+#include "Box2D/Common/b2Math.h"
 
 class Robot;
+class Ground;
+class Crate;
 
 class SpacePirate : public Entity
 {
     RTTI_DECL;
     
-    NETWORK_TYPE_DECL(NETWORK_TYPE_SpacePirate);
+    NW_TYPE_DECL(NW_TYPE_SpacePirate);
     
 public:
     enum SpacePirateReplicationState
     {
-        SPCP_Pose = 1 << 0,
-        SPCP_Color = 1 << 1,
+        SPCP_Info = 1 << 0,
+        SPCP_Pose = 1 << 1,
         SPCP_Health = 1 << 2,
-        SPCP_Size = 1 << 2,
         
-        SPCP_AllState = SPCP_Pose | SPCP_Color | SPCP_Health | SPCP_Size
+        SPCP_AllState = SPCP_Info | SPCP_Pose | SPCP_Health
     };
     
-    SpacePirate(bool isServer);
+    SpacePirate(b2World& world, bool isServer);
+    
+    virtual EntityDef constructEntityDef();
     
     virtual void update();
+    
+    virtual bool shouldCollide(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB);
+    
+    virtual void handleBeginContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB);
+    
+    virtual void handleEndContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB);
     
     virtual uint32_t getAllStateMask() const;
     
@@ -48,7 +54,9 @@ public:
     
     void init(float x, float y, float speed, int scale, uint8_t health);
     
-    void takeDamage(bool isHeadshot);
+    void handleBeginContactWithRobot(Robot* robot);
+    
+    void takeDamage(b2Vec2 force, bool isHeadshot);
     
     uint8_t getHealth();
     
@@ -57,28 +65,21 @@ public:
     bool isFacingLeft();
     
 private:
-    bool m_isServer;
     float m_fSpeed;
     uint8_t m_iHealth;
     bool m_isFacingLeft;
-    bool m_isGrounded;
-    bool m_isFalling;
     bool m_isJumping;
     
     float m_fTimeForNextJump;
     float m_fJumpSpeed;
     float m_fStartingHealth;
     
-    //bounce fraction when hitting various things
-    float m_fRobotRestitution;
+    b2Vec2 m_lastForce;
     
-    void processAI();
+    // Cached Last Known Values (from previous frame)
+    uint8_t m_iHealthLeftLastKnown;
     
     void updateInternal(float inDeltaTime);
-    
-    void processCollisions();
-    
-    void processCollisionsWithScreenWalls();
 };
 
 #endif /* defined(__noctisgames__SpacePirate__) */

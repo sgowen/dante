@@ -34,6 +34,8 @@
 #include "GpuProgramWrapperFactory.h"
 #include "NGSTDUtil.h"
 
+#include "Box2D/Box2D.h"
+
 #include <string>
 #include <assert.h>
 
@@ -159,29 +161,12 @@ bool Renderer::isReadyForRendering()
 
 void Renderer::renderEntity(Entity &pe, TextureRegion& tr, bool flipX)
 {
-    m_spriteBatcher->renderSprite(pe.getPosition().getX(), pe.getPosition().getY(), pe.getWidth(), pe.getHeight(), pe.getAngle(), flipX, tr);
+    m_spriteBatcher->renderSprite(pe.getPosition().x, pe.getPosition().y, pe.getWidth(), pe.getHeight(), pe.getAngle(), flipX, tr);
 }
 
 void Renderer::renderEntityWithColor(Entity &pe, TextureRegion& tr, Color c, bool flipX)
 {
-    m_spriteBatcher->renderSprite(pe.getPosition().getX(), pe.getPosition().getY(), pe.getWidth(), pe.getHeight(), pe.getAngle(), flipX, c, tr);
-}
-
-void Renderer::renderBoundsForEntity(Entity &pe)
-{
-    static Color red = Color(1, 0, 0, 1);
-    
-    renderBoundsWithColor(pe.getMainBounds(), red);
-}
-
-void Renderer::renderBoundsWithColor(NGRect &r, Color& c)
-{
-    m_boundsNGRectBatcher->renderNGRect(r, c);
-}
-
-void Renderer::renderHighlightForEntity(Entity &pe, Color &c)
-{
-    m_fillNGRectBatcher->renderNGRect(pe.getMainBounds(), c);
+    m_spriteBatcher->renderSprite(pe.getPosition().x, pe.getPosition().y, pe.getWidth(), pe.getHeight(), pe.getAngle(), flipX, c, tr);
 }
 
 void Renderer::loadTextureSync(TextureWrapper* textureWrapper)

@@ -120,6 +120,11 @@ InputState::GameInputState* InputState::getGameInputStateForPlayerId(uint8_t pla
     return nullptr;
 }
 
+bool InputState::isPlayerIdLocalHost(uint8_t playerId)
+{
+    return m_gameInputStates[0].m_iPlayerId == playerId;
+}
+
 bool InputState::isRequestingToAddLocalPlayer() const
 {
     for (int i = 1; i < MAX_NUM_PLAYERS_PER_SERVER; ++i)
@@ -146,7 +151,7 @@ InputState::GameInputState& InputState::getGameInputState(int index)
 
 void InputState::GameInputState::write(OutputMemoryBitStream& inOutputStream) const
 {
-    inOutputStream.write(m_iPlayerId);
+    inOutputStream.write(m_iPlayerId, 3);
     inOutputStream.write(m_isMovingRight);
     inOutputStream.write(m_isMovingLeft);
     inOutputStream.write(m_isJumping);
@@ -156,7 +161,7 @@ void InputState::GameInputState::write(OutputMemoryBitStream& inOutputStream) co
 
 void InputState::GameInputState::read(InputMemoryBitStream& inInputStream)
 {
-    inInputStream.read(m_iPlayerId);
+    inInputStream.read(m_iPlayerId, 3);
     inInputStream.read(m_isMovingRight);
     inInputStream.read(m_isMovingLeft);
     inInputStream.read(m_isJumping);

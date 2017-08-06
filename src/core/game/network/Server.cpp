@@ -28,6 +28,9 @@
 #include "EntityManager.h"
 #include "SocketServerHelper.h"
 #include "NGSteamServerHelper.h"
+#include "Crate.h"
+
+#include "Box2D/Box2D.h"
 
 #include <ctime> // rand
 #include <assert.h>
@@ -86,12 +89,18 @@ void Server::update(float deltaTime)
             InstanceManager::getServerWorld()->update();
             
             respawnEnemiesIfNecessary();
+            spawnCratesIfNecessary();
             
             clearClientMoves();
         }
         
         NG_SERVER->sendOutgoingPackets();
     }
+}
+
+int Server::getPlayerIdForRobotBeingCreated()
+{
+    return m_iPlayerIdForRobotBeingCreated;
 }
 
 void Server::toggleEnemies()
@@ -108,9 +117,34 @@ void Server::toggleEnemies()
     }
 }
 
+void Server::toggleObjects()
+{
+    m_isSpawningObjects = !m_isSpawningObjects;
+    
+    if (!m_isSpawningObjects)
+    {
+        InstanceManager::getServerWorld()->removeAllCrates();
+    }
+}
+
+void Server::toggleDisplaying()
+{
+    m_isDisplaying = !m_isDisplaying;
+}
+
 bool Server::isSpawningEnemies()
 {
     return m_isSpawningEnemies;
+}
+
+bool Server::isSpawningObjects()
+{
+    return m_isSpawningObjects;
+}
+
+bool Server::isDisplaying()
+{
+    return m_isDisplaying;
 }
 
 void Server::handleNewClient(int playerId, std::string playerName)
@@ -156,11 +190,12 @@ void Server::deleteRobotWithPlayerId(uint8_t playerId)
 
 void Server::spawnRobotForPlayer(int inPlayerId, std::string inPlayerName)
 {
-    Robot* robot = static_cast<Robot*>(SERVER_ENTITY_REG->createEntity(NETWORK_TYPE_Robot));
+    m_iPlayerIdForRobotBeingCreated = inPlayerId;
+    Robot* robot = static_cast<Robot*>(SERVER_ENTITY_REG->createEntity(NW_TYPE_Robot));
     robot->setPlayerId(inPlayerId);
     robot->setPlayerName(inPlayerName);
     float posX = (rand() % static_cast<int>(GAME_WIDTH - robot->getWidth() * 2)) + (robot->getWidth() * 2);
-    robot->setPosition(Vector2(posX - static_cast<float>(inPlayerId), 8.0f));
+    robot->setPosition(b2Vec2(posX - static_cast<float>(inPlayerId), 8.0f));
     
     static Color Red(1.0f, 0.0f, 0.0f, 1);
     static Color Green(0.0f, 1.0f, 0.0f, 1);
@@ -186,24 +221,24 @@ void Server::respawnEnemiesIfNecessary()
 {
     if (m_isSpawningEnemies && !InstanceManager::getServerWorld()->hasSpacePirates())
     {
-        m_fStateTimeNoEnemies += Timing::getInstance()->getDeltaTime();
+        m_fStateTimeNoEnemies += FRAME_RATE;
         if (m_fStateTimeNoEnemies > 10)
         {
             srand(static_cast<unsigned>(time(0)));
             
             m_fStateTimeNoEnemies = 0;
             
-            int numSpacePirates = rand() % 12 + 1;
+            int numSpacePirates = 4;
             
             for (int i = 0; i < numSpacePirates; ++i)
             {
-                SpacePirate* spacePirate = static_cast<SpacePirate*>(SERVER_ENTITY_REG->createEntity(NETWORK_TYPE_SpacePirate));
+                SpacePirate* spacePirate = static_cast<SpacePirate*>(SERVER_ENTITY_REG->createEntity(NW_TYPE_SpacePirate));
                 
                 float posX = (rand() % static_cast<int>(GAME_WIDTH - spacePirate->getWidth() * 2)) + (spacePirate->getWidth() * 2);
-                float posY = (rand() % static_cast<int>(GAME_HEIGHT - spacePirate->getHeight() * 2)) + (GROUND_TOP + spacePirate->getHeight() * 2);
+                float posY = (rand() % static_cast<int>(GAME_HEIGHT - spacePirate->getHeight() * 2)) + (2.0f + spacePirate->getHeight() * 2);
                 float speed = (rand() % 100) * 0.05f + 1.0f;
                 int scale = static_cast<int>(rand() % 3) + 1;
-                uint8_t health = static_cast<uint8_t>(rand() % 9) + 4;
+                uint8_t health = static_cast<uint8_t>(rand() % 60) + 4;
                 
                 spacePirate->init(posX, posY, speed, scale, health);
                 
@@ -228,6 +263,29 @@ void Server::respawnEnemiesIfNecessary()
     }
 }
 
+void Server::spawnCratesIfNecessary()
+{
+    if (!m_isSpawningObjects || InstanceManager::getServerWorld()->hasCrates())
+    {
+        return;
+    }
+    
+    srand(static_cast<unsigned>(time(0)));
+    
+    int limit = 16;
+    
+    for (int i = 0; i < limit; ++i)
+    {
+        Crate* crate = static_cast<Crate*>(SERVER_ENTITY_REG->createEntity(NW_TYPE_Crate));
+        
+        int xSeed = rand() % 3 + 1;
+        float posX = xSeed * GAME_WIDTH / 4;
+        float posY = (rand() % static_cast<int>(GAME_HEIGHT - crate->getHeight() * 2)) + (2.0f + crate->getHeight() * 2);
+        
+        crate->setPosition(b2Vec2(posX, posY));
+    }
+}
+
 void Server::clearClientMoves()
 {
     for (int i = 0; i < MAX_NUM_PLAYERS_PER_SERVER; ++i)
@@ -241,15 +299,17 @@ void Server::clearClientMoves()
     }
 }
 
-Server::Server(bool isSteam) : m_fStateTime(0), m_fFrameStateTime(0), m_fStateTimeNoEnemies(0), m_isSpawningEnemies(true)
+Server::Server(bool isSteam) : m_fStateTime(0), m_fFrameStateTime(0), m_fStateTimeNoEnemies(0), m_iPlayerIdForRobotBeingCreated(0), m_isSpawningEnemies(false), m_isSpawningObjects(true), m_isDisplaying(false)
 {
     FWInstanceManager::createServerEntityManager(InstanceManager::sHandleEntityCreatedOnServer, InstanceManager::sHandleEntityDeletedOnServer);
     
     InstanceManager::createServerWorld();
     
-    SERVER_ENTITY_REG->registerCreationFunction(NETWORK_TYPE_Robot, World::sServerCreateRobot);
-    SERVER_ENTITY_REG->registerCreationFunction(NETWORK_TYPE_Projectile, World::sServerCreateProjectile);
-    SERVER_ENTITY_REG->registerCreationFunction(NETWORK_TYPE_SpacePirate, World::sServerCreateSpacePirate);
+    SERVER_ENTITY_REG->registerCreationFunction(NW_TYPE_Robot, World::sServerCreateRobot);
+    SERVER_ENTITY_REG->registerCreationFunction(NW_TYPE_Projectile, World::sServerCreateProjectile);
+    SERVER_ENTITY_REG->registerCreationFunction(NW_TYPE_SpacePirate, World::sServerCreateSpacePirate);
+    SERVER_ENTITY_REG->registerCreationFunction(NW_TYPE_Crate, World::sServerCreateCrate);
+    SERVER_ENTITY_REG->registerCreationFunction(NW_TYPE_SpacePirateChunk, World::sServerCreateSpacePirateChunk);
     
     if (isSteam)
     {
@@ -265,7 +325,7 @@ Server::~Server()
 {
     NetworkManagerServer::destroy();
     
-    InstanceManager::destroyServerWorld();
-    
     FWInstanceManager::destroyServerEntityManager();
+    
+    InstanceManager::destroyServerWorld();
 }

@@ -16,7 +16,7 @@ class InputMemoryBitStream;
 class Move
 {
 public:
-    Move(IInputState* inInputState, float inTimestamp, float inDeltaTime);
+    Move(IInputState* inInputState, float inTimestamp);
     
     Move(IInputState* inInputState);
     
@@ -30,12 +30,9 @@ public:
     
     float getTimestamp() const;
     
-    float getDeltaTime() const;
-    
 private:
     IInputState* m_inputState;
     float m_fTimestamp;
-    float m_fDeltaTime;
 };
 
 #endif /* defined(__noctisgames__Move__) */

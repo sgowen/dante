@@ -62,7 +62,7 @@ bool DeliveryNotificationManager::readAndProcessState(InputMemoryBitStream& inIn
 
 void DeliveryNotificationManager::processTimedOutPackets(float frameStartTime)
 {
-    float timeoutTime = frameStartTime - NETWORK_ACK_TIMEOUT;
+    float timeoutTime = frameStartTime - NW_ACK_TIMEOUT;
     
     while (!m_inFlightPackets.empty())
     {

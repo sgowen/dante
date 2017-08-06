@@ -14,7 +14,7 @@
 #include "MathUtil.h"
 #include "FrameworkConstants.h"
 
-#define POOL_SIZE MAX(NETWORK_SERVER_TIMEOUT, NETWORK_CLIENT_TIMEOUT) * (MAX_NUM_PLAYERS_PER_SERVER + 1) * 60
+#define POOL_SIZE MAX(NW_SERVER_TIMEOUT, NW_CLIENT_TIMEOUT) * (MAX_NUM_PLAYERS_PER_SERVER + 1) * 60
 
 PooledObjectsManager* PooledObjectsManager::getInstance()
 {

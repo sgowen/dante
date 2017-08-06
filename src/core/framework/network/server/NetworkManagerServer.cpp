@@ -88,7 +88,7 @@ void NetworkManagerServer::checkForDisconnects()
 {
     std::vector<ClientProxy*> clientsToDC;
     
-    float minAllowedLastPacketFromClientTime = Timing::getInstance()->getFrameStartTime() - NETWORK_CLIENT_TIMEOUT;
+    float minAllowedLastPacketFromClientTime = Timing::getInstance()->getFrameStartTime() - NW_CLIENT_TIMEOUT;
     for (const auto& pair: m_addressHashToClientMap)
     {
         if (pair.second->getLastPacketFromClientTime() < minAllowedLastPacketFromClientTime)
@@ -236,7 +236,7 @@ void NetworkManagerServer::handlePacketFromNewClient(InputMemoryBitStream& inInp
     // read the beginning- is it a hello?
     uint32_t packetType;
     inInputStream.read(packetType);
-    if (packetType == NETWORK_PACKET_TYPE_HELLO)
+    if (packetType == NW_PACKET_TYPE_HELLO)
     {
         // read the name
         std::string name;
@@ -251,7 +251,7 @@ void NetworkManagerServer::handlePacketFromNewClient(InputMemoryBitStream& inInp
             }
         }
         
-        ClientProxy* newClientProxy = new ClientProxy(inFromAddress, name, m_iNextPlayerId++);
+        ClientProxy* newClientProxy = new ClientProxy(inFromAddress, name, m_iNextPlayerId);
         m_addressHashToClientMap[inFromAddress->getHash()] = newClientProxy;
         m_playerIDToClientMap[newClientProxy->getPlayerId()] = newClientProxy;
         
@@ -270,6 +270,8 @@ void NetworkManagerServer::handlePacketFromNewClient(InputMemoryBitStream& inInp
             Entity* pe = pair.second;
             newClientProxy->getReplicationManagerServer().replicateCreate(pair.first, pe->getAllStateMask());
         }
+        
+        updateNextPlayerId();
     }
     else
     {
@@ -287,21 +289,21 @@ void NetworkManagerServer::processPacket(ClientProxy* inClientProxy, InputMemory
     
     switch (packetType)
     {
-        case NETWORK_PACKET_TYPE_HELLO:
+        case NW_PACKET_TYPE_HELLO:
             //need to resend welcome. to be extra safe we should check the name is the one we expect from this address,
             //otherwise something weird is going on...
             sendWelcomePacket(inClientProxy);
             break;
-        case NETWORK_PACKET_TYPE_INPUT:
+        case NW_PACKET_TYPE_INPUT:
             if (inClientProxy->getDeliveryNotificationManager().readAndProcessState(inInputStream))
             {
                 handleInputPacket(inClientProxy, inInputStream);
             }
             break;
-        case NETWORK_PACKET_TYPE_ADD_LOCAL_PLAYER:
+        case NW_PACKET_TYPE_ADD_LOCAL_PLAYER:
             handleAddLocalPlayerPacket(inClientProxy, inInputStream);
             break;
-        case NETWORK_PACKET_TYPE_DROP_LOCAL_PLAYER:
+        case NW_PACKET_TYPE_DROP_LOCAL_PLAYER:
             handleDropLocalPlayerPacket(inClientProxy, inInputStream);
             break;
         default:
@@ -314,7 +316,7 @@ void NetworkManagerServer::sendWelcomePacket(ClientProxy* inClientProxy)
 {
     OutputMemoryBitStream packet;
     
-    packet.write(NETWORK_PACKET_TYPE_WELCOME);
+    packet.write(NW_PACKET_TYPE_WELCOME);
     packet.write(inClientProxy->getPlayerId());
     
     LOG("Server welcoming new client '%s' as player %d", inClientProxy->getName().c_str(), inClientProxy->getPlayerId());
@@ -328,7 +330,7 @@ void NetworkManagerServer::sendStatePacketToClient(ClientProxy* inClientProxy)
     OutputMemoryBitStream statePacket;
     
     //it's state!
-    statePacket.write(NETWORK_PACKET_TYPE_STATE);
+    statePacket.write(NW_PACKET_TYPE_STATE);
     
     InFlightPacket* ifp = inClientProxy->getDeliveryNotificationManager().writeState(statePacket);
     
@@ -355,7 +357,7 @@ void NetworkManagerServer::writeLastMoveTimestampIfDirty(OutputMemoryBitStream& 
 
 void NetworkManagerServer::handleInputPacket(ClientProxy* inClientProxy, InputMemoryBitStream& inInputStream)
 {
-    uint32_t moveCount = 0;
+    uint8_t moveCount = 0;
     Move move = Move(m_inputStateCreationFunc());
     inInputStream.read(moveCount, 2);
     
@@ -384,7 +386,7 @@ void NetworkManagerServer::handleAddLocalPlayerPacket(ClientProxy* inClientProxy
         {
             std::string localPlayerName = StringUtil::format("%s(%d)", inClientProxy->getName().c_str(), requestedIndex);
             
-            int playerId = m_iNextPlayerId++;
+            int playerId = m_iNextPlayerId;
             
             inClientProxy->onLocalPlayerAdded(playerId);
             
@@ -392,6 +394,8 @@ void NetworkManagerServer::handleAddLocalPlayerPacket(ClientProxy* inClientProxy
             
             // tell the server about this client
             m_handleNewClientFunc(playerId, localPlayerName);
+            
+            updateNextPlayerId();
         }
         
         // and welcome the new local player...
@@ -400,7 +404,7 @@ void NetworkManagerServer::handleAddLocalPlayerPacket(ClientProxy* inClientProxy
     else
     {
         OutputMemoryBitStream packet;
-        packet.write(NETWORK_PACKET_TYPE_LOCAL_PLAYER_DENIED);
+        packet.write(NW_PACKET_TYPE_LOCAL_PLAYER_DENIED);
         
         sendPacket(packet, inClientProxy->getMachineAddress());
     }
@@ -412,7 +416,7 @@ void NetworkManagerServer::sendLocalPlayerAddedPacket(ClientProxy* inClientProxy
     
     OutputMemoryBitStream packet;
     
-    packet.write(NETWORK_PACKET_TYPE_LOCAL_PLAYER_ADDED);
+    packet.write(NW_PACKET_TYPE_LOCAL_PLAYER_ADDED);
     packet.write(playerId);
     
     std::string localPlayerName = StringUtil::format("%s(%d)", inClientProxy->getName().c_str(), index);
@@ -467,15 +471,21 @@ void NetworkManagerServer::handleClientDisconnected(ClientProxy* inClientProxy)
 
 void NetworkManagerServer::updateNextPlayerId()
 {
+    LOG("updateNextPlayerId");
+    
     // Find the next available Player ID
     m_iNextPlayerId = 1;
-    for (auto const &entry : m_playerIDToClientMap)
-    {
-        if (entry.first == m_iNextPlayerId)
+    for (int i = 0; i < MAX_NUM_PLAYERS_PER_SERVER; ++i) {
+        for (auto const &entry : m_playerIDToClientMap)
         {
-            ++m_iNextPlayerId;
+            if (entry.first == m_iNextPlayerId)
+            {
+                ++m_iNextPlayerId;
+            }
         }
     }
+    
+    LOG("m_iNextPlayerId: %d", m_iNextPlayerId);
 }
 
 NetworkManagerServer::NetworkManagerServer(IServerHelper* inServerHelper, HandleNewClientFunc inHandleNewClientFunc, HandleLostClientFunc inHandleLostClientFunc, InputStateCreationFunc inInputStateCreationFunc) :

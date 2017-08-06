@@ -14,18 +14,16 @@
 #include "OutputMemoryBitStream.h"
 #include "InputMemoryBitStream.h"
 
-Move::Move(IInputState* inInputState, float inTimestamp, float inDeltaTime) :
+Move::Move(IInputState* inInputState, float inTimestamp) :
 m_inputState(inInputState),
-m_fTimestamp(inTimestamp),
-m_fDeltaTime(inDeltaTime)
+m_fTimestamp(inTimestamp)
 {
     // Empty
 }
 
 Move::Move(IInputState* inInputState) :
 m_inputState(inInputState),
-m_fTimestamp(0),
-m_fDeltaTime(0)
+m_fTimestamp(0)
 {
     // Empty
 }
@@ -57,9 +55,4 @@ IInputState* Move::getInputState() const
 float Move::getTimestamp() const
 {
     return m_fTimestamp;
-}
-
-float Move::getDeltaTime() const
-{
-    return m_fDeltaTime;
 }

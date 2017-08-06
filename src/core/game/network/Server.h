@@ -30,9 +30,19 @@ public:
     
     void update(float deltaTime);
     
+    int getPlayerIdForRobotBeingCreated();
+    
     void toggleEnemies();
     
+    void toggleObjects();
+    
+    void toggleDisplaying();
+    
     bool isSpawningEnemies();
+    
+    bool isSpawningObjects();
+    
+    bool isDisplaying();
 
 private:
     static Server* s_instance;
@@ -40,7 +50,10 @@ private:
     float m_fStateTime;
     float m_fFrameStateTime;
     float m_fStateTimeNoEnemies;
+    int m_iPlayerIdForRobotBeingCreated;
     bool m_isSpawningEnemies;
+    bool m_isSpawningObjects;
+    bool m_isDisplaying;
     
     void handleNewClient(int playerId, std::string playerName);
     
@@ -51,6 +64,8 @@ private:
     void spawnRobotForPlayer(int inPlayerId, std::string inPlayerName);
     
     void respawnEnemiesIfNecessary();
+    
+    void spawnCratesIfNecessary();
     
     void clearClientMoves();
     

@@ -13,7 +13,6 @@
 #include "Server.h"
 #include "JsonFile.h"
 #include "MainRenderer.h"
-#include "Vector2.h"
 #include "Entity.h"
 
 #include "GameConstants.h"
@@ -48,6 +47,7 @@
 #include "NGSteamAddress.h"
 #include "NGSteamGameServices.h"
 #include "MainEngineState.h"
+#include "FPSUtil.h"
 
 MainEngine::MainEngine() : IEngine(),
 m_config(new JsonFile("dante.cfg")),
@@ -61,9 +61,11 @@ m_isSteam(false)
     
     m_config->load();
     
-    FWInstanceManager::getClientEntityRegistry()->registerCreationFunction(NETWORK_TYPE_Robot, World::sClientCreateRobot);
-    FWInstanceManager::getClientEntityRegistry()->registerCreationFunction(NETWORK_TYPE_Projectile, World::sClientCreateProjectile);
-    FWInstanceManager::getClientEntityRegistry()->registerCreationFunction(NETWORK_TYPE_SpacePirate, World::sClientCreateSpacePirate);
+    CLIENT_ENTITY_REG->registerCreationFunction(NW_TYPE_Robot, World::sClientCreateRobot);
+    CLIENT_ENTITY_REG->registerCreationFunction(NW_TYPE_Projectile, World::sClientCreateProjectile);
+    CLIENT_ENTITY_REG->registerCreationFunction(NW_TYPE_SpacePirate, World::sClientCreateSpacePirate);
+    CLIENT_ENTITY_REG->registerCreationFunction(NW_TYPE_Crate, World::sClientCreateCrate);
+    CLIENT_ENTITY_REG->registerCreationFunction(NW_TYPE_SpacePirateChunk, World::sClientCreateSpacePirateChunk);
     
     NG_AUDIO_ENGINE->loadSound(SOUND_ID_ROBOT_JUMP, SOUND_ROBOT_JUMP, 4);
     NG_AUDIO_ENGINE->loadSound(SOUND_ID_EXPLOSION, SOUND_EXPLOSION, 8);
@@ -73,6 +75,9 @@ m_isSteam(false)
     NG_AUDIO_ENGINE->loadSound(SOUND_ID_HEADSHOT, SOUND_HEADSHOT, 4);
     
     NG_AUDIO_ENGINE->loadMusic(MUSIC_DEMO);
+    
+    NG_AUDIO_ENGINE->setSoundDisabled(true);
+    NG_AUDIO_ENGINE->setMusicDisabled(true);
 }
 
 MainEngine::~MainEngine()
@@ -114,6 +119,8 @@ void MainEngine::onPause()
 
 void MainEngine::update(float deltaTime)
 {
+    FPSUtil::getInstance()->update(deltaTime);
+    
     m_fStateTime += deltaTime;
     m_fFrameStateTime += deltaTime;
     
@@ -126,6 +133,8 @@ void MainEngine::update(float deltaTime)
         if (NG_CLIENT)
         {
             NG_CLIENT->processIncomingPackets();
+            
+            InstanceManager::getClientWorld()->postRead();
         }
         
         InputManager::getInstance()->update();
@@ -139,9 +148,9 @@ void MainEngine::update(float deltaTime)
             if (InstanceManager::getClientWorld())
             {
                 InstanceManager::getClientWorld()->update();
-                
-                InputManager::getInstance()->clearPendingMove();
             }
+            
+            InputManager::getInstance()->clearPendingMove();
         }
         
         if (NG_CLIENT)
@@ -180,14 +189,7 @@ void MainEngine::handleNonMoveInput()
     
     if (inputState->getMenuState() == MENU_STATE_CLIENT_MAIN_TOGGLE_MUSIC)
     {
-        if (NG_AUDIO_ENGINE->isMusicPlaying())
-        {
-            NG_AUDIO_ENGINE->stopMusic();
-        }
-        else
-        {
-            NG_AUDIO_ENGINE->playMusic(true);
-        }
+        NG_AUDIO_ENGINE->setMusicDisabled(!NG_AUDIO_ENGINE->isMusicDisabled());
     }
     else if (inputState->getMenuState() == MENU_STATE_CLIENT_MAIN_TOGGLE_SOUND)
     {
@@ -201,6 +203,14 @@ void MainEngine::handleNonMoveInput()
             if (inputState->getMenuState() == MENU_STATE_SERVER_TOGGLE_ENEMIES)
             {
                 Server::getInstance()->toggleEnemies();
+            }
+            else if (inputState->getMenuState() == MENU_STATE_SERVER_TOGGLE_OBJECTS)
+            {
+                Server::getInstance()->toggleObjects();
+            }
+            else if (inputState->getMenuState() == MENU_STATE_SERVER_TOGGLE_SERVER_DISPLAY)
+            {
+                Server::getInstance()->toggleDisplaying();
             }
         }
         
@@ -434,9 +444,9 @@ void MainEngine::disconnect()
     {
         NetworkManagerClient::destroy();
         
-        InstanceManager::destroyClientWorld();
-        
         FWInstanceManager::destroyClientEntityManager();
+        
+        InstanceManager::destroyClientWorld();
     }
     
     if (Server::getInstance())

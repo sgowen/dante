@@ -17,7 +17,8 @@
 
 class TextureWrapper;
 class Font;
-class Vector2;
+struct b2Vec2;
+class World;
 
 class MainRenderer : public Renderer
 {
@@ -45,6 +46,8 @@ private:
     
     void renderWorld();
     
+    void renderEntities(World* world, bool isServer);
+    
     void renderAtmosphere();
     
     void renderUI(int engineState);
@@ -63,7 +66,7 @@ private:
     
     void renderServerJoinedText();
     
-    void renderText(const std::string& inStr, const Vector2& origin, const Color& inColor, int justification = FONT_ALIGN_LEFT);
+    void renderText(const std::string& inStr, const b2Vec2& origin, const Color& inColor, int justification = FONT_ALIGN_LEFT);
     
     void updateCamera();
 };
