@@ -216,7 +216,12 @@ void World::update()
                     Move* move = moveList.getMoveAtIndex(j);
                     if (move)
                     {
-                        needsToProcessMoreMoves = true;
+                        if (robot->getPlayerId() == 1)
+                        {
+                            // This is the host
+                            needsToProcessMoreMoves = true;
+                        }
+                        
                         robot->processInput(move->getInputState());
                     }
                 }
