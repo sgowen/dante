@@ -51,13 +51,6 @@ public:
     virtual uint32_t write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState);
     
     void handleBeginContactWithGround(Ground* inGround);
-    
-private:
-    bool m_isServer;
-    
-    // Cached Values
-    b2Vec2 m_velocityOld;
-    b2Vec2 m_positionOld;
 };
 
 #endif /* defined(__noctisgames__Crate__) */

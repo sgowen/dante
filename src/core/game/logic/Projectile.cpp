@@ -15,6 +15,7 @@
 #include "InputMemoryBitStream.h"
 #include "Robot.h"
 #include "SpacePirate.h"
+#include "SpacePirateChunk.h"
 #include "Ground.h"
 #include "Crate.h"
 
@@ -33,15 +34,14 @@
 #include "NGAudioEngine.h"
 #include "InstanceManager.h"
 #include "Util.h"
-#include "SpacePirateChunk.h"
 
 #include <math.h>
 
-Projectile::Projectile(b2World& world, bool isServer) : Entity(world, 0, 0, 1.565217391304348f * 0.444444444444444f, 2.0f * 0.544423440453686f, constructEntityDef()),
-m_isServer(isServer),
+Projectile::Projectile(b2World& world, bool isServer) : Entity(world, 0, 0, 1.565217391304348f * 0.444444444444444f, 2.0f * 0.544423440453686f, isServer, constructEntityDef()),
 m_iPlayerId(0),
+m_isFacingLeft(false),
 m_state(ProjectileState_Waiting),
-m_isFacingLeft(false)
+m_stateLastKnown(ProjectileState_Waiting)
 {
     // Empty
 }
@@ -59,36 +59,31 @@ EntityDef Projectile::constructEntityDef()
 
 void Projectile::update()
 {
+    updateInternal(FRAME_RATE);
+    
     if (m_isServer)
     {
-        b2Vec2 oldVelocity = b2Vec2(getVelocity().x, getVelocity().y);
-        ProjectileState oldState = m_state;
-        bool old_isFacingLeft = m_isFacingLeft;
-        
-        updateInternal(FRAME_RATE);
-        
-        if (!areBox2DVectorsEqual(oldVelocity, getVelocity())
-            || oldState != m_state
-            || old_isFacingLeft != m_isFacingLeft)
+        if (!areBox2DVectorsEqual(m_velocityLastKnown, getVelocity())
+            || !areBox2DVectorsEqual(m_positionLastKnown, getPosition())
+            || m_stateLastKnown != m_state)
         {
             NG_SERVER->setStateDirty(getID(), PRJC_Pose);
         }
-        
-        NG_SERVER->setStateDirty(getID(), PRJC_Pose);
     }
-    else
-    {
-        updateInternal(FRAME_RATE);
-    }
+    
+    m_velocityLastKnown = b2Vec2(getVelocity().x, getVelocity().y);
+    m_positionLastKnown = b2Vec2(getPosition().x, getPosition().y);
+    m_stateLastKnown = m_state;
 }
 
 bool Projectile::shouldCollide(Entity *inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB)
 {
-    if (m_state == ProjectileState_Active)
+    if (m_state != ProjectileState_Waiting)
     {
         return inEntity->getRTTI().derivesFrom(SpacePirate::rtti)
+        || inEntity->getRTTI().derivesFrom(SpacePirateChunk::rtti)
         || inEntity->getRTTI().derivesFrom(Crate::rtti)
-        || inEntity->getRTTI().derivesFrom(SpacePirateChunk::rtti);
+        || inEntity->getRTTI().derivesFrom(Ground::rtti);
     }
     
     return false;
@@ -100,13 +95,17 @@ void Projectile::handleBeginContact(Entity* inEntity, b2Fixture* inFixtureA, b2F
     {
         handleBeginContactWithSpacePirate(static_cast<SpacePirate*>(inEntity));
     }
-    else if (inEntity->getRTTI().derivesFrom(Ground::rtti))
+    else if (inEntity->getRTTI().derivesFrom(SpacePirateChunk::rtti))
     {
-        handleBeginContactWithGround(nullptr);
+        handleBeginContactWithSpacePirateChunk(static_cast<SpacePirateChunk*>(inEntity));
     }
     else if (inEntity->getRTTI().derivesFrom(Crate::rtti))
     {
         handleBeginContactWithCrate(static_cast<Crate*>(inEntity));
+    }
+    else if (inEntity->getRTTI().derivesFrom(Ground::rtti))
+    {
+        handleBeginContactWithGround(nullptr);
     }
 }
 
@@ -132,13 +131,15 @@ void Projectile::read(InputMemoryBitStream& inInputStream)
     if (stateBit)
     {
         inInputStream.read(m_iPlayerId);
-        readState |= PRJC_PlayerId;
+        inInputStream.read(m_color);
+        inInputStream.read(m_isFacingLeft);
+        readState |= PRJC_PlayerInfo;
     }
     
     inInputStream.read(stateBit);
     if (stateBit)
     {
-        inInputStream.read(m_fStateTime);
+        inInputStream.read(m_state);
         
         b2Vec2 velocity;
         inInputStream.read(velocity);
@@ -148,31 +149,26 @@ void Projectile::read(InputMemoryBitStream& inInputStream)
         inInputStream.read(position);
         setPosition(position);
         
-        inInputStream.read(m_state);
-        
-        inInputStream.read(m_isFacingLeft);
-        
         readState |= PRJC_Pose;
-    }
-    
-    inInputStream.read(stateBit);
-    if (stateBit)
-    {
-        inInputStream.read(m_color);
-        readState |= PRJC_Color;
     }
     
     if (oldState == ProjectileState_Active
         && m_state == ProjectileState_Exploding)
     {
         m_body->SetGravityScale(0);
-        playSound(SOUND_ID_EXPLOSION);
+        
+        Util::playSound(SOUND_ID_EXPLOSION, getPosition(), m_isServer);
     }
     
-    if ((readState & PRJC_PlayerId) != 0)
+    if (oldState != m_state)
+    {
+        m_fStateTime = 0;
+    }
+    
+    if ((readState & PRJC_PlayerInfo) != 0)
     {
         // This projectile was just created
-        playSound(SOUND_ID_FIRE_ROCKET);
+        Util::playSound(SOUND_ID_FIRE_ROCKET, getPosition(), m_isServer);
     }
 }
 
@@ -180,12 +176,14 @@ uint32_t Projectile::write(OutputMemoryBitStream& inOutputStream, uint32_t inDir
 {
     uint32_t writtenState = 0;
     
-    if (inDirtyState & PRJC_PlayerId)
+    if (inDirtyState & PRJC_PlayerInfo)
     {
         inOutputStream.write((bool)true);
         inOutputStream.write(m_iPlayerId);
+        inOutputStream.write(m_color);
+        inOutputStream.write((bool)m_isFacingLeft);
         
-        writtenState |= PRJC_PlayerId;
+        writtenState |= PRJC_PlayerInfo;
     }
     else
     {
@@ -196,29 +194,13 @@ uint32_t Projectile::write(OutputMemoryBitStream& inOutputStream, uint32_t inDir
     {
         inOutputStream.write((bool)true);
         
-        inOutputStream.write(m_fStateTime);
+        inOutputStream.write(m_state);
         
         inOutputStream.write(getVelocity());
         
         inOutputStream.write(getPosition());
         
-        inOutputStream.write(m_state);
-        
-        inOutputStream.write((bool)m_isFacingLeft);
-        
         writtenState |= PRJC_Pose;
-    }
-    else
-    {
-        inOutputStream.write((bool)false);
-    }
-    
-    if (inDirtyState & PRJC_Color)
-    {
-        inOutputStream.write((bool)true);
-        inOutputStream.write(m_color);
-        
-        writtenState |= PRJC_Color;
     }
     else
     {
@@ -244,28 +226,23 @@ void Projectile::initFromShooter(Robot* inRobot)
     setColor(inRobot->getColor());
 }
 
-void Projectile::handleBeginContactWithSpacePirate(SpacePirate* spacePirate)
+void Projectile::handleBeginContactWithSpacePirate(SpacePirate* inEntity)
 {
     if (!m_isServer)
     {
         return;
     }
     
-    if (m_state == ProjectileState_Exploding)
-    {
-        return;
-    }
-    
     float projBottom = getPosition().y - (m_fHeight / 2.0f);
-    float targTop = spacePirate->getPosition().y + (spacePirate->getHeight() / 2.0f);
-    float targHead = targTop - spacePirate->getHeight() * 0.4f;
+    float targTop = inEntity->getPosition().y + (inEntity->getHeight() / 2.0f);
+    float targHead = targTop - inEntity->getHeight() * 0.4f;
     
     explode();
     
     bool isHeadshot = projBottom > targHead;
     
-    spacePirate->takeDamage(b2Vec2(getVelocity().x, getVelocity().y), isHeadshot);
-    if (spacePirate->getHealth() == 0)
+    inEntity->takeDamage(b2Vec2(getVelocity().x, getVelocity().y), isHeadshot);
+    if (inEntity->getHealth() == 0)
     {
         World* world = m_isServer ? InstanceManager::getServerWorld() : InstanceManager::getClientWorld();
         Robot* robot = world->getRobotWithPlayerId(getPlayerId());
@@ -274,25 +251,25 @@ void Projectile::handleBeginContactWithSpacePirate(SpacePirate* spacePirate)
             robot->awardKill(isHeadshot);
         }
     }
-    
-    NG_SERVER->setStateDirty(getID(), PRJC_Pose);
 }
 
-void Projectile::handleBeginContactWithGround(Ground* ground)
+void Projectile::handleBeginContactWithSpacePirateChunk(SpacePirateChunk* inEntity)
+{
+    inEntity->getBody()->ApplyLinearImpulseToCenter(b2Vec2(getVelocity().x, getVelocity().y), true);
+    
+    explode();
+}
+
+void Projectile::handleBeginContactWithCrate(Crate* inEntity)
+{
+    inEntity->getBody()->ApplyLinearImpulseToCenter(b2Vec2(getVelocity().x, getVelocity().y), true);
+    
+    explode();
+}
+
+void Projectile::handleBeginContactWithGround(Ground* inEntity)
 {
     explode();
-    
-    if (m_isServer)
-    {
-        NG_SERVER->setStateDirty(getID(), PRJC_Pose);
-    }
-}
-
-void Projectile::handleBeginContactWithCrate(Crate* inCrate)
-{
-    inCrate->getBody()->ApplyLinearImpulseToCenter(b2Vec2(getVelocity().x, 0), true);
-    
-    handleBeginContactWithGround(nullptr);
 }
 
 Projectile::ProjectileState Projectile::getState()
@@ -328,6 +305,15 @@ void Projectile::updateInternal(float inDeltaTime)
         
         return;
     }
+    else if (m_state == ProjectileState_Active)
+    {
+        if (m_fStateTime > 0.5f)
+        {
+            explode();
+            
+            return;
+        }
+    }
     
     if (getPosition().y < DEAD_ZONE_BOTTOM
         || getPosition().x < DEAD_ZONE_LEFT
@@ -343,11 +329,6 @@ void Projectile::explode()
     m_fStateTime = 0.0f;
     setVelocity(b2Vec2(0.0f, 0.0f));
     m_body->SetGravityScale(0);
-}
-
-void Projectile::playSound(int soundId)
-{
-    Util::playSound(soundId, getPosition(), m_isServer);
 }
 
 RTTI_IMPL(Projectile, Entity);

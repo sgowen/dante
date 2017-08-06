@@ -22,7 +22,7 @@
 #include "StringUtil.h"
 #include "MathUtil.h"
 
-Entity::Entity(b2World& world, float x, float y, float width, float height, EntityDef inEntityDef) :
+Entity::Entity(b2World& world, float x, float y, float width, float height, bool isServer, EntityDef inEntityDef) :
 m_worldRef(world),
 m_body(nullptr),
 m_fixture(nullptr),
@@ -31,6 +31,9 @@ m_fStateTime(0.0f),
 m_color(1.0f, 1.0f, 1.0f, 1.0f),
 m_fWidth(width),
 m_fHeight(height),
+m_isServer(isServer),
+m_velocityLastKnown(),
+m_positionLastKnown(),
 m_fTimeVelocityBecameOutOfSync(0.0f),
 m_fTimePositionBecameOutOfSync(0.0f),
 m_iID(getUniqueEntityID()),

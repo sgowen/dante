@@ -42,7 +42,7 @@
 
 #include <math.h>
 
-Robot::Robot(b2World& world, bool isServer) : Entity(world, 0, 0, 1.565217391304348f, 2.0f, constructEntityDef()),
+Robot::Robot(b2World& world, bool isServer) : Entity(world, 0, 0, 1.565217391304348f, 2.0f, isServer, constructEntityDef()),
 m_iAddressHash(0),
 m_iPlayerId(0),
 m_playerName("Robot"),
@@ -57,10 +57,7 @@ m_iReadState(0),
 m_fSpeed(7.5f),
 m_fJumpSpeed(11.0f),
 m_fTimeOfNextShot(0.0f),
-m_isServer(isServer),
 m_isFirstJumpCompleted(false),
-m_velocityLastKnown(),
-m_positionLastKnown(),
 m_iNumJumpsLastKnown(0),
 m_iHealthLastKnown(25),
 m_iNumKillsLastKnown(0),
@@ -84,6 +81,7 @@ EntityDef Robot::constructEntityDef()
     ret.isStaticBody = false;
     ret.restitution = 0.1f;
     ret.isCharacter = true;
+    ret.density = 32.0f;
     
     return ret;
 }
@@ -97,14 +95,18 @@ void Robot::update()
         if (!areBox2DVectorsEqual(m_velocityLastKnown, getVelocity())
             || !areBox2DVectorsEqual(m_positionLastKnown, getPosition())
             || m_iNumJumpsLastKnown != m_iNumJumps
-            || m_iHealthLastKnown != m_iHealth
-            || m_iNumKillsLastKnown != m_iNumKills
-            || m_wasLastKillHeadshotLastKnown != m_wasLastKillHeadshot
             || m_isFacingLeftLastKnown != m_isFacingLeft
             || m_isShootingLastKnown != m_isShooting
             || m_isSprintingLastKnown != m_isSprinting)
         {
             NG_SERVER->setStateDirty(getID(), ROBT_Pose);
+        }
+        
+        if (m_iHealthLastKnown != m_iHealth
+            || m_iNumKillsLastKnown != m_iNumKills
+            || m_wasLastKillHeadshotLastKnown != m_wasLastKillHeadshot)
+        {
+            NG_SERVER->setStateDirty(getID(), ROBT_Stats);
         }
     }
     else
@@ -113,7 +115,7 @@ void Robot::update()
         {
             if (m_iNumKills > m_iNumKillsLastKnown && m_wasLastKillHeadshot)
             {
-                playSound(SOUND_ID_HEADSHOT);
+                Util::playSound(SOUND_ID_HEADSHOT, getPosition(), m_isServer);
             }
         }
         else
@@ -124,7 +126,7 @@ void Robot::update()
     
     if (m_iHealth == 0 && !isRequestingDeletion())
     {
-        playSound(SOUND_ID_DEATH);
+        Util::playSound(SOUND_ID_DEATH, getPosition(), m_isServer);
         
         // TODO, this is NOT the right way to handle the player dying
         
@@ -228,16 +230,22 @@ void Robot::read(InputMemoryBitStream& inInputStream)
         
         inInputStream.read(m_iNumJumps);
         
-        inInputStream.read(m_iHealth);
-        
-        inInputStream.read(m_iNumKills);
-        inInputStream.read(m_wasLastKillHeadshot);
-        
         inInputStream.read(m_isFacingLeft);
         inInputStream.read(m_isShooting);
         inInputStream.read(m_isSprinting);
         
         m_iReadState |= ROBT_Pose;
+    }
+    
+    inInputStream.read(stateBit);
+    if (stateBit)
+    {
+        inInputStream.read(m_iHealth);
+        
+        inInputStream.read(m_iNumKills);
+        inInputStream.read(m_wasLastKillHeadshot);
+        
+        m_iReadState |= ROBT_Stats;
     }
 }
 
@@ -272,16 +280,27 @@ uint32_t Robot::write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtySta
         
         inOutputStream.write(m_iNumJumps);
         
-        inOutputStream.write(m_iHealth);
-        
-        inOutputStream.write(m_iNumKills);
-        inOutputStream.write((bool)m_wasLastKillHeadshot);
-        
         inOutputStream.write((bool)m_isFacingLeft);
         inOutputStream.write((bool)m_isShooting);
         inOutputStream.write((bool)m_isSprinting);
         
         writtenState |= ROBT_Pose;
+    }
+    else
+    {
+        inOutputStream.write((bool)false);
+    }
+    
+    if (inDirtyState & ROBT_Stats)
+    {
+        inOutputStream.write((bool)true);
+        
+        inOutputStream.write(m_iHealth);
+        
+        inOutputStream.write(m_iNumKills);
+        inOutputStream.write((bool)m_wasLastKillHeadshot);
+        
+        writtenState |= ROBT_Stats;
     }
     else
     {
@@ -501,18 +520,13 @@ void Robot::playNetworkBoundSounds(int numJumpsLastKnown, bool isSprintingLastKn
 {
     if (numJumpsLastKnown != m_iNumJumps && m_iNumJumps > 0)
     {
-        playSound(SOUND_ID_ROBOT_JUMP);
+        Util::playSound(SOUND_ID_ROBOT_JUMP, getPosition(), m_isServer);
     }
     
     if (!isSprintingLastKnown && m_isSprinting)
     {
-        playSound(SOUND_ID_ACTIVATE_SPRINT);
+        Util::playSound(SOUND_ID_ACTIVATE_SPRINT, getPosition(), m_isServer);
     }
-}
-
-void Robot::playSound(int soundId)
-{
-    Util::playSound(soundId, getPosition(), m_isServer);
 }
 
 RTTI_IMPL(Robot, Entity);

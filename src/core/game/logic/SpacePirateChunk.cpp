@@ -25,7 +25,7 @@
 
 #include <math.h>
 
-SpacePirateChunk::SpacePirateChunk(b2World& world, bool isServer) : Entity(world, 0.0f, 0.0f, 1.0f, 1.0f, constructEntityDef()), m_isServer(isServer), m_iType(Space_Pirate_Chunk_Top_Left), m_isFacingLeft(false)
+SpacePirateChunk::SpacePirateChunk(b2World& world, bool isServer) : Entity(world, 0.0f, 0.0f, 1.0f, 1.0f, isServer, constructEntityDef()), m_iType(Space_Pirate_Chunk_Top_Left), m_isFacingLeft(false)
 {
     // Empty
 }
@@ -36,7 +36,8 @@ EntityDef SpacePirateChunk::constructEntityDef()
     
     ret.isStaticBody = false;
     ret.fixedRotation = false;
-    ret.restitution = 0.25f;
+    ret.restitution = 0.5f;
+    ret.density = 8.0f;
     
     return ret;
 }
@@ -64,15 +65,15 @@ void SpacePirateChunk::update()
     
     if (m_isServer)
     {
-        if (!areBox2DVectorsEqual(m_velocityOld, getVelocity())
-            || !areBox2DVectorsEqual(m_positionOld, getPosition()))
+        if (!areBox2DVectorsEqual(m_velocityLastKnown, getVelocity())
+            || !areBox2DVectorsEqual(m_positionLastKnown, getPosition()))
         {
             NG_SERVER->setStateDirty(getID(), SPCH_Pose);
         }
-        
-        m_velocityOld = b2Vec2(getVelocity().x, getVelocity().y);
-        m_positionOld = b2Vec2(getPosition().x, getPosition().y);
     }
+    
+    m_velocityLastKnown = b2Vec2(getVelocity().x, getVelocity().y);
+    m_positionLastKnown = b2Vec2(getPosition().x, getPosition().y);
 }
 
 bool SpacePirateChunk::shouldCollide(Entity *inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB)
@@ -82,7 +83,10 @@ bool SpacePirateChunk::shouldCollide(Entity *inEntity, b2Fixture* inFixtureA, b2
 
 void SpacePirateChunk::handleBeginContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB)
 {
-    // Empty
+    if (inEntity->getRTTI().derivesFrom(Projectile::rtti))
+    {
+        (static_cast<Projectile*>(inEntity))->handleBeginContactWithSpacePirateChunk(this);
+    }
 }
 
 void SpacePirateChunk::handleEndContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB)
@@ -103,6 +107,20 @@ void SpacePirateChunk::read(InputMemoryBitStream& inInputStream)
     
     inInputStream.read(stateBit);
     if (stateBit)
+    {
+        inInputStream.read(m_iType);
+        inInputStream.read(m_isFacingLeft);
+        
+        inInputStream.read(m_color);
+        
+        inInputStream.read(m_fWidth);
+        inInputStream.read(m_fHeight);
+        
+        readState |= SPCH_Info;
+    }
+    
+    inInputStream.read(stateBit);
+    if (stateBit)
     {        
         b2Vec2 velocity;
         inInputStream.read(velocity);
@@ -112,14 +130,6 @@ void SpacePirateChunk::read(InputMemoryBitStream& inInputStream)
         inInputStream.read(position);
         setPosition(position);
         
-        inInputStream.read(m_fWidth);
-        inInputStream.read(m_fHeight);
-        
-        inInputStream.read(m_color);
-        
-        inInputStream.read(m_iType);
-        inInputStream.read(m_isFacingLeft);
-        
         readState |= SPCH_Pose;
     }
 }
@@ -128,6 +138,25 @@ uint32_t SpacePirateChunk::write(OutputMemoryBitStream& inOutputStream, uint32_t
 {
     uint32_t writtenState = 0;
     
+    if (inDirtyState & SPCH_Info)
+    {
+        inOutputStream.write((bool)true);
+        
+        inOutputStream.write(m_iType);
+        inOutputStream.write((bool)m_isFacingLeft);
+        
+        inOutputStream.write(m_color);
+        
+        inOutputStream.write(m_fWidth);
+        inOutputStream.write(m_fHeight);
+        
+        writtenState |= SPCH_Info;
+    }
+    else
+    {
+        inOutputStream.write((bool)false);
+    }
+    
     if (inDirtyState & SPCH_Pose)
     {
         inOutputStream.write((bool)true);
@@ -135,14 +164,6 @@ uint32_t SpacePirateChunk::write(OutputMemoryBitStream& inOutputStream, uint32_t
         inOutputStream.write(getVelocity());
         
         inOutputStream.write(getPosition());
-        
-        inOutputStream.write(m_fWidth);
-        inOutputStream.write(m_fHeight);
-        
-        inOutputStream.write(m_color);
-        
-        inOutputStream.write(m_iType);
-        inOutputStream.write((bool)m_isFacingLeft);
         
         writtenState |= SPCH_Pose;
     }

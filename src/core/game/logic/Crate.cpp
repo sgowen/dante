@@ -24,7 +24,7 @@
 
 #include <math.h>
 
-Crate::Crate(b2World& world, bool isServer) : Entity(world, 0.0f, 0.0f, 1.0f, 1.0f, constructEntityDef()), m_isServer(isServer)
+Crate::Crate(b2World& world, bool isServer) : Entity(world, 0.0f, 0.0f, 1.0f, 1.0f, isServer, constructEntityDef())
 {
     // Empty
 }
@@ -35,7 +35,7 @@ EntityDef Crate::constructEntityDef()
     
     ret.isStaticBody = false;
     ret.fixedRotation = false;
-    ret.restitution = 0.1f;
+    ret.restitution = 0.5f;
     ret.density = 16.0f;
     
     return ret;
@@ -43,26 +43,24 @@ EntityDef Crate::constructEntityDef()
 
 void Crate::update()
 {
+    if (m_isServer)
+    {
+        if (!areBox2DVectorsEqual(m_velocityLastKnown, getVelocity())
+            || !areBox2DVectorsEqual(m_positionLastKnown, getPosition()))
+        {
+            NG_SERVER->setStateDirty(getID(), CRAT_Pose);
+        }
+    }
+    
     if (getPosition().y < DEAD_ZONE_BOTTOM
         || getPosition().x < DEAD_ZONE_LEFT
         || getPosition().x > DEAD_ZONE_RIGHT)
     {
         requestDeletion();
     }
-    else
-    {
-        if (m_isServer)
-        {
-            if (!areBox2DVectorsEqual(m_velocityOld, getVelocity())
-                || !areBox2DVectorsEqual(m_positionOld, getPosition()))
-            {
-                NG_SERVER->setStateDirty(getID(), CRAT_Pose);
-            }
-            
-            m_velocityOld = b2Vec2(getVelocity().x, getVelocity().y);
-            m_positionOld = b2Vec2(getPosition().x, getPosition().y);
-        }
-    }
+    
+    m_velocityLastKnown = b2Vec2(getVelocity().x, getVelocity().y);
+    m_positionLastKnown = b2Vec2(getPosition().x, getPosition().y);
 }
 
 bool Crate::shouldCollide(Entity *inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB)

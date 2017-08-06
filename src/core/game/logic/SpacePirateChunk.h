@@ -32,9 +32,10 @@ class SpacePirateChunk : public Entity
 public:
     enum SpacePirateChunkReplicationState
     {
-        SPCH_Pose = 1 << 0,
+        SPCH_Info = 1 << 0,
+        SPCH_Pose = 1 << 1,
         
-        SPCH_AllState = SPCH_Pose
+        SPCH_AllState = SPCH_Info | SPCH_Pose
     };
     
     SpacePirateChunk(b2World& world, bool isServer);
@@ -63,12 +64,7 @@ public:
     
 private:
     int m_iType;
-    bool m_isServer;
     bool m_isFacingLeft;
-    
-    // Cached Values
-    b2Vec2 m_velocityOld;
-    b2Vec2 m_positionOld;
 };
 
 #endif /* defined(__noctisgames__SpacePirateChunk__) */

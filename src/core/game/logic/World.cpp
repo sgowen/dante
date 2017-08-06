@@ -68,7 +68,7 @@ m_isServer(isServer)
     // Construct a world object, which will hold and simulate the rigid bodies.
     m_world = new b2World(gravity);
     
-    m_ground = new Ground(*m_world);
+    m_ground = new Ground(*m_world, m_isServer);
     
     m_world->SetContactListener(m_entityContactListener);
     m_world->SetContactFilter(m_entityContactFilter);

@@ -22,7 +22,7 @@ class Ground : public Entity
     NW_TYPE_DECL(NW_TYPE_Ground);
     
 public:
-    Ground(b2World& world);
+    Ground(b2World& world, bool isServer);
     
     virtual EntityDef constructEntityDef();
     

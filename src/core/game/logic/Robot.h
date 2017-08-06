@@ -12,7 +12,6 @@
 #include "Entity.h"
 
 #include "GameConstants.h"
-#include "Box2D/Common/b2Math.h"
 
 #include <string>
 
@@ -32,8 +31,9 @@ public:
     {
         ROBT_PlayerInfo = 1 << 0,
         ROBT_Pose = 1 << 1,
+        ROBT_Stats = 1 << 2,
         
-        ROBT_AllState = ROBT_PlayerInfo
+        ROBT_AllState = ROBT_PlayerInfo | ROBT_Pose | ROBT_Stats
     };
     
     Robot(b2World& world, bool isServer);
@@ -111,12 +111,9 @@ private:
     float m_fJumpSpeed;
     float m_fTimeOfNextShot;
     
-    bool m_isServer;
     bool m_isFirstJumpCompleted;
     
     // Cached Last Known Values (from previous frame)
-    b2Vec2 m_velocityLastKnown;
-    b2Vec2 m_positionLastKnown;
     uint8_t m_iNumJumpsLastKnown;
     uint8_t m_iHealthLastKnown;
     uint32_t m_iNumKillsLastKnown;
@@ -128,8 +125,6 @@ private:
     void handleShooting();
     
     void playNetworkBoundSounds(int numJumpsLastKnown, bool isSprintingLastKnown);
-    
-    void playSound(int soundId);
 };
 
 #endif /* defined(__noctisgames__Robot__) */

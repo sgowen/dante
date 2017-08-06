@@ -27,12 +27,11 @@ class SpacePirate : public Entity
 public:
     enum SpacePirateReplicationState
     {
-        SPCP_Pose = 1 << 0,
-        SPCP_Color = 1 << 1,
+        SPCP_Info = 1 << 0,
+        SPCP_Pose = 1 << 1,
         SPCP_Health = 1 << 2,
-        SPCP_Size = 1 << 2,
         
-        SPCP_AllState = SPCP_Pose | SPCP_Color | SPCP_Health | SPCP_Size
+        SPCP_AllState = SPCP_Info | SPCP_Pose | SPCP_Health
     };
     
     SpacePirate(b2World& world, bool isServer);
@@ -66,7 +65,6 @@ public:
     bool isFacingLeft();
     
 private:
-    bool m_isServer;
     float m_fSpeed;
     uint8_t m_iHealth;
     bool m_isFacingLeft;
@@ -77,6 +75,9 @@ private:
     float m_fStartingHealth;
     
     b2Vec2 m_lastForce;
+    
+    // Cached Last Known Values (from previous frame)
+    uint8_t m_iHealthLeftLastKnown;
     
     void updateInternal(float inDeltaTime);
 };

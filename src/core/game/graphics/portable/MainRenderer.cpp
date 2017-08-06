@@ -158,12 +158,10 @@ void MainRenderer::renderWorld()
     
     renderEntities(InstanceManager::getClientWorld(), false);
     
-#ifdef _DEBUG
     if (Server::getInstance() && Server::getInstance()->isDisplaying())
     {
         renderEntities(InstanceManager::getServerWorld(), true);
     }
-#endif
     
     m_spriteBatcher->beginBatch();
     std::vector<Entity*> entities = InstanceManager::getClientWorld()->getEntities();
@@ -517,14 +515,12 @@ void MainRenderer::renderServerJoinedText()
             renderText(text, origin, Color::BLACK, FONT_ALIGN_RIGHT);
         }
         
-#ifdef _DEBUG
         {
             static b2Vec2 origin = b2Vec2(CAM_WIDTH - 0.5f, CAM_HEIGHT - 4.0f);
             
             std::string text = StringUtil::format("'I'  DEBUG %s", Server::getInstance()->isDisplaying() ? " ON" : "OFF");
             renderText(text, origin, Color::BLACK, FONT_ALIGN_RIGHT);
         }
-#endif
     }
     
     if (InstanceManager::getClientWorld())

@@ -37,15 +37,15 @@
 
 #include <math.h>
 
-SpacePirate::SpacePirate(b2World& world, bool isServer) : Entity(world, 0, 0, 2.0f, 2.347826086956522f, constructEntityDef()),
-m_isServer(isServer),
+SpacePirate::SpacePirate(b2World& world, bool isServer) : Entity(world, 0, 0, 2.0f, 2.347826086956522f, isServer, constructEntityDef()),
 m_fSpeed(0.0),
 m_iHealth(8),
 m_fStartingHealth(8),
 m_isFacingLeft(false),
 m_isJumping(false),
 m_fTimeForNextJump(0.0f),
-m_fJumpSpeed(7.0f)
+m_fJumpSpeed(7.0f),
+m_iHealthLeftLastKnown(8)
 {
     m_fTimeForNextJump = Timing::getInstance()->getFrameStartTime();
     m_fTimeForNextJump += (rand() % 100) * 0.1f + 1.0f;
@@ -58,31 +58,32 @@ EntityDef SpacePirate::constructEntityDef()
     ret.isStaticBody = false;
     ret.restitution = 0.1f;
     ret.isCharacter = true;
+    ret.density = 32.0f;
     
     return ret;
 }
 
 void SpacePirate::update()
 {
+    updateInternal(FRAME_RATE);
+    
     if (m_isServer)
     {
-        b2Vec2 oldVelocity = b2Vec2(getVelocity().x, getVelocity().y);
-        bool old_isFacingLeft = m_isFacingLeft;
-        
-        updateInternal(FRAME_RATE);
-        
-        if (!areBox2DVectorsEqual(oldVelocity, getVelocity())
-            || old_isFacingLeft != m_isFacingLeft)
+        if (!areBox2DVectorsEqual(m_velocityLastKnown, getVelocity())
+            || !areBox2DVectorsEqual(m_positionLastKnown, getPosition()))
         {
             NG_SERVER->setStateDirty(getID(), SPCP_Pose);
         }
         
-        NG_SERVER->setStateDirty(getID(), SPCP_Pose);
+        if (m_iHealthLeftLastKnown != m_iHealth)
+        {
+            NG_SERVER->setStateDirty(getID(), SPCP_Health);
+        }
     }
-    else
-    {
-        updateInternal(FRAME_RATE);
-    }
+    
+    m_velocityLastKnown = b2Vec2(getVelocity().x, getVelocity().y);
+    m_positionLastKnown = b2Vec2(getPosition().x, getPosition().y);
+    m_iHealthLeftLastKnown = m_iHealth;
 }
 
 bool SpacePirate::shouldCollide(Entity *inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB)
@@ -152,8 +153,16 @@ void SpacePirate::read(InputMemoryBitStream& inInputStream)
     inInputStream.read(stateBit);
     if (stateBit)
     {
-        inInputStream.read(m_fStateTime);
+        inInputStream.read(m_color);
         
+        inInputStream.read(m_fWidth);
+        inInputStream.read(m_fHeight);
+        readState |= SPCP_Info;
+    }
+    
+    inInputStream.read(stateBit);
+    if (stateBit)
+    {
         b2Vec2 velocity;
         inInputStream.read(velocity);
         setVelocity(velocity);
@@ -171,23 +180,8 @@ void SpacePirate::read(InputMemoryBitStream& inInputStream)
     inInputStream.read(stateBit);
     if (stateBit)
     {
-        inInputStream.read(m_color);
-        readState |= SPCP_Color;
-    }
-    
-    inInputStream.read(stateBit);
-    if (stateBit)
-    {
         inInputStream.read(m_iHealth);
         readState |= SPCP_Health;
-    }
-    
-    inInputStream.read(stateBit);
-    if (stateBit)
-    {
-        inInputStream.read(m_fWidth);
-        inInputStream.read(m_fHeight);
-        readState |= SPCP_Size;
     }
 }
 
@@ -195,11 +189,25 @@ uint32_t SpacePirate::write(OutputMemoryBitStream& inOutputStream, uint32_t inDi
 {
     uint32_t writtenState = 0;
     
-    if (inDirtyState & SPCP_Pose)
+    if (inDirtyState & SPCP_Info)
     {
         inOutputStream.write((bool)true);
         
-        inOutputStream.write(m_fStateTime);
+        inOutputStream.write(m_color);
+        
+        inOutputStream.write(m_fWidth);
+        inOutputStream.write(m_fHeight);
+        
+        writtenState |= SPCP_Info;
+    }
+    else
+    {
+        inOutputStream.write((bool)false);
+    }
+    
+    if (inDirtyState & SPCP_Pose)
+    {
+        inOutputStream.write((bool)true);
         
         inOutputStream.write(getVelocity());
         
@@ -215,19 +223,6 @@ uint32_t SpacePirate::write(OutputMemoryBitStream& inOutputStream, uint32_t inDi
         inOutputStream.write((bool)false);
     }
     
-    if (inDirtyState & SPCP_Color)
-    {
-        inOutputStream.write((bool)true);
-        
-        inOutputStream.write(m_color);
-        
-        writtenState |= SPCP_Color;
-    }
-    else
-    {
-        inOutputStream.write((bool)false);
-    }
-    
     if (inDirtyState & SPCP_Health)
     {
         inOutputStream.write((bool)true);
@@ -235,20 +230,6 @@ uint32_t SpacePirate::write(OutputMemoryBitStream& inOutputStream, uint32_t inDi
         inOutputStream.write(m_iHealth);
         
         writtenState |= SPCP_Health;
-    }
-    else
-    {
-        inOutputStream.write((bool)false);
-    }
-    
-    if (inDirtyState & SPCP_Size)
-    {
-        inOutputStream.write((bool)true);
-        
-        inOutputStream.write(m_fWidth);
-        inOutputStream.write(m_fHeight);
-        
-        writtenState |= SPCP_Size;
     }
     else
     {
@@ -306,12 +287,6 @@ void SpacePirate::takeDamage(b2Vec2 force, bool isHeadshot)
     {
         // We are using unsigned values for health
         m_iHealth = 0;
-    }
-    
-    if (m_isServer)
-    {
-        // tell the world our health dropped
-        NG_SERVER->setStateDirty(getID(), SPCP_Health);
     }
 }
 

@@ -12,6 +12,8 @@
 #include "Color.h"
 #include "FrameworkConstants.h"
 
+#include "Box2D/Common/b2Math.h"
+
 #include "RTTI.h"
 
 #include <stdint.h>
@@ -61,7 +63,7 @@ class Entity
     NW_TYPE_DECL(NW_TYPE_Entity);
     
 public:
-    Entity(b2World& world, float x, float y, float width, float height, EntityDef inEntityDef);
+    Entity(b2World& world, float x, float y, float width, float height, bool isServer, EntityDef inEntityDef);
     
     virtual ~Entity();
     
@@ -138,6 +140,11 @@ protected:
     Color m_color;
     float m_fWidth;
     float m_fHeight;
+    bool m_isServer;
+    
+    // Cached Last Known Values (from previous frame)
+    b2Vec2 m_velocityLastKnown;
+    b2Vec2 m_positionLastKnown;
     
     void interpolateClientSidePrediction(b2Vec2& inOldVelocity, b2Vec2& inOldPos);
     

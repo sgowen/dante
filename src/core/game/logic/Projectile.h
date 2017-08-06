@@ -13,8 +13,11 @@
 
 #include "GameConstants.h"
 
+#include "Box2D/Common/b2Math.h"
+
 class Robot;
 class SpacePirate;
+class SpacePirateChunk;
 class Ground;
 class Crate;
 
@@ -27,11 +30,10 @@ class Projectile : public Entity
 public:
     enum ProjectileReplicationState
     {
-        PRJC_Pose = 1 << 0,
-        PRJC_Color = 1 << 1,
-        PRJC_PlayerId = 1 << 2,
+        PRJC_PlayerInfo = 1 << 0,
+        PRJC_Pose = 1 << 1,
         
-        PRJC_AllState = PRJC_Pose | PRJC_Color | PRJC_PlayerId
+        PRJC_AllState = PRJC_PlayerInfo | PRJC_Pose
     };
     
     enum ProjectileState
@@ -61,11 +63,15 @@ public:
     
     void initFromShooter(Robot* inRobot);
     
-    void handleBeginContactWithSpacePirate(SpacePirate* spacePirate);
+    void handleBeginContactWithSpacePirate(SpacePirate* inEntity);
     
-    void handleBeginContactWithGround(Ground* inGround);
+    void handleBeginContactWithSpacePirateChunk(SpacePirateChunk* inEntity);
     
-    void handleBeginContactWithCrate(Crate* inCrate);
+    void handleBeginContactWithGround(Ground* inEntity);
+    
+    void handleBeginContactWithCrate(Crate* inEntity);
+    
+    void updateInternal(float inDeltaTime);
     
     ProjectileState getState();
     
@@ -76,16 +82,15 @@ public:
     bool isFacingLeft();
     
 private:
-    bool m_isServer;
     uint32_t m_iPlayerId;
-    ProjectileState m_state;
     bool m_isFacingLeft;
     
-    void updateInternal(float inDeltaTime);
+    ProjectileState m_state;
+    
+    // Cached Last Known Values (from previous frame)
+    ProjectileState m_stateLastKnown;
     
     void explode();
-    
-    void playSound(int soundId);
 };
 
 #endif /* defined(__noctisgames__Projectile__) */

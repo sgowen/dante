@@ -21,7 +21,7 @@
 
 #include <math.h>
 
-Ground::Ground(b2World& world) : Entity(world, GAME_WIDTH / 2.0f, -10.0f, GAME_WIDTH, 23.6f, constructEntityDef())
+Ground::Ground(b2World& world, bool isServer) : Entity(world, GAME_WIDTH / 2.0f, -10.0f, GAME_WIDTH, 23.6f, isServer, constructEntityDef())
 {
     // Empty
 }
