@@ -45,18 +45,18 @@ void Crate::update()
 {
     if (m_isServer)
     {
+        if (getPosition().y < DEAD_ZONE_BOTTOM
+            || getPosition().x < DEAD_ZONE_LEFT
+            || getPosition().x > DEAD_ZONE_RIGHT)
+        {
+            requestDeletion();
+        }
+        
         if (!areBox2DVectorsEqual(m_velocityLastKnown, getVelocity())
             || !areBox2DVectorsEqual(m_positionLastKnown, getPosition()))
         {
             NG_SERVER->setStateDirty(getID(), CRAT_Pose);
         }
-    }
-    
-    if (getPosition().y < DEAD_ZONE_BOTTOM
-        || getPosition().x < DEAD_ZONE_LEFT
-        || getPosition().x > DEAD_ZONE_RIGHT)
-    {
-        requestDeletion();
     }
     
     m_velocityLastKnown = b2Vec2(getVelocity().x, getVelocity().y);

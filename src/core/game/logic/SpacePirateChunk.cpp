@@ -37,7 +37,7 @@ EntityDef SpacePirateChunk::constructEntityDef()
     ret.isStaticBody = false;
     ret.fixedRotation = false;
     ret.restitution = 0.5f;
-    ret.density = 8.0f;
+    ret.density = 12.0f;
     
     return ret;
 }
@@ -46,25 +46,26 @@ void SpacePirateChunk::update()
 {
     m_fStateTime += FRAME_RATE;
     
-    if (m_fStateTime > 5)
-    {
-        requestDeletion();
-    }
-    else if (m_fStateTime > 3)
+    if (m_fStateTime > 3)
     {
         m_color.alpha = (5 - m_fStateTime) / 2.0f;
         m_color.alpha = clamp(m_color.alpha, 1, 0);
     }
     
-    if (getPosition().y < DEAD_ZONE_BOTTOM
-        || getPosition().x < DEAD_ZONE_LEFT
-        || getPosition().x > DEAD_ZONE_RIGHT)
-    {
-        requestDeletion();
-    }
-    
     if (m_isServer)
     {
+        if (m_fStateTime > 5)
+        {
+            requestDeletion();
+        }
+        
+        if (getPosition().y < DEAD_ZONE_BOTTOM
+            || getPosition().x < DEAD_ZONE_LEFT
+            || getPosition().x > DEAD_ZONE_RIGHT)
+        {
+            requestDeletion();
+        }
+        
         if (!areBox2DVectorsEqual(m_velocityLastKnown, getVelocity())
             || !areBox2DVectorsEqual(m_positionLastKnown, getPosition()))
         {

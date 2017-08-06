@@ -47,6 +47,11 @@ bool MoveList::addMoveIfNew(const Move& inMove)
     return false;
 }
 
+void MoveList::markMoveAsProcessed(Move* move)
+{
+    m_fLastMoveTimestamp = move->getTimestamp();
+}
+
 void MoveList::removeProcessedMoves(float inLastMoveProcessedOnServerTimestamp)
 {
     while (!m_moves.empty() && m_moves.front().getTimestamp() <= inLastMoveProcessedOnServerTimestamp)

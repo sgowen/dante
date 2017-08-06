@@ -43,12 +43,12 @@ m_iHealth(8),
 m_fStartingHealth(8),
 m_isFacingLeft(false),
 m_isJumping(false),
-m_fTimeForNextJump(0.0f),
+m_fJumpCooldown(0.0f),
 m_fJumpSpeed(7.0f),
 m_iHealthLeftLastKnown(8)
 {
-    m_fTimeForNextJump = Timing::getInstance()->getFrameStartTime();
-    m_fTimeForNextJump += (rand() % 100) * 0.1f + 1.0f;
+    m_fJumpCooldown = Timing::getInstance()->getFrameStartTime();
+    m_fJumpCooldown += (rand() % 100) * 0.1f + 1.0f;
 }
 
 EntityDef SpacePirate::constructEntityDef()
@@ -58,17 +58,78 @@ EntityDef SpacePirate::constructEntityDef()
     ret.isStaticBody = false;
     ret.restitution = 0.1f;
     ret.isCharacter = true;
-    ret.density = 32.0f;
+    ret.density = 48.0f;
     
     return ret;
 }
 
 void SpacePirate::update()
 {
-    updateInternal(FRAME_RATE);
+    m_fStateTime += FRAME_RATE;
     
     if (m_isServer)
     {
+        if (getPosition().y < DEAD_ZONE_BOTTOM)
+        {
+            m_iHealth = 0;
+        }
+        
+        if (m_iHealth == 0 && !isRequestingDeletion())
+        {
+            requestDeletion();
+            
+            for (int i = 0; i < 4; ++i)
+            {
+                SpacePirateChunk* chunk = static_cast<SpacePirateChunk*>(SERVER_ENTITY_REG->createEntity(NW_TYPE_SpacePirateChunk));
+                chunk->initFromSpacePirate(this, m_lastForce, i);
+            }
+        }
+        
+        if (isGrounded())
+        {
+            m_fJumpCooldown -= FRAME_RATE;
+            
+            if (m_fJumpCooldown < 0)
+            {
+                m_fJumpCooldown += (rand() % 100) * 0.1f + 1.0f;
+                
+                m_fStateTime = 0;
+                m_isJumping = true;
+                
+                setVelocity(b2Vec2(getVelocity().x, m_fJumpSpeed));
+            }
+        }
+        
+        bool targetFound = false;
+        
+        float shortestDistance = GAME_WIDTH;
+        std::vector<Entity*> players = InstanceManager::getServerWorld()->getPlayers();
+        for (Entity* entity : players)
+        {
+            Robot* robot = static_cast<Robot*>(entity);
+            
+            if (!robot->isRequestingDeletion())
+            {
+                float dist = b2Distance(robot->getPosition(), getPosition());
+                if (dist < shortestDistance)
+                {
+                    shortestDistance = dist;
+                    m_isFacingLeft = robot->getPosition().x < getPosition().x;
+                    
+                    setVelocity(b2Vec2(m_isFacingLeft ? -m_fSpeed : m_fSpeed, getVelocity().y));
+                    
+                    targetFound = true;
+                }
+            }
+        }
+        
+        if (!targetFound)
+        {
+            m_isFacingLeft = true;
+            
+            setVelocity(b2Vec2(0, getVelocity().y));
+        }
+        
         if (!areBox2DVectorsEqual(m_velocityLastKnown, getVelocity())
             || !areBox2DVectorsEqual(m_positionLastKnown, getPosition()))
         {
@@ -79,6 +140,11 @@ void SpacePirate::update()
         {
             NG_SERVER->setStateDirty(getID(), SPCP_Health);
         }
+    }
+    
+    if (getVelocity().y < 0 && !isFalling())
+    {
+        m_fStateTime = 0;
     }
     
     m_velocityLastKnown = b2Vec2(getVelocity().x, getVelocity().y);
@@ -163,6 +229,8 @@ void SpacePirate::read(InputMemoryBitStream& inInputStream)
     inInputStream.read(stateBit);
     if (stateBit)
     {
+        inInputStream.read(m_fStateTime);
+        
         b2Vec2 velocity;
         inInputStream.read(velocity);
         setVelocity(velocity);
@@ -208,6 +276,8 @@ uint32_t SpacePirate::write(OutputMemoryBitStream& inOutputStream, uint32_t inDi
     if (inDirtyState & SPCP_Pose)
     {
         inOutputStream.write((bool)true);
+        
+        inOutputStream.write(m_fStateTime);
         
         inOutputStream.write(getVelocity());
         
@@ -303,91 +373,6 @@ float SpacePirate::getSpeed()
 bool SpacePirate::isFacingLeft()
 {
     return m_isFacingLeft;
-}
-
-void SpacePirate::updateInternal(float inDeltaTime)
-{
-    m_fStateTime += inDeltaTime;
-    
-    if (isGrounded())
-    {
-        setAngle(0);
-    }
-    
-    if (getVelocity().y < 0 && !isFalling())
-    {
-        m_fStateTime = 0;
-    }
-    
-    if (getPosition().y < DEAD_ZONE_BOTTOM)
-    {
-        requestDeletion();
-        
-        return;
-    }
-    
-    if (!m_isServer)
-    {
-        return;
-    }
-    
-    if (m_iHealth == 0 && !isRequestingDeletion())
-    {
-        for (int i = 0; i < 4; ++i)
-        {
-            SpacePirateChunk* chunk = static_cast<SpacePirateChunk*>(SERVER_ENTITY_REG->createEntity(NW_TYPE_SpacePirateChunk));
-            chunk->initFromSpacePirate(this, m_lastForce, i);
-        }
-    }
-    
-    if (m_iHealth == 0)
-    {
-        requestDeletion();
-    }
-    
-    if (Timing::getInstance()->getFrameStartTime() > m_fTimeForNextJump)
-    {
-        if (isGrounded())
-        {
-            m_fTimeForNextJump = Timing::getInstance()->getFrameStartTime();
-            m_fTimeForNextJump += (rand() % 100) * 0.1f + 1.0f;
-            
-            m_fStateTime = 0;
-            m_isJumping = true;
-            
-            setVelocity(b2Vec2(getVelocity().x, m_fJumpSpeed));
-        }
-    }
-    
-    bool targetFound = false;
-    
-    float shortestDistance = GAME_WIDTH;
-    std::vector<Entity*> players = InstanceManager::getServerWorld()->getPlayers();
-    for (Entity* entity : players)
-    {
-        Robot* robot = static_cast<Robot*>(entity);
-        
-        if (!robot->isRequestingDeletion())
-        {
-            float dist = b2Distance(robot->getPosition(), getPosition());
-            if (dist < shortestDistance)
-            {
-                shortestDistance = dist;
-                m_isFacingLeft = robot->getPosition().x < getPosition().x;
-                
-                setVelocity(b2Vec2(m_isFacingLeft ? -m_fSpeed : m_fSpeed, getVelocity().y));
-                
-                targetFound = true;
-            }
-        }
-    }
-    
-    if (!targetFound)
-    {
-        m_isFacingLeft = true;
-        
-        setVelocity(b2Vec2(0, getVelocity().y));
-    }
 }
 
 RTTI_IMPL(SpacePirate, Entity);

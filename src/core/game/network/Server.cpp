@@ -109,7 +109,7 @@ void Server::toggleEnemies()
     
     if (m_isSpawningEnemies)
     {
-        m_fStateTimeNoEnemies = 10; // Spawn em now!
+        m_fStateTimeNoEnemies = 5; // Spawn em now!
     }
     else
     {
@@ -222,7 +222,7 @@ void Server::respawnEnemiesIfNecessary()
     if (m_isSpawningEnemies && !InstanceManager::getServerWorld()->hasSpacePirates())
     {
         m_fStateTimeNoEnemies += FRAME_RATE;
-        if (m_fStateTimeNoEnemies > 10)
+        if (m_fStateTimeNoEnemies > 5)
         {
             srand(static_cast<unsigned>(time(0)));
             

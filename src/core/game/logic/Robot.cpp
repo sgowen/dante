@@ -56,7 +56,7 @@ m_isSprinting(false),
 m_iReadState(0),
 m_fSpeed(7.5f),
 m_fJumpSpeed(11.0f),
-m_fTimeOfNextShot(0.0f),
+m_fShotCooldownTime(0.0f),
 m_isFirstJumpCompleted(false),
 m_iNumJumpsLastKnown(0),
 m_iHealthLastKnown(25),
@@ -88,9 +88,41 @@ EntityDef Robot::constructEntityDef()
 
 void Robot::update()
 {
+    m_fStateTime += FRAME_RATE;
+    
     if (m_isServer)
     {
-        handleShooting();
+        if (getPosition().y < DEAD_ZONE_BOTTOM)
+        {
+            m_iHealth = 0;
+        }
+        
+        if (m_iHealth == 0 && !isRequestingDeletion())
+        {
+            // TODO, this is NOT the right way to handle the player dying
+            
+            requestDeletion();
+            
+            if (m_isServer)
+            {
+                Server::sHandleNewClient(m_iPlayerId, m_playerName);
+            }
+        }
+        
+        if (m_isShooting)
+        {
+            m_fShotCooldownTime -= FRAME_RATE;
+            
+            if (m_fShotCooldownTime < 0)
+            {
+                // not exact, but okay
+                m_fShotCooldownTime += FRAME_RATE * 4;
+                
+                // fire!
+                Projectile* projectile = static_cast<Projectile*>(SERVER_ENTITY_REG->createEntity(NW_TYPE_Projectile));
+                projectile->initFromShooter(this);
+            }
+        }
         
         if (!areBox2DVectorsEqual(m_velocityLastKnown, getVelocity())
             || !areBox2DVectorsEqual(m_positionLastKnown, getPosition())
@@ -117,6 +149,11 @@ void Robot::update()
             {
                 Util::playSound(SOUND_ID_HEADSHOT, getPosition(), m_isServer);
             }
+            
+            if (m_iHealth > m_iHealthLastKnown)
+            {
+                Util::playSound(SOUND_ID_DEATH, getPosition(), m_isServer);
+            }
         }
         else
         {
@@ -124,18 +161,9 @@ void Robot::update()
         }
     }
     
-    if (m_iHealth == 0 && !isRequestingDeletion())
+    if (getVelocity().y < 0 && !isFalling() && m_iNumJumps > 0)
     {
-        Util::playSound(SOUND_ID_DEATH, getPosition(), m_isServer);
-        
-        // TODO, this is NOT the right way to handle the player dying
-        
-        requestDeletion();
-        
-        if (m_isServer)
-        {
-            Server::sHandleNewClient(m_iPlayerId, m_playerName);
-        }
+        m_fStateTime = 0;
     }
     
     m_velocityLastKnown = b2Vec2(getVelocity().x, getVelocity().y);
@@ -396,26 +424,6 @@ void Robot::processInput(IInputState* inInputState, bool isPending)
     }
 }
 
-void Robot::updateInternal(float inDeltaTime)
-{
-    m_fStateTime += inDeltaTime;
-    
-    if (isGrounded())
-    {
-        setAngle(0);
-    }
-    
-    if (getVelocity().y < 0 && !isFalling() && m_iNumJumps > 0)
-    {
-        m_fStateTime = 0;
-    }
-    
-    if (getPosition().y < DEAD_ZONE_BOTTOM)
-    {
-        m_iHealth = 0;
-    }
-}
-
 void Robot::takeDamage()
 {
     if (m_iHealth > 0)
@@ -493,27 +501,7 @@ bool Robot::isSprinting()
 
 bool Robot::needsMoveReplay()
 {
-    return m_iReadState > 0;
-}
-
-void Robot::handleShooting()
-{
-    if (!m_isServer)
-    {
-        return;
-    }
-    
-    float time = Timing::getInstance()->getFrameStartTime();
-    
-    if (m_isShooting && time > m_fTimeOfNextShot)
-    {
-        // not exact, but okay
-        m_fTimeOfNextShot = time + FRAME_RATE * 4;
-        
-        // fire!
-        Projectile* projectile = static_cast<Projectile*>(SERVER_ENTITY_REG->createEntity(NW_TYPE_Projectile));
-        projectile->initFromShooter(this);
-    }
+    return (m_iReadState & ROBT_Pose) != 0;
 }
 
 void Robot::playNetworkBoundSounds(int numJumpsLastKnown, bool isSprintingLastKnown)

@@ -71,8 +71,6 @@ public:
     
     void handleBeginContactWithCrate(Crate* inEntity);
     
-    void updateInternal(float inDeltaTime);
-    
     ProjectileState getState();
     
     void setPlayerId(uint32_t inPlayerId);

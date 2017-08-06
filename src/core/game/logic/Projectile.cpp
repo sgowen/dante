@@ -59,10 +59,32 @@ EntityDef Projectile::constructEntityDef()
 
 void Projectile::update()
 {
-    updateInternal(FRAME_RATE);
+    m_fStateTime += FRAME_RATE;
+    
+    if (m_state == ProjectileState_Active)
+    {
+        if (m_fStateTime > 0.25f)
+        {
+            explode();
+        }
+        else if (getPosition().y < DEAD_ZONE_BOTTOM
+            || getPosition().x < DEAD_ZONE_LEFT
+            || getPosition().x > DEAD_ZONE_RIGHT)
+        {
+            explode();
+        }
+    }
     
     if (m_isServer)
     {
+        if (m_state == ProjectileState_Exploding)
+        {
+            if (m_fStateTime > 0.5f)
+            {
+                requestDeletion();
+            }
+        }
+        
         if (!areBox2DVectorsEqual(m_velocityLastKnown, getVelocity())
             || !areBox2DVectorsEqual(m_positionLastKnown, getPosition())
             || m_stateLastKnown != m_state)
@@ -290,37 +312,6 @@ uint32_t Projectile::getPlayerId() const
 bool Projectile::isFacingLeft()
 {
     return m_isFacingLeft;
-}
-
-void Projectile::updateInternal(float inDeltaTime)
-{
-    m_fStateTime += inDeltaTime;
-    
-    if (m_state == ProjectileState_Exploding)
-    {
-        if (m_fStateTime > 0.5f)
-        {
-            requestDeletion();
-        }
-        
-        return;
-    }
-    else if (m_state == ProjectileState_Active)
-    {
-        if (m_fStateTime > 0.25f)
-        {
-            explode();
-            
-            return;
-        }
-    }
-    
-    if (getPosition().y < DEAD_ZONE_BOTTOM
-        || getPosition().x < DEAD_ZONE_LEFT
-        || getPosition().x > DEAD_ZONE_RIGHT)
-    {
-        explode();
-    }
 }
 
 void Projectile::explode()

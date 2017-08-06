@@ -60,8 +60,6 @@ public:
     
     void processInput(IInputState* inInputState, bool isPending = false);
     
-    void updateInternal(float inDeltaTime);
-    
     void takeDamage();
     
     void awardKill(bool isHeadshot);
@@ -109,8 +107,8 @@ private:
     
     float m_fSpeed;
     float m_fJumpSpeed;
-    float m_fTimeOfNextShot;
     
+    float m_fShotCooldownTime;
     bool m_isFirstJumpCompleted;
     
     // Cached Last Known Values (from previous frame)
@@ -121,8 +119,6 @@ private:
     bool m_isFacingLeftLastKnown;
     bool m_isShootingLastKnown;
     bool m_isSprintingLastKnown;
-    
-    void handleShooting();
     
     void playNetworkBoundSounds(int numJumpsLastKnown, bool isSprintingLastKnown);
 };

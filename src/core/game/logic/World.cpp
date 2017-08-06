@@ -150,9 +150,10 @@ void World::postRead()
     // all processed moves have been removed, so all that are left are unprocessed moves so we must apply them...
     MoveList& moveList = InputManager::getInstance()->getMoveList();
     
-    bool needsReplay = false;
     for (const Move& move : moveList)
     {
+        bool needsReplay = false;
+        
         for (Entity* entity : m_players)
         {
             Robot* robot = static_cast<Robot*>(entity);
@@ -170,25 +171,24 @@ void World::postRead()
         if (needsReplay)
         {
             stepPhysics(FRAME_RATE);
-        }
-        
-        for (Entity* entity : m_players)
-        {
-            if (needsReplay)
+            
+            for (Entity* entity : m_players)
             {
                 Robot* robot = static_cast<Robot*>(entity);
-                robot->updateInternal(FRAME_RATE);
+                robot->update();
+            }
+            
+            for (Entity* entity : m_entities)
+            {
+                entity->update();
             }
         }
     }
     
     for (Entity* entity : m_players)
     {
-        if (needsReplay)
-        {
-            Robot* robot = static_cast<Robot*>(entity);
-            robot->postRead();
-        }
+        Robot* robot = static_cast<Robot*>(entity);
+        robot->postRead();
     }
 }
 
@@ -196,50 +196,94 @@ void World::update()
 {
     if (m_isServer)
     {
-        bool needsToProcessMoreMoves = true;
-        
-        int j = 0;
-        
-        while (needsToProcessMoreMoves)
+        int lowestMoveCount = -1;
+        for (Entity* entity : m_players)
         {
-            needsToProcessMoreMoves = false;
+            Robot* robot = static_cast<Robot*>(entity);
             
-            for (Entity* entity : m_players)
+            ClientProxy* client = NG_SERVER->getClientProxy(robot->getPlayerId());
+            if (client)
             {
-                Robot* robot = static_cast<Robot*>(entity);
+                MoveList& moveList = client->getUnprocessedMoveList();
                 
-                // is there a move we haven't processed yet?
-                ClientProxy* client = NG_SERVER->getClientProxy(robot->getPlayerId());
-                if (client)
+                int moveCount = moveList.getMoveCount();
+                if (moveCount < lowestMoveCount || lowestMoveCount == -1)
                 {
-                    MoveList& moveList = client->getUnprocessedMoveList();
-                    Move* move = moveList.getMoveAtIndex(j);
-                    if (move)
-                    {
-                        if (robot->getPlayerId() == 1)
-                        {
-                            // This is the host
-                            needsToProcessMoreMoves = true;
-                        }
-                        
-                        robot->processInput(move->getInputState());
-                    }
+                    lowestMoveCount = moveCount;
                 }
             }
-            
-            if (needsToProcessMoreMoves)
+        }
+        
+        if (lowestMoveCount > 0)
+        {
+            for (int i = 0; i < lowestMoveCount; ++i)
             {
-                stepPhysics(FRAME_RATE);
-                
                 for (Entity* entity : m_players)
                 {
                     Robot* robot = static_cast<Robot*>(entity);
                     
-                    robot->updateInternal(FRAME_RATE);
+                    // is there a move we haven't processed yet?
+                    ClientProxy* client = NG_SERVER->getClientProxy(robot->getPlayerId());
+                    if (client)
+                    {
+                        MoveList& moveList = client->getUnprocessedMoveList();
+                        
+                        Move* move = moveList.getMoveAtIndex(i);
+                        
+                        robot->processInput(move->getInputState());
+                        
+                        moveList.markMoveAsProcessed(move);
+                    }
+                }
+                
+                stepPhysics(FRAME_RATE);
+                
+                // Update all game objects- sometimes they want to die, so we need to tread carefully...
+                
+                int len = static_cast<int>(m_players.size());
+                for (int i = 0, c = len; i < c; ++i)
+                {
+                    Entity* entity = m_players[i];
+                    
+                    if (!entity->isRequestingDeletion())
+                    {
+                        entity->update();
+                    }
+                    
+                    if (m_isServer)
+                    {
+                        // You might suddenly want to die after your update, so check again
+                        if (entity->isRequestingDeletion())
+                        {
+                            removeEntity(entity);
+                            --i;
+                            --c;
+                        }
+                    }
+                }
+                
+                len = static_cast<int>(m_entities.size());
+                for (int i = 0, c = len; i < c; ++i)
+                {
+                    Entity* entity = m_entities[i];
+                    
+                    if (!entity->isRequestingDeletion())
+                    {
+                        entity->update();
+                    }
+                    
+                    if (m_isServer)
+                    {
+                        // You might suddenly want to die after your update, so check again
+                        if (entity->isRequestingDeletion())
+                        {
+                            removeEntity(entity);
+                            --i;
+                            --c;
+                        }
+                    }
                 }
             }
-            
-            ++j;
         }
     }
     else
@@ -261,53 +305,12 @@ void World::update()
             for (Entity* entity : m_players)
             {
                 Robot* robot = static_cast<Robot*>(entity);
-                robot->updateInternal(FRAME_RATE);
+                robot->update();
             }
-        }
-    }
-    
-    // Update all game objects- sometimes they want to die, so we need to tread carefully...
-    
-    int len = static_cast<int>(m_players.size());
-    for (int i = 0, c = len; i < c; ++i)
-    {
-        Entity* entity = m_players[i];
-        
-        if (!entity->isRequestingDeletion())
-        {
-            entity->update();
-        }
-        
-        if (m_isServer)
-        {
-            // You might suddenly want to die after your update, so check again
-            if (entity->isRequestingDeletion())
+            
+            for (Entity* entity : m_entities)
             {
-                removeEntity(entity);
-                --i;
-                --c;
-            }
-        }
-    }
-    
-    len = static_cast<int>(m_entities.size());
-    for (int i = 0, c = len; i < c; ++i)
-    {
-        Entity* entity = m_entities[i];
-        
-        if (!entity->isRequestingDeletion())
-        {
-            entity->update();
-        }
-        
-        if (m_isServer)
-        {
-            // You might suddenly want to die after your update, so check again
-            if (entity->isRequestingDeletion())
-            {
-                removeEntity(entity);
-                --i;
-                --c;
+                entity->update();
             }
         }
     }

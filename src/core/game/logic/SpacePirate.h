@@ -70,7 +70,7 @@ private:
     bool m_isFacingLeft;
     bool m_isJumping;
     
-    float m_fTimeForNextJump;
+    float m_fJumpCooldown;
     float m_fJumpSpeed;
     float m_fStartingHealth;
     
@@ -78,8 +78,6 @@ private:
     
     // Cached Last Known Values (from previous frame)
     uint8_t m_iHealthLeftLastKnown;
-    
-    void updateInternal(float inDeltaTime);
 };
 
 #endif /* defined(__noctisgames__SpacePirate__) */
