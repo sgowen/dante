@@ -67,7 +67,8 @@ void SpacePirateChunk::update()
         }
         
         if (!areBox2DVectorsEqual(m_velocityLastKnown, getVelocity())
-            || !areBox2DVectorsEqual(m_positionLastKnown, getPosition()))
+            || !areBox2DVectorsEqual(m_positionLastKnown, getPosition())
+            || !areFloatsPracticallyEqual(m_fAngleLastKnown, getAngle()))
         {
             NG_SERVER->setStateDirty(getID(), SPCH_Pose);
         }
@@ -75,6 +76,7 @@ void SpacePirateChunk::update()
     
     m_velocityLastKnown = b2Vec2(getVelocity().x, getVelocity().y);
     m_positionLastKnown = b2Vec2(getPosition().x, getPosition().y);
+    m_fAngleLastKnown = getAngle();
 }
 
 bool SpacePirateChunk::shouldCollide(Entity *inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB)
@@ -131,6 +133,10 @@ void SpacePirateChunk::read(InputMemoryBitStream& inInputStream)
         inInputStream.read(position);
         setPosition(position);
         
+        float angle;
+        inInputStream.read(angle);
+        setAngle(angle);
+        
         readState |= SPCH_Pose;
     }
 }
@@ -165,6 +171,8 @@ uint32_t SpacePirateChunk::write(OutputMemoryBitStream& inOutputStream, uint32_t
         inOutputStream.write(getVelocity());
         
         inOutputStream.write(getPosition());
+        
+        inOutputStream.write(getAngle());
         
         writtenState |= SPCH_Pose;
     }

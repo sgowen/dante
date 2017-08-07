@@ -145,6 +145,7 @@ protected:
     // Cached Last Known Values (from previous frame)
     b2Vec2 m_velocityLastKnown;
     b2Vec2 m_positionLastKnown;
+    float m_fAngleLastKnown;
     
     void interpolateClientSidePrediction(b2Vec2& inOldVelocity, b2Vec2& inOldPos);
     

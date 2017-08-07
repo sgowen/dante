@@ -53,7 +53,8 @@ void Crate::update()
         }
         
         if (!areBox2DVectorsEqual(m_velocityLastKnown, getVelocity())
-            || !areBox2DVectorsEqual(m_positionLastKnown, getPosition()))
+            || !areBox2DVectorsEqual(m_positionLastKnown, getPosition())
+            || !areFloatsPracticallyEqual(m_fAngleLastKnown, getAngle()))
         {
             NG_SERVER->setStateDirty(getID(), CRAT_Pose);
         }
@@ -61,6 +62,7 @@ void Crate::update()
     
     m_velocityLastKnown = b2Vec2(getVelocity().x, getVelocity().y);
     m_positionLastKnown = b2Vec2(getPosition().x, getPosition().y);
+    m_fAngleLastKnown = getAngle();
 }
 
 bool Crate::shouldCollide(Entity *inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB)
@@ -127,6 +129,10 @@ void Crate::read(InputMemoryBitStream& inInputStream)
         inInputStream.read(position);
         setPosition(position);
         
+        float angle;
+        inInputStream.read(angle);
+        setAngle(angle);
+        
         readState |= CRAT_Pose;
     }
 }
@@ -142,6 +148,8 @@ uint32_t Crate::write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtySta
         inOutputStream.write(getVelocity());
         
         inOutputStream.write(getPosition());
+        
+        inOutputStream.write(getAngle());
         
         writtenState |= CRAT_Pose;
     }
