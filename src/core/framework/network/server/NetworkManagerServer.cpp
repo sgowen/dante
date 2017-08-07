@@ -475,7 +475,8 @@ void NetworkManagerServer::updateNextPlayerId()
     
     // Find the next available Player ID
     m_iNextPlayerId = 1;
-    for (int i = 0; i < MAX_NUM_PLAYERS_PER_SERVER; ++i) {
+    for (int i = 0; i < MAX_NUM_PLAYERS_PER_SERVER; ++i)
+    {
         for (auto const &entry : m_playerIDToClientMap)
         {
             if (entry.first == m_iNextPlayerId)

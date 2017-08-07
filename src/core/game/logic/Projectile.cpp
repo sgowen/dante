@@ -163,6 +163,8 @@ void Projectile::read(InputMemoryBitStream& inInputStream)
     {
         inInputStream.read(m_state);
         
+        inInputStream.read(m_fStateTime);
+        
         b2Vec2 velocity;
         inInputStream.read(velocity);
         setVelocity(velocity);
@@ -217,6 +219,8 @@ uint32_t Projectile::write(OutputMemoryBitStream& inOutputStream, uint32_t inDir
         inOutputStream.write((bool)true);
         
         inOutputStream.write(m_state);
+        
+        inOutputStream.write(m_fStateTime);
         
         inOutputStream.write(getVelocity());
         

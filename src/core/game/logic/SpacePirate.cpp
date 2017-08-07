@@ -229,8 +229,6 @@ void SpacePirate::read(InputMemoryBitStream& inInputStream)
     inInputStream.read(stateBit);
     if (stateBit)
     {
-        inInputStream.read(m_fStateTime);
-        
         b2Vec2 velocity;
         inInputStream.read(velocity);
         setVelocity(velocity);
@@ -276,8 +274,6 @@ uint32_t SpacePirate::write(OutputMemoryBitStream& inOutputStream, uint32_t inDi
     if (inDirtyState & SPCP_Pose)
     {
         inOutputStream.write((bool)true);
-        
-        inOutputStream.write(m_fStateTime);
         
         inOutputStream.write(getVelocity());
         
