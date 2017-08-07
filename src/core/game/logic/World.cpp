@@ -197,19 +197,30 @@ void World::update()
     if (m_isServer)
     {
         int lowestMoveCount = -1;
-        for (Entity* entity : m_players)
+        ClientProxy* client = NG_SERVER->getClientProxy(1);
+        if (client)
         {
-            Robot* robot = static_cast<Robot*>(entity);
-            
-            ClientProxy* client = NG_SERVER->getClientProxy(robot->getPlayerId());
-            if (client)
+            // Host
+            MoveList& moveList = client->getUnprocessedMoveList();
+            lowestMoveCount = moveList.getMoveCount();
+        }
+        
+        if (lowestMoveCount > 0)
+        {
+            for (Entity* entity : m_players)
             {
-                MoveList& moveList = client->getUnprocessedMoveList();
+                Robot* robot = static_cast<Robot*>(entity);
                 
-                int moveCount = moveList.getMoveCount();
-                if (moveCount < lowestMoveCount || lowestMoveCount == -1)
+                ClientProxy* client = NG_SERVER->getClientProxy(robot->getPlayerId());
+                if (client)
                 {
-                    lowestMoveCount = moveCount;
+                    MoveList& moveList = client->getUnprocessedMoveList();
+                    
+                    int moveCount = moveList.getMoveCount();
+                    if (moveCount < lowestMoveCount)
+                    {
+                        lowestMoveCount = moveCount;
+                    }
                 }
             }
         }
@@ -230,9 +241,12 @@ void World::update()
                         
                         Move* move = moveList.getMoveAtIndex(i);
                         
-                        robot->processInput(move->getInputState());
-                        
-                        moveList.markMoveAsProcessed(move);
+                        if (move)
+                        {
+                            robot->processInput(move->getInputState());
+                            
+                            moveList.markMoveAsProcessed(move);
+                        }
                     }
                 }
                 
@@ -250,15 +264,12 @@ void World::update()
                         entity->update();
                     }
                     
-                    if (m_isServer)
+                    // You might suddenly want to die after your update, so check again
+                    if (entity->isRequestingDeletion())
                     {
-                        // You might suddenly want to die after your update, so check again
-                        if (entity->isRequestingDeletion())
-                        {
-                            removeEntity(entity);
-                            --i;
-                            --c;
-                        }
+                        removeEntity(entity);
+                        --i;
+                        --c;
                     }
                 }
                 
@@ -272,15 +283,12 @@ void World::update()
                         entity->update();
                     }
                     
-                    if (m_isServer)
+                    // You might suddenly want to die after your update, so check again
+                    if (entity->isRequestingDeletion())
                     {
-                        // You might suddenly want to die after your update, so check again
-                        if (entity->isRequestingDeletion())
-                        {
-                            removeEntity(entity);
-                            --i;
-                            --c;
-                        }
+                        removeEntity(entity);
+                        --i;
+                        --c;
                     }
                 }
             }

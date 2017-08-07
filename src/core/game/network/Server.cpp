@@ -294,7 +294,7 @@ void Server::clearClientMoves()
         if (client)
         {
             MoveList& moveList = client->getUnprocessedMoveList();
-            moveList.clear();
+            moveList.removeProcessedMoves(client->getUnprocessedMoveList().getLastProcessedMoveTimestamp());
         }
     }
 }

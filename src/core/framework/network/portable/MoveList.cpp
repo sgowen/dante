@@ -13,7 +13,7 @@
 #include "IInputState.h"
 #include "Timing.h"
 
-MoveList::MoveList(): m_fLastMoveTimestamp(-1.f)
+MoveList::MoveList(): m_fLastMoveTimestamp(-1.0f), m_fLastProcessedMoveTimestamp(-1.0f)
 {
     // Empty
 }
@@ -49,7 +49,7 @@ bool MoveList::addMoveIfNew(const Move& inMove)
 
 void MoveList::markMoveAsProcessed(Move* move)
 {
-    m_fLastMoveTimestamp = move->getTimestamp();
+    m_fLastProcessedMoveTimestamp = move->getTimestamp();
 }
 
 void MoveList::removeProcessedMoves(float inLastMoveProcessedOnServerTimestamp)
@@ -63,6 +63,11 @@ void MoveList::removeProcessedMoves(float inLastMoveProcessedOnServerTimestamp)
 float MoveList::getLastMoveTimestamp() const
 {
     return m_fLastMoveTimestamp;
+}
+
+float MoveList::getLastProcessedMoveTimestamp() const
+{
+    return m_fLastProcessedMoveTimestamp;
 }
 
 const Move& MoveList::getLatestMove() const

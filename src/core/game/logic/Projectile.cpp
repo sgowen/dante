@@ -320,6 +320,11 @@ bool Projectile::isFacingLeft()
 
 void Projectile::explode()
 {
+    if (m_state == ProjectileState_Exploding)
+    {
+        return;
+    }
+    
     m_state = ProjectileState_Exploding;
     m_fStateTime = 0.0f;
     setVelocity(b2Vec2(0.0f, 0.0f));

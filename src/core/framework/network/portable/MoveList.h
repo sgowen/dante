@@ -30,6 +30,8 @@ public:
     
     float getLastMoveTimestamp() const;
     
+    float getLastProcessedMoveTimestamp() const;
+    
     const Move& getLatestMove() const;
     
     void clear();
@@ -46,6 +48,7 @@ public:
     
 private:
     float m_fLastMoveTimestamp;
+    float m_fLastProcessedMoveTimestamp;
     std::deque<Move> m_moves;
 };
 
