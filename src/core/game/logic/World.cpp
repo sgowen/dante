@@ -250,12 +250,15 @@ void World::update()
                         entity->update();
                     }
                     
-                    // You might suddenly want to die after your update, so check again
-                    if (entity->isRequestingDeletion())
+                    if (m_isServer)
                     {
-                        removeEntity(entity);
-                        --i;
-                        --c;
+                        // You might suddenly want to die after your update, so check again
+                        if (entity->isRequestingDeletion())
+                        {
+                            removeEntity(entity);
+                            --i;
+                            --c;
+                        }
                     }
                 }
                 
@@ -269,12 +272,15 @@ void World::update()
                         entity->update();
                     }
                     
-                    // You might suddenly want to die after your update, so check again
-                    if (entity->isRequestingDeletion())
+                    if (m_isServer)
                     {
-                        removeEntity(entity);
-                        --i;
-                        --c;
+                        // You might suddenly want to die after your update, so check again
+                        if (entity->isRequestingDeletion())
+                        {
+                            removeEntity(entity);
+                            --i;
+                            --c;
+                        }
                     }
                 }
             }
@@ -298,7 +304,8 @@ void World::update()
             
             for (Entity* entity : m_players)
             {
-                entity->update();
+                Robot* robot = static_cast<Robot*>(entity);
+                robot->update();
             }
             
             for (Entity* entity : m_entities)
