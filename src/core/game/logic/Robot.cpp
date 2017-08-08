@@ -124,8 +124,8 @@ void Robot::update()
             }
         }
         
-        if (!areBox2DVectorsEqual(m_velocityLastKnown, getVelocity())
-            || !areBox2DVectorsEqual(m_positionLastKnown, getPosition())
+        if (!areBox2DVectorsCloseEnough(m_velocityLastKnown, getVelocity())
+            || !areBox2DVectorsCloseEnough(m_positionLastKnown, getPosition())
             || m_iNumJumpsLastKnown != m_iNumJumps
             || m_isFacingLeftLastKnown != m_isFacingLeft
             || m_isShootingLastKnown != m_isShooting
@@ -380,7 +380,7 @@ void Robot::processInput(IInputState* inInputState, bool isPending)
     
     if (inputState->isJumping())
     {
-        if (isGrounded() && areFloatsPracticallyEqual(getAngle(), 0))
+        if (isGrounded())
         {
             m_fStateTime = 0;
             m_isFirstJumpCompleted = false;

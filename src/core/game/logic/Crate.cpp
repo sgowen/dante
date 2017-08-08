@@ -52,9 +52,9 @@ void Crate::update()
             requestDeletion();
         }
         
-        if (!areBox2DVectorsEqual(m_velocityLastKnown, getVelocity())
-            || !areBox2DVectorsEqual(m_positionLastKnown, getPosition())
-            || !areFloatsPracticallyEqual(m_fAngleLastKnown, getAngle()))
+        if (!areBox2DVectorsCloseEnough(m_velocityLastKnown, getVelocity())
+            || !areBox2DVectorsCloseEnough(m_positionLastKnown, getPosition())
+            || !areBox2DFloatsCloseEnough(m_fAngleLastKnown, getAngle()))
         {
             NG_SERVER->setStateDirty(getID(), CRAT_Pose);
         }

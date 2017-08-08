@@ -105,7 +105,7 @@ void InputManager::update()
                             case NG_KEY_SPACE_BAR:
                                 m_currentState->getGameInputState(0).m_isShooting = (*i)->isDown();
                                 continue;
-#ifdef _DEBUG
+//#ifdef _DEBUG
                             // Player 2, Debug Only
                             case NG_KEY_ARROW_UP:
                                 m_currentState->getGameInputState(1).m_isJumping = (*i)->isDown();
@@ -126,7 +126,7 @@ void InputManager::update()
                                 m_currentState->getGameInputState(1).m_iPlayerId = INPUT_UNASSIGNED;
                                 m_currentState->m_iMenuState = (*i)->isDown() ? MENU_STATE_LOCAL_PLAYER_DROP_OUT_1 : MENU_STATE_NONE;
                                 continue;
-#endif
+//#endif
                             default:
                                 continue;
                         }

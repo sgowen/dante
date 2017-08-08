@@ -55,9 +55,17 @@ inline bool areFloatsPracticallyEqual(float A, float B, float maxDiff = 0.000001
     return false;
 }
 
-inline bool areBox2DVectorsEqual(const b2Vec2& inA, const b2Vec2& inB)
+inline bool areBox2DVectorsCloseEnough(const b2Vec2& inA, const b2Vec2& inB)
 {
-    return areFloatsPracticallyEqual(inA.x, inB.x) && areFloatsPracticallyEqual(inA.y, inB.y);
+    static float maxDiff = 0.001f;
+    return areFloatsPracticallyEqual(inA.x, inB.x, maxDiff) && areFloatsPracticallyEqual(inA.y, inB.y, maxDiff);
+}
+
+inline bool areBox2DFloatsCloseEnough(float A, float B)
+{
+    static float maxDiff = 0.001f;
+    
+    return areFloatsPracticallyEqual(A, B, maxDiff);
 }
 
 inline b2Vec2 lerpBox2DVector(b2Vec2& inA, const b2Vec2& inB, float t)

@@ -271,7 +271,7 @@ bool Entity::interpolateVectorsIfNecessary(b2Vec2& inOld, const b2Vec2& inNew, f
     float rtt = NG_CLIENT->getRoundTripTime();
     rtt /= 2; // Let's just measure the time from server to us
     
-    if (!areBox2DVectorsEqual(inOld, inNew))
+    if (!areBox2DVectorsCloseEnough(inOld, inNew))
     {
         LOG("WARN: Robot move replay ended with incorrect %s! Old %3.8f, %3.8f - New %3.8f, %3.8f", vectorType, inOld.x, inOld.y, inNew.x, inNew.y);
         

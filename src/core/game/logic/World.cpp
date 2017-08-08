@@ -195,22 +195,7 @@ void World::update()
 {
     if (m_isServer)
     {
-        int moveCountSum = 0;
-        for (Entity* entity : m_players)
-        {
-            Robot* robot = static_cast<Robot*>(entity);
-            
-            uint8_t playerId = robot->getPlayerId();
-            ClientProxy* client = NG_SERVER->getClientProxy(playerId);
-            if (client)
-            {
-                MoveList& moveList = client->getUnprocessedMoveList();
-                
-                moveCountSum += moveList.getMoveCount();
-            }
-        }
-        
-        int avgMoveCount = m_players.size() > 0 ? (moveCountSum / m_players.size()) : 0;
+        int avgMoveCount = NG_SERVER->getAverageMoveCount();
         
         LOG("avgMoveCount: %d", avgMoveCount);
         

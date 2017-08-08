@@ -85,8 +85,8 @@ void Projectile::update()
             }
         }
         
-        if (!areBox2DVectorsEqual(m_velocityLastKnown, getVelocity())
-            || !areBox2DVectorsEqual(m_positionLastKnown, getPosition())
+        if (!areBox2DVectorsCloseEnough(m_velocityLastKnown, getVelocity())
+            || !areBox2DVectorsCloseEnough(m_positionLastKnown, getPosition())
             || m_stateLastKnown != m_state)
         {
             NG_SERVER->setStateDirty(getID(), PRJC_Pose);

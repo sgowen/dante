@@ -130,8 +130,8 @@ void SpacePirate::update()
             setVelocity(b2Vec2(0, getVelocity().y));
         }
         
-        if (!areBox2DVectorsEqual(m_velocityLastKnown, getVelocity())
-            || !areBox2DVectorsEqual(m_positionLastKnown, getPosition()))
+        if (!areBox2DVectorsCloseEnough(m_velocityLastKnown, getVelocity())
+            || !areBox2DVectorsCloseEnough(m_positionLastKnown, getPosition()))
         {
             NG_SERVER->setStateDirty(getID(), SPCP_Pose);
         }

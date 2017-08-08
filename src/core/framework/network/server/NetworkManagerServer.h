@@ -61,6 +61,8 @@ public:
     
     ClientProxy* getClientProxy(int inPlayerId) const;
     
+    int getAverageMoveCount() const;
+    
     int getNumClientsConnected();
     
     IMachineAddress* getServerAddress();

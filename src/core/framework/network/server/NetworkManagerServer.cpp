@@ -166,6 +166,23 @@ ClientProxy* NetworkManagerServer::getClientProxy(int inPlayerId) const
     return nullptr;
 }
 
+int NetworkManagerServer::getAverageMoveCount() const
+{
+    int ret = 0;
+    
+    if (m_addressHashToClientMap.size() > 0)
+    {
+        for (auto const &entry : m_addressHashToClientMap)
+        {
+            ret += entry.second->getUnprocessedMoveList().getMoveCount();
+        }
+        
+        ret /= m_addressHashToClientMap.size();
+    }
+    
+    return ret;
+}
+
 int NetworkManagerServer::getNumClientsConnected()
 {
     return static_cast<int>(m_addressHashToClientMap.size());
