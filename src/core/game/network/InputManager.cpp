@@ -220,7 +220,14 @@ void InputManager::update()
                     }
                     else
                     {
-                        ss << StringUtil::format("%c", keyboardEvent->getKey());
+						unsigned short key = keyboardEvent->getKey();
+#ifdef _WIN32
+						if (key == NG_KEY_PERIOD)
+						{
+							key = NG_KEY_ASCII_PERIOD;
+						}
+#endif
+                        ss << StringUtil::format("%c", key);
                     }
                 }
                 else if (keyboardEvent->isUp())
