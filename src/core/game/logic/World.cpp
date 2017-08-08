@@ -196,38 +196,18 @@ void World::update()
 {
     if (m_isServer)
     {
-        int lowestMoveCount = -1;
+        int hostMoveCount = -1;
         ClientProxy* client = NG_SERVER->getClientProxy(1);
         if (client)
         {
             // Host
             MoveList& moveList = client->getUnprocessedMoveList();
-            lowestMoveCount = moveList.getMoveCount();
+            hostMoveCount = moveList.getMoveCount();
         }
         
-        if (lowestMoveCount > 0)
+        if (hostMoveCount > 0)
         {
-            for (Entity* entity : m_players)
-            {
-                Robot* robot = static_cast<Robot*>(entity);
-                
-                ClientProxy* client = NG_SERVER->getClientProxy(robot->getPlayerId());
-                if (client)
-                {
-                    MoveList& moveList = client->getUnprocessedMoveList();
-                    
-                    int moveCount = moveList.getMoveCount();
-                    if (moveCount < lowestMoveCount)
-                    {
-                        lowestMoveCount = moveCount;
-                    }
-                }
-            }
-        }
-        
-        if (lowestMoveCount > 0)
-        {
-            for (int i = 0; i < lowestMoveCount; ++i)
+            for (int i = 0; i < hostMoveCount; ++i)
             {
                 for (Entity* entity : m_players)
                 {

@@ -350,7 +350,7 @@ void NetworkManagerServer::writeLastMoveTimestampIfDirty(OutputMemoryBitStream& 
     inOutputStream.write(isTimestampDirty);
     if (isTimestampDirty)
     {
-        inOutputStream.write(inClientProxy->getUnprocessedMoveList().getLastMoveTimestamp());
+        inOutputStream.write(inClientProxy->getUnprocessedMoveList().getLastProcessedMoveTimestamp());
         inClientProxy->setIsLastMoveTimestampDirty(false);
     }
 }
