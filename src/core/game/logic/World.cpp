@@ -205,9 +205,31 @@ void World::update()
             hostMoveCount = moveList.getMoveCount();
         }
         
+        int lowestMoveCount = -1;
         if (hostMoveCount > 0)
         {
-            for (int i = 0; i < hostMoveCount; ++i)
+            for (Entity* entity : m_players)
+            {
+                Robot* robot = static_cast<Robot*>(entity);
+                
+                ClientProxy* client = NG_SERVER->getClientProxy(robot->getPlayerId());
+                if (client)
+                {
+                    MoveList& moveList = client->getUnprocessedMoveList();
+                    
+                    int moveCount = moveList.getMoveCount();
+                    if (moveCount < lowestMoveCount || lowestMoveCount == -1)
+                    {
+                        lowestMoveCount = moveCount;
+                    }
+                }
+            }
+        }
+        
+        if (hostMoveCount > 0
+            && hostMoveCount >= lowestMoveCount)
+        {
+            for (int i = 0; i < lowestMoveCount; ++i)
             {
                 for (Entity* entity : m_players)
                 {
