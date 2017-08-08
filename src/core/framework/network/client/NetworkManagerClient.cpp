@@ -347,7 +347,7 @@ void NetworkManagerClient::sendInputPacket()
         
         // eventually write the 3 latest moves so they have 3 chances to get through...
         int moveCount = moveList.getMoveCount();
-        int firstMoveIndex = moveCount - 3;
+        int firstMoveIndex = moveCount - 15;
         if (firstMoveIndex < 0)
         {
             firstMoveIndex = 0;
@@ -355,7 +355,7 @@ void NetworkManagerClient::sendInputPacket()
         auto move = moveList.begin() + firstMoveIndex;
         
         // only need 2 bits to write the move count, because it's 0-3
-        inputPacket.write(moveCount - firstMoveIndex, 2);
+        inputPacket.write(moveCount - firstMoveIndex, 4);
         
         for (; firstMoveIndex < moveCount; ++firstMoveIndex, ++move)
         {
