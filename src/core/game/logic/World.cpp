@@ -174,8 +174,7 @@ void World::postRead()
             
             for (Entity* entity : m_players)
             {
-                Robot* robot = static_cast<Robot*>(entity);
-                robot->update();
+                entity->update();
             }
             
             for (Entity* entity : m_entities)
@@ -196,40 +195,28 @@ void World::update()
 {
     if (m_isServer)
     {
-        int hostMoveCount = -1;
-        ClientProxy* client = NG_SERVER->getClientProxy(1);
-        if (client)
+        int moveCountSum = 0;
+        for (Entity* entity : m_players)
         {
-            // Host
-            MoveList& moveList = client->getUnprocessedMoveList();
-            hostMoveCount = moveList.getMoveCount();
-        }
-        
-        int lowestMoveCount = -1;
-        if (hostMoveCount > 0)
-        {
-            for (Entity* entity : m_players)
+            Robot* robot = static_cast<Robot*>(entity);
+            
+            uint8_t playerId = robot->getPlayerId();
+            ClientProxy* client = NG_SERVER->getClientProxy(playerId);
+            if (client)
             {
-                Robot* robot = static_cast<Robot*>(entity);
+                MoveList& moveList = client->getUnprocessedMoveList();
                 
-                ClientProxy* client = NG_SERVER->getClientProxy(robot->getPlayerId());
-                if (client)
-                {
-                    MoveList& moveList = client->getUnprocessedMoveList();
-                    
-                    int moveCount = moveList.getMoveCount();
-                    if (moveCount < lowestMoveCount || lowestMoveCount == -1)
-                    {
-                        lowestMoveCount = moveCount;
-                    }
-                }
+                moveCountSum += moveList.getMoveCount();
             }
         }
         
-        if (hostMoveCount > 0
-            && hostMoveCount >= lowestMoveCount)
+        int avgMoveCount = m_players.size() > 0 ? (moveCountSum / m_players.size()) : 0;
+        
+        LOG("avgMoveCount: %d", avgMoveCount);
+        
+        if (avgMoveCount > 0)
         {
-            for (int i = 0; i < lowestMoveCount; ++i)
+            for (int i = 0; i < avgMoveCount; ++i)
             {
                 for (Entity* entity : m_players)
                 {
