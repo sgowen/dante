@@ -20,6 +20,11 @@ WeightedTimedMovingAverage::WeightedTimedMovingAverage(float inDuration) : m_fDu
 
 void WeightedTimedMovingAverage::updatePerSecond(float inValue)
 {
+    if (inValue < 0)
+    {
+        return;
+    }
+    
     float time = Timing::getInstance()->getFrameStartTime();
     float timeSinceLastEntry = clamp(time - m_fTimeLastEntryMade, 10, 0);
     
@@ -39,6 +44,11 @@ void WeightedTimedMovingAverage::updatePerSecond(float inValue)
 
 void WeightedTimedMovingAverage::update(float inValue)
 {
+    if (inValue < 0)
+    {
+        return;
+    }
+    
     float time = Timing::getInstance()->getFrameStartTime();
     float timeSinceLastEntry = clamp(time - m_fTimeLastEntryMade, 10, 0);
     
