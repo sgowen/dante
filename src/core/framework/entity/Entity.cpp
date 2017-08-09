@@ -306,13 +306,12 @@ bool Entity::interpolateVectorsIfNecessary(b2Vec2& inOld, const b2Vec2& inNew, f
         }
         
         float rtt = NG_CLIENT->getRoundTripTime();
-        rtt /= 2; // Let's just measure the time from server to us
         
         // now interpolate to the correct value...
         float durationOutOfSync = time - syncTracker;
         if (durationOutOfSync < rtt)
         {
-            b2Vec2 vec = lerpBox2DVector(inOld, inNew, rtt);
+            b2Vec2 vec = lerpBox2DVector(inOld, inNew, 0.1f);
             inOld.Set(vec.x, vec.y);
             
             return true;

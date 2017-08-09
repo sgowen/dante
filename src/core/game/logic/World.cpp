@@ -285,14 +285,14 @@ void World::update()
             
             for (Entity* entity : m_players)
             {
-                entity->update();
                 entity->cacheToMove(*pendingMove);
+                entity->update();
             }
             
             for (Entity* entity : m_entities)
             {
-                entity->update();
                 entity->cacheToMove(*pendingMove);
+                entity->update();
             }
         }
     }

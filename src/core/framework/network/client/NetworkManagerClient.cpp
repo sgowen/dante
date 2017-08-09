@@ -356,6 +356,8 @@ void NetworkManagerClient::sendInputPacket()
         auto move = moveList.begin() + firstMoveIndex;
         
         // only need 4 bits to write the move count, because it's 0-15
+        // What this essentially means is that the game will skip moves
+        // for clients that have a round-trip time of more than 250ms (1/60 * 15)
         inputPacket.write(moveCount - firstMoveIndex, 4);
         
         for (; firstMoveIndex < moveCount; ++firstMoveIndex, ++move)
