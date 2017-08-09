@@ -208,7 +208,7 @@ void World::update()
             {
                 finalMoveCount = lowestNonHostMoveCount;
             }
-            else if (hostMoveCount > 2 && hostMoveCount < lowestNonHostMoveCount)
+            else if (hostMoveCount > 1 && hostMoveCount < lowestNonHostMoveCount)
             {
                 finalMoveCount = hostMoveCount;
             }
