@@ -93,7 +93,6 @@ void SpacePirate::update()
             {
                 m_fJumpCooldown += (rand() % 100) * 0.1f + 1.0f;
                 
-                m_fStateTime = 0;
                 m_isJumping = true;
                 
                 setVelocity(b2Vec2(getVelocity().x, m_fJumpSpeed));
