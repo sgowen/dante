@@ -152,6 +152,11 @@ void World::postRead()
     
     for (const Move& move : moveList)
     {
+        for (Entity* entity : m_entities)
+        {
+            entity->recallIfNecessary(move);
+        }
+        
         for (Entity* entity : m_players)
         {
             entity->recallIfNecessary(move);
@@ -163,30 +168,25 @@ void World::postRead()
             }
         }
         
+        stepPhysics(FRAME_RATE);
+        
         for (Entity* entity : m_entities)
         {
-            entity->recallIfNecessary(move);
+            entity->update();
         }
-        
-        stepPhysics(FRAME_RATE);
         
         for (Entity* entity : m_players)
         {
             entity->update();
         }
-        
-        for (Entity* entity : m_entities)
-        {
-            entity->update();
-        }
     }
     
-    for (Entity* entity : m_players)
+    for (Entity* entity : m_entities)
     {
         entity->postRead();
     }
     
-    for (Entity* entity : m_entities)
+    for (Entity* entity : m_players)
     {
         entity->postRead();
     }
@@ -272,8 +272,15 @@ void World::update()
         const Move* pendingMove = InputManager::getInstance()->getPendingMove();
         if (pendingMove)
         {
+            for (Entity* entity : m_entities)
+            {
+                entity->cacheToMove(*pendingMove);
+            }
+            
             for (Entity* entity : m_players)
             {
+                entity->cacheToMove(*pendingMove);
+                
                 Robot* robot = static_cast<Robot*>(entity);
                 if (NG_CLIENT->isPlayerIdLocal(robot->getPlayerId()))
                 {
@@ -283,15 +290,13 @@ void World::update()
             
             stepPhysics(FRAME_RATE);
             
-            for (Entity* entity : m_players)
+            for (Entity* entity : m_entities)
             {
-                entity->cacheToMove(*pendingMove);
                 entity->update();
             }
             
-            for (Entity* entity : m_entities)
+            for (Entity* entity : m_players)
             {
-                entity->cacheToMove(*pendingMove);
                 entity->update();
             }
         }
