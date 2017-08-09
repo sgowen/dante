@@ -309,7 +309,7 @@ void Server::clearClientMoves()
     }
 }
 
-Server::Server(bool isSteam) : m_fStateTime(0), m_fFrameStateTime(0), m_fStateTimeNoEnemies(0), m_iPlayerIdForRobotBeingCreated(0), m_isSpawningEnemies(false), m_isSpawningObjects(true), m_isDisplaying(false), m_isAvgMethod(true)
+Server::Server(bool isSteam) : m_fStateTime(0), m_fFrameStateTime(0), m_fStateTimeNoEnemies(0), m_iPlayerIdForRobotBeingCreated(0), m_isSpawningEnemies(false), m_isSpawningObjects(true), m_isDisplaying(false), m_isAvgMethod(false)
 {
     FWInstanceManager::createServerEntityManager(InstanceManager::sHandleEntityCreatedOnServer, InstanceManager::sHandleEntityDeletedOnServer);
     
