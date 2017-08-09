@@ -435,7 +435,7 @@ void MainEngine::joinServer()
     
     NetworkManagerClient::create(clientHelper, FRAME_RATE, INPUT_MANAGER_CALLBACKS);
     
-    InputManager::getInstance()->setConnected(NG_CLIENT);
+    InputManager::getInstance()->setConnected(NG_CLIENT ? true : false);
 }
 
 void MainEngine::disconnect()
