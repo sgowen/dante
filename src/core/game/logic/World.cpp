@@ -200,7 +200,7 @@ void World::update()
         
         if (!isAvgMethod)
         {
-            if (hostMoveCount > 6 || lowestNonHostMoveCount > 6)
+            if (hostMoveCount > 4 || lowestNonHostMoveCount > 4)
             {
                 finalMoveCount = avgMoveCount;
             }
@@ -208,7 +208,7 @@ void World::update()
             {
                 finalMoveCount = lowestNonHostMoveCount;
             }
-            else if (hostMoveCount > 3 && hostMoveCount < lowestNonHostMoveCount)
+            else if (hostMoveCount > 2 && hostMoveCount < lowestNonHostMoveCount)
             {
                 finalMoveCount = hostMoveCount;
             }
