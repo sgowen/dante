@@ -142,11 +142,6 @@ void World::removeEntity(Entity* inEntity)
 
 void World::postRead()
 {
-    if (m_isServer)
-    {
-        return;
-    }
-    
     // all processed moves have been removed, so all that are left are unprocessed moves so we must apply them...
     MoveList& moveList = InputManager::getInstance()->getMoveList();
     
@@ -196,11 +191,34 @@ void World::update()
 {
     if (m_isServer)
     {
+        bool isAvgMethod = Server::getInstance()->isAvgMethod();
         int avgMoveCount = NG_SERVER->getAverageMoveCount();
+        int lowestMoveCount = NG_SERVER->getLowestMoveCount();
+        int hostMoveCount = NG_SERVER->getHostMoveCount();
         
-        if (avgMoveCount > 0)
+        int finalMoveCount = Server::getInstance()->isAvgMethod() ? avgMoveCount : lowestMoveCount;
+        
+        if (!isAvgMethod)
         {
-            for (int i = 0; i < avgMoveCount; ++i)
+            if (hostMoveCount < lowestMoveCount)
+            {
+                finalMoveCount = 0;
+            }
+            
+            if (hostMoveCount > lowestMoveCount)
+            {
+                finalMoveCount = lowestMoveCount;
+            }
+            
+            if (hostMoveCount > 12 || lowestMoveCount > 12)
+            {
+                finalMoveCount = avgMoveCount;
+            }
+        }
+        
+        if (finalMoveCount > 0)
+        {
+            for (int i = 0; i < finalMoveCount; ++i)
             {
                 for (Entity* entity : m_players)
                 {

@@ -183,6 +183,38 @@ int NetworkManagerServer::getAverageMoveCount() const
     return ret;
 }
 
+int NetworkManagerServer::getLowestMoveCount() const
+{
+    int ret = 0;
+    
+    if (m_addressHashToClientMap.size() > 0)
+    {
+        for (auto const &entry : m_addressHashToClientMap)
+        {
+            int moveCount = entry.second->getUnprocessedMoveList().getMoveCount();
+            if (moveCount < ret || ret == 0)
+            {
+                ret = moveCount;
+            }
+        }
+    }
+    
+    return ret;
+}
+
+int NetworkManagerServer::getHostMoveCount() const
+{
+    int ret = 0;
+    
+    ClientProxy* client = getClientProxy(1);
+    if (client)
+    {
+        ret = client->getUnprocessedMoveList().getMoveCount();
+    }
+    
+    return ret;
+}
+
 int NetworkManagerServer::getNumClientsConnected()
 {
     return static_cast<int>(m_addressHashToClientMap.size());

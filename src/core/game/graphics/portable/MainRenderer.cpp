@@ -484,17 +484,19 @@ void MainRenderer::renderServerJoinedText()
     ++row;
     
     {
-        static b2Vec2 origin = b2Vec2(CAM_WIDTH - 0.5f, CAM_HEIGHT - (row++ * padding));
+        {
+            static b2Vec2 origin = b2Vec2(CAM_WIDTH - 0.5f, CAM_HEIGHT - (row++ * padding));
+            
+            std::string text = StringUtil::format("'S'       Sound %s", NG_AUDIO_ENGINE->isSoundDisabled() ? "OFF" : " ON");
+            renderText(text, origin, Color::BLACK, FONT_ALIGN_RIGHT);
+        }
         
-        std::string text = StringUtil::format("'S'   Sound %s", NG_AUDIO_ENGINE->isSoundDisabled() ? "OFF" : " ON");
-        renderText(text, origin, Color::BLACK, FONT_ALIGN_RIGHT);
-    }
-    
-    {
-        static b2Vec2 origin = b2Vec2(CAM_WIDTH - 0.5f, CAM_HEIGHT - (row++ * padding));
-        
-        std::string text = StringUtil::format("'M'   Music %s", NG_AUDIO_ENGINE->isMusicDisabled() ? "OFF" : " ON");
-        renderText(text, origin, Color::BLACK, FONT_ALIGN_RIGHT);
+        {
+            static b2Vec2 origin = b2Vec2(CAM_WIDTH - 0.5f, CAM_HEIGHT - (row++ * padding));
+            
+            std::string text = StringUtil::format("'M'       Music %s", NG_AUDIO_ENGINE->isMusicDisabled() ? "OFF" : " ON");
+            renderText(text, origin, Color::BLACK, FONT_ALIGN_RIGHT);
+        }
     }
     
     if (Server::getInstance())
@@ -502,21 +504,28 @@ void MainRenderer::renderServerJoinedText()
         {
             static b2Vec2 origin = b2Vec2(CAM_WIDTH - 0.5f, CAM_HEIGHT - (row++ * padding));
             
-            std::string text = StringUtil::format("'T' Enemies %s", Server::getInstance()->isSpawningEnemies() ? " ON" : "OFF");
+            std::string text = StringUtil::format("'T'     Enemies %s", Server::getInstance()->isSpawningEnemies() ? " ON" : "OFF");
             renderText(text, origin, Color::BLACK, FONT_ALIGN_RIGHT);
         }
         
         {
             static b2Vec2 origin = b2Vec2(CAM_WIDTH - 0.5f, CAM_HEIGHT - (row++ * padding));
             
-            std::string text = StringUtil::format("'C' Objects %s", Server::getInstance()->isSpawningObjects() ? " ON" : "OFF");
+            std::string text = StringUtil::format("'C'     Objects %s", Server::getInstance()->isSpawningObjects() ? " ON" : "OFF");
             renderText(text, origin, Color::BLACK, FONT_ALIGN_RIGHT);
         }
         
         {
             static b2Vec2 origin = b2Vec2(CAM_WIDTH - 0.5f, CAM_HEIGHT - (row++ * padding));
             
-            std::string text = StringUtil::format("'I'   DEBUG %s", Server::getInstance()->isDisplaying() ? " ON" : "OFF");
+            std::string text = StringUtil::format("'I'       DEBUG %s", Server::getInstance()->isDisplaying() ? " ON" : "OFF");
+            renderText(text, origin, Color::BLACK, FONT_ALIGN_RIGHT);
+        }
+        
+        {
+            static b2Vec2 origin = b2Vec2(CAM_WIDTH - 0.5f, CAM_HEIGHT - (row++ * padding));
+            
+            std::string text = StringUtil::format("'B' Sync Method %s", Server::getInstance()->isAvgMethod() ? "AVG" : "LCC");
             renderText(text, origin, Color::BLACK, FONT_ALIGN_RIGHT);
         }
     }

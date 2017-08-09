@@ -80,6 +80,9 @@ void InputManager::update()
                 case NG_KEY_I:
                     m_currentState->m_iMenuState = (*i)->isUp() ? MENU_STATE_SERVER_TOGGLE_SERVER_DISPLAY : MENU_STATE_NONE;
                     continue;
+                case NG_KEY_B:
+                    m_currentState->m_iMenuState = (*i)->isUp() ? MENU_STATE_SERVER_TOGGLE_SYNC_METHOD : MENU_STATE_NONE;
+                    continue;
                 case NG_KEY_ESCAPE:
                     m_currentState->m_iMenuState = (*i)->isUp() ? MENU_STATE_ESCAPE : MENU_STATE_NONE;
                     continue;

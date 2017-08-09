@@ -132,6 +132,11 @@ void Server::toggleDisplaying()
     m_isDisplaying = !m_isDisplaying;
 }
 
+void Server::toggleSyncMethod()
+{
+    m_isAvgMethod = !m_isAvgMethod;
+}
+
 bool Server::isSpawningEnemies()
 {
     return m_isSpawningEnemies;
@@ -145,6 +150,11 @@ bool Server::isSpawningObjects()
 bool Server::isDisplaying()
 {
     return m_isDisplaying;
+}
+
+bool Server::isAvgMethod()
+{
+    return m_isAvgMethod;
 }
 
 void Server::handleNewClient(int playerId, std::string playerName)
@@ -299,7 +309,7 @@ void Server::clearClientMoves()
     }
 }
 
-Server::Server(bool isSteam) : m_fStateTime(0), m_fFrameStateTime(0), m_fStateTimeNoEnemies(0), m_iPlayerIdForRobotBeingCreated(0), m_isSpawningEnemies(false), m_isSpawningObjects(true), m_isDisplaying(false)
+Server::Server(bool isSteam) : m_fStateTime(0), m_fFrameStateTime(0), m_fStateTimeNoEnemies(0), m_iPlayerIdForRobotBeingCreated(0), m_isSpawningEnemies(false), m_isSpawningObjects(true), m_isDisplaying(false), m_isAvgMethod(true)
 {
     FWInstanceManager::createServerEntityManager(InstanceManager::sHandleEntityCreatedOnServer, InstanceManager::sHandleEntityDeletedOnServer);
     

@@ -63,6 +63,10 @@ public:
     
     int getAverageMoveCount() const;
     
+    int getLowestMoveCount() const;
+    
+    int getHostMoveCount() const;
+    
     int getNumClientsConnected();
     
     IMachineAddress* getServerAddress();
