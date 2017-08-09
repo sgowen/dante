@@ -114,11 +114,6 @@ void OutputMemoryBitStream::write(const b2Vec2& inVector)
     write(isZero);
     if (!isZero)
     {
-        if(inVector.x > 100000 || inVector.x < -100000)
-        {
-            LOG("WTF WEIRD SERVER VECTOR VALUE");
-        }
-        
         write(inVector.x);
     }
     
@@ -126,11 +121,6 @@ void OutputMemoryBitStream::write(const b2Vec2& inVector)
     write(isZero);
     if (!isZero)
     {
-        if(inVector.y > 100000 || inVector.y < -100000)
-        {
-            LOG("WTF WEIRD SERVER VECTOR VALUE");
-        }
-        
         write(inVector.y);
     }
 }

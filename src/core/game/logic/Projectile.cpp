@@ -74,6 +74,10 @@ void Projectile::update()
             explode();
         }
     }
+    else if (m_state == ProjectileState_Exploding)
+    {
+        setVelocity(b2Vec2_zero);
+    }
     
     if (m_isServer)
     {
@@ -107,18 +111,6 @@ void Projectile::update()
             // This projectile was just created
             Util::playSound(SOUND_ID_FIRE_ROCKET, getPosition(), m_isServer);
         }
-    }
-    
-    if (!(m_velocityLastKnown.y > 100000 || m_velocityLastKnown.y < -100000)
-        && (getVelocity().y > 100000 || getVelocity().y < -100000))
-    {
-        LOG("WTF WEIRD SERVER VECTOR VALUE");
-    }
-    
-    if (!(m_velocityLastKnown.x > 100000 || m_velocityLastKnown.x < -100000)
-        && (getVelocity().x > 100000 || getVelocity().x < -100000))
-    {
-        LOG("WTF WEIRD SERVER VECTOR VALUE");
     }
     
     m_velocityLastKnown = b2Vec2(getVelocity().x, getVelocity().y);
