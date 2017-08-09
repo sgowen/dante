@@ -313,8 +313,9 @@ void NetworkManagerClient::readLastMoveProcessedOnServerTimestamp(InputMemoryBit
     if (isTimestampDirty)
     {
         inInputStream.read(m_fLastMoveProcessedByServerTimestamp);
+        inInputStream.read(m_fLastMoveReceivedByServerTimestamp);
         
-        float rtt = Timing::getInstance()->getFrameStartTime() - m_fLastMoveProcessedByServerTimestamp;
+        float rtt = Timing::getInstance()->getFrameStartTime() - m_fLastMoveReceivedByServerTimestamp;
         m_avgRoundTripTime->update(rtt);
         
         m_removeProcessedMovesFunc(m_fLastMoveProcessedByServerTimestamp);
@@ -345,8 +346,8 @@ void NetworkManagerClient::sendInputPacket()
         
         m_deliveryNotificationManager->writeState(inputPacket);
         
-        // eventually write the 3 latest moves so they have 3 chances to get through...
-        int moveCount = moveList.getMoveCount();
+        // eventually write the 15 latest moves so they have 15 chances to get through...
+        int moveCount = moveList.getNumMovesAfterTimestamp(m_fLastMoveReceivedByServerTimestamp);
         int firstMoveIndex = moveCount - 15;
         if (firstMoveIndex < 0)
         {
@@ -354,7 +355,7 @@ void NetworkManagerClient::sendInputPacket()
         }
         auto move = moveList.begin() + firstMoveIndex;
         
-        // only need 2 bits to write the move count, because it's 0-3
+        // only need 4 bits to write the move count, because it's 0-15
         inputPacket.write(moveCount - firstMoveIndex, 4);
         
         for (; firstMoveIndex < moveCount; ++firstMoveIndex, ++move)
@@ -431,6 +432,7 @@ m_deliveryNotificationManager(new DeliveryNotificationManager(true, false)),
 m_fTimeOfLastHello(0.0f),
 m_fTimeOfLastInputPacket(0.0f),
 m_fLastMoveProcessedByServerTimestamp(0.0f),
+m_fLastMoveReceivedByServerTimestamp(0.0f),
 m_fLastServerCommunicationTimestamp(Timing::getInstance()->getFrameStartTime()),
 m_fFrameRate(inFrameRate),
 m_isRequestingToAddLocalPlayer(false),

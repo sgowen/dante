@@ -25,6 +25,7 @@ class b2Fixture;
 class b2Contact;
 class OutputMemoryBitStream;
 class InputMemoryBitStream;
+class Move;
 
 #define NW_TYPE_DECL(inCode) \
 public: \
@@ -83,6 +84,14 @@ public:
     
     virtual uint32_t write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState) = 0;
     
+    virtual bool needsMoveReplay() = 0;
+    
+    virtual void recallIfNecessary(const Move& move);
+    
+    virtual void postRead();
+    
+    virtual void cacheToMove(const Move& move);
+    
     void onDeletion();
     
     void handleBeginFootContact(Entity* inEntity);
@@ -140,6 +149,7 @@ protected:
     Color m_color;
     float m_fWidth;
     float m_fHeight;
+    uint32_t m_iReadState;
     bool m_isServer;
     
     // Cached Last Known Values (from previous frame)

@@ -50,7 +50,7 @@ public:
     
     virtual uint32_t write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState);
     
-    void handleBeginContactWithGround(Ground* inGround);
+    virtual bool needsMoveReplay();
 };
 
 #endif /* defined(__noctisgames__Crate__) */

@@ -61,6 +61,8 @@ public:
     
     virtual uint32_t write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState);
     
+    virtual bool needsMoveReplay();
+    
     void initFromShooter(Robot* inRobot);
     
     void handleBeginContactWithSpacePirate(SpacePirate* inEntity);

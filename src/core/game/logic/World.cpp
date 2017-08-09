@@ -152,42 +152,43 @@ void World::postRead()
     
     for (const Move& move : moveList)
     {
-        bool needsReplay = false;
-        
         for (Entity* entity : m_players)
         {
+            entity->recallIfNecessary(move);
+            
             Robot* robot = static_cast<Robot*>(entity);
             if (NG_CLIENT->isPlayerIdLocal(robot->getPlayerId()))
             {
-                if (robot->needsMoveReplay())
-                {
-                    needsReplay = true;
-                    
-                    robot->processInput(move.getInputState());
-                }
+                robot->processInput(move.getInputState());
             }
         }
         
-        if (needsReplay)
+        for (Entity* entity : m_entities)
         {
-            stepPhysics(FRAME_RATE);
-            
-            for (Entity* entity : m_players)
-            {
-                entity->update();
-            }
-            
-            for (Entity* entity : m_entities)
-            {
-                entity->update();
-            }
+            entity->recallIfNecessary(move);
+        }
+        
+        stepPhysics(FRAME_RATE);
+        
+        for (Entity* entity : m_players)
+        {
+            entity->update();
+        }
+        
+        for (Entity* entity : m_entities)
+        {
+            entity->update();
         }
     }
     
     for (Entity* entity : m_players)
     {
-        Robot* robot = static_cast<Robot*>(entity);
-        robot->postRead();
+        entity->postRead();
+    }
+    
+    for (Entity* entity : m_entities)
+    {
+        entity->postRead();
     }
 }
 
@@ -196,8 +197,6 @@ void World::update()
     if (m_isServer)
     {
         int avgMoveCount = NG_SERVER->getAverageMoveCount();
-        
-        LOG("avgMoveCount: %d", avgMoveCount);
         
         if (avgMoveCount > 0)
         {
@@ -286,13 +285,14 @@ void World::update()
             
             for (Entity* entity : m_players)
             {
-                Robot* robot = static_cast<Robot*>(entity);
-                robot->update();
+                entity->update();
+                entity->cacheToMove(*pendingMove);
             }
             
             for (Entity* entity : m_entities)
             {
                 entity->update();
+                entity->cacheToMove(*pendingMove);
             }
         }
     }

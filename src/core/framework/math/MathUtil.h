@@ -32,7 +32,7 @@ inline float sanitizeCloseToZeroValue(float x)
     return x;
 }
 
-inline bool areFloatsPracticallyEqual(float A, float B, float maxDiff = 0.000001f, float maxRelDiff = FLT_EPSILON)
+inline bool areFloatsPracticallyEqual(float A, float B, float maxDiff = 0.00000001f, float maxRelDiff = FLT_EPSILON)
 {
     // Check if the numbers are really close -- needed
     // when comparing numbers near zero.
@@ -57,15 +57,12 @@ inline bool areFloatsPracticallyEqual(float A, float B, float maxDiff = 0.000001
 
 inline bool areBox2DVectorsCloseEnough(const b2Vec2& inA, const b2Vec2& inB)
 {
-    static float maxDiff = 0.001f;
-    return areFloatsPracticallyEqual(inA.x, inB.x, maxDiff) && areFloatsPracticallyEqual(inA.y, inB.y, maxDiff);
+    return areFloatsPracticallyEqual(inA.x, inB.x) && areFloatsPracticallyEqual(inA.y, inB.y);
 }
 
 inline bool areBox2DFloatsCloseEnough(float A, float B)
 {
-    static float maxDiff = 0.001f;
-    
-    return areFloatsPracticallyEqual(A, B, maxDiff);
+    return areFloatsPracticallyEqual(A, B);
 }
 
 inline b2Vec2 lerpBox2DVector(b2Vec2& inA, const b2Vec2& inB, float t)

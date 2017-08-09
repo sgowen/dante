@@ -40,6 +40,8 @@ public:
     
     int getMoveCount() const;
     
+    int getNumMovesAfterTimestamp(float inLastMoveReceivedOnServerTimestamp) const;
+    
     Move* getMoveAtIndex(int index);
     
     std::deque<Move>::const_iterator begin() const;

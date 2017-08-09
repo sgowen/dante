@@ -56,7 +56,7 @@ public:
     
     virtual uint32_t write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState);
     
-    void postRead();
+    virtual bool needsMoveReplay();
     
     void processInput(IInputState* inInputState, bool isPending = false);
     
@@ -86,8 +86,6 @@ public:
     
     bool isSprinting();
     
-    bool needsMoveReplay();
-    
 private:
     uint64_t m_iAddressHash;
     uint8_t m_iPlayerId;
@@ -102,8 +100,6 @@ private:
     
     uint32_t m_iNumKills;
     bool m_wasLastKillHeadshot;
-    
-    uint32_t m_iReadState;
     
     float m_fSpeed;
     float m_fJumpSpeed;

@@ -39,6 +39,8 @@ public:
     virtual void read(InputMemoryBitStream& inInputStream);
     
     virtual uint32_t write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState);
+    
+    virtual bool needsMoveReplay();
 };
 
 #endif /* defined(__noctisgames__Ground__) */

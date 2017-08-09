@@ -9,9 +9,14 @@
 #ifndef __noctisgames__Move__
 #define __noctisgames__Move__
 
+#include "Box2D/Common/b2Math.h"
+
+#include <unordered_map>
+
 class IInputState;
 class OutputMemoryBitStream;
 class InputMemoryBitStream;
+class Entity;
 
 class Move
 {
@@ -26,11 +31,26 @@ public:
     
     bool read(InputMemoryBitStream& inInputStream);
     
+    void cacheEntity(Entity* inEntity) const;
+    
+    void recallEntityCache(Entity* inEntity) const;
+    
     IInputState* getInputState() const;
     
     float getTimestamp() const;
     
 private:
+    class EntityClientCache
+    {
+    public:
+        float m_fStateTime;
+        b2Vec2 m_velocity;
+        b2Vec2 m_position;
+        float m_fAngle;
+    };
+    
+    mutable std::unordered_map<int, EntityClientCache> m_entityCacheMap;
+    
     IInputState* m_inputState;
     float m_fTimestamp;
 };

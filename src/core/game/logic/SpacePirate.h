@@ -52,6 +52,8 @@ public:
     
     virtual uint32_t write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState);
     
+    virtual bool needsMoveReplay();
+    
     void init(float x, float y, float speed, int scale, uint8_t health);
     
     void handleBeginContactWithRobot(Robot* robot);

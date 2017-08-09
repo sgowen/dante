@@ -55,10 +55,6 @@ void Ground::handleBeginContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixtu
     {
         (static_cast<SpacePirate*>(inEntity))->handleBeginContact(this, inFixtureB, inFixtureA);
     }
-    else if (inEntity->getRTTI().derivesFrom(Crate::rtti))
-    {
-        (static_cast<Crate*>(inEntity))->handleBeginContactWithGround(this);
-    }
 }
 
 void Ground::handleEndContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB)
@@ -90,6 +86,11 @@ uint32_t Ground::write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtySt
     // Empty
     
     return writtenState;
+}
+
+bool Ground::needsMoveReplay()
+{
+    return false;
 }
 
 RTTI_IMPL(Ground, Entity);

@@ -90,6 +90,21 @@ int MoveList::getMoveCount() const
     return static_cast<int>(m_moves.size());
 }
 
+int MoveList::getNumMovesAfterTimestamp(float inLastMoveReceivedOnServerTimestamp) const
+{
+    int ret = 0;
+    
+    for (Move move : m_moves)
+    {
+        if (move.getTimestamp() > inLastMoveReceivedOnServerTimestamp)
+        {
+            ++ret;
+        }
+    }
+    
+    return ret;
+}
+
 Move* MoveList::getMoveAtIndex(int index)
 {
     if (index < getMoveCount())

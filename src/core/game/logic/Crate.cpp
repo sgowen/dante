@@ -89,10 +89,6 @@ void Crate::handleBeginContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixtur
     {
         (static_cast<SpacePirate*>(inEntity))->handleBeginContact(this, inFixtureB, inFixtureA);
     }
-    else if (inEntity->getRTTI().derivesFrom(Ground::rtti))
-    {
-        handleBeginContactWithGround(nullptr);
-    }
 }
 
 void Crate::handleEndContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB)
@@ -116,7 +112,7 @@ void Crate::read(InputMemoryBitStream& inInputStream)
 {
     bool stateBit;
     
-    uint32_t readState = 0;
+    m_iReadState = 0;
     
     inInputStream.read(stateBit);
     if (stateBit)
@@ -133,7 +129,7 @@ void Crate::read(InputMemoryBitStream& inInputStream)
         inInputStream.read(angle);
         setAngle(angle);
         
-        readState |= CRAT_Pose;
+        m_iReadState |= CRAT_Pose;
     }
 }
 
@@ -161,9 +157,9 @@ uint32_t Crate::write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtySta
     return writtenState;
 }
 
-void Crate::handleBeginContactWithGround(Ground* inGround)
+bool Crate::needsMoveReplay()
 {
-    // TODO
+    return (m_iReadState & CRAT_Pose) != 0;
 }
 
 RTTI_IMPL(Crate, Entity);

@@ -173,8 +173,26 @@ void InputMemoryBitStream::read(Vector2& outVector)
 
 void InputMemoryBitStream::read(b2Vec2& outVector)
 {
-    read(outVector.x);
-    read(outVector.y);
+    bool isZero;
+    read(isZero);
+    if (isZero)
+    {
+        outVector.x = 0;
+    }
+    else
+    {
+        read(outVector.x);
+    }
+    
+    read(isZero);
+    if (isZero)
+    {
+        outVector.y = 0;
+    }
+    else
+    {
+        read(outVector.y);
+    }
 }
 
 void InputMemoryBitStream::read(Color& outColor)

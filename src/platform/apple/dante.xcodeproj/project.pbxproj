@@ -1085,7 +1085,6 @@
 				BBAEF0BC1EA94ED900F0866E /* core */,
 				BB44C31E1DB030B3003E633F /* mac */,
 				0ADF1875178E2185005DA99E /* Products */,
-				BB79C1611F0EE60100A734CE /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1244,6 +1243,7 @@
 				BB44CB101DB04E9D003E633F /* CoreVideo.framework */,
 				BB44CB991DB054B8003E633F /* Foundation.framework */,
 				BB44CB931DB05479003E633F /* GLKit.framework */,
+				BB79C1621F0EE60100A734CE /* IOKit.framework */,
 				BB44CB9D1DB054F9003E633F /* libz.tbd */,
 				BBCCA8FC1DB36EB600452FA1 /* OpenAL.framework */,
 				BB44CB0E1DB04E81003E633F /* OpenGL.framework */,
@@ -1595,14 +1595,6 @@
 				BB79C15F1F0EE3FD00A734CE /* NSXReturnThrowError.m */,
 			);
 			path = DDHidLib;
-			sourceTree = "<group>";
-		};
-		BB79C1611F0EE60100A734CE /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				BB79C1621F0EE60100A734CE /* IOKit.framework */,
-			);
-			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		BB8307EC1EC2AC0900435E7E /* server */ = {

@@ -56,6 +56,8 @@ public:
     
     virtual uint32_t write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState);
     
+    virtual bool needsMoveReplay();
+    
     void initFromSpacePirate(SpacePirate* spacePirate, b2Vec2 force, int type);
     
     int getType();

@@ -13,6 +13,8 @@
 #include "Vector2.h"
 #include "Box2D/Box2D.h"
 #include "Color.h"
+#include "MathUtil.h"
+#include "StringUtil.h"
 
 #include <cstring>	// memcpy()
 
@@ -108,8 +110,29 @@ void OutputMemoryBitStream::write(const Vector2& inVector)
 
 void OutputMemoryBitStream::write(const b2Vec2& inVector)
 {
-    write(inVector.x);
-    write(inVector.y);
+    bool isZero = areFloatsPracticallyEqual(inVector.x, 0);
+    write(isZero);
+    if (!isZero)
+    {
+        if(inVector.x > 100000 || inVector.x < -100000)
+        {
+            LOG("WTF WEIRD SERVER VECTOR VALUE");
+        }
+        
+        write(inVector.x);
+    }
+    
+    isZero = areFloatsPracticallyEqual(inVector.y, 0);
+    write(isZero);
+    if (!isZero)
+    {
+        if(inVector.y > 100000 || inVector.y < -100000)
+        {
+            LOG("WTF WEIRD SERVER VECTOR VALUE");
+        }
+        
+        write(inVector.y);
+    }
 }
 
 void OutputMemoryBitStream::write(Color& inColor)

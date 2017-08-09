@@ -52,7 +52,7 @@ EntityDef Projectile::constructEntityDef()
     
     ret.isStaticBody = false;
     ret.bullet = true;
-    ret.restitution = 0.5f;
+    ret.restitution = 0.0f;
     
     return ret;
 }
@@ -91,6 +91,34 @@ void Projectile::update()
         {
             NG_SERVER->setStateDirty(getID(), PRJC_Pose);
         }
+    }
+    else
+    {
+        if (m_stateLastKnown == ProjectileState_Active
+            && m_state == ProjectileState_Exploding)
+        {
+            m_body->SetGravityScale(0);
+            
+            Util::playSound(SOUND_ID_EXPLOSION, getPosition(), m_isServer);
+        }
+        
+        if ((m_iReadState & PRJC_PlayerInfo) != 0)
+        {
+            // This projectile was just created
+            Util::playSound(SOUND_ID_FIRE_ROCKET, getPosition(), m_isServer);
+        }
+    }
+    
+    if (!(m_velocityLastKnown.y > 100000 || m_velocityLastKnown.y < -100000)
+        && (getVelocity().y > 100000 || getVelocity().y < -100000))
+    {
+        LOG("WTF WEIRD SERVER VECTOR VALUE");
+    }
+    
+    if (!(m_velocityLastKnown.x > 100000 || m_velocityLastKnown.x < -100000)
+        && (getVelocity().x > 100000 || getVelocity().x < -100000))
+    {
+        LOG("WTF WEIRD SERVER VECTOR VALUE");
     }
     
     m_velocityLastKnown = b2Vec2(getVelocity().x, getVelocity().y);
@@ -143,11 +171,9 @@ uint32_t Projectile::getAllStateMask() const
 
 void Projectile::read(InputMemoryBitStream& inInputStream)
 {
-    ProjectileState oldState = m_state;
-    
     bool stateBit;
     
-    uint32_t readState = 0;
+    m_iReadState = 0;
     
     inInputStream.read(stateBit);
     if (stateBit)
@@ -155,13 +181,15 @@ void Projectile::read(InputMemoryBitStream& inInputStream)
         inInputStream.read(m_iPlayerId);
         inInputStream.read(m_color);
         inInputStream.read(m_isFacingLeft);
-        readState |= PRJC_PlayerInfo;
+        m_iReadState |= PRJC_PlayerInfo;
     }
     
     inInputStream.read(stateBit);
     if (stateBit)
     {
-        inInputStream.read(m_state);
+        uint8_t state;
+        inInputStream.read(state);
+        m_state = (ProjectileState) state;
         
         inInputStream.read(m_fStateTime);
         
@@ -173,26 +201,7 @@ void Projectile::read(InputMemoryBitStream& inInputStream)
         inInputStream.read(position);
         setPosition(position);
         
-        readState |= PRJC_Pose;
-    }
-    
-    if (oldState == ProjectileState_Active
-        && m_state == ProjectileState_Exploding)
-    {
-        m_body->SetGravityScale(0);
-        
-        Util::playSound(SOUND_ID_EXPLOSION, getPosition(), m_isServer);
-    }
-    
-    if (oldState != m_state)
-    {
-        m_fStateTime = 0;
-    }
-    
-    if ((readState & PRJC_PlayerInfo) != 0)
-    {
-        // This projectile was just created
-        Util::playSound(SOUND_ID_FIRE_ROCKET, getPosition(), m_isServer);
+        m_iReadState |= PRJC_Pose;
     }
 }
 
@@ -218,7 +227,7 @@ uint32_t Projectile::write(OutputMemoryBitStream& inOutputStream, uint32_t inDir
     {
         inOutputStream.write((bool)true);
         
-        inOutputStream.write(m_state);
+        inOutputStream.write((uint8_t)m_state);
         
         inOutputStream.write(m_fStateTime);
         
@@ -236,6 +245,11 @@ uint32_t Projectile::write(OutputMemoryBitStream& inOutputStream, uint32_t inDir
     return writtenState;
 }
 
+bool Projectile::needsMoveReplay()
+{
+    return false;
+}
+
 void Projectile::initFromShooter(Robot* inRobot)
 {
     m_state = ProjectileState_Active;
@@ -243,7 +257,7 @@ void Projectile::initFromShooter(Robot* inRobot)
     m_iPlayerId = inRobot->getPlayerId();
     m_isFacingLeft = inRobot->isFacingLeft();
     
-    setVelocity(b2Vec2(m_isFacingLeft ? -80 : 80, getVelocity().y));
+    setVelocity(b2Vec2(m_isFacingLeft ? -80 : 80, 0));
     
     b2Vec2 position = inRobot->getPosition();
     position += b2Vec2(m_isFacingLeft ? -inRobot->getWidth() / 2 : inRobot->getWidth() / 2, inRobot->getHeight() / 4);

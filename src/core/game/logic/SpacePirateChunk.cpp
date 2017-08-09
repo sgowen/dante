@@ -106,7 +106,7 @@ void SpacePirateChunk::read(InputMemoryBitStream& inInputStream)
 {
     bool stateBit;
     
-    uint32_t readState = 0;
+    m_iReadState = 0;
     
     inInputStream.read(stateBit);
     if (stateBit)
@@ -119,7 +119,7 @@ void SpacePirateChunk::read(InputMemoryBitStream& inInputStream)
         inInputStream.read(m_fWidth);
         inInputStream.read(m_fHeight);
         
-        readState |= SPCH_Info;
+        m_iReadState |= SPCH_Info;
     }
     
     inInputStream.read(stateBit);
@@ -137,7 +137,7 @@ void SpacePirateChunk::read(InputMemoryBitStream& inInputStream)
         inInputStream.read(angle);
         setAngle(angle);
         
-        readState |= SPCH_Pose;
+        m_iReadState |= SPCH_Pose;
     }
 }
 
@@ -182,6 +182,11 @@ uint32_t SpacePirateChunk::write(OutputMemoryBitStream& inOutputStream, uint32_t
     }
     
     return writtenState;
+}
+
+bool SpacePirateChunk::needsMoveReplay()
+{
+    return (m_iReadState & SPCH_Pose) != 0;
 }
 
 void SpacePirateChunk::initFromSpacePirate(SpacePirate* spacePirate, b2Vec2 force, int type)

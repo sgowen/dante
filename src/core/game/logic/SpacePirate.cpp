@@ -214,7 +214,7 @@ void SpacePirate::read(InputMemoryBitStream& inInputStream)
 {
     bool stateBit;
     
-    uint32_t readState = 0;
+    m_iReadState = 0;
     
     inInputStream.read(stateBit);
     if (stateBit)
@@ -223,12 +223,14 @@ void SpacePirate::read(InputMemoryBitStream& inInputStream)
         
         inInputStream.read(m_fWidth);
         inInputStream.read(m_fHeight);
-        readState |= SPCP_Info;
+        m_iReadState |= SPCP_Info;
     }
     
     inInputStream.read(stateBit);
     if (stateBit)
     {
+        inInputStream.read(m_fStateTime);
+        
         b2Vec2 velocity;
         inInputStream.read(velocity);
         setVelocity(velocity);
@@ -240,14 +242,14 @@ void SpacePirate::read(InputMemoryBitStream& inInputStream)
         inInputStream.read(m_isFacingLeft);
         inInputStream.read(m_isJumping);
         
-        readState |= SPCP_Pose;
+        m_iReadState |= SPCP_Pose;
     }
     
     inInputStream.read(stateBit);
     if (stateBit)
     {
         inInputStream.read(m_iHealth);
-        readState |= SPCP_Health;
+        m_iReadState |= SPCP_Health;
     }
 }
 
@@ -274,6 +276,8 @@ uint32_t SpacePirate::write(OutputMemoryBitStream& inOutputStream, uint32_t inDi
     if (inDirtyState & SPCP_Pose)
     {
         inOutputStream.write((bool)true);
+        
+        inOutputStream.write(m_fStateTime);
         
         inOutputStream.write(getVelocity());
         
@@ -303,6 +307,11 @@ uint32_t SpacePirate::write(OutputMemoryBitStream& inOutputStream, uint32_t inDi
     }
     
     return writtenState;
+}
+
+bool SpacePirate::needsMoveReplay()
+{
+    return (m_iReadState & SPCP_Pose) != 0;
 }
 
 void SpacePirate::init(float x, float y, float speed, int scale, uint8_t health)

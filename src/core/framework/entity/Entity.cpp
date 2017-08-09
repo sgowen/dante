@@ -14,6 +14,7 @@
 #include "NGRect.h"
 #include "OutputMemoryBitStream.h"
 #include "InputMemoryBitStream.h"
+#include "Move.h"
 
 #include "NGSTDUtil.h"
 #include "Timing.h"
@@ -31,9 +32,10 @@ m_fStateTime(0.0f),
 m_color(1.0f, 1.0f, 1.0f, 1.0f),
 m_fWidth(width),
 m_fHeight(height),
+m_iReadState(0),
 m_isServer(isServer),
-m_velocityLastKnown(),
-m_positionLastKnown(),
+m_velocityLastKnown(b2Vec2_zero),
+m_positionLastKnown(b2Vec2_zero),
 m_fAngleLastKnown(0.0f),
 m_fTimeVelocityBecameOutOfSync(0.0f),
 m_fTimePositionBecameOutOfSync(0.0f),
@@ -112,6 +114,30 @@ m_isRequestingDeletion(false)
 Entity::~Entity()
 {
     onDeletion();
+}
+
+void Entity::recallIfNecessary(const Move& move)
+{
+    if (!needsMoveReplay())
+    {
+        move.recallEntityCache(this);
+    }
+}
+
+void Entity::postRead()
+{
+    // Only interpolate when new pose has been read in
+    if (needsMoveReplay())
+    {
+        interpolateClientSidePrediction(m_velocityLastKnown, m_positionLastKnown);
+    }
+    
+    m_iReadState = 0;
+}
+
+void Entity::cacheToMove(const Move& move)
+{
+    move.cacheEntity(this);
 }
 
 void Entity::onDeletion()
@@ -268,12 +294,9 @@ void Entity::interpolateClientSidePrediction(b2Vec2& inOldVelocity, b2Vec2& inOl
 
 bool Entity::interpolateVectorsIfNecessary(b2Vec2& inOld, const b2Vec2& inNew, float& syncTracker, const char* vectorType)
 {
-    float rtt = NG_CLIENT->getRoundTripTime();
-    rtt /= 2; // Let's just measure the time from server to us
-    
     if (!areBox2DVectorsCloseEnough(inOld, inNew))
     {
-        LOG("WARN: Robot move replay ended with incorrect %s! Old %3.8f, %3.8f - New %3.8f, %3.8f", vectorType, inOld.x, inOld.y, inNew.x, inNew.y);
+        LOG("WARN: %s move replay ended with incorrect %s! Old %3.8f, %3.8f - New %3.8f, %3.8f", getRTTI().getClassName().c_str(), vectorType, inOld.x, inOld.y, inNew.x, inNew.y);
         
         // have we been out of sync, or did we just become out of sync?
         float time = Timing::getInstance()->getFrameStartTime();
@@ -281,6 +304,9 @@ bool Entity::interpolateVectorsIfNecessary(b2Vec2& inOld, const b2Vec2& inNew, f
         {
             syncTracker = time;
         }
+        
+        float rtt = NG_CLIENT->getRoundTripTime();
+        rtt /= 2; // Let's just measure the time from server to us
         
         // now interpolate to the correct value...
         float durationOutOfSync = time - syncTracker;

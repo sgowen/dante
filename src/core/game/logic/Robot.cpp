@@ -53,7 +53,6 @@ m_wasLastKillHeadshot(false),
 m_isFacingLeft(false),
 m_isShooting(false),
 m_isSprinting(false),
-m_iReadState(0),
 m_fSpeed(7.5f),
 m_fJumpSpeed(11.0f),
 m_fShotCooldownTime(0.0f),
@@ -338,18 +337,9 @@ uint32_t Robot::write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtySta
     return writtenState;
 }
 
-void Robot::postRead()
+bool Robot::needsMoveReplay()
 {
-    if (NG_CLIENT->isPlayerIdLocal(getPlayerId()))
-    {
-        // Only interpolate when new pose has been read in
-        if ((m_iReadState & ROBT_Pose) != 0)
-        {
-            interpolateClientSidePrediction(m_velocityLastKnown, m_positionLastKnown);
-        }
-    }
-    
-    m_iReadState = 0;
+    return (m_iReadState & ROBT_Pose) != 0;
 }
 
 void Robot::processInput(IInputState* inInputState, bool isPending)
@@ -497,11 +487,6 @@ bool Robot::isShooting()
 bool Robot::isSprinting()
 {
     return m_isSprinting;
-}
-
-bool Robot::needsMoveReplay()
-{
-    return (m_iReadState & ROBT_Pose) != 0;
 }
 
 void Robot::playNetworkBoundSounds(int numJumpsLastKnown, bool isSprintingLastKnown)
