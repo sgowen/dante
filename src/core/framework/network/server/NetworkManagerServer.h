@@ -63,7 +63,7 @@ public:
     
     int getAverageMoveCount() const;
     
-    int getLowestMoveCount() const;
+    int getLowestNonHostMoveCount() const;
     
     int getHostMoveCount() const;
     

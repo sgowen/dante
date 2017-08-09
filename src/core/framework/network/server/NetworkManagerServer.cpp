@@ -183,7 +183,7 @@ int NetworkManagerServer::getAverageMoveCount() const
     return ret;
 }
 
-int NetworkManagerServer::getLowestMoveCount() const
+int NetworkManagerServer::getLowestNonHostMoveCount() const
 {
     int ret = 0;
     
@@ -191,10 +191,13 @@ int NetworkManagerServer::getLowestMoveCount() const
     {
         for (auto const &entry : m_addressHashToClientMap)
         {
-            int moveCount = entry.second->getUnprocessedMoveList().getMoveCount();
-            if (moveCount < ret || ret == 0)
+            if (entry.second->getPlayerId() != 1)
             {
-                ret = moveCount;
+                int moveCount = entry.second->getUnprocessedMoveList().getMoveCount();
+                if (moveCount < ret || ret == 0)
+                {
+                    ret = moveCount;
+                }
             }
         }
     }

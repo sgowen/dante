@@ -193,26 +193,28 @@ void World::update()
     {
         bool isAvgMethod = Server::getInstance()->isAvgMethod();
         int avgMoveCount = NG_SERVER->getAverageMoveCount();
-        int lowestMoveCount = NG_SERVER->getLowestMoveCount();
+        int lowestNonHostMoveCount = NG_SERVER->getLowestNonHostMoveCount();
         int hostMoveCount = NG_SERVER->getHostMoveCount();
         
-        int finalMoveCount = Server::getInstance()->isAvgMethod() ? avgMoveCount : lowestMoveCount;
+        int finalMoveCount = Server::getInstance()->isAvgMethod() ? avgMoveCount : lowestNonHostMoveCount;
         
         if (!isAvgMethod)
         {
-            if (hostMoveCount > 6 || lowestMoveCount > 6)
+            if (hostMoveCount > 6 || lowestNonHostMoveCount > 6)
             {
                 finalMoveCount = avgMoveCount;
             }
-            else if (hostMoveCount >= lowestMoveCount)
+            else if (hostMoveCount >= lowestNonHostMoveCount)
             {
-                finalMoveCount = lowestMoveCount;
+                finalMoveCount = lowestNonHostMoveCount;
             }
-            else if (hostMoveCount < lowestMoveCount)
+            else if (hostMoveCount < lowestNonHostMoveCount)
             {
                 finalMoveCount = 0;
             }
         }
+        
+        LOG("avgMoveCount: %d, lowestNonHostMoveCount: %d, hostMoveCount: %d, finalMoveCount: %d", avgMoveCount, lowestNonHostMoveCount, hostMoveCount, finalMoveCount)
         
         if (finalMoveCount > 0)
         {
