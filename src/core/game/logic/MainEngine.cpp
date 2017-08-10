@@ -126,6 +126,8 @@ void MainEngine::update(float deltaTime)
     
     if (m_fFrameStateTime >= FRAME_RATE)
     {
+        m_fFrameStateTime -= FRAME_RATE;
+        
         Timing::getInstance()->updateManual(m_fStateTime, FRAME_RATE);
         
         handleSteamGameServices();
@@ -141,17 +143,12 @@ void MainEngine::update(float deltaTime)
         
         NG_AUDIO_ENGINE->update();
         
-        while (m_fFrameStateTime >= FRAME_RATE)
+        if (InstanceManager::getClientWorld())
         {
-            m_fFrameStateTime -= FRAME_RATE;
-            
-            if (InstanceManager::getClientWorld())
-            {
-                InstanceManager::getClientWorld()->update();
-            }
-            
-            InputManager::getInstance()->clearPendingMove();
+            InstanceManager::getClientWorld()->update();
         }
+        
+        InputManager::getInstance()->clearPendingMove();
         
         if (NG_CLIENT)
         {
@@ -410,7 +407,34 @@ void MainEngine::startServer()
     
     if (!Server::getInstance())
     {
-        Server::create(m_isSteam);
+        int numCratesToSpawn = -1;
+        {
+            std::string key = std::string("num_crates_to_spawn");
+            std::string val = m_config->findValue(key);
+            if (val.length() > 0)
+            {
+                numCratesToSpawn = StringUtil::stringToNumber<int>(val);
+            }
+        }
+        
+        int numSpacePiratesToSpawn = -1;
+        {
+            std::string key = std::string("num_space_pirates_to_spawn");
+            std::string val = m_config->findValue(key);
+            if (val.length() > 0)
+            {
+                numSpacePiratesToSpawn = StringUtil::stringToNumber<int>(val);
+            }
+        }
+        
+        if (numCratesToSpawn > -1 && numSpacePiratesToSpawn > -1)
+        {
+            Server::create(m_isSteam, numCratesToSpawn, numSpacePiratesToSpawn);
+        }
+        else
+        {
+            Server::create(m_isSteam);
+        }
         
         if (!NG_SERVER)
         {

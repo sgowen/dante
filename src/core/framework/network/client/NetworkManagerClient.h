@@ -95,7 +95,6 @@ private:
     NetworkClientState m_state;
     
     float m_fTimeOfLastHello;
-    float m_fTimeOfLastInputPacket;
     
     std::unordered_map<uint8_t, uint8_t> m_indexToPlayerIdMap;
     uint8_t m_iNextIndex;

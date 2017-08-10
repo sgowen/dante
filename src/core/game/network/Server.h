@@ -18,7 +18,7 @@ class Robot;
 class Server
 {
 public:
-    static void create(bool isSteam);
+    static void create(bool isSteam, int inNumCratesToSpawn = 16, int inNumSpacePiratesToSpawn = 4);
     
     static void destroy();
     
@@ -55,6 +55,8 @@ private:
     float m_fFrameStateTime;
     float m_fStateTimeNoEnemies;
     int m_iPlayerIdForRobotBeingCreated;
+    int m_iNumCratesToSpawn;
+    int m_iNumSpacePiratesToSpawn;
     bool m_isSpawningEnemies;
     bool m_isSpawningObjects;
     bool m_isDisplaying;
@@ -75,7 +77,7 @@ private:
     void clearClientMoves();
     
     // ctor, copy ctor, and assignment should be private in a Singleton
-    Server(bool isSteam);
+    Server(bool isSteam, int inNumCratesToSpawn, int inNumSpacePiratesToSpawn);
     ~Server();
     Server(const Server&);
     Server& operator=(const Server&);

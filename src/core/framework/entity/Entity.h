@@ -86,7 +86,7 @@ public:
     
     virtual bool needsMoveReplay() = 0;
     
-    virtual void recallIfNecessary(const Move& move);
+    virtual void recallIfNecessary(Move* move);
     
     virtual void postRead();
     
@@ -147,6 +147,8 @@ protected:
     b2Fixture* m_footSensorFixture;
     float m_fStateTime;
     Color m_color;
+    float m_fX;
+    float m_fY;
     float m_fWidth;
     float m_fHeight;
     uint32_t m_iReadState;
@@ -156,6 +158,10 @@ protected:
     b2Vec2 m_velocityLastKnown;
     b2Vec2 m_positionLastKnown;
     float m_fAngleLastKnown;
+    
+    void initPhysics(EntityDef inEntityDef);
+    
+    void deinitPhysics();
     
     void interpolateClientSidePrediction(b2Vec2& inOldVelocity, b2Vec2& inOldPos);
     

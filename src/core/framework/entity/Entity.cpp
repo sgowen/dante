@@ -30,6 +30,8 @@ m_fixture(nullptr),
 m_footSensorFixture(nullptr),
 m_fStateTime(0.0f),
 m_color(1.0f, 1.0f, 1.0f, 1.0f),
+m_fX(x),
+m_fY(y),
 m_fWidth(width),
 m_fHeight(height),
 m_iReadState(0),
@@ -43,72 +45,7 @@ m_iID(getUniqueEntityID()),
 m_iNumGroundContacts(0),
 m_isRequestingDeletion(false)
 {
-    if (inEntityDef.isStaticBody)
-    {
-        // Define the ground body.
-        b2BodyDef groundBodyDef;
-        groundBodyDef.position.Set(x, y);
-        
-        // Call the body factory which allocates memory for the ground body
-        // from a pool and creates the ground box shape (also from a pool).
-        // The body is also added to the world.
-        m_body = world.CreateBody(&groundBodyDef);
-        
-        // Define the ground box shape.
-        b2PolygonShape groundBox;
-        
-        // The extents are the half-widths of the box.
-        groundBox.SetAsBox(width / 2.0f, height / 2.0f);
-        
-        // Add the ground fixture to the ground body.
-        m_fixture = m_body->CreateFixture(&groundBox, 0.0f);
-    }
-    else
-    {
-        // Define the dynamic body. We set its position and call the body factory.
-        b2BodyDef bodyDef;
-        bodyDef.type = b2_dynamicBody;
-        bodyDef.position.Set(x, y);
-        bodyDef.fixedRotation = inEntityDef.fixedRotation;
-        bodyDef.bullet = inEntityDef.bullet;
-        m_body = world.CreateBody(&bodyDef);
-        
-        // Define another box shape for our dynamic body.
-        b2PolygonShape dynamicBox;
-        dynamicBox.SetAsBox(width / 2.0f, height / 2.0f);
-        
-        // Define the dynamic body fixture.
-        b2FixtureDef fixtureDef;
-        fixtureDef.shape = &dynamicBox;
-        fixtureDef.isSensor = inEntityDef.isSensor;
-        
-        // Set the box density to be non-zero, so it will be dynamic.
-        fixtureDef.density = inEntityDef.density;
-        
-        // Override the default friction.
-        fixtureDef.friction = 0.3f;
-        
-        fixtureDef.restitution = inEntityDef.restitution;
-        
-        // Add the shape to the body.
-        m_fixture = m_body->CreateFixture(&fixtureDef);
-        
-        if (inEntityDef.isCharacter)
-        {
-            // Add foot sensor fixture
-            b2PolygonShape feet;
-            feet.SetAsBox(width / 3.0f, height / 8.0f, b2Vec2(x, -height / 2.0f), 0);
-            b2FixtureDef fixtureDefFeet;
-            fixtureDefFeet.shape = &feet;
-            fixtureDefFeet.isSensor = true;
-            m_footSensorFixture = m_body->CreateFixture(&fixtureDefFeet);
-            m_footSensorFixture->SetUserData(this);
-        }
-    }
-    
-    m_fixture->SetUserData(this);
-    
-    m_body->SetUserData(this);
+    initPhysics(inEntityDef);
 }
 
 Entity::~Entity()
@@ -116,11 +53,11 @@ Entity::~Entity()
     onDeletion();
 }
 
-void Entity::recallIfNecessary(const Move& move)
+void Entity::recallIfNecessary(Move* move)
 {
     if (!needsMoveReplay())
     {
-        move.recallEntityCache(this);
+        move->recallEntityCache(this);
     }
 }
 
@@ -142,23 +79,7 @@ void Entity::cacheToMove(const Move& move)
 
 void Entity::onDeletion()
 {
-    if (m_fixture)
-    {
-        m_body->DestroyFixture(m_fixture);
-        m_fixture = nullptr;
-    }
-    
-    if (m_footSensorFixture)
-    {
-        m_body->DestroyFixture(m_footSensorFixture);
-        m_footSensorFixture = nullptr;
-    }
-    
-    if (m_body)
-    {
-        m_worldRef.DestroyBody(m_body);
-        m_body = nullptr;
-    }
+    deinitPhysics();
 }
 
 void Entity::handleBeginFootContact(Entity* inEntity)
@@ -188,6 +109,9 @@ b2Body* Entity::getBody()
 
 void Entity::setPosition(b2Vec2 position)
 {
+    m_fX = position.x;
+    m_fY = position.y;
+    
     m_body->SetTransform(position, m_body->GetAngle());
 }
 
@@ -278,6 +202,99 @@ bool Entity::isRequestingDeletion()
 }
 
 #pragma mark protected
+
+void Entity::initPhysics(EntityDef inEntityDef)
+{
+    deinitPhysics();
+    
+    if (inEntityDef.isStaticBody)
+    {
+        // Define the ground body.
+        b2BodyDef groundBodyDef;
+        groundBodyDef.position.Set(m_fX, m_fY);
+        
+        // Call the body factory which allocates memory for the ground body
+        // from a pool and creates the ground box shape (also from a pool).
+        // The body is also added to the world.
+        m_body = m_worldRef.CreateBody(&groundBodyDef);
+        
+        // Define the ground box shape.
+        b2PolygonShape groundBox;
+        
+        // The extents are the half-widths of the box.
+        groundBox.SetAsBox(m_fWidth / 2.0f, m_fHeight / 2.0f);
+        
+        // Add the ground fixture to the ground body.
+        m_fixture = m_body->CreateFixture(&groundBox, 0.0f);
+    }
+    else
+    {
+        // Define the dynamic body. We set its position and call the body factory.
+        b2BodyDef bodyDef;
+        bodyDef.type = b2_dynamicBody;
+        bodyDef.position.Set(m_fX, m_fY);
+        bodyDef.fixedRotation = inEntityDef.fixedRotation;
+        bodyDef.bullet = inEntityDef.bullet;
+        m_body = m_worldRef.CreateBody(&bodyDef);
+        
+        // Define another box shape for our dynamic body.
+        b2PolygonShape dynamicBox;
+        dynamicBox.SetAsBox(m_fWidth / 2.0f, m_fHeight / 2.0f);
+        
+        // Define the dynamic body fixture.
+        b2FixtureDef fixtureDef;
+        fixtureDef.shape = &dynamicBox;
+        fixtureDef.isSensor = inEntityDef.isSensor;
+        
+        // Set the box density to be non-zero, so it will be dynamic.
+        fixtureDef.density = inEntityDef.density;
+        
+        // Override the default friction.
+        fixtureDef.friction = 0.3f;
+        
+        fixtureDef.restitution = inEntityDef.restitution;
+        
+        // Add the shape to the body.
+        m_fixture = m_body->CreateFixture(&fixtureDef);
+        
+        if (inEntityDef.isCharacter)
+        {
+            // Add foot sensor fixture
+            b2PolygonShape feet;
+            feet.SetAsBox(m_fWidth / 3.0f, m_fHeight / 8.0f, b2Vec2(m_fX, -m_fHeight / 2.0f), 0);
+            b2FixtureDef fixtureDefFeet;
+            fixtureDefFeet.shape = &feet;
+            fixtureDefFeet.isSensor = true;
+            m_footSensorFixture = m_body->CreateFixture(&fixtureDefFeet);
+            m_footSensorFixture->SetUserData(this);
+        }
+    }
+    
+    m_fixture->SetUserData(this);
+    
+    m_body->SetUserData(this);
+}
+
+void Entity::deinitPhysics()
+{
+    if (m_fixture)
+    {
+        m_body->DestroyFixture(m_fixture);
+        m_fixture = nullptr;
+    }
+    
+    if (m_footSensorFixture)
+    {
+        m_body->DestroyFixture(m_footSensorFixture);
+        m_footSensorFixture = nullptr;
+    }
+    
+    if (m_body)
+    {
+        m_worldRef.DestroyBody(m_body);
+        m_body = nullptr;
+    }
+}
 
 void Entity::interpolateClientSidePrediction(b2Vec2& inOldVelocity, b2Vec2& inOldPos)
 {

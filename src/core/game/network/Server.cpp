@@ -39,11 +39,11 @@
 
 Server* Server::s_instance = nullptr;
 
-void Server::create(bool isSteam)
+void Server::create(bool isSteam, int inNumCratesToSpawn, int inNumSpacePiratesToSpawn)
 {
     assert(!s_instance);
     
-    s_instance = new Server(isSteam);
+    s_instance = new Server(isSteam, inNumCratesToSpawn, inNumSpacePiratesToSpawn);
 }
 
 void Server::destroy()
@@ -76,23 +76,20 @@ void Server::update(float deltaTime)
     
     if (m_fFrameStateTime >= FRAME_RATE)
     {
+        m_fFrameStateTime -= FRAME_RATE;
+        
         Timing::getInstance()->updateManual(m_fStateTime, FRAME_RATE);
         
         NG_SERVER->processIncomingPackets();
         
         NG_SERVER->checkForDisconnects();
         
-        while (m_fFrameStateTime >= FRAME_RATE)
-        {
-            m_fFrameStateTime -= FRAME_RATE;
-            
-            InstanceManager::getServerWorld()->update();
-            
-            respawnEnemiesIfNecessary();
-            spawnCratesIfNecessary();
-            
-            clearClientMoves();
-        }
+        InstanceManager::getServerWorld()->update();
+        
+        respawnEnemiesIfNecessary();
+        spawnCratesIfNecessary();
+        
+        clearClientMoves();
         
         NG_SERVER->sendOutgoingPackets();
     }
@@ -238,9 +235,7 @@ void Server::respawnEnemiesIfNecessary()
             
             m_fStateTimeNoEnemies = 0;
             
-            int numSpacePirates = 4;
-            
-            for (int i = 0; i < numSpacePirates; ++i)
+            for (int i = 0; i < m_iNumSpacePiratesToSpawn; ++i)
             {
                 SpacePirate* spacePirate = static_cast<SpacePirate*>(SERVER_ENTITY_REG->createEntity(NW_TYPE_SpacePirate));
                 
@@ -282,9 +277,7 @@ void Server::spawnCratesIfNecessary()
     
     srand(static_cast<unsigned>(time(0)));
     
-    int limit = 16;
-    
-    for (int i = 0; i < limit; ++i)
+    for (int i = 0; i < m_iNumCratesToSpawn; ++i)
     {
         Crate* crate = static_cast<Crate*>(SERVER_ENTITY_REG->createEntity(NW_TYPE_Crate));
         
@@ -309,7 +302,7 @@ void Server::clearClientMoves()
     }
 }
 
-Server::Server(bool isSteam) : m_fStateTime(0), m_fFrameStateTime(0), m_fStateTimeNoEnemies(0), m_iPlayerIdForRobotBeingCreated(0), m_isSpawningEnemies(false), m_isSpawningObjects(true), m_isDisplaying(false), m_isAvgMethod(true)
+Server::Server(bool isSteam, int inNumCratesToSpawn, int inNumSpacePiratesToSpawn) : m_fStateTime(0), m_fFrameStateTime(0), m_fStateTimeNoEnemies(0), m_iPlayerIdForRobotBeingCreated(0), m_iNumCratesToSpawn(inNumCratesToSpawn), m_iNumSpacePiratesToSpawn(inNumSpacePiratesToSpawn), m_isSpawningEnemies(false), m_isSpawningObjects(true), m_isDisplaying(false), m_isAvgMethod(true)
 {
     FWInstanceManager::createServerEntityManager(InstanceManager::sHandleEntityCreatedOnServer, InstanceManager::sHandleEntityDeletedOnServer);
     

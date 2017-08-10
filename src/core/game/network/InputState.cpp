@@ -169,7 +169,7 @@ void InputState::GameInputState::read(InputMemoryBitStream& inInputStream)
     inInputStream.read(m_isSprinting);
 }
 
-float InputState::GameInputState::getDesiredRightAmount()
+int InputState::GameInputState::getDesiredRightAmount()
 {
     int ret = 0;
     

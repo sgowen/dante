@@ -53,17 +53,19 @@ m_wasLastKillHeadshot(false),
 m_isFacingLeft(false),
 m_isShooting(false),
 m_isSprinting(false),
+m_isFirstJumpCompleted(false),
 m_fSpeed(7.5f),
 m_fJumpSpeed(11.0f),
 m_fShotCooldownTime(0.0f),
-m_isFirstJumpCompleted(false),
+m_iNumSpacePiratesTouching(0),
 m_iNumJumpsLastKnown(0),
 m_iHealthLastKnown(25),
 m_iNumKillsLastKnown(0),
 m_wasLastKillHeadshotLastKnown(false),
 m_isFacingLeftLastKnown(false),
 m_isShootingLastKnown(false),
-m_isSprintingLastKnown(false)
+m_isSprintingLastKnown(false),
+m_isFirstJumpCompletedLastKnown(false)
 {
     // Empty
 }
@@ -91,6 +93,11 @@ void Robot::update()
     
     if (m_isServer)
     {
+        if (m_iNumSpacePiratesTouching > 0 && m_iHealth > 0)
+        {
+            //--m_iHealth;
+        }
+        
         if (getPosition().y < DEAD_ZONE_BOTTOM)
         {
             m_iHealth = 0;
@@ -128,7 +135,8 @@ void Robot::update()
             || m_iNumJumpsLastKnown != m_iNumJumps
             || m_isFacingLeftLastKnown != m_isFacingLeft
             || m_isShootingLastKnown != m_isShooting
-            || m_isSprintingLastKnown != m_isSprinting)
+            || m_isSprintingLastKnown != m_isSprinting
+            || m_isFirstJumpCompletedLastKnown != m_isFirstJumpCompleted)
         {
             NG_SERVER->setStateDirty(getID(), ROBT_Pose);
         }
@@ -202,7 +210,7 @@ void Robot::handleBeginContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixtur
     
     if (inEntity->getRTTI().derivesFrom(SpacePirate::rtti))
     {
-        (static_cast<SpacePirate*>(inEntity))->handleBeginContactWithRobot(this);
+        ++m_iNumSpacePiratesTouching;
     }
 }
 
@@ -217,6 +225,11 @@ void Robot::handleEndContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture*
         }
         
         return;
+    }
+    
+    if (inEntity->getRTTI().derivesFrom(SpacePirate::rtti))
+    {
+        --m_iNumSpacePiratesTouching;
     }
 }
 
@@ -260,6 +273,7 @@ void Robot::read(InputMemoryBitStream& inInputStream)
         inInputStream.read(m_isFacingLeft);
         inInputStream.read(m_isShooting);
         inInputStream.read(m_isSprinting);
+        inInputStream.read(m_isFirstJumpCompleted);
         
         m_iReadState |= ROBT_Pose;
     }
@@ -310,6 +324,7 @@ uint32_t Robot::write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtySta
         inOutputStream.write((bool)m_isFacingLeft);
         inOutputStream.write((bool)m_isShooting);
         inOutputStream.write((bool)m_isSprinting);
+        inOutputStream.write((bool)m_isFirstJumpCompleted);
         
         writtenState |= ROBT_Pose;
     }
@@ -370,7 +385,7 @@ void Robot::processInput(IInputState* inInputState, bool isPending)
     
     if (inputState->isJumping())
     {
-        if (isGrounded())
+        if (isGrounded() && m_iNumJumps == 0)
         {
             m_fStateTime = 0;
             m_isFirstJumpCompleted = false;
@@ -397,8 +412,7 @@ void Robot::processInput(IInputState* inInputState, bool isPending)
                 velocity.Set(velocity.x, m_fJumpSpeed / 2.0f);
             }
         }
-        
-        if (m_iNumJumps == 2 && velocity.y > ((m_fJumpSpeed - 2) / 2.0f))
+        else if (m_iNumJumps == 2 && velocity.y > ((m_fJumpSpeed - 2) / 2.0f))
         {
             velocity.Set(velocity.x, (m_fJumpSpeed - 2) / 2.0f);
         }
@@ -411,14 +425,6 @@ void Robot::processInput(IInputState* inInputState, bool isPending)
     if (isPending)
     {
         playNetworkBoundSounds(numJumpsLastKnown, isSprintingLastKnown);
-    }
-}
-
-void Robot::takeDamage()
-{
-    if (m_iHealth > 0)
-    {
-        m_iHealth--;
     }
 }
 

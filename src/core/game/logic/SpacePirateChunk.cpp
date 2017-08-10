@@ -124,7 +124,9 @@ void SpacePirateChunk::read(InputMemoryBitStream& inInputStream)
     
     inInputStream.read(stateBit);
     if (stateBit)
-    {        
+    {
+        inInputStream.read(m_fStateTime);
+        
         b2Vec2 velocity;
         inInputStream.read(velocity);
         setVelocity(velocity);
@@ -167,6 +169,8 @@ uint32_t SpacePirateChunk::write(OutputMemoryBitStream& inOutputStream, uint32_t
     if (inDirtyState & SPCH_Pose)
     {
         inOutputStream.write((bool)true);
+        
+        inOutputStream.write(m_fStateTime);
         
         inOutputStream.write(getVelocity());
         
@@ -237,26 +241,7 @@ void SpacePirateChunk::initFromSpacePirate(SpacePirate* spacePirate, b2Vec2 forc
     m_fWidth = w / 2;
     m_fHeight = h / 2;
     
-    // Define another box shape for our dynamic body.
-    b2PolygonShape dynamicBox;
-    dynamicBox.SetAsBox(m_fWidth / 2.0f, m_fHeight / 2.0f);
-    
-    // Define the dynamic body fixture.
-    b2FixtureDef fixtureDef;
-    fixtureDef.shape = &dynamicBox;
-    
-    // Set the box density to be non-zero, so it will be dynamic.
-    fixtureDef.density = 1.0f;
-    
-    // Override the default friction.
-    fixtureDef.friction = 0.3f;
-    
-    m_body->DestroyFixture(m_fixture);
-    
-    // Add the shape to the body.
-    m_fixture = m_body->CreateFixture(&fixtureDef);
-    
-    m_fixture->SetUserData(this);
+    initPhysics(constructEntityDef());
     
     getBody()->ApplyLinearImpulseToCenter(force, true);
 }

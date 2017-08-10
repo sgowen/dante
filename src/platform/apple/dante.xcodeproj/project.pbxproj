@@ -2405,9 +2405,9 @@
 				BB91095A1F26996D0030E3DF /* SpacePirateChunk.cpp */,
 				BB91095B1F26996D0030E3DF /* SpacePirateChunk.h */,
 				BB8EE6291EF2E2C1000A5C98 /* Util.cpp */,
-				BB8EE62A1EF2E2C1000A5C98 /* Util.h */,
 				BBBD149E1EE08A20003F9307 /* World.cpp */,
 				BBBD149F1EE08A20003F9307 /* World.h */,
+				BB8EE62A1EF2E2C1000A5C98 /* Util.h */,
 			);
 			path = logic;
 			sourceTree = "<group>";

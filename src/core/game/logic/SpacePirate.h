@@ -56,8 +56,6 @@ public:
     
     void init(float x, float y, float speed, int scale, uint8_t health);
     
-    void handleBeginContactWithRobot(Robot* robot);
-    
     void takeDamage(b2Vec2 force, bool isHeadshot);
     
     uint8_t getHealth();

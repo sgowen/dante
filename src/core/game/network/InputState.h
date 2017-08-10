@@ -50,7 +50,7 @@ public:
         
         void read(InputMemoryBitStream& inInputStream);
         
-        float getDesiredRightAmount();
+        int getDesiredRightAmount();
         
         bool isJumping();
         

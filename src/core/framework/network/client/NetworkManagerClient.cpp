@@ -324,13 +324,7 @@ void NetworkManagerClient::readLastMoveProcessedOnServerTimestamp(InputMemoryBit
 
 void NetworkManagerClient::updateSendingInputPacket()
 {
-    float time = Timing::getInstance()->getFrameStartTime();
-    
-    if (time > m_fTimeOfLastInputPacket + m_fFrameRate)
-    {
-        sendInputPacket();
-        m_fTimeOfLastInputPacket = time;
-    }
+    sendInputPacket();
 }
 
 void NetworkManagerClient::sendInputPacket()
@@ -432,7 +426,6 @@ m_avgRoundTripTime(new WeightedTimedMovingAverage(1.f)),
 m_state(NCS_Uninitialized),
 m_deliveryNotificationManager(new DeliveryNotificationManager(true, false)),
 m_fTimeOfLastHello(0.0f),
-m_fTimeOfLastInputPacket(0.0f),
 m_fLastMoveProcessedByServerTimestamp(0.0f),
 m_fLastMoveReceivedByServerTimestamp(0.0f),
 m_fLastServerCommunicationTimestamp(Timing::getInstance()->getFrameStartTime()),

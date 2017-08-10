@@ -32,7 +32,7 @@ inline float sanitizeCloseToZeroValue(float x)
     return x;
 }
 
-inline bool areFloatsPracticallyEqual(float A, float B, float maxDiff = 0.00000001f, float maxRelDiff = FLT_EPSILON)
+inline bool areFloatsPracticallyEqual(float A, float B, float maxDiff = 0.0000000000000001f, float maxRelDiff = FLT_EPSILON)
 {
     // Check if the numbers are really close -- needed
     // when comparing numbers near zero.

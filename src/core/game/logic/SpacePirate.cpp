@@ -101,7 +101,7 @@ void SpacePirate::update()
         
         bool targetFound = false;
         
-        float shortestDistance = GAME_WIDTH;
+        float shortestDistance = GAME_WIDTH * 3;
         std::vector<Entity*> players = InstanceManager::getServerWorld()->getPlayers();
         for (Entity* entity : players)
         {
@@ -141,11 +141,6 @@ void SpacePirate::update()
         }
     }
     
-    if (getVelocity().y < 0 && !isFalling())
-    {
-        m_fStateTime = 0;
-    }
-    
     m_velocityLastKnown = b2Vec2(getVelocity().x, getVelocity().y);
     m_positionLastKnown = b2Vec2(getPosition().x, getPosition().y);
     m_iHealthLeftLastKnown = m_iHealth;
@@ -178,9 +173,7 @@ void SpacePirate::handleBeginContact(Entity* inEntity, b2Fixture* inFixtureA, b2
     
     if (inEntity->getRTTI().derivesFrom(Robot::rtti))
     {
-        Robot* robot = static_cast<Robot*>(inEntity);
-        
-        handleBeginContactWithRobot(robot);
+        inEntity->handleBeginContact(this, inFixtureB, inFixtureA);
     }
     else if (inEntity->getRTTI().derivesFrom(Projectile::rtti))
     {
@@ -201,6 +194,11 @@ void SpacePirate::handleEndContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fi
         }
         
         return;
+    }
+    
+    if (inEntity->getRTTI().derivesFrom(Robot::rtti))
+    {
+        inEntity->handleEndContact(this, inFixtureB, inFixtureA);
     }
 }
 
@@ -322,35 +320,10 @@ void SpacePirate::init(float x, float y, float speed, int scale, uint8_t health)
     m_fWidth *= scale;
     m_fHeight *= scale;
     
-    // Define another box shape for our dynamic body.
-    b2PolygonShape dynamicBox;
-    dynamicBox.SetAsBox(m_fWidth / 2.0f, m_fHeight / 2.0f);
-    
-    // Define the dynamic body fixture.
-    b2FixtureDef fixtureDef;
-    fixtureDef.shape = &dynamicBox;
-    
-    // Set the box density to be non-zero, so it will be dynamic.
-    fixtureDef.density = 1.0f;
-    
-    // Override the default friction.
-    fixtureDef.friction = 0.3f;
-    
-    m_body->DestroyFixture(m_fixture);
-    
-    // Add the shape to the body.
-    m_fixture = m_body->CreateFixture(&fixtureDef);
-    
-    m_fixture->SetUserData(this);
-    
     m_iHealth = health;
     m_fStartingHealth = m_iHealth;
-}
-
-void SpacePirate::handleBeginContactWithRobot(Robot* robot)
-{
-    // Deal Damage to player robot
-    robot->takeDamage();
+    
+    initPhysics(constructEntityDef());
 }
 
 void SpacePirate::takeDamage(b2Vec2 force, bool isHeadshot)

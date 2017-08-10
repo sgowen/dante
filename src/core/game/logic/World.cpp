@@ -142,10 +142,29 @@ void World::removeEntity(Entity* inEntity)
 
 void World::postRead()
 {
+    bool needsMoveReplay = false;
+    for (Entity* entity : m_players)
+    {
+        Robot* robot = static_cast<Robot*>(entity);
+        if (NG_CLIENT->isPlayerIdLocal(robot->getPlayerId()))
+        {
+            if (robot->needsMoveReplay())
+            {
+                needsMoveReplay = true;
+            }
+        }
+    }
+    
+    if (!needsMoveReplay)
+    {
+        return;
+    }
+    
     // all processed moves have been removed, so all that are left are unprocessed moves so we must apply them...
     MoveList& moveList = InputManager::getInstance()->getMoveList();
     
-    for (const Move& move : moveList)
+    Move* move = moveList.getMoveAtIndex(0);
+    if (move)
     {
         for (Entity* entity : m_entities)
         {
@@ -155,7 +174,13 @@ void World::postRead()
         for (Entity* entity : m_players)
         {
             entity->recallIfNecessary(move);
-            
+        }
+    }
+    
+    for (const Move& move : moveList)
+    {
+        for (Entity* entity : m_players)
+        {
             Robot* robot = static_cast<Robot*>(entity);
             if (NG_CLIENT->isPlayerIdLocal(robot->getPlayerId()))
             {
@@ -200,17 +225,21 @@ void World::update()
         
         if (!isAvgMethod)
         {
-            if (hostMoveCount > 4 || lowestNonHostMoveCount > 4)
-            {
-                finalMoveCount = avgMoveCount;
-            }
-            else if (hostMoveCount >= lowestNonHostMoveCount)
+            if (lowestNonHostMoveCount < hostMoveCount
+                && (lowestNonHostMoveCount * 2) >= hostMoveCount)
             {
                 finalMoveCount = lowestNonHostMoveCount;
             }
-            else if (hostMoveCount > 1 && hostMoveCount < lowestNonHostMoveCount)
+            else if (lowestNonHostMoveCount == -1
+                     || (hostMoveCount < lowestNonHostMoveCount
+                         && (hostMoveCount * 2) >= lowestNonHostMoveCount))
             {
                 finalMoveCount = hostMoveCount;
+            }
+            else if (hostMoveCount >= 10 || lowestNonHostMoveCount >= 10)
+            {
+                // Use average move count if anyone's ping is >= 166ms
+                finalMoveCount = avgMoveCount;
             }
             else if (hostMoveCount < lowestNonHostMoveCount)
             {
@@ -218,7 +247,7 @@ void World::update()
             }
         }
         
-        LOG("avgMoveCount: %d, lowestNonHostMoveCount: %d, hostMoveCount: %d, finalMoveCount: %d", avgMoveCount, lowestNonHostMoveCount, hostMoveCount, finalMoveCount)
+        //LOG("avgMoveCount: %d, lowestNonHostMoveCount: %d, hostMoveCount: %d, finalMoveCount: %d", avgMoveCount, lowestNonHostMoveCount, hostMoveCount, finalMoveCount)
         
         if (finalMoveCount > 0)
         {

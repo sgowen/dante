@@ -60,8 +60,6 @@ public:
     
     void processInput(IInputState* inInputState, bool isPending = false);
     
-    void takeDamage();
-    
     void awardKill(bool isHeadshot);
     
     void setAddressHash(uint64_t addressHash);
@@ -95,6 +93,7 @@ private:
     bool m_isFacingLeft;
     bool m_isShooting;
     bool m_isSprinting;
+    bool m_isFirstJumpCompleted;
     
     uint8_t m_iHealth;
     
@@ -105,7 +104,7 @@ private:
     float m_fJumpSpeed;
     
     float m_fShotCooldownTime;
-    bool m_isFirstJumpCompleted;
+    int m_iNumSpacePiratesTouching;
     
     // Cached Last Known Values (from previous frame)
     uint8_t m_iNumJumpsLastKnown;
@@ -115,6 +114,7 @@ private:
     bool m_isFacingLeftLastKnown;
     bool m_isShootingLastKnown;
     bool m_isSprintingLastKnown;
+    bool m_isFirstJumpCompletedLastKnown;
     
     void playNetworkBoundSounds(int numJumpsLastKnown, bool isSprintingLastKnown);
 };
