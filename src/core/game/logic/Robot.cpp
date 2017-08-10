@@ -95,7 +95,7 @@ void Robot::update()
     {
         if (m_iNumSpacePiratesTouching > 0 && m_iHealth > 0)
         {
-            //--m_iHealth;
+            --m_iHealth;
         }
         
         if (getPosition().y < DEAD_ZONE_BOTTOM)
@@ -133,6 +133,7 @@ void Robot::update()
         if (!areBox2DVectorsCloseEnough(m_velocityLastKnown, getVelocity())
             || !areBox2DVectorsCloseEnough(m_positionLastKnown, getPosition())
             || m_iNumJumpsLastKnown != m_iNumJumps
+            || m_iNumGroundContacts != m_iNumGroundContactsLastKnown
             || m_isFacingLeftLastKnown != m_isFacingLeft
             || m_isShootingLastKnown != m_isShooting
             || m_isSprintingLastKnown != m_isSprinting
@@ -140,6 +141,8 @@ void Robot::update()
         {
             NG_SERVER->setStateDirty(getID(), ROBT_Pose);
         }
+        
+        NG_SERVER->setStateDirty(getID(), ROBT_Pose);
         
         if (m_iHealthLastKnown != m_iHealth
             || m_iNumKillsLastKnown != m_iNumKills
@@ -269,6 +272,7 @@ void Robot::read(InputMemoryBitStream& inInputStream)
         setPosition(position);
         
         inInputStream.read(m_iNumJumps);
+        inInputStream.read(m_iNumGroundContacts);
         
         inInputStream.read(m_isFacingLeft);
         inInputStream.read(m_isShooting);
@@ -320,6 +324,7 @@ uint32_t Robot::write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtySta
         inOutputStream.write(getPosition());
         
         inOutputStream.write(m_iNumJumps);
+        inOutputStream.write(m_iNumGroundContacts);
         
         inOutputStream.write((bool)m_isFacingLeft);
         inOutputStream.write((bool)m_isShooting);

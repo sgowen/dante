@@ -146,6 +146,7 @@ protected:
     b2Fixture* m_fixture;
     b2Fixture* m_footSensorFixture;
     float m_fStateTime;
+    int m_iNumGroundContacts;
     Color m_color;
     float m_fX;
     float m_fY;
@@ -158,6 +159,7 @@ protected:
     b2Vec2 m_velocityLastKnown;
     b2Vec2 m_positionLastKnown;
     float m_fAngleLastKnown;
+    int m_iNumGroundContactsLastKnown;
     
     void initPhysics(EntityDef inEntityDef);
     
@@ -171,7 +173,6 @@ private:
     float m_fTimeVelocityBecameOutOfSync;
     float m_fTimePositionBecameOutOfSync;
     int m_iID;
-    int m_iNumGroundContacts;
     bool m_isRequestingDeletion;
     
     static int getUniqueEntityID();

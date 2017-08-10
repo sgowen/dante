@@ -135,6 +135,8 @@ void SpacePirate::update()
             NG_SERVER->setStateDirty(getID(), SPCP_Pose);
         }
         
+        NG_SERVER->setStateDirty(getID(), SPCP_Pose);
+        
         if (m_iHealthLeftLastKnown != m_iHealth)
         {
             NG_SERVER->setStateDirty(getID(), SPCP_Health);

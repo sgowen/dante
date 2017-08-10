@@ -95,6 +95,8 @@ void Projectile::update()
         {
             NG_SERVER->setStateDirty(getID(), PRJC_Pose);
         }
+        
+        NG_SERVER->setStateDirty(getID(), PRJC_Pose);
     }
     else
     {

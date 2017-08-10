@@ -72,6 +72,8 @@ void SpacePirateChunk::update()
         {
             NG_SERVER->setStateDirty(getID(), SPCH_Pose);
         }
+        
+        NG_SERVER->setStateDirty(getID(), SPCH_Pose);
     }
     
     m_velocityLastKnown = b2Vec2(getVelocity().x, getVelocity().y);
