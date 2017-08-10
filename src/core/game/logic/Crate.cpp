@@ -58,8 +58,6 @@ void Crate::update()
         {
             NG_SERVER->setStateDirty(getID(), CRAT_Pose);
         }
-        
-        NG_SERVER->setStateDirty(getID(), CRAT_Pose);
     }
     
     m_velocityLastKnown = b2Vec2(getVelocity().x, getVelocity().y);

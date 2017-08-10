@@ -236,9 +236,9 @@ void World::update()
             {
                 finalMoveCount = hostMoveCount;
             }
-            else if (hostMoveCount >= 10 || lowestNonHostMoveCount >= 10)
+            else if (hostMoveCount >= 15 || lowestNonHostMoveCount >= 15)
             {
-                // Use average move count if anyone's ping is >= 166ms
+                // Use average move count if anyone's ping is >= 250ms
                 finalMoveCount = avgMoveCount;
             }
             else if (hostMoveCount < lowestNonHostMoveCount)
@@ -247,7 +247,7 @@ void World::update()
             }
         }
         
-        //LOG("avgMoveCount: %d, lowestNonHostMoveCount: %d, hostMoveCount: %d, finalMoveCount: %d", avgMoveCount, lowestNonHostMoveCount, hostMoveCount, finalMoveCount)
+        LOG("avgMoveCount: %d, lowestNonHostMoveCount: %d, hostMoveCount: %d, finalMoveCount: %d", avgMoveCount, lowestNonHostMoveCount, hostMoveCount, finalMoveCount)
         
         if (finalMoveCount > 0)
         {

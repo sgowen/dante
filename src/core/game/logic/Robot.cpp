@@ -142,8 +142,6 @@ void Robot::update()
             NG_SERVER->setStateDirty(getID(), ROBT_Pose);
         }
         
-        NG_SERVER->setStateDirty(getID(), ROBT_Pose);
-        
         if (m_iHealthLastKnown != m_iHealth
             || m_iNumKillsLastKnown != m_iNumKills
             || m_wasLastKillHeadshotLastKnown != m_wasLastKillHeadshot)
