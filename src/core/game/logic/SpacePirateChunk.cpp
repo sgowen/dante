@@ -104,6 +104,8 @@ uint32_t SpacePirateChunk::getAllStateMask() const
 
 void SpacePirateChunk::read(InputMemoryBitStream& inInputStream)
 {
+    float oldWidth = m_fWidth;
+    
     bool stateBit;
     
     m_iReadState = 0;
@@ -140,6 +142,11 @@ void SpacePirateChunk::read(InputMemoryBitStream& inInputStream)
         setAngle(angle);
         
         m_iReadState |= SPCH_Pose;
+    }
+    
+    if (!areFloatsPracticallyEqual(oldWidth, m_fWidth))
+    {
+        initPhysics(constructEntityDef());
     }
 }
 

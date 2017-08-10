@@ -209,6 +209,8 @@ uint32_t SpacePirate::getAllStateMask() const
 
 void SpacePirate::read(InputMemoryBitStream& inInputStream)
 {
+    float oldWidth = m_fWidth;
+    
     bool stateBit;
     
     m_iReadState = 0;
@@ -247,6 +249,11 @@ void SpacePirate::read(InputMemoryBitStream& inInputStream)
     {
         inInputStream.read(m_iHealth);
         m_iReadState |= SPCP_Health;
+    }
+    
+    if (!areFloatsPracticallyEqual(oldWidth, m_fWidth))
+    {
+        initPhysics(constructEntityDef());
     }
 }
 
