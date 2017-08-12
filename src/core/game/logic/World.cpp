@@ -240,9 +240,9 @@ void World::update()
             {
                 finalMoveCount = lowestNonHostMoveCount;
             }
-            else if (hostMoveCount >= 15 || lowestNonHostMoveCount >= 15)
+            else if (hostMoveCount >= 6 || lowestNonHostMoveCount >= 6)
             {
-                // Use average move count if anyone's ping is >= 250ms
+                // Use average move count if anyone's ping is >= 100ms
                 finalMoveCount = avgMoveCount;
                 
                 LOG("avgMoveCount: %d, lowestNonHostMoveCount: %d, hostMoveCount: %d, finalMoveCount: %d", avgMoveCount, lowestNonHostMoveCount, hostMoveCount, finalMoveCount)
