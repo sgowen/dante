@@ -245,7 +245,7 @@ void World::update()
                 // Use average move count if anyone's ping is >= 100ms
                 finalMoveCount = avgMoveCount;
                 
-                LOG("avgMoveCount: %d, lowestNonHostMoveCount: %d, hostMoveCount: %d, finalMoveCount: %d", avgMoveCount, lowestNonHostMoveCount, hostMoveCount, finalMoveCount)
+                //LOG("avgMoveCount: %d, lowestNonHostMoveCount: %d, hostMoveCount: %d, finalMoveCount: %d", avgMoveCount, lowestNonHostMoveCount, hostMoveCount, finalMoveCount)
             }
         }
         
