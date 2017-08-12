@@ -157,6 +157,11 @@ void Robot::update()
             {
                 Util::playSound(SOUND_ID_HEADSHOT, getPosition(), m_isServer);
             }
+            
+            if ((m_iReadState & ROBT_PlayerInfo) != 0)
+            {
+                NG_AUDIO_ENGINE->playSound(SOUND_ID_DEATH, 1);
+            }
         }
         else
         {
@@ -354,17 +359,6 @@ uint32_t Robot::write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtySta
 bool Robot::needsMoveReplay()
 {
     return (m_iReadState & ROBT_Pose) != 0;
-}
-
-void Robot::onDeletion()
-{
-    if (!m_isServer
-        && NG_CLIENT->isPlayerIdLocal(getPlayerId()))
-    {
-        NG_AUDIO_ENGINE->playSound(SOUND_ID_DEATH, 1);
-    }
-    
-    Entity::onDeletion();
 }
 
 void Robot::processInput(IInputState* inInputState, bool isPending)

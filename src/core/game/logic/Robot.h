@@ -58,8 +58,6 @@ public:
     
     virtual bool needsMoveReplay();
     
-    virtual void onDeletion();
-    
     void processInput(IInputState* inInputState, bool isPending = false);
     
     void awardKill(bool isHeadshot);
