@@ -312,12 +312,8 @@ void NetworkManagerClient::readLastMoveProcessedOnServerTimestamp(InputMemoryBit
     inInputStream.read(isTimestampDirty);
     if (isTimestampDirty)
     {
-        LOG("Client Before Read m_fLastMoveProcessedByServerTimestamp: %f, m_fLastMoveReceivedByServerTimestamp: %f", m_fLastMoveProcessedByServerTimestamp, m_fLastMoveReceivedByServerTimestamp);
-        
         inInputStream.read(m_fLastMoveProcessedByServerTimestamp);
         inInputStream.read(m_fLastMoveReceivedByServerTimestamp);
-        
-        LOG("Client After Read m_fLastMoveProcessedByServerTimestamp: %f, m_fLastMoveReceivedByServerTimestamp: %f", m_fLastMoveProcessedByServerTimestamp, m_fLastMoveReceivedByServerTimestamp);
         
         float rtt = Timing::getInstance()->getFrameStartTime() - m_fLastMoveReceivedByServerTimestamp;
         m_avgRoundTripTime->update(rtt);

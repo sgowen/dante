@@ -404,7 +404,7 @@ void NetworkManagerServer::writeLastMoveTimestampIfDirty(OutputMemoryBitStream& 
     {
         float lastProcessedMoveTimestamp = inClientProxy->getUnprocessedMoveList().getLastProcessedMoveTimestamp();
         float lastReceivedMoveTimestamp = inClientProxy->getUnprocessedMoveList().getLastMoveTimestamp();
-        LOG("Server lastProcessedMoveTimestamp: %f, lastReceivedMoveTimestamp: %f", lastProcessedMoveTimestamp, lastReceivedMoveTimestamp);
+        
         inOutputStream.write(lastProcessedMoveTimestamp);
         inOutputStream.write(lastReceivedMoveTimestamp);
         inClientProxy->setIsLastMoveTimestampDirty(false);
