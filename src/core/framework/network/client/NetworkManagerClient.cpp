@@ -345,10 +345,13 @@ void NetworkManagerClient::sendInputPacket()
         int firstMoveIndex = moveCount - 31;
         if (firstMoveIndex < 0)
         {
-            LOG("Client is sending the max of 31 moves!");
-            
             firstMoveIndex = 0;
         }
+        else
+        {
+            LOG("Client is sending the max of 31 moves!");
+        }
+        
         auto move = moveList.begin() + firstMoveIndex;
         
         // only need 5 bits to write the move count, because it's 0-31
