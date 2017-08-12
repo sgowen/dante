@@ -221,29 +221,29 @@ void World::update()
         int lowestNonHostMoveCount = NG_SERVER->getLowestNonHostMoveCount();
         int hostMoveCount = NG_SERVER->getHostMoveCount();
         
-        int finalMoveCount = Server::getInstance()->isAvgMethod() ? avgMoveCount : lowestNonHostMoveCount;
+        int finalMoveCount = 0;
         
-        if (!isAvgMethod)
+        if (isAvgMethod)
         {
-            if (lowestNonHostMoveCount < hostMoveCount
-                && (lowestNonHostMoveCount * 2) >= hostMoveCount)
-            {
-                finalMoveCount = lowestNonHostMoveCount;
-            }
-            else if (lowestNonHostMoveCount == -1
-                     || (hostMoveCount < lowestNonHostMoveCount
-                         && (hostMoveCount * 2) >= lowestNonHostMoveCount))
+            finalMoveCount = avgMoveCount;
+        }
+        else
+        {
+            if (lowestNonHostMoveCount == -1
+                || (hostMoveCount <= lowestNonHostMoveCount
+                    && (hostMoveCount * 2) >= lowestNonHostMoveCount))
             {
                 finalMoveCount = hostMoveCount;
             }
-            else if (hostMoveCount >= 10 || lowestNonHostMoveCount >= 10)
+            else if (lowestNonHostMoveCount <= hostMoveCount
+                     && (lowestNonHostMoveCount * 2) >= hostMoveCount)
             {
-                // Use average move count if anyone's ping is >= 166.667ms
-                finalMoveCount = avgMoveCount;
+                finalMoveCount = lowestNonHostMoveCount;
             }
-            else if (hostMoveCount < lowestNonHostMoveCount)
+            else if (hostMoveCount >= 15 || lowestNonHostMoveCount >= 15)
             {
-                finalMoveCount = 0;
+                // Use average move count if anyone's ping is >= 250ms
+                finalMoveCount = avgMoveCount;
             }
         }
         

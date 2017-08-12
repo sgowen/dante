@@ -92,7 +92,7 @@ public:
     
     virtual void cacheToMove(const Move& move);
     
-    void onDeletion();
+    virtual void onDeletion();
     
     void handleBeginFootContact(Entity* inEntity);
     

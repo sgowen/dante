@@ -130,17 +130,17 @@ void Robot::update()
             }
         }
         
-        if (!areBox2DVectorsCloseEnough(m_velocityLastKnown, getVelocity())
-            || !areBox2DVectorsCloseEnough(m_positionLastKnown, getPosition())
-            || m_iNumJumpsLastKnown != m_iNumJumps
-            || m_iNumGroundContacts != m_iNumGroundContactsLastKnown
-            || m_isFacingLeftLastKnown != m_isFacingLeft
-            || m_isShootingLastKnown != m_isShooting
-            || m_isSprintingLastKnown != m_isSprinting
-            || m_isFirstJumpCompletedLastKnown != m_isFirstJumpCompleted)
-        {
+//        if (!areBox2DVectorsCloseEnough(m_velocityLastKnown, getVelocity())
+//            || !areBox2DVectorsCloseEnough(m_positionLastKnown, getPosition())
+//            || m_iNumJumpsLastKnown != m_iNumJumps
+//            || m_iNumGroundContacts != m_iNumGroundContactsLastKnown
+//            || m_isFacingLeftLastKnown != m_isFacingLeft
+//            || m_isShootingLastKnown != m_isShooting
+//            || m_isSprintingLastKnown != m_isSprinting
+//            || m_isFirstJumpCompletedLastKnown != m_isFirstJumpCompleted)
+//        {
             NG_SERVER->setStateDirty(getID(), ROBT_Pose);
-        }
+//        }
         
         if (m_iHealthLastKnown != m_iHealth
             || m_iNumKillsLastKnown != m_iNumKills
@@ -156,11 +156,6 @@ void Robot::update()
             if (m_iNumKills > m_iNumKillsLastKnown && m_wasLastKillHeadshot)
             {
                 Util::playSound(SOUND_ID_HEADSHOT, getPosition(), m_isServer);
-            }
-            
-            if (m_iHealth > m_iHealthLastKnown)
-            {
-                Util::playSound(SOUND_ID_DEATH, getPosition(), m_isServer);
             }
         }
         else
@@ -183,6 +178,7 @@ void Robot::update()
     m_isFacingLeftLastKnown = m_isFacingLeft;
     m_isShootingLastKnown = m_isShooting;
     m_isSprintingLastKnown = m_isSprinting;
+    m_isFirstJumpCompletedLastKnown = m_isFirstJumpCompleted;
 }
 
 bool Robot::shouldCollide(Entity *inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB)
@@ -358,6 +354,17 @@ uint32_t Robot::write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtySta
 bool Robot::needsMoveReplay()
 {
     return (m_iReadState & ROBT_Pose) != 0;
+}
+
+void Robot::onDeletion()
+{
+    if (!m_isServer
+        && NG_CLIENT->isPlayerIdLocal(getPlayerId()))
+    {
+        NG_AUDIO_ENGINE->playSound(SOUND_ID_DEATH, 1);
+    }
+    
+    Entity::onDeletion();
 }
 
 void Robot::processInput(IInputState* inInputState, bool isPending)

@@ -71,25 +71,27 @@ void Server::sHandleLostClient(ClientProxy* inClientProxy, int index)
 
 void Server::update(float deltaTime)
 {
-    m_fStateTime += deltaTime;
     m_fFrameStateTime += deltaTime;
     
     if (m_fFrameStateTime >= FRAME_RATE)
     {
-        m_fFrameStateTime -= FRAME_RATE;
-        
-        Timing::getInstance()->updateManual(m_fStateTime, FRAME_RATE);
-        
-        NG_SERVER->processIncomingPackets();
-        
-        NG_SERVER->checkForDisconnects();
-        
-        InstanceManager::getServerWorld()->update();
-        
-        respawnEnemiesIfNecessary();
-        spawnCratesIfNecessary();
-        
-        clearClientMoves();
+        while (m_fFrameStateTime >= FRAME_RATE)
+        {
+            m_fFrameStateTime -= FRAME_RATE;
+            m_fStateTime += FRAME_RATE;
+            
+            Timing::getInstance()->updateManual(m_fStateTime, FRAME_RATE);
+            
+            NG_SERVER->processIncomingPackets();
+            NG_SERVER->checkForDisconnects();
+            
+            InstanceManager::getServerWorld()->update();
+            
+            respawnEnemiesIfNecessary();
+            spawnCratesIfNecessary();
+            
+            clearClientMoves();
+        }
         
         NG_SERVER->sendOutgoingPackets();
     }

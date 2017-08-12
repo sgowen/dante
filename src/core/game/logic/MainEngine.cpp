@@ -121,34 +121,37 @@ void MainEngine::update(float deltaTime)
 {
     FPSUtil::getInstance()->update(deltaTime);
     
-    m_fStateTime += deltaTime;
     m_fFrameStateTime += deltaTime;
     
     if (m_fFrameStateTime >= FRAME_RATE)
     {
-        m_fFrameStateTime -= FRAME_RATE;
-        
-        Timing::getInstance()->updateManual(m_fStateTime, FRAME_RATE);
-        
-        handleSteamGameServices();
-        
-        if (NG_CLIENT)
+        while (m_fFrameStateTime >= FRAME_RATE)
         {
-            NG_CLIENT->processIncomingPackets();
+            m_fFrameStateTime -= FRAME_RATE;
+            m_fStateTime += FRAME_RATE;
             
-            InstanceManager::getClientWorld()->postRead();
+            Timing::getInstance()->updateManual(m_fStateTime, FRAME_RATE);
+            
+            handleSteamGameServices();
+            
+            if (NG_CLIENT)
+            {
+                NG_CLIENT->processIncomingPackets();
+                
+                InstanceManager::getClientWorld()->postRead();
+            }
+            
+            InputManager::getInstance()->update();
+            
+            NG_AUDIO_ENGINE->update();
+            
+            if (InstanceManager::getClientWorld())
+            {
+                InstanceManager::getClientWorld()->update();
+            }
+            
+            InputManager::getInstance()->clearPendingMove();
         }
-        
-        InputManager::getInstance()->update();
-        
-        NG_AUDIO_ENGINE->update();
-        
-        if (InstanceManager::getClientWorld())
-        {
-            InstanceManager::getClientWorld()->update();
-        }
-        
-        InputManager::getInstance()->clearPendingMove();
         
         if (NG_CLIENT)
         {
@@ -328,18 +331,24 @@ void MainEngine::handleNonMoveInput()
         }
         else if (inputState->getMenuState() == MENU_STATE_STEAM_REFRESH_LAN_SERVERS)
         {
-            NG_STEAM_GAME_SERVICES->refreshLANServers();
+            if (NG_STEAM_GAME_SERVICES)
+            {
+                NG_STEAM_GAME_SERVICES->refreshLANServers();
+            }
         }
         else if (inputState->getMenuState() == MENU_STATE_STEAM_REFRESH_INTERNET_SERVERS)
         {
-            NG_STEAM_GAME_SERVICES->refreshInternetServers();
+            if (NG_STEAM_GAME_SERVICES)
+            {
+                NG_STEAM_GAME_SERVICES->refreshInternetServers();
+            }
         }
         else if (inputState->getMenuState() == MENU_STATE_STEAM_JOIN_SERVER_1
                  || inputState->getMenuState() == MENU_STATE_STEAM_JOIN_SERVER_2
                  || inputState->getMenuState() == MENU_STATE_STEAM_JOIN_SERVER_3
                  || inputState->getMenuState() == MENU_STATE_STEAM_JOIN_SERVER_4)
         {
-            if (!NG_STEAM_GAME_SERVICES->isRequestingServers())
+            if (NG_STEAM_GAME_SERVICES && !NG_STEAM_GAME_SERVICES->isRequestingServers())
             {
                 int serverIndex = inputState->getMenuState() - 7; // eh, hacky I know, but whatever
                 std::vector<NGSteamGameServer> gameServers = NG_STEAM_GAME_SERVICES->getGameServers();
