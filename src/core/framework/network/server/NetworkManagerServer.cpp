@@ -415,7 +415,7 @@ void NetworkManagerServer::handleInputPacket(ClientProxy* inClientProxy, InputMe
 {
     uint8_t moveCount = 0;
     Move move = Move(m_inputStateCreationFunc());
-    inInputStream.read(moveCount, 5);
+    inInputStream.read(moveCount, 4);
     
     for (; moveCount > 0; --moveCount)
     {
