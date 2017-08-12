@@ -304,7 +304,7 @@ void Server::clearClientMoves()
     }
 }
 
-Server::Server(bool isSteam, int inNumCratesToSpawn, int inNumSpacePiratesToSpawn) : m_fStateTime(0), m_fFrameStateTime(0), m_fStateTimeNoEnemies(0), m_iPlayerIdForRobotBeingCreated(0), m_iNumCratesToSpawn(inNumCratesToSpawn), m_iNumSpacePiratesToSpawn(inNumSpacePiratesToSpawn), m_isSpawningEnemies(false), m_isSpawningObjects(true), m_isDisplaying(false), m_isAvgMethod(true)
+Server::Server(bool isSteam, int inNumCratesToSpawn, int inNumSpacePiratesToSpawn) : m_fStateTime(0), m_fFrameStateTime(0), m_fStateTimeNoEnemies(0), m_iPlayerIdForRobotBeingCreated(0), m_iNumCratesToSpawn(inNumCratesToSpawn), m_iNumSpacePiratesToSpawn(inNumSpacePiratesToSpawn), m_isSpawningEnemies(false), m_isSpawningObjects(false), m_isDisplaying(false), m_isAvgMethod(false)
 {
     FWInstanceManager::createServerEntityManager(InstanceManager::sHandleEntityCreatedOnServer, InstanceManager::sHandleEntityDeletedOnServer);
     
