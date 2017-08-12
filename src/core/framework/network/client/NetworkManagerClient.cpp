@@ -340,24 +340,18 @@ void NetworkManagerClient::sendInputPacket()
         
         m_deliveryNotificationManager->writeState(inputPacket);
         
-        // eventually write the 31 latest moves so they have 31 chances to get through...
-        int moveCount = moveList.getNumMovesAfterTimestamp(m_fLastMoveReceivedByServerTimestamp);
-        int firstMoveIndex = moveCount - 31;
+        // eventually write the 3 latest moves so they have 3 chances to get through...
+        int moveCount = moveList.getMoveCount();
+        int firstMoveIndex = moveCount - 3;
         if (firstMoveIndex < 0)
         {
             firstMoveIndex = 0;
         }
-        else
-        {
-            LOG("Client is sending the max of 31 moves!");
-        }
         
         auto move = moveList.begin() + firstMoveIndex;
         
-        // only need 5 bits to write the move count, because it's 0-31
-        // What this essentially means is that the game will skip moves
-        // for clients that have a round-trip time of more than 516.667ms (1/60 * 31)
-        inputPacket.write(moveCount - firstMoveIndex, 5);
+        // only need 2 bits to write the move count, because it's 0-3
+        inputPacket.write(moveCount - firstMoveIndex, 2);
         
         for (; firstMoveIndex < moveCount; ++firstMoveIndex, ++move)
         {
