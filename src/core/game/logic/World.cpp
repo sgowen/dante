@@ -140,6 +140,9 @@ void World::removeEntity(Entity* inEntity)
     }
 }
 
+#include "InputState.h"
+#include "IInputState.h"
+
 void World::postRead()
 {
     bool needsMoveReplay = false;
@@ -163,7 +166,7 @@ void World::postRead()
     // all processed moves have been removed, so all that are left are unprocessed moves so we must apply them...
     MoveList& moveList = InputManager::getInstance()->getMoveList();
     
-    LOG("Client has to move replay %d moves", moveList.getMoveCount());
+//    LOG("Client has to move replay %d moves", moveList.getMoveCount());
     
     for (const Move& move : moveList)
     {
@@ -172,7 +175,23 @@ void World::postRead()
             Robot* robot = static_cast<Robot*>(entity);
             if (NG_CLIENT->isPlayerIdLocal(robot->getPlayerId()))
             {
+//                if (robot->getPlayerId() == 1)
+//                {
+//                    InputState* is = static_cast<InputState*>(move.getInputState());
+//                    InputState::GameInputState* gis = is->getGameInputStateForPlayerId(1);
+//                    
+//                    LOG("Client Read Robot before input: %f, desiredRightAmount: %d, isSprinting: %d position: (%f, %f), velocity: (%f, %f)", move.getTimestamp(), gis->getDesiredRightAmount(), gis->isSprinting(), robot->getPosition().x, robot->getPosition().y, robot->getVelocity().x, robot->getVelocity().y);
+//                }
+                
                 robot->processInput(move.getInputState());
+                
+//                if (robot->getPlayerId() == 1)
+//                {
+//                    InputState* is = static_cast<InputState*>(move.getInputState());
+//                    InputState::GameInputState* gis = is->getGameInputStateForPlayerId(1);
+//                    
+//                    LOG("Client Read Robot after  input: %f, desiredRightAmount: %d, isSprinting: %d position: (%f, %f), velocity: (%f, %f)", move.getTimestamp(), gis->getDesiredRightAmount(), gis->isSprinting(), robot->getPosition().x, robot->getPosition().y, robot->getVelocity().x, robot->getVelocity().y);
+//                }
             }
         }
         
@@ -199,6 +218,8 @@ void World::postRead()
         entity->postRead();
     }
 }
+
+float lastKnownRobotXDog = 0;
 
 void World::update()
 {
@@ -228,11 +249,17 @@ void World::update()
             {
                 finalMoveCount = lowestNonHostMoveCount;
             }
-            else
+            else if (lowestNonHostMoveCount >= 10 && lowestNonHostMoveCount < hostMoveCount)
             {
-                LOG("avgMoveCount: %d, lowestNonHostMoveCount: %d, hostMoveCount: %d, finalMoveCount: %d", avgMoveCount, lowestNonHostMoveCount, hostMoveCount, finalMoveCount)
+                finalMoveCount = lowestNonHostMoveCount;
+            }
+            else if (hostMoveCount >= 10 && hostMoveCount < lowestNonHostMoveCount)
+            {
+                finalMoveCount = hostMoveCount;
             }
         }
+        
+        LOG("avgMoveCount: %d, lowestNonHostMoveCount: %d, hostMoveCount: %d, finalMoveCount: %d", avgMoveCount, lowestNonHostMoveCount, hostMoveCount, finalMoveCount)
         
         if (finalMoveCount > 0)
         {
@@ -252,7 +279,23 @@ void World::update()
                         
                         if (move)
                         {
+//                            if (robot->getPlayerId() == 1)
+//                            {
+//                                InputState* is = static_cast<InputState*>(move->getInputState());
+//                                InputState::GameInputState* gis = is->getGameInputStateForPlayerId(1);
+//                                
+//                                LOG("Server Robot before input: %f, desiredRightAmount: %d, isSprinting: %d position: (%f, %f), velocity: (%f, %f)", move->getTimestamp(), gis->getDesiredRightAmount(), gis->isSprinting(), robot->getPosition().x, robot->getPosition().y, robot->getVelocity().x, robot->getVelocity().y);
+//                            }
+                            
                             robot->processInput(move->getInputState());
+                            
+//                            if (robot->getPlayerId() == 1)
+//                            {
+//                                InputState* is = static_cast<InputState*>(move->getInputState());
+//                                InputState::GameInputState* gis = is->getGameInputStateForPlayerId(1);
+//                                
+//                                LOG("Server Robot after  input: %f, desiredRightAmount: %d, isSprinting: %d position: (%f, %f), velocity: (%f, %f)", move->getTimestamp(), gis->getDesiredRightAmount(), gis->isSprinting(), robot->getPosition().x, robot->getPosition().y, robot->getVelocity().x, robot->getVelocity().y);
+//                            }
                             
                             moveList.markMoveAsProcessed(move);
                         }
@@ -313,7 +356,23 @@ void World::update()
                 Robot* robot = static_cast<Robot*>(entity);
                 if (NG_CLIENT->isPlayerIdLocal(robot->getPlayerId()))
                 {
+//                    if (robot->getPlayerId() == 1)
+//                    {
+//                        InputState* is = static_cast<InputState*>(pendingMove->getInputState());
+//                        InputState::GameInputState* gis = is->getGameInputStateForPlayerId(1);
+//                        
+//                        LOG("Client Robot before input: %f, desiredRightAmount: %d, isSprinting: %d position: (%f, %f), velocity: (%f, %f)", pendingMove->getTimestamp(), gis->getDesiredRightAmount(), gis->isSprinting(), robot->getPosition().x, robot->getPosition().y, robot->getVelocity().x, robot->getVelocity().y);
+//                    }
+                    
                     robot->processInput(pendingMove->getInputState(), true);
+                    
+//                    if (robot->getPlayerId() == 1)
+//                    {
+//                        InputState* is = static_cast<InputState*>(pendingMove->getInputState());
+//                        InputState::GameInputState* gis = is->getGameInputStateForPlayerId(1);
+//                        
+//                        LOG("Client Robot after  input: %f, desiredRightAmount: %d, isSprinting: %d position: (%f, %f), velocity: (%f, %f)", pendingMove->getTimestamp(), gis->getDesiredRightAmount(), gis->isSprinting(), robot->getPosition().x, robot->getPosition().y, robot->getVelocity().x, robot->getVelocity().y);
+//                    }
                 }
             }
             
@@ -328,6 +387,17 @@ void World::update()
             {
                 entity->update();
             }
+            
+//            Robot* host = getRobotWithPlayerId(1);
+//            if (host)
+//            {
+//                if (host->getPosition().x < lastKnownRobotXDog)
+//                {
+//                    LOG("OKAY WTF??");
+//                }
+//
+//                lastKnownRobotXDog = host->getPosition().x;
+//            }
         }
     }
 }
