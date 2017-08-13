@@ -125,9 +125,9 @@ void Crate::read(InputMemoryBitStream& inInputStream)
         inInputStream.read(position);
         setPosition(position);
         
-        float angle;
-        inInputStream.read(angle);
-        setAngle(angle);
+//        float angle;
+//        inInputStream.read(angle);
+//        setAngle(angle);
         
         m_iReadState |= CRAT_Pose;
     }
@@ -145,7 +145,7 @@ uint32_t Crate::write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtySta
         
         inOutputStream.write(getPosition());
         
-        inOutputStream.write(getAngle());
+//        inOutputStream.write(getAngle());
         
         writtenState |= CRAT_Pose;
     }
