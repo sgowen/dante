@@ -64,7 +64,7 @@ class Entity
     NW_TYPE_DECL(NW_TYPE_Entity);
     
 public:
-    Entity(b2World& world, float x, float y, float width, float height, bool isServer, EntityDef inEntityDef);
+    Entity(b2World& world, float x, float y, float width, float height, bool isServer, EntityDef inEntityDef, bool autoInitPhysics = true);
     
     virtual ~Entity();
     
@@ -128,9 +128,9 @@ public:
     
     float getAngle();
     
-    void setID(int inID);
+    void setID(uint32_t inID);
     
-    int getID();
+    uint32_t getID();
     
     bool isGrounded();
     
@@ -154,6 +154,7 @@ protected:
     float m_fHeight;
     uint32_t m_iReadState;
     bool m_isServer;
+    bool m_isPhysicsOn;
     
     // Cached Last Known Values (from previous frame)
     b2Vec2 m_velocityLastKnown;
@@ -172,10 +173,10 @@ protected:
 private:
     float m_fTimeVelocityBecameOutOfSync;
     float m_fTimePositionBecameOutOfSync;
-    int m_iID;
+    uint32_t m_iID;
     bool m_isRequestingDeletion;
     
-    static int getUniqueEntityID();
+    static uint32_t getUniqueEntityID();
 };
 
 #endif /* defined(__noctisgames__Entity__) */

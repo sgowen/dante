@@ -19,11 +19,11 @@ public:
     void read(InputMemoryBitStream& inInputStream);
     
 private:
-    void readAndDoCreateAction(InputMemoryBitStream& inInputStream, int inNetworkId);
+    void readAndDoCreateAction(InputMemoryBitStream& inInputStream, uint32_t inNetworkId);
     
-    void readAndDoUpdateAction(InputMemoryBitStream& inInputStream, int inNetworkId);
+    void readAndDoUpdateAction(InputMemoryBitStream& inInputStream, uint32_t inNetworkId);
     
-    void readAndDoDestroyAction(InputMemoryBitStream& inInputStream, int inNetworkId);
+    void readAndDoDestroyAction(InputMemoryBitStream& inInputStream, uint32_t inNetworkId);
 };
 
 #endif /* defined(__noctisgames__ReplicationManagerClient__) */

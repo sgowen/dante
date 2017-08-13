@@ -44,9 +44,11 @@
 
 Robot::Robot(b2World& world, bool isServer) : Entity(world, 0, 0, 1.565217391304348f, 2.0f, isServer, constructEntityDef()),
 m_iAddressHash(0),
+m_iFirstProjectileId(0),
 m_iPlayerId(0),
 m_playerName("Robot"),
 m_iNumJumps(0),
+m_iNextProjectileIndex(0),
 m_iHealth(25),
 m_iNumKills(0),
 m_wasLastKillHeadshot(false),
@@ -59,20 +61,31 @@ m_fJumpSpeed(11.0f),
 m_fShotCooldownTime(0.0f),
 m_iNumSpacePiratesTouching(0),
 m_iNumJumpsLastKnown(0),
+m_iNextProjectileIndexLastKnown(0),
 m_iHealthLastKnown(25),
 m_iNumKillsLastKnown(0),
+m_fShotCooldownTimeLastKnown(0),
 m_wasLastKillHeadshotLastKnown(false),
 m_isFacingLeftLastKnown(false),
 m_isShootingLastKnown(false),
 m_isSprintingLastKnown(false),
 m_isFirstJumpCompletedLastKnown(false)
 {
-    // Empty
+    for (int i = 0; i < 15; ++i)
+    {
+        m_projectiles[i] = m_isServer ? static_cast<Projectile*>(SERVER_ENTITY_REG->createEntity(NW_TYPE_Projectile)) : nullptr;
+    }
 }
 
 Robot::~Robot()
 {
-    // Empty
+    if (m_isServer)
+    {
+        for (Projectile* p : m_projectiles)
+        {
+            p->requestDeletion();
+        }
+    }
 }
 
 EntityDef Robot::constructEntityDef()
@@ -90,6 +103,24 @@ EntityDef Robot::constructEntityDef()
 void Robot::update()
 {
     m_fStateTime += FRAME_RATE;
+    
+    if (m_isShooting)
+    {
+        m_fShotCooldownTime -= FRAME_RATE;
+        
+        if (m_fShotCooldownTime < 0)
+        {
+            // not exact, but okay
+            m_fShotCooldownTime += FRAME_RATE * 4;
+            
+            fireProjectile();
+        }
+    }
+    
+    if (getVelocity().y < 0 && !isFalling() && m_iNumJumps > 0)
+    {
+        m_fStateTime = 0;
+    }
     
     if (m_isServer)
     {
@@ -115,32 +146,7 @@ void Robot::update()
             }
         }
         
-        if (m_isShooting)
-        {
-            m_fShotCooldownTime -= FRAME_RATE;
-            
-            if (m_fShotCooldownTime < 0)
-            {
-                // not exact, but okay
-                m_fShotCooldownTime += FRAME_RATE * 4;
-                
-                // fire!
-                Projectile* projectile = static_cast<Projectile*>(SERVER_ENTITY_REG->createEntity(NW_TYPE_Projectile));
-                projectile->initFromShooter(this);
-            }
-        }
-        
-//        if (!areBox2DVectorsCloseEnough(m_velocityLastKnown, getVelocity())
-//            || !areBox2DVectorsCloseEnough(m_positionLastKnown, getPosition())
-//            || m_iNumJumpsLastKnown != m_iNumJumps
-//            || m_iNumGroundContacts != m_iNumGroundContactsLastKnown
-//            || m_isFacingLeftLastKnown != m_isFacingLeft
-//            || m_isShootingLastKnown != m_isShooting
-//            || m_isSprintingLastKnown != m_isSprinting
-//            || m_isFirstJumpCompletedLastKnown != m_isFirstJumpCompleted)
-//        {
-            NG_SERVER->setStateDirty(getID(), ROBT_Pose);
-//        }
+        NG_SERVER->setStateDirty(getID(), ROBT_Pose);
         
         if (m_iHealthLastKnown != m_iHealth
             || m_iNumKillsLastKnown != m_iNumKills
@@ -169,16 +175,13 @@ void Robot::update()
         }
     }
     
-    if (getVelocity().y < 0 && !isFalling() && m_iNumJumps > 0)
-    {
-        m_fStateTime = 0;
-    }
-    
     m_velocityLastKnown = b2Vec2(getVelocity().x, getVelocity().y);
     m_positionLastKnown = b2Vec2(getPosition().x, getPosition().y);
     m_iNumJumpsLastKnown = m_iNumJumps;
+    m_iNextProjectileIndexLastKnown = m_iNextProjectileIndex;
     m_iHealthLastKnown = m_iHealth;
     m_iNumKillsLastKnown = m_iNumKills;
+    m_fShotCooldownTimeLastKnown = m_fShotCooldownTime;
     m_wasLastKillHeadshotLastKnown = m_wasLastKillHeadshot;
     m_isFacingLeftLastKnown = m_isFacingLeft;
     m_isShootingLastKnown = m_isShooting;
@@ -250,6 +253,7 @@ void Robot::read(InputMemoryBitStream& inInputStream)
     if (stateBit)
     {
         inInputStream.read(m_iAddressHash);
+        inInputStream.read(m_iFirstProjectileId);
         inInputStream.read(m_iPlayerId);
         inInputStream.read(m_playerName);
         inInputStream.read(m_color);
@@ -271,7 +275,9 @@ void Robot::read(InputMemoryBitStream& inInputStream)
         setPosition(position);
         
         inInputStream.read(m_iNumJumps);
+        inInputStream.read(m_iNextProjectileIndex);
         inInputStream.read(m_iNumGroundContacts);
+        inInputStream.read(m_fShotCooldownTime);
         
         inInputStream.read(m_isFacingLeft);
         inInputStream.read(m_isShooting);
@@ -301,6 +307,7 @@ uint32_t Robot::write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtySta
     {
         inOutputStream.write((bool)true);
         inOutputStream.write(m_iAddressHash);
+        inOutputStream.write(m_iFirstProjectileId);
         inOutputStream.write(m_iPlayerId);
         inOutputStream.write(m_playerName);
         inOutputStream.write(m_color);
@@ -323,7 +330,9 @@ uint32_t Robot::write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtySta
         inOutputStream.write(getPosition());
         
         inOutputStream.write(m_iNumJumps);
+        inOutputStream.write(m_iNextProjectileIndex);
         inOutputStream.write(m_iNumGroundContacts);
+        inOutputStream.write(m_fShotCooldownTime);
         
         inOutputStream.write((bool)m_isFacingLeft);
         inOutputStream.write((bool)m_isShooting);
@@ -359,6 +368,19 @@ uint32_t Robot::write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtySta
 bool Robot::needsMoveReplay()
 {
     return (m_iReadState & ROBT_Pose) != 0;
+}
+
+void Robot::postRead()
+{
+    if ((m_iReadState & ROBT_PlayerInfo) != 0)
+    {
+        for (int i = 0; i < 15; ++i)
+        {
+            m_projectiles[i] = static_cast<Projectile*>(FWInstanceManager::getClientEntityManager()->getEntityByID(m_iFirstProjectileId + i));
+        }
+    }
+    
+    Entity::postRead();
 }
 
 void Robot::processInput(IInputState* inInputState, bool isPending)
@@ -497,6 +519,21 @@ bool Robot::isShooting()
 bool Robot::isSprinting()
 {
     return m_isSprinting;
+}
+
+void Robot::fireProjectile()
+{
+    Projectile* projectile = m_projectiles[m_iNextProjectileIndex++];
+    
+    if (m_iNextProjectileIndex >= 15)
+    {
+        m_iNextProjectileIndex = 0;
+    }
+    
+    if (projectile)
+    {
+        projectile->initFromShooter(this);
+    }
 }
 
 void Robot::playNetworkBoundSounds(int numJumpsLastKnown, bool isSprintingLastKnown)

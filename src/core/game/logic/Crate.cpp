@@ -43,21 +43,16 @@ EntityDef Crate::constructEntityDef()
 
 void Crate::update()
 {
+    if (getPosition().y < DEAD_ZONE_BOTTOM
+        || getPosition().x < DEAD_ZONE_LEFT
+        || getPosition().x > DEAD_ZONE_RIGHT)
+    {
+        requestDeletion();
+    }
+    
     if (m_isServer)
     {
-        if (getPosition().y < DEAD_ZONE_BOTTOM
-            || getPosition().x < DEAD_ZONE_LEFT
-            || getPosition().x > DEAD_ZONE_RIGHT)
-        {
-            requestDeletion();
-        }
-        
-//        if (!areBox2DVectorsCloseEnough(m_velocityLastKnown, getVelocity())
-//            || !areBox2DVectorsCloseEnough(m_positionLastKnown, getPosition())
-//            || !areBox2DFloatsCloseEnough(m_fAngleLastKnown, getAngle()))
-//        {
-            NG_SERVER->setStateDirty(getID(), CRAT_Pose);
-//        }
+        NG_SERVER->setStateDirty(getID(), CRAT_Pose);
     }
     
     m_velocityLastKnown = b2Vec2(getVelocity().x, getVelocity().y);
@@ -125,10 +120,6 @@ void Crate::read(InputMemoryBitStream& inInputStream)
         inInputStream.read(position);
         setPosition(position);
         
-//        float angle;
-//        inInputStream.read(angle);
-//        setAngle(angle);
-        
         m_iReadState |= CRAT_Pose;
     }
 }
@@ -144,8 +135,6 @@ uint32_t Crate::write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtySta
         inOutputStream.write(getVelocity());
         
         inOutputStream.write(getPosition());
-        
-//        inOutputStream.write(getAngle());
         
         writtenState |= CRAT_Pose;
     }

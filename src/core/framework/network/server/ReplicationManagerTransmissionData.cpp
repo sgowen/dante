@@ -24,7 +24,7 @@ m_replicationManagerServer(inReplicationManagerServer)
     // Empty
 }
 
-void ReplicationManagerTransmissionData::addTransmission(int inNetworkId, ReplicationAction inAction, uint32_t inState)
+void ReplicationManagerTransmissionData::addTransmission(uint32_t inNetworkId, ReplicationAction inAction, uint32_t inState)
 {
     /*
      //it would be silly if we already had a transmission for this network id in here...
@@ -42,7 +42,7 @@ void ReplicationManagerTransmissionData::handleDeliveryFailure(DeliveryNotificat
     for (const ReplicationTransmission& rt: m_transmissions)
     {
         //is it a create? then we have to redo the create.
-        int networkId = rt.getID();
+        uint32_t networkId = rt.getID();
         
         switch(rt.getAction())
         {
@@ -78,7 +78,7 @@ void ReplicationManagerTransmissionData::handleDeliverySuccess(DeliveryNotificat
     }
 }
 
-void ReplicationManagerTransmissionData::handleCreateDeliveryFailure(int inNetworkId) const
+void ReplicationManagerTransmissionData::handleCreateDeliveryFailure(uint32_t inNetworkId) const
 {
     //does the object still exist? it might be dead, in which case we don't resend a create
     Entity* entity = FWInstanceManager::getServerEntityManager()->getEntityByID(inNetworkId);
@@ -88,7 +88,7 @@ void ReplicationManagerTransmissionData::handleCreateDeliveryFailure(int inNetwo
     }
 }
 
-void ReplicationManagerTransmissionData::handleUpdateStateDeliveryFailure(int inNetworkId, uint32_t inState, DeliveryNotificationManager* inDeliveryNotificationManager) const
+void ReplicationManagerTransmissionData::handleUpdateStateDeliveryFailure(uint32_t inNetworkId, uint32_t inState, DeliveryNotificationManager* inDeliveryNotificationManager) const
 {
     //does the object still exist? it might be dead, in which case we don't resend an update
     if (FWInstanceManager::getServerEntityManager()->getEntityByID(inNetworkId))
@@ -113,23 +113,23 @@ void ReplicationManagerTransmissionData::handleUpdateStateDeliveryFailure(int in
     }
 }
 
-void ReplicationManagerTransmissionData::handleDestroyDeliveryFailure(int inNetworkId) const
+void ReplicationManagerTransmissionData::handleDestroyDeliveryFailure(uint32_t inNetworkId) const
 {
     m_replicationManagerServer->replicateDestroy(inNetworkId);
 }
 
-void ReplicationManagerTransmissionData::handleCreateDeliverySuccess(int inNetworkId) const
+void ReplicationManagerTransmissionData::handleCreateDeliverySuccess(uint32_t inNetworkId) const
 {
     //we've received an ack for the create, so we can start sending as only an update
     m_replicationManagerServer->handleCreateAckd(inNetworkId);
 }
 
-void ReplicationManagerTransmissionData::handleDestroyDeliverySuccess(int inNetworkId) const
+void ReplicationManagerTransmissionData::handleDestroyDeliverySuccess(uint32_t inNetworkId) const
 {
     m_replicationManagerServer->removeFromReplication(inNetworkId);
 }
 
-ReplicationManagerTransmissionData::ReplicationTransmission::ReplicationTransmission(int inNetworkId, ReplicationAction inAction, uint32_t inState) :
+ReplicationManagerTransmissionData::ReplicationTransmission::ReplicationTransmission(uint32_t inNetworkId, ReplicationAction inAction, uint32_t inState) :
 m_iNetworkId(inNetworkId),
 m_action(inAction),
 m_iState(inState)

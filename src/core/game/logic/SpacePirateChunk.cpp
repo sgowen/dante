@@ -36,7 +36,8 @@ EntityDef SpacePirateChunk::constructEntityDef()
     
     ret.isStaticBody = false;
     ret.fixedRotation = false;
-    ret.restitution = 0.5f;
+    ret.isSensor = true;
+    ret.restitution = 1.0f;
     ret.density = 12.0f;
     
     return ret;
@@ -66,12 +67,7 @@ void SpacePirateChunk::update()
             requestDeletion();
         }
         
-//        if (!areBox2DVectorsCloseEnough(m_velocityLastKnown, getVelocity())
-//            || !areBox2DVectorsCloseEnough(m_positionLastKnown, getPosition())
-//            || !areBox2DFloatsCloseEnough(m_fAngleLastKnown, getAngle()))
-//        {
-            NG_SERVER->setStateDirty(getID(), SPCH_Pose);
-//        }
+        NG_SERVER->setStateDirty(getID(), SPCH_Pose);
     }
     
     m_velocityLastKnown = b2Vec2(getVelocity().x, getVelocity().y);
@@ -81,7 +77,7 @@ void SpacePirateChunk::update()
 
 bool SpacePirateChunk::shouldCollide(Entity *inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB)
 {
-    return !inEntity->getRTTI().derivesFrom(Robot::rtti) && !inEntity->getRTTI().derivesFrom(SpacePirateChunk::rtti);
+    return true;
 }
 
 void SpacePirateChunk::handleBeginContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB)

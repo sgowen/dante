@@ -27,9 +27,9 @@ EntityManager::~EntityManager()
     NGSTDUtil::cleanUpMapOfEntityPointers(m_entityMap);
 }
 
-Entity* EntityManager::getEntityByID(int id)const
+Entity* EntityManager::getEntityByID(uint32_t inID) const
 {
-    auto q = m_entityMap.find(id);
+    auto q = m_entityMap.find(inID);
     
     if (q != m_entityMap.end())
     {
@@ -58,12 +58,12 @@ void EntityManager::deregisterEntity(Entity* inEntity)
     inEntity = nullptr;
 }
 
-std::unordered_map<int, Entity*>& EntityManager::getMap()
+std::unordered_map<uint32_t, Entity*>& EntityManager::getMap()
 {
     return m_entityMap;
 }
 
-std::unordered_map<int, Entity*> EntityManager::getMapCopy()
+std::unordered_map<uint32_t, Entity*> EntityManager::getMapCopy()
 {
     return m_entityMap;
 }

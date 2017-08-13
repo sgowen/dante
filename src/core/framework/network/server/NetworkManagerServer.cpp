@@ -134,7 +134,7 @@ void NetworkManagerServer::registerEntity(Entity* inEntity)
 
 void NetworkManagerServer::deregisterEntity(Entity* inEntity)
 {
-    int networkId = inEntity->getID();
+    uint32_t networkId = inEntity->getID();
     
     FWInstanceManager::getServerEntityManager()->deregisterEntity(inEntity);
     
@@ -146,7 +146,7 @@ void NetworkManagerServer::deregisterEntity(Entity* inEntity)
     }
 }
 
-void NetworkManagerServer::setStateDirty(int inNetworkId, uint32_t inDirtyState)
+void NetworkManagerServer::setStateDirty(uint32_t inNetworkId, uint32_t inDirtyState)
 {
     //tell everybody this is dirty
     for (const auto& pair: m_addressHashToClientMap)

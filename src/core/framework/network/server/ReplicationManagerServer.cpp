@@ -19,28 +19,28 @@
 #include "macros.h"
 #include "Entity.h"
 
-void ReplicationManagerServer::replicateCreate(int inNetworkId, uint32_t inInitialDirtyState)
+void ReplicationManagerServer::replicateCreate(uint32_t inNetworkId, uint32_t inInitialDirtyState)
 {
     m_networkIdToReplicationCommand[inNetworkId] = ReplicationCommand(inInitialDirtyState);
 }
 
-void ReplicationManagerServer::replicateDestroy(int inNetworkId)
+void ReplicationManagerServer::replicateDestroy(uint32_t inNetworkId)
 {
     //it's broken if we don't find it...
     m_networkIdToReplicationCommand[inNetworkId].setDestroy();
 }
 
-void ReplicationManagerServer::removeFromReplication(int inNetworkId)
+void ReplicationManagerServer::removeFromReplication(uint32_t inNetworkId)
 {
     m_networkIdToReplicationCommand.erase(inNetworkId);
 }
 
-void ReplicationManagerServer::setStateDirty(int inNetworkId, uint32_t inDirtyState)
+void ReplicationManagerServer::setStateDirty(uint32_t inNetworkId, uint32_t inDirtyState)
 {
     m_networkIdToReplicationCommand[inNetworkId].addDirtyState(inDirtyState);
 }
 
-void ReplicationManagerServer::handleCreateAckd(int inNetworkId)
+void ReplicationManagerServer::handleCreateAckd(uint32_t inNetworkId)
 {
     m_networkIdToReplicationCommand[inNetworkId].handleCreateAckd();
 }
@@ -88,7 +88,7 @@ void ReplicationManagerServer::write(OutputMemoryBitStream& inOutputStream, Repl
     }
 }
 
-uint32_t ReplicationManagerServer::writeCreateAction(OutputMemoryBitStream& inOutputStream, int inNetworkId, uint32_t inDirtyState)
+uint32_t ReplicationManagerServer::writeCreateAction(OutputMemoryBitStream& inOutputStream, uint32_t inNetworkId, uint32_t inDirtyState)
 {
     //need object
     Entity* entity = FWInstanceManager::getServerEntityManager()->getEntityByID(inNetworkId);
@@ -98,7 +98,7 @@ uint32_t ReplicationManagerServer::writeCreateAction(OutputMemoryBitStream& inOu
     return entity->write(inOutputStream, inDirtyState);
 }
 
-uint32_t ReplicationManagerServer::writeUpdateAction(OutputMemoryBitStream& inOutputStream, int inNetworkId, uint32_t inDirtyState)
+uint32_t ReplicationManagerServer::writeUpdateAction(OutputMemoryBitStream& inOutputStream, uint32_t inNetworkId, uint32_t inDirtyState)
 {
     //need object
     Entity* entity = FWInstanceManager::getServerEntityManager()->getEntityByID(inNetworkId);
@@ -113,7 +113,7 @@ uint32_t ReplicationManagerServer::writeUpdateAction(OutputMemoryBitStream& inOu
     return writtenState;
 }
 
-uint32_t ReplicationManagerServer::writeDestroyAction(OutputMemoryBitStream& inOutputStream, int inNetworkId, uint32_t inDirtyState)
+uint32_t ReplicationManagerServer::writeDestroyAction(OutputMemoryBitStream& inOutputStream, uint32_t inNetworkId, uint32_t inDirtyState)
 {
     UNUSED(inOutputStream);
     UNUSED(inNetworkId);

@@ -50,7 +50,7 @@ void ReplicationManagerClient::read(InputMemoryBitStream& inInputStream)
     }
 }
 
-void ReplicationManagerClient::readAndDoCreateAction(InputMemoryBitStream& inInputStream, int inNetworkId)
+void ReplicationManagerClient::readAndDoCreateAction(InputMemoryBitStream& inInputStream, uint32_t inNetworkId)
 {
     //need 4 cc
     uint32_t fourCCName;
@@ -75,7 +75,7 @@ void ReplicationManagerClient::readAndDoCreateAction(InputMemoryBitStream& inInp
     entity->read(inInputStream);
 }
 
-void ReplicationManagerClient::readAndDoUpdateAction(InputMemoryBitStream& inInputStream, int inNetworkId)
+void ReplicationManagerClient::readAndDoUpdateAction(InputMemoryBitStream& inInputStream, uint32_t inNetworkId)
 {
     //need object
     Entity* entity = FWInstanceManager::getClientEntityManager()->getEntityByID(inNetworkId);
@@ -89,7 +89,7 @@ void ReplicationManagerClient::readAndDoUpdateAction(InputMemoryBitStream& inInp
     }
 }
 
-void ReplicationManagerClient::readAndDoDestroyAction(InputMemoryBitStream& inInputStream, int inNetworkId)
+void ReplicationManagerClient::readAndDoDestroyAction(InputMemoryBitStream& inInputStream, uint32_t inNetworkId)
 {
     //if something was destroyed before the create went through, we'll never get it
     //but we might get the destroy request, so be tolerant of being asked to destroy something that wasn't created

@@ -21,26 +21,26 @@ class ReplicationManagerTransmissionData;
 class ReplicationManagerServer
 {
 public:
-    void replicateCreate(int inNetworkId, uint32_t inInitialDirtyState);
+    void replicateCreate(uint32_t inNetworkId, uint32_t inInitialDirtyState);
     
-    void replicateDestroy(int inNetworkId);
+    void replicateDestroy(uint32_t inNetworkId);
     
-    void setStateDirty(int inNetworkId, uint32_t inDirtyState);
+    void setStateDirty(uint32_t inNetworkId, uint32_t inDirtyState);
     
-    void handleCreateAckd(int inNetworkId);
+    void handleCreateAckd(uint32_t inNetworkId);
     
-    void removeFromReplication(int inNetworkId);
+    void removeFromReplication(uint32_t inNetworkId);
     
     void write(OutputMemoryBitStream& inOutputStream, ReplicationManagerTransmissionData* ioTransmissinData);
     
 private:
     std::unordered_map<int, ReplicationCommand> m_networkIdToReplicationCommand;
     
-    uint32_t writeCreateAction(OutputMemoryBitStream& inOutputStream, int inNetworkId, uint32_t inDirtyState);
+    uint32_t writeCreateAction(OutputMemoryBitStream& inOutputStream, uint32_t inNetworkId, uint32_t inDirtyState);
     
-    uint32_t writeUpdateAction(OutputMemoryBitStream& inOutputStream, int inNetworkId, uint32_t inDirtyState);
+    uint32_t writeUpdateAction(OutputMemoryBitStream& inOutputStream, uint32_t inNetworkId, uint32_t inDirtyState);
     
-    uint32_t writeDestroyAction(OutputMemoryBitStream& inOutputStream, int inNetworkId, uint32_t inDirtyState);
+    uint32_t writeDestroyAction(OutputMemoryBitStream& inOutputStream, uint32_t inNetworkId, uint32_t inDirtyState);
 };
 
 #endif /* defined(__noctisgames__ReplicationManagerServer__) */

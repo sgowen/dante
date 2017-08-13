@@ -23,7 +23,7 @@
 #include "StringUtil.h"
 #include "MathUtil.h"
 
-Entity::Entity(b2World& world, float x, float y, float width, float height, bool isServer, EntityDef inEntityDef) :
+Entity::Entity(b2World& world, float x, float y, float width, float height, bool isServer, EntityDef inEntityDef, bool autoInitPhysics) :
 m_worldRef(world),
 m_body(nullptr),
 m_fixture(nullptr),
@@ -36,6 +36,7 @@ m_fWidth(width),
 m_fHeight(height),
 m_iReadState(0),
 m_isServer(isServer),
+m_isPhysicsOn(false),
 m_velocityLastKnown(b2Vec2_zero),
 m_positionLastKnown(b2Vec2_zero),
 m_fAngleLastKnown(0.0f),
@@ -46,7 +47,10 @@ m_iID(getUniqueEntityID()),
 m_iNumGroundContacts(0),
 m_isRequestingDeletion(false)
 {
-    initPhysics(inEntityDef);
+    if (autoInitPhysics)
+    {
+        initPhysics(inEntityDef);
+    }
 }
 
 Entity::~Entity()
@@ -113,22 +117,28 @@ void Entity::setPosition(b2Vec2 position)
     m_fX = position.x;
     m_fY = position.y;
     
-    m_body->SetTransform(position, m_body->GetAngle());
+    if (m_isPhysicsOn)
+    {
+        m_body->SetTransform(position, m_body->GetAngle());
+    }
 }
 
 const b2Vec2& Entity::getPosition()
 {
-    return m_body->GetPosition();
+    return m_isPhysicsOn ? m_body->GetPosition() : b2Vec2_zero;
 }
 
 void Entity::setVelocity(b2Vec2 velocity)
 {
-    m_body->SetLinearVelocity(velocity);
+    if (m_isPhysicsOn)
+    {
+        m_body->SetLinearVelocity(velocity);
+    }
 }
 
 const b2Vec2& Entity::getVelocity()
 {
-    return m_body->GetLinearVelocity();
+    return m_isPhysicsOn ? m_body->GetLinearVelocity() : b2Vec2_zero;
 }
 
 void Entity::setColor(Color color)
@@ -163,21 +173,24 @@ const float& Entity::getHeight()
 
 void Entity::setAngle(float angle)
 {
-    angle = DEGREES_TO_RADIANS(angle);
-    m_body->SetTransform(m_body->GetPosition(), angle);
+    if (m_isPhysicsOn)
+    {
+        angle = DEGREES_TO_RADIANS(angle);
+        m_body->SetTransform(m_body->GetPosition(), angle);
+    }
 }
 
 float Entity::getAngle()
 {
-    return m_body->GetAngle();
+    return m_isPhysicsOn ? m_body->GetAngle() : 0;
 }
 
-void Entity::setID(int inID)
+void Entity::setID(uint32_t inID)
 {
     m_iID = inID;
 }
 
-int Entity::getID()
+uint32_t Entity::getID()
 {
     return m_iID;
 }
@@ -274,10 +287,14 @@ void Entity::initPhysics(EntityDef inEntityDef)
     m_fixture->SetUserData(this);
     
     m_body->SetUserData(this);
+    
+    m_isPhysicsOn = true;
 }
 
 void Entity::deinitPhysics()
 {
+    m_isPhysicsOn = false;
+    
     if (m_fixture)
     {
         m_body->DestroyFixture(m_fixture);
@@ -345,9 +362,9 @@ bool Entity::interpolateVectorsIfNecessary(b2Vec2& inOld, const b2Vec2& inNew, f
 
 #pragma mark private
 
-int Entity::getUniqueEntityID()
+uint32_t Entity::getUniqueEntityID()
 {
-    static int entityID = 0;
+    static uint32_t entityID = 0;
     
     return entityID++;
 }

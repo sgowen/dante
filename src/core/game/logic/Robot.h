@@ -19,6 +19,7 @@ class IInputState;
 class Move;
 class Ground;
 class Crate;
+class Projectile;
 
 class Robot : public Entity
 {
@@ -58,6 +59,8 @@ public:
     
     virtual bool needsMoveReplay();
     
+    virtual void postRead();
+    
     void processInput(IInputState* inInputState, bool isPending = false);
     
     void awardKill(bool isHeadshot);
@@ -86,10 +89,12 @@ public:
     
 private:
     uint64_t m_iAddressHash;
+    uint32_t m_iFirstProjectileId;
     uint8_t m_iPlayerId;
     std::string m_playerName;
     
     uint8_t m_iNumJumps;
+    uint8_t m_iNextProjectileIndex;
     bool m_isFacingLeft;
     bool m_isShooting;
     bool m_isSprinting;
@@ -108,13 +113,19 @@ private:
     
     // Cached Last Known Values (from previous frame)
     uint8_t m_iNumJumpsLastKnown;
+    uint8_t m_iNextProjectileIndexLastKnown;
     uint8_t m_iHealthLastKnown;
     uint32_t m_iNumKillsLastKnown;
+    float m_fShotCooldownTimeLastKnown;
     bool m_wasLastKillHeadshotLastKnown;
     bool m_isFacingLeftLastKnown;
     bool m_isShootingLastKnown;
     bool m_isSprintingLastKnown;
     bool m_isFirstJumpCompletedLastKnown;
+    
+    Projectile* m_projectiles[15];
+    
+    void fireProjectile();
     
     void playNetworkBoundSounds(int numJumpsLastKnown, bool isSprintingLastKnown);
 };

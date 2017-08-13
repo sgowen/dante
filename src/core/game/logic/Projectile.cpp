@@ -37,7 +37,7 @@
 
 #include <math.h>
 
-Projectile::Projectile(b2World& world, bool isServer) : Entity(world, 0, 0, 1.565217391304348f * 0.444444444444444f, 2.0f * 0.544423440453686f, isServer, constructEntityDef()),
+Projectile::Projectile(b2World& world, bool isServer) : Entity(world, 0, 0, 1.565217391304348f * 0.444444444444444f, 2.0f * 0.544423440453686f, isServer, constructEntityDef(), false),
 m_iPlayerId(0),
 m_isFacingLeft(false),
 m_state(ProjectileState_Waiting),
@@ -76,34 +76,39 @@ void Projectile::update()
     }
     else if (m_state == ProjectileState_Exploding)
     {
-        setVelocity(b2Vec2_zero);
+        if (m_fStateTime > 0.5f)
+        {
+            m_fStateTime = 0.0f;
+            m_state = ProjectileState_Waiting;
+            
+            deinitPhysics();
+        }
     }
     
     if (m_isServer)
     {
-        if (m_state == ProjectileState_Exploding)
-        {
-            if (m_fStateTime > 0.5f)
-            {
-                requestDeletion();
-            }
-        }
-        
-//        if (!areBox2DVectorsCloseEnough(m_velocityLastKnown, getVelocity())
-//            || !areBox2DVectorsCloseEnough(m_positionLastKnown, getPosition())
-//            || m_stateLastKnown != m_state)
-//        {
-            NG_SERVER->setStateDirty(getID(), PRJC_Pose);
-//        }
+        NG_SERVER->setStateDirty(getID(), PRJC_Pose);
     }
     else
     {
-        if (m_stateLastKnown == ProjectileState_Active
+        if (m_stateLastKnown == ProjectileState_Waiting
+            && m_state == ProjectileState_Active)
+        {
+            initPhysics(constructEntityDef());
+        }
+        else if (m_stateLastKnown == ProjectileState_Active
             && m_state == ProjectileState_Exploding)
         {
-            m_body->SetGravityScale(0);
+            float stateTime = m_fStateTime;
+            explode();
+            m_fStateTime = stateTime;
             
             Util::playSound(SOUND_ID_EXPLOSION, getPosition(), m_isServer);
+        }
+        else if (m_stateLastKnown == ProjectileState_Exploding
+                 && m_state == ProjectileState_Waiting)
+        {
+            deinitPhysics();
         }
         
         if ((m_iReadState & PRJC_PlayerInfo) != 0)
@@ -113,26 +118,35 @@ void Projectile::update()
         }
     }
     
-    m_velocityLastKnown = b2Vec2(getVelocity().x, getVelocity().y);
-    m_positionLastKnown = b2Vec2(getPosition().x, getPosition().y);
+    if (m_isPhysicsOn)
+    {
+        m_velocityLastKnown = b2Vec2(getVelocity().x, getVelocity().y);
+        m_positionLastKnown = b2Vec2(getPosition().x, getPosition().y);
+    }
+    
     m_stateLastKnown = m_state;
 }
 
 bool Projectile::shouldCollide(Entity *inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB)
 {
-    if (m_state != ProjectileState_Waiting)
+    if (m_state == ProjectileState_Waiting)
     {
-        return inEntity->getRTTI().derivesFrom(SpacePirate::rtti)
-        || inEntity->getRTTI().derivesFrom(SpacePirateChunk::rtti)
-        || inEntity->getRTTI().derivesFrom(Crate::rtti)
-        || inEntity->getRTTI().derivesFrom(Ground::rtti);
+        return false;
     }
     
-    return false;
+    return inEntity->getRTTI().derivesFrom(SpacePirate::rtti)
+    || inEntity->getRTTI().derivesFrom(SpacePirateChunk::rtti)
+    || inEntity->getRTTI().derivesFrom(Crate::rtti)
+    || inEntity->getRTTI().derivesFrom(Ground::rtti);
 }
 
 void Projectile::handleBeginContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB)
 {
+    if (m_state == ProjectileState_Waiting)
+    {
+        return;
+    }
+    
     if (inEntity->getRTTI().derivesFrom(SpacePirate::rtti))
     {
         handleBeginContactWithSpacePirate(static_cast<SpacePirate*>(inEntity));
@@ -153,7 +167,10 @@ void Projectile::handleBeginContact(Entity* inEntity, b2Fixture* inFixtureA, b2F
 
 void Projectile::handleEndContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB)
 {
-    // TODO
+    if (m_state == ProjectileState_Waiting)
+    {
+        return;
+    }
 }
 
 uint32_t Projectile::getAllStateMask() const
@@ -249,13 +266,15 @@ void Projectile::initFromShooter(Robot* inRobot)
     m_iPlayerId = inRobot->getPlayerId();
     m_isFacingLeft = inRobot->isFacingLeft();
     
-    setVelocity(b2Vec2(m_isFacingLeft ? -80 : 80, 0));
-    
     b2Vec2 position = inRobot->getPosition();
     position += b2Vec2(m_isFacingLeft ? -inRobot->getWidth() / 2 : inRobot->getWidth() / 2, inRobot->getHeight() / 4);
     setPosition(position);
     
     setColor(inRobot->getColor());
+    
+    initPhysics(constructEntityDef());
+    
+    setVelocity(b2Vec2(m_isFacingLeft ? -80 : 80, 0));
 }
 
 void Projectile::handleBeginContactWithSpacePirate(SpacePirate* inEntity)
@@ -333,7 +352,7 @@ void Projectile::explode()
     
     m_state = ProjectileState_Exploding;
     m_fStateTime = 0.0f;
-    setVelocity(b2Vec2(0.0f, 0.0f));
+    setVelocity(b2Vec2_zero);
     m_body->SetGravityScale(0);
 }
 

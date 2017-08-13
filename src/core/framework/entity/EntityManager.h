@@ -23,21 +23,21 @@ public:
     
     ~EntityManager();
     
-    Entity* getEntityByID(int id) const;
+    Entity* getEntityByID(uint32_t inID) const;
     
     void registerEntity(Entity* inEntity);
     
     void deregisterEntity(Entity* inEntity);
     
-    std::unordered_map<int, Entity*>& getMap();
+    std::unordered_map<uint32_t, Entity*>& getMap();
     
-    std::unordered_map<int, Entity*> getMapCopy();
+    std::unordered_map<uint32_t, Entity*> getMapCopy();
     
 private:
     HandleEntityCreatedFunc m_handleEntityCreatedFunc;
     HandleEntityDeletionFunc m_handleEntityDeletionFunc;
     
-    std::unordered_map<int, Entity*> m_entityMap;
+    std::unordered_map<uint32_t, Entity*> m_entityMap;
 };
 
 #endif /* defined(__noctisgames__EntityManager__) */
