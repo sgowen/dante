@@ -160,7 +160,7 @@ void Robot::update()
             
             if ((m_iReadState & ROBT_PlayerInfo) != 0)
             {
-                NG_AUDIO_ENGINE->playSound(SOUND_ID_DEATH, 1);
+                NG_AUDIO_ENGINE->playSound(SOUND_ID_DEATH);
             }
         }
         else

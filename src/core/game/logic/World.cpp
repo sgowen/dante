@@ -163,19 +163,7 @@ void World::postRead()
     // all processed moves have been removed, so all that are left are unprocessed moves so we must apply them...
     MoveList& moveList = InputManager::getInstance()->getMoveList();
     
-    Move* move = moveList.getMoveAtIndex(0);
-    if (move)
-    {
-        for (Entity* entity : m_entities)
-        {
-            entity->recallIfNecessary(move);
-        }
-        
-        for (Entity* entity : m_players)
-        {
-            entity->recallIfNecessary(move);
-        }
-    }
+    LOG("Client has to move replay %d moves", moveList.getMoveCount());
     
     for (const Move& move : moveList)
     {
@@ -240,12 +228,9 @@ void World::update()
             {
                 finalMoveCount = lowestNonHostMoveCount;
             }
-            else if (hostMoveCount >= 6 || lowestNonHostMoveCount >= 6)
+            else
             {
-                // Use average move count if anyone's ping is >= 100ms
-                finalMoveCount = avgMoveCount;
-                
-                //LOG("avgMoveCount: %d, lowestNonHostMoveCount: %d, hostMoveCount: %d, finalMoveCount: %d", avgMoveCount, lowestNonHostMoveCount, hostMoveCount, finalMoveCount)
+                LOG("avgMoveCount: %d, lowestNonHostMoveCount: %d, hostMoveCount: %d, finalMoveCount: %d", avgMoveCount, lowestNonHostMoveCount, hostMoveCount, finalMoveCount)
             }
         }
         
@@ -323,15 +308,8 @@ void World::update()
         const Move* pendingMove = InputManager::getInstance()->getPendingMove();
         if (pendingMove)
         {
-            for (Entity* entity : m_entities)
-            {
-                entity->cacheToMove(*pendingMove);
-            }
-            
             for (Entity* entity : m_players)
             {
-                entity->cacheToMove(*pendingMove);
-                
                 Robot* robot = static_cast<Robot*>(entity);
                 if (NG_CLIENT->isPlayerIdLocal(robot->getPlayerId()))
                 {
