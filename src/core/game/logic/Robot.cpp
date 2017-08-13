@@ -74,6 +74,11 @@ m_isFirstJumpCompletedLastKnown(false)
     for (int i = 0; i < 15; ++i)
     {
         m_projectiles[i] = m_isServer ? static_cast<Projectile*>(SERVER_ENTITY_REG->createEntity(NW_TYPE_Projectile)) : nullptr;
+        
+        if (m_isServer && i == 0)
+        {
+            m_iFirstProjectileId = m_projectiles[i]->getID();
+        }
     }
 }
 
@@ -479,6 +484,14 @@ uint64_t Robot::getAddressHash() const
 void Robot::setPlayerId(uint8_t inPlayerId)
 {
     m_iPlayerId = inPlayerId;
+    
+    for (int i = 0; i < 15; ++i)
+    {
+        if (m_projectiles[i])
+        {
+            m_projectiles[i]->setPlayerId(m_iPlayerId);
+        }
+    }
 }
 
 uint8_t Robot::getPlayerId() const

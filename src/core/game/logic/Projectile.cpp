@@ -189,7 +189,6 @@ void Projectile::read(InputMemoryBitStream& inInputStream)
     {
         inInputStream.read(m_iPlayerId);
         inInputStream.read(m_color);
-        inInputStream.read(m_isFacingLeft);
         m_iReadState |= PRJC_PlayerInfo;
     }
     
@@ -201,6 +200,8 @@ void Projectile::read(InputMemoryBitStream& inInputStream)
         m_state = (ProjectileState) state;
         
         inInputStream.read(m_fStateTime);
+        
+        inInputStream.read(m_isFacingLeft);
         
         b2Vec2 velocity;
         inInputStream.read(velocity);
@@ -223,7 +224,6 @@ uint32_t Projectile::write(OutputMemoryBitStream& inOutputStream, uint32_t inDir
         inOutputStream.write((bool)true);
         inOutputStream.write(m_iPlayerId);
         inOutputStream.write(m_color);
-        inOutputStream.write((bool)m_isFacingLeft);
         
         writtenState |= PRJC_PlayerInfo;
     }
@@ -239,6 +239,8 @@ uint32_t Projectile::write(OutputMemoryBitStream& inOutputStream, uint32_t inDir
         inOutputStream.write((uint8_t)m_state);
         
         inOutputStream.write(m_fStateTime);
+        
+        inOutputStream.write((bool)m_isFacingLeft);
         
         inOutputStream.write(getVelocity());
         
@@ -261,13 +263,14 @@ bool Projectile::needsMoveReplay()
 
 void Projectile::initFromShooter(Robot* inRobot)
 {
+    m_fStateTime = 0;
     m_state = ProjectileState_Active;
     
     m_iPlayerId = inRobot->getPlayerId();
     m_isFacingLeft = inRobot->isFacingLeft();
     
     b2Vec2 position = inRobot->getPosition();
-    position += b2Vec2(m_isFacingLeft ? -inRobot->getWidth() / 2 : inRobot->getWidth() / 2, inRobot->getHeight() / 4);
+    position += b2Vec2(m_isFacingLeft ? -inRobot->getWidth() : inRobot->getWidth(), inRobot->getHeight() / 5);
     setPosition(position);
     
     setColor(inRobot->getColor());
