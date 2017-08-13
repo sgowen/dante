@@ -166,15 +166,6 @@ void World::postRead()
     // all processed moves have been removed, so all that are left are unprocessed moves so we must apply them...
     MoveList& moveList = InputManager::getInstance()->getMoveList();
     
-    Move* firstMove = moveList.getMoveAtIndex(0);
-    if (firstMove)
-    {
-        for (Entity* entity : m_entities)
-        {
-            firstMove->recallEntityCache(entity);
-        }
-    }
-    
 //    LOG("Client has to move replay %d moves", moveList.getMoveCount());
     
     for (const Move& move : moveList)
@@ -356,11 +347,6 @@ void World::update()
         const Move* pendingMove = InputManager::getInstance()->getPendingMove();
         if (pendingMove)
         {
-            for (Entity* entity : m_entities)
-            {
-                pendingMove->cacheEntity(entity);
-            }
-            
             for (Entity* entity : m_players)
             {
                 Robot* robot = static_cast<Robot*>(entity);
