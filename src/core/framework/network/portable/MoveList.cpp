@@ -97,7 +97,7 @@ int MoveList::getNumMovesAfterTimestamp(float inLastMoveReceivedOnServerTimestam
     
     for (Move move : m_moves)
     {
-        if (move.getTimestamp() >= inLastMoveReceivedOnServerTimestamp)
+        if (move.getTimestamp() > inLastMoveReceivedOnServerTimestamp)
         {
             ++ret;
         }

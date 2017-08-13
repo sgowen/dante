@@ -341,7 +341,7 @@ void NetworkManagerClient::sendInputPacket()
         m_deliveryNotificationManager->writeState(inputPacket);
         
         // eventually write the 3 latest moves so they have 3 chances to get through...
-        int moveCount = moveList.getMoveCount();
+        int moveCount = moveList.getNumMovesAfterTimestamp(m_fLastMoveReceivedByServerTimestamp);
         int firstMoveIndex = moveCount - 3;
         if (firstMoveIndex < 0)
         {
