@@ -415,7 +415,7 @@ void NetworkManagerServer::handleInputPacket(ClientProxy* inClientProxy, InputMe
 {
     uint8_t moveCount = 0;
     Move move = Move(m_inputStateCreationFunc());
-    inInputStream.read(moveCount, 2);
+    inInputStream.read(moveCount, 4);
     
     for (; moveCount > 0; --moveCount)
     {
@@ -423,6 +423,11 @@ void NetworkManagerServer::handleInputPacket(ClientProxy* inClientProxy, InputMe
         {
             if (inClientProxy->getUnprocessedMoveList().addMoveIfNew(move))
             {
+                if (inClientProxy->getPlayerId() == 1)
+                {
+                    LOG("Host Move Received: %f", move.getTimestamp());
+                }
+                
                 inClientProxy->setIsLastMoveTimestampDirty(true);
             }
         }
