@@ -75,6 +75,11 @@ void Move::recallEntityCache(Entity* inEntity) const
     }
 }
 
+bool Move::isEqual(Move* inMove) const
+{
+    return m_inputState->isEqual(inMove->getInputState());
+}
+
 IInputState* Move::getInputState() const
 {
     return m_inputState;
@@ -83,4 +88,14 @@ IInputState* Move::getInputState() const
 float Move::getTimestamp() const
 {
     return m_fTimestamp;
+}
+
+void Move::setTimestamp(float timeStamp)
+{
+    m_fTimestamp = timeStamp;
+}
+
+void Move::copyInputState(IInputState* inIInputState)
+{
+    inIInputState->copyTo(m_inputState);
 }

@@ -82,8 +82,27 @@ void InputState::reset()
     }
 }
 
-void InputState::copyTo(InputState* inInputState)
+bool InputState::isEqual(IInputState* inIInputState) const
 {
+    InputState* in = static_cast<InputState*>(inIInputState);
+    
+    for (int i = 0; i < MAX_NUM_PLAYERS_PER_SERVER; ++i)
+    {
+        if (in->m_gameInputStates[i].m_iPlayerId != m_gameInputStates[i].m_iPlayerId) { return false; }
+        if (in->m_gameInputStates[i].m_isMovingRight != m_gameInputStates[i].m_isMovingRight) { return false; }
+        if (in->m_gameInputStates[i].m_isMovingLeft != m_gameInputStates[i].m_isMovingLeft) { return false; }
+        if (in->m_gameInputStates[i].m_isJumping != m_gameInputStates[i].m_isJumping) { return false; }
+        if (in->m_gameInputStates[i].m_isShooting != m_gameInputStates[i].m_isShooting) { return false; }
+        if (in->m_gameInputStates[i].m_isSprinting != m_gameInputStates[i].m_isSprinting) { return false; }
+    }
+    
+    return true;
+}
+
+void InputState::copyTo(IInputState* inIInputState) const
+{
+    InputState* inInputState = static_cast<InputState*>(inIInputState);
+    
     for (int i = 0; i < MAX_NUM_PLAYERS_PER_SERVER; ++i)
     {
         inInputState->m_gameInputStates[i].m_iPlayerId = m_gameInputStates[i].m_iPlayerId;

@@ -82,7 +82,9 @@ public:
     
     virtual void reset();
     
-    void copyTo(InputState* inInputState);
+    virtual bool isEqual(IInputState* inIInputState) const;
+    
+    virtual void copyTo(IInputState* inIInputState) const;
     
     void activateNextPlayer(uint8_t playerId);
     

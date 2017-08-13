@@ -357,10 +357,31 @@ void NetworkManagerClient::sendInputPacket()
         // only need 2 bits to write the move count, because it's 0-31
         inputPacket.write(moveCount - firstMoveIndex, 5);
         
+        Move* referenceMove = nullptr;
         for (; firstMoveIndex < moveCount; ++firstMoveIndex, ++move)
         {
-            ///would be nice to optimize the time stamp...
-            move->write(inputPacket);
+            bool needsToWriteMove = true;
+            
+            if (referenceMove)
+            {
+                if (move->isEqual(referenceMove))
+                {
+                    inputPacket.write(true);
+                    
+                    inputPacket.write(move->getTimestamp());
+                    
+                    needsToWriteMove = false;
+                }
+            }
+            
+            if (needsToWriteMove)
+            {
+                inputPacket.write(false);
+                
+                move->write(inputPacket);
+                
+                referenceMove = moveList.getMoveAtIndex(firstMoveIndex);
+            }
         }
         
         sendPacket(inputPacket);

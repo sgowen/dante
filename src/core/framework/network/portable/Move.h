@@ -35,9 +35,15 @@ public:
     
     void recallEntityCache(Entity* inEntity) const;
     
+    bool isEqual(Move* inMove) const;
+    
     IInputState* getInputState() const;
     
     float getTimestamp() const;
+    
+    void setTimestamp(float timeStamp);
+    
+    void copyInputState(IInputState* inIInputState);
     
 private:
     class EntityClientCache

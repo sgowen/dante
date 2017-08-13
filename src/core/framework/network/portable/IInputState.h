@@ -29,6 +29,10 @@ public:
     
     virtual void reset() = 0;
     
+    virtual bool isEqual(IInputState* inIInputState) const = 0;
+    
+    virtual void copyTo(IInputState* inIInputState) const = 0;
+    
     void setInUse(bool inUse);
     
     bool isInUse() const;

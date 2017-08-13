@@ -418,23 +418,39 @@ void NetworkManagerServer::handleInputPacket(ClientProxy* inClientProxy, InputMe
     uint8_t moveCount = 0;
     inInputStream.read(moveCount, 5);
     
+    Move* referenceMove = nullptr;
+    
     for (; moveCount > 0; --moveCount)
     {
         Move move = Move(m_inputStateCreationFunc());
-        if (move.read(inInputStream))
+        
+        bool isCopy;
+        inInputStream.read(isCopy);
+        if (isCopy)
         {
-            if (inClientProxy->getUnprocessedMoveList().addMoveIfNew(move))
+            if (!referenceMove)
             {
-                if (inClientProxy->getPlayerId() == 1)
-                {
-//                    InputState* is = static_cast<InputState*>(move.getInputState());
-//                    InputState::GameInputState* gis = is->getGameInputStateForPlayerId(1);
-//                    
-//                    LOG("Host Move Received: %f, desiredRightAmount: %d, isSprinting: %d", move.getTimestamp(), gis->getDesiredRightAmount(), gis->isSprinting());
-                }
+                LOG("Unexpected Network State!");
                 
-                inClientProxy->setIsLastMoveTimestampDirty(true);
+                return;
             }
+            
+            float timeStamp;
+            inInputStream.read(timeStamp);
+            move.setTimestamp(timeStamp);
+            
+            move.copyInputState(referenceMove->getInputState());
+        }
+        else
+        {
+            move.read(inInputStream);
+            
+            referenceMove = &move;
+        }
+        
+        if (inClientProxy->getUnprocessedMoveList().addMoveIfNew(move))
+        {
+            inClientProxy->setIsLastMoveTimestampDirty(true);
         }
     }
 }

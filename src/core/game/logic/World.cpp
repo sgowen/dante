@@ -249,12 +249,16 @@ void World::update()
             {
                 finalMoveCount = lowestNonHostMoveCount;
             }
-            else if (lowestNonHostMoveCount >= 5 && hostMoveCount >= 5)
+            else if (lowestNonHostMoveCount >= 2 && lowestNonHostMoveCount < hostMoveCount)
             {
-                finalMoveCount = avgMoveCount;
-                
-                LOG("avgMoveCount: %d, lowestNonHostMoveCount: %d, hostMoveCount: %d, finalMoveCount: %d", avgMoveCount, lowestNonHostMoveCount, hostMoveCount, finalMoveCount)
+                finalMoveCount = lowestNonHostMoveCount;
             }
+            else if (hostMoveCount >= 2 && hostMoveCount < lowestNonHostMoveCount)
+            {
+                finalMoveCount = hostMoveCount;
+            }
+            
+            LOG("avgMoveCount: %d, lowestNonHostMoveCount: %d, hostMoveCount: %d, finalMoveCount: %d", avgMoveCount, lowestNonHostMoveCount, hostMoveCount, finalMoveCount)
         }
         
         if (finalMoveCount > 0)
