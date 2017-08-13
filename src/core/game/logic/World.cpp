@@ -219,56 +219,39 @@ void World::postRead()
     }
 }
 
-float lastKnownRobotXDog = 0;
-
 void World::update()
 {
     if (m_isServer)
     {
-        bool isAvgMethod = Server::getInstance()->isAvgMethod();
-        int avgMoveCount = NG_SERVER->getAverageMoveCount();
-        int lowestNonHostMoveCount = NG_SERVER->getLowestNonHostMoveCount();
-        int hostMoveCount = NG_SERVER->getHostMoveCount();
-        
         int finalMoveCount = 0;
         
-        if (isAvgMethod)
+        if (Server::getInstance()->isAvgMethod())
         {
-            finalMoveCount = avgMoveCount;
+            finalMoveCount = NG_SERVER->getAverageMoveCount();
         }
         else
         {
-//            if (lowestNonHostMoveCount == -1
-//                || (hostMoveCount <= lowestNonHostMoveCount
-//                    && (hostMoveCount * 3) >= lowestNonHostMoveCount))
-//            {
-//                finalMoveCount = hostMoveCount;
-//            }
-//            else if (lowestNonHostMoveCount <= hostMoveCount
-//                     && (lowestNonHostMoveCount * 3) >= hostMoveCount)
-//            {
-//                finalMoveCount = lowestNonHostMoveCount;
-//            }
-//            else if (lowestNonHostMoveCount >= 4 && lowestNonHostMoveCount < hostMoveCount)
-//            {
-//                finalMoveCount = lowestNonHostMoveCount;
-//            }
-//            else if (hostMoveCount >= 4 && hostMoveCount < lowestNonHostMoveCount)
-//            {
-//                finalMoveCount = hostMoveCount;
-//            }
+            int lowestNonHostMoveCount = NG_SERVER->getLowestNonHostMoveCount();
+            int hostMoveCount = NG_SERVER->getHostMoveCount();
             
             if (lowestNonHostMoveCount == -1
-                || hostMoveCount <= lowestNonHostMoveCount)
+                || (hostMoveCount <= lowestNonHostMoveCount
+                    && (hostMoveCount * 2) >= lowestNonHostMoveCount))
             {
                 finalMoveCount = hostMoveCount;
             }
-            else if (lowestNonHostMoveCount <= hostMoveCount)
+            else if (lowestNonHostMoveCount <= hostMoveCount
+                     && (lowestNonHostMoveCount * 2) >= hostMoveCount)
             {
                 finalMoveCount = lowestNonHostMoveCount;
             }
-            
-            LOG("avgMoveCount: %d, lowestNonHostMoveCount: %d, hostMoveCount: %d, finalMoveCount: %d", avgMoveCount, lowestNonHostMoveCount, hostMoveCount, finalMoveCount)
+            else if (lowestNonHostMoveCount >= 2 || hostMoveCount >= 2)
+            {
+                int avgMoveCount = NG_SERVER->getAverageMoveCount();
+                finalMoveCount = avgMoveCount;
+                
+                LOG("avgMoveCount: %d, lowestNonHostMoveCount: %d, hostMoveCount: %d, finalMoveCount: %d", avgMoveCount, lowestNonHostMoveCount, hostMoveCount, finalMoveCount)
+            }
         }
         
         if (finalMoveCount > 0)
@@ -289,23 +272,7 @@ void World::update()
                         
                         if (move)
                         {
-//                            if (robot->getPlayerId() == 1)
-//                            {
-//                                InputState* is = static_cast<InputState*>(move->getInputState());
-//                                InputState::GameInputState* gis = is->getGameInputStateForPlayerId(1);
-//                                
-//                                LOG("Server Robot before input: %f, desiredRightAmount: %d, isSprinting: %d position: (%f, %f), velocity: (%f, %f)", move->getTimestamp(), gis->getDesiredRightAmount(), gis->isSprinting(), robot->getPosition().x, robot->getPosition().y, robot->getVelocity().x, robot->getVelocity().y);
-//                            }
-                            
                             robot->processInput(move->getInputState());
-                            
-//                            if (robot->getPlayerId() == 1)
-//                            {
-//                                InputState* is = static_cast<InputState*>(move->getInputState());
-//                                InputState::GameInputState* gis = is->getGameInputStateForPlayerId(1);
-//                                
-//                                LOG("Server Robot after  input: %f, desiredRightAmount: %d, isSprinting: %d position: (%f, %f), velocity: (%f, %f)", move->getTimestamp(), gis->getDesiredRightAmount(), gis->isSprinting(), robot->getPosition().x, robot->getPosition().y, robot->getVelocity().x, robot->getVelocity().y);
-//                            }
                             
                             moveList.markMoveAsProcessed(move);
                         }
@@ -366,23 +333,7 @@ void World::update()
                 Robot* robot = static_cast<Robot*>(entity);
                 if (NG_CLIENT->isPlayerIdLocal(robot->getPlayerId()))
                 {
-//                    if (robot->getPlayerId() == 1)
-//                    {
-//                        InputState* is = static_cast<InputState*>(pendingMove->getInputState());
-//                        InputState::GameInputState* gis = is->getGameInputStateForPlayerId(1);
-//                        
-//                        LOG("Client Robot before input: %f, desiredRightAmount: %d, isSprinting: %d position: (%f, %f), velocity: (%f, %f)", pendingMove->getTimestamp(), gis->getDesiredRightAmount(), gis->isSprinting(), robot->getPosition().x, robot->getPosition().y, robot->getVelocity().x, robot->getVelocity().y);
-//                    }
-                    
                     robot->processInput(pendingMove->getInputState(), true);
-                    
-//                    if (robot->getPlayerId() == 1)
-//                    {
-//                        InputState* is = static_cast<InputState*>(pendingMove->getInputState());
-//                        InputState::GameInputState* gis = is->getGameInputStateForPlayerId(1);
-//                        
-//                        LOG("Client Robot after  input: %f, desiredRightAmount: %d, isSprinting: %d position: (%f, %f), velocity: (%f, %f)", pendingMove->getTimestamp(), gis->getDesiredRightAmount(), gis->isSprinting(), robot->getPosition().x, robot->getPosition().y, robot->getVelocity().x, robot->getVelocity().y);
-//                    }
                 }
             }
             
@@ -397,17 +348,6 @@ void World::update()
             {
                 entity->update();
             }
-            
-//            Robot* host = getRobotWithPlayerId(1);
-//            if (host)
-//            {
-//                if (host->getPosition().x < lastKnownRobotXDog)
-//                {
-//                    LOG("OKAY WTF??");
-//                }
-//
-//                lastKnownRobotXDog = host->getPosition().x;
-//            }
         }
     }
 }
