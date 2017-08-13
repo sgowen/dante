@@ -238,24 +238,34 @@ void World::update()
         }
         else
         {
+//            if (lowestNonHostMoveCount == -1
+//                || (hostMoveCount <= lowestNonHostMoveCount
+//                    && (hostMoveCount * 3) >= lowestNonHostMoveCount))
+//            {
+//                finalMoveCount = hostMoveCount;
+//            }
+//            else if (lowestNonHostMoveCount <= hostMoveCount
+//                     && (lowestNonHostMoveCount * 3) >= hostMoveCount)
+//            {
+//                finalMoveCount = lowestNonHostMoveCount;
+//            }
+//            else if (lowestNonHostMoveCount >= 4 && lowestNonHostMoveCount < hostMoveCount)
+//            {
+//                finalMoveCount = lowestNonHostMoveCount;
+//            }
+//            else if (hostMoveCount >= 4 && hostMoveCount < lowestNonHostMoveCount)
+//            {
+//                finalMoveCount = hostMoveCount;
+//            }
+            
             if (lowestNonHostMoveCount == -1
-                || (hostMoveCount <= lowestNonHostMoveCount
-                    && (hostMoveCount * 3) >= lowestNonHostMoveCount))
+                || hostMoveCount <= lowestNonHostMoveCount)
             {
                 finalMoveCount = hostMoveCount;
             }
-            else if (lowestNonHostMoveCount <= hostMoveCount
-                     && (lowestNonHostMoveCount * 3) >= hostMoveCount)
+            else if (lowestNonHostMoveCount <= hostMoveCount)
             {
                 finalMoveCount = lowestNonHostMoveCount;
-            }
-            else if (lowestNonHostMoveCount >= 2 && lowestNonHostMoveCount < hostMoveCount)
-            {
-                finalMoveCount = lowestNonHostMoveCount;
-            }
-            else if (hostMoveCount >= 2 && hostMoveCount < lowestNonHostMoveCount)
-            {
-                finalMoveCount = hostMoveCount;
             }
             
             LOG("avgMoveCount: %d, lowestNonHostMoveCount: %d, hostMoveCount: %d, finalMoveCount: %d", avgMoveCount, lowestNonHostMoveCount, hostMoveCount, finalMoveCount)
