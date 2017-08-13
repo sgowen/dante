@@ -327,6 +327,8 @@ void NetworkManagerClient::updateSendingInputPacket()
     sendInputPacket();
 }
 
+#include "InputState.h"
+
 void NetworkManagerClient::sendInputPacket()
 {
     //only send if there's any input to sent!
@@ -357,7 +359,7 @@ void NetworkManagerClient::sendInputPacket()
         // only need 2 bits to write the move count, because it's 0-31
         inputPacket.write(moveCount - firstMoveIndex, 5);
         
-        Move* referenceMove = nullptr;
+        const Move* referenceMove = nullptr;
         for (; firstMoveIndex < moveCount; ++firstMoveIndex, ++move)
         {
             bool needsToWriteMove = true;
@@ -380,7 +382,7 @@ void NetworkManagerClient::sendInputPacket()
                 
                 move->write(inputPacket);
                 
-                referenceMove = moveList.getMoveAtIndex(firstMoveIndex);
+                referenceMove = &(*move);
             }
         }
         

@@ -418,7 +418,7 @@ void NetworkManagerServer::handleInputPacket(ClientProxy* inClientProxy, InputMe
     uint8_t moveCount = 0;
     inInputStream.read(moveCount, 5);
     
-    Move* referenceMove = nullptr;
+    const Move* referenceMove = nullptr;
     
     for (; moveCount > 0; --moveCount)
     {
@@ -444,13 +444,16 @@ void NetworkManagerServer::handleInputPacket(ClientProxy* inClientProxy, InputMe
         else
         {
             move.read(inInputStream);
-            
-            referenceMove = &move;
         }
         
         if (inClientProxy->getUnprocessedMoveList().addMoveIfNew(move))
         {
             inClientProxy->setIsLastMoveTimestampDirty(true);
+        }
+        
+        if (!isCopy)
+        {
+            referenceMove = &inClientProxy->getUnprocessedMoveList().getLatestMove();
         }
     }
 }

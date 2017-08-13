@@ -35,7 +35,7 @@ public:
     
     void recallEntityCache(Entity* inEntity) const;
     
-    bool isEqual(Move* inMove) const;
+    bool isEqual(const Move* inMove) const;
     
     IInputState* getInputState() const;
     

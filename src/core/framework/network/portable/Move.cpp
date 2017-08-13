@@ -75,7 +75,7 @@ void Move::recallEntityCache(Entity* inEntity) const
     }
 }
 
-bool Move::isEqual(Move* inMove) const
+bool Move::isEqual(const Move* inMove) const
 {
     return m_inputState->isEqual(inMove->getInputState());
 }
