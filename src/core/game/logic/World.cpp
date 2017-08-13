@@ -166,6 +166,15 @@ void World::postRead()
     // all processed moves have been removed, so all that are left are unprocessed moves so we must apply them...
     MoveList& moveList = InputManager::getInstance()->getMoveList();
     
+    Move* firstMove = moveList.getMoveAtIndex(0);
+    if (firstMove)
+    {
+        for (Entity* entity : m_entities)
+        {
+            firstMove->recallEntityCache(entity);
+        }
+    }
+    
 //    LOG("Client has to move replay %d moves", moveList.getMoveCount());
     
     for (const Move& move : moveList)
@@ -240,26 +249,22 @@ void World::update()
         {
             if (lowestNonHostMoveCount == -1
                 || (hostMoveCount <= lowestNonHostMoveCount
-                    && (hostMoveCount * 2) >= lowestNonHostMoveCount))
+                    && (hostMoveCount * 3) >= lowestNonHostMoveCount))
             {
                 finalMoveCount = hostMoveCount;
             }
             else if (lowestNonHostMoveCount <= hostMoveCount
-                     && (lowestNonHostMoveCount * 2) >= hostMoveCount)
+                     && (lowestNonHostMoveCount * 3) >= hostMoveCount)
             {
                 finalMoveCount = lowestNonHostMoveCount;
             }
-            else if (lowestNonHostMoveCount >= 10 && lowestNonHostMoveCount < hostMoveCount)
+            else if (lowestNonHostMoveCount >= 5 && hostMoveCount >= 5)
             {
-                finalMoveCount = lowestNonHostMoveCount;
-            }
-            else if (hostMoveCount >= 10 && hostMoveCount < lowestNonHostMoveCount)
-            {
-                finalMoveCount = hostMoveCount;
+                finalMoveCount = avgMoveCount;
+                
+                LOG("avgMoveCount: %d, lowestNonHostMoveCount: %d, hostMoveCount: %d, finalMoveCount: %d", avgMoveCount, lowestNonHostMoveCount, hostMoveCount, finalMoveCount)
             }
         }
-        
-        LOG("avgMoveCount: %d, lowestNonHostMoveCount: %d, hostMoveCount: %d, finalMoveCount: %d", avgMoveCount, lowestNonHostMoveCount, hostMoveCount, finalMoveCount)
         
         if (finalMoveCount > 0)
         {
@@ -351,6 +356,11 @@ void World::update()
         const Move* pendingMove = InputManager::getInstance()->getPendingMove();
         if (pendingMove)
         {
+            for (Entity* entity : m_entities)
+            {
+                pendingMove->cacheEntity(entity);
+            }
+            
             for (Entity* entity : m_players)
             {
                 Robot* robot = static_cast<Robot*>(entity);
