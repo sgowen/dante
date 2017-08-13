@@ -535,12 +535,17 @@ void MainRenderer::renderServerJoinedText()
         bool activePlayerIds[] { false, false, false, false };
         
         int enemyCount = 0;
+        int objectCount = 0;
         std::vector<Entity*> entities = InstanceManager::getClientWorld()->getEntities();
         for (Entity* go : entities)
         {
             if (go->getNetworkType() == NW_TYPE_SpacePirate)
             {
-                enemyCount++;
+                ++enemyCount;
+            }
+            else if (go->getNetworkType() == NW_TYPE_Crate)
+            {
+                ++objectCount;
             }
         }
         
@@ -566,9 +571,17 @@ void MainRenderer::renderServerJoinedText()
             }
         }
         
-        b2Vec2 origin = b2Vec2(0.5f, CAM_HEIGHT - 4.0f);
-        std::string text = StringUtil::format("Enemies: %i", enemyCount);
-        renderText(text, origin, Color::BLACK, FONT_ALIGN_LEFT);
+        {
+            b2Vec2 origin = b2Vec2(0.5f, CAM_HEIGHT - 4.0f);
+            std::string text = StringUtil::format("Enemies: %i", enemyCount);
+            renderText(text, origin, Color::BLACK, FONT_ALIGN_LEFT);
+        }
+        
+        {
+            b2Vec2 origin = b2Vec2(0.5f, CAM_HEIGHT - 4.5f);
+            std::string text = StringUtil::format("Objects: %i", objectCount);
+            renderText(text, origin, Color::BLACK, FONT_ALIGN_LEFT);
+        }
     }
 }
 
