@@ -411,21 +411,26 @@ void NetworkManagerServer::writeLastMoveTimestampIfDirty(OutputMemoryBitStream& 
     }
 }
 
+#include "InputState.h"
+
 void NetworkManagerServer::handleInputPacket(ClientProxy* inClientProxy, InputMemoryBitStream& inInputStream)
 {
     uint8_t moveCount = 0;
-    Move move = Move(m_inputStateCreationFunc());
-    inInputStream.read(moveCount, 4);
+    inInputStream.read(moveCount, 5);
     
     for (; moveCount > 0; --moveCount)
     {
+        Move move = Move(m_inputStateCreationFunc());
         if (move.read(inInputStream))
         {
             if (inClientProxy->getUnprocessedMoveList().addMoveIfNew(move))
             {
                 if (inClientProxy->getPlayerId() == 1)
                 {
-                    LOG("Host Move Received: %f", move.getTimestamp());
+//                    InputState* is = static_cast<InputState*>(move.getInputState());
+//                    InputState::GameInputState* gis = is->getGameInputStateForPlayerId(1);
+//                    
+//                    LOG("Host Move Received: %f, desiredRightAmount: %d, isSprinting: %d", move.getTimestamp(), gis->getDesiredRightAmount(), gis->isSprinting());
                 }
                 
                 inClientProxy->setIsLastMoveTimestampDirty(true);
