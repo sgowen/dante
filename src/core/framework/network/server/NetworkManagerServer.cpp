@@ -465,6 +465,11 @@ void NetworkManagerServer::handleInputPacket(ClientProxy* inClientProxy, InputMe
 			isRefInputStateOrphaned = true;
 		}
     }
+    
+    if (isRefInputStateOrphaned && referenceInputState)
+    {
+        referenceInputState->setInUse(false);
+    }
 }
 
 void NetworkManagerServer::handleAddLocalPlayerPacket(ClientProxy* inClientProxy, InputMemoryBitStream& inInputStream)
