@@ -353,7 +353,11 @@ void Projectile::explode()
     m_state = ProjectileState_Exploding;
     m_fStateTime = 0.0f;
     setVelocity(b2Vec2_zero);
-    m_body->SetGravityScale(0);
+    
+    if (m_isPhysicsOn)
+    {
+        m_body->SetGravityScale(0);
+    }
 }
 
 RTTI_IMPL(Projectile, Entity);
