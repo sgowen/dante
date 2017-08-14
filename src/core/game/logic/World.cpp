@@ -163,8 +163,6 @@ void World::postRead()
     // all processed moves have been removed, so all that are left are unprocessed moves so we must apply them...
     MoveList& moveList = InputManager::getInstance()->getMoveList();
     
-    LOG("Client has to move replay %d moves", moveList.getMoveCount());
-    
     for (const Move& move : moveList)
     {
         for (Entity* entity : m_players)

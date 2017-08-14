@@ -418,7 +418,8 @@ void NetworkManagerServer::handleInputPacket(ClientProxy* inClientProxy, InputMe
     uint8_t moveCount = 0;
     inInputStream.read(moveCount, 5);
     
-    const Move* referenceMove = nullptr;
+	IInputState* referenceInputState = nullptr;
+	bool isRefInputStateOrphaned = false;
     
     for (; moveCount > 0; --moveCount)
     {
@@ -428,7 +429,7 @@ void NetworkManagerServer::handleInputPacket(ClientProxy* inClientProxy, InputMe
         inInputStream.read(isCopy);
         if (isCopy)
         {
-            if (!referenceMove)
+            if (!referenceInputState)
             {
                 LOG("Unexpected Network State!");
                 
@@ -439,22 +440,30 @@ void NetworkManagerServer::handleInputPacket(ClientProxy* inClientProxy, InputMe
             inInputStream.read(timeStamp);
             move.setTimestamp(timeStamp);
             
-            move.copyInputState(referenceMove->getInputState());
+            move.copyInputState(referenceInputState);
         }
         else
         {
             move.read(inInputStream);
         }
+
+		if (isRefInputStateOrphaned && referenceInputState)
+		{
+			referenceInputState->setInUse(false);
+		}
+
+		referenceInputState = move.getInputState();
         
         if (inClientProxy->getUnprocessedMoveList().addMoveIfNew(move))
         {
-            inClientProxy->setIsLastMoveTimestampDirty(true);
+			inClientProxy->setIsLastMoveTimestampDirty(true);
+
+			isRefInputStateOrphaned = false;
         }
-        
-        if (!isCopy)
-        {
-            referenceMove = &inClientProxy->getUnprocessedMoveList().getLatestMove();
-        }
+		else
+		{
+			isRefInputStateOrphaned = true;
+		}
     }
 }
 

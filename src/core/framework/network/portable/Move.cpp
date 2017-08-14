@@ -32,8 +32,6 @@ m_fTimestamp(0)
 Move::~Move()
 {
     m_entityCacheMap.clear();
-    
-    m_inputState->setInUse(false);
 }
 
 bool Move::write(OutputMemoryBitStream& inOutputStream) const

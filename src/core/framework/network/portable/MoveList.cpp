@@ -57,6 +57,8 @@ void MoveList::removeProcessedMoves(float inLastMoveProcessedOnServerTimestamp)
 {
     while (!m_moves.empty() && m_moves.front().getTimestamp() <= inLastMoveProcessedOnServerTimestamp)
     {
+		m_moves.front().getInputState()->setInUse(false);
+
         m_moves.pop_front();
     }
 }

@@ -342,21 +342,17 @@ void NetworkManagerClient::sendInputPacket()
         
         m_deliveryNotificationManager->writeState(inputPacket);
         
-        // eventually write the 31 latest moves so they have 3 chances to get through...
+        // eventually write the 31 latest moves so they have 31 chances to get through...
         int moveCount = moveList.getNumMovesAfterTimestamp(m_fLastMoveReceivedByServerTimestamp);
         int firstMoveIndex = moveCount - 31;
         if (firstMoveIndex < 0)
         {
             firstMoveIndex = 0;
         }
-        else if (firstMoveIndex > 0)
-        {
-            LOG("Skipping some moves");
-        }
         
         auto move = moveList.begin() + firstMoveIndex;
         
-        // only need 2 bits to write the move count, because it's 0-31
+        // only need 5 bits to write the move count, because it's 0-31
         inputPacket.write(moveCount - firstMoveIndex, 5);
         
         const Move* referenceMove = nullptr;
