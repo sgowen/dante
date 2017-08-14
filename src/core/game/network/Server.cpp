@@ -201,7 +201,6 @@ void Server::spawnRobotForPlayer(int inPlayerId, std::string inPlayerName)
 {
     m_iPlayerIdForRobotBeingCreated = inPlayerId;
     Robot* robot = static_cast<Robot*>(SERVER_ENTITY_REG->createEntity(NW_TYPE_Robot));
-    robot->setPlayerId(inPlayerId);
     robot->setPlayerName(inPlayerName);
     float posX = (rand() % static_cast<int>(GAME_WIDTH - robot->getWidth() * 2)) + (robot->getWidth() * 2);
     robot->setPosition(b2Vec2(posX - static_cast<float>(inPlayerId), 8.0f));
@@ -224,6 +223,9 @@ void Server::spawnRobotForPlayer(int inPlayerId, std::string inPlayerName)
         default:
             break;
     }
+    
+    // Doing this last on purpose
+    robot->setPlayerId(inPlayerId);
 }
 
 void Server::respawnEnemiesIfNecessary()

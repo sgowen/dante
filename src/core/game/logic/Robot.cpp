@@ -78,7 +78,6 @@ m_isFirstJumpCompletedLastKnown(false)
         if (m_isServer)
         {
             m_projectiles[i] = static_cast<Projectile*>(SERVER_ENTITY_REG->createEntity(NW_TYPE_Projectile));
-            m_projectiles[i]->initFromShooter(this);
             
             if (i == 0)
             {
@@ -495,7 +494,7 @@ void Robot::setPlayerId(uint8_t inPlayerId)
     {
         if (m_projectiles[i])
         {
-            m_projectiles[i]->setPlayerId(m_iPlayerId);
+            m_projectiles[i]->initFromShooter(this);
         }
     }
 }
