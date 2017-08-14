@@ -73,11 +73,17 @@ m_isFirstJumpCompletedLastKnown(false)
 {
     for (int i = 0; i < 15; ++i)
     {
-        m_projectiles[i] = m_isServer ? static_cast<Projectile*>(SERVER_ENTITY_REG->createEntity(NW_TYPE_Projectile)) : nullptr;
+        m_projectiles[i] = nullptr;
         
-        if (m_isServer && i == 0)
+        if (m_isServer)
         {
-            m_iFirstProjectileId = m_projectiles[i]->getID();
+            m_projectiles[i] = static_cast<Projectile*>(SERVER_ENTITY_REG->createEntity(NW_TYPE_Projectile));
+            m_projectiles[i]->initFromShooter(this);
+            
+            if (i == 0)
+            {
+                m_iFirstProjectileId = m_projectiles[i]->getID();
+            }
         }
     }
 }
@@ -545,7 +551,7 @@ void Robot::fireProjectile()
     
     if (projectile)
     {
-        projectile->initFromShooter(this);
+        projectile->fire(this);
     }
 }
 

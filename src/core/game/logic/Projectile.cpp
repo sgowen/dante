@@ -94,6 +94,8 @@ void Projectile::update()
         if (m_stateLastKnown == ProjectileState_Waiting
             && m_state == ProjectileState_Active)
         {
+            m_fStateTime = 0;
+            
             initPhysics(constructEntityDef());
             
             // This projectile was just created
@@ -260,17 +262,21 @@ bool Projectile::needsMoveReplay()
 
 void Projectile::initFromShooter(Robot* inRobot)
 {
+    m_iPlayerId = inRobot->getPlayerId();
+    
+    setColor(inRobot->getColor());
+}
+
+void Projectile::fire(Robot* inRobot)
+{
     m_fStateTime = 0;
     m_state = ProjectileState_Active;
     
-    m_iPlayerId = inRobot->getPlayerId();
     m_isFacingLeft = inRobot->isFacingLeft();
     
     b2Vec2 position = inRobot->getPosition();
     position += b2Vec2(m_isFacingLeft ? -inRobot->getWidth() : inRobot->getWidth(), inRobot->getHeight() / 5);
     setPosition(position);
-    
-    setColor(inRobot->getColor());
     
     initPhysics(constructEntityDef());
     

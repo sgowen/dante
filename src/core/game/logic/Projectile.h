@@ -65,6 +65,8 @@ public:
     
     void initFromShooter(Robot* inRobot);
     
+    void fire(Robot* inRobot);
+    
     void handleBeginContactWithSpacePirate(SpacePirate* inEntity);
     
     void handleBeginContactWithSpacePirateChunk(SpacePirateChunk* inEntity);
