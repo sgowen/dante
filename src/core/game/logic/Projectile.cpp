@@ -95,6 +95,9 @@ void Projectile::update()
             && m_state == ProjectileState_Active)
         {
             initPhysics(constructEntityDef());
+            
+            // This projectile was just created
+            Util::playSound(SOUND_ID_FIRE_ROCKET, getPosition(), m_isServer);
         }
         else if (m_stateLastKnown == ProjectileState_Active
             && m_state == ProjectileState_Exploding)
@@ -109,12 +112,6 @@ void Projectile::update()
                  && m_state == ProjectileState_Waiting)
         {
             deinitPhysics();
-        }
-        
-        if ((m_iReadState & PRJC_PlayerInfo) != 0)
-        {
-            // This projectile was just created
-            Util::playSound(SOUND_ID_FIRE_ROCKET, getPosition(), m_isServer);
         }
     }
     
