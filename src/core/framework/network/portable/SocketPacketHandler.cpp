@@ -22,6 +22,7 @@
 #include "SocketAddressFamily.h"
 #include "macros.h"
 #include "FrameworkConstants.h"
+#include "Network.h"
 
 SocketPacketHandler::SocketPacketHandler(uint16_t inPort, ProcessPacketFunc processPacketFunc, HandleNoResponseFunc handleNoResponseFunc, HandleConnectionResetFunc handleConnectionResetFunc) : IPacketHandler(processPacketFunc, handleNoResponseFunc, handleConnectionResetFunc), m_socketAddress(new SocketAddress(INADDR_ANY, inPort)), m_socket(nullptr), m_isInitialized(false)
 {
@@ -89,6 +90,9 @@ void SocketPacketHandler::readIncomingPacketsIntoQueue()
     }
     
     static char packetMem[NW_MAX_PACKET_SIZE];
+    
+    bzero(packetMem, NW_MAX_PACKET_SIZE);
+    
     int packetSize = sizeof(packetMem);
     InputMemoryBitStream inputStream(packetMem, packetSize * 8);
     SocketAddress fromAddress;

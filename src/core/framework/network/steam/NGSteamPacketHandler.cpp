@@ -18,6 +18,7 @@
 #include "NGSteam.h"
 #include "FrameworkConstants.h"
 #include "StringUtil.h"
+#include "Network.h"
 
 NGSteamPacketHandler::NGSteamPacketHandler(bool isServer, ProcessPacketFunc processPacketFunc, HandleNoResponseFunc handleNoResponseFunc, HandleConnectionResetFunc handleConnectionResetFunc) : IPacketHandler(processPacketFunc, handleNoResponseFunc, handleConnectionResetFunc), m_isServer(isServer)
 {
@@ -51,7 +52,10 @@ void NGSteamPacketHandler::sendPacket(const OutputMemoryBitStream& inOutputStrea
 
 void NGSteamPacketHandler::readIncomingPacketsIntoQueue()
 {
-    char packetMem[NW_MAX_PACKET_SIZE];
+    static char packetMem[NW_MAX_PACKET_SIZE];
+    
+    bzero(packetMem, NW_MAX_PACKET_SIZE);
+    
     size_t packetSize = sizeof(packetMem);
     uint32_t incomingSize = 0;
     InputMemoryBitStream inputStream(packetMem, packetSize * 8);
