@@ -34,6 +34,7 @@ m_fX(x),
 m_fY(y),
 m_fWidth(width),
 m_fHeight(height),
+m_fAngle(0),
 m_iReadState(0),
 m_isServer(isServer),
 m_isPhysicsOn(false),
@@ -173,16 +174,21 @@ const float& Entity::getHeight()
 
 void Entity::setAngle(float angle)
 {
-    if (m_isPhysicsOn)
+    if (!areFloatsPracticallyEqual(m_fAngle, angle))
     {
-        angle = DEGREES_TO_RADIANS(angle);
-        m_body->SetTransform(m_body->GetPosition(), angle);
+        if (m_isPhysicsOn)
+        {
+            angle = DEGREES_TO_RADIANS(angle);
+            m_body->SetTransform(m_body->GetPosition(), angle);
+        }
     }
+    
+    m_fAngle = angle;
 }
 
 float Entity::getAngle()
 {
-    return m_isPhysicsOn ? m_body->GetAngle() : 0;
+    return m_isPhysicsOn ? m_body->GetAngle() : m_fAngle;
 }
 
 void Entity::setID(uint32_t inID)

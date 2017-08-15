@@ -18,7 +18,7 @@ class Robot;
 class Server
 {
 public:
-    static void create(bool isSteam, int inNumCratesToSpawn = 16, int inNumSpacePiratesToSpawn = 4);
+    static void create(bool isSteam, int inNumCratesToSpawn = 4, int inNumSpacePiratesToSpawn = 4);
     
     static void destroy();
     

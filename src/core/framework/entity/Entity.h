@@ -152,6 +152,7 @@ protected:
     float m_fY;
     float m_fWidth;
     float m_fHeight;
+    float m_fAngle;
     uint32_t m_iReadState;
     bool m_isServer;
     bool m_isPhysicsOn;
