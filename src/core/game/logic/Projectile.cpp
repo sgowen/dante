@@ -87,7 +87,10 @@ void Projectile::update()
     
     if (m_isServer)
     {
-        NG_SERVER->setStateDirty(getID(), PRJC_Pose);
+        if (m_isPhysicsOn)
+        {
+            NG_SERVER->setStateDirty(getID(), PRJC_Pose);
+        }
     }
     else
     {
