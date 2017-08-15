@@ -411,12 +411,10 @@ void NetworkManagerServer::writeLastMoveTimestampIfDirty(OutputMemoryBitStream& 
     }
 }
 
-#include "InputState.h"
-
 void NetworkManagerServer::handleInputPacket(ClientProxy* inClientProxy, InputMemoryBitStream& inInputStream)
 {
     uint8_t moveCount = 0;
-    inInputStream.read(moveCount, 5);
+    inInputStream.read(moveCount, 2);
     
 	IInputState* referenceInputState = nullptr;
 	bool isRefInputStateOrphaned = false;
