@@ -178,8 +178,8 @@ void Entity::setAngle(float angle)
     {
         if (m_isPhysicsOn)
         {
-            angle = DEGREES_TO_RADIANS(angle);
-            m_body->SetTransform(m_body->GetPosition(), angle);
+            float radians = DEGREES_TO_RADIANS(angle);
+            m_body->SetTransform(m_body->GetPosition(), radians);
         }
     }
     
