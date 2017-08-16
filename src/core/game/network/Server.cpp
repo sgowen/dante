@@ -281,13 +281,12 @@ void Server::spawnCratesIfNecessary()
     
     srand(static_cast<unsigned>(time(0)));
     
-    int xSeed = rand() % 3 + 1;
-    float posX = xSeed * GAME_WIDTH / 4;
-    
     for (int i = 0; i < m_iNumCratesToSpawn; ++i)
     {
         Crate* crate = static_cast<Crate*>(SERVER_ENTITY_REG->createEntity(NW_TYPE_Crate));
         
+        int xSeed = rand() % 3 + 1;
+        float posX = xSeed * GAME_WIDTH / 4;
         float posY = (rand() % static_cast<int>(GAME_HEIGHT - crate->getHeight() * 2)) + (2.0f + crate->getHeight() * 2);
         
         crate->setPosition(b2Vec2(posX, posY));

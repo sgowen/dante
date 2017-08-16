@@ -224,7 +224,7 @@ void World::update()
             {
                 finalMoveCount = lowestNonHostMoveCount;
             }
-            else if (lowestNonHostMoveCount >= 2 || hostMoveCount >= 2)
+            else if (lowestNonHostMoveCount >= 4 || hostMoveCount >= 4)
             {
                 int avgMoveCount = NG_SERVER->getAverageMoveCount();
                 finalMoveCount = avgMoveCount;
