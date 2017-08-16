@@ -118,11 +118,11 @@ void Crate::read(InputMemoryBitStream& inInputStream)
         
         b2Vec2 position;
         inInputStream.read(position);
-        setPosition(position);
         
         float angle;
         inInputStream.read(angle);
-        setAngle(angle);
+        
+        setTransform(position, angle);
         
         m_iReadState |= CRAT_Pose;
     }

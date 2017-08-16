@@ -104,6 +104,8 @@ public:
     
     b2Body* getBody();
     
+    void setTransform(b2Vec2 position, float angle);
+    
     void setPosition(b2Vec2 position);
     
     const b2Vec2& getPosition();

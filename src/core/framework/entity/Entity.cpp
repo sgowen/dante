@@ -113,6 +113,18 @@ b2Body* Entity::getBody()
     return m_body;
 }
 
+void Entity::setTransform(b2Vec2 position, float angle)
+{
+    m_fX = position.x;
+    m_fY = position.y;
+    m_fAngle = angle;
+    
+    if (m_isPhysicsOn)
+    {
+        m_body->SetTransform(position, m_fAngle);
+    }
+}
+
 void Entity::setPosition(b2Vec2 position)
 {
     m_fX = position.x;
@@ -174,12 +186,11 @@ const float& Entity::getHeight()
 
 void Entity::setAngle(float angle)
 {
-    if (!areFloatsPracticallyEqual(m_fAngle, angle))
+    if (m_isPhysicsOn)
     {
-        if (m_isPhysicsOn)
+        if (!areFloatsPracticallyEqual(m_fAngle, angle))
         {
-            float radians = DEGREES_TO_RADIANS(angle);
-            m_body->SetTransform(m_body->GetPosition(), radians);
+            m_body->SetTransform(m_body->GetPosition(), angle);
         }
     }
     
