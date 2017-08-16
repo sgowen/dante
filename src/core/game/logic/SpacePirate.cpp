@@ -58,7 +58,7 @@ EntityDef SpacePirate::constructEntityDef()
     ret.isStaticBody = false;
     ret.restitution = 0.1f;
     ret.isCharacter = true;
-    ret.density = 48.0f;
+    ret.density = 32.0f;
     
     return ret;
 }

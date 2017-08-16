@@ -38,7 +38,7 @@ EntityDef SpacePirateChunk::constructEntityDef()
     ret.fixedRotation = false;
     ret.isSensor = true;
     ret.restitution = 1.0f;
-    ret.density = 12.0f;
+    ret.density = 8.0f;
     
     return ret;
 }

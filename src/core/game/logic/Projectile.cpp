@@ -52,7 +52,8 @@ EntityDef Projectile::constructEntityDef()
     
     ret.isStaticBody = false;
     ret.bullet = true;
-    ret.restitution = 0.0f;
+    ret.restitution = 0.5f;
+    ret.density = 1.0f;
     
     return ret;
 }
@@ -131,7 +132,7 @@ void Projectile::update()
 
 bool Projectile::shouldCollide(Entity *inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB)
 {
-    if (m_state == ProjectileState_Waiting)
+    if (m_state != ProjectileState_Active)
     {
         return false;
     }
@@ -144,7 +145,7 @@ bool Projectile::shouldCollide(Entity *inEntity, b2Fixture* inFixtureA, b2Fixtur
 
 void Projectile::handleBeginContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB)
 {
-    if (m_state == ProjectileState_Waiting)
+    if (m_state != ProjectileState_Active)
     {
         return;
     }
@@ -169,7 +170,7 @@ void Projectile::handleBeginContact(Entity* inEntity, b2Fixture* inFixtureA, b2F
 
 void Projectile::handleEndContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB)
 {
-    if (m_state == ProjectileState_Waiting)
+    if (m_state != ProjectileState_Active)
     {
         return;
     }
@@ -315,15 +316,11 @@ void Projectile::handleBeginContactWithSpacePirate(SpacePirate* inEntity)
 
 void Projectile::handleBeginContactWithSpacePirateChunk(SpacePirateChunk* inEntity)
 {
-    inEntity->getBody()->ApplyLinearImpulseToCenter(b2Vec2(getVelocity().x, getVelocity().y), true);
-    
     explode();
 }
 
 void Projectile::handleBeginContactWithCrate(Crate* inEntity)
 {
-    inEntity->getBody()->ApplyLinearImpulseToCenter(b2Vec2(getVelocity().x, getVelocity().y), true);
-    
     explode();
 }
 
@@ -361,12 +358,6 @@ void Projectile::explode()
     
     m_state = ProjectileState_Exploding;
     m_fStateTime = 0.0f;
-    setVelocity(b2Vec2_zero);
-    
-    if (m_isPhysicsOn)
-    {
-        m_body->SetGravityScale(0);
-    }
 }
 
 RTTI_IMPL(Projectile, Entity);

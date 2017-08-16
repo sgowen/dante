@@ -36,7 +36,7 @@ EntityDef Crate::constructEntityDef()
     ret.isStaticBody = false;
     ret.fixedRotation = false;
     ret.restitution = 0.5f;
-    ret.density = 16.0f;
+    ret.density = 8.0f;
     
     return ret;
 }
