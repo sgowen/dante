@@ -555,15 +555,15 @@ void MainRenderer::renderServerJoinedText()
         std::vector<Entity*> players = InstanceManager::getClientWorld()->getPlayers();
         for (Entity* entity : players)
         {
-            Robot* robot = static_cast<Robot*>(entity);
-            
-            b2Vec2 origin = b2Vec2(0.5f, CAM_HEIGHT - (robot->getPlayerId() * 0.5f));
-            std::string text = StringUtil::format("%i|%s - %i HP, %i Kills", robot->getPlayerId(), robot->getPlayerName().c_str(), robot->getHealth(), robot->getNumKills());
-            renderText(text, origin, Color::BLACK);
+			Robot* robot = static_cast<Robot*>(entity);
             
 			int playerId = robot->getPlayerId();
 			if (playerId >= 1 && playerId <= 4)
 			{
+				b2Vec2 origin = b2Vec2(0.5f, CAM_HEIGHT - (playerId * 0.5f));
+				std::string text = StringUtil::format("%i|%s - %i HP, %i Kills", playerId, robot->getPlayerName().c_str(), robot->getHealth(), robot->getNumKills());
+				renderText(text, origin, Color::BLACK);
+
 				activePlayerIds[playerId - 1] = true;
 			}
         }
