@@ -118,7 +118,11 @@ void Crate::read(InputMemoryBitStream& inInputStream)
         
         b2Vec2 position;
         inInputStream.read(position);
-        setPosition(position);
+        
+        float angle;
+        inInputStream.read(angle);
+        
+        setTransform(position, angle);
         
         m_iReadState |= CRAT_Pose;
     }
@@ -135,6 +139,8 @@ uint32_t Crate::write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtySta
         inOutputStream.write(getVelocity());
         
         inOutputStream.write(getPosition());
+        
+        inOutputStream.write(getAngle());
         
         writtenState |= CRAT_Pose;
     }

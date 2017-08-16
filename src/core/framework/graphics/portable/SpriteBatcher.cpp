@@ -48,7 +48,7 @@ void SpriteBatcher::renderSprite(float x, float y, float width, float height, fl
         float halfWidth = width / 2;
         float halfHeight = height / 2;
         
-        float rad = angle ;
+        float rad = angle;
         float cos = cosf(rad);
         float sin = sinf(rad);
         

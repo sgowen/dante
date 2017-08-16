@@ -34,6 +34,7 @@ m_fX(x),
 m_fY(y),
 m_fWidth(width),
 m_fHeight(height),
+m_fAngle(0),
 m_iReadState(0),
 m_isServer(isServer),
 m_isPhysicsOn(false),
@@ -112,6 +113,18 @@ b2Body* Entity::getBody()
     return m_body;
 }
 
+void Entity::setTransform(b2Vec2 position, float angle)
+{
+    m_fX = position.x;
+    m_fY = position.y;
+    m_fAngle = angle;
+    
+    if (m_isPhysicsOn)
+    {
+        m_body->SetTransform(position, m_fAngle);
+    }
+}
+
 void Entity::setPosition(b2Vec2 position)
 {
     m_fX = position.x;
@@ -175,14 +188,18 @@ void Entity::setAngle(float angle)
 {
     if (m_isPhysicsOn)
     {
-        angle = DEGREES_TO_RADIANS(angle);
-        m_body->SetTransform(m_body->GetPosition(), angle);
+        if (!areFloatsPracticallyEqual(m_fAngle, angle))
+        {
+            m_body->SetTransform(m_body->GetPosition(), angle);
+        }
     }
+    
+    m_fAngle = angle;
 }
 
 float Entity::getAngle()
 {
-    return m_isPhysicsOn ? m_body->GetAngle() : 0;
+    return m_isPhysicsOn ? m_body->GetAngle() : m_fAngle;
 }
 
 void Entity::setID(uint32_t inID)

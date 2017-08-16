@@ -131,7 +131,11 @@ void SpacePirateChunk::read(InputMemoryBitStream& inInputStream)
         
         b2Vec2 position;
         inInputStream.read(position);
-        setPosition(position);
+        
+        float angle;
+        inInputStream.read(angle);
+        
+        setTransform(position, angle);
         
         m_iReadState |= SPCH_Pose;
     }
@@ -174,6 +178,8 @@ uint32_t SpacePirateChunk::write(OutputMemoryBitStream& inOutputStream, uint32_t
         inOutputStream.write(getVelocity());
         
         inOutputStream.write(getPosition());
+        
+        inOutputStream.write(getAngle());
         
         writtenState |= SPCH_Pose;
     }
