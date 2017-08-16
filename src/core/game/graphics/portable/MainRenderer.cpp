@@ -561,7 +561,11 @@ void MainRenderer::renderServerJoinedText()
             std::string text = StringUtil::format("%i|%s - %i HP, %i Kills", robot->getPlayerId(), robot->getPlayerName().c_str(), robot->getHealth(), robot->getNumKills());
             renderText(text, origin, Color::BLACK);
             
-            activePlayerIds[robot->getPlayerId() - 1] = true;
+			int playerId = robot->getPlayerId();
+			if (playerId >= 1 && playerId <= 4)
+			{
+				activePlayerIds[playerId - 1] = true;
+			}
         }
         
         for (int i = 0; i < MAX_NUM_PLAYERS_PER_SERVER; ++i)
