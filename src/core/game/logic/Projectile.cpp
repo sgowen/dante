@@ -40,6 +40,7 @@
 Projectile::Projectile(b2World& world, bool isServer) : Entity(world, 0, 0, 1.565217391304348f * 0.444444444444444f, 2.0f * 0.544423440453686f, isServer, constructEntityDef(), false),
 m_iPlayerId(0),
 m_isFacingLeft(false),
+m_hasMadeContact(false),
 m_state(ProjectileState_Waiting),
 m_stateLastKnown(ProjectileState_Waiting)
 {
@@ -52,7 +53,7 @@ EntityDef Projectile::constructEntityDef()
     
     ret.isStaticBody = false;
     ret.bullet = true;
-    ret.restitution = 0.5f;
+    ret.restitution = 1.0f;
     ret.density = 1.0f;
     
     return ret;
@@ -64,7 +65,13 @@ void Projectile::update()
     
     if (m_state == ProjectileState_Active)
     {
-        if (m_fStateTime > 0.25f)
+        if (m_hasMadeContact)
+        {
+            m_hasMadeContact = false;
+            
+            explode();
+        }
+        else if (m_fStateTime > 0.25f)
         {
             explode();
         }
@@ -99,6 +106,7 @@ void Projectile::update()
             && m_state == ProjectileState_Active)
         {
             m_fStateTime = 0;
+            m_hasMadeContact = false;
             
             initPhysics(constructEntityDef());
             
@@ -150,30 +158,22 @@ void Projectile::handleBeginContact(Entity* inEntity, b2Fixture* inFixtureA, b2F
         return;
     }
     
+    if (inEntity->getRTTI().derivesFrom(Projectile::rtti))
+    {
+        return;
+    }
+    
     if (inEntity->getRTTI().derivesFrom(SpacePirate::rtti))
     {
         handleBeginContactWithSpacePirate(static_cast<SpacePirate*>(inEntity));
     }
-    else if (inEntity->getRTTI().derivesFrom(SpacePirateChunk::rtti))
-    {
-        handleBeginContactWithSpacePirateChunk(static_cast<SpacePirateChunk*>(inEntity));
-    }
-    else if (inEntity->getRTTI().derivesFrom(Crate::rtti))
-    {
-        handleBeginContactWithCrate(static_cast<Crate*>(inEntity));
-    }
-    else if (inEntity->getRTTI().derivesFrom(Ground::rtti))
-    {
-        handleBeginContactWithGround(nullptr);
-    }
+    
+    m_hasMadeContact = true;
 }
 
 void Projectile::handleEndContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB)
 {
-    if (m_state != ProjectileState_Active)
-    {
-        return;
-    }
+    // Empty
 }
 
 uint32_t Projectile::getAllStateMask() const
@@ -287,48 +287,6 @@ void Projectile::fire(Robot* inRobot)
     setVelocity(b2Vec2(m_isFacingLeft ? -80 : 80, 0));
 }
 
-void Projectile::handleBeginContactWithSpacePirate(SpacePirate* inEntity)
-{
-    if (!m_isServer)
-    {
-        return;
-    }
-    
-    float projBottom = getPosition().y - (m_fHeight / 2.0f);
-    float targTop = inEntity->getPosition().y + (inEntity->getHeight() / 2.0f);
-    float targHead = targTop - inEntity->getHeight() * 0.4f;
-    
-    explode();
-    
-    bool isHeadshot = projBottom > targHead;
-    
-    inEntity->takeDamage(b2Vec2(getVelocity().x, getVelocity().y), isHeadshot);
-    if (inEntity->getHealth() == 0)
-    {
-        World* world = m_isServer ? InstanceManager::getServerWorld() : InstanceManager::getClientWorld();
-        Robot* robot = world->getRobotWithPlayerId(getPlayerId());
-        if (robot)
-        {
-            robot->awardKill(isHeadshot);
-        }
-    }
-}
-
-void Projectile::handleBeginContactWithSpacePirateChunk(SpacePirateChunk* inEntity)
-{
-    explode();
-}
-
-void Projectile::handleBeginContactWithCrate(Crate* inEntity)
-{
-    explode();
-}
-
-void Projectile::handleBeginContactWithGround(Ground* inEntity)
-{
-    explode();
-}
-
 Projectile::ProjectileState Projectile::getState()
 {
     return m_state;
@@ -349,6 +307,26 @@ bool Projectile::isFacingLeft()
     return m_isFacingLeft;
 }
 
+void Projectile::handleBeginContactWithSpacePirate(SpacePirate* inEntity)
+{
+    float projBottom = getPosition().y - (m_fHeight / 2.0f);
+    float targTop = inEntity->getPosition().y + (inEntity->getHeight() / 2.0f);
+    float targHead = targTop - inEntity->getHeight() * 0.4f;
+    
+    bool isHeadshot = projBottom > targHead;
+    
+    inEntity->takeDamage(b2Vec2(getVelocity().x, getVelocity().y), isHeadshot);
+    if (inEntity->getHealth() == 0)
+    {
+        World* world = m_isServer ? InstanceManager::getServerWorld() : InstanceManager::getClientWorld();
+        Robot* robot = world->getRobotWithPlayerId(getPlayerId());
+        if (robot)
+        {
+            robot->awardKill(isHeadshot);
+        }
+    }
+}
+
 void Projectile::explode()
 {
     if (m_state == ProjectileState_Exploding)
@@ -358,6 +336,13 @@ void Projectile::explode()
     
     m_state = ProjectileState_Exploding;
     m_fStateTime = 0.0f;
+    
+    setVelocity(b2Vec2_zero);
+    
+    if (m_isPhysicsOn)
+    {
+        m_body->SetGravityScale(0);
+    }
 }
 
 RTTI_IMPL(Projectile, Entity);

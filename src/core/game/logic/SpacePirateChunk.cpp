@@ -82,15 +82,28 @@ bool SpacePirateChunk::shouldCollide(Entity *inEntity, b2Fixture* inFixtureA, b2
 
 void SpacePirateChunk::handleBeginContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB)
 {
+    if (inEntity->getRTTI().derivesFrom(SpacePirateChunk::rtti))
+    {
+        return;
+    }
+    
     if (inEntity->getRTTI().derivesFrom(Projectile::rtti))
     {
-        (static_cast<Projectile*>(inEntity))->handleBeginContactWithSpacePirateChunk(this);
+        inEntity->handleBeginContact(this, inFixtureB, inFixtureA);
     }
 }
 
 void SpacePirateChunk::handleEndContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB)
 {
-    // TODO
+    if (inEntity->getRTTI().derivesFrom(SpacePirateChunk::rtti))
+    {
+        return;
+    }
+    
+    if (inEntity->getRTTI().derivesFrom(Projectile::rtti))
+    {
+        inEntity->handleEndContact(this, inFixtureB, inFixtureA);
+    }
 }
 
 uint32_t SpacePirateChunk::getAllStateMask() const

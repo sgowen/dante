@@ -67,6 +67,7 @@ m_isServer(isServer)
     
     // Construct a world object, which will hold and simulate the rigid bodies.
     m_world = new b2World(gravity);
+    m_world->SetAutoClearForces(false);
     
     m_ground = new Ground(*m_world, m_isServer);
     
@@ -187,6 +188,8 @@ void World::postRead()
         }
     }
     
+    m_world->ClearForces();
+    
     for (Entity* entity : m_entities)
     {
         entity->postRead();
@@ -236,13 +239,6 @@ void World::update()
                 
                 LOG("lowestNonHostMoveCount: %d, hostMoveCount: %d, finalMoveCount: %d", lowestNonHostMoveCount, hostMoveCount, finalMoveCount);
             }
-//            else if (lowestNonHostMoveCount >= 4 || hostMoveCount >= 4)
-//            {
-//                int avgMoveCount = NG_SERVER->getAverageMoveCount();
-//                finalMoveCount = avgMoveCount;
-//                
-//                LOG("avgMoveCount: %d, lowestNonHostMoveCount: %d, hostMoveCount: %d, finalMoveCount: %d", avgMoveCount, lowestNonHostMoveCount, hostMoveCount, finalMoveCount)
-//            }
         }
         
         if (finalMoveCount > 0)
@@ -312,6 +308,8 @@ void World::update()
                     }
                 }
             }
+            
+            m_world->ClearForces();
         }
     }
     else
@@ -329,6 +327,8 @@ void World::update()
             }
             
             stepPhysics(FRAME_RATE);
+            
+            m_world->ClearForces();
             
             for (Entity* entity : m_entities)
             {

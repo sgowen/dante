@@ -223,6 +223,11 @@ void Robot::handleBeginContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixtur
         return;
     }
     
+    if (inEntity->getRTTI().derivesFrom(Robot::rtti))
+    {
+        return;
+    }
+    
     if (inEntity->getRTTI().derivesFrom(SpacePirate::rtti))
     {
         ++m_iNumSpacePiratesTouching;
@@ -239,6 +244,11 @@ void Robot::handleEndContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture*
             handleEndFootContact(inEntity);
         }
         
+        return;
+    }
+    
+    if (inEntity->getRTTI().derivesFrom(Robot::rtti))
+    {
         return;
     }
     

@@ -167,15 +167,15 @@ void SpacePirate::handleBeginContact(Entity* inEntity, b2Fixture* inFixtureA, b2
         return;
     }
     
-    if (inEntity->getRTTI().derivesFrom(Robot::rtti))
+    if (inEntity->getRTTI().derivesFrom(SpacePirate::rtti))
+    {
+        return;
+    }
+    
+    if (inEntity->getRTTI().derivesFrom(Robot::rtti)
+        || inEntity->getRTTI().derivesFrom(Projectile::rtti))
     {
         inEntity->handleBeginContact(this, inFixtureB, inFixtureA);
-    }
-    else if (inEntity->getRTTI().derivesFrom(Projectile::rtti))
-    {
-        Projectile* projectile = static_cast<Projectile*>(inEntity);
-        
-        projectile->handleBeginContactWithSpacePirate(this);
     }
 }
 
@@ -192,7 +192,13 @@ void SpacePirate::handleEndContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fi
         return;
     }
     
-    if (inEntity->getRTTI().derivesFrom(Robot::rtti))
+    if (inEntity->getRTTI().derivesFrom(SpacePirate::rtti))
+    {
+        return;
+    }
+    
+    if (inEntity->getRTTI().derivesFrom(Robot::rtti)
+        || inEntity->getRTTI().derivesFrom(Projectile::rtti))
     {
         inEntity->handleEndContact(this, inFixtureB, inFixtureA);
     }

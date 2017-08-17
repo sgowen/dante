@@ -67,14 +67,6 @@ public:
     
     void fire(Robot* inRobot);
     
-    void handleBeginContactWithSpacePirate(SpacePirate* inEntity);
-    
-    void handleBeginContactWithSpacePirateChunk(SpacePirateChunk* inEntity);
-    
-    void handleBeginContactWithGround(Ground* inEntity);
-    
-    void handleBeginContactWithCrate(Crate* inEntity);
-    
     ProjectileState getState();
     
     void setPlayerId(uint32_t inPlayerId);
@@ -86,11 +78,14 @@ public:
 private:
     uint32_t m_iPlayerId;
     bool m_isFacingLeft;
+    bool m_hasMadeContact;
     
     ProjectileState m_state;
     
     // Cached Last Known Values (from previous frame)
     ProjectileState m_stateLastKnown;
+    
+    void handleBeginContactWithSpacePirate(SpacePirate* inEntity);
     
     void explode();
 };

@@ -62,40 +62,29 @@ void Crate::update()
 
 bool Crate::shouldCollide(Entity *inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB)
 {
-    if (inEntity->getRTTI().derivesFrom(Projectile::rtti))
-    {
-        return (static_cast<Projectile*>(inEntity))->getState() == Projectile::ProjectileState_Active;
-    }
-    
     return true;
 }
 
 void Crate::handleBeginContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB)
 {
-    if (inEntity->getRTTI().derivesFrom(Robot::rtti))
+    if (inEntity->getRTTI().derivesFrom(Ground::rtti)
+        || inEntity->getRTTI().derivesFrom(Crate::rtti))
     {
-        (static_cast<Robot*>(inEntity))->handleBeginContact(this, inFixtureB, inFixtureA);
+        return;
     }
-    else if (inEntity->getRTTI().derivesFrom(Projectile::rtti))
-    {
-        (static_cast<Projectile*>(inEntity))->handleBeginContactWithCrate(this);
-    }
-    else if (inEntity->getRTTI().derivesFrom(SpacePirate::rtti))
-    {
-        (static_cast<SpacePirate*>(inEntity))->handleBeginContact(this, inFixtureB, inFixtureA);
-    }
+    
+    inEntity->handleBeginContact(this, inFixtureB, inFixtureA);
 }
 
 void Crate::handleEndContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB)
 {
-    if (inEntity->getRTTI().derivesFrom(Robot::rtti))
+    if (inEntity->getRTTI().derivesFrom(Ground::rtti)
+        || inEntity->getRTTI().derivesFrom(Crate::rtti))
     {
-        (static_cast<Robot*>(inEntity))->handleEndContact(this, inFixtureB, inFixtureA);
+        return;
     }
-    else if (inEntity->getRTTI().derivesFrom(SpacePirate::rtti))
-    {
-        (static_cast<SpacePirate*>(inEntity))->handleEndContact(this, inFixtureB, inFixtureA);
-    }
+    
+    inEntity->handleEndContact(this, inFixtureB, inFixtureA);
 }
 
 uint32_t Crate::getAllStateMask() const
