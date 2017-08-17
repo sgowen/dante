@@ -152,17 +152,17 @@ void MainEngine::update(float deltaTime)
             
             InputManager::getInstance()->clearPendingMove();
             
-            if (NG_CLIENT)
-            {
-                NG_CLIENT->sendOutgoingPackets();
-                
-                if (NG_CLIENT->getState() == NCS_Disconnected)
-                {
-                    disconnect();
-                }
-            }
-            
             handleNonMoveInput();
+        }
+        
+        if (NG_CLIENT)
+        {
+            NG_CLIENT->sendOutgoingPackets();
+            
+            if (NG_CLIENT->getState() == NCS_Disconnected)
+            {
+                disconnect();
+            }
         }
     }
     
