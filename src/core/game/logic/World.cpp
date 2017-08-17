@@ -214,13 +214,27 @@ void World::update()
             int hostMoveCount = NG_SERVER->getHostMoveCount();
             
 			if (lowestNonHostMoveCount == -1
-				|| hostMoveCount <= lowestNonHostMoveCount)
+				|| (hostMoveCount <= lowestNonHostMoveCount
+					&& (hostMoveCount * 2) >= lowestNonHostMoveCount))
 			{
 				finalMoveCount = hostMoveCount;
 			}
-			else if (lowestNonHostMoveCount <= hostMoveCount)
+			else if (lowestNonHostMoveCount <= hostMoveCount
+				&& (lowestNonHostMoveCount * 2) >= hostMoveCount)
 			{
 				finalMoveCount = lowestNonHostMoveCount;
+			}
+			else if (hostMoveCount >= 2 && hostMoveCount < lowestNonHostMoveCount)
+			{
+				finalMoveCount = hostMoveCount;
+
+				LOG("lowestNonHostMoveCount: %d, hostMoveCount: %d, finalMoveCount: %d", lowestNonHostMoveCount, hostMoveCount, finalMoveCount);
+			}
+			else if (lowestNonHostMoveCount >= 2 && lowestNonHostMoveCount < hostMoveCount)
+			{
+				finalMoveCount = lowestNonHostMoveCount;
+
+				LOG("lowestNonHostMoveCount: %d, hostMoveCount: %d, finalMoveCount: %d", lowestNonHostMoveCount, hostMoveCount, finalMoveCount);
 			}
         }
         
