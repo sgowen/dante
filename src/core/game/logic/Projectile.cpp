@@ -95,21 +95,13 @@ void Projectile::update()
     
     if (m_isServer)
     {
-        if (m_isPhysicsOn)
-        {
-            NG_SERVER->setStateDirty(getID(), PRJC_Pose);
-        }
+        NG_SERVER->setStateDirty(getID(), PRJC_Pose);
     }
     else
     {
         if (m_stateLastKnown == ProjectileState_Waiting
             && m_state == ProjectileState_Active)
         {
-            m_fStateTime = 0;
-            m_hasMadeContact = false;
-            
-            initPhysics(constructEntityDef());
-            
             // This projectile was just created
             Util::playSound(SOUND_ID_FIRE_ROCKET, getPosition(), m_isServer);
         }
@@ -129,13 +121,9 @@ void Projectile::update()
         }
     }
     
-    if (m_isPhysicsOn)
-    {
-        m_velocityLastKnown = b2Vec2(getVelocity().x, getVelocity().y);
-        m_positionLastKnown = b2Vec2(getPosition().x, getPosition().y);
-    }
-    
     m_stateLastKnown = m_state;
+    m_velocityLastKnown = b2Vec2(getVelocity().x, getVelocity().y);
+    m_positionLastKnown = b2Vec2(getPosition().x, getPosition().y);
 }
 
 bool Projectile::shouldCollide(Entity *inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB)
@@ -273,7 +261,8 @@ void Projectile::initFromShooter(Robot* inRobot)
 
 void Projectile::fire(Robot* inRobot)
 {
-    m_fStateTime = 0;
+    m_fStateTime = 0.0f;
+    m_hasMadeContact = false;
     m_state = ProjectileState_Active;
     
     m_isFacingLeft = inRobot->isFacingLeft();
@@ -336,6 +325,7 @@ void Projectile::explode()
     
     m_state = ProjectileState_Exploding;
     m_fStateTime = 0.0f;
+    m_hasMadeContact = false;
     
     setVelocity(b2Vec2_zero);
     
