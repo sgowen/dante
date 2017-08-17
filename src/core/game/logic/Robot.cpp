@@ -71,7 +71,7 @@ m_isShootingLastKnown(false),
 m_isSprintingLastKnown(false),
 m_isFirstJumpCompletedLastKnown(false)
 {
-    for (int i = 0; i < 15; ++i)
+    for (int i = 0; i < NUM_PROJECTILES; ++i)
     {
         m_projectiles[i] = nullptr;
         
@@ -121,7 +121,7 @@ void Robot::update()
         if (m_fShotCooldownTime < 0)
         {
             // not exact, but okay
-            m_fShotCooldownTime += FRAME_RATE * 4;
+            m_fShotCooldownTime += FRAME_RATE * 6;
             
             fireProjectile();
         }
@@ -394,7 +394,7 @@ void Robot::postRead()
 {
     if ((m_iReadState & ROBT_PlayerInfo) != 0)
     {
-        for (int i = 0; i < 15; ++i)
+        for (int i = 0; i < NUM_PROJECTILES; ++i)
         {
             m_projectiles[i] = static_cast<Projectile*>(FWInstanceManager::getClientEntityManager()->getEntityByID(m_iFirstProjectileId + i));
         }
@@ -500,7 +500,7 @@ void Robot::setPlayerId(uint8_t inPlayerId)
 {
     m_iPlayerId = inPlayerId;
     
-    for (int i = 0; i < 15; ++i)
+    for (int i = 0; i < NUM_PROJECTILES; ++i)
     {
         if (m_projectiles[i])
         {
@@ -553,7 +553,7 @@ void Robot::fireProjectile()
 {
     Projectile* projectile = m_projectiles[m_iNextProjectileIndex++];
     
-    if (m_iNextProjectileIndex >= 15)
+    if (m_iNextProjectileIndex >= NUM_PROJECTILES)
     {
         m_iNextProjectileIndex = 0;
     }

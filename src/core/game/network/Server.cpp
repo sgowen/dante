@@ -91,9 +91,9 @@ void Server::update(float deltaTime)
             spawnCratesIfNecessary();
             
             clearClientMoves();
-            
-            NG_SERVER->sendOutgoingPackets();
         }
+
+		NG_SERVER->sendOutgoingPackets();
     }
 }
 

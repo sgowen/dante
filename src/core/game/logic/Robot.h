@@ -21,6 +21,8 @@ class Ground;
 class Crate;
 class Projectile;
 
+#define NUM_PROJECTILES 10
+
 class Robot : public Entity
 {
     RTTI_DECL;
@@ -123,7 +125,7 @@ private:
     bool m_isSprintingLastKnown;
     bool m_isFirstJumpCompletedLastKnown;
     
-    Projectile* m_projectiles[15];
+    Projectile* m_projectiles[NUM_PROJECTILES];
     
     void fireProjectile();
     

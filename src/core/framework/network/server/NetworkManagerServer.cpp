@@ -454,8 +454,6 @@ void NetworkManagerServer::handleInputPacket(ClientProxy* inClientProxy, InputMe
         
         if (inClientProxy->getUnprocessedMoveList().addMoveIfNew(move))
         {
-			inClientProxy->setIsLastMoveTimestampDirty(true);
-
 			isRefInputStateOrphaned = false;
         }
 		else

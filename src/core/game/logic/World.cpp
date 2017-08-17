@@ -213,7 +213,17 @@ void World::update()
             int lowestNonHostMoveCount = NG_SERVER->getLowestNonHostMoveCount();
             int hostMoveCount = NG_SERVER->getHostMoveCount();
             
-            if (lowestNonHostMoveCount == -1
+			if (lowestNonHostMoveCount == -1
+				|| hostMoveCount <= lowestNonHostMoveCount)
+			{
+				finalMoveCount = hostMoveCount;
+			}
+			else if (lowestNonHostMoveCount <= hostMoveCount)
+			{
+				finalMoveCount = lowestNonHostMoveCount;
+			}
+
+            /*if (lowestNonHostMoveCount == -1
                 || (hostMoveCount <= lowestNonHostMoveCount
                     && (hostMoveCount * 2) >= lowestNonHostMoveCount))
             {
@@ -235,7 +245,7 @@ void World::update()
                 finalMoveCount = lowestNonHostMoveCount;
                 
                 LOG("lowestNonHostMoveCount: %d, hostMoveCount: %d, finalMoveCount: %d", lowestNonHostMoveCount, hostMoveCount, finalMoveCount);
-            }
+            }*/
         }
         
         if (finalMoveCount > 0)
@@ -259,6 +269,8 @@ void World::update()
                             robot->processInput(move->getInputState());
                             
                             moveList.markMoveAsProcessed(move);
+
+							client->setIsLastMoveTimestampDirty(true);
                         }
                     }
                 }
