@@ -279,7 +279,7 @@ void Projectile::fire(Robot* inRobot)
     m_isFacingLeft = inRobot->isFacingLeft();
     
     b2Vec2 position = inRobot->getPosition();
-    position += b2Vec2(m_isFacingLeft ? -inRobot->getWidth() : inRobot->getWidth(), inRobot->getHeight() / 5);
+    position += b2Vec2(0, inRobot->getHeight() / 5);
     setPosition(position);
     
     initPhysics(constructEntityDef());
