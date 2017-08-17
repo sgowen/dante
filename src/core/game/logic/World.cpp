@@ -67,7 +67,6 @@ m_isServer(isServer)
     
     // Construct a world object, which will hold and simulate the rigid bodies.
     m_world = new b2World(gravity);
-    m_world->SetAutoClearForces(false);
     
     m_ground = new Ground(*m_world, m_isServer);
     
@@ -188,8 +187,6 @@ void World::postRead()
         }
     }
     
-    m_world->ClearForces();
-    
     for (Entity* entity : m_entities)
     {
         entity->postRead();
@@ -308,8 +305,6 @@ void World::update()
                     }
                 }
             }
-            
-            m_world->ClearForces();
         }
     }
     else
@@ -327,8 +322,6 @@ void World::update()
             }
             
             stepPhysics(FRAME_RATE);
-            
-            m_world->ClearForces();
             
             for (Entity* entity : m_entities)
             {
