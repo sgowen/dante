@@ -115,10 +115,10 @@ void Robot::update()
 {
     m_fStateTime += FRAME_RATE;
     
-    m_fShotCooldownTime -= FRAME_RATE;
-    
     if (m_isShooting)
     {
+        m_fShotCooldownTime -= FRAME_RATE;
+        
         if (m_fShotCooldownTime < 0)
         {
             // not exact, but okay
@@ -126,6 +126,10 @@ void Robot::update()
             
             fireProjectile();
         }
+    }
+    else
+    {
+        m_fShotCooldownTime = 0;
     }
     
     if (getVelocity().y < 0 && !isFalling() && m_iNumJumps > 0)
