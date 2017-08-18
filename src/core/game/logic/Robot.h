@@ -21,7 +21,7 @@ class Ground;
 class Crate;
 class Projectile;
 
-#define NUM_PROJECTILES 10
+#define NUM_PROJECTILES 6
 
 class Robot : public Entity
 {
@@ -60,8 +60,6 @@ public:
     virtual uint32_t write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState);
     
     virtual bool needsMoveReplay();
-    
-    virtual void postRead();
     
     void processInput(IInputState* inInputState, bool isPending = false);
     
@@ -112,6 +110,7 @@ private:
     
     float m_fShotCooldownTime;
     int m_iNumSpacePiratesTouching;
+    bool m_hasInitializedProjectiles;
     
     // Cached Last Known Values (from previous frame)
     uint8_t m_iNumJumpsLastKnown;

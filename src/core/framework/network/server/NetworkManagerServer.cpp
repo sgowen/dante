@@ -407,6 +407,7 @@ void NetworkManagerServer::writeLastMoveTimestampIfDirty(OutputMemoryBitStream& 
         
         inOutputStream.write(lastProcessedMoveTimestamp);
         inOutputStream.write(lastReceivedMoveTimestamp);
+        
         inClientProxy->setIsLastMoveTimestampDirty(false);
     }
 }

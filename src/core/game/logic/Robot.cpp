@@ -60,6 +60,7 @@ m_fSpeed(7.5f),
 m_fJumpSpeed(11.0f),
 m_fShotCooldownTime(0.0f),
 m_iNumSpacePiratesTouching(0),
+m_hasInitializedProjectiles(false),
 m_iNumJumpsLastKnown(0),
 m_iNextProjectileIndexLastKnown(0),
 m_iHealthLastKnown(25),
@@ -114,14 +115,14 @@ void Robot::update()
 {
     m_fStateTime += FRAME_RATE;
     
+    m_fShotCooldownTime -= FRAME_RATE;
+    
     if (m_isShooting)
     {
-        m_fShotCooldownTime -= FRAME_RATE;
-        
         if (m_fShotCooldownTime < 0)
         {
             // not exact, but okay
-            m_fShotCooldownTime += FRAME_RATE * 6;
+            m_fShotCooldownTime += FRAME_RATE * (60 / NUM_PROJECTILES);
             
             fireProjectile();
         }
@@ -182,6 +183,23 @@ void Robot::update()
         else
         {
             playNetworkBoundSounds(m_iNumJumpsLastKnown, m_isSprintingLastKnown);
+        }
+        
+        if (!m_hasInitializedProjectiles)
+        {
+            bool isInitialized = true;
+            for (int i = 0; i < NUM_PROJECTILES; ++i)
+            {
+                m_projectiles[i] = static_cast<Projectile*>(FWInstanceManager::getClientEntityManager()->getEntityByID(m_iFirstProjectileId + i));
+                
+                if (!m_projectiles[i])
+                {
+                    isInitialized = false;
+                    break;
+                }
+            }
+            
+            m_hasInitializedProjectiles = isInitialized;
         }
     }
     
@@ -388,19 +406,6 @@ uint32_t Robot::write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtySta
 bool Robot::needsMoveReplay()
 {
     return (m_iReadState & ROBT_Pose) != 0;
-}
-
-void Robot::postRead()
-{
-    if ((m_iReadState & ROBT_PlayerInfo) != 0)
-    {
-        for (int i = 0; i < NUM_PROJECTILES; ++i)
-        {
-            m_projectiles[i] = static_cast<Projectile*>(FWInstanceManager::getClientEntityManager()->getEntityByID(m_iFirstProjectileId + i));
-        }
-    }
-    
-    Entity::postRead();
 }
 
 void Robot::processInput(IInputState* inInputState, bool isPending)
