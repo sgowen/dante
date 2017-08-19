@@ -87,6 +87,8 @@ void NGSteamPacketHandler::readIncomingPacketsIntoQueue()
                     
                     m_packetQueue.emplace(ReceivedPacket(simulatedReceivedTime, inputStream, fromId));
                 }
+                
+                LOG("readByteCount: %d", readByteCount);
             }
         }
     }

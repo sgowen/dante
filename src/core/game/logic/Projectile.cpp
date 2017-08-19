@@ -99,22 +99,7 @@ void Projectile::update()
     }
     else
     {
-        if (m_stateLastKnown == ProjectileState_Waiting
-            && m_state == ProjectileState_Active)
-        {
-            // This projectile was just created
-            Util::playSound(SOUND_ID_FIRE_ROCKET, getPosition(), m_isServer);
-        }
-        else if (m_stateLastKnown == ProjectileState_Active
-            && m_state == ProjectileState_Exploding)
-        {
-            float stateTime = m_fStateTime;
-            explode();
-            m_fStateTime = stateTime;
-            
-            Util::playSound(SOUND_ID_EXPLOSION, getPosition(), m_isServer);
-        }
-        else if (m_stateLastKnown == ProjectileState_Exploding
+        if (m_stateLastKnown == ProjectileState_Exploding
                  && m_state == ProjectileState_Waiting)
         {
             deinitPhysics();
@@ -332,6 +317,13 @@ void Projectile::explode()
     if (m_isPhysicsOn)
     {
         m_body->SetGravityScale(0);
+    }
+    
+    World* world = m_isServer ? InstanceManager::getServerWorld() : InstanceManager::getClientWorld();
+    Robot* robot = world->getRobotWithPlayerId(getPlayerId());
+    if (robot && robot->isPending())
+    {
+        Util::playSound(SOUND_ID_EXPLOSION, getPosition(), m_isServer);
     }
 }
 

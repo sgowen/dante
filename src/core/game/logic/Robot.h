@@ -87,6 +87,8 @@ public:
     
     bool isSprinting();
     
+    bool isPending();
+    
 private:
     uint64_t m_iAddressHash;
     uint32_t m_iFirstProjectileId;
@@ -111,6 +113,7 @@ private:
     float m_fShotCooldownTime;
     int m_iNumSpacePiratesTouching;
     bool m_hasInitializedProjectiles;
+    bool m_isPending;
     
     // Cached Last Known Values (from previous frame)
     uint8_t m_iNumJumpsLastKnown;

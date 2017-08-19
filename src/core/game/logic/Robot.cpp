@@ -70,7 +70,8 @@ m_wasLastKillHeadshotLastKnown(false),
 m_isFacingLeftLastKnown(false),
 m_isShootingLastKnown(false),
 m_isSprintingLastKnown(false),
-m_isFirstJumpCompletedLastKnown(false)
+m_isFirstJumpCompletedLastKnown(false),
+m_isPending(false)
 {
     for (int i = 0; i < NUM_PROJECTILES; ++i)
     {
@@ -115,21 +116,21 @@ void Robot::update()
 {
     m_fStateTime += FRAME_RATE;
     
+    m_fShotCooldownTime -= FRAME_RATE;
+    
     if (m_isShooting)
     {
-        m_fShotCooldownTime -= FRAME_RATE;
-        
         if (m_fShotCooldownTime < 0)
         {
             // not exact, but okay
             m_fShotCooldownTime += FRAME_RATE * (60.0f / NUM_PROJECTILES);
+            if (m_fShotCooldownTime < 0)
+            {
+                m_fShotCooldownTime = FRAME_RATE * (60.0f / NUM_PROJECTILES);
+            }
             
             fireProjectile();
         }
-    }
-    else
-    {
-        m_fShotCooldownTime = 0;
     }
     
     if (getVelocity().y < 0 && !isFalling() && m_iNumJumps > 0)
@@ -422,6 +423,8 @@ void Robot::processInput(IInputState* inInputState, bool isPending)
         return;
     }
     
+    m_isPending = isPending;
+    
     int numJumpsLastKnown = m_iNumJumps;
     bool isSprintingLastKnown = m_isSprinting;
     
@@ -558,6 +561,11 @@ bool Robot::isSprinting()
     return m_isSprinting;
 }
 
+bool Robot::isPending()
+{
+    return m_isPending;
+}
+
 void Robot::fireProjectile()
 {
     Projectile* projectile = m_projectiles[m_iNextProjectileIndex++];
@@ -570,6 +578,12 @@ void Robot::fireProjectile()
     if (projectile)
     {
         projectile->fire(this);
+        
+        if (m_isPending)
+        {
+            // This projectile was just created
+            Util::playSound(SOUND_ID_FIRE_ROCKET, getPosition(), m_isServer);
+        }
     }
 }
 
