@@ -122,7 +122,7 @@ void Robot::update()
         if (m_fShotCooldownTime < 0)
         {
             // not exact, but okay
-            m_fShotCooldownTime += FRAME_RATE * (60 / NUM_PROJECTILES);
+            m_fShotCooldownTime += FRAME_RATE * (60.0f / NUM_PROJECTILES);
             
             fireProjectile();
         }
