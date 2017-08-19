@@ -589,7 +589,7 @@ void Robot::fireProjectile()
 
 void Robot::playNetworkBoundSounds(int numJumpsLastKnown, bool isSprintingLastKnown)
 {
-    if (numJumpsLastKnown != m_iNumJumps && m_iNumJumps > 0)
+    if (m_iNumJumps > numJumpsLastKnown)
     {
         Util::playSound(SOUND_ID_ROBOT_JUMP, getPosition(), m_isServer);
     }
