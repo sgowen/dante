@@ -224,17 +224,11 @@ void World::update()
 			{
 				finalMoveCount = lowestNonHostMoveCount;
 			}
-			else if (hostMoveCount >= 2 && hostMoveCount < lowestNonHostMoveCount)
+			else if (lowestNonHostMoveCount >= 8 || hostMoveCount >= 8)
 			{
-				finalMoveCount = hostMoveCount;
+				finalMoveCount = NG_SERVER->getAverageMoveCount();
 
-				LOG("lowestNonHostMoveCount: %d, hostMoveCount: %d, finalMoveCount: %d", lowestNonHostMoveCount, hostMoveCount, finalMoveCount);
-			}
-			else if (lowestNonHostMoveCount >= 2 && lowestNonHostMoveCount < hostMoveCount)
-			{
-				finalMoveCount = lowestNonHostMoveCount;
-
-				LOG("lowestNonHostMoveCount: %d, hostMoveCount: %d, finalMoveCount: %d", lowestNonHostMoveCount, hostMoveCount, finalMoveCount);
+				LOG("lowestNonHostMoveCount: %d, hostMoveCount: %d, finalMoveCount(avg): %d", lowestNonHostMoveCount, hostMoveCount, finalMoveCount);
 			}
         }
         
