@@ -72,7 +72,6 @@ private:
     
     float m_fJumpCooldown;
     float m_fJumpSpeed;
-    float m_fStartingHealth;
     
     b2Vec2 m_lastForce;
     

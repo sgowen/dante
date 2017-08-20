@@ -40,7 +40,6 @@
 SpacePirate::SpacePirate(b2World& world, bool isServer) : Entity(world, 0, 0, 2.0f, 2.347826086956522f, isServer, constructEntityDef()),
 m_fSpeed(0.0),
 m_iHealth(8),
-m_fStartingHealth(8),
 m_isFacingLeft(false),
 m_isJumping(false),
 m_fJumpCooldown(0.0f),
@@ -330,7 +329,6 @@ void SpacePirate::init(float x, float y, float speed, int scale, uint8_t health)
     m_fHeight *= scale;
     
     m_iHealth = health;
-    m_fStartingHealth = m_iHealth;
     
     initPhysics(constructEntityDef());
 }
@@ -338,8 +336,9 @@ void SpacePirate::init(float x, float y, float speed, int scale, uint8_t health)
 void SpacePirate::takeDamage(b2Vec2 force, bool isHeadshot)
 {
     m_lastForce.Set(force.x, force.y);
+    uint8_t oldHealth = m_iHealth;
     m_iHealth -= isHeadshot ? 8 : 1;
-    if (m_iHealth > m_fStartingHealth)
+    if (m_iHealth > oldHealth)
     {
         // We are using unsigned values for health
         m_iHealth = 0;
