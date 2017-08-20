@@ -21,7 +21,7 @@ class Ground;
 class Crate;
 class Projectile;
 
-#define NUM_PROJECTILES 8
+#define NUM_PROJECTILES 6
 
 class Robot : public Entity
 {
