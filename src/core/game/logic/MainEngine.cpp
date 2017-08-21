@@ -212,10 +212,6 @@ void MainEngine::handleNonMoveInput()
             {
                 Server::getInstance()->toggleDisplaying();
             }
-            else if (inputState->getMenuState() == MENU_STATE_SERVER_TOGGLE_SYNC_METHOD)
-            {
-                Server::getInstance()->toggleSyncMethod();
-            }
         }
         
         if (inputState->isRequestingToAddLocalPlayer())

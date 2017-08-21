@@ -524,13 +524,6 @@ void MainRenderer::renderServerJoinedText()
             std::string text = StringUtil::format("'I'       DEBUG %s", Server::getInstance()->isDisplaying() ? " ON" : "OFF");
             renderText(text, origin, Color::BLACK, FONT_ALIGN_RIGHT);
         }
-        
-        {
-            static b2Vec2 origin = b2Vec2(CAM_WIDTH - 0.5f, CAM_HEIGHT - (row++ * padding));
-            
-            std::string text = StringUtil::format("'B' Sync Method %s", Server::getInstance()->isAvgMethod() ? "AVG" : "LCC");
-            renderText(text, origin, Color::BLACK, FONT_ALIGN_RIGHT);
-        }
     }
     
     if (InstanceManager::getClientWorld())

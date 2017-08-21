@@ -38,15 +38,11 @@ public:
     
     void toggleDisplaying();
     
-    void toggleSyncMethod();
-    
     bool isSpawningEnemies();
     
     bool isSpawningObjects();
     
     bool isDisplaying();
-    
-    bool isAvgMethod();
 
 private:
     static Server* s_instance;
@@ -60,7 +56,6 @@ private:
     bool m_isSpawningEnemies;
     bool m_isSpawningObjects;
     bool m_isDisplaying;
-    bool m_isAvgMethod;
     
     void handleNewClient(int playerId, std::string playerName);
     
