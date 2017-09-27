@@ -281,6 +281,48 @@
 		BBDF55C31EF782D800D6FA45 /* Color.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBDF55C21EF782D800D6FA45 /* Color.cpp */; };
 		BBF226CF1EC12CDE00573356 /* ReplicationManagerClient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF226B01EC12CDE00573356 /* ReplicationManagerClient.cpp */; };
 		BBFA22991EE5AE03002635D6 /* SpacePirate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBFA22961EE5AE03002635D6 /* SpacePirate.cpp */; };
+		BBFE50FC1F7C4B9900038D27 /* TempSpineExtension.c in Sources */ = {isa = PBXBuildFile; fileRef = BBFE50FB1F7C4B9800038D27 /* TempSpineExtension.c */; };
+		BBFE50FD1F7C4CA800038D27 /* Animation.c in Sources */ = {isa = PBXBuildFile; fileRef = BBFE50A71F7C382C00038D27 /* Animation.c */; };
+		BBFE50FE1F7C4CA800038D27 /* AnimationState.c in Sources */ = {isa = PBXBuildFile; fileRef = BBFE50A81F7C382C00038D27 /* AnimationState.c */; };
+		BBFE50FF1F7C4CA800038D27 /* AnimationStateData.c in Sources */ = {isa = PBXBuildFile; fileRef = BBFE50A91F7C382C00038D27 /* AnimationStateData.c */; };
+		BBFE51001F7C4CA800038D27 /* Array.c in Sources */ = {isa = PBXBuildFile; fileRef = BBFE50AA1F7C382C00038D27 /* Array.c */; };
+		BBFE51011F7C4CA800038D27 /* Atlas.c in Sources */ = {isa = PBXBuildFile; fileRef = BBFE50AB1F7C382C00038D27 /* Atlas.c */; };
+		BBFE51021F7C4CA800038D27 /* AtlasAttachmentLoader.c in Sources */ = {isa = PBXBuildFile; fileRef = BBFE50AC1F7C382C00038D27 /* AtlasAttachmentLoader.c */; };
+		BBFE51031F7C4CA800038D27 /* Attachment.c in Sources */ = {isa = PBXBuildFile; fileRef = BBFE50AD1F7C382C00038D27 /* Attachment.c */; };
+		BBFE51041F7C4CA800038D27 /* AttachmentLoader.c in Sources */ = {isa = PBXBuildFile; fileRef = BBFE50AE1F7C382C00038D27 /* AttachmentLoader.c */; };
+		BBFE51051F7C4CA800038D27 /* Bone.c in Sources */ = {isa = PBXBuildFile; fileRef = BBFE50AF1F7C382C00038D27 /* Bone.c */; };
+		BBFE51061F7C4CA800038D27 /* BoneData.c in Sources */ = {isa = PBXBuildFile; fileRef = BBFE50B01F7C382C00038D27 /* BoneData.c */; };
+		BBFE51071F7C4CA800038D27 /* BoundingBoxAttachment.c in Sources */ = {isa = PBXBuildFile; fileRef = BBFE50B11F7C382C00038D27 /* BoundingBoxAttachment.c */; };
+		BBFE51081F7C4CA800038D27 /* ClippingAttachment.c in Sources */ = {isa = PBXBuildFile; fileRef = BBFE50B21F7C382C00038D27 /* ClippingAttachment.c */; };
+		BBFE51091F7C4CA800038D27 /* Color.c in Sources */ = {isa = PBXBuildFile; fileRef = BBFE50B31F7C382C00038D27 /* Color.c */; };
+		BBFE510A1F7C4CA800038D27 /* Event.c in Sources */ = {isa = PBXBuildFile; fileRef = BBFE50B41F7C382C00038D27 /* Event.c */; };
+		BBFE510B1F7C4CA800038D27 /* EventData.c in Sources */ = {isa = PBXBuildFile; fileRef = BBFE50B51F7C382C00038D27 /* EventData.c */; };
+		BBFE510C1F7C4CA800038D27 /* extension.c in Sources */ = {isa = PBXBuildFile; fileRef = BBFE50B61F7C382C00038D27 /* extension.c */; };
+		BBFE510D1F7C4CA800038D27 /* IkConstraint.c in Sources */ = {isa = PBXBuildFile; fileRef = BBFE50B71F7C382C00038D27 /* IkConstraint.c */; };
+		BBFE510E1F7C4CA800038D27 /* IkConstraintData.c in Sources */ = {isa = PBXBuildFile; fileRef = BBFE50B81F7C382C00038D27 /* IkConstraintData.c */; };
+		BBFE510F1F7C4CA800038D27 /* Json.c in Sources */ = {isa = PBXBuildFile; fileRef = BBFE50B91F7C382C00038D27 /* Json.c */; };
+		BBFE51101F7C4CA800038D27 /* Json.h in Sources */ = {isa = PBXBuildFile; fileRef = BBFE50BA1F7C382C00038D27 /* Json.h */; };
+		BBFE51111F7C4CA800038D27 /* kvec.h in Sources */ = {isa = PBXBuildFile; fileRef = BBFE50BB1F7C382C00038D27 /* kvec.h */; };
+		BBFE51121F7C4CA800038D27 /* MeshAttachment.c in Sources */ = {isa = PBXBuildFile; fileRef = BBFE50BC1F7C382C00038D27 /* MeshAttachment.c */; };
+		BBFE51131F7C4CA800038D27 /* PathAttachment.c in Sources */ = {isa = PBXBuildFile; fileRef = BBFE50BD1F7C382C00038D27 /* PathAttachment.c */; };
+		BBFE51141F7C4CA800038D27 /* PathConstraint.c in Sources */ = {isa = PBXBuildFile; fileRef = BBFE50BE1F7C382C00038D27 /* PathConstraint.c */; };
+		BBFE51151F7C4CA800038D27 /* PathConstraintData.c in Sources */ = {isa = PBXBuildFile; fileRef = BBFE50BF1F7C382C00038D27 /* PathConstraintData.c */; };
+		BBFE51161F7C4CA800038D27 /* PointAttachment.c in Sources */ = {isa = PBXBuildFile; fileRef = BBFE50C01F7C382C00038D27 /* PointAttachment.c */; };
+		BBFE51171F7C4CA800038D27 /* RegionAttachment.c in Sources */ = {isa = PBXBuildFile; fileRef = BBFE50C11F7C382C00038D27 /* RegionAttachment.c */; };
+		BBFE51181F7C4CA800038D27 /* Skeleton.c in Sources */ = {isa = PBXBuildFile; fileRef = BBFE50C21F7C382C00038D27 /* Skeleton.c */; };
+		BBFE51191F7C4CA800038D27 /* SkeletonBinary.c in Sources */ = {isa = PBXBuildFile; fileRef = BBFE50C31F7C382C00038D27 /* SkeletonBinary.c */; };
+		BBFE511A1F7C4CA800038D27 /* SkeletonBounds.c in Sources */ = {isa = PBXBuildFile; fileRef = BBFE50C41F7C382C00038D27 /* SkeletonBounds.c */; };
+		BBFE511B1F7C4CA800038D27 /* SkeletonClipping.c in Sources */ = {isa = PBXBuildFile; fileRef = BBFE50C51F7C382C00038D27 /* SkeletonClipping.c */; };
+		BBFE511C1F7C4CA800038D27 /* SkeletonData.c in Sources */ = {isa = PBXBuildFile; fileRef = BBFE50C61F7C382C00038D27 /* SkeletonData.c */; };
+		BBFE511D1F7C4CA800038D27 /* SkeletonJson.c in Sources */ = {isa = PBXBuildFile; fileRef = BBFE50C71F7C382C00038D27 /* SkeletonJson.c */; };
+		BBFE511E1F7C4CA800038D27 /* Skin.c in Sources */ = {isa = PBXBuildFile; fileRef = BBFE50C81F7C382C00038D27 /* Skin.c */; };
+		BBFE511F1F7C4CA800038D27 /* Slot.c in Sources */ = {isa = PBXBuildFile; fileRef = BBFE50C91F7C382C00038D27 /* Slot.c */; };
+		BBFE51201F7C4CA800038D27 /* SlotData.c in Sources */ = {isa = PBXBuildFile; fileRef = BBFE50CA1F7C382C00038D27 /* SlotData.c */; };
+		BBFE51211F7C4CA800038D27 /* TransformConstraint.c in Sources */ = {isa = PBXBuildFile; fileRef = BBFE50CB1F7C382C00038D27 /* TransformConstraint.c */; };
+		BBFE51221F7C4CA800038D27 /* TransformConstraintData.c in Sources */ = {isa = PBXBuildFile; fileRef = BBFE50CC1F7C382C00038D27 /* TransformConstraintData.c */; };
+		BBFE51231F7C4CA800038D27 /* Triangulator.c in Sources */ = {isa = PBXBuildFile; fileRef = BBFE50CD1F7C382C00038D27 /* Triangulator.c */; };
+		BBFE51241F7C4CA800038D27 /* VertexAttachment.c in Sources */ = {isa = PBXBuildFile; fileRef = BBFE50CE1F7C382C00038D27 /* VertexAttachment.c */; };
+		BBFE51251F7C4CA800038D27 /* VertexEffect.c in Sources */ = {isa = PBXBuildFile; fileRef = BBFE50CF1F7C382C00038D27 /* VertexEffect.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -1132,6 +1174,7 @@
 		BBFE50CF1F7C382C00038D27 /* VertexEffect.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = VertexEffect.c; sourceTree = "<group>"; };
 		BBFE50F91F7C396600038D27 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		BBFE50FA1F7C396600038D27 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		BBFE50FB1F7C4B9800038D27 /* TempSpineExtension.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = TempSpineExtension.c; path = ../opengl/TempSpineExtension.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -2351,6 +2394,7 @@
 				BBAEF14E1EA94ED900F0866E /* SpriteBatcher.h */,
 				BBAEF14F1EA94ED900F0866E /* SpriteBatcherFactory.cpp */,
 				BBAEF1501EA94ED900F0866E /* SpriteBatcherFactory.h */,
+				BBFE50FB1F7C4B9800038D27 /* TempSpineExtension.c */,
 				BBAEF1511EA94ED900F0866E /* TextureLoaderFactory.cpp */,
 				BBAEF1521EA94ED900F0866E /* TextureLoaderFactory.h */,
 				BBAEF1531EA94ED900F0866E /* TextureRegion.cpp */,
@@ -2823,6 +2867,47 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BBFE50FD1F7C4CA800038D27 /* Animation.c in Sources */,
+				BBFE50FE1F7C4CA800038D27 /* AnimationState.c in Sources */,
+				BBFE50FF1F7C4CA800038D27 /* AnimationStateData.c in Sources */,
+				BBFE51001F7C4CA800038D27 /* Array.c in Sources */,
+				BBFE51011F7C4CA800038D27 /* Atlas.c in Sources */,
+				BBFE51021F7C4CA800038D27 /* AtlasAttachmentLoader.c in Sources */,
+				BBFE51031F7C4CA800038D27 /* Attachment.c in Sources */,
+				BBFE51041F7C4CA800038D27 /* AttachmentLoader.c in Sources */,
+				BBFE51051F7C4CA800038D27 /* Bone.c in Sources */,
+				BBFE51061F7C4CA800038D27 /* BoneData.c in Sources */,
+				BBFE51071F7C4CA800038D27 /* BoundingBoxAttachment.c in Sources */,
+				BBFE51081F7C4CA800038D27 /* ClippingAttachment.c in Sources */,
+				BBFE51091F7C4CA800038D27 /* Color.c in Sources */,
+				BBFE510A1F7C4CA800038D27 /* Event.c in Sources */,
+				BBFE510B1F7C4CA800038D27 /* EventData.c in Sources */,
+				BBFE510C1F7C4CA800038D27 /* extension.c in Sources */,
+				BBFE510D1F7C4CA800038D27 /* IkConstraint.c in Sources */,
+				BBFE510E1F7C4CA800038D27 /* IkConstraintData.c in Sources */,
+				BBFE510F1F7C4CA800038D27 /* Json.c in Sources */,
+				BBFE51101F7C4CA800038D27 /* Json.h in Sources */,
+				BBFE51111F7C4CA800038D27 /* kvec.h in Sources */,
+				BBFE51121F7C4CA800038D27 /* MeshAttachment.c in Sources */,
+				BBFE51131F7C4CA800038D27 /* PathAttachment.c in Sources */,
+				BBFE51141F7C4CA800038D27 /* PathConstraint.c in Sources */,
+				BBFE51151F7C4CA800038D27 /* PathConstraintData.c in Sources */,
+				BBFE51161F7C4CA800038D27 /* PointAttachment.c in Sources */,
+				BBFE51171F7C4CA800038D27 /* RegionAttachment.c in Sources */,
+				BBFE51181F7C4CA800038D27 /* Skeleton.c in Sources */,
+				BBFE51191F7C4CA800038D27 /* SkeletonBinary.c in Sources */,
+				BBFE511A1F7C4CA800038D27 /* SkeletonBounds.c in Sources */,
+				BBFE511B1F7C4CA800038D27 /* SkeletonClipping.c in Sources */,
+				BBFE511C1F7C4CA800038D27 /* SkeletonData.c in Sources */,
+				BBFE511D1F7C4CA800038D27 /* SkeletonJson.c in Sources */,
+				BBFE511E1F7C4CA800038D27 /* Skin.c in Sources */,
+				BBFE511F1F7C4CA800038D27 /* Slot.c in Sources */,
+				BBFE51201F7C4CA800038D27 /* SlotData.c in Sources */,
+				BBFE51211F7C4CA800038D27 /* TransformConstraint.c in Sources */,
+				BBFE51221F7C4CA800038D27 /* TransformConstraintData.c in Sources */,
+				BBFE51231F7C4CA800038D27 /* Triangulator.c in Sources */,
+				BBFE51241F7C4CA800038D27 /* VertexAttachment.c in Sources */,
+				BBFE51251F7C4CA800038D27 /* VertexEffect.c in Sources */,
 				BB9579371F10110200E89DE9 /* MacSoundWrapper.cpp in Sources */,
 				BBAEF2941EA94EDA00F0866E /* Circle.cpp in Sources */,
 				BB9578991F0FE0F400E89DE9 /* b2CollideCircle.cpp in Sources */,
@@ -2947,6 +3032,7 @@
 				BB5833D31EEDDB5C0084DA20 /* InputManager.cpp in Sources */,
 				BBAEF25A1EA94EDA00F0866E /* CircleBatcherFactory.cpp in Sources */,
 				BB95791F1F10108A00E89DE9 /* ALChannelSource.m in Sources */,
+				BBFE50FC1F7C4B9900038D27 /* TempSpineExtension.c in Sources */,
 				BB79C1581F0EE37700A734CE /* DDHidMouse.m in Sources */,
 				BBAEF2A41EA94EDA00F0866E /* AudioEngineHelperFactory.cpp in Sources */,
 				BB0864751EE20CCA00BCD9E0 /* EntityRegistry.cpp in Sources */,
