@@ -72,10 +72,9 @@ static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink,
     
     m_fTimeSinceLastJoystickScan = CFAbsoluteTimeGetCurrent();
     m_fLastTime = CFAbsoluteTimeGetCurrent();
-    
-    NSWindow *mainWindow = [[[NSApplication sharedApplication] windows] objectAtIndex:0];
 
 #if FULL_SCREEN_BY_DEFAULT
+    NSWindow *mainWindow = [[[NSApplication sharedApplication] windows] objectAtIndex:0];
     [mainWindow toggleFullScreen:self];
 #endif
     
