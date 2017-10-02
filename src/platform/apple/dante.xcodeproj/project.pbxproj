@@ -25,6 +25,10 @@
 		BB1E89841EF4B4F400B0D78A /* NGSteamPacketHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB1E89821EF4B4F400B0D78A /* NGSteamPacketHandler.cpp */; };
 		BB1F77901F256E45002E96E4 /* Crate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB1F778E1F256E45002E96E4 /* Crate.cpp */; };
 		BB2AC5471EFC56330012B990 /* sound_006.wav in Resources */ = {isa = PBXBuildFile; fileRef = BB2AC5461EFC56330012B990 /* sound_006.wav */; };
+		BB41A6331F82948F000104DB /* EventData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB41A6321F82948F000104DB /* EventData.cpp */; };
+		BB41A65C1F829F39000104DB /* Event.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB41A65B1F829F39000104DB /* Event.cpp */; };
+		BB41A65F1F82D1C4000104DB /* SlotData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB41A65E1F82D1C4000104DB /* SlotData.cpp */; };
+		BB41A6651F82D9CA000104DB /* PathConstraintData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB41A6641F82D9CA000104DB /* PathConstraintData.cpp */; };
 		BB4253D21EF58DA5003F6D2A /* IClientHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB4253D01EF58DA5003F6D2A /* IClientHelper.cpp */; };
 		BB4253D51EF58E00003F6D2A /* IServerHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB4253D41EF58E00003F6D2A /* IServerHelper.cpp */; };
 		BB4253DA1EF59793003F6D2A /* NGSteamClientHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB4253D61EF59793003F6D2A /* NGSteamClientHelper.cpp */; };
@@ -352,6 +356,54 @@
 		BB1F778F1F256E45002E96E4 /* Crate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Crate.h; sourceTree = "<group>"; };
 		BB2AC5451EFC382C0012B990 /* FontAlign.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FontAlign.h; sourceTree = "<group>"; };
 		BB2AC5461EFC56330012B990 /* sound_006.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = sound_006.wav; sourceTree = "<group>"; };
+		BB41A6301F829401000104DB /* Constraint.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constraint.h; sourceTree = "<group>"; };
+		BB41A6311F829485000104DB /* EventData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EventData.h; sourceTree = "<group>"; };
+		BB41A6321F82948F000104DB /* EventData.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = EventData.cpp; sourceTree = "<group>"; };
+		BB41A6351F829541000104DB /* Animation.cs */ = {isa = PBXFileReference; lastKnownFileType = text; path = Animation.cs; sourceTree = "<group>"; };
+		BB41A6361F829541000104DB /* AnimationState.cs */ = {isa = PBXFileReference; lastKnownFileType = text; path = AnimationState.cs; sourceTree = "<group>"; };
+		BB41A6371F829541000104DB /* AnimationStateData.cs */ = {isa = PBXFileReference; lastKnownFileType = text; path = AnimationStateData.cs; sourceTree = "<group>"; };
+		BB41A6381F829541000104DB /* Atlas.cs */ = {isa = PBXFileReference; lastKnownFileType = text; path = Atlas.cs; sourceTree = "<group>"; };
+		BB41A63A1F829541000104DB /* AtlasAttachmentLoader.cs */ = {isa = PBXFileReference; lastKnownFileType = text; path = AtlasAttachmentLoader.cs; sourceTree = "<group>"; };
+		BB41A63B1F829541000104DB /* Attachment.cs */ = {isa = PBXFileReference; lastKnownFileType = text; path = Attachment.cs; sourceTree = "<group>"; };
+		BB41A63C1F829541000104DB /* AttachmentLoader.cs */ = {isa = PBXFileReference; lastKnownFileType = text; path = AttachmentLoader.cs; sourceTree = "<group>"; };
+		BB41A63D1F829541000104DB /* AttachmentType.cs */ = {isa = PBXFileReference; lastKnownFileType = text; path = AttachmentType.cs; sourceTree = "<group>"; };
+		BB41A63E1F829541000104DB /* BoundingBoxAttachment.cs */ = {isa = PBXFileReference; lastKnownFileType = text; path = BoundingBoxAttachment.cs; sourceTree = "<group>"; };
+		BB41A63F1F829541000104DB /* ClippingAttachment.cs */ = {isa = PBXFileReference; lastKnownFileType = text; path = ClippingAttachment.cs; sourceTree = "<group>"; };
+		BB41A6401F829541000104DB /* MeshAttachment.cs */ = {isa = PBXFileReference; lastKnownFileType = text; path = MeshAttachment.cs; sourceTree = "<group>"; };
+		BB41A6411F829541000104DB /* PathAttachment.cs */ = {isa = PBXFileReference; lastKnownFileType = text; path = PathAttachment.cs; sourceTree = "<group>"; };
+		BB41A6421F829541000104DB /* PointAttachment.cs */ = {isa = PBXFileReference; lastKnownFileType = text; path = PointAttachment.cs; sourceTree = "<group>"; };
+		BB41A6431F829541000104DB /* RegionAttachment.cs */ = {isa = PBXFileReference; lastKnownFileType = text; path = RegionAttachment.cs; sourceTree = "<group>"; };
+		BB41A6441F829541000104DB /* VertexAttachment.cs */ = {isa = PBXFileReference; lastKnownFileType = text; path = VertexAttachment.cs; sourceTree = "<group>"; };
+		BB41A6451F829541000104DB /* Bone.cs */ = {isa = PBXFileReference; lastKnownFileType = text; path = Bone.cs; sourceTree = "<group>"; };
+		BB41A6461F829541000104DB /* Event.cs */ = {isa = PBXFileReference; lastKnownFileType = text; path = Event.cs; sourceTree = "<group>"; };
+		BB41A6471F829541000104DB /* EventData.cs */ = {isa = PBXFileReference; lastKnownFileType = text; path = EventData.cs; sourceTree = "<group>"; };
+		BB41A6481F829541000104DB /* ExposedList.cs */ = {isa = PBXFileReference; lastKnownFileType = text; path = ExposedList.cs; sourceTree = "<group>"; };
+		BB41A6491F829541000104DB /* IkConstraint.cs */ = {isa = PBXFileReference; lastKnownFileType = text; path = IkConstraint.cs; sourceTree = "<group>"; };
+		BB41A64A1F829541000104DB /* Json.cs */ = {isa = PBXFileReference; lastKnownFileType = text; path = Json.cs; sourceTree = "<group>"; };
+		BB41A64B1F829541000104DB /* MathUtils.cs */ = {isa = PBXFileReference; lastKnownFileType = text; path = MathUtils.cs; sourceTree = "<group>"; };
+		BB41A64C1F829541000104DB /* PathConstraint.cs */ = {isa = PBXFileReference; lastKnownFileType = text; path = PathConstraint.cs; sourceTree = "<group>"; };
+		BB41A64D1F829541000104DB /* PathConstraintData.cs */ = {isa = PBXFileReference; lastKnownFileType = text; path = PathConstraintData.cs; sourceTree = "<group>"; };
+		BB41A64E1F829541000104DB /* Skeleton.cs */ = {isa = PBXFileReference; lastKnownFileType = text; path = Skeleton.cs; sourceTree = "<group>"; };
+		BB41A64F1F829541000104DB /* SkeletonBinary.cs */ = {isa = PBXFileReference; lastKnownFileType = text; path = SkeletonBinary.cs; sourceTree = "<group>"; };
+		BB41A6501F829541000104DB /* SkeletonBounds.cs */ = {isa = PBXFileReference; lastKnownFileType = text; path = SkeletonBounds.cs; sourceTree = "<group>"; };
+		BB41A6511F829541000104DB /* SkeletonClipping.cs */ = {isa = PBXFileReference; lastKnownFileType = text; path = SkeletonClipping.cs; sourceTree = "<group>"; };
+		BB41A6521F829541000104DB /* SkeletonData.cs */ = {isa = PBXFileReference; lastKnownFileType = text; path = SkeletonData.cs; sourceTree = "<group>"; };
+		BB41A6531F829541000104DB /* SkeletonJson.cs */ = {isa = PBXFileReference; lastKnownFileType = text; path = SkeletonJson.cs; sourceTree = "<group>"; };
+		BB41A6541F829541000104DB /* Skin.cs */ = {isa = PBXFileReference; lastKnownFileType = text; path = Skin.cs; sourceTree = "<group>"; };
+		BB41A6551F829541000104DB /* Slot.cs */ = {isa = PBXFileReference; lastKnownFileType = text; path = Slot.cs; sourceTree = "<group>"; };
+		BB41A6561F829541000104DB /* SlotData.cs */ = {isa = PBXFileReference; lastKnownFileType = text; path = SlotData.cs; sourceTree = "<group>"; };
+		BB41A6571F829541000104DB /* TransformConstraint.cs */ = {isa = PBXFileReference; lastKnownFileType = text; path = TransformConstraint.cs; sourceTree = "<group>"; };
+		BB41A6581F829541000104DB /* TransformConstraintData.cs */ = {isa = PBXFileReference; lastKnownFileType = text; path = TransformConstraintData.cs; sourceTree = "<group>"; };
+		BB41A6591F829541000104DB /* Triangulator.cs */ = {isa = PBXFileReference; lastKnownFileType = text; path = Triangulator.cs; sourceTree = "<group>"; };
+		BB41A65A1F829F31000104DB /* Event.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Event.h; sourceTree = "<group>"; };
+		BB41A65B1F829F39000104DB /* Event.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Event.cpp; sourceTree = "<group>"; };
+		BB41A65D1F82D1BC000104DB /* SlotData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SlotData.h; sourceTree = "<group>"; };
+		BB41A65E1F82D1C4000104DB /* SlotData.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SlotData.cpp; sourceTree = "<group>"; };
+		BB41A6601F82D98B000104DB /* PositionMode.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PositionMode.h; sourceTree = "<group>"; };
+		BB41A6611F82D996000104DB /* SpacingMode.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SpacingMode.h; sourceTree = "<group>"; };
+		BB41A6621F82D9A2000104DB /* RotateMode.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RotateMode.h; sourceTree = "<group>"; };
+		BB41A6631F82D9C1000104DB /* PathConstraintData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PathConstraintData.h; sourceTree = "<group>"; };
+		BB41A6641F82D9CA000104DB /* PathConstraintData.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = PathConstraintData.cpp; sourceTree = "<group>"; };
 		BB4253D01EF58DA5003F6D2A /* IClientHelper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = IClientHelper.cpp; sourceTree = "<group>"; };
 		BB4253D11EF58DA5003F6D2A /* IClientHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IClientHelper.h; sourceTree = "<group>"; };
 		BB4253D31EF58E00003F6D2A /* IServerHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IServerHelper.h; sourceTree = "<group>"; };
@@ -1142,6 +1194,58 @@
 				BB052CD71EBA8AE9007FA789 /* shader_003_vert.vsh */,
 			);
 			path = shader;
+			sourceTree = "<group>";
+		};
+		BB41A6341F829541000104DB /* c_sharp_to_port */ = {
+			isa = PBXGroup;
+			children = (
+				BB41A6351F829541000104DB /* Animation.cs */,
+				BB41A6361F829541000104DB /* AnimationState.cs */,
+				BB41A6371F829541000104DB /* AnimationStateData.cs */,
+				BB41A6381F829541000104DB /* Atlas.cs */,
+				BB41A6391F829541000104DB /* Attachments */,
+				BB41A6451F829541000104DB /* Bone.cs */,
+				BB41A6461F829541000104DB /* Event.cs */,
+				BB41A6471F829541000104DB /* EventData.cs */,
+				BB41A6481F829541000104DB /* ExposedList.cs */,
+				BB41A6491F829541000104DB /* IkConstraint.cs */,
+				BB41A64A1F829541000104DB /* Json.cs */,
+				BB41A64B1F829541000104DB /* MathUtils.cs */,
+				BB41A64C1F829541000104DB /* PathConstraint.cs */,
+				BB41A64D1F829541000104DB /* PathConstraintData.cs */,
+				BB41A64E1F829541000104DB /* Skeleton.cs */,
+				BB41A64F1F829541000104DB /* SkeletonBinary.cs */,
+				BB41A6501F829541000104DB /* SkeletonBounds.cs */,
+				BB41A6511F829541000104DB /* SkeletonClipping.cs */,
+				BB41A6521F829541000104DB /* SkeletonData.cs */,
+				BB41A6531F829541000104DB /* SkeletonJson.cs */,
+				BB41A6541F829541000104DB /* Skin.cs */,
+				BB41A6551F829541000104DB /* Slot.cs */,
+				BB41A6561F829541000104DB /* SlotData.cs */,
+				BB41A6571F829541000104DB /* TransformConstraint.cs */,
+				BB41A6581F829541000104DB /* TransformConstraintData.cs */,
+				BB41A6591F829541000104DB /* Triangulator.cs */,
+			);
+			name = c_sharp_to_port;
+			path = ../../../../../misc/scratch/c_sharp_to_port;
+			sourceTree = "<group>";
+		};
+		BB41A6391F829541000104DB /* Attachments */ = {
+			isa = PBXGroup;
+			children = (
+				BB41A63A1F829541000104DB /* AtlasAttachmentLoader.cs */,
+				BB41A63B1F829541000104DB /* Attachment.cs */,
+				BB41A63C1F829541000104DB /* AttachmentLoader.cs */,
+				BB41A63D1F829541000104DB /* AttachmentType.cs */,
+				BB41A63E1F829541000104DB /* BoundingBoxAttachment.cs */,
+				BB41A63F1F829541000104DB /* ClippingAttachment.cs */,
+				BB41A6401F829541000104DB /* MeshAttachment.cs */,
+				BB41A6411F829541000104DB /* PathAttachment.cs */,
+				BB41A6421F829541000104DB /* PointAttachment.cs */,
+				BB41A6431F829541000104DB /* RegionAttachment.cs */,
+				BB41A6441F829541000104DB /* VertexAttachment.cs */,
+			);
+			path = Attachments;
 			sourceTree = "<group>";
 		};
 		BB44C31E1DB030B3003E633F /* mac */ = {
@@ -2499,6 +2603,7 @@
 		BBFE50781F7C382C00038D27 /* spine-runtimes */ = {
 			isa = PBXGroup;
 			children = (
+				BB41A6341F829541000104DB /* c_sharp_to_port */,
 				BBFE50791F7C382C00038D27 /* spine-cpp */,
 			);
 			path = "spine-runtimes";
@@ -2537,6 +2642,14 @@
 				BB1C1A661F7EE51800A14D34 /* IkConstraintData.h */,
 				BB1C1A691F7EE59C00A14D34 /* TransformMode.h */,
 				BB1C1A6A1F7EE66C00A14D34 /* BoneData.h */,
+				BB41A6301F829401000104DB /* Constraint.h */,
+				BB41A6311F829485000104DB /* EventData.h */,
+				BB41A65A1F829F31000104DB /* Event.h */,
+				BB41A65D1F82D1BC000104DB /* SlotData.h */,
+				BB41A6601F82D98B000104DB /* PositionMode.h */,
+				BB41A6611F82D996000104DB /* SpacingMode.h */,
+				BB41A6621F82D9A2000104DB /* RotateMode.h */,
+				BB41A6631F82D9C1000104DB /* PathConstraintData.h */,
 			);
 			path = spine;
 			sourceTree = "<group>";
@@ -2554,6 +2667,10 @@
 			children = (
 				BB1C1A671F7EE52200A14D34 /* IkConstraintData.cpp */,
 				BB1C1A6B1F7EE67500A14D34 /* BoneData.cpp */,
+				BB41A6321F82948F000104DB /* EventData.cpp */,
+				BB41A65B1F829F39000104DB /* Event.cpp */,
+				BB41A65E1F82D1C4000104DB /* SlotData.cpp */,
+				BB41A6641F82D9CA000104DB /* PathConstraintData.cpp */,
 			);
 			path = spine;
 			sourceTree = "<group>";
@@ -2691,6 +2808,7 @@
 				BBAFD3301EF4496D004F2742 /* NGSteamAddress.cpp in Sources */,
 				BBBD14A61EE08C6F003F9307 /* Robot.cpp in Sources */,
 				BB44CB811DB053C0003E633F /* png.c in Sources */,
+				BB41A6331F82948F000104DB /* EventData.cpp in Sources */,
 				BBAEF1F61EA94EDA00F0866E /* GridManager.cpp in Sources */,
 				BB7267FD1EEC7049004F33F9 /* ClientProxy.cpp in Sources */,
 				BBAEF2781EA94EDA00F0866E /* TextureRegion.cpp in Sources */,
@@ -2780,12 +2898,14 @@
 				BB9578A31F0FE0F400E89DE9 /* b2PolygonShape.cpp in Sources */,
 				BB59794D1EEF454B0047BEC6 /* pch.cpp in Sources */,
 				BB79C1511F0EE37700A734CE /* DDHidDevice.m in Sources */,
+				BB41A65F1F82D1C4000104DB /* SlotData.cpp in Sources */,
 				BBBD14A11EE08A20003F9307 /* World.cpp in Sources */,
 				BBF226CF1EC12CDE00573356 /* ReplicationManagerClient.cpp in Sources */,
 				BBAEF1FE1EA94EDA00F0866E /* AppleAssetDataHandler.cpp in Sources */,
 				BBAEF2AA1EA94EDA00F0866E /* ISoundWrapper.cpp in Sources */,
 				BB7428411EB2AF4200B7628D /* RTTI.cpp in Sources */,
 				BBAEF2401EA94EDA00F0866E /* OpenGLRendererHelper.cpp in Sources */,
+				BB41A6651F82D9CA000104DB /* PathConstraintData.cpp in Sources */,
 				BBAEF25E1EA94EDA00F0866E /* Font.cpp in Sources */,
 				BBBD14971EE06BB3003F9307 /* Timing.cpp in Sources */,
 				BBAEF27A1EA94EDA00F0866E /* TextureWrapper.cpp in Sources */,
@@ -2904,6 +3024,7 @@
 				BB95789F1F0FE0F400E89DE9 /* b2TimeOfImpact.cpp in Sources */,
 				BBCFF1CD1ECD316D003EE520 /* MainAssets.cpp in Sources */,
 				BBAEF2021EA94EDA00F0866E /* JsonFile.cpp in Sources */,
+				BB41A65C1F829F39000104DB /* Event.cpp in Sources */,
 				BB9578AC1F0FE0F400E89DE9 /* b2Fixture.cpp in Sources */,
 				BB9578B51F0FE0F400E89DE9 /* b2EdgeAndCircleContact.cpp in Sources */,
 				BB44C3281DB030B3003E633F /* AppDelegate.m in Sources */,
