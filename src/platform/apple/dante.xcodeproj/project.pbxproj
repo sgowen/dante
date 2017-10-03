@@ -110,6 +110,11 @@
 		BB79C15D1F0EE37700A734CE /* NSDictionary+DDHidExtras.m in Sources */ = {isa = PBXBuildFile; fileRef = BB79C14E1F0EE37700A734CE /* NSDictionary+DDHidExtras.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		BB79C1601F0EE3FD00A734CE /* NSXReturnThrowError.m in Sources */ = {isa = PBXBuildFile; fileRef = BB79C15F1F0EE3FD00A734CE /* NSXReturnThrowError.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		BB79C1631F0EE60100A734CE /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB79C1621F0EE60100A734CE /* IOKit.framework */; };
+		BB7B40181F84023600E25168 /* TransformConstraintData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB7B40171F84023600E25168 /* TransformConstraintData.cpp */; };
+		BB7B401B1F84057100E25168 /* Slot.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB7B401A1F84057100E25168 /* Slot.cpp */; };
+		BB7B401E1F84065000E25168 /* Attachment.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB7B401D1F84065000E25168 /* Attachment.cpp */; };
+		BB7B40211F84137300E25168 /* Bone.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB7B40201F84137300E25168 /* Bone.cpp */; };
+		BB7B40241F841FB400E25168 /* Skin.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB7B40231F841FB400E25168 /* Skin.cpp */; };
 		BB7E3E631EE4E44100E3D696 /* Projectile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB7E3E601EE4E44100E3D696 /* Projectile.cpp */; };
 		BB80D2021EF97F89002B9448 /* NGSteamP2PAuth.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB80D2001EF97F89002B9448 /* NGSteamP2PAuth.cpp */; };
 		BB8308411EC2AD1F00435E7E /* AckRange.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8308091EC2AD1F00435E7E /* AckRange.cpp */; };
@@ -668,6 +673,16 @@
 		BB79C15E1F0EE3FD00A734CE /* NSXReturnThrowError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSXReturnThrowError.h; sourceTree = "<group>"; };
 		BB79C15F1F0EE3FD00A734CE /* NSXReturnThrowError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSXReturnThrowError.m; sourceTree = "<group>"; };
 		BB79C1621F0EE60100A734CE /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.12.sdk/System/Library/Frameworks/IOKit.framework; sourceTree = DEVELOPER_DIR; };
+		BB7B40161F84022E00E25168 /* TransformConstraintData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TransformConstraintData.h; sourceTree = "<group>"; };
+		BB7B40171F84023600E25168 /* TransformConstraintData.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = TransformConstraintData.cpp; sourceTree = "<group>"; };
+		BB7B40191F84056900E25168 /* Slot.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Slot.h; sourceTree = "<group>"; };
+		BB7B401A1F84057100E25168 /* Slot.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Slot.cpp; sourceTree = "<group>"; };
+		BB7B401C1F84064700E25168 /* Attachment.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Attachment.h; sourceTree = "<group>"; };
+		BB7B401D1F84065000E25168 /* Attachment.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Attachment.cpp; sourceTree = "<group>"; };
+		BB7B401F1F84136B00E25168 /* Bone.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Bone.h; sourceTree = "<group>"; };
+		BB7B40201F84137300E25168 /* Bone.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Bone.cpp; sourceTree = "<group>"; };
+		BB7B40221F841FAB00E25168 /* Skin.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Skin.h; sourceTree = "<group>"; };
+		BB7B40231F841FB400E25168 /* Skin.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Skin.cpp; sourceTree = "<group>"; };
 		BB7E3E601EE4E44100E3D696 /* Projectile.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Projectile.cpp; sourceTree = "<group>"; };
 		BB7E3E611EE4E44100E3D696 /* Projectile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Projectile.h; sourceTree = "<group>"; };
 		BB80D2001EF97F89002B9448 /* NGSteamP2PAuth.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NGSteamP2PAuth.cpp; sourceTree = "<group>"; };
@@ -2650,6 +2665,11 @@
 				BB41A6611F82D996000104DB /* SpacingMode.h */,
 				BB41A6621F82D9A2000104DB /* RotateMode.h */,
 				BB41A6631F82D9C1000104DB /* PathConstraintData.h */,
+				BB7B40161F84022E00E25168 /* TransformConstraintData.h */,
+				BB7B40191F84056900E25168 /* Slot.h */,
+				BB7B401C1F84064700E25168 /* Attachment.h */,
+				BB7B401F1F84136B00E25168 /* Bone.h */,
+				BB7B40221F841FAB00E25168 /* Skin.h */,
 			);
 			path = spine;
 			sourceTree = "<group>";
@@ -2671,6 +2691,11 @@
 				BB41A65B1F829F39000104DB /* Event.cpp */,
 				BB41A65E1F82D1C4000104DB /* SlotData.cpp */,
 				BB41A6641F82D9CA000104DB /* PathConstraintData.cpp */,
+				BB7B40171F84023600E25168 /* TransformConstraintData.cpp */,
+				BB7B401A1F84057100E25168 /* Slot.cpp */,
+				BB7B401D1F84065000E25168 /* Attachment.cpp */,
+				BB7B40201F84137300E25168 /* Bone.cpp */,
+				BB7B40231F841FB400E25168 /* Skin.cpp */,
 			);
 			path = spine;
 			sourceTree = "<group>";
@@ -2880,6 +2905,7 @@
 				BB9579261F10108A00E89DE9 /* OpenALManager.m in Sources */,
 				BB5833D01EEDDAFC0084DA20 /* Renderer.cpp in Sources */,
 				BB9578AE1F0FE0F400E89DE9 /* b2World.cpp in Sources */,
+				BB7B40181F84023600E25168 /* TransformConstraintData.cpp in Sources */,
 				BBAEF26A1EA94EDA00F0866E /* LineBatcherFactory.cpp in Sources */,
 				BBAEF2561EA94EDA00F0866E /* Animation.cpp in Sources */,
 				BB9578A21F0FE0F400E89DE9 /* b2EdgeShape.cpp in Sources */,
@@ -2898,6 +2924,7 @@
 				BB9578A31F0FE0F400E89DE9 /* b2PolygonShape.cpp in Sources */,
 				BB59794D1EEF454B0047BEC6 /* pch.cpp in Sources */,
 				BB79C1511F0EE37700A734CE /* DDHidDevice.m in Sources */,
+				BB7B40241F841FB400E25168 /* Skin.cpp in Sources */,
 				BB41A65F1F82D1C4000104DB /* SlotData.cpp in Sources */,
 				BBBD14A11EE08A20003F9307 /* World.cpp in Sources */,
 				BBF226CF1EC12CDE00573356 /* ReplicationManagerClient.cpp in Sources */,
@@ -2954,6 +2981,7 @@
 				BBAEF26E1EA94EDA00F0866E /* NGRectBatcherFactory.cpp in Sources */,
 				BB79C14F1F0EE37700A734CE /* DDHidAppleMikey.m in Sources */,
 				BB4253E41EF5B078003F6D2A /* INetworkHelper.cpp in Sources */,
+				BB7B401B1F84057100E25168 /* Slot.cpp in Sources */,
 				BB9578C41F0FE0F400E89DE9 /* b2WheelJoint.cpp in Sources */,
 				BBCFF1C71ECD312E003EE520 /* IAssetsMapper.cpp in Sources */,
 				BB1C1A6C1F7EE67500A14D34 /* BoneData.cpp in Sources */,
@@ -2961,6 +2989,7 @@
 				BB7251A91EE105780024C71C /* IInputState.cpp in Sources */,
 				BB9579191F10108A00E89DE9 /* OALAudioTrackNotifications.m in Sources */,
 				BBBD149A1EE06BB3003F9307 /* WeightedTimedMovingAverage.cpp in Sources */,
+				BB7B40211F84137300E25168 /* Bone.cpp in Sources */,
 				BBAEF2A61EA94EDA00F0866E /* IAudioEngineHelper.cpp in Sources */,
 				BB9579151F10108A00E89DE9 /* OALActionManager.m in Sources */,
 				BB95792C1F10108A00E89DE9 /* OALAudioFile.m in Sources */,
@@ -2969,6 +2998,7 @@
 				BB9578A01F0FE0F400E89DE9 /* b2ChainShape.cpp in Sources */,
 				BBAEF2621EA94EDA00F0866E /* GpuProgramWrapperFactory.cpp in Sources */,
 				BB44CB8A1DB053C0003E633F /* pngset.c in Sources */,
+				BB7B401E1F84065000E25168 /* Attachment.cpp in Sources */,
 				BB9578981F0FE0F400E89DE9 /* b2BroadPhase.cpp in Sources */,
 				BB44CB8B1DB053C0003E633F /* pngtrans.c in Sources */,
 				BB9578B01F0FE0F400E89DE9 /* b2ChainAndCircleContact.cpp in Sources */,
