@@ -9,8 +9,6 @@
 #ifndef __noctisgames__IMachineAddress__
 #define __noctisgames__IMachineAddress__
 
-#include "Network.h"
-
 #include "RTTI.h"
 
 #include <string>
@@ -30,16 +28,5 @@ public:
     
     virtual std::string toString() const = 0;
 };
-
-namespace std
-{
-    template<> struct hash<IMachineAddress>
-    {
-        size_t operator()(const IMachineAddress& inAddress) const
-        {
-            return inAddress.getHash();
-        }
-    };
-}
 
 #endif /* defined(__noctisgames__IMachineAddress__) */
