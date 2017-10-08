@@ -15,8 +15,6 @@
 #include "StringUtil.h"
 #include "NGSTDUtil.h"
 
-#include <cassert>
-
 EntityManager::EntityManager(HandleEntityCreatedFunc handleEntityCreatedFunc, HandleEntityDeletionFunc handleEntityDeletionFunc) : m_handleEntityCreatedFunc(handleEntityCreatedFunc), m_handleEntityDeletionFunc(handleEntityDeletionFunc)
 {
     // Empty

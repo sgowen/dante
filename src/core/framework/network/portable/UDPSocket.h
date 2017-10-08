@@ -15,6 +15,9 @@ class SocketAddress;
 
 class UDPSocket
 {
+    friend class SocketUtil;
+    friend class SocketPacketHandler;
+    
 public:
     int bindSocket(const SocketAddress& inToAddress);
     
@@ -25,9 +28,6 @@ public:
     int setNonBlockingMode(bool inShouldBeNonBlocking);
     
 private:
-    friend class SocketUtil;
-    friend class SocketPacketHandler;
-    
     SOCKET m_socket;
     
     // Only allow SocketUtil/SocketPacketHandler to create or delete an instance of UDPSocket

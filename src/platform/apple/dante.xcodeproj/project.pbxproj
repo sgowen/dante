@@ -62,6 +62,15 @@
 		BB44CB961DB05486003E633F /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB44CB951DB05486003E633F /* QuartzCore.framework */; };
 		BB44CB9A1DB054B8003E633F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB44CB991DB054B8003E633F /* Foundation.framework */; };
 		BB44CB9E1DB054F9003E633F /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = BB44CB9D1DB054F9003E633F /* libz.tbd */; };
+		BB4DA7B81F8AB91400A961EC /* PathConstraint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB4DA7B71F8AB91400A961EC /* PathConstraint.cpp */; };
+		BB4DA7BA1F8AB91F00A961EC /* IkConstraint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB4DA7B91F8AB91F00A961EC /* IkConstraint.cpp */; };
+		BB4DA7BC1F8AB92F00A961EC /* TransformConstraint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB4DA7BB1F8AB92F00A961EC /* TransformConstraint.cpp */; };
+		BB4DA7BF1F8AB95800A961EC /* SkeletonData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB4DA7BE1F8AB95800A961EC /* SkeletonData.cpp */; };
+		BB4DA7C61F8ACAA800A961EC /* CurveTimeline.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB4DA7C51F8ACAA800A961EC /* CurveTimeline.cpp */; };
+		BB4DA7C81F8ACBA000A961EC /* Updatable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB4DA7C71F8ACBA000A961EC /* Updatable.cpp */; };
+		BB4DA7CA1F8ACC1000A961EC /* Constraint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB4DA7C91F8ACC1000A961EC /* Constraint.cpp */; };
+		BB4DA7CE1F8AD6FF00A961EC /* RotateTimeline.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB4DA7CD1F8AD6FF00A961EC /* RotateTimeline.cpp */; };
+		BB4DA7D01F8AE30300A961EC /* Timeline.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB4DA7CF1F8AE30300A961EC /* Timeline.cpp */; };
 		BB5697DF1EE3661400D03694 /* PooledObjectsManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB5697D91EE3661400D03694 /* PooledObjectsManager.cpp */; };
 		BB58334C1EEDB1820084DA20 /* libsteam_api.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BB58334B1EEDB1820084DA20 /* libsteam_api.dylib */; };
 		BB5833681EEDB2E10084DA20 /* libsteam_api.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BB58334B1EEDB1820084DA20 /* libsteam_api.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
@@ -290,6 +299,7 @@
 		BBCFF1CF1ECD316D003EE520 /* MainAssetsMapper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBCFF1CA1ECD316D003EE520 /* MainAssetsMapper.cpp */; };
 		BBD43A0E1ED0BD00001D5EB4 /* ReplicationCommand.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBD43A0C1ED0BD00001D5EB4 /* ReplicationCommand.cpp */; };
 		BBDF55C31EF782D800D6FA45 /* Color.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBDF55C21EF782D800D6FA45 /* Color.cpp */; };
+		BBEAA58A1F86D3C700444D04 /* Skeleton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBEAA5891F86D3C700444D04 /* Skeleton.cpp */; };
 		BBF226CF1EC12CDE00573356 /* ReplicationManagerClient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF226B01EC12CDE00573356 /* ReplicationManagerClient.cpp */; };
 		BBFA22991EE5AE03002635D6 /* SpacePirate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBFA22961EE5AE03002635D6 /* SpacePirate.cpp */; };
 /* End PBXBuildFile section */
@@ -474,6 +484,26 @@
 		BB44CB971DB0549D003E633F /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.12.sdk/System/Library/Frameworks/CoreFoundation.framework; sourceTree = DEVELOPER_DIR; };
 		BB44CB991DB054B8003E633F /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.12.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		BB44CB9D1DB054F9003E633F /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.12.sdk/usr/lib/libz.tbd; sourceTree = DEVELOPER_DIR; };
+		BB4DA7B41F8AB8DF00A961EC /* TransformConstraint.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TransformConstraint.h; sourceTree = "<group>"; };
+		BB4DA7B51F8AB8EB00A961EC /* IkConstraint.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IkConstraint.h; sourceTree = "<group>"; };
+		BB4DA7B61F8AB8FA00A961EC /* PathConstraint.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PathConstraint.h; sourceTree = "<group>"; };
+		BB4DA7B71F8AB91400A961EC /* PathConstraint.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = PathConstraint.cpp; sourceTree = "<group>"; };
+		BB4DA7B91F8AB91F00A961EC /* IkConstraint.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IkConstraint.cpp; sourceTree = "<group>"; };
+		BB4DA7BB1F8AB92F00A961EC /* TransformConstraint.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = TransformConstraint.cpp; sourceTree = "<group>"; };
+		BB4DA7BD1F8AB94C00A961EC /* SkeletonData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SkeletonData.h; sourceTree = "<group>"; };
+		BB4DA7BE1F8AB95800A961EC /* SkeletonData.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SkeletonData.cpp; sourceTree = "<group>"; };
+		BB4DA7C01F8ABB0300A961EC /* Timeline.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Timeline.h; sourceTree = "<group>"; };
+		BB4DA7C11F8ABCC800A961EC /* MixPose.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MixPose.h; sourceTree = "<group>"; };
+		BB4DA7C21F8ABD6B00A961EC /* MixDirection.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MixDirection.h; sourceTree = "<group>"; };
+		BB4DA7C31F8AC9ED00A961EC /* TimelineType.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TimelineType.h; sourceTree = "<group>"; };
+		BB4DA7C41F8ACA9B00A961EC /* CurveTimeline.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CurveTimeline.h; sourceTree = "<group>"; };
+		BB4DA7C51F8ACAA800A961EC /* CurveTimeline.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CurveTimeline.cpp; sourceTree = "<group>"; };
+		BB4DA7C71F8ACBA000A961EC /* Updatable.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Updatable.cpp; sourceTree = "<group>"; };
+		BB4DA7C91F8ACC1000A961EC /* Constraint.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Constraint.cpp; sourceTree = "<group>"; };
+		BB4DA7CB1F8AD3D500A961EC /* MathUtil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MathUtil.h; sourceTree = "<group>"; };
+		BB4DA7CC1F8AD6F700A961EC /* RotateTimeline.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RotateTimeline.h; sourceTree = "<group>"; };
+		BB4DA7CD1F8AD6FF00A961EC /* RotateTimeline.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = RotateTimeline.cpp; sourceTree = "<group>"; };
+		BB4DA7CF1F8AE30300A961EC /* Timeline.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Timeline.cpp; sourceTree = "<group>"; };
 		BB5697D91EE3661400D03694 /* PooledObjectsManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PooledObjectsManager.cpp; sourceTree = "<group>"; };
 		BB5697DA1EE3661400D03694 /* PooledObjectsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PooledObjectsManager.h; sourceTree = "<group>"; };
 		BB58334B1EEDB1820084DA20 /* libsteam_api.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libsteam_api.dylib; sourceTree = "<group>"; };
@@ -1121,6 +1151,8 @@
 		BBD43A0C1ED0BD00001D5EB4 /* ReplicationCommand.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ReplicationCommand.cpp; sourceTree = "<group>"; };
 		BBD791D21EF6D401007E62E5 /* MainEngineState.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MainEngineState.h; sourceTree = "<group>"; };
 		BBDF55C21EF782D800D6FA45 /* Color.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Color.cpp; sourceTree = "<group>"; };
+		BBEAA5881F86D3BE00444D04 /* Skeleton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Skeleton.h; sourceTree = "<group>"; };
+		BBEAA5891F86D3C700444D04 /* Skeleton.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Skeleton.cpp; sourceTree = "<group>"; };
 		BBF226B01EC12CDE00573356 /* ReplicationManagerClient.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ReplicationManagerClient.cpp; sourceTree = "<group>"; };
 		BBF226B11EC12CDE00573356 /* ReplicationManagerClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReplicationManagerClient.h; sourceTree = "<group>"; };
 		BBFA22961EE5AE03002635D6 /* SpacePirate.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SpacePirate.cpp; sourceTree = "<group>"; };
@@ -2670,6 +2702,18 @@
 				BB7B401C1F84064700E25168 /* Attachment.h */,
 				BB7B401F1F84136B00E25168 /* Bone.h */,
 				BB7B40221F841FAB00E25168 /* Skin.h */,
+				BBEAA5881F86D3BE00444D04 /* Skeleton.h */,
+				BB4DA7B41F8AB8DF00A961EC /* TransformConstraint.h */,
+				BB4DA7B51F8AB8EB00A961EC /* IkConstraint.h */,
+				BB4DA7B61F8AB8FA00A961EC /* PathConstraint.h */,
+				BB4DA7BD1F8AB94C00A961EC /* SkeletonData.h */,
+				BB4DA7C01F8ABB0300A961EC /* Timeline.h */,
+				BB4DA7C11F8ABCC800A961EC /* MixPose.h */,
+				BB4DA7C21F8ABD6B00A961EC /* MixDirection.h */,
+				BB4DA7C31F8AC9ED00A961EC /* TimelineType.h */,
+				BB4DA7C41F8ACA9B00A961EC /* CurveTimeline.h */,
+				BB4DA7CB1F8AD3D500A961EC /* MathUtil.h */,
+				BB4DA7CC1F8AD6F700A961EC /* RotateTimeline.h */,
 			);
 			path = spine;
 			sourceTree = "<group>";
@@ -2696,6 +2740,16 @@
 				BB7B401D1F84065000E25168 /* Attachment.cpp */,
 				BB7B40201F84137300E25168 /* Bone.cpp */,
 				BB7B40231F841FB400E25168 /* Skin.cpp */,
+				BBEAA5891F86D3C700444D04 /* Skeleton.cpp */,
+				BB4DA7B71F8AB91400A961EC /* PathConstraint.cpp */,
+				BB4DA7B91F8AB91F00A961EC /* IkConstraint.cpp */,
+				BB4DA7BB1F8AB92F00A961EC /* TransformConstraint.cpp */,
+				BB4DA7BE1F8AB95800A961EC /* SkeletonData.cpp */,
+				BB4DA7C51F8ACAA800A961EC /* CurveTimeline.cpp */,
+				BB4DA7C71F8ACBA000A961EC /* Updatable.cpp */,
+				BB4DA7C91F8ACC1000A961EC /* Constraint.cpp */,
+				BB4DA7CD1F8AD6FF00A961EC /* RotateTimeline.cpp */,
+				BB4DA7CF1F8AE30300A961EC /* Timeline.cpp */,
 			);
 			path = spine;
 			sourceTree = "<group>";
@@ -2841,6 +2895,7 @@
 				BB95791A1F10108A00E89DE9 /* OALAudioTracks.m in Sources */,
 				BBAEF28C1EA94EDA00F0866E /* TouchConverter.cpp in Sources */,
 				BB8308501EC2AD1F00435E7E /* InFlightPacket.cpp in Sources */,
+				BB4DA7BC1F8AB92F00A961EC /* TransformConstraint.cpp in Sources */,
 				BB9579281F10108A00E89DE9 /* OALSuspendHandler.m in Sources */,
 				BB7268001EEC704E004F33F9 /* ReplicationManagerTransmissionData.cpp in Sources */,
 				BB7267FF1EEC704C004F33F9 /* ReplicationManagerServer.cpp in Sources */,
@@ -2865,6 +2920,7 @@
 				BB79C15C1F0EE37700A734CE /* DDHidUsageTables.m in Sources */,
 				BBAEF26C1EA94EDA00F0866E /* NGRectBatcher.cpp in Sources */,
 				BBAEF25C1EA94EDA00F0866E /* DummyGpuProgramWrapper.cpp in Sources */,
+				BB4DA7D01F8AE30300A961EC /* Timeline.cpp in Sources */,
 				BB9578B91F0FE0F400E89DE9 /* b2DistanceJoint.cpp in Sources */,
 				BBAEF2441EA94EDA00F0866E /* OpenGLTextureGpuProgramWrapper.cpp in Sources */,
 				BB9578C01F0FE0F400E89DE9 /* b2PulleyJoint.cpp in Sources */,
@@ -2937,6 +2993,7 @@
 				BBBD14971EE06BB3003F9307 /* Timing.cpp in Sources */,
 				BBAEF27A1EA94EDA00F0866E /* TextureWrapper.cpp in Sources */,
 				BB9578B21F0FE0F400E89DE9 /* b2CircleContact.cpp in Sources */,
+				BB4DA7CA1F8ACC1000A961EC /* Constraint.cpp in Sources */,
 				BBFA22991EE5AE03002635D6 /* SpacePirate.cpp in Sources */,
 				BB9578A61F0FE0F400E89DE9 /* b2Math.cpp in Sources */,
 				BB9579181F10108A00E89DE9 /* OALAudioTrack.m in Sources */,
@@ -2950,6 +3007,7 @@
 				BB0864751EE20CCA00BCD9E0 /* EntityRegistry.cpp in Sources */,
 				BBAEF3101EA94FAC00F0866E /* JoystickController.mm in Sources */,
 				BB79C1521F0EE37700A734CE /* DDHidElement.m in Sources */,
+				BB4DA7C81F8ACBA000A961EC /* Updatable.cpp in Sources */,
 				BBAEF27C1EA94EDA00F0866E /* TransitionGpuProgramWrapper.cpp in Sources */,
 				BB44CB851DB053C0003E633F /* pngpread.c in Sources */,
 				BB8EE62B1EF2E2C1000A5C98 /* Util.cpp in Sources */,
@@ -2977,6 +3035,7 @@
 				BBBD14C41EE0C9B4003F9307 /* InputMemoryBitStream.cpp in Sources */,
 				BB9578C21F0FE0F400E89DE9 /* b2RopeJoint.cpp in Sources */,
 				BB9579251F10108A00E89DE9 /* ALWrapper.m in Sources */,
+				BBEAA58A1F86D3C700444D04 /* Skeleton.cpp in Sources */,
 				BBAEF2601EA94EDA00F0866E /* GpuProgramWrapper.cpp in Sources */,
 				BBAEF26E1EA94EDA00F0866E /* NGRectBatcherFactory.cpp in Sources */,
 				BB79C14F1F0EE37700A734CE /* DDHidAppleMikey.m in Sources */,
@@ -3003,10 +3062,13 @@
 				BB44CB8B1DB053C0003E633F /* pngtrans.c in Sources */,
 				BB9578B01F0FE0F400E89DE9 /* b2ChainAndCircleContact.cpp in Sources */,
 				BBAEF2581EA94EDA00F0866E /* CircleBatcher.cpp in Sources */,
+				BB4DA7B81F8AB91400A961EC /* PathConstraint.cpp in Sources */,
 				BBAEF23A1EA94EDA00F0866E /* OpenGLManager.cpp in Sources */,
 				BB9579221F10108A00E89DE9 /* ALListener.m in Sources */,
+				BB4DA7CE1F8AD6FF00A961EC /* RotateTimeline.cpp in Sources */,
 				BB9578C81F10013800E89DE9 /* InputState.cpp in Sources */,
 				BB9579141F10108A00E89DE9 /* OALAction.m in Sources */,
+				BB4DA7BA1F8AB91F00A961EC /* IkConstraint.cpp in Sources */,
 				BBAEF2381EA94EDA00F0866E /* OpenGLLineBatcher.cpp in Sources */,
 				BB44CB8C1DB053C0003E633F /* pngwio.c in Sources */,
 				BB79C1501F0EE37700A734CE /* DDHidAppleRemote.m in Sources */,
@@ -3027,6 +3089,7 @@
 				BBD43A0E1ED0BD00001D5EB4 /* ReplicationCommand.cpp in Sources */,
 				BB9578A81F0FE0F400E89DE9 /* b2StackAllocator.cpp in Sources */,
 				BB9579351F10110200E89DE9 /* MacAudioEngineHelper.cpp in Sources */,
+				BB4DA7BF1F8AB95800A961EC /* SkeletonData.cpp in Sources */,
 				BBAEF2741EA94EDA00F0866E /* SpriteBatcherFactory.cpp in Sources */,
 				BBBCB2EE1EF0993000B77938 /* NGSteamGameServer.cpp in Sources */,
 				BB5833D61EEDDB650084DA20 /* MainRenderer.cpp in Sources */,
@@ -3060,6 +3123,7 @@
 				BB44C3281DB030B3003E633F /* AppDelegate.m in Sources */,
 				BB9579291F10108A00E89DE9 /* mach_timing.c in Sources */,
 				BBAEF2AC1EA94EDA00F0866E /* NGAudioEngine.cpp in Sources */,
+				BB4DA7C61F8ACAA800A961EC /* CurveTimeline.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

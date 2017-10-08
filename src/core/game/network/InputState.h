@@ -41,9 +41,14 @@ class InputState : public IInputState
 {
     RTTI_DECL;
     
+    friend class InputManager;
+    
 public:
     class GameInputState
     {
+        friend class InputState;
+        friend class InputManager;
+        
     public:
         void write(OutputMemoryBitStream& inOutputStream) const;
         
@@ -58,9 +63,6 @@ public:
         bool isSprinting();
         
     private:
-        friend class InputState;
-        friend class InputManager;
-        
         uint8_t m_iPlayerId;
         bool m_isMovingRight;
         bool m_isMovingLeft;
@@ -96,8 +98,6 @@ public:
     int getMenuState() const;
     
 private:
-    friend class InputManager;
-    
     GameInputState m_gameInputStates[4];
     
     int m_iMenuState;

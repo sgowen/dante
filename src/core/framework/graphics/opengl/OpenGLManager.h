@@ -24,15 +24,19 @@ struct GpuTextureWrapper;
 typedef float vec4[4];
 typedef vec4 mat4x4[4];
 
-static inline void mat4x4_identity(mat4x4 M)
+inline void mat4x4_identity(mat4x4 M)
 {
     int i, j;
     for (i=0; i<4; ++i)
+    {
         for (j=0; j<4; ++j)
+        {
             M[i][j] = i==j ? 1.f : 0.f;
+        }
+    }
 }
 
-static inline void mat4x4_ortho(mat4x4 M, float l, float r, float b, float t, float n, float f)
+inline void mat4x4_ortho(mat4x4 M, float l, float r, float b, float t, float n, float f)
 {
     M[0][0] = 2.f/(r-l);
     M[0][1] = M[0][2] = M[0][3] = 0.f;

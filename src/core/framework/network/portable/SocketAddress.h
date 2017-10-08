@@ -21,6 +21,8 @@ class SocketAddress : public IMachineAddress
 {
     RTTI_DECL;
     
+    friend class UDPSocket;
+    
 public:
     SocketAddress(uint32_t inAddress, uint16_t inPort);
     
@@ -41,8 +43,6 @@ public:
     virtual std::string toString() const;
     
 private:
-    friend class UDPSocket;
-    
     sockaddr m_sockAddr;
     
     uint32_t& getIP4Ref();
