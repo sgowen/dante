@@ -664,6 +664,7 @@
 		BB7267E81EEC6E99004F33F9 /* steamps3params.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = steamps3params.h; sourceTree = "<group>"; };
 		BB7267E91EEC6E99004F33F9 /* steamtypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = steamtypes.h; sourceTree = "<group>"; };
 		BB7267EA1EEC6E99004F33F9 /* steamuniverse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = steamuniverse.h; sourceTree = "<group>"; };
+		BB72AB951F914B6500DBF0E2 /* SimpleArray.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SimpleArray.h; sourceTree = "<group>"; };
 		BB7428361EB2A98500B7628D /* pch.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = pch.h; sourceTree = "<group>"; };
 		BB7428391EB2AF4200B7628D /* FlagUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlagUtil.h; sourceTree = "<group>"; };
 		BB74283A1EB2AF4200B7628D /* macros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = macros.h; sourceTree = "<group>"; };
@@ -973,6 +974,7 @@
 		BB95797B1F101BBF00E89DE9 /* SuperpoweredtvOSAudioIO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SuperpoweredtvOSAudioIO.h; sourceTree = "<group>"; };
 		BB95797C1F101BBF00E89DE9 /* SuperpoweredtvOSAudioIO.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SuperpoweredtvOSAudioIO.mm; sourceTree = "<group>"; };
 		BB95797D1F101BBF00E89DE9 /* SuperpoweredWhoosh.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SuperpoweredWhoosh.h; sourceTree = "<group>"; };
+		BBA794EA1F8D2925007D4D8E /* HashMap.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HashMap.h; sourceTree = "<group>"; };
 		BBAA69E31EE488DF00451615 /* ITransmissionData.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ITransmissionData.cpp; sourceTree = "<group>"; };
 		BBAEF0BF1EA94ED900F0866E /* Entity.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Entity.cpp; sourceTree = "<group>"; };
 		BBAEF0C01EA94ED900F0866E /* Entity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Entity.h; sourceTree = "<group>"; };
@@ -2684,36 +2686,38 @@
 		BBFE507C1F7C382C00038D27 /* spine */ = {
 			isa = PBXGroup;
 			children = (
+				BB7B401C1F84064700E25168 /* Attachment.h */,
 				BB1C1A621F7EB75500A14D34 /* BlendMode.h */,
-				BB1C1A651F7EB9FB00A14D34 /* Updatable.h */,
-				BB1C1A661F7EE51800A14D34 /* IkConstraintData.h */,
-				BB1C1A691F7EE59C00A14D34 /* TransformMode.h */,
+				BB7B401F1F84136B00E25168 /* Bone.h */,
 				BB1C1A6A1F7EE66C00A14D34 /* BoneData.h */,
 				BB41A6301F829401000104DB /* Constraint.h */,
-				BB41A6311F829485000104DB /* EventData.h */,
-				BB41A65A1F829F31000104DB /* Event.h */,
-				BB41A65D1F82D1BC000104DB /* SlotData.h */,
-				BB41A6601F82D98B000104DB /* PositionMode.h */,
-				BB41A6611F82D996000104DB /* SpacingMode.h */,
-				BB41A6621F82D9A2000104DB /* RotateMode.h */,
-				BB41A6631F82D9C1000104DB /* PathConstraintData.h */,
-				BB7B40161F84022E00E25168 /* TransformConstraintData.h */,
-				BB7B40191F84056900E25168 /* Slot.h */,
-				BB7B401C1F84064700E25168 /* Attachment.h */,
-				BB7B401F1F84136B00E25168 /* Bone.h */,
-				BB7B40221F841FAB00E25168 /* Skin.h */,
-				BBEAA5881F86D3BE00444D04 /* Skeleton.h */,
-				BB4DA7B41F8AB8DF00A961EC /* TransformConstraint.h */,
-				BB4DA7B51F8AB8EB00A961EC /* IkConstraint.h */,
-				BB4DA7B61F8AB8FA00A961EC /* PathConstraint.h */,
-				BB4DA7BD1F8AB94C00A961EC /* SkeletonData.h */,
-				BB4DA7C01F8ABB0300A961EC /* Timeline.h */,
-				BB4DA7C11F8ABCC800A961EC /* MixPose.h */,
-				BB4DA7C21F8ABD6B00A961EC /* MixDirection.h */,
-				BB4DA7C31F8AC9ED00A961EC /* TimelineType.h */,
 				BB4DA7C41F8ACA9B00A961EC /* CurveTimeline.h */,
+				BB41A65A1F829F31000104DB /* Event.h */,
+				BB41A6311F829485000104DB /* EventData.h */,
+				BBA794EA1F8D2925007D4D8E /* HashMap.h */,
+				BB4DA7B51F8AB8EB00A961EC /* IkConstraint.h */,
+				BB1C1A661F7EE51800A14D34 /* IkConstraintData.h */,
 				BB4DA7CB1F8AD3D500A961EC /* MathUtil.h */,
+				BB4DA7C21F8ABD6B00A961EC /* MixDirection.h */,
+				BB4DA7C11F8ABCC800A961EC /* MixPose.h */,
+				BB4DA7B61F8AB8FA00A961EC /* PathConstraint.h */,
+				BB41A6631F82D9C1000104DB /* PathConstraintData.h */,
+				BB41A6601F82D98B000104DB /* PositionMode.h */,
+				BB41A6621F82D9A2000104DB /* RotateMode.h */,
 				BB4DA7CC1F8AD6F700A961EC /* RotateTimeline.h */,
+				BB72AB951F914B6500DBF0E2 /* SimpleArray.h */,
+				BBEAA5881F86D3BE00444D04 /* Skeleton.h */,
+				BB4DA7BD1F8AB94C00A961EC /* SkeletonData.h */,
+				BB7B40221F841FAB00E25168 /* Skin.h */,
+				BB7B40191F84056900E25168 /* Slot.h */,
+				BB41A65D1F82D1BC000104DB /* SlotData.h */,
+				BB41A6611F82D996000104DB /* SpacingMode.h */,
+				BB4DA7C01F8ABB0300A961EC /* Timeline.h */,
+				BB4DA7C31F8AC9ED00A961EC /* TimelineType.h */,
+				BB4DA7B41F8AB8DF00A961EC /* TransformConstraint.h */,
+				BB7B40161F84022E00E25168 /* TransformConstraintData.h */,
+				BB1C1A691F7EE59C00A14D34 /* TransformMode.h */,
+				BB1C1A651F7EB9FB00A14D34 /* Updatable.h */,
 			);
 			path = spine;
 			sourceTree = "<group>";
@@ -2729,27 +2733,27 @@
 		BBFE50A61F7C382C00038D27 /* spine */ = {
 			isa = PBXGroup;
 			children = (
-				BB1C1A671F7EE52200A14D34 /* IkConstraintData.cpp */,
-				BB1C1A6B1F7EE67500A14D34 /* BoneData.cpp */,
-				BB41A6321F82948F000104DB /* EventData.cpp */,
-				BB41A65B1F829F39000104DB /* Event.cpp */,
-				BB41A65E1F82D1C4000104DB /* SlotData.cpp */,
-				BB41A6641F82D9CA000104DB /* PathConstraintData.cpp */,
-				BB7B40171F84023600E25168 /* TransformConstraintData.cpp */,
-				BB7B401A1F84057100E25168 /* Slot.cpp */,
 				BB7B401D1F84065000E25168 /* Attachment.cpp */,
 				BB7B40201F84137300E25168 /* Bone.cpp */,
-				BB7B40231F841FB400E25168 /* Skin.cpp */,
-				BBEAA5891F86D3C700444D04 /* Skeleton.cpp */,
-				BB4DA7B71F8AB91400A961EC /* PathConstraint.cpp */,
-				BB4DA7B91F8AB91F00A961EC /* IkConstraint.cpp */,
-				BB4DA7BB1F8AB92F00A961EC /* TransformConstraint.cpp */,
-				BB4DA7BE1F8AB95800A961EC /* SkeletonData.cpp */,
-				BB4DA7C51F8ACAA800A961EC /* CurveTimeline.cpp */,
-				BB4DA7C71F8ACBA000A961EC /* Updatable.cpp */,
+				BB1C1A6B1F7EE67500A14D34 /* BoneData.cpp */,
 				BB4DA7C91F8ACC1000A961EC /* Constraint.cpp */,
+				BB4DA7C51F8ACAA800A961EC /* CurveTimeline.cpp */,
+				BB41A65B1F829F39000104DB /* Event.cpp */,
+				BB41A6321F82948F000104DB /* EventData.cpp */,
+				BB4DA7B91F8AB91F00A961EC /* IkConstraint.cpp */,
+				BB1C1A671F7EE52200A14D34 /* IkConstraintData.cpp */,
+				BB4DA7B71F8AB91400A961EC /* PathConstraint.cpp */,
+				BB41A6641F82D9CA000104DB /* PathConstraintData.cpp */,
 				BB4DA7CD1F8AD6FF00A961EC /* RotateTimeline.cpp */,
+				BBEAA5891F86D3C700444D04 /* Skeleton.cpp */,
+				BB4DA7BE1F8AB95800A961EC /* SkeletonData.cpp */,
+				BB7B40231F841FB400E25168 /* Skin.cpp */,
+				BB7B401A1F84057100E25168 /* Slot.cpp */,
+				BB41A65E1F82D1C4000104DB /* SlotData.cpp */,
 				BB4DA7CF1F8AE30300A961EC /* Timeline.cpp */,
+				BB4DA7BB1F8AB92F00A961EC /* TransformConstraint.cpp */,
+				BB7B40171F84023600E25168 /* TransformConstraintData.cpp */,
+				BB4DA7C71F8ACBA000A961EC /* Updatable.cpp */,
 			);
 			path = spine;
 			sourceTree = "<group>";
