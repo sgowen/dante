@@ -9,8 +9,9 @@
 #ifndef __noctisgames__Renderer__
 #define __noctisgames__Renderer__
 
+#include <tinythread.h>
+
 #include <vector>
-#include <thread>
 
 class SpriteBatcher;
 class NGRectBatcher;
@@ -80,7 +81,7 @@ protected:
     
 private:
     std::vector<TextureWrapper *> m_loadingTextures;
-    std::vector<std::thread *> m_textureDataLoadingThreads;
+    std::vector<tthread::thread *> m_textureDataLoadingThreads;
 	int m_iMaxBatchSize;
     bool m_areDeviceDependentResourcesCreated;
 	bool m_areWindowSizeDependentResourcesCreated;
@@ -88,6 +89,8 @@ private:
     void handleAsyncTextureLoads();
     
     void cleanUpThreads();
+    
+    friend void loadTextureDataSync(void* arg);
 };
 
 #endif /* defined(__noctisgames__Renderer__) */

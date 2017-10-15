@@ -127,7 +127,7 @@ void SocketPacketHandler::readIncomingPacketsIntoQueue()
             //this doesn't sim jitter, for that we would need to.....
             
             float simulatedReceivedTime = Timing::getInstance()->getFrameStartTime();
-            m_packetQueue.emplace(ReceivedPacket(simulatedReceivedTime, inputStream, fromAddress));
+            m_packetQueue.push(ReceivedPacket(simulatedReceivedTime, inputStream, fromAddress));
         }
         else
         {

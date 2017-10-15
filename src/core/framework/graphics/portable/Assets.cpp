@@ -77,12 +77,12 @@ Animation& Assets::findAnimation(std::string key)
     return *anim;
 }
 
-std::unordered_map<std::string, TextureRegion*>& Assets::getTextureRegionMap()
+std::map<std::string, TextureRegion*>& Assets::getTextureRegionMap()
 {
     return m_textureRegions;
 }
 
-std::unordered_map<std::string, Animation*>& Assets::getAnimationsMap()
+std::map<std::string, Animation*>& Assets::getAnimationsMap()
 {
     return m_animations;
 }

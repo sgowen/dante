@@ -163,7 +163,7 @@ bool NetworkManagerClient::isPlayerIdLocal(uint8_t inPlayerId) const
     return false;
 }
 
-std::unordered_map<uint8_t, uint8_t>& NetworkManagerClient::getPlayerIds()
+std::map<uint8_t, uint8_t>& NetworkManagerClient::getPlayerIds()
 {
     return m_indexToPlayerIdMap;
 }

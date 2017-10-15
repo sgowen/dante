@@ -11,7 +11,7 @@
 
 #include "ITransmissionData.h"
 
-#include <unordered_map>
+#include <map>
 #include <stdint.h>
 
 class DeliveryNotificationManager;
@@ -37,7 +37,7 @@ private:
     uint16_t m_iSequenceNumber;
     float m_fTimeDispatched;
     
-    std::unordered_map<int, ITransmissionData*> m_transmissionDataMap;
+    std::map<int, ITransmissionData*> m_transmissionDataMap;
 };
 
 #endif /* defined(__noctisgames__InFlightPacket__) */

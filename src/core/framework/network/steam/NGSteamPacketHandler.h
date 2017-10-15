@@ -38,7 +38,7 @@ private:
     bool m_isServer;
     
     class ReceivedPacket;
-    std::queue<ReceivedPacket, std::list<ReceivedPacket>> m_packetQueue;
+    std::queue<ReceivedPacket, std::list<ReceivedPacket> > m_packetQueue;
     
     class ReceivedPacket
     {

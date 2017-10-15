@@ -12,8 +12,9 @@
 
 #include "GpuTextureDataWrapper.h"
 #include "GpuTextureWrapper.h"
+#include "Renderer.h"
 
-TextureWrapper::TextureWrapper(std::string inName, bool in_repeatS) : name(inName), gpuTextureDataWrapper(nullptr), gpuTextureWrapper(nullptr), repeatS(in_repeatS), isLoadingData(false)
+TextureWrapper::TextureWrapper(std::string inName, Renderer* renderer, bool in_repeatS) : name(inName), gpuTextureDataWrapper(nullptr), gpuTextureWrapper(nullptr), _renderer(renderer), repeatS(in_repeatS), isLoadingData(false)
 {
     // Empty
 }

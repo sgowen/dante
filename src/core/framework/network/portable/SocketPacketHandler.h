@@ -44,7 +44,7 @@ private:
     UDPSocket* m_socket;
     
     class ReceivedPacket;
-    std::queue<ReceivedPacket, std::list<ReceivedPacket>> m_packetQueue;
+    std::queue<ReceivedPacket, std::list<ReceivedPacket> > m_packetQueue;
     
     bool m_isInitialized;
     

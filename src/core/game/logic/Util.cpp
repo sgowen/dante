@@ -31,7 +31,7 @@ void Util::playSound(int soundId, const b2Vec2& position, bool isServer)
     
     if (InstanceManager::getClientWorld())
     {
-        std::unordered_map<uint8_t, uint8_t> indexToPlayerIdMap = NG_CLIENT->getPlayerIds();
+        std::map<uint8_t, uint8_t> indexToPlayerIdMap = NG_CLIENT->getPlayerIds();
         
         for (auto const &entry : indexToPlayerIdMap)
         {

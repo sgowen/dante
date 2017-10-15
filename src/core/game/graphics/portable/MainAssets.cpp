@@ -19,7 +19,6 @@
 #define FLAG_TEXTURE_SET_DESKTOP 2
 #define FLAG_TEXTURE_SET_GAME_PAD 4
 
-
 MainAssets* MainAssets::getInstance()
 {
     static MainAssets instance = MainAssets();

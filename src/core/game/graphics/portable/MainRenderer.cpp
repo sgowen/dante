@@ -49,11 +49,11 @@
 #include <ctime> // rand
 
 MainRenderer::MainRenderer(int maxBatchSize) : Renderer(maxBatchSize),
-m_characters(new TextureWrapper("texture_001")),
-m_misc(new TextureWrapper("texture_002")),
-m_bg1(new TextureWrapper("texture_003", true)),
-m_bg2(new TextureWrapper("texture_004", true)),
-m_cover(new TextureWrapper("texture_005", true)),
+m_characters(new TextureWrapper("texture_001", this)),
+m_misc(new TextureWrapper("texture_002", this)),
+m_bg1(new TextureWrapper("texture_003", this, true)),
+m_bg2(new TextureWrapper("texture_004", this, true)),
+m_cover(new TextureWrapper("texture_005", this, true)),
 m_font(new Font("texture_002", 0, 0, 16, 64, 75, TEXTURE_SIZE_1024)),
 m_camBounds(new NGRect(0, 0, CAM_WIDTH, CAM_HEIGHT))
 {
@@ -528,7 +528,7 @@ void MainRenderer::renderServerJoinedText()
     
     if (InstanceManager::getClientWorld())
     {
-        bool activePlayerIds[] { false, false, false, false };
+        bool activePlayerIds[4] = {false};
         
         int enemyCount = 0;
         int objectCount = 0;

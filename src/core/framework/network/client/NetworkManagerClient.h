@@ -10,7 +10,7 @@
 #define __noctisgames__NetworkManagerClient__
 
 #include <string>
-#include <unordered_map>
+#include <map>
 #include <vector>
 
 class IClientHelper;
@@ -74,7 +74,7 @@ public:
     
     bool isPlayerIdLocal(uint8_t inPlayerId) const;
     
-    std::unordered_map<uint8_t, uint8_t>& getPlayerIds();
+    std::map<uint8_t, uint8_t>& getPlayerIds();
     
     std::string& getPlayerName();
     
@@ -96,7 +96,7 @@ private:
     
     float m_fTimeOfLastHello;
     
-    std::unordered_map<uint8_t, uint8_t> m_indexToPlayerIdMap;
+    std::map<uint8_t, uint8_t> m_indexToPlayerIdMap;
     uint8_t m_iNextIndex;
     float m_fFrameRate;
     

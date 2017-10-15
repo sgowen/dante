@@ -11,7 +11,7 @@
 
 #include "Box2D/Common/b2Math.h"
 
-#include <unordered_map>
+#include <map>
 
 class IInputState;
 class OutputMemoryBitStream;
@@ -55,7 +55,7 @@ private:
         float m_fAngle;
     };
     
-    mutable std::unordered_map<int, EntityClientCache> m_entityCacheMap;
+    mutable std::map<int, EntityClientCache> m_entityCacheMap;
     
     IInputState* m_inputState;
     float m_fTimestamp;

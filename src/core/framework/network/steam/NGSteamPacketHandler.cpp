@@ -85,7 +85,7 @@ void NGSteamPacketHandler::readIncomingPacketsIntoQueue()
                     //this doesn't sim jitter, for that we would need to.....
                     float simulatedReceivedTime = Timing::getInstance()->getFrameStartTime();
                     
-                    m_packetQueue.emplace(ReceivedPacket(simulatedReceivedTime, inputStream, fromId));
+                    m_packetQueue.push(ReceivedPacket(simulatedReceivedTime, inputStream, fromId));
                 }
                 
                 LOG("readByteCount: %d", readByteCount);

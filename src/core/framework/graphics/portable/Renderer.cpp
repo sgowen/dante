@@ -34,7 +34,7 @@
 #include "GpuProgramWrapperFactory.h"
 #include "NGSTDUtil.h"
 
-#include "Box2D/Box2D.h"
+#include <Box2D/Box2D.h>
 
 #include <string>
 #include <assert.h>
@@ -169,19 +169,28 @@ void Renderer::renderEntityWithColor(Entity &pe, TextureRegion& tr, Color c, boo
     m_spriteBatcher->renderSprite(pe.getPosition().x, pe.getPosition().y, pe.getWidth(), pe.getHeight(), pe.getAngle(), flipX, c, tr);
 }
 
-void Renderer::loadTextureSync(TextureWrapper* textureWrapper)
+void loadTextureDataSync(void* arg)
 {
-    assert(textureWrapper != nullptr);
+    assert(arg != nullptr);
+    
+    TextureWrapper* textureWrapper = reinterpret_cast<TextureWrapper*>(arg);
+    
+    assert(textureWrapper->_renderer != nullptr);
     assert(textureWrapper->name.length() > 0);
     
     if (textureWrapper->gpuTextureWrapper
-        || !m_areDeviceDependentResourcesCreated)
+        || !textureWrapper->_renderer->m_areDeviceDependentResourcesCreated)
     {
         return;
     }
     
     textureWrapper->isLoadingData = true;
-    textureWrapper->gpuTextureDataWrapper = m_textureLoader->loadTextureData(textureWrapper->name.c_str());
+    textureWrapper->gpuTextureDataWrapper = textureWrapper->_renderer->m_textureLoader->loadTextureData(textureWrapper->name.c_str());
+}
+
+void Renderer::loadTextureSync(TextureWrapper* textureWrapper)
+{
+    loadTextureDataSync(textureWrapper);
     
     textureWrapper->gpuTextureWrapper = m_textureLoader->loadTexture(textureWrapper->gpuTextureDataWrapper, textureWrapper->repeatS);
     
@@ -206,13 +215,7 @@ void Renderer::loadTextureAsync(TextureWrapper* textureWrapper)
     m_loadingTextures.push_back(textureWrapper);
     
     textureWrapper->isLoadingData = true;
-    m_textureDataLoadingThreads.push_back(new std::thread([](TextureWrapper* tw, Renderer* r)
-    {
-        if (r->m_areDeviceDependentResourcesCreated)
-        {
-            tw->gpuTextureDataWrapper = r->m_textureLoader->loadTextureData(tw->name.c_str());
-        }
-    }, textureWrapper, this));
+    m_textureDataLoadingThreads.push_back(new tthread::thread(loadTextureDataSync, textureWrapper));
 }
 
 void Renderer::unloadTexture(TextureWrapper* textureWrapper)
@@ -295,7 +298,7 @@ void Renderer::handleAsyncTextureLoads()
 
 void Renderer::cleanUpThreads()
 {
-    for (std::vector<std::thread *>::iterator i = m_textureDataLoadingThreads.begin(); i != m_textureDataLoadingThreads.end(); ++i)
+    for (std::vector<tthread::thread *>::iterator i = m_textureDataLoadingThreads.begin(); i != m_textureDataLoadingThreads.end(); ++i)
     {
         (*i)->join();
     }
