@@ -12,7 +12,6 @@
 #include <vector>
 #include <memory>
 #include <map>
-#include <unordered_map>
 
 class NGSTDUtil
 {
@@ -23,17 +22,6 @@ public:
         for (typename std::vector<T*>::iterator i = items.begin(); i != items.end(); )
         {
             delete *i;
-            
-            i = items.erase(i);
-        }
-    }
-    
-    template<typename T>
-    static void cleanUpVectorOfUniquePointers(std::vector<std::unique_ptr<T>>& items)
-    {
-        for (typename std::vector<std::unique_ptr<T>>::iterator i = items.begin(); i != items.end(); )
-        {
-            (*i).reset();
             
             i = items.erase(i);
         }
@@ -51,20 +39,9 @@ public:
     }
     
     template<typename K, typename T>
-    static void cleanUpMapOfPointers(std::unordered_map<K, T*>& items)
+    static void cleanUpMapOfEntityPointers(std::map<K, T*>& items)
     {
-        for (typename std::unordered_map<K, T*>::iterator i = items.begin(); i != items.end(); )
-        {
-            delete i->second;
-            
-            i = items.erase(i);
-        }
-    }
-    
-    template<typename K, typename T>
-    static void cleanUpMapOfEntityPointers(std::unordered_map<K, T*>& items)
-    {
-        for (typename std::unordered_map<K, T*>::iterator i = items.begin(); i != items.end(); )
+        for (typename std::map<K, T*>::iterator i = items.begin(); i != items.end(); )
         {
             (i->second)->onDeletion();
             

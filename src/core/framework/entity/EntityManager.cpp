@@ -58,12 +58,12 @@ void EntityManager::deregisterEntity(Entity* inEntity)
     inEntity = nullptr;
 }
 
-std::unordered_map<uint32_t, Entity*>& EntityManager::getMap()
+std::map<uint32_t, Entity*>& EntityManager::getMap()
 {
     return m_entityMap;
 }
 
-std::unordered_map<uint32_t, Entity*> EntityManager::getMapCopy()
+std::map<uint32_t, Entity*> EntityManager::getMapCopy()
 {
     return m_entityMap;
 }

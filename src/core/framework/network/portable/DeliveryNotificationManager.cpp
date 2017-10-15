@@ -113,7 +113,7 @@ InFlightPacket* DeliveryNotificationManager::writeSequenceNumber(OutputMemoryBit
     
     if (m_shouldprocessAcks)
     {
-        m_inFlightPackets.emplace_back(InFlightPacket(sequenceNumber));
+        m_inFlightPackets.push_back(InFlightPacket(sequenceNumber));
         
         return &m_inFlightPackets.back();
     }
@@ -237,7 +237,7 @@ void DeliveryNotificationManager::addPendingAck(uint16_t inSequenceNumber)
     //start a new range
     if (m_pendingAcks.size() == 0 || !m_pendingAcks.back().extendIfShould(inSequenceNumber))
     {
-        m_pendingAcks.emplace_back(inSequenceNumber);
+        m_pendingAcks.push_back(inSequenceNumber);
     }
 }
 

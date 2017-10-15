@@ -13,6 +13,7 @@
 
 struct GpuTextureDataWrapper;
 struct GpuTextureWrapper;
+class Renderer;
 
 class TextureWrapper
 {
@@ -20,10 +21,11 @@ public:
     std::string name;
     GpuTextureDataWrapper* gpuTextureDataWrapper;
     GpuTextureWrapper* gpuTextureWrapper;
+    Renderer* _renderer;
     bool repeatS;
     bool isLoadingData;
     
-    TextureWrapper(std::string inName, bool in_repeatS = false);
+    TextureWrapper(std::string inName, Renderer* renderer, bool in_repeatS = false);
 };
 
 #endif /* defined(__noctisgames__TextureWrapper__) */

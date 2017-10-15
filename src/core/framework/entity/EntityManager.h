@@ -9,7 +9,7 @@
 #ifndef __noctisgames__EntityManager__
 #define __noctisgames__EntityManager__
 
-#include <unordered_map>
+#include <map>
 
 class Entity;
 
@@ -29,15 +29,15 @@ public:
     
     void deregisterEntity(Entity* inEntity);
     
-    std::unordered_map<uint32_t, Entity*>& getMap();
+    std::map<uint32_t, Entity*>& getMap();
     
-    std::unordered_map<uint32_t, Entity*> getMapCopy();
+    std::map<uint32_t, Entity*> getMapCopy();
     
 private:
     HandleEntityCreatedFunc m_handleEntityCreatedFunc;
     HandleEntityDeletionFunc m_handleEntityDeletionFunc;
     
-    std::unordered_map<uint32_t, Entity*> m_entityMap;
+    std::map<uint32_t, Entity*> m_entityMap;
 };
 
 #endif /* defined(__noctisgames__EntityManager__) */

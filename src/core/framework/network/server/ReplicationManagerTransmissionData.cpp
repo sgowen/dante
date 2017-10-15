@@ -33,7 +33,7 @@ void ReplicationManagerTransmissionData::addTransmission(uint32_t inNetworkId, R
      assert(inNetworkId != transmission.getID());
      }
      */
-    m_transmissions.emplace_back(inNetworkId, inAction, inState);
+    m_transmissions.push_back(ReplicationTransmission(inNetworkId, inAction, inState));
 }
 
 void ReplicationManagerTransmissionData::handleDeliveryFailure(DeliveryNotificationManager* inDeliveryNotificationManager) const

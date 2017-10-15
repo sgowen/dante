@@ -13,7 +13,7 @@
 
 #include "ReplicationCommand.h"
 
-#include <unordered_map>
+#include <map>
 
 class OutputMemoryBitStream;
 class ReplicationManagerTransmissionData;
@@ -34,7 +34,7 @@ public:
     void write(OutputMemoryBitStream& inOutputStream, ReplicationManagerTransmissionData* ioTransmissinData);
     
 private:
-    std::unordered_map<int, ReplicationCommand> m_networkIdToReplicationCommand;
+    std::map<int, ReplicationCommand> m_networkIdToReplicationCommand;
     
     uint32_t writeCreateAction(OutputMemoryBitStream& inOutputStream, uint32_t inNetworkId, uint32_t inDirtyState);
     

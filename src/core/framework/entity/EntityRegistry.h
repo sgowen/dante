@@ -13,7 +13,7 @@
 
 #include "Network.h"
 
-#include <unordered_map>
+#include <map>
 
 typedef Entity* (*EntityCreationFunc)();
 
@@ -27,7 +27,7 @@ public:
     Entity* createEntity(uint32_t inFourCCName);
     
 private:
-    std::unordered_map<uint32_t, EntityCreationFunc> m_nameToEntityCreationFunctionMap;
+    std::map<uint32_t, EntityCreationFunc> m_nameToEntityCreationFunctionMap;
 };
 
 #endif /* defined(__noctisgames__EntityRegistry__) */

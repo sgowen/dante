@@ -9,7 +9,7 @@
 #ifndef __noctisgames__NetworkManagerServer__
 #define __noctisgames__NetworkManagerServer__
 
-#include <unordered_map>
+#include <map>
 
 class IServerHelper;
 class InputMemoryBitStream;
@@ -84,8 +84,8 @@ private:
     HandleLostClientFunc m_handleLostClientFunc;
     InputStateCreationFunc m_inputStateCreationFunc;
     
-    std::unordered_map<size_t, ClientProxy*> m_addressHashToClientMap;
-    std::unordered_map<int, ClientProxy*> m_playerIDToClientMap;
+    std::map<size_t, ClientProxy*> m_addressHashToClientMap;
+    std::map<int, ClientProxy*> m_playerIDToClientMap;
     uint8_t m_iNextPlayerId;
     
     void processPacket(InputMemoryBitStream& inInputStream, IMachineAddress* inFromAddress);

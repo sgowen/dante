@@ -21,7 +21,7 @@ MoveList::MoveList(): m_fLastMoveTimestamp(-1.0f), m_fLastProcessedMoveTimestamp
 
 const Move& MoveList::addMove(IInputState* inInputState, float inTimestamp)
 {
-    m_moves.emplace_back(Move(inInputState, inTimestamp));
+    m_moves.push_back(Move(inInputState, inTimestamp));
     
     m_fLastMoveTimestamp = inTimestamp;
     
@@ -40,7 +40,7 @@ bool MoveList::addMoveIfNew(const Move& inMove)
     {
         m_fLastMoveTimestamp = timeStamp;
         
-        m_moves.emplace_back(Move(inMove.getInputState(), timeStamp));
+        m_moves.push_back(Move(inMove.getInputState(), timeStamp));
         
         return true;
     }

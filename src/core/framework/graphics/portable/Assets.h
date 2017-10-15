@@ -9,7 +9,7 @@
 #ifndef __noctisgames__Assets__
 #define __noctisgames__Assets__
 
-#include <unordered_map>
+#include <map>
 #include <string>
 
 class IAssetsMapper;
@@ -31,13 +31,13 @@ public:
     
     Animation& findAnimation(std::string key);
     
-    std::unordered_map<std::string, TextureRegion*>& getTextureRegionMap();
+    std::map<std::string, TextureRegion*>& getTextureRegionMap();
     
-    std::unordered_map<std::string, Animation*>& getAnimationsMap();
+    std::map<std::string, Animation*>& getAnimationsMap();
 
 private:
-    std::unordered_map<std::string, TextureRegion*> m_textureRegions;
-    std::unordered_map<std::string, Animation*> m_animations;
+    std::map<std::string, TextureRegion*> m_textureRegions;
+    std::map<std::string, Animation*> m_animations;
     
     // ctor, copy ctor, and assignment should be private in a Singleton
     Assets();

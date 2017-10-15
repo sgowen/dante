@@ -12,6 +12,8 @@
 
 #include "GpuTextureWrapper.h"
 
+#include "nullptr_emulation.h"
+
 TransitionGpuProgramWrapper::TransitionGpuProgramWrapper() : m_to(nullptr), m_fProgress(0)
 {
     // Empty
