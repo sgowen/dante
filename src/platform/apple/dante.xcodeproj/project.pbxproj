@@ -221,6 +221,7 @@
 		BB9579361F10110200E89DE9 /* MacSound.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB9579311F10110200E89DE9 /* MacSound.cpp */; };
 		BB9579371F10110200E89DE9 /* MacSoundWrapper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB9579331F10110200E89DE9 /* MacSoundWrapper.cpp */; };
 		BB95794A1F1012D600E89DE9 /* ObjectALWrapper.mm in Sources */ = {isa = PBXBuildFile; fileRef = BB9579491F1012D600E89DE9 /* ObjectALWrapper.mm */; };
+		BBA8817E1F941C9F001153D7 /* MathUtil.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBA8817D1F941C9F001153D7 /* MathUtil.cpp */; };
 		BBAA69E51EE488DF00451615 /* ITransmissionData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAA69E31EE488DF00451615 /* ITransmissionData.cpp */; };
 		BBAEF1F01EA94EDA00F0866E /* Entity.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF0BF1EA94ED900F0866E /* Entity.cpp */; };
 		BBAEF1F21EA94EDA00F0866E /* EntityManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF0C11EA94ED900F0866E /* EntityManager.cpp */; };
@@ -1062,6 +1063,7 @@
 		BB95797C1F101BBF00E89DE9 /* SuperpoweredtvOSAudioIO.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SuperpoweredtvOSAudioIO.mm; sourceTree = "<group>"; };
 		BB95797D1F101BBF00E89DE9 /* SuperpoweredWhoosh.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SuperpoweredWhoosh.h; sourceTree = "<group>"; };
 		BBA794EA1F8D2925007D4D8E /* HashMap.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HashMap.h; sourceTree = "<group>"; };
+		BBA8817D1F941C9F001153D7 /* MathUtil.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = MathUtil.cpp; sourceTree = "<group>"; };
 		BBAA69E31EE488DF00451615 /* ITransmissionData.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ITransmissionData.cpp; sourceTree = "<group>"; };
 		BBAEF0BF1EA94ED900F0866E /* Entity.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Entity.cpp; sourceTree = "<group>"; };
 		BBAEF0C01EA94ED900F0866E /* Entity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Entity.h; sourceTree = "<group>"; };
@@ -1670,6 +1672,7 @@
 				BB6A1A5A1F94151A005B7D05 /* EventData.cpp */,
 				BB6A1A5B1F94151A005B7D05 /* IkConstraint.cpp */,
 				BB6A1A5C1F94151A005B7D05 /* IkConstraintData.cpp */,
+				BBA8817D1F941C9F001153D7 /* MathUtil.cpp */,
 				BB6A1A5D1F94151A005B7D05 /* PathConstraint.cpp */,
 				BB6A1A5E1F94151A005B7D05 /* PathConstraintData.cpp */,
 				BB6A1A5F1F94151A005B7D05 /* RotateTimeline.cpp */,
@@ -3252,6 +3255,7 @@
 				BB9578B31F0FE0F400E89DE9 /* b2Contact.cpp in Sources */,
 				BBAEF22E1EA94EDA00F0866E /* OpenGLCircleBatcher.cpp in Sources */,
 				BB9578A41F0FE0F400E89DE9 /* b2BlockAllocator.cpp in Sources */,
+				BBA8817E1F941C9F001153D7 /* MathUtil.cpp in Sources */,
 				BBCFF1C51ECD312E003EE520 /* Assets.cpp in Sources */,
 				BB9578A11F0FE0F400E89DE9 /* b2CircleShape.cpp in Sources */,
 				BBAEF2341EA94EDA00F0866E /* OpenGLGeometryGpuProgramWrapper.cpp in Sources */,
