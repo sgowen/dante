@@ -72,6 +72,7 @@
 		BB5833F11EEDDD330084DA20 /* texture_001.ngt in Resources */ = {isa = PBXBuildFile; fileRef = BB5833E71EEDDD330084DA20 /* texture_001.ngt */; };
 		BB5833F31EEDDD330084DA20 /* texture_002.ngt in Resources */ = {isa = PBXBuildFile; fileRef = BB5833E91EEDDD330084DA20 /* texture_002.ngt */; };
 		BB59794D1EEF454B0047BEC6 /* pch.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB59794C1EEF454B0047BEC6 /* pch.cpp */; };
+		BB59DFDE1F968B8E00B495BC /* RTTI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB59DFDD1F968B8E00B495BC /* RTTI.cpp */; };
 		BB6A1A691F94152E005B7D05 /* Attachment.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB6A1A541F94151A005B7D05 /* Attachment.cpp */; };
 		BB6A1A6A1F94152E005B7D05 /* Bone.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB6A1A551F94151A005B7D05 /* Bone.cpp */; };
 		BB6A1A6B1F94152E005B7D05 /* BoneData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB6A1A561F94151A005B7D05 /* BoneData.cpp */; };
@@ -545,6 +546,9 @@
 		BB5833F61EEDDD440084DA20 /* texture_002.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = texture_002.png; sourceTree = "<group>"; };
 		BB59794C1EEF454B0047BEC6 /* pch.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = pch.cpp; sourceTree = "<group>"; };
 		BB59794F1EEF56830047BEC6 /* NGSteam.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NGSteam.h; sourceTree = "<group>"; };
+		BB59DFDC1F968B8400B495BC /* RTTI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RTTI.h; sourceTree = "<group>"; };
+		BB59DFDD1F968B8E00B495BC /* RTTI.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = RTTI.cpp; sourceTree = "<group>"; };
+		BB59DFDF1F96AA3500B495BC /* ContainerUtil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ContainerUtil.h; sourceTree = "<group>"; };
 		BB5C31921EF5F5C0000B98FC /* KeyboardLookup.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KeyboardLookup.h; sourceTree = "<group>"; };
 		BB5F46FA1ED38D61005FEC0C /* SocketAddressFamily.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SocketAddressFamily.h; sourceTree = "<group>"; };
 		BB61CB581EC9FA1B000E0291 /* FrameworkConstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FrameworkConstants.h; sourceTree = "<group>"; };
@@ -1676,6 +1680,7 @@
 				BB6A1A5D1F94151A005B7D05 /* PathConstraint.cpp */,
 				BB6A1A5E1F94151A005B7D05 /* PathConstraintData.cpp */,
 				BB6A1A5F1F94151A005B7D05 /* RotateTimeline.cpp */,
+				BB59DFDD1F968B8E00B495BC /* RTTI.cpp */,
 				BB6A1A601F94151A005B7D05 /* Skeleton.cpp */,
 				BB6A1A611F94151A005B7D05 /* SkeletonData.cpp */,
 				BB6A1A621F94151A005B7D05 /* Skin.cpp */,
@@ -2923,6 +2928,7 @@
 		BBFE507C1F7C382C00038D27 /* spine */ = {
 			isa = PBXGroup;
 			children = (
+				BB59DFDF1F96AA3500B495BC /* ContainerUtil.h */,
 				BB7B401C1F84064700E25168 /* Attachment.h */,
 				BB1C1A621F7EB75500A14D34 /* BlendMode.h */,
 				BB7B401F1F84136B00E25168 /* Bone.h */,
@@ -2942,6 +2948,7 @@
 				BB41A6601F82D98B000104DB /* PositionMode.h */,
 				BB41A6621F82D9A2000104DB /* RotateMode.h */,
 				BB4DA7CC1F8AD6F700A961EC /* RotateTimeline.h */,
+				BB59DFDC1F968B8400B495BC /* RTTI.h */,
 				BB72AB951F914B6500DBF0E2 /* SimpleArray.h */,
 				BBEAA5881F86D3BE00444D04 /* Skeleton.h */,
 				BB4DA7BD1F8AB94C00A961EC /* SkeletonData.h */,
@@ -3160,6 +3167,7 @@
 				BB8308741EC2AD1F00435E7E /* SocketUtil.cpp in Sources */,
 				BB4253E11EF598C1003F6D2A /* SocketClientHelper.cpp in Sources */,
 				BB79C1531F0EE37700A734CE /* DDHidEvent.m in Sources */,
+				BB59DFDE1F968B8E00B495BC /* RTTI.cpp in Sources */,
 				BB7251951EE105330024C71C /* NetworkManagerClient.cpp in Sources */,
 				BB9579271F10108A00E89DE9 /* OALAudioSession.m in Sources */,
 				BB9578BD1F0FE0F400E89DE9 /* b2MotorJoint.cpp in Sources */,
