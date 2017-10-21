@@ -722,7 +722,7 @@
 		BB7267E81EEC6E99004F33F9 /* steamps3params.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = steamps3params.h; sourceTree = "<group>"; };
 		BB7267E91EEC6E99004F33F9 /* steamtypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = steamtypes.h; sourceTree = "<group>"; };
 		BB7267EA1EEC6E99004F33F9 /* steamuniverse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = steamuniverse.h; sourceTree = "<group>"; };
-		BB72AB951F914B6500DBF0E2 /* SimpleArray.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SimpleArray.h; sourceTree = "<group>"; };
+		BB72AB951F914B6500DBF0E2 /* Vector.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Vector.h; sourceTree = "<group>"; };
 		BB72AB971F91531600DBF0E2 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		BB72AB991F91531600DBF0E2 /* Spine.1.6.18.nuspec */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Spine.1.6.18.nuspec; sourceTree = "<group>"; };
 		BB72AB9B1F91531600DBF0E2 /* AssemblyInfo.cs */ = {isa = PBXFileReference; lastKnownFileType = text; path = AssemblyInfo.cs; sourceTree = "<group>"; };
@@ -2949,7 +2949,7 @@
 				BB41A6621F82D9A2000104DB /* RotateMode.h */,
 				BB4DA7CC1F8AD6F700A961EC /* RotateTimeline.h */,
 				BB59DFDC1F968B8400B495BC /* RTTI.h */,
-				BB72AB951F914B6500DBF0E2 /* SimpleArray.h */,
+				BB72AB951F914B6500DBF0E2 /* Vector.h */,
 				BBEAA5881F86D3BE00444D04 /* Skeleton.h */,
 				BB4DA7BD1F8AB94C00A961EC /* SkeletonData.h */,
 				BB7B40221F841FAB00E25168 /* Skin.h */,
