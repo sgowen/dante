@@ -137,6 +137,7 @@
 		BB79C15D1F0EE37700A734CE /* NSDictionary+DDHidExtras.m in Sources */ = {isa = PBXBuildFile; fileRef = BB79C14E1F0EE37700A734CE /* NSDictionary+DDHidExtras.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		BB79C1601F0EE3FD00A734CE /* NSXReturnThrowError.m in Sources */ = {isa = PBXBuildFile; fileRef = BB79C15F1F0EE3FD00A734CE /* NSXReturnThrowError.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		BB79C1631F0EE60100A734CE /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB79C1621F0EE60100A734CE /* IOKit.framework */; };
+		BB7D2E2E1F9D704A007B98D3 /* VertexAttachment.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB7D2E2D1F9D704A007B98D3 /* VertexAttachment.cpp */; };
 		BB80D2021EF97F89002B9448 /* NGSteamP2PAuth.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB80D2001EF97F89002B9448 /* NGSteamP2PAuth.cpp */; };
 		BB8308411EC2AD1F00435E7E /* AckRange.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8308091EC2AD1F00435E7E /* AckRange.cpp */; };
 		BB8308441EC2AD1F00435E7E /* DeliveryNotificationManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB83080C1EC2AD1F00435E7E /* DeliveryNotificationManager.cpp */; };
@@ -814,6 +815,8 @@
 		BB7B401C1F84064700E25168 /* Attachment.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Attachment.h; sourceTree = "<group>"; };
 		BB7B401F1F84136B00E25168 /* Bone.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Bone.h; sourceTree = "<group>"; };
 		BB7B40221F841FAB00E25168 /* Skin.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Skin.h; sourceTree = "<group>"; };
+		BB7D2E2C1F9D7041007B98D3 /* VertexAttachment.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VertexAttachment.h; sourceTree = "<group>"; };
+		BB7D2E2D1F9D704A007B98D3 /* VertexAttachment.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = VertexAttachment.cpp; sourceTree = "<group>"; };
 		BB80D2001EF97F89002B9448 /* NGSteamP2PAuth.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NGSteamP2PAuth.cpp; sourceTree = "<group>"; };
 		BB80D2011EF97F89002B9448 /* NGSteamP2PAuth.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NGSteamP2PAuth.h; sourceTree = "<group>"; };
 		BB8307F31EC2AC0900435E7E /* ReplicationManagerServer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ReplicationManagerServer.cpp; sourceTree = "<group>"; };
@@ -1690,6 +1693,7 @@
 				BB6A1A661F94151A005B7D05 /* TransformConstraint.cpp */,
 				BB6A1A671F94151A005B7D05 /* TransformConstraintData.cpp */,
 				BB6A1A681F94151A005B7D05 /* Updatable.cpp */,
+				BB7D2E2D1F9D704A007B98D3 /* VertexAttachment.cpp */,
 			);
 			path = spine;
 			sourceTree = "<group>";
@@ -2928,12 +2932,12 @@
 		BBFE507C1F7C382C00038D27 /* spine */ = {
 			isa = PBXGroup;
 			children = (
-				BB59DFDF1F96AA3500B495BC /* ContainerUtil.h */,
 				BB7B401C1F84064700E25168 /* Attachment.h */,
 				BB1C1A621F7EB75500A14D34 /* BlendMode.h */,
 				BB7B401F1F84136B00E25168 /* Bone.h */,
 				BB1C1A6A1F7EE66C00A14D34 /* BoneData.h */,
 				BB41A6301F829401000104DB /* Constraint.h */,
+				BB59DFDF1F96AA3500B495BC /* ContainerUtil.h */,
 				BB4DA7C41F8ACA9B00A961EC /* CurveTimeline.h */,
 				BB41A65A1F829F31000104DB /* Event.h */,
 				BB41A6311F829485000104DB /* EventData.h */,
@@ -2949,7 +2953,6 @@
 				BB41A6621F82D9A2000104DB /* RotateMode.h */,
 				BB4DA7CC1F8AD6F700A961EC /* RotateTimeline.h */,
 				BB59DFDC1F968B8400B495BC /* RTTI.h */,
-				BB72AB951F914B6500DBF0E2 /* Vector.h */,
 				BBEAA5881F86D3BE00444D04 /* Skeleton.h */,
 				BB4DA7BD1F8AB94C00A961EC /* SkeletonData.h */,
 				BB7B40221F841FAB00E25168 /* Skin.h */,
@@ -2962,6 +2965,8 @@
 				BB7B40161F84022E00E25168 /* TransformConstraintData.h */,
 				BB1C1A691F7EE59C00A14D34 /* TransformMode.h */,
 				BB1C1A651F7EB9FB00A14D34 /* Updatable.h */,
+				BB72AB951F914B6500DBF0E2 /* Vector.h */,
+				BB7D2E2C1F9D7041007B98D3 /* VertexAttachment.h */,
 			);
 			path = spine;
 			sourceTree = "<group>";
@@ -3184,6 +3189,7 @@
 				BBAEF2321EA94EDA00F0866E /* OpenGLFramebufferToScreenProgram.cpp in Sources */,
 				BB95789D1F0FE0F400E89DE9 /* b2Distance.cpp in Sources */,
 				BB7251A41EE105490024C71C /* MoveList.cpp in Sources */,
+				BB7D2E2E1F9D704A007B98D3 /* VertexAttachment.cpp in Sources */,
 				BB95791C1F10108A00E89DE9 /* OALSimpleAudio.m in Sources */,
 				BB9578B81F0FE0F400E89DE9 /* b2PolygonContact.cpp in Sources */,
 				BB44CB821DB053C0003E633F /* pngerror.c in Sources */,
