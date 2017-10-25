@@ -55,6 +55,7 @@
 		BB44CB961DB05486003E633F /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB44CB951DB05486003E633F /* QuartzCore.framework */; };
 		BB44CB9A1DB054B8003E633F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB44CB991DB054B8003E633F /* Foundation.framework */; };
 		BB44CB9E1DB054F9003E633F /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = BB44CB9D1DB054F9003E633F /* libz.tbd */; };
+		BB4EAE6D1FA00C75002CA5D2 /* PathAttachment.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB4EAE6C1FA00C75002CA5D2 /* PathAttachment.cpp */; };
 		BB58334C1EEDB1820084DA20 /* libsteam_api.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BB58334B1EEDB1820084DA20 /* libsteam_api.dylib */; };
 		BB5833681EEDB2E10084DA20 /* libsteam_api.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BB58334B1EEDB1820084DA20 /* libsteam_api.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		BB5833741EEDBBC50084DA20 /* steam_appid.txt in Resources */ = {isa = PBXBuildFile; fileRef = BB5833731EEDBBC50084DA20 /* steam_appid.txt */; };
@@ -452,6 +453,8 @@
 		BB4DA7C41F8ACA9B00A961EC /* CurveTimeline.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CurveTimeline.h; sourceTree = "<group>"; };
 		BB4DA7CB1F8AD3D500A961EC /* MathUtil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MathUtil.h; sourceTree = "<group>"; };
 		BB4DA7CC1F8AD6F700A961EC /* RotateTimeline.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RotateTimeline.h; sourceTree = "<group>"; };
+		BB4EAE6B1FA00C6C002CA5D2 /* PathAttachment.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PathAttachment.h; sourceTree = "<group>"; };
+		BB4EAE6C1FA00C75002CA5D2 /* PathAttachment.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = PathAttachment.cpp; sourceTree = "<group>"; };
 		BB58334B1EEDB1820084DA20 /* libsteam_api.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libsteam_api.dylib; sourceTree = "<group>"; };
 		BB58335E1EEDB20A0084DA20 /* libsteam_api.so */ = {isa = PBXFileReference; lastKnownFileType = file; path = libsteam_api.so; sourceTree = "<group>"; };
 		BB5833601EEDB20A0084DA20 /* libsteam_api.so */ = {isa = PBXFileReference; lastKnownFileType = file; path = libsteam_api.so; sourceTree = "<group>"; };
@@ -1694,6 +1697,7 @@
 				BB6A1A671F94151A005B7D05 /* TransformConstraintData.cpp */,
 				BB6A1A681F94151A005B7D05 /* Updatable.cpp */,
 				BB7D2E2D1F9D704A007B98D3 /* VertexAttachment.cpp */,
+				BB4EAE6C1FA00C75002CA5D2 /* PathAttachment.cpp */,
 			);
 			path = spine;
 			sourceTree = "<group>";
@@ -2967,6 +2971,7 @@
 				BB1C1A651F7EB9FB00A14D34 /* Updatable.h */,
 				BB72AB951F914B6500DBF0E2 /* Vector.h */,
 				BB7D2E2C1F9D7041007B98D3 /* VertexAttachment.h */,
+				BB4EAE6B1FA00C6C002CA5D2 /* PathAttachment.h */,
 			);
 			path = spine;
 			sourceTree = "<group>";
@@ -3235,6 +3240,7 @@
 				BB9578A31F0FE0F400E89DE9 /* b2PolygonShape.cpp in Sources */,
 				BB59794D1EEF454B0047BEC6 /* pch.cpp in Sources */,
 				BB79C1511F0EE37700A734CE /* DDHidDevice.m in Sources */,
+				BB4EAE6D1FA00C75002CA5D2 /* PathAttachment.cpp in Sources */,
 				BBF226CF1EC12CDE00573356 /* ReplicationManagerClient.cpp in Sources */,
 				BBAEF1FE1EA94EDA00F0866E /* AppleAssetDataHandler.cpp in Sources */,
 				BBAEF2AA1EA94EDA00F0866E /* ISoundWrapper.cpp in Sources */,
