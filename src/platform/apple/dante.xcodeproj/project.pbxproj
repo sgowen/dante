@@ -55,6 +55,7 @@
 		BB44CB961DB05486003E633F /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB44CB951DB05486003E633F /* QuartzCore.framework */; };
 		BB44CB9A1DB054B8003E633F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB44CB991DB054B8003E633F /* Foundation.framework */; };
 		BB44CB9E1DB054F9003E633F /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = BB44CB9D1DB054F9003E633F /* libz.tbd */; };
+		BB4BBD5C1FA6812700BB7EDB /* Animation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB4BBD5B1FA6812700BB7EDB /* Animation.cpp */; };
 		BB4EAE6D1FA00C75002CA5D2 /* PathAttachment.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB4EAE6C1FA00C75002CA5D2 /* PathAttachment.cpp */; };
 		BB58334C1EEDB1820084DA20 /* libsteam_api.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BB58334B1EEDB1820084DA20 /* libsteam_api.dylib */; };
 		BB5833681EEDB2E10084DA20 /* libsteam_api.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BB58334B1EEDB1820084DA20 /* libsteam_api.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
@@ -224,6 +225,8 @@
 		BB9579361F10110200E89DE9 /* MacSound.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB9579311F10110200E89DE9 /* MacSound.cpp */; };
 		BB9579371F10110200E89DE9 /* MacSoundWrapper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB9579331F10110200E89DE9 /* MacSoundWrapper.cpp */; };
 		BB95794A1F1012D600E89DE9 /* ObjectALWrapper.mm in Sources */ = {isa = PBXBuildFile; fileRef = BB9579491F1012D600E89DE9 /* ObjectALWrapper.mm */; };
+		BB9689DD1FA6A1E1004F7435 /* RegionAttachment.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB9689DC1FA6A1E1004F7435 /* RegionAttachment.cpp */; };
+		BB9689E01FA6A1F7004F7435 /* MeshAttachment.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB9689DF1FA6A1F7004F7435 /* MeshAttachment.cpp */; };
 		BBA8817E1F941C9F001153D7 /* MathUtil.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBA8817D1F941C9F001153D7 /* MathUtil.cpp */; };
 		BBAA69E51EE488DF00451615 /* ITransmissionData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAA69E31EE488DF00451615 /* ITransmissionData.cpp */; };
 		BBAEF1F01EA94EDA00F0866E /* Entity.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF0BF1EA94ED900F0866E /* Entity.cpp */; };
@@ -442,6 +445,8 @@
 		BB44CB971DB0549D003E633F /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.12.sdk/System/Library/Frameworks/CoreFoundation.framework; sourceTree = DEVELOPER_DIR; };
 		BB44CB991DB054B8003E633F /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.12.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		BB44CB9D1DB054F9003E633F /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.12.sdk/usr/lib/libz.tbd; sourceTree = DEVELOPER_DIR; };
+		BB4BBD5A1FA6811B00BB7EDB /* Animation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Animation.h; sourceTree = "<group>"; };
+		BB4BBD5B1FA6812700BB7EDB /* Animation.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Animation.cpp; sourceTree = "<group>"; };
 		BB4DA7B41F8AB8DF00A961EC /* TransformConstraint.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TransformConstraint.h; sourceTree = "<group>"; };
 		BB4DA7B51F8AB8EB00A961EC /* IkConstraint.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IkConstraint.h; sourceTree = "<group>"; };
 		BB4DA7B61F8AB8FA00A961EC /* PathConstraint.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PathConstraint.h; sourceTree = "<group>"; };
@@ -1072,6 +1077,10 @@
 		BB95797B1F101BBF00E89DE9 /* SuperpoweredtvOSAudioIO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SuperpoweredtvOSAudioIO.h; sourceTree = "<group>"; };
 		BB95797C1F101BBF00E89DE9 /* SuperpoweredtvOSAudioIO.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SuperpoweredtvOSAudioIO.mm; sourceTree = "<group>"; };
 		BB95797D1F101BBF00E89DE9 /* SuperpoweredWhoosh.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SuperpoweredWhoosh.h; sourceTree = "<group>"; };
+		BB9689DB1FA6A1D6004F7435 /* RegionAttachment.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RegionAttachment.h; sourceTree = "<group>"; };
+		BB9689DC1FA6A1E1004F7435 /* RegionAttachment.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = RegionAttachment.cpp; sourceTree = "<group>"; };
+		BB9689DE1FA6A1ED004F7435 /* MeshAttachment.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MeshAttachment.h; sourceTree = "<group>"; };
+		BB9689DF1FA6A1F7004F7435 /* MeshAttachment.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = MeshAttachment.cpp; sourceTree = "<group>"; };
 		BBA794EA1F8D2925007D4D8E /* HashMap.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HashMap.h; sourceTree = "<group>"; };
 		BBA8817D1F941C9F001153D7 /* MathUtil.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = MathUtil.cpp; sourceTree = "<group>"; };
 		BBAA69E31EE488DF00451615 /* ITransmissionData.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ITransmissionData.cpp; sourceTree = "<group>"; };
@@ -1673,6 +1682,7 @@
 		BB6A1A531F94151A005B7D05 /* spine */ = {
 			isa = PBXGroup;
 			children = (
+				BB4BBD5B1FA6812700BB7EDB /* Animation.cpp */,
 				BB6A1A541F94151A005B7D05 /* Attachment.cpp */,
 				BB6A1A551F94151A005B7D05 /* Bone.cpp */,
 				BB6A1A561F94151A005B7D05 /* BoneData.cpp */,
@@ -1683,8 +1693,11 @@
 				BB6A1A5B1F94151A005B7D05 /* IkConstraint.cpp */,
 				BB6A1A5C1F94151A005B7D05 /* IkConstraintData.cpp */,
 				BBA8817D1F941C9F001153D7 /* MathUtil.cpp */,
+				BB9689DF1FA6A1F7004F7435 /* MeshAttachment.cpp */,
+				BB4EAE6C1FA00C75002CA5D2 /* PathAttachment.cpp */,
 				BB6A1A5D1F94151A005B7D05 /* PathConstraint.cpp */,
 				BB6A1A5E1F94151A005B7D05 /* PathConstraintData.cpp */,
+				BB9689DC1FA6A1E1004F7435 /* RegionAttachment.cpp */,
 				BB6A1A5F1F94151A005B7D05 /* RotateTimeline.cpp */,
 				BB59DFDD1F968B8E00B495BC /* RTTI.cpp */,
 				BB6A1A601F94151A005B7D05 /* Skeleton.cpp */,
@@ -1697,7 +1710,6 @@
 				BB6A1A671F94151A005B7D05 /* TransformConstraintData.cpp */,
 				BB6A1A681F94151A005B7D05 /* Updatable.cpp */,
 				BB7D2E2D1F9D704A007B98D3 /* VertexAttachment.cpp */,
-				BB4EAE6C1FA00C75002CA5D2 /* PathAttachment.cpp */,
 			);
 			path = spine;
 			sourceTree = "<group>";
@@ -2936,6 +2948,7 @@
 		BBFE507C1F7C382C00038D27 /* spine */ = {
 			isa = PBXGroup;
 			children = (
+				BB4BBD5A1FA6811B00BB7EDB /* Animation.h */,
 				BB7B401C1F84064700E25168 /* Attachment.h */,
 				BB1C1A621F7EB75500A14D34 /* BlendMode.h */,
 				BB7B401F1F84136B00E25168 /* Bone.h */,
@@ -2949,11 +2962,14 @@
 				BB4DA7B51F8AB8EB00A961EC /* IkConstraint.h */,
 				BB1C1A661F7EE51800A14D34 /* IkConstraintData.h */,
 				BB4DA7CB1F8AD3D500A961EC /* MathUtil.h */,
+				BB9689DE1FA6A1ED004F7435 /* MeshAttachment.h */,
 				BB4DA7C21F8ABD6B00A961EC /* MixDirection.h */,
 				BB4DA7C11F8ABCC800A961EC /* MixPose.h */,
+				BB4EAE6B1FA00C6C002CA5D2 /* PathAttachment.h */,
 				BB4DA7B61F8AB8FA00A961EC /* PathConstraint.h */,
 				BB41A6631F82D9C1000104DB /* PathConstraintData.h */,
 				BB41A6601F82D98B000104DB /* PositionMode.h */,
+				BB9689DB1FA6A1D6004F7435 /* RegionAttachment.h */,
 				BB41A6621F82D9A2000104DB /* RotateMode.h */,
 				BB4DA7CC1F8AD6F700A961EC /* RotateTimeline.h */,
 				BB59DFDC1F968B8400B495BC /* RTTI.h */,
@@ -2971,7 +2987,6 @@
 				BB1C1A651F7EB9FB00A14D34 /* Updatable.h */,
 				BB72AB951F914B6500DBF0E2 /* Vector.h */,
 				BB7D2E2C1F9D7041007B98D3 /* VertexAttachment.h */,
-				BB4EAE6B1FA00C6C002CA5D2 /* PathAttachment.h */,
 			);
 			path = spine;
 			sourceTree = "<group>";
@@ -3228,6 +3243,7 @@
 				BB9578A21F0FE0F400E89DE9 /* b2EdgeShape.cpp in Sources */,
 				BB9579201F10108A00E89DE9 /* ALContext.m in Sources */,
 				BBAEF23E1EA94EDA00F0866E /* OpenGLProgram.cpp in Sources */,
+				BB9689E01FA6A1F7004F7435 /* MeshAttachment.cpp in Sources */,
 				BBAEF2481EA94EDA00F0866E /* OpenGLTextureProgram.cpp in Sources */,
 				BB9578BC1F0FE0F400E89DE9 /* b2Joint.cpp in Sources */,
 				BBAEF2421EA94EDA00F0866E /* OpenGLSpriteBatcher.cpp in Sources */,
@@ -3299,6 +3315,7 @@
 				BBBD149A1EE06BB3003F9307 /* WeightedTimedMovingAverage.cpp in Sources */,
 				BBAEF2A61EA94EDA00F0866E /* IAudioEngineHelper.cpp in Sources */,
 				BB9579151F10108A00E89DE9 /* OALActionManager.m in Sources */,
+				BB4BBD5C1FA6812700BB7EDB /* Animation.cpp in Sources */,
 				BB95792C1F10108A00E89DE9 /* OALAudioFile.m in Sources */,
 				BB95791D1F10108A00E89DE9 /* ALBuffer.m in Sources */,
 				BBAEF2001EA94EDA00F0866E /* AssetDataHandler.cpp in Sources */,
@@ -3358,6 +3375,7 @@
 				BB9578B51F0FE0F400E89DE9 /* b2EdgeAndCircleContact.cpp in Sources */,
 				BB44C3281DB030B3003E633F /* AppDelegate.m in Sources */,
 				BB9579291F10108A00E89DE9 /* mach_timing.c in Sources */,
+				BB9689DD1FA6A1E1004F7435 /* RegionAttachment.cpp in Sources */,
 				BBAEF2AC1EA94EDA00F0866E /* NGAudioEngine.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -3503,7 +3521,7 @@
 				HEADER_SEARCH_PATHS = (
 					"\"$(SRCROOT)/../../core\"/**",
 					"\"$(SRCROOT)/../../3rdparty/spine-runtimes/spine-cpp/spine-cpp/include\"",
-					"\"$(SRCROOT)/../../3rdparty\"/**",
+					"\"$(SRCROOT)/../../3rdparty\"",
 					"\"$(SRCROOT)/mac\"",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/mac/Info.plist";
@@ -3561,7 +3579,7 @@
 				HEADER_SEARCH_PATHS = (
 					"\"$(SRCROOT)/../../core\"/**",
 					"\"$(SRCROOT)/../../3rdparty/spine-runtimes/spine-cpp/spine-cpp/include\"",
-					"\"$(SRCROOT)/../../3rdparty\"/**",
+					"\"$(SRCROOT)/../../3rdparty\"",
 					"\"$(SRCROOT)/mac\"",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/mac/Info.plist";
