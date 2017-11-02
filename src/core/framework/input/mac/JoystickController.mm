@@ -24,8 +24,8 @@
 
 #import "JoystickController.h"
 
-#import <DDHidLib/DDHidJoystick.h>
-#import <DDHidLib/DDHidElement.h>
+#import <DDHidJoystick.h>
+#import <DDHidElement.h>
 
 // C++
 #include "GamePadInputManager.h"

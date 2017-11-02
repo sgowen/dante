@@ -24,7 +24,7 @@
 
 #import <Cocoa/Cocoa.h>
 
-#import <DDHidLib/DDHidLib.h>
+#import <DDHidLib.h>
 
 @interface JoystickController : NSObject
 {
