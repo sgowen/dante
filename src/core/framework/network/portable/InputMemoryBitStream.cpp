@@ -31,7 +31,7 @@ m_iBitHead(inOther.m_iBitHead),
 m_isBufferOwner(true)
 {
     //allocate buffer of right size
-    int byteCount = m_iBitCapacity / 8;
+    int byteCount = (m_iBitCapacity + 7) / 8;
     m_buffer = static_cast<char*>(malloc(byteCount));
     //copy
     memcpy(m_buffer, inOther.m_buffer, byteCount);
