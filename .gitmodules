@@ -4,21 +4,21 @@
 [submodule "src/3rdparty/rapidjson"]
 	path = src/3rdparty/rapidjson
 	url = https://github.com/Tencent/rapidjson.git
-[submodule "src/3rdparty/ObjectAL-for-iPhone"]
-	path = src/3rdparty/ObjectAL-for-iPhone
-	url = https://github.com/kstenerud/ObjectAL-for-iPhone.git
 [submodule "src/3rdparty/libpng"]
 	path = src/3rdparty/libpng
 	url = https://github.com/NoctisGames/libpng.git
 [submodule "src/3rdparty/DDHidLib"]
 	path = src/3rdparty/DDHidLib
 	url = https://github.com/NoctisGames/DDHidLib.git
-[submodule "src/3rdparty/Box2D"]
-	path = src/3rdparty/Box2D
-	url = https://github.com/erincatto/Box2D.git
 [submodule "src/3rdparty/Low-Latency-Android-Audio-iOS-Audio-Engine"]
 	path = src/3rdparty/Low-Latency-Android-Audio-iOS-Audio-Engine
 	url = https://github.com/superpoweredSDK/Low-Latency-Android-Audio-iOS-Audio-Engine.git
 [submodule "src/3rdparty/TinyThread"]
 	path = src/3rdparty/TinyThread
 	url = https://github.com/NoctisGames/TinyThread.git
+[submodule "src/3rdparty/Box2D"]
+	path = src/3rdparty/Box2D
+	url = https://github.com/NoctisGames/Box2D.git
+[submodule "src/3rdparty/ObjectAL-for-iPhone"]
+	path = src/3rdparty/ObjectAL-for-iPhone
+	url = https://github.com/NoctisGames/ObjectAL-for-iPhone.git
