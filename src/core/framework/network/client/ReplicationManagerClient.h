@@ -9,6 +9,8 @@
 #ifndef __noctisgames__ReplicationManagerClient__
 #define __noctisgames__ReplicationManagerClient__
 
+#include <cstdint>
+
 class InputMemoryBitStream;
 
 class ReplicationManagerClient

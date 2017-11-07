@@ -9,7 +9,4 @@
 #ifndef __noctisgames__pch__
 #define __noctisgames__pch__
 
-#import <OpenGL/OpenGL.h>
-#import <OpenGL/gl.h>
-
 #endif /* defined(__noctisgames__pch__) */

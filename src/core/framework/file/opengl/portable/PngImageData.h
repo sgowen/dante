@@ -9,7 +9,7 @@
 #ifndef __noctisgames__PngImageData__
 #define __noctisgames__PngImageData__
 
-#include "pch.h"
+#include "NGGraphics.h"
 
 struct PngImageData
 {

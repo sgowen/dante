@@ -9,6 +9,8 @@
 #ifndef __noctisgames__InstanceManager__
 #define __noctisgames__InstanceManager__
 
+#include <cstdint>
+
 class Entity;
 class World;
 class Robot;

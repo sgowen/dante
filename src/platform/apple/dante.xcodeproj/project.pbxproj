@@ -161,7 +161,6 @@
 		BB5833F01EEDDD330084DA20 /* sound_005.wav in Resources */ = {isa = PBXBuildFile; fileRef = BB5833E51EEDDD330084DA20 /* sound_005.wav */; };
 		BB5833F11EEDDD330084DA20 /* texture_001.ngt in Resources */ = {isa = PBXBuildFile; fileRef = BB5833E71EEDDD330084DA20 /* texture_001.ngt */; };
 		BB5833F31EEDDD330084DA20 /* texture_002.ngt in Resources */ = {isa = PBXBuildFile; fileRef = BB5833E91EEDDD330084DA20 /* texture_002.ngt */; };
-		BB59794D1EEF454B0047BEC6 /* pch.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB59794C1EEF454B0047BEC6 /* pch.cpp */; };
 		BB59DFDE1F968B8E00B495BC /* RTTI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB59DFDD1F968B8E00B495BC /* RTTI.cpp */; };
 		BB6A1A691F94152E005B7D05 /* Attachment.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB6A1A541F94151A005B7D05 /* Attachment.cpp */; };
 		BB6A1A6A1F94152E005B7D05 /* Bone.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB6A1A551F94151A005B7D05 /* Bone.cpp */; };
@@ -629,6 +628,7 @@
 		BB1E89831EF4B4F400B0D78A /* NGSteamPacketHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NGSteamPacketHandler.h; sourceTree = "<group>"; };
 		BB2AC5451EFC382C0012B990 /* FontAlign.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FontAlign.h; sourceTree = "<group>"; };
 		BB2AC5461EFC56330012B990 /* sound_006.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = sound_006.wav; sourceTree = "<group>"; };
+		BB39C8921FB2700900CF6699 /* NGGraphics.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NGGraphics.h; sourceTree = "<group>"; };
 		BB41A6301F829401000104DB /* Constraint.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constraint.h; sourceTree = "<group>"; };
 		BB41A6311F829485000104DB /* EventData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EventData.h; sourceTree = "<group>"; };
 		BB41A65A1F829F31000104DB /* Event.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Event.h; sourceTree = "<group>"; };
@@ -792,7 +792,6 @@
 		BB5833E91EEDDD330084DA20 /* texture_002.ngt */ = {isa = PBXFileReference; lastKnownFileType = file; path = texture_002.ngt; sourceTree = "<group>"; };
 		BB5833F51EEDDD440084DA20 /* texture_001.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = texture_001.png; sourceTree = "<group>"; };
 		BB5833F61EEDDD440084DA20 /* texture_002.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = texture_002.png; sourceTree = "<group>"; };
-		BB59794C1EEF454B0047BEC6 /* pch.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = pch.cpp; sourceTree = "<group>"; };
 		BB59794F1EEF56830047BEC6 /* NGSteam.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NGSteam.h; sourceTree = "<group>"; };
 		BB59DFDC1F968B8400B495BC /* RTTI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RTTI.h; sourceTree = "<group>"; };
 		BB59DFDD1F968B8E00B495BC /* RTTI.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = RTTI.cpp; sourceTree = "<group>"; };
@@ -1723,7 +1722,6 @@
 				BB44C3221DB030B3003E633F /* Main.storyboard */,
 				BB44CB041DB04C83003E633F /* NGOpenGLView.h */,
 				BB44CB051DB04C83003E633F /* NGOpenGLView.mm */,
-				BB59794C1EEF454B0047BEC6 /* pch.cpp */,
 				BB7428361EB2A98500B7628D /* pch.h */,
 				BB5833731EEDBBC50084DA20 /* steam_appid.txt */,
 			);
@@ -2560,6 +2558,7 @@
 				BBAEF1441EA94ED900F0866E /* LineBatcher.h */,
 				BBAEF1451EA94ED900F0866E /* LineBatcherFactory.cpp */,
 				BBAEF1461EA94ED900F0866E /* LineBatcherFactory.h */,
+				BB39C8921FB2700900CF6699 /* NGGraphics.h */,
 				BBAEF1471EA94ED900F0866E /* NGRectBatcher.cpp */,
 				BBAEF1481EA94ED900F0866E /* NGRectBatcher.h */,
 				BBAEF1491EA94ED900F0866E /* NGRectBatcherFactory.cpp */,
@@ -3101,7 +3100,6 @@
 				BBAEF2361EA94EDA00F0866E /* OpenGLGeometryProgram.cpp in Sources */,
 				BB5833781EEDBF7E0084DA20 /* NGSteamGameServices.cpp in Sources */,
 				BBAEF2721EA94EDA00F0866E /* SpriteBatcher.cpp in Sources */,
-				BB59794D1EEF454B0047BEC6 /* pch.cpp in Sources */,
 				BB190F4F1FAB9E3900BDC6D0 /* ALDevice.m in Sources */,
 				BB4EAE6D1FA00C75002CA5D2 /* PathAttachment.cpp in Sources */,
 				BBF226CF1EC12CDE00573356 /* ReplicationManagerClient.cpp in Sources */,
@@ -3332,8 +3330,8 @@
 				FRAMEWORK_SEARCH_PATHS = "\"$(SRCROOT)/../../3rdparty/steamworks_sdk/redistributable_bin/osx32\"";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_ENABLE_CPP_RTTI = NO;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = mac/pch.h;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
 					POSIX,
@@ -3398,8 +3396,8 @@
 				FRAMEWORK_SEARCH_PATHS = "\"$(SRCROOT)/../../3rdparty/steamworks_sdk/redistributable_bin/osx32\"";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_ENABLE_CPP_RTTI = NO;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = mac/pch.h;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "";
 				GCC_PREPROCESSOR_DEFINITIONS = POSIX;
 				GCC_WARN_ABOUT_INVALID_OFFSETOF_MACRO = NO;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;

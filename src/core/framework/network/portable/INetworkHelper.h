@@ -9,6 +9,8 @@
 #ifndef __noctisgames__INetworkHelper__
 #define __noctisgames__INetworkHelper__
 
+#include <cstdint>
+
 class InputMemoryBitStream;
 class OutputMemoryBitStream;
 class IMachineAddress;
