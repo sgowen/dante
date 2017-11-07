@@ -1,4 +1,4 @@
-//========= Copyright ï¿½ 1996-2008, Valve LLC, All rights reserved. ============
+//========= Copyright © 1996-2008, Valve LLC, All rights reserved. ============
 //
 // Purpose: Main class for the space war game server
 //
@@ -136,6 +136,38 @@ CSpaceWarServer::~CSpaceWarServer()
 
 	// release our reference to the steam client library
 	SteamGameServer_Shutdown();
+}
+
+
+//-----------------------------------------------------------------------------
+// Purpose: Handle clients connecting
+//-----------------------------------------------------------------------------
+void CSpaceWarServer::OnP2PSessionRequest( P2PSessionRequest_t *pCallback )
+{
+	// we'll accept a connection from anyone
+	SteamGameServerNetworking()->AcceptP2PSessionWithUser( pCallback->m_steamIDRemote );
+}
+
+
+//-----------------------------------------------------------------------------
+// Purpose: Handle clients disconnecting
+//-----------------------------------------------------------------------------
+void CSpaceWarServer::OnP2PSessionConnectFail( P2PSessionConnectFail_t *pCallback )
+{
+	// socket has closed, kick the user associated with it
+	for( uint32 i = 0; i < MAX_PLAYERS_PER_SERVER; ++i )
+	{
+		// If there is no ship, skip
+		if ( !m_rgClientData[i].m_bActive )
+			continue;
+
+		if ( m_rgClientData[i].m_SteamIDUser == pCallback->m_steamIDRemote )
+		{
+			OutputDebugString( "Disconnected dropped user\n" );
+			RemovePlayerFromServer( i );
+			break;
+		}
+	}
 }
 
 
@@ -837,13 +869,27 @@ void CSpaceWarServer::OnSteamServersConnected( SteamServersConnected_t *pLogonSu
 	SendUpdatedServerDetailsToSteam();
 }
 
+
 //-----------------------------------------------------------------------------
-// Purpose: Called when an attempt to login to Steam fails
+// Purpose: Callback from Steam when logon is fully completed and VAC secure policy is set
 //-----------------------------------------------------------------------------
-void CSpaceWarServer::OnSteamServersConnectFailure( SteamServerConnectFailure_t *pConnectFailure )
+void CSpaceWarServer::OnPolicyResponse( GSPolicyResponse_t *pPolicyResponse )
 {
-    m_bConnectedToSteam = false;
-    OutputDebugString( "SpaceWarServer failed to connect to Steam\n" );
+#ifdef USE_GS_AUTH_API
+	// Check if we were able to go VAC secure or not
+	if ( SteamGameServer()->BSecure() )
+	{
+		OutputDebugString( "SpaceWarServer is VAC Secure!\n" );
+	}
+	else
+	{
+		OutputDebugString( "SpaceWarServer is not VAC Secure!\n" );
+	}
+	char rgch[128];
+	sprintf_safe( rgch, "Game server SteamID: %llu\n", SteamGameServer()->GetSteamID().ConvertToUint64() );
+	rgch[ sizeof(rgch) - 1 ] = 0;
+	OutputDebugString( rgch );
+#endif
 }
 
 
@@ -858,93 +904,12 @@ void CSpaceWarServer::OnSteamServersDisconnected( SteamServersDisconnected_t *pL
 
 
 //-----------------------------------------------------------------------------
-// Purpose: Callback from Steam when logon is fully completed and VAC secure policy is set
+// Purpose: Called when an attempt to login to Steam fails
 //-----------------------------------------------------------------------------
-void CSpaceWarServer::OnPolicyResponse( GSPolicyResponse_t *pPolicyResponse )
+void CSpaceWarServer::OnSteamServersConnectFailure( SteamServerConnectFailure_t *pConnectFailure )
 {
-#ifdef USE_GS_AUTH_API
-    // Check if we were able to go VAC secure or not
-    if ( SteamGameServer()->BSecure() )
-    {
-        OutputDebugString( "SpaceWarServer is VAC Secure!\n" );
-    }
-    else
-    {
-        OutputDebugString( "SpaceWarServer is not VAC Secure!\n" );
-    }
-    char rgch[128];
-    sprintf_safe( rgch, "Game server SteamID: %llu\n", SteamGameServer()->GetSteamID().ConvertToUint64() );
-    rgch[ sizeof(rgch) - 1 ] = 0;
-    OutputDebugString( rgch );
-#endif
-}
-
-//-----------------------------------------------------------------------------
-// Purpose: Tells us Steam3 (VAC and newer license checking) has accepted the user connection
-//-----------------------------------------------------------------------------
-void CSpaceWarServer::OnValidateAuthTicketResponse( ValidateAuthTicketResponse_t *pResponse )
-{
-    if ( pResponse->m_eAuthSessionResponse == k_EAuthSessionResponseOK )
-    {
-        // This is the final approval, and means we should let the client play (find the pending auth by steamid)
-        for ( uint32 i = 0; i<MAX_PLAYERS_PER_SERVER; ++i )
-        {
-            if ( !m_rgPendingClientData[i].m_bActive )
-                continue;
-            else if ( m_rgPendingClientData[i].m_SteamIDUser == pResponse->m_SteamID )
-            {
-                OutputDebugString( "Auth completed for a client\n" );
-                OnAuthCompleted( true, i );
-                return;
-            }
-        }
-    }
-    else
-    {
-        // Looks like we shouldn't let this user play, kick them
-        for ( uint32 i = 0; i<MAX_PLAYERS_PER_SERVER; ++i )
-        {
-            if ( !m_rgPendingClientData[i].m_bActive )
-                continue;
-            else if ( m_rgPendingClientData[i].m_SteamIDUser == pResponse->m_SteamID )
-            {
-                OutputDebugString( "Auth failed for a client\n" );
-                OnAuthCompleted( false, i );
-                return;
-            }
-        }
-    }
-}
-
-//-----------------------------------------------------------------------------
-// Purpose: Handle clients connecting
-//-----------------------------------------------------------------------------
-void CSpaceWarServer::OnP2PSessionRequest( P2PSessionRequest_t *pCallback )
-{
-    // we'll accept a connection from anyone
-    SteamGameServerNetworking()->AcceptP2PSessionWithUser( pCallback->m_steamIDRemote );
-}
-
-
-//-----------------------------------------------------------------------------
-// Purpose: Handle clients disconnecting
-//-----------------------------------------------------------------------------
-void CSpaceWarServer::OnP2PSessionConnectFail( P2PSessionConnectFail_t *pCallback )
-{
-    // socket has closed, kick the user associated with it
-    for( uint32 i = 0; i < MAX_PLAYERS_PER_SERVER; ++i )
-    {
-        // If there is no ship, skip
-        if ( !m_rgClientData[i].m_bActive )
-            continue;
-        
-        if ( m_rgClientData[i].m_SteamIDUser == pCallback->m_steamIDRemote )
-        {
-            OutputDebugString( "Disconnected dropped user\n" );
-            RemovePlayerFromServer( i );
-            break;
-        }
-    }
+	m_bConnectedToSteam = false;
+	OutputDebugString( "SpaceWarServer failed to connect to Steam\n" );
 }
 
 
@@ -1003,6 +968,43 @@ void CSpaceWarServer::SendUpdatedServerDetailsToSteam()
 	//SteamMasterServerUpdater()->SetKeyValue( "rule2_setting", "value2" );
 }
 
+
+//-----------------------------------------------------------------------------
+// Purpose: Tells us Steam3 (VAC and newer license checking) has accepted the user connection
+//-----------------------------------------------------------------------------
+void CSpaceWarServer::OnValidateAuthTicketResponse( ValidateAuthTicketResponse_t *pResponse )
+{
+	if ( pResponse->m_eAuthSessionResponse == k_EAuthSessionResponseOK )
+	{
+		// This is the final approval, and means we should let the client play (find the pending auth by steamid)
+		for ( uint32 i = 0; i<MAX_PLAYERS_PER_SERVER; ++i )
+		{
+			if ( !m_rgPendingClientData[i].m_bActive )
+				continue;
+			else if ( m_rgPendingClientData[i].m_SteamIDUser == pResponse->m_SteamID )
+			{
+				OutputDebugString( "Auth completed for a client\n" );
+				OnAuthCompleted( true, i );
+				return;
+			}
+		}
+	}
+	else
+	{
+		// Looks like we shouldn't let this user play, kick them
+		for ( uint32 i = 0; i<MAX_PLAYERS_PER_SERVER; ++i )
+		{
+			if ( !m_rgPendingClientData[i].m_bActive )
+				continue;
+			else if ( m_rgPendingClientData[i].m_SteamIDUser == pResponse->m_SteamID )
+			{
+				OutputDebugString( "Auth failed for a client\n" );
+				OnAuthCompleted( false, i );
+				return;
+			}
+		}
+	}
+}
 
 
 

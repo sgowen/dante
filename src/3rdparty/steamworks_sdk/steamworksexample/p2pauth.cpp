@@ -1,4 +1,4 @@
-//========= Copyright ï¿½ 1996-2004, Valve LLC, All rights reserved. ============
+//========= Copyright © 1996-2004, Valve LLC, All rights reserved. ============
 //
 // Purpose:
 //
@@ -7,9 +7,7 @@
 
 
 #include "stdafx.h"
-#include "SpaceWar.h"
-#include "Messages.h"
-#include "GameEngine.h"
+#include "SpaceWarClient.h"
 #include "p2pauth.h"
 
 //-----------------------------------------------------------------------------
