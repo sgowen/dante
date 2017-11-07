@@ -1661,13 +1661,13 @@
 			path = Rope;
 			sourceTree = "<group>";
 		};
-		BB1913161FABB76E00BDC6D0 /* steamworks_sdk_140 */ = {
+		BB1913161FABB76E00BDC6D0 /* steamworks_sdk */ = {
 			isa = PBXGroup;
 			children = (
 				BB1914451FABB78C00BDC6D0 /* public */,
 				BB19136D1FABB76E00BDC6D0 /* redistributable_bin */,
 			);
-			path = steamworks_sdk_140;
+			path = steamworks_sdk;
 			sourceTree = "<group>";
 		};
 		BB19136D1FABB76E00BDC6D0 /* redistributable_bin */ = {
@@ -1790,7 +1790,7 @@
 				BB190F001FAB9E3900BDC6D0 /* ObjectAL */,
 				BB190DA31FAB910900BDC6D0 /* rapidjson */,
 				BBFE50781F7C382C00038D27 /* spine-runtimes */,
-				BB1913161FABB76E00BDC6D0 /* steamworks_sdk_140 */,
+				BB1913161FABB76E00BDC6D0 /* steamworks_sdk */,
 				BB95794B1F101BBF00E89DE9 /* Superpowered */,
 				BBCB71C71DB6A217006430B6 /* Texconv */,
 				BB6E7A491F93CE0D006C0024 /* TinyThread */,
@@ -3444,7 +3444,7 @@
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = 7V5EV5R3XG;
-				FRAMEWORK_SEARCH_PATHS = "\"$(SRCROOT)/../../3rdparty/steamworks_sdk_140/redistributable_bin/osx32\"";
+				FRAMEWORK_SEARCH_PATHS = "\"$(SRCROOT)/../../3rdparty/steamworks_sdk/redistributable_bin/osx32\"";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_ENABLE_CPP_RTTI = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -3466,13 +3466,13 @@
 					"\"$(SRCROOT)/../../3rdparty/ObjectAL-for-iPhone/ObjectAL/ObjectAL\"",
 					"\"$(SRCROOT)/../../3rdparty/rapidjson/include\"",
 					"\"$(SRCROOT)/../../3rdparty/spine-runtimes/spine-cpp/spine-cpp/include\"",
-					"\"$(SRCROOT)/../../3rdparty/steamworks_sdk_140/public\"",
+					"\"$(SRCROOT)/../../3rdparty/steamworks_sdk/public\"",
 					"\"$(SRCROOT)/../../3rdparty/TinyThread/source\"",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/mac/Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
-				LIBRARY_SEARCH_PATHS = "\"$(SRCROOT)/../../3rdparty/steamworks_sdk_140/redistributable_bin/osx32\"";
+				LIBRARY_SEARCH_PATHS = "\"$(SRCROOT)/../../3rdparty/steamworks_sdk/redistributable_bin/osx32\"";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				OTHER_LDFLAGS = (
@@ -3509,7 +3509,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 7V5EV5R3XG;
 				ENABLE_NS_ASSERTIONS = NO;
-				FRAMEWORK_SEARCH_PATHS = "\"$(SRCROOT)/../../3rdparty/steamworks_sdk_140/redistributable_bin/osx32\"";
+				FRAMEWORK_SEARCH_PATHS = "\"$(SRCROOT)/../../3rdparty/steamworks_sdk/redistributable_bin/osx32\"";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_ENABLE_CPP_RTTI = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -3527,13 +3527,13 @@
 					"\"$(SRCROOT)/../../3rdparty/ObjectAL-for-iPhone/ObjectAL/ObjectAL\"",
 					"\"$(SRCROOT)/../../3rdparty/rapidjson/include\"",
 					"\"$(SRCROOT)/../../3rdparty/spine-runtimes/spine-cpp/spine-cpp/include\"",
-					"\"$(SRCROOT)/../../3rdparty/steamworks_sdk_140/public\"",
+					"\"$(SRCROOT)/../../3rdparty/steamworks_sdk/public\"",
 					"\"$(SRCROOT)/../../3rdparty/TinyThread/source\"",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/mac/Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
-				LIBRARY_SEARCH_PATHS = "\"$(SRCROOT)/../../3rdparty/steamworks_sdk_140/redistributable_bin/osx32\"";
+				LIBRARY_SEARCH_PATHS = "\"$(SRCROOT)/../../3rdparty/steamworks_sdk/redistributable_bin/osx32\"";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_LDFLAGS = (
