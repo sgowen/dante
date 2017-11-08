@@ -11,7 +11,9 @@
 
 #include "IEngine.h"
 
+#ifdef NG_STEAM
 #include "NGSteam.h"
+#endif
 
 #include "RTTI.h"
 
@@ -51,7 +53,9 @@ private:
     float m_fFrameStateTime;
     std::string m_serverIPAddress;
     std::string m_name;
+#ifdef NG_STEAM
     CSteamID m_serverSteamID;
+#endif
     int m_iEngineState;
     bool m_isSteam;
     

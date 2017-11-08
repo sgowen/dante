@@ -27,8 +27,11 @@
 #include "FWInstanceManager.h"
 #include "EntityManager.h"
 #include "SocketServerHelper.h"
-#include "NGSteamServerHelper.h"
 #include "Crate.h"
+
+#ifdef NG_STEAM
+#include "NGSteamServerHelper.h"
+#endif
 
 #include "Box2D/Box2D.h"
 
@@ -310,7 +313,9 @@ Server::Server(bool isSteam, int inNumCratesToSpawn, int inNumSpacePiratesToSpaw
     
     if (isSteam)
     {
+#ifdef NG_STEAM
         NetworkManagerServer::create(new NGSteamServerHelper(STEAM_GAME_DIR, VERSION_STRING, STEAM_PRODUCT_NAME, STEAM_PRODUCT_DESC, SERVER_PORT, NG_SERVER_CALLBACKS), SERVER_CALLBACKS);
+#endif
     }
     else
     {

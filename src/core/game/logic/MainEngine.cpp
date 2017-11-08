@@ -42,12 +42,15 @@
 #include "FWInstanceManager.h"
 #include "EntityManager.h"
 #include "SocketClientHelper.h"
-#include "NGSteamClientHelper.h"
 #include "IMachineAddress.h"
-#include "NGSteamAddress.h"
-#include "NGSteamGameServices.h"
 #include "MainEngineState.h"
 #include "FPSUtil.h"
+
+#ifdef NG_STEAM
+#include "NGSteamClientHelper.h"
+#include "NGSteamAddress.h"
+#include "NGSteamGameServices.h"
+#endif
 
 MainEngine::MainEngine() : IEngine(),
 m_config(new JsonFile("dante.cfg")),
@@ -245,8 +248,10 @@ void MainEngine::handleNonMoveInput()
         {
             if (NG_SERVER->isConnected())
             {
+#ifdef NG_STEAM
                 m_serverSteamID = static_cast<NGSteamAddress*>(NG_SERVER->getServerAddress())->getSteamID();
                 joinServer();
+#endif
             }
         }
         else
@@ -327,23 +332,28 @@ void MainEngine::handleNonMoveInput()
         }
         else if (inputState->getMenuState() == MENU_STATE_STEAM_REFRESH_LAN_SERVERS)
         {
+#ifdef NG_STEAM
             if (NG_STEAM_GAME_SERVICES)
             {
                 NG_STEAM_GAME_SERVICES->refreshLANServers();
             }
+#endif
         }
         else if (inputState->getMenuState() == MENU_STATE_STEAM_REFRESH_INTERNET_SERVERS)
         {
+#ifdef NG_STEAM
             if (NG_STEAM_GAME_SERVICES)
             {
                 NG_STEAM_GAME_SERVICES->refreshInternetServers();
             }
+#endif
         }
         else if (inputState->getMenuState() == MENU_STATE_STEAM_JOIN_SERVER_1
                  || inputState->getMenuState() == MENU_STATE_STEAM_JOIN_SERVER_2
                  || inputState->getMenuState() == MENU_STATE_STEAM_JOIN_SERVER_3
                  || inputState->getMenuState() == MENU_STATE_STEAM_JOIN_SERVER_4)
         {
+#ifdef NG_STEAM
             if (NG_STEAM_GAME_SERVICES && !NG_STEAM_GAME_SERVICES->isRequestingServers())
             {
                 int serverIndex = inputState->getMenuState() - 7; // eh, hacky I know, but whatever
@@ -353,6 +363,7 @@ void MainEngine::handleNonMoveInput()
                     NG_STEAM_GAME_SERVICES->initiateServerConnection(gameServers[serverIndex].getSteamID());
                 }
             }
+#endif
         }
         else if (inputState->getMenuState() == MENU_STATE_ESCAPE)
         {
@@ -363,6 +374,7 @@ void MainEngine::handleNonMoveInput()
 
 void MainEngine::activateSteam()
 {
+#ifdef NG_STEAM
     if (!NGSteamGameServices::getInstance())
     {
         NGSteamGameServices::create(STEAM_GAME_DIR);
@@ -370,10 +382,12 @@ void MainEngine::activateSteam()
     
     m_isSteam = NG_STEAM_GAME_SERVICES->getStatus() == STEAM_INIT_SUCCESS;
     m_iEngineState = m_isSteam ? MAIN_ENGINE_STATE_MAIN_MENU_STEAM_ON : MAIN_ENGINE_STATE_MAIN_MENU_STEAM_OFF;
+#endif
 }
 
 void MainEngine::handleSteamGameServices()
 {
+#ifdef NG_STEAM
     if (NG_STEAM_GAME_SERVICES)
     {
         NG_STEAM_GAME_SERVICES->update(NG_SERVER ? true : false);
@@ -393,10 +407,12 @@ void MainEngine::handleSteamGameServices()
             deactivateSteam();
         }
     }
+#endif
 }
 
 void MainEngine::deactivateSteam()
 {
+#ifdef NG_STEAM
     if (NGSteamGameServices::getInstance())
     {
         NGSteamGameServices::destroy();
@@ -404,6 +420,7 @@ void MainEngine::deactivateSteam()
     
     m_isSteam = false;
     m_iEngineState = MAIN_ENGINE_STATE_MAIN_MENU_STEAM_OFF;
+#endif
 }
 
 void MainEngine::startServer()
@@ -459,7 +476,9 @@ void MainEngine::joinServer()
     IClientHelper* clientHelper = nullptr;
     if (m_isSteam)
     {
+#ifdef NG_STEAM
         clientHelper = new NGSteamClientHelper(m_serverSteamID, InstanceManager::sGetPlayerAddressHashForIndexOnClient, NG_CLIENT_CALLBACKS);
+#endif
     }
     else
     {

@@ -17,7 +17,7 @@
 #endif
 
 #if TARGET_OS_IPHONE
-// Empty
+#import <Foundation/Foundation.h>
 #elif TARGET_OS_OSX
 #import <Cocoa/Cocoa.h>
 #endif

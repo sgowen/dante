@@ -36,14 +36,17 @@
 #include "NetworkManagerServer.h"
 #include "IMachineAddress.h"
 #include "MainEngineState.h"
-#include "NGSteamGameServer.h"
-#include "NGSteamGameServices.h"
 #include "MathUtil.h"
 #include "NGAudioEngine.h"
 #include "Server.h"
 #include "Crate.h"
 #include "SpacePirateChunk.h"
 #include "FPSUtil.h"
+
+#ifdef NG_STEAM
+#include "NGSteamGameServer.h"
+#include "NGSteamGameServices.h"
+#endif
 
 #include <sstream>
 #include <ctime> // rand
@@ -382,6 +385,7 @@ void MainRenderer::renderMainMenuSteamOnText()
         renderText(text, origin, Color::BLACK, FONT_ALIGN_CENTERED);
     }
     
+#ifdef NG_STEAM
     std::vector<NGSteamGameServer> gameServers = NG_STEAM_GAME_SERVICES->getGameServers();
     int index = 0;
     for (NGSteamGameServer gameServer : gameServers)
@@ -396,6 +400,7 @@ void MainRenderer::renderMainMenuSteamOnText()
         std::string text = std::string("'ESC' to exit game");
         renderText(text, origin, Color::BLACK, FONT_ALIGN_CENTERED);
     }
+#endif
 }
 
 void MainRenderer::renderStartingServerText()
