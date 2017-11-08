@@ -9,6 +9,8 @@
 #ifndef __noctisgames__KeyboardLookup__
 #define __noctisgames__KeyboardLookup__
 
+#include <algorithm>
+
 #define NG_KEY_BACK_SPACE 0x0008
 
 #define NG_KEY_CARRIAGE_RETURN 0x000D

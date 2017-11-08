@@ -12,7 +12,7 @@
 
 #include "GpuTextureWrapper.h"
 
-#include "nullptr_emulation.h"
+#include <memory>
 
 TransitionGpuProgramWrapper::TransitionGpuProgramWrapper() : m_to(nullptr), m_fProgress(0)
 {

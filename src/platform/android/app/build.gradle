@@ -1,0 +1,100 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 26
+    buildToolsVersion "26.0.1"
+    defaultConfig {
+        applicationId "com.noctisgames.dante"
+        minSdkVersion 19
+        targetSdkVersion 26
+        versionCode 1
+        versionName "1.0"
+
+        ndk {
+            abiFilters 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64' // these platforms cover 99% percent of all Android devices
+        }
+
+        externalNativeBuild {
+            cmake {
+                arguments '-DANDROID_PLATFORM=android-19', '-DANDROID_TOOLCHAIN=clang', '-DANDROID_ARM_NEON=TRUE', '-DANDROID_STL=gnustl_static', '-DPNG_ARM_NEON_OPT=0'
+                cFlags '-O3', '-fsigned-char' // full optimization, char data type is signed, bypassing libpng issue
+                cppFlags '-std=c++11', '-fsigned-char'
+            }
+        }
+    }
+
+    buildTypes {
+        release {
+            debuggable false
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            debuggable true
+        }
+    }
+
+    signingConfigs {
+        release {
+            keyAlias 'noctisgames'
+            keyPassword 'NG_PASS'
+            storeFile file('../keystore.jks')
+            storePassword 'NG_PASS'
+        }
+        debug {
+            keyAlias 'noctisgames'
+            keyPassword 'NG_PASS'
+            storeFile file('../keystore.jks')
+            storePassword 'NG_PASS'
+        }
+    }
+
+    externalNativeBuild {
+        cmake {
+            path "CMakeLists.txt"
+        }
+    }
+
+    task runEncryptionBeforeBuild(type: Exec) {
+        workingDir = '../../../../src/core/game/tools'
+        commandLine 'sh', './encrypt_textures_and_shaders.sh'
+    }
+    preBuild.dependsOn(runEncryptionBeforeBuild)
+
+    task copyShaders(type: Copy)
+    copyShaders {
+        description = 'Copies shaders into project assets'
+        from '../../../../src/core/framework/graphics/opengl/shader'
+        from '../../../../src/core/game/graphics/opengl/shader'
+        into 'src/main/assets'
+        include('*.ngs')
+    }
+    copyShaders.dependsOn(runEncryptionBeforeBuild)
+    preBuild.dependsOn(copyShaders)
+
+    task copyTextures(type: Copy)
+    copyTextures {
+        description = 'Copies textures from root assets into project assets'
+        from '../../../../assets/textures'
+        into 'src/main/assets'
+        include('*.ngt')
+    }
+    copyTextures.dependsOn(runEncryptionBeforeBuild)
+    preBuild.dependsOn(copyTextures)
+
+    task copySounds(type: Copy)
+    copySounds {
+        description = 'Copies music and sounds from root assets into project assets'
+        from '../../../../assets/music'
+        from '../../../../assets/sounds'
+        into 'src/main/res/raw'
+        include('*.wav')
+    }
+    copySounds.dependsOn(runEncryptionBeforeBuild)
+    preBuild.dependsOn(copySounds)
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile 'com.android.support:appcompat-v7:26.+'
+}

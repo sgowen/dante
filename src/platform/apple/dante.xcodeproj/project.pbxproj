@@ -1133,7 +1133,6 @@
 		BB6A1A661F94151A005B7D05 /* TransformConstraint.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = TransformConstraint.cpp; sourceTree = "<group>"; };
 		BB6A1A671F94151A005B7D05 /* TransformConstraintData.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = TransformConstraintData.cpp; sourceTree = "<group>"; };
 		BB6A1A681F94151A005B7D05 /* Updatable.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Updatable.cpp; sourceTree = "<group>"; };
-		BB6E7A481F93C697006C0024 /* nullptr_emulation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = nullptr_emulation.h; sourceTree = "<group>"; };
 		BB6E7A8A1F93CE1B006C0024 /* fast_mutex.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = fast_mutex.h; sourceTree = "<group>"; };
 		BB6E7A8B1F93CE1B006C0024 /* tinythread.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = tinythread.cpp; sourceTree = "<group>"; };
 		BB6E7A8C1F93CE1B006C0024 /* tinythread.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = tinythread.h; sourceTree = "<group>"; };
@@ -2650,7 +2649,6 @@
 				BB74283A1EB2AF4200B7628D /* macros.h */,
 				BB74283B1EB2AF4200B7628D /* NGRollingPool.h */,
 				BB74283C1EB2AF4200B7628D /* NGSTDUtil.h */,
-				BB6E7A481F93C697006C0024 /* nullptr_emulation.h */,
 				BB74283D1EB2AF4200B7628D /* RTTI.cpp */,
 				BB74283E1EB2AF4200B7628D /* RTTI.h */,
 				BB5833CB1EEDD7790084DA20 /* StepTimer.h */,
