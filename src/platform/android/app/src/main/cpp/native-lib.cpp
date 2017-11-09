@@ -6,7 +6,6 @@
 //  Copyright © 2017 Noctis Games. All rights reserved.
 //
 
-#include "macros.h"
 #include "MainEngine.h"
 #include "ScreenInputManager.h"
 #include "KeyboardInputManager.h"
@@ -14,11 +13,12 @@
 #include "AndroidAssetDataHandler.h"
 #include "MainAssets.h"
 #include "OpenGLManager.h"
-#include "GameConstants.h"
-#include "Vector2.h"
+#include "FrameworkConstants.h"
+#include "KeyboardLookup.h"
 #include "MathUtil.h"
 
-#include "NDKHelper.h"
+#include "GLContext.h"
+#include "JNIHelper.h"
 
 #include <jni.h>
 #include <errno.h>
@@ -76,7 +76,6 @@ void Engine::handleCmd(struct android_app* app, int32_t cmd)
             {
                 eng->initDisplay();
                 eng->drawFrame();
-                eng->initializeInterstitialAds();
             }
             break;
         case APP_CMD_TERM_WINDOW:
@@ -181,10 +180,9 @@ int32_t Engine::handleInput(android_app* app, AInputEvent* event)
     }
     else if (AInputEvent_getType(event) == AINPUT_EVENT_TYPE_KEY)
     {
-        if (AKeyEvent_getKeyCode(event) == AKEYCODE_BACK
-            && eng->m_screen->m_stateMachine.getCurrentState() != Title::getInstance())
+        if (AKeyEvent_getKeyCode(event) == AKEYCODE_BACK)
         {
-            KEYBOARD_INPUT_MANAGER->onInput(KeyboardEventType_BACK, true);
+            KEYBOARD_INPUT_MANAGER->onInput(NG_KEY_ESCAPE, true);
             
             return 1; // <-- prevent default handler
         }

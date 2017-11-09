@@ -201,7 +201,7 @@ macro(android_ndk_import_module_ndk_helper)
         android_ndk_import_module_native_app_glue()
 
         include_directories(${ANDROID_NDK}/sources/android/ndk_helper)
-        file(GLOB _NDK_HELPER_SRCS ${ANDROID_NDK}/sources/android/ndk_helper/*.cpp ${ANDROID_NDK}/sources/android/ndk_helper/gl3stub.c)
+        file(GLOB _NDK_HELPER_SRCS ${ANDROID_NDK}/sources/android/ndk_helper/GLContext.cpp ${ANDROID_NDK}/sources/android/ndk_helper/JNIHelper.cpp ${ANDROID_NDK}/sources/android/ndk_helper/gl3stub.c)
         add_library(ndk_helper ${_NDK_HELPER_SRCS})
         target_link_libraries(ndk_helper log android EGL GLESv2 cpufeatures native_app_glue)
 
@@ -227,7 +227,7 @@ target_link_libraries( # Specifies the target library.
                        ZLIB::ZLIB
 
                        cpufeatures
-                       android_native_app_glue
+                       native_app_glue
                        ndk_helper
 
                        ${source_dir}/3rdparty/Low-Latency-Android-Audio-iOS-Audio-Engine/Superpowered/libSuperpoweredAndroid${ANDROID_ABI}.a
