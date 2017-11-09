@@ -1185,12 +1185,6 @@
 		BB7251A61EE105780024C71C /* IInputState.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = IInputState.cpp; sourceTree = "<group>"; };
 		BB7251A71EE105780024C71C /* IInputState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IInputState.h; sourceTree = "<group>"; };
 		BB72AB951F914B6500DBF0E2 /* Vector.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Vector.h; sourceTree = "<group>"; };
-		BB72AB971F91531600DBF0E2 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
-		BB72AB991F91531600DBF0E2 /* Spine.1.6.18.nuspec */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Spine.1.6.18.nuspec; sourceTree = "<group>"; };
-		BB72AB9B1F91531600DBF0E2 /* AssemblyInfo.cs */ = {isa = PBXFileReference; lastKnownFileType = text; path = AssemblyInfo.cs; sourceTree = "<group>"; };
-		BB72AB9C1F91531600DBF0E2 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
-		BB72AB9D1F91531600DBF0E2 /* spine-csharp.csproj */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "spine-csharp.csproj"; sourceTree = "<group>"; };
-		BB72AB9E1F91531600DBF0E2 /* spine-csharp.sln */ = {isa = PBXFileReference; lastKnownFileType = text; path = "spine-csharp.sln"; sourceTree = "<group>"; };
 		BB72ABA01F91531600DBF0E2 /* Animation.cs */ = {isa = PBXFileReference; lastKnownFileType = text; path = Animation.cs; sourceTree = "<group>"; };
 		BB72ABA11F91531600DBF0E2 /* AnimationState.cs */ = {isa = PBXFileReference; lastKnownFileType = text; path = AnimationState.cs; sourceTree = "<group>"; };
 		BB72ABA21F91531600DBF0E2 /* AnimationStateData.cs */ = {isa = PBXFileReference; lastKnownFileType = text; path = AnimationStateData.cs; sourceTree = "<group>"; };
@@ -2554,31 +2548,9 @@
 		BB72AB961F91531600DBF0E2 /* spine-csharp */ = {
 			isa = PBXGroup;
 			children = (
-				BB72AB971F91531600DBF0E2 /* LICENSE */,
-				BB72AB981F91531600DBF0E2 /* nuget */,
-				BB72AB9A1F91531600DBF0E2 /* Properties */,
-				BB72AB9C1F91531600DBF0E2 /* README.md */,
-				BB72AB9D1F91531600DBF0E2 /* spine-csharp.csproj */,
-				BB72AB9E1F91531600DBF0E2 /* spine-csharp.sln */,
 				BB72AB9F1F91531600DBF0E2 /* src */,
 			);
 			path = "spine-csharp";
-			sourceTree = "<group>";
-		};
-		BB72AB981F91531600DBF0E2 /* nuget */ = {
-			isa = PBXGroup;
-			children = (
-				BB72AB991F91531600DBF0E2 /* Spine.1.6.18.nuspec */,
-			);
-			path = nuget;
-			sourceTree = "<group>";
-		};
-		BB72AB9A1F91531600DBF0E2 /* Properties */ = {
-			isa = PBXGroup;
-			children = (
-				BB72AB9B1F91531600DBF0E2 /* AssemblyInfo.cs */,
-			);
-			path = Properties;
 			sourceTree = "<group>";
 		};
 		BB72AB9F1F91531600DBF0E2 /* src */ = {
