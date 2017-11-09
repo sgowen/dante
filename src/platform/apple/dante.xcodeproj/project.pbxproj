@@ -111,6 +111,8 @@
 		BB1E89811EF4B2BA00B0D78A /* SocketPacketHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB1E897F1EF4B2BA00B0D78A /* SocketPacketHandler.cpp */; };
 		BB1E89841EF4B4F400B0D78A /* NGSteamPacketHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB1E89821EF4B4F400B0D78A /* NGSteamPacketHandler.cpp */; };
 		BB2AC5471EFC56330012B990 /* sound_006.wav in Resources */ = {isa = PBXBuildFile; fileRef = BB2AC5461EFC56330012B990 /* sound_006.wav */; };
+		BB3BAEE11FB4A1FA00F5F8B0 /* InputManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB3BAEDF1FB4A1F900F5F8B0 /* InputManager.cpp */; };
+		BB3BAEE21FB4A1FA00F5F8B0 /* InputManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB3BAEDF1FB4A1F900F5F8B0 /* InputManager.cpp */; };
 		BB4253D21EF58DA5003F6D2A /* IClientHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB4253D01EF58DA5003F6D2A /* IClientHelper.cpp */; };
 		BB4253D51EF58E00003F6D2A /* IServerHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB4253D41EF58E00003F6D2A /* IServerHelper.cpp */; };
 		BB4253DA1EF59793003F6D2A /* NGSteamClientHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB4253D61EF59793003F6D2A /* NGSteamClientHelper.cpp */; };
@@ -305,7 +307,6 @@
 		BB5AFE101FB359DE005FBD52 /* SpacePirateChunk.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB6E7B0D1F940F13006C0024 /* SpacePirateChunk.cpp */; };
 		BB5AFE111FB359DE005FBD52 /* Util.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB6E7B0F1F940F13006C0024 /* Util.cpp */; };
 		BB5AFE121FB359DE005FBD52 /* World.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB6E7B111F940F13006C0024 /* World.cpp */; };
-		BB5AFE131FB359DE005FBD52 /* InputManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB6E7AEC1F940F13006C0024 /* InputManager.cpp */; };
 		BB5AFE141FB359DE005FBD52 /* InputState.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB6E7AEE1F940F13006C0024 /* InputState.cpp */; };
 		BB5AFE151FB359DE005FBD52 /* InstanceManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB6E7AF01F940F13006C0024 /* InstanceManager.cpp */; };
 		BB5AFE161FB359DE005FBD52 /* Server.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB6E7AF21F940F13006C0024 /* Server.cpp */; };
@@ -447,7 +448,6 @@
 		BB6E7B1D1F940F2B006C0024 /* SpacePirateChunk.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB6E7B0D1F940F13006C0024 /* SpacePirateChunk.cpp */; };
 		BB6E7B1E1F940F2B006C0024 /* Util.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB6E7B0F1F940F13006C0024 /* Util.cpp */; };
 		BB6E7B1F1F940F2B006C0024 /* World.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB6E7B111F940F13006C0024 /* World.cpp */; };
-		BB6E7B201F940F2B006C0024 /* InputManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB6E7AEC1F940F13006C0024 /* InputManager.cpp */; };
 		BB6E7B211F940F2B006C0024 /* InputState.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB6E7AEE1F940F13006C0024 /* InputState.cpp */; };
 		BB6E7B221F940F2B006C0024 /* InstanceManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB6E7AF01F940F13006C0024 /* InstanceManager.cpp */; };
 		BB6E7B231F940F2B006C0024 /* Server.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB6E7AF21F940F13006C0024 /* Server.cpp */; };
@@ -879,6 +879,8 @@
 		BB2AC5451EFC382C0012B990 /* FontAlign.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FontAlign.h; sourceTree = "<group>"; };
 		BB2AC5461EFC56330012B990 /* sound_006.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = sound_006.wav; sourceTree = "<group>"; };
 		BB39C8921FB2700900CF6699 /* NGGraphics.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NGGraphics.h; sourceTree = "<group>"; };
+		BB3BAEDF1FB4A1F900F5F8B0 /* InputManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = InputManager.cpp; sourceTree = "<group>"; };
+		BB3BAEE01FB4A1F900F5F8B0 /* InputManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InputManager.h; sourceTree = "<group>"; };
 		BB41A6301F829401000104DB /* Constraint.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constraint.h; sourceTree = "<group>"; };
 		BB41A6311F829485000104DB /* EventData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EventData.h; sourceTree = "<group>"; };
 		BB41A65A1F829F31000104DB /* Event.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Event.h; sourceTree = "<group>"; };
@@ -1136,8 +1138,6 @@
 		BB6E7A8A1F93CE1B006C0024 /* fast_mutex.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = fast_mutex.h; sourceTree = "<group>"; };
 		BB6E7A8B1F93CE1B006C0024 /* tinythread.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = tinythread.cpp; sourceTree = "<group>"; };
 		BB6E7A8C1F93CE1B006C0024 /* tinythread.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = tinythread.h; sourceTree = "<group>"; };
-		BB6E7AEC1F940F13006C0024 /* InputManager.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = InputManager.cpp; sourceTree = "<group>"; };
-		BB6E7AED1F940F13006C0024 /* InputManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InputManager.h; sourceTree = "<group>"; };
 		BB6E7AEE1F940F13006C0024 /* InputState.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = InputState.cpp; sourceTree = "<group>"; };
 		BB6E7AEF1F940F13006C0024 /* InputState.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InputState.h; sourceTree = "<group>"; };
 		BB6E7AF01F940F13006C0024 /* InstanceManager.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = InstanceManager.cpp; sourceTree = "<group>"; };
@@ -2489,8 +2489,6 @@
 		BB6E7AEB1F940F13006C0024 /* network */ = {
 			isa = PBXGroup;
 			children = (
-				BB6E7AEC1F940F13006C0024 /* InputManager.cpp */,
-				BB6E7AED1F940F13006C0024 /* InputManager.h */,
 				BB6E7AEE1F940F13006C0024 /* InputState.cpp */,
 				BB6E7AEF1F940F13006C0024 /* InputState.h */,
 				BB6E7AF01F940F13006C0024 /* InstanceManager.cpp */,
@@ -2530,6 +2528,8 @@
 				BB6E7AFF1F940F13006C0024 /* GameConstants.h */,
 				BB6E7B001F940F13006C0024 /* Ground.cpp */,
 				BB6E7B011F940F13006C0024 /* Ground.h */,
+				BB3BAEDF1FB4A1F900F5F8B0 /* InputManager.cpp */,
+				BB3BAEE01FB4A1F900F5F8B0 /* InputManager.h */,
 				BB6E7B021F940F13006C0024 /* MainEngine.cpp */,
 				BB6E7B031F940F13006C0024 /* MainEngine.h */,
 				BB6E7B041F940F13006C0024 /* MainEngineState.h */,
@@ -3513,7 +3513,6 @@
 				BB6E7B1E1F940F2B006C0024 /* Util.cpp in Sources */,
 				BB6E7B1F1F940F2B006C0024 /* World.cpp in Sources */,
 				BB1912A01FABB66A00BDC6D0 /* b2WorldCallbacks.cpp in Sources */,
-				BB6E7B201F940F2B006C0024 /* InputManager.cpp in Sources */,
 				BB6E7B211F940F2B006C0024 /* InputState.cpp in Sources */,
 				BB6E7B221F940F2B006C0024 /* InstanceManager.cpp in Sources */,
 				BB19129B1FABB66A00BDC6D0 /* b2Body.cpp in Sources */,
@@ -3680,6 +3679,7 @@
 				BB1912901FABB66A00BDC6D0 /* b2TimeOfImpact.cpp in Sources */,
 				BB44CB8A1DB053C0003E633F /* pngset.c in Sources */,
 				BB44CB8B1DB053C0003E633F /* pngtrans.c in Sources */,
+				BB3BAEE11FB4A1FA00F5F8B0 /* InputManager.cpp in Sources */,
 				BB190F501FAB9E3900BDC6D0 /* ALListener.m in Sources */,
 				BBAEF2581EA94EDA00F0866E /* CircleBatcher.cpp in Sources */,
 				BBAEF23A1EA94EDA00F0866E /* OpenGLManager.cpp in Sources */,
@@ -3855,7 +3855,6 @@
 				BB5AFE101FB359DE005FBD52 /* SpacePirateChunk.cpp in Sources */,
 				BB5AFE111FB359DE005FBD52 /* Util.cpp in Sources */,
 				BB5AFE121FB359DE005FBD52 /* World.cpp in Sources */,
-				BB5AFE131FB359DE005FBD52 /* InputManager.cpp in Sources */,
 				BB5AFE141FB359DE005FBD52 /* InputState.cpp in Sources */,
 				BB5AFE151FB359DE005FBD52 /* InstanceManager.cpp in Sources */,
 				BB5AFE161FB359DE005FBD52 /* Server.cpp in Sources */,
@@ -3887,6 +3886,7 @@
 				BB5AFDC01FB359B1005FBD52 /* b2Collision.cpp in Sources */,
 				BB5AFDC11FB359B1005FBD52 /* b2Distance.cpp in Sources */,
 				BB5AFDC21FB359B1005FBD52 /* b2DynamicTree.cpp in Sources */,
+				BB3BAEE21FB4A1FA00F5F8B0 /* InputManager.cpp in Sources */,
 				BB5AFDC31FB359B1005FBD52 /* b2TimeOfImpact.cpp in Sources */,
 				BB5AFDC41FB359B1005FBD52 /* b2ChainShape.cpp in Sources */,
 				BB5AFDC51FB359B1005FBD52 /* b2CircleShape.cpp in Sources */,
