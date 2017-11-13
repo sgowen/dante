@@ -905,6 +905,7 @@
 		BB1914781FABB78C00BDC6D0 /* steamps3params.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = steamps3params.h; sourceTree = "<group>"; };
 		BB1914791FABB78C00BDC6D0 /* steamtypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = steamtypes.h; sourceTree = "<group>"; };
 		BB19147A1FABB78C00BDC6D0 /* steamuniverse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = steamuniverse.h; sourceTree = "<group>"; };
+		BB1AACCE1FBA4E7B009E574A /* Pool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Pool.h; sourceTree = "<group>"; };
 		BB1D05261FB9DBB400FF2CBC /* NSXReturnThrowError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSXReturnThrowError.h; sourceTree = "<group>"; };
 		BB1D05271FB9DBB400FF2CBC /* NSXReturnThrowError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSXReturnThrowError.m; sourceTree = "<group>"; };
 		BB1D052A1FB9DC3600FF2CBC /* Animation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Animation.h; sourceTree = "<group>"; };
@@ -2171,6 +2172,7 @@
 				BB1D054B1FB9DC3600FF2CBC /* PathConstraintPositionTimeline.h */,
 				BB1D054C1FB9DC3600FF2CBC /* PathConstraintSpacingTimeline.h */,
 				BB1D054D1FB9DC3600FF2CBC /* PointAttachment.h */,
+				BB1AACCE1FBA4E7B009E574A /* Pool.h */,
 				BB1D054E1FB9DC3600FF2CBC /* PositionMode.h */,
 				BB1D054F1FB9DC3600FF2CBC /* RegionAttachment.h */,
 				BB1D05501FB9DC3600FF2CBC /* RotateMode.h */,
