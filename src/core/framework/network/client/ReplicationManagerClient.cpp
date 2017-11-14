@@ -30,10 +30,12 @@ void ReplicationManagerClient::read(InputMemoryBitStream& inInputStream)
     while (inInputStream.getRemainingBitCount() >= 32)
     {
         //read the network id...
-        int networkId; inInputStream.read(networkId);
+        int networkId;
+        inInputStream.read(networkId);
         
         //only need 2 bits for action...
-        uint8_t action; inInputStream.read(action, 2);
+        uint8_t action;
+        inInputStream.read(action, 2);
         
         switch(action)
         {

@@ -28,6 +28,7 @@
 #include "EntityManager.h"
 #include "SocketServerHelper.h"
 #include "Crate.h"
+#include "IMachineAddress.h"
 
 #ifdef NG_STEAM
 #include "NGSteamServerHelper.h"
@@ -194,6 +195,10 @@ void Server::spawnRobotForPlayer(int inPlayerId, std::string inPlayerName)
 {
     m_iPlayerIdForRobotBeingCreated = inPlayerId;
     Robot* robot = static_cast<Robot*>(SERVER_ENTITY_REG->createEntity(NW_TYPE_Robot));
+    
+    ClientProxy* client = NG_SERVER->getClientProxy(inPlayerId);
+    robot->setAddressHash(client->getMachineAddress()->getHash());
+    
     robot->setPlayerName(inPlayerName);
     float posX = (rand() % static_cast<int>(GAME_WIDTH - robot->getWidth() * 2)) + (robot->getWidth() * 2);
     robot->setPosition(b2Vec2(posX - static_cast<float>(inPlayerId), 8.0f));
