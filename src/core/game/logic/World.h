@@ -85,6 +85,8 @@ private:
     bool m_isServer;
     
     void stepPhysics(float deltaTime);
+    
+    int getMoveCount();
 };
 
 #include "Box2D/Dynamics/b2WorldCallbacks.h"

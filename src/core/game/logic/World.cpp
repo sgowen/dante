@@ -142,6 +142,11 @@ void World::removeEntity(Entity* inEntity)
 
 void World::postRead()
 {
+    if (m_isServer)
+    {
+        return;
+    }
+    
     bool needsMoveReplay = false;
     for (Entity* entity : m_players)
     {
@@ -202,32 +207,10 @@ void World::update()
 {
     if (m_isServer)
     {
-        int finalMoveCount = 0;
-        
-        int lowestNonHostMoveCount = NG_SERVER->getLowestNonHostMoveCount();
-        int hostMoveCount = NG_SERVER->getHostMoveCount();
-        
-        if (lowestNonHostMoveCount == -1
-            || (hostMoveCount <= lowestNonHostMoveCount
-                && (hostMoveCount * 2) >= lowestNonHostMoveCount))
+        int moveCount = getMoveCount();
+        if (moveCount > 0)
         {
-            finalMoveCount = hostMoveCount;
-        }
-        else if (lowestNonHostMoveCount <= hostMoveCount
-                 && (lowestNonHostMoveCount * 2) >= hostMoveCount)
-        {
-            finalMoveCount = lowestNonHostMoveCount;
-        }
-        else if (lowestNonHostMoveCount >= 8 || hostMoveCount >= 8)
-        {
-            finalMoveCount = NG_SERVER->getAverageMoveCount();
-            
-            LOG("lowestNonHostMoveCount: %d, hostMoveCount: %d, finalMoveCount(avg): %d", lowestNonHostMoveCount, hostMoveCount, finalMoveCount);
-        }
-        
-        if (finalMoveCount > 0)
-        {
-            for (int i = 0; i < finalMoveCount; ++i)
+            for (int i = 0; i < moveCount; ++i)
             {
                 for (Entity* entity : m_players)
                 {
@@ -410,6 +393,34 @@ void World::stepPhysics(float deltaTime)
     // Instruct the world to perform a single step of simulation.
     // It is generally best to keep the time step and iterations fixed.
     m_world->Step(deltaTime, velocityIterations, positionIterations);
+}
+
+int World::getMoveCount()
+{
+    int ret = 0;
+    
+    int lowestNonHostMoveCount = NG_SERVER->getLowestNonHostMoveCount();
+    int hostMoveCount = NG_SERVER->getHostMoveCount();
+    
+    if (lowestNonHostMoveCount == -1
+        || (hostMoveCount <= lowestNonHostMoveCount
+            && (hostMoveCount * 2) >= lowestNonHostMoveCount))
+    {
+        ret = hostMoveCount;
+    }
+    else if (lowestNonHostMoveCount <= hostMoveCount
+             && (lowestNonHostMoveCount * 2) >= hostMoveCount)
+    {
+        ret = lowestNonHostMoveCount;
+    }
+    else if (lowestNonHostMoveCount >= 8 || hostMoveCount >= 8)
+    {
+        ret = NG_SERVER->getAverageMoveCount();
+        
+        LOG("lowestNonHostMoveCount: %d, hostMoveCount: %d, finalMoveCount(avg): %d", lowestNonHostMoveCount, hostMoveCount, ret);
+    }
+    
+    return ret;
 }
 
 void EntityContactListener::BeginContact(b2Contact* contact)

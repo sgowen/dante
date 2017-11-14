@@ -191,9 +191,10 @@ int NetworkManagerServer::getLowestNonHostMoveCount() const
     {
         for (auto const &entry : m_addressHashToClientMap)
         {
-            if (entry.second->getPlayerId() != 1)
+            ClientProxy* client = entry.second;
+            if (client->getPlayerId() != 1)
             {
-                int moveCount = entry.second->getUnprocessedMoveList().getMoveCount();
+                int moveCount = client->getUnprocessedMoveList().getMoveCount();
                 if (moveCount < ret || ret == -1)
                 {
                     ret = moveCount;
