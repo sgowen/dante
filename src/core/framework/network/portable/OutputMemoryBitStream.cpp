@@ -136,6 +136,7 @@ void OutputMemoryBitStream::write(Color& inColor)
 void OutputMemoryBitStream::write(const std::string& inString)
 {
     uint32_t elementCount = static_cast<uint32_t>(inString.size());
+    elementCount = htonl(elementCount);
     write(elementCount);
     for (const auto& element : inString)
     {
