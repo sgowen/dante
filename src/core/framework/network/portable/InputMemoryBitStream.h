@@ -9,6 +9,8 @@
 #ifndef __noctisgames__InputMemoryBitStream__
 #define __noctisgames__InputMemoryBitStream__
 
+#include "Network.h"
+
 #include <cstdint>
 #include <cstdlib>
 #include <string>
@@ -69,6 +71,26 @@ public:
                       std::is_enum< T >::value,
                       "Generic Read only supports primitive data types");
         readBits(&inData, inBitCount);
+        
+        if (inBitCount == 16)
+        {
+            inData = ntohs(inData);
+        }
+        else if (inBitCount == 32)
+        {
+            if (std::is_floating_point<T>::value)
+            {
+                inData = float_swap(inData, false);
+            }
+            else
+            {
+                inData = ntohl(inData);
+            }
+        }
+        else if (inBitCount == 64)
+        {
+            inData = ntohll(inData);
+        }
     }
     
 private:

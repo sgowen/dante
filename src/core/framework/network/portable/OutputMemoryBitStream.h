@@ -9,6 +9,8 @@
 #ifndef __noctisgames__OutputMemoryBitStream__
 #define __noctisgames__OutputMemoryBitStream__
 
+#include "Network.h"
+
 #include <cstdint>
 #include <cstdlib>
 #include <string>
@@ -54,7 +56,29 @@ public:
         static_assert(std::is_arithmetic< T >::value ||
                       std::is_enum< T >::value,
                       "Generic Write only supports primitive data types");
-        writeBits(&inData, inBitCount);
+        
+        T data = inData;
+        if (inBitCount == 16)
+        {
+            data = htons(data);
+        }
+        else if (inBitCount == 32)
+        {
+            if (std::is_floating_point<T>::value)
+            {
+                data = float_swap(data, true);
+            }
+            else
+            {
+                data = htonl(data);
+            }
+        }
+        else if (inBitCount == 64)
+        {
+            data = htonll(data);
+        }
+        
+        writeBits(&data, inBitCount);
     }
     
 private:

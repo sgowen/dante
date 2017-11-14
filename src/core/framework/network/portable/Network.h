@@ -42,4 +42,28 @@
     const int SOCKET_ERROR = -1;
 #endif
 
+#ifndef htonll
+#define htonll(x) ((1==htonl(1)) ? (x) : ((uint64_t)htonl((x) & 0xFFFFFFFF) << 32) | htonl((x) >> 32))
+#endif
+
+#ifndef ntohll
+#define ntohll(x) ((1==ntohl(1)) ? (x) : ((uint64_t)ntohl((x) & 0xFFFFFFFF) << 32) | ntohl((x) >> 32))
+#endif
+
+inline float float_swap(float value, bool isHostToNetwork)
+{
+    union v
+    {
+        float f;
+        unsigned int i;
+    };
+    
+    union v val;
+    
+    val.f = value;
+    val.i = isHostToNetwork ? htonl(val.i) : ntohl(val.i);
+    
+    return val.f;
+}
+
 #endif /* defined(__noctisgames__Network__) */

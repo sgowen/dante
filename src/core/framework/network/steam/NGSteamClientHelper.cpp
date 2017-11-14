@@ -47,7 +47,7 @@ NGSteamClientHelper::~NGSteamClientHelper()
     }
     
     OutputMemoryBitStream packet;
-    packet.write(k_EMsgClientLeavingServer);
+    packet.write(static_cast<u_int32_t>(k_EMsgClientLeavingServer));
     sendPacket(packet);
     
     m_steamP2PAuth->endGame();
@@ -212,7 +212,7 @@ void NGSteamClientHelper::handleUninitialized()
         case k_EClientNotConnected:
         {
             OutputMemoryBitStream packet;
-            packet.write(k_EMsgClientInitiateConnection);
+            packet.write(static_cast<u_int32_t>(k_EMsgClientInitiateConnection));
             sendPacket(packet);
         }
             break;
@@ -236,7 +236,7 @@ void NGSteamClientHelper::handleUninitialized()
                 LOG("MsgClientBeginAuthentication_t, uTokenLen: %i", unTokenLen);
                 
                 OutputMemoryBitStream packet;
-                packet.write(k_EMsgClientBeginAuthentication);
+                packet.write(static_cast<u_int32_t>(k_EMsgClientBeginAuthentication));
                 packet.write(unTokenLen);
                 packet.writeBytes(rgchToken, unTokenLen);
                 sendPacket(packet);

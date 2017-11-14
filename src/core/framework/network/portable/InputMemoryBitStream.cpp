@@ -101,16 +101,22 @@ void InputMemoryBitStream::readBytes(void* outData, uint32_t inByteCount)
 void InputMemoryBitStream::read(uint32_t& outData, uint32_t inBitCount)
 {
     readBits(&outData, inBitCount);
+    
+    outData = ntohl(outData);
 }
 
 void InputMemoryBitStream::read(int& outData, uint32_t inBitCount)
 {
     readBits(&outData, inBitCount);
+    
+    outData = ntohl(outData);
 }
 
 void InputMemoryBitStream::read(float& outData)
 {
     readBits(&outData, 32);
+    
+    outData = float_swap(outData, false);
 }
 
 void InputMemoryBitStream::readSignedBinaryValue(float& outValue)
@@ -132,11 +138,15 @@ void InputMemoryBitStream::readSignedBinaryValue(float& outValue)
 void InputMemoryBitStream::read(uint16_t& outData, uint32_t inBitCount)
 {
     readBits(&outData, inBitCount);
+    
+    outData = ntohs(outData);
 }
 
 void InputMemoryBitStream::read(int16_t& outData, uint32_t inBitCount)
 {
     readBits(&outData, inBitCount);
+    
+    outData = ntohs(outData);
 }
 
 void InputMemoryBitStream::read(uint8_t& outData, uint32_t inBitCount)
@@ -158,6 +168,9 @@ void InputMemoryBitStream::read(std::string& inString)
 {
     uint32_t elementCount;
     read(elementCount);
+    
+    elementCount = ntohl(elementCount);
+    
     inString.resize(elementCount);
     for (auto& element : inString)
     {
