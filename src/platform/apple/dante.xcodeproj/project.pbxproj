@@ -2715,8 +2715,8 @@
 		BB6F59A51FBE005700BD7697 /* spine-runtimes */ = {
 			isa = PBXGroup;
 			children = (
-				BB6F60551FBE005800BD7697 /* spine-csharp */,
 				BB6F60891FBE005900BD7697 /* spine-cpp */,
+				BB6F60551FBE005800BD7697 /* spine-csharp */,
 			);
 			path = "spine-runtimes";
 			sourceTree = "<group>";
