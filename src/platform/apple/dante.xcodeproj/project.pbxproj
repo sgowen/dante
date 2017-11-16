@@ -591,6 +591,8 @@
 		BBBD149A1EE06BB3003F9307 /* WeightedTimedMovingAverage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBBD14941EE06BB3003F9307 /* WeightedTimedMovingAverage.cpp */; };
 		BBBD14C41EE0C9B4003F9307 /* InputMemoryBitStream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBBD14C11EE0C9B4003F9307 /* InputMemoryBitStream.cpp */; };
 		BBCDF24F1F3796C3006E94B0 /* FPSUtil.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBCDF24D1F3796C3006E94B0 /* FPSUtil.cpp */; };
+		BBCE7A391FBD0DC8003CAA21 /* Atlas.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBCE7A381FBD0DC8003CAA21 /* Atlas.cpp */; };
+		BBCE7A3A1FBD0DC8003CAA21 /* Atlas.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBCE7A381FBD0DC8003CAA21 /* Atlas.cpp */; };
 		BBCFF1C51ECD312E003EE520 /* Assets.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBCFF1C01ECD312E003EE520 /* Assets.cpp */; };
 		BBCFF1C71ECD312E003EE520 /* IAssetsMapper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBCFF1C21ECD312E003EE520 /* IAssetsMapper.cpp */; };
 		BBD3E8621FB2872A00328E35 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = BBD3E8611FB2872A00328E35 /* AppDelegate.m */; };
@@ -1537,6 +1539,8 @@
 		BBCB71C91DB6A218006430B6 /* Texconv_readme.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = Texconv_readme.txt; sourceTree = "<group>"; };
 		BBCDF24D1F3796C3006E94B0 /* FPSUtil.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FPSUtil.cpp; sourceTree = "<group>"; };
 		BBCDF24E1F3796C3006E94B0 /* FPSUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FPSUtil.h; sourceTree = "<group>"; };
+		BBCE7A371FBD0BD8003CAA21 /* Atlas.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Atlas.h; sourceTree = "<group>"; };
+		BBCE7A381FBD0DC8003CAA21 /* Atlas.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Atlas.cpp; sourceTree = "<group>"; };
 		BBCFF1C01ECD312E003EE520 /* Assets.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Assets.cpp; sourceTree = "<group>"; };
 		BBCFF1C11ECD312E003EE520 /* Assets.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Assets.h; sourceTree = "<group>"; };
 		BBCFF1C21ECD312E003EE520 /* IAssetsMapper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = IAssetsMapper.cpp; sourceTree = "<group>"; };
@@ -2706,6 +2710,7 @@
 			children = (
 				BB783F3E1FBBB1BC00A8C4B6 /* Animation.h */,
 				BB783F5D1FBBB1BC00A8C4B6 /* AnimationStateData.h */,
+				BBCE7A371FBD0BD8003CAA21 /* Atlas.h */,
 				BB783F791FBBB1BC00A8C4B6 /* AtlasAttachmentLoader.h */,
 				BB783F571FBBB1BC00A8C4B6 /* Attachment.h */,
 				BB783F641FBBB1BC00A8C4B6 /* AttachmentLoader.h */,
@@ -2775,6 +2780,7 @@
 			children = (
 				BB783F9A1FBBB1C600A8C4B6 /* Animation.cpp */,
 				BB783F891FBBB1C600A8C4B6 /* AnimationStateData.cpp */,
+				BBCE7A381FBD0DC8003CAA21 /* Atlas.cpp */,
 				BB783F811FBBB1C600A8C4B6 /* AtlasAttachmentLoader.cpp */,
 				BB783F7C1FBBB1C600A8C4B6 /* Attachment.cpp */,
 				BB783F9B1FBBB1C600A8C4B6 /* AttachmentLoader.cpp */,
@@ -3600,6 +3606,7 @@
 				BB783FFF1FBBB1C600A8C4B6 /* IkConstraintTimeline.cpp in Sources */,
 				BB190F481FAB9E3900BDC6D0 /* OALAudioTracks.m in Sources */,
 				BB6E7B171F940F2B006C0024 /* Ground.cpp in Sources */,
+				BBCE7A391FBD0DC8003CAA21 /* Atlas.cpp in Sources */,
 				BB6E7B181F940F2B006C0024 /* MainEngine.cpp in Sources */,
 				BB190FE71FABA3F700BDC6D0 /* DDHidMouse.m in Sources */,
 				BB6E7B191F940F2B006C0024 /* PooledObjectsManager.cpp in Sources */,
@@ -4058,6 +4065,7 @@
 				BB5AFDD51FB359B1005FBD52 /* b2ChainAndPolygonContact.cpp in Sources */,
 				BB5AFDD61FB359B1005FBD52 /* b2CircleContact.cpp in Sources */,
 				BB5AFDD71FB359B1005FBD52 /* b2Contact.cpp in Sources */,
+				BBCE7A3A1FBD0DC8003CAA21 /* Atlas.cpp in Sources */,
 				BB5AFDD81FB359B1005FBD52 /* b2ContactSolver.cpp in Sources */,
 				BB5AFDD91FB359B1005FBD52 /* b2EdgeAndCircleContact.cpp in Sources */,
 				BB5AFDDA1FB359B1005FBD52 /* b2EdgeAndPolygonContact.cpp in Sources */,
