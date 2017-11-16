@@ -43,7 +43,7 @@
 
 Server* Server::s_instance = nullptr;
 
-void Server::create(bool isSteam, int inNumCratesToSpawn, int inNumSpacePiratesToSpawn)
+void Server::create(bool isSteam, uint32_t inNumCratesToSpawn, uint32_t inNumSpacePiratesToSpawn)
 {
     assert(!s_instance);
     
@@ -63,12 +63,12 @@ Server * Server::getInstance()
     return s_instance;
 }
 
-void Server::sHandleNewClient(int playerId, std::string playerName)
+void Server::sHandleNewClient(uint8_t playerId, std::string playerName)
 {
     getInstance()->handleNewClient(playerId, playerName);
 }
 
-void Server::sHandleLostClient(ClientProxy* inClientProxy, int index)
+void Server::sHandleLostClient(ClientProxy* inClientProxy, uint8_t index)
 {
     getInstance()->handleLostClient(inClientProxy, index);
 }
@@ -101,7 +101,7 @@ void Server::update(float deltaTime)
     }
 }
 
-int Server::getPlayerIdForRobotBeingCreated()
+uint8_t Server::getPlayerIdForRobotBeingCreated()
 {
     return m_iPlayerIdForRobotBeingCreated;
 }
@@ -150,7 +150,7 @@ bool Server::isDisplaying()
     return m_isDisplaying;
 }
 
-void Server::handleNewClient(int playerId, std::string playerName)
+void Server::handleNewClient(uint8_t playerId, std::string playerName)
 {
     spawnRobotForPlayer(playerId, playerName);
     
@@ -163,7 +163,7 @@ void Server::handleNewClient(int playerId, std::string playerName)
     }
 }
 
-void Server::handleLostClient(ClientProxy* inClientProxy, int index)
+void Server::handleLostClient(ClientProxy* inClientProxy, uint8_t index)
 {
     if (index >= 1)
     {
@@ -191,7 +191,7 @@ void Server::deleteRobotWithPlayerId(uint8_t playerId)
     }
 }
 
-void Server::spawnRobotForPlayer(int inPlayerId, std::string inPlayerName)
+void Server::spawnRobotForPlayer(uint8_t inPlayerId, std::string inPlayerName)
 {
     m_iPlayerIdForRobotBeingCreated = inPlayerId;
     Robot* robot = static_cast<Robot*>(SERVER_ENTITY_REG->createEntity(NW_TYPE_Robot));
@@ -237,7 +237,7 @@ void Server::respawnEnemiesIfNecessary()
             
             m_fStateTimeNoEnemies = 0;
             
-            for (int i = 0; i < m_iNumSpacePiratesToSpawn; ++i)
+            for (uint32_t i = 0; i < m_iNumSpacePiratesToSpawn; ++i)
             {
                 SpacePirate* spacePirate = static_cast<SpacePirate*>(SERVER_ENTITY_REG->createEntity(NW_TYPE_SpacePirate));
                 
@@ -279,7 +279,7 @@ void Server::spawnCratesIfNecessary()
     
     srand(static_cast<unsigned>(time(0)));
     
-    for (int i = 0; i < m_iNumCratesToSpawn; ++i)
+    for (uint32_t i = 0; i < m_iNumCratesToSpawn; ++i)
     {
         Crate* crate = static_cast<Crate*>(SERVER_ENTITY_REG->createEntity(NW_TYPE_Crate));
         
@@ -293,7 +293,7 @@ void Server::spawnCratesIfNecessary()
 
 void Server::clearClientMoves()
 {
-    for (int i = 0; i < MAX_NUM_PLAYERS_PER_SERVER; ++i)
+    for (uint8_t i = 0; i < MAX_NUM_PLAYERS_PER_SERVER; ++i)
     {
         ClientProxy* client = NG_SERVER->getClientProxy(i + 1);
         if (client)
@@ -304,7 +304,7 @@ void Server::clearClientMoves()
     }
 }
 
-Server::Server(bool isSteam, int inNumCratesToSpawn, int inNumSpacePiratesToSpawn) : m_fStateTime(0), m_fFrameStateTime(0), m_fStateTimeNoEnemies(0), m_iPlayerIdForRobotBeingCreated(0), m_iNumCratesToSpawn(inNumCratesToSpawn), m_iNumSpacePiratesToSpawn(inNumSpacePiratesToSpawn), m_isSpawningEnemies(false), m_isSpawningObjects(false), m_isDisplaying(false)
+Server::Server(bool isSteam, uint32_t inNumCratesToSpawn, uint32_t inNumSpacePiratesToSpawn) : m_fStateTime(0), m_fFrameStateTime(0), m_fStateTimeNoEnemies(0), m_iPlayerIdForRobotBeingCreated(0), m_iNumCratesToSpawn(inNumCratesToSpawn), m_iNumSpacePiratesToSpawn(inNumSpacePiratesToSpawn), m_isSpawningEnemies(false), m_isSpawningObjects(false), m_isDisplaying(false)
 {
     FWInstanceManager::createServerEntityManager(InstanceManager::sHandleEntityCreatedOnServer, InstanceManager::sHandleEntityDeletedOnServer);
     

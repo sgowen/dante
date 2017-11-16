@@ -38,19 +38,7 @@ public:
     
     void readBytes(void* outData, uint32_t inByteCount);
     
-    void read(uint32_t& outData, uint32_t inBitCount = 32);
-    
-    void read(int& outData, uint32_t inBitCount = 32);
-    
-    void read(float& outData);
-    
     void readSignedBinaryValue(float& outData);
-    
-    void read(uint16_t& outData, uint32_t inBitCount = 16);
-    
-    void read(int16_t& outData, uint32_t inBitCount = 16);
-    
-    void read(uint8_t& outData, uint32_t inBitCount = 8);
     
     void read(bool& outData);
     
@@ -64,32 +52,35 @@ public:
     
     void read(Color& outColor);
     
-    template <typename T>
-    void read(T& inData, uint32_t inBitCount = sizeof(T) * 8)
+    template <typename T, uint32_t BIT_COUNT = sizeof(T) * 8>
+    void read(T& outData)
     {
         static_assert(std::is_arithmetic< T >::value ||
                       std::is_enum< T >::value,
                       "Generic Read only supports primitive data types");
-        readBits(&inData, inBitCount);
         
-        if (inBitCount == 16)
+        static_assert(BIT_COUNT == 64 || BIT_COUNT == 32 || BIT_COUNT == 16 || BIT_COUNT <= 8, "Overriden BIT_COUNT must be 8 or less");
+        
+        readBits(&outData, BIT_COUNT);
+        
+        if (BIT_COUNT == 64)
         {
-            inData = ntohs(inData);
+            outData = ntohll(outData);
         }
-        else if (inBitCount == 32)
+        else if (BIT_COUNT == 32)
         {
             if (std::is_floating_point<T>::value)
             {
-                inData = float_swap(inData, false);
+                outData = float_swap(outData, false);
             }
             else
             {
-                inData = ntohl(inData);
+                outData = ntohl(outData);
             }
         }
-        else if (inBitCount == 64)
+        else if (BIT_COUNT == 16)
         {
-            inData = ntohll(inData);
+            outData = ntohs(outData);
         }
     }
     

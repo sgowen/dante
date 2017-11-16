@@ -98,27 +98,6 @@ void InputMemoryBitStream::readBytes(void* outData, uint32_t inByteCount)
     readBits(outData, inByteCount << 3);
 }
 
-void InputMemoryBitStream::read(uint32_t& outData, uint32_t inBitCount)
-{
-    readBits(&outData, inBitCount);
-    
-    outData = ntohl(outData);
-}
-
-void InputMemoryBitStream::read(int& outData, uint32_t inBitCount)
-{
-    readBits(&outData, inBitCount);
-    
-    outData = ntohl(outData);
-}
-
-void InputMemoryBitStream::read(float& outData)
-{
-    readBits(&outData, 32);
-    
-    outData = float_swap(outData, false);
-}
-
 void InputMemoryBitStream::readSignedBinaryValue(float& outValue)
 {
     bool isNonZero;
@@ -133,25 +112,6 @@ void InputMemoryBitStream::readSignedBinaryValue(float& outValue)
     {
         outValue = 0.f;
     }
-}
-
-void InputMemoryBitStream::read(uint16_t& outData, uint32_t inBitCount)
-{
-    readBits(&outData, inBitCount);
-    
-    outData = ntohs(outData);
-}
-
-void InputMemoryBitStream::read(int16_t& outData, uint32_t inBitCount)
-{
-    readBits(&outData, inBitCount);
-    
-    outData = ntohs(outData);
-}
-
-void InputMemoryBitStream::read(uint8_t& outData, uint32_t inBitCount)
-{
-    readBits(&outData, inBitCount);
 }
 
 void InputMemoryBitStream::read(bool& outData)

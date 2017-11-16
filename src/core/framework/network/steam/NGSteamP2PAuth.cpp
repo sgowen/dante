@@ -22,13 +22,13 @@ NGSteamP2PAuth::NGSteamP2PAuth(INetworkHelper* networkHelper) :
 m_networkTransport(new NGSteamP2PNetworkTransport(networkHelper))
 {
     // no players yet
-	for (int i = 0; i < MAX_NUM_PLAYERS_PER_SERVER; i++)
+	for (uint8_t i = 0; i < MAX_NUM_PLAYERS_PER_SERVER; ++i)
 	{
 		m_rgpP2PAuthPlayer[i] = nullptr;
 	}
     
 	// no queued messages
-	for (int i = 0; i < MAX_NUM_PLAYERS_PER_SERVER; i++)
+	for (uint8_t i = 0; i < MAX_NUM_PLAYERS_PER_SERVER; ++i)
 	{
 		m_rgpQueuedMessage[i] = nullptr;
 	}
@@ -39,7 +39,7 @@ NGSteamP2PAuth::~NGSteamP2PAuth()
     delete m_networkTransport;
 }
 
-void NGSteamP2PAuth::playerDisconnect(int iSlot)
+void NGSteamP2PAuth::playerDisconnect(uint8_t iSlot)
 {
 	if (m_rgpP2PAuthPlayer[iSlot])
 	{
@@ -51,7 +51,7 @@ void NGSteamP2PAuth::playerDisconnect(int iSlot)
 
 void NGSteamP2PAuth::endGame()
 {
-	for (int i = 0; i < MAX_NUM_PLAYERS_PER_SERVER; ++i)
+	for (uint8_t i = 0; i < MAX_NUM_PLAYERS_PER_SERVER; ++i)
 	{
 		if (m_rgpP2PAuthPlayer[i])
 		{
@@ -63,7 +63,7 @@ void NGSteamP2PAuth::endGame()
 	}
 }
 
-void NGSteamP2PAuth::internalinitPlayer(int iSlot, CSteamID steamID, bool bStartAuthProcess)
+void NGSteamP2PAuth::internalinitPlayer(uint8_t iSlot, CSteamID steamID, bool bStartAuthProcess)
 {
 	char rgch[128];
 	sprintf(rgch, "P2P:: startAuthPlayer slot=%d account=%d \n", iSlot, steamID.GetAccountID());
@@ -76,7 +76,7 @@ void NGSteamP2PAuth::internalinitPlayer(int iSlot, CSteamID steamID, bool bStart
     }
 
 	// check our queued messages list to see if this guys ticket message arrived before we noticed him
-	for (int i = 0; i < MAX_NUM_PLAYERS_PER_SERVER; i++)
+	for (uint8_t i = 0; i < MAX_NUM_PLAYERS_PER_SERVER; ++i)
 	{
 		if (m_rgpQueuedMessage[i] != NULL)
 		{
@@ -90,7 +90,7 @@ void NGSteamP2PAuth::internalinitPlayer(int iSlot, CSteamID steamID, bool bStart
 	}
 }
 
-void NGSteamP2PAuth::registerPlayer(int iSlot, CSteamID steamID)
+void NGSteamP2PAuth::registerPlayer(uint8_t iSlot, CSteamID steamID)
 {
 	if (iSlot < MAX_NUM_PLAYERS_PER_SERVER)
     {
@@ -98,7 +98,7 @@ void NGSteamP2PAuth::registerPlayer(int iSlot, CSteamID steamID)
     }
 }
 
-void NGSteamP2PAuth::startAuthPlayer(int iSlot, CSteamID steamID)
+void NGSteamP2PAuth::startAuthPlayer(uint8_t iSlot, CSteamID steamID)
 {
 	if (iSlot < MAX_NUM_PLAYERS_PER_SERVER)
     {
@@ -126,7 +126,7 @@ bool NGSteamP2PAuth::handleMessage(uint32_t packetType, InputMemoryBitStream& in
             msg->setSteamID(steamID);
             msg->setToken(token, uTokenLen);
             
-            for (int i = 0; i < MAX_NUM_PLAYERS_PER_SERVER; i++)
+            for (uint8_t i = 0; i < MAX_NUM_PLAYERS_PER_SERVER; ++i)
             {
                 if (m_rgpP2PAuthPlayer[i])
                 {
@@ -139,7 +139,7 @@ bool NGSteamP2PAuth::handleMessage(uint32_t packetType, InputMemoryBitStream& in
             
             // if we dont have the player in our list yet, lets queue the message and assume he will show up soon
             LOG("P2P:: handleMessage queueing message");
-            for (int i = 0; i < MAX_NUM_PLAYERS_PER_SERVER; i++)
+            for (uint8_t i = 0; i < MAX_NUM_PLAYERS_PER_SERVER; ++i)
             {
                 if (m_rgpQueuedMessage[i] == NULL)
                 {

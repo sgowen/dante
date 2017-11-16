@@ -88,14 +88,14 @@ bool MoveList::hasMoves() const
     return !m_moves.empty();
 }
 
-int MoveList::getMoveCount() const
+uint32_t MoveList::getMoveCount() const
 {
-    return static_cast<int>(m_moves.size());
+    return static_cast<uint32_t>(m_moves.size());
 }
 
-int MoveList::getNumMovesAfterTimestamp(float inLastMoveReceivedOnServerTimestamp) const
+uint32_t MoveList::getNumMovesAfterTimestamp(float inLastMoveReceivedOnServerTimestamp) const
 {
-    int ret = 0;
+    uint32_t ret = 0;
     
     for (Move move : m_moves)
     {
@@ -108,7 +108,7 @@ int MoveList::getNumMovesAfterTimestamp(float inLastMoveReceivedOnServerTimestam
     return ret;
 }
 
-Move* MoveList::getMoveAtIndex(int index)
+Move* MoveList::getMoveAtIndex(uint32_t index)
 {
     if (index < getMoveCount())
     {

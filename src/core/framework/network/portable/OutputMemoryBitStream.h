@@ -50,19 +50,22 @@ public:
     
     void writeSignedBinaryValue(float inValue);
     
-    template <typename T>
-    void write(T inData, uint32_t inBitCount = sizeof(T) * 8)
+    template <typename T, uint32_t BIT_COUNT = sizeof(T) * 8>
+    void write(T inData)
     {
         static_assert(std::is_arithmetic< T >::value ||
                       std::is_enum< T >::value,
                       "Generic Write only supports primitive data types");
         
+        static_assert(BIT_COUNT == 64 || BIT_COUNT == 32 || BIT_COUNT == 16 || BIT_COUNT <= 8, "Overriden BIT_COUNT must be 8 or less");
+        
         T data = inData;
-        if (inBitCount == 16)
+        
+        if (BIT_COUNT == 64)
         {
-            data = htons(data);
+            data = htonll(data);
         }
-        else if (inBitCount == 32)
+        else if (BIT_COUNT == 32)
         {
             if (std::is_floating_point<T>::value)
             {
@@ -73,12 +76,12 @@ public:
                 data = htonl(data);
             }
         }
-        else if (inBitCount == 64)
+        else if (BIT_COUNT == 16)
         {
-            data = htonll(data);
+            data = htons(data);
         }
         
-        writeBits(&data, inBitCount);
+        writeBits(&data, BIT_COUNT);
     }
     
 private:

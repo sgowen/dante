@@ -13,7 +13,7 @@
 
 class ClientProxy;
 
-typedef ClientProxy* (*GetClientProxyFunc)(int inPlayerIndex);
+typedef ClientProxy* (*GetClientProxyFunc)(uint8_t inPlayerIndex);
 typedef void (*HandleClientDisconnectedFunc)(ClientProxy* inClientProxy);
 
 class IServerHelper : public INetworkHelper

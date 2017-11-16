@@ -25,7 +25,7 @@ SocketServerHelper::SocketServerHelper(uint16_t inPort, ProcessPacketFunc inProc
 
 SocketServerHelper::~SocketServerHelper()
 {
-    for (int i = 0; i < MAX_NUM_PLAYERS_PER_SERVER; ++i)
+    for (uint8_t i = 0; i < MAX_NUM_PLAYERS_PER_SERVER; ++i)
     {
         ClientProxy* clientProxy = m_getClientProxyFunc(i);
         if (clientProxy)
@@ -52,7 +52,7 @@ void SocketServerHelper::processSpecialPacket(uint32_t packetType, InputMemoryBi
             
             // Find the connection that should exist for this users address
             bool isFound = false;
-            for (int i = 0; i < MAX_NUM_PLAYERS_PER_SERVER; ++i)
+            for (uint8_t i = 0; i < MAX_NUM_PLAYERS_PER_SERVER; ++i)
             {
                 ClientProxy* clientProxy = m_getClientProxyFunc(i);
                 if (clientProxy)

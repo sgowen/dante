@@ -69,7 +69,7 @@ void NetworkManagerServer::sHandleConnectionReset(IMachineAddress* inFromAddress
     NG_SERVER->handleConnectionReset(inFromAddress);
 }
 
-ClientProxy* NetworkManagerServer::sGetClientProxy(int inPlayerIndex)
+ClientProxy* NetworkManagerServer::sGetClientProxy(uint8_t inPlayerIndex)
 {
     return NG_SERVER->getClientProxy(inPlayerIndex + 1);
 }
@@ -155,7 +155,7 @@ void NetworkManagerServer::setStateDirty(uint32_t inNetworkId, uint32_t inDirtyS
     }
 }
 
-ClientProxy* NetworkManagerServer::getClientProxy(int inPlayerId) const
+ClientProxy* NetworkManagerServer::getClientProxy(uint8_t inPlayerId) const
 {
     auto it = m_playerIDToClientMap.find(inPlayerId);
     if (it != m_playerIDToClientMap.end())
@@ -166,9 +166,9 @@ ClientProxy* NetworkManagerServer::getClientProxy(int inPlayerId) const
     return nullptr;
 }
 
-int NetworkManagerServer::getAverageMoveCount() const
+uint16_t NetworkManagerServer::getAverageMoveCount() const
 {
-    int ret = 0;
+    uint16_t ret = 0;
     
     if (m_addressHashToClientMap.size() > 0)
     {
@@ -183,9 +183,9 @@ int NetworkManagerServer::getAverageMoveCount() const
     return ret;
 }
 
-int NetworkManagerServer::getLowestNonHostMoveCount() const
+int16_t NetworkManagerServer::getLowestNonHostMoveCount() const
 {
-    int ret = -1;
+    int16_t ret = -1;
     
     if (m_addressHashToClientMap.size() > 0)
     {
@@ -194,7 +194,7 @@ int NetworkManagerServer::getLowestNonHostMoveCount() const
             ClientProxy* client = entry.second;
             if (client->getPlayerId() != 1)
             {
-                int moveCount = client->getUnprocessedMoveList().getMoveCount();
+                uint32_t moveCount = client->getUnprocessedMoveList().getMoveCount();
                 if (moveCount < ret || ret == -1)
                 {
                     ret = moveCount;
@@ -206,9 +206,9 @@ int NetworkManagerServer::getLowestNonHostMoveCount() const
     return ret;
 }
 
-int NetworkManagerServer::getHostMoveCount() const
+uint16_t NetworkManagerServer::getHostMoveCount() const
 {
-    int ret = 0;
+    uint16_t ret = 0;
     
     ClientProxy* client = getClientProxy(1);
     if (client)
@@ -219,7 +219,7 @@ int NetworkManagerServer::getHostMoveCount() const
     return ret;
 }
 
-int NetworkManagerServer::getNumClientsConnected()
+uint8_t NetworkManagerServer::getNumClientsConnected()
 {
     return static_cast<int>(m_addressHashToClientMap.size());
 }
@@ -308,7 +308,7 @@ void NetworkManagerServer::handlePacketFromNewClient(InputMemoryBitStream& inInp
         m_addressHashToClientMap[inFromAddress->getHash()] = newClientProxy;
         m_playerIDToClientMap[newClientProxy->getPlayerId()] = newClientProxy;
         
-        int playerId = newClientProxy->getPlayerId();
+        uint8_t playerId = newClientProxy->getPlayerId();
         std::string playerName = newClientProxy->getName();
         
         // tell the server about this client
@@ -416,7 +416,7 @@ void NetworkManagerServer::writeLastMoveTimestampIfDirty(OutputMemoryBitStream& 
 void NetworkManagerServer::handleInputPacket(ClientProxy* inClientProxy, InputMemoryBitStream& inInputStream)
 {
     uint8_t moveCount = 0;
-    inInputStream.read(moveCount, 2);
+    inInputStream.read<uint8_t, 2>(moveCount);
     
 	IInputState* referenceInputState = nullptr;
 	bool isRefInputStateOrphaned = false;
@@ -478,12 +478,12 @@ void NetworkManagerServer::handleAddLocalPlayerPacket(ClientProxy* inClientProxy
         uint8_t requestedIndex;
         inInputStream.read(requestedIndex);
         
-        int playerId = inClientProxy->getPlayerId(requestedIndex);
+        uint8_t playerId = inClientProxy->getPlayerId(requestedIndex);
         if (playerId == INPUT_UNASSIGNED)
         {
             std::string localPlayerName = StringUtil::format("%s(%d)", inClientProxy->getName().c_str(), requestedIndex);
             
-            int playerId = m_iNextPlayerId;
+            uint8_t playerId = m_iNextPlayerId;
             
             inClientProxy->onLocalPlayerAdded(playerId);
             
@@ -507,9 +507,9 @@ void NetworkManagerServer::handleAddLocalPlayerPacket(ClientProxy* inClientProxy
     }
 }
 
-void NetworkManagerServer::sendLocalPlayerAddedPacket(ClientProxy* inClientProxy, int index)
+void NetworkManagerServer::sendLocalPlayerAddedPacket(ClientProxy* inClientProxy, uint8_t index)
 {
-    int playerId = inClientProxy->getPlayerId(index);
+    uint8_t playerId = inClientProxy->getPlayerId(index);
     
     OutputMemoryBitStream packet;
     
@@ -526,7 +526,7 @@ void NetworkManagerServer::sendLocalPlayerAddedPacket(ClientProxy* inClientProxy
 void NetworkManagerServer::handleDropLocalPlayerPacket(ClientProxy* inClientProxy, InputMemoryBitStream& inInputStream)
 {
     // read the index to drop
-    int index;
+    uint8_t index;
     inInputStream.read(index);
     
     if (index < 1)
@@ -535,7 +535,7 @@ void NetworkManagerServer::handleDropLocalPlayerPacket(ClientProxy* inClientProx
         return;
     }
     
-    int playerId = inClientProxy->getPlayerId(index);
+    uint8_t playerId = inClientProxy->getPlayerId(index);
     if (playerId != INPUT_UNASSIGNED)
     {
         m_playerIDToClientMap.erase(playerId);
@@ -550,7 +550,7 @@ void NetworkManagerServer::handleDropLocalPlayerPacket(ClientProxy* inClientProx
 
 void NetworkManagerServer::handleClientDisconnected(ClientProxy* inClientProxy)
 {
-    for (int i = 0; i < inClientProxy->getNumPlayers(); ++i)
+    for (uint8_t i = 0; i < inClientProxy->getNumPlayers(); ++i)
     {
         m_playerIDToClientMap.erase(inClientProxy->getPlayerId(i));
     }
@@ -572,7 +572,7 @@ void NetworkManagerServer::updateNextPlayerId()
     
     // Find the next available Player ID
     m_iNextPlayerId = 1;
-    for (int i = 0; i < MAX_NUM_PLAYERS_PER_SERVER; ++i)
+    for (uint8_t i = 0; i < MAX_NUM_PLAYERS_PER_SERVER; ++i)
     {
         for (auto const &entry : m_playerIDToClientMap)
         {

@@ -24,8 +24,8 @@ class Entity;
 
 #define NG_SERVER_CALLBACKS NetworkManagerServer::sProcessPacket, NetworkManagerServer::sHandleNoResponse, NetworkManagerServer::sHandleConnectionReset, NetworkManagerServer::sGetClientProxy, NetworkManagerServer::sHandleClientDisconnected
 
-typedef void (*HandleNewClientFunc)(int playerId, std::string playerName);
-typedef void (*HandleLostClientFunc)(ClientProxy* inClientProxy, int index);
+typedef void (*HandleNewClientFunc)(uint8_t playerId, std::string playerName);
+typedef void (*HandleLostClientFunc)(ClientProxy* inClientProxy, uint8_t index);
 typedef IInputState* (*InputStateCreationFunc)();
 
 class NetworkManagerServer
@@ -43,7 +43,7 @@ public:
     
     static void sHandleConnectionReset(IMachineAddress* inFromAddress);
     
-    static ClientProxy* sGetClientProxy(int inPlayerId);
+    static ClientProxy* sGetClientProxy(uint8_t inPlayerId);
     
     static void sHandleClientDisconnected(ClientProxy* inClientProxy);
     
@@ -59,15 +59,15 @@ public:
     
     void setStateDirty(uint32_t inNetworkId, uint32_t inDirtyState);
     
-    ClientProxy* getClientProxy(int inPlayerId) const;
+    ClientProxy* getClientProxy(uint8_t inPlayerId) const;
     
-    int getAverageMoveCount() const;
+    uint16_t getAverageMoveCount() const;
     
-    int getLowestNonHostMoveCount() const;
+    int16_t getLowestNonHostMoveCount() const;
     
-    int getHostMoveCount() const;
+    uint16_t getHostMoveCount() const;
     
-    int getNumClientsConnected();
+    uint8_t getNumClientsConnected();
     
     IMachineAddress* getServerAddress();
     
@@ -102,7 +102,7 @@ private:
     
     void sendWelcomePacket(ClientProxy* inClientProxy);
     
-    void sendLocalPlayerAddedPacket(ClientProxy* inClientProxy, int index);
+    void sendLocalPlayerAddedPacket(ClientProxy* inClientProxy, uint8_t index);
     
     void sendStatePacketToClient(ClientProxy* inClientProxy);
     

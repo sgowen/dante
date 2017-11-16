@@ -75,7 +75,7 @@ void InstanceManager::sHandleEntityDeletedOnClient(Entity* inEntity)
     }
 }
 
-uint64_t InstanceManager::sGetPlayerAddressHashForIndexOnClient(int inPlayerIndex)
+uint64_t InstanceManager::sGetPlayerAddressHashForIndexOnClient(uint8_t inPlayerIndex)
 {
     uint64_t ret = 0;
  
@@ -88,7 +88,7 @@ uint64_t InstanceManager::sGetPlayerAddressHashForIndexOnClient(int inPlayerInde
     return ret;
 }
 
-Robot* InstanceManager::sGetPlayerRobotForIDOnClient(int inPlayerID)
+Robot* InstanceManager::sGetPlayerRobotForIDOnClient(uint8_t inPlayerID)
 {
     Robot* ret = nullptr;
     

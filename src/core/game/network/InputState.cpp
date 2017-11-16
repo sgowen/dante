@@ -170,7 +170,7 @@ InputState::GameInputState& InputState::getGameInputState(int index)
 
 void InputState::GameInputState::write(OutputMemoryBitStream& inOutputStream) const
 {
-    inOutputStream.write(m_iPlayerId, 3);
+    inOutputStream.write<uint8_t, 3>(m_iPlayerId);
     inOutputStream.write(m_isMovingRight);
     inOutputStream.write(m_isMovingLeft);
     inOutputStream.write(m_isJumping);
@@ -180,7 +180,7 @@ void InputState::GameInputState::write(OutputMemoryBitStream& inOutputStream) co
 
 void InputState::GameInputState::read(InputMemoryBitStream& inInputStream)
 {
-    inInputStream.read(m_iPlayerId, 3);
+    inInputStream.read<uint8_t, 3>(m_iPlayerId);
     inInputStream.read(m_isMovingRight);
     inInputStream.read(m_isMovingLeft);
     inInputStream.read(m_isJumping);

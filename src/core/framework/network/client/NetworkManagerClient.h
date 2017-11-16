@@ -62,7 +62,7 @@ public:
     
     void requestToAddLocalPlayer();
     
-    void requestToDropLocalPlayer(int index);
+    void requestToDropLocalPlayer(uint8_t index);
     
     const WeightedTimedMovingAverage& getBytesReceivedPerSecond() const;
     
@@ -107,7 +107,7 @@ private:
     WeightedTimedMovingAverage* m_avgRoundTripTime;
     
     bool m_isRequestingToAddLocalPlayer;
-    int m_isRequestingToDropLocalPlayer;
+    uint8_t m_isRequestingToDropLocalPlayer;
     
     void processPacket(InputMemoryBitStream& inInputStream, IMachineAddress* inFromAddress);
     

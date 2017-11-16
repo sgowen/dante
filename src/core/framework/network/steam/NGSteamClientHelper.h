@@ -18,7 +18,7 @@
 class NGSteamP2PAuth;
 class NGSteamAddress;
 
-typedef uint64_t (*GetPlayerAddressHashFunc)(int inPlayerIndex);
+typedef uint64_t (*GetPlayerAddressHashFunc)(uint8_t inPlayerIndex);
 
 class NGSteamClientHelper : public IClientHelper
 {

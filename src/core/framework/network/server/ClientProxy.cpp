@@ -37,7 +37,7 @@ IMachineAddress* ClientProxy::getMachineAddress() const
     return m_machineAddress;
 }
 
-uint8_t ClientProxy::getPlayerId(int index) const
+uint8_t ClientProxy::getPlayerId(uint8_t index) const
 {
     return m_playerIds.size() > index ? m_playerIds[index] : INPUT_UNASSIGNED;
 }
@@ -119,7 +119,7 @@ std::vector<uint8_t>& ClientProxy::getPlayerIds()
     return m_playerIds;
 }
 
-int ClientProxy::getNumPlayers()
+uint8_t ClientProxy::getNumPlayers()
 {
     return static_cast<int>(m_playerIds.size());
 }

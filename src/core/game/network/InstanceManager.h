@@ -27,8 +27,8 @@ public:
     
     static void sHandleEntityCreatedOnClient(Entity* inEntity);
     static void sHandleEntityDeletedOnClient(Entity* inEntity);
-    static uint64_t sGetPlayerAddressHashForIndexOnClient(int inPlayerIndex);
-    static Robot* sGetPlayerRobotForIDOnClient(int inPlayerID);
+    static uint64_t sGetPlayerAddressHashForIndexOnClient(uint8_t inPlayerIndex);
+    static Robot* sGetPlayerRobotForIDOnClient(uint8_t inPlayerID);
     
     static void sHandleEntityCreatedOnServer(Entity* inEntity);
     static void sHandleEntityDeletedOnServer(Entity* inEntity);

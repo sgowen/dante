@@ -32,12 +32,12 @@ public:
     
     ~NGSteamP2PAuth();
     
-    void playerDisconnect(int iSlot);
+    void playerDisconnect(uint8_t iSlot);
     void endGame();
-    void startAuthPlayer(int iSlot, CSteamID steamID);
-    void registerPlayer(int iSlot, CSteamID steamID);
+    void startAuthPlayer(uint8_t iSlot, CSteamID steamID);
+    void registerPlayer(uint8_t iSlot, CSteamID steamID);
     bool handleMessage(uint32_t packetType, InputMemoryBitStream& inInputStream);
-    void internalinitPlayer(int iSlot, CSteamID steamID, bool bStartAuthProcess);
+    void internalinitPlayer(uint8_t iSlot, CSteamID steamID, bool bStartAuthProcess);
 };
 
 class NGSteamP2PAuthPlayer

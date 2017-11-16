@@ -133,7 +133,7 @@ void NGSteamClientHelper::processIncomingPackets()
         // Now if we are the owner of the game, lets make sure all of our players are legit.
         // if they are not, we tell the server to kick them off
         // Start at 1 to skip myself
-        for (int i = 1; i < MAX_NUM_PLAYERS_PER_SERVER; ++i)
+        for (uint8_t i = 1; i < MAX_NUM_PLAYERS_PER_SERVER; ++i)
         {
             if (m_steamP2PAuth->m_rgpP2PAuthPlayer[i] && !m_steamP2PAuth->m_rgpP2PAuthPlayer[i]->isAuthOk())
             {

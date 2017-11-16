@@ -27,7 +27,7 @@ public:
     
     IMachineAddress* getMachineAddress() const;
     
-    uint8_t getPlayerId(int index = 0) const;
+    uint8_t getPlayerId(uint8_t index = 0) const;
     
     const std::string& getName() const;
     
@@ -51,7 +51,7 @@ public:
     
     std::vector<uint8_t>& getPlayerIds();
     
-    int getNumPlayers();
+    uint8_t getNumPlayers();
     
 private:
     DeliveryNotificationManager	m_deliveryNotificationManager;

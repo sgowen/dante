@@ -114,7 +114,7 @@ void NetworkManagerClient::requestToAddLocalPlayer()
     m_isRequestingToDropLocalPlayer = 0;
 }
 
-void NetworkManagerClient::requestToDropLocalPlayer(int index)
+void NetworkManagerClient::requestToDropLocalPlayer(uint8_t index)
 {
     if (index < 1)
     {
@@ -341,17 +341,17 @@ void NetworkManagerClient::sendInputPacket()
         m_deliveryNotificationManager->writeState(inputPacket);
         
         // eventually write the 3 latest moves so they have 3 chances to get through...
-        int moveCount = moveList.getNumMovesAfterTimestamp(m_fLastMoveReceivedByServerTimestamp);
+        uint8_t moveCount = moveList.getNumMovesAfterTimestamp(m_fLastMoveReceivedByServerTimestamp);
         int firstMoveIndex = moveCount - 3;
         if (firstMoveIndex < 0)
         {
             firstMoveIndex = 0;
         }
         
-        auto move = moveList.begin() + firstMoveIndex;
+        std::deque<Move>::const_iterator move = moveList.begin() + firstMoveIndex;
         
         // only need 2 bits to write the move count, because it's 0-3
-        inputPacket.write(moveCount - firstMoveIndex, 2);
+        inputPacket.write<uint8_t, 2>(moveCount - firstMoveIndex);
         
         const Move* referenceMove = nullptr;
         for (; firstMoveIndex < moveCount; ++firstMoveIndex, ++move)
