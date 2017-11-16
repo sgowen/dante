@@ -11,12 +11,6 @@
 
 #include <algorithm>
 
-#define NG_KEY_BACK_SPACE 0x0008
-
-#define NG_KEY_CARRIAGE_RETURN 0x000D
-
-#define NG_KEY_ESCAPE 0x001B
-
 #define NG_KEY_SPACE_BAR 0x0020
 
 #define NG_KEY_ASCII_COMMA 0x002C
@@ -66,19 +60,25 @@
 #define NG_KEY_DELETE 0x007F
 
 #ifdef _WIN32
-#define NG_KEY_PERIOD 0xbe
-#define NG_KEY_COMMA 0xbc
-#define NG_KEY_ARROW_LEFT 0x25
-#define NG_KEY_ARROW_UP 0x26
-#define NG_KEY_ARROW_RIGHT 0x27
-#define NG_KEY_ARROW_DOWN 0x28
+    #define NG_KEY_BACK_SPACE 0x0008
+    #define NG_KEY_ESCAPE 0x001B
+    #define NG_KEY_PERIOD 0xbe
+    #define NG_KEY_COMMA 0xbc
+    #define NG_KEY_ARROW_LEFT 0x25
+    #define NG_KEY_ARROW_UP 0x26
+    #define NG_KEY_ARROW_RIGHT 0x27
+    #define NG_KEY_ARROW_DOWN 0x28
+    #define NG_KEY_CARRIAGE_RETURN 0x000D
 #else
-#define NG_KEY_PERIOD NG_KEY_ASCII_PERIOD
-#define NG_KEY_COMMA NG_KEY_ASCII_COMMA
-#define NG_KEY_ARROW_UP 0xF700
-#define NG_KEY_ARROW_DOWN 0xF701
-#define NG_KEY_ARROW_LEFT 0xF702
-#define NG_KEY_ARROW_RIGHT 0xF703
+    #define NG_KEY_BACK_SPACE 0x0103
+    #define NG_KEY_ESCAPE 0x0100
+    #define NG_KEY_PERIOD NG_KEY_ASCII_PERIOD
+    #define NG_KEY_COMMA NG_KEY_ASCII_COMMA
+    #define NG_KEY_ARROW_UP 0x0109
+    #define NG_KEY_ARROW_DOWN 0x0108
+    #define NG_KEY_ARROW_LEFT 0x0107
+    #define NG_KEY_ARROW_RIGHT 0x0106
+    #define NG_KEY_CARRIAGE_RETURN 0x0101
 #endif
 
 inline std::vector<unsigned short>& getAllSupportedKeys()
