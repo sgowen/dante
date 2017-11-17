@@ -180,7 +180,7 @@
 		BB5833781EEDBF7E0084DA20 /* NGSteamGameServices.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB5833771EEDBF7E0084DA20 /* NGSteamGameServices.cpp */; };
 		BB5833CD1EEDDA330084DA20 /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = BB5833CC1EEDDA330084DA20 /* main.mm */; };
 		BB5833D01EEDDAFC0084DA20 /* Renderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB5833CE1EEDDAFC0084DA20 /* Renderer.cpp */; };
-		BB5833DC1EEDDC2B0084DA20 /* IEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB5833DA1EEDDC2B0084DA20 /* IEngine.cpp */; };
+		BB5833DC1EEDDC2B0084DA20 /* Engine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB5833DA1EEDDC2B0084DA20 /* Engine.cpp */; };
 		BB5833EB1EEDDD330084DA20 /* music_001.wav in Resources */ = {isa = PBXBuildFile; fileRef = BB5833DF1EEDDD330084DA20 /* music_001.wav */; };
 		BB5833EC1EEDDD330084DA20 /* sound_001.wav in Resources */ = {isa = PBXBuildFile; fileRef = BB5833E11EEDDD330084DA20 /* sound_001.wav */; };
 		BB5833ED1EEDDD330084DA20 /* sound_002.wav in Resources */ = {isa = PBXBuildFile; fileRef = BB5833E21EEDDD330084DA20 /* sound_002.wav */; };
@@ -276,7 +276,7 @@
 		BB5AFE151FB359DE005FBD52 /* InstanceManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB6E7AF01F940F13006C0024 /* InstanceManager.cpp */; };
 		BB5AFE161FB359DE005FBD52 /* Server.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB6E7AF21F940F13006C0024 /* Server.cpp */; };
 		BB5AFE171FB359EA005FBD52 /* FPSUtil.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBCDF24D1F3796C3006E94B0 /* FPSUtil.cpp */; };
-		BB5AFE181FB359EA005FBD52 /* IEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB5833DA1EEDDC2B0084DA20 /* IEngine.cpp */; };
+		BB5AFE181FB359EA005FBD52 /* Engine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB5833DA1EEDDC2B0084DA20 /* Engine.cpp */; };
 		BB5AFE191FB359EA005FBD52 /* RTTI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB74283D1EB2AF4200B7628D /* RTTI.cpp */; };
 		BB5AFE1A1FB359EA005FBD52 /* StringUtil.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBBD148E1EE06858003F9307 /* StringUtil.cpp */; };
 		BB5AFE1B1FB359EA005FBD52 /* Timing.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBBD14921EE06BB3003F9307 /* Timing.cpp */; };
@@ -302,9 +302,9 @@
 		BB5AFE2F1FB35A49005FBD52 /* GamePadInputManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF1611EA94ED900F0866E /* GamePadInputManager.cpp */; };
 		BB5AFE301FB35A49005FBD52 /* KeyboardEvent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF1631EA94ED900F0866E /* KeyboardEvent.cpp */; };
 		BB5AFE311FB35A49005FBD52 /* KeyboardInputManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF1661EA94ED900F0866E /* KeyboardInputManager.cpp */; };
-		BB5AFE321FB35A49005FBD52 /* ScreenEvent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF1681EA94ED900F0866E /* ScreenEvent.cpp */; };
-		BB5AFE331FB35A49005FBD52 /* ScreenInputManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF16B1EA94ED900F0866E /* ScreenInputManager.cpp */; };
-		BB5AFE341FB35A49005FBD52 /* TouchConverter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF16D1EA94ED900F0866E /* TouchConverter.cpp */; };
+		BB5AFE321FB35A49005FBD52 /* CursorEvent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF1681EA94ED900F0866E /* CursorEvent.cpp */; };
+		BB5AFE331FB35A49005FBD52 /* CursorInputManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF16B1EA94ED900F0866E /* CursorInputManager.cpp */; };
+		BB5AFE341FB35A49005FBD52 /* CursorConverter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF16D1EA94ED900F0866E /* CursorConverter.cpp */; };
 		BB5AFE351FB35A77005FBD52 /* IClientHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB4253D01EF58DA5003F6D2A /* IClientHelper.cpp */; };
 		BB5AFE361FB35A77005FBD52 /* NetworkManagerClient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB7251921EE105330024C71C /* NetworkManagerClient.cpp */; };
 		BB5AFE371FB35A77005FBD52 /* ReplicationManagerClient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF226B01EC12CDE00573356 /* ReplicationManagerClient.cpp */; };
@@ -581,9 +581,9 @@
 		BBAEF2821EA94EDA00F0866E /* GamePadInputManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF1611EA94ED900F0866E /* GamePadInputManager.cpp */; };
 		BBAEF2841EA94EDA00F0866E /* KeyboardEvent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF1631EA94ED900F0866E /* KeyboardEvent.cpp */; };
 		BBAEF2861EA94EDA00F0866E /* KeyboardInputManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF1661EA94ED900F0866E /* KeyboardInputManager.cpp */; };
-		BBAEF2881EA94EDA00F0866E /* ScreenEvent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF1681EA94ED900F0866E /* ScreenEvent.cpp */; };
-		BBAEF28A1EA94EDA00F0866E /* ScreenInputManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF16B1EA94ED900F0866E /* ScreenInputManager.cpp */; };
-		BBAEF28C1EA94EDA00F0866E /* TouchConverter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF16D1EA94ED900F0866E /* TouchConverter.cpp */; };
+		BBAEF2881EA94EDA00F0866E /* CursorEvent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF1681EA94ED900F0866E /* CursorEvent.cpp */; };
+		BBAEF28A1EA94EDA00F0866E /* CursorInputManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF16B1EA94ED900F0866E /* CursorInputManager.cpp */; };
+		BBAEF28C1EA94EDA00F0866E /* CursorConverter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF16D1EA94ED900F0866E /* CursorConverter.cpp */; };
 		BBAEF2941EA94EDA00F0866E /* Circle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF1781EA94ED900F0866E /* Circle.cpp */; };
 		BBAEF2961EA94EDA00F0866E /* Line.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF17A1EA94ED900F0866E /* Line.cpp */; };
 		BBAEF2981EA94EDA00F0866E /* NGRect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF17D1EA94ED900F0866E /* NGRect.cpp */; };
@@ -1078,8 +1078,8 @@
 		BB5833CC1EEDDA330084DA20 /* main.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = main.mm; sourceTree = "<group>"; };
 		BB5833CE1EEDDAFC0084DA20 /* Renderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Renderer.cpp; sourceTree = "<group>"; };
 		BB5833CF1EEDDAFC0084DA20 /* Renderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Renderer.h; sourceTree = "<group>"; };
-		BB5833DA1EEDDC2B0084DA20 /* IEngine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = IEngine.cpp; sourceTree = "<group>"; };
-		BB5833DB1EEDDC2B0084DA20 /* IEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IEngine.h; sourceTree = "<group>"; };
+		BB5833DA1EEDDC2B0084DA20 /* Engine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Engine.cpp; sourceTree = "<group>"; };
+		BB5833DB1EEDDC2B0084DA20 /* Engine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Engine.h; sourceTree = "<group>"; };
 		BB5833DF1EEDDD330084DA20 /* music_001.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = music_001.wav; sourceTree = "<group>"; };
 		BB5833E11EEDDD330084DA20 /* sound_001.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = sound_001.wav; sourceTree = "<group>"; };
 		BB5833E21EEDDD330084DA20 /* sound_002.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = sound_002.wav; sourceTree = "<group>"; };
@@ -1518,13 +1518,13 @@
 		BBAEF1641EA94ED900F0866E /* KeyboardEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeyboardEvent.h; sourceTree = "<group>"; };
 		BBAEF1661EA94ED900F0866E /* KeyboardInputManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KeyboardInputManager.cpp; sourceTree = "<group>"; };
 		BBAEF1671EA94ED900F0866E /* KeyboardInputManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeyboardInputManager.h; sourceTree = "<group>"; };
-		BBAEF1681EA94ED900F0866E /* ScreenEvent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ScreenEvent.cpp; sourceTree = "<group>"; };
-		BBAEF1691EA94ED900F0866E /* ScreenEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScreenEvent.h; sourceTree = "<group>"; };
-		BBAEF16A1EA94ED900F0866E /* ScreenEventType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScreenEventType.h; sourceTree = "<group>"; };
-		BBAEF16B1EA94ED900F0866E /* ScreenInputManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ScreenInputManager.cpp; sourceTree = "<group>"; };
-		BBAEF16C1EA94ED900F0866E /* ScreenInputManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScreenInputManager.h; sourceTree = "<group>"; };
-		BBAEF16D1EA94ED900F0866E /* TouchConverter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TouchConverter.cpp; sourceTree = "<group>"; };
-		BBAEF16E1EA94ED900F0866E /* TouchConverter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TouchConverter.h; sourceTree = "<group>"; };
+		BBAEF1681EA94ED900F0866E /* CursorEvent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CursorEvent.cpp; sourceTree = "<group>"; };
+		BBAEF1691EA94ED900F0866E /* CursorEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CursorEvent.h; sourceTree = "<group>"; };
+		BBAEF16A1EA94ED900F0866E /* CursorEventType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CursorEventType.h; sourceTree = "<group>"; };
+		BBAEF16B1EA94ED900F0866E /* CursorInputManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CursorInputManager.cpp; sourceTree = "<group>"; };
+		BBAEF16C1EA94ED900F0866E /* CursorInputManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CursorInputManager.h; sourceTree = "<group>"; };
+		BBAEF16D1EA94ED900F0866E /* CursorConverter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CursorConverter.cpp; sourceTree = "<group>"; };
+		BBAEF16E1EA94ED900F0866E /* CursorConverter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CursorConverter.h; sourceTree = "<group>"; };
 		BBAEF1781EA94ED900F0866E /* Circle.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Circle.cpp; sourceTree = "<group>"; };
 		BBAEF1791EA94ED900F0866E /* Circle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Circle.h; sourceTree = "<group>"; };
 		BBAEF17A1EA94ED900F0866E /* Line.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Line.cpp; sourceTree = "<group>"; };
@@ -2944,8 +2944,8 @@
 				BBCDF24D1F3796C3006E94B0 /* FPSUtil.cpp */,
 				BBCDF24E1F3796C3006E94B0 /* FPSUtil.h */,
 				BB61CB581EC9FA1B000E0291 /* FrameworkConstants.h */,
-				BB5833DA1EEDDC2B0084DA20 /* IEngine.cpp */,
-				BB5833DB1EEDDC2B0084DA20 /* IEngine.h */,
+				BB5833DA1EEDDC2B0084DA20 /* Engine.cpp */,
+				BB5833DB1EEDDC2B0084DA20 /* Engine.h */,
 				BB74283A1EB2AF4200B7628D /* macros.h */,
 				BB74283B1EB2AF4200B7628D /* NGRollingPool.h */,
 				BB74283C1EB2AF4200B7628D /* NGSTDUtil.h */,
@@ -3331,6 +3331,13 @@
 		BBAEF15D1EA94ED900F0866E /* portable */ = {
 			isa = PBXGroup;
 			children = (
+				BBAEF16D1EA94ED900F0866E /* CursorConverter.cpp */,
+				BBAEF16E1EA94ED900F0866E /* CursorConverter.h */,
+				BBAEF1681EA94ED900F0866E /* CursorEvent.cpp */,
+				BBAEF1691EA94ED900F0866E /* CursorEvent.h */,
+				BBAEF16A1EA94ED900F0866E /* CursorEventType.h */,
+				BBAEF16B1EA94ED900F0866E /* CursorInputManager.cpp */,
+				BBAEF16C1EA94ED900F0866E /* CursorInputManager.h */,
 				BBAEF15E1EA94ED900F0866E /* GamePadEvent.cpp */,
 				BBAEF15F1EA94ED900F0866E /* GamePadEvent.h */,
 				BBAEF1601EA94ED900F0866E /* GamePadEventType.h */,
@@ -3338,16 +3345,9 @@
 				BBAEF1621EA94ED900F0866E /* GamePadInputManager.h */,
 				BBAEF1631EA94ED900F0866E /* KeyboardEvent.cpp */,
 				BBAEF1641EA94ED900F0866E /* KeyboardEvent.h */,
-				BB5C31921EF5F5C0000B98FC /* KeyboardLookup.h */,
 				BBAEF1661EA94ED900F0866E /* KeyboardInputManager.cpp */,
 				BBAEF1671EA94ED900F0866E /* KeyboardInputManager.h */,
-				BBAEF1681EA94ED900F0866E /* ScreenEvent.cpp */,
-				BBAEF1691EA94ED900F0866E /* ScreenEvent.h */,
-				BBAEF16A1EA94ED900F0866E /* ScreenEventType.h */,
-				BBAEF16B1EA94ED900F0866E /* ScreenInputManager.cpp */,
-				BBAEF16C1EA94ED900F0866E /* ScreenInputManager.h */,
-				BBAEF16D1EA94ED900F0866E /* TouchConverter.cpp */,
-				BBAEF16E1EA94ED900F0866E /* TouchConverter.h */,
+				BB5C31921EF5F5C0000B98FC /* KeyboardLookup.h */,
 			);
 			path = portable;
 			sourceTree = "<group>";
@@ -3745,7 +3745,7 @@
 				BB7267FD1EEC7049004F33F9 /* ClientProxy.cpp in Sources */,
 				BBAEF2781EA94EDA00F0866E /* TextureRegion.cpp in Sources */,
 				BB7267FE1EEC704B004F33F9 /* NetworkManagerServer.cpp in Sources */,
-				BBAEF28C1EA94EDA00F0866E /* TouchConverter.cpp in Sources */,
+				BBAEF28C1EA94EDA00F0866E /* CursorConverter.cpp in Sources */,
 				BB1912B11FABB66A00BDC6D0 /* b2PulleyJoint.cpp in Sources */,
 				BB6F59901FBDEA0D00BD7697 /* vulkan.c in Sources */,
 				BB6F64361FBE009C00BD7697 /* PathConstraintMixTimeline.cpp in Sources */,
@@ -3802,7 +3802,7 @@
 				BBAEF29C1EA94EDA00F0866E /* Triangle.cpp in Sources */,
 				BBAEF2681EA94EDA00F0866E /* LineBatcher.cpp in Sources */,
 				BB19128E1FABB66A00BDC6D0 /* b2Distance.cpp in Sources */,
-				BB5833DC1EEDDC2B0084DA20 /* IEngine.cpp in Sources */,
+				BB5833DC1EEDDC2B0084DA20 /* Engine.cpp in Sources */,
 				BB6F64661FBE009C00BD7697 /* TransformConstraintTimeline.cpp in Sources */,
 				BB190F521FAB9E3900BDC6D0 /* ALSource.m in Sources */,
 				BB8308801EC2AD1F00435E7E /* UDPSocket.cpp in Sources */,
@@ -3882,7 +3882,7 @@
 				BB6F645E1FBE009C00BD7697 /* MeshAttachment.cpp in Sources */,
 				BB6F643E1FBE009C00BD7697 /* Timeline.cpp in Sources */,
 				BB1912A41FABB66A00BDC6D0 /* b2Contact.cpp in Sources */,
-				BBAEF28A1EA94EDA00F0866E /* ScreenInputManager.cpp in Sources */,
+				BBAEF28A1EA94EDA00F0866E /* CursorInputManager.cpp in Sources */,
 				BB19129F1FABB66A00BDC6D0 /* b2World.cpp in Sources */,
 				BBAEF22E1EA94EDA00F0866E /* OpenGLCircleBatcher.cpp in Sources */,
 				BBCFF1C51ECD312E003EE520 /* Assets.cpp in Sources */,
@@ -3933,7 +3933,7 @@
 				BB44CB8D1DB053C0003E633F /* pngwrite.c in Sources */,
 				BBAEF2821EA94EDA00F0866E /* GamePadInputManager.cpp in Sources */,
 				BB1912A71FABB66A00BDC6D0 /* b2EdgeAndPolygonContact.cpp in Sources */,
-				BBAEF2881EA94EDA00F0866E /* ScreenEvent.cpp in Sources */,
+				BBAEF2881EA94EDA00F0866E /* CursorEvent.cpp in Sources */,
 				BBAEF2761EA94EDA00F0866E /* TextureLoaderFactory.cpp in Sources */,
 				BB6F645A1FBE009C00BD7697 /* ColorTimeline.cpp in Sources */,
 				BB190F441FAB9E3900BDC6D0 /* OALAudioActions.m in Sources */,
@@ -4037,15 +4037,15 @@
 				BB6F64591FBE009C00BD7697 /* Skin.cpp in Sources */,
 				BB5AFE761FB35AAF005FBD52 /* TransitionGpuProgramWrapper.cpp in Sources */,
 				BB5AFE171FB359EA005FBD52 /* FPSUtil.cpp in Sources */,
-				BB5AFE181FB359EA005FBD52 /* IEngine.cpp in Sources */,
+				BB5AFE181FB359EA005FBD52 /* Engine.cpp in Sources */,
 				BB5AFE2E1FB35A49005FBD52 /* GamePadEvent.cpp in Sources */,
 				BB5AFE2F1FB35A49005FBD52 /* GamePadInputManager.cpp in Sources */,
 				BB6F647D1FBE009C00BD7697 /* Event.cpp in Sources */,
 				BB5AFE301FB35A49005FBD52 /* KeyboardEvent.cpp in Sources */,
 				BB5AFE311FB35A49005FBD52 /* KeyboardInputManager.cpp in Sources */,
-				BB5AFE321FB35A49005FBD52 /* ScreenEvent.cpp in Sources */,
-				BB5AFE331FB35A49005FBD52 /* ScreenInputManager.cpp in Sources */,
-				BB5AFE341FB35A49005FBD52 /* TouchConverter.cpp in Sources */,
+				BB5AFE321FB35A49005FBD52 /* CursorEvent.cpp in Sources */,
+				BB5AFE331FB35A49005FBD52 /* CursorInputManager.cpp in Sources */,
+				BB5AFE341FB35A49005FBD52 /* CursorConverter.cpp in Sources */,
 				BB5AFE191FB359EA005FBD52 /* RTTI.cpp in Sources */,
 				BB5AFE1A1FB359EA005FBD52 /* StringUtil.cpp in Sources */,
 				BB5AFE1B1FB359EA005FBD52 /* Timing.cpp in Sources */,

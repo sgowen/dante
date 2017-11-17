@@ -50,4 +50,9 @@
 
 #define INPUT_UNASSIGNED 255
 
+//// Misc ////
+
+#define FRAME_RATE 0.01666666666667f // 60 frames per second
+#define NUM_FRAMEBUFFERS 4
+
 #endif /* defined(__noctisgames__FrameworkConstants__) */

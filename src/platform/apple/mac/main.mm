@@ -10,7 +10,7 @@
 
 // C++
 #include "MainEngine.h"
-#include "ScreenInputManager.h"
+#include "CursorInputManager.h"
 #include "KeyboardInputManager.h"
 #include "MainAssets.h"
 #include "FrameworkConstants.h"
@@ -39,13 +39,13 @@ static void mouse_button_callback(GLFWwindow* window, int button, int action, in
     switch (action)
     {
         case GLFW_PRESS:
-            SCREEN_INPUT_MANAGER->onTouch(ScreenEventType_DOWN, cursorX, cursorY);
+            SCREEN_INPUT_MANAGER->onTouch(CursorEventType_DOWN, cursorX, cursorY);
             break;
         case GLFW_REPEAT:
-            SCREEN_INPUT_MANAGER->onTouch(ScreenEventType_DRAGGED, cursorX, cursorY);
+            SCREEN_INPUT_MANAGER->onTouch(CursorEventType_DRAGGED, cursorX, cursorY);
             break;
         case GLFW_RELEASE:
-            SCREEN_INPUT_MANAGER->onTouch(ScreenEventType_UP, cursorX, cursorY);
+            SCREEN_INPUT_MANAGER->onTouch(CursorEventType_UP, cursorX, cursorY);
             break;
         default:
             break;

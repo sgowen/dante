@@ -28,7 +28,7 @@ m_worldRef(world),
 m_body(nullptr),
 m_fixture(nullptr),
 m_footSensorFixture(nullptr),
-m_fStateTime(0.0f),
+_stateTime(0.0f),
 m_color(1.0f, 1.0f, 1.0f, 1.0f),
 m_fX(x),
 m_fY(y),
@@ -100,12 +100,12 @@ void Entity::handleEndFootContact(Entity* inEntity)
 
 void Entity::setStateTime(float stateTime)
 {
-    m_fStateTime = stateTime;
+    _stateTime = stateTime;
 }
 
 float Entity::getStateTime()
 {
-    return m_fStateTime;
+    return _stateTime;
 }
 
 b2Body* Entity::getBody()

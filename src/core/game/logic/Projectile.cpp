@@ -61,7 +61,7 @@ EntityDef Projectile::constructEntityDef()
 
 void Projectile::update()
 {
-    m_fStateTime += FRAME_RATE;
+    _stateTime += FRAME_RATE;
     
     if (m_state == ProjectileState_Active)
     {
@@ -71,7 +71,7 @@ void Projectile::update()
             
             explode();
         }
-        else if (m_fStateTime > 0.25f)
+        else if (_stateTime > 0.25f)
         {
             explode();
         }
@@ -84,9 +84,9 @@ void Projectile::update()
     }
     else if (m_state == ProjectileState_Exploding)
     {
-        if (m_fStateTime > 0.5f)
+        if (_stateTime > 0.5f)
         {
-            m_fStateTime = 0.0f;
+            _stateTime = 0.0f;
             m_state = ProjectileState_Waiting;
             
             deinitPhysics();
@@ -175,7 +175,7 @@ void Projectile::read(InputMemoryBitStream& inInputStream)
         inInputStream.read(state);
         m_state = (ProjectileState) state;
         
-        inInputStream.read(m_fStateTime);
+        inInputStream.read(_stateTime);
         
         inInputStream.read(m_isFacingLeft);
         
@@ -214,7 +214,7 @@ uint32_t Projectile::write(OutputMemoryBitStream& inOutputStream, uint32_t inDir
         
         inOutputStream.write((uint8_t)m_state);
         
-        inOutputStream.write(m_fStateTime);
+        inOutputStream.write(_stateTime);
         
         inOutputStream.write((bool)m_isFacingLeft);
         
@@ -246,7 +246,7 @@ void Projectile::initFromShooter(Robot* inRobot)
 
 void Projectile::fire(Robot* inRobot)
 {
-    m_fStateTime = 0.0f;
+    _stateTime = 0.0f;
     m_hasMadeContact = false;
     m_state = ProjectileState_Active;
     
@@ -309,7 +309,7 @@ void Projectile::explode()
     }
     
     m_state = ProjectileState_Exploding;
-    m_fStateTime = 0.0f;
+    _stateTime = 0.0f;
     m_hasMadeContact = false;
     
     setVelocity(b2Vec2_zero);

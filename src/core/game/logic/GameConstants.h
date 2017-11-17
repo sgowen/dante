@@ -60,14 +60,6 @@
 #define DEAD_ZONE_RIGHT GAME_WIDTH + 10.0f // meters
 #define DEAD_ZONE_BOTTOM -2.0f // meters
 
-//// Render Definitions ////
-
-#define NUM_FRAMEBUFFERS 4
-
-//// Misc ////
-
-#define FRAME_RATE 0.01666666666667f // 60 frames per second
-
 //// Network ////
 
 #define NW_TYPE_Robot 'ROBT'

@@ -18,14 +18,14 @@ FPSUtil* FPSUtil::getInstance()
 
 void FPSUtil::update(float deltaTime)
 {
-    m_fStateTime += deltaTime;
+    _stateTime += deltaTime;
     ++m_iNumFrames;
     
-    if (m_fStateTime > 1)
+    if (_stateTime > 1)
     {
         m_iFPS = m_iNumFrames;
         
-        m_fStateTime = 0;
+        _stateTime = 0;
         m_iNumFrames = 0;
     }
 }
@@ -35,7 +35,7 @@ int FPSUtil::getFPS() const
     return m_iFPS;
 }
 
-FPSUtil::FPSUtil() : m_fStateTime(0), m_iFPS(0), m_iNumFrames(0)
+FPSUtil::FPSUtil() : _stateTime(0), m_iFPS(0), m_iNumFrames(0)
 {
     // Empty
 }

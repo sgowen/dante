@@ -31,7 +31,7 @@ public:
     
     virtual void releaseDeviceDependentResources();
     
-    void render(int engineState);
+    virtual void render(int flags = 0);
     
 private:
     TextureWrapper* m_characters;

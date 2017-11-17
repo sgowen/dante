@@ -114,7 +114,7 @@ EntityDef Robot::constructEntityDef()
 
 void Robot::update()
 {
-    m_fStateTime += FRAME_RATE;
+    _stateTime += FRAME_RATE;
     
     m_fShotCooldownTime -= FRAME_RATE;
     
@@ -135,7 +135,7 @@ void Robot::update()
     
     if (getVelocity().y < 0 && !isFalling() && m_iNumJumps > 0)
     {
-        m_fStateTime = 0;
+        _stateTime = 0;
     }
     
     if (m_isServer)
@@ -307,7 +307,7 @@ void Robot::read(InputMemoryBitStream& inInputStream)
     inInputStream.read(stateBit);
     if (stateBit)
     {
-        inInputStream.read(m_fStateTime);
+        inInputStream.read(_stateTime);
         
         b2Vec2 velocity;
         inInputStream.read(velocity);
@@ -366,7 +366,7 @@ uint32_t Robot::write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtySta
     {
         inOutputStream.write((bool)true);
         
-        inOutputStream.write(m_fStateTime);
+        inOutputStream.write(_stateTime);
         
         inOutputStream.write(getVelocity());
         
@@ -445,7 +445,7 @@ void Robot::processInput(IInputState* inInputState, bool isPending)
     {
         if (isGrounded() && m_iNumJumps == 0)
         {
-            m_fStateTime = 0;
+            _stateTime = 0;
             m_isFirstJumpCompleted = false;
             m_iNumJumps = 1;
             
@@ -453,7 +453,7 @@ void Robot::processInput(IInputState* inInputState, bool isPending)
         }
         else if (m_iNumJumps == 1 && m_isFirstJumpCompleted)
         {
-            m_fStateTime = 0;
+            _stateTime = 0;
             m_iNumJumps = 2;
             
             velocity.Set(velocity.x, m_fJumpSpeed - 3);

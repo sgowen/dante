@@ -46,7 +46,7 @@ m_boundsNGRectBatcher(RECTANGLE_BATCHER_FACTORY->createNGRectBatcher(false)),
 m_lineBatcher(LINE_BATCHER_FACTORY->createLineBatcher()),
 m_circleBatcher(CIRCLE_BATCHER_FACTORY->createCircleBatcher()),
 m_textureLoader(TEXTURE_LOADER_FACTORY->createTextureLoader()),
-m_rendererHelper(RENDERER_HELPER_FACTORY->createRendererHelper()),
+_rendererHelper(RENDERER_HELPER_FACTORY->createRendererHelper()),
 m_textureGpuProgramWrapper(nullptr),
 m_colorGpuProgramWrapper(nullptr),
 m_framebufferToScreenGpuProgramWrapper(nullptr),
@@ -67,12 +67,12 @@ Renderer::~Renderer()
     delete m_circleBatcher;
     
     delete m_textureLoader;
-    delete m_rendererHelper;
+    delete _rendererHelper;
 }
 
 void Renderer::createDeviceDependentResources()
 {
-	m_rendererHelper->createDeviceDependentResources(m_iMaxBatchSize);
+	_rendererHelper->createDeviceDependentResources(m_iMaxBatchSize);
 
     m_textureGpuProgramWrapper = GPU_PROGRAM_WRAPPER_FACTORY->createTextureGpuProgramWrapper();
     m_colorGpuProgramWrapper = GPU_PROGRAM_WRAPPER_FACTORY->createColorGpuProgramWrapper();
@@ -83,14 +83,14 @@ void Renderer::createDeviceDependentResources()
 
 void Renderer::createWindowSizeDependentResources(int renderWidth, int renderHeight, int numFramebuffers)
 {
-	m_rendererHelper->createWindowSizeDependentResources(renderWidth, renderHeight, numFramebuffers);
+	_rendererHelper->createWindowSizeDependentResources(renderWidth, renderHeight, numFramebuffers);
 
 	m_areWindowSizeDependentResourcesCreated = true;
 }
 
 void Renderer::releaseDeviceDependentResources()
 {
-	m_rendererHelper->releaseDeviceDependentResources();
+	_rendererHelper->releaseDeviceDependentResources();
 
     m_areDeviceDependentResourcesCreated = false;
 	m_areWindowSizeDependentResourcesCreated = false;
@@ -109,11 +109,13 @@ void Renderer::releaseDeviceDependentResources()
 	m_framebufferToScreenGpuProgramWrapper = nullptr;
 }
 
+#pragma mark protected
+
 void Renderer::beginFrame()
 {
     handleAsyncTextureLoads();
     
-    m_rendererHelper->beginFrame();
+    _rendererHelper->beginFrame();
     
     setFramebuffer(0);
 }
@@ -124,27 +126,27 @@ void Renderer::setFramebuffer(int framebufferIndex)
     
     m_iFramebufferIndex = framebufferIndex;
     
-    m_rendererHelper->bindToOffscreenFramebuffer(m_iFramebufferIndex);
-    m_rendererHelper->clearFramebufferWithColor(0, 0, 0, 1);
+    _rendererHelper->bindToOffscreenFramebuffer(m_iFramebufferIndex);
+    _rendererHelper->clearFramebufferWithColor(0, 0, 0, 1);
 }
 
 void Renderer::renderToScreen()
 {
     assert(m_iFramebufferIndex >= 0);
     
-    m_rendererHelper->bindToScreenFramebuffer();
-    m_rendererHelper->clearFramebufferWithColor(0, 0, 0, 1);
+    _rendererHelper->bindToScreenFramebuffer();
+    _rendererHelper->clearFramebufferWithColor(0, 0, 0, 1);
     
     static TextureRegion tr = TextureRegion("framebuffer", 0, 0, 1, 1, 1, 1);
     
     m_spriteBatcher->beginBatch();
     m_spriteBatcher->drawSprite(0, 0, 2, 2, 0, tr);
-    m_spriteBatcher->endBatch(*m_rendererHelper->getFramebuffer(m_iFramebufferIndex), *m_framebufferToScreenGpuProgramWrapper);
+    m_spriteBatcher->endBatch(*_rendererHelper->getFramebuffer(m_iFramebufferIndex), *m_framebufferToScreenGpuProgramWrapper);
 }
 
 void Renderer::endFrame()
 {
-    m_rendererHelper->endFrame();
+    _rendererHelper->endFrame();
 }
 
 bool Renderer::isLoadingData()
@@ -154,10 +156,8 @@ bool Renderer::isLoadingData()
 
 bool Renderer::isReadyForRendering()
 {
-	return m_areDeviceDependentResourcesCreated && m_areWindowSizeDependentResourcesCreated;
+    return m_areDeviceDependentResourcesCreated && m_areWindowSizeDependentResourcesCreated;
 }
-
-#pragma mark protected
 
 void Renderer::renderEntity(Entity &pe, TextureRegion& tr, bool flipX)
 {
@@ -239,7 +239,7 @@ void Renderer::unloadTexture(TextureWrapper* textureWrapper)
     
     if (textureWrapper->gpuTextureWrapper)
     {
-        m_rendererHelper->destroyTexture(*textureWrapper->gpuTextureWrapper);
+        _rendererHelper->destroyTexture(*textureWrapper->gpuTextureWrapper);
         
         delete textureWrapper->gpuTextureWrapper;
         textureWrapper->gpuTextureWrapper = nullptr;
@@ -268,6 +268,8 @@ bool Renderer::ensureTexture(TextureWrapper* textureWrapper)
     
     return true;
 }
+
+#pragma mark private
 
 void Renderer::handleAsyncTextureLoads()
 {

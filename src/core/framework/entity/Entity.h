@@ -147,7 +147,7 @@ protected:
     b2Body* m_body;
     b2Fixture* m_fixture;
     b2Fixture* m_footSensorFixture;
-    float m_fStateTime;
+    float _stateTime;
     int m_iNumGroundContacts;
     Color m_color;
     float m_fX;

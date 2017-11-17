@@ -10,10 +10,10 @@
 
 #include "Direct3DMain.h"
 
-#include "IEngine.h"
+#include "Engine.h"
 
 #include "Direct3DManager.h"
-#include "ScreenInputManager.h"
+#include "CursorInputManager.h"
 #include "KeyboardInputManager.h"
 #include "GamePadInputManager.h"
 #include "MainAssets.h"
@@ -60,11 +60,11 @@ Direct3DMain::~Direct3DMain()
 
 // Initialize the Direct3D resources required to run.
 #if !defined(WINAPI_FAMILY) || (WINAPI_FAMILY == WINAPI_FAMILY_DESKTOP_APP)
-void Direct3DMain::Initialize(IEngine* engine, HWND window, int width, int height)
+void Direct3DMain::Initialize(Engine* engine, HWND window, int width, int height)
 {
 	m_deviceResources->SetWindow(window, width, height);
 #else
-void Direct3DMain::Initialize(IEngine* engine, IUnknown* window, int width, int height, float dpi, DXGI_MODE_ROTATION rotation)
+void Direct3DMain::Initialize(Engine* engine, IUnknown* window, int width, int height, float dpi, DXGI_MODE_ROTATION rotation)
 {
 	m_fDPI = dpi;
 	m_deviceResources->SetWindow(window, width, height, rotation);
@@ -139,17 +139,17 @@ void Direct3DMain::Update(DX::StepTimer const& timer)
 	{
 		if (m_isPointerPressed && mouse.leftButton)
 		{
-			SCREEN_INPUT_MANAGER->onTouch(ScreenEventType_DRAGGED, float(mouse.x), float(mouse.y));
+			SCREEN_INPUT_MANAGER->onTouch(CursorEventType_DRAGGED, float(mouse.x), float(mouse.y));
 		}
 		else if (mouse.leftButton && !m_isPointerPressed)
 		{
-			SCREEN_INPUT_MANAGER->onTouch(ScreenEventType_DOWN, float(mouse.x), float(mouse.y));
+			SCREEN_INPUT_MANAGER->onTouch(CursorEventType_DOWN, float(mouse.x), float(mouse.y));
 
 			m_isPointerPressed = true;
 		}
 		else if (m_isPointerPressed && !mouse.leftButton)
 		{
-			SCREEN_INPUT_MANAGER->onTouch(ScreenEventType_UP, float(mouse.x), float(mouse.y));
+			SCREEN_INPUT_MANAGER->onTouch(CursorEventType_UP, float(mouse.x), float(mouse.y));
 
 			m_isPointerPressed = false;
 		}

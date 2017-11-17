@@ -19,7 +19,7 @@ public:
     int getFPS() const;
     
 private:
-    float m_fStateTime;
+    float _stateTime;
     int m_iFPS;
     int m_iNumFrames;
     

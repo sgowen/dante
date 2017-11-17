@@ -47,9 +47,9 @@ public:
 private:
     static Server* s_instance;
     
-    float m_fStateTime;
-    float m_fFrameStateTime;
-    float m_fStateTimeNoEnemies;
+    float _stateTime;
+    float _frameStateTime;
+    float _stateTimeNoEnemies;
     uint8_t m_iPlayerIdForRobotBeingCreated;
     uint32_t m_iNumCratesToSpawn;
     uint32_t m_iNumSpacePiratesToSpawn;

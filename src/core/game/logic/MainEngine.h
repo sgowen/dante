@@ -9,7 +9,7 @@
 #ifndef __dante__MainEngine__
 #define __dante__MainEngine__
 
-#include "IEngine.h"
+#include "Engine.h"
 
 #ifdef NG_STEAM
 #include "NGSteam.h"
@@ -19,10 +19,9 @@
 
 class Server;
 class JsonFile;
-class MainRenderer;
 class Entity;
 
-class MainEngine : public IEngine
+class MainEngine : public Engine
 {
     RTTI_DECL;
     
@@ -31,32 +30,19 @@ public:
     
     virtual ~MainEngine();
     
-    virtual void createDeviceDependentResources();
-    
-    virtual void createWindowSizeDependentResources(int renderWidth, int renderHeight, int touchScreenWidth, int touchScreenHeight);
-    
-    virtual void releaseDeviceDependentResources();
-
-	virtual void onResume();
-	
-	virtual void onPause();
-    
 	virtual void update(float deltaTime);
     
-    virtual void render();
+protected:
+    virtual void onFrame();
     
 private:
     JsonFile* m_config;
-    MainRenderer* m_renderer;
     
-    float m_fStateTime;
-    float m_fFrameStateTime;
     std::string m_serverIPAddress;
     std::string m_name;
 #ifdef NG_STEAM
     CSteamID m_serverSteamID;
 #endif
-    int m_iEngineState;
     bool m_isSteam;
     
     void handleNonMoveInput();

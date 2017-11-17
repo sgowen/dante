@@ -64,7 +64,7 @@ EntityDef SpacePirate::constructEntityDef()
 
 void SpacePirate::update()
 {
-    m_fStateTime += FRAME_RATE;
+    _stateTime += FRAME_RATE;
     
     if (m_isServer)
     {
@@ -229,7 +229,7 @@ void SpacePirate::read(InputMemoryBitStream& inInputStream)
     inInputStream.read(stateBit);
     if (stateBit)
     {
-        inInputStream.read(m_fStateTime);
+        inInputStream.read(_stateTime);
         
         b2Vec2 velocity;
         inInputStream.read(velocity);
@@ -282,7 +282,7 @@ uint32_t SpacePirate::write(OutputMemoryBitStream& inOutputStream, uint32_t inDi
     {
         inOutputStream.write((bool)true);
         
-        inOutputStream.write(m_fStateTime);
+        inOutputStream.write(_stateTime);
         
         inOutputStream.write(getVelocity());
         

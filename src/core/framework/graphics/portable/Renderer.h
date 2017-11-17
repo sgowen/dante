@@ -39,17 +39,7 @@ public:
     
     virtual void releaseDeviceDependentResources();
     
-    virtual void beginFrame();
-    
-    void setFramebuffer(int framebufferIndex);
-    
-    void renderToScreen();
-    
-    void endFrame();
-    
-    bool isLoadingData();
-
-	bool isReadyForRendering();
+    virtual void render(int flags = 0) = 0;
     
 protected:
     SpriteBatcher* m_spriteBatcher;
@@ -59,13 +49,25 @@ protected:
     CircleBatcher* m_circleBatcher;
     
     ITextureLoader* m_textureLoader;
-    IRendererHelper* m_rendererHelper;
+    IRendererHelper* _rendererHelper;
     
     GpuProgramWrapper* m_textureGpuProgramWrapper;
     GpuProgramWrapper* m_colorGpuProgramWrapper;
     GpuProgramWrapper* m_framebufferToScreenGpuProgramWrapper;
     
     int m_iFramebufferIndex;
+    
+    void beginFrame();
+    
+    void setFramebuffer(int framebufferIndex);
+    
+    void renderToScreen();
+    
+    void endFrame();
+    
+    bool isLoadingData();
+    
+    bool isReadyForRendering();
     
     void renderEntity(Entity &go, TextureRegion& tr, bool flipX = false);
 

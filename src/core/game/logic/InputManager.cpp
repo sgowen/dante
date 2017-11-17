@@ -14,9 +14,9 @@
 #include "Move.h"
 
 #include "Timing.h"
-#include "ScreenInputManager.h"
-#include "ScreenEvent.h"
-#include "TouchConverter.h"
+#include "CursorInputManager.h"
+#include "CursorEvent.h"
+#include "CursorConverter.h"
 #include "KeyboardInputManager.h"
 #include "KeyboardEvent.h"
 #include "GamePadInputManager.h"

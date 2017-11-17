@@ -97,9 +97,11 @@ void MainRenderer::releaseDeviceDependentResources()
     unloadTexture(m_cover);
 }
 
-void MainRenderer::render(int engineState)
+void MainRenderer::render(int flags)
 {
-    m_rendererHelper->clearFramebufferWithColor(0.0f, 0.0f, 0.0f, 1);
+    beginFrame();
+    
+    _rendererHelper->clearFramebufferWithColor(0.0f, 0.0f, 0.0f, 1);
     
     if (ensureTexture(m_characters)
         && ensureTexture(m_misc)
@@ -118,15 +120,19 @@ void MainRenderer::render(int engineState)
         
         renderAtmosphere();
         
-        renderUI(engineState);
+        renderUI(flags);
     }
+    
+    renderToScreen();
+    
+    endFrame();
 }
 
 void MainRenderer::renderBackground()
 {
     for (int i = 0; i < 3; ++i)
     {
-        m_rendererHelper->updateMatrix(0, GAME_WIDTH, 0, CAM_HEIGHT);
+        _rendererHelper->updateMatrix(0, GAME_WIDTH, 0, CAM_HEIGHT);
         
         m_spriteBatcher->beginBatch();
         {
@@ -150,7 +156,7 @@ void MainRenderer::renderBackground()
 
 void MainRenderer::renderWorld()
 {
-    m_rendererHelper->updateMatrix(m_camBounds->getLeft(), m_camBounds->getRight(), m_camBounds->getBottom(), m_camBounds->getTop());
+    _rendererHelper->updateMatrix(m_camBounds->getLeft(), m_camBounds->getRight(), m_camBounds->getBottom(), m_camBounds->getTop());
     
     m_spriteBatcher->beginBatch();
     for (int i = 0; i < 3; ++i)
@@ -286,7 +292,7 @@ void MainRenderer::renderEntities(World* world, bool isServer)
 
 void MainRenderer::renderAtmosphere()
 {
-    m_rendererHelper->updateMatrix(0, CAM_WIDTH, 0, CAM_HEIGHT);
+    _rendererHelper->updateMatrix(0, CAM_WIDTH, 0, CAM_HEIGHT);
     
     m_spriteBatcher->beginBatch();
     {
@@ -296,12 +302,12 @@ void MainRenderer::renderAtmosphere()
     m_spriteBatcher->endBatch(*m_cover, *m_textureGpuProgramWrapper);
 }
 
-void MainRenderer::renderUI(int engineState)
+void MainRenderer::renderUI(int flags)
 {
-    m_rendererHelper->updateMatrix(0, CAM_WIDTH, 0, CAM_HEIGHT);
+    _rendererHelper->updateMatrix(0, CAM_WIDTH, 0, CAM_HEIGHT);
     
     m_spriteBatcher->beginBatch();
-    switch (engineState)
+    switch (flags)
     {
         case MAIN_ENGINE_STATE_MAIN_MENU_STEAM_OFF:
             renderMainMenuSteamOffText();

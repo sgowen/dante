@@ -75,16 +75,16 @@ void Server::sHandleLostClient(ClientProxy* inClientProxy, uint8_t index)
 
 void Server::update(float deltaTime)
 {
-    m_fFrameStateTime += deltaTime;
+    _frameStateTime += deltaTime;
     
-    if (m_fFrameStateTime >= FRAME_RATE)
+    if (_frameStateTime >= FRAME_RATE)
     {
-        while (m_fFrameStateTime >= FRAME_RATE)
+        while (_frameStateTime >= FRAME_RATE)
         {
-            m_fFrameStateTime -= FRAME_RATE;
-            m_fStateTime += FRAME_RATE;
+            _frameStateTime -= FRAME_RATE;
+            _stateTime += FRAME_RATE;
             
-            Timing::getInstance()->updateManual(m_fStateTime, FRAME_RATE);
+            Timing::getInstance()->updateManual(_stateTime, FRAME_RATE);
             
             NG_SERVER->processIncomingPackets();
             NG_SERVER->checkForDisconnects();
@@ -112,7 +112,7 @@ void Server::toggleEnemies()
     
     if (m_isSpawningEnemies)
     {
-        m_fStateTimeNoEnemies = 5; // Spawn em now!
+        _stateTimeNoEnemies = 5; // Spawn em now!
     }
     else
     {
@@ -159,7 +159,7 @@ void Server::handleNewClient(uint8_t playerId, std::string playerName)
         // This is our first client!
         // Let's spawn some nasty stuff for it to fight!
         
-        m_fStateTimeNoEnemies = 0;
+        _stateTimeNoEnemies = 0;
     }
 }
 
@@ -230,12 +230,12 @@ void Server::respawnEnemiesIfNecessary()
 {
     if (m_isSpawningEnemies && !InstanceManager::getServerWorld()->hasSpacePirates())
     {
-        m_fStateTimeNoEnemies += FRAME_RATE;
-        if (m_fStateTimeNoEnemies > 5)
+        _stateTimeNoEnemies += FRAME_RATE;
+        if (_stateTimeNoEnemies > 5)
         {
             srand(static_cast<unsigned>(time(0)));
             
-            m_fStateTimeNoEnemies = 0;
+            _stateTimeNoEnemies = 0;
             
             for (uint32_t i = 0; i < m_iNumSpacePiratesToSpawn; ++i)
             {
@@ -304,7 +304,7 @@ void Server::clearClientMoves()
     }
 }
 
-Server::Server(bool isSteam, uint32_t inNumCratesToSpawn, uint32_t inNumSpacePiratesToSpawn) : m_fStateTime(0), m_fFrameStateTime(0), m_fStateTimeNoEnemies(0), m_iPlayerIdForRobotBeingCreated(0), m_iNumCratesToSpawn(inNumCratesToSpawn), m_iNumSpacePiratesToSpawn(inNumSpacePiratesToSpawn), m_isSpawningEnemies(false), m_isSpawningObjects(false), m_isDisplaying(false)
+Server::Server(bool isSteam, uint32_t inNumCratesToSpawn, uint32_t inNumSpacePiratesToSpawn) : _stateTime(0), _frameStateTime(0), _stateTimeNoEnemies(0), m_iPlayerIdForRobotBeingCreated(0), m_iNumCratesToSpawn(inNumCratesToSpawn), m_iNumSpacePiratesToSpawn(inNumSpacePiratesToSpawn), m_isSpawningEnemies(false), m_isSpawningObjects(false), m_isDisplaying(false)
 {
     FWInstanceManager::createServerEntityManager(InstanceManager::sHandleEntityCreatedOnServer, InstanceManager::sHandleEntityDeletedOnServer);
     

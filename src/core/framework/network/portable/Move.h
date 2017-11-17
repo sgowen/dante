@@ -49,7 +49,7 @@ private:
     class EntityClientCache
     {
     public:
-        float m_fStateTime;
+        float _stateTime;
         b2Vec2 m_velocity;
         b2Vec2 m_position;
         float m_fAngle;

@@ -52,7 +52,7 @@ void Move::cacheEntity(Entity* inEntity) const
 {
     EntityClientCache entityClientCache;
     
-    entityClientCache.m_fStateTime = inEntity->getStateTime();
+    entityClientCache._stateTime = inEntity->getStateTime();
     entityClientCache.m_velocity = b2Vec2(inEntity->getVelocity().x, inEntity->getVelocity().y);
     entityClientCache.m_position = b2Vec2(inEntity->getPosition().x, inEntity->getPosition().y);
     entityClientCache.m_fAngle = inEntity->getAngle();
@@ -66,7 +66,7 @@ void Move::recallEntityCache(Entity* inEntity) const
     
     if (q != m_entityCacheMap.end())
     {
-        inEntity->setStateTime(q->second.m_fStateTime);
+        inEntity->setStateTime(q->second._stateTime);
         inEntity->setVelocity(q->second.m_velocity);
         inEntity->setPosition(q->second.m_position);
         inEntity->setAngle(q->second.m_fAngle);

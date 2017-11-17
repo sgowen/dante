@@ -45,17 +45,17 @@ EntityDef SpacePirateChunk::constructEntityDef()
 
 void SpacePirateChunk::update()
 {
-    m_fStateTime += FRAME_RATE;
+    _stateTime += FRAME_RATE;
     
-    if (m_fStateTime > 3)
+    if (_stateTime > 3)
     {
-        m_color.alpha = (5 - m_fStateTime) / 2.0f;
+        m_color.alpha = (5 - _stateTime) / 2.0f;
         m_color.alpha = clamp(m_color.alpha, 1, 0);
     }
     
     if (m_isServer)
     {
-        if (m_fStateTime > 5)
+        if (_stateTime > 5)
         {
             requestDeletion();
         }
@@ -136,7 +136,7 @@ void SpacePirateChunk::read(InputMemoryBitStream& inInputStream)
     inInputStream.read(stateBit);
     if (stateBit)
     {
-        inInputStream.read(m_fStateTime);
+        inInputStream.read(_stateTime);
         
         b2Vec2 velocity;
         inInputStream.read(velocity);
@@ -186,7 +186,7 @@ uint32_t SpacePirateChunk::write(OutputMemoryBitStream& inOutputStream, uint32_t
     {
         inOutputStream.write((bool)true);
         
-        inOutputStream.write(m_fStateTime);
+        inOutputStream.write(_stateTime);
         
         inOutputStream.write(getVelocity());
         

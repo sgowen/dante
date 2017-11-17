@@ -17,7 +17,7 @@
 #include <string>
 #include <vector>
 
-class IEngine;
+class Engine;
 
 // A basic game implementation that creates a D3D11 device and
 // provides a game loop.
@@ -30,9 +30,9 @@ public:
 
 	// Initialization and management
 #if !defined(WINAPI_FAMILY) || (WINAPI_FAMILY == WINAPI_FAMILY_DESKTOP_APP)
-	void Initialize(IEngine* engine, HWND window, int width, int height);
+	void Initialize(Engine* engine, HWND window, int width, int height);
 #else
-	void Initialize(IEngine* engine, IUnknown* window, int width, int height, float dpi, DXGI_MODE_ROTATION rotation);
+	void Initialize(Engine* engine, IUnknown* window, int width, int height, float dpi, DXGI_MODE_ROTATION rotation);
 #endif
 	
 	void OnNewAudioDevice();
@@ -73,7 +73,7 @@ private:
 	std::unique_ptr<DirectX::GamePad> m_gamePad;
 	DirectX::GamePad::ButtonStateTracker m_buttons[4];
 
-	IEngine* m_engine;
+	Engine* m_engine;
 
 	float m_fDPI;
 	bool m_isPointerPressed;

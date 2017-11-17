@@ -1,5 +1,5 @@
 //
-//  ScreenEvent.cpp
+//  CursorEvent.cpp
 //  noctisgames-framework
 //
 //  Created by Stephen Gowen on 2/22/14.
@@ -8,41 +8,41 @@
 
 #include "pch.h"
 
-#include "ScreenEvent.h"
+#include "CursorEvent.h"
 
-ScreenEvent::ScreenEvent(ScreenEventType type, float x, float y)
+CursorEvent::CursorEvent(CursorEventType type, float x, float y)
 {
     m_type = type;
     m_fX = x;
     m_fY = y;
 }
 
-ScreenEventType ScreenEvent::getType()
+CursorEventType CursorEvent::getType()
 {
 	return m_type;
 }
 
-void ScreenEvent::setType(ScreenEventType type)
+void CursorEvent::setType(CursorEventType type)
 {
 	m_type = type;
 }
 
-float ScreenEvent::getX()
+float CursorEvent::getX()
 {
 	return m_fX;
 }
 
-void ScreenEvent::setX(float x)
+void CursorEvent::setX(float x)
 {
 	m_fX = x;
 }
 
-float ScreenEvent::getY()
+float CursorEvent::getY()
 {
 	return m_fY;
 }
 
-void ScreenEvent::setY(float y)
+void CursorEvent::setY(float y)
 {
 	m_fY = y;
 }
