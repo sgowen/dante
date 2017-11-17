@@ -10,7 +10,7 @@
 
 #include "MacSound.h"
 
-MacSoundWrapper::MacSoundWrapper(int soundId, const char *path, int numInstances) : ISoundWrapper(soundId, numInstances)
+MacSoundWrapper::MacSoundWrapper(int soundId, const char *path, int numInstances) : SoundWrapper(soundId, numInstances)
 {
     for (int i = 0; i < _numInstances; ++i)
     {

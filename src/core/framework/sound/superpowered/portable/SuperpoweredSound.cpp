@@ -40,7 +40,7 @@ static void playerEventCallback(void *clientData, SuperpoweredAdvancedAudioPlaye
     }
 }
 
-SuperpoweredSound::SuperpoweredSound(SuperpoweredSoundManager* manager, int soundId, const char *path, unsigned int sampleRate, int fileOffset, int fileLength, float volume) : ISound(soundId),
+SuperpoweredSound::SuperpoweredSound(SuperpoweredSoundManager* manager, int soundId, const char *path, unsigned int sampleRate, int fileOffset, int fileLength, float volume) : Sound(soundId),
 _manager(manager),
 _volume(volume * headroom),
 _lastSamplerate(sampleRate),

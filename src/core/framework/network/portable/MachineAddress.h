@@ -1,32 +1,32 @@
 //
-//  IMachineAddress.h
+//  MachineAddress.h
 //  noctisgames-framework
 //
 //  Created by Stephen Gowen on 5/15/17.
 //  Copyright (c) 2017 Noctis Games. All rights reserved.
 //
 
-#ifndef __noctisgames__IMachineAddress__
-#define __noctisgames__IMachineAddress__
+#ifndef __noctisgames__MachineAddress__
+#define __noctisgames__MachineAddress__
 
 #include "RTTI.h"
 
 #include <string>
 
-class IMachineAddress
+class MachineAddress
 {
     RTTI_DECL;
     
 public:
-    IMachineAddress();
+    MachineAddress();
     
-    virtual ~IMachineAddress();
+    virtual ~MachineAddress();
     
-    virtual IMachineAddress* createNewCopy() = 0;
+    virtual MachineAddress* createNewCopy() = 0;
     
     virtual uint64_t getHash() const = 0;
     
     virtual std::string toString() const = 0;
 };
 
-#endif /* defined(__noctisgames__IMachineAddress__) */
+#endif /* defined(__noctisgames__MachineAddress__) */

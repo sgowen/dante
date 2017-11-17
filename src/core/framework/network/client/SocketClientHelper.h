@@ -9,20 +9,20 @@
 #ifndef __noctisgames__SocketClientHelper__
 #define __noctisgames__SocketClientHelper__
 
-#include "IClientHelper.h"
+#include "ClientHelper.h"
 
-#include "IPacketHandler.h"
+#include "PacketHandler.h"
 
 class SocketAddress;
 
-class SocketClientHelper : public IClientHelper
+class SocketClientHelper : public ClientHelper
 {
 public:
     SocketClientHelper(std::string inServerIPAddress, std::string inName, uint16_t inPort, ProcessPacketFunc processPacketFunc, HandleNoResponseFunc handleNoResponseFunc, HandleConnectionResetFunc handleConnectionResetFunc);
     
     virtual ~SocketClientHelper();
     
-    virtual void processSpecialPacket(uint32_t packetType, InputMemoryBitStream& inInputStream, IMachineAddress* inFromAddress);
+    virtual void processSpecialPacket(uint32_t packetType, InputMemoryBitStream& inInputStream, MachineAddress* inFromAddress);
     
     virtual void handleUninitialized();
     

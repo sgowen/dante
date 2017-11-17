@@ -9,7 +9,7 @@
 #ifndef __noctisgames__InFlightPacket__
 #define __noctisgames__InFlightPacket__
 
-#include "ITransmissionData.h"
+#include "TransmissionData.h"
 
 #include <map>
 #include <stdint.h>
@@ -21,9 +21,9 @@ class InFlightPacket
 public:
     InFlightPacket(uint16_t inSequenceNumber);
     
-    void setTransmissionData(int inKey, ITransmissionData* inTransmissionData);
+    void setTransmissionData(int inKey, TransmissionData* inTransmissionData);
     
-    ITransmissionData* getTransmissionData(int inKey) const;
+    TransmissionData* getTransmissionData(int inKey) const;
     
     uint16_t getSequenceNumber() const;
     
@@ -37,7 +37,7 @@ private:
     uint16_t _sequenceNumber;
     float _timeDispatched;
     
-    std::map<int, ITransmissionData*> _transmissionDataMap;
+    std::map<int, TransmissionData*> _transmissionDataMap;
 };
 
 #endif /* defined(__noctisgames__InFlightPacket__) */

@@ -22,7 +22,7 @@
 #include "NetworkManagerServer.h"
 #include "NGSteamServerHelper.h"
 
-NGSteamClientHelper::NGSteamClientHelper(CSteamID inServerSteamID, GetPlayerAddressHashFunc inGetPlayerAddressHashFunc, ProcessPacketFunc inProcessPacketFunc, HandleNoResponseFunc inHandleNoResponseFunc, HandleConnectionResetFunc inHandleConnectionResetFunc) : IClientHelper(new NGSteamPacketHandler(false, inProcessPacketFunc, inHandleNoResponseFunc, inHandleConnectionResetFunc)),
+NGSteamClientHelper::NGSteamClientHelper(CSteamID inServerSteamID, GetPlayerAddressHashFunc inGetPlayerAddressHashFunc, ProcessPacketFunc inProcessPacketFunc, HandleNoResponseFunc inHandleNoResponseFunc, HandleConnectionResetFunc inHandleConnectionResetFunc) : ClientHelper(new NGSteamPacketHandler(false, inProcessPacketFunc, inHandleNoResponseFunc, inHandleConnectionResetFunc)),
 _steamP2PAuth(new NGSteamP2PAuth(this)),
 _getPlayerAddressHashFunc(inGetPlayerAddressHashFunc),
 _eConnectedStatus(k_EClientNotConnected),
@@ -70,7 +70,7 @@ NGSteamClientHelper::~NGSteamClientHelper()
 
 void NGSteamClientHelper::processIncomingPackets()
 {
-    INetworkHelper::processIncomingPackets();
+    NetworkHelper::processIncomingPackets();
     
     // has the player list changed?
     if (NG_SERVER)
@@ -158,7 +158,7 @@ void NGSteamClientHelper::processIncomingPackets()
     }
 }
 
-void NGSteamClientHelper::processSpecialPacket(uint32_t packetType, InputMemoryBitStream& inInputStream, IMachineAddress* inFromAddress)
+void NGSteamClientHelper::processSpecialPacket(uint32_t packetType, InputMemoryBitStream& inInputStream, MachineAddress* inFromAddress)
 {
     if (inFromAddress->getHash() == _serverSteamAddress->getHash())
     {
@@ -254,7 +254,7 @@ void NGSteamClientHelper::handleUninitialized()
 
 void NGSteamClientHelper::sendPacket(const OutputMemoryBitStream& inOutputStream)
 {
-    INetworkHelper::sendPacket(inOutputStream, _serverSteamAddress);
+    NetworkHelper::sendPacket(inOutputStream, _serverSteamAddress);
 }
 
 std::string& NGSteamClientHelper::getName()

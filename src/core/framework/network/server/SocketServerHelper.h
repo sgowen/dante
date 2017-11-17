@@ -9,22 +9,22 @@
 #ifndef __noctisgames__SocketServerHelper__
 #define __noctisgames__SocketServerHelper__
 
-#include "IServerHelper.h"
+#include "ServerHelper.h"
 
-#include "IPacketHandler.h"
+#include "PacketHandler.h"
 
-class SocketServerHelper : public IServerHelper
+class SocketServerHelper : public ServerHelper
 {
 public:
     SocketServerHelper(uint16_t inPort, ProcessPacketFunc inProcessPacketFunc, HandleNoResponseFunc inHandleNoResponseFunc, HandleConnectionResetFunc inHandleConnectionResetFunc, GetClientProxyFunc inGetClientProxyFunc, HandleClientDisconnectedFunc inHandleClientDisconnectedFunc);
     
     virtual ~SocketServerHelper();
     
-    virtual void processSpecialPacket(uint32_t packetType, InputMemoryBitStream& inInputStream, IMachineAddress* inFromAddress);
+    virtual void processSpecialPacket(uint32_t packetType, InputMemoryBitStream& inInputStream, MachineAddress* inFromAddress);
     
     virtual void onClientDisconnected(ClientProxy* clientProxy);
     
-    virtual IMachineAddress* getServerAddress();
+    virtual MachineAddress* getServerAddress();
     
     virtual bool isConnected();
 };

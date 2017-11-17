@@ -10,7 +10,7 @@
 
 #include "WinSound.h"
 
-WinSound::WinSound(int soundId, DirectX::SoundEffect& sound, float volume) : ISound(soundId),
+WinSound::WinSound(int soundId, DirectX::SoundEffect& sound, float volume) : Sound(soundId),
 _isLooping(false),
 _isPaused(false)
 {

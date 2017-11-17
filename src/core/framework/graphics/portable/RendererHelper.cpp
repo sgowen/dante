@@ -1,5 +1,5 @@
 //
-//  IRendererHelper.cpp
+//  RendererHelper.cpp
 //  noctisgames-framework
 //
 //  Created by Stephen Gowen on 1/15/17.
@@ -8,16 +8,16 @@
 
 #include "pch.h"
 
-#include "IRendererHelper.h"
+#include "RendererHelper.h"
 
 #include "TextureWrapper.h"
 
-IRendererHelper::IRendererHelper() : _framebuffer(new TextureWrapper("framebuffer", NULL, false))
+RendererHelper::RendererHelper() : _framebuffer(new TextureWrapper("framebuffer", NULL, false))
 {
     // Empty
 }
 
-IRendererHelper::~IRendererHelper()
+RendererHelper::~RendererHelper()
 {
     // Empty
 }

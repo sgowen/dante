@@ -1,5 +1,5 @@
 //
-//  ITextureLoader.cpp
+//  AssetsMapper.cpp
 //  noctisgames-framework
 //
 //  Created by Stephen Gowen on 1/15/17.
@@ -8,14 +8,14 @@
 
 #include "pch.h"
 
-#include "ITextureLoader.h"
+#include "AssetsMapper.h"
 
-ITextureLoader::ITextureLoader()
+AssetsMapper::AssetsMapper()
 {
     // Empty
 }
 
-ITextureLoader::~ITextureLoader()
+AssetsMapper::~AssetsMapper()
 {
     // Empty
 }

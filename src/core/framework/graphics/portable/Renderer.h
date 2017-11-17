@@ -17,8 +17,8 @@ class SpriteBatcher;
 class NGRectBatcher;
 class LineBatcher;
 class CircleBatcher;
-class ITextureLoader;
-class IRendererHelper;
+class TextureLoader;
+class RendererHelper;
 class GpuProgramWrapper;
 class Entity;
 class TextureRegion;
@@ -48,8 +48,8 @@ protected:
     LineBatcher* _lineBatcher;
     CircleBatcher* _circleBatcher;
     
-    ITextureLoader* _textureLoader;
-    IRendererHelper* _rendererHelper;
+    TextureLoader* _textureLoader;
+    RendererHelper* _rendererHelper;
     
     GpuProgramWrapper* _textureGpuProgramWrapper;
     GpuProgramWrapper* _colorGpuProgramWrapper;

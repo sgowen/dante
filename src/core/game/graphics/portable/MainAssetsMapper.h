@@ -9,9 +9,9 @@
 #ifndef __dante__MainAssetsMapper__
 #define __dante__MainAssetsMapper__
 
-#include "IAssetsMapper.h"
+#include "AssetsMapper.h"
 
-class MainAssetsMapper : public IAssetsMapper
+class MainAssetsMapper : public AssetsMapper
 {
 public:
     MainAssetsMapper();

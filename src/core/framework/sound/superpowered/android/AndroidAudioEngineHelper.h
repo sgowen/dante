@@ -11,7 +11,7 @@
 
 #define ANDROID_AUDIO_ENGINE_HELPER (AndroidAudioEngineHelper::getInstance())
 
-#include "IAudioEngineHelper.h"
+#include "AudioEngineHelper.h"
 
 #include <jni.h>
 
@@ -20,7 +20,7 @@
 class SuperpoweredSoundManager;
 class SuperpoweredAndroidAudioIO;
 
-class AndroidAudioEngineHelper : public IAudioEngineHelper
+class AndroidAudioEngineHelper : public AudioEngineHelper
 {
 public:
 	static AndroidAudioEngineHelper* getInstance();
@@ -31,9 +31,9 @@ public:
     
     virtual void resume();
     
-    virtual ISoundWrapper* loadSound(int soundId, const char *path, int numInstances = 1);
+    virtual SoundWrapper* loadSound(int soundId, const char *path, int numInstances = 1);
     
-    virtual ISoundWrapper* loadMusic(const char* path);
+    virtual SoundWrapper* loadMusic(const char* path);
     
     void init(JNIEnv* jni, jobject activity);
     

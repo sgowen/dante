@@ -19,9 +19,9 @@ _timeDispatched(Timing::getInstance()->getFrameStartTime())
     //null out other transmision data params...
 }
 
-void InFlightPacket::setTransmissionData(int inKey, ITransmissionData* inTransmissionData)
+void InFlightPacket::setTransmissionData(int inKey, TransmissionData* inTransmissionData)
 {
-    ITransmissionData* currentTransmissionData;
+    TransmissionData* currentTransmissionData;
     if ((currentTransmissionData = getTransmissionData(inKey)))
     {
         delete currentTransmissionData;
@@ -30,7 +30,7 @@ void InFlightPacket::setTransmissionData(int inKey, ITransmissionData* inTransmi
     _transmissionDataMap[inKey] = inTransmissionData;
 }
 
-ITransmissionData* InFlightPacket::getTransmissionData(int inKey) const
+TransmissionData* InFlightPacket::getTransmissionData(int inKey) const
 {
     auto it = _transmissionDataMap.find(inKey);
     

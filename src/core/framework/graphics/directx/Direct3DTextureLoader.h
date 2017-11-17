@@ -9,9 +9,9 @@
 #ifndef __noctisgames__Direct3DTextureLoader__
 #define __noctisgames__Direct3DTextureLoader__
 
-#include "ITextureLoader.h"
+#include "TextureLoader.h"
 
-class Direct3DTextureLoader : public ITextureLoader
+class Direct3DTextureLoader : public TextureLoader
 {
 public:
     Direct3DTextureLoader();

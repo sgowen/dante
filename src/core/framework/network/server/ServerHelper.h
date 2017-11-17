@@ -1,31 +1,31 @@
 //
-//  IServerHelper.h
+//  ServerHelper.h
 //  noctisgames-framework
 //
 //  Created by Stephen Gowen on 6/17/17.
 //  Copyright (c) 2017 Noctis Games. All rights reserved.
 //
 
-#ifndef __noctisgames__IServerHelper__
-#define __noctisgames__IServerHelper__
+#ifndef __noctisgames__ServerHelper__
+#define __noctisgames__ServerHelper__
 
-#include "INetworkHelper.h"
+#include "NetworkHelper.h"
 
 class ClientProxy;
 
 typedef ClientProxy* (*GetClientProxyFunc)(uint8_t inPlayerIndex);
 typedef void (*HandleClientDisconnectedFunc)(ClientProxy* inClientProxy);
 
-class IServerHelper : public INetworkHelper
+class ServerHelper : public NetworkHelper
 {
 public:
-    IServerHelper(IPacketHandler* packetHandler, GetClientProxyFunc inGetClientProxyFunc, HandleClientDisconnectedFunc inHandleClientDisconnectedFunc);
+    ServerHelper(PacketHandler* packetHandler, GetClientProxyFunc inGetClientProxyFunc, HandleClientDisconnectedFunc inHandleClientDisconnectedFunc);
     
-    virtual ~IServerHelper();
+    virtual ~ServerHelper();
     
     virtual void onClientDisconnected(ClientProxy* clientProxy) = 0;
     
-    virtual IMachineAddress* getServerAddress() = 0;
+    virtual MachineAddress* getServerAddress() = 0;
     
     virtual bool isConnected() = 0;
     
@@ -34,4 +34,4 @@ protected:
     HandleClientDisconnectedFunc _handleClientDisconnectedFunc;
 };
 
-#endif /* defined(__noctisgames__IServerHelper__) */
+#endif /* defined(__noctisgames__ServerHelper__) */

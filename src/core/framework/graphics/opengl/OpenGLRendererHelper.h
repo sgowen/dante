@@ -9,9 +9,9 @@
 #ifndef __noctisgames__OpenGLRendererHelper__
 #define __noctisgames__OpenGLRendererHelper__
 
-#include "IRendererHelper.h"
+#include "RendererHelper.h"
 
-class OpenGLRendererHelper : public IRendererHelper
+class OpenGLRendererHelper : public RendererHelper
 {
 public:
     OpenGLRendererHelper();

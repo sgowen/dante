@@ -9,13 +9,13 @@
 #ifndef __noctisgames__WinSound__
 #define __noctisgames__WinSound__
 
-#include "ISound.h"
+#include "Sound.h"
 
 #include "Audio.h"
 
 #include <memory>
 
-class WinSound : public ISound
+class WinSound : public Sound
 {
 public:
     WinSound(int soundId, DirectX::SoundEffect& sound, float volume = 1.0f);

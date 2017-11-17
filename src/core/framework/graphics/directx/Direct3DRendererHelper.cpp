@@ -14,7 +14,7 @@
 #include "GpuTextureWrapper.h"
 #include "Direct3DManager.h"
 
-Direct3DRendererHelper::Direct3DRendererHelper() : IRendererHelper(), _framebufferIndex(0), _isBoundToScreen(false)
+Direct3DRendererHelper::Direct3DRendererHelper() : RendererHelper(), _framebufferIndex(0), _isBoundToScreen(false)
 {
 	Direct3DManager::create();
 }

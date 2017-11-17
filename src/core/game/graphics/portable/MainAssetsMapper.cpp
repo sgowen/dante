@@ -14,7 +14,7 @@
 #include "TextureRegion.h"
 #include "Animation.h"
 
-MainAssetsMapper::MainAssetsMapper() : IAssetsMapper()
+MainAssetsMapper::MainAssetsMapper() : AssetsMapper()
 {
     // Empty
 }

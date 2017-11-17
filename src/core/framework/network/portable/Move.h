@@ -13,7 +13,7 @@
 
 #include <map>
 
-class IInputState;
+class InputState;
 class OutputMemoryBitStream;
 class InputMemoryBitStream;
 class Entity;
@@ -21,9 +21,9 @@ class Entity;
 class Move
 {
 public:
-    Move(IInputState* inInputState, float inTimestamp);
+    Move(InputState* inInputState, float inTimestamp);
     
-    Move(IInputState* inInputState);
+    Move(InputState* inInputState);
     
     ~Move();
     
@@ -37,13 +37,13 @@ public:
     
     bool isEqual(const Move* inMove) const;
     
-    IInputState* getInputState() const;
+    InputState* getInputState() const;
     
     float getTimestamp() const;
     
     void setTimestamp(float timeStamp);
     
-    void copyInputState(IInputState* inIInputState);
+    void copyInputState(InputState* inInputState);
     
 private:
     class EntityClientCache
@@ -57,7 +57,7 @@ private:
     
     mutable std::map<int, EntityClientCache> _entityCacheMap;
     
-    IInputState* _inputState;
+    InputState* _inputState;
     float _timestamp;
 };
 

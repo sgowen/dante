@@ -1,5 +1,5 @@
 //
-//  IMachineAddress.cpp
+//  MachineAddress.cpp
 //  noctisgames-framework
 //
 //  Created by Stephen Gowen on 5/15/17.
@@ -8,16 +8,16 @@
 
 #include "pch.h"
 
-#include "IMachineAddress.h"
+#include "MachineAddress.h"
 
-IMachineAddress::IMachineAddress()
+MachineAddress::MachineAddress()
 {
     // Empty
 }
 
-IMachineAddress::~IMachineAddress()
+MachineAddress::~MachineAddress()
 {
     // Empty
 }
 
-RTTI_IMPL_NOPARENT(IMachineAddress);
+RTTI_IMPL_NOPARENT(MachineAddress);

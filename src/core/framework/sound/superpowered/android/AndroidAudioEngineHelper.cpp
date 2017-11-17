@@ -8,7 +8,7 @@
 
 #include "AndroidAudioEngineHelper.h"
 
-#include "ISoundWrapper.h"
+#include "SoundWrapper.h"
 #include "SuperpoweredSoundManager.h"
 #include "SuperpoweredAndroidAudioIO.h"
 
@@ -102,7 +102,7 @@ void AndroidAudioEngineHelper::resume()
     // Empty
 }
 
-ISoundWrapper* AndroidAudioEngineHelper::loadSound(int soundId, const char *path, int numInstances)
+SoundWrapper* AndroidAudioEngineHelper::loadSound(int soundId, const char *path, int numInstances)
 {
     JNIEnv* jni;
     
@@ -169,7 +169,7 @@ ISoundWrapper* AndroidAudioEngineHelper::loadSound(int soundId, const char *path
     return sound;
 }
 
-ISoundWrapper* AndroidAudioEngineHelper::loadMusic(const char* path)
+SoundWrapper* AndroidAudioEngineHelper::loadMusic(const char* path)
 {
     return loadSound(1337, path);
 }
@@ -303,7 +303,7 @@ void AndroidAudioEngineHelper::deinit()
     }
 }
 
-AndroidAudioEngineHelper::AndroidAudioEngineHelper() : IAudioEngineHelper(), _superpoweredSoundManager(nullptr), _sampleRate(44100)
+AndroidAudioEngineHelper::AndroidAudioEngineHelper() : AudioEngineHelper(), _superpoweredSoundManager(nullptr), _sampleRate(44100)
 {
     // Empty
 }

@@ -15,7 +15,7 @@
 
 #include <string>
 
-class IInputState;
+class InputState;
 class Move;
 class Ground;
 class Crate;
@@ -61,7 +61,7 @@ public:
     
     virtual bool needsMoveReplay();
     
-    void processInput(IInputState* inInputState, bool isPending = false);
+    void processInput(InputState* inInputState, bool isPending = false);
     
     void awardKill(bool isHeadshot);
     

@@ -21,7 +21,7 @@
 
 #include <string>
 
-Direct3DTextureLoader::Direct3DTextureLoader() : ITextureLoader()
+Direct3DTextureLoader::Direct3DTextureLoader() : TextureLoader()
 {
     // Empty
 }

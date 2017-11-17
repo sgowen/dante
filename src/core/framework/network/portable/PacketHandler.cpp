@@ -1,5 +1,5 @@
 //
-//  IPacketHandler.cpp
+//  PacketHandler.cpp
 //  noctisgames-framework
 //
 //  Created by Stephen Gowen on 6/15/17.
@@ -8,11 +8,11 @@
 
 #include "pch.h"
 
-#include "IPacketHandler.h"
+#include "PacketHandler.h"
 
 #include "WeightedTimedMovingAverage.h"
 
-IPacketHandler::IPacketHandler(ProcessPacketFunc processPacketFunc, HandleNoResponseFunc handleNoResponseFunc, HandleConnectionResetFunc handleConnectionResetFunc) :
+PacketHandler::PacketHandler(ProcessPacketFunc processPacketFunc, HandleNoResponseFunc handleNoResponseFunc, HandleConnectionResetFunc handleConnectionResetFunc) :
 _processPacketFunc(processPacketFunc),
 _handleNoResponseFunc(handleNoResponseFunc),
 _handleConnectionResetFunc(handleConnectionResetFunc),
@@ -23,13 +23,13 @@ _bytesSentThisFrame(0)
     // Empty
 }
 
-IPacketHandler::~IPacketHandler()
+PacketHandler::~PacketHandler()
 {
     delete _bytesReceivedPerSecond;
     delete _bytesSentPerSecond;
 }
 
-void IPacketHandler::processIncomingPackets()
+void PacketHandler::processIncomingPackets()
 {
     readIncomingPacketsIntoQueue();
     
@@ -38,17 +38,17 @@ void IPacketHandler::processIncomingPackets()
     updateBytesSentLastFrame();
 }
 
-const WeightedTimedMovingAverage& IPacketHandler::getBytesReceivedPerSecond() const
+const WeightedTimedMovingAverage& PacketHandler::getBytesReceivedPerSecond() const
 {
     return *_bytesReceivedPerSecond;
 }
 
-const WeightedTimedMovingAverage& IPacketHandler::getBytesSentPerSecond() const
+const WeightedTimedMovingAverage& PacketHandler::getBytesSentPerSecond() const
 {
     return *_bytesSentPerSecond;
 }
 
-void IPacketHandler::updateBytesSentLastFrame()
+void PacketHandler::updateBytesSentLastFrame()
 {
     if (_bytesSentThisFrame > 0)
     {
@@ -58,7 +58,7 @@ void IPacketHandler::updateBytesSentLastFrame()
     }
 }
 
-void IPacketHandler::updateBytesReceivedLastFrame(int totalReadByteCount)
+void PacketHandler::updateBytesReceivedLastFrame(int totalReadByteCount)
 {
     _bytesReceivedPerSecond->updatePerSecond(static_cast<float>(totalReadByteCount));
 }

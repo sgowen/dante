@@ -11,7 +11,7 @@
 #include "SuperpoweredSoundManager.h"
 #include "SuperpoweredSound.h"
 
-SuperpoweredSoundWrapper::SuperpoweredSoundWrapper(SuperpoweredSoundManager* manager, int soundId, const char *path, unsigned int sampleRate, int numInstances, int fileOffset, int fileLength) : ISoundWrapper(soundId, numInstances)
+SuperpoweredSoundWrapper::SuperpoweredSoundWrapper(SuperpoweredSoundManager* manager, int soundId, const char *path, unsigned int sampleRate, int numInstances, int fileOffset, int fileLength) : SoundWrapper(soundId, numInstances)
 {
     for (int i = 0; i < _numInstances; ++i)
     {

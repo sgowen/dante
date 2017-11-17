@@ -1,13 +1,13 @@
 //
-//  IPacketHandler.h
+//  PacketHandler.h
 //  noctisgames-framework
 //
 //  Created by Stephen Gowen on 6/15/17.
 //  Copyright (c) 2017 Noctis Games. All rights reserved.
 //
 
-#ifndef __noctisgames__IPacketHandler__
-#define __noctisgames__IPacketHandler__
+#ifndef __noctisgames__PacketHandler__
+#define __noctisgames__PacketHandler__
 
 #include "InputMemoryBitStream.h"
 
@@ -16,20 +16,20 @@
 
 class OutputMemoryBitStream;
 class WeightedTimedMovingAverage;
-class IMachineAddress;
+class MachineAddress;
 
-typedef void (*ProcessPacketFunc)(InputMemoryBitStream& inInputStream, IMachineAddress* inFromAddress);
+typedef void (*ProcessPacketFunc)(InputMemoryBitStream& inInputStream, MachineAddress* inFromAddress);
 typedef void (*HandleNoResponseFunc)();
-typedef void (*HandleConnectionResetFunc)(IMachineAddress* inFromAddress);
+typedef void (*HandleConnectionResetFunc)(MachineAddress* inFromAddress);
 
-class IPacketHandler
+class PacketHandler
 {
 public:
-    IPacketHandler(ProcessPacketFunc processPacketFunc, HandleNoResponseFunc handleNoResponseFunc, HandleConnectionResetFunc handleConnectionResetFunc);
+    PacketHandler(ProcessPacketFunc processPacketFunc, HandleNoResponseFunc handleNoResponseFunc, HandleConnectionResetFunc handleConnectionResetFunc);
     
-    virtual ~IPacketHandler();
+    virtual ~PacketHandler();
     
-    virtual void sendPacket(const OutputMemoryBitStream& inOutputStream, IMachineAddress* inFromAddress) = 0;
+    virtual void sendPacket(const OutputMemoryBitStream& inOutputStream, MachineAddress* inFromAddress) = 0;
     
     void processIncomingPackets();
     
@@ -56,4 +56,4 @@ private:
     WeightedTimedMovingAverage* _bytesSentPerSecond;
 };
 
-#endif /* defined(__noctisgames__IPacketHandler__) */
+#endif /* defined(__noctisgames__PacketHandler__) */

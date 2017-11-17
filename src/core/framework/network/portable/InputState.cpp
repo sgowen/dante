@@ -1,5 +1,5 @@
 //
-//  IInputState.cpp
+//  InputState.cpp
 //  noctisgames-framework
 //
 //  Created by Stephen Gowen on 5/15/17.
@@ -8,29 +8,29 @@
 
 #include "pch.h"
 
-#include "IInputState.h"
+#include "InputState.h"
 
 #include "OutputMemoryBitStream.h"
 #include "InputMemoryBitStream.h"
 
-IInputState::IInputState() : _isInUse(false)
+InputState::InputState() : _isInUse(false)
 {
     // Empty
 }
 
-IInputState::~IInputState()
+InputState::~InputState()
 {
     // Empty
 }
 
-void IInputState::setInUse(bool inUse)
+void InputState::setInUse(bool inUse)
 {
     _isInUse = inUse;
 }
 
-bool IInputState::isInUse() const
+bool InputState::isInUse() const
 {
     return _isInUse;
 }
 
-RTTI_IMPL_NOPARENT(IInputState);
+RTTI_IMPL_NOPARENT(InputState);

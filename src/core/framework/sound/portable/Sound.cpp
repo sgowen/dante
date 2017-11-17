@@ -1,5 +1,5 @@
 //
-//  ISound.cpp
+//  Sound.cpp
 //  noctisgames-framework
 //
 //  Created by Stephen Gowen on 3/10/17.
@@ -8,19 +8,19 @@
 
 #include "pch.h"
 
-#include "ISound.h"
+#include "Sound.h"
 
-ISound::ISound(int soundId) : _soundId(soundId)
+Sound::Sound(int soundId) : _soundId(soundId)
 {
     // Empty
 }
 
-ISound::~ISound()
+Sound::~Sound()
 {
     // Empty
 }
 
-int ISound::getSoundId()
+int Sound::getSoundId()
 {
     return _soundId;
 }

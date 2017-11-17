@@ -18,10 +18,10 @@ TextureLoaderFactory* TextureLoaderFactory::getInstance()
 
 #if defined __APPLE__ || defined __ANDROID__
 #include "OpenGLTextureLoader.h"
-ITextureLoader* TextureLoaderFactory::createTextureLoader() { return new OpenGLTextureLoader(); }
+TextureLoader* TextureLoaderFactory::createTextureLoader() { return new OpenGLTextureLoader(); }
 #elif defined _WIN32
 #include "Direct3DTextureLoader.h"
-ITextureLoader* TextureLoaderFactory::createTextureLoader() { return new Direct3DTextureLoader(); }
+TextureLoader* TextureLoaderFactory::createTextureLoader() { return new Direct3DTextureLoader(); }
 #endif
 
 TextureLoaderFactory::TextureLoaderFactory()

@@ -1,15 +1,15 @@
 //
-//  IClientHelper.h
+//  ClientHelper.h
 //  noctisgames-framework
 //
 //  Created by Stephen Gowen on 6/17/17.
 //  Copyright (c) 2017 Noctis Games. All rights reserved.
 //
 
-#ifndef __noctisgames__IClientHelper__
-#define __noctisgames__IClientHelper__
+#ifndef __noctisgames__ClientHelper__
+#define __noctisgames__ClientHelper__
 
-#include "INetworkHelper.h"
+#include "NetworkHelper.h"
 
 #include <string>
 
@@ -17,12 +17,12 @@
 #define CLIENT_READY_TO_SAY_HELLO 2
 #define CLIENT_AUTH_FAILED 3
 
-class IClientHelper : public INetworkHelper
+class ClientHelper : public NetworkHelper
 {
 public:
-    IClientHelper(IPacketHandler* packetHandler);
+    ClientHelper(PacketHandler* packetHandler);
     
-    virtual ~IClientHelper();
+    virtual ~ClientHelper();
     
     virtual void handleUninitialized() = 0;
     
@@ -36,4 +36,4 @@ protected:
     int _state;
 };
 
-#endif /* defined(__noctisgames__IClientHelper__) */
+#endif /* defined(__noctisgames__ClientHelper__) */

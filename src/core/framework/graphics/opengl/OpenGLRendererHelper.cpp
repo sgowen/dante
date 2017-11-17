@@ -14,7 +14,7 @@
 #include "GpuTextureWrapper.h"
 #include "OpenGLManager.h"
 
-OpenGLRendererHelper::OpenGLRendererHelper() : IRendererHelper()
+OpenGLRendererHelper::OpenGLRendererHelper() : RendererHelper()
 {
     OpenGLManager::create();
 }

@@ -10,12 +10,12 @@
 
 #include "ClientProxy.h"
 
-#include "IMachineAddress.h"
+#include "MachineAddress.h"
 
 #include "Timing.h"
 #include "FrameworkConstants.h"
 
-ClientProxy::ClientProxy(IMachineAddress* inMachineAddress, const std::string& inName, uint8_t inPlayerId) :
+ClientProxy::ClientProxy(MachineAddress* inMachineAddress, const std::string& inName, uint8_t inPlayerId) :
 _deliveryNotificationManager(DeliveryNotificationManager(false, true)),
 _machineAddress(inMachineAddress->createNewCopy()),
 _name(inName),
@@ -32,7 +32,7 @@ ClientProxy::~ClientProxy()
     delete _machineAddress;
 }
 
-IMachineAddress* ClientProxy::getMachineAddress() const
+MachineAddress* ClientProxy::getMachineAddress() const
 {
     return _machineAddress;
 }

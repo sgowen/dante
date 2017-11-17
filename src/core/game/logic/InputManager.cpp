@@ -10,7 +10,7 @@
 
 #include "InputManager.h"
 
-#include "InputState.h"
+#include "MainInputState.h"
 #include "Move.h"
 
 #include "Timing.h"
@@ -372,7 +372,7 @@ bool InputManager::isTimeToProcessInput()
     return _isTimeToProcessInput;
 }
 
-InputState* InputManager::getInputState()
+MainInputState* InputManager::getInputState()
 {
     return _currentState;
 }
@@ -399,7 +399,7 @@ bool InputManager::isPlayerIdLocalHost(uint8_t playerId)
 
 const Move& InputManager::sampleInputAsMove()
 {
-    InputState* inputState = static_cast<InputState*>(POOLED_OBJ_MGR->borrowInputState());
+    MainInputState* inputState = static_cast<MainInputState*>(POOLED_OBJ_MGR->borrowInputState());
     _currentState->copyTo(inputState);
     
     return _moveList.addMove(inputState, Timing::getInstance()->getFrameStartTime());
@@ -416,7 +416,7 @@ bool InputManager::isTimeToSampleInput()
 }
 
 InputManager::InputManager() :
-_currentState(static_cast<InputState*>(POOLED_OBJ_MGR->borrowInputState())),
+_currentState(static_cast<MainInputState*>(POOLED_OBJ_MGR->borrowInputState())),
 _pendingMove(nullptr),
 _isConnected(false),
 _isLiveMode(false),

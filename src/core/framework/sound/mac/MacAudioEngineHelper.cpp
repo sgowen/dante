@@ -10,7 +10,7 @@
 
 #include "MacAudioEngineHelper.h"
 
-#include "ISoundWrapper.h"
+#include "SoundWrapper.h"
 
 #include "MacSoundWrapper.h"
 #include "ObjectALWrapper.h"
@@ -36,7 +36,7 @@ void MacAudioEngineHelper::resume()
     resumeObjectAL();
 }
 
-ISoundWrapper* MacAudioEngineHelper::loadSound(int soundId, const char *path, int numInstances)
+SoundWrapper* MacAudioEngineHelper::loadSound(int soundId, const char *path, int numInstances)
 {
 	const char* bundlePath = getBundlePathForSoundWithName(path);
     
@@ -45,7 +45,7 @@ ISoundWrapper* MacAudioEngineHelper::loadSound(int soundId, const char *path, in
     return sound;
 }
 
-ISoundWrapper* MacAudioEngineHelper::loadMusic(const char* path)
+SoundWrapper* MacAudioEngineHelper::loadMusic(const char* path)
 {
     const char* bundlePath = getBundlePathForSoundWithName(path);
     
@@ -54,7 +54,7 @@ ISoundWrapper* MacAudioEngineHelper::loadMusic(const char* path)
     return sound;
 }
 
-MacAudioEngineHelper::MacAudioEngineHelper() : IAudioEngineHelper()
+MacAudioEngineHelper::MacAudioEngineHelper() : AudioEngineHelper()
 {
     initObjectAL();
 }

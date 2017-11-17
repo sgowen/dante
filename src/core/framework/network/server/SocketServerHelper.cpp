@@ -18,7 +18,7 @@
 #include "ClientProxy.h"
 #include "OutputMemoryBitStream.h"
 
-SocketServerHelper::SocketServerHelper(uint16_t inPort, ProcessPacketFunc inProcessPacketFunc, HandleNoResponseFunc inHandleNoResponseFunc, HandleConnectionResetFunc inHandleConnectionResetFunc, GetClientProxyFunc inGetClientProxyFunc, HandleClientDisconnectedFunc inHandleClientDisconnectedFunc) : IServerHelper(new SocketPacketHandler(inPort, inProcessPacketFunc, inHandleNoResponseFunc, inHandleConnectionResetFunc), inGetClientProxyFunc, inHandleClientDisconnectedFunc)
+SocketServerHelper::SocketServerHelper(uint16_t inPort, ProcessPacketFunc inProcessPacketFunc, HandleNoResponseFunc inHandleNoResponseFunc, HandleConnectionResetFunc inHandleConnectionResetFunc, GetClientProxyFunc inGetClientProxyFunc, HandleClientDisconnectedFunc inHandleClientDisconnectedFunc) : ServerHelper(new SocketPacketHandler(inPort, inProcessPacketFunc, inHandleNoResponseFunc, inHandleConnectionResetFunc), inGetClientProxyFunc, inHandleClientDisconnectedFunc)
 {
     // Empty
 }
@@ -40,7 +40,7 @@ SocketServerHelper::~SocketServerHelper()
     }
 }
 
-void SocketServerHelper::processSpecialPacket(uint32_t packetType, InputMemoryBitStream& inInputStream, IMachineAddress* inFromAddress)
+void SocketServerHelper::processSpecialPacket(uint32_t packetType, InputMemoryBitStream& inInputStream, MachineAddress* inFromAddress)
 {
     switch (packetType)
     {
@@ -87,7 +87,7 @@ void SocketServerHelper::onClientDisconnected(ClientProxy* clientProxy)
     // Nothing to do here.
 }
 
-IMachineAddress* SocketServerHelper::getServerAddress()
+MachineAddress* SocketServerHelper::getServerAddress()
 {
     return (static_cast<SocketPacketHandler*>(_packetHandler))->getSocketAddress();
 }

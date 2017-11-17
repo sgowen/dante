@@ -9,16 +9,16 @@
 #ifndef __noctisgames__NGSteamServerHelper__
 #define __noctisgames__NGSteamServerHelper__
 
-#include "IServerHelper.h"
+#include "ServerHelper.h"
 
 #include "NGSteam.h"
-#include "IPacketHandler.h"
+#include "PacketHandler.h"
 #include "FrameworkConstants.h"
 
 class NGSteamAddress;
 class ClientProxy;
 
-class NGSteamServerHelper : public IServerHelper
+class NGSteamServerHelper : public ServerHelper
 {
 public:
     NGSteamServerHelper(const char* inGameDir, const char* inVersionString, const char* inProductName, const char* inGameDescription, uint16 inPort, ProcessPacketFunc inProcessPacketFunc, HandleNoResponseFunc inHandleNoResponseFunc, HandleConnectionResetFunc inHandleConnectionResetFunc, GetClientProxyFunc inGetClientProxyFunc, HandleClientDisconnectedFunc inHandleClientDisconnectedFunc);
@@ -27,11 +27,11 @@ public:
     
     virtual void processIncomingPackets();
     
-    virtual void processSpecialPacket(uint32_t packetType, InputMemoryBitStream& inInputStream, IMachineAddress* inFromAddress);
+    virtual void processSpecialPacket(uint32_t packetType, InputMemoryBitStream& inInputStream, MachineAddress* inFromAddress);
     
     virtual void onClientDisconnected(ClientProxy* clientProxy);
     
-    virtual IMachineAddress* getServerAddress();
+    virtual MachineAddress* getServerAddress();
     
     virtual bool isConnected();
     

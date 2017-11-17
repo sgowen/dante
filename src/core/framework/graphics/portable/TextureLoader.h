@@ -1,27 +1,27 @@
 //
-//  ITextureLoader.h
+//  TextureLoader.h
 //  noctisgames-framework
 //
 //  Created by Stephen Gowen on 1/15/17.
 //  Copyright © 2017 Noctis Games. All rights reserved.
 //
 
-#ifndef __noctisgames__ITextureLoader__
-#define __noctisgames__ITextureLoader__
+#ifndef __noctisgames__TextureLoader__
+#define __noctisgames__TextureLoader__
 
 struct GpuTextureDataWrapper;
 struct GpuTextureWrapper;
 
-class ITextureLoader
+class TextureLoader
 {
 public:
-    ITextureLoader();
+    TextureLoader();
     
-    virtual ~ITextureLoader();
+    virtual ~TextureLoader();
     
     virtual GpuTextureDataWrapper* loadTextureData(const char* textureName) = 0;
     
     virtual GpuTextureWrapper* loadTexture(GpuTextureDataWrapper* textureData, bool repeatS = false) = 0;
 };
 
-#endif /* defined(__noctisgames__ITextureLoader__) */
+#endif /* defined(__noctisgames__TextureLoader__) */

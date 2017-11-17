@@ -1,5 +1,5 @@
 //
-//  IServerHelper.cpp
+//  ServerHelper.cpp
 //  noctisgames-framework
 //
 //  Created by Stephen Gowen on 6/17/17.
@@ -8,16 +8,16 @@
 
 #include "pch.h"
 
-#include "IServerHelper.h"
+#include "ServerHelper.h"
 
-IServerHelper::IServerHelper(IPacketHandler* packetHandler, GetClientProxyFunc inGetClientProxyFunc, HandleClientDisconnectedFunc inHandleClientDisconnectedFunc) : INetworkHelper(packetHandler),
+ServerHelper::ServerHelper(PacketHandler* packetHandler, GetClientProxyFunc inGetClientProxyFunc, HandleClientDisconnectedFunc inHandleClientDisconnectedFunc) : NetworkHelper(packetHandler),
 _getClientProxyFunc(inGetClientProxyFunc),
 _handleClientDisconnectedFunc(inHandleClientDisconnectedFunc)
 {
     // Empty
 }
 
-IServerHelper::~IServerHelper()
+ServerHelper::~ServerHelper()
 {
     // Empty
 }

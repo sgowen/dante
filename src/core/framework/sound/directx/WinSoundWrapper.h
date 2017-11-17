@@ -9,13 +9,13 @@
 #ifndef __noctisgames__WinSoundWrapper__
 #define __noctisgames__WinSoundWrapper__
 
-#include "ISoundWrapper.h"
+#include "SoundWrapper.h"
 
 #include "Audio.h"
 
 #include <memory>
 
-class WinSoundWrapper : public ISoundWrapper
+class WinSoundWrapper : public SoundWrapper
 {
 public:
     WinSoundWrapper(int soundId, const char *path, DirectX::AudioEngine* audioEngine, int numInstances = 1);

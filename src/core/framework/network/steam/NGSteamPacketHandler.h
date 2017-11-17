@@ -9,7 +9,7 @@
 #ifndef __noctisgames__NGSteamPacketHandler__
 #define __noctisgames__NGSteamPacketHandler__
 
-#include "IPacketHandler.h"
+#include "PacketHandler.h"
 
 #include "InputMemoryBitStream.h"
 #include "NGSteamAddress.h"
@@ -18,16 +18,16 @@
 #include <list>
 
 class OutputMemoryBitStream;
-class IMachineAddress;
+class MachineAddress;
 
-class NGSteamPacketHandler : public IPacketHandler
+class NGSteamPacketHandler : public PacketHandler
 {
 public:
     NGSteamPacketHandler(bool isServer, ProcessPacketFunc processPacketFunc, HandleNoResponseFunc handleNoResponseFunc, HandleConnectionResetFunc handleConnectionResetFunc);
     
     virtual ~NGSteamPacketHandler();
     
-    virtual void sendPacket(const OutputMemoryBitStream& inOutputStream, IMachineAddress* inFromAddress);
+    virtual void sendPacket(const OutputMemoryBitStream& inOutputStream, MachineAddress* inFromAddress);
 
 protected:
     virtual void readIncomingPacketsIntoQueue();

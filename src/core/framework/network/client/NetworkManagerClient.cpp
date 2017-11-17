@@ -14,7 +14,7 @@
 #include "InputMemoryBitStream.h"
 #include "OutputMemoryBitStream.h"
 #include "DeliveryNotificationManager.h"
-#include "IMachineAddress.h"
+#include "MachineAddress.h"
 #include "EntityRegistry.h"
 #include "Entity.h"
 #include "MoveList.h"
@@ -33,7 +33,7 @@
 
 NetworkManagerClient* NetworkManagerClient::s_instance = nullptr;
 
-void NetworkManagerClient::create(IClientHelper* inClientHelper, float inFrameRate, RemoveProcessedMovesFunc inRemoveProcessedMovesFunc, GetMoveListFunc inGetMoveListFunc, OnPlayerWelcomedFunc inOnPlayerWelcomedFunc)
+void NetworkManagerClient::create(ClientHelper* inClientHelper, float inFrameRate, RemoveProcessedMovesFunc inRemoveProcessedMovesFunc, GetMoveListFunc inGetMoveListFunc, OnPlayerWelcomedFunc inOnPlayerWelcomedFunc)
 {
     assert(!s_instance);
     
@@ -53,7 +53,7 @@ NetworkManagerClient * NetworkManagerClient::getInstance()
     return s_instance;
 }
 
-void NetworkManagerClient::sProcessPacket(InputMemoryBitStream& inInputStream, IMachineAddress* inFromAddress)
+void NetworkManagerClient::sProcessPacket(InputMemoryBitStream& inInputStream, MachineAddress* inFromAddress)
 {
     NG_CLIENT->processPacket(inInputStream, static_cast<SocketAddress*>(inFromAddress));
 }
@@ -63,7 +63,7 @@ void NetworkManagerClient::sHandleNoResponse()
     NG_CLIENT->handleNoResponse();
 }
 
-void NetworkManagerClient::sHandleConnectionReset(IMachineAddress* inFromAddress)
+void NetworkManagerClient::sHandleConnectionReset(MachineAddress* inFromAddress)
 {
     NG_CLIENT->handleConnectionReset(static_cast<SocketAddress*>(inFromAddress));
 }
@@ -178,7 +178,7 @@ NetworkClientState NetworkManagerClient::getState() const
     return _state;
 }
 
-void NetworkManagerClient::processPacket(InputMemoryBitStream& inInputStream, IMachineAddress* inFromAddress)
+void NetworkManagerClient::processPacket(InputMemoryBitStream& inInputStream, MachineAddress* inFromAddress)
 {
     _lastServerCommunicationTimestamp = Timing::getInstance()->getFrameStartTime();
     
@@ -219,7 +219,7 @@ void NetworkManagerClient::handleNoResponse()
     }
 }
 
-void NetworkManagerClient::handleConnectionReset(IMachineAddress* inFromAddress)
+void NetworkManagerClient::handleConnectionReset(MachineAddress* inFromAddress)
 {
     UNUSED(inFromAddress);
 }
@@ -436,7 +436,7 @@ void NetworkManagerClient::updateNextIndex()
     }
 }
 
-NetworkManagerClient::NetworkManagerClient(IClientHelper* inClientHelper, float inFrameRate, RemoveProcessedMovesFunc inRemoveProcessedMovesFunc, GetMoveListFunc inGetMoveListFunc, OnPlayerWelcomedFunc inOnPlayerWelcomedFunc) :
+NetworkManagerClient::NetworkManagerClient(ClientHelper* inClientHelper, float inFrameRate, RemoveProcessedMovesFunc inRemoveProcessedMovesFunc, GetMoveListFunc inGetMoveListFunc, OnPlayerWelcomedFunc inOnPlayerWelcomedFunc) :
 _clientHelper(inClientHelper),
 _removeProcessedMovesFunc(inRemoveProcessedMovesFunc),
 _getMoveListFunc(inGetMoveListFunc),

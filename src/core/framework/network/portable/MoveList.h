@@ -13,14 +13,14 @@
 
 #include <deque>
 
-class IInputState;
+class InputState;
 
 class MoveList
 {
 public:
     MoveList();
     
-    const Move& addMove(IInputState* inInputState, float inTimestamp);
+    const Move& addMove(InputState* inInputState, float inTimestamp);
     
     bool addMoveIfNew(const Move& inMove);
     

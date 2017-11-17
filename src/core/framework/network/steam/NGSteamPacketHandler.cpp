@@ -11,7 +11,7 @@
 #include "NGSteamPacketHandler.h"
 
 #include "OutputMemoryBitStream.h"
-#include "IMachineAddress.h"
+#include "MachineAddress.h"
 
 #include "InputMemoryBitStream.h"
 #include "Timing.h"
@@ -20,7 +20,7 @@
 #include "StringUtil.h"
 #include "Network.h"
 
-NGSteamPacketHandler::NGSteamPacketHandler(bool isServer, ProcessPacketFunc processPacketFunc, HandleNoResponseFunc handleNoResponseFunc, HandleConnectionResetFunc handleConnectionResetFunc) : IPacketHandler(processPacketFunc, handleNoResponseFunc, handleConnectionResetFunc), _isServer(isServer)
+NGSteamPacketHandler::NGSteamPacketHandler(bool isServer, ProcessPacketFunc processPacketFunc, HandleNoResponseFunc handleNoResponseFunc, HandleConnectionResetFunc handleConnectionResetFunc) : PacketHandler(processPacketFunc, handleNoResponseFunc, handleConnectionResetFunc), _isServer(isServer)
 {
     // Empty
 }
@@ -30,7 +30,7 @@ NGSteamPacketHandler::~NGSteamPacketHandler()
     // Empty
 }
 
-void NGSteamPacketHandler::sendPacket(const OutputMemoryBitStream& inOutputStream, IMachineAddress* inFromAddress)
+void NGSteamPacketHandler::sendPacket(const OutputMemoryBitStream& inOutputStream, MachineAddress* inFromAddress)
 {
     NGSteamAddress* inFromSteamAddress = static_cast<NGSteamAddress*>(inFromAddress);
     

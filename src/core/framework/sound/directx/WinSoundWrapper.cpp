@@ -14,7 +14,7 @@
 
 #include "NGSTDUtil.h"
 
-WinSoundWrapper::WinSoundWrapper(int soundId, const char *path, DirectX::AudioEngine* audioEngine, int numInstances) : ISoundWrapper(soundId, numInstances)
+WinSoundWrapper::WinSoundWrapper(int soundId, const char *path, DirectX::AudioEngine* audioEngine, int numInstances) : SoundWrapper(soundId, numInstances)
 {
     size_t len = strlen(path);
     

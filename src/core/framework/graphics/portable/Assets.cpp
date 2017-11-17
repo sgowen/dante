@@ -10,7 +10,7 @@
 
 #include "Assets.h"
 
-#include "IAssetsMapper.h"
+#include "AssetsMapper.h"
 #include "TextureRegion.h"
 #include "Animation.h"
 #include "NGSTDUtil.h"
@@ -23,7 +23,7 @@ Assets* Assets::getInstance()
     return &instance;
 }
 
-void Assets::init(IAssetsMapper* assetsMapper)
+void Assets::init(AssetsMapper* assetsMapper)
 {
 	getTextureRegionMap().clear();
 	getAnimationsMap().clear();

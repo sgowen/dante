@@ -9,7 +9,7 @@
 #ifndef __noctisgames__SocketPacketHandler__
 #define __noctisgames__SocketPacketHandler__
 
-#include "IPacketHandler.h"
+#include "PacketHandler.h"
 
 #include "InputMemoryBitStream.h"
 #include "SocketAddress.h"
@@ -19,16 +19,16 @@
 
 class OutputMemoryBitStream;
 class UDPSocket;
-class IMachineAddress;
+class MachineAddress;
 
-class SocketPacketHandler : public IPacketHandler
+class SocketPacketHandler : public PacketHandler
 {
 public:
     SocketPacketHandler(uint16_t inPort, ProcessPacketFunc processPacketFunc, HandleNoResponseFunc handleNoResponseFunc, HandleConnectionResetFunc handleConnectionResetFunc);
     
     virtual ~SocketPacketHandler();
     
-    virtual void sendPacket(const OutputMemoryBitStream& inOutputStream, IMachineAddress* inFromAddress);
+    virtual void sendPacket(const OutputMemoryBitStream& inOutputStream, MachineAddress* inFromAddress);
     
     SocketAddress* getSocketAddress();
     

@@ -1,27 +1,27 @@
 //
-//  IInputState.h
+//  InputState.h
 //  noctisgames-framework
 //
 //  Created by Stephen Gowen on 5/15/17.
 //  Copyright (c) 2017 Noctis Games. All rights reserved.
 //
 
-#ifndef __noctisgames__IInputState__
-#define __noctisgames__IInputState__
+#ifndef __noctisgames__InputState__
+#define __noctisgames__InputState__
 
 #include "RTTI.h"
 
 class OutputMemoryBitStream;
 class InputMemoryBitStream;
 
-class IInputState
+class InputState
 {
     RTTI_DECL;
     
 public:
-    IInputState();
+    InputState();
     
-    virtual ~IInputState();
+    virtual ~InputState();
     
     virtual bool write(OutputMemoryBitStream& inOutputStream) const = 0;
     
@@ -29,9 +29,9 @@ public:
     
     virtual void reset() = 0;
     
-    virtual bool isEqual(IInputState* inIInputState) const = 0;
+    virtual bool isEqual(InputState* inInputState) const = 0;
     
-    virtual void copyTo(IInputState* inIInputState) const = 0;
+    virtual void copyTo(InputState* inInputState) const = 0;
     
     void setInUse(bool inUse);
     
@@ -41,4 +41,4 @@ private:
     bool _isInUse;
 };
 
-#endif /* defined(__noctisgames__IInputState__) */
+#endif /* defined(__noctisgames__InputState__) */

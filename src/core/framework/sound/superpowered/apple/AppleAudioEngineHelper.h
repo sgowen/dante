@@ -11,11 +11,11 @@
 
 #define APPLE_AUDIO_ENGINE_HELPER (AppleAudioEngineHelper::getInstance())
 
-#include "IAudioEngineHelper.h"
+#include "AudioEngineHelper.h"
 
 class SuperpoweredSoundManager;
 
-class AppleAudioEngineHelper : public IAudioEngineHelper
+class AppleAudioEngineHelper : public AudioEngineHelper
 {
 public:
 	static AppleAudioEngineHelper* getInstance();
@@ -26,9 +26,9 @@ public:
     
     virtual void resume();
     
-    virtual ISoundWrapper* loadSound(int soundId, const char *path, int numInstances = 1);
+    virtual SoundWrapper* loadSound(int soundId, const char *path, int numInstances = 1);
     
-    virtual ISoundWrapper* loadMusic(const char* path);
+    virtual SoundWrapper* loadMusic(const char* path);
 
 private:
     SuperpoweredSoundManager* _superpoweredSoundManager;

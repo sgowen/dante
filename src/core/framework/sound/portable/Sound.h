@@ -1,20 +1,20 @@
 //
-//  ISound.h
+//  Sound.h
 //  noctisgames-framework
 //
 //  Created by Stephen Gowen on 3/10/17.
 //  Copyright © 2017 Noctis Games. All rights reserved.
 //
 
-#ifndef __noctisgames__ISound__
-#define __noctisgames__ISound__
+#ifndef __noctisgames__Sound__
+#define __noctisgames__Sound__
 
-class ISound
+class Sound
 {
 public:
-    ISound(int soundId);
+    Sound(int soundId);
     
-    virtual ~ISound();
+    virtual ~Sound();
     
     virtual void play(bool isLooping = false) = 0;
     
@@ -38,4 +38,4 @@ protected:
     int _soundId;
 };
 
-#endif /* defined(__noctisgames__ISound__) */
+#endif /* defined(__noctisgames__Sound__) */

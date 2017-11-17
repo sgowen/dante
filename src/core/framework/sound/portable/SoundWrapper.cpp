@@ -1,5 +1,5 @@
 //
-//  ISoundWrapper.cpp
+//  SoundWrapper.cpp
 //  noctisgames-framework
 //
 //  Created by Stephen Gowen on 10/20/16.
@@ -8,13 +8,13 @@
 
 #include "pch.h"
 
-#include "ISoundWrapper.h"
+#include "SoundWrapper.h"
 
-#include "ISound.h"
+#include "Sound.h"
 
 #include "NGSTDUtil.h"
 
-ISoundWrapper::ISoundWrapper(int soundId, int numInstances) :
+SoundWrapper::SoundWrapper(int soundId, int numInstances) :
 _soundIndex(0),
 _soundId(soundId),
 _numInstances(numInstances)
@@ -22,14 +22,14 @@ _numInstances(numInstances)
     // Empty
 }
 
-ISoundWrapper::~ISoundWrapper()
+SoundWrapper::~SoundWrapper()
 {
     NGSTDUtil::cleanUpVectorOfPointers(_sounds);
 }
 
-ISound* ISoundWrapper::getSoundInstance()
+Sound* SoundWrapper::getSoundInstance()
 {
-    ISound* ret = _sounds[_soundIndex++];
+    Sound* ret = _sounds[_soundIndex++];
     if (_soundIndex >= _numInstances)
     {
         _soundIndex = 0;
@@ -38,22 +38,22 @@ ISound* ISoundWrapper::getSoundInstance()
     return ret;
 }
 
-std::vector<ISound *> ISoundWrapper::getSounds()
+std::vector<Sound *> SoundWrapper::getSounds()
 {
     return _sounds;
 }
 
-int ISoundWrapper::getSoundIndex()
+int SoundWrapper::getSoundIndex()
 {
     return _soundIndex;
 }
 
-int ISoundWrapper::getSoundId()
+int SoundWrapper::getSoundId()
 {
     return _soundId;
 }
 
-int ISoundWrapper::getNumInstances()
+int SoundWrapper::getNumInstances()
 {
     return _numInstances;
 }

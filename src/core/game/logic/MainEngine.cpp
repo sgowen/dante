@@ -31,11 +31,11 @@
 #include "InputManager.h"
 #include "World.h"
 #include "InstanceManager.h"
-#include "InputState.h"
+#include "MainInputState.h"
 #include "FWInstanceManager.h"
 #include "EntityManager.h"
 #include "SocketClientHelper.h"
-#include "IMachineAddress.h"
+#include "MachineAddress.h"
 #include "MainEngineState.h"
 #include "MainRenderer.h"
 #include "NGAudioEngine.h"
@@ -130,7 +130,7 @@ void MainEngine::onFrame()
 
 void MainEngine::handleNonMoveInput()
 {
-    InputState* inputState = InputManager::getInstance()->getInputState();
+    MainInputState* inputState = InputManager::getInstance()->getInputState();
     
     if (inputState->getMenuState() == MENU_STATE_CLIENT_MAIN_TOGGLE_MUSIC)
     {
@@ -415,7 +415,7 @@ void MainEngine::joinServer()
     
     InstanceManager::createClientWorld();
     
-    IClientHelper* clientHelper = nullptr;
+    ClientHelper* clientHelper = nullptr;
     if (_isSteam)
     {
 #ifdef NG_STEAM

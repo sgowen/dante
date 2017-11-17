@@ -1,13 +1,13 @@
 //
-//  IAssetsMapper.h
+//  AssetsMapper.h
 //  noctisgames-framework
 //
 //  Created by Stephen Gowen on 1/15/17.
 //  Copyright © 2017 Noctis Games. All rights reserved.
 //
 
-#ifndef __noctisgames__IAssetsMapper__
-#define __noctisgames__IAssetsMapper__
+#ifndef __noctisgames__AssetsMapper__
+#define __noctisgames__AssetsMapper__
 
 //// Texture Definitions ////
 
@@ -16,14 +16,14 @@
 #define TEXTURE_SIZE_2048 2048, 2048
 #define TEXTURE_SIZE_4096 4096, 4096
 
-class IAssetsMapper
+class AssetsMapper
 {
 public:
-    IAssetsMapper();
+    AssetsMapper();
     
-    virtual ~IAssetsMapper();
+    virtual ~AssetsMapper();
     
     virtual void mapAssets() = 0;
 };
 
-#endif /* defined(__noctisgames__IAssetsMapper__) */
+#endif /* defined(__noctisgames__AssetsMapper__) */

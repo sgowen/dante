@@ -9,14 +9,14 @@
 #ifndef __noctisgames__SuperpoweredSoundWrapper__
 #define __noctisgames__SuperpoweredSoundWrapper__
 
-#include "ISoundWrapper.h"
+#include "SoundWrapper.h"
 
 #include <vector>
 
 class SuperpoweredSoundManager;
 class SuperpoweredSound;
 
-class SuperpoweredSoundWrapper : public ISoundWrapper
+class SuperpoweredSoundWrapper : public SoundWrapper
 {
 public:
     SuperpoweredSoundWrapper(SuperpoweredSoundManager* manager, int soundId, const char *path, unsigned int sampleRate, int numInstances = 1, int fileOffset = -1, int fileLength = -1);

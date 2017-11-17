@@ -11,14 +11,14 @@
 #include "NGSteamP2PAuth.h"
 
 #include "InputMemoryBitStream.h"
-#include "INetworkHelper.h"
+#include "NetworkHelper.h"
 #include "NGSteamAddress.h"
 
 #include "Timing.h"
 #include "StringUtil.h"
 #include "OutputMemoryBitStream.h"
 
-NGSteamP2PAuth::NGSteamP2PAuth(INetworkHelper* networkHelper) :
+NGSteamP2PAuth::NGSteamP2PAuth(NetworkHelper* networkHelper) :
 _networkTransport(new NGSteamP2PNetworkTransport(networkHelper))
 {
     // no players yet
@@ -314,7 +314,7 @@ bool NGSteamP2PAuthPlayer::handleMessage(MsgP2PSendingTicket* msg)
     return true;
 }
 
-NGSteamP2PNetworkTransport::NGSteamP2PNetworkTransport(INetworkHelper* networkHelper) :
+NGSteamP2PNetworkTransport::NGSteamP2PNetworkTransport(NetworkHelper* networkHelper) :
 _networkHelper(networkHelper),
 _outgoingPacketAddress(new NGSteamAddress()),
 _CallbackP2PSessionRequest(this, &NGSteamP2PNetworkTransport::onP2PSessionRequest),

@@ -16,16 +16,16 @@
 #include <string>
 #include <vector>
 
-class IMachineAddress;
+class MachineAddress;
 
 class ClientProxy
 {
 public:
-    ClientProxy(IMachineAddress* inMachineAddress, const std::string& inName, uint8_t inPlayerId);
+    ClientProxy(MachineAddress* inMachineAddress, const std::string& inName, uint8_t inPlayerId);
     
     ~ClientProxy();
     
-    IMachineAddress* getMachineAddress() const;
+    MachineAddress* getMachineAddress() const;
     
     uint8_t getPlayerId(uint8_t index = 0) const;
     
@@ -56,7 +56,7 @@ public:
 private:
     DeliveryNotificationManager	_deliveryNotificationManager;
     ReplicationManagerServer _replicationManagerServer;
-    IMachineAddress* _machineAddress;
+    MachineAddress* _machineAddress;
     std::string _name;
     std::vector<uint8_t> _playerIds;
     float _lastPacketFromClientTime;

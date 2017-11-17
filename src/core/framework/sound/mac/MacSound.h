@@ -9,9 +9,9 @@
 #ifndef __noctisgames__MacSound__
 #define __noctisgames__MacSound__
 
-#include "ISound.h"
+#include "Sound.h"
 
-class MacSound : public ISound
+class MacSound : public Sound
 {
 public:
     MacSound(int soundId, const char *path, float volume = 1.0f);

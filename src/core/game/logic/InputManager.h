@@ -13,7 +13,7 @@
 
 #include <string>
 
-class InputState;
+class MainInputState;
 class Move;
 
 #define INPUT_MANAGER_CALLBACKS InputManager::sRemoveProcessedMoves, InputManager::sGetMoveList, InputManager::sOnPlayerWelcomed
@@ -45,7 +45,7 @@ public:
     
     bool isTimeToProcessInput();
     
-    InputState* getInputState();
+    MainInputState* getInputState();
     
     MoveList& getMoveList();
     
@@ -57,7 +57,7 @@ public:
     
 private:
     std::string _liveInput;
-    InputState* _currentState;
+    MainInputState* _currentState;
     MoveList _moveList;
     const Move* _pendingMove;
     bool _isConnected;

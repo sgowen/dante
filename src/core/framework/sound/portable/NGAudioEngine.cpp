@@ -10,9 +10,9 @@
 
 #include "NGAudioEngine.h"
 
-#include "ISoundWrapper.h"
-#include "ISound.h"
-#include "IAudioEngineHelper.h"
+#include "SoundWrapper.h"
+#include "Sound.h"
+#include "AudioEngineHelper.h"
 
 #include "AudioEngineHelperFactory.h"
 #include "NGSTDUtil.h"
@@ -53,7 +53,7 @@ void NGAudioEngine::resume()
 
 void NGAudioEngine::loadSound(int soundId, const char *path, int numInstances)
 {
-    ISoundWrapper* sound = _audioEngineHelper->loadSound(soundId, path, numInstances);
+    SoundWrapper* sound = _audioEngineHelper->loadSound(soundId, path, numInstances);
     
     _sounds.insert(std::make_pair(soundId, sound));
 }
@@ -67,9 +67,9 @@ void NGAudioEngine::playSound(int soundId, float inVolume, bool isLooping)
         return;
     }
     
-    ISoundWrapper* soundWrapper = findSound(soundId);
+    SoundWrapper* soundWrapper = findSound(soundId);
     
-    ISound* sound = soundWrapper->getSoundInstance();
+    Sound* sound = soundWrapper->getSoundInstance();
     
     float volume = clamp(inVolume, 1, 0);
     
@@ -84,11 +84,11 @@ void NGAudioEngine::stopSound(int soundId)
         return;
     }
     
-    ISoundWrapper* soundWrapper = findSound(soundId);
+    SoundWrapper* soundWrapper = findSound(soundId);
     
     for (int j = 0; j < soundWrapper->getNumInstances(); ++j)
     {
-        ISound* sound = soundWrapper->getSoundInstance();
+        Sound* sound = soundWrapper->getSoundInstance();
         if (sound->isPlaying())
         {
             sound->stop();
@@ -105,11 +105,11 @@ void NGAudioEngine::pauseSound(int soundId)
         return;
     }
     
-    ISoundWrapper* soundWrapper = findSound(soundId);
+    SoundWrapper* soundWrapper = findSound(soundId);
     
     for (int j = 0; j < soundWrapper->getNumInstances(); ++j)
     {
-        ISound* sound = soundWrapper->getSoundInstance();
+        Sound* sound = soundWrapper->getSoundInstance();
         if (sound->isPlaying())
         {
             sound->pause();
@@ -126,11 +126,11 @@ void NGAudioEngine::resumeSound(int soundId)
         return;
     }
     
-    ISoundWrapper* soundWrapper = findSound(soundId);
+    SoundWrapper* soundWrapper = findSound(soundId);
     
     for (int j = 0; j < soundWrapper->getNumInstances(); ++j)
     {
-        ISound* sound = soundWrapper->getSoundInstance();
+        Sound* sound = soundWrapper->getSoundInstance();
         if (sound->isPaused())
         {
             sound->resume();
@@ -147,10 +147,10 @@ void NGAudioEngine::stopAllSounds()
         return;
     }
     
-    for (std::map<int, ISoundWrapper*>::iterator i = _sounds.begin(); i != _sounds.end(); ++i)
+    for (std::map<int, SoundWrapper*>::iterator i = _sounds.begin(); i != _sounds.end(); ++i)
     {
-        std::vector<ISound *> sounds = (*i).second->getSounds();
-        for (std::vector<ISound *>::iterator i = sounds.begin(); i != sounds.end(); ++i)
+        std::vector<Sound *> sounds = (*i).second->getSounds();
+        for (std::vector<Sound *>::iterator i = sounds.begin(); i != sounds.end(); ++i)
         {
             (*i)->stop();
         }
@@ -164,10 +164,10 @@ void NGAudioEngine::pauseAllSounds()
         return;
     }
     
-    for (std::map<int, ISoundWrapper*>::iterator i = _sounds.begin(); i != _sounds.end(); ++i)
+    for (std::map<int, SoundWrapper*>::iterator i = _sounds.begin(); i != _sounds.end(); ++i)
     {
-        std::vector<ISound *> sounds = (*i).second->getSounds();
-        for (std::vector<ISound *>::iterator i = sounds.begin(); i != sounds.end(); ++i)
+        std::vector<Sound *> sounds = (*i).second->getSounds();
+        for (std::vector<Sound *>::iterator i = sounds.begin(); i != sounds.end(); ++i)
         {
             (*i)->pause();
         }
@@ -181,10 +181,10 @@ void NGAudioEngine::resumeAllSounds()
         return;
     }
     
-    for (std::map<int, ISoundWrapper*>::iterator i = _sounds.begin(); i != _sounds.end(); ++i)
+    for (std::map<int, SoundWrapper*>::iterator i = _sounds.begin(); i != _sounds.end(); ++i)
     {
-        std::vector<ISound *> sounds = (*i).second->getSounds();
-        for (std::vector<ISound *>::iterator i = sounds.begin(); i != sounds.end(); ++i)
+        std::vector<Sound *> sounds = (*i).second->getSounds();
+        for (std::vector<Sound *>::iterator i = sounds.begin(); i != sounds.end(); ++i)
         {
             (*i)->resume();
         }
@@ -325,13 +325,13 @@ void NGAudioEngine::setSoundDisabled(bool isSoundDisabled)
     _isSoundDisabled = isSoundDisabled;
 }
 
-ISoundWrapper* NGAudioEngine::findSound(int soundId)
+SoundWrapper* NGAudioEngine::findSound(int soundId)
 {
     auto q = _sounds.find(soundId);
     
     assert(q != _sounds.end());
     
-    ISoundWrapper* sound = q->second;
+    SoundWrapper* sound = q->second;
     
     return sound;
 }

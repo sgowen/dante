@@ -10,7 +10,7 @@
 
 #include "PooledObjectsManager.h"
 
-#include "InputState.h"
+#include "MainInputState.h"
 #include "MathUtil.h"
 #include "FrameworkConstants.h"
 
@@ -22,9 +22,9 @@ PooledObjectsManager* PooledObjectsManager::getInstance()
     return &instance;
 }
 
-IInputState* PooledObjectsManager::borrowInputState()
+InputState* PooledObjectsManager::borrowInputState()
 {
-    IInputState* ret = nullptr;
+    InputState* ret = nullptr;
     while ((ret = POOLED_OBJ_MGR->_pool->newObject())->isInUse())
     {
         // Continue
@@ -39,7 +39,7 @@ IInputState* PooledObjectsManager::borrowInputState()
 
 #pragma mark private
 
-PooledObjectsManager::PooledObjectsManager() : _pool(new NGRollingPool<InputState>(POOL_SIZE))
+PooledObjectsManager::PooledObjectsManager() : _pool(new NGRollingPool<MainInputState>(POOL_SIZE))
 {
     // Empty
 }

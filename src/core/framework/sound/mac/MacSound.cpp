@@ -12,7 +12,7 @@
 
 #include "ObjectALWrapper.h"
 
-MacSound::MacSound(int soundId, const char *path, float volume) : ISound(soundId),
+MacSound::MacSound(int soundId, const char *path, float volume) : Sound(soundId),
 _objectALSoundIndex(-1),
 _volume(volume),
 _isLooping(false),

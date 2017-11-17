@@ -31,7 +31,7 @@ AudioEngineHelperFactory* AudioEngineHelperFactory::getInstance()
     return &instance;
 }
 
-IAudioEngineHelper* AudioEngineHelperFactory::createAudioEngineHelper()
+AudioEngineHelper* AudioEngineHelperFactory::createAudioEngineHelper()
 {
 #if defined __APPLE__
     #if TARGET_OS_IPHONE

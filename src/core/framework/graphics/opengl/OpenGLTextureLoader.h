@@ -11,11 +11,11 @@
 
 #include "pch.h"
 
-#include "ITextureLoader.h"
+#include "TextureLoader.h"
 
 #include "PngImageData.h"
 
-class OpenGLTextureLoader : public ITextureLoader
+class OpenGLTextureLoader : public TextureLoader
 {
 public:
     OpenGLTextureLoader();

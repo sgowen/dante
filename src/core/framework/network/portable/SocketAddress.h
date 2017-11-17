@@ -9,7 +9,7 @@
 #ifndef __noctisgames__SocketAddress__
 #define __noctisgames__SocketAddress__
 
-#include "IMachineAddress.h"
+#include "MachineAddress.h"
 
 #include "Network.h"
 
@@ -17,7 +17,7 @@
 
 #include <string>
 
-class SocketAddress : public IMachineAddress
+class SocketAddress : public MachineAddress
 {
     RTTI_DECL;
     
@@ -32,7 +32,7 @@ public:
     
     SocketAddress();
     
-    virtual IMachineAddress* createNewCopy();
+    virtual MachineAddress* createNewCopy();
     
     bool operator==(const SocketAddress& inOther) const;
     

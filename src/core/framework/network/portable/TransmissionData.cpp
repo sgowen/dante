@@ -1,5 +1,5 @@
 //
-//  ITransmissionData.cpp
+//  TransmissionData.cpp
 //  noctisgames-framework
 //
 //  Created by Stephen Gowen on 5/15/17.
@@ -8,14 +8,14 @@
 
 #include "pch.h"
 
-#include "ITransmissionData.h"
+#include "TransmissionData.h"
 
-ITransmissionData::ITransmissionData()
+TransmissionData::TransmissionData()
 {
     // Empty
 }
 
-ITransmissionData::~ITransmissionData()
+TransmissionData::~TransmissionData()
 {
     // Empty
 }

@@ -9,9 +9,9 @@
 #ifndef __noctisgames__NGSteamClientHelper__
 #define __noctisgames__NGSteamClientHelper__
 
-#include "IClientHelper.h"
+#include "ClientHelper.h"
 
-#include "IPacketHandler.h"
+#include "PacketHandler.h"
 #include "NGSteam.h"
 #include "FrameworkConstants.h"
 
@@ -20,7 +20,7 @@ class NGSteamAddress;
 
 typedef uint64_t (*GetPlayerAddressHashFunc)(uint8_t inPlayerIndex);
 
-class NGSteamClientHelper : public IClientHelper
+class NGSteamClientHelper : public ClientHelper
 {
 public:
     NGSteamClientHelper(CSteamID serverSteamID, GetPlayerAddressHashFunc getPlayerAddressHashFunc, ProcessPacketFunc processPacketFunc, HandleNoResponseFunc handleNoResponseFunc, HandleConnectionResetFunc handleConnectionResetFunc);
@@ -29,7 +29,7 @@ public:
     
     virtual void processIncomingPackets();
     
-    virtual void processSpecialPacket(uint32_t packetType, InputMemoryBitStream& inInputStream, IMachineAddress* inFromAddress);
+    virtual void processSpecialPacket(uint32_t packetType, InputMemoryBitStream& inInputStream, MachineAddress* inFromAddress);
     
     virtual void handleUninitialized();
     

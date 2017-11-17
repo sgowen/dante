@@ -12,7 +12,7 @@
 #include <map>
 #include <string>
 
-class IAssetsMapper;
+class AssetsMapper;
 class TextureRegion;
 class Animation;
 
@@ -23,7 +23,7 @@ class Assets
 public:
 	static Assets* getInstance();
     
-    void init(IAssetsMapper* assetsMapper);
+    void init(AssetsMapper* assetsMapper);
     
     TextureRegion& findTextureRegion(std::string key, float stateTime);
     

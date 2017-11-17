@@ -18,10 +18,10 @@ RendererHelperFactory* RendererHelperFactory::getInstance()
 
 #if defined __APPLE__ || defined __ANDROID__
 #include "OpenGLRendererHelper.h"
-IRendererHelper* RendererHelperFactory::createRendererHelper() { return new OpenGLRendererHelper(); }
+RendererHelper* RendererHelperFactory::createRendererHelper() { return new OpenGLRendererHelper(); }
 #elif defined _WIN32
 #include "Direct3DRendererHelper.h"
-IRendererHelper* RendererHelperFactory::createRendererHelper() { return new Direct3DRendererHelper(); }
+RendererHelper* RendererHelperFactory::createRendererHelper() { return new Direct3DRendererHelper(); }
 #endif
 
 RendererHelperFactory::RendererHelperFactory()

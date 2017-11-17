@@ -9,12 +9,12 @@
 #ifndef __noctisgames__SuperpoweredSound__
 #define __noctisgames__SuperpoweredSound__
 
-#include "ISound.h"
+#include "Sound.h"
 
 class SuperpoweredSoundManager;
 class SuperpoweredAdvancedAudioPlayer;
 
-class SuperpoweredSound : public ISound
+class SuperpoweredSound : public Sound
 {
 public:
     SuperpoweredSound(SuperpoweredSoundManager* manager, int soundId, const char *path, unsigned int sampleRate, int fileOffset = -1, int fileLength = -1, float volume = 1.0f);

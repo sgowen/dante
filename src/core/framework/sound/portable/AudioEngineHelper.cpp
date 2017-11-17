@@ -1,5 +1,5 @@
 //
-//  IAudioEngineHelper.cpp
+//  AudioEngineHelper.cpp
 //  noctisgames-framework
 //
 //  Created by Stephen Gowen on 3/8/17.
@@ -8,14 +8,14 @@
 
 #include "pch.h"
 
-#include "IAudioEngineHelper.h"
+#include "AudioEngineHelper.h"
 
-IAudioEngineHelper::IAudioEngineHelper()
+AudioEngineHelper::AudioEngineHelper()
 {
     // Empty
 }
 
-IAudioEngineHelper::~IAudioEngineHelper()
+AudioEngineHelper::~AudioEngineHelper()
 {
     // Empty
 }

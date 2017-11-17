@@ -10,7 +10,7 @@
 
 #include "WinAudioEngineHelper.h"
 
-#include "ISoundWrapper.h"
+#include "SoundWrapper.h"
 
 #include "WinSoundWrapper.h"
 
@@ -56,7 +56,7 @@ void WinAudioEngineHelper::resume()
     _audEngine->Resume();
 }
 
-ISoundWrapper* WinAudioEngineHelper::loadSound(int soundId, const char *path, int numInstances)
+SoundWrapper* WinAudioEngineHelper::loadSound(int soundId, const char *path, int numInstances)
 {
 	const char* finalPath;
 #if (_WIN32_WINNT == _WIN32_WINNT_WIN7)
@@ -72,12 +72,12 @@ ISoundWrapper* WinAudioEngineHelper::loadSound(int soundId, const char *path, in
     return sound;
 }
 
-ISoundWrapper* WinAudioEngineHelper::loadMusic(const char* path)
+SoundWrapper* WinAudioEngineHelper::loadMusic(const char* path)
 {
     return loadSound(1337, path);
 }
 
-WinAudioEngineHelper::WinAudioEngineHelper() : IAudioEngineHelper(), _retryAudio(false)
+WinAudioEngineHelper::WinAudioEngineHelper() : AudioEngineHelper(), _retryAudio(false)
 {
 	using namespace DirectX;
 

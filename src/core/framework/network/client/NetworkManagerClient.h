@@ -13,11 +13,11 @@
 #include <map>
 #include <vector>
 
-class IClientHelper;
+class ClientHelper;
 class InputMemoryBitStream;
 class OutputMemoryBitStream;
 class DeliveryNotificationManager;
-class IMachineAddress;
+class MachineAddress;
 class EntityRegistry;
 class Entity;
 class MoveList;
@@ -44,17 +44,17 @@ enum NetworkClientState
 class NetworkManagerClient
 {
 public:
-    static void create(IClientHelper* inClientHelper, float inFrameRate, RemoveProcessedMovesFunc inRemoveProcessedMovesFunc, GetMoveListFunc inGetMoveListFunc, OnPlayerWelcomedFunc inOnPlayerWelcomedFunc);
+    static void create(ClientHelper* inClientHelper, float inFrameRate, RemoveProcessedMovesFunc inRemoveProcessedMovesFunc, GetMoveListFunc inGetMoveListFunc, OnPlayerWelcomedFunc inOnPlayerWelcomedFunc);
     
     static void destroy();
     
     static NetworkManagerClient* getInstance();
     
-    static void sProcessPacket(InputMemoryBitStream& inInputStream, IMachineAddress* inFromAddress);
+    static void sProcessPacket(InputMemoryBitStream& inInputStream, MachineAddress* inFromAddress);
     
     static void sHandleNoResponse();
     
-    static void sHandleConnectionReset(IMachineAddress* inFromAddress);
+    static void sHandleConnectionReset(MachineAddress* inFromAddress);
     
     void processIncomingPackets();
     
@@ -83,7 +83,7 @@ public:
 private:
     static NetworkManagerClient* s_instance;
     
-    IClientHelper* _clientHelper;    
+    ClientHelper* _clientHelper;    
     
     RemoveProcessedMovesFunc _removeProcessedMovesFunc;
     GetMoveListFunc _getMoveListFunc;
@@ -109,11 +109,11 @@ private:
     bool _isRequestingToAddLocalPlayer;
     uint8_t _isRequestingToDropLocalPlayer;
     
-    void processPacket(InputMemoryBitStream& inInputStream, IMachineAddress* inFromAddress);
+    void processPacket(InputMemoryBitStream& inInputStream, MachineAddress* inFromAddress);
     
     void handleNoResponse();
     
-    void handleConnectionReset(IMachineAddress* inFromAddress);
+    void handleConnectionReset(MachineAddress* inFromAddress);
     
     void sendPacket(const OutputMemoryBitStream& inOutputStream);
     
@@ -140,7 +140,7 @@ private:
     void updateNextIndex();
     
     // ctor, copy ctor, and assignment should be private in a Singleton
-    NetworkManagerClient(IClientHelper* inClientHelper, float inFrameRate, RemoveProcessedMovesFunc inRemoveProcessedMovesFunc, GetMoveListFunc inGetMoveListFunc, OnPlayerWelcomedFunc inOnPlayerWelcomedFunc);
+    NetworkManagerClient(ClientHelper* inClientHelper, float inFrameRate, RemoveProcessedMovesFunc inRemoveProcessedMovesFunc, GetMoveListFunc inGetMoveListFunc, OnPlayerWelcomedFunc inOnPlayerWelcomedFunc);
     ~NetworkManagerClient();
     NetworkManagerClient(const NetworkManagerClient&);
     NetworkManagerClient& operator=(const NetworkManagerClient&);

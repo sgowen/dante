@@ -17,7 +17,7 @@
 
 #include "Assets.h"
 #include "MainAssetsMapper.h"
-#include "IRendererHelper.h"
+#include "RendererHelper.h"
 #include "GameConstants.h"
 #include "NGRect.h"
 #include "Color.h"
@@ -34,7 +34,7 @@
 #include "InstanceManager.h"
 #include "InputManager.h"
 #include "NetworkManagerServer.h"
-#include "IMachineAddress.h"
+#include "MachineAddress.h"
 #include "MainEngineState.h"
 #include "MathUtil.h"
 #include "NGAudioEngine.h"

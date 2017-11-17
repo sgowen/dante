@@ -9,7 +9,7 @@
 #ifndef __noctisgames__TextureLoaderFactory__
 #define __noctisgames__TextureLoaderFactory__
 
-class ITextureLoader;
+class TextureLoader;
 
 #define TEXTURE_LOADER_FACTORY (TextureLoaderFactory::getInstance())
 
@@ -18,7 +18,7 @@ class TextureLoaderFactory
 public:
 	static TextureLoaderFactory* getInstance();
     
-    ITextureLoader* createTextureLoader();
+    TextureLoader* createTextureLoader();
 
 private:
     // ctor, copy ctor, and assignment should be private in a Singleton

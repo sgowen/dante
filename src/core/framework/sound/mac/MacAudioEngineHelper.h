@@ -11,9 +11,9 @@
 
 #define MAC_AUDIO_ENGINE_HELPER (MacAudioEngineHelper::getInstance())
 
-#include "IAudioEngineHelper.h"
+#include "AudioEngineHelper.h"
 
-class MacAudioEngineHelper : public IAudioEngineHelper
+class MacAudioEngineHelper : public AudioEngineHelper
 {
 public:
 	static MacAudioEngineHelper* getInstance();
@@ -24,9 +24,9 @@ public:
     
     virtual void resume();
     
-    virtual ISoundWrapper* loadSound(int soundId, const char *path, int numInstances = 1);
+    virtual SoundWrapper* loadSound(int soundId, const char *path, int numInstances = 1);
     
-    virtual ISoundWrapper* loadMusic(const char* path);
+    virtual SoundWrapper* loadMusic(const char* path);
 
 private:
     // ctor, copy ctor, and assignment should be private in a Singleton

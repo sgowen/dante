@@ -11,14 +11,14 @@
 
 #define NG_AUDIO_ENGINE_HELPER_FACTORY (AudioEngineHelperFactory::getInstance())
 
-class IAudioEngineHelper;
+class AudioEngineHelper;
 
 class AudioEngineHelperFactory
 {
 public:
 	static AudioEngineHelperFactory* getInstance();
     
-    IAudioEngineHelper* createAudioEngineHelper();
+    AudioEngineHelper* createAudioEngineHelper();
 
 private:
     // ctor, copy ctor, and assignment should be private in a Singleton

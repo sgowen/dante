@@ -28,7 +28,7 @@
 #include "EntityManager.h"
 #include "SocketServerHelper.h"
 #include "Crate.h"
-#include "IMachineAddress.h"
+#include "MachineAddress.h"
 
 #ifdef NG_STEAM
 #include "NGSteamServerHelper.h"

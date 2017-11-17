@@ -9,11 +9,11 @@
 #ifndef __noctisgames__NGSteamAddress__
 #define __noctisgames__NGSteamAddress__
 
-#include "IMachineAddress.h"
+#include "MachineAddress.h"
 
 #include "NGSteam.h"
 
-class NGSteamAddress : public IMachineAddress
+class NGSteamAddress : public MachineAddress
 {
 public:
     NGSteamAddress(CSteamID steamID);
@@ -22,7 +22,7 @@ public:
     
     virtual ~NGSteamAddress();
     
-    virtual IMachineAddress* createNewCopy();
+    virtual MachineAddress* createNewCopy();
     
     virtual uint64_t getHash() const;
     

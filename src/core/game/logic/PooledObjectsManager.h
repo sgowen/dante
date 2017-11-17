@@ -15,18 +15,18 @@
 
 #define POOLED_OBJ_MGR (PooledObjectsManager::getInstance())
 
-class IInputState;
 class InputState;
+class MainInputState;
 
 class PooledObjectsManager
 {
 public:
     static PooledObjectsManager* getInstance();
     
-    static IInputState* borrowInputState();
+    static InputState* borrowInputState();
     
 private:
-    NGRollingPool<InputState>* _pool;
+    NGRollingPool<MainInputState>* _pool;
     
     // ctor, copy ctor, and assignment should be private in a Singleton
     PooledObjectsManager();

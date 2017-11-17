@@ -10,7 +10,7 @@
 
 #include "MoveList.h"
 
-#include "IInputState.h"
+#include "InputState.h"
 #include "Timing.h"
 #include "StringUtil.h"
 
@@ -19,7 +19,7 @@ MoveList::MoveList(): _lastMoveTimestamp(-1.0f), _lastProcessedMoveTimestamp(-1.
     // Empty
 }
 
-const Move& MoveList::addMove(IInputState* inInputState, float inTimestamp)
+const Move& MoveList::addMove(InputState* inInputState, float inTimestamp)
 {
     _moves.push_back(Move(inInputState, inTimestamp));
     

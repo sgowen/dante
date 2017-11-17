@@ -13,8 +13,8 @@
 
 #include <map>
 
-class ISoundWrapper;
-class IAudioEngineHelper;
+class SoundWrapper;
+class AudioEngineHelper;
 
 class NGAudioEngine
 {
@@ -70,14 +70,14 @@ public:
     void setSoundDisabled(bool isSoundDisabled);
     
 private:
-    std::map<int, ISoundWrapper*> _sounds;
-    ISoundWrapper* _music;
-    IAudioEngineHelper* _audioEngineHelper;
+    std::map<int, SoundWrapper*> _sounds;
+    SoundWrapper* _music;
+    AudioEngineHelper* _audioEngineHelper;
     int _numSoundsPlayedThisFrame;
     bool _isMusicDisabled;
     bool _isSoundDisabled;
     
-    ISoundWrapper* findSound(int soundId);
+    SoundWrapper* findSound(int soundId);
     
     // ctor, copy ctor, and assignment should be private in a Singleton
     NGAudioEngine();

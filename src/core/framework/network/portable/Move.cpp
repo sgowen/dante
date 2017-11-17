@@ -10,19 +10,19 @@
 
 #include "Move.h"
 
-#include "IInputState.h"
+#include "InputState.h"
 #include "OutputMemoryBitStream.h"
 #include "InputMemoryBitStream.h"
 #include "Entity.h"
 
-Move::Move(IInputState* inInputState, float inTimestamp) :
+Move::Move(InputState* inInputState, float inTimestamp) :
 _inputState(inInputState),
 _timestamp(inTimestamp)
 {
     // Empty
 }
 
-Move::Move(IInputState* inInputState) :
+Move::Move(InputState* inInputState) :
 _inputState(inInputState),
 _timestamp(0)
 {
@@ -78,7 +78,7 @@ bool Move::isEqual(const Move* inMove) const
     return _inputState->isEqual(inMove->getInputState());
 }
 
-IInputState* Move::getInputState() const
+InputState* Move::getInputState() const
 {
     return _inputState;
 }
@@ -93,7 +93,7 @@ void Move::setTimestamp(float timeStamp)
     _timestamp = timeStamp;
 }
 
-void Move::copyInputState(IInputState* inIInputState)
+void Move::copyInputState(InputState* inInputState)
 {
-    inIInputState->copyTo(_inputState);
+    inInputState->copyTo(_inputState);
 }

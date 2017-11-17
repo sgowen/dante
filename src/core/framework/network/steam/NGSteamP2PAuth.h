@@ -14,7 +14,7 @@
 #include "MathUtil.h"
 
 class InputMemoryBitStream;
-class INetworkHelper;
+class NetworkHelper;
 class NGSteamAddress;
 
 class NGSteamP2PAuthPlayer;
@@ -28,7 +28,7 @@ public:
     MsgP2PSendingTicket *_rgpQueuedMessage[MAX_NUM_PLAYERS_PER_SERVER];
     NGSteamP2PNetworkTransport *_networkTransport;
     
-    NGSteamP2PAuth(INetworkHelper* networkHelper);
+    NGSteamP2PAuth(NetworkHelper* networkHelper);
     
     ~NGSteamP2PAuth();
     
@@ -78,7 +78,7 @@ private:
 class NGSteamP2PNetworkTransport
 {
 public:
-	NGSteamP2PNetworkTransport(INetworkHelper* networkHelper);
+	NGSteamP2PNetworkTransport(NetworkHelper* networkHelper);
     
     ~NGSteamP2PNetworkTransport();
     
@@ -89,7 +89,7 @@ public:
 	STEAM_CALLBACK(NGSteamP2PNetworkTransport, onP2PSessionConnectFail, P2PSessionConnectFail_t, _CallbackP2PSessionConnectFail);
     
 private:
-    INetworkHelper* _networkHelper;
+    NetworkHelper* _networkHelper;
     NGSteamAddress* _outgoingPacketAddress;
 };
 

@@ -11,13 +11,13 @@
 
 #include <map>
 
-class IServerHelper;
+class ServerHelper;
 class InputMemoryBitStream;
 class OutputMemoryBitStream;
 class DeliveryNotificationManager;
-class IMachineAddress;
+class MachineAddress;
 class ClientProxy;
-class IInputState;
+class InputState;
 class Entity;
 
 #define NG_SERVER (NetworkManagerServer::getInstance())
@@ -26,22 +26,22 @@ class Entity;
 
 typedef void (*HandleNewClientFunc)(uint8_t playerId, std::string playerName);
 typedef void (*HandleLostClientFunc)(ClientProxy* inClientProxy, uint8_t index);
-typedef IInputState* (*InputStateCreationFunc)();
+typedef InputState* (*InputStateCreationFunc)();
 
 class NetworkManagerServer
 {
 public:
-    static void create(IServerHelper* inServerHelper, HandleNewClientFunc inHandleNewClientFunc, HandleLostClientFunc inHandleLostClientFunc, InputStateCreationFunc inInputStateCreationFunc);
+    static void create(ServerHelper* inServerHelper, HandleNewClientFunc inHandleNewClientFunc, HandleLostClientFunc inHandleLostClientFunc, InputStateCreationFunc inInputStateCreationFunc);
     
     static void destroy();
     
     static NetworkManagerServer* getInstance();
     
-    static void sProcessPacket(InputMemoryBitStream& inInputStream, IMachineAddress* inFromAddress);
+    static void sProcessPacket(InputMemoryBitStream& inInputStream, MachineAddress* inFromAddress);
     
     static void sHandleNoResponse();
     
-    static void sHandleConnectionReset(IMachineAddress* inFromAddress);
+    static void sHandleConnectionReset(MachineAddress* inFromAddress);
     
     static ClientProxy* sGetClientProxy(uint8_t inPlayerId);
     
@@ -69,16 +69,16 @@ public:
     
     uint8_t getNumClientsConnected();
     
-    IMachineAddress* getServerAddress();
+    MachineAddress* getServerAddress();
     
     bool isConnected();
     
-    IServerHelper* getServerHelper();
+    ServerHelper* getServerHelper();
     
 private:
     static NetworkManagerServer* s_instance;
     
-    IServerHelper* _serverHelper;
+    ServerHelper* _serverHelper;
     
     HandleNewClientFunc _handleNewClientFunc;
     HandleLostClientFunc _handleLostClientFunc;
@@ -88,15 +88,15 @@ private:
     std::map<int, ClientProxy*> _playerIDToClientMap;
     uint8_t _nextPlayerId;
     
-    void processPacket(InputMemoryBitStream& inInputStream, IMachineAddress* inFromAddress);
+    void processPacket(InputMemoryBitStream& inInputStream, MachineAddress* inFromAddress);
     
     void handleNoResponse();
     
-    void handleConnectionReset(IMachineAddress* inFromAddress);
+    void handleConnectionReset(MachineAddress* inFromAddress);
     
-    void sendPacket(const OutputMemoryBitStream& inOutputStream, IMachineAddress* inFromAddress);
+    void sendPacket(const OutputMemoryBitStream& inOutputStream, MachineAddress* inFromAddress);
     
-    void handlePacketFromNewClient(InputMemoryBitStream& inInputStream, IMachineAddress* inFromAddress);
+    void handlePacketFromNewClient(InputMemoryBitStream& inInputStream, MachineAddress* inFromAddress);
     
     void processPacket(ClientProxy* inClientProxy, InputMemoryBitStream& inInputStream);
     
@@ -119,7 +119,7 @@ private:
     void updateNextPlayerId();
     
     // ctor, copy ctor, and assignment should be private in a Singleton
-    NetworkManagerServer(IServerHelper* inServerHelper, HandleNewClientFunc inHandleNewClientFunc, HandleLostClientFunc inHandleLostClientFunc, InputStateCreationFunc inInputStateCreationFunc);
+    NetworkManagerServer(ServerHelper* inServerHelper, HandleNewClientFunc inHandleNewClientFunc, HandleLostClientFunc inHandleLostClientFunc, InputStateCreationFunc inInputStateCreationFunc);
     ~NetworkManagerServer();
     NetworkManagerServer(const NetworkManagerServer&);
     NetworkManagerServer& operator=(const NetworkManagerServer&);

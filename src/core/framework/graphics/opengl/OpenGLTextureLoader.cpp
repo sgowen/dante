@@ -24,7 +24,7 @@ extern "C"
 #include <assert.h>
 #include <stdlib.h>
 
-OpenGLTextureLoader::OpenGLTextureLoader() : ITextureLoader()
+OpenGLTextureLoader::OpenGLTextureLoader() : TextureLoader()
 {
     // Empty
 }

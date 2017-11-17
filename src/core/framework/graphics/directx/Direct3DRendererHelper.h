@@ -9,9 +9,9 @@
 #ifndef __noctisgames__Direct3DRendererHelper__
 #define __noctisgames__Direct3DRendererHelper__
 
-#include "IRendererHelper.h"
+#include "RendererHelper.h"
 
-class Direct3DRendererHelper : public IRendererHelper
+class Direct3DRendererHelper : public RendererHelper
 {
 public:
     Direct3DRendererHelper();

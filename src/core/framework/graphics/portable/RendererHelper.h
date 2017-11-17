@@ -1,23 +1,23 @@
 //
-//  IRendererHelper.h
+//  RendererHelper.h
 //  noctisgames-framework
 //
 //  Created by Stephen Gowen on 1/15/17.
 //  Copyright © 2017 Noctis Games. All rights reserved.
 //
 
-#ifndef __noctisgames__IRendererHelper__
-#define __noctisgames__IRendererHelper__
+#ifndef __noctisgames__RendererHelper__
+#define __noctisgames__RendererHelper__
 
 class TextureWrapper;
 struct GpuTextureWrapper;
 
-class IRendererHelper
+class RendererHelper
 {
 public:
-    IRendererHelper();
+    RendererHelper();
     
-    virtual ~IRendererHelper();
+    virtual ~RendererHelper();
 
 	virtual void createDeviceDependentResources(int maxBatchSize) = 0;
 
@@ -45,4 +45,4 @@ protected:
     TextureWrapper* _framebuffer;
 };
 
-#endif /* defined(__noctisgames__IRendererHelper__) */
+#endif /* defined(__noctisgames__RendererHelper__) */

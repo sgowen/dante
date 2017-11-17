@@ -28,7 +28,7 @@
 // UDP port for the master server updater to listen on
 #define STEAM_MASTER_SERVER_UPDATER_PORT 27016
 
-NGSteamServerHelper::NGSteamServerHelper(const char* inGameDir, const char* inVersionString, const char* inProductName, const char* inGameDescription, uint16 inPort, ProcessPacketFunc inProcessPacketFunc, HandleNoResponseFunc inHandleNoResponseFunc, HandleConnectionResetFunc inHandleConnectionResetFunc, GetClientProxyFunc inGetClientProxyFunc, HandleClientDisconnectedFunc inHandleClientDisconnectedFunc) : IServerHelper(new NGSteamPacketHandler(true, inProcessPacketFunc, inHandleNoResponseFunc, inHandleConnectionResetFunc), inGetClientProxyFunc, inHandleClientDisconnectedFunc),
+NGSteamServerHelper::NGSteamServerHelper(const char* inGameDir, const char* inVersionString, const char* inProductName, const char* inGameDescription, uint16 inPort, ProcessPacketFunc inProcessPacketFunc, HandleNoResponseFunc inHandleNoResponseFunc, HandleConnectionResetFunc inHandleConnectionResetFunc, GetClientProxyFunc inGetClientProxyFunc, HandleClientDisconnectedFunc inHandleClientDisconnectedFunc) : ServerHelper(new NGSteamPacketHandler(true, inProcessPacketFunc, inHandleNoResponseFunc, inHandleConnectionResetFunc), inGetClientProxyFunc, inHandleClientDisconnectedFunc),
 _inGameDir(inGameDir),
 _serverSteamAddress(new NGSteamAddress()),
 _isConnectedToSteam(false),
@@ -111,12 +111,12 @@ NGSteamServerHelper::~NGSteamServerHelper()
 
 void NGSteamServerHelper::processIncomingPackets()
 {
-    INetworkHelper::processIncomingPackets();
+    NetworkHelper::processIncomingPackets();
     
     sendUpdatedServerDetailsToSteam();
 }
 
-void NGSteamServerHelper::processSpecialPacket(uint32_t packetType, InputMemoryBitStream& inInputStream, IMachineAddress* inFromAddress)
+void NGSteamServerHelper::processSpecialPacket(uint32_t packetType, InputMemoryBitStream& inInputStream, MachineAddress* inFromAddress)
 {
     switch (packetType)
     {
@@ -199,7 +199,7 @@ void NGSteamServerHelper::onClientDisconnected(ClientProxy* clientProxy)
     SteamGameServer()->EndAuthSession(userAddress->getSteamID());
 }
 
-IMachineAddress* NGSteamServerHelper::getServerAddress()
+MachineAddress* NGSteamServerHelper::getServerAddress()
 {
     _serverSteamAddress->setSteamID(SteamGameServer()->GetSteamID());
     

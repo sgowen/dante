@@ -13,7 +13,7 @@
 #include "Box2D/Box2D.h"
 #include "OutputMemoryBitStream.h"
 #include "InputMemoryBitStream.h"
-#include "InputState.h"
+#include "MainInputState.h"
 #include "Move.h"
 #include "Ground.h"
 #include "Crate.h"
@@ -413,11 +413,11 @@ bool Robot::needsMoveReplay()
     return (_readState & ROBT_Pose) != 0;
 }
 
-void Robot::processInput(IInputState* inInputState, bool isPending)
+void Robot::processInput(InputState* inInputState, bool isPending)
 {
-    InputState* is = static_cast<InputState*>(inInputState);
+    MainInputState* is = static_cast<MainInputState*>(inInputState);
     uint8_t playerId = getPlayerId();
-    InputState::GameInputState* inputState = is->getGameInputStateForPlayerId(playerId);
+    MainInputState::GameInputState* inputState = is->getGameInputStateForPlayerId(playerId);
     if (inputState == nullptr)
     {
         return;

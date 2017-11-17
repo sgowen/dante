@@ -14,31 +14,31 @@
 
 #include <cstring>	// memcpy()
 
-SocketAddress::SocketAddress(uint32_t inAddress, uint16_t inPort) : IMachineAddress()
+SocketAddress::SocketAddress(uint32_t inAddress, uint16_t inPort) : MachineAddress()
 {
     getAsSockAddrIn()->sin_family = AF_INET;
     getIP4Ref() = htonl(inAddress);
     getAsSockAddrIn()->sin_port = htons(inPort);
 }
 
-SocketAddress::SocketAddress(const sockaddr& inSockAddr) : IMachineAddress()
+SocketAddress::SocketAddress(const sockaddr& inSockAddr) : MachineAddress()
 {
     memcpy(&_sockAddr, &inSockAddr, sizeof(sockaddr));
 }
 
-SocketAddress::SocketAddress(sockaddr& inSockAddr) : IMachineAddress()
+SocketAddress::SocketAddress(sockaddr& inSockAddr) : MachineAddress()
 {
     memcpy(&_sockAddr, &inSockAddr, sizeof(sockaddr));
 }
 
-SocketAddress::SocketAddress() : IMachineAddress()
+SocketAddress::SocketAddress() : MachineAddress()
 {
     getAsSockAddrIn()->sin_family = AF_INET;
     getIP4Ref() = INADDR_ANY;
     getAsSockAddrIn()->sin_port = 0;
 }
 
-IMachineAddress* SocketAddress::createNewCopy()
+MachineAddress* SocketAddress::createNewCopy()
 {
     return new SocketAddress(_sockAddr);
 }
@@ -142,4 +142,4 @@ const sockaddr_in6* SocketAddress::getAsSockAddrIn6() const
     return reinterpret_cast<const sockaddr_in6*>(&_sockAddr);
 }
 
-RTTI_IMPL(SocketAddress, IMachineAddress);
+RTTI_IMPL(SocketAddress, MachineAddress);

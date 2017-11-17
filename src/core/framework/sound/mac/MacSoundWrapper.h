@@ -9,9 +9,9 @@
 #ifndef __noctisgames__MacSoundWrapper__
 #define __noctisgames__MacSoundWrapper__
 
-#include "ISoundWrapper.h"
+#include "SoundWrapper.h"
 
-class MacSoundWrapper : public ISoundWrapper
+class MacSoundWrapper : public SoundWrapper
 {
 public:
     MacSoundWrapper(int soundId, const char *path, int numInstances = 1);

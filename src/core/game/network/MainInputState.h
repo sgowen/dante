@@ -1,15 +1,15 @@
 //
-//  InputState.h
+//  MainInputState.h
 //  noctisgames-framework
 //
 //  Created by Stephen Gowen on 5/15/17.
 //  Copyright (c) 2017 Noctis Games. All rights reserved.
 //
 
-#ifndef __noctisgames__InputState__
-#define __noctisgames__InputState__
+#ifndef __noctisgames__MainInputState__
+#define __noctisgames__MainInputState__
 
-#include "IInputState.h"
+#include "InputState.h"
 
 #include "RTTI.h"
 
@@ -37,7 +37,7 @@
 class OutputMemoryBitStream;
 class InputMemoryBitStream;
 
-class InputState : public IInputState
+class MainInputState : public InputState
 {
     RTTI_DECL;
     
@@ -46,7 +46,7 @@ class InputState : public IInputState
 public:
     class GameInputState
     {
-        friend class InputState;
+        friend class MainInputState;
         friend class InputManager;
         
     public:
@@ -73,9 +73,9 @@ public:
         GameInputState();
     };
     
-    InputState();
+    MainInputState();
     
-    virtual ~InputState();
+    virtual ~MainInputState();
     
     virtual bool write(OutputMemoryBitStream& inOutputStream) const;
     
@@ -83,9 +83,9 @@ public:
     
     virtual void reset();
     
-    virtual bool isEqual(IInputState* inIInputState) const;
+    virtual bool isEqual(InputState* inInputState) const;
     
-    virtual void copyTo(IInputState* inIInputState) const;
+    virtual void copyTo(InputState* inInputState) const;
     
     void activateNextPlayer(uint8_t playerId);
     
@@ -98,11 +98,11 @@ public:
     int getMenuState() const;
     
 private:
-    GameInputState _gameInputStates[4];
+    GameInputState _gameMainInputStates[4];
     
     int _menuState;
     
     GameInputState& getGameInputState(int index);
 };
 
-#endif /* defined(__noctisgames__InputState__) */
+#endif /* defined(__noctisgames__MainInputState__) */

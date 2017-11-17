@@ -10,13 +10,13 @@
 
 #include "NetworkManagerServer.h"
 
-#include "IServerHelper.h"
+#include "ServerHelper.h"
 #include "InputMemoryBitStream.h"
 #include "OutputMemoryBitStream.h"
 #include "DeliveryNotificationManager.h"
-#include "IMachineAddress.h"
+#include "MachineAddress.h"
 #include "ClientProxy.h"
-#include "IInputState.h"
+#include "InputState.h"
 #include "Entity.h"
 
 #include "Server.h"
@@ -34,7 +34,7 @@
 
 NetworkManagerServer* NetworkManagerServer::s_instance = nullptr;
 
-void NetworkManagerServer::create(IServerHelper* inServerHelper, HandleNewClientFunc inHandleNewClientFunc, HandleLostClientFunc inHandleLostClientFunc, InputStateCreationFunc inInputStateCreationFunc)
+void NetworkManagerServer::create(ServerHelper* inServerHelper, HandleNewClientFunc inHandleNewClientFunc, HandleLostClientFunc inHandleLostClientFunc, InputStateCreationFunc inInputStateCreationFunc)
 {
     assert(!s_instance);
     
@@ -54,7 +54,7 @@ NetworkManagerServer * NetworkManagerServer::getInstance()
     return s_instance;
 }
 
-void NetworkManagerServer::sProcessPacket(InputMemoryBitStream& inInputStream, IMachineAddress* inFromAddress)
+void NetworkManagerServer::sProcessPacket(InputMemoryBitStream& inInputStream, MachineAddress* inFromAddress)
 {
     NG_SERVER->processPacket(inInputStream, inFromAddress);
 }
@@ -64,7 +64,7 @@ void NetworkManagerServer::sHandleNoResponse()
     NG_SERVER->handleNoResponse();
 }
 
-void NetworkManagerServer::sHandleConnectionReset(IMachineAddress* inFromAddress)
+void NetworkManagerServer::sHandleConnectionReset(MachineAddress* inFromAddress)
 {
     NG_SERVER->handleConnectionReset(inFromAddress);
 }
@@ -224,7 +224,7 @@ uint8_t NetworkManagerServer::getNumClientsConnected()
     return static_cast<int>(_addressHashToClientMap.size());
 }
 
-IMachineAddress* NetworkManagerServer::getServerAddress()
+MachineAddress* NetworkManagerServer::getServerAddress()
 {
     return _serverHelper->getServerAddress();
 }
@@ -234,12 +234,12 @@ bool NetworkManagerServer::isConnected()
     return _serverHelper->isConnected();
 }
 
-IServerHelper* NetworkManagerServer::getServerHelper()
+ServerHelper* NetworkManagerServer::getServerHelper()
 {
     return _serverHelper;
 }
 
-void NetworkManagerServer::processPacket(InputMemoryBitStream& inInputStream, IMachineAddress* inFromAddress)
+void NetworkManagerServer::processPacket(InputMemoryBitStream& inInputStream, MachineAddress* inFromAddress)
 {
     //try to get the client proxy for this address
     //pass this to the client proxy to process
@@ -269,7 +269,7 @@ void NetworkManagerServer::handleNoResponse()
     // Unused
 }
 
-void NetworkManagerServer::handleConnectionReset(IMachineAddress* inFromAddress)
+void NetworkManagerServer::handleConnectionReset(MachineAddress* inFromAddress)
 {
     //just dc the client right away...
     auto it = _addressHashToClientMap.find(inFromAddress->getHash());
@@ -279,12 +279,12 @@ void NetworkManagerServer::handleConnectionReset(IMachineAddress* inFromAddress)
     }
 }
 
-void NetworkManagerServer::sendPacket(const OutputMemoryBitStream& inOutputStream, IMachineAddress* inFromAddress)
+void NetworkManagerServer::sendPacket(const OutputMemoryBitStream& inOutputStream, MachineAddress* inFromAddress)
 {
     _serverHelper->sendPacket(inOutputStream, inFromAddress);
 }
 
-void NetworkManagerServer::handlePacketFromNewClient(InputMemoryBitStream& inInputStream, IMachineAddress* inFromAddress)
+void NetworkManagerServer::handlePacketFromNewClient(InputMemoryBitStream& inInputStream, MachineAddress* inFromAddress)
 {
     // read the beginning- is it a hello?
     uint32_t packetType;
@@ -418,7 +418,7 @@ void NetworkManagerServer::handleInputPacket(ClientProxy* inClientProxy, InputMe
     uint8_t moveCount = 0;
     inInputStream.read<uint8_t, 2>(moveCount);
     
-	IInputState* referenceInputState = nullptr;
+	InputState* referenceInputState = nullptr;
 	bool isRefInputStateOrphaned = false;
     
     for (; moveCount > 0; --moveCount)
@@ -586,7 +586,7 @@ void NetworkManagerServer::updateNextPlayerId()
     LOG("_nextPlayerId: %d", _nextPlayerId);
 }
 
-NetworkManagerServer::NetworkManagerServer(IServerHelper* inServerHelper, HandleNewClientFunc inHandleNewClientFunc, HandleLostClientFunc inHandleLostClientFunc, InputStateCreationFunc inInputStateCreationFunc) :
+NetworkManagerServer::NetworkManagerServer(ServerHelper* inServerHelper, HandleNewClientFunc inHandleNewClientFunc, HandleLostClientFunc inHandleLostClientFunc, InputStateCreationFunc inInputStateCreationFunc) :
 _serverHelper(inServerHelper),
 _handleNewClientFunc(inHandleNewClientFunc),
 _handleLostClientFunc(inHandleLostClientFunc),

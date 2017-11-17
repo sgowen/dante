@@ -9,7 +9,7 @@
 #ifndef __noctisgames__RendererHelperFactory__
 #define __noctisgames__RendererHelperFactory__
 
-class IRendererHelper;
+class RendererHelper;
 
 #define RENDERER_HELPER_FACTORY (RendererHelperFactory::getInstance())
 
@@ -18,7 +18,7 @@ class RendererHelperFactory
 public:
 	static RendererHelperFactory* getInstance();
     
-    IRendererHelper* createRendererHelper();
+    RendererHelper* createRendererHelper();
 
 private:
     // ctor, copy ctor, and assignment should be private in a Singleton

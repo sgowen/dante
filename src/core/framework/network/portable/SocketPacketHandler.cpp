@@ -12,7 +12,7 @@
 
 #include "OutputMemoryBitStream.h"
 #include "UDPSocket.h"
-#include "IMachineAddress.h"
+#include "MachineAddress.h"
 
 #include "SocketAddress.h"
 #include "InputMemoryBitStream.h"
@@ -24,7 +24,7 @@
 #include "FrameworkConstants.h"
 #include "Network.h"
 
-SocketPacketHandler::SocketPacketHandler(uint16_t inPort, ProcessPacketFunc processPacketFunc, HandleNoResponseFunc handleNoResponseFunc, HandleConnectionResetFunc handleConnectionResetFunc) : IPacketHandler(processPacketFunc, handleNoResponseFunc, handleConnectionResetFunc), _socketAddress(new SocketAddress(INADDR_ANY, inPort)), _socket(nullptr), _isInitialized(false)
+SocketPacketHandler::SocketPacketHandler(uint16_t inPort, ProcessPacketFunc processPacketFunc, HandleNoResponseFunc handleNoResponseFunc, HandleConnectionResetFunc handleConnectionResetFunc) : PacketHandler(processPacketFunc, handleNoResponseFunc, handleConnectionResetFunc), _socketAddress(new SocketAddress(INADDR_ANY, inPort)), _socket(nullptr), _isInitialized(false)
 {
     if (!SOCKET_UTIL->init())
     {
@@ -57,7 +57,7 @@ SocketPacketHandler::~SocketPacketHandler()
     }
 }
 
-void SocketPacketHandler::sendPacket(const OutputMemoryBitStream& inOutputStream, IMachineAddress* inFromAddress)
+void SocketPacketHandler::sendPacket(const OutputMemoryBitStream& inOutputStream, MachineAddress* inFromAddress)
 {
     if (!_isInitialized)
     {

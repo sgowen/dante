@@ -12,12 +12,12 @@
 
 #include "StringUtil.h"
 
-NGSteamAddress::NGSteamAddress(CSteamID steamID) : IMachineAddress(), _steamID(steamID), _isReliable(false)
+NGSteamAddress::NGSteamAddress(CSteamID steamID) : MachineAddress(), _steamID(steamID), _isReliable(false)
 {
     // Empty
 }
 
-NGSteamAddress::NGSteamAddress() : IMachineAddress(), _steamID(CSteamID()), _isReliable(false)
+NGSteamAddress::NGSteamAddress() : MachineAddress(), _steamID(CSteamID()), _isReliable(false)
 {
     // Empty
 }
@@ -27,7 +27,7 @@ NGSteamAddress::~NGSteamAddress()
     // Empty
 }
 
-IMachineAddress* NGSteamAddress::createNewCopy()
+MachineAddress* NGSteamAddress::createNewCopy()
 {
     return new NGSteamAddress(_steamID);
 }
