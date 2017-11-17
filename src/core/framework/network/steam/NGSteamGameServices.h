@@ -75,14 +75,14 @@ public:
 private:
     static NGSteamGameServices* s_instance;
     
-    const char* m_gameDir;
-    int m_iNumServers; // Track the number of servers we know about
-    bool m_isRequestingServers; // Track whether we are in the middle of a refresh or not
-    HServerListRequest m_hServerListRequest; // Track what server list request is currently running
-    std::vector<NGSteamGameServer> m_gameServers;
+    const char* _gameDir;
+    int _numServers; // Track the number of servers we know about
+    bool _isRequestingServers; // Track whether we are in the middle of a refresh or not
+    HServerListRequest _hServerListRequest; // Track what server list request is currently running
+    std::vector<NGSteamGameServer> _gameServers;
     
-    uint32 m_unServerIP;
-    uint16 m_usServerPort;
+    uint32 _unServerIP;
+    uint16 _usServerPort;
     
     class GameServerPing : public ISteamMatchmakingPingResponse
     {
@@ -100,20 +100,20 @@ private:
         void cancelPing();
         
     private:
-        HServerQuery m_hGameServerQuery; // we're ping a game server, so we can convert IP:Port to a steamID
-        NGSteamGameServices *m_client;
+        HServerQuery _hGameServerQuery; // we're ping a game server, so we can convert IP:Port to a steamID
+        NGSteamGameServices *_client;
     };
     
-    GameServerPing m_gameServerPing;
+    GameServerPing _gameServerPing;
     
-    CSteamID m_steamIDGameServerToJoin;
+    CSteamID _steamIDGameServerToJoin;
     
-    int32 m_nNumFilesInCloud;
-    uint64 m_ulBytesQuota;
-    uint64 m_ulAvailableBytes;
+    int32 _nNumFilesInCloud;
+    uint64 _ulBytesQuota;
+    uint64 _ulAvailableBytes;
     
-    int m_iStatus;
-    bool m_isRequestingToJoinServer;
+    int _status;
+    bool _isRequestingToJoinServer;
     
     STEAM_CALLBACK(NGSteamGameServices, onGameOverlayActivated, GameOverlayActivated_t);
     STEAM_CALLBACK(NGSteamGameServices, onGameJoinRequested, GameRichPresenceJoinRequested_t);

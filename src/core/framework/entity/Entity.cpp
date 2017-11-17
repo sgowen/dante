@@ -24,29 +24,29 @@
 #include "MathUtil.h"
 
 Entity::Entity(b2World& world, float x, float y, float width, float height, bool isServer, EntityDef inEntityDef, bool autoInitPhysics) :
-m_worldRef(world),
-m_body(nullptr),
-m_fixture(nullptr),
-m_footSensorFixture(nullptr),
+_worldRef(world),
+_body(nullptr),
+_fixture(nullptr),
+_footSensorFixture(nullptr),
 _stateTime(0.0f),
-m_color(1.0f, 1.0f, 1.0f, 1.0f),
-m_fX(x),
-m_fY(y),
-m_fWidth(width),
-m_fHeight(height),
-m_fAngle(0),
-m_iReadState(0),
-m_isServer(isServer),
-m_isPhysicsOn(false),
-m_velocityLastKnown(b2Vec2_zero),
-m_positionLastKnown(b2Vec2_zero),
-m_fAngleLastKnown(0.0f),
-m_iNumGroundContactsLastKnown(0),
-m_fTimeVelocityBecameOutOfSync(0.0f),
-m_fTimePositionBecameOutOfSync(0.0f),
-m_iID(getUniqueEntityID()),
-m_iNumGroundContacts(0),
-m_isRequestingDeletion(false)
+_color(1.0f, 1.0f, 1.0f, 1.0f),
+_x(x),
+_y(y),
+_width(width),
+_height(height),
+_angle(0),
+_readState(0),
+_isServer(isServer),
+_isPhysicsOn(false),
+_velocityLastKnown(b2Vec2_zero),
+_positionLastKnown(b2Vec2_zero),
+_angleLastKnown(0.0f),
+_numGroundContactsLastKnown(0),
+_timeVelocityBecameOutOfSync(0.0f),
+_timePositionBecameOutOfSync(0.0f),
+_iD(getUniqueEntityID()),
+_numGroundContacts(0),
+_isRequestingDeletion(false)
 {
     if (autoInitPhysics)
     {
@@ -72,10 +72,10 @@ void Entity::postRead()
     // Only interpolate when new pose has been read in
     if (needsMoveReplay())
     {
-        interpolateClientSidePrediction(m_velocityLastKnown, m_positionLastKnown);
+        interpolateClientSidePrediction(_velocityLastKnown, _positionLastKnown);
     }
     
-    m_iReadState = 0;
+    _readState = 0;
 }
 
 void Entity::cacheToMove(const Move& move)
@@ -90,12 +90,12 @@ void Entity::onDeletion()
 
 void Entity::handleBeginFootContact(Entity* inEntity)
 {
-    ++m_iNumGroundContacts;
+    ++_numGroundContacts;
 }
 
 void Entity::handleEndFootContact(Entity* inEntity)
 {
-    --m_iNumGroundContacts;
+    --_numGroundContacts;
 }
 
 void Entity::setStateTime(float stateTime)
@@ -110,126 +110,126 @@ float Entity::getStateTime()
 
 b2Body* Entity::getBody()
 {
-    return m_body;
+    return _body;
 }
 
 void Entity::setTransform(b2Vec2 position, float angle)
 {
-    m_fX = position.x;
-    m_fY = position.y;
-    m_fAngle = angle;
+    _x = position.x;
+    _y = position.y;
+    _angle = angle;
     
-    if (m_isPhysicsOn)
+    if (_isPhysicsOn)
     {
-        m_body->SetTransform(position, m_fAngle);
+        _body->SetTransform(position, _angle);
     }
 }
 
 void Entity::setPosition(b2Vec2 position)
 {
-    m_fX = position.x;
-    m_fY = position.y;
+    _x = position.x;
+    _y = position.y;
     
-    if (m_isPhysicsOn)
+    if (_isPhysicsOn)
     {
-        m_body->SetTransform(position, m_body->GetAngle());
+        _body->SetTransform(position, _body->GetAngle());
     }
 }
 
 const b2Vec2& Entity::getPosition()
 {
-    return m_isPhysicsOn ? m_body->GetPosition() : b2Vec2_zero;
+    return _isPhysicsOn ? _body->GetPosition() : b2Vec2_zero;
 }
 
 void Entity::setVelocity(b2Vec2 velocity)
 {
-    if (m_isPhysicsOn)
+    if (_isPhysicsOn)
     {
-        m_body->SetLinearVelocity(velocity);
+        _body->SetLinearVelocity(velocity);
     }
 }
 
 const b2Vec2& Entity::getVelocity()
 {
-    return m_isPhysicsOn ? m_body->GetLinearVelocity() : b2Vec2_zero;
+    return _isPhysicsOn ? _body->GetLinearVelocity() : b2Vec2_zero;
 }
 
 void Entity::setColor(Color color)
 {
-    m_color = color;
+    _color = color;
 }
 
 Color& Entity::getColor()
 {
-    return m_color;
+    return _color;
 }
 
 void Entity::setWidth(float width)
 {
-    m_fWidth = width;
+    _width = width;
 }
 
 const float& Entity::getWidth()
 {
-    return m_fWidth;
+    return _width;
 }
 
 void Entity::setHeight(float height)
 {
-    m_fHeight = height;
+    _height = height;
 }
 
 const float& Entity::getHeight()
 {
-    return m_fHeight;
+    return _height;
 }
 
 void Entity::setAngle(float angle)
 {
-    if (m_isPhysicsOn)
+    if (_isPhysicsOn)
     {
-        if (!areFloatsPracticallyEqual(m_fAngle, angle))
+        if (!areFloatsPracticallyEqual(_angle, angle))
         {
-            m_body->SetTransform(m_body->GetPosition(), angle);
+            _body->SetTransform(_body->GetPosition(), angle);
         }
     }
     
-    m_fAngle = angle;
+    _angle = angle;
 }
 
 float Entity::getAngle()
 {
-    return m_isPhysicsOn ? m_body->GetAngle() : m_fAngle;
+    return _isPhysicsOn ? _body->GetAngle() : _angle;
 }
 
 void Entity::setID(uint32_t inID)
 {
-    m_iID = inID;
+    _iD = inID;
 }
 
 uint32_t Entity::getID()
 {
-    return m_iID;
+    return _iD;
 }
 
 bool Entity::isGrounded()
 {
-    return m_iNumGroundContacts > 0;
+    return _numGroundContacts > 0;
 }
 
 bool Entity::isFalling()
 {
-    return m_iNumGroundContacts == 0;
+    return _numGroundContacts == 0;
 }
 
 void Entity::requestDeletion()
 {
-    m_isRequestingDeletion = true;
+    _isRequestingDeletion = true;
 }
 
 bool Entity::isRequestingDeletion()
 {
-    return m_isRequestingDeletion;
+    return _isRequestingDeletion;
 }
 
 #pragma mark protected
@@ -242,35 +242,35 @@ void Entity::initPhysics(EntityDef inEntityDef)
     {
         // Define the ground body.
         b2BodyDef groundBodyDef;
-        groundBodyDef.position.Set(m_fX, m_fY);
+        groundBodyDef.position.Set(_x, _y);
         
         // Call the body factory which allocates memory for the ground body
         // from a pool and creates the ground box shape (also from a pool).
         // The body is also added to the world.
-        m_body = m_worldRef.CreateBody(&groundBodyDef);
+        _body = _worldRef.CreateBody(&groundBodyDef);
         
         // Define the ground box shape.
         b2PolygonShape groundBox;
         
         // The extents are the half-widths of the box.
-        groundBox.SetAsBox(m_fWidth / 2.0f, m_fHeight / 2.0f);
+        groundBox.SetAsBox(_width / 2.0f, _height / 2.0f);
         
         // Add the ground fixture to the ground body.
-        m_fixture = m_body->CreateFixture(&groundBox, 0.0f);
+        _fixture = _body->CreateFixture(&groundBox, 0.0f);
     }
     else
     {
         // Define the dynamic body. We set its position and call the body factory.
         b2BodyDef bodyDef;
         bodyDef.type = b2_dynamicBody;
-        bodyDef.position.Set(m_fX, m_fY);
+        bodyDef.position.Set(_x, _y);
         bodyDef.fixedRotation = inEntityDef.fixedRotation;
         bodyDef.bullet = inEntityDef.bullet;
-        m_body = m_worldRef.CreateBody(&bodyDef);
+        _body = _worldRef.CreateBody(&bodyDef);
         
         // Define another box shape for our dynamic body.
         b2PolygonShape dynamicBox;
-        dynamicBox.SetAsBox(m_fWidth / 2.0f, m_fHeight / 2.0f);
+        dynamicBox.SetAsBox(_width / 2.0f, _height / 2.0f);
         
         // Define the dynamic body fixture.
         b2FixtureDef fixtureDef;
@@ -286,59 +286,59 @@ void Entity::initPhysics(EntityDef inEntityDef)
         fixtureDef.restitution = inEntityDef.restitution;
         
         // Add the shape to the body.
-        m_fixture = m_body->CreateFixture(&fixtureDef);
+        _fixture = _body->CreateFixture(&fixtureDef);
         
         if (inEntityDef.isCharacter)
         {
             // Add foot sensor fixture
             b2PolygonShape feet;
-            feet.SetAsBox(m_fWidth / 3.0f, m_fHeight / 8.0f, b2Vec2(m_fX, -m_fHeight / 2.0f), 0);
+            feet.SetAsBox(_width / 3.0f, _height / 8.0f, b2Vec2(_x, -_height / 2.0f), 0);
             b2FixtureDef fixtureDefFeet;
             fixtureDefFeet.shape = &feet;
             fixtureDefFeet.isSensor = true;
-            m_footSensorFixture = m_body->CreateFixture(&fixtureDefFeet);
-            m_footSensorFixture->SetUserData(this);
+            _footSensorFixture = _body->CreateFixture(&fixtureDefFeet);
+            _footSensorFixture->SetUserData(this);
         }
     }
     
-    m_fixture->SetUserData(this);
+    _fixture->SetUserData(this);
     
-    m_body->SetUserData(this);
+    _body->SetUserData(this);
     
-    m_isPhysicsOn = true;
+    _isPhysicsOn = true;
 }
 
 void Entity::deinitPhysics()
 {
-    m_isPhysicsOn = false;
+    _isPhysicsOn = false;
     
-    if (m_fixture)
+    if (_fixture)
     {
-        m_body->DestroyFixture(m_fixture);
-        m_fixture = nullptr;
+        _body->DestroyFixture(_fixture);
+        _fixture = nullptr;
     }
     
-    if (m_footSensorFixture)
+    if (_footSensorFixture)
     {
-        m_body->DestroyFixture(m_footSensorFixture);
-        m_footSensorFixture = nullptr;
+        _body->DestroyFixture(_footSensorFixture);
+        _footSensorFixture = nullptr;
     }
     
-    if (m_body)
+    if (_body)
     {
-        m_worldRef.DestroyBody(m_body);
-        m_body = nullptr;
+        _worldRef.DestroyBody(_body);
+        _body = nullptr;
     }
 }
 
 void Entity::interpolateClientSidePrediction(b2Vec2& inOldVelocity, b2Vec2& inOldPos)
 {
-    if (interpolateVectorsIfNecessary(inOldVelocity, getVelocity(), m_fTimeVelocityBecameOutOfSync, "velocity"))
+    if (interpolateVectorsIfNecessary(inOldVelocity, getVelocity(), _timeVelocityBecameOutOfSync, "velocity"))
     {
         setVelocity(inOldVelocity);
     }
     
-    if (interpolateVectorsIfNecessary(inOldPos, getPosition(), m_fTimePositionBecameOutOfSync, "position"))
+    if (interpolateVectorsIfNecessary(inOldPos, getPosition(), _timePositionBecameOutOfSync, "position"))
     {
         setPosition(inOldPos);
     }

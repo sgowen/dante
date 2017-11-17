@@ -35,10 +35,10 @@ public:
     bool isPressed();
     
 private:
-    GamePadEventType m_type;
-    int m_iIndex;
-    float m_fX;
-    float m_fY;
+    GamePadEventType _type;
+    int _index;
+    float _x;
+    float _y;
 };
 
 #endif /* defined(__noctisgames__GamePadEvent__) */

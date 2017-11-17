@@ -37,8 +37,8 @@ public:
     bool isReliable();
     
 private:
-    CSteamID m_steamID;
-    bool m_isReliable;
+    CSteamID _steamID;
+    bool _isReliable;
 };
 
 #endif /* defined(__noctisgames__NGSteamAddress__) */

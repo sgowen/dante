@@ -18,33 +18,33 @@
 
 #include <cstring>	// memcpy()
 
-OutputMemoryBitStream::OutputMemoryBitStream() : m_iBitHead(0), m_buffer(nullptr)
+OutputMemoryBitStream::OutputMemoryBitStream() : _bitHead(0), _buffer(nullptr)
 {
     reallocBuffer(1500 * 8);
 }
 
 OutputMemoryBitStream::~OutputMemoryBitStream()
 {
-    std::free(m_buffer);
+    std::free(_buffer);
 }
 
 void OutputMemoryBitStream::writeBits(uint8_t inData, uint32_t inBitCount)
 {
-    uint32_t nextBitHead = m_iBitHead + static_cast<uint32_t>(inBitCount);
+    uint32_t nextBitHead = _bitHead + static_cast<uint32_t>(inBitCount);
     
-    if (nextBitHead > m_iBitCapacity)
+    if (nextBitHead > _bitCapacity)
     {
-        reallocBuffer(std::max(m_iBitCapacity * 2, nextBitHead));
+        reallocBuffer(std::max(_bitCapacity * 2, nextBitHead));
     }
     
     //calculate the byteOffset into our buffer
     //by dividing the head by 8
     //and the bitOffset by taking the last 3 bits
-    uint32_t byteOffset = m_iBitHead >> 3;
-    uint32_t bitOffset = m_iBitHead & 0x7;
+    uint32_t byteOffset = _bitHead >> 3;
+    uint32_t bitOffset = _bitHead & 0x7;
     
     uint8_t currentMask = ~(0xff << bitOffset);
-    m_buffer[byteOffset] = (m_buffer[byteOffset] & currentMask) | (inData << bitOffset);
+    _buffer[byteOffset] = (_buffer[byteOffset] & currentMask) | (inData << bitOffset);
     
     //calculate how many bits were not yet used in
     //our target byte in the buffer
@@ -54,10 +54,10 @@ void OutputMemoryBitStream::writeBits(uint8_t inData, uint32_t inBitCount)
     if (bitsFreeThisByte < inBitCount)
     {
         //we need another byte
-        m_buffer[byteOffset + 1] = inData >> bitsFreeThisByte;
+        _buffer[byteOffset + 1] = inData >> bitsFreeThisByte;
     }
     
-    m_iBitHead = nextBitHead;
+    _bitHead = nextBitHead;
 }
 
 void OutputMemoryBitStream::writeBits(const void* inData, uint32_t inBitCount)
@@ -79,17 +79,17 @@ void OutputMemoryBitStream::writeBits(const void* inData, uint32_t inBitCount)
 
 const char*	OutputMemoryBitStream::getBufferPtr() const
 {
-    return m_buffer;
+    return _buffer;
 }
 
 uint32_t OutputMemoryBitStream::getBitLength() const
 {
-    return m_iBitHead;
+    return _bitHead;
 }
 
 uint32_t OutputMemoryBitStream::getByteLength() const
 {
-    return (m_iBitHead + 7) >> 3;
+    return (_bitHead + 7) >> 3;
 }
 
 void OutputMemoryBitStream::writeBytes(const void* inData, uint32_t inByteCount)
@@ -156,23 +156,23 @@ void OutputMemoryBitStream::writeSignedBinaryValue(float inValue)
 
 void OutputMemoryBitStream::reallocBuffer(uint32_t inNewBitLength)
 {
-    if (m_buffer == nullptr)
+    if (_buffer == nullptr)
     {
         //just need to memset on first allocation
-        m_buffer = static_cast<char*>(std::malloc(inNewBitLength >> 3));
-        memset(m_buffer, 0, inNewBitLength >> 3);
+        _buffer = static_cast<char*>(std::malloc(inNewBitLength >> 3));
+        memset(_buffer, 0, inNewBitLength >> 3);
     }
     else
     {
         //need to memset, then copy the buffer
         char* tempBuffer = static_cast<char*>(std::malloc(inNewBitLength >> 3));
         memset(tempBuffer, 0, inNewBitLength >> 3);
-        memcpy(tempBuffer, m_buffer, m_iBitCapacity >> 3);
-        std::free(m_buffer);
-        m_buffer = tempBuffer;
+        memcpy(tempBuffer, _buffer, _bitCapacity >> 3);
+        std::free(_buffer);
+        _buffer = tempBuffer;
     }
     
     //handle realloc failure
     //...
-    m_iBitCapacity = inNewBitLength;
+    _bitCapacity = inNewBitLength;
 }

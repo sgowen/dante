@@ -11,55 +11,55 @@
 #include "GamePadEvent.h"
 
 GamePadEvent::GamePadEvent(GamePadEventType type, int index, float x, float y) :
-m_type(type),
-m_iIndex(index),
-m_fX(x),
-m_fY(y)
+_type(type),
+_index(index),
+_x(x),
+_y(y)
 {
 	// Empty
 }
 
 GamePadEventType GamePadEvent::getType()
 {
-    return m_type;
+    return _type;
 }
 
 void GamePadEvent::setType(GamePadEventType touchType)
 {
-    m_type = touchType;
+    _type = touchType;
 }
 
 int GamePadEvent::getIndex()
 {
-    return m_iIndex;
+    return _index;
 }
 
 void GamePadEvent::setIndex(int index)
 {
-    m_iIndex = index;
+    _index = index;
 }
 
 float GamePadEvent::getX()
 {
-	return m_fX;
+	return _x;
 }
 
 void GamePadEvent::setX(float x)
 {
-	m_fX = x;
+	_x = x;
 }
 
 float GamePadEvent::getY()
 {
-	return m_fY;
+	return _y;
 }
 
 void GamePadEvent::setY(float y)
 {
-	m_fY = y;
+	_y = y;
 }
 
 bool GamePadEvent::isPressed()
 {
-    return m_fX > 0;
+    return _x > 0;
 }

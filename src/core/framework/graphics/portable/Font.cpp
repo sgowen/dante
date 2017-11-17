@@ -21,7 +21,7 @@ Font::Font(std::string textureName, int offsetX, int offsetY, int glyphsPerRow, 
 
 	for (int i = 0; i < 176; ++i)
 	{
-		m_glyphs.push_back(TextureRegion(textureName, x, y, glyphWidth, glyphHeight, textureWidth, textureHeight));
+		_glyphs.push_back(TextureRegion(textureName, x, y, glyphWidth, glyphHeight, textureWidth, textureHeight));
 
 		x += glyphWidth;
 
@@ -35,7 +35,7 @@ Font::Font(std::string textureName, int offsetX, int offsetY, int glyphsPerRow, 
 
 Font::~Font()
 {
-    m_glyphs.clear();
+    _glyphs.clear();
 }
 
 void Font::renderText(SpriteBatcher &spriteBatcher, std::string &text, float x, float y, float width, float height, Color color, int justification)
@@ -88,5 +88,5 @@ void Font::renderAsciiChar(SpriteBatcher &spriteBatcher, int asciiChar, float x,
         return;
     }
     
-    spriteBatcher.drawSprite(x, y, width, height, 0, color, m_glyphs[asciiChar]);
+    spriteBatcher.drawSprite(x, y, width, height, 0, color, _glyphs[asciiChar]);
 }

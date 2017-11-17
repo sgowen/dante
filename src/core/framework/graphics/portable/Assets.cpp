@@ -35,9 +35,9 @@ void Assets::init(IAssetsMapper* assetsMapper)
 
 TextureRegion& Assets::findTextureRegion(std::string key, float stateTime)
 {
-    auto q = m_textureRegions.find(key);
+    auto q = _textureRegions.find(key);
     
-    if (q != m_textureRegions.end())
+    if (q != _textureRegions.end())
     {
         TextureRegion* tr = q->second;
         
@@ -45,9 +45,9 @@ TextureRegion& Assets::findTextureRegion(std::string key, float stateTime)
     }
     else
     {
-        auto q2 = m_animations.find(key);
+        auto q2 = _animations.find(key);
         
-        assert(q2 != m_animations.end());
+        assert(q2 != _animations.end());
         
         Animation* anim = q2->second;
         
@@ -57,9 +57,9 @@ TextureRegion& Assets::findTextureRegion(std::string key, float stateTime)
 
 TextureRegion& Assets::findTextureRegion(std::string key)
 {
-    auto q = m_textureRegions.find(key);
+    auto q = _textureRegions.find(key);
     
-    assert(q != m_textureRegions.end());
+    assert(q != _textureRegions.end());
     
     TextureRegion* tr = q->second;
     
@@ -68,9 +68,9 @@ TextureRegion& Assets::findTextureRegion(std::string key)
 
 Animation& Assets::findAnimation(std::string key)
 {
-    auto q = m_animations.find(key);
+    auto q = _animations.find(key);
     
-    assert(q != m_animations.end());
+    assert(q != _animations.end());
     
     Animation* anim = q->second;
     
@@ -79,12 +79,12 @@ Animation& Assets::findAnimation(std::string key)
 
 std::map<std::string, TextureRegion*>& Assets::getTextureRegionMap()
 {
-    return m_textureRegions;
+    return _textureRegions;
 }
 
 std::map<std::string, Animation*>& Assets::getAnimationsMap()
 {
-    return m_animations;
+    return _animations;
 }
 
 Assets::Assets()
@@ -94,6 +94,6 @@ Assets::Assets()
 
 Assets::~Assets()
 {
-    NGSTDUtil::cleanUpMapOfPointers(m_textureRegions);
-    NGSTDUtil::cleanUpMapOfPointers(m_animations);
+    NGSTDUtil::cleanUpMapOfPointers(_textureRegions);
+    NGSTDUtil::cleanUpMapOfPointers(_animations);
 }

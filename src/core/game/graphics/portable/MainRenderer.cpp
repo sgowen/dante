@@ -52,13 +52,13 @@
 #include <ctime> // rand
 
 MainRenderer::MainRenderer(int maxBatchSize) : Renderer(maxBatchSize),
-m_characters(new TextureWrapper("texture_001", this)),
-m_misc(new TextureWrapper("texture_002", this)),
-m_bg1(new TextureWrapper("texture_003", this, true)),
-m_bg2(new TextureWrapper("texture_004", this, true)),
-m_cover(new TextureWrapper("texture_005", this, true)),
-m_font(new Font("texture_002", 0, 0, 16, 64, 75, TEXTURE_SIZE_1024)),
-m_camBounds(new NGRect(0, 0, CAM_WIDTH, CAM_HEIGHT))
+_characters(new TextureWrapper("texture_001", this)),
+_misc(new TextureWrapper("texture_002", this)),
+_bg1(new TextureWrapper("texture_003", this, true)),
+_bg2(new TextureWrapper("texture_004", this, true)),
+_cover(new TextureWrapper("texture_005", this, true)),
+_font(new Font("texture_002", 0, 0, 16, 64, 75, TEXTURE_SIZE_1024)),
+_camBounds(new NGRect(0, 0, CAM_WIDTH, CAM_HEIGHT))
 {
     ASSETS->init(new MainAssetsMapper());
 }
@@ -67,34 +67,34 @@ MainRenderer::~MainRenderer()
 {
 	releaseDeviceDependentResources();
 
-	delete m_characters;
-	delete m_misc;
-    delete m_bg1;
-    delete m_bg2;
-    delete m_cover;
-    delete m_font;
+	delete _characters;
+	delete _misc;
+    delete _bg1;
+    delete _bg2;
+    delete _cover;
+    delete _font;
 }
 
 void MainRenderer::createDeviceDependentResources()
 {
     Renderer::createDeviceDependentResources();
     
-    loadTextureSync(m_characters);
-    loadTextureSync(m_misc);
-    loadTextureSync(m_bg1);
-    loadTextureSync(m_bg2);
-    loadTextureSync(m_cover);
+    loadTextureSync(_characters);
+    loadTextureSync(_misc);
+    loadTextureSync(_bg1);
+    loadTextureSync(_bg2);
+    loadTextureSync(_cover);
 }
 
 void MainRenderer::releaseDeviceDependentResources()
 {
     Renderer::releaseDeviceDependentResources();
 
-	unloadTexture(m_characters);
-	unloadTexture(m_misc);
-    unloadTexture(m_bg1);
-    unloadTexture(m_bg2);
-    unloadTexture(m_cover);
+	unloadTexture(_characters);
+	unloadTexture(_misc);
+    unloadTexture(_bg1);
+    unloadTexture(_bg2);
+    unloadTexture(_cover);
 }
 
 void MainRenderer::render(int flags)
@@ -103,11 +103,11 @@ void MainRenderer::render(int flags)
     
     _rendererHelper->clearFramebufferWithColor(0.0f, 0.0f, 0.0f, 1);
     
-    if (ensureTexture(m_characters)
-        && ensureTexture(m_misc)
-        && ensureTexture(m_bg1)
-        && ensureTexture(m_bg2)
-        && ensureTexture(m_cover))
+    if (ensureTexture(_characters)
+        && ensureTexture(_misc)
+        && ensureTexture(_bg1)
+        && ensureTexture(_bg2)
+        && ensureTexture(_cover))
     {
         updateCamera();
         
@@ -134,37 +134,37 @@ void MainRenderer::renderBackground()
     {
         _rendererHelper->updateMatrix(0, GAME_WIDTH, 0, CAM_HEIGHT);
         
-        m_spriteBatcher->beginBatch();
+        _spriteBatcher->beginBatch();
         {
             static TextureRegion tr = ASSETS->findTextureRegion("Background1");
-            tr.initX(m_camBounds->getLeft() * 128.0f / 3);
-            tr.initY(clamp(384 - m_camBounds->getBottom() * 32, 384, 0));
-            m_spriteBatcher->drawSprite(i * CAM_WIDTH + CAM_WIDTH / 2, CAM_HEIGHT / 2, CAM_WIDTH, CAM_HEIGHT, 0, tr);
+            tr.initX(_camBounds->getLeft() * 128.0f / 3);
+            tr.initY(clamp(384 - _camBounds->getBottom() * 32, 384, 0));
+            _spriteBatcher->drawSprite(i * CAM_WIDTH + CAM_WIDTH / 2, CAM_HEIGHT / 2, CAM_WIDTH, CAM_HEIGHT, 0, tr);
         }
-        m_spriteBatcher->endBatch(*m_bg1, *m_textureGpuProgramWrapper);
+        _spriteBatcher->endBatch(*_bg1, *_textureGpuProgramWrapper);
         
-        m_spriteBatcher->beginBatch();
+        _spriteBatcher->beginBatch();
         {
             static TextureRegion tr = ASSETS->findTextureRegion("Background2");
-            tr.initX(m_camBounds->getLeft() * 128.0f / 2);
-            tr.initY(clamp(644 - m_camBounds->getBottom() * 48, 644, 0));
-            m_spriteBatcher->drawSprite(i * CAM_WIDTH + CAM_WIDTH / 2, CAM_HEIGHT * 0.3875f / 2, CAM_WIDTH, CAM_HEIGHT * 0.3875f, 0, tr);
+            tr.initX(_camBounds->getLeft() * 128.0f / 2);
+            tr.initY(clamp(644 - _camBounds->getBottom() * 48, 644, 0));
+            _spriteBatcher->drawSprite(i * CAM_WIDTH + CAM_WIDTH / 2, CAM_HEIGHT * 0.3875f / 2, CAM_WIDTH, CAM_HEIGHT * 0.3875f, 0, tr);
         }
-        m_spriteBatcher->endBatch(*m_bg2, *m_textureGpuProgramWrapper);
+        _spriteBatcher->endBatch(*_bg2, *_textureGpuProgramWrapper);
     }
 }
 
 void MainRenderer::renderWorld()
 {
-    _rendererHelper->updateMatrix(m_camBounds->getLeft(), m_camBounds->getRight(), m_camBounds->getBottom(), m_camBounds->getTop());
+    _rendererHelper->updateMatrix(_camBounds->getLeft(), _camBounds->getRight(), _camBounds->getBottom(), _camBounds->getTop());
     
-    m_spriteBatcher->beginBatch();
+    _spriteBatcher->beginBatch();
     for (int i = 0; i < 3; ++i)
     {
         static TextureRegion tr = ASSETS->findTextureRegion("Background3");
-        m_spriteBatcher->drawSprite(i * CAM_WIDTH + CAM_WIDTH / 2, CAM_HEIGHT * 0.2f / 2, CAM_WIDTH, CAM_HEIGHT * 0.2f, 0, tr);
+        _spriteBatcher->drawSprite(i * CAM_WIDTH + CAM_WIDTH / 2, CAM_HEIGHT * 0.2f / 2, CAM_WIDTH, CAM_HEIGHT * 0.2f, 0, tr);
     }
-    m_spriteBatcher->endBatch(*m_bg2, *m_textureGpuProgramWrapper);
+    _spriteBatcher->endBatch(*_bg2, *_textureGpuProgramWrapper);
     
     renderEntities(InstanceManager::getClientWorld(), false);
     
@@ -173,7 +173,7 @@ void MainRenderer::renderWorld()
         renderEntities(InstanceManager::getServerWorld(), true);
     }
     
-    m_spriteBatcher->beginBatch();
+    _spriteBatcher->beginBatch();
     std::vector<Entity*> entities = InstanceManager::getClientWorld()->getEntities();
     for (Entity* go : entities)
     {
@@ -186,12 +186,12 @@ void MainRenderer::renderWorld()
             renderText(text, origin, Color::DARK_RED, FONT_ALIGN_CENTERED);
         }
     }
-    m_spriteBatcher->endBatch(*m_misc, *m_textureGpuProgramWrapper);
+    _spriteBatcher->endBatch(*_misc, *_textureGpuProgramWrapper);
 }
 
 void MainRenderer::renderEntities(World* world, bool isServer)
 {
-    m_spriteBatcher->beginBatch();
+    _spriteBatcher->beginBatch();
     std::vector<Entity*> entities = world->getEntities();
     for (Entity* go : entities)
     {
@@ -235,8 +235,8 @@ void MainRenderer::renderEntities(World* world, bool isServer)
             int type = spc->getType();
             static TextureRegion tr0 = ASSETS->findTextureRegion("Space_Pirate_Chunk_Top_Left");
             static TextureRegion tr1 = ASSETS->findTextureRegion("Space_Pirate_Chunk_Top_Right");
-            static TextureRegion tr2 = ASSETS->findTextureRegion("Space_Pirate_Chunk_Bottom_Left");
-            static TextureRegion tr3 = ASSETS->findTextureRegion("Space_Pirate_Chunk_Bottom_Right");
+            static TextureRegion tr2 = ASSETS->findTextureRegion("Space_Pirate_Chunk_Botto_Left");
+            static TextureRegion tr3 = ASSETS->findTextureRegion("Space_Pirate_Chunk_Botto_Right");
             
             TextureRegion* tr = nullptr;
             switch (type)
@@ -247,10 +247,10 @@ void MainRenderer::renderEntities(World* world, bool isServer)
                 case Space_Pirate_Chunk_Top_Right:
                     tr = &tr1;
                     break;
-                case Space_Pirate_Chunk_Bottom_Left:
+                case Space_Pirate_Chunk_Botto_Left:
                     tr = &tr2;
                     break;
-                case Space_Pirate_Chunk_Bottom_Right:
+                case Space_Pirate_Chunk_Botto_Right:
                     tr = &tr3;
                     break;
                 default:
@@ -287,26 +287,26 @@ void MainRenderer::renderEntities(World* world, bool isServer)
         renderEntityWithColor(*r, tr, c, r->isFacingLeft());
     }
     
-    m_spriteBatcher->endBatch(*m_characters, *m_textureGpuProgramWrapper);
+    _spriteBatcher->endBatch(*_characters, *_textureGpuProgramWrapper);
 }
 
 void MainRenderer::renderAtmosphere()
 {
     _rendererHelper->updateMatrix(0, CAM_WIDTH, 0, CAM_HEIGHT);
     
-    m_spriteBatcher->beginBatch();
+    _spriteBatcher->beginBatch();
     {
         static TextureRegion tr = ASSETS->findTextureRegion("Cover");
-        m_spriteBatcher->drawSprite(CAM_WIDTH / 2, CAM_HEIGHT / 2, CAM_WIDTH, CAM_HEIGHT, 0, tr);
+        _spriteBatcher->drawSprite(CAM_WIDTH / 2, CAM_HEIGHT / 2, CAM_WIDTH, CAM_HEIGHT, 0, tr);
     }
-    m_spriteBatcher->endBatch(*m_cover, *m_textureGpuProgramWrapper);
+    _spriteBatcher->endBatch(*_cover, *_textureGpuProgramWrapper);
 }
 
 void MainRenderer::renderUI(int flags)
 {
     _rendererHelper->updateMatrix(0, CAM_WIDTH, 0, CAM_HEIGHT);
     
-    m_spriteBatcher->beginBatch();
+    _spriteBatcher->beginBatch();
     switch (flags)
     {
         case MAIN_ENGINE_STATE_MAIN_MENU_STEAM_OFF:
@@ -335,7 +335,7 @@ void MainRenderer::renderUI(int flags)
         default:
             break;
     }
-    m_spriteBatcher->endBatch(*m_misc, *m_textureGpuProgramWrapper);
+    _spriteBatcher->endBatch(*_misc, *_textureGpuProgramWrapper);
 }
 
 void MainRenderer::renderMainMenuSteamOffText()
@@ -606,14 +606,14 @@ void MainRenderer::renderText(const std::string& inStr, const b2Vec2& origin, co
     ss << inStr;
     std::string text = ss.str();
     
-    m_font->renderText(*m_spriteBatcher, text, origin.x, origin.y, fgWidth, fgHeight, fontColor, justification);
+    _font->renderText(*_spriteBatcher, text, origin.x, origin.y, fgWidth, fgHeight, fontColor, justification);
 }
 
 void MainRenderer::updateCamera()
 {
-    m_camBounds->getLowerLeft().set(0, 0);
-    m_camBounds->setWidth(CAM_WIDTH);
-    m_camBounds->setHeight(CAM_HEIGHT);
+    _camBounds->getLowerLeft().set(0, 0);
+    _camBounds->setWidth(CAM_WIDTH);
+    _camBounds->setHeight(CAM_HEIGHT);
     
     if (NG_CLIENT && NG_CLIENT->getState() == NCS_Welcomed)
     {
@@ -691,9 +691,9 @@ void MainRenderer::updateCamera()
             float y = pY - h * 0.5f;
             y = clamp(y, GAME_HEIGHT, 0);
             
-            m_camBounds->getLowerLeft().set(x, y);
-            m_camBounds->setWidth(w);
-            m_camBounds->setHeight(h);
+            _camBounds->getLowerLeft().set(x, y);
+            _camBounds->setWidth(w);
+            _camBounds->setHeight(h);
         }
     }
 }

@@ -16,23 +16,23 @@
 #include "FrameworkConstants.h"
 
 Direct3DFramebufferToScreenGpuProgramWrapper::Direct3DFramebufferToScreenGpuProgramWrapper() : GpuProgramWrapper(),
-m_program(new Direct3DTextureProgram(FRAMEBUFFER_TO_SCREEN_VERTEX_SHADER, FRAMEBUFFER_TO_SCREEN_FRAGMENT_SHADER))
+_program(new Direct3DTextureProgram(FRAMEBUFFER_TO_SCREEN_VERTEX_SHADER, FRAMEBUFFER_TO_SCREEN_FRAGMENT_SHADER))
 {
     // Empty
 }
 
 Direct3DFramebufferToScreenGpuProgramWrapper::~Direct3DFramebufferToScreenGpuProgramWrapper()
 {
-    delete m_program;
+    delete _program;
 }
 
 void Direct3DFramebufferToScreenGpuProgramWrapper::bind()
 {
     D3DManager->useScreenBlending();
 
-    m_program->bindShaders();
+    _program->bindShaders();
 
-	m_program->mapVertices();
+	_program->mapVertices();
 }
 
 void Direct3DFramebufferToScreenGpuProgramWrapper::unbind()

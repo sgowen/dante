@@ -21,8 +21,8 @@ public:
     Vector2& getEnd();
     
 private:
-    Vector2 m_origin;
-    Vector2 m_end;
+    Vector2 _origin;
+    Vector2 _end;
 };
 
 #endif /* defined(__noctisgames__Line__) */

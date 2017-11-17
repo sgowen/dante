@@ -35,7 +35,7 @@ public:
     const WeightedTimedMovingAverage& getBytesSentPerSecond() const;
     
 protected:
-    IPacketHandler* m_packetHandler;
+    IPacketHandler* _packetHandler;
 };
 
 #endif /* defined(__noctisgames__INetworkHelper__) */

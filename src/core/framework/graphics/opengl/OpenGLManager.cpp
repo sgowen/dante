@@ -44,14 +44,14 @@ OpenGLManager * OpenGLManager::getInstance()
 
 void OpenGLManager::createDeviceDependentResources(int maxBatchSize)
 {
-    glGetIntegerv(GL_FRAMEBUFFER_BINDING, &m_iScreenFBO);
-    glGetIntegerv(GL_MAX_TEXTURE_SIZE, &m_iMaxTextureSize);
+    glGetIntegerv(GL_FRAMEBUFFER_BINDING, &_screenFBO);
+    glGetIntegerv(GL_MAX_TEXTURE_SIZE, &_maxTextureSize);
     
     generateIndices(maxBatchSize);
     
-    if (m_iRenderWidth > -1
-        && m_iRenderHeight > -1
-        && m_iNumFramebuffers > -1)
+    if (_renderWidth > -1
+        && _renderHeight > -1
+        && _numFramebuffers > -1)
     {
         releaseFramebuffers();
         createFramebufferObjects();
@@ -60,13 +60,13 @@ void OpenGLManager::createDeviceDependentResources(int maxBatchSize)
 
 void OpenGLManager::createWindowSizeDependentResources(int renderWidth, int renderHeight, int numFramebuffers)
 {
-    m_iRenderWidth = renderWidth;
-    m_iRenderHeight = renderHeight;
-    m_iNumFramebuffers = numFramebuffers;
+    _renderWidth = renderWidth;
+    _renderHeight = renderHeight;
+    _numFramebuffers = numFramebuffers;
     
-    glViewport(0, 0, m_iRenderWidth, m_iRenderHeight);
+    glViewport(0, 0, _renderWidth, _renderHeight);
     
-    glScissor(0, 0, m_iRenderWidth, m_iRenderHeight);
+    glScissor(0, 0, _renderWidth, _renderHeight);
     glEnable(GL_SCISSOR_TEST);
     
     releaseFramebuffers();
@@ -75,7 +75,7 @@ void OpenGLManager::createWindowSizeDependentResources(int renderWidth, int rend
 
 void OpenGLManager::releaseDeviceDependentResources()
 {
-    m_indices.clear();
+    _indices.clear();
     
     releaseFramebuffers();
     
@@ -85,33 +85,33 @@ void OpenGLManager::releaseDeviceDependentResources()
 
 void OpenGLManager::createMatrix(float left, float right, float bottom, float top)
 {
-    mat4x4_identity(m_viewProjectionMatrix);
+    mat4x4_identity(_viewProjectionMatrix);
     
-    mat4x4_ortho(m_viewProjectionMatrix, left, right, bottom, top, -1, 1);
+    mat4x4_ortho(_viewProjectionMatrix, left, right, bottom, top, -1, 1);
 }
 
 void OpenGLManager::addVertexCoordinate(GLfloat x, GLfloat y, GLfloat z, GLfloat r, GLfloat g, GLfloat b, GLfloat a, GLfloat u, GLfloat v)
 {
-    m_textureVertices.push_back(x);
-    m_textureVertices.push_back(y);
-    m_textureVertices.push_back(z);
-    m_textureVertices.push_back(r);
-    m_textureVertices.push_back(g);
-    m_textureVertices.push_back(b);
-    m_textureVertices.push_back(a);
-    m_textureVertices.push_back(u);
-    m_textureVertices.push_back(v);
+    _textureVertices.push_back(x);
+    _textureVertices.push_back(y);
+    _textureVertices.push_back(z);
+    _textureVertices.push_back(r);
+    _textureVertices.push_back(g);
+    _textureVertices.push_back(b);
+    _textureVertices.push_back(a);
+    _textureVertices.push_back(u);
+    _textureVertices.push_back(v);
 }
 
 void OpenGLManager::addVertexCoordinate(GLfloat x, GLfloat y, GLfloat z, GLfloat r, GLfloat g, GLfloat b, GLfloat a)
 {
-    m_colorVertices.push_back(x);
-    m_colorVertices.push_back(y);
-    m_colorVertices.push_back(z);
-    m_colorVertices.push_back(r);
-    m_colorVertices.push_back(g);
-    m_colorVertices.push_back(b);
-    m_colorVertices.push_back(a);
+    _colorVertices.push_back(x);
+    _colorVertices.push_back(y);
+    _colorVertices.push_back(z);
+    _colorVertices.push_back(r);
+    _colorVertices.push_back(g);
+    _colorVertices.push_back(b);
+    _colorVertices.push_back(a);
 }
 
 void OpenGLManager::useNormalBlending()
@@ -128,38 +128,38 @@ void OpenGLManager::useScreenBlending()
 
 void OpenGLManager::setScreenSize(int screenWidth, int screenHeight)
 {
-    m_iScreenWidth = screenWidth;
-    m_iScreenHeight = screenHeight;
+    _screenWidth = screenWidth;
+    _screenHeight = screenHeight;
 }
 
 std::vector<GLshort>& OpenGLManager::getIndices()
 {
-    return m_indices;
+    return _indices;
 }
 
 std::vector<GLuint>& OpenGLManager::getFbos()
 {
-    return m_fbos;
+    return _fbos;
 }
 
 std::vector<GLuint>& OpenGLManager::getFboTextures()
 {
-    return m_fbo_textures;
+    return _fbo_textures;
 }
 
 std::vector<GpuTextureWrapper *>& OpenGLManager::getFramebuffers()
 {
-    return m_framebuffers;
+    return _framebuffers;
 }
 
 std::vector<GLfloat>& OpenGLManager::getTextureVertices()
 {
-    return m_textureVertices;
+    return _textureVertices;
 }
 
 std::vector<GLfloat>& OpenGLManager::getColorVertices()
 {
-    return m_colorVertices;
+    return _colorVertices;
 }
 
 GLuint& OpenGLManager::getSbVboObject()
@@ -174,60 +174,60 @@ GLuint& OpenGLManager::getGbVboObject()
 
 GLint& OpenGLManager::getScreenFBO()
 {
-    return m_iScreenFBO;
+    return _screenFBO;
 }
 
 GLint& OpenGLManager::getMaxTextureSize()
 {
-    return m_iMaxTextureSize;
+    return _maxTextureSize;
 }
 
 mat4x4& OpenGLManager::getViewProjectionMatrix()
 {
-    return m_viewProjectionMatrix;
+    return _viewProjectionMatrix;
 }
 
 int OpenGLManager::getScreenWidth()
 {
-    return m_iScreenWidth;
+    return _screenWidth;
 }
 
 int OpenGLManager::getScreenHeight()
 {
-    return m_iScreenHeight;
+    return _screenHeight;
 }
 
 int OpenGLManager::getRenderWidth()
 {
-    return m_iRenderWidth;
+    return _renderWidth;
 }
 
 int OpenGLManager::getRenderHeight()
 {
-    return m_iRenderHeight;
+    return _renderHeight;
 }
 
 #pragma mark private
 
 void OpenGLManager::generateIndices(int maxBatchSize)
 {
-    m_indices.reserve(maxBatchSize * INDICES_PER_RECTANGLE);
+    _indices.reserve(maxBatchSize * INDICES_PER_RECTANGLE);
     
     GLshort j = 0;
     for (int i = 0; i < maxBatchSize * INDICES_PER_RECTANGLE; i += INDICES_PER_RECTANGLE, j += VERTICES_PER_RECTANGLE)
     {
-        m_indices.push_back(j);
-        m_indices.push_back(j + 1);
-        m_indices.push_back(j + 2);
-        m_indices.push_back(j + 2);
-        m_indices.push_back(j + 3);
-        m_indices.push_back(j + 0);
+        _indices.push_back(j);
+        _indices.push_back(j + 1);
+        _indices.push_back(j + 2);
+        _indices.push_back(j + 2);
+        _indices.push_back(j + 3);
+        _indices.push_back(j + 0);
     }
 }
 
 void OpenGLManager::createFramebufferObjects()
 {
-    for (int i = 0; i < m_iNumFramebuffers; ++i)
+    for (int i = 0; i < _numFramebuffers; ++i)
     {
         createFramebufferObject();
     }
@@ -246,7 +246,7 @@ void OpenGLManager::createFramebufferObject()
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_iRenderWidth, m_iRenderHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, _renderWidth, _renderHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
     glBindTexture(GL_TEXTURE_2D, 0);
     
     // Framebuffer
@@ -256,36 +256,36 @@ void OpenGLManager::createFramebufferObject()
     
     GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
     
-    glBindFramebuffer(GL_FRAMEBUFFER, m_iScreenFBO);
+    glBindFramebuffer(GL_FRAMEBUFFER, _screenFBO);
     
     assert(status == GL_FRAMEBUFFER_COMPLETE);
     
-    m_fbo_textures.push_back(fbo_texture);
-    m_fbos.push_back(fbo);
+    _fbo_textures.push_back(fbo_texture);
+    _fbos.push_back(fbo);
     
-    m_framebuffers.push_back(new GpuTextureWrapper(fbo_texture));
+    _framebuffers.push_back(new GpuTextureWrapper(fbo_texture));
 }
 
 void OpenGLManager::releaseFramebuffers()
 {
-    for (std::vector<GLuint>::iterator i = m_fbo_textures.begin(); i != m_fbo_textures.end(); ++i)
+    for (std::vector<GLuint>::iterator i = _fbo_textures.begin(); i != _fbo_textures.end(); ++i)
     {
         glDeleteTextures(1, &(*i));
     }
     
-    m_fbo_textures.clear();
+    _fbo_textures.clear();
     
-    for (std::vector<GLuint>::iterator i = m_fbos.begin(); i != m_fbos.end(); ++i)
+    for (std::vector<GLuint>::iterator i = _fbos.begin(); i != _fbos.end(); ++i)
     {
         glDeleteFramebuffers(1, &(*i));
     }
     
-    m_fbos.clear();
+    _fbos.clear();
     
-    NGSTDUtil::cleanUpVectorOfPointers(m_framebuffers);
+    NGSTDUtil::cleanUpVectorOfPointers(_framebuffers);
 }
 
-OpenGLManager::OpenGLManager() : sb_vbo_object(0), gb_vbo_object(0), m_iScreenFBO(0), m_iMaxTextureSize(64), m_iRenderWidth(-1), m_iRenderHeight(-1), m_iNumFramebuffers(-1)
+OpenGLManager::OpenGLManager() : sb_vbo_object(0), gb_vbo_object(0), _screenFBO(0), _maxTextureSize(64), _renderWidth(-1), _renderHeight(-1), _numFramebuffers(-1)
 {
     // Hide Constructor for Singleton
 }

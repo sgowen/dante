@@ -14,7 +14,7 @@
 #include "Vector2.h"
 #include "Color.h"
 
-NGRectBatcher::NGRectBatcher(bool isFill) : m_isFill(isFill), m_iNumNGRects(0)
+NGRectBatcher::NGRectBatcher(bool isFill) : _isFill(isFill), _numNGRects(0)
 {
     // Empty
 }

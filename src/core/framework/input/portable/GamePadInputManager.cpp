@@ -30,19 +30,19 @@ void GamePadInputManager::onInput(GamePadEventType type, int index, float x, flo
 
 void GamePadInputManager::process()
 {
-    m_pool->processBuffer();
+    _pool->processBuffer();
 }
 
 std::vector<GamePadEvent*>& GamePadInputManager::getEvents()
 {
-    return m_pool->getObjects();
+    return _pool->getObjects();
 }
 
 bool GamePadInputManager::isControllerConnected()
 {
     float time = Timing::getInstance()->getFrameStartTime();
     
-    return (time - m_fTimeSinceLastGamePadEvent) < 5;
+    return (time - _timeSinceLastGamePadEvent) < 5;
 }
 
 #pragma mark private
@@ -54,23 +54,23 @@ void GamePadInputManager::addEvent(GamePadEventType type, int index, float x, fl
         return;
     }
     
-    GamePadEvent* e = m_pool->newObject();
+    GamePadEvent* e = _pool->newObject();
     e->setType(type);
     e->setIndex(index);
     e->setX(x);
     e->setY(y);
     
-    m_pool->add(e);
+    _pool->add(e);
     
-    m_fTimeSinceLastGamePadEvent = Timing::getInstance()->getFrameStartTime();
+    _timeSinceLastGamePadEvent = Timing::getInstance()->getFrameStartTime();
 }
 
-GamePadInputManager::GamePadInputManager() : m_pool(new NGRollingPool<GamePadEvent>(POOL_SIZE)), m_fTimeSinceLastGamePadEvent(-5)
+GamePadInputManager::GamePadInputManager() : _pool(new NGRollingPool<GamePadEvent>(POOL_SIZE)), _timeSinceLastGamePadEvent(-5)
 {
     // Empty
 }
 
 GamePadInputManager::~GamePadInputManager()
 {
-    delete m_pool;
+    delete _pool;
 }

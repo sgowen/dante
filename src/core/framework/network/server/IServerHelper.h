@@ -30,8 +30,8 @@ public:
     virtual bool isConnected() = 0;
     
 protected:
-    GetClientProxyFunc m_getClientProxyFunc;
-    HandleClientDisconnectedFunc m_handleClientDisconnectedFunc;
+    GetClientProxyFunc _getClientProxyFunc;
+    HandleClientDisconnectedFunc _handleClientDisconnectedFunc;
 };
 
 #endif /* defined(__noctisgames__IServerHelper__) */

@@ -25,7 +25,7 @@ public:
     virtual void unbind();
     
 private:
-    OpenGLTextureProgram* m_program;
+    OpenGLTextureProgram* _program;
 };
 
 #endif /* defined(__noctisgames__OpenGLTextureGpuProgramWrapper__) */

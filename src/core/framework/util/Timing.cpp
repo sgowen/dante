@@ -34,33 +34,33 @@ void Timing::update()
 {
     double currentTime = getTime();
     
-    m_fDeltaTime = (float) (currentTime - m_dLastFrameStartTime);
+    _deltaTime = (float) (currentTime - _lastFrameStartTime);
     
-    m_dLastFrameStartTime = currentTime;
-    m_fFrameStartTimef = static_cast<float> (m_dLastFrameStartTime);
+    _lastFrameStartTime = currentTime;
+    _frameStartTimef = static_cast<float> (_lastFrameStartTime);
 }
 
 void Timing::updateManual(float stateTime, float deltaTime)
 {
-    m_fDeltaTime = deltaTime;
+    _deltaTime = deltaTime;
     
-    m_dLastFrameStartTime = stateTime;
-    m_fFrameStartTimef = stateTime;
+    _lastFrameStartTime = stateTime;
+    _frameStartTimef = stateTime;
 }
 
 void Timing::setDeltaTime(float inDeltaTime)
 {
-    m_fDeltaTime = inDeltaTime;
+    _deltaTime = inDeltaTime;
 }
 
 float Timing::getDeltaTime() const
 {
-    return m_fDeltaTime;
+    return _deltaTime;
 }
 
 float Timing::getFrameStartTime() const
 {
-    return m_fFrameStartTimef;
+    return _frameStartTimef;
 }
 
 float Timing::getTime() const
@@ -71,7 +71,7 @@ float Timing::getTime() const
     
     timeSinceStart.QuadPart = curTime.QuadPart - sStartTime.QuadPart;
     
-    return timeSinceStart.QuadPart * m_dPerfCountDuration;
+    return timeSinceStart.QuadPart * _dPerfCountDuration;
 #else
     auto now = steady_clock::now();
     auto ms = duration_cast< milliseconds >(now - sStartTime).count();
@@ -85,15 +85,15 @@ Timing::Timing()
 #if _WIN32
     LARGE_INTEGER perfFreq;
     QueryPerformanceFrequency(&perfFreq);
-    m_dPerfCountDuration = 1.0 / perfFreq.QuadPart;
+    _dPerfCountDuration = 1.0 / perfFreq.QuadPart;
     
     QueryPerformanceCounter(&sStartTime);
 #else
     sStartTime = steady_clock::now();
 #endif
     
-    m_dLastFrameStartTime = getTime();
-    m_fFrameStartTimef = static_cast<float> (m_dLastFrameStartTime);
+    _lastFrameStartTime = getTime();
+    _frameStartTimef = static_cast<float> (_lastFrameStartTime);
 }
 
 Timing::~Timing()

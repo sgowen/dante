@@ -36,14 +36,14 @@ protected:
     virtual void onFrame();
     
 private:
-    JsonFile* m_config;
+    JsonFile* _config;
     
-    std::string m_serverIPAddress;
-    std::string m_name;
+    std::string _serverIPAddress;
+    std::string _name;
 #ifdef NG_STEAM
-    CSteamID m_serverSteamID;
+    CSteamID _serverSteamID;
 #endif
-    bool m_isSteam;
+    bool _isSteam;
     
     void handleNonMoveInput();
     

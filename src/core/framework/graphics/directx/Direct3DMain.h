@@ -62,23 +62,23 @@ public:
 
 private:
 	// Device resources.
-	std::unique_ptr<DX::DeviceResources> m_deviceResources;
+	std::unique_ptr<DX::DeviceResources> _deviceResources;
 
 	// Rendering loop timer.
-	DX::StepTimer m_timer;
+	DX::StepTimer _timer;
 
-	std::unique_ptr<DirectX::Keyboard> m_keyboard;
-	DirectX::Keyboard::KeyboardStateTracker m_keys;
-	std::unique_ptr<DirectX::Mouse> m_mouse;
-	std::unique_ptr<DirectX::GamePad> m_gamePad;
-	DirectX::GamePad::ButtonStateTracker m_buttons[4];
+	std::unique_ptr<DirectX::Keyboard> _keyboard;
+	DirectX::Keyboard::KeyboardStateTracker _keys;
+	std::unique_ptr<DirectX::Mouse> _mouse;
+	std::unique_ptr<DirectX::GamePad> _gamePad;
+	DirectX::GamePad::ButtonStateTracker _buttons[4];
 
-	Engine* m_engine;
+	Engine* _engine;
 
-	float m_fDPI;
-	bool m_isPointerPressed;
-	bool m_isDeviceLost;
-	bool m_isWindowsMobile;
+	float _dpi;
+	bool _isPointerPressed;
+	bool _isDeviceLost;
+	bool _isWindowsMobile;
 
     void Update(DX::StepTimer const& timer);
     void Render();

@@ -25,7 +25,7 @@ public:
 	virtual void unbind();
 
 private:
-    Direct3DProgram* m_program;
+    Direct3DProgram* _program;
 };
 
 #endif /* defined(__noctisgames__Direct3DFramebufferToScreenGpuProgramWrapper__) */

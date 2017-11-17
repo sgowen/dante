@@ -23,22 +23,22 @@ OpenGLNGRectBatcher::OpenGLNGRectBatcher(bool isFill) : NGRectBatcher(isFill)
 void OpenGLNGRectBatcher::beginBatch()
 {
     OGLManager->getColorVertices().clear();
-    m_iNumNGRects = 0;
+    _numNGRects = 0;
 }
 
 void OpenGLNGRectBatcher::endBatch(GpuProgramWrapper &gpuProgramWrapper)
 {
-    if (m_iNumNGRects > 0)
+    if (_numNGRects > 0)
     {
         gpuProgramWrapper.bind();
         
-        if (m_isFill)
+        if (_isFill)
         {
-            glDrawElements(GL_TRIANGLES, m_iNumNGRects * INDICES_PER_RECTANGLE, GL_UNSIGNED_SHORT, &OGLManager->getIndices()[0]);
+            glDrawElements(GL_TRIANGLES, _numNGRects * INDICES_PER_RECTANGLE, GL_UNSIGNED_SHORT, &OGLManager->getIndices()[0]);
         }
         else
         {
-            glDrawArrays(GL_LINES, 0, VERTICES_PER_LINE * m_iNumNGRects * 4);
+            glDrawArrays(GL_LINES, 0, VERTICES_PER_LINE * _numNGRects * 4);
         }
         
         gpuProgramWrapper.unbind();
@@ -47,7 +47,7 @@ void OpenGLNGRectBatcher::endBatch(GpuProgramWrapper &gpuProgramWrapper)
 
 void OpenGLNGRectBatcher::renderNGRect(float x1, float y1, float x2, float y2, Color &c)
 {
-    if (m_isFill)
+    if (_isFill)
     {
         OGLManager->addVertexCoordinate(x1, y1, 0, c.red, c.green, c.blue, c.alpha);
         OGLManager->addVertexCoordinate(x1, y2, 0, c.red, c.green, c.blue, c.alpha);
@@ -69,5 +69,5 @@ void OpenGLNGRectBatcher::renderNGRect(float x1, float y1, float x2, float y2, C
         OGLManager->addVertexCoordinate(x1, y1, 0, c.red, c.green, c.blue, c.alpha);
     }
 
-    m_iNumNGRects++;
+    _numNGRects++;
 }

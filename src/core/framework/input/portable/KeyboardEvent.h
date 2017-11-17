@@ -33,8 +33,8 @@ public:
     bool isUp();
     
 private:
-    unsigned short m_sKey;
-    int m_iStatus;
+    unsigned short _sKey;
+    int _status;
 };
 
 #endif /* defined(__noctisgames__KeyboardEvent__) */

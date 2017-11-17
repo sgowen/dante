@@ -14,9 +14,9 @@
 class CursorEvent
 {
 private:
-    CursorEventType m_type;
-    float m_fX;
-    float m_fY;
+    CursorEventType _type;
+    float _x;
+    float _y;
     
 public:
     CursorEvent(CursorEventType type = CursorEventType_DOWN, float x = 0, float y = 0);

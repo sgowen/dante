@@ -16,75 +16,75 @@
 #include "FrameworkConstants.h"
 
 ClientProxy::ClientProxy(IMachineAddress* inMachineAddress, const std::string& inName, uint8_t inPlayerId) :
-m_deliveryNotificationManager(DeliveryNotificationManager(false, true)),
-m_machineAddress(inMachineAddress->createNewCopy()),
-m_name(inName),
-m_fLastPacketFromClientTime(0),
-m_isLastMoveTimestampDirty(false)
+_deliveryNotificationManager(DeliveryNotificationManager(false, true)),
+_machineAddress(inMachineAddress->createNewCopy()),
+_name(inName),
+_lastPacketFromClientTime(0),
+_isLastMoveTimestampDirty(false)
 {
-    m_playerIds.push_back(inPlayerId);
+    _playerIds.push_back(inPlayerId);
     
     updateLastPacketTime();
 }
 
 ClientProxy::~ClientProxy()
 {
-    delete m_machineAddress;
+    delete _machineAddress;
 }
 
 IMachineAddress* ClientProxy::getMachineAddress() const
 {
-    return m_machineAddress;
+    return _machineAddress;
 }
 
 uint8_t ClientProxy::getPlayerId(uint8_t index) const
 {
-    return m_playerIds.size() > index ? m_playerIds[index] : INPUT_UNASSIGNED;
+    return _playerIds.size() > index ? _playerIds[index] : INPUT_UNASSIGNED;
 }
 
 const std::string& ClientProxy::getName() const
 {
-    return m_name;
+    return _name;
 }
 
 void ClientProxy::updateLastPacketTime()
 {
-    m_fLastPacketFromClientTime = Timing::getInstance()->getFrameStartTime();
+    _lastPacketFromClientTime = Timing::getInstance()->getFrameStartTime();
 }
 
 float ClientProxy::getLastPacketFromClientTime() const
 {
-    return m_fLastPacketFromClientTime;
+    return _lastPacketFromClientTime;
 }
 
 DeliveryNotificationManager& ClientProxy::getDeliveryNotificationManager()
 {
-    return m_deliveryNotificationManager;
+    return _deliveryNotificationManager;
 }
 
 ReplicationManagerServer& ClientProxy::getReplicationManagerServer()
 {
-    return m_replicationManagerServer;
+    return _replicationManagerServer;
 }
 
 MoveList& ClientProxy::getUnprocessedMoveList()
 {
-    return m_unprocessedMoveList;
+    return _unprocessedMoveList;
 }
 
 void ClientProxy::setIsLastMoveTimestampDirty(bool inIsDirty)
 {
-    m_isLastMoveTimestampDirty = inIsDirty;
+    _isLastMoveTimestampDirty = inIsDirty;
 }
 
 bool ClientProxy::isLastMoveTimestampDirty() const
 {
-    return m_isLastMoveTimestampDirty;
+    return _isLastMoveTimestampDirty;
 }
 
 void ClientProxy::onLocalPlayerAdded(uint8_t playerId)
 {
-    for (typename std::vector<uint8_t>::iterator i = m_playerIds.begin(); i != m_playerIds.end(); )
+    for (typename std::vector<uint8_t>::iterator i = _playerIds.begin(); i != _playerIds.end(); )
     {
         if ((*i) == playerId)
         {
@@ -96,16 +96,16 @@ void ClientProxy::onLocalPlayerAdded(uint8_t playerId)
         }
     }
     
-    m_playerIds.push_back(playerId);
+    _playerIds.push_back(playerId);
 }
 
 void ClientProxy::onLocalPlayerRemoved(uint8_t playerId)
 {
-    for (typename std::vector<uint8_t>::iterator i = m_playerIds.begin(); i != m_playerIds.end(); )
+    for (typename std::vector<uint8_t>::iterator i = _playerIds.begin(); i != _playerIds.end(); )
     {
         if ((*i) == playerId)
         {
-            i = m_playerIds.erase(i);
+            i = _playerIds.erase(i);
         }
         else
         {
@@ -116,10 +116,10 @@ void ClientProxy::onLocalPlayerRemoved(uint8_t playerId)
 
 std::vector<uint8_t>& ClientProxy::getPlayerIds()
 {
-    return m_playerIds;
+    return _playerIds;
 }
 
 uint8_t ClientProxy::getNumPlayers()
 {
-    return static_cast<int>(m_playerIds.size());
+    return static_cast<int>(_playerIds.size());
 }

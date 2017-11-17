@@ -32,8 +32,8 @@ public:
     bool isControllerConnected();
     
 private:
-    NGRollingPool<GamePadEvent>* m_pool;
-    float m_fTimeSinceLastGamePadEvent;
+    NGRollingPool<GamePadEvent>* _pool;
+    float _timeSinceLastGamePadEvent;
     
     void addEvent(GamePadEventType type, int index, float x, float y);
     

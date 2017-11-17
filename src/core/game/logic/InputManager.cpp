@@ -48,7 +48,7 @@ MoveList& InputManager::sGetMoveList()
 
 void InputManager::sOnPlayerWelcomed(uint8_t playerId)
 {
-    getInstance()->m_currentState->activateNextPlayer(playerId);
+    getInstance()->_currentState->activateNextPlayer(playerId);
 }
 
 void InputManager::update()
@@ -57,31 +57,31 @@ void InputManager::update()
     KEYBOARD_INPUT_MANAGER->process();
     GAME_PAD_INPUT_MANAGER->process();
     
-    m_currentState->m_iMenuState = MENU_STATE_NONE;
+    _currentState->_menuState = MENU_STATE_NONE;
     
-    if (m_isConnected)
+    if (_isConnected)
     {
         for (std::vector<KeyboardEvent *>::iterator i = KEYBOARD_INPUT_MANAGER->getEvents().begin(); i != KEYBOARD_INPUT_MANAGER->getEvents().end(); ++i)
         {
             switch ((*i)->getKey())
             {
                 case NG_KEY_M:
-                    m_currentState->m_iMenuState = (*i)->isUp() ? MENU_STATE_CLIENT_MAIN_TOGGLE_MUSIC : MENU_STATE_NONE;
+                    _currentState->_menuState = (*i)->isUp() ? MENU_STATE_CLIENT_MAIN_TOGGLE_MUSIC : MENU_STATE_NONE;
                     continue;
                 case NG_KEY_S:
-                    m_currentState->m_iMenuState = (*i)->isUp() ? MENU_STATE_CLIENT_MAIN_TOGGLE_SOUND : MENU_STATE_NONE;
+                    _currentState->_menuState = (*i)->isUp() ? MENU_STATE_CLIENT_MAIN_TOGGLE_SOUND : MENU_STATE_NONE;
                     continue;
                 case NG_KEY_T:
-                    m_currentState->m_iMenuState = (*i)->isUp() ? MENU_STATE_SERVER_TOGGLE_ENEMIES : MENU_STATE_NONE;
+                    _currentState->_menuState = (*i)->isUp() ? MENU_STATE_SERVER_TOGGLE_ENEMIES : MENU_STATE_NONE;
                     continue;
                 case NG_KEY_C:
-                    m_currentState->m_iMenuState = (*i)->isUp() ? MENU_STATE_SERVER_TOGGLE_OBJECTS : MENU_STATE_NONE;
+                    _currentState->_menuState = (*i)->isUp() ? MENU_STATE_SERVER_TOGGLE_OBJECTS : MENU_STATE_NONE;
                     continue;
                 case NG_KEY_I:
-                    m_currentState->m_iMenuState = (*i)->isUp() ? MENU_STATE_SERVER_TOGGLE_SERVER_DISPLAY : MENU_STATE_NONE;
+                    _currentState->_menuState = (*i)->isUp() ? MENU_STATE_SERVER_TOGGLE_SERVER_DISPLAY : MENU_STATE_NONE;
                     continue;
                 case NG_KEY_ESCAPE:
-                    m_currentState->m_iMenuState = (*i)->isUp() ? MENU_STATE_ESCAPE : MENU_STATE_NONE;
+                    _currentState->_menuState = (*i)->isUp() ? MENU_STATE_ESCAPE : MENU_STATE_NONE;
                     continue;
                 default:
                 {
@@ -91,40 +91,40 @@ void InputManager::update()
                         {
                             // Player 1
                             case NG_KEY_W:
-                                m_currentState->getGameInputState(0).m_isJumping = (*i)->isDown();
+                                _currentState->getGameInputState(0)._isJumping = (*i)->isDown();
                                 continue;
                             case NG_KEY_A:
-                                m_currentState->getGameInputState(0).m_isMovingLeft = (*i)->isDown();
+                                _currentState->getGameInputState(0)._isMovingLeft = (*i)->isDown();
                                 continue;
                             case NG_KEY_D:
-                                m_currentState->getGameInputState(0).m_isMovingRight = (*i)->isDown();
+                                _currentState->getGameInputState(0)._isMovingRight = (*i)->isDown();
                                 continue;
                             case NG_KEY_ARROW_DOWN:
-                                m_currentState->getGameInputState(0).m_isSprinting = (*i)->isDown();
+                                _currentState->getGameInputState(0)._isSprinting = (*i)->isDown();
                                 continue;
                             case NG_KEY_SPACE_BAR:
-                                m_currentState->getGameInputState(0).m_isShooting = (*i)->isDown();
+                                _currentState->getGameInputState(0)._isShooting = (*i)->isDown();
                                 continue;
 //#ifdef _DEBUG
                             // Player 2, Debug Only
                             case NG_KEY_ARROW_UP:
-                                m_currentState->getGameInputState(1).m_isJumping = (*i)->isDown();
+                                _currentState->getGameInputState(1)._isJumping = (*i)->isDown();
                                 continue;
                             case NG_KEY_ARROW_LEFT:
-                                m_currentState->getGameInputState(1).m_isMovingLeft = (*i)->isDown();
+                                _currentState->getGameInputState(1)._isMovingLeft = (*i)->isDown();
                                 continue;
                             case NG_KEY_ARROW_RIGHT:
-                                m_currentState->getGameInputState(1).m_isMovingRight = (*i)->isDown();
+                                _currentState->getGameInputState(1)._isMovingRight = (*i)->isDown();
                                 continue;
                             case NG_KEY_COMMA:
-                                m_currentState->getGameInputState(1).m_isSprinting = (*i)->isDown();
+                                _currentState->getGameInputState(1)._isSprinting = (*i)->isDown();
                                 continue;
 							case NG_KEY_PERIOD:
-                                m_currentState->getGameInputState(1).m_isShooting = (*i)->isDown();
+                                _currentState->getGameInputState(1)._isShooting = (*i)->isDown();
                                 continue;
                             case NG_KEY_CARRIAGE_RETURN:
-                                m_currentState->getGameInputState(1).m_iPlayerId = INPUT_UNASSIGNED;
-                                m_currentState->m_iMenuState = (*i)->isDown() ? MENU_STATE_LOCAL_PLAYER_DROP_OUT_1 : MENU_STATE_NONE;
+                                _currentState->getGameInputState(1)._playerId = INPUT_UNASSIGNED;
+                                _currentState->_menuState = (*i)->isDown() ? MENU_STATE_LOCAL_PLAYER_DROP_OUT_1 : MENU_STATE_NONE;
                                 continue;
 //#endif
                             default:
@@ -141,43 +141,43 @@ void InputManager::update()
             switch ((*i)->getType())
             {
                 case GamePadEventType_A_BUTTON:
-                    m_currentState->getGameInputState((*i)->getIndex()).m_isJumping = (*i)->isPressed();
+                    _currentState->getGameInputState((*i)->getIndex())._isJumping = (*i)->isPressed();
                     continue;
                 case GamePadEventType_STICK_LEFT:
                 {
                     float val = sanitizeCloseToZeroValue((*i)->getX());
-                    m_currentState->getGameInputState((*i)->getIndex()).m_isMovingRight = val > 0;
-                    m_currentState->getGameInputState((*i)->getIndex()).m_isMovingLeft = val < 0;
+                    _currentState->getGameInputState((*i)->getIndex())._isMovingRight = val > 0;
+                    _currentState->getGameInputState((*i)->getIndex())._isMovingLeft = val < 0;
                 }
                     continue;
                 case GamePadEventType_BUMPER_LEFT:
                 case GamePadEventType_BUMPER_RIGHT:
-                    m_currentState->getGameInputState((*i)->getIndex()).m_isSprinting = (*i)->isPressed();
+                    _currentState->getGameInputState((*i)->getIndex())._isSprinting = (*i)->isPressed();
                     continue;
                 case GamePadEventType_X_BUTTON:
 				case GamePadEventType_TRIGGER:
-					m_currentState->getGameInputState((*i)->getIndex()).m_isShooting = (*i)->getX() > 0 || (*i)->getY() > 0;
+					_currentState->getGameInputState((*i)->getIndex())._isShooting = (*i)->getX() > 0 || (*i)->getY() > 0;
 					continue;
                 case GamePadEventType_BACK_BUTTON:
                 {
                     if ((*i)->getIndex() == 3)
                     {
-                        m_currentState->getGameInputState((*i)->getIndex()).m_iPlayerId = INPUT_UNASSIGNED;
-                        m_currentState->m_iMenuState = !(*i)->isPressed() ? MENU_STATE_LOCAL_PLAYER_DROP_OUT_3 : MENU_STATE_NONE;
+                        _currentState->getGameInputState((*i)->getIndex())._playerId = INPUT_UNASSIGNED;
+                        _currentState->_menuState = !(*i)->isPressed() ? MENU_STATE_LOCAL_PLAYER_DROP_OUT_3 : MENU_STATE_NONE;
                     }
                     else if ((*i)->getIndex() == 2)
                     {
-                        m_currentState->getGameInputState((*i)->getIndex()).m_iPlayerId = INPUT_UNASSIGNED;
-                        m_currentState->m_iMenuState = !(*i)->isPressed() ? MENU_STATE_LOCAL_PLAYER_DROP_OUT_2 : MENU_STATE_NONE;
+                        _currentState->getGameInputState((*i)->getIndex())._playerId = INPUT_UNASSIGNED;
+                        _currentState->_menuState = !(*i)->isPressed() ? MENU_STATE_LOCAL_PLAYER_DROP_OUT_2 : MENU_STATE_NONE;
                     }
                     else if ((*i)->getIndex() == 1)
                     {
-                        m_currentState->getGameInputState((*i)->getIndex()).m_iPlayerId = INPUT_UNASSIGNED;
-                        m_currentState->m_iMenuState = !(*i)->isPressed() ? MENU_STATE_LOCAL_PLAYER_DROP_OUT_1 : MENU_STATE_NONE;
+                        _currentState->getGameInputState((*i)->getIndex())._playerId = INPUT_UNASSIGNED;
+                        _currentState->_menuState = !(*i)->isPressed() ? MENU_STATE_LOCAL_PLAYER_DROP_OUT_1 : MENU_STATE_NONE;
                     }
                     else
                     {
-                        m_currentState->m_iMenuState = (*i)->isPressed() ? MENU_STATE_ESCAPE : MENU_STATE_NONE;
+                        _currentState->_menuState = (*i)->isPressed() ? MENU_STATE_ESCAPE : MENU_STATE_NONE;
                     }
                 }
                     continue;
@@ -186,7 +186,7 @@ void InputManager::update()
             }
         }
     }
-    else if (m_isLiveMode)
+    else if (_isLiveMode)
     {
         std::stringstream ss;
         
@@ -200,7 +200,7 @@ void InputManager::update()
                 {
                     if (keyboardEvent->getKey() == NG_KEY_CARRIAGE_RETURN)
                     {
-                        m_isTimeToProcessInput = true;
+                        _isTimeToProcessInput = true;
                         return;
                     }
                     else if (keyboardEvent->getKey() == NG_KEY_ESCAPE)
@@ -211,10 +211,10 @@ void InputManager::update()
                              || keyboardEvent->getKey() == NG_KEY_DELETE)
                     {
                         std::string s = ss.str();
-                        m_liveInput += s;
-                        if (m_liveInput.end() > m_liveInput.begin())
+                        _liveInput += s;
+                        if (_liveInput.end() > _liveInput.begin())
                         {
-                            m_liveInput.erase(m_liveInput.end() - 1, m_liveInput.end());
+                            _liveInput.erase(_liveInput.end() - 1, _liveInput.end());
                         }
                         return;
                     }
@@ -234,7 +234,7 @@ void InputManager::update()
                 {
                     if (keyboardEvent->getKey() == NG_KEY_ESCAPE)
                     {
-                        m_currentState->m_iMenuState = MENU_STATE_ESCAPE;
+                        _currentState->_menuState = MENU_STATE_ESCAPE;
                         return;
                     }
                 }
@@ -242,11 +242,11 @@ void InputManager::update()
         }
         
         std::string s = ss.str();
-        m_liveInput += s;
-        if (m_liveInput.length() > 16)
+        _liveInput += s;
+        if (_liveInput.length() > 16)
         {
-            int sub = static_cast<int>(m_liveInput.length()) - 16;
-            m_liveInput.erase(m_liveInput.end() - sub, m_liveInput.end());
+            int sub = static_cast<int>(_liveInput.length()) - 16;
+            _liveInput.erase(_liveInput.end() - sub, _liveInput.end());
         }
     }
     else
@@ -261,37 +261,37 @@ void InputManager::update()
             switch ((*i)->getKey())
             {
                 case NG_KEY_A:
-                    m_currentState->m_iMenuState = MENU_STATE_ACTIVATE_STEAM;
+                    _currentState->_menuState = MENU_STATE_ACTIVATE_STEAM;
                     continue;
                 case NG_KEY_D:
-                    m_currentState->m_iMenuState = MENU_STATE_DEACTIVATE_STEAM;
+                    _currentState->_menuState = MENU_STATE_DEACTIVATE_STEAM;
                     continue;
                 case NG_KEY_S:
-                    m_currentState->m_iMenuState = MENU_STATE_START_SERVER;
+                    _currentState->_menuState = MENU_STATE_START_SERVER;
                     continue;
                 case NG_KEY_J:
-                    m_currentState->m_iMenuState = MENU_STATE_JOIN_LOCAL_SERVER;
+                    _currentState->_menuState = MENU_STATE_JOIN_LOCAL_SERVER;
                     continue;
                 case NG_KEY_L:
-                    m_currentState->m_iMenuState = MENU_STATE_STEAM_REFRESH_LAN_SERVERS;
+                    _currentState->_menuState = MENU_STATE_STEAM_REFRESH_LAN_SERVERS;
                     continue;
                 case NG_KEY_I:
-                    m_currentState->m_iMenuState = MENU_STATE_STEAM_REFRESH_INTERNET_SERVERS;
+                    _currentState->_menuState = MENU_STATE_STEAM_REFRESH_INTERNET_SERVERS;
                     continue;
                 case NG_KEY_ONE:
-                    m_currentState->m_iMenuState = MENU_STATE_STEAM_JOIN_SERVER_1;
+                    _currentState->_menuState = MENU_STATE_STEAM_JOIN_SERVER_1;
                     continue;
                 case NG_KEY_TWO:
-                    m_currentState->m_iMenuState = MENU_STATE_STEAM_JOIN_SERVER_2;
+                    _currentState->_menuState = MENU_STATE_STEAM_JOIN_SERVER_2;
                     continue;
                 case NG_KEY_THREE:
-                    m_currentState->m_iMenuState = MENU_STATE_STEAM_JOIN_SERVER_3;
+                    _currentState->_menuState = MENU_STATE_STEAM_JOIN_SERVER_3;
                     continue;
                 case NG_KEY_FOUR:
-                    m_currentState->m_iMenuState = MENU_STATE_STEAM_JOIN_SERVER_4;
+                    _currentState->_menuState = MENU_STATE_STEAM_JOIN_SERVER_4;
                     continue;
                 case NG_KEY_ESCAPE:
-                    m_currentState->m_iMenuState = MENU_STATE_ESCAPE;
+                    _currentState->_menuState = MENU_STATE_ESCAPE;
                     continue;
                 default:
                     continue;
@@ -308,10 +308,10 @@ void InputManager::update()
             switch ((*i)->getType())
             {
                 case GamePadEventType_START_BUTTON:
-                    m_currentState->m_iMenuState = MENU_STATE_START_SERVER;
+                    _currentState->_menuState = MENU_STATE_START_SERVER;
                     continue;
                 case GamePadEventType_BACK_BUTTON:
-                    m_currentState->m_iMenuState = MENU_STATE_ESCAPE;
+                    _currentState->_menuState = MENU_STATE_ESCAPE;
                     continue;
                 default:
                     continue;
@@ -321,93 +321,93 @@ void InputManager::update()
     
     if (isTimeToSampleInput())
     {
-        m_pendingMove = &sampleInputAsMove();
+        _pendingMove = &sampleInputAsMove();
     }
 }
 
 const Move* InputManager::getPendingMove()
 {
-    return m_pendingMove;
+    return _pendingMove;
 }
 
 void InputManager::clearPendingMove()
 {
-    m_pendingMove = nullptr;
+    _pendingMove = nullptr;
 }
 
 void InputManager::setConnected(bool isConnected)
 {
-    m_isConnected = isConnected;
+    _isConnected = isConnected;
     
-    m_moveList.clear();
+    _moveList.clear();
     
-    m_currentState->reset();
+    _currentState->reset();
 }
 
 void InputManager::setLiveMode(bool isLiveMode)
 {
-    m_isLiveMode = isLiveMode;
+    _isLiveMode = isLiveMode;
     
-    m_moveList.clear();
+    _moveList.clear();
     
-    m_liveInput.clear();
+    _liveInput.clear();
     
-    m_isTimeToProcessInput = false;
+    _isTimeToProcessInput = false;
 }
 
 void InputManager::resetLiveInput()
 {
-    m_liveInput.clear();
+    _liveInput.clear();
     
-    m_isTimeToProcessInput = false;
+    _isTimeToProcessInput = false;
 }
 
 bool InputManager::isLiveMode()
 {
-    return m_isLiveMode;
+    return _isLiveMode;
 }
 
 bool InputManager::isTimeToProcessInput()
 {
-    return m_isTimeToProcessInput;
+    return _isTimeToProcessInput;
 }
 
 InputState* InputManager::getInputState()
 {
-    return m_currentState;
+    return _currentState;
 }
 
 MoveList& InputManager::getMoveList()
 {
-    return m_moveList;
+    return _moveList;
 }
 
 std::string& InputManager::getLiveInputRef()
 {
-    return m_liveInput;
+    return _liveInput;
 }
 
 std::string InputManager::getLiveInput()
 {
-    return m_liveInput;
+    return _liveInput;
 }
 
 bool InputManager::isPlayerIdLocalHost(uint8_t playerId)
 {
-    return m_currentState->isPlayerIdLocalHost(playerId);
+    return _currentState->isPlayerIdLocalHost(playerId);
 }
 
 const Move& InputManager::sampleInputAsMove()
 {
     InputState* inputState = static_cast<InputState*>(POOLED_OBJ_MGR->borrowInputState());
-    m_currentState->copyTo(inputState);
+    _currentState->copyTo(inputState);
     
-    return m_moveList.addMove(inputState, Timing::getInstance()->getFrameStartTime());
+    return _moveList.addMove(inputState, Timing::getInstance()->getFrameStartTime());
 }
 
 bool InputManager::isTimeToSampleInput()
 {
-    if (!m_isConnected)
+    if (!_isConnected)
     {
         return false;
     }
@@ -416,11 +416,11 @@ bool InputManager::isTimeToSampleInput()
 }
 
 InputManager::InputManager() :
-m_currentState(static_cast<InputState*>(POOLED_OBJ_MGR->borrowInputState())),
-m_pendingMove(nullptr),
-m_isConnected(false),
-m_isLiveMode(false),
-m_isTimeToProcessInput(false)
+_currentState(static_cast<InputState*>(POOLED_OBJ_MGR->borrowInputState())),
+_pendingMove(nullptr),
+_isConnected(false),
+_isLiveMode(false),
+_isTimeToProcessInput(false)
 {
     // Empty
 }

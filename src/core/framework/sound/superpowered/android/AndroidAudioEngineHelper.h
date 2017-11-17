@@ -40,14 +40,14 @@ public:
     void deinit();
 
 private:
-    JavaVM* m_jvm;
-    jobject m_resources;
-    jstring m_javaPackageResourcePath;
-    const char* m_packageResourcePath;
-    jstring m_packageName;
-    SuperpoweredSoundManager* m_superpoweredSoundManager;
-    std::vector<SuperpoweredAndroidAudioIO*> m_audioSystems;
-    int m_iSampleRate;
+    JavaVM* _jvm;
+    jobject _resources;
+    jstring _javaPackageResourcePath;
+    const char* _packageResourcePath;
+    jstring _packageName;
+    SuperpoweredSoundManager* _superpoweredSoundManager;
+    std::vector<SuperpoweredAndroidAudioIO*> _audioSystems;
+    int _sampleRate;
     
     // ctor, copy ctor, and assignment should be private in a Singleton
     AndroidAudioEngineHelper();

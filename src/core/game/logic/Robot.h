@@ -90,44 +90,44 @@ public:
     bool isPending();
     
 private:
-    uint64_t m_iAddressHash;
-    uint32_t m_iFirstProjectileId;
-    uint8_t m_iPlayerId;
-    std::string m_playerName;
+    uint64_t _addressHash;
+    uint32_t _firstProjectileId;
+    uint8_t _playerId;
+    std::string _playerName;
     
-    uint8_t m_iNumJumps;
-    uint8_t m_iNextProjectileIndex;
-    bool m_isFacingLeft;
-    bool m_isShooting;
-    bool m_isSprinting;
-    bool m_isFirstJumpCompleted;
+    uint8_t _numJumps;
+    uint8_t _nextProjectileIndex;
+    bool _isFacingLeft;
+    bool _isShooting;
+    bool _isSprinting;
+    bool _isFirstJumpCompleted;
     
-    uint8_t m_iHealth;
+    uint8_t _health;
     
-    uint32_t m_iNumKills;
-    bool m_wasLastKillHeadshot;
+    uint32_t _numKills;
+    bool _wasLastKillHeadshot;
     
-    float m_fSpeed;
-    float m_fJumpSpeed;
+    float _speed;
+    float _jumpSpeed;
     
-    float m_fShotCooldownTime;
-    int m_iNumSpacePiratesTouching;
-    bool m_hasInitializedProjectiles;
-    bool m_isPending;
+    float _shotCooldownTime;
+    int _numSpacePiratesTouching;
+    bool _hasInitializedProjectiles;
+    bool _isPending;
     
     // Cached Last Known Values (from previous frame)
-    uint8_t m_iNumJumpsLastKnown;
-    uint8_t m_iNextProjectileIndexLastKnown;
-    uint8_t m_iHealthLastKnown;
-    uint32_t m_iNumKillsLastKnown;
-    float m_fShotCooldownTimeLastKnown;
-    bool m_wasLastKillHeadshotLastKnown;
-    bool m_isFacingLeftLastKnown;
-    bool m_isShootingLastKnown;
-    bool m_isSprintingLastKnown;
-    bool m_isFirstJumpCompletedLastKnown;
+    uint8_t _numJumpsLastKnown;
+    uint8_t _nextProjectileIndexLastKnown;
+    uint8_t _healthLastKnown;
+    uint32_t _numKillsLastKnown;
+    float _shotCooldownTimeLastKnown;
+    bool _wasLastKillHeadshotLastKnown;
+    bool _isFacingLeftLastKnown;
+    bool _isShootingLastKnown;
+    bool _isSprintingLastKnown;
+    bool _isFirstJumpCompletedLastKnown;
     
-    Projectile* m_projectiles[NUM_PROJECTILES];
+    Projectile* _projectiles[NUM_PROJECTILES];
     
     void fireProjectile();
     

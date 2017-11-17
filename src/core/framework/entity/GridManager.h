@@ -22,7 +22,7 @@ public:
     float getGridCellSize();
     
 private:
-    float m_fGridCellSize;
+    float _gridCellSize;
     
     // ctor, copy ctor, and assignment should be private in a Singleton
     GridManager();

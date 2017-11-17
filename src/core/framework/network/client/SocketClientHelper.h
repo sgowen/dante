@@ -31,8 +31,8 @@ public:
     virtual std::string& getName();
     
 private:
-    SocketAddress* m_serverAddress;
-    std::string m_name;
+    SocketAddress* _serverAddress;
+    std::string _name;
     
     void updateState();
 };

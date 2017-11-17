@@ -31,10 +31,10 @@ public:
     int getNumInstances();
     
 protected:
-    std::vector<ISound *> m_sounds;
-    int m_iSoundIndex;
-    int m_iSoundId;
-    int m_iNumInstances;
+    std::vector<ISound *> _sounds;
+    int _soundIndex;
+    int _soundId;
+    int _numInstances;
 };
 
 #endif /* defined(__noctisgames__ISoundWrapper__) */

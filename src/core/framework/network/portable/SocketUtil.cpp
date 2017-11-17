@@ -21,7 +21,7 @@ SocketUtil* SocketUtil::getInstance()
 
 bool SocketUtil::init()
 {
-    if (m_isInitialized)
+    if (_isInitialized)
     {
         return true;
     }
@@ -36,7 +36,7 @@ bool SocketUtil::init()
     }
 #endif
     
-    m_isInitialized = true;
+    _isInitialized = true;
     
     return true;
 }
@@ -89,14 +89,14 @@ UDPSocket* SocketUtil::createUDPSocket(SocketAddressFamily inFamily)
     }
 }
 
-SocketUtil::SocketUtil() : m_isInitialized(false)
+SocketUtil::SocketUtil() : _isInitialized(false)
 {
     // Empty
 }
 
 SocketUtil::~SocketUtil()
 {
-    if (m_isInitialized)
+    if (_isInitialized)
     {
 #if _WIN32
         WSACleanup();

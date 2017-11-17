@@ -13,49 +13,49 @@
 #include "Vector2.h"
 
 Triangle::Triangle(float x1, float y1, float x2, float y2, float x3, float y3) :
-m_sideA(x1, y1, x2, y2),
-m_sideB(x2, y2, x3, y3),
-m_sideC(x3, y3, x1, y1)
+_sideA(x1, y1, x2, y2),
+_sideB(x2, y2, x3, y3),
+_sideC(x3, y3, x1, y1)
 {
     // Empty
 }
 
 void Triangle::set(float x1, float y1, float x2, float y2, float x3, float y3)
 {
-    m_sideA.getOrigin().set(x1, y1);
-    m_sideA.getEnd().set(x2, y2);
-    m_sideB.getOrigin().set(x2, y2);
-    m_sideB.getEnd().set(x3, y3);
-    m_sideC.getOrigin().set(x3, y3);
-    m_sideC.getEnd().set(x1, y1);
+    _sideA.getOrigin().set(x1, y1);
+    _sideA.getEnd().set(x2, y2);
+    _sideB.getOrigin().set(x2, y2);
+    _sideB.getEnd().set(x3, y3);
+    _sideC.getOrigin().set(x3, y3);
+    _sideC.getEnd().set(x1, y1);
 }
 
 Vector2& Triangle::getPointA()
 {
-    return m_sideA.getOrigin();
+    return _sideA.getOrigin();
 }
 
 Vector2& Triangle::getPointB()
 {
-    return m_sideB.getOrigin();
+    return _sideB.getOrigin();
 }
 
 Vector2& Triangle::getPointC()
 {
-    return m_sideC.getOrigin();
+    return _sideC.getOrigin();
 }
 
 Line& Triangle::getSideA()
 {
-    return m_sideA;
+    return _sideA;
 }
 
 Line& Triangle::getSideB()
 {
-    return m_sideB;
+    return _sideB;
 }
 
 Line& Triangle::getSideC()
 {
-    return m_sideC;
+    return _sideC;
 }

@@ -27,7 +27,7 @@ SocketServerHelper::~SocketServerHelper()
 {
     for (uint8_t i = 0; i < MAX_NUM_PLAYERS_PER_SERVER; ++i)
     {
-        ClientProxy* clientProxy = m_getClientProxyFunc(i);
+        ClientProxy* clientProxy = _getClientProxyFunc(i);
         if (clientProxy)
         {
             SocketAddress* userAddress = static_cast<SocketAddress*>(clientProxy->getMachineAddress());
@@ -54,14 +54,14 @@ void SocketServerHelper::processSpecialPacket(uint32_t packetType, InputMemoryBi
             bool isFound = false;
             for (uint8_t i = 0; i < MAX_NUM_PLAYERS_PER_SERVER; ++i)
             {
-                ClientProxy* clientProxy = m_getClientProxyFunc(i);
+                ClientProxy* clientProxy = _getClientProxyFunc(i);
                 if (clientProxy)
                 {
                     SocketAddress* userAddress = static_cast<SocketAddress*>(clientProxy->getMachineAddress());
                     if (userAddress->getHash() == socketAddrHashRemote)
                     {
                         isFound = true;
-                        m_handleClientDisconnectedFunc(clientProxy);
+                        _handleClientDisconnectedFunc(clientProxy);
                         break;
                     }
                 }
@@ -89,10 +89,10 @@ void SocketServerHelper::onClientDisconnected(ClientProxy* clientProxy)
 
 IMachineAddress* SocketServerHelper::getServerAddress()
 {
-    return (static_cast<SocketPacketHandler*>(m_packetHandler))->getSocketAddress();
+    return (static_cast<SocketPacketHandler*>(_packetHandler))->getSocketAddress();
 }
 
 bool SocketServerHelper::isConnected()
 {
-    return (static_cast<SocketPacketHandler*>(m_packetHandler))->isInitialized();
+    return (static_cast<SocketPacketHandler*>(_packetHandler))->isInitialized();
 }

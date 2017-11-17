@@ -25,7 +25,7 @@ public:
     virtual void unbind();
     
 private:
-    OpenGLFramebufferToScreenProgram* m_program;
+    OpenGLFramebufferToScreenProgram* _program;
 };
 
 #endif /* defined(__noctisgames__OpenGLFramebufferToScreenGpuProgramWrapper__) */

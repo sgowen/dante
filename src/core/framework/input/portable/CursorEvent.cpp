@@ -12,37 +12,37 @@
 
 CursorEvent::CursorEvent(CursorEventType type, float x, float y)
 {
-    m_type = type;
-    m_fX = x;
-    m_fY = y;
+    _type = type;
+    _x = x;
+    _y = y;
 }
 
 CursorEventType CursorEvent::getType()
 {
-	return m_type;
+	return _type;
 }
 
 void CursorEvent::setType(CursorEventType type)
 {
-	m_type = type;
+	_type = type;
 }
 
 float CursorEvent::getX()
 {
-	return m_fX;
+	return _x;
 }
 
 void CursorEvent::setX(float x)
 {
-	m_fX = x;
+	_x = x;
 }
 
 float CursorEvent::getY()
 {
-	return m_fY;
+	return _y;
 }
 
 void CursorEvent::setY(float y)
 {
-	m_fY = y;
+	_y = y;
 }

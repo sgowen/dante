@@ -78,15 +78,15 @@ public:
 private:
     static NetworkManagerServer* s_instance;
     
-    IServerHelper* m_serverHelper;
+    IServerHelper* _serverHelper;
     
-    HandleNewClientFunc m_handleNewClientFunc;
-    HandleLostClientFunc m_handleLostClientFunc;
-    InputStateCreationFunc m_inputStateCreationFunc;
+    HandleNewClientFunc _handleNewClientFunc;
+    HandleLostClientFunc _handleLostClientFunc;
+    InputStateCreationFunc _inputStateCreationFunc;
     
-    std::map<size_t, ClientProxy*> m_addressHashToClientMap;
-    std::map<int, ClientProxy*> m_playerIDToClientMap;
-    uint8_t m_iNextPlayerId;
+    std::map<size_t, ClientProxy*> _addressHashToClientMap;
+    std::map<int, ClientProxy*> _playerIDToClientMap;
+    uint8_t _nextPlayerId;
     
     void processPacket(InputMemoryBitStream& inInputStream, IMachineAddress* inFromAddress);
     

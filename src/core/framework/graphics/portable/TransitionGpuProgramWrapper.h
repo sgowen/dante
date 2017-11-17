@@ -23,8 +23,8 @@ public:
     void configure(GpuTextureWrapper* to, float progress);
     
 protected:
-    GpuTextureWrapper* m_to;
-    float m_fProgress;
+    GpuTextureWrapper* _to;
+    float _progress;
 };
 
 #endif /* defined(__noctisgames__TransitionGpuProgramWrapper__) */

@@ -70,12 +70,12 @@ void NetworkManagerClient::sHandleConnectionReset(IMachineAddress* inFromAddress
 
 void NetworkManagerClient::processIncomingPackets()
 {
-    m_clientHelper->processIncomingPackets();
+    _clientHelper->processIncomingPackets();
 }
 
 void NetworkManagerClient::sendOutgoingPackets()
 {
-    switch (m_state)
+    switch (_state)
     {
         case NCS_SayingHello:
             updateSayingHello();
@@ -86,32 +86,32 @@ void NetworkManagerClient::sendOutgoingPackets()
             updateDropLocalPlayerRequest();
             break;
         case NCS_Uninitialized:
-            m_clientHelper->handleUninitialized();
+            _clientHelper->handleUninitialized();
             break;
         case NCS_Disconnected:
             break;
     }
     
-    if (m_state != NCS_Disconnected)
+    if (_state != NCS_Disconnected)
     {
-        int clientHelperState = m_clientHelper->getState();
+        int clientHelperState = _clientHelper->getState();
         if (clientHelperState == CLIENT_READY_TO_SAY_HELLO
-            && m_state != NCS_Welcomed)
+            && _state != NCS_Welcomed)
         {
-            m_state = NCS_SayingHello;
+            _state = NCS_SayingHello;
         }
         else if (clientHelperState == CLIENT_AUTH_FAILED)
         {
-            m_state = NCS_Disconnected;
+            _state = NCS_Disconnected;
         }
     }
 }
 
 void NetworkManagerClient::requestToAddLocalPlayer()
 {
-    m_isRequestingToAddLocalPlayer = true;
+    _isRequestingToAddLocalPlayer = true;
     
-    m_isRequestingToDropLocalPlayer = 0;
+    _isRequestingToDropLocalPlayer = 0;
 }
 
 void NetworkManagerClient::requestToDropLocalPlayer(uint8_t index)
@@ -121,38 +121,38 @@ void NetworkManagerClient::requestToDropLocalPlayer(uint8_t index)
         return;
     }
     
-    m_isRequestingToDropLocalPlayer = index;
+    _isRequestingToDropLocalPlayer = index;
     
-    m_isRequestingToAddLocalPlayer = false;
+    _isRequestingToAddLocalPlayer = false;
     
-    m_indexToPlayerIdMap.erase(index);
+    _indexToPlayerIdMap.erase(index);
     
     updateNextIndex();
 }
 
 const WeightedTimedMovingAverage& NetworkManagerClient::getBytesReceivedPerSecond() const
 {
-    return m_clientHelper->getBytesReceivedPerSecond();
+    return _clientHelper->getBytesReceivedPerSecond();
 }
 
 const WeightedTimedMovingAverage& NetworkManagerClient::getBytesSentPerSecond() const
 {
-    return m_clientHelper->getBytesSentPerSecond();
+    return _clientHelper->getBytesSentPerSecond();
 }
 
 const WeightedTimedMovingAverage& NetworkManagerClient::getAvgRoundTripTime() const
 {
-    return *m_avgRoundTripTime;
+    return *_avgRoundTripTime;
 }
 
 float NetworkManagerClient::getRoundTripTime() const
 {
-    return m_avgRoundTripTime->getValue();
+    return _avgRoundTripTime->getValue();
 }
 
 bool NetworkManagerClient::isPlayerIdLocal(uint8_t inPlayerId) const
 {
-    for (auto const &entry : m_indexToPlayerIdMap)
+    for (auto const &entry : _indexToPlayerIdMap)
     {
         if (entry.second == inPlayerId)
         {
@@ -165,22 +165,22 @@ bool NetworkManagerClient::isPlayerIdLocal(uint8_t inPlayerId) const
 
 std::map<uint8_t, uint8_t>& NetworkManagerClient::getPlayerIds()
 {
-    return m_indexToPlayerIdMap;
+    return _indexToPlayerIdMap;
 }
 
 std::string& NetworkManagerClient::getPlayerName()
 {
-    return m_clientHelper->getName();
+    return _clientHelper->getName();
 }
 
 NetworkClientState NetworkManagerClient::getState() const
 {
-    return m_state;
+    return _state;
 }
 
 void NetworkManagerClient::processPacket(InputMemoryBitStream& inInputStream, IMachineAddress* inFromAddress)
 {
-    m_fLastServerCommunicationTimestamp = Timing::getInstance()->getFrameStartTime();
+    _lastServerCommunicationTimestamp = Timing::getInstance()->getFrameStartTime();
     
     uint32_t packetType;
     inInputStream.read(packetType);
@@ -197,13 +197,13 @@ void NetworkManagerClient::processPacket(InputMemoryBitStream& inInputStream, IM
             handleLocalPlayerDeniedPacket();
             break;
         case NW_PACKET_TYPE_STATE:
-            if (m_deliveryNotificationManager->readAndProcessState(inInputStream))
+            if (_deliveryNotificationManager->readAndProcessState(inInputStream))
             {
                 handleStatePacket(inInputStream);
             }
             break;
         default:
-            m_clientHelper->processSpecialPacket(packetType, inInputStream, inFromAddress);
+            _clientHelper->processSpecialPacket(packetType, inInputStream, inFromAddress);
             break;
     }
 }
@@ -212,10 +212,10 @@ void NetworkManagerClient::handleNoResponse()
 {
     float time = Timing::getInstance()->getFrameStartTime();
     
-    float timeout = m_state == NCS_Uninitialized ? NW_CONNECT_TO_SERVER_TIMEOUT : NW_SERVER_TIMEOUT;
-    if (time > m_fLastServerCommunicationTimestamp + timeout)
+    float timeout = _state == NCS_Uninitialized ? NW_CONNECT_TO_SERVER_TIMEOUT : NW_SERVER_TIMEOUT;
+    if (time > _lastServerCommunicationTimestamp + timeout)
     {
-        m_state = NCS_Disconnected;
+        _state = NCS_Disconnected;
     }
 }
 
@@ -226,14 +226,14 @@ void NetworkManagerClient::handleConnectionReset(IMachineAddress* inFromAddress)
 
 void NetworkManagerClient::sendPacket(const OutputMemoryBitStream& inOutputStream)
 {
-    m_clientHelper->sendPacket(inOutputStream);
+    _clientHelper->sendPacket(inOutputStream);
 }
 
 void NetworkManagerClient::updateSayingHello()
 {
     float time = Timing::getInstance()->getFrameStartTime();
     
-    if (time > m_fTimeOfLastHello + NW_CLIENT_TIME_BETWEEN_HELLOS)
+    if (time > _timeOfLastHello + NW_CLIENT_TIME_BETWEEN_HELLOS)
     {
         OutputMemoryBitStream helloPacket;
         
@@ -242,26 +242,26 @@ void NetworkManagerClient::updateSayingHello()
         
         sendPacket(helloPacket);
         
-        m_fTimeOfLastHello = time;
+        _timeOfLastHello = time;
     }
 }
 
 void NetworkManagerClient::handleWelcomePacket(InputMemoryBitStream& inInputStream)
 {
-    if (m_state == NCS_SayingHello)
+    if (_state == NCS_SayingHello)
     {
         // if we got a player id, we've been welcomed!
         uint8_t playerId;
         inInputStream.read(playerId);
         
-        m_state = NCS_Welcomed;
+        _state = NCS_Welcomed;
         
-        m_indexToPlayerIdMap.clear();
-        m_indexToPlayerIdMap[m_iNextIndex] = playerId;
+        _indexToPlayerIdMap.clear();
+        _indexToPlayerIdMap[_nextIndex] = playerId;
         
         LOG("'%s' was welcomed on client as player %d", getPlayerName().c_str(), playerId);
         
-        m_onPlayerWelcomedFunc(playerId);
+        _onPlayerWelcomedFunc(playerId);
         
         updateNextIndex();
     }
@@ -269,20 +269,20 @@ void NetworkManagerClient::handleWelcomePacket(InputMemoryBitStream& inInputStre
 
 void NetworkManagerClient::handleLocalPlayerAddedPacket(InputMemoryBitStream& inInputStream)
 {
-    if (m_state == NCS_Welcomed
-        && m_isRequestingToAddLocalPlayer)
+    if (_state == NCS_Welcomed
+        && _isRequestingToAddLocalPlayer)
     {
         // if we got a player id, our local player has been added!
         uint8_t playerId;
         inInputStream.read(playerId);
         
-        m_indexToPlayerIdMap[m_iNextIndex] = playerId;
+        _indexToPlayerIdMap[_nextIndex] = playerId;
         
-        LOG("'%s(%d)' was welcomed on client as player %d", getPlayerName().c_str(), m_iNextIndex, playerId);
+        LOG("'%s(%d)' was welcomed on client as player %d", getPlayerName().c_str(), _nextIndex, playerId);
         
-        m_isRequestingToAddLocalPlayer = false;
+        _isRequestingToAddLocalPlayer = false;
         
-        m_onPlayerWelcomedFunc(playerId);
+        _onPlayerWelcomedFunc(playerId);
         
         updateNextIndex();
     }
@@ -290,19 +290,19 @@ void NetworkManagerClient::handleLocalPlayerAddedPacket(InputMemoryBitStream& in
 
 void NetworkManagerClient::handleLocalPlayerDeniedPacket()
 {
-    LOG("'%s(%d)' was denied on client...", getPlayerName().c_str(), m_iNextIndex);
+    LOG("'%s(%d)' was denied on client...", getPlayerName().c_str(), _nextIndex);
     
-    m_isRequestingToAddLocalPlayer = false;
+    _isRequestingToAddLocalPlayer = false;
 }
 
 void NetworkManagerClient::handleStatePacket(InputMemoryBitStream& inInputStream)
 {
-    if (m_state == NCS_Welcomed)
+    if (_state == NCS_Welcomed)
     {
         readLastMoveProcessedOnServerTimestamp(inInputStream);
         
         //tell the replication manager to handle the rest...
-        m_replicationManagerClient->read(inInputStream);
+        _replicationManagerClient->read(inInputStream);
     }
 }
 
@@ -312,13 +312,13 @@ void NetworkManagerClient::readLastMoveProcessedOnServerTimestamp(InputMemoryBit
     inInputStream.read(isTimestampDirty);
     if (isTimestampDirty)
     {
-        inInputStream.read(m_fLastMoveProcessedByServerTimestamp);
-        inInputStream.read(m_fLastMoveReceivedByServerTimestamp);
+        inInputStream.read(_lastMoveProcessedByServerTimestamp);
+        inInputStream.read(_lastMoveReceivedByServerTimestamp);
         
-        float rtt = Timing::getInstance()->getFrameStartTime() - m_fLastMoveReceivedByServerTimestamp;
-        m_avgRoundTripTime->update(rtt);
+        float rtt = Timing::getInstance()->getFrameStartTime() - _lastMoveReceivedByServerTimestamp;
+        _avgRoundTripTime->update(rtt);
         
-        m_removeProcessedMovesFunc(m_fLastMoveProcessedByServerTimestamp);
+        _removeProcessedMovesFunc(_lastMoveProcessedByServerTimestamp);
     }
 }
 
@@ -330,7 +330,7 @@ void NetworkManagerClient::updateSendingInputPacket()
 void NetworkManagerClient::sendInputPacket()
 {
     //only send if there's any input to sent!
-    MoveList& moveList = m_getMoveListFunc();
+    MoveList& moveList = _getMoveListFunc();
     
     if (moveList.hasMoves())
     {
@@ -338,10 +338,10 @@ void NetworkManagerClient::sendInputPacket()
         
         inputPacket.write(NW_PACKET_TYPE_INPUT);
         
-        m_deliveryNotificationManager->writeState(inputPacket);
+        _deliveryNotificationManager->writeState(inputPacket);
         
         // eventually write the 3 latest moves so they have 3 chances to get through...
-        uint8_t moveCount = moveList.getNumMovesAfterTimestamp(m_fLastMoveReceivedByServerTimestamp);
+        uint8_t moveCount = moveList.getNumMovesAfterTimestamp(_lastMoveReceivedByServerTimestamp);
         int firstMoveIndex = moveCount - 3;
         if (firstMoveIndex < 0)
         {
@@ -386,81 +386,81 @@ void NetworkManagerClient::sendInputPacket()
 
 void NetworkManagerClient::updateAddLocalPlayerRequest()
 {
-    if (m_isRequestingToAddLocalPlayer)
+    if (_isRequestingToAddLocalPlayer)
     {
-        m_isRequestingToDropLocalPlayer = 0;
+        _isRequestingToDropLocalPlayer = 0;
         
         float time = Timing::getInstance()->getFrameStartTime();
         
-        if (time > m_fTimeOfLastHello + NW_CLIENT_TIME_BETWEEN_HELLOS)
+        if (time > _timeOfLastHello + NW_CLIENT_TIME_BETWEEN_HELLOS)
         {
             OutputMemoryBitStream packet;
             
             packet.write(NW_PACKET_TYPE_ADD_LOCAL_PLAYER);
-            packet.write(m_iNextIndex);
+            packet.write(_nextIndex);
             
             sendPacket(packet);
             
-            m_fTimeOfLastHello = time;
+            _timeOfLastHello = time;
         }
     }
 }
 
 void NetworkManagerClient::updateDropLocalPlayerRequest()
 {
-    if (m_isRequestingToDropLocalPlayer > 0)
+    if (_isRequestingToDropLocalPlayer > 0)
     {
-        m_isRequestingToAddLocalPlayer = false;
+        _isRequestingToAddLocalPlayer = false;
         
         OutputMemoryBitStream packet;
         
         packet.write(NW_PACKET_TYPE_DROP_LOCAL_PLAYER);
-        packet.write(m_isRequestingToDropLocalPlayer);
+        packet.write(_isRequestingToDropLocalPlayer);
         
         sendPacket(packet);
         
-        m_isRequestingToDropLocalPlayer = 0;
+        _isRequestingToDropLocalPlayer = 0;
     }
 }
 
 void NetworkManagerClient::updateNextIndex()
 {
     // Find the next available Player ID
-    m_iNextIndex = 0;
-    for (auto const &entry : m_indexToPlayerIdMap)
+    _nextIndex = 0;
+    for (auto const &entry : _indexToPlayerIdMap)
     {
-        if (entry.first == m_iNextIndex)
+        if (entry.first == _nextIndex)
         {
-            ++m_iNextIndex;
+            ++_nextIndex;
         }
     }
 }
 
 NetworkManagerClient::NetworkManagerClient(IClientHelper* inClientHelper, float inFrameRate, RemoveProcessedMovesFunc inRemoveProcessedMovesFunc, GetMoveListFunc inGetMoveListFunc, OnPlayerWelcomedFunc inOnPlayerWelcomedFunc) :
-m_clientHelper(inClientHelper),
-m_removeProcessedMovesFunc(inRemoveProcessedMovesFunc),
-m_getMoveListFunc(inGetMoveListFunc),
-m_onPlayerWelcomedFunc(inOnPlayerWelcomedFunc),
-m_replicationManagerClient(new ReplicationManagerClient()),
-m_avgRoundTripTime(new WeightedTimedMovingAverage(1.f)),
-m_state(NCS_Uninitialized),
-m_deliveryNotificationManager(new DeliveryNotificationManager(true, false)),
-m_fTimeOfLastHello(0.0f),
-m_fLastMoveProcessedByServerTimestamp(0.0f),
-m_fLastMoveReceivedByServerTimestamp(0.0f),
-m_fLastServerCommunicationTimestamp(Timing::getInstance()->getFrameStartTime()),
-m_fFrameRate(inFrameRate),
-m_isRequestingToAddLocalPlayer(false),
-m_isRequestingToDropLocalPlayer(0),
-m_iNextIndex(0)
+_clientHelper(inClientHelper),
+_removeProcessedMovesFunc(inRemoveProcessedMovesFunc),
+_getMoveListFunc(inGetMoveListFunc),
+_onPlayerWelcomedFunc(inOnPlayerWelcomedFunc),
+_replicationManagerClient(new ReplicationManagerClient()),
+_avgRoundTripTime(new WeightedTimedMovingAverage(1.f)),
+_state(NCS_Uninitialized),
+_deliveryNotificationManager(new DeliveryNotificationManager(true, false)),
+_timeOfLastHello(0.0f),
+_lastMoveProcessedByServerTimestamp(0.0f),
+_lastMoveReceivedByServerTimestamp(0.0f),
+_lastServerCommunicationTimestamp(Timing::getInstance()->getFrameStartTime()),
+_frameRate(inFrameRate),
+_isRequestingToAddLocalPlayer(false),
+_isRequestingToDropLocalPlayer(0),
+_nextIndex(0)
 {
     // Empty
 }
 
 NetworkManagerClient::~NetworkManagerClient()
 {
-    delete m_clientHelper;
-    delete m_deliveryNotificationManager;
-    delete m_replicationManagerClient;
-    delete m_avgRoundTripTime;
+    delete _clientHelper;
+    delete _deliveryNotificationManager;
+    delete _replicationManagerClient;
+    delete _avgRoundTripTime;
 }

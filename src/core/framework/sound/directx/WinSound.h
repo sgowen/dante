@@ -39,9 +39,9 @@ public:
     virtual bool isPaused();
 
 private:
-    std::unique_ptr<DirectX::SoundEffectInstance> m_soundEffectInstance;
-    bool m_isLooping;
-    bool m_isPaused;
+    std::unique_ptr<DirectX::SoundEffectInstance> _soundEffectInstance;
+    bool _isLooping;
+    bool _isPaused;
 };
 
 #endif /* defined(__noctisgames__WinSound__) */

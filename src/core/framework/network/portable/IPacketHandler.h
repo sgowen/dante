@@ -38,10 +38,10 @@ public:
     const WeightedTimedMovingAverage& getBytesSentPerSecond() const;
     
 protected:
-    ProcessPacketFunc m_processPacketFunc;
-    HandleNoResponseFunc m_handleNoResponseFunc;
-    HandleConnectionResetFunc m_handleConnectionResetFunc;
-    int m_bytesSentThisFrame;
+    ProcessPacketFunc _processPacketFunc;
+    HandleNoResponseFunc _handleNoResponseFunc;
+    HandleConnectionResetFunc _handleConnectionResetFunc;
+    int _bytesSentThisFrame;
     
     virtual void readIncomingPacketsIntoQueue() = 0;
     
@@ -52,8 +52,8 @@ protected:
     void updateBytesReceivedLastFrame(int totalReadByteCount);
     
 private:
-    WeightedTimedMovingAverage* m_bytesReceivedPerSecond;
-    WeightedTimedMovingAverage* m_bytesSentPerSecond;
+    WeightedTimedMovingAverage* _bytesReceivedPerSecond;
+    WeightedTimedMovingAverage* _bytesSentPerSecond;
 };
 
 #endif /* defined(__noctisgames__IPacketHandler__) */

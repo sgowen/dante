@@ -17,12 +17,12 @@ EntityRegistry::EntityRegistry()
 
 void EntityRegistry::registerCreationFunction(uint32_t inFourCCName, EntityCreationFunc inCreationFunction)
 {
-    m_nameToEntityCreationFunctionMap[inFourCCName] = inCreationFunction;
+    _nameToEntityCreationFunctionMap[inFourCCName] = inCreationFunction;
 }
 
 Entity* EntityRegistry::createEntity(uint32_t inFourCCName)
 {
-    EntityCreationFunc creationFunc = m_nameToEntityCreationFunctionMap[inFourCCName];
+    EntityCreationFunc creationFunc = _nameToEntityCreationFunctionMap[inFourCCName];
     
     return creationFunc();
 }

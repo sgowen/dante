@@ -17,7 +17,7 @@
 
 OpenGLLineBatcher::OpenGLLineBatcher() : LineBatcher()
 {
-    m_iNumLines = 0;
+    _numLines = 0;
 }
 
 OpenGLLineBatcher::~OpenGLLineBatcher()
@@ -28,16 +28,16 @@ OpenGLLineBatcher::~OpenGLLineBatcher()
 void OpenGLLineBatcher::beginBatch()
 {
     OGLManager->getColorVertices().clear();
-    m_iNumLines = 0;
+    _numLines = 0;
 }
 
 void OpenGLLineBatcher::endBatch(GpuProgramWrapper &gpuProgramWrapper)
 {
-    if (m_iNumLines > 0)
+    if (_numLines > 0)
     {
         gpuProgramWrapper.bind();
         
-        glDrawArrays(GL_LINES, 0, VERTICES_PER_LINE * m_iNumLines);
+        glDrawArrays(GL_LINES, 0, VERTICES_PER_LINE * _numLines);
         
         gpuProgramWrapper.unbind();
     }
@@ -48,5 +48,5 @@ void OpenGLLineBatcher::renderLine(float originX, float originY, float endX, flo
     OGLManager->addVertexCoordinate(originX, originY, 0, c.red, c.green, c.blue, c.alpha);
     OGLManager->addVertexCoordinate(endX, endY, 0, c.red, c.green, c.blue, c.alpha);
     
-    m_iNumLines++;
+    _numLines++;
 }

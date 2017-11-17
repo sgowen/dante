@@ -49,19 +49,19 @@ private:
         k_EServerShuttingDown
     };
     
-    NGSteamP2PAuth* m_steamP2PAuth;
-    GetPlayerAddressHashFunc m_getPlayerAddressHashFunc;
-    EClientConnectionState m_eConnectedStatus;
-    NGSteamAddress* m_serverSteamAddress;
-    std::string m_name;
-    float m_fTimeOfLastMsgClientBeginAuthentication;
+    NGSteamP2PAuth* _steamP2PAuth;
+    GetPlayerAddressHashFunc _getPlayerAddressHashFunc;
+    EClientConnectionState _eConnectedStatus;
+    NGSteamAddress* _serverSteamAddress;
+    std::string _name;
+    float _timeOfLastMsgClientBeginAuthentication;
     
-    CSteamID m_rgSteamIDPlayers[MAX_NUM_PLAYERS_PER_SERVER];
+    CSteamID _rgSteamIDPlayers[MAX_NUM_PLAYERS_PER_SERVER];
     
     // Server address data
-    uint32_t m_unServerIP;
-    uint16 m_usServerPort;
-    HAuthTicket m_hAuthTicket;
+    uint32_t _unServerIP;
+    uint16 _usServerPort;
+    HAuthTicket _hAuthTicket;
     
     void onReceiveServerInfo(CSteamID steamIDGameServer, bool bVACSecure, const char *pchServerName);
     

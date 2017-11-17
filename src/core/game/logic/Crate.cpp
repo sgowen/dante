@@ -50,14 +50,14 @@ void Crate::update()
         requestDeletion();
     }
     
-    if (m_isServer)
+    if (_isServer)
     {
         NG_SERVER->setStateDirty(getID(), CRAT_Pose);
     }
     
-    m_velocityLastKnown = b2Vec2(getVelocity().x, getVelocity().y);
-    m_positionLastKnown = b2Vec2(getPosition().x, getPosition().y);
-    m_fAngleLastKnown = getAngle();
+    _velocityLastKnown = b2Vec2(getVelocity().x, getVelocity().y);
+    _positionLastKnown = b2Vec2(getPosition().x, getPosition().y);
+    _angleLastKnown = getAngle();
 }
 
 bool Crate::shouldCollide(Entity *inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB)
@@ -96,7 +96,7 @@ void Crate::read(InputMemoryBitStream& inInputStream)
 {
     bool stateBit;
     
-    m_iReadState = 0;
+    _readState = 0;
     
     inInputStream.read(stateBit);
     if (stateBit)
@@ -113,7 +113,7 @@ void Crate::read(InputMemoryBitStream& inInputStream)
         
         setTransform(position, angle);
         
-        m_iReadState |= CRAT_Pose;
+        _readState |= CRAT_Pose;
     }
 }
 
@@ -143,7 +143,7 @@ uint32_t Crate::write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtySta
 
 bool Crate::needsMoveReplay()
 {
-    return (m_iReadState & CRAT_Pose) != 0;
+    return (_readState & CRAT_Pose) != 0;
 }
 
 RTTI_IMPL(Crate, Entity);

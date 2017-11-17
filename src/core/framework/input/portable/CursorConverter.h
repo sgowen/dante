@@ -28,10 +28,10 @@ public:
     
 private:
     Vector2 _cursor;
-    float m_fTouchScreenWidth;
-    float m_fTouchScreenHeight;
-    float m_fCamWidth;
-    float m_fCamHeight;
+    float _touchScreenWidth;
+    float _touchScreenHeight;
+    float _camWidth;
+    float _camHeight;
     
     // ctor, copy ctor, and assignment should be private in a Singleton
     CursorConverter();

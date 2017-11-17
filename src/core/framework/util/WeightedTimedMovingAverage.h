@@ -21,9 +21,9 @@ public:
     float getValue() const;
     
 private:
-    float m_fTimeLastEntryMade;
-    float m_fValue;
-    float m_fDuration;
+    float _timeLastEntryMade;
+    float _value;
+    float _duration;
 };
 
 #endif /* defined(__noctisgames__WeightedTimedMovingAverage__) */

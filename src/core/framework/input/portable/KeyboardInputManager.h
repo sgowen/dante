@@ -29,8 +29,8 @@ public:
     std::vector<KeyboardEvent*>& getEvents();
     
 private:
-    NGRollingPool<KeyboardEvent>* m_pool;
-    std::map<unsigned short, bool> m_lastKnownKeyStates;
+    NGRollingPool<KeyboardEvent>* _pool;
+    std::map<unsigned short, bool> _lastKnownKeyStates;
     
     void addEvent(unsigned short key, bool isUp);
     

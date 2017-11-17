@@ -38,7 +38,7 @@ public:
     bool isInUse() const;
     
 private:
-    bool m_isInUse;
+    bool _isInUse;
 };
 
 #endif /* defined(__noctisgames__IInputState__) */

@@ -20,8 +20,8 @@ public:
     
 private:
     float _stateTime;
-    int m_iFPS;
-    int m_iNumFrames;
+    int _fPS;
+    int _numFrames;
     
     float getTime() const;
     

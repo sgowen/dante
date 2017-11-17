@@ -6,8 +6,8 @@
 //  Copyright (c) 2017 Noctis Games. All rights reserved.
 //
 
-#ifndef __noctisgames__NGSteam__
-#define __noctisgames__NGSteam__
+#ifndef __noctisgames__NGStea__
+#define __noctisgames__NGStea__
 
 #ifdef WIN32
 
@@ -77,4 +77,4 @@ enum EMessage
     k_EForceDWORD  = 0x7fffffff, 
 };
 
-#endif /* defined(__noctisgames__NGSteam__) */
+#endif /* defined(__noctisgames__NGStea__) */

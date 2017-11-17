@@ -45,12 +45,12 @@ public:
     SuperpoweredSoundManager* getManager();
 
 private:
-    SuperpoweredSoundManager* m_manager;
-    SuperpoweredAdvancedAudioPlayer* m_player;
-    float m_fVolume;
-    unsigned int m_iLastSamplerate;
-    bool m_isLooping;
-    bool m_isPaused;
+    SuperpoweredSoundManager* _manager;
+    SuperpoweredAdvancedAudioPlayer* _player;
+    float _volume;
+    unsigned int _lastSamplerate;
+    bool _isLooping;
+    bool _isPaused;
 };
 
 #endif /* defined(__noctisgames__SuperpoweredSound__) */

@@ -25,7 +25,7 @@ PooledObjectsManager* PooledObjectsManager::getInstance()
 IInputState* PooledObjectsManager::borrowInputState()
 {
     IInputState* ret = nullptr;
-    while ((ret = POOLED_OBJ_MGR->m_pool->newObject())->isInUse())
+    while ((ret = POOLED_OBJ_MGR->_pool->newObject())->isInUse())
     {
         // Continue
     }
@@ -39,12 +39,12 @@ IInputState* PooledObjectsManager::borrowInputState()
 
 #pragma mark private
 
-PooledObjectsManager::PooledObjectsManager() : m_pool(new NGRollingPool<InputState>(POOL_SIZE))
+PooledObjectsManager::PooledObjectsManager() : _pool(new NGRollingPool<InputState>(POOL_SIZE))
 {
     // Empty
 }
 
 PooledObjectsManager::~PooledObjectsManager()
 {
-    delete m_pool;
+    delete _pool;
 }

@@ -10,17 +10,17 @@
 
 #include "Line.h"
 
-Line::Line(float x1, float y1, float x2, float y2) : m_origin(x1, y1), m_end(x2, y2)
+Line::Line(float x1, float y1, float x2, float y2) : _origin(x1, y1), _end(x2, y2)
 {
     // Empty
 }
 
 Vector2& Line::getOrigin()
 {
-    return m_origin;
+    return _origin;
 }
 
 Vector2& Line::getEnd()
 {
-    return m_end;
+    return _end;
 }

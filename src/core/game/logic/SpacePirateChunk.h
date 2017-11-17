@@ -20,8 +20,8 @@ class SpacePirate;
 
 #define Space_Pirate_Chunk_Top_Left 0
 #define Space_Pirate_Chunk_Top_Right 1
-#define Space_Pirate_Chunk_Bottom_Left 2
-#define Space_Pirate_Chunk_Bottom_Right 3
+#define Space_Pirate_Chunk_Botto_Left 2
+#define Space_Pirate_Chunk_Botto_Right 3
 
 class SpacePirateChunk : public Entity
 {
@@ -65,8 +65,8 @@ public:
     bool isFacingLeft();
     
 private:
-    int m_iType;
-    bool m_isFacingLeft;
+    int _type;
+    bool _isFacingLeft;
 };
 
 #endif /* defined(__noctisgames__SpacePirateChunk__) */

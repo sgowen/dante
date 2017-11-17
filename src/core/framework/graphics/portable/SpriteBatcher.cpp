@@ -21,7 +21,7 @@
 
 #include <math.h>
 
-SpriteBatcher::SpriteBatcher() : m_iNumSprites(0)
+SpriteBatcher::SpriteBatcher() : _numSprites(0)
 {
     // Empty
 }
@@ -86,7 +86,7 @@ void SpriteBatcher::renderSprite(float x, float y, float width, float height, fl
         renderSprite(x, y, width, height, flipX, tr);
     }
     
-    m_iNumSprites++;
+    _numSprites++;
 }
 
 void SpriteBatcher::renderSprite(float x, float y, float width, float height, float angle, bool flipX, Color &c, TextureRegion& tr)
@@ -134,7 +134,7 @@ void SpriteBatcher::renderSprite(float x, float y, float width, float height, fl
         renderSprite(x, y, width, height, flipX, c, tr);
     }
     
-    m_iNumSprites++;
+    _numSprites++;
 }
 
 #pragma private methods

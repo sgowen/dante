@@ -35,7 +35,7 @@ public:
     int getSoundId();
     
 protected:
-    int m_iSoundId;
+    int _soundId;
 };
 
 #endif /* defined(__noctisgames__ISound__) */

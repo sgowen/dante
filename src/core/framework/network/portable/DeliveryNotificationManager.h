@@ -40,18 +40,18 @@ public:
     const std::deque<InFlightPacket>& getInFlightPackets() const;
     
 private:
-    std::deque<InFlightPacket> m_inFlightPackets;
-    std::deque<AckRange> m_pendingAcks;
+    std::deque<InFlightPacket> _inFlightPackets;
+    std::deque<AckRange> _pendingAcks;
     
-    uint16_t m_iNextOutgoingSequenceNumber;
-    uint16_t m_iNextExpectedSequenceNumber;
+    uint16_t _nextOutgoingSequenceNumber;
+    uint16_t _nextExpectedSequenceNumber;
     
-    uint32_t m_iDeliveredPacketCount;
-    uint32_t m_iDroppedPacketCount;
-    uint32_t m_iDispatchedPacketCount;
+    uint32_t _deliveredPacketCount;
+    uint32_t _droppedPacketCount;
+    uint32_t _dispatchedPacketCount;
     
-    bool m_shouldSendAcks;
-    bool m_shouldprocessAcks;
+    bool _shouldSendAcks;
+    bool _shouldprocessAcks;
     
     InFlightPacket* writeSequenceNumber(OutputMemoryBitStream& inOutputStream);
     

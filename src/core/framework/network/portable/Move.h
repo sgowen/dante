@@ -50,15 +50,15 @@ private:
     {
     public:
         float _stateTime;
-        b2Vec2 m_velocity;
-        b2Vec2 m_position;
-        float m_fAngle;
+        b2Vec2 _velocity;
+        b2Vec2 _position;
+        float _angle;
     };
     
-    mutable std::map<int, EntityClientCache> m_entityCacheMap;
+    mutable std::map<int, EntityClientCache> _entityCacheMap;
     
-    IInputState* m_inputState;
-    float m_fTimestamp;
+    IInputState* _inputState;
+    float _timestamp;
 };
 
 #endif /* defined(__noctisgames__Move__) */

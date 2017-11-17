@@ -38,16 +38,16 @@
 #include <math.h>
 
 SpacePirate::SpacePirate(b2World& world, bool isServer) : Entity(world, 0, 0, 2.0f, 2.347826086956522f, isServer, constructEntityDef()),
-m_fSpeed(0.0),
-m_iHealth(8),
-m_isFacingLeft(false),
-m_isJumping(false),
-m_fJumpCooldown(0.0f),
-m_fJumpSpeed(7.0f),
-m_iHealthLeftLastKnown(8)
+_speed(0.0),
+_health(8),
+_isFacingLeft(false),
+_isJumping(false),
+_jumpCooldown(0.0f),
+_jumpSpeed(7.0f),
+_healthLeftLastKnown(8)
 {
-    m_fJumpCooldown = Timing::getInstance()->getFrameStartTime();
-    m_fJumpCooldown += (rand() % 100) * 0.1f + 1.0f;
+    _jumpCooldown = Timing::getInstance()->getFrameStartTime();
+    _jumpCooldown += (rand() % 100) * 0.1f + 1.0f;
 }
 
 EntityDef SpacePirate::constructEntityDef()
@@ -66,35 +66,35 @@ void SpacePirate::update()
 {
     _stateTime += FRAME_RATE;
     
-    if (m_isServer)
+    if (_isServer)
     {
         if (getPosition().y < DEAD_ZONE_BOTTOM)
         {
-            m_iHealth = 0;
+            _health = 0;
         }
         
-        if (m_iHealth == 0 && !isRequestingDeletion())
+        if (_health == 0 && !isRequestingDeletion())
         {
             requestDeletion();
             
             for (int i = 0; i < 4; ++i)
             {
                 SpacePirateChunk* chunk = static_cast<SpacePirateChunk*>(SERVER_ENTITY_REG->createEntity(NW_TYPE_SpacePirateChunk));
-                chunk->initFromSpacePirate(this, m_lastForce, i);
+                chunk->initFromSpacePirate(this, _lastForce, i);
             }
         }
         
         if (isGrounded())
         {
-            m_fJumpCooldown -= FRAME_RATE;
+            _jumpCooldown -= FRAME_RATE;
             
-            if (m_fJumpCooldown < 0)
+            if (_jumpCooldown < 0)
             {
-                m_fJumpCooldown += (rand() % 100) * 0.1f + 1.0f;
+                _jumpCooldown += (rand() % 100) * 0.1f + 1.0f;
                 
-                m_isJumping = true;
+                _isJumping = true;
                 
-                setVelocity(b2Vec2(getVelocity().x, m_fJumpSpeed));
+                setVelocity(b2Vec2(getVelocity().x, _jumpSpeed));
             }
         }
         
@@ -112,9 +112,9 @@ void SpacePirate::update()
                 if (dist < shortestDistance)
                 {
                     shortestDistance = dist;
-                    m_isFacingLeft = robot->getPosition().x < getPosition().x;
+                    _isFacingLeft = robot->getPosition().x < getPosition().x;
                     
-                    setVelocity(b2Vec2(m_isFacingLeft ? -m_fSpeed : m_fSpeed, getVelocity().y));
+                    setVelocity(b2Vec2(_isFacingLeft ? -_speed : _speed, getVelocity().y));
                     
                     targetFound = true;
                 }
@@ -123,27 +123,27 @@ void SpacePirate::update()
         
         if (!targetFound)
         {
-            m_isFacingLeft = true;
+            _isFacingLeft = true;
             
             setVelocity(b2Vec2(0, getVelocity().y));
         }
         
         NG_SERVER->setStateDirty(getID(), SPCP_Pose);
         
-        if (m_iHealthLeftLastKnown != m_iHealth)
+        if (_healthLeftLastKnown != _health)
         {
             NG_SERVER->setStateDirty(getID(), SPCP_Health);
         }
     }
     
-    m_velocityLastKnown = b2Vec2(getVelocity().x, getVelocity().y);
-    m_positionLastKnown = b2Vec2(getPosition().x, getPosition().y);
-    m_iHealthLeftLastKnown = m_iHealth;
+    _velocityLastKnown = b2Vec2(getVelocity().x, getVelocity().y);
+    _positionLastKnown = b2Vec2(getPosition().x, getPosition().y);
+    _healthLeftLastKnown = _health;
 }
 
 bool SpacePirate::shouldCollide(Entity *inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB)
 {
-    if (inFixtureA == m_footSensorFixture)
+    if (inFixtureA == _footSensorFixture)
     {
         return inEntity->getRTTI().derivesFrom(Ground::rtti)
         || inEntity->getRTTI().derivesFrom(Crate::rtti);
@@ -157,9 +157,9 @@ bool SpacePirate::shouldCollide(Entity *inEntity, b2Fixture* inFixtureA, b2Fixtu
 
 void SpacePirate::handleBeginContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB)
 {
-    if (inFixtureA == m_footSensorFixture)
+    if (inFixtureA == _footSensorFixture)
     {
-        m_isJumping = false;
+        _isJumping = false;
         
         handleBeginFootContact(inEntity);
         
@@ -180,7 +180,7 @@ void SpacePirate::handleBeginContact(Entity* inEntity, b2Fixture* inFixtureA, b2
 
 void SpacePirate::handleEndContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB)
 {
-    if (inFixtureA == m_footSensorFixture)
+    if (inFixtureA == _footSensorFixture)
     {
         if (inEntity->getRTTI().derivesFrom(Ground::rtti)
             || inEntity->getRTTI().derivesFrom(Crate::rtti))
@@ -210,20 +210,20 @@ uint32_t SpacePirate::getAllStateMask() const
 
 void SpacePirate::read(InputMemoryBitStream& inInputStream)
 {
-    float oldWidth = m_fWidth;
+    float oldWidth = _width;
     
     bool stateBit;
     
-    m_iReadState = 0;
+    _readState = 0;
     
     inInputStream.read(stateBit);
     if (stateBit)
     {
-        inInputStream.read(m_color);
+        inInputStream.read(_color);
         
-        inInputStream.read(m_fWidth);
-        inInputStream.read(m_fHeight);
-        m_iReadState |= SPCP_Info;
+        inInputStream.read(_width);
+        inInputStream.read(_height);
+        _readState |= SPCP_Info;
     }
     
     inInputStream.read(stateBit);
@@ -239,20 +239,20 @@ void SpacePirate::read(InputMemoryBitStream& inInputStream)
         inInputStream.read(position);
         setPosition(position);
         
-        inInputStream.read(m_isFacingLeft);
-        inInputStream.read(m_isJumping);
+        inInputStream.read(_isFacingLeft);
+        inInputStream.read(_isJumping);
         
-        m_iReadState |= SPCP_Pose;
+        _readState |= SPCP_Pose;
     }
     
     inInputStream.read(stateBit);
     if (stateBit)
     {
-        inInputStream.read(m_iHealth);
-        m_iReadState |= SPCP_Health;
+        inInputStream.read(_health);
+        _readState |= SPCP_Health;
     }
     
-    if (!areFloatsPracticallyEqual(oldWidth, m_fWidth))
+    if (!areFloatsPracticallyEqual(oldWidth, _width))
     {
         initPhysics(constructEntityDef());
     }
@@ -266,10 +266,10 @@ uint32_t SpacePirate::write(OutputMemoryBitStream& inOutputStream, uint32_t inDi
     {
         inOutputStream.write((bool)true);
         
-        inOutputStream.write(m_color);
+        inOutputStream.write(_color);
         
-        inOutputStream.write(m_fWidth);
-        inOutputStream.write(m_fHeight);
+        inOutputStream.write(_width);
+        inOutputStream.write(_height);
         
         writtenState |= SPCP_Info;
     }
@@ -288,8 +288,8 @@ uint32_t SpacePirate::write(OutputMemoryBitStream& inOutputStream, uint32_t inDi
         
         inOutputStream.write(getPosition());
         
-        inOutputStream.write((bool)m_isFacingLeft);
-        inOutputStream.write((bool)m_isJumping);
+        inOutputStream.write((bool)_isFacingLeft);
+        inOutputStream.write((bool)_isJumping);
         
         writtenState |= SPCP_Pose;
     }
@@ -302,7 +302,7 @@ uint32_t SpacePirate::write(OutputMemoryBitStream& inOutputStream, uint32_t inDi
     {
         inOutputStream.write((bool)true);
         
-        inOutputStream.write(m_iHealth);
+        inOutputStream.write(_health);
         
         writtenState |= SPCP_Health;
     }
@@ -316,48 +316,48 @@ uint32_t SpacePirate::write(OutputMemoryBitStream& inOutputStream, uint32_t inDi
 
 bool SpacePirate::needsMoveReplay()
 {
-    return (m_iReadState & SPCP_Pose) != 0;
+    return (_readState & SPCP_Pose) != 0;
 }
 
 void SpacePirate::init(float x, float y, float speed, int scale, uint8_t health)
 {
     setPosition(b2Vec2(x, y));
     
-    m_fSpeed = speed;
+    _speed = speed;
     
-    m_fWidth *= scale;
-    m_fHeight *= scale;
+    _width *= scale;
+    _height *= scale;
     
-    m_iHealth = health;
+    _health = health;
     
     initPhysics(constructEntityDef());
 }
 
 void SpacePirate::takeDamage(b2Vec2 force, bool isHeadshot)
 {
-    m_lastForce.Set(force.x, force.y);
-    uint8_t oldHealth = m_iHealth;
-    m_iHealth -= isHeadshot ? 8 : 1;
-    if (m_iHealth > oldHealth)
+    _lastForce.Set(force.x, force.y);
+    uint8_t oldHealth = _health;
+    _health -= isHeadshot ? 8 : 1;
+    if (_health > oldHealth)
     {
         // We are using unsigned values for health
-        m_iHealth = 0;
+        _health = 0;
     }
 }
 
 uint8_t SpacePirate::getHealth()
 {
-    return m_iHealth;
+    return _health;
 }
 
 float SpacePirate::getSpeed()
 {
-    return m_fSpeed;
+    return _speed;
 }
 
 bool SpacePirate::isFacingLeft()
 {
-    return m_isFacingLeft;
+    return _isFacingLeft;
 }
 
 RTTI_IMPL(SpacePirate, Entity);

@@ -24,9 +24,9 @@ class MsgP2PSendingTicket;
 class NGSteamP2PAuth
 {
 public:
-    NGSteamP2PAuthPlayer *m_rgpP2PAuthPlayer[MAX_NUM_PLAYERS_PER_SERVER];
-    MsgP2PSendingTicket *m_rgpQueuedMessage[MAX_NUM_PLAYERS_PER_SERVER];
-    NGSteamP2PNetworkTransport *m_networkTransport;
+    NGSteamP2PAuthPlayer *_rgpP2PAuthPlayer[MAX_NUM_PLAYERS_PER_SERVER];
+    MsgP2PSendingTicket *_rgpQueuedMessage[MAX_NUM_PLAYERS_PER_SERVER];
+    NGSteamP2PNetworkTransport *_networkTransport;
     
     NGSteamP2PAuth(INetworkHelper* networkHelper);
     
@@ -43,7 +43,7 @@ public:
 class NGSteamP2PAuthPlayer
 {
 public:
-    CSteamID m_steamID;
+    CSteamID _steamID;
     
 	NGSteamP2PAuthPlayer(NGSteamP2PNetworkTransport *pNetworkTransport);
     
@@ -55,24 +55,24 @@ public:
 	bool isAuthOk();
 	bool handleMessage(MsgP2PSendingTicket* msg);
 
-	STEAM_CALLBACK(NGSteamP2PAuthPlayer, OnBeginAuthResponse, ValidateAuthTicketResponse_t, m_CallbackBeginAuthResponse);
+	STEAM_CALLBACK(NGSteamP2PAuthPlayer, OnBeginAuthResponse, ValidateAuthTicketResponse_t, _CallbackBeginAuthResponse);
     
 private:
-	bool m_bSentTicket;
-	bool m_bSubmittedHisTicket;
-	bool m_bHaveAnswer;
-	float m_fConnectTime;
-	float m_fTicketTime;
-	float m_fAnswerTime;
-	uint32 m_cubTicketIGaveThisUser;
-	uint8 m_rgubTicketIGaveThisUser[1024];
-	uint32 m_cubTicketHeGaveMe;
-	uint8 m_rgubTicketHeGaveMe[1024];
-	HAuthTicket m_hAuthTicketIGaveThisUser;
-	EBeginAuthSessionResult m_eBeginAuthSessionResult;
-	EAuthSessionResponse m_eAuthSessionResponse;
+	bool _bSentTicket;
+	bool _bSubmittedHisTicket;
+	bool _bHaveAnswer;
+	float _connectTime;
+	float _ticketTime;
+	float _answerTime;
+	uint32 _cubTicketIGaveThisUser;
+	uint8 _rgubTicketIGaveThisUser[1024];
+	uint32 _cubTicketHeGaveMe;
+	uint8 _rgubTicketHeGaveMe[1024];
+	HAuthTicket _hAuthTicketIGaveThisUser;
+	EBeginAuthSessionResult _eBeginAuthSessionResult;
+	EAuthSessionResponse _eAuthSessionResponse;
 
-	NGSteamP2PNetworkTransport *m_networkTransport;
+	NGSteamP2PNetworkTransport *_networkTransport;
 };
 
 class NGSteamP2PNetworkTransport
@@ -85,12 +85,12 @@ public:
 	void sendTicket(CSteamID steamIDFrom, CSteamID steamIDTo, uint32 cubTicket, uint8 *pubTicket);
 	void closeConnection(CSteamID steamID);
 
-	STEAM_CALLBACK(NGSteamP2PNetworkTransport, onP2PSessionRequest, P2PSessionRequest_t, m_CallbackP2PSessionRequest);
-	STEAM_CALLBACK(NGSteamP2PNetworkTransport, onP2PSessionConnectFail, P2PSessionConnectFail_t, m_CallbackP2PSessionConnectFail);
+	STEAM_CALLBACK(NGSteamP2PNetworkTransport, onP2PSessionRequest, P2PSessionRequest_t, _CallbackP2PSessionRequest);
+	STEAM_CALLBACK(NGSteamP2PNetworkTransport, onP2PSessionConnectFail, P2PSessionConnectFail_t, _CallbackP2PSessionConnectFail);
     
 private:
-    INetworkHelper* m_networkHelper;
-    NGSteamAddress* m_outgoingPacketAddress;
+    INetworkHelper* _networkHelper;
+    NGSteamAddress* _outgoingPacketAddress;
 };
 
 class MsgP2PSendingTicket
@@ -108,10 +108,10 @@ public:
     uint64 getSteamID();
     
 private:
-    const DWORD m_dwMessageType;
-    uint32 m_uTokenLen;
-    char m_rgchToken[1024];
-    uint64 m_ulSteamID;
+    const DWORD _dwMessageType;
+    uint32 _uTokenLen;
+    char _rgchToken[1024];
+    uint64 _ulSteamID;
 };
 
 #endif /* defined(__noctisgames__NGSteamP2PAuth__) */

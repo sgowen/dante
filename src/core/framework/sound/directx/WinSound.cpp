@@ -11,35 +11,35 @@
 #include "WinSound.h"
 
 WinSound::WinSound(int soundId, DirectX::SoundEffect& sound, float volume) : ISound(soundId),
-m_isLooping(false),
-m_isPaused(false)
+_isLooping(false),
+_isPaused(false)
 {
-    m_soundEffectInstance = sound.CreateInstance();
+    _soundEffectInstance = sound.CreateInstance();
 }
 
 WinSound::~WinSound()
 {
-    m_soundEffectInstance->Pause();
+    _soundEffectInstance->Pause();
     
-    m_soundEffectInstance.reset();
+    _soundEffectInstance.reset();
 }
 
 void WinSound::play(bool isLooping)
 {
-    m_isLooping = isLooping;
-    m_isPaused = false;
+    _isLooping = isLooping;
+    _isPaused = false;
  
-	m_soundEffectInstance->Stop();
-    m_soundEffectInstance->Play(isLooping);
+	_soundEffectInstance->Stop();
+    _soundEffectInstance->Play(isLooping);
 }
 
 void WinSound::resume()
 {
-    if (m_isPaused)
+    if (_isPaused)
     {
-        m_soundEffectInstance->Resume();
+        _soundEffectInstance->Resume();
         
-        m_isPaused = false;
+        _isPaused = false;
     }
 }
 
@@ -47,36 +47,36 @@ void WinSound::pause()
 {
     if (isPlaying())
     {
-        m_soundEffectInstance->Pause();
+        _soundEffectInstance->Pause();
         
-        m_isPaused = true;
+        _isPaused = true;
     }
 }
 
 void WinSound::stop()
 {
-    m_isLooping = false;
-    m_isPaused = false;
+    _isLooping = false;
+    _isPaused = false;
     
-    m_soundEffectInstance->Stop();
+    _soundEffectInstance->Stop();
 }
 
 void WinSound::setVolume(float volume)
 {
-    m_soundEffectInstance->SetVolume(volume);
+    _soundEffectInstance->SetVolume(volume);
 }
 
 bool WinSound::isLooping()
 {
-    return m_isLooping;
+    return _isLooping;
 }
 
 bool WinSound::isPlaying()
 {
-	return m_soundEffectInstance->GetState() == DirectX::SoundState::PLAYING;
+	return _soundEffectInstance->GetState() == DirectX::SoundState::PLAYING;
 }
 
 bool WinSound::isPaused()
 {
-    return m_isPaused;
+    return _isPaused;
 }

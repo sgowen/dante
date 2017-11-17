@@ -10,43 +10,43 @@
 
 #include "TextureRegion.h"
 
-TextureRegion::TextureRegion(std::string textureName, int x, int y, int regionWidth, int regionHeight, int textureWidth, int textureHeight) : m_textureName(textureName)
+TextureRegion::TextureRegion(std::string textureName, int x, int y, int regionWidth, int regionHeight, int textureWidth, int textureHeight) : _textureName(textureName)
 {
     init(x, y, regionWidth, regionHeight, textureWidth, textureHeight);
 }
 
 void TextureRegion::init(int x, int y, int regionWidth, int regionHeight, int textureWidth, int textureHeight)
 {
-    m_fX = (float) x;
-    m_fY = (float) y;
-    m_fRegionWidth = (float) regionWidth;
-    m_fRegionHeight = (float) regionHeight;
-    m_fTextureWidth = (float) textureWidth;
-    m_fTextureHeight = (float) textureHeight;
+    _x = (float) x;
+    _y = (float) y;
+    _regionWidth = (float) regionWidth;
+    _regionHeight = (float) regionHeight;
+    _textureWidth = (float) textureWidth;
+    _textureHeight = (float) textureHeight;
     
-    u1 = m_fX / m_fTextureWidth;
-    v1 = m_fY / m_fTextureHeight;
-    u2 = u1 + m_fRegionWidth / m_fTextureWidth;
-    v2 = v1 + m_fRegionHeight / m_fTextureHeight;
+    u1 = _x / _textureWidth;
+    v1 = _y / _textureHeight;
+    u2 = u1 + _regionWidth / _textureWidth;
+    v2 = v1 + _regionHeight / _textureHeight;
 }
 
 void TextureRegion::initX(int x)
 {
-    m_fX = (float) x;
+    _x = (float) x;
     
-    u1 = m_fX / m_fTextureWidth;
-    u2 = u1 + m_fRegionWidth / m_fTextureWidth;
+    u1 = _x / _textureWidth;
+    u2 = u1 + _regionWidth / _textureWidth;
 }
 
 void TextureRegion::initY(int y)
 {
-    m_fY = (float) y;
+    _y = (float) y;
     
-    v1 = m_fY / m_fTextureHeight;
-    v2 = v1 + m_fRegionHeight / m_fTextureHeight;
+    v1 = _y / _textureHeight;
+    v2 = v1 + _regionHeight / _textureHeight;
 }
 
 std::string& TextureRegion::getTextureName()
 {
-    return m_textureName;
+    return _textureName;
 }

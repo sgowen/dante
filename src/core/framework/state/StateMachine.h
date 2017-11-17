@@ -18,7 +18,7 @@ class StateMachine
 {
 public:
     
-    StateMachine(entity_type* owner) : m_owner(owner), m_currentState(nullptr), m_previousState(nullptr), m_globalState(nullptr)
+    StateMachine(entity_type* owner) : _owner(owner), _currentState(nullptr), _previousState(nullptr), _globalState(nullptr)
     {
         // Empty
     }
@@ -30,29 +30,29 @@ public:
     
     void setCurrentState(state_type* state)
     {
-        m_currentState = state;
+        _currentState = state;
     }
     
     void setGlobalState(state_type* state)
     {
-        m_globalState = state;
+        _globalState = state;
     }
     
     void setPreviousState(state_type* state)
     {
-        m_previousState = state;
+        _previousState = state;
     }
     
     void execute() const
     {
-        if (m_globalState)
+        if (_globalState)
         {
-            m_globalState->execute(m_owner);
+            _globalState->execute(_owner);
         }
         
-        if (m_currentState)
+        if (_currentState)
         {
-            m_currentState->execute(m_owner);
+            _currentState->execute(_owner);
         }
     }
     
@@ -60,46 +60,46 @@ public:
     {
         assert(newState && "<StateMachine::ChangeState>:trying to assign null state to current");
         
-        m_previousState = m_currentState;
+        _previousState = _currentState;
         
-        m_currentState->exit(m_owner);
+        _currentState->exit(_owner);
         
-        m_currentState = newState;
+        _currentState = newState;
         
-        m_currentState->enter(m_owner);
+        _currentState->enter(_owner);
     }
     
     void revertToPreviousState()
     {
-        changeState(m_previousState);
+        changeState(_previousState);
     }
     
     bool isInState(const state_type* st)const
     {
-        return m_currentState == st;
+        return _currentState == st;
     }
     
     state_type* getCurrentState() const
     {
-        return m_currentState;
+        return _currentState;
     }
     
     state_type* getGlobalState() const
     {
-        return m_globalState;
+        return _globalState;
     }
     
     state_type* getPreviousState() const
     {
-        return m_previousState;
+        return _previousState;
     }
     
 private:
-    entity_type* m_owner;
+    entity_type* _owner;
     
-    state_type* m_currentState;
-    state_type* m_previousState;
-    state_type* m_globalState;
+    state_type* _currentState;
+    state_type* _previousState;
+    state_type* _globalState;
 };
 
 #endif /* defined(__noctisgames__StateMachine__) */

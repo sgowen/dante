@@ -143,27 +143,27 @@ public:
     bool isRequestingDeletion();
     
 protected:
-    b2World& m_worldRef;
-    b2Body* m_body;
-    b2Fixture* m_fixture;
-    b2Fixture* m_footSensorFixture;
+    b2World& _worldRef;
+    b2Body* _body;
+    b2Fixture* _fixture;
+    b2Fixture* _footSensorFixture;
     float _stateTime;
-    int m_iNumGroundContacts;
-    Color m_color;
-    float m_fX;
-    float m_fY;
-    float m_fWidth;
-    float m_fHeight;
-    float m_fAngle;
-    uint32_t m_iReadState;
-    bool m_isServer;
-    bool m_isPhysicsOn;
+    int _numGroundContacts;
+    Color _color;
+    float _x;
+    float _y;
+    float _width;
+    float _height;
+    float _angle;
+    uint32_t _readState;
+    bool _isServer;
+    bool _isPhysicsOn;
     
     // Cached Last Known Values (from previous frame)
-    b2Vec2 m_velocityLastKnown;
-    b2Vec2 m_positionLastKnown;
-    float m_fAngleLastKnown;
-    int m_iNumGroundContactsLastKnown;
+    b2Vec2 _velocityLastKnown;
+    b2Vec2 _positionLastKnown;
+    float _angleLastKnown;
+    int _numGroundContactsLastKnown;
     
     void initPhysics(EntityDef inEntityDef);
     
@@ -174,10 +174,10 @@ protected:
     bool interpolateVectorsIfNecessary(b2Vec2& inA, const b2Vec2& inB, float& syncTracker, const char* vectorType);
     
 private:
-    float m_fTimeVelocityBecameOutOfSync;
-    float m_fTimePositionBecameOutOfSync;
-    uint32_t m_iID;
-    bool m_isRequestingDeletion;
+    float _timeVelocityBecameOutOfSync;
+    float _timePositionBecameOutOfSync;
+    uint32_t _iD;
+    bool _isRequestingDeletion;
     
     static uint32_t getUniqueEntityID();
 };

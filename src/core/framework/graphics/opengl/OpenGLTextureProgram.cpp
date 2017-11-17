@@ -12,11 +12,11 @@
 
 OpenGLTextureProgram::OpenGLTextureProgram(const char* vertexShaderName, const char* fragmentShaderName) : OpenGLProgram(vertexShaderName, fragmentShaderName)
 {
-    u_mvp_matrix_location = glGetUniformLocation(m_programObjectId, "u_MvpMatrix");
-    u_texture_unit_location = glGetUniformLocation(m_programObjectId, "u_TextureUnit");
-    a_position_location = glGetAttribLocation(m_programObjectId, "a_Position");
-    a_color_location = glGetAttribLocation(m_programObjectId, "a_Color");
-    a_texture_coordinates_location = glGetAttribLocation(m_programObjectId, "a_TextureCoordinates");
+    u_mvp_matrix_location = glGetUniformLocation(_programObjectId, "u_MvpMatrix");
+    u_texture_unit_location = glGetUniformLocation(_programObjectId, "u_TextureUnit");
+    a_position_location = glGetAttribLocation(_programObjectId, "a_Position");
+    a_color_location = glGetAttribLocation(_programObjectId, "a_Color");
+    a_texture_coordinates_location = glGetAttribLocation(_programObjectId, "a_TextureCoordinates");
 }
 
 void OpenGLTextureProgram::bind()

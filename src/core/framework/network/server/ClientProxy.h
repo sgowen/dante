@@ -54,14 +54,14 @@ public:
     uint8_t getNumPlayers();
     
 private:
-    DeliveryNotificationManager	m_deliveryNotificationManager;
-    ReplicationManagerServer m_replicationManagerServer;
-    IMachineAddress* m_machineAddress;
-    std::string m_name;
-    std::vector<uint8_t> m_playerIds;
-    float m_fLastPacketFromClientTime;
-    MoveList m_unprocessedMoveList;
-    bool m_isLastMoveTimestampDirty;
+    DeliveryNotificationManager	_deliveryNotificationManager;
+    ReplicationManagerServer _replicationManagerServer;
+    IMachineAddress* _machineAddress;
+    std::string _name;
+    std::vector<uint8_t> _playerIds;
+    float _lastPacketFromClientTime;
+    MoveList _unprocessedMoveList;
+    bool _isLastMoveTimestampDirty;
 };
 
 #endif /* defined(__noctisgames__ClientProxy__) */

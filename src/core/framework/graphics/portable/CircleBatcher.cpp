@@ -10,7 +10,7 @@
 
 #include "CircleBatcher.h"
 
-CircleBatcher::CircleBatcher() : m_iNumPoints(0)
+CircleBatcher::CircleBatcher() : _numPoints(0)
 {
     // Empty
 }

@@ -74,9 +74,9 @@ Direct3DManager * Direct3DManager::getInstance()
 
 void Direct3DManager::createDeviceDependentResources(int maxBatchSize)
 {
-	assert(m_offscreenRenderTargets.size() == 0);
-	assert(m_offscreenRenderTargetViews.size() == 0);
-	assert(m_offscreenShaderResourceViews.size() == 0);
+	assert(_offscreenRenderTargets.size() == 0);
+	assert(_offscreenRenderTargetViews.size() == 0);
+	assert(_offscreenShaderResourceViews.size() == 0);
     
     createBlendStates();
 	createSamplerStates();
@@ -88,9 +88,9 @@ void Direct3DManager::createDeviceDependentResources(int maxBatchSize)
 
 void Direct3DManager::createWindowSizeDependentResources(int renderWidth, int renderHeight, int numFramebuffers)
 {
-    m_iRenderWidth = renderWidth;
-    m_iRenderHeight = renderHeight;
-    m_iNumFramebuffers = numFramebuffers;
+    _renderWidth = renderWidth;
+    _renderHeight = renderHeight;
+    _numFramebuffers = numFramebuffers;
 
 	releaseFramebuffers();
     createFramebufferObjects();
@@ -100,15 +100,15 @@ void Direct3DManager::releaseDeviceDependentResources()
 {
     releaseFramebuffers();
 
-	m_blendState.Reset();
-	m_screenBlendState.Reset();
-	m_matrixConstantbuffer.Reset();
-	m_indexbuffer.Reset();
-	m_sbSamplerState.Reset();
-	m_sbVertexBuffer.Reset();
-	m_textureVertices.clear();
-	m_gbVertexBuffer.Reset();
-	m_colorVertices.clear();
+	_blendState.Reset();
+	_screenBlendState.Reset();
+	_matrixConstantbuffer.Reset();
+	_indexbuffer.Reset();
+	_sbSamplerState.Reset();
+	_sbVertexBuffer.Reset();
+	_textureVertices.clear();
+	_gbVertexBuffer.Reset();
+	_colorVertices.clear();
 }
 
 void Direct3DManager::updateMatrix(float left, float right, float bottom, float top)
@@ -119,109 +119,109 @@ void Direct3DManager::updateMatrix(float left, float right, float bottom, float 
 
 	XMMATRIX matFinal = XMMatrixOrthographicOffCenterRH(left, right, bottom, top, -1.0, 1.0) * orientationMatrix;
 
-	XMStoreFloat4x4(&m_matFinal, matFinal);
+	XMStoreFloat4x4(&_matFinal, matFinal);
 }
 
 void Direct3DManager::addVertexCoordinate(float x, float y, float z, float r, float g, float b, float a, float u, float v)
 {
 	TEXTURE_VERTEX tv = { x, y, z, r, g, b, a, u, v };
-	m_textureVertices.push_back(tv);
+	_textureVertices.push_back(tv);
 }
 
 void Direct3DManager::addVertexCoordinate(float x, float y, float z, float r, float g, float b, float a)
 {
 	COLOR_VERTEX cv = { x, y, z, r, g, b, a };
-	m_colorVertices.push_back(cv);
+	_colorVertices.push_back(cv);
 }
 
 void Direct3DManager::useNormalBlending()
 {
-    s_d3dContext->OMSetBlendState(D3DManager->m_blendState.Get(), 0, 0xffffffff);
+    s_d3dContext->OMSetBlendState(D3DManager->_blendState.Get(), 0, 0xffffffff);
 }
 
 void Direct3DManager::useScreenBlending()
 {
-    s_d3dContext->OMSetBlendState(D3DManager->m_screenBlendState.Get(), 0, 0xffffffff);
+    s_d3dContext->OMSetBlendState(D3DManager->_screenBlendState.Get(), 0, 0xffffffff);
 }
 
 std::vector<ID3D11Texture2D*>& Direct3DManager::getOffscreenRenderTargets()
 {
-	return m_offscreenRenderTargets;
+	return _offscreenRenderTargets;
 }
 
 std::vector<ID3D11RenderTargetView*>& Direct3DManager::getOffscreenRenderTargetViews()
 {
-	return m_offscreenRenderTargetViews;
+	return _offscreenRenderTargetViews;
 }
 
 std::vector<ID3D11ShaderResourceView*>& Direct3DManager::getOffscreenShaderResourceViews()
 {
-	return m_offscreenShaderResourceViews;
+	return _offscreenShaderResourceViews;
 }
 
 std::vector<GpuTextureWrapper *>& Direct3DManager::getFramebuffers()
 {
-    return m_framebuffers;
+    return _framebuffers;
 }
 
 Microsoft::WRL::ComPtr<ID3D11BlendState>& Direct3DManager::getBlendState()
 {
-	return m_blendState;
+	return _blendState;
 }
 
 Microsoft::WRL::ComPtr<ID3D11BlendState>& Direct3DManager::getScreenBlendState()
 {
-	return m_screenBlendState;
+	return _screenBlendState;
 }
 
 Microsoft::WRL::ComPtr<ID3D11Buffer>& Direct3DManager::getMatrixConstantbuffer()
 {
-	return m_matrixConstantbuffer;
+	return _matrixConstantbuffer;
 }
 
 Microsoft::WRL::ComPtr<ID3D11Buffer>& Direct3DManager::getIndexbuffer()
 {
-	return m_indexbuffer;
+	return _indexbuffer;
 }
 
 Microsoft::WRL::ComPtr<ID3D11SamplerState>& Direct3DManager::getSbSamplerState()
 {
-	return m_sbSamplerState;
+	return _sbSamplerState;
 }
 
 Microsoft::WRL::ComPtr<ID3D11SamplerState>& Direct3DManager::getSbWrapSamplerState()
 {
-	return m_sbWrapSamplerState;
+	return _sbWrapSamplerState;
 }
 
 Microsoft::WRL::ComPtr<ID3D11Buffer>& Direct3DManager::getSbVertexBuffer()
 {
-	return m_sbVertexBuffer;
+	return _sbVertexBuffer;
 }
 
 std::vector<TEXTURE_VERTEX>& Direct3DManager::getTextureVertices()
 {
-	return m_textureVertices;
+	return _textureVertices;
 }
 
 Microsoft::WRL::ComPtr<ID3D11Buffer>& Direct3DManager::getGbVertexBuffer()
 {
-	return m_gbVertexBuffer;
+	return _gbVertexBuffer;
 }
 
 std::vector<COLOR_VERTEX>& Direct3DManager::getColorVertices()
 {
-	return m_colorVertices;
+	return _colorVertices;
 }
 
 DirectX::XMFLOAT4X4& Direct3DManager::getMatFinal()
 {
-	return m_matFinal;
+	return _matFinal;
 }
 
 bool Direct3DManager::isWindowsMobile()
 {
-    return m_isWindowsMobile;
+    return _isWindowsMobile;
 }
 
 // private
@@ -241,7 +241,7 @@ void Direct3DManager::createBlendStates()
 		bd.IndependentBlendEnable = FALSE;
 		bd.AlphaToCoverageEnable = FALSE;
 
-		s_d3dDevice->CreateBlendState(&bd, &m_blendState);
+		s_d3dDevice->CreateBlendState(&bd, &_blendState);
 	}
 
 	{
@@ -257,7 +257,7 @@ void Direct3DManager::createBlendStates()
 		bd.IndependentBlendEnable = FALSE;
 		bd.AlphaToCoverageEnable = FALSE;
 
-		s_d3dDevice->CreateBlendState(&bd, &m_screenBlendState);
+		s_d3dDevice->CreateBlendState(&bd, &_screenBlendState);
 	}
 }
 
@@ -280,7 +280,7 @@ void Direct3DManager::createSamplerStates()
 		sd.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR; // linear filtering
 		sd.MinLOD = 5.0f; // mip level 5 will appear blurred
 
-		s_d3dDevice->CreateSamplerState(&sd, m_sbSamplerState.GetAddressOf());
+		s_d3dDevice->CreateSamplerState(&sd, _sbSamplerState.GetAddressOf());
 	}
 
 	{
@@ -300,21 +300,21 @@ void Direct3DManager::createSamplerStates()
 		sd.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR; // linear filtering
 		sd.MinLOD = 5.0f; // mip level 5 will appear blurred
 
-		s_d3dDevice->CreateSamplerState(&sd, m_sbWrapSamplerState.GetAddressOf());
+		s_d3dDevice->CreateSamplerState(&sd, _sbWrapSamplerState.GetAddressOf());
 	}
 }
 
 void Direct3DManager::createVertexBufferForSpriteBatcher(int maxBatchSize)
 {
-	m_textureVertices.reserve(maxBatchSize * VERTICES_PER_RECTANGLE);
+	_textureVertices.reserve(maxBatchSize * VERTICES_PER_RECTANGLE);
 	TEXTURE_VERTEX tv = { 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 	for (int i = 0; i < maxBatchSize * VERTICES_PER_RECTANGLE; ++i)
 	{
-		m_textureVertices.push_back(tv);
+		_textureVertices.push_back(tv);
 	}
 
 	D3D11_BUFFER_DESC vertexBufferDesc = { 0 };
-	vertexBufferDesc.ByteWidth = sizeof(TEXTURE_VERTEX) * m_textureVertices.size();
+	vertexBufferDesc.ByteWidth = sizeof(TEXTURE_VERTEX) * _textureVertices.size();
 	vertexBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
 	vertexBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 	vertexBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
@@ -322,24 +322,24 @@ void Direct3DManager::createVertexBufferForSpriteBatcher(int maxBatchSize)
 	vertexBufferDesc.StructureByteStride = 0;
 
 	D3D11_SUBRESOURCE_DATA vertexBufferData;
-	vertexBufferData.pSysMem = &m_textureVertices[0];
+	vertexBufferData.pSysMem = &_textureVertices[0];
 	vertexBufferData.SysMemPitch = 0;
 	vertexBufferData.SysMemSlicePitch = 0;
 
-	DirectX::ThrowIfFailed(s_d3dDevice->CreateBuffer(&vertexBufferDesc, &vertexBufferData, &m_sbVertexBuffer));
+	DirectX::ThrowIfFailed(s_d3dDevice->CreateBuffer(&vertexBufferDesc, &vertexBufferData, &_sbVertexBuffer));
 }
 
 void Direct3DManager::createVertexBufferForGeometryBatchers(int maxBatchSize)
 {
-	m_colorVertices.reserve(maxBatchSize * VERTICES_PER_RECTANGLE);
+	_colorVertices.reserve(maxBatchSize * VERTICES_PER_RECTANGLE);
 	COLOR_VERTEX cv = { 0, 0, 0, 0, 0, 0, 0 };
 	for (int i = 0; i < maxBatchSize * VERTICES_PER_RECTANGLE; ++i)
 	{
-		m_colorVertices.push_back(cv);
+		_colorVertices.push_back(cv);
 	}
 
 	D3D11_BUFFER_DESC vertexBufferDesc = { 0 };
-	vertexBufferDesc.ByteWidth = sizeof(COLOR_VERTEX) * m_colorVertices.size();
+	vertexBufferDesc.ByteWidth = sizeof(COLOR_VERTEX) * _colorVertices.size();
 	vertexBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
 	vertexBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 	vertexBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
@@ -347,11 +347,11 @@ void Direct3DManager::createVertexBufferForGeometryBatchers(int maxBatchSize)
 	vertexBufferDesc.StructureByteStride = 0;
 
 	D3D11_SUBRESOURCE_DATA vertexBufferData;
-	vertexBufferData.pSysMem = &m_colorVertices[0];
+	vertexBufferData.pSysMem = &_colorVertices[0];
 	vertexBufferData.SysMemPitch = 0;
 	vertexBufferData.SysMemSlicePitch = 0;
 
-	DirectX::ThrowIfFailed(s_d3dDevice->CreateBuffer(&vertexBufferDesc, &vertexBufferData, &m_gbVertexBuffer));
+	DirectX::ThrowIfFailed(s_d3dDevice->CreateBuffer(&vertexBufferDesc, &vertexBufferData, &_gbVertexBuffer));
 }
 
 void Direct3DManager::createIndexBuffer(int maxBatchSize)
@@ -368,9 +368,9 @@ void Direct3DManager::createIndexBuffer(int maxBatchSize)
 
 	indexDataDesc.pSysMem = &indexValues.front();
 
-	s_d3dDevice->CreateBuffer(&indexBufferDesc, &indexDataDesc, &m_indexbuffer);
+	s_d3dDevice->CreateBuffer(&indexBufferDesc, &indexDataDesc, &_indexbuffer);
 
-	s_d3dContext->IASetIndexBuffer(m_indexbuffer.Get(), DXGI_FORMAT_R16_UINT, 0);
+	s_d3dContext->IASetIndexBuffer(_indexbuffer.Get(), DXGI_FORMAT_R16_UINT, 0);
 }
 
 void Direct3DManager::createConstantBuffer()
@@ -381,7 +381,7 @@ void Direct3DManager::createConstantBuffer()
 	bd.ByteWidth = 64;
 	bd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
 
-	DirectX::ThrowIfFailed(s_d3dDevice->CreateBuffer(&bd, nullptr, &m_matrixConstantbuffer));
+	DirectX::ThrowIfFailed(s_d3dDevice->CreateBuffer(&bd, nullptr, &_matrixConstantbuffer));
 }
 
 std::vector<short> Direct3DManager::createIndexValues(int maxBatchSize)
@@ -406,7 +406,7 @@ std::vector<short> Direct3DManager::createIndexValues(int maxBatchSize)
 
 void Direct3DManager::createFramebufferObjects()
 {
-    for (int i = 0; i < m_iNumFramebuffers; ++i)
+    for (int i = 0; i < _numFramebuffers; ++i)
     {
         createFramebufferObject();
     }
@@ -414,9 +414,9 @@ void Direct3DManager::createFramebufferObjects()
 
 void Direct3DManager::createFramebufferObject()
 {
-    ID3D11Texture2D* m_offscreenRenderTarget;
-    ID3D11RenderTargetView* m_offscreenRenderTargetView;
-    ID3D11ShaderResourceView* m_offscreenShaderResourceView;
+    ID3D11Texture2D* _offscreenRenderTarget;
+    ID3D11RenderTargetView* _offscreenRenderTargetView;
+    ID3D11ShaderResourceView* _offscreenShaderResourceView;
     
     D3D11_TEXTURE2D_DESC textureDesc;
     D3D11_RENDER_TARGET_VIEW_DESC renderTargetViewDesc;
@@ -426,8 +426,8 @@ void Direct3DManager::createFramebufferObject()
     ZeroMemory(&textureDesc, sizeof(textureDesc));
     
     // Setup the render target texture description.
-    textureDesc.Width = m_iRenderWidth;
-    textureDesc.Height = m_iRenderHeight;
+    textureDesc.Width = _renderWidth;
+    textureDesc.Height = _renderHeight;
     textureDesc.MipLevels = 1;
     textureDesc.ArraySize = 1;
     textureDesc.Format = DXGI_FORMAT_B8G8R8A8_UNORM;
@@ -438,7 +438,7 @@ void Direct3DManager::createFramebufferObject()
     textureDesc.MiscFlags = 0;
     
     // Create the render target texture.
-    DirectX::ThrowIfFailed(s_d3dDevice->CreateTexture2D(&textureDesc, NULL, &m_offscreenRenderTarget));
+    DirectX::ThrowIfFailed(s_d3dDevice->CreateTexture2D(&textureDesc, NULL, &_offscreenRenderTarget));
     
     // Setup the description of the render target view.
     renderTargetViewDesc.Format = textureDesc.Format;
@@ -446,7 +446,7 @@ void Direct3DManager::createFramebufferObject()
     renderTargetViewDesc.Texture2D.MipSlice = 0;
     
     // Create the render target view.
-    DirectX::ThrowIfFailed(s_d3dDevice->CreateRenderTargetView(m_offscreenRenderTarget, &renderTargetViewDesc, &m_offscreenRenderTargetView));
+    DirectX::ThrowIfFailed(s_d3dDevice->CreateRenderTargetView(_offscreenRenderTarget, &renderTargetViewDesc, &_offscreenRenderTargetView));
     
     // Setup the description of the shader resource view.
     shaderResourceViewDesc.Format = textureDesc.Format;
@@ -455,55 +455,55 @@ void Direct3DManager::createFramebufferObject()
     shaderResourceViewDesc.Texture2D.MipLevels = 1;
     
     // Create the shader resource view.
-    DirectX::ThrowIfFailed(s_d3dDevice->CreateShaderResourceView(m_offscreenRenderTarget, &shaderResourceViewDesc, &m_offscreenShaderResourceView));
+    DirectX::ThrowIfFailed(s_d3dDevice->CreateShaderResourceView(_offscreenRenderTarget, &shaderResourceViewDesc, &_offscreenShaderResourceView));
     
-    m_offscreenRenderTargets.push_back(m_offscreenRenderTarget);
-    m_offscreenRenderTargetViews.push_back(m_offscreenRenderTargetView);
-    m_offscreenShaderResourceViews.push_back(m_offscreenShaderResourceView);
+    _offscreenRenderTargets.push_back(_offscreenRenderTarget);
+    _offscreenRenderTargetViews.push_back(_offscreenRenderTargetView);
+    _offscreenShaderResourceViews.push_back(_offscreenShaderResourceView);
     
-    m_framebuffers.push_back(new GpuTextureWrapper(m_offscreenShaderResourceView));
+    _framebuffers.push_back(new GpuTextureWrapper(_offscreenShaderResourceView));
 }
 
 void Direct3DManager::releaseFramebuffers()
 {
-    for (std::vector<ID3D11Texture2D*>::iterator i = m_offscreenRenderTargets.begin(); i != m_offscreenRenderTargets.end(); ++i)
+    for (std::vector<ID3D11Texture2D*>::iterator i = _offscreenRenderTargets.begin(); i != _offscreenRenderTargets.end(); ++i)
     {
         (*i)->Release();
     }
     
-    for (std::vector<ID3D11RenderTargetView*>::iterator i = m_offscreenRenderTargetViews.begin(); i != m_offscreenRenderTargetViews.end(); ++i)
+    for (std::vector<ID3D11RenderTargetView*>::iterator i = _offscreenRenderTargetViews.begin(); i != _offscreenRenderTargetViews.end(); ++i)
     {
         (*i)->Release();
     }
     
-    for (std::vector<ID3D11ShaderResourceView*>::iterator i = m_offscreenShaderResourceViews.begin(); i != m_offscreenShaderResourceViews.end(); ++i)
+    for (std::vector<ID3D11ShaderResourceView*>::iterator i = _offscreenShaderResourceViews.begin(); i != _offscreenShaderResourceViews.end(); ++i)
     {
         (*i)->Release();
     }
     
-    m_offscreenRenderTargets.clear();
-    m_offscreenRenderTargetViews.clear();
-    m_offscreenShaderResourceViews.clear();
+    _offscreenRenderTargets.clear();
+    _offscreenRenderTargetViews.clear();
+    _offscreenShaderResourceViews.clear();
     
-    NGSTDUtil::cleanUpVectorOfPointers(m_framebuffers);
+    NGSTDUtil::cleanUpVectorOfPointers(_framebuffers);
 }
 
 Direct3DManager::Direct3DManager() :
-m_iRenderWidth(-1),
-m_iRenderHeight(-1),
-m_iNumFramebuffers(-1),
-m_isWindowsMobile(false)
+_renderWidth(-1),
+_renderHeight(-1),
+_numFramebuffers(-1),
+_isWindowsMobile(false)
 {
 	// Hide Constructor for Singleton
 #if !defined(WINAPI_FAMILY) || WINAPI_FAMILY == WINAPI_FAMILY_DESKTOP_APP
-	m_isWindowsMobile = false;
+	_isWindowsMobile = false;
 #elif defined (WINAPI_FAMILY_SYSTEM)
 	Windows::System::Profile::AnalyticsVersionInfo^ api = Windows::System::Profile::AnalyticsInfo::VersionInfo;
-	m_isWindowsMobile = api->DeviceFamily->Equals("Windows.Mobile");
+	_isWindowsMobile = api->DeviceFamily->Equals("Windows.Mobile");
 #elif WINAPI_FAMILY == WINAPI_FAMILY_PC_APP
-	m_isWindowsMobile = false;
+	_isWindowsMobile = false;
 #else
-	m_isWindowsMobile = true;
+	_isWindowsMobile = true;
 #endif
 }
 

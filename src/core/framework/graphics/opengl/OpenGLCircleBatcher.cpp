@@ -27,7 +27,7 @@ void OpenGLCircleBatcher::renderCircle(Circle &circle, Color &c, GpuProgramWrapp
 {
     OGLManager->getColorVertices().clear();
     
-    m_iNumPoints = 0;
+    _numPoints = 0;
     
     for (int i = 0; i < 360; i += DEGREE_SPACING)
     {
@@ -37,7 +37,7 @@ void OpenGLCircleBatcher::renderCircle(Circle &circle, Color &c, GpuProgramWrapp
         
         OGLManager->addVertexCoordinate(cos * circle.getRadius() + circle.getCenter().getX(), sin * circle.getRadius() + circle.getCenter().getY(), 0, c.red, c.green, c.blue, c.alpha);
         
-        m_iNumPoints++;
+        _numPoints++;
     }
     
     endBatch(gpuProgramWrapper);
@@ -49,7 +49,7 @@ void OpenGLCircleBatcher::renderPartialCircle(Circle &circle, int arcDegrees, Co
     
     OGLManager->addVertexCoordinate(circle.getCenter().getX(), circle.getCenter().getY(), 0, c.red, c.green, c.blue, c.alpha);
     
-    m_iNumPoints = 1;
+    _numPoints = 1;
     
     for (int i = 90 - arcDegrees; i > -270; i -= DEGREE_SPACING)
     {
@@ -59,7 +59,7 @@ void OpenGLCircleBatcher::renderPartialCircle(Circle &circle, int arcDegrees, Co
         
         OGLManager->addVertexCoordinate(cos * circle.getRadius() + circle.getCenter().getX(), sin * circle.getRadius() + circle.getCenter().getY(), 0, c.red, c.green, c.blue, c.alpha);
         
-        m_iNumPoints++;
+        _numPoints++;
     }
     
     float rad = DEGREES_TO_RADIANS(-270);
@@ -68,7 +68,7 @@ void OpenGLCircleBatcher::renderPartialCircle(Circle &circle, int arcDegrees, Co
     
     OGLManager->addVertexCoordinate(cos * circle.getRadius() + circle.getCenter().getX(), sin * circle.getRadius() + circle.getCenter().getY(), 0, c.red, c.green, c.blue, c.alpha);
     
-    m_iNumPoints++;
+    _numPoints++;
     
     endBatch(gpuProgramWrapper);
 }
@@ -77,7 +77,7 @@ void OpenGLCircleBatcher::endBatch(GpuProgramWrapper &gpuProgramWrapper)
 {
     gpuProgramWrapper.bind();
     
-    glDrawArrays(GL_TRIANGLE_FAN, 0, m_iNumPoints);
+    glDrawArrays(GL_TRIANGLE_FAN, 0, _numPoints);
     
     gpuProgramWrapper.unbind();
 }

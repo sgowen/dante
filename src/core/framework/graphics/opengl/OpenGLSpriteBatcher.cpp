@@ -18,19 +18,19 @@
 
 OpenGLSpriteBatcher::OpenGLSpriteBatcher()
 {
-    m_iNumSprites = 0;
+    _numSprites = 0;
 }
 
 void OpenGLSpriteBatcher::beginBatch()
 {
     OGLManager->getTextureVertices().clear();
     
-    m_iNumSprites = 0;
+    _numSprites = 0;
 }
 
 void OpenGLSpriteBatcher::endBatch(TextureWrapper& textureWrapper, GpuProgramWrapper& gpuProgramWrapper)
 {
-    if (m_iNumSprites > 0)
+    if (_numSprites > 0)
     {
         // tell the GPU which texture to use
         glActiveTexture(GL_TEXTURE0);
@@ -38,7 +38,7 @@ void OpenGLSpriteBatcher::endBatch(TextureWrapper& textureWrapper, GpuProgramWra
         
         gpuProgramWrapper.bind();
         
-        glDrawElements(GL_TRIANGLES, m_iNumSprites * INDICES_PER_RECTANGLE, GL_UNSIGNED_SHORT, &OGLManager->getIndices()[0]);
+        glDrawElements(GL_TRIANGLES, _numSprites * INDICES_PER_RECTANGLE, GL_UNSIGNED_SHORT, &OGLManager->getIndices()[0]);
         
         gpuProgramWrapper.unbind();
         

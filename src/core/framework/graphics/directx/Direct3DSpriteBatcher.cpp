@@ -27,12 +27,12 @@ void Direct3DSpriteBatcher::beginBatch()
 {
 	D3DManager->getTextureVertices().clear();
     
-	m_iNumSprites = 0;
+	_numSprites = 0;
 }
 
 void Direct3DSpriteBatcher::endBatch(TextureWrapper& textureWrapper, GpuProgramWrapper& gpuProgramWrapper)
 {
-	if (m_iNumSprites > 0)
+	if (_numSprites > 0)
 	{
 		// tell the GPU which texture to use
 		ID3D11DeviceContext* d3dContext = Direct3DManager::getD3dContext();
@@ -51,7 +51,7 @@ void Direct3DSpriteBatcher::endBatch(TextureWrapper& textureWrapper, GpuProgramW
 
 		gpuProgramWrapper.bind();
 
-		d3dContext->DrawIndexed(m_iNumSprites * INDICES_PER_RECTANGLE, 0, 0);
+		d3dContext->DrawIndexed(_numSprites * INDICES_PER_RECTANGLE, 0, 0);
 
 		gpuProgramWrapper.unbind();
 

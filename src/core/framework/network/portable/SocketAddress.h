@@ -43,7 +43,7 @@ public:
     virtual std::string toString() const;
     
 private:
-    sockaddr m_sockAddr;
+    sockaddr _sockAddr;
     
     uint32_t& getIP4Ref();
     const uint32_t& getIP4Ref() const;

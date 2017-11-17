@@ -56,13 +56,13 @@ public:
     bool isPlayerIdLocalHost(uint8_t playerId);
     
 private:
-    std::string m_liveInput;
-    InputState* m_currentState;
-    MoveList m_moveList;
-    const Move* m_pendingMove;
-    bool m_isConnected;
-    bool m_isLiveMode;
-    bool m_isTimeToProcessInput;
+    std::string _liveInput;
+    InputState* _currentState;
+    MoveList _moveList;
+    const Move* _pendingMove;
+    bool _isConnected;
+    bool _isLiveMode;
+    bool _isTimeToProcessInput;
     
     const Move& sampleInputAsMove();
     

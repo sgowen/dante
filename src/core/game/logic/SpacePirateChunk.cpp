@@ -25,7 +25,7 @@
 
 #include <math.h>
 
-SpacePirateChunk::SpacePirateChunk(b2World& world, bool isServer) : Entity(world, 0.0f, 0.0f, 1.0f, 1.0f, isServer, constructEntityDef()), m_iType(Space_Pirate_Chunk_Top_Left), m_isFacingLeft(false)
+SpacePirateChunk::SpacePirateChunk(b2World& world, bool isServer) : Entity(world, 0.0f, 0.0f, 1.0f, 1.0f, isServer, constructEntityDef()), _type(Space_Pirate_Chunk_Top_Left), _isFacingLeft(false)
 {
     // Empty
 }
@@ -49,11 +49,11 @@ void SpacePirateChunk::update()
     
     if (_stateTime > 3)
     {
-        m_color.alpha = (5 - _stateTime) / 2.0f;
-        m_color.alpha = clamp(m_color.alpha, 1, 0);
+        _color.alpha = (5 - _stateTime) / 2.0f;
+        _color.alpha = clamp(_color.alpha, 1, 0);
     }
     
-    if (m_isServer)
+    if (_isServer)
     {
         if (_stateTime > 5)
         {
@@ -70,9 +70,9 @@ void SpacePirateChunk::update()
         NG_SERVER->setStateDirty(getID(), SPCH_Pose);
     }
     
-    m_velocityLastKnown = b2Vec2(getVelocity().x, getVelocity().y);
-    m_positionLastKnown = b2Vec2(getPosition().x, getPosition().y);
-    m_fAngleLastKnown = getAngle();
+    _velocityLastKnown = b2Vec2(getVelocity().x, getVelocity().y);
+    _positionLastKnown = b2Vec2(getPosition().x, getPosition().y);
+    _angleLastKnown = getAngle();
 }
 
 bool SpacePirateChunk::shouldCollide(Entity *inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB)
@@ -113,24 +113,24 @@ uint32_t SpacePirateChunk::getAllStateMask() const
 
 void SpacePirateChunk::read(InputMemoryBitStream& inInputStream)
 {
-    float oldWidth = m_fWidth;
+    float oldWidth = _width;
     
     bool stateBit;
     
-    m_iReadState = 0;
+    _readState = 0;
     
     inInputStream.read(stateBit);
     if (stateBit)
     {
-        inInputStream.read(m_iType);
-        inInputStream.read(m_isFacingLeft);
+        inInputStream.read(_type);
+        inInputStream.read(_isFacingLeft);
         
-        inInputStream.read(m_color);
+        inInputStream.read(_color);
         
-        inInputStream.read(m_fWidth);
-        inInputStream.read(m_fHeight);
+        inInputStream.read(_width);
+        inInputStream.read(_height);
         
-        m_iReadState |= SPCH_Info;
+        _readState |= SPCH_Info;
     }
     
     inInputStream.read(stateBit);
@@ -150,10 +150,10 @@ void SpacePirateChunk::read(InputMemoryBitStream& inInputStream)
         
         setTransform(position, angle);
         
-        m_iReadState |= SPCH_Pose;
+        _readState |= SPCH_Pose;
     }
     
-    if (!areFloatsPracticallyEqual(oldWidth, m_fWidth))
+    if (!areFloatsPracticallyEqual(oldWidth, _width))
     {
         initPhysics(constructEntityDef());
     }
@@ -167,13 +167,13 @@ uint32_t SpacePirateChunk::write(OutputMemoryBitStream& inOutputStream, uint32_t
     {
         inOutputStream.write((bool)true);
         
-        inOutputStream.write(m_iType);
-        inOutputStream.write((bool)m_isFacingLeft);
+        inOutputStream.write(_type);
+        inOutputStream.write((bool)_isFacingLeft);
         
-        inOutputStream.write(m_color);
+        inOutputStream.write(_color);
         
-        inOutputStream.write(m_fWidth);
-        inOutputStream.write(m_fHeight);
+        inOutputStream.write(_width);
+        inOutputStream.write(_height);
         
         writtenState |= SPCH_Info;
     }
@@ -206,7 +206,7 @@ uint32_t SpacePirateChunk::write(OutputMemoryBitStream& inOutputStream, uint32_t
 
 bool SpacePirateChunk::needsMoveReplay()
 {
-    return (m_iReadState & SPCH_Pose) != 0;
+    return (_readState & SPCH_Pose) != 0;
 }
 
 void SpacePirateChunk::initFromSpacePirate(SpacePirate* spacePirate, b2Vec2 force, int type)
@@ -216,8 +216,8 @@ void SpacePirateChunk::initFromSpacePirate(SpacePirate* spacePirate, b2Vec2 forc
     float w = spacePirate->getWidth();
     float h = spacePirate->getHeight();
     bool flipX = spacePirate->isFacingLeft();
-    m_isFacingLeft = flipX;
-    m_iType = type;
+    _isFacingLeft = flipX;
+    _type = type;
     
     switch (type)
     {
@@ -233,13 +233,13 @@ void SpacePirateChunk::initFromSpacePirate(SpacePirate* spacePirate, b2Vec2 forc
             y += h / 4;
         }
             break;
-        case Space_Pirate_Chunk_Bottom_Left:
+        case Space_Pirate_Chunk_Botto_Left:
         {
             x += flipX ? (w / 4) : (-w / 4);
             y -= h / 4;
         }
             break;
-        case Space_Pirate_Chunk_Bottom_Right:
+        case Space_Pirate_Chunk_Botto_Right:
         {
             x += flipX ? (-w / 4) : (w / 4);
             y -= h / 4;
@@ -250,12 +250,12 @@ void SpacePirateChunk::initFromSpacePirate(SpacePirate* spacePirate, b2Vec2 forc
     }
     
     Color spColor = spacePirate->getColor();
-    m_color = Color(spColor.red, spColor.green, spColor.blue, spColor.alpha);
+    _color = Color(spColor.red, spColor.green, spColor.blue, spColor.alpha);
     
     setPosition(b2Vec2(x, y));
     
-    m_fWidth = w / 2;
-    m_fHeight = h / 2;
+    _width = w / 2;
+    _height = h / 2;
     
     initPhysics(constructEntityDef());
     
@@ -264,12 +264,12 @@ void SpacePirateChunk::initFromSpacePirate(SpacePirate* spacePirate, b2Vec2 forc
 
 int SpacePirateChunk::getType()
 {
-    return m_iType;
+    return _type;
 }
 
 bool SpacePirateChunk::isFacingLeft()
 {
-    return m_isFacingLeft;
+    return _isFacingLeft;
 }
 
 RTTI_IMPL(SpacePirateChunk, Entity);

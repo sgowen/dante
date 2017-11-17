@@ -1007,13 +1007,6 @@
 		BB5833731EEDBBC50084DA20 /* steam_appid.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = steam_appid.txt; sourceTree = "<group>"; };
 		BB5833771EEDBF7E0084DA20 /* NGSteamGameServices.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NGSteamGameServices.cpp; sourceTree = "<group>"; };
 		BB5833791EEDBFB20084DA20 /* NGSteamGameServices.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NGSteamGameServices.h; sourceTree = "<group>"; };
-		BB5833831EEDD6340084DA20 /* dds.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = dds.h; sourceTree = "<group>"; };
-		BB5833841EEDD6340084DA20 /* DDSTextureLoader.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = DDSTextureLoader.cpp; sourceTree = "<group>"; };
-		BB5833851EEDD6340084DA20 /* DDSTextureLoader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DDSTextureLoader.h; sourceTree = "<group>"; };
-		BB5833861EEDD6340084DA20 /* DirectXHelpers.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DirectXHelpers.h; sourceTree = "<group>"; };
-		BB5833871EEDD6340084DA20 /* LoaderHelpers.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoaderHelpers.h; sourceTree = "<group>"; };
-		BB5833881EEDD6340084DA20 /* PlatformHelpers.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PlatformHelpers.h; sourceTree = "<group>"; };
-		BB5833891EEDD6340084DA20 /* ReadData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ReadData.h; sourceTree = "<group>"; };
 		BB58338B1EEDD6470084DA20 /* Direct3DCircleBatcher.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Direct3DCircleBatcher.cpp; sourceTree = "<group>"; };
 		BB58338C1EEDD6470084DA20 /* Direct3DCircleBatcher.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Direct3DCircleBatcher.h; sourceTree = "<group>"; };
 		BB58338D1EEDD6470084DA20 /* Direct3DFrameBufferToScreenGpuProgramWrapper.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Direct3DFrameBufferToScreenGpuProgramWrapper.cpp; sourceTree = "<group>"; };
@@ -1050,24 +1043,6 @@
 		BB5833AD1EEDD6470084DA20 /* shader_002_vert.hlsl */ = {isa = PBXFileReference; lastKnownFileType = text; path = shader_002_vert.hlsl; sourceTree = "<group>"; };
 		BB5833AE1EEDD6470084DA20 /* shader_003_frag.hlsl */ = {isa = PBXFileReference; lastKnownFileType = text; path = shader_003_frag.hlsl; sourceTree = "<group>"; };
 		BB5833AF1EEDD6470084DA20 /* shader_003_vert.hlsl */ = {isa = PBXFileReference; lastKnownFileType = text; path = shader_003_vert.hlsl; sourceTree = "<group>"; };
-		BB5833B21EEDD6500084DA20 /* GamePad.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = GamePad.cpp; sourceTree = "<group>"; };
-		BB5833B31EEDD6500084DA20 /* GamePad.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GamePad.h; sourceTree = "<group>"; };
-		BB5833B41EEDD6500084DA20 /* Keyboard.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Keyboard.cpp; sourceTree = "<group>"; };
-		BB5833B51EEDD6500084DA20 /* Keyboard.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Keyboard.h; sourceTree = "<group>"; };
-		BB5833B61EEDD6500084DA20 /* Mouse.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Mouse.cpp; sourceTree = "<group>"; };
-		BB5833B71EEDD6500084DA20 /* Mouse.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Mouse.h; sourceTree = "<group>"; };
-		BB5833B91EEDD6580084DA20 /* Audio.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Audio.h; sourceTree = "<group>"; };
-		BB5833BA1EEDD6580084DA20 /* AudioEngine.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = AudioEngine.cpp; sourceTree = "<group>"; };
-		BB5833BB1EEDD6580084DA20 /* DynamicSoundEffectInstance.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = DynamicSoundEffectInstance.cpp; sourceTree = "<group>"; };
-		BB5833BC1EEDD6580084DA20 /* SoundCommon.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SoundCommon.cpp; sourceTree = "<group>"; };
-		BB5833BD1EEDD6580084DA20 /* SoundCommon.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SoundCommon.h; sourceTree = "<group>"; };
-		BB5833BE1EEDD6580084DA20 /* SoundEffect.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SoundEffect.cpp; sourceTree = "<group>"; };
-		BB5833BF1EEDD6580084DA20 /* SoundEffectInstance.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SoundEffectInstance.cpp; sourceTree = "<group>"; };
-		BB5833C01EEDD6580084DA20 /* WaveBank.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = WaveBank.cpp; sourceTree = "<group>"; };
-		BB5833C11EEDD6580084DA20 /* WaveBankReader.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = WaveBankReader.cpp; sourceTree = "<group>"; };
-		BB5833C21EEDD6580084DA20 /* WaveBankReader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WaveBankReader.h; sourceTree = "<group>"; };
-		BB5833C31EEDD6580084DA20 /* WAVFileReader.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = WAVFileReader.cpp; sourceTree = "<group>"; };
-		BB5833C41EEDD6580084DA20 /* WAVFileReader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WAVFileReader.h; sourceTree = "<group>"; };
 		BB5833C51EEDD6580084DA20 /* WinAudioEngineHelper.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = WinAudioEngineHelper.cpp; sourceTree = "<group>"; };
 		BB5833C61EEDD6580084DA20 /* WinAudioEngineHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WinAudioEngineHelper.h; sourceTree = "<group>"; };
 		BB5833C71EEDD6580084DA20 /* WinSound.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = WinSound.cpp; sourceTree = "<group>"; };
@@ -2308,20 +2283,6 @@
 			path = steam;
 			sourceTree = "<group>";
 		};
-		BB5833821EEDD6340084DA20 /* directx */ = {
-			isa = PBXGroup;
-			children = (
-				BB5833831EEDD6340084DA20 /* dds.h */,
-				BB5833841EEDD6340084DA20 /* DDSTextureLoader.cpp */,
-				BB5833851EEDD6340084DA20 /* DDSTextureLoader.h */,
-				BB5833861EEDD6340084DA20 /* DirectXHelpers.h */,
-				BB5833871EEDD6340084DA20 /* LoaderHelpers.h */,
-				BB5833881EEDD6340084DA20 /* PlatformHelpers.h */,
-				BB5833891EEDD6340084DA20 /* ReadData.h */,
-			);
-			path = directx;
-			sourceTree = "<group>";
-		};
 		BB58338A1EEDD6470084DA20 /* directx */ = {
 			isa = PBXGroup;
 			children = (
@@ -2373,34 +2334,9 @@
 			path = shader;
 			sourceTree = "<group>";
 		};
-		BB5833B11EEDD6500084DA20 /* directx */ = {
-			isa = PBXGroup;
-			children = (
-				BB5833B21EEDD6500084DA20 /* GamePad.cpp */,
-				BB5833B31EEDD6500084DA20 /* GamePad.h */,
-				BB5833B41EEDD6500084DA20 /* Keyboard.cpp */,
-				BB5833B51EEDD6500084DA20 /* Keyboard.h */,
-				BB5833B61EEDD6500084DA20 /* Mouse.cpp */,
-				BB5833B71EEDD6500084DA20 /* Mouse.h */,
-			);
-			path = directx;
-			sourceTree = "<group>";
-		};
 		BB5833B81EEDD6580084DA20 /* directx */ = {
 			isa = PBXGroup;
 			children = (
-				BB5833B91EEDD6580084DA20 /* Audio.h */,
-				BB5833BA1EEDD6580084DA20 /* AudioEngine.cpp */,
-				BB5833BB1EEDD6580084DA20 /* DynamicSoundEffectInstance.cpp */,
-				BB5833BC1EEDD6580084DA20 /* SoundCommon.cpp */,
-				BB5833BD1EEDD6580084DA20 /* SoundCommon.h */,
-				BB5833BE1EEDD6580084DA20 /* SoundEffect.cpp */,
-				BB5833BF1EEDD6580084DA20 /* SoundEffectInstance.cpp */,
-				BB5833C01EEDD6580084DA20 /* WaveBank.cpp */,
-				BB5833C11EEDD6580084DA20 /* WaveBankReader.cpp */,
-				BB5833C21EEDD6580084DA20 /* WaveBankReader.h */,
-				BB5833C31EEDD6580084DA20 /* WAVFileReader.cpp */,
-				BB5833C41EEDD6580084DA20 /* WAVFileReader.h */,
 				BB5833C51EEDD6580084DA20 /* WinAudioEngineHelper.cpp */,
 				BB5833C61EEDD6580084DA20 /* WinAudioEngineHelper.h */,
 				BB5833C71EEDD6580084DA20 /* WinSound.cpp */,
@@ -3167,7 +3103,6 @@
 		BBAEF0C91EA94ED900F0866E /* file */ = {
 			isa = PBXGroup;
 			children = (
-				BB5833821EEDD6340084DA20 /* directx */,
 				BBAEF0CA1EA94ED900F0866E /* opengl */,
 				BBAEF0D81EA94ED900F0866E /* portable */,
 			);
@@ -3321,7 +3256,6 @@
 		BBAEF1591EA94ED900F0866E /* input */ = {
 			isa = PBXGroup;
 			children = (
-				BB5833B11EEDD6500084DA20 /* directx */,
 				BBAEF30D1EA94FAC00F0866E /* mac */,
 				BBAEF15D1EA94ED900F0866E /* portable */,
 			);

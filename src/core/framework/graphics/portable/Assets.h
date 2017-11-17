@@ -36,8 +36,8 @@ public:
     std::map<std::string, Animation*>& getAnimationsMap();
 
 private:
-    std::map<std::string, TextureRegion*> m_textureRegions;
-    std::map<std::string, Animation*> m_animations;
+    std::map<std::string, TextureRegion*> _textureRegions;
+    std::map<std::string, Animation*> _animations;
     
     // ctor, copy ctor, and assignment should be private in a Singleton
     Assets();

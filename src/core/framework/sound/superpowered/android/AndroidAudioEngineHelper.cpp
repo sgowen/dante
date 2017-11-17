@@ -106,13 +106,13 @@ ISoundWrapper* AndroidAudioEngineHelper::loadSound(int soundId, const char *path
 {
     JNIEnv* jni;
     
-    jint status = m_jvm->GetEnv((void**)&jni, JNI_VERSION_1_6);
+    jint status = _jvm->GetEnv((void**)&jni, JNI_VERSION_1_6);
     if (status != JNI_OK)
     {
-        m_jvm->AttachCurrentThread(&jni, NULL);
+        _jvm->AttachCurrentThread(&jni, NULL);
     }
     
-    jclass class_resources = jni->GetObjectClass(m_resources);
+    jclass class_resources = jni->GetObjectClass(_resources);
     
     jmethodID mid_getIdentifier = jni->GetMethodID(class_resources, "getIdentifier", "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)I");
     assert(mid_getIdentifier != 0);
@@ -120,7 +120,7 @@ ISoundWrapper* AndroidAudioEngineHelper::loadSound(int soundId, const char *path
     jstring java_soundName = jni->NewStringUTF(path);
     jstring java_defType = jni->NewStringUTF("raw");
     
-    jint resId = jni->CallIntMethod(m_resources, mid_getIdentifier, java_soundName, java_defType, m_packageName);
+    jint resId = jni->CallIntMethod(_resources, mid_getIdentifier, java_soundName, java_defType, _packageName);
     
     jni->DeleteLocalRef(java_soundName);
     jni->DeleteLocalRef(java_defType);
@@ -128,7 +128,7 @@ ISoundWrapper* AndroidAudioEngineHelper::loadSound(int soundId, const char *path
     jmethodID mid_openRawResourceFd = jni->GetMethodID(class_resources, "openRawResourceFd", "(I)Landroid/content/res/AssetFileDescriptor;");
     assert(mid_openRawResourceFd != 0);
     
-    jobject java_assetFileDescriptor = jni->CallObjectMethod(m_resources, mid_openRawResourceFd, resId);
+    jobject java_assetFileDescriptor = jni->CallObjectMethod(_resources, mid_openRawResourceFd, resId);
     
     jclass class_assetFileDescriptor = jni->GetObjectClass(java_assetFileDescriptor);
     
@@ -161,10 +161,10 @@ ISoundWrapper* AndroidAudioEngineHelper::loadSound(int soundId, const char *path
     
     if (status != JNI_OK)
     {
-        m_jvm->DetachCurrentThread();
+        _jvm->DetachCurrentThread();
     }
     
-    SuperpoweredSoundWrapper* sound = new SuperpoweredSoundWrapper(m_superpoweredSoundManager, soundId, m_packageResourcePath, m_iSampleRate, numInstances, fileOffset, fileLength);
+    SuperpoweredSoundWrapper* sound = new SuperpoweredSoundWrapper(_superpoweredSoundManager, soundId, _packageResourcePath, _sampleRate, numInstances, fileOffset, fileLength);
     
     return sound;
 }
@@ -176,24 +176,24 @@ ISoundWrapper* AndroidAudioEngineHelper::loadMusic(const char* path)
 
 void AndroidAudioEngineHelper::init(JNIEnv* jni, jobject activity)
 {
-    jni->GetJavaVM(&m_jvm);
+    jni->GetJavaVM(&_jvm);
     
     jclass class_activity = jni->GetObjectClass(activity);
     
     jmethodID mid_getPackageResourcePath = jni->GetMethodID(class_activity, "getPackageResourcePath", "()Ljava/lang/String;");
     assert(mid_getPackageResourcePath != 0);
-    m_javaPackageResourcePath = (jstring) jni->CallObjectMethod(activity, mid_getPackageResourcePath);
-    m_packageResourcePath = jni->GetStringUTFChars(m_javaPackageResourcePath, JNI_FALSE);
+    _javaPackageResourcePath = (jstring) jni->CallObjectMethod(activity, mid_getPackageResourcePath);
+    _packageResourcePath = jni->GetStringUTFChars(_javaPackageResourcePath, JNI_FALSE);
     
     jmethodID mid_getPackageName = jni->GetMethodID(class_activity, "getPackageName", "()Ljava/lang/String;");
     assert(mid_getPackageName != 0);
     jobject java_PackageName = jni->CallObjectMethod(activity, mid_getPackageName);
-    m_packageName = (jstring) jni->NewGlobalRef(java_PackageName);
+    _packageName = (jstring) jni->NewGlobalRef(java_PackageName);
     
     jmethodID mid_getResources = jni->GetMethodID(class_activity, "getResources", "()Landroid/content/res/Resources;");
     assert(mid_getResources != 0);
     jobject java_resources = jni->CallObjectMethod(activity, mid_getResources);
-    m_resources = jni->NewGlobalRef(java_resources);
+    _resources = jni->NewGlobalRef(java_resources);
     
     // Get the device's sample rate and buffer size to enable low-latency Android audio output, if available.
     jmethodID mid_getSystemService = jni->GetMethodID(class_activity, "getSystemService", "(Ljava/lang/String;)Ljava/lang/Object;");
@@ -259,51 +259,51 @@ void AndroidAudioEngineHelper::init(JNIEnv* jni, jobject activity)
     
     jni->DeleteLocalRef(java_audioManager);
     
-    m_iSampleRate = sampleRate;
+    _sampleRate = sampleRate;
     
-    m_superpoweredSoundManager = new SuperpoweredSoundManager(m_iSampleRate, bufferSize);
+    _superpoweredSoundManager = new SuperpoweredSoundManager(_sampleRate, bufferSize);
     
-    m_audioSystems.push_back(new SuperpoweredAndroidAudioIO(sampleRate, bufferSize, false, true, audioProcessingMusic, m_superpoweredSoundManager, -1, SL_ANDROID_STREAM_MEDIA, bufferSize * 2));
+    _audioSystems.push_back(new SuperpoweredAndroidAudioIO(sampleRate, bufferSize, false, true, audioProcessingMusic, _superpoweredSoundManager, -1, SL_ANDROID_STREAM_MEDIA, bufferSize * 2));
     
-    m_audioSystems.push_back(new SuperpoweredAndroidAudioIO(sampleRate, bufferSize, false, true, audioProcessingSound1, m_superpoweredSoundManager, -1, SL_ANDROID_STREAM_MEDIA, bufferSize * 2));
-    m_audioSystems.push_back(new SuperpoweredAndroidAudioIO(sampleRate, bufferSize, false, true, audioProcessingSound2, m_superpoweredSoundManager, -1, SL_ANDROID_STREAM_MEDIA, bufferSize * 2));
-    m_audioSystems.push_back(new SuperpoweredAndroidAudioIO(sampleRate, bufferSize, false, true, audioProcessingSound3, m_superpoweredSoundManager, -1, SL_ANDROID_STREAM_MEDIA, bufferSize * 2));
-    m_audioSystems.push_back(new SuperpoweredAndroidAudioIO(sampleRate, bufferSize, false, true, audioProcessingSound4, m_superpoweredSoundManager, -1, SL_ANDROID_STREAM_MEDIA, bufferSize * 2));
-    m_audioSystems.push_back(new SuperpoweredAndroidAudioIO(sampleRate, bufferSize, false, true, audioProcessingSound5, m_superpoweredSoundManager, -1, SL_ANDROID_STREAM_MEDIA, bufferSize * 2));
-    m_audioSystems.push_back(new SuperpoweredAndroidAudioIO(sampleRate, bufferSize, false, true, audioProcessingSound6, m_superpoweredSoundManager, -1, SL_ANDROID_STREAM_MEDIA, bufferSize * 2));
-    m_audioSystems.push_back(new SuperpoweredAndroidAudioIO(sampleRate, bufferSize, false, true, audioProcessingSound7, m_superpoweredSoundManager, -1, SL_ANDROID_STREAM_MEDIA, bufferSize * 2));
-    m_audioSystems.push_back(new SuperpoweredAndroidAudioIO(sampleRate, bufferSize, false, true, audioProcessingSound8, m_superpoweredSoundManager, -1, SL_ANDROID_STREAM_MEDIA, bufferSize * 2));
-    m_audioSystems.push_back(new SuperpoweredAndroidAudioIO(sampleRate, bufferSize, false, true, audioProcessingSound9, m_superpoweredSoundManager, -1, SL_ANDROID_STREAM_MEDIA, bufferSize * 2));
-    m_audioSystems.push_back(new SuperpoweredAndroidAudioIO(sampleRate, bufferSize, false, true, audioProcessingSound10, m_superpoweredSoundManager, -1, SL_ANDROID_STREAM_MEDIA, bufferSize * 2));
-    m_audioSystems.push_back(new SuperpoweredAndroidAudioIO(sampleRate, bufferSize, false, true, audioProcessingSound11, m_superpoweredSoundManager, -1, SL_ANDROID_STREAM_MEDIA, bufferSize * 2));
+    _audioSystems.push_back(new SuperpoweredAndroidAudioIO(sampleRate, bufferSize, false, true, audioProcessingSound1, _superpoweredSoundManager, -1, SL_ANDROID_STREAM_MEDIA, bufferSize * 2));
+    _audioSystems.push_back(new SuperpoweredAndroidAudioIO(sampleRate, bufferSize, false, true, audioProcessingSound2, _superpoweredSoundManager, -1, SL_ANDROID_STREAM_MEDIA, bufferSize * 2));
+    _audioSystems.push_back(new SuperpoweredAndroidAudioIO(sampleRate, bufferSize, false, true, audioProcessingSound3, _superpoweredSoundManager, -1, SL_ANDROID_STREAM_MEDIA, bufferSize * 2));
+    _audioSystems.push_back(new SuperpoweredAndroidAudioIO(sampleRate, bufferSize, false, true, audioProcessingSound4, _superpoweredSoundManager, -1, SL_ANDROID_STREAM_MEDIA, bufferSize * 2));
+    _audioSystems.push_back(new SuperpoweredAndroidAudioIO(sampleRate, bufferSize, false, true, audioProcessingSound5, _superpoweredSoundManager, -1, SL_ANDROID_STREAM_MEDIA, bufferSize * 2));
+    _audioSystems.push_back(new SuperpoweredAndroidAudioIO(sampleRate, bufferSize, false, true, audioProcessingSound6, _superpoweredSoundManager, -1, SL_ANDROID_STREAM_MEDIA, bufferSize * 2));
+    _audioSystems.push_back(new SuperpoweredAndroidAudioIO(sampleRate, bufferSize, false, true, audioProcessingSound7, _superpoweredSoundManager, -1, SL_ANDROID_STREAM_MEDIA, bufferSize * 2));
+    _audioSystems.push_back(new SuperpoweredAndroidAudioIO(sampleRate, bufferSize, false, true, audioProcessingSound8, _superpoweredSoundManager, -1, SL_ANDROID_STREAM_MEDIA, bufferSize * 2));
+    _audioSystems.push_back(new SuperpoweredAndroidAudioIO(sampleRate, bufferSize, false, true, audioProcessingSound9, _superpoweredSoundManager, -1, SL_ANDROID_STREAM_MEDIA, bufferSize * 2));
+    _audioSystems.push_back(new SuperpoweredAndroidAudioIO(sampleRate, bufferSize, false, true, audioProcessingSound10, _superpoweredSoundManager, -1, SL_ANDROID_STREAM_MEDIA, bufferSize * 2));
+    _audioSystems.push_back(new SuperpoweredAndroidAudioIO(sampleRate, bufferSize, false, true, audioProcessingSound11, _superpoweredSoundManager, -1, SL_ANDROID_STREAM_MEDIA, bufferSize * 2));
 }
 
 void AndroidAudioEngineHelper::deinit()
 {
-    NGSTDUtil::cleanUpVectorOfPointers(m_audioSystems);
+    NGSTDUtil::cleanUpVectorOfPointers(_audioSystems);
     
-    delete m_superpoweredSoundManager;
-    m_superpoweredSoundManager = nullptr;
+    delete _superpoweredSoundManager;
+    _superpoweredSoundManager = nullptr;
     
     JNIEnv* jni;
     
-    jint status = m_jvm->GetEnv((void**)&jni, JNI_VERSION_1_6);
+    jint status = _jvm->GetEnv((void**)&jni, JNI_VERSION_1_6);
     if (status != JNI_OK)
     {
-        m_jvm->AttachCurrentThread(&jni, NULL);
+        _jvm->AttachCurrentThread(&jni, NULL);
     }
     
-    jni->DeleteLocalRef(m_resources);
-    jni->DeleteLocalRef(m_packageName);
-    jni->ReleaseStringUTFChars(m_javaPackageResourcePath, m_packageResourcePath);
+    jni->DeleteLocalRef(_resources);
+    jni->DeleteLocalRef(_packageName);
+    jni->ReleaseStringUTFChars(_javaPackageResourcePath, _packageResourcePath);
     
     if (status != JNI_OK)
     {
-        m_jvm->DetachCurrentThread();
+        _jvm->DetachCurrentThread();
     }
 }
 
-AndroidAudioEngineHelper::AndroidAudioEngineHelper() : IAudioEngineHelper(), m_superpoweredSoundManager(nullptr), m_iSampleRate(44100)
+AndroidAudioEngineHelper::AndroidAudioEngineHelper() : IAudioEngineHelper(), _superpoweredSoundManager(nullptr), _sampleRate(44100)
 {
     // Empty
 }

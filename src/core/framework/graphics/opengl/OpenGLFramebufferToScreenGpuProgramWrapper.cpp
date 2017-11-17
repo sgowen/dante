@@ -13,24 +13,24 @@
 #include "FrameworkConstants.h"
 #include "GameConstants.h"
 
-OpenGLFramebufferToScreenGpuProgramWrapper::OpenGLFramebufferToScreenGpuProgramWrapper() : GpuProgramWrapper(), m_program(new OpenGLFramebufferToScreenProgram(FRAMEBUFFER_TO_SCREEN_VERTEX_SHADER, FRAMEBUFFER_TO_SCREEN_FRAGMENT_SHADER))
+OpenGLFramebufferToScreenGpuProgramWrapper::OpenGLFramebufferToScreenGpuProgramWrapper() : GpuProgramWrapper(), _program(new OpenGLFramebufferToScreenProgram(FRAMEBUFFER_TO_SCREEN_VERTEX_SHADER, FRAMEBUFFER_TO_SCREEN_FRAGMENT_SHADER))
 {
     // Empty
 }
 
 OpenGLFramebufferToScreenGpuProgramWrapper::~OpenGLFramebufferToScreenGpuProgramWrapper()
 {
-    delete m_program;
+    delete _program;
 }
 
 void OpenGLFramebufferToScreenGpuProgramWrapper::bind()
 {
     OGLManager->useScreenBlending();
     
-    m_program->bind();
+    _program->bind();
 }
 
 void OpenGLFramebufferToScreenGpuProgramWrapper::unbind()
 {
-    m_program->unbind();
+    _program->unbind();
 }

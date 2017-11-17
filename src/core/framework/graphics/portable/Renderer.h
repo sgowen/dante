@@ -42,20 +42,20 @@ public:
     virtual void render(int flags = 0) = 0;
     
 protected:
-    SpriteBatcher* m_spriteBatcher;
-    NGRectBatcher* m_fillNGRectBatcher;
-    NGRectBatcher* m_boundsNGRectBatcher;
-    LineBatcher* m_lineBatcher;
-    CircleBatcher* m_circleBatcher;
+    SpriteBatcher* _spriteBatcher;
+    NGRectBatcher* _fillNGRectBatcher;
+    NGRectBatcher* _boundsNGRectBatcher;
+    LineBatcher* _lineBatcher;
+    CircleBatcher* _circleBatcher;
     
-    ITextureLoader* m_textureLoader;
+    ITextureLoader* _textureLoader;
     IRendererHelper* _rendererHelper;
     
-    GpuProgramWrapper* m_textureGpuProgramWrapper;
-    GpuProgramWrapper* m_colorGpuProgramWrapper;
-    GpuProgramWrapper* m_framebufferToScreenGpuProgramWrapper;
+    GpuProgramWrapper* _textureGpuProgramWrapper;
+    GpuProgramWrapper* _colorGpuProgramWrapper;
+    GpuProgramWrapper* _framebufferToScreenGpuProgramWrapper;
     
-    int m_iFramebufferIndex;
+    int _framebufferIndex;
     
     void beginFrame();
     
@@ -82,11 +82,11 @@ protected:
     bool ensureTexture(TextureWrapper* textureWrapper);
     
 private:
-    std::vector<TextureWrapper *> m_loadingTextures;
-    std::vector<tthread::thread *> m_textureDataLoadingThreads;
-	int m_iMaxBatchSize;
-    bool m_areDeviceDependentResourcesCreated;
-	bool m_areWindowSizeDependentResourcesCreated;
+    std::vector<TextureWrapper *> _loadingTextures;
+    std::vector<tthread::thread *> _textureDataLoadingThreads;
+	int _maxBatchSize;
+    bool _areDeviceDependentResourcesCreated;
+	bool _areWindowSizeDependentResourcesCreated;
     
     void handleAsyncTextureLoads();
     

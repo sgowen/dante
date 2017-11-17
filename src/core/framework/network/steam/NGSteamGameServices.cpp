@@ -106,41 +106,41 @@ void NGSteamGameServices::connectToServerWithAddress(const char *pchServerAddres
 void NGSteamGameServices::initiateServerConnection(uint32 unServerAddress, const int32 nPort)
 {
     // ping the server to find out what it's steamID is
-    m_unServerIP = unServerAddress;
-    m_usServerPort = (uint16)nPort;
+    _unServerIP = unServerAddress;
+    _usServerPort = (uint16)nPort;
     
-    m_gameServerPing.retrieveSteamIDFromGameServer(this, m_unServerIP, m_usServerPort);
+    _gameServerPing.retrieveSteamIDFromGameServer(this, _unServerIP, _usServerPort);
 }
 
 void NGSteamGameServices::initiateServerConnection(CSteamID steamIDGameServer)
 {
-    m_steamIDGameServerToJoin = steamIDGameServer;
+    _steamIDGameServerToJoin = steamIDGameServer;
     
-    m_gameServerPing.cancelPing();
+    _gameServerPing.cancelPing();
     
-    m_isRequestingToJoinServer = true;
+    _isRequestingToJoinServer = true;
 }
 
 CSteamID NGSteamGameServices::getServerToJoinSteamID()
 {
-    return m_steamIDGameServerToJoin;
+    return _steamIDGameServerToJoin;
 }
 
 int NGSteamGameServices::getStatus()
 {
-    return m_iStatus;
+    return _status;
 }
 
 bool NGSteamGameServices::isRequestingToJoinServer()
 {
-    return m_isRequestingToJoinServer;
+    return _isRequestingToJoinServer;
 }
 
 void NGSteamGameServices::onServerJoined()
 {
     SteamFriends()->SetRichPresence("status", "In game");
     
-    m_isRequestingToJoinServer = false;
+    _isRequestingToJoinServer = false;
 }
 
 #pragma mark ISteamMatchmakingServerListResponse
@@ -155,8 +155,8 @@ void NGSteamGameServices::ServerResponded(HServerListRequest hReq, int iServer)
         // Filter out servers that don't match our appid here (might get these in LAN calls since we can't put more filters on it)
         if (pServer->m_nAppID == SteamUtils()->GetAppID())
         {
-            m_gameServers.push_back(NGSteamGameServer(pServer));
-            m_iNumServers++;
+            _gameServers.push_back(NGSteamGameServer(pServer));
+            _numServers++;
         }
     }
 }
@@ -173,40 +173,40 @@ void NGSteamGameServices::RefreshComplete(HServerListRequest hReq, EMatchMakingS
 {
     LOG("RefreshComplete");
     
-    m_isRequestingServers = false;
+    _isRequestingServers = false;
 }
 
 std::vector<NGSteamGameServer>& NGSteamGameServices::getGameServers()
 {
-    return m_gameServers;
+    return _gameServers;
 }
 
 bool NGSteamGameServices::isRequestingServers()
 {
-    return m_isRequestingServers;
+    return _isRequestingServers;
 }
 
 void NGSteamGameServices::refreshInternetServers()
 {
     // If we are still finishing the previous refresh, then ignore this new request
-    if (m_isRequestingServers)
+    if (_isRequestingServers)
     {
         return;
     }
     
     // If another request is outstanding, make sure we release it properly
-    if (m_hServerListRequest)
+    if (_hServerListRequest)
     {
-        SteamMatchmakingServers()->ReleaseRequest(m_hServerListRequest);
-        m_hServerListRequest = nullptr;
+        SteamMatchmakingServers()->ReleaseRequest(_hServerListRequest);
+        _hServerListRequest = nullptr;
     }
     
     LOG("Refreshing internet servers");
     
     // Track that we are now in a refresh, what type of refresh, and reset our server count
-    m_isRequestingServers = true;
-    m_iNumServers = 0;
-    m_gameServers.clear();
+    _isRequestingServers = true;
+    _numServers = 0;
+    _gameServers.clear();
     
     Steamworks_TestSecret();
     
@@ -220,14 +220,14 @@ void NGSteamGameServices::refreshInternetServers()
     MatchMakingKeyValuePair_t *pFilter = pFilters;
     
     strncpy(pFilters[0].m_szKey, "gamedir", sizeof(pFilters[0].m_szKey));
-    strncpy(pFilters[0].m_szValue, m_gameDir, sizeof(pFilters[0].m_szValue));
+    strncpy(pFilters[0].m_szValue, _gameDir, sizeof(pFilters[0].m_szValue));
     
     strncpy(pFilters[1].m_szKey, "secure", sizeof(pFilters[1].m_szKey));
     strncpy(pFilters[1].m_szValue, "1", sizeof(pFilters[1].m_szValue));
     
     // bugbug jmccaskey - passing just the appid without filters results in getting all servers rather than
     // servers filtered by appid alone.  So, we'll use the filters to filter the results better.
-    m_hServerListRequest = SteamMatchmakingServers()->RequestInternetServerList(SteamUtils()->GetAppID(), &pFilter, ARRAYSIZE(pFilters), this);
+    _hServerListRequest = SteamMatchmakingServers()->RequestInternetServerList(SteamUtils()->GetAppID(), &pFilter, ARRAYSIZE(pFilters), this);
     
     SteamFriends()->SetRichPresence("status", "Finding an internet game");
 }
@@ -235,27 +235,27 @@ void NGSteamGameServices::refreshInternetServers()
 void NGSteamGameServices::refreshLANServers()
 {
     // If we are still finishing the previous refresh, then ignore this new request
-    if (m_isRequestingServers)
+    if (_isRequestingServers)
     {
         return;
     }
     
     // If another request is outstanding, make sure we release it properly
-    if (m_hServerListRequest)
+    if (_hServerListRequest)
     {
-        SteamMatchmakingServers()->ReleaseRequest(m_hServerListRequest);
-        m_hServerListRequest = nullptr;
+        SteamMatchmakingServers()->ReleaseRequest(_hServerListRequest);
+        _hServerListRequest = nullptr;
     }
     
     LOG("Refreshing LAN servers");
     
     // Track that we are now in a refresh, what type of refresh, and reset our server count
-    m_isRequestingServers = true;
-    m_iNumServers = 0;
-    m_gameServers.clear();
+    _isRequestingServers = true;
+    _numServers = 0;
+    _gameServers.clear();
     
     // LAN refresh doesn't accept filters like internet above does
-    m_hServerListRequest = SteamMatchmakingServers()->RequestLANServerList(SteamUtils()->GetAppID(), this);
+    _hServerListRequest = SteamMatchmakingServers()->RequestLANServerList(SteamUtils()->GetAppID(), this);
     
     SteamFriends()->SetRichPresence("status", "Finding a LAN game");
 }
@@ -268,7 +268,7 @@ bool NGSteamGameServices::writeFileToSteamCloud(const char *inFileName, const ch
     
     bool ret = false;
     int dataSize = (int) strlen(inData);
-    if (dataSize < m_ulAvailableBytes)
+    if (dataSize < _ulAvailableBytes)
     {
         ret = SteamRemoteStorage()->FileWrite(inFileName, inData, dataSize);
     }
@@ -314,12 +314,12 @@ std::string NGSteamGameServices::readFileFromSteamCloud(const char *inFileName)
 
 void NGSteamGameServices::refreshSteamCloudFileStats()
 {
-    m_ulBytesQuota = 0;
-    m_ulAvailableBytes = 0;
-    m_nNumFilesInCloud = SteamRemoteStorage()->GetFileCount();
-    SteamRemoteStorage()->GetQuota(&m_ulBytesQuota, &m_ulAvailableBytes);
+    _ulBytesQuota = 0;
+    _ulAvailableBytes = 0;
+    _nNumFilesInCloud = SteamRemoteStorage()->GetFileCount();
+    SteamRemoteStorage()->GetQuota(&_ulBytesQuota, &_ulAvailableBytes);
     
-    LOG("Quota: %llu bytes, %llu bytes remaining", m_ulBytesQuota, m_ulAvailableBytes);
+    LOG("Quota: %llu bytes, %llu bytes remaining", _ulBytesQuota, _ulAvailableBytes);
 }
 
 #pragma mark - STEAM_CALLBACK
@@ -351,29 +351,29 @@ void NGSteamGameServices::onIPCFailure(IPCFailure_t *failure)
 {
     LOG("Steam IPC Failure, shutting down");
     
-    m_iStatus = STEAM_IPC_FAILURE;
+    _status = STEAM_IPC_FAILURE;
 }
 
 void NGSteamGameServices::onSteamShutdown(SteamShutdown_t *callback)
 {
     LOG("Steam shutdown request, shutting down");
     
-    m_iStatus = STEAM_SHUTDOWN;
+    _status = STEAM_SHUTDOWN;
 }
 
 NGSteamGameServices::NGSteamGameServices(const char* inGameDir) :
-m_gameDir(inGameDir),
-m_iNumServers(0),
-m_isRequestingServers(false),
-m_hServerListRequest(nullptr),
-m_unServerIP(0),
-m_usServerPort(0),
-m_steamIDGameServerToJoin(CSteamID()),
-m_nNumFilesInCloud(0),
-m_ulBytesQuota(0),
-m_ulAvailableBytes(0),
-m_iStatus(STEAM_UNINITIALIZED),
-m_isRequestingToJoinServer(false)
+_gameDir(inGameDir),
+_numServers(0),
+_isRequestingServers(false),
+_hServerListRequest(nullptr),
+_unServerIP(0),
+_usServerPort(0),
+_steamIDGameServerToJoin(CSteamID()),
+_nNumFilesInCloud(0),
+_ulBytesQuota(0),
+_ulAvailableBytes(0),
+_status(STEAM_UNINITIALIZED),
+_isRequestingToJoinServer(false)
 {
     if (SteamAPI_RestartAppIfNecessary(k_uAppIdInvalid))
     {
@@ -382,7 +382,7 @@ m_isRequestingToJoinServer(false)
         
         // Once you get a public Steam AppID assigned for this game, you need to replace k_uAppIdInvalid with it and
         // removed steam_appid.txt from the game depot.
-        m_iStatus = STEAM_INIT_FAIL_NOT_RUNNING;
+        _status = STEAM_INIT_FAIL_NOT_RUNNING;
         return;
     }
     
@@ -391,7 +391,7 @@ m_isRequestingToJoinServer(false)
     {
         LOG("Steamworks_InitCEGLibrary() failed");
         alert("Fatal Error", "Steam must be running to play this game (InitDrmLibrary() failed).");
-        m_iStatus = STEAM_INIT_FAIL_DRM;
+        _status = STEAM_INIT_FAIL_DRM;
         return;
     }
     
@@ -406,7 +406,7 @@ m_isRequestingToJoinServer(false)
     {
         LOG("SteamAPI_Init() failed");
         alert("Fatal Error", "Steam must be running to play this game (SteamAPI_Init() failed).");
-        m_iStatus = STEAM_INIT_FAIL_API_INIT;
+        _status = STEAM_INIT_FAIL_API_INIT;
         return;
     }
     
@@ -420,7 +420,7 @@ m_isRequestingToJoinServer(false)
     {
         LOG("Steam user is not logged in");
         alert("Fatal Error", "Steam user must be logged in to play this game (SteamUser()->BLoggedOn() returned false).");
-        m_iStatus = STEAM_INIT_FAIL_LOGGED_ON;
+        _status = STEAM_INIT_FAIL_LOGGED_ON;
         return;
     }
     
@@ -431,21 +431,21 @@ m_isRequestingToJoinServer(false)
     {
         LOG("SteamController()->Init failed.");
         alert("Fatal Error", "SteamController()->Init failed.");
-        m_iStatus = STEAM_INIT_FAIL_CONTROLLER_INIT;
+        _status = STEAM_INIT_FAIL_CONTROLLER_INIT;
         return;
     }
     
     SteamFriends()->SetRichPresence("status", "Main menu");
     
-    m_iStatus = STEAM_INIT_SUCCESS;
+    _status = STEAM_INIT_SUCCESS;
 }
 
 NGSteamGameServices::~NGSteamGameServices()
 {
-    if (m_hServerListRequest)
+    if (_hServerListRequest)
     {
-        SteamMatchmakingServers()->ReleaseRequest(m_hServerListRequest);
-        m_hServerListRequest = nullptr;
+        SteamMatchmakingServers()->ReleaseRequest(_hServerListRequest);
+        _hServerListRequest = nullptr;
     }
     
     // Shutdown the SteamAPI
@@ -457,32 +457,32 @@ NGSteamGameServices::~NGSteamGameServices()
 
 NGSteamGameServices::GameServerPing::GameServerPing()
 {
-    m_hGameServerQuery = HSERVERQUERY_INVALID;
-    m_client = nullptr;
+    _hGameServerQuery = HSERVERQUERY_INVALID;
+    _client = nullptr;
 }
 
 void NGSteamGameServices::GameServerPing::ServerResponded(gameserveritem_t &server)
 {
-    if (m_hGameServerQuery != HSERVERQUERY_INVALID && server.m_steamID.IsValid())
+    if (_hGameServerQuery != HSERVERQUERY_INVALID && server.m_steamID.IsValid())
     {
-        m_client->initiateServerConnection(server.m_steamID);
+        _client->initiateServerConnection(server.m_steamID);
     }
     
-    m_hGameServerQuery = HSERVERQUERY_INVALID;
+    _hGameServerQuery = HSERVERQUERY_INVALID;
 }
 
 void NGSteamGameServices::GameServerPing::ServerFailedToRespond()
 {
-    m_hGameServerQuery = HSERVERQUERY_INVALID;
+    _hGameServerQuery = HSERVERQUERY_INVALID;
 }
 
 void NGSteamGameServices::GameServerPing::retrieveSteamIDFromGameServer(NGSteamGameServices *client, uint32 unIP, uint16 unPort)
 {
-    m_client = client;
-    m_hGameServerQuery = SteamMatchmakingServers()->PingServer(unIP, unPort, this);
+    _client = client;
+    _hGameServerQuery = SteamMatchmakingServers()->PingServer(unIP, unPort, this);
 }
 
 void NGSteamGameServices::GameServerPing::cancelPing()
 {
-    m_hGameServerQuery = HSERVERQUERY_INVALID;
+    _hGameServerQuery = HSERVERQUERY_INVALID;
 }

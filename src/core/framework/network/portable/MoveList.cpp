@@ -14,18 +14,18 @@
 #include "Timing.h"
 #include "StringUtil.h"
 
-MoveList::MoveList(): m_fLastMoveTimestamp(-1.0f), m_fLastProcessedMoveTimestamp(-1.0f)
+MoveList::MoveList(): _lastMoveTimestamp(-1.0f), _lastProcessedMoveTimestamp(-1.0f)
 {
     // Empty
 }
 
 const Move& MoveList::addMove(IInputState* inInputState, float inTimestamp)
 {
-    m_moves.push_back(Move(inInputState, inTimestamp));
+    _moves.push_back(Move(inInputState, inTimestamp));
     
-    m_fLastMoveTimestamp = inTimestamp;
+    _lastMoveTimestamp = inTimestamp;
     
-    return m_moves.back();
+    return _moves.back();
 }
 
 bool MoveList::addMoveIfNew(const Move& inMove)
@@ -36,11 +36,11 @@ bool MoveList::addMoveIfNew(const Move& inMove)
     //adjust the deltatime and then place!
     float timeStamp = inMove.getTimestamp();
     
-    if (timeStamp > m_fLastMoveTimestamp)
+    if (timeStamp > _lastMoveTimestamp)
     {
-        m_fLastMoveTimestamp = timeStamp;
+        _lastMoveTimestamp = timeStamp;
         
-        m_moves.push_back(Move(inMove.getInputState(), timeStamp));
+        _moves.push_back(Move(inMove.getInputState(), timeStamp));
         
         return true;
     }
@@ -50,54 +50,54 @@ bool MoveList::addMoveIfNew(const Move& inMove)
 
 void MoveList::markMoveAsProcessed(Move* move)
 {
-    m_fLastProcessedMoveTimestamp = move->getTimestamp();
+    _lastProcessedMoveTimestamp = move->getTimestamp();
 }
 
 void MoveList::removeProcessedMoves(float inLastMoveProcessedOnServerTimestamp)
 {
-    while (!m_moves.empty() && m_moves.front().getTimestamp() <= inLastMoveProcessedOnServerTimestamp)
+    while (!_moves.empty() && _moves.front().getTimestamp() <= inLastMoveProcessedOnServerTimestamp)
     {
-		m_moves.front().getInputState()->setInUse(false);
+		_moves.front().getInputState()->setInUse(false);
 
-        m_moves.pop_front();
+        _moves.pop_front();
     }
 }
 
 float MoveList::getLastMoveTimestamp() const
 {
-    return m_fLastMoveTimestamp;
+    return _lastMoveTimestamp;
 }
 
 float MoveList::getLastProcessedMoveTimestamp() const
 {
-    return m_fLastProcessedMoveTimestamp;
+    return _lastProcessedMoveTimestamp;
 }
 
 const Move& MoveList::getLatestMove() const
 {
-    return m_moves.back();
+    return _moves.back();
 }
 
 void MoveList::clear()
 {
-    m_moves.clear();
+    _moves.clear();
 }
 
 bool MoveList::hasMoves() const
 {
-    return !m_moves.empty();
+    return !_moves.empty();
 }
 
 uint32_t MoveList::getMoveCount() const
 {
-    return static_cast<uint32_t>(m_moves.size());
+    return static_cast<uint32_t>(_moves.size());
 }
 
 uint32_t MoveList::getNumMovesAfterTimestamp(float inLastMoveReceivedOnServerTimestamp) const
 {
     uint32_t ret = 0;
     
-    for (Move move : m_moves)
+    for (Move move : _moves)
     {
         if (move.getTimestamp() > inLastMoveReceivedOnServerTimestamp)
         {
@@ -112,7 +112,7 @@ Move* MoveList::getMoveAtIndex(uint32_t index)
 {
     if (index < getMoveCount())
     {
-        return &m_moves.at(index);
+        return &_moves.at(index);
     }
     
     return nullptr;
@@ -120,10 +120,10 @@ Move* MoveList::getMoveAtIndex(uint32_t index)
 
 std::deque<Move>::const_iterator MoveList::begin() const
 {
-    return m_moves.begin();
+    return _moves.begin();
 }
 
 std::deque<Move>::const_iterator MoveList::end() const
 {
-    return m_moves.end();
+    return _moves.end();
 }

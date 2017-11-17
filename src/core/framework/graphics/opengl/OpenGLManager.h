@@ -98,29 +98,29 @@ public:
 private:
     static OpenGLManager* s_pInstance;
     
-    std::vector<GLshort> m_indices;
+    std::vector<GLshort> _indices;
     
-    std::vector<GLuint> m_fbos;
-    std::vector<GLuint> m_fbo_textures;
+    std::vector<GLuint> _fbos;
+    std::vector<GLuint> _fbo_textures;
     
-    std::vector<GpuTextureWrapper *> m_framebuffers;
+    std::vector<GpuTextureWrapper *> _framebuffers;
     
-    std::vector<GLfloat> m_textureVertices;
-    std::vector<GLfloat> m_colorVertices;
+    std::vector<GLfloat> _textureVertices;
+    std::vector<GLfloat> _colorVertices;
     
     GLuint sb_vbo_object; // For Sprite Batcher
     GLuint gb_vbo_object; // For Geometry Batcher
     
-    GLint m_iScreenFBO;
-    GLint m_iMaxTextureSize;
+    GLint _screenFBO;
+    GLint _maxTextureSize;
     
-    mat4x4 m_viewProjectionMatrix;
+    mat4x4 _viewProjectionMatrix;
     
-    int m_iScreenWidth;
-    int m_iScreenHeight;
-    int m_iRenderWidth;
-    int m_iRenderHeight;
-    int m_iNumFramebuffers;
+    int _screenWidth;
+    int _screenHeight;
+    int _renderWidth;
+    int _renderHeight;
+    int _numFramebuffers;
     
     void generateIndices(int maxBatchSize);
     void createFramebufferObjects();

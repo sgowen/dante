@@ -13,7 +13,7 @@
 #include "OutputMemoryBitStream.h"
 #include "InputMemoryBitStream.h"
 
-IInputState::IInputState() : m_isInUse(false)
+IInputState::IInputState() : _isInUse(false)
 {
     // Empty
 }
@@ -25,12 +25,12 @@ IInputState::~IInputState()
 
 void IInputState::setInUse(bool inUse)
 {
-    m_isInUse = inUse;
+    _isInUse = inUse;
 }
 
 bool IInputState::isInUse() const
 {
-    return m_isInUse;
+    return _isInUse;
 }
 
 RTTI_IMPL_NOPARENT(IInputState);

@@ -10,17 +10,17 @@
 
 #include "Circle.h"
 
-Circle::Circle(float x, float y, float radius) : m_center(x, y), m_fRadius(radius)
+Circle::Circle(float x, float y, float radius) : _center(x, y), _radius(radius)
 {
     // Empty
 }
 
 Vector2& Circle::getCenter()
 {
-    return m_center;
+    return _center;
 }
 
 float Circle::getRadius()
 {
-    return m_fRadius;
+    return _radius;
 }

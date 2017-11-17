@@ -41,8 +41,8 @@ public:
     virtual void destroyTexture(GpuTextureWrapper& textureWrapper);
     
 private:
-	int m_iFramebufferIndex;
-    bool m_isBoundToScreen;
+	int _framebufferIndex;
+    bool _isBoundToScreen;
 };
 
 #endif /* defined(__noctisgames__Direct3DRendererHelper__) */

@@ -12,7 +12,7 @@
 
 #include "TextureWrapper.h"
 
-IRendererHelper::IRendererHelper() : m_framebuffer(new TextureWrapper("framebuffer", NULL, false))
+IRendererHelper::IRendererHelper() : _framebuffer(new TextureWrapper("framebuffer", NULL, false))
 {
     // Empty
 }

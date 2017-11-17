@@ -34,10 +34,10 @@ public:
     std::map<uint32_t, Entity*> getMapCopy();
     
 private:
-    HandleEntityCreatedFunc m_handleEntityCreatedFunc;
-    HandleEntityDeletionFunc m_handleEntityDeletionFunc;
+    HandleEntityCreatedFunc _handleEntityCreatedFunc;
+    HandleEntityDeletionFunc _handleEntityDeletionFunc;
     
-    std::map<uint32_t, Entity*> m_entityMap;
+    std::map<uint32_t, Entity*> _entityMap;
 };
 
 #endif /* defined(__noctisgames__EntityManager__) */

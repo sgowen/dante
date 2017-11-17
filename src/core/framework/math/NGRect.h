@@ -39,10 +39,10 @@ public:
     void setAngle(float angle);
     
 private:
-    Vector2 m_lowerLeft;
-    float m_fWidth;
-    float m_fHeight;
-    float m_fAngle;
+    Vector2 _lowerLeft;
+    float _width;
+    float _height;
+    float _angle;
 };
 
 #endif /* defined(__noctisgames__NGRect__) */

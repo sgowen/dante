@@ -13,65 +13,65 @@
 #include "ObjectALWrapper.h"
 
 MacSound::MacSound(int soundId, const char *path, float volume) : ISound(soundId),
-m_iObjectALSoundIndex(-1),
-m_fVolume(volume),
-m_isLooping(false),
-m_isPaused(false),
-m_isMusic(soundId == 1337)
+_objectALSoundIndex(-1),
+_volume(volume),
+_isLooping(false),
+_isPaused(false),
+_isMusic(soundId == 1337)
 {
-    if (m_isMusic)
+    if (_isMusic)
     {
         loadMusic(path);
     }
     else
     {
-        m_iObjectALSoundIndex = loadSound(path);
+        _objectALSoundIndex = loadSound(path);
     }
 }
 
 MacSound::~MacSound()
 {
-    if (m_isMusic)
+    if (_isMusic)
     {
         stopMusic();
     }
     else
     {
-        stopSound(m_iObjectALSoundIndex);
+        stopSound(_objectALSoundIndex);
     }
 }
 
 void MacSound::play(bool isLooping)
 {
-    m_isLooping = isLooping;
-    m_isPaused = false;
+    _isLooping = isLooping;
+    _isPaused = false;
     
-    if (m_isMusic)
+    if (_isMusic)
     {
         stopMusic();
-        playMusic(isLooping, m_fVolume);
+        playMusic(isLooping, _volume);
     }
     else
     {
-        stopSound(m_iObjectALSoundIndex);
-        playSound(m_iObjectALSoundIndex, m_fVolume, m_isLooping);
+        stopSound(_objectALSoundIndex);
+        playSound(_objectALSoundIndex, _volume, _isLooping);
     }
 }
 
 void MacSound::resume()
 {
-    if (m_isPaused)
+    if (_isPaused)
     {
-        if (m_isMusic)
+        if (_isMusic)
         {
             resumeMusic();
         }
         else
         {
-            resumeSound(m_iObjectALSoundIndex);
+            resumeSound(_objectALSoundIndex);
         }
         
-        m_isPaused = false;
+        _isPaused = false;
     }
 }
 
@@ -79,66 +79,66 @@ void MacSound::pause()
 {
     if (isPlaying())
     {
-        if (m_isMusic)
+        if (_isMusic)
         {
             pauseMusic();
         }
         else
         {
-            pauseSound(m_iObjectALSoundIndex);
+            pauseSound(_objectALSoundIndex);
         }
         
-        m_isPaused = true;
+        _isPaused = true;
     }
 }
 
 void MacSound::stop()
 {
-    m_isLooping = false;
-    m_isPaused = false;
+    _isLooping = false;
+    _isPaused = false;
     
-    if (m_isMusic)
+    if (_isMusic)
     {
         stopMusic();
     }
     else
     {
-        stopSound(m_iObjectALSoundIndex);
+        stopSound(_objectALSoundIndex);
     }
 }
 
 void MacSound::setVolume(float volume)
 {
-    m_fVolume = volume;
+    _volume = volume;
     
-    if (m_isMusic)
+    if (_isMusic)
     {
         setMusicVolume(volume);
     }
     else
     {
-        setSoundVolume(m_iObjectALSoundIndex, volume);
+        setSoundVolume(_objectALSoundIndex, volume);
     }
 }
 
 bool MacSound::isLooping()
 {
-    return m_isLooping;
+    return _isLooping;
 }
 
 bool MacSound::isPlaying()
 {
-    if (m_isMusic)
+    if (_isMusic)
     {
         return isMusicPlaying();
     }
     else
     {
-        return isSoundPlaying(m_iObjectALSoundIndex);
+        return isSoundPlaying(_objectALSoundIndex);
     }
 }
 
 bool MacSound::isPaused()
 {
-    return m_isPaused;
+    return _isPaused;
 }

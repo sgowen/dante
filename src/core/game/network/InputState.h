@@ -63,12 +63,12 @@ public:
         bool isSprinting();
         
     private:
-        uint8_t m_iPlayerId;
-        bool m_isMovingRight;
-        bool m_isMovingLeft;
-        bool m_isJumping;
-        bool m_isShooting;
-        bool m_isSprinting;
+        uint8_t _playerId;
+        bool _isMovingRight;
+        bool _isMovingLeft;
+        bool _isJumping;
+        bool _isShooting;
+        bool _isSprinting;
         
         GameInputState();
     };
@@ -98,9 +98,9 @@ public:
     int getMenuState() const;
     
 private:
-    GameInputState m_gameInputStates[4];
+    GameInputState _gameInputStates[4];
     
-    int m_iMenuState;
+    int _menuState;
     
     GameInputState& getGameInputState(int index);
 };

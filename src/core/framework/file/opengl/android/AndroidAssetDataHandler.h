@@ -35,10 +35,10 @@ public:
 
 private:
     AAssetManager* mAssetManager;
-    JavaVM* m_jvm;
-    jstring m_javaApkFilesDirPath;
-    const char* m_ApkFilesDirPath;
-    std::string m_pathInsideApk;
+    JavaVM* _jvm;
+    jstring _javaApkFilesDirPath;
+    const char* _apkFilesDirPath;
+    std::string _pathInsideApk;
     
     // ctor, copy ctor, and assignment should be private in a Singleton
     AndroidAssetDataHandler();

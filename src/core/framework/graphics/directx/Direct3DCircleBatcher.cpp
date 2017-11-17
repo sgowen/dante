@@ -28,7 +28,7 @@ Direct3DCircleBatcher::Direct3DCircleBatcher() : CircleBatcher()
 
 void Direct3DCircleBatcher::renderCircle(Circle &circle, Color &c, GpuProgramWrapper &gpuProgramWrapper)
 {
-	m_iNumPoints = 0;
+	_numPoints = 0;
 	D3DManager->getColorVertices().clear();
 
 	for (int i = 0; i <= 360; i += DEGREE_SPACING)
@@ -47,7 +47,7 @@ void Direct3DCircleBatcher::renderCircle(Circle &circle, Color &c, GpuProgramWra
 
 void Direct3DCircleBatcher::renderPartialCircle(Circle &circle, int arcDegrees, Color &c, GpuProgramWrapper &gpuProgramWrapper)
 {
-	m_iNumPoints = 0;
+	_numPoints = 0;
 	D3DManager->getColorVertices().clear();
 
 	for (int i = 90; i < (450 - arcDegrees); i += DEGREE_SPACING)
@@ -80,7 +80,7 @@ void Direct3DCircleBatcher::endBatch(GpuProgramWrapper &gpuProgramWrapper)
 
 	gpuProgramWrapper.bind();
 
-	d3dContext->Draw(m_iNumPoints, 0);
+	d3dContext->Draw(_numPoints, 0);
 
 	gpuProgramWrapper.unbind();
 }
@@ -89,5 +89,5 @@ void Direct3DCircleBatcher::addVertexCoordinate(float x, float y, float z, float
 {
 	D3DManager->addVertexCoordinate(x, y, z, r, g, b, a);
 
-	m_iNumPoints++;
+	_numPoints++;
 }

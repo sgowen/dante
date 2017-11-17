@@ -38,20 +38,20 @@ public:
     void kickPlayerOffServer(CSteamID steamID);
     
 private:
-    const char* m_inGameDir;
-    NGSteamAddress* m_serverSteamAddress;
-    std::string m_serverName;
-    bool m_isConnectedToSteam;
-    NGSteamAddress* m_outgoingPacketAddress;
+    const char* _inGameDir;
+    NGSteamAddress* _serverSteamAddress;
+    std::string _serverName;
+    bool _isConnectedToSteam;
+    NGSteamAddress* _outgoingPacketAddress;
     
     struct ClientConnectionData_t
     {
-        bool m_isActive;					// Is this slot in use? Or is it available for new connections?
-        CSteamID m_SteamIDUser;			// What is the steamid of the player?
+        bool _isActive;					// Is this slot in use? Or is it available for new connections?
+        CSteamID _steamIDUser;			// What is the steamid of the player?
     };
     
     // Vector to keep track of client connections which are pending auth
-    ClientConnectionData_t m_rgPendingClientData[MAX_NUM_PLAYERS_PER_SERVER];
+    ClientConnectionData_t _rgPendingClientData[MAX_NUM_PLAYERS_PER_SERVER];
     
     void sendUpdatedServerDetailsToSteam();
     

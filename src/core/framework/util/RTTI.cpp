@@ -10,19 +10,19 @@
 
 #include "RTTI.h"
 
-RTTI::RTTI(const std::string& className) : m_className(className), m_pBaseRTTI(nullptr)
+RTTI::RTTI(const std::string& className) : _className(className), _pBaseRTTI(nullptr)
 {
     // Empty
 }
 
-RTTI::RTTI(const std::string& className, const RTTI& baseRTTI) : m_className(className), m_pBaseRTTI(&baseRTTI)
+RTTI::RTTI(const std::string& className, const RTTI& baseRTTI) : _className(className), _pBaseRTTI(&baseRTTI)
 {
     // Empty
 }
 
 const std::string& RTTI::getClassName() const
 {
-    return m_className;
+    return _className;
 }
 
 bool RTTI::isExactly(const RTTI& rtti) const
@@ -41,7 +41,7 @@ bool RTTI::derivesFrom(const RTTI& rtti) const
             return true;
         }
         
-        pCompare = pCompare->m_pBaseRTTI;
+        pCompare = pCompare->_pBaseRTTI;
     }
     
     return false;

@@ -50,12 +50,12 @@ private:
     float _stateTime;
     float _frameStateTime;
     float _stateTimeNoEnemies;
-    uint8_t m_iPlayerIdForRobotBeingCreated;
-    uint32_t m_iNumCratesToSpawn;
-    uint32_t m_iNumSpacePiratesToSpawn;
-    bool m_isSpawningEnemies;
-    bool m_isSpawningObjects;
-    bool m_isDisplaying;
+    uint8_t _playerIdForRobotBeingCreated;
+    uint32_t _numCratesToSpawn;
+    uint32_t _numSpacePiratesToSpawn;
+    bool _isSpawningEnemies;
+    bool _isSpawningObjects;
+    bool _isDisplaying;
     
     void handleNewClient(uint8_t playerId, std::string playerName);
     

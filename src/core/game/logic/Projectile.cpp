@@ -38,11 +38,11 @@
 #include <math.h>
 
 Projectile::Projectile(b2World& world, bool isServer) : Entity(world, 0, 0, 1.565217391304348f * 0.444444444444444f, 2.0f * 0.544423440453686f, isServer, constructEntityDef(), false),
-m_iPlayerId(0),
-m_isFacingLeft(false),
-m_hasMadeContact(false),
-m_state(ProjectileState_Waiting),
-m_stateLastKnown(ProjectileState_Waiting)
+_playerId(0),
+_isFacingLeft(false),
+_hasMadeContact(false),
+_state(ProjectileState_Waiting),
+_stateLastKnown(ProjectileState_Waiting)
 {
     // Empty
 }
@@ -63,11 +63,11 @@ void Projectile::update()
 {
     _stateTime += FRAME_RATE;
     
-    if (m_state == ProjectileState_Active)
+    if (_state == ProjectileState_Active)
     {
-        if (m_hasMadeContact)
+        if (_hasMadeContact)
         {
-            m_hasMadeContact = false;
+            _hasMadeContact = false;
             
             explode();
         }
@@ -82,38 +82,38 @@ void Projectile::update()
             explode();
         }
     }
-    else if (m_state == ProjectileState_Exploding)
+    else if (_state == ProjectileState_Exploding)
     {
         if (_stateTime > 0.5f)
         {
             _stateTime = 0.0f;
-            m_state = ProjectileState_Waiting;
+            _state = ProjectileState_Waiting;
             
             deinitPhysics();
         }
     }
     
-    if (m_isServer)
+    if (_isServer)
     {
         NG_SERVER->setStateDirty(getID(), PRJC_Pose);
     }
     else
     {
-        if (m_stateLastKnown == ProjectileState_Exploding
-                 && m_state == ProjectileState_Waiting)
+        if (_stateLastKnown == ProjectileState_Exploding
+                 && _state == ProjectileState_Waiting)
         {
             deinitPhysics();
         }
     }
     
-    m_stateLastKnown = m_state;
-    m_velocityLastKnown = b2Vec2(getVelocity().x, getVelocity().y);
-    m_positionLastKnown = b2Vec2(getPosition().x, getPosition().y);
+    _stateLastKnown = _state;
+    _velocityLastKnown = b2Vec2(getVelocity().x, getVelocity().y);
+    _positionLastKnown = b2Vec2(getPosition().x, getPosition().y);
 }
 
 bool Projectile::shouldCollide(Entity *inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB)
 {
-    if (m_state != ProjectileState_Active)
+    if (_state != ProjectileState_Active)
     {
         return false;
     }
@@ -126,7 +126,7 @@ bool Projectile::shouldCollide(Entity *inEntity, b2Fixture* inFixtureA, b2Fixtur
 
 void Projectile::handleBeginContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB)
 {
-    if (m_state != ProjectileState_Active)
+    if (_state != ProjectileState_Active)
     {
         return;
     }
@@ -141,7 +141,7 @@ void Projectile::handleBeginContact(Entity* inEntity, b2Fixture* inFixtureA, b2F
         handleBeginContactWithSpacePirate(static_cast<SpacePirate*>(inEntity));
     }
     
-    m_hasMadeContact = true;
+    _hasMadeContact = true;
 }
 
 void Projectile::handleEndContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB)
@@ -158,14 +158,14 @@ void Projectile::read(InputMemoryBitStream& inInputStream)
 {
     bool stateBit;
     
-    m_iReadState = 0;
+    _readState = 0;
     
     inInputStream.read(stateBit);
     if (stateBit)
     {
-        inInputStream.read(m_iPlayerId);
-        inInputStream.read(m_color);
-        m_iReadState |= PRJC_PlayerInfo;
+        inInputStream.read(_playerId);
+        inInputStream.read(_color);
+        _readState |= PRJC_PlayerInfo;
     }
     
     inInputStream.read(stateBit);
@@ -173,11 +173,11 @@ void Projectile::read(InputMemoryBitStream& inInputStream)
     {
         uint8_t state;
         inInputStream.read(state);
-        m_state = (ProjectileState) state;
+        _state = (ProjectileState) state;
         
         inInputStream.read(_stateTime);
         
-        inInputStream.read(m_isFacingLeft);
+        inInputStream.read(_isFacingLeft);
         
         b2Vec2 velocity;
         inInputStream.read(velocity);
@@ -187,7 +187,7 @@ void Projectile::read(InputMemoryBitStream& inInputStream)
         inInputStream.read(position);
         setPosition(position);
         
-        m_iReadState |= PRJC_Pose;
+        _readState |= PRJC_Pose;
     }
 }
 
@@ -198,8 +198,8 @@ uint32_t Projectile::write(OutputMemoryBitStream& inOutputStream, uint32_t inDir
     if (inDirtyState & PRJC_PlayerInfo)
     {
         inOutputStream.write((bool)true);
-        inOutputStream.write(m_iPlayerId);
-        inOutputStream.write(m_color);
+        inOutputStream.write(_playerId);
+        inOutputStream.write(_color);
         
         writtenState |= PRJC_PlayerInfo;
     }
@@ -212,11 +212,11 @@ uint32_t Projectile::write(OutputMemoryBitStream& inOutputStream, uint32_t inDir
     {
         inOutputStream.write((bool)true);
         
-        inOutputStream.write((uint8_t)m_state);
+        inOutputStream.write((uint8_t)_state);
         
         inOutputStream.write(_stateTime);
         
-        inOutputStream.write((bool)m_isFacingLeft);
+        inOutputStream.write((bool)_isFacingLeft);
         
         inOutputStream.write(getVelocity());
         
@@ -239,7 +239,7 @@ bool Projectile::needsMoveReplay()
 
 void Projectile::initFromShooter(Robot* inRobot)
 {
-    m_iPlayerId = inRobot->getPlayerId();
+    _playerId = inRobot->getPlayerId();
     
     setColor(inRobot->getColor());
 }
@@ -247,10 +247,10 @@ void Projectile::initFromShooter(Robot* inRobot)
 void Projectile::fire(Robot* inRobot)
 {
     _stateTime = 0.0f;
-    m_hasMadeContact = false;
-    m_state = ProjectileState_Active;
+    _hasMadeContact = false;
+    _state = ProjectileState_Active;
     
-    m_isFacingLeft = inRobot->isFacingLeft();
+    _isFacingLeft = inRobot->isFacingLeft();
     
     b2Vec2 position = inRobot->getPosition();
     position += b2Vec2(0, inRobot->getHeight() / 5);
@@ -258,32 +258,32 @@ void Projectile::fire(Robot* inRobot)
     
     initPhysics(constructEntityDef());
     
-    setVelocity(b2Vec2(m_isFacingLeft ? -80 : 80, 0));
+    setVelocity(b2Vec2(_isFacingLeft ? -80 : 80, 0));
 }
 
 Projectile::ProjectileState Projectile::getState()
 {
-    return m_state;
+    return _state;
 }
 
 void Projectile::setPlayerId(uint32_t inPlayerId)
 {
-    m_iPlayerId = inPlayerId;
+    _playerId = inPlayerId;
 }
 
 uint32_t Projectile::getPlayerId() const
 {
-    return m_iPlayerId;
+    return _playerId;
 }
 
 bool Projectile::isFacingLeft()
 {
-    return m_isFacingLeft;
+    return _isFacingLeft;
 }
 
 void Projectile::handleBeginContactWithSpacePirate(SpacePirate* inEntity)
 {
-    float projBottom = getPosition().y - (m_fHeight / 2.0f);
+    float projBottom = getPosition().y - (_height / 2.0f);
     float targTop = inEntity->getPosition().y + (inEntity->getHeight() / 2.0f);
     float targHead = targTop - inEntity->getHeight() * 0.4f;
     
@@ -292,7 +292,7 @@ void Projectile::handleBeginContactWithSpacePirate(SpacePirate* inEntity)
     inEntity->takeDamage(b2Vec2(getVelocity().x, getVelocity().y), isHeadshot);
     if (inEntity->getHealth() == 0)
     {
-        World* world = m_isServer ? InstanceManager::getServerWorld() : InstanceManager::getClientWorld();
+        World* world = _isServer ? InstanceManager::getServerWorld() : InstanceManager::getClientWorld();
         Robot* robot = world->getRobotWithPlayerId(getPlayerId());
         if (robot)
         {
@@ -303,27 +303,27 @@ void Projectile::handleBeginContactWithSpacePirate(SpacePirate* inEntity)
 
 void Projectile::explode()
 {
-    if (m_state == ProjectileState_Exploding)
+    if (_state == ProjectileState_Exploding)
     {
         return;
     }
     
-    m_state = ProjectileState_Exploding;
+    _state = ProjectileState_Exploding;
     _stateTime = 0.0f;
-    m_hasMadeContact = false;
+    _hasMadeContact = false;
     
     setVelocity(b2Vec2_zero);
     
-    if (m_isPhysicsOn)
+    if (_isPhysicsOn)
     {
-        m_body->SetGravityScale(0);
+        _body->SetGravityScale(0);
     }
     
-    World* world = m_isServer ? InstanceManager::getServerWorld() : InstanceManager::getClientWorld();
+    World* world = _isServer ? InstanceManager::getServerWorld() : InstanceManager::getClientWorld();
     Robot* robot = world->getRobotWithPlayerId(getPlayerId());
     if (robot && robot->isPending())
     {
-        Util::playSound(SOUND_ID_EXPLOSION, getPosition(), m_isServer);
+        Util::playSound(SOUND_ID_EXPLOSION, getPosition(), _isServer);
     }
 }
 

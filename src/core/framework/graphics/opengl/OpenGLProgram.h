@@ -29,7 +29,7 @@ public:
     GLuint getProgramObjectId();
     
 protected:
-    GLuint m_programObjectId;
+    GLuint _programObjectId;
     
     void mapBuffer(GLuint& vbo, std::vector<GLfloat>& vertices);
     

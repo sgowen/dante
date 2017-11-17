@@ -16,25 +16,25 @@
 #include "FrameworkConstants.h"
 
 Direct3DTextureGpuProgramWrapper::Direct3DTextureGpuProgramWrapper() : GpuProgramWrapper(),
-m_program(new Direct3DTextureProgram(TEXTURE_VERTEX_SHADER, TEXTURE_FRAGMENT_SHADER))
+_program(new Direct3DTextureProgram(TEXTURE_VERTEX_SHADER, TEXTURE_FRAGMENT_SHADER))
 {
     // Empty
 }
 
 Direct3DTextureGpuProgramWrapper::~Direct3DTextureGpuProgramWrapper()
 {
-    delete m_program;
+    delete _program;
 }
 
 void Direct3DTextureGpuProgramWrapper::bind()
 {
     D3DManager->useNormalBlending();
 
-    m_program->bindShaders();
+    _program->bindShaders();
     
-	m_program->bindMatrix();
+	_program->bindMatrix();
 
-	m_program->mapVertices();
+	_program->mapVertices();
 }
 
 void Direct3DTextureGpuProgramWrapper::unbind()

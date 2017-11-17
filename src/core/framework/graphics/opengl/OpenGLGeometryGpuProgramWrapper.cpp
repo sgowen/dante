@@ -14,24 +14,24 @@
 #include "FrameworkConstants.h"
 #include "GameConstants.h"
 
-OpenGLGeometryGpuProgramWrapper::OpenGLGeometryGpuProgramWrapper() : GpuProgramWrapper(), m_program(new OpenGLGeometryProgram(COLOR_VERTEX_SHADER, COLOR_FRAGMENT_SHADER))
+OpenGLGeometryGpuProgramWrapper::OpenGLGeometryGpuProgramWrapper() : GpuProgramWrapper(), _program(new OpenGLGeometryProgram(COLOR_VERTEX_SHADER, COLOR_FRAGMENT_SHADER))
 {
     // Empty
 }
 
 OpenGLGeometryGpuProgramWrapper::~OpenGLGeometryGpuProgramWrapper()
 {
-    delete m_program;
+    delete _program;
 }
 
 void OpenGLGeometryGpuProgramWrapper::bind()
 {
     OGLManager->useNormalBlending();
     
-    m_program->bind();
+    _program->bind();
 }
 
 void OpenGLGeometryGpuProgramWrapper::unbind()
 {
-    m_program->unbind();
+    _program->unbind();
 }

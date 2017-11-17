@@ -6,8 +6,8 @@
 //  Copyright (c) 2017 Noctis Games. All rights reserved.
 //
 
-#ifndef __noctisgames__InputMemoryBitStream__
-#define __noctisgames__InputMemoryBitStream__
+#ifndef __noctisgames__InputMemoryBitStrea__
+#define __noctisgames__InputMemoryBitStrea__
 
 #include "Network.h"
 
@@ -85,10 +85,10 @@ public:
     }
     
 private:
-    char* m_buffer;
-    uint32_t m_iBitHead;
-    uint32_t m_iBitCapacity;
-    bool m_isBufferOwner;
+    char* _buffer;
+    uint32_t _bitHead;
+    uint32_t _bitCapacity;
+    bool _isBufferOwner;
 };
 
-#endif /* defined(__noctisgames__InputMemoryBitStream__) */
+#endif /* defined(__noctisgames__InputMemoryBitStrea__) */

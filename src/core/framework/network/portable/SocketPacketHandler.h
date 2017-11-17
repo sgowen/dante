@@ -40,13 +40,13 @@ protected:
     virtual void processQueuedPackets();
     
 private:
-    SocketAddress* m_socketAddress;
-    UDPSocket* m_socket;
+    SocketAddress* _socketAddress;
+    UDPSocket* _socket;
     
     class ReceivedPacket;
-    std::queue<ReceivedPacket, std::list<ReceivedPacket> > m_packetQueue;
+    std::queue<ReceivedPacket, std::list<ReceivedPacket> > _packetQueue;
     
-    bool m_isInitialized;
+    bool _isInitialized;
     
     class ReceivedPacket
     {
@@ -60,9 +60,9 @@ private:
         InputMemoryBitStream& getPacketBuffer();
         
     private:
-        float m_fReceivedTime;
-        InputMemoryBitStream m_packetBuffer;
-        SocketAddress m_fromAddress;
+        float _receivedTime;
+        InputMemoryBitStream _packetBuffer;
+        SocketAddress _fromAddress;
     };
 };
 

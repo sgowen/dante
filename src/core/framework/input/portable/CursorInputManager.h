@@ -30,7 +30,7 @@ public:
     std::vector<CursorEvent*>& getEvents();
     
 private:
-    NGRollingPool<CursorEvent>* m_pool;
+    NGRollingPool<CursorEvent>* _pool;
     
     void addEvent(CursorEventType type, float x, float y);
     

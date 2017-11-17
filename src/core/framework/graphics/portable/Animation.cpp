@@ -14,26 +14,26 @@
 
 #include <stdarg.h>
 
-Animation::Animation(std::string textureName, int x, int y, int regionWidth, int regionHeight, int animationWidth, int animationHeight, int textureWidth, int textureHeight, bool isLooping, int numFrames) : m_textureName(textureName), m_fCycleTime(0), m_iFirstLoopingFrame(0), m_isLooping(isLooping)
+Animation::Animation(std::string textureName, int x, int y, int regionWidth, int regionHeight, int animationWidth, int animationHeight, int textureWidth, int textureHeight, bool isLooping, int numFrames) : _textureName(textureName), _cycleTime(0), _firstLoopingFrame(0), _isLooping(isLooping)
 {
 	loadTextureRegions(x, y, regionWidth, regionHeight, animationWidth, animationHeight, textureWidth, textureHeight, numFrames);
 }
 
-Animation::Animation(std::string textureName, int x, int y, int regionWidth, int regionHeight, int animationWidth, int animationHeight, int textureWidth, int textureHeight, bool isLooping, float frameTime, int numFrames, int firstLoopingFrame, int xPadding, int yPadding) : m_textureName(textureName), m_fCycleTime(0), m_iFirstLoopingFrame(firstLoopingFrame), m_isLooping(isLooping)
+Animation::Animation(std::string textureName, int x, int y, int regionWidth, int regionHeight, int animationWidth, int animationHeight, int textureWidth, int textureHeight, bool isLooping, float frameTime, int numFrames, int firstLoopingFrame, int xPadding, int yPadding) : _textureName(textureName), _cycleTime(0), _firstLoopingFrame(firstLoopingFrame), _isLooping(isLooping)
 {
 	loadTextureRegions(x, y, regionWidth, regionHeight, animationWidth, animationHeight, textureWidth, textureHeight, numFrames, xPadding, yPadding);
 
 	for (int i = 0; i < numFrames; ++i)
 	{
-		m_frameTimes.push_back(frameTime);
-		m_fCycleTime += frameTime;
+		_frameTimes.push_back(frameTime);
+		_cycleTime += frameTime;
 	}
 }
 
 Animation::~Animation()
 {
-    m_textureRegions.clear();
-    m_frameTimes.clear();
+    _textureRegions.clear();
+    _frameTimes.clear();
 }
 
 void Animation::setFrameTimes(int numFrames, ...)
@@ -45,8 +45,8 @@ void Animation::setFrameTimes(int numFrames, ...)
     for (int i = 0; i < numFrames; ++i)
     {
         float f = va_arg(arguments, double);
-        m_frameTimes.push_back(f);
-        m_fCycleTime += f;
+        _frameTimes.push_back(f);
+        _cycleTime += f;
     }
     
     va_end(arguments);
@@ -61,21 +61,21 @@ TextureRegion& Animation::getTextureRegion(float stateTime)
 
 TextureRegion& Animation::getTextureRegion(int keyFrameNumber)
 {
-	return m_textureRegions.at(keyFrameNumber);
+	return _textureRegions.at(keyFrameNumber);
 }
 
 int Animation::getKeyFrameNumber(float stateTime)
 {
     unsigned int i = 0;
     
-    if (stateTime > m_fCycleTime && m_fCycleTime > 0)
+    if (stateTime > _cycleTime && _cycleTime > 0)
     {
-        if (m_isLooping)
+        if (_isLooping)
         {
-            float cycleTime = m_fCycleTime;
-            for ( ; i < m_iFirstLoopingFrame; ++i)
+            float cycleTime = _cycleTime;
+            for ( ; i < _firstLoopingFrame; ++i)
             {
-                cycleTime -= m_frameTimes.at(i);
+                cycleTime -= _frameTimes.at(i);
             }
             
             while (stateTime > cycleTime)
@@ -85,13 +85,13 @@ int Animation::getKeyFrameNumber(float stateTime)
         }
         else
         {
-            return ((int) m_frameTimes.size()) - 1;
+            return ((int) _frameTimes.size()) - 1;
         }
     }
     
-    for ( ; i < m_frameTimes.size(); ++i)
+    for ( ; i < _frameTimes.size(); ++i)
     {
-        float frameTime = m_frameTimes.at(i);
+        float frameTime = _frameTimes.at(i);
         
         if (stateTime < frameTime)
         {
@@ -106,7 +106,7 @@ int Animation::getKeyFrameNumber(float stateTime)
 
 bool Animation::hasFrameTimes()
 {
-    return m_frameTimes.size() > 0;
+    return _frameTimes.size() > 0;
 }
 
 void Animation::loadTextureRegions(int x, int y, int regionWidth, int regionHeight, int animationWidth, int animationHeight, int textureWidth, int textureHeight, int numFrames, int xPadding, int yPadding)
@@ -118,8 +118,8 @@ void Animation::loadTextureRegions(int x, int y, int regionWidth, int regionHeig
 	{
 		for (int i = x; i < right; i += regionWidth + xPadding)
 		{
-			TextureRegion tr = TextureRegion(m_textureName, i, j, regionWidth, regionHeight, textureWidth, textureHeight);
-			m_textureRegions.push_back(tr);
+			TextureRegion tr = TextureRegion(_textureName, i, j, regionWidth, regionHeight, textureWidth, textureHeight);
+			_textureRegions.push_back(tr);
 			numTextureRegionsAdded++;
 
 			if (numTextureRegionsAdded == numFrames)

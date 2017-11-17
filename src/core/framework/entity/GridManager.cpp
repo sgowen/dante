@@ -19,12 +19,12 @@ GridManager* GridManager::getInstance()
 
 void GridManager::setGridCellSize(float gridCellSize)
 {
-    m_fGridCellSize = gridCellSize;
+    _gridCellSize = gridCellSize;
 }
 
 float GridManager::getGridCellSize()
 {
-    return m_fGridCellSize;
+    return _gridCellSize;
 }
 
 GridManager::GridManager()

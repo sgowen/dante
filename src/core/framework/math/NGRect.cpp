@@ -12,63 +12,63 @@
 
 NGRect::NGRect(float x, float y, float width, float height, float angle)
 {
-    m_lowerLeft = Vector2(x, y);
-    m_fWidth = width;
-    m_fHeight = height;
-    m_fAngle = angle;
+    _lowerLeft = Vector2(x, y);
+    _width = width;
+    _height = height;
+    _angle = angle;
 }
 
 Vector2& NGRect::getLowerLeft()
 {
-    return m_lowerLeft;
+    return _lowerLeft;
 }
 
 float NGRect::getRight()
 {
-    return m_lowerLeft.getX() + m_fWidth;
+    return _lowerLeft.getX() + _width;
 }
 
 float NGRect::getTop()
 {
-    return m_lowerLeft.getY() + m_fHeight;
+    return _lowerLeft.getY() + _height;
 }
 
 float NGRect::getLeft()
 {
-    return m_lowerLeft.getX();
+    return _lowerLeft.getX();
 }
 
 float NGRect::getBottom()
 {
-    return m_lowerLeft.getY();
+    return _lowerLeft.getY();
 }
 
 float NGRect::getWidth()
 {
-    return m_fWidth;
+    return _width;
 }
 
 void NGRect::setWidth(float width)   
 {
-    m_fWidth = width;
+    _width = width;
 }
 
 float NGRect::getHeight()
 {
-    return m_fHeight;
+    return _height;
 }
 
 void NGRect::setHeight(float height)
 {
-    m_fHeight = height;
+    _height = height;
 }
 
 float NGRect::getAngle()
 {
-    return m_fAngle;
+    return _angle;
 }
 
 void NGRect::setAngle(float angle)
 {
-    m_fAngle = angle;
+    _angle = angle;
 }

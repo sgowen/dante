@@ -13,9 +13,9 @@
 #include "Timing.h"
 #include "MathUtil.h"
 
-WeightedTimedMovingAverage::WeightedTimedMovingAverage(float inDuration) : m_fDuration(inDuration), m_fValue(0.f)
+WeightedTimedMovingAverage::WeightedTimedMovingAverage(float inDuration) : _duration(inDuration), _value(0.f)
 {
-    m_fTimeLastEntryMade = Timing::getInstance()->getFrameStartTime();
+    _timeLastEntryMade = Timing::getInstance()->getFrameStartTime();
 }
 
 void WeightedTimedMovingAverage::updatePerSecond(float inValue)
@@ -26,20 +26,20 @@ void WeightedTimedMovingAverage::updatePerSecond(float inValue)
     }
     
     float time = Timing::getInstance()->getFrameStartTime();
-    float timeSinceLastEntry = clamp(time - m_fTimeLastEntryMade, 10, 0);
+    float timeSinceLastEntry = clamp(time - _timeLastEntryMade, 10, 0);
     
     float valueOverTime = inValue / timeSinceLastEntry;
     
     // now update our value by whatever amount of the duration that was..
-    float fractionOfDuration  = (timeSinceLastEntry / m_fDuration);
+    float fractionOfDuration  = (timeSinceLastEntry / _duration);
     if (fractionOfDuration > 1.0f)
     {
         fractionOfDuration = 1.0f;
     }
     
-    m_fValue = m_fValue * (1.0f - fractionOfDuration) + valueOverTime * fractionOfDuration;
+    _value = _value * (1.0f - fractionOfDuration) + valueOverTime * fractionOfDuration;
     
-    m_fTimeLastEntryMade = time;
+    _timeLastEntryMade = time;
 }
 
 void WeightedTimedMovingAverage::update(float inValue)
@@ -50,21 +50,21 @@ void WeightedTimedMovingAverage::update(float inValue)
     }
     
     float time = Timing::getInstance()->getFrameStartTime();
-    float timeSinceLastEntry = clamp(time - m_fTimeLastEntryMade, 10, 0);
+    float timeSinceLastEntry = clamp(time - _timeLastEntryMade, 10, 0);
     
     // now update our value by whatever amount of the duration that was..
-    float fractionOfDuration  = (timeSinceLastEntry / m_fDuration);
+    float fractionOfDuration  = (timeSinceLastEntry / _duration);
     if (fractionOfDuration > 1.0f)
     {
         fractionOfDuration = 1.0f;
     }
     
-    m_fValue = m_fValue * (1.0f - fractionOfDuration) + inValue * fractionOfDuration;
+    _value = _value * (1.0f - fractionOfDuration) + inValue * fractionOfDuration;
     
-    m_fTimeLastEntryMade = time;
+    _timeLastEntryMade = time;
 }
 
 float WeightedTimedMovingAverage::getValue() const
 {
-    return m_fValue;
+    return _value;
 }

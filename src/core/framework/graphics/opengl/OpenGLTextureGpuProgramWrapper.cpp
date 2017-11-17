@@ -14,24 +14,24 @@
 #include "FrameworkConstants.h"
 #include "GameConstants.h"
 
-OpenGLTextureGpuProgramWrapper::OpenGLTextureGpuProgramWrapper() : GpuProgramWrapper(), m_program(new OpenGLTextureProgram(TEXTURE_VERTEX_SHADER, TEXTURE_FRAGMENT_SHADER))
+OpenGLTextureGpuProgramWrapper::OpenGLTextureGpuProgramWrapper() : GpuProgramWrapper(), _program(new OpenGLTextureProgram(TEXTURE_VERTEX_SHADER, TEXTURE_FRAGMENT_SHADER))
 {
     // Empty
 }
 
 OpenGLTextureGpuProgramWrapper::~OpenGLTextureGpuProgramWrapper()
 {
-    delete m_program;
+    delete _program;
 }
 
 void OpenGLTextureGpuProgramWrapper::bind()
 {
     OGLManager->useNormalBlending();
     
-    m_program->bind();
+    _program->bind();
 }
 
 void OpenGLTextureGpuProgramWrapper::unbind()
 {
-    m_program->unbind();
+    _program->unbind();
 }

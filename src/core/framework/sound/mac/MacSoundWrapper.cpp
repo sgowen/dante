@@ -12,9 +12,9 @@
 
 MacSoundWrapper::MacSoundWrapper(int soundId, const char *path, int numInstances) : ISoundWrapper(soundId, numInstances)
 {
-    for (int i = 0; i < m_iNumInstances; ++i)
+    for (int i = 0; i < _numInstances; ++i)
     {
-        m_sounds.push_back(new MacSound(soundId, path));
+        _sounds.push_back(new MacSound(soundId, path));
     }
 }
 

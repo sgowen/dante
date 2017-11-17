@@ -14,7 +14,7 @@
 
 #include <memory>
 
-TransitionGpuProgramWrapper::TransitionGpuProgramWrapper() : m_to(nullptr), m_fProgress(0)
+TransitionGpuProgramWrapper::TransitionGpuProgramWrapper() : _to(nullptr), _progress(0)
 {
     // Empty
 }
@@ -26,6 +26,6 @@ TransitionGpuProgramWrapper::~TransitionGpuProgramWrapper()
 
 void TransitionGpuProgramWrapper::configure(GpuTextureWrapper* to, float progress)
 {
-    m_to = to;
-    m_fProgress = progress;
+    _to = to;
+    _progress = progress;
 }

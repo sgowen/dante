@@ -33,9 +33,9 @@ public:
     Line& getSideC();
     
 private:
-    Line m_sideA;
-    Line m_sideB;
-    Line m_sideC;
+    Line _sideA;
+    Line _sideB;
+    Line _sideC;
 };
 
 #endif /* defined(__noctisgames__Triangle__) */

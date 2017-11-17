@@ -34,13 +34,13 @@ public:
     virtual void render(int flags = 0);
     
 private:
-    TextureWrapper* m_characters;
-    TextureWrapper* m_misc;
-    TextureWrapper* m_bg1;
-    TextureWrapper* m_bg2;
-    TextureWrapper* m_cover;
-    Font* m_font;
-    NGRect* m_camBounds;
+    TextureWrapper* _characters;
+    TextureWrapper* _misc;
+    TextureWrapper* _bg1;
+    TextureWrapper* _bg2;
+    TextureWrapper* _cover;
+    Font* _font;
+    NGRect* _camBounds;
     
     void renderBackground();
     

@@ -10,7 +10,7 @@
 
 #include "ISound.h"
 
-ISound::ISound(int soundId) : m_iSoundId(soundId)
+ISound::ISound(int soundId) : _soundId(soundId)
 {
     // Empty
 }
@@ -22,5 +22,5 @@ ISound::~ISound()
 
 int ISound::getSoundId()
 {
-    return m_iSoundId;
+    return _soundId;
 }

@@ -28,9 +28,9 @@ public:
     void setValue(std::string key, std::string value);
 
 private:
-    const char* m_filePath;
-    bool m_useEncryption;
-    std::map<std::string, std::string> m_keyValues;
+    const char* _filePath;
+    bool _useEncryption;
+    std::map<std::string, std::string> _keyValues;
 };
 
 #endif /* defined(__noctisgames__JsonFile__) */

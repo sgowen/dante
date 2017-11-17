@@ -34,39 +34,39 @@
 #include <stdlib.h>
 #include <sstream>
 
-JsonFile::JsonFile(const char* filePath, bool useEncryption) : m_filePath(filePath), m_useEncryption(useEncryption)
+JsonFile::JsonFile(const char* filePath, bool useEncryption) : _filePath(filePath), _useEncryption(useEncryption)
 {
     // Empty
 }
 
 void JsonFile::save()
 {
-    assert(m_filePath);
+    assert(_filePath);
     
     using namespace rapidjson;
     using namespace std;
     
     const char* finalPath;
 #if defined __ANDROID__
-    finalPath = ANDROID_ASSETS->getPathInsideApk(m_filePath);
+    finalPath = ANDROID_ASSETS->getPathInsideApk(_filePath);
 #elif TARGET_OS_IPHONE
-    finalPath = getPathInsideNSDocuments(m_filePath);
+    finalPath = getPathInsideNSDocuments(_filePath);
 #elif defined _WIN32
 	#if !defined(WINAPI_FAMILY) || WINAPI_FAMILY == WINAPI_FAMILY_DESKTOP_APP
-		finalPath = m_filePath;
+		finalPath = _filePath;
 	#else
 		Windows::Storage::StorageFolder^ localFolder = Windows::Storage::ApplicationData::Current->LocalFolder;
 		Platform::String^ ps_path = localFolder->Path;
 		std::string s_path(ps_path->Begin(), ps_path->End());
 		const char* path = s_path.c_str(); // std::string to const
 		std::stringstream ss;
-		ss << path << "\\" << m_filePath;
+		ss << path << "\\" << _filePath;
 
 		std::string finalPathS = ss.str();
 		finalPath = finalPathS.c_str();
 	#endif
 #else
-    finalPath = m_filePath;
+    finalPath = _filePath;
 #endif
     
     FILE *file;
@@ -89,7 +89,7 @@ void JsonFile::save()
         
         w.StartObject();
         
-        for (std::map<std::string, std::string>::iterator i = m_keyValues.begin(); i != m_keyValues.end(); ++i)
+        for (std::map<std::string, std::string>::iterator i = _keyValues.begin(); i != _keyValues.end(); ++i)
         {
             w.String((*i).first.c_str());
             w.String((*i).second.c_str());
@@ -100,7 +100,7 @@ void JsonFile::save()
         const char* data = s.GetString();
         
         std::string rawData = std::string(data);
-        std::string dataToWrite = m_useEncryption ? StringUtil::encryptDecrypt(rawData) : rawData;
+        std::string dataToWrite = _useEncryption ? StringUtil::encryptDecrypt(rawData) : rawData;
         
         int sum = fprintf(file, "%s", dataToWrite.c_str());
         
@@ -112,7 +112,7 @@ void JsonFile::save()
 
 void JsonFile::load()
 {
-    assert(m_filePath);
+    assert(_filePath);
     
     using namespace rapidjson;
     using namespace std;
@@ -120,25 +120,25 @@ void JsonFile::load()
     const char* finalPath;
 
 #if defined __ANDROID__
-    finalPath = ANDROID_ASSETS->getPathInsideApk(m_filePath);
+    finalPath = ANDROID_ASSETS->getPathInsideApk(_filePath);
 #elif TARGET_OS_IPHONE
-    finalPath = getPathInsideNSDocuments(m_filePath);
+    finalPath = getPathInsideNSDocuments(_filePath);
 #elif defined _WIN32
 	#if !defined(WINAPI_FAMILY) || WINAPI_FAMILY == WINAPI_FAMILY_DESKTOP_APP
-		finalPath = m_filePath;
+		finalPath = _filePath;
 	#else
 		Windows::Storage::StorageFolder^ localFolder = Windows::Storage::ApplicationData::Current->LocalFolder;
 		Platform::String^ ps_path = localFolder->Path;
 		std::string s_path(ps_path->Begin(), ps_path->End());
 		const char* path = s_path.c_str(); // std::string to const
 		std::stringstream ss;
-		ss << path << "\\" << m_filePath;
+		ss << path << "\\" << _filePath;
 
 		std::string finalPathS = ss.str();
 		finalPath = finalPathS.c_str();
 	#endif
 #else
-    finalPath = m_filePath;
+    finalPath = _filePath;
 #endif
     
     FILE *file;
@@ -173,7 +173,7 @@ void JsonFile::load()
         // close the file
         fclose(file);
         
-        std::string dataToRead = m_useEncryption ? StringUtil::encryptDecrypt(rawData) : rawData;
+        std::string dataToRead = _useEncryption ? StringUtil::encryptDecrypt(rawData) : rawData;
         
         rapidjson::Document d;
         d.Parse<0>(dataToRead.c_str());
@@ -182,7 +182,7 @@ void JsonFile::load()
         {
             for (Value::ConstMemberIterator i = d.MemberBegin(); i != d.MemberEnd(); ++i)
             {
-                m_keyValues[i->name.GetString()] = i->value.GetString();
+                _keyValues[i->name.GetString()] = i->value.GetString();
             }
         }
     }
@@ -190,16 +190,16 @@ void JsonFile::load()
     
 void JsonFile::clear()
 {
-    m_keyValues.clear();
+    _keyValues.clear();
     
     save();
 }
     
 std::string JsonFile::findValue(std::string key)
 {
-    auto q = m_keyValues.find(key);
+    auto q = _keyValues.find(key);
     
-    if (q != m_keyValues.end())
+    if (q != _keyValues.end())
     {
         return q->second;
     }
@@ -209,5 +209,5 @@ std::string JsonFile::findValue(std::string key)
 
 void JsonFile::setValue(std::string key, std::string value)
 {
-    m_keyValues[key] = value;
+    _keyValues[key] = value;
 }

@@ -11,8 +11,8 @@
 #include "IServerHelper.h"
 
 IServerHelper::IServerHelper(IPacketHandler* packetHandler, GetClientProxyFunc inGetClientProxyFunc, HandleClientDisconnectedFunc inHandleClientDisconnectedFunc) : INetworkHelper(packetHandler),
-m_getClientProxyFunc(inGetClientProxyFunc),
-m_handleClientDisconnectedFunc(inHandleClientDisconnectedFunc)
+_getClientProxyFunc(inGetClientProxyFunc),
+_handleClientDisconnectedFunc(inHandleClientDisconnectedFunc)
 {
     // Empty
 }

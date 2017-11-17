@@ -35,10 +35,10 @@ protected:
     virtual void processQueuedPackets();
     
 private:
-    bool m_isServer;
+    bool _isServer;
     
     class ReceivedPacket;
-    std::queue<ReceivedPacket, std::list<ReceivedPacket> > m_packetQueue;
+    std::queue<ReceivedPacket, std::list<ReceivedPacket> > _packetQueue;
     
     class ReceivedPacket
     {
@@ -52,9 +52,9 @@ private:
         InputMemoryBitStream& getPacketBuffer();
         
     private:
-        float m_fReceivedTime;
-        InputMemoryBitStream m_packetBuffer;
-        NGSteamAddress m_fromAddress;
+        float _receivedTime;
+        InputMemoryBitStream _packetBuffer;
+        NGSteamAddress _fromAddress;
     };
 };
 

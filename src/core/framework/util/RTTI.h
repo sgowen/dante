@@ -29,8 +29,8 @@ private:
     RTTI(const RTTI& obj);
     RTTI& operator=(const RTTI& obj);
 
-    const std::string m_className;
-    const RTTI *m_pBaseRTTI;
+    const std::string _className;
+    const RTTI *_pBaseRTTI;
 };
 
 #define RTTI_DECL \

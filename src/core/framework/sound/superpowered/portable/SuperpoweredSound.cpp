@@ -41,52 +41,52 @@ static void playerEventCallback(void *clientData, SuperpoweredAdvancedAudioPlaye
 }
 
 SuperpoweredSound::SuperpoweredSound(SuperpoweredSoundManager* manager, int soundId, const char *path, unsigned int sampleRate, int fileOffset, int fileLength, float volume) : ISound(soundId),
-m_manager(manager),
-m_fVolume(volume * headroom),
-m_iLastSamplerate(sampleRate),
-m_isLooping(false),
-m_isPaused(false)
+_manager(manager),
+_volume(volume * headroom),
+_lastSamplerate(sampleRate),
+_isLooping(false),
+_isPaused(false)
 {
-    m_player = new SuperpoweredAdvancedAudioPlayer(this, playerEventCallback, sampleRate, 0);
+    _player = new SuperpoweredAdvancedAudioPlayer(this, playerEventCallback, sampleRate, 0);
     
     if (fileOffset > -1 && fileLength > -1)
     {
-        m_player->open(path, fileOffset, fileLength);
+        _player->open(path, fileOffset, fileLength);
     }
     else
     {
-        m_player->open(path);
+        _player->open(path);
     }
 }
 
 SuperpoweredSound::~SuperpoweredSound()
 {
-    m_player->pause();
+    _player->pause();
     
-    m_manager->onSoundStopped(this);
+    _manager->onSoundStopped(this);
     
-    delete m_player;
+    delete _player;
 }
 
 void SuperpoweredSound::play(bool isLooping)
 {
-    m_isLooping = isLooping;
-    m_isPaused = false;
+    _isLooping = isLooping;
+    _isPaused = false;
     
-    m_player->seek(0);
+    _player->seek(0);
     
-    m_player->play(false);
+    _player->play(false);
     
-    m_manager->onSoundPlayed(this);
+    _manager->onSoundPlayed(this);
 }
 
 void SuperpoweredSound::resume()
 {
-    if (m_isPaused)
+    if (_isPaused)
     {
-        m_player->play(false);
+        _player->play(false);
         
-        m_isPaused = false;
+        _isPaused = false;
     }
 }
 
@@ -94,55 +94,55 @@ void SuperpoweredSound::pause()
 {
     if (isPlaying())
     {
-        m_player->pause();
+        _player->pause();
         
-        m_isPaused = true;
+        _isPaused = true;
     }
 }
 
 void SuperpoweredSound::stop()
 {
-    m_isLooping = false;
-    m_isPaused = false;
+    _isLooping = false;
+    _isPaused = false;
     
-    m_player->pause();
-    m_player->setFirstBeatMs(0);
-    m_player->setPosition(m_player->firstBeatMs, false, false);
+    _player->pause();
+    _player->setFirstBeatMs(0);
+    _player->setPosition(_player->firstBeatMs, false, false);
     
-    m_manager->onSoundStopped(this);
+    _manager->onSoundStopped(this);
 }
 
 void SuperpoweredSound::setVolume(float volume)
 {
-    m_fVolume = volume * headroom;
+    _volume = volume * headroom;
 }
 
 bool SuperpoweredSound::isLooping()
 {
-    return m_isLooping;
+    return _isLooping;
 }
 
 bool SuperpoweredSound::isPlaying()
 {
-    return m_player->playing;
+    return _player->playing;
 }
 
 bool SuperpoweredSound::isPaused()
 {
-    return m_isPaused;
+    return _isPaused;
 }
 
 bool SuperpoweredSound::process(float *stereoBuffer, void *output, unsigned int numberOfSamples, unsigned int sampleRate)
 {
     if (sampleRate != -1
-        && sampleRate != m_iLastSamplerate)
+        && sampleRate != _lastSamplerate)
     {
         // Has samplerate changed?
-        m_iLastSamplerate = sampleRate;
-        m_player->setSamplerate(sampleRate);
+        _lastSamplerate = sampleRate;
+        _player->setSamplerate(sampleRate);
     }
     
-    bool ret = m_player->process(stereoBuffer, false, numberOfSamples, m_fVolume);
+    bool ret = _player->process(stereoBuffer, false, numberOfSamples, _volume);
     
     // The stereoBuffer is ready now, let's put the finished audio into the requested buffers.
     if (ret)
@@ -161,10 +161,10 @@ bool SuperpoweredSound::process(float *stereoBuffer, void *output, unsigned int 
 
 SuperpoweredAdvancedAudioPlayer* SuperpoweredSound::getPlayer()
 {
-    return m_player;
+    return _player;
 }
 
 SuperpoweredSoundManager* SuperpoweredSound::getManager()
 {
-    return m_manager;
+    return _manager;
 }

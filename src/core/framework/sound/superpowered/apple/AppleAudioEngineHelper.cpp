@@ -39,7 +39,7 @@ ISoundWrapper* AppleAudioEngineHelper::loadSound(int soundId, const char *path, 
 {
     const char* bundlePath = getBundlePathForSoundWithName(path);
     
-    SuperpoweredSoundWrapper* sound = new SuperpoweredSoundWrapper(m_superpoweredSoundManager, soundId, bundlePath, m_iSampleRate, numInstances);
+    SuperpoweredSoundWrapper* sound = new SuperpoweredSoundWrapper(_superpoweredSoundManager, soundId, bundlePath, _sampleRate, numInstances);
     
     return sound;
 }
@@ -50,15 +50,15 @@ ISoundWrapper* AppleAudioEngineHelper::loadMusic(const char* path)
 }
 
 AppleAudioEngineHelper::AppleAudioEngineHelper() : IAudioEngineHelper(),
-m_superpoweredSoundManager(new SuperpoweredSoundManager(44100)),
-m_iSampleRate(44100)
+_superpoweredSoundManager(new SuperpoweredSoundManager(44100)),
+_sampleRate(44100)
 {
-    initializeAudioSystemsWithSuperpoweredSoundManager(m_superpoweredSoundManager, m_iSampleRate);
+    initializeAudioSystemsWithSuperpoweredSoundManager(_superpoweredSoundManager, _sampleRate);
 }
 
 AppleAudioEngineHelper::~AppleAudioEngineHelper()
 {
     deinitializeAudioSystems();
     
-    delete m_superpoweredSoundManager;
+    delete _superpoweredSoundManager;
 }

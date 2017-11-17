@@ -65,18 +65,18 @@ public:
     bool isFacingLeft();
     
 private:
-    float m_fSpeed;
-    uint8_t m_iHealth;
-    bool m_isFacingLeft;
-    bool m_isJumping;
+    float _speed;
+    uint8_t _health;
+    bool _isFacingLeft;
+    bool _isJumping;
     
-    float m_fJumpCooldown;
-    float m_fJumpSpeed;
+    float _jumpCooldown;
+    float _jumpSpeed;
     
-    b2Vec2 m_lastForce;
+    b2Vec2 _lastForce;
     
     // Cached Last Known Values (from previous frame)
-    uint8_t m_iHealthLeftLastKnown;
+    uint8_t _healthLeftLastKnown;
 };
 
 #endif /* defined(__noctisgames__SpacePirate__) */

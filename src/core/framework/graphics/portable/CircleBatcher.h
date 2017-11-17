@@ -25,7 +25,7 @@ public:
     virtual void renderPartialCircle(Circle &circle, int arcDegrees, Color &c, GpuProgramWrapper &gpuProgramWrapper) = 0;
     
 protected:
-    int m_iNumPoints;
+    int _numPoints;
     
     virtual void endBatch(GpuProgramWrapper &gpuProgramWrapper) = 0;
 };

@@ -26,20 +26,20 @@ Direct3DNGRectBatcher::Direct3DNGRectBatcher(bool isFill) : NGRectBatcher(isFill
 void Direct3DNGRectBatcher::beginBatch()
 {
 	D3DManager->getColorVertices().clear();
-	m_iNumNGRects = 0;
+	_numNGRects = 0;
 }
 
 void Direct3DNGRectBatcher::endBatch(GpuProgramWrapper &gpuProgramWrapper)
 {
-	if (m_iNumNGRects > 0)
+	if (_numNGRects > 0)
 	{
 		// set the primitive topology
 		ID3D11DeviceContext* d3dContext = Direct3DManager::getD3dContext();
-		d3dContext->IASetPrimitiveTopology(m_isFill ? D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST : D3D11_PRIMITIVE_TOPOLOGY_LINESTRIP);
+		d3dContext->IASetPrimitiveTopology(_isFill ? D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST : D3D11_PRIMITIVE_TOPOLOGY_LINESTRIP);
 
 		gpuProgramWrapper.bind();
 
-		d3dContext->DrawIndexed(m_iNumNGRects * INDICES_PER_RECTANGLE, 0, 0);
+		d3dContext->DrawIndexed(_numNGRects * INDICES_PER_RECTANGLE, 0, 0);
 
 		gpuProgramWrapper.unbind();
 	}
@@ -62,5 +62,5 @@ void Direct3DNGRectBatcher::renderNGRect(float x1, float y1, float x2, float y2,
 	D3DManager->addVertexCoordinate(x2, y2, 0, color.red, color.green, color.blue, color.alpha);
 	D3DManager->addVertexCoordinate(x2, y1, 0, color.red, color.green, color.blue, color.alpha);
 
-	m_iNumNGRects++;
+	_numNGRects++;
 }

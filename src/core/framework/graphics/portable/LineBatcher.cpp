@@ -14,7 +14,7 @@
 #include "Vector2.h"
 #include "Color.h"
 
-LineBatcher::LineBatcher() : m_iNumLines(0)
+LineBatcher::LineBatcher() : _numLines(0)
 {
     // Empty
 }

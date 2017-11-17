@@ -30,9 +30,9 @@ NGAudioEngine* NGAudioEngine::getInstance()
 
 void NGAudioEngine::update(int flags)
 {
-    m_iNumSoundsPlayedThisFrame = 0;
+    _numSoundsPlayedThisFrame = 0;
     
-    m_audioEngineHelper->update(flags);
+    _audioEngineHelper->update(flags);
 }
 
 void NGAudioEngine::pause()
@@ -40,12 +40,12 @@ void NGAudioEngine::pause()
     pauseMusic();
     pauseAllSounds();
     
-    m_audioEngineHelper->pause();
+    _audioEngineHelper->pause();
 }
 
 void NGAudioEngine::resume()
 {
-    m_audioEngineHelper->resume();
+    _audioEngineHelper->resume();
     
     resumeMusic();
     resumeAllSounds();
@@ -53,16 +53,16 @@ void NGAudioEngine::resume()
 
 void NGAudioEngine::loadSound(int soundId, const char *path, int numInstances)
 {
-    ISoundWrapper* sound = m_audioEngineHelper->loadSound(soundId, path, numInstances);
+    ISoundWrapper* sound = _audioEngineHelper->loadSound(soundId, path, numInstances);
     
-    m_sounds.insert(std::make_pair(soundId, sound));
+    _sounds.insert(std::make_pair(soundId, sound));
 }
 
 void NGAudioEngine::playSound(int soundId, float inVolume, bool isLooping)
 {
-    if (m_isSoundDisabled
+    if (_isSoundDisabled
         || soundId <= 0
-        || m_iNumSoundsPlayedThisFrame >= MAX_SOUNDS_TO_PLAY_PER_FRAME)
+        || _numSoundsPlayedThisFrame >= MAX_SOUNDS_TO_PLAY_PER_FRAME)
     {
         return;
     }
@@ -79,7 +79,7 @@ void NGAudioEngine::playSound(int soundId, float inVolume, bool isLooping)
 
 void NGAudioEngine::stopSound(int soundId)
 {
-    if (m_isSoundDisabled)
+    if (_isSoundDisabled)
     {
         return;
     }
@@ -100,7 +100,7 @@ void NGAudioEngine::stopSound(int soundId)
 
 void NGAudioEngine::pauseSound(int soundId)
 {
-    if (m_isSoundDisabled)
+    if (_isSoundDisabled)
     {
         return;
     }
@@ -121,7 +121,7 @@ void NGAudioEngine::pauseSound(int soundId)
 
 void NGAudioEngine::resumeSound(int soundId)
 {
-    if (m_isSoundDisabled)
+    if (_isSoundDisabled)
     {
         return;
     }
@@ -142,12 +142,12 @@ void NGAudioEngine::resumeSound(int soundId)
 
 void NGAudioEngine::stopAllSounds()
 {
-    if (m_isSoundDisabled)
+    if (_isSoundDisabled)
     {
         return;
     }
     
-    for (std::map<int, ISoundWrapper*>::iterator i = m_sounds.begin(); i != m_sounds.end(); ++i)
+    for (std::map<int, ISoundWrapper*>::iterator i = _sounds.begin(); i != _sounds.end(); ++i)
     {
         std::vector<ISound *> sounds = (*i).second->getSounds();
         for (std::vector<ISound *>::iterator i = sounds.begin(); i != sounds.end(); ++i)
@@ -159,12 +159,12 @@ void NGAudioEngine::stopAllSounds()
 
 void NGAudioEngine::pauseAllSounds()
 {
-    if (m_isSoundDisabled)
+    if (_isSoundDisabled)
     {
         return;
     }
     
-    for (std::map<int, ISoundWrapper*>::iterator i = m_sounds.begin(); i != m_sounds.end(); ++i)
+    for (std::map<int, ISoundWrapper*>::iterator i = _sounds.begin(); i != _sounds.end(); ++i)
     {
         std::vector<ISound *> sounds = (*i).second->getSounds();
         for (std::vector<ISound *>::iterator i = sounds.begin(); i != sounds.end(); ++i)
@@ -176,12 +176,12 @@ void NGAudioEngine::pauseAllSounds()
 
 void NGAudioEngine::resumeAllSounds()
 {
-    if (m_isSoundDisabled)
+    if (_isSoundDisabled)
     {
         return;
     }
     
-    for (std::map<int, ISoundWrapper*>::iterator i = m_sounds.begin(); i != m_sounds.end(); ++i)
+    for (std::map<int, ISoundWrapper*>::iterator i = _sounds.begin(); i != _sounds.end(); ++i)
     {
         std::vector<ISound *> sounds = (*i).second->getSounds();
         for (std::vector<ISound *>::iterator i = sounds.begin(); i != sounds.end(); ++i)
@@ -193,99 +193,99 @@ void NGAudioEngine::resumeAllSounds()
 
 void NGAudioEngine::resetSounds()
 {
-    NGSTDUtil::cleanUpMapOfPointers(m_sounds);
+    NGSTDUtil::cleanUpMapOfPointers(_sounds);
 }
 
 void NGAudioEngine::loadMusic(const char *path)
 {
-    if (m_isMusicDisabled)
+    if (_isMusicDisabled)
     {
         return;
     }
     
-    if (m_music)
+    if (_music)
     {
-        m_music->getSoundInstance()->stop();
+        _music->getSoundInstance()->stop();
         
-        delete m_music;
+        delete _music;
     }
     
-    m_music = m_audioEngineHelper->loadMusic(path);
+    _music = _audioEngineHelper->loadMusic(path);
 }
 
 void NGAudioEngine::playMusic(bool isLooping, float inVolume)
 {
-    if (m_isMusicDisabled)
+    if (_isMusicDisabled)
     {
         return;
     }
     
-    if (m_music)
+    if (_music)
     {
         float volume = clamp(inVolume, 1, 0);
         
-        m_music->getSoundInstance()->play(isLooping);
-        m_music->getSoundInstance()->setVolume(volume);
+        _music->getSoundInstance()->play(isLooping);
+        _music->getSoundInstance()->setVolume(volume);
     }
 }
 
 void NGAudioEngine::setMusicVolume(float volume)
 {
-    if (m_isMusicDisabled)
+    if (_isMusicDisabled)
     {
         return;
     }
     
-    if (m_music)
+    if (_music)
     {
-        m_music->getSoundInstance()->setVolume(volume);
+        _music->getSoundInstance()->setVolume(volume);
     }
 }
 
 void NGAudioEngine::stopMusic()
 {
-    if (m_isMusicDisabled)
+    if (_isMusicDisabled)
     {
         return;
     }
     
-    if (m_music)
+    if (_music)
     {
-        m_music->getSoundInstance()->stop();
+        _music->getSoundInstance()->stop();
     }
 }
 
 void NGAudioEngine::pauseMusic()
 {
-    if (m_isMusicDisabled)
+    if (_isMusicDisabled)
     {
         return;
     }
     
-    if (m_music)
+    if (_music)
     {
-        m_music->getSoundInstance()->pause();
+        _music->getSoundInstance()->pause();
     }
 }
 
 void NGAudioEngine::resumeMusic()
 {
-    if (m_isMusicDisabled)
+    if (_isMusicDisabled)
     {
         return;
     }
     
-    if (m_music && m_music->getSoundInstance()->isPaused())
+    if (_music && _music->getSoundInstance()->isPaused())
     {
-        m_music->getSoundInstance()->resume();
+        _music->getSoundInstance()->resume();
     }
 }
 
 bool NGAudioEngine::isMusicPlaying()
 {
-    if (m_music)
+    if (_music)
     {
-        return m_music->getSoundInstance()->isPlaying();
+        return _music->getSoundInstance()->isPlaying();
     }
     
     return false;
@@ -293,43 +293,43 @@ bool NGAudioEngine::isMusicPlaying()
 
 bool NGAudioEngine::isMusicLoaded()
 {
-    return m_music ? true : false;
+    return _music ? true : false;
 }
 
 bool NGAudioEngine::isMusicDisabled()
 {
-    return m_isMusicDisabled;
+    return _isMusicDisabled;
 }
 
 void NGAudioEngine::setMusicDisabled(bool isMusicDisabled)
 {
-    if (m_isMusicDisabled && !isMusicDisabled)
+    if (_isMusicDisabled && !isMusicDisabled)
     {
-        m_isMusicDisabled = false;
+        _isMusicDisabled = false;
         playMusic();
     }
-    else if (!m_isMusicDisabled && isMusicDisabled)
+    else if (!_isMusicDisabled && isMusicDisabled)
     {
         stopMusic();
-        m_isMusicDisabled = true;
+        _isMusicDisabled = true;
     }
 }
 
 bool NGAudioEngine::isSoundDisabled()
 {
-    return m_isSoundDisabled;
+    return _isSoundDisabled;
 }
 
 void NGAudioEngine::setSoundDisabled(bool isSoundDisabled)
 {
-    m_isSoundDisabled = isSoundDisabled;
+    _isSoundDisabled = isSoundDisabled;
 }
 
 ISoundWrapper* NGAudioEngine::findSound(int soundId)
 {
-    auto q = m_sounds.find(soundId);
+    auto q = _sounds.find(soundId);
     
-    assert(q != m_sounds.end());
+    assert(q != _sounds.end());
     
     ISoundWrapper* sound = q->second;
     
@@ -337,11 +337,11 @@ ISoundWrapper* NGAudioEngine::findSound(int soundId)
 }
 
 NGAudioEngine::NGAudioEngine() :
-m_music(nullptr),
-m_audioEngineHelper(NG_AUDIO_ENGINE_HELPER_FACTORY->createAudioEngineHelper()),
-m_iNumSoundsPlayedThisFrame(0),
-m_isMusicDisabled(false),
-m_isSoundDisabled(false)
+_music(nullptr),
+_audioEngineHelper(NG_AUDIO_ENGINE_HELPER_FACTORY->createAudioEngineHelper()),
+_numSoundsPlayedThisFrame(0),
+_isMusicDisabled(false),
+_isSoundDisabled(false)
 {
     // Empty
 }
@@ -350,5 +350,5 @@ NGAudioEngine::~NGAudioEngine()
 {
     resetSounds();
     
-    delete m_music;
+    delete _music;
 }

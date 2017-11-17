@@ -12,12 +12,12 @@
 
 #include "StringUtil.h"
 
-NGSteamAddress::NGSteamAddress(CSteamID steamID) : IMachineAddress(), m_steamID(steamID), m_isReliable(false)
+NGSteamAddress::NGSteamAddress(CSteamID steamID) : IMachineAddress(), _steamID(steamID), _isReliable(false)
 {
     // Empty
 }
 
-NGSteamAddress::NGSteamAddress() : IMachineAddress(), m_steamID(CSteamID()), m_isReliable(false)
+NGSteamAddress::NGSteamAddress() : IMachineAddress(), _steamID(CSteamID()), _isReliable(false)
 {
     // Empty
 }
@@ -29,35 +29,35 @@ NGSteamAddress::~NGSteamAddress()
 
 IMachineAddress* NGSteamAddress::createNewCopy()
 {
-    return new NGSteamAddress(m_steamID);
+    return new NGSteamAddress(_steamID);
 }
 
 uint64_t NGSteamAddress::getHash() const
 {
-    return m_steamID.ConvertToUint64();
+    return _steamID.ConvertToUint64();
 }
 
 std::string NGSteamAddress::toString() const
 {
-    return StringUtil::format("Steam ID %llu", m_steamID.ConvertToUint64());
+    return StringUtil::format("Steam ID %llu", _steamID.ConvertToUint64());
 }
 
 void NGSteamAddress::setSteamID(CSteamID steamID)
 {
-    m_steamID = steamID;
+    _steamID = steamID;
 }
 
 CSteamID& NGSteamAddress::getSteamID()
 {
-    return m_steamID;
+    return _steamID;
 }
 
 void NGSteamAddress::setReliable(bool isReliable)
 {
-    m_isReliable = isReliable;
+    _isReliable = isReliable;
 }
 
 bool NGSteamAddress::isReliable()
 {
-    return m_isReliable;
+    return _isReliable;
 }

@@ -15,24 +15,24 @@
 #include "NGSTDUtil.h"
 
 ISoundWrapper::ISoundWrapper(int soundId, int numInstances) :
-m_iSoundIndex(0),
-m_iSoundId(soundId),
-m_iNumInstances(numInstances)
+_soundIndex(0),
+_soundId(soundId),
+_numInstances(numInstances)
 {
     // Empty
 }
 
 ISoundWrapper::~ISoundWrapper()
 {
-    NGSTDUtil::cleanUpVectorOfPointers(m_sounds);
+    NGSTDUtil::cleanUpVectorOfPointers(_sounds);
 }
 
 ISound* ISoundWrapper::getSoundInstance()
 {
-    ISound* ret = m_sounds[m_iSoundIndex++];
-    if (m_iSoundIndex >= m_iNumInstances)
+    ISound* ret = _sounds[_soundIndex++];
+    if (_soundIndex >= _numInstances)
     {
-        m_iSoundIndex = 0;
+        _soundIndex = 0;
     }
     
     return ret;
@@ -40,20 +40,20 @@ ISound* ISoundWrapper::getSoundInstance()
 
 std::vector<ISound *> ISoundWrapper::getSounds()
 {
-    return m_sounds;
+    return _sounds;
 }
 
 int ISoundWrapper::getSoundIndex()
 {
-    return m_iSoundIndex;
+    return _soundIndex;
 }
 
 int ISoundWrapper::getSoundId()
 {
-    return m_iSoundId;
+    return _soundId;
 }
 
 int ISoundWrapper::getNumInstances()
 {
-    return m_iNumInstances;
+    return _numInstances;
 }

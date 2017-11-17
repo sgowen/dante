@@ -40,73 +40,73 @@
 #include <assert.h>
 
 Renderer::Renderer(int maxBatchSize) :
-m_spriteBatcher(SPRITE_BATCHER_FACTORY->createSpriteBatcher()),
-m_fillNGRectBatcher(RECTANGLE_BATCHER_FACTORY->createNGRectBatcher(true)),
-m_boundsNGRectBatcher(RECTANGLE_BATCHER_FACTORY->createNGRectBatcher(false)),
-m_lineBatcher(LINE_BATCHER_FACTORY->createLineBatcher()),
-m_circleBatcher(CIRCLE_BATCHER_FACTORY->createCircleBatcher()),
-m_textureLoader(TEXTURE_LOADER_FACTORY->createTextureLoader()),
+_spriteBatcher(SPRITE_BATCHER_FACTORY->createSpriteBatcher()),
+_fillNGRectBatcher(RECTANGLE_BATCHER_FACTORY->createNGRectBatcher(true)),
+_boundsNGRectBatcher(RECTANGLE_BATCHER_FACTORY->createNGRectBatcher(false)),
+_lineBatcher(LINE_BATCHER_FACTORY->createLineBatcher()),
+_circleBatcher(CIRCLE_BATCHER_FACTORY->createCircleBatcher()),
+_textureLoader(TEXTURE_LOADER_FACTORY->createTextureLoader()),
 _rendererHelper(RENDERER_HELPER_FACTORY->createRendererHelper()),
-m_textureGpuProgramWrapper(nullptr),
-m_colorGpuProgramWrapper(nullptr),
-m_framebufferToScreenGpuProgramWrapper(nullptr),
-m_iFramebufferIndex(0),
-m_iMaxBatchSize(maxBatchSize),
-m_areDeviceDependentResourcesCreated(false),
-m_areWindowSizeDependentResourcesCreated(false)
+_textureGpuProgramWrapper(nullptr),
+_colorGpuProgramWrapper(nullptr),
+_framebufferToScreenGpuProgramWrapper(nullptr),
+_framebufferIndex(0),
+_maxBatchSize(maxBatchSize),
+_areDeviceDependentResourcesCreated(false),
+_areWindowSizeDependentResourcesCreated(false)
 {
     // Empty
 }
 
 Renderer::~Renderer()
 {
-    delete m_spriteBatcher;
-    delete m_fillNGRectBatcher;
-    delete m_boundsNGRectBatcher;
-    delete m_lineBatcher;
-    delete m_circleBatcher;
+    delete _spriteBatcher;
+    delete _fillNGRectBatcher;
+    delete _boundsNGRectBatcher;
+    delete _lineBatcher;
+    delete _circleBatcher;
     
-    delete m_textureLoader;
+    delete _textureLoader;
     delete _rendererHelper;
 }
 
 void Renderer::createDeviceDependentResources()
 {
-	_rendererHelper->createDeviceDependentResources(m_iMaxBatchSize);
+	_rendererHelper->createDeviceDependentResources(_maxBatchSize);
 
-    m_textureGpuProgramWrapper = GPU_PROGRAM_WRAPPER_FACTORY->createTextureGpuProgramWrapper();
-    m_colorGpuProgramWrapper = GPU_PROGRAM_WRAPPER_FACTORY->createColorGpuProgramWrapper();
-    m_framebufferToScreenGpuProgramWrapper = GPU_PROGRAM_WRAPPER_FACTORY->createFramebufferToScreenGpuProgramWrapper();
+    _textureGpuProgramWrapper = GPU_PROGRAM_WRAPPER_FACTORY->createTextureGpuProgramWrapper();
+    _colorGpuProgramWrapper = GPU_PROGRAM_WRAPPER_FACTORY->createColorGpuProgramWrapper();
+    _framebufferToScreenGpuProgramWrapper = GPU_PROGRAM_WRAPPER_FACTORY->createFramebufferToScreenGpuProgramWrapper();
     
-    m_areDeviceDependentResourcesCreated = true;
+    _areDeviceDependentResourcesCreated = true;
 }
 
 void Renderer::createWindowSizeDependentResources(int renderWidth, int renderHeight, int numFramebuffers)
 {
 	_rendererHelper->createWindowSizeDependentResources(renderWidth, renderHeight, numFramebuffers);
 
-	m_areWindowSizeDependentResourcesCreated = true;
+	_areWindowSizeDependentResourcesCreated = true;
 }
 
 void Renderer::releaseDeviceDependentResources()
 {
 	_rendererHelper->releaseDeviceDependentResources();
 
-    m_areDeviceDependentResourcesCreated = false;
-	m_areWindowSizeDependentResourcesCreated = false;
+    _areDeviceDependentResourcesCreated = false;
+	_areWindowSizeDependentResourcesCreated = false;
 
-	m_loadingTextures.clear();
+	_loadingTextures.clear();
 
 	cleanUpThreads();
     
-    delete m_textureGpuProgramWrapper;
-	m_textureGpuProgramWrapper = nullptr;
+    delete _textureGpuProgramWrapper;
+	_textureGpuProgramWrapper = nullptr;
 
-    delete m_colorGpuProgramWrapper;
-	m_colorGpuProgramWrapper = nullptr;
+    delete _colorGpuProgramWrapper;
+	_colorGpuProgramWrapper = nullptr;
 
-    delete m_framebufferToScreenGpuProgramWrapper;
-	m_framebufferToScreenGpuProgramWrapper = nullptr;
+    delete _framebufferToScreenGpuProgramWrapper;
+	_framebufferToScreenGpuProgramWrapper = nullptr;
 }
 
 #pragma mark protected
@@ -124,24 +124,24 @@ void Renderer::setFramebuffer(int framebufferIndex)
 {
     assert(framebufferIndex >= 0);
     
-    m_iFramebufferIndex = framebufferIndex;
+    _framebufferIndex = framebufferIndex;
     
-    _rendererHelper->bindToOffscreenFramebuffer(m_iFramebufferIndex);
+    _rendererHelper->bindToOffscreenFramebuffer(_framebufferIndex);
     _rendererHelper->clearFramebufferWithColor(0, 0, 0, 1);
 }
 
 void Renderer::renderToScreen()
 {
-    assert(m_iFramebufferIndex >= 0);
+    assert(_framebufferIndex >= 0);
     
     _rendererHelper->bindToScreenFramebuffer();
     _rendererHelper->clearFramebufferWithColor(0, 0, 0, 1);
     
     static TextureRegion tr = TextureRegion("framebuffer", 0, 0, 1, 1, 1, 1);
     
-    m_spriteBatcher->beginBatch();
-    m_spriteBatcher->drawSprite(0, 0, 2, 2, 0, tr);
-    m_spriteBatcher->endBatch(*_rendererHelper->getFramebuffer(m_iFramebufferIndex), *m_framebufferToScreenGpuProgramWrapper);
+    _spriteBatcher->beginBatch();
+    _spriteBatcher->drawSprite(0, 0, 2, 2, 0, tr);
+    _spriteBatcher->endBatch(*_rendererHelper->getFramebuffer(_framebufferIndex), *_framebufferToScreenGpuProgramWrapper);
 }
 
 void Renderer::endFrame()
@@ -151,22 +151,22 @@ void Renderer::endFrame()
 
 bool Renderer::isLoadingData()
 {
-    return m_loadingTextures.size() > 0;
+    return _loadingTextures.size() > 0;
 }
 
 bool Renderer::isReadyForRendering()
 {
-    return m_areDeviceDependentResourcesCreated && m_areWindowSizeDependentResourcesCreated;
+    return _areDeviceDependentResourcesCreated && _areWindowSizeDependentResourcesCreated;
 }
 
 void Renderer::renderEntity(Entity &pe, TextureRegion& tr, bool flipX)
 {
-    m_spriteBatcher->renderSprite(pe.getPosition().x, pe.getPosition().y, pe.getWidth(), pe.getHeight(), pe.getAngle(), flipX, tr);
+    _spriteBatcher->renderSprite(pe.getPosition().x, pe.getPosition().y, pe.getWidth(), pe.getHeight(), pe.getAngle(), flipX, tr);
 }
 
 void Renderer::renderEntityWithColor(Entity &pe, TextureRegion& tr, Color c, bool flipX)
 {
-    m_spriteBatcher->renderSprite(pe.getPosition().x, pe.getPosition().y, pe.getWidth(), pe.getHeight(), pe.getAngle(), flipX, c, tr);
+    _spriteBatcher->renderSprite(pe.getPosition().x, pe.getPosition().y, pe.getWidth(), pe.getHeight(), pe.getAngle(), flipX, c, tr);
 }
 
 void loadTextureDataSync(void* arg)
@@ -179,20 +179,20 @@ void loadTextureDataSync(void* arg)
     assert(textureWrapper->name.length() > 0);
     
     if (textureWrapper->gpuTextureWrapper
-        || !textureWrapper->_renderer->m_areDeviceDependentResourcesCreated)
+        || !textureWrapper->_renderer->_areDeviceDependentResourcesCreated)
     {
         return;
     }
     
     textureWrapper->isLoadingData = true;
-    textureWrapper->gpuTextureDataWrapper = textureWrapper->_renderer->m_textureLoader->loadTextureData(textureWrapper->name.c_str());
+    textureWrapper->gpuTextureDataWrapper = textureWrapper->_renderer->_textureLoader->loadTextureData(textureWrapper->name.c_str());
 }
 
 void Renderer::loadTextureSync(TextureWrapper* textureWrapper)
 {
     loadTextureDataSync(textureWrapper);
     
-    textureWrapper->gpuTextureWrapper = m_textureLoader->loadTexture(textureWrapper->gpuTextureDataWrapper, textureWrapper->repeatS);
+    textureWrapper->gpuTextureWrapper = _textureLoader->loadTexture(textureWrapper->gpuTextureDataWrapper, textureWrapper->repeatS);
     
     delete textureWrapper->gpuTextureDataWrapper;
     textureWrapper->gpuTextureDataWrapper = nullptr;
@@ -207,15 +207,15 @@ void Renderer::loadTextureAsync(TextureWrapper* textureWrapper)
     
     if (textureWrapper->gpuTextureWrapper
         || textureWrapper->isLoadingData
-        || !m_areDeviceDependentResourcesCreated)
+        || !_areDeviceDependentResourcesCreated)
     {
         return;
     }
     
-    m_loadingTextures.push_back(textureWrapper);
+    _loadingTextures.push_back(textureWrapper);
     
     textureWrapper->isLoadingData = true;
-    m_textureDataLoadingThreads.push_back(new tthread::thread(loadTextureDataSync, textureWrapper));
+    _textureDataLoadingThreads.push_back(new tthread::thread(loadTextureDataSync, textureWrapper));
 }
 
 void Renderer::unloadTexture(TextureWrapper* textureWrapper)
@@ -225,11 +225,11 @@ void Renderer::unloadTexture(TextureWrapper* textureWrapper)
         return;
     }
     
-    for (std::vector<TextureWrapper *>::iterator i = m_loadingTextures.begin(); i != m_loadingTextures.end(); )
+    for (std::vector<TextureWrapper *>::iterator i = _loadingTextures.begin(); i != _loadingTextures.end(); )
     {
         if ((*i) == textureWrapper)
         {
-            i = m_loadingTextures.erase(i);
+            i = _loadingTextures.erase(i);
         }
         else
         {
@@ -273,18 +273,18 @@ bool Renderer::ensureTexture(TextureWrapper* textureWrapper)
 
 void Renderer::handleAsyncTextureLoads()
 {
-    for (std::vector<TextureWrapper *>::iterator i = m_loadingTextures.begin(); i != m_loadingTextures.end(); )
+    for (std::vector<TextureWrapper *>::iterator i = _loadingTextures.begin(); i != _loadingTextures.end(); )
     {
         if ((*i)->gpuTextureDataWrapper)
         {
-            (*i)->gpuTextureWrapper = m_textureLoader->loadTexture((*i)->gpuTextureDataWrapper, (*i)->repeatS);
+            (*i)->gpuTextureWrapper = _textureLoader->loadTexture((*i)->gpuTextureDataWrapper, (*i)->repeatS);
             
             delete (*i)->gpuTextureDataWrapper;
             (*i)->gpuTextureDataWrapper = nullptr;
             
             (*i)->isLoadingData = false;
             
-            i = m_loadingTextures.erase(i);
+            i = _loadingTextures.erase(i);
         }
         else
         {
@@ -292,7 +292,7 @@ void Renderer::handleAsyncTextureLoads()
         }
     }
     
-    if (m_loadingTextures.size() == 0)
+    if (_loadingTextures.size() == 0)
     {
         cleanUpThreads();
     }
@@ -300,10 +300,10 @@ void Renderer::handleAsyncTextureLoads()
 
 void Renderer::cleanUpThreads()
 {
-    for (std::vector<tthread::thread *>::iterator i = m_textureDataLoadingThreads.begin(); i != m_textureDataLoadingThreads.end(); ++i)
+    for (std::vector<tthread::thread *>::iterator i = _textureDataLoadingThreads.begin(); i != _textureDataLoadingThreads.end(); ++i)
     {
         (*i)->join();
     }
     
-    NGSTDUtil::cleanUpVectorOfPointers(m_textureDataLoadingThreads);
+    NGSTDUtil::cleanUpVectorOfPointers(_textureDataLoadingThreads);
 }

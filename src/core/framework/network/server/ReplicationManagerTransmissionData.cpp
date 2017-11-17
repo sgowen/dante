@@ -19,7 +19,7 @@
 #include "DeliveryNotificationManager.h"
 
 ReplicationManagerTransmissionData::ReplicationManagerTransmissionData(ReplicationManagerServer* inReplicationManagerServer) :
-m_replicationManagerServer(inReplicationManagerServer)
+_replicationManagerServer(inReplicationManagerServer)
 {
     // Empty
 }
@@ -28,18 +28,18 @@ void ReplicationManagerTransmissionData::addTransmission(uint32_t inNetworkId, R
 {
     /*
      //it would be silly if we already had a transmission for this network id in here...
-     for (const auto& transmission: m_transmissions)
+     for (const auto& transmission: _transmissions)
      {
      assert(inNetworkId != transmission.getID());
      }
      */
-    m_transmissions.push_back(ReplicationTransmission(inNetworkId, inAction, inState));
+    _transmissions.push_back(ReplicationTransmission(inNetworkId, inAction, inState));
 }
 
 void ReplicationManagerTransmissionData::handleDeliveryFailure(DeliveryNotificationManager* inDeliveryNotificationManager) const
 {
     //run through the transmissions
-    for (const ReplicationTransmission& rt: m_transmissions)
+    for (const ReplicationTransmission& rt: _transmissions)
     {
         //is it a create? then we have to redo the create.
         uint32_t networkId = rt.getID();
@@ -62,7 +62,7 @@ void ReplicationManagerTransmissionData::handleDeliveryFailure(DeliveryNotificat
 void ReplicationManagerTransmissionData::handleDeliverySuccess(DeliveryNotificationManager* inDeliveryNotificationManager) const
 {
     //run through the transmissions, if any are Destroyed then we can remove this network id from the map
-    for (const ReplicationTransmission& rt: m_transmissions)
+    for (const ReplicationTransmission& rt: _transmissions)
     {
         switch(rt.getAction())
         {
@@ -84,7 +84,7 @@ void ReplicationManagerTransmissionData::handleCreateDeliveryFailure(uint32_t in
     Entity* entity = FWInstanceManager::getServerEntityManager()->getEntityByID(inNetworkId);
     if (entity)
     {
-        m_replicationManagerServer->replicateCreate(inNetworkId, entity->getAllStateMask());
+        _replicationManagerServer->replicateCreate(inNetworkId, entity->getAllStateMask());
     }
 }
 
@@ -99,7 +99,7 @@ void ReplicationManagerTransmissionData::handleUpdateStateDeliveryFailure(uint32
         {
             ReplicationManagerTransmissionData* rmtdp = static_cast<ReplicationManagerTransmissionData*>(inFlightPacket.getTransmissionData('RPLM'));
             
-            for (const ReplicationTransmission& otherRT: rmtdp->m_transmissions)
+            for (const ReplicationTransmission& otherRT: rmtdp->_transmissions)
             {
                 inState &= ~otherRT.getState();
             }
@@ -108,46 +108,46 @@ void ReplicationManagerTransmissionData::handleUpdateStateDeliveryFailure(uint32
         //if there's still any dirty state, mark it
         if (inState)
         {
-            m_replicationManagerServer->setStateDirty(inNetworkId, inState);
+            _replicationManagerServer->setStateDirty(inNetworkId, inState);
         }
     }
 }
 
 void ReplicationManagerTransmissionData::handleDestroyDeliveryFailure(uint32_t inNetworkId) const
 {
-    m_replicationManagerServer->replicateDestroy(inNetworkId);
+    _replicationManagerServer->replicateDestroy(inNetworkId);
 }
 
 void ReplicationManagerTransmissionData::handleCreateDeliverySuccess(uint32_t inNetworkId) const
 {
     //we've received an ack for the create, so we can start sending as only an update
-    m_replicationManagerServer->handleCreateAckd(inNetworkId);
+    _replicationManagerServer->handleCreateAckd(inNetworkId);
 }
 
 void ReplicationManagerTransmissionData::handleDestroyDeliverySuccess(uint32_t inNetworkId) const
 {
-    m_replicationManagerServer->removeFromReplication(inNetworkId);
+    _replicationManagerServer->removeFromReplication(inNetworkId);
 }
 
 ReplicationManagerTransmissionData::ReplicationTransmission::ReplicationTransmission(uint32_t inNetworkId, ReplicationAction inAction, uint32_t inState) :
-m_iNetworkId(inNetworkId),
-m_action(inAction),
-m_iState(inState)
+_networkId(inNetworkId),
+_action(inAction),
+_state(inState)
 {
     // Empty
 }
 
 int ReplicationManagerTransmissionData::ReplicationTransmission::getID() const
 {
-    return m_iNetworkId;
+    return _networkId;
 }
 
 ReplicationAction ReplicationManagerTransmissionData::ReplicationTransmission::getAction() const
 {
-    return m_action;
+    return _action;
 }
 
 uint32_t ReplicationManagerTransmissionData::ReplicationTransmission::getState() const
 {
-    return m_iState;
+    return _state;
 }

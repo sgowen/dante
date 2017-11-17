@@ -15,7 +15,7 @@ class TextureRegion
 {
 public:
     float u1, v1, u2, v2;
-    float m_fX, m_fY, m_fRegionWidth, m_fRegionHeight, m_fTextureWidth, m_fTextureHeight;
+    float _x, _y, _regionWidth, _regionHeight, _textureWidth, _textureHeight;
     
     TextureRegion(std::string textureName, int x, int y, int regionWidth, int regionHeight, int textureWidth, int textureHeight);
     
@@ -28,7 +28,7 @@ public:
     std::string& getTextureName();
     
 private:
-    std::string m_textureName;
+    std::string _textureName;
 };
 
 #endif /* defined(__noctisgames__TextureRegion__) */

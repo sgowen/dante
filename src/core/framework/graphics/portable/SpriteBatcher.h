@@ -34,7 +34,7 @@ public:
     void renderSprite(float x, float y, float width, float height, float angle, bool flipX, Color &c, TextureRegion& tr);
 
 protected:
-    int m_iNumSprites;
+    int _numSprites;
     
     virtual void addVertexCoordinate(float x, float y, float z, float r, float g, float b, float a, float u, float v) = 0;
     

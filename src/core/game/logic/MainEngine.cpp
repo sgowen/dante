@@ -47,14 +47,14 @@
 #endif
 
 MainEngine::MainEngine() : Engine(new MainRenderer(MAX_BATCH_SIZE)),
-m_config(new JsonFile("dante.cfg")),
-m_isSteam(false)
+_config(new JsonFile("dante.cfg")),
+_isSteam(false)
 {
     CURSOR_CONVERTER->setCamSize(CAM_WIDTH, CAM_HEIGHT);
     
     activateSteam();
     
-    m_config->load();
+    _config->load();
     
     CLIENT_ENTITY_REG->registerCreationFunction(NW_TYPE_Robot, World::sClientCreateRobot);
     CLIENT_ENTITY_REG->registerCreationFunction(NW_TYPE_Projectile, World::sClientCreateProjectile);
@@ -77,7 +77,7 @@ m_isSteam(false)
 
 MainEngine::~MainEngine()
 {
-    delete m_config;
+    delete _config;
     
     disconnect();
 	deactivateSteam();
@@ -186,12 +186,12 @@ void MainEngine::handleNonMoveInput()
         {
             disconnect();
         }
-        else if (m_isSteam)
+        else if (_isSteam)
         {
             if (NG_SERVER->isConnected())
             {
 #ifdef NG_STEAM
-                m_serverSteamID = static_cast<NGSteamAddress*>(NG_SERVER->getServerAddress())->getSteamID();
+                _serverSteamID = static_cast<NGSteamAddress*>(NG_SERVER->getServerAddress())->getSteamID();
                 joinServer();
 #endif
             }
@@ -200,7 +200,7 @@ void MainEngine::handleNonMoveInput()
         {
             if (NG_SERVER->isConnected())
             {
-                m_serverIPAddress = std::string("localhost:9999");
+                _serverIPAddress = std::string("localhost:9999");
                 joinServer();
             }
         }
@@ -211,22 +211,22 @@ void MainEngine::handleNonMoveInput()
         {
             InputManager::getInstance()->setLiveMode(false);
             InputManager::getInstance()->resetLiveInput();
-            _engineState = m_isSteam ? MAIN_ENGINE_STATE_MAIN_MENU_STEAM_ON : MAIN_ENGINE_STATE_MAIN_MENU_STEAM_OFF;
+            _engineState = _isSteam ? MAIN_ENGINE_STATE_MAIN_MENU_STEAM_ON : MAIN_ENGINE_STATE_MAIN_MENU_STEAM_OFF;
         }
         else if (InputManager::getInstance()->isTimeToProcessInput())
         {
             if (_engineState == MAIN_ENGINE_STATE_MAIN_MENU_JOINING_LOCAL_SERVER_BY_IP)
             {
-                m_serverIPAddress = StringUtil::format("%s:%d", InputManager::getInstance()->getLiveInput().c_str(), SERVER_PORT);
-                m_name.clear();
+                _serverIPAddress = StringUtil::format("%s:%d", InputManager::getInstance()->getLiveInput().c_str(), SERVER_PORT);
+                _name.clear();
                 _engineState = MAIN_ENGINE_STATE_MAIN_MENU_ENTERING_USERNAME;
             }
             else if (_engineState == MAIN_ENGINE_STATE_MAIN_MENU_ENTERING_USERNAME)
             {
-                m_name = InputManager::getInstance()->getLiveInput();
+                _name = InputManager::getInstance()->getLiveInput();
                 InputManager::getInstance()->setLiveMode(false);
                 
-                if (m_serverIPAddress.length() == 0)
+                if (_serverIPAddress.length() == 0)
                 {
                     startServer();
                 }
@@ -251,23 +251,23 @@ void MainEngine::handleNonMoveInput()
         }
         else if (inputState->getMenuState() == MENU_STATE_START_SERVER)
         {
-            if (m_isSteam)
+            if (_isSteam)
             {
                 startServer();
             }
             else
             {
-                m_serverIPAddress.clear();
-                m_name.clear();
+                _serverIPAddress.clear();
+                _name.clear();
                 _engineState = MAIN_ENGINE_STATE_MAIN_MENU_ENTERING_USERNAME;
                 InputManager::getInstance()->setLiveMode(true);
             }
         }
         else if (inputState->getMenuState() == MENU_STATE_JOIN_LOCAL_SERVER)
         {
-            if (!m_isSteam)
+            if (!_isSteam)
             {
-                m_serverIPAddress.clear();
+                _serverIPAddress.clear();
                 _engineState = MAIN_ENGINE_STATE_MAIN_MENU_JOINING_LOCAL_SERVER_BY_IP;
                 InputManager::getInstance()->setLiveMode(true);
             }
@@ -322,8 +322,8 @@ void MainEngine::activateSteam()
         NGSteamGameServices::create(STEAM_GAME_DIR);
     }
     
-    m_isSteam = NG_STEAM_GAME_SERVICES->getStatus() == STEAM_INIT_SUCCESS;
-    _engineState = m_isSteam ? MAIN_ENGINE_STATE_MAIN_MENU_STEAM_ON : MAIN_ENGINE_STATE_MAIN_MENU_STEAM_OFF;
+    _isSteam = NG_STEAM_GAME_SERVICES->getStatus() == STEAM_INIT_SUCCESS;
+    _engineState = _isSteam ? MAIN_ENGINE_STATE_MAIN_MENU_STEAM_ON : MAIN_ENGINE_STATE_MAIN_MENU_STEAM_OFF;
 #endif
 }
 
@@ -339,7 +339,7 @@ void MainEngine::handleSteamGameServices()
             if (NG_STEAM_GAME_SERVICES->isRequestingToJoinServer())
             {
                 disconnect();
-                m_serverSteamID = NG_STEAM_GAME_SERVICES->getServerToJoinSteamID();
+                _serverSteamID = NG_STEAM_GAME_SERVICES->getServerToJoinSteamID();
                 joinServer();
             }
         }
@@ -360,7 +360,7 @@ void MainEngine::deactivateSteam()
         NGSteamGameServices::destroy();
     }
     
-    m_isSteam = false;
+    _isSteam = false;
     _engineState = MAIN_ENGINE_STATE_MAIN_MENU_STEAM_OFF;
 #endif
 }
@@ -373,8 +373,8 @@ void MainEngine::startServer()
     {
         int numCratesToSpawn = -1;
         {
-            std::string key = std::string("num_crates_to_spawn");
-            std::string val = m_config->findValue(key);
+            std::string key = std::string("nu_crates_to_spawn");
+            std::string val = _config->findValue(key);
             if (val.length() > 0)
             {
                 numCratesToSpawn = StringUtil::stringToNumber<int>(val);
@@ -383,8 +383,8 @@ void MainEngine::startServer()
         
         int numSpacePiratesToSpawn = -1;
         {
-            std::string key = std::string("num_space_pirates_to_spawn");
-            std::string val = m_config->findValue(key);
+            std::string key = std::string("nu_space_pirates_to_spawn");
+            std::string val = _config->findValue(key);
             if (val.length() > 0)
             {
                 numSpacePiratesToSpawn = StringUtil::stringToNumber<int>(val);
@@ -393,11 +393,11 @@ void MainEngine::startServer()
         
         if (numCratesToSpawn > -1 && numSpacePiratesToSpawn > -1)
         {
-            Server::create(m_isSteam, numCratesToSpawn, numSpacePiratesToSpawn);
+            Server::create(_isSteam, numCratesToSpawn, numSpacePiratesToSpawn);
         }
         else
         {
-            Server::create(m_isSteam);
+            Server::create(_isSteam);
         }
         
         if (!NG_SERVER)
@@ -416,15 +416,15 @@ void MainEngine::joinServer()
     InstanceManager::createClientWorld();
     
     IClientHelper* clientHelper = nullptr;
-    if (m_isSteam)
+    if (_isSteam)
     {
 #ifdef NG_STEAM
-        clientHelper = new NGSteamClientHelper(m_serverSteamID, InstanceManager::sGetPlayerAddressHashForIndexOnClient, NG_CLIENT_CALLBACKS);
+        clientHelper = new NGSteamClientHelper(_serverSteamID, InstanceManager::sGetPlayerAddressHashForIndexOnClient, NG_CLIENT_CALLBACKS);
 #endif
     }
     else
     {
-        clientHelper = new SocketClientHelper(m_serverIPAddress, m_name, CLIENT_PORT, NG_CLIENT_CALLBACKS);
+        clientHelper = new SocketClientHelper(_serverIPAddress, _name, CLIENT_PORT, NG_CLIENT_CALLBACKS);
     }
     
     NetworkManagerClient::create(clientHelper, FRAME_RATE, INPUT_MANAGER_CALLBACKS);
@@ -448,7 +448,7 @@ void MainEngine::disconnect()
         Server::destroy();
     }
     
-    _engineState = m_isSteam ? MAIN_ENGINE_STATE_MAIN_MENU_STEAM_ON : MAIN_ENGINE_STATE_MAIN_MENU_STEAM_OFF;
+    _engineState = _isSteam ? MAIN_ENGINE_STATE_MAIN_MENU_STEAM_ON : MAIN_ENGINE_STATE_MAIN_MENU_STEAM_OFF;
     
     InputManager::getInstance()->setConnected(false);
 }

@@ -15,21 +15,21 @@
 #include "StringUtil.h"
 #include "NGSTDUtil.h"
 
-EntityManager::EntityManager(HandleEntityCreatedFunc handleEntityCreatedFunc, HandleEntityDeletionFunc handleEntityDeletionFunc) : m_handleEntityCreatedFunc(handleEntityCreatedFunc), m_handleEntityDeletionFunc(handleEntityDeletionFunc)
+EntityManager::EntityManager(HandleEntityCreatedFunc handleEntityCreatedFunc, HandleEntityDeletionFunc handleEntityDeletionFunc) : _handleEntityCreatedFunc(handleEntityCreatedFunc), _handleEntityDeletionFunc(handleEntityDeletionFunc)
 {
     // Empty
 }
 
 EntityManager::~EntityManager()
 {
-    NGSTDUtil::cleanUpMapOfEntityPointers(m_entityMap);
+    NGSTDUtil::cleanUpMapOfEntityPointers(_entityMap);
 }
 
 Entity* EntityManager::getEntityByID(uint32_t inID) const
 {
-    auto q = m_entityMap.find(inID);
+    auto q = _entityMap.find(inID);
     
-    if (q != m_entityMap.end())
+    if (q != _entityMap.end())
     {
         return q->second;
     }
@@ -39,16 +39,16 @@ Entity* EntityManager::getEntityByID(uint32_t inID) const
 
 void EntityManager::registerEntity(Entity* inEntity)
 {
-    m_entityMap.insert(std::make_pair(inEntity->getID(), inEntity));
+    _entityMap.insert(std::make_pair(inEntity->getID(), inEntity));
     
-    m_handleEntityCreatedFunc(inEntity);
+    _handleEntityCreatedFunc(inEntity);
 }
 
 void EntityManager::deregisterEntity(Entity* inEntity)
 {
-    m_entityMap.erase(inEntity->getID());
+    _entityMap.erase(inEntity->getID());
     
-    m_handleEntityDeletionFunc(inEntity);
+    _handleEntityDeletionFunc(inEntity);
     
     inEntity->onDeletion();
     
@@ -58,10 +58,10 @@ void EntityManager::deregisterEntity(Entity* inEntity)
 
 std::map<uint32_t, Entity*>& EntityManager::getMap()
 {
-    return m_entityMap;
+    return _entityMap;
 }
 
 std::map<uint32_t, Entity*> EntityManager::getMapCopy()
 {
-    return m_entityMap;
+    return _entityMap;
 }

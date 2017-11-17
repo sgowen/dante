@@ -21,8 +21,8 @@ public:
     float getRadius();
 
 private:
-    Vector2 m_center;
-    float m_fRadius;
+    Vector2 _center;
+    float _radius;
 };
 
 #endif /* defined(__noctisgames__Circle__) */

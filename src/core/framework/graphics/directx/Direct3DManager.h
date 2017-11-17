@@ -80,33 +80,33 @@ private:
 	static ID3D11RenderTargetView* s_d3dRenderTargetView;
 	static DirectX::XMFLOAT4X4 s_orientation;
 
-	std::vector<ID3D11Texture2D*> m_offscreenRenderTargets; // the offscreen render target texture
-	std::vector<ID3D11RenderTargetView*> m_offscreenRenderTargetViews; // the offscreen render target interface
-	std::vector<ID3D11ShaderResourceView*> m_offscreenShaderResourceViews; // this is needed for the screen pixel shader
-    std::vector<GpuTextureWrapper *> m_framebuffers;
-	Microsoft::WRL::ComPtr<ID3D11BlendState> m_blendState; // the blend state interface
-	Microsoft::WRL::ComPtr<ID3D11BlendState> m_screenBlendState; // the blend state interface, but for rendering to the screen
-	Microsoft::WRL::ComPtr<ID3D11Buffer> m_matrixConstantbuffer; // the matrix constant buffer interface
-	Microsoft::WRL::ComPtr<ID3D11Buffer> m_indexbuffer; // the index buffer interface
+	std::vector<ID3D11Texture2D*> _offscreenRenderTargets; // the offscreen render target texture
+	std::vector<ID3D11RenderTargetView*> _offscreenRenderTargetViews; // the offscreen render target interface
+	std::vector<ID3D11ShaderResourceView*> _offscreenShaderResourceViews; // this is needed for the screen pixel shader
+    std::vector<GpuTextureWrapper *> _framebuffers;
+	Microsoft::WRL::ComPtr<ID3D11BlendState> _blendState; // the blend state interface
+	Microsoft::WRL::ComPtr<ID3D11BlendState> _screenBlendState; // the blend state interface, but for rendering to the screen
+	Microsoft::WRL::ComPtr<ID3D11Buffer> _matrixConstantbuffer; // the matrix constant buffer interface
+	Microsoft::WRL::ComPtr<ID3D11Buffer> _indexbuffer; // the index buffer interface
 
 	// Used in SpriteBatcher
-	Microsoft::WRL::ComPtr<ID3D11SamplerState> m_sbSamplerState;
-	Microsoft::WRL::ComPtr<ID3D11SamplerState> m_sbWrapSamplerState;
-	Microsoft::WRL::ComPtr<ID3D11Buffer> m_sbVertexBuffer;
-	std::vector<TEXTURE_VERTEX> m_textureVertices;
+	Microsoft::WRL::ComPtr<ID3D11SamplerState> _sbSamplerState;
+	Microsoft::WRL::ComPtr<ID3D11SamplerState> _sbWrapSamplerState;
+	Microsoft::WRL::ComPtr<ID3D11Buffer> _sbVertexBuffer;
+	std::vector<TEXTURE_VERTEX> _textureVertices;
 
 	// Used in NGRectBatcher, LineBatcher, and CircleBatcher (Geometry)
-	Microsoft::WRL::ComPtr<ID3D11Buffer> m_gbVertexBuffer; // the vertex buffer interface
-	std::vector<COLOR_VERTEX> m_colorVertices;
+	Microsoft::WRL::ComPtr<ID3D11Buffer> _gbVertexBuffer; // the vertex buffer interface
+	std::vector<COLOR_VERTEX> _colorVertices;
 
 	// All above rendering takes place inside this matrix
-	DirectX::XMFLOAT4X4 m_matFinal;
+	DirectX::XMFLOAT4X4 _matFinal;
     
-    int m_iRenderWidth;
-    int m_iRenderHeight;
-	int m_iNumFramebuffers;
+    int _renderWidth;
+    int _renderHeight;
+	int _numFramebuffers;
     
-    bool m_isWindowsMobile;
+    bool _isWindowsMobile;
 
 	void createBlendStates();
 	void createSamplerStates();

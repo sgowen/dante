@@ -38,8 +38,8 @@ public:
     void clearDirtyState(uint32_t inStateToClear);
     
 private:
-    uint32_t m_iDirtyState;
-    ReplicationAction m_action;
+    uint32_t _dirtyState;
+    ReplicationAction _action;
 };
 
 #endif /* defined(__noctisgames__ReplicationCommand__) */

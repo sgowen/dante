@@ -70,12 +70,12 @@ public:
     void setSoundDisabled(bool isSoundDisabled);
     
 private:
-    std::map<int, ISoundWrapper*> m_sounds;
-    ISoundWrapper* m_music;
-    IAudioEngineHelper* m_audioEngineHelper;
-    int m_iNumSoundsPlayedThisFrame;
-    bool m_isMusicDisabled;
-    bool m_isSoundDisabled;
+    std::map<int, ISoundWrapper*> _sounds;
+    ISoundWrapper* _music;
+    IAudioEngineHelper* _audioEngineHelper;
+    int _numSoundsPlayedThisFrame;
+    bool _isMusicDisabled;
+    bool _isSoundDisabled;
     
     ISoundWrapper* findSound(int soundId);
     

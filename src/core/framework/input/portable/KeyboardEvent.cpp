@@ -10,42 +10,42 @@
 
 #include "KeyboardEvent.h"
 
-KeyboardEvent::KeyboardEvent(unsigned short key, int status) : m_sKey(key), m_iStatus(status)
+KeyboardEvent::KeyboardEvent(unsigned short key, int status) : _sKey(key), _status(status)
 {
 	// Empty
 }
 
 void KeyboardEvent::setKey(unsigned short key)
 {
-    m_sKey = key;
+    _sKey = key;
 }
 
 unsigned short KeyboardEvent::getKey()
 {
-    return m_sKey;
+    return _sKey;
 }
 
 void KeyboardEvent::setStatus(int status)
 {
-    m_iStatus = status;
+    _status = status;
 }
 
 int KeyboardEvent::getStatus()
 {
-    return m_iStatus;
+    return _status;
 }
 
 bool KeyboardEvent::isDown()
 {
-    return m_iStatus == KEYBOARD_STATUS_DOWN || m_iStatus == KEYBOARD_STATUS_HELD;
+    return _status == KEYBOARD_STATUS_DOWN || _status == KEYBOARD_STATUS_HELD;
 }
 
 bool KeyboardEvent::isHeld()
 {
-    return m_iStatus == KEYBOARD_STATUS_HELD;
+    return _status == KEYBOARD_STATUS_HELD;
 }
 
 bool KeyboardEvent::isUp()
 {
-    return m_iStatus == KEYBOARD_STATUS_UP;
+    return _status == KEYBOARD_STATUS_UP;
 }

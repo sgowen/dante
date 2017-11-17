@@ -25,7 +25,7 @@ public:
     virtual void unbind();
     
 private:
-    OpenGLGeometryProgram* m_program;
+    OpenGLGeometryProgram* _program;
 };
 
 #endif /* defined(__noctisgames__OpenGLGeometryGpuProgramWrapper__) */

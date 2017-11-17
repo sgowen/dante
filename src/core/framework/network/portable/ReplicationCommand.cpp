@@ -15,51 +15,51 @@ ReplicationCommand::ReplicationCommand()
     // Empty
 }
 
-ReplicationCommand::ReplicationCommand(uint32_t inInitialDirtyState) : m_action(RA_Create), m_iDirtyState(inInitialDirtyState)
+ReplicationCommand::ReplicationCommand(uint32_t inInitialDirtyState) : _action(RA_Create), _dirtyState(inInitialDirtyState)
 {
     // Empty
 }
 
 void ReplicationCommand::handleCreateAckd()
 {
-    if (m_action == RA_Create)
+    if (_action == RA_Create)
     {
         // if the create is ack'd, we can demote to just an update...
-        m_action = RA_Update;
+        _action = RA_Update;
     }
 }
 
 void ReplicationCommand::addDirtyState(uint32_t inState)
 {
-    m_iDirtyState |= inState;
+    _dirtyState |= inState;
 }
 
 void ReplicationCommand::setDestroy()
 {
-    m_action = RA_Destroy;
+    _action = RA_Destroy;
 }
 
 bool ReplicationCommand::hasDirtyState() const
 {
-    return (m_action == RA_Destroy) || (m_iDirtyState != 0);
+    return (_action == RA_Destroy) || (_dirtyState != 0);
 }
 
 ReplicationAction ReplicationCommand::getAction() const
 {
-    return m_action;
+    return _action;
 }
 
 uint32_t ReplicationCommand::getDirtyState() const
 {
-    return m_iDirtyState;
+    return _dirtyState;
 }
 
 void ReplicationCommand::clearDirtyState(uint32_t inStateToClear)
 {
-    m_iDirtyState &= ~inStateToClear;
+    _dirtyState &= ~inStateToClear;
     
-    if (m_action == RA_Destroy)
+    if (_action == RA_Destroy)
     {
-        m_action = RA_Update;
+        _action = RA_Update;
     }
 }

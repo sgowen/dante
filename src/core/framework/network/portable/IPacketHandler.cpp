@@ -13,20 +13,20 @@
 #include "WeightedTimedMovingAverage.h"
 
 IPacketHandler::IPacketHandler(ProcessPacketFunc processPacketFunc, HandleNoResponseFunc handleNoResponseFunc, HandleConnectionResetFunc handleConnectionResetFunc) :
-m_processPacketFunc(processPacketFunc),
-m_handleNoResponseFunc(handleNoResponseFunc),
-m_handleConnectionResetFunc(handleConnectionResetFunc),
-m_bytesReceivedPerSecond(new WeightedTimedMovingAverage(1.f)),
-m_bytesSentPerSecond(new WeightedTimedMovingAverage(1.f)),
-m_bytesSentThisFrame(0)
+_processPacketFunc(processPacketFunc),
+_handleNoResponseFunc(handleNoResponseFunc),
+_handleConnectionResetFunc(handleConnectionResetFunc),
+_bytesReceivedPerSecond(new WeightedTimedMovingAverage(1.f)),
+_bytesSentPerSecond(new WeightedTimedMovingAverage(1.f)),
+_bytesSentThisFrame(0)
 {
     // Empty
 }
 
 IPacketHandler::~IPacketHandler()
 {
-    delete m_bytesReceivedPerSecond;
-    delete m_bytesSentPerSecond;
+    delete _bytesReceivedPerSecond;
+    delete _bytesSentPerSecond;
 }
 
 void IPacketHandler::processIncomingPackets()
@@ -40,25 +40,25 @@ void IPacketHandler::processIncomingPackets()
 
 const WeightedTimedMovingAverage& IPacketHandler::getBytesReceivedPerSecond() const
 {
-    return *m_bytesReceivedPerSecond;
+    return *_bytesReceivedPerSecond;
 }
 
 const WeightedTimedMovingAverage& IPacketHandler::getBytesSentPerSecond() const
 {
-    return *m_bytesSentPerSecond;
+    return *_bytesSentPerSecond;
 }
 
 void IPacketHandler::updateBytesSentLastFrame()
 {
-    if (m_bytesSentThisFrame > 0)
+    if (_bytesSentThisFrame > 0)
     {
-        m_bytesSentPerSecond->updatePerSecond(static_cast<float>(m_bytesSentThisFrame));
+        _bytesSentPerSecond->updatePerSecond(static_cast<float>(_bytesSentThisFrame));
         
-        m_bytesSentThisFrame = 0;
+        _bytesSentThisFrame = 0;
     }
 }
 
 void IPacketHandler::updateBytesReceivedLastFrame(int totalReadByteCount)
 {
-    m_bytesReceivedPerSecond->updatePerSecond(static_cast<float>(totalReadByteCount));
+    _bytesReceivedPerSecond->updatePerSecond(static_cast<float>(totalReadByteCount));
 }

@@ -33,7 +33,7 @@ public:
     int getState();
     
 protected:
-    int m_iState;
+    int _state;
 };
 
 #endif /* defined(__noctisgames__IClientHelper__) */

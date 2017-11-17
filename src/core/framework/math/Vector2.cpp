@@ -18,12 +18,12 @@ const Vector2 Vector2::Zero(0.0f, 0.0f);
 
 Vector2 operator+(const Vector2& inA, const Vector2& inB)
 {
-    return Vector2(inA.m_fX + inB.m_fX, inA.m_fY + inB.m_fY);
+    return Vector2(inA._x + inB._x, inA._y + inB._y);
 }
 
 Vector2 operator-(const Vector2& inA, const Vector2& inB)
 {
-    return Vector2(inA.m_fX - inB.m_fX, inA.m_fY - inB.m_fY);
+    return Vector2(inA._x - inB._x, inA._y - inB._y);
 }
 
 Vector2 operator*(float inScalar, const Vector2& inVec)
@@ -38,7 +38,7 @@ Vector2 operator*(const Vector2& inVec, float inScalar)
 
 Vector2 operator*(const Vector2& inA, const Vector2& inB)
 {
-    return Vector2(inA.m_fX * inB.m_fX, inA.m_fY * inB.m_fY);
+    return Vector2(inA._x * inB._x, inA._y * inB._y);
 }
 
 Vector2 lerp(Vector2& inA, Vector2& inB, float t)
@@ -46,50 +46,50 @@ Vector2 lerp(Vector2& inA, Vector2& inB, float t)
     return Vector2(inA + t * (inB - inA));
 }
 
-Vector2::Vector2(float x, float y) : m_fX(x), m_fY(y)
+Vector2::Vector2(float x, float y) : _x(x), _y(y)
 {
     // Empty
 }
 
 Vector2::Vector2(const Vector2 &cSource)
 {
-    m_fX = cSource.getX();
-    m_fY = cSource.getY();
+    _x = cSource.getX();
+    _y = cSource.getY();
 }
 
 Vector2 Vector2::set(const Vector2 &other)
 {
-    m_fX = other.getX();
-    m_fY = other.getY();
+    _x = other.getX();
+    _y = other.getY();
     
     return *this;
 }
 
 Vector2 Vector2::set(float x, float y)
 {
-    m_fX = x;
-    m_fY = y;
+    _x = x;
+    _y = y;
     
     return *this;
 }
 
 Vector2 Vector2::setX(float x)
 {
-	m_fX = x;
+	_x = x;
     
     return *this;
 }
 
 Vector2 Vector2::setY(float y)
 {
-	m_fY = y;
+	_y = y;
     
     return *this;
 }
 
 Vector2 Vector2::cpy()
 {
-	return Vector2(m_fX, m_fY);
+	return Vector2(_x, _y);
 }
 
 void Vector2::operator+=(const Vector2 &other)
@@ -99,8 +99,8 @@ void Vector2::operator+=(const Vector2 &other)
 
 Vector2 Vector2::add(float x, float y)
 {
-    m_fX += x;
-    m_fY += y;
+    _x += x;
+    _y += y;
     
     return *this;
 }
@@ -112,8 +112,8 @@ void Vector2::operator-=(const Vector2 &other)
 
 Vector2 Vector2::sub(float x, float y)
 {
-    m_fX -= x;
-    m_fY -= y;
+    _x -= x;
+    _y -= y;
     
     return *this;
 }
@@ -125,20 +125,20 @@ Vector2 Vector2::operator*=(float scalar)
 
 Vector2 Vector2::mul(float scalar)
 {
-    m_fX *= scalar;
-    m_fY *= scalar;
+    _x *= scalar;
+    _y *= scalar;
     
     return *this;
 }
 
 float Vector2::len()
 {
-    return sqrtf(m_fX * m_fX + m_fY * m_fY);
+    return sqrtf(_x * _x + _y * _y);
 }
 
 float Vector2::lenSquared()
 {
-    return m_fX * m_fX + m_fY * m_fY;
+    return _x * _x + _y * _y;
 }
 
 Vector2 Vector2::nor()
@@ -147,8 +147,8 @@ Vector2 Vector2::nor()
     
     if (l != 0)
     {
-        m_fX /= l;
-        m_fY /= l;
+        _x /= l;
+        _y /= l;
     }
     
     return *this;
@@ -156,7 +156,7 @@ Vector2 Vector2::nor()
 
 float Vector2::angle()
 {
-    float radians = atan2f(m_fY, m_fX);
+    float radians = atan2f(_y, _x);
     float angle = RADIANS_TO_DEGREES(radians);
     
     if (angle < 0)
@@ -173,18 +173,18 @@ Vector2 Vector2::rotate(float angle)
     float cos = cosf(rad);
     float sin = sinf(rad);
     
-    float newX = m_fX * cos - m_fY * sin;
-    float newY = m_fX * sin + m_fY * cos;
+    float newX = _x * cos - _y * sin;
+    float newY = _x * sin + _y * cos;
     
-    m_fX = newX;
-    m_fY = newY;
+    _x = newX;
+    _y = newY;
     
     return *this;
 }
 
 float Vector2::dot(const Vector2 &other)
 {
-    return (m_fX * other.m_fX + m_fY * other.m_fY);
+    return (_x * other._x + _y * other._y);
 }
 
 float Vector2::dist(const Vector2 &other) const
@@ -204,33 +204,33 @@ float Vector2::distSquared(const Vector2 &other) const
 
 float Vector2::distSquared(float x, float y) const
 {
-    float distX = m_fX - x;
-    float distY = m_fY - y;
+    float distX = _x - x;
+    float distY = _y - y;
     
     return distX * distX + distY * distY;
 }
 
 bool Vector2::isEqualTo(const Vector2& other)
 {
-    return areFloatsPracticallyEqual(m_fX, other.m_fX) && areFloatsPracticallyEqual(m_fY, other.m_fY);
+    return areFloatsPracticallyEqual(_x, other._x) && areFloatsPracticallyEqual(_y, other._y);
 }
 
 float Vector2::getX() const
 {
-    return m_fX;
+    return _x;
 }
 
 float Vector2::getY() const
 {
-    return m_fY;
+    return _y;
 }
 
 float& Vector2::getXRef()
 {
-    return m_fX;
+    return _x;
 }
 
 float& Vector2::getYRef()
 {
-    return m_fY;
+    return _y;
 }

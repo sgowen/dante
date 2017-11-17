@@ -42,7 +42,7 @@ public:
     virtual void destroyTexture(GpuTextureWrapper& textureWrapper) = 0;
     
 protected:
-    TextureWrapper* m_framebuffer;
+    TextureWrapper* _framebuffer;
 };
 
 #endif /* defined(__noctisgames__IRendererHelper__) */

@@ -29,7 +29,7 @@ public:
     void renderLine(Line &line, Color &c);
     
 protected:
-    int m_iNumLines;
+    int _numLines;
 };
 
 #endif /* defined(__noctisgames__LineBatcher__) */

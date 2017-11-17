@@ -28,7 +28,7 @@ public:
     int setNonBlockingMode(bool inShouldBeNonBlocking);
     
 private:
-    SOCKET m_socket;
+    SOCKET _socket;
     
     // Only allow SocketUtil/SocketPacketHandler to create or delete an instance of UDPSocket
     UDPSocket(SOCKET inSocket);

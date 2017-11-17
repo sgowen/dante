@@ -83,31 +83,31 @@ public:
 private:
     static NetworkManagerClient* s_instance;
     
-    IClientHelper* m_clientHelper;    
+    IClientHelper* _clientHelper;    
     
-    RemoveProcessedMovesFunc m_removeProcessedMovesFunc;
-    GetMoveListFunc m_getMoveListFunc;
-    OnPlayerWelcomedFunc m_onPlayerWelcomedFunc;
+    RemoveProcessedMovesFunc _removeProcessedMovesFunc;
+    GetMoveListFunc _getMoveListFunc;
+    OnPlayerWelcomedFunc _onPlayerWelcomedFunc;
     
-    DeliveryNotificationManager* m_deliveryNotificationManager;
-    ReplicationManagerClient* m_replicationManagerClient;
+    DeliveryNotificationManager* _deliveryNotificationManager;
+    ReplicationManagerClient* _replicationManagerClient;
     
-    NetworkClientState m_state;
+    NetworkClientState _state;
     
-    float m_fTimeOfLastHello;
+    float _timeOfLastHello;
     
-    std::map<uint8_t, uint8_t> m_indexToPlayerIdMap;
-    uint8_t m_iNextIndex;
-    float m_fFrameRate;
+    std::map<uint8_t, uint8_t> _indexToPlayerIdMap;
+    uint8_t _nextIndex;
+    float _frameRate;
     
-    float m_fLastMoveProcessedByServerTimestamp;
-    float m_fLastMoveReceivedByServerTimestamp;
-    float m_fLastServerCommunicationTimestamp;
+    float _lastMoveProcessedByServerTimestamp;
+    float _lastMoveReceivedByServerTimestamp;
+    float _lastServerCommunicationTimestamp;
     
-    WeightedTimedMovingAverage* m_avgRoundTripTime;
+    WeightedTimedMovingAverage* _avgRoundTripTime;
     
-    bool m_isRequestingToAddLocalPlayer;
-    uint8_t m_isRequestingToDropLocalPlayer;
+    bool _isRequestingToAddLocalPlayer;
+    uint8_t _isRequestingToDropLocalPlayer;
     
     void processPacket(InputMemoryBitStream& inInputStream, IMachineAddress* inFromAddress);
     

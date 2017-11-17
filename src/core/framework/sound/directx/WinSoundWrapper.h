@@ -23,7 +23,7 @@ public:
     virtual ~WinSoundWrapper();
     
 private:
-    std::unique_ptr<DirectX::SoundEffect> m_sound;
+    std::unique_ptr<DirectX::SoundEffect> _sound;
 };
 
 #endif /* defined(__noctisgames__WinSoundWrapper__) */

@@ -27,7 +27,7 @@ public:
     Entity* createEntity(uint32_t inFourCCName);
     
 private:
-    std::map<uint32_t, EntityCreationFunc> m_nameToEntityCreationFunctionMap;
+    std::map<uint32_t, EntityCreationFunc> _nameToEntityCreationFunctionMap;
 };
 
 #endif /* defined(__noctisgames__EntityRegistry__) */

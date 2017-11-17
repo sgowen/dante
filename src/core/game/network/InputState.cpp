@@ -17,7 +17,7 @@
 
 #include <assert.h>
 
-InputState::InputState() : IInputState(), m_iMenuState(MENU_STATE_NONE)
+InputState::InputState() : IInputState(), _menuState(MENU_STATE_NONE)
 {
     // Empty
 }
@@ -33,10 +33,10 @@ bool InputState::write(OutputMemoryBitStream& inOutputStream) const
     
     for (int i = 0; i < MAX_NUM_PLAYERS_PER_SERVER; ++i)
     {
-        if (m_gameInputStates[i].m_iPlayerId != INPUT_UNASSIGNED)
+        if (_gameInputStates[i]._playerId != INPUT_UNASSIGNED)
         {
             inOutputStream.write((bool)true);
-            m_gameInputStates[i].write(inOutputStream);
+            _gameInputStates[i].write(inOutputStream);
             
             ret = true;
         }
@@ -60,7 +60,7 @@ bool InputState::read(InputMemoryBitStream& inInputStream)
         inInputStream.read(isInputAssignedBit);
         if (isInputAssignedBit)
         {
-            m_gameInputStates[i].read(inInputStream);
+            _gameInputStates[i].read(inInputStream);
             
             ret = true;
         }
@@ -71,14 +71,14 @@ bool InputState::read(InputMemoryBitStream& inInputStream)
 
 void InputState::reset()
 {
-    for (GameInputState& gis : m_gameInputStates)
+    for (GameInputState& gis : _gameInputStates)
     {
-        gis.m_iPlayerId = INPUT_UNASSIGNED;
-        gis.m_isMovingRight = false;
-        gis.m_isMovingLeft = false;
-        gis.m_isJumping = false;
-        gis.m_isShooting = false;
-        gis.m_isSprinting = false;
+        gis._playerId = INPUT_UNASSIGNED;
+        gis._isMovingRight = false;
+        gis._isMovingLeft = false;
+        gis._isJumping = false;
+        gis._isShooting = false;
+        gis._isSprinting = false;
     }
 }
 
@@ -88,12 +88,12 @@ bool InputState::isEqual(IInputState* inIInputState) const
     
     for (int i = 0; i < MAX_NUM_PLAYERS_PER_SERVER; ++i)
     {
-        if (in->m_gameInputStates[i].m_iPlayerId != m_gameInputStates[i].m_iPlayerId) { return false; }
-        if (in->m_gameInputStates[i].m_isMovingRight != m_gameInputStates[i].m_isMovingRight) { return false; }
-        if (in->m_gameInputStates[i].m_isMovingLeft != m_gameInputStates[i].m_isMovingLeft) { return false; }
-        if (in->m_gameInputStates[i].m_isJumping != m_gameInputStates[i].m_isJumping) { return false; }
-        if (in->m_gameInputStates[i].m_isShooting != m_gameInputStates[i].m_isShooting) { return false; }
-        if (in->m_gameInputStates[i].m_isSprinting != m_gameInputStates[i].m_isSprinting) { return false; }
+        if (in->_gameInputStates[i]._playerId != _gameInputStates[i]._playerId) { return false; }
+        if (in->_gameInputStates[i]._isMovingRight != _gameInputStates[i]._isMovingRight) { return false; }
+        if (in->_gameInputStates[i]._isMovingLeft != _gameInputStates[i]._isMovingLeft) { return false; }
+        if (in->_gameInputStates[i]._isJumping != _gameInputStates[i]._isJumping) { return false; }
+        if (in->_gameInputStates[i]._isShooting != _gameInputStates[i]._isShooting) { return false; }
+        if (in->_gameInputStates[i]._isSprinting != _gameInputStates[i]._isSprinting) { return false; }
     }
     
     return true;
@@ -105,12 +105,12 @@ void InputState::copyTo(IInputState* inIInputState) const
     
     for (int i = 0; i < MAX_NUM_PLAYERS_PER_SERVER; ++i)
     {
-        inInputState->m_gameInputStates[i].m_iPlayerId = m_gameInputStates[i].m_iPlayerId;
-        inInputState->m_gameInputStates[i].m_isMovingRight = m_gameInputStates[i].m_isMovingRight;
-        inInputState->m_gameInputStates[i].m_isMovingLeft = m_gameInputStates[i].m_isMovingLeft;
-        inInputState->m_gameInputStates[i].m_isJumping = m_gameInputStates[i].m_isJumping;
-        inInputState->m_gameInputStates[i].m_isShooting = m_gameInputStates[i].m_isShooting;
-        inInputState->m_gameInputStates[i].m_isSprinting = m_gameInputStates[i].m_isSprinting;
+        inInputState->_gameInputStates[i]._playerId = _gameInputStates[i]._playerId;
+        inInputState->_gameInputStates[i]._isMovingRight = _gameInputStates[i]._isMovingRight;
+        inInputState->_gameInputStates[i]._isMovingLeft = _gameInputStates[i]._isMovingLeft;
+        inInputState->_gameInputStates[i]._isJumping = _gameInputStates[i]._isJumping;
+        inInputState->_gameInputStates[i]._isShooting = _gameInputStates[i]._isShooting;
+        inInputState->_gameInputStates[i]._isSprinting = _gameInputStates[i]._isSprinting;
     }
 }
 
@@ -118,9 +118,9 @@ void InputState::activateNextPlayer(uint8_t playerId)
 {
     for (int i = 0; i < MAX_NUM_PLAYERS_PER_SERVER; ++i)
     {
-        if (m_gameInputStates[i].m_iPlayerId == INPUT_UNASSIGNED)
+        if (_gameInputStates[i]._playerId == INPUT_UNASSIGNED)
         {
-            m_gameInputStates[i].m_iPlayerId = playerId;
+            _gameInputStates[i]._playerId = playerId;
             return;
         }
     }
@@ -130,9 +130,9 @@ InputState::GameInputState* InputState::getGameInputStateForPlayerId(uint8_t pla
 {
     for (int i = 0; i < MAX_NUM_PLAYERS_PER_SERVER; ++i)
     {
-        if (m_gameInputStates[i].m_iPlayerId == playerId)
+        if (_gameInputStates[i]._playerId == playerId)
         {
-            return &m_gameInputStates[i];
+            return &_gameInputStates[i];
         }
     }
     
@@ -141,15 +141,15 @@ InputState::GameInputState* InputState::getGameInputStateForPlayerId(uint8_t pla
 
 bool InputState::isPlayerIdLocalHost(uint8_t playerId)
 {
-    return m_gameInputStates[0].m_iPlayerId == playerId;
+    return _gameInputStates[0]._playerId == playerId;
 }
 
 bool InputState::isRequestingToAddLocalPlayer() const
 {
     for (int i = 1; i < MAX_NUM_PLAYERS_PER_SERVER; ++i)
     {
-        if (m_gameInputStates[i].m_iPlayerId == INPUT_UNASSIGNED
-            && m_gameInputStates[i].m_isJumping)
+        if (_gameInputStates[i]._playerId == INPUT_UNASSIGNED
+            && _gameInputStates[i]._isJumping)
         {
             return true;
         }
@@ -160,44 +160,44 @@ bool InputState::isRequestingToAddLocalPlayer() const
 
 int InputState::getMenuState() const
 {
-    return m_iMenuState;
+    return _menuState;
 }
 
 InputState::GameInputState& InputState::getGameInputState(int index)
 {
-    return m_gameInputStates[index];
+    return _gameInputStates[index];
 }
 
 void InputState::GameInputState::write(OutputMemoryBitStream& inOutputStream) const
 {
-    inOutputStream.write<uint8_t, 3>(m_iPlayerId);
-    inOutputStream.write(m_isMovingRight);
-    inOutputStream.write(m_isMovingLeft);
-    inOutputStream.write(m_isJumping);
-    inOutputStream.write(m_isShooting);
-    inOutputStream.write(m_isSprinting);
+    inOutputStream.write<uint8_t, 3>(_playerId);
+    inOutputStream.write(_isMovingRight);
+    inOutputStream.write(_isMovingLeft);
+    inOutputStream.write(_isJumping);
+    inOutputStream.write(_isShooting);
+    inOutputStream.write(_isSprinting);
 }
 
 void InputState::GameInputState::read(InputMemoryBitStream& inInputStream)
 {
-    inInputStream.read<uint8_t, 3>(m_iPlayerId);
-    inInputStream.read(m_isMovingRight);
-    inInputStream.read(m_isMovingLeft);
-    inInputStream.read(m_isJumping);
-    inInputStream.read(m_isShooting);
-    inInputStream.read(m_isSprinting);
+    inInputStream.read<uint8_t, 3>(_playerId);
+    inInputStream.read(_isMovingRight);
+    inInputStream.read(_isMovingLeft);
+    inInputStream.read(_isJumping);
+    inInputStream.read(_isShooting);
+    inInputStream.read(_isSprinting);
 }
 
 int InputState::GameInputState::getDesiredRightAmount()
 {
     int ret = 0;
     
-    if (m_isMovingRight)
+    if (_isMovingRight)
     {
         ++ret;
     }
     
-    if (m_isMovingLeft)
+    if (_isMovingLeft)
     {
         --ret;
     }
@@ -207,26 +207,26 @@ int InputState::GameInputState::getDesiredRightAmount()
 
 bool InputState::GameInputState::isJumping()
 {
-    return m_isJumping;
+    return _isJumping;
 }
 
 bool InputState::GameInputState::isShooting()
 {
-    return m_isShooting;
+    return _isShooting;
 }
 
 bool InputState::GameInputState::isSprinting()
 {
-    return m_isSprinting;
+    return _isSprinting;
 }
 
 InputState::GameInputState::GameInputState() :
-m_iPlayerId(INPUT_UNASSIGNED),
-m_isMovingRight(false),
-m_isMovingLeft(false),
-m_isJumping(false),
-m_isShooting(false),
-m_isSprinting(false)
+_playerId(INPUT_UNASSIGNED),
+_isMovingRight(false),
+_isMovingLeft(false),
+_isJumping(false),
+_isShooting(false),
+_isSprinting(false)
 {
     // Empty
 }

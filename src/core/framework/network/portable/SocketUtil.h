@@ -31,7 +31,7 @@ public:
     bool isInitialized();
     
 private:
-    bool m_isInitialized;
+    bool _isInitialized;
     
     // ctor, copy ctor, and assignment should be private in a Singleton
     SocketUtil();

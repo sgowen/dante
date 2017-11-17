@@ -41,10 +41,10 @@ public:
     bool processSound11(void *output, unsigned int numberOfSamples, unsigned int sampleRate = -1);
 
 private:
-    std::vector<float*> m_stereoBuffers;
-    SuperpoweredSound *m_activeSounds[MAX_NUM_SOUND_PLAYERS];
-    int m_iSampleRate;
-    int m_iSoundIndex;
+    std::vector<float*> _stereoBuffers;
+    SuperpoweredSound *_activeSounds[MAX_NUM_SOUND_PLAYERS];
+    int _sampleRate;
+    int _soundIndex;
     
     bool processSound(void *output, unsigned int numberOfSamples, SuperpoweredSound *sound, float *stereoBuffer, unsigned int sampleRate = -1);
 };

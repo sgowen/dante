@@ -15,25 +15,25 @@
 #include "FrameworkConstants.h"
 
 Direct3DGeometryGpuProgramWrapper::Direct3DGeometryGpuProgramWrapper() : GpuProgramWrapper(),
-m_program(new Direct3DGeometryProgram(COLOR_VERTEX_SHADER, COLOR_FRAGMENT_SHADER))
+_program(new Direct3DGeometryProgram(COLOR_VERTEX_SHADER, COLOR_FRAGMENT_SHADER))
 {
     // Empty
 }
 
 Direct3DGeometryGpuProgramWrapper::~Direct3DGeometryGpuProgramWrapper()
 {
-    delete m_program;
+    delete _program;
 }
 
 void Direct3DGeometryGpuProgramWrapper::bind()
 {
     D3DManager->useNormalBlending();
 
-	m_program->bindShaders();
+	_program->bindShaders();
 
-	m_program->bindMatrix();
+	_program->bindMatrix();
 
-    m_program->mapVertices();
+    _program->mapVertices();
 }
 
 void Direct3DGeometryGpuProgramWrapper::unbind()

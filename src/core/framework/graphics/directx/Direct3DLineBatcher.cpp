@@ -26,12 +26,12 @@ Direct3DLineBatcher::Direct3DLineBatcher() : LineBatcher()
 void Direct3DLineBatcher::beginBatch()
 {
 	D3DManager->getColorVertices().clear();
-	m_iNumLines = 0;
+	_numLines = 0;
 }
 
 void Direct3DLineBatcher::endBatch(GpuProgramWrapper &gpuProgramWrapper)
 {
-	if (m_iNumLines > 0)
+	if (_numLines > 0)
 	{
 		// set the primitive topology
 		ID3D11DeviceContext* d3dContext = Direct3DManager::getD3dContext();
@@ -39,7 +39,7 @@ void Direct3DLineBatcher::endBatch(GpuProgramWrapper &gpuProgramWrapper)
 
 		gpuProgramWrapper.bind();
 
-		d3dContext->Draw(m_iNumLines * VERTICES_PER_LINE, 0);
+		d3dContext->Draw(_numLines * VERTICES_PER_LINE, 0);
 
 		gpuProgramWrapper.unbind();
 	}
@@ -50,5 +50,5 @@ void Direct3DLineBatcher::renderLine(float originX, float originY, float endX, f
 	D3DManager->addVertexCoordinate(originX, originY, 0, color.red, color.green, color.blue, color.alpha);
 	D3DManager->addVertexCoordinate(endX, endY, 0, color.red, color.green, color.blue, color.alpha);
 
-	m_iNumLines++;
+	_numLines++;
 }

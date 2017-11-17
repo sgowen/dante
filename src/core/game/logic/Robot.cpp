@@ -43,47 +43,47 @@
 #include <math.h>
 
 Robot::Robot(b2World& world, bool isServer) : Entity(world, 0, 0, 1.565217391304348f, 2.0f, isServer, constructEntityDef()),
-m_iAddressHash(0),
-m_iFirstProjectileId(0),
-m_iPlayerId(0),
-m_playerName("Robot"),
-m_iNumJumps(0),
-m_iNextProjectileIndex(0),
-m_iHealth(25),
-m_iNumKills(0),
-m_wasLastKillHeadshot(false),
-m_isFacingLeft(false),
-m_isShooting(false),
-m_isSprinting(false),
-m_isFirstJumpCompleted(false),
-m_fSpeed(7.5f),
-m_fJumpSpeed(11.0f),
-m_fShotCooldownTime(0.0f),
-m_iNumSpacePiratesTouching(0),
-m_hasInitializedProjectiles(false),
-m_iNumJumpsLastKnown(0),
-m_iNextProjectileIndexLastKnown(0),
-m_iHealthLastKnown(25),
-m_iNumKillsLastKnown(0),
-m_fShotCooldownTimeLastKnown(0),
-m_wasLastKillHeadshotLastKnown(false),
-m_isFacingLeftLastKnown(false),
-m_isShootingLastKnown(false),
-m_isSprintingLastKnown(false),
-m_isFirstJumpCompletedLastKnown(false),
-m_isPending(false)
+_addressHash(0),
+_firstProjectileId(0),
+_playerId(0),
+_playerName("Robot"),
+_numJumps(0),
+_nextProjectileIndex(0),
+_health(25),
+_numKills(0),
+_wasLastKillHeadshot(false),
+_isFacingLeft(false),
+_isShooting(false),
+_isSprinting(false),
+_isFirstJumpCompleted(false),
+_speed(7.5f),
+_jumpSpeed(11.0f),
+_shotCooldownTime(0.0f),
+_numSpacePiratesTouching(0),
+_hasInitializedProjectiles(false),
+_numJumpsLastKnown(0),
+_nextProjectileIndexLastKnown(0),
+_healthLastKnown(25),
+_numKillsLastKnown(0),
+_shotCooldownTimeLastKnown(0),
+_wasLastKillHeadshotLastKnown(false),
+_isFacingLeftLastKnown(false),
+_isShootingLastKnown(false),
+_isSprintingLastKnown(false),
+_isFirstJumpCompletedLastKnown(false),
+_isPending(false)
 {
     for (int i = 0; i < NUM_PROJECTILES; ++i)
     {
-        m_projectiles[i] = nullptr;
+        _projectiles[i] = nullptr;
         
-        if (m_isServer)
+        if (_isServer)
         {
-            m_projectiles[i] = static_cast<Projectile*>(SERVER_ENTITY_REG->createEntity(NW_TYPE_Projectile));
+            _projectiles[i] = static_cast<Projectile*>(SERVER_ENTITY_REG->createEntity(NW_TYPE_Projectile));
             
             if (i == 0)
             {
-                m_iFirstProjectileId = m_projectiles[i]->getID();
+                _firstProjectileId = _projectiles[i]->getID();
             }
         }
     }
@@ -91,9 +91,9 @@ m_isPending(false)
 
 Robot::~Robot()
 {
-    if (m_isServer)
+    if (_isServer)
     {
-        for (Projectile* p : m_projectiles)
+        for (Projectile* p : _projectiles)
         {
             p->requestDeletion();
         }
@@ -116,57 +116,57 @@ void Robot::update()
 {
     _stateTime += FRAME_RATE;
     
-    m_fShotCooldownTime -= FRAME_RATE;
+    _shotCooldownTime -= FRAME_RATE;
     
-    if (m_isShooting)
+    if (_isShooting)
     {
-        if (m_fShotCooldownTime < 0)
+        if (_shotCooldownTime < 0)
         {
             // not exact, but okay
-            m_fShotCooldownTime += FRAME_RATE * (60.0f / NUM_PROJECTILES);
-            if (m_fShotCooldownTime < 0)
+            _shotCooldownTime += FRAME_RATE * (60.0f / NUM_PROJECTILES);
+            if (_shotCooldownTime < 0)
             {
-                m_fShotCooldownTime = FRAME_RATE * (60.0f / NUM_PROJECTILES);
+                _shotCooldownTime = FRAME_RATE * (60.0f / NUM_PROJECTILES);
             }
             
             fireProjectile();
         }
     }
     
-    if (getVelocity().y < 0 && !isFalling() && m_iNumJumps > 0)
+    if (getVelocity().y < 0 && !isFalling() && _numJumps > 0)
     {
         _stateTime = 0;
     }
     
-    if (m_isServer)
+    if (_isServer)
     {
-        if (m_iNumSpacePiratesTouching > 0 && m_iHealth > 0)
+        if (_numSpacePiratesTouching > 0 && _health > 0)
         {
-            --m_iHealth;
+            --_health;
         }
         
         if (getPosition().y < DEAD_ZONE_BOTTOM)
         {
-            m_iHealth = 0;
+            _health = 0;
         }
         
-        if (m_iHealth == 0 && !isRequestingDeletion())
+        if (_health == 0 && !isRequestingDeletion())
         {
             // TODO, this is NOT the right way to handle the player dying
             
             requestDeletion();
             
-            if (m_isServer)
+            if (_isServer)
             {
-                Server::sHandleNewClient(m_iPlayerId, m_playerName);
+                Server::sHandleNewClient(_playerId, _playerName);
             }
         }
         
         NG_SERVER->setStateDirty(getID(), ROBT_Pose);
         
-        if (m_iHealthLastKnown != m_iHealth
-            || m_iNumKillsLastKnown != m_iNumKills
-            || m_wasLastKillHeadshotLastKnown != m_wasLastKillHeadshot)
+        if (_healthLastKnown != _health
+            || _numKillsLastKnown != _numKills
+            || _wasLastKillHeadshotLastKnown != _wasLastKillHeadshot)
         {
             NG_SERVER->setStateDirty(getID(), ROBT_Stats);
         }
@@ -175,56 +175,56 @@ void Robot::update()
     {
         if (NG_CLIENT->isPlayerIdLocal(getPlayerId()))
         {
-            if (m_iNumKills > m_iNumKillsLastKnown && m_wasLastKillHeadshot)
+            if (_numKills > _numKillsLastKnown && _wasLastKillHeadshot)
             {
-                Util::playSound(SOUND_ID_HEADSHOT, getPosition(), m_isServer);
+                Util::playSound(SOUND_ID_HEADSHOT, getPosition(), _isServer);
             }
             
-            if ((m_iReadState & ROBT_PlayerInfo) != 0)
+            if ((_readState & ROBT_PlayerInfo) != 0)
             {
                 NG_AUDIO_ENGINE->playSound(SOUND_ID_DEATH);
             }
         }
         else
         {
-            playNetworkBoundSounds(m_iNumJumpsLastKnown, m_isSprintingLastKnown);
+            playNetworkBoundSounds(_numJumpsLastKnown, _isSprintingLastKnown);
         }
         
-        if (!m_hasInitializedProjectiles)
+        if (!_hasInitializedProjectiles)
         {
             bool isInitialized = true;
             for (int i = 0; i < NUM_PROJECTILES; ++i)
             {
-                m_projectiles[i] = static_cast<Projectile*>(FWInstanceManager::getClientEntityManager()->getEntityByID(m_iFirstProjectileId + i));
+                _projectiles[i] = static_cast<Projectile*>(FWInstanceManager::getClientEntityManager()->getEntityByID(_firstProjectileId + i));
                 
-                if (!m_projectiles[i])
+                if (!_projectiles[i])
                 {
                     isInitialized = false;
                     break;
                 }
             }
             
-            m_hasInitializedProjectiles = isInitialized;
+            _hasInitializedProjectiles = isInitialized;
         }
     }
     
-    m_velocityLastKnown = b2Vec2(getVelocity().x, getVelocity().y);
-    m_positionLastKnown = b2Vec2(getPosition().x, getPosition().y);
-    m_iNumJumpsLastKnown = m_iNumJumps;
-    m_iNextProjectileIndexLastKnown = m_iNextProjectileIndex;
-    m_iHealthLastKnown = m_iHealth;
-    m_iNumKillsLastKnown = m_iNumKills;
-    m_fShotCooldownTimeLastKnown = m_fShotCooldownTime;
-    m_wasLastKillHeadshotLastKnown = m_wasLastKillHeadshot;
-    m_isFacingLeftLastKnown = m_isFacingLeft;
-    m_isShootingLastKnown = m_isShooting;
-    m_isSprintingLastKnown = m_isSprinting;
-    m_isFirstJumpCompletedLastKnown = m_isFirstJumpCompleted;
+    _velocityLastKnown = b2Vec2(getVelocity().x, getVelocity().y);
+    _positionLastKnown = b2Vec2(getPosition().x, getPosition().y);
+    _numJumpsLastKnown = _numJumps;
+    _nextProjectileIndexLastKnown = _nextProjectileIndex;
+    _healthLastKnown = _health;
+    _numKillsLastKnown = _numKills;
+    _shotCooldownTimeLastKnown = _shotCooldownTime;
+    _wasLastKillHeadshotLastKnown = _wasLastKillHeadshot;
+    _isFacingLeftLastKnown = _isFacingLeft;
+    _isShootingLastKnown = _isShooting;
+    _isSprintingLastKnown = _isSprinting;
+    _isFirstJumpCompletedLastKnown = _isFirstJumpCompleted;
 }
 
 bool Robot::shouldCollide(Entity *inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB)
 {
-    if (inFixtureA == m_footSensorFixture)
+    if (inFixtureA == _footSensorFixture)
     {
         return inEntity->getRTTI().derivesFrom(Ground::rtti)
         || inEntity->getRTTI().derivesFrom(Crate::rtti);
@@ -237,9 +237,9 @@ bool Robot::shouldCollide(Entity *inEntity, b2Fixture* inFixtureA, b2Fixture* in
 
 void Robot::handleBeginContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB)
 {
-    if (inFixtureA == m_footSensorFixture)
+    if (inFixtureA == _footSensorFixture)
     {
-        m_iNumJumps = 0;
+        _numJumps = 0;
         
         handleBeginFootContact(inEntity);
         
@@ -253,13 +253,13 @@ void Robot::handleBeginContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixtur
     
     if (inEntity->getRTTI().derivesFrom(SpacePirate::rtti))
     {
-        ++m_iNumSpacePiratesTouching;
+        ++_numSpacePiratesTouching;
     }
 }
 
 void Robot::handleEndContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB)
 {
-    if (inFixtureA == m_footSensorFixture)
+    if (inFixtureA == _footSensorFixture)
     {
         if (inEntity->getRTTI().derivesFrom(Ground::rtti)
             || inEntity->getRTTI().derivesFrom(Crate::rtti))
@@ -277,7 +277,7 @@ void Robot::handleEndContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture*
     
     if (inEntity->getRTTI().derivesFrom(SpacePirate::rtti))
     {
-        --m_iNumSpacePiratesTouching;
+        --_numSpacePiratesTouching;
     }
 }
 
@@ -290,18 +290,18 @@ void Robot::read(InputMemoryBitStream& inInputStream)
 {
     bool stateBit;
     
-    m_iReadState = 0;
+    _readState = 0;
     
     inInputStream.read(stateBit);
     if (stateBit)
     {
-        inInputStream.read(m_iAddressHash);
-        inInputStream.read(m_iFirstProjectileId);
-        inInputStream.read(m_iPlayerId);
-        inInputStream.read(m_playerName);
-        inInputStream.read(m_color);
+        inInputStream.read(_addressHash);
+        inInputStream.read(_firstProjectileId);
+        inInputStream.read(_playerId);
+        inInputStream.read(_playerName);
+        inInputStream.read(_color);
         
-        m_iReadState |= ROBT_PlayerInfo;
+        _readState |= ROBT_PlayerInfo;
     }
     
     inInputStream.read(stateBit);
@@ -317,28 +317,28 @@ void Robot::read(InputMemoryBitStream& inInputStream)
         inInputStream.read(position);
         setPosition(position);
         
-        inInputStream.read(m_iNumJumps);
-        inInputStream.read(m_iNextProjectileIndex);
-        inInputStream.read(m_iNumGroundContacts);
-        inInputStream.read(m_fShotCooldownTime);
+        inInputStream.read(_numJumps);
+        inInputStream.read(_nextProjectileIndex);
+        inInputStream.read(_numGroundContacts);
+        inInputStream.read(_shotCooldownTime);
         
-        inInputStream.read(m_isFacingLeft);
-        inInputStream.read(m_isShooting);
-        inInputStream.read(m_isSprinting);
-        inInputStream.read(m_isFirstJumpCompleted);
+        inInputStream.read(_isFacingLeft);
+        inInputStream.read(_isShooting);
+        inInputStream.read(_isSprinting);
+        inInputStream.read(_isFirstJumpCompleted);
         
-        m_iReadState |= ROBT_Pose;
+        _readState |= ROBT_Pose;
     }
     
     inInputStream.read(stateBit);
     if (stateBit)
     {
-        inInputStream.read(m_iHealth);
+        inInputStream.read(_health);
         
-        inInputStream.read(m_iNumKills);
-        inInputStream.read(m_wasLastKillHeadshot);
+        inInputStream.read(_numKills);
+        inInputStream.read(_wasLastKillHeadshot);
         
-        m_iReadState |= ROBT_Stats;
+        _readState |= ROBT_Stats;
     }
 }
 
@@ -349,11 +349,11 @@ uint32_t Robot::write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtySta
     if (inDirtyState & ROBT_PlayerInfo)
     {
         inOutputStream.write((bool)true);
-        inOutputStream.write(m_iAddressHash);
-        inOutputStream.write(m_iFirstProjectileId);
-        inOutputStream.write(m_iPlayerId);
-        inOutputStream.write(m_playerName);
-        inOutputStream.write(m_color);
+        inOutputStream.write(_addressHash);
+        inOutputStream.write(_firstProjectileId);
+        inOutputStream.write(_playerId);
+        inOutputStream.write(_playerName);
+        inOutputStream.write(_color);
         
         writtenState |= ROBT_PlayerInfo;
     }
@@ -372,15 +372,15 @@ uint32_t Robot::write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtySta
         
         inOutputStream.write(getPosition());
         
-        inOutputStream.write(m_iNumJumps);
-        inOutputStream.write(m_iNextProjectileIndex);
-        inOutputStream.write(m_iNumGroundContacts);
-        inOutputStream.write(m_fShotCooldownTime);
+        inOutputStream.write(_numJumps);
+        inOutputStream.write(_nextProjectileIndex);
+        inOutputStream.write(_numGroundContacts);
+        inOutputStream.write(_shotCooldownTime);
         
-        inOutputStream.write((bool)m_isFacingLeft);
-        inOutputStream.write((bool)m_isShooting);
-        inOutputStream.write((bool)m_isSprinting);
-        inOutputStream.write((bool)m_isFirstJumpCompleted);
+        inOutputStream.write((bool)_isFacingLeft);
+        inOutputStream.write((bool)_isShooting);
+        inOutputStream.write((bool)_isSprinting);
+        inOutputStream.write((bool)_isFirstJumpCompleted);
         
         writtenState |= ROBT_Pose;
     }
@@ -393,10 +393,10 @@ uint32_t Robot::write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtySta
     {
         inOutputStream.write((bool)true);
         
-        inOutputStream.write(m_iHealth);
+        inOutputStream.write(_health);
         
-        inOutputStream.write(m_iNumKills);
-        inOutputStream.write((bool)m_wasLastKillHeadshot);
+        inOutputStream.write(_numKills);
+        inOutputStream.write((bool)_wasLastKillHeadshot);
         
         writtenState |= ROBT_Stats;
     }
@@ -410,7 +410,7 @@ uint32_t Robot::write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtySta
 
 bool Robot::needsMoveReplay()
 {
-    return (m_iReadState & ROBT_Pose) != 0;
+    return (_readState & ROBT_Pose) != 0;
 }
 
 void Robot::processInput(IInputState* inInputState, bool isPending)
@@ -423,60 +423,60 @@ void Robot::processInput(IInputState* inInputState, bool isPending)
         return;
     }
     
-    m_isPending = isPending;
+    _isPending = isPending;
     
-    int numJumpsLastKnown = m_iNumJumps;
-    bool isSprintingLastKnown = m_isSprinting;
+    int numJumpsLastKnown = _numJumps;
+    bool isSprintingLastKnown = _isSprinting;
     
     b2Vec2 velocity = b2Vec2(getVelocity().x, getVelocity().y);
     
-    velocity.Set(inputState->getDesiredRightAmount() * m_fSpeed, getVelocity().y);
+    velocity.Set(inputState->getDesiredRightAmount() * _speed, getVelocity().y);
     
-    m_isFacingLeft = velocity.x < 0 ? true : velocity.x > 0 ? false : m_isFacingLeft;
+    _isFacingLeft = velocity.x < 0 ? true : velocity.x > 0 ? false : _isFacingLeft;
     
-    m_isSprinting = inputState->isSprinting();
+    _isSprinting = inputState->isSprinting();
     
-    if (m_isSprinting)
+    if (_isSprinting)
     {
-        velocity += b2Vec2(inputState->getDesiredRightAmount() * m_fSpeed / 2, 0);
+        velocity += b2Vec2(inputState->getDesiredRightAmount() * _speed / 2, 0);
     }
     
     if (inputState->isJumping())
     {
-        if (isGrounded() && m_iNumJumps == 0)
+        if (isGrounded() && _numJumps == 0)
         {
             _stateTime = 0;
-            m_isFirstJumpCompleted = false;
-            m_iNumJumps = 1;
+            _isFirstJumpCompleted = false;
+            _numJumps = 1;
             
-            velocity.Set(velocity.x, m_fJumpSpeed);
+            velocity.Set(velocity.x, _jumpSpeed);
         }
-        else if (m_iNumJumps == 1 && m_isFirstJumpCompleted)
+        else if (_numJumps == 1 && _isFirstJumpCompleted)
         {
             _stateTime = 0;
-            m_iNumJumps = 2;
+            _numJumps = 2;
             
-            velocity.Set(velocity.x, m_fJumpSpeed - 3);
+            velocity.Set(velocity.x, _jumpSpeed - 3);
         }
     }
     else
     {
-        if (m_iNumJumps == 1)
+        if (_numJumps == 1)
         {
-            m_isFirstJumpCompleted = true;
+            _isFirstJumpCompleted = true;
             
-            if (velocity.y > (m_fJumpSpeed / 2.0f))
+            if (velocity.y > (_jumpSpeed / 2.0f))
             {
-                velocity.Set(velocity.x, m_fJumpSpeed / 2.0f);
+                velocity.Set(velocity.x, _jumpSpeed / 2.0f);
             }
         }
-        else if (m_iNumJumps == 2 && velocity.y > ((m_fJumpSpeed - 2) / 2.0f))
+        else if (_numJumps == 2 && velocity.y > ((_jumpSpeed - 2) / 2.0f))
         {
-            velocity.Set(velocity.x, (m_fJumpSpeed - 2) / 2.0f);
+            velocity.Set(velocity.x, (_jumpSpeed - 2) / 2.0f);
         }
     }
     
-    m_isShooting = inputState->isShooting();
+    _isShooting = inputState->isShooting();
     
     setVelocity(velocity);
     
@@ -488,115 +488,115 @@ void Robot::processInput(IInputState* inInputState, bool isPending)
 
 void Robot::awardKill(bool isHeadshot)
 {
-    if (!m_isServer)
+    if (!_isServer)
     {
         return;
     }
     
-    m_iNumKills++;
+    _numKills++;
     
-    m_wasLastKillHeadshot = isHeadshot;
+    _wasLastKillHeadshot = isHeadshot;
 }
 
 void Robot::setAddressHash(uint64_t addressHash)
 {
-    m_iAddressHash = addressHash;
+    _addressHash = addressHash;
 }
 
 uint64_t Robot::getAddressHash() const
 {
-    return m_iAddressHash;
+    return _addressHash;
 }
 
 void Robot::setPlayerId(uint8_t inPlayerId)
 {
-    m_iPlayerId = inPlayerId;
+    _playerId = inPlayerId;
     
     for (int i = 0; i < NUM_PROJECTILES; ++i)
     {
-        if (m_projectiles[i])
+        if (_projectiles[i])
         {
-            m_projectiles[i]->initFromShooter(this);
+            _projectiles[i]->initFromShooter(this);
         }
     }
 }
 
 uint8_t Robot::getPlayerId() const
 {
-    return m_iPlayerId;
+    return _playerId;
 }
 
 void Robot::setPlayerName(std::string playerName)
 {
-    m_playerName = playerName;
+    _playerName = playerName;
 }
 
 std::string& Robot::getPlayerName()
 {
-    return m_playerName;
+    return _playerName;
 }
 
 uint32_t Robot::getNumKills()
 {
-    return m_iNumKills;
+    return _numKills;
 }
 
 uint8_t Robot::getHealth()
 {
-    return m_iHealth;
+    return _health;
 }
 
 bool Robot::isFacingLeft()
 {
-    return m_isFacingLeft;
+    return _isFacingLeft;
 }
 
 bool Robot::isShooting()
 {
-    return m_isShooting;
+    return _isShooting;
 }
 
 bool Robot::isSprinting()
 {
-    return m_isSprinting;
+    return _isSprinting;
 }
 
 bool Robot::isPending()
 {
-    return m_isPending;
+    return _isPending;
 }
 
 void Robot::fireProjectile()
 {
-    Projectile* projectile = m_projectiles[m_iNextProjectileIndex++];
+    Projectile* projectile = _projectiles[_nextProjectileIndex++];
     
-    if (m_iNextProjectileIndex >= NUM_PROJECTILES)
+    if (_nextProjectileIndex >= NUM_PROJECTILES)
     {
-        m_iNextProjectileIndex = 0;
+        _nextProjectileIndex = 0;
     }
     
     if (projectile)
     {
         projectile->fire(this);
         
-        if (m_isPending)
+        if (_isPending)
         {
             // This projectile was just created
-            Util::playSound(SOUND_ID_FIRE_ROCKET, getPosition(), m_isServer);
+            Util::playSound(SOUND_ID_FIRE_ROCKET, getPosition(), _isServer);
         }
     }
 }
 
 void Robot::playNetworkBoundSounds(int numJumpsLastKnown, bool isSprintingLastKnown)
 {
-    if (m_iNumJumps > numJumpsLastKnown)
+    if (_numJumps > numJumpsLastKnown)
     {
-        Util::playSound(SOUND_ID_ROBOT_JUMP, getPosition(), m_isServer);
+        Util::playSound(SOUND_ID_ROBOT_JUMP, getPosition(), _isServer);
     }
     
-    if (!isSprintingLastKnown && m_isSprinting)
+    if (!isSprintingLastKnown && _isSprinting)
     {
-        Util::playSound(SOUND_ID_ACTIVATE_SPRINT, getPosition(), m_isServer);
+        Util::playSound(SOUND_ID_ACTIVATE_SPRINT, getPosition(), _isServer);
     }
 }
 

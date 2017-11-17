@@ -49,9 +49,9 @@ public:
     std::deque<Move>::const_iterator end() const;
     
 private:
-    float m_fLastMoveTimestamp;
-    float m_fLastProcessedMoveTimestamp;
-    std::deque<Move> m_moves;
+    float _lastMoveTimestamp;
+    float _lastProcessedMoveTimestamp;
+    std::deque<Move> _moves;
 };
 
 #endif /* defined(__noctisgames__MoveList__) */

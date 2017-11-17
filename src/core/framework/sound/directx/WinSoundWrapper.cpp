@@ -30,23 +30,23 @@ WinSoundWrapper::WinSoundWrapper(int soundId, const char *path, DirectX::AudioEn
     wchar_t* wString = new wchar_t[4096];
     MultiByteToWideChar(CP_ACP, 0, wavFileName, -1, wString, 4096);
     
-    m_sound = std::make_unique<DirectX::SoundEffect>(audioEngine, wString);
+    _sound = std::make_unique<DirectX::SoundEffect>(audioEngine, wString);
     
     delete wString;
     delete wavFileName;
     
-    for (int i = 0; i < m_iNumInstances; ++i)
+    for (int i = 0; i < _numInstances; ++i)
     {
-        m_sounds.push_back(new WinSound(soundId, *m_sound));
+        _sounds.push_back(new WinSound(soundId, *_sound));
     }
 }
 
 WinSoundWrapper::~WinSoundWrapper()
 {
-	NGSTDUtil::cleanUpVectorOfPointers(m_sounds);
+	NGSTDUtil::cleanUpVectorOfPointers(_sounds);
 
-    if (m_sound)
+    if (_sound)
     {
-        m_sound.reset();
+        _sound.reset();
     }
 }

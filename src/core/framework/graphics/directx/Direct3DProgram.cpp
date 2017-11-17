@@ -77,7 +77,7 @@ Direct3DProgram::Direct3DProgram(const char* vertexShaderName, const char* pixel
 			vertex_shader_source_output,
 			blob.size(),
 			nullptr,
-			&m_vertexShader
+			&_vertexShader
 		)
 	);
 
@@ -100,7 +100,7 @@ Direct3DProgram::Direct3DProgram(const char* vertexShaderName, const char* pixel
 			useTextureCoords ? ARRAYSIZE(textureVertexDesc) : ARRAYSIZE(geometryVertexDesc),
 			vertex_shader_source_output,
 			blob.size(),
-			&m_inputLayout
+			&_inputLayout
 		)
 	);
 
@@ -114,7 +114,7 @@ Direct3DProgram::Direct3DProgram(const char* vertexShaderName, const char* pixel
 			fragment_shader_source_output,
 			blob.size(),
 			nullptr,
-			&m_pixelShader
+			&_pixelShader
 		)
 	);
 
@@ -129,20 +129,20 @@ Direct3DProgram::Direct3DProgram(const char* vertexShaderName, const char* pixel
 
 Direct3DProgram::~Direct3DProgram()
 {
-	m_vertexShader.Reset();
-	m_inputLayout.Reset();
-	m_pixelShader.Reset();
+	_vertexShader.Reset();
+	_inputLayout.Reset();
+	_pixelShader.Reset();
 }
 
 void Direct3DProgram::bindShaders()
 {
     ID3D11DeviceContext* d3dContext = Direct3DManager::getD3dContext();
     
-    d3dContext->IASetInputLayout(m_inputLayout.Get());
+    d3dContext->IASetInputLayout(_inputLayout.Get());
     
     // set the shader objects as the active shaders
-    d3dContext->VSSetShader(m_vertexShader.Get(), nullptr, 0);
-    d3dContext->PSSetShader(m_pixelShader.Get(), nullptr, 0);
+    d3dContext->VSSetShader(_vertexShader.Get(), nullptr, 0);
+    d3dContext->PSSetShader(_pixelShader.Get(), nullptr, 0);
 }
 
 void Direct3DProgram::bindMatrix()

@@ -26,7 +26,7 @@ public:
     static IInputState* borrowInputState();
     
 private:
-    NGRollingPool<InputState>* m_pool;
+    NGRollingPool<InputState>* _pool;
     
     // ctor, copy ctor, and assignment should be private in a Singleton
     PooledObjectsManager();

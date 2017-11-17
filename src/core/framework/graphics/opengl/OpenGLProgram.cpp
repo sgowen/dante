@@ -60,7 +60,7 @@ OpenGLProgram::OpenGLProgram(const char* vertexShaderName, const char* fragmentS
     unsigned char* fragment_shader_source_output = (unsigned char*) malloc(fragment_shader_source.data_length);
     StringUtil::encryptDecrypt((unsigned char*)fragment_shader_source.data, fragment_shader_source_output, fragment_shader_source.data_length);
     
-    m_programObjectId = buildProgram(vertex_shader_source_output, (GLint)vertex_shader_source.data_length, fragment_shader_source_output, (GLint)fragment_shader_source.data_length);
+    _programObjectId = buildProgram(vertex_shader_source_output, (GLint)vertex_shader_source.data_length, fragment_shader_source_output, (GLint)fragment_shader_source.data_length);
     
     AssetDataHandler::getAssetDataHandler()->releaseAssetData(&vertex_shader_source);
     AssetDataHandler::getAssetDataHandler()->releaseAssetData(&fragment_shader_source);
@@ -71,12 +71,12 @@ OpenGLProgram::OpenGLProgram(const char* vertexShaderName, const char* fragmentS
 
 OpenGLProgram::~OpenGLProgram()
 {
-    glDeleteProgram(m_programObjectId);
+    glDeleteProgram(_programObjectId);
 }
 
 void OpenGLProgram::bind()
 {
-    glUseProgram(m_programObjectId);
+    glUseProgram(_programObjectId);
 }
 
 void OpenGLProgram::unbind()
@@ -86,7 +86,7 @@ void OpenGLProgram::unbind()
 
 GLuint OpenGLProgram::getProgramObjectId()
 {
-    return m_programObjectId;
+    return _programObjectId;
 }
 
 void OpenGLProgram::mapBuffer(GLuint& vbo, std::vector<GLfloat>& vertices)
@@ -148,23 +148,23 @@ GLuint OpenGLProgram::compileShader(const GLenum type, const void* source, const
 
 GLuint OpenGLProgram::linkProgram(const GLuint vertex_shader, const GLuint fragment_shader)
 {
-    GLuint program_object_id = glCreateProgram();
+    GLuint progra_object_id = glCreateProgram();
     GLint link_status;
     
-    assert(program_object_id != GL_FALSE);
+    assert(progra_object_id != GL_FALSE);
     
-    glAttachShader(program_object_id, vertex_shader);
-    glAttachShader(program_object_id, fragment_shader);
-    glLinkProgram(program_object_id);
-    glGetProgramiv(program_object_id, GL_LINK_STATUS, &link_status);
+    glAttachShader(progra_object_id, vertex_shader);
+    glAttachShader(progra_object_id, fragment_shader);
+    glLinkProgram(progra_object_id);
+    glGetProgramiv(progra_object_id, GL_LINK_STATUS, &link_status);
     
     assert(link_status != GL_FALSE);
     
     // Release vertex and fragment shaders.
-    glDetachShader(program_object_id, vertex_shader);
+    glDetachShader(progra_object_id, vertex_shader);
     glDeleteShader(vertex_shader);
-    glDetachShader(program_object_id, fragment_shader);
+    glDetachShader(progra_object_id, fragment_shader);
     glDeleteShader(fragment_shader);
     
-    return program_object_id;
+    return progra_object_id;
 }

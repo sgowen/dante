@@ -31,8 +31,8 @@ public:
     virtual ISoundWrapper* loadMusic(const char* path);
 
 private:
-    SuperpoweredSoundManager* m_superpoweredSoundManager;
-    int m_iSampleRate;
+    SuperpoweredSoundManager* _superpoweredSoundManager;
+    int _sampleRate;
 
     // ctor, copy ctor, and assignment should be private in a Singleton
     AppleAudioEngineHelper();

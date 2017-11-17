@@ -17,26 +17,26 @@ template <class T>
 class NGRollingPool
 {
 public:
-    NGRollingPool(int poolSize) : m_iPoolSize(poolSize), m_iIndex(0)
+    NGRollingPool(int poolSize) : _poolSize(poolSize), _index(0)
     {
-        for (int i = 0; i < m_iPoolSize; ++i)
+        for (int i = 0; i < _poolSize; ++i)
         {
-            m_objectsPool.push_back(T());
+            _objectsPool.push_back(T());
         }
     }
     
     virtual ~NGRollingPool()
     {
-        m_objectsPool.clear();
+        _objectsPool.clear();
     }
     
     T* newObject()
     {
-        T* obj = &m_objectsPool.at(m_iIndex++);
+        T* obj = &_objectsPool.at(_index++);
         
-        if (m_iIndex >= m_iPoolSize)
+        if (_index >= _poolSize)
         {
-            m_iIndex = 0;
+            _index = 0;
         }
         
         return obj;
@@ -44,33 +44,33 @@ public:
     
     void add(T* obj)
     {
-        m_objectsBuffer.push_back(obj);
+        _objectsBuffer.push_back(obj);
     }
     
     void processBuffer()
     {
-        m_objects.clear();
-        m_objects.swap(m_objectsBuffer);
-        m_objectsBuffer.clear();
+        _objects.clear();
+        _objects.swap(_objectsBuffer);
+        _objectsBuffer.clear();
     }
     
     std::vector<T*>& getObjects()
     {
-        return m_objects;
+        return _objects;
     }
     
     unsigned long getBufferSize()
     {
-        return m_objectsBuffer.size();
+        return _objectsBuffer.size();
     }
     
 private:
-    std::vector<T*> m_objects;
-    std::vector<T> m_objectsPool;
-    std::vector<T*> m_objectsBuffer;
+    std::vector<T*> _objects;
+    std::vector<T> _objectsPool;
+    std::vector<T*> _objectsBuffer;
     
-    int m_iPoolSize;
-    int m_iIndex;
+    int _poolSize;
+    int _index;
 };
 
 #endif /* defined(__noctisgames__NGRollingPool__) */

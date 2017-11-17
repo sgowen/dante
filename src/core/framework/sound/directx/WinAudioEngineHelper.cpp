@@ -24,36 +24,36 @@ void WinAudioEngineHelper::update(int flags)
 {
     if (flags == -1)
     {
-        m_retryAudio = true;
+        _retryAudio = true;
         
         return;
     }
     
-    if (m_retryAudio)
+    if (_retryAudio)
     {
-        m_retryAudio = false;
-        if (m_audEngine->Reset())
+        _retryAudio = false;
+        if (_audEngine->Reset())
         {
             // TODO, restart any looped sounds here
         }
     }
-    else if (!m_audEngine->Update())
+    else if (!_audEngine->Update())
     {
-        if (m_audEngine->IsCriticalError())
+        if (_audEngine->IsCriticalError())
         {
-            m_retryAudio = true;
+            _retryAudio = true;
         }
     }
 }
 
 void WinAudioEngineHelper::pause()
 {
-    m_audEngine->Suspend();
+    _audEngine->Suspend();
 }
 
 void WinAudioEngineHelper::resume()
 {
-    m_audEngine->Resume();
+    _audEngine->Resume();
 }
 
 ISoundWrapper* WinAudioEngineHelper::loadSound(int soundId, const char *path, int numInstances)
@@ -67,7 +67,7 @@ ISoundWrapper* WinAudioEngineHelper::loadSound(int soundId, const char *path, in
 	finalPath = path;
 #endif
 
-    WinSoundWrapper* sound = new WinSoundWrapper(soundId, finalPath, m_audEngine.get(), numInstances);
+    WinSoundWrapper* sound = new WinSoundWrapper(soundId, finalPath, _audEngine.get(), numInstances);
     
     return sound;
 }
@@ -77,7 +77,7 @@ ISoundWrapper* WinAudioEngineHelper::loadMusic(const char* path)
     return loadSound(1337, path);
 }
 
-WinAudioEngineHelper::WinAudioEngineHelper() : IAudioEngineHelper(), m_retryAudio(false)
+WinAudioEngineHelper::WinAudioEngineHelper() : IAudioEngineHelper(), _retryAudio(false)
 {
 	using namespace DirectX;
 
@@ -85,13 +85,13 @@ WinAudioEngineHelper::WinAudioEngineHelper() : IAudioEngineHelper(), m_retryAudi
 #ifdef _DEBUG
     eflags = eflags | AudioEngine_Debug;
 #endif
-    m_audEngine = std::make_unique<AudioEngine>(eflags);
+    _audEngine = std::make_unique<AudioEngine>(eflags);
 }
 
 WinAudioEngineHelper::~WinAudioEngineHelper()
 {
-    if (m_audEngine)
+    if (_audEngine)
     {
-        m_audEngine->Suspend();
+        _audEngine->Suspend();
     }
 }

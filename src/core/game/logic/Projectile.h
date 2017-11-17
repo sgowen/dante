@@ -76,14 +76,14 @@ public:
     bool isFacingLeft();
     
 private:
-    uint32_t m_iPlayerId;
-    bool m_isFacingLeft;
-    bool m_hasMadeContact;
+    uint32_t _playerId;
+    bool _isFacingLeft;
+    bool _hasMadeContact;
     
-    ProjectileState m_state;
+    ProjectileState _state;
     
     // Cached Last Known Values (from previous frame)
-    ProjectileState m_stateLastKnown;
+    ProjectileState _stateLastKnown;
     
     void handleBeginContactWithSpacePirate(SpacePirate* inEntity);
     

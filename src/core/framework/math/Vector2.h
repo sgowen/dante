@@ -68,8 +68,8 @@ public:
     float& getYRef();
     
 private:
-    float m_fX;
-    float m_fY;
+    float _x;
+    float _y;
 };
 
 #endif /* defined(__noctisgames__Vector2__) */

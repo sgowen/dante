@@ -32,7 +32,7 @@ public:
     void renderAsciiChar(SpriteBatcher &spriteBatcher, int asciiChar, float x, float y, float width, float height, Color color);
 
 private:
-    std::vector<TextureRegion> m_glyphs;
+    std::vector<TextureRegion> _glyphs;
 };
 
 #endif /* defined(__noctisgames__Font__) */

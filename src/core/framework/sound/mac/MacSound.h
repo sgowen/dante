@@ -35,11 +35,11 @@ public:
     virtual bool isPaused();
 
 private:
-    int m_iObjectALSoundIndex;
-    float m_fVolume;
-    bool m_isLooping;
-    bool m_isPaused;
-    bool m_isMusic;
+    int _objectALSoundIndex;
+    float _volume;
+    bool _isLooping;
+    bool _isPaused;
+    bool _isMusic;
 };
 
 #endif /* defined(__noctisgames__MacSound__) */

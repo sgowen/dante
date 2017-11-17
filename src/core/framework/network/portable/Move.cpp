@@ -16,36 +16,36 @@
 #include "Entity.h"
 
 Move::Move(IInputState* inInputState, float inTimestamp) :
-m_inputState(inInputState),
-m_fTimestamp(inTimestamp)
+_inputState(inInputState),
+_timestamp(inTimestamp)
 {
     // Empty
 }
 
 Move::Move(IInputState* inInputState) :
-m_inputState(inInputState),
-m_fTimestamp(0)
+_inputState(inInputState),
+_timestamp(0)
 {
     // Empty
 }
 
 Move::~Move()
 {
-    m_entityCacheMap.clear();
+    _entityCacheMap.clear();
 }
 
 bool Move::write(OutputMemoryBitStream& inOutputStream) const
 {
-    inOutputStream.write(m_fTimestamp);
+    inOutputStream.write(_timestamp);
     
-    return m_inputState->write(inOutputStream);
+    return _inputState->write(inOutputStream);
 }
 
 bool Move::read(InputMemoryBitStream& inInputStream)
 {
-    inInputStream.read(m_fTimestamp);
+    inInputStream.read(_timestamp);
     
-    return m_inputState->read(inInputStream);
+    return _inputState->read(inInputStream);
 }
 
 void Move::cacheEntity(Entity* inEntity) const
@@ -53,47 +53,47 @@ void Move::cacheEntity(Entity* inEntity) const
     EntityClientCache entityClientCache;
     
     entityClientCache._stateTime = inEntity->getStateTime();
-    entityClientCache.m_velocity = b2Vec2(inEntity->getVelocity().x, inEntity->getVelocity().y);
-    entityClientCache.m_position = b2Vec2(inEntity->getPosition().x, inEntity->getPosition().y);
-    entityClientCache.m_fAngle = inEntity->getAngle();
+    entityClientCache._velocity = b2Vec2(inEntity->getVelocity().x, inEntity->getVelocity().y);
+    entityClientCache._position = b2Vec2(inEntity->getPosition().x, inEntity->getPosition().y);
+    entityClientCache._angle = inEntity->getAngle();
     
-    m_entityCacheMap.insert(std::make_pair(inEntity->getID(), entityClientCache));
+    _entityCacheMap.insert(std::make_pair(inEntity->getID(), entityClientCache));
 }
 
 void Move::recallEntityCache(Entity* inEntity) const
 {
-    auto q = m_entityCacheMap.find(inEntity->getID());
+    auto q = _entityCacheMap.find(inEntity->getID());
     
-    if (q != m_entityCacheMap.end())
+    if (q != _entityCacheMap.end())
     {
         inEntity->setStateTime(q->second._stateTime);
-        inEntity->setVelocity(q->second.m_velocity);
-        inEntity->setPosition(q->second.m_position);
-        inEntity->setAngle(q->second.m_fAngle);
+        inEntity->setVelocity(q->second._velocity);
+        inEntity->setPosition(q->second._position);
+        inEntity->setAngle(q->second._angle);
     }
 }
 
 bool Move::isEqual(const Move* inMove) const
 {
-    return m_inputState->isEqual(inMove->getInputState());
+    return _inputState->isEqual(inMove->getInputState());
 }
 
 IInputState* Move::getInputState() const
 {
-    return m_inputState;
+    return _inputState;
 }
 
 float Move::getTimestamp() const
 {
-    return m_fTimestamp;
+    return _timestamp;
 }
 
 void Move::setTimestamp(float timeStamp)
 {
-    m_fTimestamp = timeStamp;
+    _timestamp = timeStamp;
 }
 
 void Move::copyInputState(IInputState* inIInputState)
 {
-    inIInputState->copyTo(m_inputState);
+    inIInputState->copyTo(_inputState);
 }

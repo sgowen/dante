@@ -58,43 +58,43 @@ WORLD_CREATE_SERVER_IMPL(Crate);
 WORLD_CREATE_SERVER_IMPL(SpacePirateChunk);
 
 World::World(bool isServer) :
-m_entityContactListener(new EntityContactListener()),
-m_entityContactFilter(new EntityContactFilter()),
-m_isServer(isServer)
+_entityContactListener(new EntityContactListener()),
+_entityContactFilter(new EntityContactFilter()),
+_isServer(isServer)
 {
     // Define the gravity vector.
     b2Vec2 gravity(0.0f, -9.8f);
     
     // Construct a world object, which will hold and simulate the rigid bodies.
-    m_world = new b2World(gravity);
+    _world = new b2World(gravity);
     
-    m_ground = new Ground(*m_world, m_isServer);
+    _ground = new Ground(*_world, _isServer);
     
-    m_world->SetContactListener(m_entityContactListener);
-    m_world->SetContactFilter(m_entityContactFilter);
+    _world->SetContactListener(_entityContactListener);
+    _world->SetContactFilter(_entityContactFilter);
 }
 
 World::~World()
 {
-    m_entities.clear();
+    _entities.clear();
     
-    delete m_entityContactListener;
-    delete m_entityContactFilter;
+    delete _entityContactListener;
+    delete _entityContactFilter;
     
-    delete m_ground;
+    delete _ground;
     
-    delete m_world;
+    delete _world;
 }
 
 void World::addEntity(Entity* inEntity)
 {
     if (inEntity->getRTTI().derivesFrom(Robot::rtti))
     {
-        m_players.push_back(inEntity);
+        _players.push_back(inEntity);
     }
     else
     {
-        m_entities.push_back(inEntity);
+        _entities.push_back(inEntity);
     }
 }
 
@@ -103,11 +103,11 @@ void World::removeEntity(Entity* inEntity)
     std::vector<Entity*>* pEntities = nullptr;
     if (inEntity->getRTTI().derivesFrom(Robot::rtti))
     {
-        pEntities = &m_players;
+        pEntities = &_players;
     }
     else
     {
-        pEntities = &m_entities;
+        pEntities = &_entities;
     }
     
     std::vector<Entity*>& entities = *pEntities;
@@ -133,7 +133,7 @@ void World::removeEntity(Entity* inEntity)
         
         entities.pop_back();
         
-        if (m_isServer)
+        if (_isServer)
         {
             NG_SERVER->deregisterEntity(inEntity);
         }
@@ -142,13 +142,13 @@ void World::removeEntity(Entity* inEntity)
 
 void World::postRead()
 {
-    if (m_isServer)
+    if (_isServer)
     {
         return;
     }
     
     bool needsMoveReplay = false;
-    for (Entity* entity : m_players)
+    for (Entity* entity : _players)
     {
         Robot* robot = static_cast<Robot*>(entity);
         if (NG_CLIENT->isPlayerIdLocal(robot->getPlayerId()))
@@ -170,7 +170,7 @@ void World::postRead()
     
     for (const Move& move : moveList)
     {
-        for (Entity* entity : m_players)
+        for (Entity* entity : _players)
         {
             Robot* robot = static_cast<Robot*>(entity);
             if (NG_CLIENT->isPlayerIdLocal(robot->getPlayerId()))
@@ -181,23 +181,23 @@ void World::postRead()
         
         stepPhysics(FRAME_RATE);
         
-        for (Entity* entity : m_entities)
+        for (Entity* entity : _entities)
         {
             entity->update();
         }
         
-        for (Entity* entity : m_players)
+        for (Entity* entity : _players)
         {
             entity->update();
         }
     }
     
-    for (Entity* entity : m_entities)
+    for (Entity* entity : _entities)
     {
         entity->postRead();
     }
     
-    for (Entity* entity : m_players)
+    for (Entity* entity : _players)
     {
         entity->postRead();
     }
@@ -205,14 +205,14 @@ void World::postRead()
 
 void World::update()
 {
-    if (m_isServer)
+    if (_isServer)
     {
         int moveCount = getMoveCount();
         if (moveCount > 0)
         {
             for (int i = 0; i < moveCount; ++i)
             {
-                for (Entity* entity : m_players)
+                for (Entity* entity : _players)
                 {
                     Robot* robot = static_cast<Robot*>(entity);
                     
@@ -239,10 +239,10 @@ void World::update()
                 
                 // Update all game objects- sometimes they want to die, so we need to tread carefully...
                 
-                int len = static_cast<int>(m_players.size());
+                int len = static_cast<int>(_players.size());
                 for (int i = 0, c = len; i < c; ++i)
                 {
-                    Entity* entity = m_players[i];
+                    Entity* entity = _players[i];
                     
                     if (!entity->isRequestingDeletion())
                     {
@@ -258,10 +258,10 @@ void World::update()
                     }
                 }
                 
-                len = static_cast<int>(m_entities.size());
+                len = static_cast<int>(_entities.size());
                 for (int i = 0, c = len; i < c; ++i)
                 {
-                    Entity* entity = m_entities[i];
+                    Entity* entity = _entities[i];
                     
                     if (!entity->isRequestingDeletion())
                     {
@@ -284,7 +284,7 @@ void World::update()
         const Move* pendingMove = InputManager::getInstance()->getPendingMove();
         if (pendingMove)
         {
-            for (Entity* entity : m_players)
+            for (Entity* entity : _players)
             {
                 Robot* robot = static_cast<Robot*>(entity);
                 if (NG_CLIENT->isPlayerIdLocal(robot->getPlayerId()))
@@ -295,12 +295,12 @@ void World::update()
             
             stepPhysics(FRAME_RATE);
             
-            for (Entity* entity : m_entities)
+            for (Entity* entity : _entities)
             {
                 entity->update();
             }
             
-            for (Entity* entity : m_players)
+            for (Entity* entity : _players)
             {
                 entity->update();
             }
@@ -310,7 +310,7 @@ void World::update()
 
 Robot* World::getRobotWithPlayerId(uint8_t inPlayerID)
 {
-    for (Entity* entity : m_players)
+    for (Entity* entity : _players)
     {
         Robot* robot = static_cast<Robot*>(entity);
         if (robot->getPlayerId() == inPlayerID)
@@ -324,7 +324,7 @@ Robot* World::getRobotWithPlayerId(uint8_t inPlayerID)
 
 void World::killAllSpacePirates()
 {
-    for (Entity* entity : m_entities)
+    for (Entity* entity : _entities)
     {
         if (entity->getRTTI().derivesFrom(SpacePirate::rtti))
         {
@@ -335,7 +335,7 @@ void World::killAllSpacePirates()
 
 void World::removeAllCrates()
 {
-    for (Entity* entity : m_entities)
+    for (Entity* entity : _entities)
     {
         if (entity->getRTTI().derivesFrom(Crate::rtti))
         {
@@ -346,7 +346,7 @@ void World::removeAllCrates()
 
 bool World::hasSpacePirates()
 {
-    for (Entity* entity : m_entities)
+    for (Entity* entity : _entities)
     {
         if (entity->getRTTI().derivesFrom(SpacePirate::rtti))
         {
@@ -359,7 +359,7 @@ bool World::hasSpacePirates()
 
 bool World::hasCrates()
 {
-    for (Entity* entity : m_entities)
+    for (Entity* entity : _entities)
     {
         if (entity->getRTTI().derivesFrom(Crate::rtti))
         {
@@ -372,17 +372,17 @@ bool World::hasCrates()
 
 std::vector<Entity*>& World::getPlayers()
 {
-    return m_players;
+    return _players;
 }
 
 std::vector<Entity*>& World::getEntities()
 {
-    return m_entities;
+    return _entities;
 }
 
 b2World& World::getWorld()
 {
-    return *m_world;
+    return *_world;
 }
 
 void World::stepPhysics(float deltaTime)
@@ -392,7 +392,7 @@ void World::stepPhysics(float deltaTime)
     
     // Instruct the world to perform a single step of simulation.
     // It is generally best to keep the time step and iterations fixed.
-    m_world->Step(deltaTime, velocityIterations, positionIterations);
+    _world->Step(deltaTime, velocityIterations, positionIterations);
 }
 
 int World::getMoveCount()

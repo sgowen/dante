@@ -33,15 +33,15 @@ public:
     
     bool hasFrameTimes();
     
-    std::string& getTextureName() { return m_textureName; }
+    std::string& getTextureName() { return _textureName; }
     
 private:
-    std::vector<TextureRegion> m_textureRegions;
-    std::vector<float> m_frameTimes;
-    std::string m_textureName;
-    float m_fCycleTime;
-    int m_iFirstLoopingFrame;
-    bool m_isLooping;
+    std::vector<TextureRegion> _textureRegions;
+    std::vector<float> _frameTimes;
+    std::string _textureName;
+    float _cycleTime;
+    int _firstLoopingFrame;
+    bool _isLooping;
     
     void loadTextureRegions(int x, int y, int regionWidth, int regionHeight, int animationWidth, int animationHeight, int textureWidth, int textureHeight, int numFrames, int xPadding = 0, int yPadding = 0);
 };

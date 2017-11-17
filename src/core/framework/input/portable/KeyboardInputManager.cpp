@@ -28,12 +28,12 @@ void KeyboardInputManager::onInput(unsigned short key, bool isUp)
 
 void KeyboardInputManager::process()
 {
-    m_pool->processBuffer();
+    _pool->processBuffer();
 }
 
 std::vector<KeyboardEvent*>& KeyboardInputManager::getEvents()
 {
-    return m_pool->getObjects();
+    return _pool->getObjects();
 }
 
 #pragma mark private
@@ -42,29 +42,29 @@ void KeyboardInputManager::addEvent(unsigned short key, bool isUp)
 {
     bool wasLastEventDown = false;
     
-    auto q = m_lastKnownKeyStates.find(key);
+    auto q = _lastKnownKeyStates.find(key);
     
-    if (q != m_lastKnownKeyStates.end())
+    if (q != _lastKnownKeyStates.end())
     {
         bool wasUp = q->second;
         wasLastEventDown = !wasUp;
     }
     
-    m_lastKnownKeyStates[key] = isUp;
+    _lastKnownKeyStates[key] = isUp;
     
-    KeyboardEvent* e = m_pool->newObject();
+    KeyboardEvent* e = _pool->newObject();
     e->setKey(key);
     e->setStatus(isUp ? KEYBOARD_STATUS_UP : wasLastEventDown ? KEYBOARD_STATUS_HELD : KEYBOARD_STATUS_DOWN);
     
-    m_pool->add(e);
+    _pool->add(e);
 }
 
-KeyboardInputManager::KeyboardInputManager() : m_pool(new NGRollingPool<KeyboardEvent>(POOL_SIZE))
+KeyboardInputManager::KeyboardInputManager() : _pool(new NGRollingPool<KeyboardEvent>(POOL_SIZE))
 {
     // Empty
 }
 
 KeyboardInputManager::~KeyboardInputManager()
 {
-    delete m_pool;
+    delete _pool;
 }

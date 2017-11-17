@@ -76,13 +76,13 @@ public:
     b2World& getWorld();
     
 private:
-    std::vector<Entity*> m_players;
-    std::vector<Entity*> m_entities;
-    b2World* m_world;
-    Ground* m_ground;
-    EntityContactListener* m_entityContactListener;
-    EntityContactFilter* m_entityContactFilter;
-    bool m_isServer;
+    std::vector<Entity*> _players;
+    std::vector<Entity*> _entities;
+    b2World* _world;
+    Ground* _ground;
+    EntityContactListener* _entityContactListener;
+    EntityContactFilter* _entityContactFilter;
+    bool _isServer;
     
     void stepPhysics(float deltaTime);
     

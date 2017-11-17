@@ -32,9 +32,9 @@ public:
 private:
     class ReplicationTransmission;
     
-    ReplicationManagerServer* m_replicationManagerServer;
+    ReplicationManagerServer* _replicationManagerServer;
     
-    std::vector<ReplicationTransmission> m_transmissions;
+    std::vector<ReplicationTransmission> _transmissions;
     
     void handleCreateDeliveryFailure(uint32_t inNetworkId) const;
     
@@ -58,9 +58,9 @@ private:
         uint32_t getState() const;
         
     private:
-        int m_iNetworkId;
-        ReplicationAction m_action;
-        uint32_t m_iState;
+        int _networkId;
+        ReplicationAction _action;
+        uint32_t _state;
     };
 };
 

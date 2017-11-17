@@ -13,8 +13,8 @@
 #include "Timing.h"
 
 InFlightPacket::InFlightPacket(uint16_t inSequenceNumber) :
-m_iSequenceNumber(inSequenceNumber),
-m_fTimeDispatched(Timing::getInstance()->getFrameStartTime())
+_sequenceNumber(inSequenceNumber),
+_timeDispatched(Timing::getInstance()->getFrameStartTime())
 {
     //null out other transmision data params...
 }
@@ -27,29 +27,29 @@ void InFlightPacket::setTransmissionData(int inKey, ITransmissionData* inTransmi
         delete currentTransmissionData;
     }
     
-    m_transmissionDataMap[inKey] = inTransmissionData;
+    _transmissionDataMap[inKey] = inTransmissionData;
 }
 
 ITransmissionData* InFlightPacket::getTransmissionData(int inKey) const
 {
-    auto it = m_transmissionDataMap.find(inKey);
+    auto it = _transmissionDataMap.find(inKey);
     
-    return (it != m_transmissionDataMap.end()) ? it->second : nullptr;
+    return (it != _transmissionDataMap.end()) ? it->second : nullptr;
 }
 
 uint16_t InFlightPacket::getSequenceNumber() const
 {
-    return m_iSequenceNumber;
+    return _sequenceNumber;
 }
 
 float InFlightPacket::getTimeDispatched() const
 {
-    return m_fTimeDispatched;
+    return _timeDispatched;
 }
 
 void InFlightPacket::handleDeliveryFailure(DeliveryNotificationManager* inDeliveryNotificationManager) const
 {
-    for (const auto& pair : m_transmissionDataMap)
+    for (const auto& pair : _transmissionDataMap)
     {
         pair.second->handleDeliveryFailure(inDeliveryNotificationManager);
     }
@@ -57,7 +57,7 @@ void InFlightPacket::handleDeliveryFailure(DeliveryNotificationManager* inDelive
 
 void InFlightPacket::handleDeliverySuccess(DeliveryNotificationManager* inDeliveryNotificationManager) const
 {
-    for (const auto& pair : m_transmissionDataMap)
+    for (const auto& pair : _transmissionDataMap)
     {
         pair.second->handleDeliverySuccess(inDeliveryNotificationManager);
     }

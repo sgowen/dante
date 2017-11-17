@@ -17,62 +17,62 @@
 #include <cstring>	// memcpy()
 
 InputMemoryBitStream::InputMemoryBitStream(char* inBuffer, uint32_t inBitCount) :
-m_buffer(inBuffer),
-m_iBitCapacity(inBitCount),
-m_iBitHead(0),
-m_isBufferOwner(false)
+_buffer(inBuffer),
+_bitCapacity(inBitCount),
+_bitHead(0),
+_isBufferOwner(false)
 {
     // Empty
 }
 
 InputMemoryBitStream::InputMemoryBitStream(const InputMemoryBitStream& inOther) :
-m_iBitCapacity(inOther.m_iBitCapacity),
-m_iBitHead(inOther.m_iBitHead),
-m_isBufferOwner(true)
+_bitCapacity(inOther._bitCapacity),
+_bitHead(inOther._bitHead),
+_isBufferOwner(true)
 {
     //allocate buffer of right size
-    int byteCount = (m_iBitCapacity + 7) / 8;
-    m_buffer = static_cast<char*>(malloc(byteCount));
+    int byteCount = (_bitCapacity + 7) / 8;
+    _buffer = static_cast<char*>(malloc(byteCount));
     //copy
-    memcpy(m_buffer, inOther.m_buffer, byteCount);
+    memcpy(_buffer, inOther._buffer, byteCount);
 }
 
 InputMemoryBitStream::~InputMemoryBitStream()
 {
-    if (m_isBufferOwner)
+    if (_isBufferOwner)
     {
-        free(m_buffer);
+        free(_buffer);
     }
 }
 
 const char*	InputMemoryBitStream::getBufferPtr() const
 {
-    return m_buffer;
+    return _buffer;
 }
 
 uint32_t InputMemoryBitStream::getRemainingBitCount() const
 {
-    return m_iBitCapacity - m_iBitHead;
+    return _bitCapacity - _bitHead;
 }
 
 void InputMemoryBitStream::readBits(uint8_t& outData, uint32_t inBitCount)
 {
-    uint32_t byteOffset = m_iBitHead >> 3;
-    uint32_t bitOffset = m_iBitHead & 0x7;
+    uint32_t byteOffset = _bitHead >> 3;
+    uint32_t bitOffset = _bitHead & 0x7;
     
-    outData = static_cast<uint8_t>(m_buffer[byteOffset]) >> bitOffset;
+    outData = static_cast<uint8_t>(_buffer[byteOffset]) >> bitOffset;
     
     uint32_t bitsFreeThisByte = 8 - bitOffset;
     if (bitsFreeThisByte < inBitCount)
     {
         //we need another byte
-        outData |= static_cast<uint8_t>(m_buffer[byteOffset + 1]) << bitsFreeThisByte;
+        outData |= static_cast<uint8_t>(_buffer[byteOffset + 1]) << bitsFreeThisByte;
     }
     
     //don't forget a mask so that we only read the bit we wanted...
     outData &= (~(0x00ff << inBitCount));
     
-    m_iBitHead += inBitCount;
+    _bitHead += inBitCount;
 }
 
 void InputMemoryBitStream::readBits(void* outData, uint32_t inBitCount)
@@ -121,7 +121,7 @@ void InputMemoryBitStream::read(bool& outData)
 
 void InputMemoryBitStream::resetToCapacity(uint32_t inByteCapacity)
 {
-    m_iBitCapacity = inByteCapacity << 3; m_iBitHead = 0;
+    _bitCapacity = inByteCapacity << 3; _bitHead = 0;
 }
 
 void InputMemoryBitStream::read(std::string& inString)

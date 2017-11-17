@@ -17,32 +17,32 @@
 
 #include "InputMemoryBitStream.h"
 
-INetworkHelper::INetworkHelper(IPacketHandler* packetHandler) : m_packetHandler(packetHandler)
+INetworkHelper::INetworkHelper(IPacketHandler* packetHandler) : _packetHandler(packetHandler)
 {
     // Empty
 }
 
 INetworkHelper::~INetworkHelper()
 {
-    delete m_packetHandler;
+    delete _packetHandler;
 }
 
 void INetworkHelper::processIncomingPackets()
 {
-    m_packetHandler->processIncomingPackets();
+    _packetHandler->processIncomingPackets();
 }
 
 void INetworkHelper::sendPacket(const OutputMemoryBitStream& inOutputStream, IMachineAddress* inFromAddress)
 {
-    m_packetHandler->sendPacket(inOutputStream, inFromAddress);
+    _packetHandler->sendPacket(inOutputStream, inFromAddress);
 }
 
 const WeightedTimedMovingAverage& INetworkHelper::getBytesReceivedPerSecond() const
 {
-    return m_packetHandler->getBytesReceivedPerSecond();
+    return _packetHandler->getBytesReceivedPerSecond();
 }
 
 const WeightedTimedMovingAverage& INetworkHelper::getBytesSentPerSecond() const
 {
-    return m_packetHandler->getBytesSentPerSecond();
+    return _packetHandler->getBytesSentPerSecond();
 }

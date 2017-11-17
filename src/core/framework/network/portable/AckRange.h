@@ -33,8 +33,8 @@ public:
     uint32_t getCount() const;
     
 private:
-    uint16_t m_iStart;
-    uint32_t m_iCount;
+    uint16_t _start;
+    uint32_t _count;
 };
 
 #endif /* defined(__noctisgames__AckRange__) */

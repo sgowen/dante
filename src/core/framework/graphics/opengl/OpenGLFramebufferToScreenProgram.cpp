@@ -12,8 +12,8 @@
 
 OpenGLFramebufferToScreenProgram::OpenGLFramebufferToScreenProgram(const char* vertexShaderName, const char* fragmentShaderName) : OpenGLProgram(vertexShaderName, fragmentShaderName)
 {
-    u_texture_unit_location = glGetUniformLocation(m_programObjectId, "u_TextureUnit");
-    a_position_location = glGetAttribLocation(m_programObjectId, "a_Position");
+    u_texture_unit_location = glGetUniformLocation(_programObjectId, "u_TextureUnit");
+    a_position_location = glGetAttribLocation(_programObjectId, "a_Position");
 }
 
 void OpenGLFramebufferToScreenProgram::bind()

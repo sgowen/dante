@@ -29,8 +29,8 @@ public:
     void renderNGRect(NGRect &rectangle, Color &color);
     
 protected:
-    bool m_isFill;
-    int m_iNumNGRects;
+    bool _isFill;
+    int _numNGRects;
 };
 
 #endif /* defined(__noctisgames__NGRectBatcher__) */

@@ -103,14 +103,14 @@ void Server::update(float deltaTime)
 
 uint8_t Server::getPlayerIdForRobotBeingCreated()
 {
-    return m_iPlayerIdForRobotBeingCreated;
+    return _playerIdForRobotBeingCreated;
 }
 
 void Server::toggleEnemies()
 {
-    m_isSpawningEnemies = !m_isSpawningEnemies;
+    _isSpawningEnemies = !_isSpawningEnemies;
     
-    if (m_isSpawningEnemies)
+    if (_isSpawningEnemies)
     {
         _stateTimeNoEnemies = 5; // Spawn em now!
     }
@@ -122,9 +122,9 @@ void Server::toggleEnemies()
 
 void Server::toggleObjects()
 {
-    m_isSpawningObjects = !m_isSpawningObjects;
+    _isSpawningObjects = !_isSpawningObjects;
     
-    if (!m_isSpawningObjects)
+    if (!_isSpawningObjects)
     {
         InstanceManager::getServerWorld()->removeAllCrates();
     }
@@ -132,22 +132,22 @@ void Server::toggleObjects()
 
 void Server::toggleDisplaying()
 {
-    m_isDisplaying = !m_isDisplaying;
+    _isDisplaying = !_isDisplaying;
 }
 
 bool Server::isSpawningEnemies()
 {
-    return m_isSpawningEnemies;
+    return _isSpawningEnemies;
 }
 
 bool Server::isSpawningObjects()
 {
-    return m_isSpawningObjects;
+    return _isSpawningObjects;
 }
 
 bool Server::isDisplaying()
 {
-    return m_isDisplaying;
+    return _isDisplaying;
 }
 
 void Server::handleNewClient(uint8_t playerId, std::string playerName)
@@ -193,7 +193,7 @@ void Server::deleteRobotWithPlayerId(uint8_t playerId)
 
 void Server::spawnRobotForPlayer(uint8_t inPlayerId, std::string inPlayerName)
 {
-    m_iPlayerIdForRobotBeingCreated = inPlayerId;
+    _playerIdForRobotBeingCreated = inPlayerId;
     Robot* robot = static_cast<Robot*>(SERVER_ENTITY_REG->createEntity(NW_TYPE_Robot));
     
     ClientProxy* client = NG_SERVER->getClientProxy(inPlayerId);
@@ -228,7 +228,7 @@ void Server::spawnRobotForPlayer(uint8_t inPlayerId, std::string inPlayerName)
 
 void Server::respawnEnemiesIfNecessary()
 {
-    if (m_isSpawningEnemies && !InstanceManager::getServerWorld()->hasSpacePirates())
+    if (_isSpawningEnemies && !InstanceManager::getServerWorld()->hasSpacePirates())
     {
         _stateTimeNoEnemies += FRAME_RATE;
         if (_stateTimeNoEnemies > 5)
@@ -237,7 +237,7 @@ void Server::respawnEnemiesIfNecessary()
             
             _stateTimeNoEnemies = 0;
             
-            for (uint32_t i = 0; i < m_iNumSpacePiratesToSpawn; ++i)
+            for (uint32_t i = 0; i < _numSpacePiratesToSpawn; ++i)
             {
                 SpacePirate* spacePirate = static_cast<SpacePirate*>(SERVER_ENTITY_REG->createEntity(NW_TYPE_SpacePirate));
                 
@@ -272,14 +272,14 @@ void Server::respawnEnemiesIfNecessary()
 
 void Server::spawnCratesIfNecessary()
 {
-    if (!m_isSpawningObjects || InstanceManager::getServerWorld()->hasCrates())
+    if (!_isSpawningObjects || InstanceManager::getServerWorld()->hasCrates())
     {
         return;
     }
     
     srand(static_cast<unsigned>(time(0)));
     
-    for (uint32_t i = 0; i < m_iNumCratesToSpawn; ++i)
+    for (uint32_t i = 0; i < _numCratesToSpawn; ++i)
     {
         Crate* crate = static_cast<Crate*>(SERVER_ENTITY_REG->createEntity(NW_TYPE_Crate));
         
@@ -304,7 +304,7 @@ void Server::clearClientMoves()
     }
 }
 
-Server::Server(bool isSteam, uint32_t inNumCratesToSpawn, uint32_t inNumSpacePiratesToSpawn) : _stateTime(0), _frameStateTime(0), _stateTimeNoEnemies(0), m_iPlayerIdForRobotBeingCreated(0), m_iNumCratesToSpawn(inNumCratesToSpawn), m_iNumSpacePiratesToSpawn(inNumSpacePiratesToSpawn), m_isSpawningEnemies(false), m_isSpawningObjects(false), m_isDisplaying(false)
+Server::Server(bool isSteam, uint32_t inNumCratesToSpawn, uint32_t inNumSpacePiratesToSpawn) : _stateTime(0), _frameStateTime(0), _stateTimeNoEnemies(0), _playerIdForRobotBeingCreated(0), _numCratesToSpawn(inNumCratesToSpawn), _numSpacePiratesToSpawn(inNumSpacePiratesToSpawn), _isSpawningEnemies(false), _isSpawningObjects(false), _isDisplaying(false)
 {
     FWInstanceManager::createServerEntityManager(InstanceManager::sHandleEntityCreatedOnServer, InstanceManager::sHandleEntityDeletedOnServer);
     

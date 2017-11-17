@@ -55,9 +55,9 @@ void OpenGLRendererHelper::endFrame()
 
 TextureWrapper* OpenGLRendererHelper::getFramebuffer(int index)
 {
-    m_framebuffer->gpuTextureWrapper = OGLManager->getFramebuffers().at(index);
+    _framebuffer->gpuTextureWrapper = OGLManager->getFramebuffers().at(index);
     
-    return m_framebuffer;
+    return _framebuffer;
 }
 
 void OpenGLRendererHelper::updateMatrix(float left, float right, float bottom, float top)

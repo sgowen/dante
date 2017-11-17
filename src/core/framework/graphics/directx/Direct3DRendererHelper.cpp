@@ -14,7 +14,7 @@
 #include "GpuTextureWrapper.h"
 #include "Direct3DManager.h"
 
-Direct3DRendererHelper::Direct3DRendererHelper() : IRendererHelper(), m_iFramebufferIndex(0), m_isBoundToScreen(false)
+Direct3DRendererHelper::Direct3DRendererHelper() : IRendererHelper(), _framebufferIndex(0), _isBoundToScreen(false)
 {
 	Direct3DManager::create();
 }
@@ -51,9 +51,9 @@ void Direct3DRendererHelper::endFrame()
 
 TextureWrapper* Direct3DRendererHelper::getFramebuffer(int index)
 {
-    m_framebuffer->gpuTextureWrapper = D3DManager->getFramebuffers().at(index);
+    _framebuffer->gpuTextureWrapper = D3DManager->getFramebuffers().at(index);
     
-    return m_framebuffer;
+    return _framebuffer;
 }
 
 void Direct3DRendererHelper::updateMatrix(float left, float right, float bottom, float top)
@@ -67,8 +67,8 @@ void Direct3DRendererHelper::bindToOffscreenFramebuffer(int index)
 
 	d3dContext->OMSetRenderTargets(1, &D3DManager->getOffscreenRenderTargetViews().at(index), nullptr);
     
-	m_iFramebufferIndex = index;
-    m_isBoundToScreen = false;
+	_framebufferIndex = index;
+    _isBoundToScreen = false;
 }
 
 void Direct3DRendererHelper::clearFramebufferWithColor(float r, float g, float b, float a)
@@ -76,14 +76,14 @@ void Direct3DRendererHelper::clearFramebufferWithColor(float r, float g, float b
     float color[] = { r, g, b, a };
 
     ID3D11RenderTargetView * targets[1] = {};
-    if (m_isBoundToScreen)
+    if (_isBoundToScreen)
     {
 		ID3D11RenderTargetView* d3dRenderTargetView = Direct3DManager::getD3dRenderTargetView();
         targets[0] = d3dRenderTargetView;
     }
     else
     {
-        targets[0] = D3DManager->getOffscreenRenderTargetViews().at(m_iFramebufferIndex);
+        targets[0] = D3DManager->getOffscreenRenderTargetViews().at(_framebufferIndex);
     }
     
 	ID3D11DeviceContext* d3dContext = Direct3DManager::getD3dContext();
@@ -100,7 +100,7 @@ void Direct3DRendererHelper::bindToScreenFramebuffer()
     ID3D11RenderTargetView *const targets[1] = { d3dRenderTargetView };
 	d3dContext->OMSetRenderTargets(1, targets, nullptr);
     
-    m_isBoundToScreen = true;
+    _isBoundToScreen = true;
 }
 
 void Direct3DRendererHelper::destroyTexture(GpuTextureWrapper& textureWrapper)

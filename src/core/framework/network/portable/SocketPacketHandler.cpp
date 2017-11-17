@@ -24,67 +24,67 @@
 #include "FrameworkConstants.h"
 #include "Network.h"
 
-SocketPacketHandler::SocketPacketHandler(uint16_t inPort, ProcessPacketFunc processPacketFunc, HandleNoResponseFunc handleNoResponseFunc, HandleConnectionResetFunc handleConnectionResetFunc) : IPacketHandler(processPacketFunc, handleNoResponseFunc, handleConnectionResetFunc), m_socketAddress(new SocketAddress(INADDR_ANY, inPort)), m_socket(nullptr), m_isInitialized(false)
+SocketPacketHandler::SocketPacketHandler(uint16_t inPort, ProcessPacketFunc processPacketFunc, HandleNoResponseFunc handleNoResponseFunc, HandleConnectionResetFunc handleConnectionResetFunc) : IPacketHandler(processPacketFunc, handleNoResponseFunc, handleConnectionResetFunc), _socketAddress(new SocketAddress(INADDR_ANY, inPort)), _socket(nullptr), _isInitialized(false)
 {
     if (!SOCKET_UTIL->init())
     {
         return;
     }
     
-    m_socket = SOCKET_UTIL->createUDPSocket(INET);
-    m_socket->bindSocket(*m_socketAddress);
+    _socket = SOCKET_UTIL->createUDPSocket(INET);
+    _socket->bindSocket(*_socketAddress);
     
     LOG("Initializing SocketPacketHandler at port %hu", inPort);
     
-    if (m_socket && m_socket->setNonBlockingMode(true) == NO_ERROR)
+    if (_socket && _socket->setNonBlockingMode(true) == NO_ERROR)
     {
-        m_isInitialized = true;
+        _isInitialized = true;
     }
 }
 
 SocketPacketHandler::~SocketPacketHandler()
 {
-    if (m_socketAddress)
+    if (_socketAddress)
     {
-        delete m_socketAddress;
-        m_socketAddress = nullptr;
+        delete _socketAddress;
+        _socketAddress = nullptr;
     }
     
-    if (m_socket)
+    if (_socket)
     {
-        delete m_socket;
-        m_socket = nullptr;
+        delete _socket;
+        _socket = nullptr;
     }
 }
 
 void SocketPacketHandler::sendPacket(const OutputMemoryBitStream& inOutputStream, IMachineAddress* inFromAddress)
 {
-    if (!m_isInitialized)
+    if (!_isInitialized)
     {
         return;
     }
     
     SocketAddress* inFromSocketAddress = static_cast<SocketAddress*>(inFromAddress);
-    int sentByteCount = m_socket->sendToAddress(inOutputStream.getBufferPtr(), inOutputStream.getByteLength(), *inFromSocketAddress);
+    int sentByteCount = _socket->sendToAddress(inOutputStream.getBufferPtr(), inOutputStream.getByteLength(), *inFromSocketAddress);
     if (sentByteCount > 0)
     {
-        m_bytesSentThisFrame += sentByteCount;
+        _bytesSentThisFrame += sentByteCount;
     }
 }
 
 SocketAddress* SocketPacketHandler::getSocketAddress()
 {
-    return m_socketAddress;
+    return _socketAddress;
 }
 
 bool SocketPacketHandler::isInitialized()
 {
-    return m_isInitialized;
+    return _isInitialized;
 }
 
 void SocketPacketHandler::readIncomingPacketsIntoQueue()
 {
-    if (!m_isInitialized)
+    if (!_isInitialized)
     {
         return;
     }
@@ -103,17 +103,17 @@ void SocketPacketHandler::readIncomingPacketsIntoQueue()
     
     while (receivedPacketCount < NW_MAX_NUM_PACKETS_PER_FRAME)
     {
-        int readByteCount = m_socket->receiveFromAddress(packetMem, packetSize, fromAddress);
+        int readByteCount = _socket->receiveFromAddress(packetMem, packetSize, fromAddress);
         if (readByteCount == 0)
         {
             // nothing to read
-            m_handleNoResponseFunc();
+            _handleNoResponseFunc();
             break;
         }
         else if (readByteCount == -WSAECONNRESET)
         {
             //port closed on other end, so DC this person immediately
-            m_handleConnectionResetFunc(&fromAddress);
+            _handleConnectionResetFunc(&fromAddress);
         }
         else if (readByteCount > 0)
         {
@@ -127,7 +127,7 @@ void SocketPacketHandler::readIncomingPacketsIntoQueue()
             //this doesn't sim jitter, for that we would need to.....
             
             float simulatedReceivedTime = Timing::getInstance()->getFrameStartTime();
-            m_packetQueue.push(ReceivedPacket(simulatedReceivedTime, inputStream, fromAddress));
+            _packetQueue.push(ReceivedPacket(simulatedReceivedTime, inputStream, fromAddress));
         }
         else
         {
@@ -144,13 +144,13 @@ void SocketPacketHandler::readIncomingPacketsIntoQueue()
 void SocketPacketHandler::processQueuedPackets()
 {
     //look at the front packet...
-    while (!m_packetQueue.empty())
+    while (!_packetQueue.empty())
     {
-        ReceivedPacket& nextPacket = m_packetQueue.front();
+        ReceivedPacket& nextPacket = _packetQueue.front();
         if (Timing::getInstance()->getFrameStartTime() > nextPacket.getReceivedTime())
         {
-            m_processPacketFunc(nextPacket.getPacketBuffer(), &nextPacket.getFromAddress());
-            m_packetQueue.pop();
+            _processPacketFunc(nextPacket.getPacketBuffer(), &nextPacket.getFromAddress());
+            _packetQueue.pop();
         }
         else
         {
@@ -160,24 +160,24 @@ void SocketPacketHandler::processQueuedPackets()
 }
 
 SocketPacketHandler::ReceivedPacket::ReceivedPacket(float inReceivedTime, InputMemoryBitStream& ioInputMemoryBitStream, SocketAddress inFromAddress) :
-m_fReceivedTime(inReceivedTime),
-m_fromAddress(inFromAddress),
-m_packetBuffer(ioInputMemoryBitStream)
+_receivedTime(inReceivedTime),
+_fromAddress(inFromAddress),
+_packetBuffer(ioInputMemoryBitStream)
 {
     // Empty
 }
 
 SocketAddress& SocketPacketHandler::ReceivedPacket::getFromAddress()
 {
-    return m_fromAddress;
+    return _fromAddress;
 }
 
 float SocketPacketHandler::ReceivedPacket::getReceivedTime() const
 {
-    return m_fReceivedTime;
+    return _receivedTime;
 }
 
 InputMemoryBitStream& SocketPacketHandler::ReceivedPacket::getPacketBuffer()
 {
-    return m_packetBuffer;
+    return _packetBuffer;
 }

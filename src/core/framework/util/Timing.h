@@ -25,10 +25,10 @@ public:
     float getFrameStartTime() const;
     
 private:
-    double m_dLastFrameStartTime;
-    double m_dPerfCountDuration;
-    float m_fFrameStartTimef;
-    float m_fDeltaTime;
+    double _lastFrameStartTime;
+    double _perfCountDuration;
+    float _frameStartTimef;
+    float _deltaTime;
     
     float getTime() const;
     

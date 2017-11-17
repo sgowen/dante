@@ -21,34 +21,34 @@
 
 void ReplicationManagerServer::replicateCreate(uint32_t inNetworkId, uint32_t inInitialDirtyState)
 {
-    m_networkIdToReplicationCommand[inNetworkId] = ReplicationCommand(inInitialDirtyState);
+    _networkIdToReplicationCommand[inNetworkId] = ReplicationCommand(inInitialDirtyState);
 }
 
 void ReplicationManagerServer::replicateDestroy(uint32_t inNetworkId)
 {
     //it's broken if we don't find it...
-    m_networkIdToReplicationCommand[inNetworkId].setDestroy();
+    _networkIdToReplicationCommand[inNetworkId].setDestroy();
 }
 
 void ReplicationManagerServer::removeFromReplication(uint32_t inNetworkId)
 {
-    m_networkIdToReplicationCommand.erase(inNetworkId);
+    _networkIdToReplicationCommand.erase(inNetworkId);
 }
 
 void ReplicationManagerServer::setStateDirty(uint32_t inNetworkId, uint32_t inDirtyState)
 {
-    m_networkIdToReplicationCommand[inNetworkId].addDirtyState(inDirtyState);
+    _networkIdToReplicationCommand[inNetworkId].addDirtyState(inDirtyState);
 }
 
 void ReplicationManagerServer::handleCreateAckd(uint32_t inNetworkId)
 {
-    m_networkIdToReplicationCommand[inNetworkId].handleCreateAckd();
+    _networkIdToReplicationCommand[inNetworkId].handleCreateAckd();
 }
 
 void ReplicationManagerServer::write(OutputMemoryBitStream& inOutputStream, ReplicationManagerTransmissionData* ioTransmissinData)
 {
     //run through each replication command and do something...
-    for (auto& pair: m_networkIdToReplicationCommand)
+    for (auto& pair: _networkIdToReplicationCommand)
     {
         ReplicationCommand& replicationCommand = pair.second;
         if (replicationCommand.hasDirtyState())

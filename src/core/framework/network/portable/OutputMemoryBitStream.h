@@ -6,8 +6,8 @@
 //  Copyright (c) 2017 Noctis Games. All rights reserved.
 //
 
-#ifndef __noctisgames__OutputMemoryBitStream__
-#define __noctisgames__OutputMemoryBitStream__
+#ifndef __noctisgames__OutputMemoryBitStrea__
+#define __noctisgames__OutputMemoryBitStrea__
 
 #include "Network.h"
 
@@ -87,9 +87,9 @@ public:
 private:
     void reallocBuffer(uint32_t inNewBitCapacity);
     
-    char* m_buffer;
-    uint32_t m_iBitHead;
-    uint32_t m_iBitCapacity;
+    char* _buffer;
+    uint32_t _bitHead;
+    uint32_t _bitCapacity;
 };
 
-#endif /* defined(__noctisgames__OutputMemoryBitStream__) */
+#endif /* defined(__noctisgames__OutputMemoryBitStrea__) */

@@ -34,10 +34,10 @@ public:
     void handleDeliverySuccess(DeliveryNotificationManager* inDeliveryNotificationManager) const;
     
 private:
-    uint16_t m_iSequenceNumber;
-    float m_fTimeDispatched;
+    uint16_t _sequenceNumber;
+    float _timeDispatched;
     
-    std::map<int, ITransmissionData*> m_transmissionDataMap;
+    std::map<int, ITransmissionData*> _transmissionDataMap;
 };
 
 #endif /* defined(__noctisgames__InFlightPacket__) */

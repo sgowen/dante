@@ -33,8 +33,8 @@ public:
     virtual ISoundWrapper* loadMusic(const char* path);
 
 private:
-    std::unique_ptr<DirectX::AudioEngine> m_audEngine;
-    bool m_retryAudio;
+    std::unique_ptr<DirectX::AudioEngine> _audEngine;
+    bool _retryAudio;
     
     // ctor, copy ctor, and assignment should be private in a Singleton
     WinAudioEngineHelper();

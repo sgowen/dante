@@ -27,9 +27,9 @@ public:
 	void createConstantBuffer(_COM_Outptr_opt_  ID3D11Buffer **ppBuffer);
     
 private:
-    Microsoft::WRL::ComPtr<ID3D11VertexShader> m_vertexShader;
-    Microsoft::WRL::ComPtr<ID3D11InputLayout> m_inputLayout;
-    Microsoft::WRL::ComPtr<ID3D11PixelShader> m_pixelShader;
+    Microsoft::WRL::ComPtr<ID3D11VertexShader> _vertexShader;
+    Microsoft::WRL::ComPtr<ID3D11InputLayout> _inputLayout;
+    Microsoft::WRL::ComPtr<ID3D11PixelShader> _pixelShader;
 };
 
 #endif /* defined(__noctisgames__Direct3DProgram__) */
