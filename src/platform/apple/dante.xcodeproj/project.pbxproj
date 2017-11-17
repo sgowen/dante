@@ -1646,7 +1646,6 @@
 				BB44C31E1DB030B3003E633F /* mac */,
 				BBD3E85F1FB2872A00328E35 /* ios */,
 				0ADF1875178E2185005DA99E /* Products */,
-				BB6F59A31FBDF15600BD7697 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -2703,13 +2702,6 @@
 				BB6F59871FBDEA0D00BD7697 /* window.c */,
 			);
 			path = src;
-			sourceTree = "<group>";
-		};
-		BB6F59A31FBDF15600BD7697 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		BB6F59A51FBE005700BD7697 /* spine-runtimes */ = {

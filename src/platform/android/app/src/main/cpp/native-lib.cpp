@@ -406,14 +406,13 @@ void android_main(android_app* state)
     while (1)
     {
         // Read all pending events.
-        int id;
         int events;
         android_poll_source* source;
         
         // If not animating, we will block forever waiting for events.
         // If animating, we loop until all events are read, then continue
         // to draw the next frame of animation.
-        while ((id = ALooper_pollAll(g_engine.isReady() ? 0 : -1, NULL, &events, (void**) &source)) >= 0)
+        while ((ALooper_pollAll(g_engine.isReady() ? 0 : -1, NULL, &events, (void**) &source)) >= 0)
         {
             if (source != NULL)
             {
