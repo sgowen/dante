@@ -20,8 +20,8 @@ CircleBatcherFactory* CircleBatcherFactory::getInstance()
 #include "OpenGLCircleBatcher.h"
 CircleBatcher* CircleBatcherFactory::createCircleBatcher() { return new OpenGLCircleBatcher(); }
 #elif defined _WIN32
-#include "Direct3DCircleBatcher.h"
-CircleBatcher* CircleBatcherFactory::createCircleBatcher() { return new Direct3DCircleBatcher(); }
+#include "DirectXCircleBatcher.h"
+CircleBatcher* CircleBatcherFactory::createCircleBatcher() { return new DirectXCircleBatcher(); }
 #endif
 
 CircleBatcherFactory::CircleBatcherFactory()

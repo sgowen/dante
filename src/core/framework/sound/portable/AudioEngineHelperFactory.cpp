@@ -20,7 +20,7 @@
 #elif defined __ANDROID__
     #include "AndroidAudioEngineHelper.h"
 #elif defined _WIN32
-    #include "WinAudioEngineHelper.h"
+    #include "DirectXAudioEngineHelper.h"
 #endif
 
 #include <assert.h>
@@ -42,7 +42,7 @@ AudioEngineHelper* AudioEngineHelperFactory::createAudioEngineHelper()
 #elif defined __ANDROID__
     return AndroidAudioEngineHelper::getInstance();
 #elif defined _WIN32
-	return WinAudioEngineHelper::getInstance();
+	return DirectXAudioEngineHelper::getInstance();
 #endif
     
     assert(false);

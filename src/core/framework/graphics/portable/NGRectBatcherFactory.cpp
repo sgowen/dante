@@ -20,8 +20,8 @@ NGRectBatcherFactory* NGRectBatcherFactory::getInstance()
 #include "OpenGLNGRectBatcher.h"
 NGRectBatcher* NGRectBatcherFactory::createNGRectBatcher(bool isFill) { return new OpenGLNGRectBatcher(isFill); }
 #elif defined _WIN32
-#include "Direct3DNGRectBatcher.h"
-NGRectBatcher* NGRectBatcherFactory::createNGRectBatcher(bool isFill) { return new Direct3DNGRectBatcher(isFill); }
+#include "DirectXNGRectBatcher.h"
+NGRectBatcher* NGRectBatcherFactory::createNGRectBatcher(bool isFill) { return new DirectXNGRectBatcher(isFill); }
 #endif
 
 NGRectBatcherFactory::NGRectBatcherFactory()

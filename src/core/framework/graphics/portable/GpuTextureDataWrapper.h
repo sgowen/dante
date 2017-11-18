@@ -10,7 +10,7 @@
 #define __noctisgames__GpuTextureDataWrapper__
 
 #if defined __APPLE__ || defined __ANDROID__
-#include "PngImageData.h"
+#include "OpenGLPngImageData.h"
 #elif defined _WIN32
 #include "pch.h"
 #endif
@@ -18,9 +18,9 @@
 struct GpuTextureDataWrapper
 {
 #if defined __APPLE__ || defined __ANDROID__
-    PngImageData raw_image_data;
+    OpenGLPngImageData raw_image_data;
     
-    GpuTextureDataWrapper(PngImageData raw_image_data_in) : raw_image_data(raw_image_data_in) {}
+    GpuTextureDataWrapper(OpenGLPngImageData raw_image_data_in) : raw_image_data(raw_image_data_in) {}
 #elif defined _WIN32
     ID3D11ShaderResourceView* texture;
 

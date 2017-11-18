@@ -20,8 +20,8 @@ SpriteBatcherFactory* SpriteBatcherFactory::getInstance()
 #include "OpenGLSpriteBatcher.h"
 SpriteBatcher* SpriteBatcherFactory::createSpriteBatcher() { return new OpenGLSpriteBatcher(); }
 #elif defined _WIN32
-#include "Direct3DSpriteBatcher.h"
-SpriteBatcher* SpriteBatcherFactory::createSpriteBatcher() { return new Direct3DSpriteBatcher(); }
+#include "DirectXSpriteBatcher.h"
+SpriteBatcher* SpriteBatcherFactory::createSpriteBatcher() { return new DirectXSpriteBatcher(); }
 #endif
 
 SpriteBatcherFactory::SpriteBatcherFactory()

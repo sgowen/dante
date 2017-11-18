@@ -55,11 +55,9 @@ public:
     template <typename T, uint32_t BIT_COUNT = sizeof(T) * 8>
     void read(T& outData)
     {
-        static_assert(std::is_arithmetic< T >::value ||
-                      std::is_enum< T >::value,
-                      "Generic Read only supports primitive data types");
+        static_assert(std::is_arithmetic< T >::value, "Generic Read only supports primitive data types");
         
-        static_assert(BIT_COUNT == 64 || BIT_COUNT == 32 || BIT_COUNT == 16 || BIT_COUNT <= 8, "Overriden BIT_COUNT must be 8 or less");
+        static_assert(BIT_COUNT == 64 || BIT_COUNT == 32 || BIT_COUNT == 16 || BIT_COUNT <= 8, "BIT_COUNT must be 64, 32, 16, or less than or equal to 8");
         
         readBits(&outData, BIT_COUNT);
         

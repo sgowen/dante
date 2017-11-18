@@ -38,23 +38,23 @@ GpuProgramWrapper* GpuProgramWrapperFactory::createFramebufferToScreenGpuProgram
 }
 #elif defined _WIN32
 
-#include "Direct3DTextureGpuProgramWrapper.h"
-#include "Direct3DGeometryGpuProgramWrapper.h"
-#include "Direct3DFramebufferToScreenGpuProgramWrapper.h"
+#include "DirectXTextureGpuProgramWrapper.h"
+#include "DirectXGeometryGpuProgramWrapper.h"
+#include "DirectXFramebufferToScreenGpuProgramWrapper.h"
 
 GpuProgramWrapper* GpuProgramWrapperFactory::createTextureGpuProgramWrapper()
 {
-    return new Direct3DTextureGpuProgramWrapper();
+    return new DirectXTextureGpuProgramWrapper();
 }
 
 GpuProgramWrapper* GpuProgramWrapperFactory::createColorGpuProgramWrapper()
 {
-    return new Direct3DGeometryGpuProgramWrapper();
+    return new DirectXGeometryGpuProgramWrapper();
 }
 
 GpuProgramWrapper* GpuProgramWrapperFactory::createFramebufferToScreenGpuProgramWrapper()
 {
-    return new Direct3DFramebufferToScreenGpuProgramWrapper();
+    return new DirectXFramebufferToScreenGpuProgramWrapper();
 }
 #endif
 

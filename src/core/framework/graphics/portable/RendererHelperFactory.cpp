@@ -20,8 +20,8 @@ RendererHelperFactory* RendererHelperFactory::getInstance()
 #include "OpenGLRendererHelper.h"
 RendererHelper* RendererHelperFactory::createRendererHelper() { return new OpenGLRendererHelper(); }
 #elif defined _WIN32
-#include "Direct3DRendererHelper.h"
-RendererHelper* RendererHelperFactory::createRendererHelper() { return new Direct3DRendererHelper(); }
+#include "DirectXRendererHelper.h"
+RendererHelper* RendererHelperFactory::createRendererHelper() { return new DirectXRendererHelper(); }
 #endif
 
 RendererHelperFactory::RendererHelperFactory()

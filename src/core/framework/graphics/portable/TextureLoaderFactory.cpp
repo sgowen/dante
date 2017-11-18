@@ -20,8 +20,8 @@ TextureLoaderFactory* TextureLoaderFactory::getInstance()
 #include "OpenGLTextureLoader.h"
 TextureLoader* TextureLoaderFactory::createTextureLoader() { return new OpenGLTextureLoader(); }
 #elif defined _WIN32
-#include "Direct3DTextureLoader.h"
-TextureLoader* TextureLoaderFactory::createTextureLoader() { return new Direct3DTextureLoader(); }
+#include "DirectXTextureLoader.h"
+TextureLoader* TextureLoaderFactory::createTextureLoader() { return new DirectXTextureLoader(); }
 #endif
 
 TextureLoaderFactory::TextureLoaderFactory()

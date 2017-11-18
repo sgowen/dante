@@ -20,8 +20,8 @@ LineBatcherFactory* LineBatcherFactory::getInstance()
 #include "OpenGLLineBatcher.h"
 LineBatcher* LineBatcherFactory::createLineBatcher() { return new OpenGLLineBatcher(); }
 #elif defined _WIN32
-#include "Direct3DLineBatcher.h"
-LineBatcher* LineBatcherFactory::createLineBatcher() { return new Direct3DLineBatcher(); }
+#include "DirectXLineBatcher.h"
+LineBatcher* LineBatcherFactory::createLineBatcher() { return new DirectXLineBatcher(); }
 #endif
 
 LineBatcherFactory::LineBatcherFactory()
