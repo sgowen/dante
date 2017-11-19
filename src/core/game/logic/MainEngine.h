@@ -9,13 +9,13 @@
 #ifndef __dante__MainEngine__
 #define __dante__MainEngine__
 
-#include "Engine.h"
+#include "framework/util/Engine.h"
 
 #ifdef NG_STEAM
-#include "NGSteam.h"
+#include "framework/network/steam/NGSteam.h"
 #endif
 
-#include "RTTI.h"
+#include "framework/util/RTTI.h"
 
 class Server;
 class JsonFile;

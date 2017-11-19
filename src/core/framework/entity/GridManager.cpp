@@ -8,7 +8,7 @@
 
 #include "pch.h"
 
-#include "GridManager.h"
+#include "framework/entity/GridManager.h"
 
 GridManager* GridManager::getInstance()
 {

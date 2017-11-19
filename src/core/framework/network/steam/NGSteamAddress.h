@@ -9,9 +9,9 @@
 #ifndef __noctisgames__NGSteamAddress__
 #define __noctisgames__NGSteamAddress__
 
-#include "MachineAddress.h"
+#include "framework/network/portable/MachineAddress.h"
 
-#include "NGSteam.h"
+#include "framework/network/steam/NGSteam.h"
 
 class NGSteamAddress : public MachineAddress
 {

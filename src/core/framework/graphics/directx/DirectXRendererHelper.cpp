@@ -8,11 +8,11 @@
 
 #include "pch.h"
 
-#include "DirectXRendererHelper.h"
+#include "framework/graphics/directx/DirectXRendererHelper.h"
 
-#include "TextureWrapper.h"
-#include "GpuTextureWrapper.h"
-#include "DirectXManager.h"
+#include "framework/graphics/portable/TextureWrapper.h"
+#include "framework/graphics/portable/GpuTextureWrapper.h"
+#include "framework/graphics/directx/DirectXManager.h"
 
 DirectXRendererHelper::DirectXRendererHelper() : RendererHelper(), _framebufferIndex(0), _isBoundToScreen(false)
 {
@@ -26,17 +26,17 @@ DirectXRendererHelper::~DirectXRendererHelper()
 
 void DirectXRendererHelper::createDeviceDependentResources(int maxBatchSize)
 {
-	D3DManager->createDeviceDependentResources(maxBatchSize);
+	DXManager->createDeviceDependentResources(maxBatchSize);
 }
 
 void DirectXRendererHelper::createWindowSizeDependentResources(int renderWidth, int renderHeight, int numFramebuffers)
 {
-	D3DManager->createWindowSizeDependentResources(renderWidth, renderHeight, numFramebuffers);
+	DXManager->createWindowSizeDependentResources(renderWidth, renderHeight, numFramebuffers);
 }
 
 void DirectXRendererHelper::releaseDeviceDependentResources()
 {
-	D3DManager->releaseDeviceDependentResources();
+	DXManager->releaseDeviceDependentResources();
 }
 
 void DirectXRendererHelper::beginFrame()
@@ -51,21 +51,21 @@ void DirectXRendererHelper::endFrame()
 
 TextureWrapper* DirectXRendererHelper::getFramebuffer(int index)
 {
-    _framebuffer->gpuTextureWrapper = D3DManager->getFramebuffers().at(index);
+    _framebuffer->gpuTextureWrapper = DXManager->getFramebuffers().at(index);
     
     return _framebuffer;
 }
 
 void DirectXRendererHelper::updateMatrix(float left, float right, float bottom, float top)
 {
-    D3DManager->updateMatrix(left, right, bottom, top);
+    DXManager->updateMatrix(left, right, bottom, top);
 }
 
 void DirectXRendererHelper::bindToOffscreenFramebuffer(int index)
 {
 	ID3D11DeviceContext* d3dContext = DirectXManager::getD3dContext();
 
-	d3dContext->OMSetRenderTargets(1, &D3DManager->getOffscreenRenderTargetViews().at(index), nullptr);
+	d3dContext->OMSetRenderTargets(1, &DXManager->getOffscreenRenderTargetViews().at(index), nullptr);
     
 	_framebufferIndex = index;
     _isBoundToScreen = false;
@@ -83,7 +83,7 @@ void DirectXRendererHelper::clearFramebufferWithColor(float r, float g, float b,
     }
     else
     {
-        targets[0] = D3DManager->getOffscreenRenderTargetViews().at(_framebufferIndex);
+        targets[0] = DXManager->getOffscreenRenderTargetViews().at(_framebufferIndex);
     }
     
 	ID3D11DeviceContext* d3dContext = DirectXManager::getD3dContext();

@@ -6,12 +6,14 @@
 //  Copyright © 2017 Noctis Games. All rights reserved.
 //
 
-#include "AssetDataHandler.h"
+#include "framework/file/portable/AssetDataHandler.h"
 
 #if defined __APPLE__
-#include "AppleAssetDataHandler.h"
+#include "framework/file/apple/AppleAssetDataHandler.h"
 #elif defined __ANDROID__
-#include "AndroidAssetDataHandler.h"
+#include "framework/file/android/AndroidAssetDataHandler.h"
+#elif defined _WIN32
+#include "framework/file/windows/WindowsAssetDataHandler.h"
 #endif
 
 #include <assert.h>
@@ -22,6 +24,8 @@ AssetDataHandler* AssetDataHandler::getAssetDataHandler()
     return AppleAssetDataHandler::getInstance();
 #elif defined __ANDROID__
     return AndroidAssetDataHandler::getInstance();
+#elif defined _WIN32
+    return WindowsAssetDataHandler::getInstance();
 #endif
     
     assert(false);

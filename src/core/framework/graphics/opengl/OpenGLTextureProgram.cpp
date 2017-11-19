@@ -6,9 +6,9 @@
 //  Copyright (c) 2017 Noctis Games. All rights reserved.
 //
 
-#include "OpenGLTextureProgram.h"
+#include "framework/graphics/opengl/OpenGLTextureProgram.h"
 
-#include "OpenGLManager.h"
+#include "framework/graphics/opengl/OpenGLManager.h"
 
 OpenGLTextureProgram::OpenGLTextureProgram(const char* vertexShaderName, const char* fragmentShaderName) : OpenGLProgram(vertexShaderName, fragmentShaderName)
 {

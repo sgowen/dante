@@ -9,7 +9,7 @@
 #ifndef __noctisgames__OpenGLSpriteBatcher__
 #define __noctisgames__OpenGLSpriteBatcher__
 
-#include "SpriteBatcher.h"
+#include "framework/graphics/portable/SpriteBatcher.h"
 
 class OpenGLSpriteBatcher : public SpriteBatcher
 {

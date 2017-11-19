@@ -8,17 +8,17 @@
 
 #include "pch.h"
 
-#include "NGSteamServerHelper.h"
+#include "framework/network/steam/NGSteamServerHelper.h"
 
-#include "NGSteamAddress.h"
-#include "ClientProxy.h"
+#include "framework/network/steam/NGSteamAddress.h"
+#include "framework/network/server/ClientProxy.h"
 
-#include "NGSteamPacketHandler.h"
-#include "NGSteamGameServices.h"
-#include "StringUtil.h"
-#include "FrameworkConstants.h"
-#include "OutputMemoryBitStream.h"
-#include "Timing.h"
+#include "framework/network/steam/NGSteamPacketHandler.h"
+#include "framework/network/steam/NGSteamGameServices.h"
+#include "framework/util/StringUtil.h"
+#include "framework/util/FrameworkConstants.h"
+#include "framework/network/portable/OutputMemoryBitStream.h"
+#include "framework/util/Timing.h"
 
 #include <assert.h>
 

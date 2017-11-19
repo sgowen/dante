@@ -9,12 +9,12 @@
 #ifndef __noctisgames__Crate__
 #define __noctisgames__Crate__
 
-#include "Entity.h"
+#include "framework/entity/Entity.h"
 
-#include "GameConstants.h"
+#include "game/logic/GameConstants.h"
 #include "Box2D/Common/b2Math.h"
 
-#include "RTTI.h"
+#include "framework/util/RTTI.h"
 
 class Ground;
 

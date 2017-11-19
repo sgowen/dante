@@ -8,7 +8,7 @@
 
 #include "pch.h"
 
-#include "LineBatcherFactory.h"
+#include "framework/graphics/portable/LineBatcherFactory.h"
 
 LineBatcherFactory* LineBatcherFactory::getInstance()
 {
@@ -17,10 +17,10 @@ LineBatcherFactory* LineBatcherFactory::getInstance()
 }
 
 #if defined __APPLE__ || defined __ANDROID__
-#include "OpenGLLineBatcher.h"
+#include "framework/graphics/opengl/OpenGLLineBatcher.h"
 LineBatcher* LineBatcherFactory::createLineBatcher() { return new OpenGLLineBatcher(); }
 #elif defined _WIN32
-#include "DirectXLineBatcher.h"
+#include "framework/graphics/directx/DirectXLineBatcher.h"
 LineBatcher* LineBatcherFactory::createLineBatcher() { return new DirectXLineBatcher(); }
 #endif
 

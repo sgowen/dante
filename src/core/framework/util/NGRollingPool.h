@@ -9,7 +9,7 @@
 #ifndef __noctisgames__NGRollingPool__
 #define __noctisgames__NGRollingPool__
 
-#include "NGSTDUtil.h"
+#include "framework/util/NGSTDUtil.h"
 
 #include <vector>
 

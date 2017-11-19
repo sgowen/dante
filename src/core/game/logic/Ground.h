@@ -9,11 +9,11 @@
 #ifndef __noctisgames__Ground__
 #define __noctisgames__Ground__
 
-#include "Entity.h"
+#include "framework/entity/Entity.h"
 
-#include "GameConstants.h"
+#include "game/logic/GameConstants.h"
 
-#include "RTTI.h"
+#include "framework/util/RTTI.h"
 
 class Ground : public Entity
 {

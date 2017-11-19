@@ -9,7 +9,7 @@
 #ifndef __noctisgames__TransitionGpuProgramWrapper__
 #define __noctisgames__TransitionGpuProgramWrapper__
 
-#include "GpuProgramWrapper.h"
+#include "framework/graphics/portable/GpuProgramWrapper.h"
 
 struct GpuTextureWrapper;
 

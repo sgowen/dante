@@ -8,10 +8,10 @@
 
 #include "pch.h"
 
-#include "NGSteamGameServer.h"
+#include "framework/network/steam/NGSteamGameServer.h"
 
-#include "StringUtil.h"
-#include "macros.h"
+#include "framework/util/StringUtil.h"
+#include "framework/util/macros.h"
 
 NGSteamGameServer::NGSteamGameServer(gameserveritem_t *pGameServerItem)
 {

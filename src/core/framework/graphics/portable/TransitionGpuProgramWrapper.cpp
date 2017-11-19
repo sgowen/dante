@@ -8,9 +8,9 @@
 
 #include "pch.h"
 
-#include "TransitionGpuProgramWrapper.h"
+#include "framework/graphics/portable/TransitionGpuProgramWrapper.h"
 
-#include "GpuTextureWrapper.h"
+#include "framework/graphics/portable/GpuTextureWrapper.h"
 
 #include <memory>
 

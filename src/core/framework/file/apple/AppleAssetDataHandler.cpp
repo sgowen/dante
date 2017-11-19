@@ -6,9 +6,9 @@
 //  Copyright (c) 2017 Noctis Games. All rights reserved.
 //
 
-#include "AppleAssetDataHandler.h"
+#include "framework/file/apple/AppleAssetDataHandler.h"
 
-#include "apple_asset_data_handler.h"
+#include "framework/file/apple/apple_asset_data_handler.h"
 
 AppleAssetDataHandler* AppleAssetDataHandler::getInstance()
 {

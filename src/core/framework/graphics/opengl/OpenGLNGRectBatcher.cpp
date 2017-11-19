@@ -6,14 +6,14 @@
 //  Copyright (c) 2017 Noctis Games. All rights reserved.
 //
 
-#include "OpenGLNGRectBatcher.h"
+#include "framework/graphics/opengl/OpenGLNGRectBatcher.h"
 
-#include "macros.h"
-#include "NGRect.h"
-#include "Vector2.h"
-#include "GpuProgramWrapper.h"
-#include "OpenGLManager.h"
-#include "Color.h"
+#include "framework/util/macros.h"
+#include "framework/math/NGRect.h"
+#include "framework/math/Vector2.h"
+#include "framework/graphics/portable/GpuProgramWrapper.h"
+#include "framework/graphics/opengl/OpenGLManager.h"
+#include "framework/math/Color.h"
 
 OpenGLNGRectBatcher::OpenGLNGRectBatcher(bool isFill) : NGRectBatcher(isFill)
 {

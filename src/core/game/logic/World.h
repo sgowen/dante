@@ -9,7 +9,7 @@
 #ifndef __noctisgames__World__
 #define __noctisgames__World__
 
-#include "FrameworkConstants.h"
+#include "framework/util/FrameworkConstants.h"
 
 #include <memory>
 #include <vector>

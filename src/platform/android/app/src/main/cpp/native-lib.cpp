@@ -6,16 +6,17 @@
 //  Copyright © 2017 Noctis Games. All rights reserved.
 //
 
-#include "MainEngine.h"
-#include "ScreenInputManager.h"
-#include "KeyboardInputManager.h"
-#include "AndroidAudioEngineHelper.h"
-#include "AndroidAssetDataHandler.h"
-#include "MainAssets.h"
-#include "OpenGLManager.h"
-#include "FrameworkConstants.h"
-#include "KeyboardLookup.h"
-#include "MathUtil.h"
+#include "framework/input/CursorInputManager.h"
+#include "framework/input/KeyboardInputManager.h"
+#include "framework/audio/superpowered/android/AndroidAudioEngineHelper.h"
+#include "framework/file/android/AndroidAssetDataHandler.h"
+#include "framework/graphics/opengl/OpenGLManager.h"
+#include "framework/util/FrameworkConstants.h"
+#include "framework/input/KeyboardLookup.h"
+#include "framework/math/MathUtil.h"
+
+#include "game/logic/MainEngine.h"
+#include "game/graphics/portable/MainAssets.h"
 
 #include "GLContext.h"
 #include "JNIHelper.h"
@@ -151,7 +152,7 @@ int32_t Engine::handleInput(android_app* app, AInputEvent* event)
             {
                 float x = AMotionEvent_getX(event, pointerIndex);
                 float y = AMotionEvent_getY(event, pointerIndex);
-                SCREEN_INPUT_MANAGER->onTouch(ScreenEventType_DOWN, x, y);
+                CURSOR_INPUT_MANAGER->onTouch(ScreenEventType_DOWN, x, y);
             }
                 break;
             case AMOTION_EVENT_ACTION_UP:
@@ -160,7 +161,7 @@ int32_t Engine::handleInput(android_app* app, AInputEvent* event)
             {
                 float x = AMotionEvent_getX(event, pointerIndex);
                 float y = AMotionEvent_getY(event, pointerIndex);
-                SCREEN_INPUT_MANAGER->onTouch(ScreenEventType_UP, x, y);
+                CURSOR_INPUT_MANAGER->onTouch(ScreenEventType_UP, x, y);
             }
                 break;
             case AMOTION_EVENT_ACTION_MOVE:
@@ -170,7 +171,7 @@ int32_t Engine::handleInput(android_app* app, AInputEvent* event)
                     pointerIndex = i;
                     float x = AMotionEvent_getX(event, pointerIndex);
                     float y = AMotionEvent_getY(event, pointerIndex);
-                    SCREEN_INPUT_MANAGER->onTouch(ScreenEventType_DRAGGED, x, y);
+                    CURSOR_INPUT_MANAGER->onTouch(ScreenEventType_DRAGGED, x, y);
                 }
             }
                 break;
@@ -242,7 +243,7 @@ void Engine::loadResources()
     
     ANDROID_AUDIO_ENGINE_HELPER->init(jni, m_app->activity->clazz);
     
-    ANDROID_ASSETS->init(jni, m_app->activity->clazz);
+    AndroidAssetDataHandler::getInstance()->init(jni, m_app->activity->clazz);
     
     MAIN_ASSETS->setUsingCompressedTextureSet(m_glContext->GetScreenWidth() < 2560);
     
@@ -275,7 +276,7 @@ void Engine::unloadResources()
 {
     ANDROID_AUDIO_ENGINE_HELPER->deinit();
     
-    ANDROID_ASSETS->deinit();
+    AndroidAssetDataHandler::getInstance()->deinit();
     
     m_screen->releaseDeviceDependentResources();
 }

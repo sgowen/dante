@@ -8,10 +8,10 @@
 
 #include "pch.h"
 
-#include "InputState.h"
+#include "framework/network/portable/InputState.h"
 
-#include "OutputMemoryBitStream.h"
-#include "InputMemoryBitStream.h"
+#include "framework/network/portable/OutputMemoryBitStream.h"
+#include "framework/network/portable/InputMemoryBitStream.h"
 
 InputState::InputState() : _isInUse(false)
 {

@@ -8,12 +8,12 @@
 
 #include "pch.h"
 
-#include "Assets.h"
+#include "framework/graphics/portable/Assets.h"
 
-#include "AssetsMapper.h"
-#include "TextureRegion.h"
-#include "Animation.h"
-#include "NGSTDUtil.h"
+#include "framework/graphics/portable/AssetsMapper.h"
+#include "framework/graphics/portable/TextureRegion.h"
+#include "framework/graphics/portable/Animation.h"
+#include "framework/util/NGSTDUtil.h"
 
 #include <assert.h>
 

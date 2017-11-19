@@ -9,7 +9,7 @@
 #ifndef __noctisgames__ClientHelper__
 #define __noctisgames__ClientHelper__
 
-#include "NetworkHelper.h"
+#include "framework/network/portable/NetworkHelper.h"
 
 #include <string>
 

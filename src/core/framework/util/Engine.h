@@ -9,7 +9,7 @@
 #ifndef __noctisgames__Engine__
 #define __noctisgames__Engine__
 
-#include "RTTI.h"
+#include "framework/util/RTTI.h"
 
 class Renderer;
 

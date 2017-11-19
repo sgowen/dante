@@ -8,9 +8,9 @@
 
 #include "pch.h"
 
-#include "FWInstanceManager.h"
+#include "framework/network/portable/FWInstanceManager.h"
 
-#include "EntityRegistry.h"
+#include "framework/entity/EntityRegistry.h"
 
 #include <assert.h>
 

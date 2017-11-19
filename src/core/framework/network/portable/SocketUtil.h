@@ -9,9 +9,9 @@
 #ifndef __noctisgames__SocketUtil__
 #define __noctisgames__SocketUtil__
 
-#include "UDPSocket.h"
+#include "framework/network/portable/UDPSocket.h"
 
-#include "SocketAddressFamily.h"
+#include "framework/network/portable/SocketAddressFamily.h"
 
 #define SOCKET_UTIL (SocketUtil::getInstance())
 

@@ -8,12 +8,12 @@
 
 #include "pch.h"
 
-#include "DirectXProgram.h"
+#include "framework/graphics/directx/DirectXProgram.h"
 
-#include "DirectXManager.h"
+#include "framework/graphics/directx/DirectXManager.h"
 #include "PlatformHelpers.h"
 #include "ReadData.h"
-#include "StringUtil.h"
+#include "framework/util/StringUtil.h"
 
 DirectXProgram::DirectXProgram(const char* vertexShaderName, const char* pixelShaderName, bool useTextureCoords)
 {
@@ -31,51 +31,49 @@ DirectXProgram::DirectXProgram(const char* vertexShaderName, const char* pixelSh
 		vertexShaderFileName[len + 4] = '\0';
 	}
 
-	char* pixelShaderFileName;
+	char* fragmentShaderFileName;
 	{
 		size_t len = strlen(pixelShaderName);
 
-		pixelShaderFileName = new char[len + 5];
+		fragmentShaderFileName = new char[len + 5];
 
-		strcpy_s(pixelShaderFileName, len + 5, pixelShaderName);
-		pixelShaderFileName[len] = '.';
-		pixelShaderFileName[len + 1] = 'n';
-		pixelShaderFileName[len + 2] = 'g';
-		pixelShaderFileName[len + 3] = 's';
-		pixelShaderFileName[len + 4] = '\0';
+		strcpy_s(fragmentShaderFileName, len + 5, pixelShaderName);
+		fragmentShaderFileName[len] = '.';
+		fragmentShaderFileName[len + 1] = 'n';
+		fragmentShaderFileName[len + 2] = 'g';
+		fragmentShaderFileName[len + 3] = 's';
+		fragmentShaderFileName[len + 4] = '\0';
 	}
-
-	const wchar_t* finalVertexShaderFileName;
-	const wchar_t* finalPixelShaderFileName;
-	wchar_t* wString1 = new wchar_t[4096];
-	wchar_t* wString2 = new wchar_t[4096];
+    
+    const char* finalVertexShaderFileName;
+    const char* finalFragmentShaderFileName;
 #if (_WIN32_WINNT == _WIN32_WINNT_WIN7)
-	std::wstring s1(L"data\\shaders\\");
-	MultiByteToWideChar(CP_ACP, 0, vertexShaderFileName, -1, wString1, 4096);
-	s1 += std::wstring(wString1);
-	finalVertexShaderFileName = s1.c_str();
-
-	std::wstring s2(L"data\\shaders\\");
-	MultiByteToWideChar(CP_ACP, 0, pixelShaderFileName, -1, wString2, 4096);
-	s2 += std::wstring(wString2);
-	finalPixelShaderFileName = s2.c_str();
+    {
+        std::string s("data\\shaders\\");
+        s += std::string(vertexShaderFileName);
+        finalVertexShaderFileName = s.c_str();
+    }
+    
+    {
+        std::string s("data\\shaders\\");
+        s += std::string(fragmentShaderFileName);
+        finalFragmentShaderFileName = s.c_str();
+    }
 #else
-	MultiByteToWideChar(CP_ACP, 0, vertexShaderFileName, -1, wString1, 4096);
-	finalVertexShaderFileName = wString1;
-	MultiByteToWideChar(CP_ACP, 0, pixelShaderFileName, -1, wString2, 4096);
-	finalPixelShaderFileName = wString2;
+    finalVertexShaderFileName = vertexShaderFileName;
+    finalFragmentShaderFileName = fragmentShaderFileName;
 #endif
 
 	ID3D11Device* d3dDevice = DirectXManager::getD3dDevice();
 
-	auto blob = DX::ReadData(finalVertexShaderFileName);
-    unsigned char* vertex_shader_source_output = (unsigned char*) malloc(blob.size());
-    StringUtil::encryptDecrypt((unsigned char*)blob.data(), vertex_shader_source_output, blob.size());
+    const FileData vertex_shader_source = AssetDataHandler::getAssetDataHandler()->getAssetData(finalVertexShaderFileName);
+    unsigned char* vertex_shader_source_output = (unsigned char*) malloc(vertex_shader_source.data_length);
+    StringUtil::encryptDecrypt((unsigned char*)vertex_shader_source.data, vertex_shader_source_output, vertex_shader_source.data_length);
     
 	DirectX::ThrowIfFailed(
 		d3dDevice->CreateVertexShader(
 			vertex_shader_source_output,
-			blob.size(),
+			vertex_shader_source.data_length,
 			nullptr,
 			&_vertexShader
 		)
@@ -99,29 +97,29 @@ DirectXProgram::DirectXProgram(const char* vertexShaderName, const char* pixelSh
             useTextureCoords ? textureVertexDesc : geometryVertexDesc,
 			useTextureCoords ? ARRAYSIZE(textureVertexDesc) : ARRAYSIZE(geometryVertexDesc),
 			vertex_shader_source_output,
-			blob.size(),
+			vertex_shader_source.data_length,
 			&_inputLayout
 		)
 	);
 
-	blob = DX::ReadData(finalPixelShaderFileName);
-    
-    unsigned char* fragment_shader_source_output = (unsigned char*) malloc(blob.size());
-    StringUtil::encryptDecrypt((unsigned char*)blob.data(), fragment_shader_source_output, blob.size());
+    const FileData fragment_shader_source = AssetDataHandler::getAssetDataHandler()->getAssetData(finalFragmentShaderFileName);
+    unsigned char* fragment_shader_source_output = (unsigned char*) malloc(fragment_shader_source.data_length);
+    StringUtil::encryptDecrypt((unsigned char*)fragment_shader_source.data, fragment_shader_source_output, fragment_shader_source.data_length);
     
 	DirectX::ThrowIfFailed(
 		d3dDevice->CreatePixelShader(
 			fragment_shader_source_output,
-			blob.size(),
+			fragment_shader_source.data_length,
 			nullptr,
 			&_pixelShader
 		)
 	);
 
 	delete vertexShaderFileName;
-	delete pixelShaderFileName;
-	delete wString1;
-	delete wString2;
+	delete fragmentShaderFileName;
+    
+    AssetDataHandler::getAssetDataHandler()->releaseAssetData(&vertex_shader_source);
+    AssetDataHandler::getAssetDataHandler()->releaseAssetData(&fragment_shader_source);
     
     free((void *)vertex_shader_source_output);
     free((void *)fragment_shader_source_output);
@@ -149,10 +147,10 @@ void DirectXProgram::bindMatrix()
 {
     ID3D11DeviceContext* d3dContext = DirectXManager::getD3dContext();
     
-    d3dContext->VSSetConstantBuffers(0, 1, D3DManager->getMatrixConstantbuffer().GetAddressOf());
+    d3dContext->VSSetConstantBuffers(0, 1, DXManager->getMatrixConstantbuffer().GetAddressOf());
     
     // send the final matrix to video memory
-    d3dContext->UpdateSubresource(D3DManager->getMatrixConstantbuffer().Get(), 0, 0, &D3DManager->getMatFinal(), 0, 0);
+    d3dContext->UpdateSubresource(DXManager->getMatrixConstantbuffer().Get(), 0, 0, &DXManager->getMatFinal(), 0, 0);
 }
 
 void DirectXProgram::createConstantBuffer(_COM_Outptr_opt_  ID3D11Buffer **ppBuffer)

@@ -9,7 +9,7 @@
 #ifndef __noctisgames__InputMemoryBitStrea__
 #define __noctisgames__InputMemoryBitStrea__
 
-#include "Network.h"
+#include "framework/network/portable/Network.h"
 
 #include <cstdint>
 #include <cstdlib>

@@ -8,7 +8,7 @@
 
 #include "pch.h"
 
-#include "AssetsMapper.h"
+#include "framework/graphics/portable/AssetsMapper.h"
 
 AssetsMapper::AssetsMapper()
 {

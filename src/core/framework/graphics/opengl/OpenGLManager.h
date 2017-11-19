@@ -9,7 +9,7 @@
 #ifndef __noctisgames__OpenGLManager__
 #define __noctisgames__OpenGLManager__
 
-#include "NGGraphics.h"
+#include "framework/graphics/portable/NGGraphics.h"
 
 #include <vector>
 

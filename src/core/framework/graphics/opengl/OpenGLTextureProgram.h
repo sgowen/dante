@@ -9,7 +9,7 @@
 #ifndef __noctisgames__OpenGLTextureProgram__
 #define __noctisgames__OpenGLTextureProgram__
 
-#include "OpenGLProgram.h"
+#include "framework/graphics/opengl/OpenGLProgram.h"
 
 class OpenGLTextureProgram : public OpenGLProgram
 {

@@ -8,11 +8,11 @@
 
 #include "pch.h"
 
-#include "MoveList.h"
+#include "framework/network/portable/MoveList.h"
 
-#include "InputState.h"
-#include "Timing.h"
-#include "StringUtil.h"
+#include "framework/network/portable/InputState.h"
+#include "framework/util/Timing.h"
+#include "framework/util/StringUtil.h"
 
 MoveList::MoveList(): _lastMoveTimestamp(-1.0f), _lastProcessedMoveTimestamp(-1.0f)
 {

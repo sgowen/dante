@@ -8,11 +8,11 @@
 
 #include "pch.h"
 
-#include "SocketAddressFactory.h"
+#include "framework/network/portable/SocketAddressFactory.h"
 
-#include "SocketAddress.h"
+#include "framework/network/portable/SocketAddress.h"
 
-#include "SocketUtil.h"
+#include "framework/network/portable/SocketUtil.h"
 
 #include <cstring>	// memset()
 

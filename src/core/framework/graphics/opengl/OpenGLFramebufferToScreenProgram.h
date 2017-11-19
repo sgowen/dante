@@ -9,7 +9,7 @@
 #ifndef __noctisgames__OpenGLFramebufferToScreenProgram__
 #define __noctisgames__OpenGLFramebufferToScreenProgram__
 
-#include "OpenGLProgram.h"
+#include "framework/graphics/opengl/OpenGLProgram.h"
 
 class OpenGLFramebufferToScreenProgram : public OpenGLProgram
 {

@@ -8,12 +8,12 @@
 
 #include "pch.h"
 
-#include "Move.h"
+#include "framework/network/portable/Move.h"
 
-#include "InputState.h"
-#include "OutputMemoryBitStream.h"
-#include "InputMemoryBitStream.h"
-#include "Entity.h"
+#include "framework/network/portable/InputState.h"
+#include "framework/network/portable/OutputMemoryBitStream.h"
+#include "framework/network/portable/InputMemoryBitStream.h"
+#include "framework/entity/Entity.h"
 
 Move::Move(InputState* inInputState, float inTimestamp) :
 _inputState(inInputState),

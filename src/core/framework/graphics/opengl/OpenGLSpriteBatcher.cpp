@@ -6,15 +6,15 @@
 //  Copyright (c) 2017 Noctis Games. All rights reserved.
 //
 
-#include "OpenGLSpriteBatcher.h"
+#include "framework/graphics/opengl/OpenGLSpriteBatcher.h"
 
-#include "TextureWrapper.h"
-#include "GpuTextureWrapper.h"
-#include "GpuProgramWrapper.h"
-#include "TextureRegion.h"
-#include "Color.h"
+#include "framework/graphics/portable/TextureWrapper.h"
+#include "framework/graphics/portable/GpuTextureWrapper.h"
+#include "framework/graphics/portable/GpuProgramWrapper.h"
+#include "framework/graphics/portable/TextureRegion.h"
+#include "framework/math/Color.h"
 
-#include "OpenGLManager.h"
+#include "framework/graphics/opengl/OpenGLManager.h"
 
 OpenGLSpriteBatcher::OpenGLSpriteBatcher()
 {

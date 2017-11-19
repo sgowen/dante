@@ -9,7 +9,7 @@
 #ifndef __noctisgames__InputState__
 #define __noctisgames__InputState__
 
-#include "RTTI.h"
+#include "framework/util/RTTI.h"
 
 class OutputMemoryBitStream;
 class InputMemoryBitStream;

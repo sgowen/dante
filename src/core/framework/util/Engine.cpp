@@ -8,15 +8,15 @@
 
 #include "pch.h"
 
-#include "Engine.h"
+#include "framework/util/Engine.h"
 
-#include "Renderer.h"
+#include "framework/graphics/portable/Renderer.h"
 
-#include "FrameworkConstants.h"
-#include "NGAudioEngine.h"
-#include "Timing.h"
-#include "FPSUtil.h"
-#include "CursorConverter.h"
+#include "framework/util/FrameworkConstants.h"
+#include "framework/audio/portable/NGAudioEngine.h"
+#include "framework/util/Timing.h"
+#include "framework/util/FPSUtil.h"
+#include "framework/input/CursorConverter.h"
 
 Engine::Engine(Renderer* inRenderer) :
 _renderer(inRenderer),

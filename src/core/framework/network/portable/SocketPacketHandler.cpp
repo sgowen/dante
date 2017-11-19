@@ -8,21 +8,21 @@
 
 #include "pch.h"
 
-#include "SocketPacketHandler.h"
+#include "framework/network/portable/SocketPacketHandler.h"
 
-#include "OutputMemoryBitStream.h"
-#include "UDPSocket.h"
-#include "MachineAddress.h"
+#include "framework/network/portable/OutputMemoryBitStream.h"
+#include "framework/network/portable/UDPSocket.h"
+#include "framework/network/portable/MachineAddress.h"
 
-#include "SocketAddress.h"
-#include "InputMemoryBitStream.h"
-#include "SocketUtil.h"
-#include "StringUtil.h"
-#include "Timing.h"
-#include "SocketAddressFamily.h"
-#include "macros.h"
-#include "FrameworkConstants.h"
-#include "Network.h"
+#include "framework/network/portable/SocketAddress.h"
+#include "framework/network/portable/InputMemoryBitStream.h"
+#include "framework/network/portable/SocketUtil.h"
+#include "framework/util/StringUtil.h"
+#include "framework/util/Timing.h"
+#include "framework/network/portable/SocketAddressFamily.h"
+#include "framework/util/macros.h"
+#include "framework/util/FrameworkConstants.h"
+#include "framework/network/portable/Network.h"
 
 SocketPacketHandler::SocketPacketHandler(uint16_t inPort, ProcessPacketFunc processPacketFunc, HandleNoResponseFunc handleNoResponseFunc, HandleConnectionResetFunc handleConnectionResetFunc) : PacketHandler(processPacketFunc, handleNoResponseFunc, handleConnectionResetFunc), _socketAddress(new SocketAddress(INADDR_ANY, inPort)), _socket(nullptr), _isInitialized(false)
 {

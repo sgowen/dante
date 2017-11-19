@@ -9,12 +9,12 @@
 #import "ViewController.h"
 
 // C++
-#include "MainEngine.h"
-#include "CursorInputManager.h"
-#include "MainAssets.h"
-#include "GameConstants.h"
-#include "OpenGLManager.h"
-#include "FrameworkConstants.h"
+#include "game/logic/MainEngine.h"
+#include "framework/input/CursorInputManager.h"
+#include "game/graphics/portable/MainAssets.h"
+#include "game/logic/GameConstants.h"
+#include "framework/graphics/opengl/OpenGLManager.h"
+#include "framework/util/FrameworkConstants.h"
 
 @interface ViewController ()
 {
@@ -99,21 +99,21 @@
 {
     UITouch *touch = [touches anyObject];
     CGPoint pos = [touch locationInView: [UIApplication sharedApplication].keyWindow];
-    SCREEN_INPUT_MANAGER->onTouch(CursorEventType_DOWN, pos.x, pos.y);
+    CURSOR_INPUT_MANAGER->onTouch(CursorEventType_DOWN, pos.x, pos.y);
 }
 
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
 {
     UITouch *touch = [touches anyObject];
     CGPoint pos = [touch locationInView: [UIApplication sharedApplication].keyWindow];
-    SCREEN_INPUT_MANAGER->onTouch(CursorEventType_DRAGGED, pos.x, pos.y);
+    CURSOR_INPUT_MANAGER->onTouch(CursorEventType_DRAGGED, pos.x, pos.y);
 }
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
     UITouch *touch = [touches anyObject];
     CGPoint pos = [touch locationInView: [UIApplication sharedApplication].keyWindow];
-    SCREEN_INPUT_MANAGER->onTouch(CursorEventType_UP, pos.x, pos.y);
+    CURSOR_INPUT_MANAGER->onTouch(CursorEventType_UP, pos.x, pos.y);
 }
 
 - (BOOL)prefersStatusBarHidden

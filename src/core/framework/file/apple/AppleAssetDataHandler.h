@@ -9,7 +9,7 @@
 #ifndef __noctisgames__AppleAssetDataHandler__
 #define __noctisgames__AppleAssetDataHandler__
 
-#include "AssetDataHandler.h"
+#include "framework/file/portable/AssetDataHandler.h"
 
 class AppleAssetDataHandler : public AssetDataHandler
 {

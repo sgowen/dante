@@ -9,7 +9,7 @@
 #ifndef __noctisgames__OpenGLPngImageData__
 #define __noctisgames__OpenGLPngImageData__
 
-#include "NGGraphics.h"
+#include "framework/graphics/portable/NGGraphics.h"
 
 struct OpenGLPngImageData
 {

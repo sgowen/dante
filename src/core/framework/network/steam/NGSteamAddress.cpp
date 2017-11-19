@@ -8,9 +8,9 @@
 
 #include "pch.h"
 
-#include "NGSteamAddress.h"
+#include "framework/network/steam/NGSteamAddress.h"
 
-#include "StringUtil.h"
+#include "framework/util/StringUtil.h"
 
 NGSteamAddress::NGSteamAddress(CSteamID steamID) : MachineAddress(), _steamID(steamID), _isReliable(false)
 {

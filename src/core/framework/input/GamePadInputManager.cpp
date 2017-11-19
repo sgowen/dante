@@ -8,11 +8,11 @@
 
 #include "pch.h"
 
-#include "GamePadInputManager.h"
+#include "framework/input/GamePadInputManager.h"
 
-#include "GamePadEvent.h"
+#include "framework/input/GamePadEvent.h"
 
-#include "FrameworkConstants.h"
+#include "framework/util/FrameworkConstants.h"
 
 #define POOL_SIZE 8192
 

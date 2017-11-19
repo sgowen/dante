@@ -8,7 +8,7 @@
 
 #include "pch.h"
 
-#include "GpuProgramWrapper.h"
+#include "framework/graphics/portable/GpuProgramWrapper.h"
 
 GpuProgramWrapper::GpuProgramWrapper()
 {

@@ -8,4 +8,4 @@
 
 #include "pch.h"
 
-#include "NGSteam.h"
+#include "framework/network/steam/NGSteam.h"

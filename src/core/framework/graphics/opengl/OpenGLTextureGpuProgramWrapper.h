@@ -9,7 +9,7 @@
 #ifndef __noctisgames__OpenGLTextureGpuProgramWrapper__
 #define __noctisgames__OpenGLTextureGpuProgramWrapper__
 
-#include "GpuProgramWrapper.h"
+#include "framework/graphics/portable/GpuProgramWrapper.h"
 
 class OpenGLTextureProgram;
 

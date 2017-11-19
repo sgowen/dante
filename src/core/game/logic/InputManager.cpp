@@ -8,25 +8,25 @@
 
 #include "pch.h"
 
-#include "InputManager.h"
+#include "game/logic/InputManager.h"
 
-#include "MainInputState.h"
-#include "Move.h"
+#include "game/network/MainInputState.h"
+#include "framework/network/portable/Move.h"
 
-#include "Timing.h"
-#include "CursorInputManager.h"
-#include "CursorEvent.h"
-#include "CursorConverter.h"
-#include "KeyboardInputManager.h"
-#include "KeyboardEvent.h"
-#include "GamePadInputManager.h"
-#include "GamePadEvent.h"
-#include "PooledObjectsManager.h"
-#include "GameConstants.h"
-#include "KeyboardLookup.h"
-#include "StringUtil.h"
-#include "MathUtil.h"
-#include "FrameworkConstants.h"
+#include "framework/util/Timing.h"
+#include "framework/input/CursorInputManager.h"
+#include "framework/input/CursorEvent.h"
+#include "framework/input/CursorConverter.h"
+#include "framework/input/KeyboardInputManager.h"
+#include "framework/input/KeyboardEvent.h"
+#include "framework/input/GamePadInputManager.h"
+#include "framework/input/GamePadEvent.h"
+#include "game/logic/PooledObjectsManager.h"
+#include "game/logic/GameConstants.h"
+#include "framework/input/KeyboardLookup.h"
+#include "framework/util/StringUtil.h"
+#include "framework/math/MathUtil.h"
+#include "framework/util/FrameworkConstants.h"
 
 #include <sstream>
 
@@ -53,7 +53,7 @@ void InputManager::sOnPlayerWelcomed(uint8_t playerId)
 
 void InputManager::update()
 {
-    SCREEN_INPUT_MANAGER->process();
+    CURSOR_INPUT_MANAGER->process();
     KEYBOARD_INPUT_MANAGER->process();
     GAME_PAD_INPUT_MANAGER->process();
     

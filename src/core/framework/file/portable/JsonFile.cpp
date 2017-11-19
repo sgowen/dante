@@ -8,21 +8,21 @@
 
 #include "pch.h"
 
-#include "JsonFile.h"
+#include "framework/file/portable/JsonFile.h"
 
-#include "StringUtil.h"
-#include "macros.h"
+#include "framework/util/StringUtil.h"
+#include "framework/util/macros.h"
 
 #ifdef __APPLE__
 #include "TargetConditionals.h"
 #endif
 
 #if TARGET_OS_IPHONE
-#include "apple_asset_data_handler.h"
+#include "framework/file/apple/apple_asset_data_handler.h"
 #endif
 
 #if defined __ANDROID__
-#include "AndroidAssetDataHandler.h"
+#include "framework/file/android/AndroidAssetDataHandler.h"
 #endif
 
 #include "rapidjson/document.h"
@@ -48,7 +48,7 @@ void JsonFile::save()
     
     const char* finalPath;
 #if defined __ANDROID__
-    finalPath = ANDROID_ASSETS->getPathInsideApk(_filePath);
+    finalPath = AndroidAssetDataHandler::getInstance()->getPathInsideApk(_filePath);
 #elif TARGET_OS_IPHONE
     finalPath = getPathInsideNSDocuments(_filePath);
 #elif defined _WIN32
@@ -120,7 +120,7 @@ void JsonFile::load()
     const char* finalPath;
 
 #if defined __ANDROID__
-    finalPath = ANDROID_ASSETS->getPathInsideApk(_filePath);
+    finalPath = AndroidAssetDataHandler::getInstance()->getPathInsideApk(_filePath);
 #elif TARGET_OS_IPHONE
     finalPath = getPathInsideNSDocuments(_filePath);
 #elif defined _WIN32

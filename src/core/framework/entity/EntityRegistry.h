@@ -9,9 +9,9 @@
 #ifndef __noctisgames__EntityRegistry__
 #define __noctisgames__EntityRegistry__
 
-#include "Entity.h"
+#include "framework/entity/Entity.h"
 
-#include "Network.h"
+#include "framework/network/portable/Network.h"
 
 #include <map>
 

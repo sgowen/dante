@@ -8,9 +8,9 @@
 
 #include "pch.h"
 
-#include "DirectXGeometryProgram.h"
+#include "framework/graphics/directx/DirectXGeometryProgram.h"
 
-#include "DirectXManager.h"
+#include "framework/graphics/directx/DirectXManager.h"
 
 DirectXGeometryProgram::DirectXGeometryProgram(const char* vertexShaderName, const char* pixelShaderName) : DirectXProgram(vertexShaderName, pixelShaderName, false)
 {
@@ -25,17 +25,17 @@ void DirectXGeometryProgram::mapVertices()
     ID3D11DeviceContext* d3dContext = DirectXManager::getD3dContext();
     
     //	Disable GPU access to the vertex buffer data.
-    d3dContext->Map(D3DManager->getGbVertexBuffer().Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+    d3dContext->Map(DXManager->getGbVertexBuffer().Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
     
     //	Update the vertex buffer here.
-    int numVertices = D3DManager->getColorVertices().size();
-    memcpy(mappedResource.pData, &D3DManager->getColorVertices().front(), sizeof(COLOR_VERTEX) * numVertices);
+    int numVertices = DXManager->getColorVertices().size();
+    memcpy(mappedResource.pData, &DXManager->getColorVertices().front(), sizeof(COLOR_VERTEX) * numVertices);
     
     //	Reenable GPU access to the vertex buffer data.
-    d3dContext->Unmap(D3DManager->getGbVertexBuffer().Get(), 0);
+    d3dContext->Unmap(DXManager->getGbVertexBuffer().Get(), 0);
     
     // Set the vertex buffer
     UINT stride = sizeof(COLOR_VERTEX);
     UINT offset = 0;
-    d3dContext->IASetVertexBuffers(0, 1, D3DManager->getGbVertexBuffer().GetAddressOf(), &stride, &offset);
+    d3dContext->IASetVertexBuffers(0, 1, DXManager->getGbVertexBuffer().GetAddressOf(), &stride, &offset);
 }

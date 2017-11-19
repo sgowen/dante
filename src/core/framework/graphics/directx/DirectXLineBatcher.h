@@ -9,7 +9,7 @@
 #ifndef __noctisgames__DirectXLineBatcher__
 #define __noctisgames__DirectXLineBatcher__
 
-#include "LineBatcher.h"
+#include "framework/graphics/portable/LineBatcher.h"
 
 #include "pch.h"
 

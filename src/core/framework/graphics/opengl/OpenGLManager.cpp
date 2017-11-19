@@ -6,17 +6,17 @@
 //  Copyright (c) 2017 Noctis Games. All rights reserved.
 //
 
-#include "OpenGLManager.h"
+#include "framework/graphics/opengl/OpenGLManager.h"
 
-#include "OpenGLTextureGpuProgramWrapper.h"
-#include "OpenGLGeometryGpuProgramWrapper.h"
-#include "OpenGLFramebufferToScreenGpuProgramWrapper.h"
-#include "OpenGLGeometryProgram.h"
-#include "OpenGLTextureProgram.h"
-#include "OpenGLFramebufferToScreenProgram.h"
-#include "macros.h"
-#include "NGSTDUtil.h"
-#include "GpuTextureWrapper.h"
+#include "framework/graphics/opengl/OpenGLTextureGpuProgramWrapper.h"
+#include "framework/graphics/opengl/OpenGLGeometryGpuProgramWrapper.h"
+#include "framework/graphics/opengl/OpenGLFramebufferToScreenGpuProgramWrapper.h"
+#include "framework/graphics/opengl/OpenGLGeometryProgram.h"
+#include "framework/graphics/opengl/OpenGLTextureProgram.h"
+#include "framework/graphics/opengl/OpenGLFramebufferToScreenProgram.h"
+#include "framework/util/macros.h"
+#include "framework/util/NGSTDUtil.h"
+#include "framework/graphics/portable/GpuTextureWrapper.h"
 
 #include <assert.h>
 

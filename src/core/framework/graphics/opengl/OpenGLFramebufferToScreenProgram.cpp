@@ -6,9 +6,9 @@
 //  Copyright (c) 2017 Noctis Games. All rights reserved.
 //
 
-#include "OpenGLFramebufferToScreenProgram.h"
+#include "framework/graphics/opengl/OpenGLFramebufferToScreenProgram.h"
 
-#include "OpenGLManager.h"
+#include "framework/graphics/opengl/OpenGLManager.h"
 
 OpenGLFramebufferToScreenProgram::OpenGLFramebufferToScreenProgram(const char* vertexShaderName, const char* fragmentShaderName) : OpenGLProgram(vertexShaderName, fragmentShaderName)
 {

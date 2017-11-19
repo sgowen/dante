@@ -8,7 +8,7 @@
 
 #include "pch.h"
 
-#include "CircleBatcher.h"
+#include "framework/graphics/portable/CircleBatcher.h"
 
 CircleBatcher::CircleBatcher() : _numPoints(0)
 {

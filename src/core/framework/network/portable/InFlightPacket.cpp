@@ -8,9 +8,9 @@
 
 #include "pch.h"
 
-#include "InFlightPacket.h"
+#include "framework/network/portable/InFlightPacket.h"
 
-#include "Timing.h"
+#include "framework/util/Timing.h"
 
 InFlightPacket::InFlightPacket(uint16_t inSequenceNumber) :
 _sequenceNumber(inSequenceNumber),

@@ -8,7 +8,7 @@
 
 #include "pch.h"
 
-#include "ReplicationCommand.h"
+#include "framework/network/portable/ReplicationCommand.h"
 
 ReplicationCommand::ReplicationCommand()
 {

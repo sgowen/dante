@@ -6,14 +6,14 @@
 //  Copyright (c) 2017 Noctis Games. All rights reserved.
 //
 
-#include "OpenGLLineBatcher.h"
+#include "framework/graphics/opengl/OpenGLLineBatcher.h"
 
-#include "macros.h"
-#include "Line.h"
-#include "Vector2.h"
-#include "OpenGLManager.h"
-#include "GpuProgramWrapper.h"
-#include "Color.h"
+#include "framework/util/macros.h"
+#include "framework/math/Line.h"
+#include "framework/math/Vector2.h"
+#include "framework/graphics/opengl/OpenGLManager.h"
+#include "framework/graphics/portable/GpuProgramWrapper.h"
+#include "framework/math/Color.h"
 
 OpenGLLineBatcher::OpenGLLineBatcher() : LineBatcher()
 {

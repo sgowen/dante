@@ -9,7 +9,7 @@
 #ifndef __noctisgames__DirectXCircleBatcher__
 #define __noctisgames__DirectXCircleBatcher__
 
-#include "CircleBatcher.h"
+#include "framework/graphics/portable/CircleBatcher.h"
 
 #include "pch.h"
 

@@ -9,7 +9,7 @@
 #ifndef __noctisgames__DirectXSpriteBatcher__
 #define __noctisgames__DirectXSpriteBatcher__
 
-#include "SpriteBatcher.h"
+#include "framework/graphics/portable/SpriteBatcher.h"
 
 class DirectXSpriteBatcher : public SpriteBatcher
 {

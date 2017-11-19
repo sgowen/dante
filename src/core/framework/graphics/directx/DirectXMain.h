@@ -9,7 +9,7 @@
 #pragma once
 
 #include "DeviceResources.h"
-#include "StepTimer.h"
+#include "framework/util/StepTimer.h"
 #include "Keyboard.h"
 #include "Mouse.h"
 #include "GamePad.h"

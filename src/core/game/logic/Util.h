@@ -9,7 +9,7 @@
 #ifndef __noctisgames__Util__
 #define __noctisgames__Util__
 
-#include "Network.h"
+#include "framework/network/portable/Network.h"
 
 struct b2Vec2;
 

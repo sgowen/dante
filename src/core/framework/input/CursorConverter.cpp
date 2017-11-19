@@ -8,9 +8,9 @@
 
 #include "pch.h"
 
-#include "CursorConverter.h"
+#include "framework/input/CursorConverter.h"
 
-#include "CursorEvent.h"
+#include "framework/input/CursorEvent.h"
 
 #ifdef __APPLE__
 #include "TargetConditionals.h"

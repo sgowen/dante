@@ -8,26 +8,26 @@
 
 #include "pch.h"
 
-#include "World.h"
+#include "game/logic/World.h"
 
-#include "Entity.h"
-#include "Robot.h"
-#include "Projectile.h"
-#include "SpacePirate.h"
-#include "Crate.h"
-#include "SpacePirateChunk.h"
-#include "Ground.h"
+#include "framework/entity/Entity.h"
+#include "game/logic/Robot.h"
+#include "game/logic/Projectile.h"
+#include "game/logic/SpacePirate.h"
+#include "game/logic/Crate.h"
+#include "game/logic/SpacePirateChunk.h"
+#include "game/logic/Ground.h"
 #include "Box2D/Box2D.h"
 
-#include "NetworkManagerServer.h"
-#include "InstanceManager.h"
-#include "Timing.h"
-#include "Server.h"
-#include "ClientProxy.h"
-#include "MoveList.h"
-#include "InputManager.h"
-#include "NetworkManagerClient.h"
-#include "StringUtil.h"
+#include "framework/network/server/NetworkManagerServer.h"
+#include "game/network/InstanceManager.h"
+#include "framework/util/Timing.h"
+#include "game/network/Server.h"
+#include "framework/network/server/ClientProxy.h"
+#include "framework/network/portable/MoveList.h"
+#include "game/logic/InputManager.h"
+#include "framework/network/client/NetworkManagerClient.h"
+#include "framework/util/StringUtil.h"
 
 #define WORLD_CREATE_CLIENT_IMPL(name) \
 Entity* World::sClientCreate##name() \

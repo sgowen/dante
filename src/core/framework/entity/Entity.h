@@ -9,12 +9,12 @@
 #ifndef __noctisgames__Entity__
 #define __noctisgames__Entity__
 
-#include "Color.h"
-#include "FrameworkConstants.h"
+#include "framework/math/Color.h"
+#include "framework/util/FrameworkConstants.h"
 
 #include "Box2D/Common/b2Math.h"
 
-#include "RTTI.h"
+#include "framework/util/RTTI.h"
 
 #include <stdint.h>
 

@@ -6,13 +6,12 @@
 //  Copyright (c) 2017 Noctis Games. All rights reserved.
 //
 
-#include "OpenGLTextureGpuProgramWrapper.h"
+#include "framework/graphics/opengl/OpenGLTextureGpuProgramWrapper.h"
 
-#include "OpenGLTextureProgram.h"
-#include "OpenGLManager.h"
-#include "FrameworkConstants.h"
-#include "FrameworkConstants.h"
-#include "GameConstants.h"
+#include "framework/graphics/opengl/OpenGLTextureProgram.h"
+#include "framework/graphics/opengl/OpenGLManager.h"
+#include "framework/util/FrameworkConstants.h"
+#include "framework/util/FrameworkConstants.h"
 
 OpenGLTextureGpuProgramWrapper::OpenGLTextureGpuProgramWrapper() : GpuProgramWrapper(), _program(new OpenGLTextureProgram(TEXTURE_VERTEX_SHADER, TEXTURE_FRAGMENT_SHADER))
 {

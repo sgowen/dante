@@ -8,12 +8,12 @@
 
 #include "pch.h"
 
-#include "DeliveryNotificationManager.h"
+#include "framework/network/portable/DeliveryNotificationManager.h"
 
-#include "OutputMemoryBitStream.h"
-#include "InputMemoryBitStream.h"
-#include "StringUtil.h"
-#include "FrameworkConstants.h"
+#include "framework/network/portable/OutputMemoryBitStream.h"
+#include "framework/network/portable/InputMemoryBitStream.h"
+#include "framework/util/StringUtil.h"
+#include "framework/util/FrameworkConstants.h"
 
 DeliveryNotificationManager::DeliveryNotificationManager(bool inShouldSendAcks, bool inShouldprocessAcks) :
 _nextOutgoingSequenceNumber(0),

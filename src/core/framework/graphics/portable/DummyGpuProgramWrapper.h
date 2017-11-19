@@ -9,7 +9,7 @@
 #ifndef __noctisgames__DummyGpuProgramWrapper__
 #define __noctisgames__DummyGpuProgramWrapper__
 
-#include "GpuProgramWrapper.h"
+#include "framework/graphics/portable/GpuProgramWrapper.h"
 
 class DummyGpuProgramWrapper : public GpuProgramWrapper
 {

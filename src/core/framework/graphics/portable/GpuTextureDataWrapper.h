@@ -10,7 +10,7 @@
 #define __noctisgames__GpuTextureDataWrapper__
 
 #if defined __APPLE__ || defined __ANDROID__
-#include "OpenGLPngImageData.h"
+#include "framework/graphics/opengl/OpenGLPngImageData.h"
 #elif defined _WIN32
 #include "pch.h"
 #endif

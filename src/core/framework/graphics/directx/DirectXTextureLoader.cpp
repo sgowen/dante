@@ -8,16 +8,17 @@
 
 #include "pch.h"
 
-#include "DirectXTextureLoader.h"
+#include "framework/graphics/directx/DirectXTextureLoader.h"
 
 #include "DDSTextureLoader.h"
-#include "macros.h"
-#include "DirectXManager.h"
-#include "GpuTextureDataWrapper.h"
-#include "GpuTextureWrapper.h"
+#include "framework/util/macros.h"
+#include "framework/graphics/directx/DirectXManager.h"
+#include "framework/graphics/portable/GpuTextureDataWrapper.h"
+#include "framework/graphics/portable/GpuTextureWrapper.h"
 #include "PlatformHelpers.h"
-#include "ReadData.h"
-#include "StringUtil.h"
+#include "framework/file/portable/AssetDataHandler.h"
+#include "framework/file/portable/FileData.h"
+#include "framework/util/StringUtil.h"
 
 #include <string>
 
@@ -53,21 +54,19 @@ GpuTextureDataWrapper* DirectXTextureLoader::loadTextureData(const char* texture
 	finalPath = textureFileName;
 #endif
     
-    wchar_t* wString = new wchar_t[4096];
-    MultiByteToWideChar(CP_ACP, 0, finalPath, -1, wString, 4096);
-    
-    auto blob = DX::ReadData(wString);
-    unsigned char* output = (unsigned char*) malloc(blob.size());
-    StringUtil::encryptDecrypt((unsigned char*)blob.data(), output, blob.size());
+    const FileData dds_file = AssetDataHandler::getAssetDataHandler()->getAssetData(finalPath);
+    void* output = malloc(dds_file.data_length);
+    StringUtil::encryptDecrypt((unsigned char*)dds_file.data, (unsigned char*) output, dds_file.data_length);
     
     ID3D11ShaderResourceView *pShaderResourceView;
     
 	ID3D11Device* d3dDevice = DirectXManager::getD3dDevice();
-    DirectX::ThrowIfFailed(DirectX::CreateDDSTextureFromMemory(d3dDevice, (const uint8_t*)output, blob.size(), nullptr, &pShaderResourceView));
+    DirectX::ThrowIfFailed(DirectX::CreateDDSTextureFromMemory(d3dDevice, (const uint8_t*)output, dds_file.data_length, nullptr, &pShaderResourceView));
+    
+    AssetDataHandler::getAssetDataHandler()->releaseAssetData(&dds_file);
     
     GpuTextureDataWrapper* tdw = new GpuTextureDataWrapper(pShaderResourceView);
     
-    delete wString;
     delete textureFileName;
     
     free((void *)output);

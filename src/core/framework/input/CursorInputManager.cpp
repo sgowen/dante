@@ -8,9 +8,9 @@
 
 #include "pch.h"
 
-#include "CursorInputManager.h"
+#include "framework/input/CursorInputManager.h"
 
-#include "CursorEvent.h"
+#include "framework/input/CursorEvent.h"
 
 #define MAX_DRAGGED_EVENTS_PER_FRAME 3
 #define POOL_SIZE 256

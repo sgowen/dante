@@ -9,7 +9,7 @@
 #ifndef __noctisgames__OpenGLLineBatcher__
 #define __noctisgames__OpenGLLineBatcher__
 
-#include "LineBatcher.h"
+#include "framework/graphics/portable/LineBatcher.h"
 
 class OpenGLLineBatcher : public LineBatcher
 {

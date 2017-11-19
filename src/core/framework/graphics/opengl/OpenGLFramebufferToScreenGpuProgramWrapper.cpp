@@ -6,12 +6,11 @@
 //  Copyright (c) 2017 Noctis Games. All rights reserved.
 //
 
-#include "OpenGLFramebufferToScreenGpuProgramWrapper.h"
+#include "framework/graphics/opengl/OpenGLFramebufferToScreenGpuProgramWrapper.h"
 
-#include "OpenGLFramebufferToScreenProgram.h"
-#include "OpenGLManager.h"
-#include "FrameworkConstants.h"
-#include "GameConstants.h"
+#include "framework/graphics/opengl/OpenGLFramebufferToScreenProgram.h"
+#include "framework/graphics/opengl/OpenGLManager.h"
+#include "framework/util/FrameworkConstants.h"
 
 OpenGLFramebufferToScreenGpuProgramWrapper::OpenGLFramebufferToScreenGpuProgramWrapper() : GpuProgramWrapper(), _program(new OpenGLFramebufferToScreenProgram(FRAMEBUFFER_TO_SCREEN_VERTEX_SHADER, FRAMEBUFFER_TO_SCREEN_FRAGMENT_SHADER))
 {

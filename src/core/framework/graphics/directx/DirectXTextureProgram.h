@@ -9,7 +9,7 @@
 #ifndef __noctisgames__DirectXTextureProgram__
 #define __noctisgames__DirectXTextureProgram__
 
-#include "DirectXProgram.h"
+#include "framework/graphics/directx/DirectXProgram.h"
 
 class DirectXTextureProgram : public DirectXProgram
 {

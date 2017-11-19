@@ -9,11 +9,11 @@
 #ifndef __noctisgames__NGSteamServerHelper__
 #define __noctisgames__NGSteamServerHelper__
 
-#include "ServerHelper.h"
+#include "framework/network/server/ServerHelper.h"
 
-#include "NGSteam.h"
-#include "PacketHandler.h"
-#include "FrameworkConstants.h"
+#include "framework/network/steam/NGSteam.h"
+#include "framework/network/portable/PacketHandler.h"
+#include "framework/util/FrameworkConstants.h"
 
 class NGSteamAddress;
 class ClientProxy;

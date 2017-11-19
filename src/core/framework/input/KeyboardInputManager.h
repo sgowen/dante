@@ -9,7 +9,7 @@
 #ifndef __noctisgames__KeyboardInputManager__
 #define __noctisgames__KeyboardInputManager__
 
-#include "NGRollingPool.h"
+#include "framework/util/NGRollingPool.h"
 
 #include <vector>
 

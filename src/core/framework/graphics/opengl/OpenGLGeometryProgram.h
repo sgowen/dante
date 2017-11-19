@@ -9,7 +9,7 @@
 #ifndef __noctisgames__OpenGLGeometryProgram__
 #define __noctisgames__OpenGLGeometryProgram__
 
-#include "OpenGLProgram.h"
+#include "framework/graphics/opengl/OpenGLProgram.h"
 
 class OpenGLGeometryProgram : public OpenGLProgram
 {

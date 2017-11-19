@@ -8,16 +8,16 @@
 
 #include "pch.h"
 
-#include "SpriteBatcher.h"
+#include "framework/graphics/portable/SpriteBatcher.h"
 
-#include "GpuTextureWrapper.h"
-#include "GpuProgramWrapper.h"
-#include "TextureRegion.h"
-#include "Color.h"
+#include "framework/graphics/portable/GpuTextureWrapper.h"
+#include "framework/graphics/portable/GpuProgramWrapper.h"
+#include "framework/graphics/portable/TextureRegion.h"
+#include "framework/math/Color.h"
 
-#include "macros.h"
-#include "NGRect.h"
-#include "Vector2.h"
+#include "framework/util/macros.h"
+#include "framework/math/NGRect.h"
+#include "framework/math/Vector2.h"
 
 #include <math.h>
 

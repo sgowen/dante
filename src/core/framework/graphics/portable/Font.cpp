@@ -8,11 +8,11 @@
 
 #include "pch.h"
 
-#include "Font.h"
+#include "framework/graphics/portable/Font.h"
 
-#include "SpriteBatcher.h"
-#include "TextureRegion.h"
-#include "Color.h"
+#include "framework/graphics/portable/SpriteBatcher.h"
+#include "framework/graphics/portable/TextureRegion.h"
+#include "framework/math/Color.h"
 
 Font::Font(std::string textureName, int offsetX, int offsetY, int glyphsPerRow, int glyphWidth, int glyphHeight, int textureWidth, int textureHeight)
 {

@@ -8,7 +8,7 @@
 
 #include "pch.h"
 
-#include "CircleBatcherFactory.h"
+#include "framework/graphics/portable/CircleBatcherFactory.h"
 
 CircleBatcherFactory* CircleBatcherFactory::getInstance()
 {
@@ -17,10 +17,10 @@ CircleBatcherFactory* CircleBatcherFactory::getInstance()
 }
 
 #if defined __APPLE__ || defined __ANDROID__
-#include "OpenGLCircleBatcher.h"
+#include "framework/graphics/opengl/OpenGLCircleBatcher.h"
 CircleBatcher* CircleBatcherFactory::createCircleBatcher() { return new OpenGLCircleBatcher(); }
 #elif defined _WIN32
-#include "DirectXCircleBatcher.h"
+#include "framework/graphics/directx/DirectXCircleBatcher.h"
 CircleBatcher* CircleBatcherFactory::createCircleBatcher() { return new DirectXCircleBatcher(); }
 #endif
 

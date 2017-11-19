@@ -9,9 +9,9 @@
 #ifndef __noctisgames__ClientProxy__
 #define __noctisgames__ClientProxy__
 
-#include "ReplicationManagerServer.h"
-#include "DeliveryNotificationManager.h"
-#include "MoveList.h"
+#include "framework/network/server/ReplicationManagerServer.h"
+#include "framework/network/portable/DeliveryNotificationManager.h"
+#include "framework/network/portable/MoveList.h"
 
 #include <string>
 #include <vector>

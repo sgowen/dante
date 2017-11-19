@@ -9,10 +9,10 @@
 #ifndef __noctisgames__NGSteamPacketHandler__
 #define __noctisgames__NGSteamPacketHandler__
 
-#include "PacketHandler.h"
+#include "framework/network/portable/PacketHandler.h"
 
-#include "InputMemoryBitStream.h"
-#include "NGSteamAddress.h"
+#include "framework/network/portable/InputMemoryBitStream.h"
+#include "framework/network/steam/NGSteamAddress.h"
 
 #include <queue>
 #include <list>

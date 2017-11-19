@@ -980,8 +980,8 @@
 		BB5833791EEDBFB20084DA20 /* NGSteamGameServices.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NGSteamGameServices.h; sourceTree = "<group>"; };
 		BB58338B1EEDD6470084DA20 /* DirectXCircleBatcher.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = DirectXCircleBatcher.cpp; sourceTree = "<group>"; };
 		BB58338C1EEDD6470084DA20 /* DirectXCircleBatcher.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DirectXCircleBatcher.h; sourceTree = "<group>"; };
-		BB58338D1EEDD6470084DA20 /* DirectXFrameBufferToScreenGpuProgramWrapper.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = DirectXFrameBufferToScreenGpuProgramWrapper.cpp; sourceTree = "<group>"; };
-		BB58338E1EEDD6470084DA20 /* DirectXFrameBufferToScreenGpuProgramWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DirectXFrameBufferToScreenGpuProgramWrapper.h; sourceTree = "<group>"; };
+		BB58338D1EEDD6470084DA20 /* DirectXFramebufferToScreenGpuProgramWrapper.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = DirectXFramebufferToScreenGpuProgramWrapper.cpp; sourceTree = "<group>"; };
+		BB58338E1EEDD6470084DA20 /* DirectXFramebufferToScreenGpuProgramWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DirectXFramebufferToScreenGpuProgramWrapper.h; sourceTree = "<group>"; };
 		BB58338F1EEDD6470084DA20 /* DirectXGeometryGpuProgramWrapper.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = DirectXGeometryGpuProgramWrapper.cpp; sourceTree = "<group>"; };
 		BB5833901EEDD6470084DA20 /* DirectXGeometryGpuProgramWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DirectXGeometryGpuProgramWrapper.h; sourceTree = "<group>"; };
 		BB5833911EEDD6470084DA20 /* DirectXGeometryProgram.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = DirectXGeometryProgram.cpp; sourceTree = "<group>"; };
@@ -1474,8 +1474,6 @@
 		BBAEF1951EA94ED900F0866E /* SoundWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SoundWrapper.h; sourceTree = "<group>"; };
 		BBAEF1961EA94ED900F0866E /* NGAudioEngine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NGAudioEngine.cpp; sourceTree = "<group>"; };
 		BBAEF1971EA94ED900F0866E /* NGAudioEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NGAudioEngine.h; sourceTree = "<group>"; };
-		BBAEF1C41EA94ED900F0866E /* State.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = State.h; sourceTree = "<group>"; };
-		BBAEF1C51EA94ED900F0866E /* StateMachine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StateMachine.h; sourceTree = "<group>"; };
 		BBAFD32B1EF44813004F2742 /* MachineAddress.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MachineAddress.cpp; sourceTree = "<group>"; };
 		BBAFD32C1EF44813004F2742 /* MachineAddress.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MachineAddress.h; sourceTree = "<group>"; };
 		BBAFD32E1EF4496D004F2742 /* NGSteamAddress.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NGSteamAddress.cpp; sourceTree = "<group>"; };
@@ -1493,6 +1491,10 @@
 		BBBD14C11EE0C9B4003F9307 /* InputMemoryBitStream.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = InputMemoryBitStream.cpp; sourceTree = "<group>"; };
 		BBBD14C21EE0C9B4003F9307 /* InputMemoryBitStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InputMemoryBitStream.h; sourceTree = "<group>"; };
 		BBC1BE371ECF736A0045AF93 /* Network.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Network.h; sourceTree = "<group>"; };
+		BBCB93151FC217DD0020703A /* WindowsAssetDataHandler.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = WindowsAssetDataHandler.cpp; sourceTree = "<group>"; };
+		BBCB93161FC217DD0020703A /* WindowsAssetDataHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WindowsAssetDataHandler.h; sourceTree = "<group>"; };
+		BBCB93171FC2295B0020703A /* State.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = State.h; sourceTree = "<group>"; };
+		BBCB93181FC2295C0020703A /* StateMachine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StateMachine.h; sourceTree = "<group>"; };
 		BBCDF24D1F3796C3006E94B0 /* FPSUtil.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FPSUtil.cpp; sourceTree = "<group>"; };
 		BBCDF24E1F3796C3006E94B0 /* FPSUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FPSUtil.h; sourceTree = "<group>"; };
 		BBCFF1C01ECD312E003EE520 /* Assets.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Assets.cpp; sourceTree = "<group>"; };
@@ -2168,8 +2170,8 @@
 			children = (
 				BB58338B1EEDD6470084DA20 /* DirectXCircleBatcher.cpp */,
 				BB58338C1EEDD6470084DA20 /* DirectXCircleBatcher.h */,
-				BB58338D1EEDD6470084DA20 /* DirectXFrameBufferToScreenGpuProgramWrapper.cpp */,
-				BB58338E1EEDD6470084DA20 /* DirectXFrameBufferToScreenGpuProgramWrapper.h */,
+				BB58338D1EEDD6470084DA20 /* DirectXFramebufferToScreenGpuProgramWrapper.cpp */,
+				BB58338E1EEDD6470084DA20 /* DirectXFramebufferToScreenGpuProgramWrapper.h */,
 				BB58338F1EEDD6470084DA20 /* DirectXGeometryGpuProgramWrapper.cpp */,
 				BB5833901EEDD6470084DA20 /* DirectXGeometryGpuProgramWrapper.h */,
 				BB5833911EEDD6470084DA20 /* DirectXGeometryProgram.cpp */,
@@ -2756,17 +2758,19 @@
 		BB7428381EB2AF4100B7628D /* util */ = {
 			isa = PBXGroup;
 			children = (
+				BB5833DA1EEDDC2B0084DA20 /* Engine.cpp */,
+				BB5833DB1EEDDC2B0084DA20 /* Engine.h */,
 				BB7428391EB2AF4200B7628D /* FlagUtil.h */,
 				BBCDF24D1F3796C3006E94B0 /* FPSUtil.cpp */,
 				BBCDF24E1F3796C3006E94B0 /* FPSUtil.h */,
 				BB61CB581EC9FA1B000E0291 /* FrameworkConstants.h */,
-				BB5833DA1EEDDC2B0084DA20 /* Engine.cpp */,
-				BB5833DB1EEDDC2B0084DA20 /* Engine.h */,
 				BB74283A1EB2AF4200B7628D /* macros.h */,
 				BB74283B1EB2AF4200B7628D /* NGRollingPool.h */,
 				BB74283C1EB2AF4200B7628D /* NGSTDUtil.h */,
 				BB74283D1EB2AF4200B7628D /* RTTI.cpp */,
 				BB74283E1EB2AF4200B7628D /* RTTI.h */,
+				BBCB93171FC2295B0020703A /* State.h */,
+				BBCB93181FC2295C0020703A /* StateMachine.h */,
 				BB5833CB1EEDD7790084DA20 /* StepTimer.h */,
 				BBBD148E1EE06858003F9307 /* StringUtil.cpp */,
 				BB74283F1EB2AF4200B7628D /* StringUtil.h */,
@@ -2942,8 +2946,7 @@
 				BBAEF1591EA94ED900F0866E /* input */,
 				BBAEF1771EA94ED900F0866E /* math */,
 				BBF2251E1EC120AD00573356 /* network */,
-				BBAEF18C1EA94ED900F0866E /* sound */,
-				BBAEF1C31EA94ED900F0866E /* state */,
+				BBAEF18C1EA94ED900F0866E /* audio */,
 				BB052CD81EBA8AF4007FA789 /* tools */,
 				BB7428381EB2AF4100B7628D /* util */,
 			);
@@ -2971,6 +2974,7 @@
 				BB9EE5181FC092CB000F5389 /* android */,
 				BB9EE50F1FC092C4000F5389 /* apple */,
 				BBAEF0D81EA94ED900F0866E /* portable */,
+				BBCB93131FC211290020703A /* windows */,
 			);
 			path = file;
 			sourceTree = "<group>";
@@ -3137,7 +3141,7 @@
 			path = math;
 			sourceTree = "<group>";
 		};
-		BBAEF18C1EA94ED900F0866E /* sound */ = {
+		BBAEF18C1EA94ED900F0866E /* audio */ = {
 			isa = PBXGroup;
 			children = (
 				BB5833B81EEDD6580084DA20 /* directx */,
@@ -3145,7 +3149,7 @@
 				BBAEF18D1EA94ED900F0866E /* portable */,
 				BB9579381F10111F00E89DE9 /* superpowered */,
 			);
-			path = sound;
+			path = audio;
 			sourceTree = "<group>";
 		};
 		BBAEF18D1EA94ED900F0866E /* portable */ = {
@@ -3165,13 +3169,13 @@
 			path = portable;
 			sourceTree = "<group>";
 		};
-		BBAEF1C31EA94ED900F0866E /* state */ = {
+		BBCB93131FC211290020703A /* windows */ = {
 			isa = PBXGroup;
 			children = (
-				BBAEF1C41EA94ED900F0866E /* State.h */,
-				BBAEF1C51EA94ED900F0866E /* StateMachine.h */,
+				BBCB93151FC217DD0020703A /* WindowsAssetDataHandler.cpp */,
+				BBCB93161FC217DD0020703A /* WindowsAssetDataHandler.h */,
 			);
-			path = state;
+			path = windows;
 			sourceTree = "<group>";
 		};
 		BBD3E85F1FB2872A00328E35 /* ios */ = {

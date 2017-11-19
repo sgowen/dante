@@ -8,13 +8,13 @@
 
 #include "pch.h"
 
-#include "OutputMemoryBitStream.h"
+#include "framework/network/portable/OutputMemoryBitStream.h"
 
-#include "Vector2.h"
+#include "framework/math/Vector2.h"
 #include "Box2D/Box2D.h"
-#include "Color.h"
-#include "MathUtil.h"
-#include "StringUtil.h"
+#include "framework/math/Color.h"
+#include "framework/math/MathUtil.h"
+#include "framework/util/StringUtil.h"
 
 #include <cstring>	// memcpy()
 

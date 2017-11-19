@@ -8,7 +8,7 @@
 
 #include "pch.h"
 
-#include "NGRectBatcherFactory.h"
+#include "framework/graphics/portable/NGRectBatcherFactory.h"
 
 NGRectBatcherFactory* NGRectBatcherFactory::getInstance()
 {
@@ -17,10 +17,10 @@ NGRectBatcherFactory* NGRectBatcherFactory::getInstance()
 }
 
 #if defined __APPLE__ || defined __ANDROID__
-#include "OpenGLNGRectBatcher.h"
+#include "framework/graphics/opengl/OpenGLNGRectBatcher.h"
 NGRectBatcher* NGRectBatcherFactory::createNGRectBatcher(bool isFill) { return new OpenGLNGRectBatcher(isFill); }
 #elif defined _WIN32
-#include "DirectXNGRectBatcher.h"
+#include "framework/graphics/directx/DirectXNGRectBatcher.h"
 NGRectBatcher* NGRectBatcherFactory::createNGRectBatcher(bool isFill) { return new DirectXNGRectBatcher(isFill); }
 #endif
 

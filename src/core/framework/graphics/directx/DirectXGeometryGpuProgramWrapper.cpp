@@ -8,11 +8,11 @@
 
 #include "pch.h"
 
-#include "DirectXGeometryGpuProgramWrapper.h"
+#include "framework/graphics/directx/DirectXGeometryGpuProgramWrapper.h"
 
-#include "DirectXGeometryProgram.h"
-#include "DirectXManager.h"
-#include "FrameworkConstants.h"
+#include "framework/graphics/directx/DirectXGeometryProgram.h"
+#include "framework/graphics/directx/DirectXManager.h"
+#include "framework/util/FrameworkConstants.h"
 
 DirectXGeometryGpuProgramWrapper::DirectXGeometryGpuProgramWrapper() : GpuProgramWrapper(),
 _program(new DirectXGeometryProgram(COLOR_VERTEX_SHADER, COLOR_FRAGMENT_SHADER))
@@ -27,7 +27,7 @@ DirectXGeometryGpuProgramWrapper::~DirectXGeometryGpuProgramWrapper()
 
 void DirectXGeometryGpuProgramWrapper::bind()
 {
-    D3DManager->useNormalBlending();
+    DXManager->useNormalBlending();
 
 	_program->bindShaders();
 

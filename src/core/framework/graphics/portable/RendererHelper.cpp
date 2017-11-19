@@ -8,9 +8,9 @@
 
 #include "pch.h"
 
-#include "RendererHelper.h"
+#include "framework/graphics/portable/RendererHelper.h"
 
-#include "TextureWrapper.h"
+#include "framework/graphics/portable/TextureWrapper.h"
 
 RendererHelper::RendererHelper() : _framebuffer(new TextureWrapper("framebuffer", NULL, false))
 {

@@ -8,17 +8,17 @@
 
 #include "pch.h"
 
-#include "NGSteamPacketHandler.h"
+#include "framework/network/steam/NGSteamPacketHandler.h"
 
-#include "OutputMemoryBitStream.h"
-#include "MachineAddress.h"
+#include "framework/network/portable/OutputMemoryBitStream.h"
+#include "framework/network/portable/MachineAddress.h"
 
-#include "InputMemoryBitStream.h"
-#include "Timing.h"
-#include "NGSteam.h"
-#include "FrameworkConstants.h"
-#include "StringUtil.h"
-#include "Network.h"
+#include "framework/network/portable/InputMemoryBitStream.h"
+#include "framework/util/Timing.h"
+#include "framework/network/steam/NGSteam.h"
+#include "framework/util/FrameworkConstants.h"
+#include "framework/util/StringUtil.h"
+#include "framework/network/portable/Network.h"
 
 NGSteamPacketHandler::NGSteamPacketHandler(bool isServer, ProcessPacketFunc processPacketFunc, HandleNoResponseFunc handleNoResponseFunc, HandleConnectionResetFunc handleConnectionResetFunc) : PacketHandler(processPacketFunc, handleNoResponseFunc, handleConnectionResetFunc), _isServer(isServer)
 {

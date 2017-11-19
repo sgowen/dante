@@ -8,13 +8,13 @@
 
 #define DEGREE_SPACING 6
 
-#include "OpenGLCircleBatcher.h"
-#include "macros.h"
-#include "Circle.h"
-#include "Vector2.h"
-#include "OpenGLManager.h"
-#include "DummyGpuProgramWrapper.h"
-#include "Color.h"
+#include "framework/graphics/opengl/OpenGLCircleBatcher.h"
+#include "framework/util/macros.h"
+#include "framework/math/Circle.h"
+#include "framework/math/Vector2.h"
+#include "framework/graphics/opengl/OpenGLManager.h"
+#include "framework/graphics/portable/DummyGpuProgramWrapper.h"
+#include "framework/math/Color.h"
 
 #include <math.h>
 

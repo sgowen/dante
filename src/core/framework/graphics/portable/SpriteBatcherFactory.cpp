@@ -8,7 +8,7 @@
 
 #include "pch.h"
 
-#include "SpriteBatcherFactory.h"
+#include "framework/graphics/portable/SpriteBatcherFactory.h"
 
 SpriteBatcherFactory* SpriteBatcherFactory::getInstance()
 {
@@ -17,10 +17,10 @@ SpriteBatcherFactory* SpriteBatcherFactory::getInstance()
 }
 
 #if defined __APPLE__ || defined __ANDROID__
-#include "OpenGLSpriteBatcher.h"
+#include "framework/graphics/opengl/OpenGLSpriteBatcher.h"
 SpriteBatcher* SpriteBatcherFactory::createSpriteBatcher() { return new OpenGLSpriteBatcher(); }
 #elif defined _WIN32
-#include "DirectXSpriteBatcher.h"
+#include "framework/graphics/directx/DirectXSpriteBatcher.h"
 SpriteBatcher* SpriteBatcherFactory::createSpriteBatcher() { return new DirectXSpriteBatcher(); }
 #endif
 

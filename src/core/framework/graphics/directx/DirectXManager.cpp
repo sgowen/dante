@@ -8,15 +8,15 @@
 
 #include "pch.h"
 
-#include "DirectXManager.h"
+#include "framework/graphics/directx/DirectXManager.h"
 
-#include "DirectXTextureGpuProgramWrapper.h"
-#include "DirectXGeometryGpuProgramWrapper.h"
-#include "DirectXFramebufferToScreenGpuProgramWrapper.h"
-#include "GpuTextureWrapper.h"
+#include "framework/graphics/directx/DirectXTextureGpuProgramWrapper.h"
+#include "framework/graphics/directx/DirectXGeometryGpuProgramWrapper.h"
+#include "framework/graphics/directx/DirectXFramebufferToScreenGpuProgramWrapper.h"
+#include "framework/graphics/portable/GpuTextureWrapper.h"
 #include "PlatformHelpers.h"
-#include "NGSTDUtil.h"
-#include "GpuTextureWrapper.h"
+#include "framework/util/NGSTDUtil.h"
+#include "framework/graphics/portable/GpuTextureWrapper.h"
 
 #include <assert.h>
 
@@ -136,12 +136,12 @@ void DirectXManager::addVertexCoordinate(float x, float y, float z, float r, flo
 
 void DirectXManager::useNormalBlending()
 {
-    s_d3dContext->OMSetBlendState(D3DManager->_blendState.Get(), 0, 0xffffffff);
+    s_d3dContext->OMSetBlendState(DXManager->_blendState.Get(), 0, 0xffffffff);
 }
 
 void DirectXManager::useScreenBlending()
 {
-    s_d3dContext->OMSetBlendState(D3DManager->_screenBlendState.Get(), 0, 0xffffffff);
+    s_d3dContext->OMSetBlendState(DXManager->_screenBlendState.Get(), 0, 0xffffffff);
 }
 
 std::vector<ID3D11Texture2D*>& DirectXManager::getOffscreenRenderTargets()

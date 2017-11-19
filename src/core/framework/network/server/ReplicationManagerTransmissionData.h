@@ -9,10 +9,10 @@
 #ifndef __noctisgames__ReplicationManagerTransmissionData__
 #define __noctisgames__ReplicationManagerTransmissionData__
 
-#include "TransmissionData.h"
+#include "framework/network/portable/TransmissionData.h"
 
-#include "ReplicationCommand.h"
-#include "ReplicationAction.h"
+#include "framework/network/portable/ReplicationCommand.h"
+#include "framework/network/portable/ReplicationAction.h"
 
 #include <vector>
 

@@ -8,11 +8,11 @@
 
 #include "pch.h"
 
-#include "LineBatcher.h"
+#include "framework/graphics/portable/LineBatcher.h"
 
-#include "Line.h"
-#include "Vector2.h"
-#include "Color.h"
+#include "framework/math/Line.h"
+#include "framework/math/Vector2.h"
+#include "framework/math/Color.h"
 
 LineBatcher::LineBatcher() : _numLines(0)
 {

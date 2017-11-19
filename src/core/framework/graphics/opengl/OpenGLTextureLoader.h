@@ -11,9 +11,9 @@
 
 #include "pch.h"
 
-#include "TextureLoader.h"
+#include "framework/graphics/portable/TextureLoader.h"
 
-#include "OpenGLPngImageData.h"
+#include "framework/graphics/opengl/OpenGLPngImageData.h"
 
 class OpenGLTextureLoader : public TextureLoader
 {

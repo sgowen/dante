@@ -8,19 +8,19 @@
 
 #include "pch.h"
 
-#include "NGSteamClientHelper.h"
+#include "framework/network/steam/NGSteamClientHelper.h"
 
-#include "NGSteamP2PAuth.h"
-#include "NGSteamAddress.h"
+#include "framework/network/steam/NGSteamP2PAuth.h"
+#include "framework/network/steam/NGSteamAddress.h"
 
-#include "NGSteamPacketHandler.h"
-#include "macros.h"
-#include "StringUtil.h"
-#include "Timing.h"
-#include "OutputMemoryBitStream.h"
-#include "NGSteamGameServices.h"
-#include "NetworkManagerServer.h"
-#include "NGSteamServerHelper.h"
+#include "framework/network/steam/NGSteamPacketHandler.h"
+#include "framework/util/macros.h"
+#include "framework/util/StringUtil.h"
+#include "framework/util/Timing.h"
+#include "framework/network/portable/OutputMemoryBitStream.h"
+#include "framework/network/steam/NGSteamGameServices.h"
+#include "framework/network/server/NetworkManagerServer.h"
+#include "framework/network/steam/NGSteamServerHelper.h"
 
 NGSteamClientHelper::NGSteamClientHelper(CSteamID inServerSteamID, GetPlayerAddressHashFunc inGetPlayerAddressHashFunc, ProcessPacketFunc inProcessPacketFunc, HandleNoResponseFunc inHandleNoResponseFunc, HandleConnectionResetFunc inHandleConnectionResetFunc) : ClientHelper(new NGSteamPacketHandler(false, inProcessPacketFunc, inHandleNoResponseFunc, inHandleConnectionResetFunc)),
 _steamP2PAuth(new NGSteamP2PAuth(this)),

@@ -8,11 +8,11 @@
 
 #include "pch.h"
 
-#include "NGRectBatcher.h"
+#include "framework/graphics/portable/NGRectBatcher.h"
 
-#include "NGRect.h"
-#include "Vector2.h"
-#include "Color.h"
+#include "framework/math/NGRect.h"
+#include "framework/math/Vector2.h"
+#include "framework/math/Color.h"
 
 NGRectBatcher::NGRectBatcher(bool isFill) : _isFill(isFill), _numNGRects(0)
 {

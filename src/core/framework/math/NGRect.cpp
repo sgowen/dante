@@ -8,7 +8,7 @@
 
 #include "pch.h"
 
-#include "NGRect.h"
+#include "framework/math/NGRect.h"
 
 NGRect::NGRect(float x, float y, float width, float height, float angle)
 {

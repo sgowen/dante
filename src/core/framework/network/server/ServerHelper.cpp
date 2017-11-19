@@ -8,7 +8,7 @@
 
 #include "pch.h"
 
-#include "ServerHelper.h"
+#include "framework/network/server/ServerHelper.h"
 
 ServerHelper::ServerHelper(PacketHandler* packetHandler, GetClientProxyFunc inGetClientProxyFunc, HandleClientDisconnectedFunc inHandleClientDisconnectedFunc) : NetworkHelper(packetHandler),
 _getClientProxyFunc(inGetClientProxyFunc),

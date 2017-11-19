@@ -9,9 +9,9 @@
 #ifndef __noctisgames__MainInputState__
 #define __noctisgames__MainInputState__
 
-#include "InputState.h"
+#include "framework/network/portable/InputState.h"
 
-#include "RTTI.h"
+#include "framework/util/RTTI.h"
 
 #define MENU_STATE_NONE 0
 #define MENU_STATE_ACTIVATE_STEAM 1

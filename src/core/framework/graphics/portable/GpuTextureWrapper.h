@@ -9,7 +9,7 @@
 #ifndef __noctisgames__GpuTextureWrapper__
 #define __noctisgames__GpuTextureWrapper__
 
-#include "NGGraphics.h"
+#include "framework/graphics/portable/NGGraphics.h"
 
 struct GpuTextureWrapper
 {

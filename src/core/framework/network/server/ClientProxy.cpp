@@ -8,12 +8,12 @@
 
 #include "pch.h"
 
-#include "ClientProxy.h"
+#include "framework/network/server/ClientProxy.h"
 
-#include "MachineAddress.h"
+#include "framework/network/portable/MachineAddress.h"
 
-#include "Timing.h"
-#include "FrameworkConstants.h"
+#include "framework/util/Timing.h"
+#include "framework/util/FrameworkConstants.h"
 
 ClientProxy::ClientProxy(MachineAddress* inMachineAddress, const std::string& inName, uint8_t inPlayerId) :
 _deliveryNotificationManager(DeliveryNotificationManager(false, true)),

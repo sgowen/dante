@@ -9,7 +9,7 @@
 #ifndef __noctisgames__DirectXGeometryGpuProgramWrapper__
 #define __noctisgames__DirectXGeometryGpuProgramWrapper__
 
-#include "GpuProgramWrapper.h"
+#include "framework/graphics/portable/GpuProgramWrapper.h"
 
 class DirectXProgram;
 

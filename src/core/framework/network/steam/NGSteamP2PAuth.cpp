@@ -8,15 +8,15 @@
 
 #include "pch.h"
 
-#include "NGSteamP2PAuth.h"
+#include "framework/network/steam/NGSteamP2PAuth.h"
 
-#include "InputMemoryBitStream.h"
-#include "NetworkHelper.h"
-#include "NGSteamAddress.h"
+#include "framework/network/portable/InputMemoryBitStream.h"
+#include "framework/network/portable/NetworkHelper.h"
+#include "framework/network/steam/NGSteamAddress.h"
 
-#include "Timing.h"
-#include "StringUtil.h"
-#include "OutputMemoryBitStream.h"
+#include "framework/util/Timing.h"
+#include "framework/util/StringUtil.h"
+#include "framework/network/portable/OutputMemoryBitStream.h"
 
 NGSteamP2PAuth::NGSteamP2PAuth(NetworkHelper* networkHelper) :
 _networkTransport(new NGSteamP2PNetworkTransport(networkHelper))

@@ -8,7 +8,7 @@
 
 #include "pch.h"
 
-#include "EntityRegistry.h"
+#include "framework/entity/EntityRegistry.h"
 
 EntityRegistry::EntityRegistry()
 {

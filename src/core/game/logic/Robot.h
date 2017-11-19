@@ -9,9 +9,9 @@
 #ifndef __noctisgames__Robot__
 #define __noctisgames__Robot__
 
-#include "Entity.h"
+#include "framework/entity/Entity.h"
 
-#include "GameConstants.h"
+#include "game/logic/GameConstants.h"
 
 #include <string>
 

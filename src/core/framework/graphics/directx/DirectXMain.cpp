@@ -8,19 +8,19 @@
 
 #include "pch.h"
 
-#include "DirectXMain.h"
+#include "framework/graphics/directx/DirectXMain.h"
 
-#include "Engine.h"
+#include "framework/util/Engine.h"
 
-#include "DirectXManager.h"
-#include "CursorInputManager.h"
-#include "KeyboardInputManager.h"
-#include "GamePadInputManager.h"
-#include "MainAssets.h"
-#include "FrameworkConstants.h"
-#include "macros.h"
-#include "NGAudioEngine.h"
-#include "KeyboardLookup.h"
+#include "framework/graphics/directx/DirectXManager.h"
+#include "framework/input/CursorInputManager.h"
+#include "framework/input/KeyboardInputManager.h"
+#include "framework/input/GamePadInputManager.h"
+#include "game/graphics/portable/MainAssets.h"
+#include "framework/util/FrameworkConstants.h"
+#include "framework/util/macros.h"
+#include "framework/audio/portable/NGAudioEngine.h"
+#include "framework/input/KeyboardLookup.h"
 
 extern void exitGame();
 
@@ -139,17 +139,17 @@ void DirectXMain::Update(DX::StepTimer const& timer)
 	{
 		if (_isPointerPressed && mouse.leftButton)
 		{
-			SCREEN_INPUT_MANAGER->onTouch(CursorEventType_DRAGGED, float(mouse.x), float(mouse.y));
+			CURSOR_INPUT_MANAGER->onTouch(CursorEventType_DRAGGED, float(mouse.x), float(mouse.y));
 		}
 		else if (mouse.leftButton && !_isPointerPressed)
 		{
-			SCREEN_INPUT_MANAGER->onTouch(CursorEventType_DOWN, float(mouse.x), float(mouse.y));
+			CURSOR_INPUT_MANAGER->onTouch(CursorEventType_DOWN, float(mouse.x), float(mouse.y));
 
 			_isPointerPressed = true;
 		}
 		else if (_isPointerPressed && !mouse.leftButton)
 		{
-			SCREEN_INPUT_MANAGER->onTouch(CursorEventType_UP, float(mouse.x), float(mouse.y));
+			CURSOR_INPUT_MANAGER->onTouch(CursorEventType_UP, float(mouse.x), float(mouse.y));
 
 			_isPointerPressed = false;
 		}
@@ -517,7 +517,7 @@ void DirectXMain::CreateWindowSizeDependentResources()
 	LONG touchWidth = width;
 	LONG touchHeight = height;
 
-	if (D3DManager->isWindowsMobile())
+	if (DXManager->isWindowsMobile())
 	{
 		touchWidth = height;
 		touchHeight = width;

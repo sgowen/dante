@@ -8,11 +8,11 @@
 
 #include "pch.h"
 
-#include "InstanceManager.h"
+#include "game/network/InstanceManager.h"
 
-#include "Entity.h"
-#include "World.h"
-#include "Robot.h"
+#include "framework/entity/Entity.h"
+#include "game/logic/World.h"
+#include "game/logic/Robot.h"
 
 #include <assert.h>
 

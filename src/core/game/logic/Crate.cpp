@@ -8,19 +8,19 @@
 
 #include "pch.h"
 
-#include "Crate.h"
+#include "game/logic/Crate.h"
 
 #include "Box2D/Box2D.h"
-#include "OutputMemoryBitStream.h"
-#include "InputMemoryBitStream.h"
+#include "framework/network/portable/OutputMemoryBitStream.h"
+#include "framework/network/portable/InputMemoryBitStream.h"
 
-#include "Ground.h"
+#include "game/logic/Ground.h"
 
-#include "Robot.h"
-#include "Projectile.h"
-#include "SpacePirate.h"
-#include "NetworkManagerServer.h"
-#include "MathUtil.h"
+#include "game/logic/Robot.h"
+#include "game/logic/Projectile.h"
+#include "game/logic/SpacePirate.h"
+#include "framework/network/server/NetworkManagerServer.h"
+#include "framework/math/MathUtil.h"
 
 #include <math.h>
 

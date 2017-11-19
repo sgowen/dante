@@ -9,7 +9,7 @@
 #ifndef __noctisgames__DirectXNGRectBatcher__
 #define __noctisgames__DirectXNGRectBatcher__
 
-#include "NGRectBatcher.h"
+#include "framework/graphics/portable/NGRectBatcher.h"
 
 #include "pch.h"
 

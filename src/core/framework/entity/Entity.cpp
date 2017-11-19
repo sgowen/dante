@@ -8,20 +8,20 @@
 
 #include "pch.h"
 
-#include "Entity.h"
+#include "framework/entity/Entity.h"
 
 #include "Box2D/Box2D.h"
-#include "NGRect.h"
-#include "OutputMemoryBitStream.h"
-#include "InputMemoryBitStream.h"
-#include "Move.h"
+#include "framework/math/NGRect.h"
+#include "framework/network/portable/OutputMemoryBitStream.h"
+#include "framework/network/portable/InputMemoryBitStream.h"
+#include "framework/network/portable/Move.h"
 
-#include "NGSTDUtil.h"
-#include "Timing.h"
-#include "macros.h"
-#include "NetworkManagerClient.h"
-#include "StringUtil.h"
-#include "MathUtil.h"
+#include "framework/util/NGSTDUtil.h"
+#include "framework/util/Timing.h"
+#include "framework/util/macros.h"
+#include "framework/network/client/NetworkManagerClient.h"
+#include "framework/util/StringUtil.h"
+#include "framework/math/MathUtil.h"
 
 Entity::Entity(b2World& world, float x, float y, float width, float height, bool isServer, EntityDef inEntityDef, bool autoInitPhysics) :
 _worldRef(world),

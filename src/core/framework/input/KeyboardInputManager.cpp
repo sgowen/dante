@@ -8,10 +8,10 @@
 
 #include "pch.h"
 
-#include "KeyboardInputManager.h"
+#include "framework/input/KeyboardInputManager.h"
 
-#include "KeyboardEvent.h"
-#include "KeyboardLookup.h"
+#include "framework/input/KeyboardEvent.h"
+#include "framework/input/KeyboardLookup.h"
 
 #define POOL_SIZE 1024
 

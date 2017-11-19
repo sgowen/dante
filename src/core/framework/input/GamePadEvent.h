@@ -9,7 +9,7 @@
 #ifndef __noctisgames__GamePadEvent__
 #define __noctisgames__GamePadEvent__
 
-#include "GamePadEventType.h"
+#include "framework/input/GamePadEventType.h"
 
 class GamePadEvent
 {

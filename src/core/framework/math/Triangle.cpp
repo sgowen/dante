@@ -8,9 +8,9 @@
 
 #include "pch.h"
 
-#include "Triangle.h"
+#include "framework/math/Triangle.h"
 
-#include "Vector2.h"
+#include "framework/math/Vector2.h"
 
 Triangle::Triangle(float x1, float y1, float x2, float y2, float x3, float y3) :
 _sideA(x1, y1, x2, y2),

@@ -9,8 +9,8 @@
 #ifndef __noctisgames__GamePadInputManager__
 #define __noctisgames__GamePadInputManager__
 
-#include "GamePadEventType.h"
-#include "NGRollingPool.h"
+#include "framework/input/GamePadEventType.h"
+#include "framework/util/NGRollingPool.h"
 
 #include <vector>
 

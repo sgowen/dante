@@ -8,15 +8,15 @@
 
 #include "pch.h"
 
-#include "DirectXSpriteBatcher.h"
+#include "framework/graphics/directx/DirectXSpriteBatcher.h"
 
-#include "TextureWrapper.h"
-#include "GpuTextureWrapper.h"
-#include "GpuProgramWrapper.h"
-#include "TextureRegion.h"
-#include "Color.h"
+#include "framework/graphics/portable/TextureWrapper.h"
+#include "framework/graphics/portable/GpuTextureWrapper.h"
+#include "framework/graphics/portable/GpuProgramWrapper.h"
+#include "framework/graphics/portable/TextureRegion.h"
+#include "framework/math/Color.h"
 
-#include "DirectXManager.h"
+#include "framework/graphics/directx/DirectXManager.h"
 
 DirectXSpriteBatcher::DirectXSpriteBatcher() : SpriteBatcher()
 {
@@ -25,7 +25,7 @@ DirectXSpriteBatcher::DirectXSpriteBatcher() : SpriteBatcher()
 
 void DirectXSpriteBatcher::beginBatch()
 {
-	D3DManager->getTextureVertices().clear();
+	DXManager->getTextureVertices().clear();
     
 	_numSprites = 0;
 }
@@ -62,19 +62,19 @@ void DirectXSpriteBatcher::endBatch(TextureWrapper& textureWrapper, GpuProgramWr
 
 void DirectXSpriteBatcher::addVertexCoordinate(float x, float y, float z, float r, float g, float b, float a, float u, float v)
 {
-    D3DManager->addVertexCoordinate(x, y, z, r, g, b, a, u, v);
+    DXManager->addVertexCoordinate(x, y, z, r, g, b, a, u, v);
 }
 
 void DirectXSpriteBatcher::bindNormalSamplerState()
 {
     ID3D11DeviceContext* d3dContext = DirectXManager::getD3dContext();
     
-    d3dContext->PSSetSamplers(0, 1, D3DManager->getSbSamplerState().GetAddressOf());
+    d3dContext->PSSetSamplers(0, 1, DXManager->getSbSamplerState().GetAddressOf());
 }
 
 void DirectXSpriteBatcher::bindWrapSamplerState()
 {
     ID3D11DeviceContext* d3dContext = DirectXManager::getD3dContext();
     
-    d3dContext->PSSetSamplers(0, 1, D3DManager->getSbWrapSamplerState().GetAddressOf());
+    d3dContext->PSSetSamplers(0, 1, DXManager->getSbWrapSamplerState().GetAddressOf());
 }

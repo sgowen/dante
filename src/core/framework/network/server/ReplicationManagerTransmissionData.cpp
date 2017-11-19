@@ -8,15 +8,15 @@
 
 #include "pch.h"
 
-#include "ReplicationManagerTransmissionData.h"
+#include "framework/network/server/ReplicationManagerTransmissionData.h"
 
-#include "ReplicationManagerServer.h"
+#include "framework/network/server/ReplicationManagerServer.h"
 
-#include "FWInstanceManager.h"
-#include "EntityManager.h"
-#include "Entity.h"
-#include "ReplicationAction.h"
-#include "DeliveryNotificationManager.h"
+#include "framework/network/portable/FWInstanceManager.h"
+#include "framework/entity/EntityManager.h"
+#include "framework/entity/Entity.h"
+#include "framework/network/portable/ReplicationAction.h"
+#include "framework/network/portable/DeliveryNotificationManager.h"
 
 ReplicationManagerTransmissionData::ReplicationManagerTransmissionData(ReplicationManagerServer* inReplicationManagerServer) :
 _replicationManagerServer(inReplicationManagerServer)

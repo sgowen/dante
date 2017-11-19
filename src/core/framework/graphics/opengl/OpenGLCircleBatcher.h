@@ -9,7 +9,7 @@
 #ifndef __noctisgames__OpenGLCircleBatcher__
 #define __noctisgames__OpenGLCircleBatcher__
 
-#include "CircleBatcher.h"
+#include "framework/graphics/portable/CircleBatcher.h"
 
 class OpenGLCircleBatcher : public CircleBatcher
 {

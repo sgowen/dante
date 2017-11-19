@@ -8,12 +8,12 @@
 
 #include "pch.h"
 
-#include "UDPSocket.h"
+#include "framework/network/portable/UDPSocket.h"
 
-#include "SocketAddress.h"
+#include "framework/network/portable/SocketAddress.h"
 
-#include "SocketUtil.h"
-#include "StringUtil.h"
+#include "framework/network/portable/SocketUtil.h"
+#include "framework/util/StringUtil.h"
 
 int UDPSocket::bindSocket(const SocketAddress& inBindAddress)
 {

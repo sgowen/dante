@@ -9,7 +9,7 @@
 #ifndef __noctisgames__ServerHelper__
 #define __noctisgames__ServerHelper__
 
-#include "NetworkHelper.h"
+#include "framework/network/portable/NetworkHelper.h"
 
 class ClientProxy;
 

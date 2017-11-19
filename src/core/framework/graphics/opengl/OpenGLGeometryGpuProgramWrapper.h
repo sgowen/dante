@@ -9,7 +9,7 @@
 #ifndef __noctisgames__OpenGLGeometryGpuProgramWrapper__
 #define __noctisgames__OpenGLGeometryGpuProgramWrapper__
 
-#include "GpuProgramWrapper.h"
+#include "framework/graphics/portable/GpuProgramWrapper.h"
 
 class OpenGLGeometryProgram;
 

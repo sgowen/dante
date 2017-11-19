@@ -9,7 +9,7 @@
 #ifndef __noctisgames__OpenGLNGRectBatcher__
 #define __noctisgames__OpenGLNGRectBatcher__
 
-#include "NGRectBatcher.h"
+#include "framework/graphics/portable/NGRectBatcher.h"
 
 class GpuProgramWrapper;
 class Color;

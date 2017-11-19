@@ -9,7 +9,7 @@
 #ifndef __noctisgames__MoveList__
 #define __noctisgames__MoveList__
 
-#include "Move.h"
+#include "framework/network/portable/Move.h"
 
 #include <deque>
 

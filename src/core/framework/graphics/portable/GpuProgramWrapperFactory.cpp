@@ -8,7 +8,7 @@
 
 #include "pch.h"
 
-#include "GpuProgramWrapperFactory.h"
+#include "framework/graphics/portable/GpuProgramWrapperFactory.h"
 
 GpuProgramWrapperFactory* GpuProgramWrapperFactory::getInstance()
 {
@@ -18,9 +18,9 @@ GpuProgramWrapperFactory* GpuProgramWrapperFactory::getInstance()
 
 #if defined __APPLE__ || defined __ANDROID__
 
-#include "OpenGLTextureGpuProgramWrapper.h"
-#include "OpenGLGeometryGpuProgramWrapper.h"
-#include "OpenGLFramebufferToScreenGpuProgramWrapper.h"
+#include "framework/graphics/opengl/OpenGLTextureGpuProgramWrapper.h"
+#include "framework/graphics/opengl/OpenGLGeometryGpuProgramWrapper.h"
+#include "framework/graphics/opengl/OpenGLFramebufferToScreenGpuProgramWrapper.h"
 
 GpuProgramWrapper* GpuProgramWrapperFactory::createTextureGpuProgramWrapper()
 {
@@ -38,9 +38,9 @@ GpuProgramWrapper* GpuProgramWrapperFactory::createFramebufferToScreenGpuProgram
 }
 #elif defined _WIN32
 
-#include "DirectXTextureGpuProgramWrapper.h"
-#include "DirectXGeometryGpuProgramWrapper.h"
-#include "DirectXFramebufferToScreenGpuProgramWrapper.h"
+#include "framework/graphics/directx/DirectXTextureGpuProgramWrapper.h"
+#include "framework/graphics/directx/DirectXGeometryGpuProgramWrapper.h"
+#include "framework/graphics/directx/DirectXFramebufferToScreenGpuProgramWrapper.h"
 
 GpuProgramWrapper* GpuProgramWrapperFactory::createTextureGpuProgramWrapper()
 {

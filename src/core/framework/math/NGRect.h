@@ -9,7 +9,7 @@
 #ifndef __noctisgames__NGRect__
 #define __noctisgames__NGRect__
 
-#include "Vector2.h"
+#include "framework/math/Vector2.h"
 
 class NGRect
 {

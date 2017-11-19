@@ -9,7 +9,7 @@
 #ifndef __noctisgames__OpenGLFramebufferToScreenGpuProgramWrapper__
 #define __noctisgames__OpenGLFramebufferToScreenGpuProgramWrapper__
 
-#include "GpuProgramWrapper.h"
+#include "framework/graphics/portable/GpuProgramWrapper.h"
 
 class OpenGLFramebufferToScreenProgram;
 

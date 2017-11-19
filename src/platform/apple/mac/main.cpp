@@ -6,15 +6,15 @@
 //  Copyright (c) 2017 Noctis Games. All rights reserved.
 //
 
-#include "MainEngine.h"
-#include "MainAssets.h"
-#include "CursorInputManager.h"
-#include "KeyboardInputManager.h"
-#include "GamePadInputManager.h"
-#include "GamePadEventType.h"
-#include "FrameworkConstants.h"
-#include "OpenGLManager.h"
-#include "NGGraphics.h"
+#include "game/logic/MainEngine.h"
+#include "game/graphics/portable/MainAssets.h"
+#include "framework/input/CursorInputManager.h"
+#include "framework/input/KeyboardInputManager.h"
+#include "framework/input/GamePadInputManager.h"
+#include "framework/input/GamePadEventType.h"
+#include "framework/util/FrameworkConstants.h"
+#include "framework/graphics/opengl/OpenGLManager.h"
+#include "framework/graphics/portable/NGGraphics.h"
 
 #include <GLFW/glfw3.h>
 
@@ -66,13 +66,13 @@ static void mouse_button_callback(GLFWwindow* window, int button, int action, in
     switch (action)
     {
         case GLFW_PRESS:
-            SCREEN_INPUT_MANAGER->onTouch(CursorEventType_DOWN, cursorX, cursorY);
+            CURSOR_INPUT_MANAGER->onTouch(CursorEventType_DOWN, cursorX, cursorY);
             break;
         case GLFW_REPEAT:
-            SCREEN_INPUT_MANAGER->onTouch(CursorEventType_DRAGGED, cursorX, cursorY);
+            CURSOR_INPUT_MANAGER->onTouch(CursorEventType_DRAGGED, cursorX, cursorY);
             break;
         case GLFW_RELEASE:
-            SCREEN_INPUT_MANAGER->onTouch(CursorEventType_UP, cursorX, cursorY);
+            CURSOR_INPUT_MANAGER->onTouch(CursorEventType_UP, cursorX, cursorY);
             break;
         default:
             break;

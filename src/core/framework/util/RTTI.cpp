@@ -8,7 +8,7 @@
 
 #include "pch.h"
 
-#include "RTTI.h"
+#include "framework/util/RTTI.h"
 
 RTTI::RTTI(const std::string& className) : _className(className), _pBaseRTTI(nullptr)
 {

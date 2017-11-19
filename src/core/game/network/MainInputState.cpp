@@ -8,12 +8,12 @@
 
 #include "pch.h"
 
-#include "MainInputState.h"
+#include "game/network/MainInputState.h"
 
-#include "OutputMemoryBitStream.h"
-#include "InputMemoryBitStream.h"
+#include "framework/network/portable/OutputMemoryBitStream.h"
+#include "framework/network/portable/InputMemoryBitStream.h"
 
-#include "FrameworkConstants.h"
+#include "framework/util/FrameworkConstants.h"
 
 #include <assert.h>
 

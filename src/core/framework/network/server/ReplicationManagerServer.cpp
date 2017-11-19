@@ -8,16 +8,16 @@
 
 #include "pch.h"
 
-#include "ReplicationManagerServer.h"
+#include "framework/network/server/ReplicationManagerServer.h"
 
-#include "OutputMemoryBitStream.h"
-#include "ReplicationManagerTransmissionData.h"
+#include "framework/network/portable/OutputMemoryBitStream.h"
+#include "framework/network/server/ReplicationManagerTransmissionData.h"
 
-#include "FWInstanceManager.h"
-#include "EntityManager.h"
-#include "ReplicationAction.h"
-#include "macros.h"
-#include "Entity.h"
+#include "framework/network/portable/FWInstanceManager.h"
+#include "framework/entity/EntityManager.h"
+#include "framework/network/portable/ReplicationAction.h"
+#include "framework/util/macros.h"
+#include "framework/entity/Entity.h"
 
 void ReplicationManagerServer::replicateCreate(uint32_t inNetworkId, uint32_t inInitialDirtyState)
 {

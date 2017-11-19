@@ -13,9 +13,9 @@
 #define VERTICES_PER_RECTANGLE 4
 #define INDICES_PER_RECTANGLE 6
 
-#define D3DManager (DirectXManager::getInstance())
+#define DXManager (DirectXManager::getInstance())
 
-#include "DirectXProgramInput.h"
+#include "framework/graphics/directx/DirectXProgramInput.h"
 #include "pch.h"
 
 #include <vector>

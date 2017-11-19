@@ -9,7 +9,7 @@
 #ifndef __noctisgames__FWInstanceManager__
 #define __noctisgames__FWInstanceManager__
 
-#include "EntityManager.h"
+#include "framework/entity/EntityManager.h"
 
 class EntityRegistry;
 

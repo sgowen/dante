@@ -8,12 +8,12 @@
 
 #include "pch.h"
 
-#include "DirectXTextureGpuProgramWrapper.h"
+#include "framework/graphics/directx/DirectXTextureGpuProgramWrapper.h"
 
-#include "DirectXTextureProgram.h"
-#include "DirectXManager.h"
-#include "GpuTextureWrapper.h"
-#include "FrameworkConstants.h"
+#include "framework/graphics/directx/DirectXTextureProgram.h"
+#include "framework/graphics/directx/DirectXManager.h"
+#include "framework/graphics/portable/GpuTextureWrapper.h"
+#include "framework/util/FrameworkConstants.h"
 
 DirectXTextureGpuProgramWrapper::DirectXTextureGpuProgramWrapper() : GpuProgramWrapper(),
 _program(new DirectXTextureProgram(TEXTURE_VERTEX_SHADER, TEXTURE_FRAGMENT_SHADER))
@@ -28,7 +28,7 @@ DirectXTextureGpuProgramWrapper::~DirectXTextureGpuProgramWrapper()
 
 void DirectXTextureGpuProgramWrapper::bind()
 {
-    D3DManager->useNormalBlending();
+    DXManager->useNormalBlending();
 
     _program->bindShaders();
     

@@ -8,7 +8,7 @@
 
 #include "pch.h"
 
-#include "TextureLoaderFactory.h"
+#include "framework/graphics/portable/TextureLoaderFactory.h"
 
 TextureLoaderFactory* TextureLoaderFactory::getInstance()
 {
@@ -17,10 +17,10 @@ TextureLoaderFactory* TextureLoaderFactory::getInstance()
 }
 
 #if defined __APPLE__ || defined __ANDROID__
-#include "OpenGLTextureLoader.h"
+#include "framework/graphics/opengl/OpenGLTextureLoader.h"
 TextureLoader* TextureLoaderFactory::createTextureLoader() { return new OpenGLTextureLoader(); }
 #elif defined _WIN32
-#include "DirectXTextureLoader.h"
+#include "framework/graphics/directx/DirectXTextureLoader.h"
 TextureLoader* TextureLoaderFactory::createTextureLoader() { return new DirectXTextureLoader(); }
 #endif
 

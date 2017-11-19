@@ -9,12 +9,12 @@
 #ifndef __noctisgames__CursorInputManager__
 #define __noctisgames__CursorInputManager__
 
-#include "CursorEventType.h"
-#include "NGRollingPool.h"
+#include "framework/input/CursorEventType.h"
+#include "framework/util/NGRollingPool.h"
 
 #include <vector>
 
-#define SCREEN_INPUT_MANAGER (CursorInputManager::getInstance())
+#define CURSOR_INPUT_MANAGER (CursorInputManager::getInstance())
 
 class CursorEvent;
 

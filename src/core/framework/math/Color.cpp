@@ -8,7 +8,7 @@
 
 #include "pch.h"
 
-#include "Color.h"
+#include "framework/math/Color.h"
 
 Color Color::BLACK = Color(0.0f, 0.0f, 0.0f, 1.0f);
 Color Color::RED = Color(1.0f, 0.0f, 0.0f, 1.0f);

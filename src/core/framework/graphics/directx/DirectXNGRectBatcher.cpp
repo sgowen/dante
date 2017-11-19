@@ -8,15 +8,15 @@
 
 #include "pch.h"
 
-#include "DirectXNGRectBatcher.h"
+#include "framework/graphics/directx/DirectXNGRectBatcher.h"
 
-#include "NGRect.h"
-#include "Vector2.h"
-#include "DirectXProgramInput.h"
-#include "DirectXManager.h"
-#include "GpuProgramWrapper.h"
-#include "DirectXGeometryGpuProgramWrapper.h"
-#include "Color.h"
+#include "framework/math/NGRect.h"
+#include "framework/math/Vector2.h"
+#include "framework/graphics/directx/DirectXProgramInput.h"
+#include "framework/graphics/directx/DirectXManager.h"
+#include "framework/graphics/portable/GpuProgramWrapper.h"
+#include "framework/graphics/directx/DirectXGeometryGpuProgramWrapper.h"
+#include "framework/math/Color.h"
 
 DirectXNGRectBatcher::DirectXNGRectBatcher(bool isFill) : NGRectBatcher(isFill)
 {
@@ -25,7 +25,7 @@ DirectXNGRectBatcher::DirectXNGRectBatcher(bool isFill) : NGRectBatcher(isFill)
 
 void DirectXNGRectBatcher::beginBatch()
 {
-	D3DManager->getColorVertices().clear();
+	DXManager->getColorVertices().clear();
 	_numNGRects = 0;
 }
 
@@ -57,10 +57,10 @@ void DirectXNGRectBatcher::renderNGRect(NGRect &rectangle, Color &color)
 
 void DirectXNGRectBatcher::renderNGRect(float x1, float y1, float x2, float y2, Color &color)
 {
-	D3DManager->addVertexCoordinate(x1, y1, 0, color.red, color.green, color.blue, color.alpha);
-	D3DManager->addVertexCoordinate(x1, y2, 0, color.red, color.green, color.blue, color.alpha);
-	D3DManager->addVertexCoordinate(x2, y2, 0, color.red, color.green, color.blue, color.alpha);
-	D3DManager->addVertexCoordinate(x2, y1, 0, color.red, color.green, color.blue, color.alpha);
+	DXManager->addVertexCoordinate(x1, y1, 0, color.red, color.green, color.blue, color.alpha);
+	DXManager->addVertexCoordinate(x1, y2, 0, color.red, color.green, color.blue, color.alpha);
+	DXManager->addVertexCoordinate(x2, y2, 0, color.red, color.green, color.blue, color.alpha);
+	DXManager->addVertexCoordinate(x2, y1, 0, color.red, color.green, color.blue, color.alpha);
 
 	_numNGRects++;
 }

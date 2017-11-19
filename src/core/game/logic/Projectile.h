@@ -9,9 +9,9 @@
 #ifndef __noctisgames__Projectile__
 #define __noctisgames__Projectile__
 
-#include "Entity.h"
+#include "framework/entity/Entity.h"
 
-#include "GameConstants.h"
+#include "game/logic/GameConstants.h"
 
 #include "Box2D/Common/b2Math.h"
 

@@ -6,12 +6,12 @@
 //  Copyright (c) 2017 Noctis Games. All rights reserved.
 //
 
-#include "OpenGLProgram.h"
+#include "framework/graphics/opengl/OpenGLProgram.h"
 
-#include "OpenGLManager.h"
-#include "AssetDataHandler.h"
-#include "FileData.h"
-#include "StringUtil.h"
+#include "framework/graphics/opengl/OpenGLManager.h"
+#include "framework/file/portable/AssetDataHandler.h"
+#include "framework/file/portable/FileData.h"
+#include "framework/util/StringUtil.h"
 
 #include <assert.h>
 #include <stdio.h>
@@ -61,6 +61,9 @@ OpenGLProgram::OpenGLProgram(const char* vertexShaderName, const char* fragmentS
     StringUtil::encryptDecrypt((unsigned char*)fragment_shader_source.data, fragment_shader_source_output, fragment_shader_source.data_length);
     
     _programObjectId = buildProgram(vertex_shader_source_output, (GLint)vertex_shader_source.data_length, fragment_shader_source_output, (GLint)fragment_shader_source.data_length);
+    
+    delete vertexShaderFileName;
+    delete fragmentShaderFileName;
     
     AssetDataHandler::getAssetDataHandler()->releaseAssetData(&vertex_shader_source);
     AssetDataHandler::getAssetDataHandler()->releaseAssetData(&fragment_shader_source);

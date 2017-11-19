@@ -9,9 +9,9 @@
 #ifndef __noctisgames__SocketServerHelper__
 #define __noctisgames__SocketServerHelper__
 
-#include "ServerHelper.h"
+#include "framework/network/server/ServerHelper.h"
 
-#include "PacketHandler.h"
+#include "framework/network/portable/PacketHandler.h"
 
 class SocketServerHelper : public ServerHelper
 {

@@ -8,11 +8,11 @@
 
 #include "pch.h"
 
-#include "OpenGLRendererHelper.h"
+#include "framework/graphics/opengl/OpenGLRendererHelper.h"
 
-#include "TextureWrapper.h"
-#include "GpuTextureWrapper.h"
-#include "OpenGLManager.h"
+#include "framework/graphics/portable/TextureWrapper.h"
+#include "framework/graphics/portable/GpuTextureWrapper.h"
+#include "framework/graphics/opengl/OpenGLManager.h"
 
 OpenGLRendererHelper::OpenGLRendererHelper() : RendererHelper()
 {

@@ -8,16 +8,16 @@
 
 #include "pch.h"
 
-#include "DirectXCircleBatcher.h"
+#include "framework/graphics/directx/DirectXCircleBatcher.h"
 
-#include "Circle.h"
-#include "Vector2.h"
-#include "DirectXProgramInput.h"
-#include "macros.h"
-#include "DirectXManager.h"
-#include "GpuProgramWrapper.h"
-#include "DirectXGeometryGpuProgramWrapper.h"
-#include "Color.h"
+#include "framework/math/Circle.h"
+#include "framework/math/Vector2.h"
+#include "framework/graphics/directx/DirectXProgramInput.h"
+#include "framework/util/macros.h"
+#include "framework/graphics/directx/DirectXManager.h"
+#include "framework/graphics/portable/GpuProgramWrapper.h"
+#include "framework/graphics/directx/DirectXGeometryGpuProgramWrapper.h"
+#include "framework/math/Color.h"
 
 #define DEGREE_SPACING 6
 
@@ -29,7 +29,7 @@ DirectXCircleBatcher::DirectXCircleBatcher() : CircleBatcher()
 void DirectXCircleBatcher::renderCircle(Circle &circle, Color &c, GpuProgramWrapper &gpuProgramWrapper)
 {
 	_numPoints = 0;
-	D3DManager->getColorVertices().clear();
+	DXManager->getColorVertices().clear();
 
 	for (int i = 0; i <= 360; i += DEGREE_SPACING)
 	{
@@ -48,7 +48,7 @@ void DirectXCircleBatcher::renderCircle(Circle &circle, Color &c, GpuProgramWrap
 void DirectXCircleBatcher::renderPartialCircle(Circle &circle, int arcDegrees, Color &c, GpuProgramWrapper &gpuProgramWrapper)
 {
 	_numPoints = 0;
-	D3DManager->getColorVertices().clear();
+	DXManager->getColorVertices().clear();
 
 	for (int i = 90; i < (450 - arcDegrees); i += DEGREE_SPACING)
 	{
@@ -87,7 +87,7 @@ void DirectXCircleBatcher::endBatch(GpuProgramWrapper &gpuProgramWrapper)
 
 void DirectXCircleBatcher::addVertexCoordinate(float x, float y, float z, float r, float g, float b, float a)
 {
-	D3DManager->addVertexCoordinate(x, y, z, r, g, b, a);
+	DXManager->addVertexCoordinate(x, y, z, r, g, b, a);
 
 	_numPoints++;
 }

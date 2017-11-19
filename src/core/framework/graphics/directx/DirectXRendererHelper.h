@@ -9,7 +9,7 @@
 #ifndef __noctisgames__DirectXRendererHelper__
 #define __noctisgames__DirectXRendererHelper__
 
-#include "RendererHelper.h"
+#include "framework/graphics/portable/RendererHelper.h"
 
 class DirectXRendererHelper : public RendererHelper
 {

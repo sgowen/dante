@@ -8,7 +8,7 @@
 
 #include "pch.h"
 
-#include "Line.h"
+#include "framework/math/Line.h"
 
 Line::Line(float x1, float y1, float x2, float y2) : _origin(x1, y1), _end(x2, y2)
 {

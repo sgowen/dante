@@ -9,7 +9,7 @@
 #ifndef __dante__MainAssetsMapper__
 #define __dante__MainAssetsMapper__
 
-#include "AssetsMapper.h"
+#include "framework/graphics/portable/AssetsMapper.h"
 
 class MainAssetsMapper : public AssetsMapper
 {

@@ -8,9 +8,9 @@
 
 #include "pch.h"
 
-#include "SocketAddress.h"
+#include "framework/network/portable/SocketAddress.h"
 
-#include "StringUtil.h"
+#include "framework/util/StringUtil.h"
 
 #include <cstring>	// memcpy()
 

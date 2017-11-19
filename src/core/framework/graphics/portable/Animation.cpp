@@ -8,9 +8,9 @@
 
 #include "pch.h"
 
-#include "Animation.h"
+#include "framework/graphics/portable/Animation.h"
 
-#include "TextureRegion.h"
+#include "framework/graphics/portable/TextureRegion.h"
 
 #include <stdarg.h>
 

@@ -9,7 +9,7 @@
 #ifndef __noctisgames__DirectXGeometryProgram__
 #define __noctisgames__DirectXGeometryProgram__
 
-#include "DirectXProgram.h"
+#include "framework/graphics/directx/DirectXProgram.h"
 
 class DirectXGeometryProgram : public DirectXProgram
 {

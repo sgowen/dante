@@ -8,12 +8,12 @@
 
 #include "pch.h"
 
-#include "MainAssets.h"
+#include "game/graphics/portable/MainAssets.h"
 
-#include "TextureRegion.h"
+#include "framework/graphics/portable/TextureRegion.h"
 
-#include "Assets.h"
-#include "FlagUtil.h"
+#include "framework/graphics/portable/Assets.h"
+#include "framework/util/FlagUtil.h"
 
 #define FLAG_TEXTURE_SET_COMPRESSED 1
 #define FLAG_TEXTURE_SET_DESKTOP 2

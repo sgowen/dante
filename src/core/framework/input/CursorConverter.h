@@ -9,7 +9,7 @@
 #ifndef __noctisgames__CursorConverter__
 #define __noctisgames__CursorConverter__
 
-#include "Vector2.h"
+#include "framework/math/Vector2.h"
 
 #define CURSOR_CONVERTER (CursorConverter::getInstance())
 

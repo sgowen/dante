@@ -9,9 +9,7 @@
 #ifndef __noctisgames__AndroidAssetDataHandler__
 #define __noctisgames__AndroidAssetDataHandler__
 
-#define ANDROID_ASSETS (AndroidAssetDataHandler::getInstance())
-
-#include "AssetDataHandler.h"
+#include "framework/file/portable/AssetDataHandler.h"
 
 #include <jni.h>
 #include <android/asset_manager_jni.h>

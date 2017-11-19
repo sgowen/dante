@@ -9,9 +9,9 @@
 #ifndef __dante__MainRenderer__
 #define __dante__MainRenderer__
 
-#include "Renderer.h"
+#include "framework/graphics/portable/Renderer.h"
 
-#include "FontAlign.h"
+#include "framework/graphics/portable/FontAlign.h"
 
 #include <string>
 

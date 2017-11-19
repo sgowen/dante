@@ -8,11 +8,11 @@
 
 #include "pch.h"
 
-#include "InputMemoryBitStream.h"
+#include "framework/network/portable/InputMemoryBitStream.h"
 
-#include "Vector2.h"
+#include "framework/math/Vector2.h"
 #include "Box2D/Box2D.h"
-#include "Color.h"
+#include "framework/math/Color.h"
 
 #include <cstring>	// memcpy()
 

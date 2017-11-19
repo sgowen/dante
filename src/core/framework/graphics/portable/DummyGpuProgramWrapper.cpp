@@ -8,7 +8,7 @@
 
 #include "pch.h"
 
-#include "DummyGpuProgramWrapper.h"
+#include "framework/graphics/portable/DummyGpuProgramWrapper.h"
 
 DummyGpuProgramWrapper * DummyGpuProgramWrapper::getInstance()
 {

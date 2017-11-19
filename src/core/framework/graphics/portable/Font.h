@@ -9,7 +9,7 @@
 #ifndef __noctisgames__Font__
 #define __noctisgames__Font__
 
-#include "FontAlign.h"
+#include "framework/graphics/portable/FontAlign.h"
 
 #include <vector>
 #include <string>

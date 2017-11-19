@@ -8,15 +8,15 @@
 
 #include "pch.h"
 
-#include "DirectXLineBatcher.h"
+#include "framework/graphics/directx/DirectXLineBatcher.h"
 
-#include "Line.h"
-#include "Vector2.h"
-#include "DirectXProgramInput.h"
-#include "DirectXManager.h"
-#include "GpuProgramWrapper.h"
-#include "DirectXGeometryGpuProgramWrapper.h"
-#include "Color.h"
+#include "framework/math/Line.h"
+#include "framework/math/Vector2.h"
+#include "framework/graphics/directx/DirectXProgramInput.h"
+#include "framework/graphics/directx/DirectXManager.h"
+#include "framework/graphics/portable/GpuProgramWrapper.h"
+#include "framework/graphics/directx/DirectXGeometryGpuProgramWrapper.h"
+#include "framework/math/Color.h"
 
 DirectXLineBatcher::DirectXLineBatcher() : LineBatcher()
 {
@@ -25,7 +25,7 @@ DirectXLineBatcher::DirectXLineBatcher() : LineBatcher()
 
 void DirectXLineBatcher::beginBatch()
 {
-	D3DManager->getColorVertices().clear();
+	DXManager->getColorVertices().clear();
 	_numLines = 0;
 }
 
@@ -47,8 +47,8 @@ void DirectXLineBatcher::endBatch(GpuProgramWrapper &gpuProgramWrapper)
 
 void DirectXLineBatcher::renderLine(float originX, float originY, float endX, float endY, Color &color)
 {
-	D3DManager->addVertexCoordinate(originX, originY, 0, color.red, color.green, color.blue, color.alpha);
-	D3DManager->addVertexCoordinate(endX, endY, 0, color.red, color.green, color.blue, color.alpha);
+	DXManager->addVertexCoordinate(originX, originY, 0, color.red, color.green, color.blue, color.alpha);
+	DXManager->addVertexCoordinate(endX, endY, 0, color.red, color.green, color.blue, color.alpha);
 
 	_numLines++;
 }

@@ -6,9 +6,9 @@
 //  Copyright (c) 2017 Noctis Games. All rights reserved.
 //
 
-#include "OpenGLGeometryProgram.h"
+#include "framework/graphics/opengl/OpenGLGeometryProgram.h"
 
-#include "OpenGLManager.h"
+#include "framework/graphics/opengl/OpenGLManager.h"
 
 OpenGLGeometryProgram::OpenGLGeometryProgram(const char* vertexShaderName, const char* fragmentShaderName) : OpenGLProgram(vertexShaderName, fragmentShaderName)
 {

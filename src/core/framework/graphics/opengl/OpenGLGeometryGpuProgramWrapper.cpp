@@ -6,13 +6,12 @@
 //  Copyright (c) 2017 Noctis Games. All rights reserved.
 //
 
-#include "OpenGLGeometryGpuProgramWrapper.h"
+#include "framework/graphics/opengl/OpenGLGeometryGpuProgramWrapper.h"
 
-#include "OpenGLGeometryProgram.h"
-#include "OpenGLManager.h"
-#include "FrameworkConstants.h"
-#include "FrameworkConstants.h"
-#include "GameConstants.h"
+#include "framework/graphics/opengl/OpenGLGeometryProgram.h"
+#include "framework/graphics/opengl/OpenGLManager.h"
+#include "framework/util/FrameworkConstants.h"
+#include "framework/util/FrameworkConstants.h"
 
 OpenGLGeometryGpuProgramWrapper::OpenGLGeometryGpuProgramWrapper() : GpuProgramWrapper(), _program(new OpenGLGeometryProgram(COLOR_VERTEX_SHADER, COLOR_FRAGMENT_SHADER))
 {
