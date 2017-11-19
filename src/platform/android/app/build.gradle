@@ -56,7 +56,7 @@ android {
     }
 
     task runEncryptionBeforeBuild(type: Exec) {
-        workingDir = '../../../../src/core/game/tools'
+        workingDir = '../../../../tools'
         commandLine 'sh', './encrypt_textures_and_shaders.sh'
     }
     preBuild.dependsOn(runEncryptionBeforeBuild)

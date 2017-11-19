@@ -1076,9 +1076,6 @@
 		BB5A0AA71FB36DD1005FBD52 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = ../../../../../../../../../../../System/Library/Frameworks/GLKit.framework; sourceTree = "<group>"; };
 		BB5F46FA1ED38D61005FEC0C /* SocketAddressFamily.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SocketAddressFamily.h; sourceTree = "<group>"; };
 		BB61CB581EC9FA1B000E0291 /* FrameworkConstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FrameworkConstants.h; sourceTree = "<group>"; };
-		BB6A1A501F941054005B7D05 /* encrypt_shaders_win32.bat */ = {isa = PBXFileReference; lastKnownFileType = text; path = encrypt_shaders_win32.bat; sourceTree = "<group>"; };
-		BB6A1A511F941054005B7D05 /* encrypt_textures_and_shaders.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = encrypt_textures_and_shaders.sh; sourceTree = "<group>"; };
-		BB6A1A521F941054005B7D05 /* encrypt_textures_win32.bat */ = {isa = PBXFileReference; lastKnownFileType = text; path = encrypt_textures_win32.bat; sourceTree = "<group>"; };
 		BB6E7A8A1F93CE1B006C0024 /* fast_mutex.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = fast_mutex.h; sourceTree = "<group>"; };
 		BB6E7A8B1F93CE1B006C0024 /* tinythread.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = tinythread.cpp; sourceTree = "<group>"; };
 		BB6E7A8C1F93CE1B006C0024 /* tinythread.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = tinythread.h; sourceTree = "<group>"; };
@@ -1495,6 +1492,12 @@
 		BBCB93161FC217DD0020703A /* WindowsAssetDataHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WindowsAssetDataHandler.h; sourceTree = "<group>"; };
 		BBCB93171FC2295B0020703A /* State.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = State.h; sourceTree = "<group>"; };
 		BBCB93181FC2295C0020703A /* StateMachine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StateMachine.h; sourceTree = "<group>"; };
+		BBCB931A1FC234B50020703A /* encrypt_textures_and_shaders.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = encrypt_textures_and_shaders.sh; sourceTree = "<group>"; };
+		BBCB931B1FC234B50020703A /* encrypt_shaders_win32.bat */ = {isa = PBXFileReference; lastKnownFileType = text; path = encrypt_shaders_win32.bat; sourceTree = "<group>"; };
+		BBCB931C1FC234B50020703A /* encrypt_textures_win32.bat */ = {isa = PBXFileReference; lastKnownFileType = text; path = encrypt_textures_win32.bat; sourceTree = "<group>"; };
+		BBCB931D1FC236B30020703A /* XOREncryptDecrypt.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = XOREncryptDecrypt.c; sourceTree = "<group>"; };
+		BBCB931E1FC236B30020703A /* XOREncryptDecrypt.exe */ = {isa = PBXFileReference; lastKnownFileType = file; path = XOREncryptDecrypt.exe; sourceTree = "<group>"; };
+		BBCB931F1FC236B30020703A /* XOREncryptDecrypt */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = XOREncryptDecrypt; sourceTree = "<group>"; };
 		BBCDF24D1F3796C3006E94B0 /* FPSUtil.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FPSUtil.cpp; sourceTree = "<group>"; };
 		BBCDF24E1F3796C3006E94B0 /* FPSUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FPSUtil.h; sourceTree = "<group>"; };
 		BBCFF1C01ECD312E003EE520 /* Assets.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Assets.cpp; sourceTree = "<group>"; };
@@ -1565,9 +1568,10 @@
 			children = (
 				BB44C4F61DB03A7C003E633F /* 3rdparty */,
 				BBAEF0BC1EA94ED900F0866E /* core */,
-				BB44C31E1DB030B3003E633F /* mac */,
 				BBD3E85F1FB2872A00328E35 /* ios */,
+				BB44C31E1DB030B3003E633F /* mac */,
 				0ADF1875178E2185005DA99E /* Products */,
+				BBCB93191FC234B50020703A /* tools */,
 			);
 			sourceTree = "<group>";
 		};
@@ -2362,16 +2366,6 @@
 			path = "Low-Latency-Android-Audio-iOS-Audio-Engine";
 			sourceTree = "<group>";
 		};
-		BB6A1A4F1F941054005B7D05 /* tools */ = {
-			isa = PBXGroup;
-			children = (
-				BB6A1A501F941054005B7D05 /* encrypt_shaders_win32.bat */,
-				BB6A1A511F941054005B7D05 /* encrypt_textures_and_shaders.sh */,
-				BB6A1A521F941054005B7D05 /* encrypt_textures_win32.bat */,
-			);
-			path = tools;
-			sourceTree = "<group>";
-		};
 		BB6E7A491F93CE0D006C0024 /* TinyThread */ = {
 			isa = PBXGroup;
 			children = (
@@ -2396,7 +2390,6 @@
 				BB6E7AF41F940F13006C0024 /* graphics */,
 				BB6E7AFC1F940F13006C0024 /* logic */,
 				BB6E7AEB1F940F13006C0024 /* network */,
-				BB6A1A4F1F941054005B7D05 /* tools */,
 			);
 			path = game;
 			sourceTree = "<group>";
@@ -3178,6 +3171,20 @@
 			path = windows;
 			sourceTree = "<group>";
 		};
+		BBCB93191FC234B50020703A /* tools */ = {
+			isa = PBXGroup;
+			children = (
+				BBCB931B1FC234B50020703A /* encrypt_shaders_win32.bat */,
+				BBCB931A1FC234B50020703A /* encrypt_textures_and_shaders.sh */,
+				BBCB931C1FC234B50020703A /* encrypt_textures_win32.bat */,
+				BBCB931F1FC236B30020703A /* XOREncryptDecrypt */,
+				BBCB931D1FC236B30020703A /* XOREncryptDecrypt.c */,
+				BBCB931E1FC236B30020703A /* XOREncryptDecrypt.exe */,
+			);
+			name = tools;
+			path = ../../../tools;
+			sourceTree = "<group>";
+		};
 		BBD3E85F1FB2872A00328E35 /* ios */ = {
 			isa = PBXGroup;
 			children = (
@@ -3388,7 +3395,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cd $SRCROOT/../../../src/core/game/tools\n./encrypt_textures_and_shaders.sh";
+			shellScript = "cd $SRCROOT/../../../tools\n./encrypt_textures_and_shaders.sh";
 		};
 		BB5065681FB36E7A00CADEEA /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -3401,7 +3408,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cd $SRCROOT/../../../src/core/game/tools\n./encrypt_textures_and_shaders.sh";
+			shellScript = "cd $SRCROOT/../../../tools\n./encrypt_textures_and_shaders.sh";
 		};
 /* End PBXShellScriptBuildPhase section */
 

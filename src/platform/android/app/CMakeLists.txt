@@ -22,9 +22,8 @@ file(GLOB_RECURSE CPP_3RD_PARTY_FILES_4 "${source_dir}/3rdparty/spine-runtimes/s
 file(GLOB_RECURSE CPP_3RD_PARTY_FILES_5 "${source_dir}/3rdparty/TinyThread/source/*.cpp")
 
 file(GLOB_RECURSE CPP_FRAMEWORK_FILES_1 "${source_dir}/core/framework/entity/*cpp")
-file(GLOB_RECURSE CPP_FRAMEWORK_FILES_2 "${source_dir}/core/framework/file/opengl/android/*cpp")
-file(GLOB_RECURSE CPP_FRAMEWORK_FILES_3 "${source_dir}/core/framework/file/opengl/portable/*cpp")
-file(GLOB_RECURSE CPP_FRAMEWORK_FILES_4 "${source_dir}/core/framework/file/portable/*cpp")
+file(GLOB_RECURSE CPP_FRAMEWORK_FILES_2 "${source_dir}/core/framework/file/android/*cpp")
+file(GLOB_RECURSE CPP_FRAMEWORK_FILES_3 "${source_dir}/core/framework/file/portable/*cpp")
 file(GLOB_RECURSE CPP_FRAMEWORK_FILES_5 "${source_dir}/core/framework/graphics/opengl/*cpp")
 file(GLOB_RECURSE CPP_FRAMEWORK_FILES_6 "${source_dir}/core/framework/graphics/portable/*cpp")
 file(GLOB_RECURSE CPP_FRAMEWORK_FILES_7 "${source_dir}/core/framework/input/*cpp")

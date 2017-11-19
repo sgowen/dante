@@ -32,14 +32,14 @@
 
 struct android_app;
 
-class Engine
+class AndroidEngine
 {
 public:
     static void handleCmd(struct android_app* app, int32_t cmd);
     static int32_t handleInput(android_app* app, AInputEvent* event);
     
-    Engine();
-    ~Engine();
+    AndroidEngine();
+    ~AndroidEngine();
     
     void setState(android_app* state);
     int initDisplay();
@@ -63,9 +63,9 @@ private:
     bool m_hasFocus;
 };
 
-void Engine::handleCmd(struct android_app* app, int32_t cmd)
+void AndroidEngine::handleCmd(struct android_app* app, int32_t cmd)
 {
-    Engine* eng = (Engine*) app->userData;
+    AndroidEngine* eng = (AndroidEngine*) app->userData;
     switch (cmd)
     {
         case APP_CMD_SAVE_STATE:
@@ -134,9 +134,9 @@ void Engine::handleCmd(struct android_app* app, int32_t cmd)
     }
 }
 
-int32_t Engine::handleInput(android_app* app, AInputEvent* event)
+int32_t AndroidEngine::handleInput(android_app* app, AInputEvent* event)
 {
-    Engine* eng = (Engine*) app->userData;
+    AndroidEngine* eng = (AndroidEngine*) app->userData;
     if (AInputEvent_getType(event) == AINPUT_EVENT_TYPE_MOTION)
     {
         int32_t action = AMotionEvent_getAction(event);
@@ -152,7 +152,7 @@ int32_t Engine::handleInput(android_app* app, AInputEvent* event)
             {
                 float x = AMotionEvent_getX(event, pointerIndex);
                 float y = AMotionEvent_getY(event, pointerIndex);
-                CURSOR_INPUT_MANAGER->onTouch(ScreenEventType_DOWN, x, y);
+                CURSOR_INPUT_MANAGER->onTouch(CursorEventType_DOWN, x, y);
             }
                 break;
             case AMOTION_EVENT_ACTION_UP:
@@ -161,7 +161,7 @@ int32_t Engine::handleInput(android_app* app, AInputEvent* event)
             {
                 float x = AMotionEvent_getX(event, pointerIndex);
                 float y = AMotionEvent_getY(event, pointerIndex);
-                CURSOR_INPUT_MANAGER->onTouch(ScreenEventType_UP, x, y);
+                CURSOR_INPUT_MANAGER->onTouch(CursorEventType_UP, x, y);
             }
                 break;
             case AMOTION_EVENT_ACTION_MOVE:
@@ -171,7 +171,7 @@ int32_t Engine::handleInput(android_app* app, AInputEvent* event)
                     pointerIndex = i;
                     float x = AMotionEvent_getX(event, pointerIndex);
                     float y = AMotionEvent_getY(event, pointerIndex);
-                    CURSOR_INPUT_MANAGER->onTouch(ScreenEventType_DRAGGED, x, y);
+                    CURSOR_INPUT_MANAGER->onTouch(CursorEventType_DRAGGED, x, y);
                 }
             }
                 break;
@@ -192,7 +192,7 @@ int32_t Engine::handleInput(android_app* app, AInputEvent* event)
     return 0;
 }
 
-Engine::Engine() :
+AndroidEngine::AndroidEngine() :
 m_glContext(ndk_helper::GLContext::GetInstance()),
 m_app(nullptr),
 m_screen(nullptr),
@@ -203,16 +203,16 @@ m_hasFocus(false)
     // Empty
 }
 
-Engine::~Engine()
+AndroidEngine::~AndroidEngine()
 {
 }
 
-void Engine::setState(android_app* state)
+void AndroidEngine::setState(android_app* state)
 {
     m_app = state;
 }
 
-int Engine::initDisplay()
+int AndroidEngine::initDisplay()
 {
     if (!m_hasInitializedResources)
     {
@@ -236,7 +236,7 @@ int Engine::initDisplay()
     return 0;
 }
 
-void Engine::loadResources()
+void AndroidEngine::loadResources()
 {
     JNIEnv *jni;
     m_app->activity->vm->AttachCurrentThread(&jni, NULL);
@@ -272,7 +272,7 @@ void Engine::loadResources()
     return;
 }
 
-void Engine::unloadResources()
+void AndroidEngine::unloadResources()
 {
     ANDROID_AUDIO_ENGINE_HELPER->deinit();
     
@@ -294,7 +294,7 @@ inline float approxRollingAverage(float avg, float newSample)
     return avg;
 }
 
-void Engine::drawFrame()
+void AndroidEngine::drawFrame()
 {
     float deltaTime;
     
@@ -341,19 +341,19 @@ void Engine::drawFrame()
     }
 }
 
-void Engine::termDisplay()
+void AndroidEngine::termDisplay()
 {
     pause();
     
     m_glContext->Suspend();
 }
 
-void Engine::trimMemory()
+void AndroidEngine::trimMemory()
 {
     m_glContext->Invalidate();
 }
 
-bool Engine::isReady()
+bool AndroidEngine::isReady()
 {
     if (m_hasFocus)
     {
@@ -363,7 +363,7 @@ bool Engine::isReady()
     return false;
 }
 
-void Engine::resume()
+void AndroidEngine::resume()
 {
     if (m_screen)
     {
@@ -373,7 +373,7 @@ void Engine::resume()
     }
 }
 
-void Engine::pause()
+void AndroidEngine::pause()
 {
     if (m_screen)
     {
@@ -383,7 +383,7 @@ void Engine::pause()
     }
 }
 
-Engine g_engine;
+AndroidEngine g_engine;
 
 /**
  * This is the main entry point of a native application that is using
@@ -397,8 +397,8 @@ void android_main(android_app* state)
     g_engine.setState(state);
     
     state->userData = &g_engine;
-    state->onAppCmd = Engine::handleCmd;
-    state->onInputEvent = Engine::handleInput;
+    state->onAppCmd = AndroidEngine::handleCmd;
+    state->onInputEvent = AndroidEngine::handleInput;
     
 #ifdef USE_NDK_PROFILER
     monstartup("native-lib.so");

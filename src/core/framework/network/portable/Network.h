@@ -43,11 +43,27 @@
 #endif
 
 #ifndef htonll
-#define htonll(x) ((1==htonl(1)) ? (x) : ((uint64_t)htonl((x) & 0xFFFFFFFF) << 32) | htonl((x) >> 32))
+#define htonll(x) \
+((__uint64_t)((((__uint64_t)(x) & 0xff00000000000000ULL) >> 56) | \
+(((__uint64_t)(x) & 0x00ff000000000000ULL) >> 40) | \
+(((__uint64_t)(x) & 0x0000ff0000000000ULL) >> 24) | \
+(((__uint64_t)(x) & 0x000000ff00000000ULL) >>  8) | \
+(((__uint64_t)(x) & 0x00000000ff000000ULL) <<  8) | \
+(((__uint64_t)(x) & 0x0000000000ff0000ULL) << 24) | \
+(((__uint64_t)(x) & 0x000000000000ff00ULL) << 40) | \
+(((__uint64_t)(x) & 0x00000000000000ffULL) << 56)))
 #endif
 
 #ifndef ntohll
-#define ntohll(x) ((1==ntohl(1)) ? (x) : ((uint64_t)ntohl((x) & 0xFFFFFFFF) << 32) | ntohl((x) >> 32))
+#define ntohll(x) \
+((__uint64_t)((((__uint64_t)(x) & 0xff00000000000000ULL) >> 56) | \
+(((__uint64_t)(x) & 0x00ff000000000000ULL) >> 40) | \
+(((__uint64_t)(x) & 0x0000ff0000000000ULL) >> 24) | \
+(((__uint64_t)(x) & 0x000000ff00000000ULL) >>  8) | \
+(((__uint64_t)(x) & 0x00000000ff000000ULL) <<  8) | \
+(((__uint64_t)(x) & 0x0000000000ff0000ULL) << 24) | \
+(((__uint64_t)(x) & 0x000000000000ff00ULL) << 40) | \
+(((__uint64_t)(x) & 0x00000000000000ffULL) << 56)))
 #endif
 
 inline float float_swap(float value, bool isHostToNetwork)
