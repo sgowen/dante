@@ -93,7 +93,7 @@ NGSteamServerHelper::~NGSteamServerHelper()
             NGSteamAddress* userAddress = static_cast<NGSteamAddress*>(clientProxy->getMachineAddress());
             
             OutputMemoryBitStream packet;
-            packet.write(static_cast<u_int32_t>(k_EMsgServerExiting));
+            packet.write(static_cast<uint32_t>(k_EMsgServerExiting));
             
             sendPacket(packet, userAddress);
         }
@@ -126,7 +126,7 @@ void NGSteamServerHelper::processSpecialPacket(uint32_t packetType, InputMemoryB
             // the authentication phase of the connection which comes next
             // TODO
             OutputMemoryBitStream packet;
-            packet.write(static_cast<u_int32_t>(k_EMsgServerSendInfo));
+            packet.write(static_cast<uint32_t>(k_EMsgServerSendInfo));
             packet.write(SteamGameServer()->GetSteamID().ConvertToUint64());
             // You can only make use of VAC when using the Steam authentication system
             packet.write(SteamGameServer()->BSecure());
@@ -231,7 +231,7 @@ void NGSteamServerHelper::kickPlayerOffServer(CSteamID steamID)
             
             // send him a kick message
             OutputMemoryBitStream packet;
-            packet.write(static_cast<u_int32_t>(k_EMsgServerFailAuthentication));
+            packet.write(static_cast<uint32_t>(k_EMsgServerFailAuthentication));
             sendDataToClient(steamID, packet);
         }
     }
@@ -306,7 +306,7 @@ void NGSteamServerHelper::onClientBeginAuthentication(CSteamID steamIDClient, vo
     if (nPendingOrActivePlayerCount >= MAX_NUM_PLAYERS_PER_SERVER)
     {
         OutputMemoryBitStream packet;
-        packet.write(static_cast<u_int32_t>(k_EMsgServerFailAuthentication));
+        packet.write(static_cast<uint32_t>(k_EMsgServerFailAuthentication));
         sendDataToClient(steamIDClient, packet);
     }
     
@@ -319,7 +319,7 @@ void NGSteamServerHelper::onClientBeginAuthentication(CSteamID steamIDClient, vo
             if (k_EBeginAuthSessionResultOK != SteamGameServer()->BeginAuthSession(token, uTokenLen, steamIDClient))
             {
                 OutputMemoryBitStream packet;
-                packet.write(static_cast<u_int32_t>(k_EMsgServerFailAuthentication));
+                packet.write(static_cast<uint32_t>(k_EMsgServerFailAuthentication));
                 sendDataToClient(steamIDClient, packet);
                 break;
             }
@@ -350,7 +350,7 @@ void NGSteamServerHelper::onAuthCompleted(bool bAuthSuccessful, uint32_t iPendin
             if (!clientProxy)
             {
                 OutputMemoryBitStream packet;
-                packet.write(static_cast<u_int32_t>(k_EMsgServerPassAuthentication));
+                packet.write(static_cast<uint32_t>(k_EMsgServerPassAuthentication));
                 sendDataToClient(_rgPendingClientData[iPendingAuthIndex]._steamIDUser, packet);
                 
                 // copy over the data from the pending array
@@ -367,7 +367,7 @@ void NGSteamServerHelper::onAuthCompleted(bool bAuthSuccessful, uint32_t iPendin
         
         // Send a deny for the client, and zero out the pending data
         OutputMemoryBitStream packet;
-        packet.write(static_cast<u_int32_t>(k_EMsgServerFailAuthentication));
+        packet.write(static_cast<uint32_t>(k_EMsgServerFailAuthentication));
         sendDataToClient(_rgPendingClientData[iPendingAuthIndex]._steamIDUser, packet);
         
         memset(&_rgPendingClientData[iPendingAuthIndex], 0, sizeof(ClientConnectionData_t));
