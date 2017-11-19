@@ -4104,7 +4104,6 @@
 				HEADER_SEARCH_PATHS = (
 					"\"$(SRCROOT)/../../3rdparty/glfw/include\"",
 					"\"$(SRCROOT)/../../3rdparty/Box2D/Box2D\"",
-					"\"$(SRCROOT)/../../3rdparty/DDHidLib/lib\"",
 					"\"$(SRCROOT)/../../3rdparty/libpng\"",
 					"\"$(SRCROOT)/../../3rdparty/ObjectAL-for-iPhone/ObjectAL/ObjectAL\"",
 					"\"$(SRCROOT)/../../3rdparty/rapidjson/include\"",
@@ -4176,7 +4175,6 @@
 				HEADER_SEARCH_PATHS = (
 					"\"$(SRCROOT)/../../3rdparty/glfw/include\"",
 					"\"$(SRCROOT)/../../3rdparty/Box2D/Box2D\"",
-					"\"$(SRCROOT)/../../3rdparty/DDHidLib/lib\"",
 					"\"$(SRCROOT)/../../3rdparty/libpng\"",
 					"\"$(SRCROOT)/../../3rdparty/ObjectAL-for-iPhone/ObjectAL/ObjectAL\"",
 					"\"$(SRCROOT)/../../3rdparty/rapidjson/include\"",
