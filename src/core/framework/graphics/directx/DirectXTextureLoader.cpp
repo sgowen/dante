@@ -10,15 +10,16 @@
 
 #include "framework/graphics/directx/DirectXTextureLoader.h"
 
-#include "DDSTextureLoader.h"
 #include "framework/util/macros.h"
 #include "framework/graphics/directx/DirectXManager.h"
 #include "framework/graphics/portable/GpuTextureDataWrapper.h"
 #include "framework/graphics/portable/GpuTextureWrapper.h"
-#include "PlatformHelpers.h"
 #include "framework/file/portable/AssetDataHandler.h"
 #include "framework/file/portable/FileData.h"
 #include "framework/util/StringUtil.h"
+
+#include "DDSTextureLoader.h"
+#include "PlatformHelpers.h"
 
 #include <string>
 

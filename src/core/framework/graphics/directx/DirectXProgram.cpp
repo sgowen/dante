@@ -11,9 +11,9 @@
 #include "framework/graphics/directx/DirectXProgram.h"
 
 #include "framework/graphics/directx/DirectXManager.h"
-#include "PlatformHelpers.h"
-#include "ReadData.h"
 #include "framework/util/StringUtil.h"
+
+#include "PlatformHelpers.h"
 
 DirectXProgram::DirectXProgram(const char* vertexShaderName, const char* pixelShaderName, bool useTextureCoords)
 {

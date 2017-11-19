@@ -8,9 +8,9 @@
 
 #include "pch.h"
 
-#include "framework/sound/directx/DirectXSoundWrapper.h"
+#include "framework/audio/directx/DirectXSoundWrapper.h"
 
-#include "framework/sound/directx/DirectXSound.h"
+#include "framework/audio/directx/DirectXSound.h"
 
 #include "framework/util/NGSTDUtil.h"
 

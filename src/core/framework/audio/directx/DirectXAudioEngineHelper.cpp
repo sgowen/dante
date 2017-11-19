@@ -8,11 +8,11 @@
 
 #include "pch.h"
 
-#include "framework/sound/directx/DirectXAudioEngineHelper.h"
+#include "framework/audio/directx/DirectXAudioEngineHelper.h"
 
 #include "framework/audio/portable/SoundWrapper.h"
 
-#include "framework/sound/directx/DirectXSoundWrapper.h"
+#include "framework/audio/directx/DirectXSoundWrapper.h"
 
 DirectXAudioEngineHelper* DirectXAudioEngineHelper::getInstance()
 {

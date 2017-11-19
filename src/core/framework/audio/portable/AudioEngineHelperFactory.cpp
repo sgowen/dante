@@ -20,7 +20,7 @@
 #elif defined __ANDROID__
     #include "framework/audio/superpowered/android/AndroidAudioEngineHelper.h"
 #elif defined _WIN32
-    #include "framework/sound/directx/DirectXAudioEngineHelper.h"
+    #include "framework/audio/directx/DirectXAudioEngineHelper.h"
 #endif
 
 #include <assert.h>

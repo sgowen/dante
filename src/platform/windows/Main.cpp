@@ -3,16 +3,16 @@
 //
 
 #include "pch.h"
-#include "Direct3DMain.h"
+#include "framework/graphics/directx/DirectXMain.h"
 #include "Audio.h"
-#include "MainEngine.h"
+#include "game/logic/MainEngine.h"
 #include <Dbt.h>
 
 using namespace DirectX;
 
 namespace
 {
-    std::unique_ptr<Direct3DMain> g_main;
+    std::unique_ptr<DirectXMain> g_main;
 };
 
 LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
@@ -41,7 +41,7 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, 
 		return 1;
 	}
 
-    g_main = std::make_unique<Direct3DMain>();
+    g_main = std::make_unique<DirectXMain>();
 
     // Register class and create window
     {
@@ -143,7 +143,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     static bool s_minimized = false;
     static bool s_fullscreen = true;
 
-    auto direct3DMain = reinterpret_cast<Direct3DMain*>(GetWindowLongPtr(hWnd, GWLP_USERDATA));
+    auto directXMain = reinterpret_cast<DirectXMain*>(GetWindowLongPtr(hWnd, GWLP_USERDATA));
 
     switch (message)
     {
@@ -158,9 +158,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             if (!s_minimized)
             {
                 s_minimized = true;
-				if (!s_in_suspend && direct3DMain)
+				if (!s_in_suspend && directXMain)
 				{
-					direct3DMain->OnSuspending();
+					directXMain->OnSuspending();
 				}
                 s_in_suspend = true;
             }
@@ -168,15 +168,15 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         else if (s_minimized)
         {
             s_minimized = false;
-			if (s_in_suspend && direct3DMain)
+			if (s_in_suspend && directXMain)
 			{
-				direct3DMain->OnResuming();
+				directXMain->OnResuming();
 			}
             s_in_suspend = false;
         }
-        else if (!s_in_sizemove && direct3DMain)
+        else if (!s_in_sizemove && directXMain)
         {
-            direct3DMain->OnWindowSizeChanged(LOWORD(lParam), HIWORD(lParam));
+            directXMain->OnWindowSizeChanged(LOWORD(lParam), HIWORD(lParam));
         }
         break;
 
@@ -186,12 +186,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
     case WM_EXITSIZEMOVE:
         s_in_sizemove = false;
-        if (direct3DMain)
+        if (directXMain)
         {
             RECT rc;
             GetClientRect(hWnd, &rc);
 
-            direct3DMain->OnWindowSizeChanged(rc.right - rc.left, rc.bottom - rc.top);
+            directXMain->OnWindowSizeChanged(rc.right - rc.left, rc.bottom - rc.top);
         }
         break;
 
@@ -204,15 +204,15 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         break;
 
     case WM_ACTIVATEAPP:
-        if (direct3DMain)
+        if (directXMain)
         {
             if (wParam)
             {
-                direct3DMain->OnActivated();
+                directXMain->OnActivated();
             }
             else
             {
-                direct3DMain->OnDeactivated();
+                directXMain->OnDeactivated();
             }
         }
 
@@ -225,9 +225,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         switch (wParam)
         {
         case PBT_APMQUERYSUSPEND:
-			if (!s_in_suspend && direct3DMain)
+			if (!s_in_suspend && directXMain)
 			{
-				direct3DMain->OnSuspending();
+				directXMain->OnSuspending();
 			}
             s_in_suspend = true;
             return TRUE;
@@ -235,9 +235,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         case PBT_APMRESUMESUSPEND:
             if (!s_minimized)
             {
-				if (s_in_suspend && direct3DMain)
+				if (s_in_suspend && directXMain)
 				{
-					direct3DMain->OnResuming();
+					directXMain->OnResuming();
 				}
                 s_in_suspend = false;
             }
@@ -260,9 +260,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
                 int width = 800;
                 int height = 600;
-				if (direct3DMain)
+				if (directXMain)
 				{
-					direct3DMain->GetDefaultSize(width, height);
+					directXMain->GetDefaultSize(width, height);
 				}
 
                 ShowWindow(hWnd, SW_SHOWNORMAL);
@@ -323,9 +323,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 					auto pInter = reinterpret_cast<const PDEV_BROADCAST_DEVICEINTERFACE>(pDev);
 					if (pInter->dbcc_classguid == KSCATEGORY_AUDIO)
 					{
-						if (direct3DMain)
+						if (directXMain)
 						{
-							direct3DMain->OnNewAudioDevice();
+							directXMain->OnNewAudioDevice();
 						}
 					}
 				}

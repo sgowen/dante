@@ -6,6 +6,8 @@
 //  Copyright (c) 2017 Noctis Games. All rights reserved.
 //
 
+#include "pch.h"
+
 #include "framework/file/windows/WindowsAssetDataHandler.h"
 
 #include <stdint.h>
@@ -63,18 +65,17 @@ FileData WindowsAssetDataHandler::getAssetData(const char* relativePath)
     
     delete name;
     
-    return (FileData)
-    {
-        blob->size(), blob->data(), blob
-    };
+	FileData ret(blob->size(), blob->data(), blob);
+
+	return ret;
 }
 
 void WindowsAssetDataHandler::releaseAssetData(const FileData* fileData)
 {
-    assert(file_data != NULL);
+    assert(fileData != NULL);
     assert(fileData->file_handle != NULL);
     
-    delete file_handle;
+    delete fileData->file_handle;
 }
 
 WindowsAssetDataHandler::WindowsAssetDataHandler() : AssetDataHandler()

@@ -14,9 +14,10 @@
 #include "framework/graphics/directx/DirectXGeometryGpuProgramWrapper.h"
 #include "framework/graphics/directx/DirectXFramebufferToScreenGpuProgramWrapper.h"
 #include "framework/graphics/portable/GpuTextureWrapper.h"
-#include "PlatformHelpers.h"
 #include "framework/util/NGSTDUtil.h"
 #include "framework/graphics/portable/GpuTextureWrapper.h"
+
+#include "PlatformHelpers.h"
 
 #include <assert.h>
 

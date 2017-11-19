@@ -8,7 +8,7 @@
 
 #include "pch.h"
 
-#include "framework/sound/directx/DirectXSound.h"
+#include "framework/audio/directx/DirectXSound.h"
 
 DirectXSound::DirectXSound(int soundId, DirectX::SoundEffect& sound, float volume) : Sound(soundId),
 _isLooping(false),
