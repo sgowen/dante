@@ -42,20 +42,6 @@
 		BB190F591FAB9E3900BDC6D0 /* NSMutableDictionary+WeakReferences.m in Sources */ = {isa = PBXBuildFile; fileRef = BB190F3A1FAB9E3900BDC6D0 /* NSMutableDictionary+WeakReferences.m */; };
 		BB190F5A1FAB9E3900BDC6D0 /* OALAudioFile.m in Sources */ = {isa = PBXBuildFile; fileRef = BB190F3C1FAB9E3900BDC6D0 /* OALAudioFile.m */; };
 		BB190F5B1FAB9E3900BDC6D0 /* OALTools.m in Sources */ = {isa = PBXBuildFile; fileRef = BB190F3F1FAB9E3900BDC6D0 /* OALTools.m */; };
-		BB190FDF1FABA3F700BDC6D0 /* DDHidAppleMikey.m in Sources */ = {isa = PBXBuildFile; fileRef = BB190FC41FABA3F600BDC6D0 /* DDHidAppleMikey.m */; };
-		BB190FE01FABA3F700BDC6D0 /* DDHidAppleRemote.m in Sources */ = {isa = PBXBuildFile; fileRef = BB190FC61FABA3F600BDC6D0 /* DDHidAppleRemote.m */; };
-		BB190FE11FABA3F700BDC6D0 /* DDHidDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = BB190FC81FABA3F600BDC6D0 /* DDHidDevice.m */; };
-		BB190FE21FABA3F700BDC6D0 /* DDHidElement.m in Sources */ = {isa = PBXBuildFile; fileRef = BB190FCA1FABA3F600BDC6D0 /* DDHidElement.m */; };
-		BB190FE31FABA3F700BDC6D0 /* DDHidEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = BB190FCC1FABA3F600BDC6D0 /* DDHidEvent.m */; };
-		BB190FE41FABA3F700BDC6D0 /* DDHidJoystick.m in Sources */ = {isa = PBXBuildFile; fileRef = BB190FCE1FABA3F600BDC6D0 /* DDHidJoystick.m */; };
-		BB190FE51FABA3F700BDC6D0 /* DDHidKeyboard.m in Sources */ = {isa = PBXBuildFile; fileRef = BB190FD01FABA3F600BDC6D0 /* DDHidKeyboard.m */; };
-		BB190FE61FABA3F700BDC6D0 /* DDHidKeyboardBarcodeScanner.m in Sources */ = {isa = PBXBuildFile; fileRef = BB190FD21FABA3F600BDC6D0 /* DDHidKeyboardBarcodeScanner.m */; };
-		BB190FE71FABA3F700BDC6D0 /* DDHidMouse.m in Sources */ = {isa = PBXBuildFile; fileRef = BB190FD51FABA3F600BDC6D0 /* DDHidMouse.m */; };
-		BB190FE81FABA3F700BDC6D0 /* DDHidQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = BB190FD71FABA3F600BDC6D0 /* DDHidQueue.m */; };
-		BB190FE91FABA3F700BDC6D0 /* DDHidStandardUsages.plist in Resources */ = {isa = PBXBuildFile; fileRef = BB190FD81FABA3F600BDC6D0 /* DDHidStandardUsages.plist */; };
-		BB190FEA1FABA3F700BDC6D0 /* DDHidUsage.m in Sources */ = {isa = PBXBuildFile; fileRef = BB190FDA1FABA3F600BDC6D0 /* DDHidUsage.m */; };
-		BB190FEB1FABA3F700BDC6D0 /* DDHidUsageTables.m in Sources */ = {isa = PBXBuildFile; fileRef = BB190FDC1FABA3F600BDC6D0 /* DDHidUsageTables.m */; };
-		BB190FEC1FABA3F700BDC6D0 /* NSDictionary+DDHidExtras.m in Sources */ = {isa = PBXBuildFile; fileRef = BB190FDE1FABA3F600BDC6D0 /* NSDictionary+DDHidExtras.m */; };
 		BB1912891FABB66A00BDC6D0 /* b2BroadPhase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB1911631FABB66A00BDC6D0 /* b2BroadPhase.cpp */; };
 		BB19128A1FABB66A00BDC6D0 /* b2CollideCircle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB1911651FABB66A00BDC6D0 /* b2CollideCircle.cpp */; };
 		BB19128B1FABB66A00BDC6D0 /* b2CollideEdge.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB1911661FABB66A00BDC6D0 /* b2CollideEdge.cpp */; };
@@ -106,11 +92,24 @@
 		BB1914821FABB78C00BDC6D0 /* steam_api.json in Resources */ = {isa = PBXBuildFile; fileRef = BB1914701FABB78C00BDC6D0 /* steam_api.json */; };
 		BB1914831FABB78C00BDC6D0 /* steam_api_interop.cs in Resources */ = {isa = PBXBuildFile; fileRef = BB1914731FABB78C00BDC6D0 /* steam_api_interop.cs */; };
 		BB19148E1FABBD1300BDC6D0 /* libsteam_api.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BB1914431FABB78400BDC6D0 /* libsteam_api.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		BB1D05281FB9DBB400FF2CBC /* NSXReturnThrowError.m in Sources */ = {isa = PBXBuildFile; fileRef = BB1D05271FB9DBB400FF2CBC /* NSXReturnThrowError.m */; };
 		BB1E897B1EF4A81500B0D78A /* PacketHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB1E89791EF4A81500B0D78A /* PacketHandler.cpp */; };
 		BB1E89811EF4B2BA00B0D78A /* SocketPacketHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB1E897F1EF4B2BA00B0D78A /* SocketPacketHandler.cpp */; };
 		BB1E89841EF4B4F400B0D78A /* NGSteamPacketHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB1E89821EF4B4F400B0D78A /* NGSteamPacketHandler.cpp */; };
 		BB2AC5471EFC56330012B990 /* sound_006.wav in Resources */ = {isa = PBXBuildFile; fileRef = BB2AC5461EFC56330012B990 /* sound_006.wav */; };
+		BB31B5A51FC205D5005F1C0A /* CursorEvent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB31B5941FC205CA005F1C0A /* CursorEvent.cpp */; };
+		BB31B5A61FC205D5005F1C0A /* CursorEvent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB31B5941FC205CA005F1C0A /* CursorEvent.cpp */; };
+		BB31B5A71FC205D5005F1C0A /* GamePadInputManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB31B5951FC205CB005F1C0A /* GamePadInputManager.cpp */; };
+		BB31B5A81FC205D5005F1C0A /* GamePadInputManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB31B5951FC205CB005F1C0A /* GamePadInputManager.cpp */; };
+		BB31B5A91FC205D5005F1C0A /* KeyboardEvent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB31B5961FC205CC005F1C0A /* KeyboardEvent.cpp */; };
+		BB31B5AA1FC205D5005F1C0A /* KeyboardEvent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB31B5961FC205CC005F1C0A /* KeyboardEvent.cpp */; };
+		BB31B5AB1FC205D5005F1C0A /* CursorInputManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB31B5981FC205CC005F1C0A /* CursorInputManager.cpp */; };
+		BB31B5AC1FC205D5005F1C0A /* CursorInputManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB31B5981FC205CC005F1C0A /* CursorInputManager.cpp */; };
+		BB31B5AD1FC205D5005F1C0A /* CursorConverter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB31B5991FC205CD005F1C0A /* CursorConverter.cpp */; };
+		BB31B5AE1FC205D5005F1C0A /* CursorConverter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB31B5991FC205CD005F1C0A /* CursorConverter.cpp */; };
+		BB31B5AF1FC205D5005F1C0A /* GamePadEvent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB31B59F1FC205D0005F1C0A /* GamePadEvent.cpp */; };
+		BB31B5B01FC205D5005F1C0A /* GamePadEvent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB31B59F1FC205D0005F1C0A /* GamePadEvent.cpp */; };
+		BB31B5B11FC205D5005F1C0A /* KeyboardInputManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB31B5A31FC205D4005F1C0A /* KeyboardInputManager.cpp */; };
+		BB31B5B21FC205D5005F1C0A /* KeyboardInputManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB31B5A31FC205D4005F1C0A /* KeyboardInputManager.cpp */; };
 		BB3BAEE11FB4A1FA00F5F8B0 /* InputManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB3BAEDF1FB4A1F900F5F8B0 /* InputManager.cpp */; };
 		BB3BAEE21FB4A1FA00F5F8B0 /* InputManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB3BAEDF1FB4A1F900F5F8B0 /* InputManager.cpp */; };
 		BB4253D21EF58DA5003F6D2A /* ClientHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB4253D01EF58DA5003F6D2A /* ClientHelper.cpp */; };
@@ -178,7 +177,7 @@
 		BB5833741EEDBBC50084DA20 /* steam_appid.txt in Resources */ = {isa = PBXBuildFile; fileRef = BB5833731EEDBBC50084DA20 /* steam_appid.txt */; };
 		BB5833751EEDBBC90084DA20 /* steam_appid.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = BB5833731EEDBBC50084DA20 /* steam_appid.txt */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		BB5833781EEDBF7E0084DA20 /* NGSteamGameServices.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB5833771EEDBF7E0084DA20 /* NGSteamGameServices.cpp */; };
-		BB5833CD1EEDDA330084DA20 /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = BB5833CC1EEDDA330084DA20 /* main.mm */; };
+		BB5833CD1EEDDA330084DA20 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB5833CC1EEDDA330084DA20 /* main.cpp */; };
 		BB5833D01EEDDAFC0084DA20 /* Renderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB5833CE1EEDDAFC0084DA20 /* Renderer.cpp */; };
 		BB5833DC1EEDDC2B0084DA20 /* Engine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB5833DA1EEDDC2B0084DA20 /* Engine.cpp */; };
 		BB5833EB1EEDDD330084DA20 /* music_001.wav in Resources */ = {isa = PBXBuildFile; fileRef = BB5833DF1EEDDD330084DA20 /* music_001.wav */; };
@@ -298,13 +297,6 @@
 		BB5AFE2B1FB35A19005FBD52 /* OverlapTester.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF17F1EA94ED900F0866E /* OverlapTester.cpp */; };
 		BB5AFE2C1FB35A19005FBD52 /* Triangle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF1811EA94ED900F0866E /* Triangle.cpp */; };
 		BB5AFE2D1FB35A19005FBD52 /* Vector2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF1831EA94ED900F0866E /* Vector2.cpp */; };
-		BB5AFE2E1FB35A49005FBD52 /* GamePadEvent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF15E1EA94ED900F0866E /* GamePadEvent.cpp */; };
-		BB5AFE2F1FB35A49005FBD52 /* GamePadInputManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF1611EA94ED900F0866E /* GamePadInputManager.cpp */; };
-		BB5AFE301FB35A49005FBD52 /* KeyboardEvent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF1631EA94ED900F0866E /* KeyboardEvent.cpp */; };
-		BB5AFE311FB35A49005FBD52 /* KeyboardInputManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF1661EA94ED900F0866E /* KeyboardInputManager.cpp */; };
-		BB5AFE321FB35A49005FBD52 /* CursorEvent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF1681EA94ED900F0866E /* CursorEvent.cpp */; };
-		BB5AFE331FB35A49005FBD52 /* CursorInputManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF16B1EA94ED900F0866E /* CursorInputManager.cpp */; };
-		BB5AFE341FB35A49005FBD52 /* CursorConverter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF16D1EA94ED900F0866E /* CursorConverter.cpp */; };
 		BB5AFE351FB35A77005FBD52 /* ClientHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB4253D01EF58DA5003F6D2A /* ClientHelper.cpp */; };
 		BB5AFE361FB35A77005FBD52 /* NetworkManagerClient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB7251921EE105330024C71C /* NetworkManagerClient.cpp */; };
 		BB5AFE371FB35A77005FBD52 /* ReplicationManagerClient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF226B01EC12CDE00573356 /* ReplicationManagerClient.cpp */; };
@@ -577,13 +569,6 @@
 		BBAEF2781EA94EDA00F0866E /* TextureRegion.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF1531EA94ED900F0866E /* TextureRegion.cpp */; };
 		BBAEF27A1EA94EDA00F0866E /* TextureWrapper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF1551EA94ED900F0866E /* TextureWrapper.cpp */; };
 		BBAEF27C1EA94EDA00F0866E /* TransitionGpuProgramWrapper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF1571EA94ED900F0866E /* TransitionGpuProgramWrapper.cpp */; };
-		BBAEF2801EA94EDA00F0866E /* GamePadEvent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF15E1EA94ED900F0866E /* GamePadEvent.cpp */; };
-		BBAEF2821EA94EDA00F0866E /* GamePadInputManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF1611EA94ED900F0866E /* GamePadInputManager.cpp */; };
-		BBAEF2841EA94EDA00F0866E /* KeyboardEvent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF1631EA94ED900F0866E /* KeyboardEvent.cpp */; };
-		BBAEF2861EA94EDA00F0866E /* KeyboardInputManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF1661EA94ED900F0866E /* KeyboardInputManager.cpp */; };
-		BBAEF2881EA94EDA00F0866E /* CursorEvent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF1681EA94ED900F0866E /* CursorEvent.cpp */; };
-		BBAEF28A1EA94EDA00F0866E /* CursorInputManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF16B1EA94ED900F0866E /* CursorInputManager.cpp */; };
-		BBAEF28C1EA94EDA00F0866E /* CursorConverter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF16D1EA94ED900F0866E /* CursorConverter.cpp */; };
 		BBAEF2941EA94EDA00F0866E /* Circle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF1781EA94ED900F0866E /* Circle.cpp */; };
 		BBAEF2961EA94EDA00F0866E /* Line.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF17A1EA94ED900F0866E /* Line.cpp */; };
 		BBAEF2981EA94EDA00F0866E /* NGRect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF17D1EA94ED900F0866E /* NGRect.cpp */; };
@@ -595,7 +580,6 @@
 		BBAEF2A81EA94EDA00F0866E /* Sound.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF1921EA94ED900F0866E /* Sound.cpp */; };
 		BBAEF2AA1EA94EDA00F0866E /* SoundWrapper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF1941EA94ED900F0866E /* SoundWrapper.cpp */; };
 		BBAEF2AC1EA94EDA00F0866E /* NGAudioEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF1961EA94ED900F0866E /* NGAudioEngine.cpp */; };
-		BBAEF3101EA94FAC00F0866E /* JoystickController.mm in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF30F1EA94FAC00F0866E /* JoystickController.mm */; };
 		BBAFD32D1EF44813004F2742 /* MachineAddress.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAFD32B1EF44813004F2742 /* MachineAddress.cpp */; };
 		BBAFD3301EF4496D004F2742 /* NGSteamAddress.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAFD32E1EF4496D004F2742 /* NGSteamAddress.cpp */; };
 		BBAFD3331EF45EEA004F2742 /* FWInstanceManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAFD3311EF45EEA004F2742 /* FWInstanceManager.cpp */; };
@@ -759,34 +743,6 @@
 		BB190F3F1FAB9E3900BDC6D0 /* OALTools.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OALTools.m; sourceTree = "<group>"; };
 		BB190F401FAB9E3900BDC6D0 /* ObjectALMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ObjectALMacros.h; sourceTree = "<group>"; };
 		BB190F411FAB9E3900BDC6D0 /* SynthesizeSingleton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SynthesizeSingleton.h; sourceTree = "<group>"; };
-		BB190FC31FABA3F600BDC6D0 /* DDHidAppleMikey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDHidAppleMikey.h; sourceTree = "<group>"; };
-		BB190FC41FABA3F600BDC6D0 /* DDHidAppleMikey.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDHidAppleMikey.m; sourceTree = "<group>"; };
-		BB190FC51FABA3F600BDC6D0 /* DDHidAppleRemote.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDHidAppleRemote.h; sourceTree = "<group>"; };
-		BB190FC61FABA3F600BDC6D0 /* DDHidAppleRemote.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDHidAppleRemote.m; sourceTree = "<group>"; };
-		BB190FC71FABA3F600BDC6D0 /* DDHidDevice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDHidDevice.h; sourceTree = "<group>"; };
-		BB190FC81FABA3F600BDC6D0 /* DDHidDevice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDHidDevice.m; sourceTree = "<group>"; };
-		BB190FC91FABA3F600BDC6D0 /* DDHidElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDHidElement.h; sourceTree = "<group>"; };
-		BB190FCA1FABA3F600BDC6D0 /* DDHidElement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDHidElement.m; sourceTree = "<group>"; };
-		BB190FCB1FABA3F600BDC6D0 /* DDHidEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDHidEvent.h; sourceTree = "<group>"; };
-		BB190FCC1FABA3F600BDC6D0 /* DDHidEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDHidEvent.m; sourceTree = "<group>"; };
-		BB190FCD1FABA3F600BDC6D0 /* DDHidJoystick.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDHidJoystick.h; sourceTree = "<group>"; };
-		BB190FCE1FABA3F600BDC6D0 /* DDHidJoystick.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDHidJoystick.m; sourceTree = "<group>"; };
-		BB190FCF1FABA3F600BDC6D0 /* DDHidKeyboard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDHidKeyboard.h; sourceTree = "<group>"; };
-		BB190FD01FABA3F600BDC6D0 /* DDHidKeyboard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDHidKeyboard.m; sourceTree = "<group>"; };
-		BB190FD11FABA3F600BDC6D0 /* DDHidKeyboardBarcodeScanner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDHidKeyboardBarcodeScanner.h; sourceTree = "<group>"; };
-		BB190FD21FABA3F600BDC6D0 /* DDHidKeyboardBarcodeScanner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDHidKeyboardBarcodeScanner.m; sourceTree = "<group>"; };
-		BB190FD31FABA3F600BDC6D0 /* DDHidLib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDHidLib.h; sourceTree = "<group>"; };
-		BB190FD41FABA3F600BDC6D0 /* DDHidMouse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDHidMouse.h; sourceTree = "<group>"; };
-		BB190FD51FABA3F600BDC6D0 /* DDHidMouse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDHidMouse.m; sourceTree = "<group>"; };
-		BB190FD61FABA3F600BDC6D0 /* DDHidQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDHidQueue.h; sourceTree = "<group>"; };
-		BB190FD71FABA3F600BDC6D0 /* DDHidQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDHidQueue.m; sourceTree = "<group>"; };
-		BB190FD81FABA3F600BDC6D0 /* DDHidStandardUsages.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = DDHidStandardUsages.plist; sourceTree = "<group>"; };
-		BB190FD91FABA3F600BDC6D0 /* DDHidUsage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDHidUsage.h; sourceTree = "<group>"; };
-		BB190FDA1FABA3F600BDC6D0 /* DDHidUsage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDHidUsage.m; sourceTree = "<group>"; };
-		BB190FDB1FABA3F600BDC6D0 /* DDHidUsageTables.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDHidUsageTables.h; sourceTree = "<group>"; };
-		BB190FDC1FABA3F600BDC6D0 /* DDHidUsageTables.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDHidUsageTables.m; sourceTree = "<group>"; };
-		BB190FDD1FABA3F600BDC6D0 /* NSDictionary+DDHidExtras.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+DDHidExtras.h"; sourceTree = "<group>"; };
-		BB190FDE1FABA3F600BDC6D0 /* NSDictionary+DDHidExtras.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+DDHidExtras.m"; sourceTree = "<group>"; };
 		BB1911611FABB66A00BDC6D0 /* Box2D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Box2D.h; sourceTree = "<group>"; };
 		BB1911631FABB66A00BDC6D0 /* b2BroadPhase.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = b2BroadPhase.cpp; sourceTree = "<group>"; };
 		BB1911641FABB66A00BDC6D0 /* b2BroadPhase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = b2BroadPhase.h; sourceTree = "<group>"; };
@@ -920,8 +876,6 @@
 		BB1914781FABB78C00BDC6D0 /* steamps3params.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = steamps3params.h; sourceTree = "<group>"; };
 		BB1914791FABB78C00BDC6D0 /* steamtypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = steamtypes.h; sourceTree = "<group>"; };
 		BB19147A1FABB78C00BDC6D0 /* steamuniverse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = steamuniverse.h; sourceTree = "<group>"; };
-		BB1D05261FB9DBB400FF2CBC /* NSXReturnThrowError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSXReturnThrowError.h; sourceTree = "<group>"; };
-		BB1D05271FB9DBB400FF2CBC /* NSXReturnThrowError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSXReturnThrowError.m; sourceTree = "<group>"; };
 		BB1E89791EF4A81500B0D78A /* PacketHandler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PacketHandler.cpp; sourceTree = "<group>"; };
 		BB1E897A1EF4A81500B0D78A /* PacketHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PacketHandler.h; sourceTree = "<group>"; };
 		BB1E897F1EF4B2BA00B0D78A /* SocketPacketHandler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SocketPacketHandler.cpp; sourceTree = "<group>"; };
@@ -930,6 +884,23 @@
 		BB1E89831EF4B4F400B0D78A /* NGSteamPacketHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NGSteamPacketHandler.h; sourceTree = "<group>"; };
 		BB2AC5451EFC382C0012B990 /* FontAlign.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FontAlign.h; sourceTree = "<group>"; };
 		BB2AC5461EFC56330012B990 /* sound_006.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = sound_006.wav; sourceTree = "<group>"; };
+		BB31B5941FC205CA005F1C0A /* CursorEvent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CursorEvent.cpp; sourceTree = "<group>"; };
+		BB31B5951FC205CB005F1C0A /* GamePadInputManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GamePadInputManager.cpp; sourceTree = "<group>"; };
+		BB31B5961FC205CC005F1C0A /* KeyboardEvent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KeyboardEvent.cpp; sourceTree = "<group>"; };
+		BB31B5971FC205CC005F1C0A /* GamePadInputManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GamePadInputManager.h; sourceTree = "<group>"; };
+		BB31B5981FC205CC005F1C0A /* CursorInputManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CursorInputManager.cpp; sourceTree = "<group>"; };
+		BB31B5991FC205CD005F1C0A /* CursorConverter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CursorConverter.cpp; sourceTree = "<group>"; };
+		BB31B59A1FC205CD005F1C0A /* CursorEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CursorEvent.h; sourceTree = "<group>"; };
+		BB31B59B1FC205CD005F1C0A /* KeyboardEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeyboardEvent.h; sourceTree = "<group>"; };
+		BB31B59C1FC205CE005F1C0A /* CursorInputManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CursorInputManager.h; sourceTree = "<group>"; };
+		BB31B59D1FC205CE005F1C0A /* CursorEventType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CursorEventType.h; sourceTree = "<group>"; };
+		BB31B59E1FC205CF005F1C0A /* GamePadEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GamePadEvent.h; sourceTree = "<group>"; };
+		BB31B59F1FC205D0005F1C0A /* GamePadEvent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GamePadEvent.cpp; sourceTree = "<group>"; };
+		BB31B5A01FC205D2005F1C0A /* KeyboardLookup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeyboardLookup.h; sourceTree = "<group>"; };
+		BB31B5A11FC205D3005F1C0A /* GamePadEventType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GamePadEventType.h; sourceTree = "<group>"; };
+		BB31B5A21FC205D4005F1C0A /* CursorConverter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CursorConverter.h; sourceTree = "<group>"; };
+		BB31B5A31FC205D4005F1C0A /* KeyboardInputManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KeyboardInputManager.cpp; sourceTree = "<group>"; };
+		BB31B5A41FC205D5005F1C0A /* KeyboardInputManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeyboardInputManager.h; sourceTree = "<group>"; };
 		BB39C8921FB2700900CF6699 /* NGGraphics.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NGGraphics.h; sourceTree = "<group>"; };
 		BB3BAEDF1FB4A1F900F5F8B0 /* InputManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = InputManager.cpp; sourceTree = "<group>"; };
 		BB3BAEE01FB4A1F900F5F8B0 /* InputManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InputManager.h; sourceTree = "<group>"; };
@@ -1050,7 +1021,7 @@
 		BB5833C91EEDD6580084DA20 /* DirectXSoundWrapper.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = DirectXSoundWrapper.cpp; sourceTree = "<group>"; };
 		BB5833CA1EEDD6580084DA20 /* DirectXSoundWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DirectXSoundWrapper.h; sourceTree = "<group>"; };
 		BB5833CB1EEDD7790084DA20 /* StepTimer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StepTimer.h; sourceTree = "<group>"; };
-		BB5833CC1EEDDA330084DA20 /* main.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = main.mm; sourceTree = "<group>"; };
+		BB5833CC1EEDDA330084DA20 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		BB5833CE1EEDDAFC0084DA20 /* Renderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Renderer.cpp; sourceTree = "<group>"; };
 		BB5833CF1EEDDAFC0084DA20 /* Renderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Renderer.h; sourceTree = "<group>"; };
 		BB5833DA1EEDDC2B0084DA20 /* Engine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Engine.cpp; sourceTree = "<group>"; };
@@ -1103,7 +1074,6 @@
 		BB5A0A911FB36297005FBD52 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS11.1.sdk/System/Library/Frameworks/AVFoundation.framework; sourceTree = DEVELOPER_DIR; };
 		BB5A0A931FB36309005FBD52 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS11.1.sdk/System/Library/Frameworks/MediaPlayer.framework; sourceTree = DEVELOPER_DIR; };
 		BB5A0AA71FB36DD1005FBD52 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = ../../../../../../../../../../../System/Library/Frameworks/GLKit.framework; sourceTree = "<group>"; };
-		BB5C31921EF5F5C0000B98FC /* KeyboardLookup.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KeyboardLookup.h; sourceTree = "<group>"; };
 		BB5F46FA1ED38D61005FEC0C /* SocketAddressFamily.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SocketAddressFamily.h; sourceTree = "<group>"; };
 		BB61CB581EC9FA1B000E0291 /* FrameworkConstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FrameworkConstants.h; sourceTree = "<group>"; };
 		BB6A1A501F941054005B7D05 /* encrypt_shaders_win32.bat */ = {isa = PBXFileReference; lastKnownFileType = text; path = encrypt_shaders_win32.bat; sourceTree = "<group>"; };
@@ -1372,11 +1342,6 @@
 		BB8308391EC2AD1F00435E7E /* UDPSocket.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = UDPSocket.cpp; sourceTree = "<group>"; };
 		BB83083A1EC2AD1F00435E7E /* UDPSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UDPSocket.h; sourceTree = "<group>"; };
 		BB88026F1EE4A40400F1A37C /* Color.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Color.h; sourceTree = "<group>"; };
-		BB9578CA1F10105600E89DE9 /* dxwebsetup.exe */ = {isa = PBXFileReference; lastKnownFileType = file; path = dxwebsetup.exe; sourceTree = "<group>"; };
-		BB9578CD1F10105600E89DE9 /* msvcp140.dll */ = {isa = PBXFileReference; lastKnownFileType = file; path = msvcp140.dll; sourceTree = "<group>"; };
-		BB9578CE1F10105600E89DE9 /* vcruntime140.dll */ = {isa = PBXFileReference; lastKnownFileType = file; path = vcruntime140.dll; sourceTree = "<group>"; };
-		BB9578D01F10105600E89DE9 /* msvcp140.dll */ = {isa = PBXFileReference; lastKnownFileType = file; path = msvcp140.dll; sourceTree = "<group>"; };
-		BB9578D11F10105600E89DE9 /* vcruntime140.dll */ = {isa = PBXFileReference; lastKnownFileType = file; path = vcruntime140.dll; sourceTree = "<group>"; };
 		BB95792F1F10110200E89DE9 /* MacAudioEngineHelper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MacAudioEngineHelper.cpp; sourceTree = "<group>"; };
 		BB9579301F10110200E89DE9 /* MacAudioEngineHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MacAudioEngineHelper.h; sourceTree = "<group>"; };
 		BB9579311F10110200E89DE9 /* MacSound.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MacSound.cpp; sourceTree = "<group>"; };
@@ -1486,22 +1451,6 @@
 		BBAEF1561EA94ED900F0866E /* TextureWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextureWrapper.h; sourceTree = "<group>"; };
 		BBAEF1571EA94ED900F0866E /* TransitionGpuProgramWrapper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TransitionGpuProgramWrapper.cpp; sourceTree = "<group>"; };
 		BBAEF1581EA94ED900F0866E /* TransitionGpuProgramWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransitionGpuProgramWrapper.h; sourceTree = "<group>"; };
-		BBAEF15E1EA94ED900F0866E /* GamePadEvent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GamePadEvent.cpp; sourceTree = "<group>"; };
-		BBAEF15F1EA94ED900F0866E /* GamePadEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GamePadEvent.h; sourceTree = "<group>"; };
-		BBAEF1601EA94ED900F0866E /* GamePadEventType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GamePadEventType.h; sourceTree = "<group>"; };
-		BBAEF1611EA94ED900F0866E /* GamePadInputManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GamePadInputManager.cpp; sourceTree = "<group>"; };
-		BBAEF1621EA94ED900F0866E /* GamePadInputManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GamePadInputManager.h; sourceTree = "<group>"; };
-		BBAEF1631EA94ED900F0866E /* KeyboardEvent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KeyboardEvent.cpp; sourceTree = "<group>"; };
-		BBAEF1641EA94ED900F0866E /* KeyboardEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeyboardEvent.h; sourceTree = "<group>"; };
-		BBAEF1661EA94ED900F0866E /* KeyboardInputManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KeyboardInputManager.cpp; sourceTree = "<group>"; };
-		BBAEF1671EA94ED900F0866E /* KeyboardInputManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeyboardInputManager.h; sourceTree = "<group>"; };
-		BBAEF1681EA94ED900F0866E /* CursorEvent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CursorEvent.cpp; sourceTree = "<group>"; };
-		BBAEF1691EA94ED900F0866E /* CursorEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CursorEvent.h; sourceTree = "<group>"; };
-		BBAEF16A1EA94ED900F0866E /* CursorEventType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CursorEventType.h; sourceTree = "<group>"; };
-		BBAEF16B1EA94ED900F0866E /* CursorInputManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CursorInputManager.cpp; sourceTree = "<group>"; };
-		BBAEF16C1EA94ED900F0866E /* CursorInputManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CursorInputManager.h; sourceTree = "<group>"; };
-		BBAEF16D1EA94ED900F0866E /* CursorConverter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CursorConverter.cpp; sourceTree = "<group>"; };
-		BBAEF16E1EA94ED900F0866E /* CursorConverter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CursorConverter.h; sourceTree = "<group>"; };
 		BBAEF1781EA94ED900F0866E /* Circle.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Circle.cpp; sourceTree = "<group>"; };
 		BBAEF1791EA94ED900F0866E /* Circle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Circle.h; sourceTree = "<group>"; };
 		BBAEF17A1EA94ED900F0866E /* Line.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Line.cpp; sourceTree = "<group>"; };
@@ -1527,8 +1476,6 @@
 		BBAEF1971EA94ED900F0866E /* NGAudioEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NGAudioEngine.h; sourceTree = "<group>"; };
 		BBAEF1C41EA94ED900F0866E /* State.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = State.h; sourceTree = "<group>"; };
 		BBAEF1C51EA94ED900F0866E /* StateMachine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StateMachine.h; sourceTree = "<group>"; };
-		BBAEF30E1EA94FAC00F0866E /* JoystickController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JoystickController.h; sourceTree = "<group>"; };
-		BBAEF30F1EA94FAC00F0866E /* JoystickController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = JoystickController.mm; sourceTree = "<group>"; };
 		BBAFD32B1EF44813004F2742 /* MachineAddress.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MachineAddress.cpp; sourceTree = "<group>"; };
 		BBAFD32C1EF44813004F2742 /* MachineAddress.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MachineAddress.h; sourceTree = "<group>"; };
 		BBAFD32E1EF4496D004F2742 /* NGSteamAddress.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NGSteamAddress.cpp; sourceTree = "<group>"; };
@@ -1546,8 +1493,6 @@
 		BBBD14C11EE0C9B4003F9307 /* InputMemoryBitStream.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = InputMemoryBitStream.cpp; sourceTree = "<group>"; };
 		BBBD14C21EE0C9B4003F9307 /* InputMemoryBitStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InputMemoryBitStream.h; sourceTree = "<group>"; };
 		BBC1BE371ECF736A0045AF93 /* Network.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Network.h; sourceTree = "<group>"; };
-		BBCB71C81DB6A218006430B6 /* texconv.exe */ = {isa = PBXFileReference; lastKnownFileType = file; path = texconv.exe; sourceTree = "<group>"; };
-		BBCB71C91DB6A218006430B6 /* Texconv_readme.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = Texconv_readme.txt; sourceTree = "<group>"; };
 		BBCDF24D1F3796C3006E94B0 /* FPSUtil.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FPSUtil.cpp; sourceTree = "<group>"; };
 		BBCDF24E1F3796C3006E94B0 /* FPSUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FPSUtil.h; sourceTree = "<group>"; };
 		BBCFF1C01ECD312E003EE520 /* Assets.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Assets.cpp; sourceTree = "<group>"; };
@@ -1823,50 +1768,6 @@
 			path = Support;
 			sourceTree = "<group>";
 		};
-		BB190F5C1FABA3E400BDC6D0 /* DDHidLib */ = {
-			isa = PBXGroup;
-			children = (
-				BB190FC21FABA3F600BDC6D0 /* lib */,
-				BB1D05241FB9DB8200FF2CBC /* vendor */,
-			);
-			path = DDHidLib;
-			sourceTree = "<group>";
-		};
-		BB190FC21FABA3F600BDC6D0 /* lib */ = {
-			isa = PBXGroup;
-			children = (
-				BB190FC31FABA3F600BDC6D0 /* DDHidAppleMikey.h */,
-				BB190FC41FABA3F600BDC6D0 /* DDHidAppleMikey.m */,
-				BB190FC51FABA3F600BDC6D0 /* DDHidAppleRemote.h */,
-				BB190FC61FABA3F600BDC6D0 /* DDHidAppleRemote.m */,
-				BB190FC71FABA3F600BDC6D0 /* DDHidDevice.h */,
-				BB190FC81FABA3F600BDC6D0 /* DDHidDevice.m */,
-				BB190FC91FABA3F600BDC6D0 /* DDHidElement.h */,
-				BB190FCA1FABA3F600BDC6D0 /* DDHidElement.m */,
-				BB190FCB1FABA3F600BDC6D0 /* DDHidEvent.h */,
-				BB190FCC1FABA3F600BDC6D0 /* DDHidEvent.m */,
-				BB190FCD1FABA3F600BDC6D0 /* DDHidJoystick.h */,
-				BB190FCE1FABA3F600BDC6D0 /* DDHidJoystick.m */,
-				BB190FCF1FABA3F600BDC6D0 /* DDHidKeyboard.h */,
-				BB190FD01FABA3F600BDC6D0 /* DDHidKeyboard.m */,
-				BB190FD11FABA3F600BDC6D0 /* DDHidKeyboardBarcodeScanner.h */,
-				BB190FD21FABA3F600BDC6D0 /* DDHidKeyboardBarcodeScanner.m */,
-				BB190FD31FABA3F600BDC6D0 /* DDHidLib.h */,
-				BB190FD41FABA3F600BDC6D0 /* DDHidMouse.h */,
-				BB190FD51FABA3F600BDC6D0 /* DDHidMouse.m */,
-				BB190FD61FABA3F600BDC6D0 /* DDHidQueue.h */,
-				BB190FD71FABA3F600BDC6D0 /* DDHidQueue.m */,
-				BB190FD81FABA3F600BDC6D0 /* DDHidStandardUsages.plist */,
-				BB190FD91FABA3F600BDC6D0 /* DDHidUsage.h */,
-				BB190FDA1FABA3F600BDC6D0 /* DDHidUsage.m */,
-				BB190FDB1FABA3F600BDC6D0 /* DDHidUsageTables.h */,
-				BB190FDC1FABA3F600BDC6D0 /* DDHidUsageTables.m */,
-				BB190FDD1FABA3F600BDC6D0 /* NSDictionary+DDHidExtras.h */,
-				BB190FDE1FABA3F600BDC6D0 /* NSDictionary+DDHidExtras.m */,
-			);
-			path = lib;
-			sourceTree = "<group>";
-		};
 		BB19115F1FABB66A00BDC6D0 /* Box2D */ = {
 			isa = PBXGroup;
 			children = (
@@ -2130,23 +2031,6 @@
 			path = shader;
 			sourceTree = "<group>";
 		};
-		BB1D05241FB9DB8200FF2CBC /* vendor */ = {
-			isa = PBXGroup;
-			children = (
-				BB1D05251FB9DB8200FF2CBC /* NSXReturnThrowError */,
-			);
-			path = vendor;
-			sourceTree = "<group>";
-		};
-		BB1D05251FB9DB8200FF2CBC /* NSXReturnThrowError */ = {
-			isa = PBXGroup;
-			children = (
-				BB1D05261FB9DBB400FF2CBC /* NSXReturnThrowError.h */,
-				BB1D05271FB9DBB400FF2CBC /* NSXReturnThrowError.m */,
-			);
-			path = NSXReturnThrowError;
-			sourceTree = "<group>";
-		};
 		BB44C31E1DB030B3003E633F /* mac */ = {
 			isa = PBXGroup;
 			children = (
@@ -2154,7 +2038,7 @@
 				BB44C3211DB030B3003E633F /* Assets.xcassets */,
 				BB5A0AA91FB36DE5005FBD52 /* Frameworks */,
 				BB44C3241DB030B3003E633F /* Info.plist */,
-				BB5833CC1EEDDA330084DA20 /* main.mm */,
+				BB5833CC1EEDDA330084DA20 /* main.cpp */,
 				BB7428361EB2A98500B7628D /* pch.h */,
 				BB5833731EEDBBC50084DA20 /* steam_appid.txt */,
 			);
@@ -2165,9 +2049,6 @@
 			isa = PBXGroup;
 			children = (
 				BB19115F1FABB66A00BDC6D0 /* Box2D */,
-				BB190F5C1FABA3E400BDC6D0 /* DDHidLib */,
-				BB9578C91F10105600E89DE9 /* directx */,
-				BB9578CB1F10105600E89DE9 /* dlls */,
 				BB6F58BE1FBDE8FF00BD7697 /* glfw */,
 				BB44C4F71DB03A7C003E633F /* libpng */,
 				BB5AFE7F1FB35CA6005FBD52 /* Low-Latency-Android-Audio-iOS-Audio-Engine */,
@@ -2175,7 +2056,6 @@
 				BB190DA31FAB910900BDC6D0 /* rapidjson */,
 				BB6F59A51FBE005700BD7697 /* spine-runtimes */,
 				BB1913161FABB76E00BDC6D0 /* steamworks_sdk */,
-				BBCB71C71DB6A217006430B6 /* Texconv */,
 				BB6E7A491F93CE0D006C0024 /* TinyThread */,
 			);
 			name = 3rdparty;
@@ -2965,41 +2845,6 @@
 			path = portable;
 			sourceTree = "<group>";
 		};
-		BB9578C91F10105600E89DE9 /* directx */ = {
-			isa = PBXGroup;
-			children = (
-				BB9578CA1F10105600E89DE9 /* dxwebsetup.exe */,
-			);
-			path = directx;
-			sourceTree = "<group>";
-		};
-		BB9578CB1F10105600E89DE9 /* dlls */ = {
-			isa = PBXGroup;
-			children = (
-				BB9578CC1F10105600E89DE9 /* win32 */,
-				BB9578CF1F10105600E89DE9 /* x64 */,
-			);
-			path = dlls;
-			sourceTree = "<group>";
-		};
-		BB9578CC1F10105600E89DE9 /* win32 */ = {
-			isa = PBXGroup;
-			children = (
-				BB9578CD1F10105600E89DE9 /* msvcp140.dll */,
-				BB9578CE1F10105600E89DE9 /* vcruntime140.dll */,
-			);
-			path = win32;
-			sourceTree = "<group>";
-		};
-		BB9578CF1F10105600E89DE9 /* x64 */ = {
-			isa = PBXGroup;
-			children = (
-				BB9578D01F10105600E89DE9 /* msvcp140.dll */,
-				BB9578D11F10105600E89DE9 /* vcruntime140.dll */,
-			);
-			path = x64;
-			sourceTree = "<group>";
-		};
 		BB95792E1F10110200E89DE9 /* mac */ = {
 			isa = PBXGroup;
 			children = (
@@ -3249,34 +3094,25 @@
 		BBAEF1591EA94ED900F0866E /* input */ = {
 			isa = PBXGroup;
 			children = (
-				BBAEF30D1EA94FAC00F0866E /* mac */,
-				BBAEF15D1EA94ED900F0866E /* portable */,
+				BB31B5991FC205CD005F1C0A /* CursorConverter.cpp */,
+				BB31B5A21FC205D4005F1C0A /* CursorConverter.h */,
+				BB31B5941FC205CA005F1C0A /* CursorEvent.cpp */,
+				BB31B59A1FC205CD005F1C0A /* CursorEvent.h */,
+				BB31B59D1FC205CE005F1C0A /* CursorEventType.h */,
+				BB31B5981FC205CC005F1C0A /* CursorInputManager.cpp */,
+				BB31B59C1FC205CE005F1C0A /* CursorInputManager.h */,
+				BB31B59F1FC205D0005F1C0A /* GamePadEvent.cpp */,
+				BB31B59E1FC205CF005F1C0A /* GamePadEvent.h */,
+				BB31B5A11FC205D3005F1C0A /* GamePadEventType.h */,
+				BB31B5951FC205CB005F1C0A /* GamePadInputManager.cpp */,
+				BB31B5971FC205CC005F1C0A /* GamePadInputManager.h */,
+				BB31B5961FC205CC005F1C0A /* KeyboardEvent.cpp */,
+				BB31B59B1FC205CD005F1C0A /* KeyboardEvent.h */,
+				BB31B5A31FC205D4005F1C0A /* KeyboardInputManager.cpp */,
+				BB31B5A41FC205D5005F1C0A /* KeyboardInputManager.h */,
+				BB31B5A01FC205D2005F1C0A /* KeyboardLookup.h */,
 			);
 			path = input;
-			sourceTree = "<group>";
-		};
-		BBAEF15D1EA94ED900F0866E /* portable */ = {
-			isa = PBXGroup;
-			children = (
-				BBAEF16D1EA94ED900F0866E /* CursorConverter.cpp */,
-				BBAEF16E1EA94ED900F0866E /* CursorConverter.h */,
-				BBAEF1681EA94ED900F0866E /* CursorEvent.cpp */,
-				BBAEF1691EA94ED900F0866E /* CursorEvent.h */,
-				BBAEF16A1EA94ED900F0866E /* CursorEventType.h */,
-				BBAEF16B1EA94ED900F0866E /* CursorInputManager.cpp */,
-				BBAEF16C1EA94ED900F0866E /* CursorInputManager.h */,
-				BBAEF15E1EA94ED900F0866E /* GamePadEvent.cpp */,
-				BBAEF15F1EA94ED900F0866E /* GamePadEvent.h */,
-				BBAEF1601EA94ED900F0866E /* GamePadEventType.h */,
-				BBAEF1611EA94ED900F0866E /* GamePadInputManager.cpp */,
-				BBAEF1621EA94ED900F0866E /* GamePadInputManager.h */,
-				BBAEF1631EA94ED900F0866E /* KeyboardEvent.cpp */,
-				BBAEF1641EA94ED900F0866E /* KeyboardEvent.h */,
-				BBAEF1661EA94ED900F0866E /* KeyboardInputManager.cpp */,
-				BBAEF1671EA94ED900F0866E /* KeyboardInputManager.h */,
-				BB5C31921EF5F5C0000B98FC /* KeyboardLookup.h */,
-			);
-			path = portable;
 			sourceTree = "<group>";
 		};
 		BBAEF1771EA94ED900F0866E /* math */ = {
@@ -3336,24 +3172,6 @@
 				BBAEF1C51EA94ED900F0866E /* StateMachine.h */,
 			);
 			path = state;
-			sourceTree = "<group>";
-		};
-		BBAEF30D1EA94FAC00F0866E /* mac */ = {
-			isa = PBXGroup;
-			children = (
-				BBAEF30E1EA94FAC00F0866E /* JoystickController.h */,
-				BBAEF30F1EA94FAC00F0866E /* JoystickController.mm */,
-			);
-			path = mac;
-			sourceTree = "<group>";
-		};
-		BBCB71C71DB6A217006430B6 /* Texconv */ = {
-			isa = PBXGroup;
-			children = (
-				BBCB71C91DB6A218006430B6 /* Texconv_readme.txt */,
-				BBCB71C81DB6A218006430B6 /* texconv.exe */,
-			);
-			path = Texconv;
 			sourceTree = "<group>";
 		};
 		BBD3E85F1FB2872A00328E35 /* ios */ = {
@@ -3515,7 +3333,6 @@
 				BB5833EC1EEDDD330084DA20 /* sound_001.wav in Resources */,
 				BB5833EF1EEDDD330084DA20 /* sound_004.wav in Resources */,
 				BB052CD11EBA8ADD007FA789 /* shader_003_vert.ngs in Resources */,
-				BB190FE91FABA3F700BDC6D0 /* DDHidStandardUsages.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3598,12 +3415,9 @@
 				BB1912891FABB66A00BDC6D0 /* b2BroadPhase.cpp in Sources */,
 				BB19128B1FABB66A00BDC6D0 /* b2CollideEdge.cpp in Sources */,
 				BB19129E1FABB66A00BDC6D0 /* b2Island.cpp in Sources */,
-				BB190FDF1FABA3F700BDC6D0 /* DDHidAppleMikey.m in Sources */,
-				BB190FE11FABA3F700BDC6D0 /* DDHidDevice.m in Sources */,
 				BB6E7B141F940F2B006C0024 /* MainAssetsMapper.cpp in Sources */,
 				BB6E7B151F940F2B006C0024 /* MainRenderer.cpp in Sources */,
 				BB6E7B161F940F2B006C0024 /* Crate.cpp in Sources */,
-				BB190FE21FABA3F700BDC6D0 /* DDHidElement.m in Sources */,
 				BB1912951FABB66A00BDC6D0 /* b2BlockAllocator.cpp in Sources */,
 				BB1912B21FABB66A00BDC6D0 /* b2RevoluteJoint.cpp in Sources */,
 				BB190F511FAB9E3900BDC6D0 /* ALSoundSourcePool.m in Sources */,
@@ -3611,7 +3425,6 @@
 				BB190F481FAB9E3900BDC6D0 /* OALAudioTracks.m in Sources */,
 				BB6E7B171F940F2B006C0024 /* Ground.cpp in Sources */,
 				BB6E7B181F940F2B006C0024 /* MainEngine.cpp in Sources */,
-				BB190FE71FABA3F700BDC6D0 /* DDHidMouse.m in Sources */,
 				BB6E7B191F940F2B006C0024 /* PooledObjectsManager.cpp in Sources */,
 				BB6E7B1A1F940F2B006C0024 /* Projectile.cpp in Sources */,
 				BB1912AD1FABB66A00BDC6D0 /* b2Joint.cpp in Sources */,
@@ -3640,7 +3453,6 @@
 				BBAEF2701EA94EDA00F0866E /* RendererHelperFactory.cpp in Sources */,
 				BBAEF23C1EA94EDA00F0866E /* OpenGLNGRectBatcher.cpp in Sources */,
 				BB1912A21FABB66A00BDC6D0 /* b2ChainAndPolygonContact.cpp in Sources */,
-				BB190FE61FABA3F700BDC6D0 /* DDHidKeyboardBarcodeScanner.m in Sources */,
 				BB1912B41FABB66A00BDC6D0 /* b2WeldJoint.cpp in Sources */,
 				BB80D2021EF97F89002B9448 /* NGSteamP2PAuth.cpp in Sources */,
 				BBAEF2301EA94EDA00F0866E /* OpenGLFramebufferToScreenGpuProgramWrapper.cpp in Sources */,
@@ -3663,7 +3475,6 @@
 				BB7267FD1EEC7049004F33F9 /* ClientProxy.cpp in Sources */,
 				BBAEF2781EA94EDA00F0866E /* TextureRegion.cpp in Sources */,
 				BB7267FE1EEC704B004F33F9 /* NetworkManagerServer.cpp in Sources */,
-				BBAEF28C1EA94EDA00F0866E /* CursorConverter.cpp in Sources */,
 				BB1912B11FABB66A00BDC6D0 /* b2PulleyJoint.cpp in Sources */,
 				BB6F59901FBDEA0D00BD7697 /* vulkan.c in Sources */,
 				BB6F64361FBE009C00BD7697 /* PathConstraintMixTimeline.cpp in Sources */,
@@ -3675,29 +3486,29 @@
 				BB8308411EC2AD1F00435E7E /* AckRange.cpp in Sources */,
 				BB6F59811FBDE9C400BD7697 /* posix_thread.c in Sources */,
 				BBAEF2981EA94EDA00F0866E /* NGRect.cpp in Sources */,
-				BBAEF2861EA94EDA00F0866E /* KeyboardInputManager.cpp in Sources */,
 				BB6F64701FBE009C00BD7697 /* RotateTimeline.cpp in Sources */,
+				BB31B5A51FC205D5005F1C0A /* CursorEvent.cpp in Sources */,
 				BB6F64561FBE009C00BD7697 /* ClippingAttachment.cpp in Sources */,
-				BB190FE01FABA3F700BDC6D0 /* DDHidAppleRemote.m in Sources */,
 				BB6F597E1FBDE9C400BD7697 /* egl_context.c in Sources */,
 				BB4253D21EF58DA5003F6D2A /* ClientHelper.cpp in Sources */,
 				BB6F644C1FBE009C00BD7697 /* TwoColorTimeline.cpp in Sources */,
 				BB190F591FAB9E3900BDC6D0 /* NSMutableDictionary+WeakReferences.m in Sources */,
 				BB1E897B1EF4A81500B0D78A /* PacketHandler.cpp in Sources */,
-				BB190FEB1FABA3F700BDC6D0 /* DDHidUsageTables.m in Sources */,
 				BB6F64261FBE009C00BD7697 /* AnimationStateData.cpp in Sources */,
 				BB8308741EC2AD1F00435E7E /* SocketUtil.cpp in Sources */,
 				BB6F59791FBDE97D00BD7697 /* cocoa_window.m in Sources */,
+				BB31B5AF1FC205D5005F1C0A /* GamePadEvent.cpp in Sources */,
 				BB4253E11EF598C1003F6D2A /* SocketClientHelper.cpp in Sources */,
 				BB1912961FABB66A00BDC6D0 /* b2Draw.cpp in Sources */,
 				BB7251951EE105330024C71C /* NetworkManagerClient.cpp in Sources */,
 				BB6F59911FBDEA0D00BD7697 /* context.c in Sources */,
 				BB6F64461FBE009C00BD7697 /* PathConstraintData.cpp in Sources */,
 				BB190F551FAB9E3900BDC6D0 /* OALAudioSession.m in Sources */,
-				BB5833CD1EEDDA330084DA20 /* main.mm in Sources */,
+				BB5833CD1EEDDA330084DA20 /* main.cpp in Sources */,
 				BB6F64321FBE009C00BD7697 /* IkConstraintTimeline.cpp in Sources */,
 				BBAEF26C1EA94EDA00F0866E /* NGRectBatcher.cpp in Sources */,
 				BBAEF25C1EA94EDA00F0866E /* DummyGpuProgramWrapper.cpp in Sources */,
+				BB31B5AB1FC205D5005F1C0A /* CursorInputManager.cpp in Sources */,
 				BB6F64841FBE009C00BD7697 /* Bone.cpp in Sources */,
 				BBAEF2441EA94EDA00F0866E /* OpenGLTextureGpuProgramWrapper.cpp in Sources */,
 				BB1912A31FABB66A00BDC6D0 /* b2CircleContact.cpp in Sources */,
@@ -3711,17 +3522,17 @@
 				BB6F64441FBE009C00BD7697 /* RTTI.cpp in Sources */,
 				BB19129D1FABB66A00BDC6D0 /* b2Fixture.cpp in Sources */,
 				BB7251A41EE105490024C71C /* MoveList.cpp in Sources */,
-				BB190FE81FABA3F700BDC6D0 /* DDHidQueue.m in Sources */,
 				BB190F561FAB9E3900BDC6D0 /* OALSuspendHandler.m in Sources */,
-				BB190FE41FABA3F700BDC6D0 /* DDHidJoystick.m in Sources */,
 				BB44CB821DB053C0003E633F /* pngerror.c in Sources */,
 				BBAFD3331EF45EEA004F2742 /* FWInstanceManager.cpp in Sources */,
 				BB4253DE1EF598AC003F6D2A /* SocketServerHelper.cpp in Sources */,
 				BBAEF29C1EA94EDA00F0866E /* Triangle.cpp in Sources */,
 				BBAEF2681EA94EDA00F0866E /* LineBatcher.cpp in Sources */,
+				BB31B5B11FC205D5005F1C0A /* KeyboardInputManager.cpp in Sources */,
 				BB19128E1FABB66A00BDC6D0 /* b2Distance.cpp in Sources */,
 				BB5833DC1EEDDC2B0084DA20 /* Engine.cpp in Sources */,
 				BB6F64661FBE009C00BD7697 /* TransformConstraintTimeline.cpp in Sources */,
+				BB31B5AD1FC205D5005F1C0A /* CursorConverter.cpp in Sources */,
 				BB190F521FAB9E3900BDC6D0 /* ALSource.m in Sources */,
 				BB8308801EC2AD1F00435E7E /* UDPSocket.cpp in Sources */,
 				BB6F64541FBE009C00BD7697 /* SkeletonData.cpp in Sources */,
@@ -3730,13 +3541,13 @@
 				BB6F598D1FBDEA0D00BD7697 /* window.c in Sources */,
 				BB190F5B1FAB9E3900BDC6D0 /* OALTools.m in Sources */,
 				BBAFD32D1EF44813004F2742 /* MachineAddress.cpp in Sources */,
+				BB31B5A71FC205D5005F1C0A /* GamePadInputManager.cpp in Sources */,
 				BB6F64401FBE009C00BD7697 /* AttachmentLoader.cpp in Sources */,
 				BB1912981FABB66A00BDC6D0 /* b2Settings.cpp in Sources */,
 				BB44CB831DB053C0003E633F /* pngget.c in Sources */,
 				BB190F421FAB9E3900BDC6D0 /* OALAction.m in Sources */,
 				BB190F571FAB9E3900BDC6D0 /* mach_timing.c in Sources */,
 				BB6F64761FBE009C00BD7697 /* PathConstraint.cpp in Sources */,
-				BB190FE51FABA3F700BDC6D0 /* DDHidKeyboard.m in Sources */,
 				BB1912AC1FABB66A00BDC6D0 /* b2GearJoint.cpp in Sources */,
 				BB6F646E1FBE009C00BD7697 /* Slot.cpp in Sources */,
 				BB19129C1FABB66A00BDC6D0 /* b2ContactManager.cpp in Sources */,
@@ -3758,7 +3569,6 @@
 				BB190F431FAB9E3900BDC6D0 /* OALActionManager.m in Sources */,
 				BBAEF26A1EA94EDA00F0866E /* LineBatcherFactory.cpp in Sources */,
 				BBAEF2561EA94EDA00F0866E /* Animation.cpp in Sources */,
-				BB190FEA1FABA3F700BDC6D0 /* DDHidUsage.m in Sources */,
 				BBAEF23E1EA94EDA00F0866E /* OpenGLProgram.cpp in Sources */,
 				BB9EE50D1FC092BA000F5389 /* AssetDataHandler.cpp in Sources */,
 				BBAEF2481EA94EDA00F0866E /* OpenGLTextureProgram.cpp in Sources */,
@@ -3782,16 +3592,14 @@
 				BBBD14971EE06BB3003F9307 /* Timing.cpp in Sources */,
 				BBAEF27A1EA94EDA00F0866E /* TextureWrapper.cpp in Sources */,
 				BBAA69E51EE488DF00451615 /* TransmissionData.cpp in Sources */,
-				BB190FEC1FABA3F700BDC6D0 /* NSDictionary+DDHidExtras.m in Sources */,
 				BBAEF25A1EA94EDA00F0866E /* CircleBatcherFactory.cpp in Sources */,
 				BBAEF2A41EA94EDA00F0866E /* AudioEngineHelperFactory.cpp in Sources */,
 				BB0864751EE20CCA00BCD9E0 /* EntityRegistry.cpp in Sources */,
-				BBAEF3101EA94FAC00F0866E /* JoystickController.mm in Sources */,
 				BB1912A51FABB66A00BDC6D0 /* b2ContactSolver.cpp in Sources */,
 				BBAEF27C1EA94EDA00F0866E /* TransitionGpuProgramWrapper.cpp in Sources */,
+				BB31B5A91FC205D5005F1C0A /* KeyboardEvent.cpp in Sources */,
 				BB44CB851DB053C0003E633F /* pngpread.c in Sources */,
 				BBCDF24F1F3796C3006E94B0 /* FPSUtil.cpp in Sources */,
-				BB1D05281FB9DBB400FF2CBC /* NSXReturnThrowError.m in Sources */,
 				BB6F646A1FBE009C00BD7697 /* Triangulator.cpp in Sources */,
 				BB44CB861DB053C0003E633F /* pngread.c in Sources */,
 				BB44CB871DB053C0003E633F /* pngrio.c in Sources */,
@@ -3799,7 +3607,6 @@
 				BB6F645E1FBE009C00BD7697 /* MeshAttachment.cpp in Sources */,
 				BB6F643E1FBE009C00BD7697 /* Timeline.cpp in Sources */,
 				BB1912A41FABB66A00BDC6D0 /* b2Contact.cpp in Sources */,
-				BBAEF28A1EA94EDA00F0866E /* CursorInputManager.cpp in Sources */,
 				BB19129F1FABB66A00BDC6D0 /* b2World.cpp in Sources */,
 				BBAEF22E1EA94EDA00F0866E /* OpenGLCircleBatcher.cpp in Sources */,
 				BBCFF1C51ECD312E003EE520 /* Assets.cpp in Sources */,
@@ -3845,13 +3652,9 @@
 				BB1912AA1FABB66A00BDC6D0 /* b2DistanceJoint.cpp in Sources */,
 				BB1912911FABB66A00BDC6D0 /* b2ChainShape.cpp in Sources */,
 				BB44CB8C1DB053C0003E633F /* pngwio.c in Sources */,
-				BB190FE31FABA3F700BDC6D0 /* DDHidEvent.m in Sources */,
-				BBAEF2801EA94EDA00F0866E /* GamePadEvent.cpp in Sources */,
 				BB44CB8D1DB053C0003E633F /* pngwrite.c in Sources */,
 				BB9EE5141FC092C5000F5389 /* apple_asset_data_handler.mm in Sources */,
-				BBAEF2821EA94EDA00F0866E /* GamePadInputManager.cpp in Sources */,
 				BB1912A71FABB66A00BDC6D0 /* b2EdgeAndPolygonContact.cpp in Sources */,
-				BBAEF2881EA94EDA00F0866E /* CursorEvent.cpp in Sources */,
 				BBAEF2761EA94EDA00F0866E /* TextureLoaderFactory.cpp in Sources */,
 				BB6F645A1FBE009C00BD7697 /* ColorTimeline.cpp in Sources */,
 				BB190F441FAB9E3900BDC6D0 /* OALAudioActions.m in Sources */,
@@ -3880,7 +3683,6 @@
 				BB6F64681FBE009C00BD7697 /* Updatable.cpp in Sources */,
 				BB190F5A1FAB9E3900BDC6D0 /* OALAudioFile.m in Sources */,
 				BB6F64421FBE009C00BD7697 /* BoundingBoxAttachment.cpp in Sources */,
-				BBAEF2841EA94EDA00F0866E /* KeyboardEvent.cpp in Sources */,
 				BB1E89841EF4B4F400B0D78A /* NGSteamPacketHandler.cpp in Sources */,
 				BBAEF1F21EA94EDA00F0866E /* EntityManager.cpp in Sources */,
 				BBAEF2021EA94EDA00F0866E /* JsonFile.cpp in Sources */,
@@ -3900,6 +3702,7 @@
 				BB6F64711FBE009C00BD7697 /* RotateTimeline.cpp in Sources */,
 				BB6F646F1FBE009C00BD7697 /* Slot.cpp in Sources */,
 				BB5AFE531FB35AAE005FBD52 /* OpenGLFramebufferToScreenGpuProgramWrapper.cpp in Sources */,
+				BB31B5A61FC205D5005F1C0A /* CursorEvent.cpp in Sources */,
 				BB6F644B1FBE009C00BD7697 /* RegionAttachment.cpp in Sources */,
 				BB6F64391FBE009C00BD7697 /* Attachment.cpp in Sources */,
 				BB5AFE541FB35AAE005FBD52 /* OpenGLFramebufferToScreenProgram.cpp in Sources */,
@@ -3918,6 +3721,7 @@
 				BB6F64551FBE009C00BD7697 /* SkeletonData.cpp in Sources */,
 				BB6F646B1FBE009C00BD7697 /* Triangulator.cpp in Sources */,
 				BB6F643B1FBE009C00BD7697 /* EventTimeline.cpp in Sources */,
+				BB31B5B21FC205D5005F1C0A /* KeyboardInputManager.cpp in Sources */,
 				BB5AFE5C1FB35AAE005FBD52 /* OpenGLSpriteBatcher.cpp in Sources */,
 				BB5AFE5D1FB35AAE005FBD52 /* OpenGLTextureGpuProgramWrapper.cpp in Sources */,
 				BB6F642D1FBE009C00BD7697 /* Skeleton.cpp in Sources */,
@@ -3953,18 +3757,12 @@
 				BB5AFE761FB35AAF005FBD52 /* TransitionGpuProgramWrapper.cpp in Sources */,
 				BB5AFE171FB359EA005FBD52 /* FPSUtil.cpp in Sources */,
 				BB5AFE181FB359EA005FBD52 /* Engine.cpp in Sources */,
-				BB5AFE2E1FB35A49005FBD52 /* GamePadEvent.cpp in Sources */,
-				BB5AFE2F1FB35A49005FBD52 /* GamePadInputManager.cpp in Sources */,
 				BB6F647D1FBE009C00BD7697 /* Event.cpp in Sources */,
-				BB5AFE301FB35A49005FBD52 /* KeyboardEvent.cpp in Sources */,
-				BB5AFE311FB35A49005FBD52 /* KeyboardInputManager.cpp in Sources */,
-				BB5AFE321FB35A49005FBD52 /* CursorEvent.cpp in Sources */,
-				BB5AFE331FB35A49005FBD52 /* CursorInputManager.cpp in Sources */,
-				BB5AFE341FB35A49005FBD52 /* CursorConverter.cpp in Sources */,
 				BB5AFE191FB359EA005FBD52 /* RTTI.cpp in Sources */,
 				BB5AFE1A1FB359EA005FBD52 /* StringUtil.cpp in Sources */,
 				BB5AFE1B1FB359EA005FBD52 /* Timing.cpp in Sources */,
 				BB5AFE1C1FB359EA005FBD52 /* WeightedTimedMovingAverage.cpp in Sources */,
+				BB31B5A81FC205D5005F1C0A /* GamePadInputManager.cpp in Sources */,
 				BB5AFE061FB359DE005FBD52 /* MainAssets.cpp in Sources */,
 				BB6F64471FBE009C00BD7697 /* PathConstraintData.cpp in Sources */,
 				BB5AFE071FB359DE005FBD52 /* MainAssetsMapper.cpp in Sources */,
@@ -3980,6 +3778,7 @@
 				BB6F64831FBE009C00BD7697 /* DrawOrderTimeline.cpp in Sources */,
 				BB5AFE3B1FB35A77005FBD52 /* FWInstanceManager.cpp in Sources */,
 				BB5AFE3C1FB35A77005FBD52 /* InputState.cpp in Sources */,
+				BB31B5AC1FC205D5005F1C0A /* CursorInputManager.cpp in Sources */,
 				BB5AFE3D1FB35A77005FBD52 /* MachineAddress.cpp in Sources */,
 				BB5AFE3E1FB35A77005FBD52 /* NetworkHelper.cpp in Sources */,
 				BB5AFE3F1FB35A77005FBD52 /* InFlightPacket.cpp in Sources */,
@@ -4021,6 +3820,7 @@
 				BB5AFE2B1FB35A19005FBD52 /* OverlapTester.cpp in Sources */,
 				BB5AFE2C1FB35A19005FBD52 /* Triangle.cpp in Sources */,
 				BB5AFE2D1FB35A19005FBD52 /* Vector2.cpp in Sources */,
+				BB31B5B01FC205D5005F1C0A /* GamePadEvent.cpp in Sources */,
 				BB5AFE1E1FB359F9005FBD52 /* AppleAudioEngineHelper.cpp in Sources */,
 				BB6F643D1FBE009C00BD7697 /* DeformTimeline.cpp in Sources */,
 				BB6F64271FBE009C00BD7697 /* AnimationStateData.cpp in Sources */,
@@ -4090,6 +3890,7 @@
 				BB5AFDDA1FB359B1005FBD52 /* b2EdgeAndPolygonContact.cpp in Sources */,
 				BB5AFDDB1FB359B1005FBD52 /* b2PolygonAndCircleContact.cpp in Sources */,
 				BB6F64351FBE009C00BD7697 /* Animation.cpp in Sources */,
+				BB31B5AA1FC205D5005F1C0A /* KeyboardEvent.cpp in Sources */,
 				BB5AFDDC1FB359B1005FBD52 /* b2PolygonContact.cpp in Sources */,
 				BB6F644F1FBE009C00BD7697 /* Atlas.cpp in Sources */,
 				BB6F645B1FBE009C00BD7697 /* ColorTimeline.cpp in Sources */,
@@ -4101,6 +3902,7 @@
 				BB5AFDE11FB359B1005FBD52 /* b2MotorJoint.cpp in Sources */,
 				BB5AFDE21FB359B1005FBD52 /* b2MouseJoint.cpp in Sources */,
 				BB5AFDE31FB359B1005FBD52 /* b2PrismaticJoint.cpp in Sources */,
+				BB31B5AE1FC205D5005F1C0A /* CursorConverter.cpp in Sources */,
 				BB5AFDE41FB359B1005FBD52 /* b2PulleyJoint.cpp in Sources */,
 				BB5AFDE51FB359B1005FBD52 /* b2RevoluteJoint.cpp in Sources */,
 				BB5AFDE61FB359B1005FBD52 /* b2RopeJoint.cpp in Sources */,
@@ -4289,8 +4091,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				HEADER_SEARCH_PATHS = (
-					"\"$(SRCROOT)/mac\"",
-					"\"$(SRCROOT)/../../core\"/**",
+					"\"$(SRCROOT)/../../3rdparty/glfw/include\"",
 					"\"$(SRCROOT)/../../3rdparty/Box2D/Box2D\"",
 					"\"$(SRCROOT)/../../3rdparty/DDHidLib/lib\"",
 					"\"$(SRCROOT)/../../3rdparty/libpng\"",
@@ -4299,7 +4100,8 @@
 					"\"$(SRCROOT)/../../3rdparty/spine-runtimes/spine-cpp/spine-cpp/include\"",
 					"\"$(SRCROOT)/../../3rdparty/steamworks_sdk/public\"",
 					"\"$(SRCROOT)/../../3rdparty/TinyThread/source\"",
-					"\"$(SRCROOT)/../../3rdparty/glfw/include\"",
+					"\"$(SRCROOT)/../../core\"/**",
+					"\"$(SRCROOT)/mac\"",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/mac/Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
@@ -4361,8 +4163,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				HEADER_SEARCH_PATHS = (
-					"\"$(SRCROOT)/mac\"",
-					"\"$(SRCROOT)/../../core\"/**",
+					"\"$(SRCROOT)/../../3rdparty/glfw/include\"",
 					"\"$(SRCROOT)/../../3rdparty/Box2D/Box2D\"",
 					"\"$(SRCROOT)/../../3rdparty/DDHidLib/lib\"",
 					"\"$(SRCROOT)/../../3rdparty/libpng\"",
@@ -4371,7 +4172,8 @@
 					"\"$(SRCROOT)/../../3rdparty/spine-runtimes/spine-cpp/spine-cpp/include\"",
 					"\"$(SRCROOT)/../../3rdparty/steamworks_sdk/public\"",
 					"\"$(SRCROOT)/../../3rdparty/TinyThread/source\"",
-					"\"$(SRCROOT)/../../3rdparty/glfw/include\"",
+					"\"$(SRCROOT)/../../core\"/**",
+					"\"$(SRCROOT)/mac\"",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/mac/Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
@@ -4431,7 +4233,7 @@
 					"\"$(SRCROOT)/../../3rdparty/rapidjson/include\"",
 					"\"$(SRCROOT)/../../3rdparty/spine-runtimes/spine-cpp/spine-cpp/include\"",
 					"\"$(SRCROOT)/../../3rdparty/TinyThread/source\"",
-					"\"$(SRCROOT)/../../core\"/**",
+					"\"$(SRCROOT)/../../core\"",
 					"\"$(SRCROOT)/ios\"",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/ios/Info.plist";
@@ -4487,7 +4289,7 @@
 					"\"$(SRCROOT)/../../3rdparty/rapidjson/include\"",
 					"\"$(SRCROOT)/../../3rdparty/spine-runtimes/spine-cpp/spine-cpp/include\"",
 					"\"$(SRCROOT)/../../3rdparty/TinyThread/source\"",
-					"\"$(SRCROOT)/../../core\"/**",
+					"\"$(SRCROOT)/../../core\"",
 					"\"$(SRCROOT)/ios\"",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/ios/Info.plist";

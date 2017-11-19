@@ -29,8 +29,6 @@ public:
     
     std::vector<GamePadEvent*>& getEvents();
     
-    bool isControllerConnected();
-    
 private:
     NGRollingPool<GamePadEvent>* _pool;
     float _timeSinceLastGamePadEvent;

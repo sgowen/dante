@@ -1,5 +1,5 @@
 //
-//  main.mm
+//  main.cpp
 //  dante
 //
 //  Created by Stephen Gowen on 11/16/17.
@@ -7,15 +7,16 @@
 //
 
 #include "MainEngine.h"
+#include "MainAssets.h"
 #include "CursorInputManager.h"
 #include "KeyboardInputManager.h"
-#include "MainAssets.h"
+#include "GamePadInputManager.h"
+#include "GamePadEventType.h"
 #include "FrameworkConstants.h"
 #include "OpenGLManager.h"
-
 #include "NGGraphics.h"
 
-#include <glfw/glfw3.h>
+#include <GLFW/glfw3.h>
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -85,6 +86,8 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
 
 int main(void)
 {
+    memset(joysticks, 0, sizeof(joysticks));
+    
     GLFWwindow* window;
     
     glfwSetErrorCallback(error_callback);
@@ -119,10 +122,6 @@ int main(void)
     }
 #endif
     
-    int jid, hat_buttons = GLFW_FALSE;
-    
-    memset(joysticks, 0, sizeof(joysticks));
-    
     window = glfwCreateWindow(width, height, "Project Dante", monitor, NULL);
     if (!window)
     {
@@ -130,7 +129,7 @@ int main(void)
         exit(EXIT_FAILURE);
     }
     
-    for (jid = GLFW_JOYSTICK_1;  jid <= GLFW_JOYSTICK_LAST;  jid++)
+    for (int jid = GLFW_JOYSTICK_1; jid <= GLFW_JOYSTICK_LAST; ++jid)
     {
         if (glfwJoystickPresent(jid))
         {
@@ -167,7 +166,97 @@ int main(void)
             glHeight = height;
         }
         
-        
+        for (int i = 0; i < joystick_count; ++i)
+        {
+            int j, axis_count, button_count;
+            const float* axes;
+            const unsigned char* buttons;
+            
+            axes = glfwGetJoystickAxes(joysticks[i], &axis_count);
+            buttons = glfwGetJoystickButtons(joysticks[i], &button_count);
+            
+            float stickLeftX = 0;
+            float stickLeftY = 0;
+            float stickRightX = 0;
+            float stickRightY = 0;
+            float triggerLeft = 0;
+            float triggerRight = 0;
+            
+            for (j = 0; j < axis_count; ++j)
+            {
+                switch (j)
+                {
+                    case 0:
+                        stickLeftX = axes[j];
+                        break;
+                    case 1:
+                        stickLeftY = axes[j];
+                        break;
+                    case 2:
+                        stickRightX = axes[j];
+                        break;
+                    case 3:
+                        triggerLeft = axes[j];
+                        break;
+                    case 4:
+                        triggerRight = axes[j];
+                        break;
+                    case 5:
+                        stickRightY = axes[j];
+                    default:
+                        break;
+                }
+            }
+            
+            GAME_PAD_INPUT_MANAGER->onInput(GamePadEventType_STICK_LEFT, i, stickLeftX, stickLeftY);
+            GAME_PAD_INPUT_MANAGER->onInput(GamePadEventType_STICK_RIGHT, i, stickRightX, stickRightY);
+            GAME_PAD_INPUT_MANAGER->onInput(GamePadEventType_TRIGGER, i, triggerLeft, triggerRight);
+            
+            for (j = 0; j < button_count; ++j)
+            {
+                switch (j)
+                {
+                    case 0:
+                        GAME_PAD_INPUT_MANAGER->onInput(GamePadEventType_X_BUTTON, i, buttons[j], 0);
+                        break;
+                    case 1:
+                        GAME_PAD_INPUT_MANAGER->onInput(GamePadEventType_A_BUTTON, i, buttons[j], 0);
+                        break;
+                    case 2:
+                        GAME_PAD_INPUT_MANAGER->onInput(GamePadEventType_B_BUTTON, i, buttons[j], 0);
+                        break;
+                    case 3:
+                        GAME_PAD_INPUT_MANAGER->onInput(GamePadEventType_Y_BUTTON, i, buttons[j], 0);
+                        break;
+                    case 4:
+                        GAME_PAD_INPUT_MANAGER->onInput(GamePadEventType_BUMPER_LEFT, i, buttons[j], 0);
+                        break;
+                    case 5:
+                        GAME_PAD_INPUT_MANAGER->onInput(GamePadEventType_BUMPER_RIGHT, i, buttons[j], 0);
+                        break;
+                    case 8:
+                        GAME_PAD_INPUT_MANAGER->onInput(GamePadEventType_BACK_BUTTON, i, buttons[j], 0);
+                        break;
+                    case 9:
+                        GAME_PAD_INPUT_MANAGER->onInput(GamePadEventType_START_BUTTON, i, buttons[j], 0);
+                        break;
+                    case 14:
+                        GAME_PAD_INPUT_MANAGER->onInput(GamePadEventType_D_PAD_UP, i, buttons[j], 0);
+                        break;
+                    case 15:
+                        GAME_PAD_INPUT_MANAGER->onInput(GamePadEventType_D_PAD_RIGHT, i, buttons[j], 0);
+                        break;
+                    case 16:
+                        GAME_PAD_INPUT_MANAGER->onInput(GamePadEventType_D_PAD_DOWN, i, buttons[j], 0);
+                        break;
+                    case 17:
+                        GAME_PAD_INPUT_MANAGER->onInput(GamePadEventType_D_PAD_LEFT, i, buttons[j], 0);
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
         
         double time = glfwGetTime();
         

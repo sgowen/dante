@@ -15,8 +15,8 @@
         #include <OpenGLES/ES2/gl.h>
         #include <OpenGLES/ES2/glext.h>
     #elif TARGET_OS_OSX
-        #import <OpenGL/OpenGL.h>
-        #import <OpenGL/gl.h>
+        #include <OpenGL/OpenGL.h>
+        #include <OpenGL/gl.h>
     #endif
 #elif defined __ANDROID__
     #include <GLES2/gl2.h>

@@ -66,75 +66,76 @@ void InputManager::update()
             switch ((*i)->getKey())
             {
                 case NG_KEY_M:
-                    _currentState->_menuState = (*i)->isUp() ? MENU_STATE_CLIENT_MAIN_TOGGLE_MUSIC : MENU_STATE_NONE;
+                    _currentState->_menuState = (*i)->isUp() ? MENU_STATE_CLIENT_MAIN_TOGGLE_MUSIC : _currentState->_menuState;
                     continue;
                 case NG_KEY_S:
-                    _currentState->_menuState = (*i)->isUp() ? MENU_STATE_CLIENT_MAIN_TOGGLE_SOUND : MENU_STATE_NONE;
+                    _currentState->_menuState = (*i)->isUp() ? MENU_STATE_CLIENT_MAIN_TOGGLE_SOUND : _currentState->_menuState;
                     continue;
                 case NG_KEY_T:
-                    _currentState->_menuState = (*i)->isUp() ? MENU_STATE_SERVER_TOGGLE_ENEMIES : MENU_STATE_NONE;
+                    _currentState->_menuState = (*i)->isUp() ? MENU_STATE_SERVER_TOGGLE_ENEMIES : _currentState->_menuState;
                     continue;
                 case NG_KEY_C:
-                    _currentState->_menuState = (*i)->isUp() ? MENU_STATE_SERVER_TOGGLE_OBJECTS : MENU_STATE_NONE;
+                    _currentState->_menuState = (*i)->isUp() ? MENU_STATE_SERVER_TOGGLE_OBJECTS : _currentState->_menuState;
                     continue;
                 case NG_KEY_I:
-                    _currentState->_menuState = (*i)->isUp() ? MENU_STATE_SERVER_TOGGLE_SERVER_DISPLAY : MENU_STATE_NONE;
+                    _currentState->_menuState = (*i)->isUp() ? MENU_STATE_SERVER_TOGGLE_SERVER_DISPLAY : _currentState->_menuState;
                     continue;
                 case NG_KEY_ESCAPE:
-                    _currentState->_menuState = (*i)->isUp() ? MENU_STATE_ESCAPE : MENU_STATE_NONE;
+                    _currentState->_menuState = (*i)->isUp() ? MENU_STATE_ESCAPE : _currentState->_menuState;
                     continue;
                 default:
                 {
-                    if (!GAME_PAD_INPUT_MANAGER->isControllerConnected())
+                    switch ((*i)->getKey())
                     {
-                        switch ((*i)->getKey())
-                        {
-                            // Player 1
-                            case NG_KEY_W:
-                                _currentState->getGameInputState(0)._isJumping = (*i)->isDown();
-                                continue;
-                            case NG_KEY_A:
-                                _currentState->getGameInputState(0)._isMovingLeft = (*i)->isDown();
-                                continue;
-                            case NG_KEY_D:
-                                _currentState->getGameInputState(0)._isMovingRight = (*i)->isDown();
-                                continue;
-                            case NG_KEY_ARROW_DOWN:
-                                _currentState->getGameInputState(0)._isSprinting = (*i)->isDown();
-                                continue;
-                            case NG_KEY_SPACE_BAR:
-                                _currentState->getGameInputState(0)._isShooting = (*i)->isDown();
-                                continue;
-//#ifdef _DEBUG
-                            // Player 2, Debug Only
-                            case NG_KEY_ARROW_UP:
-                                _currentState->getGameInputState(1)._isJumping = (*i)->isDown();
-                                continue;
-                            case NG_KEY_ARROW_LEFT:
-                                _currentState->getGameInputState(1)._isMovingLeft = (*i)->isDown();
-                                continue;
-                            case NG_KEY_ARROW_RIGHT:
-                                _currentState->getGameInputState(1)._isMovingRight = (*i)->isDown();
-                                continue;
-                            case NG_KEY_COMMA:
-                                _currentState->getGameInputState(1)._isSprinting = (*i)->isDown();
-                                continue;
-							case NG_KEY_PERIOD:
-                                _currentState->getGameInputState(1)._isShooting = (*i)->isDown();
-                                continue;
-                            case NG_KEY_CARRIAGE_RETURN:
-                                _currentState->getGameInputState(1)._playerId = INPUT_UNASSIGNED;
-                                _currentState->_menuState = (*i)->isDown() ? MENU_STATE_LOCAL_PLAYER_DROP_OUT_1 : MENU_STATE_NONE;
-                                continue;
-//#endif
-                            default:
-                                continue;
-                        }
+                        // Player 1
+                        case NG_KEY_W:
+                            _currentState->getGameInputState(0)._isJumping = (*i)->isDown();
+                            continue;
+                        case NG_KEY_A:
+                            _currentState->getGameInputState(0)._isMovingLeft = (*i)->isDown();
+                            continue;
+                        case NG_KEY_D:
+                            _currentState->getGameInputState(0)._isMovingRight = (*i)->isDown();
+                            continue;
+                        case NG_KEY_ARROW_DOWN:
+                            _currentState->getGameInputState(0)._isSprinting = (*i)->isDown();
+                            continue;
+                        case NG_KEY_SPACE_BAR:
+                            _currentState->getGameInputState(0)._isShooting = (*i)->isDown();
+                            continue;
+#ifdef _DEBUG
+                        // Player 2, Debug Only
+                        case NG_KEY_ARROW_UP:
+                            _currentState->getGameInputState(1)._isJumping = (*i)->isDown();
+                            continue;
+                        case NG_KEY_ARROW_LEFT:
+                            _currentState->getGameInputState(1)._isMovingLeft = (*i)->isDown();
+                            continue;
+                        case NG_KEY_ARROW_RIGHT:
+                            _currentState->getGameInputState(1)._isMovingRight = (*i)->isDown();
+                            continue;
+                        case NG_KEY_COMMA:
+                            _currentState->getGameInputState(1)._isSprinting = (*i)->isDown();
+                            continue;
+                        case NG_KEY_PERIOD:
+                            _currentState->getGameInputState(1)._isShooting = (*i)->isDown();
+                            continue;
+                        case NG_KEY_CARRIAGE_RETURN:
+                            _currentState->getGameInputState(1)._playerId = INPUT_UNASSIGNED;
+                            _currentState->_menuState = (*i)->isDown() ? MENU_STATE_LOCAL_PLAYER_DROP_OUT_1 : MENU_STATE_NONE;
+                            continue;
+#endif
+                        default:
+                            continue;
                     }
                 }
-                    continue;
             }
         }
+        
+        bool isMovingRight[4] = {false};
+        bool isMovingLeft[4] = {false};
+        bool isSprinting[4] = {false};
+        bool isShooting[4] = {false};
         
         for (std::vector<GamePadEvent *>::iterator i = GAME_PAD_INPUT_MANAGER->getEvents().begin(); i != GAME_PAD_INPUT_MANAGER->getEvents().end(); ++i)
         {
@@ -143,20 +144,55 @@ void InputManager::update()
                 case GamePadEventType_A_BUTTON:
                     _currentState->getGameInputState((*i)->getIndex())._isJumping = (*i)->isPressed();
                     continue;
+                case GamePadEventType_D_PAD_RIGHT:
+                {
+                    if (!isMovingRight[(*i)->getIndex()])
+                    {
+                        _currentState->getGameInputState((*i)->getIndex())._isMovingRight = (*i)->isPressed();
+                        isMovingRight[(*i)->getIndex()] = _currentState->getGameInputState((*i)->getIndex())._isMovingRight;
+                    }
+                }
+                    continue;
+                case GamePadEventType_D_PAD_LEFT:
+                {
+                    if (!isMovingLeft[(*i)->getIndex()])
+                    {
+                        _currentState->getGameInputState((*i)->getIndex())._isMovingLeft = (*i)->isPressed();
+                        isMovingLeft[(*i)->getIndex()] = _currentState->getGameInputState((*i)->getIndex())._isMovingLeft;
+                    }
+                }
+                    continue;
                 case GamePadEventType_STICK_LEFT:
                 {
                     float val = sanitizeCloseToZeroValue((*i)->getX());
-                    _currentState->getGameInputState((*i)->getIndex())._isMovingRight = val > 0;
-                    _currentState->getGameInputState((*i)->getIndex())._isMovingLeft = val < 0;
+                    if (!isMovingRight[(*i)->getIndex()])
+                    {
+                        _currentState->getGameInputState((*i)->getIndex())._isMovingRight = val > 0;
+                        isMovingRight[(*i)->getIndex()] = _currentState->getGameInputState((*i)->getIndex())._isMovingRight;
+                    }
+                    
+                    if (!isMovingLeft[(*i)->getIndex()])
+                    {
+                        _currentState->getGameInputState((*i)->getIndex())._isMovingLeft = val < 0;
+                        isMovingLeft[(*i)->getIndex()] = _currentState->getGameInputState((*i)->getIndex())._isMovingLeft;
+                    }
                 }
                     continue;
                 case GamePadEventType_BUMPER_LEFT:
                 case GamePadEventType_BUMPER_RIGHT:
-                    _currentState->getGameInputState((*i)->getIndex())._isSprinting = (*i)->isPressed();
+                    if (!isSprinting[(*i)->getIndex()])
+                    {
+                        _currentState->getGameInputState((*i)->getIndex())._isSprinting = (*i)->isPressed();
+                        isSprinting[(*i)->getIndex()] = _currentState->getGameInputState((*i)->getIndex())._isSprinting;
+                    }
                     continue;
                 case GamePadEventType_X_BUTTON:
 				case GamePadEventType_TRIGGER:
-					_currentState->getGameInputState((*i)->getIndex())._isShooting = (*i)->getX() > 0 || (*i)->getY() > 0;
+                    if (!isShooting[(*i)->getIndex()])
+                    {
+                        _currentState->getGameInputState((*i)->getIndex())._isShooting = (*i)->getX() > 0 || (*i)->getY() > 0;
+                        isShooting[(*i)->getIndex()] = _currentState->getGameInputState((*i)->getIndex())._isShooting;
+                    }
 					continue;
                 case GamePadEventType_BACK_BUTTON:
                 {
@@ -177,7 +213,7 @@ void InputManager::update()
                     }
                     else
                     {
-                        _currentState->_menuState = (*i)->isPressed() ? MENU_STATE_ESCAPE : MENU_STATE_NONE;
+                        _currentState->_menuState = (*i)->isPressed() ? MENU_STATE_ESCAPE : _currentState->_menuState;
                     }
                 }
                     continue;

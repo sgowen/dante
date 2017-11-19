@@ -7,9 +7,6 @@
 [submodule "src/3rdparty/libpng"]
 	path = src/3rdparty/libpng
 	url = https://github.com/NoctisGames/libpng.git
-[submodule "src/3rdparty/DDHidLib"]
-	path = src/3rdparty/DDHidLib
-	url = https://github.com/NoctisGames/DDHidLib.git
 [submodule "src/3rdparty/TinyThread"]
 	path = src/3rdparty/TinyThread
 	url = https://github.com/NoctisGames/TinyThread.git
@@ -25,3 +22,9 @@
 [submodule "src/3rdparty/glfw"]
 	path = src/3rdparty/glfw
 	url = https://github.com/NoctisGames/glfw.git
+[submodule "src/3rdparty/DirectXTK"]
+	path = src/3rdparty/DirectXTK
+	url = https://github.com/NoctisGames/DirectXTK.git
+[submodule "src/3rdparty/DirectXTex"]
+	path = src/3rdparty/DirectXTex
+	url = https://github.com/NoctisGames/DirectXTex.git

@@ -13,7 +13,6 @@
 #include "GamePadEvent.h"
 
 #include "FrameworkConstants.h"
-#include "Timing.h"
 
 #define POOL_SIZE 8192
 
@@ -38,13 +37,6 @@ std::vector<GamePadEvent*>& GamePadInputManager::getEvents()
     return _pool->getObjects();
 }
 
-bool GamePadInputManager::isControllerConnected()
-{
-    float time = Timing::getInstance()->getFrameStartTime();
-    
-    return (time - _timeSinceLastGamePadEvent) < 5;
-}
-
 #pragma mark private
 
 void GamePadInputManager::addEvent(GamePadEventType type, int index, float x, float y)
@@ -61,8 +53,6 @@ void GamePadInputManager::addEvent(GamePadEventType type, int index, float x, fl
     e->setY(y);
     
     _pool->add(e);
-    
-    _timeSinceLastGamePadEvent = Timing::getInstance()->getFrameStartTime();
 }
 
 GamePadInputManager::GamePadInputManager() : _pool(new NGRollingPool<GamePadEvent>(POOL_SIZE)), _timeSinceLastGamePadEvent(-5)
