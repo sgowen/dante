@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -88,11 +88,11 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NG_STEAM;WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <FloatingPointModel>Fast</FloatingPointModel>
       <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
-      <AdditionalIncludeDirectories>../../3rdparty/;../../core/framework/entity/;../../core/framework/file/portable/;../../core/framework/file/directx/;../../core/framework/graphics/directx/;../../core/framework/graphics/portable/;../../core/framework/input/portable/;../../core/framework/input/directx/;../../core/framework/math/;../../core/framework/network/client/;../../core/framework/network/portable/;../../core/framework/network/server/;../../core/framework/network/steam/;../../core/framework/sound/portable/;../../core/framework/sound/directx/;../../core/framework/state/;../../core/framework/util/;../../core/game/graphics/directx/;../../core/game/graphics/portable/;../../core/game/logic/;../../core/game/network/;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;$(ProjectDir);</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../3rdparty/DirectXTK/Inc;../../3rdparty/Box2D/Box2D;../../3rdparty/rapidjson/include;../../3rdparty/spine-runtimes/spine-cpp/spine-cpp/include;../../3rdparty/steamworks_sdk/public;../../3rdparty/TinyThread/source;../../core;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;$(ProjectDir);</AdditionalIncludeDirectories>
       <PrecompiledHeaderOutputFile>$(IntDir)$(TargetName).pch</PrecompiledHeaderOutputFile>
     </ClCompile>
     <Link>
@@ -107,7 +107,7 @@
       <Command>rd /s /q $(SolutionDir)data\textures &amp; MD $(SolutionDir)data\textures</Command>
     </PreBuildEvent>
     <PreLinkEvent>
-      <Command>xcopy /y "$(SolutionDir)..\..\3rdparty\steam\redistributable_bin\steam_api.dll" $(SolutionDir) &amp;xcopy /y "$(OutDir)*.cso" $(SolutionDir)data\shaders\ &amp; cd $(SolutionDir)..\..\core\game\tools &amp; encrypt_shaders_win32.bat &amp; cd $(SolutionDir)..\..\core\game\tools &amp; encrypt_textures_win32.bat</Command>
+      <Command>xcopy /y "$(SolutionDir)..\..\3rdparty\steam\redistributable_bin\steam_api.dll" $(SolutionDir) &amp;xcopy /y "$(OutDir)*.cso" $(SolutionDir)data\shaders\ &amp; cd $(SolutionDir)..\..\..\tools &amp; encrypt_shaders_win32.bat &amp; cd $(SolutionDir)..\..\..\tools &amp; encrypt_textures_win32.bat</Command>
     </PreLinkEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -115,10 +115,10 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NG_STEAM;WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <FloatingPointModel>Fast</FloatingPointModel>
-      <AdditionalIncludeDirectories>../../3rdparty/;../../core/framework/entity/;../../core/framework/file/portable/;../../core/framework/file/directx/;../../core/framework/graphics/directx/;../../core/framework/graphics/portable/;../../core/framework/input/portable/;../../core/framework/input/directx/;../../core/framework/math/;../../core/framework/network/client/;../../core/framework/network/portable/;../../core/framework/network/server/;../../core/framework/network/steam/;../../core/framework/sound/portable/;../../core/framework/sound/directx/;../../core/framework/state/;../../core/framework/util/;../../core/game/graphics/directx/;../../core/game/graphics/portable/;../../core/game/logic/;../../core/game/network/;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;$(ProjectDir);</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../3rdparty/DirectXTK/Inc;../../3rdparty/Box2D/Box2D;../../3rdparty/rapidjson/include;../../3rdparty/spine-runtimes/spine-cpp/spine-cpp/include;../../3rdparty/steamworks_sdk/public;../../3rdparty/TinyThread/source;../../core;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;$(ProjectDir);</AdditionalIncludeDirectories>
       <PrecompiledHeaderOutputFile>$(IntDir)$(TargetName).pch</PrecompiledHeaderOutputFile>
     </ClCompile>
     <Link>
@@ -133,7 +133,7 @@
       <Command>rd /s /q $(SolutionDir)data\textures &amp; MD $(SolutionDir)data\textures</Command>
     </PreBuildEvent>
     <PreLinkEvent>
-      <Command>xcopy /y "$(SolutionDir)..\..\3rdparty\steam\redistributable_bin\win64\steam_api64.dll" $(SolutionDir) &amp;xcopy /y "$(OutDir)*.cso" $(SolutionDir)data\shaders\ &amp; cd $(SolutionDir)..\..\core\game\tools &amp; encrypt_shaders_win32.bat &amp; cd $(SolutionDir)..\..\core\game\tools &amp; encrypt_textures_win32.bat</Command>
+      <Command>xcopy /y "$(SolutionDir)..\..\3rdparty\steam\redistributable_bin\win64\steam_api64.dll" $(SolutionDir) &amp;xcopy /y "$(OutDir)*.cso" $(SolutionDir)data\shaders\ &amp; cd $(SolutionDir)..\..\..\tools &amp; encrypt_shaders_win32.bat &amp; cd $(SolutionDir)..\..\..\tools &amp; encrypt_textures_win32.bat</Command>
     </PreLinkEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -143,11 +143,11 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NG_STEAM;WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <FloatingPointModel>Fast</FloatingPointModel>
       <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
-      <AdditionalIncludeDirectories>../../3rdparty/;../../core/framework/entity/;../../core/framework/file/portable/;../../core/framework/file/directx/;../../core/framework/graphics/directx/;../../core/framework/graphics/portable/;../../core/framework/input/portable/;../../core/framework/input/directx/;../../core/framework/math/;../../core/framework/network/client/;../../core/framework/network/portable/;../../core/framework/network/server/;../../core/framework/network/steam/;../../core/framework/sound/portable/;../../core/framework/sound/directx/;../../core/framework/state/;../../core/framework/util/;../../core/game/graphics/directx/;../../core/game/graphics/portable/;../../core/game/logic/;../../core/game/network/;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;$(ProjectDir);</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../3rdparty/DirectXTK/Inc;../../3rdparty/Box2D/Box2D;../../3rdparty/rapidjson/include;../../3rdparty/spine-runtimes/spine-cpp/spine-cpp/include;../../3rdparty/steamworks_sdk/public;../../3rdparty/TinyThread/source;../../core;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;$(ProjectDir);</AdditionalIncludeDirectories>
       <PrecompiledHeaderOutputFile>$(IntDir)$(TargetName).pch</PrecompiledHeaderOutputFile>
     </ClCompile>
     <Link>
@@ -164,7 +164,7 @@
       <Command>rd /s /q $(SolutionDir)data\textures &amp; MD $(SolutionDir)data\textures</Command>
     </PreBuildEvent>
     <PreLinkEvent>
-      <Command>xcopy /y "$(SolutionDir)..\..\3rdparty\steam\redistributable_bin\steam_api.dll" $(SolutionDir) &amp;xcopy /y "$(OutDir)*.cso" $(SolutionDir)data\shaders\ &amp; cd $(SolutionDir)..\..\core\game\tools &amp; encrypt_shaders_win32.bat &amp; cd $(SolutionDir)..\..\core\game\tools &amp; encrypt_textures_win32.bat</Command>
+      <Command>xcopy /y "$(SolutionDir)..\..\3rdparty\steam\redistributable_bin\steam_api.dll" $(SolutionDir) &amp;xcopy /y "$(OutDir)*.cso" $(SolutionDir)data\shaders\ &amp; cd $(SolutionDir)..\..\..\tools &amp; encrypt_shaders_win32.bat &amp; cd $(SolutionDir)..\..\..\tools &amp; encrypt_textures_win32.bat</Command>
     </PreLinkEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -174,10 +174,10 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NG_STEAM;WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <FloatingPointModel>Fast</FloatingPointModel>
-      <AdditionalIncludeDirectories>../../3rdparty/;../../core/framework/entity/;../../core/framework/file/portable/;../../core/framework/file/directx/;../../core/framework/graphics/directx/;../../core/framework/graphics/portable/;../../core/framework/input/portable/;../../core/framework/input/directx/;../../core/framework/math/;../../core/framework/network/client/;../../core/framework/network/portable/;../../core/framework/network/server/;../../core/framework/network/steam/;../../core/framework/sound/portable/;../../core/framework/sound/directx/;../../core/framework/state/;../../core/framework/util/;../../core/game/graphics/directx/;../../core/game/graphics/portable/;../../core/game/logic/;../../core/game/network/;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;$(ProjectDir);</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../3rdparty/DirectXTK/Inc;../../3rdparty/Box2D/Box2D;../../3rdparty/rapidjson/include;../../3rdparty/spine-runtimes/spine-cpp/spine-cpp/include;../../3rdparty/steamworks_sdk/public;../../3rdparty/TinyThread/source;../../core;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;$(ProjectDir);</AdditionalIncludeDirectories>
       <PrecompiledHeaderOutputFile>$(IntDir)$(TargetName).pch</PrecompiledHeaderOutputFile>
     </ClCompile>
     <Link>
@@ -194,7 +194,7 @@
       <Command>rd /s /q $(SolutionDir)data\textures &amp; MD $(SolutionDir)data\textures</Command>
     </PreBuildEvent>
     <PreLinkEvent>
-      <Command>xcopy /y "$(SolutionDir)..\..\3rdparty\steam\redistributable_bin\win64\steam_api64.dll" $(SolutionDir) &amp;xcopy /y "$(OutDir)*.cso" $(SolutionDir)data\shaders\ &amp; cd $(SolutionDir)..\..\core\game\tools &amp; encrypt_shaders_win32.bat &amp; cd $(SolutionDir)..\..\core\game\tools &amp; encrypt_textures_win32.bat</Command>
+      <Command>xcopy /y "$(SolutionDir)..\..\3rdparty\steam\redistributable_bin\win64\steam_api64.dll" $(SolutionDir) &amp;xcopy /y "$(OutDir)*.cso" $(SolutionDir)data\shaders\ &amp; cd $(SolutionDir)..\..\..\tools &amp; encrypt_shaders_win32.bat &amp; cd $(SolutionDir)..\..\..\tools &amp; encrypt_textures_win32.bat</Command>
     </PreLinkEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -208,20 +208,17 @@
     <ClInclude Include="..\..\3rdparty\Box2D\Rope\*.h" />
     <ClInclude Include="..\..\core\framework\entity\*.h" />
     <ClInclude Include="..\..\core\framework\file\portable\*.h" />
-    <ClInclude Include="..\..\core\framework\file\directx\*.h" />
+    <ClInclude Include="..\..\core\framework\file\windows\*.h" />
     <ClInclude Include="..\..\core\framework\graphics\directx\*.h" />
     <ClInclude Include="..\..\core\framework\graphics\portable\*.h" />
-    <ClInclude Include="..\..\core\framework\input\portable\*.h" />
-    <ClInclude Include="..\..\core\framework\input\directx\*.h" />
+    <ClInclude Include="..\..\core\framework\input\*.h" />
     <ClInclude Include="..\..\core\framework\math\*.h" />
     <ClInclude Include="..\..\core\framework\network\client\*.h" />
     <ClInclude Include="..\..\core\framework\network\portable\*.h" />
     <ClInclude Include="..\..\core\framework\network\server\*.h" />
     <ClInclude Include="..\..\core\framework\network\steam\*.h" />
-    <ClInclude Include="..\..\core\framework\sound\portable\*.h" />
-    <ClInclude Include="..\..\core\framework\sound\directx\*.h" />
-    <ClInclude Include="..\..\core\framework\state\*.h" />
-    <ClInclude Include="..\..\core\framework\ui\*.h" />
+    <ClInclude Include="..\..\core\framework\audio\portable\*.h" />
+    <ClInclude Include="..\..\core\framework\audio\directx\*.h" />
     <ClInclude Include="..\..\core\framework\util\*.h" />
     <ClInclude Include="..\..\core\game\graphics\directx\*.h" />
     <ClInclude Include="..\..\core\game\graphics\portable\*.h" />
@@ -256,20 +253,17 @@
     </ClCompile>
     <ClCompile Include="..\..\core\framework\entity\*.cpp" />
     <ClCompile Include="..\..\core\framework\file\portable\*.cpp" />
-    <ClCompile Include="..\..\core\framework\file\directx\*.cpp" />
+    <ClCompile Include="..\..\core\framework\file\windows\*.cpp" />
     <ClCompile Include="..\..\core\framework\graphics\directx\*.cpp" />
     <ClCompile Include="..\..\core\framework\graphics\portable\*.cpp" />
-    <ClCompile Include="..\..\core\framework\input\portable\*.cpp" />
-    <ClCompile Include="..\..\core\framework\input\directx\*.cpp" />
+    <ClCompile Include="..\..\core\framework\input\*.cpp" />
     <ClCompile Include="..\..\core\framework\math\*.cpp" />
     <ClCompile Include="..\..\core\framework\network\client\*.cpp" />
     <ClCompile Include="..\..\core\framework\network\portable\*.cpp" />
     <ClCompile Include="..\..\core\framework\network\server\*.cpp" />
     <ClCompile Include="..\..\core\framework\network\steam\*.cpp" />
-    <ClCompile Include="..\..\core\framework\sound\portable\*.cpp" />
-    <ClCompile Include="..\..\core\framework\sound\directx\*.cpp" />
-    <ClCompile Include="..\..\core\framework\state\*.cpp" />
-    <ClCompile Include="..\..\core\framework\ui\*.cpp" />
+    <ClCompile Include="..\..\core\framework\audio\portable\*.cpp" />
+    <ClCompile Include="..\..\core\framework\audio\directx\*.cpp" />
     <ClCompile Include="..\..\core\framework\util\*.cpp" />
     <ClCompile Include="..\..\core\game\graphics\directx\*.cpp" />
     <ClCompile Include="..\..\core\game\graphics\portable\*.cpp" />

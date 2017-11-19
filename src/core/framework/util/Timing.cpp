@@ -71,7 +71,7 @@ float Timing::getTime() const
     
     timeSinceStart.QuadPart = curTime.QuadPart - sStartTime.QuadPart;
     
-    return timeSinceStart.QuadPart * _dPerfCountDuration;
+    return timeSinceStart.QuadPart * _perfCountDuration;
 #else
     auto now = steady_clock::now();
     auto ms = duration_cast< milliseconds >(now - sStartTime).count();
@@ -85,7 +85,7 @@ Timing::Timing()
 #if _WIN32
     LARGE_INTEGER perfFreq;
     QueryPerformanceFrequency(&perfFreq);
-    _dPerfCountDuration = 1.0 / perfFreq.QuadPart;
+    _perfCountDuration = 1.0 / perfFreq.QuadPart;
     
     QueryPerformanceCounter(&sStartTime);
 #else
