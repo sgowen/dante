@@ -60,7 +60,7 @@ void ReplicationManagerServer::write(OutputMemoryBitStream& inOutputStream, Repl
             
             //only need 2 bits for action...
             ReplicationAction action = replicationCommand.getAction();
-            inOutputStream.write<u_int8_t, 2>(static_cast<u_int8_t>(action));
+            inOutputStream.write<uint8_t, 2>(static_cast<uint8_t>(action));
             
             uint32_t writtenState = 0;
             uint32_t dirtyState = replicationCommand.getDirtyState();
