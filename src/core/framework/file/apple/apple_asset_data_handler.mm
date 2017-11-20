@@ -44,10 +44,7 @@ FileData appleGetAssetData(const char *relative_path)
     assert(ferror(stream) == 0);
     fclose(stream);
     
-    return (FileData)
-    {
-        stream_size, buffer, NULL
-    };
+    return FileData(stream_size, buffer, NULL);
 }
 
 void appleReleaseAssetData(const FileData *file_data)
