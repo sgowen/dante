@@ -20,7 +20,7 @@
 
 #include <assert.h>
 
-OpenGLManager* OpenGLManager::s_pInstance = nullptr;
+OpenGLManager* OpenGLManager::s_pInstance = NULL;
 
 void OpenGLManager::create()
 {
@@ -34,7 +34,7 @@ void OpenGLManager::destroy()
     assert(s_pInstance);
     
     delete s_pInstance;
-    s_pInstance = nullptr;
+    s_pInstance = NULL;
 }
 
 OpenGLManager * OpenGLManager::getInstance()

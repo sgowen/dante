@@ -61,11 +61,11 @@ public:
     
     ClientProxy* getClientProxy(uint8_t inPlayerId) const;
     
-    uint16_t getAverageMoveCount() const;
+    int getAverageMoveCount() const;
     
-    int16_t getLowestNonHostMoveCount() const;
+    int getLowestNonHostMoveCount() const;
     
-    uint16_t getHostMoveCount() const;
+    int getHostMoveCount() const;
     
     uint8_t getNumClientsConnected();
     

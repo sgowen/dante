@@ -34,7 +34,7 @@ Entity* EntityManager::getEntityByID(uint32_t inID) const
         return q->second;
     }
     
-    return nullptr;
+    return NULL;
 }
 
 void EntityManager::registerEntity(Entity* inEntity)
@@ -53,7 +53,7 @@ void EntityManager::deregisterEntity(Entity* inEntity)
     inEntity->onDeletion();
     
     delete inEntity;
-    inEntity = nullptr;
+    inEntity = NULL;
 }
 
 std::map<uint32_t, Entity*>& EntityManager::getMap()

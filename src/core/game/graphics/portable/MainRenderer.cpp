@@ -238,7 +238,7 @@ void MainRenderer::renderEntities(World* world, bool isServer)
             static TextureRegion tr2 = ASSETS->findTextureRegion("Space_Pirate_Chunk_Botto_Left");
             static TextureRegion tr3 = ASSETS->findTextureRegion("Space_Pirate_Chunk_Botto_Right");
             
-            TextureRegion* tr = nullptr;
+            TextureRegion* tr = NULL;
             switch (type)
             {
                 case Space_Pirate_Chunk_Top_Left:

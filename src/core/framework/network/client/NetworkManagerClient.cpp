@@ -31,7 +31,7 @@
 
 #include <assert.h>
 
-NetworkManagerClient* NetworkManagerClient::s_instance = nullptr;
+NetworkManagerClient* NetworkManagerClient::s_instance = NULL;
 
 void NetworkManagerClient::create(ClientHelper* inClientHelper, float inFrameRate, RemoveProcessedMovesFunc inRemoveProcessedMovesFunc, GetMoveListFunc inGetMoveListFunc, OnPlayerWelcomedFunc inOnPlayerWelcomedFunc)
 {
@@ -45,7 +45,7 @@ void NetworkManagerClient::destroy()
     assert(s_instance);
     
     delete s_instance;
-    s_instance = nullptr;
+    s_instance = NULL;
 }
 
 NetworkManagerClient * NetworkManagerClient::getInstance()
@@ -353,7 +353,7 @@ void NetworkManagerClient::sendInputPacket()
         // only need 2 bits to write the move count, because it's 0-3
         inputPacket.write<uint8_t, 2>(moveCount - firstMoveIndex);
         
-        const Move* referenceMove = nullptr;
+        const Move* referenceMove = NULL;
         for (; firstMoveIndex < moveCount; ++firstMoveIndex, ++move)
         {
             bool needsToWriteMove = true;

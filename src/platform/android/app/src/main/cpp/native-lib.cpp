@@ -65,7 +65,7 @@ private:
 
 void AndroidEngine::handleCmd(struct android_app* app, int32_t cmd)
 {
-    AndroidEngine* eng = (AndroidEngine*) app->userData;
+    AndroidEngine* engine = (AndroidEngine*) app->userData;
     switch (cmd)
     {
         case APP_CMD_SAVE_STATE:
@@ -75,14 +75,14 @@ void AndroidEngine::handleCmd(struct android_app* app, int32_t cmd)
             LOGI("NG APP_CMD_INIT_WINDOW");
             if (app->window != NULL)
             {
-                eng->initDisplay();
-                eng->drawFrame();
+                engine->initDisplay();
+                engine->drawFrame();
             }
             break;
         case APP_CMD_TERM_WINDOW:
             LOGI("NG APP_CMD_TERM_WINDOW");
-            eng->termDisplay();
-            eng->m_hasFocus = false;
+            engine->termDisplay();
+            engine->m_hasFocus = false;
             break;
         case APP_CMD_DESTROY:
             LOGI("NG APP_CMD_DESTROY");
@@ -92,26 +92,26 @@ void AndroidEngine::handleCmd(struct android_app* app, int32_t cmd)
             break;
         case APP_CMD_GAINED_FOCUS:
             LOGI("NG APP_CMD_GAINED_FOCUS");
-            eng->resume();
-            eng->m_hasFocus = true;
+            engine->resume();
+            engine->m_hasFocus = true;
             break;
         case APP_CMD_LOST_FOCUS:
             LOGI("NG APP_CMD_LOST_FOCUS");
-            eng->pause();
-            eng->m_hasFocus = false;
-            eng->drawFrame();
+            engine->pause();
+            engine->m_hasFocus = false;
+            engine->drawFrame();
             break;
         case APP_CMD_LOW_MEMORY:
             LOGI("NG APP_CMD_LOW_MEMORY");
-            eng->trimMemory();
+            engine->trimMemory();
             break;
         case APP_CMD_RESUME:
             LOGI("NG APP_CMD_RESUME");
-            eng->resume();
+            engine->resume();
             break;
         case APP_CMD_PAUSE:
             LOGI("NG APP_CMD_PAUSE");
-            eng->pause();
+            engine->pause();
             break;
         case APP_CMD_INPUT_CHANGED:
             LOGI("NG APP_CMD_INPUT_CHANGED");
@@ -136,7 +136,6 @@ void AndroidEngine::handleCmd(struct android_app* app, int32_t cmd)
 
 int32_t AndroidEngine::handleInput(android_app* app, AInputEvent* event)
 {
-    AndroidEngine* eng = (AndroidEngine*) app->userData;
     if (AInputEvent_getType(event) == AINPUT_EVENT_TYPE_MOTION)
     {
         int32_t action = AMotionEvent_getAction(event);
@@ -383,8 +382,6 @@ void AndroidEngine::pause()
     }
 }
 
-AndroidEngine g_engine;
-
 /**
  * This is the main entry point of a native application that is using
  * android_native_m_appglue.  It runs in its own thread, with its own
@@ -392,11 +389,13 @@ AndroidEngine g_engine;
  */
 void android_main(android_app* state)
 {
+    AndroidEngine engine;
+    
     app_dummy();
     
-    g_engine.setState(state);
+    engine.setState(state);
     
-    state->userData = &g_engine;
+    state->userData = &engine;
     state->onAppCmd = AndroidEngine::handleCmd;
     state->onInputEvent = AndroidEngine::handleInput;
     
@@ -413,7 +412,7 @@ void android_main(android_app* state)
         // If not animating, we will block forever waiting for events.
         // If animating, we loop until all events are read, then continue
         // to draw the next frame of animation.
-        while ((ALooper_pollAll(g_engine.isReady() ? 0 : -1, NULL, &events, (void**) &source)) >= 0)
+        while ((ALooper_pollAll(engine.isReady() ? 0 : -1, NULL, &events, (void**) &source)) >= 0)
         {
             if (source != NULL)
             {
@@ -422,14 +421,14 @@ void android_main(android_app* state)
             
             if (state->destroyRequested != 0)
             {
-                g_engine.termDisplay();
+                engine.termDisplay();
                 return;
             }
         }
         
-        if (g_engine.isReady())
+        if (engine.isReady())
         {
-            g_engine.drawFrame();
+            engine.drawFrame();
         }
     }
 }

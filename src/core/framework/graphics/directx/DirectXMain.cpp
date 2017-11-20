@@ -28,7 +28,7 @@ using namespace DirectX;
 
 using Microsoft::WRL::ComPtr;
 
-DirectXMain::DirectXMain() : _engine(nullptr), _dpi(0), _isPointerPressed(false), _isDeviceLost(false)
+DirectXMain::DirectXMain() : _engine(NULL), _dpi(0), _isPointerPressed(false), _isDeviceLost(false)
 {
     _deviceResources = std::make_unique<DX::DeviceResources>();
 	_deviceResources->RegisterDeviceNotify(this);

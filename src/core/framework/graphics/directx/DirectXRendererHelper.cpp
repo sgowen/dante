@@ -65,7 +65,7 @@ void DirectXRendererHelper::bindToOffscreenFramebuffer(int index)
 {
 	ID3D11DeviceContext* d3dContext = DirectXManager::getD3dContext();
 
-	d3dContext->OMSetRenderTargets(1, &DXManager->getOffscreenRenderTargetViews().at(index), nullptr);
+	d3dContext->OMSetRenderTargets(1, &DXManager->getOffscreenRenderTargetViews().at(index), NULL);
     
 	_framebufferIndex = index;
     _isBoundToScreen = false;
@@ -98,7 +98,7 @@ void DirectXRendererHelper::bindToScreenFramebuffer()
 	ID3D11RenderTargetView* d3dRenderTargetView = DirectXManager::getD3dRenderTargetView();
 
     ID3D11RenderTargetView *const targets[1] = { d3dRenderTargetView };
-	d3dContext->OMSetRenderTargets(1, targets, nullptr);
+	d3dContext->OMSetRenderTargets(1, targets, NULL);
     
     _isBoundToScreen = true;
 }

@@ -242,7 +242,7 @@ void AndroidAudioEngineHelper::deinit()
     NGSTDUtil::cleanUpVectorOfPointers(_audioSystems);
     
     delete _superpoweredSoundManager;
-    _superpoweredSoundManager = nullptr;
+    _superpoweredSoundManager = NULL;
     
     JNIEnv* jni;
     
@@ -262,7 +262,7 @@ void AndroidAudioEngineHelper::deinit()
     }
 }
 
-AndroidAudioEngineHelper::AndroidAudioEngineHelper() : AudioEngineHelper(), _superpoweredSoundManager(nullptr), _sampleRate(44100)
+AndroidAudioEngineHelper::AndroidAudioEngineHelper() : AudioEngineHelper(), _superpoweredSoundManager(NULL), _sampleRate(44100)
 {
     // Empty
 }

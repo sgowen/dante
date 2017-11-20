@@ -368,7 +368,7 @@ const Move* InputManager::getPendingMove()
 
 void InputManager::clearPendingMove()
 {
-    _pendingMove = nullptr;
+    _pendingMove = NULL;
 }
 
 void InputManager::setConnected(bool isConnected)
@@ -453,7 +453,7 @@ bool InputManager::isTimeToSampleInput()
 
 InputManager::InputManager() :
 _currentState(static_cast<MainInputState*>(POOLED_OBJ_MGR->borrowInputState())),
-_pendingMove(nullptr),
+_pendingMove(NULL),
 _isConnected(false),
 _isLiveMode(false),
 _isTimeToProcessInput(false)

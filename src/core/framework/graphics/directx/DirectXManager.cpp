@@ -23,11 +23,11 @@
 
 using namespace DirectX;
 
-DirectXManager* DirectXManager::s_pInstance = nullptr;
+DirectXManager* DirectXManager::s_pInstance = NULL;
 
-ID3D11Device* DirectXManager::s_d3dDevice = nullptr;
-ID3D11DeviceContext* DirectXManager::s_d3dContext = nullptr;
-ID3D11RenderTargetView* DirectXManager::s_d3dRenderTargetView = nullptr;
+ID3D11Device* DirectXManager::s_d3dDevice = NULL;
+ID3D11DeviceContext* DirectXManager::s_d3dContext = NULL;
+ID3D11RenderTargetView* DirectXManager::s_d3dRenderTargetView = NULL;
 XMFLOAT4X4 DirectXManager::s_orientation;
 
 void DirectXManager::init(ID3D11Device* d3dDevice, ID3D11DeviceContext* d3dContext, ID3D11RenderTargetView* d3dRenderTargetView, XMFLOAT4X4 orientation)
@@ -65,7 +65,7 @@ void DirectXManager::destroy()
     assert(s_pInstance);
     
     delete s_pInstance;
-    s_pInstance = nullptr;
+    s_pInstance = NULL;
 }
 
 DirectXManager * DirectXManager::getInstance()
@@ -382,7 +382,7 @@ void DirectXManager::createConstantBuffer()
 	bd.ByteWidth = 64;
 	bd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
 
-	DirectX::ThrowIfFailed(s_d3dDevice->CreateBuffer(&bd, nullptr, &_matrixConstantbuffer));
+	DirectX::ThrowIfFailed(s_d3dDevice->CreateBuffer(&bd, NULL, &_matrixConstantbuffer));
 }
 
 std::vector<short> DirectXManager::createIndexValues(int maxBatchSize)

@@ -88,6 +88,6 @@ private:
     void CreateDeviceDependentResources();
     void CreateWindowSizeDependentResources();
 
-	void beginPixEvent(PCWSTR pFormat, DX::DeviceResources* deviceResources = nullptr);
-	void endPixEvent(DX::DeviceResources* deviceResources = nullptr);
+	void beginPixEvent(PCWSTR pFormat, DX::DeviceResources* deviceResources = NULL);
+	void endPixEvent(DX::DeviceResources* deviceResources = NULL);
 };

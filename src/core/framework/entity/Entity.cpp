@@ -25,9 +25,9 @@
 
 Entity::Entity(b2World& world, float x, float y, float width, float height, bool isServer, EntityDef inEntityDef, bool autoInitPhysics) :
 _worldRef(world),
-_body(nullptr),
-_fixture(nullptr),
-_footSensorFixture(nullptr),
+_body(NULL),
+_fixture(NULL),
+_footSensorFixture(NULL),
 _stateTime(0.0f),
 _color(1.0f, 1.0f, 1.0f, 1.0f),
 _x(x),
@@ -315,19 +315,19 @@ void Entity::deinitPhysics()
     if (_fixture)
     {
         _body->DestroyFixture(_fixture);
-        _fixture = nullptr;
+        _fixture = NULL;
     }
     
     if (_footSensorFixture)
     {
         _body->DestroyFixture(_footSensorFixture);
-        _footSensorFixture = nullptr;
+        _footSensorFixture = NULL;
     }
     
     if (_body)
     {
         _worldRef.DestroyBody(_body);
-        _body = nullptr;
+        _body = NULL;
     }
 }
 

@@ -121,5 +121,5 @@ std::vector<uint8_t>& ClientProxy::getPlayerIds()
 
 uint8_t ClientProxy::getNumPlayers()
 {
-    return static_cast<int>(_playerIds.size());
+    return static_cast<uint8_t>(_playerIds.size());
 }

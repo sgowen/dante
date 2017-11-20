@@ -16,8 +16,8 @@
 
 #include <assert.h>
 
-World* InstanceManager::s_clientWorldInstance = nullptr;
-World* InstanceManager::s_serverWorldInstance = nullptr;
+World* InstanceManager::s_clientWorldInstance = NULL;
+World* InstanceManager::s_serverWorldInstance = NULL;
 
 void InstanceManager::createClientWorld()
 {
@@ -38,7 +38,7 @@ void InstanceManager::destroyClientWorld()
     assert(s_clientWorldInstance);
     
     delete s_clientWorldInstance;
-    s_clientWorldInstance = nullptr;
+    s_clientWorldInstance = NULL;
 }
 
 void InstanceManager::destroyServerWorld()
@@ -46,7 +46,7 @@ void InstanceManager::destroyServerWorld()
     assert(s_serverWorldInstance);
     
     delete s_serverWorldInstance;
-    s_serverWorldInstance = nullptr;
+    s_serverWorldInstance = NULL;
 }
 
 World* InstanceManager::getClientWorld()
@@ -90,7 +90,7 @@ uint64_t InstanceManager::sGetPlayerAddressHashForIndexOnClient(uint8_t inPlayer
 
 Robot* InstanceManager::sGetPlayerRobotForIDOnClient(uint8_t inPlayerID)
 {
-    Robot* ret = nullptr;
+    Robot* ret = NULL;
     
     if (InstanceManager::getClientWorld())
     {

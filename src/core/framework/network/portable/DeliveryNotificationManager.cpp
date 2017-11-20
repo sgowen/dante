@@ -119,7 +119,7 @@ InFlightPacket* DeliveryNotificationManager::writeSequenceNumber(OutputMemoryBit
     }
     else
     {
-        return nullptr;
+        return NULL;
     }
 }
 

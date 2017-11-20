@@ -32,7 +32,7 @@
 
 #include <assert.h>
 
-NetworkManagerServer* NetworkManagerServer::s_instance = nullptr;
+NetworkManagerServer* NetworkManagerServer::s_instance = NULL;
 
 void NetworkManagerServer::create(ServerHelper* inServerHelper, HandleNewClientFunc inHandleNewClientFunc, HandleLostClientFunc inHandleLostClientFunc, InputStateCreationFunc inInputStateCreationFunc)
 {
@@ -46,7 +46,7 @@ void NetworkManagerServer::destroy()
     assert(s_instance);
     
     delete s_instance;
-    s_instance = nullptr;
+    s_instance = NULL;
 }
 
 NetworkManagerServer * NetworkManagerServer::getInstance()
@@ -163,10 +163,10 @@ ClientProxy* NetworkManagerServer::getClientProxy(uint8_t inPlayerId) const
         return it->second;
     }
     
-    return nullptr;
+    return NULL;
 }
 
-uint16_t NetworkManagerServer::getAverageMoveCount() const
+int NetworkManagerServer::getAverageMoveCount() const
 {
     uint16_t ret = 0;
     
@@ -183,9 +183,9 @@ uint16_t NetworkManagerServer::getAverageMoveCount() const
     return ret;
 }
 
-int16_t NetworkManagerServer::getLowestNonHostMoveCount() const
+int NetworkManagerServer::getLowestNonHostMoveCount() const
 {
-    int16_t ret = -1;
+    int ret = -1;
     
     if (_addressHashToClientMap.size() > 0)
     {
@@ -206,7 +206,7 @@ int16_t NetworkManagerServer::getLowestNonHostMoveCount() const
     return ret;
 }
 
-uint16_t NetworkManagerServer::getHostMoveCount() const
+int NetworkManagerServer::getHostMoveCount() const
 {
     uint16_t ret = 0;
     
@@ -221,7 +221,7 @@ uint16_t NetworkManagerServer::getHostMoveCount() const
 
 uint8_t NetworkManagerServer::getNumClientsConnected()
 {
-    return static_cast<int>(_addressHashToClientMap.size());
+    return static_cast<uint8_t>(_addressHashToClientMap.size());
 }
 
 MachineAddress* NetworkManagerServer::getServerAddress()
@@ -418,7 +418,7 @@ void NetworkManagerServer::handleInputPacket(ClientProxy* inClientProxy, InputMe
     uint8_t moveCount = 0;
     inInputStream.read<uint8_t, 2>(moveCount);
     
-	InputState* referenceInputState = nullptr;
+	InputState* referenceInputState = NULL;
 	bool isRefInputStateOrphaned = false;
     
     for (; moveCount > 0; --moveCount)

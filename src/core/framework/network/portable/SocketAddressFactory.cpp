@@ -37,18 +37,18 @@ SocketAddress* SocketAddressFactory::createIPv4FromString(const std::string& inS
     memset(&hint, 0, sizeof(hint));
     hint.ai_family = AF_INET;
     
-    addrinfo* result = nullptr;
+    addrinfo* result = NULL;
     int error = getaddrinfo(host.c_str(), service.c_str(), &hint, &result);
-    if (error != 0 && result != nullptr)
+    if (error != 0 && result != NULL)
     {
         SOCKET_UTIL->reportError("SocketAddressFactory::createIPv4FromString");
-        return nullptr;
+        return NULL;
     }
     
-    if (result == nullptr)
+    if (result == NULL)
     {
         SOCKET_UTIL->reportError("SocketAddressFactory::createIPv4FromString");
-        return nullptr;
+        return NULL;
     }
     
     while (!result->ai_addr && result->ai_next)
@@ -58,7 +58,7 @@ SocketAddress* SocketAddressFactory::createIPv4FromString(const std::string& inS
     
     if (!result->ai_addr)
     {
-        return nullptr;
+        return NULL;
     }
     
     auto toRet = new SocketAddress(*result->ai_addr);

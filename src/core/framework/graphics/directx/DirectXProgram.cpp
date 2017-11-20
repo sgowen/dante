@@ -65,7 +65,7 @@ DirectXProgram::DirectXProgram(const char* vertexShaderName, const char* pixelSh
 		d3dDevice->CreateVertexShader(
 			vertex_shader_source_output,
 			vertex_shader_source.data_length,
-			nullptr,
+			NULL,
 			&_vertexShader
 		)
 	);
@@ -101,7 +101,7 @@ DirectXProgram::DirectXProgram(const char* vertexShaderName, const char* pixelSh
 		d3dDevice->CreatePixelShader(
 			fragment_shader_source_output,
 			fragment_shader_source.data_length,
-			nullptr,
+			NULL,
 			&_pixelShader
 		)
 	);
@@ -130,8 +130,8 @@ void DirectXProgram::bindShaders()
     d3dContext->IASetInputLayout(_inputLayout.Get());
     
     // set the shader objects as the active shaders
-    d3dContext->VSSetShader(_vertexShader.Get(), nullptr, 0);
-    d3dContext->PSSetShader(_pixelShader.Get(), nullptr, 0);
+    d3dContext->VSSetShader(_vertexShader.Get(), NULL, 0);
+    d3dContext->PSSetShader(_pixelShader.Get(), NULL, 0);
 }
 
 void DirectXProgram::bindMatrix()
@@ -154,5 +154,5 @@ void DirectXProgram::createConstantBuffer(_COM_Outptr_opt_  ID3D11Buffer **ppBuf
 	bd.ByteWidth = 16;
 	bd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
 
-	d3dDevice->CreateBuffer(&bd, nullptr, ppBuffer);
+	d3dDevice->CreateBuffer(&bd, NULL, ppBuffer);
 }

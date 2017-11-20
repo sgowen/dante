@@ -18,7 +18,7 @@ class StateMachine
 {
 public:
     
-    StateMachine(entity_type* owner) : _owner(owner), _currentState(nullptr), _previousState(nullptr), _globalState(nullptr)
+    StateMachine(entity_type* owner) : _owner(owner), _currentState(NULL), _previousState(NULL), _globalState(NULL)
     {
         // Empty
     }

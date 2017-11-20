@@ -41,7 +41,7 @@
 
 #define SERVER_CALLBACKS Server::sHandleNewClient, Server::sHandleLostClient, PooledObjectsManager::borrowInputState
 
-Server* Server::s_instance = nullptr;
+Server* Server::s_instance = NULL;
 
 void Server::create(bool isSteam, uint32_t inNumCratesToSpawn, uint32_t inNumSpacePiratesToSpawn)
 {
@@ -55,7 +55,7 @@ void Server::destroy()
     assert(s_instance);
     
     delete s_instance;
-    s_instance = nullptr;
+    s_instance = NULL;
 }
 
 Server * Server::getInstance()

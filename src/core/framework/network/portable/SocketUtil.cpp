@@ -85,7 +85,7 @@ UDPSocket* SocketUtil::createUDPSocket(SocketAddressFamily inFamily)
     {
         reportError("SocketUtil::createUDPSocket");
         
-        return nullptr;
+        return NULL;
     }
 }
 

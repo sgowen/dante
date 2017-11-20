@@ -75,7 +75,7 @@ _isPending(false)
 {
     for (int i = 0; i < NUM_PROJECTILES; ++i)
     {
-        _projectiles[i] = nullptr;
+        _projectiles[i] = NULL;
         
         if (_isServer)
         {
@@ -418,7 +418,7 @@ void Robot::processInput(InputState* inInputState, bool isPending)
     MainInputState* is = static_cast<MainInputState*>(inInputState);
     uint8_t playerId = getPlayerId();
     MainInputState::GameInputState* inputState = is->getGameInputStateForPlayerId(playerId);
-    if (inputState == nullptr)
+    if (inputState == NULL)
     {
         return;
     }

@@ -49,7 +49,7 @@ void SocketClientHelper::processSpecialPacket(uint32_t packetType, InputMemoryBi
             if (_serverAddress)
             {
                 delete _serverAddress;
-                _serverAddress = nullptr;
+                _serverAddress = NULL;
             }
             
             updateState();

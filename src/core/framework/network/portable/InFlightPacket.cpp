@@ -34,7 +34,7 @@ TransmissionData* InFlightPacket::getTransmissionData(int inKey) const
 {
     auto it = _transmissionDataMap.find(inKey);
     
-    return (it != _transmissionDataMap.end()) ? it->second : nullptr;
+    return (it != _transmissionDataMap.end()) ? it->second : NULL;
 }
 
 uint16_t InFlightPacket::getSequenceNumber() const

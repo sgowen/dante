@@ -47,9 +47,9 @@ _lineBatcher(LINE_BATCHER_FACTORY->createLineBatcher()),
 _circleBatcher(CIRCLE_BATCHER_FACTORY->createCircleBatcher()),
 _textureLoader(TEXTURE_LOADER_FACTORY->createTextureLoader()),
 _rendererHelper(RENDERER_HELPER_FACTORY->createRendererHelper()),
-_textureGpuProgramWrapper(nullptr),
-_colorGpuProgramWrapper(nullptr),
-_framebufferToScreenGpuProgramWrapper(nullptr),
+_textureGpuProgramWrapper(NULL),
+_colorGpuProgramWrapper(NULL),
+_framebufferToScreenGpuProgramWrapper(NULL),
 _framebufferIndex(0),
 _maxBatchSize(maxBatchSize),
 _areDeviceDependentResourcesCreated(false),
@@ -100,13 +100,13 @@ void Renderer::releaseDeviceDependentResources()
 	cleanUpThreads();
     
     delete _textureGpuProgramWrapper;
-	_textureGpuProgramWrapper = nullptr;
+	_textureGpuProgramWrapper = NULL;
 
     delete _colorGpuProgramWrapper;
-	_colorGpuProgramWrapper = nullptr;
+	_colorGpuProgramWrapper = NULL;
 
     delete _framebufferToScreenGpuProgramWrapper;
-	_framebufferToScreenGpuProgramWrapper = nullptr;
+	_framebufferToScreenGpuProgramWrapper = NULL;
 }
 
 #pragma mark protected
@@ -171,11 +171,11 @@ void Renderer::renderEntityWithColor(Entity &pe, TextureRegion& tr, Color c, boo
 
 void loadTextureDataSync(void* arg)
 {
-    assert(arg != nullptr);
+    assert(arg != NULL);
     
     TextureWrapper* textureWrapper = reinterpret_cast<TextureWrapper*>(arg);
     
-    assert(textureWrapper->_renderer != nullptr);
+    assert(textureWrapper->_renderer != NULL);
     assert(textureWrapper->name.length() > 0);
     
     if (textureWrapper->gpuTextureWrapper
@@ -195,14 +195,14 @@ void Renderer::loadTextureSync(TextureWrapper* textureWrapper)
     textureWrapper->gpuTextureWrapper = _textureLoader->loadTexture(textureWrapper->gpuTextureDataWrapper, textureWrapper->repeatS);
     
     delete textureWrapper->gpuTextureDataWrapper;
-    textureWrapper->gpuTextureDataWrapper = nullptr;
+    textureWrapper->gpuTextureDataWrapper = NULL;
     
     textureWrapper->isLoadingData = false;
 }
 
 void Renderer::loadTextureAsync(TextureWrapper* textureWrapper)
 {
-    assert(textureWrapper != nullptr);
+    assert(textureWrapper != NULL);
     assert(textureWrapper->name.length() > 0);
     
     if (textureWrapper->gpuTextureWrapper
@@ -220,7 +220,7 @@ void Renderer::loadTextureAsync(TextureWrapper* textureWrapper)
 
 void Renderer::unloadTexture(TextureWrapper* textureWrapper)
 {
-    if (textureWrapper == nullptr)
+    if (textureWrapper == NULL)
     {
         return;
     }
@@ -242,13 +242,13 @@ void Renderer::unloadTexture(TextureWrapper* textureWrapper)
         _rendererHelper->destroyTexture(*textureWrapper->gpuTextureWrapper);
         
         delete textureWrapper->gpuTextureWrapper;
-        textureWrapper->gpuTextureWrapper = nullptr;
+        textureWrapper->gpuTextureWrapper = NULL;
     }
     
     if (textureWrapper->gpuTextureDataWrapper)
     {
         delete textureWrapper->gpuTextureDataWrapper;
-        textureWrapper->gpuTextureDataWrapper = nullptr;
+        textureWrapper->gpuTextureDataWrapper = NULL;
     }
     
     textureWrapper->isLoadingData = false;
@@ -256,7 +256,7 @@ void Renderer::unloadTexture(TextureWrapper* textureWrapper)
 
 bool Renderer::ensureTexture(TextureWrapper* textureWrapper)
 {
-    if (textureWrapper->gpuTextureWrapper == nullptr)
+    if (textureWrapper->gpuTextureWrapper == NULL)
     {
         if (!textureWrapper->isLoadingData)
         {
@@ -280,7 +280,7 @@ void Renderer::handleAsyncTextureLoads()
             (*i)->gpuTextureWrapper = _textureLoader->loadTexture((*i)->gpuTextureDataWrapper, (*i)->repeatS);
             
             delete (*i)->gpuTextureDataWrapper;
-            (*i)->gpuTextureDataWrapper = nullptr;
+            (*i)->gpuTextureDataWrapper = NULL;
             
             (*i)->isLoadingData = false;
             

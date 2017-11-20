@@ -24,7 +24,7 @@ PooledObjectsManager* PooledObjectsManager::getInstance()
 
 InputState* PooledObjectsManager::borrowInputState()
 {
-    InputState* ret = nullptr;
+    InputState* ret = NULL;
     while ((ret = POOLED_OBJ_MGR->_pool->newObject())->isInUse())
     {
         // Continue

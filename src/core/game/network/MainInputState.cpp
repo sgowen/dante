@@ -136,7 +136,7 @@ MainInputState::GameInputState* MainInputState::getGameInputStateForPlayerId(uin
         }
     }
     
-    return nullptr;
+    return NULL;
 }
 
 bool MainInputState::isPlayerIdLocalHost(uint8_t playerId)

@@ -115,7 +115,7 @@ Move* MoveList::getMoveAtIndex(uint32_t index)
         return &_moves.at(index);
     }
     
-    return nullptr;
+    return NULL;
 }
 
 std::deque<Move>::const_iterator MoveList::begin() const

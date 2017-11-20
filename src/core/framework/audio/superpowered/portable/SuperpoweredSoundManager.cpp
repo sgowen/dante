@@ -31,7 +31,7 @@ _soundIndex(1)
 #endif
         _stereoBuffers.push_back(stereoBuffer);
         
-        _activeSounds[i] = nullptr;
+        _activeSounds[i] = NULL;
     }
 }
 
@@ -93,7 +93,7 @@ void SuperpoweredSoundManager::onSoundStopped(SuperpoweredSound* sound)
     if (sound->getSoundId() == 1337)
     {
         // This is music
-        _activeSounds[0] = nullptr;
+        _activeSounds[0] = NULL;
         
         return;
     }
@@ -102,7 +102,7 @@ void SuperpoweredSoundManager::onSoundStopped(SuperpoweredSound* sound)
     {
         if (_activeSounds[j] == sound)
         {
-            _activeSounds[j] = nullptr;
+            _activeSounds[j] = NULL;
             
             return;
         }

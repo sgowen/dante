@@ -85,7 +85,7 @@ NGSteamServerHelper::~NGSteamServerHelper()
     // Notify Steam master server we are going offline
     SteamGameServer()->EnableHeartbeats(false);
     
-    for (uint32_t i = 0; i < MAX_NUM_PLAYERS_PER_SERVER; ++i)
+    for (uint8_t i = 0; i < MAX_NUM_PLAYERS_PER_SERVER; ++i)
     {
         ClientProxy* clientProxy = _getClientProxyFunc(i);
         if (clientProxy)
@@ -156,7 +156,7 @@ void NGSteamServerHelper::processSpecialPacket(uint32_t packetType, InputMemoryB
             
             // Find the connection that should exist for this users address
             bool isFound = false;
-            for (uint32_t i = 0; i < MAX_NUM_PLAYERS_PER_SERVER; ++i)
+            for (uint8_t i = 0; i < MAX_NUM_PLAYERS_PER_SERVER; ++i)
             {
                 ClientProxy* clientProxy = _getClientProxyFunc(i);
                 if (clientProxy)
@@ -213,7 +213,7 @@ bool NGSteamServerHelper::isConnected()
 
 void NGSteamServerHelper::kickPlayerOffServer(CSteamID steamID)
 {
-    for (uint32_t i = 0; i < MAX_NUM_PLAYERS_PER_SERVER; ++i)
+    for (uint8_t i = 0; i < MAX_NUM_PLAYERS_PER_SERVER; ++i)
     {
         ClientProxy* clientProxy = _getClientProxyFunc(i);
         // If client is not active, skip
@@ -254,7 +254,7 @@ void NGSteamServerHelper::sendUpdatedServerDetailsToSteam()
     SteamGameServer()->SetMapName("Wasteland"); // TODO, do we need to specify a map name?
     
     // Update all the players names
-    for (uint32_t i = 0; i < MAX_NUM_PLAYERS_PER_SERVER; ++i)
+    for (uint8_t i = 0; i < MAX_NUM_PLAYERS_PER_SERVER; ++i)
     {
         ClientProxy* clientProxy = _getClientProxyFunc(i);
         if (clientProxy)
@@ -273,7 +273,7 @@ void NGSteamServerHelper::onClientBeginAuthentication(CSteamID steamIDClient, vo
     LOG("onClientBeginAuthentication, uTokenLen: %i", uTokenLen);
     
     // First, check this isn't a duplicate and we already have a user logged on from the same steamid
-    for (uint32_t i = 0; i < MAX_NUM_PLAYERS_PER_SERVER; ++i)
+    for (uint8_t i = 0; i < MAX_NUM_PLAYERS_PER_SERVER; ++i)
     {
         ClientProxy* clientProxy = _getClientProxyFunc(i);
         if (clientProxy)
@@ -289,7 +289,7 @@ void NGSteamServerHelper::onClientBeginAuthentication(CSteamID steamIDClient, vo
     
     // Second, do we have room?
     uint32_t nPendingOrActivePlayerCount = 0;
-    for (uint32_t i = 0; i < MAX_NUM_PLAYERS_PER_SERVER; ++i)
+    for (uint8_t i = 0; i < MAX_NUM_PLAYERS_PER_SERVER; ++i)
     {
         if (_rgPendingClientData[i]._isActive)
         {
@@ -344,7 +344,7 @@ void NGSteamServerHelper::onAuthCompleted(bool bAuthSuccessful, uint32_t iPendin
     
     if (bAuthSuccessful)
     {
-        for (uint32_t i = 0; i < MAX_NUM_PLAYERS_PER_SERVER; ++i)
+        for (uint8_t i = 0; i < MAX_NUM_PLAYERS_PER_SERVER; ++i)
         {
             ClientProxy* clientProxy = _getClientProxyFunc(i);
             if (!clientProxy)
@@ -478,7 +478,7 @@ void NGSteamServerHelper::onP2PSessionConnectFail(P2PSessionConnectFail_t *pCall
     LOG("onP2PSessionConnectFail");
     
     // socket has closed, kick the user associated with it
-    for (uint32_t i = 0; i < MAX_NUM_PLAYERS_PER_SERVER; ++i)
+    for (uint8_t i = 0; i < MAX_NUM_PLAYERS_PER_SERVER; ++i)
     {
         ClientProxy* clientProxy = _getClientProxyFunc(i);
         // If client is not active, skip

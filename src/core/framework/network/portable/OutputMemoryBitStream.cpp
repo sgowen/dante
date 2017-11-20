@@ -18,7 +18,7 @@
 
 #include <cstring>	// memcpy()
 
-OutputMemoryBitStream::OutputMemoryBitStream() : _bitHead(0), _buffer(nullptr)
+OutputMemoryBitStream::OutputMemoryBitStream() : _bitHead(0), _buffer(NULL)
 {
     reallocBuffer(1500 * 8);
 }
@@ -156,7 +156,7 @@ void OutputMemoryBitStream::writeSignedBinaryValue(float inValue)
 
 void OutputMemoryBitStream::reallocBuffer(uint32_t inNewBitLength)
 {
-    if (_buffer == nullptr)
+    if (_buffer == NULL)
     {
         //just need to memset on first allocation
         _buffer = static_cast<char*>(std::malloc(inNewBitLength >> 3));

@@ -14,7 +14,7 @@
 
 #include <memory>
 
-TransitionGpuProgramWrapper::TransitionGpuProgramWrapper() : _to(nullptr), _progress(0)
+TransitionGpuProgramWrapper::TransitionGpuProgramWrapper() : _to(NULL), _progress(0)
 {
     // Empty
 }

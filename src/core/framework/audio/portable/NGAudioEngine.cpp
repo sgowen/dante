@@ -337,7 +337,7 @@ SoundWrapper* NGAudioEngine::findSound(int soundId)
 }
 
 NGAudioEngine::NGAudioEngine() :
-_music(nullptr),
+_music(NULL),
 _audioEngineHelper(NG_AUDIO_ENGINE_HELPER_FACTORY->createAudioEngineHelper()),
 _numSoundsPlayedThisFrame(0),
 _isMusicDisabled(false),

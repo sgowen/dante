@@ -24,13 +24,13 @@ _networkTransport(new NGSteamP2PNetworkTransport(networkHelper))
     // no players yet
 	for (uint8_t i = 0; i < MAX_NUM_PLAYERS_PER_SERVER; ++i)
 	{
-		_rgpP2PAuthPlayer[i] = nullptr;
+		_rgpP2PAuthPlayer[i] = NULL;
 	}
     
 	// no queued messages
 	for (uint8_t i = 0; i < MAX_NUM_PLAYERS_PER_SERVER; ++i)
 	{
-		_rgpQueuedMessage[i] = nullptr;
+		_rgpQueuedMessage[i] = NULL;
 	}
 }
 
@@ -45,7 +45,7 @@ void NGSteamP2PAuth::playerDisconnect(uint8_t iSlot)
 	{
 		_rgpP2PAuthPlayer[iSlot]->endGame();
 		delete _rgpP2PAuthPlayer[iSlot];
-		_rgpP2PAuthPlayer[iSlot] = nullptr;
+		_rgpP2PAuthPlayer[iSlot] = NULL;
 	}
 }
 
@@ -58,7 +58,7 @@ void NGSteamP2PAuth::endGame()
 			_rgpP2PAuthPlayer[i]->endGame();
             
 			delete _rgpP2PAuthPlayer[i];
-			_rgpP2PAuthPlayer[i] = nullptr;
+			_rgpP2PAuthPlayer[i] = NULL;
 		}
 	}
 }
@@ -84,7 +84,7 @@ void NGSteamP2PAuth::internalinitPlayer(uint8_t iSlot, CSteamID steamID, bool bS
 			{
 				LOG("P2P:: Consumed queued message");
                 delete _rgpQueuedMessage[i];
-				_rgpQueuedMessage[i] = nullptr;
+				_rgpQueuedMessage[i] = NULL;
 			}
 		}
 	}
@@ -178,7 +178,7 @@ NGSteamP2PAuthPlayer::~NGSteamP2PAuthPlayer()
     endGame();
     
     _networkTransport->closeConnection(SteamUser()->GetSteamID());
-    _networkTransport = nullptr;
+    _networkTransport = NULL;
 }
 
 void NGSteamP2PAuthPlayer::OnBeginAuthResponse(ValidateAuthTicketResponse_t *pCallback)

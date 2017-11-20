@@ -38,7 +38,7 @@ extern "C" void __cdecl steamAPIDebugTextHook(int nSeverity, const char *pchDebu
     }
 }
 
-NGSteamGameServices* NGSteamGameServices::s_instance = nullptr;
+NGSteamGameServices* NGSteamGameServices::s_instance = NULL;
 
 void NGSteamGameServices::create(const char* inGameDir)
 {
@@ -52,7 +52,7 @@ void NGSteamGameServices::destroy()
     assert(s_instance);
     
     delete s_instance;
-    s_instance = nullptr;
+    s_instance = NULL;
 }
 
 NGSteamGameServices * NGSteamGameServices::getInstance()
@@ -198,7 +198,7 @@ void NGSteamGameServices::refreshInternetServers()
     if (_hServerListRequest)
     {
         SteamMatchmakingServers()->ReleaseRequest(_hServerListRequest);
-        _hServerListRequest = nullptr;
+        _hServerListRequest = NULL;
     }
     
     LOG("Refreshing internet servers");
@@ -244,7 +244,7 @@ void NGSteamGameServices::refreshLANServers()
     if (_hServerListRequest)
     {
         SteamMatchmakingServers()->ReleaseRequest(_hServerListRequest);
-        _hServerListRequest = nullptr;
+        _hServerListRequest = NULL;
     }
     
     LOG("Refreshing LAN servers");
@@ -365,7 +365,7 @@ NGSteamGameServices::NGSteamGameServices(const char* inGameDir) :
 _gameDir(inGameDir),
 _numServers(0),
 _isRequestingServers(false),
-_hServerListRequest(nullptr),
+_hServerListRequest(NULL),
 _unServerIP(0),
 _usServerPort(0),
 _steamIDGameServerToJoin(CSteamID()),
@@ -445,7 +445,7 @@ NGSteamGameServices::~NGSteamGameServices()
     if (_hServerListRequest)
     {
         SteamMatchmakingServers()->ReleaseRequest(_hServerListRequest);
-        _hServerListRequest = nullptr;
+        _hServerListRequest = NULL;
     }
     
     // Shutdown the SteamAPI
@@ -458,7 +458,7 @@ NGSteamGameServices::~NGSteamGameServices()
 NGSteamGameServices::GameServerPing::GameServerPing()
 {
     _hGameServerQuery = HSERVERQUERY_INVALID;
-    _client = nullptr;
+    _client = NULL;
 }
 
 void NGSteamGameServices::GameServerPing::ServerResponded(gameserveritem_t &server)

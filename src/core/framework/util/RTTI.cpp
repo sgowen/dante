@@ -10,7 +10,7 @@
 
 #include "framework/util/RTTI.h"
 
-RTTI::RTTI(const std::string& className) : _className(className), _pBaseRTTI(nullptr)
+RTTI::RTTI(const std::string& className) : _className(className), _pBaseRTTI(NULL)
 {
     // Empty
 }

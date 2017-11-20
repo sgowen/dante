@@ -14,8 +14,8 @@
 
 #include <assert.h>
 
-EntityManager* FWInstanceManager::s_clientEntityManagerInstance = nullptr;
-EntityManager* FWInstanceManager::s_serverEntityManagerInstance = nullptr;
+EntityManager* FWInstanceManager::s_clientEntityManagerInstance = NULL;
+EntityManager* FWInstanceManager::s_serverEntityManagerInstance = NULL;
 
 void FWInstanceManager::createClientEntityManager(HandleEntityCreatedFunc handleEntityCreatedFunc, HandleEntityDeletionFunc handleEntityDeletionFunc)
 {
@@ -36,7 +36,7 @@ void FWInstanceManager::destroyClientEntityManager()
     assert(s_clientEntityManagerInstance);
     
     delete s_clientEntityManagerInstance;
-    s_clientEntityManagerInstance = nullptr;
+    s_clientEntityManagerInstance = NULL;
 }
 
 void FWInstanceManager::destroyServerEntityManager()
@@ -44,7 +44,7 @@ void FWInstanceManager::destroyServerEntityManager()
     assert(s_serverEntityManagerInstance);
     
     delete s_serverEntityManagerInstance;
-    s_serverEntityManagerInstance = nullptr;
+    s_serverEntityManagerInstance = NULL;
 }
 
 EntityManager* FWInstanceManager::getClientEntityManager()

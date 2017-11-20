@@ -100,7 +100,7 @@ void World::addEntity(Entity* inEntity)
 
 void World::removeEntity(Entity* inEntity)
 {
-    std::vector<Entity*>* pEntities = nullptr;
+    std::vector<Entity*>* pEntities = NULL;
     if (inEntity->getRTTI().derivesFrom(Robot::rtti))
     {
         pEntities = &_players;
@@ -319,7 +319,7 @@ Robot* World::getRobotWithPlayerId(uint8_t inPlayerID)
         }
     }
     
-    return nullptr;
+    return NULL;
 }
 
 void World::killAllSpacePirates()

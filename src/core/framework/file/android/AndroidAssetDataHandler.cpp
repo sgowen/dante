@@ -94,7 +94,7 @@ void AndroidAssetDataHandler::releaseAssetData(const FileData* fileData)
     AAsset_close((AAsset*)fileData->file_handle);
 }
 
-AndroidAssetDataHandler::AndroidAssetDataHandler() : AssetDataHandler(), _jvm(nullptr)
+AndroidAssetDataHandler::AndroidAssetDataHandler() : AssetDataHandler(), _jvm(NULL)
 {
     // Empty
 }

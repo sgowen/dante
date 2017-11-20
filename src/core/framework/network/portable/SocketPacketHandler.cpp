@@ -24,7 +24,7 @@
 #include "framework/util/FrameworkConstants.h"
 #include "framework/network/portable/Network.h"
 
-SocketPacketHandler::SocketPacketHandler(uint16_t inPort, ProcessPacketFunc processPacketFunc, HandleNoResponseFunc handleNoResponseFunc, HandleConnectionResetFunc handleConnectionResetFunc) : PacketHandler(processPacketFunc, handleNoResponseFunc, handleConnectionResetFunc), _socketAddress(new SocketAddress(INADDR_ANY, inPort)), _socket(nullptr), _isInitialized(false)
+SocketPacketHandler::SocketPacketHandler(uint16_t inPort, ProcessPacketFunc processPacketFunc, HandleNoResponseFunc handleNoResponseFunc, HandleConnectionResetFunc handleConnectionResetFunc) : PacketHandler(processPacketFunc, handleNoResponseFunc, handleConnectionResetFunc), _socketAddress(new SocketAddress(INADDR_ANY, inPort)), _socket(NULL), _isInitialized(false)
 {
     if (!SOCKET_UTIL->init())
     {
@@ -47,13 +47,13 @@ SocketPacketHandler::~SocketPacketHandler()
     if (_socketAddress)
     {
         delete _socketAddress;
-        _socketAddress = nullptr;
+        _socketAddress = NULL;
     }
     
     if (_socket)
     {
         delete _socket;
-        _socket = nullptr;
+        _socket = NULL;
     }
 }
 

@@ -53,7 +53,7 @@ NGSteamClientHelper::~NGSteamClientHelper()
     _steamP2PAuth->endGame();
     
     delete _steamP2PAuth;
-    _steamP2PAuth = nullptr;
+    _steamP2PAuth = NULL;
     
     if (_eConnectedStatus == k_EClientConnectedAndAuthenticated)
     {

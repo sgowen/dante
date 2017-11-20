@@ -415,7 +415,7 @@ void MainEngine::joinServer()
     
     InstanceManager::createClientWorld();
     
-    ClientHelper* clientHelper = nullptr;
+    ClientHelper* clientHelper = NULL;
     if (_isSteam)
     {
 #ifdef NG_STEAM
