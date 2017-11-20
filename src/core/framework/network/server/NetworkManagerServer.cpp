@@ -168,7 +168,7 @@ ClientProxy* NetworkManagerServer::getClientProxy(uint8_t inPlayerId) const
 
 int NetworkManagerServer::getAverageMoveCount() const
 {
-    uint16_t ret = 0;
+    int ret = 0;
     
     if (_addressHashToClientMap.size() > 0)
     {
@@ -208,7 +208,7 @@ int NetworkManagerServer::getLowestNonHostMoveCount() const
 
 int NetworkManagerServer::getHostMoveCount() const
 {
-    uint16_t ret = 0;
+    int ret = 0;
     
     ClientProxy* client = getClientProxy(1);
     if (client)

@@ -38,11 +38,11 @@ public:
     
     bool hasMoves() const;
     
-    uint32_t getMoveCount() const;
+    int getMoveCount() const;
     
-    uint32_t getNumMovesAfterTimestamp(float inLastMoveReceivedOnServerTimestamp) const;
+    int getNumMovesAfterTimestamp(float inLastMoveReceivedOnServerTimestamp) const;
     
-    Move* getMoveAtIndex(uint32_t index);
+    Move* getMoveAtIndex(int index);
     
     std::deque<Move>::const_iterator begin() const;
     
