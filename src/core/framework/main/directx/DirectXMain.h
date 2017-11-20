@@ -8,8 +8,9 @@
 
 #pragma once
 
-#include "DeviceResources.h"
+#include "framework/graphics/directx/DirectXDeviceResources.h"
 #include "framework/util/StepTimer.h"
+
 #include "Keyboard.h"
 #include "Mouse.h"
 #include "GamePad.h"
@@ -62,7 +63,7 @@ public:
 
 private:
 	// Device resources.
-	std::unique_ptr<DX::DeviceResources> _deviceResources;
+	std::unique_ptr<DX::DirectXDeviceResources> _deviceResources;
 
 	// Rendering loop timer.
 	DX::StepTimer _timer;
@@ -88,6 +89,6 @@ private:
     void CreateDeviceDependentResources();
     void CreateWindowSizeDependentResources();
 
-	void beginPixEvent(PCWSTR pFormat, DX::DeviceResources* deviceResources = NULL);
-	void endPixEvent(DX::DeviceResources* deviceResources = NULL);
+	void beginPixEvent(PCWSTR pFormat, DX::DirectXDeviceResources* deviceResources = NULL);
+	void endPixEvent(DX::DirectXDeviceResources* deviceResources = NULL);
 };

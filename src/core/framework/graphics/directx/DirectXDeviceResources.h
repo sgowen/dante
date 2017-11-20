@@ -1,5 +1,5 @@
-﻿//
-// DeviceResources.h - A wrapper for the Direct3D 11 device and swapchain
+//
+// DirectXDeviceResources.h - A wrapper for the Direct3D 11 device and swapchain
 //
 
 #pragma once
@@ -8,7 +8,7 @@
 
 namespace DX
 {
-    // Provides an interface for an application that owns DeviceResources to be notified of the device being lost or created.
+    // Provides an interface for an application that owns DirectXDeviceResources to be notified of the device being lost or created.
     interface IDeviceNotify
     {
         virtual void OnDeviceLost() = 0;
@@ -16,10 +16,10 @@ namespace DX
     };
 
     // Controls all the DirectX device resources.
-    class DeviceResources
+    class DirectXDeviceResources
     {
     public:
-        DeviceResources(DXGI_FORMAT backBufferFormat = DXGI_FORMAT_B8G8R8A8_UNORM,
+        DirectXDeviceResources(DXGI_FORMAT backBufferFormat = DXGI_FORMAT_B8G8R8A8_UNORM,
                         DXGI_FORMAT depthBufferFormat = DXGI_FORMAT_D24_UNORM_S8_UINT,
                         UINT backBufferCount = 2,
                         D3D_FEATURE_LEVEL minFeatureLevel = D3D_FEATURE_LEVEL_9_1);
@@ -107,7 +107,7 @@ namespace DX
         D3D_FEATURE_LEVEL                               m_d3dFeatureLevel;
         RECT                                            m_outputSize;
 
-        // The IDeviceNotify can be held directly as it owns the DeviceResources.
+        // The IDeviceNotify can be held directly as it owns the DirectXDeviceResources.
         IDeviceNotify*                                  m_deviceNotify;
 
 		int m_iClampWidth;

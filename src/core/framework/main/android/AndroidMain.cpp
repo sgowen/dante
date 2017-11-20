@@ -1,10 +1,14 @@
 //
-//  native-lib.cpp
+//  AndroidMain.cpp
 //  noctisgames-framework
 //
-//  Created by Stephen Gowen on 3/18/17.
-//  Copyright © 2017 Noctis Games. All rights reserved.
+//  Created by Stephen Gowen on 11/16/17.
+//  Copyright (c) 2017 Noctis Games. All rights reserved.
 //
+
+#include "framework/main/android/AndroidMain.h"
+
+#include "framework/main/portable/Engine.h"
 
 #include "framework/input/CursorInputManager.h"
 #include "framework/input/KeyboardInputManager.h"
@@ -15,57 +19,17 @@
 #include "framework/input/KeyboardLookup.h"
 #include "framework/math/MathUtil.h"
 
-#include "game/logic/MainEngine.h"
-#include "game/graphics/portable/MainAssets.h"
-
-#include "GLContext.h"
-#include "JNIHelper.h"
-
-#include <jni.h>
-#include <errno.h>
 #include <chrono>
-#include <vector>
-#include <android/log.h>
-#include <android_native_app_glue.h>
-#include <android/native_window_jni.h>
-#include <cpu-features.h>
 
-struct android_app;
-
-class AndroidEngine
+AndroidMain *AndroidMain::getInstance()
 {
-public:
-    static void handleCmd(struct android_app* app, int32_t cmd);
-    static int32_t handleInput(android_app* app, AInputEvent* event);
-    
-    AndroidEngine();
-    ~AndroidEngine();
-    
-    void setState(android_app* state);
-    int initDisplay();
-    void loadResources();
-    void unloadResources();
-    void drawFrame();
-    void termDisplay();
-    void trimMemory();
-    bool isReady();
-    
-    void resume();
-    void pause();
-    
-private:
-    ndk_helper::GLContext* m_glContext;
-    android_app* m_app;
-    MainEngine* m_screen;
-    
-    float m_fAveragedDeltaTime;
-    bool m_hasInitializedResources;
-    bool m_hasFocus;
-};
+    static AndroidMain instance = AndroidMain();
+    return &instance;
+}
 
-void AndroidEngine::handleCmd(struct android_app* app, int32_t cmd)
+void AndroidMain::handleCmd(struct android_app* app, int32_t cmd)
 {
-    AndroidEngine* engine = (AndroidEngine*) app->userData;
+    AndroidMain* engine = (AndroidMain*) app->userData;
     switch (cmd)
     {
         case APP_CMD_SAVE_STATE:
@@ -131,18 +95,21 @@ void AndroidEngine::handleCmd(struct android_app* app, int32_t cmd)
         case APP_CMD_START:
             LOGI("NG APP_CMD_START");
             break;
+        default:
+            LOGI("Default");
+            break;
     }
 }
 
-int32_t AndroidEngine::handleInput(android_app* app, AInputEvent* event)
+int32_t AndroidMain::handleInput(android_app* app, AInputEvent* event)
 {
     if (AInputEvent_getType(event) == AINPUT_EVENT_TYPE_MOTION)
     {
         int32_t action = AMotionEvent_getAction(event);
-        int32_t pointerIndex = (action & AMOTION_EVENT_ACTION_POINTER_INDEX_MASK) >> AMOTION_EVENT_ACTION_POINTER_INDEX_SHIFT;
-        uint32_t flags = action & AMOTION_EVENT_ACTION_MASK;
+        size_t pointerIndex = (size_t) ((action & AMOTION_EVENT_ACTION_POINTER_INDEX_MASK) >> AMOTION_EVENT_ACTION_POINTER_INDEX_SHIFT);
+        uint32_t flags = (uint32_t) (action & AMOTION_EVENT_ACTION_MASK);
         
-        int32_t pointerCount = AMotionEvent_getPointerCount(event);
+        size_t pointerCount = AMotionEvent_getPointerCount(event);
         
         switch (flags)
         {
@@ -165,7 +132,7 @@ int32_t AndroidEngine::handleInput(android_app* app, AInputEvent* event)
                 break;
             case AMOTION_EVENT_ACTION_MOVE:
             {
-                for (int i = 0; i < pointerCount; ++i)
+                for (size_t i = 0; i < pointerCount; ++i)
                 {
                     pointerIndex = i;
                     float x = AMotionEvent_getX(event, pointerIndex);
@@ -173,6 +140,8 @@ int32_t AndroidEngine::handleInput(android_app* app, AInputEvent* event)
                     CURSOR_INPUT_MANAGER->onTouch(CursorEventType_DRAGGED, x, y);
                 }
             }
+                break;
+            default:
                 break;
         }
         
@@ -191,27 +160,55 @@ int32_t AndroidEngine::handleInput(android_app* app, AInputEvent* event)
     return 0;
 }
 
-AndroidEngine::AndroidEngine() :
-m_glContext(ndk_helper::GLContext::GetInstance()),
-m_app(nullptr),
-m_screen(nullptr),
-m_fAveragedDeltaTime(0.016666666666667f),
-m_hasInitializedResources(false),
-m_hasFocus(false)
+void AndroidMain::exec(android_app* state, Engine* engine)
 {
-    // Empty
-}
-
-AndroidEngine::~AndroidEngine()
-{
-}
-
-void AndroidEngine::setState(android_app* state)
-{
+    if (!engine)
+    {
+        return;
+    }
+    
     m_app = state;
+    _engine = engine;
+    
+    state->userData = this;
+    state->onAppCmd = AndroidMain::handleCmd;
+    state->onInputEvent = AndroidMain::handleInput;
+    
+#ifdef USE_NDK_PROFILER
+    monstartup("native-lib.so");
+#endif
+    
+    while (1)
+    {
+        // Read all pending events.
+        int events;
+        android_poll_source* source;
+        
+        // If not animating, we will block forever waiting for events.
+        // If animating, we loop until all events are read, then continue
+        // to draw the next frame of animation.
+        while ((ALooper_pollAll(isReady() ? 0 : -1, NULL, &events, (void**) &source)) >= 0)
+        {
+            if (source != NULL)
+            {
+                source->process(state, source);
+            }
+            
+            if (state->destroyRequested != 0)
+            {
+                termDisplay();
+                return;
+            }
+        }
+        
+        if (isReady())
+        {
+            drawFrame();
+        }
+    }
 }
 
-int AndroidEngine::initDisplay()
+int AndroidMain::initDisplay()
 {
     if (!m_hasInitializedResources)
     {
@@ -235,7 +232,7 @@ int AndroidEngine::initDisplay()
     return 0;
 }
 
-void AndroidEngine::loadResources()
+void AndroidMain::loadResources()
 {
     JNIEnv *jni;
     m_app->activity->vm->AttachCurrentThread(&jni, NULL);
@@ -244,40 +241,33 @@ void AndroidEngine::loadResources()
     
     AndroidAssetDataHandler::getInstance()->init(jni, m_app->activity->clazz);
     
-    MAIN_ASSETS->setUsingCompressedTextureSet(m_glContext->GetScreenWidth() < 2560);
-    
-    if (!m_screen)
-    {
-        m_screen = new MainEngine();
-    }
-    
     int width = m_glContext->GetScreenWidth();
     int height = m_glContext->GetScreenHeight();
     
-    m_screen->createDeviceDependentResources();
+    _engine->createDeviceDependentResources();
     
     OGLManager->setScreenSize(width, height);
     
-    if (MAIN_ASSETS->isUsingCompressedTextureSet())
+    if (m_glContext->GetScreenWidth() < 2560)
     {
-        m_screen->createWindowSizeDependentResources(width > 1280 ? 1280 : width, height > 720 ? 720 : height, width, height);
+        _engine->createWindowSizeDependentResources(width > 1280 ? 1280 : width, height > 720 ? 720 : height, width, height);
     }
     else
     {
-        m_screen->createWindowSizeDependentResources(width > 1440 ? 1440 : width, height > 900 ? 900 : height, width, height);
+        _engine->createWindowSizeDependentResources(width > 1440 ? 1440 : width, height > 900 ? 900 : height, width, height);
     }
     
     m_app->activity->vm->DetachCurrentThread();
     return;
 }
 
-void AndroidEngine::unloadResources()
+void AndroidMain::unloadResources()
 {
     ANDROID_AUDIO_ENGINE_HELPER->deinit();
     
     AndroidAssetDataHandler::getInstance()->deinit();
     
-    m_screen->releaseDeviceDependentResources();
+    _engine->releaseDeviceDependentResources();
 }
 
 std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
@@ -293,7 +283,7 @@ inline float approxRollingAverage(float avg, float newSample)
     return avg;
 }
 
-void AndroidEngine::drawFrame()
+void AndroidMain::drawFrame()
 {
     float deltaTime;
     
@@ -315,7 +305,7 @@ void AndroidEngine::drawFrame()
         deltaTime = 0.016666666666667f;
     }
     
-    int requestedAction = m_screen->getRequestedAction();
+    int requestedAction = _engine->getRequestedAction();
     
     switch (requestedAction)
     {
@@ -325,13 +315,13 @@ void AndroidEngine::drawFrame()
         case REQUESTED_ACTION_UPDATE:
             break;
         default:
-            m_screen->clearRequestedAction();
+            _engine->clearRequestedAction();
             break;
     }
     
-    m_screen->update(deltaTime);
+    _engine->update(deltaTime);
     
-    m_screen->render();
+    _engine->render();
     
     if (EGL_SUCCESS != m_glContext->Swap())
     {
@@ -340,95 +330,48 @@ void AndroidEngine::drawFrame()
     }
 }
 
-void AndroidEngine::termDisplay()
+void AndroidMain::termDisplay()
 {
     pause();
     
     m_glContext->Suspend();
 }
 
-void AndroidEngine::trimMemory()
+void AndroidMain::trimMemory()
 {
     m_glContext->Invalidate();
 }
 
-bool AndroidEngine::isReady()
+bool AndroidMain::isReady()
 {
-    if (m_hasFocus)
-    {
-        return true;
-    }
-    
-    return false;
+    return m_hasFocus;
 }
 
-void AndroidEngine::resume()
+void AndroidMain::resume()
 {
-    if (m_screen)
-    {
-        m_screen->onResume();
-        
-        m_hasFocus = true;
-    }
+    _engine->onResume();
+    
+    m_hasFocus = true;
 }
 
-void AndroidEngine::pause()
+void AndroidMain::pause()
 {
-    if (m_screen)
-    {
-        m_screen->onPause();
-        
-        m_hasFocus = false;
-    }
+    _engine->onPause();
+    
+    m_hasFocus = false;
 }
 
-/**
- * This is the main entry point of a native application that is using
- * android_native_m_appglue.  It runs in its own thread, with its own
- * event loop for receiving input events and doing other things.
- */
-void android_main(android_app* state)
+AndroidMain::AndroidMain() :
+m_glContext(ndk_helper::GLContext::GetInstance()),
+m_app(nullptr),
+_engine(nullptr),
+m_fAveragedDeltaTime(0.016666666666667f),
+m_hasInitializedResources(false),
+m_hasFocus(false)
 {
-    AndroidEngine engine;
-    
-    app_dummy();
-    
-    engine.setState(state);
-    
-    state->userData = &engine;
-    state->onAppCmd = AndroidEngine::handleCmd;
-    state->onInputEvent = AndroidEngine::handleInput;
-    
-#ifdef USE_NDK_PROFILER
-    monstartup("native-lib.so");
-#endif
-    
-    while (1)
-    {
-        // Read all pending events.
-        int events;
-        android_poll_source* source;
-        
-        // If not animating, we will block forever waiting for events.
-        // If animating, we loop until all events are read, then continue
-        // to draw the next frame of animation.
-        while ((ALooper_pollAll(engine.isReady() ? 0 : -1, NULL, &events, (void**) &source)) >= 0)
-        {
-            if (source != NULL)
-            {
-                source->process(state, source);
-            }
-            
-            if (state->destroyRequested != 0)
-            {
-                engine.termDisplay();
-                return;
-            }
-        }
-        
-        if (engine.isReady())
-        {
-            engine.drawFrame();
-        }
-    }
+    // Empty
+}
+
+AndroidMain::~AndroidMain()
+{
 }

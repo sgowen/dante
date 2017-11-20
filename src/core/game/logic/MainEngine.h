@@ -9,7 +9,7 @@
 #ifndef __dante__MainEngine__
 #define __dante__MainEngine__
 
-#include "framework/util/Engine.h"
+#include "framework/main/portable/Engine.h"
 
 #ifdef NG_STEAM
 #include "framework/network/steam/NGSteam.h"

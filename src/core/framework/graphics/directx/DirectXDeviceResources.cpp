@@ -1,10 +1,12 @@
-﻿//
-// DeviceResources.cpp - A wrapper for the Direct3D 11 device and swapchain
+//
+// DirectXDeviceResources.cpp - A wrapper for the Direct3D 11 device and swapchain
 //                       (requires DirectX 11.0 Runtime)
 //
 
 #include "pch.h"
-#include "DeviceResources.h"
+
+#include "framework/graphics/directx/DirectXDeviceResources.h"
+
 #include "PlatformHelpers.h"
 
 using namespace DirectX;
@@ -35,8 +37,8 @@ namespace
 #endif
 };
 
-// Constructor for DeviceResources.
-DX::DeviceResources::DeviceResources(DXGI_FORMAT backBufferFormat, DXGI_FORMAT depthBufferFormat, UINT backBufferCount, D3D_FEATURE_LEVEL minFeatureLevel) :
+// Constructor for DirectXDeviceResources.
+DX::DirectXDeviceResources::DirectXDeviceResources(DXGI_FORMAT backBufferFormat, DXGI_FORMAT depthBufferFormat, UINT backBufferCount, D3D_FEATURE_LEVEL minFeatureLevel) :
     m_screenViewport{},
     m_backBufferFormat(backBufferFormat),
     m_depthBufferFormat(depthBufferFormat),
@@ -52,7 +54,7 @@ DX::DeviceResources::DeviceResources(DXGI_FORMAT backBufferFormat, DXGI_FORMAT d
 }
 
 // Configures the Direct3D device, and stores handles to it and the device context.
-void DX::DeviceResources::CreateDeviceResources() 
+void DX::DirectXDeviceResources::CreateDeviceResources() 
 {
     UINT creationFlags = D3D11_CREATE_DEVICE_BGRA_SUPPORT;
 
@@ -215,7 +217,7 @@ void DX::DeviceResources::CreateDeviceResources()
 }
 
 // These resources need to be recreated every time the window size is changed.
-void DX::DeviceResources::CreateWindowSizeDependentResources(int clampWidth, int clampHeight)
+void DX::DirectXDeviceResources::CreateWindowSizeDependentResources(int clampWidth, int clampHeight)
 {
     if (!m_window)
     {
@@ -395,7 +397,7 @@ void DX::DeviceResources::CreateWindowSizeDependentResources(int clampWidth, int
 }
 
 // This method is called when the Win32 window is created (or re-created).
-void DX::DeviceResources::SetWindow(HWND window, int width, int height)
+void DX::DirectXDeviceResources::SetWindow(HWND window, int width, int height)
 {
     m_window = window;
 
@@ -405,7 +407,7 @@ void DX::DeviceResources::SetWindow(HWND window, int width, int height)
 }
 
 // This method is called when the Win32 window changes size
-bool DX::DeviceResources::WindowSizeChanged(int width, int height)
+bool DX::DirectXDeviceResources::WindowSizeChanged(int width, int height)
 {
     RECT newRc;
     newRc.left = newRc.top = 0;
@@ -422,7 +424,7 @@ bool DX::DeviceResources::WindowSizeChanged(int width, int height)
 }
 
 // Recreate all device resources and set them back to the current state.
-void DX::DeviceResources::HandleDeviceLost()
+void DX::DirectXDeviceResources::HandleDeviceLost()
 {
     if (m_deviceNotify)
     {
@@ -462,7 +464,7 @@ void DX::DeviceResources::HandleDeviceLost()
 }
 
 // Present the contents of the swap chain to the screen.
-void DX::DeviceResources::Present() 
+void DX::DirectXDeviceResources::Present() 
 {
     // The first argument instructs DXGI to block until VSync, putting the application
     // to sleep until the next VSync. This ensures we don't waste any cycles rendering
@@ -502,7 +504,7 @@ void DX::DeviceResources::Present()
 
 // This method acquires the first available hardware adapter.
 // If no such adapter can be found, *ppAdapter will be set to nullptr.
-void DX::DeviceResources::GetHardwareAdapter(IDXGIAdapter1** ppAdapter)
+void DX::DirectXDeviceResources::GetHardwareAdapter(IDXGIAdapter1** ppAdapter)
 {
     *ppAdapter = nullptr;
 

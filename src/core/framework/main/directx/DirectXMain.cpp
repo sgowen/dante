@@ -10,13 +10,12 @@
 
 #include "framework/graphics/directx/DirectXMain.h"
 
-#include "framework/util/Engine.h"
+#include "framework/main/portable/Engine.h"
 
 #include "framework/graphics/directx/DirectXManager.h"
 #include "framework/input/CursorInputManager.h"
 #include "framework/input/KeyboardInputManager.h"
 #include "framework/input/GamePadInputManager.h"
-#include "game/graphics/portable/MainAssets.h"
 #include "framework/util/FrameworkConstants.h"
 #include "framework/util/macros.h"
 #include "framework/audio/portable/NGAudioEngine.h"
@@ -30,7 +29,7 @@ using Microsoft::WRL::ComPtr;
 
 DirectXMain::DirectXMain() : _engine(NULL), _dpi(0), _isPointerPressed(false), _isDeviceLost(false)
 {
-    _deviceResources = std::make_unique<DX::DeviceResources>();
+    _deviceResources = std::make_unique<DX::DirectXDeviceResources>();
 	_deviceResources->RegisterDeviceNotify(this);
 
 #if !defined(WINAPI_FAMILY) || (WINAPI_FAMILY == WINAPI_FAMILY_DESKTOP_APP)
@@ -47,8 +46,6 @@ DirectXMain::DirectXMain() : _engine(NULL), _dpi(0), _isPointerPressed(false), _
 	Windows::System::Profile::AnalyticsVersionInfo^ api = Windows::System::Profile::AnalyticsInfo::VersionInfo;
 	_isWindowsMobile = api->DeviceFamily->Equals("Windows.Mobile");
 #endif
-
-	MAIN_ASSETS->setUsingDesktopTextureSet(!_isWindowsMobile);
 }
 
 DirectXMain::~DirectXMain()
@@ -532,7 +529,7 @@ void DirectXMain::CreateWindowSizeDependentResources()
 	_engine->createWindowSizeDependentResources(width, height, touchWidth, touchHeight);
 }
 
-void DirectXMain::beginPixEvent(PCWSTR pFormat, DX::DeviceResources* deviceResources)
+void DirectXMain::beginPixEvent(PCWSTR pFormat, DX::DirectXDeviceResources* deviceResources)
 {
 #if !defined(WINAPI_FAMILY) || (WINAPI_FAMILY == WINAPI_FAMILY_DESKTOP_APP)
 	UNUSED(deviceResources);
@@ -551,7 +548,7 @@ void DirectXMain::beginPixEvent(PCWSTR pFormat, DX::DeviceResources* deviceResou
 #endif
 }
 
-void DirectXMain::endPixEvent(DX::DeviceResources* deviceResources)
+void DirectXMain::endPixEvent(DX::DirectXDeviceResources* deviceResources)
 {
 #if !defined(WINAPI_FAMILY) || (WINAPI_FAMILY == WINAPI_FAMILY_DESKTOP_APP)
 	UNUSED(deviceResources);

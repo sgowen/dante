@@ -35,6 +35,8 @@ file(GLOB_RECURSE CPP_FRAMEWORK_FILES_12 "${source_dir}/core/framework/audio/por
 file(GLOB_RECURSE CPP_FRAMEWORK_FILES_13 "${source_dir}/core/framework/audio/superpowered/android/*cpp")
 file(GLOB_RECURSE CPP_FRAMEWORK_FILES_14 "${source_dir}/core/framework/audio/superpowered/portable/*cpp")
 file(GLOB_RECURSE CPP_FRAMEWORK_FILES_16 "${source_dir}/core/framework/util/*cpp")
+file(GLOB_RECURSE CPP_FRAMEWORK_FILES_17 "${source_dir}/core/framework/main/android/*cpp")
+file(GLOB_RECURSE CPP_FRAMEWORK_FILES_18 "${source_dir}/core/framework/main/portable/*cpp")
 
 file(GLOB_RECURSE CPP_GAME_FILES_1 "${source_dir}/core/game/graphics/portable/*cpp")
 file(GLOB_RECURSE CPP_GAME_FILES_2 "${source_dir}/core/game/logic/*cpp")
@@ -114,6 +116,8 @@ add_library( # Sets the name of the library.
              ${CPP_FRAMEWORK_FILES_14}
              ${CPP_FRAMEWORK_FILES_15}
              ${CPP_FRAMEWORK_FILES_16}
+             ${CPP_FRAMEWORK_FILES_17}
+             ${CPP_FRAMEWORK_FILES_18}
 
              ${CPP_GAME_FILES_1}
              ${CPP_GAME_FILES_2}
