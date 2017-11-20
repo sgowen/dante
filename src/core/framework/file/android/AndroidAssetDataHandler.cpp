@@ -83,7 +83,7 @@ FileData AndroidAssetDataHandler::getAssetData(const char* relativePath)
     AAsset *asset = AAssetManager_open(mAssetManager, relativePath, AASSET_MODE_STREAMING);
     assert(asset != NULL);
     
-    return FileData(AAsset_getLength(asset), AAsset_getBuffer(asset), asset);
+    return FileData(AAsset_getLength(asset), const_cast<void*>(AAsset_getBuffer(asset)), asset);
 }
 
 void AndroidAssetDataHandler::releaseAssetData(const FileData* fileData)
