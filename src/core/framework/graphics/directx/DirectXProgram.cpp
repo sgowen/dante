@@ -46,25 +46,14 @@ DirectXProgram::DirectXProgram(const char* vertexShaderName, const char* pixelSh
 		fragmentShaderFileName[len + 3] = 's';
 		fragmentShaderFileName[len + 4] = '\0';
 	}
-    
-    const char* finalVertexShaderFileName;
-    const char* finalFragmentShaderFileName;
-#if (_WIN32_WINNT == _WIN32_WINNT_WIN7)
-    {
-        std::string s("data\\shaders\\");
-        s += std::string(vertexShaderFileName);
-        finalVertexShaderFileName = s.c_str();
-    }
-    
-    {
-        std::string s("data\\shaders\\");
-        s += std::string(fragmentShaderFileName);
-        finalFragmentShaderFileName = s.c_str();
-    }
-#else
-    finalVertexShaderFileName = vertexShaderFileName;
-    finalFragmentShaderFileName = fragmentShaderFileName;
-#endif
+
+	std::string s1("data\\shaders\\");
+	s1 += std::string(vertexShaderFileName);
+	const char* finalVertexShaderFileName = s1.c_str();
+
+	std::string s2("data\\shaders\\");
+	s2 += std::string(fragmentShaderFileName);
+	const char* finalFragmentShaderFileName = s2.c_str();
 
 	ID3D11Device* d3dDevice = DirectXManager::getD3dDevice();
 

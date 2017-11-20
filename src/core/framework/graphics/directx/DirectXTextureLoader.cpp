@@ -46,14 +46,9 @@ GpuTextureDataWrapper* DirectXTextureLoader::loadTextureData(const char* texture
     textureFileName[len + 3] = 't';
     textureFileName[len + 4] = '\0';
 
-	const char* finalPath;
-#if (_WIN32_WINNT == _WIN32_WINNT_WIN7)
 	std::string s("data\\textures\\");
 	s += std::string(textureFileName);
-	finalPath = s.c_str();
-#else
-	finalPath = textureFileName;
-#endif
+	const char* finalPath = s.c_str();
     
     const FileData dds_file = AssetDataHandler::getAssetDataHandler()->getAssetData(finalPath);
     void* output = malloc(dds_file.data_length);

@@ -1,6 +1,6 @@
 ECHO Encrypting Shaders...
 
-set XOREncryptDecryptTool=$(pwd)/XOREncryptDecrypt.exe
+set XOREncryptDecryptTool="%cd%/XOREncryptDecrypt.exe"
 
 cd ..\src\platform\windows\data\shaders
 
