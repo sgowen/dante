@@ -1,5 +1,5 @@
 //
-//  Animation.cpp
+//  NGAnimation.cpp
 //  noctisgames-framework
 //
 //  Created by Stephen Gowen on 9/3/15.
@@ -8,18 +8,18 @@
 
 #include "pch.h"
 
-#include "framework/graphics/portable/Animation.h"
+#include "framework/graphics/portable/NGAnimation.h"
 
 #include "framework/graphics/portable/TextureRegion.h"
 
 #include <stdarg.h>
 
-Animation::Animation(std::string textureName, int x, int y, int regionWidth, int regionHeight, int animationWidth, int animationHeight, int textureWidth, int textureHeight, bool isLooping, int numFrames) : _textureName(textureName), _cycleTime(0), _firstLoopingFrame(0), _isLooping(isLooping)
+NGAnimation::NGAnimation(std::string textureName, int x, int y, int regionWidth, int regionHeight, int animationWidth, int animationHeight, int textureWidth, int textureHeight, bool isLooping, int numFrames) : _textureName(textureName), _cycleTime(0), _firstLoopingFrame(0), _isLooping(isLooping)
 {
 	loadTextureRegions(x, y, regionWidth, regionHeight, animationWidth, animationHeight, textureWidth, textureHeight, numFrames);
 }
 
-Animation::Animation(std::string textureName, int x, int y, int regionWidth, int regionHeight, int animationWidth, int animationHeight, int textureWidth, int textureHeight, bool isLooping, float frameTime, int numFrames, int firstLoopingFrame, int xPadding, int yPadding) : _textureName(textureName), _cycleTime(0), _firstLoopingFrame(firstLoopingFrame), _isLooping(isLooping)
+NGAnimation::NGAnimation(std::string textureName, int x, int y, int regionWidth, int regionHeight, int animationWidth, int animationHeight, int textureWidth, int textureHeight, bool isLooping, float frameTime, int numFrames, int firstLoopingFrame, int xPadding, int yPadding) : _textureName(textureName), _cycleTime(0), _firstLoopingFrame(firstLoopingFrame), _isLooping(isLooping)
 {
 	loadTextureRegions(x, y, regionWidth, regionHeight, animationWidth, animationHeight, textureWidth, textureHeight, numFrames, xPadding, yPadding);
 
@@ -30,13 +30,13 @@ Animation::Animation(std::string textureName, int x, int y, int regionWidth, int
 	}
 }
 
-Animation::~Animation()
+NGAnimation::~NGAnimation()
 {
     _textureRegions.clear();
     _frameTimes.clear();
 }
 
-void Animation::setFrameTimes(int numFrames, ...)
+void NGAnimation::setFrameTimes(int numFrames, ...)
 {
     va_list arguments;
     
@@ -52,19 +52,19 @@ void Animation::setFrameTimes(int numFrames, ...)
     va_end(arguments);
 }
 
-TextureRegion& Animation::getTextureRegion(float stateTime)
+TextureRegion& NGAnimation::getTextureRegion(float stateTime)
 {
 	int keyFrameNumber = getKeyFrameNumber(stateTime);
 
 	return getTextureRegion(keyFrameNumber);
 }
 
-TextureRegion& Animation::getTextureRegion(int keyFrameNumber)
+TextureRegion& NGAnimation::getTextureRegion(int keyFrameNumber)
 {
 	return _textureRegions.at(keyFrameNumber);
 }
 
-int Animation::getKeyFrameNumber(float stateTime)
+int NGAnimation::getKeyFrameNumber(float stateTime)
 {
     unsigned int i = 0;
     
@@ -104,12 +104,12 @@ int Animation::getKeyFrameNumber(float stateTime)
     return 0;
 }
 
-bool Animation::hasFrameTimes()
+bool NGAnimation::hasFrameTimes()
 {
     return _frameTimes.size() > 0;
 }
 
-void Animation::loadTextureRegions(int x, int y, int regionWidth, int regionHeight, int animationWidth, int animationHeight, int textureWidth, int textureHeight, int numFrames, int xPadding, int yPadding)
+void NGAnimation::loadTextureRegions(int x, int y, int regionWidth, int regionHeight, int animationWidth, int animationHeight, int textureWidth, int textureHeight, int numFrames, int xPadding, int yPadding)
 {
 	int right = x + animationWidth;
 	int bottom = y + animationHeight;

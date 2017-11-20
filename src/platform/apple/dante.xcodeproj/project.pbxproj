@@ -340,7 +340,7 @@
 		BB5AFE5D1FB35AAE005FBD52 /* OpenGLTextureGpuProgramWrapper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF11F1EA94ED900F0866E /* OpenGLTextureGpuProgramWrapper.cpp */; };
 		BB5AFE5E1FB35AAE005FBD52 /* OpenGLTextureLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF1211EA94ED900F0866E /* OpenGLTextureLoader.cpp */; };
 		BB5AFE5F1FB35AAE005FBD52 /* OpenGLTextureProgram.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF1231EA94ED900F0866E /* OpenGLTextureProgram.cpp */; };
-		BB5AFE601FB35AAE005FBD52 /* Animation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF12E1EA94ED900F0866E /* Animation.cpp */; };
+		BB5AFE601FB35AAE005FBD52 /* NGAnimation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF12E1EA94ED900F0866E /* NGAnimation.cpp */; };
 		BB5AFE611FB35AAE005FBD52 /* Assets.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBCFF1C01ECD312E003EE520 /* Assets.cpp */; };
 		BB5AFE621FB35AAE005FBD52 /* CircleBatcher.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF1301EA94ED900F0866E /* CircleBatcher.cpp */; };
 		BB5AFE631FB35AAE005FBD52 /* CircleBatcherFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF1321EA94ED900F0866E /* CircleBatcherFactory.cpp */; };
@@ -549,7 +549,7 @@
 		BBAEF2441EA94EDA00F0866E /* OpenGLTextureGpuProgramWrapper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF11F1EA94ED900F0866E /* OpenGLTextureGpuProgramWrapper.cpp */; };
 		BBAEF2461EA94EDA00F0866E /* OpenGLTextureLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF1211EA94ED900F0866E /* OpenGLTextureLoader.cpp */; };
 		BBAEF2481EA94EDA00F0866E /* OpenGLTextureProgram.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF1231EA94ED900F0866E /* OpenGLTextureProgram.cpp */; };
-		BBAEF2561EA94EDA00F0866E /* Animation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF12E1EA94ED900F0866E /* Animation.cpp */; };
+		BBAEF2561EA94EDA00F0866E /* NGAnimation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF12E1EA94ED900F0866E /* NGAnimation.cpp */; };
 		BBAEF2581EA94EDA00F0866E /* CircleBatcher.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF1301EA94ED900F0866E /* CircleBatcher.cpp */; };
 		BBAEF25A1EA94EDA00F0866E /* CircleBatcherFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF1321EA94ED900F0866E /* CircleBatcherFactory.cpp */; };
 		BBAEF25C1EA94EDA00F0866E /* DummyGpuProgramWrapper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF1351EA94ED900F0866E /* DummyGpuProgramWrapper.cpp */; };
@@ -1405,8 +1405,8 @@
 		BBAEF1221EA94ED900F0866E /* OpenGLTextureLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenGLTextureLoader.h; sourceTree = "<group>"; };
 		BBAEF1231EA94ED900F0866E /* OpenGLTextureProgram.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OpenGLTextureProgram.cpp; sourceTree = "<group>"; };
 		BBAEF1241EA94ED900F0866E /* OpenGLTextureProgram.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenGLTextureProgram.h; sourceTree = "<group>"; };
-		BBAEF12E1EA94ED900F0866E /* Animation.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Animation.cpp; sourceTree = "<group>"; };
-		BBAEF12F1EA94ED900F0866E /* Animation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Animation.h; sourceTree = "<group>"; };
+		BBAEF12E1EA94ED900F0866E /* NGAnimation.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NGAnimation.cpp; sourceTree = "<group>"; };
+		BBAEF12F1EA94ED900F0866E /* NGAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NGAnimation.h; sourceTree = "<group>"; };
 		BBAEF1301EA94ED900F0866E /* CircleBatcher.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CircleBatcher.cpp; sourceTree = "<group>"; };
 		BBAEF1311EA94ED900F0866E /* CircleBatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CircleBatcher.h; sourceTree = "<group>"; };
 		BBAEF1321EA94ED900F0866E /* CircleBatcherFactory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CircleBatcherFactory.cpp; sourceTree = "<group>"; };
@@ -3024,8 +3024,6 @@
 		BBAEF12D1EA94ED900F0866E /* portable */ = {
 			isa = PBXGroup;
 			children = (
-				BBAEF12E1EA94ED900F0866E /* Animation.cpp */,
-				BBAEF12F1EA94ED900F0866E /* Animation.h */,
 				BBCFF1C01ECD312E003EE520 /* Assets.cpp */,
 				BBCFF1C11ECD312E003EE520 /* Assets.h */,
 				BBCFF1C21ECD312E003EE520 /* AssetsMapper.cpp */,
@@ -3049,6 +3047,8 @@
 				BBAEF1441EA94ED900F0866E /* LineBatcher.h */,
 				BBAEF1451EA94ED900F0866E /* LineBatcherFactory.cpp */,
 				BBAEF1461EA94ED900F0866E /* LineBatcherFactory.h */,
+				BBAEF12E1EA94ED900F0866E /* NGAnimation.cpp */,
+				BBAEF12F1EA94ED900F0866E /* NGAnimation.h */,
 				BB39C8921FB2700900CF6699 /* NGGraphics.h */,
 				BBAEF1471EA94ED900F0866E /* NGRectBatcher.cpp */,
 				BBAEF1481EA94ED900F0866E /* NGRectBatcher.h */,
@@ -3569,7 +3569,7 @@
 				BB5833D01EEDDAFC0084DA20 /* Renderer.cpp in Sources */,
 				BB190F431FAB9E3900BDC6D0 /* OALActionManager.m in Sources */,
 				BBAEF26A1EA94EDA00F0866E /* LineBatcherFactory.cpp in Sources */,
-				BBAEF2561EA94EDA00F0866E /* Animation.cpp in Sources */,
+				BBAEF2561EA94EDA00F0866E /* NGAnimation.cpp in Sources */,
 				BBAEF23E1EA94EDA00F0866E /* OpenGLProgram.cpp in Sources */,
 				BB9EE50D1FC092BA000F5389 /* AssetDataHandler.cpp in Sources */,
 				BBAEF2481EA94EDA00F0866E /* OpenGLTextureProgram.cpp in Sources */,
@@ -3730,7 +3730,7 @@
 				BB5AFE5E1FB35AAE005FBD52 /* OpenGLTextureLoader.cpp in Sources */,
 				BB5AFE5F1FB35AAE005FBD52 /* OpenGLTextureProgram.cpp in Sources */,
 				BB6F64231FBE009C00BD7697 /* CurveTimeline.cpp in Sources */,
-				BB5AFE601FB35AAE005FBD52 /* Animation.cpp in Sources */,
+				BB5AFE601FB35AAE005FBD52 /* NGAnimation.cpp in Sources */,
 				BB5AFE611FB35AAE005FBD52 /* Assets.cpp in Sources */,
 				BB5AFE621FB35AAE005FBD52 /* CircleBatcher.cpp in Sources */,
 				BB5AFE631FB35AAE005FBD52 /* CircleBatcherFactory.cpp in Sources */,

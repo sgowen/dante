@@ -12,7 +12,7 @@
 
 #include "framework/graphics/portable/Assets.h"
 #include "framework/graphics/portable/TextureRegion.h"
-#include "framework/graphics/portable/Animation.h"
+#include "framework/graphics/portable/NGAnimation.h"
 
 MainAssetsMapper::MainAssetsMapper() : AssetsMapper()
 {
@@ -41,21 +41,21 @@ void MainAssetsMapper::mapAssets()
     ASSETS->getTextureRegionMap()["Space_Pirate_Chunk_Botto_Left"] = new TextureRegion("texture_001", 394, 26, 24, 28, TEXTURE_SIZE_2048);
     ASSETS->getTextureRegionMap()["Space_Pirate_Chunk_Botto_Right"] = new TextureRegion("texture_001", 416, 26, 24, 28, TEXTURE_SIZE_2048);
     
-    /// Animations
-    ASSETS->getAnimationsMap()["Samus_Running"] = new Animation("texture_001", 0, 0, 36, 46, 360, 46, TEXTURE_SIZE_2048, true, 0.1f, 10, 0, 2);
-    ASSETS->getAnimationsMap()["Samus_Running_Fast"] = new Animation("texture_001", 0, 0, 36, 46, 360, 46, TEXTURE_SIZE_2048, true, 0.075f, 10, 0, 2);
+    /// NGAnimations
+    ASSETS->getNGAnimationsMap()["Samus_Running"] = new NGAnimation("texture_001", 0, 0, 36, 46, 360, 46, TEXTURE_SIZE_2048, true, 0.1f, 10, 0, 2);
+    ASSETS->getNGAnimationsMap()["Samus_Running_Fast"] = new NGAnimation("texture_001", 0, 0, 36, 46, 360, 46, TEXTURE_SIZE_2048, true, 0.075f, 10, 0, 2);
     
-    ASSETS->getAnimationsMap()["Samus_Idle"] = new Animation("texture_001", 118, 58, 36, 46, 144 + 16 * 3, 138 + 8 * 2, TEXTURE_SIZE_2048, true, 0.1f, 3, 0, 16, 8);
+    ASSETS->getNGAnimationsMap()["Samus_Idle"] = new NGAnimation("texture_001", 118, 58, 36, 46, 144 + 16 * 3, 138 + 8 * 2, TEXTURE_SIZE_2048, true, 0.1f, 3, 0, 16, 8);
     
-    ASSETS->getAnimationsMap()["Samus_Shooting"] = new Animation("texture_001", 630, 324, 36, 46, 144 + 16 * 3, 138 + 8 * 2, TEXTURE_SIZE_2048, true, 0.1f, 10, 0, 16, 8);
+    ASSETS->getNGAnimationsMap()["Samus_Shooting"] = new NGAnimation("texture_001", 630, 324, 36, 46, 144 + 16 * 3, 138 + 8 * 2, TEXTURE_SIZE_2048, true, 0.1f, 10, 0, 16, 8);
     
-    ASSETS->getAnimationsMap()["Samus_Jumping"] = new Animation("texture_001", 630, 162, 36, 46, 144 + 16 * 3, 138 + 8 * 2, TEXTURE_SIZE_2048, false, 0.1f, 4, 0, 16, 8);
+    ASSETS->getNGAnimationsMap()["Samus_Jumping"] = new NGAnimation("texture_001", 630, 162, 36, 46, 144 + 16 * 3, 138 + 8 * 2, TEXTURE_SIZE_2048, false, 0.1f, 4, 0, 16, 8);
     
-    ASSETS->getAnimationsMap()["Samus_Falling"] = new Animation("texture_001", 630, 216, 36, 46, 144 + 16 * 3, 138 + 8 * 2, TEXTURE_SIZE_2048, false, 0.1f, 4, 0, 16, 8);
+    ASSETS->getNGAnimationsMap()["Samus_Falling"] = new NGAnimation("texture_001", 630, 216, 36, 46, 144 + 16 * 3, 138 + 8 * 2, TEXTURE_SIZE_2048, false, 0.1f, 4, 0, 16, 8);
     
-    ASSETS->getAnimationsMap()["Samus_Landing"] = new Animation("texture_001", 630, 270, 36, 46, 144 + 16 * 3, 138 + 8 * 2, TEXTURE_SIZE_2048, false, 0.1f, 2, 0, 16, 8);
+    ASSETS->getNGAnimationsMap()["Samus_Landing"] = new NGAnimation("texture_001", 630, 270, 36, 46, 144 + 16 * 3, 138 + 8 * 2, TEXTURE_SIZE_2048, false, 0.1f, 2, 0, 16, 8);
     
-    ASSETS->getAnimationsMap()["Explosion"] = new Animation("texture_001", 20, 138, 16, 16, 16 * 5 + 4 * 4, 16, TEXTURE_SIZE_2048, false, 0.1f, 5, 0, 4);
+    ASSETS->getNGAnimationsMap()["Explosion"] = new NGAnimation("texture_001", 20, 138, 16, 16, 16 * 5 + 4 * 4, 16, TEXTURE_SIZE_2048, false, 0.1f, 5, 0, 4);
     
-    ASSETS->getAnimationsMap()["Space_Pirate_Walking"] = new Animation("texture_001", 394, 0, 46, 54, 46 * 4 + 4 * 3, 54 * 2 + 4, TEXTURE_SIZE_2048, true, 0.1f, 8, 0, 4, 4);
+    ASSETS->getNGAnimationsMap()["Space_Pirate_Walking"] = new NGAnimation("texture_001", 394, 0, 46, 54, 46 * 4 + 4 * 3, 54 * 2 + 4, TEXTURE_SIZE_2048, true, 0.1f, 8, 0, 4, 4);
 }

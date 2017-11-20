@@ -14,7 +14,7 @@
 
 class AssetsMapper;
 class TextureRegion;
-class Animation;
+class NGAnimation;
 
 #define ASSETS (Assets::getInstance())
 
@@ -29,15 +29,15 @@ public:
     
     TextureRegion& findTextureRegion(std::string key);
     
-    Animation& findAnimation(std::string key);
+    NGAnimation& findNGAnimation(std::string key);
     
     std::map<std::string, TextureRegion*>& getTextureRegionMap();
     
-    std::map<std::string, Animation*>& getAnimationsMap();
+    std::map<std::string, NGAnimation*>& getNGAnimationsMap();
 
 private:
     std::map<std::string, TextureRegion*> _textureRegions;
-    std::map<std::string, Animation*> _animations;
+    std::map<std::string, NGAnimation*> _animations;
     
     // ctor, copy ctor, and assignment should be private in a Singleton
     Assets();

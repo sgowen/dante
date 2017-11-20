@@ -12,7 +12,7 @@
 
 #include "framework/graphics/portable/AssetsMapper.h"
 #include "framework/graphics/portable/TextureRegion.h"
-#include "framework/graphics/portable/Animation.h"
+#include "framework/graphics/portable/NGAnimation.h"
 #include "framework/util/NGSTDUtil.h"
 
 #include <assert.h>
@@ -26,7 +26,7 @@ Assets* Assets::getInstance()
 void Assets::init(AssetsMapper* assetsMapper)
 {
 	getTextureRegionMap().clear();
-	getAnimationsMap().clear();
+	getNGAnimationsMap().clear();
 
     assetsMapper->mapAssets();
     
@@ -49,7 +49,7 @@ TextureRegion& Assets::findTextureRegion(std::string key, float stateTime)
         
         assert(q2 != _animations.end());
         
-        Animation* anim = q2->second;
+        NGAnimation* anim = q2->second;
         
         return anim->getTextureRegion(stateTime);
     }
@@ -66,13 +66,13 @@ TextureRegion& Assets::findTextureRegion(std::string key)
     return *tr;
 }
 
-Animation& Assets::findAnimation(std::string key)
+NGAnimation& Assets::findNGAnimation(std::string key)
 {
     auto q = _animations.find(key);
     
     assert(q != _animations.end());
     
-    Animation* anim = q->second;
+    NGAnimation* anim = q->second;
     
     return *anim;
 }
@@ -82,7 +82,7 @@ std::map<std::string, TextureRegion*>& Assets::getTextureRegionMap()
     return _textureRegions;
 }
 
-std::map<std::string, Animation*>& Assets::getAnimationsMap()
+std::map<std::string, NGAnimation*>& Assets::getNGAnimationsMap()
 {
     return _animations;
 }
