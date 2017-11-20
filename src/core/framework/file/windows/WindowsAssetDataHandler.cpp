@@ -65,9 +65,7 @@ FileData WindowsAssetDataHandler::getAssetData(const char* relativePath)
     
     delete name;
     
-	FileData ret(blob->size(), blob->data(), blob);
-
-	return ret;
+	return FileData(blob->size(), blob->data(), blob);
 }
 
 void WindowsAssetDataHandler::releaseAssetData(const FileData* fileData)
