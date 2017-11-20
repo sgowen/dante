@@ -69,19 +69,19 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <LibraryPath>$(SolutionDir)..\..\3rdparty\steam\redistributable_bin;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Lib\x86;$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86</LibraryPath>
+    <LibraryPath>$(SolutionDir)..\..\3rdparty\steamworks_sdk\redistributable_bin;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Lib\x86;$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <LibraryPath>$(SolutionDir)..\..\3rdparty\steam\redistributable_bin\win64;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Lib\x64;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);$(NETFXKitsDir)Lib\um\x64</LibraryPath>
+    <LibraryPath>$(SolutionDir)..\..\3rdparty\steamworks_sdk\redistributable_bin\win64;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Lib\x64;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);$(NETFXKitsDir)Lib\um\x64</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <LibraryPath>$(SolutionDir)..\..\3rdparty\steam\redistributable_bin;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Lib\x86;$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86</LibraryPath>
+    <LibraryPath>$(SolutionDir)..\..\3rdparty\steamworks_sdk\redistributable_bin;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Lib\x86;$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <LibraryPath>$(SolutionDir)..\..\3rdparty\steam\redistributable_bin\win64;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Lib\x64;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);$(NETFXKitsDir)Lib\um\x64</LibraryPath>
+    <LibraryPath>$(SolutionDir)..\..\3rdparty\steamworks_sdk\redistributable_bin\win64;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Lib\x64;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);$(NETFXKitsDir)Lib\um\x64</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -198,14 +198,28 @@
     </PreLinkEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\3rdparty\Box2D\*.h" />
-    <ClInclude Include="..\..\3rdparty\Box2D\Collision\*.h" />
-    <ClInclude Include="..\..\3rdparty\Box2D\Collision\Shapes\*.h" />
-    <ClInclude Include="..\..\3rdparty\Box2D\Common\*.h" />
-    <ClInclude Include="..\..\3rdparty\Box2D\Dynamics\*.h" />
-    <ClInclude Include="..\..\3rdparty\Box2D\Dynamics\Contacts\*.h" />
-    <ClInclude Include="..\..\3rdparty\Box2D\Dynamics\Joints\*.h" />
-    <ClInclude Include="..\..\3rdparty\Box2D\Rope\*.h" />
+    <ClInclude Include="..\..\3rdparty\Box2D\Box2D\Box2D\*.h" />
+    <ClInclude Include="..\..\3rdparty\Box2D\Box2D\Box2D\Collision\*.h" />
+    <ClInclude Include="..\..\3rdparty\Box2D\Box2D\Box2D\Collision\Shapes\*.h" />
+    <ClInclude Include="..\..\3rdparty\Box2D\Box2D\Box2D\Common\*.h" />
+    <ClInclude Include="..\..\3rdparty\Box2D\Box2D\Box2D\Dynamics\*.h" />
+    <ClInclude Include="..\..\3rdparty\Box2D\Box2D\Box2D\Dynamics\Contacts\*.h" />
+    <ClInclude Include="..\..\3rdparty\Box2D\Box2D\Box2D\Dynamics\Joints\*.h" />
+    <ClInclude Include="..\..\3rdparty\Box2D\Box2D\Box2D\Rope\*.h" />
+    <ClInclude Include="..\..\3rdparty\DirectXTK\Audio\SoundCommon.h" />
+    <ClInclude Include="..\..\3rdparty\DirectXTK\Audio\WaveBankReader.h" />
+    <ClInclude Include="..\..\3rdparty\DirectXTK\Audio\WAVFileReader.h" />
+    <ClInclude Include="..\..\3rdparty\DirectXTK\Inc\Audio.h" />
+    <ClInclude Include="..\..\3rdparty\DirectXTK\Inc\DDSTextureLoader.h" />
+    <ClInclude Include="..\..\3rdparty\DirectXTK\Inc\DirectXHelpers.h" />
+    <ClInclude Include="..\..\3rdparty\DirectXTK\Inc\GamePad.h" />
+    <ClInclude Include="..\..\3rdparty\DirectXTK\Inc\Keyboard.h" />
+    <ClInclude Include="..\..\3rdparty\DirectXTK\Inc\Mouse.h" />
+    <ClInclude Include="..\..\3rdparty\DirectXTK\Src\dds.h" />
+    <ClInclude Include="..\..\3rdparty\DirectXTK\Src\LoaderHelpers.h" />
+    <ClInclude Include="..\..\3rdparty\DirectXTK\Src\PlatformHelpers.h" />
+    <ClInclude Include="..\..\3rdparty\spine-runtimes\spine-cpp\spine-cpp\include\spine\*.h" />
+    <ClInclude Include="..\..\3rdparty\TinyThread\source\*.h" />
     <ClInclude Include="..\..\core\framework\entity\*.h" />
     <ClInclude Include="..\..\core\framework\file\portable\*.h" />
     <ClInclude Include="..\..\core\framework\file\windows\*.h" />
@@ -227,28 +241,46 @@
     <ClInclude Include="*.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\3rdparty\Box2D\*.cpp">
+    <ClCompile Include="..\..\3rdparty\Box2D\Box2D\Box2D\*.cpp">
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="..\..\3rdparty\Box2D\Collision\*.cpp">
+    <ClCompile Include="..\..\3rdparty\Box2D\Box2D\Box2D\Collision\*.cpp">
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="..\..\3rdparty\Box2D\Collision\Shapes\*.cpp">
+    <ClCompile Include="..\..\3rdparty\Box2D\Box2D\Box2D\Collision\Shapes\*.cpp">
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="..\..\3rdparty\Box2D\Common\*.cpp">
+    <ClCompile Include="..\..\3rdparty\Box2D\Box2D\Box2D\Common\*.cpp">
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="..\..\3rdparty\Box2D\Dynamics\*.cpp">
+    <ClCompile Include="..\..\3rdparty\Box2D\Box2D\Box2D\Dynamics\*.cpp">
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="..\..\3rdparty\Box2D\Dynamics\Contacts\*.cpp">
+    <ClCompile Include="..\..\3rdparty\Box2D\Box2D\Box2D\Dynamics\Contacts\*.cpp">
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="..\..\3rdparty\Box2D\Dynamics\Joints\*.cpp">
+    <ClCompile Include="..\..\3rdparty\Box2D\Box2D\Box2D\Dynamics\Joints\*.cpp">
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="..\..\3rdparty\Box2D\Rope\*.cpp">
+    <ClCompile Include="..\..\3rdparty\Box2D\Box2D\Box2D\Rope\*.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\..\3rdparty\DirectXTK\Audio\AudioEngine.cpp" />
+    <ClCompile Include="..\..\3rdparty\DirectXTK\Audio\DynamicSoundEffectInstance.cpp" />
+    <ClCompile Include="..\..\3rdparty\DirectXTK\Audio\SoundCommon.cpp" />
+    <ClCompile Include="..\..\3rdparty\DirectXTK\Audio\SoundEffect.cpp" />
+    <ClCompile Include="..\..\3rdparty\DirectXTK\Audio\SoundEffectInstance.cpp" />
+    <ClCompile Include="..\..\3rdparty\DirectXTK\Audio\WaveBank.cpp" />
+    <ClCompile Include="..\..\3rdparty\DirectXTK\Audio\WaveBankReader.cpp" />
+    <ClCompile Include="..\..\3rdparty\DirectXTK\Audio\WAVFileReader.cpp" />
+    <ClCompile Include="..\..\3rdparty\DirectXTK\Src\DDSTextureLoader.cpp" />
+    <ClCompile Include="..\..\3rdparty\DirectXTK\Src\GamePad.cpp" />
+    <ClCompile Include="..\..\3rdparty\DirectXTK\Src\Keyboard.cpp" />
+    <ClCompile Include="..\..\3rdparty\DirectXTK\Src\Mouse.cpp" />
+    <ClCompile Include="..\..\3rdparty\spine-runtimes\spine-cpp\spine-cpp\src\spine\*.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\..\3rdparty\TinyThread\source\*.cpp">
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="..\..\core\framework\entity\*.cpp" />

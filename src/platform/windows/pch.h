@@ -43,3 +43,6 @@
 #include <stdexcept>
 
 #include <stdio.h>
+#include <wincodec.h>
+#include <map>
+#include <set>

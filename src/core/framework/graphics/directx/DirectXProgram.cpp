@@ -12,6 +12,8 @@
 
 #include "framework/graphics/directx/DirectXManager.h"
 #include "framework/util/StringUtil.h"
+#include "framework/file/portable/AssetDataHandler.h"
+#include "framework/file/portable/FileData.h"
 
 #include "PlatformHelpers.h"
 
