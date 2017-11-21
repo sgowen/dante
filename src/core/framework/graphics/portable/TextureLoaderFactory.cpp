@@ -16,7 +16,7 @@ TextureLoaderFactory* TextureLoaderFactory::getInstance()
     return &instance;
 }
 
-#if defined __APPLE__ || defined __ANDROID__
+#if defined __APPLE__ || defined __ANDROID__ || defined __linux__
 #include "framework/graphics/opengl/OpenGLTextureLoader.h"
 TextureLoader* TextureLoaderFactory::createTextureLoader() { return new OpenGLTextureLoader(); }
 #elif defined _WIN32

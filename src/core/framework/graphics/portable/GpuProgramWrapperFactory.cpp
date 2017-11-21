@@ -16,7 +16,7 @@ GpuProgramWrapperFactory* GpuProgramWrapperFactory::getInstance()
     return &instance;
 }
 
-#if defined __APPLE__ || defined __ANDROID__
+#if defined __APPLE__ || defined __ANDROID__ || defined __linux__
 
 #include "framework/graphics/opengl/OpenGLTextureGpuProgramWrapper.h"
 #include "framework/graphics/opengl/OpenGLGeometryGpuProgramWrapper.h"

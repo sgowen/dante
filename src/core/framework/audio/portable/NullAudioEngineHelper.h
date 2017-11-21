@@ -1,20 +1,20 @@
 //
-//  MacAudioEngineHelper.h
+//  NullAudioEngineHelper.h
 //  noctisgames-framework
 //
 //  Created by Stephen Gowen on 7/7/17.
 //  Copyright (c) 2017 Noctis Games. All rights reserved.
 //
 
-#ifndef __noctisgames__MacAudioEngineHelper__
-#define __noctisgames__MacAudioEngineHelper__
+#ifndef __noctisgames__NullAudioEngineHelper__
+#define __noctisgames__NullAudioEngineHelper__
 
 #include "framework/audio/portable/AudioEngineHelper.h"
 
-class MacAudioEngineHelper : public AudioEngineHelper
+class NullAudioEngineHelper : public AudioEngineHelper
 {
 public:
-	static MacAudioEngineHelper* getInstance();
+	static NullAudioEngineHelper* getInstance();
     
     virtual void update(int flags = 0);
     
@@ -28,10 +28,10 @@ public:
 
 private:
     // ctor, copy ctor, and assignment should be private in a Singleton
-    MacAudioEngineHelper();
-    virtual ~MacAudioEngineHelper();
-    MacAudioEngineHelper(const MacAudioEngineHelper&);
-    MacAudioEngineHelper& operator=(const MacAudioEngineHelper&);
+    NullAudioEngineHelper();
+    virtual ~NullAudioEngineHelper();
+    NullAudioEngineHelper(const NullAudioEngineHelper&);
+    NullAudioEngineHelper& operator=(const NullAudioEngineHelper&);
 };
 
-#endif /* defined(__noctisgames__MacAudioEngineHelper__) */
+#endif /* defined(__noctisgames__NullAudioEngineHelper__) */

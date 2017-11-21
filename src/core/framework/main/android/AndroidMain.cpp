@@ -237,7 +237,7 @@ void AndroidMain::loadResources()
     JNIEnv *jni;
     _app->activity->vm->AttachCurrentThread(&jni, NULL);
     
-    ANDROID_AUDIO_ENGINE_HELPER->init(jni, _app->activity->clazz);
+    AndroidAudioEngineHelper::getInstance()->init(jni, _app->activity->clazz);
     
     AndroidAssetDataHandler::getInstance()->init(jni, _app->activity->clazz);
     
@@ -263,7 +263,7 @@ void AndroidMain::loadResources()
 
 void AndroidMain::unloadResources()
 {
-    ANDROID_AUDIO_ENGINE_HELPER->deinit();
+    AndroidAudioEngineHelper::getInstance()->deinit();
     
     AndroidAssetDataHandler::getInstance()->deinit();
     

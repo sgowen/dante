@@ -16,7 +16,7 @@ CircleBatcherFactory* CircleBatcherFactory::getInstance()
     return &instance;
 }
 
-#if defined __APPLE__ || defined __ANDROID__
+#if defined __APPLE__ || defined __ANDROID__ || defined __linux__
 #include "framework/graphics/opengl/OpenGLCircleBatcher.h"
 CircleBatcher* CircleBatcherFactory::createCircleBatcher() { return new OpenGLCircleBatcher(); }
 #elif defined _WIN32

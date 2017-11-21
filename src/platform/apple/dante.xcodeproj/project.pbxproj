@@ -603,6 +603,9 @@
 		BBF226CF1EC12CDE00573356 /* ReplicationManagerClient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF226B01EC12CDE00573356 /* ReplicationManagerClient.cpp */; };
 		BBFA49E51FC3702D00233514 /* Engine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBFA49E41FC3702D00233514 /* Engine.cpp */; };
 		BBFA49E61FC3702D00233514 /* Engine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBFA49E41FC3702D00233514 /* Engine.cpp */; };
+		BBFC2A7C1FC4A00E00A970B4 /* NullAudioEngineHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBFC2A771FC49E6700A970B4 /* NullAudioEngineHelper.cpp */; };
+		BBFC2A7D1FC4A00E00A970B4 /* NullSound.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBFC2A761FC49E6700A970B4 /* NullSound.cpp */; };
+		BBFC2A7E1FC4A00E00A970B4 /* NullSoundWrapper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBFC2A7A1FC49E6800A970B4 /* NullSoundWrapper.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -1525,6 +1528,12 @@
 		BBFA49E11FC367FB00233514 /* DirectXDeviceResources.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DirectXDeviceResources.h; sourceTree = "<group>"; };
 		BBFA49E31FC3702D00233514 /* Engine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Engine.h; sourceTree = "<group>"; };
 		BBFA49E41FC3702D00233514 /* Engine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Engine.cpp; sourceTree = "<group>"; };
+		BBFC2A761FC49E6700A970B4 /* NullSound.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = NullSound.cpp; sourceTree = "<group>"; };
+		BBFC2A771FC49E6700A970B4 /* NullAudioEngineHelper.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = NullAudioEngineHelper.cpp; sourceTree = "<group>"; };
+		BBFC2A781FC49E6800A970B4 /* NullAudioEngineHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NullAudioEngineHelper.h; sourceTree = "<group>"; };
+		BBFC2A791FC49E6800A970B4 /* NullSound.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NullSound.h; sourceTree = "<group>"; };
+		BBFC2A7A1FC49E6800A970B4 /* NullSoundWrapper.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = NullSoundWrapper.cpp; sourceTree = "<group>"; };
+		BBFC2A7B1FC49E6800A970B4 /* NullSoundWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NullSoundWrapper.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -3165,6 +3174,12 @@
 				BBAEF18F1EA94ED900F0866E /* AudioEngineHelperFactory.h */,
 				BBAEF1961EA94ED900F0866E /* NGAudioEngine.cpp */,
 				BBAEF1971EA94ED900F0866E /* NGAudioEngine.h */,
+				BBFC2A771FC49E6700A970B4 /* NullAudioEngineHelper.cpp */,
+				BBFC2A781FC49E6800A970B4 /* NullAudioEngineHelper.h */,
+				BBFC2A761FC49E6700A970B4 /* NullSound.cpp */,
+				BBFC2A791FC49E6800A970B4 /* NullSound.h */,
+				BBFC2A7A1FC49E6800A970B4 /* NullSoundWrapper.cpp */,
+				BBFC2A7B1FC49E6800A970B4 /* NullSoundWrapper.h */,
 				BBAEF1921EA94ED900F0866E /* Sound.cpp */,
 				BBAEF1931EA94ED900F0866E /* Sound.h */,
 				BBAEF1941EA94ED900F0866E /* SoundWrapper.cpp */,
@@ -3486,6 +3501,9 @@
 				BB190F481FAB9E3900BDC6D0 /* OALAudioTracks.m in Sources */,
 				BB6E7B171F940F2B006C0024 /* Ground.cpp in Sources */,
 				BB6E7B181F940F2B006C0024 /* MainEngine.cpp in Sources */,
+				BBFC2A7C1FC4A00E00A970B4 /* NullAudioEngineHelper.cpp in Sources */,
+				BBFC2A7D1FC4A00E00A970B4 /* NullSound.cpp in Sources */,
+				BBFC2A7E1FC4A00E00A970B4 /* NullSoundWrapper.cpp in Sources */,
 				BB6E7B191F940F2B006C0024 /* PooledObjectsManager.cpp in Sources */,
 				BB6E7B1A1F940F2B006C0024 /* Projectile.cpp in Sources */,
 				BB1912AD1FABB66A00BDC6D0 /* b2Joint.cpp in Sources */,

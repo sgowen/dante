@@ -16,7 +16,7 @@ SpriteBatcherFactory* SpriteBatcherFactory::getInstance()
     return &instance;
 }
 
-#if defined __APPLE__ || defined __ANDROID__
+#if defined __APPLE__ || defined __ANDROID__ || defined __linux__
 #include "framework/graphics/opengl/OpenGLSpriteBatcher.h"
 SpriteBatcher* SpriteBatcherFactory::createSpriteBatcher() { return new OpenGLSpriteBatcher(); }
 #elif defined _WIN32

@@ -43,6 +43,8 @@ AudioEngineHelper* AudioEngineHelperFactory::createAudioEngineHelper()
     return AndroidAudioEngineHelper::getInstance();
 #elif defined _WIN32
 	return DirectXAudioEngineHelper::getInstance();
+#else
+    return NullAudioEngineHelper::getInstance();
 #endif
     
     assert(false);

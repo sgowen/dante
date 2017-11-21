@@ -9,8 +9,6 @@
 #ifndef __noctisgames__DirectXAudioEngineHelper__
 #define __noctisgames__DirectXAudioEngineHelper__
 
-#define WIN_AUDIO_ENGINE_HELPER (DirectXAudioEngineHelper::getInstance())
-
 #include "framework/audio/portable/AudioEngineHelper.h"
 
 #include "Audio.h"

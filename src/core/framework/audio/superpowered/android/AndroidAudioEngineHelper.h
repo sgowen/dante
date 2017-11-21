@@ -9,8 +9,6 @@
 #ifndef __noctisgames__AndroidAudioEngineHelper__
 #define __noctisgames__AndroidAudioEngineHelper__
 
-#define ANDROID_AUDIO_ENGINE_HELPER (AndroidAudioEngineHelper::getInstance())
-
 #include "framework/audio/portable/AudioEngineHelper.h"
 
 #include <jni.h>

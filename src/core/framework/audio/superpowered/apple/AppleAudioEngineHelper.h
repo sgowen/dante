@@ -9,8 +9,6 @@
 #ifndef __noctisgames__AppleAudioEngineHelper__
 #define __noctisgames__AppleAudioEngineHelper__
 
-#define APPLE_AUDIO_ENGINE_HELPER (AppleAudioEngineHelper::getInstance())
-
 #include "framework/audio/portable/AudioEngineHelper.h"
 
 class SuperpoweredSoundManager;

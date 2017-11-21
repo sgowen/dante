@@ -16,7 +16,7 @@ NGRectBatcherFactory* NGRectBatcherFactory::getInstance()
     return &instance;
 }
 
-#if defined __APPLE__ || defined __ANDROID__
+#if defined __APPLE__ || defined __ANDROID__ || defined __linux__
 #include "framework/graphics/opengl/OpenGLNGRectBatcher.h"
 NGRectBatcher* NGRectBatcherFactory::createNGRectBatcher(bool isFill) { return new OpenGLNGRectBatcher(isFill); }
 #elif defined _WIN32
