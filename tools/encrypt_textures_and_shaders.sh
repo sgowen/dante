@@ -1,3 +1,5 @@
+#!/bin/bash
+
 XOREncryptDecryptTool=$(pwd)/XOREncryptDecrypt
 
 cd ../src/core/framework/graphics/opengl/shader
