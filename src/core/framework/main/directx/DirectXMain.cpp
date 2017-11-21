@@ -8,7 +8,7 @@
 
 #include "pch.h"
 
-#include "framework/graphics/directx/DirectXMain.h"
+#include "framework/main/directx/DirectXMain.h"
 
 #include "framework/main/portable/Engine.h"
 

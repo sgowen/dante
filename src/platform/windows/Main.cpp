@@ -3,7 +3,7 @@
 //
 
 #include "pch.h"
-#include "framework/graphics/directx/DirectXMain.h"
+#include "framework/main/directx/DirectXMain.h"
 #include "Audio.h"
 #include "game/logic/MainEngine.h"
 #include <Dbt.h>
@@ -57,7 +57,7 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, 
         wcex.hCursor = LoadCursor(nullptr, IDC_ARROW);
         wcex.hbrBackground = (HBRUSH) (COLOR_WINDOW + 1);
         wcex.lpszMenuName = nullptr;
-        wcex.lpszClassName = L"DanteWindowClass";
+        wcex.lpszClassName = L"NGWindowClass";
         wcex.hIconSm = LoadIcon(wcex.hInstance, L"IDI_ICON");
 		if (!RegisterClassEx(&wcex))
 		{
@@ -76,7 +76,7 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, 
 
         AdjustWindowRect(&rc, WS_OVERLAPPEDWINDOW, FALSE);
 
-        HWND hwnd = CreateWindowEx(WS_EX_TOPMOST, L"DanteWindowClass", L"Dante", WS_POPUP,
+        HWND hwnd = CreateWindowEx(WS_EX_TOPMOST, L"NGWindowClass", L"Noctis Games", WS_POPUP,
             CW_USEDEFAULT, CW_USEDEFAULT, rc.right - rc.left, rc.bottom - rc.top, nullptr, nullptr, hInstance,
             nullptr);
 
@@ -85,7 +85,7 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, 
 			return 1;
 		}
 
-        ShowWindow(hwnd, SW_SHOWMAXIMIZED);
+		ShowWindow(hwnd, SW_SHOWMAXIMIZED);
 
         SetWindowLongPtr(hwnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(g_main.get()) );
 

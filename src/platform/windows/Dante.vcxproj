@@ -143,7 +143,7 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>NG_STEAM;WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NG_STEAM;WIN32;NG_LAUNCH_AS_FULL_SCREEN;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <FloatingPointModel>Fast</FloatingPointModel>
       <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
@@ -174,7 +174,7 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>NG_STEAM;WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NG_STEAM;WIN32;NG_LAUNCH_AS_FULL_SCREEN;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <FloatingPointModel>Fast</FloatingPointModel>
       <AdditionalIncludeDirectories>../../3rdparty/DirectXTK/Inc;../../3rdparty/DirectXTK/Src;../../3rdparty/Box2D/Box2D;../../3rdparty/rapidjson/include;../../3rdparty/spine-runtimes/spine-cpp/spine-cpp/include;../../3rdparty/steamworks_sdk/public;../../3rdparty/TinyThread/source;../../core;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;$(ProjectDir);</AdditionalIncludeDirectories>
@@ -234,6 +234,8 @@
     <ClInclude Include="..\..\core\framework\audio\portable\*.h" />
     <ClInclude Include="..\..\core\framework\audio\directx\*.h" />
     <ClInclude Include="..\..\core\framework\util\*.h" />
+    <ClInclude Include="..\..\core\framework\main\portable\*.h" />
+    <ClInclude Include="..\..\core\framework\main\directx\*.h" />
     <ClInclude Include="..\..\core\game\graphics\directx\*.h" />
     <ClInclude Include="..\..\core\game\graphics\portable\*.h" />
     <ClInclude Include="..\..\core\game\logic\*.h" />
@@ -297,11 +299,12 @@
     <ClCompile Include="..\..\core\framework\audio\portable\*.cpp" />
     <ClCompile Include="..\..\core\framework\audio\directx\*.cpp" />
     <ClCompile Include="..\..\core\framework\util\*.cpp" />
+    <ClCompile Include="..\..\core\framework\main\portable\*.cpp" />
+    <ClCompile Include="..\..\core\framework\main\directx\*.cpp" />
     <ClCompile Include="..\..\core\game\graphics\directx\*.cpp" />
     <ClCompile Include="..\..\core\game\graphics\portable\*.cpp" />
     <ClCompile Include="..\..\core\game\logic\*.cpp" />
     <ClCompile Include="..\..\core\game\network\*.cpp" />
-    <ClCompile Include="DeviceResources.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
