@@ -77,6 +77,7 @@
 			<Add before="cp -R $(PROJECT_DIR)../../../assets/textures/*.ngt $(PROJECT_DIR)data/textures/" />
 			<Add before="cp -R $(PROJECT_DIR)../../../assets/music/*.wav $(PROJECT_DIR)data/music/" />
 			<Add before="cp -R $(PROJECT_DIR)../../../assets/sounds/*.wav $(PROJECT_DIR)data/sounds/" />
+			<Add after="cp -R $(PROJECT_DIR)../../../src/3rdparty/steamworks_sdk/redistributable_bin/linux64/*.so $(PROJECT_DIR)" />
 			<Mode after="always" />
 		</ExtraCommands>
 		<Unit filename="../../3rdparty/Box2D/Box2D/Box2D/Box2D.h" />

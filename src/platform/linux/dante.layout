@@ -2,74 +2,9 @@
 <CodeBlocks_layout_file>
 	<FileVersion major="1" minor="0" />
 	<ActiveTarget name="Debug" />
-	<File name="../../core/framework/graphics/portable/Renderer.cpp" open="0" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="1468" topLine="25" />
-		</Cursor>
-	</File>
-	<File name="../../core/game/network/Server.cpp" open="0" top="0" tabpos="12" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="8878" topLine="302" />
-		</Cursor>
-	</File>
-	<File name="../../core/framework/graphics/opengl/OpenGLManager.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="6585" topLine="251" />
-		</Cursor>
-	</File>
 	<File name="../../3rdparty/libpng/png.c" open="0" top="0" tabpos="13" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
 			<Cursor1 position="4609" topLine="115" />
-		</Cursor>
-	</File>
-	<File name="../../3rdparty/Box2D/Box2D/Box2D/Common/b2GrowableStack.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="1438" topLine="22" />
-		</Cursor>
-	</File>
-	<File name="../../core/framework/network/steam/NGSteam.h" open="1" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="225" topLine="24" />
-		</Cursor>
-	</File>
-	<File name="../../core/framework/graphics/portable/SpriteBatcher.cpp" open="0" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="218" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="../../core/framework/graphics/portable/GpuTextureDataWrapper.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="301" topLine="2" />
-		</Cursor>
-	</File>
-	<File name="../../core/framework/graphics/opengl/OpenGLRendererHelper.cpp" open="0" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="411" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="../../core/framework/graphics/portable/NGGraphics.h" open="0" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="534" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="pch.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="247" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="../../core/framework/file/linux/LinuxAssetDataHandler.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="758" topLine="1" />
-		</Cursor>
-	</File>
-	<File name="../../core/framework/network/steam/NGSteamP2PAuth.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="2995" topLine="94" />
-		</Cursor>
-	</File>
-	<File name="../../core/framework/entity/Entity.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="1149" topLine="49" />
 		</Cursor>
 	</File>
 	<File name="../../core/framework/graphics/portable/SpriteBatcher.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
@@ -77,99 +12,24 @@
 			<Cursor1 position="0" topLine="12" />
 		</Cursor>
 	</File>
-	<File name="../../3rdparty/spine-runtimes/spine-cpp/spine-cpp/include/spine/HashMap.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="3318" topLine="84" />
-		</Cursor>
-	</File>
-	<File name="../../core/framework/graphics/opengl/OpenGLProgram.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="1534" topLine="44" />
-		</Cursor>
-	</File>
-	<File name="../../core/framework/util/StringUtil.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="279" topLine="6" />
-		</Cursor>
-	</File>
-	<File name="../../core/game/logic/MainEngine.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="2502" topLine="63" />
-		</Cursor>
-	</File>
-	<File name="../../core/framework/audio/portable/AudioEngineHelper.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="160" topLine="0" />
-		</Cursor>
-	</File>
 	<File name="../../core/framework/file/portable/AssetDataHandler.cpp" open="0" top="0" tabpos="15" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
 			<Cursor1 position="332" topLine="0" />
 		</Cursor>
 	</File>
-	<File name="../../core/framework/network/portable/Network.h" open="0" top="0" tabpos="10" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="../../3rdparty/steamworks_sdk/public/steam/steamclientpublic.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="539" topLine="56" />
+			<Cursor1 position="31706" topLine="573" />
 		</Cursor>
 	</File>
-	<File name="../../core/framework/network/steam/NGSteamClientHelper.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="../../core/framework/graphics/opengl/OpenGLManager.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="2830" topLine="67" />
+			<Cursor1 position="6585" topLine="251" />
 		</Cursor>
 	</File>
-	<File name="../../core/framework/network/portable/SocketPacketHandler.cpp" open="0" top="0" tabpos="9" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="../../core/framework/graphics/portable/GpuTextureDataWrapper.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="523" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="../../3rdparty/steamworks_sdk/public/steam/steam_api_flat.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="1282" topLine="132" />
-		</Cursor>
-	</File>
-	<File name="../../core/framework/graphics/portable/GpuTextureWrapper.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="391" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="main.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="246" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="../../3rdparty/steamworks_sdk/public/steam/steam_gameserver.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="6037" topLine="214" />
-		</Cursor>
-	</File>
-	<File name="../../3rdparty/steamworks_sdk/public/steam/steam_api_internal.h" open="1" top="1" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="828" topLine="4" />
-		</Cursor>
-	</File>
-	<File name="../../core/game/graphics/portable/MainRenderer.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="1931" topLine="38" />
-		</Cursor>
-	</File>
-	<File name="../../core/framework/graphics/opengl/OpenGLFramebufferToScreenProgram.cpp" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="487" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="../../core/framework/audio/portable/AudioEngineHelperFactory.cpp" open="0" top="0" tabpos="14" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="693" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="../../core/framework/network/steam/NGSteamClientHelper.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="1822" topLine="30" />
-		</Cursor>
-	</File>
-	<File name="../../core/game/logic/Projectile.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="458" topLine="0" />
+			<Cursor1 position="301" topLine="2" />
 		</Cursor>
 	</File>
 	<File name="../../3rdparty/spine-runtimes/spine-cpp/spine-cpp/src/spine/Animation.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
@@ -177,9 +37,39 @@
 			<Cursor1 position="1809" topLine="0" />
 		</Cursor>
 	</File>
-	<File name="../../core/framework/graphics/opengl/OpenGLTextureLoader.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="../../core/framework/file/linux/LinuxAssetDataHandler.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="1261" topLine="33" />
+			<Cursor1 position="758" topLine="1" />
+		</Cursor>
+	</File>
+	<File name="../../core/framework/network/steam/NGSteamClientHelper.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1822" topLine="30" />
+		</Cursor>
+	</File>
+	<File name="../../3rdparty/steamworks_sdk/public/steam/steam_gameserver.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="6037" topLine="214" />
+		</Cursor>
+	</File>
+	<File name="../../core/framework/graphics/portable/NGGraphics.h" open="0" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="534" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="../../3rdparty/Box2D/Box2D/Box2D/Common/b2GrowableStack.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1438" topLine="22" />
+		</Cursor>
+	</File>
+	<File name="../../core/framework/graphics/opengl/OpenGLProgram.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1534" topLine="44" />
+		</Cursor>
+	</File>
+	<File name="../../core/framework/audio/portable/AudioEngineHelper.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="160" topLine="0" />
 		</Cursor>
 	</File>
 	<File name="../../core/framework/network/steam/NGSteamP2PAuth.h" open="1" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
@@ -187,9 +77,24 @@
 			<Cursor1 position="2844" topLine="86" />
 		</Cursor>
 	</File>
-	<File name="../../core/framework/main/glfw/GlfwMain.h" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="../../core/framework/graphics/opengl/OpenGLManager.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="188" topLine="0" />
+			<Cursor1 position="258" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="../../core/game/logic/Projectile.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="458" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="../../core/framework/network/steam/NGSteamClientHelper.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="2830" topLine="67" />
+		</Cursor>
+	</File>
+	<File name="../../core/framework/graphics/opengl/OpenGLFramebufferToScreenProgram.cpp" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="487" topLine="0" />
 		</Cursor>
 	</File>
 	<File name="../../3rdparty/Box2D/Box2D/Box2D/Collision/b2BroadPhase.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
@@ -197,9 +102,94 @@
 			<Cursor1 position="916" topLine="0" />
 		</Cursor>
 	</File>
+	<File name="../../core/game/graphics/portable/MainRenderer.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1931" topLine="38" />
+		</Cursor>
+	</File>
+	<File name="../../core/framework/network/portable/SocketPacketHandler.cpp" open="0" top="0" tabpos="9" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="523" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="../../core/game/network/Server.cpp" open="0" top="0" tabpos="12" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="8878" topLine="302" />
+		</Cursor>
+	</File>
+	<File name="../../3rdparty/steamworks_sdk/public/steam/steam_api_flat.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1282" topLine="132" />
+		</Cursor>
+	</File>
+	<File name="../../core/framework/network/portable/Network.h" open="0" top="0" tabpos="10" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="539" topLine="56" />
+		</Cursor>
+	</File>
+	<File name="../../core/framework/network/steam/NGSteam.h" open="1" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="225" topLine="24" />
+		</Cursor>
+	</File>
+	<File name="pch.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="247" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="../../core/framework/entity/Entity.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1149" topLine="49" />
+		</Cursor>
+	</File>
+	<File name="../../core/framework/graphics/portable/GpuTextureWrapper.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="391" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="../../core/framework/main/glfw/GlfwMain.h" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="188" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="../../core/framework/graphics/opengl/OpenGLTextureLoader.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1261" topLine="33" />
+		</Cursor>
+	</File>
+	<File name="main.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="246" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="../../core/framework/graphics/opengl/OpenGLRendererHelper.cpp" open="0" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="411" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="../../core/framework/graphics/portable/Renderer.cpp" open="0" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1468" topLine="25" />
+		</Cursor>
+	</File>
+	<File name="../../core/framework/network/steam/NGSteamP2PAuth.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="2995" topLine="94" />
+		</Cursor>
+	</File>
+	<File name="../../core/framework/util/StringUtil.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="279" topLine="6" />
+		</Cursor>
+	</File>
 	<File name="../../core/framework/main/glfw/GlfwMain.cpp" open="0" top="0" tabpos="8" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
 			<Cursor1 position="3790" topLine="135" />
+		</Cursor>
+	</File>
+	<File name="../../3rdparty/spine-runtimes/spine-cpp/spine-cpp/include/spine/HashMap.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="3318" topLine="84" />
 		</Cursor>
 	</File>
 	<File name="../../3rdparty/steamworks_sdk/public/steam/steam_api.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
@@ -207,14 +197,24 @@
 			<Cursor1 position="17258" topLine="33" />
 		</Cursor>
 	</File>
-	<File name="../../core/framework/graphics/opengl/OpenGLManager.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="../../core/framework/audio/portable/AudioEngineHelperFactory.cpp" open="0" top="0" tabpos="14" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="258" topLine="0" />
+			<Cursor1 position="693" topLine="0" />
 		</Cursor>
 	</File>
-	<File name="../../3rdparty/steamworks_sdk/public/steam/steamclientpublic.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="../../core/game/logic/MainEngine.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="31706" topLine="573" />
+			<Cursor1 position="2502" topLine="63" />
+		</Cursor>
+	</File>
+	<File name="../../3rdparty/steamworks_sdk/public/steam/steam_api_internal.h" open="1" top="1" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="426" topLine="4" />
+		</Cursor>
+	</File>
+	<File name="../../core/framework/graphics/portable/SpriteBatcher.cpp" open="0" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="218" topLine="0" />
 		</Cursor>
 	</File>
 </CodeBlocks_layout_file>
