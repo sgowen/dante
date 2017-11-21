@@ -27,28 +27,28 @@ public:
     NGSteamP2PAuthPlayer *_rgpP2PAuthPlayer[MAX_NUM_PLAYERS_PER_SERVER];
     MsgP2PSendingTicket *_rgpQueuedMessage[MAX_NUM_PLAYERS_PER_SERVER];
     NGSteamP2PNetworkTransport *_networkTransport;
-    
+
     NGSteamP2PAuth(NetworkHelper* networkHelper);
-    
+
     ~NGSteamP2PAuth();
-    
-    void playerDisconnect(uint8_t iSlot);
+
+    void playerDisconnect(uint8 iSlot);
     void endGame();
-    void startAuthPlayer(uint8_t iSlot, CSteamID steamID);
-    void registerPlayer(uint8_t iSlot, CSteamID steamID);
-    bool handleMessage(uint32_t packetType, InputMemoryBitStream& inInputStream);
-    void internalinitPlayer(uint8_t iSlot, CSteamID steamID, bool bStartAuthProcess);
+    void startAuthPlayer(uint8 iSlot, CSteamID steamID);
+    void registerPlayer(uint8 iSlot, CSteamID steamID);
+    bool handleMessage(uint32 packetType, InputMemoryBitStream& inInputStream);
+    void internalinitPlayer(uint8 iSlot, CSteamID steamID, bool bStartAuthProcess);
 };
 
 class NGSteamP2PAuthPlayer
 {
 public:
     CSteamID _steamID;
-    
+
 	NGSteamP2PAuthPlayer(NGSteamP2PNetworkTransport *pNetworkTransport);
-    
+
 	~NGSteamP2PAuthPlayer();
-	
+
     void endGame();
 	void initPlayer(CSteamID steamID);
 	void startAuthPlayer();
@@ -56,7 +56,7 @@ public:
 	bool handleMessage(MsgP2PSendingTicket* msg);
 
 	STEAM_CALLBACK(NGSteamP2PAuthPlayer, OnBeginAuthResponse, ValidateAuthTicketResponse_t, _CallbackBeginAuthResponse);
-    
+
 private:
 	bool _bSentTicket;
 	bool _bSubmittedHisTicket;
@@ -79,15 +79,15 @@ class NGSteamP2PNetworkTransport
 {
 public:
 	NGSteamP2PNetworkTransport(NetworkHelper* networkHelper);
-    
+
     ~NGSteamP2PNetworkTransport();
-    
+
 	void sendTicket(CSteamID steamIDFrom, CSteamID steamIDTo, uint32 cubTicket, uint8 *pubTicket);
 	void closeConnection(CSteamID steamID);
 
 	STEAM_CALLBACK(NGSteamP2PNetworkTransport, onP2PSessionRequest, P2PSessionRequest_t, _CallbackP2PSessionRequest);
 	STEAM_CALLBACK(NGSteamP2PNetworkTransport, onP2PSessionConnectFail, P2PSessionConnectFail_t, _CallbackP2PSessionConnectFail);
-    
+
 private:
     NetworkHelper* _networkHelper;
     NGSteamAddress* _outgoingPacketAddress;
@@ -97,16 +97,16 @@ class MsgP2PSendingTicket
 {
 public:
     MsgP2PSendingTicket();
-    
+
     DWORD getMessageType();
-    
+
     void setToken(const char *pchToken, uint32 unLen);
     uint32 getTokenLen();
     const char* getTokenPtr();
-    
+
     void setSteamID(uint64 ulSteamID);
     uint64 getSteamID();
-    
+
 private:
     const DWORD _dwMessageType;
     uint32 _uTokenLen;

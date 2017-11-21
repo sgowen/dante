@@ -14,8 +14,12 @@
 				<Compiler>
 					<Add option="-std=c++11" />
 					<Add option="-g" />
-					<Add option="-DPOSIX -D_DEBUG -D_GLFW_X11 -fpermissive" />
+					<Add option="-DNG_STEAM -DPOSIX -D_DEBUG -D_GLFW_X11 -fpermissive" />
 				</Compiler>
+				<ExtraCommands>
+					<Add after="cp -R $(PROJECT_DIR)bin/Debug/dante $(PROJECT_DIR)./dante_build" />
+					<Mode after="always" />
+				</ExtraCommands>
 			</Target>
 			<Target title="Release">
 				<Option output="bin/Release/dante" prefix_auto="1" extension_auto="1" />
@@ -25,11 +29,15 @@
 				<Compiler>
 					<Add option="-O2" />
 					<Add option="-std=c++11" />
-					<Add option="-DPOSIX -D_GLFW_X11 -DNG_LAUNCH_AS_FULL_SCREEN -fpermissive" />
+					<Add option="-DNG_STEAM -DPOSIX -D_GLFW_X11 -DNG_LAUNCH_AS_FULL_SCREEN -fpermissive" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
 				</Linker>
+				<ExtraCommands>
+					<Add after="cp -R $(PROJECT_DIR)bin/Release/dante $(PROJECT_DIR)./dante_build" />
+					<Mode after="always" />
+				</ExtraCommands>
 			</Target>
 		</Build>
 		<Compiler>
@@ -43,6 +51,7 @@
 			<Add directory="../../3rdparty/TinyThread/source" />
 			<Add directory="../linux" />
 			<Add directory="/usr/include/" />
+			<Add directory="../../3rdparty/steamworks_sdk/public" />
 		</Compiler>
 		<Linker>
 			<Add library="GL" />
@@ -53,7 +62,23 @@
 			<Add library="z" />
 			<Add library="GLEW" />
 			<Add library="GLU" />
+			<Add library="../../3rdparty/steamworks_sdk/redistributable_bin/linux64/libsteam_api.so" />
 		</Linker>
+		<ExtraCommands>
+			<Add before="#!/bin/bash" />
+			<Add before="chmod 777 $(PROJECT_DIR)../../../tools/encrypt_textures_and_shaders.sh" />
+			<Add before="/bin/bash $(PROJECT_DIR)../../../tools/encrypt_textures_and_shaders.sh $(PROJECT_DIR)../../../ XOREncryptDecryptLinux" />
+			<Add before="mkdir -p $(PROJECT_DIR)data" />
+			<Add before="mkdir -p $(PROJECT_DIR)data/shaders" />
+			<Add before="mkdir -p $(PROJECT_DIR)data/sounds" />
+			<Add before="mkdir -p $(PROJECT_DIR)data/music" />
+			<Add before="mkdir -p $(PROJECT_DIR)data/textures" />
+			<Add before="cp -R $(PROJECT_DIR)../../../src/core/framework/graphics/opengl/shader/*.ngs $(PROJECT_DIR)data/shaders/" />
+			<Add before="cp -R $(PROJECT_DIR)../../../assets/textures/*.ngt $(PROJECT_DIR)data/textures/" />
+			<Add before="cp -R $(PROJECT_DIR)../../../assets/music/*.wav $(PROJECT_DIR)data/music/" />
+			<Add before="cp -R $(PROJECT_DIR)../../../assets/sounds/*.wav $(PROJECT_DIR)data/sounds/" />
+			<Mode after="always" />
+		</ExtraCommands>
 		<Unit filename="../../3rdparty/Box2D/Box2D/Box2D/Box2D.h" />
 		<Unit filename="../../3rdparty/Box2D/Box2D/Box2D/Collision/Shapes/b2ChainShape.cpp" />
 		<Unit filename="../../3rdparty/Box2D/Box2D/Box2D/Collision/Shapes/b2ChainShape.h" />
@@ -409,6 +434,47 @@
 		<Unit filename="../../3rdparty/spine-runtimes/spine-cpp/spine-cpp/src/spine/TwoColorTimeline.cpp" />
 		<Unit filename="../../3rdparty/spine-runtimes/spine-cpp/spine-cpp/src/spine/Updatable.cpp" />
 		<Unit filename="../../3rdparty/spine-runtimes/spine-cpp/spine-cpp/src/spine/VertexAttachment.cpp" />
+		<Unit filename="../../3rdparty/steamworks_sdk/public/steam/isteamapplist.h" />
+		<Unit filename="../../3rdparty/steamworks_sdk/public/steam/isteamapps.h" />
+		<Unit filename="../../3rdparty/steamworks_sdk/public/steam/isteamappticket.h" />
+		<Unit filename="../../3rdparty/steamworks_sdk/public/steam/isteamclient.h" />
+		<Unit filename="../../3rdparty/steamworks_sdk/public/steam/isteamcontroller.h" />
+		<Unit filename="../../3rdparty/steamworks_sdk/public/steam/isteamfriends.h" />
+		<Unit filename="../../3rdparty/steamworks_sdk/public/steam/isteamgamecoordinator.h" />
+		<Unit filename="../../3rdparty/steamworks_sdk/public/steam/isteamgameserver.h" />
+		<Unit filename="../../3rdparty/steamworks_sdk/public/steam/isteamgameserverstats.h" />
+		<Unit filename="../../3rdparty/steamworks_sdk/public/steam/isteamhtmlsurface.h" />
+		<Unit filename="../../3rdparty/steamworks_sdk/public/steam/isteamhttp.h" />
+		<Unit filename="../../3rdparty/steamworks_sdk/public/steam/isteaminventory.h" />
+		<Unit filename="../../3rdparty/steamworks_sdk/public/steam/isteammasterserverupdater.h" />
+		<Unit filename="../../3rdparty/steamworks_sdk/public/steam/isteammatchmaking.h" />
+		<Unit filename="../../3rdparty/steamworks_sdk/public/steam/isteammusic.h" />
+		<Unit filename="../../3rdparty/steamworks_sdk/public/steam/isteammusicremote.h" />
+		<Unit filename="../../3rdparty/steamworks_sdk/public/steam/isteamnetworking.h" />
+		<Unit filename="../../3rdparty/steamworks_sdk/public/steam/isteamparentalsettings.h" />
+		<Unit filename="../../3rdparty/steamworks_sdk/public/steam/isteamps3overlayrenderer.h" />
+		<Unit filename="../../3rdparty/steamworks_sdk/public/steam/isteamremotestorage.h" />
+		<Unit filename="../../3rdparty/steamworks_sdk/public/steam/isteamscreenshots.h" />
+		<Unit filename="../../3rdparty/steamworks_sdk/public/steam/isteamugc.h" />
+		<Unit filename="../../3rdparty/steamworks_sdk/public/steam/isteamunifiedmessages.h" />
+		<Unit filename="../../3rdparty/steamworks_sdk/public/steam/isteamuser.h" />
+		<Unit filename="../../3rdparty/steamworks_sdk/public/steam/isteamuserstats.h" />
+		<Unit filename="../../3rdparty/steamworks_sdk/public/steam/isteamutils.h" />
+		<Unit filename="../../3rdparty/steamworks_sdk/public/steam/isteamvideo.h" />
+		<Unit filename="../../3rdparty/steamworks_sdk/public/steam/matchmakingtypes.h" />
+		<Unit filename="../../3rdparty/steamworks_sdk/public/steam/steam_api.h" />
+		<Unit filename="../../3rdparty/steamworks_sdk/public/steam/steam_api.json" />
+		<Unit filename="../../3rdparty/steamworks_sdk/public/steam/steam_api_flat.h" />
+		<Unit filename="../../3rdparty/steamworks_sdk/public/steam/steam_api_internal.h" />
+		<Unit filename="../../3rdparty/steamworks_sdk/public/steam/steam_api_interop.cs" />
+		<Unit filename="../../3rdparty/steamworks_sdk/public/steam/steam_gameserver.h" />
+		<Unit filename="../../3rdparty/steamworks_sdk/public/steam/steamclientpublic.h" />
+		<Unit filename="../../3rdparty/steamworks_sdk/public/steam/steamencryptedappticket.h" />
+		<Unit filename="../../3rdparty/steamworks_sdk/public/steam/steamhttpenums.h" />
+		<Unit filename="../../3rdparty/steamworks_sdk/public/steam/steamps3params.h" />
+		<Unit filename="../../3rdparty/steamworks_sdk/public/steam/steamtypes.h" />
+		<Unit filename="../../3rdparty/steamworks_sdk/public/steam/steamuniverse.h" />
+		<Unit filename="../../3rdparty/steamworks_sdk/redistributable_bin/linux32/libsteam_api.so" />
 		<Unit filename="../../core/framework/audio/portable/AudioEngineHelper.cpp" />
 		<Unit filename="../../core/framework/audio/portable/AudioEngineHelper.h" />
 		<Unit filename="../../core/framework/audio/portable/AudioEngineHelperFactory.cpp" />
@@ -433,6 +499,8 @@
 		<Unit filename="../../core/framework/entity/EntityRegistry.h" />
 		<Unit filename="../../core/framework/entity/GridManager.cpp" />
 		<Unit filename="../../core/framework/entity/GridManager.h" />
+		<Unit filename="../../core/framework/file/linux/LinuxAssetDataHandler.cpp" />
+		<Unit filename="../../core/framework/file/linux/LinuxAssetDataHandler.h" />
 		<Unit filename="../../core/framework/file/portable/AssetDataHandler.cpp" />
 		<Unit filename="../../core/framework/file/portable/AssetDataHandler.h" />
 		<Unit filename="../../core/framework/file/portable/FileData.cpp" />
@@ -615,6 +683,22 @@
 		<Unit filename="../../core/framework/network/server/ServerHelper.h" />
 		<Unit filename="../../core/framework/network/server/SocketServerHelper.cpp" />
 		<Unit filename="../../core/framework/network/server/SocketServerHelper.h" />
+		<Unit filename="../../core/framework/network/steam/NGSteam.cpp" />
+		<Unit filename="../../core/framework/network/steam/NGSteam.h" />
+		<Unit filename="../../core/framework/network/steam/NGSteamAddress.cpp" />
+		<Unit filename="../../core/framework/network/steam/NGSteamAddress.h" />
+		<Unit filename="../../core/framework/network/steam/NGSteamClientHelper.cpp" />
+		<Unit filename="../../core/framework/network/steam/NGSteamClientHelper.h" />
+		<Unit filename="../../core/framework/network/steam/NGSteamGameServer.cpp" />
+		<Unit filename="../../core/framework/network/steam/NGSteamGameServer.h" />
+		<Unit filename="../../core/framework/network/steam/NGSteamGameServices.cpp" />
+		<Unit filename="../../core/framework/network/steam/NGSteamGameServices.h" />
+		<Unit filename="../../core/framework/network/steam/NGSteamP2PAuth.cpp" />
+		<Unit filename="../../core/framework/network/steam/NGSteamP2PAuth.h" />
+		<Unit filename="../../core/framework/network/steam/NGSteamPacketHandler.cpp" />
+		<Unit filename="../../core/framework/network/steam/NGSteamPacketHandler.h" />
+		<Unit filename="../../core/framework/network/steam/NGSteamServerHelper.cpp" />
+		<Unit filename="../../core/framework/network/steam/NGSteamServerHelper.h" />
 		<Unit filename="../../core/framework/util/FPSUtil.cpp" />
 		<Unit filename="../../core/framework/util/FPSUtil.h" />
 		<Unit filename="../../core/framework/util/FlagUtil.h" />

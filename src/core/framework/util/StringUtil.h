@@ -11,6 +11,7 @@
 
 #include <string>
 #include <sstream>
+#include <cstdarg>
 
 // OUT_Z_ARRAY indicates an output array that will be null-terminated.
 #if _MSC_VER >= 1600
@@ -40,7 +41,7 @@ public:
         ss << n;
         return ss.str();
     }
-    
+
     template<typename T>
     static T stringToNumber(const std::string &str, T defVal = 0)
     {
@@ -50,35 +51,35 @@ public:
         {
             return defVal;
         }
-        
+
         return value;
     }
-    
+
     template<size_t maxLenInChars>
     static void sprintf_safe(OUT_Z_ARRAY char (&pDest)[maxLenInChars], const char *pFormat, ...)
     {
         va_list params;
         va_start(params, pFormat);
-        
+
 #ifdef POSIX
         vsnprintf(pDest, maxLenInChars, pFormat, params);
 #else
         _vsnprintf(pDest, maxLenInChars, pFormat, params);
 #endif
-        
+
         pDest[maxLenInChars - 1] = '\0';
-        
+
         va_end(params);
     }
-    
+
     static std::string encryptDecrypt(std::string input);
-    
+
     static void encryptDecrypt(unsigned char* input, unsigned char* output, const long dataLength);
-    
+
     static std::string format(const char* inFormat, ...);
-    
+
     static void log(const char* inFormat, ...);
-    
+
 private:
     // ctor, copy ctor, and assignment should be private in a Static Utility Class
     StringUtil();

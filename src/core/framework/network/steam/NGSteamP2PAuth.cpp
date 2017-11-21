@@ -22,13 +22,13 @@ NGSteamP2PAuth::NGSteamP2PAuth(NetworkHelper* networkHelper) :
 _networkTransport(new NGSteamP2PNetworkTransport(networkHelper))
 {
     // no players yet
-	for (uint8_t i = 0; i < MAX_NUM_PLAYERS_PER_SERVER; ++i)
+	for (uint8 i = 0; i < MAX_NUM_PLAYERS_PER_SERVER; ++i)
 	{
 		_rgpP2PAuthPlayer[i] = NULL;
 	}
-    
+
 	// no queued messages
-	for (uint8_t i = 0; i < MAX_NUM_PLAYERS_PER_SERVER; ++i)
+	for (uint8 i = 0; i < MAX_NUM_PLAYERS_PER_SERVER; ++i)
 	{
 		_rgpQueuedMessage[i] = NULL;
 	}
@@ -39,7 +39,7 @@ NGSteamP2PAuth::~NGSteamP2PAuth()
     delete _networkTransport;
 }
 
-void NGSteamP2PAuth::playerDisconnect(uint8_t iSlot)
+void NGSteamP2PAuth::playerDisconnect(uint8 iSlot)
 {
 	if (_rgpP2PAuthPlayer[iSlot])
 	{
@@ -51,19 +51,19 @@ void NGSteamP2PAuth::playerDisconnect(uint8_t iSlot)
 
 void NGSteamP2PAuth::endGame()
 {
-	for (uint8_t i = 0; i < MAX_NUM_PLAYERS_PER_SERVER; ++i)
+	for (uint8 i = 0; i < MAX_NUM_PLAYERS_PER_SERVER; ++i)
 	{
 		if (_rgpP2PAuthPlayer[i])
 		{
 			_rgpP2PAuthPlayer[i]->endGame();
-            
+
 			delete _rgpP2PAuthPlayer[i];
 			_rgpP2PAuthPlayer[i] = NULL;
 		}
 	}
 }
 
-void NGSteamP2PAuth::internalinitPlayer(uint8_t iSlot, CSteamID steamID, bool bStartAuthProcess)
+void NGSteamP2PAuth::internalinitPlayer(uint8 iSlot, CSteamID steamID, bool bStartAuthProcess)
 {
 	char rgch[128];
 	sprintf(rgch, "P2P:: startAuthPlayer slot=%d account=%d \n", iSlot, steamID.GetAccountID());
@@ -76,7 +76,7 @@ void NGSteamP2PAuth::internalinitPlayer(uint8_t iSlot, CSteamID steamID, bool bS
     }
 
 	// check our queued messages list to see if this guys ticket message arrived before we noticed him
-	for (uint8_t i = 0; i < MAX_NUM_PLAYERS_PER_SERVER; ++i)
+	for (uint8 i = 0; i < MAX_NUM_PLAYERS_PER_SERVER; ++i)
 	{
 		if (_rgpQueuedMessage[i] != NULL)
 		{
@@ -90,7 +90,7 @@ void NGSteamP2PAuth::internalinitPlayer(uint8_t iSlot, CSteamID steamID, bool bS
 	}
 }
 
-void NGSteamP2PAuth::registerPlayer(uint8_t iSlot, CSteamID steamID)
+void NGSteamP2PAuth::registerPlayer(uint8 iSlot, CSteamID steamID)
 {
 	if (iSlot < MAX_NUM_PLAYERS_PER_SERVER)
     {
@@ -98,7 +98,7 @@ void NGSteamP2PAuth::registerPlayer(uint8_t iSlot, CSteamID steamID)
     }
 }
 
-void NGSteamP2PAuth::startAuthPlayer(uint8_t iSlot, CSteamID steamID)
+void NGSteamP2PAuth::startAuthPlayer(uint8 iSlot, CSteamID steamID)
 {
 	if (iSlot < MAX_NUM_PLAYERS_PER_SERVER)
     {
@@ -106,7 +106,7 @@ void NGSteamP2PAuth::startAuthPlayer(uint8_t iSlot, CSteamID steamID)
     }
 }
 
-bool NGSteamP2PAuth::handleMessage(uint32_t packetType, InputMemoryBitStream& inInputStream)
+bool NGSteamP2PAuth::handleMessage(uint32 packetType, InputMemoryBitStream& inInputStream)
 {
 	switch (packetType)
 	{
@@ -115,18 +115,18 @@ bool NGSteamP2PAuth::handleMessage(uint32_t packetType, InputMemoryBitStream& in
         {
             uint64 steamID;
             inInputStream.read(steamID);
-            
+
             uint32 uTokenLen;
             inInputStream.read(uTokenLen);
-            
+
             char token[1024];
             inInputStream.readBytes(&token, uTokenLen);
-            
+
             MsgP2PSendingTicket *msg = new MsgP2PSendingTicket();
             msg->setSteamID(steamID);
             msg->setToken(token, uTokenLen);
-            
-            for (uint8_t i = 0; i < MAX_NUM_PLAYERS_PER_SERVER; ++i)
+
+            for (uint8 i = 0; i < MAX_NUM_PLAYERS_PER_SERVER; ++i)
             {
                 if (_rgpP2PAuthPlayer[i])
                 {
@@ -136,10 +136,10 @@ bool NGSteamP2PAuth::handleMessage(uint32_t packetType, InputMemoryBitStream& in
                     }
                 }
             }
-            
+
             // if we dont have the player in our list yet, lets queue the message and assume he will show up soon
             LOG("P2P:: handleMessage queueing message");
-            for (uint8_t i = 0; i < MAX_NUM_PLAYERS_PER_SERVER; ++i)
+            for (uint8 i = 0; i < MAX_NUM_PLAYERS_PER_SERVER; ++i)
             {
                 if (_rgpQueuedMessage[i] == NULL)
                 {
@@ -147,9 +147,9 @@ bool NGSteamP2PAuth::handleMessage(uint32_t packetType, InputMemoryBitStream& in
                     return true; // message handled
                 }
             }
-            
+
             delete msg;
-            
+
             break;
         }
         default:
@@ -176,7 +176,7 @@ NGSteamP2PAuthPlayer::NGSteamP2PAuthPlayer(NGSteamP2PNetworkTransport *pNetworkT
 NGSteamP2PAuthPlayer::~NGSteamP2PAuthPlayer()
 {
     endGame();
-    
+
     _networkTransport->closeConnection(SteamUser()->GetSteamID());
     _networkTransport = NULL;
 }
@@ -212,12 +212,12 @@ void NGSteamP2PAuthPlayer::startAuthPlayer()
     {
         _hAuthTicketIGaveThisUser = SteamUser()->GetAuthSessionTicket(_rgubTicketIGaveThisUser, sizeof(_rgubTicketIGaveThisUser), &_cubTicketIGaveThisUser);
     }
-    
+
     // sample has no retry here
     _networkTransport->sendTicket(SteamUser()->GetSteamID(), _steamID, _cubTicketIGaveThisUser, _rgubTicketIGaveThisUser);
-    
+
     _bSentTicket = true;
-    
+
     // start a timer on this, if we dont get a ticket back within reasonable time, mark him timed out
     _ticketTime = Timing::getInstance()->getFrameStartTime();
 }
@@ -237,7 +237,7 @@ bool NGSteamP2PAuthPlayer::isAuthOk()
                 return false;
             }
         }
-        
+
         // first ticket check: if i submitted his ticket - was it good?
         if (_bSubmittedHisTicket && _eBeginAuthSessionResult != k_EBeginAuthSessionResultOK)
         {
@@ -246,7 +246,7 @@ bool NGSteamP2PAuthPlayer::isAuthOk()
             LOG(rgch);
             return false;
         }
-        
+
         // second ticket check: if the steam backend replied, was that good?
         if (_bHaveAnswer && _eAuthSessionResponse != k_EAuthSessionResponseOK)
         {
@@ -255,7 +255,7 @@ bool NGSteamP2PAuthPlayer::isAuthOk()
             LOG(rgch);
             return false;
         }
-        
+
         // last: if i sent him a ticket and he has not reciprocated, time out after 30 sec
         if (_bSentTicket && !_bSubmittedHisTicket)
         {
@@ -278,13 +278,13 @@ void NGSteamP2PAuthPlayer::endGame()
         SteamUser()->CancelAuthTicket(_hAuthTicketIGaveThisUser);
         _bSentTicket = false;
     }
-    
+
     if (_bSubmittedHisTicket)
     {
         SteamUser()->EndAuthSession(_steamID);
         _bSubmittedHisTicket = false;
     }
-    
+
     if (_steamID.IsValid())
     {
         _networkTransport->closeConnection(_steamID);
@@ -299,7 +299,7 @@ bool NGSteamP2PAuthPlayer::handleMessage(MsgP2PSendingTicket* msg)
     {
         return false;
     }
-    
+
     _cubTicketHeGaveMe = msg->getTokenLen();
     memcpy(_rgubTicketHeGaveMe, msg->getTokenPtr(), _cubTicketHeGaveMe);
     _eBeginAuthSessionResult = SteamUser()->BeginAuthSession(_rgubTicketHeGaveMe, _cubTicketHeGaveMe, _steamID);
@@ -333,16 +333,16 @@ void NGSteamP2PNetworkTransport::sendTicket(CSteamID steamIDFrom, CSteamID steam
     MsgP2PSendingTicket msg;
     msg.setToken((char *)pubTicket, cubTicket);
     msg.setSteamID(steamIDFrom.ConvertToUint64());
-    
+
     OutputMemoryBitStream packet;
     packet.write(msg.getMessageType());
     packet.write(msg.getSteamID());
     packet.write(msg.getTokenLen());
     packet.writeBytes(msg.getTokenPtr(), msg.getTokenLen());
-    
+
     _outgoingPacketAddress->setSteamID(steamIDTo);
     _outgoingPacketAddress->setReliable(true);
-    
+
     _networkHelper->sendPacket(packet, _outgoingPacketAddress);
 }
 
@@ -377,7 +377,7 @@ DWORD MsgP2PSendingTicket::getMessageType()
 void MsgP2PSendingTicket::setToken(const char *pchToken, uint32 unLen)
 {
     _uTokenLen = unLen;
-    
+
     memcpy(_rgchToken, pchToken, MIN(unLen, sizeof(_rgchToken)));
 }
 

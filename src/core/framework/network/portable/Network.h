@@ -24,10 +24,6 @@
 
     #define bzero(b,len) (memset((b), '\0', (len)), (void) 0)
 #else
-    //#ifdef __linux__
-      //  #define bzero(b,len) memset((b), '\0', (len)), (void) 0
-    //#endif
-
     #include <sys/socket.h>
     #include <netinet/in.h>
     #include <sys/types.h>

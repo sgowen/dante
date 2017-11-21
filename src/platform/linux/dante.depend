@@ -1461,7 +1461,7 @@
 	<cstdlib>
 	<string>
 
-1511285711 /home/sgowen/Documents/github/dante/src/core/framework/network/portable/Network.h
+1511304139 /home/sgowen/Documents/github/dante/src/core/framework/network/portable/Network.h
 	<windows.h>
 	<winsock2.h>
 	<ws2tcpip.h>
@@ -1494,9 +1494,10 @@
 	<map>
 	<vector>
 
-1510864439 /home/sgowen/Documents/github/dante/src/core/framework/util/StringUtil.h
+1511303965 /home/sgowen/Documents/github/dante/src/core/framework/util/StringUtil.h
 	<string>
 	<sstream>
+	<cstdarg>
 	<sal.h>
 
 1511226637 source:/home/sgowen/Documents/github/dante/src/core/framework/entity/EntityManager.cpp
@@ -4365,7 +4366,8 @@
 1511226637 /home/sgowen/Documents/github/dante/src/core/framework/network/steam/NGSteamGameServer.h
 	"framework/network/steam/NGSteam.h"
 
-1510864439 /home/sgowen/Documents/github/dante/src/core/framework/network/steam/NGSteam.h
+1511304119 /home/sgowen/Documents/github/dante/src/core/framework/network/steam/NGSteam.h
+	<stddef.h>
 	"steam/steam_api.h"
 	"steam/steamtypes.h"
 	"steam/isteamuserstats.h"
@@ -4720,4 +4722,210 @@
 
 1511299901 /home/sgowen/Documents/github/dante/src/core/framework/file/linux/LinuxAssetDataHandler.h
 	"framework/file/portable/AssetDataHandler.h"
+
+1510864439 /home/sgowen/Documents/github/dante/src/3rdparty/steamworks_sdk/public/steam/steam_api.h
+	"isteamclient.h"
+	"isteamuser.h"
+	"isteamfriends.h"
+	"isteamutils.h"
+	"isteammatchmaking.h"
+	"isteamuserstats.h"
+	"isteamapps.h"
+	"isteamnetworking.h"
+	"isteamremotestorage.h"
+	"isteamscreenshots.h"
+	"isteammusic.h"
+	"isteammusicremote.h"
+	"isteamhttp.h"
+	"isteamunifiedmessages.h"
+	"isteamcontroller.h"
+	"isteamugc.h"
+	"isteamapplist.h"
+	"isteamhtmlsurface.h"
+	"isteaminventory.h"
+	"isteamvideo.h"
+	"isteamparentalsettings.h"
+	"steam_api_internal.h"
+
+1510864439 /home/sgowen/Documents/github/dante/src/3rdparty/steamworks_sdk/public/steam/isteamclient.h
+	"steamtypes.h"
+	"steamclientpublic.h"
+
+1510864439 /home/sgowen/Documents/github/dante/src/3rdparty/steamworks_sdk/public/steam/steamtypes.h
+
+1510864439 /home/sgowen/Documents/github/dante/src/3rdparty/steamworks_sdk/public/steam/steamclientpublic.h
+	"steamtypes.h"
+	"steamuniverse.h"
+
+1510864439 /home/sgowen/Documents/github/dante/src/3rdparty/steamworks_sdk/public/steam/steamuniverse.h
+
+1510864439 /home/sgowen/Documents/github/dante/src/3rdparty/steamworks_sdk/public/steam/isteamuser.h
+	"isteamclient.h"
+
+1510864439 /home/sgowen/Documents/github/dante/src/3rdparty/steamworks_sdk/public/steam/isteamfriends.h
+	"isteamclient.h"
+	"steamclientpublic.h"
+
+1510864439 /home/sgowen/Documents/github/dante/src/3rdparty/steamworks_sdk/public/steam/isteamutils.h
+	"isteamclient.h"
+
+1510864439 /home/sgowen/Documents/github/dante/src/3rdparty/steamworks_sdk/public/steam/isteammatchmaking.h
+	"steamtypes.h"
+	"steamclientpublic.h"
+	"matchmakingtypes.h"
+	"isteamclient.h"
+	"isteamfriends.h"
+
+1510864439 /home/sgowen/Documents/github/dante/src/3rdparty/steamworks_sdk/public/steam/matchmakingtypes.h
+	<stdio.h>
+	<string.h>
+
+1510864439 /home/sgowen/Documents/github/dante/src/3rdparty/steamworks_sdk/public/steam/isteamuserstats.h
+	"isteamclient.h"
+	"isteamremotestorage.h"
+
+1510864439 /home/sgowen/Documents/github/dante/src/3rdparty/steamworks_sdk/public/steam/isteamremotestorage.h
+	"isteamclient.h"
+
+1510864439 /home/sgowen/Documents/github/dante/src/3rdparty/steamworks_sdk/public/steam/isteamapps.h
+
+1510864439 /home/sgowen/Documents/github/dante/src/3rdparty/steamworks_sdk/public/steam/isteamnetworking.h
+	"steamtypes.h"
+	"steamclientpublic.h"
+
+1510864439 /home/sgowen/Documents/github/dante/src/3rdparty/steamworks_sdk/public/steam/isteamscreenshots.h
+	"isteamclient.h"
+
+1510864439 /home/sgowen/Documents/github/dante/src/3rdparty/steamworks_sdk/public/steam/isteammusic.h
+	"isteamclient.h"
+
+1510864439 /home/sgowen/Documents/github/dante/src/3rdparty/steamworks_sdk/public/steam/isteammusicremote.h
+	"isteamclient.h"
+	"isteammusic.h"
+
+1510864439 /home/sgowen/Documents/github/dante/src/3rdparty/steamworks_sdk/public/steam/isteamhttp.h
+	"isteamclient.h"
+	"steamhttpenums.h"
+
+1510864439 /home/sgowen/Documents/github/dante/src/3rdparty/steamworks_sdk/public/steam/steamhttpenums.h
+
+1510864439 /home/sgowen/Documents/github/dante/src/3rdparty/steamworks_sdk/public/steam/isteamunifiedmessages.h
+
+1510864439 /home/sgowen/Documents/github/dante/src/3rdparty/steamworks_sdk/public/steam/isteamcontroller.h
+	"isteamclient.h"
+
+1510864439 /home/sgowen/Documents/github/dante/src/3rdparty/steamworks_sdk/public/steam/isteamugc.h
+	"isteamclient.h"
+
+1510864439 /home/sgowen/Documents/github/dante/src/3rdparty/steamworks_sdk/public/steam/isteamapplist.h
+	"isteamclient.h"
+	"steamtypes.h"
+
+1510864439 /home/sgowen/Documents/github/dante/src/3rdparty/steamworks_sdk/public/steam/isteamhtmlsurface.h
+	"isteamclient.h"
+
+1510864439 /home/sgowen/Documents/github/dante/src/3rdparty/steamworks_sdk/public/steam/isteaminventory.h
+	"isteamclient.h"
+
+1510864439 /home/sgowen/Documents/github/dante/src/3rdparty/steamworks_sdk/public/steam/isteamvideo.h
+	"isteamclient.h"
+
+1510864439 /home/sgowen/Documents/github/dante/src/3rdparty/steamworks_sdk/public/steam/isteamparentalsettings.h
+
+1510864439 /home/sgowen/Documents/github/dante/src/3rdparty/steamworks_sdk/public/steam/steam_api_internal.h
+
+1510864439 /home/sgowen/Documents/github/dante/src/3rdparty/steamworks_sdk/public/steam/steam_gameserver.h
+	"steam_api.h"
+	"isteamgameserver.h"
+	"isteamgameserverstats.h"
+
+1510864439 /home/sgowen/Documents/github/dante/src/3rdparty/steamworks_sdk/public/steam/isteamgameserver.h
+	"isteamclient.h"
+
+1510864439 /home/sgowen/Documents/github/dante/src/3rdparty/steamworks_sdk/public/steam/isteamgameserverstats.h
+	"isteamclient.h"
+
+1511226637 source:/home/sgowen/Documents/github/dante/src/core/framework/network/steam/NGSteam.cpp
+	"pch.h"
+	"framework/network/steam/NGSteam.h"
+
+1511226637 source:/home/sgowen/Documents/github/dante/src/core/framework/network/steam/NGSteamAddress.cpp
+	"pch.h"
+	"framework/network/steam/NGSteamAddress.h"
+	"framework/util/StringUtil.h"
+
+1511303929 source:/home/sgowen/Documents/github/dante/src/core/framework/network/steam/NGSteamClientHelper.cpp
+	"pch.h"
+	"framework/network/steam/NGSteamClientHelper.h"
+	"framework/network/steam/NGSteamP2PAuth.h"
+	"framework/network/steam/NGSteamAddress.h"
+	"framework/network/steam/NGSteamPacketHandler.h"
+	"framework/util/macros.h"
+	"framework/util/StringUtil.h"
+	"framework/util/Timing.h"
+	"framework/network/portable/OutputMemoryBitStream.h"
+	"framework/network/steam/NGSteamGameServices.h"
+	"framework/network/server/NetworkManagerServer.h"
+	"framework/network/steam/NGSteamServerHelper.h"
+
+1511304218 /home/sgowen/Documents/github/dante/src/core/framework/network/steam/NGSteamP2PAuth.h
+	"framework/network/steam/NGSteam.h"
+	"framework/util/FrameworkConstants.h"
+	"framework/math/MathUtil.h"
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/framework/network/steam/NGSteamPacketHandler.h
+	"framework/network/portable/PacketHandler.h"
+	"framework/network/portable/InputMemoryBitStream.h"
+	"framework/network/steam/NGSteamAddress.h"
+	<queue>
+	<list>
+
+1511226637 source:/home/sgowen/Documents/github/dante/src/core/framework/network/steam/NGSteamGameServer.cpp
+	"pch.h"
+	"framework/network/steam/NGSteamGameServer.h"
+	"framework/util/StringUtil.h"
+	"framework/util/macros.h"
+
+1511226637 source:/home/sgowen/Documents/github/dante/src/core/framework/network/steam/NGSteamGameServices.cpp
+	"pch.h"
+	"framework/network/steam/NGSteamGameServices.h"
+	"framework/util/StringUtil.h"
+	"framework/util/FrameworkConstants.h"
+	"framework/util/macros.h"
+	<assert.h>
+
+1511226637 source:/home/sgowen/Documents/github/dante/src/core/framework/network/steam/NGSteamPacketHandler.cpp
+	"pch.h"
+	"framework/network/steam/NGSteamPacketHandler.h"
+	"framework/network/portable/OutputMemoryBitStream.h"
+	"framework/network/portable/MachineAddress.h"
+	"framework/network/portable/InputMemoryBitStream.h"
+	"framework/util/Timing.h"
+	"framework/network/steam/NGSteam.h"
+	"framework/util/FrameworkConstants.h"
+	"framework/util/StringUtil.h"
+	"framework/network/portable/Network.h"
+
+1511226637 source:/home/sgowen/Documents/github/dante/src/core/framework/network/steam/NGSteamServerHelper.cpp
+	"pch.h"
+	"framework/network/steam/NGSteamServerHelper.h"
+	"framework/network/steam/NGSteamAddress.h"
+	"framework/network/server/ClientProxy.h"
+	"framework/network/steam/NGSteamPacketHandler.h"
+	"framework/network/steam/NGSteamGameServices.h"
+	"framework/util/StringUtil.h"
+	"framework/util/FrameworkConstants.h"
+	"framework/network/portable/OutputMemoryBitStream.h"
+	"framework/util/Timing.h"
+	<assert.h>
+
+1511304273 source:/home/sgowen/Documents/github/dante/src/core/framework/network/steam/NGSteamP2PAuth.cpp
+	"pch.h"
+	"framework/network/steam/NGSteamP2PAuth.h"
+	"framework/network/portable/InputMemoryBitStream.h"
+	"framework/network/portable/NetworkHelper.h"
+	"framework/network/steam/NGSteamAddress.h"
+	"framework/util/Timing.h"
+	"framework/util/StringUtil.h"
+	"framework/network/portable/OutputMemoryBitStream.h"
 
