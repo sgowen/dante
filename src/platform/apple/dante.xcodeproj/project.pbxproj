@@ -3460,7 +3460,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cd $SRCROOT/../../../tools\n./encrypt_textures_and_shaders.sh";
+			shellScript = "cd $SRCROOT/../../../tools\n./encrypt_textures_and_shaders.sh $SRCROOT/../../.. XOREncryptDecrypt";
 		};
 		BB5065681FB36E7A00CADEEA /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -3473,7 +3473,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cd $SRCROOT/../../../tools\n./encrypt_textures_and_shaders.sh";
+			shellScript = "cd $SRCROOT/../../../tools\n./encrypt_textures_and_shaders.sh $SRCROOT/../../.. XOREncryptDecrypt";
 		};
 /* End PBXShellScriptBuildPhase section */
 
