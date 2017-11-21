@@ -24,18 +24,20 @@
 #include "framework/util/FrameworkConstants.h"
 #include "framework/network/portable/Network.h"
 
+#include <string.h>
+
 SocketPacketHandler::SocketPacketHandler(uint16_t inPort, ProcessPacketFunc processPacketFunc, HandleNoResponseFunc handleNoResponseFunc, HandleConnectionResetFunc handleConnectionResetFunc) : PacketHandler(processPacketFunc, handleNoResponseFunc, handleConnectionResetFunc), _socketAddress(new SocketAddress(INADDR_ANY, inPort)), _socket(NULL), _isInitialized(false)
 {
     if (!SOCKET_UTIL->init())
     {
         return;
     }
-    
+
     _socket = SOCKET_UTIL->createUDPSocket(INET);
     _socket->bindSocket(*_socketAddress);
-    
+
     LOG("Initializing SocketPacketHandler at port %hu", inPort);
-    
+
     if (_socket && _socket->setNonBlockingMode(true) == NO_ERROR)
     {
         _isInitialized = true;
@@ -49,7 +51,7 @@ SocketPacketHandler::~SocketPacketHandler()
         delete _socketAddress;
         _socketAddress = NULL;
     }
-    
+
     if (_socket)
     {
         delete _socket;
@@ -63,7 +65,7 @@ void SocketPacketHandler::sendPacket(const OutputMemoryBitStream& inOutputStream
     {
         return;
     }
-    
+
     SocketAddress* inFromSocketAddress = static_cast<SocketAddress*>(inFromAddress);
     int sentByteCount = _socket->sendToAddress(inOutputStream.getBufferPtr(), inOutputStream.getByteLength(), *inFromSocketAddress);
     if (sentByteCount > 0)
@@ -88,19 +90,19 @@ void SocketPacketHandler::readIncomingPacketsIntoQueue()
     {
         return;
     }
-    
+
     static char packetMem[NW_MAX_PACKET_SIZE];
-    
+
     bzero(packetMem, NW_MAX_PACKET_SIZE);
-    
+
     int packetSize = sizeof(packetMem);
     InputMemoryBitStream inputStream(packetMem, packetSize * 8);
     SocketAddress fromAddress;
-    
+
     //keep reading until we don't have anything to read (or we hit a max number that we'll process per frame)
     int receivedPacketCount = 0;
     int totalReadByteCount = 0;
-    
+
     while (receivedPacketCount < NW_MAX_NUM_PACKETS_PER_FRAME)
     {
         int readByteCount = _socket->receiveFromAddress(packetMem, packetSize, fromAddress);
@@ -120,12 +122,12 @@ void SocketPacketHandler::readIncomingPacketsIntoQueue()
             inputStream.resetToCapacity(readByteCount);
             ++receivedPacketCount;
             totalReadByteCount += readByteCount;
-            
+
             //we made it
             //shove the packet into the queue and we'll handle it as soon as we should...
             //we'll pretend it wasn't received until simulated latency from now
             //this doesn't sim jitter, for that we would need to.....
-            
+
             float simulatedReceivedTime = Timing::getInstance()->getFrameStartTime();
             _packetQueue.push(ReceivedPacket(simulatedReceivedTime, inputStream, fromAddress));
         }
@@ -134,7 +136,7 @@ void SocketPacketHandler::readIncomingPacketsIntoQueue()
             // uhoh, error? exit or just keep going?
         }
     }
-    
+
     if (totalReadByteCount > 0)
     {
         updateBytesReceivedLastFrame(totalReadByteCount);

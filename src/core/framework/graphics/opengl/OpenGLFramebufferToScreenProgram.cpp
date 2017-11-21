@@ -19,19 +19,19 @@ OpenGLFramebufferToScreenProgram::OpenGLFramebufferToScreenProgram(const char* v
 void OpenGLFramebufferToScreenProgram::bind()
 {
     OpenGLProgram::bind();
-    
+
     glUniform1i(u_texture_unit_location, 0);
-    
+
     mapBuffer(OGLManager->getSbVboObject(), OGLManager->getTextureVertices());
-    
+
     glVertexAttribPointer(a_position_location, 2, GL_FLOAT, GL_FALSE, sizeof(GLfloat) * 9, BUFFER_OFFSET(0));
-    
+
     glEnableVertexAttribArray(a_position_location);
 }
 
 void OpenGLFramebufferToScreenProgram::unbind()
 {
     unmapBuffer(OGLManager->getSbVboObject());
-    
+
     OpenGLProgram::unbind();
 }

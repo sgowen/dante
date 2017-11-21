@@ -16,10 +16,10 @@
 #include "framework/input/GamePadEventType.h"
 #include "framework/util/FrameworkConstants.h"
 #include "framework/graphics/opengl/OpenGLManager.h"
-#include "framework/graphics/portable/NGGraphics.h"
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <cstring>
 
 int GlfwMain::joysticks[GLFW_JOYSTICK_LAST + 1];
 int GlfwMain::joystick_count = 0;
@@ -44,7 +44,7 @@ void GlfwMain::joystick_callback(int jid, int event)
     else if (event == GLFW_DISCONNECTED)
     {
         int i;
-        
+
         for (i = 0; i < joystick_count; ++i)
         {
             if (joysticks[i] == jid)
@@ -52,12 +52,12 @@ void GlfwMain::joystick_callback(int jid, int event)
                 break;
             }
         }
-        
+
         for (i = i + 1; i < joystick_count; ++i)
         {
             joysticks[i - 1] = joysticks[i];
         }
-        
+
         joystick_count--;
     }
 }
@@ -66,9 +66,9 @@ void GlfwMain::mouse_button_callback(GLFWwindow* window, int button, int action,
 {
     static double cursorX;
     static double cursorY;
-    
+
     glfwGetCursorPos(window, &cursorX, &cursorY);
-    
+
     switch (action)
     {
         case GLFW_PRESS:
@@ -96,50 +96,50 @@ int GlfwMain::exec(Engine* engine)
     {
         exit(EXIT_FAILURE);
     }
-    
+
     memset(joysticks, 0, sizeof(joysticks));
-    
+
     GLFWwindow* window;
-    
+
     glfwSetErrorCallback(error_callback);
-    
+
     if (!glfwInit())
     {
         exit(EXIT_FAILURE);
     }
-    
+
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
-    
+
     GLFWmonitor* monitor = NULL;
-    
+
     int width = 800;
     int height = 480;
-    
+
 #ifdef NG_LAUNCH_AS_FULL_SCREEN
     monitor = glfwGetPrimaryMonitor();
-    
+
     if (monitor)
     {
         const GLFWvidmode* mode = glfwGetVideoMode(monitor);
-        
+
         glfwWindowHint(GLFW_RED_BITS, mode->redBits);
         glfwWindowHint(GLFW_GREEN_BITS, mode->greenBits);
         glfwWindowHint(GLFW_BLUE_BITS, mode->blueBits);
         glfwWindowHint(GLFW_REFRESH_RATE, mode->refreshRate);
-        
+
         width  = mode->width;
         height = mode->height;
     }
 #endif
-    
+
     window = glfwCreateWindow(width, height, "Project Dante", monitor, NULL);
     if (!window)
     {
         glfwTerminate();
         exit(EXIT_FAILURE);
     }
-    
+
     for (int jid = GLFW_JOYSTICK_1; jid <= GLFW_JOYSTICK_LAST; ++jid)
     {
         if (glfwJoystickPresent(jid))
@@ -147,49 +147,49 @@ int GlfwMain::exec(Engine* engine)
             joysticks[joystick_count++] = jid;
         }
     }
-    
+
     glfwSetJoystickCallback(GlfwMain::joystick_callback);
     glfwSetMouseButtonCallback(window, GlfwMain::mouse_button_callback);
     glfwSetKeyCallback(window, GlfwMain::key_callback);
-    
+
     glfwMakeContextCurrent(window);
     glfwSwapInterval(1);
-    
+
     float lastTime = 0;
     engine->createDeviceDependentResources();
-    
+
     int glWidth = 0, glHeight = 0;
-    
+
     while (!glfwWindowShouldClose(window))
     {
         glfwGetFramebufferSize(window, &width, &height);
-        
+
         if (width != glWidth || height != glHeight)
         {
             OGLManager->setScreenSize(width, height);
-            
+
             engine->createWindowSizeDependentResources(width > 1440 ? 1440 : width, height > 900 ? 900 : height, width, height);
-            
+
             glWidth = width;
             glHeight = height;
         }
-        
+
         for (int i = 0; i < joystick_count; ++i)
         {
             int j, axis_count, button_count;
             const float* axes;
             const unsigned char* buttons;
-            
+
             axes = glfwGetJoystickAxes(joysticks[i], &axis_count);
             buttons = glfwGetJoystickButtons(joysticks[i], &button_count);
-            
+
             float stickLeftX = 0;
             float stickLeftY = 0;
             float stickRightX = 0;
             float stickRightY = 0;
             float triggerLeft = 0;
             float triggerRight = 0;
-            
+
             for (j = 0; j < axis_count; ++j)
             {
                 switch (j)
@@ -215,11 +215,11 @@ int GlfwMain::exec(Engine* engine)
                         break;
                 }
             }
-            
+
             GAME_PAD_INPUT_MANAGER->onInput(GamePadEventType_STICK_LEFT, i, stickLeftX, stickLeftY);
             GAME_PAD_INPUT_MANAGER->onInput(GamePadEventType_STICK_RIGHT, i, stickRightX, stickRightY);
             GAME_PAD_INPUT_MANAGER->onInput(GamePadEventType_TRIGGER, i, triggerLeft, triggerRight);
-            
+
             for (j = 0; j < button_count; ++j)
             {
                 switch (j)
@@ -265,14 +265,14 @@ int GlfwMain::exec(Engine* engine)
                 }
             }
         }
-        
+
         double time = glfwGetTime();
-        
+
         double deltaTime = time - lastTime;
         lastTime = time;
-        
+
         int requestedAction = engine->getRequestedAction();
-        
+
         switch (requestedAction)
         {
             case REQUESTED_ACTION_EXIT:
@@ -284,18 +284,18 @@ int GlfwMain::exec(Engine* engine)
                 engine->clearRequestedAction();
                 break;
         }
-        
+
         engine->update(deltaTime);
         engine->render();
-        
+
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
-    
+
     delete engine;
-    
+
     glfwDestroyWindow(window);
-    
+
     glfwTerminate();
     exit(EXIT_SUCCESS);
 }

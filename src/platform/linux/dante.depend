@@ -1,0 +1,4688 @@
+# depslib dependency file v1.0
+1510864752 source:/home/sgowen/Documents/github/dante/src/3rdparty/Box2D/Box2D/Box2D/Collision/b2BroadPhase.cpp
+	"Box2D/Collision/b2BroadPhase.h"
+
+1510864752 /home/sgowen/Documents/github/dante/src/3rdparty/Box2D/Box2D/Box2D/Collision/b2BroadPhase.h
+	"Box2D/Common/b2Settings.h"
+	"Box2D/Collision/b2Collision.h"
+	"Box2D/Collision/b2DynamicTree.h"
+	<algorithm>
+
+1510864752 /home/sgowen/Documents/github/dante/src/3rdparty/Box2D/Box2D/Box2D/Common/b2Settings.h
+	<stddef.h>
+	<assert.h>
+	<float.h>
+
+1510864752 /home/sgowen/Documents/github/dante/src/3rdparty/Box2D/Box2D/Box2D/Collision/b2Collision.h
+	"Box2D/Common/b2Math.h"
+	<limits.h>
+
+1510864752 /home/sgowen/Documents/github/dante/src/3rdparty/Box2D/Box2D/Box2D/Common/b2Math.h
+	"Box2D/Common/b2Settings.h"
+	<math.h>
+
+1510864752 /home/sgowen/Documents/github/dante/src/3rdparty/Box2D/Box2D/Box2D/Collision/b2DynamicTree.h
+	"Box2D/Collision/b2Collision.h"
+	"Box2D/Common/b2GrowableStack.h"
+
+1510864752 /home/sgowen/Documents/github/dante/src/3rdparty/Box2D/Box2D/Box2D/Common/b2GrowableStack.h
+	"Box2D/Common/b2Settings.h"
+	<string.h>
+
+1510864752 source:/home/sgowen/Documents/github/dante/src/3rdparty/Box2D/Box2D/Box2D/Collision/b2CollideCircle.cpp
+	"Box2D/Collision/b2Collision.h"
+	"Box2D/Collision/Shapes/b2CircleShape.h"
+	"Box2D/Collision/Shapes/b2PolygonShape.h"
+
+1510864752 /home/sgowen/Documents/github/dante/src/3rdparty/Box2D/Box2D/Box2D/Collision/Shapes/b2CircleShape.h
+	"Box2D/Collision/Shapes/b2Shape.h"
+
+1510864752 /home/sgowen/Documents/github/dante/src/3rdparty/Box2D/Box2D/Box2D/Collision/Shapes/b2Shape.h
+	"Box2D/Common/b2BlockAllocator.h"
+	"Box2D/Common/b2Math.h"
+	"Box2D/Collision/b2Collision.h"
+
+1510864752 /home/sgowen/Documents/github/dante/src/3rdparty/Box2D/Box2D/Box2D/Common/b2BlockAllocator.h
+	"Box2D/Common/b2Settings.h"
+
+1510864752 /home/sgowen/Documents/github/dante/src/3rdparty/Box2D/Box2D/Box2D/Collision/Shapes/b2PolygonShape.h
+	"Box2D/Collision/Shapes/b2Shape.h"
+
+1510864752 source:/home/sgowen/Documents/github/dante/src/3rdparty/Box2D/Box2D/Box2D/Collision/b2CollideEdge.cpp
+	"Box2D/Collision/b2Collision.h"
+	"Box2D/Collision/Shapes/b2CircleShape.h"
+	"Box2D/Collision/Shapes/b2EdgeShape.h"
+	"Box2D/Collision/Shapes/b2PolygonShape.h"
+
+1510864752 /home/sgowen/Documents/github/dante/src/3rdparty/Box2D/Box2D/Box2D/Collision/Shapes/b2EdgeShape.h
+	"Box2D/Collision/Shapes/b2Shape.h"
+
+1510864752 source:/home/sgowen/Documents/github/dante/src/3rdparty/Box2D/Box2D/Box2D/Collision/b2CollidePolygon.cpp
+	"Box2D/Collision/b2Collision.h"
+	"Box2D/Collision/Shapes/b2PolygonShape.h"
+
+1510864752 source:/home/sgowen/Documents/github/dante/src/3rdparty/Box2D/Box2D/Box2D/Collision/b2Collision.cpp
+	"Box2D/Collision/b2Collision.h"
+	"Box2D/Collision/b2Distance.h"
+
+1510864752 /home/sgowen/Documents/github/dante/src/3rdparty/Box2D/Box2D/Box2D/Collision/b2Distance.h
+	"Box2D/Common/b2Math.h"
+
+1510864752 source:/home/sgowen/Documents/github/dante/src/3rdparty/Box2D/Box2D/Box2D/Collision/b2Distance.cpp
+	"Box2D/Collision/b2Distance.h"
+	"Box2D/Collision/Shapes/b2CircleShape.h"
+	"Box2D/Collision/Shapes/b2EdgeShape.h"
+	"Box2D/Collision/Shapes/b2ChainShape.h"
+	"Box2D/Collision/Shapes/b2PolygonShape.h"
+
+1510864752 /home/sgowen/Documents/github/dante/src/3rdparty/Box2D/Box2D/Box2D/Collision/Shapes/b2ChainShape.h
+	"Box2D/Collision/Shapes/b2Shape.h"
+
+1510864752 source:/home/sgowen/Documents/github/dante/src/3rdparty/Box2D/Box2D/Box2D/Collision/b2DynamicTree.cpp
+	"Box2D/Collision/b2DynamicTree.h"
+	<string.h>
+
+1510864752 source:/home/sgowen/Documents/github/dante/src/3rdparty/Box2D/Box2D/Box2D/Collision/b2TimeOfImpact.cpp
+	"Box2D/Collision/b2Collision.h"
+	"Box2D/Collision/b2Distance.h"
+	"Box2D/Collision/b2TimeOfImpact.h"
+	"Box2D/Collision/Shapes/b2CircleShape.h"
+	"Box2D/Collision/Shapes/b2PolygonShape.h"
+	"Box2D/Common/b2Timer.h"
+	<stdio.h>
+
+1510864752 /home/sgowen/Documents/github/dante/src/3rdparty/Box2D/Box2D/Box2D/Collision/b2TimeOfImpact.h
+	"Box2D/Common/b2Math.h"
+	"Box2D/Collision/b2Distance.h"
+
+1510864752 /home/sgowen/Documents/github/dante/src/3rdparty/Box2D/Box2D/Box2D/Common/b2Timer.h
+	"Box2D/Common/b2Settings.h"
+
+1510864752 source:/home/sgowen/Documents/github/dante/src/3rdparty/Box2D/Box2D/Box2D/Collision/Shapes/b2ChainShape.cpp
+	"Box2D/Collision/Shapes/b2ChainShape.h"
+	"Box2D/Collision/Shapes/b2EdgeShape.h"
+	<new>
+	<string.h>
+
+1510864752 source:/home/sgowen/Documents/github/dante/src/3rdparty/Box2D/Box2D/Box2D/Collision/Shapes/b2CircleShape.cpp
+	"Box2D/Collision/Shapes/b2CircleShape.h"
+	<new>
+
+1510864752 source:/home/sgowen/Documents/github/dante/src/3rdparty/Box2D/Box2D/Box2D/Collision/Shapes/b2EdgeShape.cpp
+	"Box2D/Collision/Shapes/b2EdgeShape.h"
+	<new>
+
+1510864752 source:/home/sgowen/Documents/github/dante/src/3rdparty/Box2D/Box2D/Box2D/Collision/Shapes/b2PolygonShape.cpp
+	"Box2D/Collision/Shapes/b2PolygonShape.h"
+	<new>
+
+1510864752 source:/home/sgowen/Documents/github/dante/src/3rdparty/Box2D/Box2D/Box2D/Common/b2BlockAllocator.cpp
+	"Box2D/Common/b2BlockAllocator.h"
+	<limits.h>
+	<string.h>
+	<stddef.h>
+
+1510864752 source:/home/sgowen/Documents/github/dante/src/3rdparty/Box2D/Box2D/Box2D/Common/b2Draw.cpp
+	"Box2D/Common/b2Draw.h"
+
+1510864752 /home/sgowen/Documents/github/dante/src/3rdparty/Box2D/Box2D/Box2D/Common/b2Draw.h
+	"Box2D/Common/b2Math.h"
+
+1510864752 source:/home/sgowen/Documents/github/dante/src/3rdparty/Box2D/Box2D/Box2D/Common/b2Math.cpp
+	"Box2D/Common/b2Math.h"
+
+1510864752 source:/home/sgowen/Documents/github/dante/src/3rdparty/Box2D/Box2D/Box2D/Common/b2Settings.cpp
+	"Box2D/Common/b2Settings.h"
+	<stdio.h>
+	<stdarg.h>
+	<stdlib.h>
+
+1510864752 source:/home/sgowen/Documents/github/dante/src/3rdparty/Box2D/Box2D/Box2D/Common/b2StackAllocator.cpp
+	"Box2D/Common/b2StackAllocator.h"
+	"Box2D/Common/b2Math.h"
+
+1510864752 /home/sgowen/Documents/github/dante/src/3rdparty/Box2D/Box2D/Box2D/Common/b2StackAllocator.h
+	"Box2D/Common/b2Settings.h"
+
+1510864752 source:/home/sgowen/Documents/github/dante/src/3rdparty/Box2D/Box2D/Box2D/Common/b2Timer.cpp
+	"Box2D/Common/b2Timer.h"
+	<windows.h>
+	<sys/time.h>
+
+1510864752 source:/home/sgowen/Documents/github/dante/src/3rdparty/Box2D/Box2D/Box2D/Dynamics/b2Body.cpp
+	"Box2D/Dynamics/b2Body.h"
+	"Box2D/Dynamics/b2Fixture.h"
+	"Box2D/Dynamics/b2World.h"
+	"Box2D/Dynamics/Contacts/b2Contact.h"
+	"Box2D/Dynamics/Joints/b2Joint.h"
+
+1510864752 /home/sgowen/Documents/github/dante/src/3rdparty/Box2D/Box2D/Box2D/Dynamics/b2Body.h
+	"Box2D/Common/b2Math.h"
+	"Box2D/Collision/Shapes/b2Shape.h"
+	<memory>
+
+1510864752 /home/sgowen/Documents/github/dante/src/3rdparty/Box2D/Box2D/Box2D/Dynamics/b2Fixture.h
+	"Box2D/Dynamics/b2Body.h"
+	"Box2D/Collision/b2Collision.h"
+	"Box2D/Collision/Shapes/b2Shape.h"
+
+1510864752 /home/sgowen/Documents/github/dante/src/3rdparty/Box2D/Box2D/Box2D/Dynamics/b2World.h
+	"Box2D/Common/b2Math.h"
+	"Box2D/Common/b2BlockAllocator.h"
+	"Box2D/Common/b2StackAllocator.h"
+	"Box2D/Dynamics/b2ContactManager.h"
+	"Box2D/Dynamics/b2WorldCallbacks.h"
+	"Box2D/Dynamics/b2TimeStep.h"
+
+1510864752 /home/sgowen/Documents/github/dante/src/3rdparty/Box2D/Box2D/Box2D/Dynamics/b2ContactManager.h
+	"Box2D/Collision/b2BroadPhase.h"
+
+1510864752 /home/sgowen/Documents/github/dante/src/3rdparty/Box2D/Box2D/Box2D/Dynamics/b2WorldCallbacks.h
+	"Box2D/Common/b2Settings.h"
+
+1510864752 /home/sgowen/Documents/github/dante/src/3rdparty/Box2D/Box2D/Box2D/Dynamics/b2TimeStep.h
+	"Box2D/Common/b2Math.h"
+
+1510864752 /home/sgowen/Documents/github/dante/src/3rdparty/Box2D/Box2D/Box2D/Dynamics/Contacts/b2Contact.h
+	"Box2D/Common/b2Math.h"
+	"Box2D/Collision/b2Collision.h"
+	"Box2D/Collision/Shapes/b2Shape.h"
+	"Box2D/Dynamics/b2Fixture.h"
+
+1510864752 /home/sgowen/Documents/github/dante/src/3rdparty/Box2D/Box2D/Box2D/Dynamics/Joints/b2Joint.h
+	"Box2D/Common/b2Math.h"
+
+1510864752 source:/home/sgowen/Documents/github/dante/src/3rdparty/Box2D/Box2D/Box2D/Dynamics/b2ContactManager.cpp
+	"Box2D/Dynamics/b2ContactManager.h"
+	"Box2D/Dynamics/b2Body.h"
+	"Box2D/Dynamics/b2Fixture.h"
+	"Box2D/Dynamics/b2WorldCallbacks.h"
+	"Box2D/Dynamics/Contacts/b2Contact.h"
+
+1510864752 source:/home/sgowen/Documents/github/dante/src/3rdparty/Box2D/Box2D/Box2D/Dynamics/b2Fixture.cpp
+	"Box2D/Dynamics/b2Fixture.h"
+	"Box2D/Dynamics/Contacts/b2Contact.h"
+	"Box2D/Dynamics/b2World.h"
+	"Box2D/Collision/Shapes/b2CircleShape.h"
+	"Box2D/Collision/Shapes/b2EdgeShape.h"
+	"Box2D/Collision/Shapes/b2PolygonShape.h"
+	"Box2D/Collision/Shapes/b2ChainShape.h"
+	"Box2D/Collision/b2BroadPhase.h"
+	"Box2D/Collision/b2Collision.h"
+	"Box2D/Common/b2BlockAllocator.h"
+
+1510864752 source:/home/sgowen/Documents/github/dante/src/3rdparty/Box2D/Box2D/Box2D/Dynamics/b2Island.cpp
+	"Box2D/Collision/b2Distance.h"
+	"Box2D/Dynamics/b2Island.h"
+	"Box2D/Dynamics/b2Body.h"
+	"Box2D/Dynamics/b2Fixture.h"
+	"Box2D/Dynamics/b2World.h"
+	"Box2D/Dynamics/Contacts/b2Contact.h"
+	"Box2D/Dynamics/Contacts/b2ContactSolver.h"
+	"Box2D/Dynamics/Joints/b2Joint.h"
+	"Box2D/Common/b2StackAllocator.h"
+	"Box2D/Common/b2Timer.h"
+
+1510864752 /home/sgowen/Documents/github/dante/src/3rdparty/Box2D/Box2D/Box2D/Dynamics/b2Island.h
+	"Box2D/Common/b2Math.h"
+	"Box2D/Dynamics/b2Body.h"
+	"Box2D/Dynamics/b2TimeStep.h"
+
+1510864752 /home/sgowen/Documents/github/dante/src/3rdparty/Box2D/Box2D/Box2D/Dynamics/Contacts/b2ContactSolver.h
+	"Box2D/Common/b2Math.h"
+	"Box2D/Collision/b2Collision.h"
+	"Box2D/Dynamics/b2TimeStep.h"
+
+1510864752 source:/home/sgowen/Documents/github/dante/src/3rdparty/Box2D/Box2D/Box2D/Dynamics/b2World.cpp
+	"Box2D/Dynamics/b2World.h"
+	"Box2D/Dynamics/b2Body.h"
+	"Box2D/Dynamics/b2Fixture.h"
+	"Box2D/Dynamics/b2Island.h"
+	"Box2D/Dynamics/Joints/b2PulleyJoint.h"
+	"Box2D/Dynamics/Contacts/b2Contact.h"
+	"Box2D/Dynamics/Contacts/b2ContactSolver.h"
+	"Box2D/Collision/b2Collision.h"
+	"Box2D/Collision/b2BroadPhase.h"
+	"Box2D/Collision/Shapes/b2CircleShape.h"
+	"Box2D/Collision/Shapes/b2EdgeShape.h"
+	"Box2D/Collision/Shapes/b2ChainShape.h"
+	"Box2D/Collision/Shapes/b2PolygonShape.h"
+	"Box2D/Collision/b2TimeOfImpact.h"
+	"Box2D/Common/b2Draw.h"
+	"Box2D/Common/b2Timer.h"
+	<new>
+
+1510864752 /home/sgowen/Documents/github/dante/src/3rdparty/Box2D/Box2D/Box2D/Dynamics/Joints/b2PulleyJoint.h
+	"Box2D/Dynamics/Joints/b2Joint.h"
+
+1510864752 source:/home/sgowen/Documents/github/dante/src/3rdparty/Box2D/Box2D/Box2D/Dynamics/b2WorldCallbacks.cpp
+	"Box2D/Dynamics/b2WorldCallbacks.h"
+	"Box2D/Dynamics/b2Fixture.h"
+
+1510864752 source:/home/sgowen/Documents/github/dante/src/3rdparty/Box2D/Box2D/Box2D/Dynamics/Contacts/b2ChainAndCircleContact.cpp
+	"Box2D/Dynamics/Contacts/b2ChainAndCircleContact.h"
+	"Box2D/Common/b2BlockAllocator.h"
+	"Box2D/Dynamics/b2Fixture.h"
+	"Box2D/Collision/Shapes/b2ChainShape.h"
+	"Box2D/Collision/Shapes/b2EdgeShape.h"
+	<new>
+
+1510864752 /home/sgowen/Documents/github/dante/src/3rdparty/Box2D/Box2D/Box2D/Dynamics/Contacts/b2ChainAndCircleContact.h
+	"Box2D/Dynamics/Contacts/b2Contact.h"
+
+1510864752 source:/home/sgowen/Documents/github/dante/src/3rdparty/Box2D/Box2D/Box2D/Dynamics/Contacts/b2ChainAndPolygonContact.cpp
+	"Box2D/Dynamics/Contacts/b2ChainAndPolygonContact.h"
+	"Box2D/Common/b2BlockAllocator.h"
+	"Box2D/Dynamics/b2Fixture.h"
+	"Box2D/Collision/Shapes/b2ChainShape.h"
+	"Box2D/Collision/Shapes/b2EdgeShape.h"
+	<new>
+
+1510864752 /home/sgowen/Documents/github/dante/src/3rdparty/Box2D/Box2D/Box2D/Dynamics/Contacts/b2ChainAndPolygonContact.h
+	"Box2D/Dynamics/Contacts/b2Contact.h"
+
+1510864752 source:/home/sgowen/Documents/github/dante/src/3rdparty/Box2D/Box2D/Box2D/Dynamics/Contacts/b2CircleContact.cpp
+	"Box2D/Dynamics/Contacts/b2CircleContact.h"
+	"Box2D/Dynamics/b2Body.h"
+	"Box2D/Dynamics/b2Fixture.h"
+	"Box2D/Dynamics/b2WorldCallbacks.h"
+	"Box2D/Common/b2BlockAllocator.h"
+	"Box2D/Collision/b2TimeOfImpact.h"
+	<new>
+
+1510864752 /home/sgowen/Documents/github/dante/src/3rdparty/Box2D/Box2D/Box2D/Dynamics/Contacts/b2CircleContact.h
+	"Box2D/Dynamics/Contacts/b2Contact.h"
+
+1510864752 source:/home/sgowen/Documents/github/dante/src/3rdparty/Box2D/Box2D/Box2D/Dynamics/Contacts/b2Contact.cpp
+	"Box2D/Dynamics/Contacts/b2Contact.h"
+	"Box2D/Dynamics/Contacts/b2CircleContact.h"
+	"Box2D/Dynamics/Contacts/b2PolygonAndCircleContact.h"
+	"Box2D/Dynamics/Contacts/b2PolygonContact.h"
+	"Box2D/Dynamics/Contacts/b2EdgeAndCircleContact.h"
+	"Box2D/Dynamics/Contacts/b2EdgeAndPolygonContact.h"
+	"Box2D/Dynamics/Contacts/b2ChainAndCircleContact.h"
+	"Box2D/Dynamics/Contacts/b2ChainAndPolygonContact.h"
+	"Box2D/Dynamics/Contacts/b2ContactSolver.h"
+	"Box2D/Collision/b2Collision.h"
+	"Box2D/Collision/b2TimeOfImpact.h"
+	"Box2D/Collision/Shapes/b2Shape.h"
+	"Box2D/Common/b2BlockAllocator.h"
+	"Box2D/Dynamics/b2Body.h"
+	"Box2D/Dynamics/b2Fixture.h"
+	"Box2D/Dynamics/b2World.h"
+
+1510864752 /home/sgowen/Documents/github/dante/src/3rdparty/Box2D/Box2D/Box2D/Dynamics/Contacts/b2PolygonAndCircleContact.h
+	"Box2D/Dynamics/Contacts/b2Contact.h"
+
+1510864752 /home/sgowen/Documents/github/dante/src/3rdparty/Box2D/Box2D/Box2D/Dynamics/Contacts/b2PolygonContact.h
+	"Box2D/Dynamics/Contacts/b2Contact.h"
+
+1510864752 /home/sgowen/Documents/github/dante/src/3rdparty/Box2D/Box2D/Box2D/Dynamics/Contacts/b2EdgeAndCircleContact.h
+	"Box2D/Dynamics/Contacts/b2Contact.h"
+
+1510864752 /home/sgowen/Documents/github/dante/src/3rdparty/Box2D/Box2D/Box2D/Dynamics/Contacts/b2EdgeAndPolygonContact.h
+	"Box2D/Dynamics/Contacts/b2Contact.h"
+
+1510864752 source:/home/sgowen/Documents/github/dante/src/3rdparty/Box2D/Box2D/Box2D/Dynamics/Contacts/b2ContactSolver.cpp
+	"Box2D/Dynamics/Contacts/b2ContactSolver.h"
+	"Box2D/Dynamics/Contacts/b2Contact.h"
+	"Box2D/Dynamics/b2Body.h"
+	"Box2D/Dynamics/b2Fixture.h"
+	"Box2D/Dynamics/b2World.h"
+	"Box2D/Common/b2StackAllocator.h"
+
+1510864752 source:/home/sgowen/Documents/github/dante/src/3rdparty/Box2D/Box2D/Box2D/Dynamics/Contacts/b2EdgeAndCircleContact.cpp
+	"Box2D/Dynamics/Contacts/b2EdgeAndCircleContact.h"
+	"Box2D/Common/b2BlockAllocator.h"
+	"Box2D/Dynamics/b2Fixture.h"
+	<new>
+
+1510864752 source:/home/sgowen/Documents/github/dante/src/3rdparty/Box2D/Box2D/Box2D/Dynamics/Contacts/b2EdgeAndPolygonContact.cpp
+	"Box2D/Dynamics/Contacts/b2EdgeAndPolygonContact.h"
+	"Box2D/Common/b2BlockAllocator.h"
+	"Box2D/Dynamics/b2Fixture.h"
+	<new>
+
+1510864752 source:/home/sgowen/Documents/github/dante/src/3rdparty/Box2D/Box2D/Box2D/Dynamics/Contacts/b2PolygonAndCircleContact.cpp
+	"Box2D/Dynamics/Contacts/b2PolygonAndCircleContact.h"
+	"Box2D/Common/b2BlockAllocator.h"
+	"Box2D/Dynamics/b2Fixture.h"
+	<new>
+
+1510864752 source:/home/sgowen/Documents/github/dante/src/3rdparty/Box2D/Box2D/Box2D/Dynamics/Contacts/b2PolygonContact.cpp
+	"Box2D/Dynamics/Contacts/b2PolygonContact.h"
+	"Box2D/Common/b2BlockAllocator.h"
+	"Box2D/Collision/b2TimeOfImpact.h"
+	"Box2D/Dynamics/b2Body.h"
+	"Box2D/Dynamics/b2Fixture.h"
+	"Box2D/Dynamics/b2WorldCallbacks.h"
+	<new>
+
+1510864752 source:/home/sgowen/Documents/github/dante/src/3rdparty/Box2D/Box2D/Box2D/Dynamics/Joints/b2DistanceJoint.cpp
+	"Box2D/Dynamics/Joints/b2DistanceJoint.h"
+	"Box2D/Dynamics/b2Body.h"
+	"Box2D/Dynamics/b2TimeStep.h"
+
+1510864752 /home/sgowen/Documents/github/dante/src/3rdparty/Box2D/Box2D/Box2D/Dynamics/Joints/b2DistanceJoint.h
+	"Box2D/Dynamics/Joints/b2Joint.h"
+
+1510864752 source:/home/sgowen/Documents/github/dante/src/3rdparty/Box2D/Box2D/Box2D/Dynamics/Joints/b2FrictionJoint.cpp
+	"Box2D/Dynamics/Joints/b2FrictionJoint.h"
+	"Box2D/Dynamics/b2Body.h"
+	"Box2D/Dynamics/b2TimeStep.h"
+
+1510864752 /home/sgowen/Documents/github/dante/src/3rdparty/Box2D/Box2D/Box2D/Dynamics/Joints/b2FrictionJoint.h
+	"Box2D/Dynamics/Joints/b2Joint.h"
+
+1510864752 source:/home/sgowen/Documents/github/dante/src/3rdparty/Box2D/Box2D/Box2D/Dynamics/Joints/b2GearJoint.cpp
+	"Box2D/Dynamics/Joints/b2GearJoint.h"
+	"Box2D/Dynamics/Joints/b2RevoluteJoint.h"
+	"Box2D/Dynamics/Joints/b2PrismaticJoint.h"
+	"Box2D/Dynamics/b2Body.h"
+	"Box2D/Dynamics/b2TimeStep.h"
+
+1510864752 /home/sgowen/Documents/github/dante/src/3rdparty/Box2D/Box2D/Box2D/Dynamics/Joints/b2GearJoint.h
+	"Box2D/Dynamics/Joints/b2Joint.h"
+
+1510864752 /home/sgowen/Documents/github/dante/src/3rdparty/Box2D/Box2D/Box2D/Dynamics/Joints/b2RevoluteJoint.h
+	"Box2D/Dynamics/Joints/b2Joint.h"
+
+1510864752 /home/sgowen/Documents/github/dante/src/3rdparty/Box2D/Box2D/Box2D/Dynamics/Joints/b2PrismaticJoint.h
+	"Box2D/Dynamics/Joints/b2Joint.h"
+
+1510864752 source:/home/sgowen/Documents/github/dante/src/3rdparty/Box2D/Box2D/Box2D/Dynamics/Joints/b2Joint.cpp
+	"Box2D/Dynamics/Joints/b2Joint.h"
+	"Box2D/Dynamics/Joints/b2DistanceJoint.h"
+	"Box2D/Dynamics/Joints/b2WheelJoint.h"
+	"Box2D/Dynamics/Joints/b2MouseJoint.h"
+	"Box2D/Dynamics/Joints/b2RevoluteJoint.h"
+	"Box2D/Dynamics/Joints/b2PrismaticJoint.h"
+	"Box2D/Dynamics/Joints/b2PulleyJoint.h"
+	"Box2D/Dynamics/Joints/b2GearJoint.h"
+	"Box2D/Dynamics/Joints/b2WeldJoint.h"
+	"Box2D/Dynamics/Joints/b2FrictionJoint.h"
+	"Box2D/Dynamics/Joints/b2RopeJoint.h"
+	"Box2D/Dynamics/Joints/b2MotorJoint.h"
+	"Box2D/Dynamics/b2Body.h"
+	"Box2D/Dynamics/b2World.h"
+	"Box2D/Common/b2BlockAllocator.h"
+	<new>
+
+1510864752 /home/sgowen/Documents/github/dante/src/3rdparty/Box2D/Box2D/Box2D/Dynamics/Joints/b2WheelJoint.h
+	"Box2D/Dynamics/Joints/b2Joint.h"
+
+1510864752 /home/sgowen/Documents/github/dante/src/3rdparty/Box2D/Box2D/Box2D/Dynamics/Joints/b2MouseJoint.h
+	"Box2D/Dynamics/Joints/b2Joint.h"
+
+1510864752 /home/sgowen/Documents/github/dante/src/3rdparty/Box2D/Box2D/Box2D/Dynamics/Joints/b2WeldJoint.h
+	"Box2D/Dynamics/Joints/b2Joint.h"
+
+1510864752 /home/sgowen/Documents/github/dante/src/3rdparty/Box2D/Box2D/Box2D/Dynamics/Joints/b2RopeJoint.h
+	"Box2D/Dynamics/Joints/b2Joint.h"
+
+1510864752 /home/sgowen/Documents/github/dante/src/3rdparty/Box2D/Box2D/Box2D/Dynamics/Joints/b2MotorJoint.h
+	"Box2D/Dynamics/Joints/b2Joint.h"
+
+1510864752 source:/home/sgowen/Documents/github/dante/src/3rdparty/Box2D/Box2D/Box2D/Dynamics/Joints/b2MotorJoint.cpp
+	"Box2D/Dynamics/Joints/b2MotorJoint.h"
+	"Box2D/Dynamics/b2Body.h"
+	"Box2D/Dynamics/b2TimeStep.h"
+
+1510864752 source:/home/sgowen/Documents/github/dante/src/3rdparty/Box2D/Box2D/Box2D/Dynamics/Joints/b2MouseJoint.cpp
+	"Box2D/Dynamics/Joints/b2MouseJoint.h"
+	"Box2D/Dynamics/b2Body.h"
+	"Box2D/Dynamics/b2TimeStep.h"
+
+1510864752 source:/home/sgowen/Documents/github/dante/src/3rdparty/Box2D/Box2D/Box2D/Dynamics/Joints/b2PrismaticJoint.cpp
+	"Box2D/Dynamics/Joints/b2PrismaticJoint.h"
+	"Box2D/Dynamics/b2Body.h"
+	"Box2D/Dynamics/b2TimeStep.h"
+
+1510864752 source:/home/sgowen/Documents/github/dante/src/3rdparty/Box2D/Box2D/Box2D/Dynamics/Joints/b2PulleyJoint.cpp
+	"Box2D/Dynamics/Joints/b2PulleyJoint.h"
+	"Box2D/Dynamics/b2Body.h"
+	"Box2D/Dynamics/b2TimeStep.h"
+
+1510864752 source:/home/sgowen/Documents/github/dante/src/3rdparty/Box2D/Box2D/Box2D/Dynamics/Joints/b2RevoluteJoint.cpp
+	"Box2D/Dynamics/Joints/b2RevoluteJoint.h"
+	"Box2D/Dynamics/b2Body.h"
+	"Box2D/Dynamics/b2TimeStep.h"
+
+1510864752 source:/home/sgowen/Documents/github/dante/src/3rdparty/Box2D/Box2D/Box2D/Dynamics/Joints/b2RopeJoint.cpp
+	"Box2D/Dynamics/Joints/b2RopeJoint.h"
+	"Box2D/Dynamics/b2Body.h"
+	"Box2D/Dynamics/b2TimeStep.h"
+
+1510864752 source:/home/sgowen/Documents/github/dante/src/3rdparty/Box2D/Box2D/Box2D/Dynamics/Joints/b2WeldJoint.cpp
+	"Box2D/Dynamics/Joints/b2WeldJoint.h"
+	"Box2D/Dynamics/b2Body.h"
+	"Box2D/Dynamics/b2TimeStep.h"
+
+1510864752 source:/home/sgowen/Documents/github/dante/src/3rdparty/Box2D/Box2D/Box2D/Dynamics/Joints/b2WheelJoint.cpp
+	"Box2D/Dynamics/Joints/b2WheelJoint.h"
+	"Box2D/Dynamics/b2Body.h"
+	"Box2D/Dynamics/b2TimeStep.h"
+
+1510864752 source:/home/sgowen/Documents/github/dante/src/3rdparty/Box2D/Box2D/Box2D/Rope/b2Rope.cpp
+	"Box2D/Rope/b2Rope.h"
+	"Box2D/Common/b2Draw.h"
+
+1510864752 /home/sgowen/Documents/github/dante/src/3rdparty/Box2D/Box2D/Box2D/Rope/b2Rope.h
+	"Box2D/Common/b2Math.h"
+
+1510864921 source:/home/sgowen/Documents/github/dante/src/3rdparty/glfw/src/context.c
+	"internal.h"
+	<assert.h>
+	<stdio.h>
+	<string.h>
+	<limits.h>
+	<stdio.h>
+
+1510864921 /home/sgowen/Documents/github/dante/src/3rdparty/glfw/src/internal.h
+	"glfw_config.h"
+	"../include/GLFW/glfw3.h"
+	"cocoa_platform.h"
+	"win32_platform.h"
+	"x11_platform.h"
+	"wl_platform.h"
+	"mir_platform.h"
+	"null_platform.h"
+
+1511279869 /home/sgowen/Documents/github/dante/src/3rdparty/glfw/include/GLFW/glfw3.h
+	<stddef.h>
+	<stdint.h>
+	<GLES/gl.h>
+	<GLES/glext.h>
+	<GLES2/gl2.h>
+	<GLES2/gl2ext.h>
+	<GLES3/gl3.h>
+	<GLES2/gl2ext.h>
+	<GLES3/gl31.h>
+	<GLES2/gl2ext.h>
+	<GLES3/gl32.h>
+	<GLES2/gl2ext.h>
+	<OpenGL/gl3.h>
+	<OpenGL/gl3ext.h>
+	<GL/glcorearb.h>
+	<OpenGL/gl.h>
+	<OpenGL/glu.h>
+	<GL/gl.h>
+	<GL/glext.h>
+	<GL/glu.h>
+	<vulkan/vulkan.h>
+
+1510864921 /home/sgowen/Documents/github/dante/src/3rdparty/glfw/src/cocoa_platform.h
+	<stdint.h>
+	<dlfcn.h>
+	<Carbon/Carbon.h>
+	<ApplicationServices/ApplicationServices.h>
+	"posix_thread.h"
+	"cocoa_joystick.h"
+	"nsgl_context.h"
+	"egl_context.h"
+	"osmesa_context.h"
+
+1510864921 /home/sgowen/Documents/github/dante/src/3rdparty/glfw/src/posix_thread.h
+	<pthread.h>
+
+1510864921 /home/sgowen/Documents/github/dante/src/3rdparty/glfw/src/cocoa_joystick.h
+	<IOKit/IOKitLib.h>
+	<IOKit/IOCFPlugIn.h>
+	<IOKit/hid/IOHIDLib.h>
+	<IOKit/hid/IOHIDKeys.h>
+
+1510864921 /home/sgowen/Documents/github/dante/src/3rdparty/glfw/src/nsgl_context.h
+
+1510864921 /home/sgowen/Documents/github/dante/src/3rdparty/glfw/src/egl_context.h
+	<EGL/eglplatform.h>
+
+1510864921 /home/sgowen/Documents/github/dante/src/3rdparty/glfw/src/osmesa_context.h
+
+1510864921 /home/sgowen/Documents/github/dante/src/3rdparty/glfw/src/win32_platform.h
+	<wctype.h>
+	<windows.h>
+	<dinput.h>
+	<xinput.h>
+	<dbt.h>
+	<malloc.h>
+	"win32_joystick.h"
+	"wgl_context.h"
+	"egl_context.h"
+	"osmesa_context.h"
+
+1510864921 /home/sgowen/Documents/github/dante/src/3rdparty/glfw/src/win32_joystick.h
+
+1510864921 /home/sgowen/Documents/github/dante/src/3rdparty/glfw/src/wgl_context.h
+
+1510864921 /home/sgowen/Documents/github/dante/src/3rdparty/glfw/src/x11_platform.h
+	<unistd.h>
+	<signal.h>
+	<stdint.h>
+	<dlfcn.h>
+	<X11/Xlib.h>
+	<X11/keysym.h>
+	<X11/Xatom.h>
+	<X11/Xcursor/Xcursor.h>
+	<X11/extensions/Xrandr.h>
+	<X11/XKBlib.h>
+	<X11/extensions/Xinerama.h>
+	<X11/extensions/XInput2.h>
+	"posix_thread.h"
+	"posix_time.h"
+	"xkb_unicode.h"
+	"glx_context.h"
+	"egl_context.h"
+	"osmesa_context.h"
+	"linux_joystick.h"
+	"null_joystick.h"
+
+1510864921 /home/sgowen/Documents/github/dante/src/3rdparty/glfw/src/posix_time.h
+	<stdint.h>
+
+1510864921 /home/sgowen/Documents/github/dante/src/3rdparty/glfw/src/xkb_unicode.h
+
+1510864921 /home/sgowen/Documents/github/dante/src/3rdparty/glfw/src/glx_context.h
+
+1510864921 /home/sgowen/Documents/github/dante/src/3rdparty/glfw/src/linux_joystick.h
+	<linux/input.h>
+	<linux/limits.h>
+	<regex.h>
+
+1510864921 /home/sgowen/Documents/github/dante/src/3rdparty/glfw/src/null_joystick.h
+
+1511279869 /home/sgowen/Documents/github/dante/src/3rdparty/glfw/src/wl_platform.h
+	<wayland-client.h>
+	<xkbcommon/xkbcommon.h>
+	<xkbcommon/xkbcommon-compose.h>
+	<dlfcn.h>
+	"posix_thread.h"
+	"posix_time.h"
+	"linux_joystick.h"
+	"xkb_unicode.h"
+	"egl_context.h"
+	"osmesa_context.h"
+	"wayland-relative-pointer-unstable-v1-client-protocol.h"
+	"wayland-pointer-constraints-unstable-v1-client-protocol.h"
+	"wayland-idle-inhibit-unstable-v1-client-protocol.h"
+
+1510864921 /home/sgowen/Documents/github/dante/src/3rdparty/glfw/src/mir_platform.h
+	<sys/queue.h>
+	<pthread.h>
+	<dlfcn.h>
+	<mir_toolkit/mir_client_library.h>
+	"posix_thread.h"
+	"posix_time.h"
+	"linux_joystick.h"
+	"xkb_unicode.h"
+	"egl_context.h"
+	"osmesa_context.h"
+
+1510864921 /home/sgowen/Documents/github/dante/src/3rdparty/glfw/src/null_platform.h
+	<dlfcn.h>
+	"osmesa_context.h"
+	"posix_time.h"
+	"posix_thread.h"
+	"null_joystick.h"
+
+1510864921 source:/home/sgowen/Documents/github/dante/src/3rdparty/glfw/src/egl_context.c
+	"internal.h"
+	<stdio.h>
+	<string.h>
+	<stdlib.h>
+	<assert.h>
+
+1510864921 source:/home/sgowen/Documents/github/dante/src/3rdparty/glfw/src/glx_context.c
+	"internal.h"
+	<string.h>
+	<stdlib.h>
+	<assert.h>
+
+1511226648 source:/home/sgowen/Documents/github/dante/src/3rdparty/glfw/src/init.c
+	"internal.h"
+	"mappings.h"
+	<string.h>
+	<stdlib.h>
+	<stdio.h>
+	<stdarg.h>
+	<assert.h>
+
+1510864921 /home/sgowen/Documents/github/dante/src/3rdparty/glfw/src/mappings.h
+
+1511226648 source:/home/sgowen/Documents/github/dante/src/3rdparty/glfw/src/input.c
+	"internal.h"
+	<assert.h>
+	<float.h>
+	<math.h>
+	<stdlib.h>
+	<string.h>
+	<ctype.h>
+
+1510864921 source:/home/sgowen/Documents/github/dante/src/3rdparty/glfw/src/linux_joystick.c
+	"internal.h"
+	<sys/types.h>
+	<sys/stat.h>
+	<sys/inotify.h>
+	<fcntl.h>
+	<errno.h>
+	<dirent.h>
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<unistd.h>
+
+1510864921 source:/home/sgowen/Documents/github/dante/src/3rdparty/glfw/src/monitor.c
+	"internal.h"
+	<assert.h>
+	<math.h>
+	<float.h>
+	<string.h>
+	<stdlib.h>
+	<limits.h>
+
+1510864921 source:/home/sgowen/Documents/github/dante/src/3rdparty/glfw/src/osmesa_context.c
+	<stdlib.h>
+	<string.h>
+	<assert.h>
+	"internal.h"
+
+1510864921 source:/home/sgowen/Documents/github/dante/src/3rdparty/glfw/src/posix_thread.c
+	"internal.h"
+	<assert.h>
+	<string.h>
+
+1510864921 source:/home/sgowen/Documents/github/dante/src/3rdparty/glfw/src/posix_time.c
+	"internal.h"
+	<sys/time.h>
+	<time.h>
+
+1510864921 source:/home/sgowen/Documents/github/dante/src/3rdparty/glfw/src/vulkan.c
+	"internal.h"
+	<assert.h>
+	<string.h>
+	<stdlib.h>
+
+1510864921 source:/home/sgowen/Documents/github/dante/src/3rdparty/glfw/src/window.c
+	"internal.h"
+	<assert.h>
+	<string.h>
+	<stdlib.h>
+	<float.h>
+
+1510864921 source:/home/sgowen/Documents/github/dante/src/3rdparty/glfw/src/x11_init.c
+	"internal.h"
+	<X11/Xresource.h>
+	<stdlib.h>
+	<string.h>
+	<limits.h>
+	<stdio.h>
+	<locale.h>
+
+1510864921 source:/home/sgowen/Documents/github/dante/src/3rdparty/glfw/src/x11_monitor.c
+	"internal.h"
+	<limits.h>
+	<stdlib.h>
+	<string.h>
+
+1510864921 source:/home/sgowen/Documents/github/dante/src/3rdparty/glfw/src/x11_window.c
+	"internal.h"
+	<X11/cursorfont.h>
+	<X11/Xmd.h>
+	<sys/select.h>
+	<string.h>
+	<stdio.h>
+	<stdlib.h>
+	<limits.h>
+	<errno.h>
+	<assert.h>
+
+1510864921 source:/home/sgowen/Documents/github/dante/src/3rdparty/glfw/src/xkb_unicode.c
+	"internal.h"
+
+1510864917 source:/home/sgowen/Documents/github/dante/src/3rdparty/libpng/png.c
+	"pngpriv.h"
+
+1510864917 /home/sgowen/Documents/github/dante/src/3rdparty/libpng/pngpriv.h
+	<stdlib.h>
+	<string.h>
+	<config.h>
+	"pnglibconf.h"
+	"pngprefix.h"
+	"pngusr.h"
+	"png.h"
+	<float.h>
+	<fp.h>
+	<math.h>
+	<m68881.h>
+	<mem.h>
+	<alloc.h>
+	<windows.h>
+	"pngstruct.h"
+	"pnginfo.h"
+	"pngdebug.h"
+
+1510864917 /home/sgowen/Documents/github/dante/src/3rdparty/libpng/pnglibconf.h
+
+1510864917 /home/sgowen/Documents/github/dante/src/3rdparty/libpng/png.h
+	"pnglibconf.h"
+	"pngconf.h"
+
+1510864917 /home/sgowen/Documents/github/dante/src/3rdparty/libpng/pngconf.h
+	<limits.h>
+	<stddef.h>
+	<stdio.h>
+	<setjmp.h>
+	<time.h>
+
+1510864917 /home/sgowen/Documents/github/dante/src/3rdparty/libpng/pngstruct.h
+	"zlib.h"
+
+1510864917 /home/sgowen/Documents/github/dante/src/3rdparty/libpng/pnginfo.h
+
+1510864917 /home/sgowen/Documents/github/dante/src/3rdparty/libpng/pngdebug.h
+	<crtdbg.h>
+	<stdio.h>
+
+1510864917 source:/home/sgowen/Documents/github/dante/src/3rdparty/libpng/pngerror.c
+	"pngpriv.h"
+
+1510864917 source:/home/sgowen/Documents/github/dante/src/3rdparty/libpng/pngget.c
+	"pngpriv.h"
+
+1510864917 source:/home/sgowen/Documents/github/dante/src/3rdparty/libpng/pngmem.c
+	"pngpriv.h"
+
+1510864917 source:/home/sgowen/Documents/github/dante/src/3rdparty/libpng/pngpread.c
+	"pngpriv.h"
+
+1510864917 source:/home/sgowen/Documents/github/dante/src/3rdparty/libpng/pngread.c
+	"pngpriv.h"
+	<errno.h>
+
+1510864917 source:/home/sgowen/Documents/github/dante/src/3rdparty/libpng/pngrio.c
+	"pngpriv.h"
+
+1510864917 source:/home/sgowen/Documents/github/dante/src/3rdparty/libpng/pngrtran.c
+	"pngpriv.h"
+
+1510864917 source:/home/sgowen/Documents/github/dante/src/3rdparty/libpng/pngrutil.c
+	"pngpriv.h"
+
+1510864917 source:/home/sgowen/Documents/github/dante/src/3rdparty/libpng/pngset.c
+	"pngpriv.h"
+
+1510864917 source:/home/sgowen/Documents/github/dante/src/3rdparty/libpng/pngtrans.c
+	"pngpriv.h"
+
+1510864917 source:/home/sgowen/Documents/github/dante/src/3rdparty/libpng/pngwio.c
+	"pngpriv.h"
+
+1510864917 source:/home/sgowen/Documents/github/dante/src/3rdparty/libpng/pngwrite.c
+	"pngpriv.h"
+	<errno.h>
+
+1510864917 source:/home/sgowen/Documents/github/dante/src/3rdparty/libpng/pngwtran.c
+	"pngpriv.h"
+
+1510864917 source:/home/sgowen/Documents/github/dante/src/3rdparty/libpng/pngwutil.c
+	"pngpriv.h"
+
+1510864875 source:/home/sgowen/Documents/github/dante/src/3rdparty/spine-runtimes/spine-cpp/spine-cpp/src/spine/Animation.cpp
+	<spine/Animation.h>
+	<spine/Timeline.h>
+	<spine/Skeleton.h>
+	<spine/Event.h>
+	<assert.h>
+	<math.h>
+
+1510864875 /home/sgowen/Documents/github/dante/src/3rdparty/spine-runtimes/spine-cpp/spine-cpp/include/spine/Animation.h
+	<spine/Vector.h>
+	<spine/MixPose.h>
+	<spine/MixDirection.h>
+	<string>
+
+1510864875 /home/sgowen/Documents/github/dante/src/3rdparty/spine-runtimes/spine-cpp/spine-cpp/include/spine/Vector.h
+	<stdlib.h>
+	<memory>
+	<assert.h>
+
+1510864875 /home/sgowen/Documents/github/dante/src/3rdparty/spine-runtimes/spine-cpp/spine-cpp/include/spine/MixPose.h
+
+1510864875 /home/sgowen/Documents/github/dante/src/3rdparty/spine-runtimes/spine-cpp/spine-cpp/include/spine/MixDirection.h
+
+1511276934 /home/sgowen/Documents/github/dante/src/3rdparty/spine-runtimes/spine-cpp/spine-cpp/include/spine/Timeline.h
+	<spine/SpineRTTI.h>
+	<spine/Vector.h>
+	<spine/MixPose.h>
+	<spine/MixDirection.h>
+
+1511276934 /home/sgowen/Documents/github/dante/src/3rdparty/spine-runtimes/spine-cpp/spine-cpp/include/spine/SpineRTTI.h
+	<string>
+
+1510864875 /home/sgowen/Documents/github/dante/src/3rdparty/spine-runtimes/spine-cpp/spine-cpp/include/spine/Skeleton.h
+	<spine/Vector.h>
+	<spine/MathUtil.h>
+	<string>
+	<limits>
+
+1510864875 /home/sgowen/Documents/github/dante/src/3rdparty/spine-runtimes/spine-cpp/spine-cpp/include/spine/MathUtil.h
+	<math.h>
+	<float.h>
+
+1510864875 /home/sgowen/Documents/github/dante/src/3rdparty/spine-runtimes/spine-cpp/spine-cpp/include/spine/Event.h
+	<string>
+
+1510864875 source:/home/sgowen/Documents/github/dante/src/3rdparty/spine-runtimes/spine-cpp/spine-cpp/src/spine/AnimationStateData.cpp
+	<spine/AnimationStateData.h>
+	<spine/SkeletonData.h>
+	<spine/Animation.h>
+
+1510864875 /home/sgowen/Documents/github/dante/src/3rdparty/spine-runtimes/spine-cpp/spine-cpp/include/spine/AnimationStateData.h
+	<spine/HashMap.h>
+	<assert.h>
+	<string>
+
+1510864875 /home/sgowen/Documents/github/dante/src/3rdparty/spine-runtimes/spine-cpp/spine-cpp/include/spine/HashMap.h
+	<memory>
+
+1510864875 /home/sgowen/Documents/github/dante/src/3rdparty/spine-runtimes/spine-cpp/spine-cpp/include/spine/SkeletonData.h
+	<spine/Vector.h>
+	<string>
+
+1510864875 source:/home/sgowen/Documents/github/dante/src/3rdparty/spine-runtimes/spine-cpp/spine-cpp/src/spine/Atlas.cpp
+	<spine/Atlas.h>
+
+1510864875 /home/sgowen/Documents/github/dante/src/3rdparty/spine-runtimes/spine-cpp/spine-cpp/include/spine/Atlas.h
+	<spine/Vector.h>
+	<string>
+
+1511276934 source:/home/sgowen/Documents/github/dante/src/3rdparty/spine-runtimes/spine-cpp/spine-cpp/src/spine/AtlasAttachmentLoader.cpp
+	<spine/AtlasAttachmentLoader.h>
+
+1511276934 /home/sgowen/Documents/github/dante/src/3rdparty/spine-runtimes/spine-cpp/spine-cpp/include/spine/AtlasAttachmentLoader.h
+	<spine/AttachmentLoader.h>
+	<spine/Vector.h>
+
+1511276934 /home/sgowen/Documents/github/dante/src/3rdparty/spine-runtimes/spine-cpp/spine-cpp/include/spine/AttachmentLoader.h
+	<spine/SpineRTTI.h>
+	<string>
+
+1511276934 source:/home/sgowen/Documents/github/dante/src/3rdparty/spine-runtimes/spine-cpp/spine-cpp/src/spine/Attachment.cpp
+	<spine/Attachment.h>
+	<assert.h>
+
+1511276934 /home/sgowen/Documents/github/dante/src/3rdparty/spine-runtimes/spine-cpp/spine-cpp/include/spine/Attachment.h
+	<spine/SpineRTTI.h>
+	<string>
+
+1511276934 source:/home/sgowen/Documents/github/dante/src/3rdparty/spine-runtimes/spine-cpp/spine-cpp/src/spine/AttachmentLoader.cpp
+	<spine/AttachmentLoader.h>
+
+1511276934 source:/home/sgowen/Documents/github/dante/src/3rdparty/spine-runtimes/spine-cpp/spine-cpp/src/spine/AttachmentTimeline.cpp
+	<spine/AttachmentTimeline.h>
+	<spine/Skeleton.h>
+	<spine/Event.h>
+	<spine/Animation.h>
+	<spine/TimelineType.h>
+
+1511276934 /home/sgowen/Documents/github/dante/src/3rdparty/spine-runtimes/spine-cpp/spine-cpp/include/spine/AttachmentTimeline.h
+	<spine/Timeline.h>
+	<spine/Vector.h>
+	<spine/MixPose.h>
+	<spine/MixDirection.h>
+	<string>
+
+1510864875 /home/sgowen/Documents/github/dante/src/3rdparty/spine-runtimes/spine-cpp/spine-cpp/include/spine/TimelineType.h
+
+1511276934 source:/home/sgowen/Documents/github/dante/src/3rdparty/spine-runtimes/spine-cpp/spine-cpp/src/spine/Bone.cpp
+	<spine/Bone.h>
+	<spine/BoneData.h>
+	<spine/Skeleton.h>
+	<spine/MathUtil.h>
+	<spine/TransformMode.h>
+
+1511276934 /home/sgowen/Documents/github/dante/src/3rdparty/spine-runtimes/spine-cpp/spine-cpp/include/spine/Bone.h
+	<spine/Updatable.h>
+	<spine/Vector.h>
+
+1511276934 /home/sgowen/Documents/github/dante/src/3rdparty/spine-runtimes/spine-cpp/spine-cpp/include/spine/Updatable.h
+	<spine/SpineRTTI.h>
+
+1510864875 /home/sgowen/Documents/github/dante/src/3rdparty/spine-runtimes/spine-cpp/spine-cpp/include/spine/BoneData.h
+	<spine/TransformMode.h>
+	<string>
+
+1510864875 /home/sgowen/Documents/github/dante/src/3rdparty/spine-runtimes/spine-cpp/spine-cpp/include/spine/TransformMode.h
+
+1510864875 source:/home/sgowen/Documents/github/dante/src/3rdparty/spine-runtimes/spine-cpp/spine-cpp/src/spine/BoneData.cpp
+	<spine/BoneData.h>
+	<assert.h>
+
+1511276934 source:/home/sgowen/Documents/github/dante/src/3rdparty/spine-runtimes/spine-cpp/spine-cpp/src/spine/BoundingBoxAttachment.cpp
+	<spine/BoundingBoxAttachment.h>
+
+1511276934 /home/sgowen/Documents/github/dante/src/3rdparty/spine-runtimes/spine-cpp/spine-cpp/include/spine/BoundingBoxAttachment.h
+	<spine/VertexAttachment.h>
+
+1511276934 /home/sgowen/Documents/github/dante/src/3rdparty/spine-runtimes/spine-cpp/spine-cpp/include/spine/VertexAttachment.h
+	<spine/Attachment.h>
+	<spine/Vector.h>
+
+1511276934 source:/home/sgowen/Documents/github/dante/src/3rdparty/spine-runtimes/spine-cpp/spine-cpp/src/spine/ClippingAttachment.cpp
+	<spine/ClippingAttachment.h>
+	<spine/SlotData.h>
+
+1511276934 /home/sgowen/Documents/github/dante/src/3rdparty/spine-runtimes/spine-cpp/spine-cpp/include/spine/ClippingAttachment.h
+	<spine/VertexAttachment.h>
+
+1510864875 /home/sgowen/Documents/github/dante/src/3rdparty/spine-runtimes/spine-cpp/spine-cpp/include/spine/SlotData.h
+	<spine/BlendMode.h>
+	<string>
+
+1510864875 /home/sgowen/Documents/github/dante/src/3rdparty/spine-runtimes/spine-cpp/spine-cpp/include/spine/BlendMode.h
+
+1511276934 source:/home/sgowen/Documents/github/dante/src/3rdparty/spine-runtimes/spine-cpp/spine-cpp/src/spine/ColorTimeline.cpp
+	<spine/ColorTimeline.h>
+
+1511276934 /home/sgowen/Documents/github/dante/src/3rdparty/spine-runtimes/spine-cpp/spine-cpp/include/spine/ColorTimeline.h
+	<spine/CurveTimeline.h>
+
+1511276934 /home/sgowen/Documents/github/dante/src/3rdparty/spine-runtimes/spine-cpp/spine-cpp/include/spine/CurveTimeline.h
+	<spine/Timeline.h>
+	<spine/Vector.h>
+	<assert.h>
+
+1511276934 source:/home/sgowen/Documents/github/dante/src/3rdparty/spine-runtimes/spine-cpp/spine-cpp/src/spine/Constraint.cpp
+	<spine/Constraint.h>
+
+1511276934 /home/sgowen/Documents/github/dante/src/3rdparty/spine-runtimes/spine-cpp/spine-cpp/include/spine/Constraint.h
+	<spine/Updatable.h>
+
+1511276934 source:/home/sgowen/Documents/github/dante/src/3rdparty/spine-runtimes/spine-cpp/spine-cpp/src/spine/CurveTimeline.cpp
+	<spine/CurveTimeline.h>
+	<spine/MathUtil.h>
+
+1511276934 source:/home/sgowen/Documents/github/dante/src/3rdparty/spine-runtimes/spine-cpp/spine-cpp/src/spine/DeformTimeline.cpp
+	<spine/DeformTimeline.h>
+
+1511276934 /home/sgowen/Documents/github/dante/src/3rdparty/spine-runtimes/spine-cpp/spine-cpp/include/spine/DeformTimeline.h
+	<spine/CurveTimeline.h>
+
+1511276934 source:/home/sgowen/Documents/github/dante/src/3rdparty/spine-runtimes/spine-cpp/spine-cpp/src/spine/DrawOrderTimeline.cpp
+	<spine/DrawOrderTimeline.h>
+
+1511276934 /home/sgowen/Documents/github/dante/src/3rdparty/spine-runtimes/spine-cpp/spine-cpp/include/spine/DrawOrderTimeline.h
+	<spine/Timeline.h>
+
+1510864875 source:/home/sgowen/Documents/github/dante/src/3rdparty/spine-runtimes/spine-cpp/spine-cpp/src/spine/Event.cpp
+	<spine/Event.h>
+	<spine/EventData.h>
+
+1510864875 /home/sgowen/Documents/github/dante/src/3rdparty/spine-runtimes/spine-cpp/spine-cpp/include/spine/EventData.h
+	<string>
+
+1510864875 source:/home/sgowen/Documents/github/dante/src/3rdparty/spine-runtimes/spine-cpp/spine-cpp/src/spine/EventData.cpp
+	<spine/EventData.h>
+	<assert.h>
+
+1511276934 source:/home/sgowen/Documents/github/dante/src/3rdparty/spine-runtimes/spine-cpp/spine-cpp/src/spine/EventTimeline.cpp
+	<spine/EventTimeline.h>
+
+1511276934 /home/sgowen/Documents/github/dante/src/3rdparty/spine-runtimes/spine-cpp/spine-cpp/include/spine/EventTimeline.h
+	<spine/Timeline.h>
+
+1511276934 source:/home/sgowen/Documents/github/dante/src/3rdparty/spine-runtimes/spine-cpp/spine-cpp/src/spine/IkConstraint.cpp
+	<spine/IkConstraint.h>
+	<spine/IkConstraintData.h>
+	<spine/Skeleton.h>
+	<spine/Bone.h>
+	<spine/BoneData.h>
+	<spine/MathUtil.h>
+
+1511276934 /home/sgowen/Documents/github/dante/src/3rdparty/spine-runtimes/spine-cpp/spine-cpp/include/spine/IkConstraint.h
+	<spine/Constraint.h>
+	<spine/Vector.h>
+
+1510864875 /home/sgowen/Documents/github/dante/src/3rdparty/spine-runtimes/spine-cpp/spine-cpp/include/spine/IkConstraintData.h
+	<spine/Vector.h>
+	<string>
+
+1510864875 source:/home/sgowen/Documents/github/dante/src/3rdparty/spine-runtimes/spine-cpp/spine-cpp/src/spine/IkConstraintData.cpp
+	<spine/IkConstraintData.h>
+	<spine/BoneData.h>
+
+1511276934 source:/home/sgowen/Documents/github/dante/src/3rdparty/spine-runtimes/spine-cpp/spine-cpp/src/spine/IkConstraintTimeline.cpp
+	<spine/IkConstraintTimeline.h>
+
+1511276934 /home/sgowen/Documents/github/dante/src/3rdparty/spine-runtimes/spine-cpp/spine-cpp/include/spine/IkConstraintTimeline.h
+	<spine/CurveTimeline.h>
+
+1510864875 source:/home/sgowen/Documents/github/dante/src/3rdparty/spine-runtimes/spine-cpp/spine-cpp/src/spine/MathUtil.cpp
+	<spine/MathUtil.h>
+
+1511276934 source:/home/sgowen/Documents/github/dante/src/3rdparty/spine-runtimes/spine-cpp/spine-cpp/src/spine/MeshAttachment.cpp
+	<spine/MeshAttachment.h>
+
+1511276934 /home/sgowen/Documents/github/dante/src/3rdparty/spine-runtimes/spine-cpp/spine-cpp/include/spine/MeshAttachment.h
+	<spine/VertexAttachment.h>
+	<spine/Vector.h>
+	<string>
+
+1511276934 source:/home/sgowen/Documents/github/dante/src/3rdparty/spine-runtimes/spine-cpp/spine-cpp/src/spine/PathAttachment.cpp
+	<spine/PathAttachment.h>
+
+1511276934 /home/sgowen/Documents/github/dante/src/3rdparty/spine-runtimes/spine-cpp/spine-cpp/include/spine/PathAttachment.h
+	<spine/VertexAttachment.h>
+
+1511276934 source:/home/sgowen/Documents/github/dante/src/3rdparty/spine-runtimes/spine-cpp/spine-cpp/src/spine/PathConstraint.cpp
+	<spine/PathConstraint.h>
+	<spine/PathConstraintData.h>
+	<spine/Skeleton.h>
+	<spine/PathAttachment.h>
+	<spine/Bone.h>
+	<spine/Slot.h>
+	<spine/SlotData.h>
+	<spine/BoneData.h>
+	<spine/SpacingMode.h>
+	<spine/PositionMode.h>
+	<spine/RotateMode.h>
+	<spine/MathUtil.h>
+
+1511276934 /home/sgowen/Documents/github/dante/src/3rdparty/spine-runtimes/spine-cpp/spine-cpp/include/spine/PathConstraint.h
+	<spine/Constraint.h>
+	<spine/Vector.h>
+
+1510864875 /home/sgowen/Documents/github/dante/src/3rdparty/spine-runtimes/spine-cpp/spine-cpp/include/spine/PathConstraintData.h
+	<spine/PositionMode.h>
+	<spine/SpacingMode.h>
+	<spine/RotateMode.h>
+	<spine/Vector.h>
+	<string>
+
+1510864875 /home/sgowen/Documents/github/dante/src/3rdparty/spine-runtimes/spine-cpp/spine-cpp/include/spine/PositionMode.h
+
+1510864875 /home/sgowen/Documents/github/dante/src/3rdparty/spine-runtimes/spine-cpp/spine-cpp/include/spine/SpacingMode.h
+
+1510864875 /home/sgowen/Documents/github/dante/src/3rdparty/spine-runtimes/spine-cpp/spine-cpp/include/spine/RotateMode.h
+
+1510864875 /home/sgowen/Documents/github/dante/src/3rdparty/spine-runtimes/spine-cpp/spine-cpp/include/spine/Slot.h
+	<spine/Vector.h>
+	<string>
+
+1510864875 source:/home/sgowen/Documents/github/dante/src/3rdparty/spine-runtimes/spine-cpp/spine-cpp/src/spine/PathConstraintData.cpp
+	<spine/PathConstraintData.h>
+	<spine/BoneData.h>
+	<spine/SlotData.h>
+	<assert.h>
+
+1511276934 source:/home/sgowen/Documents/github/dante/src/3rdparty/spine-runtimes/spine-cpp/spine-cpp/src/spine/PathConstraintMixTimeline.cpp
+	<spine/PathConstraintMixTimeline.h>
+
+1511276934 /home/sgowen/Documents/github/dante/src/3rdparty/spine-runtimes/spine-cpp/spine-cpp/include/spine/PathConstraintMixTimeline.h
+	<spine/CurveTimeline.h>
+
+1511276934 source:/home/sgowen/Documents/github/dante/src/3rdparty/spine-runtimes/spine-cpp/spine-cpp/src/spine/PathConstraintPositionTimeline.cpp
+	<spine/PathConstraintPositionTimeline.h>
+
+1511276934 /home/sgowen/Documents/github/dante/src/3rdparty/spine-runtimes/spine-cpp/spine-cpp/include/spine/PathConstraintPositionTimeline.h
+	<spine/CurveTimeline.h>
+
+1511276934 source:/home/sgowen/Documents/github/dante/src/3rdparty/spine-runtimes/spine-cpp/spine-cpp/src/spine/PathConstraintSpacingTimeline.cpp
+	<spine/PathConstraintSpacingTimeline.h>
+
+1511276934 /home/sgowen/Documents/github/dante/src/3rdparty/spine-runtimes/spine-cpp/spine-cpp/include/spine/PathConstraintSpacingTimeline.h
+	<spine/PathConstraintPositionTimeline.h>
+
+1511276934 source:/home/sgowen/Documents/github/dante/src/3rdparty/spine-runtimes/spine-cpp/spine-cpp/src/spine/PointAttachment.cpp
+	<spine/PointAttachment.h>
+	<spine/Bone.h>
+	<spine/MathUtil.h>
+
+1511276934 /home/sgowen/Documents/github/dante/src/3rdparty/spine-runtimes/spine-cpp/spine-cpp/include/spine/PointAttachment.h
+	<spine/Attachment.h>
+
+1511276934 source:/home/sgowen/Documents/github/dante/src/3rdparty/spine-runtimes/spine-cpp/spine-cpp/src/spine/RegionAttachment.cpp
+	<spine/RegionAttachment.h>
+	<spine/Bone.h>
+	<spine/MathUtil.h>
+	<assert.h>
+
+1511276934 /home/sgowen/Documents/github/dante/src/3rdparty/spine-runtimes/spine-cpp/spine-cpp/include/spine/RegionAttachment.h
+	<spine/Attachment.h>
+	<spine/Vector.h>
+	<string>
+
+1511276934 source:/home/sgowen/Documents/github/dante/src/3rdparty/spine-runtimes/spine-cpp/spine-cpp/src/spine/RotateTimeline.cpp
+	<spine/RotateTimeline.h>
+	<spine/Skeleton.h>
+	<spine/Event.h>
+	<spine/Bone.h>
+	<spine/BoneData.h>
+	<spine/Animation.h>
+	<spine/TimelineType.h>
+
+1511276934 /home/sgowen/Documents/github/dante/src/3rdparty/spine-runtimes/spine-cpp/spine-cpp/include/spine/RotateTimeline.h
+	<spine/CurveTimeline.h>
+
+1511276934 source:/home/sgowen/Documents/github/dante/src/3rdparty/spine-runtimes/spine-cpp/spine-cpp/src/spine/ScaleTimeline.cpp
+	<spine/ScaleTimeline.h>
+
+1511276934 /home/sgowen/Documents/github/dante/src/3rdparty/spine-runtimes/spine-cpp/spine-cpp/include/spine/ScaleTimeline.h
+	<spine/TranslateTimeline.h>
+
+1511276934 /home/sgowen/Documents/github/dante/src/3rdparty/spine-runtimes/spine-cpp/spine-cpp/include/spine/TranslateTimeline.h
+	<spine/CurveTimeline.h>
+	<spine/Animation.h>
+	<spine/TimelineType.h>
+
+1511276934 source:/home/sgowen/Documents/github/dante/src/3rdparty/spine-runtimes/spine-cpp/spine-cpp/src/spine/ShearTimeline.cpp
+	<spine/ShearTimeline.h>
+
+1511276934 /home/sgowen/Documents/github/dante/src/3rdparty/spine-runtimes/spine-cpp/spine-cpp/include/spine/ShearTimeline.h
+	<spine/TranslateTimeline.h>
+
+1511276934 source:/home/sgowen/Documents/github/dante/src/3rdparty/spine-runtimes/spine-cpp/spine-cpp/src/spine/Skeleton.cpp
+	<spine/Skeleton.h>
+	<spine/SkeletonData.h>
+	<spine/Bone.h>
+	<spine/Updatable.h>
+	<spine/Slot.h>
+	<spine/IkConstraint.h>
+	<spine/PathConstraint.h>
+	<spine/TransformConstraint.h>
+	<spine/Skin.h>
+	<spine/Attachment.h>
+	<spine/BoneData.h>
+	<spine/SlotData.h>
+	<spine/IkConstraintData.h>
+	<spine/TransformConstraintData.h>
+	<spine/PathConstraintData.h>
+	<spine/RegionAttachment.h>
+	<spine/MeshAttachment.h>
+	<spine/PathAttachment.h>
+	<spine/ContainerUtil.h>
+
+1511276934 /home/sgowen/Documents/github/dante/src/3rdparty/spine-runtimes/spine-cpp/spine-cpp/include/spine/TransformConstraint.h
+	<spine/Constraint.h>
+	<spine/Vector.h>
+
+1510864875 /home/sgowen/Documents/github/dante/src/3rdparty/spine-runtimes/spine-cpp/spine-cpp/include/spine/Skin.h
+	<string>
+	<spine/HashMap.h>
+	<spine/Vector.h>
+
+1510864875 /home/sgowen/Documents/github/dante/src/3rdparty/spine-runtimes/spine-cpp/spine-cpp/include/spine/TransformConstraintData.h
+	<spine/Vector.h>
+	<string>
+
+1510864875 /home/sgowen/Documents/github/dante/src/3rdparty/spine-runtimes/spine-cpp/spine-cpp/include/spine/ContainerUtil.h
+	<spine/Vector.h>
+	<spine/HashMap.h>
+	<string>
+	<assert.h>
+
+1510864875 source:/home/sgowen/Documents/github/dante/src/3rdparty/spine-runtimes/spine-cpp/spine-cpp/src/spine/SkeletonData.cpp
+	<spine/SkeletonData.h>
+	<spine/BoneData.h>
+	<spine/SlotData.h>
+	<spine/Skin.h>
+	<spine/EventData.h>
+	<spine/Animation.h>
+	<spine/IkConstraintData.h>
+	<spine/TransformConstraintData.h>
+	<spine/PathConstraintData.h>
+	<spine/ContainerUtil.h>
+	<assert.h>
+
+1510864875 source:/home/sgowen/Documents/github/dante/src/3rdparty/spine-runtimes/spine-cpp/spine-cpp/src/spine/Skin.cpp
+	<spine/Skin.h>
+	<spine/Attachment.h>
+	<spine/Skeleton.h>
+	<spine/Slot.h>
+	<assert.h>
+
+1510864875 source:/home/sgowen/Documents/github/dante/src/3rdparty/spine-runtimes/spine-cpp/spine-cpp/src/spine/Slot.cpp
+	<spine/Slot.h>
+	<spine/SlotData.h>
+	<spine/Bone.h>
+	<spine/Skeleton.h>
+	<spine/Attachment.h>
+
+1510864875 source:/home/sgowen/Documents/github/dante/src/3rdparty/spine-runtimes/spine-cpp/spine-cpp/src/spine/SlotData.cpp
+	<spine/SlotData.h>
+	<assert.h>
+
+1511276934 source:/home/sgowen/Documents/github/dante/src/3rdparty/spine-runtimes/spine-cpp/spine-cpp/src/spine/SpineRTTI.cpp
+	<spine/SpineRTTI.h>
+
+1511276934 source:/home/sgowen/Documents/github/dante/src/3rdparty/spine-runtimes/spine-cpp/spine-cpp/src/spine/Timeline.cpp
+	<spine/Timeline.h>
+	<spine/Skeleton.h>
+	<spine/Event.h>
+
+1511276934 source:/home/sgowen/Documents/github/dante/src/3rdparty/spine-runtimes/spine-cpp/spine-cpp/src/spine/TransformConstraint.cpp
+	<spine/TransformConstraint.h>
+	<spine/TransformConstraintData.h>
+	<spine/Skeleton.h>
+	<spine/Bone.h>
+	<spine/BoneData.h>
+	<spine/MathUtil.h>
+
+1510864875 source:/home/sgowen/Documents/github/dante/src/3rdparty/spine-runtimes/spine-cpp/spine-cpp/src/spine/TransformConstraintData.cpp
+	<spine/TransformConstraintData.h>
+	<spine/BoneData.h>
+	<assert.h>
+
+1511276934 source:/home/sgowen/Documents/github/dante/src/3rdparty/spine-runtimes/spine-cpp/spine-cpp/src/spine/TransformConstraintTimeline.cpp
+	<spine/TransformConstraintTimeline.h>
+
+1511276934 /home/sgowen/Documents/github/dante/src/3rdparty/spine-runtimes/spine-cpp/spine-cpp/include/spine/TransformConstraintTimeline.h
+	<spine/CurveTimeline.h>
+
+1511276934 source:/home/sgowen/Documents/github/dante/src/3rdparty/spine-runtimes/spine-cpp/spine-cpp/src/spine/TranslateTimeline.cpp
+	<spine/TranslateTimeline.h>
+
+1510864875 source:/home/sgowen/Documents/github/dante/src/3rdparty/spine-runtimes/spine-cpp/spine-cpp/src/spine/Triangulator.cpp
+	<spine/Triangulator.h>
+	<spine/MathUtil.h>
+
+1510864875 /home/sgowen/Documents/github/dante/src/3rdparty/spine-runtimes/spine-cpp/spine-cpp/include/spine/Triangulator.h
+	<spine/Vector.h>
+	<spine/Pool.h>
+
+1510864875 /home/sgowen/Documents/github/dante/src/3rdparty/spine-runtimes/spine-cpp/spine-cpp/include/spine/Pool.h
+	<spine/Vector.h>
+	<spine/ContainerUtil.h>
+
+1511276934 source:/home/sgowen/Documents/github/dante/src/3rdparty/spine-runtimes/spine-cpp/spine-cpp/src/spine/TwoColorTimeline.cpp
+	<spine/TwoColorTimeline.h>
+
+1511276934 /home/sgowen/Documents/github/dante/src/3rdparty/spine-runtimes/spine-cpp/spine-cpp/include/spine/TwoColorTimeline.h
+	<spine/CurveTimeline.h>
+
+1511276934 source:/home/sgowen/Documents/github/dante/src/3rdparty/spine-runtimes/spine-cpp/spine-cpp/src/spine/Updatable.cpp
+	<spine/Updatable.h>
+
+1511276934 source:/home/sgowen/Documents/github/dante/src/3rdparty/spine-runtimes/spine-cpp/spine-cpp/src/spine/VertexAttachment.cpp
+	<spine/VertexAttachment.h>
+	<spine/Slot.h>
+	<spine/Bone.h>
+	<spine/Skeleton.h>
+
+1510864921 source:/home/sgowen/Documents/github/dante/src/3rdparty/TinyThread/source/tinythread.cpp
+	<exception>
+	"tinythread.h"
+	<unistd.h>
+	<map>
+	<process.h>
+
+1510864921 /home/sgowen/Documents/github/dante/src/3rdparty/TinyThread/source/tinythread.h
+	<windows.h>
+	<pthread.h>
+	<signal.h>
+	<sched.h>
+	<unistd.h>
+	<ostream>
+
+1511226637 source:/home/sgowen/Documents/github/dante/src/core/framework/audio/portable/AudioEngineHelper.cpp
+	"pch.h"
+	"framework/audio/portable/AudioEngineHelper.h"
+
+1511282551 /home/sgowen/Documents/github/dante/src/platform/linux//pch.h
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/framework/audio/portable/AudioEngineHelper.h
+
+1511226637 source:/home/sgowen/Documents/github/dante/src/core/framework/audio/portable/AudioEngineHelperFactory.cpp
+	"pch.h"
+	"framework/audio/portable/AudioEngineHelperFactory.h"
+	"TargetConditionals.h"
+	"framework/audio/superpowered/android/AndroidAudioEngineHelper.h"
+	"framework/audio/directx/DirectXAudioEngineHelper.h"
+	<assert.h>
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/framework/audio/portable/AudioEngineHelperFactory.h
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/framework/audio/superpowered/android/AndroidAudioEngineHelper.h
+	"framework/audio/portable/AudioEngineHelper.h"
+	<jni.h>
+	<vector>
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/framework/audio/directx/DirectXAudioEngineHelper.h
+	"framework/audio/portable/AudioEngineHelper.h"
+	"Audio.h"
+	<memory>
+
+1511226637 source:/home/sgowen/Documents/github/dante/src/core/framework/audio/portable/NGAudioEngine.cpp
+	"pch.h"
+	"framework/audio/portable/NGAudioEngine.h"
+	"framework/audio/portable/SoundWrapper.h"
+	"framework/audio/portable/Sound.h"
+	"framework/audio/portable/AudioEngineHelper.h"
+	"framework/audio/portable/AudioEngineHelperFactory.h"
+	"framework/util/NGSTDUtil.h"
+	"framework/math/MathUtil.h"
+	<assert.h>
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/framework/audio/portable/NGAudioEngine.h
+	<map>
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/framework/audio/portable/SoundWrapper.h
+	<vector>
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/framework/audio/portable/Sound.h
+
+1510864439 /home/sgowen/Documents/github/dante/src/core/framework/util/NGSTDUtil.h
+	<vector>
+	<memory>
+	<map>
+
+1510864439 /home/sgowen/Documents/github/dante/src/core/framework/math/MathUtil.h
+	"Box2D/Common/b2Math.h"
+	<math.h>
+	<float.h>
+
+1511226637 source:/home/sgowen/Documents/github/dante/src/core/framework/audio/portable/Sound.cpp
+	"pch.h"
+	"framework/audio/portable/Sound.h"
+
+1511226637 source:/home/sgowen/Documents/github/dante/src/core/framework/audio/portable/SoundWrapper.cpp
+	"pch.h"
+	"framework/audio/portable/SoundWrapper.h"
+	"framework/audio/portable/Sound.h"
+	"framework/util/NGSTDUtil.h"
+
+1511226637 source:/home/sgowen/Documents/github/dante/src/core/framework/entity/Entity.cpp
+	"pch.h"
+	"framework/entity/Entity.h"
+	"Box2D/Box2D.h"
+	"framework/math/NGRect.h"
+	"framework/network/portable/OutputMemoryBitStream.h"
+	"framework/network/portable/InputMemoryBitStream.h"
+	"framework/network/portable/Move.h"
+	"framework/util/NGSTDUtil.h"
+	"framework/util/Timing.h"
+	"framework/util/macros.h"
+	"framework/network/client/NetworkManagerClient.h"
+	"framework/util/StringUtil.h"
+	"framework/math/MathUtil.h"
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/framework/entity/Entity.h
+	"framework/math/Color.h"
+	"framework/util/FrameworkConstants.h"
+	"Box2D/Common/b2Math.h"
+	"framework/util/RTTI.h"
+	<stdint.h>
+
+1510864439 /home/sgowen/Documents/github/dante/src/core/framework/math/Color.h
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/framework/util/FrameworkConstants.h
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/framework/util/RTTI.h
+	<string>
+
+1510864752 /home/sgowen/Documents/github/dante/src/3rdparty/Box2D/Box2D/Box2D/Box2D.h
+	"Box2D/Common/b2Settings.h"
+	"Box2D/Common/b2Draw.h"
+	"Box2D/Common/b2Timer.h"
+	"Box2D/Collision/Shapes/b2CircleShape.h"
+	"Box2D/Collision/Shapes/b2EdgeShape.h"
+	"Box2D/Collision/Shapes/b2ChainShape.h"
+	"Box2D/Collision/Shapes/b2PolygonShape.h"
+	"Box2D/Collision/b2BroadPhase.h"
+	"Box2D/Collision/b2Distance.h"
+	"Box2D/Collision/b2DynamicTree.h"
+	"Box2D/Collision/b2TimeOfImpact.h"
+	"Box2D/Dynamics/b2Body.h"
+	"Box2D/Dynamics/b2Fixture.h"
+	"Box2D/Dynamics/b2WorldCallbacks.h"
+	"Box2D/Dynamics/b2TimeStep.h"
+	"Box2D/Dynamics/b2World.h"
+	"Box2D/Dynamics/Contacts/b2Contact.h"
+	"Box2D/Dynamics/Joints/b2DistanceJoint.h"
+	"Box2D/Dynamics/Joints/b2FrictionJoint.h"
+	"Box2D/Dynamics/Joints/b2GearJoint.h"
+	"Box2D/Dynamics/Joints/b2MotorJoint.h"
+	"Box2D/Dynamics/Joints/b2MouseJoint.h"
+	"Box2D/Dynamics/Joints/b2PrismaticJoint.h"
+	"Box2D/Dynamics/Joints/b2PulleyJoint.h"
+	"Box2D/Dynamics/Joints/b2RevoluteJoint.h"
+	"Box2D/Dynamics/Joints/b2RopeJoint.h"
+	"Box2D/Dynamics/Joints/b2WeldJoint.h"
+	"Box2D/Dynamics/Joints/b2WheelJoint.h"
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/framework/math/NGRect.h
+	"framework/math/Vector2.h"
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/framework/math/Vector2.h
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/framework/network/portable/OutputMemoryBitStream.h
+	"framework/network/portable/Network.h"
+	<cstdint>
+	<cstdlib>
+	<string>
+
+1511285711 /home/sgowen/Documents/github/dante/src/core/framework/network/portable/Network.h
+	<windows.h>
+	<winsock2.h>
+	<ws2tcpip.h>
+	<sys/socket.h>
+	<netinet/in.h>
+	<sys/types.h>
+	<sys/select.h>
+	<arpa/inet.h>
+	<netdb.h>
+	<errno.h>
+	<fcntl.h>
+	<unistd.h>
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/framework/network/portable/InputMemoryBitStream.h
+	"framework/network/portable/Network.h"
+	<cstdint>
+	<cstdlib>
+	<string>
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/framework/network/portable/Move.h
+	"Box2D/Common/b2Math.h"
+	<map>
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/framework/util/Timing.h
+
+1510864439 /home/sgowen/Documents/github/dante/src/core/framework/util/macros.h
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/framework/network/client/NetworkManagerClient.h
+	<string>
+	<map>
+	<vector>
+
+1510864439 /home/sgowen/Documents/github/dante/src/core/framework/util/StringUtil.h
+	<string>
+	<sstream>
+	<sal.h>
+
+1511226637 source:/home/sgowen/Documents/github/dante/src/core/framework/entity/EntityManager.cpp
+	"pch.h"
+	"framework/entity/EntityManager.h"
+	"framework/entity/Entity.h"
+	"framework/util/StringUtil.h"
+	"framework/util/NGSTDUtil.h"
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/framework/entity/EntityManager.h
+	<map>
+
+1511226637 source:/home/sgowen/Documents/github/dante/src/core/framework/entity/EntityRegistry.cpp
+	"pch.h"
+	"framework/entity/EntityRegistry.h"
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/framework/entity/EntityRegistry.h
+	"framework/entity/Entity.h"
+	"framework/network/portable/Network.h"
+	<map>
+
+1511226637 source:/home/sgowen/Documents/github/dante/src/core/framework/entity/GridManager.cpp
+	"pch.h"
+	"framework/entity/GridManager.h"
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/framework/entity/GridManager.h
+
+1511226637 source:/home/sgowen/Documents/github/dante/src/core/framework/file/portable/AssetDataHandler.cpp
+	"pch.h"
+	"framework/file/portable/AssetDataHandler.h"
+	"framework/file/apple/AppleAssetDataHandler.h"
+	"framework/file/android/AndroidAssetDataHandler.h"
+	"framework/file/windows/WindowsAssetDataHandler.h"
+	<assert.h>
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/framework/file/portable/AssetDataHandler.h
+	"framework/file/portable/FileData.h"
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/framework/file/portable/FileData.h
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/framework/file/apple/AppleAssetDataHandler.h
+	"framework/file/portable/AssetDataHandler.h"
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/framework/file/android/AndroidAssetDataHandler.h
+	"framework/file/portable/AssetDataHandler.h"
+	<jni.h>
+	<android/asset_manager_jni.h>
+	<string>
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/framework/file/windows/WindowsAssetDataHandler.h
+	"framework/file/portable/AssetDataHandler.h"
+
+1511226637 source:/home/sgowen/Documents/github/dante/src/core/framework/file/portable/FileData.cpp
+	"pch.h"
+	"framework/file/portable/FileData.h"
+
+1511226637 source:/home/sgowen/Documents/github/dante/src/core/framework/file/portable/JsonFile.cpp
+	"pch.h"
+	"framework/file/portable/JsonFile.h"
+	"framework/util/StringUtil.h"
+	"framework/util/macros.h"
+	"TargetConditionals.h"
+	"framework/file/apple/apple_asset_data_handler.h"
+	"framework/file/android/AndroidAssetDataHandler.h"
+	"rapidjson/document.h"
+	"rapidjson/writer.h"
+	"rapidjson/stringbuffer.h"
+	<assert.h>
+	<stdio.h>
+	<stdlib.h>
+	<sstream>
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/framework/file/portable/JsonFile.h
+	<map>
+	<string>
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/framework/file/apple/apple_asset_data_handler.h
+	"framework/file/portable/FileData.h"
+
+1510864882 /home/sgowen/Documents/github/dante/src/3rdparty/rapidjson/include/rapidjson/document.h
+	"reader.h"
+	"internal/meta.h"
+	"internal/strfunc.h"
+	"memorystream.h"
+	"encodedstream.h"
+	<new>
+	<limits>
+	<iterator>
+	<utility>
+
+1510864882 /home/sgowen/Documents/github/dante/src/3rdparty/rapidjson/include/rapidjson/reader.h
+	"allocators.h"
+	"stream.h"
+	"encodedstream.h"
+	"internal/meta.h"
+	"internal/stack.h"
+	"internal/strtod.h"
+	<limits>
+	<intrin.h>
+	<nmmintrin.h>
+	<emmintrin.h>
+	<arm_neon.h>
+	<stdexcept>
+	"rapidjson/error/error.h"
+	"rapidjson/reader.h"
+	"error/error.h"
+
+1510864882 /home/sgowen/Documents/github/dante/src/3rdparty/rapidjson/include/rapidjson/allocators.h
+	"rapidjson.h"
+
+1510864882 /home/sgowen/Documents/github/dante/src/3rdparty/rapidjson/include/rapidjson/rapidjson.h
+	<cstdlib>
+	<cstring>
+	"rapidjson/..."
+	<string>
+	"msinttypes/stdint.h"
+	"msinttypes/inttypes.h"
+	<stdint.h>
+	<inttypes.h>
+	<endian.h>
+	"rapidjson/..."
+	<cassert>
+
+1510864882 /home/sgowen/Documents/github/dante/src/3rdparty/rapidjson/include/rapidjson/msinttypes/stdint.h
+	<stdint.h>
+	<limits.h>
+	<wchar.h>
+
+1510864882 /home/sgowen/Documents/github/dante/src/3rdparty/rapidjson/include/rapidjson/msinttypes/inttypes.h
+	"stdint.h"
+	<inttypes.h>
+
+1510864882 /home/sgowen/Documents/github/dante/src/3rdparty/rapidjson/include/rapidjson/stream.h
+	"rapidjson.h"
+	"encodings.h"
+
+1510864882 /home/sgowen/Documents/github/dante/src/3rdparty/rapidjson/include/rapidjson/encodings.h
+	"rapidjson.h"
+
+1510864882 /home/sgowen/Documents/github/dante/src/3rdparty/rapidjson/include/rapidjson/encodedstream.h
+	"stream.h"
+	"memorystream.h"
+
+1510864882 /home/sgowen/Documents/github/dante/src/3rdparty/rapidjson/include/rapidjson/memorystream.h
+	"stream.h"
+
+1510864882 /home/sgowen/Documents/github/dante/src/3rdparty/rapidjson/include/rapidjson/internal/meta.h
+	"../rapidjson.h"
+	<type_traits>
+
+1510864882 /home/sgowen/Documents/github/dante/src/3rdparty/rapidjson/include/rapidjson/internal/stack.h
+	"../allocators.h"
+	"swap.h"
+
+1510864882 /home/sgowen/Documents/github/dante/src/3rdparty/rapidjson/include/rapidjson/internal/swap.h
+	"../rapidjson.h"
+
+1510864882 /home/sgowen/Documents/github/dante/src/3rdparty/rapidjson/include/rapidjson/internal/strtod.h
+	"ieee754.h"
+	"biginteger.h"
+	"diyfp.h"
+	"pow10.h"
+
+1510864882 /home/sgowen/Documents/github/dante/src/3rdparty/rapidjson/include/rapidjson/internal/ieee754.h
+	"../rapidjson.h"
+
+1510864882 /home/sgowen/Documents/github/dante/src/3rdparty/rapidjson/include/rapidjson/internal/biginteger.h
+	"../rapidjson.h"
+	<intrin.h>
+
+1510864882 /home/sgowen/Documents/github/dante/src/3rdparty/rapidjson/include/rapidjson/internal/diyfp.h
+	"../rapidjson.h"
+	<intrin.h>
+
+1510864882 /home/sgowen/Documents/github/dante/src/3rdparty/rapidjson/include/rapidjson/internal/pow10.h
+	"../rapidjson.h"
+
+1510864882 /home/sgowen/Documents/github/dante/src/3rdparty/rapidjson/include/rapidjson/error/error.h
+	"../rapidjson.h"
+
+1510864882 /home/sgowen/Documents/github/dante/src/3rdparty/rapidjson/include/rapidjson/internal/strfunc.h
+	"../stream.h"
+	<cwchar>
+
+1510864882 /home/sgowen/Documents/github/dante/src/3rdparty/rapidjson/include/rapidjson/writer.h
+	"stream.h"
+	"internal/meta.h"
+	"internal/stack.h"
+	"internal/strfunc.h"
+	"internal/dtoa.h"
+	"internal/itoa.h"
+	"stringbuffer.h"
+	<new>
+	<intrin.h>
+	<nmmintrin.h>
+	<emmintrin.h>
+	<arm_neon.h>
+
+1510864882 /home/sgowen/Documents/github/dante/src/3rdparty/rapidjson/include/rapidjson/internal/dtoa.h
+	"itoa.h"
+	"diyfp.h"
+	"ieee754.h"
+
+1510864882 /home/sgowen/Documents/github/dante/src/3rdparty/rapidjson/include/rapidjson/internal/itoa.h
+	"../rapidjson.h"
+
+1510864882 /home/sgowen/Documents/github/dante/src/3rdparty/rapidjson/include/rapidjson/stringbuffer.h
+	"stream.h"
+	"internal/stack.h"
+	<utility>
+	"internal/stack.h"
+
+1511226637 source:/home/sgowen/Documents/github/dante/src/core/framework/graphics/opengl/OpenGLCircleBatcher.cpp
+	"framework/graphics/opengl/OpenGLCircleBatcher.h"
+	"framework/util/macros.h"
+	"framework/math/Circle.h"
+	"framework/math/Vector2.h"
+	"framework/graphics/opengl/OpenGLManager.h"
+	"framework/graphics/portable/DummyGpuProgramWrapper.h"
+	"framework/math/Color.h"
+	<math.h>
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/framework/graphics/opengl/OpenGLCircleBatcher.h
+	"framework/graphics/portable/CircleBatcher.h"
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/framework/graphics/portable/CircleBatcher.h
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/framework/math/Circle.h
+	"framework/math/Vector2.h"
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/framework/graphics/opengl/OpenGLManager.h
+	"framework/graphics/portable/NGGraphics.h"
+	<vector>
+
+1511285203 /home/sgowen/Documents/github/dante/src/core/framework/graphics/portable/NGGraphics.h
+	"TargetConditionals.h"
+	<OpenGLES/ES2/gl.h>
+	<OpenGLES/ES2/glext.h>
+	<OpenGL/OpenGL.h>
+	<OpenGL/gl.h>
+	<GL/glew.h>
+	<GLES2/gl2.h>
+	<GLES2/gl2ext.h>
+	<d3d11_1.h>
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/framework/graphics/portable/DummyGpuProgramWrapper.h
+	"framework/graphics/portable/GpuProgramWrapper.h"
+
+1510864439 /home/sgowen/Documents/github/dante/src/core/framework/graphics/portable/GpuProgramWrapper.h
+
+1511226637 source:/home/sgowen/Documents/github/dante/src/core/framework/graphics/opengl/OpenGLFramebufferToScreenGpuProgramWrapper.cpp
+	"framework/graphics/opengl/OpenGLFramebufferToScreenGpuProgramWrapper.h"
+	"framework/graphics/opengl/OpenGLFramebufferToScreenProgram.h"
+	"framework/graphics/opengl/OpenGLManager.h"
+	"framework/util/FrameworkConstants.h"
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/framework/graphics/opengl/OpenGLFramebufferToScreenGpuProgramWrapper.h
+	"framework/graphics/portable/GpuProgramWrapper.h"
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/framework/graphics/opengl/OpenGLFramebufferToScreenProgram.h
+	"framework/graphics/opengl/OpenGLProgram.h"
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/framework/graphics/opengl/OpenGLProgram.h
+	"framework/graphics/portable/NGGraphics.h"
+	<vector>
+
+1497646299 /usr/include/assert.h
+	<features.h>
+
+1497646282 /usr/include/features.h
+	<stdc-predef.h>
+	<sys/cdefs.h>
+	<gnu/stubs.h>
+
+1497646282 /usr/include/stdc-predef.h
+
+1497646316 /usr/include/sys/cdefs.h
+	<features.h>
+	<bits/wordsize.h>
+
+1497646305 /usr/include/bits/wordsize.h
+
+1497646282 /usr/include/gnu/stubs.h
+	<gnu/stubs-32.h>
+	<gnu/stubs-64.h>
+	<gnu/stubs-x32.h>
+
+1497646453 /usr/include/gnu/stubs-32.h
+
+1497646344 /usr/include/gnu/stubs-64.h
+
+1497646536 /usr/include/gnu/stubs-x32.h
+
+1497646301 /usr/include/math.h
+	<features.h>
+	<bits/math-vector.h>
+	<bits/huge_val.h>
+	<bits/huge_valf.h>
+	<bits/huge_vall.h>
+	<bits/inf.h>
+	<bits/nan.h>
+	<bits/mathdef.h>
+	<bits/mathcalls.h>
+	<bits/mathcalls.h>
+	<bits/mathcalls.h>
+	<bits/mathinline.h>
+	<bits/math-finite.h>
+
+1497646301 /usr/include/bits/math-vector.h
+	<bits/libm-simd-decl-stubs.h>
+
+1497646301 /usr/include/bits/libm-simd-decl-stubs.h
+
+1497646301 /usr/include/bits/huge_val.h
+	<endian.h>
+
+1497646309 /usr/include/endian.h
+	<features.h>
+	<bits/endian.h>
+	<bits/byteswap.h>
+
+1497646309 /usr/include/bits/endian.h
+
+1497646309 /usr/include/bits/byteswap.h
+	<features.h>
+	<bits/types.h>
+	<bits/wordsize.h>
+	<bits/byteswap-16.h>
+
+1497646312 /usr/include/bits/types.h
+	<features.h>
+	<bits/wordsize.h>
+	<bits/typesizes.h>
+
+1497646312 /usr/include/bits/typesizes.h
+
+1497646309 /usr/include/bits/byteswap-16.h
+
+1497646301 /usr/include/bits/huge_valf.h
+
+1497646301 /usr/include/bits/huge_vall.h
+
+1497646301 /usr/include/bits/inf.h
+
+1497646301 /usr/include/bits/nan.h
+	<endian.h>
+
+1497646301 /usr/include/bits/mathdef.h
+
+1497646301 /usr/include/bits/mathcalls.h
+
+1497646301 /usr/include/bits/mathinline.h
+
+1497646301 /usr/include/bits/math-finite.h
+
+1497646282 /usr/include/limits.h
+	<features.h>
+	<bits/wordsize.h>
+	<bits/posix1_lim.h>
+	<bits/posix2_lim.h>
+	<bits/xopen_lim.h>
+
+1497646312 /usr/include/bits/posix1_lim.h
+	<bits/local_lim.h>
+
+1497646312 /usr/include/bits/local_lim.h
+	<linux/limits.h>
+
+1510346203 /usr/include/linux/limits.h
+
+1497646312 /usr/include/bits/posix2_lim.h
+
+1497646282 /usr/include/bits/xopen_lim.h
+	<bits/stdio_lim.h>
+	<bits/wordsize.h>
+
+1497646305 /usr/include/bits/stdio_lim.h
+
+1497646309 /usr/include/string.h
+	<features.h>
+	<stddef.h>
+	<xlocale.h>
+	<bits/string.h>
+	<bits/string2.h>
+	<bits/string3.h>
+
+1497646283 /usr/include/xlocale.h
+
+1497646309 /usr/include/bits/string.h
+
+1497646309 /usr/include/bits/string2.h
+	<endian.h>
+	<bits/types.h>
+	<stdlib.h>
+
+1497646305 /usr/include/stdlib.h
+	<features.h>
+	<stddef.h>
+	<bits/waitflags.h>
+	<bits/waitstatus.h>
+	<xlocale.h>
+	<sys/types.h>
+	<alloca.h>
+	<bits/stdlib-bsearch.h>
+	<bits/stdlib-float.h>
+	<bits/stdlib.h>
+	<bits/stdlib-ldbl.h>
+
+1497646312 /usr/include/bits/waitflags.h
+
+1497646312 /usr/include/bits/waitstatus.h
+	<endian.h>
+
+1497646312 /usr/include/sys/types.h
+	<features.h>
+	<bits/types.h>
+	<time.h>
+	<stddef.h>
+	<endian.h>
+	<sys/select.h>
+	<sys/sysmacros.h>
+	<bits/pthreadtypes.h>
+
+1497646310 /usr/include/time.h
+	<features.h>
+	<stddef.h>
+	<bits/time.h>
+	<bits/types.h>
+	<bits/types.h>
+	<bits/types.h>
+	<bits/types.h>
+	<bits/types.h>
+	<xlocale.h>
+
+1497646310 /usr/include/bits/time.h
+	<bits/types.h>
+	<bits/types.h>
+	<bits/timex.h>
+
+1497646310 /usr/include/bits/timex.h
+	<bits/types.h>
+
+1497646316 /usr/include/sys/select.h
+	<features.h>
+	<bits/types.h>
+	<bits/select.h>
+	<bits/sigset.h>
+	<time.h>
+	<bits/time.h>
+	<bits/select2.h>
+
+1497646316 /usr/include/bits/select.h
+	<bits/wordsize.h>
+
+1497646304 /usr/include/bits/sigset.h
+
+1497646316 /usr/include/bits/select2.h
+
+1497646312 /usr/include/sys/sysmacros.h
+	<features.h>
+
+1497646312 /usr/include/bits/pthreadtypes.h
+	<bits/wordsize.h>
+
+1497646305 /usr/include/alloca.h
+	<features.h>
+	<stddef.h>
+
+1497646305 /usr/include/bits/stdlib-bsearch.h
+
+1497646305 /usr/include/bits/stdlib-float.h
+
+1497646305 /usr/include/bits/stdlib.h
+
+1497646305 /usr/include/bits/stdlib-ldbl.h
+
+1497646309 /usr/include/bits/string3.h
+
+1497646306 /usr/include/stdio.h
+	<features.h>
+	<stddef.h>
+	<bits/types.h>
+	<libio.h>
+	<stdarg.h>
+	<bits/stdio_lim.h>
+	<bits/sys_errlist.h>
+	<getopt.h>
+	<bits/stdio.h>
+	<bits/stdio2.h>
+	<bits/stdio-ldbl.h>
+
+1497646306 /usr/include/libio.h
+	<_G_config.h>
+	<stdarg.h>
+	<sys/cdefs.h>
+	<shlib-compat.h>
+	<bits/libio-ldbl.h>
+
+1497646306 /usr/include/_G_config.h
+	<bits/types.h>
+	<stddef.h>
+	<wchar.h>
+	<gconv.h>
+
+1497646309 /usr/include/wchar.h
+	<features.h>
+	<stdio.h>
+	<stdarg.h>
+	<bits/wchar.h>
+	<stddef.h>
+	<wctype.h>
+	<xlocale.h>
+	<xlocale.h>
+	<xlocale.h>
+	<wctype.h>
+	<bits/wchar2.h>
+	<bits/wchar-ldbl.h>
+
+1497646309 /usr/include/bits/wchar.h
+
+1497646321 /usr/include/wctype.h
+	<features.h>
+	<bits/types.h>
+	<wchar.h>
+	<endian.h>
+	<xlocale.h>
+
+1497646310 /usr/include/bits/wchar2.h
+
+1497646310 /usr/include/bits/wchar-ldbl.h
+
+1497646283 /usr/include/gconv.h
+	<features.h>
+	<wchar.h>
+	<stddef.h>
+
+1497646306 /usr/include/bits/libio-ldbl.h
+
+1497646306 /usr/include/bits/sys_errlist.h
+
+1497646312 /usr/include/getopt.h
+	<ctype.h>
+
+1497646299 /usr/include/ctype.h
+	<features.h>
+	<bits/types.h>
+	<endian.h>
+	<xlocale.h>
+
+1497646306 /usr/include/bits/stdio.h
+
+1497646306 /usr/include/bits/stdio2.h
+
+1497646306 /usr/include/bits/stdio-ldbl.h
+
+1497646310 /usr/include/sys/time.h
+	<features.h>
+	<bits/types.h>
+	<time.h>
+	<bits/time.h>
+	<sys/select.h>
+
+1497646305 /usr/include/stdint.h
+	<features.h>
+	<bits/wchar.h>
+	<bits/wordsize.h>
+
+1502405496 /usr/include/GL/glcorearb.h
+	<windows.h>
+	<stddef.h>
+	<inttypes.h>
+	<inttypes.h>
+	<inttypes.h>
+	<stdint.h>
+	<stdint.h>
+	<inttypes.h>
+
+1497646305 /usr/include/inttypes.h
+	<features.h>
+	<stdint.h>
+	<stddef.h>
+
+1502405496 /usr/include/GL/gl.h
+	"gl_mangle.h"
+	<windows.h>
+	<GL/glext.h>
+
+1502405496 /usr/include/GL/gl_mangle.h
+
+1502405496 /usr/include/GL/glext.h
+	<windows.h>
+	<stddef.h>
+	<inttypes.h>
+	<inttypes.h>
+	<inttypes.h>
+	<stdint.h>
+	<stdint.h>
+	<inttypes.h>
+
+1445634967 /usr/include/GL/glu.h
+	"glu_mangle.h"
+	<GL/gl.h>
+
+1445634967 /usr/include/GL/glu_mangle.h
+
+1497646307 /usr/include/dlfcn.h
+	<features.h>
+	<stddef.h>
+	<bits/dlfcn.h>
+
+1497646307 /usr/include/bits/dlfcn.h
+
+1497646326 /usr/include/pthread.h
+	<features.h>
+	<endian.h>
+	<sched.h>
+	<time.h>
+	<bits/pthreadtypes.h>
+	<bits/setjmp.h>
+	<bits/wordsize.h>
+
+1497646312 /usr/include/sched.h
+	<features.h>
+	<bits/types.h>
+	<stddef.h>
+	<time.h>
+	<bits/sched.h>
+
+1497646312 /usr/include/bits/sched.h
+
+1497646304 /usr/include/bits/setjmp.h
+	<bits/wordsize.h>
+
+1497646308 /usr/include/malloc.h
+	<features.h>
+	<stddef.h>
+	<stdio.h>
+
+1497646312 /usr/include/unistd.h
+	<features.h>
+	<bits/posix_opt.h>
+	<bits/environments.h>
+	<bits/types.h>
+	<stddef.h>
+	<bits/confname.h>
+	<getopt.h>
+	<bits/unistd.h>
+
+1497646312 /usr/include/bits/posix_opt.h
+
+1497646312 /usr/include/bits/environments.h
+	<bits/wordsize.h>
+
+1497646312 /usr/include/bits/confname.h
+
+1497646312 /usr/include/bits/unistd.h
+
+1497646304 /usr/include/signal.h
+	<features.h>
+	<bits/sigset.h>
+	<bits/types.h>
+	<bits/signum.h>
+	<time.h>
+	<bits/siginfo.h>
+	<bits/sigaction.h>
+	<bits/sigcontext.h>
+	<stddef.h>
+	<bits/sigstack.h>
+	<sys/ucontext.h>
+	<bits/pthreadtypes.h>
+	<bits/sigthread.h>
+
+1497646304 /usr/include/bits/signum.h
+
+1497646304 /usr/include/bits/siginfo.h
+	<bits/wordsize.h>
+
+1497646304 /usr/include/bits/sigaction.h
+
+1497646304 /usr/include/bits/sigcontext.h
+
+1497646304 /usr/include/bits/sigstack.h
+
+1497646305 /usr/include/sys/ucontext.h
+	<features.h>
+	<signal.h>
+	<bits/sigcontext.h>
+
+1497646304 /usr/include/bits/sigthread.h
+
+1442577391 /usr/include/X11/Xlib.h
+	<sys/types.h>
+	<stdint.h>
+	<X11/X.h>
+	<X11/Xfuncproto.h>
+	<X11/Xosdefs.h>
+	<stddef.h>
+	<stdlib.h>
+
+1507748003 /usr/include/X11/X.h
+	<X11/Xmd.h>
+
+1507748003 /usr/include/X11/Xmd.h
+	<sys/isa_defs.h>
+
+1507748003 /usr/include/X11/Xfuncproto.h
+
+1507748003 /usr/include/X11/Xosdefs.h
+
+1507748003 /usr/include/X11/keysym.h
+	<X11/keysymdef.h>
+
+1507748003 /usr/include/X11/keysymdef.h
+
+1507748003 /usr/include/X11/Xatom.h
+
+1372162093 /usr/include/X11/Xcursor/Xcursor.h
+	<stdio.h>
+	<X11/Xfuncproto.h>
+	<X11/Xlib.h>
+
+1438586685 /usr/include/X11/extensions/Xrandr.h
+	<X11/extensions/randr.h>
+	<X11/extensions/Xrender.h>
+	<X11/Xfuncproto.h>
+
+1438016168 /usr/include/X11/extensions/randr.h
+
+1436912303 /usr/include/X11/extensions/Xrender.h
+	<X11/Xlib.h>
+	<X11/Xfuncproto.h>
+	<X11/Xosdefs.h>
+	<X11/Xutil.h>
+	<X11/extensions/render.h>
+
+1442577391 /usr/include/X11/Xutil.h
+	<X11/Xlib.h>
+	<X11/keysym.h>
+
+1309630919 /usr/include/X11/extensions/render.h
+	<X11/Xdefs.h>
+
+1507748003 /usr/include/X11/Xdefs.h
+	<X11/Xmd.h>
+
+1442577391 /usr/include/X11/XKBlib.h
+	<X11/Xlib.h>
+	<X11/extensions/XKBstr.h>
+
+1436842355 /usr/include/X11/extensions/XKBstr.h
+	<X11/extensions/XKB.h>
+
+1436842355 /usr/include/X11/extensions/XKB.h
+
+1372633899 /usr/include/X11/extensions/Xinerama.h
+	<X11/Xlib.h>
+
+1453677148 /usr/include/X11/extensions/XInput2.h
+	<X11/Xlib.h>
+	<X11/extensions/XI2.h>
+	<X11/extensions/Xge.h>
+	<X11/extensions/Xfixes.h>
+
+1405271614 /usr/include/X11/extensions/XI2.h
+
+1414221020 /usr/include/X11/extensions/Xge.h
+	<X11/Xlib.h>
+	<X11/Xfuncproto.h>
+
+1407154003 /usr/include/X11/extensions/Xfixes.h
+	<X11/extensions/xfixeswire.h>
+	<X11/Xfuncproto.h>
+	<X11/Xlib.h>
+
+1372930929 /usr/include/X11/extensions/xfixeswire.h
+
+1510346203 /usr/include/linux/input.h
+	<sys/time.h>
+	<sys/ioctl.h>
+	<sys/types.h>
+	<linux/types.h>
+	"input-event-codes.h"
+
+1497646316 /usr/include/sys/ioctl.h
+	<features.h>
+	<bits/ioctls.h>
+	<bits/ioctl-types.h>
+	<sys/ttydefaults.h>
+
+1497646316 /usr/include/bits/ioctls.h
+	<asm/ioctls.h>
+
+1510346207 /usr/include/asm/ioctls.h
+	<asm-generic/ioctls.h>
+
+1510346198 /usr/include/asm-generic/ioctls.h
+	<linux/ioctl.h>
+
+1510346203 /usr/include/linux/ioctl.h
+	<asm/ioctl.h>
+
+1510346207 /usr/include/asm/ioctl.h
+	<asm-generic/ioctl.h>
+
+1510346198 /usr/include/asm-generic/ioctl.h
+
+1497646316 /usr/include/bits/ioctl-types.h
+	<asm/ioctls.h>
+
+1497646313 /usr/include/sys/ttydefaults.h
+
+1510346205 /usr/include/linux/types.h
+	<asm/types.h>
+	<linux/posix_types.h>
+
+1510346207 /usr/include/asm/types.h
+	<asm-generic/types.h>
+
+1510346198 /usr/include/asm-generic/types.h
+	<asm-generic/int-ll64.h>
+
+1510346198 /usr/include/asm-generic/int-ll64.h
+	<asm/bitsperlong.h>
+
+1510346206 /usr/include/asm/bitsperlong.h
+	<asm-generic/bitsperlong.h>
+
+1510346198 /usr/include/asm-generic/bitsperlong.h
+
+1510346204 /usr/include/linux/posix_types.h
+	<linux/stddef.h>
+	<asm/posix_types.h>
+
+1510346205 /usr/include/linux/stddef.h
+
+1510346207 /usr/include/asm/posix_types.h
+	<asm/posix_types_32.h>
+	<asm/posix_types_x32.h>
+	<asm/posix_types_64.h>
+
+1510346207 /usr/include/asm/posix_types_32.h
+	<asm-generic/posix_types.h>
+
+1510346198 /usr/include/asm-generic/posix_types.h
+	<asm/bitsperlong.h>
+
+1510346207 /usr/include/asm/posix_types_x32.h
+	<asm/posix_types_64.h>
+
+1510346207 /usr/include/asm/posix_types_64.h
+	<asm-generic/posix_types.h>
+
+1510346203 /usr/include/linux/input-event-codes.h
+
+1497646312 /usr/include/regex.h
+	<sys/types.h>
+
+1437380189 /usr/include/xkbcommon/xkbcommon.h
+	<stdint.h>
+	<stdio.h>
+	<stdarg.h>
+	<xkbcommon/xkbcommon-names.h>
+	<xkbcommon/xkbcommon-keysyms.h>
+	<xkbcommon/xkbcommon-compat.h>
+
+1437380189 /usr/include/xkbcommon/xkbcommon-names.h
+
+1437380189 /usr/include/xkbcommon/xkbcommon-keysyms.h
+
+1437380189 /usr/include/xkbcommon/xkbcommon-compat.h
+
+1437380189 /usr/include/xkbcommon/xkbcommon-compose.h
+	<xkbcommon/xkbcommon.h>
+
+1497646316 /usr/include/sys/queue.h
+
+1497646313 /usr/include/sys/stat.h
+	<features.h>
+	<bits/types.h>
+	<time.h>
+	<bits/stat.h>
+
+1497646313 /usr/include/bits/stat.h
+
+1497646317 /usr/include/sys/inotify.h
+	<stdint.h>
+	<bits/inotify.h>
+
+1497646317 /usr/include/bits/inotify.h
+
+1497646313 /usr/include/fcntl.h
+	<features.h>
+	<bits/types.h>
+	<bits/fcntl.h>
+	<time.h>
+	<bits/stat.h>
+	<bits/fcntl2.h>
+
+1497646313 /usr/include/bits/fcntl.h
+	<bits/fcntl-linux.h>
+
+1497646313 /usr/include/bits/fcntl-linux.h
+	<bits/fcntl-linux.h>
+	<bits/uio.h>
+
+1497646316 /usr/include/bits/uio.h
+	<sys/types.h>
+
+1497646313 /usr/include/bits/fcntl2.h
+
+1497646305 /usr/include/errno.h
+	<features.h>
+	<bits/errno.h>
+
+1497646305 /usr/include/bits/errno.h
+	<linux/errno.h>
+
+1510346202 /usr/include/linux/errno.h
+	<asm/errno.h>
+
+1510346206 /usr/include/asm/errno.h
+	<asm-generic/errno.h>
+
+1510346198 /usr/include/asm-generic/errno.h
+	<asm-generic/errno-base.h>
+
+1510346198 /usr/include/asm-generic/errno-base.h
+
+1497646311 /usr/include/dirent.h
+	<features.h>
+	<bits/types.h>
+	<bits/dirent.h>
+	<bits/types.h>
+	<bits/posix1_lim.h>
+	<stddef.h>
+
+1497646311 /usr/include/bits/dirent.h
+
+1442577391 /usr/include/X11/Xresource.h
+	<X11/Xlib.h>
+
+1497646283 /usr/include/locale.h
+	<features.h>
+	<stddef.h>
+	<bits/locale.h>
+	<xlocale.h>
+
+1497646283 /usr/include/bits/locale.h
+
+1442577391 /usr/include/X11/cursorfont.h
+
+1497646304 /usr/include/setjmp.h
+	<features.h>
+	<bits/setjmp.h>
+	<bits/sigset.h>
+	<bits/setjmp2.h>
+
+1497646304 /usr/include/bits/setjmp2.h
+
+1488563541 /usr/include/zlib.h
+	"zconf.h"
+
+1488563541 /usr/include/zconf.h
+	<windows.h>
+	<limits.h>
+	<sys/types.h>
+	<stdarg.h>
+	<stddef.h>
+	<unistd.h>
+	<unixio.h>
+
+1497646321 /usr/include/sys/socket.h
+	<features.h>
+	<sys/uio.h>
+	<stddef.h>
+	<bits/sigset.h>
+	<bits/socket.h>
+	<bits/socket2.h>
+
+1497646316 /usr/include/sys/uio.h
+	<features.h>
+	<sys/types.h>
+	<bits/uio.h>
+
+1497646321 /usr/include/bits/socket.h
+	<stddef.h>
+	<sys/types.h>
+	<bits/socket_type.h>
+	<bits/sockaddr.h>
+	<asm/socket.h>
+
+1497646317 /usr/include/bits/socket_type.h
+
+1497646321 /usr/include/bits/sockaddr.h
+
+1510346207 /usr/include/asm/socket.h
+	<asm-generic/socket.h>
+
+1510346198 /usr/include/asm-generic/socket.h
+	<asm/sockios.h>
+
+1510346207 /usr/include/asm/sockios.h
+	<asm-generic/sockios.h>
+
+1510346198 /usr/include/asm-generic/sockios.h
+
+1497646321 /usr/include/bits/socket2.h
+
+1497646332 /usr/include/netinet/in.h
+	<features.h>
+	<stdint.h>
+	<sys/socket.h>
+	<bits/types.h>
+	<bits/in.h>
+	<endian.h>
+	<bits/byteswap.h>
+
+1497646332 /usr/include/bits/in.h
+
+1497646332 /usr/include/arpa/inet.h
+	<features.h>
+	<netinet/in.h>
+
+1497646332 /usr/include/netdb.h
+	<features.h>
+	<netinet/in.h>
+	<stdint.h>
+	<rpc/netdb.h>
+	<bits/siginfo.h>
+	<time.h>
+	<bits/netdb.h>
+
+1497646335 /usr/include/rpc/netdb.h
+	<features.h>
+	<stddef.h>
+
+1497646332 /usr/include/bits/netdb.h
+
+1400929863 /usr/include/GL/glut.h
+	"freeglut_std.h"
+
+1400929863 /usr/include/GL/freeglut_std.h
+	<windows.h>
+	<OpenGL/gl.h>
+	<OpenGL/glu.h>
+	<GL/gl.h>
+	<GL/glu.h>
+	<stdlib.h>
+
+1497646299 /usr/include//assert.h
+	<features.h>
+
+1497646282 /usr/include//features.h
+	<stdc-predef.h>
+	<sys/cdefs.h>
+	<gnu/stubs.h>
+
+1497646282 /usr/include//stdc-predef.h
+
+1497646316 /usr/include//sys/cdefs.h
+	<features.h>
+	<bits/wordsize.h>
+
+1497646305 /usr/include//bits/wordsize.h
+
+1497646282 /usr/include//gnu/stubs.h
+	<gnu/stubs-32.h>
+	<gnu/stubs-64.h>
+	<gnu/stubs-x32.h>
+
+1497646453 /usr/include//gnu/stubs-32.h
+
+1497646344 /usr/include//gnu/stubs-64.h
+
+1497646536 /usr/include//gnu/stubs-x32.h
+
+1497646301 /usr/include//math.h
+	<features.h>
+	<bits/math-vector.h>
+	<bits/huge_val.h>
+	<bits/huge_valf.h>
+	<bits/huge_vall.h>
+	<bits/inf.h>
+	<bits/nan.h>
+	<bits/mathdef.h>
+	<bits/mathcalls.h>
+	<bits/mathcalls.h>
+	<bits/mathcalls.h>
+	<bits/mathinline.h>
+	<bits/math-finite.h>
+
+1497646301 /usr/include//bits/math-vector.h
+	<bits/libm-simd-decl-stubs.h>
+
+1497646301 /usr/include//bits/libm-simd-decl-stubs.h
+
+1497646301 /usr/include//bits/huge_val.h
+	<endian.h>
+
+1497646309 /usr/include//endian.h
+	<features.h>
+	<bits/endian.h>
+	<bits/byteswap.h>
+
+1497646309 /usr/include//bits/endian.h
+
+1497646309 /usr/include//bits/byteswap.h
+	<features.h>
+	<bits/types.h>
+	<bits/wordsize.h>
+	<bits/byteswap-16.h>
+
+1497646312 /usr/include//bits/types.h
+	<features.h>
+	<bits/wordsize.h>
+	<bits/typesizes.h>
+
+1497646312 /usr/include//bits/typesizes.h
+
+1497646309 /usr/include//bits/byteswap-16.h
+
+1497646301 /usr/include//bits/huge_valf.h
+
+1497646301 /usr/include//bits/huge_vall.h
+
+1497646301 /usr/include//bits/inf.h
+
+1497646301 /usr/include//bits/nan.h
+	<endian.h>
+
+1497646301 /usr/include//bits/mathdef.h
+
+1497646301 /usr/include//bits/mathcalls.h
+
+1497646301 /usr/include//bits/mathinline.h
+
+1497646301 /usr/include//bits/math-finite.h
+
+1497646282 /usr/include//limits.h
+	<features.h>
+	<bits/wordsize.h>
+	<bits/posix1_lim.h>
+	<bits/posix2_lim.h>
+	<bits/xopen_lim.h>
+
+1497646312 /usr/include//bits/posix1_lim.h
+	<bits/local_lim.h>
+
+1497646312 /usr/include//bits/local_lim.h
+	<linux/limits.h>
+
+1510346203 /usr/include//linux/limits.h
+
+1497646312 /usr/include//bits/posix2_lim.h
+
+1497646282 /usr/include//bits/xopen_lim.h
+	<bits/stdio_lim.h>
+	<bits/wordsize.h>
+
+1497646305 /usr/include//bits/stdio_lim.h
+
+1497646309 /usr/include//string.h
+	<features.h>
+	<stddef.h>
+	<xlocale.h>
+	<bits/string.h>
+	<bits/string2.h>
+	<bits/string3.h>
+
+1497646283 /usr/include//xlocale.h
+
+1497646309 /usr/include//bits/string.h
+
+1497646309 /usr/include//bits/string2.h
+	<endian.h>
+	<bits/types.h>
+	<stdlib.h>
+
+1497646305 /usr/include//stdlib.h
+	<features.h>
+	<stddef.h>
+	<bits/waitflags.h>
+	<bits/waitstatus.h>
+	<xlocale.h>
+	<sys/types.h>
+	<alloca.h>
+	<bits/stdlib-bsearch.h>
+	<bits/stdlib-float.h>
+	<bits/stdlib.h>
+	<bits/stdlib-ldbl.h>
+
+1497646312 /usr/include//bits/waitflags.h
+
+1497646312 /usr/include//bits/waitstatus.h
+	<endian.h>
+
+1497646312 /usr/include//sys/types.h
+	<features.h>
+	<bits/types.h>
+	<time.h>
+	<stddef.h>
+	<endian.h>
+	<sys/select.h>
+	<sys/sysmacros.h>
+	<bits/pthreadtypes.h>
+
+1497646310 /usr/include//time.h
+	<features.h>
+	<stddef.h>
+	<bits/time.h>
+	<bits/types.h>
+	<bits/types.h>
+	<bits/types.h>
+	<bits/types.h>
+	<bits/types.h>
+	<xlocale.h>
+
+1497646310 /usr/include//bits/time.h
+	<bits/types.h>
+	<bits/types.h>
+	<bits/timex.h>
+
+1497646310 /usr/include//bits/timex.h
+	<bits/types.h>
+
+1497646316 /usr/include//sys/select.h
+	<features.h>
+	<bits/types.h>
+	<bits/select.h>
+	<bits/sigset.h>
+	<time.h>
+	<bits/time.h>
+	<bits/select2.h>
+
+1497646316 /usr/include//bits/select.h
+	<bits/wordsize.h>
+
+1497646304 /usr/include//bits/sigset.h
+
+1497646316 /usr/include//bits/select2.h
+
+1497646312 /usr/include//sys/sysmacros.h
+	<features.h>
+
+1497646312 /usr/include//bits/pthreadtypes.h
+	<bits/wordsize.h>
+
+1497646305 /usr/include//alloca.h
+	<features.h>
+	<stddef.h>
+
+1497646305 /usr/include//bits/stdlib-bsearch.h
+
+1497646305 /usr/include//bits/stdlib-float.h
+
+1497646305 /usr/include//bits/stdlib.h
+
+1497646305 /usr/include//bits/stdlib-ldbl.h
+
+1497646309 /usr/include//bits/string3.h
+
+1497646306 /usr/include//stdio.h
+	<features.h>
+	<stddef.h>
+	<bits/types.h>
+	<libio.h>
+	<stdarg.h>
+	<bits/stdio_lim.h>
+	<bits/sys_errlist.h>
+	<getopt.h>
+	<bits/stdio.h>
+	<bits/stdio2.h>
+	<bits/stdio-ldbl.h>
+
+1497646306 /usr/include//libio.h
+	<_G_config.h>
+	<stdarg.h>
+	<sys/cdefs.h>
+	<shlib-compat.h>
+	<bits/libio-ldbl.h>
+
+1497646306 /usr/include//_G_config.h
+	<bits/types.h>
+	<stddef.h>
+	<wchar.h>
+	<gconv.h>
+
+1497646309 /usr/include//wchar.h
+	<features.h>
+	<stdio.h>
+	<stdarg.h>
+	<bits/wchar.h>
+	<stddef.h>
+	<wctype.h>
+	<xlocale.h>
+	<xlocale.h>
+	<xlocale.h>
+	<wctype.h>
+	<bits/wchar2.h>
+	<bits/wchar-ldbl.h>
+
+1497646309 /usr/include//bits/wchar.h
+
+1497646321 /usr/include//wctype.h
+	<features.h>
+	<bits/types.h>
+	<wchar.h>
+	<endian.h>
+	<xlocale.h>
+
+1497646310 /usr/include//bits/wchar2.h
+
+1497646310 /usr/include//bits/wchar-ldbl.h
+
+1497646283 /usr/include//gconv.h
+	<features.h>
+	<wchar.h>
+	<stddef.h>
+
+1497646306 /usr/include//bits/libio-ldbl.h
+
+1497646306 /usr/include//bits/sys_errlist.h
+
+1497646312 /usr/include//getopt.h
+	<ctype.h>
+
+1497646299 /usr/include//ctype.h
+	<features.h>
+	<bits/types.h>
+	<endian.h>
+	<xlocale.h>
+
+1497646306 /usr/include//bits/stdio.h
+
+1497646306 /usr/include//bits/stdio2.h
+
+1497646306 /usr/include//bits/stdio-ldbl.h
+
+1497646310 /usr/include//sys/time.h
+	<features.h>
+	<bits/types.h>
+	<time.h>
+	<bits/time.h>
+	<sys/select.h>
+
+1497646305 /usr/include//stdint.h
+	<features.h>
+	<bits/wchar.h>
+	<bits/wordsize.h>
+
+1502405496 /usr/include//GL/glcorearb.h
+	<windows.h>
+	<stddef.h>
+	<inttypes.h>
+	<inttypes.h>
+	<inttypes.h>
+	<stdint.h>
+	<stdint.h>
+	<inttypes.h>
+
+1497646305 /usr/include//inttypes.h
+	<features.h>
+	<stdint.h>
+	<stddef.h>
+
+1502405496 /usr/include//GL/gl.h
+	"gl_mangle.h"
+	<windows.h>
+	<GL/glext.h>
+
+1502405496 /usr/include//GL/gl_mangle.h
+
+1502405496 /usr/include//GL/glext.h
+	<windows.h>
+	<stddef.h>
+	<inttypes.h>
+	<inttypes.h>
+	<inttypes.h>
+	<stdint.h>
+	<stdint.h>
+	<inttypes.h>
+
+1445634967 /usr/include//GL/glu.h
+	"glu_mangle.h"
+	<GL/gl.h>
+
+1445634967 /usr/include//GL/glu_mangle.h
+
+1497646307 /usr/include//dlfcn.h
+	<features.h>
+	<stddef.h>
+	<bits/dlfcn.h>
+
+1497646307 /usr/include//bits/dlfcn.h
+
+1497646326 /usr/include//pthread.h
+	<features.h>
+	<endian.h>
+	<sched.h>
+	<time.h>
+	<bits/pthreadtypes.h>
+	<bits/setjmp.h>
+	<bits/wordsize.h>
+
+1497646312 /usr/include//sched.h
+	<features.h>
+	<bits/types.h>
+	<stddef.h>
+	<time.h>
+	<bits/sched.h>
+
+1497646312 /usr/include//bits/sched.h
+
+1497646304 /usr/include//bits/setjmp.h
+	<bits/wordsize.h>
+
+1497646308 /usr/include//malloc.h
+	<features.h>
+	<stddef.h>
+	<stdio.h>
+
+1497646312 /usr/include//unistd.h
+	<features.h>
+	<bits/posix_opt.h>
+	<bits/environments.h>
+	<bits/types.h>
+	<stddef.h>
+	<bits/confname.h>
+	<getopt.h>
+	<bits/unistd.h>
+
+1497646312 /usr/include//bits/posix_opt.h
+
+1497646312 /usr/include//bits/environments.h
+	<bits/wordsize.h>
+
+1497646312 /usr/include//bits/confname.h
+
+1497646312 /usr/include//bits/unistd.h
+
+1497646304 /usr/include//signal.h
+	<features.h>
+	<bits/sigset.h>
+	<bits/types.h>
+	<bits/signum.h>
+	<time.h>
+	<bits/siginfo.h>
+	<bits/sigaction.h>
+	<bits/sigcontext.h>
+	<stddef.h>
+	<bits/sigstack.h>
+	<sys/ucontext.h>
+	<bits/pthreadtypes.h>
+	<bits/sigthread.h>
+
+1497646304 /usr/include//bits/signum.h
+
+1497646304 /usr/include//bits/siginfo.h
+	<bits/wordsize.h>
+
+1497646304 /usr/include//bits/sigaction.h
+
+1497646304 /usr/include//bits/sigcontext.h
+
+1497646304 /usr/include//bits/sigstack.h
+
+1497646305 /usr/include//sys/ucontext.h
+	<features.h>
+	<signal.h>
+	<bits/sigcontext.h>
+
+1497646304 /usr/include//bits/sigthread.h
+
+1442577391 /usr/include//X11/Xlib.h
+	<sys/types.h>
+	<stdint.h>
+	<X11/X.h>
+	<X11/Xfuncproto.h>
+	<X11/Xosdefs.h>
+	<stddef.h>
+	<stdlib.h>
+
+1507748003 /usr/include//X11/X.h
+	<X11/Xmd.h>
+
+1507748003 /usr/include//X11/Xmd.h
+	<sys/isa_defs.h>
+
+1507748003 /usr/include//X11/Xfuncproto.h
+
+1507748003 /usr/include//X11/Xosdefs.h
+
+1507748003 /usr/include//X11/keysym.h
+	<X11/keysymdef.h>
+
+1507748003 /usr/include//X11/keysymdef.h
+
+1507748003 /usr/include//X11/Xatom.h
+
+1372162093 /usr/include//X11/Xcursor/Xcursor.h
+	<stdio.h>
+	<X11/Xfuncproto.h>
+	<X11/Xlib.h>
+
+1438586685 /usr/include//X11/extensions/Xrandr.h
+	<X11/extensions/randr.h>
+	<X11/extensions/Xrender.h>
+	<X11/Xfuncproto.h>
+
+1438016168 /usr/include//X11/extensions/randr.h
+
+1436912303 /usr/include//X11/extensions/Xrender.h
+	<X11/Xlib.h>
+	<X11/Xfuncproto.h>
+	<X11/Xosdefs.h>
+	<X11/Xutil.h>
+	<X11/extensions/render.h>
+
+1442577391 /usr/include//X11/Xutil.h
+	<X11/Xlib.h>
+	<X11/keysym.h>
+
+1309630919 /usr/include//X11/extensions/render.h
+	<X11/Xdefs.h>
+
+1507748003 /usr/include//X11/Xdefs.h
+	<X11/Xmd.h>
+
+1442577391 /usr/include//X11/XKBlib.h
+	<X11/Xlib.h>
+	<X11/extensions/XKBstr.h>
+
+1436842355 /usr/include//X11/extensions/XKBstr.h
+	<X11/extensions/XKB.h>
+
+1436842355 /usr/include//X11/extensions/XKB.h
+
+1372633899 /usr/include//X11/extensions/Xinerama.h
+	<X11/Xlib.h>
+
+1453677148 /usr/include//X11/extensions/XInput2.h
+	<X11/Xlib.h>
+	<X11/extensions/XI2.h>
+	<X11/extensions/Xge.h>
+	<X11/extensions/Xfixes.h>
+
+1405271614 /usr/include//X11/extensions/XI2.h
+
+1414221020 /usr/include//X11/extensions/Xge.h
+	<X11/Xlib.h>
+	<X11/Xfuncproto.h>
+
+1407154003 /usr/include//X11/extensions/Xfixes.h
+	<X11/extensions/xfixeswire.h>
+	<X11/Xfuncproto.h>
+	<X11/Xlib.h>
+
+1372930929 /usr/include//X11/extensions/xfixeswire.h
+
+1510346203 /usr/include//linux/input.h
+	<sys/time.h>
+	<sys/ioctl.h>
+	<sys/types.h>
+	<linux/types.h>
+	"input-event-codes.h"
+
+1497646316 /usr/include//sys/ioctl.h
+	<features.h>
+	<bits/ioctls.h>
+	<bits/ioctl-types.h>
+	<sys/ttydefaults.h>
+
+1497646316 /usr/include//bits/ioctls.h
+	<asm/ioctls.h>
+
+1510346207 /usr/include//asm/ioctls.h
+	<asm-generic/ioctls.h>
+
+1510346198 /usr/include//asm-generic/ioctls.h
+	<linux/ioctl.h>
+
+1510346203 /usr/include//linux/ioctl.h
+	<asm/ioctl.h>
+
+1510346207 /usr/include//asm/ioctl.h
+	<asm-generic/ioctl.h>
+
+1510346198 /usr/include//asm-generic/ioctl.h
+
+1497646316 /usr/include//bits/ioctl-types.h
+	<asm/ioctls.h>
+
+1497646313 /usr/include//sys/ttydefaults.h
+
+1510346205 /usr/include//linux/types.h
+	<asm/types.h>
+	<linux/posix_types.h>
+
+1510346207 /usr/include//asm/types.h
+	<asm-generic/types.h>
+
+1510346198 /usr/include//asm-generic/types.h
+	<asm-generic/int-ll64.h>
+
+1510346198 /usr/include//asm-generic/int-ll64.h
+	<asm/bitsperlong.h>
+
+1510346206 /usr/include//asm/bitsperlong.h
+	<asm-generic/bitsperlong.h>
+
+1510346198 /usr/include//asm-generic/bitsperlong.h
+
+1510346204 /usr/include//linux/posix_types.h
+	<linux/stddef.h>
+	<asm/posix_types.h>
+
+1510346205 /usr/include//linux/stddef.h
+
+1510346207 /usr/include//asm/posix_types.h
+	<asm/posix_types_32.h>
+	<asm/posix_types_x32.h>
+	<asm/posix_types_64.h>
+
+1510346207 /usr/include//asm/posix_types_32.h
+	<asm-generic/posix_types.h>
+
+1510346198 /usr/include//asm-generic/posix_types.h
+	<asm/bitsperlong.h>
+
+1510346207 /usr/include//asm/posix_types_x32.h
+	<asm/posix_types_64.h>
+
+1510346207 /usr/include//asm/posix_types_64.h
+	<asm-generic/posix_types.h>
+
+1510346203 /usr/include//linux/input-event-codes.h
+
+1497646312 /usr/include//regex.h
+	<sys/types.h>
+
+1437380189 /usr/include//xkbcommon/xkbcommon.h
+	<stdint.h>
+	<stdio.h>
+	<stdarg.h>
+	<xkbcommon/xkbcommon-names.h>
+	<xkbcommon/xkbcommon-keysyms.h>
+	<xkbcommon/xkbcommon-compat.h>
+
+1437380189 /usr/include//xkbcommon/xkbcommon-names.h
+
+1437380189 /usr/include//xkbcommon/xkbcommon-keysyms.h
+
+1437380189 /usr/include//xkbcommon/xkbcommon-compat.h
+
+1437380189 /usr/include//xkbcommon/xkbcommon-compose.h
+	<xkbcommon/xkbcommon.h>
+
+1497646316 /usr/include//sys/queue.h
+
+1497646313 /usr/include//sys/stat.h
+	<features.h>
+	<bits/types.h>
+	<time.h>
+	<bits/stat.h>
+
+1497646313 /usr/include//bits/stat.h
+
+1497646317 /usr/include//sys/inotify.h
+	<stdint.h>
+	<bits/inotify.h>
+
+1497646317 /usr/include//bits/inotify.h
+
+1497646313 /usr/include//fcntl.h
+	<features.h>
+	<bits/types.h>
+	<bits/fcntl.h>
+	<time.h>
+	<bits/stat.h>
+	<bits/fcntl2.h>
+
+1497646313 /usr/include//bits/fcntl.h
+	<bits/fcntl-linux.h>
+
+1497646313 /usr/include//bits/fcntl-linux.h
+	<bits/fcntl-linux.h>
+	<bits/uio.h>
+
+1497646316 /usr/include//bits/uio.h
+	<sys/types.h>
+
+1497646313 /usr/include//bits/fcntl2.h
+
+1497646305 /usr/include//errno.h
+	<features.h>
+	<bits/errno.h>
+
+1497646305 /usr/include//bits/errno.h
+	<linux/errno.h>
+
+1510346202 /usr/include//linux/errno.h
+	<asm/errno.h>
+
+1510346206 /usr/include//asm/errno.h
+	<asm-generic/errno.h>
+
+1510346198 /usr/include//asm-generic/errno.h
+	<asm-generic/errno-base.h>
+
+1510346198 /usr/include//asm-generic/errno-base.h
+
+1497646311 /usr/include//dirent.h
+	<features.h>
+	<bits/types.h>
+	<bits/dirent.h>
+	<bits/types.h>
+	<bits/posix1_lim.h>
+	<stddef.h>
+
+1497646311 /usr/include//bits/dirent.h
+
+1442577391 /usr/include//X11/Xresource.h
+	<X11/Xlib.h>
+
+1497646283 /usr/include//locale.h
+	<features.h>
+	<stddef.h>
+	<bits/locale.h>
+	<xlocale.h>
+
+1497646283 /usr/include//bits/locale.h
+
+1442577391 /usr/include//X11/cursorfont.h
+
+1497646304 /usr/include//setjmp.h
+	<features.h>
+	<bits/setjmp.h>
+	<bits/sigset.h>
+	<bits/setjmp2.h>
+
+1497646304 /usr/include//bits/setjmp2.h
+
+1488563541 /usr/include//zlib.h
+	"zconf.h"
+
+1488563541 /usr/include//zconf.h
+	<windows.h>
+	<limits.h>
+	<sys/types.h>
+	<stdarg.h>
+	<stddef.h>
+	<unistd.h>
+	<unixio.h>
+
+1497646321 /usr/include//sys/socket.h
+	<features.h>
+	<sys/uio.h>
+	<stddef.h>
+	<bits/sigset.h>
+	<bits/socket.h>
+	<bits/socket2.h>
+
+1497646316 /usr/include//sys/uio.h
+	<features.h>
+	<sys/types.h>
+	<bits/uio.h>
+
+1497646321 /usr/include//bits/socket.h
+	<stddef.h>
+	<sys/types.h>
+	<bits/socket_type.h>
+	<bits/sockaddr.h>
+	<asm/socket.h>
+
+1497646317 /usr/include//bits/socket_type.h
+
+1497646321 /usr/include//bits/sockaddr.h
+
+1510346207 /usr/include//asm/socket.h
+	<asm-generic/socket.h>
+
+1510346198 /usr/include//asm-generic/socket.h
+	<asm/sockios.h>
+
+1510346207 /usr/include//asm/sockios.h
+	<asm-generic/sockios.h>
+
+1510346198 /usr/include//asm-generic/sockios.h
+
+1497646321 /usr/include//bits/socket2.h
+
+1497646332 /usr/include//netinet/in.h
+	<features.h>
+	<stdint.h>
+	<sys/socket.h>
+	<bits/types.h>
+	<bits/in.h>
+	<endian.h>
+	<bits/byteswap.h>
+
+1497646332 /usr/include//bits/in.h
+
+1497646332 /usr/include//arpa/inet.h
+	<features.h>
+	<netinet/in.h>
+
+1497646332 /usr/include//netdb.h
+	<features.h>
+	<netinet/in.h>
+	<stdint.h>
+	<rpc/netdb.h>
+	<bits/siginfo.h>
+	<time.h>
+	<bits/netdb.h>
+
+1497646335 /usr/include//rpc/netdb.h
+	<features.h>
+	<stddef.h>
+
+1497646332 /usr/include//bits/netdb.h
+
+1400929863 /usr/include//GL/glut.h
+	"freeglut_std.h"
+
+1400929863 /usr/include//GL/freeglut_std.h
+	<windows.h>
+	<OpenGL/gl.h>
+	<OpenGL/glu.h>
+	<GL/gl.h>
+	<GL/glu.h>
+	<stdlib.h>
+
+1447153911 /usr/include//GL/glew.h
+	<stddef.h>
+	<inttypes.h>
+	<stdint.h>
+	<inttypes.h>
+	<Availability.h>
+	<OpenGL/glu.h>
+	<GL/glu.h>
+
+1511285935 source:/home/sgowen/Documents/github/dante/src/core/framework/graphics/opengl/OpenGLFramebufferToScreenProgram.cpp
+	"framework/graphics/opengl/OpenGLFramebufferToScreenProgram.h"
+	"framework/graphics/opengl/OpenGLManager.h"
+
+1511226637 source:/home/sgowen/Documents/github/dante/src/core/framework/graphics/opengl/OpenGLGeometryGpuProgramWrapper.cpp
+	"framework/graphics/opengl/OpenGLGeometryGpuProgramWrapper.h"
+	"framework/graphics/opengl/OpenGLGeometryProgram.h"
+	"framework/graphics/opengl/OpenGLManager.h"
+	"framework/util/FrameworkConstants.h"
+	"framework/util/FrameworkConstants.h"
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/framework/graphics/opengl/OpenGLGeometryGpuProgramWrapper.h
+	"framework/graphics/portable/GpuProgramWrapper.h"
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/framework/graphics/opengl/OpenGLGeometryProgram.h
+	"framework/graphics/opengl/OpenGLProgram.h"
+
+1511226637 source:/home/sgowen/Documents/github/dante/src/core/framework/graphics/opengl/OpenGLGeometryProgram.cpp
+	"framework/graphics/opengl/OpenGLGeometryProgram.h"
+	"framework/graphics/opengl/OpenGLManager.h"
+
+1511226637 source:/home/sgowen/Documents/github/dante/src/core/framework/graphics/opengl/OpenGLLineBatcher.cpp
+	"framework/graphics/opengl/OpenGLLineBatcher.h"
+	"framework/util/macros.h"
+	"framework/math/Line.h"
+	"framework/math/Vector2.h"
+	"framework/graphics/opengl/OpenGLManager.h"
+	"framework/graphics/portable/GpuProgramWrapper.h"
+	"framework/math/Color.h"
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/framework/graphics/opengl/OpenGLLineBatcher.h
+	"framework/graphics/portable/LineBatcher.h"
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/framework/graphics/portable/LineBatcher.h
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/framework/math/Line.h
+	"framework/math/Vector2.h"
+
+1511226637 source:/home/sgowen/Documents/github/dante/src/core/framework/graphics/opengl/OpenGLManager.cpp
+	"framework/graphics/opengl/OpenGLManager.h"
+	"framework/graphics/opengl/OpenGLTextureGpuProgramWrapper.h"
+	"framework/graphics/opengl/OpenGLGeometryGpuProgramWrapper.h"
+	"framework/graphics/opengl/OpenGLFramebufferToScreenGpuProgramWrapper.h"
+	"framework/graphics/opengl/OpenGLGeometryProgram.h"
+	"framework/graphics/opengl/OpenGLTextureProgram.h"
+	"framework/graphics/opengl/OpenGLFramebufferToScreenProgram.h"
+	"framework/util/macros.h"
+	"framework/util/NGSTDUtil.h"
+	"framework/graphics/portable/GpuTextureWrapper.h"
+	<assert.h>
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/framework/graphics/opengl/OpenGLTextureGpuProgramWrapper.h
+	"framework/graphics/portable/GpuProgramWrapper.h"
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/framework/graphics/opengl/OpenGLTextureProgram.h
+	"framework/graphics/opengl/OpenGLProgram.h"
+
+1511284799 /home/sgowen/Documents/github/dante/src/core/framework/graphics/portable/GpuTextureWrapper.h
+	"framework/graphics/portable/NGGraphics.h"
+
+1511226637 source:/home/sgowen/Documents/github/dante/src/core/framework/graphics/opengl/OpenGLNGRectBatcher.cpp
+	"framework/graphics/opengl/OpenGLNGRectBatcher.h"
+	"framework/util/macros.h"
+	"framework/math/NGRect.h"
+	"framework/math/Vector2.h"
+	"framework/graphics/portable/GpuProgramWrapper.h"
+	"framework/graphics/opengl/OpenGLManager.h"
+	"framework/math/Color.h"
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/framework/graphics/opengl/OpenGLNGRectBatcher.h
+	"framework/graphics/portable/NGRectBatcher.h"
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/framework/graphics/portable/NGRectBatcher.h
+
+1511284942 source:/home/sgowen/Documents/github/dante/src/core/framework/graphics/opengl/OpenGLProgram.cpp
+	"framework/graphics/opengl/OpenGLProgram.h"
+	"framework/graphics/opengl/OpenGLManager.h"
+	"framework/file/portable/AssetDataHandler.h"
+	"framework/file/portable/FileData.h"
+	"framework/util/StringUtil.h"
+	<assert.h>
+	<stdio.h>
+	<stdlib.h>
+	<string>
+	<cstring>
+
+1511226637 source:/home/sgowen/Documents/github/dante/src/core/framework/graphics/opengl/OpenGLRendererHelper.cpp
+	"pch.h"
+	"framework/graphics/opengl/OpenGLRendererHelper.h"
+	"framework/graphics/portable/TextureWrapper.h"
+	"framework/graphics/portable/GpuTextureWrapper.h"
+	"framework/graphics/opengl/OpenGLManager.h"
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/framework/graphics/opengl/OpenGLRendererHelper.h
+	"framework/graphics/portable/RendererHelper.h"
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/framework/graphics/portable/RendererHelper.h
+
+1510864439 /home/sgowen/Documents/github/dante/src/core/framework/graphics/portable/TextureWrapper.h
+	<string>
+
+1511226637 source:/home/sgowen/Documents/github/dante/src/core/framework/graphics/opengl/OpenGLSpriteBatcher.cpp
+	"framework/graphics/opengl/OpenGLSpriteBatcher.h"
+	"framework/graphics/portable/TextureWrapper.h"
+	"framework/graphics/portable/GpuTextureWrapper.h"
+	"framework/graphics/portable/GpuProgramWrapper.h"
+	"framework/graphics/portable/TextureRegion.h"
+	"framework/math/Color.h"
+	"framework/graphics/opengl/OpenGLManager.h"
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/framework/graphics/opengl/OpenGLSpriteBatcher.h
+	"framework/graphics/portable/SpriteBatcher.h"
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/framework/graphics/portable/SpriteBatcher.h
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/framework/graphics/portable/TextureRegion.h
+	<string>
+
+1511226637 source:/home/sgowen/Documents/github/dante/src/core/framework/graphics/opengl/OpenGLTextureGpuProgramWrapper.cpp
+	"framework/graphics/opengl/OpenGLTextureGpuProgramWrapper.h"
+	"framework/graphics/opengl/OpenGLTextureProgram.h"
+	"framework/graphics/opengl/OpenGLManager.h"
+	"framework/util/FrameworkConstants.h"
+	"framework/util/FrameworkConstants.h"
+
+1511284954 source:/home/sgowen/Documents/github/dante/src/core/framework/graphics/opengl/OpenGLTextureLoader.cpp
+	"framework/graphics/opengl/OpenGLTextureLoader.h"
+	"framework/graphics/portable/GpuTextureDataWrapper.h"
+	"framework/graphics/portable/GpuTextureWrapper.h"
+	"framework/file/portable/AssetDataHandler.h"
+	"framework/file/portable/FileData.h"
+	"framework/graphics/opengl/OpenGLPngImageData.h"
+	"framework/util/StringUtil.h"
+	"png.h"
+	<string>
+	<assert.h>
+	<stdlib.h>
+	<cstring>
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/framework/graphics/opengl/OpenGLTextureLoader.h
+	"pch.h"
+	"framework/graphics/portable/TextureLoader.h"
+	"framework/graphics/opengl/OpenGLPngImageData.h"
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/framework/graphics/portable/TextureLoader.h
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/framework/graphics/opengl/OpenGLPngImageData.h
+	"framework/graphics/portable/NGGraphics.h"
+
+1511285009 /home/sgowen/Documents/github/dante/src/core/framework/graphics/portable/GpuTextureDataWrapper.h
+	"framework/graphics/opengl/OpenGLPngImageData.h"
+	"pch.h"
+
+1511226637 source:/home/sgowen/Documents/github/dante/src/core/framework/graphics/opengl/OpenGLTextureProgram.cpp
+	"framework/graphics/opengl/OpenGLTextureProgram.h"
+	"framework/graphics/opengl/OpenGLManager.h"
+
+1511226637 source:/home/sgowen/Documents/github/dante/src/core/framework/graphics/portable/Assets.cpp
+	"pch.h"
+	"framework/graphics/portable/Assets.h"
+	"framework/graphics/portable/AssetsMapper.h"
+	"framework/graphics/portable/TextureRegion.h"
+	"framework/graphics/portable/NGAnimation.h"
+	"framework/util/NGSTDUtil.h"
+	<assert.h>
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/framework/graphics/portable/Assets.h
+	<map>
+	<string>
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/framework/graphics/portable/AssetsMapper.h
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/framework/graphics/portable/NGAnimation.h
+	<vector>
+	<string>
+
+1511226637 source:/home/sgowen/Documents/github/dante/src/core/framework/graphics/portable/AssetsMapper.cpp
+	"pch.h"
+	"framework/graphics/portable/AssetsMapper.h"
+
+1511226637 source:/home/sgowen/Documents/github/dante/src/core/framework/graphics/portable/CircleBatcher.cpp
+	"pch.h"
+	"framework/graphics/portable/CircleBatcher.h"
+
+1511226637 source:/home/sgowen/Documents/github/dante/src/core/framework/graphics/portable/CircleBatcherFactory.cpp
+	"pch.h"
+	"framework/graphics/portable/CircleBatcherFactory.h"
+	"framework/graphics/opengl/OpenGLCircleBatcher.h"
+	"framework/graphics/directx/DirectXCircleBatcher.h"
+
+1510864439 /home/sgowen/Documents/github/dante/src/core/framework/graphics/portable/CircleBatcherFactory.h
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/framework/graphics/directx/DirectXCircleBatcher.h
+	"framework/graphics/portable/CircleBatcher.h"
+	"pch.h"
+
+1511226637 source:/home/sgowen/Documents/github/dante/src/core/framework/graphics/portable/DummyGpuProgramWrapper.cpp
+	"pch.h"
+	"framework/graphics/portable/DummyGpuProgramWrapper.h"
+
+1511226637 source:/home/sgowen/Documents/github/dante/src/core/framework/graphics/portable/Font.cpp
+	"pch.h"
+	"framework/graphics/portable/Font.h"
+	"framework/graphics/portable/SpriteBatcher.h"
+	"framework/graphics/portable/TextureRegion.h"
+	"framework/math/Color.h"
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/framework/graphics/portable/Font.h
+	"framework/graphics/portable/FontAlign.h"
+	<vector>
+	<string>
+
+1510864439 /home/sgowen/Documents/github/dante/src/core/framework/graphics/portable/FontAlign.h
+
+1511226637 source:/home/sgowen/Documents/github/dante/src/core/framework/graphics/portable/GpuProgramWrapper.cpp
+	"pch.h"
+	"framework/graphics/portable/GpuProgramWrapper.h"
+
+1511226637 source:/home/sgowen/Documents/github/dante/src/core/framework/graphics/portable/GpuProgramWrapperFactory.cpp
+	"pch.h"
+	"framework/graphics/portable/GpuProgramWrapperFactory.h"
+	"framework/graphics/opengl/OpenGLTextureGpuProgramWrapper.h"
+	"framework/graphics/opengl/OpenGLGeometryGpuProgramWrapper.h"
+	"framework/graphics/opengl/OpenGLFramebufferToScreenGpuProgramWrapper.h"
+	"framework/graphics/directx/DirectXTextureGpuProgramWrapper.h"
+	"framework/graphics/directx/DirectXGeometryGpuProgramWrapper.h"
+	"framework/graphics/directx/DirectXFramebufferToScreenGpuProgramWrapper.h"
+
+1510864439 /home/sgowen/Documents/github/dante/src/core/framework/graphics/portable/GpuProgramWrapperFactory.h
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/framework/graphics/directx/DirectXTextureGpuProgramWrapper.h
+	"framework/graphics/portable/GpuProgramWrapper.h"
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/framework/graphics/directx/DirectXGeometryGpuProgramWrapper.h
+	"framework/graphics/portable/GpuProgramWrapper.h"
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/framework/graphics/directx/DirectXFramebufferToScreenGpuProgramWrapper.h
+	"framework/graphics/portable/GpuProgramWrapper.h"
+
+1511226637 source:/home/sgowen/Documents/github/dante/src/core/framework/graphics/portable/LineBatcher.cpp
+	"pch.h"
+	"framework/graphics/portable/LineBatcher.h"
+	"framework/math/Line.h"
+	"framework/math/Vector2.h"
+	"framework/math/Color.h"
+
+1511226637 source:/home/sgowen/Documents/github/dante/src/core/framework/graphics/portable/LineBatcherFactory.cpp
+	"pch.h"
+	"framework/graphics/portable/LineBatcherFactory.h"
+	"framework/graphics/opengl/OpenGLLineBatcher.h"
+	"framework/graphics/directx/DirectXLineBatcher.h"
+
+1510864439 /home/sgowen/Documents/github/dante/src/core/framework/graphics/portable/LineBatcherFactory.h
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/framework/graphics/directx/DirectXLineBatcher.h
+	"framework/graphics/portable/LineBatcher.h"
+	"pch.h"
+
+1511226637 source:/home/sgowen/Documents/github/dante/src/core/framework/graphics/portable/NGAnimation.cpp
+	"pch.h"
+	"framework/graphics/portable/NGAnimation.h"
+	"framework/graphics/portable/TextureRegion.h"
+	<stdarg.h>
+
+1511226637 source:/home/sgowen/Documents/github/dante/src/core/framework/graphics/portable/NGRectBatcher.cpp
+	"pch.h"
+	"framework/graphics/portable/NGRectBatcher.h"
+	"framework/math/NGRect.h"
+	"framework/math/Vector2.h"
+	"framework/math/Color.h"
+
+1511226637 source:/home/sgowen/Documents/github/dante/src/core/framework/graphics/portable/NGRectBatcherFactory.cpp
+	"pch.h"
+	"framework/graphics/portable/NGRectBatcherFactory.h"
+	"framework/graphics/opengl/OpenGLNGRectBatcher.h"
+	"framework/graphics/directx/DirectXNGRectBatcher.h"
+
+1510864439 /home/sgowen/Documents/github/dante/src/core/framework/graphics/portable/NGRectBatcherFactory.h
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/framework/graphics/directx/DirectXNGRectBatcher.h
+	"framework/graphics/portable/NGRectBatcher.h"
+	"pch.h"
+
+1511226637 source:/home/sgowen/Documents/github/dante/src/core/framework/graphics/portable/Renderer.cpp
+	"pch.h"
+	"framework/graphics/portable/Renderer.h"
+	"framework/graphics/portable/SpriteBatcher.h"
+	"framework/graphics/portable/NGRectBatcher.h"
+	"framework/graphics/portable/LineBatcher.h"
+	"framework/graphics/portable/CircleBatcher.h"
+	"framework/graphics/portable/TextureLoader.h"
+	"framework/graphics/portable/RendererHelper.h"
+	"framework/graphics/portable/GpuProgramWrapper.h"
+	"framework/entity/Entity.h"
+	"framework/graphics/portable/TextureRegion.h"
+	"framework/math/Color.h"
+	"framework/math/NGRect.h"
+	"framework/graphics/portable/TextureWrapper.h"
+	"framework/graphics/portable/GpuTextureWrapper.h"
+	"framework/graphics/portable/GpuTextureDataWrapper.h"
+	"framework/graphics/portable/SpriteBatcherFactory.h"
+	"framework/graphics/portable/NGRectBatcherFactory.h"
+	"framework/graphics/portable/LineBatcherFactory.h"
+	"framework/graphics/portable/CircleBatcherFactory.h"
+	"framework/graphics/portable/TextureLoaderFactory.h"
+	"framework/graphics/portable/RendererHelperFactory.h"
+	"framework/graphics/portable/GpuProgramWrapperFactory.h"
+	"framework/util/NGSTDUtil.h"
+	<Box2D/Box2D.h>
+	<string>
+	<assert.h>
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/framework/graphics/portable/Renderer.h
+	<tinythread.h>
+	<vector>
+
+1510864439 /home/sgowen/Documents/github/dante/src/core/framework/graphics/portable/SpriteBatcherFactory.h
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/framework/graphics/portable/TextureLoaderFactory.h
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/framework/graphics/portable/RendererHelperFactory.h
+
+1511226637 source:/home/sgowen/Documents/github/dante/src/core/framework/graphics/portable/RendererHelper.cpp
+	"pch.h"
+	"framework/graphics/portable/RendererHelper.h"
+	"framework/graphics/portable/TextureWrapper.h"
+
+1511226637 source:/home/sgowen/Documents/github/dante/src/core/framework/graphics/portable/RendererHelperFactory.cpp
+	"pch.h"
+	"framework/graphics/portable/RendererHelperFactory.h"
+	"framework/graphics/opengl/OpenGLRendererHelper.h"
+	"framework/graphics/directx/DirectXRendererHelper.h"
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/framework/graphics/directx/DirectXRendererHelper.h
+	"framework/graphics/portable/RendererHelper.h"
+
+1511226637 source:/home/sgowen/Documents/github/dante/src/core/framework/graphics/portable/SpriteBatcher.cpp
+	"pch.h"
+	"framework/graphics/portable/SpriteBatcher.h"
+	"framework/graphics/portable/GpuTextureWrapper.h"
+	"framework/graphics/portable/GpuProgramWrapper.h"
+	"framework/graphics/portable/TextureRegion.h"
+	"framework/math/Color.h"
+	"framework/util/macros.h"
+	"framework/math/NGRect.h"
+	"framework/math/Vector2.h"
+	<math.h>
+
+1511226637 source:/home/sgowen/Documents/github/dante/src/core/framework/graphics/portable/SpriteBatcherFactory.cpp
+	"pch.h"
+	"framework/graphics/portable/SpriteBatcherFactory.h"
+	"framework/graphics/opengl/OpenGLSpriteBatcher.h"
+	"framework/graphics/directx/DirectXSpriteBatcher.h"
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/framework/graphics/directx/DirectXSpriteBatcher.h
+	"framework/graphics/portable/SpriteBatcher.h"
+
+1511226637 source:/home/sgowen/Documents/github/dante/src/core/framework/graphics/portable/TextureLoader.cpp
+	"pch.h"
+	"framework/graphics/portable/TextureLoader.h"
+
+1511226637 source:/home/sgowen/Documents/github/dante/src/core/framework/graphics/portable/TextureLoaderFactory.cpp
+	"pch.h"
+	"framework/graphics/portable/TextureLoaderFactory.h"
+	"framework/graphics/opengl/OpenGLTextureLoader.h"
+	"framework/graphics/directx/DirectXTextureLoader.h"
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/framework/graphics/directx/DirectXTextureLoader.h
+	"framework/graphics/portable/TextureLoader.h"
+
+1511226637 source:/home/sgowen/Documents/github/dante/src/core/framework/graphics/portable/TextureRegion.cpp
+	"pch.h"
+	"framework/graphics/portable/TextureRegion.h"
+
+1511226637 source:/home/sgowen/Documents/github/dante/src/core/framework/graphics/portable/TextureWrapper.cpp
+	"pch.h"
+	"framework/graphics/portable/TextureWrapper.h"
+	"framework/graphics/portable/GpuTextureDataWrapper.h"
+	"framework/graphics/portable/GpuTextureWrapper.h"
+	"framework/graphics/portable/Renderer.h"
+
+1511226637 source:/home/sgowen/Documents/github/dante/src/core/framework/graphics/portable/TransitionGpuProgramWrapper.cpp
+	"pch.h"
+	"framework/graphics/portable/TransitionGpuProgramWrapper.h"
+	"framework/graphics/portable/GpuTextureWrapper.h"
+	<memory>
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/framework/graphics/portable/TransitionGpuProgramWrapper.h
+	"framework/graphics/portable/GpuProgramWrapper.h"
+
+1511226637 source:/home/sgowen/Documents/github/dante/src/core/framework/input/CursorConverter.cpp
+	"pch.h"
+	"framework/input/CursorConverter.h"
+	"framework/input/CursorEvent.h"
+	"TargetConditionals.h"
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/framework/input/CursorConverter.h
+	"framework/math/Vector2.h"
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/framework/input/CursorEvent.h
+	"framework/input/CursorEventType.h"
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/framework/input/CursorEventType.h
+
+1511226637 source:/home/sgowen/Documents/github/dante/src/core/framework/input/CursorEvent.cpp
+	"pch.h"
+	"framework/input/CursorEvent.h"
+
+1511226637 source:/home/sgowen/Documents/github/dante/src/core/framework/input/CursorInputManager.cpp
+	"pch.h"
+	"framework/input/CursorInputManager.h"
+	"framework/input/CursorEvent.h"
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/framework/input/CursorInputManager.h
+	"framework/input/CursorEventType.h"
+	"framework/util/NGRollingPool.h"
+	<vector>
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/framework/util/NGRollingPool.h
+	"framework/util/NGSTDUtil.h"
+	<vector>
+
+1511226637 source:/home/sgowen/Documents/github/dante/src/core/framework/input/GamePadEvent.cpp
+	"pch.h"
+	"framework/input/GamePadEvent.h"
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/framework/input/GamePadEvent.h
+	"framework/input/GamePadEventType.h"
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/framework/input/GamePadEventType.h
+
+1511226637 source:/home/sgowen/Documents/github/dante/src/core/framework/input/GamePadInputManager.cpp
+	"pch.h"
+	"framework/input/GamePadInputManager.h"
+	"framework/input/GamePadEvent.h"
+	"framework/util/FrameworkConstants.h"
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/framework/input/GamePadInputManager.h
+	"framework/input/GamePadEventType.h"
+	"framework/util/NGRollingPool.h"
+	<vector>
+
+1511226637 source:/home/sgowen/Documents/github/dante/src/core/framework/input/KeyboardEvent.cpp
+	"pch.h"
+	"framework/input/KeyboardEvent.h"
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/framework/input/KeyboardEvent.h
+
+1511226637 source:/home/sgowen/Documents/github/dante/src/core/framework/input/KeyboardInputManager.cpp
+	"pch.h"
+	"framework/input/KeyboardInputManager.h"
+	"framework/input/KeyboardEvent.h"
+	"framework/input/KeyboardLookup.h"
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/framework/input/KeyboardInputManager.h
+	"framework/util/NGRollingPool.h"
+	<vector>
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/framework/input/KeyboardLookup.h
+	<algorithm>
+
+1511282551 /home/sgowen/Documents/github/dante/src/platform/linux/pch.h
+
+1511285443 source:/home/sgowen/Documents/github/dante/src/core/framework/main/glfw/GlfwMain.cpp
+	"framework/main/glfw/GlfwMain.h"
+	"framework/main/portable/Engine.h"
+	"framework/input/CursorInputManager.h"
+	"framework/input/KeyboardInputManager.h"
+	"framework/input/GamePadInputManager.h"
+	"framework/input/GamePadEventType.h"
+	"framework/util/FrameworkConstants.h"
+	"framework/graphics/opengl/OpenGLManager.h"
+	<stdlib.h>
+	<stdio.h>
+	<cstring>
+
+1511285396 /home/sgowen/Documents/github/dante/src/core/framework/main/glfw/GlfwMain.h
+	"framework/graphics/portable/NGGraphics.h"
+	<GLFW/glfw3.h>
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/framework/main/portable/Engine.h
+	"framework/util/RTTI.h"
+
+1511226637 source:/home/sgowen/Documents/github/dante/src/core/framework/main/portable/Engine.cpp
+	"pch.h"
+	"framework/main/portable/Engine.h"
+	"framework/graphics/portable/Renderer.h"
+	"framework/util/FrameworkConstants.h"
+	"framework/audio/portable/NGAudioEngine.h"
+	"framework/util/Timing.h"
+	"framework/util/FPSUtil.h"
+	"framework/input/CursorConverter.h"
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/framework/util/FPSUtil.h
+
+1511226637 source:/home/sgowen/Documents/github/dante/src/core/framework/math/Circle.cpp
+	"pch.h"
+	"framework/math/Circle.h"
+
+1511226637 source:/home/sgowen/Documents/github/dante/src/core/framework/math/Color.cpp
+	"pch.h"
+	"framework/math/Color.h"
+
+1511226637 source:/home/sgowen/Documents/github/dante/src/core/framework/math/Line.cpp
+	"pch.h"
+	"framework/math/Line.h"
+
+1511226637 source:/home/sgowen/Documents/github/dante/src/core/framework/math/NGRect.cpp
+	"pch.h"
+	"framework/math/NGRect.h"
+
+1511226637 source:/home/sgowen/Documents/github/dante/src/core/framework/math/OverlapTester.cpp
+	"pch.h"
+	"framework/math/OverlapTester.h"
+	"framework/util/macros.h"
+	"framework/math/NGRect.h"
+	"framework/math/Circle.h"
+	"framework/math/Vector2.h"
+	"framework/math/Triangle.h"
+	"framework/math/Line.h"
+	<stdio.h>
+	<stdlib.h>
+	<math.h>
+
+1510864439 /home/sgowen/Documents/github/dante/src/core/framework/math/OverlapTester.h
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/framework/math/Triangle.h
+	"framework/math/Line.h"
+
+1511226637 source:/home/sgowen/Documents/github/dante/src/core/framework/math/Triangle.cpp
+	"pch.h"
+	"framework/math/Triangle.h"
+	"framework/math/Vector2.h"
+
+1511226637 source:/home/sgowen/Documents/github/dante/src/core/framework/math/Vector2.cpp
+	"pch.h"
+	"framework/math/Vector2.h"
+	"framework/util/macros.h"
+	"framework/math/MathUtil.h"
+
+1511226637 source:/home/sgowen/Documents/github/dante/src/core/framework/network/client/ClientHelper.cpp
+	"pch.h"
+	"framework/network/client/ClientHelper.h"
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/framework/network/client/ClientHelper.h
+	"framework/network/portable/NetworkHelper.h"
+	<string>
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/framework/network/portable/NetworkHelper.h
+	<cstdint>
+
+1511226637 source:/home/sgowen/Documents/github/dante/src/core/framework/network/client/NetworkManagerClient.cpp
+	"pch.h"
+	"framework/network/client/NetworkManagerClient.h"
+	"framework/network/client/SocketClientHelper.h"
+	"framework/network/portable/InputMemoryBitStream.h"
+	"framework/network/portable/OutputMemoryBitStream.h"
+	"framework/network/portable/DeliveryNotificationManager.h"
+	"framework/network/portable/MachineAddress.h"
+	"framework/entity/EntityRegistry.h"
+	"framework/entity/Entity.h"
+	"framework/network/portable/MoveList.h"
+	"framework/network/client/ReplicationManagerClient.h"
+	"framework/util/WeightedTimedMovingAverage.h"
+	"framework/network/portable/SocketAddress.h"
+	"framework/entity/EntityManager.h"
+	"framework/util/StringUtil.h"
+	"framework/util/Timing.h"
+	"framework/network/portable/SocketAddressFactory.h"
+	"framework/network/portable/FWInstanceManager.h"
+	"framework/util/macros.h"
+	<assert.h>
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/framework/network/client/SocketClientHelper.h
+	"framework/network/client/ClientHelper.h"
+	"framework/network/portable/PacketHandler.h"
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/framework/network/portable/PacketHandler.h
+	"framework/network/portable/InputMemoryBitStream.h"
+	<queue>
+	<list>
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/framework/network/portable/DeliveryNotificationManager.h
+	"framework/network/portable/InFlightPacket.h"
+	"framework/network/portable/AckRange.h"
+	<deque>
+	<stdint.h>
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/framework/network/portable/InFlightPacket.h
+	"framework/network/portable/TransmissionData.h"
+	<map>
+	<stdint.h>
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/framework/network/portable/TransmissionData.h
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/framework/network/portable/AckRange.h
+	<stdint.h>
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/framework/network/portable/MachineAddress.h
+	"framework/util/RTTI.h"
+	<string>
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/framework/network/portable/MoveList.h
+	"framework/network/portable/Move.h"
+	<deque>
+
+1510864439 /home/sgowen/Documents/github/dante/src/core/framework/network/client/ReplicationManagerClient.h
+	<cstdint>
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/framework/util/WeightedTimedMovingAverage.h
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/framework/network/portable/SocketAddress.h
+	"framework/network/portable/MachineAddress.h"
+	"framework/network/portable/Network.h"
+	"framework/util/RTTI.h"
+	<string>
+
+1510864439 /home/sgowen/Documents/github/dante/src/core/framework/network/portable/SocketAddressFactory.h
+	<string>
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/framework/network/portable/FWInstanceManager.h
+	"framework/entity/EntityManager.h"
+
+1511226637 source:/home/sgowen/Documents/github/dante/src/core/framework/network/client/ReplicationManagerClient.cpp
+	"pch.h"
+	"framework/network/client/ReplicationManagerClient.h"
+	"framework/entity/EntityRegistry.h"
+	"framework/network/portable/InputMemoryBitStream.h"
+	"framework/network/portable/FWInstanceManager.h"
+	"framework/entity/EntityManager.h"
+	"framework/entity/Entity.h"
+	"framework/network/portable/ReplicationAction.h"
+	<cassert>
+
+1510864439 /home/sgowen/Documents/github/dante/src/core/framework/network/portable/ReplicationAction.h
+
+1511226637 source:/home/sgowen/Documents/github/dante/src/core/framework/network/client/SocketClientHelper.cpp
+	"pch.h"
+	"framework/network/client/SocketClientHelper.h"
+	"framework/network/portable/SocketAddress.h"
+	"framework/network/portable/SocketPacketHandler.h"
+	"framework/network/portable/SocketAddressFactory.h"
+	"framework/util/macros.h"
+	"framework/network/portable/OutputMemoryBitStream.h"
+	"framework/util/FrameworkConstants.h"
+	"framework/util/StringUtil.h"
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/framework/network/portable/SocketPacketHandler.h
+	"framework/network/portable/PacketHandler.h"
+	"framework/network/portable/InputMemoryBitStream.h"
+	"framework/network/portable/SocketAddress.h"
+	<queue>
+	<list>
+
+1511226637 source:/home/sgowen/Documents/github/dante/src/core/framework/network/portable/AckRange.cpp
+	"pch.h"
+	"framework/network/portable/AckRange.h"
+	"framework/network/portable/OutputMemoryBitStream.h"
+	"framework/network/portable/InputMemoryBitStream.h"
+
+1511226637 source:/home/sgowen/Documents/github/dante/src/core/framework/network/portable/DeliveryNotificationManager.cpp
+	"pch.h"
+	"framework/network/portable/DeliveryNotificationManager.h"
+	"framework/network/portable/OutputMemoryBitStream.h"
+	"framework/network/portable/InputMemoryBitStream.h"
+	"framework/util/StringUtil.h"
+	"framework/util/FrameworkConstants.h"
+
+1511226637 source:/home/sgowen/Documents/github/dante/src/core/framework/network/portable/FWInstanceManager.cpp
+	"pch.h"
+	"framework/network/portable/FWInstanceManager.h"
+	"framework/entity/EntityRegistry.h"
+	<assert.h>
+
+1511226637 source:/home/sgowen/Documents/github/dante/src/core/framework/network/portable/InFlightPacket.cpp
+	"pch.h"
+	"framework/network/portable/InFlightPacket.h"
+	"framework/util/Timing.h"
+
+1511226637 source:/home/sgowen/Documents/github/dante/src/core/framework/network/portable/InputMemoryBitStream.cpp
+	"pch.h"
+	"framework/network/portable/InputMemoryBitStream.h"
+	"framework/math/Vector2.h"
+	"Box2D/Box2D.h"
+	"framework/math/Color.h"
+	<cstring>
+
+1511226637 source:/home/sgowen/Documents/github/dante/src/core/framework/network/portable/InputState.cpp
+	"pch.h"
+	"framework/network/portable/InputState.h"
+	"framework/network/portable/OutputMemoryBitStream.h"
+	"framework/network/portable/InputMemoryBitStream.h"
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/framework/network/portable/InputState.h
+	"framework/util/RTTI.h"
+
+1511226637 source:/home/sgowen/Documents/github/dante/src/core/framework/network/portable/MachineAddress.cpp
+	"pch.h"
+	"framework/network/portable/MachineAddress.h"
+
+1511226637 source:/home/sgowen/Documents/github/dante/src/core/framework/network/portable/Move.cpp
+	"pch.h"
+	"framework/network/portable/Move.h"
+	"framework/network/portable/InputState.h"
+	"framework/network/portable/OutputMemoryBitStream.h"
+	"framework/network/portable/InputMemoryBitStream.h"
+	"framework/entity/Entity.h"
+
+1511226637 source:/home/sgowen/Documents/github/dante/src/core/framework/network/portable/MoveList.cpp
+	"pch.h"
+	"framework/network/portable/MoveList.h"
+	"framework/network/portable/InputState.h"
+	"framework/util/Timing.h"
+	"framework/util/StringUtil.h"
+
+1511226637 source:/home/sgowen/Documents/github/dante/src/core/framework/network/portable/NetworkHelper.cpp
+	"pch.h"
+	"framework/network/portable/NetworkHelper.h"
+	"framework/network/portable/OutputMemoryBitStream.h"
+	"framework/network/portable/MachineAddress.h"
+	"framework/util/WeightedTimedMovingAverage.h"
+	"framework/network/portable/PacketHandler.h"
+	"framework/network/portable/InputMemoryBitStream.h"
+
+1511226637 source:/home/sgowen/Documents/github/dante/src/core/framework/network/portable/OutputMemoryBitStream.cpp
+	"pch.h"
+	"framework/network/portable/OutputMemoryBitStream.h"
+	"framework/math/Vector2.h"
+	"Box2D/Box2D.h"
+	"framework/math/Color.h"
+	"framework/math/MathUtil.h"
+	"framework/util/StringUtil.h"
+	<cstring>
+
+1511226637 source:/home/sgowen/Documents/github/dante/src/core/framework/network/portable/PacketHandler.cpp
+	"pch.h"
+	"framework/network/portable/PacketHandler.h"
+	"framework/util/WeightedTimedMovingAverage.h"
+
+1511226637 source:/home/sgowen/Documents/github/dante/src/core/framework/network/portable/ReplicationCommand.cpp
+	"pch.h"
+	"framework/network/portable/ReplicationCommand.h"
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/framework/network/portable/ReplicationCommand.h
+	"framework/network/portable/ReplicationAction.h"
+	"framework/network/portable/Network.h"
+
+1511226637 source:/home/sgowen/Documents/github/dante/src/core/framework/network/portable/SocketAddress.cpp
+	"pch.h"
+	"framework/network/portable/SocketAddress.h"
+	"framework/util/StringUtil.h"
+	<cstring>
+
+1511226637 source:/home/sgowen/Documents/github/dante/src/core/framework/network/portable/SocketAddressFactory.cpp
+	"pch.h"
+	"framework/network/portable/SocketAddressFactory.h"
+	"framework/network/portable/SocketAddress.h"
+	"framework/network/portable/SocketUtil.h"
+	<cstring>
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/framework/network/portable/SocketUtil.h
+	"framework/network/portable/UDPSocket.h"
+	"framework/network/portable/SocketAddressFamily.h"
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/framework/network/portable/UDPSocket.h
+	"framework/network/portable/Network.h"
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/framework/network/portable/SocketAddressFamily.h
+	"framework/network/portable/Network.h"
+
+1511285728 source:/home/sgowen/Documents/github/dante/src/core/framework/network/portable/SocketPacketHandler.cpp
+	"pch.h"
+	"framework/network/portable/SocketPacketHandler.h"
+	"framework/network/portable/OutputMemoryBitStream.h"
+	"framework/network/portable/UDPSocket.h"
+	"framework/network/portable/MachineAddress.h"
+	"framework/network/portable/SocketAddress.h"
+	"framework/network/portable/InputMemoryBitStream.h"
+	"framework/network/portable/SocketUtil.h"
+	"framework/util/StringUtil.h"
+	"framework/util/Timing.h"
+	"framework/network/portable/SocketAddressFamily.h"
+	"framework/util/macros.h"
+	"framework/util/FrameworkConstants.h"
+	"framework/network/portable/Network.h"
+	<string.h>
+
+1511226637 source:/home/sgowen/Documents/github/dante/src/core/framework/network/portable/SocketUtil.cpp
+	"pch.h"
+	"framework/network/portable/SocketUtil.h"
+	"framework/network/portable/Network.h"
+	"framework/util/StringUtil.h"
+
+1511226637 source:/home/sgowen/Documents/github/dante/src/core/framework/network/portable/TransmissionData.cpp
+	"pch.h"
+	"framework/network/portable/TransmissionData.h"
+
+1511226637 source:/home/sgowen/Documents/github/dante/src/core/framework/network/portable/UDPSocket.cpp
+	"pch.h"
+	"framework/network/portable/UDPSocket.h"
+	"framework/network/portable/SocketAddress.h"
+	"framework/network/portable/SocketUtil.h"
+	"framework/util/StringUtil.h"
+
+1511226637 source:/home/sgowen/Documents/github/dante/src/core/framework/network/server/ClientProxy.cpp
+	"pch.h"
+	"framework/network/server/ClientProxy.h"
+	"framework/network/portable/MachineAddress.h"
+	"framework/util/Timing.h"
+	"framework/util/FrameworkConstants.h"
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/framework/network/server/ClientProxy.h
+	"framework/network/server/ReplicationManagerServer.h"
+	"framework/network/portable/DeliveryNotificationManager.h"
+	"framework/network/portable/MoveList.h"
+	<string>
+	<vector>
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/framework/network/server/ReplicationManagerServer.h
+	"framework/network/portable/Network.h"
+	"framework/network/portable/ReplicationCommand.h"
+	<map>
+
+1511226637 source:/home/sgowen/Documents/github/dante/src/core/framework/network/server/NetworkManagerServer.cpp
+	"pch.h"
+	"framework/network/server/NetworkManagerServer.h"
+	"framework/network/server/ServerHelper.h"
+	"framework/network/portable/InputMemoryBitStream.h"
+	"framework/network/portable/OutputMemoryBitStream.h"
+	"framework/network/portable/DeliveryNotificationManager.h"
+	"framework/network/portable/MachineAddress.h"
+	"framework/network/server/ClientProxy.h"
+	"framework/network/portable/InputState.h"
+	"framework/entity/Entity.h"
+	"game/network/Server.h"
+	"framework/network/server/ReplicationManagerTransmissionData.h"
+	"framework/util/StringUtil.h"
+	"framework/util/Timing.h"
+	"framework/entity/EntityManager.h"
+	"framework/util/StringUtil.h"
+	"framework/network/portable/FWInstanceManager.h"
+	"framework/util/NGSTDUtil.h"
+	"framework/util/FrameworkConstants.h"
+	"framework/network/client/NetworkManagerClient.h"
+	<assert.h>
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/framework/network/server/NetworkManagerServer.h
+	<map>
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/framework/network/server/ServerHelper.h
+	"framework/network/portable/NetworkHelper.h"
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/game/network/Server.h
+	<string>
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/framework/network/server/ReplicationManagerTransmissionData.h
+	"framework/network/portable/TransmissionData.h"
+	"framework/network/portable/ReplicationCommand.h"
+	"framework/network/portable/ReplicationAction.h"
+	<vector>
+
+1511226637 source:/home/sgowen/Documents/github/dante/src/core/framework/network/server/ReplicationManagerServer.cpp
+	"pch.h"
+	"framework/network/server/ReplicationManagerServer.h"
+	"framework/network/portable/OutputMemoryBitStream.h"
+	"framework/network/server/ReplicationManagerTransmissionData.h"
+	"framework/network/portable/FWInstanceManager.h"
+	"framework/entity/EntityManager.h"
+	"framework/network/portable/ReplicationAction.h"
+	"framework/util/macros.h"
+	"framework/entity/Entity.h"
+
+1511226637 source:/home/sgowen/Documents/github/dante/src/core/framework/network/server/ReplicationManagerTransmissionData.cpp
+	"pch.h"
+	"framework/network/server/ReplicationManagerTransmissionData.h"
+	"framework/network/server/ReplicationManagerServer.h"
+	"framework/network/portable/FWInstanceManager.h"
+	"framework/entity/EntityManager.h"
+	"framework/entity/Entity.h"
+	"framework/network/portable/ReplicationAction.h"
+	"framework/network/portable/DeliveryNotificationManager.h"
+
+1511226637 source:/home/sgowen/Documents/github/dante/src/core/framework/network/server/ServerHelper.cpp
+	"pch.h"
+	"framework/network/server/ServerHelper.h"
+
+1511226637 source:/home/sgowen/Documents/github/dante/src/core/framework/network/server/SocketServerHelper.cpp
+	"pch.h"
+	"framework/network/server/SocketServerHelper.h"
+	"framework/network/portable/SocketAddress.h"
+	"framework/network/portable/SocketPacketHandler.h"
+	"framework/util/macros.h"
+	"framework/util/StringUtil.h"
+	"framework/util/FrameworkConstants.h"
+	"framework/network/server/ClientProxy.h"
+	"framework/network/portable/OutputMemoryBitStream.h"
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/framework/network/server/SocketServerHelper.h
+	"framework/network/server/ServerHelper.h"
+	"framework/network/portable/PacketHandler.h"
+
+1511226637 source:/home/sgowen/Documents/github/dante/src/core/framework/util/FPSUtil.cpp
+	"pch.h"
+	"framework/util/FPSUtil.h"
+
+1511226637 source:/home/sgowen/Documents/github/dante/src/core/framework/util/RTTI.cpp
+	"pch.h"
+	"framework/util/RTTI.h"
+
+1511226637 source:/home/sgowen/Documents/github/dante/src/core/framework/util/StringUtil.cpp
+	"pch.h"
+	"framework/util/StringUtil.h"
+	<stdarg.h>
+
+1511226637 source:/home/sgowen/Documents/github/dante/src/core/framework/util/Timing.cpp
+	"pch.h"
+	"framework/util/Timing.h"
+	<chrono>
+
+1511226637 source:/home/sgowen/Documents/github/dante/src/core/framework/util/WeightedTimedMovingAverage.cpp
+	"pch.h"
+	"framework/util/WeightedTimedMovingAverage.h"
+	"framework/util/Timing.h"
+	"framework/math/MathUtil.h"
+
+1511226637 source:/home/sgowen/Documents/github/dante/src/core/game/graphics/portable/MainAssetsMapper.cpp
+	"pch.h"
+	"game/graphics/portable/MainAssetsMapper.h"
+	"framework/graphics/portable/Assets.h"
+	"framework/graphics/portable/TextureRegion.h"
+	"framework/graphics/portable/NGAnimation.h"
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/game/graphics/portable/MainAssetsMapper.h
+	"framework/graphics/portable/AssetsMapper.h"
+
+1511226637 source:/home/sgowen/Documents/github/dante/src/core/game/graphics/portable/MainRenderer.cpp
+	"pch.h"
+	"game/graphics/portable/MainRenderer.h"
+	"framework/graphics/portable/TextureWrapper.h"
+	"framework/graphics/portable/Font.h"
+	"Box2D/Box2D.h"
+	"game/logic/World.h"
+	"framework/graphics/portable/Assets.h"
+	"game/graphics/portable/MainAssetsMapper.h"
+	"framework/graphics/portable/RendererHelper.h"
+	"game/logic/GameConstants.h"
+	"framework/math/NGRect.h"
+	"framework/math/Color.h"
+	"framework/graphics/portable/SpriteBatcher.h"
+	"framework/graphics/portable/TextureRegion.h"
+	"framework/util/macros.h"
+	"framework/network/client/NetworkManagerClient.h"
+	"game/logic/Robot.h"
+	"game/logic/Projectile.h"
+	"game/logic/SpacePirate.h"
+	"framework/util/StringUtil.h"
+	"framework/util/WeightedTimedMovingAverage.h"
+	"framework/util/NGSTDUtil.h"
+	"game/network/InstanceManager.h"
+	"game/logic/InputManager.h"
+	"framework/network/server/NetworkManagerServer.h"
+	"framework/network/portable/MachineAddress.h"
+	"game/logic/MainEngineState.h"
+	"framework/math/MathUtil.h"
+	"framework/audio/portable/NGAudioEngine.h"
+	"game/network/Server.h"
+	"game/logic/Crate.h"
+	"game/logic/SpacePirateChunk.h"
+	"framework/util/FPSUtil.h"
+	"framework/network/steam/NGSteamGameServer.h"
+	"framework/network/steam/NGSteamGameServices.h"
+	<sstream>
+	<ctime>
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/game/graphics/portable/MainRenderer.h
+	"framework/graphics/portable/Renderer.h"
+	"framework/graphics/portable/FontAlign.h"
+	<string>
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/game/logic/World.h
+	"framework/util/FrameworkConstants.h"
+	<memory>
+	<vector>
+	"Box2D/Dynamics/b2WorldCallbacks.h"
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/game/logic/GameConstants.h
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/game/logic/Robot.h
+	"framework/entity/Entity.h"
+	"game/logic/GameConstants.h"
+	<string>
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/game/logic/Projectile.h
+	"framework/entity/Entity.h"
+	"game/logic/GameConstants.h"
+	"Box2D/Common/b2Math.h"
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/game/logic/SpacePirate.h
+	"framework/entity/Entity.h"
+	"game/logic/GameConstants.h"
+	"Box2D/Common/b2Math.h"
+
+1510864439 /home/sgowen/Documents/github/dante/src/core/game/network/InstanceManager.h
+	<cstdint>
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/game/logic/InputManager.h
+	"framework/network/portable/MoveList.h"
+	<string>
+
+1510864439 /home/sgowen/Documents/github/dante/src/core/game/logic/MainEngineState.h
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/game/logic/Crate.h
+	"framework/entity/Entity.h"
+	"game/logic/GameConstants.h"
+	"Box2D/Common/b2Math.h"
+	"framework/util/RTTI.h"
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/game/logic/SpacePirateChunk.h
+	"framework/entity/Entity.h"
+	"game/logic/GameConstants.h"
+	"Box2D/Common/b2Math.h"
+	"framework/util/RTTI.h"
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/framework/network/steam/NGSteamGameServer.h
+	"framework/network/steam/NGSteam.h"
+
+1510864439 /home/sgowen/Documents/github/dante/src/core/framework/network/steam/NGSteam.h
+	"steam/steam_api.h"
+	"steam/steamtypes.h"
+	"steam/isteamuserstats.h"
+	"steam/isteamremotestorage.h"
+	"steam/isteammatchmaking.h"
+	"steam/steam_gameserver.h"
+	"cegclient.h"
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/framework/network/steam/NGSteamGameServices.h
+	"framework/network/steam/NGSteam.h"
+	"framework/network/steam/NGSteamGameServer.h"
+	<string>
+	<vector>
+
+1511226637 source:/home/sgowen/Documents/github/dante/src/core/game/logic/Crate.cpp
+	"pch.h"
+	"game/logic/Crate.h"
+	"Box2D/Box2D.h"
+	"framework/network/portable/OutputMemoryBitStream.h"
+	"framework/network/portable/InputMemoryBitStream.h"
+	"game/logic/Ground.h"
+	"game/logic/Robot.h"
+	"game/logic/Projectile.h"
+	"game/logic/SpacePirate.h"
+	"framework/network/server/NetworkManagerServer.h"
+	"framework/math/MathUtil.h"
+	<math.h>
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/game/logic/Ground.h
+	"framework/entity/Entity.h"
+	"game/logic/GameConstants.h"
+	"framework/util/RTTI.h"
+
+1511226637 source:/home/sgowen/Documents/github/dante/src/core/game/logic/Ground.cpp
+	"pch.h"
+	"game/logic/Ground.h"
+	"Box2D/Box2D.h"
+	"framework/network/portable/OutputMemoryBitStream.h"
+	"framework/network/portable/InputMemoryBitStream.h"
+	"game/logic/Robot.h"
+	"game/logic/Projectile.h"
+	"game/logic/SpacePirate.h"
+	"game/logic/Crate.h"
+	<math.h>
+
+1511226637 source:/home/sgowen/Documents/github/dante/src/core/game/logic/InputManager.cpp
+	"pch.h"
+	"game/logic/InputManager.h"
+	"game/network/MainInputState.h"
+	"framework/network/portable/Move.h"
+	"framework/util/Timing.h"
+	"framework/input/CursorInputManager.h"
+	"framework/input/CursorEvent.h"
+	"framework/input/CursorConverter.h"
+	"framework/input/KeyboardInputManager.h"
+	"framework/input/KeyboardEvent.h"
+	"framework/input/GamePadInputManager.h"
+	"framework/input/GamePadEvent.h"
+	"game/logic/PooledObjectsManager.h"
+	"game/logic/GameConstants.h"
+	"framework/input/KeyboardLookup.h"
+	"framework/util/StringUtil.h"
+	"framework/math/MathUtil.h"
+	"framework/util/FrameworkConstants.h"
+	<sstream>
+	"TargetConditionals.h"
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/game/network/MainInputState.h
+	"framework/network/portable/InputState.h"
+	"framework/util/RTTI.h"
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/game/logic/PooledObjectsManager.h
+	"framework/util/NGRollingPool.h"
+	<vector>
+
+1511226637 source:/home/sgowen/Documents/github/dante/src/core/game/logic/MainEngine.cpp
+	"pch.h"
+	"game/logic/MainEngine.h"
+	"game/network/Server.h"
+	"framework/file/portable/JsonFile.h"
+	"framework/entity/Entity.h"
+	"game/logic/GameConstants.h"
+	"framework/input/CursorInputManager.h"
+	"framework/input/CursorEvent.h"
+	"framework/input/CursorConverter.h"
+	"framework/util/StringUtil.h"
+	"framework/math/MathUtil.h"
+	"game/logic/Robot.h"
+	"game/logic/Projectile.h"
+	"game/logic/SpacePirate.h"
+	"framework/entity/EntityRegistry.h"
+	"framework/network/client/NetworkManagerClient.h"
+	"framework/network/server/NetworkManagerServer.h"
+	"framework/network/portable/SocketAddressFactory.h"
+	"framework/network/portable/SocketUtil.h"
+	"game/logic/InputManager.h"
+	"game/logic/World.h"
+	"game/network/InstanceManager.h"
+	"game/network/MainInputState.h"
+	"framework/network/portable/FWInstanceManager.h"
+	"framework/entity/EntityManager.h"
+	"framework/network/client/SocketClientHelper.h"
+	"framework/network/portable/MachineAddress.h"
+	"game/logic/MainEngineState.h"
+	"game/graphics/portable/MainRenderer.h"
+	"framework/audio/portable/NGAudioEngine.h"
+	"framework/network/steam/NGSteamClientHelper.h"
+	"framework/network/steam/NGSteamAddress.h"
+	"framework/network/steam/NGSteamGameServices.h"
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/game/logic/MainEngine.h
+	"framework/main/portable/Engine.h"
+	"framework/network/steam/NGSteam.h"
+	"framework/util/RTTI.h"
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/framework/network/steam/NGSteamClientHelper.h
+	"framework/network/client/ClientHelper.h"
+	"framework/network/portable/PacketHandler.h"
+	"framework/network/steam/NGSteam.h"
+	"framework/util/FrameworkConstants.h"
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/framework/network/steam/NGSteamAddress.h
+	"framework/network/portable/MachineAddress.h"
+	"framework/network/steam/NGSteam.h"
+
+1511226637 source:/home/sgowen/Documents/github/dante/src/core/game/logic/PooledObjectsManager.cpp
+	"pch.h"
+	"game/logic/PooledObjectsManager.h"
+	"game/network/MainInputState.h"
+	"framework/math/MathUtil.h"
+	"framework/util/FrameworkConstants.h"
+
+1511226637 source:/home/sgowen/Documents/github/dante/src/core/game/logic/Projectile.cpp
+	"pch.h"
+	"game/logic/Projectile.h"
+	"Box2D/Box2D.h"
+	"framework/network/portable/OutputMemoryBitStream.h"
+	"framework/network/portable/InputMemoryBitStream.h"
+	"game/logic/Robot.h"
+	"game/logic/SpacePirate.h"
+	"game/logic/SpacePirateChunk.h"
+	"game/logic/Ground.h"
+	"game/logic/Crate.h"
+	"game/logic/World.h"
+	"framework/util/macros.h"
+	"game/logic/GameConstants.h"
+	"framework/util/Timing.h"
+	"framework/util/StringUtil.h"
+	"framework/network/portable/Move.h"
+	"framework/math/MathUtil.h"
+	"framework/math/NGRect.h"
+	"game/logic/SpacePirate.h"
+	"framework/math/OverlapTester.h"
+	"framework/network/server/NetworkManagerServer.h"
+	"framework/network/client/NetworkManagerClient.h"
+	"framework/audio/portable/NGAudioEngine.h"
+	"game/network/InstanceManager.h"
+	"game/logic/Util.h"
+	<math.h>
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/game/logic/Util.h
+	"framework/network/portable/Network.h"
+
+1511226637 source:/home/sgowen/Documents/github/dante/src/core/game/logic/Robot.cpp
+	"pch.h"
+	"game/logic/Robot.h"
+	"Box2D/Box2D.h"
+	"framework/network/portable/OutputMemoryBitStream.h"
+	"framework/network/portable/InputMemoryBitStream.h"
+	"game/network/MainInputState.h"
+	"framework/network/portable/Move.h"
+	"game/logic/Ground.h"
+	"game/logic/Crate.h"
+	"game/logic/World.h"
+	"framework/util/macros.h"
+	"game/logic/GameConstants.h"
+	"framework/util/Timing.h"
+	"framework/util/StringUtil.h"
+	"framework/math/MathUtil.h"
+	"framework/math/NGRect.h"
+	"game/logic/Projectile.h"
+	"framework/entity/EntityRegistry.h"
+	"framework/network/server/NetworkManagerServer.h"
+	"framework/network/server/ClientProxy.h"
+	"framework/network/client/NetworkManagerClient.h"
+	"game/logic/InputManager.h"
+	"framework/audio/portable/NGAudioEngine.h"
+	"game/network/InstanceManager.h"
+	"framework/network/portable/FWInstanceManager.h"
+	"game/logic/Util.h"
+	"game/network/Server.h"
+	"game/logic/Ground.h"
+	"game/logic/SpacePirate.h"
+	"game/logic/SpacePirateChunk.h"
+	<math.h>
+
+1511226637 source:/home/sgowen/Documents/github/dante/src/core/game/logic/SpacePirate.cpp
+	"pch.h"
+	"game/logic/SpacePirate.h"
+	"Box2D/Box2D.h"
+	"framework/network/portable/OutputMemoryBitStream.h"
+	"framework/network/portable/InputMemoryBitStream.h"
+	"game/logic/Robot.h"
+	"game/logic/Ground.h"
+	"game/logic/Crate.h"
+	"game/logic/World.h"
+	"framework/util/macros.h"
+	"game/logic/GameConstants.h"
+	"framework/util/Timing.h"
+	"framework/util/StringUtil.h"
+	"framework/network/portable/Move.h"
+	"framework/math/MathUtil.h"
+	"framework/math/NGRect.h"
+	"framework/math/OverlapTester.h"
+	"framework/network/server/NetworkManagerServer.h"
+	"framework/network/client/NetworkManagerClient.h"
+	"game/network/InstanceManager.h"
+	"game/logic/Projectile.h"
+	"game/logic/Util.h"
+	"framework/entity/EntityRegistry.h"
+	"framework/network/portable/FWInstanceManager.h"
+	"game/logic/SpacePirateChunk.h"
+	<math.h>
+
+1511226637 source:/home/sgowen/Documents/github/dante/src/core/game/logic/SpacePirateChunk.cpp
+	"pch.h"
+	"game/logic/SpacePirateChunk.h"
+	"Box2D/Box2D.h"
+	"framework/network/portable/OutputMemoryBitStream.h"
+	"framework/network/portable/InputMemoryBitStream.h"
+	"game/logic/Ground.h"
+	"game/logic/Robot.h"
+	"game/logic/Projectile.h"
+	"game/logic/SpacePirate.h"
+	"framework/network/server/NetworkManagerServer.h"
+	"framework/math/MathUtil.h"
+	"framework/util/Timing.h"
+	<math.h>
+
+1511226637 source:/home/sgowen/Documents/github/dante/src/core/game/logic/Util.cpp
+	"pch.h"
+	"game/logic/Util.h"
+	"Box2D/Box2D.h"
+	"framework/network/client/NetworkManagerClient.h"
+	"game/logic/Robot.h"
+	"game/network/InstanceManager.h"
+	"game/logic/World.h"
+	"framework/audio/portable/NGAudioEngine.h"
+
+1511226637 source:/home/sgowen/Documents/github/dante/src/core/game/logic/World.cpp
+	"pch.h"
+	"game/logic/World.h"
+	"framework/entity/Entity.h"
+	"game/logic/Robot.h"
+	"game/logic/Projectile.h"
+	"game/logic/SpacePirate.h"
+	"game/logic/Crate.h"
+	"game/logic/SpacePirateChunk.h"
+	"game/logic/Ground.h"
+	"Box2D/Box2D.h"
+	"framework/network/server/NetworkManagerServer.h"
+	"game/network/InstanceManager.h"
+	"framework/util/Timing.h"
+	"game/network/Server.h"
+	"framework/network/server/ClientProxy.h"
+	"framework/network/portable/MoveList.h"
+	"game/logic/InputManager.h"
+	"framework/network/client/NetworkManagerClient.h"
+	"framework/util/StringUtil.h"
+
+1511226637 source:/home/sgowen/Documents/github/dante/src/core/game/network/InstanceManager.cpp
+	"pch.h"
+	"game/network/InstanceManager.h"
+	"framework/entity/Entity.h"
+	"game/logic/World.h"
+	"game/logic/Robot.h"
+	<assert.h>
+
+1511226637 source:/home/sgowen/Documents/github/dante/src/core/game/network/MainInputState.cpp
+	"pch.h"
+	"game/network/MainInputState.h"
+	"framework/network/portable/OutputMemoryBitStream.h"
+	"framework/network/portable/InputMemoryBitStream.h"
+	"framework/util/FrameworkConstants.h"
+	<assert.h>
+
+1511226637 source:/home/sgowen/Documents/github/dante/src/core/game/network/Server.cpp
+	"pch.h"
+	"game/network/Server.h"
+	"framework/network/server/ClientProxy.h"
+	"framework/entity/Entity.h"
+	"game/logic/Robot.h"
+	"game/logic/Projectile.h"
+	"game/logic/SpacePirate.h"
+	"framework/network/server/NetworkManagerServer.h"
+	"framework/entity/EntityRegistry.h"
+	"game/logic/World.h"
+	"framework/util/Timing.h"
+	"framework/util/FrameworkConstants.h"
+	"framework/network/portable/SocketUtil.h"
+	"game/logic/PooledObjectsManager.h"
+	"game/network/InstanceManager.h"
+	"framework/network/portable/FWInstanceManager.h"
+	"framework/entity/EntityManager.h"
+	"framework/network/server/SocketServerHelper.h"
+	"game/logic/Crate.h"
+	"framework/network/portable/MachineAddress.h"
+	"framework/network/steam/NGSteamServerHelper.h"
+	"Box2D/Box2D.h"
+	<ctime>
+	<assert.h>
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/framework/network/steam/NGSteamServerHelper.h
+	"framework/network/server/ServerHelper.h"
+	"framework/network/steam/NGSteam.h"
+	"framework/network/portable/PacketHandler.h"
+	"framework/util/FrameworkConstants.h"
+
+1511281129 source:/home/sgowen/Documents/github/dante/src/platform/linux/main.cpp
+	"framework/main/glfw/GlfwMain.h"
+	"game/logic/MainEngine.h"
+

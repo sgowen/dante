@@ -13,13 +13,13 @@
 
 struct GpuTextureWrapper
 {
-#if defined __APPLE__ || defined __ANDROID__
+#if defined __APPLE__ || defined __ANDROID__ || defined __linux__
     GLuint texture;
-    
+
     GpuTextureWrapper(GLuint textureIn) : texture(textureIn) {}
 #elif defined _WIN32
     ID3D11ShaderResourceView* texture;
-    
+
     GpuTextureWrapper(ID3D11ShaderResourceView* textureIn) : texture(textureIn) {}
 #endif
 };

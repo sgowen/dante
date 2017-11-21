@@ -24,6 +24,10 @@
 
     #define bzero(b,len) (memset((b), '\0', (len)), (void) 0)
 #else
+    //#ifdef __linux__
+      //  #define bzero(b,len) memset((b), '\0', (len)), (void) 0
+    //#endif
+
     #include <sys/socket.h>
     #include <netinet/in.h>
     #include <sys/types.h>
@@ -73,12 +77,12 @@ inline float float_swap(float value, bool isHostToNetwork)
         float f;
         unsigned int i;
     };
-    
+
     union v val;
-    
+
     val.f = value;
     val.i = isHostToNetwork ? htonl(val.i) : ntohl(val.i);
-    
+
     return val.f;
 }
 
