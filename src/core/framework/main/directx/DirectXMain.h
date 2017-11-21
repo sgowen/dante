@@ -25,9 +25,17 @@ class Engine;
 class DirectXMain : public DX::IDeviceNotify
 {
 public:
-    DirectXMain();
-    
-	~DirectXMain();
+	static void create();
+
+	static void destroy();
+
+	static DirectXMain* getInstance();
+
+	// Entry point
+	static int exec(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLine, int nCmdShow, Engine* engine);
+
+	// Windows procedure
+	static LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 
 	// Initialization and management
 #if !defined(WINAPI_FAMILY) || (WINAPI_FAMILY == WINAPI_FAMILY_DESKTOP_APP)
@@ -62,6 +70,8 @@ public:
     void GetDefaultSize(int& width, int& height) const;
 
 private:
+	static DirectXMain* s_pInstance;
+
 	// Device resources.
 	std::unique_ptr<DX::DirectXDeviceResources> _deviceResources;
 
@@ -91,4 +101,11 @@ private:
 
 	void beginPixEvent(PCWSTR pFormat, DX::DirectXDeviceResources* deviceResources = NULL);
 	void endPixEvent(DX::DirectXDeviceResources* deviceResources = NULL);
+
+private:
+	// ctor, copy ctor, and assignment should be private in a Singleton
+	DirectXMain();
+	~DirectXMain();
+	DirectXMain(const DirectXMain&);
+	DirectXMain& operator=(const DirectXMain&);
 };
