@@ -12,9 +12,7 @@
 #include "framework/main/portable/Engine.h"
 
 @interface IOSMain : GLKViewController
-{
-@protected
-    Engine *_engine;
-}
+
+- (Engine *)createEngine;
 
 @end

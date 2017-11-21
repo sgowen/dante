@@ -9,7 +9,8 @@
 #import <framework/main/ios/IOSMain.h>
 
 @interface ViewController : IOSMain
-
+{
+    // Empty
+}
 
 @end
-

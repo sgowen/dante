@@ -292,6 +292,8 @@ int GlfwMain::exec(Engine* engine)
         glfwPollEvents();
     }
     
+    delete engine;
+    
     glfwDestroyWindow(window);
     
     glfwTerminate();

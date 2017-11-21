@@ -14,6 +14,9 @@
 #include "framework/util/FrameworkConstants.h"
 
 @interface IOSMain ()
+{
+    Engine *_engine;
+}
 
 @property (strong, nonatomic) EAGLContext *context;
 
@@ -115,6 +118,13 @@
     return YES;
 }
 
+#pragma mark must override
+
+- (Engine *)createEngine
+{
+    return NULL;
+}
+
 #pragma mark - GLKView and GLKViewController delegate methods
 
 - (void)update
@@ -145,6 +155,8 @@
 
 - (void)setupGL
 {
+    _engine = [self createEngine];
+    
     [EAGLContext setCurrentContext:self.context];
     
     CGRect screenBounds = [[UIScreen mainScreen] nativeBounds];

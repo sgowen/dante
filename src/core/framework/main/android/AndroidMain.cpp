@@ -384,4 +384,8 @@ _hasFocus(false)
 
 AndroidMain::~AndroidMain()
 {
+    if (_engine)
+    {
+        delete _engine;
+    }
 }

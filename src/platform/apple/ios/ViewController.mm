@@ -12,11 +12,9 @@
 
 @implementation ViewController
 
-- (void)viewDidLoad
+- (Engine *)createEngine
 {
-    _engine = new MainEngine();
-    
-    [super viewDidLoad];
+    return new MainEngine();
 }
 
 @end

@@ -77,6 +77,11 @@ int DirectXMain::exec(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmd
 	{
 		return 1;
 	}
+    
+    if (!engine)
+    {
+        return 1;
+    }
 
 	// Register class and create window
 	{
