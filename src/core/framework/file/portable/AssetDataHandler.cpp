@@ -12,10 +12,10 @@
 
 #if defined __APPLE__
 #include "framework/file/apple/AppleAssetDataHandler.h"
-#elif defined __linux__
-#include "framework/file/linux/LinuxAssetDataHandler.h"
 #elif defined __ANDROID__
 #include "framework/file/android/AndroidAssetDataHandler.h"
+#elif defined __linux__
+#include "framework/file/linux/LinuxAssetDataHandler.h"
 #elif defined _WIN32
 #include "framework/file/windows/WindowsAssetDataHandler.h"
 #endif
@@ -26,10 +26,10 @@ AssetDataHandler* AssetDataHandler::getAssetDataHandler()
 {
 #if defined __APPLE__
     return AppleAssetDataHandler::getInstance();
-#elif defined __linux__
-    return LinuxAssetDataHandler::getInstance();
 #elif defined __ANDROID__
     return AndroidAssetDataHandler::getInstance();
+#elif defined __linux__
+    return LinuxAssetDataHandler::getInstance();
 #elif defined _WIN32
     return WindowsAssetDataHandler::getInstance();
 #endif
