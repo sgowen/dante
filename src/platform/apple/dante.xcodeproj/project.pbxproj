@@ -91,8 +91,6 @@
 		BB1912B51FABB66A00BDC6D0 /* b2WheelJoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB1911C01FABB66A00BDC6D0 /* b2WheelJoint.cpp */; };
 		BB1912B61FABB66A00BDC6D0 /* b2Rope.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB1911C31FABB66A00BDC6D0 /* b2Rope.cpp */; };
 		BB1914441FABB78400BDC6D0 /* libsteam_api.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BB1914431FABB78400BDC6D0 /* libsteam_api.dylib */; };
-		BB1914821FABB78C00BDC6D0 /* steam_api.json in Resources */ = {isa = PBXBuildFile; fileRef = BB1914701FABB78C00BDC6D0 /* steam_api.json */; };
-		BB1914831FABB78C00BDC6D0 /* steam_api_interop.cs in Resources */ = {isa = PBXBuildFile; fileRef = BB1914731FABB78C00BDC6D0 /* steam_api_interop.cs */; };
 		BB19148E1FABBD1300BDC6D0 /* libsteam_api.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BB1914431FABB78400BDC6D0 /* libsteam_api.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		BB1E897B1EF4A81500B0D78A /* PacketHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB1E89791EF4A81500B0D78A /* PacketHandler.cpp */; };
 		BB1E89811EF4B2BA00B0D78A /* SocketPacketHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB1E897F1EF4B2BA00B0D78A /* SocketPacketHandler.cpp */; };
@@ -871,10 +869,8 @@
 		BB1914601FABB78C00BDC6D0 /* isteamvideo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = isteamvideo.h; sourceTree = "<group>"; };
 		BB19146E1FABB78C00BDC6D0 /* matchmakingtypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = matchmakingtypes.h; sourceTree = "<group>"; };
 		BB19146F1FABB78C00BDC6D0 /* steam_api.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = steam_api.h; sourceTree = "<group>"; };
-		BB1914701FABB78C00BDC6D0 /* steam_api.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = steam_api.json; sourceTree = "<group>"; };
 		BB1914711FABB78C00BDC6D0 /* steam_api_flat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = steam_api_flat.h; sourceTree = "<group>"; };
 		BB1914721FABB78C00BDC6D0 /* steam_api_internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = steam_api_internal.h; sourceTree = "<group>"; };
-		BB1914731FABB78C00BDC6D0 /* steam_api_interop.cs */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = steam_api_interop.cs; sourceTree = "<group>"; };
 		BB1914741FABB78C00BDC6D0 /* steam_gameserver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = steam_gameserver.h; sourceTree = "<group>"; };
 		BB1914751FABB78C00BDC6D0 /* steamclientpublic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = steamclientpublic.h; sourceTree = "<group>"; };
 		BB1914761FABB78C00BDC6D0 /* steamencryptedappticket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = steamencryptedappticket.h; sourceTree = "<group>"; };
@@ -2029,9 +2025,7 @@
 				BB19146E1FABB78C00BDC6D0 /* matchmakingtypes.h */,
 				BB1914711FABB78C00BDC6D0 /* steam_api_flat.h */,
 				BB1914721FABB78C00BDC6D0 /* steam_api_internal.h */,
-				BB1914731FABB78C00BDC6D0 /* steam_api_interop.cs */,
 				BB19146F1FABB78C00BDC6D0 /* steam_api.h */,
-				BB1914701FABB78C00BDC6D0 /* steam_api.json */,
 				BB1914741FABB78C00BDC6D0 /* steam_gameserver.h */,
 				BB1914751FABB78C00BDC6D0 /* steamclientpublic.h */,
 				BB1914761FABB78C00BDC6D0 /* steamencryptedappticket.h */,
@@ -3403,7 +3397,6 @@
 				BB052CCD1EBA8ADD007FA789 /* shader_002_vert.ngs in Resources */,
 				BB052CCB1EBA8ADD007FA789 /* shader_002_frag.ngs in Resources */,
 				BB5833EE1EEDDD330084DA20 /* sound_003.wav in Resources */,
-				BB1914831FABB78C00BDC6D0 /* steam_api_interop.cs in Resources */,
 				BB5833F11EEDDD330084DA20 /* texture_001.ngt in Resources */,
 				BB125E111EFAF61F00917328 /* texture_004.ngt in Resources */,
 				BB052CC91EBA8ADD007FA789 /* shader_001_vert.ngs in Resources */,
@@ -3414,7 +3407,6 @@
 				BB2AC5471EFC56330012B990 /* sound_006.wav in Resources */,
 				BB125E121EFAF61F00917328 /* texture_005.ngt in Resources */,
 				BB052CCF1EBA8ADD007FA789 /* shader_003_frag.ngs in Resources */,
-				BB1914821FABB78C00BDC6D0 /* steam_api.json in Resources */,
 				BB052CC71EBA8ADD007FA789 /* shader_001_frag.ngs in Resources */,
 				BB125E101EFAF61F00917328 /* texture_003.ngt in Resources */,
 				BB5833741EEDBBC50084DA20 /* steam_appid.txt in Resources */,

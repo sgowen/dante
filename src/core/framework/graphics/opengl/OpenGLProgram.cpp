@@ -54,7 +54,7 @@ OpenGLProgram::OpenGLProgram(const char* vertexShaderName, const char* fragmentS
     
     const char* finalVertexShaderFileName;
     const char* finalFragmentShaderFileName;
-#if defined __linux__
+#if defined __linux__ && !defined(__ANDROID__)
     std::string s1("data/shaders/");
     s1 += std::string(vertexShaderFileName);
     finalVertexShaderFileName = s1.c_str();

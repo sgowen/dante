@@ -49,7 +49,7 @@ GpuTextureDataWrapper* OpenGLTextureLoader::loadTextureData(const char* textureN
     textureFileName[len+4] = '\0';
 
     const char* finalTextureFileName;
-#if defined __linux__
+#if defined __linux__ && !defined(__ANDROID__)
     std::string s1("data/textures/");
     s1 += std::string(textureFileName);
     finalTextureFileName = s1.c_str();
