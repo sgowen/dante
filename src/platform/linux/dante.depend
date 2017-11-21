@@ -1524,10 +1524,11 @@
 
 1511226637 /home/sgowen/Documents/github/dante/src/core/framework/entity/GridManager.h
 
-1511226637 source:/home/sgowen/Documents/github/dante/src/core/framework/file/portable/AssetDataHandler.cpp
+1511299901 source:/home/sgowen/Documents/github/dante/src/core/framework/file/portable/AssetDataHandler.cpp
 	"pch.h"
 	"framework/file/portable/AssetDataHandler.h"
 	"framework/file/apple/AppleAssetDataHandler.h"
+	"framework/file/linux/LinuxAssetDataHandler.h"
 	"framework/file/android/AndroidAssetDataHandler.h"
 	"framework/file/windows/WindowsAssetDataHandler.h"
 	<assert.h>
@@ -1731,7 +1732,7 @@
 	"framework/graphics/portable/NGGraphics.h"
 	<vector>
 
-1511285203 /home/sgowen/Documents/github/dante/src/core/framework/graphics/portable/NGGraphics.h
+1511301609 /home/sgowen/Documents/github/dante/src/core/framework/graphics/portable/NGGraphics.h
 	"TargetConditionals.h"
 	<OpenGLES/ES2/gl.h>
 	<OpenGLES/ES2/glext.h>
@@ -3412,7 +3413,7 @@
 
 1511226637 /home/sgowen/Documents/github/dante/src/core/framework/graphics/portable/NGRectBatcher.h
 
-1511284942 source:/home/sgowen/Documents/github/dante/src/core/framework/graphics/opengl/OpenGLProgram.cpp
+1511302020 source:/home/sgowen/Documents/github/dante/src/core/framework/graphics/opengl/OpenGLProgram.cpp
 	"framework/graphics/opengl/OpenGLProgram.h"
 	"framework/graphics/opengl/OpenGLManager.h"
 	"framework/file/portable/AssetDataHandler.h"
@@ -3463,7 +3464,7 @@
 	"framework/util/FrameworkConstants.h"
 	"framework/util/FrameworkConstants.h"
 
-1511284954 source:/home/sgowen/Documents/github/dante/src/core/framework/graphics/opengl/OpenGLTextureLoader.cpp
+1511302010 source:/home/sgowen/Documents/github/dante/src/core/framework/graphics/opengl/OpenGLTextureLoader.cpp
 	"framework/graphics/opengl/OpenGLTextureLoader.h"
 	"framework/graphics/portable/GpuTextureDataWrapper.h"
 	"framework/graphics/portable/GpuTextureWrapper.h"
@@ -3801,7 +3802,7 @@
 
 1511282551 /home/sgowen/Documents/github/dante/src/platform/linux/pch.h
 
-1511285443 source:/home/sgowen/Documents/github/dante/src/core/framework/main/glfw/GlfwMain.cpp
+1511301932 source:/home/sgowen/Documents/github/dante/src/core/framework/main/glfw/GlfwMain.cpp
 	"framework/main/glfw/GlfwMain.h"
 	"framework/main/portable/Engine.h"
 	"framework/input/CursorInputManager.h"
@@ -4440,7 +4441,7 @@
 	"framework/util/NGRollingPool.h"
 	<vector>
 
-1511226637 source:/home/sgowen/Documents/github/dante/src/core/game/logic/MainEngine.cpp
+1511300203 source:/home/sgowen/Documents/github/dante/src/core/game/logic/MainEngine.cpp
 	"pch.h"
 	"game/logic/MainEngine.h"
 	"game/network/Server.h"
@@ -4709,4 +4710,14 @@
 1511287209 source:/home/sgowen/Documents/github/dante/src/core/framework/audio/portable/NullSoundWrapper.cpp
 	"framework/audio/portable/NullSoundWrapper.h"
 	"framework/audio/portable/NullSound.h"
+
+1511300031 source:/home/sgowen/Documents/github/dante/src/core/framework/file/linux/LinuxAssetDataHandler.cpp
+	"framework/file/linux/LinuxAssetDataHandler.h"
+	<stdint.h>
+	<fstream>
+	<vector>
+	<assert.h>
+
+1511299901 /home/sgowen/Documents/github/dante/src/core/framework/file/linux/LinuxAssetDataHandler.h
+	"framework/file/portable/AssetDataHandler.h"
 

@@ -155,6 +155,10 @@ int GlfwMain::exec(Engine* engine)
     glfwMakeContextCurrent(window);
     glfwSwapInterval(1);
 
+#if defined __linux__
+    glewInit();
+#endif
+
     float lastTime = 0;
     engine->createDeviceDependentResources();
 
