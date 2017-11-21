@@ -1331,22 +1331,23 @@
 
 1511226637 /home/sgowen/Documents/github/dante/src/core/framework/audio/portable/AudioEngineHelper.h
 
-1511226637 source:/home/sgowen/Documents/github/dante/src/core/framework/audio/portable/AudioEngineHelperFactory.cpp
+1511287256 source:/home/sgowen/Documents/github/dante/src/core/framework/audio/portable/AudioEngineHelperFactory.cpp
 	"pch.h"
 	"framework/audio/portable/AudioEngineHelperFactory.h"
 	"TargetConditionals.h"
 	"framework/audio/superpowered/android/AndroidAudioEngineHelper.h"
 	"framework/audio/directx/DirectXAudioEngineHelper.h"
+	"framework/audio/portable/NullAudioEngineHelper.h"
 	<assert.h>
 
 1511226637 /home/sgowen/Documents/github/dante/src/core/framework/audio/portable/AudioEngineHelperFactory.h
 
-1511226637 /home/sgowen/Documents/github/dante/src/core/framework/audio/superpowered/android/AndroidAudioEngineHelper.h
+1511287209 /home/sgowen/Documents/github/dante/src/core/framework/audio/superpowered/android/AndroidAudioEngineHelper.h
 	"framework/audio/portable/AudioEngineHelper.h"
 	<jni.h>
 	<vector>
 
-1511226637 /home/sgowen/Documents/github/dante/src/core/framework/audio/directx/DirectXAudioEngineHelper.h
+1511287209 /home/sgowen/Documents/github/dante/src/core/framework/audio/directx/DirectXAudioEngineHelper.h
 	"framework/audio/portable/AudioEngineHelper.h"
 	"Audio.h"
 	<memory>
@@ -3521,7 +3522,7 @@
 	"pch.h"
 	"framework/graphics/portable/CircleBatcher.h"
 
-1511226637 source:/home/sgowen/Documents/github/dante/src/core/framework/graphics/portable/CircleBatcherFactory.cpp
+1511287209 source:/home/sgowen/Documents/github/dante/src/core/framework/graphics/portable/CircleBatcherFactory.cpp
 	"pch.h"
 	"framework/graphics/portable/CircleBatcherFactory.h"
 	"framework/graphics/opengl/OpenGLCircleBatcher.h"
@@ -3555,7 +3556,7 @@
 	"pch.h"
 	"framework/graphics/portable/GpuProgramWrapper.h"
 
-1511226637 source:/home/sgowen/Documents/github/dante/src/core/framework/graphics/portable/GpuProgramWrapperFactory.cpp
+1511287209 source:/home/sgowen/Documents/github/dante/src/core/framework/graphics/portable/GpuProgramWrapperFactory.cpp
 	"pch.h"
 	"framework/graphics/portable/GpuProgramWrapperFactory.h"
 	"framework/graphics/opengl/OpenGLTextureGpuProgramWrapper.h"
@@ -3583,7 +3584,7 @@
 	"framework/math/Vector2.h"
 	"framework/math/Color.h"
 
-1511226637 source:/home/sgowen/Documents/github/dante/src/core/framework/graphics/portable/LineBatcherFactory.cpp
+1511287209 source:/home/sgowen/Documents/github/dante/src/core/framework/graphics/portable/LineBatcherFactory.cpp
 	"pch.h"
 	"framework/graphics/portable/LineBatcherFactory.h"
 	"framework/graphics/opengl/OpenGLLineBatcher.h"
@@ -3608,7 +3609,7 @@
 	"framework/math/Vector2.h"
 	"framework/math/Color.h"
 
-1511226637 source:/home/sgowen/Documents/github/dante/src/core/framework/graphics/portable/NGRectBatcherFactory.cpp
+1511287209 source:/home/sgowen/Documents/github/dante/src/core/framework/graphics/portable/NGRectBatcherFactory.cpp
 	"pch.h"
 	"framework/graphics/portable/NGRectBatcherFactory.h"
 	"framework/graphics/opengl/OpenGLNGRectBatcher.h"
@@ -3664,7 +3665,7 @@
 	"framework/graphics/portable/RendererHelper.h"
 	"framework/graphics/portable/TextureWrapper.h"
 
-1511226637 source:/home/sgowen/Documents/github/dante/src/core/framework/graphics/portable/RendererHelperFactory.cpp
+1511287209 source:/home/sgowen/Documents/github/dante/src/core/framework/graphics/portable/RendererHelperFactory.cpp
 	"pch.h"
 	"framework/graphics/portable/RendererHelperFactory.h"
 	"framework/graphics/opengl/OpenGLRendererHelper.h"
@@ -3685,7 +3686,7 @@
 	"framework/math/Vector2.h"
 	<math.h>
 
-1511226637 source:/home/sgowen/Documents/github/dante/src/core/framework/graphics/portable/SpriteBatcherFactory.cpp
+1511287209 source:/home/sgowen/Documents/github/dante/src/core/framework/graphics/portable/SpriteBatcherFactory.cpp
 	"pch.h"
 	"framework/graphics/portable/SpriteBatcherFactory.h"
 	"framework/graphics/opengl/OpenGLSpriteBatcher.h"
@@ -3698,7 +3699,7 @@
 	"pch.h"
 	"framework/graphics/portable/TextureLoader.h"
 
-1511226637 source:/home/sgowen/Documents/github/dante/src/core/framework/graphics/portable/TextureLoaderFactory.cpp
+1511287209 source:/home/sgowen/Documents/github/dante/src/core/framework/graphics/portable/TextureLoaderFactory.cpp
 	"pch.h"
 	"framework/graphics/portable/TextureLoaderFactory.h"
 	"framework/graphics/opengl/OpenGLTextureLoader.h"
@@ -4685,4 +4686,27 @@
 1511281129 source:/home/sgowen/Documents/github/dante/src/platform/linux/main.cpp
 	"framework/main/glfw/GlfwMain.h"
 	"game/logic/MainEngine.h"
+
+1511287209 /home/sgowen/Documents/github/dante/src/core/framework/audio/portable/NullAudioEngineHelper.h
+	"framework/audio/portable/AudioEngineHelper.h"
+
+1511287209 source:/home/sgowen/Documents/github/dante/src/core/framework/audio/portable/NullAudioEngineHelper.cpp
+	"pch.h"
+	"framework/audio/portable/NullAudioEngineHelper.h"
+	"framework/audio/portable/SoundWrapper.h"
+	"framework/audio/portable/NullSoundWrapper.h"
+
+1511287209 /home/sgowen/Documents/github/dante/src/core/framework/audio/portable/NullSoundWrapper.h
+	"framework/audio/portable/SoundWrapper.h"
+
+1511287209 source:/home/sgowen/Documents/github/dante/src/core/framework/audio/portable/NullSound.cpp
+	"pch.h"
+	"framework/audio/portable/NullSound.h"
+
+1511287209 /home/sgowen/Documents/github/dante/src/core/framework/audio/portable/NullSound.h
+	"framework/audio/portable/Sound.h"
+
+1511287209 source:/home/sgowen/Documents/github/dante/src/core/framework/audio/portable/NullSoundWrapper.cpp
+	"framework/audio/portable/NullSoundWrapper.h"
+	"framework/audio/portable/NullSound.h"
 
