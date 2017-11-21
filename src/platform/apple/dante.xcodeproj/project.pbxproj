@@ -1488,6 +1488,8 @@
 		BBBD14C11EE0C9B4003F9307 /* InputMemoryBitStream.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = InputMemoryBitStream.cpp; sourceTree = "<group>"; };
 		BBBD14C21EE0C9B4003F9307 /* InputMemoryBitStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InputMemoryBitStream.h; sourceTree = "<group>"; };
 		BBC1BE371ECF736A0045AF93 /* Network.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Network.h; sourceTree = "<group>"; };
+		BBC532B01FC4D0C900F5439E /* LinuxAssetDataHandler.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = LinuxAssetDataHandler.cpp; sourceTree = "<group>"; };
+		BBC532B11FC4D0C900F5439E /* LinuxAssetDataHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LinuxAssetDataHandler.h; sourceTree = "<group>"; };
 		BBCB93151FC217DD0020703A /* WindowsAssetDataHandler.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = WindowsAssetDataHandler.cpp; sourceTree = "<group>"; };
 		BBCB93161FC217DD0020703A /* WindowsAssetDataHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WindowsAssetDataHandler.h; sourceTree = "<group>"; };
 		BBCB93171FC2295B0020703A /* State.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = State.h; sourceTree = "<group>"; };
@@ -2985,6 +2987,7 @@
 			children = (
 				BB9EE5181FC092CB000F5389 /* android */,
 				BB9EE50F1FC092C4000F5389 /* apple */,
+				BBC532AF1FC4D0C900F5439E /* linux */,
 				BBAEF0D81EA94ED900F0866E /* portable */,
 				BBCB93131FC211290020703A /* windows */,
 			);
@@ -3186,6 +3189,15 @@
 				BBAEF1951EA94ED900F0866E /* SoundWrapper.h */,
 			);
 			path = portable;
+			sourceTree = "<group>";
+		};
+		BBC532AF1FC4D0C900F5439E /* linux */ = {
+			isa = PBXGroup;
+			children = (
+				BBC532B01FC4D0C900F5439E /* LinuxAssetDataHandler.cpp */,
+				BBC532B11FC4D0C900F5439E /* LinuxAssetDataHandler.h */,
+			);
+			path = linux;
 			sourceTree = "<group>";
 		};
 		BBCB93131FC211290020703A /* windows */ = {

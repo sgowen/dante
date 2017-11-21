@@ -48,7 +48,16 @@ GpuTextureDataWrapper* OpenGLTextureLoader::loadTextureData(const char* textureN
     textureFileName[len+3] = 't';
     textureFileName[len+4] = '\0';
 
-    const FileData png_file = AssetDataHandler::getAssetDataHandler()->getAssetData(textureFileName);
+    const char* finalTextureFileName;
+#if defined __linux__
+    std::string s1("data/textures/");
+    s1 += std::string(vertexShaderFileName);
+    finalTextureFileName = s1.c_str();
+#else
+    finalTextureFileName = textureFileName;
+#endif
+    
+    const FileData png_file = AssetDataHandler::getAssetDataHandler()->getAssetData(finalTextureFileName);
     void* output = malloc(png_file.data_length);
     StringUtil::encryptDecrypt((unsigned char*)png_file.data, (unsigned char*) output, png_file.data_length);
 

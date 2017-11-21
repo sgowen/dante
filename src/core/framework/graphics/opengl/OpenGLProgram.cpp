@@ -51,9 +51,24 @@ OpenGLProgram::OpenGLProgram(const char* vertexShaderName, const char* fragmentS
         fragmentShaderFileName[len + 3] = 's';
         fragmentShaderFileName[len + 4] = '\0';
     }
-
-    const FileData vertex_shader_source = AssetDataHandler::getAssetDataHandler()->getAssetData(vertexShaderFileName);
-    const FileData fragment_shader_source = AssetDataHandler::getAssetDataHandler()->getAssetData(fragmentShaderFileName);
+    
+    const char* finalVertexShaderFileName;
+    const char* finalFragmentShaderFileName;
+#if defined __linux__
+    std::string s1("data/shaders/");
+    s1 += std::string(vertexShaderFileName);
+    finalVertexShaderFileName = s1.c_str();
+    
+    std::string s2("data/shaders/");
+    s2 += std::string(fragmentShaderFileName);
+    finalFragmentShaderFileName = s2.c_str();
+#else
+    finalVertexShaderFileName = vertexShaderFileName;
+    finalFragmentShaderFileName = fragmentShaderFileName;
+#endif
+    
+    const FileData vertex_shader_source = AssetDataHandler::getAssetDataHandler()->getAssetData(finalVertexShaderFileName);
+    const FileData fragment_shader_source = AssetDataHandler::getAssetDataHandler()->getAssetData(finalFragmentShaderFileName);
 
     unsigned char* vertex_shader_source_output = (unsigned char*) malloc(vertex_shader_source.data_length);
     StringUtil::encryptDecrypt((unsigned char*)vertex_shader_source.data, vertex_shader_source_output, vertex_shader_source.data_length);
