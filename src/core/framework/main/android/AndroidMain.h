@@ -33,13 +33,13 @@ public:
     void pause();
     
 private:
-    ndk_helper::GLContext* m_glContext;
-    android_app* m_app;
+    ndk_helper::GLContext* _glContext;
+    android_app* _app;
     Engine* _engine;
     
-    float m_fAveragedDeltaTime;
-    bool m_hasInitializedResources;
-    bool m_hasFocus;
+    float _averagedDeltaTime;
+    bool _hasInitializedResources;
+    bool _hasFocus;
     
     // ctor, copy ctor, and assignment should be private in a Singleton
     AndroidMain();

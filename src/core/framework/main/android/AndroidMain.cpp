@@ -46,7 +46,7 @@ void AndroidMain::handleCmd(struct android_app* app, int32_t cmd)
         case APP_CMD_TERM_WINDOW:
             LOGI("NG APP_CMD_TERM_WINDOW");
             engine->termDisplay();
-            engine->m_hasFocus = false;
+            engine->_hasFocus = false;
             break;
         case APP_CMD_DESTROY:
             LOGI("NG APP_CMD_DESTROY");
@@ -57,12 +57,12 @@ void AndroidMain::handleCmd(struct android_app* app, int32_t cmd)
         case APP_CMD_GAINED_FOCUS:
             LOGI("NG APP_CMD_GAINED_FOCUS");
             engine->resume();
-            engine->m_hasFocus = true;
+            engine->_hasFocus = true;
             break;
         case APP_CMD_LOST_FOCUS:
             LOGI("NG APP_CMD_LOST_FOCUS");
             engine->pause();
-            engine->m_hasFocus = false;
+            engine->_hasFocus = false;
             engine->drawFrame();
             break;
         case APP_CMD_LOW_MEMORY:
@@ -167,7 +167,7 @@ void AndroidMain::exec(android_app* state, Engine* engine)
         return;
     }
     
-    m_app = state;
+    _app = state;
     _engine = engine;
     
     state->userData = this;
@@ -210,17 +210,17 @@ void AndroidMain::exec(android_app* state, Engine* engine)
 
 int AndroidMain::initDisplay()
 {
-    if (!m_hasInitializedResources)
+    if (!_hasInitializedResources)
     {
-        m_glContext->Init(m_app->window);
+        _glContext->Init(_app->window);
         
         loadResources();
-        m_hasInitializedResources = true;
+        _hasInitializedResources = true;
     }
     else
     {
         // initialize OpenGL ES and EGL
-        if (EGL_SUCCESS != m_glContext->Resume(m_app->window))
+        if (EGL_SUCCESS != _glContext->Resume(_app->window))
         {
             unloadResources();
             loadResources();
@@ -235,20 +235,20 @@ int AndroidMain::initDisplay()
 void AndroidMain::loadResources()
 {
     JNIEnv *jni;
-    m_app->activity->vm->AttachCurrentThread(&jni, NULL);
+    _app->activity->vm->AttachCurrentThread(&jni, NULL);
     
-    ANDROID_AUDIO_ENGINE_HELPER->init(jni, m_app->activity->clazz);
+    ANDROID_AUDIO_ENGINE_HELPER->init(jni, _app->activity->clazz);
     
-    AndroidAssetDataHandler::getInstance()->init(jni, m_app->activity->clazz);
+    AndroidAssetDataHandler::getInstance()->init(jni, _app->activity->clazz);
     
-    int width = m_glContext->GetScreenWidth();
-    int height = m_glContext->GetScreenHeight();
+    int width = _glContext->GetScreenWidth();
+    int height = _glContext->GetScreenHeight();
     
     _engine->createDeviceDependentResources();
     
     OGLManager->setScreenSize(width, height);
     
-    if (m_glContext->GetScreenWidth() < 2560)
+    if (_glContext->GetScreenWidth() < 2560)
     {
         _engine->createWindowSizeDependentResources(width > 1280 ? 1280 : width, height > 720 ? 720 : height, width, height);
     }
@@ -257,7 +257,7 @@ void AndroidMain::loadResources()
         _engine->createWindowSizeDependentResources(width > 1440 ? 1440 : width, height > 900 ? 900 : height, width, height);
     }
     
-    m_app->activity->vm->DetachCurrentThread();
+    _app->activity->vm->DetachCurrentThread();
     return;
 }
 
@@ -296,11 +296,11 @@ void AndroidMain::drawFrame()
     
     deltaTime = timeSpan.count();
     
-    m_fAveragedDeltaTime = approxRollingAverage(m_fAveragedDeltaTime, deltaTime);
+    _averagedDeltaTime = approxRollingAverage(_averagedDeltaTime, deltaTime);
     
-    deltaTime = clamp(m_fAveragedDeltaTime, 0.016f, 0.033f);
+    deltaTime = clamp(_averagedDeltaTime, 0.016f, 0.033f);
     
-    if (m_fAveragedDeltaTime > 0.016f && m_fAveragedDeltaTime < 0.018f)
+    if (_averagedDeltaTime > 0.016f && _averagedDeltaTime < 0.018f)
     {
         deltaTime = 0.016666666666667f;
     }
@@ -323,7 +323,7 @@ void AndroidMain::drawFrame()
     
     _engine->render();
     
-    if (EGL_SUCCESS != m_glContext->Swap())
+    if (EGL_SUCCESS != _glContext->Swap())
     {
         unloadResources();
         loadResources();
@@ -334,40 +334,50 @@ void AndroidMain::termDisplay()
 {
     pause();
     
-    m_glContext->Suspend();
+    _glContext->Suspend();
 }
 
 void AndroidMain::trimMemory()
 {
-    m_glContext->Invalidate();
+    _glContext->Invalidate();
 }
 
 bool AndroidMain::isReady()
 {
-    return m_hasFocus;
+    return _hasFocus;
 }
 
 void AndroidMain::resume()
 {
+    if (!_hasInitializedResources)
+    {
+        return;
+    }
+    
     _engine->onResume();
     
-    m_hasFocus = true;
+    _hasFocus = true;
 }
 
 void AndroidMain::pause()
 {
+    if (!_hasInitializedResources)
+    {
+        return;
+    }
+    
     _engine->onPause();
     
-    m_hasFocus = false;
+    _hasFocus = false;
 }
 
 AndroidMain::AndroidMain() :
-m_glContext(ndk_helper::GLContext::GetInstance()),
-m_app(nullptr),
+_glContext(ndk_helper::GLContext::GetInstance()),
+_app(nullptr),
 _engine(nullptr),
-m_fAveragedDeltaTime(0.016666666666667f),
-m_hasInitializedResources(false),
-m_hasFocus(false)
+_averagedDeltaTime(0.016666666666667f),
+_hasInitializedResources(false),
+_hasFocus(false)
 {
     // Empty
 }

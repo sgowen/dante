@@ -61,6 +61,19 @@ _isSteam(false)
     CLIENT_ENTITY_REG->registerCreationFunction(NW_TYPE_SpacePirate, World::sClientCreateSpacePirate);
     CLIENT_ENTITY_REG->registerCreationFunction(NW_TYPE_Crate, World::sClientCreateCrate);
     CLIENT_ENTITY_REG->registerCreationFunction(NW_TYPE_SpacePirateChunk, World::sClientCreateSpacePirateChunk);
+}
+
+MainEngine::~MainEngine()
+{
+    delete _config;
+    
+    disconnect();
+	deactivateSteam();
+}
+
+void MainEngine::createDeviceDependentResources()
+{
+    Engine::createDeviceDependentResources();
     
     NG_AUDIO_ENGINE->loadSound(SOUND_ID_ROBOT_JUMP, SOUND_ROBOT_JUMP, 4);
     NG_AUDIO_ENGINE->loadSound(SOUND_ID_EXPLOSION, SOUND_EXPLOSION, 8);
@@ -75,12 +88,12 @@ _isSteam(false)
     NG_AUDIO_ENGINE->setMusicDisabled(true);
 }
 
-MainEngine::~MainEngine()
+void MainEngine::releaseDeviceDependentResources()
 {
-    delete _config;
+    Engine::releaseDeviceDependentResources();
     
-    disconnect();
-	deactivateSteam();
+    NG_AUDIO_ENGINE->resetSounds();
+    NG_AUDIO_ENGINE->resetMusic();
 }
 
 void MainEngine::update(float deltaTime)

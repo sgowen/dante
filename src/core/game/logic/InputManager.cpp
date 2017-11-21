@@ -30,6 +30,15 @@
 
 #include <sstream>
 
+#if defined __APPLE__
+    #include "TargetConditionals.h"
+    #if TARGET_OS_IPHONE
+        #define NG_MOBILE
+    #endif
+#elif defined __ANDROID__
+    #define NG_MOBILE
+#endif
+
 InputManager* InputManager::getInstance()
 {
     static InputManager instance = InputManager();
@@ -221,6 +230,26 @@ void InputManager::update()
                     continue;
             }
         }
+        
+#ifdef NG_MOBILE
+        for (std::vector<CursorEvent *>::iterator i = CURSOR_INPUT_MANAGER->getEvents().begin(); i != CURSOR_INPUT_MANAGER->getEvents().end(); ++i)
+        {
+            if ((*i)->getType() == CursorEventType_DOWN
+                || (*i)->getType() == CursorEventType_DRAGGED)
+            {
+                Vector2& vec = CURSOR_CONVERTER->touchToWorld(*(*i));
+                _currentState->getGameInputState(0)._isMovingLeft = vec.getX() < (CAM_WIDTH / 2);
+                _currentState->getGameInputState(0)._isMovingRight = vec.getX() > (CAM_WIDTH / 2);
+            }
+            else
+            {
+                _currentState->getGameInputState(0)._isMovingLeft = false;
+                _currentState->getGameInputState(0)._isMovingRight = false;
+                
+                continue;
+            }
+        }
+#endif
     }
     else if (_isLiveMode)
     {
@@ -276,6 +305,27 @@ void InputManager::update()
                 }
             }
         }
+        
+#ifdef NG_MOBILE
+        for (std::vector<CursorEvent *>::iterator i = CURSOR_INPUT_MANAGER->getEvents().begin(); i != CURSOR_INPUT_MANAGER->getEvents().end(); ++i)
+        {
+            if ((*i)->getType() == CursorEventType_UP)
+            {
+                if (_liveInput.length() > 0)
+                {
+                    _isTimeToProcessInput = true;
+                }
+                else
+                {
+                    ss << "mobile";
+                }
+            }
+            else
+            {
+                continue;
+            }
+        }
+#endif
         
         std::string s = ss.str();
         _liveInput += s;
@@ -353,6 +403,20 @@ void InputManager::update()
                     continue;
             }
         }
+        
+#ifdef NG_MOBILE
+        for (std::vector<CursorEvent *>::iterator i = CURSOR_INPUT_MANAGER->getEvents().begin(); i != CURSOR_INPUT_MANAGER->getEvents().end(); ++i)
+        {
+            if ((*i)->getType() == CursorEventType_UP)
+            {
+                _currentState->_menuState = MENU_STATE_START_SERVER;
+            }
+            else
+            {
+                continue;
+            }
+        }
+#endif
     }
     
     if (isTimeToSampleInput())

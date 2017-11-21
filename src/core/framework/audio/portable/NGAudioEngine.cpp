@@ -281,6 +281,14 @@ void NGAudioEngine::resumeMusic()
     }
 }
 
+void NGAudioEngine::resetMusic()
+{
+    if (_music)
+    {
+        delete _music;
+    }
+}
+
 bool NGAudioEngine::isMusicPlaying()
 {
     if (_music)
@@ -350,5 +358,5 @@ NGAudioEngine::~NGAudioEngine()
 {
     resetSounds();
     
-    delete _music;
+    resetMusic();
 }
