@@ -21,6 +21,8 @@
     #include "framework/audio/superpowered/android/AndroidAudioEngineHelper.h"
 #elif defined _WIN32
     #include "framework/audio/directx/DirectXAudioEngineHelper.h"
+#else
+    #include "framework/audio/portable/NullAudioEngineHelper.h"
 #endif
 
 #include <assert.h>
@@ -46,7 +48,7 @@ AudioEngineHelper* AudioEngineHelperFactory::createAudioEngineHelper()
 #else
     return NullAudioEngineHelper::getInstance();
 #endif
-    
+
     assert(false);
 }
 
