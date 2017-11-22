@@ -11,14 +11,11 @@
 #include "framework/audio/portable/AudioEngineHelperFactory.h"
 
 #if defined __APPLE__
-    #include "TargetConditionals.h"
-    #if TARGET_OS_IPHONE
-        #import "AppleAudioEngineHelper.h"
-    #elif TARGET_OS_OSX
-        #import "MacAudioEngineHelper.h"
-    #endif
+    #include "framework/audio/superpowered/apple/AppleAudioEngineHelper.h"
 #elif defined __ANDROID__
     #include "framework/audio/superpowered/android/AndroidAudioEngineHelper.h"
+#elif defined __linux__
+    #include "framework/audio/portable/NullAudioEngineHelper.h"
 #elif defined _WIN32
     #include "framework/audio/directx/DirectXAudioEngineHelper.h"
 #else
@@ -36,11 +33,7 @@ AudioEngineHelperFactory* AudioEngineHelperFactory::getInstance()
 AudioEngineHelper* AudioEngineHelperFactory::createAudioEngineHelper()
 {
 #if defined __APPLE__
-    #if TARGET_OS_IPHONE
-        return AppleAudioEngineHelper::getInstance();
-    #elif TARGET_OS_OSX
-        return MacAudioEngineHelper::getInstance();
-    #endif
+    return AppleAudioEngineHelper::getInstance();
 #elif defined __ANDROID__
     return AndroidAudioEngineHelper::getInstance();
 #elif defined __linux__
