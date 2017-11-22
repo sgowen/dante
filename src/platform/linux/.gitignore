@@ -32,4 +32,5 @@
 *.app
 /bin
 /data
-dante_build
+*_build
+*.depend
