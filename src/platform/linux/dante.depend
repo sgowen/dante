@@ -1331,12 +1331,12 @@
 
 1511226637 /home/sgowen/Documents/github/dante/src/core/framework/audio/portable/AudioEngineHelper.h
 
-1511316931 source:/home/sgowen/Documents/github/dante/src/core/framework/audio/portable/AudioEngineHelperFactory.cpp
+1511375255 source:/home/sgowen/Documents/github/dante/src/core/framework/audio/portable/AudioEngineHelperFactory.cpp
 	"pch.h"
 	"framework/audio/portable/AudioEngineHelperFactory.h"
 	"framework/audio/superpowered/apple/AppleAudioEngineHelper.h"
 	"framework/audio/superpowered/android/AndroidAudioEngineHelper.h"
-	"framework/audio/portable/NullAudioEngineHelper.h"
+	"framework/audio/linux/LinuxAudioEngineHelper.h"
 	"framework/audio/directx/DirectXAudioEngineHelper.h"
 	"framework/audio/portable/NullAudioEngineHelper.h"
 	<assert.h>
@@ -4989,4 +4989,43 @@
 	"framework/audio/superpowered/portable/SuperpoweredSoundManager.h"
 	"framework/audio/superpowered/portable/SuperpoweredSoundWrapper.h"
 	<string>
+
+1511375672 source:/home/sgowen/Documents/github/dante/src/core/framework/audio/linux/LinuxAudioEngineHelper.cpp
+	"framework/audio/linux/LinuxAudioEngineHelper.h"
+	"framework/audio/portable/SoundWrapper.h"
+	"framework/audio/linux/LinuxSoundWrapper.h"
+	<string>
+	<AL/alut.h>
+
+1511375255 /home/sgowen/Documents/github/dante/src/core/framework/audio/linux/LinuxAudioEngineHelper.h
+	"framework/audio/portable/AudioEngineHelper.h"
+
+1511375255 /home/sgowen/Documents/github/dante/src/core/framework/audio/linux/LinuxSoundWrapper.h
+	"framework/audio/portable/SoundWrapper.h"
+
+1409988443 /usr/include//AL/alut.h
+	<alc.h>
+	<al.h>
+	<OpenAL/alc.h>
+	<OpenAL/al.h>
+	<AL/al.h>
+	<AL/alc.h>
+
+1408086419 /usr/include//AL/al.h
+
+1408086419 /usr/include//AL/alc.h
+
+1511375743 source:/home/sgowen/Documents/github/dante/src/core/framework/audio/linux/LinuxSound.cpp
+	"pch.h"
+	"framework/audio/linux/LinuxSound.h"
+	<assert.h>
+	<AL/alut.h>
+
+1511375255 /home/sgowen/Documents/github/dante/src/core/framework/audio/linux/LinuxSound.h
+	"framework/audio/portable/Sound.h"
+	<AL/al.h>
+
+1511375255 source:/home/sgowen/Documents/github/dante/src/core/framework/audio/linux/LinuxSoundWrapper.cpp
+	"framework/audio/linux/LinuxSoundWrapper.h"
+	"framework/audio/linux/LinuxSound.h"
 

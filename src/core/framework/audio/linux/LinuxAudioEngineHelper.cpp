@@ -6,13 +6,15 @@
 //  Copyright (c) 2017 Noctis Games. All rights reserved.
 //
 
-#include "framework/audio/Linux/linux/LinuxAudioEngineHelper.h"
+#include "framework/audio/linux/LinuxAudioEngineHelper.h"
 
 #include "framework/audio/portable/SoundWrapper.h"
 
 #include "framework/audio/linux/LinuxSoundWrapper.h"
 
 #include <string>
+
+#include <AL/alut.h>
 
 LinuxAudioEngineHelper* LinuxAudioEngineHelper::getInstance()
 {
