@@ -6,6 +6,8 @@
 //  Copyright (c) 2017 Noctis Games. All rights reserved.
 //
 
+#include "pch.h"
+
 #include "framework/audio/portable/NullSoundWrapper.h"
 
 #include "framework/audio/portable/NullSound.h"
