@@ -15,6 +15,7 @@
 		BB052CCD1EBA8ADD007FA789 /* shader_002_vert.ngs in Resources */ = {isa = PBXBuildFile; fileRef = BB052CC31EBA8ADD007FA789 /* shader_002_vert.ngs */; };
 		BB052CCF1EBA8ADD007FA789 /* shader_003_frag.ngs in Resources */ = {isa = PBXBuildFile; fileRef = BB052CC41EBA8ADD007FA789 /* shader_003_frag.ngs */; };
 		BB052CD11EBA8ADD007FA789 /* shader_003_vert.ngs in Resources */ = {isa = PBXBuildFile; fileRef = BB052CC51EBA8ADD007FA789 /* shader_003_vert.ngs */; };
+		BB07A78D1FC60FD900AE5051 /* vulkan.c in Sources */ = {isa = PBXBuildFile; fileRef = BB07A78C1FC60FD900AE5051 /* vulkan.c */; };
 		BB0864751EE20CCA00BCD9E0 /* EntityRegistry.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB0864721EE20CCA00BCD9E0 /* EntityRegistry.cpp */; };
 		BB125E101EFAF61F00917328 /* texture_003.ngt in Resources */ = {isa = PBXBuildFile; fileRef = BB125E0D1EFAF61F00917328 /* texture_003.ngt */; };
 		BB125E111EFAF61F00917328 /* texture_004.ngt in Resources */ = {isa = PBXBuildFile; fileRef = BB125E0E1EFAF61F00917328 /* texture_004.ngt */; };
@@ -369,7 +370,6 @@
 		BB6F598D1FBDEA0D00BD7697 /* window.c in Sources */ = {isa = PBXBuildFile; fileRef = BB6F59871FBDEA0D00BD7697 /* window.c */; };
 		BB6F598E1FBDEA0D00BD7697 /* input.c in Sources */ = {isa = PBXBuildFile; fileRef = BB6F59881FBDEA0D00BD7697 /* input.c */; };
 		BB6F598F1FBDEA0D00BD7697 /* monitor.c in Sources */ = {isa = PBXBuildFile; fileRef = BB6F59891FBDEA0D00BD7697 /* monitor.c */; };
-		BB6F59901FBDEA0D00BD7697 /* vulkan.c in Sources */ = {isa = PBXBuildFile; fileRef = BB6F598A1FBDEA0D00BD7697 /* vulkan.c */; };
 		BB6F59911FBDEA0D00BD7697 /* context.c in Sources */ = {isa = PBXBuildFile; fileRef = BB6F598B1FBDEA0D00BD7697 /* context.c */; };
 		BB6F59A11FBDF11C00BD7697 /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB6F599F1FBDF11100BD7697 /* CoreServices.framework */; };
 		BB6F59A41FBDF15600BD7697 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB6F59A21FBDF14900BD7697 /* OpenGLES.framework */; };
@@ -630,6 +630,9 @@
 		BB07A5111FC5F11D00AE5051 /* LinuxSoundWrapper.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = LinuxSoundWrapper.cpp; sourceTree = "<group>"; };
 		BB07A5121FC5F11D00AE5051 /* LinuxSoundWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LinuxSoundWrapper.h; sourceTree = "<group>"; };
 		BB07A5131FC5F11D00AE5051 /* LinuxSound.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = LinuxSound.cpp; sourceTree = "<group>"; };
+		BB07A78A1FC60F4900AE5051 /* XOREncryptDecryptLinux */ = {isa = PBXFileReference; lastKnownFileType = file; path = XOREncryptDecryptLinux; sourceTree = "<group>"; };
+		BB07A78B1FC60F7900AE5051 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../../../README.md; sourceTree = "<group>"; };
+		BB07A78C1FC60FD900AE5051 /* vulkan.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = vulkan.c; sourceTree = "<group>"; };
 		BB0864721EE20CCA00BCD9E0 /* EntityRegistry.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EntityRegistry.cpp; sourceTree = "<group>"; };
 		BB0864731EE20CCA00BCD9E0 /* EntityRegistry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EntityRegistry.h; sourceTree = "<group>"; };
 		BB125E0D1EFAF61F00917328 /* texture_003.ngt */ = {isa = PBXFileReference; lastKnownFileType = text; path = texture_003.ngt; sourceTree = "<group>"; };
@@ -1055,7 +1058,6 @@
 		BB6F59871FBDEA0D00BD7697 /* window.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = window.c; sourceTree = "<group>"; };
 		BB6F59881FBDEA0D00BD7697 /* input.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = input.c; sourceTree = "<group>"; };
 		BB6F59891FBDEA0D00BD7697 /* monitor.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = monitor.c; sourceTree = "<group>"; };
-		BB6F598A1FBDEA0D00BD7697 /* vulkan.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = vulkan.c; sourceTree = "<group>"; };
 		BB6F598B1FBDEA0D00BD7697 /* context.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = context.c; sourceTree = "<group>"; };
 		BB6F59931FBDEB0500BD7697 /* internal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = internal.h; sourceTree = "<group>"; };
 		BB6F59941FBDEB0500BD7697 /* mappings.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = mappings.h; sourceTree = "<group>"; };
@@ -1508,6 +1510,7 @@
 				BBD3E85F1FB2872A00328E35 /* ios */,
 				BB44C31E1DB030B3003E633F /* mac */,
 				0ADF1875178E2185005DA99E /* Products */,
+				BB07A78B1FC60F7900AE5051 /* README.md */,
 				BBCB93191FC234B50020703A /* tools */,
 			);
 			sourceTree = "<group>";
@@ -2359,7 +2362,7 @@
 				BB6F59841FBDE9E400BD7697 /* osmesa_context.h */,
 				BB6F597D1FBDE9C400BD7697 /* posix_thread.c */,
 				BB6F59851FBDE9E400BD7697 /* posix_thread.h */,
-				BB6F598A1FBDEA0D00BD7697 /* vulkan.c */,
+				BB07A78C1FC60FD900AE5051 /* vulkan.c */,
 				BB6F59871FBDEA0D00BD7697 /* window.c */,
 			);
 			path = src;
@@ -3030,6 +3033,7 @@
 				BBCB931F1FC236B30020703A /* XOREncryptDecrypt */,
 				BBCB931D1FC236B30020703A /* XOREncryptDecrypt.c */,
 				BBCB931E1FC236B30020703A /* XOREncryptDecrypt.exe */,
+				BB07A78A1FC60F4900AE5051 /* XOREncryptDecryptLinux */,
 			);
 			name = tools;
 			path = ../../../tools;
@@ -3386,7 +3390,6 @@
 				BBAEF2781EA94EDA00F0866E /* TextureRegion.cpp in Sources */,
 				BB7267FE1EEC704B004F33F9 /* NetworkManagerServer.cpp in Sources */,
 				BB1912B11FABB66A00BDC6D0 /* b2PulleyJoint.cpp in Sources */,
-				BB6F59901FBDEA0D00BD7697 /* vulkan.c in Sources */,
 				BBFA49E51FC3702D00233514 /* Engine.cpp in Sources */,
 				BB6F64361FBE009C00BD7697 /* PathConstraintMixTimeline.cpp in Sources */,
 				BB6F646C1FBE009C00BD7697 /* IkConstraintData.cpp in Sources */,
@@ -3559,6 +3562,7 @@
 				BB6F642C1FBE009C00BD7697 /* Skeleton.cpp in Sources */,
 				BB6F64221FBE009C00BD7697 /* CurveTimeline.cpp in Sources */,
 				BB44CB8E1DB053C0003E633F /* pngwtran.c in Sources */,
+				BB07A78D1FC60FD900AE5051 /* vulkan.c in Sources */,
 				BB8308711EC2AD1F00435E7E /* SocketAddressFactory.cpp in Sources */,
 				BB4253DB1EF59793003F6D2A /* NGSteamServerHelper.cpp in Sources */,
 				BBAEF2461EA94EDA00F0866E /* OpenGLTextureLoader.cpp in Sources */,
