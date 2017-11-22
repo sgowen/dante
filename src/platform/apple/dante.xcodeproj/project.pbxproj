@@ -1430,6 +1430,11 @@
 		BBD43A0B1ED0BCAD001D5EB4 /* ReplicationAction.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ReplicationAction.h; sourceTree = "<group>"; };
 		BBD43A0C1ED0BD00001D5EB4 /* ReplicationCommand.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ReplicationCommand.cpp; sourceTree = "<group>"; };
 		BBDF55C21EF782D800D6FA45 /* Color.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Color.cpp; sourceTree = "<group>"; };
+		BBE3C6CE1FC515D50009E3A6 /* SuperpoweredAndroidAudioIO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SuperpoweredAndroidAudioIO.h; sourceTree = "<group>"; };
+		BBE3C6CF1FC515D50009E3A6 /* SuperpoweredUSBAudio.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SuperpoweredUSBAudio.h; sourceTree = "<group>"; };
+		BBE3C6D01FC515D50009E3A6 /* SuperpoweredAndroidAudioIO.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SuperpoweredAndroidAudioIO.cpp; sourceTree = "<group>"; };
+		BBE3C6D21FC515EF0009E3A6 /* LinuxAudioEngineHelper.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = LinuxAudioEngineHelper.cpp; sourceTree = "<group>"; };
+		BBE3C6D31FC515EF0009E3A6 /* LinuxAudioEngineHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LinuxAudioEngineHelper.h; sourceTree = "<group>"; };
 		BBF226B01EC12CDE00573356 /* ReplicationManagerClient.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ReplicationManagerClient.cpp; sourceTree = "<group>"; };
 		BBF226B11EC12CDE00573356 /* ReplicationManagerClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReplicationManagerClient.h; sourceTree = "<group>"; };
 		BBFA49DB1FC367AF00233514 /* GlfwMain.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GlfwMain.h; sourceTree = "<group>"; };
@@ -2111,6 +2116,7 @@
 		BB5A00F01FB35CA7005FBD52 /* Superpowered */ = {
 			isa = PBXGroup;
 			children = (
+				BBE3C6CD1FC515D50009E3A6 /* AndroidIO */,
 				BB5A0A5F1FB35D03005FBD52 /* libSuperpoweredAudioIOS.a */,
 				BB95CD841FC4FEC900FEF667 /* libSuperpoweredAudioOSX.a */,
 				BB5A0A7C1FB35D06005FBD52 /* Superpowered3BandEQ.h */,
@@ -2672,6 +2678,7 @@
 			children = (
 				BB9579391F10111F00E89DE9 /* android */,
 				BB95793C1F10111F00E89DE9 /* apple */,
+				BBE3C6D11FC515EF0009E3A6 /* linux */,
 				BB9579411F10111F00E89DE9 /* portable */,
 			);
 			path = superpowered;
@@ -3028,6 +3035,25 @@
 				BBD3E8641FB2872A00328E35 /* ViewController.mm */,
 			);
 			path = ios;
+			sourceTree = "<group>";
+		};
+		BBE3C6CD1FC515D50009E3A6 /* AndroidIO */ = {
+			isa = PBXGroup;
+			children = (
+				BBE3C6D01FC515D50009E3A6 /* SuperpoweredAndroidAudioIO.cpp */,
+				BBE3C6CE1FC515D50009E3A6 /* SuperpoweredAndroidAudioIO.h */,
+				BBE3C6CF1FC515D50009E3A6 /* SuperpoweredUSBAudio.h */,
+			);
+			path = AndroidIO;
+			sourceTree = "<group>";
+		};
+		BBE3C6D11FC515EF0009E3A6 /* linux */ = {
+			isa = PBXGroup;
+			children = (
+				BBE3C6D21FC515EF0009E3A6 /* LinuxAudioEngineHelper.cpp */,
+				BBE3C6D31FC515EF0009E3A6 /* LinuxAudioEngineHelper.h */,
+			);
+			path = linux;
 			sourceTree = "<group>";
 		};
 		BBF2251E1EC120AD00573356 /* network */ = {
