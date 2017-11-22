@@ -92,8 +92,7 @@ void MainEngine::releaseDeviceDependentResources()
 {
     Engine::releaseDeviceDependentResources();
     
-    NG_AUDIO_ENGINE->resetSounds();
-    NG_AUDIO_ENGINE->resetMusic();
+    NG_AUDIO_ENGINE->reset();
 }
 
 void MainEngine::update(float deltaTime)

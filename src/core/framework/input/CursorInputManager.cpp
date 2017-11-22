@@ -13,7 +13,7 @@
 #include "framework/input/CursorEvent.h"
 
 #define MAX_DRAGGED_EVENTS_PER_FRAME 3
-#define POOL_SIZE 256
+#define POOL_SIZE 4096
 
 CursorInputManager* CursorInputManager::getInstance()
 {

@@ -633,6 +633,7 @@
 		BB07A78A1FC60F4900AE5051 /* XOREncryptDecryptLinux */ = {isa = PBXFileReference; lastKnownFileType = file; path = XOREncryptDecryptLinux; sourceTree = "<group>"; };
 		BB07A78B1FC60F7900AE5051 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../../../README.md; sourceTree = "<group>"; };
 		BB07A78C1FC60FD900AE5051 /* vulkan.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = vulkan.c; sourceTree = "<group>"; };
+		BB07A78E1FC61AD700AE5051 /* StepTimer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StepTimer.h; sourceTree = "<group>"; };
 		BB0864721EE20CCA00BCD9E0 /* EntityRegistry.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EntityRegistry.cpp; sourceTree = "<group>"; };
 		BB0864731EE20CCA00BCD9E0 /* EntityRegistry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EntityRegistry.h; sourceTree = "<group>"; };
 		BB125E0D1EFAF61F00917328 /* texture_003.ngt */ = {isa = PBXFileReference; lastKnownFileType = text; path = texture_003.ngt; sourceTree = "<group>"; };
@@ -948,7 +949,6 @@
 		BB5833C81EEDD6580084DA20 /* DirectXSound.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DirectXSound.h; sourceTree = "<group>"; };
 		BB5833C91EEDD6580084DA20 /* DirectXSoundWrapper.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = DirectXSoundWrapper.cpp; sourceTree = "<group>"; };
 		BB5833CA1EEDD6580084DA20 /* DirectXSoundWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DirectXSoundWrapper.h; sourceTree = "<group>"; };
-		BB5833CB1EEDD7790084DA20 /* StepTimer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StepTimer.h; sourceTree = "<group>"; };
 		BB5833CC1EEDDA330084DA20 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		BB5833CE1EEDDAFC0084DA20 /* Renderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Renderer.cpp; sourceTree = "<group>"; };
 		BB5833CF1EEDDAFC0084DA20 /* Renderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Renderer.h; sourceTree = "<group>"; };
@@ -2615,7 +2615,6 @@
 				BB74283E1EB2AF4200B7628D /* RTTI.h */,
 				BBCB93171FC2295B0020703A /* State.h */,
 				BBCB93181FC2295C0020703A /* StateMachine.h */,
-				BB5833CB1EEDD7790084DA20 /* StepTimer.h */,
 				BBBD148E1EE06858003F9307 /* StringUtil.cpp */,
 				BB74283F1EB2AF4200B7628D /* StringUtil.h */,
 				BBBD14921EE06BB3003F9307 /* Timing.cpp */,
@@ -3120,6 +3119,7 @@
 			children = (
 				BBFA49DE1FC367AF00233514 /* DirectXMain.cpp */,
 				BBFA49DF1FC367AF00233514 /* DirectXMain.h */,
+				BB07A78E1FC61AD700AE5051 /* StepTimer.h */,
 			);
 			path = directx;
 			sourceTree = "<group>";

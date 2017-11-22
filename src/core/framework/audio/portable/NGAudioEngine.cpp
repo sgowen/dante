@@ -191,11 +191,6 @@ void NGAudioEngine::resumeAllSounds()
     }
 }
 
-void NGAudioEngine::resetSounds()
-{
-    NGSTDUtil::cleanUpMapOfPointers(_sounds);
-}
-
 void NGAudioEngine::loadMusic(const char *path)
 {
     if (_isMusicDisabled)
@@ -281,14 +276,6 @@ void NGAudioEngine::resumeMusic()
     }
 }
 
-void NGAudioEngine::resetMusic()
-{
-    if (_music)
-    {
-        delete _music;
-    }
-}
-
 bool NGAudioEngine::isMusicPlaying()
 {
     if (_music)
@@ -333,6 +320,16 @@ void NGAudioEngine::setSoundDisabled(bool isSoundDisabled)
     _isSoundDisabled = isSoundDisabled;
 }
 
+void NGAudioEngine::reset()
+{
+    NGSTDUtil::cleanUpMapOfPointers(_sounds);
+    
+    if (_music)
+    {
+        delete _music;
+    }
+}
+
 SoundWrapper* NGAudioEngine::findSound(int soundId)
 {
     auto q = _sounds.find(soundId);
@@ -356,7 +353,5 @@ _isSoundDisabled(false)
 
 NGAudioEngine::~NGAudioEngine()
 {
-    resetSounds();
-    
-    resetMusic();
+    reset();
 }

@@ -9,6 +9,10 @@
 #ifndef __noctisgames__Timing__
 #define __noctisgames__Timing__
 
+#ifndef _WIN32
+#include <chrono>
+#endif
+
 class Timing
 {
 public:
@@ -25,9 +29,15 @@ public:
     float getFrameStartTime() const;
     
 private:
+#ifdef _WIN32
+    LARGE_INTEGER _startTime = { 0 };
+#else
+    std::chrono::steady_clock::time_point _startTime;
+#endif
+    
     double _lastFrameStartTime;
     double _perfCountDuration;
-    float _frameStartTimef;
+    float _frameStartTime;
     float _deltaTime;
     
     float getTime() const;

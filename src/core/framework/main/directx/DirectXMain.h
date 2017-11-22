@@ -9,7 +9,7 @@
 #pragma once
 
 #include "framework/graphics/directx/DirectXDeviceResources.h"
-#include "framework/util/StepTimer.h"
+#include "framework/main/directx/StepTimer.h"
 
 #include "Keyboard.h"
 #include "Mouse.h"

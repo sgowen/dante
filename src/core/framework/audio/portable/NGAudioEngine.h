@@ -43,8 +43,6 @@ public:
     
     void resumeAllSounds();
     
-    void resetSounds();
-    
     void loadMusic(const char *path);
     
     void playMusic(bool isLooping = true, float inVolume = 1.0f);
@@ -57,8 +55,6 @@ public:
     
     void resumeMusic();
     
-    void resetMusic();
-    
     bool isMusicPlaying();
     
     bool isMusicLoaded();
@@ -70,6 +66,8 @@ public:
     bool isSoundDisabled();
     
     void setSoundDisabled(bool isSoundDisabled);
+    
+    void reset();
     
 private:
     std::map<int, SoundWrapper*> _sounds;

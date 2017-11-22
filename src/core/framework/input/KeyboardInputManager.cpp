@@ -13,7 +13,7 @@
 #include "framework/input/KeyboardEvent.h"
 #include "framework/input/KeyboardLookup.h"
 
-#define POOL_SIZE 1024
+#define POOL_SIZE 4096
 
 KeyboardInputManager* KeyboardInputManager::getInstance()
 {

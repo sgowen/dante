@@ -14,7 +14,7 @@
 
 #include "framework/util/FrameworkConstants.h"
 
-#define POOL_SIZE 8192
+#define POOL_SIZE 16384
 
 GamePadInputManager* GamePadInputManager::getInstance()
 {

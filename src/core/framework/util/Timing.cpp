@@ -10,20 +10,6 @@
 
 #include "framework/util/Timing.h"
 
-#if !_WIN32
-#include <chrono>
-using namespace std::chrono;
-#endif
-
-namespace
-{
-#if _WIN32
-    LARGE_INTEGER sStartTime = { 0 };
-#else
-    steady_clock::time_point sStartTime;
-#endif
-}
-
 Timing* Timing::getInstance()
 {
     static Timing instance = Timing();
@@ -37,7 +23,7 @@ void Timing::update()
     _deltaTime = (float) (currentTime - _lastFrameStartTime);
     
     _lastFrameStartTime = currentTime;
-    _frameStartTimef = static_cast<float> (_lastFrameStartTime);
+    _frameStartTime = static_cast<float> (_lastFrameStartTime);
 }
 
 void Timing::updateManual(float stateTime, float deltaTime)
@@ -45,7 +31,7 @@ void Timing::updateManual(float stateTime, float deltaTime)
     _deltaTime = deltaTime;
     
     _lastFrameStartTime = stateTime;
-    _frameStartTimef = stateTime;
+    _frameStartTime = stateTime;
 }
 
 void Timing::setDeltaTime(float inDeltaTime)
@@ -60,21 +46,21 @@ float Timing::getDeltaTime() const
 
 float Timing::getFrameStartTime() const
 {
-    return _frameStartTimef;
+    return _frameStartTime;
 }
 
 float Timing::getTime() const
 {
-#if _WIN32
+#ifdef _WIN32
     LARGE_INTEGER curTime, timeSinceStart;
     QueryPerformanceCounter(&curTime);
     
-    timeSinceStart.QuadPart = curTime.QuadPart - sStartTime.QuadPart;
+    timeSinceStart.QuadPart = curTime.QuadPart - _startTime.QuadPart;
     
     return timeSinceStart.QuadPart * _perfCountDuration;
 #else
-    auto now = steady_clock::now();
-    auto ms = duration_cast< milliseconds >(now - sStartTime).count();
+    auto now = std::chrono::steady_clock::now();
+    auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(now - _startTime).count();
     
     return static_cast<float>(ms) / 1000;
 #endif
@@ -82,18 +68,18 @@ float Timing::getTime() const
 
 Timing::Timing()
 {
-#if _WIN32
+#ifdef _WIN32
     LARGE_INTEGER perfFreq;
     QueryPerformanceFrequency(&perfFreq);
     _perfCountDuration = 1.0 / perfFreq.QuadPart;
     
-    QueryPerformanceCounter(&sStartTime);
+    QueryPerformanceCounter(&_startTime);
 #else
-    sStartTime = steady_clock::now();
+    _startTime = std::chrono::steady_clock::now();
 #endif
     
     _lastFrameStartTime = getTime();
-    _frameStartTimef = static_cast<float> (_lastFrameStartTime);
+    _frameStartTime = static_cast<float> (_lastFrameStartTime);
 }
 
 Timing::~Timing()
