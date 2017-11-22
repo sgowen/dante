@@ -14,7 +14,7 @@
 
 #include <SuperpoweredSimple.h>
 
-#import <stdlib.h>
+#include <stdlib.h>
 
 SuperpoweredSoundManager::SuperpoweredSoundManager(unsigned int sampleRate, unsigned int bufferSize) :
 _activeSounds(),
@@ -24,13 +24,13 @@ _soundIndex(1)
     for (int i = 0; i < MAX_NUM_SOUND_PLAYERS; ++i)
     {
         float* stereoBuffer;
-#if defined __APPLE__
+#if defined __APPLE__ || defined __linux__
         if (posix_memalign((void **)&stereoBuffer, 16, 4096 + 128) != 0) abort(); // Allocating memory, aligned to 16.
 #elif defined __ANDROID__
         stereoBuffer = (float *)memalign(16, (bufferSize + 16) * sizeof(float) * 2);
 #endif
         _stereoBuffers.push_back(stereoBuffer);
-        
+
         _activeSounds[i] = NULL;
     }
 }
@@ -49,10 +49,10 @@ void SuperpoweredSoundManager::onSoundPlayed(SuperpoweredSound* sound)
     {
         // This is music
         _activeSounds[0] = sound;
-        
+
         return;
     }
-    
+
     for (int j = 1; j < MAX_NUM_SOUND_PLAYERS; ++j)
     {
         if (_activeSounds[j] == sound)
@@ -60,7 +60,7 @@ void SuperpoweredSoundManager::onSoundPlayed(SuperpoweredSound* sound)
             return;
         }
     }
-    
+
     int count = 0;
     bool isGoodToBreak = false;
     while (true)
@@ -69,16 +69,16 @@ void SuperpoweredSoundManager::onSoundPlayed(SuperpoweredSound* sound)
             || !_activeSounds[_soundIndex]->isPlaying())
         {
             _activeSounds[_soundIndex] = sound;
-            
+
             isGoodToBreak = true;
         }
-        
+
         _soundIndex++;
         if (_soundIndex >= MAX_NUM_SOUND_PLAYERS)
         {
             _soundIndex = 1;
         }
-        
+
         count++;
         if (isGoodToBreak
             || count >= (MAX_NUM_SOUND_PLAYERS - 1))
@@ -94,16 +94,16 @@ void SuperpoweredSoundManager::onSoundStopped(SuperpoweredSound* sound)
     {
         // This is music
         _activeSounds[0] = NULL;
-        
+
         return;
     }
-    
+
     for (int j = 1; j < MAX_NUM_SOUND_PLAYERS; ++j)
     {
         if (_activeSounds[j] == sound)
         {
             _activeSounds[j] = NULL;
-            
+
             return;
         }
     }

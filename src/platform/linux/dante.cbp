@@ -52,6 +52,7 @@
 			<Add directory="../linux" />
 			<Add directory="/usr/include/" />
 			<Add directory="../../3rdparty/steamworks_sdk/public" />
+			<Add directory="../../3rdparty/Low-Latency-Android-Audio-iOS-Audio-Engine/Superpowered" />
 		</Compiler>
 		<Linker>
 			<Add library="GL" />
@@ -63,6 +64,7 @@
 			<Add library="GLEW" />
 			<Add library="GLU" />
 			<Add library="../../3rdparty/steamworks_sdk/redistributable_bin/linux64/libsteam_api.so" />
+			<Add library="../../3rdparty/Low-Latency-Android-Audio-iOS-Audio-Engine/Superpowered/libSuperpoweredLinuxX86_64.a" />
 		</Linker>
 		<ExtraCommands>
 			<Add before="#!/bin/bash" />
@@ -173,6 +175,34 @@
 		<Unit filename="../../3rdparty/Box2D/Box2D/Box2D/Dynamics/b2WorldCallbacks.h" />
 		<Unit filename="../../3rdparty/Box2D/Box2D/Box2D/Rope/b2Rope.cpp" />
 		<Unit filename="../../3rdparty/Box2D/Box2D/Box2D/Rope/b2Rope.h" />
+		<Unit filename="../../3rdparty/Low-Latency-Android-Audio-iOS-Audio-Engine/Superpowered/Superpowered3BandEQ.h" />
+		<Unit filename="../../3rdparty/Low-Latency-Android-Audio-iOS-Audio-Engine/Superpowered/SuperpoweredAdvancedAudioPlayer.h" />
+		<Unit filename="../../3rdparty/Low-Latency-Android-Audio-iOS-Audio-Engine/Superpowered/SuperpoweredAnalyzer.h" />
+		<Unit filename="../../3rdparty/Low-Latency-Android-Audio-iOS-Audio-Engine/Superpowered/SuperpoweredAudioBuffers.h" />
+		<Unit filename="../../3rdparty/Low-Latency-Android-Audio-iOS-Audio-Engine/Superpowered/SuperpoweredBandpassFilterbank.h" />
+		<Unit filename="../../3rdparty/Low-Latency-Android-Audio-iOS-Audio-Engine/Superpowered/SuperpoweredCPU.h" />
+		<Unit filename="../../3rdparty/Low-Latency-Android-Audio-iOS-Audio-Engine/Superpowered/SuperpoweredClipper.h" />
+		<Unit filename="../../3rdparty/Low-Latency-Android-Audio-iOS-Audio-Engine/Superpowered/SuperpoweredCompressor.h" />
+		<Unit filename="../../3rdparty/Low-Latency-Android-Audio-iOS-Audio-Engine/Superpowered/SuperpoweredDecoder.h" />
+		<Unit filename="../../3rdparty/Low-Latency-Android-Audio-iOS-Audio-Engine/Superpowered/SuperpoweredEcho.h" />
+		<Unit filename="../../3rdparty/Low-Latency-Android-Audio-iOS-Audio-Engine/Superpowered/SuperpoweredFFT.h" />
+		<Unit filename="../../3rdparty/Low-Latency-Android-Audio-iOS-Audio-Engine/Superpowered/SuperpoweredFX.h" />
+		<Unit filename="../../3rdparty/Low-Latency-Android-Audio-iOS-Audio-Engine/Superpowered/SuperpoweredFilter.h" />
+		<Unit filename="../../3rdparty/Low-Latency-Android-Audio-iOS-Audio-Engine/Superpowered/SuperpoweredFlanger.h" />
+		<Unit filename="../../3rdparty/Low-Latency-Android-Audio-iOS-Audio-Engine/Superpowered/SuperpoweredFrequencyDomain.h" />
+		<Unit filename="../../3rdparty/Low-Latency-Android-Audio-iOS-Audio-Engine/Superpowered/SuperpoweredGate.h" />
+		<Unit filename="../../3rdparty/Low-Latency-Android-Audio-iOS-Audio-Engine/Superpowered/SuperpoweredLimiter.h" />
+		<Unit filename="../../3rdparty/Low-Latency-Android-Audio-iOS-Audio-Engine/Superpowered/SuperpoweredMixer.h" />
+		<Unit filename="../../3rdparty/Low-Latency-Android-Audio-iOS-Audio-Engine/Superpowered/SuperpoweredNBandEQ.cpp" />
+		<Unit filename="../../3rdparty/Low-Latency-Android-Audio-iOS-Audio-Engine/Superpowered/SuperpoweredNBandEQ.h" />
+		<Unit filename="../../3rdparty/Low-Latency-Android-Audio-iOS-Audio-Engine/Superpowered/SuperpoweredRecorder.h" />
+		<Unit filename="../../3rdparty/Low-Latency-Android-Audio-iOS-Audio-Engine/Superpowered/SuperpoweredResampler.h" />
+		<Unit filename="../../3rdparty/Low-Latency-Android-Audio-iOS-Audio-Engine/Superpowered/SuperpoweredReverb.h" />
+		<Unit filename="../../3rdparty/Low-Latency-Android-Audio-iOS-Audio-Engine/Superpowered/SuperpoweredRoll.h" />
+		<Unit filename="../../3rdparty/Low-Latency-Android-Audio-iOS-Audio-Engine/Superpowered/SuperpoweredSimple.h" />
+		<Unit filename="../../3rdparty/Low-Latency-Android-Audio-iOS-Audio-Engine/Superpowered/SuperpoweredSpatializer.h" />
+		<Unit filename="../../3rdparty/Low-Latency-Android-Audio-iOS-Audio-Engine/Superpowered/SuperpoweredTimeStretching.h" />
+		<Unit filename="../../3rdparty/Low-Latency-Android-Audio-iOS-Audio-Engine/Superpowered/SuperpoweredWhoosh.h" />
 		<Unit filename="../../3rdparty/TinyThread/source/fast_mutex.h" />
 		<Unit filename="../../3rdparty/TinyThread/source/tinythread.cpp" />
 		<Unit filename="../../3rdparty/TinyThread/source/tinythread.h" />
@@ -464,10 +494,8 @@
 		<Unit filename="../../3rdparty/steamworks_sdk/public/steam/isteamvideo.h" />
 		<Unit filename="../../3rdparty/steamworks_sdk/public/steam/matchmakingtypes.h" />
 		<Unit filename="../../3rdparty/steamworks_sdk/public/steam/steam_api.h" />
-		<Unit filename="../../3rdparty/steamworks_sdk/public/steam/steam_api.json" />
 		<Unit filename="../../3rdparty/steamworks_sdk/public/steam/steam_api_flat.h" />
 		<Unit filename="../../3rdparty/steamworks_sdk/public/steam/steam_api_internal.h" />
-		<Unit filename="../../3rdparty/steamworks_sdk/public/steam/steam_api_interop.cs" />
 		<Unit filename="../../3rdparty/steamworks_sdk/public/steam/steam_gameserver.h" />
 		<Unit filename="../../3rdparty/steamworks_sdk/public/steam/steamclientpublic.h" />
 		<Unit filename="../../3rdparty/steamworks_sdk/public/steam/steamencryptedappticket.h" />
@@ -475,7 +503,6 @@
 		<Unit filename="../../3rdparty/steamworks_sdk/public/steam/steamps3params.h" />
 		<Unit filename="../../3rdparty/steamworks_sdk/public/steam/steamtypes.h" />
 		<Unit filename="../../3rdparty/steamworks_sdk/public/steam/steamuniverse.h" />
-		<Unit filename="../../3rdparty/steamworks_sdk/redistributable_bin/linux32/libsteam_api.so" />
 		<Unit filename="../../core/framework/audio/portable/AudioEngineHelper.cpp" />
 		<Unit filename="../../core/framework/audio/portable/AudioEngineHelper.h" />
 		<Unit filename="../../core/framework/audio/portable/AudioEngineHelperFactory.cpp" />
@@ -492,6 +519,14 @@
 		<Unit filename="../../core/framework/audio/portable/Sound.h" />
 		<Unit filename="../../core/framework/audio/portable/SoundWrapper.cpp" />
 		<Unit filename="../../core/framework/audio/portable/SoundWrapper.h" />
+		<Unit filename="../../core/framework/audio/superpowered/linux/LinuxAudioEngineHelper.cpp" />
+		<Unit filename="../../core/framework/audio/superpowered/linux/LinuxAudioEngineHelper.h" />
+		<Unit filename="../../core/framework/audio/superpowered/portable/SuperpoweredSound.cpp" />
+		<Unit filename="../../core/framework/audio/superpowered/portable/SuperpoweredSound.h" />
+		<Unit filename="../../core/framework/audio/superpowered/portable/SuperpoweredSoundManager.cpp" />
+		<Unit filename="../../core/framework/audio/superpowered/portable/SuperpoweredSoundManager.h" />
+		<Unit filename="../../core/framework/audio/superpowered/portable/SuperpoweredSoundWrapper.cpp" />
+		<Unit filename="../../core/framework/audio/superpowered/portable/SuperpoweredSoundWrapper.h" />
 		<Unit filename="../../core/framework/entity/Entity.cpp" />
 		<Unit filename="../../core/framework/entity/Entity.h" />
 		<Unit filename="../../core/framework/entity/EntityManager.cpp" />

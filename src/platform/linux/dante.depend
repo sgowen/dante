@@ -1331,11 +1331,12 @@
 
 1511226637 /home/sgowen/Documents/github/dante/src/core/framework/audio/portable/AudioEngineHelper.h
 
-1511287256 source:/home/sgowen/Documents/github/dante/src/core/framework/audio/portable/AudioEngineHelperFactory.cpp
+1511316931 source:/home/sgowen/Documents/github/dante/src/core/framework/audio/portable/AudioEngineHelperFactory.cpp
 	"pch.h"
 	"framework/audio/portable/AudioEngineHelperFactory.h"
-	"TargetConditionals.h"
+	"framework/audio/superpowered/apple/AppleAudioEngineHelper.h"
 	"framework/audio/superpowered/android/AndroidAudioEngineHelper.h"
+	"framework/audio/portable/NullAudioEngineHelper.h"
 	"framework/audio/directx/DirectXAudioEngineHelper.h"
 	"framework/audio/portable/NullAudioEngineHelper.h"
 	<assert.h>
@@ -1525,12 +1526,12 @@
 
 1511226637 /home/sgowen/Documents/github/dante/src/core/framework/entity/GridManager.h
 
-1511299901 source:/home/sgowen/Documents/github/dante/src/core/framework/file/portable/AssetDataHandler.cpp
+1511306609 source:/home/sgowen/Documents/github/dante/src/core/framework/file/portable/AssetDataHandler.cpp
 	"pch.h"
 	"framework/file/portable/AssetDataHandler.h"
 	"framework/file/apple/AppleAssetDataHandler.h"
-	"framework/file/linux/LinuxAssetDataHandler.h"
 	"framework/file/android/AndroidAssetDataHandler.h"
+	"framework/file/linux/LinuxAssetDataHandler.h"
 	"framework/file/windows/WindowsAssetDataHandler.h"
 	<assert.h>
 
@@ -1733,15 +1734,15 @@
 	"framework/graphics/portable/NGGraphics.h"
 	<vector>
 
-1511301609 /home/sgowen/Documents/github/dante/src/core/framework/graphics/portable/NGGraphics.h
+1511306609 /home/sgowen/Documents/github/dante/src/core/framework/graphics/portable/NGGraphics.h
 	"TargetConditionals.h"
 	<OpenGLES/ES2/gl.h>
 	<OpenGLES/ES2/glext.h>
 	<OpenGL/OpenGL.h>
 	<OpenGL/gl.h>
-	<GL/glew.h>
 	<GLES2/gl2.h>
 	<GLES2/gl2ext.h>
+	<GL/glew.h>
 	<d3d11_1.h>
 
 1511226637 /home/sgowen/Documents/github/dante/src/core/framework/graphics/portable/DummyGpuProgramWrapper.h
@@ -3414,7 +3415,7 @@
 
 1511226637 /home/sgowen/Documents/github/dante/src/core/framework/graphics/portable/NGRectBatcher.h
 
-1511302155 source:/home/sgowen/Documents/github/dante/src/core/framework/graphics/opengl/OpenGLProgram.cpp
+1511306609 source:/home/sgowen/Documents/github/dante/src/core/framework/graphics/opengl/OpenGLProgram.cpp
 	"framework/graphics/opengl/OpenGLProgram.h"
 	"framework/graphics/opengl/OpenGLManager.h"
 	"framework/file/portable/AssetDataHandler.h"
@@ -3465,7 +3466,7 @@
 	"framework/util/FrameworkConstants.h"
 	"framework/util/FrameworkConstants.h"
 
-1511302010 source:/home/sgowen/Documents/github/dante/src/core/framework/graphics/opengl/OpenGLTextureLoader.cpp
+1511306609 source:/home/sgowen/Documents/github/dante/src/core/framework/graphics/opengl/OpenGLTextureLoader.cpp
 	"framework/graphics/opengl/OpenGLTextureLoader.h"
 	"framework/graphics/portable/GpuTextureDataWrapper.h"
 	"framework/graphics/portable/GpuTextureWrapper.h"
@@ -4928,4 +4929,64 @@
 	"framework/util/Timing.h"
 	"framework/util/StringUtil.h"
 	"framework/network/portable/OutputMemoryBitStream.h"
+
+1510864850 source:/home/sgowen/Documents/github/dante/src/3rdparty/Low-Latency-Android-Audio-iOS-Audio-Engine/Superpowered/SuperpoweredNBandEQ.cpp
+	<SuperpoweredFilter.h>
+	<math.h>
+	"SuperpoweredNBandEQ.h"
+
+1510864850 /home/sgowen/Documents/github/dante/src/3rdparty/Low-Latency-Android-Audio-iOS-Audio-Engine/Superpowered/SuperpoweredFilter.h
+	"SuperpoweredFX.h"
+
+1510864850 /home/sgowen/Documents/github/dante/src/3rdparty/Low-Latency-Android-Audio-iOS-Audio-Engine/Superpowered/SuperpoweredFX.h
+
+1510864850 /home/sgowen/Documents/github/dante/src/3rdparty/Low-Latency-Android-Audio-iOS-Audio-Engine/Superpowered/SuperpoweredNBandEQ.h
+	"SuperpoweredFX.h"
+
+1511287209 /home/sgowen/Documents/github/dante/src/core/framework/audio/superpowered/apple/AppleAudioEngineHelper.h
+	"framework/audio/portable/AudioEngineHelper.h"
+
+1511316640 source:/home/sgowen/Documents/github/dante/src/core/framework/audio/superpowered/portable/SuperpoweredSound.cpp
+	"framework/audio/superpowered/portable/SuperpoweredSound.h"
+	"framework/audio/superpowered/portable/SuperpoweredSoundManager.h"
+	"SuperpoweredAdvancedAudioPlayer.h"
+	<SuperpoweredSimple.h>
+	<math.h>
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/framework/audio/superpowered/portable/SuperpoweredSound.h
+	"framework/audio/portable/Sound.h"
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/framework/audio/superpowered/portable/SuperpoweredSoundManager.h
+	<vector>
+
+1510864850 /home/sgowen/Documents/github/dante/src/3rdparty/Low-Latency-Android-Audio-iOS-Audio-Engine/Superpowered/SuperpoweredAdvancedAudioPlayer.h
+
+1510864850 /home/sgowen/Documents/github/dante/src/3rdparty/Low-Latency-Android-Audio-iOS-Audio-Engine/Superpowered/SuperpoweredSimple.h
+
+1511226637 source:/home/sgowen/Documents/github/dante/src/core/framework/audio/superpowered/portable/SuperpoweredSoundWrapper.cpp
+	"framework/audio/superpowered/portable/SuperpoweredSoundWrapper.h"
+	"framework/audio/superpowered/portable/SuperpoweredSoundManager.h"
+	"framework/audio/superpowered/portable/SuperpoweredSound.h"
+
+1511226637 /home/sgowen/Documents/github/dante/src/core/framework/audio/superpowered/portable/SuperpoweredSoundWrapper.h
+	"framework/audio/portable/SoundWrapper.h"
+	<vector>
+
+1511316661 source:/home/sgowen/Documents/github/dante/src/core/framework/audio/superpowered/portable/SuperpoweredSoundManager.cpp
+	"framework/audio/superpowered/portable/SuperpoweredSoundManager.h"
+	"framework/audio/superpowered/portable/SuperpoweredSound.h"
+	"framework/audio/superpowered/portable/SuperpoweredSoundWrapper.h"
+	"framework/util/NGSTDUtil.h"
+	<SuperpoweredSimple.h>
+	<stdlib.h>
+
+1511315958 /home/sgowen/Documents/github/dante/src/core/framework/audio/superpowered/linux/LinuxAudioEngineHelper.h
+	"framework/audio/portable/AudioEngineHelper.h"
+
+1511316550 source:/home/sgowen/Documents/github/dante/src/core/framework/audio/superpowered/linux/LinuxAudioEngineHelper.cpp
+	"framework/audio/superpowered/linux/LinuxAudioEngineHelper.h"
+	"framework/audio/portable/SoundWrapper.h"
+	"framework/audio/superpowered/portable/SuperpoweredSoundManager.h"
+	"framework/audio/superpowered/portable/SuperpoweredSoundWrapper.h"
+	<string>
 

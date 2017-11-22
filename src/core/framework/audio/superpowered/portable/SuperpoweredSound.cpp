@@ -19,7 +19,7 @@
 
 static const float headroom = powf(10.0f, -HEADROOM_DECIBEL * 0.025f);
 
-static void playerEventCallback(void *clientData, SuperpoweredAdvancedAudioPlayerEvent event, void * __unused value)
+static void playerEventCallback(void *clientData, SuperpoweredAdvancedAudioPlayerEvent event, void * value)
 {
     SuperpoweredSound *sps = (SuperpoweredSound *)clientData;
 
@@ -32,7 +32,7 @@ static void playerEventCallback(void *clientData, SuperpoweredAdvancedAudioPlaye
     {
         bool *pBoolValue = (bool *)value;
         *pBoolValue = !sps->isLooping();
-        
+
         if (!sps->isLooping())
         {
             sps->getManager()->onSoundStopped(sps);
@@ -48,7 +48,7 @@ _isLooping(false),
 _isPaused(false)
 {
     _player = new SuperpoweredAdvancedAudioPlayer(this, playerEventCallback, sampleRate, 0);
-    
+
     if (fileOffset > -1 && fileLength > -1)
     {
         _player->open(path, fileOffset, fileLength);
@@ -62,9 +62,9 @@ _isPaused(false)
 SuperpoweredSound::~SuperpoweredSound()
 {
     _player->pause();
-    
+
     _manager->onSoundStopped(this);
-    
+
     delete _player;
 }
 
@@ -72,11 +72,11 @@ void SuperpoweredSound::play(bool isLooping)
 {
     _isLooping = isLooping;
     _isPaused = false;
-    
+
     _player->seek(0);
-    
+
     _player->play(false);
-    
+
     _manager->onSoundPlayed(this);
 }
 
@@ -85,7 +85,7 @@ void SuperpoweredSound::resume()
     if (_isPaused)
     {
         _player->play(false);
-        
+
         _isPaused = false;
     }
 }
@@ -95,7 +95,7 @@ void SuperpoweredSound::pause()
     if (isPlaying())
     {
         _player->pause();
-        
+
         _isPaused = true;
     }
 }
@@ -104,11 +104,11 @@ void SuperpoweredSound::stop()
 {
     _isLooping = false;
     _isPaused = false;
-    
+
     _player->pause();
     _player->setFirstBeatMs(0);
     _player->setPosition(_player->firstBeatMs, false, false);
-    
+
     _manager->onSoundStopped(this);
 }
 
@@ -141,13 +141,13 @@ bool SuperpoweredSound::process(float *stereoBuffer, void *output, unsigned int 
         _lastSamplerate = sampleRate;
         _player->setSamplerate(sampleRate);
     }
-    
+
     bool ret = _player->process(stereoBuffer, false, numberOfSamples, _volume);
-    
+
     // The stereoBuffer is ready now, let's put the finished audio into the requested buffers.
     if (ret)
     {
-#if defined __APPLE__
+#if defined __APPLE__ || defined __linux__
         float **buffers = (float **)output;
         SuperpoweredDeInterleave(stereoBuffer, buffers[0], buffers[1], numberOfSamples); // The stereoBuffer is ready now, let's put the finished audio into the requested buffers.
 #elif defined __ANDROID__
@@ -155,7 +155,7 @@ bool SuperpoweredSound::process(float *stereoBuffer, void *output, unsigned int 
         SuperpoweredFloatToShortInt(stereoBuffer, realOutput, numberOfSamples);
 #endif
     }
-    
+
     return ret;
 }
 
