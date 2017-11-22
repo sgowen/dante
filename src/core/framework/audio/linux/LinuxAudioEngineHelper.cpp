@@ -6,12 +6,11 @@
 //  Copyright (c) 2017 Noctis Games. All rights reserved.
 //
 
-#include "framework/audio/superpowered/linux/LinuxAudioEngineHelper.h"
+#include "framework/audio/Linux/linux/LinuxAudioEngineHelper.h"
 
 #include "framework/audio/portable/SoundWrapper.h"
-#include "framework/audio/superpowered/portable/SuperpoweredSoundManager.h"
 
-#include "framework/audio/superpowered/portable/SuperpoweredSoundWrapper.h"
+#include "framework/audio/linux/LinuxSoundWrapper.h"
 
 #include <string>
 
@@ -44,7 +43,7 @@ SoundWrapper* LinuxAudioEngineHelper::loadSound(int soundId, const char *path, i
     s1 += s2;
     const char* finalPath = s1.c_str();
 
-    SuperpoweredSoundWrapper* sound = new SuperpoweredSoundWrapper(_superpoweredSoundManager, soundId, finalPath, _sampleRate, numInstances);
+    LinuxSoundWrapper* sound = new LinuxSoundWrapper(soundId, finalPath, numInstances);
 
     return sound;
 }
@@ -54,13 +53,12 @@ SoundWrapper* LinuxAudioEngineHelper::loadMusic(const char* path)
     return loadSound(1337, path);
 }
 
-LinuxAudioEngineHelper::LinuxAudioEngineHelper() : AudioEngineHelper(), _superpoweredSoundManager(NULL), _sampleRate(44100)
+LinuxAudioEngineHelper::LinuxAudioEngineHelper() : AudioEngineHelper()
 {
-    // Empty
+    alutInit(NULL, NULL);
 }
 
 LinuxAudioEngineHelper::~LinuxAudioEngineHelper()
 {
-    delete _superpoweredSoundManager;
-    _superpoweredSoundManager = NULL;
+    alutExit();
 }

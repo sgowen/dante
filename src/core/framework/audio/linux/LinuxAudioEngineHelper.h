@@ -11,8 +11,6 @@
 
 #include "framework/audio/portable/AudioEngineHelper.h"
 
-class SuperpoweredSoundManager;
-
 class LinuxAudioEngineHelper : public AudioEngineHelper
 {
 public:
@@ -29,9 +27,6 @@ public:
     virtual SoundWrapper* loadMusic(const char* path);
 
 private:
-    SuperpoweredSoundManager* _superpoweredSoundManager;
-    int _sampleRate;
-
     // ctor, copy ctor, and assignment should be private in a Singleton
     LinuxAudioEngineHelper();
     ~LinuxAudioEngineHelper();

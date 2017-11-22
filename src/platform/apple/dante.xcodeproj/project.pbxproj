@@ -624,6 +624,12 @@
 		BB052CD51EBA8AE9007FA789 /* shader_002_vert.vsh */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = shader_002_vert.vsh; sourceTree = "<group>"; };
 		BB052CD61EBA8AE9007FA789 /* shader_003_frag.fsh */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = shader_003_frag.fsh; sourceTree = "<group>"; };
 		BB052CD71EBA8AE9007FA789 /* shader_003_vert.vsh */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = shader_003_vert.vsh; sourceTree = "<group>"; };
+		BB07A50E1FC5F0BA00AE5051 /* LinuxAudioEngineHelper.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = LinuxAudioEngineHelper.cpp; sourceTree = "<group>"; };
+		BB07A50F1FC5F0BA00AE5051 /* LinuxAudioEngineHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LinuxAudioEngineHelper.h; sourceTree = "<group>"; };
+		BB07A5101FC5F11D00AE5051 /* LinuxSound.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LinuxSound.h; sourceTree = "<group>"; };
+		BB07A5111FC5F11D00AE5051 /* LinuxSoundWrapper.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = LinuxSoundWrapper.cpp; sourceTree = "<group>"; };
+		BB07A5121FC5F11D00AE5051 /* LinuxSoundWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LinuxSoundWrapper.h; sourceTree = "<group>"; };
+		BB07A5131FC5F11D00AE5051 /* LinuxSound.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = LinuxSound.cpp; sourceTree = "<group>"; };
 		BB0864721EE20CCA00BCD9E0 /* EntityRegistry.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EntityRegistry.cpp; sourceTree = "<group>"; };
 		BB0864731EE20CCA00BCD9E0 /* EntityRegistry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EntityRegistry.h; sourceTree = "<group>"; };
 		BB125E0D1EFAF61F00917328 /* texture_003.ngt */ = {isa = PBXFileReference; lastKnownFileType = text; path = texture_003.ngt; sourceTree = "<group>"; };
@@ -1433,8 +1439,6 @@
 		BBE3C6CE1FC515D50009E3A6 /* SuperpoweredAndroidAudioIO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SuperpoweredAndroidAudioIO.h; sourceTree = "<group>"; };
 		BBE3C6CF1FC515D50009E3A6 /* SuperpoweredUSBAudio.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SuperpoweredUSBAudio.h; sourceTree = "<group>"; };
 		BBE3C6D01FC515D50009E3A6 /* SuperpoweredAndroidAudioIO.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SuperpoweredAndroidAudioIO.cpp; sourceTree = "<group>"; };
-		BBE3C6D21FC515EF0009E3A6 /* LinuxAudioEngineHelper.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = LinuxAudioEngineHelper.cpp; sourceTree = "<group>"; };
-		BBE3C6D31FC515EF0009E3A6 /* LinuxAudioEngineHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LinuxAudioEngineHelper.h; sourceTree = "<group>"; };
 		BBF226B01EC12CDE00573356 /* ReplicationManagerClient.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ReplicationManagerClient.cpp; sourceTree = "<group>"; };
 		BBF226B11EC12CDE00573356 /* ReplicationManagerClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReplicationManagerClient.h; sourceTree = "<group>"; };
 		BBFA49DB1FC367AF00233514 /* GlfwMain.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GlfwMain.h; sourceTree = "<group>"; };
@@ -1533,6 +1537,19 @@
 				BB04A6C01FC383A800E0EB89 /* IOSMain.mm */,
 			);
 			path = ios;
+			sourceTree = "<group>";
+		};
+		BB07A50D1FC5F0BA00AE5051 /* linux */ = {
+			isa = PBXGroup;
+			children = (
+				BB07A50E1FC5F0BA00AE5051 /* LinuxAudioEngineHelper.cpp */,
+				BB07A50F1FC5F0BA00AE5051 /* LinuxAudioEngineHelper.h */,
+				BB07A5131FC5F11D00AE5051 /* LinuxSound.cpp */,
+				BB07A5101FC5F11D00AE5051 /* LinuxSound.h */,
+				BB07A5111FC5F11D00AE5051 /* LinuxSoundWrapper.cpp */,
+				BB07A5121FC5F11D00AE5051 /* LinuxSoundWrapper.h */,
+			);
+			path = linux;
 			sourceTree = "<group>";
 		};
 		BB190DA31FAB910900BDC6D0 /* rapidjson */ = {
@@ -2678,7 +2695,6 @@
 			children = (
 				BB9579391F10111F00E89DE9 /* android */,
 				BB95793C1F10111F00E89DE9 /* apple */,
-				BBE3C6D11FC515EF0009E3A6 /* linux */,
 				BB9579411F10111F00E89DE9 /* portable */,
 			);
 			path = superpowered;
@@ -2957,6 +2973,7 @@
 			isa = PBXGroup;
 			children = (
 				BB5833B81EEDD6580084DA20 /* directx */,
+				BB07A50D1FC5F0BA00AE5051 /* linux */,
 				BBAEF18D1EA94ED900F0866E /* portable */,
 				BB9579381F10111F00E89DE9 /* superpowered */,
 			);
@@ -3045,15 +3062,6 @@
 				BBE3C6CF1FC515D50009E3A6 /* SuperpoweredUSBAudio.h */,
 			);
 			path = AndroidIO;
-			sourceTree = "<group>";
-		};
-		BBE3C6D11FC515EF0009E3A6 /* linux */ = {
-			isa = PBXGroup;
-			children = (
-				BBE3C6D21FC515EF0009E3A6 /* LinuxAudioEngineHelper.cpp */,
-				BBE3C6D31FC515EF0009E3A6 /* LinuxAudioEngineHelper.h */,
-			);
-			path = linux;
 			sourceTree = "<group>";
 		};
 		BBF2251E1EC120AD00573356 /* network */ = {

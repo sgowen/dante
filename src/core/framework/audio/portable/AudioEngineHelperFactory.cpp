@@ -15,8 +15,7 @@
 #elif defined __ANDROID__
     #include "framework/audio/superpowered/android/AndroidAudioEngineHelper.h"
 #elif defined __linux__
-    //#include "framework/audio/superpowered/linux/LinuxAudioEngineHelper.h"
-    #include "framework/audio/portable/NullAudioEngineHelper.h"
+    #include "framework/audio/linux/LinuxAudioEngineHelper.h"
 #elif defined _WIN32
     #include "framework/audio/directx/DirectXAudioEngineHelper.h"
 #else
@@ -38,8 +37,7 @@ AudioEngineHelper* AudioEngineHelperFactory::createAudioEngineHelper()
 #elif defined __ANDROID__
     return AndroidAudioEngineHelper::getInstance();
 #elif defined __linux__
-    return NullAudioEngineHelper::getInstance();
-    //return LinuxAudioEngineHelper::getInstance();
+    return LinuxAudioEngineHelper::getInstance();
 #elif defined _WIN32
 	return DirectXAudioEngineHelper::getInstance();
 #else
