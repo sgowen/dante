@@ -13,11 +13,6 @@
 
 #include <jni.h>
 
-#include <vector>
-
-class SuperpoweredSoundManager;
-class SuperpoweredAndroidAudioIO;
-
 class AndroidAudioEngineHelper : public AudioEngineHelper
 {
 public:
@@ -43,8 +38,6 @@ private:
     jstring _javaPackageResourcePath;
     const char* _packageResourcePath;
     jstring _packageName;
-    SuperpoweredSoundManager* _superpoweredSoundManager;
-    std::vector<SuperpoweredAndroidAudioIO*> _audioSystems;
     int _sampleRate;
     
     // ctor, copy ctor, and assignment should be private in a Singleton

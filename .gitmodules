@@ -13,9 +13,6 @@
 [submodule "src/3rdparty/Box2D"]
 	path = src/3rdparty/Box2D
 	url = https://github.com/NoctisGames/Box2D.git
-[submodule "src/3rdparty/Low-Latency-Android-Audio-iOS-Audio-Engine"]
-	path = src/3rdparty/Low-Latency-Android-Audio-iOS-Audio-Engine
-	url = https://github.com/superpoweredSDK/Low-Latency-Android-Audio-iOS-Audio-Engine.git
 [submodule "src/3rdparty/glfw"]
 	path = src/3rdparty/glfw
 	url = https://github.com/NoctisGames/glfw.git
@@ -25,3 +22,6 @@
 [submodule "src/3rdparty/DirectXTex"]
 	path = src/3rdparty/DirectXTex
 	url = https://github.com/NoctisGames/DirectXTex.git
+[submodule "src/3rdparty/ObjectAL-for-iPhone"]
+	path = src/3rdparty/ObjectAL-for-iPhone
+	url = https://github.com/NoctisGames/ObjectAL-for-iPhone.git

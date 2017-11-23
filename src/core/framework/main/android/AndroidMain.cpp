@@ -12,7 +12,7 @@
 
 #include "framework/input/CursorInputManager.h"
 #include "framework/input/KeyboardInputManager.h"
-#include "framework/audio/superpowered/android/AndroidAudioEngineHelper.h"
+#include "framework/audio/android/AndroidAudioEngineHelper.h"
 #include "framework/file/android/AndroidAssetDataHandler.h"
 #include "framework/graphics/opengl/OpenGLManager.h"
 #include "framework/util/FrameworkConstants.h"

@@ -11,9 +11,9 @@
 #include "framework/audio/portable/AudioEngineHelperFactory.h"
 
 #if defined __APPLE__
-    #include "framework/audio/superpowered/apple/AppleAudioEngineHelper.h"
+    #include "framework/audio/apple/AppleAudioEngineHelper.h"
 #elif defined __ANDROID__
-    #include "framework/audio/superpowered/android/AndroidAudioEngineHelper.h"
+    #include "framework/audio/android/AndroidAudioEngineHelper.h"
 #elif defined __linux__
     #include "framework/audio/linux/LinuxAudioEngineHelper.h"
 #elif defined _WIN32

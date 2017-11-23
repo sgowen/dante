@@ -2,7 +2,7 @@
 //  AppleAudioEngineHelper.h
 //  noctisgames-framework
 //
-//  Created by Stephen Gowen on 2/25/17.
+//  Created by Stephen Gowen on 7/7/17.
 //  Copyright (c) 2017 Noctis Games. All rights reserved.
 //
 
@@ -10,8 +10,6 @@
 #define __noctisgames__AppleAudioEngineHelper__
 
 #include "framework/audio/portable/AudioEngineHelper.h"
-
-class SuperpoweredSoundManager;
 
 class AppleAudioEngineHelper : public AudioEngineHelper
 {
@@ -29,9 +27,6 @@ public:
     virtual SoundWrapper* loadMusic(const char* path);
 
 private:
-    SuperpoweredSoundManager* _superpoweredSoundManager;
-    int _sampleRate;
-
     // ctor, copy ctor, and assignment should be private in a Singleton
     AppleAudioEngineHelper();
     virtual ~AppleAudioEngineHelper();

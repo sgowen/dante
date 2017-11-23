@@ -71,6 +71,64 @@
 		BB1E897B1EF4A81500B0D78A /* PacketHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB1E89791EF4A81500B0D78A /* PacketHandler.cpp */; };
 		BB1E89811EF4B2BA00B0D78A /* SocketPacketHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB1E897F1EF4B2BA00B0D78A /* SocketPacketHandler.cpp */; };
 		BB1E89841EF4B4F400B0D78A /* NGSteamPacketHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB1E89821EF4B4F400B0D78A /* NGSteamPacketHandler.cpp */; };
+		BB27D22E1FC6567A00ED42FD /* OALAudioTracks.m in Sources */ = {isa = PBXBuildFile; fileRef = BB27D1DE1FC655FF00ED42FD /* OALAudioTracks.m */; };
+		BB27D22F1FC6567A00ED42FD /* OALAudioTrack.m in Sources */ = {isa = PBXBuildFile; fileRef = BB27D1E01FC655FF00ED42FD /* OALAudioTrack.m */; };
+		BB27D2301FC6567A00ED42FD /* OALAudioTrackNotifications.m in Sources */ = {isa = PBXBuildFile; fileRef = BB27D1E21FC655FF00ED42FD /* OALAudioTrackNotifications.m */; };
+		BB27D2311FC6567A00ED42FD /* ALDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = BB27D1E51FC655FF00ED42FD /* ALDevice.m */; };
+		BB27D2321FC6567A00ED42FD /* ALListener.m in Sources */ = {isa = PBXBuildFile; fileRef = BB27D1EA1FC655FF00ED42FD /* ALListener.m */; };
+		BB27D2331FC6567A00ED42FD /* ALChannelSource.m in Sources */ = {isa = PBXBuildFile; fileRef = BB27D1EB1FC655FF00ED42FD /* ALChannelSource.m */; };
+		BB27D2341FC6567A00ED42FD /* OpenALManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BB27D1EE1FC655FF00ED42FD /* OpenALManager.m */; };
+		BB27D2351FC6567A00ED42FD /* ALSource.m in Sources */ = {isa = PBXBuildFile; fileRef = BB27D1EF1FC655FF00ED42FD /* ALSource.m */; };
+		BB27D2361FC6567A00ED42FD /* ALWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = BB27D1F01FC655FF00ED42FD /* ALWrapper.m */; };
+		BB27D2371FC6567A00ED42FD /* ALBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = BB27D1F31FC655FF00ED42FD /* ALBuffer.m */; };
+		BB27D2381FC6567A00ED42FD /* ALCaptureDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = BB27D1F51FC655FF00ED42FD /* ALCaptureDevice.m */; };
+		BB27D2391FC6567A00ED42FD /* ALContext.m in Sources */ = {isa = PBXBuildFile; fileRef = BB27D1F61FC655FF00ED42FD /* ALContext.m */; };
+		BB27D23A1FC6567A00ED42FD /* ALSoundSourcePool.m in Sources */ = {isa = PBXBuildFile; fileRef = BB27D1F71FC655FF00ED42FD /* ALSoundSourcePool.m */; };
+		BB27D23B1FC6567A00ED42FD /* OALSimpleAudio.m in Sources */ = {isa = PBXBuildFile; fileRef = BB27D1FB1FC655FF00ED42FD /* OALSimpleAudio.m */; };
+		BB27D23C1FC6567A00ED42FD /* OALAudioFile.m in Sources */ = {isa = PBXBuildFile; fileRef = BB27D1FD1FC655FF00ED42FD /* OALAudioFile.m */; };
+		BB27D23D1FC6567A00ED42FD /* NSMutableDictionary+WeakReferences.m in Sources */ = {isa = PBXBuildFile; fileRef = BB27D1FE1FC655FF00ED42FD /* NSMutableDictionary+WeakReferences.m */; };
+		BB27D23E1FC6567A00ED42FD /* NSMutableArray+WeakReferences.m in Sources */ = {isa = PBXBuildFile; fileRef = BB27D2011FC655FF00ED42FD /* NSMutableArray+WeakReferences.m */; };
+		BB27D23F1FC6567A00ED42FD /* OALTools.m in Sources */ = {isa = PBXBuildFile; fileRef = BB27D2081FC655FF00ED42FD /* OALTools.m */; };
+		BB27D2401FC6567A00ED42FD /* mach_timing.c in Sources */ = {isa = PBXBuildFile; fileRef = BB27D2091FC655FF00ED42FD /* mach_timing.c */; };
+		BB27D2411FC6567A00ED42FD /* OALActionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BB27D20E1FC655FF00ED42FD /* OALActionManager.m */; };
+		BB27D2421FC6567A00ED42FD /* OALAction.m in Sources */ = {isa = PBXBuildFile; fileRef = BB27D2101FC655FF00ED42FD /* OALAction.m */; };
+		BB27D2431FC6567A00ED42FD /* OALUtilityActions.m in Sources */ = {isa = PBXBuildFile; fileRef = BB27D2111FC655FF00ED42FD /* OALUtilityActions.m */; };
+		BB27D2441FC6567A00ED42FD /* OALAudioActions.m in Sources */ = {isa = PBXBuildFile; fileRef = BB27D2141FC655FF00ED42FD /* OALAudioActions.m */; };
+		BB27D2451FC6567A00ED42FD /* OALSuspendHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = BB27D21A1FC655FF00ED42FD /* OALSuspendHandler.m */; };
+		BB27D2461FC6567F00ED42FD /* OALAudioTracks.m in Sources */ = {isa = PBXBuildFile; fileRef = BB27D1DE1FC655FF00ED42FD /* OALAudioTracks.m */; };
+		BB27D2471FC6567F00ED42FD /* OALAudioTrack.m in Sources */ = {isa = PBXBuildFile; fileRef = BB27D1E01FC655FF00ED42FD /* OALAudioTrack.m */; };
+		BB27D2481FC6567F00ED42FD /* OALAudioTrackNotifications.m in Sources */ = {isa = PBXBuildFile; fileRef = BB27D1E21FC655FF00ED42FD /* OALAudioTrackNotifications.m */; };
+		BB27D2491FC6567F00ED42FD /* ALDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = BB27D1E51FC655FF00ED42FD /* ALDevice.m */; };
+		BB27D24A1FC6567F00ED42FD /* ALListener.m in Sources */ = {isa = PBXBuildFile; fileRef = BB27D1EA1FC655FF00ED42FD /* ALListener.m */; };
+		BB27D24B1FC6567F00ED42FD /* ALChannelSource.m in Sources */ = {isa = PBXBuildFile; fileRef = BB27D1EB1FC655FF00ED42FD /* ALChannelSource.m */; };
+		BB27D24C1FC6567F00ED42FD /* OpenALManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BB27D1EE1FC655FF00ED42FD /* OpenALManager.m */; };
+		BB27D24D1FC6567F00ED42FD /* ALSource.m in Sources */ = {isa = PBXBuildFile; fileRef = BB27D1EF1FC655FF00ED42FD /* ALSource.m */; };
+		BB27D24E1FC6567F00ED42FD /* ALWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = BB27D1F01FC655FF00ED42FD /* ALWrapper.m */; };
+		BB27D24F1FC6567F00ED42FD /* ALBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = BB27D1F31FC655FF00ED42FD /* ALBuffer.m */; };
+		BB27D2501FC6567F00ED42FD /* ALCaptureDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = BB27D1F51FC655FF00ED42FD /* ALCaptureDevice.m */; };
+		BB27D2511FC6567F00ED42FD /* ALContext.m in Sources */ = {isa = PBXBuildFile; fileRef = BB27D1F61FC655FF00ED42FD /* ALContext.m */; };
+		BB27D2521FC6567F00ED42FD /* ALSoundSourcePool.m in Sources */ = {isa = PBXBuildFile; fileRef = BB27D1F71FC655FF00ED42FD /* ALSoundSourcePool.m */; };
+		BB27D2531FC6567F00ED42FD /* OALSimpleAudio.m in Sources */ = {isa = PBXBuildFile; fileRef = BB27D1FB1FC655FF00ED42FD /* OALSimpleAudio.m */; };
+		BB27D2541FC6567F00ED42FD /* OALAudioFile.m in Sources */ = {isa = PBXBuildFile; fileRef = BB27D1FD1FC655FF00ED42FD /* OALAudioFile.m */; };
+		BB27D2551FC6567F00ED42FD /* NSMutableDictionary+WeakReferences.m in Sources */ = {isa = PBXBuildFile; fileRef = BB27D1FE1FC655FF00ED42FD /* NSMutableDictionary+WeakReferences.m */; };
+		BB27D2561FC6567F00ED42FD /* NSMutableArray+WeakReferences.m in Sources */ = {isa = PBXBuildFile; fileRef = BB27D2011FC655FF00ED42FD /* NSMutableArray+WeakReferences.m */; };
+		BB27D2571FC6567F00ED42FD /* OALTools.m in Sources */ = {isa = PBXBuildFile; fileRef = BB27D2081FC655FF00ED42FD /* OALTools.m */; };
+		BB27D2581FC6567F00ED42FD /* mach_timing.c in Sources */ = {isa = PBXBuildFile; fileRef = BB27D2091FC655FF00ED42FD /* mach_timing.c */; };
+		BB27D2591FC6567F00ED42FD /* OALActionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BB27D20E1FC655FF00ED42FD /* OALActionManager.m */; };
+		BB27D25A1FC6567F00ED42FD /* OALAction.m in Sources */ = {isa = PBXBuildFile; fileRef = BB27D2101FC655FF00ED42FD /* OALAction.m */; };
+		BB27D25B1FC6567F00ED42FD /* OALUtilityActions.m in Sources */ = {isa = PBXBuildFile; fileRef = BB27D2111FC655FF00ED42FD /* OALUtilityActions.m */; };
+		BB27D25C1FC6567F00ED42FD /* OALAudioActions.m in Sources */ = {isa = PBXBuildFile; fileRef = BB27D2141FC655FF00ED42FD /* OALAudioActions.m */; };
+		BB27D25D1FC6567F00ED42FD /* OALSuspendHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = BB27D21A1FC655FF00ED42FD /* OALSuspendHandler.m */; };
+		BB27D2671FC6572600ED42FD /* AppleSoundWrapper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB27D25F1FC6572600ED42FD /* AppleSoundWrapper.cpp */; };
+		BB27D2681FC6572600ED42FD /* AppleSoundWrapper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB27D25F1FC6572600ED42FD /* AppleSoundWrapper.cpp */; };
+		BB27D2691FC6572600ED42FD /* ObjectALWrapper.mm in Sources */ = {isa = PBXBuildFile; fileRef = BB27D2601FC6572600ED42FD /* ObjectALWrapper.mm */; };
+		BB27D26A1FC6572600ED42FD /* ObjectALWrapper.mm in Sources */ = {isa = PBXBuildFile; fileRef = BB27D2601FC6572600ED42FD /* ObjectALWrapper.mm */; };
+		BB27D26B1FC6572600ED42FD /* AppleAudioEngineHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB27D2611FC6572600ED42FD /* AppleAudioEngineHelper.cpp */; };
+		BB27D26C1FC6572600ED42FD /* AppleAudioEngineHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB27D2611FC6572600ED42FD /* AppleAudioEngineHelper.cpp */; };
+		BB27D26D1FC6572600ED42FD /* AppleSound.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB27D2641FC6572600ED42FD /* AppleSound.cpp */; };
+		BB27D26E1FC6572600ED42FD /* AppleSound.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB27D2641FC6572600ED42FD /* AppleSound.cpp */; };
+		BB27D2801FC6588B00ED42FD /* OALAudioSession.m in Sources */ = {isa = PBXBuildFile; fileRef = BB27D2191FC655FF00ED42FD /* OALAudioSession.m */; };
+		BB27D2811FC6596D00ED42FD /* OALAudioSession.m in Sources */ = {isa = PBXBuildFile; fileRef = BB27D2191FC655FF00ED42FD /* OALAudioSession.m */; };
 		BB2AC5471EFC56330012B990 /* sound_006.wav in Resources */ = {isa = PBXBuildFile; fileRef = BB2AC5461EFC56330012B990 /* sound_006.wav */; };
 		BB31B5A51FC205D5005F1C0A /* CursorEvent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB31B5941FC205CA005F1C0A /* CursorEvent.cpp */; };
 		BB31B5A61FC205D5005F1C0A /* CursorEvent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB31B5941FC205CA005F1C0A /* CursorEvent.cpp */; };
@@ -163,9 +221,6 @@
 		BB5833F01EEDDD330084DA20 /* sound_005.wav in Resources */ = {isa = PBXBuildFile; fileRef = BB5833E51EEDDD330084DA20 /* sound_005.wav */; };
 		BB5833F11EEDDD330084DA20 /* texture_001.ngt in Resources */ = {isa = PBXBuildFile; fileRef = BB5833E71EEDDD330084DA20 /* texture_001.ngt */; };
 		BB5833F31EEDDD330084DA20 /* texture_002.ngt in Resources */ = {isa = PBXBuildFile; fileRef = BB5833E91EEDDD330084DA20 /* texture_002.ngt */; };
-		BB5A0A7D1FB35D06005FBD52 /* libSuperpoweredAudioIOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BB5A0A5F1FB35D03005FBD52 /* libSuperpoweredAudioIOS.a */; };
-		BB5A0A7E1FB35D06005FBD52 /* SuperpoweredNBandEQ.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB5A0A6F1FB35D04005FBD52 /* SuperpoweredNBandEQ.cpp */; };
-		BB5A0A7F1FB35D06005FBD52 /* SuperpoweredIOSAudioIO.mm in Sources */ = {isa = PBXBuildFile; fileRef = BB5A0A751FB35D05005FBD52 /* SuperpoweredIOSAudioIO.mm */; };
 		BB5A0A8E1FB3627E005FBD52 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB5A0A8D1FB3627A005FBD52 /* AudioToolbox.framework */; };
 		BB5A0A901FB3628C005FBD52 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB5A0A8F1FB36289005FBD52 /* CoreMedia.framework */; };
 		BB5A0A921FB3629C005FBD52 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB5A0A911FB36297005FBD52 /* AVFoundation.framework */; };
@@ -253,11 +308,6 @@
 		BB5AFE1A1FB359EA005FBD52 /* StringUtil.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBBD148E1EE06858003F9307 /* StringUtil.cpp */; };
 		BB5AFE1B1FB359EA005FBD52 /* Timing.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBBD14921EE06BB3003F9307 /* Timing.cpp */; };
 		BB5AFE1C1FB359EA005FBD52 /* WeightedTimedMovingAverage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBBD14941EE06BB3003F9307 /* WeightedTimedMovingAverage.cpp */; };
-		BB5AFE1D1FB359F9005FBD52 /* apple_audio_engine_helper.mm in Sources */ = {isa = PBXBuildFile; fileRef = BB95793E1F10111F00E89DE9 /* apple_audio_engine_helper.mm */; };
-		BB5AFE1E1FB359F9005FBD52 /* AppleAudioEngineHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB95793F1F10111F00E89DE9 /* AppleAudioEngineHelper.cpp */; };
-		BB5AFE1F1FB35A01005FBD52 /* SuperpoweredSound.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB9579421F10111F00E89DE9 /* SuperpoweredSound.cpp */; };
-		BB5AFE201FB35A01005FBD52 /* SuperpoweredSoundManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB9579441F10111F00E89DE9 /* SuperpoweredSoundManager.cpp */; };
-		BB5AFE211FB35A01005FBD52 /* SuperpoweredSoundWrapper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB9579461F10111F00E89DE9 /* SuperpoweredSoundWrapper.cpp */; };
 		BB5AFE221FB35A0B005FBD52 /* AudioEngineHelperFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF18E1EA94ED900F0866E /* AudioEngineHelperFactory.cpp */; };
 		BB5AFE231FB35A0B005FBD52 /* AudioEngineHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF1901EA94ED900F0866E /* AudioEngineHelper.cpp */; };
 		BB5AFE241FB35A0B005FBD52 /* Sound.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF1921EA94ED900F0866E /* Sound.cpp */; };
@@ -491,13 +541,6 @@
 		BB8308711EC2AD1F00435E7E /* SocketAddressFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB83082E1EC2AD1F00435E7E /* SocketAddressFactory.cpp */; };
 		BB8308741EC2AD1F00435E7E /* SocketUtil.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8308301EC2AD1F00435E7E /* SocketUtil.cpp */; };
 		BB8308801EC2AD1F00435E7E /* UDPSocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8308391EC2AD1F00435E7E /* UDPSocket.cpp */; };
-		BB95CD851FC4FEC900FEF667 /* libSuperpoweredAudioOSX.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BB95CD841FC4FEC900FEF667 /* libSuperpoweredAudioOSX.a */; };
-		BB95CD881FC4FEE600FEF667 /* SuperpoweredOSXAudioIO.mm in Sources */ = {isa = PBXBuildFile; fileRef = BB95CD871FC4FEE600FEF667 /* SuperpoweredOSXAudioIO.mm */; };
-		BB95CD891FC4FFE400FEF667 /* apple_audio_engine_helper.mm in Sources */ = {isa = PBXBuildFile; fileRef = BB95793E1F10111F00E89DE9 /* apple_audio_engine_helper.mm */; };
-		BB95CD8A1FC4FFE400FEF667 /* AppleAudioEngineHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB95793F1F10111F00E89DE9 /* AppleAudioEngineHelper.cpp */; };
-		BB95CD8B1FC4FFE400FEF667 /* SuperpoweredSound.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB9579421F10111F00E89DE9 /* SuperpoweredSound.cpp */; };
-		BB95CD8C1FC4FFE400FEF667 /* SuperpoweredSoundManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB9579441F10111F00E89DE9 /* SuperpoweredSoundManager.cpp */; };
-		BB95CD8D1FC4FFE400FEF667 /* SuperpoweredSoundWrapper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB9579461F10111F00E89DE9 /* SuperpoweredSoundWrapper.cpp */; };
 		BB9EE50D1FC092BA000F5389 /* AssetDataHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB9EE50A1FC092BA000F5389 /* AssetDataHandler.cpp */; };
 		BB9EE50E1FC092BA000F5389 /* AssetDataHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB9EE50A1FC092BA000F5389 /* AssetDataHandler.cpp */; };
 		BB9EE5141FC092C5000F5389 /* apple_asset_data_handler.mm in Sources */ = {isa = PBXBuildFile; fileRef = BB9EE5101FC092C4000F5389 /* apple_asset_data_handler.mm */; };
@@ -813,6 +856,75 @@
 		BB1E89801EF4B2BA00B0D78A /* SocketPacketHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SocketPacketHandler.h; sourceTree = "<group>"; };
 		BB1E89821EF4B4F400B0D78A /* NGSteamPacketHandler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NGSteamPacketHandler.cpp; sourceTree = "<group>"; };
 		BB1E89831EF4B4F400B0D78A /* NGSteamPacketHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NGSteamPacketHandler.h; sourceTree = "<group>"; };
+		BB27D1DB1FC655FF00ED42FD /* OALSimpleAudio.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OALSimpleAudio.h; sourceTree = "<group>"; };
+		BB27D1DD1FC655FF00ED42FD /* OALAudioTrack.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OALAudioTrack.h; sourceTree = "<group>"; };
+		BB27D1DE1FC655FF00ED42FD /* OALAudioTracks.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OALAudioTracks.m; sourceTree = "<group>"; };
+		BB27D1DF1FC655FF00ED42FD /* OALAudioTrackNotifications.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OALAudioTrackNotifications.h; sourceTree = "<group>"; };
+		BB27D1E01FC655FF00ED42FD /* OALAudioTrack.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OALAudioTrack.m; sourceTree = "<group>"; };
+		BB27D1E11FC655FF00ED42FD /* OALAudioTracks.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OALAudioTracks.h; sourceTree = "<group>"; };
+		BB27D1E21FC655FF00ED42FD /* OALAudioTrackNotifications.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OALAudioTrackNotifications.m; sourceTree = "<group>"; };
+		BB27D1E31FC655FF00ED42FD /* ObjectALConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ObjectALConfig.h; sourceTree = "<group>"; };
+		BB27D1E51FC655FF00ED42FD /* ALDevice.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ALDevice.m; sourceTree = "<group>"; };
+		BB27D1E61FC655FF00ED42FD /* ALSoundSource.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ALSoundSource.h; sourceTree = "<group>"; };
+		BB27D1E71FC655FF00ED42FD /* ALWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ALWrapper.h; sourceTree = "<group>"; };
+		BB27D1E81FC655FF00ED42FD /* ALCaptureDevice.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ALCaptureDevice.h; sourceTree = "<group>"; };
+		BB27D1E91FC655FF00ED42FD /* ALBuffer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ALBuffer.h; sourceTree = "<group>"; };
+		BB27D1EA1FC655FF00ED42FD /* ALListener.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ALListener.m; sourceTree = "<group>"; };
+		BB27D1EB1FC655FF00ED42FD /* ALChannelSource.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ALChannelSource.m; sourceTree = "<group>"; };
+		BB27D1EC1FC655FF00ED42FD /* ALSoundSourcePool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ALSoundSourcePool.h; sourceTree = "<group>"; };
+		BB27D1ED1FC655FF00ED42FD /* ALContext.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ALContext.h; sourceTree = "<group>"; };
+		BB27D1EE1FC655FF00ED42FD /* OpenALManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OpenALManager.m; sourceTree = "<group>"; };
+		BB27D1EF1FC655FF00ED42FD /* ALSource.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ALSource.m; sourceTree = "<group>"; };
+		BB27D1F01FC655FF00ED42FD /* ALWrapper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ALWrapper.m; sourceTree = "<group>"; };
+		BB27D1F11FC655FF00ED42FD /* ALTypes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ALTypes.h; sourceTree = "<group>"; };
+		BB27D1F21FC655FF00ED42FD /* ALDevice.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ALDevice.h; sourceTree = "<group>"; };
+		BB27D1F31FC655FF00ED42FD /* ALBuffer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ALBuffer.m; sourceTree = "<group>"; };
+		BB27D1F41FC655FF00ED42FD /* ALListener.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ALListener.h; sourceTree = "<group>"; };
+		BB27D1F51FC655FF00ED42FD /* ALCaptureDevice.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ALCaptureDevice.m; sourceTree = "<group>"; };
+		BB27D1F61FC655FF00ED42FD /* ALContext.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ALContext.m; sourceTree = "<group>"; };
+		BB27D1F71FC655FF00ED42FD /* ALSoundSourcePool.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ALSoundSourcePool.m; sourceTree = "<group>"; };
+		BB27D1F81FC655FF00ED42FD /* ALChannelSource.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ALChannelSource.h; sourceTree = "<group>"; };
+		BB27D1F91FC655FF00ED42FD /* ALSource.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ALSource.h; sourceTree = "<group>"; };
+		BB27D1FA1FC655FF00ED42FD /* OpenALManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OpenALManager.h; sourceTree = "<group>"; };
+		BB27D1FB1FC655FF00ED42FD /* OALSimpleAudio.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OALSimpleAudio.m; sourceTree = "<group>"; };
+		BB27D1FD1FC655FF00ED42FD /* OALAudioFile.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OALAudioFile.m; sourceTree = "<group>"; };
+		BB27D1FE1FC655FF00ED42FD /* NSMutableDictionary+WeakReferences.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSMutableDictionary+WeakReferences.m"; sourceTree = "<group>"; };
+		BB27D1FF1FC655FF00ED42FD /* ARCSafe_MemMgmt.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARCSafe_MemMgmt.h; sourceTree = "<group>"; };
+		BB27D2001FC655FF00ED42FD /* OALTools.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OALTools.h; sourceTree = "<group>"; };
+		BB27D2011FC655FF00ED42FD /* NSMutableArray+WeakReferences.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSMutableArray+WeakReferences.m"; sourceTree = "<group>"; };
+		BB27D2021FC655FF00ED42FD /* mach_timing.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = mach_timing.h; sourceTree = "<group>"; };
+		BB27D2031FC655FF00ED42FD /* SynthesizeSingleton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SynthesizeSingleton.h; sourceTree = "<group>"; };
+		BB27D2041FC655FF00ED42FD /* NSMutableDictionary+WeakReferences.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSMutableDictionary+WeakReferences.h"; sourceTree = "<group>"; };
+		BB27D2051FC655FF00ED42FD /* OALAudioFile.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OALAudioFile.h; sourceTree = "<group>"; };
+		BB27D2061FC655FF00ED42FD /* ObjectALMacros.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ObjectALMacros.h; sourceTree = "<group>"; };
+		BB27D2071FC655FF00ED42FD /* OALNotifications.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OALNotifications.h; sourceTree = "<group>"; };
+		BB27D2081FC655FF00ED42FD /* OALTools.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OALTools.m; sourceTree = "<group>"; };
+		BB27D2091FC655FF00ED42FD /* mach_timing.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = mach_timing.c; sourceTree = "<group>"; };
+		BB27D20A1FC655FF00ED42FD /* NSMutableArray+WeakReferences.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSMutableArray+WeakReferences.h"; sourceTree = "<group>"; };
+		BB27D20B1FC655FF00ED42FD /* ObjectAL.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ObjectAL.h; sourceTree = "<group>"; };
+		BB27D20D1FC655FF00ED42FD /* OALUtilityActions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OALUtilityActions.h; sourceTree = "<group>"; };
+		BB27D20E1FC655FF00ED42FD /* OALActionManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OALActionManager.m; sourceTree = "<group>"; };
+		BB27D20F1FC655FF00ED42FD /* OALAudioActions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OALAudioActions.h; sourceTree = "<group>"; };
+		BB27D2101FC655FF00ED42FD /* OALAction.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OALAction.m; sourceTree = "<group>"; };
+		BB27D2111FC655FF00ED42FD /* OALUtilityActions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OALUtilityActions.m; sourceTree = "<group>"; };
+		BB27D2121FC655FF00ED42FD /* OALAction+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "OALAction+Private.h"; sourceTree = "<group>"; };
+		BB27D2131FC655FF00ED42FD /* OALAction.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OALAction.h; sourceTree = "<group>"; };
+		BB27D2141FC655FF00ED42FD /* OALAudioActions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OALAudioActions.m; sourceTree = "<group>"; };
+		BB27D2151FC655FF00ED42FD /* OALActionManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OALActionManager.h; sourceTree = "<group>"; };
+		BB27D2181FC655FF00ED42FD /* OALSuspendHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OALSuspendHandler.h; sourceTree = "<group>"; };
+		BB27D2191FC655FF00ED42FD /* OALAudioSession.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OALAudioSession.m; sourceTree = "<group>"; };
+		BB27D21A1FC655FF00ED42FD /* OALSuspendHandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OALSuspendHandler.m; sourceTree = "<group>"; };
+		BB27D21B1FC655FF00ED42FD /* OALAudioSession.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OALAudioSession.h; sourceTree = "<group>"; };
+		BB27D25F1FC6572600ED42FD /* AppleSoundWrapper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AppleSoundWrapper.cpp; sourceTree = "<group>"; };
+		BB27D2601FC6572600ED42FD /* ObjectALWrapper.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ObjectALWrapper.mm; sourceTree = "<group>"; };
+		BB27D2611FC6572600ED42FD /* AppleAudioEngineHelper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AppleAudioEngineHelper.cpp; sourceTree = "<group>"; };
+		BB27D2621FC6572600ED42FD /* AppleSoundWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppleSoundWrapper.h; sourceTree = "<group>"; };
+		BB27D2631FC6572600ED42FD /* ObjectALWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ObjectALWrapper.h; sourceTree = "<group>"; };
+		BB27D2641FC6572600ED42FD /* AppleSound.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AppleSound.cpp; sourceTree = "<group>"; };
+		BB27D2651FC6572600ED42FD /* AppleAudioEngineHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppleAudioEngineHelper.h; sourceTree = "<group>"; };
+		BB27D2661FC6572600ED42FD /* AppleSound.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppleSound.h; sourceTree = "<group>"; };
+		BB27D2831FC65B4D00ED42FD /* AndroidAudioEngineHelper.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = AndroidAudioEngineHelper.cpp; sourceTree = "<group>"; };
+		BB27D2841FC65B4D00ED42FD /* AndroidAudioEngineHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AndroidAudioEngineHelper.h; sourceTree = "<group>"; };
 		BB2AC5451EFC382C0012B990 /* FontAlign.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FontAlign.h; sourceTree = "<group>"; };
 		BB2AC5461EFC56330012B990 /* sound_006.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = sound_006.wav; sourceTree = "<group>"; };
 		BB31B5941FC205CA005F1C0A /* CursorEvent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CursorEvent.cpp; sourceTree = "<group>"; };
@@ -963,37 +1075,6 @@
 		BB5833F51EEDDD440084DA20 /* texture_001.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = texture_001.png; sourceTree = "<group>"; };
 		BB5833F61EEDDD440084DA20 /* texture_002.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = texture_002.png; sourceTree = "<group>"; };
 		BB59794F1EEF56830047BEC6 /* NGSteam.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NGSteam.h; sourceTree = "<group>"; };
-		BB5A0A5E1FB35D03005FBD52 /* SuperpoweredFlanger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SuperpoweredFlanger.h; sourceTree = "<group>"; };
-		BB5A0A5F1FB35D03005FBD52 /* libSuperpoweredAudioIOS.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libSuperpoweredAudioIOS.a; sourceTree = "<group>"; };
-		BB5A0A601FB35D03005FBD52 /* SuperpoweredGate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SuperpoweredGate.h; sourceTree = "<group>"; };
-		BB5A0A611FB35D03005FBD52 /* SuperpoweredTimeStretching.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SuperpoweredTimeStretching.h; sourceTree = "<group>"; };
-		BB5A0A621FB35D03005FBD52 /* SuperpoweredSimple.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SuperpoweredSimple.h; sourceTree = "<group>"; };
-		BB5A0A631FB35D03005FBD52 /* SuperpoweredAdvancedAudioPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SuperpoweredAdvancedAudioPlayer.h; sourceTree = "<group>"; };
-		BB5A0A641FB35D03005FBD52 /* SuperpoweredFFT.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SuperpoweredFFT.h; sourceTree = "<group>"; };
-		BB5A0A651FB35D03005FBD52 /* SuperpoweredFX.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SuperpoweredFX.h; sourceTree = "<group>"; };
-		BB5A0A661FB35D03005FBD52 /* SuperpoweredRecorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SuperpoweredRecorder.h; sourceTree = "<group>"; };
-		BB5A0A671FB35D03005FBD52 /* SuperpoweredResampler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SuperpoweredResampler.h; sourceTree = "<group>"; };
-		BB5A0A681FB35D03005FBD52 /* SuperpoweredReverb.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SuperpoweredReverb.h; sourceTree = "<group>"; };
-		BB5A0A691FB35D04005FBD52 /* SuperpoweredEcho.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SuperpoweredEcho.h; sourceTree = "<group>"; };
-		BB5A0A6A1FB35D04005FBD52 /* SuperpoweredClipper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SuperpoweredClipper.h; sourceTree = "<group>"; };
-		BB5A0A6B1FB35D04005FBD52 /* SuperpoweredRoll.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SuperpoweredRoll.h; sourceTree = "<group>"; };
-		BB5A0A6C1FB35D04005FBD52 /* SuperpoweredWhoosh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SuperpoweredWhoosh.h; sourceTree = "<group>"; };
-		BB5A0A6D1FB35D04005FBD52 /* SuperpoweredFrequencyDomain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SuperpoweredFrequencyDomain.h; sourceTree = "<group>"; };
-		BB5A0A6E1FB35D04005FBD52 /* SuperpoweredAudioBuffers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SuperpoweredAudioBuffers.h; sourceTree = "<group>"; };
-		BB5A0A6F1FB35D04005FBD52 /* SuperpoweredNBandEQ.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SuperpoweredNBandEQ.cpp; sourceTree = "<group>"; };
-		BB5A0A701FB35D04005FBD52 /* SuperpoweredMixer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SuperpoweredMixer.h; sourceTree = "<group>"; };
-		BB5A0A711FB35D04005FBD52 /* SuperpoweredSpatializer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SuperpoweredSpatializer.h; sourceTree = "<group>"; };
-		BB5A0A721FB35D05005FBD52 /* SuperpoweredBandpassFilterbank.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SuperpoweredBandpassFilterbank.h; sourceTree = "<group>"; };
-		BB5A0A731FB35D05005FBD52 /* SuperpoweredLimiter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SuperpoweredLimiter.h; sourceTree = "<group>"; };
-		BB5A0A741FB35D05005FBD52 /* SuperpoweredCPU.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SuperpoweredCPU.h; sourceTree = "<group>"; };
-		BB5A0A751FB35D05005FBD52 /* SuperpoweredIOSAudioIO.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SuperpoweredIOSAudioIO.mm; sourceTree = "<group>"; };
-		BB5A0A761FB35D05005FBD52 /* SuperpoweredDecoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SuperpoweredDecoder.h; sourceTree = "<group>"; };
-		BB5A0A771FB35D05005FBD52 /* SuperpoweredFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SuperpoweredFilter.h; sourceTree = "<group>"; };
-		BB5A0A781FB35D06005FBD52 /* SuperpoweredNBandEQ.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SuperpoweredNBandEQ.h; sourceTree = "<group>"; };
-		BB5A0A791FB35D06005FBD52 /* SuperpoweredAnalyzer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SuperpoweredAnalyzer.h; sourceTree = "<group>"; };
-		BB5A0A7A1FB35D06005FBD52 /* SuperpoweredIOSAudioIO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SuperpoweredIOSAudioIO.h; sourceTree = "<group>"; };
-		BB5A0A7B1FB35D06005FBD52 /* SuperpoweredCompressor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SuperpoweredCompressor.h; sourceTree = "<group>"; };
-		BB5A0A7C1FB35D06005FBD52 /* Superpowered3BandEQ.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Superpowered3BandEQ.h; sourceTree = "<group>"; };
 		BB5A0A801FB35FD1005FBD52 /* pch.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = pch.h; sourceTree = "<group>"; };
 		BB5A0A8D1FB3627A005FBD52 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS11.1.sdk/System/Library/Frameworks/AudioToolbox.framework; sourceTree = DEVELOPER_DIR; };
 		BB5A0A8F1FB36289005FBD52 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS11.1.sdk/System/Library/Frameworks/CoreMedia.framework; sourceTree = DEVELOPER_DIR; };
@@ -1262,21 +1343,6 @@
 		BB8308391EC2AD1F00435E7E /* UDPSocket.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = UDPSocket.cpp; sourceTree = "<group>"; };
 		BB83083A1EC2AD1F00435E7E /* UDPSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UDPSocket.h; sourceTree = "<group>"; };
 		BB88026F1EE4A40400F1A37C /* Color.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Color.h; sourceTree = "<group>"; };
-		BB95793A1F10111F00E89DE9 /* AndroidAudioEngineHelper.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = AndroidAudioEngineHelper.cpp; sourceTree = "<group>"; };
-		BB95793B1F10111F00E89DE9 /* AndroidAudioEngineHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AndroidAudioEngineHelper.h; sourceTree = "<group>"; };
-		BB95793D1F10111F00E89DE9 /* apple_audio_engine_helper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = apple_audio_engine_helper.h; sourceTree = "<group>"; };
-		BB95793E1F10111F00E89DE9 /* apple_audio_engine_helper.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = apple_audio_engine_helper.mm; sourceTree = "<group>"; };
-		BB95793F1F10111F00E89DE9 /* AppleAudioEngineHelper.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = AppleAudioEngineHelper.cpp; sourceTree = "<group>"; };
-		BB9579401F10111F00E89DE9 /* AppleAudioEngineHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppleAudioEngineHelper.h; sourceTree = "<group>"; };
-		BB9579421F10111F00E89DE9 /* SuperpoweredSound.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SuperpoweredSound.cpp; sourceTree = "<group>"; };
-		BB9579431F10111F00E89DE9 /* SuperpoweredSound.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SuperpoweredSound.h; sourceTree = "<group>"; };
-		BB9579441F10111F00E89DE9 /* SuperpoweredSoundManager.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SuperpoweredSoundManager.cpp; sourceTree = "<group>"; };
-		BB9579451F10111F00E89DE9 /* SuperpoweredSoundManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SuperpoweredSoundManager.h; sourceTree = "<group>"; };
-		BB9579461F10111F00E89DE9 /* SuperpoweredSoundWrapper.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SuperpoweredSoundWrapper.cpp; sourceTree = "<group>"; };
-		BB9579471F10111F00E89DE9 /* SuperpoweredSoundWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SuperpoweredSoundWrapper.h; sourceTree = "<group>"; };
-		BB95CD841FC4FEC900FEF667 /* libSuperpoweredAudioOSX.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libSuperpoweredAudioOSX.a; sourceTree = "<group>"; };
-		BB95CD861FC4FEE600FEF667 /* SuperpoweredOSXAudioIO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SuperpoweredOSXAudioIO.h; sourceTree = "<group>"; };
-		BB95CD871FC4FEE600FEF667 /* SuperpoweredOSXAudioIO.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SuperpoweredOSXAudioIO.mm; sourceTree = "<group>"; };
 		BB9EE50A1FC092BA000F5389 /* AssetDataHandler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AssetDataHandler.cpp; sourceTree = "<group>"; };
 		BB9EE50B1FC092BA000F5389 /* FileData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileData.h; sourceTree = "<group>"; };
 		BB9EE50C1FC092BA000F5389 /* AssetDataHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AssetDataHandler.h; sourceTree = "<group>"; };
@@ -1438,9 +1504,6 @@
 		BBD43A0B1ED0BCAD001D5EB4 /* ReplicationAction.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ReplicationAction.h; sourceTree = "<group>"; };
 		BBD43A0C1ED0BD00001D5EB4 /* ReplicationCommand.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ReplicationCommand.cpp; sourceTree = "<group>"; };
 		BBDF55C21EF782D800D6FA45 /* Color.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Color.cpp; sourceTree = "<group>"; };
-		BBE3C6CE1FC515D50009E3A6 /* SuperpoweredAndroidAudioIO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SuperpoweredAndroidAudioIO.h; sourceTree = "<group>"; };
-		BBE3C6CF1FC515D50009E3A6 /* SuperpoweredUSBAudio.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SuperpoweredUSBAudio.h; sourceTree = "<group>"; };
-		BBE3C6D01FC515D50009E3A6 /* SuperpoweredAndroidAudioIO.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SuperpoweredAndroidAudioIO.cpp; sourceTree = "<group>"; };
 		BBF226B01EC12CDE00573356 /* ReplicationManagerClient.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ReplicationManagerClient.cpp; sourceTree = "<group>"; };
 		BBF226B11EC12CDE00573356 /* ReplicationManagerClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReplicationManagerClient.h; sourceTree = "<group>"; };
 		BBFA49DB1FC367AF00233514 /* GlfwMain.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GlfwMain.h; sourceTree = "<group>"; };
@@ -1470,7 +1533,6 @@
 				BB5067281FB370A300CADEEA /* AudioUnit.framework in Frameworks */,
 				BB50672C1FB370A300CADEEA /* AVFoundation.framework in Frameworks */,
 				BB5067201FB370A300CADEEA /* Cocoa.framework in Frameworks */,
-				BB95CD851FC4FEC900FEF667 /* libSuperpoweredAudioOSX.a in Frameworks */,
 				BB50672A1FB370A300CADEEA /* CoreAudio.framework in Frameworks */,
 				BB5067221FB370A300CADEEA /* CoreGraphics.framework in Frameworks */,
 				BB50672D1FB370A300CADEEA /* CoreMedia.framework in Frameworks */,
@@ -1495,7 +1557,6 @@
 				BB5A0AAB1FB36DE5005FBD52 /* GLKit.framework in Frameworks */,
 				BB5A0A941FB3630E005FBD52 /* MediaPlayer.framework in Frameworks */,
 				BB6F59A41FBDF15600BD7697 /* OpenGLES.framework in Frameworks */,
-				BB5A0A7D1FB35D06005FBD52 /* libSuperpoweredAudioIOS.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1889,6 +1950,152 @@
 			path = shader;
 			sourceTree = "<group>";
 		};
+		BB27D13D1FC655FF00ED42FD /* ObjectAL-for-iPhone */ = {
+			isa = PBXGroup;
+			children = (
+				BB27D1C71FC655FF00ED42FD /* ObjectAL */,
+			);
+			path = "ObjectAL-for-iPhone";
+			sourceTree = "<group>";
+		};
+		BB27D1C71FC655FF00ED42FD /* ObjectAL */ = {
+			isa = PBXGroup;
+			children = (
+				BB27D1DA1FC655FF00ED42FD /* ObjectAL */,
+			);
+			path = ObjectAL;
+			sourceTree = "<group>";
+		};
+		BB27D1DA1FC655FF00ED42FD /* ObjectAL */ = {
+			isa = PBXGroup;
+			children = (
+				BB27D20C1FC655FF00ED42FD /* Actions */,
+				BB27D1DC1FC655FF00ED42FD /* AudioTrack */,
+				BB27D1DB1FC655FF00ED42FD /* OALSimpleAudio.h */,
+				BB27D1FB1FC655FF00ED42FD /* OALSimpleAudio.m */,
+				BB27D20B1FC655FF00ED42FD /* ObjectAL.h */,
+				BB27D1E31FC655FF00ED42FD /* ObjectALConfig.h */,
+				BB27D1E41FC655FF00ED42FD /* OpenAL */,
+				BB27D2171FC655FF00ED42FD /* Session */,
+				BB27D1FC1FC655FF00ED42FD /* Support */,
+			);
+			path = ObjectAL;
+			sourceTree = "<group>";
+		};
+		BB27D1DC1FC655FF00ED42FD /* AudioTrack */ = {
+			isa = PBXGroup;
+			children = (
+				BB27D1DD1FC655FF00ED42FD /* OALAudioTrack.h */,
+				BB27D1E01FC655FF00ED42FD /* OALAudioTrack.m */,
+				BB27D1DF1FC655FF00ED42FD /* OALAudioTrackNotifications.h */,
+				BB27D1E21FC655FF00ED42FD /* OALAudioTrackNotifications.m */,
+				BB27D1E11FC655FF00ED42FD /* OALAudioTracks.h */,
+				BB27D1DE1FC655FF00ED42FD /* OALAudioTracks.m */,
+			);
+			path = AudioTrack;
+			sourceTree = "<group>";
+		};
+		BB27D1E41FC655FF00ED42FD /* OpenAL */ = {
+			isa = PBXGroup;
+			children = (
+				BB27D1E91FC655FF00ED42FD /* ALBuffer.h */,
+				BB27D1F31FC655FF00ED42FD /* ALBuffer.m */,
+				BB27D1E81FC655FF00ED42FD /* ALCaptureDevice.h */,
+				BB27D1F51FC655FF00ED42FD /* ALCaptureDevice.m */,
+				BB27D1F81FC655FF00ED42FD /* ALChannelSource.h */,
+				BB27D1EB1FC655FF00ED42FD /* ALChannelSource.m */,
+				BB27D1ED1FC655FF00ED42FD /* ALContext.h */,
+				BB27D1F61FC655FF00ED42FD /* ALContext.m */,
+				BB27D1F21FC655FF00ED42FD /* ALDevice.h */,
+				BB27D1E51FC655FF00ED42FD /* ALDevice.m */,
+				BB27D1F41FC655FF00ED42FD /* ALListener.h */,
+				BB27D1EA1FC655FF00ED42FD /* ALListener.m */,
+				BB27D1E61FC655FF00ED42FD /* ALSoundSource.h */,
+				BB27D1EC1FC655FF00ED42FD /* ALSoundSourcePool.h */,
+				BB27D1F71FC655FF00ED42FD /* ALSoundSourcePool.m */,
+				BB27D1F91FC655FF00ED42FD /* ALSource.h */,
+				BB27D1EF1FC655FF00ED42FD /* ALSource.m */,
+				BB27D1F11FC655FF00ED42FD /* ALTypes.h */,
+				BB27D1E71FC655FF00ED42FD /* ALWrapper.h */,
+				BB27D1F01FC655FF00ED42FD /* ALWrapper.m */,
+				BB27D1FA1FC655FF00ED42FD /* OpenALManager.h */,
+				BB27D1EE1FC655FF00ED42FD /* OpenALManager.m */,
+			);
+			path = OpenAL;
+			sourceTree = "<group>";
+		};
+		BB27D1FC1FC655FF00ED42FD /* Support */ = {
+			isa = PBXGroup;
+			children = (
+				BB27D1FF1FC655FF00ED42FD /* ARCSafe_MemMgmt.h */,
+				BB27D2091FC655FF00ED42FD /* mach_timing.c */,
+				BB27D2021FC655FF00ED42FD /* mach_timing.h */,
+				BB27D20A1FC655FF00ED42FD /* NSMutableArray+WeakReferences.h */,
+				BB27D2011FC655FF00ED42FD /* NSMutableArray+WeakReferences.m */,
+				BB27D2041FC655FF00ED42FD /* NSMutableDictionary+WeakReferences.h */,
+				BB27D1FE1FC655FF00ED42FD /* NSMutableDictionary+WeakReferences.m */,
+				BB27D2051FC655FF00ED42FD /* OALAudioFile.h */,
+				BB27D1FD1FC655FF00ED42FD /* OALAudioFile.m */,
+				BB27D2071FC655FF00ED42FD /* OALNotifications.h */,
+				BB27D2001FC655FF00ED42FD /* OALTools.h */,
+				BB27D2081FC655FF00ED42FD /* OALTools.m */,
+				BB27D2061FC655FF00ED42FD /* ObjectALMacros.h */,
+				BB27D2031FC655FF00ED42FD /* SynthesizeSingleton.h */,
+			);
+			path = Support;
+			sourceTree = "<group>";
+		};
+		BB27D20C1FC655FF00ED42FD /* Actions */ = {
+			isa = PBXGroup;
+			children = (
+				BB27D2131FC655FF00ED42FD /* OALAction.h */,
+				BB27D2101FC655FF00ED42FD /* OALAction.m */,
+				BB27D2121FC655FF00ED42FD /* OALAction+Private.h */,
+				BB27D2151FC655FF00ED42FD /* OALActionManager.h */,
+				BB27D20E1FC655FF00ED42FD /* OALActionManager.m */,
+				BB27D20F1FC655FF00ED42FD /* OALAudioActions.h */,
+				BB27D2141FC655FF00ED42FD /* OALAudioActions.m */,
+				BB27D20D1FC655FF00ED42FD /* OALUtilityActions.h */,
+				BB27D2111FC655FF00ED42FD /* OALUtilityActions.m */,
+			);
+			path = Actions;
+			sourceTree = "<group>";
+		};
+		BB27D2171FC655FF00ED42FD /* Session */ = {
+			isa = PBXGroup;
+			children = (
+				BB27D21B1FC655FF00ED42FD /* OALAudioSession.h */,
+				BB27D2191FC655FF00ED42FD /* OALAudioSession.m */,
+				BB27D2181FC655FF00ED42FD /* OALSuspendHandler.h */,
+				BB27D21A1FC655FF00ED42FD /* OALSuspendHandler.m */,
+			);
+			path = Session;
+			sourceTree = "<group>";
+		};
+		BB27D25E1FC6572600ED42FD /* apple */ = {
+			isa = PBXGroup;
+			children = (
+				BB27D2611FC6572600ED42FD /* AppleAudioEngineHelper.cpp */,
+				BB27D2651FC6572600ED42FD /* AppleAudioEngineHelper.h */,
+				BB27D2641FC6572600ED42FD /* AppleSound.cpp */,
+				BB27D2661FC6572600ED42FD /* AppleSound.h */,
+				BB27D25F1FC6572600ED42FD /* AppleSoundWrapper.cpp */,
+				BB27D2621FC6572600ED42FD /* AppleSoundWrapper.h */,
+				BB27D2631FC6572600ED42FD /* ObjectALWrapper.h */,
+				BB27D2601FC6572600ED42FD /* ObjectALWrapper.mm */,
+			);
+			path = apple;
+			sourceTree = "<group>";
+		};
+		BB27D2821FC65B4D00ED42FD /* android */ = {
+			isa = PBXGroup;
+			children = (
+				BB27D2831FC65B4D00ED42FD /* AndroidAudioEngineHelper.cpp */,
+				BB27D2841FC65B4D00ED42FD /* AndroidAudioEngineHelper.h */,
+			);
+			path = android;
+			sourceTree = "<group>";
+		};
 		BB44C31E1DB030B3003E633F /* mac */ = {
 			isa = PBXGroup;
 			children = (
@@ -1909,7 +2116,7 @@
 				BB19115F1FABB66A00BDC6D0 /* Box2D */,
 				BB6F58BE1FBDE8FF00BD7697 /* glfw */,
 				BB44C4F71DB03A7C003E633F /* libpng */,
-				BB5AFE7F1FB35CA6005FBD52 /* Low-Latency-Android-Audio-iOS-Audio-Engine */,
+				BB27D13D1FC655FF00ED42FD /* ObjectAL-for-iPhone */,
 				BB190DA31FAB910900BDC6D0 /* rapidjson */,
 				BB6F59A51FBE005700BD7697 /* spine-runtimes */,
 				BB1913161FABB76E00BDC6D0 /* steamworks_sdk */,
@@ -2133,48 +2340,6 @@
 			path = textures;
 			sourceTree = "<group>";
 		};
-		BB5A00F01FB35CA7005FBD52 /* Superpowered */ = {
-			isa = PBXGroup;
-			children = (
-				BBE3C6CD1FC515D50009E3A6 /* AndroidIO */,
-				BB5A0A5F1FB35D03005FBD52 /* libSuperpoweredAudioIOS.a */,
-				BB95CD841FC4FEC900FEF667 /* libSuperpoweredAudioOSX.a */,
-				BB5A0A7C1FB35D06005FBD52 /* Superpowered3BandEQ.h */,
-				BB5A0A631FB35D03005FBD52 /* SuperpoweredAdvancedAudioPlayer.h */,
-				BB5A0A791FB35D06005FBD52 /* SuperpoweredAnalyzer.h */,
-				BB5A0A6E1FB35D04005FBD52 /* SuperpoweredAudioBuffers.h */,
-				BB5A0A721FB35D05005FBD52 /* SuperpoweredBandpassFilterbank.h */,
-				BB5A0A6A1FB35D04005FBD52 /* SuperpoweredClipper.h */,
-				BB5A0A7B1FB35D06005FBD52 /* SuperpoweredCompressor.h */,
-				BB5A0A741FB35D05005FBD52 /* SuperpoweredCPU.h */,
-				BB5A0A761FB35D05005FBD52 /* SuperpoweredDecoder.h */,
-				BB5A0A691FB35D04005FBD52 /* SuperpoweredEcho.h */,
-				BB5A0A641FB35D03005FBD52 /* SuperpoweredFFT.h */,
-				BB5A0A771FB35D05005FBD52 /* SuperpoweredFilter.h */,
-				BB5A0A5E1FB35D03005FBD52 /* SuperpoweredFlanger.h */,
-				BB5A0A6D1FB35D04005FBD52 /* SuperpoweredFrequencyDomain.h */,
-				BB5A0A651FB35D03005FBD52 /* SuperpoweredFX.h */,
-				BB5A0A601FB35D03005FBD52 /* SuperpoweredGate.h */,
-				BB5A0A7A1FB35D06005FBD52 /* SuperpoweredIOSAudioIO.h */,
-				BB5A0A751FB35D05005FBD52 /* SuperpoweredIOSAudioIO.mm */,
-				BB5A0A731FB35D05005FBD52 /* SuperpoweredLimiter.h */,
-				BB5A0A701FB35D04005FBD52 /* SuperpoweredMixer.h */,
-				BB5A0A6F1FB35D04005FBD52 /* SuperpoweredNBandEQ.cpp */,
-				BB5A0A781FB35D06005FBD52 /* SuperpoweredNBandEQ.h */,
-				BB95CD861FC4FEE600FEF667 /* SuperpoweredOSXAudioIO.h */,
-				BB95CD871FC4FEE600FEF667 /* SuperpoweredOSXAudioIO.mm */,
-				BB5A0A661FB35D03005FBD52 /* SuperpoweredRecorder.h */,
-				BB5A0A671FB35D03005FBD52 /* SuperpoweredResampler.h */,
-				BB5A0A681FB35D03005FBD52 /* SuperpoweredReverb.h */,
-				BB5A0A6B1FB35D04005FBD52 /* SuperpoweredRoll.h */,
-				BB5A0A621FB35D03005FBD52 /* SuperpoweredSimple.h */,
-				BB5A0A711FB35D04005FBD52 /* SuperpoweredSpatializer.h */,
-				BB5A0A611FB35D03005FBD52 /* SuperpoweredTimeStretching.h */,
-				BB5A0A6C1FB35D04005FBD52 /* SuperpoweredWhoosh.h */,
-			);
-			path = Superpowered;
-			sourceTree = "<group>";
-		};
 		BB5A0A8A1FB36264005FBD52 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -2211,14 +2376,6 @@
 			);
 			name = Frameworks;
 			path = ..;
-			sourceTree = "<group>";
-		};
-		BB5AFE7F1FB35CA6005FBD52 /* Low-Latency-Android-Audio-iOS-Audio-Engine */ = {
-			isa = PBXGroup;
-			children = (
-				BB5A00F01FB35CA7005FBD52 /* Superpowered */,
-			);
-			path = "Low-Latency-Android-Audio-iOS-Audio-Engine";
 			sourceTree = "<group>";
 		};
 		BB6E7A491F93CE0D006C0024 /* TinyThread */ = {
@@ -2692,49 +2849,6 @@
 			path = portable;
 			sourceTree = "<group>";
 		};
-		BB9579381F10111F00E89DE9 /* superpowered */ = {
-			isa = PBXGroup;
-			children = (
-				BB9579391F10111F00E89DE9 /* android */,
-				BB95793C1F10111F00E89DE9 /* apple */,
-				BB9579411F10111F00E89DE9 /* portable */,
-			);
-			path = superpowered;
-			sourceTree = "<group>";
-		};
-		BB9579391F10111F00E89DE9 /* android */ = {
-			isa = PBXGroup;
-			children = (
-				BB95793A1F10111F00E89DE9 /* AndroidAudioEngineHelper.cpp */,
-				BB95793B1F10111F00E89DE9 /* AndroidAudioEngineHelper.h */,
-			);
-			path = android;
-			sourceTree = "<group>";
-		};
-		BB95793C1F10111F00E89DE9 /* apple */ = {
-			isa = PBXGroup;
-			children = (
-				BB95793D1F10111F00E89DE9 /* apple_audio_engine_helper.h */,
-				BB95793E1F10111F00E89DE9 /* apple_audio_engine_helper.mm */,
-				BB95793F1F10111F00E89DE9 /* AppleAudioEngineHelper.cpp */,
-				BB9579401F10111F00E89DE9 /* AppleAudioEngineHelper.h */,
-			);
-			path = apple;
-			sourceTree = "<group>";
-		};
-		BB9579411F10111F00E89DE9 /* portable */ = {
-			isa = PBXGroup;
-			children = (
-				BB9579421F10111F00E89DE9 /* SuperpoweredSound.cpp */,
-				BB9579431F10111F00E89DE9 /* SuperpoweredSound.h */,
-				BB9579441F10111F00E89DE9 /* SuperpoweredSoundManager.cpp */,
-				BB9579451F10111F00E89DE9 /* SuperpoweredSoundManager.h */,
-				BB9579461F10111F00E89DE9 /* SuperpoweredSoundWrapper.cpp */,
-				BB9579471F10111F00E89DE9 /* SuperpoweredSoundWrapper.h */,
-			);
-			path = portable;
-			sourceTree = "<group>";
-		};
 		BB9EE50F1FC092C4000F5389 /* apple */ = {
 			isa = PBXGroup;
 			children = (
@@ -2974,10 +3088,11 @@
 		BBAEF18C1EA94ED900F0866E /* audio */ = {
 			isa = PBXGroup;
 			children = (
+				BB27D2821FC65B4D00ED42FD /* android */,
+				BB27D25E1FC6572600ED42FD /* apple */,
 				BB5833B81EEDD6580084DA20 /* directx */,
 				BB07A50D1FC5F0BA00AE5051 /* linux */,
 				BBAEF18D1EA94ED900F0866E /* portable */,
-				BB9579381F10111F00E89DE9 /* superpowered */,
 			);
 			path = audio;
 			sourceTree = "<group>";
@@ -3055,16 +3170,6 @@
 				BBD3E8641FB2872A00328E35 /* ViewController.mm */,
 			);
 			path = ios;
-			sourceTree = "<group>";
-		};
-		BBE3C6CD1FC515D50009E3A6 /* AndroidIO */ = {
-			isa = PBXGroup;
-			children = (
-				BBE3C6D01FC515D50009E3A6 /* SuperpoweredAndroidAudioIO.cpp */,
-				BBE3C6CE1FC515D50009E3A6 /* SuperpoweredAndroidAudioIO.h */,
-				BBE3C6CF1FC515D50009E3A6 /* SuperpoweredUSBAudio.h */,
-			);
-			path = AndroidIO;
 			sourceTree = "<group>";
 		};
 		BBF2251E1EC120AD00573356 /* network */ = {
@@ -3319,6 +3424,33 @@
 			buildActionMask = 2147483647;
 			files = (
 				BB6F64281FBE009C00BD7697 /* PathConstraintPositionTimeline.cpp in Sources */,
+				BB27D22E1FC6567A00ED42FD /* OALAudioTracks.m in Sources */,
+				BB27D22F1FC6567A00ED42FD /* OALAudioTrack.m in Sources */,
+				BB27D2301FC6567A00ED42FD /* OALAudioTrackNotifications.m in Sources */,
+				BB27D2311FC6567A00ED42FD /* ALDevice.m in Sources */,
+				BB27D2321FC6567A00ED42FD /* ALListener.m in Sources */,
+				BB27D2331FC6567A00ED42FD /* ALChannelSource.m in Sources */,
+				BB27D2341FC6567A00ED42FD /* OpenALManager.m in Sources */,
+				BB27D2351FC6567A00ED42FD /* ALSource.m in Sources */,
+				BB27D2361FC6567A00ED42FD /* ALWrapper.m in Sources */,
+				BB27D2371FC6567A00ED42FD /* ALBuffer.m in Sources */,
+				BB27D2381FC6567A00ED42FD /* ALCaptureDevice.m in Sources */,
+				BB27D2391FC6567A00ED42FD /* ALContext.m in Sources */,
+				BB27D23A1FC6567A00ED42FD /* ALSoundSourcePool.m in Sources */,
+				BB27D23B1FC6567A00ED42FD /* OALSimpleAudio.m in Sources */,
+				BB27D23C1FC6567A00ED42FD /* OALAudioFile.m in Sources */,
+				BB27D23D1FC6567A00ED42FD /* NSMutableDictionary+WeakReferences.m in Sources */,
+				BB27D23E1FC6567A00ED42FD /* NSMutableArray+WeakReferences.m in Sources */,
+				BB27D2801FC6588B00ED42FD /* OALAudioSession.m in Sources */,
+				BB27D26D1FC6572600ED42FD /* AppleSound.cpp in Sources */,
+				BB27D2691FC6572600ED42FD /* ObjectALWrapper.mm in Sources */,
+				BB27D23F1FC6567A00ED42FD /* OALTools.m in Sources */,
+				BB27D2401FC6567A00ED42FD /* mach_timing.c in Sources */,
+				BB27D2411FC6567A00ED42FD /* OALActionManager.m in Sources */,
+				BB27D2421FC6567A00ED42FD /* OALAction.m in Sources */,
+				BB27D2431FC6567A00ED42FD /* OALUtilityActions.m in Sources */,
+				BB27D2441FC6567A00ED42FD /* OALAudioActions.m in Sources */,
+				BB27D2451FC6567A00ED42FD /* OALSuspendHandler.m in Sources */,
 				BB6E7B241F940FD4006C0024 /* tinythread.cpp in Sources */,
 				BB6F64521FBE009C00BD7697 /* Constraint.cpp in Sources */,
 				BB1912891FABB66A00BDC6D0 /* b2BroadPhase.cpp in Sources */,
@@ -3327,13 +3459,9 @@
 				BB19129E1FABB66A00BDC6D0 /* b2Island.cpp in Sources */,
 				BB6E7B141F940F2B006C0024 /* MainAssetsMapper.cpp in Sources */,
 				BB6E7B151F940F2B006C0024 /* MainRenderer.cpp in Sources */,
+				BB27D26B1FC6572600ED42FD /* AppleAudioEngineHelper.cpp in Sources */,
 				BB6E7B161F940F2B006C0024 /* Crate.cpp in Sources */,
 				BB1912951FABB66A00BDC6D0 /* b2BlockAllocator.cpp in Sources */,
-				BB95CD891FC4FFE400FEF667 /* apple_audio_engine_helper.mm in Sources */,
-				BB95CD8A1FC4FFE400FEF667 /* AppleAudioEngineHelper.cpp in Sources */,
-				BB95CD8B1FC4FFE400FEF667 /* SuperpoweredSound.cpp in Sources */,
-				BB95CD8C1FC4FFE400FEF667 /* SuperpoweredSoundManager.cpp in Sources */,
-				BB95CD8D1FC4FFE400FEF667 /* SuperpoweredSoundWrapper.cpp in Sources */,
 				BB1912B21FABB66A00BDC6D0 /* b2RevoluteJoint.cpp in Sources */,
 				BB19128C1FABB66A00BDC6D0 /* b2CollidePolygon.cpp in Sources */,
 				BB6E7B171F940F2B006C0024 /* Ground.cpp in Sources */,
@@ -3355,6 +3483,7 @@
 				BB6F59771FBDE97D00BD7697 /* cocoa_time.c in Sources */,
 				BB1912991FABB66A00BDC6D0 /* b2StackAllocator.cpp in Sources */,
 				BB6E7B1E1F940F2B006C0024 /* Util.cpp in Sources */,
+				BB27D2671FC6572600ED42FD /* AppleSoundWrapper.cpp in Sources */,
 				BB6E7B1F1F940F2B006C0024 /* World.cpp in Sources */,
 				BB1912A01FABB66A00BDC6D0 /* b2WorldCallbacks.cpp in Sources */,
 				BB6F598C1FBDEA0D00BD7697 /* init.c in Sources */,
@@ -3506,7 +3635,6 @@
 				BB1912A41FABB66A00BDC6D0 /* b2Contact.cpp in Sources */,
 				BB19129F1FABB66A00BDC6D0 /* b2World.cpp in Sources */,
 				BBAEF22E1EA94EDA00F0866E /* OpenGLCircleBatcher.cpp in Sources */,
-				BB95CD881FC4FEE600FEF667 /* SuperpoweredOSXAudioIO.mm in Sources */,
 				BBCB93211FC252790020703A /* FileData.cpp in Sources */,
 				BBCFF1C51ECD312E003EE520 /* Assets.cpp in Sources */,
 				BBAEF2341EA94EDA00F0866E /* OpenGLGeometryGpuProgramWrapper.cpp in Sources */,
@@ -3592,6 +3720,33 @@
 				BB6F64451FBE009C00BD7697 /* SpineRTTI.cpp in Sources */,
 				BB5AFE771FB35AB6005FBD52 /* JsonFile.cpp in Sources */,
 				BB5AFE521FB35AAE005FBD52 /* OpenGLCircleBatcher.cpp in Sources */,
+				BB27D2461FC6567F00ED42FD /* OALAudioTracks.m in Sources */,
+				BB27D2471FC6567F00ED42FD /* OALAudioTrack.m in Sources */,
+				BB27D2811FC6596D00ED42FD /* OALAudioSession.m in Sources */,
+				BB27D2481FC6567F00ED42FD /* OALAudioTrackNotifications.m in Sources */,
+				BB27D2491FC6567F00ED42FD /* ALDevice.m in Sources */,
+				BB27D24A1FC6567F00ED42FD /* ALListener.m in Sources */,
+				BB27D26C1FC6572600ED42FD /* AppleAudioEngineHelper.cpp in Sources */,
+				BB27D24B1FC6567F00ED42FD /* ALChannelSource.m in Sources */,
+				BB27D24C1FC6567F00ED42FD /* OpenALManager.m in Sources */,
+				BB27D24D1FC6567F00ED42FD /* ALSource.m in Sources */,
+				BB27D24E1FC6567F00ED42FD /* ALWrapper.m in Sources */,
+				BB27D26A1FC6572600ED42FD /* ObjectALWrapper.mm in Sources */,
+				BB27D24F1FC6567F00ED42FD /* ALBuffer.m in Sources */,
+				BB27D2501FC6567F00ED42FD /* ALCaptureDevice.m in Sources */,
+				BB27D2511FC6567F00ED42FD /* ALContext.m in Sources */,
+				BB27D2521FC6567F00ED42FD /* ALSoundSourcePool.m in Sources */,
+				BB27D2531FC6567F00ED42FD /* OALSimpleAudio.m in Sources */,
+				BB27D2541FC6567F00ED42FD /* OALAudioFile.m in Sources */,
+				BB27D2551FC6567F00ED42FD /* NSMutableDictionary+WeakReferences.m in Sources */,
+				BB27D2561FC6567F00ED42FD /* NSMutableArray+WeakReferences.m in Sources */,
+				BB27D2571FC6567F00ED42FD /* OALTools.m in Sources */,
+				BB27D2581FC6567F00ED42FD /* mach_timing.c in Sources */,
+				BB27D2591FC6567F00ED42FD /* OALActionManager.m in Sources */,
+				BB27D25A1FC6567F00ED42FD /* OALAction.m in Sources */,
+				BB27D25B1FC6567F00ED42FD /* OALUtilityActions.m in Sources */,
+				BB27D25C1FC6567F00ED42FD /* OALAudioActions.m in Sources */,
+				BB27D25D1FC6567F00ED42FD /* OALSuspendHandler.m in Sources */,
 				BB6F64711FBE009C00BD7697 /* RotateTimeline.cpp in Sources */,
 				BB6F646F1FBE009C00BD7697 /* Slot.cpp in Sources */,
 				BB5AFE531FB35AAE005FBD52 /* OpenGLFramebufferToScreenGpuProgramWrapper.cpp in Sources */,
@@ -3677,7 +3832,6 @@
 				BB5AFE401FB35A77005FBD52 /* InputMemoryBitStream.cpp in Sources */,
 				BB5AFE411FB35A77005FBD52 /* PacketHandler.cpp in Sources */,
 				BB5AFE421FB35A77005FBD52 /* TransmissionData.cpp in Sources */,
-				BB5A0A7E1FB35D06005FBD52 /* SuperpoweredNBandEQ.cpp in Sources */,
 				BB5AFE431FB35A77005FBD52 /* Move.cpp in Sources */,
 				BB6F64491FBE009C00BD7697 /* TransformConstraintData.cpp in Sources */,
 				BB5AFE441FB35A77005FBD52 /* MoveList.cpp in Sources */,
@@ -3700,7 +3854,6 @@
 				BB5AFE0A1FB359DE005FBD52 /* Ground.cpp in Sources */,
 				BB5AFE0B1FB359DE005FBD52 /* MainEngine.cpp in Sources */,
 				BB5AFE0C1FB359DE005FBD52 /* PooledObjectsManager.cpp in Sources */,
-				BB5AFE1D1FB359F9005FBD52 /* apple_audio_engine_helper.mm in Sources */,
 				BB5AFE271FB35A19005FBD52 /* Circle.cpp in Sources */,
 				BB5AFE281FB35A19005FBD52 /* Color.cpp in Sources */,
 				BB5AFE291FB35A19005FBD52 /* Line.cpp in Sources */,
@@ -3714,19 +3867,16 @@
 				BB5AFE2C1FB35A19005FBD52 /* Triangle.cpp in Sources */,
 				BB5AFE2D1FB35A19005FBD52 /* Vector2.cpp in Sources */,
 				BB31B5B01FC205D5005F1C0A /* GamePadEvent.cpp in Sources */,
-				BB5AFE1E1FB359F9005FBD52 /* AppleAudioEngineHelper.cpp in Sources */,
 				BB6F643D1FBE009C00BD7697 /* DeformTimeline.cpp in Sources */,
 				BB6F64271FBE009C00BD7697 /* AnimationStateData.cpp in Sources */,
 				BB5AFE221FB35A0B005FBD52 /* AudioEngineHelperFactory.cpp in Sources */,
 				BB5AFE231FB35A0B005FBD52 /* AudioEngineHelper.cpp in Sources */,
+				BB27D2681FC6572600ED42FD /* AppleSoundWrapper.cpp in Sources */,
 				BB5AFE241FB35A0B005FBD52 /* Sound.cpp in Sources */,
-				BB5A0A7F1FB35D06005FBD52 /* SuperpoweredIOSAudioIO.mm in Sources */,
 				BB6F64811FBE009C00BD7697 /* TransformConstraint.cpp in Sources */,
 				BB5AFE251FB35A0B005FBD52 /* SoundWrapper.cpp in Sources */,
 				BB5AFE261FB35A0B005FBD52 /* NGAudioEngine.cpp in Sources */,
-				BB5AFE1F1FB35A01005FBD52 /* SuperpoweredSound.cpp in Sources */,
-				BB5AFE201FB35A01005FBD52 /* SuperpoweredSoundManager.cpp in Sources */,
-				BB5AFE211FB35A01005FBD52 /* SuperpoweredSoundWrapper.cpp in Sources */,
+				BB27D26E1FC6572600ED42FD /* AppleSound.cpp in Sources */,
 				BB5AFE0D1FB359DE005FBD52 /* Projectile.cpp in Sources */,
 				BB6F64251FBE009C00BD7697 /* TranslateTimeline.cpp in Sources */,
 				BB5AFE0E1FB359DE005FBD52 /* Robot.cpp in Sources */,
@@ -3988,7 +4138,7 @@
 					"\"$(SRCROOT)/../../3rdparty/glfw/include\"",
 					"\"$(SRCROOT)/../../3rdparty/Box2D/Box2D\"",
 					"\"$(SRCROOT)/../../3rdparty/libpng\"",
-					"\"$(SRCROOT)/../../3rdparty/Low-Latency-Android-Audio-iOS-Audio-Engine/Superpowered\"",
+					"\"$(SRCROOT)/../../3rdparty/ObjectAL-for-iPhone/ObjectAL/ObjectAL\"",
 					"\"$(SRCROOT)/../../3rdparty/rapidjson/include\"",
 					"\"$(SRCROOT)/../../3rdparty/spine-runtimes/spine-cpp/spine-cpp/include\"",
 					"\"$(SRCROOT)/../../3rdparty/steamworks_sdk/public\"",
@@ -3999,10 +4149,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/mac/Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					"\"$(SRCROOT)/../../3rdparty/steamworks_sdk/redistributable_bin/osx32\"",
-					"\"$(SRCROOT)/../../3rdparty/Low-Latency-Android-Audio-iOS-Audio-Engine/Superpowered\"",
-				);
+				LIBRARY_SEARCH_PATHS = "\"$(SRCROOT)/../../3rdparty/steamworks_sdk/redistributable_bin/osx32\"";
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				OTHER_LDFLAGS = (
@@ -4062,7 +4209,7 @@
 					"\"$(SRCROOT)/../../3rdparty/glfw/include\"",
 					"\"$(SRCROOT)/../../3rdparty/Box2D/Box2D\"",
 					"\"$(SRCROOT)/../../3rdparty/libpng\"",
-					"\"$(SRCROOT)/../../3rdparty/Low-Latency-Android-Audio-iOS-Audio-Engine/Superpowered\"",
+					"\"$(SRCROOT)/../../3rdparty/ObjectAL-for-iPhone/ObjectAL/ObjectAL\"",
 					"\"$(SRCROOT)/../../3rdparty/rapidjson/include\"",
 					"\"$(SRCROOT)/../../3rdparty/spine-runtimes/spine-cpp/spine-cpp/include\"",
 					"\"$(SRCROOT)/../../3rdparty/steamworks_sdk/public\"",
@@ -4073,10 +4220,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/mac/Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					"\"$(SRCROOT)/../../3rdparty/steamworks_sdk/redistributable_bin/osx32\"",
-					"\"$(SRCROOT)/../../3rdparty/Low-Latency-Android-Audio-iOS-Audio-Engine/Superpowered\"",
-				);
+				LIBRARY_SEARCH_PATHS = "\"$(SRCROOT)/../../3rdparty/steamworks_sdk/redistributable_bin/osx32\"";
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_LDFLAGS = (
@@ -4127,7 +4271,7 @@
 				HEADER_SEARCH_PATHS = (
 					"\"$(SRCROOT)/../../3rdparty/Box2D/Box2D\"",
 					"\"$(SRCROOT)/../../3rdparty/libpng\"",
-					"\"$(SRCROOT)/../../3rdparty/Low-Latency-Android-Audio-iOS-Audio-Engine/Superpowered\"",
+					"\"$(SRCROOT)/../../3rdparty/ObjectAL-for-iPhone/ObjectAL/ObjectAL\"",
 					"\"$(SRCROOT)/../../3rdparty/rapidjson/include\"",
 					"\"$(SRCROOT)/../../3rdparty/spine-runtimes/spine-cpp/spine-cpp/include\"",
 					"\"$(SRCROOT)/../../3rdparty/TinyThread/source\"",
@@ -4137,7 +4281,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/ios/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = "\"$(SRCROOT)/../../3rdparty/Low-Latency-Android-Audio-iOS-Audio-Engine/Superpowered\"";
+				LIBRARY_SEARCH_PATHS = "";
 				MTL_ENABLE_DEBUG_INFO = YES;
 				OTHER_LDFLAGS = (
 					"-std=c++03",
@@ -4183,7 +4327,7 @@
 				HEADER_SEARCH_PATHS = (
 					"\"$(SRCROOT)/../../3rdparty/Box2D/Box2D\"",
 					"\"$(SRCROOT)/../../3rdparty/libpng\"",
-					"\"$(SRCROOT)/../../3rdparty/Low-Latency-Android-Audio-iOS-Audio-Engine/Superpowered\"",
+					"\"$(SRCROOT)/../../3rdparty/ObjectAL-for-iPhone/ObjectAL/ObjectAL\"",
 					"\"$(SRCROOT)/../../3rdparty/rapidjson/include\"",
 					"\"$(SRCROOT)/../../3rdparty/spine-runtimes/spine-cpp/spine-cpp/include\"",
 					"\"$(SRCROOT)/../../3rdparty/TinyThread/source\"",
@@ -4193,7 +4337,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/ios/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = "\"$(SRCROOT)/../../3rdparty/Low-Latency-Android-Audio-iOS-Audio-Engine/Superpowered\"";
+				LIBRARY_SEARCH_PATHS = "";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_LDFLAGS = (
 					"-std=c++03",
