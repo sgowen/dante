@@ -44,9 +44,7 @@ SoundWrapper* NullAudioEngineHelper::loadSound(int soundId, const char *path, in
 
 SoundWrapper* NullAudioEngineHelper::loadMusic(const char* path)
 {
-    NullSoundWrapper* sound = new NullSoundWrapper(1337, path);
-    
-    return sound;
+    return loadSound(1337, path);
 }
 
 NullAudioEngineHelper::NullAudioEngineHelper() : AudioEngineHelper()

@@ -240,11 +240,20 @@ void InputManager::update()
                 Vector2& vec = CURSOR_CONVERTER->touchToWorld(*(*i));
                 _currentState->getGameInputState(0)._isMovingLeft = vec.getX() < (CAM_WIDTH / 2);
                 _currentState->getGameInputState(0)._isMovingRight = vec.getX() > (CAM_WIDTH / 2);
+                
+                if ((*i)->getType() == CursorEventType_DOWN)
+                {
+                    _currentState->getGameInputState(0)._isJumping = true;
+                    _currentState->getGameInputState(0)._isShooting = true;
+                }
             }
             else
             {
                 _currentState->getGameInputState(0)._isMovingLeft = false;
                 _currentState->getGameInputState(0)._isMovingRight = false;
+                
+                _currentState->getGameInputState(0)._isJumping = false;
+                _currentState->getGameInputState(0)._isShooting = false;
                 
                 continue;
             }
