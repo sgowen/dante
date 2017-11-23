@@ -1,3 +1,4 @@
+@@ -1,56 +0,0 @@
 //
 //  AndroidAudioEngineHelper.h
 //  noctisgames-framework
@@ -13,10 +14,15 @@
 
 #include <jni.h>
 
+#include <vector>
+
+class SuperpoweredSoundManager;
+class SuperpoweredAndroidAudioIO;
+
 class AndroidAudioEngineHelper : public AudioEngineHelper
 {
 public:
-	static AndroidAudioEngineHelper* getInstance();
+    static AndroidAudioEngineHelper* getInstance();
     
     virtual void update(int flags = 0);
     
@@ -31,13 +37,15 @@ public:
     void init(JNIEnv* jni, jobject activity);
     
     void deinit();
-
+    
 private:
     JavaVM* _jvm;
     jobject _resources;
     jstring _javaPackageResourcePath;
     const char* _packageResourcePath;
     jstring _packageName;
+    SuperpoweredSoundManager* _superpoweredSoundManager;
+    std::vector<SuperpoweredAndroidAudioIO*> _audioSystems;
     int _sampleRate;
     
     // ctor, copy ctor, and assignment should be private in a Singleton
@@ -47,3 +55,4 @@ private:
 };
 
 #endif /* defined(__noctisgames__AndroidAudioEngineHelper__) */
+
