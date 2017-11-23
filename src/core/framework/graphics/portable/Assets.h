@@ -33,7 +33,7 @@ public:
     
     std::map<std::string, TextureRegion*>& getTextureRegionMap();
     
-    std::map<std::string, NGAnimation*>& getNGAnimationsMap();
+    std::map<std::string, NGAnimation*>& getAnimationsMap();
 
 private:
     std::map<std::string, TextureRegion*> _textureRegions;

@@ -26,7 +26,7 @@ Assets* Assets::getInstance()
 void Assets::init(AssetsMapper* assetsMapper)
 {
 	getTextureRegionMap().clear();
-	getNGAnimationsMap().clear();
+	getAnimationsMap().clear();
 
     assetsMapper->mapAssets();
     
@@ -82,7 +82,7 @@ std::map<std::string, TextureRegion*>& Assets::getTextureRegionMap()
     return _textureRegions;
 }
 
-std::map<std::string, NGAnimation*>& Assets::getNGAnimationsMap()
+std::map<std::string, NGAnimation*>& Assets::getAnimationsMap()
 {
     return _animations;
 }
