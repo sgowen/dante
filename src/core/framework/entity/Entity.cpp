@@ -23,6 +23,10 @@
 #include "framework/util/StringUtil.h"
 #include "framework/math/MathUtil.h"
 
+RTTI_IMPL_NOPARENT(Entity);
+
+NW_TYPE_IMPL(Entity);
+
 Entity::Entity(b2World& world, float x, float y, float width, float height, bool isServer, EntityDef inEntityDef, bool autoInitPhysics) :
 _worldRef(world),
 _body(NULL),
@@ -385,7 +389,3 @@ uint32_t Entity::getUniqueEntityID()
     
     return entityID++;
 }
-
-RTTI_IMPL_NOPARENT(Entity);
-
-NW_TYPE_IMPL(Entity);

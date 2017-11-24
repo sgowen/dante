@@ -313,22 +313,8 @@ void NetworkManagerClient::readLastMoveProcessedOnServerTimestamp(InputMemoryBit
     if (isTimestampDirty)
     {
         inInputStream.read(_lastMoveProcessedByServerTimestamp);
-        bool isLastMoveReceivedSameAsLastMoveProcessed;
-        inInputStream.read(isLastMoveReceivedSameAsLastMoveProcessed);
-        if (isLastMoveReceivedSameAsLastMoveProcessed)
-        {
-            _lastMoveReceivedByServerTimestamp = _lastMoveProcessedByServerTimestamp;
-        }
-        else
-        {
-            inInputStream.read(_lastMoveReceivedByServerTimestamp);
-        }
         
-#ifdef NETWORK_LOG
-        printf("_lastMoveProcessedByServerTimestamp: %f, _lastMoveReceivedByServerTimestamp: %f \n", _lastMoveProcessedByServerTimestamp, _lastMoveReceivedByServerTimestamp);
-#endif
-        
-        float rtt = Timing::getInstance()->getFrameStartTime() - _lastMoveReceivedByServerTimestamp;
+        float rtt = Timing::getInstance()->getFrameStartTime() - _lastMoveProcessedByServerTimestamp;
         _avgRoundTripTime->update(rtt);
         
         _removeProcessedMovesFunc(_lastMoveProcessedByServerTimestamp);
@@ -354,7 +340,7 @@ void NetworkManagerClient::sendInputPacket()
         _deliveryNotificationManager->writeState(inputPacket);
         
         // eventually write the 3 latest moves so they have 3 chances to get through...
-        int moveCount = moveList.getNumMovesAfterTimestamp(_lastMoveReceivedByServerTimestamp);
+        int moveCount = moveList.getNumMovesAfterTimestamp(_lastMoveProcessedByServerTimestamp);
         int firstMoveIndex = moveCount - 3;
         if (firstMoveIndex < 0)
         {
@@ -460,7 +446,6 @@ _state(NCS_Uninitialized),
 _deliveryNotificationManager(new DeliveryNotificationManager(true, false)),
 _timeOfLastHello(0.0f),
 _lastMoveProcessedByServerTimestamp(0.0f),
-_lastMoveReceivedByServerTimestamp(0.0f),
 _lastServerCommunicationTimestamp(Timing::getInstance()->getFrameStartTime()),
 _frameRate(inFrameRate),
 _isRequestingToAddLocalPlayer(false),

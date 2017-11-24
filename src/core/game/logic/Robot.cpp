@@ -42,6 +42,10 @@
 
 #include <math.h>
 
+RTTI_IMPL(Robot, Entity);
+
+NW_TYPE_IMPL(Robot);
+
 Robot::Robot(b2World& world, bool isServer) : Entity(world, 0, 0, 1.565217391304348f, 2.0f, isServer, constructEntityDef()),
 _addressHash(0),
 _firstProjectileId(0),
@@ -122,12 +126,7 @@ void Robot::update()
     {
         if (_shotCooldownTime < 0)
         {
-            // not exact, but okay
-            _shotCooldownTime += FRAME_RATE * (60.0f / NUM_PROJECTILES);
-            if (_shotCooldownTime < 0)
-            {
-                _shotCooldownTime = FRAME_RATE * (60.0f / NUM_PROJECTILES);
-            }
+            _shotCooldownTime = FRAME_RATE * (60.0f / NUM_PROJECTILES);
             
             fireProjectile();
         }
@@ -162,7 +161,7 @@ void Robot::update()
             }
         }
         
-        //NG_SERVER->setStateDirty(getID(), ROBT_Pose);
+        NG_SERVER->setStateDirty(getID(), ROBT_Pose);
         
         if (_healthLastKnown != _health
             || _numKillsLastKnown != _numKills
@@ -599,7 +598,3 @@ void Robot::playNetworkBoundSounds(uint8_t numJumpsLastKnown, bool isSprintingLa
         Util::playSound(SOUND_ID_ACTIVATE_SPRINT, getPosition(), _isServer);
     }
 }
-
-RTTI_IMPL(Robot, Entity);
-
-NW_TYPE_IMPL(Robot);

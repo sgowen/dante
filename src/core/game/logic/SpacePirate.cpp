@@ -37,6 +37,10 @@
 
 #include <math.h>
 
+RTTI_IMPL(SpacePirate, Entity);
+
+NW_TYPE_IMPL(SpacePirate);
+
 SpacePirate::SpacePirate(b2World& world, bool isServer) : Entity(world, 0, 0, 2.0f, 2.347826086956522f, isServer, constructEntityDef()),
 _speed(0.0),
 _health(8),
@@ -359,7 +363,3 @@ bool SpacePirate::isFacingLeft()
 {
     return _isFacingLeft;
 }
-
-RTTI_IMPL(SpacePirate, Entity);
-
-NW_TYPE_IMPL(SpacePirate);

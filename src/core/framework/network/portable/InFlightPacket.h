@@ -21,7 +21,7 @@ class InFlightPacket
 public:
     InFlightPacket(uint16_t inSequenceNumber);
     
-    void setTransmissionData(int inKey, TransmissionData* inTransmissionData);
+    TransmissionData* setTransmissionData(int inKey, TransmissionData* inTransmissionData);
     
     TransmissionData* getTransmissionData(int inKey) const;
     

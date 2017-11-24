@@ -51,7 +51,7 @@ private:
     uint32_t _dispatchedPacketCount;
     
     bool _shouldSendAcks;
-    bool _shouldprocessAcks;
+    bool _shouldProcessAcks;
     
     InFlightPacket* writeSequenceNumber(OutputMemoryBitStream& inOutputStream);
     

@@ -9,6 +9,9 @@
 #ifndef __noctisgames__NetworkManagerServer__
 #define __noctisgames__NetworkManagerServer__
 
+#include "NGPool.h"
+#include "framework/network/server/ReplicationManagerTransmissionData.h"
+
 #include <map>
 
 class ServerHelper;
@@ -84,6 +87,7 @@ private:
     HandleLostClientFunc _handleLostClientFunc;
     InputStateCreationFunc _inputStateCreationFunc;
     
+    NoctisGames::NGPool<ReplicationManagerTransmissionData> _replicationManagerTransmissionDatas;
     std::map<size_t, ClientProxy*> _addressHashToClientMap;
     std::map<int, ClientProxy*> _playerIDToClientMap;
     uint8_t _nextPlayerId;

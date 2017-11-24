@@ -101,7 +101,6 @@ private:
     float _frameRate;
     
     float _lastMoveProcessedByServerTimestamp;
-    float _lastMoveReceivedByServerTimestamp;
     float _lastServerCommunicationTimestamp;
     
     WeightedTimedMovingAverage* _avgRoundTripTime;

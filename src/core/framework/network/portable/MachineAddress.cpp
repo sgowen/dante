@@ -10,6 +10,8 @@
 
 #include "framework/network/portable/MachineAddress.h"
 
+RTTI_IMPL_NOPARENT(MachineAddress);
+
 MachineAddress::MachineAddress()
 {
     // Empty
@@ -19,5 +21,3 @@ MachineAddress::~MachineAddress()
 {
     // Empty
 }
-
-RTTI_IMPL_NOPARENT(MachineAddress);

@@ -37,6 +37,10 @@
 
 #include <math.h>
 
+RTTI_IMPL(Projectile, Entity);
+
+NW_TYPE_IMPL(Projectile);
+
 Projectile::Projectile(b2World& world, bool isServer) : Entity(world, 0, 0, 1.565217391304348f * 0.444444444444444f, 2.0f * 0.544423440453686f, isServer, constructEntityDef(), false),
 _playerId(0),
 _isFacingLeft(false),
@@ -95,7 +99,7 @@ void Projectile::update()
     
     if (_isServer)
     {
-        //NG_SERVER->setStateDirty(getID(), PRJC_Pose);
+        NG_SERVER->setStateDirty(getID(), PRJC_Pose);
     }
     else
     {
@@ -173,7 +177,7 @@ void Projectile::read(InputMemoryBitStream& inInputStream)
     {
         uint8_t state;
         inInputStream.read<uint8_t, 2>(state);
-        _state = (ProjectileState) state;
+        _state = static_cast<ProjectileState>(state);
         
         inInputStream.read(_stateTime);
         
@@ -327,6 +331,3 @@ void Projectile::explode()
     }
 }
 
-RTTI_IMPL(Projectile, Entity);
-
-NW_TYPE_IMPL(Projectile);

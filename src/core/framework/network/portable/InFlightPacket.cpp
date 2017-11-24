@@ -19,15 +19,13 @@ _timeDispatched(Timing::getInstance()->getFrameStartTime())
     //null out other transmision data params...
 }
 
-void InFlightPacket::setTransmissionData(int inKey, TransmissionData* inTransmissionData)
+TransmissionData* InFlightPacket::setTransmissionData(int inKey, TransmissionData* inTransmissionData)
 {
-    TransmissionData* currentTransmissionData;
-    if ((currentTransmissionData = getTransmissionData(inKey)))
-    {
-        delete currentTransmissionData;
-    }
+    TransmissionData* currentTransmissionData = getTransmissionData(inKey);
     
     _transmissionDataMap[inKey] = inTransmissionData;
+    
+    return currentTransmissionData;
 }
 
 TransmissionData* InFlightPacket::getTransmissionData(int inKey) const

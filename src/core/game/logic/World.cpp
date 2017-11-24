@@ -179,7 +179,7 @@ void World::postRead()
             }
         }
         
-        stepPhysics(FRAME_RATE);
+        stepPhysics();
         
         for (Entity* entity : _entities)
         {
@@ -235,7 +235,7 @@ void World::update()
                     }
                 }
                 
-                stepPhysics(FRAME_RATE);
+                stepPhysics();
                 
                 // Update all game objects- sometimes they want to die, so we need to tread carefully...
                 
@@ -293,7 +293,7 @@ void World::update()
                 }
             }
             
-            stepPhysics(FRAME_RATE);
+            stepPhysics();
             
             for (Entity* entity : _entities)
             {
@@ -385,14 +385,14 @@ b2World& World::getWorld()
     return *_world;
 }
 
-void World::stepPhysics(float deltaTime)
+void World::stepPhysics()
 {
     static int32 velocityIterations = 6;
     static int32 positionIterations = 2;
     
     // Instruct the world to perform a single step of simulation.
     // It is generally best to keep the time step and iterations fixed.
-    _world->Step(deltaTime, velocityIterations, positionIterations);
+    _world->Step(FRAME_RATE, velocityIterations, positionIterations);
 }
 
 int World::getMoveCount()

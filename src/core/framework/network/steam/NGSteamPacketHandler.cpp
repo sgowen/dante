@@ -88,7 +88,7 @@ void NGSteamPacketHandler::readIncomingPacketsIntoQueue()
                     _packetQueue.push(ReceivedPacket(simulatedReceivedTime, inputStream, fromId));
                 }
                 
-#ifdef NETWORK_LOG
+#ifdef NG_LOG
                 if (!_isServer)
                 {
                     LOG("readByteCount: %d", readByteCount);

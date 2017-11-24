@@ -25,6 +25,10 @@
 
 #include <math.h>
 
+RTTI_IMPL(SpacePirateChunk, Entity);
+
+NW_TYPE_IMPL(SpacePirateChunk);
+
 SpacePirateChunk::SpacePirateChunk(b2World& world, bool isServer) : Entity(world, 0.0f, 0.0f, 1.0f, 1.0f, isServer, constructEntityDef()), _type(Space_Pirate_Chunk_Top_Left), _isFacingLeft(false)
 {
     // Empty
@@ -271,7 +275,3 @@ bool SpacePirateChunk::isFacingLeft()
 {
     return _isFacingLeft;
 }
-
-RTTI_IMPL(SpacePirateChunk, Entity);
-
-NW_TYPE_IMPL(SpacePirateChunk);

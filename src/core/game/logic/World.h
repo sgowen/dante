@@ -84,7 +84,7 @@ private:
     EntityContactFilter* _entityContactFilter;
     bool _isServer;
     
-    void stepPhysics(float deltaTime);
+    void stepPhysics();
     
     int getMoveCount();
 };

@@ -21,7 +21,9 @@ class ReplicationManagerServer;
 class ReplicationManagerTransmissionData : public TransmissionData
 {
 public:
-    ReplicationManagerTransmissionData(ReplicationManagerServer* inReplicationManagerServer);
+    ReplicationManagerTransmissionData();
+    
+    void reset(ReplicationManagerServer* inReplicationManagerServer);
     
     void addTransmission(uint32_t inNetworkId, ReplicationAction inAction, uint32_t inState);
     

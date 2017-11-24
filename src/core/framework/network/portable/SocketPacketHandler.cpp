@@ -123,7 +123,7 @@ void SocketPacketHandler::readIncomingPacketsIntoQueue()
             ++receivedPacketCount;
             totalReadByteCount += readByteCount;
             
-#ifdef NETWORK_LOG
+#ifdef NG_LOG
             if (!_isServer)
             {
                 LOG("readByteCount: %d", readByteCount);

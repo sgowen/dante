@@ -18,10 +18,16 @@
 #include "framework/network/portable/ReplicationAction.h"
 #include "framework/network/portable/DeliveryNotificationManager.h"
 
-ReplicationManagerTransmissionData::ReplicationManagerTransmissionData(ReplicationManagerServer* inReplicationManagerServer) :
-_replicationManagerServer(inReplicationManagerServer)
+ReplicationManagerTransmissionData::ReplicationManagerTransmissionData() :
+_replicationManagerServer(NULL)
 {
     // Empty
+}
+
+void ReplicationManagerTransmissionData::reset(ReplicationManagerServer* inReplicationManagerServer)
+{
+    _replicationManagerServer = inReplicationManagerServer;
+    _transmissions.clear();
 }
 
 void ReplicationManagerTransmissionData::addTransmission(uint32_t inNetworkId, ReplicationAction inAction, uint32_t inState)

@@ -14,6 +14,8 @@
 
 #include <cstring>	// memcpy()
 
+RTTI_IMPL(SocketAddress, MachineAddress);
+
 SocketAddress::SocketAddress(uint32_t inAddress, uint16_t inPort) : MachineAddress()
 {
     getAsSockAddrIn()->sin_family = AF_INET;
@@ -141,5 +143,3 @@ const sockaddr_in6* SocketAddress::getAsSockAddrIn6() const
 {
     return reinterpret_cast<const sockaddr_in6*>(&_sockAddr);
 }
-
-RTTI_IMPL(SocketAddress, MachineAddress);

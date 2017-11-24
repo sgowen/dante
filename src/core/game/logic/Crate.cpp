@@ -24,6 +24,10 @@
 
 #include <math.h>
 
+RTTI_IMPL(Crate, Entity);
+
+NW_TYPE_IMPL(Crate);
+
 Crate::Crate(b2World& world, bool isServer) : Entity(world, 0.0f, 0.0f, 1.0f, 1.0f, isServer, constructEntityDef())
 {
     // Empty
@@ -145,7 +149,3 @@ bool Crate::needsMoveReplay()
 {
     return (_readState & CRAT_Pose) != 0;
 }
-
-RTTI_IMPL(Crate, Entity);
-
-NW_TYPE_IMPL(Crate);

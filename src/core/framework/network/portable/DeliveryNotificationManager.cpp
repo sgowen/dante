@@ -19,7 +19,7 @@ DeliveryNotificationManager::DeliveryNotificationManager(bool inShouldSendAcks, 
 _nextOutgoingSequenceNumber(0),
 _nextExpectedSequenceNumber(0),
 _shouldSendAcks(inShouldSendAcks),
-_shouldprocessAcks(inShouldprocessAcks),
+_shouldProcessAcks(inShouldprocessAcks),
 _deliveredPacketCount(0),
 _droppedPacketCount(0),
 _dispatchedPacketCount(0)
@@ -30,11 +30,13 @@ _dispatchedPacketCount(0)
 DeliveryNotificationManager::~DeliveryNotificationManager()
 {
     if (_dispatchedPacketCount > 0
-        && _shouldprocessAcks)
+        && _shouldProcessAcks)
     {
+#ifdef NG_LOG
         LOG("DeliveryNotificationManager destructor. Delivery rate %d%%, Drop rate %d%%",
             (100 * _deliveredPacketCount) / _dispatchedPacketCount,
             (100 * _droppedPacketCount) / _dispatchedPacketCount);
+#endif
     }
 }
 
@@ -52,7 +54,7 @@ InFlightPacket* DeliveryNotificationManager::writeState(OutputMemoryBitStream& i
 bool DeliveryNotificationManager::readAndProcessState(InputMemoryBitStream& inInputStream)
 {
     bool toRet = processSequenceNumber(inInputStream);
-    if (_shouldprocessAcks)
+    if (_shouldProcessAcks)
     {
         processAcks(inInputStream);
     }
@@ -111,7 +113,7 @@ InFlightPacket* DeliveryNotificationManager::writeSequenceNumber(OutputMemoryBit
     
     ++_dispatchedPacketCount;
     
-    if (_shouldprocessAcks)
+    if (_shouldProcessAcks)
     {
         _inFlightPackets.push_back(InFlightPacket(sequenceNumber));
         

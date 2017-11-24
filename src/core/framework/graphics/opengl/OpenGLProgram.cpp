@@ -153,7 +153,7 @@ GLuint OpenGLProgram::compileShader(const GLenum type, const void* source, const
 
         GLchar* errorLog = (GLchar*) malloc(maxLength);
         glGetShaderInfoLog(shader_object_id, maxLength, &maxLength, errorLog);
-        printf("%s", errorLog);
+        LOG("%s", errorLog);
 
         glDeleteShader(shader_object_id);
 

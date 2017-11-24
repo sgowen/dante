@@ -21,6 +21,10 @@
 
 #include <math.h>
 
+RTTI_IMPL(Ground, Entity);
+
+NW_TYPE_IMPL(Ground);
+
 Ground::Ground(b2World& world, bool isServer) : Entity(world, GAME_WIDTH / 2.0f, -10.0f, GAME_WIDTH, 23.6f, isServer, constructEntityDef())
 {
     // Empty
@@ -86,7 +90,3 @@ bool Ground::needsMoveReplay()
 {
     return false;
 }
-
-RTTI_IMPL(Ground, Entity);
-
-NW_TYPE_IMPL(Ground);

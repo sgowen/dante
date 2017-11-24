@@ -602,6 +602,8 @@
 		BBAFD32D1EF44813004F2742 /* MachineAddress.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAFD32B1EF44813004F2742 /* MachineAddress.cpp */; };
 		BBAFD3301EF4496D004F2742 /* NGSteamAddress.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAFD32E1EF4496D004F2742 /* NGSteamAddress.cpp */; };
 		BBAFD3331EF45EEA004F2742 /* FWInstanceManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAFD3311EF45EEA004F2742 /* FWInstanceManager.cpp */; };
+		BBB1D3AE1FC8CB9800B74BAC /* Extension.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBB1D3AD1FC8CB9700B74BAC /* Extension.cpp */; };
+		BBB1D3AF1FC8CB9800B74BAC /* Extension.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBB1D3AD1FC8CB9700B74BAC /* Extension.cpp */; };
 		BBBCB2EB1EF090E900B77938 /* NGSteam.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBBCB2EA1EF090E900B77938 /* NGSteam.cpp */; };
 		BBBCB2EE1EF0993000B77938 /* NGSteamGameServer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBBCB2EC1EF0993000B77938 /* NGSteamGameServer.cpp */; };
 		BBBD14901EE06858003F9307 /* StringUtil.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBBD148E1EE06858003F9307 /* StringUtil.cpp */; };
@@ -1471,6 +1473,12 @@
 		BBAFD32F1EF4496D004F2742 /* NGSteamAddress.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NGSteamAddress.h; sourceTree = "<group>"; };
 		BBAFD3311EF45EEA004F2742 /* FWInstanceManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FWInstanceManager.cpp; sourceTree = "<group>"; };
 		BBAFD3321EF45EEA004F2742 /* FWInstanceManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FWInstanceManager.h; sourceTree = "<group>"; };
+		BBB1D3A81FC8C65F00B74BAC /* NGPool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NGPool.h; sourceTree = "<group>"; };
+		BBB1D3A91FC8CA4D00B74BAC /* Vector.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Vector.h; sourceTree = "<group>"; };
+		BBB1D3AA1FC8CA4D00B74BAC /* ContainerUtil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ContainerUtil.h; sourceTree = "<group>"; };
+		BBB1D3AB1FC8CA4D00B74BAC /* HashMap.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HashMap.h; sourceTree = "<group>"; };
+		BBB1D3AC1FC8CB9700B74BAC /* Extension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Extension.h; sourceTree = "<group>"; };
+		BBB1D3AD1FC8CB9700B74BAC /* Extension.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Extension.cpp; sourceTree = "<group>"; };
 		BBBCB2EA1EF090E900B77938 /* NGSteam.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NGSteam.cpp; sourceTree = "<group>"; };
 		BBBCB2EC1EF0993000B77938 /* NGSteamGameServer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NGSteamGameServer.cpp; sourceTree = "<group>"; };
 		BBBCB2ED1EF0993000B77938 /* NGSteamGameServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NGSteamGameServer.h; sourceTree = "<group>"; };
@@ -2779,11 +2787,16 @@
 		BB7428381EB2AF4100B7628D /* util */ = {
 			isa = PBXGroup;
 			children = (
+				BBB1D3AA1FC8CA4D00B74BAC /* ContainerUtil.h */,
+				BBB1D3AD1FC8CB9700B74BAC /* Extension.cpp */,
+				BBB1D3AC1FC8CB9700B74BAC /* Extension.h */,
 				BB7428391EB2AF4200B7628D /* FlagUtil.h */,
 				BBCDF24D1F3796C3006E94B0 /* FPSUtil.cpp */,
 				BBCDF24E1F3796C3006E94B0 /* FPSUtil.h */,
 				BB61CB581EC9FA1B000E0291 /* FrameworkConstants.h */,
+				BBB1D3AB1FC8CA4D00B74BAC /* HashMap.h */,
 				BB74283A1EB2AF4200B7628D /* macros.h */,
+				BBB1D3A81FC8C65F00B74BAC /* NGPool.h */,
 				BB74283B1EB2AF4200B7628D /* NGRollingPool.h */,
 				BB74283C1EB2AF4200B7628D /* NGSTDUtil.h */,
 				BB74283D1EB2AF4200B7628D /* RTTI.cpp */,
@@ -2794,6 +2807,7 @@
 				BB74283F1EB2AF4200B7628D /* StringUtil.h */,
 				BBBD14921EE06BB3003F9307 /* Timing.cpp */,
 				BBBD14931EE06BB3003F9307 /* Timing.h */,
+				BBB1D3A91FC8CA4D00B74BAC /* Vector.h */,
 				BBBD14941EE06BB3003F9307 /* WeightedTimedMovingAverage.cpp */,
 				BBBD14951EE06BB3003F9307 /* WeightedTimedMovingAverage.h */,
 			);
@@ -3586,6 +3600,7 @@
 				BB31B5B11FC205D5005F1C0A /* KeyboardInputManager.cpp in Sources */,
 				BB19128E1FABB66A00BDC6D0 /* b2Distance.cpp in Sources */,
 				BB6F64661FBE009C00BD7697 /* TransformConstraintTimeline.cpp in Sources */,
+				BBB1D3AE1FC8CB9800B74BAC /* Extension.cpp in Sources */,
 				BB31B5AD1FC205D5005F1C0A /* CursorConverter.cpp in Sources */,
 				BB8308801EC2AD1F00435E7E /* UDPSocket.cpp in Sources */,
 				BB6F64541FBE009C00BD7697 /* SkeletonData.cpp in Sources */,
@@ -3764,6 +3779,7 @@
 				BB27D2591FC6567F00ED42FD /* OALActionManager.m in Sources */,
 				BB27D25A1FC6567F00ED42FD /* OALAction.m in Sources */,
 				BB27D25B1FC6567F00ED42FD /* OALUtilityActions.m in Sources */,
+				BBB1D3AF1FC8CB9800B74BAC /* Extension.cpp in Sources */,
 				BB27D25C1FC6567F00ED42FD /* OALAudioActions.m in Sources */,
 				BB27D25D1FC6567F00ED42FD /* OALSuspendHandler.m in Sources */,
 				BB6F64711FBE009C00BD7697 /* RotateTimeline.cpp in Sources */,
@@ -4150,7 +4166,7 @@
 					_DEBUG,
 					NG_STEAM,
 					_GLFW_COCOA,
-					NETWORK_LOG,
+					NG_LOG,
 				);
 				GCC_WARN_ABOUT_INVALID_OFFSETOF_MACRO = NO;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;

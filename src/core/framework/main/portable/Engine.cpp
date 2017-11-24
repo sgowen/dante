@@ -18,6 +18,8 @@
 #include "framework/util/FPSUtil.h"
 #include "framework/input/CursorConverter.h"
 
+RTTI_IMPL_NOPARENT(Engine);
+
 Engine::Engine(Renderer* inRenderer) :
 _renderer(inRenderer),
 _stateTime(0),
@@ -94,5 +96,3 @@ void Engine::clearRequestedAction()
 {
     _requestedAction = REQUESTED_ACTION_UPDATE;
 }
-
-RTTI_IMPL_NOPARENT(Engine);
