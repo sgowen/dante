@@ -123,7 +123,7 @@ uint32_t Crate::write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtySta
     
     if (inDirtyState & CRAT_Pose)
     {
-        inOutputStream.write((bool)true);
+        inOutputStream.write(true);
         
         inOutputStream.write(getVelocity());
         
@@ -135,7 +135,7 @@ uint32_t Crate::write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtySta
     }
     else
     {
-        inOutputStream.write((bool)false);
+        inOutputStream.write(false);
     }
     
     return writtenState;

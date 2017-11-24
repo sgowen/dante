@@ -20,7 +20,7 @@
 #include "framework/util/StringUtil.h"
 #include "framework/network/portable/Network.h"
 
-NGSteamPacketHandler::NGSteamPacketHandler(bool isServer, ProcessPacketFunc processPacketFunc, HandleNoResponseFunc handleNoResponseFunc, HandleConnectionResetFunc handleConnectionResetFunc) : PacketHandler(processPacketFunc, handleNoResponseFunc, handleConnectionResetFunc), _isServer(isServer)
+NGSteamPacketHandler::NGSteamPacketHandler(bool isServer, ProcessPacketFunc processPacketFunc, HandleNoResponseFunc handleNoResponseFunc, HandleConnectionResetFunc handleConnectionResetFunc) : PacketHandler(isServer, processPacketFunc, handleNoResponseFunc, handleConnectionResetFunc)
 {
     // Empty
 }
@@ -56,7 +56,7 @@ void NGSteamPacketHandler::readIncomingPacketsIntoQueue()
     
     bzero(packetMem, NW_MAX_PACKET_SIZE);
     
-    uint32 packetSize = sizeof(packetMem);
+    static uint32 packetSize = sizeof(packetMem);
     uint32_t incomingSize = 0;
     InputMemoryBitStream inputStream(packetMem, packetSize * 8);
     CSteamID fromId;
@@ -88,7 +88,12 @@ void NGSteamPacketHandler::readIncomingPacketsIntoQueue()
                     _packetQueue.push(ReceivedPacket(simulatedReceivedTime, inputStream, fromId));
                 }
                 
-                LOG("readByteCount: %d", readByteCount);
+#ifdef NETWORK_LOG
+                if (!_isServer)
+                {
+                    LOG("readByteCount: %d", readByteCount);
+                }
+#endif
             }
         }
     }

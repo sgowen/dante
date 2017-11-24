@@ -264,7 +264,7 @@ uint32_t SpacePirate::write(OutputMemoryBitStream& inOutputStream, uint32_t inDi
     
     if (inDirtyState & SPCP_Info)
     {
-        inOutputStream.write((bool)true);
+        inOutputStream.write(true);
         
         inOutputStream.write(_color);
         
@@ -275,12 +275,12 @@ uint32_t SpacePirate::write(OutputMemoryBitStream& inOutputStream, uint32_t inDi
     }
     else
     {
-        inOutputStream.write((bool)false);
+        inOutputStream.write(false);
     }
     
     if (inDirtyState & SPCP_Pose)
     {
-        inOutputStream.write((bool)true);
+        inOutputStream.write(true);
         
         inOutputStream.write(_stateTime);
         
@@ -288,19 +288,19 @@ uint32_t SpacePirate::write(OutputMemoryBitStream& inOutputStream, uint32_t inDi
         
         inOutputStream.write(getPosition());
         
-        inOutputStream.write((bool)_isFacingLeft);
-        inOutputStream.write((bool)_isJumping);
+        inOutputStream.write(_isFacingLeft);
+        inOutputStream.write(_isJumping);
         
         writtenState |= SPCP_Pose;
     }
     else
     {
-        inOutputStream.write((bool)false);
+        inOutputStream.write(false);
     }
     
     if (inDirtyState & SPCP_Health)
     {
-        inOutputStream.write((bool)true);
+        inOutputStream.write(true);
         
         inOutputStream.write(_health);
         
@@ -308,7 +308,7 @@ uint32_t SpacePirate::write(OutputMemoryBitStream& inOutputStream, uint32_t inDi
     }
     else
     {
-        inOutputStream.write((bool)false);
+        inOutputStream.write(false);
     }
     
     return writtenState;

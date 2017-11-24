@@ -24,7 +24,7 @@ class MachineAddress;
 class SocketPacketHandler : public PacketHandler
 {
 public:
-    SocketPacketHandler(uint16_t inPort, ProcessPacketFunc processPacketFunc, HandleNoResponseFunc handleNoResponseFunc, HandleConnectionResetFunc handleConnectionResetFunc);
+    SocketPacketHandler(bool isServer, uint16_t inPort, ProcessPacketFunc processPacketFunc, HandleNoResponseFunc handleNoResponseFunc, HandleConnectionResetFunc handleConnectionResetFunc);
     
     virtual ~SocketPacketHandler();
     

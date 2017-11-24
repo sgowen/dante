@@ -12,13 +12,14 @@
 
 #include "framework/util/WeightedTimedMovingAverage.h"
 
-PacketHandler::PacketHandler(ProcessPacketFunc processPacketFunc, HandleNoResponseFunc handleNoResponseFunc, HandleConnectionResetFunc handleConnectionResetFunc) :
+PacketHandler::PacketHandler(bool isServer, ProcessPacketFunc processPacketFunc, HandleNoResponseFunc handleNoResponseFunc, HandleConnectionResetFunc handleConnectionResetFunc) :
 _processPacketFunc(processPacketFunc),
 _handleNoResponseFunc(handleNoResponseFunc),
 _handleConnectionResetFunc(handleConnectionResetFunc),
 _bytesReceivedPerSecond(new WeightedTimedMovingAverage(1.f)),
 _bytesSentPerSecond(new WeightedTimedMovingAverage(1.f)),
-_bytesSentThisFrame(0)
+_bytesSentThisFrame(0),
+_isServer(isServer)
 {
     // Empty
 }

@@ -20,7 +20,7 @@
 #include "framework/util/StringUtil.h"
 
 SocketClientHelper::SocketClientHelper(std::string inServerIPAddress, std::string inName, uint16_t inPort, ProcessPacketFunc processPacketFunc, HandleNoResponseFunc handleNoResponseFunc, HandleConnectionResetFunc handleConnectionResetFunc) :
-ClientHelper(new SocketPacketHandler(inPort, processPacketFunc, handleNoResponseFunc, handleConnectionResetFunc)),
+ClientHelper(new SocketPacketHandler(false, inPort, processPacketFunc, handleNoResponseFunc, handleConnectionResetFunc)),
 _serverAddress(SocketAddressFactory::createIPv4FromString(inServerIPAddress)),
 _name(inName)
 {

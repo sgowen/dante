@@ -25,7 +25,7 @@ typedef void (*HandleConnectionResetFunc)(MachineAddress* inFromAddress);
 class PacketHandler
 {
 public:
-    PacketHandler(ProcessPacketFunc processPacketFunc, HandleNoResponseFunc handleNoResponseFunc, HandleConnectionResetFunc handleConnectionResetFunc);
+    PacketHandler(bool isServer, ProcessPacketFunc processPacketFunc, HandleNoResponseFunc handleNoResponseFunc, HandleConnectionResetFunc handleConnectionResetFunc);
     
     virtual ~PacketHandler();
     
@@ -42,6 +42,7 @@ protected:
     HandleNoResponseFunc _handleNoResponseFunc;
     HandleConnectionResetFunc _handleConnectionResetFunc;
     int _bytesSentThisFrame;
+    bool _isServer;
     
     virtual void readIncomingPacketsIntoQueue() = 0;
     

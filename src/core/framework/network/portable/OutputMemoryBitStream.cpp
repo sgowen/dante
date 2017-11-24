@@ -15,12 +15,13 @@
 #include "framework/math/Color.h"
 #include "framework/math/MathUtil.h"
 #include "framework/util/StringUtil.h"
+#include "framework/util/FrameworkConstants.h"
 
 #include <cstring>	// memcpy()
 
 OutputMemoryBitStream::OutputMemoryBitStream() : _bitHead(0), _buffer(NULL)
 {
-    reallocBuffer(1500 * 8);
+    reallocBuffer(NW_MAX_PACKET_SIZE * 8);
 }
 
 OutputMemoryBitStream::~OutputMemoryBitStream()

@@ -245,7 +245,7 @@ void Server::respawnEnemiesIfNecessary()
                 float posY = (rand() % static_cast<int>(GAME_HEIGHT - spacePirate->getHeight() * 2)) + (2.0f + spacePirate->getHeight() * 2);
                 float speed = (rand() % 100) * 0.05f + 1.0f;
                 int scale = static_cast<int>(rand() % 3) + 1;
-                uint8_t health = static_cast<uint8_t>(rand() % 60) + 4;
+                uint8_t health = static_cast<uint8_t>(rand() % 4) + 4;
                 
                 spacePirate->init(posX, posY, speed, scale, health);
                 

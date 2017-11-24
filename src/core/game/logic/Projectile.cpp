@@ -95,7 +95,7 @@ void Projectile::update()
     
     if (_isServer)
     {
-        NG_SERVER->setStateDirty(getID(), PRJC_Pose);
+        //NG_SERVER->setStateDirty(getID(), PRJC_Pose);
     }
     else
     {
@@ -172,7 +172,7 @@ void Projectile::read(InputMemoryBitStream& inInputStream)
     if (stateBit)
     {
         uint8_t state;
-        inInputStream.read(state);
+        inInputStream.read<uint8_t, 2>(state);
         _state = (ProjectileState) state;
         
         inInputStream.read(_stateTime);
@@ -197,7 +197,7 @@ uint32_t Projectile::write(OutputMemoryBitStream& inOutputStream, uint32_t inDir
     
     if (inDirtyState & PRJC_PlayerInfo)
     {
-        inOutputStream.write((bool)true);
+        inOutputStream.write(true);
         inOutputStream.write(_playerId);
         inOutputStream.write(_color);
         
@@ -205,18 +205,18 @@ uint32_t Projectile::write(OutputMemoryBitStream& inOutputStream, uint32_t inDir
     }
     else
     {
-        inOutputStream.write((bool)false);
+        inOutputStream.write(false);
     }
     
     if (inDirtyState & PRJC_Pose)
     {
-        inOutputStream.write((bool)true);
+        inOutputStream.write(true);
         
-        inOutputStream.write((uint8_t)_state);
+        inOutputStream.write<uint8_t, 2>(static_cast<uint8_t>(_state));
         
         inOutputStream.write(_stateTime);
         
-        inOutputStream.write((bool)_isFacingLeft);
+        inOutputStream.write(_isFacingLeft);
         
         inOutputStream.write(getVelocity());
         
@@ -226,7 +226,7 @@ uint32_t Projectile::write(OutputMemoryBitStream& inOutputStream, uint32_t inDir
     }
     else
     {
-        inOutputStream.write((bool)false);
+        inOutputStream.write(false);
     }
     
     return writtenState;

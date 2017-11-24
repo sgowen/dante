@@ -26,7 +26,7 @@
 
 #include <string.h>
 
-SocketPacketHandler::SocketPacketHandler(uint16_t inPort, ProcessPacketFunc processPacketFunc, HandleNoResponseFunc handleNoResponseFunc, HandleConnectionResetFunc handleConnectionResetFunc) : PacketHandler(processPacketFunc, handleNoResponseFunc, handleConnectionResetFunc), _socketAddress(new SocketAddress(INADDR_ANY, inPort)), _socket(NULL), _isInitialized(false)
+SocketPacketHandler::SocketPacketHandler(bool isServer, uint16_t inPort, ProcessPacketFunc processPacketFunc, HandleNoResponseFunc handleNoResponseFunc, HandleConnectionResetFunc handleConnectionResetFunc) : PacketHandler(isServer, processPacketFunc, handleNoResponseFunc, handleConnectionResetFunc), _socketAddress(new SocketAddress(INADDR_ANY, inPort)), _socket(NULL), _isInitialized(false)
 {
     if (!SOCKET_UTIL->init())
     {
@@ -95,7 +95,7 @@ void SocketPacketHandler::readIncomingPacketsIntoQueue()
 
     bzero(packetMem, NW_MAX_PACKET_SIZE);
 
-    int packetSize = sizeof(packetMem);
+    static uint32_t packetSize = sizeof(packetMem);
     InputMemoryBitStream inputStream(packetMem, packetSize * 8);
     SocketAddress fromAddress;
 
@@ -122,6 +122,13 @@ void SocketPacketHandler::readIncomingPacketsIntoQueue()
             inputStream.resetToCapacity(readByteCount);
             ++receivedPacketCount;
             totalReadByteCount += readByteCount;
+            
+#ifdef NETWORK_LOG
+            if (!_isServer)
+            {
+                LOG("readByteCount: %d", readByteCount);
+            }
+#endif
 
             //we made it
             //shove the packet into the queue and we'll handle it as soon as we should...

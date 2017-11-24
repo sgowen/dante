@@ -29,6 +29,7 @@
 #include "framework/util/NGSTDUtil.h"
 #include "framework/util/FrameworkConstants.h"
 #include "framework/network/client/NetworkManagerClient.h"
+#include "framework/math/MathUtil.h"
 
 #include <assert.h>
 
@@ -385,13 +386,34 @@ void NetworkManagerServer::sendStatePacketToClient(ClientProxy* inClientProxy)
     //it's state!
     statePacket.write(NW_PACKET_TYPE_STATE);
     
+#ifdef NETWORK_LOG
+    printf("Outgoing statePacket Bit Length 1: %d \n", statePacket.getBitLength());
+#endif
+    
     InFlightPacket* ifp = inClientProxy->getDeliveryNotificationManager().writeState(statePacket);
+    
+#ifdef NETWORK_LOG
+    printf("Outgoing statePacket Bit Length 2: %d \n", statePacket.getBitLength());
+#endif
     
     writeLastMoveTimestampIfDirty(statePacket, inClientProxy);
     
+#ifdef NETWORK_LOG
+    printf("Outgoing statePacket Bit Length 3: %d \n", statePacket.getBitLength());
+#endif
+    
     ReplicationManagerTransmissionData* rmtd = new ReplicationManagerTransmissionData(&inClientProxy->getReplicationManagerServer());
     inClientProxy->getReplicationManagerServer().write(statePacket, rmtd);
+    
+#ifdef NETWORK_LOG
+    printf("Outgoing statePacket Bit Length 4: %d \n", statePacket.getBitLength());
+#endif
+    
     ifp->setTransmissionData('RPLM', rmtd);
+    
+#ifdef NETWORK_LOG
+    printf("Outgoing statePacket Bit Length F: %d \n", statePacket.getBitLength());
+#endif
     
     sendPacket(statePacket, inClientProxy->getMachineAddress());
 }
@@ -407,7 +429,15 @@ void NetworkManagerServer::writeLastMoveTimestampIfDirty(OutputMemoryBitStream& 
         float lastReceivedMoveTimestamp = inClientProxy->getUnprocessedMoveList().getLastMoveTimestamp();
         
         inOutputStream.write(lastProcessedMoveTimestamp);
-        inOutputStream.write(lastReceivedMoveTimestamp);
+        if (areFloatsPracticallyEqual(lastProcessedMoveTimestamp, lastReceivedMoveTimestamp))
+        {
+            inOutputStream.write(true);
+        }
+        else
+        {
+            inOutputStream.write(false);
+            inOutputStream.write(lastReceivedMoveTimestamp);
+        }
         
         inClientProxy->setIsLastMoveTimestampDirty(false);
     }

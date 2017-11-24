@@ -35,8 +35,6 @@ protected:
     virtual void processQueuedPackets();
     
 private:
-    bool _isServer;
-    
     class ReceivedPacket;
     std::queue<ReceivedPacket, std::list<ReceivedPacket> > _packetQueue;
     

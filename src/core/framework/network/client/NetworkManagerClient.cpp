@@ -313,7 +313,20 @@ void NetworkManagerClient::readLastMoveProcessedOnServerTimestamp(InputMemoryBit
     if (isTimestampDirty)
     {
         inInputStream.read(_lastMoveProcessedByServerTimestamp);
-        inInputStream.read(_lastMoveReceivedByServerTimestamp);
+        bool isLastMoveReceivedSameAsLastMoveProcessed;
+        inInputStream.read(isLastMoveReceivedSameAsLastMoveProcessed);
+        if (isLastMoveReceivedSameAsLastMoveProcessed)
+        {
+            _lastMoveReceivedByServerTimestamp = _lastMoveProcessedByServerTimestamp;
+        }
+        else
+        {
+            inInputStream.read(_lastMoveReceivedByServerTimestamp);
+        }
+        
+#ifdef NETWORK_LOG
+        printf("_lastMoveProcessedByServerTimestamp: %f, _lastMoveReceivedByServerTimestamp: %f \n", _lastMoveProcessedByServerTimestamp, _lastMoveReceivedByServerTimestamp);
+#endif
         
         float rtt = Timing::getInstance()->getFrameStartTime() - _lastMoveReceivedByServerTimestamp;
         _avgRoundTripTime->update(rtt);

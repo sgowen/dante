@@ -162,7 +162,7 @@ void Robot::update()
             }
         }
         
-        NG_SERVER->setStateDirty(getID(), ROBT_Pose);
+        //NG_SERVER->setStateDirty(getID(), ROBT_Pose);
         
         if (_healthLastKnown != _health
             || _numKillsLastKnown != _numKills
@@ -348,7 +348,7 @@ uint32_t Robot::write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtySta
     
     if (inDirtyState & ROBT_PlayerInfo)
     {
-        inOutputStream.write((bool)true);
+        inOutputStream.write(true);
         inOutputStream.write(_addressHash);
         inOutputStream.write(_firstProjectileId);
         inOutputStream.write(_playerId);
@@ -359,12 +359,12 @@ uint32_t Robot::write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtySta
     }
     else
     {
-        inOutputStream.write((bool)false);
+        inOutputStream.write(false);
     }
     
     if (inDirtyState & ROBT_Pose)
     {
-        inOutputStream.write((bool)true);
+        inOutputStream.write(true);
         
         inOutputStream.write(_stateTime);
         
@@ -377,32 +377,32 @@ uint32_t Robot::write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtySta
         inOutputStream.write<uint8_t, 1>(_numGroundContacts);
         inOutputStream.write(_shotCooldownTime);
         
-        inOutputStream.write((bool)_isFacingLeft);
-        inOutputStream.write((bool)_isShooting);
-        inOutputStream.write((bool)_isSprinting);
-        inOutputStream.write((bool)_isFirstJumpCompleted);
+        inOutputStream.write(_isFacingLeft);
+        inOutputStream.write(_isShooting);
+        inOutputStream.write(_isSprinting);
+        inOutputStream.write(_isFirstJumpCompleted);
         
         writtenState |= ROBT_Pose;
     }
     else
     {
-        inOutputStream.write((bool)false);
+        inOutputStream.write(false);
     }
     
     if (inDirtyState & ROBT_Stats)
     {
-        inOutputStream.write((bool)true);
+        inOutputStream.write(true);
         
         inOutputStream.write(_health);
         
         inOutputStream.write(_numKills);
-        inOutputStream.write((bool)_wasLastKillHeadshot);
+        inOutputStream.write(_wasLastKillHeadshot);
         
         writtenState |= ROBT_Stats;
     }
     else
     {
-        inOutputStream.write((bool)false);
+        inOutputStream.write(false);
     }
     
     return writtenState;

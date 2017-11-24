@@ -35,14 +35,14 @@ bool MainInputState::write(OutputMemoryBitStream& inOutputStream) const
     {
         if (_gameMainInputStates[i]._playerId != INPUT_UNASSIGNED)
         {
-            inOutputStream.write((bool)true);
+            inOutputStream.write(true);
             _gameMainInputStates[i].write(inOutputStream);
             
             ret = true;
         }
         else
         {
-            inOutputStream.write((bool)false);
+            inOutputStream.write(false);
         }
     }
     
