@@ -111,7 +111,7 @@ private:
     float _jumpSpeed;
     
     float _shotCooldownTime;
-    int _numSpacePiratesTouching;
+    uint8_t _numSpacePiratesTouching;
     bool _hasInitializedProjectiles;
     bool _isPending;
     
@@ -131,7 +131,7 @@ private:
     
     void fireProjectile();
     
-    void playNetworkBoundSounds(int numJumpsLastKnown, bool isSprintingLastKnown);
+    void playNetworkBoundSounds(uint8_t numJumpsLastKnown, bool isSprintingLastKnown);
 };
 
 #endif /* defined(__noctisgames__Robot__) */

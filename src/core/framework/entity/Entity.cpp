@@ -95,7 +95,7 @@ void Entity::handleBeginFootContact(Entity* inEntity)
 
 void Entity::handleEndFootContact(Entity* inEntity)
 {
-    --_numGroundContacts;
+    _numGroundContacts = 0;
 }
 
 void Entity::setStateTime(float stateTime)

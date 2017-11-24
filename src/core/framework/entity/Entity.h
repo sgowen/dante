@@ -148,7 +148,7 @@ protected:
     b2Fixture* _fixture;
     b2Fixture* _footSensorFixture;
     float _stateTime;
-    int _numGroundContacts;
+    uint8_t _numGroundContacts;
     Color _color;
     float _x;
     float _y;
@@ -163,7 +163,7 @@ protected:
     b2Vec2 _velocityLastKnown;
     b2Vec2 _positionLastKnown;
     float _angleLastKnown;
-    int _numGroundContactsLastKnown;
+    uint8_t _numGroundContactsLastKnown;
     
     void initPhysics(EntityDef inEntityDef);
     

@@ -73,7 +73,7 @@ _isSprintingLastKnown(false),
 _isFirstJumpCompletedLastKnown(false),
 _isPending(false)
 {
-    for (int i = 0; i < NUM_PROJECTILES; ++i)
+    for (uint8_t i = 0; i < NUM_PROJECTILES; ++i)
     {
         _projectiles[i] = NULL;
         
@@ -193,7 +193,7 @@ void Robot::update()
         if (!_hasInitializedProjectiles)
         {
             bool isInitialized = true;
-            for (int i = 0; i < NUM_PROJECTILES; ++i)
+            for (uint8_t i = 0; i < NUM_PROJECTILES; ++i)
             {
                 _projectiles[i] = static_cast<Projectile*>(FWInstanceManager::getClientEntityManager()->getEntityByID(_firstProjectileId + i));
                 
@@ -317,9 +317,9 @@ void Robot::read(InputMemoryBitStream& inInputStream)
         inInputStream.read(position);
         setPosition(position);
         
-        inInputStream.read(_numJumps);
-        inInputStream.read(_nextProjectileIndex);
-        inInputStream.read(_numGroundContacts);
+        inInputStream.read<uint8_t, 2>(_numJumps);
+        inInputStream.read<uint8_t, 3>(_nextProjectileIndex);
+        inInputStream.read<uint8_t, 1>(_numGroundContacts);
         inInputStream.read(_shotCooldownTime);
         
         inInputStream.read(_isFacingLeft);
@@ -372,9 +372,9 @@ uint32_t Robot::write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtySta
         
         inOutputStream.write(getPosition());
         
-        inOutputStream.write(_numJumps);
-        inOutputStream.write(_nextProjectileIndex);
-        inOutputStream.write(_numGroundContacts);
+        inOutputStream.write<uint8_t, 2>(_numJumps);
+        inOutputStream.write<uint8_t, 3>(_nextProjectileIndex);
+        inOutputStream.write<uint8_t, 1>(_numGroundContacts);
         inOutputStream.write(_shotCooldownTime);
         
         inOutputStream.write((bool)_isFacingLeft);
@@ -425,7 +425,7 @@ void Robot::processInput(InputState* inInputState, bool isPending)
     
     _isPending = isPending;
     
-    int numJumpsLastKnown = _numJumps;
+    uint8_t numJumpsLastKnown = _numJumps;
     bool isSprintingLastKnown = _isSprinting;
     
     b2Vec2 velocity = b2Vec2(getVelocity().x, getVelocity().y);
@@ -512,7 +512,7 @@ void Robot::setPlayerId(uint8_t inPlayerId)
 {
     _playerId = inPlayerId;
     
-    for (int i = 0; i < NUM_PROJECTILES; ++i)
+    for (uint8_t i = 0; i < NUM_PROJECTILES; ++i)
     {
         if (_projectiles[i])
         {
@@ -587,7 +587,7 @@ void Robot::fireProjectile()
     }
 }
 
-void Robot::playNetworkBoundSounds(int numJumpsLastKnown, bool isSprintingLastKnown)
+void Robot::playNetworkBoundSounds(uint8_t numJumpsLastKnown, bool isSprintingLastKnown)
 {
     if (_numJumps > numJumpsLastKnown)
     {
