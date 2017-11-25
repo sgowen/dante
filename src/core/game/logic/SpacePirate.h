@@ -20,7 +20,7 @@ class Crate;
 
 class SpacePirate : public Entity
 {
-    RTTI_DECL;
+    NGRTTI_DECL;
     
     NW_TYPE_DECL(NW_TYPE_SpacePirate);
     

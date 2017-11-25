@@ -42,7 +42,7 @@
 
 #include <math.h>
 
-RTTI_IMPL(Robot, Entity);
+NGRTTI_IMPL(Robot, Entity);
 
 NW_TYPE_IMPL(Robot);
 

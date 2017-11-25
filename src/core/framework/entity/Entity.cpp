@@ -23,7 +23,7 @@
 #include "framework/util/StringUtil.h"
 #include "framework/math/MathUtil.h"
 
-RTTI_IMPL_NOPARENT(Entity);
+NGRTTI_IMPL_NOPARENT(Entity);
 
 NW_TYPE_IMPL(Entity);
 

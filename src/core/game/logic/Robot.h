@@ -25,7 +25,7 @@ class Projectile;
 
 class Robot : public Entity
 {
-    RTTI_DECL;
+    NGRTTI_DECL;
     
     NW_TYPE_DECL(NW_TYPE_Robot);
     

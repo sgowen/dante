@@ -24,7 +24,7 @@
 
 #include <math.h>
 
-RTTI_IMPL(Crate, Entity);
+NGRTTI_IMPL(Crate, Entity);
 
 NW_TYPE_IMPL(Crate);
 

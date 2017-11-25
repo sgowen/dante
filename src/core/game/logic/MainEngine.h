@@ -15,7 +15,7 @@
 #include "framework/network/steam/NGSteam.h"
 #endif
 
-#include "framework/util/RTTI.h"
+#include "framework/util/NGRTTI.h"
 
 class Server;
 class JsonFile;
@@ -23,7 +23,7 @@ class Entity;
 
 class MainEngine : public Engine
 {
-    RTTI_DECL;
+    NGRTTI_DECL;
     
 public:
     MainEngine();

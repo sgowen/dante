@@ -9,13 +9,13 @@
 #ifndef __noctisgames__Engine__
 #define __noctisgames__Engine__
 
-#include "framework/util/RTTI.h"
+#include "framework/util/NGRTTI.h"
 
 class Renderer;
 
 class Engine
 {
-    RTTI_DECL;
+    NGRTTI_DECL;
     
 public:
     Engine(Renderer* inRenderer);

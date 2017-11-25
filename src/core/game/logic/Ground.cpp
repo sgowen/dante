@@ -21,7 +21,7 @@
 
 #include <math.h>
 
-RTTI_IMPL(Ground, Entity);
+NGRTTI_IMPL(Ground, Entity);
 
 NW_TYPE_IMPL(Ground);
 

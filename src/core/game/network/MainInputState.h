@@ -11,7 +11,7 @@
 
 #include "framework/network/portable/InputState.h"
 
-#include "framework/util/RTTI.h"
+#include "framework/util/NGRTTI.h"
 
 #define MENU_STATE_NONE 0
 #define MENU_STATE_ACTIVATE_STEAM 1
@@ -39,7 +39,7 @@ class InputMemoryBitStream;
 
 class MainInputState : public InputState
 {
-    RTTI_DECL;
+    NGRTTI_DECL;
     
     friend class InputManager;
     

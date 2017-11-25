@@ -14,13 +14,13 @@
 #include "game/logic/GameConstants.h"
 #include "Box2D/Common/b2Math.h"
 
-#include "framework/util/RTTI.h"
+#include "framework/util/NGRTTI.h"
 
 class Ground;
 
 class Crate : public Entity
 {
-    RTTI_DECL;
+    NGRTTI_DECL;
     
     NW_TYPE_DECL(NW_TYPE_Crate);
     

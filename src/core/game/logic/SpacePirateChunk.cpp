@@ -25,7 +25,7 @@
 
 #include <math.h>
 
-RTTI_IMPL(SpacePirateChunk, Entity);
+NGRTTI_IMPL(SpacePirateChunk, Entity);
 
 NW_TYPE_IMPL(SpacePirateChunk);
 

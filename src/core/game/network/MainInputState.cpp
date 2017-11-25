@@ -17,7 +17,7 @@
 
 #include <assert.h>
 
-RTTI_IMPL(MainInputState, InputState);
+NGRTTI_IMPL(MainInputState, InputState);
 
 MainInputState::MainInputState() : InputState(), _menuState(MENU_STATE_NONE)
 {

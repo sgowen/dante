@@ -14,7 +14,7 @@
 
 #include "Box2D/Common/b2Math.h"
 
-#include "framework/util/RTTI.h"
+#include "framework/util/NGRTTI.h"
 
 #include <stdint.h>
 
@@ -59,7 +59,7 @@ struct EntityDef
 
 class Entity
 {
-    RTTI_DECL;
+    NGRTTI_DECL;
     
     NW_TYPE_DECL(NW_TYPE_Entity);
     

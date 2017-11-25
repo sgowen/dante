@@ -46,7 +46,7 @@
 #include "framework/network/steam/NGSteamGameServices.h"
 #endif
 
-RTTI_IMPL(MainEngine, Engine);
+NGRTTI_IMPL(MainEngine, Engine);
 
 MainEngine::MainEngine() : Engine(new MainRenderer(MAX_BATCH_SIZE)),
 _config(new JsonFile("dante.cfg")),

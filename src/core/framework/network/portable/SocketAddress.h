@@ -13,13 +13,13 @@
 
 #include "framework/network/portable/Network.h"
 
-#include "framework/util/RTTI.h"
+#include "framework/util/NGRTTI.h"
 
 #include <string>
 
 class SocketAddress : public MachineAddress
 {
-    RTTI_DECL;
+    NGRTTI_DECL;
     
     friend class UDPSocket;
     

@@ -37,7 +37,7 @@
 
 #include <math.h>
 
-RTTI_IMPL(SpacePirate, Entity);
+NGRTTI_IMPL(SpacePirate, Entity);
 
 NW_TYPE_IMPL(SpacePirate);
 

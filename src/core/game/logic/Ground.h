@@ -13,11 +13,11 @@
 
 #include "game/logic/GameConstants.h"
 
-#include "framework/util/RTTI.h"
+#include "framework/util/NGRTTI.h"
 
 class Ground : public Entity
 {
-    RTTI_DECL;
+    NGRTTI_DECL;
     
     NW_TYPE_DECL(NW_TYPE_Ground);
     

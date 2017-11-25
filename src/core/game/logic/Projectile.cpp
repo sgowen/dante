@@ -37,7 +37,7 @@
 
 #include <math.h>
 
-RTTI_IMPL(Projectile, Entity);
+NGRTTI_IMPL(Projectile, Entity);
 
 NW_TYPE_IMPL(Projectile);
 

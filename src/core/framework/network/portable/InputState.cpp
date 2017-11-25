@@ -13,7 +13,7 @@
 #include "framework/network/portable/OutputMemoryBitStream.h"
 #include "framework/network/portable/InputMemoryBitStream.h"
 
-RTTI_IMPL_NOPARENT(InputState);
+NGRTTI_IMPL_NOPARENT(InputState);
 
 InputState::InputState() : _isInUse(false)
 {

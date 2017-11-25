@@ -18,7 +18,7 @@
 #include "framework/util/FPSUtil.h"
 #include "framework/input/CursorConverter.h"
 
-RTTI_IMPL_NOPARENT(Engine);
+NGRTTI_IMPL_NOPARENT(Engine);
 
 Engine::Engine(Renderer* inRenderer) :
 _renderer(inRenderer),
