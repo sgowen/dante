@@ -6,7 +6,9 @@
 //  Copyright (c) 2017 Noctis Games. All rights reserved.
 //
 
-#include <framework/util/Extension.h>
+#include "pch.h"
+
+#include <framework/util/NGExtension.h>
 
 //#include <iostream>
 #include <fstream>

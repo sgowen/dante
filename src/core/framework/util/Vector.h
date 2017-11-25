@@ -9,7 +9,7 @@
 #ifndef __noctisgames__Vector__
 #define __noctisgames__Vector__
 
-#include <framework/util/Extension.h>
+#include <framework/util/NGExtension.h>
 
 #include <stdlib.h>
 #include <memory>

@@ -10,7 +10,7 @@
 #define __noctisgames__ContainerUtil__
 
 #include <framework/util/Vector.h>
-#include <framework/util/Extension.h>
+#include <framework/util/NGExtension.h>
 
 namespace NoctisGames
 {

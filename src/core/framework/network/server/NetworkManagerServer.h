@@ -9,7 +9,7 @@
 #ifndef __noctisgames__NetworkManagerServer__
 #define __noctisgames__NetworkManagerServer__
 
-#include "NGPool.h"
+#include "framework/util/NGPool.h"
 #include "framework/network/server/ReplicationManagerTransmissionData.h"
 
 #include <map>
