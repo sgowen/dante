@@ -393,6 +393,10 @@
 		BB5AFE7E1FB35ACA005FBD52 /* GridManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF0C51EA94ED900F0866E /* GridManager.cpp */; };
 		BB5B8CD31FC7827600325A95 /* Extension.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB5B8CD21FC7827600325A95 /* Extension.cpp */; };
 		BB5B8CD41FC7827600325A95 /* Extension.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB5B8CD21FC7827600325A95 /* Extension.cpp */; };
+		BB67E95D1FC9F84D001F5D38 /* SkeletonClipping.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB67E95C1FC9F84D001F5D38 /* SkeletonClipping.cpp */; };
+		BB67E95E1FC9F84D001F5D38 /* SkeletonClipping.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB67E95C1FC9F84D001F5D38 /* SkeletonClipping.cpp */; };
+		BB67E9601FC9F857001F5D38 /* SkeletonBounds.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB67E95F1FC9F857001F5D38 /* SkeletonBounds.cpp */; };
+		BB67E9611FC9F857001F5D38 /* SkeletonBounds.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB67E95F1FC9F857001F5D38 /* SkeletonBounds.cpp */; };
 		BB6E7B141F940F2B006C0024 /* MainAssetsMapper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB6E7AF81F940F13006C0024 /* MainAssetsMapper.cpp */; };
 		BB6E7B151F940F2B006C0024 /* MainRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB6E7AFA1F940F13006C0024 /* MainRenderer.cpp */; };
 		BB6E7B161F940F2B006C0024 /* Crate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB6E7AFD1F940F13006C0024 /* Crate.cpp */; };
@@ -1095,6 +1099,10 @@
 		BB5B8CD21FC7827600325A95 /* Extension.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Extension.cpp; sourceTree = "<group>"; };
 		BB5F46FA1ED38D61005FEC0C /* SocketAddressFamily.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SocketAddressFamily.h; sourceTree = "<group>"; };
 		BB61CB581EC9FA1B000E0291 /* FrameworkConstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FrameworkConstants.h; sourceTree = "<group>"; };
+		BB67E95A1FC9F82D001F5D38 /* SkeletonBounds.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SkeletonBounds.h; sourceTree = "<group>"; };
+		BB67E95B1FC9F83E001F5D38 /* SkeletonClipping.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SkeletonClipping.h; sourceTree = "<group>"; };
+		BB67E95C1FC9F84D001F5D38 /* SkeletonClipping.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SkeletonClipping.cpp; sourceTree = "<group>"; };
+		BB67E95F1FC9F857001F5D38 /* SkeletonBounds.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SkeletonBounds.cpp; sourceTree = "<group>"; };
 		BB6E7A8A1F93CE1B006C0024 /* fast_mutex.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = fast_mutex.h; sourceTree = "<group>"; };
 		BB6E7A8B1F93CE1B006C0024 /* tinythread.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = tinythread.cpp; sourceTree = "<group>"; };
 		BB6E7A8C1F93CE1B006C0024 /* tinythread.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = tinythread.h; sourceTree = "<group>"; };
@@ -2696,6 +2704,8 @@
 				BB6F60C31FBE005900BD7697 /* ScaleTimeline.h */,
 				BB6F60B71FBE005900BD7697 /* ShearTimeline.h */,
 				BB6F60B31FBE005900BD7697 /* Skeleton.h */,
+				BB67E95A1FC9F82D001F5D38 /* SkeletonBounds.h */,
+				BB67E95B1FC9F83E001F5D38 /* SkeletonClipping.h */,
 				BB6F60BB1FBE005900BD7697 /* SkeletonData.h */,
 				BB6F60B91FBE005900BD7697 /* Skin.h */,
 				BB6F60C91FBE005900BD7697 /* Slot.h */,
@@ -2766,6 +2776,8 @@
 				BB6F64191FBE009A00BD7697 /* ScaleTimeline.cpp */,
 				BB6F64111FBE009900BD7697 /* ShearTimeline.cpp */,
 				BB6F63F51FBE009600BD7697 /* Skeleton.cpp */,
+				BB67E95F1FC9F857001F5D38 /* SkeletonBounds.cpp */,
+				BB67E95C1FC9F84D001F5D38 /* SkeletonClipping.cpp */,
 				BB6F64091FBE009800BD7697 /* SkeletonData.cpp */,
 				BB6F640B1FBE009800BD7697 /* Skin.cpp */,
 				BB6F64161FBE009A00BD7697 /* Slot.cpp */,
@@ -3519,6 +3531,7 @@
 				BB6E7B1F1F940F2B006C0024 /* World.cpp in Sources */,
 				BB1912A01FABB66A00BDC6D0 /* b2WorldCallbacks.cpp in Sources */,
 				BB6F598C1FBDEA0D00BD7697 /* init.c in Sources */,
+				BB67E95D1FC9F84D001F5D38 /* SkeletonClipping.cpp in Sources */,
 				BB6E7B211F940F2B006C0024 /* MainInputState.cpp in Sources */,
 				BB6F59751FBDE97D00BD7697 /* cocoa_joystick.m in Sources */,
 				BB6E7B221F940F2B006C0024 /* InstanceManager.cpp in Sources */,
@@ -3631,6 +3644,7 @@
 				BB5833D01EEDDAFC0084DA20 /* Renderer.cpp in Sources */,
 				BBAEF26A1EA94EDA00F0866E /* LineBatcherFactory.cpp in Sources */,
 				BBAEF2561EA94EDA00F0866E /* NGAnimation.cpp in Sources */,
+				BB67E9601FC9F857001F5D38 /* SkeletonBounds.cpp in Sources */,
 				BBAEF23E1EA94EDA00F0866E /* OpenGLProgram.cpp in Sources */,
 				BB9EE50D1FC092BA000F5389 /* AssetDataHandler.cpp in Sources */,
 				BBAEF2481EA94EDA00F0866E /* OpenGLTextureProgram.cpp in Sources */,
@@ -3837,6 +3851,7 @@
 				BB5AFE731FB35AAF005FBD52 /* TextureLoaderFactory.cpp in Sources */,
 				BB5AFE741FB35AAF005FBD52 /* TextureRegion.cpp in Sources */,
 				BB5AFE751FB35AAF005FBD52 /* TextureWrapper.cpp in Sources */,
+				BB67E95E1FC9F84D001F5D38 /* SkeletonClipping.cpp in Sources */,
 				BB6F64591FBE009C00BD7697 /* Skin.cpp in Sources */,
 				BB5AFE761FB35AAF005FBD52 /* TransitionGpuProgramWrapper.cpp in Sources */,
 				BB5AFE171FB359EA005FBD52 /* FPSUtil.cpp in Sources */,
@@ -4004,6 +4019,7 @@
 				BB5AFDB61FB3595F005FBD52 /* pngset.c in Sources */,
 				BB9EE5171FC092C5000F5389 /* AppleAssetDataHandler.cpp in Sources */,
 				BB5AFDB71FB3595F005FBD52 /* pngtrans.c in Sources */,
+				BB67E9611FC9F857001F5D38 /* SkeletonBounds.cpp in Sources */,
 				BB5AFDB81FB3595F005FBD52 /* pngwio.c in Sources */,
 				BB5AFDB91FB3595F005FBD52 /* pngwrite.c in Sources */,
 				BB5AFDBA1FB3595F005FBD52 /* pngwtran.c in Sources */,
