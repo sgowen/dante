@@ -9,6 +9,7 @@
 #ifndef __noctisgames__HashMap__
 #define __noctisgames__HashMap__
 
+#include <framework/util/NGExtension.h>
 #include <framework/util/Vector.h>
 
 namespace NoctisGames
@@ -126,7 +127,7 @@ namespace NoctisGames
             
             size_t index = hash(key);
             
-            Entry* entry = MALLOC(Entry, 1);
+            Entry* entry = NG_MALLOC(Entry, 1);
             new (entry) Entry();
             entry->_key = key;
             entry->_value = value;
@@ -235,7 +236,7 @@ namespace NoctisGames
                         pos._entry->next->prev = pos._entry->prev;
                     }
                     
-                    DESTROY(Entry, pos._entry);
+                    NG_DESTROY(Entry, pos._entry);
                 }
                 else if (_hashTable[index].next == pos._entry)
                 {
@@ -251,7 +252,7 @@ namespace NoctisGames
                         pos._entry->next->prev = pos._entry->prev;
                     }
                     
-                    DESTROY(Entry, pos._entry);
+                    NG_DESTROY(Entry, pos._entry);
                 }
                 else if (_hashTable[index].prev == pos._entry)
                 {
@@ -267,14 +268,14 @@ namespace NoctisGames
                         pos._entry->next->prev = pos._entry->prev;
                     }
                     
-                    DESTROY(Entry, pos._entry);
+                    NG_DESTROY(Entry, pos._entry);
                 }
                 else
                 {
                     pos._entry->prev->next = pos._entry->next;
                     pos._entry->next->prev = pos._entry->prev;
                     
-                    DESTROY(Entry, pos._entry);
+                    NG_DESTROY(Entry, pos._entry);
                 }
                 
                 _hashSize--;

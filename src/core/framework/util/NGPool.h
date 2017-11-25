@@ -9,6 +9,7 @@
 #ifndef __noctisgames__NGPool__
 #define __noctisgames__NGPool__
 
+#include <framework/util/NGExtension.h>
 #include <framework/util/Vector.h>
 #include <framework/util/ContainerUtil.h>
 
@@ -39,7 +40,7 @@ namespace NoctisGames
             }
             else
             {
-                T* ret = MALLOC(T, 1);
+                T* ret = NG_MALLOC(T, 1);
                 new (ret) T();
                 
                 return ret;

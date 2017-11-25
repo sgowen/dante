@@ -129,7 +129,7 @@ namespace NoctisGames
             size_t newCapacity = inCapacity > 0 ? inCapacity : _capacity > 0 ? _capacity * 2 : 1;
             if (newCapacity > _capacity)
             {
-                _buffer = REALLOC(_buffer, T, newCapacity);
+                _buffer = NG_REALLOC(_buffer, T, newCapacity);
                 _capacity = newCapacity;
             }
         }
@@ -153,7 +153,7 @@ namespace NoctisGames
         {
             assert(n > 0);
             
-            T* ptr = MALLOC(T, n);
+            T* ptr = NG_MALLOC(T, n);
             
             assert(ptr);
             
@@ -162,7 +162,7 @@ namespace NoctisGames
         
         void deallocate(T* buffer)
         {
-            FREE(buffer);
+            NG_FREE(buffer);
         }
         
         void construct(T* buffer, const T& val)

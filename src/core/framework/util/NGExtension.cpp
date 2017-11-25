@@ -1,5 +1,5 @@
 //
-//  Extension.cpp
+//  NGExtension.cpp
 //  noctisgames-framework
 //
 //  Created by Stephen Gowen on 11/24/17.

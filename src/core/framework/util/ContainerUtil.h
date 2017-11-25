@@ -9,8 +9,8 @@
 #ifndef __noctisgames__ContainerUtil__
 #define __noctisgames__ContainerUtil__
 
-#include <framework/util/Vector.h>
 #include <framework/util/NGExtension.h>
+#include <framework/util/Vector.h>
 
 namespace NoctisGames
 {
@@ -24,7 +24,7 @@ namespace NoctisGames
             {
                 T* item = items[i];
                 
-                DESTROY(T, item);
+                NG_DESTROY(T, item);
                 
                 items.erase(i);
             }

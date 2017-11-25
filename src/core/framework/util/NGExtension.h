@@ -1,5 +1,5 @@
 //
-//  Extension.h
+//  NGExtension.h
 //  noctisgames-framework
 //
 //  Created by Stephen Gowen on 11/24/17.
@@ -10,14 +10,14 @@
 #define __noctisgames__Extension__
 
 /* All allocation uses these. */
-#define MALLOC(TYPE,COUNT) ((TYPE*)ngAlloc(sizeof(TYPE) * (COUNT), __FILE__, __LINE__))
-#define REALLOC(PTR,TYPE,COUNT) ((TYPE*)ngRealloc(PTR, sizeof(TYPE) * (COUNT), __FILE__, __LINE__))
+#define NG_MALLOC(TYPE,COUNT) ((TYPE*)ngAlloc(sizeof(TYPE) * (COUNT), __FILE__, __LINE__))
+#define NG_REALLOC(PTR,TYPE,COUNT) ((TYPE*)ngRealloc(PTR, sizeof(TYPE) * (COUNT), __FILE__, __LINE__))
 
 /* Frees memory. Can be used on const types. */
-#define FREE(VALUE) ngFree((void*)VALUE)
+#define NG_FREE(VALUE) ngFree((void*)VALUE)
 
 /* Call destructor and then frees memory. Can be used on const types. */
-#define DESTROY(TYPE,VALUE) VALUE->~TYPE(); ngFree((void*)VALUE)
+#define NG_DESTROY(TYPE,VALUE) VALUE->~TYPE(); ngFree((void*)VALUE)
 
 #include <stdlib.h>
 
