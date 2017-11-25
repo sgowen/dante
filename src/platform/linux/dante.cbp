@@ -346,6 +346,7 @@
 		<Unit filename="../../3rdparty/spine-runtimes/spine-cpp/spine-cpp/include/spine/Event.h" />
 		<Unit filename="../../3rdparty/spine-runtimes/spine-cpp/spine-cpp/include/spine/EventData.h" />
 		<Unit filename="../../3rdparty/spine-runtimes/spine-cpp/spine-cpp/include/spine/EventTimeline.h" />
+		<Unit filename="../../3rdparty/spine-runtimes/spine-cpp/spine-cpp/include/spine/Extension.h" />
 		<Unit filename="../../3rdparty/spine-runtimes/spine-cpp/spine-cpp/include/spine/HashMap.h" />
 		<Unit filename="../../3rdparty/spine-runtimes/spine-cpp/spine-cpp/include/spine/IkConstraint.h" />
 		<Unit filename="../../3rdparty/spine-runtimes/spine-cpp/spine-cpp/include/spine/IkConstraintData.h" />
@@ -406,6 +407,7 @@
 		<Unit filename="../../3rdparty/spine-runtimes/spine-cpp/spine-cpp/src/spine/Event.cpp" />
 		<Unit filename="../../3rdparty/spine-runtimes/spine-cpp/spine-cpp/src/spine/EventData.cpp" />
 		<Unit filename="../../3rdparty/spine-runtimes/spine-cpp/spine-cpp/src/spine/EventTimeline.cpp" />
+		<Unit filename="../../3rdparty/spine-runtimes/spine-cpp/spine-cpp/src/spine/Extension.cpp" />
 		<Unit filename="../../3rdparty/spine-runtimes/spine-cpp/spine-cpp/src/spine/IkConstraint.cpp" />
 		<Unit filename="../../3rdparty/spine-runtimes/spine-cpp/spine-cpp/src/spine/IkConstraintData.cpp" />
 		<Unit filename="../../3rdparty/spine-runtimes/spine-cpp/spine-cpp/src/spine/IkConstraintTimeline.cpp" />
@@ -705,12 +707,18 @@
 		<Unit filename="../../core/framework/network/steam/NGSteamPacketHandler.h" />
 		<Unit filename="../../core/framework/network/steam/NGSteamServerHelper.cpp" />
 		<Unit filename="../../core/framework/network/steam/NGSteamServerHelper.h" />
+		<Unit filename="../../core/framework/util/ContainerUtil.h" />
 		<Unit filename="../../core/framework/util/FPSUtil.cpp" />
 		<Unit filename="../../core/framework/util/FPSUtil.h" />
 		<Unit filename="../../core/framework/util/FlagUtil.h" />
 		<Unit filename="../../core/framework/util/FrameworkConstants.h" />
+		<Unit filename="../../core/framework/util/HashMap.h" />
+		<Unit filename="../../core/framework/util/NGExtension.cpp" />
+		<Unit filename="../../core/framework/util/NGExtension.h" />
+		<Unit filename="../../core/framework/util/NGPool.h" />
 		<Unit filename="../../core/framework/util/NGRollingPool.h" />
 		<Unit filename="../../core/framework/util/NGSTDUtil.h" />
+		<Unit filename="../../core/framework/util/Pool.h" />
 		<Unit filename="../../core/framework/util/RTTI.cpp" />
 		<Unit filename="../../core/framework/util/RTTI.h" />
 		<Unit filename="../../core/framework/util/State.h" />
@@ -720,6 +728,7 @@
 		<Unit filename="../../core/framework/util/StringUtil.h" />
 		<Unit filename="../../core/framework/util/Timing.cpp" />
 		<Unit filename="../../core/framework/util/Timing.h" />
+		<Unit filename="../../core/framework/util/Vector.h" />
 		<Unit filename="../../core/framework/util/WeightedTimedMovingAverage.cpp" />
 		<Unit filename="../../core/framework/util/WeightedTimedMovingAverage.h" />
 		<Unit filename="../../core/framework/util/macros.h" />
