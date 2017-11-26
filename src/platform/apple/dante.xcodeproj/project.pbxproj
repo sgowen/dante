@@ -391,6 +391,14 @@
 		BB5AFE7C1FB35ACA005FBD52 /* EntityManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF0C11EA94ED900F0866E /* EntityManager.cpp */; };
 		BB5AFE7D1FB35ACA005FBD52 /* EntityRegistry.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB0864721EE20CCA00BCD9E0 /* EntityRegistry.cpp */; };
 		BB5AFE7E1FB35ACA005FBD52 /* GridManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF0C51EA94ED900F0866E /* GridManager.cpp */; };
+		BB5B22DB1FCB27DB009AA38A /* AnimationState.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB5B22DA1FCB27DB009AA38A /* AnimationState.cpp */; };
+		BB5B22DC1FCB27DB009AA38A /* AnimationState.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB5B22DA1FCB27DB009AA38A /* AnimationState.cpp */; };
+		BB5B22E11FCB2946009AA38A /* Json.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB5B22E01FCB2946009AA38A /* Json.cpp */; };
+		BB5B22E21FCB2946009AA38A /* Json.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB5B22E01FCB2946009AA38A /* Json.cpp */; };
+		BB5B22E41FCB2951009AA38A /* SkeletonBinary.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB5B22E31FCB2951009AA38A /* SkeletonBinary.cpp */; };
+		BB5B22E51FCB2951009AA38A /* SkeletonBinary.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB5B22E31FCB2951009AA38A /* SkeletonBinary.cpp */; };
+		BB5B22E71FCB295A009AA38A /* SkeletonJson.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB5B22E61FCB295A009AA38A /* SkeletonJson.cpp */; };
+		BB5B22E81FCB295A009AA38A /* SkeletonJson.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB5B22E61FCB295A009AA38A /* SkeletonJson.cpp */; };
 		BB5B8CD31FC7827600325A95 /* Extension.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB5B8CD21FC7827600325A95 /* Extension.cpp */; };
 		BB5B8CD41FC7827600325A95 /* Extension.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB5B8CD21FC7827600325A95 /* Extension.cpp */; };
 		BB67E95D1FC9F84D001F5D38 /* SkeletonClipping.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB67E95C1FC9F84D001F5D38 /* SkeletonClipping.cpp */; };
@@ -1089,6 +1097,14 @@
 		BB5A0A911FB36297005FBD52 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS11.1.sdk/System/Library/Frameworks/AVFoundation.framework; sourceTree = DEVELOPER_DIR; };
 		BB5A0A931FB36309005FBD52 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS11.1.sdk/System/Library/Frameworks/MediaPlayer.framework; sourceTree = DEVELOPER_DIR; };
 		BB5A0AA71FB36DD1005FBD52 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = ../../../../../../../../../../../System/Library/Frameworks/GLKit.framework; sourceTree = "<group>"; };
+		BB5B22D91FCB27D1009AA38A /* AnimationState.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AnimationState.h; sourceTree = "<group>"; };
+		BB5B22DA1FCB27DB009AA38A /* AnimationState.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = AnimationState.cpp; sourceTree = "<group>"; };
+		BB5B22DD1FCB291D009AA38A /* Json.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Json.h; sourceTree = "<group>"; };
+		BB5B22DE1FCB2928009AA38A /* SkeletonBinary.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SkeletonBinary.h; sourceTree = "<group>"; };
+		BB5B22DF1FCB2936009AA38A /* SkeletonJson.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SkeletonJson.h; sourceTree = "<group>"; };
+		BB5B22E01FCB2946009AA38A /* Json.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Json.cpp; sourceTree = "<group>"; };
+		BB5B22E31FCB2951009AA38A /* SkeletonBinary.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SkeletonBinary.cpp; sourceTree = "<group>"; };
+		BB5B22E61FCB295A009AA38A /* SkeletonJson.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SkeletonJson.cpp; sourceTree = "<group>"; };
 		BB5B8C461FC7704400325A95 /* SuperpoweredSoundManager.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SuperpoweredSoundManager.cpp; sourceTree = "<group>"; };
 		BB5B8C471FC7704400325A95 /* SuperpoweredSoundWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SuperpoweredSoundWrapper.h; sourceTree = "<group>"; };
 		BB5B8C481FC7704400325A95 /* SuperpoweredSound.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SuperpoweredSound.h; sourceTree = "<group>"; };
@@ -2659,6 +2675,7 @@
 			isa = PBXGroup;
 			children = (
 				BB6F60911FBE005900BD7697 /* Animation.h */,
+				BB5B22D91FCB27D1009AA38A /* AnimationState.h */,
 				BB6F60B11FBE005900BD7697 /* AnimationStateData.h */,
 				BB6F609F1FBE005900BD7697 /* Atlas.h */,
 				BB6F60CD1FBE005900BD7697 /* AtlasAttachmentLoader.h */,
@@ -2685,6 +2702,7 @@
 				BB6F60C41FBE005900BD7697 /* IkConstraint.h */,
 				BB6F60AF1FBE005900BD7697 /* IkConstraintData.h */,
 				BB6F60A21FBE005900BD7697 /* IkConstraintTimeline.h */,
+				BB5B22DD1FCB291D009AA38A /* Json.h */,
 				BB6F60C61FBE005900BD7697 /* MathUtil.h */,
 				BB6F60CC1FBE005900BD7697 /* MeshAttachment.h */,
 				BB6F609A1FBE005900BD7697 /* MixDirection.h */,
@@ -2705,9 +2723,11 @@
 				BB6F60C31FBE005900BD7697 /* ScaleTimeline.h */,
 				BB6F60B71FBE005900BD7697 /* ShearTimeline.h */,
 				BB6F60B31FBE005900BD7697 /* Skeleton.h */,
+				BB5B22DE1FCB2928009AA38A /* SkeletonBinary.h */,
 				BB67E95A1FC9F82D001F5D38 /* SkeletonBounds.h */,
 				BB67E95B1FC9F83E001F5D38 /* SkeletonClipping.h */,
 				BB6F60BB1FBE005900BD7697 /* SkeletonData.h */,
+				BB5B22DF1FCB2936009AA38A /* SkeletonJson.h */,
 				BB6F60B91FBE005900BD7697 /* Skin.h */,
 				BB6F60C91FBE005900BD7697 /* Slot.h */,
 				BB6F60931FBE005900BD7697 /* SlotData.h */,
@@ -2740,6 +2760,7 @@
 			isa = PBXGroup;
 			children = (
 				BB6F63F91FBE009600BD7697 /* Animation.cpp */,
+				BB5B22DA1FCB27DB009AA38A /* AnimationState.cpp */,
 				BB6F63F21FBE009600BD7697 /* AnimationStateData.cpp */,
 				BB6F64061FBE009800BD7697 /* Atlas.cpp */,
 				BB6F64071FBE009800BD7697 /* AtlasAttachmentLoader.cpp */,
@@ -2762,6 +2783,7 @@
 				BB6F641C1FBE009B00BD7697 /* IkConstraint.cpp */,
 				BB6F64151FBE009A00BD7697 /* IkConstraintData.cpp */,
 				BB6F63F81FBE009600BD7697 /* IkConstraintTimeline.cpp */,
+				BB5B22E01FCB2946009AA38A /* Json.cpp */,
 				BB6F640F1FBE009900BD7697 /* MathUtil.cpp */,
 				BB6F640E1FBE009900BD7697 /* MeshAttachment.cpp */,
 				BB6F641E1FBE009B00BD7697 /* PathAttachment.cpp */,
@@ -2777,9 +2799,11 @@
 				BB6F64191FBE009A00BD7697 /* ScaleTimeline.cpp */,
 				BB6F64111FBE009900BD7697 /* ShearTimeline.cpp */,
 				BB6F63F51FBE009600BD7697 /* Skeleton.cpp */,
+				BB5B22E31FCB2951009AA38A /* SkeletonBinary.cpp */,
 				BB67E95F1FC9F857001F5D38 /* SkeletonBounds.cpp */,
 				BB67E95C1FC9F84D001F5D38 /* SkeletonClipping.cpp */,
 				BB6F64091FBE009800BD7697 /* SkeletonData.cpp */,
+				BB5B22E61FCB295A009AA38A /* SkeletonJson.cpp */,
 				BB6F640B1FBE009800BD7697 /* Skin.cpp */,
 				BB6F64161FBE009A00BD7697 /* Slot.cpp */,
 				BB6F63F61FBE009600BD7697 /* SlotData.cpp */,
@@ -3604,6 +3628,7 @@
 				BBAEF2321EA94EDA00F0866E /* OpenGLFramebufferToScreenProgram.cpp in Sources */,
 				BB6F64441FBE009C00BD7697 /* RTTI.cpp in Sources */,
 				BB19129D1FABB66A00BDC6D0 /* b2Fixture.cpp in Sources */,
+				BB5B22E41FCB2951009AA38A /* SkeletonBinary.cpp in Sources */,
 				BB7251A41EE105490024C71C /* MoveList.cpp in Sources */,
 				BB44CB821DB053C0003E633F /* pngerror.c in Sources */,
 				BBAFD3331EF45EEA004F2742 /* FWInstanceManager.cpp in Sources */,
@@ -3623,6 +3648,7 @@
 				BBAFD32D1EF44813004F2742 /* MachineAddress.cpp in Sources */,
 				BB31B5A71FC205D5005F1C0A /* GamePadInputManager.cpp in Sources */,
 				BB6F64401FBE009C00BD7697 /* AttachmentLoader.cpp in Sources */,
+				BB5B22E11FCB2946009AA38A /* Json.cpp in Sources */,
 				BB1912981FABB66A00BDC6D0 /* b2Settings.cpp in Sources */,
 				BB44CB831DB053C0003E633F /* pngget.c in Sources */,
 				BB6F64761FBE009C00BD7697 /* PathConstraint.cpp in Sources */,
@@ -3636,6 +3662,7 @@
 				BB1912A11FABB66A00BDC6D0 /* b2ChainAndCircleContact.cpp in Sources */,
 				BB1912AB1FABB66A00BDC6D0 /* b2FrictionJoint.cpp in Sources */,
 				BB44CB841DB053C0003E633F /* pngmem.c in Sources */,
+				BB5B22E71FCB295A009AA38A /* SkeletonJson.cpp in Sources */,
 				BB4253D51EF58E00003F6D2A /* ServerHelper.cpp in Sources */,
 				BB6F597F1FBDE9C400BD7697 /* nsgl_context.m in Sources */,
 				BB6F647E1FBE009C00BD7697 /* PathAttachment.cpp in Sources */,
@@ -3721,6 +3748,7 @@
 				BB3BAEE11FB4A1FA00F5F8B0 /* InputManager.cpp in Sources */,
 				BBAEF2581EA94EDA00F0866E /* CircleBatcher.cpp in Sources */,
 				BBAEF23A1EA94EDA00F0866E /* OpenGLManager.cpp in Sources */,
+				BB5B22DB1FCB27DB009AA38A /* AnimationState.cpp in Sources */,
 				BBAEF2381EA94EDA00F0866E /* OpenGLLineBatcher.cpp in Sources */,
 				BB1912AA1FABB66A00BDC6D0 /* b2DistanceJoint.cpp in Sources */,
 				BB1912911FABB66A00BDC6D0 /* b2ChainShape.cpp in Sources */,
@@ -3788,12 +3816,14 @@
 				BB27D2541FC6567F00ED42FD /* OALAudioFile.m in Sources */,
 				BB27D2551FC6567F00ED42FD /* NSMutableDictionary+WeakReferences.m in Sources */,
 				BB27D2561FC6567F00ED42FD /* NSMutableArray+WeakReferences.m in Sources */,
+				BB5B22E51FCB2951009AA38A /* SkeletonBinary.cpp in Sources */,
 				BB27D2571FC6567F00ED42FD /* OALTools.m in Sources */,
 				BB27D2581FC6567F00ED42FD /* mach_timing.c in Sources */,
 				BB27D2591FC6567F00ED42FD /* OALActionManager.m in Sources */,
 				BB27D25A1FC6567F00ED42FD /* OALAction.m in Sources */,
 				BB27D25B1FC6567F00ED42FD /* OALUtilityActions.m in Sources */,
 				BBB1D3AF1FC8CB9800B74BAC /* NGExtension.cpp in Sources */,
+				BB5B22E81FCB295A009AA38A /* SkeletonJson.cpp in Sources */,
 				BB27D25C1FC6567F00ED42FD /* OALAudioActions.m in Sources */,
 				BB27D25D1FC6567F00ED42FD /* OALSuspendHandler.m in Sources */,
 				BB6F64711FBE009C00BD7697 /* RotateTimeline.cpp in Sources */,
@@ -3951,6 +3981,7 @@
 				BB5AFDC31FB359B1005FBD52 /* b2TimeOfImpact.cpp in Sources */,
 				BB5AFDC41FB359B1005FBD52 /* b2ChainShape.cpp in Sources */,
 				BB5AFDC51FB359B1005FBD52 /* b2CircleShape.cpp in Sources */,
+				BB5B22DC1FCB27DB009AA38A /* AnimationState.cpp in Sources */,
 				BB6F64571FBE009C00BD7697 /* ClippingAttachment.cpp in Sources */,
 				BB5AFDC61FB359B1005FBD52 /* b2EdgeShape.cpp in Sources */,
 				BB5AFDC71FB359B1005FBD52 /* b2PolygonShape.cpp in Sources */,
@@ -4026,6 +4057,7 @@
 				BB6F64511FBE009C00BD7697 /* AtlasAttachmentLoader.cpp in Sources */,
 				BB6F64331FBE009C00BD7697 /* IkConstraintTimeline.cpp in Sources */,
 				BB5AFDBB1FB3595F005FBD52 /* pngwutil.c in Sources */,
+				BB5B22E21FCB2946009AA38A /* Json.cpp in Sources */,
 				BBD3E8701FB2872A00328E35 /* main.m in Sources */,
 				BBD3E8621FB2872A00328E35 /* AppDelegate.m in Sources */,
 			);
