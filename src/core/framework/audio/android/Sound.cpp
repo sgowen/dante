@@ -1,7 +1,6 @@
 #include "Sound.hpp"
 #include "Log.hpp"
 
-#include <png.h>
 #include <SLES/OpenSLES.h>
 #include <SLES/OpenSLES_Android.h>
 #include <SLES/OpenSLES_AndroidConfiguration.h>
