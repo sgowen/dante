@@ -16,10 +16,8 @@ message(${ANDROID_ABI})
 set( source_dir ${CMAKE_CURRENT_SOURCE_DIR}/../../../../src )
 
 file(GLOB_RECURSE CPP_3RD_PARTY_FILES_1 "${source_dir}/3rdparty/Box2D/Box2D/Box2D/*.cpp")
-file(GLOB_RECURSE CPP_3RD_PARTY_FILES_2 "${source_dir}/3rdparty/Low-Latency-Android-Audio-iOS-Audio-Engine/Superpowered/*.cpp")
-file(GLOB_RECURSE CPP_3RD_PARTY_FILES_3 "${source_dir}/3rdparty/Low-Latency-Android-Audio-iOS-Audio-Engine/Superpowered/AndroidIO/*.cpp")
-file(GLOB_RECURSE CPP_3RD_PARTY_FILES_4 "${source_dir}/3rdparty/spine-runtimes/spine-cpp/spine-cpp/src/spine/*.cpp")
-file(GLOB_RECURSE CPP_3RD_PARTY_FILES_5 "${source_dir}/3rdparty/TinyThread/source/*.cpp")
+file(GLOB_RECURSE CPP_3RD_PARTY_FILES_2 "${source_dir}/3rdparty/spine-runtimes/spine-cpp/spine-cpp/src/spine/*.cpp")
+file(GLOB_RECURSE CPP_3RD_PARTY_FILES_3 "${source_dir}/3rdparty/TinyThread/source/*.cpp")
 
 file(GLOB_RECURSE CPP_FRAMEWORK_FILES_1 "${source_dir}/core/framework/entity/*cpp")
 file(GLOB_RECURSE CPP_FRAMEWORK_FILES_2 "${source_dir}/core/framework/file/android/*cpp")
@@ -72,8 +70,6 @@ set( libpng_sources
 )
 
 include_directories(${source_dir}/3rdparty/Box2D/Box2D)
-include_directories(${source_dir}/3rdparty/Low-Latency-Android-Audio-iOS-Audio-Engine/Superpowered)
-include_directories(${source_dir}/3rdparty/Low-Latency-Android-Audio-iOS-Audio-Engine/Superpowered/AndroidIO)
 include_directories(${source_dir}/3rdparty/libpng)
 include_directories(${source_dir}/3rdparty/rapidjson/include)
 include_directories(${source_dir}/3rdparty/spine-runtimes/spine-cpp/spine-cpp/include)
@@ -92,8 +88,6 @@ add_library( # Sets the name of the library.
              ${CPP_3RD_PARTY_FILES_1}
              ${CPP_3RD_PARTY_FILES_2}
              ${CPP_3RD_PARTY_FILES_3}
-             ${CPP_3RD_PARTY_FILES_4}
-             ${CPP_3RD_PARTY_FILES_5}
 
              ${libpng_headers}
              ${libpng_sources}
@@ -208,6 +202,4 @@ target_link_libraries( # Specifies the target library.
                        cpufeatures
                        native_app_glue
                        ndk_helper
-
-                       ${source_dir}/3rdparty/Low-Latency-Android-Audio-iOS-Audio-Engine/Superpowered/libSuperpoweredAndroid${ANDROID_ABI}.a
 )
