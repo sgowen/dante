@@ -43,9 +43,8 @@ private:
     jstring _javaPackageResourcePath;
     const char* _packageResourcePath;
     jstring _packageName;
-    SuperpoweredSoundManager* _superpoweredSoundManager;
-    std::vector<SuperpoweredAndroidAudioIO*> _audioSystems;
     int _sampleRate;
+    packt::SoundService lSoundService;
     
     // ctor, copy ctor, and assignment should be private in a Singleton
     AndroidAudioEngineHelper();
