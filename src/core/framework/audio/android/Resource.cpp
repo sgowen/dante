@@ -1,5 +1,5 @@
-#include "Resource.hpp"
-#include "Log.hpp"
+#include "framework/audio/android/Resource.hpp"
+#include "framework/audio/android/Log.hpp"
 
 #include <sys/stat.h>
 

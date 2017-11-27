@@ -1,5 +1,5 @@
-#include "Sound.hpp"
-#include "Log.hpp"
+#include "framework/audio/android/Sound.hpp"
+#include "framework/audio/android/Log.hpp"
 
 #include <SLES/OpenSLES.h>
 #include <SLES/OpenSLES_Android.h>

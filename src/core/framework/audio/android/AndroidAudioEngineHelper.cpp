@@ -100,7 +100,7 @@ SoundWrapper* AndroidAudioEngineHelper::loadSound(int soundId, const char *path,
     {
         _jvm->DetachCurrentThread();
     }
-    
+
     // TODO
     
     return NULL;
@@ -197,12 +197,14 @@ void AndroidAudioEngineHelper::init(JNIEnv* jni, jobject activity)
     jni->DeleteLocalRef(java_audioManager);
     
     _sampleRate = sampleRate;
-    
-    // TODO
+
+    assert(_soundService.start() == packt::STATUS_OK);
 }
 
 void AndroidAudioEngineHelper::deinit()
 {
+    _soundService.stop();
+
     JNIEnv* jni;
     
     jint status = _jvm->GetEnv((void**)&jni, JNI_VERSION_1_6);

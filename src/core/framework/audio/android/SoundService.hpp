@@ -1,8 +1,8 @@
 #ifndef _PACKT_SOUNDSERVICE_HPP_
 #define _PACKT_SOUNDSERVICE_HPP_
 
-#include "Sound.hpp"
-#include "Types.hpp"
+#include "framework/audio/android/Sound.hpp"
+#include "framework/audio/android/Types.hpp"
 
 #include <android_native_app_glue.h>
 #include <SLES/OpenSLES.h>
@@ -14,7 +14,7 @@ namespace packt
     class SoundService
     {
     public:
-        SoundService(android_app* pApplication);
+        SoundService();
         ~SoundService();
 
         status start();

@@ -3,9 +3,8 @@
 
 class SoundService;
 
-#include "Context.hpp"
-#include "Resource.hpp"
-#include "Types.hpp"
+#include "framework/audio/android/Resource.hpp"
+#include "framework/audio/android/Types.hpp"
 
 namespace packt
 {
