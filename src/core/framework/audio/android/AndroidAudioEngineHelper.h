@@ -11,12 +11,11 @@
 
 #include "framework/audio/portable/AudioEngineHelper.h"
 
+#include "framework/audio/android/SoundService.hpp"
+
 #include <jni.h>
 
 #include <vector>
-
-class SuperpoweredSoundManager;
-class SuperpoweredAndroidAudioIO;
 
 class AndroidAudioEngineHelper : public AudioEngineHelper
 {
@@ -44,7 +43,7 @@ private:
     const char* _packageResourcePath;
     jstring _packageName;
     int _sampleRate;
-    packt::SoundService lSoundService;
+    packt::SoundService _soundService;
     
     // ctor, copy ctor, and assignment should be private in a Singleton
     AndroidAudioEngineHelper();

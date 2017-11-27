@@ -9,36 +9,14 @@
 #include "framework/audio/android/AndroidAudioEngineHelper.h"
 
 #include "framework/audio/portable/SoundWrapper.h"
-#include "framework/audio/android/SuperpoweredSoundManager.h"
-#include "SuperpoweredAndroidAudioIO.h"
 
 #include "framework/util/NGSTDUtil.h"
-#include "framework/audio/android/SuperpoweredSoundWrapper.h"
 
 #include <SLES/OpenSLES.h>
 #include <SLES/OpenSLES_AndroidConfiguration.h>
 
 #include <assert.h>
 #include <sstream>
-
-#define AUDIO_PROCESSING_CALLBACK(name) \
-static bool audioProcessing##name(void *clientData, short int *audioIO, int numberOfSamples, int __unused samplerate) \
-{ \
-return ((SuperpoweredSoundManager *)clientData)->process##name(audioIO, (unsigned int)numberOfSamples); \
-}
-
-AUDIO_PROCESSING_CALLBACK(Music);
-AUDIO_PROCESSING_CALLBACK(Sound1);
-AUDIO_PROCESSING_CALLBACK(Sound2);
-AUDIO_PROCESSING_CALLBACK(Sound3);
-AUDIO_PROCESSING_CALLBACK(Sound4);
-AUDIO_PROCESSING_CALLBACK(Sound5);
-AUDIO_PROCESSING_CALLBACK(Sound6);
-AUDIO_PROCESSING_CALLBACK(Sound7);
-AUDIO_PROCESSING_CALLBACK(Sound8);
-AUDIO_PROCESSING_CALLBACK(Sound9);
-AUDIO_PROCESSING_CALLBACK(Sound10);
-AUDIO_PROCESSING_CALLBACK(Sound11);
 
 AndroidAudioEngineHelper* AndroidAudioEngineHelper::getInstance()
 {
@@ -123,9 +101,9 @@ SoundWrapper* AndroidAudioEngineHelper::loadSound(int soundId, const char *path,
         _jvm->DetachCurrentThread();
     }
     
-    SuperpoweredSoundWrapper* sound = new SuperpoweredSoundWrapper(_superpoweredSoundManager, soundId, _packageResourcePath, _sampleRate, numInstances, fileOffset, fileLength);
+    // TODO
     
-    return sound;
+    return NULL;
 }
 
 SoundWrapper* AndroidAudioEngineHelper::loadMusic(const char* path)
@@ -220,30 +198,11 @@ void AndroidAudioEngineHelper::init(JNIEnv* jni, jobject activity)
     
     _sampleRate = sampleRate;
     
-    _superpoweredSoundManager = new SuperpoweredSoundManager(_sampleRate, bufferSize);
-    
-    _audioSystems.push_back(new SuperpoweredAndroidAudioIO(sampleRate, bufferSize, false, true, audioProcessingMusic, _superpoweredSoundManager, -1, SL_ANDROID_STREAM_MEDIA, bufferSize * 2));
-    
-    _audioSystems.push_back(new SuperpoweredAndroidAudioIO(sampleRate, bufferSize, false, true, audioProcessingSound1, _superpoweredSoundManager, -1, SL_ANDROID_STREAM_MEDIA, bufferSize * 2));
-    _audioSystems.push_back(new SuperpoweredAndroidAudioIO(sampleRate, bufferSize, false, true, audioProcessingSound2, _superpoweredSoundManager, -1, SL_ANDROID_STREAM_MEDIA, bufferSize * 2));
-    _audioSystems.push_back(new SuperpoweredAndroidAudioIO(sampleRate, bufferSize, false, true, audioProcessingSound3, _superpoweredSoundManager, -1, SL_ANDROID_STREAM_MEDIA, bufferSize * 2));
-    _audioSystems.push_back(new SuperpoweredAndroidAudioIO(sampleRate, bufferSize, false, true, audioProcessingSound4, _superpoweredSoundManager, -1, SL_ANDROID_STREAM_MEDIA, bufferSize * 2));
-    _audioSystems.push_back(new SuperpoweredAndroidAudioIO(sampleRate, bufferSize, false, true, audioProcessingSound5, _superpoweredSoundManager, -1, SL_ANDROID_STREAM_MEDIA, bufferSize * 2));
-    _audioSystems.push_back(new SuperpoweredAndroidAudioIO(sampleRate, bufferSize, false, true, audioProcessingSound6, _superpoweredSoundManager, -1, SL_ANDROID_STREAM_MEDIA, bufferSize * 2));
-    _audioSystems.push_back(new SuperpoweredAndroidAudioIO(sampleRate, bufferSize, false, true, audioProcessingSound7, _superpoweredSoundManager, -1, SL_ANDROID_STREAM_MEDIA, bufferSize * 2));
-    _audioSystems.push_back(new SuperpoweredAndroidAudioIO(sampleRate, bufferSize, false, true, audioProcessingSound8, _superpoweredSoundManager, -1, SL_ANDROID_STREAM_MEDIA, bufferSize * 2));
-    _audioSystems.push_back(new SuperpoweredAndroidAudioIO(sampleRate, bufferSize, false, true, audioProcessingSound9, _superpoweredSoundManager, -1, SL_ANDROID_STREAM_MEDIA, bufferSize * 2));
-    _audioSystems.push_back(new SuperpoweredAndroidAudioIO(sampleRate, bufferSize, false, true, audioProcessingSound10, _superpoweredSoundManager, -1, SL_ANDROID_STREAM_MEDIA, bufferSize * 2));
-    _audioSystems.push_back(new SuperpoweredAndroidAudioIO(sampleRate, bufferSize, false, true, audioProcessingSound11, _superpoweredSoundManager, -1, SL_ANDROID_STREAM_MEDIA, bufferSize * 2));
+    // TODO
 }
 
 void AndroidAudioEngineHelper::deinit()
 {
-    NGSTDUtil::cleanUpVectorOfPointers(_audioSystems);
-    
-    delete _superpoweredSoundManager;
-    _superpoweredSoundManager = NULL;
-    
     JNIEnv* jni;
     
     jint status = _jvm->GetEnv((void**)&jni, JNI_VERSION_1_6);
@@ -262,8 +221,7 @@ void AndroidAudioEngineHelper::deinit()
     }
 }
 
-AndroidAudioEngineHelper::AndroidAudioEngineHelper() : AudioEngineHelper(), _superpoweredSoundManager(NULL), _sampleRate(44100)
+AndroidAudioEngineHelper::AndroidAudioEngineHelper() : AudioEngineHelper(), _sampleRate(44100)
 {
     // Empty
 }
-
