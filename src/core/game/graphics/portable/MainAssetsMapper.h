@@ -6,8 +6,8 @@
 //  Copyright © 2017 Noctis Games. All rights reserved.
 //
 
-#ifndef __dante__MainAssetsMapper__
-#define __dante__MainAssetsMapper__
+#ifndef __noctisgames__MainAssetsMapper__
+#define __noctisgames__MainAssetsMapper__
 
 #include "framework/graphics/portable/AssetsMapper.h"
 
@@ -21,4 +21,4 @@ public:
     virtual void mapAssets();
 };
 
-#endif /* defined(__dante__MainAssetsMapper__) */
+#endif /* defined(__noctisgames__MainAssetsMapper__) */

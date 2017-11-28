@@ -37,7 +37,8 @@ private:
     android_app* _app;
     Engine* _engine;
     
-    float _averagedDeltaTime;
+    double _lastTime;
+    float _deltaTime;
     bool _hasInitializedResources;
     bool _hasFocus;
     

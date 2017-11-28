@@ -25,6 +25,3 @@
 [submodule "src/3rdparty/ObjectAL-for-iPhone"]
 	path = src/3rdparty/ObjectAL-for-iPhone
 	url = https://github.com/NoctisGames/ObjectAL-for-iPhone.git
-[submodule "src/3rdparty/Low-Latency-Android-Audio-iOS-Audio-Engine"]
-	path = src/3rdparty/Low-Latency-Android-Audio-iOS-Audio-Engine
-	url = https://github.com/superpoweredSDK/Low-Latency-Android-Audio-iOS-Audio-Engine.git

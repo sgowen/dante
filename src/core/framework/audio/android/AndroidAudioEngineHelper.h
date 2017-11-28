@@ -15,8 +15,7 @@
 
 #include <vector>
 
-class SuperpoweredSoundManager;
-class SuperpoweredAndroidAudioIO;
+class SoundService;
 
 class AndroidAudioEngineHelper : public AudioEngineHelper
 {
@@ -38,17 +37,13 @@ public:
     void deinit();
     
 private:
-    JavaVM* _jvm;
-    jobject _resources;
-    jstring _javaPackageResourcePath;
-    const char* _packageResourcePath;
-    jstring _packageName;
-    SuperpoweredSoundManager* _superpoweredSoundManager;
-    std::vector<SuperpoweredAndroidAudioIO*> _audioSystems;
     int _sampleRate;
+    int _bufferSize;
+    SoundService* _soundService;
     
     // ctor, copy ctor, and assignment should be private in a Singleton
     AndroidAudioEngineHelper();
+    ~AndroidAudioEngineHelper();
     AndroidAudioEngineHelper(const AndroidAudioEngineHelper&);
     AndroidAudioEngineHelper& operator=(const AndroidAudioEngineHelper&);
 };

@@ -6,8 +6,8 @@
 //  Copyright (c) 2017 Noctis Games. All rights reserved.
 //
 
-#ifndef __dante__MainRenderer__
-#define __dante__MainRenderer__
+#ifndef __noctisgames__MainRenderer__
+#define __noctisgames__MainRenderer__
 
 #include "framework/graphics/portable/Renderer.h"
 
@@ -71,4 +71,4 @@ private:
     void updateCamera();
 };
 
-#endif /* defined(__dante__MainRenderer__) */
+#endif /* defined(__noctisgames__MainRenderer__) */

@@ -6,8 +6,8 @@
 //  Copyright (c) 2017 Noctis Games. All rights reserved.
 //
 
-#ifndef __dante__GameConstants__
-#define __dante__GameConstants__
+#ifndef __noctisgames__GameConstants__
+#define __noctisgames__GameConstants__
 
 //// VERSION ////
 
@@ -86,4 +86,4 @@
 #define STEAM_PRODUCT_NAME "Project Dante"
 #define STEAM_PRODUCT_DESC "A 4 Player Co-Op Dungeon Crawler set in a Grim Wasteland"
 
-#endif /* defined(__dante__GameConstants__) */
+#endif /* defined(__noctisgames__GameConstants__) */

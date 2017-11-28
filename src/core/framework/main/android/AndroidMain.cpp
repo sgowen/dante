@@ -270,40 +270,26 @@ void AndroidMain::unloadResources()
     _engine->releaseDeviceDependentResources();
 }
 
-std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
-std::chrono::steady_clock::time_point t2 = std::chrono::steady_clock::now();
-
-inline float approxRollingAverage(float avg, float newSample)
+double timeNow()
 {
-    static float numSamples = 60;
-    
-    avg -= avg / numSamples;
-    avg += newSample / numSamples;
-    
-    return avg;
+    // Retrieves current time with a monotonic clock to ensure
+    // time goes forward and is not subject to system changes.
+    timespec lTimeVal;
+    clock_gettime(CLOCK_MONOTONIC, &lTimeVal);
+    return lTimeVal.tv_sec + (lTimeVal.tv_nsec * 1.0e-9);
 }
 
 void AndroidMain::drawFrame()
 {
-    float deltaTime;
-    
     using namespace std;
     using namespace std::chrono;
     
-    t2 = steady_clock::now();
-    duration<float> timeSpan = duration_cast<duration<float>>(t2 - t1);
-    t1 = steady_clock::now();
-    
-    deltaTime = timeSpan.count();
-    
-    _averagedDeltaTime = approxRollingAverage(_averagedDeltaTime, deltaTime);
-    
-    deltaTime = clamp(_averagedDeltaTime, 0.016f, 0.033f);
-    
-    if (_averagedDeltaTime > 0.016f && _averagedDeltaTime < 0.018f)
-    {
-        deltaTime = 0.016666666666667f;
-    }
+    // Checks elapsed time since last frame. It is important to
+    // work on double with current time to avoid losing accuracy
+    // Then we can go back to float for elapsed time.
+    double lCurrentTime = timeNow();
+    _deltaTime = (lCurrentTime - _lastTime);
+    _lastTime = lCurrentTime;
     
     int requestedAction = _engine->getRequestedAction();
     
@@ -319,7 +305,7 @@ void AndroidMain::drawFrame()
             break;
     }
     
-    _engine->update(deltaTime);
+    _engine->update(_deltaTime);
     
     _engine->render();
     
@@ -375,7 +361,8 @@ AndroidMain::AndroidMain() :
 _glContext(ndk_helper::GLContext::GetInstance()),
 _app(nullptr),
 _engine(nullptr),
-_averagedDeltaTime(0.016666666666667f),
+_lastTime(timeNow()),
+_deltaTime(0.016666666666667f),
 _hasInitializedResources(false),
 _hasFocus(false)
 {
