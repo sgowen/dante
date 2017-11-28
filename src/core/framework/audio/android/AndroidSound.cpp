@@ -41,7 +41,7 @@ void AndroidSound::play(bool isLooping)
     
     if (_isMusic)
     {
-        _soundService->playBGM(_path);
+        //_soundService->playBGM(_path);
     }
     else
     {
@@ -76,7 +76,7 @@ void AndroidSound::stop()
     
     if (_isMusic)
     {
-        _soundService->stopBGM();
+        //_soundService->stopBGM();
     }
 }
 
