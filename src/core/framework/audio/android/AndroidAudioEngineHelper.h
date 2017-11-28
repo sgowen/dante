@@ -37,12 +37,8 @@ public:
     void deinit();
     
 private:
-    JavaVM* _jvm;
-    jobject _resources;
-    jstring _javaPackageResourcePath;
-    const char* _packageResourcePath;
-    jstring _packageName;
     int _sampleRate;
+    int _bufferSize;
     SoundService* _soundService;
     
     // ctor, copy ctor, and assignment should be private in a Singleton

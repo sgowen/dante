@@ -1,5 +1,4 @@
 #include "framework/audio/android/SoundService.hpp"
-#include "framework/audio/android/Resource.hpp"
 #include "framework/audio/android/Log.hpp"
 
 #include <string>

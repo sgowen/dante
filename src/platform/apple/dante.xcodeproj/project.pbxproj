@@ -965,8 +965,6 @@
 		BB379E991FCBAE9400118787 /* OpenSLESSound.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = OpenSLESSound.hpp; sourceTree = "<group>"; };
 		BB379E9A1FCBAE9400118787 /* OpenSLESSound.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = OpenSLESSound.cpp; sourceTree = "<group>"; };
 		BB379E9B1FCBAEB000118787 /* Types.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Types.hpp; sourceTree = "<group>"; };
-		BB379E9C1FCBAF2C00118787 /* Resource.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Resource.cpp; sourceTree = "<group>"; };
-		BB379E9D1FCBAF2D00118787 /* Resource.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Resource.hpp; sourceTree = "<group>"; };
 		BB379E9E1FCBAF4E00118787 /* Log.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Log.cpp; sourceTree = "<group>"; };
 		BB379E9F1FCBAF4E00118787 /* Log.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Log.hpp; sourceTree = "<group>"; };
 		BB39C8921FB2700900CF6699 /* NGGraphics.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NGGraphics.h; sourceTree = "<group>"; };
@@ -2149,8 +2147,6 @@
 				BB379E9F1FCBAF4E00118787 /* Log.hpp */,
 				BB379E9A1FCBAE9400118787 /* OpenSLESSound.cpp */,
 				BB379E991FCBAE9400118787 /* OpenSLESSound.hpp */,
-				BB379E9C1FCBAF2C00118787 /* Resource.cpp */,
-				BB379E9D1FCBAF2D00118787 /* Resource.hpp */,
 				BB379E971FCBAE7800118787 /* SoundService.cpp */,
 				BB379E981FCBAE7800118787 /* SoundService.hpp */,
 				BB379E9B1FCBAEB000118787 /* Types.hpp */,

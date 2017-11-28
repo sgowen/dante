@@ -87,7 +87,6 @@ android {
         description = 'Copies music and sounds from root assets into project assets'
         from '../../../../assets/music'
         from '../../../../assets/sounds'
-        into 'src/main/res/raw'
         into 'src/main/assets'
         include('*.wav')
     }

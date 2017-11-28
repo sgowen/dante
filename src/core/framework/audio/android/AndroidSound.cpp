@@ -25,6 +25,7 @@ _isMusic(soundId == 1337)
     if (!_isMusic)
     {
         _sound = _soundService->registerSound(path);
+        _sound->load();
     }
 }
 

@@ -86,8 +86,8 @@ void MainEngine::createDeviceDependentResources()
     
     NG_AUDIO_ENGINE->loadMusic(MUSIC_DEMO);
     
-//    NG_AUDIO_ENGINE->setSoundDisabled(true);
-//    NG_AUDIO_ENGINE->setMusicDisabled(true);
+    NG_AUDIO_ENGINE->setSoundDisabled(true);
+    NG_AUDIO_ENGINE->setMusicDisabled(true);
 }
 
 void MainEngine::releaseDeviceDependentResources()

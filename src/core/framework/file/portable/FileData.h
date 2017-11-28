@@ -17,6 +17,8 @@ public:
     const void *file_handle;
 
 	FileData(long data_length_in, void *data_in, void *file_handle_in);
+    
+    FileData(const FileData& inFileData);
 };
 
 #endif /* defined(__noctisgames__FileData__) */

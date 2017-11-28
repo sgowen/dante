@@ -17,3 +17,11 @@ file_handle(file_handle_in)
 {
 	// Empty
 }
+
+FileData::FileData(const FileData& inFileData) :
+data_length(inFileData.data_length),
+data(inFileData.data),
+file_handle(inFileData.file_handle)
+{
+    // Empty
+}

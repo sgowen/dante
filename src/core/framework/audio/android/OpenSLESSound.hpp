@@ -3,8 +3,9 @@
 
 class SoundService;
 
-#include "framework/audio/android/Resource.hpp"
 #include "framework/audio/android/Types.hpp"
+
+class FileData;
 
 class OpenSLESSound
 {
@@ -20,7 +21,9 @@ private:
     friend class SoundService;
     
 private:
-    Resource mResource;
-    uint8_t* mBuffer; off_t mLength;
+    const char* mPath;
+    FileData* wav_file;
+    uint8_t* mBuffer;
+    long mLength;
 };
 #endif
