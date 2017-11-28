@@ -6,8 +6,8 @@
 //  Copyright (c) 2017 Noctis Games. All rights reserved.
 //
 
-#ifndef __dante__MainEngine__
-#define __dante__MainEngine__
+#ifndef __noctisgames__MainEngine__
+#define __noctisgames__MainEngine__
 
 #include "framework/main/portable/Engine.h"
 
@@ -64,4 +64,4 @@ private:
     void disconnect();
 };
 
-#endif /* defined(__dante__MainEngine__) */
+#endif /* defined(__noctisgames__MainEngine__) */

@@ -9,7 +9,9 @@
 #include "framework/audio/android/AndroidAudioEngineHelper.h"
 
 #include "framework/audio/portable/SoundWrapper.h"
+#include "framework/audio/android/SoundService.hpp"
 
+#include "framework/audio/android/AndroidSoundWrapper.h"
 #include "framework/util/NGSTDUtil.h"
 
 #include <SLES/OpenSLES.h>
@@ -101,9 +103,14 @@ SoundWrapper* AndroidAudioEngineHelper::loadSound(int soundId, const char *path,
         _jvm->DetachCurrentThread();
     }
 
-    // TODO
+    std::string s1(path);
+    std::string s2(".wav");
+    s1 += s2;
+    const char* finalPath = s1.c_str();
     
-    return NULL;
+    AndroidSoundWrapper* sound = new AndroidSoundWrapper(_soundService, soundId, finalPath, numInstances);
+    
+    return sound;
 }
 
 SoundWrapper* AndroidAudioEngineHelper::loadMusic(const char* path)
@@ -198,12 +205,12 @@ void AndroidAudioEngineHelper::init(JNIEnv* jni, jobject activity)
     
     _sampleRate = sampleRate;
 
-    assert(_soundService.start() == packt::STATUS_OK);
+    assert(_soundService->start() == STATUS_OK);
 }
 
 void AndroidAudioEngineHelper::deinit()
 {
-    _soundService.stop();
+    _soundService->stop();
 
     JNIEnv* jni;
     
@@ -223,7 +230,12 @@ void AndroidAudioEngineHelper::deinit()
     }
 }
 
-AndroidAudioEngineHelper::AndroidAudioEngineHelper() : AudioEngineHelper(), _sampleRate(44100)
+AndroidAudioEngineHelper::AndroidAudioEngineHelper() : AudioEngineHelper(), _sampleRate(44100), _soundService(new SoundService())
 {
     // Empty
+}
+
+AndroidAudioEngineHelper::~AndroidAudioEngineHelper()
+{
+    delete _soundService;
 }

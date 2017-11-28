@@ -6,8 +6,8 @@
 //  Copyright (c) 2017 Noctis Games. All rights reserved.
 //
 
-#ifndef __dante__MainEngineState__
-#define __dante__MainEngineState__
+#ifndef __noctisgames__MainEngineState__
+#define __noctisgames__MainEngineState__
 
 #define MAIN_ENGINE_STATE_MAIN_MENU_STEAM_OFF 0
 #define MAIN_ENGINE_STATE_MAIN_MENU_STEAM_ON 1
@@ -16,4 +16,4 @@
 #define MAIN_ENGINE_STATE_MAIN_MENU_JOINING_LOCAL_SERVER_BY_IP 5
 #define MAIN_ENGINE_STEAM_JOINING_SERVER 6
 
-#endif /* defined(__dante__MainEngineState__) */
+#endif /* defined(__noctisgames__MainEngineState__) */
