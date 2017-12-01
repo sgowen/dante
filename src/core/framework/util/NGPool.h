@@ -40,7 +40,7 @@ namespace NoctisGames
             }
             else
             {
-                T* ret = NG_MALLOC(T, 1);
+                T* ret = NG_NEW(T);
                 new (ret) T();
                 
                 return ret;

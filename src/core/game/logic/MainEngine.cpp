@@ -39,6 +39,9 @@
 #include "game/logic/MainEngineState.h"
 #include "game/graphics/portable/MainRenderer.h"
 #include "framework/audio/portable/NGAudioEngine.h"
+#include "framework/util/NGExtension.h"
+
+#include <spine/Extension.h>
 
 #ifdef NG_STEAM
 #include "framework/network/steam/NGSteamClientHelper.h"
@@ -52,6 +55,9 @@ MainEngine::MainEngine() : Engine(new MainRenderer(MAX_BATCH_SIZE)),
 _config(new JsonFile("dante.cfg")),
 _isSteam(false)
 {
+    NoctisGames::NGExtension::setInstance(NoctisGames::DefaultNGExtension::getInstance());
+    Spine::SpineExtension::setInstance(Spine::DefaultSpineExtension::getInstance());
+    
     CURSOR_CONVERTER->setCamSize(CAM_WIDTH, CAM_HEIGHT);
     
     activateSteam();

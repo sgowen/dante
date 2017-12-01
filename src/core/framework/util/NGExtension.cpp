@@ -2,34 +2,74 @@
 //  NGExtension.cpp
 //  noctisgames-framework
 //
-//  Created by Stephen Gowen on 11/24/17.
-//  Copyright (c) 2017 Noctis Games. All rights reserved.
+//  Created by Stephen Gowen on 11/2/17.
+//  Copyright © 2017 Noctis Games. All rights reserved.
 //
-
-#include "pch.h"
 
 #include <framework/util/NGExtension.h>
 
-//#include <iostream>
-#include <fstream>
+#include <iostream>
+#include <assert.h>
 
 namespace NoctisGames
 {
-    void* ngAlloc(size_t size, const char* file, int line)
+    NGExtension* NGExtension::_ngExtension = NULL;
+    
+    void NGExtension::setInstance(NGExtension* inValue)
     {
-        //printf("ngAlloc size: %lu, file: %s, line: %d \n", size, file, line);
+        assert(!_ngExtension);
+        
+        _ngExtension = inValue;
+    }
+    
+    NGExtension* NGExtension::getInstance()
+    {
+        assert(_ngExtension);
+        
+        return _ngExtension;
+    }
+    
+    NGExtension::NGExtension()
+    {
+        // Empty
+    }
+    
+    NGExtension::~NGExtension()
+    {
+        // Empty
+    }
+    
+    DefaultNGExtension* DefaultNGExtension::getInstance()
+    {
+        static DefaultNGExtension ret;
+        return &ret;
+    }
+    
+    DefaultNGExtension::DefaultNGExtension() : NGExtension()
+    {
+        // Empty
+    }
+    
+    DefaultNGExtension::~DefaultNGExtension()
+    {
+        // Empty
+    }
+    
+    void* DefaultNGExtension::ngAlloc(size_t size, const char* file, int line)
+    {
+        printf("ng size: %lu, file: %s, line: %d \n", size, file, line);
         
         return malloc(size);
     }
     
-    void* ngRealloc(void* ptr, size_t size, const char* file, int line)
+    void* DefaultNGExtension::ngRealloc(void* ptr, size_t size, const char* file, int line)
     {
-        //printf("ngRealloc size: %lu, file: %s, line: %d \n", size, file, line);
+        printf("ng size: %lu, file: %s, line: %d \n", size, file, line);
         
         return realloc(ptr, size);
     }
     
-    void ngFree(void* mem)
+    void DefaultNGExtension::ngFree(void* mem)
     {
         free(mem);
     }
