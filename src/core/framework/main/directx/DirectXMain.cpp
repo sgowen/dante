@@ -127,7 +127,19 @@ int DirectXMain::exec(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmd
 			return 1;
 		}
 
+#ifdef NG_LAUNCH_AS_FULL_SCREEN
 		ShowWindow(hwnd, SW_SHOWMAXIMIZED);
+#else
+		SetWindowLongPtr(hwnd, GWL_STYLE, WS_OVERLAPPEDWINDOW);
+		SetWindowLongPtr(hwnd, GWL_EXSTYLE, 0);
+
+		int width = w;
+		int height = h;
+
+		ShowWindow(hwnd, SW_SHOWNORMAL);
+
+		SetWindowPos(hwnd, HWND_TOP, 0, 0, width, height, SWP_NOMOVE | SWP_NOZORDER | SWP_FRAMECHANGED);
+#endif
 
 		SetWindowLongPtr(hwnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(DX_MAIN));
 
