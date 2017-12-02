@@ -15,6 +15,7 @@
 
 /* All allocation uses these. */
 #define NG_MALLOC(TYPE,COUNT) ((TYPE*)NG_EXTENSION->ngAlloc(sizeof(TYPE) * (COUNT), __FILE__, __LINE__))
+#define NG_CALLOC(TYPE,COUNT) ((TYPE*)NG_EXTENSION->ngCalloc(COUNT, sizeof(TYPE), __FILE__, __LINE__))
 #define NG_NEW(TYPE) ((TYPE*)NG_EXTENSION->ngAlloc(sizeof(TYPE), __FILE__, __LINE__))
 #define NG_REALLOC(PTR,TYPE,COUNT) ((TYPE*)NG_EXTENSION->ngRealloc(PTR, sizeof(TYPE) * (COUNT), __FILE__, __LINE__))
 
@@ -38,6 +39,8 @@ namespace NoctisGames
         /// Implement this function to use your own memory allocator
         virtual void* ngAlloc(size_t size, const char* file, int line) = 0;
         
+        virtual void* ngCalloc(size_t num, size_t size, const char* file, int line) = 0;
+        
         virtual void* ngRealloc(void* ptr, size_t size, const char* file, int line) = 0;
         
         /// If you provide a ngAllocFunc, you should also provide a ngFreeFunc
@@ -47,7 +50,7 @@ namespace NoctisGames
         NGExtension();
         
     private:
-        static NGExtension* _ngExtension;
+        static NGExtension* _instance;
     };
     
     class DefaultNGExtension : public NGExtension
@@ -58,6 +61,8 @@ namespace NoctisGames
         virtual ~DefaultNGExtension();
         
         virtual void* ngAlloc(size_t size, const char* file, int line);
+        
+        virtual void* ngCalloc(size_t num, size_t size, const char* file, int line);
         
         virtual void* ngRealloc(void* ptr, size_t size, const char* file, int line);
         

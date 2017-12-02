@@ -15,20 +15,20 @@
 
 namespace NoctisGames
 {
-    NGExtension* NGExtension::_ngExtension = NULL;
+    NGExtension* NGExtension::_instance = NULL;
     
     void NGExtension::setInstance(NGExtension* inValue)
     {
-        assert(!_ngExtension);
+        assert(!_instance);
         
-        _ngExtension = inValue;
+        _instance = inValue;
     }
     
     NGExtension* NGExtension::getInstance()
     {
-        assert(_ngExtension);
+        assert(_instance);
         
-        return _ngExtension;
+        return _instance;
     }
     
     NGExtension::NGExtension()
@@ -62,6 +62,17 @@ namespace NoctisGames
         printf("ng size: %lu, file: %s, line: %d \n", size, file, line);
         
         return malloc(size);
+    }
+    
+    void* DefaultNGExtension::ngCalloc(size_t num, size_t size, const char* file, int line)
+    {
+        void* ptr = ngAlloc(num * size, file, line);
+        if (ptr)
+        {
+            memset(ptr, 0, num * size);
+        }
+        
+        return ptr;
     }
     
     void* DefaultNGExtension::ngRealloc(void* ptr, size_t size, const char* file, int line)
