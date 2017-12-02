@@ -25,3 +25,6 @@
 [submodule "src/3rdparty/ObjectAL-for-iPhone"]
 	path = src/3rdparty/ObjectAL-for-iPhone
 	url = https://github.com/NoctisGames/ObjectAL-for-iPhone.git
+[submodule "src/3rdparty/steamworks_sdk"]
+	path = src/3rdparty/steamworks_sdk
+	url = https://github.com/NoctisGames/steamworks_sdk.git
