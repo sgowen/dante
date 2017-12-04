@@ -964,6 +964,7 @@
 		BB31B5A21FC205D4005F1C0A /* CursorConverter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CursorConverter.h; sourceTree = "<group>"; };
 		BB31B5A31FC205D4005F1C0A /* KeyboardInputManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KeyboardInputManager.cpp; sourceTree = "<group>"; };
 		BB31B5A41FC205D5005F1C0A /* KeyboardInputManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeyboardInputManager.h; sourceTree = "<group>"; };
+		BB344F371FD5F86100587944 /* Vertices.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Vertices.h; sourceTree = "<group>"; };
 		BB379E971FCBAE7800118787 /* SoundService.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SoundService.cpp; sourceTree = "<group>"; };
 		BB379E981FCBAE7800118787 /* SoundService.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SoundService.hpp; sourceTree = "<group>"; };
 		BB379E991FCBAE9400118787 /* OpenSLESSound.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = OpenSLESSound.hpp; sourceTree = "<group>"; };
@@ -2658,6 +2659,7 @@
 				BB6F60BE1FBE005900BD7697 /* Updatable.h */,
 				BB6F60C71FBE005900BD7697 /* Vector.h */,
 				BB6F60A31FBE005900BD7697 /* VertexAttachment.h */,
+				BB344F371FD5F86100587944 /* Vertices.h */,
 			);
 			path = spine;
 			sourceTree = "<group>";
