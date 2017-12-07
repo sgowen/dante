@@ -555,6 +555,16 @@
 		BB8308711EC2AD1F00435E7E /* SocketAddressFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB83082E1EC2AD1F00435E7E /* SocketAddressFactory.cpp */; };
 		BB8308741EC2AD1F00435E7E /* SocketUtil.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8308301EC2AD1F00435E7E /* SocketUtil.cpp */; };
 		BB8308801EC2AD1F00435E7E /* UDPSocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8308391EC2AD1F00435E7E /* UDPSocket.cpp */; };
+		BB980C1E1FD9F5B400F8F994 /* spineboy.atlas in Resources */ = {isa = PBXBuildFile; fileRef = BB980C1C1FD9F5B300F8F994 /* spineboy.atlas */; };
+		BB980C1F1FD9F5B400F8F994 /* spineboy-pro.json in Resources */ = {isa = PBXBuildFile; fileRef = BB980C1D1FD9F5B300F8F994 /* spineboy-pro.json */; };
+		BB980C281FD9FB7F00F8F994 /* spineboy-pro.json in Resources */ = {isa = PBXBuildFile; fileRef = BB980C201FD9FB7E00F8F994 /* spineboy-pro.json */; };
+		BB980C291FD9FB7F00F8F994 /* spineboy-pma.atlas in Resources */ = {isa = PBXBuildFile; fileRef = BB980C211FD9FB7E00F8F994 /* spineboy-pma.atlas */; };
+		BB980C2A1FD9FB7F00F8F994 /* spineboy-ess.json in Resources */ = {isa = PBXBuildFile; fileRef = BB980C221FD9FB7F00F8F994 /* spineboy-ess.json */; };
+		BB980C2B1FD9FB7F00F8F994 /* spineboy.png in Resources */ = {isa = PBXBuildFile; fileRef = BB980C231FD9FB7F00F8F994 /* spineboy.png */; };
+		BB980C2C1FD9FB7F00F8F994 /* spineboy-pma.png in Resources */ = {isa = PBXBuildFile; fileRef = BB980C241FD9FB7F00F8F994 /* spineboy-pma.png */; };
+		BB980C2D1FD9FB7F00F8F994 /* spineboy-ess.skel in Resources */ = {isa = PBXBuildFile; fileRef = BB980C251FD9FB7F00F8F994 /* spineboy-ess.skel */; };
+		BB980C2E1FD9FB7F00F8F994 /* spineboy-pro.skel in Resources */ = {isa = PBXBuildFile; fileRef = BB980C261FD9FB7F00F8F994 /* spineboy-pro.skel */; };
+		BB980C2F1FD9FB7F00F8F994 /* spineboy.atlas in Resources */ = {isa = PBXBuildFile; fileRef = BB980C271FD9FB7F00F8F994 /* spineboy.atlas */; };
 		BB9EE50D1FC092BA000F5389 /* AssetDataHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB9EE50A1FC092BA000F5389 /* AssetDataHandler.cpp */; };
 		BB9EE50E1FC092BA000F5389 /* AssetDataHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB9EE50A1FC092BA000F5389 /* AssetDataHandler.cpp */; };
 		BB9EE5141FC092C5000F5389 /* apple_asset_data_handler.mm in Sources */ = {isa = PBXBuildFile; fileRef = BB9EE5101FC092C4000F5389 /* apple_asset_data_handler.mm */; };
@@ -1344,6 +1354,16 @@
 		BB8308391EC2AD1F00435E7E /* UDPSocket.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = UDPSocket.cpp; sourceTree = "<group>"; };
 		BB83083A1EC2AD1F00435E7E /* UDPSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UDPSocket.h; sourceTree = "<group>"; };
 		BB88026F1EE4A40400F1A37C /* Color.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Color.h; sourceTree = "<group>"; };
+		BB980C1C1FD9F5B300F8F994 /* spineboy.atlas */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = spineboy.atlas; sourceTree = "<group>"; };
+		BB980C1D1FD9F5B300F8F994 /* spineboy-pro.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "spineboy-pro.json"; sourceTree = "<group>"; };
+		BB980C201FD9FB7E00F8F994 /* spineboy-pro.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "spineboy-pro.json"; sourceTree = "<group>"; };
+		BB980C211FD9FB7E00F8F994 /* spineboy-pma.atlas */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "spineboy-pma.atlas"; sourceTree = "<group>"; };
+		BB980C221FD9FB7F00F8F994 /* spineboy-ess.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "spineboy-ess.json"; sourceTree = "<group>"; };
+		BB980C231FD9FB7F00F8F994 /* spineboy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = spineboy.png; sourceTree = "<group>"; };
+		BB980C241FD9FB7F00F8F994 /* spineboy-pma.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "spineboy-pma.png"; sourceTree = "<group>"; };
+		BB980C251FD9FB7F00F8F994 /* spineboy-ess.skel */ = {isa = PBXFileReference; lastKnownFileType = file; path = "spineboy-ess.skel"; sourceTree = "<group>"; };
+		BB980C261FD9FB7F00F8F994 /* spineboy-pro.skel */ = {isa = PBXFileReference; lastKnownFileType = file; path = "spineboy-pro.skel"; sourceTree = "<group>"; };
+		BB980C271FD9FB7F00F8F994 /* spineboy.atlas */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = spineboy.atlas; sourceTree = "<group>"; };
 		BB9EE50A1FC092BA000F5389 /* AssetDataHandler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AssetDataHandler.cpp; sourceTree = "<group>"; };
 		BB9EE50B1FC092BA000F5389 /* FileData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileData.h; sourceTree = "<group>"; };
 		BB9EE50C1FC092BA000F5389 /* AssetDataHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AssetDataHandler.h; sourceTree = "<group>"; };
@@ -2322,7 +2342,17 @@
 			children = (
 				BB5833DE1EEDDD330084DA20 /* music */,
 				BB5833E01EEDDD330084DA20 /* sounds */,
+				BB980C221FD9FB7F00F8F994 /* spineboy-ess.json */,
+				BB980C251FD9FB7F00F8F994 /* spineboy-ess.skel */,
+				BB980C211FD9FB7E00F8F994 /* spineboy-pma.atlas */,
+				BB980C241FD9FB7F00F8F994 /* spineboy-pma.png */,
+				BB980C1D1FD9F5B300F8F994 /* spineboy-pro.json */,
+				BB980C261FD9FB7F00F8F994 /* spineboy-pro.skel */,
+				BB980C1C1FD9F5B300F8F994 /* spineboy.atlas */,
+				BB980C201FD9FB7E00F8F994 /* spineboy-pro.json */,
+				BB980C231FD9FB7F00F8F994 /* spineboy.png */,
 				BB5833E61EEDDD330084DA20 /* textures */,
+				BB980C271FD9FB7F00F8F994 /* spineboy.atlas */,
 			);
 			name = assets;
 			path = ../../../../assets;
@@ -3317,22 +3347,32 @@
 			buildActionMask = 2147483647;
 			files = (
 				BB44C3291DB030B3003E633F /* Assets.xcassets in Resources */,
+				BB980C1E1FD9F5B400F8F994 /* spineboy.atlas in Resources */,
 				BB052CCD1EBA8ADD007FA789 /* shader_002_vert.ngs in Resources */,
+				BB980C2D1FD9FB7F00F8F994 /* spineboy-ess.skel in Resources */,
+				BB980C281FD9FB7F00F8F994 /* spineboy-pro.json in Resources */,
 				BB052CCB1EBA8ADD007FA789 /* shader_002_frag.ngs in Resources */,
 				BB5833EE1EEDDD330084DA20 /* sound_003.wav in Resources */,
 				BB5833F11EEDDD330084DA20 /* texture_001.ngt in Resources */,
 				BB125E111EFAF61F00917328 /* texture_004.ngt in Resources */,
 				BB052CC91EBA8ADD007FA789 /* shader_001_vert.ngs in Resources */,
+				BB980C2F1FD9FB7F00F8F994 /* spineboy.atlas in Resources */,
 				BB5833F01EEDDD330084DA20 /* sound_005.wav in Resources */,
 				BB5833EB1EEDDD330084DA20 /* music_001.wav in Resources */,
+				BB980C2C1FD9FB7F00F8F994 /* spineboy-pma.png in Resources */,
+				BB980C2E1FD9FB7F00F8F994 /* spineboy-pro.skel in Resources */,
 				BB5833ED1EEDDD330084DA20 /* sound_002.wav in Resources */,
 				BB5833F31EEDDD330084DA20 /* texture_002.ngt in Resources */,
 				BB2AC5471EFC56330012B990 /* sound_006.wav in Resources */,
+				BB980C2B1FD9FB7F00F8F994 /* spineboy.png in Resources */,
 				BB125E121EFAF61F00917328 /* texture_005.ngt in Resources */,
 				BB052CCF1EBA8ADD007FA789 /* shader_003_frag.ngs in Resources */,
 				BB052CC71EBA8ADD007FA789 /* shader_001_frag.ngs in Resources */,
+				BB980C291FD9FB7F00F8F994 /* spineboy-pma.atlas in Resources */,
+				BB980C2A1FD9FB7F00F8F994 /* spineboy-ess.json in Resources */,
 				BB125E101EFAF61F00917328 /* texture_003.ngt in Resources */,
 				BB5833741EEDBBC50084DA20 /* steam_appid.txt in Resources */,
+				BB980C1F1FD9F5B400F8F994 /* spineboy-pro.json in Resources */,
 				BB5833EC1EEDDD330084DA20 /* sound_001.wav in Resources */,
 				BB5833EF1EEDDD330084DA20 /* sound_004.wav in Resources */,
 				BB052CD11EBA8ADD007FA789 /* shader_003_vert.ngs in Resources */,

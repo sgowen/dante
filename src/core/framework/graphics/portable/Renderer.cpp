@@ -169,11 +169,11 @@ void Renderer::renderEntityWithColor(Entity &pe, TextureRegion& tr, Color c, boo
     _spriteBatcher->renderSprite(pe.getPosition().x, pe.getPosition().y, pe.getWidth(), pe.getHeight(), pe.getAngle(), flipX, c, tr);
 }
 
-void loadTextureDataSync(void* arg)
+void Renderer::loadTextureDataSync(TextureWrapper* arg)
 {
     assert(arg != NULL);
     
-    TextureWrapper* textureWrapper = reinterpret_cast<TextureWrapper*>(arg);
+    TextureWrapper* textureWrapper = static_cast<TextureWrapper*>(arg);
     
     assert(textureWrapper->_renderer != NULL);
     assert(textureWrapper->name.length() > 0);
@@ -186,6 +186,15 @@ void loadTextureDataSync(void* arg)
     
     textureWrapper->isLoadingData = true;
     textureWrapper->gpuTextureDataWrapper = textureWrapper->_renderer->_textureLoader->loadTextureData(textureWrapper->name.c_str());
+}
+
+void tthreadLoadTextureDataSync(void* arg)
+{
+    assert(arg != NULL);
+    
+    TextureWrapper* textureWrapper = static_cast<TextureWrapper*>(arg);
+    
+    textureWrapper->_renderer->loadTextureDataSync(textureWrapper);
 }
 
 void Renderer::loadTextureSync(TextureWrapper* textureWrapper)
@@ -215,7 +224,7 @@ void Renderer::loadTextureAsync(TextureWrapper* textureWrapper)
     _loadingTextures.push_back(textureWrapper);
     
     textureWrapper->isLoadingData = true;
-    _textureDataLoadingThreads.push_back(new tthread::thread(loadTextureDataSync, textureWrapper));
+    _textureDataLoadingThreads.push_back(new tthread::thread(tthreadLoadTextureDataSync, textureWrapper));
 }
 
 void Renderer::unloadTexture(TextureWrapper* textureWrapper)
