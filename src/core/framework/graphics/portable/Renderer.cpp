@@ -149,7 +149,7 @@ void Renderer::endFrame()
     _rendererHelper->endFrame();
 }
 
-bool Renderer::_isLoadingData()
+bool Renderer::isLoadingData()
 {
     return _loadingTextures.size() > 0;
 }

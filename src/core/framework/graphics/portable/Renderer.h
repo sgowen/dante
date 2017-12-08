@@ -77,7 +77,7 @@ protected:
     
     void endFrame();
     
-    bool _isLoadingData();
+    bool isLoadingData();
     
     bool isReadyForRendering();
     
