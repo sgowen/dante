@@ -51,16 +51,13 @@ public:
     
     void loadTextureDataSync(TextureWrapper* arg);
     
-    TextureLoader* _textureLoader;
-    
 protected:
     SpriteBatcher* _spriteBatcher;
     NGRectBatcher* _fillNGRectBatcher;
     NGRectBatcher* _boundsNGRectBatcher;
     LineBatcher* _lineBatcher;
     CircleBatcher* _circleBatcher;
-    
-    
+    TextureLoader* _textureLoader;
     RendererHelper* _rendererHelper;
     
     GpuProgramWrapper* _textureGpuProgramWrapper;

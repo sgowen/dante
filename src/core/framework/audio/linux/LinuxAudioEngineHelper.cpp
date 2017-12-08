@@ -41,8 +41,6 @@ SoundWrapper* LinuxAudioEngineHelper::loadSound(int soundId, const char *path, i
 {
     std::string s1(soundId == 1337 ? "data/music/" : "data/sounds/");
     s1 += std::string(path);
-    std::string s2(".wav");
-    s1 += s2;
     const char* finalPath = s1.c_str();
 
     LinuxSoundWrapper* sound = new LinuxSoundWrapper(soundId, finalPath, numInstances);

@@ -28,16 +28,16 @@
 #define SOUND_ID_ACTIVATE_SPRINT 5
 #define SOUND_ID_HEADSHOT 6
 
-#define SOUND_ROBOT_JUMP "sound_001"
-#define SOUND_EXPLOSION "sound_002"
-#define SOUND_DEATH "sound_003"
-#define SOUND_FIRE_ROCKET "sound_004"
-#define SOUND_ACTIVATE_SPRINT "sound_005"
-#define SOUND_HEADSHOT "sound_006"
+#define SOUND_ROBOT_JUMP "sound_001.wav"
+#define SOUND_EXPLOSION "sound_002.wav"
+#define SOUND_DEATH "sound_003.wav"
+#define SOUND_FIRE_ROCKET "sound_004.wav"
+#define SOUND_ACTIVATE_SPRINT "sound_005.wav"
+#define SOUND_HEADSHOT "sound_006.wav"
 
 //// Music Definitions ////
 
-#define MUSIC_DEMO "music_001"
+#define MUSIC_DEMO "music_001.wav"
 
 //// Render Definitions ////
 

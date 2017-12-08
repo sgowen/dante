@@ -43,12 +43,7 @@ void AndroidAudioEngineHelper::resume()
 
 SoundWrapper* AndroidAudioEngineHelper::loadSound(int soundId, const char *path, int numInstances)
 {
-    std::string s1(path);
-    std::string s2(".wav");
-    s1 += s2;
-    const char* finalPath = s1.c_str();
-    
-    AndroidSoundWrapper* sound = new AndroidSoundWrapper(_soundService, soundId, finalPath, numInstances);
+    AndroidSoundWrapper* sound = new AndroidSoundWrapper(_soundService, soundId, path, numInstances);
     
     return sound;
 }

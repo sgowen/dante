@@ -263,7 +263,7 @@ void unloadMusic()
 const char * getBundlePathForSoundWithName(const char* soundName)
 {
     NSString *path = [[NSString alloc] initWithCString:soundName encoding:NSASCIIStringEncoding];
-    const char *bundlePath = [[[NSBundle mainBundle] pathForResource:path ofType:@"wav"] fileSystemRepresentation];
+    const char *bundlePath = [[[NSBundle mainBundle] pathForResource:path ofType:nil] fileSystemRepresentation];
     
     return bundlePath;
 }
