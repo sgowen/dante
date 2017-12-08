@@ -353,6 +353,7 @@
 		<Unit filename="../../3rdparty/spine-runtimes/spine-cpp/spine-cpp/include/spine/IkConstraintData.h" />
 		<Unit filename="../../3rdparty/spine-runtimes/spine-cpp/spine-cpp/include/spine/IkConstraintTimeline.h" />
 		<Unit filename="../../3rdparty/spine-runtimes/spine-cpp/spine-cpp/include/spine/Json.h" />
+		<Unit filename="../../3rdparty/spine-runtimes/spine-cpp/spine-cpp/include/spine/LinkedMesh.h" />
 		<Unit filename="../../3rdparty/spine-runtimes/spine-cpp/spine-cpp/include/spine/MathUtil.h" />
 		<Unit filename="../../3rdparty/spine-runtimes/spine-cpp/spine-cpp/include/spine/MeshAttachment.h" />
 		<Unit filename="../../3rdparty/spine-runtimes/spine-cpp/spine-cpp/include/spine/MixDirection.h" />
@@ -382,6 +383,7 @@
 		<Unit filename="../../3rdparty/spine-runtimes/spine-cpp/spine-cpp/include/spine/Slot.h" />
 		<Unit filename="../../3rdparty/spine-runtimes/spine-cpp/spine-cpp/include/spine/SlotData.h" />
 		<Unit filename="../../3rdparty/spine-runtimes/spine-cpp/spine-cpp/include/spine/SpacingMode.h" />
+		<Unit filename="../../3rdparty/spine-runtimes/spine-cpp/spine-cpp/include/spine/TextureLoader.h" />
 		<Unit filename="../../3rdparty/spine-runtimes/spine-cpp/spine-cpp/include/spine/Timeline.h" />
 		<Unit filename="../../3rdparty/spine-runtimes/spine-cpp/spine-cpp/include/spine/TimelineType.h" />
 		<Unit filename="../../3rdparty/spine-runtimes/spine-cpp/spine-cpp/include/spine/TransformConstraint.h" />
@@ -394,6 +396,7 @@
 		<Unit filename="../../3rdparty/spine-runtimes/spine-cpp/spine-cpp/include/spine/Updatable.h" />
 		<Unit filename="../../3rdparty/spine-runtimes/spine-cpp/spine-cpp/include/spine/Vector.h" />
 		<Unit filename="../../3rdparty/spine-runtimes/spine-cpp/spine-cpp/include/spine/VertexAttachment.h" />
+		<Unit filename="../../3rdparty/spine-runtimes/spine-cpp/spine-cpp/include/spine/Vertices.h" />
 		<Unit filename="../../3rdparty/spine-runtimes/spine-cpp/spine-cpp/src/spine/Animation.cpp" />
 		<Unit filename="../../3rdparty/spine-runtimes/spine-cpp/spine-cpp/src/spine/AnimationState.cpp" />
 		<Unit filename="../../3rdparty/spine-runtimes/spine-cpp/spine-cpp/src/spine/AnimationStateData.cpp" />
@@ -419,6 +422,7 @@
 		<Unit filename="../../3rdparty/spine-runtimes/spine-cpp/spine-cpp/src/spine/IkConstraintData.cpp" />
 		<Unit filename="../../3rdparty/spine-runtimes/spine-cpp/spine-cpp/src/spine/IkConstraintTimeline.cpp" />
 		<Unit filename="../../3rdparty/spine-runtimes/spine-cpp/spine-cpp/src/spine/Json.cpp" />
+		<Unit filename="../../3rdparty/spine-runtimes/spine-cpp/spine-cpp/src/spine/LinkedMesh.cpp" />
 		<Unit filename="../../3rdparty/spine-runtimes/spine-cpp/spine-cpp/src/spine/MathUtil.cpp" />
 		<Unit filename="../../3rdparty/spine-runtimes/spine-cpp/spine-cpp/src/spine/MeshAttachment.cpp" />
 		<Unit filename="../../3rdparty/spine-runtimes/spine-cpp/spine-cpp/src/spine/PathAttachment.cpp" />
@@ -442,6 +446,7 @@
 		<Unit filename="../../3rdparty/spine-runtimes/spine-cpp/spine-cpp/src/spine/Skin.cpp" />
 		<Unit filename="../../3rdparty/spine-runtimes/spine-cpp/spine-cpp/src/spine/Slot.cpp" />
 		<Unit filename="../../3rdparty/spine-runtimes/spine-cpp/spine-cpp/src/spine/SlotData.cpp" />
+		<Unit filename="../../3rdparty/spine-runtimes/spine-cpp/spine-cpp/src/spine/TextureLoader.cpp" />
 		<Unit filename="../../3rdparty/spine-runtimes/spine-cpp/spine-cpp/src/spine/Timeline.cpp" />
 		<Unit filename="../../3rdparty/spine-runtimes/spine-cpp/spine-cpp/src/spine/TransformConstraint.cpp" />
 		<Unit filename="../../3rdparty/spine-runtimes/spine-cpp/spine-cpp/src/spine/TransformConstraintData.cpp" />
