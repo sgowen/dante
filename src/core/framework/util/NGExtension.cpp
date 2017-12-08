@@ -12,6 +12,7 @@
 
 #include <iostream>
 #include <assert.h>
+#include <cstring>
 
 namespace NoctisGames
 {
