@@ -17,42 +17,14 @@
 
 #include "PlatformHelpers.h"
 
-DirectXProgram::DirectXProgram(const char* vertexShaderName, const char* pixelShaderName, bool useTextureCoords)
+DirectXProgram::DirectXProgram(const char* vertexShaderName, const char* fragmentShaderName, bool useTextureCoords)
 {
-	char* vertexShaderFileName;
-	{
-		size_t len = strlen(vertexShaderName);
-
-		vertexShaderFileName = new char[len + 5];
-
-		strcpy_s(vertexShaderFileName, len + 5, vertexShaderName);
-		vertexShaderFileName[len] = '.';
-		vertexShaderFileName[len + 1] = 'n';
-		vertexShaderFileName[len + 2] = 'g';
-		vertexShaderFileName[len + 3] = 's';
-		vertexShaderFileName[len + 4] = '\0';
-	}
-
-	char* fragmentShaderFileName;
-	{
-		size_t len = strlen(pixelShaderName);
-
-		fragmentShaderFileName = new char[len + 5];
-
-		strcpy_s(fragmentShaderFileName, len + 5, pixelShaderName);
-		fragmentShaderFileName[len] = '.';
-		fragmentShaderFileName[len + 1] = 'n';
-		fragmentShaderFileName[len + 2] = 'g';
-		fragmentShaderFileName[len + 3] = 's';
-		fragmentShaderFileName[len + 4] = '\0';
-	}
-
-	std::string s1("data\\shaders\\");
-	s1 += std::string(vertexShaderFileName);
+    std::string s1("data\\shaders\\");
+	s1 += std::string(vertexShaderName);
 	const char* finalVertexShaderFileName = s1.c_str();
 
 	std::string s2("data\\shaders\\");
-	s2 += std::string(fragmentShaderFileName);
+	s2 += std::string(fragmentShaderName);
 	const char* finalFragmentShaderFileName = s2.c_str();
 
 	ID3D11Device* d3dDevice = DirectXManager::getD3dDevice();
@@ -105,9 +77,6 @@ DirectXProgram::DirectXProgram(const char* vertexShaderName, const char* pixelSh
 			&_pixelShader
 		)
 	);
-
-	delete vertexShaderFileName;
-	delete fragmentShaderFileName;
     
     AssetDataHandler::getAssetDataHandler()->releaseAssetData(&vertex_shader_source);
     AssetDataHandler::getAssetDataHandler()->releaseAssetData(&fragment_shader_source);

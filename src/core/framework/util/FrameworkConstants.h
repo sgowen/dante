@@ -16,12 +16,12 @@
 
 //// Shader Definitions ////
 
-#define COLOR_VERTEX_SHADER "shader_001_vert"
-#define COLOR_FRAGMENT_SHADER "shader_001_frag"
-#define FRAMEBUFFER_TO_SCREEN_VERTEX_SHADER "shader_002_vert"
-#define FRAMEBUFFER_TO_SCREEN_FRAGMENT_SHADER "shader_002_frag"
-#define TEXTURE_VERTEX_SHADER "shader_003_vert"
-#define TEXTURE_FRAGMENT_SHADER "shader_003_frag"
+#define COLOR_VERTEX_SHADER "shader_001_vert.ngs"
+#define COLOR_FRAGMENT_SHADER "shader_001_frag.ngs"
+#define FRAMEBUFFER_TO_SCREEN_VERTEX_SHADER "shader_002_vert.ngs"
+#define FRAMEBUFFER_TO_SCREEN_FRAGMENT_SHADER "shader_002_frag.ngs"
+#define TEXTURE_VERTEX_SHADER "shader_003_vert.ngs"
+#define TEXTURE_FRAGMENT_SHADER "shader_003_frag.ngs"
 
 //// Network ////
 

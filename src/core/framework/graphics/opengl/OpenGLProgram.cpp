@@ -23,48 +23,20 @@ OpenGLProgram::OpenGLProgram(const char* vertexShaderName, const char* fragmentS
 {
     assert(vertexShaderName != NULL);
     assert(fragmentShaderName != NULL);
-
-    char* vertexShaderFileName;
-    {
-        size_t len = strlen(vertexShaderName);
-
-        vertexShaderFileName = new char[len + 5];
-
-        strcpy(vertexShaderFileName, vertexShaderName);
-        vertexShaderFileName[len] = '.';
-        vertexShaderFileName[len + 1] = 'n';
-        vertexShaderFileName[len + 2] = 'g';
-        vertexShaderFileName[len + 3] = 's';
-        vertexShaderFileName[len + 4] = '\0';
-    }
-
-    char* fragmentShaderFileName;
-    {
-        size_t len = strlen(fragmentShaderName);
-
-        fragmentShaderFileName = new char[len + 5];
-
-        strcpy(fragmentShaderFileName, fragmentShaderName);
-        fragmentShaderFileName[len] = '.';
-        fragmentShaderFileName[len + 1] = 'n';
-        fragmentShaderFileName[len + 2] = 'g';
-        fragmentShaderFileName[len + 3] = 's';
-        fragmentShaderFileName[len + 4] = '\0';
-    }
     
     const char* finalVertexShaderFileName;
     const char* finalFragmentShaderFileName;
 #if defined __linux__ && !defined(__ANDROID__)
     std::string s1("data/shaders/");
-    s1 += std::string(vertexShaderFileName);
+    s1 += std::string(vertexShaderName);
     finalVertexShaderFileName = s1.c_str();
     
     std::string s2("data/shaders/");
-    s2 += std::string(fragmentShaderFileName);
+    s2 += std::string(fragmentShaderName);
     finalFragmentShaderFileName = s2.c_str();
 #else
-    finalVertexShaderFileName = vertexShaderFileName;
-    finalFragmentShaderFileName = fragmentShaderFileName;
+    finalVertexShaderFileName = vertexShaderName;
+    finalFragmentShaderFileName = fragmentShaderName;
 #endif
     
     const FileData vertex_shader_source = AssetDataHandler::getAssetDataHandler()->getAssetData(finalVertexShaderFileName);
@@ -77,9 +49,6 @@ OpenGLProgram::OpenGLProgram(const char* vertexShaderName, const char* fragmentS
     StringUtil::encryptDecrypt((unsigned char*)fragment_shader_source.data, fragment_shader_source_output, fragment_shader_source.data_length);
 
     _programObjectId = buildProgram(vertex_shader_source_output, (GLint)vertex_shader_source.data_length, fragment_shader_source_output, (GLint)fragment_shader_source.data_length);
-
-    delete vertexShaderFileName;
-    delete fragmentShaderFileName;
 
     AssetDataHandler::getAssetDataHandler()->releaseAssetData(&vertex_shader_source);
     AssetDataHandler::getAssetDataHandler()->releaseAssetData(&fragment_shader_source);
