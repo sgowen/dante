@@ -51,26 +51,6 @@
 #include <sstream>
 #include <ctime> // rand
 
-#include <spine/Extension.h>
-#include <spine/TextureLoader.h>
-#include <spine/Vector.h>
-
-#include <spine/CurveTimeline.h>
-#include <spine/VertexAttachment.h>
-#include <spine/Json.h>
-
-#include <spine/AttachmentLoader.h>
-#include <spine/AtlasAttachmentLoader.h>
-#include <spine/LinkedMesh.h>
-
-#include <spine/SkeletonJson.h>
-#include <spine/SkeletonData.h>
-#include <spine/Atlas.h>
-#include <spine/AnimationStateData.h>
-#include <spine/Skeleton.h>
-#include <spine/AnimationState.h>
-#include <spine/Animation.h>
-
 MainRenderer::MainRenderer(int maxBatchSize) : Renderer(maxBatchSize),
 _characters(new TextureWrapper("texture_001.ngt", this, false, true)),
 _misc(new TextureWrapper("texture_002.ngt", this, false, true)),
@@ -95,77 +75,6 @@ MainRenderer::~MainRenderer()
     delete _font;
 }
 
-using namespace Spine;
-
-#include <framework/graphics/portable/GpuTextureDataWrapper.h>
-#include <framework/graphics/portable/TextureLoader.h>
-
-static SkeletonData* readSkeletonJsonData(const char* filename, Atlas* atlas)
-{
-    Vector<Atlas*> atlasArray;
-    atlasArray.push_back(atlas);
-    
-    SkeletonJson* skeletonJson = NEW(SkeletonJson);
-    new (skeletonJson) SkeletonJson(atlasArray);
-    assert(skeletonJson != 0);
-    
-    SkeletonData* skeletonData = skeletonJson->readSkeletonDataFile(filename);
-    assert(skeletonData != 0);
-    
-    DESTROY(SkeletonJson, skeletonJson);
-    
-    return skeletonData;
-}
-
-typedef std::vector<std::string> AnimList;
-
-static size_t enumerateAnimations(AnimList& outList, SkeletonData* skeletonData)
-{
-    if (skeletonData)
-    {
-        for (int n = 0; n < skeletonData->getAnimations().size(); n++)
-        {
-            outList.push_back(skeletonData->getAnimations()[n]->getName());
-        }
-    }
-    
-    return outList.size();
-}
-
-class MyTextureLoader : public Spine::TextureLoader
-{
-public:
-    MyTextureLoader(Renderer* renderer) : _renderer(renderer) {}
-    
-    virtual void load(AtlasPage& page, std::string path)
-    {
-        TextureWrapper* tw = new TextureWrapper(path, _renderer);
-        _textureWrappers.push_back(tw);
-        
-        _renderer->loadTextureDataSync(tw);
-        
-        tw->gpuTextureWrapper = _renderer->_textureLoader->loadTexture(tw->gpuTextureDataWrapper, tw->_repeatS);
-        
-        page.rendererObject = tw;
-        page.width = tw->gpuTextureDataWrapper->getWidth();
-        page.height = tw->gpuTextureDataWrapper->getHeight();
-        
-        delete tw->gpuTextureDataWrapper;
-        tw->gpuTextureDataWrapper = NULL;
-        
-        tw->_isLoadingData = false;
-    }
-    
-    virtual void unload(void* texture)
-    {
-        _renderer->unloadTexture(static_cast<TextureWrapper*>(texture));
-    }
-    
-private:
-    Renderer* _renderer;
-    std::vector<TextureWrapper*> _textureWrappers;
-};
-
 void MainRenderer::createDeviceDependentResources()
 {
     Renderer::createDeviceDependentResources();
@@ -175,45 +84,6 @@ void MainRenderer::createDeviceDependentResources()
     loadTextureSync(_bg1);
     loadTextureSync(_bg2);
     loadTextureSync(_cover);
-    
-    static MyTextureLoader myTextureLoader(this);
-    Atlas* atlas = NEW(Atlas);
-    new (atlas) Atlas("spineboy.atlas", myTextureLoader);
-    assert(atlas != 0);
-    
-    SkeletonData* skeletonData = readSkeletonJsonData("spineboy-pro.json", atlas);
-    assert(skeletonData != 0);
-    
-    AnimationStateData* stateData = NEW(AnimationStateData);
-    new (stateData) AnimationStateData(*skeletonData);
-    assert(stateData != 0);
-    stateData->setDefaultMix(0.2f); // force mixing
-    
-    ///////////////////////////////////////////////////////////////////////////
-    // Animation Instance
-    Skeleton* skeleton = NEW(Skeleton);
-    new (skeleton) Skeleton(*skeletonData);
-    assert(skeleton != 0);
-    
-    AnimationState* state = NEW(AnimationState);
-    new (state) AnimationState(*stateData);
-    assert(state != 0);
-    
-    ///////////////////////////////////////////////////////////////////////////
-    // Run animation
-    skeleton->setToSetupPose();
-    
-    AnimList anims; // Let's chain all the animations together as a test
-    size_t count = enumerateAnimations(anims, skeletonData);
-    if (count > 0)
-    {
-        state->setAnimation(0, anims[0].c_str(), false);
-    }
-    
-    for (size_t i = 1; i < count; ++i)
-    {
-        state->addAnimation(0, anims[i].c_str(), false, 0.0f);
-    }
 }
 
 void MainRenderer::releaseDeviceDependentResources()
@@ -258,11 +128,6 @@ void MainRenderer::render(int flags)
     endFrame();
 }
 
-inline float clampR(float x, float upper, float lower)
-{
-    return MIN(upper, MAX(x, lower));
-}
-
 void MainRenderer::renderBackground()
 {
     for (int i = 0; i < 3; ++i)
@@ -273,7 +138,7 @@ void MainRenderer::renderBackground()
         {
             static TextureRegion tr = ASSETS->findTextureRegion("Background1");
             tr.initX(_camBounds->getLeft() * 128.0f / 3);
-            tr.initY(clampR(384 - _camBounds->getBottom() * 32, 384, 0));
+            tr.initY(clamp(384 - _camBounds->getBottom() * 32, 384, 0));
             _spriteBatcher->drawSprite(i * CAM_WIDTH + CAM_WIDTH / 2, CAM_HEIGHT / 2, CAM_WIDTH, CAM_HEIGHT, 0, tr);
         }
         _spriteBatcher->endBatch(*_bg1, *_textureGpuProgramWrapper);
@@ -282,7 +147,7 @@ void MainRenderer::renderBackground()
         {
             static TextureRegion tr = ASSETS->findTextureRegion("Background2");
             tr.initX(_camBounds->getLeft() * 128.0f / 2);
-            tr.initY(clampR(644 - _camBounds->getBottom() * 48, 644, 0));
+            tr.initY(clamp(644 - _camBounds->getBottom() * 48, 644, 0));
             _spriteBatcher->drawSprite(i * CAM_WIDTH + CAM_WIDTH / 2, CAM_HEIGHT * 0.3875f / 2, CAM_WIDTH, CAM_HEIGHT * 0.3875f, 0, tr);
         }
         _spriteBatcher->endBatch(*_bg2, *_textureGpuProgramWrapper);
@@ -824,7 +689,7 @@ void MainRenderer::updateCamera()
             float x = pX - w * 0.5f;
             
             float y = pY - h * 0.5f;
-            y = clampR(y, GAME_HEIGHT, 0);
+            y = clamp(y, GAME_HEIGHT, 0);
             
             _camBounds->getLowerLeft().set(x, y);
             _camBounds->setWidth(w);
