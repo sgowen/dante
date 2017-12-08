@@ -38,7 +38,7 @@ void DirectXSpriteBatcher::endBatch(TextureWrapper& textureWrapper, GpuProgramWr
 		ID3D11DeviceContext* d3dContext = DirectXManager::getD3dContext();
 		d3dContext->PSSetShaderResources(0, 1, &textureWrapper.gpuTextureWrapper->texture);
         
-        if (textureWrapper.repeatS)
+        if (textureWrapper._repeatS)
         {
             bindWrapSamplerState();
         }

@@ -9,7 +9,9 @@
 #include "framework/graphics/opengl/OpenGLTextureLoader.h"
 
 #include "framework/graphics/portable/GpuTextureDataWrapper.h"
+#include <framework/graphics/portable/TextureWrapper.h>
 #include "framework/graphics/portable/GpuTextureWrapper.h"
+
 #include "framework/file/portable/AssetDataHandler.h"
 #include "framework/file/portable/FileData.h"
 #include "framework/graphics/opengl/OpenGLPngImageData.h"
@@ -35,31 +37,30 @@ OpenGLTextureLoader::~OpenGLTextureLoader()
     // Empty
 }
 
-GpuTextureDataWrapper* OpenGLTextureLoader::loadTextureData(const char* textureName)
+GpuTextureDataWrapper* OpenGLTextureLoader::loadTextureData(TextureWrapper* textureWrapper)
 {
-    size_t len = strlen(textureName);
-
-    char* textureFileName = new char[len + 5];
-
-    strcpy(textureFileName, textureName);
-    textureFileName[len] = '.';
-    textureFileName[len+1] = 'n';
-    textureFileName[len+2] = 'g';
-    textureFileName[len+3] = 't';
-    textureFileName[len+4] = '\0';
+    const char* textureName = textureWrapper->name.c_str();
 
     const char* finalTextureFileName;
 #if defined __linux__ && !defined(__ANDROID__)
     std::string s1("data/textures/");
-    s1 += std::string(textureFileName);
+    s1 += std::string(textureName);
     finalTextureFileName = s1.c_str();
 #else
-    finalTextureFileName = textureFileName;
+    finalTextureFileName = textureName;
 #endif
 
     const FileData png_file = AssetDataHandler::getAssetDataHandler()->getAssetData(finalTextureFileName);
-    void* output = malloc(png_file.data_length);
-    StringUtil::encryptDecrypt((unsigned char*)png_file.data, (unsigned char*) output, png_file.data_length);
+    void* output = NULL;
+    if (textureWrapper->_isEncrypted)
+    {
+        output = malloc(png_file.data_length);
+        StringUtil::encryptDecrypt((unsigned char*)png_file.data, (unsigned char*) output, png_file.data_length);
+    }
+    else
+    {
+        output = (void*) png_file.data;
+    }
 
     const OpenGLPngImageData raw_image_data = getOpenGLPngImageDataFromFileData(output, (int)png_file.data_length);
 
@@ -67,9 +68,10 @@ GpuTextureDataWrapper* OpenGLTextureLoader::loadTextureData(const char* textureN
 
     GpuTextureDataWrapper* tdw = new GpuTextureDataWrapper(raw_image_data);
 
-    delete[] textureFileName;
-
-    free(output);
+    if (textureWrapper->_isEncrypted)
+    {
+        free(output);
+    }
 
     return tdw;
 }

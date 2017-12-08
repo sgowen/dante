@@ -14,7 +14,7 @@
 #include "framework/graphics/portable/GpuTextureWrapper.h"
 #include "framework/graphics/portable/Renderer.h"
 
-TextureWrapper::TextureWrapper(std::string inName, Renderer* renderer, bool in_repeatS) : name(inName), gpuTextureDataWrapper(NULL), gpuTextureWrapper(NULL), _renderer(renderer), repeatS(in_repeatS), isLoadingData(false)
+TextureWrapper::TextureWrapper(std::string inName, Renderer* renderer, bool repeatS, bool isEncrypted) : name(inName), gpuTextureDataWrapper(NULL), gpuTextureWrapper(NULL), _renderer(renderer), _repeatS(repeatS), _isEncrypted(isEncrypted), _isLoadingData(false)
 {
     // Empty
 }

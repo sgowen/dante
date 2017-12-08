@@ -72,12 +72,12 @@
 #include <spine/Animation.h>
 
 MainRenderer::MainRenderer(int maxBatchSize) : Renderer(maxBatchSize),
-_characters(new TextureWrapper("texture_001", this)),
-_misc(new TextureWrapper("texture_002", this)),
-_bg1(new TextureWrapper("texture_003", this, true)),
-_bg2(new TextureWrapper("texture_004", this, true)),
-_cover(new TextureWrapper("texture_005", this, true)),
-_font(new Font("texture_002", 0, 0, 16, 64, 75, TEXTURE_SIZE_1024)),
+_characters(new TextureWrapper("texture_001.ngt", this, false, true)),
+_misc(new TextureWrapper("texture_002.ngt", this, false, true)),
+_bg1(new TextureWrapper("texture_003.ngt", this, true, true)),
+_bg2(new TextureWrapper("texture_004.ngt", this, true, true)),
+_cover(new TextureWrapper("texture_005.ngt", this, true, true)),
+_font(new Font("texture_002.ngt", 0, 0, 16, 64, 75, TEXTURE_SIZE_1024)),
 _camBounds(new NGRect(0, 0, CAM_WIDTH, CAM_HEIGHT))
 {
     ASSETS->init(new MainAssetsMapper());
@@ -144,7 +144,7 @@ public:
         
         _renderer->loadTextureDataSync(tw);
         
-        tw->gpuTextureWrapper = _renderer->_textureLoader->loadTexture(tw->gpuTextureDataWrapper, tw->repeatS);
+        tw->gpuTextureWrapper = _renderer->_textureLoader->loadTexture(tw->gpuTextureDataWrapper, tw->_repeatS);
         
         page.rendererObject = tw;
         page.width = tw->gpuTextureDataWrapper->getWidth();
@@ -153,7 +153,7 @@ public:
         delete tw->gpuTextureDataWrapper;
         tw->gpuTextureDataWrapper = NULL;
         
-        tw->isLoadingData = false;
+        tw->_isLoadingData = false;
     }
     
     virtual void unload(void* texture)

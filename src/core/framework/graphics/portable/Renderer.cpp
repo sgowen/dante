@@ -149,7 +149,7 @@ void Renderer::endFrame()
     _rendererHelper->endFrame();
 }
 
-bool Renderer::isLoadingData()
+bool Renderer::_isLoadingData()
 {
     return _loadingTextures.size() > 0;
 }
@@ -184,8 +184,8 @@ void Renderer::loadTextureDataSync(TextureWrapper* arg)
         return;
     }
     
-    textureWrapper->isLoadingData = true;
-    textureWrapper->gpuTextureDataWrapper = textureWrapper->_renderer->_textureLoader->loadTextureData(textureWrapper->name.c_str());
+    textureWrapper->_isLoadingData = true;
+    textureWrapper->gpuTextureDataWrapper = textureWrapper->_renderer->_textureLoader->loadTextureData(textureWrapper);
 }
 
 void tthreadLoadTextureDataSync(void* arg)
@@ -201,12 +201,12 @@ void Renderer::loadTextureSync(TextureWrapper* textureWrapper)
 {
     loadTextureDataSync(textureWrapper);
     
-    textureWrapper->gpuTextureWrapper = _textureLoader->loadTexture(textureWrapper->gpuTextureDataWrapper, textureWrapper->repeatS);
+    textureWrapper->gpuTextureWrapper = _textureLoader->loadTexture(textureWrapper->gpuTextureDataWrapper, textureWrapper->_repeatS);
     
     delete textureWrapper->gpuTextureDataWrapper;
     textureWrapper->gpuTextureDataWrapper = NULL;
     
-    textureWrapper->isLoadingData = false;
+    textureWrapper->_isLoadingData = false;
 }
 
 void Renderer::loadTextureAsync(TextureWrapper* textureWrapper)
@@ -215,7 +215,7 @@ void Renderer::loadTextureAsync(TextureWrapper* textureWrapper)
     assert(textureWrapper->name.length() > 0);
     
     if (textureWrapper->gpuTextureWrapper
-        || textureWrapper->isLoadingData
+        || textureWrapper->_isLoadingData
         || !_areDeviceDependentResourcesCreated)
     {
         return;
@@ -223,7 +223,7 @@ void Renderer::loadTextureAsync(TextureWrapper* textureWrapper)
     
     _loadingTextures.push_back(textureWrapper);
     
-    textureWrapper->isLoadingData = true;
+    textureWrapper->_isLoadingData = true;
     _textureDataLoadingThreads.push_back(new tthread::thread(tthreadLoadTextureDataSync, textureWrapper));
 }
 
@@ -260,14 +260,14 @@ void Renderer::unloadTexture(TextureWrapper* textureWrapper)
         textureWrapper->gpuTextureDataWrapper = NULL;
     }
     
-    textureWrapper->isLoadingData = false;
+    textureWrapper->_isLoadingData = false;
 }
 
 bool Renderer::ensureTexture(TextureWrapper* textureWrapper)
 {
     if (textureWrapper->gpuTextureWrapper == NULL)
     {
-        if (!textureWrapper->isLoadingData)
+        if (!textureWrapper->_isLoadingData)
         {
             loadTextureAsync(textureWrapper);
         }
@@ -286,12 +286,12 @@ void Renderer::handleAsyncTextureLoads()
     {
         if ((*i)->gpuTextureDataWrapper)
         {
-            (*i)->gpuTextureWrapper = _textureLoader->loadTexture((*i)->gpuTextureDataWrapper, (*i)->repeatS);
+            (*i)->gpuTextureWrapper = _textureLoader->loadTexture((*i)->gpuTextureDataWrapper, (*i)->_repeatS);
             
             delete (*i)->gpuTextureDataWrapper;
             (*i)->gpuTextureDataWrapper = NULL;
             
-            (*i)->isLoadingData = false;
+            (*i)->_isLoadingData = false;
             
             i = _loadingTextures.erase(i);
         }
