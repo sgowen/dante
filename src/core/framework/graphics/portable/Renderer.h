@@ -41,6 +41,18 @@ public:
     
     virtual void render(int flags = 0) = 0;
     
+    void loadTextureSync(TextureWrapper* textureWrapper);
+    
+    void loadTextureAsync(TextureWrapper* textureWrapper);
+    
+    void unloadTexture(TextureWrapper* textureWrapper);
+    
+    bool ensureTexture(TextureWrapper* textureWrapper);
+    
+    void loadTextureDataSync(TextureWrapper* arg);
+    
+    TextureLoader* _textureLoader;
+    
 protected:
     SpriteBatcher* _spriteBatcher;
     NGRectBatcher* _fillNGRectBatcher;
@@ -48,7 +60,7 @@ protected:
     LineBatcher* _lineBatcher;
     CircleBatcher* _circleBatcher;
     
-    TextureLoader* _textureLoader;
+    
     RendererHelper* _rendererHelper;
     
     GpuProgramWrapper* _textureGpuProgramWrapper;
@@ -73,14 +85,6 @@ protected:
 
 	void renderEntityWithColor(Entity &go, TextureRegion& tr, Color c, bool flipX = false);
     
-    void loadTextureSync(TextureWrapper* textureWrapper);
-    
-    void loadTextureAsync(TextureWrapper* textureWrapper);
-    
-    void unloadTexture(TextureWrapper* textureWrapper);
-    
-    bool ensureTexture(TextureWrapper* textureWrapper);
-    
 private:
     std::vector<TextureWrapper *> _loadingTextures;
     std::vector<tthread::thread *> _textureDataLoadingThreads;
@@ -92,7 +96,7 @@ private:
     
     void cleanUpThreads();
     
-    friend void loadTextureDataSync(void* arg);
+    friend void tthreadLoadTextureDataSync(void* arg);
 };
 
 #endif /* defined(__noctisgames__Renderer__) */

@@ -22,10 +22,11 @@ public:
     GpuTextureDataWrapper* gpuTextureDataWrapper;
     GpuTextureWrapper* gpuTextureWrapper;
     Renderer* _renderer;
-    bool repeatS;
-    bool isLoadingData;
+    bool _repeatS;
+    bool _isEncrypted;
+    bool _isLoadingData;
     
-    TextureWrapper(std::string inName, Renderer* renderer, bool in_repeatS = false);
+    TextureWrapper(std::string inName, Renderer* renderer, bool repeatS = false, bool isEncrypted = false);
 };
 
 #endif /* defined(__noctisgames__TextureWrapper__) */

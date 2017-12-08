@@ -10,10 +10,12 @@
 
 #include "framework/graphics/directx/DirectXTextureLoader.h"
 
+#include "framework/graphics/portable/GpuTextureDataWrapper.h"
+#include <framework/graphics/portable/TextureWrapper.h>
+#include "framework/graphics/portable/GpuTextureWrapper.h"
+
 #include "framework/util/macros.h"
 #include "framework/graphics/directx/DirectXManager.h"
-#include "framework/graphics/portable/GpuTextureDataWrapper.h"
-#include "framework/graphics/portable/GpuTextureWrapper.h"
 #include "framework/file/portable/AssetDataHandler.h"
 #include "framework/file/portable/FileData.h"
 #include "framework/util/StringUtil.h"
@@ -33,26 +35,25 @@ DirectXTextureLoader::~DirectXTextureLoader()
     // Empty
 }
 
-GpuTextureDataWrapper* DirectXTextureLoader::loadTextureData(const char* textureName)
+GpuTextureDataWrapper* DirectXTextureLoader::loadTextureData(TextureWrapper* textureWrapper)
 {
-    size_t len = strlen(textureName);
-    
-    char* textureFileName = new char[len + 5];
-    
-	strcpy_s(textureFileName, len + 5, textureName);
-    textureFileName[len] = '.';
-    textureFileName[len + 1] = 'n';
-    textureFileName[len + 2] = 'g';
-    textureFileName[len + 3] = 't';
-    textureFileName[len + 4] = '\0';
+    const char* textureName = textureWrapper->name.c_str();
 
 	std::string s("data\\textures\\");
-	s += std::string(textureFileName);
+	s += std::string(textureName);
 	const char* finalPath = s.c_str();
     
     const FileData dds_file = AssetDataHandler::getAssetDataHandler()->getAssetData(finalPath);
-    void* output = malloc(dds_file.data_length);
-    StringUtil::encryptDecrypt((unsigned char*)dds_file.data, (unsigned char*) output, dds_file.data_length);
+    void* output = NULL;
+    if (textureWrapper->_isEncrypted)
+    {
+        malloc(dds_file.data_length);
+        StringUtil::encryptDecrypt((unsigned char*)dds_file.data, (unsigned char*) output, dds_file.data_length);
+    }
+    else
+    {
+        output = (void*) dds_file.data;
+    }
     
     ID3D11ShaderResourceView *pShaderResourceView;
     
@@ -63,9 +64,10 @@ GpuTextureDataWrapper* DirectXTextureLoader::loadTextureData(const char* texture
     
     GpuTextureDataWrapper* tdw = new GpuTextureDataWrapper(pShaderResourceView);
     
-    delete textureFileName;
-    
-    free((void *)output);
+    if (textureWrapper->_isEncrypted)
+    {
+        free((void *)output);
+    }
     
     return tdw;
 }

@@ -21,10 +21,16 @@ struct GpuTextureDataWrapper
     OpenGLPngImageData raw_image_data;
 
     GpuTextureDataWrapper(OpenGLPngImageData raw_image_data_in) : raw_image_data(raw_image_data_in) {}
+    
+    int getWidth() { return raw_image_data.width; }
+    int getHeight() { return raw_image_data.height; }
 #elif defined _WIN32
     ID3D11ShaderResourceView* texture;
 
     GpuTextureDataWrapper(ID3D11ShaderResourceView* textureIn) : texture(textureIn) {}
+    
+    int getWidth() { return texture->getWidth(); }
+    int getHeight() { return texture->getHeight(); }
 #endif
 };
 
