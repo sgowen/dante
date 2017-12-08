@@ -258,9 +258,9 @@ void MainRenderer::render(int flags)
     endFrame();
 }
 
-inline float clampR(float x, float lower, float upper)
+inline float clampR(float x, float upper, float lower)
 {
-    return fminf(upper, fmaxf(x, lower));
+    return MIN(upper, MAX(x, lower));
 }
 
 void MainRenderer::renderBackground()
