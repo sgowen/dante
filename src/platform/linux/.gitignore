@@ -34,3 +34,6 @@
 /data
 *_build
 *.depend
+
+# CodeBlocks IDE
+dante.layout
