@@ -24,9 +24,10 @@ _replicationManagerServer(NULL)
     // Empty
 }
 
-void ReplicationManagerTransmissionData::reset(ReplicationManagerServer* inReplicationManagerServer)
+void ReplicationManagerTransmissionData::reset(ReplicationManagerServer* inReplicationManagerServer, NoctisGames::NGPool<ReplicationManagerTransmissionData>* replicationManagerTransmissionDatas)
 {
     _replicationManagerServer = inReplicationManagerServer;
+    _replicationManagerTransmissionDatas = replicationManagerTransmissionDatas;
     _transmissions.clear();
 }
 
@@ -40,6 +41,14 @@ void ReplicationManagerTransmissionData::addTransmission(uint32_t inNetworkId, R
      }
      */
     _transmissions.push_back(ReplicationTransmission(inNetworkId, inAction, inState));
+}
+
+void ReplicationManagerTransmissionData::free()
+{
+    if (_replicationManagerTransmissionDatas)
+    {
+        _replicationManagerTransmissionDatas->free(this);
+    }
 }
 
 void ReplicationManagerTransmissionData::handleDeliveryFailure(DeliveryNotificationManager* inDeliveryNotificationManager) const

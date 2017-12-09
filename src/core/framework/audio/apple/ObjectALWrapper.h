@@ -53,6 +53,4 @@ bool isMusicLoaded();
 
 void unloadMusic();
 
-const char * getBundlePathForSoundWithName(const char* soundName);
-
 #endif /* defined(__noctisgames__ObjectALWrapper__) */

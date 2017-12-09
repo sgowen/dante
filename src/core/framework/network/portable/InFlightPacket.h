@@ -21,7 +21,9 @@ class InFlightPacket
 public:
     InFlightPacket(uint16_t inSequenceNumber);
     
-    TransmissionData* setTransmissionData(int inKey, TransmissionData* inTransmissionData);
+    ~InFlightPacket();
+    
+    void setTransmissionData(int inKey, TransmissionData* inTransmissionData);
     
     TransmissionData* getTransmissionData(int inKey) const;
     
@@ -36,6 +38,7 @@ public:
 private:
     uint16_t _sequenceNumber;
     float _timeDispatched;
+    int _inKey;
     
     std::map<int, TransmissionData*> _transmissionDataMap;
 };

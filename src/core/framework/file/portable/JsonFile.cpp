@@ -46,41 +46,9 @@ void JsonFile::save()
     using namespace rapidjson;
     using namespace std;
     
-    const char* finalPath;
-#if defined __ANDROID__
-    finalPath = AndroidAssetDataHandler::getInstance()->getPathInsideApk(_filePath);
-#elif TARGET_OS_IPHONE
-    finalPath = getPathInsideNSDocuments(_filePath);
-#elif defined _WIN32
-	#if !defined(WINAPI_FAMILY) || WINAPI_FAMILY == WINAPI_FAMILY_DESKTOP_APP
-		finalPath = _filePath;
-	#else
-		Windows::Storage::StorageFolder^ localFolder = Windows::Storage::ApplicationData::Current->LocalFolder;
-		Platform::String^ ps_path = localFolder->Path;
-		std::string s_path(ps_path->Begin(), ps_path->End());
-		const char* path = s_path.c_str(); // std::string to const
-		std::stringstream ss;
-		ss << path << "\\" << _filePath;
-
-		std::string finalPathS = ss.str();
-		finalPath = finalPathS.c_str();
-	#endif
-#else
-    finalPath = _filePath;
-#endif
-    
-    FILE *file;
-#ifdef _WIN32
-    errno_t err;
-    if ((err = fopen_s(&file, finalPath, "w+")) != 0)
-    {
-#else
-    if ((file = fopen(finalPath, "w+")) == NULL)
-    {
-#endif
-        return;
-    }
-    else
+    const char* finalPath = platformSpecificFilePath();
+    FILE *file = openFile(finalPath, "w+");
+    if (file)
     {
         static StringBuffer s;
         Writer<StringBuffer> w(s);
@@ -117,41 +85,10 @@ void JsonFile::load()
     using namespace rapidjson;
     using namespace std;
     
-    const char* finalPath;
+    const char* finalPath = platformSpecificFilePath();
 
-#if defined __ANDROID__
-    finalPath = AndroidAssetDataHandler::getInstance()->getPathInsideApk(_filePath);
-#elif TARGET_OS_IPHONE
-    finalPath = getPathInsideNSDocuments(_filePath);
-#elif defined _WIN32
-	#if !defined(WINAPI_FAMILY) || WINAPI_FAMILY == WINAPI_FAMILY_DESKTOP_APP
-		finalPath = _filePath;
-	#else
-		Windows::Storage::StorageFolder^ localFolder = Windows::Storage::ApplicationData::Current->LocalFolder;
-		Platform::String^ ps_path = localFolder->Path;
-		std::string s_path(ps_path->Begin(), ps_path->End());
-		const char* path = s_path.c_str(); // std::string to const
-		std::stringstream ss;
-		ss << path << "\\" << _filePath;
-
-		std::string finalPathS = ss.str();
-		finalPath = finalPathS.c_str();
-	#endif
-#else
-    finalPath = _filePath;
-#endif
-    
-    FILE *file;
-#ifdef _WIN32
-    errno_t err;
-    if ((err = fopen_s(&file, finalPath, "r")) != 0)
-#else
-    if ((file = fopen(finalPath, "r")) == NULL)
-#endif
-    {
-        return;
-    }
-    else
+    FILE *file = openFile(finalPath, "r");
+    if (file)
     {
         // seek to end of file
         fseek(file, 0, SEEK_END);
@@ -210,4 +147,51 @@ std::string JsonFile::findValue(std::string key)
 void JsonFile::setValue(std::string key, std::string value)
 {
     _keyValues[key] = value;
+}
+    
+const char* JsonFile::platformSpecificFilePath()
+{
+    const char* ret;
+    
+#if defined __ANDROID__
+    ret = AndroidAssetDataHandler::getInstance()->getPathInsideApk(_filePath);
+#elif TARGET_OS_IPHONE
+    ret = getPathInsideNSDocuments(_filePath);
+#elif defined _WIN32
+    #if !defined(WINAPI_FAMILY) || WINAPI_FAMILY == WINAPI_FAMILY_DESKTOP_APP
+        ret = _filePath;
+    #else
+        Windows::Storage::StorageFolder^ localFolder = Windows::Storage::ApplicationData::Current->LocalFolder;
+        Platform::String^ ps_path = localFolder->Path;
+        std::string s_path(ps_path->Begin(), ps_path->End());
+        const char* path = s_path.c_str(); // std::string to const
+        std::stringstream ss;
+        ss << path << "\\" << _filePath;
+    
+        std::string retS = ss.str();
+        ret = retS.c_str();
+    #endif
+#else
+    ret = _filePath;
+#endif
+    
+    return ret;
+}
+    
+FILE* JsonFile::openFile(const char* path, const char* mode)
+{
+    FILE *file;
+    
+#ifdef _WIN32
+    errno_t err;
+    if ((err = fopen_s(&file, path, mode)) != 0)
+    {
+#else
+    if ((file = fopen(path, mode)) == NULL)
+    {
+#endif
+        return NULL;
+    }
+        
+    return file;
 }

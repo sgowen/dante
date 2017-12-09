@@ -41,8 +41,6 @@
 #include "framework/audio/portable/NGAudioEngine.h"
 #include "framework/util/NGExtension.h"
 
-#include <spine/Extension.h>
-
 #ifdef NG_STEAM
 #include "framework/network/steam/NGSteamClientHelper.h"
 #include "framework/network/steam/NGSteamAddress.h"
@@ -56,7 +54,6 @@ _config(new JsonFile("dante.cfg")),
 _isSteam(false)
 {
     NoctisGames::NGExtension::setInstance(NoctisGames::DefaultNGExtension::getInstance());
-    Spine::SpineExtension::setInstance(Spine::DefaultSpineExtension::getInstance());
     
     CURSOR_CONVERTER->setCamSize(CAM_WIDTH, CAM_HEIGHT);
     

@@ -26,8 +26,7 @@ FileData appleGetAssetData(const char *relative_path)
 {
 	assert(relative_path != NULL);
     
-    NSString *path = [[NSString alloc] initWithCString:relative_path encoding:NSASCIIStringEncoding];
-    const char *bundlePath = [[[NSBundle mainBundle] pathForResource:path ofType:nil] fileSystemRepresentation];
+    const char *bundlePath = getBundlePathForSoundWithName(relative_path);
     
     assert(bundlePath != NULL);
     
@@ -64,4 +63,12 @@ const char * getPathInsideNSDocuments(const char* relative_path)
     const char *nsDocumentsPath = [filePath fileSystemRepresentation];
     
     return nsDocumentsPath;
+}
+
+const char * getBundlePathForSoundWithName(const char* relative_path)
+{
+    NSString *path = [[NSString alloc] initWithCString:relative_path encoding:NSASCIIStringEncoding];
+    const char *bundlePath = [[[NSBundle mainBundle] pathForResource:path ofType:nil] fileSystemRepresentation];
+    
+    return bundlePath;
 }

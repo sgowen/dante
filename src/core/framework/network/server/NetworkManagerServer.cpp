@@ -401,7 +401,7 @@ void NetworkManagerServer::sendStatePacketToClient(ClientProxy* inClientProxy)
 #endif
     
     ReplicationManagerTransmissionData* rmtd = _replicationManagerTransmissionDatas.obtain();
-    rmtd->reset(&inClientProxy->getReplicationManagerServer());
+    rmtd->reset(&inClientProxy->getReplicationManagerServer(), &_replicationManagerTransmissionDatas);
     
     inClientProxy->getReplicationManagerServer().write(statePacket, rmtd);
     
@@ -409,11 +409,13 @@ void NetworkManagerServer::sendStatePacketToClient(ClientProxy* inClientProxy)
     LOG("Outgoing statePacket Bit Length 4: %d \n", statePacket.getBitLength());
 #endif
     
-    ReplicationManagerTransmissionData* td = static_cast<ReplicationManagerTransmissionData*>(ifp->setTransmissionData('RPLM', rmtd));
-    if (td)
+    TransmissionData* currentTransmissionData = ifp->getTransmissionData('RPLM');
+    if (currentTransmissionData)
     {
-        _replicationManagerTransmissionDatas.free(td);
+        _replicationManagerTransmissionDatas.free(static_cast<ReplicationManagerTransmissionData*>(currentTransmissionData));
     }
+    
+    ifp->setTransmissionData('RPLM', rmtd);
     
 #ifdef NG_LOG
     LOG("Outgoing statePacket Bit Length F: %d \n", statePacket.getBitLength());

@@ -13,6 +13,7 @@
 
 #include "framework/network/portable/ReplicationCommand.h"
 #include "framework/network/portable/ReplicationAction.h"
+#include "framework/util/NGPool.h"
 
 #include <vector>
 
@@ -23,9 +24,11 @@ class ReplicationManagerTransmissionData : public TransmissionData
 public:
     ReplicationManagerTransmissionData();
     
-    void reset(ReplicationManagerServer* inReplicationManagerServer);
+    void reset(ReplicationManagerServer* inReplicationManagerServer, NoctisGames::NGPool<ReplicationManagerTransmissionData>* replicationManagerTransmissionDatas);
     
     void addTransmission(uint32_t inNetworkId, ReplicationAction inAction, uint32_t inState);
+    
+    virtual void free() override;
     
     virtual void handleDeliveryFailure(DeliveryNotificationManager* inDeliveryNotificationManager) const override;
     
@@ -35,6 +38,7 @@ private:
     class ReplicationTransmission;
     
     ReplicationManagerServer* _replicationManagerServer;
+    NoctisGames::NGPool<ReplicationManagerTransmissionData>* _replicationManagerTransmissionDatas;
     
     std::vector<ReplicationTransmission> _transmissions;
     

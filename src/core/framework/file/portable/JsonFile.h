@@ -31,6 +31,10 @@ private:
     const char* _filePath;
     bool _useEncryption;
     std::map<std::string, std::string> _keyValues;
+    
+    const char* platformSpecificFilePath();
+    
+    FILE* openFile(const char* path, const char* mode);
 };
 
 #endif /* defined(__noctisgames__JsonFile__) */

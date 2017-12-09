@@ -14,18 +14,29 @@
 
 InFlightPacket::InFlightPacket(uint16_t inSequenceNumber) :
 _sequenceNumber(inSequenceNumber),
-_timeDispatched(Timing::getInstance()->getFrameStartTime())
+_timeDispatched(Timing::getInstance()->getFrameStartTime()),
+_inKey(0)
 {
     //null out other transmision data params...
 }
 
-TransmissionData* InFlightPacket::setTransmissionData(int inKey, TransmissionData* inTransmissionData)
+InFlightPacket::~InFlightPacket()
 {
-    TransmissionData* currentTransmissionData = getTransmissionData(inKey);
+    if (_inKey > 0)
+    {
+        TransmissionData* transmissionData = getTransmissionData(_inKey);
+        if (transmissionData)
+        {
+            transmissionData->free();
+        }
+    }
+}
+
+void InFlightPacket::setTransmissionData(int inKey, TransmissionData* inTransmissionData)
+{
+    _inKey = inKey;
     
     _transmissionDataMap[inKey] = inTransmissionData;
-    
-    return currentTransmissionData;
 }
 
 TransmissionData* InFlightPacket::getTransmissionData(int inKey) const

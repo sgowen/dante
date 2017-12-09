@@ -15,6 +15,8 @@
 #include "framework/audio/apple/AppleSoundWrapper.h"
 #include "framework/audio/apple/ObjectALWrapper.h"
 
+#include "framework/file/apple/apple_asset_data_handler.h"
+
 AppleAudioEngineHelper* AppleAudioEngineHelper::getInstance()
 {
     static AppleAudioEngineHelper instance = AppleAudioEngineHelper();
