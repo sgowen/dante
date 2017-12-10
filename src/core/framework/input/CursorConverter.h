@@ -22,14 +22,14 @@ public:
     
     Vector2& touchToWorld(CursorEvent& touchEvent);
     
-    void setTouchScreenSize(int width, int height);
+    void setCursorSize(int width, int height);
     
     void setCamSize(float camWidth, float camHeight);
     
 private:
     Vector2 _cursor;
-    float _touchScreenWidth;
-    float _touchScreenHeight;
+    float _cursorWidth;
+    float _cursorHeight;
     float _camWidth;
     float _camHeight;
     

@@ -40,16 +40,18 @@ void Engine::createDeviceDependentResources()
     _renderer->createDeviceDependentResources();
 }
 
-void Engine::createWindowSizeDependentResources(int renderWidth, int renderHeight, int touchScreenWidth, int touchScreenHeight)
+void Engine::createWindowSizeDependentResources(int renderWidth, int renderHeight, int cursorWidth, int cursorHeight)
 {
     _renderer->createWindowSizeDependentResources(renderWidth, renderHeight, NUM_FRAMEBUFFERS);
     
-    CURSOR_CONVERTER->setTouchScreenSize(touchScreenWidth, touchScreenHeight);
+    CURSOR_CONVERTER->setCursorSize(cursorWidth, cursorHeight);
 }
 
 void Engine::releaseDeviceDependentResources()
 {
     _renderer->releaseDeviceDependentResources();
+    
+    NG_AUDIO_ENGINE->reset();
 }
 
 void Engine::onResume()

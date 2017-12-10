@@ -40,6 +40,7 @@
 #include "game/graphics/portable/MainRenderer.h"
 #include "framework/audio/portable/NGAudioEngine.h"
 #include "framework/util/NGExtension.h"
+#include "framework/util/PlatformHelper.h"
 
 #ifdef NG_STEAM
 #include "framework/network/steam/NGSteamClientHelper.h"
@@ -89,15 +90,13 @@ void MainEngine::createDeviceDependentResources()
     
     NG_AUDIO_ENGINE->loadMusic(MUSIC_DEMO);
     
-    NG_AUDIO_ENGINE->setSoundDisabled(true);
-    NG_AUDIO_ENGINE->setMusicDisabled(true);
-}
-
-void MainEngine::releaseDeviceDependentResources()
-{
-    Engine::releaseDeviceDependentResources();
-    
-    NG_AUDIO_ENGINE->reset();
+    if (PlatformHelper::getPlatform() != NG_PLATFORM_ANDROID
+        && PlatformHelper::getPlatform() != NG_PLATFORM_IOS)
+    {
+        // No keyboard on mobile, meaning we can't hit the S key to turn on sound
+        NG_AUDIO_ENGINE->setSoundDisabled(true);
+        NG_AUDIO_ENGINE->setMusicDisabled(true);
+    }
 }
 
 void MainEngine::update(float deltaTime)

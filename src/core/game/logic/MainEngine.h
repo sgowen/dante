@@ -32,8 +32,6 @@ public:
     
     virtual void createDeviceDependentResources();
     
-    virtual void releaseDeviceDependentResources();
-    
 	virtual void update(float deltaTime);
     
 protected:

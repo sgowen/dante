@@ -24,8 +24,8 @@ CursorConverter* CursorConverter::getInstance()
 
 CursorConverter::CursorConverter() :
 _cursor(),
-_touchScreenWidth(160),
-_touchScreenHeight(90),
+_cursorWidth(160),
+_cursorHeight(90),
 _camWidth(1),
 _camHeight(1)
 {
@@ -35,22 +35,22 @@ _camHeight(1)
 Vector2& CursorConverter::touchToWorld(CursorEvent& touchEvent)
 {
 #if TARGET_OS_IPHONE
-    _cursor.set((touchEvent.getX() / _touchScreenWidth) * _camWidth, (1 - touchEvent.getY() / _touchScreenHeight) * _camHeight);
+    _cursor.set((touchEvent.getX() / _cursorWidth) * _camWidth, (1 - touchEvent.getY() / _cursorHeight) * _camHeight);
 #elif TARGET_OS_OSX
-    _cursor.set((touchEvent.getX() / _touchScreenWidth) * _camWidth, (touchEvent.getY() / _touchScreenHeight) * _camHeight);
+    _cursor.set((touchEvent.getX() / _cursorWidth) * _camWidth, (touchEvent.getY() / _cursorHeight) * _camHeight);
 #elif __ANDROID__
-    _cursor.set((touchEvent.getX() / _touchScreenWidth) * _camWidth, (1 - touchEvent.getY() / _touchScreenHeight) * _camHeight);
+    _cursor.set((touchEvent.getX() / _cursorWidth) * _camWidth, (1 - touchEvent.getY() / _cursorHeight) * _camHeight);
 #elif defined _WIN32
-	_cursor.set(touchEvent.getX() / _touchScreenWidth * _camWidth, _camHeight - (touchEvent.getY() / _touchScreenHeight * _camHeight));
+	_cursor.set(touchEvent.getX() / _cursorWidth * _camWidth, _camHeight - (touchEvent.getY() / _cursorHeight * _camHeight));
 #endif
     
     return _cursor;
 }
 
-void CursorConverter::setTouchScreenSize(int width, int height)
+void CursorConverter::setCursorSize(int width, int height)
 {
-    _touchScreenWidth = (float) width;
-    _touchScreenHeight = (float) height;
+    _cursorWidth = (float) width;
+    _cursorHeight = (float) height;
 }
 
 void CursorConverter::setCamSize(float camWidth, float camHeight)
