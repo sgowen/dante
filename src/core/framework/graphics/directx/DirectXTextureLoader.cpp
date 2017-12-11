@@ -47,7 +47,7 @@ GpuTextureDataWrapper* DirectXTextureLoader::loadTextureData(TextureWrapper* tex
     void* output = NULL;
     if (textureWrapper->_isEncrypted)
     {
-        malloc(dds_file.data_length);
+        output = malloc(dds_file.data_length);
         StringUtil::encryptDecrypt((unsigned char*)dds_file.data, (unsigned char*) output, dds_file.data_length);
     }
     else

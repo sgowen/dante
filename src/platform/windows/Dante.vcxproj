@@ -92,7 +92,7 @@
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <FloatingPointModel>Fast</FloatingPointModel>
       <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
-      <AdditionalIncludeDirectories>../../3rdparty/DirectXTK/Inc;../../3rdparty/DirectXTK/Src;../../3rdparty/Box2D/Box2D;../../3rdparty/rapidjson/include;../../3rdparty/spine-runtimes/spine-cpp/spine-cpp/include;../../3rdparty/steamworks_sdk/public;../../3rdparty/TinyThread/source;../../core;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;$(ProjectDir);</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../3rdparty/DirectXTK/Inc;../../3rdparty/DirectXTK/Src;../../3rdparty/Box2D/Box2D;../../3rdparty/rapidjson/include;../../3rdparty/steamworks_sdk/public;../../3rdparty/TinyThread/source;../../core;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;$(ProjectDir);</AdditionalIncludeDirectories>
       <PrecompiledHeaderOutputFile>$(IntDir)$(TargetName).pch</PrecompiledHeaderOutputFile>
     </ClCompile>
     <Link>
@@ -118,7 +118,7 @@
       <PreprocessorDefinitions>NG_STEAM;WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <FloatingPointModel>Fast</FloatingPointModel>
-      <AdditionalIncludeDirectories>../../3rdparty/DirectXTK/Inc;../../3rdparty/DirectXTK/Src;../../3rdparty/Box2D/Box2D;../../3rdparty/rapidjson/include;../../3rdparty/spine-runtimes/spine-cpp/spine-cpp/include;../../3rdparty/steamworks_sdk/public;../../3rdparty/TinyThread/source;../../core;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;$(ProjectDir);</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../3rdparty/DirectXTK/Inc;../../3rdparty/DirectXTK/Src;../../3rdparty/Box2D/Box2D;../../3rdparty/rapidjson/include;../../3rdparty/steamworks_sdk/public;../../3rdparty/TinyThread/source;../../core;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;$(ProjectDir);</AdditionalIncludeDirectories>
       <PrecompiledHeaderOutputFile>$(IntDir)$(TargetName).pch</PrecompiledHeaderOutputFile>
     </ClCompile>
     <Link>
@@ -147,7 +147,7 @@
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <FloatingPointModel>Fast</FloatingPointModel>
       <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
-      <AdditionalIncludeDirectories>../../3rdparty/DirectXTK/Inc;../../3rdparty/DirectXTK/Src;../../3rdparty/Box2D/Box2D;../../3rdparty/rapidjson/include;../../3rdparty/spine-runtimes/spine-cpp/spine-cpp/include;../../3rdparty/steamworks_sdk/public;../../3rdparty/TinyThread/source;../../core;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;$(ProjectDir);</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../3rdparty/DirectXTK/Inc;../../3rdparty/DirectXTK/Src;../../3rdparty/Box2D/Box2D;../../3rdparty/rapidjson/include;../../3rdparty/steamworks_sdk/public;../../3rdparty/TinyThread/source;../../core;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;$(ProjectDir);</AdditionalIncludeDirectories>
       <PrecompiledHeaderOutputFile>$(IntDir)$(TargetName).pch</PrecompiledHeaderOutputFile>
     </ClCompile>
     <Link>
@@ -177,7 +177,7 @@
       <PreprocessorDefinitions>NG_STEAM;WIN32;NG_LAUNCH_AS_FULL_SCREEN;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <FloatingPointModel>Fast</FloatingPointModel>
-      <AdditionalIncludeDirectories>../../3rdparty/DirectXTK/Inc;../../3rdparty/DirectXTK/Src;../../3rdparty/Box2D/Box2D;../../3rdparty/rapidjson/include;../../3rdparty/spine-runtimes/spine-cpp/spine-cpp/include;../../3rdparty/steamworks_sdk/public;../../3rdparty/TinyThread/source;../../core;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;$(ProjectDir);</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../3rdparty/DirectXTK/Inc;../../3rdparty/DirectXTK/Src;../../3rdparty/Box2D/Box2D;../../3rdparty/rapidjson/include;../../3rdparty/steamworks_sdk/public;../../3rdparty/TinyThread/source;../../core;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;$(ProjectDir);</AdditionalIncludeDirectories>
       <PrecompiledHeaderOutputFile>$(IntDir)$(TargetName).pch</PrecompiledHeaderOutputFile>
     </ClCompile>
     <Link>
@@ -218,7 +218,6 @@
     <ClInclude Include="..\..\3rdparty\DirectXTK\Src\dds.h" />
     <ClInclude Include="..\..\3rdparty\DirectXTK\Src\LoaderHelpers.h" />
     <ClInclude Include="..\..\3rdparty\DirectXTK\Src\PlatformHelpers.h" />
-    <ClInclude Include="..\..\3rdparty\spine-runtimes\spine-cpp\spine-cpp\include\spine\*.h" />
     <ClInclude Include="..\..\3rdparty\TinyThread\source\*.h" />
     <ClInclude Include="..\..\core\framework\entity\*.h" />
     <ClInclude Include="..\..\core\framework\file\portable\*.h" />
@@ -279,9 +278,6 @@
     <ClCompile Include="..\..\3rdparty\DirectXTK\Src\GamePad.cpp" />
     <ClCompile Include="..\..\3rdparty\DirectXTK\Src\Keyboard.cpp" />
     <ClCompile Include="..\..\3rdparty\DirectXTK\Src\Mouse.cpp" />
-    <ClCompile Include="..\..\3rdparty\spine-runtimes\spine-cpp\spine-cpp\src\spine\*.cpp">
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
-    </ClCompile>
     <ClCompile Include="..\..\3rdparty\TinyThread\source\*.cpp">
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
     </ClCompile>
