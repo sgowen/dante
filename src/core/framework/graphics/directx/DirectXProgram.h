@@ -14,7 +14,7 @@
 class DirectXProgram
 {
 public:
-    DirectXProgram(const char* vertexShaderName, const char* pixelShaderName, bool useTextureCoords);
+    DirectXProgram(const char* vertexShaderName, const char* fragmentShaderName, bool useTextureCoords);
     
     virtual ~DirectXProgram();
     

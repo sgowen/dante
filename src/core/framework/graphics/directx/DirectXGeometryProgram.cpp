@@ -12,7 +12,7 @@
 
 #include "framework/graphics/directx/DirectXManager.h"
 
-DirectXGeometryProgram::DirectXGeometryProgram(const char* vertexShaderName, const char* pixelShaderName) : DirectXProgram(vertexShaderName, pixelShaderName, false)
+DirectXGeometryProgram::DirectXGeometryProgram(const char* vertexShaderName, const char* fragmentShaderName) : DirectXProgram(vertexShaderName, fragmentShaderName, false)
 {
     // Empty
 }

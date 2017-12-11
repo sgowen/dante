@@ -14,7 +14,7 @@
 class DirectXTextureProgram : public DirectXProgram
 {
 public:
-    DirectXTextureProgram(const char* vertexShaderName, const char* pixelShaderName);
+    DirectXTextureProgram(const char* vertexShaderName, const char* fragmentShaderName);
     
     virtual void mapVertices();
 };

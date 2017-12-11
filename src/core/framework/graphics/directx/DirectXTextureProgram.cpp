@@ -12,7 +12,7 @@
 
 #include "framework/graphics/directx/DirectXManager.h"
 
-DirectXTextureProgram::DirectXTextureProgram(const char* vertexShaderName, const char* pixelShaderName) : DirectXProgram(vertexShaderName, pixelShaderName, true)
+DirectXTextureProgram::DirectXTextureProgram(const char* vertexShaderName, const char* fragmentShaderName) : DirectXProgram(vertexShaderName, fragmentShaderName, true)
 {
     // Empty
 }

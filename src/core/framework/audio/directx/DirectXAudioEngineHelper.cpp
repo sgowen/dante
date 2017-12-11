@@ -58,14 +58,9 @@ void DirectXAudioEngineHelper::resume()
 
 SoundWrapper* DirectXAudioEngineHelper::loadSound(int soundId, const char *path, int numInstances)
 {
-	const char* finalPath;
-#if (_WIN32_WINNT == _WIN32_WINNT_WIN7)
-	std::string s(soundId == 1337 ? "data\\music\\" : "data\\sounds\\");
-	s += std::string(path);
-	finalPath = s.c_str();
-#else
-	finalPath = path;
-#endif
+    std::string s(soundId == 1337 ? "data\\music\\" : "data\\sounds\\");
+    s += std::string(path);
+    const char* finalPath = s.c_str();
 
     DirectXSoundWrapper* sound = new DirectXSoundWrapper(soundId, finalPath, _audEngine.get(), numInstances);
     
