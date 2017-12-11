@@ -12,6 +12,10 @@
 
 #include <stdarg.h>
 
+#if defined __ANDROID__
+#include <android/log.h>
+#endif
+
 std::string StringUtil::encryptDecrypt(std::string input)
 {
     char key[3] = {'N', 'G', 'S'}; // Any chars will work, in an array of any size
@@ -38,7 +42,11 @@ void StringUtil::encryptDecrypt(unsigned char* input, unsigned char* output, con
 #ifndef _WIN32
 void OutputDebugStringA(const char* inString)
 {
+#if defined __ANDROID__
+    __android_log_print(ANDROID_LOG_DEBUG, "NoctisGames", "%s", inString);
+#else
     printf("%s", inString);
+#endif
 }
 #endif
 
@@ -54,6 +62,7 @@ std::string StringUtil::format(const char* inFormat, ...)
 #else
     vsnprintf(temp, 4096, inFormat, args);
 #endif
+    
     return std::string(temp);
 }
 
@@ -66,6 +75,8 @@ void StringUtil::log(const char* inFormat, ...)
     
 #if _WIN32
     _vsnprintf_s(temp, 4096, 4096, inFormat, args);
+#elif defined __ANDROID__
+    __android_log_vprint(ANDROID_LOG_DEBUG, "NoctisGames", inFormat, args);
 #else
     vsnprintf(temp, 4096, inFormat, args);
 #endif

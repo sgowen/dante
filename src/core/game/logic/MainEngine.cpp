@@ -97,6 +97,10 @@ void MainEngine::createDeviceDependentResources()
         NG_AUDIO_ENGINE->setSoundDisabled(true);
         NG_AUDIO_ENGINE->setMusicDisabled(true);
     }
+    else
+    {
+        NG_AUDIO_ENGINE->playMusic();
+    }
 }
 
 void MainEngine::update(double deltaTime)

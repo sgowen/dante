@@ -1,9 +1,7 @@
-#ifndef _PACKT_SOUND_HPP_
-#define _PACKT_SOUND_HPP_
+#ifndef _noctisgames_SOUND_HPP_
+#define _noctisgames_SOUND_HPP_
 
-class SoundService;
-
-#include "framework/audio/android/Types.hpp"
+#include <cstdlib>
 
 class FileData;
 
@@ -14,8 +12,8 @@ public:
     
     const char* getPath();
     
-    status load();
-    status unload();
+    bool load();
+    bool unload();
     
 private:
     friend class SoundService;

@@ -22,11 +22,8 @@ _isLooping(false),
 _isPaused(false),
 _isMusic(soundId == 1337)
 {
-    if (!_isMusic)
-    {
-        _sound = _soundService->registerSound(path);
-        _sound->load();
-    }
+    _sound = _soundService->registerSound(path);
+    _sound->load();
 }
 
 AndroidSound::~AndroidSound()
@@ -39,14 +36,7 @@ void AndroidSound::play(bool isLooping)
     _isLooping = isLooping;
     _isPaused = false;
     
-    if (_isMusic)
-    {
-        //_soundService->playBGM(_path);
-    }
-    else
-    {
-        _soundService->playSound(_sound);
-    }
+    _soundService->playSound(_sound);
 }
 
 void AndroidSound::resume()
@@ -74,10 +64,7 @@ void AndroidSound::stop()
     _isLooping = false;
     _isPaused = false;
     
-    if (_isMusic)
-    {
-        //_soundService->stopBGM();
-    }
+    // TODO
 }
 
 void AndroidSound::setVolume(float volume)

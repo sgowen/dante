@@ -11,8 +11,6 @@
 
 #include "framework/audio/portable/AudioEngineHelper.h"
 
-#include <jni.h>
-
 #include <vector>
 
 class SoundService;
@@ -32,13 +30,7 @@ public:
     
     virtual SoundWrapper* loadMusic(const char* path);
     
-    void init(JNIEnv* jni, jobject activity);
-    
-    void deinit();
-    
 private:
-    int _sampleRate;
-    int _bufferSize;
     SoundService* _soundService;
     
     // ctor, copy ctor, and assignment should be private in a Singleton
@@ -49,4 +41,3 @@ private:
 };
 
 #endif /* defined(__noctisgames__AndroidAudioEngineHelper__) */
-

@@ -1,29 +1,33 @@
 #include "framework/audio/android/SoundService.hpp"
-#include "framework/audio/android/Log.hpp"
 
 #include <string>
+#include <math.h>
+#include <assert.h>
+#include "framework/util/StringUtil.h"
 
 SoundService::SoundService() :
 mEngineObj(NULL),
 mEngine(NULL),
 mOutputMixObj(NULL),
-mBGMPlayerObj(NULL), mBGMPlayer(NULL), mBGMPlayerSeek(NULL),
-mPlayerObj(NULL), mPlayer(NULL), mPlayerQueue(NULL),
-mSoundCount(0) {
-    Log::info("Creating SoundService.");
+mPlayerObj(NULL), mPlayer(NULL), mPlayerQueue(NULL), mPlayerVolume(NULL),
+mSoundCount(0)
+{
+    LOG("Creating SoundService.");
 }
 
-SoundService::~SoundService() {
-    Log::info("Destroying SoundService.");
+SoundService::~SoundService()
+{
+    LOG("Destroying SoundService.");
     
-    for (int32_t i = 0; i < mSoundCount; ++i) {
+    for (int32_t i = 0; i < mSoundCount; ++i)
+    {
         delete mSounds[i];
         mSoundCount = 0;
     }
 }
 
-status SoundService::start() {
-    Log::info("Starting SoundService.");
+void SoundService::start()
+{
     SLresult lRes;
     const SLuint32      lEngineMixIIDCount = 1;
     const SLInterfaceID lEngineMixIIDs[]   = {SL_IID_ENGINE};
@@ -35,64 +39,65 @@ status SoundService::start() {
     // Creates OpenSL ES engine and dumps its capabilities.
     lRes = slCreateEngine(&mEngineObj, 0, NULL,
                           lEngineMixIIDCount, lEngineMixIIDs, lEngineMixReqs);
-    if (lRes != SL_RESULT_SUCCESS) goto ERROR;
+    assert(lRes == SL_RESULT_SUCCESS);
     lRes = (*mEngineObj)->Realize(mEngineObj,SL_BOOLEAN_FALSE);
-    if (lRes != SL_RESULT_SUCCESS) goto ERROR;
+    assert(lRes == SL_RESULT_SUCCESS);
     lRes = (*mEngineObj)->GetInterface(mEngineObj, SL_IID_ENGINE,
                                        &mEngine);
-    if (lRes != SL_RESULT_SUCCESS) goto ERROR;
+    assert(lRes == SL_RESULT_SUCCESS);
     
     // Creates audio output.
     lRes = (*mEngine)->CreateOutputMix(mEngine, &mOutputMixObj,
                                        lOutputMixIIDCount, lOutputMixIIDs, lOutputMixReqs);
+    assert(lRes == SL_RESULT_SUCCESS);
     lRes = (*mOutputMixObj)->Realize(mOutputMixObj,
                                      SL_BOOLEAN_FALSE);
+    assert(lRes == SL_RESULT_SUCCESS);
     
     // Set-up sound player.
-    if (startSoundPlayer() != STATUS_OK) goto ERROR;
+    startSoundPlayer();
     
     // Loads resources
-    for (int32_t i = 0; i < mSoundCount; ++i) {
-        if (mSounds[i]->load() != STATUS_OK) goto ERROR;
+    for (int32_t i = 0; i < mSoundCount; ++i)
+    {
+        assert(mSounds[i]->load());
     }
-    return STATUS_OK;
-    
-ERROR:
-    Log::error("Error while starting SoundService");
-    stop();
-    return STATUS_KO;
 }
 
-void SoundService::stop() {
-    Log::info("Stopping SoundService.");
-    
-    // Stops and destroys BGM player.
-    stopBGM();
+void SoundService::stop()
+{
+    LOG("Stopping SoundService.");
     
     // Destroys sound player.
-    if (mPlayerObj != NULL) {
+    if (mPlayerObj != NULL)
+    {
         (*mPlayerObj)->Destroy(mPlayerObj);
-        mPlayerObj = NULL; mPlayer = NULL; mPlayerQueue = NULL;
+        mPlayerObj = NULL; mPlayer = NULL; mPlayerQueue = NULL; mPlayerVolume = NULL;
     }
     
     // Destroys audio output and engine.
-    if (mOutputMixObj != NULL) {
+    if (mOutputMixObj != NULL)
+    {
         (*mOutputMixObj)->Destroy(mOutputMixObj);
         mOutputMixObj = NULL;
     }
-    if (mEngineObj != NULL) {
+    
+    if (mEngineObj != NULL)
+    {
         (*mEngineObj)->Destroy(mEngineObj);
         mEngineObj = NULL; mEngine = NULL;
     }
     
     // Frees sound resources.
-    for (int32_t i = 0; i < mSoundCount; ++i) {
+    for (int32_t i = 0; i < mSoundCount; ++i)
+    {
         mSounds[i]->unload();
     }
 }
 
-status SoundService::startSoundPlayer() {
-    Log::info("Starting sound player.");
+void SoundService::startSoundPlayer()
+{
+    LOG("Starting sound player.");
     SLresult lRes;
     
     // Set-up sound audio source.
@@ -124,150 +129,69 @@ status SoundService::startSoundPlayer() {
     lDataSink.pFormat = NULL;
     
     // Creates the sounds player and retrieves its interfaces.
-    const SLuint32 lSoundPlayerIIDCount = 2;
-    const SLInterfaceID lSoundPlayerIIDs[] =
-    { SL_IID_PLAY, SL_IID_BUFFERQUEUE };
-    const SLboolean lSoundPlayerReqs[] =
-    { SL_BOOLEAN_TRUE, SL_BOOLEAN_TRUE };
+    const SLuint32 lSoundPlayerIIDCount = 3;
+    const SLInterfaceID lSoundPlayerIIDs[] = { SL_IID_PLAY, SL_IID_BUFFERQUEUE, SL_IID_VOLUME };
+    const SLboolean lSoundPlayerReqs[] = { SL_BOOLEAN_TRUE, SL_BOOLEAN_TRUE, SL_BOOLEAN_TRUE };
     
-    lRes = (*mEngine)->CreateAudioPlayer(mEngine, &mPlayerObj,
-                                         &lDataSource, &lDataSink, lSoundPlayerIIDCount,
-                                         lSoundPlayerIIDs, lSoundPlayerReqs);
-    if (lRes != SL_RESULT_SUCCESS) goto ERROR;
+    lRes = (*mEngine)->CreateAudioPlayer(mEngine, &mPlayerObj, &lDataSource, &lDataSink, lSoundPlayerIIDCount, lSoundPlayerIIDs, lSoundPlayerReqs);
+    assert(lRes == SL_RESULT_SUCCESS);
+    
     lRes = (*mPlayerObj)->Realize(mPlayerObj, SL_BOOLEAN_FALSE);
-    if (lRes != SL_RESULT_SUCCESS) goto ERROR;
+    assert(lRes == SL_RESULT_SUCCESS);
     
-    lRes = (*mPlayerObj)->GetInterface(mPlayerObj, SL_IID_PLAY,
-                                       &mPlayer);
-    if (lRes != SL_RESULT_SUCCESS) goto ERROR;
-    lRes = (*mPlayerObj)->GetInterface(mPlayerObj,
-                                       SL_IID_BUFFERQUEUE, &mPlayerQueue);
-    if (lRes != SL_RESULT_SUCCESS) goto ERROR;
+    lRes = (*mPlayerObj)->GetInterface(mPlayerObj, SL_IID_PLAY, &mPlayer);
+    assert(lRes == SL_RESULT_SUCCESS);
+    
+    lRes = (*mPlayerObj)->GetInterface(mPlayerObj, SL_IID_BUFFERQUEUE, &mPlayerQueue);
+    assert(lRes == SL_RESULT_SUCCESS);
+    
+    lRes = (*mPlayerObj)->GetInterface(mPlayerObj, SL_IID_VOLUME, &mPlayerVolume);
+    assert(lRes == SL_RESULT_SUCCESS);
     
     // Starts the sound player. Nothing can be heard while the
     // sound queue remains empty.
-    lRes = (*mPlayer)->SetPlayState(mPlayer,
-                                    SL_PLAYSTATE_PLAYING);
-    if (lRes != SL_RESULT_SUCCESS) goto ERROR;
-    
-    return STATUS_OK;
-    
-ERROR:
-    Log::error("Error while starting SoundPlayer");
-    return STATUS_KO;
+    lRes = (*mPlayer)->SetPlayState(mPlayer, SL_PLAYSTATE_PLAYING);
+    assert(lRes == SL_RESULT_SUCCESS);
 }
 
-status SoundService::playBGM(const char* pPath) {
-    SLresult lRes;
-    Log::info("Opening BGM %s", pPath);
-    
-    // Set-up BGM audio source.
-    SLDataLocator_URI lDataLocatorIn;
-    std::string lPath = std::string("file://") + pPath;
-    lDataLocatorIn.locatorType = SL_DATALOCATOR_URI;
-    lDataLocatorIn.URI = (SLchar*) lPath.c_str();
-    
-    SLDataFormat_MIME lDataFormat;
-    lDataFormat.formatType    = SL_DATAFORMAT_MIME;
-    lDataFormat.mimeType      = NULL;
-    lDataFormat.containerType = SL_CONTAINERTYPE_UNSPECIFIED;
-    
-    SLDataSource lDataSource;
-    lDataSource.pLocator = &lDataLocatorIn;
-    lDataSource.pFormat  = &lDataFormat;
-    
-    SLDataLocator_OutputMix lDataLocatorOut;
-    lDataLocatorOut.locatorType = SL_DATALOCATOR_OUTPUTMIX;
-    lDataLocatorOut.outputMix   = mOutputMixObj;
-    
-    SLDataSink lDataSink;
-    lDataSink.pLocator = &lDataLocatorOut;
-    lDataSink.pFormat  = NULL;
-    
-    // Creates BGM player and retrieves its interfaces.
-    const SLuint32 lBGMPlayerIIDCount = 2;
-    const SLInterfaceID lBGMPlayerIIDs[] =
-    { SL_IID_PLAY, SL_IID_SEEK };
-    const SLboolean lBGMPlayerReqs[] =
-    { SL_BOOLEAN_TRUE, SL_BOOLEAN_TRUE };
-    
-    lRes = (*mEngine)->CreateAudioPlayer(mEngine,
-                                         &mBGMPlayerObj, &lDataSource, &lDataSink,
-                                         lBGMPlayerIIDCount, lBGMPlayerIIDs, lBGMPlayerReqs);
-    if (lRes != SL_RESULT_SUCCESS) goto ERROR;
-    lRes = (*mBGMPlayerObj)->Realize(mBGMPlayerObj,
-                                     SL_BOOLEAN_FALSE);
-    if (lRes != SL_RESULT_SUCCESS) goto ERROR;
-    
-    lRes = (*mBGMPlayerObj)->GetInterface(mBGMPlayerObj,
-                                          SL_IID_PLAY, &mBGMPlayer);
-    if (lRes != SL_RESULT_SUCCESS) goto ERROR;
-    lRes = (*mBGMPlayerObj)->GetInterface(mBGMPlayerObj,
-                                          SL_IID_SEEK, &mBGMPlayerSeek);
-    if (lRes != SL_RESULT_SUCCESS) goto ERROR;
-    
-    // Enables looping and starts playing.
-    lRes = (*mBGMPlayerSeek)->SetLoop(mBGMPlayerSeek,
-                                      SL_BOOLEAN_TRUE, 0, SL_TIME_UNKNOWN);
-    if (lRes != SL_RESULT_SUCCESS) goto ERROR;
-    lRes = (*mBGMPlayer)->SetPlayState(mBGMPlayer,
-                                       SL_PLAYSTATE_PLAYING);
-    if (lRes != SL_RESULT_SUCCESS) goto ERROR;
-    
-    return STATUS_OK;
-    
-ERROR:
-    return STATUS_KO;
-}
-
-void SoundService::stopBGM() {
-    if (mBGMPlayer != NULL) {
-        SLuint32 lBGMPlayerState;
-        (*mBGMPlayerObj)->GetState(mBGMPlayerObj,
-                                   &lBGMPlayerState);
-        if (lBGMPlayerState == SL_OBJECT_STATE_REALIZED) {
-            (*mBGMPlayer)->SetPlayState(mBGMPlayer,
-                                        SL_PLAYSTATE_PAUSED);
-            
-            (*mBGMPlayerObj)->Destroy(mBGMPlayerObj);
-            mBGMPlayerObj = NULL;
-            mBGMPlayer = NULL; mBGMPlayerSeek = NULL;
-        }
-    }
-}
-
-OpenSLESSound* SoundService::registerSound(const char* pPath) {
-    // Finds out if texture already loaded.
-    for (int32_t i = 0; i < mSoundCount; ++i) {
-        if (strcmp(pPath, mSounds[i]->getPath()) == 0) {
-            return mSounds[i];
-        }
-    }
-    
+OpenSLESSound* SoundService::registerSound(const char* pPath)
+{
     OpenSLESSound* lSound = new OpenSLESSound(pPath);
     mSounds[mSoundCount++] = lSound;
     return lSound;
 }
 
-void SoundService::playSound(OpenSLESSound* pSound) {
+double log2(double n)
+{
+    return log(n) / log(2.0);
+}
+
+void SoundService::playSound(OpenSLESSound* pSound)
+{
     SLresult lRes;
     SLuint32 lPlayerState;
     (*mPlayerObj)->GetState(mPlayerObj, &lPlayerState);
-    if (lPlayerState == SL_OBJECT_STATE_REALIZED) {
+    if (lPlayerState == SL_OBJECT_STATE_REALIZED)
+    {
         int16_t* lBuffer = (int16_t*) pSound->mBuffer;
-        off_t    lLength = pSound->mLength;
+        off_t lLength = pSound->mLength;
         
         // Removes any sound from the queue.
         lRes = (*mPlayerQueue)->Clear(mPlayerQueue);
-        if (lRes != SL_RESULT_SUCCESS) goto ERROR;
+        assert(lRes == SL_RESULT_SUCCESS);
         
         // Plays the new sound.
-        lRes = (*mPlayerQueue)->Enqueue(mPlayerQueue, lBuffer,
-                                        lLength);
-        if (lRes != SL_RESULT_SUCCESS) goto ERROR;
+        lRes = (*mPlayerQueue)->Enqueue(mPlayerQueue, lBuffer, lLength);
+        assert(lRes == SL_RESULT_SUCCESS);
+        
+        // Sets Volume
+        float x = 0.1f;
+
+        int dBVolume = (int) (20 * log2(x) / log2(10));
+        SLmillibel volume = (SLmillibel) (dBVolume * 100); //1dB = 100mB
+
+        //set
+        lRes = (*mPlayerVolume)->SetVolumeLevel(mPlayerVolume, volume);
+        assert(lRes == SL_RESULT_SUCCESS);
     }
-    return;
-    
-ERROR:
-    Log::error("Error trying to play sound");
 }

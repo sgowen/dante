@@ -12,7 +12,6 @@
 
 #include "framework/input/CursorInputManager.h"
 #include "framework/input/KeyboardInputManager.h"
-#include "framework/audio/android/AndroidAudioEngineHelper.h"
 #include "framework/file/android/AndroidAssetDataHandler.h"
 #include "framework/graphics/opengl/OpenGLManager.h"
 #include "framework/util/FrameworkConstants.h"
@@ -237,8 +236,6 @@ void AndroidMain::loadResources()
     JNIEnv *jni;
     _app->activity->vm->AttachCurrentThread(&jni, NULL);
     
-    AndroidAudioEngineHelper::getInstance()->init(jni, _app->activity->clazz);
-    
     AndroidAssetDataHandler::getInstance()->init(jni, _app->activity->clazz);
     
     int width = _glContext->GetScreenWidth();
@@ -263,8 +260,6 @@ void AndroidMain::loadResources()
 
 void AndroidMain::unloadResources()
 {
-    AndroidAudioEngineHelper::getInstance()->deinit();
-    
     AndroidAssetDataHandler::getInstance()->deinit();
     
     _engine->releaseDeviceDependentResources();

@@ -1,8 +1,9 @@
 #include "framework/audio/android/OpenSLESSound.hpp"
-#include "framework/audio/android/Log.hpp"
+
+#include "framework/file/portable/FileData.h"
 
 #include "framework/file/portable/AssetDataHandler.h"
-#include "framework/file/portable/FileData.h"
+#include "framework/util/StringUtil.h"
 
 #include <SLES/OpenSLES.h>
 #include <SLES/OpenSLES_Android.h>
@@ -20,9 +21,9 @@ const char* OpenSLESSound::getPath()
     return mPath;
 }
 
-status OpenSLESSound::load()
+bool OpenSLESSound::load()
 {
-    Log::info("Loading sound %s", mPath);
+    LOG("Loading sound %s", mPath);
     
     FileData fileData = AssetDataHandler::getAssetDataHandler()->getAssetData(mPath);
     
@@ -35,23 +36,23 @@ status OpenSLESSound::load()
         mLength = wav_file->data_length;
         mBuffer = (uint8_t*) wav_file->data;
         
-        return STATUS_OK;
+        return true;
     }
     else
     {
-        Log::error("Error while reading PCM sound.");
-        return STATUS_KO;
+        LOG("Error while reading PCM sound.");
+        return false;
     }
 }
 
-status OpenSLESSound::unload()
+bool OpenSLESSound::unload()
 {
     if (wav_file)
     {
         AssetDataHandler::getAssetDataHandler()->releaseAssetData(wav_file);
         
-        return STATUS_OK;
+        return true;
     }
     
-    return STATUS_KO;
+    return false;
 }
