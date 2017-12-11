@@ -73,7 +73,7 @@ void Server::sHandleLostClient(ClientProxy* inClientProxy, uint8_t index)
     getInstance()->handleLostClient(inClientProxy, index);
 }
 
-void Server::update(float deltaTime)
+void Server::update(double deltaTime)
 {
     _frameStateTime += deltaTime;
     

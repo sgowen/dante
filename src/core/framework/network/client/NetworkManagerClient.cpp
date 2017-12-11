@@ -33,11 +33,11 @@
 
 NetworkManagerClient* NetworkManagerClient::s_instance = NULL;
 
-void NetworkManagerClient::create(ClientHelper* inClientHelper, float inFrameRate, RemoveProcessedMovesFunc inRemoveProcessedMovesFunc, GetMoveListFunc inGetMoveListFunc, OnPlayerWelcomedFunc inOnPlayerWelcomedFunc)
+void NetworkManagerClient::create(ClientHelper* inClientHelper, RemoveProcessedMovesFunc inRemoveProcessedMovesFunc, GetMoveListFunc inGetMoveListFunc, OnPlayerWelcomedFunc inOnPlayerWelcomedFunc)
 {
     assert(!s_instance);
     
-    s_instance = new NetworkManagerClient(inClientHelper, inFrameRate, inRemoveProcessedMovesFunc, inGetMoveListFunc, inOnPlayerWelcomedFunc);
+    s_instance = new NetworkManagerClient(inClientHelper, inRemoveProcessedMovesFunc, inGetMoveListFunc, inOnPlayerWelcomedFunc);
 }
 
 void NetworkManagerClient::destroy()
@@ -435,7 +435,7 @@ void NetworkManagerClient::updateNextIndex()
     }
 }
 
-NetworkManagerClient::NetworkManagerClient(ClientHelper* inClientHelper, float inFrameRate, RemoveProcessedMovesFunc inRemoveProcessedMovesFunc, GetMoveListFunc inGetMoveListFunc, OnPlayerWelcomedFunc inOnPlayerWelcomedFunc) :
+NetworkManagerClient::NetworkManagerClient(ClientHelper* inClientHelper, RemoveProcessedMovesFunc inRemoveProcessedMovesFunc, GetMoveListFunc inGetMoveListFunc, OnPlayerWelcomedFunc inOnPlayerWelcomedFunc) :
 _clientHelper(inClientHelper),
 _removeProcessedMovesFunc(inRemoveProcessedMovesFunc),
 _getMoveListFunc(inGetMoveListFunc),
@@ -447,7 +447,6 @@ _deliveryNotificationManager(new DeliveryNotificationManager(true, false)),
 _timeOfLastHello(0.0f),
 _lastMoveProcessedByServerTimestamp(0.0f),
 _lastServerCommunicationTimestamp(Timing::getInstance()->getFrameStartTime()),
-_frameRate(inFrameRate),
 _isRequestingToAddLocalPlayer(false),
 _isRequestingToDropLocalPlayer(0),
 _nextIndex(0)

@@ -44,7 +44,7 @@ enum NetworkClientState
 class NetworkManagerClient
 {
 public:
-    static void create(ClientHelper* inClientHelper, float inFrameRate, RemoveProcessedMovesFunc inRemoveProcessedMovesFunc, GetMoveListFunc inGetMoveListFunc, OnPlayerWelcomedFunc inOnPlayerWelcomedFunc);
+    static void create(ClientHelper* inClientHelper, RemoveProcessedMovesFunc inRemoveProcessedMovesFunc, GetMoveListFunc inGetMoveListFunc, OnPlayerWelcomedFunc inOnPlayerWelcomedFunc);
     
     static void destroy();
     
@@ -139,7 +139,7 @@ private:
     void updateNextIndex();
     
     // ctor, copy ctor, and assignment should be private in a Singleton
-    NetworkManagerClient(ClientHelper* inClientHelper, float inFrameRate, RemoveProcessedMovesFunc inRemoveProcessedMovesFunc, GetMoveListFunc inGetMoveListFunc, OnPlayerWelcomedFunc inOnPlayerWelcomedFunc);
+    NetworkManagerClient(ClientHelper* inClientHelper, RemoveProcessedMovesFunc inRemoveProcessedMovesFunc, GetMoveListFunc inGetMoveListFunc, OnPlayerWelcomedFunc inOnPlayerWelcomedFunc);
     ~NetworkManagerClient();
     NetworkManagerClient(const NetworkManagerClient&);
     NetworkManagerClient& operator=(const NetworkManagerClient&);

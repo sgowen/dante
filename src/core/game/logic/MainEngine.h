@@ -32,7 +32,7 @@ public:
     
     virtual void createDeviceDependentResources();
     
-	virtual void update(float deltaTime);
+	virtual void update(double deltaTime);
     
 protected:
     virtual void onFrame();

@@ -159,7 +159,7 @@ int GlfwMain::exec(Engine* engine)
     glewInit();
 #endif
 
-    float lastTime = 0;
+    double lastTime = 0;
     engine->createDeviceDependentResources();
 
     int glWidth = 0, glHeight = 0;

@@ -16,12 +16,12 @@ FPSUtil* FPSUtil::getInstance()
     return &instance;
 }
 
-void FPSUtil::update(float deltaTime)
+void FPSUtil::update(double deltaTime)
 {
     _stateTime += deltaTime;
     ++_numFrames;
     
-    if (_stateTime > 1)
+    if (_stateTime >= 1.0)
     {
         _fPS = _numFrames;
         

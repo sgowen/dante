@@ -32,7 +32,7 @@ public:
 	
     virtual void onPause();
     
-    virtual void update(float deltaTime);
+    virtual void update(double deltaTime);
     
     virtual void render();
     
@@ -43,8 +43,8 @@ public:
 protected:
     Renderer* _renderer;
     
-    float _stateTime;
-    float _frameStateTime;
+    double _stateTime;
+    double _frameStateTime;
     
     int _requestedAction;
     int _engineState;

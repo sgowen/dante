@@ -64,23 +64,20 @@ void Engine::onPause()
     NG_AUDIO_ENGINE->pause();
 }
 
-void Engine::update(float deltaTime)
+void Engine::update(double deltaTime)
 {
     FPSUtil::getInstance()->update(deltaTime);
     
     _frameStateTime += deltaTime;
     
-    if (_frameStateTime >= FRAME_RATE)
+    while (_frameStateTime >= FRAME_RATE)
     {
-        while (_frameStateTime >= FRAME_RATE)
-        {
-            _frameStateTime -= FRAME_RATE;
-            _stateTime += FRAME_RATE;
-            
-            Timing::getInstance()->updateManual(_stateTime, FRAME_RATE);
-            
-            onFrame();
-        }
+        _frameStateTime -= FRAME_RATE;
+        _stateTime += FRAME_RATE;
+        
+        Timing::getInstance()->updateManual(_stateTime, FRAME_RATE);
+        
+        onFrame();
     }
 }
 

@@ -28,7 +28,7 @@ public:
     
     static void sHandleLostClient(ClientProxy* inClientProxy, uint8_t index);
     
-    void update(float deltaTime);
+    void update(double deltaTime);
     
     uint8_t getPlayerIdForRobotBeingCreated();
     
@@ -47,9 +47,9 @@ public:
 private:
     static Server* s_instance;
     
-    float _stateTime;
-    float _frameStateTime;
-    float _stateTimeNoEnemies;
+    double _stateTime;
+    double _frameStateTime;
+    double _stateTimeNoEnemies;
     uint8_t _playerIdForRobotBeingCreated;
     uint32_t _numCratesToSpawn;
     uint32_t _numSpacePiratesToSpawn;

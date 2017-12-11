@@ -362,7 +362,7 @@ _glContext(ndk_helper::GLContext::GetInstance()),
 _app(nullptr),
 _engine(nullptr),
 _lastTime(timeNow()),
-_deltaTime(0.016666666666667f),
+_deltaTime(FRAME_RATE),
 _hasInitializedResources(false),
 _hasFocus(false)
 {

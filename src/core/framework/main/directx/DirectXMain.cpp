@@ -632,9 +632,7 @@ void DirectXMain::Update(DX::StepTimer const& timer)
 		break;
 	}
 
-	float elapsedTime = float(timer.GetElapsedSeconds());
-
-	_engine->update(elapsedTime);
+	_engine->update(timer.GetElapsedSeconds());
 
 	endPixEvent();
 }

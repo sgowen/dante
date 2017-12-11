@@ -99,7 +99,7 @@ void MainEngine::createDeviceDependentResources()
     }
 }
 
-void MainEngine::update(float deltaTime)
+void MainEngine::update(double deltaTime)
 {
     Engine::update(deltaTime);
     
@@ -443,7 +443,7 @@ void MainEngine::joinServer()
         clientHelper = new SocketClientHelper(_serverIPAddress, _name, CLIENT_PORT, NG_CLIENT_CALLBACKS);
     }
     
-    NetworkManagerClient::create(clientHelper, FRAME_RATE, INPUT_MANAGER_CALLBACKS);
+    NetworkManagerClient::create(clientHelper, INPUT_MANAGER_CALLBACKS);
     
     InputManager::getInstance()->setConnected(NG_CLIENT ? true : false);
 }

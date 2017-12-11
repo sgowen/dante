@@ -38,11 +38,11 @@
 #define NW_PACKET_TYPE_CLIENT_EXIT 'CEXI'
 #define NW_PACKET_TYPE_SERVER_EXIT 'SEXI'
 
-#define NW_CLIENT_TIME_BETWEEN_HELLOS 1.0f
-#define NW_CLIENT_TIMEOUT 3.0f
-#define NW_SERVER_TIMEOUT 5.0f
-#define NW_CONNECT_TO_SERVER_TIMEOUT 15.0f
-#define NW_ACK_TIMEOUT 0.5f
+#define NW_CLIENT_TIME_BETWEEN_HELLOS 1.0
+#define NW_CLIENT_TIMEOUT 3.0
+#define NW_SERVER_TIMEOUT 5.0
+#define NW_CONNECT_TO_SERVER_TIMEOUT 15.0
+#define NW_ACK_TIMEOUT 0.5
 
 #define MAX_NUM_PLAYERS_PER_SERVER 4
 #define NW_MAX_NUM_PACKETS_PER_FRAME 10
@@ -52,7 +52,7 @@
 
 //// Misc ////
 
-#define FRAME_RATE 0.01666666666667f // 60 frames per second
+#define FRAME_RATE (1.0 / 60.0) // 60 frames per second
 #define NUM_FRAMEBUFFERS 4
 
 #endif /* defined(__noctisgames__FrameworkConstants__) */

@@ -38,7 +38,7 @@ private:
     Engine* _engine;
     
     double _lastTime;
-    float _deltaTime;
+    double _deltaTime;
     bool _hasInitializedResources;
     bool _hasFocus;
     

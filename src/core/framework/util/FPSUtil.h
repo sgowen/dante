@@ -14,16 +14,14 @@ class FPSUtil
 public:
     static FPSUtil* getInstance();
     
-    void update(float deltaTime);
+    void update(double deltaTime);
     
     int getFPS() const;
     
 private:
-    float _stateTime;
+    double _stateTime;
     int _fPS;
     int _numFrames;
-    
-    float getTime() const;
     
     // ctor, copy ctor, and assignment should be private in a Singleton
     FPSUtil();
