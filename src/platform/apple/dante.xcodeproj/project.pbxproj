@@ -753,10 +753,6 @@
 		BB31B5A21FC205D4005F1C0A /* CursorConverter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CursorConverter.h; sourceTree = "<group>"; };
 		BB31B5A31FC205D4005F1C0A /* KeyboardInputManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KeyboardInputManager.cpp; sourceTree = "<group>"; };
 		BB31B5A41FC205D5005F1C0A /* KeyboardInputManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeyboardInputManager.h; sourceTree = "<group>"; };
-		BB379E971FCBAE7800118787 /* SoundService.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SoundService.cpp; sourceTree = "<group>"; };
-		BB379E981FCBAE7800118787 /* SoundService.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SoundService.hpp; sourceTree = "<group>"; };
-		BB379E991FCBAE9400118787 /* OpenSLESSound.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = OpenSLESSound.hpp; sourceTree = "<group>"; };
-		BB379E9A1FCBAE9400118787 /* OpenSLESSound.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = OpenSLESSound.cpp; sourceTree = "<group>"; };
 		BB39C8921FB2700900CF6699 /* NGGraphics.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NGGraphics.h; sourceTree = "<group>"; };
 		BB3BAEDF1FB4A1F900F5F8B0 /* InputManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = InputManager.cpp; sourceTree = "<group>"; };
 		BB3BAEE01FB4A1F900F5F8B0 /* InputManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InputManager.h; sourceTree = "<group>"; };
@@ -1003,6 +999,8 @@
 		BB8308391EC2AD1F00435E7E /* UDPSocket.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = UDPSocket.cpp; sourceTree = "<group>"; };
 		BB83083A1EC2AD1F00435E7E /* UDPSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UDPSocket.h; sourceTree = "<group>"; };
 		BB88026F1EE4A40400F1A37C /* Color.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Color.h; sourceTree = "<group>"; };
+		BB9527B51FDEFF0700AC2E67 /* OpenSLESManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OpenSLESManager.h; sourceTree = "<group>"; };
+		BB9527B61FDEFF0700AC2E67 /* OpenSLESManager.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = OpenSLESManager.cpp; sourceTree = "<group>"; };
 		BB9EE50A1FC092BA000F5389 /* AssetDataHandler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AssetDataHandler.cpp; sourceTree = "<group>"; };
 		BB9EE50B1FC092BA000F5389 /* FileData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileData.h; sourceTree = "<group>"; };
 		BB9EE50C1FC092BA000F5389 /* AssetDataHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AssetDataHandler.h; sourceTree = "<group>"; };
@@ -1140,10 +1138,10 @@
 		BBC1BE371ECF736A0045AF93 /* Network.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Network.h; sourceTree = "<group>"; };
 		BBC532B01FC4D0C900F5439E /* LinuxAssetDataHandler.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = LinuxAssetDataHandler.cpp; sourceTree = "<group>"; };
 		BBC532B11FC4D0C900F5439E /* LinuxAssetDataHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LinuxAssetDataHandler.h; sourceTree = "<group>"; };
-		BBCB152C1FCCECD50076FD60 /* AndroidSoundWrapper.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = AndroidSoundWrapper.cpp; sourceTree = "<group>"; };
-		BBCB152D1FCCECD50076FD60 /* AndroidSound.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AndroidSound.h; sourceTree = "<group>"; };
-		BBCB152E1FCCECD50076FD60 /* AndroidSoundWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AndroidSoundWrapper.h; sourceTree = "<group>"; };
-		BBCB152F1FCCECD60076FD60 /* AndroidSound.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = AndroidSound.cpp; sourceTree = "<group>"; };
+		BBCB152C1FCCECD50076FD60 /* OpenSLESSoundWrapper.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = OpenSLESSoundWrapper.cpp; sourceTree = "<group>"; };
+		BBCB152D1FCCECD50076FD60 /* OpenSLESSound.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OpenSLESSound.h; sourceTree = "<group>"; };
+		BBCB152E1FCCECD50076FD60 /* OpenSLESSoundWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OpenSLESSoundWrapper.h; sourceTree = "<group>"; };
+		BBCB152F1FCCECD60076FD60 /* OpenSLESSound.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = OpenSLESSound.cpp; sourceTree = "<group>"; };
 		BBCB93151FC217DD0020703A /* WindowsAssetDataHandler.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = WindowsAssetDataHandler.cpp; sourceTree = "<group>"; };
 		BBCB93161FC217DD0020703A /* WindowsAssetDataHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WindowsAssetDataHandler.h; sourceTree = "<group>"; };
 		BBCB93171FC2295B0020703A /* State.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = State.h; sourceTree = "<group>"; };
@@ -2105,14 +2103,12 @@
 			children = (
 				BB27D2831FC65B4D00ED42FD /* AndroidAudioEngineHelper.cpp */,
 				BB27D2841FC65B4D00ED42FD /* AndroidAudioEngineHelper.h */,
-				BBCB152F1FCCECD60076FD60 /* AndroidSound.cpp */,
-				BBCB152D1FCCECD50076FD60 /* AndroidSound.h */,
-				BBCB152C1FCCECD50076FD60 /* AndroidSoundWrapper.cpp */,
-				BBCB152E1FCCECD50076FD60 /* AndroidSoundWrapper.h */,
-				BB379E9A1FCBAE9400118787 /* OpenSLESSound.cpp */,
-				BB379E991FCBAE9400118787 /* OpenSLESSound.hpp */,
-				BB379E971FCBAE7800118787 /* SoundService.cpp */,
-				BB379E981FCBAE7800118787 /* SoundService.hpp */,
+				BB9527B61FDEFF0700AC2E67 /* OpenSLESManager.cpp */,
+				BB9527B51FDEFF0700AC2E67 /* OpenSLESManager.h */,
+				BBCB152F1FCCECD60076FD60 /* OpenSLESSound.cpp */,
+				BBCB152D1FCCECD50076FD60 /* OpenSLESSound.h */,
+				BBCB152C1FCCECD50076FD60 /* OpenSLESSoundWrapper.cpp */,
+				BBCB152E1FCCECD50076FD60 /* OpenSLESSoundWrapper.h */,
 			);
 			path = android;
 			sourceTree = "<group>";

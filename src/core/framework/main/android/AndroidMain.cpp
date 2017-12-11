@@ -13,6 +13,7 @@
 #include "framework/input/CursorInputManager.h"
 #include "framework/input/KeyboardInputManager.h"
 #include "framework/file/android/AndroidAssetDataHandler.h"
+#include "framework/audio/android/AndroidAudioEngineHelper.h"
 #include "framework/graphics/opengl/OpenGLManager.h"
 #include "framework/util/FrameworkConstants.h"
 #include "framework/input/KeyboardLookup.h"
@@ -238,6 +239,8 @@ void AndroidMain::loadResources()
     
     AndroidAssetDataHandler::getInstance()->init(jni, _app->activity->clazz);
     
+    AndroidAudioEngineHelper::getInstance()->init();
+    
     int width = _glContext->GetScreenWidth();
     int height = _glContext->GetScreenHeight();
     
@@ -260,6 +263,8 @@ void AndroidMain::loadResources()
 
 void AndroidMain::unloadResources()
 {
+    AndroidAudioEngineHelper::getInstance()->deinit();
+    
     AndroidAssetDataHandler::getInstance()->deinit();
     
     _engine->releaseDeviceDependentResources();

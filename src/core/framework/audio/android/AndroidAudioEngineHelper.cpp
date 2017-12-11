@@ -9,13 +9,12 @@
 #include "framework/audio/android/AndroidAudioEngineHelper.h"
 
 #include "framework/audio/portable/SoundWrapper.h"
-#include "framework/audio/android/SoundService.hpp"
 
-#include "framework/audio/android/AndroidSoundWrapper.h"
+#include "framework/audio/android/OpenSLESManager.h"
+#include "framework/audio/android/OpenSLESSoundWrapper.h"
 #include "framework/util/NGSTDUtil.h"
 
 #include <assert.h>
-#include <sstream>
 
 AndroidAudioEngineHelper* AndroidAudioEngineHelper::getInstance()
 {
@@ -40,7 +39,7 @@ void AndroidAudioEngineHelper::resume()
 
 SoundWrapper* AndroidAudioEngineHelper::loadSound(int soundId, const char *path, int numInstances)
 {
-    AndroidSoundWrapper* sound = new AndroidSoundWrapper(_soundService, soundId, path, numInstances);
+    OpenSLESSoundWrapper* sound = new OpenSLESSoundWrapper(OpenSLESManager::getInstance(), soundId, path, numInstances);
     
     return sound;
 }
@@ -50,14 +49,22 @@ SoundWrapper* AndroidAudioEngineHelper::loadMusic(const char* path)
     return loadSound(1337, path);
 }
 
-AndroidAudioEngineHelper::AndroidAudioEngineHelper() : AudioEngineHelper(), _soundService(new SoundService())
+void AndroidAudioEngineHelper::init()
 {
-    _soundService->start();
+    OpenSLESManager::create();
+}
+
+void AndroidAudioEngineHelper::deinit()
+{
+    OpenSLESManager::destroy();
+}
+
+AndroidAudioEngineHelper::AndroidAudioEngineHelper() : AudioEngineHelper()
+{
+    // Empty
 }
 
 AndroidAudioEngineHelper::~AndroidAudioEngineHelper()
 {
-    _soundService->stop();
-    
-    delete _soundService;
+    // Empty
 }

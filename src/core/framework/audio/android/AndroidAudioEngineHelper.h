@@ -13,8 +13,6 @@
 
 #include <vector>
 
-class SoundService;
-
 class AndroidAudioEngineHelper : public AudioEngineHelper
 {
 public:
@@ -30,9 +28,11 @@ public:
     
     virtual SoundWrapper* loadMusic(const char* path);
     
-private:
-    SoundService* _soundService;
+    void init();
     
+    void deinit();
+    
+private:
     // ctor, copy ctor, and assignment should be private in a Singleton
     AndroidAudioEngineHelper();
     ~AndroidAudioEngineHelper();
