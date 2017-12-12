@@ -259,7 +259,7 @@ static GLenum getGlColorFormat(const int png_color_format)
 
 GLuint OpenGLTextureLoader::loadPngAssetIntoTexture(OpenGLPngImageData inOpenGLPngImageData, bool repeatS)
 {
-    const GLuint texture_object_id = createTexture(inOpenGLPngImageData.width, inOpenGLPngImageData.height, inOpenGLPngImageData.gl_color_format, inOpenGLPngImageData.data, repeatS, 0);
+    const GLuint texture_object_id = createTexture(inOpenGLPngImageData.width, inOpenGLPngImageData.height, inOpenGLPngImageData.gl_color_format, inOpenGLPngImageData.data, repeatS, true);
 
     releaseOpenGLPngImageData(&inOpenGLPngImageData);
 
