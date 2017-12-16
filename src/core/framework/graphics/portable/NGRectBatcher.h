@@ -9,6 +9,7 @@
 #ifndef __noctisgames__NGRectBatcher__
 #define __noctisgames__NGRectBatcher__
 
+class RendererHelper;
 class GpuProgramWrapper;
 class NGRect;
 class Color;
@@ -16,19 +17,18 @@ class Color;
 class NGRectBatcher
 {
 public:
-    NGRectBatcher(bool isFill = false);
+    NGRectBatcher(RendererHelper& inRendererHelper, bool isFill);
     
-    virtual ~NGRectBatcher();
+    ~NGRectBatcher();
     
-    virtual void beginBatch() = 0;
+    void beginBatch();
     
-    virtual void endBatch(GpuProgramWrapper &gpuProgramWrapper) = 0;
+    void endBatch(GpuProgramWrapper &gpuProgramWrapper);
     
-    virtual void renderNGRect(float leftX, float bottomY, float rightX, float topY, Color &color) = 0;
+    void renderNGRect(NGRect &r, Color &c);
     
-    void renderNGRect(NGRect &rectangle, Color &color);
-    
-protected:
+private:
+    RendererHelper& _rendererHelper;
     bool _isFill;
     int _numNGRects;
 };

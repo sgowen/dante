@@ -10,6 +10,7 @@
 
 #include "framework/graphics/portable/CircleBatcher.h"
 
+#include "framework/graphics/portable/RendererHelper.h"
 #include "framework/math/Circle.h"
 #include "framework/graphics/portable/GpuProgramWrapper.h"
 #include "framework/math/Color.h"
@@ -21,7 +22,7 @@
 
 #define DEGREE_SPACING 6
 
-CircleBatcher::CircleBatcher() : _numPoints(0)
+CircleBatcher::CircleBatcher(RendererHelper& inRendererHelper) : _rendererHelper(inRendererHelper), _numPoints(0)
 {
     // Empty
 }
@@ -77,4 +78,25 @@ void CircleBatcher::renderPartialCircle(Circle &circle, int arcDegrees, Color &c
     addVertexCoordinate(circle.getCenter().getX(), circle.getCenter().getY(), 0, c.red, c.green, c.blue, c.alpha);
     
     endBatch(gpuProgramWrapper);
+}
+
+void CircleBatcher::clearVertices()
+{
+    _rendererHelper.clearColorVertices();
+}
+
+void CircleBatcher::endBatch(GpuProgramWrapper &gpuProgramWrapper)
+{
+    gpuProgramWrapper.bind();
+    
+    _rendererHelper.draw(NGPrimitiveType_TriangleStrip, 0, _numPoints);
+    
+    gpuProgramWrapper.unbind();
+}
+
+void CircleBatcher::addVertexCoordinate(float x, float y, float z, float r, float g, float b, float a)
+{
+    _rendererHelper.addVertexCoordinate(x, y, z, r, g, b, a);
+    
+    _numPoints++;
 }

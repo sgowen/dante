@@ -23,7 +23,7 @@ public:
 
     virtual void beginBatch() = 0;
 
-    virtual void endBatch(TextureWrapper& textureWrapper, GpuProgramWrapper& gpuProgramWrapper) = 0;
+    virtual void endBatch(TextureWrapper* textureWrapper, GpuProgramWrapper& gpuProgramWrapper) = 0;
 
     void drawSprite(float x, float y, float width, float height, float angle, TextureRegion& tr);
 

@@ -28,13 +28,13 @@ void OpenGLSpriteBatcher::beginBatch()
     _numSprites = 0;
 }
 
-void OpenGLSpriteBatcher::endBatch(TextureWrapper& textureWrapper, GpuProgramWrapper& gpuProgramWrapper)
+void OpenGLSpriteBatcher::endBatch(TextureWrapper* textureWrapper, GpuProgramWrapper& gpuProgramWrapper)
 {
     if (_numSprites > 0)
     {
         // tell the GPU which texture to use
         glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, textureWrapper.gpuTextureWrapper->texture);
+        glBindTexture(GL_TEXTURE_2D, textureWrapper->gpuTextureWrapper->texture);
         
         gpuProgramWrapper.bind();
         

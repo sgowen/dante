@@ -111,6 +111,16 @@ void DirectXRendererHelper::destroyTexture(GpuTextureWrapper& textureWrapper)
     }
 }
 
+void DirectXRendererHelper::clearColorVertices()
+{
+    DXManager->getColorVertices().clear();
+}
+
+void DirectXRendererHelper::clearTextureVertices()
+{
+    DXManager->getTextureVertices().clear();
+}
+
 void DirectXRendererHelper::addVertexCoordinate(float x, float y, float z, float r, float g, float b, float a, float u, float v)
 {
     DXManager->addVertexCoordinate(x, y, z, r, g, b, a, u, v);
@@ -119,4 +129,34 @@ void DirectXRendererHelper::addVertexCoordinate(float x, float y, float z, float
 void DirectXRendererHelper::addVertexCoordinate(float x, float y, float z, float r, float g, float b, float a)
 {
     DXManager->addVertexCoordinate(x, y, z, r, g, b, a);
+}
+
+void DirectXRendererHelper::draw(NGPrimitiveType renderPrimitiveType, uint32_t first, uint32_t count)
+{
+    ID3D11DeviceContext* d3dContext = DirectXManager::getD3dContext();
+    d3dContext->IASetPrimitiveTopology(renderPrimitiveType);
+    d3dContext->Draw(_numPoints, first);
+}
+
+void DirectXRendererHelper::drawIndexed(NGPrimitiveType renderPrimitiveType, uint32_t count)
+{
+    ID3D11DeviceContext* d3dContext = DirectXManager::getD3dContext();
+    d3dContext->IASetPrimitiveTopology(renderPrimitiveType);
+    d3dContext->DrawIndexed(count, 0, 0);
+}
+
+void DirectXRendererHelper::bindTexture(NGTextureSlot textureSlot, TextureWrapper* textureWrapper)
+{
+    ID3D11DeviceContext* d3dContext = DirectXManager::getD3dContext();
+    
+    if (textureWrapper == NULL)
+    {
+        ID3D11ShaderResourceView *pSRV[1] = { NULL };
+        d3dContext->PSSetShaderResources(0, 1, pSRV);
+    }
+    else
+    {
+        d3dContext->PSSetShaderResources(0, 1, &textureWrapper->gpuTextureWrapper->texture);
+        d3dContext->PSSetSamplers(0, 1, textureWrapper->_repeatS ? DXManager->getSbWrapSamplerState().GetAddressOf() : DXManager->getSbSamplerState().GetAddressOf());
+    }
 }

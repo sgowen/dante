@@ -26,9 +26,6 @@
 #include "framework/graphics/portable/GpuTextureWrapper.h"
 #include "framework/graphics/portable/GpuTextureDataWrapper.h"
 #include "framework/graphics/portable/SpriteBatcherFactory.h"
-#include "framework/graphics/portable/NGRectBatcherFactory.h"
-#include "framework/graphics/portable/LineBatcherFactory.h"
-#include "framework/graphics/portable/CircleBatcherFactory.h"
 #include "framework/graphics/portable/TextureLoaderFactory.h"
 #include "framework/graphics/portable/RendererHelperFactory.h"
 #include "framework/graphics/portable/GpuProgramWrapperFactory.h"
@@ -40,13 +37,13 @@
 #include <assert.h>
 
 Renderer::Renderer(int maxBatchSize) :
-_spriteBatcher(SPRITE_BATCHER_FACTORY->createSpriteBatcher()),
-_fillNGRectBatcher(RECTANGLE_BATCHER_FACTORY->createNGRectBatcher(true)),
-_boundsNGRectBatcher(RECTANGLE_BATCHER_FACTORY->createNGRectBatcher(false)),
-_lineBatcher(LINE_BATCHER_FACTORY->createLineBatcher()),
-_circleBatcher(CIRCLE_BATCHER_FACTORY->createCircleBatcher()),
-_textureLoader(TEXTURE_LOADER_FACTORY->createTextureLoader()),
 _rendererHelper(RENDERER_HELPER_FACTORY->createRendererHelper()),
+_spriteBatcher(SPRITE_BATCHER_FACTORY->createSpriteBatcher()),
+_fillNGRectBatcher(new NGRectBatcher(*_rendererHelper, true)),
+_boundsNGRectBatcher(new NGRectBatcher(*_rendererHelper, false)),
+_lineBatcher(new LineBatcher(*_rendererHelper)),
+_circleBatcher(new CircleBatcher(*_rendererHelper)),
+_textureLoader(TEXTURE_LOADER_FACTORY->createTextureLoader()),
 _textureGpuProgramWrapper(NULL),
 _colorGpuProgramWrapper(NULL),
 _framebufferToScreenGpuProgramWrapper(NULL),
@@ -141,7 +138,7 @@ void Renderer::renderToScreen()
     
     _spriteBatcher->beginBatch();
     _spriteBatcher->drawSprite(0, 0, 2, 2, 0, tr);
-    _spriteBatcher->endBatch(*_rendererHelper->getFramebuffer(_framebufferIndex), *_framebufferToScreenGpuProgramWrapper);
+    _spriteBatcher->endBatch(_rendererHelper->getFramebuffer(_framebufferIndex), *_framebufferToScreenGpuProgramWrapper);
 }
 
 void Renderer::endFrame()

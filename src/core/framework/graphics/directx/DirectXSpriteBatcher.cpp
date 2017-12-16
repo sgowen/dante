@@ -30,14 +30,14 @@ void DirectXSpriteBatcher::beginBatch()
 	_numSprites = 0;
 }
 
-void DirectXSpriteBatcher::endBatch(TextureWrapper& textureWrapper, GpuProgramWrapper& gpuProgramWrapper)
+void DirectXSpriteBatcher::endBatch(TextureWrapper* textureWrapper, GpuProgramWrapper& gpuProgramWrapper)
 {
 	if (_numSprites > 0)
 	{
 		// tell the GPU which texture to use
 		ID3D11DeviceContext* d3dContext = DirectXManager::getD3dContext();
-		d3dContext->PSSetShaderResources(0, 1, &textureWrapper.gpuTextureWrapper->texture);
-        d3dContext->PSSetSamplers(0, 1, textureWrapper._repeatS ? DXManager->getSbWrapSamplerState().GetAddressOf() : DXManager->getSbSamplerState().GetAddressOf());
+		d3dContext->PSSetShaderResources(0, 1, &textureWrapper->gpuTextureWrapper->texture);
+        d3dContext->PSSetSamplers(0, 1, textureWrapper->_repeatS ? DXManager->getSbWrapSamplerState().GetAddressOf() : DXManager->getSbSamplerState().GetAddressOf());
 
 		gpuProgramWrapper.bind();
 

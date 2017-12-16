@@ -9,6 +9,9 @@
 #ifndef __noctisgames__RendererHelper__
 #define __noctisgames__RendererHelper__
 
+#include <framework/graphics/portable/NGPrimitiveType.h>
+#include <framework/graphics/portable/NGTextureSlot.h>
+
 class TextureWrapper;
 struct GpuTextureWrapper;
 
@@ -41,9 +44,19 @@ public:
     
     virtual void destroyTexture(GpuTextureWrapper& textureWrapper) = 0;
     
+    virtual void clearColorVertices() = 0;
+    
+    virtual void clearTextureVertices() = 0;
+    
     virtual void addVertexCoordinate(float x, float y, float z, float r, float g, float b, float a, float u, float v) = 0;
     
     virtual void addVertexCoordinate(float x, float y, float z, float r, float g, float b, float a) = 0;
+    
+    virtual void draw(NGPrimitiveType renderPrimitiveType, uint32_t first, uint32_t count) = 0;
+    
+    virtual void drawIndexed(NGPrimitiveType renderPrimitiveType, uint32_t count) = 0;
+    
+    virtual void bindTexture(NGTextureSlot textureSlot, TextureWrapper* textureWrapper) = 0;
     
 protected:
     TextureWrapper* _framebuffer;

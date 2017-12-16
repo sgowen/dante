@@ -40,9 +40,19 @@ public:
     
     virtual void destroyTexture(GpuTextureWrapper& textureWrapper);
     
+    virtual void clearColorVertices();
+    
+    virtual void clearTextureVertices();
+    
     virtual void addVertexCoordinate(float x, float y, float z, float r, float g, float b, float a, float u, float v);
     
     virtual void addVertexCoordinate(float x, float y, float z, float r, float g, float b, float a);
+    
+    virtual void draw(NGPrimitiveType renderPrimitiveType, uint32_t first, uint32_t count) = 0;
+    
+    virtual void drawIndexed(NGPrimitiveType renderPrimitiveType, uint32_t count) = 0;
+    
+    virtual void bindTexture(NGTextureSlot textureSlot, TextureWrapper* textureWrapper) = 0;
     
 private:
 	int _framebufferIndex;

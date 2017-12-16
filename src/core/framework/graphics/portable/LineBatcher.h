@@ -9,26 +9,26 @@
 #ifndef __noctisgames__LineBatcher__
 #define __noctisgames__LineBatcher__
 
-class Line;
+class RendererHelper;
 class GpuProgramWrapper;
+class Line;
 class Color;
 
 class LineBatcher
 {
 public:
-    LineBatcher();
+    LineBatcher(RendererHelper& inRendererHelper);
     
-    virtual ~LineBatcher();
+    ~LineBatcher();
     
-    virtual void beginBatch() = 0;
+    void beginBatch();
     
-    virtual void endBatch(GpuProgramWrapper &gpuProgramWrapper) = 0;
-    
-    virtual void renderLine(float originX, float originY, float endX, float endY, Color &c) = 0;
+    void endBatch(GpuProgramWrapper &gpuProgramWrapper);
     
     void renderLine(Line &line, Color &c);
     
-protected:
+private:
+    RendererHelper& _rendererHelper;
     int _numLines;
 };
 

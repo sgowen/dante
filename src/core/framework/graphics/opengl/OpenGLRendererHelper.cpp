@@ -98,6 +98,16 @@ void OpenGLRendererHelper::destroyTexture(GpuTextureWrapper& textureWrapper)
     glDeleteTextures(1, &textureWrapper.texture);
 }
 
+void OpenGLRendererHelper::clearColorVertices()
+{
+    OGLManager->getColorVertices().clear();
+}
+
+void OpenGLRendererHelper::clearTextureVertices()
+{
+    OGLManager->getTextureVertices().clear();
+}
+
 void OpenGLRendererHelper::addVertexCoordinate(float x, float y, float z, float r, float g, float b, float a, float u, float v)
 {
     OGLManager->addVertexCoordinate(x, y, z, r, g, b, a, u, v);
@@ -106,4 +116,20 @@ void OpenGLRendererHelper::addVertexCoordinate(float x, float y, float z, float 
 void OpenGLRendererHelper::addVertexCoordinate(float x, float y, float z, float r, float g, float b, float a)
 {
     OGLManager->addVertexCoordinate(x, y, z, r, g, b, a);
+}
+
+void OpenGLRendererHelper::draw(NGPrimitiveType renderPrimitiveType, uint32_t first, uint32_t count)
+{
+    glDrawArrays(renderPrimitiveType, first, count);
+}
+
+void OpenGLRendererHelper::drawIndexed(NGPrimitiveType renderPrimitiveType, uint32_t count)
+{
+    glDrawElements(renderPrimitiveType, count, GL_UNSIGNED_SHORT, &OGLManager->getIndices()[0]);
+}
+
+void OpenGLRendererHelper::bindTexture(NGTextureSlot textureSlot, TextureWrapper* textureWrapper)
+{
+    glActiveTexture(textureSlot);
+    glBindTexture(GL_TEXTURE_2D, textureWrapper == NULL ? 0 : textureWrapper->gpuTextureWrapper->texture);
 }

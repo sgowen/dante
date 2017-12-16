@@ -50,9 +50,15 @@
 
 #define INPUT_UNASSIGNED 255
 
+//// Rendering ////
+
+#define NUM_FRAMEBUFFERS 4
+#define VERTICES_PER_LINE 2
+#define VERTICES_PER_RECTANGLE 4
+#define INDICES_PER_RECTANGLE 6
+
 //// Misc ////
 
 #define FRAME_RATE (1.0 / 60.0) // 60 frames per second
-#define NUM_FRAMEBUFFERS 4
 
 #endif /* defined(__noctisgames__FrameworkConstants__) */

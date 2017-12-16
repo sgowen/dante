@@ -9,6 +9,7 @@
 #ifndef __noctisgames__CircleBatcher__
 #define __noctisgames__CircleBatcher__
 
+class RendererHelper;
 class Circle;
 class GpuProgramWrapper;
 class Color;
@@ -16,22 +17,23 @@ class Color;
 class CircleBatcher
 {
 public:
-    CircleBatcher();
+    CircleBatcher(RendererHelper& inRendererHelper);
     
-    virtual ~CircleBatcher();
+    ~CircleBatcher();
     
     void renderCircle(Circle &circle, Color &c, GpuProgramWrapper &gpuProgramWrapper);
     
     void renderPartialCircle(Circle &circle, int arcDegrees, Color &c, GpuProgramWrapper &gpuProgramWrapper);
     
-protected:
+private:
+    RendererHelper& _rendererHelper;
     int _numPoints;
     
-    virtual void clearVertices() = 0;
+    void clearVertices();
     
-    virtual void addVertexCoordinate(float x, float y, float z, float r, float g, float b, float a) = 0;
+    void addVertexCoordinate(float x, float y, float z, float r, float g, float b, float a);
     
-    virtual void endBatch(GpuProgramWrapper &gpuProgramWrapper) = 0;
+    void endBatch(GpuProgramWrapper &gpuProgramWrapper);
 };
 
 #endif /* defined(__noctisgames__CircleBatcher__) */

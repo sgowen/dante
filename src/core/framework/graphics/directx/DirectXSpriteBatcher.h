@@ -18,7 +18,7 @@ public:
     
 	virtual void beginBatch();
 
-	virtual void endBatch(TextureWrapper& textureWrapper, GpuProgramWrapper& gpuProgramWrapper);
+	virtual void endBatch(TextureWrapper* textureWrapper, GpuProgramWrapper& gpuProgramWrapper);
     
 protected:
     virtual void addVertexCoordinate(float x, float y, float z, float r, float g, float b, float a, float u, float v);
