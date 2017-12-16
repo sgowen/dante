@@ -97,3 +97,13 @@ void OpenGLRendererHelper::destroyTexture(GpuTextureWrapper& textureWrapper)
 {
     glDeleteTextures(1, &textureWrapper.texture);
 }
+
+void OpenGLRendererHelper::addVertexCoordinate(float x, float y, float z, float r, float g, float b, float a, float u, float v)
+{
+    OGLManager->addVertexCoordinate(x, y, z, r, g, b, a, u, v);
+}
+
+void OpenGLRendererHelper::addVertexCoordinate(float x, float y, float z, float r, float g, float b, float a)
+{
+    OGLManager->addVertexCoordinate(x, y, z, r, g, b, a);
+}

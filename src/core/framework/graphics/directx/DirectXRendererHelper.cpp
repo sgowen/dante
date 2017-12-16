@@ -110,3 +110,13 @@ void DirectXRendererHelper::destroyTexture(GpuTextureWrapper& textureWrapper)
         textureWrapper.texture->Release();
     }
 }
+
+void DirectXRendererHelper::addVertexCoordinate(float x, float y, float z, float r, float g, float b, float a, float u, float v)
+{
+    DXManager->addVertexCoordinate(x, y, z, r, g, b, a, u, v);
+}
+
+void DirectXRendererHelper::addVertexCoordinate(float x, float y, float z, float r, float g, float b, float a)
+{
+    DXManager->addVertexCoordinate(x, y, z, r, g, b, a);
+}

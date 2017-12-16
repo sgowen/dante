@@ -41,6 +41,10 @@ public:
     
     virtual void destroyTexture(GpuTextureWrapper& textureWrapper) = 0;
     
+    virtual void addVertexCoordinate(float x, float y, float z, float r, float g, float b, float a, float u, float v) = 0;
+    
+    virtual void addVertexCoordinate(float x, float y, float z, float r, float g, float b, float a) = 0;
+    
 protected:
     TextureWrapper* _framebuffer;
 };

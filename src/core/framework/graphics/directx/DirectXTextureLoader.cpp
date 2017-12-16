@@ -43,24 +43,24 @@ GpuTextureDataWrapper* DirectXTextureLoader::loadTextureData(TextureWrapper* tex
 	s += std::string(textureName);
 	const char* finalPath = s.c_str();
     
-    const FileData dds_file = AssetDataHandler::getAssetDataHandler()->getAssetData(finalPath);
+    const FileData fileData = AssetDataHandler::getAssetDataHandler()->getAssetData(finalPath);
     void* output = NULL;
     if (textureWrapper->_isEncrypted)
     {
-        output = malloc(dds_file.data_length);
-        StringUtil::encryptDecrypt((unsigned char*)dds_file.data, (unsigned char*) output, dds_file.data_length);
+        output = malloc(fileData.data_length);
+        StringUtil::encryptDecrypt((unsigned char*)fileData.data, (unsigned char*) output, fileData.data_length);
     }
     else
     {
-        output = (void*) dds_file.data;
+        output = (void*) fileData.data;
     }
     
     ID3D11ShaderResourceView *pShaderResourceView;
     
 	ID3D11Device* d3dDevice = DirectXManager::getD3dDevice();
-    DirectX::ThrowIfFailed(DirectX::CreateDDSTextureFromMemory(d3dDevice, (const uint8_t*)output, dds_file.data_length, NULL, &pShaderResourceView));
+    DirectX::ThrowIfFailed(DirectX::CreateDDSTextureFromMemory(d3dDevice, (const uint8_t*)output, fileData.data_length, NULL, &pShaderResourceView));
     
-    AssetDataHandler::getAssetDataHandler()->releaseAssetData(&dds_file);
+    AssetDataHandler::getAssetDataHandler()->releaseAssetData(&fileData);
     
     GpuTextureDataWrapper* tdw = new GpuTextureDataWrapper(pShaderResourceView);
     

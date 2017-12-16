@@ -37,20 +37,11 @@ void DirectXSpriteBatcher::endBatch(TextureWrapper& textureWrapper, GpuProgramWr
 		// tell the GPU which texture to use
 		ID3D11DeviceContext* d3dContext = DirectXManager::getD3dContext();
 		d3dContext->PSSetShaderResources(0, 1, &textureWrapper.gpuTextureWrapper->texture);
-        
-        if (textureWrapper._repeatS)
-        {
-            bindWrapSamplerState();
-        }
-        else
-        {
-            bindNormalSamplerState();
-        }
-
-		d3dContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+        d3dContext->PSSetSamplers(0, 1, textureWrapper._repeatS ? DXManager->getSbWrapSamplerState().GetAddressOf() : DXManager->getSbSamplerState().GetAddressOf());
 
 		gpuProgramWrapper.bind();
 
+        d3dContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 		d3dContext->DrawIndexed(_numSprites * INDICES_PER_RECTANGLE, 0, 0);
 
 		gpuProgramWrapper.unbind();
@@ -63,18 +54,4 @@ void DirectXSpriteBatcher::endBatch(TextureWrapper& textureWrapper, GpuProgramWr
 void DirectXSpriteBatcher::addVertexCoordinate(float x, float y, float z, float r, float g, float b, float a, float u, float v)
 {
     DXManager->addVertexCoordinate(x, y, z, r, g, b, a, u, v);
-}
-
-void DirectXSpriteBatcher::bindNormalSamplerState()
-{
-    ID3D11DeviceContext* d3dContext = DirectXManager::getD3dContext();
-    
-    d3dContext->PSSetSamplers(0, 1, DXManager->getSbSamplerState().GetAddressOf());
-}
-
-void DirectXSpriteBatcher::bindWrapSamplerState()
-{
-    ID3D11DeviceContext* d3dContext = DirectXManager::getD3dContext();
-    
-    d3dContext->PSSetSamplers(0, 1, DXManager->getSbWrapSamplerState().GetAddressOf());
 }

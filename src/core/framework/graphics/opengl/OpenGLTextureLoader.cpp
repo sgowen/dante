@@ -50,21 +50,21 @@ GpuTextureDataWrapper* OpenGLTextureLoader::loadTextureData(TextureWrapper* text
     finalTextureFileName = textureName;
 #endif
 
-    const FileData png_file = AssetDataHandler::getAssetDataHandler()->getAssetData(finalTextureFileName);
+    const FileData fileData = AssetDataHandler::getAssetDataHandler()->getAssetData(finalTextureFileName);
     void* output = NULL;
     if (textureWrapper->_isEncrypted)
     {
-        output = malloc(png_file.data_length);
-        StringUtil::encryptDecrypt((unsigned char*)png_file.data, (unsigned char*) output, png_file.data_length);
+        output = malloc(fileData.data_length);
+        StringUtil::encryptDecrypt((unsigned char*)fileData.data, (unsigned char*) output, fileData.data_length);
     }
     else
     {
-        output = (void*) png_file.data;
+        output = (void*) fileData.data;
     }
 
-    const OpenGLPngImageData raw_image_data = getOpenGLPngImageDataFromFileData(output, (int)png_file.data_length);
+    const OpenGLPngImageData raw_image_data = getOpenGLPngImageDataFromFileData(output, (int)fileData.data_length);
 
-    AssetDataHandler::getAssetDataHandler()->releaseAssetData(&png_file);
+    AssetDataHandler::getAssetDataHandler()->releaseAssetData(&fileData);
 
     GpuTextureDataWrapper* tdw = new GpuTextureDataWrapper(raw_image_data);
 

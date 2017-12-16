@@ -39,6 +39,10 @@ public:
     virtual void bindToScreenFramebuffer();
     
     virtual void destroyTexture(GpuTextureWrapper& textureWrapper);
+    
+    virtual void addVertexCoordinate(float x, float y, float z, float r, float g, float b, float a, float u, float v);
+    
+    virtual void addVertexCoordinate(float x, float y, float z, float r, float g, float b, float a);
 };
 
 #endif /* defined(__noctisgames__OpenGLRendererHelper__) */
