@@ -134,14 +134,14 @@ void DirectXRendererHelper::addVertexCoordinate(float x, float y, float z, float
 void DirectXRendererHelper::draw(NGPrimitiveType renderPrimitiveType, uint32_t first, uint32_t count)
 {
     ID3D11DeviceContext* d3dContext = DirectXManager::getD3dContext();
-    d3dContext->IASetPrimitiveTopology(renderPrimitiveType);
-    d3dContext->Draw(_numPoints, first);
+    d3dContext->IASetPrimitiveTopology(static_cast<D3D11_PRIMITIVE_TOPOLOGY>(renderPrimitiveType));
+    d3dContext->Draw(count, first);
 }
 
 void DirectXRendererHelper::drawIndexed(NGPrimitiveType renderPrimitiveType, uint32_t count)
 {
     ID3D11DeviceContext* d3dContext = DirectXManager::getD3dContext();
-    d3dContext->IASetPrimitiveTopology(renderPrimitiveType);
+    d3dContext->IASetPrimitiveTopology(static_cast<D3D11_PRIMITIVE_TOPOLOGY>(renderPrimitiveType));
     d3dContext->DrawIndexed(count, 0, 0);
 }
 
