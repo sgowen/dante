@@ -42,6 +42,10 @@
 #include "game/logic/Crate.h"
 #include "game/logic/SpacePirateChunk.h"
 #include "framework/util/FPSUtil.h"
+#include "framework/math/Color.h"
+#include "framework/math/Circle.h"
+#include "framework/graphics/portable/CircleBatcher.h"
+#include "framework/util/FlagUtil.h"
 
 #ifdef NG_STEAM
 #include "framework/network/steam/NGSteamGameServer.h"
@@ -118,7 +122,14 @@ void MainRenderer::render(int flags)
             renderWorld();
         }
         
-        renderAtmosphere();
+        if (FlagUtil::isFlagSet(flags, MAIN_ENGINE_FLAG_SHOW_ATMOSPHERE))
+        {
+            renderAtmosphere();
+        }
+        
+#ifdef NG_TEST_RENDERING_SUITE
+        testRenderingSuite();
+#endif
         
         renderUI(flags);
     }
@@ -307,7 +318,9 @@ void MainRenderer::renderUI(int flags)
     _rendererHelper->updateMatrix(0, CAM_WIDTH, 0, CAM_HEIGHT);
     
     _spriteBatcher->beginBatch();
-    switch (flags)
+    
+    int state = FlagUtil::removeFlag(flags, MAIN_ENGINE_FLAG_SHOW_ATMOSPHERE);
+    switch (state)
     {
         case MAIN_ENGINE_STATE_MAIN_MENU_STEAM_OFF:
             renderMainMenuSteamOffText();
@@ -329,7 +342,7 @@ void MainRenderer::renderUI(int flags)
             
             if (NG_CLIENT->getState() == NCS_Welcomed)
             {
-                renderServerJoinedText();
+                renderServerJoinedText(flags);
             }
             break;
         default:
@@ -455,7 +468,7 @@ void MainRenderer::renderJoiningServerText()
     }
 }
 
-void MainRenderer::renderServerJoinedText()
+void MainRenderer::renderServerJoinedText(int flags)
 {
     static int row = 1;
     static float padding = 0.5f;
@@ -518,14 +531,14 @@ void MainRenderer::renderServerJoinedText()
         {
             static b2Vec2 origin = b2Vec2(CAM_WIDTH - 0.5f, CAM_HEIGHT - (row++ * padding));
             
-            std::string text = StringUtil::format("'T'     Enemies %s", Server::getInstance()->isSpawningEnemies() ? " ON" : "OFF");
+            std::string text = StringUtil::format("'E'     Enemies %s", Server::getInstance()->isSpawningEnemies() ? " ON" : "OFF");
             renderText(text, origin, Color::BLACK, FONT_ALIGN_RIGHT);
         }
         
         {
             static b2Vec2 origin = b2Vec2(CAM_WIDTH - 0.5f, CAM_HEIGHT - (row++ * padding));
             
-            std::string text = StringUtil::format("'C'     Objects %s", Server::getInstance()->isSpawningObjects() ? " ON" : "OFF");
+            std::string text = StringUtil::format("'O'     Objects %s", Server::getInstance()->isSpawningObjects() ? " ON" : "OFF");
             renderText(text, origin, Color::BLACK, FONT_ALIGN_RIGHT);
         }
         
@@ -533,6 +546,13 @@ void MainRenderer::renderServerJoinedText()
             static b2Vec2 origin = b2Vec2(CAM_WIDTH - 0.5f, CAM_HEIGHT - (row++ * padding));
             
             std::string text = StringUtil::format("'I'       DEBUG %s", Server::getInstance()->isDisplaying() ? " ON" : "OFF");
+            renderText(text, origin, Color::BLACK, FONT_ALIGN_RIGHT);
+        }
+        
+        {
+            static b2Vec2 origin = b2Vec2(CAM_WIDTH - 0.5f, CAM_HEIGHT - (row++ * padding));
+            
+            std::string text = StringUtil::format("'P'  ATMOSPHERE %s", FlagUtil::isFlagSet(flags, MAIN_ENGINE_FLAG_SHOW_ATMOSPHERE) ? " ON" : "OFF");
             renderText(text, origin, Color::BLACK, FONT_ALIGN_RIGHT);
         }
     }
@@ -696,4 +716,15 @@ void MainRenderer::updateCamera()
             _camBounds->setHeight(h);
         }
     }
+}
+
+void MainRenderer::testRenderingSuite()
+{
+    _rendererHelper->updateMatrix(0, CAM_WIDTH, 0, CAM_HEIGHT);
+    
+    static Circle c1(4, 4, 2);
+    _circleBatcher->renderCircle(c1, Color::RED, *_colorGpuProgramWrapper);
+    
+    static Circle c2(7, 7, 3);
+    _circleBatcher->renderPartialCircle(c2, 135, Color::RED, *_colorGpuProgramWrapper);
 }

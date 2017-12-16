@@ -11,22 +11,17 @@
 
 #include "framework/graphics/portable/CircleBatcher.h"
 
-#include "pch.h"
-
 class DirectXCircleBatcher : public CircleBatcher
 {
 public:
 	DirectXCircleBatcher();
 
-	virtual void renderCircle(Circle &circle, Color &c, GpuProgramWrapper &gpuProgramWrapper);
-
-	virtual void renderPartialCircle(Circle &circle, int arcDegrees, Color &c, GpuProgramWrapper &gpuProgramWrapper);
-
 protected:
+    virtual void clearVertices();
+    
+    virtual void addVertexCoordinate(float x, float y, float z, float r, float g, float b, float a);
+    
 	virtual void endBatch(GpuProgramWrapper &gpuProgramWrapper);
-
-private:
-	void addVertexCoordinate(float x, float y, float z, float r, float g, float b, float a);
 };
 
 #endif /* defined(__noctisgames__DirectXCircleBatcher__) */

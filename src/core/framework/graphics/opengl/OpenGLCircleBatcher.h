@@ -16,11 +16,11 @@ class OpenGLCircleBatcher : public CircleBatcher
 public:
     OpenGLCircleBatcher();
     
-    virtual void renderCircle(Circle &circle, Color &c, GpuProgramWrapper &gpuProgramWrapper);
-    
-    virtual void renderPartialCircle(Circle &circle, int arcDegrees, Color &c, GpuProgramWrapper &gpuProgramWrapper);
-    
 protected:
+    virtual void clearVertices();
+    
+    virtual void addVertexCoordinate(float x, float y, float z, float r, float g, float b, float a);
+    
     virtual void endBatch(GpuProgramWrapper &gpuProgramWrapper);
 };
 

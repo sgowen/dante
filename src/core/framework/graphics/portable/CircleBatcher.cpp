@@ -10,6 +10,17 @@
 
 #include "framework/graphics/portable/CircleBatcher.h"
 
+#include "framework/math/Circle.h"
+#include "framework/graphics/portable/GpuProgramWrapper.h"
+#include "framework/math/Color.h"
+
+#include "framework/util/FrameworkConstants.h"
+#include "framework/util/macros.h"
+
+#include <math.h>
+
+#define DEGREE_SPACING 6
+
 CircleBatcher::CircleBatcher() : _numPoints(0)
 {
     // Empty
@@ -18,4 +29,52 @@ CircleBatcher::CircleBatcher() : _numPoints(0)
 CircleBatcher::~CircleBatcher()
 {
     // Empty
+}
+
+void CircleBatcher::renderCircle(Circle &circle, Color &c, GpuProgramWrapper &gpuProgramWrapper)
+{
+    clearVertices();
+    
+    _numPoints = 0;
+    
+    for (int i = 0; i <= 360; i += DEGREE_SPACING)
+    {
+        float rad = DEGREES_TO_RADIANS(i);
+        float cos = cosf(rad);
+        float sin = sinf(rad);
+        
+        addVertexCoordinate(cos * circle.getRadius() + circle.getCenter().getX(), sin * circle.getRadius() + circle.getCenter().getY(), 0, c.red, c.green, c.blue, c.alpha);
+        
+        addVertexCoordinate(circle.getCenter().getX(), circle.getCenter().getY(), 0, c.red, c.green, c.blue, c.alpha);
+    }
+    
+    endBatch(gpuProgramWrapper);
+}
+
+void CircleBatcher::renderPartialCircle(Circle &circle, int arcDegrees, Color &c, GpuProgramWrapper &gpuProgramWrapper)
+{
+    clearVertices();
+    
+    _numPoints = 0;
+    
+    for (int i = 90; i < (450 - arcDegrees); i += DEGREE_SPACING)
+    {
+        float rad = DEGREES_TO_RADIANS(i);
+        float cos = cosf(rad);
+        float sin = sinf(rad);
+        
+        addVertexCoordinate(cos * circle.getRadius() + circle.getCenter().getX(), sin * circle.getRadius() + circle.getCenter().getY(), 0, c.red, c.green, c.blue, c.alpha);
+        
+        addVertexCoordinate(circle.getCenter().getX(), circle.getCenter().getY(), 0, c.red, c.green, c.blue, c.alpha);
+    }
+    
+    float rad = DEGREES_TO_RADIANS(450 - arcDegrees);
+    float cos = cosf(rad);
+    float sin = sinf(rad);
+    
+    addVertexCoordinate(cos * circle.getRadius() + circle.getCenter().getX(), sin * circle.getRadius() + circle.getCenter().getY(), 0, c.red, c.green, c.blue, c.alpha);
+    
+    addVertexCoordinate(circle.getCenter().getX(), circle.getCenter().getY(), 0, c.red, c.green, c.blue, c.alpha);
+    
+    endBatch(gpuProgramWrapper);
 }

@@ -20,12 +20,16 @@ public:
     
     virtual ~CircleBatcher();
     
-    virtual void renderCircle(Circle &circle, Color &c, GpuProgramWrapper &gpuProgramWrapper) = 0;
+    void renderCircle(Circle &circle, Color &c, GpuProgramWrapper &gpuProgramWrapper);
     
-    virtual void renderPartialCircle(Circle &circle, int arcDegrees, Color &c, GpuProgramWrapper &gpuProgramWrapper) = 0;
+    void renderPartialCircle(Circle &circle, int arcDegrees, Color &c, GpuProgramWrapper &gpuProgramWrapper);
     
 protected:
     int _numPoints;
+    
+    virtual void clearVertices() = 0;
+    
+    virtual void addVertexCoordinate(float x, float y, float z, float r, float g, float b, float a) = 0;
     
     virtual void endBatch(GpuProgramWrapper &gpuProgramWrapper) = 0;
 };

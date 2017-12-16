@@ -41,6 +41,7 @@
 #include "framework/audio/portable/NGAudioEngine.h"
 #include "framework/util/NGExtension.h"
 #include "framework/util/PlatformHelper.h"
+#include "framework/util/FlagUtil.h"
 
 #ifdef NG_STEAM
 #include "framework/network/steam/NGSteamClientHelper.h"
@@ -172,6 +173,17 @@ void MainEngine::handleNonMoveInput()
             else if (inputState->getMenuState() == MENU_STATE_SERVER_TOGGLE_OBJECTS)
             {
                 Server::getInstance()->toggleObjects();
+            }
+            else if (inputState->getMenuState() == MENU_STATE_SERVER_TOGGLE_ATMOSPHERE)
+            {
+                if (FlagUtil::isFlagSet(_engineState, MAIN_ENGINE_FLAG_SHOW_ATMOSPHERE))
+                {
+                    _engineState = FlagUtil::removeFlag(_engineState, MAIN_ENGINE_FLAG_SHOW_ATMOSPHERE);
+                }
+                else
+                {
+                    _engineState = FlagUtil::setFlag(_engineState, MAIN_ENGINE_FLAG_SHOW_ATMOSPHERE);
+                }
             }
             else if (inputState->getMenuState() == MENU_STATE_SERVER_TOGGLE_SERVER_DISPLAY)
             {
