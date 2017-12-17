@@ -549,6 +549,8 @@
 		BB0756E31FE63073008E0E08 /* DirectXFramebufferToScreenProgram.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DirectXFramebufferToScreenProgram.h; sourceTree = "<group>"; };
 		BB0756E41FE63796008E0E08 /* VertexProgramInput.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VertexProgramInput.h; sourceTree = "<group>"; };
 		BB0756E51FE63796008E0E08 /* VertexProgramInput.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = VertexProgramInput.cpp; sourceTree = "<group>"; };
+		BB0756E81FE64603008E0E08 /* DirectXDeviceResources.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DirectXDeviceResources.h; sourceTree = "<group>"; };
+		BB0756E91FE64603008E0E08 /* DirectXDeviceResources.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = DirectXDeviceResources.cpp; sourceTree = "<group>"; };
 		BB07A50E1FC5F0BA00AE5051 /* LinuxAudioEngineHelper.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = LinuxAudioEngineHelper.cpp; sourceTree = "<group>"; };
 		BB07A50F1FC5F0BA00AE5051 /* LinuxAudioEngineHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LinuxAudioEngineHelper.h; sourceTree = "<group>"; };
 		BB07A5101FC5F11D00AE5051 /* LinuxSound.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LinuxSound.h; sourceTree = "<group>"; };
@@ -1620,8 +1622,6 @@
 		BBFA49DC1FC367AF00233514 /* GlfwMain.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = GlfwMain.cpp; sourceTree = "<group>"; };
 		BBFA49DE1FC367AF00233514 /* DirectXMain.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = DirectXMain.cpp; sourceTree = "<group>"; };
 		BBFA49DF1FC367AF00233514 /* DirectXMain.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DirectXMain.h; sourceTree = "<group>"; };
-		BBFA49E01FC367FB00233514 /* DirectXDeviceResources.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = DirectXDeviceResources.cpp; sourceTree = "<group>"; };
-		BBFA49E11FC367FB00233514 /* DirectXDeviceResources.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DirectXDeviceResources.h; sourceTree = "<group>"; };
 		BBFA49E31FC3702D00233514 /* Engine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Engine.h; sourceTree = "<group>"; };
 		BBFA49E41FC3702D00233514 /* Engine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Engine.cpp; sourceTree = "<group>"; };
 		BBFC2A761FC49E6700A970B4 /* NullSound.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = NullSound.cpp; sourceTree = "<group>"; };
@@ -2182,8 +2182,6 @@
 		BB58338A1EEDD6470084DA20 /* directx */ = {
 			isa = PBXGroup;
 			children = (
-				BBFA49E01FC367FB00233514 /* DirectXDeviceResources.cpp */,
-				BBFA49E11FC367FB00233514 /* DirectXDeviceResources.h */,
 				BB0756E21FE63072008E0E08 /* DirectXFramebufferToScreenProgram.cpp */,
 				BB0756E31FE63073008E0E08 /* DirectXFramebufferToScreenProgram.h */,
 				BB5833911EEDD6470084DA20 /* DirectXGeometryProgram.cpp */,
@@ -3557,6 +3555,8 @@
 		BBFA49DD1FC367AF00233514 /* directx */ = {
 			isa = PBXGroup;
 			children = (
+				BB0756E91FE64603008E0E08 /* DirectXDeviceResources.cpp */,
+				BB0756E81FE64603008E0E08 /* DirectXDeviceResources.h */,
 				BBFA49DE1FC367AF00233514 /* DirectXMain.cpp */,
 				BBFA49DF1FC367AF00233514 /* DirectXMain.h */,
 				BB07A78E1FC61AD700AE5051 /* StepTimer.h */,
