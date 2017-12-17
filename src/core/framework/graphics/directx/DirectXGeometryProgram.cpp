@@ -40,8 +40,8 @@ void DirectXGeometryProgram::bind(void* data)
     _d3dContext->Map(_rendererHelper->getGbVertexBuffer().Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
     
     //	Update the vertex buffer here.
-    int numVertices = _rendererHelper->getColorVertices().size();
-    memcpy(mappedResource.pData, &_rendererHelper->getColorVertices().front(), sizeof(COLOR_VERTEX) * numVertices);
+    std::vector<COLOR_VERTEX>& vertices = _rendererHelper->getColorVertices();
+    memcpy(mappedResource.pData, &vertices.front(), sizeof(COLOR_VERTEX) * vertices.size());
     
     //	Reenable GPU access to the vertex buffer data.
     _d3dContext->Unmap(_rendererHelper->getGbVertexBuffer().Get(), 0);
