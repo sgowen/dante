@@ -32,6 +32,10 @@ public:
     
     virtual void unbind();
     
+    virtual void useNormalBlending();
+    
+    virtual void useScreenBlending();
+    
     GLuint getProgramObjectId();
     
 protected:

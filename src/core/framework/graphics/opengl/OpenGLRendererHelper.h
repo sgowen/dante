@@ -43,10 +43,6 @@ public:
     
     virtual void destroyTexture(GpuTextureWrapper& textureWrapper);
     
-    virtual void useNormalBlending();
-    
-    virtual void useScreenBlending();
-    
     virtual void draw(NGPrimitiveType renderPrimitiveType, uint32_t first, uint32_t count);
     
     virtual void drawIndexed(NGPrimitiveType renderPrimitiveType, uint32_t count);

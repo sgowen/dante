@@ -27,7 +27,7 @@ void OpenGLTextureProgram::bind(void* data)
     
     OpenGLProgram::bind(data);
     
-    _rendererHelper->useNormalBlending();
+    useNormalBlending();
     
     glUniformMatrix4fv(u_mvp_matrix_location, 1, GL_FALSE, (GLfloat*)_rendererHelper->getViewProjectionMatrix());
     

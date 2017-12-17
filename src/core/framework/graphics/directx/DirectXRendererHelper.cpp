@@ -164,16 +164,6 @@ void DirectXRendererHelper::destroyTexture(GpuTextureWrapper& textureWrapper)
     }
 }
 
-void DirectXRendererHelper::useNormalBlending()
-{
-    s_d3dContext->OMSetBlendState(_blendState.Get(), 0, 0xffffffff);
-}
-
-void DirectXRendererHelper::useScreenBlending()
-{
-    s_d3dContext->OMSetBlendState(_screenBlendState.Get(), 0, 0xffffffff);
-}
-
 void DirectXRendererHelper::draw(NGPrimitiveType renderPrimitiveType, uint32_t first, uint32_t count)
 {
     s_d3dContext->IASetPrimitiveTopology(static_cast<D3D11_PRIMITIVE_TOPOLOGY>(renderPrimitiveType));

@@ -26,7 +26,7 @@ void DirectXGeometryProgram::bind(void* data)
 {
     DirectXProgram::bind(data);
     
-    _rendererHelper->useNormalBlending();
+    useNormalBlending();
     
     _d3dContext->VSSetConstantBuffers(0, 1, _rendererHelper->getMatrixConstantbuffer().GetAddressOf());
     

@@ -73,6 +73,18 @@ void OpenGLProgram::unbind()
     glUseProgram(0);
 }
 
+void OpenGLProgram::useNormalBlending()
+{
+    glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ZERO);
+    glBlendEquationSeparate(GL_FUNC_ADD, GL_FUNC_ADD);
+}
+
+void OpenGLProgram::useScreenBlending()
+{
+    glBlendFuncSeparate(GL_ONE, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
+    glBlendEquationSeparate(GL_FUNC_ADD, GL_FUNC_ADD);
+}
+
 GLuint OpenGLProgram::getProgramObjectId()
 {
     return _programObjectId;

@@ -21,6 +21,10 @@ public:
     virtual void bind(void* data = NULL) = 0;
     
     virtual void unbind() = 0;
+    
+    virtual void useNormalBlending() = 0;
+    
+    virtual void useScreenBlending() = 0;
 };
 
 #endif /* defined(__noctisgames__GpuProgram__) */

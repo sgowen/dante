@@ -31,7 +31,7 @@ void DirectXFramebufferToScreenProgram::bind(void* data)
     
     DirectXProgram::bind(data);
     
-    _rendererHelper->useScreenBlending();
+    useScreenBlending();
     
     D3D11_MAPPED_SUBRESOURCE mappedResource;
     ZeroMemory(&mappedResource, sizeof(D3D11_MAPPED_SUBRESOURCE));

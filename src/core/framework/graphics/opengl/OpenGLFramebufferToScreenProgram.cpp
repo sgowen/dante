@@ -24,7 +24,7 @@ void OpenGLFramebufferToScreenProgram::bind(void* data)
     
     OpenGLProgram::bind(data);
 
-    _rendererHelper->useScreenBlending();
+    useScreenBlending();
     
     // tell the GPU which texture to use
     _rendererHelper->bindTexture(NGTextureSlot_ZERO, static_cast<TextureWrapper*>(data), u_texture_unit_location);

@@ -153,18 +153,6 @@ void OpenGLRendererHelper::destroyTexture(GpuTextureWrapper& textureWrapper)
     glDeleteTextures(1, &textureWrapper.texture);
 }
 
-void OpenGLRendererHelper::useNormalBlending()
-{
-    glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ZERO);
-    glBlendEquationSeparate(GL_FUNC_ADD, GL_FUNC_ADD);
-}
-
-void OpenGLRendererHelper::useScreenBlending()
-{
-    glBlendFuncSeparate(GL_ONE, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
-    glBlendEquationSeparate(GL_FUNC_ADD, GL_FUNC_ADD);
-}
-
 void OpenGLRendererHelper::draw(NGPrimitiveType renderPrimitiveType, uint32_t first, uint32_t count)
 {
     glDrawArrays(renderPrimitiveType, first, count);

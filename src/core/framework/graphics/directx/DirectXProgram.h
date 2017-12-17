@@ -26,6 +26,10 @@ public:
     
     virtual void unbind();
     
+    virtual void useNormalBlending();
+    
+    virtual void useScreenBlending();
+    
 protected:
 	DirectXRendererHelper* _rendererHelper;
     ID3D11Device* _d3dDevice;
