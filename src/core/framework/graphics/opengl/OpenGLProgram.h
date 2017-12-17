@@ -11,6 +11,8 @@
 
 #include "framework/graphics/portable/NGGraphics.h"
 
+#include <framework/graphics/portable/VertexProgramInput.h>
+
 #include <vector>
 
 #define BUFFER_OFFSET(i) ((void*)(i))
@@ -34,7 +36,9 @@ protected:
     OpenGLRendererHelper* _rendererHelper;
     GLuint _programObjectId;
     
-    void mapBuffer(GLuint& vbo, std::vector<GLfloat>& vertices);
+    void mapBuffer(GLuint& vbo, std::vector<COLOR_VERTEX>& vertices);
+    
+    void mapBuffer(GLuint& vbo, std::vector<TEXTURE_VERTEX>& vertices);
     
     void unmapBuffer(GLuint& vbo);
     

@@ -11,8 +11,6 @@
 
 #include "framework/graphics/portable/RendererHelper.h"
 
-#include <framework/graphics/directx/DirectXProgramInput.h>
-
 class DirectXRendererHelper : public RendererHelper
 {
 public:
@@ -48,14 +46,6 @@ public:
     
     virtual void destroyTexture(GpuTextureWrapper& textureWrapper);
     
-    virtual void clearColorVertices();
-    
-    virtual void clearTextureVertices();
-    
-    virtual void addVertexCoordinate(float x, float y, float z, float r, float g, float b, float a, float u, float v);
-    
-    virtual void addVertexCoordinate(float x, float y, float z, float r, float g, float b, float a);
-    
     virtual void useNormalBlending();
     
     virtual void useScreenBlending();
@@ -73,9 +63,7 @@ public:
     Microsoft::WRL::ComPtr<ID3D11SamplerState>& getSbSamplerState();
     Microsoft::WRL::ComPtr<ID3D11SamplerState>& getSbWrapSamplerState();
     Microsoft::WRL::ComPtr<ID3D11Buffer>& getSbVertexBuffer();
-    std::vector<TEXTURE_VERTEX>& getTextureVertices();
     Microsoft::WRL::ComPtr<ID3D11Buffer>& getGbVertexBuffer();
-    std::vector<COLOR_VERTEX>& getColorVertices();
     DirectX::XMFLOAT4X4& getMatFinal();
     
 protected:
@@ -91,6 +79,7 @@ private:
     std::vector<ID3D11Texture2D*> _offscreenRenderTargets; // the offscreen render target texture
     std::vector<ID3D11RenderTargetView*> _offscreenRenderTargetViews; // the offscreen render target interface
     std::vector<ID3D11ShaderResourceView*> _offscreenShaderResourceViews; // this is needed for the screen pixel shader
+    
     Microsoft::WRL::ComPtr<ID3D11BlendState> _blendState; // the blend state interface
     Microsoft::WRL::ComPtr<ID3D11BlendState> _screenBlendState; // the blend state interface, but for rendering to the screen
     Microsoft::WRL::ComPtr<ID3D11Buffer> _matrixConstantbuffer; // the matrix constant buffer interface
@@ -100,11 +89,9 @@ private:
     Microsoft::WRL::ComPtr<ID3D11SamplerState> _sbSamplerState;
     Microsoft::WRL::ComPtr<ID3D11SamplerState> _sbWrapSamplerState;
     Microsoft::WRL::ComPtr<ID3D11Buffer> _sbVertexBuffer;
-    std::vector<TEXTURE_VERTEX> _textureVertices;
     
     // Used in NGRectBatcher, LineBatcher, and CircleBatcher (Geometry)
     Microsoft::WRL::ComPtr<ID3D11Buffer> _gbVertexBuffer; // the vertex buffer interface
-    std::vector<COLOR_VERTEX> _colorVertices;
     
     // All above rendering takes place inside this matrix
     DirectX::XMFLOAT4X4 _matFinal;

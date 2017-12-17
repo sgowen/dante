@@ -1,5 +1,5 @@
 //
-//  DirectXProgramInput.cpp
+//  VertexProgramInput.cpp
 //  noctisgames-framework
 //
 //  Created by Stephen Gowen on 11/16/14.
@@ -8,4 +8,4 @@
 
 #include "pch.h"
 
-#include "framework/graphics/directx/DirectXProgramInput.h"
+#include "framework/graphics/portable/VertexProgramInput.h"

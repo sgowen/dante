@@ -78,11 +78,18 @@ GLuint OpenGLProgram::getProgramObjectId()
     return _programObjectId;
 }
 
-void OpenGLProgram::mapBuffer(GLuint& vbo, std::vector<GLfloat>& vertices)
+void OpenGLProgram::mapBuffer(GLuint& vbo, std::vector<COLOR_VERTEX>& vertices)
 {
     glGenBuffers(1, &vbo);
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * vertices.size(), &vertices[0], GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(COLOR_VERTEX) * vertices.size(), &vertices[0], GL_STATIC_DRAW);
+}
+
+void OpenGLProgram::mapBuffer(GLuint& vbo, std::vector<TEXTURE_VERTEX>& vertices)
+{
+    glGenBuffers(1, &vbo);
+    glBindBuffer(GL_ARRAY_BUFFER, vbo);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(TEXTURE_VERTEX) * vertices.size(), &vertices[0], GL_STATIC_DRAW);
 }
 
 void OpenGLProgram::unmapBuffer(GLuint& vbo)

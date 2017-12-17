@@ -43,14 +43,6 @@ public:
     
     virtual void destroyTexture(GpuTextureWrapper& textureWrapper);
     
-    virtual void clearColorVertices();
-    
-    virtual void clearTextureVertices();
-    
-    virtual void addVertexCoordinate(float x, float y, float z, float r, float g, float b, float a, float u, float v);
-    
-    virtual void addVertexCoordinate(float x, float y, float z, float r, float g, float b, float a);
-    
     virtual void useNormalBlending();
     
     virtual void useScreenBlending();
@@ -61,8 +53,6 @@ public:
     
     virtual void bindTexture(NGTextureSlot textureSlot, TextureWrapper* textureWrapper);
     
-    std::vector<GLfloat>& getTextureVertices();
-    std::vector<GLfloat>& getColorVertices();
     GLuint& getSbVboObject(); // For Sprite Batcher
     GLuint& getGbVboObject(); // For Geometry Batcher
     mat4x4& getViewProjectionMatrix();
@@ -74,9 +64,6 @@ protected:
 private:
     std::vector<GLuint> _fbos;
     std::vector<GLuint> _fbo_textures;
-    
-    std::vector<GLfloat> _textureVertices;
-    std::vector<GLfloat> _colorVertices;
     
     GLuint _sbVboObject; // For Sprite Batcher
     GLuint _gbVboObject; // For Geometry Batcher

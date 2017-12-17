@@ -17,6 +17,8 @@
 		BB052CD11EBA8ADD007FA789 /* shader_003_vert.ngs in Resources */ = {isa = PBXBuildFile; fileRef = BB052CC51EBA8ADD007FA789 /* shader_003_vert.ngs */; };
 		BB0756E01FE6107F008E0E08 /* RendererHelperFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB0756DE1FE6107F008E0E08 /* RendererHelperFactory.cpp */; };
 		BB0756E11FE6107F008E0E08 /* RendererHelperFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB0756DE1FE6107F008E0E08 /* RendererHelperFactory.cpp */; };
+		BB0756E61FE63796008E0E08 /* VertexProgramInput.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB0756E51FE63796008E0E08 /* VertexProgramInput.cpp */; };
+		BB0756E71FE63796008E0E08 /* VertexProgramInput.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB0756E51FE63796008E0E08 /* VertexProgramInput.cpp */; };
 		BB07A78D1FC60FD900AE5051 /* vulkan.c in Sources */ = {isa = PBXBuildFile; fileRef = BB07A78C1FC60FD900AE5051 /* vulkan.c */; };
 		BB0864751EE20CCA00BCD9E0 /* EntityRegistry.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB0864721EE20CCA00BCD9E0 /* EntityRegistry.cpp */; };
 		BB125E101EFAF61F00917328 /* texture_003.ngt in Resources */ = {isa = PBXBuildFile; fileRef = BB125E0D1EFAF61F00917328 /* texture_003.ngt */; };
@@ -555,6 +557,8 @@
 		BB0756DF1FE6107F008E0E08 /* RendererHelperFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RendererHelperFactory.h; sourceTree = "<group>"; };
 		BB0756E21FE63072008E0E08 /* DirectXFramebufferToScreenProgram.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = DirectXFramebufferToScreenProgram.cpp; sourceTree = "<group>"; };
 		BB0756E31FE63073008E0E08 /* DirectXFramebufferToScreenProgram.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DirectXFramebufferToScreenProgram.h; sourceTree = "<group>"; };
+		BB0756E41FE63796008E0E08 /* VertexProgramInput.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VertexProgramInput.h; sourceTree = "<group>"; };
+		BB0756E51FE63796008E0E08 /* VertexProgramInput.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = VertexProgramInput.cpp; sourceTree = "<group>"; };
 		BB07A50E1FC5F0BA00AE5051 /* LinuxAudioEngineHelper.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = LinuxAudioEngineHelper.cpp; sourceTree = "<group>"; };
 		BB07A50F1FC5F0BA00AE5051 /* LinuxAudioEngineHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LinuxAudioEngineHelper.h; sourceTree = "<group>"; };
 		BB07A5101FC5F11D00AE5051 /* LinuxSound.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LinuxSound.h; sourceTree = "<group>"; };
@@ -826,8 +830,6 @@
 		BB5833921EEDD6470084DA20 /* DirectXGeometryProgram.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DirectXGeometryProgram.h; sourceTree = "<group>"; };
 		BB58339B1EEDD6470084DA20 /* DirectXProgram.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = DirectXProgram.cpp; sourceTree = "<group>"; };
 		BB58339C1EEDD6470084DA20 /* DirectXProgram.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DirectXProgram.h; sourceTree = "<group>"; };
-		BB58339D1EEDD6470084DA20 /* DirectXProgramInput.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = DirectXProgramInput.cpp; sourceTree = "<group>"; };
-		BB58339E1EEDD6470084DA20 /* DirectXProgramInput.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DirectXProgramInput.h; sourceTree = "<group>"; };
 		BB58339F1EEDD6470084DA20 /* DirectXRendererHelper.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = DirectXRendererHelper.cpp; sourceTree = "<group>"; };
 		BB5833A01EEDD6470084DA20 /* DirectXRendererHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DirectXRendererHelper.h; sourceTree = "<group>"; };
 		BB5833A31EEDD6470084DA20 /* DirectXTextureGpuProgramWrapper.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = DirectXTextureGpuProgramWrapper.cpp; sourceTree = "<group>"; };
@@ -2218,8 +2220,6 @@
 				BB5833921EEDD6470084DA20 /* DirectXGeometryProgram.h */,
 				BB58339B1EEDD6470084DA20 /* DirectXProgram.cpp */,
 				BB58339C1EEDD6470084DA20 /* DirectXProgram.h */,
-				BB58339D1EEDD6470084DA20 /* DirectXProgramInput.cpp */,
-				BB58339E1EEDD6470084DA20 /* DirectXProgramInput.h */,
 				BB58339F1EEDD6470084DA20 /* DirectXRendererHelper.cpp */,
 				BB5833A01EEDD6470084DA20 /* DirectXRendererHelper.h */,
 				BB5833A31EEDD6470084DA20 /* DirectXTextureGpuProgramWrapper.cpp */,
@@ -2761,6 +2761,8 @@
 				BBAEF1561EA94ED900F0866E /* TextureWrapper.h */,
 				BBAEF1571EA94ED900F0866E /* TransitionGpuProgramWrapper.cpp */,
 				BBAEF1581EA94ED900F0866E /* TransitionGpuProgramWrapper.h */,
+				BB0756E51FE63796008E0E08 /* VertexProgramInput.cpp */,
+				BB0756E41FE63796008E0E08 /* VertexProgramInput.h */,
 			);
 			path = portable;
 			sourceTree = "<group>";
@@ -3919,6 +3921,7 @@
 				BBAEF2681EA94EDA00F0866E /* LineBatcher.cpp in Sources */,
 				BB31B5B11FC205D5005F1C0A /* KeyboardInputManager.cpp in Sources */,
 				BBB1D3AE1FC8CB9800B74BAC /* NGExtension.cpp in Sources */,
+				BB0756E61FE63796008E0E08 /* VertexProgramInput.cpp in Sources */,
 				BB31B5AD1FC205D5005F1C0A /* CursorConverter.cpp in Sources */,
 				BB8308801EC2AD1F00435E7E /* UDPSocket.cpp in Sources */,
 				BBD554641FDB2EA800E00AD6 /* b2CollideEdge.cpp in Sources */,
@@ -4189,6 +4192,7 @@
 				BB5AFE231FB35A0B005FBD52 /* AudioEngineHelper.cpp in Sources */,
 				BB27D2681FC6572600ED42FD /* AppleSoundWrapper.cpp in Sources */,
 				BB5AFE241FB35A0B005FBD52 /* Sound.cpp in Sources */,
+				BB0756E71FE63796008E0E08 /* VertexProgramInput.cpp in Sources */,
 				BB5AFE251FB35A0B005FBD52 /* SoundWrapper.cpp in Sources */,
 				BB5AFE261FB35A0B005FBD52 /* NGAudioEngine.cpp in Sources */,
 				BB27D26E1FC6572600ED42FD /* AppleSound.cpp in Sources */,

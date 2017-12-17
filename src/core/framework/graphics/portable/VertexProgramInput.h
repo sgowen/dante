@@ -1,13 +1,13 @@
 //
-//  DirectXProgramInput.h
+//  VertexProgramInput.h
 //  noctisgames-framework
 //
 //  Created by Stephen Gowen on 11/16/14.
 //  Copyright (c) 2017 Noctis Games. All rights reserved.
 //
 
-#ifndef __noctisgames__DirectXProgramInput__
-#define __noctisgames__DirectXProgramInput__
+#ifndef __noctisgames__VertexProgramInput__
+#define __noctisgames__VertexProgramInput__
 
 struct COLOR_VERTEX
 {
@@ -22,4 +22,4 @@ struct TEXTURE_VERTEX
 	float U, V;    // texture coordinates
 };
 
-#endif /* defined(__noctisgames__DirectXProgramInput__) */
+#endif /* defined(__noctisgames__VertexProgramInput__) */

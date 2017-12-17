@@ -11,6 +11,7 @@
 
 #include <framework/graphics/portable/NGPrimitiveType.h>
 #include <framework/graphics/portable/NGTextureSlot.h>
+#include <framework/graphics/portable/VertexProgramInput.h>
 
 #include <vector>
 
@@ -46,14 +47,6 @@ public:
     
     virtual void destroyTexture(GpuTextureWrapper& textureWrapper) = 0;
     
-    virtual void clearColorVertices() = 0;
-    
-    virtual void clearTextureVertices() = 0;
-    
-    virtual void addVertexCoordinate(float x, float y, float z, float r, float g, float b, float a, float u, float v) = 0;
-    
-    virtual void addVertexCoordinate(float x, float y, float z, float r, float g, float b, float a) = 0;
-    
     virtual void useNormalBlending() = 0;
     
     virtual void useScreenBlending() = 0;
@@ -64,10 +57,23 @@ public:
     
     virtual void bindTexture(NGTextureSlot textureSlot, TextureWrapper* textureWrapper) = 0;
     
+    void clearColorVertices();
+    
+    void clearTextureVertices();
+    
+    void addVertexCoordinate(float x, float y, float z, float r, float g, float b, float a, float u, float v);
+    
+    void addVertexCoordinate(float x, float y, float z, float r, float g, float b, float a);
+    
+    std::vector<TEXTURE_VERTEX>& getTextureVertices();
+    std::vector<COLOR_VERTEX>& getColorVertices();
+    
 protected:
     TextureWrapper* _framebuffer;
     
     std::vector<GpuTextureWrapper *> _framebuffers;
+    std::vector<TEXTURE_VERTEX> _textureVertices;
+    std::vector<COLOR_VERTEX> _colorVertices;
     std::vector<uint16_t> _indices;
     
     int _screenWidth;

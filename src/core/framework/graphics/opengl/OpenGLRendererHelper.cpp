@@ -64,6 +64,9 @@ void OpenGLRendererHelper::releaseDeviceDependentResources()
     
     glDeleteBuffers(1, &_sbVboObject);
     glDeleteBuffers(1, &_gbVboObject);
+    
+    _textureVertices.clear();
+    _colorVertices.clear();
 }
 
 void OpenGLRendererHelper::beginFrame()
@@ -150,40 +153,6 @@ void OpenGLRendererHelper::destroyTexture(GpuTextureWrapper& textureWrapper)
     glDeleteTextures(1, &textureWrapper.texture);
 }
 
-void OpenGLRendererHelper::clearColorVertices()
-{
-    _colorVertices.clear();
-}
-
-void OpenGLRendererHelper::clearTextureVertices()
-{
-    _textureVertices.clear();
-}
-
-void OpenGLRendererHelper::addVertexCoordinate(float x, float y, float z, float r, float g, float b, float a, float u, float v)
-{
-    _textureVertices.push_back(x);
-    _textureVertices.push_back(y);
-    _textureVertices.push_back(z);
-    _textureVertices.push_back(r);
-    _textureVertices.push_back(g);
-    _textureVertices.push_back(b);
-    _textureVertices.push_back(a);
-    _textureVertices.push_back(u);
-    _textureVertices.push_back(v);
-}
-
-void OpenGLRendererHelper::addVertexCoordinate(float x, float y, float z, float r, float g, float b, float a)
-{
-    _colorVertices.push_back(x);
-    _colorVertices.push_back(y);
-    _colorVertices.push_back(z);
-    _colorVertices.push_back(r);
-    _colorVertices.push_back(g);
-    _colorVertices.push_back(b);
-    _colorVertices.push_back(a);
-}
-
 void OpenGLRendererHelper::useNormalBlending()
 {
     glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ZERO);
@@ -210,16 +179,6 @@ void OpenGLRendererHelper::bindTexture(NGTextureSlot textureSlot, TextureWrapper
 {
     glActiveTexture(textureSlot);
     glBindTexture(GL_TEXTURE_2D, textureWrapper == NULL ? 0 : textureWrapper->gpuTextureWrapper->texture);
-}
-
-std::vector<GLfloat>& OpenGLRendererHelper::getTextureVertices()
-{
-    return _textureVertices;
-}
-
-std::vector<GLfloat>& OpenGLRendererHelper::getColorVertices()
-{
-    return _colorVertices;
 }
 
 GLuint& OpenGLRendererHelper::getSbVboObject()

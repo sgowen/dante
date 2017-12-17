@@ -85,10 +85,13 @@ void DirectXRendererHelper::releaseDeviceDependentResources()
     _screenBlendState.Reset();
     _matrixConstantbuffer.Reset();
     _indexbuffer.Reset();
+    
     _sbSamplerState.Reset();
+    _sbWrapSamplerState.Reset();
     _sbVertexBuffer.Reset();
-    _textureVertices.clear();
     _gbVertexBuffer.Reset();
+    
+    _textureVertices.clear();
     _colorVertices.clear();
 }
 
@@ -157,28 +160,6 @@ void DirectXRendererHelper::destroyTexture(GpuTextureWrapper& textureWrapper)
     {
         textureWrapper.texture->Release();
     }
-}
-
-void DirectXRendererHelper::clearColorVertices()
-{
-	_colorVertices.clear();
-}
-
-void DirectXRendererHelper::clearTextureVertices()
-{
-	_textureVertices.clear();
-}
-
-void DirectXRendererHelper::addVertexCoordinate(float x, float y, float z, float r, float g, float b, float a, float u, float v)
-{
-	TEXTURE_VERTEX tv = { x, y, z, r, g, b, a, u, v };
-	_textureVertices.push_back(tv);
-}
-
-void DirectXRendererHelper::addVertexCoordinate(float x, float y, float z, float r, float g, float b, float a)
-{
-	COLOR_VERTEX cv = { x, y, z, r, g, b, a };
-	_colorVertices.push_back(cv);
 }
 
 void DirectXRendererHelper::useNormalBlending()
@@ -254,19 +235,9 @@ Microsoft::WRL::ComPtr<ID3D11Buffer>& DirectXRendererHelper::getSbVertexBuffer()
     return _sbVertexBuffer;
 }
 
-std::vector<TEXTURE_VERTEX>& DirectXRendererHelper::getTextureVertices()
-{
-    return _textureVertices;
-}
-
 Microsoft::WRL::ComPtr<ID3D11Buffer>& DirectXRendererHelper::getGbVertexBuffer()
 {
     return _gbVertexBuffer;
-}
-
-std::vector<COLOR_VERTEX>& DirectXRendererHelper::getColorVertices()
-{
-    return _colorVertices;
 }
 
 DirectX::XMFLOAT4X4& DirectXRendererHelper::getMatFinal()
@@ -430,7 +401,6 @@ void DirectXRendererHelper::createSamplerStates()
 
 void DirectXRendererHelper::createVertexBufferForSpriteBatcher()
 {
-    _textureVertices.reserve(MAX_BATCH_SIZE * VERTICES_PER_RECTANGLE);
     TEXTURE_VERTEX tv = { 0, 0, 0, 0, 0, 0, 0, 0, 0 };
     for (int i = 0; i < MAX_BATCH_SIZE * VERTICES_PER_RECTANGLE; ++i)
     {
@@ -455,7 +425,6 @@ void DirectXRendererHelper::createVertexBufferForSpriteBatcher()
 
 void DirectXRendererHelper::createVertexBufferForGeometryBatchers()
 {
-    _colorVertices.reserve(MAX_BATCH_SIZE * VERTICES_PER_RECTANGLE);
     COLOR_VERTEX cv = { 0, 0, 0, 0, 0, 0, 0 };
     for (int i = 0; i < MAX_BATCH_SIZE * VERTICES_PER_RECTANGLE; ++i)
     {
