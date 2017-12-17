@@ -18,7 +18,7 @@ class DirectXRendererHelper;
 class DirectXProgram : public GpuProgram
 {
 public:
-    DirectXProgram(DirectXRendererHelper* inRendererHelper, const char* vertexShaderName, const char* fragmentShaderName, const D3D11_INPUT_ELEMENT_DESC *inputElementDescs);
+    DirectXProgram(DirectXRendererHelper* inRendererHelper, const char* vertexShaderName, const char* fragmentShaderName, const D3D11_INPUT_ELEMENT_DESC* inputElementDescs, UINT numElements);
     
     virtual ~DirectXProgram();
     

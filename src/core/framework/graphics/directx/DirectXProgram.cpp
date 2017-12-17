@@ -17,7 +17,7 @@
 
 #include "PlatformHelpers.h"
 
-DirectXProgram::DirectXProgram(DirectXRendererHelper* inRendererHelper, const char* vertexShaderName, const char* fragmentShaderName, const D3D11_INPUT_ELEMENT_DESC *inputElementDescs) : _rendererHelper(inRendererHelper)
+DirectXProgram::DirectXProgram(DirectXRendererHelper* inRendererHelper, const char* vertexShaderName, const char* fragmentShaderName, const D3D11_INPUT_ELEMENT_DESC* inputElementDescs, UINT numElements) : _rendererHelper(inRendererHelper)
 {
     std::string s1("data\\shaders\\");
 	s1 += std::string(vertexShaderName);
@@ -42,23 +42,10 @@ DirectXProgram::DirectXProgram(DirectXRendererHelper* inRendererHelper, const ch
 		)
 	);
 
-    static const D3D11_INPUT_ELEMENT_DESC geometryVertexDesc[] =
-    {
-        { "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-        { "COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 }
-    };
-    
-	static const D3D11_INPUT_ELEMENT_DESC textureVertexDesc[] =
-	{
-		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-		{ "COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-		{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 28, D3D11_INPUT_PER_VERTEX_DATA, 0 }
-	};
-
 	DirectX::ThrowIfFailed(
 		d3dDevice->CreateInputLayout(
             inputElementDescs,
-			ARRAYSIZE(*inputElementDescs),
+			numElements,
 			vertex_shader_source_output,
 			vertex_shader_source.data_length,
 			&_inputLayout
