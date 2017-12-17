@@ -11,7 +11,7 @@
 
 #include "pch.h"
 
-class RendererHelper;
+class DirectXRendererHelper;
 
 class DirectXProgram
 {
@@ -29,7 +29,7 @@ public:
 	void createConstantBuffer(_COM_Outptr_opt_  ID3D11Buffer **ppBuffer);
     
 protected:
-    RendererHelper* _rendererHelper;
+	DirectXRendererHelper* _rendererHelper;
     
 private:
     Microsoft::WRL::ComPtr<ID3D11VertexShader> _vertexShader;

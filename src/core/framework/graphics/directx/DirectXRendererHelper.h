@@ -11,6 +11,8 @@
 
 #include "framework/graphics/portable/RendererHelper.h"
 
+#include <framework/graphics/directx/DirectXProgramInput.h>
+
 class DirectXRendererHelper : public RendererHelper
 {
 public:

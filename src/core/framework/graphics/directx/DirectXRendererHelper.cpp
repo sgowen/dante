@@ -15,6 +15,8 @@
 #include "framework/graphics/directx/DirectXRendererHelper.h"
 
 #include "framework/util/NGSTDUtil.h"
+#include "PlatformHelpers.h"
+#include <framework/util/FrameworkConstants.h>
 
 #include <assert.h>
 
@@ -24,7 +26,7 @@ ID3D11Device* DirectXRendererHelper::s_d3dDevice = NULL;
 ID3D11DeviceContext* DirectXRendererHelper::s_d3dContext = NULL;
 ID3D11RenderTargetView* DirectXRendererHelper::s_d3dRenderTargetView = NULL;
 
-void DirectXRendererHelper::init(ID3D11Device* d3dDevice, ID3D11DeviceContext* d3dContext, ID3D11RenderTargetView* d3dRenderTargetView, XMFLOAT4X4 orientation)
+void DirectXRendererHelper::init(ID3D11Device* d3dDevice, ID3D11DeviceContext* d3dContext, ID3D11RenderTargetView* d3dRenderTargetView)
 {
     s_d3dDevice = d3dDevice;
     s_d3dContext = d3dContext;
@@ -59,9 +61,9 @@ void DirectXRendererHelper::createDeviceDependentResources()
     
     createBlendStates();
     createSamplerStates();
-    createVertexBufferForSpriteBatcher(maxBatchSize);
-    createVertexBufferForGeometryBatchers(maxBatchSize);
-    createIndexBuffer(maxBatchSize);
+    createVertexBufferForSpriteBatcher();
+    createVertexBufferForGeometryBatchers();
+    createIndexBuffer();
     createConstantBuffer();
 }
 
@@ -102,7 +104,7 @@ void DirectXRendererHelper::endFrame()
 
 TextureWrapper* DirectXRendererHelper::getFramebuffer(int index)
 {
-    _framebuffer->gpuTextureWrapper = _rendererHelper->getFramebuffers().at(index);
+    _framebuffer->gpuTextureWrapper = _framebuffers[index];
     
     return _framebuffer;
 }
@@ -118,7 +120,7 @@ void DirectXRendererHelper::updateMatrix(float left, float right, float bottom, 
 
 void DirectXRendererHelper::bindToOffscreenFramebuffer(int index)
 {
-    s_d3dContext->OMSetRenderTargets(1, &_rendererHelper->getOffscreenRenderTargetViews().at(index), NULL);
+    s_d3dContext->OMSetRenderTargets(1, &_offscreenRenderTargetViews[index], NULL);
     
 	_framebufferIndex = index;
     _isBoundToScreen = false;
@@ -135,7 +137,7 @@ void DirectXRendererHelper::clearFramebufferWithColor(float r, float g, float b,
     }
     else
     {
-        targets[0] = _rendererHelper->getOffscreenRenderTargetViews().at(_framebufferIndex);
+        targets[0] = _offscreenRenderTargetViews[_framebufferIndex];
     }
     
 	s_d3dContext->ClearRenderTargetView(targets[0], color);
@@ -159,34 +161,34 @@ void DirectXRendererHelper::destroyTexture(GpuTextureWrapper& textureWrapper)
 
 void DirectXRendererHelper::clearColorVertices()
 {
-    COLOR_VERTEX cv = { x, y, z, r, g, b, a };
-    _colorVertices.push_back(cv);
+	_colorVertices.clear();
 }
 
 void DirectXRendererHelper::clearTextureVertices()
 {
-    TEXTURE_VERTEX tv = { x, y, z, r, g, b, a, u, v };
-    _textureVertices.push_back(tv);
+	_textureVertices.clear();
 }
 
 void DirectXRendererHelper::addVertexCoordinate(float x, float y, float z, float r, float g, float b, float a, float u, float v)
 {
-    _rendererHelper->addVertexCoordinate(x, y, z, r, g, b, a, u, v);
+	TEXTURE_VERTEX tv = { x, y, z, r, g, b, a, u, v };
+	_textureVertices.push_back(tv);
 }
 
 void DirectXRendererHelper::addVertexCoordinate(float x, float y, float z, float r, float g, float b, float a)
 {
-    _rendererHelper->addVertexCoordinate(x, y, z, r, g, b, a);
+	COLOR_VERTEX cv = { x, y, z, r, g, b, a };
+	_colorVertices.push_back(cv);
 }
 
 void DirectXRendererHelper::useNormalBlending()
 {
-    s_d3dContext->OMSetBlendState(_rendererHelper->_blendState.Get(), 0, 0xffffffff);
+    s_d3dContext->OMSetBlendState(_blendState.Get(), 0, 0xffffffff);
 }
 
 void DirectXRendererHelper::useScreenBlending()
 {
-    s_d3dContext->OMSetBlendState(_rendererHelper->_screenBlendState.Get(), 0, 0xffffffff);
+    s_d3dContext->OMSetBlendState(_screenBlendState.Get(), 0, 0xffffffff);
 }
 
 void DirectXRendererHelper::draw(NGPrimitiveType renderPrimitiveType, uint32_t first, uint32_t count)
@@ -208,7 +210,7 @@ void DirectXRendererHelper::bindTexture(NGTextureSlot textureSlot, TextureWrappe
     if (textureWrapper)
     {
         s_d3dContext->PSSetShaderResources(0, 1, &textureWrapper->gpuTextureWrapper->texture);
-        s_d3dContext->PSSetSamplers(0, 1, textureWrapper->_repeatS ? _rendererHelper->getSbWrapSamplerState().GetAddressOf() : _rendererHelper->getSbSamplerState().GetAddressOf());
+        s_d3dContext->PSSetSamplers(0, 1, textureWrapper->_repeatS ? _sbWrapSamplerState.GetAddressOf() : _sbSamplerState.GetAddressOf());
     }
     else
     {
@@ -428,9 +430,9 @@ void DirectXRendererHelper::createSamplerStates()
 
 void DirectXRendererHelper::createVertexBufferForSpriteBatcher()
 {
-    _textureVertices.reserve(maxBatchSize * VERTICES_PER_RECTANGLE);
+    _textureVertices.reserve(MAX_BATCH_SIZE * VERTICES_PER_RECTANGLE);
     TEXTURE_VERTEX tv = { 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-    for (int i = 0; i < maxBatchSize * VERTICES_PER_RECTANGLE; ++i)
+    for (int i = 0; i < MAX_BATCH_SIZE * VERTICES_PER_RECTANGLE; ++i)
     {
         _textureVertices.push_back(tv);
     }
@@ -453,9 +455,9 @@ void DirectXRendererHelper::createVertexBufferForSpriteBatcher()
 
 void DirectXRendererHelper::createVertexBufferForGeometryBatchers()
 {
-    _colorVertices.reserve(maxBatchSize * VERTICES_PER_RECTANGLE);
+    _colorVertices.reserve(MAX_BATCH_SIZE * VERTICES_PER_RECTANGLE);
     COLOR_VERTEX cv = { 0, 0, 0, 0, 0, 0, 0 };
-    for (int i = 0; i < maxBatchSize * VERTICES_PER_RECTANGLE; ++i)
+    for (int i = 0; i < MAX_BATCH_SIZE * VERTICES_PER_RECTANGLE; ++i)
     {
         _colorVertices.push_back(cv);
     }
@@ -480,7 +482,7 @@ void DirectXRendererHelper::createIndexBuffer()
 {
     D3D11_BUFFER_DESC indexBufferDesc = { 0 };
     
-    indexBufferDesc.ByteWidth = sizeof(short) * maxBatchSize * INDICES_PER_RECTANGLE;
+    indexBufferDesc.ByteWidth = sizeof(short) * MAX_BATCH_SIZE * INDICES_PER_RECTANGLE;
     indexBufferDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
     indexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
     
@@ -501,4 +503,3 @@ void DirectXRendererHelper::createConstantBuffer()
     
     DirectX::ThrowIfFailed(s_d3dDevice->CreateBuffer(&bd, NULL, &_matrixConstantbuffer));
 }
-

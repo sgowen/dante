@@ -11,7 +11,7 @@
 
 #include "framework/graphics/portable/GpuProgramWrapper.h"
 
-class RendererHelper;
+class DirectXRendererHelper;
 class DirectXProgram;
 
 class DirectXTextureGpuProgramWrapper : public GpuProgramWrapper

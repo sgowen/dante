@@ -40,6 +40,7 @@ GpuProgramWrapper* GpuProgramWrapperFactory::createFramebufferToScreenGpuProgram
 }
 #elif defined _WIN32
 
+#include "framework/graphics/directx/DirectXRendererHelper.h"
 #include "framework/graphics/directx/DirectXTextureGpuProgramWrapper.h"
 #include "framework/graphics/directx/DirectXGeometryGpuProgramWrapper.h"
 #include "framework/graphics/directx/DirectXFramebufferToScreenGpuProgramWrapper.h"
