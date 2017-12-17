@@ -16,7 +16,7 @@ class DirectXGeometryProgram : public DirectXProgram
 public:
     DirectXGeometryProgram(DirectXRendererHelper* inRendererHelper, const char* vertexShaderName, const char* fragmentShaderName);
     
-    virtual void bind();
+    virtual void bind(void* data = NULL);
     
 private:
     static const D3D11_INPUT_ELEMENT_DESC VERTEX_DESC[2];

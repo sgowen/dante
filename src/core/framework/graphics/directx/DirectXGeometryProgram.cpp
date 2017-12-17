@@ -22,34 +22,32 @@ DirectXGeometryProgram::DirectXGeometryProgram(DirectXRendererHelper* inRenderer
     // Empty
 }
 
-void DirectXGeometryProgram::bind()
+void DirectXGeometryProgram::bind(void* data)
 {
-    DirectXProgram::bind();
+    DirectXProgram::bind(data);
     
     _rendererHelper->useNormalBlending();
     
-    ID3D11DeviceContext* d3dContext = DirectXRendererHelper::getD3dContext();
-    
-    d3dContext->VSSetConstantBuffers(0, 1, _rendererHelper->getMatrixConstantbuffer().GetAddressOf());
+    _d3dContext->VSSetConstantBuffers(0, 1, _rendererHelper->getMatrixConstantbuffer().GetAddressOf());
     
     // send the final matrix to video memory
-    d3dContext->UpdateSubresource(_rendererHelper->getMatrixConstantbuffer().Get(), 0, 0, &_rendererHelper->getMatFinal(), 0, 0);
+    _d3dContext->UpdateSubresource(_rendererHelper->getMatrixConstantbuffer().Get(), 0, 0, &_rendererHelper->getMatFinal(), 0, 0);
     
     D3D11_MAPPED_SUBRESOURCE mappedResource;
     ZeroMemory(&mappedResource, sizeof(D3D11_MAPPED_SUBRESOURCE));
     
     //	Disable GPU access to the vertex buffer data.
-    d3dContext->Map(_rendererHelper->getGbVertexBuffer().Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+    _d3dContext->Map(_rendererHelper->getGbVertexBuffer().Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
     
     //	Update the vertex buffer here.
     int numVertices = _rendererHelper->getColorVertices().size();
     memcpy(mappedResource.pData, &_rendererHelper->getColorVertices().front(), sizeof(COLOR_VERTEX) * numVertices);
     
     //	Reenable GPU access to the vertex buffer data.
-    d3dContext->Unmap(_rendererHelper->getGbVertexBuffer().Get(), 0);
+    _d3dContext->Unmap(_rendererHelper->getGbVertexBuffer().Get(), 0);
     
     // Set the vertex buffer
     UINT stride = sizeof(COLOR_VERTEX);
     UINT offset = 0;
-    d3dContext->IASetVertexBuffers(0, 1, _rendererHelper->getGbVertexBuffer().GetAddressOf(), &stride, &offset);
+    _d3dContext->IASetVertexBuffers(0, 1, _rendererHelper->getGbVertexBuffer().GetAddressOf(), &stride, &offset);
 }

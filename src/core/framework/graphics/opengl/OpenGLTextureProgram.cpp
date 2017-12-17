@@ -10,6 +10,8 @@
 
 #include <framework/graphics/opengl/OpenGLRendererHelper.h>
 
+#include <assert.h>
+
 OpenGLTextureProgram::OpenGLTextureProgram(OpenGLRendererHelper* inRendererHelper, const char* vertexShaderName, const char* fragmentShaderName) : OpenGLProgram(inRendererHelper, vertexShaderName, fragmentShaderName)
 {
     u_mvp_matrix_location = glGetUniformLocation(_programObjectId, "u_MvpMatrix");
@@ -19,15 +21,18 @@ OpenGLTextureProgram::OpenGLTextureProgram(OpenGLRendererHelper* inRendererHelpe
     a_texture_coordinates_location = glGetAttribLocation(_programObjectId, "a_TextureCoordinates");
 }
 
-void OpenGLTextureProgram::bind()
+void OpenGLTextureProgram::bind(void* data)
 {
-    OpenGLProgram::bind();
+    assert(data != NULL);
+    
+    OpenGLProgram::bind(data);
     
     _rendererHelper->useNormalBlending();
     
     glUniformMatrix4fv(u_mvp_matrix_location, 1, GL_FALSE, (GLfloat*)_rendererHelper->getViewProjectionMatrix());
     
-    glUniform1i(u_texture_unit_location, 0);
+    // tell the GPU which texture to use
+    _rendererHelper->bindTexture(NGTextureSlot_ZERO, static_cast<TextureWrapper*>(data), u_texture_unit_location);
     
     mapBuffer(_rendererHelper->getSbVboObject(), _rendererHelper->getTextureVertices());
     
@@ -42,6 +47,8 @@ void OpenGLTextureProgram::bind()
 
 void OpenGLTextureProgram::unbind()
 {
+    _rendererHelper->bindTexture(NGTextureSlot_ZERO, NULL);
+    
     unmapBuffer(_rendererHelper->getSbVboObject());
     
     OpenGLProgram::unbind();

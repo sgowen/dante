@@ -16,7 +16,7 @@ class OpenGLFramebufferToScreenProgram : public OpenGLProgram
 public:
     OpenGLFramebufferToScreenProgram(OpenGLRendererHelper* inRendererHelper, const char* vertexShaderName, const char* fragmentShaderName);
     
-    virtual void bind();
+    virtual void bind(void* data = NULL);
     
     virtual void unbind();
     

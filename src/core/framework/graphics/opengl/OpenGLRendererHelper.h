@@ -51,7 +51,7 @@ public:
     
     virtual void drawIndexed(NGPrimitiveType renderPrimitiveType, uint32_t count);
     
-    virtual void bindTexture(NGTextureSlot textureSlot, TextureWrapper* textureWrapper);
+    virtual void bindTexture(NGTextureSlot textureSlot, TextureWrapper* textureWrapper, int32_t flags = 0);
     
     GLuint& getSbVboObject(); // For Sprite Batcher
     GLuint& getGbVboObject(); // For Geometry Batcher
@@ -72,6 +72,8 @@ private:
     GLint _maxTextureSize;
     
     mat4x4 _viewProjectionMatrix;
+    
+    int slotIndexForTextureSlot(NGTextureSlot textureSlot);
 };
 
 #endif /* defined(__noctisgames__OpenGLRendererHelper__) */

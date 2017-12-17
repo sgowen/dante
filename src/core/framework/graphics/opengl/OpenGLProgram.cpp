@@ -63,7 +63,7 @@ OpenGLProgram::~OpenGLProgram()
     glDeleteProgram(_programObjectId);
 }
 
-void OpenGLProgram::bind()
+void OpenGLProgram::bind(void* data)
 {
     glUseProgram(_programObjectId);
 }

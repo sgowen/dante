@@ -28,7 +28,7 @@ public:
     
     virtual ~OpenGLProgram();
     
-    virtual void bind();
+    virtual void bind(void* data = NULL);
     
     virtual void unbind();
     

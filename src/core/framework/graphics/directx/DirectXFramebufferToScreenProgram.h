@@ -16,7 +16,9 @@ class DirectXFramebufferToScreenProgram : public DirectXProgram
 public:
     DirectXFramebufferToScreenProgram(DirectXRendererHelper* inRendererHelper, const char* vertexShaderName, const char* fragmentShaderName);
     
-    virtual void bind();
+    virtual void bind(void* data = NULL);
+    
+    virtual void unbind();
     
 private:
     static const D3D11_INPUT_ELEMENT_DESC VERTEX_DESC[3];

@@ -22,12 +22,14 @@ public:
     
     virtual ~DirectXProgram();
     
-    virtual void bind();
+    virtual void bind(void* data = NULL);
     
     virtual void unbind();
     
 protected:
 	DirectXRendererHelper* _rendererHelper;
+    ID3D11Device* _d3dDevice;
+    ID3D11DeviceContext* _d3dContext;
     
     void createConstantBuffer(_COM_Outptr_opt_  ID3D11Buffer **ppBuffer);
     

@@ -17,9 +17,9 @@ OpenGLGeometryProgram::OpenGLGeometryProgram(OpenGLRendererHelper* inRendererHel
     a_color_location = glGetAttribLocation(_programObjectId, "a_Color");
 }
 
-void OpenGLGeometryProgram::bind()
+void OpenGLGeometryProgram::bind(void* data)
 {
-    OpenGLProgram::bind();
+    OpenGLProgram::bind(data);
     
     _rendererHelper->useNormalBlending();
     

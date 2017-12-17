@@ -41,16 +41,11 @@ void SpriteBatcher::endBatch(TextureWrapper* textureWrapper, GpuProgram& gpuProg
 {
     if (_numSprites > 0)
     {
-        // tell the GPU which texture to use
-        _rendererHelper->bindTexture(NGTextureSlot_ZERO, textureWrapper);
-        
-        gpuProgramWrapper.bind();
+        gpuProgramWrapper.bind(textureWrapper);
         
         _rendererHelper->drawIndexed(NGPrimitiveType_Triangles, _numSprites * INDICES_PER_RECTANGLE);
         
         gpuProgramWrapper.unbind();
-        
-        _rendererHelper->bindTexture(NGTextureSlot_ZERO, NULL);
     }
 }
 

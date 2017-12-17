@@ -9,6 +9,8 @@
 #ifndef __noctisgames__GpuProgram__
 #define __noctisgames__GpuProgram__
 
+#include <cstddef>
+
 class GpuProgram
 {
 public:
@@ -16,7 +18,7 @@ public:
     
     virtual ~GpuProgram();
     
-    virtual void bind() = 0;
+    virtual void bind(void* data = NULL) = 0;
     
     virtual void unbind() = 0;
 };

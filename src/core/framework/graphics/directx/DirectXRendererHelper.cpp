@@ -188,17 +188,17 @@ void DirectXRendererHelper::drawIndexed(NGPrimitiveType renderPrimitiveType, uin
     s_d3dContext->DrawIndexed(count, 0, 0);
 }
 
-void DirectXRendererHelper::bindTexture(NGTextureSlot textureSlot, TextureWrapper* textureWrapper)
+void DirectXRendererHelper::bindTexture(NGTextureSlot textureSlot, TextureWrapper* textureWrapper, int32_t flags)
 {
     if (textureWrapper)
     {
-        s_d3dContext->PSSetShaderResources(0, 1, &textureWrapper->gpuTextureWrapper->texture);
-        s_d3dContext->PSSetSamplers(0, 1, textureWrapper->_repeatS ? _sbWrapSamplerState.GetAddressOf() : _sbSamplerState.GetAddressOf());
+        s_d3dContext->PSSetShaderResources(textureSlot, 1, &textureWrapper->gpuTextureWrapper->texture);
+        s_d3dContext->PSSetSamplers(textureSlot, 1, textureWrapper->_repeatS ? _sbWrapSamplerState.GetAddressOf() : _sbSamplerState.GetAddressOf());
     }
     else
     {
         ID3D11ShaderResourceView *pSRV[1] = { NULL };
-        s_d3dContext->PSSetShaderResources(0, 1, pSRV);
+        s_d3dContext->PSSetShaderResources(textureSlot, 1, pSRV);
     }
 }
 

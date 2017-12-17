@@ -17,7 +17,7 @@
 
 #include "PlatformHelpers.h"
 
-DirectXProgram::DirectXProgram(DirectXRendererHelper* inRendererHelper, const char* vertexShaderName, const char* fragmentShaderName, const D3D11_INPUT_ELEMENT_DESC *inputElementDescs) : _rendererHelper(inRendererHelper)
+DirectXProgram::DirectXProgram(DirectXRendererHelper* inRendererHelper, const char* vertexShaderName, const char* fragmentShaderName, const D3D11_INPUT_ELEMENT_DESC *inputElementDescs) : _rendererHelper(inRendererHelper), _d3dDevice(DirectXRendererHelper::getD3dDevice()), _d3dContext(DirectXRendererHelper::getD3dContext())
 {
     std::string s1("data\\shaders\\");
 	s1 += std::string(vertexShaderName);
@@ -27,14 +27,12 @@ DirectXProgram::DirectXProgram(DirectXRendererHelper* inRendererHelper, const ch
 	s2 += std::string(fragmentShaderName);
 	const char* finalFragmentShaderFileName = s2.c_str();
 
-	ID3D11Device* d3dDevice = DirectXRendererHelper::getD3dDevice();
-
     const FileData vertex_shader_source = AssetDataHandler::getAssetDataHandler()->getAssetData(finalVertexShaderFileName);
     unsigned char* vertex_shader_source_output = (unsigned char*) malloc(vertex_shader_source.data_length);
     StringUtil::encryptDecrypt((unsigned char*)vertex_shader_source.data, vertex_shader_source_output, vertex_shader_source.data_length);
     
 	DirectX::ThrowIfFailed(
-		d3dDevice->CreateVertexShader(
+		_d3dDevice->CreateVertexShader(
 			vertex_shader_source_output,
 			vertex_shader_source.data_length,
 			NULL,
@@ -56,7 +54,7 @@ DirectXProgram::DirectXProgram(DirectXRendererHelper* inRendererHelper, const ch
 	};
 
 	DirectX::ThrowIfFailed(
-		d3dDevice->CreateInputLayout(
+		_d3dDevice->CreateInputLayout(
             inputElementDescs,
 			ARRAYSIZE(*inputElementDescs),
 			vertex_shader_source_output,
@@ -70,7 +68,7 @@ DirectXProgram::DirectXProgram(DirectXRendererHelper* inRendererHelper, const ch
     StringUtil::encryptDecrypt((unsigned char*)fragment_shader_source.data, fragment_shader_source_output, fragment_shader_source.data_length);
     
 	DirectX::ThrowIfFailed(
-		d3dDevice->CreatePixelShader(
+		_d3dDevice->CreatePixelShader(
 			fragment_shader_source_output,
 			fragment_shader_source.data_length,
 			NULL,
@@ -92,15 +90,13 @@ DirectXProgram::~DirectXProgram()
 	_pixelShader.Reset();
 }
 
-void DirectXProgram::bind()
+void DirectXProgram::bind(void* data)
 {
-    ID3D11DeviceContext* d3dContext = DirectXRendererHelper::getD3dContext();
-    
-    d3dContext->IASetInputLayout(_inputLayout.Get());
+    _d3dContext->IASetInputLayout(_inputLayout.Get());
     
     // set the shader objects as the active shaders
-    d3dContext->VSSetShader(_vertexShader.Get(), NULL, 0);
-    d3dContext->PSSetShader(_pixelShader.Get(), NULL, 0);
+    _d3dContext->VSSetShader(_vertexShader.Get(), NULL, 0);
+    _d3dContext->PSSetShader(_pixelShader.Get(), NULL, 0);
 }
 
 void DirectXProgram::unbind()
@@ -110,13 +106,11 @@ void DirectXProgram::unbind()
 
 void DirectXProgram::createConstantBuffer(_COM_Outptr_opt_  ID3D11Buffer **ppBuffer)
 {
-	ID3D11Device* d3dDevice = DirectXRendererHelper::getD3dDevice();
-
-	D3D11_BUFFER_DESC bd = { 0 };
+    D3D11_BUFFER_DESC bd = { 0 };
 
 	bd.Usage = D3D11_USAGE_DEFAULT;
 	bd.ByteWidth = 16;
 	bd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
 
-	d3dDevice->CreateBuffer(&bd, NULL, ppBuffer);
+	_d3dDevice->CreateBuffer(&bd, NULL, ppBuffer);
 }

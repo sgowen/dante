@@ -175,10 +175,15 @@ void OpenGLRendererHelper::drawIndexed(NGPrimitiveType renderPrimitiveType, uint
     glDrawElements(renderPrimitiveType, count, GL_UNSIGNED_SHORT, &_indices[0]);
 }
 
-void OpenGLRendererHelper::bindTexture(NGTextureSlot textureSlot, TextureWrapper* textureWrapper)
+void OpenGLRendererHelper::bindTexture(NGTextureSlot textureSlot, TextureWrapper* textureWrapper, int32_t flags)
 {
     glActiveTexture(textureSlot);
     glBindTexture(GL_TEXTURE_2D, textureWrapper == NULL ? 0 : textureWrapper->gpuTextureWrapper->texture);
+    
+    if (textureWrapper != NULL && flags != 0)
+    {
+        glUniform1i(flags, slotIndexForTextureSlot(textureSlot));
+    }
 }
 
 GLuint& OpenGLRendererHelper::getSbVboObject()
@@ -246,4 +251,17 @@ void OpenGLRendererHelper::releaseFramebuffers()
     _fbos.clear();
     
     NGSTDUtil::cleanUpVectorOfPointers(_framebuffers);
+}
+
+int OpenGLRendererHelper::slotIndexForTextureSlot(NGTextureSlot textureSlot)
+{
+    switch (textureSlot)
+    {
+        case NGTextureSlot_ZERO:
+            return 0;
+        case NGTextureSlot_ONE:
+            return 1;
+    }
+    
+    assert(false);
 }

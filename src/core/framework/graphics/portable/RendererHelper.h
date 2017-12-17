@@ -55,7 +55,7 @@ public:
     
     virtual void drawIndexed(NGPrimitiveType renderPrimitiveType, uint32_t count) = 0;
     
-    virtual void bindTexture(NGTextureSlot textureSlot, TextureWrapper* textureWrapper) = 0;
+    virtual void bindTexture(NGTextureSlot textureSlot, TextureWrapper* textureWrapper, int32_t flags = 0) = 0;
     
     void clearColorVertices();
     
