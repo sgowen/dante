@@ -56,6 +56,8 @@ void SpriteBatcher::renderSprite(float x, float y, float width, float height, fl
 
 void SpriteBatcher::renderSprite(float x, float y, float width, float height, float angle, Color &c, TextureRegion& tr, bool flipX)
 {
+    float xFinal[4], yFinal[4], uFinal[4];
+    
     if (angle != 0)
     {
         float halfWidth = width / 2;
@@ -89,10 +91,14 @@ void SpriteBatcher::renderSprite(float x, float y, float width, float height, fl
         x4 += x;
         y4 += y;
         
-        _rendererHelper->addVertexCoordinate(x1, y1, 0, c.red, c.green, c.blue, c.alpha, flipX ? tr.u2 : tr.u1, tr.v2);
-        _rendererHelper->addVertexCoordinate(x4, y4, 0, c.red, c.green, c.blue, c.alpha, flipX ? tr.u2 : tr.u1, tr.v1);
-        _rendererHelper->addVertexCoordinate(x3, y3, 0, c.red, c.green, c.blue, c.alpha, flipX ? tr.u1 : tr.u2, tr.v1);
-        _rendererHelper->addVertexCoordinate(x2, y2, 0, c.red, c.green, c.blue, c.alpha, flipX ? tr.u1 : tr.u2, tr.v2);
+        xFinal[0] = x1;
+        yFinal[0] = y1;
+        xFinal[1] = x4;
+        yFinal[1] = y4;
+        xFinal[2] = x3;
+        yFinal[2] = y3;
+        xFinal[3] = x2;
+        yFinal[3] = y2;
     }
     else
     {
@@ -103,12 +109,35 @@ void SpriteBatcher::renderSprite(float x, float y, float width, float height, fl
         float x2 = x + halfWidth;
         float y2 = y + halfHeight;
         
-        _rendererHelper->addVertexCoordinate(x1, y1, 0, c.red, c.green, c.blue, c.alpha, flipX ? tr.u2 : tr.u1, tr.v2);
-        _rendererHelper->addVertexCoordinate(x1, y2, 0, c.red, c.green, c.blue, c.alpha, flipX ? tr.u2 : tr.u1, tr.v1);
-        _rendererHelper->addVertexCoordinate(x2, y2, 0, c.red, c.green, c.blue, c.alpha, flipX ? tr.u1 : tr.u2, tr.v1);
-        _rendererHelper->addVertexCoordinate(x2, y1, 0, c.red, c.green, c.blue, c.alpha, flipX ? tr.u1 : tr.u2, tr.v2);
+        xFinal[0] = x1;
+        yFinal[0] = y1;
+        xFinal[1] = x1;
+        yFinal[1] = y2;
+        xFinal[2] = x2;
+        yFinal[2] = y2;
+        xFinal[3] = x2;
+        yFinal[3] = y1;
     }
+    
+    if (flipX)
+    {
+        uFinal[0] = tr.u2;
+        uFinal[1] = tr.u2;
+        uFinal[2] = tr.u1;
+        uFinal[3] = tr.u1;
+    }
+    else
+    {
+        uFinal[0] = tr.u1;
+        uFinal[1] = tr.u1;
+        uFinal[2] = tr.u2;
+        uFinal[3] = tr.u2;
+    }
+    
+    _rendererHelper->addVertexCoordinate(xFinal[0], yFinal[0], 0, c.red, c.green, c.blue, c.alpha, uFinal[0], tr.v2);
+    _rendererHelper->addVertexCoordinate(xFinal[1], yFinal[1], 0, c.red, c.green, c.blue, c.alpha, uFinal[1], tr.v1);
+    _rendererHelper->addVertexCoordinate(xFinal[2], yFinal[2], 0, c.red, c.green, c.blue, c.alpha, uFinal[2], tr.v1);
+    _rendererHelper->addVertexCoordinate(xFinal[3], yFinal[3], 0, c.red, c.green, c.blue, c.alpha, uFinal[3], tr.v2);
     
     _numSprites++;
 }
-
