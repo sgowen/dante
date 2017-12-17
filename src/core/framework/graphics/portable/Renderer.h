@@ -19,7 +19,7 @@ class LineBatcher;
 class CircleBatcher;
 class TextureLoader;
 class RendererHelper;
-class GpuProgramWrapper;
+class GpuProgram;
 class Entity;
 class TextureRegion;
 class Color;
@@ -60,9 +60,9 @@ protected:
     CircleBatcher* _circleBatcher;
     TextureLoader* _textureLoader;
     
-    GpuProgramWrapper* _textureGpuProgramWrapper;
-    GpuProgramWrapper* _colorGpuProgramWrapper;
-    GpuProgramWrapper* _framebufferToScreenGpuProgramWrapper;
+    GpuProgram* _textureGpuProgram;
+    GpuProgram* _colorGpuProgram;
+    GpuProgram* _framebufferToScreenGpuProgram;
     
     int _framebufferIndex;
     

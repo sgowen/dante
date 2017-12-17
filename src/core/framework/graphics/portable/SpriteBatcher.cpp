@@ -12,7 +12,7 @@
 
 #include "framework/graphics/portable/RendererHelper.h"
 #include "framework/graphics/portable/TextureWrapper.h"
-#include "framework/graphics/portable/GpuProgramWrapper.h"
+#include "framework/graphics/portable/GpuProgram.h"
 #include "framework/graphics/portable/TextureRegion.h"
 #include "framework/math/Color.h"
 
@@ -37,7 +37,7 @@ void SpriteBatcher::beginBatch()
     _numSprites = 0;
 }
 
-void SpriteBatcher::endBatch(TextureWrapper* textureWrapper, GpuProgramWrapper& gpuProgramWrapper)
+void SpriteBatcher::endBatch(TextureWrapper* textureWrapper, GpuProgram& gpuProgramWrapper)
 {
     if (_numSprites > 0)
     {

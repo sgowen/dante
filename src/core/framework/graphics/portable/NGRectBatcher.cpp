@@ -11,7 +11,7 @@
 #include "framework/graphics/portable/NGRectBatcher.h"
 
 #include "framework/graphics/portable/RendererHelper.h"
-#include "framework/graphics/portable/GpuProgramWrapper.h"
+#include "framework/graphics/portable/GpuProgram.h"
 #include "framework/math/NGRect.h"
 #include "framework/math/Color.h"
 
@@ -33,7 +33,7 @@ void NGRectBatcher::beginBatch()
     _numNGRects = 0;
 }
 
-void NGRectBatcher::endBatch(GpuProgramWrapper &gpuProgramWrapper)
+void NGRectBatcher::endBatch(GpuProgram &gpuProgramWrapper)
 {
     if (_numNGRects > 0)
     {

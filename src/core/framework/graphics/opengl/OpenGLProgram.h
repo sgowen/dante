@@ -9,6 +9,8 @@
 #ifndef __noctisgames__OpenGLProgram__
 #define __noctisgames__OpenGLProgram__
 
+#include <framework/graphics/portable/GpuProgram.h>
+
 #include "framework/graphics/portable/NGGraphics.h"
 
 #include <framework/graphics/portable/VertexProgramInput.h>
@@ -19,7 +21,7 @@
 
 class OpenGLRendererHelper;
 
-class OpenGLProgram
+class OpenGLProgram : public GpuProgram
 {
 public:
     OpenGLProgram(OpenGLRendererHelper* inRendererHelper, const char* vertexShaderName, const char* fragmentShaderName);

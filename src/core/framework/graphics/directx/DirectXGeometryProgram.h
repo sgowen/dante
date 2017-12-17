@@ -16,7 +16,7 @@ class DirectXGeometryProgram : public DirectXProgram
 public:
     DirectXGeometryProgram(DirectXRendererHelper* inRendererHelper, const char* vertexShaderName, const char* fragmentShaderName);
     
-    virtual void mapVertices();
+    virtual void bind();
 };
 
 #endif /* defined(__noctisgames__DirectXGeometryProgram__) */

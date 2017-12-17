@@ -10,7 +10,7 @@
 #define __noctisgames__NGRectBatcher__
 
 class RendererHelper;
-class GpuProgramWrapper;
+class GpuProgram;
 class NGRect;
 class Color;
 
@@ -23,7 +23,7 @@ public:
     
     void beginBatch();
     
-    void endBatch(GpuProgramWrapper &gpuProgramWrapper);
+    void endBatch(GpuProgram &gpuProgramWrapper);
     
     void renderNGRect(NGRect &r, Color &c);
     

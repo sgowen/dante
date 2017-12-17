@@ -155,7 +155,7 @@ void MainRenderer::renderBackground()
             tr.initY(clamp(384 - _camBounds->getBottom() * 32, 384, 0));
             _spriteBatcher->renderSprite(i * CAM_WIDTH + CAM_WIDTH / 2, CAM_HEIGHT / 2, CAM_WIDTH, CAM_HEIGHT, 0, tr);
         }
-        _spriteBatcher->endBatch(_bg1, *_textureGpuProgramWrapper);
+        _spriteBatcher->endBatch(_bg1, *_textureGpuProgram);
         
         _spriteBatcher->beginBatch();
         {
@@ -164,7 +164,7 @@ void MainRenderer::renderBackground()
             tr.initY(clamp(644 - _camBounds->getBottom() * 48, 644, 0));
             _spriteBatcher->renderSprite(i * CAM_WIDTH + CAM_WIDTH / 2, CAM_HEIGHT * 0.3875f / 2, CAM_WIDTH, CAM_HEIGHT * 0.3875f, 0, tr);
         }
-        _spriteBatcher->endBatch(_bg2, *_textureGpuProgramWrapper);
+        _spriteBatcher->endBatch(_bg2, *_textureGpuProgram);
     }
 }
 
@@ -178,7 +178,7 @@ void MainRenderer::renderWorld()
         static TextureRegion tr = ASSETS->findTextureRegion("Background3");
         _spriteBatcher->renderSprite(i * CAM_WIDTH + CAM_WIDTH / 2, CAM_HEIGHT * 0.2f / 2, CAM_WIDTH, CAM_HEIGHT * 0.2f, 0, tr);
     }
-    _spriteBatcher->endBatch(_bg2, *_textureGpuProgramWrapper);
+    _spriteBatcher->endBatch(_bg2, *_textureGpuProgram);
     
     renderEntities(InstanceManager::getClientWorld(), false);
     
@@ -200,7 +200,7 @@ void MainRenderer::renderWorld()
             renderText(text, origin, Color::DARK_RED, FONT_ALIGN_CENTERED);
         }
     }
-    _spriteBatcher->endBatch(_misc, *_textureGpuProgramWrapper);
+    _spriteBatcher->endBatch(_misc, *_textureGpuProgram);
 }
 
 void MainRenderer::renderEntities(World* world, bool isServer)
@@ -301,7 +301,7 @@ void MainRenderer::renderEntities(World* world, bool isServer)
         renderEntityWithColor(*r, tr, c, r->isFacingLeft());
     }
     
-    _spriteBatcher->endBatch(_characters, *_textureGpuProgramWrapper);
+    _spriteBatcher->endBatch(_characters, *_textureGpuProgram);
 }
 
 void MainRenderer::renderAtmosphere()
@@ -313,7 +313,7 @@ void MainRenderer::renderAtmosphere()
         static TextureRegion tr = ASSETS->findTextureRegion("Cover");
         _spriteBatcher->renderSprite(CAM_WIDTH / 2, CAM_HEIGHT / 2, CAM_WIDTH, CAM_HEIGHT, 0, tr);
     }
-    _spriteBatcher->endBatch(_cover, *_textureGpuProgramWrapper);
+    _spriteBatcher->endBatch(_cover, *_textureGpuProgram);
 }
 
 void MainRenderer::renderUI(int flags)
@@ -351,7 +351,7 @@ void MainRenderer::renderUI(int flags)
         default:
             break;
     }
-    _spriteBatcher->endBatch(_misc, *_textureGpuProgramWrapper);
+    _spriteBatcher->endBatch(_misc, *_textureGpuProgram);
 }
 
 void MainRenderer::renderMainMenuSteamOffText()
@@ -726,23 +726,23 @@ void MainRenderer::testRenderingSuite()
     _rendererHelper->updateMatrix(0, CAM_WIDTH, 0, CAM_HEIGHT);
     
     static Circle c1(10, 4, 2);
-    _circleBatcher->renderCircle(c1, Color::RED, *_colorGpuProgramWrapper);
+    _circleBatcher->renderCircle(c1, Color::RED, *_colorGpuProgram);
     
     static Circle c2(7, 7, 2);
-    _circleBatcher->renderPartialCircle(c2, 135, Color::RED, *_colorGpuProgramWrapper);
+    _circleBatcher->renderPartialCircle(c2, 135, Color::RED, *_colorGpuProgram);
     
     static NGRect r1(1, 1, 2, 1);
     _boundsNGRectBatcher->beginBatch();
     _boundsNGRectBatcher->renderNGRect(r1, Color::RED);
-    _boundsNGRectBatcher->endBatch(*_colorGpuProgramWrapper);
+    _boundsNGRectBatcher->endBatch(*_colorGpuProgram);
     
     static NGRect r2(4, 1, 2, 1);
     _fillNGRectBatcher->beginBatch();
     _fillNGRectBatcher->renderNGRect(r2, Color::RED);
-    _fillNGRectBatcher->endBatch(*_colorGpuProgramWrapper);
+    _fillNGRectBatcher->endBatch(*_colorGpuProgram);
     
     static Line line(3, 3, 5, 5);
     _lineBatcher->beginBatch();
     _lineBatcher->renderLine(line, Color::RED);
-    _lineBatcher->endBatch(*_colorGpuProgramWrapper);
+    _lineBatcher->endBatch(*_colorGpuProgram);
 }

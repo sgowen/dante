@@ -16,7 +16,7 @@ class DirectXTextureProgram : public DirectXProgram
 public:
     DirectXTextureProgram(DirectXRendererHelper* inRendererHelper, const char* vertexShaderName, const char* fragmentShaderName);
     
-    virtual void mapVertices();
+    virtual void bind();
 };
 
 #endif /* defined(__noctisgames__DirectXTextureProgram__) */

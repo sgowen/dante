@@ -17,9 +17,13 @@ DirectXGeometryProgram::DirectXGeometryProgram(DirectXRendererHelper* inRenderer
     // Empty
 }
 
-void DirectXGeometryProgram::mapVertices()
+void DirectXGeometryProgram::bind()
 {
+    DirectXProgram::bind();
+    
     _rendererHelper->useNormalBlending();
+    
+    bindMatrix();
     
     D3D11_MAPPED_SUBRESOURCE mappedResource;
     ZeroMemory(&mappedResource, sizeof(D3D11_MAPPED_SUBRESOURCE));

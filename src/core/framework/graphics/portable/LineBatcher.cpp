@@ -11,7 +11,7 @@
 #include "framework/graphics/portable/LineBatcher.h"
 
 #include "framework/graphics/portable/RendererHelper.h"
-#include "framework/graphics/portable/GpuProgramWrapper.h"
+#include "framework/graphics/portable/GpuProgram.h"
 #include "framework/math/Line.h"
 #include "framework/math/Color.h"
 
@@ -33,7 +33,7 @@ void LineBatcher::beginBatch()
     _numLines = 0;
 }
 
-void LineBatcher::endBatch(GpuProgramWrapper &gpuProgramWrapper)
+void LineBatcher::endBatch(GpuProgram &gpuProgramWrapper)
 {
     if (_numLines > 0)
     {

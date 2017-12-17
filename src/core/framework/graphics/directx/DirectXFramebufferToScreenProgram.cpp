@@ -17,8 +17,10 @@ DirectXFramebufferToScreenProgram::DirectXFramebufferToScreenProgram(DirectXRend
     // Empty
 }
 
-void DirectXFramebufferToScreenProgram::mapVertices()
+void DirectXFramebufferToScreenProgram::bind()
 {
+    DirectXProgram::bind();
+    
     _rendererHelper->useScreenBlending();
     
     D3D11_MAPPED_SUBRESOURCE mappedResource;

@@ -17,9 +17,13 @@ DirectXTextureProgram::DirectXTextureProgram(DirectXRendererHelper* inRendererHe
     // Empty
 }
 
-void DirectXTextureProgram::mapVertices()
+void DirectXTextureProgram::bind()
 {
+    DirectXProgram::bind();
+    
     _rendererHelper->useNormalBlending();
+    
+    bindMatrix();
     
     D3D11_MAPPED_SUBRESOURCE mappedResource;
     ZeroMemory(&mappedResource, sizeof(D3D11_MAPPED_SUBRESOURCE));

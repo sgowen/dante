@@ -92,7 +92,7 @@ DirectXProgram::~DirectXProgram()
 	_pixelShader.Reset();
 }
 
-void DirectXProgram::bindShaders()
+void DirectXProgram::bind()
 {
     ID3D11DeviceContext* d3dContext = DirectXRendererHelper::getD3dContext();
     
@@ -101,6 +101,11 @@ void DirectXProgram::bindShaders()
     // set the shader objects as the active shaders
     d3dContext->VSSetShader(_vertexShader.Get(), NULL, 0);
     d3dContext->PSSetShader(_pixelShader.Get(), NULL, 0);
+}
+
+void DirectXProgram::unbind()
+{
+    // Empty
 }
 
 void DirectXProgram::bindMatrix()

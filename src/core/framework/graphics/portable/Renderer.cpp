@@ -16,7 +16,7 @@
 #include "framework/graphics/portable/CircleBatcher.h"
 #include "framework/graphics/portable/TextureLoader.h"
 #include "framework/graphics/portable/RendererHelper.h"
-#include "framework/graphics/portable/GpuProgramWrapper.h"
+#include "framework/graphics/portable/GpuProgram.h"
 #include "framework/entity/Entity.h"
 #include "framework/graphics/portable/TextureRegion.h"
 #include "framework/math/Color.h"
@@ -27,7 +27,7 @@
 #include "framework/graphics/portable/GpuTextureDataWrapper.h"
 #include "framework/graphics/portable/TextureLoaderFactory.h"
 #include "framework/graphics/portable/RendererHelperFactory.h"
-#include "framework/graphics/portable/GpuProgramWrapperFactory.h"
+#include "framework/graphics/portable/GpuProgramFactory.h"
 #include "framework/util/NGSTDUtil.h"
 
 #include <Box2D/Box2D.h>
@@ -43,9 +43,9 @@ _boundsNGRectBatcher(new NGRectBatcher(_rendererHelper, false)),
 _lineBatcher(new LineBatcher(_rendererHelper)),
 _circleBatcher(new CircleBatcher(_rendererHelper)),
 _textureLoader(TEXTURE_LOADER_FACTORY->createTextureLoader()),
-_textureGpuProgramWrapper(NULL),
-_colorGpuProgramWrapper(NULL),
-_framebufferToScreenGpuProgramWrapper(NULL),
+_textureGpuProgram(NULL),
+_colorGpuProgram(NULL),
+_framebufferToScreenGpuProgram(NULL),
 _framebufferIndex(0),
 _areDeviceDependentResourcesCreated(false),
 _areWindowSizeDependentResourcesCreated(false)
@@ -69,9 +69,9 @@ void Renderer::createDeviceDependentResources()
 {
 	_rendererHelper->createDeviceDependentResources();
 
-    _textureGpuProgramWrapper = GPU_PROGRAM_WRAPPER_FACTORY->createTextureGpuProgramWrapper(_rendererHelper);
-    _colorGpuProgramWrapper = GPU_PROGRAM_WRAPPER_FACTORY->createColorGpuProgramWrapper(_rendererHelper);
-    _framebufferToScreenGpuProgramWrapper = GPU_PROGRAM_WRAPPER_FACTORY->createFramebufferToScreenGpuProgramWrapper(_rendererHelper);
+    _textureGpuProgram = GPU_PROGRAM_WRAPPER_FACTORY->createTextureGpuProgram(_rendererHelper);
+    _colorGpuProgram = GPU_PROGRAM_WRAPPER_FACTORY->createColorGpuProgram(_rendererHelper);
+    _framebufferToScreenGpuProgram = GPU_PROGRAM_WRAPPER_FACTORY->createFramebufferToScreenGpuProgram(_rendererHelper);
     
     _areDeviceDependentResourcesCreated = true;
 }
@@ -94,14 +94,14 @@ void Renderer::releaseDeviceDependentResources()
 
 	cleanUpThreads();
     
-    delete _textureGpuProgramWrapper;
-	_textureGpuProgramWrapper = NULL;
+    delete _textureGpuProgram;
+	_textureGpuProgram = NULL;
 
-    delete _colorGpuProgramWrapper;
-	_colorGpuProgramWrapper = NULL;
+    delete _colorGpuProgram;
+	_colorGpuProgram = NULL;
 
-    delete _framebufferToScreenGpuProgramWrapper;
-	_framebufferToScreenGpuProgramWrapper = NULL;
+    delete _framebufferToScreenGpuProgram;
+	_framebufferToScreenGpuProgram = NULL;
 }
 
 #pragma mark protected
@@ -136,7 +136,7 @@ void Renderer::renderToScreen()
     
     _spriteBatcher->beginBatch();
     _spriteBatcher->renderSprite(0, 0, 2, 2, 0, tr);
-    _spriteBatcher->endBatch(_rendererHelper->getFramebuffer(_framebufferIndex), *_framebufferToScreenGpuProgramWrapper);
+    _spriteBatcher->endBatch(_rendererHelper->getFramebuffer(_framebufferIndex), *_framebufferToScreenGpuProgram);
 }
 
 void Renderer::endFrame()

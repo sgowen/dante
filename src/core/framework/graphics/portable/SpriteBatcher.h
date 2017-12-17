@@ -11,7 +11,7 @@
 
 class RendererHelper;
 class TextureWrapper;
-class GpuProgramWrapper;
+class GpuProgram;
 class TextureRegion;
 class Color;
 
@@ -24,7 +24,7 @@ public:
 
     void beginBatch();
 
-    void endBatch(TextureWrapper* textureWrapper, GpuProgramWrapper& gpuProgramWrapper);
+    void endBatch(TextureWrapper* textureWrapper, GpuProgram& gpuProgramWrapper);
 
     void renderSprite(float x, float y, float width, float height, float angle, TextureRegion& tr, bool flipX = false);
     void renderSprite(float x, float y, float width, float height, float angle, Color &c, TextureRegion& tr, bool flipX = false);

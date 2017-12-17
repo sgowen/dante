@@ -1,5 +1,5 @@
 //
-//  GpuProgramWrapper.cpp
+//  GpuProgram.cpp
 //  noctisgames-framework
 //
 //  Created by Stephen Gowen on 8/27/15.
@@ -8,14 +8,14 @@
 
 #include "pch.h"
 
-#include "framework/graphics/portable/GpuProgramWrapper.h"
+#include "framework/graphics/portable/GpuProgram.h"
 
-GpuProgramWrapper::GpuProgramWrapper()
+GpuProgram::GpuProgram()
 {
     // Empty
 }
 
-GpuProgramWrapper::~GpuProgramWrapper()
+GpuProgram::~GpuProgram()
 {
     // Override
 }
