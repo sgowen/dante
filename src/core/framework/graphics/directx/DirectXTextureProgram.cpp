@@ -48,8 +48,8 @@ void DirectXTextureProgram::bind(void* data)
     _d3dContext->Map(_rendererHelper->getSbVertexBuffer().Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
     
     //	Update the vertex buffer here.
-    int numVertices = _rendererHelper->getTextureVertices().size();
-    memcpy(mappedResource.pData, &_rendererHelper->getTextureVertices().front(), sizeof(TEXTURE_VERTEX) * numVertices);
+    std::vector<TEXTURE_VERTEX>& vertices = _rendererHelper->getTextureVertices();
+    memcpy(mappedResource.pData, &vertices.front(), sizeof(TEXTURE_VERTEX) * vertices.size());
     
     //	Reenable GPU access to the vertex buffer data.
     _d3dContext->Unmap(_rendererHelper->getSbVertexBuffer().Get(), 0);
