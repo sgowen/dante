@@ -58,7 +58,7 @@
 #include <sstream>
 #include <ctime> // rand
 
-MainRenderer::MainRenderer(int maxBatchSize) : Renderer(maxBatchSize),
+MainRenderer::MainRenderer() : Renderer(),
 _characters(new TextureWrapper("texture_001.ngt", this, false, true)),
 _misc(new TextureWrapper("texture_002.ngt", this, false, true)),
 _bg1(new TextureWrapper("texture_003.ngt", this, true, true)),
@@ -153,7 +153,7 @@ void MainRenderer::renderBackground()
             static TextureRegion tr = ASSETS->findTextureRegion("Background1");
             tr.initX(_camBounds->getLeft() * 128.0f / 3);
             tr.initY(clamp(384 - _camBounds->getBottom() * 32, 384, 0));
-            _spriteBatcher->drawSprite(i * CAM_WIDTH + CAM_WIDTH / 2, CAM_HEIGHT / 2, CAM_WIDTH, CAM_HEIGHT, 0, tr);
+            _spriteBatcher->renderSprite(i * CAM_WIDTH + CAM_WIDTH / 2, CAM_HEIGHT / 2, CAM_WIDTH, CAM_HEIGHT, 0, tr);
         }
         _spriteBatcher->endBatch(_bg1, *_textureGpuProgramWrapper);
         
@@ -162,7 +162,7 @@ void MainRenderer::renderBackground()
             static TextureRegion tr = ASSETS->findTextureRegion("Background2");
             tr.initX(_camBounds->getLeft() * 128.0f / 2);
             tr.initY(clamp(644 - _camBounds->getBottom() * 48, 644, 0));
-            _spriteBatcher->drawSprite(i * CAM_WIDTH + CAM_WIDTH / 2, CAM_HEIGHT * 0.3875f / 2, CAM_WIDTH, CAM_HEIGHT * 0.3875f, 0, tr);
+            _spriteBatcher->renderSprite(i * CAM_WIDTH + CAM_WIDTH / 2, CAM_HEIGHT * 0.3875f / 2, CAM_WIDTH, CAM_HEIGHT * 0.3875f, 0, tr);
         }
         _spriteBatcher->endBatch(_bg2, *_textureGpuProgramWrapper);
     }
@@ -176,7 +176,7 @@ void MainRenderer::renderWorld()
     for (int i = 0; i < 3; ++i)
     {
         static TextureRegion tr = ASSETS->findTextureRegion("Background3");
-        _spriteBatcher->drawSprite(i * CAM_WIDTH + CAM_WIDTH / 2, CAM_HEIGHT * 0.2f / 2, CAM_WIDTH, CAM_HEIGHT * 0.2f, 0, tr);
+        _spriteBatcher->renderSprite(i * CAM_WIDTH + CAM_WIDTH / 2, CAM_HEIGHT * 0.2f / 2, CAM_WIDTH, CAM_HEIGHT * 0.2f, 0, tr);
     }
     _spriteBatcher->endBatch(_bg2, *_textureGpuProgramWrapper);
     
@@ -311,7 +311,7 @@ void MainRenderer::renderAtmosphere()
     _spriteBatcher->beginBatch();
     {
         static TextureRegion tr = ASSETS->findTextureRegion("Cover");
-        _spriteBatcher->drawSprite(CAM_WIDTH / 2, CAM_HEIGHT / 2, CAM_WIDTH, CAM_HEIGHT, 0, tr);
+        _spriteBatcher->renderSprite(CAM_WIDTH / 2, CAM_HEIGHT / 2, CAM_WIDTH, CAM_HEIGHT, 0, tr);
     }
     _spriteBatcher->endBatch(_cover, *_textureGpuProgramWrapper);
 }

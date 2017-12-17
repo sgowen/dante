@@ -29,13 +29,13 @@ class TextureWrapper;
 class Renderer
 {
 public:
-    Renderer(int maxBatchSize);
+    Renderer();
     
     virtual ~Renderer();
     
     virtual void createDeviceDependentResources();
 
-	virtual void createWindowSizeDependentResources(int renderWidth, int renderHeight, int numFramebuffers);
+	virtual void createWindowSizeDependentResources(int screenWidth, int screenHeight, int renderWidth, int renderHeight, int numFramebuffers);
     
     virtual void releaseDeviceDependentResources();
     

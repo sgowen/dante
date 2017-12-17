@@ -12,7 +12,7 @@
 
 #include "framework/main/portable/Engine.h"
 
-#include "framework/graphics/directx/DirectXManager.h"
+#include "framework/graphics/directx/DirectXRendererHelper.h"
 #include "framework/input/CursorInputManager.h"
 #include "framework/input/KeyboardInputManager.h"
 #include "framework/input/GamePadInputManager.h"
@@ -391,16 +391,9 @@ LRESULT CALLBACK DirectXMain::WndProc(HWND hWnd, UINT message, WPARAM wParam, LP
 }
 
 // Initialize the DirectX resources required to run.
-#if !defined(WINAPI_FAMILY) || (WINAPI_FAMILY == WINAPI_FAMILY_DESKTOP_APP)
 void DirectXMain::Initialize(Engine* engine, HWND window, int width, int height)
 {
 	_deviceResources->SetWindow(window, width, height);
-#else
-void DirectXMain::Initialize(Engine* engine, IUnknown* window, int width, int height, float dpi, DXGI_MODE_ROTATION rotation)
-{
-	_dpi = dpi;
-	_deviceResources->SetWindow(window, width, height, rotation);
-#endif
     
     _engine = engine;
     if (_engine->getRequestedAction() == REQUESTED_ACTION_EXIT)
@@ -424,12 +417,7 @@ void DirectXMain::Initialize(Engine* engine, IUnknown* window, int width, int he
 
 	_gamePad = std::make_unique<GamePad>();
 
-#if !defined(WINAPI_FAMILY) || (WINAPI_FAMILY == WINAPI_FAMILY_DESKTOP_APP)
-	_mouse->SetWindow(window);
-#else
-	_mouse->SetWindow(reinterpret_cast<ABI::Windows::UI::Core::ICoreWindow*>(window));
-	_keyboard->SetWindow(reinterpret_cast<ABI::Windows::UI::Core::ICoreWindow*>(window));
-#endif
+    _mouse->SetWindow(window);
 }
 
 void DirectXMain::OnNewAudioDevice()
@@ -698,12 +686,6 @@ void DirectXMain::OnActivated()
 		button.Reset();
 	}
 
-	if (_isWindowsMobile
-		&& _isDeviceLost)
-	{
-		OnDeviceRestored();
-	}
-
 	_engine->onResume();
 }
 
@@ -717,13 +699,6 @@ void DirectXMain::OnDeactivated()
 	for (DirectX::GamePad::ButtonStateTracker& button : _buttons)
 	{
 		button.Reset();
-	}
-
-	if (_isWindowsMobile)
-	{
-		OnDeviceLost();
-
-		_isDeviceLost = true;
 	}
 
 	_engine->onPause();
@@ -740,15 +715,6 @@ void DirectXMain::OnSuspending()
 	{
 		button.Reset();
 	}
-
-#if !defined(WINAPI_FAMILY) || (WINAPI_FAMILY == WINAPI_FAMILY_DESKTOP_APP)
-	// Empty
-#else
-	auto context = _deviceResources->GetD3DDeviceContext();
-	context->ClearState();
-
-	_deviceResources->Trim();
-#endif
 
 	_engine->onPause();
 }
@@ -770,7 +736,6 @@ void DirectXMain::OnResuming()
 	_engine->onResume();
 }
 
-#if !defined(WINAPI_FAMILY) || (WINAPI_FAMILY == WINAPI_FAMILY_DESKTOP_APP)
 void DirectXMain::OnWindowSizeChanged(int width, int height)
 {
 	if (!_deviceResources->WindowSizeChanged(width, height))
@@ -780,24 +745,6 @@ void DirectXMain::OnWindowSizeChanged(int width, int height)
 
 	CreateWindowSizeDependentResources();
 }
-#else
-void DirectXMain::OnWindowSizeChanged(int width, int height, float dpi, DXGI_MODE_ROTATION rotation)
-{
-	_dpi = dpi;
-
-	if (!_deviceResources->WindowSizeChanged(width, height, rotation))
-	{
-		return;
-	}
-
-	CreateWindowSizeDependentResources();
-}
-
-void DirectXMain::ValidateDevice()
-{
-	_deviceResources->ValidateDevice();
-}
-#endif
 
 // Properties
 void DirectXMain::GetDefaultSize(int& width, int& height) const
@@ -811,17 +758,7 @@ void DirectXMain::GetDefaultSize(int& width, int& height) const
 // These are the resources that depend on the device.
 void DirectXMain::CreateDeviceDependentResources()
 {
-#if !defined(WINAPI_FAMILY) || (WINAPI_FAMILY == WINAPI_FAMILY_DESKTOP_APP)
-	static const XMFLOAT4X4 Rotation0(
-		1.0f, 0.0f, 0.0f, 0.0f,
-		0.0f, 1.0f, 0.0f, 0.0f,
-		0.0f, 0.0f, 1.0f, 0.0f,
-		0.0f, 0.0f, 0.0f, 1.0f
-	);
-	DirectXManager::init(_deviceResources->GetD3DDevice(), _deviceResources->GetD3DDeviceContext(), _deviceResources->GetRenderTargetView(), Rotation0);
-#else
-	DirectXManager::init(_deviceResources->GetD3DDevice(), _deviceResources->GetD3DDeviceContext(), _deviceResources->GetRenderTargetView(), _deviceResources->GetOrientationTransform3D());
-#endif
+    DirectXRendererHelper::init(_deviceResources->GetD3DDevice(), _deviceResources->GetD3DDeviceContext(), _deviceResources->GetRenderTargetView());
 
 	_engine->createDeviceDependentResources();
 }
@@ -829,29 +766,15 @@ void DirectXMain::CreateDeviceDependentResources()
 // Allocate all memory resources that change on a window SizeChanged event.
 void DirectXMain::CreateWindowSizeDependentResources()
 {
-#if !defined(WINAPI_FAMILY) || (WINAPI_FAMILY == WINAPI_FAMILY_DESKTOP_APP)
-	static const XMFLOAT4X4 Rotation0(
-		1.0f, 0.0f, 0.0f, 0.0f,
-		0.0f, 1.0f, 0.0f, 0.0f,
-		0.0f, 0.0f, 1.0f, 0.0f,
-		0.0f, 0.0f, 0.0f, 1.0f
-	);
-	DirectXManager::init(_deviceResources->GetD3DDevice(), _deviceResources->GetD3DDeviceContext(), _deviceResources->GetRenderTargetView(), Rotation0);
-#else
-	DirectXManager::init(_deviceResources->GetD3DDevice(), _deviceResources->GetD3DDeviceContext(), _deviceResources->GetRenderTargetView(), _deviceResources->GetOrientationTransform3D());
-#endif
+    DirectXRendererHelper::init(_deviceResources->GetD3DDevice(), _deviceResources->GetD3DDeviceContext(), _deviceResources->GetRenderTargetView());
 
 	RECT outputSize = _deviceResources->GetOutputSize();
-	LONG width = outputSize.right - outputSize.left;
-	LONG height = outputSize.bottom - outputSize.top;
+    LONG screenWidth = outputSize.right - outputSize.left;
+    LONG screenHeight = outputSize.bottom - outputSize.top;
+    LONG width = screenWidth;
+	LONG height = screenHeight;
 	LONG touchWidth = width;
 	LONG touchHeight = height;
-
-	if (DXManager->isWindowsMobile())
-	{
-		touchWidth = height;
-		touchHeight = width;
-	}
 
     int clampWidth = 1440;
     int clampHeight = 900;
@@ -859,45 +782,21 @@ void DirectXMain::CreateWindowSizeDependentResources()
 	width = width > clampWidth ? clampWidth : width;
 	height = height > clampHeight ? clampHeight : height;
 
-	_engine->createWindowSizeDependentResources(width, height, touchWidth, touchHeight);
+	_engine->createWindowSizeDependentResources(screenWidth, screenHeight, width, height, touchWidth, touchHeight);
 }
 
 void DirectXMain::beginPixEvent(PCWSTR pFormat, DX::DirectXDeviceResources* deviceResources)
 {
-#if !defined(WINAPI_FAMILY) || (WINAPI_FAMILY == WINAPI_FAMILY_DESKTOP_APP)
-	UNUSED(deviceResources);
-
-	_deviceResources->PIXBeginEvent(pFormat);
-#else
-	if (deviceResources)
-	{
-		auto context = deviceResources->GetD3DDeviceContext();
-		PIXBeginEvent(context, PIX_COLOR_DEFAULT, pFormat);
-	}
-	else
-	{
-		PIXBeginEvent(PIX_COLOR_DEFAULT, pFormat);
-	}
-#endif
+    UNUSED(deviceResources);
+    
+    _deviceResources->PIXBeginEvent(pFormat);
 }
 
 void DirectXMain::endPixEvent(DX::DirectXDeviceResources* deviceResources)
 {
-#if !defined(WINAPI_FAMILY) || (WINAPI_FAMILY == WINAPI_FAMILY_DESKTOP_APP)
-	UNUSED(deviceResources);
-
-	_deviceResources->PIXEndEvent();
-#else
-	if (deviceResources)
-	{
-		auto context = deviceResources->GetD3DDeviceContext();
-		PIXEndEvent(context);
-	}
-	else
-	{
-		PIXEndEvent();
-	}
-#endif
+    UNUSED(deviceResources);
+    
+    _deviceResources->PIXEndEvent();
 }
 
 void DirectXMain::OnDeviceLost()
@@ -918,20 +817,7 @@ DirectXMain::DirectXMain() : _engine(NULL), _dpi(0), _isPointerPressed(false), _
 	_deviceResources = std::make_unique<DX::DirectXDeviceResources>();
 	_deviceResources->RegisterDeviceNotify(this);
 
-#if !defined(WINAPI_FAMILY) || (WINAPI_FAMILY == WINAPI_FAMILY_DESKTOP_APP)
-	static const XMFLOAT4X4 Rotation0(
-		1.0f, 0.0f, 0.0f, 0.0f,
-		0.0f, 1.0f, 0.0f, 0.0f,
-		0.0f, 0.0f, 1.0f, 0.0f,
-		0.0f, 0.0f, 0.0f, 1.0f
-	);
-	DirectXManager::init(_deviceResources->GetD3DDevice(), _deviceResources->GetD3DDeviceContext(), _deviceResources->GetRenderTargetView(), Rotation0);
-	_isWindowsMobile = false;
-#else
-	DirectXManager::init(_deviceResources->GetD3DDevice(), _deviceResources->GetD3DDeviceContext(), _deviceResources->GetRenderTargetView(), _deviceResources->GetOrientationTransform3D());
-	Windows::System::Profile::AnalyticsVersionInfo^ api = Windows::System::Profile::AnalyticsInfo::VersionInfo;
-	_isWindowsMobile = api->DeviceFamily->Equals("Windows.Mobile");
-#endif
+    DirectXRendererHelper::init(_deviceResources->GetD3DDevice(), _deviceResources->GetD3DDeviceContext(), _deviceResources->GetRenderTargetView());
 }
 
 DirectXMain::~DirectXMain()
@@ -943,9 +829,5 @@ DirectXMain::~DirectXMain()
 
 void exitGame()
 {
-#if !defined(WINAPI_FAMILY) || (WINAPI_FAMILY == WINAPI_FAMILY_DESKTOP_APP)
-	PostQuitMessage(0);
-#else
-	Windows::ApplicationModel::Core::CoreApplication::Exit();
-#endif
+    PostQuitMessage(0);
 }

@@ -14,7 +14,6 @@
 #include "framework/input/KeyboardInputManager.h"
 #include "framework/file/android/AndroidAssetDataHandler.h"
 #include "framework/audio/android/AndroidAudioEngineHelper.h"
-#include "framework/graphics/opengl/OpenGLManager.h"
 #include "framework/util/FrameworkConstants.h"
 #include "framework/input/KeyboardLookup.h"
 #include "framework/math/MathUtil.h"
@@ -246,15 +245,13 @@ void AndroidMain::loadResources()
     
     _engine->createDeviceDependentResources();
     
-    OGLManager->setScreenSize(width, height);
-    
     if (_glContext->GetScreenWidth() < 2560)
     {
-        _engine->createWindowSizeDependentResources(width > 1280 ? 1280 : width, height > 720 ? 720 : height, width, height);
+        _engine->createWindowSizeDependentResources(width, height, width > 1280 ? 1280 : width, height > 720 ? 720 : height, width, height);
     }
     else
     {
-        _engine->createWindowSizeDependentResources(width > 1440 ? 1440 : width, height > 900 ? 900 : height, width, height);
+        _engine->createWindowSizeDependentResources(width, height, width > 1440 ? 1440 : width, height > 900 ? 900 : height, width, height);
     }
     
     _app->activity->vm->DetachCurrentThread();

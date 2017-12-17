@@ -15,10 +15,12 @@
 
 #define BUFFER_OFFSET(i) ((void*)(i))
 
+class OpenGLRendererHelper;
+
 class OpenGLProgram
 {
 public:
-    OpenGLProgram(const char* vertexShaderName, const char* fragmentShaderName);
+    OpenGLProgram(OpenGLRendererHelper* inRendererHelper, const char* vertexShaderName, const char* fragmentShaderName);
     
     virtual ~OpenGLProgram();
     
@@ -29,6 +31,7 @@ public:
     GLuint getProgramObjectId();
     
 protected:
+    OpenGLRendererHelper* _rendererHelper;
     GLuint _programObjectId;
     
     void mapBuffer(GLuint& vbo, std::vector<GLfloat>& vertices);

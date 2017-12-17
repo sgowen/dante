@@ -15,7 +15,6 @@
 #include "framework/input/GamePadInputManager.h"
 #include "framework/input/GamePadEventType.h"
 #include "framework/util/FrameworkConstants.h"
-#include "framework/graphics/opengl/OpenGLManager.h"
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -170,9 +169,7 @@ int GlfwMain::exec(Engine* engine)
 
         if (width != glWidth || height != glHeight)
         {
-            OGLManager->setScreenSize(width, height);
-
-            engine->createWindowSizeDependentResources(width > 1440 ? 1440 : width, height > 900 ? 900 : height, width, height);
+            engine->createWindowSizeDependentResources(width, height, width > 1440 ? 1440 : width, height > 900 ? 900 : height, width, height);
 
             glWidth = width;
             glHeight = height;

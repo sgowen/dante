@@ -157,20 +157,6 @@ const char* JsonFile::platformSpecificFilePath()
     ret = AndroidAssetDataHandler::getInstance()->getPathInsideApk(_filePath);
 #elif TARGET_OS_IPHONE
     ret = getPathInsideNSDocuments(_filePath);
-#elif defined _WIN32
-    #if !defined(WINAPI_FAMILY) || WINAPI_FAMILY == WINAPI_FAMILY_DESKTOP_APP
-        ret = _filePath;
-    #else
-        Windows::Storage::StorageFolder^ localFolder = Windows::Storage::ApplicationData::Current->LocalFolder;
-        Platform::String^ ps_path = localFolder->Path;
-        std::string s_path(ps_path->Begin(), ps_path->End());
-        const char* path = s_path.c_str(); // std::string to const
-        std::stringstream ss;
-        ss << path << "\\" << _filePath;
-    
-        std::string retS = ss.str();
-        ret = retS.c_str();
-    #endif
 #else
     ret = _filePath;
 #endif

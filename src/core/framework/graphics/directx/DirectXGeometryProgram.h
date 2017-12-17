@@ -14,7 +14,7 @@
 class DirectXGeometryProgram : public DirectXProgram
 {
 public:
-    DirectXGeometryProgram(const char* vertexShaderName, const char* fragmentShaderName);
+    DirectXGeometryProgram(DirectXRendererHelper* inRendererHelper, const char* vertexShaderName, const char* fragmentShaderName);
     
     virtual void mapVertices();
 };

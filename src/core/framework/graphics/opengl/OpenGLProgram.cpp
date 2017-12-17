@@ -8,7 +8,8 @@
 
 #include "framework/graphics/opengl/OpenGLProgram.h"
 
-#include "framework/graphics/opengl/OpenGLManager.h"
+#include <framework/graphics/opengl/OpenGLRendererHelper.h>
+
 #include "framework/file/portable/AssetDataHandler.h"
 #include "framework/file/portable/FileData.h"
 #include "framework/util/StringUtil.h"
@@ -19,7 +20,7 @@
 #include <string>
 #include <cstring>
 
-OpenGLProgram::OpenGLProgram(const char* vertexShaderName, const char* fragmentShaderName)
+OpenGLProgram::OpenGLProgram(OpenGLRendererHelper* inRendererHelper, const char* vertexShaderName, const char* fragmentShaderName) : _rendererHelper(inRendererHelper), _programObjectId(0)
 {
     assert(vertexShaderName != NULL);
     assert(fragmentShaderName != NULL);

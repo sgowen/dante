@@ -11,12 +11,13 @@
 
 #include "framework/graphics/portable/GpuProgramWrapper.h"
 
+class OpenGLRendererHelper;
 class OpenGLTextureProgram;
 
 class OpenGLTextureGpuProgramWrapper : public GpuProgramWrapper
 {
 public:
-    OpenGLTextureGpuProgramWrapper();
+    OpenGLTextureGpuProgramWrapper(OpenGLRendererHelper* inRendererHelper);
     
     virtual ~OpenGLTextureGpuProgramWrapper();
     

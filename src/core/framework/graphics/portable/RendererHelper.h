@@ -12,6 +12,8 @@
 #include <framework/graphics/portable/NGPrimitiveType.h>
 #include <framework/graphics/portable/NGTextureSlot.h>
 
+#include <vector>
+
 class TextureWrapper;
 struct GpuTextureWrapper;
 
@@ -22,9 +24,9 @@ public:
     
     virtual ~RendererHelper();
 
-	virtual void createDeviceDependentResources(int maxBatchSize) = 0;
+	virtual void createDeviceDependentResources() = 0;
 
-	virtual void createWindowSizeDependentResources(int renderWidth, int renderHeight, int numFramebuffers) = 0;
+	virtual void createWindowSizeDependentResources(int screenWidth, int screenHeight, int renderWidth, int renderHeight, int numFramebuffers) = 0;
 
 	virtual void releaseDeviceDependentResources() = 0;
     
@@ -52,6 +54,10 @@ public:
     
     virtual void addVertexCoordinate(float x, float y, float z, float r, float g, float b, float a) = 0;
     
+    virtual void useNormalBlending() = 0;
+    
+    virtual void useScreenBlending() = 0;
+    
     virtual void draw(NGPrimitiveType renderPrimitiveType, uint32_t first, uint32_t count) = 0;
     
     virtual void drawIndexed(NGPrimitiveType renderPrimitiveType, uint32_t count) = 0;
@@ -60,6 +66,23 @@ public:
     
 protected:
     TextureWrapper* _framebuffer;
+    
+    std::vector<GpuTextureWrapper *> _framebuffers;
+    std::vector<uint16_t> _indices;
+    
+    int _screenWidth;
+    int _screenHeight;
+    int _renderWidth;
+    int _renderHeight;
+    int _numFramebuffers;
+    
+    virtual void createFramebufferObject() = 0;
+    virtual void releaseFramebuffers() = 0;
+    
+    void createFramebufferObjects();
+    
+private:
+    void generateIndices(int maxBatchSize);
 };
 
 #endif /* defined(__noctisgames__RendererHelper__) */

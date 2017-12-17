@@ -10,14 +10,14 @@
 
 #include "framework/graphics/directx/DirectXProgram.h"
 
-#include "framework/graphics/directx/DirectXManager.h"
+#include "framework/graphics/directx/DirectXRendererHelper.h"
 #include "framework/util/StringUtil.h"
 #include "framework/file/portable/AssetDataHandler.h"
 #include "framework/file/portable/FileData.h"
 
 #include "PlatformHelpers.h"
 
-DirectXProgram::DirectXProgram(const char* vertexShaderName, const char* fragmentShaderName, bool useTextureCoords)
+DirectXProgram::DirectXProgram(DirectXRendererHelper* inRendererHelper, const char* vertexShaderName, const char* fragmentShaderName, bool useTextureCoords) : _rendererHelper(inRendererHelper)
 {
     std::string s1("data\\shaders\\");
 	s1 += std::string(vertexShaderName);
@@ -27,7 +27,7 @@ DirectXProgram::DirectXProgram(const char* vertexShaderName, const char* fragmen
 	s2 += std::string(fragmentShaderName);
 	const char* finalFragmentShaderFileName = s2.c_str();
 
-	ID3D11Device* d3dDevice = DirectXManager::getD3dDevice();
+	ID3D11Device* d3dDevice = DirectXRendererHelper::getD3dDevice();
 
     const FileData vertex_shader_source = AssetDataHandler::getAssetDataHandler()->getAssetData(finalVertexShaderFileName);
     unsigned char* vertex_shader_source_output = (unsigned char*) malloc(vertex_shader_source.data_length);
@@ -94,7 +94,7 @@ DirectXProgram::~DirectXProgram()
 
 void DirectXProgram::bindShaders()
 {
-    ID3D11DeviceContext* d3dContext = DirectXManager::getD3dContext();
+    ID3D11DeviceContext* d3dContext = DirectXRendererHelper::getD3dContext();
     
     d3dContext->IASetInputLayout(_inputLayout.Get());
     
@@ -105,17 +105,17 @@ void DirectXProgram::bindShaders()
 
 void DirectXProgram::bindMatrix()
 {
-    ID3D11DeviceContext* d3dContext = DirectXManager::getD3dContext();
+    ID3D11DeviceContext* d3dContext = DirectXRendererHelper::getD3dContext();
     
-    d3dContext->VSSetConstantBuffers(0, 1, DXManager->getMatrixConstantbuffer().GetAddressOf());
+    d3dContext->VSSetConstantBuffers(0, 1, _rendererHelper->getMatrixConstantbuffer().GetAddressOf());
     
     // send the final matrix to video memory
-    d3dContext->UpdateSubresource(DXManager->getMatrixConstantbuffer().Get(), 0, 0, &DXManager->getMatFinal(), 0, 0);
+    d3dContext->UpdateSubresource(_rendererHelper->getMatrixConstantbuffer().Get(), 0, 0, &_rendererHelper->getMatFinal(), 0, 0);
 }
 
 void DirectXProgram::createConstantBuffer(_COM_Outptr_opt_  ID3D11Buffer **ppBuffer)
 {
-	ID3D11Device* d3dDevice = DirectXManager::getD3dDevice();
+	ID3D11Device* d3dDevice = DirectXRendererHelper::getD3dDevice();
 
 	D3D11_BUFFER_DESC bd = { 0 };
 

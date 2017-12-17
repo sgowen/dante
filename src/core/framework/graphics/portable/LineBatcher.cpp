@@ -17,7 +17,7 @@
 
 #include <framework/util/FrameworkConstants.h>
 
-LineBatcher::LineBatcher(RendererHelper& inRendererHelper) : _rendererHelper(inRendererHelper), _numLines(0)
+LineBatcher::LineBatcher(RendererHelper* inRendererHelper) : _rendererHelper(inRendererHelper), _numLines(0)
 {
     // Empty
 }
@@ -29,7 +29,7 @@ LineBatcher::~LineBatcher()
 
 void LineBatcher::beginBatch()
 {
-    _rendererHelper.clearColorVertices();
+    _rendererHelper->clearColorVertices();
     _numLines = 0;
 }
 
@@ -39,7 +39,7 @@ void LineBatcher::endBatch(GpuProgramWrapper &gpuProgramWrapper)
     {
         gpuProgramWrapper.bind();
         
-        _rendererHelper.draw(NGPrimitiveType_Lines, 0, VERTICES_PER_LINE * _numLines);
+        _rendererHelper->draw(NGPrimitiveType_Lines, 0, VERTICES_PER_LINE * _numLines);
         
         gpuProgramWrapper.unbind();
     }
@@ -52,8 +52,8 @@ void LineBatcher::renderLine(Line &line, Color &c)
     float eX = line.getEnd().getX();
     float eY = line.getEnd().getY();
     
-    _rendererHelper.addVertexCoordinate(oX, oY, 0, c.red, c.green, c.blue, c.alpha);
-    _rendererHelper.addVertexCoordinate(eX, eY, 0, c.red, c.green, c.blue, c.alpha);
+    _rendererHelper->addVertexCoordinate(oX, oY, 0, c.red, c.green, c.blue, c.alpha);
+    _rendererHelper->addVertexCoordinate(eX, eY, 0, c.red, c.green, c.blue, c.alpha);
     
     _numLines++;
 }

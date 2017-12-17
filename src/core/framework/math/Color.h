@@ -12,6 +12,7 @@
 class Color
 {
 public:
+    static Color WHITE;
     static Color BLACK;
     static Color RED;
     static Color DARK_RED;

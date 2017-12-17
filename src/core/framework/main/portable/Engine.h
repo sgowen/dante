@@ -24,7 +24,7 @@ public:
     
     virtual void createDeviceDependentResources();
     
-    virtual void createWindowSizeDependentResources(int renderWidth, int renderHeight, int cursorWidth, int cursorHeight);
+    virtual void createWindowSizeDependentResources(int screenWidth, int screenHeight, int renderWidth, int renderHeight, int cursorWidth, int cursorHeight);
     
     virtual void releaseDeviceDependentResources();
     

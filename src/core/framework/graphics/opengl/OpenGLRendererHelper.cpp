@@ -12,31 +12,58 @@
 
 #include "framework/graphics/portable/TextureWrapper.h"
 #include "framework/graphics/portable/GpuTextureWrapper.h"
-#include "framework/graphics/opengl/OpenGLManager.h"
 
-OpenGLRendererHelper::OpenGLRendererHelper() : RendererHelper()
+#include "framework/util/NGSTDUtil.h"
+
+#include <assert.h>
+
+OpenGLRendererHelper::OpenGLRendererHelper() : RendererHelper(), _sbVboObject(0), _gbVboObject(0), _screenFBO(0), _maxTextureSize(64)
 {
-    OpenGLManager::create();
+    // Empty
 }
 
 OpenGLRendererHelper::~OpenGLRendererHelper()
 {
-    OpenGLManager::destroy();
+    releaseDeviceDependentResources();
 }
 
-void OpenGLRendererHelper::createDeviceDependentResources(int maxBatchSize)
+void OpenGLRendererHelper::createDeviceDependentResources()
 {
-    OGLManager->createDeviceDependentResources(maxBatchSize);
+    glGetIntegerv(GL_FRAMEBUFFER_BINDING, &_screenFBO);
+    glGetIntegerv(GL_MAX_TEXTURE_SIZE, &_maxTextureSize);
+    
+    if (_renderWidth > -1
+        && _renderHeight > -1
+        && _numFramebuffers > -1)
+    {
+        releaseFramebuffers();
+        createFramebufferObjects();
+    }
 }
 
-void OpenGLRendererHelper::createWindowSizeDependentResources(int renderWidth, int renderHeight, int numFramebuffers)
+void OpenGLRendererHelper::createWindowSizeDependentResources(int screenWidth, int screenHeight, int renderWidth, int renderHeight, int numFramebuffers)
 {
-    OGLManager->createWindowSizeDependentResources(renderWidth, renderHeight, numFramebuffers);
+    _screenWidth = screenWidth;
+    _screenHeight = screenHeight;
+    _renderWidth = renderWidth;
+    _renderHeight = renderHeight;
+    _numFramebuffers = numFramebuffers;
+    
+    glViewport(0, 0, _renderWidth, _renderHeight);
+    
+    glScissor(0, 0, _renderWidth, _renderHeight);
+    glEnable(GL_SCISSOR_TEST);
+    
+    releaseFramebuffers();
+    createFramebufferObjects();
 }
 
 void OpenGLRendererHelper::releaseDeviceDependentResources()
 {
-    OGLManager->releaseDeviceDependentResources();
+    releaseFramebuffers();
+    
+    glDeleteBuffers(1, &_sbVboObject);
+    glDeleteBuffers(1, &_gbVboObject);
 }
 
 void OpenGLRendererHelper::beginFrame()
@@ -55,25 +82,53 @@ void OpenGLRendererHelper::endFrame()
 
 TextureWrapper* OpenGLRendererHelper::getFramebuffer(int index)
 {
-    _framebuffer->gpuTextureWrapper = OGLManager->getFramebuffers().at(index);
+    _framebuffer->gpuTextureWrapper = _framebuffers[index];
     
     return _framebuffer;
 }
 
+inline void mat4x4_identity(mat4x4 M)
+{
+    int i, j;
+    for (i=0; i<4; ++i)
+    {
+        for (j=0; j<4; ++j)
+        {
+            M[i][j] = i==j ? 1.f : 0.f;
+        }
+    }
+}
+
+inline void mat4x4_ortho(mat4x4 M, float l, float r, float b, float t, float n, float f)
+{
+    M[0][0] = 2.f/(r-l);
+    M[0][1] = M[0][2] = M[0][3] = 0.f;
+    
+    M[1][1] = 2.f/(t-b);
+    M[1][0] = M[1][2] = M[1][3] = 0.f;
+    
+    M[2][2] = -2.f/(f-n);
+    M[2][0] = M[2][1] = M[2][3] = 0.f;
+    
+    M[3][0] = -(r+l)/(r-l);
+    M[3][1] = -(t+b)/(t-b);
+    M[3][2] = -(f+n)/(f-n);
+    M[3][3] = 1.f;
+}
+
 void OpenGLRendererHelper::updateMatrix(float left, float right, float bottom, float top)
 {
-    OGLManager->createMatrix(left, right, bottom, top);
+    mat4x4_identity(_viewProjectionMatrix);
+    
+    mat4x4_ortho(_viewProjectionMatrix, left, right, bottom, top, -1, 1);
 }
 
 void OpenGLRendererHelper::bindToOffscreenFramebuffer(int index)
 {
-    glBindFramebuffer(GL_FRAMEBUFFER, OGLManager->getFbos().at(index));
+    glBindFramebuffer(GL_FRAMEBUFFER, _fbos[index]);
     
-    int width = OGLManager->getRenderWidth();
-    int height = OGLManager->getRenderHeight();
-    
-    glViewport(0, 0, width, height);
-    glScissor(0, 0, width, height);
+    glViewport(0, 0, _renderWidth, _renderHeight);
+    glScissor(0, 0, _renderWidth, _renderHeight);
 }
 
 void OpenGLRendererHelper::clearFramebufferWithColor(float r, float g, float b, float a)
@@ -84,13 +139,10 @@ void OpenGLRendererHelper::clearFramebufferWithColor(float r, float g, float b, 
 
 void OpenGLRendererHelper::bindToScreenFramebuffer()
 {
-    glBindFramebuffer(GL_FRAMEBUFFER, OGLManager->getScreenFBO());
+    glBindFramebuffer(GL_FRAMEBUFFER, _screenFBO);
     
-    int width = OGLManager->getScreenWidth();
-    int height = OGLManager->getScreenHeight();
-    
-    glViewport(0, 0, width, height);
-    glScissor(0, 0, width, height);
+    glViewport(0, 0, _screenWidth, _screenHeight);
+    glScissor(0, 0, _screenWidth, _screenHeight);
 }
 
 void OpenGLRendererHelper::destroyTexture(GpuTextureWrapper& textureWrapper)
@@ -100,22 +152,48 @@ void OpenGLRendererHelper::destroyTexture(GpuTextureWrapper& textureWrapper)
 
 void OpenGLRendererHelper::clearColorVertices()
 {
-    OGLManager->getColorVertices().clear();
+    _colorVertices.clear();
 }
 
 void OpenGLRendererHelper::clearTextureVertices()
 {
-    OGLManager->getTextureVertices().clear();
+    _textureVertices.clear();
 }
 
 void OpenGLRendererHelper::addVertexCoordinate(float x, float y, float z, float r, float g, float b, float a, float u, float v)
 {
-    OGLManager->addVertexCoordinate(x, y, z, r, g, b, a, u, v);
+    _textureVertices.push_back(x);
+    _textureVertices.push_back(y);
+    _textureVertices.push_back(z);
+    _textureVertices.push_back(r);
+    _textureVertices.push_back(g);
+    _textureVertices.push_back(b);
+    _textureVertices.push_back(a);
+    _textureVertices.push_back(u);
+    _textureVertices.push_back(v);
 }
 
 void OpenGLRendererHelper::addVertexCoordinate(float x, float y, float z, float r, float g, float b, float a)
 {
-    OGLManager->addVertexCoordinate(x, y, z, r, g, b, a);
+    _colorVertices.push_back(x);
+    _colorVertices.push_back(y);
+    _colorVertices.push_back(z);
+    _colorVertices.push_back(r);
+    _colorVertices.push_back(g);
+    _colorVertices.push_back(b);
+    _colorVertices.push_back(a);
+}
+
+void OpenGLRendererHelper::useNormalBlending()
+{
+    glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ZERO);
+    glBlendEquationSeparate(GL_FUNC_ADD, GL_FUNC_ADD);
+}
+
+void OpenGLRendererHelper::useScreenBlending()
+{
+    glBlendFuncSeparate(GL_ONE, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
+    glBlendEquationSeparate(GL_FUNC_ADD, GL_FUNC_ADD);
 }
 
 void OpenGLRendererHelper::draw(NGPrimitiveType renderPrimitiveType, uint32_t first, uint32_t count)
@@ -125,11 +203,88 @@ void OpenGLRendererHelper::draw(NGPrimitiveType renderPrimitiveType, uint32_t fi
 
 void OpenGLRendererHelper::drawIndexed(NGPrimitiveType renderPrimitiveType, uint32_t count)
 {
-    glDrawElements(renderPrimitiveType, count, GL_UNSIGNED_SHORT, &OGLManager->getIndices()[0]);
+    glDrawElements(renderPrimitiveType, count, GL_UNSIGNED_SHORT, &_indices[0]);
 }
 
 void OpenGLRendererHelper::bindTexture(NGTextureSlot textureSlot, TextureWrapper* textureWrapper)
 {
     glActiveTexture(textureSlot);
     glBindTexture(GL_TEXTURE_2D, textureWrapper == NULL ? 0 : textureWrapper->gpuTextureWrapper->texture);
+}
+
+std::vector<GLfloat>& OpenGLRendererHelper::getTextureVertices()
+{
+    return _textureVertices;
+}
+
+std::vector<GLfloat>& OpenGLRendererHelper::getColorVertices()
+{
+    return _colorVertices;
+}
+
+GLuint& OpenGLRendererHelper::getSbVboObject()
+{
+    return _sbVboObject;
+}
+
+GLuint& OpenGLRendererHelper::getGbVboObject()
+{
+    return _gbVboObject;
+}
+
+mat4x4& OpenGLRendererHelper::getViewProjectionMatrix()
+{
+    return _viewProjectionMatrix;
+}
+
+void OpenGLRendererHelper::createFramebufferObject()
+{
+    GLuint fbo_texture;
+    GLuint fbo;
+    
+    // Texture
+    glActiveTexture(GL_TEXTURE0);
+    glGenTextures(1, &fbo_texture);
+    glBindTexture(GL_TEXTURE_2D, fbo_texture);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, _renderWidth, _renderHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+    glBindTexture(GL_TEXTURE_2D, 0);
+    
+    // Framebuffer
+    glGenFramebuffers(1, &fbo);
+    glBindFramebuffer(GL_FRAMEBUFFER, fbo);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, fbo_texture, 0);
+    
+    GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
+    
+    glBindFramebuffer(GL_FRAMEBUFFER, _screenFBO);
+    
+    assert(status == GL_FRAMEBUFFER_COMPLETE);
+    
+    _fbo_textures.push_back(fbo_texture);
+    _fbos.push_back(fbo);
+    
+    _framebuffers.push_back(new GpuTextureWrapper(fbo_texture));
+}
+
+void OpenGLRendererHelper::releaseFramebuffers()
+{
+    for (std::vector<GLuint>::iterator i = _fbo_textures.begin(); i != _fbo_textures.end(); ++i)
+    {
+        glDeleteTextures(1, &(*i));
+    }
+    
+    _fbo_textures.clear();
+    
+    for (std::vector<GLuint>::iterator i = _fbos.begin(); i != _fbos.end(); ++i)
+    {
+        glDeleteFramebuffers(1, &(*i));
+    }
+    
+    _fbos.clear();
+    
+    NGSTDUtil::cleanUpVectorOfPointers(_framebuffers);
 }

@@ -11,12 +11,12 @@
 #include "framework/graphics/directx/DirectXTextureGpuProgramWrapper.h"
 
 #include "framework/graphics/directx/DirectXTextureProgram.h"
-#include "framework/graphics/directx/DirectXManager.h"
+#include "framework/graphics/directx/DirectXRendererHelper.h"
 #include "framework/graphics/portable/GpuTextureWrapper.h"
 #include "framework/util/FrameworkConstants.h"
 
-DirectXTextureGpuProgramWrapper::DirectXTextureGpuProgramWrapper() : GpuProgramWrapper(),
-_program(new DirectXTextureProgram(TEXTURE_VERTEX_SHADER, TEXTURE_FRAGMENT_SHADER))
+DirectXTextureGpuProgramWrapper::DirectXTextureGpuProgramWrapper(DirectXRendererHelper* inRendererHelper) : GpuProgramWrapper(),
+_program(new DirectXTextureProgram(inRendererHelper, TEXTURE_VERTEX_SHADER, TEXTURE_FRAGMENT_SHADER))
 {
     // Empty
 }
@@ -28,8 +28,6 @@ DirectXTextureGpuProgramWrapper::~DirectXTextureGpuProgramWrapper()
 
 void DirectXTextureGpuProgramWrapper::bind()
 {
-    DXManager->useNormalBlending();
-
     _program->bindShaders();
     
 	_program->bindMatrix();

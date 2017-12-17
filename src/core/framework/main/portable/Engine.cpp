@@ -40,9 +40,9 @@ void Engine::createDeviceDependentResources()
     _renderer->createDeviceDependentResources();
 }
 
-void Engine::createWindowSizeDependentResources(int renderWidth, int renderHeight, int cursorWidth, int cursorHeight)
+void Engine::createWindowSizeDependentResources(int screenWidth, int screenHeight, int renderWidth, int renderHeight, int cursorWidth, int cursorHeight)
 {
-    _renderer->createWindowSizeDependentResources(renderWidth, renderHeight, NUM_FRAMEBUFFERS);
+    _renderer->createWindowSizeDependentResources(screenWidth, screenHeight, renderWidth, renderHeight, NUM_FRAMEBUFFERS);
     
     CURSOR_CONVERTER->setCursorSize(cursorWidth, cursorHeight);
 }

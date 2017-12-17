@@ -17,7 +17,7 @@ class Color;
 class CircleBatcher
 {
 public:
-    CircleBatcher(RendererHelper& inRendererHelper);
+    CircleBatcher(RendererHelper* inRendererHelper);
     
     ~CircleBatcher();
     
@@ -26,7 +26,7 @@ public:
     void renderPartialCircle(Circle &circle, int arcDegrees, Color &c, GpuProgramWrapper &gpuProgramWrapper);
     
 private:
-    RendererHelper& _rendererHelper;
+    RendererHelper* _rendererHelper;
     int _numPoints;
     
     void clearVertices();

@@ -8,11 +8,12 @@
 
 #include "framework/graphics/opengl/OpenGLFramebufferToScreenGpuProgramWrapper.h"
 
+#include <framework/graphics/portable/RendererHelper.h>
 #include "framework/graphics/opengl/OpenGLFramebufferToScreenProgram.h"
-#include "framework/graphics/opengl/OpenGLManager.h"
+
 #include "framework/util/FrameworkConstants.h"
 
-OpenGLFramebufferToScreenGpuProgramWrapper::OpenGLFramebufferToScreenGpuProgramWrapper() : GpuProgramWrapper(), _program(new OpenGLFramebufferToScreenProgram(FRAMEBUFFER_TO_SCREEN_VERTEX_SHADER, FRAMEBUFFER_TO_SCREEN_FRAGMENT_SHADER))
+OpenGLFramebufferToScreenGpuProgramWrapper::OpenGLFramebufferToScreenGpuProgramWrapper(OpenGLRendererHelper* inRendererHelper) : GpuProgramWrapper(), _program(new OpenGLFramebufferToScreenProgram(inRendererHelper, FRAMEBUFFER_TO_SCREEN_VERTEX_SHADER, FRAMEBUFFER_TO_SCREEN_FRAGMENT_SHADER))
 {
     // Empty
 }
@@ -24,8 +25,6 @@ OpenGLFramebufferToScreenGpuProgramWrapper::~OpenGLFramebufferToScreenGpuProgram
 
 void OpenGLFramebufferToScreenGpuProgramWrapper::bind()
 {
-    OGLManager->useScreenBlending();
-    
     _program->bind();
 }
 

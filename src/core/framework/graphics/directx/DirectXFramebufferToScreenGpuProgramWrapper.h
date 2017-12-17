@@ -11,12 +11,13 @@
 
 #include "framework/graphics/portable/GpuProgramWrapper.h"
 
+class RendererHelper;
 class DirectXProgram;
 
 class DirectXFramebufferToScreenGpuProgramWrapper : public GpuProgramWrapper
 {
 public:
-	DirectXFramebufferToScreenGpuProgramWrapper();
+	DirectXFramebufferToScreenGpuProgramWrapper(DirectXRendererHelper* inRendererHelper);
 
     virtual ~DirectXFramebufferToScreenGpuProgramWrapper();
     

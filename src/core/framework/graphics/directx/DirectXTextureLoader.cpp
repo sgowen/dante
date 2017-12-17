@@ -15,7 +15,7 @@
 #include "framework/graphics/portable/GpuTextureWrapper.h"
 
 #include "framework/util/macros.h"
-#include "framework/graphics/directx/DirectXManager.h"
+#include "framework/graphics/directx/DirectXRendererHelper.h"
 #include "framework/file/portable/AssetDataHandler.h"
 #include "framework/file/portable/FileData.h"
 #include "framework/util/StringUtil.h"
@@ -57,7 +57,7 @@ GpuTextureDataWrapper* DirectXTextureLoader::loadTextureData(TextureWrapper* tex
     
     ID3D11ShaderResourceView *pShaderResourceView;
     
-	ID3D11Device* d3dDevice = DirectXManager::getD3dDevice();
+	ID3D11Device* d3dDevice = DirectXRendererHelper::getD3dDevice();
     DirectX::ThrowIfFailed(DirectX::CreateDDSTextureFromMemory(d3dDevice, (const uint8_t*)output, fileData.data_length, NULL, &pShaderResourceView));
     
     AssetDataHandler::getAssetDataHandler()->releaseAssetData(&fileData);

@@ -17,7 +17,7 @@ class Color;
 class LineBatcher
 {
 public:
-    LineBatcher(RendererHelper& inRendererHelper);
+    LineBatcher(RendererHelper* inRendererHelper);
     
     ~LineBatcher();
     
@@ -28,7 +28,7 @@ public:
     void renderLine(Line &line, Color &c);
     
 private:
-    RendererHelper& _rendererHelper;
+    RendererHelper* _rendererHelper;
     int _numLines;
 };
 

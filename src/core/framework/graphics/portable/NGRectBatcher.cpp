@@ -17,7 +17,7 @@
 
 #include <framework/util/FrameworkConstants.h>
 
-NGRectBatcher::NGRectBatcher(RendererHelper& inRendererHelper, bool isFill) : _rendererHelper(inRendererHelper), _isFill(isFill), _numNGRects(0)
+NGRectBatcher::NGRectBatcher(RendererHelper* inRendererHelper, bool isFill) : _rendererHelper(inRendererHelper), _isFill(isFill), _numNGRects(0)
 {
     // Empty
 }
@@ -29,7 +29,7 @@ NGRectBatcher::~NGRectBatcher()
 
 void NGRectBatcher::beginBatch()
 {
-    _rendererHelper.clearColorVertices();
+    _rendererHelper->clearColorVertices();
     _numNGRects = 0;
 }
 
@@ -39,7 +39,7 @@ void NGRectBatcher::endBatch(GpuProgramWrapper &gpuProgramWrapper)
     {
         gpuProgramWrapper.bind();
         
-        _rendererHelper.drawIndexed(_isFill ? NGPrimitiveType_Triangles : NGPrimitiveType_LineStrip, _numNGRects * INDICES_PER_RECTANGLE);
+        _rendererHelper->drawIndexed(_isFill ? NGPrimitiveType_Triangles : NGPrimitiveType_LineStrip, _numNGRects * INDICES_PER_RECTANGLE);
         
         gpuProgramWrapper.unbind();
     }
@@ -52,10 +52,10 @@ void NGRectBatcher::renderNGRect(NGRect &r, Color &c)
     float x2 = x1 + r.getWidth();
     float y2 = y1 + r.getHeight();
     
-    _rendererHelper.addVertexCoordinate(x1, y1, 0, c.red, c.green, c.blue, c.alpha);
-    _rendererHelper.addVertexCoordinate(x1, y2, 0, c.red, c.green, c.blue, c.alpha);
-    _rendererHelper.addVertexCoordinate(x2, y2, 0, c.red, c.green, c.blue, c.alpha);
-    _rendererHelper.addVertexCoordinate(x2, y1, 0, c.red, c.green, c.blue, c.alpha);
+    _rendererHelper->addVertexCoordinate(x1, y1, 0, c.red, c.green, c.blue, c.alpha);
+    _rendererHelper->addVertexCoordinate(x1, y2, 0, c.red, c.green, c.blue, c.alpha);
+    _rendererHelper->addVertexCoordinate(x2, y2, 0, c.red, c.green, c.blue, c.alpha);
+    _rendererHelper->addVertexCoordinate(x2, y1, 0, c.red, c.green, c.blue, c.alpha);
     
     _numNGRects++;
 }

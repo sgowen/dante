@@ -11,6 +11,9 @@
 
 #include "framework/graphics/portable/RendererHelper.h"
 
+typedef float vec4[4];
+typedef vec4 mat4x4[4];
+
 class OpenGLRendererHelper : public RendererHelper
 {
 public:
@@ -18,9 +21,9 @@ public:
     
     virtual ~OpenGLRendererHelper();
     
-    virtual void createDeviceDependentResources(int maxBatchSize);
+    virtual void createDeviceDependentResources();
     
-    virtual void createWindowSizeDependentResources(int renderWidth, int renderHeight, int numFramebuffers);
+    virtual void createWindowSizeDependentResources(int screenWidth, int screenHeight, int renderWidth, int renderHeight, int numFramebuffers);
     
     virtual void releaseDeviceDependentResources();
     
@@ -48,11 +51,40 @@ public:
     
     virtual void addVertexCoordinate(float x, float y, float z, float r, float g, float b, float a);
     
+    virtual void useNormalBlending();
+    
+    virtual void useScreenBlending();
+    
     virtual void draw(NGPrimitiveType renderPrimitiveType, uint32_t first, uint32_t count);
     
     virtual void drawIndexed(NGPrimitiveType renderPrimitiveType, uint32_t count);
     
     virtual void bindTexture(NGTextureSlot textureSlot, TextureWrapper* textureWrapper);
+    
+    std::vector<GLfloat>& getTextureVertices();
+    std::vector<GLfloat>& getColorVertices();
+    GLuint& getSbVboObject(); // For Sprite Batcher
+    GLuint& getGbVboObject(); // For Geometry Batcher
+    mat4x4& getViewProjectionMatrix();
+    
+protected:
+    virtual void createFramebufferObject();
+    virtual void releaseFramebuffers();
+    
+private:
+    std::vector<GLuint> _fbos;
+    std::vector<GLuint> _fbo_textures;
+    
+    std::vector<GLfloat> _textureVertices;
+    std::vector<GLfloat> _colorVertices;
+    
+    GLuint _sbVboObject; // For Sprite Batcher
+    GLuint _gbVboObject; // For Geometry Batcher
+    
+    GLint _screenFBO;
+    GLint _maxTextureSize;
+    
+    mat4x4 _viewProjectionMatrix;
 };
 
 #endif /* defined(__noctisgames__OpenGLRendererHelper__) */

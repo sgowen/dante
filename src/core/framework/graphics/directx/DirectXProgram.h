@@ -11,10 +11,12 @@
 
 #include "pch.h"
 
+class RendererHelper;
+
 class DirectXProgram
 {
 public:
-    DirectXProgram(const char* vertexShaderName, const char* fragmentShaderName, bool useTextureCoords);
+    DirectXProgram(DirectXRendererHelper* inRendererHelper, const char* vertexShaderName, const char* fragmentShaderName, bool useTextureCoords);
     
     virtual ~DirectXProgram();
     
@@ -25,6 +27,9 @@ public:
     void bindMatrix();
 
 	void createConstantBuffer(_COM_Outptr_opt_  ID3D11Buffer **ppBuffer);
+    
+protected:
+    RendererHelper* _rendererHelper;
     
 private:
     Microsoft::WRL::ComPtr<ID3D11VertexShader> _vertexShader;

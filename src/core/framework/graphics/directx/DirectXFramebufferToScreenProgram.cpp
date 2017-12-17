@@ -1,5 +1,5 @@
 //
-//  DirectXTextureProgram.cpp
+//  DirectXFramebufferToScreenProgram.cpp
 //  noctisgames-framework
 //
 //  Created by Stephen Gowen on 2/17/17.
@@ -8,18 +8,18 @@
 
 #include "pch.h"
 
-#include "framework/graphics/directx/DirectXTextureProgram.h"
+#include "framework/graphics/directx/DirectXFramebufferToScreenProgram.h"
 
 #include "framework/graphics/directx/DirectXRendererHelper.h"
 
-DirectXTextureProgram::DirectXTextureProgram(DirectXRendererHelper* inRendererHelper, const char* vertexShaderName, const char* fragmentShaderName) : DirectXProgram(inRendererHelper, vertexShaderName, fragmentShaderName, true)
+DirectXFramebufferToScreenProgram::DirectXFramebufferToScreenProgram(DirectXRendererHelper* inRendererHelper, const char* vertexShaderName, const char* fragmentShaderName) : DirectXProgram(inRendererHelper, vertexShaderName, fragmentShaderName, true)
 {
     // Empty
 }
 
-void DirectXTextureProgram::mapVertices()
+void DirectXFramebufferToScreenProgram::mapVertices()
 {
-    _rendererHelper->useNormalBlending();
+    _rendererHelper->useScreenBlending();
     
     D3D11_MAPPED_SUBRESOURCE mappedResource;
     ZeroMemory(&mappedResource, sizeof(D3D11_MAPPED_SUBRESOURCE));

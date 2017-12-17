@@ -10,7 +10,6 @@
 
 // C++
 #include "framework/input/CursorInputManager.h"
-#include "framework/graphics/opengl/OpenGLManager.h"
 #include "framework/util/FrameworkConstants.h"
 
 @interface IOSMain ()
@@ -171,9 +170,7 @@
     float touchWidth = [UIScreen mainScreen].bounds.size.width;
     float touchHeight = [UIScreen mainScreen].bounds.size.height;
     
-    OGLManager->setScreenSize(width, height);
-    
-    _engine->createWindowSizeDependentResources(width > 1440 ? 1440 : width, height > 900 ? 900 : height, touchWidth, touchHeight);
+    _engine->createWindowSizeDependentResources(width, height, width > 1440 ? 1440 : width, height > 900 ? 900 : height, touchWidth, touchHeight);
 }
 
 - (void)tearDownGL

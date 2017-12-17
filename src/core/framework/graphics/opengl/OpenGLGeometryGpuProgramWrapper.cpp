@@ -8,12 +8,12 @@
 
 #include "framework/graphics/opengl/OpenGLGeometryGpuProgramWrapper.h"
 
+#include <framework/graphics/portable/RendererHelper.h>
 #include "framework/graphics/opengl/OpenGLGeometryProgram.h"
-#include "framework/graphics/opengl/OpenGLManager.h"
-#include "framework/util/FrameworkConstants.h"
+
 #include "framework/util/FrameworkConstants.h"
 
-OpenGLGeometryGpuProgramWrapper::OpenGLGeometryGpuProgramWrapper() : GpuProgramWrapper(), _program(new OpenGLGeometryProgram(COLOR_VERTEX_SHADER, COLOR_FRAGMENT_SHADER))
+OpenGLGeometryGpuProgramWrapper::OpenGLGeometryGpuProgramWrapper(OpenGLRendererHelper* inRendererHelper) : GpuProgramWrapper(), _program(new OpenGLGeometryProgram(inRendererHelper, COLOR_VERTEX_SHADER, COLOR_FRAGMENT_SHADER))
 {
     // Empty
 }
@@ -25,8 +25,6 @@ OpenGLGeometryGpuProgramWrapper::~OpenGLGeometryGpuProgramWrapper()
 
 void OpenGLGeometryGpuProgramWrapper::bind()
 {
-    OGLManager->useNormalBlending();
-    
     _program->bind();
 }
 

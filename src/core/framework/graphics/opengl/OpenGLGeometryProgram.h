@@ -14,7 +14,7 @@
 class OpenGLGeometryProgram : public OpenGLProgram
 {
 public:
-    OpenGLGeometryProgram(const char* vertexShaderName, const char* fragmentShaderName);
+    OpenGLGeometryProgram(OpenGLRendererHelper* inRendererHelper, const char* vertexShaderName, const char* fragmentShaderName);
     
     virtual void bind();
     

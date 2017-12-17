@@ -8,9 +8,9 @@
 
 #include "framework/graphics/opengl/OpenGLGeometryProgram.h"
 
-#include "framework/graphics/opengl/OpenGLManager.h"
+#include <framework/graphics/opengl/OpenGLRendererHelper.h>
 
-OpenGLGeometryProgram::OpenGLGeometryProgram(const char* vertexShaderName, const char* fragmentShaderName) : OpenGLProgram(vertexShaderName, fragmentShaderName)
+OpenGLGeometryProgram::OpenGLGeometryProgram(OpenGLRendererHelper* inRendererHelper, const char* vertexShaderName, const char* fragmentShaderName) : OpenGLProgram(inRendererHelper, vertexShaderName, fragmentShaderName)
 {
     u_mvp_matrix_location = glGetUniformLocation(_programObjectId, "u_MvpMatrix");
     a_position_location = glGetAttribLocation(_programObjectId, "a_Position");
@@ -21,9 +21,11 @@ void OpenGLGeometryProgram::bind()
 {
     OpenGLProgram::bind();
     
-    glUniformMatrix4fv(u_mvp_matrix_location, 1, GL_FALSE, (GLfloat*)OGLManager->getViewProjectionMatrix());
+    _rendererHelper->useNormalBlending();
     
-    mapBuffer(OGLManager->getGbVboObject(), OGLManager->getColorVertices());
+    glUniformMatrix4fv(u_mvp_matrix_location, 1, GL_FALSE, (GLfloat*)_rendererHelper->getViewProjectionMatrix());
+    
+    mapBuffer(_rendererHelper->getGbVboObject(), _rendererHelper->getColorVertices());
     
     glVertexAttribPointer(a_position_location, 3, GL_FLOAT, GL_FALSE, sizeof(GLfloat) * 7, BUFFER_OFFSET(0));
     glVertexAttribPointer(a_color_location, 4, GL_FLOAT, GL_FALSE, sizeof(GLfloat) * 7, BUFFER_OFFSET(3 * sizeof(GL_FLOAT)));
@@ -34,7 +36,7 @@ void OpenGLGeometryProgram::bind()
 
 void OpenGLGeometryProgram::unbind()
 {
-    unmapBuffer(OGLManager->getGbVboObject());
+    unmapBuffer(_rendererHelper->getGbVboObject());
     
     OpenGLProgram::unbind();
 }

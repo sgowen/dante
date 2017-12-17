@@ -10,32 +10,34 @@
 
 #include "framework/graphics/directx/DirectXGeometryProgram.h"
 
-#include "framework/graphics/directx/DirectXManager.h"
+#include "framework/graphics/directx/DirectXRendererHelper.h"
 
-DirectXGeometryProgram::DirectXGeometryProgram(const char* vertexShaderName, const char* fragmentShaderName) : DirectXProgram(vertexShaderName, fragmentShaderName, false)
+DirectXGeometryProgram::DirectXGeometryProgram(DirectXRendererHelper* inRendererHelper, const char* vertexShaderName, const char* fragmentShaderName) : DirectXProgram(inRendererHelper, vertexShaderName, fragmentShaderName, false)
 {
     // Empty
 }
 
 void DirectXGeometryProgram::mapVertices()
 {
+    _rendererHelper->useNormalBlending();
+    
     D3D11_MAPPED_SUBRESOURCE mappedResource;
     ZeroMemory(&mappedResource, sizeof(D3D11_MAPPED_SUBRESOURCE));
     
-    ID3D11DeviceContext* d3dContext = DirectXManager::getD3dContext();
+    ID3D11DeviceContext* d3dContext = DirectXRendererHelper::getD3dContext();
     
     //	Disable GPU access to the vertex buffer data.
-    d3dContext->Map(DXManager->getGbVertexBuffer().Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+    d3dContext->Map(_rendererHelper->getGbVertexBuffer().Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
     
     //	Update the vertex buffer here.
-    int numVertices = DXManager->getColorVertices().size();
-    memcpy(mappedResource.pData, &DXManager->getColorVertices().front(), sizeof(COLOR_VERTEX) * numVertices);
+    int numVertices = _rendererHelper->getColorVertices().size();
+    memcpy(mappedResource.pData, &_rendererHelper->getColorVertices().front(), sizeof(COLOR_VERTEX) * numVertices);
     
     //	Reenable GPU access to the vertex buffer data.
-    d3dContext->Unmap(DXManager->getGbVertexBuffer().Get(), 0);
+    d3dContext->Unmap(_rendererHelper->getGbVertexBuffer().Get(), 0);
     
     // Set the vertex buffer
     UINT stride = sizeof(COLOR_VERTEX);
     UINT offset = 0;
-    d3dContext->IASetVertexBuffers(0, 1, DXManager->getGbVertexBuffer().GetAddressOf(), &stride, &offset);
+    d3dContext->IASetVertexBuffers(0, 1, _rendererHelper->getGbVertexBuffer().GetAddressOf(), &stride, &offset);
 }

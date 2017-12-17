@@ -38,11 +38,7 @@ public:
 	static LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 
 	// Initialization and management
-#if !defined(WINAPI_FAMILY) || (WINAPI_FAMILY == WINAPI_FAMILY_DESKTOP_APP)
-	void Initialize(Engine* engine, HWND window, int width, int height);
-#else
-	void Initialize(Engine* engine, IUnknown* window, int width, int height, float dpi, DXGI_MODE_ROTATION rotation);
-#endif
+    void Initialize(Engine* engine, HWND window, int width, int height);
 	
 	void OnNewAudioDevice();
 
@@ -59,12 +55,7 @@ public:
     void OnSuspending();
     void OnResuming();
 
-#if !defined(WINAPI_FAMILY) || (WINAPI_FAMILY == WINAPI_FAMILY_DESKTOP_APP)
-	void OnWindowSizeChanged(int width, int height);
-#else
-	void OnWindowSizeChanged(int width, int height, float dpi, DXGI_MODE_ROTATION rotation);
-	void ValidateDevice();
-#endif
+    void OnWindowSizeChanged(int width, int height);
     
     // Properties
     void GetDefaultSize(int& width, int& height) const;
@@ -89,7 +80,6 @@ private:
 	float _dpi;
 	bool _isPointerPressed;
 	bool _isDeviceLost;
-	bool _isWindowsMobile;
 
     void Update(DX::StepTimer const& timer);
     void Render();

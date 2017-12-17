@@ -10,13 +10,13 @@
 
 #include "framework/graphics/directx/DirectXFramebufferToScreenGpuProgramWrapper.h"
 
-#include "framework/graphics/directx/DirectXTextureProgram.h"
-#include "framework/graphics/directx/DirectXManager.h"
+#include "framework/graphics/directx/DirectXFramebufferToScreenProgram.h"
+#include "framework/graphics/directx/DirectXRendererHelper.h"
 #include "framework/graphics/portable/GpuTextureWrapper.h"
 #include "framework/util/FrameworkConstants.h"
 
-DirectXFramebufferToScreenGpuProgramWrapper::DirectXFramebufferToScreenGpuProgramWrapper() : GpuProgramWrapper(),
-_program(new DirectXTextureProgram(FRAMEBUFFER_TO_SCREEN_VERTEX_SHADER, FRAMEBUFFER_TO_SCREEN_FRAGMENT_SHADER))
+DirectXFramebufferToScreenGpuProgramWrapper::DirectXFramebufferToScreenGpuProgramWrapper(DirectXRendererHelper* inRendererHelper) : GpuProgramWrapper(),
+_program(new DirectXFramebufferToScreenProgram(inRendererHelper, FRAMEBUFFER_TO_SCREEN_VERTEX_SHADER, FRAMEBUFFER_TO_SCREEN_FRAGMENT_SHADER))
 {
     // Empty
 }
@@ -28,8 +28,6 @@ DirectXFramebufferToScreenGpuProgramWrapper::~DirectXFramebufferToScreenGpuProgr
 
 void DirectXFramebufferToScreenGpuProgramWrapper::bind()
 {
-    DXManager->useScreenBlending();
-
     _program->bindShaders();
 
 	_program->mapVertices();

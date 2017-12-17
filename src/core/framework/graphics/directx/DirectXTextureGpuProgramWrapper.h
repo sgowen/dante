@@ -11,12 +11,13 @@
 
 #include "framework/graphics/portable/GpuProgramWrapper.h"
 
+class RendererHelper;
 class DirectXProgram;
 
 class DirectXTextureGpuProgramWrapper : public GpuProgramWrapper
 {
 public:
-	DirectXTextureGpuProgramWrapper();
+	DirectXTextureGpuProgramWrapper(DirectXRendererHelper* inRendererHelper);
     
     virtual ~DirectXTextureGpuProgramWrapper();
 

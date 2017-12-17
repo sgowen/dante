@@ -22,7 +22,7 @@
 
 #define DEGREE_SPACING 6
 
-CircleBatcher::CircleBatcher(RendererHelper& inRendererHelper) : _rendererHelper(inRendererHelper), _numPoints(0)
+CircleBatcher::CircleBatcher(RendererHelper* inRendererHelper) : _rendererHelper(inRendererHelper), _numPoints(0)
 {
     // Empty
 }
@@ -82,21 +82,21 @@ void CircleBatcher::renderPartialCircle(Circle &circle, int arcDegrees, Color &c
 
 void CircleBatcher::clearVertices()
 {
-    _rendererHelper.clearColorVertices();
+    _rendererHelper->clearColorVertices();
 }
 
 void CircleBatcher::endBatch(GpuProgramWrapper &gpuProgramWrapper)
 {
     gpuProgramWrapper.bind();
     
-    _rendererHelper.draw(NGPrimitiveType_TriangleStrip, 0, _numPoints);
+    _rendererHelper->draw(NGPrimitiveType_TriangleStrip, 0, _numPoints);
     
     gpuProgramWrapper.unbind();
 }
 
 void CircleBatcher::addVertexCoordinate(float x, float y, float z, float r, float g, float b, float a)
 {
-    _rendererHelper.addVertexCoordinate(x, y, z, r, g, b, a);
+    _rendererHelper->addVertexCoordinate(x, y, z, r, g, b, a);
     
     _numPoints++;
 }

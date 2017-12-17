@@ -28,7 +28,6 @@ FileData WindowsAssetDataHandler::getAssetData(const char* relativePath)
     
     std::ifstream inFile(name, std::ios::in | std::ios::binary | std::ios::ate);
     
-#if !defined(WINAPI_FAMILY) || WINAPI_FAMILY == WINAPI_FAMILY_DESKTOP_APP
     if (!inFile)
     {
         wchar_t moduleName[_MAX_PATH];
@@ -45,7 +44,6 @@ FileData WindowsAssetDataHandler::getAssetData(const char* relativePath)
         
         inFile.open(filename, std::ios::in | std::ios::binary | std::ios::ate);
     }
-#endif
     
     assert(inFile);
     

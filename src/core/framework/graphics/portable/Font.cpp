@@ -88,5 +88,5 @@ void Font::renderAsciiChar(SpriteBatcher &spriteBatcher, int asciiChar, float x,
         return;
     }
     
-    spriteBatcher.drawSprite(x, y, width, height, 0, color, _glyphs[asciiChar]);
+    spriteBatcher.renderSprite(x, y, width, height, 0, color, _glyphs[asciiChar]);
 }

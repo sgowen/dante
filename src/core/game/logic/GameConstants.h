@@ -39,10 +39,6 @@
 
 #define MUSIC_DEMO "music_001.wav"
 
-//// Render Definitions ////
-
-#define MAX_BATCH_SIZE 16384
-
 //// Matrix Definitions ////
 
 #define CAM_WIDTH 24.0f // meters

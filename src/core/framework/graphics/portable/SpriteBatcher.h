@@ -9,6 +9,7 @@
 #ifndef __noctisgames__SpriteBatcher__
 #define __noctisgames__SpriteBatcher__
 
+class RendererHelper;
 class TextureWrapper;
 class GpuProgramWrapper;
 class TextureRegion;
@@ -17,31 +18,20 @@ class Color;
 class SpriteBatcher
 {
 public:
-    SpriteBatcher();
+    SpriteBatcher(RendererHelper* inRendererHelper);
     
-    virtual ~SpriteBatcher();
+    ~SpriteBatcher();
 
-    virtual void beginBatch() = 0;
+    void beginBatch();
 
-    virtual void endBatch(TextureWrapper* textureWrapper, GpuProgramWrapper& gpuProgramWrapper) = 0;
+    void endBatch(TextureWrapper* textureWrapper, GpuProgramWrapper& gpuProgramWrapper);
 
-    void drawSprite(float x, float y, float width, float height, float angle, TextureRegion& tr);
+    void renderSprite(float x, float y, float width, float height, float angle, TextureRegion& tr, bool flipX = false);
+    void renderSprite(float x, float y, float width, float height, float angle, Color &c, TextureRegion& tr, bool flipX = false);
 
-    void drawSprite(float x, float y, float width, float height, float angle, Color &c, TextureRegion& tr);
-    
-    void renderSprite(float x, float y, float width, float height, float angle, bool flipX, TextureRegion& tr);
-    
-    void renderSprite(float x, float y, float width, float height, float angle, bool flipX, Color &c, TextureRegion& tr);
-
-protected:
-    int _numSprites;
-    
-    virtual void addVertexCoordinate(float x, float y, float z, float r, float g, float b, float a, float u, float v) = 0;
-    
 private:
-    void renderSprite(float x, float y, float width, float height, bool flipX, TextureRegion& tr);
-    
-    void renderSprite(float x, float y, float width, float height, bool flipX, Color &c, TextureRegion& tr);
+    RendererHelper* _rendererHelper;
+    int _numSprites;
 };
 
 #endif /* defined(__noctisgames__SpriteBatcher__) */

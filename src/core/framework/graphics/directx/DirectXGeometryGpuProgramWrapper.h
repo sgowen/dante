@@ -11,12 +11,13 @@
 
 #include "framework/graphics/portable/GpuProgramWrapper.h"
 
+class RendererHelper;
 class DirectXProgram;
 
 class DirectXGeometryGpuProgramWrapper : public GpuProgramWrapper
 {
 public:
-	DirectXGeometryGpuProgramWrapper();
+	DirectXGeometryGpuProgramWrapper(DirectXRendererHelper* inRendererHelper);
     
     virtual ~DirectXGeometryGpuProgramWrapper();
     

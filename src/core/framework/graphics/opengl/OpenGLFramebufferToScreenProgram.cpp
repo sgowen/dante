@@ -8,9 +8,9 @@
 
 #include "framework/graphics/opengl/OpenGLFramebufferToScreenProgram.h"
 
-#include "framework/graphics/opengl/OpenGLManager.h"
+#include <framework/graphics/opengl/OpenGLRendererHelper.h>
 
-OpenGLFramebufferToScreenProgram::OpenGLFramebufferToScreenProgram(const char* vertexShaderName, const char* fragmentShaderName) : OpenGLProgram(vertexShaderName, fragmentShaderName)
+OpenGLFramebufferToScreenProgram::OpenGLFramebufferToScreenProgram(OpenGLRendererHelper* inRendererHelper, const char* vertexShaderName, const char* fragmentShaderName) : OpenGLProgram(inRendererHelper, vertexShaderName, fragmentShaderName)
 {
     u_texture_unit_location = glGetUniformLocation(_programObjectId, "u_TextureUnit");
     a_position_location = glGetAttribLocation(_programObjectId, "a_Position");
@@ -20,9 +20,11 @@ void OpenGLFramebufferToScreenProgram::bind()
 {
     OpenGLProgram::bind();
 
+    _rendererHelper->useScreenBlending();
+    
     glUniform1i(u_texture_unit_location, 0);
 
-    mapBuffer(OGLManager->getSbVboObject(), OGLManager->getTextureVertices());
+    mapBuffer(_rendererHelper->getSbVboObject(), _rendererHelper->getTextureVertices());
 
     glVertexAttribPointer(a_position_location, 2, GL_FLOAT, GL_FALSE, sizeof(GLfloat) * 9, BUFFER_OFFSET(0));
 
@@ -31,7 +33,7 @@ void OpenGLFramebufferToScreenProgram::bind()
 
 void OpenGLFramebufferToScreenProgram::unbind()
 {
-    unmapBuffer(OGLManager->getSbVboObject());
+    unmapBuffer(_rendererHelper->getSbVboObject());
 
     OpenGLProgram::unbind();
 }

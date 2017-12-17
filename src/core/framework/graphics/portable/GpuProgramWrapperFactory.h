@@ -10,6 +10,7 @@
 #define __noctisgames__GpuProgramWrapperFactory__
 
 class GpuProgramWrapper;
+class RendererHelper;
 
 #define GPU_PROGRAM_WRAPPER_FACTORY (GpuProgramWrapperFactory::getInstance())
 
@@ -18,11 +19,11 @@ class GpuProgramWrapperFactory
 public:
 	static GpuProgramWrapperFactory* getInstance();
     
-    GpuProgramWrapper* createTextureGpuProgramWrapper();
+    GpuProgramWrapper* createTextureGpuProgramWrapper(RendererHelper* inRendererHelper);
     
-    GpuProgramWrapper* createColorGpuProgramWrapper();
+    GpuProgramWrapper* createColorGpuProgramWrapper(RendererHelper* inRendererHelper);
     
-    GpuProgramWrapper* createFramebufferToScreenGpuProgramWrapper();
+    GpuProgramWrapper* createFramebufferToScreenGpuProgramWrapper(RendererHelper* inRendererHelper);
 
 private:
     // ctor, copy ctor, and assignment should be private in a Singleton

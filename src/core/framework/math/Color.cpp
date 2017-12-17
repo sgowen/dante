@@ -10,6 +10,7 @@
 
 #include "framework/math/Color.h"
 
+Color Color::WHITE = Color(1.0f, 1.0f, 1.0f, 1.0f);
 Color Color::BLACK = Color(0.0f, 0.0f, 0.0f, 1.0f);
 Color Color::RED = Color(1.0f, 0.0f, 0.0f, 1.0f);
 Color Color::DARK_RED = Color(0.6f, 0.1f, 0.1f, 1.0f);

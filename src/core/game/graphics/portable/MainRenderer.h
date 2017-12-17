@@ -23,7 +23,7 @@ class World;
 class MainRenderer : public Renderer
 {
 public:
-    MainRenderer(int maxBatchSize);
+    MainRenderer();
     
     virtual ~MainRenderer();
     

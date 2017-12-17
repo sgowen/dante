@@ -51,7 +51,7 @@
 
 NGRTTI_IMPL(MainEngine, Engine);
 
-MainEngine::MainEngine() : Engine(new MainRenderer(MAX_BATCH_SIZE)),
+MainEngine::MainEngine() : Engine(new MainRenderer()),
 _config(new JsonFile("dante.cfg")),
 _isSteam(false)
 {

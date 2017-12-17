@@ -8,9 +8,9 @@
 
 #include "framework/graphics/opengl/OpenGLTextureProgram.h"
 
-#include "framework/graphics/opengl/OpenGLManager.h"
+#include <framework/graphics/opengl/OpenGLRendererHelper.h>
 
-OpenGLTextureProgram::OpenGLTextureProgram(const char* vertexShaderName, const char* fragmentShaderName) : OpenGLProgram(vertexShaderName, fragmentShaderName)
+OpenGLTextureProgram::OpenGLTextureProgram(OpenGLRendererHelper* inRendererHelper, const char* vertexShaderName, const char* fragmentShaderName) : OpenGLProgram(inRendererHelper, vertexShaderName, fragmentShaderName)
 {
     u_mvp_matrix_location = glGetUniformLocation(_programObjectId, "u_MvpMatrix");
     u_texture_unit_location = glGetUniformLocation(_programObjectId, "u_TextureUnit");
@@ -23,11 +23,13 @@ void OpenGLTextureProgram::bind()
 {
     OpenGLProgram::bind();
     
-    glUniformMatrix4fv(u_mvp_matrix_location, 1, GL_FALSE, (GLfloat*)OGLManager->getViewProjectionMatrix());
+    _rendererHelper->useNormalBlending();
+    
+    glUniformMatrix4fv(u_mvp_matrix_location, 1, GL_FALSE, (GLfloat*)_rendererHelper->getViewProjectionMatrix());
     
     glUniform1i(u_texture_unit_location, 0);
     
-    mapBuffer(OGLManager->getSbVboObject(), OGLManager->getTextureVertices());
+    mapBuffer(_rendererHelper->getSbVboObject(), _rendererHelper->getTextureVertices());
     
     glVertexAttribPointer(a_position_location, 3, GL_FLOAT, GL_FALSE, sizeof(GLfloat) * 9, BUFFER_OFFSET(0));
     glVertexAttribPointer(a_color_location, 4, GL_FLOAT, GL_FALSE, sizeof(GLfloat) * 9, BUFFER_OFFSET(3 * sizeof(GL_FLOAT)));
@@ -40,7 +42,7 @@ void OpenGLTextureProgram::bind()
 
 void OpenGLTextureProgram::unbind()
 {
-    unmapBuffer(OGLManager->getSbVboObject());
+    unmapBuffer(_rendererHelper->getSbVboObject());
     
     OpenGLProgram::unbind();
 }

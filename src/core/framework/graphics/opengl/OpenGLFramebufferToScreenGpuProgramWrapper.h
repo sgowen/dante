@@ -11,12 +11,13 @@
 
 #include "framework/graphics/portable/GpuProgramWrapper.h"
 
+class OpenGLRendererHelper;
 class OpenGLFramebufferToScreenProgram;
 
 class OpenGLFramebufferToScreenGpuProgramWrapper : public GpuProgramWrapper
 {
 public:
-    OpenGLFramebufferToScreenGpuProgramWrapper();
+    OpenGLFramebufferToScreenGpuProgramWrapper(OpenGLRendererHelper* inRendererHelper);
     
     virtual ~OpenGLFramebufferToScreenGpuProgramWrapper();
     

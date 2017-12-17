@@ -25,7 +25,6 @@
 
 #include "framework/graphics/portable/GpuTextureWrapper.h"
 #include "framework/graphics/portable/GpuTextureDataWrapper.h"
-#include "framework/graphics/portable/SpriteBatcherFactory.h"
 #include "framework/graphics/portable/TextureLoaderFactory.h"
 #include "framework/graphics/portable/RendererHelperFactory.h"
 #include "framework/graphics/portable/GpuProgramWrapperFactory.h"
@@ -36,19 +35,18 @@
 #include <string>
 #include <assert.h>
 
-Renderer::Renderer(int maxBatchSize) :
+Renderer::Renderer() :
 _rendererHelper(RENDERER_HELPER_FACTORY->createRendererHelper()),
-_spriteBatcher(SPRITE_BATCHER_FACTORY->createSpriteBatcher()),
-_fillNGRectBatcher(new NGRectBatcher(*_rendererHelper, true)),
-_boundsNGRectBatcher(new NGRectBatcher(*_rendererHelper, false)),
-_lineBatcher(new LineBatcher(*_rendererHelper)),
-_circleBatcher(new CircleBatcher(*_rendererHelper)),
+_spriteBatcher(new SpriteBatcher(_rendererHelper)),
+_fillNGRectBatcher(new NGRectBatcher(_rendererHelper, true)),
+_boundsNGRectBatcher(new NGRectBatcher(_rendererHelper, false)),
+_lineBatcher(new LineBatcher(_rendererHelper)),
+_circleBatcher(new CircleBatcher(_rendererHelper)),
 _textureLoader(TEXTURE_LOADER_FACTORY->createTextureLoader()),
 _textureGpuProgramWrapper(NULL),
 _colorGpuProgramWrapper(NULL),
 _framebufferToScreenGpuProgramWrapper(NULL),
 _framebufferIndex(0),
-_maxBatchSize(maxBatchSize),
 _areDeviceDependentResourcesCreated(false),
 _areWindowSizeDependentResourcesCreated(false)
 {
@@ -69,18 +67,18 @@ Renderer::~Renderer()
 
 void Renderer::createDeviceDependentResources()
 {
-	_rendererHelper->createDeviceDependentResources(_maxBatchSize);
+	_rendererHelper->createDeviceDependentResources();
 
-    _textureGpuProgramWrapper = GPU_PROGRAM_WRAPPER_FACTORY->createTextureGpuProgramWrapper();
-    _colorGpuProgramWrapper = GPU_PROGRAM_WRAPPER_FACTORY->createColorGpuProgramWrapper();
-    _framebufferToScreenGpuProgramWrapper = GPU_PROGRAM_WRAPPER_FACTORY->createFramebufferToScreenGpuProgramWrapper();
+    _textureGpuProgramWrapper = GPU_PROGRAM_WRAPPER_FACTORY->createTextureGpuProgramWrapper(_rendererHelper);
+    _colorGpuProgramWrapper = GPU_PROGRAM_WRAPPER_FACTORY->createColorGpuProgramWrapper(_rendererHelper);
+    _framebufferToScreenGpuProgramWrapper = GPU_PROGRAM_WRAPPER_FACTORY->createFramebufferToScreenGpuProgramWrapper(_rendererHelper);
     
     _areDeviceDependentResourcesCreated = true;
 }
 
-void Renderer::createWindowSizeDependentResources(int renderWidth, int renderHeight, int numFramebuffers)
+void Renderer::createWindowSizeDependentResources(int screenWidth, int screenHeight, int renderWidth, int renderHeight, int numFramebuffers)
 {
-	_rendererHelper->createWindowSizeDependentResources(renderWidth, renderHeight, numFramebuffers);
+	_rendererHelper->createWindowSizeDependentResources(screenWidth, screenHeight, renderWidth, renderHeight, numFramebuffers);
 
 	_areWindowSizeDependentResourcesCreated = true;
 }
@@ -137,7 +135,7 @@ void Renderer::renderToScreen()
     static TextureRegion tr = TextureRegion("framebuffer", 0, 0, 1, 1, 1, 1);
     
     _spriteBatcher->beginBatch();
-    _spriteBatcher->drawSprite(0, 0, 2, 2, 0, tr);
+    _spriteBatcher->renderSprite(0, 0, 2, 2, 0, tr);
     _spriteBatcher->endBatch(_rendererHelper->getFramebuffer(_framebufferIndex), *_framebufferToScreenGpuProgramWrapper);
 }
 
@@ -158,12 +156,12 @@ bool Renderer::isReadyForRendering()
 
 void Renderer::renderEntity(Entity &pe, TextureRegion& tr, bool flipX)
 {
-    _spriteBatcher->renderSprite(pe.getPosition().x, pe.getPosition().y, pe.getWidth(), pe.getHeight(), pe.getAngle(), flipX, tr);
+    _spriteBatcher->renderSprite(pe.getPosition().x, pe.getPosition().y, pe.getWidth(), pe.getHeight(), pe.getAngle(), tr, flipX);
 }
 
 void Renderer::renderEntityWithColor(Entity &pe, TextureRegion& tr, Color c, bool flipX)
 {
-    _spriteBatcher->renderSprite(pe.getPosition().x, pe.getPosition().y, pe.getWidth(), pe.getHeight(), pe.getAngle(), flipX, c, tr);
+    _spriteBatcher->renderSprite(pe.getPosition().x, pe.getPosition().y, pe.getWidth(), pe.getHeight(), pe.getAngle(), c, tr, flipX);
 }
 
 void Renderer::loadTextureDataSync(TextureWrapper* arg)

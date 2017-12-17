@@ -8,12 +8,12 @@
 
 #include "framework/graphics/opengl/OpenGLTextureGpuProgramWrapper.h"
 
+#include <framework/graphics/portable/RendererHelper.h>
 #include "framework/graphics/opengl/OpenGLTextureProgram.h"
-#include "framework/graphics/opengl/OpenGLManager.h"
-#include "framework/util/FrameworkConstants.h"
+
 #include "framework/util/FrameworkConstants.h"
 
-OpenGLTextureGpuProgramWrapper::OpenGLTextureGpuProgramWrapper() : GpuProgramWrapper(), _program(new OpenGLTextureProgram(TEXTURE_VERTEX_SHADER, TEXTURE_FRAGMENT_SHADER))
+OpenGLTextureGpuProgramWrapper::OpenGLTextureGpuProgramWrapper(OpenGLRendererHelper* inRendererHelper) : GpuProgramWrapper(), _program(new OpenGLTextureProgram(inRendererHelper, TEXTURE_VERTEX_SHADER, TEXTURE_FRAGMENT_SHADER))
 {
     // Empty
 }
@@ -25,8 +25,6 @@ OpenGLTextureGpuProgramWrapper::~OpenGLTextureGpuProgramWrapper()
 
 void OpenGLTextureGpuProgramWrapper::bind()
 {
-    OGLManager->useNormalBlending();
-    
     _program->bind();
 }
 

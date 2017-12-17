@@ -17,7 +17,7 @@ class Color;
 class NGRectBatcher
 {
 public:
-    NGRectBatcher(RendererHelper& inRendererHelper, bool isFill);
+    NGRectBatcher(RendererHelper* inRendererHelper, bool isFill);
     
     ~NGRectBatcher();
     
@@ -28,7 +28,7 @@ public:
     void renderNGRect(NGRect &r, Color &c);
     
 private:
-    RendererHelper& _rendererHelper;
+    RendererHelper* _rendererHelper;
     bool _isFill;
     int _numNGRects;
 };
