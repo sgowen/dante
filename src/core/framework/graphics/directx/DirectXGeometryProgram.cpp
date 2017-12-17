@@ -12,7 +12,12 @@
 
 #include "framework/graphics/directx/DirectXRendererHelper.h"
 
-DirectXGeometryProgram::DirectXGeometryProgram(DirectXRendererHelper* inRendererHelper, const char* vertexShaderName, const char* fragmentShaderName) : DirectXProgram(inRendererHelper, vertexShaderName, fragmentShaderName, false)
+const D3D11_INPUT_ELEMENT_DESC DirectXTextureProgram::VERTEX_DESC[2] = {
+    { "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+    { "COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 }
+};
+
+DirectXGeometryProgram::DirectXGeometryProgram(DirectXRendererHelper* inRendererHelper, const char* vertexShaderName, const char* fragmentShaderName) : DirectXProgram(inRendererHelper, vertexShaderName, fragmentShaderName, VERTEX_DESC)
 {
     // Empty
 }
@@ -23,12 +28,15 @@ void DirectXGeometryProgram::bind()
     
     _rendererHelper->useNormalBlending();
     
-    bindMatrix();
+    ID3D11DeviceContext* d3dContext = DirectXRendererHelper::getD3dContext();
+    
+    d3dContext->VSSetConstantBuffers(0, 1, _rendererHelper->getMatrixConstantbuffer().GetAddressOf());
+    
+    // send the final matrix to video memory
+    d3dContext->UpdateSubresource(_rendererHelper->getMatrixConstantbuffer().Get(), 0, 0, &_rendererHelper->getMatFinal(), 0, 0);
     
     D3D11_MAPPED_SUBRESOURCE mappedResource;
     ZeroMemory(&mappedResource, sizeof(D3D11_MAPPED_SUBRESOURCE));
-    
-    ID3D11DeviceContext* d3dContext = DirectXRendererHelper::getD3dContext();
     
     //	Disable GPU access to the vertex buffer data.
     d3dContext->Map(_rendererHelper->getGbVertexBuffer().Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);

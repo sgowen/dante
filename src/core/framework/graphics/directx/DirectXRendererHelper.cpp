@@ -69,6 +69,8 @@ void DirectXRendererHelper::createDeviceDependentResources()
 
 void DirectXRendererHelper::createWindowSizeDependentResources(int screenWidth, int screenHeight, int renderWidth, int renderHeight, int numFramebuffers)
 {
+    _screenWidth = screenWidth;
+    _screenHeight = screenHeight;
     _renderWidth = renderWidth;
     _renderHeight = renderHeight;
     _numFramebuffers = numFramebuffers;

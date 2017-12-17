@@ -17,7 +17,7 @@
 
 #include "PlatformHelpers.h"
 
-DirectXProgram::DirectXProgram(DirectXRendererHelper* inRendererHelper, const char* vertexShaderName, const char* fragmentShaderName, bool useTextureCoords) : _rendererHelper(inRendererHelper)
+DirectXProgram::DirectXProgram(DirectXRendererHelper* inRendererHelper, const char* vertexShaderName, const char* fragmentShaderName, const D3D11_INPUT_ELEMENT_DESC *inputElementDescs) : _rendererHelper(inRendererHelper)
 {
     std::string s1("data\\shaders\\");
 	s1 += std::string(vertexShaderName);
@@ -57,8 +57,8 @@ DirectXProgram::DirectXProgram(DirectXRendererHelper* inRendererHelper, const ch
 
 	DirectX::ThrowIfFailed(
 		d3dDevice->CreateInputLayout(
-            useTextureCoords ? textureVertexDesc : geometryVertexDesc,
-			useTextureCoords ? ARRAYSIZE(textureVertexDesc) : ARRAYSIZE(geometryVertexDesc),
+            inputElementDescs,
+			ARRAYSIZE(*inputElementDescs),
 			vertex_shader_source_output,
 			vertex_shader_source.data_length,
 			&_inputLayout
@@ -106,16 +106,6 @@ void DirectXProgram::bind()
 void DirectXProgram::unbind()
 {
     // Empty
-}
-
-void DirectXProgram::bindMatrix()
-{
-    ID3D11DeviceContext* d3dContext = DirectXRendererHelper::getD3dContext();
-    
-    d3dContext->VSSetConstantBuffers(0, 1, _rendererHelper->getMatrixConstantbuffer().GetAddressOf());
-    
-    // send the final matrix to video memory
-    d3dContext->UpdateSubresource(_rendererHelper->getMatrixConstantbuffer().Get(), 0, 0, &_rendererHelper->getMatFinal(), 0, 0);
 }
 
 void DirectXProgram::createConstantBuffer(_COM_Outptr_opt_  ID3D11Buffer **ppBuffer)

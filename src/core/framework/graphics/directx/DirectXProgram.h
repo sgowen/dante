@@ -18,7 +18,7 @@ class DirectXRendererHelper;
 class DirectXProgram : public GpuProgram
 {
 public:
-    DirectXProgram(DirectXRendererHelper* inRendererHelper, const char* vertexShaderName, const char* fragmentShaderName, bool useTextureCoords);
+    DirectXProgram(DirectXRendererHelper* inRendererHelper, const char* vertexShaderName, const char* fragmentShaderName, const D3D11_INPUT_ELEMENT_DESC *inputElementDescs);
     
     virtual ~DirectXProgram();
     
@@ -29,14 +29,12 @@ public:
 protected:
 	DirectXRendererHelper* _rendererHelper;
     
-    void bindMatrix();
+    void createConstantBuffer(_COM_Outptr_opt_  ID3D11Buffer **ppBuffer);
     
 private:
     Microsoft::WRL::ComPtr<ID3D11VertexShader> _vertexShader;
     Microsoft::WRL::ComPtr<ID3D11InputLayout> _inputLayout;
     Microsoft::WRL::ComPtr<ID3D11PixelShader> _pixelShader;
-    
-    void createConstantBuffer(_COM_Outptr_opt_  ID3D11Buffer **ppBuffer);
 };
 
 #endif /* defined(__noctisgames__DirectXProgram__) */

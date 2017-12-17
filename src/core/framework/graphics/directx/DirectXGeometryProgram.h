@@ -17,6 +17,9 @@ public:
     DirectXGeometryProgram(DirectXRendererHelper* inRendererHelper, const char* vertexShaderName, const char* fragmentShaderName);
     
     virtual void bind();
+    
+private:
+    static const D3D11_INPUT_ELEMENT_DESC VERTEX_DESC[2];
 };
 
 #endif /* defined(__noctisgames__DirectXGeometryProgram__) */
