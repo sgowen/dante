@@ -14,13 +14,13 @@
 
 #include <assert.h>
 
-const D3D11_INPUT_ELEMENT_DESC DirectXTextureProgram::VERTEX_DESC[3] = {
+const D3D11_INPUT_ELEMENT_DESC DirectXFramebufferToScreenProgram::VERTEX_DESC[3] = {
     { "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
     { "COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
     { "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 28, D3D11_INPUT_PER_VERTEX_DATA, 0 }
 };
 
-DirectXFramebufferToScreenProgram::DirectXFramebufferToScreenProgram(DirectXRendererHelper* inRendererHelper, const char* vertexShaderName, const char* fragmentShaderName) : DirectXProgram(inRendererHelper, vertexShaderName, fragmentShaderName, VERTEX_DESC)
+DirectXFramebufferToScreenProgram::DirectXFramebufferToScreenProgram(DirectXRendererHelper* inRendererHelper, const char* vertexShaderName, const char* fragmentShaderName) : DirectXProgram(inRendererHelper, vertexShaderName, fragmentShaderName, VERTEX_DESC, ARRAYSIZE(VERTEX_DESC))
 {
     // Empty
 }

@@ -5,7 +5,7 @@
 
 #include "pch.h"
 
-#include "framework/graphics/directx/DirectXDeviceResources.h"
+#include "framework/main/directx/DirectXDeviceResources.h"
 
 #include "PlatformHelpers.h"
 
