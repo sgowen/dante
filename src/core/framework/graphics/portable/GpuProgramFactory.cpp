@@ -42,9 +42,9 @@ GpuProgram* GpuProgramFactory::createFramebufferToScreenGpuProgram(RendererHelpe
 #elif defined _WIN32
 
 #include "framework/graphics/directx/DirectXRendererHelper.h"
-#include "framework/graphics/directx/DirectXTextureGpuProgram.h"
-#include "framework/graphics/directx/DirectXGeometryGpuProgram.h"
-#include "framework/graphics/directx/DirectXFramebufferToScreenGpuProgram.h"
+#include "framework/graphics/directx/DirectXTextureProgram.h"
+#include "framework/graphics/directx/DirectXGeometryProgram.h"
+#include "framework/graphics/directx/DirectXFramebufferToScreenProgram.h"
 
 GpuProgram* GpuProgramFactory::createTextureGpuProgram(RendererHelper* inRendererHelper)
 {
