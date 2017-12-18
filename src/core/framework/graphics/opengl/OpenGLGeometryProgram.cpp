@@ -32,9 +32,9 @@ void OpenGLGeometryProgram::bind(void* data)
     glBufferData(GL_ARRAY_BUFFER, sizeof(COLOR_VERTEX) * vertices.size(), &vertices[0], GL_STATIC_DRAW);
     
     glVertexAttribPointer(a_position_location, 3, GL_FLOAT, GL_FALSE, sizeof(GLfloat) * 7, BUFFER_OFFSET(0));
-    glVertexAttribPointer(a_color_location, 4, GL_FLOAT, GL_FALSE, sizeof(GLfloat) * 7, BUFFER_OFFSET(3 * sizeof(GL_FLOAT)));
-    
     glEnableVertexAttribArray(a_position_location);
+    
+    glVertexAttribPointer(a_color_location, 4, GL_FLOAT, GL_FALSE, sizeof(GLfloat) * 7, BUFFER_OFFSET(3 * sizeof(GL_FLOAT)));
     glEnableVertexAttribArray(a_color_location);
 }
 

@@ -41,11 +41,12 @@ void OpenGLTextureProgram::bind(void* data)
     glBufferData(GL_ARRAY_BUFFER, sizeof(TEXTURE_VERTEX) * vertices.size(), &vertices[0], GL_STATIC_DRAW);
     
     glVertexAttribPointer(a_position_location, 3, GL_FLOAT, GL_FALSE, sizeof(GLfloat) * 9, BUFFER_OFFSET(0));
-    glVertexAttribPointer(a_color_location, 4, GL_FLOAT, GL_FALSE, sizeof(GLfloat) * 9, BUFFER_OFFSET(3 * sizeof(GL_FLOAT)));
-    glVertexAttribPointer(a_texture_coordinates_location, 2, GL_FLOAT, GL_FALSE, sizeof(GLfloat) * 9, BUFFER_OFFSET(7 * sizeof(GL_FLOAT)));
-    
     glEnableVertexAttribArray(a_position_location);
+    
+    glVertexAttribPointer(a_color_location, 4, GL_FLOAT, GL_FALSE, sizeof(GLfloat) * 9, BUFFER_OFFSET(3 * sizeof(GL_FLOAT)));
     glEnableVertexAttribArray(a_color_location);
+    
+    glVertexAttribPointer(a_texture_coordinates_location, 2, GL_FLOAT, GL_FALSE, sizeof(GLfloat) * 9, BUFFER_OFFSET(7 * sizeof(GL_FLOAT)));
     glEnableVertexAttribArray(a_texture_coordinates_location);
 }
 

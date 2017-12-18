@@ -36,7 +36,6 @@ void OpenGLFramebufferToScreenProgram::bind(void* data)
     glBufferData(GL_ARRAY_BUFFER, sizeof(TEXTURE_VERTEX) * vertices.size(), &vertices[0], GL_STATIC_DRAW);
 
     glVertexAttribPointer(a_position_location, 2, GL_FLOAT, GL_FALSE, sizeof(GLfloat) * 9, BUFFER_OFFSET(0));
-
     glEnableVertexAttribArray(a_position_location);
 }
 
