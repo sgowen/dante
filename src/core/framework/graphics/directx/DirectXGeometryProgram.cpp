@@ -54,3 +54,8 @@ void DirectXGeometryProgram::bind(void* data)
     UINT offset = 0;
     _d3dContext->IASetVertexBuffers(0, 1, _rendererHelper->getGbVertexBuffer().GetAddressOf(), &stride, &offset);
 }
+
+void DirectXGeometryProgram::unbind()
+{
+	// Empty
+}
