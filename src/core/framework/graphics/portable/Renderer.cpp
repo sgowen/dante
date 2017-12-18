@@ -19,7 +19,7 @@
 #include "framework/graphics/portable/GpuProgram.h"
 #include "framework/entity/Entity.h"
 #include "framework/graphics/portable/TextureRegion.h"
-#include "framework/math/Color.h"
+#include "framework/graphics/portable/Color.h"
 #include "framework/math/NGRect.h"
 #include "framework/graphics/portable/TextureWrapper.h"
 
@@ -29,6 +29,8 @@
 #include "framework/graphics/portable/RendererHelperFactory.h"
 #include "framework/graphics/portable/GpuProgramFactory.h"
 #include "framework/util/NGSTDUtil.h"
+#include "framework/math/Circle.h"
+#include "framework/math/Line.h"
 
 #include <Box2D/Box2D.h>
 
@@ -104,66 +106,6 @@ void Renderer::releaseDeviceDependentResources()
 	_framebufferToScreenGpuProgram = NULL;
 }
 
-#pragma mark protected
-
-void Renderer::beginFrame()
-{
-    handleAsyncTextureLoads();
-    
-    _rendererHelper->beginFrame();
-    
-    setFramebuffer(0);
-}
-
-void Renderer::setFramebuffer(int framebufferIndex)
-{
-    assert(framebufferIndex >= 0);
-    
-    _framebufferIndex = framebufferIndex;
-    
-    _rendererHelper->bindToOffscreenFramebuffer(_framebufferIndex);
-    _rendererHelper->clearFramebufferWithColor(0, 0, 0, 1);
-}
-
-void Renderer::renderToScreen()
-{
-    assert(_framebufferIndex >= 0);
-    
-    _rendererHelper->bindToScreenFramebuffer();
-    _rendererHelper->clearFramebufferWithColor(0, 0, 0, 1);
-    
-    static TextureRegion tr = TextureRegion("framebuffer", 0, 0, 1, 1, 1, 1);
-    
-    _spriteBatcher->beginBatch();
-    _spriteBatcher->renderSprite(0, 0, 2, 2, 0, tr);
-    _spriteBatcher->endBatch(_rendererHelper->getFramebuffer(_framebufferIndex), *_framebufferToScreenGpuProgram);
-}
-
-void Renderer::endFrame()
-{
-    _rendererHelper->endFrame();
-}
-
-bool Renderer::isLoadingData()
-{
-    return _loadingTextures.size() > 0;
-}
-
-bool Renderer::isReadyForRendering()
-{
-    return _areDeviceDependentResourcesCreated && _areWindowSizeDependentResourcesCreated;
-}
-
-void Renderer::renderEntity(Entity &pe, TextureRegion& tr, bool flipX)
-{
-    _spriteBatcher->renderSprite(pe.getPosition().x, pe.getPosition().y, pe.getWidth(), pe.getHeight(), pe.getAngle(), tr, flipX);
-}
-
-void Renderer::renderEntityWithColor(Entity &pe, TextureRegion& tr, Color c, bool flipX)
-{
-    _spriteBatcher->renderSprite(pe.getPosition().x, pe.getPosition().y, pe.getWidth(), pe.getHeight(), pe.getAngle(), c, tr, flipX);
-}
-
 void Renderer::loadTextureDataSync(TextureWrapper* arg)
 {
     assert(arg != NULL);
@@ -183,15 +125,6 @@ void Renderer::loadTextureDataSync(TextureWrapper* arg)
     textureWrapper->gpuTextureDataWrapper = textureWrapper->_renderer->_textureLoader->loadTextureData(textureWrapper);
 }
 
-void tthreadLoadTextureDataSync(void* arg)
-{
-    assert(arg != NULL);
-    
-    TextureWrapper* textureWrapper = static_cast<TextureWrapper*>(arg);
-    
-    textureWrapper->_renderer->loadTextureDataSync(textureWrapper);
-}
-
 void Renderer::loadTextureSync(TextureWrapper* textureWrapper)
 {
     loadTextureDataSync(textureWrapper);
@@ -202,6 +135,15 @@ void Renderer::loadTextureSync(TextureWrapper* textureWrapper)
     textureWrapper->gpuTextureDataWrapper = NULL;
     
     textureWrapper->_isLoadingData = false;
+}
+
+void tthreadLoadTextureDataSync(void* arg)
+{
+    assert(arg != NULL);
+    
+    TextureWrapper* textureWrapper = static_cast<TextureWrapper*>(arg);
+    
+    textureWrapper->_renderer->loadTextureDataSync(textureWrapper);
 }
 
 void Renderer::loadTextureAsync(TextureWrapper* textureWrapper)
@@ -271,6 +213,92 @@ bool Renderer::ensureTexture(TextureWrapper* textureWrapper)
     }
     
     return true;
+}
+
+#pragma mark protected
+
+void Renderer::beginFrame()
+{
+    handleAsyncTextureLoads();
+    
+    _rendererHelper->beginFrame();
+    
+    setFramebuffer(0);
+}
+
+void Renderer::setFramebuffer(int framebufferIndex)
+{
+    assert(framebufferIndex >= 0);
+    
+    _framebufferIndex = framebufferIndex;
+    
+    _rendererHelper->bindToOffscreenFramebuffer(_framebufferIndex);
+    _rendererHelper->clearFramebufferWithColor(0, 0, 0, 1);
+}
+
+void Renderer::renderToScreen()
+{
+    assert(_framebufferIndex >= 0);
+    
+    _rendererHelper->bindToScreenFramebuffer();
+    _rendererHelper->clearFramebufferWithColor(0, 0, 0, 1);
+    
+    static TextureRegion tr = TextureRegion("framebuffer", 0, 0, 1, 1, 1, 1);
+    
+    _spriteBatcher->beginBatch();
+    _spriteBatcher->renderSprite(0, 0, 2, 2, 0, tr);
+    _spriteBatcher->endBatch(_rendererHelper->getFramebuffer(_framebufferIndex), *_framebufferToScreenGpuProgram);
+}
+
+void Renderer::endFrame()
+{
+    _rendererHelper->endFrame();
+}
+
+bool Renderer::isLoadingData()
+{
+    return _loadingTextures.size() > 0;
+}
+
+bool Renderer::isReadyForRendering()
+{
+    return _areDeviceDependentResourcesCreated && _areWindowSizeDependentResourcesCreated;
+}
+
+void Renderer::renderEntity(Entity &pe, TextureRegion& tr, bool flipX)
+{
+    _spriteBatcher->renderSprite(pe.getPosition().x, pe.getPosition().y, pe.getWidth(), pe.getHeight(), pe.getAngle(), tr, flipX);
+}
+
+void Renderer::renderEntityWithColor(Entity &pe, TextureRegion& tr, Color c, bool flipX)
+{
+    _spriteBatcher->renderSprite(pe.getPosition().x, pe.getPosition().y, pe.getWidth(), pe.getHeight(), pe.getAngle(), c, tr, flipX);
+}
+
+void Renderer::testRenderingSuite()
+{
+    _rendererHelper->updateMatrix(0, 16, 0, 9);
+    
+    static Circle c1(10, 4, 2);
+    _circleBatcher->renderCircle(c1, Color::RED, *_colorGpuProgram);
+    
+    static Circle c2(7, 7, 2);
+    _circleBatcher->renderPartialCircle(c2, 135, Color::RED, *_colorGpuProgram);
+    
+    static NGRect r1(1, 1, 2, 1);
+    _boundsNGRectBatcher->beginBatch();
+    _boundsNGRectBatcher->renderNGRect(r1, Color::RED);
+    _boundsNGRectBatcher->endBatch(*_colorGpuProgram);
+    
+    static NGRect r2(4, 1, 2, 1);
+    _fillNGRectBatcher->beginBatch();
+    _fillNGRectBatcher->renderNGRect(r2, Color::RED);
+    _fillNGRectBatcher->endBatch(*_colorGpuProgram);
+    
+    static Line line(3, 3, 5, 5);
+    _lineBatcher->beginBatch();
+    _lineBatcher->renderLine(line, Color::RED);
+    _lineBatcher->endBatch(*_colorGpuProgram);
 }
 
 #pragma mark private

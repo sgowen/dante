@@ -41,15 +41,11 @@ public:
     
     virtual void render(int flags = 0) = 0;
     
-    void loadTextureSync(TextureWrapper* textureWrapper);
-    
-    void loadTextureAsync(TextureWrapper* textureWrapper);
-    
-    void unloadTexture(TextureWrapper* textureWrapper);
-    
-    bool ensureTexture(TextureWrapper* textureWrapper);
-    
     void loadTextureDataSync(TextureWrapper* arg);
+    void loadTextureSync(TextureWrapper* textureWrapper);
+    void loadTextureAsync(TextureWrapper* textureWrapper);
+    void unloadTexture(TextureWrapper* textureWrapper);
+    bool ensureTexture(TextureWrapper* textureWrapper);
     
 protected:
     RendererHelper* _rendererHelper;
@@ -79,8 +75,9 @@ protected:
     bool isReadyForRendering();
     
     void renderEntity(Entity &go, TextureRegion& tr, bool flipX = false);
-
 	void renderEntityWithColor(Entity &go, TextureRegion& tr, Color c, bool flipX = false);
+    
+    void testRenderingSuite();
     
 private:
     std::vector<TextureWrapper *> _loadingTextures;

@@ -14,7 +14,7 @@
 #include "framework/graphics/portable/TextureWrapper.h"
 #include "framework/graphics/portable/GpuProgram.h"
 #include "framework/graphics/portable/TextureRegion.h"
-#include "framework/math/Color.h"
+#include "framework/graphics/portable/Color.h"
 
 #include <framework/util/FrameworkConstants.h>
 

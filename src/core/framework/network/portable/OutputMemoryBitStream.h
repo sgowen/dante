@@ -15,7 +15,6 @@
 #include <cstdlib>
 #include <string>
 
-class Vector2;
 struct b2Vec2;
 class Color;
 
@@ -39,8 +38,6 @@ public:
     void writeBytes(const void* inData, uint32_t inByteCount);
     
     void write(bool inData);
-    
-    void write(const Vector2& inVector);
     
     void write(const b2Vec2& inVector);
     

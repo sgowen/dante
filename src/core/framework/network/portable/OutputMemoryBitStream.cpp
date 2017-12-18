@@ -10,9 +10,8 @@
 
 #include "framework/network/portable/OutputMemoryBitStream.h"
 
-#include "framework/math/Vector2.h"
 #include "Box2D/Box2D.h"
-#include "framework/math/Color.h"
+#include "framework/graphics/portable/Color.h"
 #include "framework/math/MathUtil.h"
 #include "framework/util/StringUtil.h"
 #include "framework/util/FrameworkConstants.h"
@@ -101,12 +100,6 @@ void OutputMemoryBitStream::writeBytes(const void* inData, uint32_t inByteCount)
 void OutputMemoryBitStream::write(bool inData)
 {
     writeBits(&inData, 1);
-}
-
-void OutputMemoryBitStream::write(const Vector2& inVector)
-{
-    write(inVector.getX());
-    write(inVector.getY());
 }
 
 void OutputMemoryBitStream::write(const b2Vec2& inVector)

@@ -11,7 +11,6 @@
 #include "framework/entity/Entity.h"
 
 #include "Box2D/Box2D.h"
-#include "framework/math/NGRect.h"
 #include "framework/network/portable/OutputMemoryBitStream.h"
 #include "framework/network/portable/InputMemoryBitStream.h"
 #include "framework/network/portable/Move.h"

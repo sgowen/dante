@@ -21,7 +21,7 @@
 #include "game/logic/GameConstants.h"
 #include "framework/math/NGRect.h"
 #include "framework/math/Line.h"
-#include "framework/math/Color.h"
+#include "framework/graphics/portable/Color.h"
 #include "framework/graphics/portable/SpriteBatcher.h"
 #include "framework/graphics/portable/TextureRegion.h"
 #include "framework/util/macros.h"
@@ -43,7 +43,7 @@
 #include "game/logic/Crate.h"
 #include "game/logic/SpacePirateChunk.h"
 #include "framework/util/FPSUtil.h"
-#include "framework/math/Color.h"
+#include "framework/graphics/portable/Color.h"
 #include "framework/math/Circle.h"
 #include "framework/graphics/portable/CircleBatcher.h"
 #include "framework/graphics/portable/NGRectBatcher.h"
@@ -719,30 +719,4 @@ void MainRenderer::updateCamera()
             _camBounds->setHeight(h);
         }
     }
-}
-
-void MainRenderer::testRenderingSuite()
-{
-    _rendererHelper->updateMatrix(0, CAM_WIDTH, 0, CAM_HEIGHT);
-    
-    static Circle c1(10, 4, 2);
-    _circleBatcher->renderCircle(c1, Color::RED, *_colorGpuProgram);
-    
-    static Circle c2(7, 7, 2);
-    _circleBatcher->renderPartialCircle(c2, 135, Color::RED, *_colorGpuProgram);
-    
-    static NGRect r1(1, 1, 2, 1);
-    _boundsNGRectBatcher->beginBatch();
-    _boundsNGRectBatcher->renderNGRect(r1, Color::RED);
-    _boundsNGRectBatcher->endBatch(*_colorGpuProgram);
-    
-    static NGRect r2(4, 1, 2, 1);
-    _fillNGRectBatcher->beginBatch();
-    _fillNGRectBatcher->renderNGRect(r2, Color::RED);
-    _fillNGRectBatcher->endBatch(*_colorGpuProgram);
-    
-    static Line line(3, 3, 5, 5);
-    _lineBatcher->beginBatch();
-    _lineBatcher->renderLine(line, Color::RED);
-    _lineBatcher->endBatch(*_colorGpuProgram);
 }

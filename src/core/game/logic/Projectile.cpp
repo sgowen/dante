@@ -26,7 +26,6 @@
 #include "framework/util/StringUtil.h"
 #include "framework/network/portable/Move.h"
 #include "framework/math/MathUtil.h"
-#include "framework/math/NGRect.h"
 #include "game/logic/SpacePirate.h"
 #include "framework/math/OverlapTester.h"
 #include "framework/network/server/NetworkManagerServer.h"

@@ -12,7 +12,7 @@
 
 #include "framework/graphics/portable/SpriteBatcher.h"
 #include "framework/graphics/portable/TextureRegion.h"
-#include "framework/math/Color.h"
+#include "framework/graphics/portable/Color.h"
 
 Font::Font(std::string textureName, int offsetX, int offsetY, int glyphsPerRow, int glyphWidth, int glyphHeight, int textureWidth, int textureHeight)
 {

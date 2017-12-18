@@ -13,7 +13,7 @@
 #include "framework/graphics/portable/RendererHelper.h"
 #include "framework/graphics/portable/GpuProgram.h"
 #include "framework/math/NGRect.h"
-#include "framework/math/Color.h"
+#include "framework/graphics/portable/Color.h"
 
 #include <framework/util/FrameworkConstants.h>
 

@@ -24,7 +24,6 @@
 #include "framework/util/Timing.h"
 #include "framework/util/StringUtil.h"
 #include "framework/math/MathUtil.h"
-#include "framework/math/NGRect.h"
 #include "game/logic/Projectile.h"
 #include "framework/entity/EntityRegistry.h"
 #include "framework/network/server/NetworkManagerServer.h"

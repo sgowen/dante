@@ -26,6 +26,8 @@
 		BB125E121EFAF61F00917328 /* texture_005.ngt in Resources */ = {isa = PBXBuildFile; fileRef = BB125E0F1EFAF61F00917328 /* texture_005.ngt */; };
 		BB1914441FABB78400BDC6D0 /* libsteam_api.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BB1914431FABB78400BDC6D0 /* libsteam_api.dylib */; };
 		BB19148E1FABBD1300BDC6D0 /* libsteam_api.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BB1914431FABB78400BDC6D0 /* libsteam_api.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		BB1C3BF91FE75FD3002E4AA6 /* Color.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB1C3BF81FE75FD3002E4AA6 /* Color.cpp */; };
+		BB1C3BFA1FE75FD3002E4AA6 /* Color.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB1C3BF81FE75FD3002E4AA6 /* Color.cpp */; };
 		BB1E897B1EF4A81500B0D78A /* PacketHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB1E89791EF4A81500B0D78A /* PacketHandler.cpp */; };
 		BB1E89811EF4B2BA00B0D78A /* SocketPacketHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB1E897F1EF4B2BA00B0D78A /* SocketPacketHandler.cpp */; };
 		BB1E89841EF4B4F400B0D78A /* NGSteamPacketHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB1E89821EF4B4F400B0D78A /* NGSteamPacketHandler.cpp */; };
@@ -226,7 +228,6 @@
 		BB5AFE251FB35A0B005FBD52 /* SoundWrapper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF1941EA94ED900F0866E /* SoundWrapper.cpp */; };
 		BB5AFE261FB35A0B005FBD52 /* NGAudioEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF1961EA94ED900F0866E /* NGAudioEngine.cpp */; };
 		BB5AFE271FB35A19005FBD52 /* Circle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF1781EA94ED900F0866E /* Circle.cpp */; };
-		BB5AFE281FB35A19005FBD52 /* Color.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBDF55C21EF782D800D6FA45 /* Color.cpp */; };
 		BB5AFE291FB35A19005FBD52 /* Line.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF17A1EA94ED900F0866E /* Line.cpp */; };
 		BB5AFE2A1FB35A19005FBD52 /* NGRect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF17D1EA94ED900F0866E /* NGRect.cpp */; };
 		BB5AFE2B1FB35A19005FBD52 /* OverlapTester.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF17F1EA94ED900F0866E /* OverlapTester.cpp */; };
@@ -494,7 +495,6 @@
 		BBD554651FDB2EA800E00AD6 /* b2CollideEdge.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBD5540A1FDB2EA800E00AD6 /* b2CollideEdge.cpp */; };
 		BBD554661FDB2EA800E00AD6 /* b2Collision.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBD5540B1FDB2EA800E00AD6 /* b2Collision.cpp */; };
 		BBD554671FDB2EA800E00AD6 /* b2Collision.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBD5540B1FDB2EA800E00AD6 /* b2Collision.cpp */; };
-		BBDF55C31EF782D800D6FA45 /* Color.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBDF55C21EF782D800D6FA45 /* Color.cpp */; };
 		BBF226CF1EC12CDE00573356 /* ReplicationManagerClient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF226B01EC12CDE00573356 /* ReplicationManagerClient.cpp */; };
 		BBFA49E51FC3702D00233514 /* Engine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBFA49E41FC3702D00233514 /* Engine.cpp */; };
 		BBFA49E61FC3702D00233514 /* Engine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBFA49E41FC3702D00233514 /* Engine.cpp */; };
@@ -643,6 +643,8 @@
 		BB1914781FABB78C00BDC6D0 /* steamps3params.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = steamps3params.h; sourceTree = "<group>"; };
 		BB1914791FABB78C00BDC6D0 /* steamtypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = steamtypes.h; sourceTree = "<group>"; };
 		BB19147A1FABB78C00BDC6D0 /* steamuniverse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = steamuniverse.h; sourceTree = "<group>"; };
+		BB1C3BF71FE75FD3002E4AA6 /* Color.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Color.h; sourceTree = "<group>"; };
+		BB1C3BF81FE75FD3002E4AA6 /* Color.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Color.cpp; sourceTree = "<group>"; };
 		BB1E89791EF4A81500B0D78A /* PacketHandler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PacketHandler.cpp; sourceTree = "<group>"; };
 		BB1E897A1EF4A81500B0D78A /* PacketHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PacketHandler.h; sourceTree = "<group>"; };
 		BB1E897F1EF4B2BA00B0D78A /* SocketPacketHandler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SocketPacketHandler.cpp; sourceTree = "<group>"; };
@@ -964,7 +966,6 @@
 		BB8308381EC2AD1F00435E7E /* TransmissionData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransmissionData.h; sourceTree = "<group>"; };
 		BB8308391EC2AD1F00435E7E /* UDPSocket.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = UDPSocket.cpp; sourceTree = "<group>"; };
 		BB83083A1EC2AD1F00435E7E /* UDPSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UDPSocket.h; sourceTree = "<group>"; };
-		BB88026F1EE4A40400F1A37C /* Color.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Color.h; sourceTree = "<group>"; };
 		BB9527B51FDEFF0700AC2E67 /* OpenSLESManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OpenSLESManager.h; sourceTree = "<group>"; };
 		BB9527B61FDEFF0700AC2E67 /* OpenSLESManager.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = OpenSLESManager.cpp; sourceTree = "<group>"; };
 		BB9EE50A1FC092BA000F5389 /* AssetDataHandler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AssetDataHandler.cpp; sourceTree = "<group>"; };
@@ -1615,7 +1616,6 @@
 		BBD554091FDB2EA800E00AD6 /* b2Distance.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = b2Distance.h; sourceTree = "<group>"; };
 		BBD5540A1FDB2EA800E00AD6 /* b2CollideEdge.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = b2CollideEdge.cpp; sourceTree = "<group>"; };
 		BBD5540B1FDB2EA800E00AD6 /* b2Collision.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = b2Collision.cpp; sourceTree = "<group>"; };
-		BBDF55C21EF782D800D6FA45 /* Color.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Color.cpp; sourceTree = "<group>"; };
 		BBF226B01EC12CDE00573356 /* ReplicationManagerClient.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ReplicationManagerClient.cpp; sourceTree = "<group>"; };
 		BBF226B11EC12CDE00573356 /* ReplicationManagerClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReplicationManagerClient.h; sourceTree = "<group>"; };
 		BBFA49DB1FC367AF00233514 /* GlfwMain.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GlfwMain.h; sourceTree = "<group>"; };
@@ -2683,6 +2683,8 @@
 				BBCFF1C31ECD312E003EE520 /* AssetsMapper.h */,
 				BBAEF1301EA94ED900F0866E /* CircleBatcher.cpp */,
 				BBAEF1311EA94ED900F0866E /* CircleBatcher.h */,
+				BB1C3BF81FE75FD3002E4AA6 /* Color.cpp */,
+				BB1C3BF71FE75FD3002E4AA6 /* Color.h */,
 				BBAEF1371EA94ED900F0866E /* Font.cpp */,
 				BBAEF1381EA94ED900F0866E /* Font.h */,
 				BB2AC5451EFC382C0012B990 /* FontAlign.h */,
@@ -2752,8 +2754,6 @@
 			children = (
 				BBAEF1781EA94ED900F0866E /* Circle.cpp */,
 				BBAEF1791EA94ED900F0866E /* Circle.h */,
-				BBDF55C21EF782D800D6FA45 /* Color.cpp */,
-				BB88026F1EE4A40400F1A37C /* Color.h */,
 				BBAEF17A1EA94ED900F0866E /* Line.cpp */,
 				BBAEF17B1EA94ED900F0866E /* Line.h */,
 				BBAEF17C1EA94ED900F0866E /* MathUtil.h */,
@@ -3816,6 +3816,7 @@
 				BB6E7B1F1F940F2B006C0024 /* World.cpp in Sources */,
 				BBD554101FDB2EA800E00AD6 /* b2Fixture.cpp in Sources */,
 				BB6F598C1FBDEA0D00BD7697 /* init.c in Sources */,
+				BB1C3BF91FE75FD3002E4AA6 /* Color.cpp in Sources */,
 				BB6E7B211F940F2B006C0024 /* MainInputState.cpp in Sources */,
 				BB6F59751FBDE97D00BD7697 /* cocoa_joystick.m in Sources */,
 				BB6E7B221F940F2B006C0024 /* InstanceManager.cpp in Sources */,
@@ -3926,7 +3927,6 @@
 				BBCFF1C51ECD312E003EE520 /* Assets.cpp in Sources */,
 				BB9EE5161FC092C5000F5389 /* AppleAssetDataHandler.cpp in Sources */,
 				BBAEF1F01EA94EDA00F0866E /* Entity.cpp in Sources */,
-				BBDF55C31EF782D800D6FA45 /* Color.cpp in Sources */,
 				BBD5543C1FDB2EA800E00AD6 /* b2RopeJoint.cpp in Sources */,
 				BBBCB2EB1EF090E900B77938 /* NGSteam.cpp in Sources */,
 				BB44CB881DB053C0003E633F /* pngrtran.c in Sources */,
@@ -3991,6 +3991,7 @@
 				BBD3E8651FB2872A00328E35 /* ViewController.mm in Sources */,
 				BBD554171FDB2EA800E00AD6 /* b2ChainAndCircleContact.cpp in Sources */,
 				BB5AFE771FB35AB6005FBD52 /* JsonFile.cpp in Sources */,
+				BB1C3BFA1FE75FD3002E4AA6 /* Color.cpp in Sources */,
 				BB27D2461FC6567F00ED42FD /* OALAudioTracks.m in Sources */,
 				BB27D2471FC6567F00ED42FD /* OALAudioTrack.m in Sources */,
 				BB27D2811FC6596D00ED42FD /* OALAudioSession.m in Sources */,
@@ -4126,7 +4127,6 @@
 				BB5AFE0B1FB359DE005FBD52 /* MainEngine.cpp in Sources */,
 				BB5AFE0C1FB359DE005FBD52 /* PooledObjectsManager.cpp in Sources */,
 				BB5AFE271FB35A19005FBD52 /* Circle.cpp in Sources */,
-				BB5AFE281FB35A19005FBD52 /* Color.cpp in Sources */,
 				BB5AFE291FB35A19005FBD52 /* Line.cpp in Sources */,
 				BB04A6C11FC383A800E0EB89 /* IOSMain.mm in Sources */,
 				BB5AFE2A1FB35A19005FBD52 /* NGRect.cpp in Sources */,

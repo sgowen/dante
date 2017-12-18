@@ -10,9 +10,8 @@
 
 #include "framework/network/portable/InputMemoryBitStream.h"
 
-#include "framework/math/Vector2.h"
 #include "Box2D/Box2D.h"
-#include "framework/math/Color.h"
+#include "framework/graphics/portable/Color.h"
 
 #include <cstring>	// memcpy()
 
@@ -136,12 +135,6 @@ void InputMemoryBitStream::read(std::string& inString)
     {
         read(element);
     }
-}
-
-void InputMemoryBitStream::read(Vector2& outVector)
-{
-    read(outVector.getXRef());
-    read(outVector.getYRef());
 }
 
 void InputMemoryBitStream::read(b2Vec2& outVector)

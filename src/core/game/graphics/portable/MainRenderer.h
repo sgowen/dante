@@ -69,8 +69,6 @@ private:
     void renderText(const std::string& inStr, const b2Vec2& origin, const Color& inColor, int justification = FONT_ALIGN_LEFT);
     
     void updateCamera();
-    
-    void testRenderingSuite();
 };
 
 #endif /* defined(__noctisgames__MainRenderer__) */
