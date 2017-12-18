@@ -76,14 +76,3 @@ DirectXProgram::~DirectXProgram()
 	_inputLayout.Reset();
 	_pixelShader.Reset();
 }
-
-void DirectXProgram::createConstantBuffer(_COM_Outptr_opt_  ID3D11Buffer **ppBuffer)
-{
-    D3D11_BUFFER_DESC bd = { 0 };
-
-	bd.Usage = D3D11_USAGE_DEFAULT;
-	bd.ByteWidth = 16;
-	bd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-
-	_d3dDevice->CreateBuffer(&bd, NULL, ppBuffer);
-}

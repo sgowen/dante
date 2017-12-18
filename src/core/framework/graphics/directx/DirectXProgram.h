@@ -29,8 +29,6 @@ protected:
     Microsoft::WRL::ComPtr<ID3D11VertexShader> _vertexShader;
     Microsoft::WRL::ComPtr<ID3D11InputLayout> _inputLayout;
     Microsoft::WRL::ComPtr<ID3D11PixelShader> _pixelShader;
-    
-    void createConstantBuffer(_COM_Outptr_opt_  ID3D11Buffer **ppBuffer);
 };
 
 #endif /* defined(__noctisgames__DirectXProgram__) */
