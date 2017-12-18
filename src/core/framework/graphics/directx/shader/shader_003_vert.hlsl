@@ -11,7 +11,7 @@ struct VOut
 };
 
 // Vertex Shader
-VOut main(float4 position : POSITION, float4 color : COLOR, float2 texcoord : TEXCOORD)
+VOut main(float4 position : a_Position, float4 color : a_Color, float2 texcoord : a_TexCoord)
 {
 	// create a VOut struct
 	VOut output;

@@ -14,11 +14,11 @@
 
 OpenGLTextureProgram::OpenGLTextureProgram(OpenGLRendererHelper* inRendererHelper, const char* vertexShaderName, const char* fragmentShaderName) : OpenGLProgram(inRendererHelper, vertexShaderName, fragmentShaderName)
 {
-    u_mvp_matrix_location = glGetUniformLocation(_programObjectId, "u_MvpMatrix");
+    u_mvp_matrix_location = glGetUniformLocation(_programObjectId, "u_Matrix");
     u_texture_unit_location = glGetUniformLocation(_programObjectId, "u_TextureUnit");
     a_position_location = glGetAttribLocation(_programObjectId, "a_Position");
     a_color_location = glGetAttribLocation(_programObjectId, "a_Color");
-    a_texture_coordinates_location = glGetAttribLocation(_programObjectId, "a_TextureCoordinates");
+    a_texture_coordinates_location = glGetAttribLocation(_programObjectId, "a_TexCoord");
 }
 
 void OpenGLTextureProgram::bind(void* data)

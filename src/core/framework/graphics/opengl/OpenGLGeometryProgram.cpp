@@ -12,7 +12,7 @@
 
 OpenGLGeometryProgram::OpenGLGeometryProgram(OpenGLRendererHelper* inRendererHelper, const char* vertexShaderName, const char* fragmentShaderName) : OpenGLProgram(inRendererHelper, vertexShaderName, fragmentShaderName)
 {
-    u_mvp_matrix_location = glGetUniformLocation(_programObjectId, "u_MvpMatrix");
+    u_mvp_matrix_location = glGetUniformLocation(_programObjectId, "u_Matrix");
     a_position_location = glGetAttribLocation(_programObjectId, "a_Position");
     a_color_location = glGetAttribLocation(_programObjectId, "a_Color");
 }

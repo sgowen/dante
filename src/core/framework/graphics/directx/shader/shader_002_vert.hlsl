@@ -5,7 +5,7 @@ struct VOut
 };
 
 // Vertex Shader
-VOut main(float4 position : POSITION)
+VOut main(float4 position : a_Position)
 {
 	// create a VOut struct
 	VOut output;
