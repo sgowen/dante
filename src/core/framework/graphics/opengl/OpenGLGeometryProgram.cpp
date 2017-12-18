@@ -19,13 +19,17 @@ OpenGLGeometryProgram::OpenGLGeometryProgram(OpenGLRendererHelper* inRendererHel
 
 void OpenGLGeometryProgram::bind(void* data)
 {
-    OpenGLProgram::bind(data);
+    glUseProgram(_programObjectId);
     
-    useNormalBlending();
+    _rendererHelper->useNormalBlending();
     
     glUniformMatrix4fv(u_mvp_matrix_location, 1, GL_FALSE, (GLfloat*)_rendererHelper->getViewProjectionMatrix());
     
-    mapBuffer(_rendererHelper->getGbVboObject(), _rendererHelper->getColorVertices());
+    GLuint vbo = _rendererHelper->getGbVboObject();
+    std::vector<COLOR_VERTEX>& vertices = _rendererHelper->getColorVertices();
+    glGenBuffers(1, &vbo);
+    glBindBuffer(GL_ARRAY_BUFFER, vbo);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(COLOR_VERTEX) * vertices.size(), &vertices[0], GL_STATIC_DRAW);
     
     glVertexAttribPointer(a_position_location, 3, GL_FLOAT, GL_FALSE, sizeof(GLfloat) * 7, BUFFER_OFFSET(0));
     glVertexAttribPointer(a_color_location, 4, GL_FLOAT, GL_FALSE, sizeof(GLfloat) * 7, BUFFER_OFFSET(3 * sizeof(GL_FLOAT)));
@@ -36,7 +40,9 @@ void OpenGLGeometryProgram::bind(void* data)
 
 void OpenGLGeometryProgram::unbind()
 {
-    unmapBuffer(_rendererHelper->getGbVboObject());
+    GLuint vbo = _rendererHelper->getGbVboObject();
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glDeleteBuffers(1, &vbo);
     
-    OpenGLProgram::unbind();
+    glUseProgram(0);
 }

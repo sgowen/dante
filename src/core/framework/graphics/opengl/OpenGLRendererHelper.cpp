@@ -148,6 +148,18 @@ void OpenGLRendererHelper::bindToScreenFramebuffer()
     glScissor(0, 0, _screenWidth, _screenHeight);
 }
 
+void OpenGLRendererHelper::useNormalBlending()
+{
+    glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ZERO);
+    glBlendEquationSeparate(GL_FUNC_ADD, GL_FUNC_ADD);
+}
+
+void OpenGLRendererHelper::useScreenBlending()
+{
+    glBlendFuncSeparate(GL_ONE, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
+    glBlendEquationSeparate(GL_FUNC_ADD, GL_FUNC_ADD);
+}
+
 void OpenGLRendererHelper::destroyTexture(GpuTextureWrapper& textureWrapper)
 {
     glDeleteTextures(1, &textureWrapper.texture);
@@ -163,23 +175,23 @@ void OpenGLRendererHelper::drawIndexed(NGPrimitiveType renderPrimitiveType, uint
     glDrawElements(renderPrimitiveType, count, GL_UNSIGNED_SHORT, &_indices[0]);
 }
 
-void OpenGLRendererHelper::bindTexture(NGTextureSlot textureSlot, TextureWrapper* textureWrapper, int32_t flags)
+void OpenGLRendererHelper::bindTexture(NGTextureSlot textureSlot, TextureWrapper* textureWrapper, int32_t location)
 {
     glActiveTexture(textureSlot);
     glBindTexture(GL_TEXTURE_2D, textureWrapper == NULL ? 0 : textureWrapper->gpuTextureWrapper->texture);
     
-    if (textureWrapper != NULL && flags != 0)
+    if (textureWrapper != NULL && location != 0)
     {
-        glUniform1i(flags, slotIndexForTextureSlot(textureSlot));
+        glUniform1i(location, slotIndexForTextureSlot(textureSlot));
     }
 }
 
-GLuint& OpenGLRendererHelper::getSbVboObject()
+GLuint OpenGLRendererHelper::getSbVboObject()
 {
     return _sbVboObject;
 }
 
-GLuint& OpenGLRendererHelper::getGbVboObject()
+GLuint OpenGLRendererHelper::getGbVboObject()
 {
     return _gbVboObject;
 }

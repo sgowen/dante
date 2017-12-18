@@ -29,9 +29,12 @@ void DirectXFramebufferToScreenProgram::bind(void* data)
 {
     assert(data != NULL);
     
-    DirectXProgram::bind(data);
+    // set the shader objects as the active shaders
+    _d3dContext->VSSetShader(_vertexShader.Get(), NULL, 0);
+    _d3dContext->IASetInputLayout(_inputLayout.Get());
+    _d3dContext->PSSetShader(_pixelShader.Get(), NULL, 0);
     
-    useScreenBlending();
+    _rendererHelper->useScreenBlending();
     
     D3D11_MAPPED_SUBRESOURCE mappedResource;
     ZeroMemory(&mappedResource, sizeof(D3D11_MAPPED_SUBRESOURCE));
@@ -58,6 +61,4 @@ void DirectXFramebufferToScreenProgram::bind(void* data)
 void DirectXFramebufferToScreenProgram::unbind()
 {
     _rendererHelper->bindTexture(NGTextureSlot_ZERO, NULL);
-    
-    DirectXProgram::unbind();
 }

@@ -25,16 +25,20 @@ void OpenGLTextureProgram::bind(void* data)
 {
     assert(data != NULL);
     
-    OpenGLProgram::bind(data);
+    glUseProgram(_programObjectId);
     
-    useNormalBlending();
+    _rendererHelper->useNormalBlending();
     
     glUniformMatrix4fv(u_mvp_matrix_location, 1, GL_FALSE, (GLfloat*)_rendererHelper->getViewProjectionMatrix());
     
     // tell the GPU which texture to use
     _rendererHelper->bindTexture(NGTextureSlot_ZERO, static_cast<TextureWrapper*>(data), u_texture_unit_location);
     
-    mapBuffer(_rendererHelper->getSbVboObject(), _rendererHelper->getTextureVertices());
+    GLuint vbo = _rendererHelper->getSbVboObject();
+    std::vector<TEXTURE_VERTEX>& vertices = _rendererHelper->getTextureVertices();
+    glGenBuffers(1, &vbo);
+    glBindBuffer(GL_ARRAY_BUFFER, vbo);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(TEXTURE_VERTEX) * vertices.size(), &vertices[0], GL_STATIC_DRAW);
     
     glVertexAttribPointer(a_position_location, 3, GL_FLOAT, GL_FALSE, sizeof(GLfloat) * 9, BUFFER_OFFSET(0));
     glVertexAttribPointer(a_color_location, 4, GL_FLOAT, GL_FALSE, sizeof(GLfloat) * 9, BUFFER_OFFSET(3 * sizeof(GL_FLOAT)));
@@ -49,7 +53,9 @@ void OpenGLTextureProgram::unbind()
 {
     _rendererHelper->bindTexture(NGTextureSlot_ZERO, NULL);
     
-    unmapBuffer(_rendererHelper->getSbVboObject());
+    GLuint vbo = _rendererHelper->getSbVboObject();
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glDeleteBuffers(1, &vbo);
     
-    OpenGLProgram::unbind();
+    glUseProgram(0);
 }

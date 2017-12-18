@@ -45,13 +45,17 @@ public:
     
     virtual void bindToScreenFramebuffer() = 0;
     
+    virtual void useNormalBlending() = 0;
+    
+    virtual void useScreenBlending() = 0;
+    
     virtual void destroyTexture(GpuTextureWrapper& textureWrapper) = 0;
     
     virtual void draw(NGPrimitiveType renderPrimitiveType, uint32_t first, uint32_t count) = 0;
     
     virtual void drawIndexed(NGPrimitiveType renderPrimitiveType, uint32_t count) = 0;
     
-    virtual void bindTexture(NGTextureSlot textureSlot, TextureWrapper* textureWrapper, int32_t flags = 0) = 0;
+    virtual void bindTexture(NGTextureSlot textureSlot, TextureWrapper* textureWrapper, int32_t location = 0) = 0;
     
     void clearColorVertices();
     

@@ -28,25 +28,9 @@ public:
     
     virtual ~OpenGLProgram();
     
-    virtual void bind(void* data = NULL);
-    
-    virtual void unbind();
-    
-    virtual void useNormalBlending();
-    
-    virtual void useScreenBlending();
-    
-    GLuint getProgramObjectId();
-    
 protected:
     OpenGLRendererHelper* _rendererHelper;
     GLuint _programObjectId;
-    
-    void mapBuffer(GLuint& vbo, std::vector<COLOR_VERTEX>& vertices);
-    
-    void mapBuffer(GLuint& vbo, std::vector<TEXTURE_VERTEX>& vertices);
-    
-    void unmapBuffer(GLuint& vbo);
     
 private:
     GLuint buildProgram(const void * vertex_shader_source, const int vertex_shader_source_length, const void * fragment_shader_source, const int fragment_shader_source_length);

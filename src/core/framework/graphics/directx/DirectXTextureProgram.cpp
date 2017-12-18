@@ -29,9 +29,12 @@ void DirectXTextureProgram::bind(void* data)
 {
     assert(data != NULL);
     
-    DirectXProgram::bind(data);
+    // set the shader objects as the active shaders
+    _d3dContext->VSSetShader(_vertexShader.Get(), NULL, 0);
+    _d3dContext->IASetInputLayout(_inputLayout.Get());
+    _d3dContext->PSSetShader(_pixelShader.Get(), NULL, 0);
     
-    useNormalBlending();
+    _rendererHelper->useNormalBlending();
     
     _d3dContext->VSSetConstantBuffers(0, 1, _rendererHelper->getMatrixConstantbuffer().GetAddressOf());
     
@@ -63,6 +66,4 @@ void DirectXTextureProgram::bind(void* data)
 void DirectXTextureProgram::unbind()
 {
     _rendererHelper->bindTexture(NGTextureSlot_ZERO, NULL);
-    
-    DirectXProgram::unbind();
 }

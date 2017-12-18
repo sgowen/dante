@@ -41,16 +41,20 @@ public:
     
     virtual void bindToScreenFramebuffer();
     
+    virtual void useNormalBlending();
+    
+    virtual void useScreenBlending();
+    
     virtual void destroyTexture(GpuTextureWrapper& textureWrapper);
     
     virtual void draw(NGPrimitiveType renderPrimitiveType, uint32_t first, uint32_t count);
     
     virtual void drawIndexed(NGPrimitiveType renderPrimitiveType, uint32_t count);
     
-    virtual void bindTexture(NGTextureSlot textureSlot, TextureWrapper* textureWrapper, int32_t flags = 0);
+    virtual void bindTexture(NGTextureSlot textureSlot, TextureWrapper* textureWrapper, int32_t location = 0);
     
-    GLuint& getSbVboObject(); // For Sprite Batcher
-    GLuint& getGbVboObject(); // For Geometry Batcher
+    GLuint getSbVboObject(); // For Sprite Batcher
+    GLuint getGbVboObject(); // For Geometry Batcher
     mat4x4& getViewProjectionMatrix();
     
 protected:

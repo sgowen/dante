@@ -156,6 +156,16 @@ void DirectXRendererHelper::bindToScreenFramebuffer()
     _isBoundToScreen = true;
 }
 
+void DirectXRendererHelper::useNormalBlending()
+{
+    s_d3dContext->OMSetBlendState(_blendState.Get(), 0, 0xffffffff);
+}
+
+void DirectXRendererHelper::useScreenBlending()
+{
+    s_d3dContext->OMSetBlendState(_screenBlendState.Get(), 0, 0xffffffff);
+}
+
 void DirectXRendererHelper::destroyTexture(GpuTextureWrapper& textureWrapper)
 {
     if (textureWrapper.texture)
@@ -178,7 +188,7 @@ void DirectXRendererHelper::drawIndexed(NGPrimitiveType renderPrimitiveType, uin
     s_d3dContext->DrawIndexed(count, 0, 0);
 }
 
-void DirectXRendererHelper::bindTexture(NGTextureSlot textureSlot, TextureWrapper* textureWrapper, int32_t flags)
+void DirectXRendererHelper::bindTexture(NGTextureSlot textureSlot, TextureWrapper* textureWrapper, int32_t location)
 {
     if (textureWrapper)
     {

@@ -63,54 +63,6 @@ OpenGLProgram::~OpenGLProgram()
     glDeleteProgram(_programObjectId);
 }
 
-void OpenGLProgram::bind(void* data)
-{
-    glUseProgram(_programObjectId);
-}
-
-void OpenGLProgram::unbind()
-{
-    glUseProgram(0);
-}
-
-void OpenGLProgram::useNormalBlending()
-{
-    glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ZERO);
-    glBlendEquationSeparate(GL_FUNC_ADD, GL_FUNC_ADD);
-}
-
-void OpenGLProgram::useScreenBlending()
-{
-    glBlendFuncSeparate(GL_ONE, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
-    glBlendEquationSeparate(GL_FUNC_ADD, GL_FUNC_ADD);
-}
-
-GLuint OpenGLProgram::getProgramObjectId()
-{
-    return _programObjectId;
-}
-
-void OpenGLProgram::mapBuffer(GLuint& vbo, std::vector<COLOR_VERTEX>& vertices)
-{
-    glGenBuffers(1, &vbo);
-    glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(COLOR_VERTEX) * vertices.size(), &vertices[0], GL_STATIC_DRAW);
-}
-
-void OpenGLProgram::mapBuffer(GLuint& vbo, std::vector<TEXTURE_VERTEX>& vertices)
-{
-    glGenBuffers(1, &vbo);
-    glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(TEXTURE_VERTEX) * vertices.size(), &vertices[0], GL_STATIC_DRAW);
-}
-
-void OpenGLProgram::unmapBuffer(GLuint& vbo)
-{
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-    glDeleteBuffers(1, &vbo);
-}
-
 GLuint OpenGLProgram::buildProgram(const void * vertex_shader_source, const int vertex_shader_source_length, const void * fragment_shader_source, const int fragment_shader_source_length)
 {
     assert(vertex_shader_source != NULL);

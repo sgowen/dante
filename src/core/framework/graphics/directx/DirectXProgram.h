@@ -22,25 +22,15 @@ public:
     
     virtual ~DirectXProgram();
     
-    virtual void bind(void* data = NULL);
-    
-    virtual void unbind();
-    
-    virtual void useNormalBlending();
-    
-    virtual void useScreenBlending();
-    
 protected:
 	DirectXRendererHelper* _rendererHelper;
     ID3D11Device* _d3dDevice;
     ID3D11DeviceContext* _d3dContext;
-    
-    void createConstantBuffer(_COM_Outptr_opt_  ID3D11Buffer **ppBuffer);
-    
-private:
     Microsoft::WRL::ComPtr<ID3D11VertexShader> _vertexShader;
     Microsoft::WRL::ComPtr<ID3D11InputLayout> _inputLayout;
     Microsoft::WRL::ComPtr<ID3D11PixelShader> _pixelShader;
+    
+    void createConstantBuffer(_COM_Outptr_opt_  ID3D11Buffer **ppBuffer);
 };
 
 #endif /* defined(__noctisgames__DirectXProgram__) */

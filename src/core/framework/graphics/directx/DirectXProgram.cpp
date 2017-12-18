@@ -77,30 +77,6 @@ DirectXProgram::~DirectXProgram()
 	_pixelShader.Reset();
 }
 
-void DirectXProgram::bind(void* data)
-{
-    _d3dContext->IASetInputLayout(_inputLayout.Get());
-    
-    // set the shader objects as the active shaders
-    _d3dContext->VSSetShader(_vertexShader.Get(), NULL, 0);
-    _d3dContext->PSSetShader(_pixelShader.Get(), NULL, 0);
-}
-
-void DirectXProgram::unbind()
-{
-    // Empty
-}
-
-void DirectXProgram::useNormalBlending()
-{
-    _d3dContext->OMSetBlendState(_rendererHelper->getBlendState().Get(), 0, 0xffffffff);
-}
-
-void DirectXProgram::useScreenBlending()
-{
-    _d3dContext->OMSetBlendState(_rendererHelper->getScreenBlendState().Get(), 0, 0xffffffff);
-}
-
 void DirectXProgram::createConstantBuffer(_COM_Outptr_opt_  ID3D11Buffer **ppBuffer)
 {
     D3D11_BUFFER_DESC bd = { 0 };
