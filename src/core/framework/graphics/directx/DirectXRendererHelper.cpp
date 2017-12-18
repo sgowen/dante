@@ -65,6 +65,7 @@ void DirectXRendererHelper::createDeviceDependentResources()
     createSamplerStates();
     createVertexBufferForSpriteBatcher();
     createVertexBufferForGeometryBatchers();
+    createVertexBufferForScreen();
     createIndexBuffer();
     createConstantBuffer();
 }
@@ -94,6 +95,7 @@ void DirectXRendererHelper::releaseDeviceDependentResources()
     _sbWrapSamplerState.Reset();
     _textureVertexBuffer.Reset();
     _colorVertexBuffer.Reset();
+    _screenVertexBuffer.Reset();
     
     _textureVertices.clear();
     _colorVertices.clear();
@@ -230,7 +232,27 @@ void DirectXRendererHelper::destroyShaderProgram(ShaderProgramWrapper* shaderPro
     shaderProgramWrapper->_pixelShader = NULL;
 }
 
-void DirectXRendererHelper::mapTextureVertices()
+void DirectXRendererHelper::mapScreenVertices(std::vector<NGShaderVarInput*>& inputLayout)
+{
+    D3D11_MAPPED_SUBRESOURCE mappedResource;
+    ZeroMemory(&mappedResource, sizeof(D3D11_MAPPED_SUBRESOURCE));
+    
+    //    Disable GPU access to the vertex buffer data.
+    _d3dContext->Map(_screenVertexBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+    
+    //    Update the vertex buffer here.
+    memcpy(mappedResource.pData, &_screenVertices.front(), sizeof(SCREEN_VERTEX) * _screenVertices.size());
+    
+    //    Reenable GPU access to the vertex buffer data.
+    _d3dContext->Unmap(_screenVertexBuffer.Get(), 0);
+}
+
+void DirectXRendererHelper::unmapScreenVertices()
+{
+    // Unused
+}
+
+void DirectXRendererHelper::mapTextureVertices(std::vector<NGShaderVarInput*>& inputLayout)
 {
     D3D11_MAPPED_SUBRESOURCE mappedResource;
     ZeroMemory(&mappedResource, sizeof(D3D11_MAPPED_SUBRESOURCE));
@@ -247,10 +269,10 @@ void DirectXRendererHelper::mapTextureVertices()
 
 void DirectXRendererHelper::unmapTextureVertices()
 {
-    // Empty
+    // Unused
 }
 
-void DirectXRendererHelper::mapColorVertices()
+void DirectXRendererHelper::mapColorVertices(std::vector<NGShaderVarInput*>& inputLayout)
 {
     D3D11_MAPPED_SUBRESOURCE mappedResource;
     ZeroMemory(&mappedResource, sizeof(D3D11_MAPPED_SUBRESOURCE));
@@ -267,7 +289,7 @@ void DirectXRendererHelper::mapColorVertices()
 
 void DirectXRendererHelper::unmapColorVertices()
 {
-    // Empty
+    // Unused
 }
 
 void DirectXRendererHelper::draw(NGPrimitiveType renderPrimitiveType, uint32_t first, uint32_t count)
@@ -484,6 +506,30 @@ void DirectXRendererHelper::createVertexBufferForGeometryBatchers()
     vertexBufferData.SysMemSlicePitch = 0;
     
     DirectX::ThrowIfFailed(s_d3dDevice->CreateBuffer(&vertexBufferDesc, &vertexBufferData, &_colorVertexBuffer));
+}
+
+void DirectXRendererHelper::createVertexBufferForScreen()
+{
+    SCREEN_VERTEX tv = { 0, 0 };
+    for (int i = 0; i < 4; ++i)
+    {
+        _screenVertices.push_back(tv);
+    }
+    
+    D3D11_BUFFER_DESC vertexBufferDesc = { 0 };
+    vertexBufferDesc.ByteWidth = sizeof(SCREEN_VERTEX) * _screenVertices.size();
+    vertexBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
+    vertexBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+    vertexBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+    vertexBufferDesc.MiscFlags = 0;
+    vertexBufferDesc.StructureByteStride = 0;
+    
+    D3D11_SUBRESOURCE_DATA vertexBufferData;
+    vertexBufferData.pSysMem = &_screenVertices[0];
+    vertexBufferData.SysMemPitch = 0;
+    vertexBufferData.SysMemSlicePitch = 0;
+    
+    DirectX::ThrowIfFailed(s_d3dDevice->CreateBuffer(&vertexBufferDesc, &vertexBufferData, &_screenVertexBuffer));
 }
 
 void DirectXRendererHelper::createIndexBuffer()

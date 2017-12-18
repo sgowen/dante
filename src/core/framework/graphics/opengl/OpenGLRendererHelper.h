@@ -49,6 +49,9 @@ public:
     virtual void bindShaderProgram(ShaderProgramWrapper* shaderProgramWrapper);
     virtual void destroyShaderProgram(ShaderProgramWrapper* shaderProgramWrapper);
     
+    virtual void mapScreenVertices(std::vector<NGShaderVarInput*>& inputLayout);
+    virtual void unmapScreenVertices();
+    
     virtual void mapTextureVertices(std::vector<NGShaderVarInput*>& inputLayout);
     virtual void unmapTextureVertices();
     
@@ -66,6 +69,7 @@ private:
     std::vector<GLuint> _fbos;
     std::vector<GLuint> _fbo_textures;
     
+    GLuint _screenVboObject; // For Screen
     GLuint _textureVboObject; // For Sprite Batcher
     GLuint _colorVboObject; // For Geometry Batcher
     

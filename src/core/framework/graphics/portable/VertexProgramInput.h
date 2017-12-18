@@ -12,17 +12,22 @@
 typedef float vec4[4];
 typedef vec4 mat4x4[4];
 
-struct COLOR_VERTEX
+struct SCREEN_VERTEX
 {
-	float X, Y, Z; // vertex position
-	float R, G, B, A; // vertex color
+    float X, Y;
 };
 
 struct TEXTURE_VERTEX
 {
-	float X, Y, Z; // vertex position
-	float R, G, B, A; // vertex color
-	float U, V;    // texture coordinates
+    float X, Y, Z;
+    float R, G, B, A;
+    float U, V;
+};
+
+struct COLOR_VERTEX
+{
+	float X, Y, Z;
+	float R, G, B, A;
 };
 
 #endif /* defined(__noctisgames__VertexProgramInput__) */

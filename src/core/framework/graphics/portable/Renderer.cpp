@@ -250,11 +250,15 @@ void Renderer::renderToScreen()
     _rendererHelper->bindToScreenFramebuffer();
     _rendererHelper->clearFramebufferWithColor(0, 0, 0, 1);
     
-    static TextureRegion tr = TextureRegion("framebuffer", 0, 0, 1, 1, 1, 1);
+    _rendererHelper->clearScreenVertices();
+    _rendererHelper->addVertexCoordinate(-1, -1);
+    _rendererHelper->addVertexCoordinate(-1, 1);
+    _rendererHelper->addVertexCoordinate(1, 1);
+    _rendererHelper->addVertexCoordinate(1, -1);
     
-    _spriteBatcher->beginBatch();
-    _spriteBatcher->renderSprite(0, 0, 2, 2, 0, tr);
-    _spriteBatcher->endBatch(_rendererHelper->getFramebuffer(_framebufferIndex), *_framebufferToScreenShaderProgram);
+    _framebufferToScreenShaderProgram->bind(_rendererHelper->getFramebuffer(_framebufferIndex));
+    _rendererHelper->drawIndexed(NGPrimitiveType_Triangles, INDICES_PER_RECTANGLE);
+    _framebufferToScreenShaderProgram->unbind();
 }
 
 void Renderer::endFrame()

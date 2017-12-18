@@ -20,7 +20,7 @@
 
 #include <assert.h>
 
-OpenGLRendererHelper::OpenGLRendererHelper() : RendererHelper(), _textureVboObject(0), _colorVboObject(0), _screenFBO(0), _maxTextureSize(64)
+OpenGLRendererHelper::OpenGLRendererHelper() : RendererHelper(), _screenVboObject(0), _textureVboObject(0), _colorVboObject(0), _screenFBO(0), _maxTextureSize(64)
 {
     // Empty
 }
@@ -65,6 +65,7 @@ void OpenGLRendererHelper::releaseDeviceDependentResources()
 {
     releaseFramebuffers();
     
+    glDeleteBuffers(1, &_screenVboObject);
     glDeleteBuffers(1, &_textureVboObject);
     glDeleteBuffers(1, &_colorVboObject);
     
@@ -194,18 +195,37 @@ void OpenGLRendererHelper::destroyShaderProgram(ShaderProgramWrapper* shaderProg
     glDeleteProgram(shaderProgramWrapper->_programObjectId);
 }
 
-void OpenGLRendererHelper::mapTextureVertices(std::vector<NGShaderVarInput*>& inputLayout)
+void OpenGLRendererHelper::mapScreenVertices(std::vector<NGShaderVarInput*>& inputLayout)
 {
-    glGenBuffers(1, &_textureVboObject);
-    glBindBuffer(GL_ARRAY_BUFFER, _textureVboObject);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(TEXTURE_VERTEX) * _textureVertices.size(), &_textureVertices[0], GL_STATIC_DRAW);
-
+    glGenBuffers(1, &_screenVboObject);
+    glBindBuffer(GL_ARRAY_BUFFER, _screenVboObject);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(TEXTURE_VERTEX) * _screenVertices.size(), &_screenVertices[0], GL_STATIC_DRAW);
+    
     for (std::vector<NGShaderVarInput*>::iterator i = inputLayout.begin(); i != inputLayout.end(); ++i)
     {
         NGShaderVarInput* svi = (*i);
         
         glVertexAttribPointer(svi->_attribute, svi->_size, GL_FLOAT, GL_FALSE, svi->_stride, svi->_bufferOffset);
-        glEnableVertexAttribArray(svi->_attribute);
+    }
+}
+
+void OpenGLRendererHelper::unmapScreenVertices()
+{
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glDeleteBuffers(1, &_screenVboObject);
+}
+
+void OpenGLRendererHelper::mapTextureVertices(std::vector<NGShaderVarInput*>& inputLayout)
+{
+    glGenBuffers(1, &_textureVboObject);
+    glBindBuffer(GL_ARRAY_BUFFER, _textureVboObject);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(TEXTURE_VERTEX) * _textureVertices.size(), &_textureVertices[0], GL_STATIC_DRAW);
+    
+    for (std::vector<NGShaderVarInput*>::iterator i = inputLayout.begin(); i != inputLayout.end(); ++i)
+    {
+        NGShaderVarInput* svi = (*i);
+        
+        glVertexAttribPointer(svi->_attribute, svi->_size, GL_FLOAT, GL_FALSE, svi->_stride, svi->_bufferOffset);
     }
 }
 
@@ -224,9 +244,8 @@ void OpenGLRendererHelper::mapColorVertices(std::vector<NGShaderVarInput*>& inpu
     for (std::vector<NGShaderVarInput*>::iterator i = inputLayout.begin(); i != inputLayout.end(); ++i)
     {
         NGShaderVarInput* svi = (*i);
-     
+        
         glVertexAttribPointer(svi->_attribute, svi->_size, GL_FLOAT, GL_FALSE, svi->_stride, svi->_bufferOffset);
-        glEnableVertexAttribArray(svi->_attribute);
     }
 }
 

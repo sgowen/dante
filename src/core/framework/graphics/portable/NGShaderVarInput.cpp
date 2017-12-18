@@ -38,5 +38,6 @@ void NGShaderVarInput::build(ShaderProgramWrapper* inShaderProgramWrapper, int t
     _bufferOffset = BUFFER_OFFSET(_offset * sizeof(GL_FLOAT));
     
     _attribute = glGetAttribLocation(inShaderProgramWrapper->_programObjectId, _attribName);
+    glEnableVertexAttribArray(_attribute);
 }
 #endif

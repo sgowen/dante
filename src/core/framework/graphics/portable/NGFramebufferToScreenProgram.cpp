@@ -20,9 +20,7 @@ NGFramebufferToScreenProgram::NGFramebufferToScreenProgram(RendererHelper& inRen
 {
     _uniforms.push_back(new NGShaderUniformInput("u_TextureUnit"));
     
-    _inputLayout.push_back(new NGShaderVarInput("a_Position", 3, 0));
-    _inputLayout.push_back(new NGShaderVarInput("a_Color", 4, 3));
-    _inputLayout.push_back(new NGShaderVarInput("a_TexCoord", 2, 7));
+    _inputLayout.push_back(new NGShaderVarInput("a_Position", 2, 0));
     
     load();
 }
@@ -37,12 +35,12 @@ void NGFramebufferToScreenProgram::bind(void* data)
     
     _rendererHelper.bindTexture(NGTextureSlot_ZERO, static_cast<NGTexture*>(data), _uniforms[0]);
     
-    _rendererHelper.mapTextureVertices(_inputLayout);
+    _rendererHelper.mapScreenVertices(_inputLayout);
 }
 
 void NGFramebufferToScreenProgram::unbind()
 {
-    _rendererHelper.unmapTextureVertices();
+    _rendererHelper.unmapScreenVertices();
     
     _rendererHelper.bindTexture(NGTextureSlot_ZERO, NULL);
     

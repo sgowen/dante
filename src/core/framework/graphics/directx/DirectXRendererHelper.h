@@ -55,11 +55,14 @@ public:
     virtual void bindShaderProgram(ShaderProgramWrapper* shaderProgramWrapper);
     virtual void destroyShaderProgram(ShaderProgramWrapper* shaderProgramWrapper);
     
-    virtual void mapTextureVertices() = 0;
-    virtual void unmapTextureVertices() = 0;
+    virtual void mapScreenVertices(std::vector<NGShaderVarInput*>& inputLayout);
+    virtual void unmapScreenVertices();
     
-    virtual void mapColorVertices() = 0;
-    virtual void unmapColorVertices() = 0;
+    virtual void mapTextureVertices(std::vector<NGShaderVarInput*>& inputLayout);
+    virtual void unmapTextureVertices();
+    
+    virtual void mapColorVertices(std::vector<NGShaderVarInput*>& inputLayout);
+    virtual void unmapColorVertices();
     
     virtual void draw(NGPrimitiveType renderPrimitiveType, uint32_t first, uint32_t count);
     virtual void drawIndexed(NGPrimitiveType renderPrimitiveType, uint32_t count);
@@ -90,6 +93,9 @@ private:
     
     // Used in NGRectBatcher, LineBatcher, and CircleBatcher (Geometry)
     Microsoft::WRL::ComPtr<ID3D11Buffer> _colorVertexBuffer; // the vertex buffer interface
+    
+    // Used when rendering directly to the screen
+    Microsoft::WRL::ComPtr<ID3D11Buffer> _screenVertexBuffer;
     
     // All above rendering takes place inside this matrix
     DirectX::XMFLOAT4X4 _matFinal;
