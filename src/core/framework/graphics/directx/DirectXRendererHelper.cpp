@@ -13,6 +13,7 @@
 #include "framework/graphics/portable/NGTexture.h"
 #include "framework/graphics/portable/TextureWrapper.h"
 #include "framework/graphics/portable/ShaderProgramWrapper.h"
+#include "framework/graphics/portable/NGShaderUniformInput.h"
 
 #include "framework/util/NGSTDUtil.h"
 #include "PlatformHelpers.h"
@@ -167,9 +168,9 @@ void DirectXRendererHelper::useScreenBlending()
     s_d3dContext->OMSetBlendState(_screenBlendState.Get(), 0, 0xffffffff);
 }
 
-void DirectXRendererHelper::bindMatrix(int32_t location)
+void DirectXRendererHelper::bindMatrix(NGShaderUniformInput* uniform)
 {
-    UNUSED(location);
+    UNUSED(uniform);
     
     _d3dContext->VSSetConstantBuffers(0, 1, _matrixConstantbuffer.GetAddressOf());
     
@@ -177,9 +178,9 @@ void DirectXRendererHelper::bindMatrix(int32_t location)
     _d3dContext->UpdateSubresource(_matrixConstantbuffer.Get(), 0, 0, &_matFinal, 0, 0);
 }
 
-void DirectXRendererHelper::bindTexture(NGTextureSlot textureSlot, NGTexture* texture, int32_t location)
+void DirectXRendererHelper::bindTexture(NGTextureSlot textureSlot, NGTexture* texture, NGShaderUniformInput* uniform)
 {
-    UNUSED(location);
+    UNUSED(uniform);
     
     if (texture)
     {
@@ -214,6 +215,11 @@ void DirectXRendererHelper::bindShaderProgram(ShaderProgramWrapper* shaderProgra
 
 void DirectXRendererHelper::destroyShaderProgram(ShaderProgramWrapper* shaderProgramWrapper)
 {
+    assert(shaderProgramWrapper != NULL);
+    assert(shaderProgramWrapper->_vertexShader != NULL);
+    assert(shaderProgramWrapper->_inputLayout != NULL);
+    assert(shaderProgramWrapper->_pixelShader != NULL);
+    
     delete shaderProgramWrapper->_vertexShader;
     shaderProgramWrapper->_vertexShader = NULL;
     
@@ -276,26 +282,6 @@ void DirectXRendererHelper::drawIndexed(NGPrimitiveType renderPrimitiveType, uin
     
     s_d3dContext->IASetPrimitiveTopology(static_cast<D3D11_PRIMITIVE_TOPOLOGY>(renderPrimitiveType));
     s_d3dContext->DrawIndexed(count, 0, 0);
-}
-
-Microsoft::WRL::ComPtr<ID3D11Buffer>& DirectXRendererHelper::getTextureVertexBuffer()
-{
-    return _textureVertexBuffer;
-}
-
-Microsoft::WRL::ComPtr<ID3D11Buffer>& DirectXRendererHelper::getColorVertexBuffer()
-{
-    return _colorVertexBuffer;
-}
-
-DirectX::XMFLOAT4X4& DirectXRendererHelper::getMatrix()
-{
-    return _matFinal;
-}
-
-Microsoft::WRL::ComPtr<ID3D11Buffer>& DirectXRendererHelper::getMatrixConstantbuffer()
-{
-    return _matrixConstantbuffer;
 }
 
 void DirectXRendererHelper::createFramebufferObject()

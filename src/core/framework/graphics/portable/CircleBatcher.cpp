@@ -34,7 +34,7 @@ CircleBatcher::~CircleBatcher()
 
 void CircleBatcher::renderCircle(Circle &circle, Color &c, ShaderProgram &gpuProgramWrapper)
 {
-    clearVertices();
+    _rendererHelper->clearColorVertices();
     
     _numPoints = 0;
     
@@ -54,7 +54,7 @@ void CircleBatcher::renderCircle(Circle &circle, Color &c, ShaderProgram &gpuPro
 
 void CircleBatcher::renderPartialCircle(Circle &circle, int arcDegrees, Color &c, ShaderProgram &gpuProgramWrapper)
 {
-    clearVertices();
+    _rendererHelper->clearColorVertices();
     
     _numPoints = 0;
     
@@ -78,11 +78,6 @@ void CircleBatcher::renderPartialCircle(Circle &circle, int arcDegrees, Color &c
     addVertexCoordinate(circle.getCenter().getX(), circle.getCenter().getY(), 0, c.red, c.green, c.blue, c.alpha);
     
     endBatch(gpuProgramWrapper);
-}
-
-void CircleBatcher::clearVertices()
-{
-    _rendererHelper->clearColorVertices();
 }
 
 void CircleBatcher::endBatch(ShaderProgram &gpuProgramWrapper)

@@ -38,11 +38,13 @@
 		BB1C3C111FE77301002E4AA6 /* NGGeometryProgram.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB1C3C0B1FE77301002E4AA6 /* NGGeometryProgram.cpp */; };
 		BB1C3C121FE77301002E4AA6 /* NGTextureProgram.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB1C3C0D1FE77301002E4AA6 /* NGTextureProgram.cpp */; };
 		BB1C3C131FE77301002E4AA6 /* NGTextureProgram.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB1C3C0D1FE77301002E4AA6 /* NGTextureProgram.cpp */; };
-		BB1C3C1A1FE7868E002E4AA6 /* NGShaderInput.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB1C3C181FE7868E002E4AA6 /* NGShaderInput.cpp */; };
-		BB1C3C1B1FE7868E002E4AA6 /* NGShaderInput.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB1C3C181FE7868E002E4AA6 /* NGShaderInput.cpp */; };
+		BB1C3C1A1FE7868E002E4AA6 /* NGShaderVarInput.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB1C3C181FE7868E002E4AA6 /* NGShaderVarInput.cpp */; };
+		BB1C3C1B1FE7868E002E4AA6 /* NGShaderVarInput.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB1C3C181FE7868E002E4AA6 /* NGShaderVarInput.cpp */; };
 		BB1E897B1EF4A81500B0D78A /* PacketHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB1E89791EF4A81500B0D78A /* PacketHandler.cpp */; };
 		BB1E89811EF4B2BA00B0D78A /* SocketPacketHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB1E897F1EF4B2BA00B0D78A /* SocketPacketHandler.cpp */; };
 		BB1E89841EF4B4F400B0D78A /* NGSteamPacketHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB1E89821EF4B4F400B0D78A /* NGSteamPacketHandler.cpp */; };
+		BB2022F31FE8281D00BBB053 /* NGShaderUniformInput.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB2022F11FE8281C00BBB053 /* NGShaderUniformInput.cpp */; };
+		BB2022F41FE8281D00BBB053 /* NGShaderUniformInput.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB2022F11FE8281C00BBB053 /* NGShaderUniformInput.cpp */; };
 		BB27D22E1FC6567A00ED42FD /* OALAudioTracks.m in Sources */ = {isa = PBXBuildFile; fileRef = BB27D1DE1FC655FF00ED42FD /* OALAudioTracks.m */; };
 		BB27D22F1FC6567A00ED42FD /* OALAudioTrack.m in Sources */ = {isa = PBXBuildFile; fileRef = BB27D1E01FC655FF00ED42FD /* OALAudioTrack.m */; };
 		BB27D2301FC6567A00ED42FD /* OALAudioTrackNotifications.m in Sources */ = {isa = PBXBuildFile; fileRef = BB27D1E21FC655FF00ED42FD /* OALAudioTrackNotifications.m */; };
@@ -281,7 +283,6 @@
 		BB5AFE621FB35AAE005FBD52 /* CircleBatcher.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF1301EA94ED900F0866E /* CircleBatcher.cpp */; };
 		BB5AFE651FB35AAF005FBD52 /* Font.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF1371EA94ED900F0866E /* Font.cpp */; };
 		BB5AFE661FB35AAF005FBD52 /* ShaderProgram.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF1391EA94ED900F0866E /* ShaderProgram.cpp */; };
-		BB5AFE671FB35AAF005FBD52 /* ShaderProgramFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF13B1EA94ED900F0866E /* ShaderProgramFactory.cpp */; };
 		BB5AFE681FB35AAF005FBD52 /* AssetsMapper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBCFF1C21ECD312E003EE520 /* AssetsMapper.cpp */; };
 		BB5AFE691FB35AAF005FBD52 /* RendererHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF13F1EA94ED900F0866E /* RendererHelper.cpp */; };
 		BB5AFE6A1FB35AAF005FBD52 /* TextureLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF1411EA94ED900F0866E /* TextureLoader.cpp */; };
@@ -364,7 +365,6 @@
 		BBAEF2581EA94EDA00F0866E /* CircleBatcher.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF1301EA94ED900F0866E /* CircleBatcher.cpp */; };
 		BBAEF25E1EA94EDA00F0866E /* Font.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF1371EA94ED900F0866E /* Font.cpp */; };
 		BBAEF2601EA94EDA00F0866E /* ShaderProgram.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF1391EA94ED900F0866E /* ShaderProgram.cpp */; };
-		BBAEF2621EA94EDA00F0866E /* ShaderProgramFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF13B1EA94ED900F0866E /* ShaderProgramFactory.cpp */; };
 		BBAEF2641EA94EDA00F0866E /* RendererHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF13F1EA94ED900F0866E /* RendererHelper.cpp */; };
 		BBAEF2661EA94EDA00F0866E /* TextureLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF1411EA94ED900F0866E /* TextureLoader.cpp */; };
 		BBAEF2681EA94EDA00F0866E /* LineBatcher.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF1431EA94ED900F0866E /* LineBatcher.cpp */; };
@@ -661,14 +661,16 @@
 		BB1C3C0B1FE77301002E4AA6 /* NGGeometryProgram.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NGGeometryProgram.cpp; sourceTree = "<group>"; };
 		BB1C3C0C1FE77301002E4AA6 /* NGFramebufferToScreenProgram.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NGFramebufferToScreenProgram.h; sourceTree = "<group>"; };
 		BB1C3C0D1FE77301002E4AA6 /* NGTextureProgram.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NGTextureProgram.cpp; sourceTree = "<group>"; };
-		BB1C3C181FE7868E002E4AA6 /* NGShaderInput.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NGShaderInput.cpp; sourceTree = "<group>"; };
-		BB1C3C191FE7868E002E4AA6 /* NGShaderInput.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NGShaderInput.h; sourceTree = "<group>"; };
+		BB1C3C181FE7868E002E4AA6 /* NGShaderVarInput.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NGShaderVarInput.cpp; sourceTree = "<group>"; };
+		BB1C3C191FE7868E002E4AA6 /* NGShaderVarInput.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NGShaderVarInput.h; sourceTree = "<group>"; };
 		BB1E89791EF4A81500B0D78A /* PacketHandler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PacketHandler.cpp; sourceTree = "<group>"; };
 		BB1E897A1EF4A81500B0D78A /* PacketHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PacketHandler.h; sourceTree = "<group>"; };
 		BB1E897F1EF4B2BA00B0D78A /* SocketPacketHandler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SocketPacketHandler.cpp; sourceTree = "<group>"; };
 		BB1E89801EF4B2BA00B0D78A /* SocketPacketHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SocketPacketHandler.h; sourceTree = "<group>"; };
 		BB1E89821EF4B4F400B0D78A /* NGSteamPacketHandler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NGSteamPacketHandler.cpp; sourceTree = "<group>"; };
 		BB1E89831EF4B4F400B0D78A /* NGSteamPacketHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NGSteamPacketHandler.h; sourceTree = "<group>"; };
+		BB2022F11FE8281C00BBB053 /* NGShaderUniformInput.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NGShaderUniformInput.cpp; sourceTree = "<group>"; };
+		BB2022F21FE8281C00BBB053 /* NGShaderUniformInput.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NGShaderUniformInput.h; sourceTree = "<group>"; };
 		BB27D1DB1FC655FF00ED42FD /* OALSimpleAudio.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OALSimpleAudio.h; sourceTree = "<group>"; };
 		BB27D1DD1FC655FF00ED42FD /* OALAudioTrack.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OALAudioTrack.h; sourceTree = "<group>"; };
 		BB27D1DE1FC655FF00ED42FD /* OALAudioTracks.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OALAudioTracks.m; sourceTree = "<group>"; };
@@ -1017,8 +1019,6 @@
 		BBAEF1381EA94ED900F0866E /* Font.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Font.h; sourceTree = "<group>"; };
 		BBAEF1391EA94ED900F0866E /* ShaderProgram.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ShaderProgram.cpp; sourceTree = "<group>"; };
 		BBAEF13A1EA94ED900F0866E /* ShaderProgram.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShaderProgram.h; sourceTree = "<group>"; };
-		BBAEF13B1EA94ED900F0866E /* ShaderProgramFactory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ShaderProgramFactory.cpp; sourceTree = "<group>"; };
-		BBAEF13C1EA94ED900F0866E /* ShaderProgramFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShaderProgramFactory.h; sourceTree = "<group>"; };
 		BBAEF13D1EA94ED900F0866E /* TextureDataWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextureDataWrapper.h; sourceTree = "<group>"; };
 		BBAEF13E1EA94ED900F0866E /* TextureWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextureWrapper.h; sourceTree = "<group>"; };
 		BBAEF13F1EA94ED900F0866E /* RendererHelper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RendererHelper.cpp; sourceTree = "<group>"; };
@@ -2704,8 +2704,10 @@
 				BB0CA6F01FE5B08D0011B75B /* NGPrimitiveType.h */,
 				BBAEF1471EA94ED900F0866E /* NGRectBatcher.cpp */,
 				BBAEF1481EA94ED900F0866E /* NGRectBatcher.h */,
-				BB1C3C181FE7868E002E4AA6 /* NGShaderInput.cpp */,
-				BB1C3C191FE7868E002E4AA6 /* NGShaderInput.h */,
+				BB2022F11FE8281C00BBB053 /* NGShaderUniformInput.cpp */,
+				BB2022F21FE8281C00BBB053 /* NGShaderUniformInput.h */,
+				BB1C3C181FE7868E002E4AA6 /* NGShaderVarInput.cpp */,
+				BB1C3C191FE7868E002E4AA6 /* NGShaderVarInput.h */,
 				BBAEF1551EA94ED900F0866E /* NGTexture.cpp */,
 				BBAEF1561EA94ED900F0866E /* NGTexture.h */,
 				BB1C3C0D1FE77301002E4AA6 /* NGTextureProgram.cpp */,
@@ -2719,8 +2721,6 @@
 				BB0756DF1FE6107F008E0E08 /* RendererHelperFactory.h */,
 				BBAEF1391EA94ED900F0866E /* ShaderProgram.cpp */,
 				BBAEF13A1EA94ED900F0866E /* ShaderProgram.h */,
-				BBAEF13B1EA94ED900F0866E /* ShaderProgramFactory.cpp */,
-				BBAEF13C1EA94ED900F0866E /* ShaderProgramFactory.h */,
 				BB1C3BFC1FE76966002E4AA6 /* ShaderProgramLoader.cpp */,
 				BB1C3BFD1FE76967002E4AA6 /* ShaderProgramLoader.h */,
 				BB1C3C011FE76BE0002E4AA6 /* ShaderProgramLoaderFactory.cpp */,
@@ -3810,7 +3810,7 @@
 				BB6E7B141F940F2B006C0024 /* MainAssetsMapper.cpp in Sources */,
 				BB6E7B151F940F2B006C0024 /* MainRenderer.cpp in Sources */,
 				BBD554621FDB2EA800E00AD6 /* b2BroadPhase.cpp in Sources */,
-				BB1C3C1A1FE7868E002E4AA6 /* NGShaderInput.cpp in Sources */,
+				BB1C3C1A1FE7868E002E4AA6 /* NGShaderVarInput.cpp in Sources */,
 				BB27D26B1FC6572600ED42FD /* AppleAudioEngineHelper.cpp in Sources */,
 				BB6E7B161F940F2B006C0024 /* Crate.cpp in Sources */,
 				BB6E7B171F940F2B006C0024 /* Ground.cpp in Sources */,
@@ -3958,7 +3958,6 @@
 				BB7251A91EE105780024C71C /* InputState.cpp in Sources */,
 				BBBD149A1EE06BB3003F9307 /* WeightedTimedMovingAverage.cpp in Sources */,
 				BBAEF2A61EA94EDA00F0866E /* AudioEngineHelper.cpp in Sources */,
-				BBAEF2621EA94EDA00F0866E /* ShaderProgramFactory.cpp in Sources */,
 				BBD5543A1FDB2EA800E00AD6 /* b2PulleyJoint.cpp in Sources */,
 				BB6F59801FBDE9C400BD7697 /* osmesa_context.c in Sources */,
 				BBD5542C1FDB2EA800E00AD6 /* b2DistanceJoint.cpp in Sources */,
@@ -3977,6 +3976,7 @@
 				BBD43A0E1ED0BD00001D5EB4 /* ReplicationCommand.cpp in Sources */,
 				BBBCB2EE1EF0993000B77938 /* NGSteamGameServer.cpp in Sources */,
 				BBAEF2641EA94EDA00F0866E /* RendererHelper.cpp in Sources */,
+				BB2022F31FE8281D00BBB053 /* NGShaderUniformInput.cpp in Sources */,
 				BB44CB8E1DB053C0003E633F /* pngwtran.c in Sources */,
 				BBD5545C1FDB2EA800E00AD6 /* b2CircleShape.cpp in Sources */,
 				BB07A78D1FC60FD900AE5051 /* vulkan.c in Sources */,
@@ -4037,6 +4037,7 @@
 				BB27D2581FC6567F00ED42FD /* mach_timing.c in Sources */,
 				BB27D2591FC6567F00ED42FD /* OALActionManager.m in Sources */,
 				BB27D25A1FC6567F00ED42FD /* OALAction.m in Sources */,
+				BB2022F41FE8281D00BBB053 /* NGShaderUniformInput.cpp in Sources */,
 				BB1C3C111FE77301002E4AA6 /* NGGeometryProgram.cpp in Sources */,
 				BB27D25B1FC6567F00ED42FD /* OALUtilityActions.m in Sources */,
 				BBB1D3AF1FC8CB9800B74BAC /* NGExtension.cpp in Sources */,
@@ -4066,7 +4067,6 @@
 				BB5AFE621FB35AAE005FBD52 /* CircleBatcher.cpp in Sources */,
 				BB5AFE651FB35AAF005FBD52 /* Font.cpp in Sources */,
 				BB5AFE661FB35AAF005FBD52 /* ShaderProgram.cpp in Sources */,
-				BB5AFE671FB35AAF005FBD52 /* ShaderProgramFactory.cpp in Sources */,
 				BB5AFE681FB35AAF005FBD52 /* AssetsMapper.cpp in Sources */,
 				BBD554611FDB2EA800E00AD6 /* b2TimeOfImpact.cpp in Sources */,
 				BBD5545B1FDB2EA800E00AD6 /* b2EdgeShape.cpp in Sources */,
@@ -4156,7 +4156,7 @@
 				BB31B5B01FC205D5005F1C0A /* GamePadEvent.cpp in Sources */,
 				BB5AFE221FB35A0B005FBD52 /* AudioEngineHelperFactory.cpp in Sources */,
 				BBD554371FDB2EA800E00AD6 /* b2Joint.cpp in Sources */,
-				BB1C3C1B1FE7868E002E4AA6 /* NGShaderInput.cpp in Sources */,
+				BB1C3C1B1FE7868E002E4AA6 /* NGShaderVarInput.cpp in Sources */,
 				BB5AFE231FB35A0B005FBD52 /* AudioEngineHelper.cpp in Sources */,
 				BB27D2681FC6572600ED42FD /* AppleSoundWrapper.cpp in Sources */,
 				BB5AFE241FB35A0B005FBD52 /* Sound.cpp in Sources */,

@@ -9,26 +9,23 @@
 #include "framework/graphics/portable/NGTextureProgram.h"
 
 #include <framework/graphics/portable/RendererHelper.h>
+#include <framework/graphics/portable/ShaderProgramLoader.h>
+#include <framework/graphics/portable/NGShaderUniformInput.h>
+#include <framework/graphics/portable/NGShaderVarInput.h>
 #include <framework/graphics/portable/ShaderProgramWrapper.h>
-
-#include <framework/util/macros.h>
 
 #include <assert.h>
 
-NGTextureProgram::NGTextureProgram(RendererHelper& inRendererHelper, ShaderProgramWrapper* inShaderProgramWrapper) : ShaderProgram(inRendererHelper, inShaderProgramWrapper)
+NGTextureProgram::NGTextureProgram(RendererHelper& inRendererHelper, ShaderProgramLoader& inShaderProgramLoader, const char* vertexShaderName, const char* fragmentShaderName) : ShaderProgram(inRendererHelper, inShaderProgramLoader, vertexShaderName, fragmentShaderName)
 {
-    u_mvp_matrix_location = glGetUniformLocation(_shaderProgramWrapper->_programObjectId, "u_Matrix");
-    u_texture_unit_location = glGetUniformLocation(_shaderProgramWrapper->_programObjectId, "u_TextureUnit");
-    a_position_location = glGetAttribLocation(_shaderProgramWrapper->_programObjectId, "a_Position");
-    a_color_location = glGetAttribLocation(_shaderProgramWrapper->_programObjectId, "a_Color");
-    a_texture_coordinates_location = glGetAttribLocation(_shaderProgramWrapper->_programObjectId, "a_TexCoord");
-}
-
-NGTextureProgram::~NGTextureProgram()
-{
-    _rendererHelper.destroyShaderProgram(_shaderProgramWrapper);
+    _uniforms.push_back(new NGShaderUniformInput("u_Matrix"));
+    _uniforms.push_back(new NGShaderUniformInput("u_TextureUnit"));
     
-    delete _shaderProgramWrapper;
+    _inputLayout.push_back(new NGShaderVarInput("a_Position", 3, 0));
+    _inputLayout.push_back(new NGShaderVarInput("a_Color", 4, 3));
+    _inputLayout.push_back(new NGShaderVarInput("a_TexCoord", 2, 7));
+    
+    load();
 }
 
 void NGTextureProgram::bind(void* data)
@@ -39,27 +36,18 @@ void NGTextureProgram::bind(void* data)
     
     _rendererHelper.useNormalBlending();
     
-    _rendererHelper.bindMatrix(u_mvp_matrix_location);
+    _rendererHelper.bindMatrix(_uniforms[0]);
     
-    _rendererHelper.bindTexture(NGTextureSlot_ZERO, static_cast<NGTexture*>(data), u_texture_unit_location);
+    _rendererHelper.bindTexture(NGTextureSlot_ZERO, static_cast<NGTexture*>(data), _uniforms[1]);
     
-    _rendererHelper.mapTextureVertices();
-    
-    glVertexAttribPointer(a_position_location, 3, GL_FLOAT, GL_FALSE, sizeof(GLfloat) * 9, BUFFER_OFFSET(0));
-    glEnableVertexAttribArray(a_position_location);
-    
-    glVertexAttribPointer(a_color_location, 4, GL_FLOAT, GL_FALSE, sizeof(GLfloat) * 9, BUFFER_OFFSET(3 * sizeof(GL_FLOAT)));
-    glEnableVertexAttribArray(a_color_location);
-    
-    glVertexAttribPointer(a_texture_coordinates_location, 2, GL_FLOAT, GL_FALSE, sizeof(GLfloat) * 9, BUFFER_OFFSET(7 * sizeof(GL_FLOAT)));
-    glEnableVertexAttribArray(a_texture_coordinates_location);
+    _rendererHelper.mapTextureVertices(_inputLayout);
 }
 
 void NGTextureProgram::unbind()
 {
-    _rendererHelper.bindTexture(NGTextureSlot_ZERO, NULL);
-    
     _rendererHelper.unmapTextureVertices();
+    
+    _rendererHelper.bindTexture(NGTextureSlot_ZERO, NULL);
     
     _rendererHelper.bindShaderProgram(NULL);
 }

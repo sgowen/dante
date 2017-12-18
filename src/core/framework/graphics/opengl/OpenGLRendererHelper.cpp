@@ -13,6 +13,8 @@
 #include "framework/graphics/portable/NGTexture.h"
 #include "framework/graphics/portable/TextureWrapper.h"
 #include "framework/graphics/portable/ShaderProgramWrapper.h"
+#include "framework/graphics/portable/NGShaderUniformInput.h"
+#include "framework/graphics/portable/NGShaderVarInput.h"
 
 #include "framework/util/NGSTDUtil.h"
 
@@ -161,19 +163,19 @@ void OpenGLRendererHelper::useScreenBlending()
     glBlendEquationSeparate(GL_FUNC_ADD, GL_FUNC_ADD);
 }
 
-void OpenGLRendererHelper::bindMatrix(int32_t location)
+void OpenGLRendererHelper::bindMatrix(NGShaderUniformInput* uniform)
 {
-    glUniformMatrix4fv(location, 1, GL_FALSE, (GLfloat*)_matrix);
+    glUniformMatrix4fv(uniform->_attribute, 1, GL_FALSE, (GLfloat*)_matrix);
 }
 
-void OpenGLRendererHelper::bindTexture(NGTextureSlot textureSlot, NGTexture* texture, int32_t location)
+void OpenGLRendererHelper::bindTexture(NGTextureSlot textureSlot, NGTexture* texture, NGShaderUniformInput* uniform)
 {
     glActiveTexture(textureSlot);
     glBindTexture(GL_TEXTURE_2D, texture == NULL ? 0 : texture->textureWrapper->texture);
     
-    if (texture != NULL && location != 0)
+    if (texture != NULL && uniform != NULL)
     {
-        glUniform1i(location, slotIndexForTextureSlot(textureSlot));
+        glUniform1i(uniform->_attribute, slotIndexForTextureSlot(textureSlot));
     }
 }
 
@@ -192,11 +194,19 @@ void OpenGLRendererHelper::destroyShaderProgram(ShaderProgramWrapper* shaderProg
     glDeleteProgram(shaderProgramWrapper->_programObjectId);
 }
 
-void OpenGLRendererHelper::mapTextureVertices()
+void OpenGLRendererHelper::mapTextureVertices(std::vector<NGShaderVarInput*>& inputLayout)
 {
     glGenBuffers(1, &_textureVboObject);
     glBindBuffer(GL_ARRAY_BUFFER, _textureVboObject);
     glBufferData(GL_ARRAY_BUFFER, sizeof(TEXTURE_VERTEX) * _textureVertices.size(), &_textureVertices[0], GL_STATIC_DRAW);
+
+    for (std::vector<NGShaderVarInput*>::iterator i = inputLayout.begin(); i != inputLayout.end(); ++i)
+    {
+        NGShaderVarInput* svi = (*i);
+        
+        glVertexAttribPointer(svi->_attribute, svi->_size, GL_FLOAT, GL_FALSE, svi->_stride, svi->_bufferOffset);
+        glEnableVertexAttribArray(svi->_attribute);
+    }
 }
 
 void OpenGLRendererHelper::unmapTextureVertices()
@@ -205,11 +215,19 @@ void OpenGLRendererHelper::unmapTextureVertices()
     glDeleteBuffers(1, &_textureVboObject);
 }
 
-void OpenGLRendererHelper::mapColorVertices()
+void OpenGLRendererHelper::mapColorVertices(std::vector<NGShaderVarInput*>& inputLayout)
 {
     glGenBuffers(1, &_colorVboObject);
     glBindBuffer(GL_ARRAY_BUFFER, _colorVboObject);
     glBufferData(GL_ARRAY_BUFFER, sizeof(COLOR_VERTEX) * _colorVertices.size(), &_colorVertices[0], GL_STATIC_DRAW);
+    
+    for (std::vector<NGShaderVarInput*>::iterator i = inputLayout.begin(); i != inputLayout.end(); ++i)
+    {
+        NGShaderVarInput* svi = (*i);
+     
+        glVertexAttribPointer(svi->_attribute, svi->_size, GL_FLOAT, GL_FALSE, svi->_stride, svi->_bufferOffset);
+        glEnableVertexAttribArray(svi->_attribute);
+    }
 }
 
 void OpenGLRendererHelper::unmapColorVertices()
@@ -226,21 +244,6 @@ void OpenGLRendererHelper::draw(NGPrimitiveType renderPrimitiveType, uint32_t fi
 void OpenGLRendererHelper::drawIndexed(NGPrimitiveType renderPrimitiveType, uint32_t count)
 {
     glDrawElements(renderPrimitiveType, count, GL_UNSIGNED_SHORT, &_indices[0]);
-}
-
-GLuint OpenGLRendererHelper::getTextureVertexBuffer()
-{
-    return _textureVboObject;
-}
-
-GLuint OpenGLRendererHelper::getColorVertexBuffer()
-{
-    return _colorVboObject;
-}
-
-mat4x4& OpenGLRendererHelper::getMatrix()
-{
-    return _matrix;
 }
 
 void OpenGLRendererHelper::createFramebufferObject()

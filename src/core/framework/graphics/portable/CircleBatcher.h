@@ -29,8 +29,6 @@ private:
     RendererHelper* _rendererHelper;
     int _numPoints;
     
-    void clearVertices();
-    
     void addVertexCoordinate(float x, float y, float z, float r, float g, float b, float a);
     
     void endBatch(ShaderProgram &gpuProgramWrapper);

@@ -11,22 +11,14 @@
 
 #include "framework/graphics/portable/ShaderProgram.h"
 
-#include <framework/graphics/portable/NGGraphics.h>
-
 class NGFramebufferToScreenProgram : public ShaderProgram
 {
 public:
-    NGFramebufferToScreenProgram(RendererHelper& inRendererHelper, ShaderProgramWrapper* inShaderProgramWrapper);
-    
-    virtual ~NGFramebufferToScreenProgram();
+    NGFramebufferToScreenProgram(RendererHelper& inRendererHelper, ShaderProgramLoader& inShaderProgramLoader, const char* vertexShaderName, const char* fragmentShaderName);
     
     virtual void bind(void* data = NULL);
     
     virtual void unbind();
-    
-private:
-    GLint u_texture_unit_location;
-    GLint a_position_location;
 };
 
 #endif /* defined(__noctisgames__NGFramebufferToScreenProgram__) */

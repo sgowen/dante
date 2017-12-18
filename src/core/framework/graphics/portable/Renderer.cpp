@@ -29,7 +29,6 @@
 #include "framework/graphics/portable/TextureLoaderFactory.h"
 #include "framework/graphics/portable/ShaderProgramLoaderFactory.h"
 #include "framework/graphics/portable/RendererHelperFactory.h"
-#include "framework/graphics/portable/ShaderProgramFactory.h"
 #include "framework/util/NGSTDUtil.h"
 #include "framework/math/Circle.h"
 #include "framework/math/Line.h"
@@ -63,6 +62,8 @@ _areWindowSizeDependentResourcesCreated(false)
 
 Renderer::~Renderer()
 {
+    delete _rendererHelper;
+    
     delete _spriteBatcher;
     delete _fillNGRectBatcher;
     delete _boundsNGRectBatcher;
@@ -70,16 +71,16 @@ Renderer::~Renderer()
     delete _circleBatcher;
     
     delete _textureLoader;
-    delete _rendererHelper;
+    delete _shaderProgramLoader;
 }
 
 void Renderer::createDeviceDependentResources()
 {
 	_rendererHelper->createDeviceDependentResources();
 
-    _textureShaderProgram = new NGTextureProgram(_rendererHelper, _shaderProgramLoader->loadShaderProgram("shader_003_vert.ngs", "shader_003_frag.ngs"));
-    _colorShaderProgram = new NGGeometryProgram(_rendererHelper, _shaderProgramLoader->loadShaderProgram("shader_001_vert.ngs", "shader_001_frag.ngs"));
-    _framebufferToScreenShaderProgram = new NGFramebufferToScreenProgram(_rendererHelper, _shaderProgramLoader->loadShaderProgram("shader_002_vert.ngs", "shader_002_frag.ngs"));
+    _textureShaderProgram = new NGTextureProgram(*_rendererHelper, *_shaderProgramLoader, "shader_003_vert.ngs", "shader_003_frag.ngs");
+    _colorShaderProgram = new NGGeometryProgram(*_rendererHelper, *_shaderProgramLoader, "shader_001_vert.ngs", "shader_001_frag.ngs");
+    _framebufferToScreenShaderProgram = new NGFramebufferToScreenProgram(*_rendererHelper, *_shaderProgramLoader, "shader_002_vert.ngs", "shader_002_frag.ngs");
     
     _areDeviceDependentResourcesCreated = true;
 }

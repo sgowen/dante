@@ -10,14 +10,18 @@
 #define __noctisgames__ShaderProgram__
 
 #include <cstddef>
+#include <vector>
 
 class RendererHelper;
+class ShaderProgramLoader;
+class NGShaderUniformInput;
+class NGShaderVarInput;
 struct ShaderProgramWrapper;
 
 class ShaderProgram
 {
 public:
-    ShaderProgram(RendererHelper& inRendererHelper, ShaderProgramWrapper* inShaderProgramWrapper);
+    ShaderProgram(RendererHelper& inRendererHelper, ShaderProgramLoader& inShaderProgramLoader, const char* vertexShaderName, const char* fragmentShaderName);
     
     virtual ~ShaderProgram();
     
@@ -27,7 +31,14 @@ public:
     
 protected:
     RendererHelper& _rendererHelper;
+    ShaderProgramLoader& _shaderProgramLoader;
+    const char* _vertexShaderName;
+    const char* _fragmentShaderName;
+    std::vector<NGShaderUniformInput*> _uniforms;
+    std::vector<NGShaderVarInput*> _inputLayout;
     ShaderProgramWrapper* _shaderProgramWrapper;
+    
+    void load();
 };
 
 #endif /* defined(__noctisgames__ShaderProgram__) */

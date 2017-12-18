@@ -9,6 +9,8 @@
 #include "framework/graphics/opengl/OpenGLProgramLoader.h"
 
 #include "framework/graphics/portable/ShaderProgramWrapper.h"
+#include "framework/graphics/portable/NGShaderVarInput.h"
+#include "framework/graphics/portable/NGShaderUniformInput.h"
 
 #include "framework/file/portable/AssetDataHandler.h"
 #include "framework/file/portable/FileData.h"
@@ -30,7 +32,7 @@ OpenGLProgramLoader::~OpenGLProgramLoader()
     // Empty
 }
 
-ShaderProgramWrapper* OpenGLProgramLoader::loadShaderProgram(const char* vertexShaderName, const char* fragmentShaderName)
+ShaderProgramWrapper* OpenGLProgramLoader::loadShaderProgram(const char* vertexShaderName, const char* fragmentShaderName, std::vector<NGShaderUniformInput*>& uniforms, std::vector<NGShaderVarInput*>& inputLayout)
 {
     assert(vertexShaderName != NULL);
     assert(fragmentShaderName != NULL);
@@ -67,7 +69,25 @@ ShaderProgramWrapper* OpenGLProgramLoader::loadShaderProgram(const char* vertexS
     free((void *)vertex_shader_source_output);
     free((void *)fragment_shader_source_output);
     
-    return new ShaderProgramWrapper(programObjectId);
+    ShaderProgramWrapper* ret = new ShaderProgramWrapper(programObjectId);
+    
+    int totalSize = 0;
+    for (std::vector<NGShaderVarInput*>::iterator i = inputLayout.begin(); i != inputLayout.end(); ++i)
+    {
+        totalSize += (*i)->_size;
+    }
+    
+    for (std::vector<NGShaderVarInput*>::iterator i = inputLayout.begin(); i != inputLayout.end(); ++i)
+    {
+        (*i)->build(ret, totalSize);
+    }
+    
+    for (std::vector<NGShaderUniformInput*>::iterator i = uniforms.begin(); i != uniforms.end(); ++i)
+    {
+        (*i)->build(ret);
+    }
+    
+    return ret;
 }
 
 GLuint OpenGLProgramLoader::buildProgram(const void * vertex_shader_source, const int vertex_shader_source_length, const void * fragment_shader_source, const int fragment_shader_source_length)

@@ -18,6 +18,8 @@
 class NGTexture;
 struct TextureWrapper;
 class ShaderProgramWrapper;
+class NGShaderUniformInput;
+class NGShaderVarInput;
 
 class RendererHelper
 {
@@ -49,32 +51,22 @@ public:
     virtual void useNormalBlending() = 0;
     virtual void useScreenBlending() = 0;
     
-    virtual void bindMatrix(int32_t location = 0) = 0;
+    virtual void bindMatrix(NGShaderUniformInput* uniform) = 0;
     
-    virtual void bindTexture(NGTextureSlot textureSlot, NGTexture* texture, int32_t location = 0) = 0;
+    virtual void bindTexture(NGTextureSlot textureSlot, NGTexture* texture, NGShaderUniformInput* uniform = NULL) = 0;
     virtual void destroyTexture(TextureWrapper& textureWrapper) = 0;
     
     virtual void bindShaderProgram(ShaderProgramWrapper* shaderProgramWrapper) = 0;
     virtual void destroyShaderProgram(ShaderProgramWrapper* shaderProgramWrapper) = 0;
     
-    virtual void mapTextureVertices() = 0;
+    virtual void mapTextureVertices(std::vector<NGShaderVarInput*>& inputLayout) = 0;
     virtual void unmapTextureVertices() = 0;
     
-    virtual void mapColorVertices() = 0;
+    virtual void mapColorVertices(std::vector<NGShaderVarInput*>& inputLayout) = 0;
     virtual void unmapColorVertices() = 0;
     
     virtual void draw(NGPrimitiveType renderPrimitiveType, uint32_t first, uint32_t count) = 0;
     virtual void drawIndexed(NGPrimitiveType renderPrimitiveType, uint32_t count) = 0;
-    
-#if defined __APPLE__ || defined __ANDROID__ || defined __linux__
-    virtual GLuint getTextureVertexBuffer() = 0;
-    virtual GLuint getColorVertexBuffer() = 0;
-    virtual mat4x4& getMatrix() = 0;
-#elif defined _WIN32
-    virtual Microsoft::WRL::ComPtr<ID3D11Buffer>& getTextureVertexBuffer() = 0;
-    virtual Microsoft::WRL::ComPtr<ID3D11Buffer>& getColorVertexBuffer() = 0;
-    virtual DirectX::XMFLOAT4X4& getMatrix() = 0;
-#endif
     
     void clearColorVertices();
     void clearTextureVertices();

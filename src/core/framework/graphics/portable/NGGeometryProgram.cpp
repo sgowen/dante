@@ -9,22 +9,19 @@
 #include "framework/graphics/portable/NGGeometryProgram.h"
 
 #include <framework/graphics/portable/RendererHelper.h>
+#include <framework/graphics/portable/ShaderProgramLoader.h>
+#include <framework/graphics/portable/NGShaderUniformInput.h>
+#include <framework/graphics/portable/NGShaderVarInput.h>
 #include <framework/graphics/portable/ShaderProgramWrapper.h>
 
-#include <framework/util/macros.h>
-
-NGGeometryProgram::NGGeometryProgram(RendererHelper& inRendererHelper, ShaderProgramWrapper* inShaderProgramWrapper) : ShaderProgram(inRendererHelper, inShaderProgramWrapper)
+NGGeometryProgram::NGGeometryProgram(RendererHelper& inRendererHelper, ShaderProgramLoader& inShaderProgramLoader, const char* vertexShaderName, const char* fragmentShaderName) : ShaderProgram(inRendererHelper, inShaderProgramLoader, vertexShaderName, fragmentShaderName)
 {
-    u_mvp_matrix_location = glGetUniformLocation(_shaderProgramWrapper->_programObjectId, "u_Matrix");
-    a_position_location = glGetAttribLocation(_shaderProgramWrapper->_programObjectId, "a_Position");
-    a_color_location = glGetAttribLocation(_shaderProgramWrapper->_programObjectId, "a_Color");
-}
-
-NGGeometryProgram::~NGGeometryProgram()
-{
-    _rendererHelper.destroyShaderProgram(_shaderProgramWrapper);
+    _uniforms.push_back(new NGShaderUniformInput("u_Matrix"));
     
-    delete _shaderProgramWrapper;
+    _inputLayout.push_back(new NGShaderVarInput("a_Position", 3, 0));
+    _inputLayout.push_back(new NGShaderVarInput("a_Color", 4, 3));
+    
+    load();
 }
 
 void NGGeometryProgram::bind(void* data)
@@ -33,15 +30,9 @@ void NGGeometryProgram::bind(void* data)
     
     _rendererHelper.useNormalBlending();
     
-    _rendererHelper.bindMatrix(u_mvp_matrix_location);
+    _rendererHelper.bindMatrix(_uniforms[0]);
     
-    _rendererHelper.mapColorVertices();
-    
-    glVertexAttribPointer(a_position_location, 3, GL_FLOAT, GL_FALSE, sizeof(GLfloat) * 7, BUFFER_OFFSET(0));
-    glEnableVertexAttribArray(a_position_location);
-    
-    glVertexAttribPointer(a_color_location, 4, GL_FLOAT, GL_FALSE, sizeof(GLfloat) * 7, BUFFER_OFFSET(3 * sizeof(GL_FLOAT)));
-    glEnableVertexAttribArray(a_color_location);
+    _rendererHelper.mapColorVertices(_inputLayout);
 }
 
 void NGGeometryProgram::unbind()

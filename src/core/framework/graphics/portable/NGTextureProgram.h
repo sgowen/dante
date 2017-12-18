@@ -11,25 +11,14 @@
 
 #include "framework/graphics/portable/ShaderProgram.h"
 
-#include <framework/graphics/portable/NGGraphics.h>
-
 class NGTextureProgram : public ShaderProgram
 {
 public:
-    NGTextureProgram(RendererHelper& inRendererHelper, ShaderProgramWrapper* inShaderProgramWrapper);
-    
-    virtual ~NGTextureProgram();
+    NGTextureProgram(RendererHelper& inRendererHelper, ShaderProgramLoader& inShaderProgramLoader, const char* vertexShaderName, const char* fragmentShaderName);
     
     virtual void bind(void* data = NULL);
     
     virtual void unbind();
-    
-private:
-    GLint u_mvp_matrix_location;
-    GLint u_texture_unit_location;
-    GLint a_position_location;
-    GLint a_color_location;
-    GLint a_texture_coordinates_location;
 };
 
 #endif /* defined(__noctisgames__NGTextureProgram__) */

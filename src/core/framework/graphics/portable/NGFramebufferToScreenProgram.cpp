@@ -9,23 +9,22 @@
 #include "framework/graphics/portable/NGFramebufferToScreenProgram.h"
 
 #include <framework/graphics/portable/RendererHelper.h>
+#include <framework/graphics/portable/ShaderProgramLoader.h>
+#include <framework/graphics/portable/NGShaderUniformInput.h>
+#include <framework/graphics/portable/NGShaderVarInput.h>
 #include <framework/graphics/portable/ShaderProgramWrapper.h>
-
-#include <framework/util/macros.h>
 
 #include <assert.h>
 
-NGFramebufferToScreenProgram::NGFramebufferToScreenProgram(RendererHelper& inRendererHelper, ShaderProgramWrapper* inShaderProgramWrapper) : ShaderProgram(inRendererHelper, inShaderProgramWrapper)
+NGFramebufferToScreenProgram::NGFramebufferToScreenProgram(RendererHelper& inRendererHelper, ShaderProgramLoader& inShaderProgramLoader, const char* vertexShaderName, const char* fragmentShaderName) : ShaderProgram(inRendererHelper, inShaderProgramLoader, vertexShaderName, fragmentShaderName)
 {
-    u_texture_unit_location = glGetUniformLocation(_shaderProgramWrapper->_programObjectId, "u_TextureUnit");
-    a_position_location = glGetAttribLocation(_shaderProgramWrapper->_programObjectId, "a_Position");
-}
-
-NGFramebufferToScreenProgram::~NGFramebufferToScreenProgram()
-{
-    _rendererHelper.destroyShaderProgram(_shaderProgramWrapper);
+    _uniforms.push_back(new NGShaderUniformInput("u_TextureUnit"));
     
-    delete _shaderProgramWrapper;
+    _inputLayout.push_back(new NGShaderVarInput("a_Position", 3, 0));
+    _inputLayout.push_back(new NGShaderVarInput("a_Color", 4, 3));
+    _inputLayout.push_back(new NGShaderVarInput("a_TexCoord", 2, 7));
+    
+    load();
 }
 
 void NGFramebufferToScreenProgram::bind(void* data)
@@ -36,20 +35,16 @@ void NGFramebufferToScreenProgram::bind(void* data)
     
     _rendererHelper.useScreenBlending();
     
-    // tell the GPU which texture to use
-    _rendererHelper.bindTexture(NGTextureSlot_ZERO, static_cast<NGTexture*>(data), u_texture_unit_location);
+    _rendererHelper.bindTexture(NGTextureSlot_ZERO, static_cast<NGTexture*>(data), _uniforms[0]);
     
-    _rendererHelper.mapTextureVertices();
-    
-    glVertexAttribPointer(a_position_location, 2, GL_FLOAT, GL_FALSE, sizeof(GLfloat) * 9, BUFFER_OFFSET(0));
-    glEnableVertexAttribArray(a_position_location);
+    _rendererHelper.mapTextureVertices(_inputLayout);
 }
 
 void NGFramebufferToScreenProgram::unbind()
 {
-    _rendererHelper.bindTexture(NGTextureSlot_ZERO, NULL);
-    
     _rendererHelper.unmapTextureVertices();
+    
+    _rendererHelper.bindTexture(NGTextureSlot_ZERO, NULL);
     
     _rendererHelper.bindShaderProgram(NULL);
 }

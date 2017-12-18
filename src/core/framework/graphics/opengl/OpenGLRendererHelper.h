@@ -41,26 +41,22 @@ public:
     virtual void useNormalBlending();
     virtual void useScreenBlending();
     
-    virtual void bindMatrix(int32_t location = 0);
+    virtual void bindMatrix(NGShaderUniformInput* uniform);
     
-    virtual void bindTexture(NGTextureSlot textureSlot, NGTexture* texture, int32_t location = 0);
+    virtual void bindTexture(NGTextureSlot textureSlot, NGTexture* texture, NGShaderUniformInput* uniform = NULL);
     virtual void destroyTexture(TextureWrapper& textureWrapper);
     
     virtual void bindShaderProgram(ShaderProgramWrapper* shaderProgramWrapper);
     virtual void destroyShaderProgram(ShaderProgramWrapper* shaderProgramWrapper);
     
-    virtual void mapTextureVertices() = 0;
-    virtual void unmapTextureVertices() = 0;
+    virtual void mapTextureVertices(std::vector<NGShaderVarInput*>& inputLayout);
+    virtual void unmapTextureVertices();
     
-    virtual void mapColorVertices() = 0;
-    virtual void unmapColorVertices() = 0;
+    virtual void mapColorVertices(std::vector<NGShaderVarInput*>& inputLayout);
+    virtual void unmapColorVertices();
     
     virtual void draw(NGPrimitiveType renderPrimitiveType, uint32_t first, uint32_t count);
     virtual void drawIndexed(NGPrimitiveType renderPrimitiveType, uint32_t count);
-    
-    virtual GLuint getTextureVertexBuffer();
-    virtual GLuint getColorVertexBuffer();
-    virtual mat4x4& getMatrix();
     
 protected:
     virtual void createFramebufferObject();
