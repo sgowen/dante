@@ -1,5 +1,5 @@
 //
-//  GpuProgramFactory.cpp
+//  ShaderProgramFactory.cpp
 //  noctisgames-framework
 //
 //  Created by Stephen Gowen on 1/15/17.
@@ -8,13 +8,13 @@
 
 #include "pch.h"
 
-#include "framework/graphics/portable/GpuProgramFactory.h"
+#include "framework/graphics/portable/ShaderProgramFactory.h"
 #include "framework/graphics/portable/RendererHelper.h"
 #include "framework/util/FrameworkConstants.h"
 
-GpuProgramFactory* GpuProgramFactory::getInstance()
+ShaderProgramFactory* ShaderProgramFactory::getInstance()
 {
-    static GpuProgramFactory instance = GpuProgramFactory();
+    static ShaderProgramFactory instance = ShaderProgramFactory();
     return &instance;
 }
 
@@ -25,17 +25,17 @@ GpuProgramFactory* GpuProgramFactory::getInstance()
 #include "framework/graphics/opengl/OpenGLGeometryProgram.h"
 #include "framework/graphics/opengl/OpenGLFramebufferToScreenProgram.h"
 
-GpuProgram* GpuProgramFactory::createTextureGpuProgram(RendererHelper* inRendererHelper)
+ShaderProgram* ShaderProgramFactory::createTextureShaderProgram(RendererHelper* inRendererHelper)
 {
     return new OpenGLTextureProgram(static_cast<OpenGLRendererHelper*>(inRendererHelper), TEXTURE_VERTEX_SHADER, TEXTURE_FRAGMENT_SHADER);
 }
 
-GpuProgram* GpuProgramFactory::createColorGpuProgram(RendererHelper* inRendererHelper)
+ShaderProgram* ShaderProgramFactory::createColorShaderProgram(RendererHelper* inRendererHelper)
 {
     return new OpenGLGeometryProgram(static_cast<OpenGLRendererHelper*>(inRendererHelper), COLOR_VERTEX_SHADER, COLOR_FRAGMENT_SHADER);
 }
 
-GpuProgram* GpuProgramFactory::createFramebufferToScreenGpuProgram(RendererHelper* inRendererHelper)
+ShaderProgram* ShaderProgramFactory::createFramebufferToScreenShaderProgram(RendererHelper* inRendererHelper)
 {
     return new OpenGLFramebufferToScreenProgram(static_cast<OpenGLRendererHelper*>(inRendererHelper), FRAMEBUFFER_TO_SCREEN_VERTEX_SHADER, FRAMEBUFFER_TO_SCREEN_FRAGMENT_SHADER);
 }
@@ -46,23 +46,23 @@ GpuProgram* GpuProgramFactory::createFramebufferToScreenGpuProgram(RendererHelpe
 #include "framework/graphics/directx/DirectXGeometryProgram.h"
 #include "framework/graphics/directx/DirectXFramebufferToScreenProgram.h"
 
-GpuProgram* GpuProgramFactory::createTextureGpuProgram(RendererHelper* inRendererHelper)
+ShaderProgram* ShaderProgramFactory::createTextureShaderProgram(RendererHelper* inRendererHelper)
 {
     return new DirectXTextureProgram(static_cast<DirectXRendererHelper*>(inRendererHelper), TEXTURE_VERTEX_SHADER, TEXTURE_FRAGMENT_SHADER);
 }
 
-GpuProgram* GpuProgramFactory::createColorGpuProgram(RendererHelper* inRendererHelper)
+ShaderProgram* ShaderProgramFactory::createColorShaderProgram(RendererHelper* inRendererHelper)
 {
     return new DirectXGeometryProgram(static_cast<DirectXRendererHelper*>(inRendererHelper), COLOR_VERTEX_SHADER, COLOR_FRAGMENT_SHADER);
 }
 
-GpuProgram* GpuProgramFactory::createFramebufferToScreenGpuProgram(RendererHelper* inRendererHelper)
+ShaderProgram* ShaderProgramFactory::createFramebufferToScreenShaderProgram(RendererHelper* inRendererHelper)
 {
     return new DirectXFramebufferToScreenProgram(static_cast<DirectXRendererHelper*>(inRendererHelper), FRAMEBUFFER_TO_SCREEN_VERTEX_SHADER, FRAMEBUFFER_TO_SCREEN_FRAGMENT_SHADER);
 }
 #endif
 
-GpuProgramFactory::GpuProgramFactory()
+ShaderProgramFactory::ShaderProgramFactory()
 {
     // Hide Constructor for Singleton
 }

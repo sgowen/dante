@@ -11,9 +11,6 @@
 
 #include "framework/graphics/portable/RendererHelper.h"
 
-typedef float vec4[4];
-typedef vec4 mat4x4[4];
-
 class OpenGLRendererHelper : public RendererHelper
 {
 public:
@@ -31,7 +28,7 @@ public:
     
     virtual void endFrame();
     
-    virtual TextureWrapper* getFramebuffer(int index);
+    virtual NGTexture* getFramebuffer(int index);
     
     virtual void updateMatrix(float left, float right, float bottom, float top);
     
@@ -42,20 +39,28 @@ public:
     virtual void bindToScreenFramebuffer();
     
     virtual void useNormalBlending();
-    
     virtual void useScreenBlending();
     
-    virtual void destroyTexture(GpuTextureWrapper& textureWrapper);
+    virtual void bindMatrix(int32_t location = 0);
+    
+    virtual void bindTexture(NGTextureSlot textureSlot, NGTexture* texture, int32_t location = 0);
+    virtual void destroyTexture(TextureWrapper& textureWrapper);
+    
+    virtual void bindShaderProgram(ShaderProgramWrapper* shaderProgramWrapper);
+    virtual void destroyShaderProgram(ShaderProgramWrapper* shaderProgramWrapper);
+    
+    virtual void mapTextureVertices() = 0;
+    virtual void unmapTextureVertices() = 0;
+    
+    virtual void mapColorVertices() = 0;
+    virtual void unmapColorVertices() = 0;
     
     virtual void draw(NGPrimitiveType renderPrimitiveType, uint32_t first, uint32_t count);
-    
     virtual void drawIndexed(NGPrimitiveType renderPrimitiveType, uint32_t count);
     
-    virtual void bindTexture(NGTextureSlot textureSlot, TextureWrapper* textureWrapper, int32_t location = 0);
-    
-    GLuint getSbVboObject(); // For Sprite Batcher
-    GLuint getGbVboObject(); // For Geometry Batcher
-    mat4x4& getViewProjectionMatrix();
+    virtual GLuint getTextureVertexBuffer();
+    virtual GLuint getColorVertexBuffer();
+    virtual mat4x4& getMatrix();
     
 protected:
     virtual void createFramebufferObject();
@@ -65,13 +70,13 @@ private:
     std::vector<GLuint> _fbos;
     std::vector<GLuint> _fbo_textures;
     
-    GLuint _sbVboObject; // For Sprite Batcher
-    GLuint _gbVboObject; // For Geometry Batcher
+    GLuint _textureVboObject; // For Sprite Batcher
+    GLuint _colorVboObject; // For Geometry Batcher
     
     GLint _screenFBO;
     GLint _maxTextureSize;
     
-    mat4x4 _viewProjectionMatrix;
+    mat4x4 _matrix;
     
     int slotIndexForTextureSlot(NGTextureSlot textureSlot);
 };

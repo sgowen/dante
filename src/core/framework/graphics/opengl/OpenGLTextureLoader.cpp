@@ -8,9 +8,9 @@
 
 #include "framework/graphics/opengl/OpenGLTextureLoader.h"
 
-#include "framework/graphics/portable/GpuTextureDataWrapper.h"
-#include <framework/graphics/portable/TextureWrapper.h>
-#include "framework/graphics/portable/GpuTextureWrapper.h"
+#include "framework/graphics/portable/TextureDataWrapper.h"
+#include <framework/graphics/portable/NGTexture.h>
+#include "framework/graphics/portable/TextureWrapper.h"
 
 #include "framework/file/portable/AssetDataHandler.h"
 #include "framework/file/portable/FileData.h"
@@ -37,9 +37,9 @@ OpenGLTextureLoader::~OpenGLTextureLoader()
     // Empty
 }
 
-GpuTextureDataWrapper* OpenGLTextureLoader::loadTextureData(TextureWrapper* textureWrapper)
+TextureDataWrapper* OpenGLTextureLoader::loadTextureData(NGTexture* texture)
 {
-    const char* textureName = textureWrapper->name.c_str();
+    const char* textureName = texture->name.c_str();
 
     const char* finalTextureFileName;
 #if defined __linux__ && !defined(__ANDROID__)
@@ -52,7 +52,7 @@ GpuTextureDataWrapper* OpenGLTextureLoader::loadTextureData(TextureWrapper* text
 
     const FileData fileData = AssetDataHandler::getAssetDataHandler()->getAssetData(finalTextureFileName);
     void* output = NULL;
-    if (textureWrapper->_isEncrypted)
+    if (texture->_isEncrypted)
     {
         output = malloc(fileData.data_length);
         StringUtil::encryptDecrypt((unsigned char*)fileData.data, (unsigned char*) output, fileData.data_length);
@@ -66,9 +66,9 @@ GpuTextureDataWrapper* OpenGLTextureLoader::loadTextureData(TextureWrapper* text
 
     AssetDataHandler::getAssetDataHandler()->releaseAssetData(&fileData);
 
-    GpuTextureDataWrapper* tdw = new GpuTextureDataWrapper(raw_image_data);
+    TextureDataWrapper* tdw = new TextureDataWrapper(raw_image_data);
 
-    if (textureWrapper->_isEncrypted)
+    if (texture->_isEncrypted)
     {
         free(output);
     }
@@ -76,9 +76,9 @@ GpuTextureDataWrapper* OpenGLTextureLoader::loadTextureData(TextureWrapper* text
     return tdw;
 }
 
-GpuTextureWrapper* OpenGLTextureLoader::loadTexture(GpuTextureDataWrapper* textureData, bool repeatS)
+TextureWrapper* OpenGLTextureLoader::loadTexture(TextureDataWrapper* textureData, bool repeatS)
 {
-    return new GpuTextureWrapper(loadPngAssetIntoTexture(textureData->raw_image_data, repeatS));
+    return new TextureWrapper(loadPngAssetIntoTexture(textureData->raw_image_data, repeatS));
 }
 
 struct DataHandle

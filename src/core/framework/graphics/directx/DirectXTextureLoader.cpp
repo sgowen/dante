@@ -10,9 +10,9 @@
 
 #include "framework/graphics/directx/DirectXTextureLoader.h"
 
-#include "framework/graphics/portable/GpuTextureDataWrapper.h"
-#include <framework/graphics/portable/TextureWrapper.h>
-#include "framework/graphics/portable/GpuTextureWrapper.h"
+#include "framework/graphics/portable/TextureDataWrapper.h"
+#include <framework/graphics/portable/NGTexture.h>
+#include "framework/graphics/portable/TextureWrapper.h"
 
 #include "framework/util/macros.h"
 #include "framework/graphics/directx/DirectXRendererHelper.h"
@@ -35,9 +35,9 @@ DirectXTextureLoader::~DirectXTextureLoader()
     // Empty
 }
 
-GpuTextureDataWrapper* DirectXTextureLoader::loadTextureData(TextureWrapper* textureWrapper)
+TextureDataWrapper* DirectXTextureLoader::loadTextureData(NGTexture* texture)
 {
-    const char* textureName = textureWrapper->name.c_str();
+    const char* textureName = texture->name.c_str();
 
 	std::string s("data\\textures\\");
 	s += std::string(textureName);
@@ -45,7 +45,7 @@ GpuTextureDataWrapper* DirectXTextureLoader::loadTextureData(TextureWrapper* tex
     
     const FileData fileData = AssetDataHandler::getAssetDataHandler()->getAssetData(finalPath);
     void* output = NULL;
-    if (textureWrapper->_isEncrypted)
+    if (texture->_isEncrypted)
     {
         output = malloc(fileData.data_length);
         StringUtil::encryptDecrypt((unsigned char*)fileData.data, (unsigned char*) output, fileData.data_length);
@@ -62,9 +62,9 @@ GpuTextureDataWrapper* DirectXTextureLoader::loadTextureData(TextureWrapper* tex
     
     AssetDataHandler::getAssetDataHandler()->releaseAssetData(&fileData);
     
-    GpuTextureDataWrapper* tdw = new GpuTextureDataWrapper(pShaderResourceView);
+    TextureDataWrapper* tdw = new TextureDataWrapper(pShaderResourceView);
     
-    if (textureWrapper->_isEncrypted)
+    if (texture->_isEncrypted)
     {
         free((void *)output);
     }
@@ -72,9 +72,9 @@ GpuTextureDataWrapper* DirectXTextureLoader::loadTextureData(TextureWrapper* tex
     return tdw;
 }
 
-GpuTextureWrapper* DirectXTextureLoader::loadTexture(GpuTextureDataWrapper* textureData, bool repeatS)
+TextureWrapper* DirectXTextureLoader::loadTexture(TextureDataWrapper* textureData, bool repeatS)
 {
     UNUSED(repeatS);
     
-    return new GpuTextureWrapper(textureData->texture);
+    return new TextureWrapper(textureData->texture);
 }

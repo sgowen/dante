@@ -9,13 +9,13 @@
 #ifndef __noctisgames__DirectXProgram__
 #define __noctisgames__DirectXProgram__
 
-#include <framework/graphics/portable/GpuProgram.h>
+#include <framework/graphics/portable/ShaderProgram.h>
 
 #include "pch.h"
 
 class DirectXRendererHelper;
 
-class DirectXProgram : public GpuProgram
+class DirectXProgram : public ShaderProgram
 {
 public:
     DirectXProgram(DirectXRendererHelper* inRendererHelper, const char* vertexShaderName, const char* fragmentShaderName, const D3D11_INPUT_ELEMENT_DESC* inputElementDescs, UINT numElements);

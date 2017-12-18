@@ -9,9 +9,9 @@
 #ifndef __noctisgames__TextureLoader__
 #define __noctisgames__TextureLoader__
 
-struct GpuTextureDataWrapper;
-class TextureWrapper;
-struct GpuTextureWrapper;
+struct TextureDataWrapper;
+class NGTexture;
+struct TextureWrapper;
 
 class TextureLoader
 {
@@ -20,9 +20,9 @@ public:
     
     virtual ~TextureLoader();
     
-    virtual GpuTextureDataWrapper* loadTextureData(TextureWrapper* textureWrapper) = 0;
+    virtual TextureDataWrapper* loadTextureData(NGTexture* texture) = 0;
     
-    virtual GpuTextureWrapper* loadTexture(GpuTextureDataWrapper* textureData, bool repeatS = false) = 0;
+    virtual TextureWrapper* loadTexture(TextureDataWrapper* textureData, bool repeatS = false) = 0;
 };
 
 #endif /* defined(__noctisgames__TextureLoader__) */

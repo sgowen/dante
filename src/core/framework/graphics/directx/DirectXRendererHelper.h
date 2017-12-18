@@ -34,7 +34,7 @@ public:
     
     virtual void endFrame();
     
-    virtual TextureWrapper* getFramebuffer(int index);
+    virtual NGTexture* getFramebuffer(int index);
     
     virtual void updateMatrix(float left, float right, float bottom, float top);
     
@@ -45,26 +45,30 @@ public:
     virtual void bindToScreenFramebuffer();
     
     virtual void useNormalBlending();
-    
     virtual void useScreenBlending();
     
-    virtual void destroyTexture(GpuTextureWrapper& textureWrapper);
+    virtual void bindMatrix(int32_t location = 0);
+    
+    virtual void bindTexture(NGTextureSlot textureSlot, NGTexture* texture, int32_t location = 0);
+    virtual void destroyTexture(TextureWrapper& textureWrapper);
+    
+    virtual void bindShaderProgram(ShaderProgramWrapper* shaderProgramWrapper);
+    virtual void destroyShaderProgram(ShaderProgramWrapper* shaderProgramWrapper);
+    
+    virtual void mapTextureVertices() = 0;
+    virtual void unmapTextureVertices() = 0;
+    
+    virtual void mapColorVertices() = 0;
+    virtual void unmapColorVertices() = 0;
     
     virtual void draw(NGPrimitiveType renderPrimitiveType, uint32_t first, uint32_t count);
-    
     virtual void drawIndexed(NGPrimitiveType renderPrimitiveType, uint32_t count);
     
-    virtual void bindTexture(NGTextureSlot textureSlot, TextureWrapper* textureWrapper, int32_t location = 0);
+    virtual Microsoft::WRL::ComPtr<ID3D11Buffer>& getTextureVertexBuffer();
+    virtual Microsoft::WRL::ComPtr<ID3D11Buffer>& getColorVertexBuffer();
+    virtual DirectX::XMFLOAT4X4& getMatrix();
     
-    Microsoft::WRL::ComPtr<ID3D11BlendState>& getBlendState();
-    Microsoft::WRL::ComPtr<ID3D11BlendState>& getScreenBlendState();
     Microsoft::WRL::ComPtr<ID3D11Buffer>& getMatrixConstantbuffer();
-    Microsoft::WRL::ComPtr<ID3D11Buffer>& getIndexbuffer();
-    Microsoft::WRL::ComPtr<ID3D11SamplerState>& getSbSamplerState();
-    Microsoft::WRL::ComPtr<ID3D11SamplerState>& getSbWrapSamplerState();
-    Microsoft::WRL::ComPtr<ID3D11Buffer>& getSbVertexBuffer();
-    Microsoft::WRL::ComPtr<ID3D11Buffer>& getGbVertexBuffer();
-    DirectX::XMFLOAT4X4& getMatFinal();
     
 protected:
     virtual void createFramebufferObject();
@@ -88,10 +92,10 @@ private:
     // Used in SpriteBatcher
     Microsoft::WRL::ComPtr<ID3D11SamplerState> _sbSamplerState;
     Microsoft::WRL::ComPtr<ID3D11SamplerState> _sbWrapSamplerState;
-    Microsoft::WRL::ComPtr<ID3D11Buffer> _sbVertexBuffer;
+    Microsoft::WRL::ComPtr<ID3D11Buffer> _textureVertexBuffer;
     
     // Used in NGRectBatcher, LineBatcher, and CircleBatcher (Geometry)
-    Microsoft::WRL::ComPtr<ID3D11Buffer> _gbVertexBuffer; // the vertex buffer interface
+    Microsoft::WRL::ComPtr<ID3D11Buffer> _colorVertexBuffer; // the vertex buffer interface
     
     // All above rendering takes place inside this matrix
     DirectX::XMFLOAT4X4 _matFinal;

@@ -11,8 +11,8 @@
 #include "framework/graphics/portable/SpriteBatcher.h"
 
 #include "framework/graphics/portable/RendererHelper.h"
-#include "framework/graphics/portable/TextureWrapper.h"
-#include "framework/graphics/portable/GpuProgram.h"
+#include "framework/graphics/portable/NGTexture.h"
+#include "framework/graphics/portable/ShaderProgram.h"
 #include "framework/graphics/portable/TextureRegion.h"
 #include "framework/graphics/portable/Color.h"
 
@@ -37,11 +37,11 @@ void SpriteBatcher::beginBatch()
     _numSprites = 0;
 }
 
-void SpriteBatcher::endBatch(TextureWrapper* textureWrapper, GpuProgram& gpuProgramWrapper)
+void SpriteBatcher::endBatch(NGTexture* texture, ShaderProgram& gpuProgramWrapper)
 {
     if (_numSprites > 0)
     {
-        gpuProgramWrapper.bind(textureWrapper);
+        gpuProgramWrapper.bind(texture);
         
         _rendererHelper->drawIndexed(NGPrimitiveType_Triangles, _numSprites * INDICES_PER_RECTANGLE);
         

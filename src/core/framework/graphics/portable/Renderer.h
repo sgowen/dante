@@ -18,13 +18,14 @@ class NGRectBatcher;
 class LineBatcher;
 class CircleBatcher;
 class TextureLoader;
+class ShaderProgramLoader;
 class RendererHelper;
-class GpuProgram;
+class ShaderProgram;
 class Entity;
 class TextureRegion;
 class Color;
 class NGRect;
-class TextureWrapper;
+class NGTexture;
 
 class Renderer
 {
@@ -41,11 +42,11 @@ public:
     
     virtual void render(int flags = 0) = 0;
     
-    void loadTextureDataSync(TextureWrapper* arg);
-    void loadTextureSync(TextureWrapper* textureWrapper);
-    void loadTextureAsync(TextureWrapper* textureWrapper);
-    void unloadTexture(TextureWrapper* textureWrapper);
-    bool ensureTexture(TextureWrapper* textureWrapper);
+    void loadTextureDataSync(NGTexture* arg);
+    void loadTextureSync(NGTexture* texture);
+    void loadTextureAsync(NGTexture* texture);
+    void unloadTexture(NGTexture* texture);
+    bool ensureTexture(NGTexture* texture);
     
 protected:
     RendererHelper* _rendererHelper;
@@ -55,10 +56,11 @@ protected:
     LineBatcher* _lineBatcher;
     CircleBatcher* _circleBatcher;
     TextureLoader* _textureLoader;
+    ShaderProgramLoader* _shaderProgramLoader;
     
-    GpuProgram* _textureGpuProgram;
-    GpuProgram* _colorGpuProgram;
-    GpuProgram* _framebufferToScreenGpuProgram;
+    ShaderProgram* _textureShaderProgram;
+    ShaderProgram* _colorShaderProgram;
+    ShaderProgram* _framebufferToScreenShaderProgram;
     
     int _framebufferIndex;
     
@@ -80,7 +82,7 @@ protected:
     void testRenderingSuite();
     
 private:
-    std::vector<TextureWrapper *> _loadingTextures;
+    std::vector<NGTexture *> _loadingTextures;
     std::vector<tthread::thread *> _textureDataLoadingThreads;
 	int _maxBatchSize;
     bool _areDeviceDependentResourcesCreated;

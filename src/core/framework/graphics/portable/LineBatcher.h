@@ -10,7 +10,7 @@
 #define __noctisgames__LineBatcher__
 
 class RendererHelper;
-class GpuProgram;
+class ShaderProgram;
 class Line;
 class Color;
 
@@ -23,7 +23,7 @@ public:
     
     void beginBatch();
     
-    void endBatch(GpuProgram &gpuProgramWrapper);
+    void endBatch(ShaderProgram &gpuProgramWrapper);
     
     void renderLine(Line &line, Color &c);
     

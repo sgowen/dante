@@ -9,6 +9,9 @@
 #ifndef __noctisgames__VertexProgramInput__
 #define __noctisgames__VertexProgramInput__
 
+typedef float vec4[4];
+typedef vec4 mat4x4[4];
+
 struct COLOR_VERTEX
 {
 	float X, Y, Z; // vertex position

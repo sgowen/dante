@@ -15,7 +15,7 @@
 
 #include <string>
 
-class TextureWrapper;
+class NGTexture;
 class Font;
 struct b2Vec2;
 class World;
@@ -34,11 +34,11 @@ public:
     virtual void render(int flags = 0);
     
 private:
-    TextureWrapper* _characters;
-    TextureWrapper* _misc;
-    TextureWrapper* _bg1;
-    TextureWrapper* _bg2;
-    TextureWrapper* _cover;
+    NGTexture* _characters;
+    NGTexture* _misc;
+    NGTexture* _bg1;
+    NGTexture* _bg2;
+    NGTexture* _cover;
     Font* _font;
     NGRect* _camBounds;
     

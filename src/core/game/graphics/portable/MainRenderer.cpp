@@ -10,7 +10,7 @@
 
 #include "game/graphics/portable/MainRenderer.h"
 
-#include "framework/graphics/portable/TextureWrapper.h"
+#include "framework/graphics/portable/NGTexture.h"
 #include "framework/graphics/portable/Font.h"
 #include "Box2D/Box2D.h"
 #include "game/logic/World.h"
@@ -59,11 +59,11 @@
 #include <ctime> // rand
 
 MainRenderer::MainRenderer() : Renderer(),
-_characters(new TextureWrapper("texture_001.ngt", this, false, true)),
-_misc(new TextureWrapper("texture_002.ngt", this, false, true)),
-_bg1(new TextureWrapper("texture_003.ngt", this, true, true)),
-_bg2(new TextureWrapper("texture_004.ngt", this, true, true)),
-_cover(new TextureWrapper("texture_005.ngt", this, true, true)),
+_characters(new NGTexture("texture_001.ngt", this, false, true)),
+_misc(new NGTexture("texture_002.ngt", this, false, true)),
+_bg1(new NGTexture("texture_003.ngt", this, true, true)),
+_bg2(new NGTexture("texture_004.ngt", this, true, true)),
+_cover(new NGTexture("texture_005.ngt", this, true, true)),
 _font(new Font("texture_002.ngt", 0, 0, 16, 64, 75, TEXTURE_SIZE_1024)),
 _camBounds(new NGRect(0, 0, CAM_WIDTH, CAM_HEIGHT))
 {
@@ -155,7 +155,7 @@ void MainRenderer::renderBackground()
             tr.initY(clamp(384 - _camBounds->getBottom() * 32, 384, 0));
             _spriteBatcher->renderSprite(i * CAM_WIDTH + CAM_WIDTH / 2, CAM_HEIGHT / 2, CAM_WIDTH, CAM_HEIGHT, 0, tr);
         }
-        _spriteBatcher->endBatch(_bg1, *_textureGpuProgram);
+        _spriteBatcher->endBatch(_bg1, *_textureShaderProgram);
         
         _spriteBatcher->beginBatch();
         {
@@ -164,7 +164,7 @@ void MainRenderer::renderBackground()
             tr.initY(clamp(644 - _camBounds->getBottom() * 48, 644, 0));
             _spriteBatcher->renderSprite(i * CAM_WIDTH + CAM_WIDTH / 2, CAM_HEIGHT * 0.3875f / 2, CAM_WIDTH, CAM_HEIGHT * 0.3875f, 0, tr);
         }
-        _spriteBatcher->endBatch(_bg2, *_textureGpuProgram);
+        _spriteBatcher->endBatch(_bg2, *_textureShaderProgram);
     }
 }
 
@@ -178,7 +178,7 @@ void MainRenderer::renderWorld()
         static TextureRegion tr = ASSETS->findTextureRegion("Background3");
         _spriteBatcher->renderSprite(i * CAM_WIDTH + CAM_WIDTH / 2, CAM_HEIGHT * 0.2f / 2, CAM_WIDTH, CAM_HEIGHT * 0.2f, 0, tr);
     }
-    _spriteBatcher->endBatch(_bg2, *_textureGpuProgram);
+    _spriteBatcher->endBatch(_bg2, *_textureShaderProgram);
     
     renderEntities(InstanceManager::getClientWorld(), false);
     
@@ -200,7 +200,7 @@ void MainRenderer::renderWorld()
             renderText(text, origin, Color::DARK_RED, FONT_ALIGN_CENTERED);
         }
     }
-    _spriteBatcher->endBatch(_misc, *_textureGpuProgram);
+    _spriteBatcher->endBatch(_misc, *_textureShaderProgram);
 }
 
 void MainRenderer::renderEntities(World* world, bool isServer)
@@ -301,7 +301,7 @@ void MainRenderer::renderEntities(World* world, bool isServer)
         renderEntityWithColor(*r, tr, c, r->isFacingLeft());
     }
     
-    _spriteBatcher->endBatch(_characters, *_textureGpuProgram);
+    _spriteBatcher->endBatch(_characters, *_textureShaderProgram);
 }
 
 void MainRenderer::renderAtmosphere()
@@ -313,7 +313,7 @@ void MainRenderer::renderAtmosphere()
         static TextureRegion tr = ASSETS->findTextureRegion("Cover");
         _spriteBatcher->renderSprite(CAM_WIDTH / 2, CAM_HEIGHT / 2, CAM_WIDTH, CAM_HEIGHT, 0, tr);
     }
-    _spriteBatcher->endBatch(_cover, *_textureGpuProgram);
+    _spriteBatcher->endBatch(_cover, *_textureShaderProgram);
 }
 
 void MainRenderer::renderUI(int flags)
@@ -351,7 +351,7 @@ void MainRenderer::renderUI(int flags)
         default:
             break;
     }
-    _spriteBatcher->endBatch(_misc, *_textureGpuProgram);
+    _spriteBatcher->endBatch(_misc, *_textureShaderProgram);
 }
 
 void MainRenderer::renderMainMenuSteamOffText()

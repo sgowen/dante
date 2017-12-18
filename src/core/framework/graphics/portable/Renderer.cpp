@@ -15,22 +15,27 @@
 #include "framework/graphics/portable/LineBatcher.h"
 #include "framework/graphics/portable/CircleBatcher.h"
 #include "framework/graphics/portable/TextureLoader.h"
+#include "framework/graphics/portable/ShaderProgramLoader.h"
 #include "framework/graphics/portable/RendererHelper.h"
-#include "framework/graphics/portable/GpuProgram.h"
+#include "framework/graphics/portable/ShaderProgram.h"
 #include "framework/entity/Entity.h"
 #include "framework/graphics/portable/TextureRegion.h"
 #include "framework/graphics/portable/Color.h"
 #include "framework/math/NGRect.h"
-#include "framework/graphics/portable/TextureWrapper.h"
+#include "framework/graphics/portable/NGTexture.h"
 
-#include "framework/graphics/portable/GpuTextureWrapper.h"
-#include "framework/graphics/portable/GpuTextureDataWrapper.h"
+#include "framework/graphics/portable/TextureWrapper.h"
+#include "framework/graphics/portable/TextureDataWrapper.h"
 #include "framework/graphics/portable/TextureLoaderFactory.h"
+#include "framework/graphics/portable/ShaderProgramLoaderFactory.h"
 #include "framework/graphics/portable/RendererHelperFactory.h"
-#include "framework/graphics/portable/GpuProgramFactory.h"
+#include "framework/graphics/portable/ShaderProgramFactory.h"
 #include "framework/util/NGSTDUtil.h"
 #include "framework/math/Circle.h"
 #include "framework/math/Line.h"
+#include <framework/graphics/portable/NGTextureProgram.h>
+#include <framework/graphics/portable/NGGeometryProgram.h>
+#include <framework/graphics/portable/NGFramebufferToScreenProgram.h>
 
 #include <Box2D/Box2D.h>
 
@@ -45,9 +50,10 @@ _boundsNGRectBatcher(new NGRectBatcher(_rendererHelper, false)),
 _lineBatcher(new LineBatcher(_rendererHelper)),
 _circleBatcher(new CircleBatcher(_rendererHelper)),
 _textureLoader(TEXTURE_LOADER_FACTORY->createTextureLoader()),
-_textureGpuProgram(NULL),
-_colorGpuProgram(NULL),
-_framebufferToScreenGpuProgram(NULL),
+_shaderProgramLoader(SHADER_PROGRAM_LOADER_FACTORY->createShaderProgramLoader()),
+_textureShaderProgram(NULL),
+_colorShaderProgram(NULL),
+_framebufferToScreenShaderProgram(NULL),
 _framebufferIndex(0),
 _areDeviceDependentResourcesCreated(false),
 _areWindowSizeDependentResourcesCreated(false)
@@ -71,9 +77,9 @@ void Renderer::createDeviceDependentResources()
 {
 	_rendererHelper->createDeviceDependentResources();
 
-    _textureGpuProgram = GPU_PROGRAM_WRAPPER_FACTORY->createTextureGpuProgram(_rendererHelper);
-    _colorGpuProgram = GPU_PROGRAM_WRAPPER_FACTORY->createColorGpuProgram(_rendererHelper);
-    _framebufferToScreenGpuProgram = GPU_PROGRAM_WRAPPER_FACTORY->createFramebufferToScreenGpuProgram(_rendererHelper);
+    _textureShaderProgram = new NGTextureProgram(_rendererHelper, _shaderProgramLoader->loadShaderProgram("shader_003_vert.ngs", "shader_003_frag.ngs"));
+    _colorShaderProgram = new NGGeometryProgram(_rendererHelper, _shaderProgramLoader->loadShaderProgram("shader_001_vert.ngs", "shader_001_frag.ngs"));
+    _framebufferToScreenShaderProgram = new NGFramebufferToScreenProgram(_rendererHelper, _shaderProgramLoader->loadShaderProgram("shader_002_vert.ngs", "shader_002_frag.ngs"));
     
     _areDeviceDependentResourcesCreated = true;
 }
@@ -96,84 +102,84 @@ void Renderer::releaseDeviceDependentResources()
 
 	cleanUpThreads();
     
-    delete _textureGpuProgram;
-	_textureGpuProgram = NULL;
+    delete _textureShaderProgram;
+	_textureShaderProgram = NULL;
 
-    delete _colorGpuProgram;
-	_colorGpuProgram = NULL;
+    delete _colorShaderProgram;
+	_colorShaderProgram = NULL;
 
-    delete _framebufferToScreenGpuProgram;
-	_framebufferToScreenGpuProgram = NULL;
+    delete _framebufferToScreenShaderProgram;
+	_framebufferToScreenShaderProgram = NULL;
 }
 
-void Renderer::loadTextureDataSync(TextureWrapper* arg)
+void Renderer::loadTextureDataSync(NGTexture* arg)
 {
     assert(arg != NULL);
     
-    TextureWrapper* textureWrapper = static_cast<TextureWrapper*>(arg);
+    NGTexture* texture = static_cast<NGTexture*>(arg);
     
-    assert(textureWrapper->_renderer != NULL);
-    assert(textureWrapper->name.length() > 0);
+    assert(texture->_renderer != NULL);
+    assert(texture->name.length() > 0);
     
-    if (textureWrapper->gpuTextureWrapper
-        || !textureWrapper->_renderer->_areDeviceDependentResourcesCreated)
+    if (texture->textureWrapper
+        || !texture->_renderer->_areDeviceDependentResourcesCreated)
     {
         return;
     }
     
-    textureWrapper->_isLoadingData = true;
-    textureWrapper->gpuTextureDataWrapper = textureWrapper->_renderer->_textureLoader->loadTextureData(textureWrapper);
+    texture->_isLoadingData = true;
+    texture->textureDataWrapper = texture->_renderer->_textureLoader->loadTextureData(texture);
 }
 
-void Renderer::loadTextureSync(TextureWrapper* textureWrapper)
+void Renderer::loadTextureSync(NGTexture* texture)
 {
-    loadTextureDataSync(textureWrapper);
+    loadTextureDataSync(texture);
     
-    textureWrapper->gpuTextureWrapper = _textureLoader->loadTexture(textureWrapper->gpuTextureDataWrapper, textureWrapper->_repeatS);
+    texture->textureWrapper = _textureLoader->loadTexture(texture->textureDataWrapper, texture->_repeatS);
     
-    delete textureWrapper->gpuTextureDataWrapper;
-    textureWrapper->gpuTextureDataWrapper = NULL;
+    delete texture->textureDataWrapper;
+    texture->textureDataWrapper = NULL;
     
-    textureWrapper->_isLoadingData = false;
+    texture->_isLoadingData = false;
 }
 
 void tthreadLoadTextureDataSync(void* arg)
 {
     assert(arg != NULL);
     
-    TextureWrapper* textureWrapper = static_cast<TextureWrapper*>(arg);
+    NGTexture* texture = static_cast<NGTexture*>(arg);
     
-    textureWrapper->_renderer->loadTextureDataSync(textureWrapper);
+    texture->_renderer->loadTextureDataSync(texture);
 }
 
-void Renderer::loadTextureAsync(TextureWrapper* textureWrapper)
+void Renderer::loadTextureAsync(NGTexture* texture)
 {
-    assert(textureWrapper != NULL);
-    assert(textureWrapper->name.length() > 0);
+    assert(texture != NULL);
+    assert(texture->name.length() > 0);
     
-    if (textureWrapper->gpuTextureWrapper
-        || textureWrapper->_isLoadingData
+    if (texture->textureWrapper
+        || texture->_isLoadingData
         || !_areDeviceDependentResourcesCreated)
     {
         return;
     }
     
-    _loadingTextures.push_back(textureWrapper);
+    _loadingTextures.push_back(texture);
     
-    textureWrapper->_isLoadingData = true;
-    _textureDataLoadingThreads.push_back(new tthread::thread(tthreadLoadTextureDataSync, textureWrapper));
+    texture->_isLoadingData = true;
+    _textureDataLoadingThreads.push_back(new tthread::thread(tthreadLoadTextureDataSync, texture));
 }
 
-void Renderer::unloadTexture(TextureWrapper* textureWrapper)
+void Renderer::unloadTexture(NGTexture* texture)
 {
-    if (textureWrapper == NULL)
+    if (texture == NULL)
     {
         return;
     }
     
-    for (std::vector<TextureWrapper *>::iterator i = _loadingTextures.begin(); i != _loadingTextures.end(); )
+    for (std::vector<NGTexture *>::iterator i = _loadingTextures.begin(); i != _loadingTextures.end(); )
     {
-        if ((*i) == textureWrapper)
+        if ((*i) == texture)
         {
             i = _loadingTextures.erase(i);
         }
@@ -183,30 +189,30 @@ void Renderer::unloadTexture(TextureWrapper* textureWrapper)
         }
     }
     
-    if (textureWrapper->gpuTextureWrapper)
+    if (texture->textureWrapper)
     {
-        _rendererHelper->destroyTexture(*textureWrapper->gpuTextureWrapper);
+        _rendererHelper->destroyTexture(*texture->textureWrapper);
         
-        delete textureWrapper->gpuTextureWrapper;
-        textureWrapper->gpuTextureWrapper = NULL;
+        delete texture->textureWrapper;
+        texture->textureWrapper = NULL;
     }
     
-    if (textureWrapper->gpuTextureDataWrapper)
+    if (texture->textureDataWrapper)
     {
-        delete textureWrapper->gpuTextureDataWrapper;
-        textureWrapper->gpuTextureDataWrapper = NULL;
+        delete texture->textureDataWrapper;
+        texture->textureDataWrapper = NULL;
     }
     
-    textureWrapper->_isLoadingData = false;
+    texture->_isLoadingData = false;
 }
 
-bool Renderer::ensureTexture(TextureWrapper* textureWrapper)
+bool Renderer::ensureTexture(NGTexture* texture)
 {
-    if (textureWrapper->gpuTextureWrapper == NULL)
+    if (texture->textureWrapper == NULL)
     {
-        if (!textureWrapper->_isLoadingData)
+        if (!texture->_isLoadingData)
         {
-            loadTextureAsync(textureWrapper);
+            loadTextureAsync(texture);
         }
         
         return false;
@@ -247,7 +253,7 @@ void Renderer::renderToScreen()
     
     _spriteBatcher->beginBatch();
     _spriteBatcher->renderSprite(0, 0, 2, 2, 0, tr);
-    _spriteBatcher->endBatch(_rendererHelper->getFramebuffer(_framebufferIndex), *_framebufferToScreenGpuProgram);
+    _spriteBatcher->endBatch(_rendererHelper->getFramebuffer(_framebufferIndex), *_framebufferToScreenShaderProgram);
 }
 
 void Renderer::endFrame()
@@ -280,39 +286,39 @@ void Renderer::testRenderingSuite()
     _rendererHelper->updateMatrix(0, 16, 0, 9);
     
     static Circle c1(10, 4, 2);
-    _circleBatcher->renderCircle(c1, Color::RED, *_colorGpuProgram);
+    _circleBatcher->renderCircle(c1, Color::RED, *_colorShaderProgram);
     
     static Circle c2(7, 7, 2);
-    _circleBatcher->renderPartialCircle(c2, 135, Color::RED, *_colorGpuProgram);
+    _circleBatcher->renderPartialCircle(c2, 135, Color::RED, *_colorShaderProgram);
     
     static NGRect r1(1, 1, 2, 1);
     _boundsNGRectBatcher->beginBatch();
     _boundsNGRectBatcher->renderNGRect(r1, Color::RED);
-    _boundsNGRectBatcher->endBatch(*_colorGpuProgram);
+    _boundsNGRectBatcher->endBatch(*_colorShaderProgram);
     
     static NGRect r2(4, 1, 2, 1);
     _fillNGRectBatcher->beginBatch();
     _fillNGRectBatcher->renderNGRect(r2, Color::RED);
-    _fillNGRectBatcher->endBatch(*_colorGpuProgram);
+    _fillNGRectBatcher->endBatch(*_colorShaderProgram);
     
     static Line line(3, 3, 5, 5);
     _lineBatcher->beginBatch();
     _lineBatcher->renderLine(line, Color::RED);
-    _lineBatcher->endBatch(*_colorGpuProgram);
+    _lineBatcher->endBatch(*_colorShaderProgram);
 }
 
 #pragma mark private
 
 void Renderer::handleAsyncTextureLoads()
 {
-    for (std::vector<TextureWrapper *>::iterator i = _loadingTextures.begin(); i != _loadingTextures.end(); )
+    for (std::vector<NGTexture *>::iterator i = _loadingTextures.begin(); i != _loadingTextures.end(); )
     {
-        if ((*i)->gpuTextureDataWrapper)
+        if ((*i)->textureDataWrapper)
         {
-            (*i)->gpuTextureWrapper = _textureLoader->loadTexture((*i)->gpuTextureDataWrapper, (*i)->_repeatS);
+            (*i)->textureWrapper = _textureLoader->loadTexture((*i)->textureDataWrapper, (*i)->_repeatS);
             
-            delete (*i)->gpuTextureDataWrapper;
-            (*i)->gpuTextureDataWrapper = NULL;
+            delete (*i)->textureDataWrapper;
+            (*i)->textureDataWrapper = NULL;
             
             (*i)->_isLoadingData = false;
             

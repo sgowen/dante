@@ -1,14 +1,14 @@
 //
-//  OpenGLProgram.cpp
+//  OpenGLProgramLoader.cpp
 //  noctisgames-framework
 //
 //  Created by Stephen Gowen on 3/2/17.
 //  Copyright (c) 2017 Noctis Games. All rights reserved.
 //
 
-#include "framework/graphics/opengl/OpenGLProgram.h"
+#include "framework/graphics/opengl/OpenGLProgramLoader.h"
 
-#include <framework/graphics/opengl/OpenGLRendererHelper.h>
+#include "framework/graphics/portable/ShaderProgramWrapper.h"
 
 #include "framework/file/portable/AssetDataHandler.h"
 #include "framework/file/portable/FileData.h"
@@ -20,7 +20,17 @@
 #include <string>
 #include <cstring>
 
-OpenGLProgram::OpenGLProgram(OpenGLRendererHelper* inRendererHelper, const char* vertexShaderName, const char* fragmentShaderName) : _rendererHelper(inRendererHelper), _programObjectId(0)
+OpenGLProgramLoader::OpenGLProgramLoader() : ShaderProgramLoader()
+{
+    // Empty
+}
+
+OpenGLProgramLoader::~OpenGLProgramLoader()
+{
+    // Empty
+}
+
+ShaderProgramWrapper* OpenGLProgramLoader::loadShaderProgram(const char* vertexShaderName, const char* fragmentShaderName)
 {
     assert(vertexShaderName != NULL);
     assert(fragmentShaderName != NULL);
@@ -49,21 +59,18 @@ OpenGLProgram::OpenGLProgram(OpenGLRendererHelper* inRendererHelper, const char*
     unsigned char* fragment_shader_source_output = (unsigned char*) malloc(fragment_shader_source.data_length);
     StringUtil::encryptDecrypt((unsigned char*)fragment_shader_source.data, fragment_shader_source_output, fragment_shader_source.data_length);
 
-    _programObjectId = buildProgram(vertex_shader_source_output, (GLint)vertex_shader_source.data_length, fragment_shader_source_output, (GLint)fragment_shader_source.data_length);
+    GLuint programObjectId = buildProgram(vertex_shader_source_output, (GLint)vertex_shader_source.data_length, fragment_shader_source_output, (GLint)fragment_shader_source.data_length);
 
     AssetDataHandler::getAssetDataHandler()->releaseAssetData(&vertex_shader_source);
     AssetDataHandler::getAssetDataHandler()->releaseAssetData(&fragment_shader_source);
 
     free((void *)vertex_shader_source_output);
     free((void *)fragment_shader_source_output);
+    
+    return new ShaderProgramWrapper(programObjectId);
 }
 
-OpenGLProgram::~OpenGLProgram()
-{
-    glDeleteProgram(_programObjectId);
-}
-
-GLuint OpenGLProgram::buildProgram(const void * vertex_shader_source, const int vertex_shader_source_length, const void * fragment_shader_source, const int fragment_shader_source_length)
+GLuint OpenGLProgramLoader::buildProgram(const void * vertex_shader_source, const int vertex_shader_source_length, const void * fragment_shader_source, const int fragment_shader_source_length)
 {
     assert(vertex_shader_source != NULL);
     assert(fragment_shader_source != NULL);
@@ -74,7 +81,7 @@ GLuint OpenGLProgram::buildProgram(const void * vertex_shader_source, const int 
     return linkProgram(vertex_shader, fragment_shader);
 }
 
-GLuint OpenGLProgram::compileShader(const GLenum type, const void* source, const GLint length)
+GLuint OpenGLProgramLoader::compileShader(const GLenum type, const void* source, const GLint length)
 {
     assert(source != NULL);
 
@@ -106,7 +113,7 @@ GLuint OpenGLProgram::compileShader(const GLenum type, const void* source, const
     return shader_object_id;
 }
 
-GLuint OpenGLProgram::linkProgram(const GLuint vertex_shader, const GLuint fragment_shader)
+GLuint OpenGLProgramLoader::linkProgram(const GLuint vertex_shader, const GLuint fragment_shader)
 {
     GLuint progra_object_id = glCreateProgram();
     GLint link_status;

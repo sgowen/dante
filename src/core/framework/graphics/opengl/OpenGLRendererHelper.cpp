@@ -10,14 +10,15 @@
 
 #include "framework/graphics/opengl/OpenGLRendererHelper.h"
 
+#include "framework/graphics/portable/NGTexture.h"
 #include "framework/graphics/portable/TextureWrapper.h"
-#include "framework/graphics/portable/GpuTextureWrapper.h"
+#include "framework/graphics/portable/ShaderProgramWrapper.h"
 
 #include "framework/util/NGSTDUtil.h"
 
 #include <assert.h>
 
-OpenGLRendererHelper::OpenGLRendererHelper() : RendererHelper(), _sbVboObject(0), _gbVboObject(0), _screenFBO(0), _maxTextureSize(64)
+OpenGLRendererHelper::OpenGLRendererHelper() : RendererHelper(), _textureVboObject(0), _colorVboObject(0), _screenFBO(0), _maxTextureSize(64)
 {
     // Empty
 }
@@ -62,8 +63,8 @@ void OpenGLRendererHelper::releaseDeviceDependentResources()
 {
     releaseFramebuffers();
     
-    glDeleteBuffers(1, &_sbVboObject);
-    glDeleteBuffers(1, &_gbVboObject);
+    glDeleteBuffers(1, &_textureVboObject);
+    glDeleteBuffers(1, &_colorVboObject);
     
     _textureVertices.clear();
     _colorVertices.clear();
@@ -83,9 +84,9 @@ void OpenGLRendererHelper::endFrame()
     glDisable(GL_TEXTURE_2D);
 }
 
-TextureWrapper* OpenGLRendererHelper::getFramebuffer(int index)
+NGTexture* OpenGLRendererHelper::getFramebuffer(int index)
 {
-    _framebuffer->gpuTextureWrapper = _framebuffers[index];
+    _framebuffer->textureWrapper = _framebuffers[index];
     
     return _framebuffer;
 }
@@ -121,9 +122,9 @@ inline void mat4x4_ortho(mat4x4 M, float l, float r, float b, float t, float n, 
 
 void OpenGLRendererHelper::updateMatrix(float left, float right, float bottom, float top)
 {
-    mat4x4_identity(_viewProjectionMatrix);
+    mat4x4_identity(_matrix);
     
-    mat4x4_ortho(_viewProjectionMatrix, left, right, bottom, top, -1, 1);
+    mat4x4_ortho(_matrix, left, right, bottom, top, -1, 1);
 }
 
 void OpenGLRendererHelper::bindToOffscreenFramebuffer(int index)
@@ -160,9 +161,61 @@ void OpenGLRendererHelper::useScreenBlending()
     glBlendEquationSeparate(GL_FUNC_ADD, GL_FUNC_ADD);
 }
 
-void OpenGLRendererHelper::destroyTexture(GpuTextureWrapper& textureWrapper)
+void OpenGLRendererHelper::bindMatrix(int32_t location)
+{
+    glUniformMatrix4fv(location, 1, GL_FALSE, (GLfloat*)_matrix);
+}
+
+void OpenGLRendererHelper::bindTexture(NGTextureSlot textureSlot, NGTexture* texture, int32_t location)
+{
+    glActiveTexture(textureSlot);
+    glBindTexture(GL_TEXTURE_2D, texture == NULL ? 0 : texture->textureWrapper->texture);
+    
+    if (texture != NULL && location != 0)
+    {
+        glUniform1i(location, slotIndexForTextureSlot(textureSlot));
+    }
+}
+
+void OpenGLRendererHelper::destroyTexture(TextureWrapper& textureWrapper)
 {
     glDeleteTextures(1, &textureWrapper.texture);
+}
+
+void OpenGLRendererHelper::bindShaderProgram(ShaderProgramWrapper* shaderProgramWrapper)
+{
+    glUseProgram(shaderProgramWrapper == NULL ? 0 : shaderProgramWrapper->_programObjectId);
+}
+
+void OpenGLRendererHelper::destroyShaderProgram(ShaderProgramWrapper* shaderProgramWrapper)
+{
+    glDeleteProgram(shaderProgramWrapper->_programObjectId);
+}
+
+void OpenGLRendererHelper::mapTextureVertices()
+{
+    glGenBuffers(1, &_textureVboObject);
+    glBindBuffer(GL_ARRAY_BUFFER, _textureVboObject);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(TEXTURE_VERTEX) * _textureVertices.size(), &_textureVertices[0], GL_STATIC_DRAW);
+}
+
+void OpenGLRendererHelper::unmapTextureVertices()
+{
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glDeleteBuffers(1, &_textureVboObject);
+}
+
+void OpenGLRendererHelper::mapColorVertices()
+{
+    glGenBuffers(1, &_colorVboObject);
+    glBindBuffer(GL_ARRAY_BUFFER, _colorVboObject);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(COLOR_VERTEX) * _colorVertices.size(), &_colorVertices[0], GL_STATIC_DRAW);
+}
+
+void OpenGLRendererHelper::unmapColorVertices()
+{
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glDeleteBuffers(1, &_colorVboObject);
 }
 
 void OpenGLRendererHelper::draw(NGPrimitiveType renderPrimitiveType, uint32_t first, uint32_t count)
@@ -175,30 +228,19 @@ void OpenGLRendererHelper::drawIndexed(NGPrimitiveType renderPrimitiveType, uint
     glDrawElements(renderPrimitiveType, count, GL_UNSIGNED_SHORT, &_indices[0]);
 }
 
-void OpenGLRendererHelper::bindTexture(NGTextureSlot textureSlot, TextureWrapper* textureWrapper, int32_t location)
+GLuint OpenGLRendererHelper::getTextureVertexBuffer()
 {
-    glActiveTexture(textureSlot);
-    glBindTexture(GL_TEXTURE_2D, textureWrapper == NULL ? 0 : textureWrapper->gpuTextureWrapper->texture);
-    
-    if (textureWrapper != NULL && location != 0)
-    {
-        glUniform1i(location, slotIndexForTextureSlot(textureSlot));
-    }
+    return _textureVboObject;
 }
 
-GLuint OpenGLRendererHelper::getSbVboObject()
+GLuint OpenGLRendererHelper::getColorVertexBuffer()
 {
-    return _sbVboObject;
+    return _colorVboObject;
 }
 
-GLuint OpenGLRendererHelper::getGbVboObject()
+mat4x4& OpenGLRendererHelper::getMatrix()
 {
-    return _gbVboObject;
-}
-
-mat4x4& OpenGLRendererHelper::getViewProjectionMatrix()
-{
-    return _viewProjectionMatrix;
+    return _matrix;
 }
 
 void OpenGLRendererHelper::createFramebufferObject()
@@ -231,7 +273,7 @@ void OpenGLRendererHelper::createFramebufferObject()
     _fbo_textures.push_back(fbo_texture);
     _fbos.push_back(fbo);
     
-    _framebuffers.push_back(new GpuTextureWrapper(fbo_texture));
+    _framebuffers.push_back(new TextureWrapper(fbo_texture));
 }
 
 void OpenGLRendererHelper::releaseFramebuffers()

@@ -10,13 +10,14 @@
 
 #include "framework/graphics/directx/DirectXRendererHelper.h"
 
+#include "framework/graphics/portable/NGTexture.h"
 #include "framework/graphics/portable/TextureWrapper.h"
-#include "framework/graphics/portable/GpuTextureWrapper.h"
-#include "framework/graphics/directx/DirectXRendererHelper.h"
+#include "framework/graphics/portable/ShaderProgramWrapper.h"
 
 #include "framework/util/NGSTDUtil.h"
 #include "PlatformHelpers.h"
 #include <framework/util/FrameworkConstants.h>
+#include <framework/util/macros.h>
 
 #include <assert.h>
 
@@ -90,8 +91,8 @@ void DirectXRendererHelper::releaseDeviceDependentResources()
     
     _sbSamplerState.Reset();
     _sbWrapSamplerState.Reset();
-    _sbVertexBuffer.Reset();
-    _gbVertexBuffer.Reset();
+    _textureVertexBuffer.Reset();
+    _colorVertexBuffer.Reset();
     
     _textureVertices.clear();
     _colorVertices.clear();
@@ -107,9 +108,9 @@ void DirectXRendererHelper::endFrame()
     // Empty
 }
 
-TextureWrapper* DirectXRendererHelper::getFramebuffer(int index)
+NGTexture* DirectXRendererHelper::getFramebuffer(int index)
 {
-    _framebuffer->gpuTextureWrapper = _framebuffers[index];
+    _framebuffer->textureWrapper = _framebuffers[index];
     
     return _framebuffer;
 }
@@ -166,12 +167,101 @@ void DirectXRendererHelper::useScreenBlending()
     s_d3dContext->OMSetBlendState(_screenBlendState.Get(), 0, 0xffffffff);
 }
 
-void DirectXRendererHelper::destroyTexture(GpuTextureWrapper& textureWrapper)
+void DirectXRendererHelper::bindMatrix(int32_t location)
+{
+    UNUSED(location);
+    
+    _d3dContext->VSSetConstantBuffers(0, 1, _matrixConstantbuffer.GetAddressOf());
+    
+    // send the final matrix to video memory
+    _d3dContext->UpdateSubresource(_matrixConstantbuffer.Get(), 0, 0, &_matFinal, 0, 0);
+}
+
+void DirectXRendererHelper::bindTexture(NGTextureSlot textureSlot, NGTexture* texture, int32_t location)
+{
+    UNUSED(location);
+    
+    if (texture)
+    {
+        s_d3dContext->PSSetShaderResources(textureSlot, 1, &texture->textureWrapper->texture);
+        s_d3dContext->PSSetSamplers(textureSlot, 1, texture->_repeatS ? _sbWrapSamplerState.GetAddressOf() : _sbSamplerState.GetAddressOf());
+    }
+    else
+    {
+        ID3D11ShaderResourceView *pSRV[1] = { NULL };
+        s_d3dContext->PSSetShaderResources(textureSlot, 1, pSRV);
+    }
+}
+
+void DirectXRendererHelper::destroyTexture(TextureWrapper& textureWrapper)
 {
     if (textureWrapper.texture)
     {
         textureWrapper.texture->Release();
     }
+}
+
+void DirectXRendererHelper::bindShaderProgram(ShaderProgramWrapper* shaderProgramWrapper)
+{
+    if (shaderProgramWrapper != NULL)
+    {
+        // set the shader objects as the active shaders
+        s_d3dContext->VSSetShader(&shaderProgramWrapper->_vertexShader, NULL, 0);
+        s_d3dContext->IASetInputLayout(&shaderProgramWrapper->_inputLayout);
+        s_d3dContext->PSSetShader(&shaderProgramWrapper->_pixelShader, NULL, 0);
+    }
+}
+
+void DirectXRendererHelper::destroyShaderProgram(ShaderProgramWrapper* shaderProgramWrapper)
+{
+    delete shaderProgramWrapper->_vertexShader;
+    shaderProgramWrapper->_vertexShader = NULL;
+    
+    delete shaderProgramWrapper->_inputLayout;
+    shaderProgramWrapper->_inputLayout = NULL;
+    
+    delete shaderProgramWrapper->_pixelShader;
+    shaderProgramWrapper->_pixelShader = NULL;
+}
+
+void DirectXRendererHelper::mapTextureVertices()
+{
+    D3D11_MAPPED_SUBRESOURCE mappedResource;
+    ZeroMemory(&mappedResource, sizeof(D3D11_MAPPED_SUBRESOURCE));
+    
+    //    Disable GPU access to the vertex buffer data.
+    _d3dContext->Map(_textureVertexBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+    
+    //    Update the vertex buffer here.
+    memcpy(mappedResource.pData, &_textureVertices.front(), sizeof(TEXTURE_VERTEX) * _textureVertices.size());
+    
+    //    Reenable GPU access to the vertex buffer data.
+    _d3dContext->Unmap(_textureVertexBuffer.Get(), 0);
+}
+
+void DirectXRendererHelper::unmapTextureVertices()
+{
+    // Empty
+}
+
+void DirectXRendererHelper::mapColorVertices()
+{
+    D3D11_MAPPED_SUBRESOURCE mappedResource;
+    ZeroMemory(&mappedResource, sizeof(D3D11_MAPPED_SUBRESOURCE));
+    
+    //    Disable GPU access to the vertex buffer data.
+    _d3dContext->Map(_colorVertexBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+    
+    //    Update the vertex buffer here.
+    memcpy(mappedResource.pData, &_colorVertices.front(), sizeof(COLOR_VERTEX) * _colorVertices.size());
+    
+    //    Reenable GPU access to the vertex buffer data.
+    _d3dContext->Unmap(_colorVertexBuffer.Get(), 0);
+}
+
+void DirectXRendererHelper::unmapColorVertices()
+{
+    // Empty
 }
 
 void DirectXRendererHelper::draw(NGPrimitiveType renderPrimitiveType, uint32_t first, uint32_t count)
@@ -188,63 +278,24 @@ void DirectXRendererHelper::drawIndexed(NGPrimitiveType renderPrimitiveType, uin
     s_d3dContext->DrawIndexed(count, 0, 0);
 }
 
-void DirectXRendererHelper::bindTexture(NGTextureSlot textureSlot, TextureWrapper* textureWrapper, int32_t location)
+Microsoft::WRL::ComPtr<ID3D11Buffer>& DirectXRendererHelper::getTextureVertexBuffer()
 {
-    if (textureWrapper)
-    {
-        s_d3dContext->PSSetShaderResources(textureSlot, 1, &textureWrapper->gpuTextureWrapper->texture);
-        s_d3dContext->PSSetSamplers(textureSlot, 1, textureWrapper->_repeatS ? _sbWrapSamplerState.GetAddressOf() : _sbSamplerState.GetAddressOf());
-    }
-    else
-    {
-        ID3D11ShaderResourceView *pSRV[1] = { NULL };
-        s_d3dContext->PSSetShaderResources(textureSlot, 1, pSRV);
-    }
+    return _textureVertexBuffer;
 }
 
-Microsoft::WRL::ComPtr<ID3D11BlendState>& DirectXRendererHelper::getBlendState()
+Microsoft::WRL::ComPtr<ID3D11Buffer>& DirectXRendererHelper::getColorVertexBuffer()
 {
-    return _blendState;
+    return _colorVertexBuffer;
 }
 
-Microsoft::WRL::ComPtr<ID3D11BlendState>& DirectXRendererHelper::getScreenBlendState()
+DirectX::XMFLOAT4X4& DirectXRendererHelper::getMatrix()
 {
-    return _screenBlendState;
+    return _matFinal;
 }
 
 Microsoft::WRL::ComPtr<ID3D11Buffer>& DirectXRendererHelper::getMatrixConstantbuffer()
 {
     return _matrixConstantbuffer;
-}
-
-Microsoft::WRL::ComPtr<ID3D11Buffer>& DirectXRendererHelper::getIndexbuffer()
-{
-    return _indexbuffer;
-}
-
-Microsoft::WRL::ComPtr<ID3D11SamplerState>& DirectXRendererHelper::getSbSamplerState()
-{
-    return _sbSamplerState;
-}
-
-Microsoft::WRL::ComPtr<ID3D11SamplerState>& DirectXRendererHelper::getSbWrapSamplerState()
-{
-    return _sbWrapSamplerState;
-}
-
-Microsoft::WRL::ComPtr<ID3D11Buffer>& DirectXRendererHelper::getSbVertexBuffer()
-{
-    return _sbVertexBuffer;
-}
-
-Microsoft::WRL::ComPtr<ID3D11Buffer>& DirectXRendererHelper::getGbVertexBuffer()
-{
-    return _gbVertexBuffer;
-}
-
-DirectX::XMFLOAT4X4& DirectXRendererHelper::getMatFinal()
-{
-    return _matFinal;
 }
 
 void DirectXRendererHelper::createFramebufferObject()
@@ -296,7 +347,7 @@ void DirectXRendererHelper::createFramebufferObject()
     _offscreenRenderTargetViews.push_back(_offscreenRenderTargetView);
     _offscreenShaderResourceViews.push_back(_offscreenShaderResourceView);
     
-    _framebuffers.push_back(new GpuTextureWrapper(_offscreenShaderResourceView));
+    _framebuffers.push_back(new TextureWrapper(_offscreenShaderResourceView));
 }
 
 void DirectXRendererHelper::releaseFramebuffers()
@@ -422,7 +473,7 @@ void DirectXRendererHelper::createVertexBufferForSpriteBatcher()
     vertexBufferData.SysMemPitch = 0;
     vertexBufferData.SysMemSlicePitch = 0;
     
-    DirectX::ThrowIfFailed(s_d3dDevice->CreateBuffer(&vertexBufferDesc, &vertexBufferData, &_sbVertexBuffer));
+    DirectX::ThrowIfFailed(s_d3dDevice->CreateBuffer(&vertexBufferDesc, &vertexBufferData, &_textureVertexBuffer));
 }
 
 void DirectXRendererHelper::createVertexBufferForGeometryBatchers()
@@ -446,7 +497,7 @@ void DirectXRendererHelper::createVertexBufferForGeometryBatchers()
     vertexBufferData.SysMemPitch = 0;
     vertexBufferData.SysMemSlicePitch = 0;
     
-    DirectX::ThrowIfFailed(s_d3dDevice->CreateBuffer(&vertexBufferDesc, &vertexBufferData, &_gbVertexBuffer));
+    DirectX::ThrowIfFailed(s_d3dDevice->CreateBuffer(&vertexBufferDesc, &vertexBufferData, &_colorVertexBuffer));
 }
 
 void DirectXRendererHelper::createIndexBuffer()

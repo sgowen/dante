@@ -18,9 +18,9 @@ public:
     
     virtual ~DirectXTextureLoader();
     
-    virtual GpuTextureDataWrapper* loadTextureData(TextureWrapper* textureWrapper);
+    virtual TextureDataWrapper* loadTextureData(NGTexture* texture);
     
-    virtual GpuTextureWrapper* loadTexture(GpuTextureDataWrapper* textureData, bool repeatS = false);
+    virtual TextureWrapper* loadTexture(TextureDataWrapper* textureData, bool repeatS = false);
 };
 
 #endif /* defined(__noctisgames__DirectXTextureLoader__) */

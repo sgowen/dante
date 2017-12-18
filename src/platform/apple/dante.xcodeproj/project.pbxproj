@@ -17,8 +17,6 @@
 		BB052CD11EBA8ADD007FA789 /* shader_003_vert.ngs in Resources */ = {isa = PBXBuildFile; fileRef = BB052CC51EBA8ADD007FA789 /* shader_003_vert.ngs */; };
 		BB0756E01FE6107F008E0E08 /* RendererHelperFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB0756DE1FE6107F008E0E08 /* RendererHelperFactory.cpp */; };
 		BB0756E11FE6107F008E0E08 /* RendererHelperFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB0756DE1FE6107F008E0E08 /* RendererHelperFactory.cpp */; };
-		BB0756E61FE63796008E0E08 /* VertexProgramInput.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB0756E51FE63796008E0E08 /* VertexProgramInput.cpp */; };
-		BB0756E71FE63796008E0E08 /* VertexProgramInput.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB0756E51FE63796008E0E08 /* VertexProgramInput.cpp */; };
 		BB07A78D1FC60FD900AE5051 /* vulkan.c in Sources */ = {isa = PBXBuildFile; fileRef = BB07A78C1FC60FD900AE5051 /* vulkan.c */; };
 		BB0864751EE20CCA00BCD9E0 /* EntityRegistry.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB0864721EE20CCA00BCD9E0 /* EntityRegistry.cpp */; };
 		BB125E101EFAF61F00917328 /* texture_003.ngt in Resources */ = {isa = PBXBuildFile; fileRef = BB125E0D1EFAF61F00917328 /* texture_003.ngt */; };
@@ -28,6 +26,20 @@
 		BB19148E1FABBD1300BDC6D0 /* libsteam_api.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BB1914431FABB78400BDC6D0 /* libsteam_api.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		BB1C3BF91FE75FD3002E4AA6 /* Color.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB1C3BF81FE75FD3002E4AA6 /* Color.cpp */; };
 		BB1C3BFA1FE75FD3002E4AA6 /* Color.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB1C3BF81FE75FD3002E4AA6 /* Color.cpp */; };
+		BB1C3BFE1FE76967002E4AA6 /* ShaderProgramLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB1C3BFC1FE76966002E4AA6 /* ShaderProgramLoader.cpp */; };
+		BB1C3BFF1FE76967002E4AA6 /* ShaderProgramLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB1C3BFC1FE76966002E4AA6 /* ShaderProgramLoader.cpp */; };
+		BB1C3C021FE76BE0002E4AA6 /* ShaderProgramLoaderFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB1C3C011FE76BE0002E4AA6 /* ShaderProgramLoaderFactory.cpp */; };
+		BB1C3C031FE76BE0002E4AA6 /* ShaderProgramLoaderFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB1C3C011FE76BE0002E4AA6 /* ShaderProgramLoaderFactory.cpp */; };
+		BB1C3C061FE76C65002E4AA6 /* OpenGLProgramLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB1C3C051FE76C65002E4AA6 /* OpenGLProgramLoader.cpp */; };
+		BB1C3C071FE76C65002E4AA6 /* OpenGLProgramLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB1C3C051FE76C65002E4AA6 /* OpenGLProgramLoader.cpp */; };
+		BB1C3C0E1FE77301002E4AA6 /* NGFramebufferToScreenProgram.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB1C3C081FE77301002E4AA6 /* NGFramebufferToScreenProgram.cpp */; };
+		BB1C3C0F1FE77301002E4AA6 /* NGFramebufferToScreenProgram.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB1C3C081FE77301002E4AA6 /* NGFramebufferToScreenProgram.cpp */; };
+		BB1C3C101FE77301002E4AA6 /* NGGeometryProgram.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB1C3C0B1FE77301002E4AA6 /* NGGeometryProgram.cpp */; };
+		BB1C3C111FE77301002E4AA6 /* NGGeometryProgram.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB1C3C0B1FE77301002E4AA6 /* NGGeometryProgram.cpp */; };
+		BB1C3C121FE77301002E4AA6 /* NGTextureProgram.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB1C3C0D1FE77301002E4AA6 /* NGTextureProgram.cpp */; };
+		BB1C3C131FE77301002E4AA6 /* NGTextureProgram.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB1C3C0D1FE77301002E4AA6 /* NGTextureProgram.cpp */; };
+		BB1C3C1A1FE7868E002E4AA6 /* NGShaderInput.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB1C3C181FE7868E002E4AA6 /* NGShaderInput.cpp */; };
+		BB1C3C1B1FE7868E002E4AA6 /* NGShaderInput.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB1C3C181FE7868E002E4AA6 /* NGShaderInput.cpp */; };
 		BB1E897B1EF4A81500B0D78A /* PacketHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB1E89791EF4A81500B0D78A /* PacketHandler.cpp */; };
 		BB1E89811EF4B2BA00B0D78A /* SocketPacketHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB1E897F1EF4B2BA00B0D78A /* SocketPacketHandler.cpp */; };
 		BB1E89841EF4B4F400B0D78A /* NGSteamPacketHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB1E89821EF4B4F400B0D78A /* NGSteamPacketHandler.cpp */; };
@@ -262,18 +274,14 @@
 		BB5AFE4F1FB35A77005FBD52 /* ReplicationManagerServer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8307F31EC2AC0900435E7E /* ReplicationManagerServer.cpp */; };
 		BB5AFE501FB35A77005FBD52 /* ReplicationManagerTransmissionData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8307F51EC2AC0900435E7E /* ReplicationManagerTransmissionData.cpp */; };
 		BB5AFE511FB35A77005FBD52 /* SocketServerHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB4253DC1EF598AC003F6D2A /* SocketServerHelper.cpp */; };
-		BB5AFE541FB35AAE005FBD52 /* OpenGLFramebufferToScreenProgram.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF10D1EA94ED900F0866E /* OpenGLFramebufferToScreenProgram.cpp */; };
-		BB5AFE561FB35AAE005FBD52 /* OpenGLGeometryProgram.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF1111EA94ED900F0866E /* OpenGLGeometryProgram.cpp */; };
-		BB5AFE5A1FB35AAE005FBD52 /* OpenGLProgram.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF1191EA94ED900F0866E /* OpenGLProgram.cpp */; };
 		BB5AFE5B1FB35AAE005FBD52 /* OpenGLRendererHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF11B1EA94ED900F0866E /* OpenGLRendererHelper.cpp */; };
 		BB5AFE5E1FB35AAE005FBD52 /* OpenGLTextureLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF1211EA94ED900F0866E /* OpenGLTextureLoader.cpp */; };
-		BB5AFE5F1FB35AAE005FBD52 /* OpenGLTextureProgram.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF1231EA94ED900F0866E /* OpenGLTextureProgram.cpp */; };
 		BB5AFE601FB35AAE005FBD52 /* NGAnimation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF12E1EA94ED900F0866E /* NGAnimation.cpp */; };
 		BB5AFE611FB35AAE005FBD52 /* Assets.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBCFF1C01ECD312E003EE520 /* Assets.cpp */; };
 		BB5AFE621FB35AAE005FBD52 /* CircleBatcher.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF1301EA94ED900F0866E /* CircleBatcher.cpp */; };
 		BB5AFE651FB35AAF005FBD52 /* Font.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF1371EA94ED900F0866E /* Font.cpp */; };
-		BB5AFE661FB35AAF005FBD52 /* GpuProgram.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF1391EA94ED900F0866E /* GpuProgram.cpp */; };
-		BB5AFE671FB35AAF005FBD52 /* GpuProgramFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF13B1EA94ED900F0866E /* GpuProgramFactory.cpp */; };
+		BB5AFE661FB35AAF005FBD52 /* ShaderProgram.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF1391EA94ED900F0866E /* ShaderProgram.cpp */; };
+		BB5AFE671FB35AAF005FBD52 /* ShaderProgramFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF13B1EA94ED900F0866E /* ShaderProgramFactory.cpp */; };
 		BB5AFE681FB35AAF005FBD52 /* AssetsMapper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBCFF1C21ECD312E003EE520 /* AssetsMapper.cpp */; };
 		BB5AFE691FB35AAF005FBD52 /* RendererHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF13F1EA94ED900F0866E /* RendererHelper.cpp */; };
 		BB5AFE6A1FB35AAF005FBD52 /* TextureLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF1411EA94ED900F0866E /* TextureLoader.cpp */; };
@@ -283,7 +291,7 @@
 		BB5AFE711FB35AAF005FBD52 /* SpriteBatcher.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF14D1EA94ED900F0866E /* SpriteBatcher.cpp */; };
 		BB5AFE731FB35AAF005FBD52 /* TextureLoaderFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF1511EA94ED900F0866E /* TextureLoaderFactory.cpp */; };
 		BB5AFE741FB35AAF005FBD52 /* TextureRegion.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF1531EA94ED900F0866E /* TextureRegion.cpp */; };
-		BB5AFE751FB35AAF005FBD52 /* TextureWrapper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF1551EA94ED900F0866E /* TextureWrapper.cpp */; };
+		BB5AFE751FB35AAF005FBD52 /* NGTexture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF1551EA94ED900F0866E /* NGTexture.cpp */; };
 		BB5AFE771FB35AB6005FBD52 /* JsonFile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF0D91EA94ED900F0866E /* JsonFile.cpp */; };
 		BB5AFE7B1FB35ACA005FBD52 /* Entity.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF0BF1EA94ED900F0866E /* Entity.cpp */; };
 		BB5AFE7C1FB35ACA005FBD52 /* EntityManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF0C11EA94ED900F0866E /* EntityManager.cpp */; };
@@ -350,17 +358,13 @@
 		BBAEF1F21EA94EDA00F0866E /* EntityManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF0C11EA94ED900F0866E /* EntityManager.cpp */; };
 		BBAEF1F61EA94EDA00F0866E /* GridManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF0C51EA94ED900F0866E /* GridManager.cpp */; };
 		BBAEF2021EA94EDA00F0866E /* JsonFile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF0D91EA94ED900F0866E /* JsonFile.cpp */; };
-		BBAEF2321EA94EDA00F0866E /* OpenGLFramebufferToScreenProgram.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF10D1EA94ED900F0866E /* OpenGLFramebufferToScreenProgram.cpp */; };
-		BBAEF2361EA94EDA00F0866E /* OpenGLGeometryProgram.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF1111EA94ED900F0866E /* OpenGLGeometryProgram.cpp */; };
-		BBAEF23E1EA94EDA00F0866E /* OpenGLProgram.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF1191EA94ED900F0866E /* OpenGLProgram.cpp */; };
 		BBAEF2401EA94EDA00F0866E /* OpenGLRendererHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF11B1EA94ED900F0866E /* OpenGLRendererHelper.cpp */; };
 		BBAEF2461EA94EDA00F0866E /* OpenGLTextureLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF1211EA94ED900F0866E /* OpenGLTextureLoader.cpp */; };
-		BBAEF2481EA94EDA00F0866E /* OpenGLTextureProgram.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF1231EA94ED900F0866E /* OpenGLTextureProgram.cpp */; };
 		BBAEF2561EA94EDA00F0866E /* NGAnimation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF12E1EA94ED900F0866E /* NGAnimation.cpp */; };
 		BBAEF2581EA94EDA00F0866E /* CircleBatcher.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF1301EA94ED900F0866E /* CircleBatcher.cpp */; };
 		BBAEF25E1EA94EDA00F0866E /* Font.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF1371EA94ED900F0866E /* Font.cpp */; };
-		BBAEF2601EA94EDA00F0866E /* GpuProgram.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF1391EA94ED900F0866E /* GpuProgram.cpp */; };
-		BBAEF2621EA94EDA00F0866E /* GpuProgramFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF13B1EA94ED900F0866E /* GpuProgramFactory.cpp */; };
+		BBAEF2601EA94EDA00F0866E /* ShaderProgram.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF1391EA94ED900F0866E /* ShaderProgram.cpp */; };
+		BBAEF2621EA94EDA00F0866E /* ShaderProgramFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF13B1EA94ED900F0866E /* ShaderProgramFactory.cpp */; };
 		BBAEF2641EA94EDA00F0866E /* RendererHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF13F1EA94ED900F0866E /* RendererHelper.cpp */; };
 		BBAEF2661EA94EDA00F0866E /* TextureLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF1411EA94ED900F0866E /* TextureLoader.cpp */; };
 		BBAEF2681EA94EDA00F0866E /* LineBatcher.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF1431EA94ED900F0866E /* LineBatcher.cpp */; };
@@ -368,7 +372,7 @@
 		BBAEF2721EA94EDA00F0866E /* SpriteBatcher.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF14D1EA94ED900F0866E /* SpriteBatcher.cpp */; };
 		BBAEF2761EA94EDA00F0866E /* TextureLoaderFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF1511EA94ED900F0866E /* TextureLoaderFactory.cpp */; };
 		BBAEF2781EA94EDA00F0866E /* TextureRegion.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF1531EA94ED900F0866E /* TextureRegion.cpp */; };
-		BBAEF27A1EA94EDA00F0866E /* TextureWrapper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF1551EA94ED900F0866E /* TextureWrapper.cpp */; };
+		BBAEF27A1EA94EDA00F0866E /* NGTexture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF1551EA94ED900F0866E /* NGTexture.cpp */; };
 		BBAEF2941EA94EDA00F0866E /* Circle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF1781EA94ED900F0866E /* Circle.cpp */; };
 		BBAEF2961EA94EDA00F0866E /* Line.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF17A1EA94ED900F0866E /* Line.cpp */; };
 		BBAEF2981EA94EDA00F0866E /* NGRect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF17D1EA94ED900F0866E /* NGRect.cpp */; };
@@ -548,7 +552,6 @@
 		BB0756E21FE63072008E0E08 /* DirectXFramebufferToScreenProgram.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = DirectXFramebufferToScreenProgram.cpp; sourceTree = "<group>"; };
 		BB0756E31FE63073008E0E08 /* DirectXFramebufferToScreenProgram.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DirectXFramebufferToScreenProgram.h; sourceTree = "<group>"; };
 		BB0756E41FE63796008E0E08 /* VertexProgramInput.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VertexProgramInput.h; sourceTree = "<group>"; };
-		BB0756E51FE63796008E0E08 /* VertexProgramInput.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = VertexProgramInput.cpp; sourceTree = "<group>"; };
 		BB0756E81FE64603008E0E08 /* DirectXDeviceResources.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DirectXDeviceResources.h; sourceTree = "<group>"; };
 		BB0756E91FE64603008E0E08 /* DirectXDeviceResources.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = DirectXDeviceResources.cpp; sourceTree = "<group>"; };
 		BB07A50E1FC5F0BA00AE5051 /* LinuxAudioEngineHelper.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = LinuxAudioEngineHelper.cpp; sourceTree = "<group>"; };
@@ -645,6 +648,21 @@
 		BB19147A1FABB78C00BDC6D0 /* steamuniverse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = steamuniverse.h; sourceTree = "<group>"; };
 		BB1C3BF71FE75FD3002E4AA6 /* Color.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Color.h; sourceTree = "<group>"; };
 		BB1C3BF81FE75FD3002E4AA6 /* Color.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Color.cpp; sourceTree = "<group>"; };
+		BB1C3BFB1FE7694C002E4AA6 /* ShaderProgramWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShaderProgramWrapper.h; sourceTree = "<group>"; };
+		BB1C3BFC1FE76966002E4AA6 /* ShaderProgramLoader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ShaderProgramLoader.cpp; sourceTree = "<group>"; };
+		BB1C3BFD1FE76967002E4AA6 /* ShaderProgramLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShaderProgramLoader.h; sourceTree = "<group>"; };
+		BB1C3C001FE76BDF002E4AA6 /* ShaderProgramLoaderFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShaderProgramLoaderFactory.h; sourceTree = "<group>"; };
+		BB1C3C011FE76BE0002E4AA6 /* ShaderProgramLoaderFactory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ShaderProgramLoaderFactory.cpp; sourceTree = "<group>"; };
+		BB1C3C041FE76C65002E4AA6 /* OpenGLProgramLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenGLProgramLoader.h; sourceTree = "<group>"; };
+		BB1C3C051FE76C65002E4AA6 /* OpenGLProgramLoader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OpenGLProgramLoader.cpp; sourceTree = "<group>"; };
+		BB1C3C081FE77301002E4AA6 /* NGFramebufferToScreenProgram.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NGFramebufferToScreenProgram.cpp; sourceTree = "<group>"; };
+		BB1C3C091FE77301002E4AA6 /* NGGeometryProgram.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NGGeometryProgram.h; sourceTree = "<group>"; };
+		BB1C3C0A1FE77301002E4AA6 /* NGTextureProgram.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NGTextureProgram.h; sourceTree = "<group>"; };
+		BB1C3C0B1FE77301002E4AA6 /* NGGeometryProgram.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NGGeometryProgram.cpp; sourceTree = "<group>"; };
+		BB1C3C0C1FE77301002E4AA6 /* NGFramebufferToScreenProgram.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NGFramebufferToScreenProgram.h; sourceTree = "<group>"; };
+		BB1C3C0D1FE77301002E4AA6 /* NGTextureProgram.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NGTextureProgram.cpp; sourceTree = "<group>"; };
+		BB1C3C181FE7868E002E4AA6 /* NGShaderInput.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NGShaderInput.cpp; sourceTree = "<group>"; };
+		BB1C3C191FE7868E002E4AA6 /* NGShaderInput.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NGShaderInput.h; sourceTree = "<group>"; };
 		BB1E89791EF4A81500B0D78A /* PacketHandler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PacketHandler.cpp; sourceTree = "<group>"; };
 		BB1E897A1EF4A81500B0D78A /* PacketHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PacketHandler.h; sourceTree = "<group>"; };
 		BB1E897F1EF4B2BA00B0D78A /* SocketPacketHandler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SocketPacketHandler.cpp; sourceTree = "<group>"; };
@@ -987,30 +1005,22 @@
 		BBAEF0C61EA94ED900F0866E /* GridManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GridManager.h; sourceTree = "<group>"; };
 		BBAEF0D91EA94ED900F0866E /* JsonFile.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = JsonFile.cpp; sourceTree = "<group>"; };
 		BBAEF0DA1EA94ED900F0866E /* JsonFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JsonFile.h; sourceTree = "<group>"; };
-		BBAEF10D1EA94ED900F0866E /* OpenGLFramebufferToScreenProgram.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OpenGLFramebufferToScreenProgram.cpp; sourceTree = "<group>"; };
-		BBAEF10E1EA94ED900F0866E /* OpenGLFramebufferToScreenProgram.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenGLFramebufferToScreenProgram.h; sourceTree = "<group>"; };
-		BBAEF1111EA94ED900F0866E /* OpenGLGeometryProgram.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OpenGLGeometryProgram.cpp; sourceTree = "<group>"; };
-		BBAEF1121EA94ED900F0866E /* OpenGLGeometryProgram.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenGLGeometryProgram.h; sourceTree = "<group>"; };
-		BBAEF1191EA94ED900F0866E /* OpenGLProgram.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OpenGLProgram.cpp; sourceTree = "<group>"; };
-		BBAEF11A1EA94ED900F0866E /* OpenGLProgram.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenGLProgram.h; sourceTree = "<group>"; };
 		BBAEF11B1EA94ED900F0866E /* OpenGLRendererHelper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OpenGLRendererHelper.cpp; sourceTree = "<group>"; };
 		BBAEF11C1EA94ED900F0866E /* OpenGLRendererHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenGLRendererHelper.h; sourceTree = "<group>"; };
 		BBAEF1211EA94ED900F0866E /* OpenGLTextureLoader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OpenGLTextureLoader.cpp; sourceTree = "<group>"; };
 		BBAEF1221EA94ED900F0866E /* OpenGLTextureLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenGLTextureLoader.h; sourceTree = "<group>"; };
-		BBAEF1231EA94ED900F0866E /* OpenGLTextureProgram.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OpenGLTextureProgram.cpp; sourceTree = "<group>"; };
-		BBAEF1241EA94ED900F0866E /* OpenGLTextureProgram.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenGLTextureProgram.h; sourceTree = "<group>"; };
 		BBAEF12E1EA94ED900F0866E /* NGAnimation.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NGAnimation.cpp; sourceTree = "<group>"; };
 		BBAEF12F1EA94ED900F0866E /* NGAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NGAnimation.h; sourceTree = "<group>"; };
 		BBAEF1301EA94ED900F0866E /* CircleBatcher.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CircleBatcher.cpp; sourceTree = "<group>"; };
 		BBAEF1311EA94ED900F0866E /* CircleBatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CircleBatcher.h; sourceTree = "<group>"; };
 		BBAEF1371EA94ED900F0866E /* Font.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Font.cpp; sourceTree = "<group>"; };
 		BBAEF1381EA94ED900F0866E /* Font.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Font.h; sourceTree = "<group>"; };
-		BBAEF1391EA94ED900F0866E /* GpuProgram.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GpuProgram.cpp; sourceTree = "<group>"; };
-		BBAEF13A1EA94ED900F0866E /* GpuProgram.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GpuProgram.h; sourceTree = "<group>"; };
-		BBAEF13B1EA94ED900F0866E /* GpuProgramFactory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GpuProgramFactory.cpp; sourceTree = "<group>"; };
-		BBAEF13C1EA94ED900F0866E /* GpuProgramFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GpuProgramFactory.h; sourceTree = "<group>"; };
-		BBAEF13D1EA94ED900F0866E /* GpuTextureDataWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GpuTextureDataWrapper.h; sourceTree = "<group>"; };
-		BBAEF13E1EA94ED900F0866E /* GpuTextureWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GpuTextureWrapper.h; sourceTree = "<group>"; };
+		BBAEF1391EA94ED900F0866E /* ShaderProgram.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ShaderProgram.cpp; sourceTree = "<group>"; };
+		BBAEF13A1EA94ED900F0866E /* ShaderProgram.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShaderProgram.h; sourceTree = "<group>"; };
+		BBAEF13B1EA94ED900F0866E /* ShaderProgramFactory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ShaderProgramFactory.cpp; sourceTree = "<group>"; };
+		BBAEF13C1EA94ED900F0866E /* ShaderProgramFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShaderProgramFactory.h; sourceTree = "<group>"; };
+		BBAEF13D1EA94ED900F0866E /* TextureDataWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextureDataWrapper.h; sourceTree = "<group>"; };
+		BBAEF13E1EA94ED900F0866E /* TextureWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextureWrapper.h; sourceTree = "<group>"; };
 		BBAEF13F1EA94ED900F0866E /* RendererHelper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RendererHelper.cpp; sourceTree = "<group>"; };
 		BBAEF1401EA94ED900F0866E /* RendererHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RendererHelper.h; sourceTree = "<group>"; };
 		BBAEF1411EA94ED900F0866E /* TextureLoader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TextureLoader.cpp; sourceTree = "<group>"; };
@@ -1025,8 +1035,8 @@
 		BBAEF1521EA94ED900F0866E /* TextureLoaderFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextureLoaderFactory.h; sourceTree = "<group>"; };
 		BBAEF1531EA94ED900F0866E /* TextureRegion.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TextureRegion.cpp; sourceTree = "<group>"; };
 		BBAEF1541EA94ED900F0866E /* TextureRegion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextureRegion.h; sourceTree = "<group>"; };
-		BBAEF1551EA94ED900F0866E /* TextureWrapper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TextureWrapper.cpp; sourceTree = "<group>"; };
-		BBAEF1561EA94ED900F0866E /* TextureWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextureWrapper.h; sourceTree = "<group>"; };
+		BBAEF1551EA94ED900F0866E /* NGTexture.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NGTexture.cpp; sourceTree = "<group>"; };
+		BBAEF1561EA94ED900F0866E /* NGTexture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NGTexture.h; sourceTree = "<group>"; };
 		BBAEF1781EA94ED900F0866E /* Circle.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Circle.cpp; sourceTree = "<group>"; };
 		BBAEF1791EA94ED900F0866E /* Circle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Circle.h; sourceTree = "<group>"; };
 		BBAEF17A1EA94ED900F0866E /* Line.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Line.cpp; sourceTree = "<group>"; };
@@ -2656,19 +2666,13 @@
 		BBAEF1081EA94ED900F0866E /* opengl */ = {
 			isa = PBXGroup;
 			children = (
-				BBAEF10D1EA94ED900F0866E /* OpenGLFramebufferToScreenProgram.cpp */,
-				BBAEF10E1EA94ED900F0866E /* OpenGLFramebufferToScreenProgram.h */,
-				BBAEF1111EA94ED900F0866E /* OpenGLGeometryProgram.cpp */,
-				BBAEF1121EA94ED900F0866E /* OpenGLGeometryProgram.h */,
 				BB9EE51B1FC092E7000F5389 /* OpenGLPngImageData.h */,
-				BBAEF1191EA94ED900F0866E /* OpenGLProgram.cpp */,
-				BBAEF11A1EA94ED900F0866E /* OpenGLProgram.h */,
+				BB1C3C051FE76C65002E4AA6 /* OpenGLProgramLoader.cpp */,
+				BB1C3C041FE76C65002E4AA6 /* OpenGLProgramLoader.h */,
 				BBAEF11B1EA94ED900F0866E /* OpenGLRendererHelper.cpp */,
 				BBAEF11C1EA94ED900F0866E /* OpenGLRendererHelper.h */,
 				BBAEF1211EA94ED900F0866E /* OpenGLTextureLoader.cpp */,
 				BBAEF1221EA94ED900F0866E /* OpenGLTextureLoader.h */,
-				BBAEF1231EA94ED900F0866E /* OpenGLTextureProgram.cpp */,
-				BBAEF1241EA94ED900F0866E /* OpenGLTextureProgram.h */,
 				BB1CC7711EB9662A00696C06 /* shader */,
 			);
 			path = opengl;
@@ -2688,20 +2692,24 @@
 				BBAEF1371EA94ED900F0866E /* Font.cpp */,
 				BBAEF1381EA94ED900F0866E /* Font.h */,
 				BB2AC5451EFC382C0012B990 /* FontAlign.h */,
-				BBAEF1391EA94ED900F0866E /* GpuProgram.cpp */,
-				BBAEF13A1EA94ED900F0866E /* GpuProgram.h */,
-				BBAEF13B1EA94ED900F0866E /* GpuProgramFactory.cpp */,
-				BBAEF13C1EA94ED900F0866E /* GpuProgramFactory.h */,
-				BBAEF13D1EA94ED900F0866E /* GpuTextureDataWrapper.h */,
-				BBAEF13E1EA94ED900F0866E /* GpuTextureWrapper.h */,
 				BBAEF1431EA94ED900F0866E /* LineBatcher.cpp */,
 				BBAEF1441EA94ED900F0866E /* LineBatcher.h */,
 				BBAEF12E1EA94ED900F0866E /* NGAnimation.cpp */,
 				BBAEF12F1EA94ED900F0866E /* NGAnimation.h */,
+				BB1C3C081FE77301002E4AA6 /* NGFramebufferToScreenProgram.cpp */,
+				BB1C3C0C1FE77301002E4AA6 /* NGFramebufferToScreenProgram.h */,
+				BB1C3C0B1FE77301002E4AA6 /* NGGeometryProgram.cpp */,
+				BB1C3C091FE77301002E4AA6 /* NGGeometryProgram.h */,
 				BB39C8921FB2700900CF6699 /* NGGraphics.h */,
 				BB0CA6F01FE5B08D0011B75B /* NGPrimitiveType.h */,
 				BBAEF1471EA94ED900F0866E /* NGRectBatcher.cpp */,
 				BBAEF1481EA94ED900F0866E /* NGRectBatcher.h */,
+				BB1C3C181FE7868E002E4AA6 /* NGShaderInput.cpp */,
+				BB1C3C191FE7868E002E4AA6 /* NGShaderInput.h */,
+				BBAEF1551EA94ED900F0866E /* NGTexture.cpp */,
+				BBAEF1561EA94ED900F0866E /* NGTexture.h */,
+				BB1C3C0D1FE77301002E4AA6 /* NGTextureProgram.cpp */,
+				BB1C3C0A1FE77301002E4AA6 /* NGTextureProgram.h */,
 				BB0CA6F11FE5B7130011B75B /* NGTextureSlot.h */,
 				BB5833CE1EEDDAFC0084DA20 /* Renderer.cpp */,
 				BB5833CF1EEDDAFC0084DA20 /* Renderer.h */,
@@ -2709,17 +2717,25 @@
 				BBAEF1401EA94ED900F0866E /* RendererHelper.h */,
 				BB0756DE1FE6107F008E0E08 /* RendererHelperFactory.cpp */,
 				BB0756DF1FE6107F008E0E08 /* RendererHelperFactory.h */,
+				BBAEF1391EA94ED900F0866E /* ShaderProgram.cpp */,
+				BBAEF13A1EA94ED900F0866E /* ShaderProgram.h */,
+				BBAEF13B1EA94ED900F0866E /* ShaderProgramFactory.cpp */,
+				BBAEF13C1EA94ED900F0866E /* ShaderProgramFactory.h */,
+				BB1C3BFC1FE76966002E4AA6 /* ShaderProgramLoader.cpp */,
+				BB1C3BFD1FE76967002E4AA6 /* ShaderProgramLoader.h */,
+				BB1C3C011FE76BE0002E4AA6 /* ShaderProgramLoaderFactory.cpp */,
+				BB1C3C001FE76BDF002E4AA6 /* ShaderProgramLoaderFactory.h */,
+				BB1C3BFB1FE7694C002E4AA6 /* ShaderProgramWrapper.h */,
 				BBAEF14D1EA94ED900F0866E /* SpriteBatcher.cpp */,
 				BBAEF14E1EA94ED900F0866E /* SpriteBatcher.h */,
+				BBAEF13D1EA94ED900F0866E /* TextureDataWrapper.h */,
 				BBAEF1411EA94ED900F0866E /* TextureLoader.cpp */,
 				BBAEF1421EA94ED900F0866E /* TextureLoader.h */,
 				BBAEF1511EA94ED900F0866E /* TextureLoaderFactory.cpp */,
 				BBAEF1521EA94ED900F0866E /* TextureLoaderFactory.h */,
 				BBAEF1531EA94ED900F0866E /* TextureRegion.cpp */,
 				BBAEF1541EA94ED900F0866E /* TextureRegion.h */,
-				BBAEF1551EA94ED900F0866E /* TextureWrapper.cpp */,
-				BBAEF1561EA94ED900F0866E /* TextureWrapper.h */,
-				BB0756E51FE63796008E0E08 /* VertexProgramInput.cpp */,
+				BBAEF13E1EA94ED900F0866E /* TextureWrapper.h */,
 				BB0756E41FE63796008E0E08 /* VertexProgramInput.h */,
 			);
 			path = portable;
@@ -3794,6 +3810,7 @@
 				BB6E7B141F940F2B006C0024 /* MainAssetsMapper.cpp in Sources */,
 				BB6E7B151F940F2B006C0024 /* MainRenderer.cpp in Sources */,
 				BBD554621FDB2EA800E00AD6 /* b2BroadPhase.cpp in Sources */,
+				BB1C3C1A1FE7868E002E4AA6 /* NGShaderInput.cpp in Sources */,
 				BB27D26B1FC6572600ED42FD /* AppleAudioEngineHelper.cpp in Sources */,
 				BB6E7B161F940F2B006C0024 /* Crate.cpp in Sources */,
 				BB6E7B171F940F2B006C0024 /* Ground.cpp in Sources */,
@@ -3810,6 +3827,7 @@
 				BB6F59771FBDE97D00BD7697 /* cocoa_time.c in Sources */,
 				BB6E7B1E1F940F2B006C0024 /* Util.cpp in Sources */,
 				BBD5541E1FDB2EA800E00AD6 /* b2CircleContact.cpp in Sources */,
+				BB1C3C021FE76BE0002E4AA6 /* ShaderProgramLoaderFactory.cpp in Sources */,
 				BBD5544A1FDB2EA800E00AD6 /* b2Timer.cpp in Sources */,
 				BBD5543E1FDB2EA800E00AD6 /* b2Island.cpp in Sources */,
 				BB27D2671FC6572600ED42FD /* AppleSoundWrapper.cpp in Sources */,
@@ -3823,6 +3841,7 @@
 				BBD554181FDB2EA800E00AD6 /* b2PolygonAndCircleContact.cpp in Sources */,
 				BBD554121FDB2EA800E00AD6 /* b2ChainAndPolygonContact.cpp in Sources */,
 				BBD554541FDB2EA800E00AD6 /* b2CollidePolygon.cpp in Sources */,
+				BB1C3C0E1FE77301002E4AA6 /* NGFramebufferToScreenProgram.cpp in Sources */,
 				BB6E7B231F940F2B006C0024 /* Server.cpp in Sources */,
 				BBAEF2941EA94EDA00F0866E /* Circle.cpp in Sources */,
 				BBBD14901EE06858003F9307 /* StringUtil.cpp in Sources */,
@@ -3835,6 +3854,7 @@
 				BBD554161FDB2EA800E00AD6 /* b2ChainAndCircleContact.cpp in Sources */,
 				BBAFD3301EF4496D004F2742 /* NGSteamAddress.cpp in Sources */,
 				BB44CB811DB053C0003E633F /* png.c in Sources */,
+				BB1C3C061FE76C65002E4AA6 /* OpenGLProgramLoader.cpp in Sources */,
 				BBAEF1F61EA94EDA00F0866E /* GridManager.cpp in Sources */,
 				BB6F59781FBDE97D00BD7697 /* cocoa_monitor.m in Sources */,
 				BB7267FD1EEC7049004F33F9 /* ClientProxy.cpp in Sources */,
@@ -3868,7 +3888,7 @@
 				BBD554381FDB2EA800E00AD6 /* b2PrismaticJoint.cpp in Sources */,
 				BB6F598E1FBDEA0D00BD7697 /* input.c in Sources */,
 				BBAEF2961EA94EDA00F0866E /* Line.cpp in Sources */,
-				BBAEF2321EA94EDA00F0866E /* OpenGLFramebufferToScreenProgram.cpp in Sources */,
+				BB1C3BFE1FE76967002E4AA6 /* ShaderProgramLoader.cpp in Sources */,
 				BB7251A41EE105490024C71C /* MoveList.cpp in Sources */,
 				BB44CB821DB053C0003E633F /* pngerror.c in Sources */,
 				BBAFD3331EF45EEA004F2742 /* FWInstanceManager.cpp in Sources */,
@@ -3877,7 +3897,6 @@
 				BBAEF2681EA94EDA00F0866E /* LineBatcher.cpp in Sources */,
 				BB31B5B11FC205D5005F1C0A /* KeyboardInputManager.cpp in Sources */,
 				BBB1D3AE1FC8CB9800B74BAC /* NGExtension.cpp in Sources */,
-				BB0756E61FE63796008E0E08 /* VertexProgramInput.cpp in Sources */,
 				BB31B5AD1FC205D5005F1C0A /* CursorConverter.cpp in Sources */,
 				BB8308801EC2AD1F00435E7E /* UDPSocket.cpp in Sources */,
 				BBD554641FDB2EA800E00AD6 /* b2CollideEdge.cpp in Sources */,
@@ -3896,11 +3915,8 @@
 				BB6F597F1FBDE9C400BD7697 /* nsgl_context.m in Sources */,
 				BB5833D01EEDDAFC0084DA20 /* Renderer.cpp in Sources */,
 				BBAEF2561EA94EDA00F0866E /* NGAnimation.cpp in Sources */,
-				BBAEF23E1EA94EDA00F0866E /* OpenGLProgram.cpp in Sources */,
 				BB9EE50D1FC092BA000F5389 /* AssetDataHandler.cpp in Sources */,
-				BBAEF2481EA94EDA00F0866E /* OpenGLTextureProgram.cpp in Sources */,
 				BBAEF29A1EA94EDA00F0866E /* OverlapTester.cpp in Sources */,
-				BBAEF2361EA94EDA00F0866E /* OpenGLGeometryProgram.cpp in Sources */,
 				BB5833781EEDBF7E0084DA20 /* NGSteamGameServices.cpp in Sources */,
 				BBAEF2721EA94EDA00F0866E /* SpriteBatcher.cpp in Sources */,
 				BBF226CF1EC12CDE00573356 /* ReplicationManagerClient.cpp in Sources */,
@@ -3911,12 +3927,14 @@
 				BBAEF2401EA94EDA00F0866E /* OpenGLRendererHelper.cpp in Sources */,
 				BBAEF25E1EA94EDA00F0866E /* Font.cpp in Sources */,
 				BBBD14971EE06BB3003F9307 /* Timing.cpp in Sources */,
-				BBAEF27A1EA94EDA00F0866E /* TextureWrapper.cpp in Sources */,
+				BBAEF27A1EA94EDA00F0866E /* NGTexture.cpp in Sources */,
 				BBD5540C1FDB2EA800E00AD6 /* b2Body.cpp in Sources */,
 				BBAA69E51EE488DF00451615 /* TransmissionData.cpp in Sources */,
 				BBAEF2A41EA94EDA00F0866E /* AudioEngineHelperFactory.cpp in Sources */,
 				BB0864751EE20CCA00BCD9E0 /* EntityRegistry.cpp in Sources */,
 				BB31B5A91FC205D5005F1C0A /* KeyboardEvent.cpp in Sources */,
+				BB1C3C121FE77301002E4AA6 /* NGTextureProgram.cpp in Sources */,
+				BB1C3C101FE77301002E4AA6 /* NGGeometryProgram.cpp in Sources */,
 				BB44CB851DB053C0003E633F /* pngpread.c in Sources */,
 				BBCDF24F1F3796C3006E94B0 /* FPSUtil.cpp in Sources */,
 				BBD554581FDB2EA800E00AD6 /* b2ChainShape.cpp in Sources */,
@@ -3931,7 +3949,7 @@
 				BBBCB2EB1EF090E900B77938 /* NGSteam.cpp in Sources */,
 				BB44CB881DB053C0003E633F /* pngrtran.c in Sources */,
 				BBBD14C41EE0C9B4003F9307 /* InputMemoryBitStream.cpp in Sources */,
-				BBAEF2601EA94EDA00F0866E /* GpuProgram.cpp in Sources */,
+				BBAEF2601EA94EDA00F0866E /* ShaderProgram.cpp in Sources */,
 				BBD554201FDB2EA800E00AD6 /* b2EdgeAndCircleContact.cpp in Sources */,
 				BB4253E41EF5B078003F6D2A /* NetworkHelper.cpp in Sources */,
 				BBCFF1C71ECD312E003EE520 /* AssetsMapper.cpp in Sources */,
@@ -3940,7 +3958,7 @@
 				BB7251A91EE105780024C71C /* InputState.cpp in Sources */,
 				BBBD149A1EE06BB3003F9307 /* WeightedTimedMovingAverage.cpp in Sources */,
 				BBAEF2A61EA94EDA00F0866E /* AudioEngineHelper.cpp in Sources */,
-				BBAEF2621EA94EDA00F0866E /* GpuProgramFactory.cpp in Sources */,
+				BBAEF2621EA94EDA00F0866E /* ShaderProgramFactory.cpp in Sources */,
 				BBD5543A1FDB2EA800E00AD6 /* b2PulleyJoint.cpp in Sources */,
 				BB6F59801FBDE9C400BD7697 /* osmesa_context.c in Sources */,
 				BBD5542C1FDB2EA800E00AD6 /* b2DistanceJoint.cpp in Sources */,
@@ -4019,13 +4037,13 @@
 				BB27D2581FC6567F00ED42FD /* mach_timing.c in Sources */,
 				BB27D2591FC6567F00ED42FD /* OALActionManager.m in Sources */,
 				BB27D25A1FC6567F00ED42FD /* OALAction.m in Sources */,
+				BB1C3C111FE77301002E4AA6 /* NGGeometryProgram.cpp in Sources */,
 				BB27D25B1FC6567F00ED42FD /* OALUtilityActions.m in Sources */,
 				BBB1D3AF1FC8CB9800B74BAC /* NGExtension.cpp in Sources */,
 				BB27D25C1FC6567F00ED42FD /* OALAudioActions.m in Sources */,
 				BB27D25D1FC6567F00ED42FD /* OALSuspendHandler.m in Sources */,
 				BBD554231FDB2EA800E00AD6 /* b2Contact.cpp in Sources */,
 				BB31B5A61FC205D5005F1C0A /* CursorEvent.cpp in Sources */,
-				BB5AFE541FB35AAE005FBD52 /* OpenGLFramebufferToScreenProgram.cpp in Sources */,
 				BBD5541F1FDB2EA800E00AD6 /* b2CircleContact.cpp in Sources */,
 				BB5AFE7B1FB35ACA005FBD52 /* Entity.cpp in Sources */,
 				BB5AFE7C1FB35ACA005FBD52 /* EntityManager.cpp in Sources */,
@@ -4033,24 +4051,22 @@
 				BB5AFE7E1FB35ACA005FBD52 /* GridManager.cpp in Sources */,
 				BBD554291FDB2EA800E00AD6 /* b2MouseJoint.cpp in Sources */,
 				BBD5545D1FDB2EA800E00AD6 /* b2CircleShape.cpp in Sources */,
-				BB5AFE561FB35AAE005FBD52 /* OpenGLGeometryProgram.cpp in Sources */,
+				BB1C3BFF1FE76967002E4AA6 /* ShaderProgramLoader.cpp in Sources */,
 				BBD554591FDB2EA800E00AD6 /* b2ChainShape.cpp in Sources */,
-				BB5AFE5A1FB35AAE005FBD52 /* OpenGLProgram.cpp in Sources */,
 				BB5AFE5B1FB35AAE005FBD52 /* OpenGLRendererHelper.cpp in Sources */,
 				BBFA49E61FC3702D00233514 /* Engine.cpp in Sources */,
 				BBD554511FDB2EA800E00AD6 /* b2Distance.cpp in Sources */,
 				BBD5543B1FDB2EA800E00AD6 /* b2PulleyJoint.cpp in Sources */,
 				BB31B5B21FC205D5005F1C0A /* KeyboardInputManager.cpp in Sources */,
 				BB5AFE5E1FB35AAE005FBD52 /* OpenGLTextureLoader.cpp in Sources */,
-				BB5AFE5F1FB35AAE005FBD52 /* OpenGLTextureProgram.cpp in Sources */,
 				BB5AFE601FB35AAE005FBD52 /* NGAnimation.cpp in Sources */,
 				BB0756E11FE6107F008E0E08 /* RendererHelperFactory.cpp in Sources */,
 				BB5AFE611FB35AAE005FBD52 /* Assets.cpp in Sources */,
 				BBD5542B1FDB2EA800E00AD6 /* b2FrictionJoint.cpp in Sources */,
 				BB5AFE621FB35AAE005FBD52 /* CircleBatcher.cpp in Sources */,
 				BB5AFE651FB35AAF005FBD52 /* Font.cpp in Sources */,
-				BB5AFE661FB35AAF005FBD52 /* GpuProgram.cpp in Sources */,
-				BB5AFE671FB35AAF005FBD52 /* GpuProgramFactory.cpp in Sources */,
+				BB5AFE661FB35AAF005FBD52 /* ShaderProgram.cpp in Sources */,
+				BB5AFE671FB35AAF005FBD52 /* ShaderProgramFactory.cpp in Sources */,
 				BB5AFE681FB35AAF005FBD52 /* AssetsMapper.cpp in Sources */,
 				BBD554611FDB2EA800E00AD6 /* b2TimeOfImpact.cpp in Sources */,
 				BBD5545B1FDB2EA800E00AD6 /* b2EdgeShape.cpp in Sources */,
@@ -4067,10 +4083,11 @@
 				BB5AFE711FB35AAF005FBD52 /* SpriteBatcher.cpp in Sources */,
 				BB5AFE731FB35AAF005FBD52 /* TextureLoaderFactory.cpp in Sources */,
 				BB5AFE741FB35AAF005FBD52 /* TextureRegion.cpp in Sources */,
-				BB5AFE751FB35AAF005FBD52 /* TextureWrapper.cpp in Sources */,
+				BB5AFE751FB35AAF005FBD52 /* NGTexture.cpp in Sources */,
 				BBD554491FDB2EA800E00AD6 /* b2Settings.cpp in Sources */,
 				BBD554411FDB2EA800E00AD6 /* b2ContactManager.cpp in Sources */,
 				BBD5544F1FDB2EA800E00AD6 /* b2Math.cpp in Sources */,
+				BB1C3C071FE76C65002E4AA6 /* OpenGLProgramLoader.cpp in Sources */,
 				BBD5543F1FDB2EA800E00AD6 /* b2Island.cpp in Sources */,
 				BB5AFE171FB359EA005FBD52 /* FPSUtil.cpp in Sources */,
 				BB5AFE191FB359EA005FBD52 /* NGRTTI.cpp in Sources */,
@@ -4090,6 +4107,7 @@
 				BB5AFE381FB35A77005FBD52 /* SocketClientHelper.cpp in Sources */,
 				BB5AFE391FB35A77005FBD52 /* AckRange.cpp in Sources */,
 				BB5AFE3A1FB35A77005FBD52 /* DeliveryNotificationManager.cpp in Sources */,
+				BB1C3C0F1FE77301002E4AA6 /* NGFramebufferToScreenProgram.cpp in Sources */,
 				BB5AFE3B1FB35A77005FBD52 /* FWInstanceManager.cpp in Sources */,
 				BBD554311FDB2EA800E00AD6 /* b2MotorJoint.cpp in Sources */,
 				BB5AFE3C1FB35A77005FBD52 /* InputState.cpp in Sources */,
@@ -4121,6 +4139,7 @@
 				BB9EE50E1FC092BA000F5389 /* AssetDataHandler.cpp in Sources */,
 				BB5AFE4E1FB35A77005FBD52 /* NetworkManagerServer.cpp in Sources */,
 				BB5AFE4F1FB35A77005FBD52 /* ReplicationManagerServer.cpp in Sources */,
+				BB1C3C131FE77301002E4AA6 /* NGTextureProgram.cpp in Sources */,
 				BB5AFE501FB35A77005FBD52 /* ReplicationManagerTransmissionData.cpp in Sources */,
 				BB5AFE511FB35A77005FBD52 /* SocketServerHelper.cpp in Sources */,
 				BB5AFE0A1FB359DE005FBD52 /* Ground.cpp in Sources */,
@@ -4137,10 +4156,10 @@
 				BB31B5B01FC205D5005F1C0A /* GamePadEvent.cpp in Sources */,
 				BB5AFE221FB35A0B005FBD52 /* AudioEngineHelperFactory.cpp in Sources */,
 				BBD554371FDB2EA800E00AD6 /* b2Joint.cpp in Sources */,
+				BB1C3C1B1FE7868E002E4AA6 /* NGShaderInput.cpp in Sources */,
 				BB5AFE231FB35A0B005FBD52 /* AudioEngineHelper.cpp in Sources */,
 				BB27D2681FC6572600ED42FD /* AppleSoundWrapper.cpp in Sources */,
 				BB5AFE241FB35A0B005FBD52 /* Sound.cpp in Sources */,
-				BB0756E71FE63796008E0E08 /* VertexProgramInput.cpp in Sources */,
 				BB5AFE251FB35A0B005FBD52 /* SoundWrapper.cpp in Sources */,
 				BB5AFE261FB35A0B005FBD52 /* NGAudioEngine.cpp in Sources */,
 				BB27D26E1FC6572600ED42FD /* AppleSound.cpp in Sources */,
@@ -4171,6 +4190,7 @@
 				BBD5540F1FDB2EA800E00AD6 /* b2World.cpp in Sources */,
 				BB5AFDAF1FB3595F005FBD52 /* pngget.c in Sources */,
 				BBD554451FDB2EA800E00AD6 /* b2Draw.cpp in Sources */,
+				BB1C3C031FE76BE0002E4AA6 /* ShaderProgramLoaderFactory.cpp in Sources */,
 				BB5AFDB01FB3595F005FBD52 /* pngmem.c in Sources */,
 				BB5AFDB11FB3595F005FBD52 /* pngpread.c in Sources */,
 				BB5AFDB21FB3595F005FBD52 /* pngread.c in Sources */,

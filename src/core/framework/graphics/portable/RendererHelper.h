@@ -15,8 +15,9 @@
 
 #include <vector>
 
-class TextureWrapper;
-struct GpuTextureWrapper;
+class NGTexture;
+struct TextureWrapper;
+class ShaderProgramWrapper;
 
 class RendererHelper
 {
@@ -35,7 +36,7 @@ public:
     
     virtual void endFrame() = 0;
     
-    virtual TextureWrapper* getFramebuffer(int index) = 0;
+    virtual NGTexture* getFramebuffer(int index) = 0;
     
     virtual void updateMatrix(float left, float right, float bottom, float top) = 0;
     
@@ -46,19 +47,36 @@ public:
     virtual void bindToScreenFramebuffer() = 0;
     
     virtual void useNormalBlending() = 0;
-    
     virtual void useScreenBlending() = 0;
     
-    virtual void destroyTexture(GpuTextureWrapper& textureWrapper) = 0;
+    virtual void bindMatrix(int32_t location = 0) = 0;
+    
+    virtual void bindTexture(NGTextureSlot textureSlot, NGTexture* texture, int32_t location = 0) = 0;
+    virtual void destroyTexture(TextureWrapper& textureWrapper) = 0;
+    
+    virtual void bindShaderProgram(ShaderProgramWrapper* shaderProgramWrapper) = 0;
+    virtual void destroyShaderProgram(ShaderProgramWrapper* shaderProgramWrapper) = 0;
+    
+    virtual void mapTextureVertices() = 0;
+    virtual void unmapTextureVertices() = 0;
+    
+    virtual void mapColorVertices() = 0;
+    virtual void unmapColorVertices() = 0;
     
     virtual void draw(NGPrimitiveType renderPrimitiveType, uint32_t first, uint32_t count) = 0;
-    
     virtual void drawIndexed(NGPrimitiveType renderPrimitiveType, uint32_t count) = 0;
     
-    virtual void bindTexture(NGTextureSlot textureSlot, TextureWrapper* textureWrapper, int32_t location = 0) = 0;
+#if defined __APPLE__ || defined __ANDROID__ || defined __linux__
+    virtual GLuint getTextureVertexBuffer() = 0;
+    virtual GLuint getColorVertexBuffer() = 0;
+    virtual mat4x4& getMatrix() = 0;
+#elif defined _WIN32
+    virtual Microsoft::WRL::ComPtr<ID3D11Buffer>& getTextureVertexBuffer() = 0;
+    virtual Microsoft::WRL::ComPtr<ID3D11Buffer>& getColorVertexBuffer() = 0;
+    virtual DirectX::XMFLOAT4X4& getMatrix() = 0;
+#endif
     
     void clearColorVertices();
-    
     void clearTextureVertices();
     
     void addVertexCoordinate(float x, float y, float z, float r, float g, float b, float a, float u, float v);
@@ -69,9 +87,9 @@ public:
     std::vector<COLOR_VERTEX>& getColorVertices();
     
 protected:
-    TextureWrapper* _framebuffer;
+    NGTexture* _framebuffer;
     
-    std::vector<GpuTextureWrapper *> _framebuffers;
+    std::vector<TextureWrapper *> _framebuffers;
     std::vector<TEXTURE_VERTEX> _textureVertices;
     std::vector<COLOR_VERTEX> _colorVertices;
     std::vector<uint16_t> _indices;

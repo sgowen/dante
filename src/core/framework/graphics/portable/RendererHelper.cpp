@@ -10,12 +10,12 @@
 
 #include "framework/graphics/portable/RendererHelper.h"
 
+#include "framework/graphics/portable/NGTexture.h"
 #include "framework/graphics/portable/TextureWrapper.h"
-#include "framework/graphics/portable/GpuTextureWrapper.h"
 
 #include <framework/util/FrameworkConstants.h>
 
-RendererHelper::RendererHelper() : _framebuffer(new TextureWrapper("framebuffer", NULL, false)), _screenWidth(1), _screenHeight(1), _renderWidth(1), _renderHeight(1), _numFramebuffers(1)
+RendererHelper::RendererHelper() : _framebuffer(new NGTexture("framebuffer", NULL, false)), _screenWidth(1), _screenHeight(1), _renderWidth(1), _renderHeight(1), _numFramebuffers(1)
 {
     _textureVertices.reserve(MAX_BATCH_SIZE * VERTICES_PER_RECTANGLE);
     _colorVertices.reserve(MAX_BATCH_SIZE * VERTICES_PER_RECTANGLE);

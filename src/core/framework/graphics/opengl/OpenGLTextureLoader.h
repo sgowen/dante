@@ -22,9 +22,9 @@ public:
     
     virtual ~OpenGLTextureLoader();
     
-    virtual GpuTextureDataWrapper* loadTextureData(TextureWrapper* textureWrapper);
+    virtual TextureDataWrapper* loadTextureData(NGTexture* texture);
     
-    virtual GpuTextureWrapper* loadTexture(GpuTextureDataWrapper* textureData, bool repeatS = false);
+    virtual TextureWrapper* loadTexture(TextureDataWrapper* textureData, bool repeatS = false);
     
 private:
     OpenGLPngImageData getOpenGLPngImageDataFromFileData(const void* png_data, const int png_data_size);

@@ -10,8 +10,8 @@
 #define __noctisgames__SpriteBatcher__
 
 class RendererHelper;
-class TextureWrapper;
-class GpuProgram;
+class NGTexture;
+class ShaderProgram;
 class TextureRegion;
 class Color;
 
@@ -24,7 +24,7 @@ public:
 
     void beginBatch();
 
-    void endBatch(TextureWrapper* textureWrapper, GpuProgram& gpuProgramWrapper);
+    void endBatch(NGTexture* texture, ShaderProgram& gpuProgramWrapper);
 
     void renderSprite(float x, float y, float width, float height, float angle, TextureRegion& tr, bool flipX = false);
     void renderSprite(float x, float y, float width, float height, float angle, Color &c, TextureRegion& tr, bool flipX = false);

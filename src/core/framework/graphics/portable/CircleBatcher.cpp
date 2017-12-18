@@ -12,7 +12,7 @@
 
 #include "framework/graphics/portable/RendererHelper.h"
 #include "framework/math/Circle.h"
-#include "framework/graphics/portable/GpuProgram.h"
+#include "framework/graphics/portable/ShaderProgram.h"
 #include "framework/graphics/portable/Color.h"
 
 #include "framework/util/FrameworkConstants.h"
@@ -32,7 +32,7 @@ CircleBatcher::~CircleBatcher()
     // Empty
 }
 
-void CircleBatcher::renderCircle(Circle &circle, Color &c, GpuProgram &gpuProgramWrapper)
+void CircleBatcher::renderCircle(Circle &circle, Color &c, ShaderProgram &gpuProgramWrapper)
 {
     clearVertices();
     
@@ -52,7 +52,7 @@ void CircleBatcher::renderCircle(Circle &circle, Color &c, GpuProgram &gpuProgra
     endBatch(gpuProgramWrapper);
 }
 
-void CircleBatcher::renderPartialCircle(Circle &circle, int arcDegrees, Color &c, GpuProgram &gpuProgramWrapper)
+void CircleBatcher::renderPartialCircle(Circle &circle, int arcDegrees, Color &c, ShaderProgram &gpuProgramWrapper)
 {
     clearVertices();
     
@@ -85,7 +85,7 @@ void CircleBatcher::clearVertices()
     _rendererHelper->clearColorVertices();
 }
 
-void CircleBatcher::endBatch(GpuProgram &gpuProgramWrapper)
+void CircleBatcher::endBatch(ShaderProgram &gpuProgramWrapper)
 {
     gpuProgramWrapper.bind();
     
