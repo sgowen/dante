@@ -1,6 +1,3 @@
-[submodule "src/3rdparty/rapidjson"]
-	path = src/3rdparty/rapidjson
-	url = https://github.com/Tencent/rapidjson.git
 [submodule "src/3rdparty/libpng"]
 	path = src/3rdparty/libpng
 	url = https://github.com/NoctisGames/libpng.git
@@ -25,3 +22,6 @@
 [submodule "src/3rdparty/steamworks_sdk"]
 	path = src/3rdparty/steamworks_sdk
 	url = https://github.com/NoctisGames/steamworks_sdk.git
+[submodule "src/3rdparty/rapidjson"]
+	path = src/3rdparty/rapidjson
+	url = https://github.com/NoctisGames/rapidjson.git
