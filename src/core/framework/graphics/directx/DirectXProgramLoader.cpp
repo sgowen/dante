@@ -45,9 +45,9 @@ ShaderProgramWrapper* DirectXProgramLoader::loadShaderProgram(const char* vertex
     unsigned char* vertex_shader_source_output = (unsigned char*) malloc(vertex_shader_source.data_length);
     StringUtil::encryptDecrypt((unsigned char*)vertex_shader_source.data, vertex_shader_source_output, vertex_shader_source.data_length);
     
-    Microsoft::WRL::ComPtr<ID3D11VertexShader> vertexShader
-    Microsoft::WRL::ComPtr<ID3D11InputLayout> inputLayout
-    Microsoft::WRL::ComPtr<ID3D11PixelShader> pixelShader
+	Microsoft::WRL::ComPtr<ID3D11VertexShader> pVertexShader;
+	Microsoft::WRL::ComPtr<ID3D11InputLayout> pInputLayout;
+	Microsoft::WRL::ComPtr<ID3D11PixelShader> pPixelShader;
     
     ID3D11Device* d3dDevice = DirectXRendererHelper::getD3dDevice();
     
@@ -56,7 +56,7 @@ ShaderProgramWrapper* DirectXProgramLoader::loadShaderProgram(const char* vertex
 			vertex_shader_source_output,
 			vertex_shader_source.data_length,
 			NULL,
-			&vertexShader
+			&pVertexShader
 		)
 	);
     
@@ -76,7 +76,7 @@ ShaderProgramWrapper* DirectXProgramLoader::loadShaderProgram(const char* vertex
 			inputElementDescs.size(),
 			vertex_shader_source_output,
 			vertex_shader_source.data_length,
-			&inputLayout
+			&pInputLayout
 		)
 	);
 
@@ -89,7 +89,7 @@ ShaderProgramWrapper* DirectXProgramLoader::loadShaderProgram(const char* vertex
 			fragment_shader_source_output,
 			fragment_shader_source.data_length,
 			NULL,
-			&pixelShader
+			&pPixelShader
 		)
 	);
     

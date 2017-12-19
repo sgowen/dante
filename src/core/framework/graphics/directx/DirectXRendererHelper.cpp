@@ -209,9 +209,9 @@ void DirectXRendererHelper::bindShaderProgram(ShaderProgramWrapper* shaderProgra
     if (shaderProgramWrapper != NULL)
     {
         // set the shader objects as the active shaders
-        s_d3dContext->VSSetShader(shaderProgramWrapper->_vertexShader, NULL, 0);
-        s_d3dContext->IASetInputLayout(shaderProgramWrapper->_inputLayout);
-        s_d3dContext->PSSetShader(shaderProgramWrapper->_pixelShader, NULL, 0);
+        s_d3dContext->VSSetShader(shaderProgramWrapper->_vertexShader.Get(), NULL, 0);
+        s_d3dContext->IASetInputLayout(shaderProgramWrapper->_inputLayout.Get());
+        s_d3dContext->PSSetShader(shaderProgramWrapper->_pixelShader.Get(), NULL, 0);
     }
 }
 

@@ -27,7 +27,7 @@ NGShaderVarInput::NGShaderVarInput(const char* attribName, int size, int offset)
         format = DXGI_FORMAT_R32G32_FLOAT;
     }
     
-    _attribute = { attribName, 0, format, 0, (UINT)(_offset * 4)b , D3D11_INPUT_PER_VERTEX_DATA, 0 };
+    _attribute = { attribName, 0, format, 0, (UINT)(_offset * 4), D3D11_INPUT_PER_VERTEX_DATA, 0 };
 #endif
 }
 
