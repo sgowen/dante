@@ -218,18 +218,10 @@ void DirectXRendererHelper::bindShaderProgram(ShaderProgramWrapper* shaderProgra
 void DirectXRendererHelper::destroyShaderProgram(ShaderProgramWrapper* shaderProgramWrapper)
 {
     assert(shaderProgramWrapper != NULL);
-    assert(shaderProgramWrapper->_vertexShader != NULL);
-    assert(shaderProgramWrapper->_inputLayout != NULL);
-    assert(shaderProgramWrapper->_pixelShader != NULL);
     
-    delete shaderProgramWrapper->_vertexShader;
-    shaderProgramWrapper->_vertexShader = NULL;
-    
-    delete shaderProgramWrapper->_inputLayout;
-    shaderProgramWrapper->_inputLayout = NULL;
-    
-    delete shaderProgramWrapper->_pixelShader;
-    shaderProgramWrapper->_pixelShader = NULL;
+    shaderProgramWrapper->_vertexShader.Reset();
+    shaderProgramWrapper->_inputLayout.Reset();
+    shaderProgramWrapper->_pixelShader.Reset();
 }
 
 void DirectXRendererHelper::mapScreenVertices(std::vector<NGShaderVarInput*>& inputLayout)

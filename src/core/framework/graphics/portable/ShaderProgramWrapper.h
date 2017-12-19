@@ -18,11 +18,11 @@ struct ShaderProgramWrapper
 
     ShaderProgramWrapper(GLuint programObjectId) : _programObjectId(programObjectId) {}
 #elif defined _WIN32
-    ID3D11VertexShader* _vertexShader;
-    ID3D11InputLayout* _inputLayout;
-    ID3D11PixelShader* _pixelShader;
+    Microsoft::WRL::ComPtr<ID3D11VertexShader> _vertexShader;
+    Microsoft::WRL::ComPtr<ID3D11InputLayout> _inputLayout;
+    Microsoft::WRL::ComPtr<ID3D11PixelShader> _pixelShader;
 
-    ShaderProgramWrapper(ID3D11VertexShader* vertexShader, ID3D11InputLayout* inputLayout, ID3D11PixelShader* pixelShader) : _vertexShader(vertexShader), _inputLayout(inputLayout), _pixelShader(pixelShader) {}
+    ShaderProgramWrapper(Microsoft::WRL::ComPtr<ID3D11VertexShader> vertexShader, Microsoft::WRL::ComPtr<ID3D11InputLayout> inputLayout, Microsoft::WRL::ComPtr<ID3D11PixelShader> pixelShader) : _vertexShader(vertexShader), _inputLayout(inputLayout), _pixelShader(pixelShader) {}
 #endif
 };
 
