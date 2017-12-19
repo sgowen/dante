@@ -12,9 +12,8 @@
 
 #include "framework/graphics/portable/ShaderProgramWrapper.h"
 
-#include "framework/graphics/directx/DirectXRendererHelper.h"
-
 #if defined _WIN32
+#include "framework/graphics/directx/DirectXRendererHelper.h"
 #include "PlatformHelpers.h"
 #endif
 
