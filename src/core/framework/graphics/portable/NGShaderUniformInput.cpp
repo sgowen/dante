@@ -12,6 +12,12 @@
 
 #include "framework/graphics/portable/ShaderProgramWrapper.h"
 
+#include "framework/graphics/directx/DirectXRendererHelper.h"
+
+#if defined _WIN32
+#include "PlatformHelpers.h"
+#endif
+
 NGShaderUniformInput::NGShaderUniformInput(const char* attribName, int byteWidth) : _attribName(attribName)
 {
 #if defined _WIN32
@@ -23,7 +29,8 @@ NGShaderUniformInput::NGShaderUniformInput(const char* attribName, int byteWidth
         bd.ByteWidth = byteWidth;
         bd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
         
-        DirectX::ThrowIfFailed(s_d3dDevice->CreateBuffer(&bd, NULL, &_constantbuffer));
+		ID3D11Device* d3dDevice = DirectXRendererHelper::getD3dDevice();
+        DirectX::ThrowIfFailed(d3dDevice->CreateBuffer(&bd, NULL, &_constantbuffer));
     }
 #endif
 }

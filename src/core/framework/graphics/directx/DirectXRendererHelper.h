@@ -112,7 +112,7 @@ private:
         memcpy(mappedResource.pData, &vertices.front(), sizeof(T) * vertices.size());
         
         //    Reenable GPU access to the vertex buffer data.
-        s_d3dContext->Unmap(_screenVertexBuffer.Get(), 0);
+        s_d3dContext->Unmap(vertexBuffer.Get(), 0);
         
         // Set the vertex buffer
         UINT stride = sizeof(T);
