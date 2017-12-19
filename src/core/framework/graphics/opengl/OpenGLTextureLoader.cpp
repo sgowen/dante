@@ -14,7 +14,6 @@
 
 #include "framework/file/portable/AssetDataHandler.h"
 #include "framework/file/portable/FileData.h"
-#include "framework/graphics/opengl/OpenGLPngImageData.h"
 #include "framework/util/StringUtil.h"
 
 extern "C"
@@ -62,11 +61,11 @@ TextureDataWrapper* OpenGLTextureLoader::loadTextureData(NGTexture* texture)
         output = (void*) fileData.data;
     }
 
-    const OpenGLPngImageData raw_image_data = getOpenGLPngImageDataFromFileData(output, (int)fileData.data_length);
+    OpenGLPngImageData* rawImageData = getOpenGLPngImageDataFromFileData(output, (int)fileData.data_length);
 
     AssetDataHandler::getAssetDataHandler()->releaseAssetData(&fileData);
 
-    TextureDataWrapper* tdw = new TextureDataWrapper(raw_image_data);
+    TextureDataWrapper* tdw = new TextureDataWrapper(rawImageData);
 
     if (texture->_isEncrypted)
     {
@@ -78,7 +77,12 @@ TextureDataWrapper* OpenGLTextureLoader::loadTextureData(NGTexture* texture)
 
 TextureWrapper* OpenGLTextureLoader::loadTexture(TextureDataWrapper* textureData, bool repeatS)
 {
-    return new TextureWrapper(loadPngAssetIntoTexture(textureData->raw_image_data, repeatS));
+    TextureWrapper* ret = new TextureWrapper(loadPngAssetIntoTexture(textureData->_rawImageData, repeatS));
+    
+    delete textureData->_rawImageData;
+    textureData->_rawImageData = NULL;
+    
+    return ret;
 }
 
 struct DataHandle
@@ -108,7 +112,7 @@ static DataHandle readEntirePngImage(const png_structp png_ptr, const png_infop 
 
 static GLenum getGlColorFormat(const int png_color_format);
 
-OpenGLPngImageData OpenGLTextureLoader::getOpenGLPngImageDataFromFileData(const void* png_data, const int png_data_size)
+OpenGLPngImageData* OpenGLTextureLoader::getOpenGLPngImageDataFromFileData(const void* png_data, const int png_data_size)
 {
     assert(png_data != NULL && png_data_size > 8);
     assert(png_check_sig((png_const_bytep)png_data, 8));
@@ -137,20 +141,14 @@ OpenGLPngImageData OpenGLTextureLoader::getOpenGLPngImageDataFromFileData(const 
     png_read_end(png_ptr, info_ptr);
     png_destroy_read_struct(&png_ptr, &info_ptr, NULL);
 
-    return (OpenGLPngImageData)
-    {
-        static_cast<int>(png_info.width),
-        static_cast<int>(png_info.height),
-        (int) raw_image.size,
-        getGlColorFormat(png_info.color_type),
-        raw_image.data
-    };
+    return new OpenGLPngImageData(static_cast<int>(png_info.width), static_cast<int>(png_info.height), (int) raw_image.size, getGlColorFormat(png_info.color_type), raw_image.data);
 }
 
 void OpenGLTextureLoader::releaseOpenGLPngImageData(const OpenGLPngImageData* data)
 {
     assert(data != NULL);
-    free((void*)data->data);
+    
+    free((void*)data->_data);
 }
 
 static void readPngDataCallback(png_structp png_ptr, png_byte* raw_data, png_size_t read_length)
@@ -257,11 +255,11 @@ static GLenum getGlColorFormat(const int png_color_format)
     return 0;
 }
 
-GLuint OpenGLTextureLoader::loadPngAssetIntoTexture(OpenGLPngImageData inOpenGLPngImageData, bool repeatS)
+GLuint OpenGLTextureLoader::loadPngAssetIntoTexture(OpenGLPngImageData* inOpenGLPngImageData, bool repeatS)
 {
-    const GLuint texture_object_id = createTexture(inOpenGLPngImageData.width, inOpenGLPngImageData.height, inOpenGLPngImageData.gl_color_format, inOpenGLPngImageData.data, repeatS, true);
+    const GLuint texture_object_id = createTexture(inOpenGLPngImageData->_width, inOpenGLPngImageData->_height, inOpenGLPngImageData->_glColorFormat, inOpenGLPngImageData->_data, repeatS, true);
 
-    releaseOpenGLPngImageData(&inOpenGLPngImageData);
+    releaseOpenGLPngImageData(inOpenGLPngImageData);
 
     return texture_object_id;
 }

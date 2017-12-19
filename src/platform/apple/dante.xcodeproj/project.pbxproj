@@ -991,7 +991,6 @@
 		BB9EE5131FC092C4000F5389 /* AppleAssetDataHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppleAssetDataHandler.h; sourceTree = "<group>"; };
 		BB9EE5191FC092CB000F5389 /* AndroidAssetDataHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AndroidAssetDataHandler.h; sourceTree = "<group>"; };
 		BB9EE51A1FC092CB000F5389 /* AndroidAssetDataHandler.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = AndroidAssetDataHandler.cpp; sourceTree = "<group>"; };
-		BB9EE51B1FC092E7000F5389 /* OpenGLPngImageData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OpenGLPngImageData.h; sourceTree = "<group>"; };
 		BBAA69E31EE488DF00451615 /* TransmissionData.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TransmissionData.cpp; sourceTree = "<group>"; };
 		BBAEF0BF1EA94ED900F0866E /* Entity.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Entity.cpp; sourceTree = "<group>"; };
 		BBAEF0C01EA94ED900F0866E /* Entity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Entity.h; sourceTree = "<group>"; };
@@ -2654,7 +2653,6 @@
 		BBAEF1081EA94ED900F0866E /* opengl */ = {
 			isa = PBXGroup;
 			children = (
-				BB9EE51B1FC092E7000F5389 /* OpenGLPngImageData.h */,
 				BB1C3C051FE76C65002E4AA6 /* OpenGLProgramLoader.cpp */,
 				BB1C3C041FE76C65002E4AA6 /* OpenGLProgramLoader.h */,
 				BBAEF11B1EA94ED900F0866E /* OpenGLRendererHelper.cpp */,
