@@ -70,7 +70,6 @@ private:
     
     // ctor, copy ctor, and assignment should be private in a Singleton
     InputManager();
-    ~InputManager();
     InputManager(const InputManager&);
     InputManager& operator=(const InputManager&);
 };

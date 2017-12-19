@@ -76,8 +76,6 @@ public:
     
     MainInputState();
     
-    virtual ~MainInputState();
-    
     virtual bool write(OutputMemoryBitStream& inOutputStream) const;
     
     virtual bool read(InputMemoryBitStream& inInputStream);

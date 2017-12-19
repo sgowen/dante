@@ -19,11 +19,6 @@ MainAssetsMapper::MainAssetsMapper() : AssetsMapper()
     // Empty
 }
 
-MainAssetsMapper::~MainAssetsMapper()
-{
-    // Empty
-}
-
 void MainAssetsMapper::mapAssets()
 {
     /// Texture Regions

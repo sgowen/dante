@@ -24,11 +24,6 @@ MainInputState::MainInputState() : InputState(), _menuState(MENU_STATE_NONE)
     // Empty
 }
 
-MainInputState::~MainInputState()
-{
-    // Empty
-}
-
 bool MainInputState::write(OutputMemoryBitStream& inOutputStream) const
 {
     bool ret = false;

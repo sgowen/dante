@@ -536,8 +536,3 @@ _isTimeToProcessInput(false)
 {
     // Empty
 }
-
-InputManager::~InputManager()
-{
-    // Empty
-}
