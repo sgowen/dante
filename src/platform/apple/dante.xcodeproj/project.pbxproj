@@ -834,8 +834,8 @@
 		BB5833731EEDBBC50084DA20 /* steam_appid.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = steam_appid.txt; sourceTree = "<group>"; };
 		BB5833771EEDBF7E0084DA20 /* NGSteamGameServices.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NGSteamGameServices.cpp; sourceTree = "<group>"; };
 		BB5833791EEDBFB20084DA20 /* NGSteamGameServices.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NGSteamGameServices.h; sourceTree = "<group>"; };
-		BB58339B1EEDD6470084DA20 /* DirectXProgram.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = DirectXProgram.cpp; sourceTree = "<group>"; };
-		BB58339C1EEDD6470084DA20 /* DirectXProgram.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DirectXProgram.h; sourceTree = "<group>"; };
+		BB58339B1EEDD6470084DA20 /* DirectXProgramLoader.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = DirectXProgramLoader.cpp; sourceTree = "<group>"; };
+		BB58339C1EEDD6470084DA20 /* DirectXProgramLoader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DirectXProgramLoader.h; sourceTree = "<group>"; };
 		BB58339F1EEDD6470084DA20 /* DirectXRendererHelper.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = DirectXRendererHelper.cpp; sourceTree = "<group>"; };
 		BB5833A01EEDD6470084DA20 /* DirectXRendererHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DirectXRendererHelper.h; sourceTree = "<group>"; };
 		BB5833A51EEDD6470084DA20 /* DirectXTextureLoader.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = DirectXTextureLoader.cpp; sourceTree = "<group>"; };
@@ -2186,8 +2186,8 @@
 		BB58338A1EEDD6470084DA20 /* directx */ = {
 			isa = PBXGroup;
 			children = (
-				BB58339B1EEDD6470084DA20 /* DirectXProgram.cpp */,
-				BB58339C1EEDD6470084DA20 /* DirectXProgram.h */,
+				BB58339B1EEDD6470084DA20 /* DirectXProgramLoader.cpp */,
+				BB58339C1EEDD6470084DA20 /* DirectXProgramLoader.h */,
 				BB58339F1EEDD6470084DA20 /* DirectXRendererHelper.cpp */,
 				BB5833A01EEDD6470084DA20 /* DirectXRendererHelper.h */,
 				BB5833A51EEDD6470084DA20 /* DirectXTextureLoader.cpp */,
