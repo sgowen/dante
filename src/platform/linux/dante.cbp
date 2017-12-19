@@ -399,7 +399,6 @@
 		<Unit filename="../../core/framework/file/portable/FileData.h" />
 		<Unit filename="../../core/framework/file/portable/JsonFile.cpp" />
 		<Unit filename="../../core/framework/file/portable/JsonFile.h" />
-		<Unit filename="../../core/framework/graphics/opengl/OpenGLPngImageData.h" />
 		<Unit filename="../../core/framework/graphics/opengl/OpenGLProgramLoader.cpp" />
 		<Unit filename="../../core/framework/graphics/opengl/OpenGLProgramLoader.h" />
 		<Unit filename="../../core/framework/graphics/opengl/OpenGLRendererHelper.cpp" />
