@@ -34,7 +34,7 @@ void OpenGLRendererHelper::createDeviceDependentResources()
 {
     glGetIntegerv(GL_FRAMEBUFFER_BINDING, &_screenFBO);
     glGetIntegerv(GL_MAX_TEXTURE_SIZE, &_maxTextureSize);
-    
+
     if (_renderWidth > -1
         && _renderHeight > -1
         && _numFramebuffers > -1)
@@ -51,12 +51,12 @@ void OpenGLRendererHelper::createWindowSizeDependentResources(int screenWidth, i
     _renderWidth = renderWidth;
     _renderHeight = renderHeight;
     _numFramebuffers = numFramebuffers;
-    
+
     glViewport(0, 0, _renderWidth, _renderHeight);
-    
+
     glScissor(0, 0, _renderWidth, _renderHeight);
     glEnable(GL_SCISSOR_TEST);
-    
+
     releaseFramebuffers();
     createFramebufferObjects();
 }
@@ -64,11 +64,11 @@ void OpenGLRendererHelper::createWindowSizeDependentResources(int screenWidth, i
 void OpenGLRendererHelper::releaseDeviceDependentResources()
 {
     releaseFramebuffers();
-    
+
     glDeleteBuffers(1, &_screenVboObject);
     glDeleteBuffers(1, &_textureVboObject);
     glDeleteBuffers(1, &_colorVboObject);
-    
+
     _textureVertices.clear();
     _colorVertices.clear();
 }
@@ -76,21 +76,21 @@ void OpenGLRendererHelper::releaseDeviceDependentResources()
 void OpenGLRendererHelper::beginFrame()
 {
     glEnable(GL_TEXTURE_2D);
-    
+
     glEnable(GL_BLEND);
 }
 
 void OpenGLRendererHelper::endFrame()
 {
     glDisable(GL_BLEND);
-    
+
     glDisable(GL_TEXTURE_2D);
 }
 
 NGTexture* OpenGLRendererHelper::getFramebuffer(int index)
 {
     _framebuffer->textureWrapper = _framebuffers[index];
-    
+
     return _framebuffer;
 }
 
@@ -110,13 +110,13 @@ inline void mat4x4_ortho(mat4x4 M, float l, float r, float b, float t, float n, 
 {
     M[0][0] = 2.f/(r-l);
     M[0][1] = M[0][2] = M[0][3] = 0.f;
-    
+
     M[1][1] = 2.f/(t-b);
     M[1][0] = M[1][2] = M[1][3] = 0.f;
-    
+
     M[2][2] = -2.f/(f-n);
     M[2][0] = M[2][1] = M[2][3] = 0.f;
-    
+
     M[3][0] = -(r+l)/(r-l);
     M[3][1] = -(t+b)/(t-b);
     M[3][2] = -(f+n)/(f-n);
@@ -126,14 +126,14 @@ inline void mat4x4_ortho(mat4x4 M, float l, float r, float b, float t, float n, 
 void OpenGLRendererHelper::updateMatrix(float left, float right, float bottom, float top)
 {
     mat4x4_identity(_matrix);
-    
+
     mat4x4_ortho(_matrix, left, right, bottom, top, -1, 1);
 }
 
 void OpenGLRendererHelper::bindToOffscreenFramebuffer(int index)
 {
     glBindFramebuffer(GL_FRAMEBUFFER, _fbos[index]);
-    
+
     glViewport(0, 0, _renderWidth, _renderHeight);
     glScissor(0, 0, _renderWidth, _renderHeight);
 }
@@ -147,7 +147,7 @@ void OpenGLRendererHelper::clearFramebufferWithColor(float r, float g, float b, 
 void OpenGLRendererHelper::bindToScreenFramebuffer()
 {
     glBindFramebuffer(GL_FRAMEBUFFER, _screenFBO);
-    
+
     glViewport(0, 0, _screenWidth, _screenHeight);
     glScissor(0, 0, _screenWidth, _screenHeight);
 }
@@ -169,11 +169,24 @@ void OpenGLRendererHelper::bindMatrix(NGShaderUniformInput* uniform)
     glUniformMatrix4fv(uniform->_attribute, 1, GL_FALSE, (GLfloat*)_matrix);
 }
 
+inline int slotIndexForTextureSlot(NGTextureSlot textureSlot)
+{
+    switch (textureSlot)
+    {
+        case NGTextureSlot_ZERO:
+            return 0;
+        case NGTextureSlot_ONE:
+            return 1;
+    }
+
+    assert(false);
+}
+
 void OpenGLRendererHelper::bindTexture(NGTextureSlot textureSlot, NGTexture* texture, NGShaderUniformInput* uniform)
 {
     glActiveTexture(textureSlot);
     glBindTexture(GL_TEXTURE_2D, texture == NULL ? 0 : texture->textureWrapper->texture);
-    
+
     if (texture != NULL && uniform != NULL)
     {
         glUniform1i(uniform->_attribute, slotIndexForTextureSlot(textureSlot));
@@ -200,11 +213,11 @@ void OpenGLRendererHelper::mapScreenVertices(std::vector<NGShaderVarInput*>& inp
     glGenBuffers(1, &_screenVboObject);
     glBindBuffer(GL_ARRAY_BUFFER, _screenVboObject);
     glBufferData(GL_ARRAY_BUFFER, sizeof(TEXTURE_VERTEX) * _screenVertices.size(), &_screenVertices[0], GL_STATIC_DRAW);
-    
+
     for (std::vector<NGShaderVarInput*>::iterator i = inputLayout.begin(); i != inputLayout.end(); ++i)
     {
         NGShaderVarInput* svi = (*i);
-        
+
         glVertexAttribPointer(svi->_attribute, svi->_size, GL_FLOAT, GL_FALSE, svi->_stride, svi->_bufferOffset);
     }
 }
@@ -220,11 +233,11 @@ void OpenGLRendererHelper::mapTextureVertices(std::vector<NGShaderVarInput*>& in
     glGenBuffers(1, &_textureVboObject);
     glBindBuffer(GL_ARRAY_BUFFER, _textureVboObject);
     glBufferData(GL_ARRAY_BUFFER, sizeof(TEXTURE_VERTEX) * _textureVertices.size(), &_textureVertices[0], GL_STATIC_DRAW);
-    
+
     for (std::vector<NGShaderVarInput*>::iterator i = inputLayout.begin(); i != inputLayout.end(); ++i)
     {
         NGShaderVarInput* svi = (*i);
-        
+
         glVertexAttribPointer(svi->_attribute, svi->_size, GL_FLOAT, GL_FALSE, svi->_stride, svi->_bufferOffset);
     }
 }
@@ -240,11 +253,11 @@ void OpenGLRendererHelper::mapColorVertices(std::vector<NGShaderVarInput*>& inpu
     glGenBuffers(1, &_colorVboObject);
     glBindBuffer(GL_ARRAY_BUFFER, _colorVboObject);
     glBufferData(GL_ARRAY_BUFFER, sizeof(COLOR_VERTEX) * _colorVertices.size(), &_colorVertices[0], GL_STATIC_DRAW);
-    
+
     for (std::vector<NGShaderVarInput*>::iterator i = inputLayout.begin(); i != inputLayout.end(); ++i)
     {
         NGShaderVarInput* svi = (*i);
-        
+
         glVertexAttribPointer(svi->_attribute, svi->_size, GL_FLOAT, GL_FALSE, svi->_stride, svi->_bufferOffset);
     }
 }
@@ -269,7 +282,7 @@ void OpenGLRendererHelper::createFramebufferObject()
 {
     GLuint fbo_texture;
     GLuint fbo;
-    
+
     // Texture
     glActiveTexture(GL_TEXTURE0);
     glGenTextures(1, &fbo_texture);
@@ -280,21 +293,21 @@ void OpenGLRendererHelper::createFramebufferObject()
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, _renderWidth, _renderHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
     glBindTexture(GL_TEXTURE_2D, 0);
-    
+
     // Framebuffer
     glGenFramebuffers(1, &fbo);
     glBindFramebuffer(GL_FRAMEBUFFER, fbo);
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, fbo_texture, 0);
-    
+
     GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
-    
+
     glBindFramebuffer(GL_FRAMEBUFFER, _screenFBO);
-    
+
     assert(status == GL_FRAMEBUFFER_COMPLETE);
-    
+
     _fbo_textures.push_back(fbo_texture);
     _fbos.push_back(fbo);
-    
+
     _framebuffers.push_back(new TextureWrapper(fbo_texture));
 }
 
@@ -304,28 +317,15 @@ void OpenGLRendererHelper::releaseFramebuffers()
     {
         glDeleteTextures(1, &(*i));
     }
-    
+
     _fbo_textures.clear();
-    
+
     for (std::vector<GLuint>::iterator i = _fbos.begin(); i != _fbos.end(); ++i)
     {
         glDeleteFramebuffers(1, &(*i));
     }
-    
-    _fbos.clear();
-    
-    NGSTDUtil::cleanUpVectorOfPointers(_framebuffers);
-}
 
-int OpenGLRendererHelper::slotIndexForTextureSlot(NGTextureSlot textureSlot)
-{
-    switch (textureSlot)
-    {
-        case NGTextureSlot_ZERO:
-            return 0;
-        case NGTextureSlot_ONE:
-            return 1;
-    }
-    
-    assert(false);
+    _fbos.clear();
+
+    NGSTDUtil::cleanUpVectorOfPointers(_framebuffers);
 }
