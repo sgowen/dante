@@ -549,8 +549,6 @@
 		BB052CD71EBA8AE9007FA789 /* shader_003_vert.vsh */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = shader_003_vert.vsh; sourceTree = "<group>"; };
 		BB0756DE1FE6107F008E0E08 /* RendererHelperFactory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RendererHelperFactory.cpp; sourceTree = "<group>"; };
 		BB0756DF1FE6107F008E0E08 /* RendererHelperFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RendererHelperFactory.h; sourceTree = "<group>"; };
-		BB0756E21FE63072008E0E08 /* DirectXFramebufferToScreenProgram.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = DirectXFramebufferToScreenProgram.cpp; sourceTree = "<group>"; };
-		BB0756E31FE63073008E0E08 /* DirectXFramebufferToScreenProgram.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DirectXFramebufferToScreenProgram.h; sourceTree = "<group>"; };
 		BB0756E41FE63796008E0E08 /* VertexProgramInput.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VertexProgramInput.h; sourceTree = "<group>"; };
 		BB0756E81FE64603008E0E08 /* DirectXDeviceResources.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DirectXDeviceResources.h; sourceTree = "<group>"; };
 		BB0756E91FE64603008E0E08 /* DirectXDeviceResources.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = DirectXDeviceResources.cpp; sourceTree = "<group>"; };
@@ -836,16 +834,12 @@
 		BB5833731EEDBBC50084DA20 /* steam_appid.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = steam_appid.txt; sourceTree = "<group>"; };
 		BB5833771EEDBF7E0084DA20 /* NGSteamGameServices.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NGSteamGameServices.cpp; sourceTree = "<group>"; };
 		BB5833791EEDBFB20084DA20 /* NGSteamGameServices.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NGSteamGameServices.h; sourceTree = "<group>"; };
-		BB5833911EEDD6470084DA20 /* DirectXGeometryProgram.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = DirectXGeometryProgram.cpp; sourceTree = "<group>"; };
-		BB5833921EEDD6470084DA20 /* DirectXGeometryProgram.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DirectXGeometryProgram.h; sourceTree = "<group>"; };
 		BB58339B1EEDD6470084DA20 /* DirectXProgram.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = DirectXProgram.cpp; sourceTree = "<group>"; };
 		BB58339C1EEDD6470084DA20 /* DirectXProgram.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DirectXProgram.h; sourceTree = "<group>"; };
 		BB58339F1EEDD6470084DA20 /* DirectXRendererHelper.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = DirectXRendererHelper.cpp; sourceTree = "<group>"; };
 		BB5833A01EEDD6470084DA20 /* DirectXRendererHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DirectXRendererHelper.h; sourceTree = "<group>"; };
 		BB5833A51EEDD6470084DA20 /* DirectXTextureLoader.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = DirectXTextureLoader.cpp; sourceTree = "<group>"; };
 		BB5833A61EEDD6470084DA20 /* DirectXTextureLoader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DirectXTextureLoader.h; sourceTree = "<group>"; };
-		BB5833A71EEDD6470084DA20 /* DirectXTextureProgram.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = DirectXTextureProgram.cpp; sourceTree = "<group>"; };
-		BB5833A81EEDD6470084DA20 /* DirectXTextureProgram.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DirectXTextureProgram.h; sourceTree = "<group>"; };
 		BB5833AA1EEDD6470084DA20 /* shader_001_frag.hlsl */ = {isa = PBXFileReference; lastKnownFileType = text; path = shader_001_frag.hlsl; sourceTree = "<group>"; };
 		BB5833AB1EEDD6470084DA20 /* shader_001_vert.hlsl */ = {isa = PBXFileReference; lastKnownFileType = text; path = shader_001_vert.hlsl; sourceTree = "<group>"; };
 		BB5833AC1EEDD6470084DA20 /* shader_002_frag.hlsl */ = {isa = PBXFileReference; lastKnownFileType = text; path = shader_002_frag.hlsl; sourceTree = "<group>"; };
@@ -2192,18 +2186,12 @@
 		BB58338A1EEDD6470084DA20 /* directx */ = {
 			isa = PBXGroup;
 			children = (
-				BB0756E21FE63072008E0E08 /* DirectXFramebufferToScreenProgram.cpp */,
-				BB0756E31FE63073008E0E08 /* DirectXFramebufferToScreenProgram.h */,
-				BB5833911EEDD6470084DA20 /* DirectXGeometryProgram.cpp */,
-				BB5833921EEDD6470084DA20 /* DirectXGeometryProgram.h */,
 				BB58339B1EEDD6470084DA20 /* DirectXProgram.cpp */,
 				BB58339C1EEDD6470084DA20 /* DirectXProgram.h */,
 				BB58339F1EEDD6470084DA20 /* DirectXRendererHelper.cpp */,
 				BB5833A01EEDD6470084DA20 /* DirectXRendererHelper.h */,
 				BB5833A51EEDD6470084DA20 /* DirectXTextureLoader.cpp */,
 				BB5833A61EEDD6470084DA20 /* DirectXTextureLoader.h */,
-				BB5833A71EEDD6470084DA20 /* DirectXTextureProgram.cpp */,
-				BB5833A81EEDD6470084DA20 /* DirectXTextureProgram.h */,
 				BB5833A91EEDD6470084DA20 /* shader */,
 			);
 			path = directx;
