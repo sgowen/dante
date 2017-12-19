@@ -107,6 +107,7 @@ private:
     void createSamplerStates();
     void createVertexBufferForSpriteBatcher();
     void createVertexBufferForGeometryBatchers();
+	void createVertexBufferForScreen();
     void createIndexBuffer();
     void createConstantBuffer();
 };

@@ -6,6 +6,8 @@
 //  Copyright (c) 2017 Noctis Games. All rights reserved.
 //
 
+#include "pch.h"
+
 #include "framework/graphics/portable/NGGeometryProgram.h"
 
 #include <framework/graphics/portable/RendererHelper.h>

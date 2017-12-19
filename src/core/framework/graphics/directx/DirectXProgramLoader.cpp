@@ -60,12 +60,6 @@ ShaderProgramWrapper* DirectXProgramLoader::loadShaderProgram(const char* vertex
 		)
 	);
     
-    const D3D11_INPUT_ELEMENT_DESC inputElementDescs[3] = {
-        { "a_Position", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-        { "a_Color", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-        { "a_TexCoord", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 28, D3D11_INPUT_PER_VERTEX_DATA, 0 }
-    };
-    
     std::vector<D3D11_INPUT_ELEMENT_DESC> inputElementDescs;
     inputElementDescs.reserve(inputLayout.size());
     
@@ -78,7 +72,7 @@ ShaderProgramWrapper* DirectXProgramLoader::loadShaderProgram(const char* vertex
 
 	DirectX::ThrowIfFailed(
 		d3dDevice->CreateInputLayout(
-            inputElementDescs,
+            &inputElementDescs.front(),
 			inputElementDescs.size(),
 			vertex_shader_source_output,
 			vertex_shader_source.data_length,

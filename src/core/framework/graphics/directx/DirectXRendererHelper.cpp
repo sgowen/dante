@@ -174,10 +174,10 @@ void DirectXRendererHelper::bindMatrix(NGShaderUniformInput* uniform)
 {
     UNUSED(uniform);
     
-    _d3dContext->VSSetConstantBuffers(0, 1, _matrixConstantbuffer.GetAddressOf());
+    s_d3dContext->VSSetConstantBuffers(0, 1, _matrixConstantbuffer.GetAddressOf());
     
     // send the final matrix to video memory
-    _d3dContext->UpdateSubresource(_matrixConstantbuffer.Get(), 0, 0, &_matFinal, 0, 0);
+	s_d3dContext->UpdateSubresource(_matrixConstantbuffer.Get(), 0, 0, &_matFinal, 0, 0);
 }
 
 void DirectXRendererHelper::bindTexture(NGTextureSlot textureSlot, NGTexture* texture, NGShaderUniformInput* uniform)
@@ -209,9 +209,9 @@ void DirectXRendererHelper::bindShaderProgram(ShaderProgramWrapper* shaderProgra
     if (shaderProgramWrapper != NULL)
     {
         // set the shader objects as the active shaders
-        s_d3dContext->VSSetShader(&shaderProgramWrapper->_vertexShader, NULL, 0);
-        s_d3dContext->IASetInputLayout(&shaderProgramWrapper->_inputLayout);
-        s_d3dContext->PSSetShader(&shaderProgramWrapper->_pixelShader, NULL, 0);
+        s_d3dContext->VSSetShader(shaderProgramWrapper->_vertexShader, NULL, 0);
+        s_d3dContext->IASetInputLayout(shaderProgramWrapper->_inputLayout);
+        s_d3dContext->PSSetShader(shaderProgramWrapper->_pixelShader, NULL, 0);
     }
 }
 
@@ -238,18 +238,18 @@ void DirectXRendererHelper::mapScreenVertices(std::vector<NGShaderVarInput*>& in
     ZeroMemory(&mappedResource, sizeof(D3D11_MAPPED_SUBRESOURCE));
     
     //    Disable GPU access to the vertex buffer data.
-    _d3dContext->Map(_screenVertexBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+	s_d3dContext->Map(_screenVertexBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
     
     //    Update the vertex buffer here.
     memcpy(mappedResource.pData, &_screenVertices.front(), sizeof(SCREEN_VERTEX) * _screenVertices.size());
     
     //    Reenable GPU access to the vertex buffer data.
-    _d3dContext->Unmap(_screenVertexBuffer.Get(), 0);
+	s_d3dContext->Unmap(_screenVertexBuffer.Get(), 0);
     
     // Set the vertex buffer
     UINT stride = sizeof(SCREEN_VERTEX);
     UINT offset = 0;
-    _d3dContext->IASetVertexBuffers(0, 1, _screenVertexBuffer.GetAddressOf(), &stride, &offset);
+	s_d3dContext->IASetVertexBuffers(0, 1, _screenVertexBuffer.GetAddressOf(), &stride, &offset);
 }
 
 void DirectXRendererHelper::unmapScreenVertices()
@@ -263,18 +263,18 @@ void DirectXRendererHelper::mapTextureVertices(std::vector<NGShaderVarInput*>& i
     ZeroMemory(&mappedResource, sizeof(D3D11_MAPPED_SUBRESOURCE));
     
     //    Disable GPU access to the vertex buffer data.
-    _d3dContext->Map(_textureVertexBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+	s_d3dContext->Map(_textureVertexBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
     
     //    Update the vertex buffer here.
     memcpy(mappedResource.pData, &_textureVertices.front(), sizeof(TEXTURE_VERTEX) * _textureVertices.size());
     
     //    Reenable GPU access to the vertex buffer data.
-    _d3dContext->Unmap(_textureVertexBuffer.Get(), 0);
+	s_d3dContext->Unmap(_textureVertexBuffer.Get(), 0);
     
     // Set the vertex buffer
     UINT stride = sizeof(TEXTURE_VERTEX);
     UINT offset = 0;
-    _d3dContext->IASetVertexBuffers(0, 1, _textureVertexBuffer.GetAddressOf(), &stride, &offset);
+	s_d3dContext->IASetVertexBuffers(0, 1, _textureVertexBuffer.GetAddressOf(), &stride, &offset);
 }
 
 void DirectXRendererHelper::unmapTextureVertices()
@@ -288,18 +288,18 @@ void DirectXRendererHelper::mapColorVertices(std::vector<NGShaderVarInput*>& inp
     ZeroMemory(&mappedResource, sizeof(D3D11_MAPPED_SUBRESOURCE));
     
     //    Disable GPU access to the vertex buffer data.
-    _d3dContext->Map(_colorVertexBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+	s_d3dContext->Map(_colorVertexBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
     
     //    Update the vertex buffer here.
     memcpy(mappedResource.pData, &_colorVertices.front(), sizeof(COLOR_VERTEX) * _colorVertices.size());
     
     //    Reenable GPU access to the vertex buffer data.
-    _d3dContext->Unmap(_colorVertexBuffer.Get(), 0);
+	s_d3dContext->Unmap(_colorVertexBuffer.Get(), 0);
     
     // Set the vertex buffer
     UINT stride = sizeof(COLOR_VERTEX);
     UINT offset = 0;
-    _d3dContext->IASetVertexBuffers(0, 1, _colorVertexBuffer.GetAddressOf(), &stride, &offset);
+	s_d3dContext->IASetVertexBuffers(0, 1, _colorVertexBuffer.GetAddressOf(), &stride, &offset);
 }
 
 void DirectXRendererHelper::unmapColorVertices()
