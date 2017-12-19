@@ -45,7 +45,7 @@ ID3D11DeviceContext* DirectXRendererHelper::getD3dContext()
     return s_d3dContext;
 }
 
-DirectXRendererHelper::DirectXRendererHelper() : RendererHelper(), _framebufferIndex(0), _isBoundToScreen(false)
+DirectXRendererHelper::DirectXRendererHelper() : RendererHelper(), _framebufferIndex(0)
 {
 	// Empty
 }
@@ -67,38 +67,20 @@ void DirectXRendererHelper::createDeviceDependentResources()
     createVertexBufferForGeometryBatchers();
     createVertexBufferForScreen();
     createIndexBuffer();
-    createConstantBuffer();
-}
-
-void DirectXRendererHelper::createWindowSizeDependentResources(int screenWidth, int screenHeight, int renderWidth, int renderHeight, int numFramebuffers)
-{
-    _screenWidth = screenWidth;
-    _screenHeight = screenHeight;
-    _renderWidth = renderWidth;
-    _renderHeight = renderHeight;
-    _numFramebuffers = numFramebuffers;
-    
-    releaseFramebuffers();
-    createFramebufferObjects();
 }
 
 void DirectXRendererHelper::releaseDeviceDependentResources()
 {
-    releaseFramebuffers();
+    RendererHelper::releaseDeviceDependentResources();
     
     _blendState.Reset();
     _screenBlendState.Reset();
-    _matrixConstantbuffer.Reset();
-    _indexbuffer.Reset();
-    
     _sbSamplerState.Reset();
     _sbWrapSamplerState.Reset();
     _textureVertexBuffer.Reset();
     _colorVertexBuffer.Reset();
     _screenVertexBuffer.Reset();
-    
-    _textureVertices.clear();
-    _colorVertices.clear();
+    _indexbuffer.Reset();
 }
 
 void DirectXRendererHelper::beginFrame()
@@ -124,7 +106,7 @@ void DirectXRendererHelper::updateMatrix(float left, float right, float bottom, 
     
     XMMATRIX matFinal = XMMatrixOrthographicOffCenterRH(left, right, bottom, top, -1.0, 1.0);
     
-    XMStoreFloat4x4(&_matFinal, matFinal);
+    XMStoreFloat4x4(&_matrix, matFinal);
 }
 
 void DirectXRendererHelper::bindToOffscreenFramebuffer(int index)
@@ -132,7 +114,6 @@ void DirectXRendererHelper::bindToOffscreenFramebuffer(int index)
     s_d3dContext->OMSetRenderTargets(1, &_offscreenRenderTargetViews[index], NULL);
     
 	_framebufferIndex = index;
-    _isBoundToScreen = false;
 }
 
 void DirectXRendererHelper::clearFramebufferWithColor(float r, float g, float b, float a)
@@ -140,7 +121,7 @@ void DirectXRendererHelper::clearFramebufferWithColor(float r, float g, float b,
     float color[] = { r, g, b, a };
 
     ID3D11RenderTargetView * targets[1] = {};
-    if (_isBoundToScreen)
+    if (_framebufferIndex < 0)
     {
 		targets[0] = s_d3dRenderTargetView;
     }
@@ -157,7 +138,7 @@ void DirectXRendererHelper::bindToScreenFramebuffer()
     ID3D11RenderTargetView *const targets[1] = { s_d3dRenderTargetView };
 	s_d3dContext->OMSetRenderTargets(1, targets, NULL);
     
-    _isBoundToScreen = true;
+    _framebufferIndex = -1;
 }
 
 void DirectXRendererHelper::useNormalBlending()
@@ -174,10 +155,10 @@ void DirectXRendererHelper::bindMatrix(NGShaderUniformInput* uniform)
 {
     UNUSED(uniform);
     
-    s_d3dContext->VSSetConstantBuffers(0, 1, _matrixConstantbuffer.GetAddressOf());
+    s_d3dContext->VSSetConstantBuffers(0, 1, uniform->_constantbuffer.GetAddressOf());
     
     // send the final matrix to video memory
-	s_d3dContext->UpdateSubresource(_matrixConstantbuffer.Get(), 0, 0, &_matFinal, 0, 0);
+	s_d3dContext->UpdateSubresource(uniform->_constantbuffer.Get(), 0, 0, &_matrix, 0, 0);
 }
 
 void DirectXRendererHelper::bindTexture(NGTextureSlot textureSlot, NGTexture* texture, NGShaderUniformInput* uniform)
@@ -215,33 +196,25 @@ void DirectXRendererHelper::bindShaderProgram(ShaderProgramWrapper* shaderProgra
     }
 }
 
-void DirectXRendererHelper::destroyShaderProgram(ShaderProgramWrapper* shaderProgramWrapper)
+void DirectXRendererHelper::destroyShaderProgram(ShaderProgramWrapper* shaderProgramWrapper, std::vector<NGShaderUniformInput*>& uniforms, std::vector<NGShaderVarInput*>& inputLayout)
 {
     assert(shaderProgramWrapper != NULL);
     
     shaderProgramWrapper->_vertexShader.Reset();
     shaderProgramWrapper->_inputLayout.Reset();
     shaderProgramWrapper->_pixelShader.Reset();
+    
+    for (std::vector<NGShaderUniformInput*>::iterator i = uniforms.begin(); i != uniforms.end(); ++i)
+    {
+        NGShaderUniformInput* sui = (*i);
+        
+        sui->_constantbuffer.Reset();
+    }
 }
 
 void DirectXRendererHelper::mapScreenVertices(std::vector<NGShaderVarInput*>& inputLayout)
 {
-    D3D11_MAPPED_SUBRESOURCE mappedResource;
-    ZeroMemory(&mappedResource, sizeof(D3D11_MAPPED_SUBRESOURCE));
-    
-    //    Disable GPU access to the vertex buffer data.
-	s_d3dContext->Map(_screenVertexBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
-    
-    //    Update the vertex buffer here.
-    memcpy(mappedResource.pData, &_screenVertices.front(), sizeof(SCREEN_VERTEX) * _screenVertices.size());
-    
-    //    Reenable GPU access to the vertex buffer data.
-	s_d3dContext->Unmap(_screenVertexBuffer.Get(), 0);
-    
-    // Set the vertex buffer
-    UINT stride = sizeof(SCREEN_VERTEX);
-    UINT offset = 0;
-	s_d3dContext->IASetVertexBuffers(0, 1, _screenVertexBuffer.GetAddressOf(), &stride, &offset);
+    mapVertices(_screenVertexBuffer, _screenVertices);
 }
 
 void DirectXRendererHelper::unmapScreenVertices()
@@ -251,22 +224,7 @@ void DirectXRendererHelper::unmapScreenVertices()
 
 void DirectXRendererHelper::mapTextureVertices(std::vector<NGShaderVarInput*>& inputLayout)
 {
-    D3D11_MAPPED_SUBRESOURCE mappedResource;
-    ZeroMemory(&mappedResource, sizeof(D3D11_MAPPED_SUBRESOURCE));
-    
-    //    Disable GPU access to the vertex buffer data.
-	s_d3dContext->Map(_textureVertexBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
-    
-    //    Update the vertex buffer here.
-    memcpy(mappedResource.pData, &_textureVertices.front(), sizeof(TEXTURE_VERTEX) * _textureVertices.size());
-    
-    //    Reenable GPU access to the vertex buffer data.
-	s_d3dContext->Unmap(_textureVertexBuffer.Get(), 0);
-    
-    // Set the vertex buffer
-    UINT stride = sizeof(TEXTURE_VERTEX);
-    UINT offset = 0;
-	s_d3dContext->IASetVertexBuffers(0, 1, _textureVertexBuffer.GetAddressOf(), &stride, &offset);
+    mapVertices(_textureVertexBuffer, _textureVertices);
 }
 
 void DirectXRendererHelper::unmapTextureVertices()
@@ -276,22 +234,7 @@ void DirectXRendererHelper::unmapTextureVertices()
 
 void DirectXRendererHelper::mapColorVertices(std::vector<NGShaderVarInput*>& inputLayout)
 {
-    D3D11_MAPPED_SUBRESOURCE mappedResource;
-    ZeroMemory(&mappedResource, sizeof(D3D11_MAPPED_SUBRESOURCE));
-    
-    //    Disable GPU access to the vertex buffer data.
-	s_d3dContext->Map(_colorVertexBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
-    
-    //    Update the vertex buffer here.
-    memcpy(mappedResource.pData, &_colorVertices.front(), sizeof(COLOR_VERTEX) * _colorVertices.size());
-    
-    //    Reenable GPU access to the vertex buffer data.
-	s_d3dContext->Unmap(_colorVertexBuffer.Get(), 0);
-    
-    // Set the vertex buffer
-    UINT stride = sizeof(COLOR_VERTEX);
-    UINT offset = 0;
-	s_d3dContext->IASetVertexBuffers(0, 1, _colorVertexBuffer.GetAddressOf(), &stride, &offset);
+    mapVertices(_colorVertexBuffer, _colorVertices);
 }
 
 void DirectXRendererHelper::unmapColorVertices()
@@ -551,16 +494,5 @@ void DirectXRendererHelper::createIndexBuffer()
     
     indexDataDesc.pSysMem = &_indices[0];
     
-    s_d3dDevice->CreateBuffer(&indexBufferDesc, &indexDataDesc, &_indexbuffer);
-}
-
-void DirectXRendererHelper::createConstantBuffer()
-{
-    D3D11_BUFFER_DESC bd = { 0 };
-    
-    bd.Usage = D3D11_USAGE_DEFAULT;
-    bd.ByteWidth = 64;
-    bd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-    
-    DirectX::ThrowIfFailed(s_d3dDevice->CreateBuffer(&bd, NULL, &_matrixConstantbuffer));
+    DirectX::ThrowIfFailed(s_d3dDevice->CreateBuffer(&indexBufferDesc, &indexDataDesc, &_indexbuffer));
 }

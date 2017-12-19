@@ -20,7 +20,7 @@
 
 NGTextureProgram::NGTextureProgram(RendererHelper& inRendererHelper, ShaderProgramLoader& inShaderProgramLoader, const char* vertexShaderName, const char* fragmentShaderName) : ShaderProgram(inRendererHelper, inShaderProgramLoader, vertexShaderName, fragmentShaderName)
 {
-    _uniforms.push_back(new NGShaderUniformInput("u_Matrix"));
+    _uniforms.push_back(new NGShaderUniformInput("u_Matrix", 64));
     _uniforms.push_back(new NGShaderUniformInput("u_TextureUnit"));
     
     _inputLayout.push_back(new NGShaderVarInput("a_Position", 3, 0));

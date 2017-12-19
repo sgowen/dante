@@ -12,9 +12,20 @@
 
 #include "framework/graphics/portable/ShaderProgramWrapper.h"
 
-NGShaderUniformInput::NGShaderUniformInput(const char* attribName) : _attribName(attribName)
+NGShaderUniformInput::NGShaderUniformInput(const char* attribName, int byteWidth) : _attribName(attribName)
 {
-    // Empty
+#if defined _WIN32
+    if (byteWidth > 0)
+    {
+        D3D11_BUFFER_DESC bd = { 0 };
+        
+        bd.Usage = D3D11_USAGE_DEFAULT;
+        bd.ByteWidth = byteWidth;
+        bd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+        
+        DirectX::ThrowIfFailed(s_d3dDevice->CreateBuffer(&bd, NULL, &_constantbuffer));
+    }
+#endif
 }
 
 #if defined __APPLE__ || defined __ANDROID__ || defined __linux__

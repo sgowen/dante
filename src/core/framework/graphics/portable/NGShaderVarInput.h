@@ -17,20 +17,20 @@ class NGShaderVarInput
 {
 public:
     const char* _attribName;
-    int32_t _size;
-    int32_t _offset;
+    uint32_t _size;
+    uint32_t _offset;
 #if defined __APPLE__ || defined __ANDROID__ || defined __linux__
     GLint _attribute;
-    int32_t _stride;
+    uint32_t _stride;
     void* _bufferOffset;
 #elif defined _WIN32
     D3D11_INPUT_ELEMENT_DESC _attribute;
 #endif
     
-    NGShaderVarInput(const char* attribName, int size, int offset);
+    NGShaderVarInput(const char* attribName, uint32_t size, uint32_t offset);
     
 #if defined __APPLE__ || defined __ANDROID__ || defined __linux__
-    void build(ShaderProgramWrapper* inShaderProgramWrapper, int totalSize);
+    void build(ShaderProgramWrapper* inShaderProgramWrapper, uint32_t totalSize);
 #endif
 };
 

@@ -27,7 +27,7 @@ ShaderProgram::~ShaderProgram()
 {
     if (_shaderProgramWrapper != NULL)
     {
-        _rendererHelper.destroyShaderProgram(_shaderProgramWrapper);
+        _rendererHelper.destroyShaderProgram(_shaderProgramWrapper, _uniforms, _inputLayout);
         
         delete _shaderProgramWrapper;
     }

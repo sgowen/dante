@@ -19,9 +19,11 @@ public:
     const char* _attribName;
 #if defined __APPLE__ || defined __ANDROID__ || defined __linux__
     GLint _attribute;
+#elif _WIN32
+    Microsoft::WRL::ComPtr<ID3D11Buffer> _constantbuffer;
 #endif
     
-    NGShaderUniformInput(const char* attribName);
+    NGShaderUniformInput(const char* attribName, int byteWidth = 0);
     
 #if defined __APPLE__ || defined __ANDROID__ || defined __linux__
     void build(ShaderProgramWrapper* inShaderProgramWrapper);

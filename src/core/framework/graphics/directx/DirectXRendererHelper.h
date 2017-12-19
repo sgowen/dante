@@ -26,8 +26,6 @@ public:
 
 	virtual void createDeviceDependentResources();
 
-	virtual void createWindowSizeDependentResources(int screenWidth, int screenHeight, int renderWidth, int renderHeight, int numFramebuffers);
-
 	virtual void releaseDeviceDependentResources();
     
     virtual void beginFrame();
@@ -53,7 +51,7 @@ public:
     virtual void destroyTexture(TextureWrapper& textureWrapper);
     
     virtual void bindShaderProgram(ShaderProgramWrapper* shaderProgramWrapper);
-    virtual void destroyShaderProgram(ShaderProgramWrapper* shaderProgramWrapper);
+    virtual void destroyShaderProgram(ShaderProgramWrapper* shaderProgramWrapper, std::vector<NGShaderUniformInput*>& uniforms, std::vector<NGShaderVarInput*>& inputLayout);
     
     virtual void mapScreenVertices(std::vector<NGShaderVarInput*>& inputLayout);
     virtual void unmapScreenVertices();
@@ -83,7 +81,6 @@ private:
     
     Microsoft::WRL::ComPtr<ID3D11BlendState> _blendState; // the blend state interface
     Microsoft::WRL::ComPtr<ID3D11BlendState> _screenBlendState; // the blend state interface, but for rendering to the screen
-    Microsoft::WRL::ComPtr<ID3D11Buffer> _matrixConstantbuffer; // the matrix constant buffer interface
     Microsoft::WRL::ComPtr<ID3D11Buffer> _indexbuffer; // the index buffer interface
     
     // Used in SpriteBatcher
@@ -98,10 +95,30 @@ private:
     Microsoft::WRL::ComPtr<ID3D11Buffer> _screenVertexBuffer;
     
     // All above rendering takes place inside this matrix
-    DirectX::XMFLOAT4X4 _matFinal;
+    DirectX::XMFLOAT4X4 _matrix;
     
 	int _framebufferIndex;
-    bool _isBoundToScreen;
+    
+    template <typename T>
+    void mapVertices(Microsoft::WRL::ComPtr<ID3D11Buffer> vertexBuffer, std::vector<T> vertices)
+    {
+        D3D11_MAPPED_SUBRESOURCE mappedResource;
+        ZeroMemory(&mappedResource, sizeof(D3D11_MAPPED_SUBRESOURCE));
+        
+        //    Disable GPU access to the vertex buffer data.
+        s_d3dContext->Map(vertexBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+        
+        //    Update the vertex buffer here.
+        memcpy(mappedResource.pData, &vertices.front(), sizeof(T) * vertices.size());
+        
+        //    Reenable GPU access to the vertex buffer data.
+        s_d3dContext->Unmap(_screenVertexBuffer.Get(), 0);
+        
+        // Set the vertex buffer
+        UINT stride = sizeof(T);
+        UINT offset = 0;
+        s_d3dContext->IASetVertexBuffers(0, 1, vertexBuffer.GetAddressOf(), &stride, &offset);
+    }
     
     void createBlendStates();
     void createSamplerStates();
@@ -109,7 +126,6 @@ private:
     void createVertexBufferForGeometryBatchers();
 	void createVertexBufferForScreen();
     void createIndexBuffer();
-    void createConstantBuffer();
 };
 
 #endif /* defined(__noctisgames__DirectXRendererHelper__) */

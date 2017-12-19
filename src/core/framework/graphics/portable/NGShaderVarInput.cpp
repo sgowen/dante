@@ -14,7 +14,7 @@
 
 #include <framework/util/macros.h>
 
-NGShaderVarInput::NGShaderVarInput(const char* attribName, int size, int offset) : _attribName(attribName), _size(size), _offset(offset)
+NGShaderVarInput::NGShaderVarInput(const char* attribName, uint32_t size, uint32_t offset) : _attribName(attribName), _size(size), _offset(offset)
 {
 #if defined _WIN32
     DXGI_FORMAT format = DXGI_FORMAT_R32G32B32A32_FLOAT;
@@ -27,12 +27,12 @@ NGShaderVarInput::NGShaderVarInput(const char* attribName, int size, int offset)
         format = DXGI_FORMAT_R32G32_FLOAT;
     }
     
-    _attribute = { attribName, 0, format, 0, (UINT)(_offset * 4), D3D11_INPUT_PER_VERTEX_DATA, 0 };
+    _attribute = { attribName, 0, format, 0, _offset * 4, D3D11_INPUT_PER_VERTEX_DATA, 0 };
 #endif
 }
 
 #if defined __APPLE__ || defined __ANDROID__ || defined __linux__
-void NGShaderVarInput::build(ShaderProgramWrapper* inShaderProgramWrapper, int totalSize)
+void NGShaderVarInput::build(ShaderProgramWrapper* inShaderProgramWrapper, uint32_t totalSize)
 {
     _stride = totalSize * sizeof(GLfloat);
     _bufferOffset = BUFFER_OFFSET(_offset * sizeof(GL_FLOAT));

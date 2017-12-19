@@ -44,33 +44,13 @@ void OpenGLRendererHelper::createDeviceDependentResources()
     }
 }
 
-void OpenGLRendererHelper::createWindowSizeDependentResources(int screenWidth, int screenHeight, int renderWidth, int renderHeight, int numFramebuffers)
-{
-    _screenWidth = screenWidth;
-    _screenHeight = screenHeight;
-    _renderWidth = renderWidth;
-    _renderHeight = renderHeight;
-    _numFramebuffers = numFramebuffers;
-
-    glViewport(0, 0, _renderWidth, _renderHeight);
-
-    glScissor(0, 0, _renderWidth, _renderHeight);
-    glEnable(GL_SCISSOR_TEST);
-
-    releaseFramebuffers();
-    createFramebufferObjects();
-}
-
 void OpenGLRendererHelper::releaseDeviceDependentResources()
 {
-    releaseFramebuffers();
-
+    RendererHelper::releaseDeviceDependentResources();
+    
     glDeleteBuffers(1, &_screenVboObject);
     glDeleteBuffers(1, &_textureVboObject);
     glDeleteBuffers(1, &_colorVboObject);
-
-    _textureVertices.clear();
-    _colorVertices.clear();
 }
 
 void OpenGLRendererHelper::beginFrame()
@@ -136,6 +116,7 @@ void OpenGLRendererHelper::bindToOffscreenFramebuffer(int index)
 
     glViewport(0, 0, _renderWidth, _renderHeight);
     glScissor(0, 0, _renderWidth, _renderHeight);
+    glEnable(GL_SCISSOR_TEST);
 }
 
 void OpenGLRendererHelper::clearFramebufferWithColor(float r, float g, float b, float a)
@@ -203,7 +184,7 @@ void OpenGLRendererHelper::bindShaderProgram(ShaderProgramWrapper* shaderProgram
     glUseProgram(shaderProgramWrapper == NULL ? 0 : shaderProgramWrapper->_programObjectId);
 }
 
-void OpenGLRendererHelper::destroyShaderProgram(ShaderProgramWrapper* shaderProgramWrapper)
+void OpenGLRendererHelper::destroyShaderProgram(ShaderProgramWrapper* shaderProgramWrapper, std::vector<NGShaderUniformInput*>& uniforms, std::vector<NGShaderVarInput*>& inputLayout)
 {
     glDeleteProgram(shaderProgramWrapper->_programObjectId);
 }

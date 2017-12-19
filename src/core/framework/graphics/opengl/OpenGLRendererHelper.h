@@ -20,8 +20,6 @@ public:
 
     virtual void createDeviceDependentResources();
 
-    virtual void createWindowSizeDependentResources(int screenWidth, int screenHeight, int renderWidth, int renderHeight, int numFramebuffers);
-
     virtual void releaseDeviceDependentResources();
 
     virtual void beginFrame();
@@ -47,7 +45,7 @@ public:
     virtual void destroyTexture(TextureWrapper& textureWrapper);
 
     virtual void bindShaderProgram(ShaderProgramWrapper* shaderProgramWrapper);
-    virtual void destroyShaderProgram(ShaderProgramWrapper* shaderProgramWrapper);
+    virtual void destroyShaderProgram(ShaderProgramWrapper* shaderProgramWrapper, std::vector<NGShaderUniformInput*>& uniforms, std::vector<NGShaderVarInput*>& inputLayout);
 
     virtual void mapScreenVertices(std::vector<NGShaderVarInput*>& inputLayout);
     virtual void unmapScreenVertices();

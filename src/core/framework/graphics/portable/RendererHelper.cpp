@@ -28,6 +28,26 @@ RendererHelper::~RendererHelper()
     _indices.clear();
 }
 
+void RendererHelper::createWindowSizeDependentResources(int screenWidth, int screenHeight, int renderWidth, int renderHeight, int numFramebuffers)
+{
+    _screenWidth = screenWidth;
+    _screenHeight = screenHeight;
+    _renderWidth = renderWidth;
+    _renderHeight = renderHeight;
+    _numFramebuffers = numFramebuffers;
+    
+    releaseFramebuffers();
+    createFramebufferObjects();
+}
+
+void RendererHelper::releaseDeviceDependentResources()
+{
+    releaseFramebuffers();
+    
+    _textureVertices.clear();
+    _colorVertices.clear();
+}
+
 void RendererHelper::clearScreenVertices()
 {
     _screenVertices.clear();
