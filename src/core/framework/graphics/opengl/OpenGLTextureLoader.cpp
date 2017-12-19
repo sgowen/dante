@@ -26,12 +26,12 @@ extern "C"
 #include <stdlib.h>
 #include <cstring>
 
-OpenGLTextureLoader::OpenGLTextureLoader() : TextureLoader()
-{
-    // Empty
-}
+OpenGLPngImageData* getOpenGLPngImageDataFromFileData(const void* png_data, const int png_data_size);
+void releaseOpenGLPngImageData(const OpenGLPngImageData* data);
+GLuint loadPngAssetIntoTexture(OpenGLPngImageData* OpenGLPngImageData, bool repeatS = false);
+GLuint createTexture(const GLsizei width, const GLsizei height, const GLenum type, const GLvoid* pixels, bool repeatS = false, bool mipmap = false);
 
-OpenGLTextureLoader::~OpenGLTextureLoader()
+OpenGLTextureLoader::OpenGLTextureLoader() : TextureLoader()
 {
     // Empty
 }
@@ -112,7 +112,7 @@ static DataHandle readEntirePngImage(const png_structp png_ptr, const png_infop 
 
 static GLenum getGlColorFormat(const int png_color_format);
 
-OpenGLPngImageData* OpenGLTextureLoader::getOpenGLPngImageDataFromFileData(const void* png_data, const int png_data_size)
+OpenGLPngImageData* getOpenGLPngImageDataFromFileData(const void* png_data, const int png_data_size)
 {
     assert(png_data != NULL && png_data_size > 8);
     assert(png_check_sig((png_const_bytep)png_data, 8));
@@ -144,7 +144,7 @@ OpenGLPngImageData* OpenGLTextureLoader::getOpenGLPngImageDataFromFileData(const
     return new OpenGLPngImageData(static_cast<int>(png_info.width), static_cast<int>(png_info.height), (int) raw_image.size, getGlColorFormat(png_info.color_type), raw_image.data);
 }
 
-void OpenGLTextureLoader::releaseOpenGLPngImageData(const OpenGLPngImageData* data)
+void releaseOpenGLPngImageData(const OpenGLPngImageData* data)
 {
     assert(data != NULL);
     
@@ -255,7 +255,7 @@ static GLenum getGlColorFormat(const int png_color_format)
     return 0;
 }
 
-GLuint OpenGLTextureLoader::loadPngAssetIntoTexture(OpenGLPngImageData* inOpenGLPngImageData, bool repeatS)
+GLuint loadPngAssetIntoTexture(OpenGLPngImageData* inOpenGLPngImageData, bool repeatS)
 {
     const GLuint texture_object_id = createTexture(inOpenGLPngImageData->_width, inOpenGLPngImageData->_height, inOpenGLPngImageData->_glColorFormat, inOpenGLPngImageData->_data, repeatS, true);
 
@@ -264,7 +264,7 @@ GLuint OpenGLTextureLoader::loadPngAssetIntoTexture(OpenGLPngImageData* inOpenGL
     return texture_object_id;
 }
 
-GLuint OpenGLTextureLoader::createTexture(const GLsizei width, const GLsizei height, const GLenum type, const GLvoid* pixels, bool repeat_s, bool mipmap)
+GLuint createTexture(const GLsizei width, const GLsizei height, const GLenum type, const GLvoid* pixels, bool repeat_s, bool mipmap)
 {
     GLuint texture_object_id;
     glGenTextures(1, &texture_object_id);

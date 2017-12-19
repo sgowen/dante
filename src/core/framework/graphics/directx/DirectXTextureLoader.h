@@ -16,8 +16,6 @@ class DirectXTextureLoader : public TextureLoader
 public:
     DirectXTextureLoader();
     
-    virtual ~DirectXTextureLoader();
-    
     virtual TextureDataWrapper* loadTextureData(NGTexture* texture);
     
     virtual TextureWrapper* loadTexture(TextureDataWrapper* textureData, bool repeatS = false);

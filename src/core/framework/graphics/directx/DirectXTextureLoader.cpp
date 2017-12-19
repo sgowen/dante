@@ -14,11 +14,11 @@
 #include <framework/graphics/portable/NGTexture.h>
 #include "framework/graphics/portable/TextureWrapper.h"
 
-#include "framework/util/macros.h"
-#include "framework/graphics/directx/DirectXRendererHelper.h"
 #include "framework/file/portable/AssetDataHandler.h"
 #include "framework/file/portable/FileData.h"
 #include "framework/util/StringUtil.h"
+#include "framework/util/macros.h"
+#include "framework/graphics/directx/DirectXRendererHelper.h"
 
 #include "DDSTextureLoader.h"
 #include "PlatformHelpers.h"
@@ -26,11 +26,6 @@
 #include <string>
 
 DirectXTextureLoader::DirectXTextureLoader() : TextureLoader()
-{
-    // Empty
-}
-
-DirectXTextureLoader::~DirectXTextureLoader()
 {
     // Empty
 }
