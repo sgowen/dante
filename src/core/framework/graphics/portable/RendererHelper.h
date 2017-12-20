@@ -71,27 +71,25 @@ public:
     virtual void draw(NGPrimitiveType renderPrimitiveType, uint32_t first, uint32_t count) = 0;
     virtual void drawIndexed(NGPrimitiveType renderPrimitiveType, uint32_t count) = 0;
     
-    void clearScreenVertices();
     void clearTextureVertices();
     void clearColorVertices();
-    
-    void addVertexCoordinate(float x, float y);
+    void clearScreenVertices();
     
     void addVertexCoordinate(float x, float y, float z, float r, float g, float b, float a, float u, float v);
-    
     void addVertexCoordinate(float x, float y, float z, float r, float g, float b, float a);
+    void addVertexCoordinate(float x, float y);
     
-    std::vector<SCREEN_VERTEX>& getScreenVertices();
     std::vector<TEXTURE_VERTEX>& getTextureVertices();
     std::vector<COLOR_VERTEX>& getColorVertices();
+    std::vector<SCREEN_VERTEX>& getScreenVertices();
     
 protected:
     NGTexture* _framebuffer;
     
     std::vector<TextureWrapper *> _framebuffers;
-    std::vector<SCREEN_VERTEX> _screenVertices;
     std::vector<TEXTURE_VERTEX> _textureVertices;
     std::vector<COLOR_VERTEX> _colorVertices;
+    std::vector<SCREEN_VERTEX> _screenVertices;
     std::vector<uint16_t> _indices;
     
     int _screenWidth;

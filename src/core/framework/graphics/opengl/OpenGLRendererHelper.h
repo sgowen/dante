@@ -11,6 +11,8 @@
 
 #include "framework/graphics/portable/RendererHelper.h"
 
+#include "framework/graphics/portable/NGShaderVarInput.h"
+
 class OpenGLRendererHelper : public RendererHelper
 {
 public:
@@ -75,6 +77,23 @@ private:
     GLint _maxTextureSize;
 
     mat4x4 _matrix;
+    
+    template <typename T>
+    void mapVertices(GLuint& vertexBuffer, std::vector<T>& vertices, std::vector<NGShaderVarInput*>& inputLayout)
+    {
+        glGenBuffers(1, &vertexBuffer);
+        glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
+        glBufferData(GL_ARRAY_BUFFER, sizeof(T) * vertices.size(), &vertices[0], GL_STATIC_DRAW);
+        
+        for (std::vector<NGShaderVarInput*>::iterator i = inputLayout.begin(); i != inputLayout.end(); ++i)
+        {
+            NGShaderVarInput* svi = (*i);
+            
+            glVertexAttribPointer(svi->_attribute, svi->_size, GL_FLOAT, GL_FALSE, svi->_stride, svi->_bufferOffset);
+        }
+    }
+    
+    void unmapVertices(GLuint& vertexBuffer);
 };
 
 #endif /* defined(__noctisgames__OpenGLRendererHelper__) */

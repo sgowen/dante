@@ -17,9 +17,10 @@
 
 RendererHelper::RendererHelper() : _framebuffer(new NGTexture("framebuffer", NULL, false)), _screenWidth(1), _screenHeight(1), _renderWidth(1), _renderHeight(1), _numFramebuffers(1)
 {
-    _screenVertices.reserve(4);
     _textureVertices.reserve(MAX_BATCH_SIZE * VERTICES_PER_RECTANGLE);
     _colorVertices.reserve(MAX_BATCH_SIZE * VERTICES_PER_RECTANGLE);
+    _screenVertices.reserve(4);
+    
     generateIndices(MAX_BATCH_SIZE);
 }
 
@@ -48,11 +49,6 @@ void RendererHelper::releaseDeviceDependentResources()
     _colorVertices.clear();
 }
 
-void RendererHelper::clearScreenVertices()
-{
-    _screenVertices.clear();
-}
-
 void RendererHelper::clearTextureVertices()
 {
     _textureVertices.clear();
@@ -63,10 +59,9 @@ void RendererHelper::clearColorVertices()
     _colorVertices.clear();
 }
 
-void RendererHelper::addVertexCoordinate(float x, float y)
+void RendererHelper::clearScreenVertices()
 {
-    SCREEN_VERTEX vertex = { x, y };
-    _screenVertices.push_back(vertex);
+    _screenVertices.clear();
 }
 
 void RendererHelper::addVertexCoordinate(float x, float y, float z, float r, float g, float b, float a, float u, float v)
@@ -81,9 +76,10 @@ void RendererHelper::addVertexCoordinate(float x, float y, float z, float r, flo
     _colorVertices.push_back(vertex);
 }
 
-std::vector<SCREEN_VERTEX>& RendererHelper::getScreenVertices()
+void RendererHelper::addVertexCoordinate(float x, float y)
 {
-    return _screenVertices;
+    SCREEN_VERTEX vertex = { x, y };
+    _screenVertices.push_back(vertex);
 }
 
 std::vector<TEXTURE_VERTEX>& RendererHelper::getTextureVertices()
@@ -94,6 +90,11 @@ std::vector<TEXTURE_VERTEX>& RendererHelper::getTextureVertices()
 std::vector<COLOR_VERTEX>& RendererHelper::getColorVertices()
 {
     return _colorVertices;
+}
+
+std::vector<SCREEN_VERTEX>& RendererHelper::getScreenVertices()
+{
+    return _screenVertices;
 }
 
 void RendererHelper::createFramebufferObjects()

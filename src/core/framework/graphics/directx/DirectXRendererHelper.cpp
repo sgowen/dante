@@ -14,6 +14,7 @@
 #include "framework/graphics/portable/TextureWrapper.h"
 #include "framework/graphics/portable/ShaderProgramWrapper.h"
 #include "framework/graphics/portable/NGShaderUniformInput.h"
+#include "framework/graphics/portable/NGShaderVarInput.h"
 
 #include "framework/util/NGSTDUtil.h"
 #include "PlatformHelpers.h"
@@ -212,16 +213,6 @@ void DirectXRendererHelper::destroyShaderProgram(ShaderProgramWrapper* shaderPro
     }
 }
 
-void DirectXRendererHelper::mapScreenVertices(std::vector<NGShaderVarInput*>& inputLayout)
-{
-    mapVertices(_screenVertexBuffer, _screenVertices);
-}
-
-void DirectXRendererHelper::unmapScreenVertices()
-{
-    // Unused
-}
-
 void DirectXRendererHelper::mapTextureVertices(std::vector<NGShaderVarInput*>& inputLayout)
 {
     mapVertices(_textureVertexBuffer, _textureVertices);
@@ -238,6 +229,16 @@ void DirectXRendererHelper::mapColorVertices(std::vector<NGShaderVarInput*>& inp
 }
 
 void DirectXRendererHelper::unmapColorVertices()
+{
+    // Unused
+}
+
+void DirectXRendererHelper::mapScreenVertices(std::vector<NGShaderVarInput*>& inputLayout)
+{
+    mapVertices(_screenVertexBuffer, _screenVertices);
+}
+
+void DirectXRendererHelper::unmapScreenVertices()
 {
     // Unused
 }
