@@ -10,7 +10,6 @@
 
 #include <stdint.h>
 #include <fstream>
-#include <vector>
 #include <assert.h>
 
 LinuxAssetDataHandler* LinuxAssetDataHandler::getInstance()
@@ -24,7 +23,7 @@ FileData LinuxAssetDataHandler::getAssetData(const char* relativePath)
     assert(relativePath != NULL);
 
     FILE* stream = fopen(relativePath, "r");
-    assert (stream != NULL);
+    assert(stream != NULL);
 
     fseek(stream, 0, SEEK_END);
     long stream_size = ftell(stream);
