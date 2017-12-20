@@ -18,7 +18,7 @@ class AudioEngineHelperFactory
 public:
 	static AudioEngineHelperFactory* getInstance();
     
-    AudioEngineHelper* createAudioEngineHelper();
+    AudioEngineHelper* getAudioEngineHelper();
 
 private:
     // ctor, copy ctor, and assignment should be private in a Singleton

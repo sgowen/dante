@@ -12,7 +12,6 @@
 #include <map>
 #include <string>
 
-class AssetsMapper;
 class TextureRegion;
 class NGAnimation;
 
@@ -23,7 +22,10 @@ class Assets
 public:
 	static Assets* getInstance();
     
-    void init(AssetsMapper* assetsMapper);
+    static void sDeserializerFunc(const char* data);
+    
+    void initWithJsonFile(const char* jsonFile, bool isBundled, bool useEncryption = false);
+    void initWithJson(const char* json);
     
     TextureRegion& findTextureRegion(std::string key, float stateTime);
     

@@ -12,10 +12,16 @@
 #include <map>
 #include <string>
 
+typedef void (*DeserializerFunc)(const char* data);
+typedef const char* (*SerializerFunc)();
+
 class JsonFile
 {
 public:
-    JsonFile(const char* filePath, bool useEncryption = false);
+    JsonFile(const char* filePath, bool isBundled = false, bool useEncryption = false);
+    
+    void setDeserializerFunc(DeserializerFunc deserializerFunc);
+    void setSerializerFunc(SerializerFunc serializerFunc);
     
     void save();
     
@@ -29,8 +35,13 @@ public:
 
 private:
     const char* _filePath;
+    bool _isBundled;
     bool _useEncryption;
+    DeserializerFunc _deserializerFunc;
+    SerializerFunc _serializerFunc;
     std::map<std::string, std::string> _keyValues;
+    
+    void deserialize(const char* data);
     
     const char* platformSpecificFilePath();
     

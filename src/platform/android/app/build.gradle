@@ -78,6 +78,7 @@ android {
         from '../../../../assets/textures'
         into 'src/main/assets'
         include('*.ngt')
+        include('*.cfg')
     }
     copyTextures.dependsOn(runEncryptionBeforeBuild)
     preBuild.dependsOn(copyTextures)

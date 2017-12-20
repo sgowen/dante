@@ -237,13 +237,13 @@ void SpacePirateChunk::initFromSpacePirate(SpacePirate* spacePirate, b2Vec2 forc
             y += h / 4;
         }
             break;
-        case Space_Pirate_Chunk_Botto_Left:
+        case Space_Pirate_Chunk_Bottom_Left:
         {
             x += flipX ? (w / 4) : (-w / 4);
             y -= h / 4;
         }
             break;
-        case Space_Pirate_Chunk_Botto_Right:
+        case Space_Pirate_Chunk_Bottom_Right:
         {
             x += flipX ? (-w / 4) : (w / 4);
             y -= h / 4;

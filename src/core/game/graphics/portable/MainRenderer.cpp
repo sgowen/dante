@@ -16,7 +16,6 @@
 #include "game/logic/World.h"
 
 #include "framework/graphics/portable/Assets.h"
-#include "game/graphics/portable/MainAssetsMapper.h"
 #include "framework/graphics/portable/RendererHelper.h"
 #include "game/logic/GameConstants.h"
 #include "framework/math/NGRect.h"
@@ -49,6 +48,7 @@
 #include "framework/graphics/portable/NGRectBatcher.h"
 #include "framework/graphics/portable/LineBatcher.h"
 #include "framework/util/FlagUtil.h"
+#include "framework/util/FrameworkConstants.h"
 
 #ifdef NG_STEAM
 #include "framework/network/steam/NGSteamGameServer.h"
@@ -67,7 +67,7 @@ _cover(new NGTexture("texture_005.ngt", this, true, true)),
 _font(new Font("texture_002.ngt", 0, 0, 16, 64, 75, TEXTURE_SIZE_1024)),
 _camBounds(new NGRect(0, 0, CAM_WIDTH, CAM_HEIGHT))
 {
-    ASSETS->init(new MainAssetsMapper());
+    // Empty
 }
 
 MainRenderer::~MainRenderer()
@@ -85,6 +85,8 @@ MainRenderer::~MainRenderer()
 void MainRenderer::createDeviceDependentResources()
 {
     Renderer::createDeviceDependentResources();
+    
+    ASSETS->initWithJsonFile("assets.cfg", true);
     
     loadTextureSync(_characters);
     loadTextureSync(_misc);
@@ -249,8 +251,8 @@ void MainRenderer::renderEntities(World* world, bool isServer)
             int type = spc->getType();
             static TextureRegion tr0 = ASSETS->findTextureRegion("Space_Pirate_Chunk_Top_Left");
             static TextureRegion tr1 = ASSETS->findTextureRegion("Space_Pirate_Chunk_Top_Right");
-            static TextureRegion tr2 = ASSETS->findTextureRegion("Space_Pirate_Chunk_Botto_Left");
-            static TextureRegion tr3 = ASSETS->findTextureRegion("Space_Pirate_Chunk_Botto_Right");
+            static TextureRegion tr2 = ASSETS->findTextureRegion("Space_Pirate_Chunk_Bottom_Left");
+            static TextureRegion tr3 = ASSETS->findTextureRegion("Space_Pirate_Chunk_Bottom_Right");
             
             TextureRegion* tr = NULL;
             switch (type)
@@ -261,10 +263,10 @@ void MainRenderer::renderEntities(World* world, bool isServer)
                 case Space_Pirate_Chunk_Top_Right:
                     tr = &tr1;
                     break;
-                case Space_Pirate_Chunk_Botto_Left:
+                case Space_Pirate_Chunk_Bottom_Left:
                     tr = &tr2;
                     break;
-                case Space_Pirate_Chunk_Botto_Right:
+                case Space_Pirate_Chunk_Bottom_Right:
                     tr = &tr3;
                     break;
                 default:

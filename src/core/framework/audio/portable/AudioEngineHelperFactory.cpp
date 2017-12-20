@@ -30,7 +30,7 @@ AudioEngineHelperFactory* AudioEngineHelperFactory::getInstance()
     return &instance;
 }
 
-AudioEngineHelper* AudioEngineHelperFactory::createAudioEngineHelper()
+AudioEngineHelper* AudioEngineHelperFactory::getAudioEngineHelper()
 {
 #if defined __APPLE__
     return AppleAudioEngineHelper::getInstance();

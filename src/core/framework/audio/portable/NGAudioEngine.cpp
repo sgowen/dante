@@ -327,6 +327,7 @@ void NGAudioEngine::reset()
     if (_music)
     {
         delete _music;
+        _music = NULL;
     }
 }
 
@@ -343,7 +344,7 @@ SoundWrapper* NGAudioEngine::findSound(int soundId)
 
 NGAudioEngine::NGAudioEngine() :
 _music(NULL),
-_audioEngineHelper(NG_AUDIO_ENGINE_HELPER_FACTORY->createAudioEngineHelper()),
+_audioEngineHelper(NG_AUDIO_ENGINE_HELPER_FACTORY->getAudioEngineHelper()),
 _numSoundsPlayedThisFrame(0),
 _isMusicDisabled(false),
 _isSoundDisabled(false)

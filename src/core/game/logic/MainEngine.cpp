@@ -42,6 +42,7 @@
 #include "framework/util/NGExtension.h"
 #include "framework/util/PlatformHelper.h"
 #include "framework/util/FlagUtil.h"
+#include "framework/graphics/portable/Assets.h"
 
 #ifdef NG_STEAM
 #include "framework/network/steam/NGSteamClientHelper.h"
@@ -61,8 +62,6 @@ _isSteam(false)
     
     activateSteam();
     
-    _config->load();
-    
     CLIENT_ENTITY_REG->registerCreationFunction(NW_TYPE_Robot, World::sClientCreateRobot);
     CLIENT_ENTITY_REG->registerCreationFunction(NW_TYPE_Projectile, World::sClientCreateProjectile);
     CLIENT_ENTITY_REG->registerCreationFunction(NW_TYPE_SpacePirate, World::sClientCreateSpacePirate);
@@ -81,6 +80,8 @@ MainEngine::~MainEngine()
 void MainEngine::createDeviceDependentResources()
 {
     Engine::createDeviceDependentResources();
+    
+    _config->load();
     
     NG_AUDIO_ENGINE->loadSound(SOUND_ID_ROBOT_JUMP, SOUND_ROBOT_JUMP, 4);
     NG_AUDIO_ENGINE->loadSound(SOUND_ID_EXPLOSION, SOUND_EXPLOSION, 8);
@@ -405,8 +406,7 @@ void MainEngine::startServer()
     {
         int numCratesToSpawn = -1;
         {
-            std::string key = std::string("nu_crates_to_spawn");
-            std::string val = _config->findValue(key);
+            std::string val = _config->findValue(std::string("nu_crates_to_spawn"));
             if (val.length() > 0)
             {
                 numCratesToSpawn = StringUtil::stringToNumber<int>(val);
@@ -415,8 +415,7 @@ void MainEngine::startServer()
         
         int numSpacePiratesToSpawn = -1;
         {
-            std::string key = std::string("nu_space_pirates_to_spawn");
-            std::string val = _config->findValue(key);
+            std::string val = _config->findValue(std::string("nu_space_pirates_to_spawn"));
             if (val.length() > 0)
             {
                 numSpacePiratesToSpawn = StringUtil::stringToNumber<int>(val);

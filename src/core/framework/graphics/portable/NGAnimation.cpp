@@ -12,17 +12,26 @@
 
 #include "framework/graphics/portable/TextureRegion.h"
 
-#include <stdarg.h>
-
-NGAnimation::NGAnimation(std::string textureName, int x, int y, int regionWidth, int regionHeight, int animationWidth, int animationHeight, int textureWidth, int textureHeight, bool isLooping, int numFrames) : _textureName(textureName), _cycleTime(0), _firstLoopingFrame(0), _isLooping(isLooping)
+NGAnimation::NGAnimation(std::string textureName, int x, int y, int regionWidth, int regionHeight, int animationWidth, int animationHeight, int textureWidth, int textureHeight, bool isLooping, int firstLoopingFrame, int xPadding, int yPadding, std::vector<float> frameTimes) : _textureName(textureName), _cycleTime(0), _firstLoopingFrame(firstLoopingFrame), _isLooping(isLooping)
 {
-	loadTextureRegions(x, y, regionWidth, regionHeight, animationWidth, animationHeight, textureWidth, textureHeight, numFrames);
+    int numFrames = static_cast<int>(frameTimes.size());
+    
+	loadTextureRegions(x, y, regionWidth, regionHeight, animationWidth, animationHeight, textureWidth, textureHeight, numFrames, xPadding, yPadding);
+    
+    _frameTimes.reserve(numFrames);
+    for (int i = 0; i < numFrames; ++i)
+    {
+        float f = frameTimes[i];
+        _frameTimes.push_back(f);
+        _cycleTime += f;
+    }
 }
 
-NGAnimation::NGAnimation(std::string textureName, int x, int y, int regionWidth, int regionHeight, int animationWidth, int animationHeight, int textureWidth, int textureHeight, bool isLooping, float frameTime, int numFrames, int firstLoopingFrame, int xPadding, int yPadding) : _textureName(textureName), _cycleTime(0), _firstLoopingFrame(firstLoopingFrame), _isLooping(isLooping)
+NGAnimation::NGAnimation(std::string textureName, int x, int y, int regionWidth, int regionHeight, int animationWidth, int animationHeight, int textureWidth, int textureHeight, bool isLooping, int firstLoopingFrame, int xPadding, int yPadding, float frameTime, int numFrames) : _textureName(textureName), _cycleTime(0), _firstLoopingFrame(firstLoopingFrame), _isLooping(isLooping)
 {
 	loadTextureRegions(x, y, regionWidth, regionHeight, animationWidth, animationHeight, textureWidth, textureHeight, numFrames, xPadding, yPadding);
 
+    _frameTimes.reserve(numFrames);
 	for (int i = 0; i < numFrames; ++i)
 	{
 		_frameTimes.push_back(frameTime);
@@ -34,22 +43,6 @@ NGAnimation::~NGAnimation()
 {
     _textureRegions.clear();
     _frameTimes.clear();
-}
-
-void NGAnimation::setFrameTimes(int numFrames, ...)
-{
-    va_list arguments;
-    
-    va_start(arguments, numFrames);
-    
-    for (int i = 0; i < numFrames; ++i)
-    {
-        float f = va_arg(arguments, double);
-        _frameTimes.push_back(f);
-        _cycleTime += f;
-    }
-    
-    va_end(arguments);
 }
 
 TextureRegion& NGAnimation::getTextureRegion(float stateTime)

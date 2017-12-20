@@ -10,14 +10,13 @@
 
 #include "framework/file/portable/JsonFile.h"
 
+#include "framework/file/portable/AssetDataHandler.h"
+#include "framework/file/portable/FileData.h"
 #include "framework/util/StringUtil.h"
 #include "framework/util/macros.h"
 
 #ifdef __APPLE__
 #include "TargetConditionals.h"
-#endif
-
-#if TARGET_OS_IPHONE
 #include "framework/file/apple/apple_asset_data_handler.h"
 #endif
 
@@ -34,38 +33,56 @@
 #include <stdlib.h>
 #include <sstream>
 
-JsonFile::JsonFile(const char* filePath, bool useEncryption) : _filePath(filePath), _useEncryption(useEncryption)
+JsonFile::JsonFile(const char* filePath, bool isBundled, bool useEncryption) : _filePath(filePath), _isBundled(isBundled), _useEncryption(useEncryption)
 {
     // Empty
+}
+
+void JsonFile::setDeserializerFunc(DeserializerFunc deserializerFunc)
+{
+    _deserializerFunc = deserializerFunc;
+}
+
+void JsonFile::setSerializerFunc(SerializerFunc serializerFunc)
+{
+    _serializerFunc = serializerFunc;
 }
 
 void JsonFile::save()
 {
     assert(_filePath);
-    
-    using namespace rapidjson;
-    using namespace std;
+    assert(!_isBundled); // Can't overwrite bundled files
     
     const char* finalPath = platformSpecificFilePath();
     FILE *file = openFile(finalPath, "w+");
     if (file)
     {
-        static StringBuffer s;
-        Writer<StringBuffer> w(s);
-        
-        s.Clear();
-        
-        w.StartObject();
-        
-        for (std::map<std::string, std::string>::iterator i = _keyValues.begin(); i != _keyValues.end(); ++i)
+        const char* data;
+        if (_serializerFunc)
         {
-            w.String((*i).first.c_str());
-            w.String((*i).second.c_str());
+            data = _serializerFunc();
         }
-        
-        w.EndObject();
-        
-        const char* data = s.GetString();
+        else
+        {
+            using namespace rapidjson;
+            
+            static StringBuffer s;
+            Writer<StringBuffer> w(s);
+            
+            s.Clear();
+            
+            w.StartObject();
+            
+            for (std::map<std::string, std::string>::iterator i = _keyValues.begin(); i != _keyValues.end(); ++i)
+            {
+                w.String((*i).first.c_str());
+                w.String((*i).second.c_str());
+            }
+            
+            w.EndObject();
+            
+            data = s.GetString();
+        }
         
         std::string rawData = std::string(data);
         std::string dataToWrite = _useEncryption ? StringUtil::encryptDecrypt(rawData) : rawData;
@@ -82,45 +99,46 @@ void JsonFile::load()
 {
     assert(_filePath);
     
-    using namespace rapidjson;
-    using namespace std;
-    
-    const char* finalPath = platformSpecificFilePath();
-
-    FILE *file = openFile(finalPath, "r");
-    if (file)
+    if (_isBundled)
     {
-        // seek to end of file
-        fseek(file, 0, SEEK_END);
-        
-        // get current file position which is end from seek
-        size_t size = ftell(file);
-        
-        std::string rawData;
-        
-        // allocate string space and set length
-        rawData.resize(size);
-        
-        // go back to beginning of file for read
-        rewind(file);
-        
-        // read 1*size bytes from sfile into ss
-        fread(&rawData[0], 1, size, file);
-        
-        // close the file
-        fclose(file);
-        
+        const FileData fileData = AssetDataHandler::getAssetDataHandler()->getAssetData(_filePath);
+        std::string rawData = std::string((const char*)fileData.data);
         std::string dataToRead = _useEncryption ? StringUtil::encryptDecrypt(rawData) : rawData;
         
-        rapidjson::Document d;
-        d.Parse<0>(dataToRead.c_str());
+        deserialize(dataToRead.c_str());
         
-        if (d.IsObject())
+        AssetDataHandler::getAssetDataHandler()->releaseAssetData(&fileData);
+    }
+    else
+    {
+        const char* finalPath = platformSpecificFilePath();
+        
+        FILE *file = openFile(finalPath, "r");
+        if (file)
         {
-            for (Value::ConstMemberIterator i = d.MemberBegin(); i != d.MemberEnd(); ++i)
-            {
-                _keyValues[i->name.GetString()] = i->value.GetString();
-            }
+            // seek to end of file
+            fseek(file, 0, SEEK_END);
+            
+            // get current file position which is end from seek
+            size_t size = ftell(file);
+            
+            std::string rawData;
+            
+            // allocate string space and set length
+            rawData.resize(size);
+            
+            // go back to beginning of file for read
+            rewind(file);
+            
+            // read 1*size bytes from sfile into ss
+            fread(&rawData[0], 1, size, file);
+            
+            // close the file
+            fclose(file);
+            
+            std::string dataToRead = _useEncryption ? StringUtil::encryptDecrypt(rawData) : rawData;
+            
+            deserialize(dataToRead.c_str());
         }
     }
 }
@@ -147,6 +165,31 @@ std::string JsonFile::findValue(std::string key)
 void JsonFile::setValue(std::string key, std::string value)
 {
     _keyValues[key] = value;
+}
+
+void JsonFile::deserialize(const char *data)
+{
+    if (_deserializerFunc)
+    {
+        _deserializerFunc(data);
+    }
+    else
+    {
+        using namespace rapidjson;
+        
+        _keyValues.clear();
+        
+        rapidjson::Document d;
+        d.Parse<0>(data);
+        
+        if (d.IsObject())
+        {
+            for (Value::ConstMemberIterator i = d.MemberBegin(); i != d.MemberEnd(); ++i)
+            {
+                _keyValues[i->name.GetString()] = i->value.GetString();
+            }
+        }
+    }
 }
     
 const char* JsonFile::platformSpecificFilePath()

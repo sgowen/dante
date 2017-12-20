@@ -17,6 +17,6 @@ void appleReleaseAssetData(const FileData* file_data);
 
 const char * getPathInsideNSDocuments(const char* relative_path);
 
-const char * getBundlePathForSoundWithName(const char* relative_path);
+const char * getBundlePath(const char* relative_path);
 
 #endif /* defined(__noctisgames__asset_data_handler__) */

@@ -40,7 +40,7 @@ void AppleAudioEngineHelper::resume()
 
 SoundWrapper* AppleAudioEngineHelper::loadSound(int soundId, const char *path, int numInstances)
 {
-	const char* bundlePath = getBundlePathForSoundWithName(path);
+	const char* bundlePath = getBundlePath(path);
     
     AppleSoundWrapper* sound = new AppleSoundWrapper(soundId, bundlePath, numInstances);
     
@@ -49,7 +49,7 @@ SoundWrapper* AppleAudioEngineHelper::loadSound(int soundId, const char *path, i
 
 SoundWrapper* AppleAudioEngineHelper::loadMusic(const char* path)
 {
-    const char* bundlePath = getBundlePathForSoundWithName(path);
+    const char* bundlePath = getBundlePath(path);
     
     AppleSoundWrapper* sound = new AppleSoundWrapper(1337, bundlePath);
     
