@@ -86,7 +86,7 @@ private:
 	int _framebufferIndex;
     
     template <typename T>
-    void mapVertices(Microsoft::WRL::ComPtr<ID3D11Buffer> vertexBuffer, std::vector<T>& vertices)
+    void mapVertices(Microsoft::WRL::ComPtr<ID3D11Buffer>& vertexBuffer, std::vector<T>& vertices)
     {
         D3D11_MAPPED_SUBRESOURCE mappedResource;
         ZeroMemory(&mappedResource, sizeof(D3D11_MAPPED_SUBRESOURCE));
@@ -107,7 +107,7 @@ private:
     }
     
     template <typename T>
-    void createVertexBuffer(Microsoft::WRL::ComPtr<ID3D11Buffer> vertexBuffer, std::vector<T>& vertices, uint32_t size)
+    void createVertexBuffer(Microsoft::WRL::ComPtr<ID3D11Buffer>& vertexBuffer, std::vector<T>& vertices, uint32_t size)
     {
         T vertex;
         for (int i = 0; i < size; ++i)
