@@ -52,13 +52,8 @@ public:
     virtual void destroyShaderProgram(ShaderProgramWrapper* shaderProgramWrapper, std::vector<NGShaderUniformInput*>& uniforms, std::vector<NGShaderVarInput*>& inputLayout);
     
     virtual void mapScreenVertices(std::vector<NGShaderVarInput*>& inputLayout);
-    virtual void unmapScreenVertices();
-    
     virtual void mapTextureVertices(std::vector<NGShaderVarInput*>& inputLayout);
-    virtual void unmapTextureVertices();
-    
     virtual void mapColorVertices(std::vector<NGShaderVarInput*>& inputLayout);
-    virtual void unmapColorVertices();
     
     virtual void draw(NGPrimitiveType renderPrimitiveType, uint32_t first, uint32_t count);
     virtual void drawIndexed(NGPrimitiveType renderPrimitiveType, uint32_t count);
@@ -111,11 +106,33 @@ private:
         s_d3dContext->IASetVertexBuffers(0, 1, vertexBuffer.GetAddressOf(), &stride, &offset);
     }
     
+    template <typename T>
+    void createVertexBuffer(Microsoft::WRL::ComPtr<ID3D11Buffer> vertexBuffer, std::vector<T>& vertices, uint32_t size)
+    {
+        T vertex;
+        for (int i = 0; i < size; ++i)
+        {
+            vertices.push_back(vertex);
+        }
+        
+        D3D11_BUFFER_DESC vertexBufferDesc = { 0 };
+        vertexBufferDesc.ByteWidth = sizeof(T) * vertices.size();
+        vertexBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
+        vertexBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+        vertexBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+        vertexBufferDesc.MiscFlags = 0;
+        vertexBufferDesc.StructureByteStride = 0;
+        
+        D3D11_SUBRESOURCE_DATA vertexBufferData;
+        vertexBufferData.pSysMem = &vertices[0];
+        vertexBufferData.SysMemPitch = 0;
+        vertexBufferData.SysMemSlicePitch = 0;
+        
+        DirectX::ThrowIfFailed(s_d3dDevice->CreateBuffer(&vertexBufferDesc, &vertexBufferData, &vertexBuffer));
+    }
+    
     void createBlendStates();
     void createSamplerStates();
-    void createVertexBufferForSpriteBatcher();
-    void createVertexBufferForGeometryBatchers();
-	void createVertexBufferForScreen();
     void createIndexBuffer();
 };
 

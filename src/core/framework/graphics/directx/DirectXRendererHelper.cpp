@@ -64,9 +64,11 @@ void DirectXRendererHelper::createDeviceDependentResources()
     
     createBlendStates();
     createSamplerStates();
-    createVertexBufferForSpriteBatcher();
-    createVertexBufferForGeometryBatchers();
-    createVertexBufferForScreen();
+    
+    createVertexBuffer(_textureVertexBuffer, _textureVertices, MAX_BATCH_SIZE * VERTICES_PER_RECTANGLE);
+    createVertexBuffer(_colorVertexBuffer, _colorVertices, MAX_BATCH_SIZE * VERTICES_PER_RECTANGLE);
+    createVertexBuffer(_screenVertexBuffer, _screenVertices, 4);
+    
     createIndexBuffer();
 }
 
@@ -76,11 +78,14 @@ void DirectXRendererHelper::releaseDeviceDependentResources()
     
     _blendState.Reset();
     _screenBlendState.Reset();
+    
     _sbSamplerState.Reset();
     _sbWrapSamplerState.Reset();
+    
     _textureVertexBuffer.Reset();
     _colorVertexBuffer.Reset();
     _screenVertexBuffer.Reset();
+    
     _indexbuffer.Reset();
 }
 
@@ -209,29 +214,14 @@ void DirectXRendererHelper::mapTextureVertices(std::vector<NGShaderVarInput*>& i
     mapVertices(_textureVertexBuffer, _textureVertices);
 }
 
-void DirectXRendererHelper::unmapTextureVertices()
-{
-    // Unused
-}
-
 void DirectXRendererHelper::mapColorVertices(std::vector<NGShaderVarInput*>& inputLayout)
 {
     mapVertices(_colorVertexBuffer, _colorVertices);
 }
 
-void DirectXRendererHelper::unmapColorVertices()
-{
-    // Unused
-}
-
 void DirectXRendererHelper::mapScreenVertices(std::vector<NGShaderVarInput*>& inputLayout)
 {
     mapVertices(_screenVertexBuffer, _screenVertices);
-}
-
-void DirectXRendererHelper::unmapScreenVertices()
-{
-    // Unused
 }
 
 void DirectXRendererHelper::draw(NGPrimitiveType renderPrimitiveType, uint32_t first, uint32_t count)
@@ -326,152 +316,49 @@ void DirectXRendererHelper::releaseFramebuffers()
 
 void DirectXRendererHelper::createBlendStates()
 {
-    {
-        D3D11_BLEND_DESC bd;
-        bd.RenderTarget[0].BlendEnable = TRUE;
-        bd.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
-        bd.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA;
-        bd.RenderTarget[0].DestBlend = D3D11_BLEND_INV_SRC_ALPHA;
-        bd.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
-        bd.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ONE;
-        bd.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ZERO;
-        bd.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
-        bd.IndependentBlendEnable = FALSE;
-        bd.AlphaToCoverageEnable = FALSE;
-        
-        s_d3dDevice->CreateBlendState(&bd, &_blendState);
-    }
+    D3D11_BLEND_DESC bd;
+    bd.RenderTarget[0].BlendEnable = TRUE;
+    bd.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
+    bd.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA;
+    bd.RenderTarget[0].DestBlend = D3D11_BLEND_INV_SRC_ALPHA;
+    bd.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
+    bd.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ONE;
+    bd.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ZERO;
+    bd.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
+    bd.IndependentBlendEnable = FALSE;
+    bd.AlphaToCoverageEnable = FALSE;
     
-    {
-        D3D11_BLEND_DESC bd;
-        bd.RenderTarget[0].BlendEnable = TRUE;
-        bd.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
-        bd.RenderTarget[0].SrcBlend = D3D11_BLEND_ONE;
-        bd.RenderTarget[0].DestBlend = D3D11_BLEND_ONE;
-        bd.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
-        bd.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ONE;
-        bd.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ZERO;
-        bd.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
-        bd.IndependentBlendEnable = FALSE;
-        bd.AlphaToCoverageEnable = FALSE;
-        
-        s_d3dDevice->CreateBlendState(&bd, &_screenBlendState);
-    }
+    s_d3dDevice->CreateBlendState(&bd, &_blendState);
+    
+    bd.RenderTarget[0].SrcBlend = D3D11_BLEND_ONE;
+    bd.RenderTarget[0].DestBlend = D3D11_BLEND_ONE;
+    
+    s_d3dDevice->CreateBlendState(&bd, &_screenBlendState);
 }
 
 void DirectXRendererHelper::createSamplerStates()
 {
-    {
-        D3D11_SAMPLER_DESC sd;
-        sd.Filter = D3D11_FILTER_ANISOTROPIC;
-        sd.MaxAnisotropy = 16;
-        sd.AddressU = D3D11_TEXTURE_ADDRESS_CLAMP;
-        sd.AddressV = D3D11_TEXTURE_ADDRESS_CLAMP;
-        sd.AddressW = D3D11_TEXTURE_ADDRESS_CLAMP;
-        sd.BorderColor[0] = 0.0f;
-        sd.BorderColor[1] = 0.0f;
-        sd.BorderColor[2] = 0.0f;
-        sd.BorderColor[3] = 0.0f;
-        sd.MinLOD = 0.0f;
-        sd.MaxLOD = FLT_MAX;
-        sd.MipLODBias = 0.0f;
-        sd.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR; // linear filtering
-        sd.MinLOD = 5.0f; // mip level 5 will appear blurred
-        
-        s_d3dDevice->CreateSamplerState(&sd, _sbSamplerState.GetAddressOf());
-    }
+    D3D11_SAMPLER_DESC sd;
+    sd.Filter = D3D11_FILTER_ANISOTROPIC;
+    sd.MaxAnisotropy = 16;
+    sd.AddressU = D3D11_TEXTURE_ADDRESS_CLAMP;
+    sd.AddressV = D3D11_TEXTURE_ADDRESS_CLAMP;
+    sd.AddressW = D3D11_TEXTURE_ADDRESS_CLAMP;
+    sd.BorderColor[0] = 0.0f;
+    sd.BorderColor[1] = 0.0f;
+    sd.BorderColor[2] = 0.0f;
+    sd.BorderColor[3] = 0.0f;
+    sd.MinLOD = 0.0f;
+    sd.MaxLOD = FLT_MAX;
+    sd.MipLODBias = 0.0f;
+    sd.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR; // linear filtering
+    sd.MinLOD = 5.0f; // mip level 5 will appear blurred
     
-    {
-        D3D11_SAMPLER_DESC sd;
-        sd.Filter = D3D11_FILTER_ANISOTROPIC;
-        sd.MaxAnisotropy = 16;
-        sd.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
-        sd.AddressV = D3D11_TEXTURE_ADDRESS_CLAMP;
-        sd.AddressW = D3D11_TEXTURE_ADDRESS_CLAMP;
-        sd.BorderColor[0] = 0.0f;
-        sd.BorderColor[1] = 0.0f;
-        sd.BorderColor[2] = 0.0f;
-        sd.BorderColor[3] = 0.0f;
-        sd.MinLOD = 0.0f;
-        sd.MaxLOD = FLT_MAX;
-        sd.MipLODBias = 0.0f;
-        sd.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR; // linear filtering
-        sd.MinLOD = 5.0f; // mip level 5 will appear blurred
-        
-        s_d3dDevice->CreateSamplerState(&sd, _sbWrapSamplerState.GetAddressOf());
-    }
-}
-
-void DirectXRendererHelper::createVertexBufferForSpriteBatcher()
-{
-    TEXTURE_VERTEX tv = { 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-    for (int i = 0; i < MAX_BATCH_SIZE * VERTICES_PER_RECTANGLE; ++i)
-    {
-        _textureVertices.push_back(tv);
-    }
+    s_d3dDevice->CreateSamplerState(&sd, _sbSamplerState.GetAddressOf());
     
-    D3D11_BUFFER_DESC vertexBufferDesc = { 0 };
-    vertexBufferDesc.ByteWidth = sizeof(TEXTURE_VERTEX) * _textureVertices.size();
-    vertexBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
-    vertexBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-    vertexBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-    vertexBufferDesc.MiscFlags = 0;
-    vertexBufferDesc.StructureByteStride = 0;
+    sd.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
     
-    D3D11_SUBRESOURCE_DATA vertexBufferData;
-    vertexBufferData.pSysMem = &_textureVertices[0];
-    vertexBufferData.SysMemPitch = 0;
-    vertexBufferData.SysMemSlicePitch = 0;
-    
-    DirectX::ThrowIfFailed(s_d3dDevice->CreateBuffer(&vertexBufferDesc, &vertexBufferData, &_textureVertexBuffer));
-}
-
-void DirectXRendererHelper::createVertexBufferForGeometryBatchers()
-{
-    COLOR_VERTEX cv = { 0, 0, 0, 0, 0, 0, 0 };
-    for (int i = 0; i < MAX_BATCH_SIZE * VERTICES_PER_RECTANGLE; ++i)
-    {
-        _colorVertices.push_back(cv);
-    }
-    
-    D3D11_BUFFER_DESC vertexBufferDesc = { 0 };
-    vertexBufferDesc.ByteWidth = sizeof(COLOR_VERTEX) * _colorVertices.size();
-    vertexBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
-    vertexBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-    vertexBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-    vertexBufferDesc.MiscFlags = 0;
-    vertexBufferDesc.StructureByteStride = 0;
-    
-    D3D11_SUBRESOURCE_DATA vertexBufferData;
-    vertexBufferData.pSysMem = &_colorVertices[0];
-    vertexBufferData.SysMemPitch = 0;
-    vertexBufferData.SysMemSlicePitch = 0;
-    
-    DirectX::ThrowIfFailed(s_d3dDevice->CreateBuffer(&vertexBufferDesc, &vertexBufferData, &_colorVertexBuffer));
-}
-
-void DirectXRendererHelper::createVertexBufferForScreen()
-{
-    SCREEN_VERTEX tv = { 0, 0 };
-    for (int i = 0; i < 4; ++i)
-    {
-        _screenVertices.push_back(tv);
-    }
-    
-    D3D11_BUFFER_DESC vertexBufferDesc = { 0 };
-    vertexBufferDesc.ByteWidth = sizeof(SCREEN_VERTEX) * _screenVertices.size();
-    vertexBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
-    vertexBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-    vertexBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-    vertexBufferDesc.MiscFlags = 0;
-    vertexBufferDesc.StructureByteStride = 0;
-    
-    D3D11_SUBRESOURCE_DATA vertexBufferData;
-    vertexBufferData.pSysMem = &_screenVertices[0];
-    vertexBufferData.SysMemPitch = 0;
-    vertexBufferData.SysMemSlicePitch = 0;
-    
-    DirectX::ThrowIfFailed(s_d3dDevice->CreateBuffer(&vertexBufferDesc, &vertexBufferData, &_screenVertexBuffer));
+    s_d3dDevice->CreateSamplerState(&sd, _sbWrapSamplerState.GetAddressOf());
 }
 
 void DirectXRendererHelper::createIndexBuffer()

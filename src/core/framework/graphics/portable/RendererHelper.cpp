@@ -85,6 +85,21 @@ void RendererHelper::updateMatrix(float left, float right, float bottom, float t
     mat4x4_ortho(_matrix, left, right, bottom, top, -1, 1);
 }
 
+void RendererHelper::unmapTextureVertices()
+{
+    // Unused
+}
+
+void RendererHelper::unmapColorVertices()
+{
+    // Unused
+}
+
+void RendererHelper::unmapScreenVertices()
+{
+    // Unused
+}
+
 void RendererHelper::clearTextureVertices()
 {
     _textureVertices.clear();
@@ -102,19 +117,19 @@ void RendererHelper::clearScreenVertices()
 
 void RendererHelper::addVertexCoordinate(float x, float y, float z, float r, float g, float b, float a, float u, float v)
 {
-    TEXTURE_VERTEX vertex = { x, y, z, r, g, b, a, u, v };
+    TEXTURE_VERTEX vertex(x, y, z, r, g, b, a, u, v);
     _textureVertices.push_back(vertex);
 }
 
 void RendererHelper::addVertexCoordinate(float x, float y, float z, float r, float g, float b, float a)
 {
-    COLOR_VERTEX vertex = { x, y, z, r, g, b, a };
+    COLOR_VERTEX vertex(x, y, z, r, g, b, a);
     _colorVertices.push_back(vertex);
 }
 
 void RendererHelper::addVertexCoordinate(float x, float y)
 {
-    SCREEN_VERTEX vertex = { x, y };
+    SCREEN_VERTEX vertex(x, y);
     _screenVertices.push_back(vertex);
 }
 

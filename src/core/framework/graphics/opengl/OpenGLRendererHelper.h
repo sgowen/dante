@@ -49,10 +49,8 @@ public:
 
     virtual void mapScreenVertices(std::vector<NGShaderVarInput*>& inputLayout);
     virtual void unmapScreenVertices();
-
     virtual void mapTextureVertices(std::vector<NGShaderVarInput*>& inputLayout);
     virtual void unmapTextureVertices();
-
     virtual void mapColorVertices(std::vector<NGShaderVarInput*>& inputLayout);
     virtual void unmapColorVertices();
 

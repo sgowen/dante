@@ -60,13 +60,11 @@ public:
     virtual void destroyShaderProgram(ShaderProgramWrapper* shaderProgramWrapper, std::vector<NGShaderUniformInput*>& uniforms, std::vector<NGShaderVarInput*>& inputLayout) = 0;
     
     virtual void mapScreenVertices(std::vector<NGShaderVarInput*>& inputLayout) = 0;
-    virtual void unmapScreenVertices() = 0;
-    
+    virtual void unmapScreenVertices();
     virtual void mapTextureVertices(std::vector<NGShaderVarInput*>& inputLayout) = 0;
-    virtual void unmapTextureVertices() = 0;
-    
+    virtual void unmapTextureVertices();
     virtual void mapColorVertices(std::vector<NGShaderVarInput*>& inputLayout) = 0;
-    virtual void unmapColorVertices() = 0;
+    virtual void unmapColorVertices();
     
     virtual void draw(NGPrimitiveType renderPrimitiveType, uint32_t first, uint32_t count) = 0;
     virtual void drawIndexed(NGPrimitiveType renderPrimitiveType, uint32_t count) = 0;
