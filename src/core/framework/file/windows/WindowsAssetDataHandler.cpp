@@ -26,7 +26,7 @@ FileData WindowsAssetDataHandler::getAssetData(const char* relativePath)
     
     FILE *stream;
     errno_t err;
-    assert(fopen_s(&file, relativePath, "r") != 0)
+	assert(fopen_s(&stream, relativePath, "r") == 0);
     
     assert(stream != NULL);
     
