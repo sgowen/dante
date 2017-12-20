@@ -86,7 +86,21 @@ void MainRenderer::createDeviceDependentResources()
 {
     Renderer::createDeviceDependentResources();
     
-    ASSETS->initWithJsonFile("assets.cfg", true);
+    const char* assetsCfgFileName = "assets.cfg";
+    const char* finalAssetsCfgFileName;
+#if defined __linux__ && !defined(__ANDROID__)
+    std::string s("data/textures/");
+    s += std::string(assetsCfgFileName);
+    finalAssetsCfgFileName = s.c_str();
+#elif defined _WIN32
+    std::string s("data\\textures\\");
+    s += std::string(assetsCfgFileName);
+    finalAssetsCfgFileName = s.c_str();
+#else
+    finalAssetsCfgFileName = assetsCfgFileName;
+#endif
+    
+    ASSETS->initWithJsonFile(finalAssetsCfgFileName, true);
     
     loadTextureSync(_characters);
     loadTextureSync(_misc);
