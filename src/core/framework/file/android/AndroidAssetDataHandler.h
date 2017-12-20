@@ -27,7 +27,7 @@ public:
     
     const char* getPathInsideApk(const char* filePath);
     
-    virtual FileData getAssetData(const char* relativePath);
+    virtual FileData getAssetData(const char* relativePath, bool isText);
     
     virtual void releaseAssetData(const FileData* fileData);
 

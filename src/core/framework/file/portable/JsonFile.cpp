@@ -101,7 +101,7 @@ void JsonFile::load()
     
     if (_isBundled)
     {
-        const FileData fileData = AssetDataHandler::getAssetDataHandler()->getAssetData(_filePath);
+        const FileData fileData = AssetDataHandler::getAssetDataHandler()->getAssetData(_filePath, true);
         std::string rawData = std::string((const char*)fileData.data);
         std::string dataToRead = _useEncryption ? StringUtil::encryptDecrypt(rawData) : rawData;
         

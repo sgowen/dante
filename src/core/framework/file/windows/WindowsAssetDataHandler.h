@@ -16,7 +16,7 @@ class WindowsAssetDataHandler : public AssetDataHandler
 public:
 	static WindowsAssetDataHandler* getInstance();
     
-    virtual FileData getAssetData(const char* relativePath);
+    virtual FileData getAssetData(const char* relativePath, bool isText);
     
     virtual void releaseAssetData(const FileData* fileData);
 
