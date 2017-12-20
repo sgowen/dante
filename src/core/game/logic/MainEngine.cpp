@@ -358,6 +358,8 @@ void MainEngine::activateSteam()
     _isSteam = NG_STEAM_GAME_SERVICES->getStatus() == STEAM_INIT_SUCCESS;
     _engineState = _isSteam ? MAIN_ENGINE_STATE_MAIN_MENU_STEAM_ON : MAIN_ENGINE_STATE_MAIN_MENU_STEAM_OFF;
 #endif
+    
+    _engineState = MAIN_ENGINE_STATE_MAIN_MENU_STEAM_OFF;
 }
 
 void MainEngine::handleSteamGameServices()
