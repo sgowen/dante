@@ -30,8 +30,6 @@ public:
 
     virtual NGTexture* getFramebuffer(int index);
 
-    virtual void updateMatrix(float left, float right, float bottom, float top);
-
     virtual void bindToOffscreenFramebuffer(int index);
 
     virtual void clearFramebufferWithColor(float r, float g, float b, float a);
@@ -75,8 +73,6 @@ private:
 
     GLint _screenFBO;
     GLint _maxTextureSize;
-
-    mat4x4 _matrix;
     
     template <typename T>
     void mapVertices(GLuint& vertexBuffer, std::vector<T>& vertices, std::vector<NGShaderVarInput*>& inputLayout)

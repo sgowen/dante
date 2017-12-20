@@ -40,7 +40,7 @@ public:
     
     virtual NGTexture* getFramebuffer(int index) = 0;
     
-    virtual void updateMatrix(float left, float right, float bottom, float top) = 0;
+    virtual void updateMatrix(float left, float right, float bottom, float top);
     
     virtual void bindToOffscreenFramebuffer(int index) = 0;
     
@@ -91,6 +91,8 @@ protected:
     std::vector<COLOR_VERTEX> _colorVertices;
     std::vector<SCREEN_VERTEX> _screenVertices;
     std::vector<uint16_t> _indices;
+    
+    mat4x4 _matrix;
     
     int _screenWidth;
     int _screenHeight;

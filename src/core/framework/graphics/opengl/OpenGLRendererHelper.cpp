@@ -73,42 +73,6 @@ NGTexture* OpenGLRendererHelper::getFramebuffer(int index)
     return _framebuffer;
 }
 
-inline void mat4x4_identity(mat4x4 M)
-{
-    int i, j;
-    for (i=0; i<4; ++i)
-    {
-        for (j=0; j<4; ++j)
-        {
-            M[i][j] = i==j ? 1.f : 0.f;
-        }
-    }
-}
-
-inline void mat4x4_ortho(mat4x4 M, float l, float r, float b, float t, float n, float f)
-{
-    M[0][0] = 2.f/(r-l);
-    M[0][1] = M[0][2] = M[0][3] = 0.f;
-
-    M[1][1] = 2.f/(t-b);
-    M[1][0] = M[1][2] = M[1][3] = 0.f;
-
-    M[2][2] = -2.f/(f-n);
-    M[2][0] = M[2][1] = M[2][3] = 0.f;
-
-    M[3][0] = -(r+l)/(r-l);
-    M[3][1] = -(t+b)/(t-b);
-    M[3][2] = -(f+n)/(f-n);
-    M[3][3] = 1.f;
-}
-
-void OpenGLRendererHelper::updateMatrix(float left, float right, float bottom, float top)
-{
-    mat4x4_identity(_matrix);
-
-    mat4x4_ortho(_matrix, left, right, bottom, top, -1, 1);
-}
-
 void OpenGLRendererHelper::bindToOffscreenFramebuffer(int index)
 {
     glBindFramebuffer(GL_FRAMEBUFFER, _fbos[index]);

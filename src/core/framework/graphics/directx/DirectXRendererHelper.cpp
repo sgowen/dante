@@ -101,15 +101,6 @@ NGTexture* DirectXRendererHelper::getFramebuffer(int index)
     return _framebuffer;
 }
 
-void DirectXRendererHelper::updateMatrix(float left, float right, float bottom, float top)
-{
-    using namespace DirectX;
-    
-    XMMATRIX matFinal = XMMatrixOrthographicOffCenterRH(left, right, bottom, top, -1.0, 1.0);
-    
-    XMStoreFloat4x4(&_matrix, matFinal);
-}
-
 void DirectXRendererHelper::bindToOffscreenFramebuffer(int index)
 {
     s_d3dContext->OMSetRenderTargets(1, &_offscreenRenderTargetViews[index], NULL);

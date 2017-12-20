@@ -34,8 +34,6 @@ public:
     
     virtual NGTexture* getFramebuffer(int index);
     
-    virtual void updateMatrix(float left, float right, float bottom, float top);
-    
     virtual void bindToOffscreenFramebuffer(int index);
     
     virtual void clearFramebufferWithColor(float r, float g, float b, float a);
@@ -75,27 +73,20 @@ private:
     static ID3D11DeviceContext* s_d3dContext;
     static ID3D11RenderTargetView* s_d3dRenderTargetView;
     
-    std::vector<ID3D11Texture2D*> _offscreenRenderTargets; // the offscreen render target texture
-    std::vector<ID3D11RenderTargetView*> _offscreenRenderTargetViews; // the offscreen render target interface
-    std::vector<ID3D11ShaderResourceView*> _offscreenShaderResourceViews; // this is needed for the screen pixel shader
+    std::vector<ID3D11Texture2D*> _offscreenRenderTargets;
+    std::vector<ID3D11RenderTargetView*> _offscreenRenderTargetViews;
+    std::vector<ID3D11ShaderResourceView*> _offscreenShaderResourceViews;
     
-    Microsoft::WRL::ComPtr<ID3D11BlendState> _blendState; // the blend state interface
-    Microsoft::WRL::ComPtr<ID3D11BlendState> _screenBlendState; // the blend state interface, but for rendering to the screen
-    Microsoft::WRL::ComPtr<ID3D11Buffer> _indexbuffer; // the index buffer interface
+    Microsoft::WRL::ComPtr<ID3D11BlendState> _blendState;
+    Microsoft::WRL::ComPtr<ID3D11BlendState> _screenBlendState;
+    Microsoft::WRL::ComPtr<ID3D11Buffer> _indexbuffer;
     
-    // Used in SpriteBatcher
     Microsoft::WRL::ComPtr<ID3D11SamplerState> _sbSamplerState;
     Microsoft::WRL::ComPtr<ID3D11SamplerState> _sbWrapSamplerState;
+    
     Microsoft::WRL::ComPtr<ID3D11Buffer> _textureVertexBuffer;
-    
-    // Used in NGRectBatcher, LineBatcher, and CircleBatcher (Geometry)
-    Microsoft::WRL::ComPtr<ID3D11Buffer> _colorVertexBuffer; // the vertex buffer interface
-    
-    // Used when rendering directly to the screen
+    Microsoft::WRL::ComPtr<ID3D11Buffer> _colorVertexBuffer;
     Microsoft::WRL::ComPtr<ID3D11Buffer> _screenVertexBuffer;
-    
-    // All above rendering takes place inside this matrix
-    DirectX::XMFLOAT4X4 _matrix;
     
 	int _framebufferIndex;
     
