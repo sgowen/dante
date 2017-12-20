@@ -406,7 +406,9 @@ void MainEngine::startServer()
     
     if (!Server::getInstance())
     {
-        int numCratesToSpawn = -1;
+        uint32_t numCratesToSpawn = 6;
+        uint32_t numSpacePiratesToSpawn = 4;
+        
         {
             std::string val = _config->findValue(std::string("nu_crates_to_spawn"));
             if (val.length() > 0)
@@ -415,7 +417,6 @@ void MainEngine::startServer()
             }
         }
         
-        int numSpacePiratesToSpawn = -1;
         {
             std::string val = _config->findValue(std::string("nu_space_pirates_to_spawn"));
             if (val.length() > 0)
@@ -424,13 +425,13 @@ void MainEngine::startServer()
             }
         }
         
-        if (numCratesToSpawn > -1 && numSpacePiratesToSpawn > -1)
+        Server::create(_isSteam, numCratesToSpawn, numSpacePiratesToSpawn);
+        
+        if (PlatformHelper::getPlatform() == NG_PLATFORM_ANDROID
+            || PlatformHelper::getPlatform() == NG_PLATFORM_IOS)
         {
-            Server::create(_isSteam, numCratesToSpawn, numSpacePiratesToSpawn);
-        }
-        else
-        {
-            Server::create(_isSteam);
+            Server::getInstance()->toggleEnemies();
+            Server::getInstance()->toggleObjects();
         }
         
         if (!NG_SERVER)

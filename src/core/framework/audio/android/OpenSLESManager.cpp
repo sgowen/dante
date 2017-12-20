@@ -130,7 +130,7 @@ void OpenSLESManager::resumeSound(OpenSLESSound* sound)
     if (i >= 0)
     {
         SLresult result = (*_players[i])->SetPlayState(_players[i], SL_PLAYSTATE_PLAYING);
-        assert(result == SL_PLAYSTATE_PLAYING);
+        assert(result == SL_RESULT_SUCCESS);
     }
 }
 
