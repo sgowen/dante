@@ -307,6 +307,16 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <CustomBuild Include="..\..\..\assets\textures\*.cfg">
+      <ExcludedFromBuild>false</ExcludedFromBuild>
+      <DeploymentContent>false</DeploymentContent>
+      <Command>xcopy /y %(Identity) $(SolutionDir)data\textures\</Command>
+      <Message>Converting to DDS %(Identity)</Message>
+      <Outputs>%(Filename).cfg</Outputs>
+      <TreatOutputAsContent>true</TreatOutputAsContent>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
     <CustomBuild Include="..\..\..\assets\textures\*.png">
       <ExcludedFromBuild>false</ExcludedFromBuild>
       <DeploymentContent>false</DeploymentContent>

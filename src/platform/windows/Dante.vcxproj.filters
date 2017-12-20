@@ -79,6 +79,9 @@
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
+    <CustomBuild Include="..\..\..\assets\textures\*.cfg">
+      <Filter>Assets</Filter>
+    </CustomBuild>
     <CustomBuild Include="..\..\..\assets\textures\*.png">
       <Filter>Assets</Filter>
     </CustomBuild>

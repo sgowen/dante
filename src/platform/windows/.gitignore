@@ -17,6 +17,7 @@ AppPackages/
 # Noctis Games
 *.ngt
 *.ngs
+*.cfg
 *.dds
 *.wav
 *.cso
