@@ -76,6 +76,7 @@
 			<Add before="mkdir -p $(PROJECT_DIR)data/textures" />
 			<Add before="cp -R $(PROJECT_DIR)../../../src/core/framework/graphics/opengl/shader/*.ngs $(PROJECT_DIR)data/shaders/" />
 			<Add before="cp -R $(PROJECT_DIR)../../../assets/textures/*.ngt $(PROJECT_DIR)data/textures/" />
+			<Add before="cp -R $(PROJECT_DIR)../../../assets/textures/*.cfg $(PROJECT_DIR)data/textures/" />
 			<Add before="cp -R $(PROJECT_DIR)../../../assets/music/*.wav $(PROJECT_DIR)data/music/" />
 			<Add before="cp -R $(PROJECT_DIR)../../../assets/sounds/*.wav $(PROJECT_DIR)data/sounds/" />
 			<Add after="cp -R $(PROJECT_DIR)../../../src/3rdparty/steamworks_sdk/redistributable_bin/linux64/*.so $(PROJECT_DIR)" />
@@ -407,7 +408,6 @@
 		<Unit filename="../../core/framework/graphics/opengl/OpenGLTextureLoader.h" />
 		<Unit filename="../../core/framework/graphics/portable/Assets.cpp" />
 		<Unit filename="../../core/framework/graphics/portable/Assets.h" />
-		<Unit filename="../../core/framework/graphics/portable/AssetsMapper.cpp" />
 		<Unit filename="../../core/framework/graphics/portable/AssetsMapper.h" />
 		<Unit filename="../../core/framework/graphics/portable/CircleBatcher.cpp" />
 		<Unit filename="../../core/framework/graphics/portable/CircleBatcher.h" />
@@ -596,8 +596,6 @@
 		<Unit filename="../../core/framework/util/WeightedTimedMovingAverage.cpp" />
 		<Unit filename="../../core/framework/util/WeightedTimedMovingAverage.h" />
 		<Unit filename="../../core/framework/util/macros.h" />
-		<Unit filename="../../core/game/graphics/portable/MainAssetsMapper.cpp" />
-		<Unit filename="../../core/game/graphics/portable/MainAssetsMapper.h" />
 		<Unit filename="../../core/game/graphics/portable/MainRenderer.cpp" />
 		<Unit filename="../../core/game/graphics/portable/MainRenderer.h" />
 		<Unit filename="../../core/game/logic/Crate.cpp" />
