@@ -12,6 +12,7 @@
 
 #include <stdint.h>
 #include <fstream>
+#include <vector>
 #include <assert.h>
 
 WindowsAssetDataHandler* WindowsAssetDataHandler::getInstance()
@@ -22,36 +23,84 @@ WindowsAssetDataHandler* WindowsAssetDataHandler::getInstance()
 
 FileData WindowsAssetDataHandler::getAssetData(const char* relativePath)
 {
-    assert(relativePath != NULL);
+    wchar_t* name = new wchar_t[4096];
+    MultiByteToWideChar(CP_ACP, 0, relativePath, -1, name, 4096);
     
-    FILE *stream;
-    errno_t err;
-	assert(fopen_s(&stream, relativePath, "r") == 0);
+    std::ifstream inFile(name, std::ios::in | std::ios::binary | std::ios::ate);
     
-    assert(stream != NULL);
+    if (!inFile)
+    {
+        wchar_t moduleName[_MAX_PATH];
+        
+        assert(GetModuleFileNameW(NULL, moduleName, _MAX_PATH));
+        
+        wchar_t drive[_MAX_DRIVE];
+        wchar_t path[_MAX_PATH];
+        
+        assert(!_wsplitpath_s(moduleName, drive, _MAX_DRIVE, path, _MAX_PATH, NULL, 0, NULL, 0));
+        
+        wchar_t filename[_MAX_PATH];
+        assert(!_wmakepath_s(filename, _MAX_PATH, drive, path, name, NULL));
+        
+        inFile.open(filename, std::ios::in | std::ios::binary | std::ios::ate);
+    }
     
-    fseek(stream, 0, SEEK_END);
-    long stream_size = ftell(stream);
-    fseek(stream, 0, SEEK_SET);
+    assert(inFile);
     
-    void* buffer = malloc(stream_size);
-    fread(buffer, stream_size, 1, stream);
+    std::streampos len = inFile.tellg();
+    assert(inFile);
     
-    assert(ferror(stream) == 0);
-    fclose(stream);
+    std::vector<uint8_t>* blob = new std::vector<uint8_t>();
+    blob->resize(size_t(len));
     
-    return FileData(stream_size, buffer, NULL);
+    inFile.seekg(0, std::ios::beg);
+    assert(inFile);
+    
+    inFile.read(reinterpret_cast<char*>(blob->data()), len);
+    assert(inFile);
+    
+    inFile.close();
+    
+    delete name;
+    
+    return FileData(blob->size(), blob->data(), blob);
+    
+//    assert(relativePath != NULL);
+//    
+//    FILE *stream;
+//    errno_t err;
+//    assert(fopen_s(&stream, relativePath, "r") == 0);
+//    
+//    assert(stream != NULL);
+//    
+//    fseek(stream, 0, SEEK_END);
+//    long stream_size = ftell(stream);
+//    fseek(stream, 0, SEEK_SET);
+//    
+//    void* buffer = malloc(stream_size);
+//    fread(buffer, stream_size, 1, stream);
+//    
+//    assert(ferror(stream) == 0);
+//    fclose(stream);
+//    
+//    return FileData(stream_size, buffer, NULL);
 }
 
 void WindowsAssetDataHandler::releaseAssetData(const FileData* fileData)
 {
     assert(fileData != NULL);
-    assert(fileData->data != NULL);
+    assert(fileData->file_handle != NULL);
     
-    free((void *)fileData->data);
+    delete fileData->file_handle;
+    
+//    assert(fileData != NULL);
+//    assert(fileData->data != NULL);
+//
+//    free((void *)fileData->data);
 }
 
 WindowsAssetDataHandler::WindowsAssetDataHandler() : AssetDataHandler()
 {
     // Empty
 }
+
