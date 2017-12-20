@@ -28,22 +28,32 @@ FileData WindowsAssetDataHandler::getAssetData(const char* relativePath, bool is
         assert(relativePath != NULL);
         
         FILE *stream;
-        errno_t err;
         assert(fopen_s(&stream, relativePath, "r") == 0);
         
         assert(stream != NULL);
         
-        fseek(stream, 0, SEEK_END);
-        long stream_size = ftell(stream);
-        fseek(stream, 0, SEEK_SET);
+		// seek to end of file
+		fseek(stream, 0, SEEK_END);
+
+		// get current file position which is end from seek
+		size_t size = ftell(stream);
+
+		std::string* rawDataP = new std::string();
+		std::string& rawData = *rawDataP;
+
+		// allocate string space and set length
+		rawData.resize(size);
+
+		// go back to beginning of file for read
+		rewind(stream);
+
+		// read 1*size bytes from sfile into ss
+		fread(&rawData[0], 1, size, stream);
+
+		// close the file
+		fclose(stream);
         
-        void* buffer = malloc(stream_size);
-        fread(buffer, stream_size, 1, stream);
-        
-        assert(ferror(stream) == 0);
-        fclose(stream);
-        
-        return FileData(stream_size, buffer, NULL);
+        return FileData(size, (void*)rawData.c_str(), rawDataP);
     }
     else
     {
@@ -94,15 +104,9 @@ FileData WindowsAssetDataHandler::getAssetData(const char* relativePath, bool is
 void WindowsAssetDataHandler::releaseAssetData(const FileData* fileData)
 {
     assert(fileData != NULL);
-    
-    if (fileData->file_handle != NULL)
-    {
-        delete fileData->file_handle;
-    }
-    else if (fileData->data != NULL)
-    {
-        free((void *)fileData->data);
-    }
+	assert(fileData->file_handle != NULL);
+
+	delete fileData->file_handle;
 }
 
 WindowsAssetDataHandler::WindowsAssetDataHandler() : AssetDataHandler()
