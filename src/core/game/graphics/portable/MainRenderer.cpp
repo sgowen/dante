@@ -63,7 +63,6 @@ _characters(new NGTexture("texture_001.ngt", this, false, true)),
 _misc(new NGTexture("texture_002.ngt", this, false, true)),
 _bg1(new NGTexture("texture_003.ngt", this, true, true)),
 _bg2(new NGTexture("texture_004.ngt", this, true, true)),
-_cover(new NGTexture("texture_005.ngt", this, true, true)),
 _font(new Font("texture_002.ngt", 0, 0, 16, 64, 75, TEXTURE_SIZE_1024)),
 _camBounds(new NGRect(0, 0, CAM_WIDTH, CAM_HEIGHT))
 {
@@ -78,7 +77,6 @@ MainRenderer::~MainRenderer()
 	delete _misc;
     delete _bg1;
     delete _bg2;
-    delete _cover;
     delete _font;
 }
 
@@ -106,7 +104,6 @@ void MainRenderer::createDeviceDependentResources()
     loadTextureSync(_misc);
     loadTextureSync(_bg1);
     loadTextureSync(_bg2);
-    loadTextureSync(_cover);
 }
 
 void MainRenderer::releaseDeviceDependentResources()
@@ -117,7 +114,6 @@ void MainRenderer::releaseDeviceDependentResources()
 	unloadTexture(_misc);
     unloadTexture(_bg1);
     unloadTexture(_bg2);
-    unloadTexture(_cover);
 }
 
 void MainRenderer::render(int flags)
@@ -129,8 +125,7 @@ void MainRenderer::render(int flags)
     if (ensureTexture(_characters)
         && ensureTexture(_misc)
         && ensureTexture(_bg1)
-        && ensureTexture(_bg2)
-        && ensureTexture(_cover))
+        && ensureTexture(_bg2))
     {
         updateCamera();
         
@@ -139,11 +134,6 @@ void MainRenderer::render(int flags)
         if (InstanceManager::getClientWorld())
         {
             renderWorld();
-        }
-        
-        if (FlagUtil::isFlagSet(flags, MAIN_ENGINE_FLAG_SHOW_ATMOSPHERE))
-        {
-            renderAtmosphere();
         }
         
 #ifdef NG_TEST_RENDERING_SUITE
@@ -317,25 +307,13 @@ void MainRenderer::renderEntities(World* world, bool isServer)
     _spriteBatcher->endBatch(_characters, *_textureShaderProgram);
 }
 
-void MainRenderer::renderAtmosphere()
-{
-    _rendererHelper->updateMatrix(0, CAM_WIDTH, 0, CAM_HEIGHT);
-    
-    _spriteBatcher->beginBatch();
-    {
-        static TextureRegion tr = ASSETS->findTextureRegion("Cover");
-        _spriteBatcher->renderSprite(CAM_WIDTH / 2, CAM_HEIGHT / 2, CAM_WIDTH, CAM_HEIGHT, 0, tr);
-    }
-    _spriteBatcher->endBatch(_cover, *_textureShaderProgram);
-}
-
 void MainRenderer::renderUI(int flags)
 {
     _rendererHelper->updateMatrix(0, CAM_WIDTH, 0, CAM_HEIGHT);
     
     _spriteBatcher->beginBatch();
     
-    int state = FlagUtil::removeFlag(flags, MAIN_ENGINE_FLAG_SHOW_ATMOSPHERE);
+    int state = flags;
     switch (state)
     {
         case MAIN_ENGINE_STATE_MAIN_MENU_STEAM_OFF:
@@ -562,13 +540,6 @@ void MainRenderer::renderServerJoinedText(int flags)
             static b2Vec2 origin = b2Vec2(CAM_WIDTH - 0.5f, CAM_HEIGHT - (row++ * padding));
             
             std::string text = StringUtil::format("'I'       DEBUG %s", Server::getInstance()->isDisplaying() ? " ON" : "OFF");
-            renderText(text, origin, Color::BLACK, FONT_ALIGN_RIGHT);
-        }
-        
-        {
-            static b2Vec2 origin = b2Vec2(CAM_WIDTH - 0.5f, CAM_HEIGHT - (row++ * padding));
-            
-            std::string text = StringUtil::format("'P'  ATMOSPHERE %s", FlagUtil::isFlagSet(flags, MAIN_ENGINE_FLAG_SHOW_ATMOSPHERE) ? " ON" : "OFF");
             renderText(text, origin, Color::BLACK, FONT_ALIGN_RIGHT);
         }
     }

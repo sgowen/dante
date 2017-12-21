@@ -175,17 +175,6 @@ void MainEngine::handleNonMoveInput()
             {
                 Server::getInstance()->toggleObjects();
             }
-            else if (inputState->getMenuState() == MENU_STATE_SERVER_TOGGLE_ATMOSPHERE)
-            {
-                if (FlagUtil::isFlagSet(_engineState, MAIN_ENGINE_FLAG_SHOW_ATMOSPHERE))
-                {
-                    _engineState = FlagUtil::removeFlag(_engineState, MAIN_ENGINE_FLAG_SHOW_ATMOSPHERE);
-                }
-                else
-                {
-                    _engineState = FlagUtil::setFlag(_engineState, MAIN_ENGINE_FLAG_SHOW_ATMOSPHERE);
-                }
-            }
             else if (inputState->getMenuState() == MENU_STATE_SERVER_TOGGLE_SERVER_DISPLAY)
             {
                 Server::getInstance()->toggleDisplaying();

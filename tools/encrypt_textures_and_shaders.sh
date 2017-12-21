@@ -17,4 +17,3 @@ $XOREncryptDecryptTool texture_001.png texture_001.ngt
 $XOREncryptDecryptTool texture_002.png texture_002.ngt
 $XOREncryptDecryptTool texture_003.png texture_003.ngt
 $XOREncryptDecryptTool texture_004.png texture_004.ngt
-$XOREncryptDecryptTool texture_005.png texture_005.ngt

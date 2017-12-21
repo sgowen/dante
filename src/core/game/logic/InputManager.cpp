@@ -86,9 +86,6 @@ void InputManager::update()
                 case NG_KEY_O:
                     _currentState->_menuState = (*i)->isUp() ? MENU_STATE_SERVER_TOGGLE_OBJECTS : _currentState->_menuState;
                     continue;
-                case NG_KEY_P:
-                    _currentState->_menuState = (*i)->isUp() ? MENU_STATE_SERVER_TOGGLE_ATMOSPHERE : _currentState->_menuState;
-                    continue;
                 case NG_KEY_I:
                     _currentState->_menuState = (*i)->isUp() ? MENU_STATE_SERVER_TOGGLE_SERVER_DISPLAY : _currentState->_menuState;
                     continue;

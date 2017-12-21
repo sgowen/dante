@@ -38,7 +38,6 @@ private:
     NGTexture* _misc;
     NGTexture* _bg1;
     NGTexture* _bg2;
-    NGTexture* _cover;
     Font* _font;
     NGRect* _camBounds;
     

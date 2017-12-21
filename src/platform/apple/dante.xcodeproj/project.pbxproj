@@ -21,7 +21,6 @@
 		BB0864751EE20CCA00BCD9E0 /* EntityRegistry.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB0864721EE20CCA00BCD9E0 /* EntityRegistry.cpp */; };
 		BB125E101EFAF61F00917328 /* texture_003.ngt in Resources */ = {isa = PBXBuildFile; fileRef = BB125E0D1EFAF61F00917328 /* texture_003.ngt */; };
 		BB125E111EFAF61F00917328 /* texture_004.ngt in Resources */ = {isa = PBXBuildFile; fileRef = BB125E0E1EFAF61F00917328 /* texture_004.ngt */; };
-		BB125E121EFAF61F00917328 /* texture_005.ngt in Resources */ = {isa = PBXBuildFile; fileRef = BB125E0F1EFAF61F00917328 /* texture_005.ngt */; };
 		BB1914441FABB78400BDC6D0 /* libsteam_api.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BB1914431FABB78400BDC6D0 /* libsteam_api.dylib */; };
 		BB19148E1FABBD1300BDC6D0 /* libsteam_api.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BB1914431FABB78400BDC6D0 /* libsteam_api.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		BB1C3BF91FE75FD3002E4AA6 /* Color.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB1C3BF81FE75FD3002E4AA6 /* Color.cpp */; };
@@ -154,7 +153,6 @@
 		BB5067031FB36EBA00CADEEA /* texture_002.ngt in Resources */ = {isa = PBXBuildFile; fileRef = BB5066F21FB36EBA00CADEEA /* texture_002.ngt */; };
 		BB5067051FB36EBA00CADEEA /* texture_003.ngt in Resources */ = {isa = PBXBuildFile; fileRef = BB5066F41FB36EBA00CADEEA /* texture_003.ngt */; };
 		BB5067071FB36EBA00CADEEA /* texture_004.ngt in Resources */ = {isa = PBXBuildFile; fileRef = BB5066F61FB36EBA00CADEEA /* texture_004.ngt */; };
-		BB5067091FB36EBA00CADEEA /* texture_005.ngt in Resources */ = {isa = PBXBuildFile; fileRef = BB5066F81FB36EBA00CADEEA /* texture_005.ngt */; };
 		BB5067201FB370A300CADEEA /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB50671E1FB3709200CADEEA /* Cocoa.framework */; };
 		BB5067211FB370A300CADEEA /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB50671D1FB3708E00CADEEA /* OpenGL.framework */; };
 		BB5067221FB370A300CADEEA /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB50671C1FB3708700CADEEA /* CoreGraphics.framework */; };
@@ -565,10 +563,8 @@
 		BB0CA6F11FE5B7130011B75B /* NGTextureSlot.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NGTextureSlot.h; sourceTree = "<group>"; };
 		BB125E0D1EFAF61F00917328 /* texture_003.ngt */ = {isa = PBXFileReference; lastKnownFileType = text; path = texture_003.ngt; sourceTree = "<group>"; };
 		BB125E0E1EFAF61F00917328 /* texture_004.ngt */ = {isa = PBXFileReference; lastKnownFileType = file; path = texture_004.ngt; sourceTree = "<group>"; };
-		BB125E0F1EFAF61F00917328 /* texture_005.ngt */ = {isa = PBXFileReference; lastKnownFileType = file; path = texture_005.ngt; sourceTree = "<group>"; };
 		BB125E131EFAF62800917328 /* texture_003.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = texture_003.png; sourceTree = "<group>"; };
 		BB125E141EFAF62800917328 /* texture_004.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = texture_004.png; sourceTree = "<group>"; };
-		BB125E151EFAF62900917328 /* texture_005.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = texture_005.png; sourceTree = "<group>"; };
 		BB190EA41FAB910900BDC6D0 /* allocators.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = allocators.h; sourceTree = "<group>"; };
 		BB190EA51FAB910900BDC6D0 /* cursorstreamwrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = cursorstreamwrapper.h; sourceTree = "<group>"; };
 		BB190EA61FAB910900BDC6D0 /* document.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = document.h; sourceTree = "<group>"; };
@@ -807,9 +803,7 @@
 		BB5066F21FB36EBA00CADEEA /* texture_002.ngt */ = {isa = PBXFileReference; lastKnownFileType = file; path = texture_002.ngt; sourceTree = "<group>"; };
 		BB5066F41FB36EBA00CADEEA /* texture_003.ngt */ = {isa = PBXFileReference; lastKnownFileType = file; path = texture_003.ngt; sourceTree = "<group>"; };
 		BB5066F61FB36EBA00CADEEA /* texture_004.ngt */ = {isa = PBXFileReference; lastKnownFileType = file; path = texture_004.ngt; sourceTree = "<group>"; };
-		BB5066F81FB36EBA00CADEEA /* texture_005.ngt */ = {isa = PBXFileReference; lastKnownFileType = file; path = texture_005.ngt; sourceTree = "<group>"; };
 		BB50670B1FB36F2D00CADEEA /* texture_003.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = texture_003.png; sourceTree = "<group>"; };
-		BB50670C1FB36F2D00CADEEA /* texture_005.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = texture_005.png; sourceTree = "<group>"; };
 		BB50670D1FB36F2D00CADEEA /* texture_001.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = texture_001.png; sourceTree = "<group>"; };
 		BB50670E1FB36F2D00CADEEA /* texture_002.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = texture_002.png; sourceTree = "<group>"; };
 		BB50670F1FB36F2E00CADEEA /* texture_004.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = texture_004.png; sourceTree = "<group>"; };
@@ -2149,8 +2143,6 @@
 				BB50670B1FB36F2D00CADEEA /* texture_003.png */,
 				BB5066F61FB36EBA00CADEEA /* texture_004.ngt */,
 				BB50670F1FB36F2E00CADEEA /* texture_004.png */,
-				BB5066F81FB36EBA00CADEEA /* texture_005.ngt */,
-				BB50670C1FB36F2D00CADEEA /* texture_005.png */,
 			);
 			path = textures;
 			sourceTree = "<group>";
@@ -2262,8 +2254,6 @@
 				BB125E131EFAF62800917328 /* texture_003.png */,
 				BB125E0E1EFAF61F00917328 /* texture_004.ngt */,
 				BB125E141EFAF62800917328 /* texture_004.png */,
-				BB125E0F1EFAF61F00917328 /* texture_005.ngt */,
-				BB125E151EFAF62900917328 /* texture_005.png */,
 			);
 			path = textures;
 			sourceTree = "<group>";
@@ -3672,7 +3662,6 @@
 				BB5833ED1EEDDD330084DA20 /* sound_002.wav in Resources */,
 				BB5833F31EEDDD330084DA20 /* texture_002.ngt in Resources */,
 				BB2AC5471EFC56330012B990 /* sound_006.wav in Resources */,
-				BB125E121EFAF61F00917328 /* texture_005.ngt in Resources */,
 				BB052CCF1EBA8ADD007FA789 /* shader_003_frag.ngs in Resources */,
 				BB6363381FEB0551001BB9E1 /* assets.cfg in Resources */,
 				BB052CC71EBA8ADD007FA789 /* shader_001_frag.ngs in Resources */,
@@ -3714,7 +3703,6 @@
 				BBD3E8681FB2872A00328E35 /* Main.storyboard in Resources */,
 				BB5066FB1FB36EBA00CADEEA /* sound_001.wav in Resources */,
 				BB5067001FB36EBA00CADEEA /* sound_006.wav in Resources */,
-				BB5067091FB36EBA00CADEEA /* texture_005.ngt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
