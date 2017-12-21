@@ -105,7 +105,7 @@ void Assets::initWithJson(const char* json)
                 assert(va.IsArray());
                 
                 std::vector<float> frameTimes;
-                for (SizeType i = 0; i < v.Size(); ++i)
+                for (SizeType i = 0; i < va.Size(); ++i)
                 {
                     const Value& iva = va[i];
                     frameTimes.push_back(iva.GetFloat());
