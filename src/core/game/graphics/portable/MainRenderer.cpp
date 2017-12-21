@@ -304,10 +304,7 @@ void MainRenderer::renderEntities(World* world, bool isServer)
         }
         
         bool isMoving = r->getVelocity().x < -0.5f || r->getVelocity().x > 0.5f;
-        TextureRegion tr = ASSETS->findTextureRegion(
-                                                     r->isGrounded() ?
-                                                     isMoving ? r->isShooting() ? "Samus_Shooting" : (r->isSprinting() ? "Samus_Running_Fast" : "Samus_Running") : "Samus_Idle" :
-                                                     r->getVelocity().y > 0 ? "Samus_Jumping" : "Samus_Falling", r->getStateTime());
+        TextureRegion tr = ASSETS->findTextureRegion(!isMoving ? "Bot_Idle" : r->isSprinting() ? "Bot_Running_Fast" : "Bot_Running", r->getStateTime());
         
         if (isServer)
         {

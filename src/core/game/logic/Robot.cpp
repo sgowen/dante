@@ -45,7 +45,7 @@ NGRTTI_IMPL(Robot, Entity);
 
 NW_TYPE_IMPL(Robot);
 
-Robot::Robot(b2World& world, bool isServer) : Entity(world, 0, 0, 1.565217391304348f, 2.0f, isServer, constructEntityDef()),
+Robot::Robot(b2World& world, bool isServer) : Entity(world, 0, 0, 2.0f, 2.0f, isServer, constructEntityDef()),
 _addressHash(0),
 _firstProjectileId(0),
 _playerId(0),
