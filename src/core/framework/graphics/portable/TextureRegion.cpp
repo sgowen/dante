@@ -10,7 +10,7 @@
 
 #include "framework/graphics/portable/TextureRegion.h"
 
-TextureRegion::TextureRegion(std::string textureName, int x, int y, int regionWidth, int regionHeight, int textureWidth, int textureHeight) : _textureName(textureName)
+TextureRegion::TextureRegion(std::string textureName, int x, int y, int regionWidth, int regionHeight, int textureWidth, int textureHeight)
 {
     init(x, y, regionWidth, regionHeight, textureWidth, textureHeight);
 }
@@ -24,26 +24,26 @@ void TextureRegion::init(int x, int y, int regionWidth, int regionHeight, int te
     _textureWidth = (double) textureWidth;
     _textureHeight = (double) textureHeight;
     
-    u1 = _x / _textureWidth;
-    v1 = _y / _textureHeight;
-    u2 = u1 + _regionWidth / _textureWidth;
-    v2 = v1 + _regionHeight / _textureHeight;
+    _u1 = _x / _textureWidth;
+    _v1 = _y / _textureHeight;
+    _u2 = _u1 + _regionWidth / _textureWidth;
+    _v2 = _v1 + _regionHeight / _textureHeight;
 }
 
 void TextureRegion::initX(int x)
 {
     _x = (double) x;
     
-    u1 = _x / _textureWidth;
-    u2 = u1 + _regionWidth / _textureWidth;
+    _u1 = _x / _textureWidth;
+    _u2 = _u1 + _regionWidth / _textureWidth;
 }
 
 void TextureRegion::initY(int y)
 {
     _y = (double) y;
     
-    v1 = _y / _textureHeight;
-    v2 = v1 + _regionHeight / _textureHeight;
+    _v1 = _y / _textureHeight;
+    _v2 = _v1 + _regionHeight / _textureHeight;
 }
 
 std::string& TextureRegion::getTextureName()

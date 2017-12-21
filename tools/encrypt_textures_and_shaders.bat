@@ -18,3 +18,18 @@ ECHO .
 ECHO .
 
 del /s *.cso
+
+ECHO Encrypting Textures...
+
+cd ..\textures
+
+%XOREncryptDecryptTool% texture_001.dds texture_001.ngt
+ECHO .
+%XOREncryptDecryptTool% texture_002.dds texture_002.ngt
+ECHO .
+%XOREncryptDecryptTool% texture_003.dds texture_003.ngt
+ECHO .
+%XOREncryptDecryptTool% texture_004.dds texture_004.ngt
+ECHO .
+
+del /s *.dds

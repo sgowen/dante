@@ -27,17 +27,9 @@ public:
     
     virtual ~MainRenderer();
     
-    virtual void createDeviceDependentResources();
-    
-    virtual void releaseDeviceDependentResources();
-    
     virtual void render(int flags = 0);
     
 private:
-    NGTexture* _characters;
-    NGTexture* _misc;
-    NGTexture* _bg1;
-    NGTexture* _bg2;
     Font* _font;
     NGRect* _camBounds;
     

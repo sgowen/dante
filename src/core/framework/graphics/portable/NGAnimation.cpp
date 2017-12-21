@@ -102,6 +102,11 @@ bool NGAnimation::hasFrameTimes()
     return _frameTimes.size() > 0;
 }
 
+std::string& NGAnimation::getTextureName()
+{
+    return _textureName;
+}
+
 void NGAnimation::loadTextureRegions(int x, int y, int regionWidth, int regionHeight, int animationWidth, int animationHeight, int textureWidth, int textureHeight, int numFrames, int xPadding, int yPadding)
 {
 	int right = x + animationWidth;

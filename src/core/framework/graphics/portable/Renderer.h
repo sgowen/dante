@@ -46,6 +46,7 @@ public:
     void loadTextureSync(NGTexture* texture);
     void loadTextureAsync(NGTexture* texture);
     void unloadTexture(NGTexture* texture);
+    bool ensureTextures();
     bool ensureTexture(NGTexture* texture);
     
 protected:
@@ -61,6 +62,8 @@ protected:
     ShaderProgram* _textureShaderProgram;
     ShaderProgram* _colorShaderProgram;
     ShaderProgram* _framebufferToScreenShaderProgram;
+    
+    std::vector<NGTexture*> _textures;
     
     int _framebufferIndex;
     

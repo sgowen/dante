@@ -11,7 +11,9 @@
 
 #include <map>
 #include <string>
+#include <vector>
 
+struct NGTextureDesc;
 class TextureRegion;
 class NGAnimation;
 
@@ -33,11 +35,14 @@ public:
     
     NGAnimation& findNGAnimation(std::string key);
     
+    std::vector<NGTextureDesc*>& getTextures();
+    
     std::map<std::string, TextureRegion*>& getTextureRegionMap();
     
     std::map<std::string, NGAnimation*>& getAnimationsMap();
 
 private:
+    std::vector<NGTextureDesc*> _textures;
     std::map<std::string, TextureRegion*> _textureRegions;
     std::map<std::string, NGAnimation*> _animations;
     

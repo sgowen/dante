@@ -10,6 +10,7 @@
 
 #include "framework/graphics/portable/Assets.h"
 
+#include "framework/graphics/portable/NGTextureDesc.h"
 #include "framework/graphics/portable/TextureRegion.h"
 #include "framework/graphics/portable/NGAnimation.h"
 
@@ -34,7 +35,20 @@ void Assets::sDeserializerFunc(const char* data)
 
 void Assets::initWithJsonFile(const char* path, bool isBundled, bool useEncryption)
 {
-    JsonFile jsonFile(path, isBundled, useEncryption);
+    const char* finalPath;
+#if defined __linux__ && !defined(__ANDROID__)
+    std::string s("data/textures/");
+    s += std::string(path);
+    finalPath = s.c_str();
+#elif defined _WIN32
+    std::string s("data\\textures\\");
+    s += std::string(path);
+    finalPath = s.c_str();
+#else
+    finalPath = path;
+#endif
+    
+    JsonFile jsonFile(finalPath, isBundled, useEncryption);
     jsonFile.setDeserializerFunc(sDeserializerFunc);
     jsonFile.load();
 }
@@ -49,8 +63,24 @@ void Assets::initWithJson(const char* json)
     Document d;
     d.Parse<0>(json);
     
+    assert(d.HasMember("textures"));
     assert(d.HasMember("textureRegions"));
     assert(d.HasMember("animations"));
+    
+    {
+        Value& v = d["textures"];
+        
+        assert(v.IsArray());
+        for (SizeType i = 0; i < v.Size(); ++i)
+        {
+            const Value& iv = v[i];
+            std::string textureName = iv["textureName"].GetString();
+            bool repeatS = iv["repeatS"].GetBool();
+            bool isEncrypted = iv["isEncrypted"].GetBool();
+            
+            _textures.push_back(new NGTextureDesc(textureName, repeatS, isEncrypted));
+        }
+    }
     
     {
         Value& v = d["textureRegions"];
@@ -166,6 +196,11 @@ NGAnimation& Assets::findNGAnimation(std::string key)
     NGAnimation* anim = q->second;
     
     return *anim;
+}
+
+std::vector<NGTextureDesc*>& Assets::getTextures()
+{
+    return _textures;
 }
 
 std::map<std::string, TextureRegion*>& Assets::getTextureRegionMap()

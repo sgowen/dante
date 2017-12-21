@@ -31,7 +31,7 @@ public:
     
     bool hasFrameTimes();
     
-    std::string& getTextureName() { return _textureName; }
+    std::string& getTextureName();
     
 private:
     std::vector<TextureRegion> _textureRegions;

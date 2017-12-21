@@ -14,7 +14,7 @@
 class TextureRegion
 {
 public:
-    double u1, v1, u2, v2;
+    double _u1, _v1, _u2, _v2;
     double _x, _y, _regionWidth, _regionHeight, _textureWidth, _textureHeight;
     
     TextureRegion(std::string textureName, int x, int y, int regionWidth, int regionHeight, int textureWidth, int textureHeight);

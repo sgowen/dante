@@ -35,6 +35,8 @@
 #include <framework/graphics/portable/NGTextureProgram.h>
 #include <framework/graphics/portable/NGGeometryProgram.h>
 #include <framework/graphics/portable/NGFramebufferToScreenProgram.h>
+#include "framework/graphics/portable/NGTextureDesc.h"
+#include "framework/graphics/portable/Assets.h"
 
 #include <Box2D/Box2D.h>
 
@@ -62,6 +64,8 @@ _areWindowSizeDependentResourcesCreated(false)
 
 Renderer::~Renderer()
 {
+    releaseDeviceDependentResources();
+    
     delete _rendererHelper;
     
     delete _spriteBatcher;
@@ -72,6 +76,8 @@ Renderer::~Renderer()
     
     delete _textureLoader;
     delete _shaderProgramLoader;
+    
+    NGSTDUtil::cleanUpVectorOfPointers(_textures);
 }
 
 void Renderer::createDeviceDependentResources()
@@ -81,6 +87,22 @@ void Renderer::createDeviceDependentResources()
     _textureShaderProgram = new NGTextureProgram(*_rendererHelper, *_shaderProgramLoader, "shader_003_vert.ngs", "shader_003_frag.ngs");
     _colorShaderProgram = new NGGeometryProgram(*_rendererHelper, *_shaderProgramLoader, "shader_001_vert.ngs", "shader_001_frag.ngs");
     _framebufferToScreenShaderProgram = new NGFramebufferToScreenProgram(*_rendererHelper, *_shaderProgramLoader, "shader_002_vert.ngs", "shader_002_frag.ngs");
+    
+    ASSETS->initWithJsonFile("assets.cfg", true);
+    
+    if (_textures.size() == 0)
+    {
+        std::vector<NGTextureDesc*>& textureDescs = ASSETS->getTextures();
+        for (NGTextureDesc* td : textureDescs)
+        {
+            _textures.push_back(new NGTexture(td->_textureName, this, td->_repeatS, td->_isEncrypted));
+        }
+    }
+    
+    for (NGTexture* t : _textures)
+    {
+        loadTextureSync(t);
+    }
     
     _areDeviceDependentResourcesCreated = true;
 }
@@ -111,6 +133,11 @@ void Renderer::releaseDeviceDependentResources()
 
     delete _framebufferToScreenShaderProgram;
 	_framebufferToScreenShaderProgram = NULL;
+    
+    for (NGTexture* t : _textures)
+    {
+        unloadTexture(t);
+    }
 }
 
 void Renderer::loadTextureDataSync(NGTexture* arg)
@@ -123,7 +150,7 @@ void Renderer::loadTextureDataSync(NGTexture* arg)
     assert(texture->name.length() > 0);
     
     if (texture->textureWrapper
-        || !texture->_renderer->_areDeviceDependentResourcesCreated)
+        || texture->_isLoadingData)
     {
         return;
     }
@@ -159,8 +186,7 @@ void Renderer::loadTextureAsync(NGTexture* texture)
     assert(texture->name.length() > 0);
     
     if (texture->textureWrapper
-        || texture->_isLoadingData
-        || !_areDeviceDependentResourcesCreated)
+        || texture->_isLoadingData)
     {
         return;
     }
@@ -205,6 +231,19 @@ void Renderer::unloadTexture(NGTexture* texture)
     }
     
     texture->_isLoadingData = false;
+}
+
+bool Renderer::ensureTextures()
+{
+    for (NGTexture* t : _textures)
+    {
+        if (!ensureTexture(t))
+        {
+            return false;
+        }
+    }
+    
+    return true;
 }
 
 bool Renderer::ensureTexture(NGTexture* texture)

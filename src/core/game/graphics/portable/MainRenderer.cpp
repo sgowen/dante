@@ -59,11 +59,7 @@
 #include <ctime> // rand
 
 MainRenderer::MainRenderer() : Renderer(),
-_characters(new NGTexture("texture_001.ngt", this, false, true)),
-_misc(new NGTexture("texture_002.ngt", this, false, true)),
-_bg1(new NGTexture("texture_003.ngt", this, true, true)),
-_bg2(new NGTexture("texture_004.ngt", this, true, true)),
-_font(new Font("texture_002.ngt", 0, 0, 16, 64, 75, TEXTURE_SIZE_1024)),
+_font(new Font("texture_001.ngt", 0, 0, 16, 64, 75, TEXTURE_SIZE_1024)),
 _camBounds(new NGRect(0, 0, CAM_WIDTH, CAM_HEIGHT))
 {
     // Empty
@@ -71,49 +67,7 @@ _camBounds(new NGRect(0, 0, CAM_WIDTH, CAM_HEIGHT))
 
 MainRenderer::~MainRenderer()
 {
-	releaseDeviceDependentResources();
-
-	delete _characters;
-	delete _misc;
-    delete _bg1;
-    delete _bg2;
     delete _font;
-}
-
-void MainRenderer::createDeviceDependentResources()
-{
-    Renderer::createDeviceDependentResources();
-    
-    const char* assetsCfgFileName = "assets.cfg";
-    const char* finalAssetsCfgFileName;
-#if defined __linux__ && !defined(__ANDROID__)
-    std::string s("data/textures/");
-    s += std::string(assetsCfgFileName);
-    finalAssetsCfgFileName = s.c_str();
-#elif defined _WIN32
-    std::string s("data\\textures\\");
-    s += std::string(assetsCfgFileName);
-    finalAssetsCfgFileName = s.c_str();
-#else
-    finalAssetsCfgFileName = assetsCfgFileName;
-#endif
-    
-    ASSETS->initWithJsonFile(finalAssetsCfgFileName, true);
-    
-    loadTextureSync(_characters);
-    loadTextureSync(_misc);
-    loadTextureSync(_bg1);
-    loadTextureSync(_bg2);
-}
-
-void MainRenderer::releaseDeviceDependentResources()
-{
-    Renderer::releaseDeviceDependentResources();
-
-	unloadTexture(_characters);
-	unloadTexture(_misc);
-    unloadTexture(_bg1);
-    unloadTexture(_bg2);
 }
 
 void MainRenderer::render(int flags)
@@ -122,10 +76,7 @@ void MainRenderer::render(int flags)
     
     _rendererHelper->clearFramebufferWithColor(0.0f, 0.0f, 0.0f, 1);
     
-    if (ensureTexture(_characters)
-        && ensureTexture(_misc)
-        && ensureTexture(_bg1)
-        && ensureTexture(_bg2))
+    if (ensureTextures())
     {
         updateCamera();
         
@@ -153,7 +104,7 @@ void MainRenderer::renderBackground()
     for (int i = 0; i < 3; ++i)
     {
         _rendererHelper->updateMatrix(0, GAME_WIDTH, 0, CAM_HEIGHT);
-        
+
         _spriteBatcher->beginBatch();
         {
             static TextureRegion tr = ASSETS->findTextureRegion("Background1");
@@ -161,8 +112,8 @@ void MainRenderer::renderBackground()
             tr.initY(clamp(384 - _camBounds->getBottom() * 32, 384, 0));
             _spriteBatcher->renderSprite(i * CAM_WIDTH + CAM_WIDTH / 2, CAM_HEIGHT / 2, CAM_WIDTH, CAM_HEIGHT, 0, tr);
         }
-        _spriteBatcher->endBatch(_bg1, *_textureShaderProgram);
-        
+        _spriteBatcher->endBatch(_textures[2], *_textureShaderProgram);
+
         _spriteBatcher->beginBatch();
         {
             static TextureRegion tr = ASSETS->findTextureRegion("Background2");
@@ -170,7 +121,7 @@ void MainRenderer::renderBackground()
             tr.initY(clamp(644 - _camBounds->getBottom() * 48, 644, 0));
             _spriteBatcher->renderSprite(i * CAM_WIDTH + CAM_WIDTH / 2, CAM_HEIGHT * 0.3875f / 2, CAM_WIDTH, CAM_HEIGHT * 0.3875f, 0, tr);
         }
-        _spriteBatcher->endBatch(_bg2, *_textureShaderProgram);
+        _spriteBatcher->endBatch(_textures[3], *_textureShaderProgram);
     }
 }
 
@@ -184,7 +135,7 @@ void MainRenderer::renderWorld()
         static TextureRegion tr = ASSETS->findTextureRegion("Background3");
         _spriteBatcher->renderSprite(i * CAM_WIDTH + CAM_WIDTH / 2, CAM_HEIGHT * 0.2f / 2, CAM_WIDTH, CAM_HEIGHT * 0.2f, 0, tr);
     }
-    _spriteBatcher->endBatch(_bg2, *_textureShaderProgram);
+    _spriteBatcher->endBatch(_textures[3], *_textureShaderProgram);
     
     renderEntities(InstanceManager::getClientWorld(), false);
     
@@ -203,10 +154,10 @@ void MainRenderer::renderWorld()
             b2Vec2 origin = b2Vec2(entity->getPosition().x, entity->getPosition().y);
             origin += b2Vec2(0, entity->getHeight() / 2);
             std::string text = StringUtil::format("%i", entity->getHealth());
-            renderText(text, origin, Color::DARK_RED, FONT_ALIGN_CENTERED);
+            renderText(text, origin, Color::RED, FONT_ALIGN_CENTERED);
         }
     }
-    _spriteBatcher->endBatch(_misc, *_textureShaderProgram);
+    _spriteBatcher->endBatch(_textures[0], *_textureShaderProgram);
 }
 
 void MainRenderer::renderEntities(World* world, bool isServer)
@@ -243,7 +194,7 @@ void MainRenderer::renderEntities(World* world, bool isServer)
         {
             Crate* crate = static_cast<Crate*>(go);
             static Color activeColor = Color(1.0f, 0, 0, 1.0f);
-            TextureRegion tr = ASSETS->findTextureRegion("Crate", go->getStateTime());
+            TextureRegion tr = ASSETS->findTextureRegion("Map_Crate", go->getStateTime());
             
             activeColor.alpha = isServer ? 0.5f : 1.0f;
             
@@ -304,7 +255,7 @@ void MainRenderer::renderEntities(World* world, bool isServer)
         renderEntityWithColor(*r, tr, c, r->isFacingLeft());
     }
     
-    _spriteBatcher->endBatch(_characters, *_textureShaderProgram);
+    _spriteBatcher->endBatch(_textures[1], *_textureShaderProgram);
 }
 
 void MainRenderer::renderUI(int flags)
@@ -342,7 +293,7 @@ void MainRenderer::renderUI(int flags)
         default:
             break;
     }
-    _spriteBatcher->endBatch(_misc, *_textureShaderProgram);
+    _spriteBatcher->endBatch(_textures[0], *_textureShaderProgram);
 }
 
 void MainRenderer::renderMainMenuSteamOffText()
