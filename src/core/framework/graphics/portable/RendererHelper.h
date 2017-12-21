@@ -32,7 +32,7 @@ public:
 
 	virtual void createWindowSizeDependentResources(int screenWidth, int screenHeight, int renderWidth, int renderHeight, int numFramebuffers);
 
-	virtual void releaseDeviceDependentResources();
+	virtual void releaseDeviceDependentResources() = 0;
     
     virtual void beginFrame() = 0;
     

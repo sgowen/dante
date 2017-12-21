@@ -41,14 +41,6 @@ void RendererHelper::createWindowSizeDependentResources(int screenWidth, int scr
     createFramebufferObjects();
 }
 
-void RendererHelper::releaseDeviceDependentResources()
-{
-    releaseFramebuffers();
-    
-    _textureVertices.clear();
-    _colorVertices.clear();
-}
-
 inline void mat4x4_identity(mat4x4 M)
 {
     int i, j;

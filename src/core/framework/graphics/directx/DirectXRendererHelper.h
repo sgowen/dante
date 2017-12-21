@@ -109,6 +109,9 @@ private:
     template <typename T>
     void createVertexBuffer(Microsoft::WRL::ComPtr<ID3D11Buffer>& vertexBuffer, std::vector<T>& vertices, uint32_t size)
     {
+        vertices.clear();
+        vertices.reserve(size);
+        
         T vertex;
         for (int i = 0; i < size; ++i)
         {

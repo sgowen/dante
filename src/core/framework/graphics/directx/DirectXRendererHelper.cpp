@@ -74,7 +74,7 @@ void DirectXRendererHelper::createDeviceDependentResources()
 
 void DirectXRendererHelper::releaseDeviceDependentResources()
 {
-    RendererHelper::releaseDeviceDependentResources();
+    releaseFramebuffers();
     
     _blendState.Reset();
     _screenBlendState.Reset();
