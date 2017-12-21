@@ -23,10 +23,10 @@ WindowsAssetDataHandler* WindowsAssetDataHandler::getInstance()
 
 FileData WindowsAssetDataHandler::getAssetData(const char* relativePath, bool isText)
 {
+    assert(relativePath != NULL);
+    
     if (isText)
     {
-        assert(relativePath != NULL);
-        
         FILE *stream;
         assert(fopen_s(&stream, relativePath, "r") == 0);
         

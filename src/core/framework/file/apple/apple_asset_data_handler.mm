@@ -11,6 +11,7 @@
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <fstream>
 
 #ifdef __APPLE__
 #include "TargetConditionals.h"
@@ -31,27 +32,36 @@ FileData appleGetAssetData(const char *relative_path)
     assert(bundlePath != NULL);
     
     FILE* stream = fopen(bundlePath, "r");
-    assert (stream != NULL);
+    assert(stream != NULL);
     
+    // seek to end of file
     fseek(stream, 0, SEEK_END);
-    long stream_size = ftell(stream);
-    fseek(stream, 0, SEEK_SET);
     
-    void* buffer = malloc(stream_size);
-    fread(buffer, stream_size, 1, stream);
+    // get current file position which is end from seek
+    long size = ftell(stream);
     
-    assert(ferror(stream) == 0);
+    std::string* rawDataP = new std::string();
+    std::string& rawData = *rawDataP;
+    
+    // allocate string space and set length
+    rawData.resize(size);
+    
+    // go back to beginning of file for read
+    rewind(stream);
+    
+    // read 1*size bytes from sfile into ss
+    fread(&rawData[0], 1, size, stream);
+    
+    // close the file
     fclose(stream);
     
-    return FileData(stream_size, buffer, NULL);
+    return FileData(size, (void*)rawData.c_str(), rawDataP);
 }
 
 void appleReleaseAssetData(const FileData *file_data)
 {
     assert(file_data != NULL);
-    assert(file_data->data != NULL);
-    
-    free((void *)file_data->data);
+    assert(file_data->file_handle != NULL);
 }
 
 const char * getPathInsideNSDocuments(const char* relative_path)
