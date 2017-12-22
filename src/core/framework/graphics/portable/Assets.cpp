@@ -100,6 +100,7 @@ void Assets::initWithJson(const char* json)
             int textureWidth = iv["textureWidth"].GetInt();
             int textureHeight = iv["textureHeight"].GetInt();
             
+            assert(!_textureRegions[key]);
             _textureRegions[key] = new TextureRegion(textureName, x, y, regionWidth, regionHeight, textureWidth, textureHeight);
         }
     }
@@ -128,6 +129,8 @@ void Assets::initWithJson(const char* json)
             int firstLoopingFrame = iv["firstLoopingFrame"].GetInt();
             int xPadding = iv["xPadding"].GetInt();
             int yPadding = iv["yPadding"].GetInt();
+            
+            assert(!_animations[key]);
             
             if (iv.HasMember("frameTimes"))
             {
