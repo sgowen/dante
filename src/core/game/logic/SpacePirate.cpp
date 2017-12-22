@@ -27,7 +27,7 @@
 #include "framework/math/OverlapTester.h"
 #include "framework/network/server/NetworkManagerServer.h"
 #include "framework/network/client/NetworkManagerClient.h"
-#include "game/network/InstanceManager.h"
+#include "game/logic/InstanceManager.h"
 #include "game/logic/Projectile.h"
 #include "game/logic/Util.h"
 #include "framework/entity/EntityRegistry.h"

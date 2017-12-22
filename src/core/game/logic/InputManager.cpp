@@ -10,7 +10,7 @@
 
 #include "game/logic/InputManager.h"
 
-#include "game/network/MainInputState.h"
+#include "game/logic/MainInputState.h"
 #include "framework/network/portable/Move.h"
 
 #include "framework/util/Timing.h"

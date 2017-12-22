@@ -1,6 +1,6 @@
 //
 //  MainInputState.cpp
-//  noctisgames-framework
+//  dante
 //
 //  Created by Stephen Gowen on 5/15/17.
 //  Copyright (c) 2017 Noctis Games. All rights reserved.
@@ -8,7 +8,7 @@
 
 #include "pch.h"
 
-#include "game/network/MainInputState.h"
+#include "game/logic/MainInputState.h"
 
 #include "framework/network/portable/OutputMemoryBitStream.h"
 #include "framework/network/portable/InputMemoryBitStream.h"

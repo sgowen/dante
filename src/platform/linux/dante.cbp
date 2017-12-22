@@ -622,12 +622,12 @@
 		<Unit filename="../../core/game/logic/Util.h" />
 		<Unit filename="../../core/game/logic/World.cpp" />
 		<Unit filename="../../core/game/logic/World.h" />
-		<Unit filename="../../core/game/network/InstanceManager.cpp" />
-		<Unit filename="../../core/game/network/InstanceManager.h" />
-		<Unit filename="../../core/game/network/MainInputState.cpp" />
-		<Unit filename="../../core/game/network/MainInputState.h" />
-		<Unit filename="../../core/game/network/Server.cpp" />
-		<Unit filename="../../core/game/network/Server.h" />
+		<Unit filename="../../core/game/logic/InstanceManager.cpp" />
+		<Unit filename="../../core/game/logic/InstanceManager.h" />
+		<Unit filename="../../core/game/logic/MainInputState.cpp" />
+		<Unit filename="../../core/game/logic/MainInputState.h" />
+		<Unit filename="../../core/game/logic/Server.cpp" />
+		<Unit filename="../../core/game/logic/Server.h" />
 		<Unit filename="main.cpp" />
 		<Unit filename="pch.h" />
 		<Extensions>

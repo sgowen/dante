@@ -8,7 +8,7 @@
 
 #include "pch.h"
 
-#include "game/network/InstanceManager.h"
+#include "game/logic/InstanceManager.h"
 
 #include "framework/entity/Entity.h"
 #include "game/logic/World.h"

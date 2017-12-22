@@ -219,10 +219,6 @@
 		BB5AFE0F1FB359DE005FBD52 /* SpacePirate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB6E7B0B1F940F13006C0024 /* SpacePirate.cpp */; };
 		BB5AFE101FB359DE005FBD52 /* SpacePirateChunk.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB6E7B0D1F940F13006C0024 /* SpacePirateChunk.cpp */; };
 		BB5AFE111FB359DE005FBD52 /* Util.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB6E7B0F1F940F13006C0024 /* Util.cpp */; };
-		BB5AFE121FB359DE005FBD52 /* World.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB6E7B111F940F13006C0024 /* World.cpp */; };
-		BB5AFE141FB359DE005FBD52 /* MainInputState.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB6E7AEE1F940F13006C0024 /* MainInputState.cpp */; };
-		BB5AFE151FB359DE005FBD52 /* InstanceManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB6E7AF01F940F13006C0024 /* InstanceManager.cpp */; };
-		BB5AFE161FB359DE005FBD52 /* Server.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB6E7AF21F940F13006C0024 /* Server.cpp */; };
 		BB5AFE171FB359EA005FBD52 /* FPSUtil.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBCDF24D1F3796C3006E94B0 /* FPSUtil.cpp */; };
 		BB5AFE191FB359EA005FBD52 /* NGRTTI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB74283D1EB2AF4200B7628D /* NGRTTI.cpp */; };
 		BB5AFE1A1FB359EA005FBD52 /* StringUtil.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBBD148E1EE06858003F9307 /* StringUtil.cpp */; };
@@ -291,6 +287,14 @@
 		BB5AFE7E1FB35ACA005FBD52 /* GridManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF0C51EA94ED900F0866E /* GridManager.cpp */; };
 		BB6363381FEB0551001BB9E1 /* assets.cfg in Resources */ = {isa = PBXBuildFile; fileRef = BB6363351FEAF65C001BB9E1 /* assets.cfg */; };
 		BB63633C1FEB0D3E001BB9E1 /* assets.cfg in Resources */ = {isa = PBXBuildFile; fileRef = BB63633B1FEB0D3E001BB9E1 /* assets.cfg */; };
+		BB6531601FED56CA00963997 /* MainInputState.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB65315B1FED56C800963997 /* MainInputState.cpp */; };
+		BB6531611FED56CA00963997 /* MainInputState.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB65315B1FED56C800963997 /* MainInputState.cpp */; };
+		BB6531621FED56CA00963997 /* World.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB65315C1FED56C800963997 /* World.cpp */; };
+		BB6531631FED56CA00963997 /* World.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB65315C1FED56C800963997 /* World.cpp */; };
+		BB6531641FED56CA00963997 /* Server.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB65315D1FED56C800963997 /* Server.cpp */; };
+		BB6531651FED56CA00963997 /* Server.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB65315D1FED56C800963997 /* Server.cpp */; };
+		BB6531681FED575B00963997 /* InstanceManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB6531661FED575B00963997 /* InstanceManager.cpp */; };
+		BB6531691FED575B00963997 /* InstanceManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB6531661FED575B00963997 /* InstanceManager.cpp */; };
 		BB6E7B151F940F2B006C0024 /* MainRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB6E7AFA1F940F13006C0024 /* MainRenderer.cpp */; };
 		BB6E7B161F940F2B006C0024 /* Crate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB6E7AFD1F940F13006C0024 /* Crate.cpp */; };
 		BB6E7B171F940F2B006C0024 /* Ground.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB6E7B001F940F13006C0024 /* Ground.cpp */; };
@@ -301,10 +305,6 @@
 		BB6E7B1C1F940F2B006C0024 /* SpacePirate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB6E7B0B1F940F13006C0024 /* SpacePirate.cpp */; };
 		BB6E7B1D1F940F2B006C0024 /* SpacePirateChunk.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB6E7B0D1F940F13006C0024 /* SpacePirateChunk.cpp */; };
 		BB6E7B1E1F940F2B006C0024 /* Util.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB6E7B0F1F940F13006C0024 /* Util.cpp */; };
-		BB6E7B1F1F940F2B006C0024 /* World.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB6E7B111F940F13006C0024 /* World.cpp */; };
-		BB6E7B211F940F2B006C0024 /* MainInputState.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB6E7AEE1F940F13006C0024 /* MainInputState.cpp */; };
-		BB6E7B221F940F2B006C0024 /* InstanceManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB6E7AF01F940F13006C0024 /* InstanceManager.cpp */; };
-		BB6E7B231F940F2B006C0024 /* Server.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB6E7AF21F940F13006C0024 /* Server.cpp */; };
 		BB6E7B241F940FD4006C0024 /* tinythread.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB6E7A8B1F93CE1B006C0024 /* tinythread.cpp */; };
 		BB6F59751FBDE97D00BD7697 /* cocoa_joystick.m in Sources */ = {isa = PBXBuildFile; fileRef = BB6F596F1FBDE97D00BD7697 /* cocoa_joystick.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		BB6F59761FBDE97D00BD7697 /* cocoa_init.m in Sources */ = {isa = PBXBuildFile; fileRef = BB6F59701FBDE97D00BD7697 /* cocoa_init.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -860,15 +860,16 @@
 		BB61CB581EC9FA1B000E0291 /* FrameworkConstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FrameworkConstants.h; sourceTree = "<group>"; };
 		BB6363351FEAF65C001BB9E1 /* assets.cfg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = assets.cfg; sourceTree = "<group>"; };
 		BB63633B1FEB0D3E001BB9E1 /* assets.cfg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = assets.cfg; sourceTree = "<group>"; };
+		BB65315A1FED56C700963997 /* MainInputState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainInputState.h; sourceTree = "<group>"; };
+		BB65315B1FED56C800963997 /* MainInputState.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MainInputState.cpp; sourceTree = "<group>"; };
+		BB65315C1FED56C800963997 /* World.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = World.cpp; sourceTree = "<group>"; };
+		BB65315D1FED56C800963997 /* Server.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Server.cpp; sourceTree = "<group>"; };
+		BB65315F1FED56C800963997 /* Server.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Server.h; sourceTree = "<group>"; };
+		BB6531661FED575B00963997 /* InstanceManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = InstanceManager.cpp; sourceTree = "<group>"; };
+		BB6531671FED575B00963997 /* InstanceManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InstanceManager.h; sourceTree = "<group>"; };
 		BB6E7A8A1F93CE1B006C0024 /* fast_mutex.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = fast_mutex.h; sourceTree = "<group>"; };
 		BB6E7A8B1F93CE1B006C0024 /* tinythread.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = tinythread.cpp; sourceTree = "<group>"; };
 		BB6E7A8C1F93CE1B006C0024 /* tinythread.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = tinythread.h; sourceTree = "<group>"; };
-		BB6E7AEE1F940F13006C0024 /* MainInputState.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = MainInputState.cpp; sourceTree = "<group>"; };
-		BB6E7AEF1F940F13006C0024 /* MainInputState.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MainInputState.h; sourceTree = "<group>"; };
-		BB6E7AF01F940F13006C0024 /* InstanceManager.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = InstanceManager.cpp; sourceTree = "<group>"; };
-		BB6E7AF11F940F13006C0024 /* InstanceManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InstanceManager.h; sourceTree = "<group>"; };
-		BB6E7AF21F940F13006C0024 /* Server.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Server.cpp; sourceTree = "<group>"; };
-		BB6E7AF31F940F13006C0024 /* Server.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Server.h; sourceTree = "<group>"; };
 		BB6E7AFA1F940F13006C0024 /* MainRenderer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = MainRenderer.cpp; sourceTree = "<group>"; };
 		BB6E7AFB1F940F13006C0024 /* MainRenderer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MainRenderer.h; sourceTree = "<group>"; };
 		BB6E7AFD1F940F13006C0024 /* Crate.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Crate.cpp; sourceTree = "<group>"; };
@@ -891,8 +892,6 @@
 		BB6E7B0E1F940F13006C0024 /* SpacePirateChunk.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SpacePirateChunk.h; sourceTree = "<group>"; };
 		BB6E7B0F1F940F13006C0024 /* Util.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Util.cpp; sourceTree = "<group>"; };
 		BB6E7B101F940F13006C0024 /* Util.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Util.h; sourceTree = "<group>"; };
-		BB6E7B111F940F13006C0024 /* World.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = World.cpp; sourceTree = "<group>"; };
-		BB6E7B121F940F13006C0024 /* World.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = World.h; sourceTree = "<group>"; };
 		BB6F58D21FBDE8FF00BD7697 /* glfw3.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = glfw3.h; sourceTree = "<group>"; };
 		BB6F58D31FBDE8FF00BD7697 /* glfw3native.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = glfw3native.h; sourceTree = "<group>"; };
 		BB6F596E1FBDE97D00BD7697 /* cocoa_platform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cocoa_platform.h; sourceTree = "<group>"; };
@@ -2319,22 +2318,8 @@
 			children = (
 				BB6E7AF41F940F13006C0024 /* graphics */,
 				BB6E7AFC1F940F13006C0024 /* logic */,
-				BB6E7AEB1F940F13006C0024 /* network */,
 			);
 			path = game;
-			sourceTree = "<group>";
-		};
-		BB6E7AEB1F940F13006C0024 /* network */ = {
-			isa = PBXGroup;
-			children = (
-				BB6E7AF01F940F13006C0024 /* InstanceManager.cpp */,
-				BB6E7AF11F940F13006C0024 /* InstanceManager.h */,
-				BB6E7AEE1F940F13006C0024 /* MainInputState.cpp */,
-				BB6E7AEF1F940F13006C0024 /* MainInputState.h */,
-				BB6E7AF21F940F13006C0024 /* Server.cpp */,
-				BB6E7AF31F940F13006C0024 /* Server.h */,
-			);
-			path = network;
 			sourceTree = "<group>";
 		};
 		BB6E7AF41F940F13006C0024 /* graphics */ = {
@@ -2364,23 +2349,28 @@
 				BB6E7B011F940F13006C0024 /* Ground.h */,
 				BB3BAEDF1FB4A1F900F5F8B0 /* InputManager.cpp */,
 				BB3BAEE01FB4A1F900F5F8B0 /* InputManager.h */,
+				BB6531661FED575B00963997 /* InstanceManager.cpp */,
+				BB6531671FED575B00963997 /* InstanceManager.h */,
 				BB6E7B021F940F13006C0024 /* MainEngine.cpp */,
 				BB6E7B031F940F13006C0024 /* MainEngine.h */,
 				BB6E7B041F940F13006C0024 /* MainEngineState.h */,
+				BB65315B1FED56C800963997 /* MainInputState.cpp */,
+				BB65315A1FED56C700963997 /* MainInputState.h */,
 				BB6E7B051F940F13006C0024 /* PooledObjectsManager.cpp */,
 				BB6E7B061F940F13006C0024 /* PooledObjectsManager.h */,
 				BB6E7B071F940F13006C0024 /* Projectile.cpp */,
 				BB6E7B081F940F13006C0024 /* Projectile.h */,
 				BB6E7B091F940F13006C0024 /* Robot.cpp */,
 				BB6E7B0A1F940F13006C0024 /* Robot.h */,
+				BB65315D1FED56C800963997 /* Server.cpp */,
+				BB65315F1FED56C800963997 /* Server.h */,
 				BB6E7B0B1F940F13006C0024 /* SpacePirate.cpp */,
 				BB6E7B0C1F940F13006C0024 /* SpacePirate.h */,
 				BB6E7B0D1F940F13006C0024 /* SpacePirateChunk.cpp */,
 				BB6E7B0E1F940F13006C0024 /* SpacePirateChunk.h */,
 				BB6E7B0F1F940F13006C0024 /* Util.cpp */,
 				BB6E7B101F940F13006C0024 /* Util.h */,
-				BB6E7B111F940F13006C0024 /* World.cpp */,
-				BB6E7B121F940F13006C0024 /* World.h */,
+				BB65315C1FED56C800963997 /* World.cpp */,
 			);
 			path = logic;
 			sourceTree = "<group>";
@@ -3744,6 +3734,7 @@
 			files = (
 				BB27D22E1FC6567A00ED42FD /* OALAudioTracks.m in Sources */,
 				BBD554281FDB2EA800E00AD6 /* b2MouseJoint.cpp in Sources */,
+				BB6531621FED56CA00963997 /* World.cpp in Sources */,
 				BB27D22F1FC6567A00ED42FD /* OALAudioTrack.m in Sources */,
 				BBD554261FDB2EA800E00AD6 /* b2WeldJoint.cpp in Sources */,
 				BB27D2301FC6567A00ED42FD /* OALAudioTrackNotifications.m in Sources */,
@@ -3762,6 +3753,7 @@
 				BBD554461FDB2EA800E00AD6 /* b2BlockAllocator.cpp in Sources */,
 				BB27D23D1FC6567A00ED42FD /* NSMutableDictionary+WeakReferences.m in Sources */,
 				BB27D23E1FC6567A00ED42FD /* NSMutableArray+WeakReferences.m in Sources */,
+				BB6531601FED56CA00963997 /* MainInputState.cpp in Sources */,
 				BBD5541A1FDB2EA800E00AD6 /* b2PolygonContact.cpp in Sources */,
 				BB27D2801FC6588B00ED42FD /* OALAudioSession.m in Sources */,
 				BB27D26D1FC6572600ED42FD /* AppleSound.cpp in Sources */,
@@ -3798,18 +3790,14 @@
 				BBD5544A1FDB2EA800E00AD6 /* b2Timer.cpp in Sources */,
 				BBD5543E1FDB2EA800E00AD6 /* b2Island.cpp in Sources */,
 				BB27D2671FC6572600ED42FD /* AppleSoundWrapper.cpp in Sources */,
-				BB6E7B1F1F940F2B006C0024 /* World.cpp in Sources */,
 				BBD554101FDB2EA800E00AD6 /* b2Fixture.cpp in Sources */,
 				BB6F598C1FBDEA0D00BD7697 /* init.c in Sources */,
 				BB1C3BF91FE75FD3002E4AA6 /* Color.cpp in Sources */,
-				BB6E7B211F940F2B006C0024 /* MainInputState.cpp in Sources */,
 				BB6F59751FBDE97D00BD7697 /* cocoa_joystick.m in Sources */,
-				BB6E7B221F940F2B006C0024 /* InstanceManager.cpp in Sources */,
 				BBD554181FDB2EA800E00AD6 /* b2PolygonAndCircleContact.cpp in Sources */,
 				BBD554121FDB2EA800E00AD6 /* b2ChainAndPolygonContact.cpp in Sources */,
 				BBD554541FDB2EA800E00AD6 /* b2CollidePolygon.cpp in Sources */,
 				BB1C3C0E1FE77301002E4AA6 /* NGFramebufferToScreenProgram.cpp in Sources */,
-				BB6E7B231F940F2B006C0024 /* Server.cpp in Sources */,
 				BBAEF2941EA94EDA00F0866E /* Circle.cpp in Sources */,
 				BBBD14901EE06858003F9307 /* StringUtil.cpp in Sources */,
 				BB80D2021EF97F89002B9448 /* NGSteamP2PAuth.cpp in Sources */,
@@ -3864,6 +3852,7 @@
 				BBAEF2681EA94EDA00F0866E /* LineBatcher.cpp in Sources */,
 				BB31B5B11FC205D5005F1C0A /* KeyboardInputManager.cpp in Sources */,
 				BBB1D3AE1FC8CB9800B74BAC /* NGExtension.cpp in Sources */,
+				BB6531641FED56CA00963997 /* Server.cpp in Sources */,
 				BB31B5AD1FC205D5005F1C0A /* CursorConverter.cpp in Sources */,
 				BB8308801EC2AD1F00435E7E /* UDPSocket.cpp in Sources */,
 				BBD554641FDB2EA800E00AD6 /* b2CollideEdge.cpp in Sources */,
@@ -3910,6 +3899,7 @@
 				BBD5544E1FDB2EA800E00AD6 /* b2Math.cpp in Sources */,
 				BBCB93211FC252790020703A /* FileData.cpp in Sources */,
 				BBCFF1C51ECD312E003EE520 /* Assets.cpp in Sources */,
+				BB6531681FED575B00963997 /* InstanceManager.cpp in Sources */,
 				BB9EE5161FC092C5000F5389 /* AppleAssetDataHandler.cpp in Sources */,
 				BBAEF1F01EA94EDA00F0866E /* Entity.cpp in Sources */,
 				BBD5543C1FDB2EA800E00AD6 /* b2RopeJoint.cpp in Sources */,
@@ -3977,6 +3967,7 @@
 				BB5AFE771FB35AB6005FBD52 /* JsonFile.cpp in Sources */,
 				BB1C3BFA1FE75FD3002E4AA6 /* Color.cpp in Sources */,
 				BB27D2461FC6567F00ED42FD /* OALAudioTracks.m in Sources */,
+				BB6531611FED56CA00963997 /* MainInputState.cpp in Sources */,
 				BB27D2471FC6567F00ED42FD /* OALAudioTrack.m in Sources */,
 				BB27D2811FC6596D00ED42FD /* OALAudioSession.m in Sources */,
 				BB27D2481FC6567F00ED42FD /* OALAudioTrackNotifications.m in Sources */,
@@ -4078,6 +4069,7 @@
 				BB31B5AC1FC205D5005F1C0A /* CursorInputManager.cpp in Sources */,
 				BB5AFE3D1FB35A77005FBD52 /* MachineAddress.cpp in Sources */,
 				BB5AFE3E1FB35A77005FBD52 /* NetworkHelper.cpp in Sources */,
+				BB6531651FED56CA00963997 /* Server.cpp in Sources */,
 				BB5AFE3F1FB35A77005FBD52 /* InFlightPacket.cpp in Sources */,
 				BB5AFE401FB35A77005FBD52 /* InputMemoryBitStream.cpp in Sources */,
 				BB5AFE411FB35A77005FBD52 /* PacketHandler.cpp in Sources */,
@@ -4133,14 +4125,11 @@
 				BB5AFE0F1FB359DE005FBD52 /* SpacePirate.cpp in Sources */,
 				BB5AFE101FB359DE005FBD52 /* SpacePirateChunk.cpp in Sources */,
 				BB5AFE111FB359DE005FBD52 /* Util.cpp in Sources */,
-				BB5AFE121FB359DE005FBD52 /* World.cpp in Sources */,
-				BB5AFE141FB359DE005FBD52 /* MainInputState.cpp in Sources */,
-				BB5AFE151FB359DE005FBD52 /* InstanceManager.cpp in Sources */,
 				BBD5543D1FDB2EA800E00AD6 /* b2RopeJoint.cpp in Sources */,
-				BB5AFE161FB359DE005FBD52 /* Server.cpp in Sources */,
 				BB3BAEE21FB4A1FA00F5F8B0 /* InputManager.cpp in Sources */,
 				BBCB93221FC252790020703A /* FileData.cpp in Sources */,
 				BBD554251FDB2EA800E00AD6 /* b2WorldCallbacks.cpp in Sources */,
+				BB6531691FED575B00963997 /* InstanceManager.cpp in Sources */,
 				BBD5544D1FDB2EA800E00AD6 /* b2StackAllocator.cpp in Sources */,
 				BBD5541D1FDB2EA800E00AD6 /* b2ContactSolver.cpp in Sources */,
 				BB9EE5151FC092C5000F5389 /* apple_asset_data_handler.mm in Sources */,
@@ -4156,6 +4145,7 @@
 				BBD554451FDB2EA800E00AD6 /* b2Draw.cpp in Sources */,
 				BB1C3C031FE76BE0002E4AA6 /* ShaderProgramLoaderFactory.cpp in Sources */,
 				BB5AFDB01FB3595F005FBD52 /* pngmem.c in Sources */,
+				BB6531631FED56CA00963997 /* World.cpp in Sources */,
 				BB5AFDB11FB3595F005FBD52 /* pngpread.c in Sources */,
 				BB5AFDB21FB3595F005FBD52 /* pngread.c in Sources */,
 				BB5AFDB31FB3595F005FBD52 /* pngrio.c in Sources */,

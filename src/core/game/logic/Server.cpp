@@ -8,7 +8,7 @@
 
 #include "pch.h"
 
-#include "game/network/Server.h"
+#include "game/logic/Server.h"
 
 #include "framework/network/server/ClientProxy.h"
 #include "framework/entity/Entity.h"
@@ -23,7 +23,7 @@
 #include "framework/util/FrameworkConstants.h"
 #include "framework/network/portable/SocketUtil.h"
 #include "game/logic/PooledObjectsManager.h"
-#include "game/network/InstanceManager.h"
+#include "game/logic/InstanceManager.h"
 #include "framework/network/portable/FWInstanceManager.h"
 #include "framework/entity/EntityManager.h"
 #include "framework/network/server/SocketServerHelper.h"

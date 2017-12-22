@@ -10,7 +10,7 @@
 
 #include "game/logic/MainEngine.h"
 
-#include "game/network/Server.h"
+#include "game/logic/Server.h"
 #include "framework/file/portable/JsonFile.h"
 #include "framework/entity/Entity.h"
 
@@ -30,8 +30,8 @@
 #include "framework/network/portable/SocketUtil.h"
 #include "game/logic/InputManager.h"
 #include "game/logic/World.h"
-#include "game/network/InstanceManager.h"
-#include "game/network/MainInputState.h"
+#include "game/logic/InstanceManager.h"
+#include "game/logic/MainInputState.h"
 #include "framework/network/portable/FWInstanceManager.h"
 #include "framework/entity/EntityManager.h"
 #include "framework/network/client/SocketClientHelper.h"

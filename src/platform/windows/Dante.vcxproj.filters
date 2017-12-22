@@ -28,7 +28,6 @@
     <ClInclude Include="..\..\core\game\graphics\directx\*.h" />
     <ClInclude Include="..\..\core\game\graphics\portable\*.h" />
     <ClInclude Include="..\..\core\game\logic\*.h" />
-    <ClInclude Include="..\..\core\game\network\*.h" />
     <ClInclude Include="*.h" />
   </ItemGroup>
   <ItemGroup>
@@ -49,7 +48,6 @@
     <ClCompile Include="..\..\core\game\graphics\directx\*.cpp" />
     <ClCompile Include="..\..\core\game\graphics\portable\*.cpp" />
     <ClCompile Include="..\..\core\game\logic\*.cpp" />
-    <ClCompile Include="..\..\core\game\network\*.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="pch.cpp" />
   </ItemGroup>

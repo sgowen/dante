@@ -14,7 +14,7 @@
 
 #include "framework/network/client/NetworkManagerClient.h"
 #include "game/logic/Robot.h"
-#include "game/network/InstanceManager.h"
+#include "game/logic/InstanceManager.h"
 #include "game/logic/World.h"
 #include "framework/audio/portable/NGAudioEngine.h"
 

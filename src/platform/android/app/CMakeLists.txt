@@ -36,7 +36,6 @@ file(GLOB_RECURSE CPP_FRAMEWORK_FILES_16 "${source_dir}/core/framework/main/port
 
 file(GLOB_RECURSE CPP_GAME_FILES_1 "${source_dir}/core/game/graphics/portable/*cpp")
 file(GLOB_RECURSE CPP_GAME_FILES_2 "${source_dir}/core/game/logic/*cpp")
-file(GLOB_RECURSE CPP_GAME_FILES_3 "${source_dir}/core/game/network/*cpp")
 
 file(GLOB CPP_ANDROID_FILES "src/main/cpp/*.cpp")
 

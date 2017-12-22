@@ -20,9 +20,9 @@
 #include "Box2D/Box2D.h"
 
 #include "framework/network/server/NetworkManagerServer.h"
-#include "game/network/InstanceManager.h"
+#include "game/logic/InstanceManager.h"
 #include "framework/util/Timing.h"
-#include "game/network/Server.h"
+#include "game/logic/Server.h"
 #include "framework/network/server/ClientProxy.h"
 #include "framework/network/portable/MoveList.h"
 #include "game/logic/InputManager.h"

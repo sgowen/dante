@@ -19,7 +19,6 @@
 #include "framework/network/portable/InputState.h"
 #include "framework/entity/Entity.h"
 
-#include "game/network/Server.h"
 #include "framework/util/StringUtil.h"
 #include "framework/util/Timing.h"
 #include "framework/entity/EntityManager.h"
