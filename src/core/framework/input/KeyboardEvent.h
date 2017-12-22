@@ -19,17 +19,11 @@ public:
     KeyboardEvent(unsigned short key = 0, int status = KEYBOARD_STATUS_DOWN);
 
     void setKey(unsigned short key);
-    
     unsigned short getKey();
-    
     void setStatus(int status);
-    
     int getStatus();
-    
     bool isDown();
-    
     bool isHeld();
-    
     bool isUp();
     
 private:

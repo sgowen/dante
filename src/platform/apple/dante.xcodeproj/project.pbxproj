@@ -1607,6 +1607,7 @@
 		BBDC64CD1FEC410E002DCADA /* texture_004.ngt */ = {isa = PBXFileReference; lastKnownFileType = file; path = texture_004.ngt; sourceTree = "<group>"; };
 		BBDC64D01FEC4150002DCADA /* texture_004.ngt */ = {isa = PBXFileReference; lastKnownFileType = file; path = texture_004.ngt; sourceTree = "<group>"; };
 		BBDC64D11FEC4151002DCADA /* texture_003.ngt */ = {isa = PBXFileReference; lastKnownFileType = file; path = texture_003.ngt; sourceTree = "<group>"; };
+		BBE4E4081FEDC2D5004193F1 /* World.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = World.h; sourceTree = "<group>"; };
 		BBF226B01EC12CDE00573356 /* ReplicationManagerClient.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ReplicationManagerClient.cpp; sourceTree = "<group>"; };
 		BBF226B11EC12CDE00573356 /* ReplicationManagerClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReplicationManagerClient.h; sourceTree = "<group>"; };
 		BBFA49DB1FC367AF00233514 /* GlfwMain.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GlfwMain.h; sourceTree = "<group>"; };
@@ -2371,6 +2372,7 @@
 				BB6E7B0F1F940F13006C0024 /* Util.cpp */,
 				BB6E7B101F940F13006C0024 /* Util.h */,
 				BB65315C1FED56C800963997 /* World.cpp */,
+				BBE4E4081FEDC2D5004193F1 /* World.h */,
 			);
 			path = logic;
 			sourceTree = "<group>";
