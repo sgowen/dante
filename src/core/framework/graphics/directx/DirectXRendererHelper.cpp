@@ -89,16 +89,6 @@ void DirectXRendererHelper::releaseDeviceDependentResources()
     _indexbuffer.Reset();
 }
 
-void DirectXRendererHelper::beginFrame()
-{
-    // Empty
-}
-
-void DirectXRendererHelper::endFrame()
-{
-    // Empty
-}
-
 NGTexture* DirectXRendererHelper::getFramebuffer(int index)
 {
     _framebuffer->textureWrapper = _framebuffers[index];
@@ -176,15 +166,12 @@ void DirectXRendererHelper::bindTexture(NGTextureSlot textureSlot, NGTexture* te
 
 void DirectXRendererHelper::destroyTexture(TextureWrapper& textureWrapper)
 {
-    if (textureWrapper.texture)
-    {
-        textureWrapper.texture->Release();
-    }
+    textureWrapper.texture->Release();
 }
 
 void DirectXRendererHelper::bindShaderProgram(ShaderProgramWrapper* shaderProgramWrapper)
 {
-    if (shaderProgramWrapper != NULL)
+    if (shaderProgramWrapper)
     {
         // set the shader objects as the active shaders
         s_d3dContext->VSSetShader(shaderProgramWrapper->_vertexShader.Get(), NULL, 0);

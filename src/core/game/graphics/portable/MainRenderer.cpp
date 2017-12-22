@@ -94,8 +94,6 @@ void MainRenderer::render(int flags)
         renderUI(flags);
     }
     
-    renderToScreen();
-    
     endFrame();
 }
 

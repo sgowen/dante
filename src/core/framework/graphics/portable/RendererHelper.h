@@ -34,10 +34,6 @@ public:
 
 	virtual void releaseDeviceDependentResources() = 0;
     
-    virtual void beginFrame() = 0;
-    
-    virtual void endFrame() = 0;
-    
     virtual NGTexture* getFramebuffer(int index) = 0;
     
     virtual void updateMatrix(float left, float right, float bottom, float top);

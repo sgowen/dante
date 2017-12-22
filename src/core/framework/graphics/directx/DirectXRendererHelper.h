@@ -28,10 +28,6 @@ public:
 
 	virtual void releaseDeviceDependentResources();
     
-    virtual void beginFrame();
-    
-    virtual void endFrame();
-    
     virtual NGTexture* getFramebuffer(int index);
     
     virtual void bindToOffscreenFramebuffer(int index);

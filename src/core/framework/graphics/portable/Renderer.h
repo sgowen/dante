@@ -71,8 +71,6 @@ protected:
     
     void setFramebuffer(int framebufferIndex);
     
-    void renderToScreen();
-    
     void endFrame();
     
     bool isLoadingData();

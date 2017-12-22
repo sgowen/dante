@@ -267,8 +267,6 @@ void Renderer::beginFrame()
 {
     handleAsyncTextureLoads();
     
-    _rendererHelper->beginFrame();
-    
     setFramebuffer(0);
 }
 
@@ -282,7 +280,7 @@ void Renderer::setFramebuffer(int framebufferIndex)
     _rendererHelper->clearFramebufferWithColor(0, 0, 0, 1);
 }
 
-void Renderer::renderToScreen()
+void Renderer::endFrame()
 {
     assert(_framebufferIndex >= 0);
     
@@ -298,11 +296,6 @@ void Renderer::renderToScreen()
     _framebufferToScreenShaderProgram->bind(_rendererHelper->getFramebuffer(_framebufferIndex));
     _rendererHelper->drawIndexed(NGPrimitiveType_Triangles, INDICES_PER_RECTANGLE);
     _framebufferToScreenShaderProgram->unbind();
-}
-
-void Renderer::endFrame()
-{
-    _rendererHelper->endFrame();
 }
 
 bool Renderer::isLoadingData()

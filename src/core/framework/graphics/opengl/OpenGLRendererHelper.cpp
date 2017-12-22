@@ -52,20 +52,6 @@ void OpenGLRendererHelper::releaseDeviceDependentResources()
     glDeleteBuffers(1, &_colorVboObject);
 }
 
-void OpenGLRendererHelper::beginFrame()
-{
-    glEnable(GL_TEXTURE_2D);
-
-    glEnable(GL_BLEND);
-}
-
-void OpenGLRendererHelper::endFrame()
-{
-    glDisable(GL_BLEND);
-
-    glDisable(GL_TEXTURE_2D);
-}
-
 NGTexture* OpenGLRendererHelper::getFramebuffer(int index)
 {
     _framebuffer->textureWrapper = _framebuffers[index];
@@ -100,12 +86,14 @@ void OpenGLRendererHelper::useNormalBlending()
 {
     glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ZERO);
     glBlendEquationSeparate(GL_FUNC_ADD, GL_FUNC_ADD);
+    glEnable(GL_BLEND);
 }
 
 void OpenGLRendererHelper::useScreenBlending()
 {
     glBlendFuncSeparate(GL_ONE, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
     glBlendEquationSeparate(GL_FUNC_ADD, GL_FUNC_ADD);
+    glEnable(GL_BLEND);
 }
 
 void OpenGLRendererHelper::bindMatrix(NGShaderUniformInput* uniform)
@@ -129,11 +117,20 @@ inline int slotIndexForTextureSlot(NGTextureSlot textureSlot)
 void OpenGLRendererHelper::bindTexture(NGTextureSlot textureSlot, NGTexture* texture, NGShaderUniformInput* uniform)
 {
     glActiveTexture(textureSlot);
-    glBindTexture(GL_TEXTURE_2D, texture == NULL ? 0 : texture->textureWrapper->texture);
-
-    if (texture != NULL && uniform != NULL)
+    glBindTexture(GL_TEXTURE_2D, texture ? texture->textureWrapper->texture : 0);
+    
+    if (texture)
     {
-        glUniform1i(uniform->_attribute, slotIndexForTextureSlot(textureSlot));
+        glEnable(GL_TEXTURE_2D);
+        
+        if (uniform)
+        {
+            glUniform1i(uniform->_attribute, slotIndexForTextureSlot(textureSlot));
+        }
+    }
+    else
+    {
+        glDisable(GL_TEXTURE_2D);
     }
 }
 
@@ -145,6 +142,11 @@ void OpenGLRendererHelper::destroyTexture(TextureWrapper& textureWrapper)
 void OpenGLRendererHelper::bindShaderProgram(ShaderProgramWrapper* shaderProgramWrapper)
 {
     glUseProgram(shaderProgramWrapper == NULL ? 0 : shaderProgramWrapper->_programObjectId);
+    
+    if (!shaderProgramWrapper)
+    {
+        glDisable(GL_BLEND);
+    }
 }
 
 void OpenGLRendererHelper::destroyShaderProgram(ShaderProgramWrapper* shaderProgramWrapper, std::vector<NGShaderUniformInput*>& uniforms, std::vector<NGShaderVarInput*>& inputLayout)
