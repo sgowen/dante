@@ -196,7 +196,6 @@ void MainRenderer::renderEntities(World* world, bool isServer)
         }
         else if (go->getNetworkType() == NW_TYPE_Crate)
         {
-            Crate* crate = static_cast<Crate*>(go);
             TextureRegion tr = ASSETS->findTextureRegion("Map_Crate", go->getStateTime());
             
             renderEntityWithColor(*go, tr, c);
