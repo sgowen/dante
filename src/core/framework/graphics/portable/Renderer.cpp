@@ -24,7 +24,6 @@
 #include "framework/math/NGRect.h"
 #include "framework/graphics/portable/NGTexture.h"
 #include "framework/graphics/portable/Box2DDebugRenderer.h"
-#include <Box2D/Box2D.h>
 
 #include "framework/graphics/portable/TextureWrapper.h"
 #include "framework/graphics/portable/TextureDataWrapper.h"
@@ -139,11 +138,6 @@ void Renderer::releaseDeviceDependentResources()
     {
         unloadTexture(t);
     }
-}
-
-void Renderer::onWorldCreated(b2World* world)
-{
-    _box2DDebugRenderer->setWorld(world);
 }
 
 void Renderer::loadTextureDataSync(NGTexture* arg)

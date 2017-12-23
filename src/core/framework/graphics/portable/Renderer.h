@@ -27,7 +27,6 @@ class Color;
 class NGRect;
 class NGTexture;
 class Box2DDebugRenderer;
-class b2World;
 
 class Renderer
 {
@@ -43,8 +42,6 @@ public:
     virtual void releaseDeviceDependentResources();
     
     virtual void render(int flags = 0) = 0;
-    
-    void onWorldCreated(b2World* world);
     
     void loadTextureDataSync(NGTexture* arg);
     void loadTextureSync(NGTexture* texture);

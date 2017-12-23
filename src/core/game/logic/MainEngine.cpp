@@ -449,8 +449,6 @@ void MainEngine::joinServer()
     
     InstanceManager::createClientWorld();
     
-    _renderer->onWorldCreated(&InstanceManager::getClientWorld()->getWorld());
-    
     ClientHelper* clientHelper = NULL;
     if (_isSteam)
     {

@@ -160,7 +160,14 @@ void MainRenderer::renderWorld(int flags)
     
     if (FlagUtil::isFlagSet(flags, MAIN_ENGINE_STATE_DISPLAY_BOX_2D))
     {
+        _box2DDebugRenderer->setWorld(&InstanceManager::getClientWorld()->getWorld());
         _box2DDebugRenderer->render(*_colorShaderProgram);
+        
+        if (Server::getInstance() && Server::getInstance()->isDisplaying())
+        {
+            _box2DDebugRenderer->setWorld(&InstanceManager::getServerWorld()->getWorld());
+            _box2DDebugRenderer->render(*_colorShaderProgram);
+        }
     }
 }
 

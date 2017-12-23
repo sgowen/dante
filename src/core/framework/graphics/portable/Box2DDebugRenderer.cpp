@@ -37,7 +37,7 @@ void Box2DDebugRenderer::DrawPolygon(const b2Vec2* vertices, int32 vertexCount, 
 {
     if (vertexCount == 4)
     {
-        Color c = Color(color.r, color.g, color.b, color.a);
+        Color c = Color(color.r, color.g, color.b, color.a / 2);
         _boundsQuadBatcher.renderQuad(vertices[0].x, vertices[0].y,
                                       vertices[1].x, vertices[1].y,
                                       vertices[2].x, vertices[2].y,
@@ -49,7 +49,7 @@ void Box2DDebugRenderer::DrawSolidPolygon(const b2Vec2* vertices, int32 vertexCo
 {
     if (vertexCount == 4)
     {
-        Color c = Color(color.r, color.g, color.b, color.a);
+        Color c = Color(color.r, color.g, color.b, color.a / 2);
         _fillQuadBatcher.renderQuad(vertices[0].x, vertices[0].y,
                                     vertices[1].x, vertices[1].y,
                                     vertices[2].x, vertices[2].y,

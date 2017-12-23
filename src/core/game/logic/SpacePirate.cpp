@@ -254,11 +254,6 @@ void SpacePirate::read(InputMemoryBitStream& inInputStream)
         inInputStream.read(_health);
         _readState |= SPCP_Health;
     }
-    
-    if (!areFloatsPracticallyEqual(oldWidth, _width))
-    {
-        initPhysics(constructEntityDef());
-    }
 }
 
 uint32_t SpacePirate::write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState)
@@ -332,8 +327,6 @@ void SpacePirate::init(float x, float y, float speed, int scale, uint8_t health)
     _height *= scale;
     
     _health = health;
-    
-    initPhysics(constructEntityDef());
 }
 
 void SpacePirate::takeDamage(b2Vec2 force, bool isHeadshot)
