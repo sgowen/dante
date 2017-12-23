@@ -37,18 +37,6 @@ void SpriteBatcher::beginBatch()
     _numSprites = 0;
 }
 
-void SpriteBatcher::endBatch(NGTexture* texture, ShaderProgram& gpuProgramWrapper)
-{
-    if (_numSprites > 0)
-    {
-        gpuProgramWrapper.bind(texture);
-        
-        _rendererHelper->drawIndexed(NGPrimitiveType_Triangles, _numSprites * INDICES_PER_RECTANGLE);
-        
-        gpuProgramWrapper.unbind();
-    }
-}
-
 void SpriteBatcher::renderSprite(float x, float y, float width, float height, float angle, TextureRegion& tr, bool flipX)
 {
     renderSprite(x, y, width, height, angle, Color::WHITE, tr, flipX);
@@ -140,4 +128,16 @@ void SpriteBatcher::renderSprite(float x, float y, float width, float height, fl
     _rendererHelper->addVertexCoordinate(xFinal[3], yFinal[3], 0, c.red, c.green, c.blue, c.alpha, uFinal[3], tr._v2);
     
     _numSprites++;
+}
+
+void SpriteBatcher::endBatch(NGTexture* texture, ShaderProgram& gpuProgramWrapper)
+{
+    if (_numSprites > 0)
+    {
+        gpuProgramWrapper.bind(texture);
+        
+        _rendererHelper->drawIndexed(NGPrimitiveType_Triangles, _numSprites * INDICES_PER_RECTANGLE);
+        
+        gpuProgramWrapper.unbind();
+    }
 }

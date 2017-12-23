@@ -274,7 +274,7 @@
 		BB5AFE691FB35AAF005FBD52 /* RendererHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF13F1EA94ED900F0866E /* RendererHelper.cpp */; };
 		BB5AFE6A1FB35AAF005FBD52 /* TextureLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF1411EA94ED900F0866E /* TextureLoader.cpp */; };
 		BB5AFE6B1FB35AAF005FBD52 /* LineBatcher.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF1431EA94ED900F0866E /* LineBatcher.cpp */; };
-		BB5AFE6D1FB35AAF005FBD52 /* NGRectBatcher.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF1471EA94ED900F0866E /* NGRectBatcher.cpp */; };
+		BB5AFE6D1FB35AAF005FBD52 /* QuadBatcher.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF1471EA94ED900F0866E /* QuadBatcher.cpp */; };
 		BB5AFE6F1FB35AAF005FBD52 /* Renderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB5833CE1EEDDAFC0084DA20 /* Renderer.cpp */; };
 		BB5AFE711FB35AAF005FBD52 /* SpriteBatcher.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF14D1EA94ED900F0866E /* SpriteBatcher.cpp */; };
 		BB5AFE731FB35AAF005FBD52 /* TextureLoaderFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF1511EA94ED900F0866E /* TextureLoaderFactory.cpp */; };
@@ -360,7 +360,7 @@
 		BBAEF2641EA94EDA00F0866E /* RendererHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF13F1EA94ED900F0866E /* RendererHelper.cpp */; };
 		BBAEF2661EA94EDA00F0866E /* TextureLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF1411EA94ED900F0866E /* TextureLoader.cpp */; };
 		BBAEF2681EA94EDA00F0866E /* LineBatcher.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF1431EA94ED900F0866E /* LineBatcher.cpp */; };
-		BBAEF26C1EA94EDA00F0866E /* NGRectBatcher.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF1471EA94ED900F0866E /* NGRectBatcher.cpp */; };
+		BBAEF26C1EA94EDA00F0866E /* QuadBatcher.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF1471EA94ED900F0866E /* QuadBatcher.cpp */; };
 		BBAEF2721EA94EDA00F0866E /* SpriteBatcher.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF14D1EA94ED900F0866E /* SpriteBatcher.cpp */; };
 		BBAEF2761EA94EDA00F0866E /* TextureLoaderFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF1511EA94ED900F0866E /* TextureLoaderFactory.cpp */; };
 		BBAEF2781EA94EDA00F0866E /* TextureRegion.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF1531EA94ED900F0866E /* TextureRegion.cpp */; };
@@ -494,6 +494,8 @@
 		BBDC64CF1FEC410E002DCADA /* texture_004.ngt in Resources */ = {isa = PBXBuildFile; fileRef = BBDC64CD1FEC410E002DCADA /* texture_004.ngt */; };
 		BBDC64D21FEC4151002DCADA /* texture_004.ngt in Resources */ = {isa = PBXBuildFile; fileRef = BBDC64D01FEC4150002DCADA /* texture_004.ngt */; };
 		BBDC64D31FEC4151002DCADA /* texture_003.ngt in Resources */ = {isa = PBXBuildFile; fileRef = BBDC64D11FEC4151002DCADA /* texture_003.ngt */; };
+		BBE4E40B1FEDD03F004193F1 /* Box2DDebugRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBE4E4091FEDD03F004193F1 /* Box2DDebugRenderer.cpp */; };
+		BBE4E40C1FEDD03F004193F1 /* Box2DDebugRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBE4E4091FEDD03F004193F1 /* Box2DDebugRenderer.cpp */; };
 		BBF226CF1EC12CDE00573356 /* ReplicationManagerClient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF226B01EC12CDE00573356 /* ReplicationManagerClient.cpp */; };
 		BBFA49E51FC3702D00233514 /* Engine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBFA49E41FC3702D00233514 /* Engine.cpp */; };
 		BBFA49E61FC3702D00233514 /* Engine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBFA49E41FC3702D00233514 /* Engine.cpp */; };
@@ -1002,8 +1004,8 @@
 		BBAEF1421EA94ED900F0866E /* TextureLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextureLoader.h; sourceTree = "<group>"; };
 		BBAEF1431EA94ED900F0866E /* LineBatcher.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LineBatcher.cpp; sourceTree = "<group>"; };
 		BBAEF1441EA94ED900F0866E /* LineBatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LineBatcher.h; sourceTree = "<group>"; };
-		BBAEF1471EA94ED900F0866E /* NGRectBatcher.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NGRectBatcher.cpp; sourceTree = "<group>"; };
-		BBAEF1481EA94ED900F0866E /* NGRectBatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NGRectBatcher.h; sourceTree = "<group>"; };
+		BBAEF1471EA94ED900F0866E /* QuadBatcher.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = QuadBatcher.cpp; sourceTree = "<group>"; };
+		BBAEF1481EA94ED900F0866E /* QuadBatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QuadBatcher.h; sourceTree = "<group>"; };
 		BBAEF14D1EA94ED900F0866E /* SpriteBatcher.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SpriteBatcher.cpp; sourceTree = "<group>"; };
 		BBAEF14E1EA94ED900F0866E /* SpriteBatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpriteBatcher.h; sourceTree = "<group>"; };
 		BBAEF1511EA94ED900F0866E /* TextureLoaderFactory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TextureLoaderFactory.cpp; sourceTree = "<group>"; };
@@ -1608,6 +1610,8 @@
 		BBDC64D01FEC4150002DCADA /* texture_004.ngt */ = {isa = PBXFileReference; lastKnownFileType = file; path = texture_004.ngt; sourceTree = "<group>"; };
 		BBDC64D11FEC4151002DCADA /* texture_003.ngt */ = {isa = PBXFileReference; lastKnownFileType = file; path = texture_003.ngt; sourceTree = "<group>"; };
 		BBE4E4081FEDC2D5004193F1 /* World.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = World.h; sourceTree = "<group>"; };
+		BBE4E4091FEDD03F004193F1 /* Box2DDebugRenderer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Box2DDebugRenderer.cpp; sourceTree = "<group>"; };
+		BBE4E40A1FEDD03F004193F1 /* Box2DDebugRenderer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Box2DDebugRenderer.h; sourceTree = "<group>"; };
 		BBF226B01EC12CDE00573356 /* ReplicationManagerClient.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ReplicationManagerClient.cpp; sourceTree = "<group>"; };
 		BBF226B11EC12CDE00573356 /* ReplicationManagerClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReplicationManagerClient.h; sourceTree = "<group>"; };
 		BBFA49DB1FC367AF00233514 /* GlfwMain.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GlfwMain.h; sourceTree = "<group>"; };
@@ -2646,6 +2650,8 @@
 			children = (
 				BBCFF1C01ECD312E003EE520 /* Assets.cpp */,
 				BBCFF1C11ECD312E003EE520 /* Assets.h */,
+				BBE4E4091FEDD03F004193F1 /* Box2DDebugRenderer.cpp */,
+				BBE4E40A1FEDD03F004193F1 /* Box2DDebugRenderer.h */,
 				BBAEF1301EA94ED900F0866E /* CircleBatcher.cpp */,
 				BBAEF1311EA94ED900F0866E /* CircleBatcher.h */,
 				BB1C3BF81FE75FD3002E4AA6 /* Color.cpp */,
@@ -2663,8 +2669,8 @@
 				BB1C3C091FE77301002E4AA6 /* NGGeometryProgram.h */,
 				BB39C8921FB2700900CF6699 /* NGGraphics.h */,
 				BB0CA6F01FE5B08D0011B75B /* NGPrimitiveType.h */,
-				BBAEF1471EA94ED900F0866E /* NGRectBatcher.cpp */,
-				BBAEF1481EA94ED900F0866E /* NGRectBatcher.h */,
+				BBAEF1471EA94ED900F0866E /* QuadBatcher.cpp */,
+				BBAEF1481EA94ED900F0866E /* QuadBatcher.h */,
 				BB2022F11FE8281C00BBB053 /* NGShaderUniformInput.cpp */,
 				BB2022F21FE8281C00BBB053 /* NGShaderUniformInput.h */,
 				BB1C3C181FE7868E002E4AA6 /* NGShaderVarInput.cpp */,
@@ -3837,7 +3843,7 @@
 				BB6F59911FBDEA0D00BD7697 /* context.c in Sources */,
 				BBD5541C1FDB2EA800E00AD6 /* b2ContactSolver.cpp in Sources */,
 				BB5833CD1EEDDA330084DA20 /* main.cpp in Sources */,
-				BBAEF26C1EA94EDA00F0866E /* NGRectBatcher.cpp in Sources */,
+				BBAEF26C1EA94EDA00F0866E /* QuadBatcher.cpp in Sources */,
 				BBD5545E1FDB2EA800E00AD6 /* b2PolygonShape.cpp in Sources */,
 				BBD554601FDB2EA800E00AD6 /* b2TimeOfImpact.cpp in Sources */,
 				BBD554321FDB2EA800E00AD6 /* b2RevoluteJoint.cpp in Sources */,
@@ -3930,6 +3936,7 @@
 				BBD5544C1FDB2EA800E00AD6 /* b2StackAllocator.cpp in Sources */,
 				BB9EE5141FC092C5000F5389 /* apple_asset_data_handler.mm in Sources */,
 				BBAEF2761EA94EDA00F0866E /* TextureLoaderFactory.cpp in Sources */,
+				BBE4E40B1FEDD03F004193F1 /* Box2DDebugRenderer.cpp in Sources */,
 				BBD554561FDB2EA800E00AD6 /* b2DynamicTree.cpp in Sources */,
 				BBD43A0E1ED0BD00001D5EB4 /* ReplicationCommand.cpp in Sources */,
 				BBBCB2EE1EF0993000B77938 /* NGSteamGameServer.cpp in Sources */,
@@ -4036,7 +4043,7 @@
 				BB5AFE6B1FB35AAF005FBD52 /* LineBatcher.cpp in Sources */,
 				BBD554111FDB2EA800E00AD6 /* b2Fixture.cpp in Sources */,
 				BBD554531FDB2EA800E00AD6 /* b2CollideCircle.cpp in Sources */,
-				BB5AFE6D1FB35AAF005FBD52 /* NGRectBatcher.cpp in Sources */,
+				BB5AFE6D1FB35AAF005FBD52 /* QuadBatcher.cpp in Sources */,
 				BB5AFE6F1FB35AAF005FBD52 /* Renderer.cpp in Sources */,
 				BB5AFE711FB35AAF005FBD52 /* SpriteBatcher.cpp in Sources */,
 				BB5AFE731FB35AAF005FBD52 /* TextureLoaderFactory.cpp in Sources */,
@@ -4064,6 +4071,7 @@
 				BB5AFE381FB35A77005FBD52 /* SocketClientHelper.cpp in Sources */,
 				BB5AFE391FB35A77005FBD52 /* AckRange.cpp in Sources */,
 				BB5AFE3A1FB35A77005FBD52 /* DeliveryNotificationManager.cpp in Sources */,
+				BBE4E40C1FEDD03F004193F1 /* Box2DDebugRenderer.cpp in Sources */,
 				BB1C3C0F1FE77301002E4AA6 /* NGFramebufferToScreenProgram.cpp in Sources */,
 				BB5AFE3B1FB35A77005FBD52 /* FWInstanceManager.cpp in Sources */,
 				BBD554311FDB2EA800E00AD6 /* b2MotorJoint.cpp in Sources */,
@@ -4317,6 +4325,7 @@
 					_DEBUG,
 					NG_STEAM,
 					_GLFW_COCOA,
+					NG_BOX_2D_DRAW_DEBUG,
 				);
 				GCC_WARN_ABOUT_INVALID_OFFSETOF_MACRO = NO;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;

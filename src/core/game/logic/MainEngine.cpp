@@ -179,6 +179,17 @@ void MainEngine::handleNonMoveInput()
             {
                 Server::getInstance()->toggleDisplaying();
             }
+            else if (inputState->getMenuState() == MENU_STATE_SERVER_TOGGLE_PHYSICS_DISPLAY)
+            {
+                if (FlagUtil::isFlagSet(_engineState, MAIN_ENGINE_STATE_DISPLAY_BOX_2D))
+                {
+                    _engineState = FlagUtil::removeFlag(_engineState, MAIN_ENGINE_STATE_DISPLAY_BOX_2D);
+                }
+                else
+                {
+                    _engineState = FlagUtil::setFlag(_engineState, MAIN_ENGINE_STATE_DISPLAY_BOX_2D);
+                }
+            }
         }
         
         if (inputState->isRequestingToAddLocalPlayer())
@@ -432,11 +443,13 @@ void MainEngine::startServer()
 
 void MainEngine::joinServer()
 {
-    _engineState = MAIN_ENGINE_STEAM_JOINING_SERVER;
+    _engineState = MAIN_ENGINE_STATE_STEAM_JOINING_SERVER;
     
     FWInstanceManager::createClientEntityManager(InstanceManager::sHandleEntityCreatedOnClient, InstanceManager::sHandleEntityDeletedOnClient);
     
     InstanceManager::createClientWorld();
+    
+    _renderer->onWorldCreated(&InstanceManager::getClientWorld()->getWorld());
     
     ClientHelper* clientHelper = NULL;
     if (_isSteam)

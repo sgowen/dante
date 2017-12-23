@@ -23,11 +23,11 @@ public:
     ~SpriteBatcher();
 
     void beginBatch();
-
-    void endBatch(NGTexture* texture, ShaderProgram& gpuProgramWrapper);
-
+    
     void renderSprite(float x, float y, float width, float height, float angle, TextureRegion& tr, bool flipX = false);
     void renderSprite(float x, float y, float width, float height, float angle, Color &c, TextureRegion& tr, bool flipX = false);
+
+    void endBatch(NGTexture* texture, ShaderProgram& gpuProgramWrapper);
 
 private:
     RendererHelper* _rendererHelper;

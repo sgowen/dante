@@ -14,6 +14,7 @@
 #include "framework/graphics/portable/Font.h"
 #include "Box2D/Box2D.h"
 #include "game/logic/World.h"
+#include "framework/graphics/portable/Box2DDebugRenderer.h"
 
 #include "framework/graphics/portable/Assets.h"
 #include "framework/graphics/portable/RendererHelper.h"
@@ -45,7 +46,7 @@
 #include "framework/graphics/portable/Color.h"
 #include "framework/math/Circle.h"
 #include "framework/graphics/portable/CircleBatcher.h"
-#include "framework/graphics/portable/NGRectBatcher.h"
+#include "framework/graphics/portable/QuadBatcher.h"
 #include "framework/graphics/portable/LineBatcher.h"
 #include "framework/util/FlagUtil.h"
 #include "framework/util/FrameworkConstants.h"
@@ -84,7 +85,7 @@ void MainRenderer::render(int flags)
         
         if (InstanceManager::getClientWorld())
         {
-            renderWorld();
+            renderWorld(flags);
         }
         
 #ifdef NG_TEST_RENDERING_SUITE
@@ -123,7 +124,7 @@ void MainRenderer::renderBackground()
     }
 }
 
-void MainRenderer::renderWorld()
+void MainRenderer::renderWorld(int flags)
 {
     _rendererHelper->updateMatrix(_camBounds->getLeft(), _camBounds->getRight(), _camBounds->getBottom(), _camBounds->getTop());
     
@@ -156,6 +157,11 @@ void MainRenderer::renderWorld()
         }
     }
     _spriteBatcher->endBatch(_textures[0], *_textureShaderProgram);
+    
+    if (FlagUtil::isFlagSet(flags, MAIN_ENGINE_STATE_DISPLAY_BOX_2D))
+    {
+        _box2DDebugRenderer->render(*_colorShaderProgram);
+    }
 }
 
 void MainRenderer::renderEntities(World* world, bool isServer)
@@ -191,12 +197,9 @@ void MainRenderer::renderEntities(World* world, bool isServer)
         else if (go->getNetworkType() == NW_TYPE_Crate)
         {
             Crate* crate = static_cast<Crate*>(go);
-            static Color activeColor = Color(1.0f, 0, 0, 1.0f);
             TextureRegion tr = ASSETS->findTextureRegion("Map_Crate", go->getStateTime());
             
-            activeColor.alpha = isServer ? 0.5f : 1.0f;
-            
-            renderEntityWithColor(*go, tr, crate->getBody()->IsAwake() ? activeColor : c);
+            renderEntityWithColor(*go, tr, c);
         }
         else if (go->getNetworkType() == NW_TYPE_SpacePirateChunk)
         {
@@ -262,7 +265,7 @@ void MainRenderer::renderUI(int flags)
     
     _spriteBatcher->beginBatch();
     
-    int state = flags;
+    int state = FlagUtil::removeFlag(flags, MAIN_ENGINE_STATE_DISPLAY_BOX_2D);
     switch (state)
     {
         case MAIN_ENGINE_STATE_MAIN_MENU_STEAM_OFF:
@@ -280,7 +283,7 @@ void MainRenderer::renderUI(int flags)
         case MAIN_ENGINE_STATE_MAIN_MENU_JOINING_LOCAL_SERVER_BY_IP:
             renderJoiningLocalServerByIPText();
             break;
-        case MAIN_ENGINE_STEAM_JOINING_SERVER:
+        case MAIN_ENGINE_STATE_STEAM_JOINING_SERVER:
             renderJoiningServerText();
             
             if (NG_CLIENT->getState() == NCS_Welcomed)
@@ -489,6 +492,13 @@ void MainRenderer::renderServerJoinedText(int flags)
             static b2Vec2 origin = b2Vec2(CAM_WIDTH - 0.5f, CAM_HEIGHT - (row++ * padding));
             
             std::string text = StringUtil::format("'I'       DEBUG %s", Server::getInstance()->isDisplaying() ? " ON" : "OFF");
+            renderText(text, origin, Color::BLACK, FONT_ALIGN_RIGHT);
+        }
+        
+        {
+            static b2Vec2 origin = b2Vec2(CAM_WIDTH - 0.5f, CAM_HEIGHT - (row++ * padding));
+            
+            std::string text = StringUtil::format("'P' BOX2D DEBUG %s", FlagUtil::isFlagSet(flags, MAIN_ENGINE_STATE_DISPLAY_BOX_2D) ? " ON" : "OFF");
             renderText(text, origin, Color::BLACK, FONT_ALIGN_RIGHT);
         }
     }

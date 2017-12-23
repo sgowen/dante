@@ -142,21 +142,15 @@ void World::removeEntity(Entity* inEntity)
 
 void World::postRead()
 {
-    if (_isServer)
-    {
-        return;
-    }
+    assert(!_isServer);
     
     bool needsMoveReplay = false;
     for (Entity* entity : _players)
     {
-        Robot* robot = static_cast<Robot*>(entity);
-        if (NG_CLIENT->isPlayerIdLocal(robot->getPlayerId()))
+        if (entity->needsMoveReplay())
         {
-            if (robot->needsMoveReplay())
-            {
-                needsMoveReplay = true;
-            }
+            needsMoveReplay = true;
+            break;
         }
     }
     

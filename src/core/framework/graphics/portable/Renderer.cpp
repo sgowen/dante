@@ -11,7 +11,7 @@
 #include "framework/graphics/portable/Renderer.h"
 
 #include "framework/graphics/portable/SpriteBatcher.h"
-#include "framework/graphics/portable/NGRectBatcher.h"
+#include "framework/graphics/portable/QuadBatcher.h"
 #include "framework/graphics/portable/LineBatcher.h"
 #include "framework/graphics/portable/CircleBatcher.h"
 #include "framework/graphics/portable/TextureLoader.h"
@@ -23,6 +23,8 @@
 #include "framework/graphics/portable/Color.h"
 #include "framework/math/NGRect.h"
 #include "framework/graphics/portable/NGTexture.h"
+#include "framework/graphics/portable/Box2DDebugRenderer.h"
+#include <Box2D/Box2D.h>
 
 #include "framework/graphics/portable/TextureWrapper.h"
 #include "framework/graphics/portable/TextureDataWrapper.h"
@@ -38,18 +40,17 @@
 #include "framework/graphics/portable/NGTextureDesc.h"
 #include "framework/graphics/portable/Assets.h"
 
-#include <Box2D/Box2D.h>
-
 #include <string>
 #include <assert.h>
 
 Renderer::Renderer() :
 _rendererHelper(RENDERER_HELPER_FACTORY->createRendererHelper()),
 _spriteBatcher(new SpriteBatcher(_rendererHelper)),
-_fillNGRectBatcher(new NGRectBatcher(_rendererHelper, true)),
-_boundsNGRectBatcher(new NGRectBatcher(_rendererHelper, false)),
+_fillQuadBatcher(new QuadBatcher(_rendererHelper, true)),
+_boundsQuadBatcher(new QuadBatcher(_rendererHelper, false)),
 _lineBatcher(new LineBatcher(_rendererHelper)),
 _circleBatcher(new CircleBatcher(_rendererHelper)),
+_box2DDebugRenderer(new Box2DDebugRenderer(*_fillQuadBatcher, *_boundsQuadBatcher, *_lineBatcher, *_circleBatcher)),
 _textureLoader(TEXTURE_LOADER_FACTORY->createTextureLoader()),
 _shaderProgramLoader(SHADER_PROGRAM_LOADER_FACTORY->createShaderProgramLoader()),
 _textureShaderProgram(NULL),
@@ -69,11 +70,11 @@ Renderer::~Renderer()
     delete _rendererHelper;
     
     delete _spriteBatcher;
-    delete _fillNGRectBatcher;
-    delete _boundsNGRectBatcher;
+    delete _fillQuadBatcher;
+    delete _boundsQuadBatcher;
     delete _lineBatcher;
     delete _circleBatcher;
-    
+    delete _box2DDebugRenderer;
     delete _textureLoader;
     delete _shaderProgramLoader;
     
@@ -138,6 +139,11 @@ void Renderer::releaseDeviceDependentResources()
     {
         unloadTexture(t);
     }
+}
+
+void Renderer::onWorldCreated(b2World* world)
+{
+    _box2DDebugRenderer->setWorld(world);
 }
 
 void Renderer::loadTextureDataSync(NGTexture* arg)
@@ -329,14 +335,14 @@ void Renderer::testRenderingSuite()
     _circleBatcher->renderPartialCircle(c2, 135, Color::RED, *_colorShaderProgram);
     
     static NGRect r1(1, 1, 2, 1);
-    _boundsNGRectBatcher->beginBatch();
-    _boundsNGRectBatcher->renderNGRect(r1, Color::RED);
-    _boundsNGRectBatcher->endBatch(*_colorShaderProgram);
+    _boundsQuadBatcher->beginBatch();
+    _boundsQuadBatcher->renderRect(r1, Color::RED);
+    _boundsQuadBatcher->endBatch(*_colorShaderProgram);
     
     static NGRect r2(4, 1, 2, 1);
-    _fillNGRectBatcher->beginBatch();
-    _fillNGRectBatcher->renderNGRect(r2, Color::RED);
-    _fillNGRectBatcher->endBatch(*_colorShaderProgram);
+    _fillQuadBatcher->beginBatch();
+    _fillQuadBatcher->renderRect(r2, Color::RED);
+    _fillQuadBatcher->endBatch(*_colorShaderProgram);
     
     static Line line(3, 3, 5, 5);
     _lineBatcher->beginBatch();

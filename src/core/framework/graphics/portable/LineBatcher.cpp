@@ -33,18 +33,6 @@ void LineBatcher::beginBatch()
     _numLines = 0;
 }
 
-void LineBatcher::endBatch(ShaderProgram &gpuProgramWrapper)
-{
-    if (_numLines > 0)
-    {
-        gpuProgramWrapper.bind();
-        
-        _rendererHelper->draw(NGPrimitiveType_Lines, 0, VERTICES_PER_LINE * _numLines);
-        
-        gpuProgramWrapper.unbind();
-    }
-}
-
 void LineBatcher::renderLine(Line &line, Color &c)
 {
     float oX = line.getOrigin().getX();
@@ -56,4 +44,16 @@ void LineBatcher::renderLine(Line &line, Color &c)
     _rendererHelper->addVertexCoordinate(eX, eY, 0, c.red, c.green, c.blue, c.alpha);
     
     _numLines++;
+}
+
+void LineBatcher::endBatch(ShaderProgram &gpuProgramWrapper)
+{
+    if (_numLines > 0)
+    {
+        gpuProgramWrapper.bind();
+        
+        _rendererHelper->draw(NGPrimitiveType_Lines, 0, VERTICES_PER_LINE * _numLines);
+        
+        gpuProgramWrapper.unbind();
+    }
 }

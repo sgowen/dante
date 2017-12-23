@@ -35,7 +35,7 @@ private:
     
     void renderBackground();
     
-    void renderWorld();
+    void renderWorld(int flags);
     
     void renderEntities(World* world, bool isServer);
     

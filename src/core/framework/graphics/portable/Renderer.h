@@ -14,7 +14,7 @@
 #include <vector>
 
 class SpriteBatcher;
-class NGRectBatcher;
+class QuadBatcher;
 class LineBatcher;
 class CircleBatcher;
 class TextureLoader;
@@ -26,6 +26,8 @@ class TextureRegion;
 class Color;
 class NGRect;
 class NGTexture;
+class Box2DDebugRenderer;
+class b2World;
 
 class Renderer
 {
@@ -42,6 +44,8 @@ public:
     
     virtual void render(int flags = 0) = 0;
     
+    void onWorldCreated(b2World* world);
+    
     void loadTextureDataSync(NGTexture* arg);
     void loadTextureSync(NGTexture* texture);
     void loadTextureAsync(NGTexture* texture);
@@ -50,12 +54,17 @@ public:
     bool ensureTexture(NGTexture* texture);
     
 protected:
+    std::vector<NGTexture*> _textures;
+    std::vector<NGTexture *> _loadingTextures;
+    std::vector<tthread::thread *> _textureDataLoadingThreads;
+    
     RendererHelper* _rendererHelper;
     SpriteBatcher* _spriteBatcher;
-    NGRectBatcher* _fillNGRectBatcher;
-    NGRectBatcher* _boundsNGRectBatcher;
+    QuadBatcher* _fillQuadBatcher;
+    QuadBatcher* _boundsQuadBatcher;
     LineBatcher* _lineBatcher;
     CircleBatcher* _circleBatcher;
+    Box2DDebugRenderer* _box2DDebugRenderer;
     TextureLoader* _textureLoader;
     ShaderProgramLoader* _shaderProgramLoader;
     
@@ -63,9 +72,9 @@ protected:
     ShaderProgram* _colorShaderProgram;
     ShaderProgram* _framebufferToScreenShaderProgram;
     
-    std::vector<NGTexture*> _textures;
-    
     int _framebufferIndex;
+    bool _areDeviceDependentResourcesCreated;
+    bool _areWindowSizeDependentResourcesCreated;
     
     void beginFrame();
     
@@ -81,13 +90,6 @@ protected:
 	void renderEntityWithColor(Entity &go, TextureRegion& tr, Color c, bool flipX = false);
     
     void testRenderingSuite();
-    
-private:
-    std::vector<NGTexture *> _loadingTextures;
-    std::vector<tthread::thread *> _textureDataLoadingThreads;
-	int _maxBatchSize;
-    bool _areDeviceDependentResourcesCreated;
-	bool _areWindowSizeDependentResourcesCreated;
     
     void handleAsyncTextureLoads();
     

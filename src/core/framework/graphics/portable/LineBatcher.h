@@ -23,9 +23,9 @@ public:
     
     void beginBatch();
     
-    void endBatch(ShaderProgram &gpuProgramWrapper);
-    
     void renderLine(Line &line, Color &c);
+    
+    void endBatch(ShaderProgram &gpuProgramWrapper);
     
 private:
     RendererHelper* _rendererHelper;
