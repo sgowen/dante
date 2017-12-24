@@ -213,8 +213,6 @@ uint32_t SpacePirate::getAllStateMask() const
 
 void SpacePirate::read(InputMemoryBitStream& inInputStream)
 {
-    float oldWidth = _width;
-    
     bool stateBit;
     
     _readState = 0;
