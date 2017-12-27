@@ -38,6 +38,7 @@ private:
     HandleEntityDeletionFunc _handleEntityDeletionFunc;
     
     std::map<uint32_t, Entity*> _entityMap;
+    uint32_t _entityID;
 };
 
 #endif /* defined(__noctisgames__EntityManager__) */

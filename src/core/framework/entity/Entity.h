@@ -176,10 +176,8 @@ protected:
 private:
     float _timeVelocityBecameOutOfSync;
     float _timePositionBecameOutOfSync;
-    uint32_t _iD;
+    uint32_t _ID;
     bool _isRequestingDeletion;
-    
-    static uint32_t getUniqueEntityID();
 };
 
 #endif /* defined(__noctisgames__Entity__) */

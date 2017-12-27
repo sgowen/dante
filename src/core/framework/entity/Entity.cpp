@@ -47,7 +47,7 @@ _angleLastKnown(0.0f),
 _numGroundContactsLastKnown(0),
 _timeVelocityBecameOutOfSync(0.0f),
 _timePositionBecameOutOfSync(0.0f),
-_iD(getUniqueEntityID()),
+_ID(0),
 _numGroundContacts(0),
 _isRequestingDeletion(false)
 {
@@ -207,12 +207,12 @@ float Entity::getAngle()
 
 void Entity::setID(uint32_t inID)
 {
-    _iD = inID;
+    _ID = inID;
 }
 
 uint32_t Entity::getID()
 {
-    return _iD;
+    return _ID;
 }
 
 bool Entity::isGrounded()
@@ -378,13 +378,4 @@ bool Entity::interpolateVectorsIfNecessary(b2Vec2& inOld, const b2Vec2& inNew, f
     }
     
     return false;
-}
-
-#pragma mark private
-
-uint32_t Entity::getUniqueEntityID()
-{
-    static uint32_t entityID = 0;
-    
-    return entityID++;
 }

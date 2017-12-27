@@ -15,7 +15,8 @@
 #include "framework/util/StringUtil.h"
 #include "framework/util/NGSTDUtil.h"
 
-EntityManager::EntityManager(HandleEntityCreatedFunc handleEntityCreatedFunc, HandleEntityDeletionFunc handleEntityDeletionFunc) : _handleEntityCreatedFunc(handleEntityCreatedFunc), _handleEntityDeletionFunc(handleEntityDeletionFunc)
+EntityManager::EntityManager(HandleEntityCreatedFunc handleEntityCreatedFunc, HandleEntityDeletionFunc handleEntityDeletionFunc) : _handleEntityCreatedFunc(handleEntityCreatedFunc), _handleEntityDeletionFunc(handleEntityDeletionFunc),
+_entityID(0)
 {
     // Empty
 }
@@ -39,6 +40,8 @@ Entity* EntityManager::getEntityByID(uint32_t inID) const
 
 void EntityManager::registerEntity(Entity* inEntity)
 {
+    inEntity->setID(_entityID++);
+    
     _entityMap.insert(std::make_pair(inEntity->getID(), inEntity));
     
     _handleEntityCreatedFunc(inEntity);
