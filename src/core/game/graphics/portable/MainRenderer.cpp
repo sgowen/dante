@@ -158,8 +158,6 @@ void MainRenderer::render(int flags)
 {
     beginFrame();
     
-    _rendererHelper->clearFramebufferWithColor(0.0f, 0.0f, 0.0f, 1);
-    
     if (_textureManager->ensureTextures())
     {
         updateCamera();
@@ -186,6 +184,16 @@ void MainRenderer::beginFrame()
     _textureManager->handleAsyncTextureLoads();
     
     setFramebuffer(0);
+}
+
+void MainRenderer::setFramebuffer(int framebufferIndex)
+{
+    assert(framebufferIndex >= 0);
+    
+    _framebufferIndex = framebufferIndex;
+    
+    _rendererHelper->bindToOffscreenFramebuffer(_framebufferIndex);
+    _rendererHelper->clearFramebufferWithColor(0, 0, 0, 1);
 }
 
 void MainRenderer::renderBackground()
@@ -281,7 +289,7 @@ void MainRenderer::renderEntities(World* world, bool isServer)
                 bool isActive = proj->getState() == Projectile::ProjectileState::ProjectileState_Active;
                 TextureRegion tr = isActive ? ASSETS->findTextureRegion("Projectile") : ASSETS->findTextureRegion("Explosion", proj->getStateTime());
                 
-                renderEntityWithColor(*proj, tr, c, proj->isFacingLeft());
+                _spriteBatcher->renderSprite(proj->getPosition().x, proj->getPosition().y, proj->getWidth(), proj->getHeight(), proj->getAngle(), c, tr, proj->isFacingLeft());
             }
         }
         else if (go->getNetworkType() == NW_TYPE_SpacePirate)
@@ -289,13 +297,13 @@ void MainRenderer::renderEntities(World* world, bool isServer)
             SpacePirate* sp = static_cast<SpacePirate*>(go);
             TextureRegion tr = ASSETS->findTextureRegion("Space_Pirate_Walking", sp->getStateTime());
             
-            renderEntityWithColor(*sp, tr, c, sp->isFacingLeft());
+            _spriteBatcher->renderSprite(sp->getPosition().x, sp->getPosition().y, sp->getWidth(), sp->getHeight(), sp->getAngle(), c, tr, sp->isFacingLeft());
         }
         else if (go->getNetworkType() == NW_TYPE_Crate)
         {
             TextureRegion tr = ASSETS->findTextureRegion("Map_Crate", go->getStateTime());
             
-            renderEntityWithColor(*go, tr, c);
+            _spriteBatcher->renderSprite(go->getPosition().x, go->getPosition().y, go->getWidth(), go->getHeight(), go->getAngle(), c, tr);
         }
         else if (go->getNetworkType() == NW_TYPE_SpacePirateChunk)
         {
@@ -325,7 +333,7 @@ void MainRenderer::renderEntities(World* world, bool isServer)
                     break;
             }
             
-            renderEntityWithColor(*go, *tr, c, spc->isFacingLeft());
+            _spriteBatcher->renderSprite(spc->getPosition().x, spc->getPosition().y, spc->getWidth(), spc->getHeight(), spc->getAngle(), c, *tr, spc->isFacingLeft());
         }
     }
     
@@ -349,7 +357,7 @@ void MainRenderer::renderEntities(World* world, bool isServer)
             c.alpha /= 2.0f;
         }
         
-        renderEntityWithColor(*r, tr, c, r->isFacingLeft());
+        _spriteBatcher->renderSprite(r->getPosition().x, r->getPosition().y, r->getWidth(), r->getHeight(), r->getAngle(), c, tr, r->isFacingLeft());
     }
     
     _spriteBatcher->endBatch(_textureManager->getTextures()[1], *_textureShaderProgram);
@@ -776,26 +784,6 @@ void MainRenderer::updateCamera()
             _camBounds->setHeight(h);
         }
     }
-}
-
-void MainRenderer::setFramebuffer(int framebufferIndex)
-{
-    assert(framebufferIndex >= 0);
-    
-    _framebufferIndex = framebufferIndex;
-    
-    _rendererHelper->bindToOffscreenFramebuffer(_framebufferIndex);
-    _rendererHelper->clearFramebufferWithColor(0, 0, 0, 1);
-}
-
-void MainRenderer::renderEntity(Entity &pe, TextureRegion& tr, bool flipX)
-{
-    _spriteBatcher->renderSprite(pe.getPosition().x, pe.getPosition().y, pe.getWidth(), pe.getHeight(), pe.getAngle(), tr, flipX);
-}
-
-void MainRenderer::renderEntityWithColor(Entity &pe, TextureRegion& tr, Color c, bool flipX)
-{
-    _spriteBatcher->renderSprite(pe.getPosition().x, pe.getPosition().y, pe.getWidth(), pe.getHeight(), pe.getAngle(), c, tr, flipX);
 }
 
 void MainRenderer::testRenderingSuite()

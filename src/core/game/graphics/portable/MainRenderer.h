@@ -63,6 +63,7 @@ private:
     int _framebufferIndex;
     
     void beginFrame();
+    void setFramebuffer(int framebufferIndex);
     void renderBackground();
     void renderWorld(int flags);
     void renderEntities(World* world, bool isServer);
@@ -79,11 +80,6 @@ private:
     void endFrame();
     
     void updateCamera();
-    
-    void setFramebuffer(int framebufferIndex);
-    
-    void renderEntity(Entity &go, TextureRegion& tr, bool flipX = false);
-    void renderEntityWithColor(Entity &go, TextureRegion& tr, Color c, bool flipX = false);
     
     void testRenderingSuite();
 };
