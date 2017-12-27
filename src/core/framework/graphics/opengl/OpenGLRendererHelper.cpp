@@ -134,11 +134,6 @@ void OpenGLRendererHelper::bindTexture(NGTextureSlot textureSlot, NGTexture* tex
     }
 }
 
-void OpenGLRendererHelper::destroyTexture(TextureWrapper& textureWrapper)
-{
-    glDeleteTextures(1, &textureWrapper.texture);
-}
-
 void OpenGLRendererHelper::bindShaderProgram(ShaderProgramWrapper* shaderProgramWrapper)
 {
     glUseProgram(shaderProgramWrapper == NULL ? 0 : shaderProgramWrapper->_programObjectId);

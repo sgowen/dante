@@ -331,6 +331,8 @@
 		BB7267FF1EEC704C004F33F9 /* ReplicationManagerServer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8307F31EC2AC0900435E7E /* ReplicationManagerServer.cpp */; };
 		BB7268001EEC704E004F33F9 /* ReplicationManagerTransmissionData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8307F51EC2AC0900435E7E /* ReplicationManagerTransmissionData.cpp */; };
 		BB7428411EB2AF4200B7628D /* NGRTTI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB74283D1EB2AF4200B7628D /* NGRTTI.cpp */; };
+		BB8091FD1FF4131600F84D1D /* TextureManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8091FB1FF4131500F84D1D /* TextureManager.cpp */; };
+		BB8091FE1FF4131600F84D1D /* TextureManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8091FB1FF4131500F84D1D /* TextureManager.cpp */; };
 		BB80D2021EF97F89002B9448 /* NGSteamP2PAuth.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB80D2001EF97F89002B9448 /* NGSteamP2PAuth.cpp */; };
 		BB8308411EC2AD1F00435E7E /* AckRange.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8308091EC2AD1F00435E7E /* AckRange.cpp */; };
 		BB8308441EC2AD1F00435E7E /* DeliveryNotificationManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB83080C1EC2AD1F00435E7E /* DeliveryNotificationManager.cpp */; };
@@ -940,6 +942,8 @@
 		BB74283D1EB2AF4200B7628D /* NGRTTI.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NGRTTI.cpp; sourceTree = "<group>"; };
 		BB74283E1EB2AF4200B7628D /* NGRTTI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NGRTTI.h; sourceTree = "<group>"; };
 		BB74283F1EB2AF4200B7628D /* StringUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StringUtil.h; sourceTree = "<group>"; };
+		BB8091FB1FF4131500F84D1D /* TextureManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TextureManager.cpp; sourceTree = "<group>"; };
+		BB8091FC1FF4131500F84D1D /* TextureManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextureManager.h; sourceTree = "<group>"; };
 		BB80D2001EF97F89002B9448 /* NGSteamP2PAuth.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NGSteamP2PAuth.cpp; sourceTree = "<group>"; };
 		BB80D2011EF97F89002B9448 /* NGSteamP2PAuth.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NGSteamP2PAuth.h; sourceTree = "<group>"; };
 		BB8307F31EC2AC0900435E7E /* ReplicationManagerServer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ReplicationManagerServer.cpp; sourceTree = "<group>"; };
@@ -2669,8 +2673,6 @@
 				BB1C3C091FE77301002E4AA6 /* NGGeometryProgram.h */,
 				BB39C8921FB2700900CF6699 /* NGGraphics.h */,
 				BB0CA6F01FE5B08D0011B75B /* NGPrimitiveType.h */,
-				BBAEF1471EA94ED900F0866E /* QuadBatcher.cpp */,
-				BBAEF1481EA94ED900F0866E /* QuadBatcher.h */,
 				BB2022F11FE8281C00BBB053 /* NGShaderUniformInput.cpp */,
 				BB2022F21FE8281C00BBB053 /* NGShaderUniformInput.h */,
 				BB1C3C181FE7868E002E4AA6 /* NGShaderVarInput.cpp */,
@@ -2681,6 +2683,8 @@
 				BB1C3C0D1FE77301002E4AA6 /* NGTextureProgram.cpp */,
 				BB1C3C0A1FE77301002E4AA6 /* NGTextureProgram.h */,
 				BB0CA6F11FE5B7130011B75B /* NGTextureSlot.h */,
+				BBAEF1471EA94ED900F0866E /* QuadBatcher.cpp */,
+				BBAEF1481EA94ED900F0866E /* QuadBatcher.h */,
 				BB5833CE1EEDDAFC0084DA20 /* Renderer.cpp */,
 				BB5833CF1EEDDAFC0084DA20 /* Renderer.h */,
 				BBAEF13F1EA94ED900F0866E /* RendererHelper.cpp */,
@@ -2701,6 +2705,8 @@
 				BBAEF1421EA94ED900F0866E /* TextureLoader.h */,
 				BBAEF1511EA94ED900F0866E /* TextureLoaderFactory.cpp */,
 				BBAEF1521EA94ED900F0866E /* TextureLoaderFactory.h */,
+				BB8091FB1FF4131500F84D1D /* TextureManager.cpp */,
+				BB8091FC1FF4131500F84D1D /* TextureManager.h */,
 				BBAEF1531EA94ED900F0866E /* TextureRegion.cpp */,
 				BBAEF1541EA94ED900F0866E /* TextureRegion.h */,
 				BBAEF13E1EA94ED900F0866E /* TextureWrapper.h */,
@@ -3754,6 +3760,7 @@
 				BB27D2361FC6567A00ED42FD /* ALWrapper.m in Sources */,
 				BB27D2371FC6567A00ED42FD /* ALBuffer.m in Sources */,
 				BB27D2381FC6567A00ED42FD /* ALCaptureDevice.m in Sources */,
+				BB8091FD1FF4131600F84D1D /* TextureManager.cpp in Sources */,
 				BB27D2391FC6567A00ED42FD /* ALContext.m in Sources */,
 				BB27D23A1FC6567A00ED42FD /* ALSoundSourcePool.m in Sources */,
 				BB27D23B1FC6567A00ED42FD /* OALSimpleAudio.m in Sources */,
@@ -4132,6 +4139,7 @@
 				BBD5540D1FDB2EA800E00AD6 /* b2Body.cpp in Sources */,
 				BB5AFE0D1FB359DE005FBD52 /* Projectile.cpp in Sources */,
 				BB5AFE0E1FB359DE005FBD52 /* Robot.cpp in Sources */,
+				BB8091FE1FF4131600F84D1D /* TextureManager.cpp in Sources */,
 				BB5AFE0F1FB359DE005FBD52 /* SpacePirate.cpp in Sources */,
 				BB5AFE101FB359DE005FBD52 /* SpacePirateChunk.cpp in Sources */,
 				BB5AFE111FB359DE005FBD52 /* Util.cpp in Sources */,

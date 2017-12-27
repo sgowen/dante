@@ -73,3 +73,8 @@ TextureWrapper* DirectXTextureLoader::loadTexture(TextureDataWrapper* textureDat
     
     return new TextureWrapper(textureData->texture);
 }
+
+void DirectXTextureLoader::destroyTexture(TextureWrapper& textureWrapper)
+{
+    textureWrapper.texture->Release();
+}

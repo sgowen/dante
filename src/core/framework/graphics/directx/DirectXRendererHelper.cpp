@@ -164,11 +164,6 @@ void DirectXRendererHelper::bindTexture(NGTextureSlot textureSlot, NGTexture* te
     }
 }
 
-void DirectXRendererHelper::destroyTexture(TextureWrapper& textureWrapper)
-{
-    textureWrapper.texture->Release();
-}
-
 void DirectXRendererHelper::bindShaderProgram(ShaderProgramWrapper* shaderProgramWrapper)
 {
     if (shaderProgramWrapper)

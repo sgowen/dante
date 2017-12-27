@@ -85,6 +85,11 @@ TextureWrapper* OpenGLTextureLoader::loadTexture(TextureDataWrapper* textureData
     return ret;
 }
 
+void OpenGLTextureLoader::destroyTexture(TextureWrapper& textureWrapper)
+{
+    glDeleteTextures(1, &textureWrapper.texture);
+}
+
 struct DataHandle
 {
     const png_byte* data;

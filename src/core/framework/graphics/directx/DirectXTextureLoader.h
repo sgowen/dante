@@ -19,6 +19,8 @@ public:
     virtual TextureDataWrapper* loadTextureData(NGTexture* texture);
     
     virtual TextureWrapper* loadTexture(TextureDataWrapper* textureData, bool repeatS = false);
+    
+    virtual void destroyTexture(TextureWrapper& textureWrapper);
 };
 
 #endif /* defined(__noctisgames__DirectXTextureLoader__) */

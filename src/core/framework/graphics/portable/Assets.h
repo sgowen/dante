@@ -35,7 +35,7 @@ public:
     
     NGAnimation& findNGAnimation(std::string key);
     
-    std::vector<NGTextureDesc*>& getTextures();
+    std::vector<NGTextureDesc*>& getTextureDescriptors();
     
     std::map<std::string, TextureRegion*>& getTextureRegionMap();
     

@@ -12,9 +12,9 @@
 
 #include "framework/graphics/portable/TextureDataWrapper.h"
 #include "framework/graphics/portable/TextureWrapper.h"
-#include "framework/graphics/portable/Renderer.h"
+#include "framework/graphics/portable/TextureManager.h"
 
-NGTexture::NGTexture(std::string inName, Renderer* renderer, bool repeatS, bool isEncrypted) : name(inName), textureDataWrapper(NULL), textureWrapper(NULL), _renderer(renderer), _repeatS(repeatS), _isEncrypted(isEncrypted), _isLoadingData(false)
+NGTexture::NGTexture(std::string inName, TextureManager* textureManager, bool repeatS, bool isEncrypted) : name(inName), textureDataWrapper(NULL), textureWrapper(NULL), _textureManager(textureManager), _repeatS(repeatS), _isEncrypted(isEncrypted), _isLoadingData(false)
 {
     // Empty
 }

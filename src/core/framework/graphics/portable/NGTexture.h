@@ -13,7 +13,7 @@
 
 struct TextureDataWrapper;
 struct TextureWrapper;
-class Renderer;
+class TextureManager;
 
 class NGTexture
 {
@@ -21,12 +21,12 @@ public:
     std::string name;
     TextureDataWrapper* textureDataWrapper;
     TextureWrapper* textureWrapper;
-    Renderer* _renderer;
+    TextureManager* _textureManager;
     bool _repeatS;
     bool _isEncrypted;
     bool _isLoadingData;
     
-    NGTexture(std::string inName, Renderer* renderer, bool repeatS = false, bool isEncrypted = false);
+    NGTexture(std::string inName, TextureManager* textureManager, bool repeatS = false, bool isEncrypted = false);
 };
 
 #endif /* defined(__noctisgames__NGTexture__) */

@@ -42,7 +42,6 @@ public:
     virtual void bindMatrix(NGShaderUniformInput* uniform);
     
     virtual void bindTexture(NGTextureSlot textureSlot, NGTexture* texture, NGShaderUniformInput* uniform = NULL);
-    virtual void destroyTexture(TextureWrapper& textureWrapper);
     
     virtual void bindShaderProgram(ShaderProgramWrapper* shaderProgramWrapper);
     virtual void destroyShaderProgram(ShaderProgramWrapper* shaderProgramWrapper, std::vector<NGShaderUniformInput*>& uniforms, std::vector<NGShaderVarInput*>& inputLayout);

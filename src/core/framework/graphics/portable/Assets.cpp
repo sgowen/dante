@@ -201,7 +201,7 @@ NGAnimation& Assets::findNGAnimation(std::string key)
     return *anim;
 }
 
-std::vector<NGTextureDesc*>& Assets::getTextures()
+std::vector<NGTextureDesc*>& Assets::getTextureDescriptors()
 {
     return _textures;
 }

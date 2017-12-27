@@ -10,10 +10,23 @@
 
 #include "game/graphics/portable/MainRenderer.h"
 
-#include "framework/graphics/portable/NGTexture.h"
+#include "framework/graphics/portable/TextureManager.h"
 #include "framework/graphics/portable/Font.h"
 #include "Box2D/Box2D.h"
 #include "game/logic/World.h"
+#include "framework/graphics/portable/Box2DDebugRenderer.h"
+#include "framework/graphics/portable/SpriteBatcher.h"
+#include "framework/graphics/portable/QuadBatcher.h"
+#include "framework/graphics/portable/LineBatcher.h"
+#include "framework/graphics/portable/CircleBatcher.h"
+#include "framework/graphics/portable/ShaderProgramLoader.h"
+#include "framework/graphics/portable/RendererHelper.h"
+#include "framework/graphics/portable/ShaderProgram.h"
+#include "framework/entity/Entity.h"
+#include "framework/graphics/portable/TextureRegion.h"
+#include "framework/graphics/portable/Color.h"
+#include "framework/math/NGRect.h"
+#include "framework/graphics/portable/NGTexture.h"
 #include "framework/graphics/portable/Box2DDebugRenderer.h"
 
 #include "framework/graphics/portable/Assets.h"
@@ -50,6 +63,19 @@
 #include "framework/graphics/portable/LineBatcher.h"
 #include "framework/util/FlagUtil.h"
 #include "framework/util/FrameworkConstants.h"
+#include "framework/graphics/portable/TextureWrapper.h"
+#include "framework/graphics/portable/TextureDataWrapper.h"
+#include "framework/graphics/portable/TextureLoaderFactory.h"
+#include "framework/graphics/portable/ShaderProgramLoaderFactory.h"
+#include "framework/graphics/portable/RendererHelperFactory.h"
+#include "framework/util/NGSTDUtil.h"
+#include "framework/math/Circle.h"
+#include "framework/math/Line.h"
+#include <framework/graphics/portable/NGTextureProgram.h>
+#include <framework/graphics/portable/NGGeometryProgram.h>
+#include <framework/graphics/portable/NGFramebufferToScreenProgram.h>
+#include "framework/graphics/portable/NGTextureDesc.h"
+#include "framework/graphics/portable/Assets.h"
 
 #ifdef NG_STEAM
 #include "framework/network/steam/NGSteamGameServer.h"
@@ -58,17 +84,74 @@
 
 #include <sstream>
 #include <ctime> // rand
+#include <string>
+#include <assert.h>
 
 MainRenderer::MainRenderer() : Renderer(),
+_textureManager(new TextureManager()),
+_rendererHelper(RENDERER_HELPER_FACTORY->createRendererHelper()),
+_spriteBatcher(new SpriteBatcher(_rendererHelper)),
+_fillQuadBatcher(new QuadBatcher(_rendererHelper, true)),
+_boundsQuadBatcher(new QuadBatcher(_rendererHelper, false)),
+_lineBatcher(new LineBatcher(_rendererHelper)),
+_circleBatcher(new CircleBatcher(_rendererHelper)),
+_box2DDebugRenderer(new Box2DDebugRenderer(*_fillQuadBatcher, *_boundsQuadBatcher, *_lineBatcher, *_circleBatcher)),
+_shaderProgramLoader(SHADER_PROGRAM_LOADER_FACTORY->createShaderProgramLoader()),
+_textureShaderProgram(NULL),
+_colorShaderProgram(NULL),
+_framebufferToScreenShaderProgram(NULL),
 _font(new Font("texture_001.ngt", 0, 0, 16, 64, 75, TEXTURE_SIZE_1024)),
-_camBounds(new NGRect(0, 0, CAM_WIDTH, CAM_HEIGHT))
+_camBounds(new NGRect(0, 0, CAM_WIDTH, CAM_HEIGHT)),
+_framebufferIndex(0)
 {
     // Empty
 }
 
 MainRenderer::~MainRenderer()
 {
+    releaseDeviceDependentResources();
+    
+    delete _rendererHelper;
+    
+    delete _spriteBatcher;
+    delete _fillQuadBatcher;
+    delete _boundsQuadBatcher;
+    delete _lineBatcher;
+    delete _circleBatcher;
+    delete _box2DDebugRenderer;
+    delete _shaderProgramLoader;
+    
     delete _font;
+}
+
+void MainRenderer::createDeviceDependentResources()
+{
+    _rendererHelper->createDeviceDependentResources();
+    _textureManager->createDeviceDependentResources();
+    
+    _textureShaderProgram = new NGTextureProgram(*_rendererHelper, *_shaderProgramLoader, "shader_003_vert.ngs", "shader_003_frag.ngs");
+    _colorShaderProgram = new NGGeometryProgram(*_rendererHelper, *_shaderProgramLoader, "shader_001_vert.ngs", "shader_001_frag.ngs");
+    _framebufferToScreenShaderProgram = new NGFramebufferToScreenProgram(*_rendererHelper, *_shaderProgramLoader, "shader_002_vert.ngs", "shader_002_frag.ngs");
+}
+
+void MainRenderer::createWindowSizeDependentResources(int screenWidth, int screenHeight, int renderWidth, int renderHeight, int numFramebuffers)
+{
+    _rendererHelper->createWindowSizeDependentResources(screenWidth, screenHeight, renderWidth, renderHeight, numFramebuffers);
+}
+
+void MainRenderer::releaseDeviceDependentResources()
+{
+    _rendererHelper->releaseDeviceDependentResources();
+    _textureManager->releaseDeviceDependentResources();
+    
+    delete _textureShaderProgram;
+    _textureShaderProgram = NULL;
+    
+    delete _colorShaderProgram;
+    _colorShaderProgram = NULL;
+    
+    delete _framebufferToScreenShaderProgram;
+    _framebufferToScreenShaderProgram = NULL;
 }
 
 void MainRenderer::render(int flags)
@@ -77,7 +160,7 @@ void MainRenderer::render(int flags)
     
     _rendererHelper->clearFramebufferWithColor(0.0f, 0.0f, 0.0f, 1);
     
-    if (ensureTextures())
+    if (_textureManager->ensureTextures())
     {
         updateCamera();
         
@@ -98,6 +181,13 @@ void MainRenderer::render(int flags)
     endFrame();
 }
 
+void MainRenderer::beginFrame()
+{
+    _textureManager->handleAsyncTextureLoads();
+    
+    setFramebuffer(0);
+}
+
 void MainRenderer::renderBackground()
 {
     for (int i = 0; i < 3; ++i)
@@ -111,7 +201,7 @@ void MainRenderer::renderBackground()
             tr.initY(clamp(384 - _camBounds->getBottom() * 32, 384, 0));
             _spriteBatcher->renderSprite(i * CAM_WIDTH + CAM_WIDTH / 2, CAM_HEIGHT / 2, CAM_WIDTH, CAM_HEIGHT, 0, tr);
         }
-        _spriteBatcher->endBatch(_textures[2], *_textureShaderProgram);
+        _spriteBatcher->endBatch(_textureManager->getTextures()[2], *_textureShaderProgram);
 
         _spriteBatcher->beginBatch();
         {
@@ -120,7 +210,7 @@ void MainRenderer::renderBackground()
             tr.initY(clamp(644 - _camBounds->getBottom() * 48, 644, 0));
             _spriteBatcher->renderSprite(i * CAM_WIDTH + CAM_WIDTH / 2, CAM_HEIGHT * 0.3875f / 2, CAM_WIDTH, CAM_HEIGHT * 0.3875f, 0, tr);
         }
-        _spriteBatcher->endBatch(_textures[3], *_textureShaderProgram);
+        _spriteBatcher->endBatch(_textureManager->getTextures()[3], *_textureShaderProgram);
     }
 }
 
@@ -134,7 +224,7 @@ void MainRenderer::renderWorld(int flags)
         static TextureRegion tr = ASSETS->findTextureRegion("Background3");
         _spriteBatcher->renderSprite(i * CAM_WIDTH + CAM_WIDTH / 2, CAM_HEIGHT * 0.2f / 2, CAM_WIDTH, CAM_HEIGHT * 0.2f, 0, tr);
     }
-    _spriteBatcher->endBatch(_textures[3], *_textureShaderProgram);
+    _spriteBatcher->endBatch(_textureManager->getTextures()[3], *_textureShaderProgram);
     
     renderEntities(InstanceManager::getClientWorld(), false);
     
@@ -156,7 +246,7 @@ void MainRenderer::renderWorld(int flags)
             renderText(text, origin, Color::RED, FONT_ALIGN_CENTERED);
         }
     }
-    _spriteBatcher->endBatch(_textures[0], *_textureShaderProgram);
+    _spriteBatcher->endBatch(_textureManager->getTextures()[0], *_textureShaderProgram);
     
     if (FlagUtil::isFlagSet(flags, MAIN_ENGINE_STATE_DISPLAY_BOX_2D))
     {
@@ -262,7 +352,7 @@ void MainRenderer::renderEntities(World* world, bool isServer)
         renderEntityWithColor(*r, tr, c, r->isFacingLeft());
     }
     
-    _spriteBatcher->endBatch(_textures[1], *_textureShaderProgram);
+    _spriteBatcher->endBatch(_textureManager->getTextures()[1], *_textureShaderProgram);
 }
 
 void MainRenderer::renderUI(int flags)
@@ -300,7 +390,7 @@ void MainRenderer::renderUI(int flags)
         default:
             break;
     }
-    _spriteBatcher->endBatch(_textures[0], *_textureShaderProgram);
+    _spriteBatcher->endBatch(_textureManager->getTextures()[0], *_textureShaderProgram);
 }
 
 void MainRenderer::renderMainMenuSteamOffText()
@@ -581,6 +671,24 @@ void MainRenderer::renderText(const std::string& inStr, const b2Vec2& origin, co
     _font->renderText(*_spriteBatcher, text, origin.x, origin.y, fgWidth, fgHeight, fontColor, justification);
 }
 
+void MainRenderer::endFrame()
+{
+    assert(_framebufferIndex >= 0);
+    
+    _rendererHelper->bindToScreenFramebuffer();
+    _rendererHelper->clearFramebufferWithColor(0, 0, 0, 1);
+    
+    _rendererHelper->clearScreenVertices();
+    _rendererHelper->addVertexCoordinate(-1, -1);
+    _rendererHelper->addVertexCoordinate(-1, 1);
+    _rendererHelper->addVertexCoordinate(1, 1);
+    _rendererHelper->addVertexCoordinate(1, -1);
+    
+    _framebufferToScreenShaderProgram->bind(_rendererHelper->getFramebuffer(_framebufferIndex));
+    _rendererHelper->drawIndexed(NGPrimitiveType_Triangles, INDICES_PER_RECTANGLE);
+    _framebufferToScreenShaderProgram->unbind();
+}
+
 void MainRenderer::updateCamera()
 {
     _camBounds->getLowerLeft().set(0, 0);
@@ -669,3 +777,50 @@ void MainRenderer::updateCamera()
         }
     }
 }
+
+void MainRenderer::setFramebuffer(int framebufferIndex)
+{
+    assert(framebufferIndex >= 0);
+    
+    _framebufferIndex = framebufferIndex;
+    
+    _rendererHelper->bindToOffscreenFramebuffer(_framebufferIndex);
+    _rendererHelper->clearFramebufferWithColor(0, 0, 0, 1);
+}
+
+void MainRenderer::renderEntity(Entity &pe, TextureRegion& tr, bool flipX)
+{
+    _spriteBatcher->renderSprite(pe.getPosition().x, pe.getPosition().y, pe.getWidth(), pe.getHeight(), pe.getAngle(), tr, flipX);
+}
+
+void MainRenderer::renderEntityWithColor(Entity &pe, TextureRegion& tr, Color c, bool flipX)
+{
+    _spriteBatcher->renderSprite(pe.getPosition().x, pe.getPosition().y, pe.getWidth(), pe.getHeight(), pe.getAngle(), c, tr, flipX);
+}
+
+void MainRenderer::testRenderingSuite()
+{
+    _rendererHelper->updateMatrix(0, 16, 0, 9);
+    
+    static Circle c1(10, 4, 2);
+    _circleBatcher->renderCircle(c1, Color::RED, *_colorShaderProgram);
+    
+    static Circle c2(7, 7, 2);
+    _circleBatcher->renderPartialCircle(c2, 135, Color::RED, *_colorShaderProgram);
+    
+    static NGRect r1(1, 1, 2, 1);
+    _boundsQuadBatcher->beginBatch();
+    _boundsQuadBatcher->renderRect(r1, Color::RED);
+    _boundsQuadBatcher->endBatch(*_colorShaderProgram);
+    
+    static NGRect r2(4, 1, 2, 1);
+    _fillQuadBatcher->beginBatch();
+    _fillQuadBatcher->renderRect(r2, Color::RED);
+    _fillQuadBatcher->endBatch(*_colorShaderProgram);
+    
+    static Line line(3, 3, 5, 5);
+    _lineBatcher->beginBatch();
+    _lineBatcher->renderLine(line, Color::RED);
+    _lineBatcher->endBatch(*_colorShaderProgram);
+}
+
