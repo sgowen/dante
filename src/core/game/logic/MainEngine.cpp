@@ -10,10 +10,11 @@
 
 #include "game/logic/MainEngine.h"
 
-#include "game/logic/Server.h"
+#include <game/graphics/portable/MainRenderer.h>
 #include "framework/file/portable/JsonFile.h"
 #include "framework/entity/Entity.h"
 
+#include "game/logic/Server.h"
 #include "game/logic/GameConstants.h"
 #include "framework/input/CursorInputManager.h"
 #include "framework/input/CursorEvent.h"
@@ -37,12 +38,16 @@
 #include "framework/network/client/SocketClientHelper.h"
 #include "framework/network/portable/MachineAddress.h"
 #include "game/logic/MainEngineState.h"
-#include "game/graphics/portable/MainRenderer.h"
 #include "framework/audio/portable/NGAudioEngine.h"
 #include "framework/util/NGExtension.h"
 #include "framework/util/PlatformHelper.h"
 #include "framework/util/FlagUtil.h"
 #include "framework/graphics/portable/Assets.h"
+#include "framework/util/FrameworkConstants.h"
+#include "framework/audio/portable/NGAudioEngine.h"
+#include "framework/util/Timing.h"
+#include "framework/util/FPSUtil.h"
+#include "framework/input/CursorConverter.h"
 
 #ifdef NG_STEAM
 #include "framework/network/steam/NGSteamClientHelper.h"
@@ -52,21 +57,26 @@
 
 NGRTTI_IMPL(MainEngine, Engine);
 
-MainEngine::MainEngine() : Engine(new MainRenderer()),
+MainEngine::MainEngine() : Engine(),
+_stateMachine(this),
 _config(new JsonFile("dante.cfg")),
+_renderer(new MainRenderer()),
 _isSteam(false)
 {
-    NoctisGames::NGExtension::setInstance(NoctisGames::DefaultNGExtension::getInstance());
+    {
+        using namespace NoctisGames;
+        NGExtension::setInstance(DefaultNGExtension::getInstance());
+    }
     
     CURSOR_CONVERTER->setCamSize(CAM_WIDTH, CAM_HEIGHT);
-    
-    activateSteam();
     
     CLIENT_ENTITY_REG->registerCreationFunction(NW_TYPE_Robot, World::sClientCreateRobot);
     CLIENT_ENTITY_REG->registerCreationFunction(NW_TYPE_Projectile, World::sClientCreateProjectile);
     CLIENT_ENTITY_REG->registerCreationFunction(NW_TYPE_SpacePirate, World::sClientCreateSpacePirate);
     CLIENT_ENTITY_REG->registerCreationFunction(NW_TYPE_Crate, World::sClientCreateCrate);
     CLIENT_ENTITY_REG->registerCreationFunction(NW_TYPE_SpacePirateChunk, World::sClientCreateSpacePirateChunk);
+    
+    activateSteam();
 }
 
 MainEngine::~MainEngine()
@@ -79,7 +89,7 @@ MainEngine::~MainEngine()
 
 void MainEngine::createDeviceDependentResources()
 {
-    Engine::createDeviceDependentResources();
+    _renderer->createDeviceDependentResources();
     
     _config->load();
     
@@ -105,9 +115,75 @@ void MainEngine::createDeviceDependentResources()
     }
 }
 
+void MainEngine::createWindowSizeDependentResources(int screenWidth, int screenHeight, int renderWidth, int renderHeight, int cursorWidth, int cursorHeight)
+{
+    _renderer->createWindowSizeDependentResources(screenWidth, screenHeight, renderWidth, renderHeight);
+    
+    CURSOR_CONVERTER->setCursorSize(cursorWidth, cursorHeight);
+}
+
+void MainEngine::releaseDeviceDependentResources()
+{
+    _renderer->releaseDeviceDependentResources();
+    
+    NG_AUDIO_ENGINE->reset();
+}
+
+void MainEngine::onResume()
+{
+    NG_AUDIO_ENGINE->resume();
+}
+
+void MainEngine::onPause()
+{
+    NG_AUDIO_ENGINE->pause();
+}
+
 void MainEngine::update(double deltaTime)
 {
-    Engine::update(deltaTime);
+    FPSUtil::getInstance()->update(deltaTime);
+    
+    _frameStateTime += deltaTime;
+    
+    while (_frameStateTime >= FRAME_RATE)
+    {
+        _frameStateTime -= FRAME_RATE;
+        _stateTime += FRAME_RATE;
+        
+        Timing::getInstance()->updateManual(_stateTime, FRAME_RATE);
+        
+        handleSteamGameServices();
+        
+        if (NG_CLIENT)
+        {
+            NG_CLIENT->processIncomingPackets();
+            
+            InstanceManager::getClientWorld()->postRead();
+        }
+        
+        InputManager::getInstance()->update();
+        
+        NG_AUDIO_ENGINE->update();
+        
+        if (InstanceManager::getClientWorld())
+        {
+            InstanceManager::getClientWorld()->update();
+        }
+        
+        InputManager::getInstance()->clearPendingMove();
+        
+        handleNonMoveInput();
+        
+        if (NG_CLIENT)
+        {
+            NG_CLIENT->sendOutgoingPackets();
+            
+            if (NG_CLIENT->getState() == NCS_Disconnected)
+            {
+                disconnect();
+            }
+        }
+    }
     
     if (Server::getInstance())
     {
@@ -115,50 +191,20 @@ void MainEngine::update(double deltaTime)
     }
 }
 
-void MainEngine::onFrame()
+void MainEngine::render()
 {
-    handleSteamGameServices();
-    
-    if (NG_CLIENT)
-    {
-        NG_CLIENT->processIncomingPackets();
-        
-        InstanceManager::getClientWorld()->postRead();
-    }
-    
-    InputManager::getInstance()->update();
-    
-    NG_AUDIO_ENGINE->update();
-    
-    if (InstanceManager::getClientWorld())
-    {
-        InstanceManager::getClientWorld()->update();
-    }
-    
-    InputManager::getInstance()->clearPendingMove();
-    
-    handleNonMoveInput();
-    
-    if (NG_CLIENT)
-    {
-        NG_CLIENT->sendOutgoingPackets();
-        
-        if (NG_CLIENT->getState() == NCS_Disconnected)
-        {
-            disconnect();
-        }
-    }
+    _renderer->render(_engineState);
 }
 
 void MainEngine::handleNonMoveInput()
 {
     MainInputState* inputState = InputManager::getInstance()->getInputState();
     
-    if (inputState->getMenuState() == MENU_STATE_CLIENT_MAIN_TOGGLE_MUSIC)
+    if (inputState->getMenuState() == MS_CLIENT_MAIN_TOGGLE_MUSIC)
     {
         NG_AUDIO_ENGINE->setMusicDisabled(!NG_AUDIO_ENGINE->isMusicDisabled());
     }
-    else if (inputState->getMenuState() == MENU_STATE_CLIENT_MAIN_TOGGLE_SOUND)
+    else if (inputState->getMenuState() == MS_CLIENT_MAIN_TOGGLE_SOUND)
     {
         NG_AUDIO_ENGINE->setSoundDisabled(!NG_AUDIO_ENGINE->isSoundDisabled());
     }
@@ -167,27 +213,27 @@ void MainEngine::handleNonMoveInput()
     {
         if (Server::getInstance())
         {
-            if (inputState->getMenuState() == MENU_STATE_SERVER_TOGGLE_ENEMIES)
+            if (inputState->getMenuState() == MS_SERVER_TOGGLE_ENEMIES)
             {
                 Server::getInstance()->toggleEnemies();
             }
-            else if (inputState->getMenuState() == MENU_STATE_SERVER_TOGGLE_OBJECTS)
+            else if (inputState->getMenuState() == MS_SERVER_TOGGLE_OBJECTS)
             {
                 Server::getInstance()->toggleObjects();
             }
-            else if (inputState->getMenuState() == MENU_STATE_SERVER_TOGGLE_SERVER_DISPLAY)
+            else if (inputState->getMenuState() == MS_SERVER_TOGGLE_SERVER_DISPLAY)
             {
                 Server::getInstance()->toggleDisplaying();
             }
-            else if (inputState->getMenuState() == MENU_STATE_SERVER_TOGGLE_PHYSICS_DISPLAY)
+            else if (inputState->getMenuState() == MS_SERVER_TOGGLE_PHYSICS_DISPLAY)
             {
-                if (FlagUtil::isFlagSet(_engineState, MAIN_ENGINE_STATE_DISPLAY_BOX_2D))
+                if (FlagUtil::isFlagSet(_engineState, MES_DISPLAY_BOX_2D))
                 {
-                    _engineState = FlagUtil::removeFlag(_engineState, MAIN_ENGINE_STATE_DISPLAY_BOX_2D);
+                    _engineState = FlagUtil::removeFlag(_engineState, MES_DISPLAY_BOX_2D);
                 }
                 else
                 {
-                    _engineState = FlagUtil::setFlag(_engineState, MAIN_ENGINE_STATE_DISPLAY_BOX_2D);
+                    _engineState = FlagUtil::setFlag(_engineState, MES_DISPLAY_BOX_2D);
                 }
             }
         }
@@ -196,26 +242,26 @@ void MainEngine::handleNonMoveInput()
         {
             NG_CLIENT->requestToAddLocalPlayer();
         }
-        else if (inputState->getMenuState() == MENU_STATE_ESCAPE)
+        else if (inputState->getMenuState() == MS_ESCAPE)
         {
             disconnect();
         }
-        else if (inputState->getMenuState() == MENU_STATE_LOCAL_PLAYER_DROP_OUT_1)
+        else if (inputState->getMenuState() == MS_LOCAL_PLAYER_DROP_OUT_1)
         {
             NG_CLIENT->requestToDropLocalPlayer(1);
         }
-        else if (inputState->getMenuState() == MENU_STATE_LOCAL_PLAYER_DROP_OUT_2)
+        else if (inputState->getMenuState() == MS_LOCAL_PLAYER_DROP_OUT_2)
         {
             NG_CLIENT->requestToDropLocalPlayer(2);
         }
-        else if (inputState->getMenuState() == MENU_STATE_LOCAL_PLAYER_DROP_OUT_3)
+        else if (inputState->getMenuState() == MS_LOCAL_PLAYER_DROP_OUT_3)
         {
             NG_CLIENT->requestToDropLocalPlayer(3);
         }
     }
     else if (NG_SERVER)
     {
-        if (inputState->getMenuState() == MENU_STATE_ESCAPE)
+        if (inputState->getMenuState() == MS_ESCAPE)
         {
             disconnect();
         }
@@ -240,21 +286,21 @@ void MainEngine::handleNonMoveInput()
     }
     else if (InputManager::getInstance()->isLiveMode())
     {
-        if (inputState->getMenuState() == MENU_STATE_ESCAPE)
+        if (inputState->getMenuState() == MS_ESCAPE)
         {
             InputManager::getInstance()->setLiveMode(false);
             InputManager::getInstance()->resetLiveInput();
-            _engineState = _isSteam ? MAIN_ENGINE_STATE_MAIN_MENU_STEAM_ON : MAIN_ENGINE_STATE_MAIN_MENU_STEAM_OFF;
+            _engineState = _isSteam ? MES_MAIN_MENU_STEAM_ON : MES_MAIN_MENU_STEAM_OFF;
         }
         else if (InputManager::getInstance()->isTimeToProcessInput())
         {
-            if (_engineState == MAIN_ENGINE_STATE_MAIN_MENU_JOINING_LOCAL_SERVER_BY_IP)
+            if (_engineState == MES_MAIN_MENU_JOINING_LOCAL_SERVER_BY_IP)
             {
                 _serverIPAddress = StringUtil::format("%s:%d", InputManager::getInstance()->getLiveInput().c_str(), SERVER_PORT);
                 _name.clear();
-                _engineState = MAIN_ENGINE_STATE_MAIN_MENU_ENTERING_USERNAME;
+                _engineState = MES_MAIN_MENU_ENTERING_USERNAME;
             }
-            else if (_engineState == MAIN_ENGINE_STATE_MAIN_MENU_ENTERING_USERNAME)
+            else if (_engineState == MES_MAIN_MENU_ENTERING_USERNAME)
             {
                 _name = InputManager::getInstance()->getLiveInput();
                 InputManager::getInstance()->setLiveMode(false);
@@ -274,15 +320,15 @@ void MainEngine::handleNonMoveInput()
     }
     else
     {
-        if (inputState->getMenuState() == MENU_STATE_ACTIVATE_STEAM)
+        if (inputState->getMenuState() == MS_ACTIVATE_STEAM)
         {
             activateSteam();
         }
-        else if (inputState->getMenuState() == MENU_STATE_DEACTIVATE_STEAM)
+        else if (inputState->getMenuState() == MS_DEACTIVATE_STEAM)
         {
             deactivateSteam();
         }
-        else if (inputState->getMenuState() == MENU_STATE_START_SERVER)
+        else if (inputState->getMenuState() == MS_START_SERVER)
         {
             if (_isSteam)
             {
@@ -292,20 +338,20 @@ void MainEngine::handleNonMoveInput()
             {
                 _serverIPAddress.clear();
                 _name.clear();
-                _engineState = MAIN_ENGINE_STATE_MAIN_MENU_ENTERING_USERNAME;
+                _engineState = MES_MAIN_MENU_ENTERING_USERNAME;
                 InputManager::getInstance()->setLiveMode(true);
             }
         }
-        else if (inputState->getMenuState() == MENU_STATE_JOIN_LOCAL_SERVER)
+        else if (inputState->getMenuState() == MS_JOIN_LOCAL_SERVER)
         {
             if (!_isSteam)
             {
                 _serverIPAddress.clear();
-                _engineState = MAIN_ENGINE_STATE_MAIN_MENU_JOINING_LOCAL_SERVER_BY_IP;
+                _engineState = MES_MAIN_MENU_JOINING_LOCAL_SERVER_BY_IP;
                 InputManager::getInstance()->setLiveMode(true);
             }
         }
-        else if (inputState->getMenuState() == MENU_STATE_STEAM_REFRESH_LAN_SERVERS)
+        else if (inputState->getMenuState() == MS_STEAM_REFRESH_LAN_SERVERS)
         {
 #ifdef NG_STEAM
             if (NG_STEAM_GAME_SERVICES)
@@ -314,7 +360,7 @@ void MainEngine::handleNonMoveInput()
             }
 #endif
         }
-        else if (inputState->getMenuState() == MENU_STATE_STEAM_REFRESH_INTERNET_SERVERS)
+        else if (inputState->getMenuState() == MS_STEAM_REFRESH_INTERNET_SERVERS)
         {
 #ifdef NG_STEAM
             if (NG_STEAM_GAME_SERVICES)
@@ -323,10 +369,10 @@ void MainEngine::handleNonMoveInput()
             }
 #endif
         }
-        else if (inputState->getMenuState() == MENU_STATE_STEAM_JOIN_SERVER_1
-                 || inputState->getMenuState() == MENU_STATE_STEAM_JOIN_SERVER_2
-                 || inputState->getMenuState() == MENU_STATE_STEAM_JOIN_SERVER_3
-                 || inputState->getMenuState() == MENU_STATE_STEAM_JOIN_SERVER_4)
+        else if (inputState->getMenuState() == MS_STEAM_JOIN_SERVER_1
+                 || inputState->getMenuState() == MS_STEAM_JOIN_SERVER_2
+                 || inputState->getMenuState() == MS_STEAM_JOIN_SERVER_3
+                 || inputState->getMenuState() == MS_STEAM_JOIN_SERVER_4)
         {
 #ifdef NG_STEAM
             if (NG_STEAM_GAME_SERVICES && !NG_STEAM_GAME_SERVICES->isRequestingServers())
@@ -340,7 +386,7 @@ void MainEngine::handleNonMoveInput()
             }
 #endif
         }
-        else if (inputState->getMenuState() == MENU_STATE_ESCAPE)
+        else if (inputState->getMenuState() == MS_ESCAPE)
         {
             _requestedAction = REQUESTED_ACTION_EXIT;
         }
@@ -349,6 +395,8 @@ void MainEngine::handleNonMoveInput()
 
 void MainEngine::activateSteam()
 {
+    _engineState = MES_MAIN_MENU_STEAM_OFF;
+    
 #ifdef NG_STEAM
     if (!NGSteamGameServices::getInstance())
     {
@@ -356,9 +404,7 @@ void MainEngine::activateSteam()
     }
     
     _isSteam = NG_STEAM_GAME_SERVICES->getStatus() == STEAM_INIT_SUCCESS;
-    _engineState = _isSteam ? MAIN_ENGINE_STATE_MAIN_MENU_STEAM_ON : MAIN_ENGINE_STATE_MAIN_MENU_STEAM_OFF;
-#else
-    _engineState = MAIN_ENGINE_STATE_MAIN_MENU_STEAM_OFF;
+    _engineState = _isSteam ? MES_MAIN_MENU_STEAM_ON : MES_MAIN_MENU_STEAM_OFF;
 #endif
 }
 
@@ -396,13 +442,13 @@ void MainEngine::deactivateSteam()
     }
     
     _isSteam = false;
-    _engineState = MAIN_ENGINE_STATE_MAIN_MENU_STEAM_OFF;
+    _engineState = MES_MAIN_MENU_STEAM_OFF;
 #endif
 }
 
 void MainEngine::startServer()
 {
-    _engineState = MAIN_ENGINE_STATE_MAIN_MENU_STARTING_SERVER;
+    _engineState = MES_MAIN_MENU_STARTING_SERVER;
     
     if (!Server::getInstance())
     {
@@ -443,7 +489,7 @@ void MainEngine::startServer()
 
 void MainEngine::joinServer()
 {
-    _engineState = MAIN_ENGINE_STATE_STEAM_JOINING_SERVER;
+    _engineState = MES_STEAM_JOINING_SERVER;
     
     FWInstanceManager::createClientEntityManager(InstanceManager::sHandleEntityCreatedOnClient, InstanceManager::sHandleEntityDeletedOnClient);
     
@@ -482,7 +528,7 @@ void MainEngine::disconnect()
         Server::destroy();
     }
     
-    _engineState = _isSteam ? MAIN_ENGINE_STATE_MAIN_MENU_STEAM_ON : MAIN_ENGINE_STATE_MAIN_MENU_STEAM_OFF;
+    _engineState = _isSteam ? MES_MAIN_MENU_STEAM_ON : MES_MAIN_MENU_STEAM_OFF;
     
     InputManager::getInstance()->setConnected(false);
 }

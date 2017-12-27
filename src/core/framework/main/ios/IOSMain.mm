@@ -177,6 +177,8 @@
 {
     [EAGLContext setCurrentContext:self.context];
     
+    _engine->releaseDeviceDependentResources();
+    
     delete _engine;
 }
 

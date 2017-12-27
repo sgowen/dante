@@ -370,6 +370,8 @@ AndroidMain::~AndroidMain()
 {
     if (_engine)
     {
+        _engine->releaseDeviceDependentResources();
+        
         delete _engine;
     }
 }

@@ -11,45 +11,33 @@
 
 #include "framework/util/NGRTTI.h"
 
-class Renderer;
-
 class Engine
 {
     NGRTTI_DECL;
     
 public:
-    Engine(Renderer* inRenderer);
-    
+    Engine();
     virtual ~Engine();
     
-    virtual void createDeviceDependentResources();
+    virtual void createDeviceDependentResources() = 0;
+    virtual void createWindowSizeDependentResources(int screenWidth, int screenHeight, int renderWidth, int renderHeight, int cursorWidth, int cursorHeight) = 0;
+    virtual void releaseDeviceDependentResources() = 0;
     
-    virtual void createWindowSizeDependentResources(int screenWidth, int screenHeight, int renderWidth, int renderHeight, int cursorWidth, int cursorHeight);
+    virtual void onResume() = 0;
+    virtual void onPause() = 0;
     
-    virtual void releaseDeviceDependentResources();
-    
-    virtual void onResume();
-	
-    virtual void onPause();
-    
-    virtual void update(double deltaTime);
-    
-    virtual void render();
+    virtual void update(double deltaTime) = 0;
+    virtual void render() = 0;
     
     int getRequestedAction();
-    
     void clearRequestedAction();
     
 protected:
-    Renderer* _renderer;
-    
     double _stateTime;
     double _frameStateTime;
     
     int _requestedAction;
     int _engineState;
-    
-    virtual void onFrame() = 0;
 };
 
 #endif /* defined(__noctisgames__Engine__) */

@@ -35,8 +35,7 @@ void OpenGLRendererHelper::createDeviceDependentResources()
     glGetIntegerv(GL_MAX_TEXTURE_SIZE, &_maxTextureSize);
 
     if (_renderWidth > -1
-        && _renderHeight > -1
-        && _numFramebuffers > -1)
+        && _renderHeight > -1)
     {
         releaseFramebuffers();
         createFramebufferObjects();

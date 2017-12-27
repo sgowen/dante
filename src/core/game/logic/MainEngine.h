@@ -15,11 +15,13 @@
 #include "framework/network/steam/NGSteam.h"
 #endif
 
+#include "framework/util/StateMachine.h"
+
 #include "framework/util/NGRTTI.h"
 
-class Server;
+class MainEngineState;
 class JsonFile;
-class Entity;
+class Renderer;
 
 class MainEngine : public Engine
 {
@@ -27,18 +29,23 @@ class MainEngine : public Engine
     
 public:
     MainEngine();
-    
     virtual ~MainEngine();
     
     virtual void createDeviceDependentResources();
+    virtual void createWindowSizeDependentResources(int screenWidth, int screenHeight, int renderWidth, int renderHeight, int cursorWidth, int cursorHeight);
+    virtual void releaseDeviceDependentResources();
     
-	virtual void update(double deltaTime);
+    virtual void onResume();
+    virtual void onPause();
     
-protected:
-    virtual void onFrame();
+    virtual void update(double deltaTime);
+    virtual void render();
     
 private:
+    StateMachine<MainEngine, MainEngineState> _stateMachine;
+    
     JsonFile* _config;
+    Renderer* _renderer;
     
     std::string _serverIPAddress;
     std::string _name;

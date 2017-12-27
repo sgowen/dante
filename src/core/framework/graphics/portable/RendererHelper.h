@@ -30,7 +30,7 @@ public:
 
 	virtual void createDeviceDependentResources() = 0;
 
-	virtual void createWindowSizeDependentResources(int screenWidth, int screenHeight, int renderWidth, int renderHeight, int numFramebuffers);
+	virtual void createWindowSizeDependentResources(int screenWidth, int screenHeight, int renderWidth, int renderHeight);
 
 	virtual void releaseDeviceDependentResources() = 0;
     
@@ -91,7 +91,6 @@ protected:
     int _screenHeight;
     int _renderWidth;
     int _renderHeight;
-    int _numFramebuffers;
     
     virtual void createFramebufferObject() = 0;
     virtual void releaseFramebuffers() = 0;

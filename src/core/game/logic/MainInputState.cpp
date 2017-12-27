@@ -19,7 +19,7 @@
 
 NGRTTI_IMPL(MainInputState, InputState);
 
-MainInputState::MainInputState() : InputState(), _menuState(MENU_STATE_NONE)
+MainInputState::MainInputState() : InputState(), _menuState(MS_NONE)
 {
     // Empty
 }

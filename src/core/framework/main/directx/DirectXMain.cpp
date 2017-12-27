@@ -822,6 +822,8 @@ DirectXMain::DirectXMain() : _engine(NULL), _dpi(0), _isPointerPressed(false), _
 
 DirectXMain::~DirectXMain()
 {
+    _engine->releaseDeviceDependentResources();
+    
 	delete _engine;
 
 	_deviceResources.reset();

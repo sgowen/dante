@@ -134,9 +134,9 @@ void MainRenderer::createDeviceDependentResources()
     _framebufferToScreenShaderProgram = new NGFramebufferToScreenProgram(*_rendererHelper, *_shaderProgramLoader, "shader_002_vert.ngs", "shader_002_frag.ngs");
 }
 
-void MainRenderer::createWindowSizeDependentResources(int screenWidth, int screenHeight, int renderWidth, int renderHeight, int numFramebuffers)
+void MainRenderer::createWindowSizeDependentResources(int screenWidth, int screenHeight, int renderWidth, int renderHeight)
 {
-    _rendererHelper->createWindowSizeDependentResources(screenWidth, screenHeight, renderWidth, renderHeight, numFramebuffers);
+    _rendererHelper->createWindowSizeDependentResources(screenWidth, screenHeight, renderWidth, renderHeight);
 }
 
 void MainRenderer::releaseDeviceDependentResources()
@@ -145,13 +145,8 @@ void MainRenderer::releaseDeviceDependentResources()
     _textureManager->releaseDeviceDependentResources();
     
     delete _textureShaderProgram;
-    _textureShaderProgram = NULL;
-    
     delete _colorShaderProgram;
-    _colorShaderProgram = NULL;
-    
     delete _framebufferToScreenShaderProgram;
-    _framebufferToScreenShaderProgram = NULL;
 }
 
 void MainRenderer::render(int flags)
@@ -168,10 +163,6 @@ void MainRenderer::render(int flags)
         {
             renderWorld(flags);
         }
-        
-#ifdef NG_TEST_RENDERING_SUITE
-        testRenderingSuite();
-#endif
         
         renderUI(flags);
     }
@@ -256,7 +247,7 @@ void MainRenderer::renderWorld(int flags)
     }
     _spriteBatcher->endBatch(_textureManager->getTextures()[0], *_textureShaderProgram);
     
-    if (FlagUtil::isFlagSet(flags, MAIN_ENGINE_STATE_DISPLAY_BOX_2D))
+    if (FlagUtil::isFlagSet(flags, MES_DISPLAY_BOX_2D))
     {
         _box2DDebugRenderer->setWorld(&InstanceManager::getClientWorld()->getWorld());
         _box2DDebugRenderer->render(*_colorShaderProgram);
@@ -369,25 +360,25 @@ void MainRenderer::renderUI(int flags)
     
     _spriteBatcher->beginBatch();
     
-    int state = FlagUtil::removeFlag(flags, MAIN_ENGINE_STATE_DISPLAY_BOX_2D);
+    int state = FlagUtil::removeFlag(flags, MES_DISPLAY_BOX_2D);
     switch (state)
     {
-        case MAIN_ENGINE_STATE_MAIN_MENU_STEAM_OFF:
+        case MES_MAIN_MENU_STEAM_OFF:
             renderMainMenuSteamOffText();
             break;
-        case MAIN_ENGINE_STATE_MAIN_MENU_STEAM_ON:
+        case MES_MAIN_MENU_STEAM_ON:
             renderMainMenuSteamOnText();
             break;
-        case MAIN_ENGINE_STATE_MAIN_MENU_STARTING_SERVER:
+        case MES_MAIN_MENU_STARTING_SERVER:
             renderStartingServerText();
             break;
-        case MAIN_ENGINE_STATE_MAIN_MENU_ENTERING_USERNAME:
+        case MES_MAIN_MENU_ENTERING_USERNAME:
             renderEnterUsernameText();
             break;
-        case MAIN_ENGINE_STATE_MAIN_MENU_JOINING_LOCAL_SERVER_BY_IP:
+        case MES_MAIN_MENU_JOINING_LOCAL_SERVER_BY_IP:
             renderJoiningLocalServerByIPText();
             break;
-        case MAIN_ENGINE_STATE_STEAM_JOINING_SERVER:
+        case MES_STEAM_JOINING_SERVER:
             renderJoiningServerText();
             
             if (NG_CLIENT->getState() == NCS_Welcomed)
@@ -602,7 +593,7 @@ void MainRenderer::renderServerJoinedText(int flags)
         {
             static b2Vec2 origin = b2Vec2(CAM_WIDTH - 0.5f, CAM_HEIGHT - (row++ * padding));
             
-            std::string text = StringUtil::format("'P' BOX2D DEBUG %s", FlagUtil::isFlagSet(flags, MAIN_ENGINE_STATE_DISPLAY_BOX_2D) ? " ON" : "OFF");
+            std::string text = StringUtil::format("'P' BOX2D DEBUG %s", FlagUtil::isFlagSet(flags, MES_DISPLAY_BOX_2D) ? " ON" : "OFF");
             renderText(text, origin, Color::BLACK, FONT_ALIGN_RIGHT);
         }
     }
@@ -785,30 +776,3 @@ void MainRenderer::updateCamera()
         }
     }
 }
-
-void MainRenderer::testRenderingSuite()
-{
-    _rendererHelper->updateMatrix(0, 16, 0, 9);
-    
-    static Circle c1(10, 4, 2);
-    _circleBatcher->renderCircle(c1, Color::RED, *_colorShaderProgram);
-    
-    static Circle c2(7, 7, 2);
-    _circleBatcher->renderPartialCircle(c2, 135, Color::RED, *_colorShaderProgram);
-    
-    static NGRect r1(1, 1, 2, 1);
-    _boundsQuadBatcher->beginBatch();
-    _boundsQuadBatcher->renderRect(r1, Color::RED);
-    _boundsQuadBatcher->endBatch(*_colorShaderProgram);
-    
-    static NGRect r2(4, 1, 2, 1);
-    _fillQuadBatcher->beginBatch();
-    _fillQuadBatcher->renderRect(r2, Color::RED);
-    _fillQuadBatcher->endBatch(*_colorShaderProgram);
-    
-    static Line line(3, 3, 5, 5);
-    _lineBatcher->beginBatch();
-    _lineBatcher->renderLine(line, Color::RED);
-    _lineBatcher->endBatch(*_colorShaderProgram);
-}
-

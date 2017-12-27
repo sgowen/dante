@@ -292,6 +292,8 @@ int GlfwMain::exec(Engine* engine)
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
+    
+    engine->releaseDeviceDependentResources();
 
     delete engine;
 

@@ -17,7 +17,6 @@ template <class entity_type, class state_type>
 class StateMachine
 {
 public:
-    
     StateMachine(entity_type* owner) : _owner(owner), _currentState(NULL), _previousState(NULL), _globalState(NULL)
     {
         // Empty
@@ -58,7 +57,7 @@ public:
     
     void changeState(state_type* newState)
     {
-        assert(newState && "<StateMachine::ChangeState>:trying to assign null state to current");
+        assert(newState && "StateMachine::changeState trying to assign null state to current");
         
         _previousState = _currentState;
         

@@ -66,7 +66,7 @@ void InputManager::update()
     KEYBOARD_INPUT_MANAGER->process();
     GAME_PAD_INPUT_MANAGER->process();
     
-    _currentState->_menuState = MENU_STATE_NONE;
+    _currentState->_menuState = MS_NONE;
     
     if (_isConnected)
     {
@@ -75,25 +75,25 @@ void InputManager::update()
             switch ((*i)->getKey())
             {
                 case NG_KEY_M:
-                    _currentState->_menuState = (*i)->isUp() ? MENU_STATE_CLIENT_MAIN_TOGGLE_MUSIC : _currentState->_menuState;
+                    _currentState->_menuState = (*i)->isUp() ? MS_CLIENT_MAIN_TOGGLE_MUSIC : _currentState->_menuState;
                     continue;
                 case NG_KEY_S:
-                    _currentState->_menuState = (*i)->isUp() ? MENU_STATE_CLIENT_MAIN_TOGGLE_SOUND : _currentState->_menuState;
+                    _currentState->_menuState = (*i)->isUp() ? MS_CLIENT_MAIN_TOGGLE_SOUND : _currentState->_menuState;
                     continue;
                 case NG_KEY_E:
-                    _currentState->_menuState = (*i)->isUp() ? MENU_STATE_SERVER_TOGGLE_ENEMIES : _currentState->_menuState;
+                    _currentState->_menuState = (*i)->isUp() ? MS_SERVER_TOGGLE_ENEMIES : _currentState->_menuState;
                     continue;
                 case NG_KEY_O:
-                    _currentState->_menuState = (*i)->isUp() ? MENU_STATE_SERVER_TOGGLE_OBJECTS : _currentState->_menuState;
+                    _currentState->_menuState = (*i)->isUp() ? MS_SERVER_TOGGLE_OBJECTS : _currentState->_menuState;
                     continue;
                 case NG_KEY_I:
-                    _currentState->_menuState = (*i)->isUp() ? MENU_STATE_SERVER_TOGGLE_SERVER_DISPLAY : _currentState->_menuState;
+                    _currentState->_menuState = (*i)->isUp() ? MS_SERVER_TOGGLE_SERVER_DISPLAY : _currentState->_menuState;
                     continue;
                 case NG_KEY_P:
-                    _currentState->_menuState = (*i)->isUp() ? MENU_STATE_SERVER_TOGGLE_PHYSICS_DISPLAY : _currentState->_menuState;
+                    _currentState->_menuState = (*i)->isUp() ? MS_SERVER_TOGGLE_PHYSICS_DISPLAY : _currentState->_menuState;
                     continue;
                 case NG_KEY_ESCAPE:
-                    _currentState->_menuState = (*i)->isUp() ? MENU_STATE_ESCAPE : _currentState->_menuState;
+                    _currentState->_menuState = (*i)->isUp() ? MS_ESCAPE : _currentState->_menuState;
                     continue;
                 default:
                 {
@@ -134,7 +134,7 @@ void InputManager::update()
                             continue;
                         case NG_KEY_CARRIAGE_RETURN:
                             _currentState->getGameInputState(1)._playerId = INPUT_UNASSIGNED;
-                            _currentState->_menuState = (*i)->isDown() ? MENU_STATE_LOCAL_PLAYER_DROP_OUT_1 : MENU_STATE_NONE;
+                            _currentState->_menuState = (*i)->isDown() ? MS_LOCAL_PLAYER_DROP_OUT_1 : MS_NONE;
                             continue;
 #endif
                         default:
@@ -211,21 +211,21 @@ void InputManager::update()
                     if ((*i)->getIndex() == 3)
                     {
                         _currentState->getGameInputState((*i)->getIndex())._playerId = INPUT_UNASSIGNED;
-                        _currentState->_menuState = !(*i)->isPressed() ? MENU_STATE_LOCAL_PLAYER_DROP_OUT_3 : MENU_STATE_NONE;
+                        _currentState->_menuState = !(*i)->isPressed() ? MS_LOCAL_PLAYER_DROP_OUT_3 : MS_NONE;
                     }
                     else if ((*i)->getIndex() == 2)
                     {
                         _currentState->getGameInputState((*i)->getIndex())._playerId = INPUT_UNASSIGNED;
-                        _currentState->_menuState = !(*i)->isPressed() ? MENU_STATE_LOCAL_PLAYER_DROP_OUT_2 : MENU_STATE_NONE;
+                        _currentState->_menuState = !(*i)->isPressed() ? MS_LOCAL_PLAYER_DROP_OUT_2 : MS_NONE;
                     }
                     else if ((*i)->getIndex() == 1)
                     {
                         _currentState->getGameInputState((*i)->getIndex())._playerId = INPUT_UNASSIGNED;
-                        _currentState->_menuState = !(*i)->isPressed() ? MENU_STATE_LOCAL_PLAYER_DROP_OUT_1 : MENU_STATE_NONE;
+                        _currentState->_menuState = !(*i)->isPressed() ? MS_LOCAL_PLAYER_DROP_OUT_1 : MS_NONE;
                     }
                     else
                     {
-                        _currentState->_menuState = (*i)->isPressed() ? MENU_STATE_ESCAPE : _currentState->_menuState;
+                        _currentState->_menuState = (*i)->isPressed() ? MS_ESCAPE : _currentState->_menuState;
                     }
                 }
                     continue;
@@ -311,7 +311,7 @@ void InputManager::update()
                 {
                     if (keyboardEvent->getKey() == NG_KEY_ESCAPE)
                     {
-                        _currentState->_menuState = MENU_STATE_ESCAPE;
+                        _currentState->_menuState = MS_ESCAPE;
                         return;
                     }
                 }
@@ -359,37 +359,37 @@ void InputManager::update()
             switch ((*i)->getKey())
             {
                 case NG_KEY_A:
-                    _currentState->_menuState = MENU_STATE_ACTIVATE_STEAM;
+                    _currentState->_menuState = MS_ACTIVATE_STEAM;
                     continue;
                 case NG_KEY_D:
-                    _currentState->_menuState = MENU_STATE_DEACTIVATE_STEAM;
+                    _currentState->_menuState = MS_DEACTIVATE_STEAM;
                     continue;
                 case NG_KEY_S:
-                    _currentState->_menuState = MENU_STATE_START_SERVER;
+                    _currentState->_menuState = MS_START_SERVER;
                     continue;
                 case NG_KEY_J:
-                    _currentState->_menuState = MENU_STATE_JOIN_LOCAL_SERVER;
+                    _currentState->_menuState = MS_JOIN_LOCAL_SERVER;
                     continue;
                 case NG_KEY_L:
-                    _currentState->_menuState = MENU_STATE_STEAM_REFRESH_LAN_SERVERS;
+                    _currentState->_menuState = MS_STEAM_REFRESH_LAN_SERVERS;
                     continue;
                 case NG_KEY_I:
-                    _currentState->_menuState = MENU_STATE_STEAM_REFRESH_INTERNET_SERVERS;
+                    _currentState->_menuState = MS_STEAM_REFRESH_INTERNET_SERVERS;
                     continue;
                 case NG_KEY_ONE:
-                    _currentState->_menuState = MENU_STATE_STEAM_JOIN_SERVER_1;
+                    _currentState->_menuState = MS_STEAM_JOIN_SERVER_1;
                     continue;
                 case NG_KEY_TWO:
-                    _currentState->_menuState = MENU_STATE_STEAM_JOIN_SERVER_2;
+                    _currentState->_menuState = MS_STEAM_JOIN_SERVER_2;
                     continue;
                 case NG_KEY_THREE:
-                    _currentState->_menuState = MENU_STATE_STEAM_JOIN_SERVER_3;
+                    _currentState->_menuState = MS_STEAM_JOIN_SERVER_3;
                     continue;
                 case NG_KEY_FOUR:
-                    _currentState->_menuState = MENU_STATE_STEAM_JOIN_SERVER_4;
+                    _currentState->_menuState = MS_STEAM_JOIN_SERVER_4;
                     continue;
                 case NG_KEY_ESCAPE:
-                    _currentState->_menuState = MENU_STATE_ESCAPE;
+                    _currentState->_menuState = MS_ESCAPE;
                     continue;
                 default:
                     continue;
@@ -406,10 +406,10 @@ void InputManager::update()
             switch ((*i)->getType())
             {
                 case GamePadEventType_START_BUTTON:
-                    _currentState->_menuState = MENU_STATE_START_SERVER;
+                    _currentState->_menuState = MS_START_SERVER;
                     continue;
                 case GamePadEventType_BACK_BUTTON:
-                    _currentState->_menuState = MENU_STATE_ESCAPE;
+                    _currentState->_menuState = MS_ESCAPE;
                     continue;
                 default:
                     continue;
@@ -421,7 +421,7 @@ void InputManager::update()
         {
             if ((*i)->getType() == CursorEventType_UP)
             {
-                _currentState->_menuState = MENU_STATE_START_SERVER;
+                _currentState->_menuState = MS_START_SERVER;
             }
             else
             {

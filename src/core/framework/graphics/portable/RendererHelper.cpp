@@ -15,7 +15,7 @@
 
 #include <framework/util/FrameworkConstants.h>
 
-RendererHelper::RendererHelper() : _framebuffer(new NGTexture("framebuffer", NULL, false)), _screenWidth(1), _screenHeight(1), _renderWidth(1), _renderHeight(1), _numFramebuffers(1)
+RendererHelper::RendererHelper() : _framebuffer(new NGTexture("framebuffer", NULL, false)), _screenWidth(1), _screenHeight(1), _renderWidth(1), _renderHeight(1)
 {
     _textureVertices.reserve(MAX_BATCH_SIZE * VERTICES_PER_RECTANGLE);
     _colorVertices.reserve(MAX_BATCH_SIZE * VERTICES_PER_RECTANGLE);
@@ -29,13 +29,12 @@ RendererHelper::~RendererHelper()
     _indices.clear();
 }
 
-void RendererHelper::createWindowSizeDependentResources(int screenWidth, int screenHeight, int renderWidth, int renderHeight, int numFramebuffers)
+void RendererHelper::createWindowSizeDependentResources(int screenWidth, int screenHeight, int renderWidth, int renderHeight)
 {
     _screenWidth = screenWidth;
     _screenHeight = screenHeight;
     _renderWidth = renderWidth;
     _renderHeight = renderHeight;
-    _numFramebuffers = numFramebuffers;
     
     releaseFramebuffers();
     createFramebufferObjects();
@@ -142,7 +141,7 @@ std::vector<SCREEN_VERTEX>& RendererHelper::getScreenVertices()
 
 void RendererHelper::createFramebufferObjects()
 {
-    for (int i = 0; i < _numFramebuffers; ++i)
+    for (int i = 0; i < NUM_FRAMEBUFFERS; ++i)
     {
         createFramebufferObject();
     }

@@ -40,7 +40,9 @@ Entity* EntityManager::getEntityByID(uint32_t inID) const
 
 void EntityManager::registerEntity(Entity* inEntity)
 {
-    inEntity->setID(_entityID++);
+    ++_entityID;
+    
+    inEntity->setID(_entityID);
     
     _entityMap.insert(std::make_pair(inEntity->getID(), inEntity));
     
@@ -59,12 +61,12 @@ void EntityManager::deregisterEntity(Entity* inEntity)
     inEntity = NULL;
 }
 
-std::map<uint32_t, Entity*>& EntityManager::getMap()
+void EntityManager::setEntityID(uint32_t inValue)
 {
-    return _entityMap;
+    _entityID = inValue;
 }
 
-std::map<uint32_t, Entity*> EntityManager::getMapCopy()
+std::map<uint32_t, Entity*>& EntityManager::getMap()
 {
     return _entityMap;
 }

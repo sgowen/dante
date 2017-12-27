@@ -10,18 +10,11 @@
 
 #include "framework/main/portable/Engine.h"
 
-#include "framework/graphics/portable/Renderer.h"
-
 #include "framework/util/FrameworkConstants.h"
-#include "framework/audio/portable/NGAudioEngine.h"
-#include "framework/util/Timing.h"
-#include "framework/util/FPSUtil.h"
-#include "framework/input/CursorConverter.h"
 
 NGRTTI_IMPL_NOPARENT(Engine);
 
-Engine::Engine(Renderer* inRenderer) :
-_renderer(inRenderer),
+Engine::Engine() :
 _stateTime(0),
 _frameStateTime(0),
 _requestedAction(REQUESTED_ACTION_UPDATE),
@@ -32,58 +25,7 @@ _engineState(0)
 
 Engine::~Engine()
 {
-    delete _renderer;
-}
-
-void Engine::createDeviceDependentResources()
-{
-    _renderer->createDeviceDependentResources();
-}
-
-void Engine::createWindowSizeDependentResources(int screenWidth, int screenHeight, int renderWidth, int renderHeight, int cursorWidth, int cursorHeight)
-{
-    _renderer->createWindowSizeDependentResources(screenWidth, screenHeight, renderWidth, renderHeight, NUM_FRAMEBUFFERS);
-    
-    CURSOR_CONVERTER->setCursorSize(cursorWidth, cursorHeight);
-}
-
-void Engine::releaseDeviceDependentResources()
-{
-    _renderer->releaseDeviceDependentResources();
-    
-    NG_AUDIO_ENGINE->reset();
-}
-
-void Engine::onResume()
-{
-    NG_AUDIO_ENGINE->resume();
-}
-
-void Engine::onPause()
-{
-    NG_AUDIO_ENGINE->pause();
-}
-
-void Engine::update(double deltaTime)
-{
-    FPSUtil::getInstance()->update(deltaTime);
-    
-    _frameStateTime += deltaTime;
-    
-    while (_frameStateTime >= FRAME_RATE)
-    {
-        _frameStateTime -= FRAME_RATE;
-        _stateTime += FRAME_RATE;
-        
-        Timing::getInstance()->updateManual(_stateTime, FRAME_RATE);
-        
-        onFrame();
-    }
-}
-
-void Engine::render()
-{
-    _renderer->render(_engineState);
+    // Empty
 }
 
 int Engine::getRequestedAction()

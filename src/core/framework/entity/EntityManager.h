@@ -20,18 +20,16 @@ class EntityManager
 {
 public:
     EntityManager(HandleEntityCreatedFunc handleEntityCreatedFunc, HandleEntityDeletionFunc handleEntityDeletionFunc);
-    
     ~EntityManager();
     
     Entity* getEntityByID(uint32_t inID) const;
     
     void registerEntity(Entity* inEntity);
-    
     void deregisterEntity(Entity* inEntity);
     
-    std::map<uint32_t, Entity*>& getMap();
+    void setEntityID(uint32_t inValue);
     
-    std::map<uint32_t, Entity*> getMapCopy();
+    std::map<uint32_t, Entity*>& getMap();
     
 private:
     HandleEntityCreatedFunc _handleEntityCreatedFunc;
