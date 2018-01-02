@@ -136,7 +136,7 @@ void SpriteBatcher::endBatch(NGTexture* texture, ShaderProgram& gpuProgramWrappe
     {
         gpuProgramWrapper.bind(texture);
         
-        _rendererHelper->drawIndexed(NGPrimitiveType_Triangles, _numSprites * INDICES_PER_RECTANGLE);
+        _rendererHelper->drawIndexed(NGPrimitiveType_Triangles, 0, _numSprites * INDICES_PER_RECTANGLE);
         
         gpuProgramWrapper.unbind();
     }

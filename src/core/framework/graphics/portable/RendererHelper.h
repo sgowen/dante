@@ -62,7 +62,7 @@ public:
     virtual void unmapColorVertices();
     
     virtual void draw(NGPrimitiveType renderPrimitiveType, uint32_t first, uint32_t count) = 0;
-    virtual void drawIndexed(NGPrimitiveType renderPrimitiveType, uint32_t count) = 0;
+    virtual void drawIndexed(NGPrimitiveType renderPrimitiveType, uint32_t first, uint32_t count) = 0;
     
     void clearTextureVertices();
     void clearColorVertices();

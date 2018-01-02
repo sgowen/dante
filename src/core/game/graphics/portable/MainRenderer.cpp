@@ -684,7 +684,7 @@ void MainRenderer::endFrame()
     _rendererHelper->addVertexCoordinate(1, -1);
     
     _framebufferToScreenShaderProgram->bind(_rendererHelper->getFramebuffer(_framebufferIndex));
-    _rendererHelper->drawIndexed(NGPrimitiveType_Triangles, INDICES_PER_RECTANGLE);
+    _rendererHelper->drawIndexed(NGPrimitiveType_Triangles, 0, INDICES_PER_RECTANGLE);
     _framebufferToScreenShaderProgram->unbind();
 }
 

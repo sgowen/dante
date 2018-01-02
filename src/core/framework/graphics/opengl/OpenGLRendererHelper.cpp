@@ -183,9 +183,9 @@ void OpenGLRendererHelper::draw(NGPrimitiveType renderPrimitiveType, uint32_t fi
     glDrawArrays(renderPrimitiveType, first, count);
 }
 
-void OpenGLRendererHelper::drawIndexed(NGPrimitiveType renderPrimitiveType, uint32_t count)
+void OpenGLRendererHelper::drawIndexed(NGPrimitiveType renderPrimitiveType, uint32_t first, uint32_t count)
 {
-    glDrawElements(renderPrimitiveType, count, GL_UNSIGNED_SHORT, &_indices[0]);
+    glDrawElements(renderPrimitiveType, count, GL_UNSIGNED_SHORT, &_indices[first]);
 }
 
 void OpenGLRendererHelper::createFramebufferObject()

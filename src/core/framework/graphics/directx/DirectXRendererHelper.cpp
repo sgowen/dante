@@ -212,12 +212,12 @@ void DirectXRendererHelper::draw(NGPrimitiveType renderPrimitiveType, uint32_t f
     s_d3dContext->Draw(count, first);
 }
 
-void DirectXRendererHelper::drawIndexed(NGPrimitiveType renderPrimitiveType, uint32_t count)
+void DirectXRendererHelper::drawIndexed(NGPrimitiveType renderPrimitiveType, uint32_t first, uint32_t count)
 {
     s_d3dContext->IASetIndexBuffer(_indexbuffer.Get(), DXGI_FORMAT_R16_UINT, 0);
     
     s_d3dContext->IASetPrimitiveTopology(static_cast<D3D11_PRIMITIVE_TOPOLOGY>(renderPrimitiveType));
-    s_d3dContext->DrawIndexed(count, 0, 0);
+    s_d3dContext->DrawIndexed(count, first, 0);
 }
 
 void DirectXRendererHelper::createFramebufferObject()

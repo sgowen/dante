@@ -51,7 +51,7 @@ public:
     virtual void mapColorVertices(std::vector<NGShaderVarInput*>& inputLayout);
     
     virtual void draw(NGPrimitiveType renderPrimitiveType, uint32_t first, uint32_t count);
-    virtual void drawIndexed(NGPrimitiveType renderPrimitiveType, uint32_t count);
+    virtual void drawIndexed(NGPrimitiveType renderPrimitiveType, uint32_t first, uint32_t count);
     
 protected:
     virtual void createFramebufferObject();
