@@ -51,8 +51,8 @@ public:
     
     virtual void bindTexture(NGTextureSlot textureSlot, NGTexture* texture, NGShaderUniformInput* uniform = NULL) = 0;
     
-    virtual void bindShaderProgram(ShaderProgramWrapper* shaderProgramWrapper) = 0;
-    virtual void destroyShaderProgram(ShaderProgramWrapper* shaderProgramWrapper, std::vector<NGShaderUniformInput*>& uniforms, std::vector<NGShaderVarInput*>& inputLayout) = 0;
+    virtual void bindNGShader(ShaderProgramWrapper* shaderProgramWrapper) = 0;
+    virtual void destroyNGShader(ShaderProgramWrapper* shaderProgramWrapper, std::vector<NGShaderUniformInput*>& uniforms, std::vector<NGShaderVarInput*>& inputLayout) = 0;
     
     virtual void mapScreenVertices(std::vector<NGShaderVarInput*>& inputLayout) = 0;
     virtual void unmapScreenVertices();

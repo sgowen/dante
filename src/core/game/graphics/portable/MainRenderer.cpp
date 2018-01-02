@@ -19,9 +19,9 @@
 #include "framework/graphics/portable/QuadBatcher.h"
 #include "framework/graphics/portable/LineBatcher.h"
 #include "framework/graphics/portable/CircleBatcher.h"
-#include "framework/graphics/portable/ShaderProgramLoader.h"
+#include "framework/graphics/portable/NGShaderLoader.h"
 #include "framework/graphics/portable/RendererHelper.h"
-#include "framework/graphics/portable/ShaderProgram.h"
+#include "framework/graphics/portable/NGShader.h"
 #include "framework/entity/Entity.h"
 #include "framework/graphics/portable/TextureRegion.h"
 #include "framework/graphics/portable/Color.h"
@@ -66,14 +66,14 @@
 #include "framework/graphics/portable/TextureWrapper.h"
 #include "framework/graphics/portable/TextureDataWrapper.h"
 #include "framework/graphics/portable/TextureLoaderFactory.h"
-#include "framework/graphics/portable/ShaderProgramLoaderFactory.h"
+#include "framework/graphics/portable/NGShaderLoaderFactory.h"
 #include "framework/graphics/portable/RendererHelperFactory.h"
 #include "framework/util/NGSTDUtil.h"
 #include "framework/math/Circle.h"
 #include "framework/math/Line.h"
-#include <framework/graphics/portable/NGTextureProgram.h>
-#include <framework/graphics/portable/NGGeometryProgram.h>
-#include <framework/graphics/portable/NGFramebufferToScreenProgram.h>
+#include <framework/graphics/portable/NGTextureShader.h>
+#include <framework/graphics/portable/NGGeometryShader.h>
+#include <framework/graphics/portable/NGFramebufferToScreenShader.h>
 #include "framework/graphics/portable/NGTextureDesc.h"
 #include "framework/graphics/portable/Assets.h"
 
@@ -96,10 +96,10 @@ _boundsQuadBatcher(new QuadBatcher(_rendererHelper, false)),
 _lineBatcher(new LineBatcher(_rendererHelper)),
 _circleBatcher(new CircleBatcher(_rendererHelper)),
 _box2DDebugRenderer(new Box2DDebugRenderer(*_fillQuadBatcher, *_boundsQuadBatcher, *_lineBatcher, *_circleBatcher)),
-_shaderProgramLoader(SHADER_PROGRAM_LOADER_FACTORY->createShaderProgramLoader()),
-_textureShaderProgram(NULL),
-_colorShaderProgram(NULL),
-_framebufferToScreenShaderProgram(NULL),
+_shaderProgramLoader(SHADER_PROGRAM_LOADER_FACTORY->createNGShaderLoader()),
+_textureNGShader(NULL),
+_colorNGShader(NULL),
+_framebufferToScreenNGShader(NULL),
 _font(new Font("texture_001.ngt", 0, 0, 16, 64, 75, TEXTURE_SIZE_1024)),
 _camBounds(new NGRect(0, 0, CAM_WIDTH, CAM_HEIGHT)),
 _framebufferIndex(0)
@@ -129,9 +129,9 @@ void MainRenderer::createDeviceDependentResources()
     _rendererHelper->createDeviceDependentResources();
     _textureManager->createDeviceDependentResources();
     
-    _textureShaderProgram = new NGTextureProgram(*_rendererHelper, *_shaderProgramLoader, "shader_003_vert.ngs", "shader_003_frag.ngs");
-    _colorShaderProgram = new NGGeometryProgram(*_rendererHelper, *_shaderProgramLoader, "shader_001_vert.ngs", "shader_001_frag.ngs");
-    _framebufferToScreenShaderProgram = new NGFramebufferToScreenProgram(*_rendererHelper, *_shaderProgramLoader, "shader_002_vert.ngs", "shader_002_frag.ngs");
+    _textureNGShader = new NGTextureShader(*_rendererHelper, *_shaderProgramLoader, "shader_003_vert.ngs", "shader_003_frag.ngs");
+    _colorNGShader = new NGGeometryShader(*_rendererHelper, *_shaderProgramLoader, "shader_001_vert.ngs", "shader_001_frag.ngs");
+    _framebufferToScreenNGShader = new NGFramebufferToScreenShader(*_rendererHelper, *_shaderProgramLoader, "shader_002_vert.ngs", "shader_002_frag.ngs");
 }
 
 void MainRenderer::createWindowSizeDependentResources(int screenWidth, int screenHeight, int renderWidth, int renderHeight)
@@ -144,9 +144,9 @@ void MainRenderer::releaseDeviceDependentResources()
     _rendererHelper->releaseDeviceDependentResources();
     _textureManager->releaseDeviceDependentResources();
     
-    delete _textureShaderProgram;
-    delete _colorShaderProgram;
-    delete _framebufferToScreenShaderProgram;
+    delete _textureNGShader;
+    delete _colorNGShader;
+    delete _framebufferToScreenNGShader;
 }
 
 void MainRenderer::render(int flags)
@@ -200,7 +200,7 @@ void MainRenderer::renderBackground()
             tr.initY(clamp(384 - _camBounds->getBottom() * 32, 384, 0));
             _spriteBatcher->renderSprite(i * CAM_WIDTH + CAM_WIDTH / 2, CAM_HEIGHT / 2, CAM_WIDTH, CAM_HEIGHT, 0, tr);
         }
-        _spriteBatcher->endBatch(_textureManager->getTextures()[2], *_textureShaderProgram);
+        _spriteBatcher->endBatch(_textureManager->getTextures()[2], *_textureNGShader);
 
         _spriteBatcher->beginBatch();
         {
@@ -209,7 +209,7 @@ void MainRenderer::renderBackground()
             tr.initY(clamp(644 - _camBounds->getBottom() * 48, 644, 0));
             _spriteBatcher->renderSprite(i * CAM_WIDTH + CAM_WIDTH / 2, CAM_HEIGHT * 0.3875f / 2, CAM_WIDTH, CAM_HEIGHT * 0.3875f, 0, tr);
         }
-        _spriteBatcher->endBatch(_textureManager->getTextures()[3], *_textureShaderProgram);
+        _spriteBatcher->endBatch(_textureManager->getTextures()[3], *_textureNGShader);
     }
 }
 
@@ -223,7 +223,7 @@ void MainRenderer::renderWorld(int flags)
         static TextureRegion tr = ASSETS->findTextureRegion("Background3");
         _spriteBatcher->renderSprite(i * CAM_WIDTH + CAM_WIDTH / 2, CAM_HEIGHT * 0.2f / 2, CAM_WIDTH, CAM_HEIGHT * 0.2f, 0, tr);
     }
-    _spriteBatcher->endBatch(_textureManager->getTextures()[3], *_textureShaderProgram);
+    _spriteBatcher->endBatch(_textureManager->getTextures()[3], *_textureNGShader);
     
     renderEntities(InstanceManager::getClientWorld(), false);
     
@@ -245,17 +245,17 @@ void MainRenderer::renderWorld(int flags)
             renderText(text, origin, Color::RED, FONT_ALIGN_CENTERED);
         }
     }
-    _spriteBatcher->endBatch(_textureManager->getTextures()[0], *_textureShaderProgram);
+    _spriteBatcher->endBatch(_textureManager->getTextures()[0], *_textureNGShader);
     
     if (FlagUtil::isFlagSet(flags, MES_DISPLAY_BOX_2D))
     {
         _box2DDebugRenderer->setWorld(&InstanceManager::getClientWorld()->getWorld());
-        _box2DDebugRenderer->render(*_colorShaderProgram);
+        _box2DDebugRenderer->render(*_colorNGShader);
         
         if (Server::getInstance() && Server::getInstance()->isDisplaying())
         {
             _box2DDebugRenderer->setWorld(&InstanceManager::getServerWorld()->getWorld());
-            _box2DDebugRenderer->render(*_colorShaderProgram);
+            _box2DDebugRenderer->render(*_colorNGShader);
         }
     }
 }
@@ -351,7 +351,7 @@ void MainRenderer::renderEntities(World* world, bool isServer)
         _spriteBatcher->renderSprite(r->getPosition().x, r->getPosition().y, r->getWidth(), r->getHeight(), r->getAngle(), c, tr, r->isFacingLeft());
     }
     
-    _spriteBatcher->endBatch(_textureManager->getTextures()[1], *_textureShaderProgram);
+    _spriteBatcher->endBatch(_textureManager->getTextures()[1], *_textureNGShader);
 }
 
 void MainRenderer::renderUI(int flags)
@@ -389,7 +389,7 @@ void MainRenderer::renderUI(int flags)
         default:
             break;
     }
-    _spriteBatcher->endBatch(_textureManager->getTextures()[0], *_textureShaderProgram);
+    _spriteBatcher->endBatch(_textureManager->getTextures()[0], *_textureNGShader);
 }
 
 void MainRenderer::renderMainMenuSteamOffText()
@@ -683,9 +683,9 @@ void MainRenderer::endFrame()
     _rendererHelper->addVertexCoordinate(1, 1);
     _rendererHelper->addVertexCoordinate(1, -1);
     
-    _framebufferToScreenShaderProgram->bind(_rendererHelper->getFramebuffer(_framebufferIndex));
+    _framebufferToScreenNGShader->bind(_rendererHelper->getFramebuffer(_framebufferIndex));
     _rendererHelper->drawIndexed(NGPrimitiveType_Triangles, 0, INDICES_PER_RECTANGLE);
-    _framebufferToScreenShaderProgram->unbind();
+    _framebufferToScreenNGShader->unbind();
 }
 
 void MainRenderer::updateCamera()

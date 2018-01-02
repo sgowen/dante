@@ -14,7 +14,7 @@
 class QuadBatcher;
 class LineBatcher;
 class CircleBatcher;
-class ShaderProgram;
+class NGShader;
 class b2World;
 
 class Box2DDebugRenderer : public b2Draw
@@ -46,7 +46,7 @@ public:
     /// Draw a point.
     virtual void DrawPoint(const b2Vec2& p, float32 size, const b2Color& color);
     
-    void render(ShaderProgram& shaderProgram);
+    void render(NGShader& shaderProgram);
     
     void setWorld(b2World* world);
     

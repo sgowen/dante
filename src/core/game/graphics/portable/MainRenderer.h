@@ -20,9 +20,9 @@ class SpriteBatcher;
 class QuadBatcher;
 class LineBatcher;
 class CircleBatcher;
-class ShaderProgramLoader;
+class NGShaderLoader;
 class RendererHelper;
-class ShaderProgram;
+class NGShader;
 class Entity;
 class TextureRegion;
 class Color;
@@ -54,12 +54,12 @@ private:
     LineBatcher* _lineBatcher;
     CircleBatcher* _circleBatcher;
     Box2DDebugRenderer* _box2DDebugRenderer;
-    ShaderProgramLoader* _shaderProgramLoader;
+    NGShaderLoader* _shaderProgramLoader;
     Font* _font;
     NGRect* _camBounds;
-    ShaderProgram* _textureShaderProgram;
-    ShaderProgram* _colorShaderProgram;
-    ShaderProgram* _framebufferToScreenShaderProgram;
+    NGShader* _textureNGShader;
+    NGShader* _colorNGShader;
+    NGShader* _framebufferToScreenNGShader;
     int _framebufferIndex;
     
     void beginFrame();

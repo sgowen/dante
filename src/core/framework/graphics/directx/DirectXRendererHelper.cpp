@@ -164,7 +164,7 @@ void DirectXRendererHelper::bindTexture(NGTextureSlot textureSlot, NGTexture* te
     }
 }
 
-void DirectXRendererHelper::bindShaderProgram(ShaderProgramWrapper* shaderProgramWrapper)
+void DirectXRendererHelper::bindNGShader(ShaderProgramWrapper* shaderProgramWrapper)
 {
     if (shaderProgramWrapper)
     {
@@ -175,7 +175,7 @@ void DirectXRendererHelper::bindShaderProgram(ShaderProgramWrapper* shaderProgra
     }
 }
 
-void DirectXRendererHelper::destroyShaderProgram(ShaderProgramWrapper* shaderProgramWrapper, std::vector<NGShaderUniformInput*>& uniforms, std::vector<NGShaderVarInput*>& inputLayout)
+void DirectXRendererHelper::destroyNGShader(ShaderProgramWrapper* shaderProgramWrapper, std::vector<NGShaderUniformInput*>& uniforms, std::vector<NGShaderVarInput*>& inputLayout)
 {
     assert(shaderProgramWrapper != NULL);
     

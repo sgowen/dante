@@ -22,7 +22,7 @@
 #include <string>
 #include <cstring>
 
-OpenGLProgramLoader::OpenGLProgramLoader() : ShaderProgramLoader()
+OpenGLProgramLoader::OpenGLProgramLoader() : NGShaderLoader()
 {
     // Empty
 }
@@ -32,7 +32,7 @@ OpenGLProgramLoader::~OpenGLProgramLoader()
     // Empty
 }
 
-ShaderProgramWrapper* OpenGLProgramLoader::loadShaderProgram(const char* vertexShaderName, const char* fragmentShaderName, std::vector<NGShaderUniformInput*>& uniforms, std::vector<NGShaderVarInput*>& inputLayout)
+ShaderProgramWrapper* OpenGLProgramLoader::loadNGShader(const char* vertexShaderName, const char* fragmentShaderName, std::vector<NGShaderUniformInput*>& uniforms, std::vector<NGShaderVarInput*>& inputLayout)
 {
     assert(vertexShaderName != NULL);
     assert(fragmentShaderName != NULL);

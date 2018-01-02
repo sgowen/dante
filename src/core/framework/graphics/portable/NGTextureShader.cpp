@@ -1,5 +1,5 @@
 //
-//  NGTextureProgram.cpp
+//  NGTextureShader.cpp
 //  noctisgames-framework
 //
 //  Created by Stephen Gowen on 8/4/15.
@@ -8,17 +8,17 @@
 
 #include "pch.h"
 
-#include "framework/graphics/portable/NGTextureProgram.h"
+#include "framework/graphics/portable/NGTextureShader.h"
 
 #include <framework/graphics/portable/RendererHelper.h>
-#include <framework/graphics/portable/ShaderProgramLoader.h>
+#include <framework/graphics/portable/NGShaderLoader.h>
 #include <framework/graphics/portable/NGShaderUniformInput.h>
 #include <framework/graphics/portable/NGShaderVarInput.h>
 #include <framework/graphics/portable/ShaderProgramWrapper.h>
 
 #include <assert.h>
 
-NGTextureProgram::NGTextureProgram(RendererHelper& inRendererHelper, ShaderProgramLoader& inShaderProgramLoader, const char* vertexShaderName, const char* fragmentShaderName) : ShaderProgram(inRendererHelper, inShaderProgramLoader, vertexShaderName, fragmentShaderName)
+NGTextureShader::NGTextureShader(RendererHelper& inRendererHelper, NGShaderLoader& inNGShaderLoader, const char* vertexShaderName, const char* fragmentShaderName) : NGShader(inRendererHelper, inNGShaderLoader, vertexShaderName, fragmentShaderName)
 {
     _uniforms.push_back(new NGShaderUniformInput("u_Matrix", 64));
     _uniforms.push_back(new NGShaderUniformInput("u_TextureUnit"));
@@ -30,11 +30,11 @@ NGTextureProgram::NGTextureProgram(RendererHelper& inRendererHelper, ShaderProgr
     load();
 }
 
-void NGTextureProgram::bind(void* data)
+void NGTextureShader::bind(void* data)
 {
     assert(data != NULL);
     
-    _rendererHelper.bindShaderProgram(_shaderProgramWrapper);
+    _rendererHelper.bindNGShader(_shaderProgramWrapper);
     
     _rendererHelper.useNormalBlending();
     
@@ -45,11 +45,11 @@ void NGTextureProgram::bind(void* data)
     _rendererHelper.mapTextureVertices(_inputLayout);
 }
 
-void NGTextureProgram::unbind()
+void NGTextureShader::unbind()
 {
     _rendererHelper.unmapTextureVertices();
     
     _rendererHelper.bindTexture(NGTextureSlot_ZERO, NULL);
     
-    _rendererHelper.bindShaderProgram(NULL);
+    _rendererHelper.bindNGShader(NULL);
 }

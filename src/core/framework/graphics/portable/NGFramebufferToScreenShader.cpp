@@ -1,5 +1,5 @@
 //
-//  NGFramebufferToScreenProgram.cpp
+//  NGFramebufferToScreenShader.cpp
 //  noctisgames-framework
 //
 //  Created by Stephen Gowen on 8/4/15.
@@ -8,17 +8,17 @@
 
 #include "pch.h"
 
-#include "framework/graphics/portable/NGFramebufferToScreenProgram.h"
+#include "framework/graphics/portable/NGFramebufferToScreenShader.h"
 
 #include <framework/graphics/portable/RendererHelper.h>
-#include <framework/graphics/portable/ShaderProgramLoader.h>
+#include <framework/graphics/portable/NGShaderLoader.h>
 #include <framework/graphics/portable/NGShaderUniformInput.h>
 #include <framework/graphics/portable/NGShaderVarInput.h>
 #include <framework/graphics/portable/ShaderProgramWrapper.h>
 
 #include <assert.h>
 
-NGFramebufferToScreenProgram::NGFramebufferToScreenProgram(RendererHelper& inRendererHelper, ShaderProgramLoader& inShaderProgramLoader, const char* vertexShaderName, const char* fragmentShaderName) : ShaderProgram(inRendererHelper, inShaderProgramLoader, vertexShaderName, fragmentShaderName)
+NGFramebufferToScreenShader::NGFramebufferToScreenShader(RendererHelper& inRendererHelper, NGShaderLoader& inNGShaderLoader, const char* vertexShaderName, const char* fragmentShaderName) : NGShader(inRendererHelper, inNGShaderLoader, vertexShaderName, fragmentShaderName)
 {
     _uniforms.push_back(new NGShaderUniformInput("u_TextureUnit"));
     
@@ -27,11 +27,11 @@ NGFramebufferToScreenProgram::NGFramebufferToScreenProgram(RendererHelper& inRen
     load();
 }
 
-void NGFramebufferToScreenProgram::bind(void* data)
+void NGFramebufferToScreenShader::bind(void* data)
 {
     assert(data != NULL);
     
-    _rendererHelper.bindShaderProgram(_shaderProgramWrapper);
+    _rendererHelper.bindNGShader(_shaderProgramWrapper);
     
     _rendererHelper.useScreenBlending();
     
@@ -40,11 +40,11 @@ void NGFramebufferToScreenProgram::bind(void* data)
     _rendererHelper.mapScreenVertices(_inputLayout);
 }
 
-void NGFramebufferToScreenProgram::unbind()
+void NGFramebufferToScreenShader::unbind()
 {
     _rendererHelper.unmapScreenVertices();
     
     _rendererHelper.bindTexture(NGTextureSlot_ZERO, NULL);
     
-    _rendererHelper.bindShaderProgram(NULL);
+    _rendererHelper.bindNGShader(NULL);
 }

@@ -133,7 +133,7 @@ void OpenGLRendererHelper::bindTexture(NGTextureSlot textureSlot, NGTexture* tex
     }
 }
 
-void OpenGLRendererHelper::bindShaderProgram(ShaderProgramWrapper* shaderProgramWrapper)
+void OpenGLRendererHelper::bindNGShader(ShaderProgramWrapper* shaderProgramWrapper)
 {
     glUseProgram(shaderProgramWrapper == NULL ? 0 : shaderProgramWrapper->_programObjectId);
     
@@ -143,7 +143,7 @@ void OpenGLRendererHelper::bindShaderProgram(ShaderProgramWrapper* shaderProgram
     }
 }
 
-void OpenGLRendererHelper::destroyShaderProgram(ShaderProgramWrapper* shaderProgramWrapper, std::vector<NGShaderUniformInput*>& uniforms, std::vector<NGShaderVarInput*>& inputLayout)
+void OpenGLRendererHelper::destroyNGShader(ShaderProgramWrapper* shaderProgramWrapper, std::vector<NGShaderUniformInput*>& uniforms, std::vector<NGShaderVarInput*>& inputLayout)
 {
     glDeleteProgram(shaderProgramWrapper->_programObjectId);
 }

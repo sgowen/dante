@@ -11,7 +11,7 @@
 #include "framework/graphics/portable/QuadBatcher.h"
 
 #include "framework/graphics/portable/RendererHelper.h"
-#include "framework/graphics/portable/ShaderProgram.h"
+#include "framework/graphics/portable/NGShader.h"
 #include "framework/math/NGRect.h"
 #include "framework/graphics/portable/Color.h"
 
@@ -62,7 +62,7 @@ void QuadBatcher::renderQuad(float x1, float y1,
     _numQuads++;
 }
 
-void QuadBatcher::endBatch(ShaderProgram &gpuProgramWrapper)
+void QuadBatcher::endBatch(NGShader &gpuProgramWrapper)
 {
     if (_numQuads > 0)
     {

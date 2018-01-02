@@ -10,7 +10,7 @@
 #define __noctisgames__QuadBatcher__
 
 class RendererHelper;
-class ShaderProgram;
+class NGShader;
 class NGRect;
 class Color;
 
@@ -30,7 +30,7 @@ public:
                     float x3, float y3,
                     float x4, float y4, Color &c);
     
-    void endBatch(ShaderProgram &gpuProgramWrapper);
+    void endBatch(NGShader &gpuProgramWrapper);
     
 private:
     RendererHelper* _rendererHelper;

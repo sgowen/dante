@@ -1,5 +1,5 @@
 //
-//  ShaderProgramLoader.cpp
+//  NGShaderLoader.cpp
 //  noctisgames-framework
 //
 //  Created by Stephen Gowen on 12/17/17.
@@ -8,15 +8,15 @@
 
 #include "pch.h"
 
-#include "framework/graphics/portable/ShaderProgramLoader.h"
+#include "framework/graphics/portable/NGShaderLoader.h"
 #include "framework/graphics/portable/NGShaderVarInput.h"
 
-ShaderProgramLoader::ShaderProgramLoader()
+NGShaderLoader::NGShaderLoader()
 {
     // Empty
 }
 
-ShaderProgramLoader::~ShaderProgramLoader()
+NGShaderLoader::~NGShaderLoader()
 {
     // Empty
 }

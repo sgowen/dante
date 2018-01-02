@@ -11,7 +11,7 @@
 
 class RendererHelper;
 class Circle;
-class ShaderProgram;
+class NGShader;
 class Color;
 
 class CircleBatcher
@@ -21,9 +21,9 @@ public:
     
     ~CircleBatcher();
     
-    void renderCircle(Circle &circle, Color &c, ShaderProgram &gpuProgramWrapper);
+    void renderCircle(Circle &circle, Color &c, NGShader &gpuProgramWrapper);
     
-    void renderPartialCircle(Circle &circle, int arcDegrees, Color &c, ShaderProgram &gpuProgramWrapper);
+    void renderPartialCircle(Circle &circle, int arcDegrees, Color &c, NGShader &gpuProgramWrapper);
     
 private:
     RendererHelper* _rendererHelper;
@@ -31,7 +31,7 @@ private:
     
     void addVertexCoordinate(float x, float y, float z, float r, float g, float b, float a);
     
-    void endBatch(ShaderProgram &gpuProgramWrapper);
+    void endBatch(NGShader &gpuProgramWrapper);
 };
 
 #endif /* defined(__noctisgames__CircleBatcher__) */

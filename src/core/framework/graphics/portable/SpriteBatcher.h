@@ -11,7 +11,7 @@
 
 class RendererHelper;
 class NGTexture;
-class ShaderProgram;
+class NGShader;
 class TextureRegion;
 class Color;
 
@@ -27,7 +27,7 @@ public:
     void renderSprite(float x, float y, float width, float height, float angle, TextureRegion& tr, bool flipX = false);
     void renderSprite(float x, float y, float width, float height, float angle, Color &c, TextureRegion& tr, bool flipX = false);
 
-    void endBatch(NGTexture* texture, ShaderProgram& gpuProgramWrapper);
+    void endBatch(NGTexture* texture, NGShader& gpuProgramWrapper);
 
 private:
     RendererHelper* _rendererHelper;

@@ -11,7 +11,7 @@
 #include "framework/graphics/portable/LineBatcher.h"
 
 #include "framework/graphics/portable/RendererHelper.h"
-#include "framework/graphics/portable/ShaderProgram.h"
+#include "framework/graphics/portable/NGShader.h"
 #include "framework/math/Line.h"
 #include "framework/graphics/portable/Color.h"
 
@@ -46,7 +46,7 @@ void LineBatcher::renderLine(Line &line, Color &c)
     _numLines++;
 }
 
-void LineBatcher::endBatch(ShaderProgram &gpuProgramWrapper)
+void LineBatcher::endBatch(NGShader &gpuProgramWrapper)
 {
     if (_numLines > 0)
     {

@@ -11,7 +11,7 @@
 #include "framework/graphics/portable/QuadBatcher.h"
 #include "framework/graphics/portable/LineBatcher.h"
 #include "framework/graphics/portable/CircleBatcher.h"
-#include <framework/graphics/portable/ShaderProgram.h>
+#include <framework/graphics/portable/NGShader.h>
 #include <Box2D/Box2D.h>
 
 #include "framework/math/NGRect.h"
@@ -82,7 +82,7 @@ void Box2DDebugRenderer::DrawPoint(const b2Vec2& p, float32 size, const b2Color&
     //
 }
 
-void Box2DDebugRenderer::render(ShaderProgram& shaderProgram)
+void Box2DDebugRenderer::render(NGShader& shaderProgram)
 {
     if (!_world)
     {

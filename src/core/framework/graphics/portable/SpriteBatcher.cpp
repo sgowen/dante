@@ -12,7 +12,7 @@
 
 #include "framework/graphics/portable/RendererHelper.h"
 #include "framework/graphics/portable/NGTexture.h"
-#include "framework/graphics/portable/ShaderProgram.h"
+#include "framework/graphics/portable/NGShader.h"
 #include "framework/graphics/portable/TextureRegion.h"
 #include "framework/graphics/portable/Color.h"
 
@@ -130,7 +130,7 @@ void SpriteBatcher::renderSprite(float x, float y, float width, float height, fl
     _numSprites++;
 }
 
-void SpriteBatcher::endBatch(NGTexture* texture, ShaderProgram& gpuProgramWrapper)
+void SpriteBatcher::endBatch(NGTexture* texture, NGShader& gpuProgramWrapper)
 {
     if (_numSprites > 0)
     {

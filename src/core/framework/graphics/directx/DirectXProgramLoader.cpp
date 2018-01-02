@@ -21,7 +21,7 @@
 
 #include "PlatformHelpers.h"
 
-DirectXProgramLoader::DirectXProgramLoader() : ShaderProgramLoader()
+DirectXProgramLoader::DirectXProgramLoader() : NGShaderLoader()
 {
     // Empty
 }
@@ -31,7 +31,7 @@ DirectXProgramLoader::~DirectXProgramLoader()
     // Empty
 }
 
-ShaderProgramWrapper* DirectXProgramLoader::loadShaderProgram(const char* vertexShaderName, const char* fragmentShaderName, std::vector<NGShaderUniformInput*>& uniforms, std::vector<NGShaderVarInput*>& inputLayout)
+ShaderProgramWrapper* DirectXProgramLoader::loadNGShader(const char* vertexShaderName, const char* fragmentShaderName, std::vector<NGShaderUniformInput*>& uniforms, std::vector<NGShaderVarInput*>& inputLayout)
 {
     std::string s1("data\\shaders\\");
 	s1 += std::string(vertexShaderName);
