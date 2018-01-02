@@ -135,23 +135,23 @@ GLuint OpenGLProgramLoader::compileShader(const GLenum type, const void* source,
 
 GLuint OpenGLProgramLoader::linkProgram(const GLuint vertex_shader, const GLuint fragment_shader)
 {
-    GLuint progra_object_id = glCreateProgram();
+    GLuint program_object_id = glCreateProgram();
     GLint link_status;
 
-    assert(progra_object_id != GL_FALSE);
+    assert(program_object_id != GL_FALSE);
 
-    glAttachShader(progra_object_id, vertex_shader);
-    glAttachShader(progra_object_id, fragment_shader);
-    glLinkProgram(progra_object_id);
-    glGetProgramiv(progra_object_id, GL_LINK_STATUS, &link_status);
+    glAttachShader(program_object_id, vertex_shader);
+    glAttachShader(program_object_id, fragment_shader);
+    glLinkProgram(program_object_id);
+    glGetProgramiv(program_object_id, GL_LINK_STATUS, &link_status);
 
     assert(link_status != GL_FALSE);
 
     // Release vertex and fragment shaders.
-    glDetachShader(progra_object_id, vertex_shader);
+    glDetachShader(program_object_id, vertex_shader);
     glDeleteShader(vertex_shader);
-    glDetachShader(progra_object_id, fragment_shader);
+    glDetachShader(program_object_id, fragment_shader);
     glDeleteShader(fragment_shader);
 
-    return progra_object_id;
+    return program_object_id;
 }
