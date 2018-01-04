@@ -9,6 +9,8 @@
 #ifndef __noctisgames__CircleBatcher__
 #define __noctisgames__CircleBatcher__
 
+#include <vector>
+
 class RendererHelper;
 class Circle;
 class NGShader;
@@ -18,20 +20,21 @@ class CircleBatcher
 {
 public:
     CircleBatcher(RendererHelper* inRendererHelper);
-    
     ~CircleBatcher();
     
-    void renderCircle(Circle &circle, Color &c, NGShader &gpuProgramWrapper);
+    void beginBatch();
     
-    void renderPartialCircle(Circle &circle, int arcDegrees, Color &c, NGShader &gpuProgramWrapper);
+    void renderCircle(Circle &circle, Color &c);
+    void renderPartialCircle(Circle &circle, int arcDegrees, Color &c);
+    
+    void endBatch(NGShader &shader);
     
 private:
     RendererHelper* _rendererHelper;
+    std::vector<int> _circles;
     int _numPoints;
     
     void addVertexCoordinate(float x, float y, float z, float r, float g, float b, float a);
-    
-    void endBatch(NGShader &gpuProgramWrapper);
 };
 
 #endif /* defined(__noctisgames__CircleBatcher__) */

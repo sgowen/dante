@@ -62,11 +62,11 @@ void QuadBatcher::renderQuad(float x1, float y1,
     _numQuads++;
 }
 
-void QuadBatcher::endBatch(NGShader &gpuProgramWrapper)
+void QuadBatcher::endBatch(NGShader &shader)
 {
     if (_numQuads > 0)
     {
-        gpuProgramWrapper.bind();
+        shader.bind();
         
         if (_isFill)
         {
@@ -80,6 +80,6 @@ void QuadBatcher::endBatch(NGShader &gpuProgramWrapper)
             }
         }
         
-        gpuProgramWrapper.unbind();
+        shader.unbind();
     }
 }

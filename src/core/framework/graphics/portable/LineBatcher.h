@@ -18,14 +18,13 @@ class LineBatcher
 {
 public:
     LineBatcher(RendererHelper* inRendererHelper);
-    
     ~LineBatcher();
     
     void beginBatch();
     
     void renderLine(Line &line, Color &c);
     
-    void endBatch(NGShader &gpuProgramWrapper);
+    void endBatch(NGShader &shader);
     
 private:
     RendererHelper* _rendererHelper;

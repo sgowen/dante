@@ -130,14 +130,14 @@ void SpriteBatcher::renderSprite(float x, float y, float width, float height, fl
     _numSprites++;
 }
 
-void SpriteBatcher::endBatch(NGTexture* texture, NGShader& gpuProgramWrapper)
+void SpriteBatcher::endBatch(NGTexture* texture, NGShader& shader)
 {
     if (_numSprites > 0)
     {
-        gpuProgramWrapper.bind(texture);
+        shader.bind(texture);
         
         _rendererHelper->drawIndexed(NGPrimitiveType_Triangles, 0, _numSprites * INDICES_PER_RECTANGLE);
         
-        gpuProgramWrapper.unbind();
+        shader.unbind();
     }
 }

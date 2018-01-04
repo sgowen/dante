@@ -25,12 +25,12 @@ _lineBatcher(lineBatcher),
 _circleBatcher(circleBatcher),
 _world(NULL)
 {
-    //
+    // Empty
 }
 
 Box2DDebugRenderer::~Box2DDebugRenderer()
 {
-    //
+    // Empty
 }
 
 void Box2DDebugRenderer::DrawPolygon(const b2Vec2* vertices, int32 vertexCount, const b2Color& color)
@@ -59,27 +59,27 @@ void Box2DDebugRenderer::DrawSolidPolygon(const b2Vec2* vertices, int32 vertexCo
 
 void Box2DDebugRenderer::DrawCircle(const b2Vec2& center, float32 radius, const b2Color& color)
 {
-    //
+    // TODO
 }
 
 void Box2DDebugRenderer::DrawSolidCircle(const b2Vec2& center, float32 radius, const b2Vec2& axis, const b2Color& color)
 {
-    //
+    // TODO
 }
 
 void Box2DDebugRenderer::DrawSegment(const b2Vec2& p1, const b2Vec2& p2, const b2Color& color)
 {
-    //
+    // TODO
 }
 
 void Box2DDebugRenderer::DrawTransform(const b2Transform& xf)
 {
-    //
+    // TODO
 }
 
 void Box2DDebugRenderer::DrawPoint(const b2Vec2& p, float32 size, const b2Color& color)
 {
-    //
+    // TODO
 }
 
 void Box2DDebugRenderer::render(NGShader& shaderProgram)
@@ -92,12 +92,14 @@ void Box2DDebugRenderer::render(NGShader& shaderProgram)
     _boundsQuadBatcher.beginBatch();
     _fillQuadBatcher.beginBatch();
     _lineBatcher.beginBatch();
+    _circleBatcher.beginBatch();
     
     _world->DrawDebugData();
     
     _boundsQuadBatcher.endBatch(shaderProgram);
     _fillQuadBatcher.endBatch(shaderProgram);
     _lineBatcher.endBatch(shaderProgram);
+    _circleBatcher.endBatch(shaderProgram);
 }
 
 void Box2DDebugRenderer::setWorld(b2World* world)

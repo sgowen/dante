@@ -46,14 +46,14 @@ void LineBatcher::renderLine(Line &line, Color &c)
     _numLines++;
 }
 
-void LineBatcher::endBatch(NGShader &gpuProgramWrapper)
+void LineBatcher::endBatch(NGShader &shader)
 {
     if (_numLines > 0)
     {
-        gpuProgramWrapper.bind();
+        shader.bind();
         
         _rendererHelper->draw(NGPrimitiveType_Lines, 0, VERTICES_PER_LINE * _numLines);
         
-        gpuProgramWrapper.unbind();
+        shader.unbind();
     }
 }

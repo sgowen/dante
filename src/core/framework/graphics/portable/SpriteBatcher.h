@@ -19,7 +19,6 @@ class SpriteBatcher
 {
 public:
     SpriteBatcher(RendererHelper* inRendererHelper);
-    
     ~SpriteBatcher();
 
     void beginBatch();
@@ -27,7 +26,7 @@ public:
     void renderSprite(float x, float y, float width, float height, float angle, TextureRegion& tr, bool flipX = false);
     void renderSprite(float x, float y, float width, float height, float angle, Color &c, TextureRegion& tr, bool flipX = false);
 
-    void endBatch(NGTexture* texture, NGShader& gpuProgramWrapper);
+    void endBatch(NGTexture* texture, NGShader& shader);
 
 private:
     RendererHelper* _rendererHelper;

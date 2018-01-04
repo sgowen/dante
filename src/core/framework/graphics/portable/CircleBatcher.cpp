@@ -32,10 +32,15 @@ CircleBatcher::~CircleBatcher()
     // Empty
 }
 
-void CircleBatcher::renderCircle(Circle &circle, Color &c, NGShader &gpuProgramWrapper)
+void CircleBatcher::beginBatch()
 {
     _rendererHelper->clearColorVertices();
     
+    _circles.clear();
+}
+
+void CircleBatcher::renderCircle(Circle &circle, Color &c)
+{
     _numPoints = 0;
     
     for (int i = 0; i <= 360; i += DEGREE_SPACING)
@@ -49,13 +54,11 @@ void CircleBatcher::renderCircle(Circle &circle, Color &c, NGShader &gpuProgramW
         addVertexCoordinate(circle.getCenter().getX(), circle.getCenter().getY(), 0, c.red, c.green, c.blue, c.alpha);
     }
     
-    endBatch(gpuProgramWrapper);
+    _circles.push_back(_numPoints);
 }
 
-void CircleBatcher::renderPartialCircle(Circle &circle, int arcDegrees, Color &c, NGShader &gpuProgramWrapper)
+void CircleBatcher::renderPartialCircle(Circle &circle, int arcDegrees, Color &c)
 {
-    _rendererHelper->clearColorVertices();
-    
     _numPoints = 0;
     
     for (int i = 90; i < (450 - arcDegrees); i += DEGREE_SPACING)
@@ -77,21 +80,27 @@ void CircleBatcher::renderPartialCircle(Circle &circle, int arcDegrees, Color &c
     
     addVertexCoordinate(circle.getCenter().getX(), circle.getCenter().getY(), 0, c.red, c.green, c.blue, c.alpha);
     
-    endBatch(gpuProgramWrapper);
+    _circles.push_back(_numPoints);
 }
 
-void CircleBatcher::endBatch(NGShader &gpuProgramWrapper)
+void CircleBatcher::endBatch(NGShader &shader)
 {
-    gpuProgramWrapper.bind();
+    shader.bind();
     
-    _rendererHelper->draw(NGPrimitiveType_TriangleStrip, 0, _numPoints);
+    int offset = 0;
+    for (std::vector<int>::iterator i = _circles.begin(); i != _circles.end(); ++i)
+    {
+        int numPoints = (*i);
+        _rendererHelper->draw(NGPrimitiveType_TriangleStrip, offset, numPoints);
+        offset += numPoints;
+    }
     
-    gpuProgramWrapper.unbind();
+    shader.unbind();
 }
 
 void CircleBatcher::addVertexCoordinate(float x, float y, float z, float r, float g, float b, float a)
 {
     _rendererHelper->addVertexCoordinate(x, y, z, r, g, b, a);
     
-    _numPoints++;
+    ++_numPoints;
 }
