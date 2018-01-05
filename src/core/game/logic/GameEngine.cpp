@@ -122,6 +122,10 @@ void GameEngine::update(Engine* engine)
         engine->getStateMachine().revertToPreviousState();
     }
     
+#ifdef NG_STEAM
+    NG_STEAM_GAME_SERVICES->update(false);
+#endif
+    
     if (Server::getInstance())
     {
         Server::getInstance()->update();

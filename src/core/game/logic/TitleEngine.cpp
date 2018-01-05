@@ -309,7 +309,8 @@ void TitleEngine::handleSteamGameServices(Engine* engine)
 #ifdef NG_STEAM
     if (NG_STEAM_GAME_SERVICES)
     {
-        NG_STEAM_GAME_SERVICES->update(NG_SERVER ? true : false);
+        NG_STEAM_GAME_SERVICES->update(false);
+        NG_STEAM_GAME_SERVICES->update(true);
         
         if (NG_STEAM_GAME_SERVICES->getStatus() == STEAM_INIT_SUCCESS)
         {

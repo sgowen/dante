@@ -29,6 +29,7 @@
 #include "framework/network/server/SocketServerHelper.h"
 #include "game/logic/Crate.h"
 #include "framework/network/portable/MachineAddress.h"
+#include <framework/network/steam/NGSteamGameServices.h>
 
 #ifdef NG_STEAM
 #include "framework/network/steam/NGSteamServerHelper.h"
@@ -90,6 +91,10 @@ void Server::update()
     clearClientMoves();
     
     NG_SERVER->sendOutgoingPackets();
+    
+#ifdef NG_STEAM
+    NG_STEAM_GAME_SERVICES->update(true);
+#endif
 }
 
 uint8_t Server::getPlayerIdForRobotBeingCreated()

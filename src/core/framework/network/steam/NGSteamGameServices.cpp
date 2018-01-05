@@ -62,11 +62,13 @@ NGSteamGameServices * NGSteamGameServices::getInstance()
 
 void NGSteamGameServices::update(bool isServer)
 {
-    SteamAPI_RunCallbacks();
-    
     if (isServer)
     {
         SteamGameServer_RunCallbacks();
+    }
+    else
+    {
+        SteamAPI_RunCallbacks();
     }
 }
 
