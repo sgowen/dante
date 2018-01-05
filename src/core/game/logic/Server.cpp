@@ -29,10 +29,10 @@
 #include "framework/network/server/SocketServerHelper.h"
 #include "game/logic/Crate.h"
 #include "framework/network/portable/MachineAddress.h"
-#include <framework/network/steam/NGSteamGameServices.h>
 
 #ifdef NG_STEAM
-#include "framework/network/steam/NGSteamServerHelper.h"
+#include <framework/network/steam/NGSteamServerHelper.h>
+#include <framework/network/steam/NGSteamGameServices.h>
 #endif
 
 #include "Box2D/Box2D.h"
