@@ -31,13 +31,13 @@ NGShaderVarInput::NGShaderVarInput(const char* attribName, uint32_t size, uint32
 #endif
 }
 
-#if defined __APPLE__ || defined __ANDROID__ || defined __linux__
 void NGShaderVarInput::build(ShaderProgramWrapper* inShaderProgramWrapper, uint32_t totalSize)
 {
+#if defined __APPLE__ || defined __ANDROID__ || defined __linux__
     _stride = totalSize * sizeof(GLfloat);
     _bufferOffset = BUFFER_OFFSET(_offset * sizeof(GL_FLOAT));
     
     _attribute = glGetAttribLocation(inShaderProgramWrapper->_programObjectId, _attribName);
     glEnableVertexAttribArray(_attribute);
-}
 #endif
+}

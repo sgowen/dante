@@ -17,6 +17,7 @@ class NGShaderUniformInput
 {
 public:
     const char* _attribName;
+    int _byteWidth;
 #if defined __APPLE__ || defined __ANDROID__ || defined __linux__
     GLint _attribute;
 #elif _WIN32
@@ -25,9 +26,7 @@ public:
     
     NGShaderUniformInput(const char* attribName, int byteWidth = 0);
     
-#if defined __APPLE__ || defined __ANDROID__ || defined __linux__
     void build(ShaderProgramWrapper* inShaderProgramWrapper);
-#endif
 };
 
 #endif /* defined(__noctisgames__NGShaderUniformInput__) */
