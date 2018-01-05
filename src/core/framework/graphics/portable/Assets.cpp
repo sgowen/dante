@@ -65,8 +65,6 @@ void Assets::initWithJson(const char* json)
     d.Parse<0>(json);
     
     assert(d.HasMember("textures"));
-    assert(d.HasMember("textureRegions"));
-    assert(d.HasMember("animations"));
     
     {
         Value& v = d["textures"];
@@ -83,6 +81,7 @@ void Assets::initWithJson(const char* json)
         }
     }
     
+    if (d.HasMember("textureRegions"))
     {
         Value& v = d["textureRegions"];
         
@@ -106,6 +105,7 @@ void Assets::initWithJson(const char* json)
         }
     }
     
+    if (d.HasMember("animations"))
     {
         Value& v = d["animations"];
         
