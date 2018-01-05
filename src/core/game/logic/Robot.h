@@ -21,8 +21,6 @@ class Ground;
 class Crate;
 class Projectile;
 
-#define NUM_PROJECTILES 6
-
 class Robot : public Entity
 {
     NGRTTI_DECL;
@@ -40,96 +38,55 @@ public:
     };
     
     Robot(b2World& world, bool isServer);
-    
     virtual ~Robot();
     
-    virtual EntityDef constructEntityDef();
-    
     virtual void update();
-    
     virtual bool shouldCollide(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB);
-    
     virtual void handleBeginContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB);
-    
     virtual void handleEndContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB);
-    
     virtual uint32_t getAllStateMask() const;
-    
     virtual void read(InputMemoryBitStream& inInputStream);
-    
     virtual uint32_t write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState);
-    
     virtual bool needsMoveReplay();
     
     void processInput(InputState* inInputState, bool isPending = false);
     
-    void awardKill(bool isHeadshot);
-    
     void setAddressHash(uint64_t addressHash);
-    
     uint64_t getAddressHash() const;
-    
     void setPlayerId(uint8_t inPlayerId);
-    
     uint8_t getPlayerId() const;
-    
     void setPlayerName(std::string playerName);
-    
     std::string& getPlayerName();
-    
-    uint32_t getNumKills();
-    
     uint8_t getHealth();
-    
+    uint8_t getNumJumps();
     bool isFacingLeft();
-    
-    bool isShooting();
-    
+    bool isMainAction();
     bool isSprinting();
-    
-    bool isPending();
     
 private:
     uint64_t _addressHash;
-    uint32_t _firstProjectileId;
     uint8_t _playerId;
     std::string _playerName;
     
     uint8_t _numJumps;
-    uint8_t _nextProjectileIndex;
     bool _isFacingLeft;
-    bool _isShooting;
+    bool _isMainAction;
     bool _isSprinting;
     bool _isFirstJumpCompleted;
     
     uint8_t _health;
     
-    uint32_t _numKills;
-    bool _wasLastKillHeadshot;
-    
     float _speed;
-    float _jumpSpeed;
-    
-    float _shotCooldownTime;
-    uint8_t _numSpacePiratesTouching;
-    bool _hasInitializedProjectiles;
-    bool _isPending;
+    float _movementForce;
+    float _jumpForce;
+    float _doubleJumpForce;
     
     // Cached Last Known Values (from previous frame)
     uint8_t _numJumpsLastKnown;
-    uint8_t _nextProjectileIndexLastKnown;
     uint8_t _healthLastKnown;
-    uint32_t _numKillsLastKnown;
-    float _shotCooldownTimeLastKnown;
-    bool _wasLastKillHeadshotLastKnown;
     bool _isFacingLeftLastKnown;
-    bool _isShootingLastKnown;
     bool _isSprintingLastKnown;
     bool _isFirstJumpCompletedLastKnown;
-    
-    Projectile* _projectiles[NUM_PROJECTILES];
-    
-    void fireProjectile();
     
     void playNetworkBoundSounds(uint8_t numJumpsLastKnown, bool isSprintingLastKnown);
 };

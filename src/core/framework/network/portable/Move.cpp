@@ -13,7 +13,6 @@
 #include "framework/network/portable/InputState.h"
 #include "framework/network/portable/OutputMemoryBitStream.h"
 #include "framework/network/portable/InputMemoryBitStream.h"
-#include "framework/entity/Entity.h"
 
 Move::Move(InputState* inInputState, float inTimestamp) :
 _inputState(inInputState),
@@ -31,7 +30,7 @@ _timestamp(0)
 
 Move::~Move()
 {
-    _entityCacheMap.clear();
+    // Empty
 }
 
 bool Move::write(OutputMemoryBitStream& inOutputStream) const
@@ -46,31 +45,6 @@ bool Move::read(InputMemoryBitStream& inInputStream)
     inInputStream.read(_timestamp);
     
     return _inputState->read(inInputStream);
-}
-
-void Move::cacheEntity(Entity* inEntity) const
-{
-    EntityClientCache entityClientCache;
-    
-    entityClientCache._stateTime = inEntity->getStateTime();
-    entityClientCache._velocity = b2Vec2(inEntity->getVelocity().x, inEntity->getVelocity().y);
-    entityClientCache._position = b2Vec2(inEntity->getPosition().x, inEntity->getPosition().y);
-    entityClientCache._angle = inEntity->getAngle();
-    
-    _entityCacheMap.insert(std::make_pair(inEntity->getID(), entityClientCache));
-}
-
-void Move::recallEntityCache(Entity* inEntity) const
-{
-    auto q = _entityCacheMap.find(inEntity->getID());
-    
-    if (q != _entityCacheMap.end())
-    {
-        inEntity->setStateTime(q->second._stateTime);
-        inEntity->setVelocity(q->second._velocity);
-        inEntity->setPosition(q->second._position);
-        inEntity->setAngle(q->second._angle);
-    }
 }
 
 bool Move::isEqual(const Move* inMove) const

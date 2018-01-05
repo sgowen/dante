@@ -17,9 +17,9 @@
 class Entity;
 class Robot;
 class Projectile;
-class SpacePirate;
+class Enemy;
 class Crate;
-class SpacePirateChunk;
+class EnemyChunk;
 class Ground;
 class b2World;
 
@@ -37,15 +37,15 @@ class World
 public:
     WORLD_CREATE_CLIENT_DECL(Robot);
     WORLD_CREATE_CLIENT_DECL(Projectile);
-    WORLD_CREATE_CLIENT_DECL(SpacePirate);
+    WORLD_CREATE_CLIENT_DECL(Enemy);
     WORLD_CREATE_CLIENT_DECL(Crate);
-    WORLD_CREATE_CLIENT_DECL(SpacePirateChunk);
+    WORLD_CREATE_CLIENT_DECL(EnemyChunk);
     
     WORLD_CREATE_SERVER_DECL(Robot);
     WORLD_CREATE_SERVER_DECL(Projectile);
-    WORLD_CREATE_SERVER_DECL(SpacePirate);
+    WORLD_CREATE_SERVER_DECL(Enemy);
     WORLD_CREATE_SERVER_DECL(Crate);
-    WORLD_CREATE_SERVER_DECL(SpacePirateChunk);
+    WORLD_CREATE_SERVER_DECL(EnemyChunk);
     
     World(bool isServer);
     
@@ -61,11 +61,11 @@ public:
     
     Robot* getRobotWithPlayerId(uint8_t inPlayerID);
     
-    void killAllSpacePirates();
+    void killAllEnemys();
     
     void removeAllCrates();
     
-    bool hasSpacePirates();
+    bool hasEnemys();
     
     bool hasCrates();
     

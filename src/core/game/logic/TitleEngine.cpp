@@ -21,8 +21,6 @@
 #include "framework/util/StringUtil.h"
 #include "framework/math/MathUtil.h"
 #include "game/logic/Robot.h"
-#include "game/logic/Projectile.h"
-#include "game/logic/SpacePirate.h"
 #include "framework/entity/EntityRegistry.h"
 #include "framework/network/client/NetworkManagerClient.h"
 #include "framework/network/server/NetworkManagerServer.h"
@@ -101,10 +99,10 @@ TitleEngine::~TitleEngine()
 
 void TitleEngine::enter(Engine* engine)
 {
+    disconnect();
+    
     createDeviceDependentResources();
     createWindowSizeDependentResources(engine->getScreenWidth(), engine->getScreenHeight(), engine->getRenderWidth(), engine->getRenderHeight(), engine->getCursorWidth(), engine->getCursorHeight());
-    
-    disconnect();
 }
 
 void TitleEngine::update(Engine* engine)
@@ -198,15 +196,18 @@ bool TitleEngine::handleInput(Engine* engine)
             else if (_state == TE_MAIN_MENU_ENTERING_USERNAME)
             {
                 _name = TitleInputManager::getInstance()->getLiveInput();
-                TitleInputManager::getInstance()->setLiveInputMode(false);
-                
-                if (_serverIPAddress.length() == 0)
+                if (_name.length() > 0)
                 {
-                    startServer();
-                }
-                else
-                {
-                    joinServer(engine);
+                    TitleInputManager::getInstance()->setLiveInputMode(false);
+                    
+                    if (_serverIPAddress.length() == 0)
+                    {
+                        startServer();
+                    }
+                    else
+                    {
+                        joinServer(engine);
+                    }
                 }
             }
             
@@ -361,7 +362,7 @@ void TitleEngine::startServer()
     if (!Server::getInstance())
     {
         uint32_t numCratesToSpawn = 6;
-        uint32_t numSpacePiratesToSpawn = 4;
+        uint32_t numEnemysToSpawn = 4;
         
         {
             std::string val = _config->findValue(std::string("nu_crates_to_spawn"));
@@ -375,11 +376,11 @@ void TitleEngine::startServer()
             std::string val = _config->findValue(std::string("nu_space_pirates_to_spawn"));
             if (val.length() > 0)
             {
-                numSpacePiratesToSpawn = StringUtil::stringToNumber<int>(val);
+                numEnemysToSpawn = StringUtil::stringToNumber<int>(val);
             }
         }
         
-        Server::create(_isSteam, numCratesToSpawn, numSpacePiratesToSpawn);
+        Server::create(_isSteam, numCratesToSpawn, numEnemysToSpawn);
         
         if (PlatformHelper::getPlatform() == NG_PLATFORM_ANDROID
             || PlatformHelper::getPlatform() == NG_PLATFORM_IOS)
@@ -415,11 +416,8 @@ void TitleEngine::joinServer(Engine* engine)
     
     assert(clientHelper);
     
-    CLIENT_ENTITY_REG->registerCreationFunction(NW_TYPE_Robot, World::sClientCreateRobot);
-    CLIENT_ENTITY_REG->registerCreationFunction(NW_TYPE_Projectile, World::sClientCreateProjectile);
-    CLIENT_ENTITY_REG->registerCreationFunction(NW_TYPE_SpacePirate, World::sClientCreateSpacePirate);
-    CLIENT_ENTITY_REG->registerCreationFunction(NW_TYPE_Crate, World::sClientCreateCrate);
-    CLIENT_ENTITY_REG->registerCreationFunction(NW_TYPE_SpacePirateChunk, World::sClientCreateSpacePirateChunk);
+    CLIENT_ENTITY_REG->registerFunction(NW_TYPE_Robot, World::sClientCreateRobot);
+    CLIENT_ENTITY_REG->registerFunction(NW_TYPE_Crate, World::sClientCreateCrate);
     
     NetworkManagerClient::create(clientHelper, INPUT_MANAGER_CALLBACKS);
     

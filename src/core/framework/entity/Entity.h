@@ -39,8 +39,9 @@ struct EntityDef
 {
     EntityDef()
     {
-        restitution = 0.0f;
+        restitution = 0.25f;
         density = 1.0f;
+        friction = 0.5f;
         isStaticBody = true;
         fixedRotation = true;
         bullet = false;
@@ -50,6 +51,7 @@ struct EntityDef
     
     float restitution;
     float density;
+    float friction;
     bool isStaticBody;
     bool fixedRotation;
     bool bullet;
@@ -64,100 +66,61 @@ class Entity
     NW_TYPE_DECL(NW_TYPE_Entity);
     
 public:
-    Entity(b2World& world, float x, float y, float width, float height, bool isServer, EntityDef inEntityDef, bool autoInitPhysics = true);
-    
+    Entity(b2World& world, float x, float y, float width, float height, bool isServer, EntityDef inEntityDef);
     virtual ~Entity();
     
-    virtual EntityDef constructEntityDef() = 0;
-    
     virtual void update() = 0;
-    
     virtual bool shouldCollide(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB) = 0;
-    
     virtual void handleBeginContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB) = 0;
-    
     virtual void handleEndContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB) = 0;
-    
     virtual uint32_t getAllStateMask() const = 0;
-    
     virtual void read(InputMemoryBitStream& inInputStream) = 0;
-    
     virtual uint32_t write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState) = 0;
-    
     virtual bool needsMoveReplay() = 0;
     
-    virtual void recallIfNecessary(Move* move);
-    
     virtual void postRead();
-    
-    virtual void cacheToMove(const Move& move);
-    
-    virtual void onDeletion();
+    virtual void deinitPhysics();
     
     void handleBeginFootContact(Entity* inEntity);
-    
     void handleEndFootContact(Entity* inEntity);
     
     void setStateTime(float stateTime);
-    
     float getStateTime();
-    
     b2Body* getBody();
-    
     void setTransform(b2Vec2 position, float angle);
-    
     void setPosition(b2Vec2 position);
-    
     const b2Vec2& getPosition();
-    
     void setVelocity(b2Vec2 velocity);
-    
     const b2Vec2& getVelocity();
-    
     void setColor(Color color);
-    
     Color& getColor();
-    
-    void setWidth(float width);
-    
-    const float& getWidth();
-    
-    void setHeight(float height);
-    
-    const float& getHeight();
-    
+    float getWidth();
+    float getHeight();
     void setAngle(float angle);
-    
     float getAngle();
     
     void setID(uint32_t inID);
-    
     uint32_t getID();
     
     bool isGrounded();
-    
     bool isFalling();
     
     void requestDeletion();
-    
     bool isRequestingDeletion();
     
 protected:
     b2World& _worldRef;
+    EntityDef _entityDef;
     b2Body* _body;
     b2Fixture* _fixture;
     b2Fixture* _footSensorFixture;
     float _stateTime;
     uint8_t _numGroundContacts;
     Color _color;
-    float _x;
-    float _y;
     float _width;
     float _height;
-    float _angle;
     uint32_t _readState;
     bool _isServer;
-    bool _isPhysicsOn;
     
     // Cached Last Known Values (from previous frame)
     b2Vec2 _velocityLastKnown;
@@ -165,12 +128,7 @@ protected:
     float _angleLastKnown;
     uint8_t _numGroundContactsLastKnown;
     
-    void initPhysics(EntityDef inEntityDef);
-    
-    void deinitPhysics();
-    
     void interpolateClientSidePrediction(b2Vec2& inOldVelocity, b2Vec2& inOldPos);
-    
     bool interpolateVectorsIfNecessary(b2Vec2& inA, const b2Vec2& inB, float& syncTracker, const char* vectorType);
     
 private:

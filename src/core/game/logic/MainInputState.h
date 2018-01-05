@@ -60,7 +60,7 @@ public:
         
         bool isJumping();
         
-        bool isShooting();
+        bool isMainAction();
         
         bool isSprinting();
         
@@ -69,7 +69,7 @@ public:
         bool _isMovingRight;
         bool _isMovingLeft;
         bool _isJumping;
-        bool _isShooting;
+        bool _isMainAction;
         bool _isSprinting;
         
         GameInputState();

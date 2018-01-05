@@ -11,12 +11,9 @@
 
 #include "Box2D/Common/b2Math.h"
 
-#include <map>
-
 class InputState;
 class OutputMemoryBitStream;
 class InputMemoryBitStream;
-class Entity;
 
 class Move
 {
@@ -31,10 +28,6 @@ public:
     
     bool read(InputMemoryBitStream& inInputStream);
     
-    void cacheEntity(Entity* inEntity) const;
-    
-    void recallEntityCache(Entity* inEntity) const;
-    
     bool isEqual(const Move* inMove) const;
     
     InputState* getInputState() const;
@@ -46,17 +39,6 @@ public:
     void copyInputState(InputState* inInputState);
     
 private:
-    class EntityClientCache
-    {
-    public:
-        float _stateTime;
-        b2Vec2 _velocity;
-        b2Vec2 _position;
-        float _angle;
-    };
-    
-    mutable std::map<int, EntityClientCache> _entityCacheMap;
-    
     InputState* _inputState;
     float _timestamp;
 };

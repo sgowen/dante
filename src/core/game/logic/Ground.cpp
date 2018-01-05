@@ -15,8 +15,6 @@
 #include "framework/network/portable/InputMemoryBitStream.h"
 
 #include "game/logic/Robot.h"
-#include "game/logic/Projectile.h"
-#include "game/logic/SpacePirate.h"
 #include "game/logic/Crate.h"
 
 #include <math.h>
@@ -25,14 +23,21 @@ NGRTTI_IMPL(Ground, Entity);
 
 NW_TYPE_IMPL(Ground);
 
+namespace
+{
+    inline EntityDef constructEntityDef()
+    {
+        EntityDef ret;
+        
+        ret.friction = 5.0f;
+        
+        return ret;
+    }
+}
+
 Ground::Ground(b2World& world, bool isServer) : Entity(world, GAME_WIDTH / 2.0f, -10.0f, GAME_WIDTH, 23.6f, isServer, constructEntityDef())
 {
     // Empty
-}
-
-EntityDef Ground::constructEntityDef()
-{
-    return EntityDef();
 }
 
 void Ground::update()

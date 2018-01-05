@@ -61,6 +61,16 @@ android {
     }
     preBuild.dependsOn(runEncryptionBeforeBuild)
 
+    task copyConfigs(type: Copy)
+    copyConfigs {
+        description = 'Copies configs from root assets into project assets'
+        from '../../../../assets/config'
+        into 'src/main/assets'
+        include('*.cfg')
+    }
+    copyConfigs.dependsOn(runEncryptionBeforeBuild)
+    preBuild.dependsOn(copyConfigs)
+
     task copyShaders(type: Copy)
     copyShaders {
         description = 'Copies shaders into project assets'
@@ -78,7 +88,6 @@ android {
         from '../../../../assets/textures'
         into 'src/main/assets'
         include('*.ngt')
-        include('*.cfg')
     }
     copyTextures.dependsOn(runEncryptionBeforeBuild)
     preBuild.dependsOn(copyTextures)

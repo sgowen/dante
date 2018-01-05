@@ -214,10 +214,7 @@
 		BB5AFE0A1FB359DE005FBD52 /* Ground.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB6E7B001F940F13006C0024 /* Ground.cpp */; };
 		BB5AFE0B1FB359DE005FBD52 /* TitleEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB6E7B021F940F13006C0024 /* TitleEngine.cpp */; };
 		BB5AFE0C1FB359DE005FBD52 /* PooledObjectsManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB6E7B051F940F13006C0024 /* PooledObjectsManager.cpp */; };
-		BB5AFE0D1FB359DE005FBD52 /* Projectile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB6E7B071F940F13006C0024 /* Projectile.cpp */; };
 		BB5AFE0E1FB359DE005FBD52 /* Robot.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB6E7B091F940F13006C0024 /* Robot.cpp */; };
-		BB5AFE0F1FB359DE005FBD52 /* SpacePirate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB6E7B0B1F940F13006C0024 /* SpacePirate.cpp */; };
-		BB5AFE101FB359DE005FBD52 /* SpacePirateChunk.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB6E7B0D1F940F13006C0024 /* SpacePirateChunk.cpp */; };
 		BB5AFE111FB359DE005FBD52 /* Util.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB6E7B0F1F940F13006C0024 /* Util.cpp */; };
 		BB5AFE171FB359EA005FBD52 /* FPSUtil.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBCDF24D1F3796C3006E94B0 /* FPSUtil.cpp */; };
 		BB5AFE191FB359EA005FBD52 /* NGRTTI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB74283D1EB2AF4200B7628D /* NGRTTI.cpp */; };
@@ -284,8 +281,6 @@
 		BB5AFE7B1FB35ACA005FBD52 /* Entity.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF0BF1EA94ED900F0866E /* Entity.cpp */; };
 		BB5AFE7C1FB35ACA005FBD52 /* EntityManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF0C11EA94ED900F0866E /* EntityManager.cpp */; };
 		BB5AFE7D1FB35ACA005FBD52 /* EntityRegistry.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB0864721EE20CCA00BCD9E0 /* EntityRegistry.cpp */; };
-		BB6363381FEB0551001BB9E1 /* game_assets.cfg in Resources */ = {isa = PBXBuildFile; fileRef = BB6363351FEAF65C001BB9E1 /* game_assets.cfg */; };
-		BB63633C1FEB0D3E001BB9E1 /* game_assets.cfg in Resources */ = {isa = PBXBuildFile; fileRef = BB63633B1FEB0D3E001BB9E1 /* game_assets.cfg */; };
 		BB6531601FED56CA00963997 /* MainInputState.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB65315B1FED56C800963997 /* MainInputState.cpp */; };
 		BB6531611FED56CA00963997 /* MainInputState.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB65315B1FED56C800963997 /* MainInputState.cpp */; };
 		BB6531621FED56CA00963997 /* World.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB65315C1FED56C800963997 /* World.cpp */; };
@@ -299,10 +294,7 @@
 		BB6E7B171F940F2B006C0024 /* Ground.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB6E7B001F940F13006C0024 /* Ground.cpp */; };
 		BB6E7B181F940F2B006C0024 /* TitleEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB6E7B021F940F13006C0024 /* TitleEngine.cpp */; };
 		BB6E7B191F940F2B006C0024 /* PooledObjectsManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB6E7B051F940F13006C0024 /* PooledObjectsManager.cpp */; };
-		BB6E7B1A1F940F2B006C0024 /* Projectile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB6E7B071F940F13006C0024 /* Projectile.cpp */; };
 		BB6E7B1B1F940F2B006C0024 /* Robot.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB6E7B091F940F13006C0024 /* Robot.cpp */; };
-		BB6E7B1C1F940F2B006C0024 /* SpacePirate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB6E7B0B1F940F13006C0024 /* SpacePirate.cpp */; };
-		BB6E7B1D1F940F2B006C0024 /* SpacePirateChunk.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB6E7B0D1F940F13006C0024 /* SpacePirateChunk.cpp */; };
 		BB6E7B1E1F940F2B006C0024 /* Util.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB6E7B0F1F940F13006C0024 /* Util.cpp */; };
 		BB6E7B241F940FD4006C0024 /* tinythread.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB6E7A8B1F93CE1B006C0024 /* tinythread.cpp */; };
 		BB6F59751FBDE97D00BD7697 /* cocoa_joystick.m in Sources */ = {isa = PBXBuildFile; fileRef = BB6F596F1FBDE97D00BD7697 /* cocoa_joystick.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -496,6 +488,16 @@
 		BBDC64D31FEC4151002DCADA /* texture_003.ngt in Resources */ = {isa = PBXBuildFile; fileRef = BBDC64D11FEC4151002DCADA /* texture_003.ngt */; };
 		BBE4E40B1FEDD03F004193F1 /* Box2DDebugRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBE4E4091FEDD03F004193F1 /* Box2DDebugRenderer.cpp */; };
 		BBE4E40C1FEDD03F004193F1 /* Box2DDebugRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBE4E4091FEDD03F004193F1 /* Box2DDebugRenderer.cpp */; };
+		BBEF6FFF200028220030076A /* EntityController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBEF6FFD200028220030076A /* EntityController.cpp */; };
+		BBEF7000200028220030076A /* EntityController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBEF6FFD200028220030076A /* EntityController.cpp */; };
+		BBEF7013200033140030076A /* title_assets.cfg in Resources */ = {isa = PBXBuildFile; fileRef = BBEF700F200033140030076A /* title_assets.cfg */; };
+		BBEF7014200033140030076A /* game_assets.cfg in Resources */ = {isa = PBXBuildFile; fileRef = BBEF7010200033140030076A /* game_assets.cfg */; };
+		BBEF7015200033140030076A /* entities.cfg in Resources */ = {isa = PBXBuildFile; fileRef = BBEF7011200033140030076A /* entities.cfg */; };
+		BBEF7016200033140030076A /* maps.cfg in Resources */ = {isa = PBXBuildFile; fileRef = BBEF7012200033140030076A /* maps.cfg */; };
+		BBEF701C2000331F0030076A /* title_assets.cfg in Resources */ = {isa = PBXBuildFile; fileRef = BBEF70182000331F0030076A /* title_assets.cfg */; };
+		BBEF701D2000331F0030076A /* game_assets.cfg in Resources */ = {isa = PBXBuildFile; fileRef = BBEF70192000331F0030076A /* game_assets.cfg */; };
+		BBEF701E2000331F0030076A /* entities.cfg in Resources */ = {isa = PBXBuildFile; fileRef = BBEF701A2000331F0030076A /* entities.cfg */; };
+		BBEF701F2000331F0030076A /* maps.cfg in Resources */ = {isa = PBXBuildFile; fileRef = BBEF701B2000331F0030076A /* maps.cfg */; };
 		BBF226CF1EC12CDE00573356 /* ReplicationManagerClient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF226B01EC12CDE00573356 /* ReplicationManagerClient.cpp */; };
 		BBFA49E51FC3702D00233514 /* Engine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBFA49E41FC3702D00233514 /* Engine.cpp */; };
 		BBFA49E61FC3702D00233514 /* Engine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBFA49E41FC3702D00233514 /* Engine.cpp */; };
@@ -514,8 +516,6 @@
 		BBFE83141FFEC6AD00E5F650 /* GameRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBFE83111FFEC6AD00E5F650 /* GameRenderer.cpp */; };
 		BBFE83171FFEC87300E5F650 /* GameInputManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBFE83161FFEC87300E5F650 /* GameInputManager.cpp */; };
 		BBFE83181FFEC87300E5F650 /* GameInputManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBFE83161FFEC87300E5F650 /* GameInputManager.cpp */; };
-		BBFE831A1FFECFEA00E5F650 /* title_assets.cfg in Resources */ = {isa = PBXBuildFile; fileRef = BBFE83191FFECFEA00E5F650 /* title_assets.cfg */; };
-		BBFE831C1FFECFF200E5F650 /* title_assets.cfg in Resources */ = {isa = PBXBuildFile; fileRef = BBFE831B1FFECFF200E5F650 /* title_assets.cfg */; };
 		BBFE83231FFF1B3D00E5F650 /* StudioEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBFE83211FFF1B3D00E5F650 /* StudioEngine.cpp */; };
 		BBFE83241FFF1B3D00E5F650 /* StudioEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBFE83211FFF1B3D00E5F650 /* StudioEngine.cpp */; };
 		BBFE83271FFF1B5A00E5F650 /* StudioRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBFE83261FFF1B5A00E5F650 /* StudioRenderer.cpp */; };
@@ -880,8 +880,6 @@
 		BB5B332F1FDDBDE700B2D145 /* PlatformHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PlatformHelper.h; sourceTree = "<group>"; };
 		BB5F46FA1ED38D61005FEC0C /* SocketAddressFamily.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SocketAddressFamily.h; sourceTree = "<group>"; };
 		BB61CB581EC9FA1B000E0291 /* FrameworkConstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FrameworkConstants.h; sourceTree = "<group>"; };
-		BB6363351FEAF65C001BB9E1 /* game_assets.cfg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = game_assets.cfg; sourceTree = "<group>"; };
-		BB63633B1FEB0D3E001BB9E1 /* game_assets.cfg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = game_assets.cfg; sourceTree = "<group>"; };
 		BB65315A1FED56C700963997 /* MainInputState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainInputState.h; sourceTree = "<group>"; };
 		BB65315B1FED56C800963997 /* MainInputState.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MainInputState.cpp; sourceTree = "<group>"; };
 		BB65315C1FED56C800963997 /* World.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = World.cpp; sourceTree = "<group>"; };
@@ -903,14 +901,8 @@
 		BB6E7B031F940F13006C0024 /* TitleEngine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TitleEngine.h; sourceTree = "<group>"; };
 		BB6E7B051F940F13006C0024 /* PooledObjectsManager.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = PooledObjectsManager.cpp; sourceTree = "<group>"; };
 		BB6E7B061F940F13006C0024 /* PooledObjectsManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PooledObjectsManager.h; sourceTree = "<group>"; };
-		BB6E7B071F940F13006C0024 /* Projectile.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Projectile.cpp; sourceTree = "<group>"; };
-		BB6E7B081F940F13006C0024 /* Projectile.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Projectile.h; sourceTree = "<group>"; };
 		BB6E7B091F940F13006C0024 /* Robot.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Robot.cpp; sourceTree = "<group>"; };
 		BB6E7B0A1F940F13006C0024 /* Robot.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Robot.h; sourceTree = "<group>"; };
-		BB6E7B0B1F940F13006C0024 /* SpacePirate.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SpacePirate.cpp; sourceTree = "<group>"; };
-		BB6E7B0C1F940F13006C0024 /* SpacePirate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SpacePirate.h; sourceTree = "<group>"; };
-		BB6E7B0D1F940F13006C0024 /* SpacePirateChunk.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SpacePirateChunk.cpp; sourceTree = "<group>"; };
-		BB6E7B0E1F940F13006C0024 /* SpacePirateChunk.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SpacePirateChunk.h; sourceTree = "<group>"; };
 		BB6E7B0F1F940F13006C0024 /* Util.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Util.cpp; sourceTree = "<group>"; };
 		BB6E7B101F940F13006C0024 /* Util.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Util.h; sourceTree = "<group>"; };
 		BB6F58D21FBDE8FF00BD7697 /* glfw3.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = glfw3.h; sourceTree = "<group>"; };
@@ -1631,6 +1623,16 @@
 		BBE4E4081FEDC2D5004193F1 /* World.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = World.h; sourceTree = "<group>"; };
 		BBE4E4091FEDD03F004193F1 /* Box2DDebugRenderer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Box2DDebugRenderer.cpp; sourceTree = "<group>"; };
 		BBE4E40A1FEDD03F004193F1 /* Box2DDebugRenderer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Box2DDebugRenderer.h; sourceTree = "<group>"; };
+		BBEF6FFD200028220030076A /* EntityController.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = EntityController.cpp; sourceTree = "<group>"; };
+		BBEF6FFE200028220030076A /* EntityController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EntityController.h; sourceTree = "<group>"; };
+		BBEF700F200033140030076A /* title_assets.cfg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = title_assets.cfg; sourceTree = "<group>"; };
+		BBEF7010200033140030076A /* game_assets.cfg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = game_assets.cfg; sourceTree = "<group>"; };
+		BBEF7011200033140030076A /* entities.cfg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = entities.cfg; sourceTree = "<group>"; };
+		BBEF7012200033140030076A /* maps.cfg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = maps.cfg; sourceTree = "<group>"; };
+		BBEF70182000331F0030076A /* title_assets.cfg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = title_assets.cfg; sourceTree = "<group>"; };
+		BBEF70192000331F0030076A /* game_assets.cfg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = game_assets.cfg; sourceTree = "<group>"; };
+		BBEF701A2000331F0030076A /* entities.cfg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = entities.cfg; sourceTree = "<group>"; };
+		BBEF701B2000331F0030076A /* maps.cfg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = maps.cfg; sourceTree = "<group>"; };
 		BBF226B01EC12CDE00573356 /* ReplicationManagerClient.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ReplicationManagerClient.cpp; sourceTree = "<group>"; };
 		BBF226B11EC12CDE00573356 /* ReplicationManagerClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReplicationManagerClient.h; sourceTree = "<group>"; };
 		BBFA49DB1FC367AF00233514 /* GlfwMain.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GlfwMain.h; sourceTree = "<group>"; };
@@ -1657,8 +1659,6 @@
 		BBFE83121FFEC6AD00E5F650 /* GameRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameRenderer.h; sourceTree = "<group>"; };
 		BBFE83151FFEC87200E5F650 /* GameInputManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameInputManager.h; sourceTree = "<group>"; };
 		BBFE83161FFEC87300E5F650 /* GameInputManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameInputManager.cpp; sourceTree = "<group>"; };
-		BBFE83191FFECFEA00E5F650 /* title_assets.cfg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = title_assets.cfg; sourceTree = "<group>"; };
-		BBFE831B1FFECFF200E5F650 /* title_assets.cfg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = title_assets.cfg; sourceTree = "<group>"; };
 		BBFE83211FFF1B3D00E5F650 /* StudioEngine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StudioEngine.cpp; sourceTree = "<group>"; };
 		BBFE83221FFF1B3D00E5F650 /* StudioEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StudioEngine.h; sourceTree = "<group>"; };
 		BBFE83251FFF1B5A00E5F650 /* StudioRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StudioRenderer.h; sourceTree = "<group>"; };
@@ -2145,6 +2145,7 @@
 		BB5066E51FB36EBA00CADEEA /* assets */ = {
 			isa = PBXGroup;
 			children = (
+				BBEF700E200033140030076A /* config */,
 				BB5066E61FB36EBA00CADEEA /* music */,
 				BB5066E81FB36EBA00CADEEA /* sounds */,
 				BB5066EF1FB36EBA00CADEEA /* textures */,
@@ -2177,7 +2178,6 @@
 		BB5066EF1FB36EBA00CADEEA /* textures */ = {
 			isa = PBXGroup;
 			children = (
-				BB63633B1FEB0D3E001BB9E1 /* game_assets.cfg */,
 				BB5066F01FB36EBA00CADEEA /* texture_001.ngt */,
 				BB50670D1FB36F2D00CADEEA /* texture_001.png */,
 				BB5066F21FB36EBA00CADEEA /* texture_002.ngt */,
@@ -2186,7 +2186,6 @@
 				BBDC64C41FEC40E9002DCADA /* texture_003.png */,
 				BBDC64CD1FEC410E002DCADA /* texture_004.ngt */,
 				BBDC64C51FEC40E9002DCADA /* texture_004.png */,
-				BBFE83191FFECFEA00E5F650 /* title_assets.cfg */,
 			);
 			path = textures;
 			sourceTree = "<group>";
@@ -2257,6 +2256,7 @@
 		BB5833DD1EEDDD330084DA20 /* assets */ = {
 			isa = PBXGroup;
 			children = (
+				BBEF70172000331F0030076A /* config */,
 				BB5833DE1EEDDD330084DA20 /* music */,
 				BB5833E01EEDDD330084DA20 /* sounds */,
 				BB5833E61EEDDD330084DA20 /* textures */,
@@ -2289,7 +2289,6 @@
 		BB5833E61EEDDD330084DA20 /* textures */ = {
 			isa = PBXGroup;
 			children = (
-				BB6363351FEAF65C001BB9E1 /* game_assets.cfg */,
 				BB5833E71EEDDD330084DA20 /* texture_001.ngt */,
 				BB5833F51EEDDD440084DA20 /* texture_001.png */,
 				BB5833E91EEDDD330084DA20 /* texture_002.ngt */,
@@ -2298,7 +2297,6 @@
 				BBDC64C01FEC40DC002DCADA /* texture_003.png */,
 				BBDC64D01FEC4150002DCADA /* texture_004.ngt */,
 				BBDC64C11FEC40DC002DCADA /* texture_004.png */,
-				BBFE831B1FFECFF200E5F650 /* title_assets.cfg */,
 			);
 			path = textures;
 			sourceTree = "<group>";
@@ -2409,16 +2407,10 @@
 				BB65315A1FED56C700963997 /* MainInputState.h */,
 				BB6E7B051F940F13006C0024 /* PooledObjectsManager.cpp */,
 				BB6E7B061F940F13006C0024 /* PooledObjectsManager.h */,
-				BB6E7B071F940F13006C0024 /* Projectile.cpp */,
-				BB6E7B081F940F13006C0024 /* Projectile.h */,
 				BB6E7B091F940F13006C0024 /* Robot.cpp */,
 				BB6E7B0A1F940F13006C0024 /* Robot.h */,
 				BB65315D1FED56C800963997 /* Server.cpp */,
 				BB65315F1FED56C800963997 /* Server.h */,
-				BB6E7B0B1F940F13006C0024 /* SpacePirate.cpp */,
-				BB6E7B0C1F940F13006C0024 /* SpacePirate.h */,
-				BB6E7B0D1F940F13006C0024 /* SpacePirateChunk.cpp */,
-				BB6E7B0E1F940F13006C0024 /* SpacePirateChunk.h */,
 				BBFE83211FFF1B3D00E5F650 /* StudioEngine.cpp */,
 				BBFE83221FFF1B3D00E5F650 /* StudioEngine.h */,
 				BBFE83291FFF1C6C00E5F650 /* StudioInputManager.cpp */,
@@ -2640,6 +2632,8 @@
 			children = (
 				BBAEF0BF1EA94ED900F0866E /* Entity.cpp */,
 				BBAEF0C01EA94ED900F0866E /* Entity.h */,
+				BBEF6FFD200028220030076A /* EntityController.cpp */,
+				BBEF6FFE200028220030076A /* EntityController.h */,
 				BBAEF0C11EA94ED900F0866E /* EntityManager.cpp */,
 				BBAEF0C21EA94ED900F0866E /* EntityManager.h */,
 				BB0864721EE20CCA00BCD9E0 /* EntityRegistry.cpp */,
@@ -3542,6 +3536,28 @@
 			path = Shapes;
 			sourceTree = "<group>";
 		};
+		BBEF700E200033140030076A /* config */ = {
+			isa = PBXGroup;
+			children = (
+				BBEF700F200033140030076A /* title_assets.cfg */,
+				BBEF7010200033140030076A /* game_assets.cfg */,
+				BBEF7011200033140030076A /* entities.cfg */,
+				BBEF7012200033140030076A /* maps.cfg */,
+			);
+			path = config;
+			sourceTree = "<group>";
+		};
+		BBEF70172000331F0030076A /* config */ = {
+			isa = PBXGroup;
+			children = (
+				BBEF70182000331F0030076A /* title_assets.cfg */,
+				BBEF70192000331F0030076A /* game_assets.cfg */,
+				BBEF701A2000331F0030076A /* entities.cfg */,
+				BBEF701B2000331F0030076A /* maps.cfg */,
+			);
+			path = config;
+			sourceTree = "<group>";
+		};
 		BBF2251E1EC120AD00573356 /* network */ = {
 			isa = PBXGroup;
 			children = (
@@ -3706,9 +3722,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BBEF701C2000331F0030076A /* title_assets.cfg in Resources */,
+				BBEF701D2000331F0030076A /* game_assets.cfg in Resources */,
 				BB44C3291DB030B3003E633F /* Assets.xcassets in Resources */,
 				BB052CCD1EBA8ADD007FA789 /* shader_002_vert.ngs in Resources */,
-				BBFE831C1FFECFF200E5F650 /* title_assets.cfg in Resources */,
 				BB052CCB1EBA8ADD007FA789 /* shader_002_frag.ngs in Resources */,
 				BB5833EE1EEDDD330084DA20 /* sound_003.wav in Resources */,
 				BB5833F11EEDDD330084DA20 /* texture_001.ngt in Resources */,
@@ -3720,8 +3737,9 @@
 				BBDC64D21FEC4151002DCADA /* texture_004.ngt in Resources */,
 				BB2AC5471EFC56330012B990 /* sound_006.wav in Resources */,
 				BB052CCF1EBA8ADD007FA789 /* shader_003_frag.ngs in Resources */,
-				BB6363381FEB0551001BB9E1 /* game_assets.cfg in Resources */,
+				BBEF701E2000331F0030076A /* entities.cfg in Resources */,
 				BBDC64D31FEC4151002DCADA /* texture_003.ngt in Resources */,
+				BBEF701F2000331F0030076A /* maps.cfg in Resources */,
 				BB052CC71EBA8ADD007FA789 /* shader_001_frag.ngs in Resources */,
 				BB5833EC1EEDDD330084DA20 /* sound_001.wav in Resources */,
 				BB5833EF1EEDDD330084DA20 /* sound_004.wav in Resources */,
@@ -3742,11 +3760,12 @@
 				BB5067031FB36EBA00CADEEA /* texture_002.ngt in Resources */,
 				BB50672F1FB3712E00CADEEA /* shader_001_frag.fsh in Resources */,
 				BB5067301FB3712E00CADEEA /* shader_001_frag.ngs in Resources */,
+				BBEF7014200033140030076A /* game_assets.cfg in Resources */,
 				BB5067311FB3712E00CADEEA /* shader_001_vert.ngs in Resources */,
-				BBFE831A1FFECFEA00E5F650 /* title_assets.cfg in Resources */,
 				BB5067321FB3712E00CADEEA /* shader_001_vert.vsh in Resources */,
 				BB5067331FB3712E00CADEEA /* shader_002_frag.fsh in Resources */,
 				BBDC64CE1FEC410E002DCADA /* texture_003.ngt in Resources */,
+				BBEF7015200033140030076A /* entities.cfg in Resources */,
 				BB5067341FB3712E00CADEEA /* shader_002_frag.ngs in Resources */,
 				BB5067351FB3712E00CADEEA /* shader_002_vert.ngs in Resources */,
 				BB5067361FB3712E00CADEEA /* shader_002_vert.vsh in Resources */,
@@ -3755,11 +3774,12 @@
 				BB5067391FB3712E00CADEEA /* shader_003_vert.ngs in Resources */,
 				BB50673A1FB3712E00CADEEA /* shader_003_vert.vsh in Resources */,
 				BB5066FA1FB36EBA00CADEEA /* music_001.wav in Resources */,
-				BB63633C1FEB0D3E001BB9E1 /* game_assets.cfg in Resources */,
 				BB5066FD1FB36EBA00CADEEA /* sound_003.wav in Resources */,
 				BB5066FE1FB36EBA00CADEEA /* sound_004.wav in Resources */,
+				BBEF7016200033140030076A /* maps.cfg in Resources */,
 				BBD3E8681FB2872A00328E35 /* Main.storyboard in Resources */,
 				BB5066FB1FB36EBA00CADEEA /* sound_001.wav in Resources */,
+				BBEF7013200033140030076A /* title_assets.cfg in Resources */,
 				BB5067001FB36EBA00CADEEA /* sound_006.wav in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -3848,10 +3868,7 @@
 				BBFC2A7D1FC4A00E00A970B4 /* NullSound.cpp in Sources */,
 				BBFC2A7E1FC4A00E00A970B4 /* NullSoundWrapper.cpp in Sources */,
 				BB6E7B191F940F2B006C0024 /* PooledObjectsManager.cpp in Sources */,
-				BB6E7B1A1F940F2B006C0024 /* Projectile.cpp in Sources */,
 				BB6E7B1B1F940F2B006C0024 /* Robot.cpp in Sources */,
-				BB6E7B1C1F940F2B006C0024 /* SpacePirate.cpp in Sources */,
-				BB6E7B1D1F940F2B006C0024 /* SpacePirateChunk.cpp in Sources */,
 				BB6F59771FBDE97D00BD7697 /* cocoa_time.c in Sources */,
 				BB6E7B1E1F940F2B006C0024 /* Util.cpp in Sources */,
 				BBD5541E1FDB2EA800E00AD6 /* b2CircleContact.cpp in Sources */,
@@ -3885,6 +3902,7 @@
 				BB7267FD1EEC7049004F33F9 /* ClientProxy.cpp in Sources */,
 				BBAEF2781EA94EDA00F0866E /* TextureRegion.cpp in Sources */,
 				BB7267FE1EEC704B004F33F9 /* NetworkManagerServer.cpp in Sources */,
+				BBEF6FFF200028220030076A /* EntityController.cpp in Sources */,
 				BBFA49E51FC3702D00233514 /* Engine.cpp in Sources */,
 				BB8308501EC2AD1F00435E7E /* InFlightPacket.cpp in Sources */,
 				BBFE830F1FFEC69500E5F650 /* GameEngine.cpp in Sources */,
@@ -4122,6 +4140,7 @@
 				BB5AFE741FB35AAF005FBD52 /* TextureRegion.cpp in Sources */,
 				BB5AFE751FB35AAF005FBD52 /* NGTexture.cpp in Sources */,
 				BBD554491FDB2EA800E00AD6 /* b2Settings.cpp in Sources */,
+				BBEF7000200028220030076A /* EntityController.cpp in Sources */,
 				BBD554411FDB2EA800E00AD6 /* b2ContactManager.cpp in Sources */,
 				BBD5544F1FDB2EA800E00AD6 /* b2Math.cpp in Sources */,
 				BB1C3C071FE76C65002E4AA6 /* OpenGLProgramLoader.cpp in Sources */,
@@ -4205,11 +4224,8 @@
 				BB5AFE261FB35A0B005FBD52 /* NGAudioEngine.cpp in Sources */,
 				BB27D26E1FC6572600ED42FD /* AppleSound.cpp in Sources */,
 				BBD5540D1FDB2EA800E00AD6 /* b2Body.cpp in Sources */,
-				BB5AFE0D1FB359DE005FBD52 /* Projectile.cpp in Sources */,
 				BB5AFE0E1FB359DE005FBD52 /* Robot.cpp in Sources */,
 				BB8091FE1FF4131600F84D1D /* TextureManager.cpp in Sources */,
-				BB5AFE0F1FB359DE005FBD52 /* SpacePirate.cpp in Sources */,
-				BB5AFE101FB359DE005FBD52 /* SpacePirateChunk.cpp in Sources */,
 				BBFE83091FFEBFF900E5F650 /* MainEngineController.cpp in Sources */,
 				BB5AFE111FB359DE005FBD52 /* Util.cpp in Sources */,
 				BBD5543D1FDB2EA800E00AD6 /* b2RopeJoint.cpp in Sources */,

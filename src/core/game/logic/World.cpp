@@ -12,10 +12,7 @@
 
 #include "framework/entity/Entity.h"
 #include "game/logic/Robot.h"
-#include "game/logic/Projectile.h"
-#include "game/logic/SpacePirate.h"
 #include "game/logic/Crate.h"
-#include "game/logic/SpacePirateChunk.h"
 #include "game/logic/Ground.h"
 #include "Box2D/Box2D.h"
 
@@ -46,16 +43,10 @@ Entity* World::sServerCreate##name() \
 }
 
 WORLD_CREATE_CLIENT_IMPL(Robot);
-WORLD_CREATE_CLIENT_IMPL(Projectile);
-WORLD_CREATE_CLIENT_IMPL(SpacePirate);
 WORLD_CREATE_CLIENT_IMPL(Crate);
-WORLD_CREATE_CLIENT_IMPL(SpacePirateChunk);
 
 WORLD_CREATE_SERVER_IMPL(Robot);
-WORLD_CREATE_SERVER_IMPL(Projectile);
-WORLD_CREATE_SERVER_IMPL(SpacePirate);
 WORLD_CREATE_SERVER_IMPL(Crate);
-WORLD_CREATE_SERVER_IMPL(SpacePirateChunk);
 
 World::World(bool isServer) :
 _entityContactListener(new EntityContactListener()),
@@ -144,17 +135,7 @@ void World::postRead()
 {
     assert(!_isServer);
     
-    bool needsMoveReplay = false;
-    for (Entity* entity : _players)
-    {
-        if (entity->needsMoveReplay())
-        {
-            needsMoveReplay = true;
-            break;
-        }
-    }
-    
-    if (!needsMoveReplay)
+    if (!NG_CLIENT->hasReceivedNewState())
     {
         return;
     }
@@ -316,14 +297,14 @@ Robot* World::getRobotWithPlayerId(uint8_t inPlayerID)
     return NULL;
 }
 
-void World::killAllSpacePirates()
+void World::killAllEnemys()
 {
     for (Entity* entity : _entities)
     {
-        if (entity->getRTTI().derivesFrom(SpacePirate::rtti))
-        {
-            entity->requestDeletion();
-        }
+//        if (entity->getRTTI().derivesFrom(Enemy::rtti))
+//        {
+//            entity->requestDeletion();
+//        }
     }
 }
 
@@ -338,14 +319,14 @@ void World::removeAllCrates()
     }
 }
 
-bool World::hasSpacePirates()
+bool World::hasEnemys()
 {
     for (Entity* entity : _entities)
     {
-        if (entity->getRTTI().derivesFrom(SpacePirate::rtti))
-        {
-            return true;
-        }
+//        if (entity->getRTTI().derivesFrom(Enemy::rtti))
+//        {
+//            return true;
+//        }
     }
     
     return false;

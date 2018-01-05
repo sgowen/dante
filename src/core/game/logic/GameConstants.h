@@ -59,11 +59,8 @@
 //// Network ////
 
 #define NW_TYPE_Robot 'ROBT'
-#define NW_TYPE_Projectile 'PRJC'
-#define NW_TYPE_SpacePirate 'SPCP'
 #define NW_TYPE_Ground 'GRND'
 #define NW_TYPE_Crate 'CRAT'
-#define NW_TYPE_SpacePirateChunk 'SPCH'
 
 //// Non-Steam ////
 

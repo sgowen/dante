@@ -18,7 +18,7 @@ class Robot;
 class Server
 {
 public:
-    static void create(bool isSteam, uint32_t inNumCratesToSpawn, uint32_t inNumSpacePiratesToSpawn);
+    static void create(bool isSteam, uint32_t inNumCratesToSpawn, uint32_t inNumEnemysToSpawn);
     
     static void destroy();
     
@@ -52,7 +52,7 @@ private:
     double _stateTimeNoEnemies;
     uint8_t _playerIdForRobotBeingCreated;
     uint32_t _numCratesToSpawn;
-    uint32_t _numSpacePiratesToSpawn;
+    uint32_t _numEnemysToSpawn;
     bool _isSpawningEnemies;
     bool _isSpawningObjects;
     bool _isDisplaying;
@@ -72,7 +72,7 @@ private:
     void clearClientMoves();
     
     // ctor, copy ctor, and assignment should be private in a Singleton
-    Server(bool isSteam, uint32_t inNumCratesToSpawn, uint32_t inNumSpacePiratesToSpawn);
+    Server(bool isSteam, uint32_t inNumCratesToSpawn, uint32_t inNumEnemysToSpawn);
     ~Server();
     Server(const Server&);
     Server& operator=(const Server&);

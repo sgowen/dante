@@ -40,17 +40,17 @@ void NetworkManagerClient::create(ClientHelper* inClientHelper, RemoveProcessedM
     s_instance = new NetworkManagerClient(inClientHelper, inRemoveProcessedMovesFunc, inGetMoveListFunc, inOnPlayerWelcomedFunc);
 }
 
+NetworkManagerClient * NetworkManagerClient::getInstance()
+{
+    return s_instance;
+}
+
 void NetworkManagerClient::destroy()
 {
     assert(s_instance);
     
     delete s_instance;
     s_instance = NULL;
-}
-
-NetworkManagerClient * NetworkManagerClient::getInstance()
-{
-    return s_instance;
 }
 
 void NetworkManagerClient::sProcessPacket(InputMemoryBitStream& inInputStream, MachineAddress* inFromAddress)
@@ -75,6 +75,8 @@ void NetworkManagerClient::processIncomingPackets()
 
 void NetworkManagerClient::sendOutgoingPackets()
 {
+    _hasReceivedNewState = false;
+    
     switch (_state)
     {
         case NCS_SayingHello:
@@ -161,6 +163,11 @@ bool NetworkManagerClient::isPlayerIdLocal(uint8_t inPlayerId) const
     }
     
     return false;
+}
+
+bool NetworkManagerClient::hasReceivedNewState()
+{
+    return _hasReceivedNewState;
 }
 
 std::map<uint8_t, uint8_t>& NetworkManagerClient::getPlayerIds()
@@ -303,6 +310,8 @@ void NetworkManagerClient::handleStatePacket(InputMemoryBitStream& inInputStream
         
         //tell the replication manager to handle the rest...
         _replicationManagerClient->read(inInputStream);
+        
+        _hasReceivedNewState = true;
     }
 }
 
@@ -449,7 +458,8 @@ _lastMoveProcessedByServerTimestamp(0.0f),
 _lastServerCommunicationTimestamp(Timing::getInstance()->getFrameStartTime()),
 _isRequestingToAddLocalPlayer(false),
 _isRequestingToDropLocalPlayer(0),
-_nextIndex(0)
+_nextIndex(0),
+_hasReceivedNewState(false)
 {
     // Empty
 }

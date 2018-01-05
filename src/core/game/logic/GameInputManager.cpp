@@ -103,7 +103,7 @@ void GameInputManager::update()
                         _currentState->getGameInputState(0)._isSprinting = (*i)->isDown();
                         continue;
                     case NG_KEY_SPACE_BAR:
-                        _currentState->getGameInputState(0)._isShooting = (*i)->isDown();
+                        _currentState->getGameInputState(0)._isMainAction = (*i)->isDown();
                         continue;
 #ifdef _DEBUG
                         // Player 2, Debug Only
@@ -120,7 +120,7 @@ void GameInputManager::update()
                         _currentState->getGameInputState(1)._isSprinting = (*i)->isDown();
                         continue;
                     case NG_KEY_PERIOD:
-                        _currentState->getGameInputState(1)._isShooting = (*i)->isDown();
+                        _currentState->getGameInputState(1)._isMainAction = (*i)->isDown();
                         continue;
                     case NG_KEY_CARRIAGE_RETURN:
                         _currentState->getGameInputState(1)._playerId = INPUT_UNASSIGNED;
@@ -192,8 +192,8 @@ void GameInputManager::update()
             case GamePadEventType_TRIGGER:
                 if (!isShooting[(*i)->getIndex()])
                 {
-                    _currentState->getGameInputState((*i)->getIndex())._isShooting = (*i)->getX() > 0 || (*i)->getY() > 0;
-                    isShooting[(*i)->getIndex()] = _currentState->getGameInputState((*i)->getIndex())._isShooting;
+                    _currentState->getGameInputState((*i)->getIndex())._isMainAction = (*i)->getX() > 0 || (*i)->getY() > 0;
+                    isShooting[(*i)->getIndex()] = _currentState->getGameInputState((*i)->getIndex())._isMainAction;
                 }
                 continue;
             case GamePadEventType_BACK_BUTTON:
@@ -239,7 +239,7 @@ void GameInputManager::update()
                 if ((*i)->getType() == CursorEventType_DOWN)
                 {
                     _currentState->getGameInputState(0)._isJumping = true;
-                    _currentState->getGameInputState(0)._isShooting = true;
+                    _currentState->getGameInputState(0)._isMainAction = true;
                 }
             }
             else
@@ -248,7 +248,7 @@ void GameInputManager::update()
                 _currentState->getGameInputState(0)._isMovingRight = false;
                 
                 _currentState->getGameInputState(0)._isJumping = false;
-                _currentState->getGameInputState(0)._isShooting = false;
+                _currentState->getGameInputState(0)._isMainAction = false;
                 
                 continue;
             }

@@ -39,8 +39,6 @@
 #include "framework/util/macros.h"
 #include "framework/network/client/NetworkManagerClient.h"
 #include "game/logic/Robot.h"
-#include "game/logic/Projectile.h"
-#include "game/logic/SpacePirate.h"
 #include "framework/util/StringUtil.h"
 #include "framework/util/WeightedTimedMovingAverage.h"
 #include "framework/util/NGSTDUtil.h"
@@ -53,7 +51,6 @@
 #include "game/logic/Server.h"
 #include "game/logic/Crate.h"
 #include "game/logic/TitleEngine.h"
-#include "game/logic/SpacePirateChunk.h"
 #include "framework/util/FPSUtil.h"
 #include "framework/graphics/portable/Color.h"
 #include "framework/math/Circle.h"
@@ -285,7 +282,7 @@ void GameRenderer::renderBackground()
         {
             static TextureRegion tr = ASSETS->findTextureRegion("Background1");
             tr.initX(_camBounds->getLeft() * 128.0f / 3);
-            tr.initY(clamp(384 - _camBounds->getBottom() * 32, 384, 0));
+            tr.initY(384 - _camBounds->getBottom() * 32);
             _spriteBatcher->renderSprite(i * CAM_WIDTH + CAM_WIDTH / 2, CAM_HEIGHT / 2, CAM_WIDTH, CAM_HEIGHT, 0, tr);
         }
         _spriteBatcher->endBatch(_textureManager->getTextures()[2], *_textureNGShader);
@@ -294,7 +291,7 @@ void GameRenderer::renderBackground()
         {
             static TextureRegion tr = ASSETS->findTextureRegion("Background2");
             tr.initX(_camBounds->getLeft() * 128.0f / 2);
-            tr.initY(clamp(644 - _camBounds->getBottom() * 48, 644, 0));
+            tr.initY(644 - _camBounds->getBottom() * 48);
             _spriteBatcher->renderSprite(i * CAM_WIDTH + CAM_WIDTH / 2, CAM_HEIGHT * 0.3875f / 2, CAM_WIDTH, CAM_HEIGHT * 0.3875f, 0, tr);
         }
         _spriteBatcher->endBatch(_textureManager->getTextures()[3], *_textureNGShader);
@@ -319,18 +316,6 @@ void GameRenderer::renderWorld(int flags)
     {
         renderEntities(InstanceManager::getServerWorld(), true);
     }
-    
-    _spriteBatcher->beginBatch();
-    std::vector<Entity*> entities = InstanceManager::getClientWorld()->getEntities();
-    for (Entity* go : entities)
-    {
-        if (go->getNetworkType() == NW_TYPE_SpacePirate)
-        {
-            SpacePirate* entity = static_cast<SpacePirate*>(go);
-            renderText(StringUtil::format("%i", entity->getHealth()).c_str(), entity->getPosition().x, entity->getPosition().y + entity->getHeight() / 2, Color::RED, FONT_ALIGN_CENTERED);
-        }
-    }
-    _spriteBatcher->endBatch(_textureManager->getTextures()[0], *_textureNGShader);
     
     if (FlagUtil::isFlagSet(flags, GE_DISPLAY_BOX_2D))
     {
@@ -357,59 +342,11 @@ void GameRenderer::renderEntities(World* world, bool isServer)
             c.alpha = 0.5f;
         }
         
-        if (go->getNetworkType() == NW_TYPE_Projectile)
-        {
-            Projectile* proj = static_cast<Projectile*>(go);
-            if (proj->getState() != Projectile::ProjectileState::ProjectileState_Waiting)
-            {
-                bool isActive = proj->getState() == Projectile::ProjectileState::ProjectileState_Active;
-                TextureRegion tr = isActive ? ASSETS->findTextureRegion("Projectile") : ASSETS->findTextureRegion("Explosion", proj->getStateTime());
-                
-                _spriteBatcher->renderSprite(proj->getPosition().x, proj->getPosition().y, proj->getWidth(), proj->getHeight(), proj->getAngle(), c, tr, proj->isFacingLeft());
-            }
-        }
-        else if (go->getNetworkType() == NW_TYPE_SpacePirate)
-        {
-            SpacePirate* sp = static_cast<SpacePirate*>(go);
-            TextureRegion tr = ASSETS->findTextureRegion("Space_Pirate_Walking", sp->getStateTime());
-            
-            _spriteBatcher->renderSprite(sp->getPosition().x, sp->getPosition().y, sp->getWidth(), sp->getHeight(), sp->getAngle(), c, tr, sp->isFacingLeft());
-        }
-        else if (go->getNetworkType() == NW_TYPE_Crate)
+        if (go->getRTTI().derivesFrom(Crate::rtti))
         {
             TextureRegion tr = ASSETS->findTextureRegion("Map_Crate", go->getStateTime());
             
             _spriteBatcher->renderSprite(go->getPosition().x, go->getPosition().y, go->getWidth(), go->getHeight(), go->getAngle(), c, tr);
-        }
-        else if (go->getNetworkType() == NW_TYPE_SpacePirateChunk)
-        {
-            SpacePirateChunk* spc = static_cast<SpacePirateChunk*>(go);
-            int type = spc->getType();
-            static TextureRegion tr0 = ASSETS->findTextureRegion("Space_Pirate_Chunk_Top_Left");
-            static TextureRegion tr1 = ASSETS->findTextureRegion("Space_Pirate_Chunk_Top_Right");
-            static TextureRegion tr2 = ASSETS->findTextureRegion("Space_Pirate_Chunk_Bottom_Left");
-            static TextureRegion tr3 = ASSETS->findTextureRegion("Space_Pirate_Chunk_Bottom_Right");
-            
-            TextureRegion* tr = NULL;
-            switch (type)
-            {
-                case Space_Pirate_Chunk_Top_Left:
-                    tr = &tr0;
-                    break;
-                case Space_Pirate_Chunk_Top_Right:
-                    tr = &tr1;
-                    break;
-                case Space_Pirate_Chunk_Bottom_Left:
-                    tr = &tr2;
-                    break;
-                case Space_Pirate_Chunk_Bottom_Right:
-                    tr = &tr3;
-                    break;
-                default:
-                    break;
-            }
-            
-            _spriteBatcher->renderSprite(spc->getPosition().x, spc->getPosition().y, spc->getWidth(), spc->getHeight(), spc->getAngle(), c, *tr, spc->isFacingLeft());
         }
     }
     
@@ -426,7 +363,7 @@ void GameRenderer::renderEntities(World* world, bool isServer)
         }
         
         bool isMoving = r->getVelocity().x < -0.5f || r->getVelocity().x > 0.5f;
-        TextureRegion tr = ASSETS->findTextureRegion(!isMoving ? "Bot_Idle" : r->isSprinting() ? "Bot_Running_Fast" : "Bot_Running", r->getStateTime());
+        TextureRegion tr = ASSETS->findTextureRegion(r->isGrounded() && r->getNumJumps() == 0 ? r->isMainAction() ? "Bot_Punching" : !isMoving ? "Bot_Idle" : r->isSprinting() ? "Bot_Running_Fast" : "Bot_Running" : "Bot_Jumping", r->getStateTime());
         
         if (isServer)
         {
@@ -487,11 +424,11 @@ void GameRenderer::renderUI(int flags)
             std::vector<Entity*> entities = InstanceManager::getClientWorld()->getEntities();
             for (Entity* go : entities)
             {
-                if (go->getNetworkType() == NW_TYPE_SpacePirate)
-                {
-                    ++enemyCount;
-                }
-                else if (go->getNetworkType() == NW_TYPE_Crate)
+//                if (go->getNetworkType() == NW_TYPE_Enemy)
+//                {
+//                    ++enemyCount;
+//                }
+                if (go->getRTTI().derivesFrom(Crate::rtti))
                 {
                     ++objectCount;
                 }
@@ -505,7 +442,7 @@ void GameRenderer::renderUI(int flags)
                 int playerId = robot->getPlayerId();
                 if (playerId >= 1 && playerId <= 4)
                 {
-                    renderText(StringUtil::format("%i|%s - %i HP, %i Kills", playerId, robot->getPlayerName().c_str(), robot->getHealth(), robot->getNumKills()).c_str(), 0.5f, CAM_HEIGHT - (playerId * 0.5f), Color::BLACK);
+                    renderText(StringUtil::format("%i|%s - %i HP", playerId, robot->getPlayerName().c_str(), robot->getHealth()).c_str(), 0.5f, CAM_HEIGHT - (playerId * 0.5f), Color::BLACK);
                     activePlayerIds[playerId - 1] = true;
                 }
             }

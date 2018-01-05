@@ -17,8 +17,6 @@
 #include "game/logic/Ground.h"
 
 #include "game/logic/Robot.h"
-#include "game/logic/Projectile.h"
-#include "game/logic/SpacePirate.h"
 #include "framework/network/server/NetworkManagerServer.h"
 #include "framework/math/MathUtil.h"
 
@@ -28,21 +26,24 @@ NGRTTI_IMPL(Crate, Entity);
 
 NW_TYPE_IMPL(Crate);
 
+namespace
+{
+    inline EntityDef constructEntityDef()
+    {
+        EntityDef ret;
+        
+        ret.isStaticBody = false;
+        ret.fixedRotation = false;
+        ret.restitution = 0.5f;
+        ret.density = 8.0f;
+        
+        return ret;
+    }
+}
+
 Crate::Crate(b2World& world, bool isServer) : Entity(world, 0.0f, 0.0f, 1.0f, 1.0f, isServer, constructEntityDef())
 {
     // Empty
-}
-
-EntityDef Crate::constructEntityDef()
-{
-    EntityDef ret = EntityDef();
-    
-    ret.isStaticBody = false;
-    ret.fixedRotation = false;
-    ret.restitution = 0.5f;
-    ret.density = 8.0f;
-    
-    return ret;
 }
 
 void Crate::update()
@@ -59,8 +60,8 @@ void Crate::update()
         NG_SERVER->setStateDirty(getID(), CRAT_Pose);
     }
     
-    _velocityLastKnown = b2Vec2(getVelocity().x, getVelocity().y);
-    _positionLastKnown = b2Vec2(getPosition().x, getPosition().y);
+    _velocityLastKnown.Set(getVelocity().x, getVelocity().y);
+    _positionLastKnown.Set(getPosition().x, getPosition().y);
     _angleLastKnown = getAngle();
 }
 
@@ -114,7 +115,6 @@ void Crate::read(InputMemoryBitStream& inInputStream)
         
         float angle;
         inInputStream.read(angle);
-        
         setTransform(position, angle);
         
         _readState |= CRAT_Pose;
@@ -125,10 +125,10 @@ uint32_t Crate::write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtySta
 {
     uint32_t writtenState = 0;
     
-    if (inDirtyState & CRAT_Pose)
+    bool pose = inDirtyState & CRAT_Pose;
+    inOutputStream.write(pose);
+    if (pose)
     {
-        inOutputStream.write(true);
-        
         inOutputStream.write(getVelocity());
         
         inOutputStream.write(getPosition());
@@ -136,10 +136,6 @@ uint32_t Crate::write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtySta
         inOutputStream.write(getAngle());
         
         writtenState |= CRAT_Pose;
-    }
-    else
-    {
-        inOutputStream.write(false);
     }
     
     return writtenState;
