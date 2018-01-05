@@ -100,8 +100,8 @@ void TitleInputManager::update()
             }
         }
         
-        if (PlatformHelper::getPlatform() != NG_PLATFORM_ANDROID
-            && PlatformHelper::getPlatform() != NG_PLATFORM_IOS)
+        if (PlatformHelper::getPlatform() == NG_PLATFORM_ANDROID
+            || PlatformHelper::getPlatform() == NG_PLATFORM_IOS)
         {
             for (std::vector<CursorEvent *>::iterator i = CURSOR_INPUT_MANAGER->getEvents().begin(); i != CURSOR_INPUT_MANAGER->getEvents().end(); ++i)
             {
@@ -203,8 +203,8 @@ void TitleInputManager::update()
             }
         }
         
-        if (PlatformHelper::getPlatform() != NG_PLATFORM_ANDROID
-            && PlatformHelper::getPlatform() != NG_PLATFORM_IOS)
+        if (PlatformHelper::getPlatform() == NG_PLATFORM_ANDROID
+            || PlatformHelper::getPlatform() == NG_PLATFORM_IOS)
         {
             for (std::vector<CursorEvent *>::iterator i = CURSOR_INPUT_MANAGER->getEvents().begin(); i != CURSOR_INPUT_MANAGER->getEvents().end(); ++i)
             {
