@@ -6,6 +6,8 @@
 //  Copyright © 2017 Noctis Games. All rights reserved.
 //
 
+#include "pch.h"
+
 #include <framework/graphics/portable/Box2DDebugRenderer.h>
 
 #include "framework/graphics/portable/QuadBatcher.h"
