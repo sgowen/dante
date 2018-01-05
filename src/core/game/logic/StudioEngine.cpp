@@ -93,6 +93,8 @@ void StudioEngine::enter(Engine* engine)
 {
     createDeviceDependentResources();
     createWindowSizeDependentResources(engine->getScreenWidth(), engine->getScreenHeight(), engine->getRenderWidth(), engine->getRenderHeight(), engine->getCursorWidth(), engine->getCursorHeight());
+    
+    _state = SE_DEFAULT;
 }
 
 void StudioEngine::update(Engine* engine)

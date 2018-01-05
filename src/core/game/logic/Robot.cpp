@@ -468,9 +468,9 @@ void Robot::processInput(InputState* inInputState, bool isPending)
                 velocity.Set(velocity.x, _jumpSpeed / 2.0f);
             }
         }
-        else if (_numJumps == 2 && velocity.y > ((_jumpSpeed - 2) / 2.0f))
+        else if (_numJumps == 2 && velocity.y > ((_jumpSpeed - 3) / 2.0f))
         {
-            velocity.Set(velocity.x, (_jumpSpeed - 2) / 2.0f);
+            velocity.Set(velocity.x, (_jumpSpeed - 3) / 2.0f);
         }
     }
     

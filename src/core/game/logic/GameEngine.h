@@ -44,8 +44,8 @@ private:
     static GameEngine* s_pInstance;
     
     GameRenderer* _renderer;
-    int _state;
     double _stateTime;
+    int _state;
     
     bool handleNonMoveInput();
     

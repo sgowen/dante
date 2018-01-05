@@ -94,6 +94,9 @@ void GameEngine::enter(Engine* engine)
 {
     createDeviceDependentResources();
     createWindowSizeDependentResources(engine->getScreenWidth(), engine->getScreenHeight(), engine->getRenderWidth(), engine->getRenderHeight(), engine->getCursorWidth(), engine->getCursorHeight());
+    
+    _stateTime = 0;
+    _state = GE_DEFAULT;
 }
 
 void GameEngine::update(Engine* engine)
