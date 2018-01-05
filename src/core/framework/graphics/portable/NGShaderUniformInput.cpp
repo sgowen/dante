@@ -17,10 +17,15 @@
 #include "PlatformHelpers.h"
 #endif
 
-NGShaderUniformInput::NGShaderUniformInput(const char* attribName, int byteWidth) : _attribName(attribName)
+NGShaderUniformInput::NGShaderUniformInput(const char* attribName, int byteWidth) : _attribName(attribName), _byteWidth(byteWidth)
+{
+    // Empty
+}
+
+void NGShaderUniformInput::build(ShaderProgramWrapper* inShaderProgramWrapper)
 {
 #if defined _WIN32
-    if (byteWidth > 0)
+    if (_byteWidth > 0)
     {
         D3D11_BUFFER_DESC bd = { 0 };
         
@@ -28,15 +33,10 @@ NGShaderUniformInput::NGShaderUniformInput(const char* attribName, int byteWidth
         bd.ByteWidth = byteWidth;
         bd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
         
-		ID3D11Device* d3dDevice = DirectXRendererHelper::getD3dDevice();
+        ID3D11Device* d3dDevice = DirectXRendererHelper::getD3dDevice();
         DirectX::ThrowIfFailed(d3dDevice->CreateBuffer(&bd, NULL, &_constantbuffer));
     }
-#endif
-}
-
-#if defined __APPLE__ || defined __ANDROID__ || defined __linux__
-void NGShaderUniformInput::build(ShaderProgramWrapper* inShaderProgramWrapper)
-{
+#elif defined __APPLE__ || defined __ANDROID__ || defined __linux__
     _attribute = glGetUniformLocation(inShaderProgramWrapper->_programObjectId, _attribName);
-}
 #endif
+}

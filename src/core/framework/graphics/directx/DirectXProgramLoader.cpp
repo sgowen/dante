@@ -99,7 +99,19 @@ ShaderProgramWrapper* DirectXProgramLoader::loadNGShader(const char* vertexShade
     free((void *)vertex_shader_source_output);
     free((void *)fragment_shader_source_output);
     
-    return new ShaderProgramWrapper(pVertexShader, pInputLayout, pPixelShader);
+    ShaderProgramWrapper* ret = new ShaderProgramWrapper(pVertexShader, pInputLayout, pPixelShader);
+    
+    for (std::vector<NGShaderVarInput*>::iterator i = inputLayout.begin(); i != inputLayout.end(); ++i)
+    {
+        (*i)->build(ret, totalSize);
+    }
+    
+    for (std::vector<NGShaderUniformInput*>::iterator i = uniforms.begin(); i != uniforms.end(); ++i)
+    {
+        (*i)->build(ret);
+    }
+    
+    return ret;
 }
 
 void DirectXProgramLoader::destroyNGShader(ShaderProgramWrapper* shaderProgramWrapper, std::vector<NGShaderUniformInput*>& uniforms, std::vector<NGShaderVarInput*>& inputLayout)

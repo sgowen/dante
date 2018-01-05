@@ -29,9 +29,7 @@ public:
     
     NGShaderVarInput(const char* attribName, uint32_t size, uint32_t offset);
     
-#if defined __APPLE__ || defined __ANDROID__ || defined __linux__
     void build(ShaderProgramWrapper* inShaderProgramWrapper, uint32_t totalSize);
-#endif
 };
 
 #endif /* defined(__noctisgames__NGShaderVarInput__) */
