@@ -217,10 +217,12 @@ bool TitleEngine::handleInput(Engine* engine)
     {
         if (menuState == MIS_ENTER_STUDIO)
         {
-#ifndef NG_MOBILE
-            engine->getStateMachine().changeState(StudioEngine::getInstance());
-            return true;
-#endif
+            if (PlatformHelper::getPlatform() != NG_PLATFORM_ANDROID
+                && PlatformHelper::getPlatform() != NG_PLATFORM_IOS)
+            {
+                engine->getStateMachine().changeState(StudioEngine::getInstance());
+                return true;
+            }
         }
         else if (menuState == MIS_ACTIVATE_STEAM)
         {

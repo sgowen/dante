@@ -120,7 +120,7 @@
 
 #pragma mark must override
 
-- (Engine *)createEngine
+- (EngineController *)createEngineController
 {
     return NULL;
 }

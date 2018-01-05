@@ -75,6 +75,7 @@
 #include <framework/graphics/portable/NGFramebufferToScreenShader.h>
 #include "framework/graphics/portable/NGTextureDesc.h"
 #include "framework/graphics/portable/Assets.h"
+#include "framework/util/PlatformHelper.h"
 
 #ifdef NG_STEAM
 #include "framework/network/steam/NGSteamGameServer.h"
@@ -202,9 +203,11 @@ void TitleRenderer::setFramebuffer(int framebufferIndex)
 
 void TitleRenderer::renderMainMenuSteamOffText()
 {
-#ifndef NG_MOBILE
-    renderText("'E' to enter Studio",       CAM_WIDTH / 2, CAM_HEIGHT - 1, Color::WHITE, FONT_ALIGN_CENTERED);
-#endif
+    if (PlatformHelper::getPlatform() != NG_PLATFORM_ANDROID
+        && PlatformHelper::getPlatform() != NG_PLATFORM_IOS)
+    {
+        renderText("'E' to enter Studio",   CAM_WIDTH / 2, CAM_HEIGHT - 1, Color::WHITE, FONT_ALIGN_CENTERED);
+    }
     
     renderText("'A' to activate Steam",     CAM_WIDTH / 2, CAM_HEIGHT - 2, Color::WHITE, FONT_ALIGN_CENTERED);
     renderText("'S' to start local server", CAM_WIDTH / 2, CAM_HEIGHT - 3, Color::WHITE, FONT_ALIGN_CENTERED);
@@ -215,9 +218,11 @@ void TitleRenderer::renderMainMenuSteamOffText()
 
 void TitleRenderer::renderMainMenuSteamOnText()
 {
-#ifndef NG_MOBILE
-    renderText("'E' to enter Studio",                     CAM_WIDTH / 2, CAM_HEIGHT - 1, Color::WHITE, FONT_ALIGN_CENTERED);
-#endif
+    if (PlatformHelper::getPlatform() != NG_PLATFORM_ANDROID
+        && PlatformHelper::getPlatform() != NG_PLATFORM_IOS)
+    {
+        renderText("'E' to enter Studio",                 CAM_WIDTH / 2, CAM_HEIGHT - 1, Color::WHITE, FONT_ALIGN_CENTERED);
+    }
     
     renderText("'D' to deactivate Steam",                 CAM_WIDTH / 2, CAM_HEIGHT - 2, Color::WHITE, FONT_ALIGN_CENTERED);
     renderText("'S' to start steam server",               CAM_WIDTH / 2, CAM_HEIGHT - 3, Color::WHITE, FONT_ALIGN_CENTERED);

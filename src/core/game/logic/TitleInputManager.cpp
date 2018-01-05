@@ -27,6 +27,7 @@
 #include "framework/util/StringUtil.h"
 #include "framework/math/MathUtil.h"
 #include "framework/util/FrameworkConstants.h"
+#include "framework/util/PlatformHelper.h"
 
 #include <sstream>
 
@@ -99,26 +100,28 @@ void TitleInputManager::update()
             }
         }
         
-#ifdef NG_MOBILE
-        for (std::vector<CursorEvent *>::iterator i = CURSOR_INPUT_MANAGER->getEvents().begin(); i != CURSOR_INPUT_MANAGER->getEvents().end(); ++i)
+        if (PlatformHelper::getPlatform() != NG_PLATFORM_ANDROID
+            && PlatformHelper::getPlatform() != NG_PLATFORM_IOS)
         {
-            if ((*i)->getType() == CursorEventType_UP)
+            for (std::vector<CursorEvent *>::iterator i = CURSOR_INPUT_MANAGER->getEvents().begin(); i != CURSOR_INPUT_MANAGER->getEvents().end(); ++i)
             {
-                if (_liveInput.length() > 0)
+                if ((*i)->getType() == CursorEventType_UP)
                 {
-                    _isTimeToProcessInput = true;
+                    if (_liveInput.length() > 0)
+                    {
+                        _isTimeToProcessInput = true;
+                    }
+                    else
+                    {
+                        ss << "mobile";
+                    }
                 }
                 else
                 {
-                    ss << "mobile";
+                    continue;
                 }
             }
-            else
-            {
-                continue;
-            }
         }
-#endif
         
         std::string s = ss.str();
         _liveInput += s;
@@ -200,19 +203,21 @@ void TitleInputManager::update()
             }
         }
         
-#ifdef NG_MOBILE
-        for (std::vector<CursorEvent *>::iterator i = CURSOR_INPUT_MANAGER->getEvents().begin(); i != CURSOR_INPUT_MANAGER->getEvents().end(); ++i)
+        if (PlatformHelper::getPlatform() != NG_PLATFORM_ANDROID
+            && PlatformHelper::getPlatform() != NG_PLATFORM_IOS)
         {
-            if ((*i)->getType() == CursorEventType_UP)
+            for (std::vector<CursorEvent *>::iterator i = CURSOR_INPUT_MANAGER->getEvents().begin(); i != CURSOR_INPUT_MANAGER->getEvents().end(); ++i)
             {
-                _menuState = MIS_START_SERVER;
-            }
-            else
-            {
-                continue;
+                if ((*i)->getType() == CursorEventType_UP)
+                {
+                    _menuState = MIS_START_SERVER;
+                }
+                else
+                {
+                    continue;
+                }
             }
         }
-#endif
     }
 }
 

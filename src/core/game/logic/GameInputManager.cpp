@@ -27,6 +27,7 @@
 #include "framework/util/StringUtil.h"
 #include "framework/math/MathUtil.h"
 #include "framework/util/FrameworkConstants.h"
+#include "framework/util/PlatformHelper.h"
 
 #include <sstream>
 
@@ -223,34 +224,36 @@ void GameInputManager::update()
         }
     }
     
-#ifdef NG_MOBILE
-    for (std::vector<CursorEvent *>::iterator i = CURSOR_INPUT_MANAGER->getEvents().begin(); i != CURSOR_INPUT_MANAGER->getEvents().end(); ++i)
+    if (PlatformHelper::getPlatform() != NG_PLATFORM_ANDROID
+        && PlatformHelper::getPlatform() != NG_PLATFORM_IOS)
     {
-        if ((*i)->getType() == CursorEventType_DOWN
-            || (*i)->getType() == CursorEventType_DRAGGED)
+        for (std::vector<CursorEvent *>::iterator i = CURSOR_INPUT_MANAGER->getEvents().begin(); i != CURSOR_INPUT_MANAGER->getEvents().end(); ++i)
         {
-            Vector2& vec = CURSOR_CONVERTER->touchToWorld(*(*i));
-            _currentState->getGameInputState(0)._isMovingLeft = vec.getX() < (CAM_WIDTH / 2);
-            _currentState->getGameInputState(0)._isMovingRight = vec.getX() > (CAM_WIDTH / 2);
-            
-            if ((*i)->getType() == CursorEventType_DOWN)
+            if ((*i)->getType() == CursorEventType_DOWN
+                || (*i)->getType() == CursorEventType_DRAGGED)
             {
-                _currentState->getGameInputState(0)._isJumping = true;
-                _currentState->getGameInputState(0)._isShooting = true;
+                Vector2& vec = CURSOR_CONVERTER->touchToWorld(*(*i));
+                _currentState->getGameInputState(0)._isMovingLeft = vec.getX() < (CAM_WIDTH / 2);
+                _currentState->getGameInputState(0)._isMovingRight = vec.getX() > (CAM_WIDTH / 2);
+                
+                if ((*i)->getType() == CursorEventType_DOWN)
+                {
+                    _currentState->getGameInputState(0)._isJumping = true;
+                    _currentState->getGameInputState(0)._isShooting = true;
+                }
+            }
+            else
+            {
+                _currentState->getGameInputState(0)._isMovingLeft = false;
+                _currentState->getGameInputState(0)._isMovingRight = false;
+                
+                _currentState->getGameInputState(0)._isJumping = false;
+                _currentState->getGameInputState(0)._isShooting = false;
+                
+                continue;
             }
         }
-        else
-        {
-            _currentState->getGameInputState(0)._isMovingLeft = false;
-            _currentState->getGameInputState(0)._isMovingRight = false;
-            
-            _currentState->getGameInputState(0)._isJumping = false;
-            _currentState->getGameInputState(0)._isShooting = false;
-            
-            continue;
-        }
     }
-#endif
     
     _pendingMove = &sampleInputAsMove();
 }
