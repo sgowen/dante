@@ -1,13 +1,13 @@
 //
-//  GameEngine.h
+//  StudioEngine.h
 //  dante
 //
-//  Created by Stephen Gowen on 2/22/14.
+//  Created by Stephen Gowen on 1/4/18.
 //  Copyright (c) 2017 Noctis Games. All rights reserved.
 //
 
-#ifndef __noctisgames__GameEngine__
-#define __noctisgames__GameEngine__
+#ifndef __noctisgames__StudioEngine__
+#define __noctisgames__StudioEngine__
 
 #include "framework/main/portable/EngineState.h"
 
@@ -15,18 +15,17 @@
 #include "framework/network/steam/NGSteam.h"
 #endif
 
-class GameRenderer;
+class StudioRenderer;
 
-#define GE_DEFAULT 1 << 0
-#define GE_DISPLAY_BOX_2D 1 << 1
+#define SE_DEFAULT 1 << 0
 
-class GameEngine : public EngineState
+class StudioEngine : public EngineState
 {
     NGRTTI_DECL;
     
 public:
     static void create();
-    static GameEngine* getInstance();
+    static StudioEngine* getInstance();
     static void destroy();
     
     virtual void enter(Engine* engine);
@@ -41,16 +40,15 @@ public:
     virtual void render();
     
 private:
-    static GameEngine* s_pInstance;
+    static StudioEngine* s_pInstance;
     
-    GameRenderer* _renderer;
+    StudioRenderer* _renderer;
     int _state;
-    double _stateTime;
     
-    bool handleNonMoveInput();
+    bool handleInput();
     
-    GameEngine();
-    virtual ~GameEngine();
+    StudioEngine();
+    virtual ~StudioEngine();
 };
 
-#endif /* defined(__noctisgames__GameEngine__) */
+#endif /* defined(__noctisgames__StudioEngine__) */

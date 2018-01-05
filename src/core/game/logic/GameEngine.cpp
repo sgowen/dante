@@ -80,7 +80,7 @@ void GameEngine::destroy()
 GameEngine::GameEngine() : EngineState(),
 _renderer(new GameRenderer()),
 _stateTime(0),
-_engineState(GE_DEFAULT)
+_state(GE_DEFAULT)
 {
     // Empty
 }
@@ -120,6 +120,7 @@ void GameEngine::update(Engine* engine)
         || handleNonMoveInput())
     {
         engine->getStateMachine().revertToPreviousState();
+        return;
     }
     
 #ifdef NG_STEAM
@@ -190,45 +191,45 @@ void GameEngine::onPause()
 
 void GameEngine::render()
 {
-    _renderer->render(_engineState);
+    _renderer->render(_state);
 }
 
 bool GameEngine::handleNonMoveInput()
 {
     int menuState = GameInputManager::getInstance()->getMenuState();
     
-    if (menuState == MS_CLIENT_MAIN_TOGGLE_MUSIC)
+    if (menuState == MIS_CLIENT_MAIN_TOGGLE_MUSIC)
     {
         NG_AUDIO_ENGINE->setMusicDisabled(!NG_AUDIO_ENGINE->isMusicDisabled());
     }
-    else if (menuState == MS_CLIENT_MAIN_TOGGLE_SOUND)
+    else if (menuState == MIS_CLIENT_MAIN_TOGGLE_SOUND)
     {
         NG_AUDIO_ENGINE->setSoundDisabled(!NG_AUDIO_ENGINE->isSoundDisabled());
     }
     
     if (Server::getInstance())
     {
-        if (menuState == MS_SERVER_TOGGLE_ENEMIES)
+        if (menuState == MIS_SERVER_TOGGLE_ENEMIES)
         {
             Server::getInstance()->toggleEnemies();
         }
-        else if (menuState == MS_SERVER_TOGGLE_OBJECTS)
+        else if (menuState == MIS_SERVER_TOGGLE_OBJECTS)
         {
             Server::getInstance()->toggleObjects();
         }
-        else if (menuState == MS_SERVER_TOGGLE_SERVER_DISPLAY)
+        else if (menuState == MIS_SERVER_TOGGLE_SERVER_DISPLAY)
         {
             Server::getInstance()->toggleDisplaying();
         }
-        else if (menuState == MS_SERVER_TOGGLE_PHYSICS_DISPLAY)
+        else if (menuState == MIS_SERVER_TOGGLE_PHYSICS_DISPLAY)
         {
-            if (FlagUtil::isFlagSet(_engineState, GE_DISPLAY_BOX_2D))
+            if (FlagUtil::isFlagSet(_state, GE_DISPLAY_BOX_2D))
             {
-                _engineState = FlagUtil::removeFlag(_engineState, GE_DISPLAY_BOX_2D);
+                _state = FlagUtil::removeFlag(_state, GE_DISPLAY_BOX_2D);
             }
             else
             {
-                _engineState = FlagUtil::setFlag(_engineState, GE_DISPLAY_BOX_2D);
+                _state = FlagUtil::setFlag(_state, GE_DISPLAY_BOX_2D);
             }
         }
     }
@@ -238,19 +239,19 @@ bool GameEngine::handleNonMoveInput()
     {
         NG_CLIENT->requestToAddLocalPlayer();
     }
-    else if (menuState == MS_ESCAPE)
+    else if (menuState == MIS_ESCAPE)
     {
         return true;
     }
-    else if (menuState == MS_LOCAL_PLAYER_DROP_OUT_1)
+    else if (menuState == MIS_LOCAL_PLAYER_DROP_OUT_1)
     {
         NG_CLIENT->requestToDropLocalPlayer(1);
     }
-    else if (menuState == MS_LOCAL_PLAYER_DROP_OUT_2)
+    else if (menuState == MIS_LOCAL_PLAYER_DROP_OUT_2)
     {
         NG_CLIENT->requestToDropLocalPlayer(2);
     }
-    else if (menuState == MS_LOCAL_PLAYER_DROP_OUT_3)
+    else if (menuState == MIS_LOCAL_PLAYER_DROP_OUT_3)
     {
         NG_CLIENT->requestToDropLocalPlayer(3);
     }

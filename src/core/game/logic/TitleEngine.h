@@ -55,9 +55,9 @@ private:
     CSteamID _serverSteamID;
 #endif
     bool _isSteam;
-    int _engineState;
+    int _state;
     
-    bool handleNonMoveInput(Engine* engine);
+    bool handleInput(Engine* engine);
     void activateSteam();
     void handleSteamGameServices(Engine* engine);
     void deactivateSteam();

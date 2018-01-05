@@ -1,14 +1,14 @@
 //
-//  TitleRenderer.cpp
+//  StudioRenderer.cpp
 //  dante
 //
-//  Created by Stephen Gowen on 2/22/14.
+//  Created by Stephen Gowen on 1/4/18.
 //  Copyright (c) 2017 Noctis Games. All rights reserved.
 //
 
 #include "pch.h"
 
-#include "game/graphics/portable/TitleRenderer.h"
+#include "game/graphics/portable/StudioRenderer.h"
 
 #include "framework/graphics/portable/TextureManager.h"
 #include "framework/graphics/portable/Font.h"
@@ -86,7 +86,7 @@
 #include <string>
 #include <assert.h>
 
-TitleRenderer::TitleRenderer() : Renderer(),
+StudioRenderer::StudioRenderer() : Renderer(),
 _textureManager(new TextureManager("title_assets.cfg")),
 _rendererHelper(RENDERER_HELPER_FACTORY->createRendererHelper()),
 _spriteBatcher(new SpriteBatcher(_rendererHelper)),
@@ -104,7 +104,7 @@ _framebufferIndex(0)
     // Empty
 }
 
-TitleRenderer::~TitleRenderer()
+StudioRenderer::~StudioRenderer()
 {
     releaseDeviceDependentResources();
     
@@ -122,7 +122,7 @@ TitleRenderer::~TitleRenderer()
     delete _framebufferToScreenNGShader;
 }
 
-void TitleRenderer::createDeviceDependentResources()
+void StudioRenderer::createDeviceDependentResources()
 {
     _rendererHelper->createDeviceDependentResources();
     _textureManager->createDeviceDependentResources();
@@ -132,12 +132,12 @@ void TitleRenderer::createDeviceDependentResources()
     _framebufferToScreenNGShader->load(*_shaderProgramLoader);
 }
 
-void TitleRenderer::createWindowSizeDependentResources(int screenWidth, int screenHeight, int renderWidth, int renderHeight)
+void StudioRenderer::createWindowSizeDependentResources(int screenWidth, int screenHeight, int renderWidth, int renderHeight)
 {
     _rendererHelper->createWindowSizeDependentResources(screenWidth, screenHeight, renderWidth, renderHeight);
 }
 
-void TitleRenderer::releaseDeviceDependentResources()
+void StudioRenderer::releaseDeviceDependentResources()
 {
     _rendererHelper->releaseDeviceDependentResources();
     _textureManager->releaseDeviceDependentResources();
@@ -147,7 +147,7 @@ void TitleRenderer::releaseDeviceDependentResources()
     _framebufferToScreenNGShader->unload(*_shaderProgramLoader);
 }
 
-void TitleRenderer::render(int flags)
+void StudioRenderer::render(int flags)
 {
     beginFrame();
     
@@ -157,40 +157,24 @@ void TitleRenderer::render(int flags)
         
         _spriteBatcher->beginBatch();
         
-        switch (flags)
-        {
-            case TE_MAIN_MENU_STEAM_OFF:
-                renderMainMenuSteamOffText();
-                break;
-            case TE_MAIN_MENU_STEAM_ON:
-                renderMainMenuSteamOnText();
-                break;
-            case TE_MAIN_MENU_STARTING_SERVER:
-                renderStartingServerText();
-                break;
-            case TE_MAIN_MENU_ENTERING_USERNAME:
-                renderEnterUsernameText();
-                break;
-            case TE_MAIN_MENU_JOINING_LOCAL_SERVER_BY_IP:
-                renderJoiningLocalServerByIPText();
-                break;
-            default:
-                break;
-        }
+        renderText("Awwww yeah, prepare for the Studio!!!", CAM_WIDTH / 2, CAM_HEIGHT - 2, Color::WHITE, FONT_ALIGN_CENTERED);
+        
+        renderText("'ESC' to exit",                         CAM_WIDTH / 2, CAM_HEIGHT - 9, Color::WHITE, FONT_ALIGN_CENTERED);
+        
         _spriteBatcher->endBatch(_textureManager->getTextures()[0], *_textureNGShader);
     }
     
     endFrame();
 }
 
-void TitleRenderer::beginFrame()
+void StudioRenderer::beginFrame()
 {
     _textureManager->handleAsyncTextureLoads();
     
     setFramebuffer(0);
 }
 
-void TitleRenderer::setFramebuffer(int framebufferIndex)
+void StudioRenderer::setFramebuffer(int framebufferIndex)
 {
     assert(framebufferIndex >= 0);
     
@@ -200,65 +184,7 @@ void TitleRenderer::setFramebuffer(int framebufferIndex)
     _rendererHelper->clearFramebufferWithColor(0, 0, 0, 1);
 }
 
-void TitleRenderer::renderMainMenuSteamOffText()
-{
-#ifndef NG_MOBILE
-    renderText("'E' to enter Studio",       CAM_WIDTH / 2, CAM_HEIGHT - 1, Color::WHITE, FONT_ALIGN_CENTERED);
-#endif
-    
-    renderText("'A' to activate Steam",     CAM_WIDTH / 2, CAM_HEIGHT - 2, Color::WHITE, FONT_ALIGN_CENTERED);
-    renderText("'S' to start local server", CAM_WIDTH / 2, CAM_HEIGHT - 3, Color::WHITE, FONT_ALIGN_CENTERED);
-    renderText("'J' to join server by IP",  CAM_WIDTH / 2, CAM_HEIGHT - 4, Color::WHITE, FONT_ALIGN_CENTERED);
-    
-    renderText("'ESC' to exit game", CAM_WIDTH / 2, CAM_HEIGHT - 9, Color::WHITE, FONT_ALIGN_CENTERED);
-}
-
-void TitleRenderer::renderMainMenuSteamOnText()
-{
-#ifndef NG_MOBILE
-    renderText("'E' to enter Studio",                     CAM_WIDTH / 2, CAM_HEIGHT - 1, Color::WHITE, FONT_ALIGN_CENTERED);
-#endif
-    
-    renderText("'D' to deactivate Steam",                 CAM_WIDTH / 2, CAM_HEIGHT - 2, Color::WHITE, FONT_ALIGN_CENTERED);
-    renderText("'S' to start steam server",               CAM_WIDTH / 2, CAM_HEIGHT - 3, Color::WHITE, FONT_ALIGN_CENTERED);
-    renderText("'L' to refresh list of LAN servers",      CAM_WIDTH / 2, CAM_HEIGHT - 4, Color::WHITE, FONT_ALIGN_CENTERED);
-    renderText("'I' to refresh list of Internet servers", CAM_WIDTH / 2, CAM_HEIGHT - 5, Color::WHITE, FONT_ALIGN_CENTERED);
-    
-#ifdef NG_STEAM
-    std::vector<NGSteamGameServer> gameServers = NG_STEAM_GAME_SERVICES->getGameServers();
-    int index = 0;
-    for (NGSteamGameServer gameServer : gameServers)
-    {
-        int serverNumber = index + 1;
-        renderText(StringUtil::format("'%i' %s", serverNumber, gameServer.getDisplayString()).c_str(), CAM_WIDTH / 2, CAM_HEIGHT - 6.5f - (index * 0.5f), Color::WHITE, FONT_ALIGN_CENTERED);
-        
-        ++index;
-    }
-#endif
-    
-    renderText("'ESC' to exit game", CAM_WIDTH / 2, CAM_HEIGHT - 9, Color::WHITE, FONT_ALIGN_CENTERED);
-}
-
-void TitleRenderer::renderStartingServerText()
-{
-    renderText("Server starting, 'ESC' to exit", CAM_WIDTH / 2, CAM_HEIGHT - 2, Color::WHITE, FONT_ALIGN_CENTERED);
-}
-
-void TitleRenderer::renderEnterUsernameText()
-{
-    renderText("Enter Username to join, 'ESC' to exit", CAM_WIDTH / 2, CAM_HEIGHT - 2, Color::WHITE, FONT_ALIGN_CENTERED);
-    
-    renderText(TitleInputManager::getInstance()->getLiveInputRef().c_str(), CAM_WIDTH / 2, CAM_HEIGHT - 4, Color::WHITE, FONT_ALIGN_CENTERED);
-}
-
-void TitleRenderer::renderJoiningLocalServerByIPText()
-{
-    renderText("Enter Server Address to join, 'ESC' to exit", CAM_WIDTH / 2, CAM_HEIGHT - 2, Color::WHITE, FONT_ALIGN_CENTERED);
-    
-    renderText(TitleInputManager::getInstance()->getLiveInputRef().c_str(), CAM_WIDTH / 2, CAM_HEIGHT - 4, Color::WHITE, FONT_ALIGN_CENTERED);
-}
-
-void TitleRenderer::renderText(const char* inStr, float x, float y, const Color& inColor, int justification)
+void StudioRenderer::renderText(const char* inStr, float x, float y, const Color& inColor, int justification)
 {
     Color fontColor = Color(inColor.red, inColor.green, inColor.blue, inColor.alpha);
     float fgWidth = CAM_WIDTH / 60;
@@ -269,7 +195,7 @@ void TitleRenderer::renderText(const char* inStr, float x, float y, const Color&
     _font->renderText(*_spriteBatcher, text, x, y, fgWidth, fgHeight, fontColor, justification);
 }
 
-void TitleRenderer::endFrame()
+void StudioRenderer::endFrame()
 {
     assert(_framebufferIndex >= 0);
     

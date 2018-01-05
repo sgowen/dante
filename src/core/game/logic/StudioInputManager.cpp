@@ -1,14 +1,14 @@
 //
-//  TitleInputManager.cpp
+//  StudioInputManager.cpp
 //  dante
 //
-//  Created by Stephen Gowen on 5/15/17.
+//  Created by Stephen Gowen on 1/4/18.
 //  Copyright (c) 2017 Noctis Games. All rights reserved.
 //
 
 #include "pch.h"
 
-#include "game/logic/TitleInputManager.h"
+#include "game/logic/StudioInputManager.h"
 
 #include "game/logic/MainInputState.h"
 #include "framework/network/portable/Move.h"
@@ -30,13 +30,13 @@
 
 #include <sstream>
 
-TitleInputManager* TitleInputManager::getInstance()
+StudioInputManager* StudioInputManager::getInstance()
 {
-    static TitleInputManager instance = TitleInputManager();
+    static StudioInputManager instance = StudioInputManager();
     return &instance;
 }
 
-void TitleInputManager::update()
+void StudioInputManager::update()
 {
     CURSOR_INPUT_MANAGER->process();
     KEYBOARD_INPUT_MANAGER->process();
@@ -99,27 +99,6 @@ void TitleInputManager::update()
             }
         }
         
-#ifdef NG_MOBILE
-        for (std::vector<CursorEvent *>::iterator i = CURSOR_INPUT_MANAGER->getEvents().begin(); i != CURSOR_INPUT_MANAGER->getEvents().end(); ++i)
-        {
-            if ((*i)->getType() == CursorEventType_UP)
-            {
-                if (_liveInput.length() > 0)
-                {
-                    _isTimeToProcessInput = true;
-                }
-                else
-                {
-                    ss << "mobile";
-                }
-            }
-            else
-            {
-                continue;
-            }
-        }
-#endif
-        
         std::string s = ss.str();
         _liveInput += s;
         if (_liveInput.length() > 16)
@@ -139,39 +118,6 @@ void TitleInputManager::update()
             
             switch ((*i)->getKey())
             {
-                case NG_KEY_E:
-                    _menuState = MIS_ENTER_STUDIO;
-                    continue;
-                case NG_KEY_A:
-                    _menuState = MIS_ACTIVATE_STEAM;
-                    continue;
-                case NG_KEY_D:
-                    _menuState = MIS_DEACTIVATE_STEAM;
-                    continue;
-                case NG_KEY_S:
-                    _menuState = MIS_START_SERVER;
-                    continue;
-                case NG_KEY_J:
-                    _menuState = MIS_JOIN_LOCAL_SERVER;
-                    continue;
-                case NG_KEY_L:
-                    _menuState = MIS_STEAM_REFRESH_LAN_SERVERS;
-                    continue;
-                case NG_KEY_I:
-                    _menuState = MIS_STEAM_REFRESH_INTERNET_SERVERS;
-                    continue;
-                case NG_KEY_ONE:
-                    _menuState = MIS_STEAM_JOIN_SERVER_1;
-                    continue;
-                case NG_KEY_TWO:
-                    _menuState = MIS_STEAM_JOIN_SERVER_2;
-                    continue;
-                case NG_KEY_THREE:
-                    _menuState = MIS_STEAM_JOIN_SERVER_3;
-                    continue;
-                case NG_KEY_FOUR:
-                    _menuState = MIS_STEAM_JOIN_SERVER_4;
-                    continue;
                 case NG_KEY_ESCAPE:
                     _menuState = MIS_ESCAPE;
                     continue;
@@ -179,44 +125,10 @@ void TitleInputManager::update()
                     continue;
             }
         }
-        
-        for (std::vector<GamePadEvent *>::iterator i = GAME_PAD_INPUT_MANAGER->getEvents().begin(); i != GAME_PAD_INPUT_MANAGER->getEvents().end(); ++i)
-        {
-            if (!(*i)->isPressed())
-            {
-                continue;
-            }
-            
-            switch ((*i)->getType())
-            {
-                case GamePadEventType_START_BUTTON:
-                    _menuState = MIS_START_SERVER;
-                    continue;
-                case GamePadEventType_BACK_BUTTON:
-                    _menuState = MIS_ESCAPE;
-                    continue;
-                default:
-                    continue;
-            }
-        }
-        
-#ifdef NG_MOBILE
-        for (std::vector<CursorEvent *>::iterator i = CURSOR_INPUT_MANAGER->getEvents().begin(); i != CURSOR_INPUT_MANAGER->getEvents().end(); ++i)
-        {
-            if ((*i)->getType() == CursorEventType_UP)
-            {
-                _menuState = MIS_START_SERVER;
-            }
-            else
-            {
-                continue;
-            }
-        }
-#endif
     }
 }
 
-void TitleInputManager::setLiveInputMode(bool isLiveMode)
+void StudioInputManager::setLiveInputMode(bool isLiveMode)
 {
     _isLiveMode = isLiveMode;
     
@@ -226,38 +138,38 @@ void TitleInputManager::setLiveInputMode(bool isLiveMode)
     }
 }
 
-bool TitleInputManager::isLiveMode()
+bool StudioInputManager::isLiveMode()
 {
     return _isLiveMode;
 }
 
-bool TitleInputManager::isTimeToProcessInput()
+bool StudioInputManager::isTimeToProcessInput()
 {
     return _isTimeToProcessInput;
 }
 
-void TitleInputManager::onInputProcessed()
+void StudioInputManager::onInputProcessed()
 {
     _liveInput.clear();
     _isTimeToProcessInput = false;
 }
 
-int TitleInputManager::getMenuState()
+int StudioInputManager::getMenuState()
 {
     return _menuState;
 }
 
-std::string& TitleInputManager::getLiveInputRef()
+std::string& StudioInputManager::getLiveInputRef()
 {
     return _liveInput;
 }
 
-std::string TitleInputManager::getLiveInput()
+std::string StudioInputManager::getLiveInput()
 {
     return _liveInput;
 }
 
-TitleInputManager::TitleInputManager() :
+StudioInputManager::StudioInputManager() :
 _menuState(MIS_NONE),
 _isLiveMode(false),
 _isTimeToProcessInput(false)

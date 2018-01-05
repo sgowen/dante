@@ -17,7 +17,7 @@ android {
         externalNativeBuild {
             cmake {
                 arguments '-DANDROID_PLATFORM=android-19', '-DANDROID_TOOLCHAIN=clang', '-DANDROID_ARM_NEON=TRUE', '-DANDROID_STL=gnustl_static'
-                cFlags '-O3', '-fsigned-char', '-DPNG_ARM_NEON_OPT=0' // full optimization, char data type is signed, bypassing libpng issue
+                cFlags '-O3', '-fsigned-char', '-DPNG_ARM_NEON_OPT=0', '-DNG_MOBILE' // full optimization, char data type is signed, bypassing libpng issue
                 cppFlags '-std=c++11', '-fsigned-char'
             }
         }

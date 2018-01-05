@@ -48,6 +48,7 @@
 #include "framework/input/CursorConverter.h"
 #include "game/logic/GameEngine.h"
 #include "game/logic/GameInputManager.h"
+#include "game/logic/StudioEngine.h"
 
 #ifdef NG_STEAM
 #include "framework/network/steam/NGSteamClientHelper.h"
@@ -83,7 +84,7 @@ TitleEngine::TitleEngine() : EngineState(),
 _config(new JsonFile("dante.cfg")),
 _renderer(new TitleRenderer()),
 _isSteam(false),
-_engineState(TE_MAIN_MENU_STEAM_OFF)
+_state(TE_MAIN_MENU_STEAM_OFF)
 {
     NoctisGames::NGExtension::setInstance(NoctisGames::DefaultNGExtension::getInstance());
     
@@ -112,9 +113,9 @@ void TitleEngine::update(Engine* engine)
     
     TitleInputManager::getInstance()->update();
     
-    if (handleNonMoveInput(engine))
+    if (handleInput(engine))
     {
-        engine->setRequestedAction(REQUESTED_ACTION_EXIT);
+        return;
     }
     
     if (NG_SERVER && NG_SERVER->isConnected())
@@ -171,30 +172,30 @@ void TitleEngine::onPause()
 
 void TitleEngine::render()
 {
-    _renderer->render(_engineState);
+    _renderer->render(_state);
 }
 
-bool TitleEngine::handleNonMoveInput(Engine* engine)
+bool TitleEngine::handleInput(Engine* engine)
 {
     int menuState = TitleInputManager::getInstance()->getMenuState();
     
     if (TitleInputManager::getInstance()->isLiveMode())
     {
-        if (menuState == MS_ESCAPE)
+        if (menuState == MIS_ESCAPE)
         {
             TitleInputManager::getInstance()->setLiveInputMode(false);
             
-            _engineState = _isSteam ? TE_MAIN_MENU_STEAM_ON : TE_MAIN_MENU_STEAM_OFF;
+            _state = _isSteam ? TE_MAIN_MENU_STEAM_ON : TE_MAIN_MENU_STEAM_OFF;
         }
         else if (TitleInputManager::getInstance()->isTimeToProcessInput())
         {
-            if (_engineState == TE_MAIN_MENU_JOINING_LOCAL_SERVER_BY_IP)
+            if (_state == TE_MAIN_MENU_JOINING_LOCAL_SERVER_BY_IP)
             {
                 _serverIPAddress = StringUtil::format("%s:%d", TitleInputManager::getInstance()->getLiveInput().c_str(), SERVER_PORT);
                 _name.clear();
-                _engineState = TE_MAIN_MENU_ENTERING_USERNAME;
+                _state = TE_MAIN_MENU_ENTERING_USERNAME;
             }
-            else if (_engineState == TE_MAIN_MENU_ENTERING_USERNAME)
+            else if (_state == TE_MAIN_MENU_ENTERING_USERNAME)
             {
                 _name = TitleInputManager::getInstance()->getLiveInput();
                 TitleInputManager::getInstance()->setLiveInputMode(false);
@@ -214,15 +215,22 @@ bool TitleEngine::handleNonMoveInput(Engine* engine)
     }
     else
     {
-        if (menuState == MS_ACTIVATE_STEAM)
+        if (menuState == MIS_ENTER_STUDIO)
+        {
+#ifndef NG_MOBILE
+            engine->getStateMachine().changeState(StudioEngine::getInstance());
+            return true;
+#endif
+        }
+        else if (menuState == MIS_ACTIVATE_STEAM)
         {
             activateSteam();
         }
-        else if (menuState == MS_DEACTIVATE_STEAM)
+        else if (menuState == MIS_DEACTIVATE_STEAM)
         {
             deactivateSteam();
         }
-        else if (menuState == MS_START_SERVER)
+        else if (menuState == MIS_START_SERVER)
         {
             if (_isSteam)
             {
@@ -232,20 +240,20 @@ bool TitleEngine::handleNonMoveInput(Engine* engine)
             {
                 _serverIPAddress.clear();
                 _name.clear();
-                _engineState = TE_MAIN_MENU_ENTERING_USERNAME;
+                _state = TE_MAIN_MENU_ENTERING_USERNAME;
                 TitleInputManager::getInstance()->setLiveInputMode(true);
             }
         }
-        else if (menuState == MS_JOIN_LOCAL_SERVER)
+        else if (menuState == MIS_JOIN_LOCAL_SERVER)
         {
             if (!_isSteam)
             {
                 _serverIPAddress.clear();
-                _engineState = TE_MAIN_MENU_JOINING_LOCAL_SERVER_BY_IP;
+                _state = TE_MAIN_MENU_JOINING_LOCAL_SERVER_BY_IP;
                 TitleInputManager::getInstance()->setLiveInputMode(true);
             }
         }
-        else if (menuState == MS_STEAM_REFRESH_LAN_SERVERS)
+        else if (menuState == MIS_STEAM_REFRESH_LAN_SERVERS)
         {
 #ifdef NG_STEAM
             if (NG_STEAM_GAME_SERVICES)
@@ -254,7 +262,7 @@ bool TitleEngine::handleNonMoveInput(Engine* engine)
             }
 #endif
         }
-        else if (menuState == MS_STEAM_REFRESH_INTERNET_SERVERS)
+        else if (menuState == MIS_STEAM_REFRESH_INTERNET_SERVERS)
         {
 #ifdef NG_STEAM
             if (NG_STEAM_GAME_SERVICES)
@@ -263,10 +271,10 @@ bool TitleEngine::handleNonMoveInput(Engine* engine)
             }
 #endif
         }
-        else if (menuState == MS_STEAM_JOIN_SERVER_1
-                 || menuState == MS_STEAM_JOIN_SERVER_2
-                 || menuState == MS_STEAM_JOIN_SERVER_3
-                 || menuState == MS_STEAM_JOIN_SERVER_4)
+        else if (menuState == MIS_STEAM_JOIN_SERVER_1
+                 || menuState == MIS_STEAM_JOIN_SERVER_2
+                 || menuState == MIS_STEAM_JOIN_SERVER_3
+                 || menuState == MIS_STEAM_JOIN_SERVER_4)
         {
 #ifdef NG_STEAM
             if (NG_STEAM_GAME_SERVICES && !NG_STEAM_GAME_SERVICES->isRequestingServers())
@@ -280,8 +288,9 @@ bool TitleEngine::handleNonMoveInput(Engine* engine)
             }
 #endif
         }
-        else if (menuState == MS_ESCAPE)
+        else if (menuState == MIS_ESCAPE)
         {
+            engine->setRequestedAction(REQUESTED_ACTION_EXIT);
             return true;
         }
     }
@@ -291,7 +300,7 @@ bool TitleEngine::handleNonMoveInput(Engine* engine)
 
 void TitleEngine::activateSteam()
 {
-    _engineState = TE_MAIN_MENU_STEAM_OFF;
+    _state = TE_MAIN_MENU_STEAM_OFF;
     
 #ifdef NG_STEAM
     if (!NGSteamGameServices::getInstance())
@@ -300,7 +309,7 @@ void TitleEngine::activateSteam()
     }
     
     _isSteam = NG_STEAM_GAME_SERVICES->getStatus() == STEAM_INIT_SUCCESS;
-    _engineState = _isSteam ? TE_MAIN_MENU_STEAM_ON : TE_MAIN_MENU_STEAM_OFF;
+    _state = _isSteam ? TE_MAIN_MENU_STEAM_ON : TE_MAIN_MENU_STEAM_OFF;
 #endif
 }
 
@@ -339,13 +348,13 @@ void TitleEngine::deactivateSteam()
     }
     
     _isSteam = false;
-    _engineState = TE_MAIN_MENU_STEAM_OFF;
+    _state = TE_MAIN_MENU_STEAM_OFF;
 #endif
 }
 
 void TitleEngine::startServer()
 {
-    _engineState = TE_MAIN_MENU_STARTING_SERVER;
+    _state = TE_MAIN_MENU_STARTING_SERVER;
     
     if (!Server::getInstance())
     {
@@ -433,5 +442,5 @@ void TitleEngine::disconnect()
         Server::destroy();
     }
     
-    _engineState = _isSteam ? TE_MAIN_MENU_STEAM_ON : TE_MAIN_MENU_STEAM_OFF;
+    _state = _isSteam ? TE_MAIN_MENU_STEAM_ON : TE_MAIN_MENU_STEAM_OFF;
 }

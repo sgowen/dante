@@ -30,15 +30,6 @@
 
 #include <sstream>
 
-#if defined __APPLE__
-    #include "TargetConditionals.h"
-    #if TARGET_OS_IPHONE
-        #define NG_MOBILE
-    #endif
-#elif defined __ANDROID__
-    #define NG_MOBILE
-#endif
-
 GameInputManager* GameInputManager::getInstance()
 {
     static GameInputManager instance = GameInputManager();
@@ -66,32 +57,32 @@ void GameInputManager::update()
     KEYBOARD_INPUT_MANAGER->process();
     GAME_PAD_INPUT_MANAGER->process();
     
-    _menuState = MS_NONE;
+    _menuState = MIS_NONE;
     
     for (std::vector<KeyboardEvent *>::iterator i = KEYBOARD_INPUT_MANAGER->getEvents().begin(); i != KEYBOARD_INPUT_MANAGER->getEvents().end(); ++i)
     {
         switch ((*i)->getKey())
         {
             case NG_KEY_M:
-                _menuState = (*i)->isUp() ? MS_CLIENT_MAIN_TOGGLE_MUSIC : _menuState;
+                _menuState = (*i)->isUp() ? MIS_CLIENT_MAIN_TOGGLE_MUSIC : _menuState;
                 continue;
             case NG_KEY_S:
-                _menuState = (*i)->isUp() ? MS_CLIENT_MAIN_TOGGLE_SOUND : _menuState;
+                _menuState = (*i)->isUp() ? MIS_CLIENT_MAIN_TOGGLE_SOUND : _menuState;
                 continue;
             case NG_KEY_E:
-                _menuState = (*i)->isUp() ? MS_SERVER_TOGGLE_ENEMIES : _menuState;
+                _menuState = (*i)->isUp() ? MIS_SERVER_TOGGLE_ENEMIES : _menuState;
                 continue;
             case NG_KEY_O:
-                _menuState = (*i)->isUp() ? MS_SERVER_TOGGLE_OBJECTS : _menuState;
+                _menuState = (*i)->isUp() ? MIS_SERVER_TOGGLE_OBJECTS : _menuState;
                 continue;
             case NG_KEY_I:
-                _menuState = (*i)->isUp() ? MS_SERVER_TOGGLE_SERVER_DISPLAY : _menuState;
+                _menuState = (*i)->isUp() ? MIS_SERVER_TOGGLE_SERVER_DISPLAY : _menuState;
                 continue;
             case NG_KEY_P:
-                _menuState = (*i)->isUp() ? MS_SERVER_TOGGLE_PHYSICS_DISPLAY : _menuState;
+                _menuState = (*i)->isUp() ? MIS_SERVER_TOGGLE_PHYSICS_DISPLAY : _menuState;
                 continue;
             case NG_KEY_ESCAPE:
-                _menuState = (*i)->isUp() ? MS_ESCAPE : _menuState;
+                _menuState = (*i)->isUp() ? MIS_ESCAPE : _menuState;
                 continue;
             default:
             {
@@ -132,7 +123,7 @@ void GameInputManager::update()
                         continue;
                     case NG_KEY_CARRIAGE_RETURN:
                         _currentState->getGameInputState(1)._playerId = INPUT_UNASSIGNED;
-                        _menuState = (*i)->isDown() ? MS_LOCAL_PLAYER_DROP_OUT_1 : MS_NONE;
+                        _menuState = (*i)->isDown() ? MIS_LOCAL_PLAYER_DROP_OUT_1 : MIS_NONE;
                         continue;
 #endif
                     default:
@@ -209,21 +200,21 @@ void GameInputManager::update()
                 if ((*i)->getIndex() == 3)
                 {
                     _currentState->getGameInputState((*i)->getIndex())._playerId = INPUT_UNASSIGNED;
-                    _menuState = !(*i)->isPressed() ? MS_LOCAL_PLAYER_DROP_OUT_3 : MS_NONE;
+                    _menuState = !(*i)->isPressed() ? MIS_LOCAL_PLAYER_DROP_OUT_3 : MIS_NONE;
                 }
                 else if ((*i)->getIndex() == 2)
                 {
                     _currentState->getGameInputState((*i)->getIndex())._playerId = INPUT_UNASSIGNED;
-                    _menuState = !(*i)->isPressed() ? MS_LOCAL_PLAYER_DROP_OUT_2 : MS_NONE;
+                    _menuState = !(*i)->isPressed() ? MIS_LOCAL_PLAYER_DROP_OUT_2 : MIS_NONE;
                 }
                 else if ((*i)->getIndex() == 1)
                 {
                     _currentState->getGameInputState((*i)->getIndex())._playerId = INPUT_UNASSIGNED;
-                    _menuState = !(*i)->isPressed() ? MS_LOCAL_PLAYER_DROP_OUT_1 : MS_NONE;
+                    _menuState = !(*i)->isPressed() ? MIS_LOCAL_PLAYER_DROP_OUT_1 : MIS_NONE;
                 }
                 else
                 {
-                    _menuState = (*i)->isPressed() ? MS_ESCAPE : _menuState;
+                    _menuState = (*i)->isPressed() ? MIS_ESCAPE : _menuState;
                 }
             }
                 continue;
@@ -305,7 +296,7 @@ const Move& GameInputManager::sampleInputAsMove()
 GameInputManager::GameInputManager() :
 _currentState(static_cast<MainInputState*>(POOLED_OBJ_MGR->borrowInputState())),
 _pendingMove(NULL),
-_menuState(MS_NONE),
+_menuState(MIS_NONE),
 _isTimeToProcessInput(false)
 {
     // Empty

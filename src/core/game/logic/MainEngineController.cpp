@@ -12,6 +12,7 @@
 
 #include "game/logic/TitleEngine.h"
 #include "game/logic/GameEngine.h"
+#include "game/logic/StudioEngine.h"
 
 NGRTTI_IMPL(MainEngineController, EngineController);
 
@@ -19,10 +20,12 @@ MainEngineController::MainEngineController()
 {
     TitleEngine::create();
     GameEngine::create();
+    StudioEngine::create();
 }
 
 MainEngineController::~MainEngineController()
 {
+    StudioEngine::destroy();
     GameEngine::destroy();
     TitleEngine::destroy();
 }
