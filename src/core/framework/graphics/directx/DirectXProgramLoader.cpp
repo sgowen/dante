@@ -101,11 +101,6 @@ ShaderProgramWrapper* DirectXProgramLoader::loadNGShader(const char* vertexShade
     
     ShaderProgramWrapper* ret = new ShaderProgramWrapper(pVertexShader, pInputLayout, pPixelShader);
     
-    for (std::vector<NGShaderVarInput*>::iterator i = inputLayout.begin(); i != inputLayout.end(); ++i)
-    {
-        (*i)->build(ret, totalSize);
-    }
-    
     for (std::vector<NGShaderUniformInput*>::iterator i = uniforms.begin(); i != uniforms.end(); ++i)
     {
         (*i)->build(ret);

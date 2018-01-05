@@ -30,7 +30,7 @@ void NGShaderUniformInput::build(ShaderProgramWrapper* inShaderProgramWrapper)
         D3D11_BUFFER_DESC bd = { 0 };
         
         bd.Usage = D3D11_USAGE_DEFAULT;
-        bd.ByteWidth = byteWidth;
+        bd.ByteWidth = _byteWidth;
         bd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
         
         ID3D11Device* d3dDevice = DirectXRendererHelper::getD3dDevice();
