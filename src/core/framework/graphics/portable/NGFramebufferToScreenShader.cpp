@@ -18,13 +18,11 @@
 
 #include <assert.h>
 
-NGFramebufferToScreenShader::NGFramebufferToScreenShader(RendererHelper& inRendererHelper, NGShaderLoader& inNGShaderLoader, const char* vertexShaderName, const char* fragmentShaderName) : NGShader(inRendererHelper, inNGShaderLoader, vertexShaderName, fragmentShaderName)
+NGFramebufferToScreenShader::NGFramebufferToScreenShader(RendererHelper& inRendererHelper, const char* vertexShaderName, const char* fragmentShaderName) : NGShader(inRendererHelper, vertexShaderName, fragmentShaderName)
 {
     _uniforms.push_back(new NGShaderUniformInput("u_TextureUnit"));
     
     _inputLayout.push_back(new NGShaderVarInput("a_Position", 2, 0));
-    
-    load();
 }
 
 void NGFramebufferToScreenShader::bind(void* data)

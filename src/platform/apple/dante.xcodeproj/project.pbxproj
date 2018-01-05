@@ -115,8 +115,8 @@
 		BB31B5B01FC205D5005F1C0A /* GamePadEvent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB31B59F1FC205D0005F1C0A /* GamePadEvent.cpp */; };
 		BB31B5B11FC205D5005F1C0A /* KeyboardInputManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB31B5A31FC205D4005F1C0A /* KeyboardInputManager.cpp */; };
 		BB31B5B21FC205D5005F1C0A /* KeyboardInputManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB31B5A31FC205D4005F1C0A /* KeyboardInputManager.cpp */; };
-		BB3BAEE11FB4A1FA00F5F8B0 /* InputManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB3BAEDF1FB4A1F900F5F8B0 /* InputManager.cpp */; };
-		BB3BAEE21FB4A1FA00F5F8B0 /* InputManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB3BAEDF1FB4A1F900F5F8B0 /* InputManager.cpp */; };
+		BB3BAEE11FB4A1FA00F5F8B0 /* TitleInputManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB3BAEDF1FB4A1F900F5F8B0 /* TitleInputManager.cpp */; };
+		BB3BAEE21FB4A1FA00F5F8B0 /* TitleInputManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB3BAEDF1FB4A1F900F5F8B0 /* TitleInputManager.cpp */; };
 		BB4253D21EF58DA5003F6D2A /* ClientHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB4253D01EF58DA5003F6D2A /* ClientHelper.cpp */; };
 		BB4253D51EF58E00003F6D2A /* ServerHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB4253D41EF58E00003F6D2A /* ServerHelper.cpp */; };
 		BB4253DA1EF59793003F6D2A /* NGSteamClientHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB4253D61EF59793003F6D2A /* NGSteamClientHelper.cpp */; };
@@ -209,10 +209,10 @@
 		BB5AFDB91FB3595F005FBD52 /* pngwrite.c in Sources */ = {isa = PBXBuildFile; fileRef = BB44C5981DB03A7C003E633F /* pngwrite.c */; };
 		BB5AFDBA1FB3595F005FBD52 /* pngwtran.c in Sources */ = {isa = PBXBuildFile; fileRef = BB44C5991DB03A7C003E633F /* pngwtran.c */; };
 		BB5AFDBB1FB3595F005FBD52 /* pngwutil.c in Sources */ = {isa = PBXBuildFile; fileRef = BB44C59A1DB03A7C003E633F /* pngwutil.c */; };
-		BB5AFE081FB359DE005FBD52 /* MainRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB6E7AFA1F940F13006C0024 /* MainRenderer.cpp */; };
+		BB5AFE081FB359DE005FBD52 /* TitleRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB6E7AFA1F940F13006C0024 /* TitleRenderer.cpp */; };
 		BB5AFE091FB359DE005FBD52 /* Crate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB6E7AFD1F940F13006C0024 /* Crate.cpp */; };
 		BB5AFE0A1FB359DE005FBD52 /* Ground.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB6E7B001F940F13006C0024 /* Ground.cpp */; };
-		BB5AFE0B1FB359DE005FBD52 /* MainEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB6E7B021F940F13006C0024 /* MainEngine.cpp */; };
+		BB5AFE0B1FB359DE005FBD52 /* TitleEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB6E7B021F940F13006C0024 /* TitleEngine.cpp */; };
 		BB5AFE0C1FB359DE005FBD52 /* PooledObjectsManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB6E7B051F940F13006C0024 /* PooledObjectsManager.cpp */; };
 		BB5AFE0D1FB359DE005FBD52 /* Projectile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB6E7B071F940F13006C0024 /* Projectile.cpp */; };
 		BB5AFE0E1FB359DE005FBD52 /* Robot.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB6E7B091F940F13006C0024 /* Robot.cpp */; };
@@ -284,8 +284,8 @@
 		BB5AFE7B1FB35ACA005FBD52 /* Entity.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF0BF1EA94ED900F0866E /* Entity.cpp */; };
 		BB5AFE7C1FB35ACA005FBD52 /* EntityManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF0C11EA94ED900F0866E /* EntityManager.cpp */; };
 		BB5AFE7D1FB35ACA005FBD52 /* EntityRegistry.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB0864721EE20CCA00BCD9E0 /* EntityRegistry.cpp */; };
-		BB6363381FEB0551001BB9E1 /* assets.cfg in Resources */ = {isa = PBXBuildFile; fileRef = BB6363351FEAF65C001BB9E1 /* assets.cfg */; };
-		BB63633C1FEB0D3E001BB9E1 /* assets.cfg in Resources */ = {isa = PBXBuildFile; fileRef = BB63633B1FEB0D3E001BB9E1 /* assets.cfg */; };
+		BB6363381FEB0551001BB9E1 /* game_assets.cfg in Resources */ = {isa = PBXBuildFile; fileRef = BB6363351FEAF65C001BB9E1 /* game_assets.cfg */; };
+		BB63633C1FEB0D3E001BB9E1 /* game_assets.cfg in Resources */ = {isa = PBXBuildFile; fileRef = BB63633B1FEB0D3E001BB9E1 /* game_assets.cfg */; };
 		BB6531601FED56CA00963997 /* MainInputState.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB65315B1FED56C800963997 /* MainInputState.cpp */; };
 		BB6531611FED56CA00963997 /* MainInputState.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB65315B1FED56C800963997 /* MainInputState.cpp */; };
 		BB6531621FED56CA00963997 /* World.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB65315C1FED56C800963997 /* World.cpp */; };
@@ -294,10 +294,10 @@
 		BB6531651FED56CA00963997 /* Server.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB65315D1FED56C800963997 /* Server.cpp */; };
 		BB6531681FED575B00963997 /* InstanceManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB6531661FED575B00963997 /* InstanceManager.cpp */; };
 		BB6531691FED575B00963997 /* InstanceManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB6531661FED575B00963997 /* InstanceManager.cpp */; };
-		BB6E7B151F940F2B006C0024 /* MainRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB6E7AFA1F940F13006C0024 /* MainRenderer.cpp */; };
+		BB6E7B151F940F2B006C0024 /* TitleRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB6E7AFA1F940F13006C0024 /* TitleRenderer.cpp */; };
 		BB6E7B161F940F2B006C0024 /* Crate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB6E7AFD1F940F13006C0024 /* Crate.cpp */; };
 		BB6E7B171F940F2B006C0024 /* Ground.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB6E7B001F940F13006C0024 /* Ground.cpp */; };
-		BB6E7B181F940F2B006C0024 /* MainEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB6E7B021F940F13006C0024 /* MainEngine.cpp */; };
+		BB6E7B181F940F2B006C0024 /* TitleEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB6E7B021F940F13006C0024 /* TitleEngine.cpp */; };
 		BB6E7B191F940F2B006C0024 /* PooledObjectsManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB6E7B051F940F13006C0024 /* PooledObjectsManager.cpp */; };
 		BB6E7B1A1F940F2B006C0024 /* Projectile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB6E7B071F940F13006C0024 /* Projectile.cpp */; };
 		BB6E7B1B1F940F2B006C0024 /* Robot.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB6E7B091F940F13006C0024 /* Robot.cpp */; };
@@ -383,8 +383,6 @@
 		BBB1D3AF1FC8CB9800B74BAC /* NGExtension.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBB1D3AD1FC8CB9700B74BAC /* NGExtension.cpp */; };
 		BBBCB2EB1EF090E900B77938 /* NGSteam.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBBCB2EA1EF090E900B77938 /* NGSteam.cpp */; };
 		BBBCB2EE1EF0993000B77938 /* NGSteamGameServer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBBCB2EC1EF0993000B77938 /* NGSteamGameServer.cpp */; };
-		BBBCC1651FF462BA00E23FEB /* MainEngineState.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBBCC1641FF462BA00E23FEB /* MainEngineState.cpp */; };
-		BBBCC1661FF462BA00E23FEB /* MainEngineState.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBBCC1641FF462BA00E23FEB /* MainEngineState.cpp */; };
 		BBBD14901EE06858003F9307 /* StringUtil.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBBD148E1EE06858003F9307 /* StringUtil.cpp */; };
 		BBBD14971EE06BB3003F9307 /* Timing.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBBD14921EE06BB3003F9307 /* Timing.cpp */; };
 		BBBD149A1EE06BB3003F9307 /* WeightedTimedMovingAverage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBBD14941EE06BB3003F9307 /* WeightedTimedMovingAverage.cpp */; };
@@ -504,6 +502,20 @@
 		BBFC2A7C1FC4A00E00A970B4 /* NullAudioEngineHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBFC2A771FC49E6700A970B4 /* NullAudioEngineHelper.cpp */; };
 		BBFC2A7D1FC4A00E00A970B4 /* NullSound.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBFC2A761FC49E6700A970B4 /* NullSound.cpp */; };
 		BBFC2A7E1FC4A00E00A970B4 /* NullSoundWrapper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBFC2A7A1FC49E6800A970B4 /* NullSoundWrapper.cpp */; };
+		BBFE83041FFEBC8200E5F650 /* EngineController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBFE83021FFEBC8100E5F650 /* EngineController.cpp */; };
+		BBFE83051FFEBC8200E5F650 /* EngineController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBFE83021FFEBC8100E5F650 /* EngineController.cpp */; };
+		BBFE83081FFEBFF900E5F650 /* MainEngineController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBFE83061FFEBFF900E5F650 /* MainEngineController.cpp */; };
+		BBFE83091FFEBFF900E5F650 /* MainEngineController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBFE83061FFEBFF900E5F650 /* MainEngineController.cpp */; };
+		BBFE830B1FFEC23000E5F650 /* EngineState.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBFE830A1FFEC23000E5F650 /* EngineState.cpp */; };
+		BBFE830C1FFEC23000E5F650 /* EngineState.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBFE830A1FFEC23000E5F650 /* EngineState.cpp */; };
+		BBFE830F1FFEC69500E5F650 /* GameEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBFE830E1FFEC69500E5F650 /* GameEngine.cpp */; };
+		BBFE83101FFEC69500E5F650 /* GameEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBFE830E1FFEC69500E5F650 /* GameEngine.cpp */; };
+		BBFE83131FFEC6AD00E5F650 /* GameRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBFE83111FFEC6AD00E5F650 /* GameRenderer.cpp */; };
+		BBFE83141FFEC6AD00E5F650 /* GameRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBFE83111FFEC6AD00E5F650 /* GameRenderer.cpp */; };
+		BBFE83171FFEC87300E5F650 /* GameInputManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBFE83161FFEC87300E5F650 /* GameInputManager.cpp */; };
+		BBFE83181FFEC87300E5F650 /* GameInputManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBFE83161FFEC87300E5F650 /* GameInputManager.cpp */; };
+		BBFE831A1FFECFEA00E5F650 /* title_assets.cfg in Resources */ = {isa = PBXBuildFile; fileRef = BBFE83191FFECFEA00E5F650 /* title_assets.cfg */; };
+		BBFE831C1FFECFF200E5F650 /* title_assets.cfg in Resources */ = {isa = PBXBuildFile; fileRef = BBFE831B1FFECFF200E5F650 /* title_assets.cfg */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -751,8 +763,8 @@
 		BB31B5A31FC205D4005F1C0A /* KeyboardInputManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KeyboardInputManager.cpp; sourceTree = "<group>"; };
 		BB31B5A41FC205D5005F1C0A /* KeyboardInputManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeyboardInputManager.h; sourceTree = "<group>"; };
 		BB39C8921FB2700900CF6699 /* NGGraphics.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NGGraphics.h; sourceTree = "<group>"; };
-		BB3BAEDF1FB4A1F900F5F8B0 /* InputManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = InputManager.cpp; sourceTree = "<group>"; };
-		BB3BAEE01FB4A1F900F5F8B0 /* InputManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InputManager.h; sourceTree = "<group>"; };
+		BB3BAEDF1FB4A1F900F5F8B0 /* TitleInputManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TitleInputManager.cpp; sourceTree = "<group>"; };
+		BB3BAEE01FB4A1F900F5F8B0 /* TitleInputManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TitleInputManager.h; sourceTree = "<group>"; };
 		BB4253D01EF58DA5003F6D2A /* ClientHelper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ClientHelper.cpp; sourceTree = "<group>"; };
 		BB4253D11EF58DA5003F6D2A /* ClientHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClientHelper.h; sourceTree = "<group>"; };
 		BB4253D31EF58E00003F6D2A /* ServerHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ServerHelper.h; sourceTree = "<group>"; };
@@ -862,8 +874,8 @@
 		BB5B332F1FDDBDE700B2D145 /* PlatformHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PlatformHelper.h; sourceTree = "<group>"; };
 		BB5F46FA1ED38D61005FEC0C /* SocketAddressFamily.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SocketAddressFamily.h; sourceTree = "<group>"; };
 		BB61CB581EC9FA1B000E0291 /* FrameworkConstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FrameworkConstants.h; sourceTree = "<group>"; };
-		BB6363351FEAF65C001BB9E1 /* assets.cfg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = assets.cfg; sourceTree = "<group>"; };
-		BB63633B1FEB0D3E001BB9E1 /* assets.cfg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = assets.cfg; sourceTree = "<group>"; };
+		BB6363351FEAF65C001BB9E1 /* game_assets.cfg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = game_assets.cfg; sourceTree = "<group>"; };
+		BB63633B1FEB0D3E001BB9E1 /* game_assets.cfg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = game_assets.cfg; sourceTree = "<group>"; };
 		BB65315A1FED56C700963997 /* MainInputState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainInputState.h; sourceTree = "<group>"; };
 		BB65315B1FED56C800963997 /* MainInputState.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MainInputState.cpp; sourceTree = "<group>"; };
 		BB65315C1FED56C800963997 /* World.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = World.cpp; sourceTree = "<group>"; };
@@ -874,16 +886,15 @@
 		BB6E7A8A1F93CE1B006C0024 /* fast_mutex.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = fast_mutex.h; sourceTree = "<group>"; };
 		BB6E7A8B1F93CE1B006C0024 /* tinythread.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = tinythread.cpp; sourceTree = "<group>"; };
 		BB6E7A8C1F93CE1B006C0024 /* tinythread.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = tinythread.h; sourceTree = "<group>"; };
-		BB6E7AFA1F940F13006C0024 /* MainRenderer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = MainRenderer.cpp; sourceTree = "<group>"; };
-		BB6E7AFB1F940F13006C0024 /* MainRenderer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MainRenderer.h; sourceTree = "<group>"; };
+		BB6E7AFA1F940F13006C0024 /* TitleRenderer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = TitleRenderer.cpp; sourceTree = "<group>"; };
+		BB6E7AFB1F940F13006C0024 /* TitleRenderer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TitleRenderer.h; sourceTree = "<group>"; };
 		BB6E7AFD1F940F13006C0024 /* Crate.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Crate.cpp; sourceTree = "<group>"; };
 		BB6E7AFE1F940F13006C0024 /* Crate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Crate.h; sourceTree = "<group>"; };
 		BB6E7AFF1F940F13006C0024 /* GameConstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GameConstants.h; sourceTree = "<group>"; };
 		BB6E7B001F940F13006C0024 /* Ground.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Ground.cpp; sourceTree = "<group>"; };
 		BB6E7B011F940F13006C0024 /* Ground.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Ground.h; sourceTree = "<group>"; };
-		BB6E7B021F940F13006C0024 /* MainEngine.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = MainEngine.cpp; sourceTree = "<group>"; };
-		BB6E7B031F940F13006C0024 /* MainEngine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MainEngine.h; sourceTree = "<group>"; };
-		BB6E7B041F940F13006C0024 /* MainEngineState.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MainEngineState.h; sourceTree = "<group>"; };
+		BB6E7B021F940F13006C0024 /* TitleEngine.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = TitleEngine.cpp; sourceTree = "<group>"; };
+		BB6E7B031F940F13006C0024 /* TitleEngine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TitleEngine.h; sourceTree = "<group>"; };
 		BB6E7B051F940F13006C0024 /* PooledObjectsManager.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = PooledObjectsManager.cpp; sourceTree = "<group>"; };
 		BB6E7B061F940F13006C0024 /* PooledObjectsManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PooledObjectsManager.h; sourceTree = "<group>"; };
 		BB6E7B071F940F13006C0024 /* Projectile.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Projectile.cpp; sourceTree = "<group>"; };
@@ -1054,7 +1065,6 @@
 		BBBCB2EA1EF090E900B77938 /* NGSteam.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NGSteam.cpp; sourceTree = "<group>"; };
 		BBBCB2EC1EF0993000B77938 /* NGSteamGameServer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NGSteamGameServer.cpp; sourceTree = "<group>"; };
 		BBBCB2ED1EF0993000B77938 /* NGSteamGameServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NGSteamGameServer.h; sourceTree = "<group>"; };
-		BBBCC1641FF462BA00E23FEB /* MainEngineState.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MainEngineState.cpp; sourceTree = "<group>"; };
 		BBBD148E1EE06858003F9307 /* StringUtil.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StringUtil.cpp; sourceTree = "<group>"; };
 		BBBD14921EE06BB3003F9307 /* Timing.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Timing.cpp; sourceTree = "<group>"; };
 		BBBD14931EE06BB3003F9307 /* Timing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Timing.h; sourceTree = "<group>"; };
@@ -1629,6 +1639,20 @@
 		BBFC2A791FC49E6800A970B4 /* NullSound.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NullSound.h; sourceTree = "<group>"; };
 		BBFC2A7A1FC49E6800A970B4 /* NullSoundWrapper.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = NullSoundWrapper.cpp; sourceTree = "<group>"; };
 		BBFC2A7B1FC49E6800A970B4 /* NullSoundWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NullSoundWrapper.h; sourceTree = "<group>"; };
+		BBFE83011FFEAB8900E5F650 /* EngineState.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EngineState.h; sourceTree = "<group>"; };
+		BBFE83021FFEBC8100E5F650 /* EngineController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EngineController.cpp; sourceTree = "<group>"; };
+		BBFE83031FFEBC8100E5F650 /* EngineController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EngineController.h; sourceTree = "<group>"; };
+		BBFE83061FFEBFF900E5F650 /* MainEngineController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MainEngineController.cpp; sourceTree = "<group>"; };
+		BBFE83071FFEBFF900E5F650 /* MainEngineController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainEngineController.h; sourceTree = "<group>"; };
+		BBFE830A1FFEC23000E5F650 /* EngineState.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EngineState.cpp; sourceTree = "<group>"; };
+		BBFE830D1FFEC69400E5F650 /* GameEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameEngine.h; sourceTree = "<group>"; };
+		BBFE830E1FFEC69500E5F650 /* GameEngine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameEngine.cpp; sourceTree = "<group>"; };
+		BBFE83111FFEC6AD00E5F650 /* GameRenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameRenderer.cpp; sourceTree = "<group>"; };
+		BBFE83121FFEC6AD00E5F650 /* GameRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameRenderer.h; sourceTree = "<group>"; };
+		BBFE83151FFEC87200E5F650 /* GameInputManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameInputManager.h; sourceTree = "<group>"; };
+		BBFE83161FFEC87300E5F650 /* GameInputManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameInputManager.cpp; sourceTree = "<group>"; };
+		BBFE83191FFECFEA00E5F650 /* title_assets.cfg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = title_assets.cfg; sourceTree = "<group>"; };
+		BBFE831B1FFECFF200E5F650 /* title_assets.cfg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = title_assets.cfg; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -2141,7 +2165,7 @@
 		BB5066EF1FB36EBA00CADEEA /* textures */ = {
 			isa = PBXGroup;
 			children = (
-				BB63633B1FEB0D3E001BB9E1 /* assets.cfg */,
+				BB63633B1FEB0D3E001BB9E1 /* game_assets.cfg */,
 				BB5066F01FB36EBA00CADEEA /* texture_001.ngt */,
 				BB50670D1FB36F2D00CADEEA /* texture_001.png */,
 				BB5066F21FB36EBA00CADEEA /* texture_002.ngt */,
@@ -2150,6 +2174,7 @@
 				BBDC64C41FEC40E9002DCADA /* texture_003.png */,
 				BBDC64CD1FEC410E002DCADA /* texture_004.ngt */,
 				BBDC64C51FEC40E9002DCADA /* texture_004.png */,
+				BBFE83191FFECFEA00E5F650 /* title_assets.cfg */,
 			);
 			path = textures;
 			sourceTree = "<group>";
@@ -2252,7 +2277,7 @@
 		BB5833E61EEDDD330084DA20 /* textures */ = {
 			isa = PBXGroup;
 			children = (
-				BB6363351FEAF65C001BB9E1 /* assets.cfg */,
+				BB6363351FEAF65C001BB9E1 /* game_assets.cfg */,
 				BB5833E71EEDDD330084DA20 /* texture_001.ngt */,
 				BB5833F51EEDDD440084DA20 /* texture_001.png */,
 				BB5833E91EEDDD330084DA20 /* texture_002.ngt */,
@@ -2261,6 +2286,7 @@
 				BBDC64C01FEC40DC002DCADA /* texture_003.png */,
 				BBDC64D01FEC4150002DCADA /* texture_004.ngt */,
 				BBDC64C11FEC40DC002DCADA /* texture_004.png */,
+				BBFE831B1FFECFF200E5F650 /* title_assets.cfg */,
 			);
 			path = textures;
 			sourceTree = "<group>";
@@ -2341,8 +2367,10 @@
 		BB6E7AF51F940F13006C0024 /* portable */ = {
 			isa = PBXGroup;
 			children = (
-				BB6E7AFA1F940F13006C0024 /* MainRenderer.cpp */,
-				BB6E7AFB1F940F13006C0024 /* MainRenderer.h */,
+				BBFE83111FFEC6AD00E5F650 /* GameRenderer.cpp */,
+				BBFE83121FFEC6AD00E5F650 /* GameRenderer.h */,
+				BB6E7AFA1F940F13006C0024 /* TitleRenderer.cpp */,
+				BB6E7AFB1F940F13006C0024 /* TitleRenderer.h */,
 			);
 			path = portable;
 			sourceTree = "<group>";
@@ -2353,16 +2381,16 @@
 				BB6E7AFD1F940F13006C0024 /* Crate.cpp */,
 				BB6E7AFE1F940F13006C0024 /* Crate.h */,
 				BB6E7AFF1F940F13006C0024 /* GameConstants.h */,
+				BBFE830E1FFEC69500E5F650 /* GameEngine.cpp */,
+				BBFE830D1FFEC69400E5F650 /* GameEngine.h */,
+				BBFE83161FFEC87300E5F650 /* GameInputManager.cpp */,
+				BBFE83151FFEC87200E5F650 /* GameInputManager.h */,
 				BB6E7B001F940F13006C0024 /* Ground.cpp */,
 				BB6E7B011F940F13006C0024 /* Ground.h */,
-				BB3BAEDF1FB4A1F900F5F8B0 /* InputManager.cpp */,
-				BB3BAEE01FB4A1F900F5F8B0 /* InputManager.h */,
 				BB6531661FED575B00963997 /* InstanceManager.cpp */,
 				BB6531671FED575B00963997 /* InstanceManager.h */,
-				BB6E7B021F940F13006C0024 /* MainEngine.cpp */,
-				BB6E7B031F940F13006C0024 /* MainEngine.h */,
-				BB6E7B041F940F13006C0024 /* MainEngineState.h */,
-				BBBCC1641FF462BA00E23FEB /* MainEngineState.cpp */,
+				BBFE83061FFEBFF900E5F650 /* MainEngineController.cpp */,
+				BBFE83071FFEBFF900E5F650 /* MainEngineController.h */,
 				BB65315B1FED56C800963997 /* MainInputState.cpp */,
 				BB65315A1FED56C700963997 /* MainInputState.h */,
 				BB6E7B051F940F13006C0024 /* PooledObjectsManager.cpp */,
@@ -2377,6 +2405,10 @@
 				BB6E7B0C1F940F13006C0024 /* SpacePirate.h */,
 				BB6E7B0D1F940F13006C0024 /* SpacePirateChunk.cpp */,
 				BB6E7B0E1F940F13006C0024 /* SpacePirateChunk.h */,
+				BB6E7B021F940F13006C0024 /* TitleEngine.cpp */,
+				BB6E7B031F940F13006C0024 /* TitleEngine.h */,
+				BB3BAEDF1FB4A1F900F5F8B0 /* TitleInputManager.cpp */,
+				BB3BAEE01FB4A1F900F5F8B0 /* TitleInputManager.h */,
 				BB6E7B0F1F940F13006C0024 /* Util.cpp */,
 				BB6E7B101F940F13006C0024 /* Util.h */,
 				BB65315C1FED56C800963997 /* World.cpp */,
@@ -3554,8 +3586,12 @@
 		BBFA49E21FC3702D00233514 /* portable */ = {
 			isa = PBXGroup;
 			children = (
-				BBFA49E31FC3702D00233514 /* Engine.h */,
 				BBFA49E41FC3702D00233514 /* Engine.cpp */,
+				BBFA49E31FC3702D00233514 /* Engine.h */,
+				BBFE83021FFEBC8100E5F650 /* EngineController.cpp */,
+				BBFE83031FFEBC8100E5F650 /* EngineController.h */,
+				BBFE830A1FFEC23000E5F650 /* EngineState.cpp */,
+				BBFE83011FFEAB8900E5F650 /* EngineState.h */,
 			);
 			path = portable;
 			sourceTree = "<group>";
@@ -3654,6 +3690,7 @@
 			files = (
 				BB44C3291DB030B3003E633F /* Assets.xcassets in Resources */,
 				BB052CCD1EBA8ADD007FA789 /* shader_002_vert.ngs in Resources */,
+				BBFE831C1FFECFF200E5F650 /* title_assets.cfg in Resources */,
 				BB052CCB1EBA8ADD007FA789 /* shader_002_frag.ngs in Resources */,
 				BB5833EE1EEDDD330084DA20 /* sound_003.wav in Resources */,
 				BB5833F11EEDDD330084DA20 /* texture_001.ngt in Resources */,
@@ -3665,7 +3702,7 @@
 				BBDC64D21FEC4151002DCADA /* texture_004.ngt in Resources */,
 				BB2AC5471EFC56330012B990 /* sound_006.wav in Resources */,
 				BB052CCF1EBA8ADD007FA789 /* shader_003_frag.ngs in Resources */,
-				BB6363381FEB0551001BB9E1 /* assets.cfg in Resources */,
+				BB6363381FEB0551001BB9E1 /* game_assets.cfg in Resources */,
 				BBDC64D31FEC4151002DCADA /* texture_003.ngt in Resources */,
 				BB052CC71EBA8ADD007FA789 /* shader_001_frag.ngs in Resources */,
 				BB5833EC1EEDDD330084DA20 /* sound_001.wav in Resources */,
@@ -3688,6 +3725,7 @@
 				BB50672F1FB3712E00CADEEA /* shader_001_frag.fsh in Resources */,
 				BB5067301FB3712E00CADEEA /* shader_001_frag.ngs in Resources */,
 				BB5067311FB3712E00CADEEA /* shader_001_vert.ngs in Resources */,
+				BBFE831A1FFECFEA00E5F650 /* title_assets.cfg in Resources */,
 				BB5067321FB3712E00CADEEA /* shader_001_vert.vsh in Resources */,
 				BB5067331FB3712E00CADEEA /* shader_002_frag.fsh in Resources */,
 				BBDC64CE1FEC410E002DCADA /* texture_003.ngt in Resources */,
@@ -3699,7 +3737,7 @@
 				BB5067391FB3712E00CADEEA /* shader_003_vert.ngs in Resources */,
 				BB50673A1FB3712E00CADEEA /* shader_003_vert.vsh in Resources */,
 				BB5066FA1FB36EBA00CADEEA /* music_001.wav in Resources */,
-				BB63633C1FEB0D3E001BB9E1 /* assets.cfg in Resources */,
+				BB63633C1FEB0D3E001BB9E1 /* game_assets.cfg in Resources */,
 				BB5066FD1FB36EBA00CADEEA /* sound_003.wav in Resources */,
 				BB5066FE1FB36EBA00CADEEA /* sound_004.wav in Resources */,
 				BBD3E8681FB2872A00328E35 /* Main.storyboard in Resources */,
@@ -3780,13 +3818,13 @@
 				BB27D2451FC6567A00ED42FD /* OALSuspendHandler.m in Sources */,
 				BB6E7B241F940FD4006C0024 /* tinythread.cpp in Sources */,
 				BB04A6B81FC3746800E0EB89 /* GlfwMain.cpp in Sources */,
-				BB6E7B151F940F2B006C0024 /* MainRenderer.cpp in Sources */,
+				BB6E7B151F940F2B006C0024 /* TitleRenderer.cpp in Sources */,
 				BBD554621FDB2EA800E00AD6 /* b2BroadPhase.cpp in Sources */,
 				BB1C3C1A1FE7868E002E4AA6 /* NGShaderVarInput.cpp in Sources */,
 				BB27D26B1FC6572600ED42FD /* AppleAudioEngineHelper.cpp in Sources */,
 				BB6E7B161F940F2B006C0024 /* Crate.cpp in Sources */,
 				BB6E7B171F940F2B006C0024 /* Ground.cpp in Sources */,
-				BB6E7B181F940F2B006C0024 /* MainEngine.cpp in Sources */,
+				BB6E7B181F940F2B006C0024 /* TitleEngine.cpp in Sources */,
 				BBFC2A7C1FC4A00E00A970B4 /* NullAudioEngineHelper.cpp in Sources */,
 				BBD554341FDB2EA800E00AD6 /* b2GearJoint.cpp in Sources */,
 				BBFC2A7D1FC4A00E00A970B4 /* NullSound.cpp in Sources */,
@@ -3803,6 +3841,7 @@
 				BBD5544A1FDB2EA800E00AD6 /* b2Timer.cpp in Sources */,
 				BBD5543E1FDB2EA800E00AD6 /* b2Island.cpp in Sources */,
 				BB27D2671FC6572600ED42FD /* AppleSoundWrapper.cpp in Sources */,
+				BBFE830B1FFEC23000E5F650 /* EngineState.cpp in Sources */,
 				BBD554101FDB2EA800E00AD6 /* b2Fixture.cpp in Sources */,
 				BB6F598C1FBDEA0D00BD7697 /* init.c in Sources */,
 				BB1C3BF91FE75FD3002E4AA6 /* Color.cpp in Sources */,
@@ -3813,9 +3852,9 @@
 				BB1C3C0E1FE77301002E4AA6 /* NGFramebufferToScreenShader.cpp in Sources */,
 				BBAEF2941EA94EDA00F0866E /* Circle.cpp in Sources */,
 				BBBD14901EE06858003F9307 /* StringUtil.cpp in Sources */,
+				BBFE83041FFEBC8200E5F650 /* EngineController.cpp in Sources */,
 				BB80D2021EF97F89002B9448 /* NGSteamP2PAuth.cpp in Sources */,
 				BB6F59761FBDE97D00BD7697 /* cocoa_init.m in Sources */,
-				BBBCC1651FF462BA00E23FEB /* MainEngineState.cpp in Sources */,
 				BB8308441EC2AD1F00435E7E /* DeliveryNotificationManager.cpp in Sources */,
 				BB1E89811EF4B2BA00B0D78A /* SocketPacketHandler.cpp in Sources */,
 				BBD554441FDB2EA800E00AD6 /* b2Draw.cpp in Sources */,
@@ -3830,8 +3869,10 @@
 				BB7267FE1EEC704B004F33F9 /* NetworkManagerServer.cpp in Sources */,
 				BBFA49E51FC3702D00233514 /* Engine.cpp in Sources */,
 				BB8308501EC2AD1F00435E7E /* InFlightPacket.cpp in Sources */,
+				BBFE830F1FFEC69500E5F650 /* GameEngine.cpp in Sources */,
 				BB7268001EEC704E004F33F9 /* ReplicationManagerTransmissionData.cpp in Sources */,
 				BB7267FF1EEC704C004F33F9 /* ReplicationManagerServer.cpp in Sources */,
+				BBFE83171FFEC87300E5F650 /* GameInputManager.cpp in Sources */,
 				BB8308411EC2AD1F00435E7E /* AckRange.cpp in Sources */,
 				BB6F59811FBDE9C400BD7697 /* posix_thread.c in Sources */,
 				BBAEF2981EA94EDA00F0866E /* NGRect.cpp in Sources */,
@@ -3842,6 +3883,7 @@
 				BB1E897B1EF4A81500B0D78A /* PacketHandler.cpp in Sources */,
 				BB8308741EC2AD1F00435E7E /* SocketUtil.cpp in Sources */,
 				BB6F59791FBDE97D00BD7697 /* cocoa_window.m in Sources */,
+				BBFE83131FFEC6AD00E5F650 /* GameRenderer.cpp in Sources */,
 				BB31B5AF1FC205D5005F1C0A /* GamePadEvent.cpp in Sources */,
 				BB4253E11EF598C1003F6D2A /* SocketClientHelper.cpp in Sources */,
 				BB7251951EE105330024C71C /* NetworkManagerClient.cpp in Sources */,
@@ -3890,6 +3932,7 @@
 				BBAEF2721EA94EDA00F0866E /* SpriteBatcher.cpp in Sources */,
 				BBF226CF1EC12CDE00573356 /* ReplicationManagerClient.cpp in Sources */,
 				BBAEF2AA1EA94EDA00F0866E /* SoundWrapper.cpp in Sources */,
+				BBFE83081FFEBFF900E5F650 /* MainEngineController.cpp in Sources */,
 				BBD554421FDB2EA800E00AD6 /* b2Rope.cpp in Sources */,
 				BBD5542A1FDB2EA800E00AD6 /* b2FrictionJoint.cpp in Sources */,
 				BB7428411EB2AF4200B7628D /* NGRTTI.cpp in Sources */,
@@ -3933,7 +3976,7 @@
 				BBD554501FDB2EA800E00AD6 /* b2Distance.cpp in Sources */,
 				BB44CB8A1DB053C0003E633F /* pngset.c in Sources */,
 				BB44CB8B1DB053C0003E633F /* pngtrans.c in Sources */,
-				BB3BAEE11FB4A1FA00F5F8B0 /* InputManager.cpp in Sources */,
+				BB3BAEE11FB4A1FA00F5F8B0 /* TitleInputManager.cpp in Sources */,
 				BBAEF2581EA94EDA00F0866E /* CircleBatcher.cpp in Sources */,
 				BB44CB8C1DB053C0003E633F /* pngwio.c in Sources */,
 				BBD554141FDB2EA800E00AD6 /* b2EdgeAndPolygonContact.cpp in Sources */,
@@ -4000,6 +4043,7 @@
 				BB27D2521FC6567F00ED42FD /* ALSoundSourcePool.m in Sources */,
 				BB27D2531FC6567F00ED42FD /* OALSimpleAudio.m in Sources */,
 				BB27D2541FC6567F00ED42FD /* OALAudioFile.m in Sources */,
+				BBFE83181FFEC87300E5F650 /* GameInputManager.cpp in Sources */,
 				BBD554151FDB2EA800E00AD6 /* b2EdgeAndPolygonContact.cpp in Sources */,
 				BB27D2551FC6567F00ED42FD /* NSMutableDictionary+WeakReferences.m in Sources */,
 				BB27D2561FC6567F00ED42FD /* NSMutableArray+WeakReferences.m in Sources */,
@@ -4039,6 +4083,7 @@
 				BB5AFE661FB35AAF005FBD52 /* NGShader.cpp in Sources */,
 				BBD554611FDB2EA800E00AD6 /* b2TimeOfImpact.cpp in Sources */,
 				BBD5545B1FDB2EA800E00AD6 /* b2EdgeShape.cpp in Sources */,
+				BBFE83101FFEC69500E5F650 /* GameEngine.cpp in Sources */,
 				BB5AFE691FB35AAF005FBD52 /* RendererHelper.cpp in Sources */,
 				BBD5542D1FDB2EA800E00AD6 /* b2DistanceJoint.cpp in Sources */,
 				BBD554671FDB2EA800E00AD6 /* b2Collision.cpp in Sources */,
@@ -4065,12 +4110,13 @@
 				BBD5541B1FDB2EA800E00AD6 /* b2PolygonContact.cpp in Sources */,
 				BB5AFE1C1FB359EA005FBD52 /* WeightedTimedMovingAverage.cpp in Sources */,
 				BB31B5A81FC205D5005F1C0A /* GamePadInputManager.cpp in Sources */,
-				BB5AFE081FB359DE005FBD52 /* MainRenderer.cpp in Sources */,
+				BB5AFE081FB359DE005FBD52 /* TitleRenderer.cpp in Sources */,
 				BB5AFE091FB359DE005FBD52 /* Crate.cpp in Sources */,
 				BB5AFE351FB35A77005FBD52 /* ClientHelper.cpp in Sources */,
 				BBD554331FDB2EA800E00AD6 /* b2RevoluteJoint.cpp in Sources */,
 				BBD554431FDB2EA800E00AD6 /* b2Rope.cpp in Sources */,
 				BB5AFE361FB35A77005FBD52 /* NetworkManagerClient.cpp in Sources */,
+				BBFE83051FFEBC8200E5F650 /* EngineController.cpp in Sources */,
 				BB5AFE371FB35A77005FBD52 /* ReplicationManagerClient.cpp in Sources */,
 				BB5AFE381FB35A77005FBD52 /* SocketClientHelper.cpp in Sources */,
 				BB5AFE391FB35A77005FBD52 /* AckRange.cpp in Sources */,
@@ -4082,6 +4128,7 @@
 				BB5AFE3C1FB35A77005FBD52 /* InputState.cpp in Sources */,
 				BB31B5AC1FC205D5005F1C0A /* CursorInputManager.cpp in Sources */,
 				BB5AFE3D1FB35A77005FBD52 /* MachineAddress.cpp in Sources */,
+				BBFE830C1FFEC23000E5F650 /* EngineState.cpp in Sources */,
 				BB5AFE3E1FB35A77005FBD52 /* NetworkHelper.cpp in Sources */,
 				BB6531651FED56CA00963997 /* Server.cpp in Sources */,
 				BB5AFE3F1FB35A77005FBD52 /* InFlightPacket.cpp in Sources */,
@@ -4113,7 +4160,7 @@
 				BB5AFE501FB35A77005FBD52 /* ReplicationManagerTransmissionData.cpp in Sources */,
 				BB5AFE511FB35A77005FBD52 /* SocketServerHelper.cpp in Sources */,
 				BB5AFE0A1FB359DE005FBD52 /* Ground.cpp in Sources */,
-				BB5AFE0B1FB359DE005FBD52 /* MainEngine.cpp in Sources */,
+				BB5AFE0B1FB359DE005FBD52 /* TitleEngine.cpp in Sources */,
 				BB5AFE0C1FB359DE005FBD52 /* PooledObjectsManager.cpp in Sources */,
 				BB5AFE271FB35A19005FBD52 /* Circle.cpp in Sources */,
 				BB5AFE291FB35A19005FBD52 /* Line.cpp in Sources */,
@@ -4137,12 +4184,12 @@
 				BB5AFE0D1FB359DE005FBD52 /* Projectile.cpp in Sources */,
 				BB5AFE0E1FB359DE005FBD52 /* Robot.cpp in Sources */,
 				BB8091FE1FF4131600F84D1D /* TextureManager.cpp in Sources */,
-				BBBCC1661FF462BA00E23FEB /* MainEngineState.cpp in Sources */,
 				BB5AFE0F1FB359DE005FBD52 /* SpacePirate.cpp in Sources */,
 				BB5AFE101FB359DE005FBD52 /* SpacePirateChunk.cpp in Sources */,
+				BBFE83091FFEBFF900E5F650 /* MainEngineController.cpp in Sources */,
 				BB5AFE111FB359DE005FBD52 /* Util.cpp in Sources */,
 				BBD5543D1FDB2EA800E00AD6 /* b2RopeJoint.cpp in Sources */,
-				BB3BAEE21FB4A1FA00F5F8B0 /* InputManager.cpp in Sources */,
+				BB3BAEE21FB4A1FA00F5F8B0 /* TitleInputManager.cpp in Sources */,
 				BBCB93221FC252790020703A /* FileData.cpp in Sources */,
 				BBD554251FDB2EA800E00AD6 /* b2WorldCallbacks.cpp in Sources */,
 				BB6531691FED575B00963997 /* InstanceManager.cpp in Sources */,
@@ -4169,6 +4216,7 @@
 				BB5AFDB51FB3595F005FBD52 /* pngrutil.c in Sources */,
 				BB5AFDB61FB3595F005FBD52 /* pngset.c in Sources */,
 				BB9EE5171FC092C5000F5389 /* AppleAssetDataHandler.cpp in Sources */,
+				BBFE83141FFEC6AD00E5F650 /* GameRenderer.cpp in Sources */,
 				BB5AFDB71FB3595F005FBD52 /* pngtrans.c in Sources */,
 				BBD554211FDB2EA800E00AD6 /* b2EdgeAndCircleContact.cpp in Sources */,
 				BB5AFDB81FB3595F005FBD52 /* pngwio.c in Sources */,

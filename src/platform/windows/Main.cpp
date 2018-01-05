@@ -6,10 +6,10 @@
 
 #include "framework/main/directx/DirectXMain.h"
 
-#include "game/logic/MainEngine.h"
+#include "game/logic/MainEngineController.h"
 
 // Entry point
 int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPWSTR lpCmdLine, _In_ int nCmdShow)
 {
-	return DirectXMain::exec(hInstance, hPrevInstance, lpCmdLine, nCmdShow, new MainEngine());
+	return DirectXMain::exec(hInstance, hPrevInstance, lpCmdLine, nCmdShow, new MainEngineController());
 }

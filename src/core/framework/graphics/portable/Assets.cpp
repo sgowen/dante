@@ -55,6 +55,7 @@ void Assets::initWithJsonFile(const char* path, bool isBundled, bool useEncrypti
 
 void Assets::initWithJson(const char* json)
 {
+    getTextureDescriptors().clear();
     getTextureRegionMap().clear();
     getAnimationsMap().clear();
     

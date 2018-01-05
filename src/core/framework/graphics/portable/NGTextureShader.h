@@ -14,7 +14,7 @@
 class NGTextureShader : public NGShader
 {
 public:
-    NGTextureShader(RendererHelper& inRendererHelper, NGShaderLoader& inNGShaderLoader, const char* vertexShaderName, const char* fragmentShaderName);
+    NGTextureShader(RendererHelper& inRendererHelper, const char* vertexShaderName, const char* fragmentShaderName);
     
     virtual void bind(void* data = NULL);
     

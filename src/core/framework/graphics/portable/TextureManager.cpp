@@ -23,7 +23,9 @@
 #include <string>
 #include <assert.h>
 
-TextureManager::TextureManager() : _textureLoader(TEXTURE_LOADER_FACTORY->createTextureLoader())
+TextureManager::TextureManager(const char* assetsCfgPath) :
+_assetsCfgPath(assetsCfgPath),
+_textureLoader(TEXTURE_LOADER_FACTORY->createTextureLoader())
 {
     // Empty
 }
@@ -39,7 +41,7 @@ TextureManager::~TextureManager()
 
 void TextureManager::createDeviceDependentResources()
 {
-    ASSETS->initWithJsonFile("assets.cfg", true);
+    ASSETS->initWithJsonFile(_assetsCfgPath, true);
     
     if (_textures.size() == 0)
     {
@@ -52,7 +54,7 @@ void TextureManager::createDeviceDependentResources()
     
     for (NGTexture* t : _textures)
     {
-        loadTextureSync(t);
+        loadTextureAsync(t);
     }
 }
 
@@ -66,6 +68,8 @@ void TextureManager::releaseDeviceDependentResources()
     {
         unloadTexture(t);
     }
+    
+    _textures.clear();
 }
 
 void TextureManager::loadTextureDataSync(NGTexture* arg)
@@ -121,7 +125,6 @@ void TextureManager::loadTextureAsync(NGTexture* texture)
     
     _loadingTextures.push_back(texture);
     
-    texture->_isLoadingData = true;
     _textureDataLoadingThreads.push_back(new tthread::thread(tthreadLoadTextureDataSync, texture));
 }
 

@@ -8,7 +8,7 @@
 
 #include "framework/main/android/AndroidMain.h"
 
-#include "game/logic/MainEngine.h"
+#include "game/logic/MainEngineController.h"
 
 /**
  * This is the main entry point of a native application that is using
@@ -19,5 +19,5 @@ void android_main(android_app* state)
 {
     app_dummy();
 
-    AndroidMain::getInstance()->exec(state, new MainEngine());
+    AndroidMain::getInstance()->exec(state, new MainEngineController());
 }

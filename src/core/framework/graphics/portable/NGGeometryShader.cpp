@@ -16,14 +16,12 @@
 #include <framework/graphics/portable/NGShaderVarInput.h>
 #include <framework/graphics/portable/ShaderProgramWrapper.h>
 
-NGGeometryShader::NGGeometryShader(RendererHelper& inRendererHelper, NGShaderLoader& inNGShaderLoader, const char* vertexShaderName, const char* fragmentShaderName) : NGShader(inRendererHelper, inNGShaderLoader, vertexShaderName, fragmentShaderName)
+NGGeometryShader::NGGeometryShader(RendererHelper& inRendererHelper, const char* vertexShaderName, const char* fragmentShaderName) : NGShader(inRendererHelper, vertexShaderName, fragmentShaderName)
 {
     _uniforms.push_back(new NGShaderUniformInput("u_Matrix", 64));
     
     _inputLayout.push_back(new NGShaderVarInput("a_Position", 3, 0));
     _inputLayout.push_back(new NGShaderVarInput("a_Color", 4, 3));
-    
-    load();
 }
 
 void NGGeometryShader::bind(void* data)

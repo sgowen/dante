@@ -90,6 +90,11 @@ ShaderProgramWrapper* OpenGLProgramLoader::loadNGShader(const char* vertexShader
     return ret;
 }
 
+void OpenGLProgramLoader::destroyNGShader(ShaderProgramWrapper* shaderProgramWrapper, std::vector<NGShaderUniformInput*>& uniforms, std::vector<NGShaderVarInput*>& inputLayout)
+{
+    glDeleteProgram(shaderProgramWrapper->_programObjectId);
+}
+
 GLuint OpenGLProgramLoader::buildProgram(const void * vertex_shader_source, const int vertex_shader_source_length, const void * fragment_shader_source, const int fragment_shader_source_length)
 {
     assert(vertex_shader_source != NULL);

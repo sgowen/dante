@@ -42,16 +42,16 @@ public:
         _previousState = state;
     }
     
-    void execute() const
+    void update() const
     {
         if (_globalState)
         {
-            _globalState->execute(_owner);
+            _globalState->update(_owner);
         }
         
         if (_currentState)
         {
-            _currentState->execute(_owner);
+            _currentState->update(_owner);
         }
     }
     

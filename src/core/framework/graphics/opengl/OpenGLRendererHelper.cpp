@@ -143,11 +143,6 @@ void OpenGLRendererHelper::bindNGShader(ShaderProgramWrapper* shaderProgramWrapp
     }
 }
 
-void OpenGLRendererHelper::destroyNGShader(ShaderProgramWrapper* shaderProgramWrapper, std::vector<NGShaderUniformInput*>& uniforms, std::vector<NGShaderVarInput*>& inputLayout)
-{
-    glDeleteProgram(shaderProgramWrapper->_programObjectId);
-}
-
 void OpenGLRendererHelper::mapTextureVertices(std::vector<NGShaderVarInput*>& inputLayout)
 {
     mapVertices(_textureVboObject, _textureVertices, inputLayout);

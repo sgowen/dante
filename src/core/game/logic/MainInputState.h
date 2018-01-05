@@ -42,13 +42,13 @@ class MainInputState : public InputState
 {
     NGRTTI_DECL;
     
-    friend class InputManager;
+    friend class GameInputManager;
     
 public:
     class GameInputState
     {
         friend class MainInputState;
-        friend class InputManager;
+        friend class GameInputManager;
         
     public:
         void write(OutputMemoryBitStream& inOutputStream) const;
@@ -94,12 +94,8 @@ public:
     
     bool isRequestingToAddLocalPlayer() const;
     
-    int getMenuState() const;
-    
 private:
     GameInputState _gameMainInputStates[4];
-    
-    int _menuState;
     
     GameInputState& getGameInputState(int index);
 };

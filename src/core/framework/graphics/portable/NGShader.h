@@ -21,7 +21,7 @@ struct ShaderProgramWrapper;
 class NGShader
 {
 public:
-    NGShader(RendererHelper& inRendererHelper, NGShaderLoader& inNGShaderLoader, const char* vertexShaderName, const char* fragmentShaderName);
+    NGShader(RendererHelper& inRendererHelper, const char* vertexShaderName, const char* fragmentShaderName);
     
     virtual ~NGShader();
     
@@ -29,16 +29,19 @@ public:
     
     virtual void unbind() = 0;
     
+    void load(NGShaderLoader& shaderProgramLoader);
+    
+    void unload(NGShaderLoader& shaderProgramLoader);
+    
+    bool isLoaded();
+    
 protected:
     RendererHelper& _rendererHelper;
-    NGShaderLoader& _shaderProgramLoader;
     const char* _vertexShaderName;
     const char* _fragmentShaderName;
     std::vector<NGShaderUniformInput*> _uniforms;
     std::vector<NGShaderVarInput*> _inputLayout;
     ShaderProgramWrapper* _shaderProgramWrapper;
-    
-    void load();
 };
 
 #endif /* defined(__noctisgames__NGShader__) */

@@ -8,8 +8,10 @@
 
 #include "framework/main/android/AndroidMain.h"
 
+#include "framework/main/portable/EngineController.h"
 #include "framework/main/portable/Engine.h"
 
+#include "framework/main/portable/EngineState.h"
 #include "framework/input/CursorInputManager.h"
 #include "framework/input/KeyboardInputManager.h"
 #include "framework/file/android/AndroidAssetDataHandler.h"
@@ -159,15 +161,15 @@ int32_t AndroidMain::handleInput(android_app* app, AInputEvent* event)
     return 0;
 }
 
-void AndroidMain::exec(android_app* state, Engine* engine)
+void AndroidMain::exec(android_app* state, EngineController* engineController)
 {
-    if (!engine)
+    if (!engineController)
     {
         return;
     }
     
     _app = state;
-    _engine = engine;
+    _engine = new Engine(engineController);
     
     state->userData = this;
     state->onAppCmd = AndroidMain::handleCmd;

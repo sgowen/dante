@@ -19,7 +19,7 @@
 
 NGRTTI_IMPL(MainInputState, InputState);
 
-MainInputState::MainInputState() : InputState(), _menuState(MS_NONE)
+MainInputState::MainInputState() : InputState()
 {
     // Empty
 }
@@ -153,11 +153,6 @@ bool MainInputState::isRequestingToAddLocalPlayer() const
     }
     
     return false;
-}
-
-int MainInputState::getMenuState() const
-{
-    return _menuState;
 }
 
 MainInputState::GameInputState& MainInputState::getGameInputState(int index)

@@ -18,25 +18,35 @@
 
 #include <framework/util/NGSTDUtil.h>
 
-NGShader::NGShader(RendererHelper& inRendererHelper, NGShaderLoader& inNGShaderLoader, const char* vertexShaderName, const char* fragmentShaderName) : _rendererHelper(inRendererHelper), _shaderProgramLoader(inNGShaderLoader), _vertexShaderName(vertexShaderName), _fragmentShaderName(fragmentShaderName), _shaderProgramWrapper(NULL)
+NGShader::NGShader(RendererHelper& inRendererHelper, const char* vertexShaderName, const char* fragmentShaderName) : _rendererHelper(inRendererHelper), _vertexShaderName(vertexShaderName), _fragmentShaderName(fragmentShaderName), _shaderProgramWrapper(NULL)
 {
     // Empty
 }
 
 NGShader::~NGShader()
 {
-    if (_shaderProgramWrapper != NULL)
-    {
-        _rendererHelper.destroyNGShader(_shaderProgramWrapper, _uniforms, _inputLayout);
-        
-        delete _shaderProgramWrapper;
-    }
-    
     NGSTDUtil::cleanUpVectorOfPointers(_uniforms);
     NGSTDUtil::cleanUpVectorOfPointers(_inputLayout);
 }
 
-void NGShader::load()
+void NGShader::load(NGShaderLoader& shaderProgramLoader)
 {
-    _shaderProgramWrapper = _shaderProgramLoader.loadNGShader(_vertexShaderName, _fragmentShaderName, _uniforms, _inputLayout);
+    _shaderProgramWrapper = shaderProgramLoader.loadNGShader(_vertexShaderName, _fragmentShaderName, _uniforms, _inputLayout);
+}
+
+void NGShader::unload(NGShaderLoader& shaderProgramLoader)
+{
+    if (_shaderProgramWrapper != NULL)
+    {
+        shaderProgramLoader.destroyNGShader(_shaderProgramWrapper, _uniforms, _inputLayout);
+        
+        delete _shaderProgramWrapper;
+        
+        _shaderProgramWrapper = NULL;
+    }
+}
+
+bool NGShader::isLoaded()
+{
+    return _shaderProgramWrapper != NULL;
 }

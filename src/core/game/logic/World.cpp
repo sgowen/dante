@@ -25,7 +25,7 @@
 #include "game/logic/Server.h"
 #include "framework/network/server/ClientProxy.h"
 #include "framework/network/portable/MoveList.h"
-#include "game/logic/InputManager.h"
+#include "game/logic/GameInputManager.h"
 #include "framework/network/client/NetworkManagerClient.h"
 #include "framework/util/StringUtil.h"
 
@@ -160,7 +160,7 @@ void World::postRead()
     }
     
     // all processed moves have been removed, so all that are left are unprocessed moves so we must apply them...
-    MoveList& moveList = InputManager::getInstance()->getMoveList();
+    MoveList& moveList = GameInputManager::getInstance()->getMoveList();
     
     for (const Move& move : moveList)
     {
@@ -275,7 +275,7 @@ void World::update()
     }
     else
     {
-        const Move* pendingMove = InputManager::getInstance()->getPendingMove();
+        const Move* pendingMove = GameInputManager::getInstance()->getPendingMove();
         if (pendingMove)
         {
             for (Entity* entity : _players)

@@ -21,6 +21,8 @@ public:
     virtual ~DirectXProgramLoader();
     
     virtual ShaderProgramWrapper* loadNGShader(const char* vertexShaderName, const char* fragmentShaderName, std::vector<NGShaderUniformInput*>& uniforms, std::vector<NGShaderVarInput*>& inputLayout);
+    
+    virtual void destroyNGShader(ShaderProgramWrapper* shaderProgramWrapper, std::vector<NGShaderUniformInput*>& uniforms, std::vector<NGShaderVarInput*>& inputLayout);
 };
 
 #endif /* defined(__noctisgames__DirectXProgramLoader__) */

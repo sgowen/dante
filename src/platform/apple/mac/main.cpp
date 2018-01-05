@@ -8,9 +8,9 @@
 
 #include "framework/main/glfw/GlfwMain.h"
 
-#include "game/logic/MainEngine.h"
+#include "game/logic/MainEngineController.h"
 
 int main(void)
 {
-    return GlfwMain::getInstance()->exec(new MainEngine());
+    return GlfwMain::getInstance()->exec(new MainEngineController());
 }

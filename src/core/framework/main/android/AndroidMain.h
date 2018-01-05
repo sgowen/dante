@@ -9,6 +9,7 @@
 #include "android_native_app_glue.h"
 #include "GLContext.h"
 
+class EngineController;
 class Engine;
 
 class AndroidMain
@@ -19,7 +20,7 @@ public:
     static void handleCmd(struct android_app* app, int32_t cmd);
     static int32_t handleInput(android_app* app, AInputEvent* event);
     
-    void exec(android_app* state, Engine* engine);
+    void exec(android_app* state, EngineController* engineController);
     
     int initDisplay();
     void loadResources();

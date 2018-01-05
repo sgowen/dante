@@ -10,6 +10,7 @@
 
 #include "framework/main/directx/DirectXMain.h"
 
+#include "framework/main/portable/EngineController.h"
 #include "framework/main/portable/Engine.h"
 
 #include "framework/graphics/directx/DirectXRendererHelper.h"
@@ -42,17 +43,17 @@ void DirectXMain::create()
 	s_pInstance = new DirectXMain();
 }
 
+DirectXMain * DirectXMain::getInstance()
+{
+    return s_pInstance;
+}
+
 void DirectXMain::destroy()
 {
 	assert(s_pInstance);
 
 	delete s_pInstance;
 	s_pInstance = NULL;
-}
-
-DirectXMain * DirectXMain::getInstance()
-{
-	return s_pInstance;
 }
 
 // Indicates to hybrid graphics systems to prefer the discrete part by default
@@ -62,7 +63,7 @@ extern "C"
 	__declspec(dllexport) int AmdPowerXpressRequestHighPerformance = 1;
 }
 
-int DirectXMain::exec(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLine, int nCmdShow, Engine* engine)
+int DirectXMain::exec(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLine, int nCmdShow, EngineController* engineController)
 {
 	UNREFERENCED_PARAMETER(hPrevInstance);
 	UNREFERENCED_PARAMETER(lpCmdLine);
@@ -78,7 +79,7 @@ int DirectXMain::exec(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmd
 		return 1;
 	}
     
-    if (!engine)
+    if (!engineController)
     {
         return 1;
     }
@@ -145,7 +146,7 @@ int DirectXMain::exec(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmd
 
 		GetClientRect(hwnd, &rc);
 
-		DX_MAIN->Initialize(engine, hwnd, rc.right - rc.left, rc.bottom - rc.top);
+		DX_MAIN->Initialize(engineController, hwnd, rc.right - rc.left, rc.bottom - rc.top);
 
 		HDEVNOTIFY hNewAudio = nullptr;
 
@@ -391,16 +392,11 @@ LRESULT CALLBACK DirectXMain::WndProc(HWND hWnd, UINT message, WPARAM wParam, LP
 }
 
 // Initialize the DirectX resources required to run.
-void DirectXMain::Initialize(Engine* engine, HWND window, int width, int height)
+void DirectXMain::Initialize(EngineController* engineController, HWND window, int width, int height)
 {
 	_deviceResources->SetWindow(window, width, height);
     
-    _engine = engine;
-    if (_engine->getRequestedAction() == REQUESTED_ACTION_EXIT)
-    {
-        exitGame();
-        return;
-    }
+    _engine = new Engine(engineController);
 
 	_deviceResources->CreateDeviceResources();
 	CreateDeviceDependentResources();

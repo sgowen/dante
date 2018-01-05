@@ -73,32 +73,23 @@ void Server::sHandleLostClient(ClientProxy* inClientProxy, uint8_t index)
     getInstance()->handleLostClient(inClientProxy, index);
 }
 
-void Server::update(double deltaTime)
+void Server::update()
 {
-    _frameStateTime += deltaTime;
+    _stateTime += FRAME_RATE;
     
-    if (_frameStateTime >= FRAME_RATE)
-    {
-        while (_frameStateTime >= FRAME_RATE)
-        {
-            _frameStateTime -= FRAME_RATE;
-            _stateTime += FRAME_RATE;
-            
-            Timing::getInstance()->updateManual(_stateTime, FRAME_RATE);
-            
-            NG_SERVER->processIncomingPackets();
-            NG_SERVER->checkForDisconnects();
-            
-            InstanceManager::getServerWorld()->update();
-            
-            respawnEnemiesIfNecessary();
-            spawnCratesIfNecessary();
-            
-            clearClientMoves();
-        }
-
-		NG_SERVER->sendOutgoingPackets();
-    }
+    Timing::getInstance()->updateManual(_stateTime, FRAME_RATE);
+    
+    NG_SERVER->processIncomingPackets();
+    NG_SERVER->checkForDisconnects();
+    
+    InstanceManager::getServerWorld()->update();
+    
+    respawnEnemiesIfNecessary();
+    spawnCratesIfNecessary();
+    
+    clearClientMoves();
+    
+    NG_SERVER->sendOutgoingPackets();
 }
 
 uint8_t Server::getPlayerIdForRobotBeingCreated()

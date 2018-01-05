@@ -18,6 +18,7 @@
 #include <string>
 #include <vector>
 
+class EngineController;
 class Engine;
 
 // A basic game implementation that creates a D3D11 device and
@@ -26,19 +27,17 @@ class DirectXMain : public DX::IDeviceNotify
 {
 public:
 	static void create();
-
+    static DirectXMain* getInstance();
 	static void destroy();
 
-	static DirectXMain* getInstance();
-
 	// Entry point
-	static int exec(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLine, int nCmdShow, Engine* engine);
+	static int exec(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLine, int nCmdShow, EngineController* engineController);
 
 	// Windows procedure
 	static LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 
 	// Initialization and management
-    void Initialize(Engine* engine, HWND window, int width, int height);
+    void Initialize(EngineController* engineController, HWND window, int width, int height);
 	
 	void OnNewAudioDevice();
 

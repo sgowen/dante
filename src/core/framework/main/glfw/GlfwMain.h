@@ -10,7 +10,7 @@
 
 #include <GLFW/glfw3.h>
 
-class Engine;
+class EngineController;
 
 class GlfwMain
 {
@@ -22,7 +22,7 @@ public:
     static void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
     static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
 
-    int exec(Engine* engine);
+    int exec(EngineController* engineController);
 
 private:
     static int joysticks[GLFW_JOYSTICK_LAST + 1];

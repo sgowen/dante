@@ -28,7 +28,7 @@ public:
     
     static void sHandleLostClient(ClientProxy* inClientProxy, uint8_t index);
     
-    void update(double deltaTime);
+    void update();
     
     uint8_t getPlayerIdForRobotBeingCreated();
     

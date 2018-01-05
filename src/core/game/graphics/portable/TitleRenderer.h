@@ -1,13 +1,13 @@
 //
-//  MainRenderer.h
+//  TitleRenderer.h
 //  dante
 //
 //  Created by Stephen Gowen on 2/22/14.
 //  Copyright (c) 2017 Noctis Games. All rights reserved.
 //
 
-#ifndef __noctisgames__MainRenderer__
-#define __noctisgames__MainRenderer__
+#ifndef __noctisgames__TitleRenderer__
+#define __noctisgames__TitleRenderer__
 
 #include "framework/graphics/portable/Renderer.h"
 
@@ -28,16 +28,14 @@ class TextureRegion;
 class Color;
 class NGRect;
 class NGTexture;
-class Box2DDebugRenderer;
 class Font;
-struct b2Vec2;
 class World;
 
-class MainRenderer : public Renderer
+class TitleRenderer : public Renderer
 {
 public:
-    MainRenderer();
-    virtual ~MainRenderer();
+    TitleRenderer();
+    virtual ~TitleRenderer();
     
     virtual void createDeviceDependentResources();
     virtual void createWindowSizeDependentResources(int screenWidth, int screenHeight, int renderWidth, int renderHeight);
@@ -53,10 +51,8 @@ private:
     QuadBatcher* _boundsQuadBatcher;
     LineBatcher* _lineBatcher;
     CircleBatcher* _circleBatcher;
-    Box2DDebugRenderer* _box2DDebugRenderer;
     NGShaderLoader* _shaderProgramLoader;
     Font* _font;
-    NGRect* _camBounds;
     NGShader* _textureNGShader;
     NGShader* _colorNGShader;
     NGShader* _framebufferToScreenNGShader;
@@ -64,24 +60,13 @@ private:
     
     void beginFrame();
     void setFramebuffer(int framebufferIndex);
-    void renderBackground();
-    void renderWorld(int flags);
-    void renderEntities(World* world, bool isServer);
-    void renderAtmosphere();
-    void renderUI(int engineState);
     void renderMainMenuSteamOffText();
     void renderMainMenuSteamOnText();
     void renderStartingServerText();
     void renderEnterUsernameText();
     void renderJoiningLocalServerByIPText();
-    void renderJoiningServerText();
-    void renderServerJoinedText(int flags);
-    void renderText(const std::string& inStr, const b2Vec2& origin, const Color& inColor, int justification = FONT_ALIGN_LEFT);
+    void renderText(const char* inStr, float x, float y, const Color& inColor, int justification = FONT_ALIGN_LEFT);
     void endFrame();
-    
-    void updateCamera();
-    
-    void testRenderingSuite();
 };
 
-#endif /* defined(__noctisgames__MainRenderer__) */
+#endif /* defined(__noctisgames__TitleRenderer__) */

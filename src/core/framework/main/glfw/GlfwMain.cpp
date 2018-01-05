@@ -8,8 +8,9 @@
 
 #include "framework/main/glfw/GlfwMain.h"
 
-#include "framework/main/portable/Engine.h"
+#include "framework/main/portable/EngineController.h"
 
+#include "framework/main/portable/Engine.h"
 #include "framework/input/CursorInputManager.h"
 #include "framework/input/KeyboardInputManager.h"
 #include "framework/input/GamePadInputManager.h"
@@ -89,9 +90,9 @@ void GlfwMain::key_callback(GLFWwindow* window, int key, int scancode, int actio
     KEYBOARD_INPUT_MANAGER->onInput(key, action == GLFW_RELEASE);
 }
 
-int GlfwMain::exec(Engine* engine)
+int GlfwMain::exec(EngineController* engineController)
 {
-    if (!engine)
+    if (!engineController)
     {
         exit(EXIT_FAILURE);
     }
@@ -159,7 +160,9 @@ int GlfwMain::exec(Engine* engine)
 #endif
 
     double lastTime = 0;
-    engine->createDeviceDependentResources();
+    
+    Engine engine(engineController);
+    engine.createDeviceDependentResources();
 
     int glWidth = 0, glHeight = 0;
 
@@ -169,7 +172,7 @@ int GlfwMain::exec(Engine* engine)
 
         if (width != glWidth || height != glHeight)
         {
-            engine->createWindowSizeDependentResources(width, height, width > 1440 ? 1440 : width, height > 900 ? 900 : height, width, height);
+            engine.createWindowSizeDependentResources(width, height, width > 1440 ? 1440 : width, height > 900 ? 900 : height, width, height);
 
             glWidth = width;
             glHeight = height;
@@ -272,7 +275,7 @@ int GlfwMain::exec(Engine* engine)
         double deltaTime = time - lastTime;
         lastTime = time;
 
-        int requestedAction = engine->getRequestedAction();
+        int requestedAction = engine.getRequestedAction();
 
         switch (requestedAction)
         {
@@ -282,20 +285,18 @@ int GlfwMain::exec(Engine* engine)
             case REQUESTED_ACTION_UPDATE:
                 break;
             default:
-                engine->clearRequestedAction();
+                engine.clearRequestedAction();
                 break;
         }
 
-        engine->update(deltaTime);
-        engine->render();
+        engine.update(deltaTime);
+        engine.render();
 
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
     
-    engine->releaseDeviceDependentResources();
-
-    delete engine;
+    engine.releaseDeviceDependentResources();
 
     glfwDestroyWindow(window);
 

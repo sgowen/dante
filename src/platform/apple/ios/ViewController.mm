@@ -8,13 +8,13 @@
 
 #import "ViewController.h"
 
-#include "game/logic/MainEngine.h"
+#include "game/logic/MainEngineController.h"
 
 @implementation ViewController
 
-- (Engine *)createEngine
+- (EngineController *)createEngineController
 {
-    return new MainEngine();
+    return new MainEngineController();
 }
 
 @end

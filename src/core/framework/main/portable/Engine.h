@@ -10,34 +10,54 @@
 #define __noctisgames__Engine__
 
 #include "framework/util/NGRTTI.h"
+#include "framework/util/StateMachine.h"
+
+class EngineController;
+class EngineState;
 
 class Engine
 {
     NGRTTI_DECL;
     
 public:
-    Engine();
-    virtual ~Engine();
+    Engine(EngineController* engineController);
+    ~Engine();
     
-    virtual void createDeviceDependentResources() = 0;
-    virtual void createWindowSizeDependentResources(int screenWidth, int screenHeight, int renderWidth, int renderHeight, int cursorWidth, int cursorHeight) = 0;
-    virtual void releaseDeviceDependentResources() = 0;
+    void createDeviceDependentResources();
+    void createWindowSizeDependentResources(int screenWidth, int screenHeight, int renderWidth, int renderHeight, int cursorWidth, int cursorHeight);
+    void releaseDeviceDependentResources();
     
-    virtual void onResume() = 0;
-    virtual void onPause() = 0;
+    void onResume();
+    void onPause();
     
-    virtual void update(double deltaTime) = 0;
-    virtual void render() = 0;
+    void update(double deltaTime);
+    void render();
     
+    EngineController* getEngineController();
+    StateMachine<Engine, EngineState>& getStateMachine();
+    void setRequestedAction(int inValue);
     int getRequestedAction();
     void clearRequestedAction();
+    int getScreenWidth();
+    int getScreenHeight();
+    int getRenderWidth();
+    int getRenderHeight();
+    int getCursorWidth();
+    int getCursorHeight();
+    bool areDeviceDependentResourcesCreated();
     
-protected:
-    double _stateTime;
+private:
+    EngineController* _engineController;
+    StateMachine<Engine, EngineState> _stateMachine;
     double _frameStateTime;
-    
     int _requestedAction;
-    int _engineState;
+    int _screenWidth;
+    int _screenHeight;
+    int _renderWidth;
+    int _renderHeight;
+    int _cursorWidth;
+    int _cursorHeight;
+    bool _areDeviceDependentResourcesCreated;
 };
 
 #endif /* defined(__noctisgames__Engine__) */

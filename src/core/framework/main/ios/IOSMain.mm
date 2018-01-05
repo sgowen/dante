@@ -9,6 +9,7 @@
 #import "IOSMain.h"
 
 // C++
+#include "framework/main/portable/Engine.h"
 #include "framework/input/CursorInputManager.h"
 #include "framework/util/FrameworkConstants.h"
 
@@ -154,7 +155,8 @@
 
 - (void)setupGL
 {
-    _engine = [self createEngine];
+    EngineController* engineController = [self createEngineController];
+    _engine = new Engine(engineController);
     
     [EAGLContext setCurrentContext:self.context];
     

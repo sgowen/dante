@@ -1,13 +1,13 @@
 //
-//  InputManager.h
+//  GameInputManager.h
 //  dante
 //
 //  Created by Stephen Gowen on 5/15/17.
 //  Copyright (c) 2017 Noctis Games. All rights reserved.
 //
 
-#ifndef __noctisgames__InputManager__
-#define __noctisgames__InputManager__
+#ifndef __noctisgames__GameInputManager__
+#define __noctisgames__GameInputManager__
 
 #include "framework/network/portable/MoveList.h"
 
@@ -16,12 +16,12 @@
 class MainInputState;
 class Move;
 
-#define INPUT_MANAGER_CALLBACKS InputManager::sRemoveProcessedMoves, InputManager::sGetMoveList, InputManager::sOnPlayerWelcomed
+#define INPUT_MANAGER_CALLBACKS GameInputManager::sRemoveProcessedMoves, GameInputManager::sGetMoveList, GameInputManager::sOnPlayerWelcomed
 
-class InputManager
+class GameInputManager
 {
 public:
-    static InputManager* getInstance();
+    static GameInputManager* getInstance();
     
     static void sRemoveProcessedMoves(float inLastMoveProcessedOnServerTimestamp);
     
@@ -35,43 +35,27 @@ public:
     
     void clearPendingMove();
     
-    void setConnected(bool isConnected);
-    
-    void setLiveMode(bool isLiveMode);
-    
-    void resetLiveInput();
-    
-    bool isLiveMode();
-    
-    bool isTimeToProcessInput();
-    
     MainInputState* getInputState();
     
     MoveList& getMoveList();
     
-    std::string& getLiveInputRef();
-    
-    std::string getLiveInput();
-    
     bool isPlayerIdLocalHost(uint8_t playerId);
     
+    int getMenuState();
+    
 private:
-    std::string _liveInput;
     MainInputState* _currentState;
     MoveList _moveList;
     const Move* _pendingMove;
-    bool _isConnected;
-    bool _isLiveMode;
+    int _menuState;
     bool _isTimeToProcessInput;
     
     const Move& sampleInputAsMove();
     
-    bool isTimeToSampleInput();
-    
     // ctor, copy ctor, and assignment should be private in a Singleton
-    InputManager();
-    InputManager(const InputManager&);
-    InputManager& operator=(const InputManager&);
+    GameInputManager();
+    GameInputManager(const GameInputManager&);
+    GameInputManager& operator=(const GameInputManager&);
 };
 
-#endif /* defined(__noctisgames__InputManager__) */
+#endif /* defined(__noctisgames__GameInputManager__) */
