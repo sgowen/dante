@@ -60,7 +60,7 @@ public:
     void GetDefaultSize(int& width, int& height) const;
 
 private:
-	static DirectXMain* s_pInstance;
+	static DirectXMain* s_instance;
 
 	// Device resources.
 	std::unique_ptr<DX::DirectXDeviceResources> _deviceResources;

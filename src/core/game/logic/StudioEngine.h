@@ -40,7 +40,7 @@ public:
     virtual void render();
     
 private:
-    static StudioEngine* s_pInstance;
+    static StudioEngine* s_instance;
     
     StudioRenderer* _renderer;
     int _state;

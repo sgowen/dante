@@ -64,10 +64,21 @@ public:
     bool isSprinting();
     
 private:
-    uint64_t _addressHash;
-    uint8_t _playerId;
-    std::string _playerName;
+    struct PlayerInfo
+    {
+        PlayerInfo()
+        {
+            _addressHash = 0;
+            _playerId = 0;
+            _playerName = "Robot";
+        }
+        
+        uint64_t _addressHash;
+        uint8_t _playerId;
+        std::string _playerName;
+    };
     
+    PlayerInfo _playerInfo;
     uint8_t _numJumps;
     bool _isFacingLeft;
     bool _isMainAction;

@@ -53,26 +53,26 @@
 
 NGRTTI_IMPL(StudioEngine, EngineState);
 
-StudioEngine* StudioEngine::s_pInstance = NULL;
+StudioEngine* StudioEngine::s_instance = NULL;
 
 void StudioEngine::create()
 {
-    assert(!s_pInstance);
+    assert(!s_instance);
     
-    s_pInstance = new StudioEngine();
+    s_instance = new StudioEngine();
 }
 
 StudioEngine * StudioEngine::getInstance()
 {
-    return s_pInstance;
+    return s_instance;
 }
 
 void StudioEngine::destroy()
 {
-    assert(s_pInstance);
+    assert(s_instance);
     
-    delete s_pInstance;
-    s_pInstance = NULL;
+    delete s_instance;
+    s_instance = NULL;
 }
 
 StudioEngine::StudioEngine() : EngineState(),

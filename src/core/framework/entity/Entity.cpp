@@ -34,7 +34,7 @@ _controller(EntityMapper::getInstance()->createEntityController(inEntityDef.cont
 _worldRef(world),
 _body(NULL),
 _fixture(NULL),
-_footSensorFixture(NULL),
+_groundSensorFixture(NULL),
 _stateTime(0.0f),
 _color(1.0f, 1.0f, 1.0f, 1.0f),
 _readState(0),
@@ -51,71 +51,36 @@ _isRequestingDeletion(false)
 {
     b2BodyDef bodyDef;
     bodyDef.position.Set(0, 0);
+    bodyDef.type = _entityDef.isStaticBody ? b2_staticBody : b2_dynamicBody;
+    bodyDef.fixedRotation = _entityDef.fixedRotation;
+    bodyDef.bullet = _entityDef.bullet;
     
-    if (_entityDef.isStaticBody)
-    {
-        // Call the body factory which allocates memory for the ground body
-        // from a pool and creates the ground box shape (also from a pool).
-        // The body is also added to the world.
-        _body = _worldRef.CreateBody(&bodyDef);
-        
-        // Define the ground box shape.
-        b2PolygonShape groundBox;
-        
-        // The extents are the half-widths of the box.
-        groundBox.SetAsBox(inEntityDef.width / 2, inEntityDef.height / 2);
-        
-        b2FixtureDef def;
-        def.shape = &groundBox;
-        def.density = 0.0f;
-        def.friction = _entityDef.friction;
-        
-        // Add the ground fixture to the ground body.
-        _fixture = _body->CreateFixture(&def);
-    }
-    else
-    {
-        bodyDef.type = b2_dynamicBody;
-        bodyDef.fixedRotation = _entityDef.fixedRotation;
-        bodyDef.bullet = _entityDef.bullet;
-        _body = _worldRef.CreateBody(&bodyDef);
-        
-        // Define another box shape for our dynamic body.
-        b2PolygonShape dynamicBox;
-        dynamicBox.SetAsBox(inEntityDef.width / 2, inEntityDef.height / 2);
-        
-        // Define the dynamic body fixture.
-        b2FixtureDef fixtureDef;
-        fixtureDef.shape = &dynamicBox;
-        fixtureDef.isSensor = _entityDef.isSensor;
-        
-        // Set the box density to be non-zero, so it will be dynamic.
-        fixtureDef.density = _entityDef.density;
-        
-        // Override the default friction.
-        fixtureDef.friction = _entityDef.friction;
-        
-        fixtureDef.restitution = _entityDef.restitution;
-        
-        // Add the shape to the body.
-        _fixture = _body->CreateFixture(&fixtureDef);
-        
-        if (_entityDef.isCharacter)
-        {
-            // Add foot sensor fixture
-            b2PolygonShape feet;
-            feet.SetAsBox(inEntityDef.width * 0.48f, inEntityDef.height / 8, b2Vec2(0, -inEntityDef.height / 2), 0);
-            b2FixtureDef fixtureDefFeet;
-            fixtureDefFeet.shape = &feet;
-            fixtureDefFeet.isSensor = true;
-            _footSensorFixture = _body->CreateFixture(&fixtureDefFeet);
-            _footSensorFixture->SetUserData(this);
-        }
-    }
+    b2PolygonShape shape;
+    shape.SetAsBox(inEntityDef.width / 2, inEntityDef.height / 2);
     
+    b2FixtureDef fixtureDef;
+    fixtureDef.shape = &shape;
+    fixtureDef.isSensor = _entityDef.isSensor;
+    fixtureDef.density = _entityDef.density;
+    fixtureDef.friction = _entityDef.friction;
+    fixtureDef.restitution = _entityDef.restitution;
+    
+    _body = _worldRef.CreateBody(&bodyDef);
+    _body->SetUserData(this);
+    
+    _fixture = _body->CreateFixture(&fixtureDef);
     _fixture->SetUserData(this);
     
-    _body->SetUserData(this);
+    if (_entityDef.isCharacter)
+    {
+        b2PolygonShape groundContact;
+        groundContact.SetAsBox(inEntityDef.width * 0.48f, inEntityDef.height / 8, b2Vec2(0, -inEntityDef.height / 2), 0);
+        b2FixtureDef fixtureDefGroundContact;
+        fixtureDefGroundContact.shape = &groundContact;
+        fixtureDefGroundContact.isSensor = true;
+        _groundSensorFixture = _body->CreateFixture(&fixtureDefGroundContact);
+        _groundSensorFixture->SetUserData(this);
+    }
 }
 
 Entity::~Entity()
@@ -125,6 +90,11 @@ Entity::~Entity()
     delete _controller;
 }
 
+void Entity::recallLastReadState()
+{
+    // TODO
+}
+
 void Entity::postRead()
 {
     // Only interpolate when new pose has been read in
@@ -132,8 +102,6 @@ void Entity::postRead()
     {
         interpolateClientSidePrediction(_velocityLastKnown, _positionLastKnown);
     }
-    
-    _readState = 0;
 }
 
 void Entity::deinitPhysics()
@@ -144,10 +112,10 @@ void Entity::deinitPhysics()
         _fixture = NULL;
     }
     
-    if (_footSensorFixture)
+    if (_groundSensorFixture)
     {
-        _body->DestroyFixture(_footSensorFixture);
-        _footSensorFixture = NULL;
+        _body->DestroyFixture(_groundSensorFixture);
+        _groundSensorFixture = NULL;
     }
     
     if (_body)

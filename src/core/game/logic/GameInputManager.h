@@ -21,29 +21,25 @@ class Move;
 class GameInputManager
 {
 public:
+    static void create();
     static GameInputManager* getInstance();
+    static void destroy();
     
     static void sRemoveProcessedMoves(float inLastMoveProcessedOnServerTimestamp);
-    
     static MoveList& sGetMoveList();
-    
     static void sOnPlayerWelcomed(uint8_t playerId);
     
     void update();
-    
     const Move* getPendingMove();
-    
     void clearPendingMove();
-    
     MainInputState* getInputState();
-    
     MoveList& getMoveList();
-    
     bool isPlayerIdLocalHost(uint8_t playerId);
-    
     int getMenuState();
     
 private:
+    static GameInputManager* s_instance;
+    
     MainInputState* _currentState;
     MoveList _moveList;
     const Move* _pendingMove;

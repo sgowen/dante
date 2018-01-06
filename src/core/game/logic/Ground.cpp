@@ -32,7 +32,7 @@ namespace
         
         ret.width = 32.0f;
         ret.height = 4.0f;
-        ret.friction = 12.0f;
+        ret.friction = 32.0f;
         
         return ret;
     }
@@ -61,24 +61,12 @@ bool Ground::shouldCollide(Entity *inEntity, b2Fixture* inFixtureA, b2Fixture* i
 
 void Ground::handleBeginContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB)
 {
-    if (inEntity->getRTTI().derivesFrom(Ground::rtti)
-        || inEntity->getRTTI().derivesFrom(Crate::rtti))
-    {
-        return;
-    }
-    
-    inEntity->handleBeginContact(this, inFixtureB, inFixtureA);
+    // Empty
 }
 
 void Ground::handleEndContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB)
 {
-    if (inEntity->getRTTI().derivesFrom(Ground::rtti)
-        || inEntity->getRTTI().derivesFrom(Crate::rtti))
-    {
-        return;
-    }
-    
-    inEntity->handleEndContact(this, inFixtureB, inFixtureA);
+    // Empty
 }
 
 uint32_t Ground::getAllStateMask() const

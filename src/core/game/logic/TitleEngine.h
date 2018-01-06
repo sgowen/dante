@@ -45,7 +45,7 @@ public:
     virtual void render();
     
 private:
-    static TitleEngine* s_pInstance;
+    static TitleEngine* s_instance;
     
     JsonFile* _config;
     TitleRenderer* _renderer;

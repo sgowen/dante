@@ -42,7 +42,7 @@
 //// Matrix Definitions ////
 
 #define CAM_WIDTH 36.0f // meters
-#define CAM_HEIGHT 15.0f // meters
+#define CAM_HEIGHT 20.25f // meters
 
 //// World Definitions ////
 

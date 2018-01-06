@@ -53,26 +53,26 @@
 
 NGRTTI_IMPL(GameEngine, EngineState);
 
-GameEngine* GameEngine::s_pInstance = NULL;
+GameEngine* GameEngine::s_instance = NULL;
 
 void GameEngine::create()
 {
-    assert(!s_pInstance);
+    assert(!s_instance);
     
-    s_pInstance = new GameEngine();
+    s_instance = new GameEngine();
 }
 
 GameEngine * GameEngine::getInstance()
 {
-    return s_pInstance;
+    return s_instance;
 }
 
 void GameEngine::destroy()
 {
-    assert(s_pInstance);
+    assert(s_instance);
     
-    delete s_pInstance;
-    s_pInstance = NULL;
+    delete s_instance;
+    s_instance = NULL;
 }
 
 GameEngine::GameEngine() : EngineState(),
@@ -92,6 +92,11 @@ void GameEngine::enter(Engine* engine)
 {
     createDeviceDependentResources();
     createWindowSizeDependentResources(engine->getScreenWidth(), engine->getScreenHeight(), engine->getRenderWidth(), engine->getRenderHeight(), engine->getCursorWidth(), engine->getCursorHeight());
+    
+    _stateTime = 0;
+    _state = GE_DEFAULT;
+    
+    GameInputManager::create();
 }
 
 void GameEngine::update(Engine* engine)
@@ -134,6 +139,8 @@ void GameEngine::update(Engine* engine)
 void GameEngine::exit(Engine* engine)
 {
     releaseDeviceDependentResources();
+    
+    GameInputManager::destroy();
 }
 
 void GameEngine::createDeviceDependentResources()

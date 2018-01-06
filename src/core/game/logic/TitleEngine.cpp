@@ -47,6 +47,7 @@
 #include "game/logic/GameEngine.h"
 #include "game/logic/GameInputManager.h"
 #include "game/logic/StudioEngine.h"
+#include "game/logic/PooledObjectsManager.h"
 
 #ifdef NG_STEAM
 #include "framework/network/steam/NGSteamClientHelper.h"
@@ -56,26 +57,26 @@
 
 NGRTTI_IMPL(TitleEngine, EngineState);
 
-TitleEngine* TitleEngine::s_pInstance = NULL;
+TitleEngine* TitleEngine::s_instance = NULL;
 
 void TitleEngine::create()
 {
-    assert(!s_pInstance);
+    assert(!s_instance);
     
-    s_pInstance = new TitleEngine();
+    s_instance = new TitleEngine();
 }
 
 TitleEngine * TitleEngine::getInstance()
 {
-    return s_pInstance;
+    return s_instance;
 }
 
 void TitleEngine::destroy()
 {
-    assert(s_pInstance);
+    assert(s_instance);
     
-    delete s_pInstance;
-    s_pInstance = NULL;
+    delete s_instance;
+    s_instance = NULL;
 }
 
 TitleEngine::TitleEngine() : EngineState(),
@@ -359,6 +360,8 @@ void TitleEngine::startServer()
 {
     disconnect();
     
+    PooledObjectsManager::create();
+    
     _state = TE_MAIN_MENU_STARTING_SERVER;
     
     uint32_t numCratesToSpawn = 6;
@@ -425,6 +428,11 @@ void TitleEngine::joinServer(Engine* engine)
 
 void TitleEngine::disconnect()
 {
+    if (PooledObjectsManager::getInstance())
+    {
+        PooledObjectsManager::destroy();
+    }
+    
     if (NG_CLIENT)
     {
         NetworkManagerClient::destroy();

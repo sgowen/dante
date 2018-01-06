@@ -57,38 +57,12 @@ void JsonFile::save()
     FILE *file = openFile(finalPath, "w+");
     if (file)
     {
-        const char* data;
-        if (_serializerFunc)
-        {
-            data = _serializerFunc();
-        }
-        else
-        {
-            using namespace rapidjson;
-            
-            static StringBuffer s;
-            Writer<StringBuffer> w(s);
-            
-            s.Clear();
-            
-            w.StartObject();
-            
-            for (std::map<std::string, std::string>::iterator i = _keyValues.begin(); i != _keyValues.end(); ++i)
-            {
-                w.String((*i).first.c_str());
-                w.String((*i).second.c_str());
-            }
-            
-            w.EndObject();
-            
-            data = s.GetString();
-        }
+        const char* data = serialize();
         
         std::string rawData = std::string(data);
         std::string dataToWrite = _useEncryption ? StringUtil::encryptDecrypt(rawData) : rawData;
         
         int sum = fprintf(file, "%s", dataToWrite.c_str());
-        
         UNUSED(sum);
         
         fclose(file);
@@ -165,6 +139,35 @@ std::string JsonFile::findValue(std::string key)
 void JsonFile::setValue(std::string key, std::string value)
 {
     _keyValues[key] = value;
+}
+
+const char* JsonFile::serialize()
+{
+    if (_serializerFunc)
+    {
+        return _serializerFunc();
+    }
+    else
+    {
+        using namespace rapidjson;
+        
+        static StringBuffer s;
+        Writer<StringBuffer> w(s);
+        
+        s.Clear();
+        
+        w.StartObject();
+        
+        for (std::map<std::string, std::string>::iterator i = _keyValues.begin(); i != _keyValues.end(); ++i)
+        {
+            w.String((*i).first.c_str());
+            w.String((*i).second.c_str());
+        }
+        
+        w.EndObject();
+        
+        return s.GetString();
+    }
 }
 
 void JsonFile::deserialize(const char *data)

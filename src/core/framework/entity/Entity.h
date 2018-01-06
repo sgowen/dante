@@ -43,9 +43,9 @@ struct EntityDef
         controller = "DefaultEntityController";
         width = 1.0f;
         height = 1.0f;
-        restitution = 0.1f;
-        density = 1.0f;
-        friction = 0.5f;
+        restitution = 0.0f;
+        density = 0.0f;
+        friction = 0.2f;
         isStaticBody = true;
         fixedRotation = true;
         bullet = false;
@@ -85,6 +85,7 @@ public:
     virtual uint32_t write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState) = 0;
     virtual bool needsMoveReplay() = 0;
     
+    virtual void recallLastReadState();
     virtual void postRead();
     virtual void deinitPhysics();
     
@@ -121,7 +122,7 @@ protected:
     EntityController* _controller;
     b2Body* _body;
     b2Fixture* _fixture;
-    b2Fixture* _footSensorFixture;
+    b2Fixture* _groundSensorFixture;
     float _stateTime;
     uint8_t _numGroundContacts;
     Color _color;

@@ -21,11 +21,15 @@ class MainInputState;
 class PooledObjectsManager
 {
 public:
+    static void create();
     static PooledObjectsManager* getInstance();
+    static void destroy();
     
     static InputState* borrowInputState();
     
 private:
+    static PooledObjectsManager* s_instance;
+    
     NGRollingPool<MainInputState>* _pool;
     
     // ctor, copy ctor, and assignment should be private in a Singleton

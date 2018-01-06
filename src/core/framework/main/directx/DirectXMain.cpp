@@ -32,28 +32,28 @@ using namespace DirectX;
 
 using Microsoft::WRL::ComPtr;
 
-DirectXMain* DirectXMain::s_pInstance = NULL;
+DirectXMain* DirectXMain::s_instance = NULL;
 
 #define DX_MAIN (DirectXMain::getInstance())
 
 void DirectXMain::create()
 {
-	assert(!s_pInstance);
+	assert(!s_instance);
 
-	s_pInstance = new DirectXMain();
+	s_instance = new DirectXMain();
 }
 
 DirectXMain * DirectXMain::getInstance()
 {
-    return s_pInstance;
+    return s_instance;
 }
 
 void DirectXMain::destroy()
 {
-	assert(s_pInstance);
+	assert(s_instance);
 
-	delete s_pInstance;
-	s_pInstance = NULL;
+	delete s_instance;
+	s_instance = NULL;
 }
 
 // Indicates to hybrid graphics systems to prefer the discrete part by default

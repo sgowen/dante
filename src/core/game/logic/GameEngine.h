@@ -41,7 +41,7 @@ public:
     virtual void render();
     
 private:
-    static GameEngine* s_pInstance;
+    static GameEngine* s_instance;
     
     GameRenderer* _renderer;
     double _stateTime;

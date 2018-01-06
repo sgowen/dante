@@ -76,34 +76,47 @@ World::~World()
 
 void World::addEntity(Entity* inEntity)
 {
+    _entities.push_back(inEntity);
+    
     if (inEntity->getRTTI().derivesFrom(Robot::rtti))
     {
         _players.push_back(inEntity);
-    }
-    else
-    {
-        _entities.push_back(inEntity);
     }
 }
 
 void World::removeEntity(Entity* inEntity)
 {
-    std::vector<Entity*>* pEntities = NULL;
     if (inEntity->getRTTI().derivesFrom(Robot::rtti))
     {
-        pEntities = &_players;
-    }
-    else
-    {
-        pEntities = &_entities;
+        int len = static_cast<int>(_players.size());
+        int indexToRemove = -1;
+        for (int i = 0; i < len; ++i)
+        {
+            if (_players[i]->getID() == inEntity->getID())
+            {
+                indexToRemove = i;
+                break;
+            }
+        }
+        
+        if (indexToRemove > -1)
+        {
+            int lastIndex = len - 1;
+            
+            if (indexToRemove != lastIndex)
+            {
+                _players[indexToRemove] = _players[lastIndex];
+            }
+            
+            _players.pop_back();
+        }
     }
     
-    std::vector<Entity*>& entities = *pEntities;
-    int len = static_cast<int>(entities.size());
+    int len = static_cast<int>(_entities.size());
     int indexToRemove = -1;
     for (int i = 0; i < len; ++i)
     {
-        if (entities[i]->getID() == inEntity->getID())
+        if (_entities[i]->getID() == inEntity->getID())
         {
             indexToRemove = i;
             break;
@@ -116,10 +129,10 @@ void World::removeEntity(Entity* inEntity)
         
         if (indexToRemove != lastIndex)
         {
-            entities[indexToRemove] = entities[lastIndex];
+            _entities[indexToRemove] = _entities[lastIndex];
         }
         
-        entities.pop_back();
+        _entities.pop_back();
         
         if (_isServer)
         {
@@ -135,6 +148,11 @@ void World::postRead()
     if (!NG_CLIENT->hasReceivedNewState())
     {
         return;
+    }
+    
+    for (Entity* entity : _entities)
+    {
+        entity->recallLastReadState();
     }
     
     // all processed moves have been removed, so all that are left are unprocessed moves so we must apply them...
@@ -157,19 +175,9 @@ void World::postRead()
         {
             entity->update();
         }
-        
-        for (Entity* entity : _players)
-        {
-            entity->update();
-        }
     }
     
     for (Entity* entity : _entities)
-    {
-        entity->postRead();
-    }
-    
-    for (Entity* entity : _players)
     {
         entity->postRead();
     }
@@ -211,26 +219,7 @@ void World::update()
                 
                 // Update all game objects- sometimes they want to die, so we need to tread carefully...
                 
-                int len = static_cast<int>(_players.size());
-                for (int i = 0, c = len; i < c; ++i)
-                {
-                    Entity* entity = _players[i];
-                    
-                    if (!entity->isRequestingDeletion())
-                    {
-                        entity->update();
-                    }
-                    
-                    // You might suddenly want to die after your update, so check again
-                    if (entity->isRequestingDeletion())
-                    {
-                        removeEntity(entity);
-                        --i;
-                        --c;
-                    }
-                }
-                
-                len = static_cast<int>(_entities.size());
+                int len = static_cast<int>(_entities.size());
                 for (int i = 0, c = len; i < c; ++i)
                 {
                     Entity* entity = _entities[i];
@@ -268,11 +257,6 @@ void World::update()
             stepPhysics();
             
             for (Entity* entity : _entities)
-            {
-                entity->update();
-            }
-            
-            for (Entity* entity : _players)
             {
                 entity->update();
             }
@@ -404,6 +388,7 @@ void EntityContactListener::BeginContact(b2Contact* contact)
     Entity* entityB = static_cast<Entity*>(fixtureB->GetBody()->GetUserData());
     
     entityA->handleBeginContact(entityB, fixtureA, fixtureB);
+    entityB->handleBeginContact(entityA, fixtureB, fixtureA);
 }
 
 void EntityContactListener::EndContact(b2Contact* contact)
@@ -415,6 +400,7 @@ void EntityContactListener::EndContact(b2Contact* contact)
     Entity* entityB = static_cast<Entity*>(fixtureB->GetBody()->GetUserData());
     
     entityA->handleEndContact(entityB, fixtureA, fixtureB);
+    entityB->handleEndContact(entityA, fixtureB, fixtureA);
 }
 
 bool EntityContactFilter::ShouldCollide(b2Fixture* fixtureA, b2Fixture* fixtureB)

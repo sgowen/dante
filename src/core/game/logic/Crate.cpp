@@ -74,24 +74,12 @@ bool Crate::shouldCollide(Entity *inEntity, b2Fixture* inFixtureA, b2Fixture* in
 
 void Crate::handleBeginContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB)
 {
-    if (inEntity->getRTTI().derivesFrom(Ground::rtti)
-        || inEntity->getRTTI().derivesFrom(Crate::rtti))
-    {
-        return;
-    }
-    
-    inEntity->handleBeginContact(this, inFixtureB, inFixtureA);
+    // Empty
 }
 
 void Crate::handleEndContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB)
 {
-    if (inEntity->getRTTI().derivesFrom(Ground::rtti)
-        || inEntity->getRTTI().derivesFrom(Crate::rtti))
-    {
-        return;
-    }
-    
-    inEntity->handleEndContact(this, inFixtureB, inFixtureA);
+    // Empty
 }
 
 uint32_t Crate::getAllStateMask() const

@@ -41,6 +41,8 @@ private:
     SerializerFunc _serializerFunc;
     std::map<std::string, std::string> _keyValues;
     
+    const char* serialize();
+    
     void deserialize(const char* data);
     
     const char* platformSpecificFilePath();

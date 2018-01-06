@@ -16,10 +16,26 @@
 
 #define POOL_SIZE MAX(NW_SERVER_TIMEOUT, NW_CLIENT_TIMEOUT) * (MAX_NUM_PLAYERS_PER_SERVER + 1) * 60
 
-PooledObjectsManager* PooledObjectsManager::getInstance()
+PooledObjectsManager* PooledObjectsManager::s_instance = NULL;
+
+void PooledObjectsManager::create()
 {
-    static PooledObjectsManager instance = PooledObjectsManager();
-    return &instance;
+    assert(!s_instance);
+    
+    s_instance = new PooledObjectsManager();
+}
+
+PooledObjectsManager * PooledObjectsManager::getInstance()
+{
+    return s_instance;
+}
+
+void PooledObjectsManager::destroy()
+{
+    assert(s_instance);
+    
+    delete s_instance;
+    s_instance = NULL;
 }
 
 InputState* PooledObjectsManager::borrowInputState()

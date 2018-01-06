@@ -198,7 +198,7 @@ void Server::spawnGroundsIfNecessary()
         Ground* ground = static_cast<Ground*>(SERVER_ENTITY_REG->createEntity(NW_TYPE_Ground));
         int xSeed = rand() % 5 + 1;
         float posX = i == 0 ? GAME_WIDTH / 2 : xSeed * GAME_WIDTH / 3;
-        ground->setPosition(b2Vec2(posX, 0));
+        ground->setPosition(b2Vec2(posX, 2));
     }
     
     _hasSpawnedGrounds = true;
@@ -213,7 +213,7 @@ void Server::spawnRobotForPlayer(uint8_t inPlayerId, std::string inPlayerName)
     robot->setAddressHash(client->getMachineAddress()->getHash());
     
     robot->setPlayerName(inPlayerName);
-    float posX = GAME_WIDTH / 2;//(rand() % static_cast<int>(GAME_WIDTH - robot->getWidth() * 2)) + (robot->getWidth() * 2);
+    float posX = GAME_WIDTH / 2;
     robot->setPosition(b2Vec2(posX, 8));
     
     static Color Red(1.0f, 0.0f, 0.0f, 1);

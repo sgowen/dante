@@ -31,10 +31,26 @@
 
 #include <sstream>
 
-GameInputManager* GameInputManager::getInstance()
+GameInputManager* GameInputManager::s_instance = NULL;
+
+void GameInputManager::create()
 {
-    static GameInputManager instance = GameInputManager();
-    return &instance;
+    assert(!s_instance);
+    
+    s_instance = new GameInputManager();
+}
+
+GameInputManager * GameInputManager::getInstance()
+{
+    return s_instance;
+}
+
+void GameInputManager::destroy()
+{
+    assert(s_instance);
+    
+    delete s_instance;
+    s_instance = NULL;
 }
 
 void GameInputManager::sRemoveProcessedMoves(float inLastMoveProcessedOnServerTimestamp)
@@ -89,7 +105,7 @@ void GameInputManager::update()
             {
                 switch ((*i)->getKey())
                 {
-                        // Player 1
+                    // Player 1
                     case NG_KEY_W:
                         _currentState->getGameInputState(0)._isJumping = (*i)->isDown();
                         continue;
@@ -106,7 +122,7 @@ void GameInputManager::update()
                         _currentState->getGameInputState(0)._isMainAction = (*i)->isDown();
                         continue;
 #ifdef _DEBUG
-                        // Player 2, Debug Only
+                    // Player 2, Debug Only
                     case NG_KEY_ARROW_UP:
                         _currentState->getGameInputState(1)._isJumping = (*i)->isDown();
                         continue;

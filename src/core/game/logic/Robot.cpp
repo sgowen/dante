@@ -53,23 +53,20 @@ namespace
         ret.isStaticBody = false;
         ret.restitution = 0.1f;
         ret.isCharacter = true;
-        ret.density = 16.0f;
+        ret.density = 8.0f;
         
         return ret;
     }
 }
 
 Robot::Robot(b2World& world, bool isServer) : Entity(constructEntityDef(), world, isServer),
-_addressHash(0),
-_playerId(0),
-_playerName("Robot"),
 _numJumps(0),
 _health(255),
 _isFacingLeft(false),
 _isMainAction(false),
 _isSprinting(false),
 _isFirstJumpCompleted(false),
-_speed(15.0f),
+_speed(8.0f),
 _sprintSpeed(_speed * 1.5f),
 _movementForce(_speed * 6),
 _sprintMovementForce(_movementForce * 1.5f),
@@ -108,7 +105,7 @@ void Robot::update()
             
             if (_isServer)
             {
-                Server::sHandleNewClient(_playerId, _playerName);
+                Server::sHandleNewClient(_playerInfo._playerId, _playerInfo._playerName);
             }
         }
         
@@ -139,7 +136,7 @@ void Robot::update()
 
 bool Robot::shouldCollide(Entity *inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB)
 {
-    if (inFixtureA == _footSensorFixture)
+    if (inFixtureA == _groundSensorFixture)
     {
         return inEntity->getRTTI().derivesFrom(Ground::rtti)
         || inEntity->getRTTI().derivesFrom(Crate::rtti);
@@ -151,37 +148,21 @@ bool Robot::shouldCollide(Entity *inEntity, b2Fixture* inFixtureA, b2Fixture* in
 
 void Robot::handleBeginContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB)
 {
-    if (inFixtureA == _footSensorFixture)
+    if (inFixtureA == _groundSensorFixture)
     {
-        _numJumps = 0;
-        
         handleBeginFootContact(inEntity);
-        
-        return;
-    }
-    
-    if (inEntity->getRTTI().derivesFrom(Robot::rtti))
-    {
-        return;
     }
 }
 
 void Robot::handleEndContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB)
 {
-    if (inFixtureA == _footSensorFixture)
+    if (inFixtureA == _groundSensorFixture)
     {
         if (inEntity->getRTTI().derivesFrom(Ground::rtti)
             || inEntity->getRTTI().derivesFrom(Crate::rtti))
         {
             handleEndFootContact(inEntity);
         }
-        
-        return;
-    }
-    
-    if (inEntity->getRTTI().derivesFrom(Robot::rtti))
-    {
-        return;
     }
 }
 
@@ -199,9 +180,9 @@ void Robot::read(InputMemoryBitStream& inInputStream)
     inInputStream.read(stateBit);
     if (stateBit)
     {
-        inInputStream.read(_addressHash);
-        inInputStream.read(_playerId);
-        inInputStream.read(_playerName);
+        inInputStream.read(_playerInfo._addressHash);
+        inInputStream.read(_playerInfo._playerId);
+        inInputStream.read(_playerInfo._playerName);
         inInputStream.read(_color);
         
         _readState |= ROBT_PlayerInfo;
@@ -248,9 +229,9 @@ uint32_t Robot::write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtySta
     inOutputStream.write(playerInfo);
     if (playerInfo)
     {
-        inOutputStream.write(_addressHash);
-        inOutputStream.write(_playerId);
-        inOutputStream.write(_playerName);
+        inOutputStream.write(_playerInfo._addressHash);
+        inOutputStream.write(_playerInfo._playerId);
+        inOutputStream.write(_playerInfo._playerName);
         inOutputStream.write(_color);
         
         writtenState |= ROBT_PlayerInfo;
@@ -312,7 +293,7 @@ void Robot::processInput(InputState* inInputState, bool isPending)
     float sideForce = 0;
     float vertForce = 0;
     
-    _isSprinting = inputState->isSprinting() && isGrounded();
+    _isSprinting = inputState->isSprinting();
     if (_isSprinting)
     {
         if ((inputState->getDesiredRightAmount() > 0 && velocity.x < _sprintSpeed)
@@ -355,14 +336,16 @@ void Robot::processInput(InputState* inInputState, bool isPending)
             }
             else
             {
-                vertForce = _body->GetMass() * (11.0f - (7.0f + (_stateTime + 0.25f) * 10));
+                vertForce = _body->GetMass() * (11.25f - (7.0f + (_stateTime + 0.25f) * 10));
             }
         }
         
         if (_numJumps == 2)
         {
-            vertForce = _body->GetMass() * (10.0f - (6.0f + (_stateTime + 0.25f) * 10));
+            vertForce = _body->GetMass() * (10.25f - (6.0f + (_stateTime + 0.25f) * 10));
         }
+        
+        vertForce = clamp(vertForce, _body->GetMass() * 8.0f, 0);
     }
     else
     {
@@ -378,8 +361,6 @@ void Robot::processInput(InputState* inInputState, bool isPending)
         _numJumps = 0;
     }
     
-    sideForce = isGrounded() || _numJumps == 2 ? sideForce : 0;
-    vertForce = clamp(vertForce, _body->GetMass() * 8.0f, 0);
     _isFacingLeft = sideForce < 0 ? true : sideForce > 0 ? false : _isFacingLeft;
     _body->ApplyLinearImpulse(b2Vec2(sideForce,vertForce), _body->GetWorldCenter(), true);
     
@@ -393,32 +374,32 @@ void Robot::processInput(InputState* inInputState, bool isPending)
 
 void Robot::setAddressHash(uint64_t addressHash)
 {
-    _addressHash = addressHash;
+    _playerInfo._addressHash = addressHash;
 }
 
 uint64_t Robot::getAddressHash() const
 {
-    return _addressHash;
+    return _playerInfo._addressHash;
 }
 
 void Robot::setPlayerId(uint8_t inPlayerId)
 {
-    _playerId = inPlayerId;
+    _playerInfo._playerId = inPlayerId;
 }
 
 uint8_t Robot::getPlayerId() const
 {
-    return _playerId;
+    return _playerInfo._playerId;
 }
 
 void Robot::setPlayerName(std::string playerName)
 {
-    _playerName = playerName;
+    _playerInfo._playerName = playerName;
 }
 
 std::string& Robot::getPlayerName()
 {
-    return _playerName;
+    return _playerInfo._playerName;
 }
 
 uint8_t Robot::getHealth()
