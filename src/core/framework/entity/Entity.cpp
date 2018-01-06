@@ -120,6 +120,8 @@ _isRequestingDeletion(false)
 
 Entity::~Entity()
 {
+    deinitPhysics();
+    
     delete _controller;
 }
 

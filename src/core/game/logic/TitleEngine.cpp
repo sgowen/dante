@@ -361,38 +361,35 @@ void TitleEngine::startServer()
     
     _state = TE_MAIN_MENU_STARTING_SERVER;
     
-    if (!Server::getInstance())
+    uint32_t numCratesToSpawn = 6;
+    uint32_t numEnemysToSpawn = 4;
+    
     {
-        uint32_t numCratesToSpawn = 6;
-        uint32_t numEnemysToSpawn = 4;
-        
+        std::string val = _config->findValue(std::string("nu_crates_to_spawn"));
+        if (val.length() > 0)
         {
-            std::string val = _config->findValue(std::string("nu_crates_to_spawn"));
-            if (val.length() > 0)
-            {
-                numCratesToSpawn = StringUtil::stringToNumber<int>(val);
-            }
+            numCratesToSpawn = StringUtil::stringToNumber<int>(val);
         }
-        
-        {
-            std::string val = _config->findValue(std::string("nu_space_pirates_to_spawn"));
-            if (val.length() > 0)
-            {
-                numEnemysToSpawn = StringUtil::stringToNumber<int>(val);
-            }
-        }
-        
-        Server::create(_isSteam, numCratesToSpawn, numEnemysToSpawn);
-        
-        if (PlatformHelper::getPlatform() == NG_PLATFORM_ANDROID
-            || PlatformHelper::getPlatform() == NG_PLATFORM_IOS)
-        {
-            Server::getInstance()->toggleEnemies();
-            Server::getInstance()->toggleObjects();
-        }
-        
-        assert(NG_SERVER);
     }
+    
+    {
+        std::string val = _config->findValue(std::string("nu_space_pirates_to_spawn"));
+        if (val.length() > 0)
+        {
+            numEnemysToSpawn = StringUtil::stringToNumber<int>(val);
+        }
+    }
+    
+    Server::create(_isSteam, numCratesToSpawn, numEnemysToSpawn);
+    
+    if (PlatformHelper::getPlatform() == NG_PLATFORM_ANDROID
+        || PlatformHelper::getPlatform() == NG_PLATFORM_IOS)
+    {
+        Server::getInstance()->toggleEnemies();
+        Server::getInstance()->toggleObjects();
+    }
+    
+    assert(NG_SERVER);
 }
 
 void TitleEngine::joinServer(Engine* engine)
