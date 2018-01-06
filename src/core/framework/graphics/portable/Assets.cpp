@@ -224,6 +224,7 @@ Assets::Assets()
 
 Assets::~Assets()
 {
+    NGSTDUtil::cleanUpVectorOfPointers(_textures);
     NGSTDUtil::cleanUpMapOfPointers(_textureRegions);
     NGSTDUtil::cleanUpMapOfPointers(_animations);
 }

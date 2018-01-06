@@ -17,10 +17,7 @@
 class Entity;
 class Robot;
 class Projectile;
-class Enemy;
 class Crate;
-class EnemyChunk;
-class Ground;
 class b2World;
 
 class EntityContactListener;
@@ -35,17 +32,13 @@ static Entity* sServerCreate##name()
 class World
 {
 public:
+    WORLD_CREATE_CLIENT_DECL(Ground);
     WORLD_CREATE_CLIENT_DECL(Robot);
-    WORLD_CREATE_CLIENT_DECL(Projectile);
-    WORLD_CREATE_CLIENT_DECL(Enemy);
     WORLD_CREATE_CLIENT_DECL(Crate);
-    WORLD_CREATE_CLIENT_DECL(EnemyChunk);
     
+    WORLD_CREATE_SERVER_DECL(Ground);
     WORLD_CREATE_SERVER_DECL(Robot);
-    WORLD_CREATE_SERVER_DECL(Projectile);
-    WORLD_CREATE_SERVER_DECL(Enemy);
-    WORLD_CREATE_SERVER_DECL(Crate);
-    WORLD_CREATE_SERVER_DECL(EnemyChunk);
+    WORLD_CREATE_SERVER_DECL(Crate);    
     
     World(bool isServer);
     
@@ -79,7 +72,6 @@ private:
     std::vector<Entity*> _players;
     std::vector<Entity*> _entities;
     b2World* _world;
-    Ground* _ground;
     EntityContactListener* _entityContactListener;
     EntityContactFilter* _entityContactFilter;
     bool _isServer;

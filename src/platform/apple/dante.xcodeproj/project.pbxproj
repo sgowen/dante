@@ -498,6 +498,10 @@
 		BBEF701D2000331F0030076A /* game_assets.cfg in Resources */ = {isa = PBXBuildFile; fileRef = BBEF70192000331F0030076A /* game_assets.cfg */; };
 		BBEF701E2000331F0030076A /* entities.cfg in Resources */ = {isa = PBXBuildFile; fileRef = BBEF701A2000331F0030076A /* entities.cfg */; };
 		BBEF701F2000331F0030076A /* maps.cfg in Resources */ = {isa = PBXBuildFile; fileRef = BBEF701B2000331F0030076A /* maps.cfg */; };
+		BBEF7022200062C40030076A /* EntityMapper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBEF7020200062C40030076A /* EntityMapper.cpp */; };
+		BBEF7023200062C40030076A /* EntityMapper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBEF7020200062C40030076A /* EntityMapper.cpp */; };
+		BBEF7026200078320030076A /* DefaultEntityController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBEF7024200078320030076A /* DefaultEntityController.cpp */; };
+		BBEF7027200078320030076A /* DefaultEntityController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBEF7024200078320030076A /* DefaultEntityController.cpp */; };
 		BBF226CF1EC12CDE00573356 /* ReplicationManagerClient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF226B01EC12CDE00573356 /* ReplicationManagerClient.cpp */; };
 		BBFA49E51FC3702D00233514 /* Engine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBFA49E41FC3702D00233514 /* Engine.cpp */; };
 		BBFA49E61FC3702D00233514 /* Engine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBFA49E41FC3702D00233514 /* Engine.cpp */; };
@@ -1633,6 +1637,10 @@
 		BBEF70192000331F0030076A /* game_assets.cfg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = game_assets.cfg; sourceTree = "<group>"; };
 		BBEF701A2000331F0030076A /* entities.cfg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = entities.cfg; sourceTree = "<group>"; };
 		BBEF701B2000331F0030076A /* maps.cfg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = maps.cfg; sourceTree = "<group>"; };
+		BBEF7020200062C40030076A /* EntityMapper.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = EntityMapper.cpp; sourceTree = "<group>"; };
+		BBEF7021200062C40030076A /* EntityMapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EntityMapper.h; sourceTree = "<group>"; };
+		BBEF7024200078320030076A /* DefaultEntityController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DefaultEntityController.cpp; sourceTree = "<group>"; };
+		BBEF7025200078320030076A /* DefaultEntityController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DefaultEntityController.h; sourceTree = "<group>"; };
 		BBF226B01EC12CDE00573356 /* ReplicationManagerClient.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ReplicationManagerClient.cpp; sourceTree = "<group>"; };
 		BBF226B11EC12CDE00573356 /* ReplicationManagerClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReplicationManagerClient.h; sourceTree = "<group>"; };
 		BBFA49DB1FC367AF00233514 /* GlfwMain.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GlfwMain.h; sourceTree = "<group>"; };
@@ -2630,12 +2638,16 @@
 		BBAEF0BE1EA94ED900F0866E /* entity */ = {
 			isa = PBXGroup;
 			children = (
+				BBEF7024200078320030076A /* DefaultEntityController.cpp */,
+				BBEF7025200078320030076A /* DefaultEntityController.h */,
 				BBAEF0BF1EA94ED900F0866E /* Entity.cpp */,
 				BBAEF0C01EA94ED900F0866E /* Entity.h */,
 				BBEF6FFD200028220030076A /* EntityController.cpp */,
 				BBEF6FFE200028220030076A /* EntityController.h */,
 				BBAEF0C11EA94ED900F0866E /* EntityManager.cpp */,
 				BBAEF0C21EA94ED900F0866E /* EntityManager.h */,
+				BBEF7020200062C40030076A /* EntityMapper.cpp */,
+				BBEF7021200062C40030076A /* EntityMapper.h */,
 				BB0864721EE20CCA00BCD9E0 /* EntityRegistry.cpp */,
 				BB0864731EE20CCA00BCD9E0 /* EntityRegistry.h */,
 			);
@@ -3839,6 +3851,7 @@
 				BB27D23A1FC6567A00ED42FD /* ALSoundSourcePool.m in Sources */,
 				BB27D23B1FC6567A00ED42FD /* OALSimpleAudio.m in Sources */,
 				BB27D23C1FC6567A00ED42FD /* OALAudioFile.m in Sources */,
+				BBEF7022200062C40030076A /* EntityMapper.cpp in Sources */,
 				BBD554461FDB2EA800E00AD6 /* b2BlockAllocator.cpp in Sources */,
 				BB27D23D1FC6567A00ED42FD /* NSMutableDictionary+WeakReferences.m in Sources */,
 				BB27D23E1FC6567A00ED42FD /* NSMutableArray+WeakReferences.m in Sources */,
@@ -3850,6 +3863,7 @@
 				BB27D23F1FC6567A00ED42FD /* OALTools.m in Sources */,
 				BB27D2401FC6567A00ED42FD /* mach_timing.c in Sources */,
 				BB27D2411FC6567A00ED42FD /* OALActionManager.m in Sources */,
+				BBEF7026200078320030076A /* DefaultEntityController.cpp in Sources */,
 				BB27D2421FC6567A00ED42FD /* OALAction.m in Sources */,
 				BB27D2431FC6567A00ED42FD /* OALUtilityActions.m in Sources */,
 				BB27D2441FC6567A00ED42FD /* OALAudioActions.m in Sources */,
@@ -4141,6 +4155,7 @@
 				BB5AFE751FB35AAF005FBD52 /* NGTexture.cpp in Sources */,
 				BBD554491FDB2EA800E00AD6 /* b2Settings.cpp in Sources */,
 				BBEF7000200028220030076A /* EntityController.cpp in Sources */,
+				BBEF7023200062C40030076A /* EntityMapper.cpp in Sources */,
 				BBD554411FDB2EA800E00AD6 /* b2ContactManager.cpp in Sources */,
 				BBD5544F1FDB2EA800E00AD6 /* b2Math.cpp in Sources */,
 				BB1C3C071FE76C65002E4AA6 /* OpenGLProgramLoader.cpp in Sources */,
@@ -4208,6 +4223,7 @@
 				BB5AFE271FB35A19005FBD52 /* Circle.cpp in Sources */,
 				BB5AFE291FB35A19005FBD52 /* Line.cpp in Sources */,
 				BB04A6C11FC383A800E0EB89 /* IOSMain.mm in Sources */,
+				BBEF7027200078320030076A /* DefaultEntityController.cpp in Sources */,
 				BB5AFE2A1FB35A19005FBD52 /* NGRect.cpp in Sources */,
 				BBD554271FDB2EA800E00AD6 /* b2WeldJoint.cpp in Sources */,
 				BB5AFE2B1FB35A19005FBD52 /* OverlapTester.cpp in Sources */,

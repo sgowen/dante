@@ -14,6 +14,7 @@
 #include "framework/network/portable/OutputMemoryBitStream.h"
 #include "framework/network/portable/InputMemoryBitStream.h"
 #include "framework/network/portable/Move.h"
+#include <framework/entity/EntityController.h>
 
 #include "framework/util/NGSTDUtil.h"
 #include "framework/util/Timing.h"
@@ -21,21 +22,21 @@
 #include "framework/network/client/NetworkManagerClient.h"
 #include "framework/util/StringUtil.h"
 #include "framework/math/MathUtil.h"
+#include <framework/entity/EntityMapper.h>
 
 NGRTTI_IMPL_NOPARENT(Entity);
 
 NW_TYPE_IMPL(Entity);
 
-Entity::Entity(b2World& world, float x, float y, float width, float height, bool isServer, EntityDef inEntityDef) :
-_worldRef(world),
+Entity::Entity(EntityDef inEntityDef, b2World& world, bool isServer) :
 _entityDef(inEntityDef),
+_controller(EntityMapper::getInstance()->createEntityController(inEntityDef.controller, this)),
+_worldRef(world),
 _body(NULL),
 _fixture(NULL),
 _footSensorFixture(NULL),
 _stateTime(0.0f),
 _color(1.0f, 1.0f, 1.0f, 1.0f),
-_width(width),
-_height(height),
 _readState(0),
 _isServer(isServer),
 _velocityLastKnown(b2Vec2_zero),
@@ -48,22 +49,21 @@ _ID(0),
 _numGroundContacts(0),
 _isRequestingDeletion(false)
 {
+    b2BodyDef bodyDef;
+    bodyDef.position.Set(0, 0);
+    
     if (_entityDef.isStaticBody)
     {
-        // Define the ground body.
-        b2BodyDef groundBodyDef;
-        groundBodyDef.position.Set(x, y);
-        
         // Call the body factory which allocates memory for the ground body
         // from a pool and creates the ground box shape (also from a pool).
         // The body is also added to the world.
-        _body = _worldRef.CreateBody(&groundBodyDef);
+        _body = _worldRef.CreateBody(&bodyDef);
         
         // Define the ground box shape.
         b2PolygonShape groundBox;
         
         // The extents are the half-widths of the box.
-        groundBox.SetAsBox(_width / 2.0f, _height / 2.0f);
+        groundBox.SetAsBox(inEntityDef.width / 2, inEntityDef.height / 2);
         
         b2FixtureDef def;
         def.shape = &groundBox;
@@ -75,17 +75,14 @@ _isRequestingDeletion(false)
     }
     else
     {
-        // Define the dynamic body. We set its position and call the body factory.
-        b2BodyDef bodyDef;
         bodyDef.type = b2_dynamicBody;
-        bodyDef.position.Set(x, y);
         bodyDef.fixedRotation = _entityDef.fixedRotation;
         bodyDef.bullet = _entityDef.bullet;
         _body = _worldRef.CreateBody(&bodyDef);
         
         // Define another box shape for our dynamic body.
         b2PolygonShape dynamicBox;
-        dynamicBox.SetAsBox(_width / 2.0f, _height / 2.0f);
+        dynamicBox.SetAsBox(inEntityDef.width / 2, inEntityDef.height / 2);
         
         // Define the dynamic body fixture.
         b2FixtureDef fixtureDef;
@@ -107,7 +104,7 @@ _isRequestingDeletion(false)
         {
             // Add foot sensor fixture
             b2PolygonShape feet;
-            feet.SetAsBox(_width * 0.49f, _height / 8, b2Vec2(x, -_height / 2), 0);
+            feet.SetAsBox(inEntityDef.width * 0.48f, inEntityDef.height / 8, b2Vec2(0, -inEntityDef.height / 2), 0);
             b2FixtureDef fixtureDefFeet;
             fixtureDefFeet.shape = &feet;
             fixtureDefFeet.isSensor = true;
@@ -123,7 +120,7 @@ _isRequestingDeletion(false)
 
 Entity::~Entity()
 {
-    // Empty
+    delete _controller;
 }
 
 void Entity::postRead()
@@ -232,12 +229,12 @@ Color& Entity::getColor()
 
 float Entity::getWidth()
 {
-    return _width;
+    return _entityDef.width;
 }
 
 float Entity::getHeight()
 {
-    return _height;
+    return _entityDef.height;
 }
 
 void Entity::setAngle(float angle)

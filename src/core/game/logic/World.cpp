@@ -42,9 +42,11 @@ Entity* World::sServerCreate##name() \
     return ret; \
 }
 
+WORLD_CREATE_CLIENT_IMPL(Ground);
 WORLD_CREATE_CLIENT_IMPL(Robot);
 WORLD_CREATE_CLIENT_IMPL(Crate);
 
+WORLD_CREATE_SERVER_IMPL(Ground);
 WORLD_CREATE_SERVER_IMPL(Robot);
 WORLD_CREATE_SERVER_IMPL(Crate);
 
@@ -58,9 +60,6 @@ _isServer(isServer)
     
     // Construct a world object, which will hold and simulate the rigid bodies.
     _world = new b2World(gravity);
-    
-    _ground = new Ground(*_world, _isServer);
-    
     _world->SetContactListener(_entityContactListener);
     _world->SetContactFilter(_entityContactFilter);
 }
@@ -71,8 +70,6 @@ World::~World()
     
     delete _entityContactListener;
     delete _entityContactFilter;
-    
-    delete _ground;
     
     delete _world;
 }

@@ -27,6 +27,7 @@
 #include "framework/network/server/SocketServerHelper.h"
 #include "game/logic/Crate.h"
 #include "framework/network/portable/MachineAddress.h"
+#include "game/logic/Ground.h"
 
 #ifdef NG_STEAM
 #include <framework/network/steam/NGSteamServerHelper.h>
@@ -49,17 +50,17 @@ void Server::create(bool isSteam, uint32_t inNumCratesToSpawn, uint32_t inNumEne
     s_instance = new Server(isSteam, inNumCratesToSpawn, inNumEnemysToSpawn);
 }
 
+Server * Server::getInstance()
+{
+    return s_instance;
+}
+
 void Server::destroy()
 {
     assert(s_instance);
     
     delete s_instance;
     s_instance = NULL;
-}
-
-Server * Server::getInstance()
-{
-    return s_instance;
 }
 
 void Server::sHandleNewClient(uint8_t playerId, std::string playerName)
@@ -185,6 +186,24 @@ void Server::deleteRobotWithPlayerId(uint8_t playerId)
     }
 }
 
+void Server::spawnGroundsIfNecessary()
+{
+    if (_hasSpawnedGrounds)
+    {
+        return;
+    }
+    
+    for (int i = 0; i < 3; ++i)
+    {
+        Ground* ground = static_cast<Ground*>(SERVER_ENTITY_REG->createEntity(NW_TYPE_Ground));
+        int xSeed = rand() % 5 + 1;
+        float posX = i == 0 ? GAME_WIDTH / 2 : xSeed * GAME_WIDTH / 3;
+        ground->setPosition(b2Vec2(posX, 0));
+    }
+    
+    _hasSpawnedGrounds = true;
+}
+
 void Server::spawnRobotForPlayer(uint8_t inPlayerId, std::string inPlayerName)
 {
     _playerIdForRobotBeingCreated = inPlayerId;
@@ -194,8 +213,8 @@ void Server::spawnRobotForPlayer(uint8_t inPlayerId, std::string inPlayerName)
     robot->setAddressHash(client->getMachineAddress()->getHash());
     
     robot->setPlayerName(inPlayerName);
-    float posX = (rand() % static_cast<int>(GAME_WIDTH - robot->getWidth() * 2)) + (robot->getWidth() * 2);
-    robot->setPosition(b2Vec2(posX - static_cast<float>(inPlayerId), 8.0f));
+    float posX = GAME_WIDTH / 2;//(rand() % static_cast<int>(GAME_WIDTH - robot->getWidth() * 2)) + (robot->getWidth() * 2);
+    robot->setPosition(b2Vec2(posX, 8));
     
     static Color Red(1.0f, 0.0f, 0.0f, 1);
     static Color Green(0.0f, 1.0f, 0.0f, 1);
@@ -218,6 +237,8 @@ void Server::spawnRobotForPlayer(uint8_t inPlayerId, std::string inPlayerName)
     
     // Doing this last on purpose
     robot->setPlayerId(inPlayerId);
+    
+    spawnGroundsIfNecessary();
 }
 
 void Server::respawnEnemiesIfNecessary()
@@ -297,12 +318,13 @@ void Server::clearClientMoves()
     }
 }
 
-Server::Server(bool isSteam, uint32_t inNumCratesToSpawn, uint32_t inNumEnemysToSpawn) : _stateTime(0), _frameStateTime(0), _stateTimeNoEnemies(0), _playerIdForRobotBeingCreated(0), _numCratesToSpawn(inNumCratesToSpawn), _numEnemysToSpawn(inNumEnemysToSpawn), _isSpawningEnemies(false), _isSpawningObjects(false), _isDisplaying(false)
+Server::Server(bool isSteam, uint32_t inNumCratesToSpawn, uint32_t inNumEnemysToSpawn) : _stateTime(0), _frameStateTime(0), _stateTimeNoEnemies(0), _playerIdForRobotBeingCreated(0), _numCratesToSpawn(inNumCratesToSpawn), _numEnemysToSpawn(inNumEnemysToSpawn), _isSpawningEnemies(false), _isSpawningObjects(false), _isDisplaying(false), _hasSpawnedGrounds(false)
 {
     FWInstanceManager::createServerEntityManager(InstanceManager::sHandleEntityCreatedOnServer, InstanceManager::sHandleEntityDeletedOnServer);
     
     InstanceManager::createServerWorld();
     
+    SERVER_ENTITY_REG->registerFunction(NW_TYPE_Ground, World::sServerCreateGround);
     SERVER_ENTITY_REG->registerFunction(NW_TYPE_Robot, World::sServerCreateRobot);
     SERVER_ENTITY_REG->registerFunction(NW_TYPE_Crate, World::sServerCreateCrate);
     

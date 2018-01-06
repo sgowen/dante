@@ -1,35 +1,25 @@
 //
-//  Ground.h
-//  dante
+//  DefaultEntityController.h
+//  noctisgames-framework
 //
-//  Created by Stephen Gowen on 7/13/17.
-//  Copyright (c) 2017 Noctis Games. All rights reserved.
+//  Created by Stephen Gowen on 1/5/18.
+//  Copyright © 2018 Noctis Games. All rights reserved.
 //
 
-#ifndef __noctisgames__Ground__
-#define __noctisgames__Ground__
+#ifndef __noctisgames__DefaultEntityController__
+#define __noctisgames__DefaultEntityController__
 
-#include "framework/entity/Entity.h"
+#include <framework/entity/EntityController.h>
 
-#include "game/logic/GameConstants.h"
-
-#include "framework/util/NGRTTI.h"
-
-class Ground : public Entity
+class DefaultEntityController : public EntityController
 {
     NGRTTI_DECL;
     
-    NW_TYPE_DECL(NW_TYPE_Ground);
-    
 public:
-    enum GroundReplicationState
-    {
-        GRND_Pose = 1 << 0,
-        
-        GRND_AllState = GRND_Pose
-    };
+    static EntityController* create(Entity* inEntity);
     
-    Ground(b2World& world, bool isServer);
+    DefaultEntityController(Entity* inEntity);
+    virtual ~DefaultEntityController();
     
     virtual void update();
     virtual bool shouldCollide(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB);
@@ -41,4 +31,4 @@ public:
     virtual bool needsMoveReplay();
 };
 
-#endif /* defined(__noctisgames__Ground__) */
+#endif /* defined(__noctisgames__DefaultEntityController__) */

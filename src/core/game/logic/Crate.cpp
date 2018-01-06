@@ -32,6 +32,8 @@ namespace
     {
         EntityDef ret;
         
+        ret.width = 4.0f;
+        ret.height = 4.0f;
         ret.isStaticBody = false;
         ret.fixedRotation = false;
         ret.restitution = 0.5f;
@@ -41,7 +43,7 @@ namespace
     }
 }
 
-Crate::Crate(b2World& world, bool isServer) : Entity(world, 0.0f, 0.0f, 1.0f, 1.0f, isServer, constructEntityDef())
+Crate::Crate(b2World& world, bool isServer) : Entity(constructEntityDef(), world, isServer)
 {
     // Empty
 }

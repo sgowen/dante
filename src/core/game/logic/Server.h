@@ -19,29 +19,18 @@ class Server
 {
 public:
     static void create(bool isSteam, uint32_t inNumCratesToSpawn, uint32_t inNumEnemysToSpawn);
-    
-    static void destroy();
-    
     static Server* getInstance();
-    
+    static void destroy();
     static void sHandleNewClient(uint8_t playerId, std::string playerName);
-    
     static void sHandleLostClient(ClientProxy* inClientProxy, uint8_t index);
     
     void update();
-    
     uint8_t getPlayerIdForRobotBeingCreated();
-    
     void toggleEnemies();
-    
     void toggleObjects();
-    
     void toggleDisplaying();
-    
     bool isSpawningEnemies();
-    
     bool isSpawningObjects();
-    
     bool isDisplaying();
 
 private:
@@ -56,19 +45,15 @@ private:
     bool _isSpawningEnemies;
     bool _isSpawningObjects;
     bool _isDisplaying;
+    bool _hasSpawnedGrounds;
     
     void handleNewClient(uint8_t playerId, std::string playerName);
-    
     void handleLostClient(ClientProxy* inClientProxy, uint8_t index);
-    
     void deleteRobotWithPlayerId(uint8_t playerId);
-    
+    void spawnGroundsIfNecessary();
     void spawnRobotForPlayer(uint8_t inPlayerId, std::string inPlayerName);
-    
     void respawnEnemiesIfNecessary();
-    
     void spawnCratesIfNecessary();
-    
     void clearClientMoves();
     
     // ctor, copy ctor, and assignment should be private in a Singleton

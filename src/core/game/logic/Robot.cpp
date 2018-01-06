@@ -48,6 +48,8 @@ namespace
     {
         EntityDef ret;
         
+        ret.width = 3.0f;
+        ret.height = 3.0f;
         ret.isStaticBody = false;
         ret.restitution = 0.1f;
         ret.isCharacter = true;
@@ -57,7 +59,7 @@ namespace
     }
 }
 
-Robot::Robot(b2World& world, bool isServer) : Entity(world, 0, 0, 2.0f, 2.0f, isServer, constructEntityDef()),
+Robot::Robot(b2World& world, bool isServer) : Entity(constructEntityDef(), world, isServer),
 _addressHash(0),
 _playerId(0),
 _playerName("Robot"),
@@ -67,10 +69,10 @@ _isFacingLeft(false),
 _isMainAction(false),
 _isSprinting(false),
 _isFirstJumpCompleted(false),
-_speed(7.5f),
+_speed(15.0f),
+_sprintSpeed(_speed * 1.5f),
 _movementForce(_speed * 6),
-_jumpForce(600.0f),
-_doubleJumpForce(400.0f),
+_sprintMovementForce(_movementForce * 1.5f),
 _numJumpsLastKnown(0),
 _healthLastKnown(_health),
 _isFacingLeftLastKnown(false),
@@ -307,16 +309,16 @@ void Robot::processInput(InputState* inInputState, bool isPending)
     
     const b2Vec2& velocity = getVelocity();
     
-    float movementForce = isGrounded() ? _movementForce : 0;
     float sideForce = 0;
     float vertForce = 0;
+    
     _isSprinting = inputState->isSprinting() && isGrounded();
     if (_isSprinting)
     {
-        if ((inputState->getDesiredRightAmount() > 0 && velocity.x < (_speed * 1.5f))
-            || (inputState->getDesiredRightAmount() < 0 && velocity.x > (-_speed * 1.5f)))
+        if ((inputState->getDesiredRightAmount() > 0 && velocity.x < _sprintSpeed)
+            || (inputState->getDesiredRightAmount() < 0 && velocity.x > -_sprintSpeed))
         {
-            sideForce = inputState->getDesiredRightAmount() * movementForce * 1.5f;
+            sideForce = inputState->getDesiredRightAmount() * _sprintMovementForce;
         }
     }
     else
@@ -324,11 +326,9 @@ void Robot::processInput(InputState* inInputState, bool isPending)
         if ((inputState->getDesiredRightAmount() > 0 && velocity.x < _speed)
             || (inputState->getDesiredRightAmount() < 0 && velocity.x > -_speed))
         {
-            sideForce = inputState->getDesiredRightAmount() * movementForce;
+            sideForce = inputState->getDesiredRightAmount() * _movementForce;
         }
     }
-    
-    _isFacingLeft = sideForce < 0 ? true : sideForce > 0 ? false : _isFacingLeft;
     
     if (inputState->isJumping())
     {
@@ -355,15 +355,7 @@ void Robot::processInput(InputState* inInputState, bool isPending)
             }
             else
             {
-                vertForce = _body->GetMass() * (8.0f - (4.0f + (_stateTime + 0.25f) * 10));
-                
-                if (isGrounded() && _stateTime > 0.3f)
-                {
-                    setVelocity(b2Vec2(velocity.x, 0));
-                    _stateTime = 0;
-                    _isFirstJumpCompleted = false;
-                    _numJumps = 0;
-                }
+                vertForce = _body->GetMass() * (11.0f - (7.0f + (_stateTime + 0.25f) * 10));
             }
         }
         
@@ -380,7 +372,15 @@ void Robot::processInput(InputState* inInputState, bool isPending)
         }
     }
     
+    if (isGrounded() && _stateTime > 0.3f)
+    {
+        _isFirstJumpCompleted = false;
+        _numJumps = 0;
+    }
+    
+    sideForce = isGrounded() || _numJumps == 2 ? sideForce : 0;
     vertForce = clamp(vertForce, _body->GetMass() * 8.0f, 0);
+    _isFacingLeft = sideForce < 0 ? true : sideForce > 0 ? false : _isFacingLeft;
     _body->ApplyLinearImpulse(b2Vec2(sideForce,vertForce), _body->GetWorldCenter(), true);
     
     _isMainAction = inputState->isMainAction();

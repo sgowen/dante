@@ -41,8 +41,8 @@
 
 //// Matrix Definitions ////
 
-#define CAM_WIDTH 24.0f // meters
-#define CAM_HEIGHT 10.0f // meters
+#define CAM_WIDTH 36.0f // meters
+#define CAM_HEIGHT 15.0f // meters
 
 //// World Definitions ////
 
@@ -58,8 +58,8 @@
 
 //// Network ////
 
-#define NW_TYPE_Robot 'ROBT'
 #define NW_TYPE_Ground 'GRND'
+#define NW_TYPE_Robot 'ROBT'
 #define NW_TYPE_Crate 'CRAT'
 
 //// Non-Steam ////

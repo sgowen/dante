@@ -6,4 +6,18 @@
 //  Copyright © 2018 Noctis Games. All rights reserved.
 //
 
+#include "pch.h"
+
 #include "EntityController.h"
+
+NGRTTI_IMPL_NOPARENT(EntityController);
+
+EntityController::EntityController(Entity* inEntity) : _entity(inEntity)
+{
+    // Empty
+}
+
+EntityController::~EntityController()
+{
+    // Empty
+}

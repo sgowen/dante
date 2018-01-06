@@ -13,6 +13,8 @@
 #include "game/logic/TitleEngine.h"
 #include "game/logic/GameEngine.h"
 #include "game/logic/StudioEngine.h"
+#include <framework/entity/EntityMapper.h>
+#include <framework/entity/DefaultEntityController.h>
 
 NGRTTI_IMPL(MainEngineController, EngineController);
 
@@ -21,6 +23,8 @@ MainEngineController::MainEngineController()
     TitleEngine::create();
     GameEngine::create();
     StudioEngine::create();
+    
+    EntityMapper::getInstance()->registerFunction("DefaultEntityController", DefaultEntityController::create);
 }
 
 MainEngineController::~MainEngineController()

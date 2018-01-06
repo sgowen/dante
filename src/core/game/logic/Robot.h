@@ -77,9 +77,9 @@ private:
     uint8_t _health;
     
     float _speed;
+    float _sprintSpeed;
     float _movementForce;
-    float _jumpForce;
-    float _doubleJumpForce;
+    float _sprintMovementForce;
     
     // Cached Last Known Values (from previous frame)
     uint8_t _numJumpsLastKnown;

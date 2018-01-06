@@ -73,6 +73,7 @@
 #include "framework/graphics/portable/NGTextureDesc.h"
 #include "framework/graphics/portable/Assets.h"
 #include <game/logic/GameEngine.h>
+#include <game/logic/Ground.h>
 
 #ifdef NG_STEAM
 #include "framework/network/steam/NGSteamGameServer.h"
@@ -302,14 +303,6 @@ void GameRenderer::renderWorld(int flags)
 {
     _rendererHelper->updateMatrix(_camBounds->getLeft(), _camBounds->getRight(), _camBounds->getBottom(), _camBounds->getTop());
     
-    _spriteBatcher->beginBatch();
-    for (int i = 0; i < 3; ++i)
-    {
-        static TextureRegion tr = ASSETS->findTextureRegion("Background3");
-        _spriteBatcher->renderSprite(i * CAM_WIDTH + CAM_WIDTH / 2, CAM_HEIGHT * 0.2f / 2, CAM_WIDTH, CAM_HEIGHT * 0.2f, 0, tr);
-    }
-    _spriteBatcher->endBatch(_textureManager->getTextures()[3], *_textureNGShader);
-    
     renderEntities(InstanceManager::getClientWorld(), false);
     
     if (Server::getInstance() && Server::getInstance()->isDisplaying())
@@ -342,7 +335,13 @@ void GameRenderer::renderEntities(World* world, bool isServer)
             c.alpha = 0.5f;
         }
         
-        if (go->getRTTI().derivesFrom(Crate::rtti))
+        if (go->getRTTI().derivesFrom(Ground::rtti))
+        {
+            TextureRegion tr = ASSETS->findTextureRegion("Map_Ground", go->getStateTime());
+            
+            _spriteBatcher->renderSprite(go->getPosition().x, go->getPosition().y, go->getWidth(), go->getHeight(), go->getAngle(), c, tr);
+        }
+        else if (go->getRTTI().derivesFrom(Crate::rtti))
         {
             TextureRegion tr = ASSETS->findTextureRegion("Map_Crate", go->getStateTime());
             

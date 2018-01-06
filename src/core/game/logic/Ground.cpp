@@ -16,6 +16,7 @@
 
 #include "game/logic/Robot.h"
 #include "game/logic/Crate.h"
+#include "framework/network/server/NetworkManagerServer.h"
 
 #include <math.h>
 
@@ -29,20 +30,28 @@ namespace
     {
         EntityDef ret;
         
-        ret.friction = 5.0f;
+        ret.width = 32.0f;
+        ret.height = 4.0f;
+        ret.friction = 12.0f;
         
         return ret;
     }
 }
 
-Ground::Ground(b2World& world, bool isServer) : Entity(world, GAME_WIDTH / 2.0f, -10.0f, GAME_WIDTH, 23.6f, isServer, constructEntityDef())
+Ground::Ground(b2World& world, bool isServer) : Entity(constructEntityDef(), world, isServer)
 {
     // Empty
 }
 
 void Ground::update()
 {
-    // Empty
+    if (_isServer)
+    {
+        NG_SERVER->setStateDirty(getID(), GRND_Pose);
+    }
+    
+    _velocityLastKnown.Set(getVelocity().x, getVelocity().y);
+    _positionLastKnown.Set(getPosition().x, getPosition().y);
 }
 
 bool Ground::shouldCollide(Entity *inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB)
@@ -74,24 +83,49 @@ void Ground::handleEndContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture
 
 uint32_t Ground::getAllStateMask() const
 {
-    return 0;
+    return GRND_AllState;
 }
 
 void Ground::read(InputMemoryBitStream& inInputStream)
 {
-    // Empty
+    bool stateBit;
+    
+    _readState = 0;
+    
+    inInputStream.read(stateBit);
+    if (stateBit)
+    {
+        b2Vec2 velocity;
+        inInputStream.read(velocity);
+        setVelocity(velocity);
+        
+        b2Vec2 position;
+        inInputStream.read(position);
+        setPosition(position);
+        
+        _readState |= GRND_Pose;
+    }
 }
 
 uint32_t Ground::write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState)
 {
     uint32_t writtenState = 0;
     
-    // Empty
+    bool pose = inDirtyState & GRND_Pose;
+    inOutputStream.write(pose);
+    if (pose)
+    {
+        inOutputStream.write(getVelocity());
+        
+        inOutputStream.write(getPosition());
+        
+        writtenState |= GRND_Pose;
+    }
     
     return writtenState;
 }
 
 bool Ground::needsMoveReplay()
 {
-    return false;
+    return (_readState & GRND_Pose) != 0;
 }

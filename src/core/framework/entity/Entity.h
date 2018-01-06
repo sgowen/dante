@@ -26,6 +26,7 @@ class b2Contact;
 class OutputMemoryBitStream;
 class InputMemoryBitStream;
 class Move;
+class EntityController;
 
 #define NW_TYPE_DECL(inCode) \
 public: \
@@ -39,7 +40,10 @@ struct EntityDef
 {
     EntityDef()
     {
-        restitution = 0.25f;
+        controller = "DefaultEntityController";
+        width = 1.0f;
+        height = 1.0f;
+        restitution = 0.1f;
         density = 1.0f;
         friction = 0.5f;
         isStaticBody = true;
@@ -49,6 +53,9 @@ struct EntityDef
         isCharacter = false;
     }
     
+    std::string controller;
+    float width;
+    float height;
     float restitution;
     float density;
     float friction;
@@ -66,7 +73,7 @@ class Entity
     NW_TYPE_DECL(NW_TYPE_Entity);
     
 public:
-    Entity(b2World& world, float x, float y, float width, float height, bool isServer, EntityDef inEntityDef);
+    Entity(EntityDef inEntityDef, b2World& world, bool isServer);
     virtual ~Entity();
     
     virtual void update() = 0;
@@ -111,14 +118,13 @@ public:
 protected:
     b2World& _worldRef;
     EntityDef _entityDef;
+    EntityController* _controller;
     b2Body* _body;
     b2Fixture* _fixture;
     b2Fixture* _footSensorFixture;
     float _stateTime;
     uint8_t _numGroundContacts;
     Color _color;
-    float _width;
-    float _height;
     uint32_t _readState;
     bool _isServer;
     

@@ -357,6 +357,8 @@ void TitleEngine::deactivateSteam()
 
 void TitleEngine::startServer()
 {
+    disconnect();
+    
     _state = TE_MAIN_MENU_STARTING_SERVER;
     
     if (!Server::getInstance())
@@ -389,10 +391,7 @@ void TitleEngine::startServer()
             Server::getInstance()->toggleObjects();
         }
         
-        if (!NG_SERVER)
-        {
-            Server::destroy();
-        }
+        assert(NG_SERVER);
     }
 }
 
@@ -416,6 +415,7 @@ void TitleEngine::joinServer(Engine* engine)
     
     assert(clientHelper);
     
+    CLIENT_ENTITY_REG->registerFunction(NW_TYPE_Ground, World::sClientCreateGround);
     CLIENT_ENTITY_REG->registerFunction(NW_TYPE_Robot, World::sClientCreateRobot);
     CLIENT_ENTITY_REG->registerFunction(NW_TYPE_Crate, World::sClientCreateCrate);
     
