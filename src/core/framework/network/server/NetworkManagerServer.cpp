@@ -120,6 +120,9 @@ void NetworkManagerServer::sendOutgoingPackets()
 
 void NetworkManagerServer::registerEntity(Entity* inEntity)
 {
+    ++_entityID;
+    inEntity->setID(_entityID);
+    
     //add mapping from network id to game object
     FWInstanceManager::getServerEntityManager()->registerEntity(inEntity);
     
@@ -607,7 +610,8 @@ _serverHelper(inServerHelper),
 _handleNewClientFunc(inHandleNewClientFunc),
 _handleLostClientFunc(inHandleLostClientFunc),
 _inputStateCreationFunc(inInputStateCreationFunc),
-_nextPlayerId(1)
+_nextPlayerId(1),
+_entityID(0)
 {
     // Empty
 }

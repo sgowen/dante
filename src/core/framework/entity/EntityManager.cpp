@@ -18,8 +18,7 @@
 EntityManager::EntityManager(HandleEntityCreatedFunc inHandleEntityCreatedFunc, HandleEntityDeletionFunc inHandleEntityDeletionFunc, EntityCreationFunc inEntityCreationFunc) :
 _handleEntityCreatedFunc(inHandleEntityCreatedFunc),
 _handleEntityDeletionFunc(inHandleEntityDeletionFunc),
-_entityCreationFunc(inEntityCreationFunc),
-_entityID(0)
+_entityCreationFunc(inEntityCreationFunc)
 {
     // Empty
 }
@@ -48,10 +47,6 @@ Entity* EntityManager::getEntityByID(uint32_t inID) const
 
 void EntityManager::registerEntity(Entity* inEntity)
 {
-    ++_entityID;
-    
-    inEntity->setID(_entityID);
-    
     _entityMap.insert(std::make_pair(inEntity->getID(), inEntity));
     
     _handleEntityCreatedFunc(inEntity);
@@ -65,11 +60,6 @@ void EntityManager::deregisterEntity(Entity* inEntity)
     
     delete inEntity;
     inEntity = NULL;
-}
-
-void EntityManager::setEntityID(uint32_t inValue)
-{
-    _entityID = inValue;
 }
 
 std::map<uint32_t, Entity*>& EntityManager::getMap()

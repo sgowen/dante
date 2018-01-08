@@ -91,6 +91,7 @@ private:
     std::map<size_t, ClientProxy*> _addressHashToClientMap;
     std::map<int, ClientProxy*> _playerIDToClientMap;
     uint8_t _nextPlayerId;
+    uint32_t _entityID;
     
     void processPacket(InputMemoryBitStream& inInputStream, MachineAddress* inFromAddress);
     
