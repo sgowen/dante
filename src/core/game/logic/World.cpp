@@ -55,7 +55,15 @@ _isServer(isServer)
 
 World::~World()
 {
-    _entities.clear();
+    int len = static_cast<int>(_entities.size());
+    for (int i = 0, c = len; i < c; ++i)
+    {
+        Entity* entity = _entities[i];
+        
+        removeEntity(entity);
+        --i;
+        --c;
+    }
     
     delete _entityContactListener;
     delete _entityContactFilter;
@@ -123,6 +131,8 @@ void World::removeEntity(Entity* inEntity)
         
         _entities.pop_back();
         
+        inEntity->deinitPhysics();
+        
         if (_isServer)
         {
             NG_SERVER->deregisterEntity(inEntity);
@@ -132,8 +142,6 @@ void World::removeEntity(Entity* inEntity)
 
 void World::postRead()
 {
-    assert(!_isServer);
-    
     if (!NG_CLIENT->hasReceivedNewState())
     {
         return;
@@ -262,17 +270,6 @@ Entity* World::getRobotWithPlayerId(uint8_t inPlayerID)
     return NULL;
 }
 
-void World::killAllEnemys()
-{
-    for (Entity* entity : _entities)
-    {
-//        if (entity->getRTTI().derivesFrom(Enemy::rtti))
-//        {
-//            entity->requestDeletion();
-//        }
-    }
-}
-
 void World::removeAllCrates()
 {
     for (Entity* entity : _entities)
@@ -282,19 +279,6 @@ void World::removeAllCrates()
             entity->requestDeletion();
         }
     }
-}
-
-bool World::hasEnemys()
-{
-    for (Entity* entity : _entities)
-    {
-//        if (entity->getRTTI().derivesFrom(Enemy::rtti))
-//        {
-//            return true;
-//        }
-    }
-    
-    return false;
 }
 
 bool World::hasCrates()

@@ -43,8 +43,6 @@ public:
     {
         for (typename std::map<K, T*>::iterator i = items.begin(); i != items.end(); )
         {
-            (i->second)->deinitPhysics();
-            
             delete i->second;
             
             i = items.erase(i);

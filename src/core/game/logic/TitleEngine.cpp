@@ -367,35 +367,18 @@ void TitleEngine::startServer()
 {
     disconnect();
     
-    PooledObjectsManager::create();
+    if (!PooledObjectsManager::getInstance())
+    {
+        PooledObjectsManager::create();
+    }
     
     _state = TE_MAIN_MENU_STARTING_SERVER;
     
-    uint32_t numCratesToSpawn = 6;
-    uint32_t numEnemysToSpawn = 4;
-    
-    {
-        std::string val = _config->findValue(std::string("num_crates_to_spawn"));
-        if (val.length() > 0)
-        {
-            numCratesToSpawn = StringUtil::stringToNumber<uint32_t>(val);
-        }
-    }
-    
-    {
-        std::string val = _config->findValue(std::string("num_enemies_to_spawn"));
-        if (val.length() > 0)
-        {
-            numEnemysToSpawn = StringUtil::stringToNumber<uint32_t>(val);
-        }
-    }
-    
-    Server::create(_isSteam, numCratesToSpawn, numEnemysToSpawn);
+    Server::create(_isSteam);
     
     if (PlatformHelper::getPlatform() == NG_PLATFORM_ANDROID
         || PlatformHelper::getPlatform() == NG_PLATFORM_IOS)
     {
-        Server::getInstance()->toggleEnemies();
         Server::getInstance()->toggleObjects();
     }
     
@@ -404,11 +387,14 @@ void TitleEngine::startServer()
 
 void TitleEngine::joinServer(Engine* engine)
 {
+    if (!PooledObjectsManager::getInstance())
+    {
+        PooledObjectsManager::create();
+    }
+    
     EntityMapper::getInstance()->initWithJsonFile("entities.cfg", true);
     
     FWInstanceManager::createClientEntityManager(InstanceManager::sHandleEntityCreatedOnClient, InstanceManager::sHandleEntityDeletedOnClient, World::sClientCreateEntity);
-    
-    InstanceManager::createClientWorld();
     
     ClientHelper* clientHelper = NULL;
     if (_isSteam)
@@ -425,28 +411,28 @@ void TitleEngine::joinServer(Engine* engine)
     NetworkManagerClient::create(clientHelper, INPUT_MANAGER_CALLBACKS);
     assert(NG_CLIENT);
     
+    InstanceManager::createClientWorld();
+    
     engine->getStateMachine().changeState(GameEngine::getInstance());
 }
 
 void TitleEngine::disconnect()
 {
-    if (PooledObjectsManager::getInstance())
-    {
-        PooledObjectsManager::destroy();
-    }
-    
     if (NG_CLIENT)
     {
-        NetworkManagerClient::destroy();
-        
-        FWInstanceManager::destroyClientEntityManager();
-        
         InstanceManager::destroyClientWorld();
+        NetworkManagerClient::destroy();
+        FWInstanceManager::destroyClientEntityManager();
     }
     
     if (Server::getInstance())
     {
         Server::destroy();
+    }
+    
+    if (PooledObjectsManager::getInstance())
+    {
+        PooledObjectsManager::destroy();
     }
     
     _state = _isSteam ? TE_MAIN_MENU_STEAM_ON : TE_MAIN_MENU_STEAM_OFF;

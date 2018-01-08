@@ -41,11 +41,11 @@
 
 Server* Server::s_instance = NULL;
 
-void Server::create(bool isSteam, uint32_t inNumCratesToSpawn, uint32_t inNumEnemysToSpawn)
+void Server::create(bool isSteam)
 {
     assert(!s_instance);
     
-    s_instance = new Server(isSteam, inNumCratesToSpawn, inNumEnemysToSpawn);
+    s_instance = new Server(isSteam);
 }
 
 Server * Server::getInstance()
@@ -82,7 +82,6 @@ void Server::update()
     
     InstanceManager::getServerWorld()->update();
     
-    respawnEnemiesIfNecessary();
     spawnCratesIfNecessary();
     
     clearClientMoves();
@@ -99,20 +98,6 @@ uint8_t Server::getPlayerIdForRobotBeingCreated()
     return _playerIdForRobotBeingCreated;
 }
 
-void Server::toggleEnemies()
-{
-    _isSpawningEnemies = !_isSpawningEnemies;
-    
-    if (_isSpawningEnemies)
-    {
-        _stateTimeNoEnemies = 5; // Spawn em now!
-    }
-    else
-    {
-        InstanceManager::getServerWorld()->killAllEnemys();
-    }
-}
-
 void Server::toggleObjects()
 {
     _isSpawningObjects = !_isSpawningObjects;
@@ -126,11 +111,6 @@ void Server::toggleObjects()
 void Server::toggleDisplaying()
 {
     _isDisplaying = !_isDisplaying;
-}
-
-bool Server::isSpawningEnemies()
-{
-    return _isSpawningEnemies;
 }
 
 bool Server::isSpawningObjects()
@@ -221,49 +201,6 @@ void Server::spawnRobotForPlayer(uint8_t inPlayerId, std::string inPlayerName)
     spawnGroundsIfNecessary();
 }
 
-void Server::respawnEnemiesIfNecessary()
-{
-    if (_isSpawningEnemies && !InstanceManager::getServerWorld()->hasEnemys())
-    {
-        _stateTimeNoEnemies += FRAME_RATE;
-        if (_stateTimeNoEnemies > 5)
-        {
-            srand(static_cast<unsigned>(time(0)));
-            
-            _stateTimeNoEnemies = 0;
-            
-            for (uint32_t i = 0; i < _numEnemysToSpawn; ++i)
-            {
-//                Enemy* spacePirate = static_cast<Enemy*>(SERVER_ENTITY_MGR->createEntity(NW_TYPE_Enemy));
-//                
-//                float posX = (rand() % static_cast<int>(GAME_WIDTH - spacePirate->getWidth() * 2)) + (spacePirate->getWidth() * 2);
-//                float posY = (rand() % static_cast<int>(GAME_HEIGHT - spacePirate->getHeight() * 2)) + (2.0f + spacePirate->getHeight() * 2);
-//                float speed = (rand() % 100) * 0.05f + 1.0f;
-//                uint8_t health = static_cast<uint8_t>(rand() % 4) + 4;
-//                
-//                spacePirate->init(posX, posY, speed, 1, health);
-//                
-//                static Color Red(1.0f, 0.0f, 0.0f, 1);
-//                static Color Blue(0.0f, 0.0f, 1.0f, 1);
-//                static Color Green(0.0f, 1.0f, 0.0f, 1);
-//                
-//                if (spacePirate->getSpeed() > 4)
-//                {
-//                    spacePirate->setColor(Red);
-//                }
-//                else if (spacePirate->getSpeed() > 3)
-//                {
-//                    spacePirate->setColor(Green);
-//                }
-//                else if (spacePirate->getSpeed() > 2)
-//                {
-//                    spacePirate->setColor(Blue);
-//                }
-            }
-        }
-    }
-}
-
 void Server::spawnCratesIfNecessary()
 {
     if (!_isSpawningObjects || InstanceManager::getServerWorld()->hasCrates())
@@ -273,7 +210,7 @@ void Server::spawnCratesIfNecessary()
     
     srand(static_cast<unsigned>(time(0)));
     
-    for (uint32_t i = 0; i < _numCratesToSpawn; ++i)
+    for (uint32_t i = 0; i < 4; ++i)
     {
         Entity* entity = SERVER_ENTITY_MGR->createEntity('CRAT');
         
@@ -298,11 +235,9 @@ void Server::clearClientMoves()
     }
 }
 
-Server::Server(bool isSteam, uint32_t inNumCratesToSpawn, uint32_t inNumEnemysToSpawn) : _stateTime(0), _frameStateTime(0), _stateTimeNoEnemies(0), _playerIdForRobotBeingCreated(0), _numCratesToSpawn(inNumCratesToSpawn), _numEnemysToSpawn(inNumEnemysToSpawn), _isSpawningEnemies(false), _isSpawningObjects(false), _isDisplaying(false), _hasSpawnedGrounds(false)
+Server::Server(bool isSteam) : _stateTime(0), _frameStateTime(0), _stateTimeNoEnemies(0), _playerIdForRobotBeingCreated(0), _isSpawningObjects(false), _isDisplaying(false), _hasSpawnedGrounds(false)
 {
     FWInstanceManager::createServerEntityManager(InstanceManager::sHandleEntityCreatedOnServer, InstanceManager::sHandleEntityDeletedOnServer, World::sServerCreateEntity);
-    
-    InstanceManager::createServerWorld();
     
     if (isSteam)
     {
@@ -315,13 +250,13 @@ Server::Server(bool isSteam, uint32_t inNumCratesToSpawn, uint32_t inNumEnemysTo
         NetworkManagerServer::create(new SocketServerHelper(SERVER_PORT, NG_SERVER_CALLBACKS), SERVER_CALLBACKS);
     }
     assert(NG_SERVER);
+    
+    InstanceManager::createServerWorld();
 }
 
 Server::~Server()
 {
-    NetworkManagerServer::destroy();
-    
-    FWInstanceManager::destroyServerEntityManager();
-    
     InstanceManager::destroyServerWorld();
+    NetworkManagerServer::destroy();
+    FWInstanceManager::destroyServerEntityManager();
 }

@@ -47,7 +47,12 @@ void DefaultController::handleEndContact(Entity* inEntity, b2Fixture* inFixtureA
     // Empty
 }
 
-void DefaultController::read(InputMemoryBitStream& inInputStream)
+void DefaultController::read(InputMemoryBitStream& inInputStream, uint16_t& inReadState)
+{
+    // Empty
+}
+
+void DefaultController::recallLastReadState(uint16_t& inReadState)
 {
     // Empty
 }
@@ -55,9 +60,4 @@ void DefaultController::read(InputMemoryBitStream& inInputStream)
 uint16_t DefaultController::write(OutputMemoryBitStream& inOutputStream, uint16_t inWrittenState, uint16_t inDirtyState)
 {
     return inWrittenState;
-}
-
-void DefaultController::recallLastReadState()
-{
-    // Empty
 }

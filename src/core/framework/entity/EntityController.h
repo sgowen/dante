@@ -28,9 +28,9 @@ public:
     virtual bool shouldCollide(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB) = 0;
     virtual void handleBeginContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB) = 0;
     virtual void handleEndContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB) = 0;
-    virtual void read(InputMemoryBitStream& inInputStream) = 0;
+    virtual void read(InputMemoryBitStream& inInputStream, uint16_t& inReadState) = 0;
+    virtual void recallLastReadState(uint16_t& inReadState) = 0;
     virtual uint16_t write(OutputMemoryBitStream& inOutputStream, uint16_t inWrittenState, uint16_t inDirtyState) = 0;
-    virtual void recallLastReadState() = 0;
     
 protected:
     Entity* _entity;

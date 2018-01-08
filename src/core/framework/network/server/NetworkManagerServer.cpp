@@ -367,7 +367,7 @@ void NetworkManagerServer::sendWelcomePacket(ClientProxy* inClientProxy)
     OutputMemoryBitStream packet;
     
     packet.write(static_cast<uint8_t>(NW_PACKET_TYPE_WELCOME));
-    packet.write(inClientProxy->getPlayerId());
+    packet.write<uint8_t, 3>(inClientProxy->getPlayerId());
     
     LOG("Server welcoming new client '%s' as player %d", inClientProxy->getName().c_str(), inClientProxy->getPlayerId());
     
@@ -399,9 +399,6 @@ void NetworkManagerServer::sendStatePacketToClient(ClientProxy* inClientProxy)
     rmtd->reset(&inClientProxy->getReplicationManagerServer(), &_replicationManagerTransmissionDatas);
     
     inClientProxy->getReplicationManagerServer().write(statePacket, rmtd);
-#ifdef NG_LOG
-    LOG("Outgoing statePacket Bit Length 4: %d \n", statePacket.getBitLength());
-#endif
     
     TransmissionData* currentTransmissionData = ifp->getTransmissionData('RPLM');
     if (currentTransmissionData)
@@ -533,7 +530,7 @@ void NetworkManagerServer::sendLocalPlayerAddedPacket(ClientProxy* inClientProxy
     OutputMemoryBitStream packet;
     
     packet.write(static_cast<uint8_t>(NW_PACKET_TYPE_LOCAL_PLAYER_ADDED));
-    packet.write(playerId);
+    packet.write<uint8_t, 3>(playerId);
     
     std::string localPlayerName = StringUtil::format("%s(%d)", inClientProxy->getName().c_str(), index);
     

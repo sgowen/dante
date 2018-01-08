@@ -1,6 +1,6 @@
 //
 //  RobotController.cpp
-//  noctisgames-framework
+//  dante
 //
 //  Created by Stephen Gowen on 1/5/18.
 //  Copyright © 2018 Noctis Games. All rights reserved.
@@ -62,35 +62,37 @@ RobotController::~RobotController()
 
 void RobotController::update()
 {
-    if (_entity->_isServer)
+    if (_stats.health == 0)
     {
-        if (_stats.health == 0)
-        {
-            _entity->requestDeletion();
-        }
-        
+        _entity->requestDeletion();
+    }
+    
+    if (_entity->isServer())
+    {
         if (_entity->isRequestingDeletion())
         {
+            // Respawn
             Server::sHandleNewClient(_playerInfo.playerId, _playerInfo.playerName);
         }
         
         if (_playerInfoCache != _playerInfo)
         {
+            _playerInfoCache = _playerInfo;
             NG_SERVER->setStateDirty(_entity->getID(), ROBT_PlayerInfo);
         }
-        _playerInfoCache = _playerInfo;
         
         if (_statsCache != _stats)
         {
+            _statsCache = _stats;
             NG_SERVER->setStateDirty(_entity->getID(), ROBT_Stats);
         }
-        _statsCache = _stats;
     }
 }
 
 bool RobotController::shouldCollide(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB)
 {
-    return inEntity->getEntityDef().type != _entity->_entityDef.type;
+    // Don't collide with other players
+    return inEntity->getEntityDef().type != _entity->getEntityDef().type;
 }
 
 void RobotController::handleBeginContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB)
@@ -103,7 +105,7 @@ void RobotController::handleEndContact(Entity* inEntity, b2Fixture* inFixtureA, 
     // Empty
 }
 
-void RobotController::read(InputMemoryBitStream& inInputStream)
+void RobotController::read(InputMemoryBitStream& inInputStream, uint16_t& inReadState)
 {
     bool stateBit;
     
@@ -111,11 +113,10 @@ void RobotController::read(InputMemoryBitStream& inInputStream)
     if (stateBit)
     {
         inInputStream.read(_playerInfo.addressHash);
-        inInputStream.read(_playerInfo.playerId);
+        inInputStream.read<uint8_t, 3>(_playerInfo.playerId);
         inInputStream.read(_playerInfo.playerName);
         
-        setFlag(_entity->_readState, ROBT_PlayerInfo);
-        
+        setFlag(inReadState, ROBT_PlayerInfo);
         _playerInfoCache = _playerInfo;
     }
     
@@ -124,9 +125,21 @@ void RobotController::read(InputMemoryBitStream& inInputStream)
     {
         inInputStream.read(_stats.health);
         
-        setFlag(_entity->_readState, ROBT_Stats);
-        
+        setFlag(inReadState, ROBT_Stats);
         _statsCache = _stats;
+    }
+}
+
+void RobotController::recallLastReadState(uint16_t& inReadState)
+{
+    if (isFlagSet(inReadState, ROBT_PlayerInfo))
+    {
+        _playerInfo = _playerInfoCache;
+    }
+    
+    if (isFlagSet(inReadState, ROBT_Stats))
+    {
+        _stats = _statsCache;
     }
 }
 
@@ -139,7 +152,7 @@ uint16_t RobotController::write(OutputMemoryBitStream& inOutputStream, uint16_t 
     if (playerInfo)
     {
         inOutputStream.write(_playerInfo.addressHash);
-        inOutputStream.write(_playerInfo.playerId);
+        inOutputStream.write<uint8_t, 3>(_playerInfo.playerId);
         inOutputStream.write(_playerInfo.playerName);
         
         setFlag(writtenState, ROBT_PlayerInfo);
@@ -155,19 +168,6 @@ uint16_t RobotController::write(OutputMemoryBitStream& inOutputStream, uint16_t 
     }
     
     return writtenState;
-}
-
-void RobotController::recallLastReadState()
-{
-    if (isFlagSet(_entity->_readState, ROBT_PlayerInfo))
-    {
-        _playerInfo = _playerInfoCache;
-    }
-    
-    if (isFlagSet(_entity->_readState, ROBT_Stats))
-    {
-        _stats = _statsCache;
-    }
 }
 
 void RobotController::processInput(InputState* inInputState, bool isPending)
@@ -188,9 +188,9 @@ void RobotController::processInput(InputState* inInputState, bool isPending)
     bool isSprinting = inputState->isSprinting();
     if (isSprinting)
     {
-        if (!isFlagSet(_entity->_pose.state, ROBT_SPRINTING))
+        if (!isFlagSet(_entity->getPose().state, ROBT_SPRINTING))
         {
-            setFlag(_entity->_pose.state, ROBT_SPRINTING);
+            setFlag(_entity->getPose().state, ROBT_SPRINTING);
             
             if (isPending)
             {
@@ -206,7 +206,7 @@ void RobotController::processInput(InputState* inInputState, bool isPending)
     }
     else
     {
-        removeFlag(_entity->_pose.state, ROBT_SPRINTING);
+        removeFlag(_entity->getPose().state, ROBT_SPRINTING);
         
         if ((inputState->getDesiredRightAmount() > 0 && velocity.x < SPEED)
             || (inputState->getDesiredRightAmount() < 0 && velocity.x > -SPEED))
@@ -220,10 +220,10 @@ void RobotController::processInput(InputState* inInputState, bool isPending)
         if (_entity->isGrounded() && getNumJumps() == 0)
         {
             _entity->setVelocity(b2Vec2(velocity.x, 0));
-            _entity->_pose.stateTime = 0;
-            removeFlag(_entity->_pose.state, ROBT_FIRST_JUMP_COMPLETED);
-            removeFlag(_entity->_pose.state, ROBT_SECOND_JUMP);
-            setFlag(_entity->_pose.state, ROBT_FIRST_JUMP);
+            _entity->getPose().stateTime = 0;
+            removeFlag(_entity->getPose().state, ROBT_FIRST_JUMP_COMPLETED);
+            removeFlag(_entity->getPose().state, ROBT_SECOND_JUMP);
+            setFlag(_entity->getPose().state, ROBT_FIRST_JUMP);
             
             if (isPending)
             {
@@ -232,18 +232,18 @@ void RobotController::processInput(InputState* inInputState, bool isPending)
         }
         else if (getNumJumps() == 0)
         {
-            removeFlag(_entity->_pose.state, ROBT_SECOND_JUMP);
-            setFlag(_entity->_pose.state, ROBT_FIRST_JUMP);
-            setFlag(_entity->_pose.state, ROBT_FIRST_JUMP_COMPLETED);
+            removeFlag(_entity->getPose().state, ROBT_SECOND_JUMP);
+            setFlag(_entity->getPose().state, ROBT_FIRST_JUMP);
+            setFlag(_entity->getPose().state, ROBT_FIRST_JUMP_COMPLETED);
         }
         
         if (getNumJumps() == 1)
         {
-            if (isFlagSet(_entity->_pose.state, ROBT_FIRST_JUMP_COMPLETED))
+            if (isFlagSet(_entity->getPose().state, ROBT_FIRST_JUMP_COMPLETED))
             {
-                _entity->_pose.stateTime = 0;
-                removeFlag(_entity->_pose.state, ROBT_FIRST_JUMP);
-                setFlag(_entity->_pose.state, ROBT_SECOND_JUMP);
+                _entity->getPose().stateTime = 0;
+                removeFlag(_entity->getPose().state, ROBT_FIRST_JUMP);
+                setFlag(_entity->getPose().state, ROBT_SECOND_JUMP);
                 _entity->setVelocity(b2Vec2(velocity.x, 0));
                 
                 if (isPending)
@@ -253,50 +253,43 @@ void RobotController::processInput(InputState* inInputState, bool isPending)
             }
             else
             {
-                vertForce = _entity->_body->GetMass() * (11.25f - (7.0f + (_entity->_pose.stateTime + 0.25f) * 10));
+                vertForce = _entity->getBody()->GetMass() * (11.25f - (7.0f + (_entity->getPose().stateTime + 0.25f) * 10));
             }
         }
         
         if (getNumJumps() == 2)
         {
-            vertForce = _entity->_body->GetMass() * (10.25f - (6.0f + (_entity->_pose.stateTime + 0.25f) * 10));
+            vertForce = _entity->getBody()->GetMass() * (10.25f - (6.0f + (_entity->getPose().stateTime + 0.25f) * 10));
         }
         
-        vertForce = clamp(vertForce, _entity->_body->GetMass() * 8.0f, 0);
+        vertForce = clamp(vertForce, _entity->getBody()->GetMass() * 8.0f, 0);
     }
     else
     {
-        if (!isFlagSet(_entity->_pose.state, ROBT_FIRST_JUMP_COMPLETED))
+        if (!isFlagSet(_entity->getPose().state, ROBT_FIRST_JUMP_COMPLETED))
         {
-            setFlag(_entity->_pose.state, ROBT_FIRST_JUMP_COMPLETED);
+            setFlag(_entity->getPose().state, ROBT_FIRST_JUMP_COMPLETED);
         }
     }
     
-    if (_entity->isGrounded() && _entity->_pose.stateTime > 0.3f)
+    if (_entity->isGrounded() && _entity->getPose().stateTime > 0.3f)
     {
-        removeFlag(_entity->_pose.state, ROBT_FIRST_JUMP_COMPLETED);
-        removeFlag(_entity->_pose.state, ROBT_FIRST_JUMP);
-        removeFlag(_entity->_pose.state, ROBT_SECOND_JUMP);
+        removeFlag(_entity->getPose().state, ROBT_FIRST_JUMP_COMPLETED);
+        removeFlag(_entity->getPose().state, ROBT_FIRST_JUMP);
+        removeFlag(_entity->getPose().state, ROBT_SECOND_JUMP);
     }
     
-    _entity->_body->ApplyLinearImpulse(b2Vec2(sideForce,vertForce), _entity->_body->GetWorldCenter(), true);
+    _entity->getBody()->ApplyLinearImpulse(b2Vec2(sideForce,vertForce), _entity->getBody()->GetWorldCenter(), true);
     
-    if (sideForce < 0)
-    {
-        setFlag(_entity->_pose.state, ROBT_FACING_LEFT);
-    }
-    else if (sideForce > 0)
-    {
-        removeFlag(_entity->_pose.state, ROBT_FACING_LEFT);
-    }
+    _entity->getPose().isFacingLeft = sideForce < 0 ? true : sideForce > 0 ? false : _entity->getPose().isFacingLeft;
     
     if (inputState->isMainAction())
     {
-        setFlag(_entity->_pose.state, ROBT_MAIN_ACTION);
+        setFlag(_entity->getPose().state, ROBT_MAIN_ACTION);
     }
     else
     {
-        removeFlag(_entity->_pose.state, ROBT_MAIN_ACTION);
+        removeFlag(_entity->getPose().state, ROBT_MAIN_ACTION);
     }
 }
 
@@ -337,11 +330,11 @@ uint8_t RobotController::getHealth()
 
 uint8_t RobotController::getNumJumps()
 {
-    if (isFlagSet(_entity->_pose.state, ROBT_FIRST_JUMP))
+    if (isFlagSet(_entity->getPose().state, ROBT_FIRST_JUMP))
     {
         return 1;
     }
-    else if (isFlagSet(_entity->_pose.state, ROBT_SECOND_JUMP))
+    else if (isFlagSet(_entity->getPose().state, ROBT_SECOND_JUMP))
     {
         return 2;
     }
@@ -349,17 +342,12 @@ uint8_t RobotController::getNumJumps()
     return 0;
 }
 
-bool RobotController::isFacingLeft()
-{
-    return isFlagSet(_entity->_pose.state, ROBT_FACING_LEFT);
-}
-
 bool RobotController::isMainAction()
 {
-    return isFlagSet(_entity->_pose.state, ROBT_MAIN_ACTION);
+    return isFlagSet(_entity->getPose().state, ROBT_MAIN_ACTION);
 }
 
 bool RobotController::isSprinting()
 {
-    return isFlagSet(_entity->_pose.state, ROBT_SPRINTING);
+    return isFlagSet(_entity->getPose().state, ROBT_SPRINTING);
 }

@@ -116,6 +116,10 @@ int GlfwMain::exec(EngineController* engineController)
     int width = 800;
     int height = 480;
 
+#ifndef DEBUG
+//#define NG_LAUNCH_AS_FULL_SCREEN
+#endif
+    
 #ifdef NG_LAUNCH_AS_FULL_SCREEN
     monitor = glfwGetPrimaryMonitor();
 

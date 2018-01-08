@@ -1,6 +1,6 @@
 //
 //  RobotController.h
-//  noctisgames-framework
+//  dante
 //
 //  Created by Stephen Gowen on 1/5/18.
 //  Copyright © 2018 Noctis Games. All rights reserved.
@@ -30,9 +30,9 @@ public:
     virtual bool shouldCollide(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB);
     virtual void handleBeginContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB);
     virtual void handleEndContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB);
-    virtual void read(InputMemoryBitStream& inInputStream);
+    virtual void read(InputMemoryBitStream& inInputStream, uint16_t& inReadState);
+    virtual void recallLastReadState(uint16_t& inReadState);
     virtual uint16_t write(OutputMemoryBitStream& inOutputStream, uint16_t inWrittenState, uint16_t inDirtyState);
-    virtual void recallLastReadState();
     
     void processInput(InputState* inInputState, bool isPending = false);
     void setAddressHash(uint64_t addressHash);
@@ -43,19 +43,17 @@ public:
     std::string& getPlayerName();
     uint8_t getHealth();
     uint8_t getNumJumps();
-    bool isFacingLeft();
     bool isMainAction();
     bool isSprinting();
     
 private:
     enum RobotState
     {
-        ROBT_FACING_LEFT = 1 << 0,
-        ROBT_MAIN_ACTION = 1 << 1,
-        ROBT_SPRINTING = 1 << 2,
-        ROBT_FIRST_JUMP = 1 << 3,
-        ROBT_FIRST_JUMP_COMPLETED = 1 << 4,
-        ROBT_SECOND_JUMP = 1 << 5
+        ROBT_MAIN_ACTION = 1 << 0,
+        ROBT_SPRINTING = 1 << 1,
+        ROBT_FIRST_JUMP = 1 << 2,
+        ROBT_FIRST_JUMP_COMPLETED = 1 << 3,
+        ROBT_SECOND_JUMP = 1 << 4
     };
     
     enum RobotReplicationState

@@ -34,9 +34,7 @@ public:
     void postRead();
     void update();
     Entity* getRobotWithPlayerId(uint8_t inPlayerID);
-    void killAllEnemys();
     void removeAllCrates();
-    bool hasEnemys();
     bool hasCrates();
     std::vector<Entity*>& getPlayers();
     std::vector<Entity*>& getEntities();

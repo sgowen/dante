@@ -18,6 +18,7 @@
 #include "framework/network/portable/ReplicationAction.h"
 #include "framework/util/macros.h"
 #include "framework/entity/Entity.h"
+#include "framework/util/StringUtil.h"
 
 void ReplicationManagerServer::replicateCreate(uint32_t inNetworkId, uint16_t inInitialDirtyState)
 {
@@ -58,9 +59,17 @@ void ReplicationManagerServer::write(OutputMemoryBitStream& inOutputStream, Repl
             //well, first write the network id...
             inOutputStream.write(networkId);
             
+#ifdef NG_LOG
+            LOG("Outgoing statePacket Bit Length 4: %d \n", inOutputStream.getBitLength());
+#endif
+            
             //only need 2 bits for action...
             ReplicationAction action = replicationCommand.getAction();
             inOutputStream.write<uint8_t, 2>(static_cast<uint8_t>(action));
+            
+#ifdef NG_LOG
+            LOG("Outgoing statePacket Bit Length 5: %d \n", inOutputStream.getBitLength());
+#endif
             
             uint16_t writtenState = 0;
             uint16_t dirtyState = replicationCommand.getDirtyState();
@@ -79,6 +88,10 @@ void ReplicationManagerServer::write(OutputMemoryBitStream& inOutputStream, Repl
                     writtenState = writeDestroyAction(inOutputStream, networkId, dirtyState);
                     break;
             }
+            
+#ifdef NG_LOG
+            LOG("Outgoing statePacket Bit Length 6: %d \n", inOutputStream.getBitLength());
+#endif
             
             ioTransmissinData->addTransmission(networkId, action, writtenState);
             

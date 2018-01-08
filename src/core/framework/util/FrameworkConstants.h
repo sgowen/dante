@@ -40,7 +40,7 @@
 #define NW_MAX_NUM_PACKETS_PER_FRAME 10
 #define NW_MAX_PACKET_SIZE 1500
 
-#define INPUT_UNASSIGNED 255
+#define INPUT_UNASSIGNED 7
 
 //// Rendering ////
 

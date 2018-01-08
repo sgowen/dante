@@ -25,9 +25,9 @@ public:
     virtual bool shouldCollide(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB);
     virtual void handleBeginContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB);
     virtual void handleEndContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB);
-    virtual void read(InputMemoryBitStream& inInputStream);
+    virtual void read(InputMemoryBitStream& inInputStream, uint16_t& inReadState);
+    virtual void recallLastReadState(uint16_t& inReadState);
     virtual uint16_t write(OutputMemoryBitStream& inOutputStream, uint16_t inWrittenState, uint16_t inDirtyState);
-    virtual void recallLastReadState();
 };
 
 #endif /* defined(__noctisgames__DefaultController__) */

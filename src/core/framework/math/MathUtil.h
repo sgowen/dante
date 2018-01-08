@@ -55,12 +55,12 @@ inline bool areFloatsPracticallyEqual(float A, float B, float maxDiff = 0.000001
     return false;
 }
 
-inline bool areBox2DVectorsCloseEnough(const b2Vec2& inA, const b2Vec2& inB)
+inline bool isCloseEnough(const b2Vec2& inA, const b2Vec2& inB)
 {
     return areFloatsPracticallyEqual(inA.x, inB.x) && areFloatsPracticallyEqual(inA.y, inB.y);
 }
 
-inline bool areBox2DFloatsCloseEnough(float A, float B)
+inline bool isCloseEnough(float A, float B)
 {
     return areFloatsPracticallyEqual(A, B);
 }

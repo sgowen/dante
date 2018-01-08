@@ -11,6 +11,7 @@
 
 #include "framework/graphics/portable/Color.h"
 #include "framework/util/FrameworkConstants.h"
+#include "framework/math/MathUtil.h"
 
 #include "Box2D/Common/b2Math.h"
 
@@ -64,9 +65,6 @@ struct EntityDef
 
 class Entity
 {
-    /// TODO, fixme
-    friend class RobotController;
-    
     NGRTTI_DECL;
     
 public:
@@ -78,8 +76,8 @@ public:
     void handleBeginContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB);
     void handleEndContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB);
     void read(InputMemoryBitStream& inInputStream);
-    uint16_t write(OutputMemoryBitStream& inOutputStream, uint16_t inDirtyState);
     void recallLastReadState();
+    uint16_t write(OutputMemoryBitStream& inOutputStream, uint16_t inDirtyState);
     
     void deinitPhysics();
     void handleBeginFootContact(Entity* inEntity);
@@ -89,7 +87,6 @@ public:
     void setStateTime(float stateTime);
     float getStateTime();
     b2Body* getBody();
-    void setTransform(b2Vec2 position, float angle);
     void setPosition(b2Vec2 position);
     const b2Vec2& getPosition();
     void setVelocity(b2Vec2 velocity);
@@ -104,6 +101,48 @@ public:
     bool isFalling();
     void requestDeletion();
     bool isRequestingDeletion();
+    bool isServer();
+    bool isFacingLeft();
+    
+    struct Pose
+    {
+        float stateTime;
+        uint8_t state;
+        b2Vec2 velocity;
+        b2Vec2 position;
+        float angle;
+        uint8_t numGroundContacts;
+        bool isFacingLeft;
+        
+        Pose()
+        {
+            stateTime = 0;
+            state = 0;
+            velocity = b2Vec2_zero;
+            position = b2Vec2_zero;
+            angle = 0;
+            numGroundContacts = 0;
+            isFacingLeft = false;
+        }
+        
+        friend bool operator==(Pose& lhs, Pose& rhs)
+        {
+            return
+            lhs.stateTime         == rhs.stateTime &&
+            lhs.state             == rhs.state &&
+            lhs.velocity          == rhs.velocity &&
+            lhs.position          == rhs.position &&
+            lhs.angle             == rhs.angle &&
+            lhs.numGroundContacts == rhs.numGroundContacts &&
+            lhs.isFacingLeft      == rhs.isFacingLeft;
+        }
+        
+        friend bool operator!=(Pose& lhs, Pose& rhs)
+        {
+            return !(lhs == rhs);
+        }
+    };
+    Pose& getPose();
     
 private:
     enum ReplicationState
@@ -121,42 +160,6 @@ private:
     b2Fixture* _fixture;
     b2Fixture* _groundSensorFixture;
     
-    struct Pose
-    {
-        float stateTime;
-        uint8_t state;
-        b2Vec2 velocity;
-        b2Vec2 position;
-        float angle;
-        uint8_t numGroundContacts;
-        
-        Pose()
-        {
-            stateTime = 0;
-            state = 0;
-            velocity = b2Vec2_zero;
-            position = b2Vec2_zero;
-            angle = 0;
-            numGroundContacts = 0;
-        }
-        
-        friend bool operator==(Pose& lhs, Pose& rhs)
-        {
-            return
-            // Don't force a network write if only stateTime is different
-            lhs.stateTime         == rhs.stateTime &&
-            lhs.state             == rhs.state &&
-            lhs.velocity          == rhs.velocity &&
-            lhs.position          == rhs.position &&
-            lhs.angle             == rhs.angle &&
-            lhs.numGroundContacts == rhs.numGroundContacts;
-        }
-        
-        friend bool operator!=(Pose& lhs, Pose& rhs)
-        {
-            return !(lhs == rhs);
-        }
-    };
     Pose _pose;
     Pose _poseCache;
     
@@ -164,6 +167,9 @@ private:
     
     uint32_t _ID;
     bool _isRequestingDeletion;
+    
+    void updatePoseFromBody();
+    void updateBodyFromPose();
 };
 
 #endif /* defined(__noctisgames__Entity__) */

@@ -63,8 +63,6 @@ void EntityManager::deregisterEntity(Entity* inEntity)
     
     _handleEntityDeletionFunc(inEntity);
     
-    inEntity->deinitPhysics();
-    
     delete inEntity;
     inEntity = NULL;
 }

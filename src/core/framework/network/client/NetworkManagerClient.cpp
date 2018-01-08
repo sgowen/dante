@@ -258,7 +258,7 @@ void NetworkManagerClient::handleWelcomePacket(InputMemoryBitStream& inInputStre
     {
         // if we got a player id, we've been welcomed!
         uint8_t playerId;
-        inInputStream.read(playerId);
+        inInputStream.read<uint8_t, 3>(playerId);
         
         _state = NCS_Welcomed;
         

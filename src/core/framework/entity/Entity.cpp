@@ -90,25 +90,23 @@ void Entity::update()
         _pose.stateTime += FRAME_RATE;
     }
     
-    _pose.velocity = getVelocity();
-    _pose.position = getPosition();
-    _pose.angle = getAngle();
+    _controller->update();
+    
+    if (getPosition().y < -5)
+    {
+        requestDeletion();
+    }
+    
+    updatePoseFromBody();
     
     if (_isServer)
     {
-        if (getPosition().y < -5)
-        {
-            requestDeletion();
-        }
-        
         if (_poseCache != _pose)
         {
+            _poseCache = _pose;
             NG_SERVER->setStateDirty(getID(), ENTY_Pose);
         }
-        _poseCache = _pose;
     }
-    
-    _controller->update();
 }
 
 bool Entity::shouldCollide(Entity *inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB)
@@ -160,15 +158,11 @@ void Entity::read(InputMemoryBitStream& inInputStream)
         }
         
         inInputStream.read(_pose.velocity);
-        setVelocity(_pose.velocity);
-        
         inInputStream.read(_pose.position);
-        setPosition(_pose.position);
         
         if (!_entityDef.fixedRotation)
         {
             inInputStream.read(_pose.angle);
-            setTransform(_pose.position, _pose.angle);
         }
         
         if (_entityDef.character)
@@ -176,12 +170,27 @@ void Entity::read(InputMemoryBitStream& inInputStream)
             inInputStream.read<uint8_t, 2>(_pose.numGroundContacts);
         }
         
-        setFlag(_readState, ENTY_Pose);
+        inInputStream.read(_pose.isFacingLeft);
         
+        updateBodyFromPose();
+        
+        setFlag(_readState, ENTY_Pose);
         _poseCache = _pose;
     }
     
-    _controller->read(inInputStream);
+    _controller->read(inInputStream, _readState);
+}
+
+void Entity::recallLastReadState()
+{
+    if (isFlagSet(_readState, ENTY_Pose))
+    {
+        _pose = _poseCache;
+        
+        updateBodyFromPose();
+    }
+    
+    _controller->recallLastReadState(_readState);
 }
 
 uint16_t Entity::write(OutputMemoryBitStream& inOutputStream, uint16_t inDirtyState)
@@ -199,7 +208,6 @@ uint16_t Entity::write(OutputMemoryBitStream& inOutputStream, uint16_t inDirtySt
         }
         
         inOutputStream.write(_pose.velocity);
-        
         inOutputStream.write(_pose.position);
         
         if (!_entityDef.fixedRotation)
@@ -212,24 +220,22 @@ uint16_t Entity::write(OutputMemoryBitStream& inOutputStream, uint16_t inDirtySt
             inOutputStream.write<uint8_t, 2>(_pose.numGroundContacts);
         }
         
+        inOutputStream.write(_pose.isFacingLeft);
+        
         setFlag(writtenState, ENTY_Pose);
     }
     
     return _controller->write(inOutputStream, writtenState, inDirtyState);
 }
 
-void Entity::recallLastReadState()
-{
-    if (isFlagSet(_readState, ENTY_Pose))
-    {
-        _pose = _poseCache;
-    }
-    
-    _controller->recallLastReadState();
-}
-
 void Entity::deinitPhysics()
 {
+    if (!_body)
+    {
+        // Physics already deinitialized
+        return;
+    }
+    
     if (_fixture)
     {
         _body->DestroyFixture(_fixture);
@@ -296,13 +302,6 @@ b2Body* Entity::getBody()
     return _body;
 }
 
-void Entity::setTransform(b2Vec2 position, float angle)
-{
-    _pose.position = position;
-    _pose.angle = angle;
-    _body->SetTransform(_pose.position, _pose.angle);
-}
-
 void Entity::setPosition(b2Vec2 position)
 {
     _pose.position = position;
@@ -312,7 +311,8 @@ void Entity::setPosition(b2Vec2 position)
 
 const b2Vec2& Entity::getPosition()
 {
-    return _body->GetPosition();
+    _pose.position = _body->GetPosition();
+    return _pose.position;
 }
 
 void Entity::setVelocity(b2Vec2 velocity)
@@ -323,7 +323,8 @@ void Entity::setVelocity(b2Vec2 velocity)
 
 const b2Vec2& Entity::getVelocity()
 {
-    return _body->GetLinearVelocity();
+    _pose.velocity = _body->GetLinearVelocity();
+    return _pose.velocity;
 }
 
 float Entity::getWidth()
@@ -345,7 +346,8 @@ void Entity::setAngle(float angle)
 
 float Entity::getAngle()
 {
-    return _body->GetAngle();
+    _pose.angle = _body->GetAngle();
+    return _pose.angle;
 }
 
 void Entity::setID(uint32_t inID)
@@ -376,4 +378,41 @@ void Entity::requestDeletion()
 bool Entity::isRequestingDeletion()
 {
     return _isRequestingDeletion;
+}
+
+bool Entity::isServer()
+{
+    return _isServer;
+}
+
+bool Entity::isFacingLeft()
+{
+    return _pose.isFacingLeft;
+}
+
+Entity::Pose& Entity::getPose()
+{
+    return _pose;
+}
+
+void Entity::updatePoseFromBody()
+{
+    _pose.velocity = getVelocity();
+    _pose.position = getPosition();
+    
+    if (!_entityDef.fixedRotation)
+    {
+        _pose.angle = getAngle();
+    }
+}
+
+void Entity::updateBodyFromPose()
+{
+    setVelocity(_pose.velocity);
+    setPosition(_pose.position);
+    
+    if (!_entityDef.fixedRotation)
+    {
+        setAngle(_pose.angle);
+    }
 }

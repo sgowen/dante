@@ -214,11 +214,7 @@ bool GameEngine::handleNonMoveInput()
     
     if (Server::getInstance())
     {
-        if (menuState == MIS_SERVER_TOGGLE_ENEMIES)
-        {
-            Server::getInstance()->toggleEnemies();
-        }
-        else if (menuState == MIS_SERVER_TOGGLE_OBJECTS)
+        if (menuState == MIS_SERVER_TOGGLE_OBJECTS)
         {
             Server::getInstance()->toggleObjects();
         }

@@ -273,24 +273,7 @@ void GameRenderer::updateCamera()
 
 void GameRenderer::renderBackground()
 {
-    for (int i = 0; i < 3; ++i)
-    {
-        _rendererHelper->updateMatrix(0, GAME_WIDTH, 0, CAM_HEIGHT);
-
-        _spriteBatcher->beginBatch();
-        {
-            static TextureRegion tr = ASSETS->findTextureRegion("Background1");
-            _spriteBatcher->renderSprite(i * CAM_WIDTH + CAM_WIDTH / 2, CAM_HEIGHT / 2, CAM_WIDTH, CAM_HEIGHT, 0, tr);
-        }
-        _spriteBatcher->endBatch(_textureManager->getTextures()[4], *_textureNGShader);
-
-        _spriteBatcher->beginBatch();
-        {
-            static TextureRegion tr = ASSETS->findTextureRegion("Background2");
-            _spriteBatcher->renderSprite(i * CAM_WIDTH + CAM_WIDTH / 2, CAM_HEIGHT * 0.3875f / 2, CAM_WIDTH, CAM_HEIGHT * 0.3875f, 0, tr);
-        }
-        _spriteBatcher->endBatch(_textureManager->getTextures()[4], *_textureNGShader);
-    }
+    // TODO
 }
 
 void GameRenderer::renderWorld(int flags)
@@ -333,13 +316,13 @@ void GameRenderer::renderEntities(World* world, bool isServer)
         {
             TextureRegion tr = ASSETS->findTextureRegion("Map_Ground", go->getStateTime());
             
-            _spriteBatcher->renderSprite(go->getPosition().x, go->getPosition().y, go->getWidth(), go->getHeight(), go->getAngle(), c, tr);
+            _spriteBatcher->renderSprite(go->getPosition().x, go->getPosition().y, go->getWidth(), go->getHeight(), go->getAngle(), c, tr, go->isFacingLeft());
         }
         else if (go->getEntityDef().type == 'CRAT')
         {
             TextureRegion tr = ASSETS->findTextureRegion("Map_Crate", go->getStateTime());
             
-            _spriteBatcher->renderSprite(go->getPosition().x, go->getPosition().y, go->getWidth(), go->getHeight(), go->getAngle(), c, tr);
+            _spriteBatcher->renderSprite(go->getPosition().x, go->getPosition().y, go->getWidth(), go->getHeight(), go->getAngle(), c, tr, go->isFacingLeft());
         }
     }
     _spriteBatcher->endBatch(_textureManager->getTextures()[3], *_textureNGShader);
@@ -384,7 +367,7 @@ void GameRenderer::renderEntities(World* world, bool isServer)
             c.alpha /= 2.0f;
         }
         
-        _spriteBatcher->renderSprite(e->getPosition().x, e->getPosition().y, e->getWidth(), e->getHeight(), e->getAngle(), c, tr, r->isFacingLeft());
+        _spriteBatcher->renderSprite(e->getPosition().x, e->getPosition().y, e->getWidth(), e->getHeight(), e->getAngle(), c, tr, e->isFacingLeft());
     }
     
     _spriteBatcher->endBatch(_textureManager->getTextures()[1], *_textureNGShader);
@@ -423,7 +406,6 @@ void GameRenderer::renderUI(int flags)
         
         if (Server::getInstance())
         {
-            renderText(StringUtil::format("'E'     Enemies %s", Server::getInstance()->isSpawningEnemies() ? " ON" : "OFF").c_str(), CAM_WIDTH - 0.5f, CAM_HEIGHT - (row++ * padding), Color::WHITE, FONT_ALIGN_RIGHT);
             renderText(StringUtil::format("'O'     Objects %s", Server::getInstance()->isSpawningObjects() ? " ON" : "OFF").c_str(), CAM_WIDTH - 0.5f, CAM_HEIGHT - (row++ * padding), Color::WHITE, FONT_ALIGN_RIGHT);
             renderText(StringUtil::format("'I'       DEBUG %s", Server::getInstance()->isDisplaying() ? " ON" : "OFF").c_str(), CAM_WIDTH - 0.5f, CAM_HEIGHT - (row++ * padding), Color::WHITE, FONT_ALIGN_RIGHT);
             renderText(StringUtil::format("'P' BOX2D DEBUG %s", isFlagSet(flags, GE_DISPLAY_BOX_2D) ? " ON" : "OFF").c_str(), CAM_WIDTH - 0.5f, CAM_HEIGHT - (row++ * padding), Color::WHITE, FONT_ALIGN_RIGHT);
@@ -438,10 +420,6 @@ void GameRenderer::renderUI(int flags)
             std::vector<Entity*> entities = InstanceManager::getClientWorld()->getEntities();
             for (Entity* go : entities)
             {
-//                if (go->getNetworkType() == NW_TYPE_Enemy)
-//                {
-//                    ++enemyCount;
-//                }
                 if (go->getEntityDef().type == 'CRAT')
                 {
                     ++objectCount;

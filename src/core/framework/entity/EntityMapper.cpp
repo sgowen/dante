@@ -119,6 +119,8 @@ Entity* EntityMapper::createEntity(uint32_t inFourCCName, b2World& world, bool i
 
 void EntityMapper::registerFunction(std::string name, EntityControllerCreationFunc inCreationFunction)
 {
+    assert(inCreationFunction);
+    
     _nameToEntityControllerCreationFunctionMap[name] = inCreationFunction;
 }
 
