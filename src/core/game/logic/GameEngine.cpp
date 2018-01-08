@@ -20,8 +20,6 @@
 #include "framework/input/CursorConverter.h"
 #include "framework/util/StringUtil.h"
 #include "framework/math/MathUtil.h"
-#include "game/logic/Robot.h"
-#include "framework/entity/EntityRegistry.h"
 #include "framework/network/client/NetworkManagerClient.h"
 #include "framework/network/server/NetworkManagerServer.h"
 #include "framework/network/portable/SocketAddressFactory.h"
@@ -141,6 +139,8 @@ void GameEngine::exit(Engine* engine)
     releaseDeviceDependentResources();
     
     GameInputManager::destroy();
+    
+    Timing::getInstance()->updateManual(0, FRAME_RATE);
 }
 
 void GameEngine::createDeviceDependentResources()
@@ -228,13 +228,13 @@ bool GameEngine::handleNonMoveInput()
         }
         else if (menuState == MIS_SERVER_TOGGLE_PHYSICS_DISPLAY)
         {
-            if (FlagUtil::isFlagSet(_state, GE_DISPLAY_BOX_2D))
+            if (isFlagSet(_state, GE_DISPLAY_BOX_2D))
             {
-                _state = FlagUtil::removeFlag(_state, GE_DISPLAY_BOX_2D);
+                removeFlag(_state, GE_DISPLAY_BOX_2D);
             }
             else
             {
-                _state = FlagUtil::setFlag(_state, GE_DISPLAY_BOX_2D);
+                setFlag(_state, GE_DISPLAY_BOX_2D);
             }
         }
     }

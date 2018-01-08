@@ -20,8 +20,6 @@
 #include "framework/input/CursorConverter.h"
 #include "framework/util/StringUtil.h"
 #include "framework/math/MathUtil.h"
-#include "game/logic/Robot.h"
-#include "framework/entity/EntityRegistry.h"
 #include "framework/network/client/NetworkManagerClient.h"
 #include "framework/network/server/NetworkManagerServer.h"
 #include "framework/network/portable/SocketAddressFactory.h"
@@ -32,6 +30,7 @@
 #include "game/logic/MainInputState.h"
 #include "framework/network/portable/FWInstanceManager.h"
 #include "framework/entity/EntityManager.h"
+#include "framework/entity/EntityMapper.h"
 #include "framework/network/client/SocketClientHelper.h"
 #include "framework/network/portable/MachineAddress.h"
 #include "framework/audio/portable/NGAudioEngine.h"
@@ -80,7 +79,7 @@ void TitleEngine::destroy()
 }
 
 TitleEngine::TitleEngine() : EngineState(),
-_config(new JsonFile("dante.cfg")),
+_config(new JsonFile("game.cfg")),
 _renderer(new TitleRenderer()),
 _isSteam(false),
 _state(TE_MAIN_MENU_STEAM_OFF)
@@ -213,6 +212,14 @@ bool TitleEngine::handleInput(Engine* engine)
             }
             
             TitleInputManager::getInstance()->onInputProcessed();
+        }
+    }
+    else if (NG_SERVER)
+    {
+        if (menuState == MIS_ESCAPE)
+        {
+            disconnect();
+            return true;
         }
     }
     else
@@ -368,18 +375,18 @@ void TitleEngine::startServer()
     uint32_t numEnemysToSpawn = 4;
     
     {
-        std::string val = _config->findValue(std::string("nu_crates_to_spawn"));
+        std::string val = _config->findValue(std::string("num_crates_to_spawn"));
         if (val.length() > 0)
         {
-            numCratesToSpawn = StringUtil::stringToNumber<int>(val);
+            numCratesToSpawn = StringUtil::stringToNumber<uint32_t>(val);
         }
     }
     
     {
-        std::string val = _config->findValue(std::string("nu_space_pirates_to_spawn"));
+        std::string val = _config->findValue(std::string("num_enemies_to_spawn"));
         if (val.length() > 0)
         {
-            numEnemysToSpawn = StringUtil::stringToNumber<int>(val);
+            numEnemysToSpawn = StringUtil::stringToNumber<uint32_t>(val);
         }
     }
     
@@ -397,7 +404,9 @@ void TitleEngine::startServer()
 
 void TitleEngine::joinServer(Engine* engine)
 {
-    FWInstanceManager::createClientEntityManager(InstanceManager::sHandleEntityCreatedOnClient, InstanceManager::sHandleEntityDeletedOnClient);
+    EntityMapper::getInstance()->initWithJsonFile("entities.cfg", true);
+    
+    FWInstanceManager::createClientEntityManager(InstanceManager::sHandleEntityCreatedOnClient, InstanceManager::sHandleEntityDeletedOnClient, World::sClientCreateEntity);
     
     InstanceManager::createClientWorld();
     
@@ -413,14 +422,7 @@ void TitleEngine::joinServer(Engine* engine)
         clientHelper = new SocketClientHelper(_serverIPAddress, _name, CLIENT_PORT, NG_CLIENT_CALLBACKS);
     }
     
-    assert(clientHelper);
-    
-    CLIENT_ENTITY_REG->registerFunction(NW_TYPE_Ground, World::sClientCreateGround);
-    CLIENT_ENTITY_REG->registerFunction(NW_TYPE_Robot, World::sClientCreateRobot);
-    CLIENT_ENTITY_REG->registerFunction(NW_TYPE_Crate, World::sClientCreateCrate);
-    
     NetworkManagerClient::create(clientHelper, INPUT_MANAGER_CALLBACKS);
-    
     assert(NG_CLIENT);
     
     engine->getStateMachine().changeState(GameEngine::getInstance());

@@ -9,23 +9,22 @@
 #ifndef __noctisgames__FlagUtil__
 #define __noctisgames__FlagUtil__
 
-class FlagUtil
+template <typename T>
+inline bool isFlagSet(T value, int flag)
 {
-public:
-    static bool isFlagSet(int value, int flag)
-	{
-		return (value & flag) == flag;
-	}
-    
-    static int setFlag(int value, int flag)
-	{
-		return value | flag;
-	}
-    
-    static int removeFlag(int value, int flag)
-	{
-		return value & ~flag;
-	}
-};
+    return (value & flag) == flag;
+}
+
+template <typename T>
+inline void setFlag(T& value, int flag)
+{
+    value |= flag;
+}
+
+template <typename T>
+inline void removeFlag(T& value, int flag)
+{
+    value &= ~flag;
+}
 
 #endif /* defined(__noctisgames__FlagUtil__) */

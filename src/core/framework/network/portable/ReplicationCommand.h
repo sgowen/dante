@@ -21,11 +21,11 @@ class ReplicationCommand
 public:
     ReplicationCommand();
     
-    ReplicationCommand(uint32_t inInitialDirtyState);
+    ReplicationCommand(uint16_t inInitialDirtyState);
     
     void handleCreateAckd();
     
-    void addDirtyState(uint32_t inState);
+    void addDirtyState(uint16_t inState);
     
     void setDestroy();
     
@@ -33,12 +33,12 @@ public:
     
     ReplicationAction getAction() const;
     
-    uint32_t getDirtyState() const;
+    uint16_t getDirtyState() const;
     
-    void clearDirtyState(uint32_t inStateToClear);
+    void clearDirtyState(uint16_t inStateToClear);
     
 private:
-    uint32_t _dirtyState;
+    uint16_t _dirtyState;
     ReplicationAction _action;
 };
 

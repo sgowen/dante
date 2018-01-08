@@ -12,10 +12,8 @@
 
 #include "framework/network/server/ClientProxy.h"
 #include "framework/entity/Entity.h"
-#include "game/logic/Robot.h"
 
 #include "framework/network/server/NetworkManagerServer.h"
-#include "framework/entity/EntityRegistry.h"
 #include "game/logic/World.h"
 #include "framework/util/Timing.h"
 #include "framework/util/FrameworkConstants.h"
@@ -25,9 +23,9 @@
 #include "framework/network/portable/FWInstanceManager.h"
 #include "framework/entity/EntityManager.h"
 #include "framework/network/server/SocketServerHelper.h"
-#include "game/logic/Crate.h"
 #include "framework/network/portable/MachineAddress.h"
-#include "game/logic/Ground.h"
+#include <game/logic/GameConstants.h>
+#include <game/logic/RobotController.h>
 
 #ifdef NG_STEAM
 #include <framework/network/steam/NGSteamServerHelper.h>
@@ -179,10 +177,10 @@ void Server::handleLostClient(ClientProxy* inClientProxy, uint8_t index)
 
 void Server::deleteRobotWithPlayerId(uint8_t playerId)
 {
-    Robot* robot = InstanceManager::getServerWorld()->getRobotWithPlayerId(playerId);
-    if (robot)
+    Entity* entity = InstanceManager::getServerWorld()->getRobotWithPlayerId(playerId);
+    if (entity)
     {
-        robot->requestDeletion();
+        entity->requestDeletion();
     }
 }
 
@@ -195,10 +193,10 @@ void Server::spawnGroundsIfNecessary()
     
     for (int i = 0; i < 3; ++i)
     {
-        Ground* ground = static_cast<Ground*>(SERVER_ENTITY_REG->createEntity(NW_TYPE_Ground));
+        Entity* entity = SERVER_ENTITY_MGR->createEntity('GRND');
         int xSeed = rand() % 5 + 1;
         float posX = i == 0 ? GAME_WIDTH / 2 : xSeed * GAME_WIDTH / 3;
-        ground->setPosition(b2Vec2(posX, 2));
+        entity->setPosition(b2Vec2(posX, 2));
     }
     
     _hasSpawnedGrounds = true;
@@ -207,33 +205,15 @@ void Server::spawnGroundsIfNecessary()
 void Server::spawnRobotForPlayer(uint8_t inPlayerId, std::string inPlayerName)
 {
     _playerIdForRobotBeingCreated = inPlayerId;
-    Robot* robot = static_cast<Robot*>(SERVER_ENTITY_REG->createEntity(NW_TYPE_Robot));
+    Entity* entity = SERVER_ENTITY_MGR->createEntity('ROBT');
+    RobotController* robot = static_cast<RobotController*>(entity->getEntityController());
     
     ClientProxy* client = NG_SERVER->getClientProxy(inPlayerId);
     robot->setAddressHash(client->getMachineAddress()->getHash());
     
     robot->setPlayerName(inPlayerName);
     float posX = GAME_WIDTH / 2;
-    robot->setPosition(b2Vec2(posX, 8));
-    
-    static Color Red(1.0f, 0.0f, 0.0f, 1);
-    static Color Green(0.0f, 1.0f, 0.0f, 1);
-    static Color Blue(0.0f, 0.0f, 1.0f, 1);
-    
-    switch (inPlayerId)
-    {
-        case 2:
-            robot->setColor(Red);
-            break;
-        case 3:
-            robot->setColor(Green);
-            break;
-        case 4:
-            robot->setColor(Blue);
-            break;
-        default:
-            break;
-    }
+    entity->setPosition(b2Vec2(posX, 8));
     
     // Doing this last on purpose
     robot->setPlayerId(inPlayerId);
@@ -254,7 +234,7 @@ void Server::respawnEnemiesIfNecessary()
             
             for (uint32_t i = 0; i < _numEnemysToSpawn; ++i)
             {
-//                Enemy* spacePirate = static_cast<Enemy*>(SERVER_ENTITY_REG->createEntity(NW_TYPE_Enemy));
+//                Enemy* spacePirate = static_cast<Enemy*>(SERVER_ENTITY_MGR->createEntity(NW_TYPE_Enemy));
 //                
 //                float posX = (rand() % static_cast<int>(GAME_WIDTH - spacePirate->getWidth() * 2)) + (spacePirate->getWidth() * 2);
 //                float posY = (rand() % static_cast<int>(GAME_HEIGHT - spacePirate->getHeight() * 2)) + (2.0f + spacePirate->getHeight() * 2);
@@ -295,13 +275,13 @@ void Server::spawnCratesIfNecessary()
     
     for (uint32_t i = 0; i < _numCratesToSpawn; ++i)
     {
-        Crate* crate = static_cast<Crate*>(SERVER_ENTITY_REG->createEntity(NW_TYPE_Crate));
+        Entity* entity = SERVER_ENTITY_MGR->createEntity('CRAT');
         
         int xSeed = rand() % 3 + 1;
         float posX = xSeed * GAME_WIDTH / 4;
-        float posY = (rand() % static_cast<int>(GAME_HEIGHT - crate->getHeight() * 2)) + (2.0f + crate->getHeight() * 2);
+        float posY = (rand() % static_cast<int>(GAME_HEIGHT - entity->getHeight() * 2)) + (2.0f + entity->getHeight() * 2);
         
-        crate->setPosition(b2Vec2(posX, posY));
+        entity->setPosition(b2Vec2(posX, posY));
     }
 }
 
@@ -320,13 +300,9 @@ void Server::clearClientMoves()
 
 Server::Server(bool isSteam, uint32_t inNumCratesToSpawn, uint32_t inNumEnemysToSpawn) : _stateTime(0), _frameStateTime(0), _stateTimeNoEnemies(0), _playerIdForRobotBeingCreated(0), _numCratesToSpawn(inNumCratesToSpawn), _numEnemysToSpawn(inNumEnemysToSpawn), _isSpawningEnemies(false), _isSpawningObjects(false), _isDisplaying(false), _hasSpawnedGrounds(false)
 {
-    FWInstanceManager::createServerEntityManager(InstanceManager::sHandleEntityCreatedOnServer, InstanceManager::sHandleEntityDeletedOnServer);
+    FWInstanceManager::createServerEntityManager(InstanceManager::sHandleEntityCreatedOnServer, InstanceManager::sHandleEntityDeletedOnServer, World::sServerCreateEntity);
     
     InstanceManager::createServerWorld();
-    
-    SERVER_ENTITY_REG->registerFunction(NW_TYPE_Ground, World::sServerCreateGround);
-    SERVER_ENTITY_REG->registerFunction(NW_TYPE_Robot, World::sServerCreateRobot);
-    SERVER_ENTITY_REG->registerFunction(NW_TYPE_Crate, World::sServerCreateCrate);
     
     if (isSteam)
     {
@@ -338,6 +314,7 @@ Server::Server(bool isSteam, uint32_t inNumCratesToSpawn, uint32_t inNumEnemysTo
     {
         NetworkManagerServer::create(new SocketServerHelper(SERVER_PORT, NG_SERVER_CALLBACKS), SERVER_CALLBACKS);
     }
+    assert(NG_SERVER);
 }
 
 Server::~Server()

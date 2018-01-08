@@ -55,28 +55,30 @@ typedef unsigned char uint8;
 #define Steamworks_SelfCheck()
 #endif
 
+#include <framework/util/FrameworkConstants.h>
+
 // Steam Auth Network message types
 enum EMessage
 {
     // Server messages
-    k_EMsgServerBegin = 0,
+    k_EMsgServerBegin = NW_PACKET_TYPE_COUNT+1,
     k_EMsgServerSendInfo = k_EMsgServerBegin+1,
     k_EMsgServerFailAuthentication = k_EMsgServerBegin+2,
     k_EMsgServerPassAuthentication = k_EMsgServerBegin+3,
     k_EMsgServerExiting = k_EMsgServerBegin+4,
 
     // Client messages
-    k_EMsgClientBegin = 500,
+    k_EMsgClientBegin = k_EMsgServerExiting+1,
     k_EMsgClientInitiateConnection = k_EMsgClientBegin+1, // Msg from client to server when trying to connect
     k_EMsgClientBeginAuthentication = k_EMsgClientBegin+2,
     k_EMsgClientLeavingServer = k_EMsgClientBegin+3,
 
     // P2P authentication messages
-    k_EMsgP2PBegin = 600,
+    k_EMsgP2PBegin = k_EMsgClientLeavingServer+1,
     k_EMsgP2PSendingTicket = k_EMsgP2PBegin+1,
 
-    // force 32-bit size enum so the wire protocol doesn't get outgrown later
-    k_EForceDWORD  = 0x7fffffff,
+    // force 8-bit size enum so the wire protocol doesn't get outgrown later
+    k_EForceDWORD  = 0xFF,
 };
 
 #endif /* defined(__noctisgames__NGSteam__) */

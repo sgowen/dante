@@ -15,7 +15,6 @@
 #include "framework/network/portable/OutputMemoryBitStream.h"
 #include "framework/network/portable/DeliveryNotificationManager.h"
 #include "framework/network/portable/MachineAddress.h"
-#include "framework/entity/EntityRegistry.h"
 #include "framework/entity/Entity.h"
 #include "framework/network/portable/MoveList.h"
 #include "framework/network/client/ReplicationManagerClient.h"
@@ -189,7 +188,7 @@ void NetworkManagerClient::processPacket(InputMemoryBitStream& inInputStream, Ma
 {
     _lastServerCommunicationTimestamp = Timing::getInstance()->getFrameStartTime();
     
-    uint32_t packetType;
+    uint8_t packetType;
     inInputStream.read(packetType);
     
     switch (packetType)
@@ -244,7 +243,7 @@ void NetworkManagerClient::updateSayingHello()
     {
         OutputMemoryBitStream helloPacket;
         
-        helloPacket.write(NW_PACKET_TYPE_HELLO);
+        helloPacket.write(static_cast<uint8_t>(NW_PACKET_TYPE_HELLO));
         helloPacket.write(getPlayerName());
         
         sendPacket(helloPacket);
@@ -344,7 +343,7 @@ void NetworkManagerClient::sendInputPacket()
     {
         OutputMemoryBitStream inputPacket;
         
-        inputPacket.write(NW_PACKET_TYPE_INPUT);
+        inputPacket.write(static_cast<uint8_t>(NW_PACKET_TYPE_INPUT));
         
         _deliveryNotificationManager->writeState(inputPacket);
         
@@ -404,7 +403,7 @@ void NetworkManagerClient::updateAddLocalPlayerRequest()
         {
             OutputMemoryBitStream packet;
             
-            packet.write(NW_PACKET_TYPE_ADD_LOCAL_PLAYER);
+            packet.write(static_cast<uint8_t>(NW_PACKET_TYPE_ADD_LOCAL_PLAYER));
             packet.write(_nextIndex);
             
             sendPacket(packet);
@@ -422,7 +421,7 @@ void NetworkManagerClient::updateDropLocalPlayerRequest()
         
         OutputMemoryBitStream packet;
         
-        packet.write(NW_PACKET_TYPE_DROP_LOCAL_PLAYER);
+        packet.write(static_cast<uint8_t>(NW_PACKET_TYPE_DROP_LOCAL_PLAYER));
         packet.write(_isRequestingToDropLocalPlayer);
         
         sendPacket(packet);

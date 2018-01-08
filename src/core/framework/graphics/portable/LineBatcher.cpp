@@ -40,8 +40,8 @@ void LineBatcher::renderLine(Line &line, Color &c)
     float eX = line.getEnd().getX();
     float eY = line.getEnd().getY();
     
-    _rendererHelper->addVertexCoordinate(oX, oY, 0, c.red, c.green, c.blue, c.alpha);
-    _rendererHelper->addVertexCoordinate(eX, eY, 0, c.red, c.green, c.blue, c.alpha);
+    _rendererHelper->addVertexCoordinate(oX, oY, c.red, c.green, c.blue, c.alpha);
+    _rendererHelper->addVertexCoordinate(eX, eY, c.red, c.green, c.blue, c.alpha);
     
     _numLines++;
 }

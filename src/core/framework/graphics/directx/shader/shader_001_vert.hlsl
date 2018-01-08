@@ -10,15 +10,12 @@ struct VOut
 };
 
 // Vertex Shader
-VOut main(float4 position : a_Position, float4 color : a_Color)
+VOut main(float2 position : a_Position, float4 color : a_Color)
 {
-	// create a VOut struct
-	VOut output;
+    VOut output;
 
-	// set the output values
-	output.position = mul(matFinal, position);    // transform the vertex from 3D to 2D
+	output.position = mul(matFinal, float4(position, 0, 1));
 	output.color = color;
 
-	// return the output values
 	return output;
 }

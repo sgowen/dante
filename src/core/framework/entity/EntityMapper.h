@@ -12,6 +12,7 @@
 #include <map>
 #include <string>
 
+class b2World;
 class Entity;
 class EntityDef;
 class EntityController;
@@ -28,8 +29,12 @@ public:
     void initWithJsonFile(const char* jsonFile, bool isBundled, bool useEncryption = false);
     void initWithJson(const char* json);
     
+    Entity* createEntity(uint32_t inFourCCName, b2World& world, bool isServer);
+    
     void registerFunction(std::string name, EntityControllerCreationFunc inCreationFunction);
     EntityController* createEntityController(std::string name, Entity* inEntity);
+    
+    std::map<uint32_t, EntityDef*>& getEntityDescriptors();
     
 private:
     std::map<uint32_t, EntityDef*> _entityDescriptors;

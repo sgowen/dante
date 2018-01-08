@@ -13,7 +13,6 @@
 
 class ClientProxy;
 class Entity;
-class Robot;
 
 class Server
 {

@@ -19,7 +19,7 @@
 #include "framework/util/macros.h"
 #include "framework/entity/Entity.h"
 
-void ReplicationManagerServer::replicateCreate(uint32_t inNetworkId, uint32_t inInitialDirtyState)
+void ReplicationManagerServer::replicateCreate(uint32_t inNetworkId, uint16_t inInitialDirtyState)
 {
     _networkIdToReplicationCommand[inNetworkId] = ReplicationCommand(inInitialDirtyState);
 }
@@ -35,7 +35,7 @@ void ReplicationManagerServer::removeFromReplication(uint32_t inNetworkId)
     _networkIdToReplicationCommand.erase(inNetworkId);
 }
 
-void ReplicationManagerServer::setStateDirty(uint32_t inNetworkId, uint32_t inDirtyState)
+void ReplicationManagerServer::setStateDirty(uint32_t inNetworkId, uint16_t inDirtyState)
 {
     _networkIdToReplicationCommand[inNetworkId].addDirtyState(inDirtyState);
 }
@@ -62,8 +62,8 @@ void ReplicationManagerServer::write(OutputMemoryBitStream& inOutputStream, Repl
             ReplicationAction action = replicationCommand.getAction();
             inOutputStream.write<uint8_t, 2>(static_cast<uint8_t>(action));
             
-            uint32_t writtenState = 0;
-            uint32_t dirtyState = replicationCommand.getDirtyState();
+            uint16_t writtenState = 0;
+            uint16_t dirtyState = replicationCommand.getDirtyState();
             
             //now do what?
             switch(action)
@@ -88,17 +88,17 @@ void ReplicationManagerServer::write(OutputMemoryBitStream& inOutputStream, Repl
     }
 }
 
-uint32_t ReplicationManagerServer::writeCreateAction(OutputMemoryBitStream& inOutputStream, uint32_t inNetworkId, uint32_t inDirtyState)
+uint16_t ReplicationManagerServer::writeCreateAction(OutputMemoryBitStream& inOutputStream, uint32_t inNetworkId, uint16_t inDirtyState)
 {
     //need object
     Entity* entity = FWInstanceManager::getServerEntityManager()->getEntityByID(inNetworkId);
     //need 4 cc
-    inOutputStream.write(entity->getNetworkType());
+    inOutputStream.write(entity->getEntityDef().type);
     
     return entity->write(inOutputStream, inDirtyState);
 }
 
-uint32_t ReplicationManagerServer::writeUpdateAction(OutputMemoryBitStream& inOutputStream, uint32_t inNetworkId, uint32_t inDirtyState)
+uint16_t ReplicationManagerServer::writeUpdateAction(OutputMemoryBitStream& inOutputStream, uint32_t inNetworkId, uint16_t inDirtyState)
 {
     //need object
     Entity* entity = FWInstanceManager::getServerEntityManager()->getEntityByID(inNetworkId);
@@ -108,12 +108,12 @@ uint32_t ReplicationManagerServer::writeUpdateAction(OutputMemoryBitStream& inOu
     
     //this means we need byte sand each new object needs to be byte aligned
     
-    uint32_t writtenState = entity->write(inOutputStream, inDirtyState);
+    uint16_t writtenState = entity->write(inOutputStream, inDirtyState);
     
     return writtenState;
 }
 
-uint32_t ReplicationManagerServer::writeDestroyAction(OutputMemoryBitStream& inOutputStream, uint32_t inNetworkId, uint32_t inDirtyState)
+uint16_t ReplicationManagerServer::writeDestroyAction(OutputMemoryBitStream& inOutputStream, uint32_t inNetworkId, uint16_t inDirtyState)
 {
     UNUSED(inOutputStream);
     UNUSED(inNetworkId);

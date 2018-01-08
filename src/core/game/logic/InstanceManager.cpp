@@ -12,7 +12,7 @@
 
 #include "framework/entity/Entity.h"
 #include "game/logic/World.h"
-#include "game/logic/Robot.h"
+#include <game/logic/RobotController.h>
 
 #include <assert.h>
 
@@ -79,7 +79,8 @@ uint64_t InstanceManager::sGetPlayerAddressHashForIndexOnClient(uint8_t inPlayer
 {
     uint64_t ret = 0;
  
-    Robot* robot = InstanceManager::sGetPlayerRobotForIDOnClient(inPlayerIndex + 1);
+    Entity* entity = InstanceManager::sGetPlayerEntityForIDOnClient(inPlayerIndex + 1);
+    RobotController* robot = static_cast<RobotController*>(entity->getEntityController());
     if (robot)
     {
         ret = robot->getAddressHash();
@@ -88,9 +89,9 @@ uint64_t InstanceManager::sGetPlayerAddressHashForIndexOnClient(uint8_t inPlayer
     return ret;
 }
 
-Robot* InstanceManager::sGetPlayerRobotForIDOnClient(uint8_t inPlayerID)
+Entity* InstanceManager::sGetPlayerEntityForIDOnClient(uint8_t inPlayerID)
 {
-    Robot* ret = NULL;
+    Entity* ret = NULL;
     
     if (InstanceManager::getClientWorld())
     {

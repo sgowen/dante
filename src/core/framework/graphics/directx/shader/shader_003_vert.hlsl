@@ -11,16 +11,12 @@ struct VOut
 };
 
 // Vertex Shader
-VOut main(float4 position : a_Position, float4 color : a_Color, float2 texcoord : a_TexCoord)
+VOut main(float2 position : a_Position, float4 color : a_Color, float2 texcoord : a_TexCoord)
 {
-	// create a VOut struct
-	VOut output;
-
-	// set the output values
-	output.position = mul(matFinal, position);    // transform the vertex from 3D to 2D
+    VOut output;
+    output.position = mul(matFinal, float4(position, 0, 1)); // transform the vertex from 3D to 2D
 	output.color = color;
-	output.texcoord = texcoord;    // set the texture coordinates, unmodified
+	output.texcoord = texcoord; // set the texture coordinates, unmodified
 
-	// return the output values
-	return output;
+    return output;
 }

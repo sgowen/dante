@@ -45,7 +45,7 @@ private:
     
     GameRenderer* _renderer;
     double _stateTime;
-    int _state;
+    uint8_t _state;
     
     bool handleNonMoveInput();
     

@@ -23,35 +23,28 @@
 #include "framework/util/StringUtil.h"
 #include "framework/math/MathUtil.h"
 #include <framework/entity/EntityMapper.h>
+#include <framework/util/FlagUtil.h>
+#include <framework/network/server/NetworkManagerServer.h>
 
 NGRTTI_IMPL_NOPARENT(Entity);
 
-NW_TYPE_IMPL(Entity);
-
-Entity::Entity(EntityDef inEntityDef, b2World& world, bool isServer) :
+Entity::Entity(EntityDef& inEntityDef, b2World& world, bool isServer) :
 _entityDef(inEntityDef),
 _controller(EntityMapper::getInstance()->createEntityController(inEntityDef.controller, this)),
 _worldRef(world),
+_isServer(isServer),
 _body(NULL),
 _fixture(NULL),
 _groundSensorFixture(NULL),
-_stateTime(0.0f),
-_color(1.0f, 1.0f, 1.0f, 1.0f),
+_pose(),
+_poseCache(_pose),
 _readState(0),
-_isServer(isServer),
-_velocityLastKnown(b2Vec2_zero),
-_positionLastKnown(b2Vec2_zero),
-_angleLastKnown(0.0f),
-_numGroundContactsLastKnown(0),
-_timeVelocityBecameOutOfSync(0.0f),
-_timePositionBecameOutOfSync(0.0f),
 _ID(0),
-_numGroundContacts(0),
 _isRequestingDeletion(false)
 {
     b2BodyDef bodyDef;
     bodyDef.position.Set(0, 0);
-    bodyDef.type = _entityDef.isStaticBody ? b2_staticBody : b2_dynamicBody;
+    bodyDef.type = _entityDef.staticBody ? b2_staticBody : b2_dynamicBody;
     bodyDef.fixedRotation = _entityDef.fixedRotation;
     bodyDef.bullet = _entityDef.bullet;
     
@@ -60,7 +53,7 @@ _isRequestingDeletion(false)
     
     b2FixtureDef fixtureDef;
     fixtureDef.shape = &shape;
-    fixtureDef.isSensor = _entityDef.isSensor;
+    fixtureDef.isSensor = _entityDef.sensor;
     fixtureDef.density = _entityDef.density;
     fixtureDef.friction = _entityDef.friction;
     fixtureDef.restitution = _entityDef.restitution;
@@ -71,7 +64,7 @@ _isRequestingDeletion(false)
     _fixture = _body->CreateFixture(&fixtureDef);
     _fixture->SetUserData(this);
     
-    if (_entityDef.isCharacter)
+    if (_entityDef.character)
     {
         b2PolygonShape groundContact;
         groundContact.SetAsBox(inEntityDef.width * 0.48f, inEntityDef.height / 8, b2Vec2(0, -inEntityDef.height / 2), 0);
@@ -90,18 +83,149 @@ Entity::~Entity()
     delete _controller;
 }
 
-void Entity::recallLastReadState()
+void Entity::update()
 {
-    // TODO
+    if (_entityDef.stateSensitive)
+    {
+        _pose.stateTime += FRAME_RATE;
+    }
+    
+    _pose.velocity = getVelocity();
+    _pose.position = getPosition();
+    _pose.angle = getAngle();
+    
+    if (_isServer)
+    {
+        if (getPosition().y < -5)
+        {
+            requestDeletion();
+        }
+        
+        if (_poseCache != _pose)
+        {
+            NG_SERVER->setStateDirty(getID(), ENTY_Pose);
+        }
+        _poseCache = _pose;
+    }
+    
+    _controller->update();
 }
 
-void Entity::postRead()
+bool Entity::shouldCollide(Entity *inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB)
 {
-    // Only interpolate when new pose has been read in
-    if (needsMoveReplay())
+    if (inFixtureA == _groundSensorFixture)
     {
-        interpolateClientSidePrediction(_velocityLastKnown, _positionLastKnown);
+        return inEntity->getEntityDef().type != _entityDef.type;
     }
+    
+    return _controller->shouldCollide(inEntity, inFixtureA, inFixtureB);
+}
+
+void Entity::handleBeginContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB)
+{
+    if (inFixtureA == _groundSensorFixture)
+    {
+        handleBeginFootContact(inEntity);
+    }
+    
+    _controller->handleBeginContact(inEntity, inFixtureA, inFixtureB);
+}
+
+void Entity::handleEndContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB)
+{
+    if (inFixtureA == _groundSensorFixture)
+    {
+        if (inEntity->getEntityDef().type != _entityDef.type)
+        {
+            handleEndFootContact(inEntity);
+        }
+    }
+    
+    _controller->handleEndContact(inEntity, inFixtureA, inFixtureB);
+}
+
+void Entity::read(InputMemoryBitStream& inInputStream)
+{
+    _readState = 0;
+    
+    bool stateBit;
+    
+    inInputStream.read(stateBit);
+    if (stateBit)
+    {
+        if (_entityDef.stateSensitive)
+        {
+            inInputStream.read(_pose.stateTime);
+            inInputStream.read(_pose.state);
+        }
+        
+        inInputStream.read(_pose.velocity);
+        setVelocity(_pose.velocity);
+        
+        inInputStream.read(_pose.position);
+        setPosition(_pose.position);
+        
+        if (!_entityDef.fixedRotation)
+        {
+            inInputStream.read(_pose.angle);
+            setTransform(_pose.position, _pose.angle);
+        }
+        
+        if (_entityDef.character)
+        {
+            inInputStream.read<uint8_t, 2>(_pose.numGroundContacts);
+        }
+        
+        setFlag(_readState, ENTY_Pose);
+        
+        _poseCache = _pose;
+    }
+    
+    _controller->read(inInputStream);
+}
+
+uint16_t Entity::write(OutputMemoryBitStream& inOutputStream, uint16_t inDirtyState)
+{
+    uint16_t writtenState = 0;
+    
+    bool pose = isFlagSet(inDirtyState, ENTY_Pose);
+    inOutputStream.write(pose);
+    if (pose)
+    {
+        if (_entityDef.stateSensitive)
+        {
+            inOutputStream.write(_pose.stateTime);
+            inOutputStream.write(_pose.state);
+        }
+        
+        inOutputStream.write(_pose.velocity);
+        
+        inOutputStream.write(_pose.position);
+        
+        if (!_entityDef.fixedRotation)
+        {
+            inOutputStream.write(_pose.angle);
+        }
+        
+        if (_entityDef.character)
+        {
+            inOutputStream.write<uint8_t, 2>(_pose.numGroundContacts);
+        }
+        
+        setFlag(writtenState, ENTY_Pose);
+    }
+    
+    return _controller->write(inOutputStream, writtenState, inDirtyState);
+}
+
+void Entity::recallLastReadState()
+{
+    if (isFlagSet(_readState, ENTY_Pose))
+    {
+        _pose = _poseCache;
+    }
+    
+    _controller->recallLastReadState();
 }
 
 void Entity::deinitPhysics()
@@ -127,34 +251,44 @@ void Entity::deinitPhysics()
 
 void Entity::handleBeginFootContact(Entity* inEntity)
 {
-    ++_numGroundContacts;
+    ++_pose.numGroundContacts;
     
-    if (_numGroundContacts > 3)
+    if (_pose.numGroundContacts > 3)
     {
-        _numGroundContacts = 0;
+        _pose.numGroundContacts = 0;
     }
 }
 
 void Entity::handleEndFootContact(Entity* inEntity)
 {
-    if (_numGroundContacts == 1)
+    if (_pose.numGroundContacts == 1)
     {
-        _numGroundContacts = 0;
+        _pose.numGroundContacts = 0;
     }
     else
     {
-        --_numGroundContacts;
+        --_pose.numGroundContacts;
     }
+}
+
+EntityDef& Entity::getEntityDef()
+{
+    return _entityDef;
+}
+
+EntityController* Entity::getEntityController()
+{
+    return _controller;
 }
 
 void Entity::setStateTime(float stateTime)
 {
-    _stateTime = stateTime;
+    _pose.stateTime = stateTime;
 }
 
 float Entity::getStateTime()
 {
-    return _stateTime;
+    return _pose.stateTime;
 }
 
 b2Body* Entity::getBody()
@@ -164,12 +298,16 @@ b2Body* Entity::getBody()
 
 void Entity::setTransform(b2Vec2 position, float angle)
 {
-    _body->SetTransform(position, angle);
+    _pose.position = position;
+    _pose.angle = angle;
+    _body->SetTransform(_pose.position, _pose.angle);
 }
 
 void Entity::setPosition(b2Vec2 position)
 {
-    _body->SetTransform(position, _body->GetAngle());
+    _pose.position = position;
+    _pose.angle = _body->GetAngle();
+    _body->SetTransform(_pose.position, _pose.angle);
 }
 
 const b2Vec2& Entity::getPosition()
@@ -179,22 +317,13 @@ const b2Vec2& Entity::getPosition()
 
 void Entity::setVelocity(b2Vec2 velocity)
 {
-    _body->SetLinearVelocity(velocity);
+    _pose.velocity = velocity;
+    _body->SetLinearVelocity(_pose.velocity);
 }
 
 const b2Vec2& Entity::getVelocity()
 {
     return _body->GetLinearVelocity();
-}
-
-void Entity::setColor(Color color)
-{
-    _color = color;
-}
-
-Color& Entity::getColor()
-{
-    return _color;
 }
 
 float Entity::getWidth()
@@ -209,7 +338,9 @@ float Entity::getHeight()
 
 void Entity::setAngle(float angle)
 {
-    _body->SetTransform(_body->GetPosition(), angle);
+    _pose.position = _body->GetPosition();
+    _pose.angle = angle;
+    _body->SetTransform(_pose.position, _pose.angle);
 }
 
 float Entity::getAngle()
@@ -229,12 +360,12 @@ uint32_t Entity::getID()
 
 bool Entity::isGrounded()
 {
-    return _numGroundContacts > 0;
+    return _pose.numGroundContacts > 0;
 }
 
 bool Entity::isFalling()
 {
-    return _numGroundContacts == 0;
+    return _pose.numGroundContacts == 0;
 }
 
 void Entity::requestDeletion()
@@ -246,52 +377,3 @@ bool Entity::isRequestingDeletion()
 {
     return _isRequestingDeletion;
 }
-
-#pragma mark protected
-
-void Entity::interpolateClientSidePrediction(b2Vec2& inOldVelocity, b2Vec2& inOldPos)
-{
-    if (interpolateVectorsIfNecessary(inOldVelocity, getVelocity(), _timeVelocityBecameOutOfSync, "velocity"))
-    {
-        setVelocity(inOldVelocity);
-    }
-    
-    if (interpolateVectorsIfNecessary(inOldPos, getPosition(), _timePositionBecameOutOfSync, "position"))
-    {
-        setPosition(inOldPos);
-    }
-}
-
-bool Entity::interpolateVectorsIfNecessary(b2Vec2& inOld, const b2Vec2& inNew, float& syncTracker, const char* vectorType)
-{
-    if (!areBox2DVectorsCloseEnough(inOld, inNew))
-    {
-        LOG("WARN: %s move replay ended with incorrect %s! Old %3.8f, %3.8f - New %3.8f, %3.8f", getRTTI().getClassName().c_str(), vectorType, inOld.x, inOld.y, inNew.x, inNew.y);
-        
-        // have we been out of sync, or did we just become out of sync?
-        float time = Timing::getInstance()->getFrameStartTime();
-        if (syncTracker == 0.0f)
-        {
-            syncTracker = time;
-        }
-        
-        float rtt = NG_CLIENT->getRoundTripTime();
-        
-        // now interpolate to the correct value...
-        float durationOutOfSync = time - syncTracker;
-        if (durationOutOfSync < rtt)
-        {
-            b2Vec2 vec = lerpBox2DVector(inOld, inNew, 0.1f);
-            inOld.Set(vec.x, vec.y);
-            
-            return true;
-        }
-    }
-    else
-    {
-        syncTracker = 0.0f;
-    }
-    
-    return false;
-}
-

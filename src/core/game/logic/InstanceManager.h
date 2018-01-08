@@ -13,7 +13,6 @@
 
 class Entity;
 class World;
-class Robot;
 
 class InstanceManager
 {
@@ -28,7 +27,7 @@ public:
     static void sHandleEntityCreatedOnClient(Entity* inEntity);
     static void sHandleEntityDeletedOnClient(Entity* inEntity);
     static uint64_t sGetPlayerAddressHashForIndexOnClient(uint8_t inPlayerIndex);
-    static Robot* sGetPlayerRobotForIDOnClient(uint8_t inPlayerID);
+    static Entity* sGetPlayerEntityForIDOnClient(uint8_t inPlayerID);
     
     static void sHandleEntityCreatedOnServer(Entity* inEntity);
     static void sHandleEntityDeletedOnServer(Entity* inEntity);

@@ -20,8 +20,6 @@
 #include "framework/input/CursorConverter.h"
 #include "framework/util/StringUtil.h"
 #include "framework/math/MathUtil.h"
-#include "game/logic/Robot.h"
-#include "framework/entity/EntityRegistry.h"
 #include "framework/network/client/NetworkManagerClient.h"
 #include "framework/network/server/NetworkManagerServer.h"
 #include "framework/network/portable/SocketAddressFactory.h"

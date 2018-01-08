@@ -10,6 +10,7 @@
 
 #include "EntityMapper.h"
 
+#include "Box2D/Box2D.h"
 #include "framework/entity/Entity.h"
 #include "framework/entity/EntityController.h"
 
@@ -86,21 +87,34 @@ void EntityMapper::initWithJson(const char* json)
             
             EntityDef* entry = new EntityDef();
             
+            entry->type = key;
             entry->controller = iv["controller"].GetString();
             entry->width = static_cast<float>(iv["width"].GetInt());
             entry->height = static_cast<float>(iv["height"].GetInt());
             entry->restitution = iv["restitution"].GetFloat();
             entry->density = iv["density"].GetFloat();
             entry->friction = iv["friction"].GetFloat();
-            entry->isStaticBody = iv["isStaticBody"].GetBool();
+            entry->staticBody = iv["staticBody"].GetBool();
             entry->fixedRotation = iv["fixedRotation"].GetBool();
             entry->bullet = iv["bullet"].GetBool();
-            entry->isSensor = iv["isSensor"].GetBool();
-            entry->isCharacter = iv["isCharacter"].GetBool();
+            entry->sensor = iv["sensor"].GetBool();
+            entry->character = iv["character"].GetBool();
+            entry->stateSensitive = iv["stateSensitive"].GetBool();
             
             _entityDescriptors[key] = entry;
         }
     }
+}
+
+Entity* EntityMapper::createEntity(uint32_t inFourCCName, b2World& world, bool isServer)
+{
+    auto q = _entityDescriptors.find(inFourCCName);
+    
+    assert(q != _entityDescriptors.end());
+    
+    EntityDef* entityDef = q->second;
+    
+    return new Entity(*entityDef, world, isServer);
 }
 
 void EntityMapper::registerFunction(std::string name, EntityControllerCreationFunc inCreationFunction)
@@ -112,7 +126,14 @@ EntityController* EntityMapper::createEntityController(std::string name, Entity*
 {
     EntityControllerCreationFunc creationFunc = _nameToEntityControllerCreationFunctionMap[name];
     
+    assert(creationFunc);
+    
     return creationFunc(inEntity);
+}
+
+std::map<uint32_t, EntityDef*>& EntityMapper::getEntityDescriptors()
+{
+    return _entityDescriptors;
 }
 
 EntityMapper::EntityMapper()

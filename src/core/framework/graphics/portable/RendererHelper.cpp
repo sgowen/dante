@@ -106,15 +106,15 @@ void RendererHelper::clearScreenVertices()
     _screenVertices.clear();
 }
 
-void RendererHelper::addVertexCoordinate(float x, float y, float z, float r, float g, float b, float a, float u, float v)
+void RendererHelper::addVertexCoordinate(float x, float y, float r, float g, float b, float a, float u, float v)
 {
-    TEXTURE_VERTEX vertex(x, y, z, r, g, b, a, u, v);
+    TEXTURE_VERTEX vertex(x, y, r, g, b, a, u, v);
     _textureVertices.push_back(vertex);
 }
 
-void RendererHelper::addVertexCoordinate(float x, float y, float z, float r, float g, float b, float a)
+void RendererHelper::addVertexCoordinate(float x, float y, float r, float g, float b, float a)
 {
-    COLOR_VERTEX vertex(x, y, z, r, g, b, a);
+    COLOR_VERTEX vertex(x, y, r, g, b, a);
     _colorVertices.push_back(vertex);
 }
 

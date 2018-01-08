@@ -1,34 +1,33 @@
 //
-//  DefaultEntityController.h
+//  DefaultController.h
 //  noctisgames-framework
 //
 //  Created by Stephen Gowen on 1/5/18.
 //  Copyright © 2018 Noctis Games. All rights reserved.
 //
 
-#ifndef __noctisgames__DefaultEntityController__
-#define __noctisgames__DefaultEntityController__
+#ifndef __noctisgames__DefaultController__
+#define __noctisgames__DefaultController__
 
 #include <framework/entity/EntityController.h>
 
-class DefaultEntityController : public EntityController
+class DefaultController : public EntityController
 {
     NGRTTI_DECL;
     
 public:
     static EntityController* create(Entity* inEntity);
     
-    DefaultEntityController(Entity* inEntity);
-    virtual ~DefaultEntityController();
+    DefaultController(Entity* inEntity);
+    virtual ~DefaultController();
     
     virtual void update();
     virtual bool shouldCollide(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB);
     virtual void handleBeginContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB);
     virtual void handleEndContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB);
-    virtual uint32_t getAllStateMask() const;
     virtual void read(InputMemoryBitStream& inInputStream);
-    virtual uint32_t write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState);
-    virtual bool needsMoveReplay();
+    virtual uint16_t write(OutputMemoryBitStream& inOutputStream, uint16_t inWrittenState, uint16_t inDirtyState);
+    virtual void recallLastReadState();
 };
 
-#endif /* defined(__noctisgames__DefaultEntityController__) */
+#endif /* defined(__noctisgames__DefaultController__) */

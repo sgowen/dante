@@ -34,7 +34,7 @@ private:
     std::vector<int> _circles;
     int _numPoints;
     
-    void addVertexCoordinate(float x, float y, float z, float r, float g, float b, float a);
+    void addVertexCoordinate(float x, float y, float r, float g, float b, float a);
 };
 
 #endif /* defined(__noctisgames__CircleBatcher__) */

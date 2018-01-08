@@ -20,8 +20,8 @@ NGGeometryShader::NGGeometryShader(RendererHelper& inRendererHelper, const char*
 {
     _uniforms.push_back(new NGShaderUniformInput("u_Matrix", 64));
     
-    _inputLayout.push_back(new NGShaderVarInput("a_Position", 3, 0));
-    _inputLayout.push_back(new NGShaderVarInput("a_Color", 4, 3));
+    _inputLayout.push_back(new NGShaderVarInput("a_Position", 2, 0));
+    _inputLayout.push_back(new NGShaderVarInput("a_Color", 4, 2));
 }
 
 void NGGeometryShader::bind(void* data)

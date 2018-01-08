@@ -18,7 +18,6 @@ class InputMemoryBitStream;
 class OutputMemoryBitStream;
 class DeliveryNotificationManager;
 class MachineAddress;
-class EntityRegistry;
 class Entity;
 class MoveList;
 class ReplicationManagerClient;

@@ -12,6 +12,8 @@ $XOREncryptDecryptTool shader_002_frag.fsh shader_002_frag.ngs
 echo "."
 $XOREncryptDecryptTool shader_003_frag.fsh shader_003_frag.ngs
 echo "."
+$XOREncryptDecryptTool shader_004_frag.fsh shader_004_frag.ngs
+echo "."
 $XOREncryptDecryptTool shader_001_vert.vsh shader_001_vert.ngs
 echo "."
 $XOREncryptDecryptTool shader_002_vert.vsh shader_002_vert.ngs
@@ -30,4 +32,6 @@ echo "."
 $XOREncryptDecryptTool texture_003.png texture_003.ngt
 echo "."
 $XOREncryptDecryptTool texture_004.png texture_004.ngt
+echo "."
+$XOREncryptDecryptTool texture_005.png texture_005.ngt
 echo "."

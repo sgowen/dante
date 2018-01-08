@@ -10,7 +10,6 @@
 
 #include "framework/network/client/ReplicationManagerClient.h"
 
-#include "framework/entity/EntityRegistry.h"
 #include "framework/network/portable/InputMemoryBitStream.h"
 
 #include "framework/network/portable/FWInstanceManager.h"
@@ -60,17 +59,17 @@ void ReplicationManagerClient::readAndDoCreateAction(InputMemoryBitStream& inInp
     
     //we might already have this object- could happen if our ack of the create got dropped so server resends create request
     //(even though we might have created)
-    Entity* entity = FWInstanceManager::getClientEntityManager()->getEntityByID(inNetworkId);
+    Entity* entity = CLIENT_ENTITY_MGR->getEntityByID(inNetworkId);
     if (!entity)
     {
         //create the object and map it...
-        entity = FWInstanceManager::getClientEntityRegistry()->createEntity(fourCCName);
+        entity = CLIENT_ENTITY_MGR->createEntity(fourCCName);
         entity->setID(inNetworkId);
         
-        FWInstanceManager::getClientEntityManager()->registerEntity(entity);
+        CLIENT_ENTITY_MGR->registerEntity(entity);
         
         //it had really be the rigth type...
-        assert(entity->getNetworkType() == fourCCName);
+        assert(entity->getEntityDef().type == fourCCName);
     }
     
     //and read state
@@ -80,7 +79,7 @@ void ReplicationManagerClient::readAndDoCreateAction(InputMemoryBitStream& inInp
 void ReplicationManagerClient::readAndDoUpdateAction(InputMemoryBitStream& inInputStream, uint32_t inNetworkId)
 {
     //need object
-    Entity* entity = FWInstanceManager::getClientEntityManager()->getEntityByID(inNetworkId);
+    Entity* entity = CLIENT_ENTITY_MGR->getEntityByID(inNetworkId);
     
     //entity MUST be found, because create was ack'd if we're getting an update...
     //and read state
@@ -95,9 +94,9 @@ void ReplicationManagerClient::readAndDoDestroyAction(InputMemoryBitStream& inIn
 {
     //if something was destroyed before the create went through, we'll never get it
     //but we might get the destroy request, so be tolerant of being asked to destroy something that wasn't created
-    Entity* entity = FWInstanceManager::getClientEntityManager()->getEntityByID(inNetworkId);
+    Entity* entity = CLIENT_ENTITY_MGR->getEntityByID(inNetworkId);
     if (entity)
     {
-        FWInstanceManager::getClientEntityManager()->deregisterEntity(entity);
+        CLIENT_ENTITY_MGR->deregisterEntity(entity);
     }
 }

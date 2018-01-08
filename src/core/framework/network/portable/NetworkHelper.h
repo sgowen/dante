@@ -24,7 +24,7 @@ public:
     
     virtual ~NetworkHelper();
     
-    virtual void processSpecialPacket(uint32_t packetType, InputMemoryBitStream& inInputStream, MachineAddress* inFromAddress) = 0;
+    virtual void processSpecialPacket(uint8_t packetType, InputMemoryBitStream& inInputStream, MachineAddress* inFromAddress) = 0;
     
     virtual void processIncomingPackets();
     

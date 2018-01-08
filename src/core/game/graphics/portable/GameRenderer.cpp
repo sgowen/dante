@@ -38,7 +38,6 @@
 #include "framework/graphics/portable/TextureRegion.h"
 #include "framework/util/macros.h"
 #include "framework/network/client/NetworkManagerClient.h"
-#include "game/logic/Robot.h"
 #include "framework/util/StringUtil.h"
 #include "framework/util/WeightedTimedMovingAverage.h"
 #include "framework/util/NGSTDUtil.h"
@@ -49,7 +48,6 @@
 #include "framework/math/MathUtil.h"
 #include "framework/audio/portable/NGAudioEngine.h"
 #include "game/logic/Server.h"
-#include "game/logic/Crate.h"
 #include "game/logic/TitleEngine.h"
 #include "framework/util/FPSUtil.h"
 #include "framework/graphics/portable/Color.h"
@@ -73,7 +71,7 @@
 #include "framework/graphics/portable/NGTextureDesc.h"
 #include "framework/graphics/portable/Assets.h"
 #include <game/logic/GameEngine.h>
-#include <game/logic/Ground.h>
+#include <game/logic/RobotController.h>
 
 #ifdef NG_STEAM
 #include "framework/network/steam/NGSteamGameServer.h"
@@ -201,14 +199,14 @@ void GameRenderer::updateCamera()
         
         for (Entity* entity : InstanceManager::getClientWorld()->getPlayers())
         {
-            Robot* player = static_cast<Robot*>(entity);
+            RobotController* robot = static_cast<RobotController*>(entity->getEntityController());
             
-            if (NG_CLIENT->isPlayerIdLocal(player->getPlayerId()))
+            if (NG_CLIENT->isPlayerIdLocal(robot->getPlayerId()))
             {
                 // Adjust camera based on the player position
                 
-                float pX = player->getPosition().x;
-                float pY = player->getPosition().y;
+                float pX = entity->getPosition().x;
+                float pY = entity->getPosition().y;
                 
                 if (needsInit)
                 {
@@ -282,20 +280,16 @@ void GameRenderer::renderBackground()
         _spriteBatcher->beginBatch();
         {
             static TextureRegion tr = ASSETS->findTextureRegion("Background1");
-            tr.initX(_camBounds->getLeft() * 128.0f / 3);
-            tr.initY(384 - _camBounds->getBottom() * 32);
             _spriteBatcher->renderSprite(i * CAM_WIDTH + CAM_WIDTH / 2, CAM_HEIGHT / 2, CAM_WIDTH, CAM_HEIGHT, 0, tr);
         }
-        _spriteBatcher->endBatch(_textureManager->getTextures()[2], *_textureNGShader);
+        _spriteBatcher->endBatch(_textureManager->getTextures()[4], *_textureNGShader);
 
         _spriteBatcher->beginBatch();
         {
             static TextureRegion tr = ASSETS->findTextureRegion("Background2");
-            tr.initX(_camBounds->getLeft() * 128.0f / 2);
-            tr.initY(644 - _camBounds->getBottom() * 48);
             _spriteBatcher->renderSprite(i * CAM_WIDTH + CAM_WIDTH / 2, CAM_HEIGHT * 0.3875f / 2, CAM_WIDTH, CAM_HEIGHT * 0.3875f, 0, tr);
         }
-        _spriteBatcher->endBatch(_textureManager->getTextures()[3], *_textureNGShader);
+        _spriteBatcher->endBatch(_textureManager->getTextures()[4], *_textureNGShader);
     }
 }
 
@@ -310,7 +304,7 @@ void GameRenderer::renderWorld(int flags)
         renderEntities(InstanceManager::getServerWorld(), true);
     }
     
-    if (FlagUtil::isFlagSet(flags, GE_DISPLAY_BOX_2D))
+    if (isFlagSet(flags, GE_DISPLAY_BOX_2D))
     {
         _box2DDebugRenderer->setWorld(&InstanceManager::getClientWorld()->getWorld());
         _box2DDebugRenderer->render(*_colorNGShader);
@@ -329,47 +323,68 @@ void GameRenderer::renderEntities(World* world, bool isServer)
     std::vector<Entity*> entities = world->getEntities();
     for (Entity* go : entities)
     {
-        Color c = Color(go->getColor().red, go->getColor().green, go->getColor().blue, go->getColor().alpha);
+        Color c = Color::WHITE;
         if (isServer)
         {
             c.alpha = 0.5f;
         }
         
-        if (go->getRTTI().derivesFrom(Ground::rtti))
+        if (go->getEntityDef().type == 'GRND')
         {
             TextureRegion tr = ASSETS->findTextureRegion("Map_Ground", go->getStateTime());
             
             _spriteBatcher->renderSprite(go->getPosition().x, go->getPosition().y, go->getWidth(), go->getHeight(), go->getAngle(), c, tr);
         }
-        else if (go->getRTTI().derivesFrom(Crate::rtti))
+        else if (go->getEntityDef().type == 'CRAT')
         {
             TextureRegion tr = ASSETS->findTextureRegion("Map_Crate", go->getStateTime());
             
             _spriteBatcher->renderSprite(go->getPosition().x, go->getPosition().y, go->getWidth(), go->getHeight(), go->getAngle(), c, tr);
         }
     }
+    _spriteBatcher->endBatch(_textureManager->getTextures()[3], *_textureNGShader);
     
+    _spriteBatcher->beginBatch();
     std::vector<Entity*> players = world->getPlayers();
-    for (Entity* entity : players)
+    for (Entity* e : players)
     {
-        Robot* r = static_cast<Robot*>(entity);
+        RobotController* r = static_cast<RobotController*>(e->getEntityController());
         
-        Color c = r->getColor();
+        Color c = Color::WHITE;
+        static Color Red(1.0f, 0.0f, 0.0f, 1);
+        static Color Green(0.0f, 1.0f, 0.0f, 1);
+        static Color Blue(0.0f, 0.0f, 1.0f, 1);
+        
+        switch (r->getPlayerId())
+        {
+            case 2:
+                c = Red;
+                break;
+            case 3:
+                c = Green;
+                break;
+            case 4:
+                c = Blue;
+                break;
+            default:
+                break;
+        }
+        
         if (r->isSprinting())
         {
             c = Color(c.red, c.green, c.blue, c.alpha);
             c.alpha = (rand() % 50) * 0.01f + 0.25f;
         }
         
-        bool isMoving = r->getVelocity().x < -0.5f || r->getVelocity().x > 0.5f;
-        TextureRegion tr = ASSETS->findTextureRegion(r->isGrounded() && r->getNumJumps() == 0 ? r->isMainAction() ? "Bot_Punching" : !isMoving ? "Bot_Idle" : r->isSprinting() ? "Bot_Running_Fast" : "Bot_Running" : "Bot_Jumping", r->getStateTime());
+        bool isMoving = e->getVelocity().x < -0.5f || e->getVelocity().x > 0.5f;
+        TextureRegion tr = ASSETS->findTextureRegion(e->isGrounded() && r->getNumJumps() == 0 ? r->isMainAction() ? "Bot_Punching" : !isMoving ? "Bot_Idle" : r->isSprinting() ? "Bot_Running_Fast" : "Bot_Running" : "Bot_Jumping", e->getStateTime());
         
         if (isServer)
         {
             c.alpha /= 2.0f;
         }
         
-        _spriteBatcher->renderSprite(r->getPosition().x, r->getPosition().y, r->getWidth(), r->getHeight(), r->getAngle(), c, tr, r->isFacingLeft());
+        _spriteBatcher->renderSprite(e->getPosition().x, e->getPosition().y, e->getWidth(), e->getHeight(), e->getAngle(), c, tr, r->isFacingLeft());
     }
     
     _spriteBatcher->endBatch(_textureManager->getTextures()[1], *_textureNGShader);
@@ -387,31 +402,31 @@ void GameRenderer::renderUI(int flags)
         static float padding = 0.5f;
         
         int fps = FPSUtil::getInstance()->getFPS();
-        renderText(StringUtil::format("FPS %d", fps).c_str(), CAM_WIDTH - 0.5f, CAM_HEIGHT - (row++ * padding), Color::BLACK, FONT_ALIGN_RIGHT);
+        renderText(StringUtil::format("FPS %d", fps).c_str(), CAM_WIDTH - 0.5f, CAM_HEIGHT - (row++ * padding), Color::WHITE, FONT_ALIGN_RIGHT);
         
         float rttMS = NG_CLIENT->getAvgRoundTripTime().getValue() * 1000.f;
-        renderText(StringUtil::format("RTT %d ms", static_cast<int>(rttMS)).c_str(), CAM_WIDTH - 0.5f, CAM_HEIGHT - (row++ * padding), Color::BLACK, FONT_ALIGN_RIGHT);
+        renderText(StringUtil::format("RTT %d ms", static_cast<int>(rttMS)).c_str(), CAM_WIDTH - 0.5f, CAM_HEIGHT - (row++ * padding), Color::WHITE, FONT_ALIGN_RIGHT);
         
         const WeightedTimedMovingAverage& bpsIn = NG_CLIENT->getBytesReceivedPerSecond();
         int bpsInInt = static_cast<int>(bpsIn.getValue());
-        renderText(StringUtil::format(" In %d Bps", bpsInInt).c_str(), CAM_WIDTH - 0.5f, CAM_HEIGHT - (row++ * padding), Color::BLACK, FONT_ALIGN_RIGHT);
+        renderText(StringUtil::format(" In %d Bps", bpsInInt).c_str(), CAM_WIDTH - 0.5f, CAM_HEIGHT - (row++ * padding), Color::WHITE, FONT_ALIGN_RIGHT);
         
         const WeightedTimedMovingAverage& bpsOut = NG_CLIENT->getBytesSentPerSecond();
         int bpsOutInt = static_cast<int>(bpsOut.getValue());
-        renderText(StringUtil::format("Out %d Bps", bpsOutInt).c_str(), CAM_WIDTH - 0.5f, CAM_HEIGHT - (row++ * padding), Color::BLACK, FONT_ALIGN_RIGHT);
+        renderText(StringUtil::format("Out %d Bps", bpsOutInt).c_str(), CAM_WIDTH - 0.5f, CAM_HEIGHT - (row++ * padding), Color::WHITE, FONT_ALIGN_RIGHT);
         
         // Controls
         ++row;
         
-        renderText(StringUtil::format("'S'       Sound %s", NG_AUDIO_ENGINE->isSoundDisabled() ? "OFF" : " ON").c_str(), CAM_WIDTH - 0.5f, CAM_HEIGHT - (row++ * padding), Color::BLACK, FONT_ALIGN_RIGHT);
-        renderText(StringUtil::format("'M'       Music %s", NG_AUDIO_ENGINE->isMusicDisabled() ? "OFF" : " ON").c_str(), CAM_WIDTH - 0.5f, CAM_HEIGHT - (row++ * padding), Color::BLACK, FONT_ALIGN_RIGHT);
+        renderText(StringUtil::format("'S'       Sound %s", NG_AUDIO_ENGINE->isSoundDisabled() ? "OFF" : " ON").c_str(), CAM_WIDTH - 0.5f, CAM_HEIGHT - (row++ * padding), Color::WHITE, FONT_ALIGN_RIGHT);
+        renderText(StringUtil::format("'M'       Music %s", NG_AUDIO_ENGINE->isMusicDisabled() ? "OFF" : " ON").c_str(), CAM_WIDTH - 0.5f, CAM_HEIGHT - (row++ * padding), Color::WHITE, FONT_ALIGN_RIGHT);
         
         if (Server::getInstance())
         {
-            renderText(StringUtil::format("'E'     Enemies %s", Server::getInstance()->isSpawningEnemies() ? " ON" : "OFF").c_str(), CAM_WIDTH - 0.5f, CAM_HEIGHT - (row++ * padding), Color::BLACK, FONT_ALIGN_RIGHT);
-            renderText(StringUtil::format("'O'     Objects %s", Server::getInstance()->isSpawningObjects() ? " ON" : "OFF").c_str(), CAM_WIDTH - 0.5f, CAM_HEIGHT - (row++ * padding), Color::BLACK, FONT_ALIGN_RIGHT);
-            renderText(StringUtil::format("'I'       DEBUG %s", Server::getInstance()->isDisplaying() ? " ON" : "OFF").c_str(), CAM_WIDTH - 0.5f, CAM_HEIGHT - (row++ * padding), Color::BLACK, FONT_ALIGN_RIGHT);
-            renderText(StringUtil::format("'P' BOX2D DEBUG %s", FlagUtil::isFlagSet(flags, GE_DISPLAY_BOX_2D) ? " ON" : "OFF").c_str(), CAM_WIDTH - 0.5f, CAM_HEIGHT - (row++ * padding), Color::BLACK, FONT_ALIGN_RIGHT);
+            renderText(StringUtil::format("'E'     Enemies %s", Server::getInstance()->isSpawningEnemies() ? " ON" : "OFF").c_str(), CAM_WIDTH - 0.5f, CAM_HEIGHT - (row++ * padding), Color::WHITE, FONT_ALIGN_RIGHT);
+            renderText(StringUtil::format("'O'     Objects %s", Server::getInstance()->isSpawningObjects() ? " ON" : "OFF").c_str(), CAM_WIDTH - 0.5f, CAM_HEIGHT - (row++ * padding), Color::WHITE, FONT_ALIGN_RIGHT);
+            renderText(StringUtil::format("'I'       DEBUG %s", Server::getInstance()->isDisplaying() ? " ON" : "OFF").c_str(), CAM_WIDTH - 0.5f, CAM_HEIGHT - (row++ * padding), Color::WHITE, FONT_ALIGN_RIGHT);
+            renderText(StringUtil::format("'P' BOX2D DEBUG %s", isFlagSet(flags, GE_DISPLAY_BOX_2D) ? " ON" : "OFF").c_str(), CAM_WIDTH - 0.5f, CAM_HEIGHT - (row++ * padding), Color::WHITE, FONT_ALIGN_RIGHT);
         }
         
         if (InstanceManager::getClientWorld())
@@ -427,7 +442,7 @@ void GameRenderer::renderUI(int flags)
 //                {
 //                    ++enemyCount;
 //                }
-                if (go->getRTTI().derivesFrom(Crate::rtti))
+                if (go->getEntityDef().type == 'CRAT')
                 {
                     ++objectCount;
                 }
@@ -436,12 +451,12 @@ void GameRenderer::renderUI(int flags)
             std::vector<Entity*> players = InstanceManager::getClientWorld()->getPlayers();
             for (Entity* entity : players)
             {
-                Robot* robot = static_cast<Robot*>(entity);
+                RobotController* robot = static_cast<RobotController*>(entity->getEntityController());
                 
                 int playerId = robot->getPlayerId();
                 if (playerId >= 1 && playerId <= 4)
                 {
-                    renderText(StringUtil::format("%i|%s - %i HP", playerId, robot->getPlayerName().c_str(), robot->getHealth()).c_str(), 0.5f, CAM_HEIGHT - (playerId * 0.5f), Color::BLACK);
+                    renderText(StringUtil::format("%i|%s - %i HP", playerId, robot->getPlayerName().c_str(), robot->getHealth()).c_str(), 0.5f, CAM_HEIGHT - (playerId * 0.5f), Color::WHITE);
                     activePlayerIds[playerId - 1] = true;
                 }
             }
@@ -450,17 +465,17 @@ void GameRenderer::renderUI(int flags)
             {
                 if (!activePlayerIds[i])
                 {
-                    renderText(StringUtil::format("%i|%s", (i + 1), "Connect a controller to join...").c_str(), 0.5f, CAM_HEIGHT - ((i + 1) * 0.5f), Color::BLACK);
+                    renderText(StringUtil::format("%i|%s", (i + 1), "Connect a controller to join...").c_str(), 0.5f, CAM_HEIGHT - ((i + 1) * 0.5f), Color::WHITE);
                 }
             }
             
-            renderText(StringUtil::format("Enemies: %i", enemyCount).c_str(), 0.5f, CAM_HEIGHT - 4.0f, Color::BLACK, FONT_ALIGN_LEFT);
-            renderText(StringUtil::format("Objects: %i", objectCount).c_str(), 0.5f, CAM_HEIGHT - 4.5f, Color::BLACK, FONT_ALIGN_LEFT);
+            renderText(StringUtil::format("Enemies: %i", enemyCount).c_str(), 0.5f, CAM_HEIGHT - 4.0f, Color::WHITE, FONT_ALIGN_LEFT);
+            renderText(StringUtil::format("Objects: %i", objectCount).c_str(), 0.5f, CAM_HEIGHT - 4.5f, Color::WHITE, FONT_ALIGN_LEFT);
         }
     }
     else
     {
-        renderText(StringUtil::format("%s, 'ESC' to exit", "Joining Server...").c_str(), 0.5f, CAM_HEIGHT - 3.5f, Color::BLACK, FONT_ALIGN_LEFT);
+        renderText(StringUtil::format("%s, 'ESC' to exit", "Joining Server...").c_str(), 0.5f, CAM_HEIGHT - 3.5f, Color::WHITE, FONT_ALIGN_LEFT);
     }
     
     _spriteBatcher->endBatch(_textureManager->getTextures()[0], *_textureNGShader);

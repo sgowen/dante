@@ -20,7 +20,7 @@ public:
     
     virtual ~SocketServerHelper();
     
-    virtual void processSpecialPacket(uint32_t packetType, InputMemoryBitStream& inInputStream, MachineAddress* inFromAddress);
+    virtual void processSpecialPacket(uint8_t packetType, InputMemoryBitStream& inInputStream, MachineAddress* inFromAddress);
     
     virtual void onClientDisconnected(ClientProxy* clientProxy);
     

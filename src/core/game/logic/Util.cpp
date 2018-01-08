@@ -13,19 +13,13 @@
 #include "Box2D/Box2D.h"
 
 #include "framework/network/client/NetworkManagerClient.h"
-#include "game/logic/Robot.h"
 #include "game/logic/InstanceManager.h"
 #include "game/logic/World.h"
 #include "framework/audio/portable/NGAudioEngine.h"
+#include "framework/entity/Entity.h"
 
-void Util::playSound(int soundId, const b2Vec2& position, bool isServer)
+void Util::playSound(int soundId, const b2Vec2& position)
 {
-    if (isServer)
-    {
-        // Don't play sounds on the server
-        return;
-    }
-    
     float volume = 1;
     float robotVolume = 0;
     
@@ -37,7 +31,7 @@ void Util::playSound(int soundId, const b2Vec2& position, bool isServer)
         {
             uint8_t playerId = entry.second;
             
-            Robot* playerRobot = InstanceManager::getClientWorld()->getRobotWithPlayerId(playerId);
+            Entity* playerRobot = InstanceManager::getClientWorld()->getRobotWithPlayerId(playerId);
             
             if (playerRobot)
             {

@@ -42,6 +42,8 @@
     const int SOCKET_ERROR = -1;
 #endif
 
+#define NG_ALL_STATE 0xFFFFu
+
 #ifndef htonll
 #define htonll(x) \
 ((uint64_t)((((uint64_t)(x) & 0xff00000000000000ULL) >> 56) | \

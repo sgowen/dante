@@ -104,14 +104,14 @@ void OutputMemoryBitStream::write(bool inData)
 
 void OutputMemoryBitStream::write(const b2Vec2& inVector)
 {
-    bool isZero = areFloatsPracticallyEqual(inVector.x, 0);
+    bool isZero = inVector.x == 0;
     write(isZero);
     if (!isZero)
     {
         write(inVector.x);
     }
     
-    isZero = areFloatsPracticallyEqual(inVector.y, 0);
+    isZero = inVector.y == 0;
     write(isZero);
     if (!isZero)
     {

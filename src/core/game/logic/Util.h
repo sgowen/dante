@@ -16,7 +16,7 @@ struct b2Vec2;
 class Util
 {
 public:
-    static void playSound(int soundId, const b2Vec2& position, bool isServer);
+    static void playSound(int soundId, const b2Vec2& position);
     
 private:
     // ctor, copy ctor, and assignment should be private in a Singleton

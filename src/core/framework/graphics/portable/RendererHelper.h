@@ -67,8 +67,8 @@ public:
     void clearColorVertices();
     void clearScreenVertices();
     
-    void addVertexCoordinate(float x, float y, float z, float r, float g, float b, float a, float u, float v);
-    void addVertexCoordinate(float x, float y, float z, float r, float g, float b, float a);
+    void addVertexCoordinate(float x, float y, float r, float g, float b, float a, float u, float v);
+    void addVertexCoordinate(float x, float y, float r, float g, float b, float a);
     void addVertexCoordinate(float x, float y);
     
     std::vector<TEXTURE_VERTEX>& getTextureVertices();

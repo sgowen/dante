@@ -14,6 +14,7 @@
 #include "framework/file/portable/FileData.h"
 #include "framework/util/StringUtil.h"
 #include "framework/util/macros.h"
+#include "framework/util/PlatformHelper.h"
 
 #ifdef __APPLE__
 #include "TargetConditionals.h"
@@ -33,7 +34,7 @@
 #include <stdlib.h>
 #include <sstream>
 
-JsonFile::JsonFile(const char* filePath, bool isBundled, bool useEncryption) : _filePath(filePath), _isBundled(isBundled), _useEncryption(useEncryption)
+JsonFile::JsonFile(const char* filePath, bool isBundled, bool useEncryption) : _filePath(filePath), _isBundled(isBundled), _useEncryption(useEncryption), _serializerFunc(NULL), _deserializerFunc(NULL)
 {
     // Empty
 }
@@ -51,7 +52,9 @@ void JsonFile::setSerializerFunc(SerializerFunc serializerFunc)
 void JsonFile::save()
 {
     assert(_filePath);
-    assert(!_isBundled); // Can't overwrite bundled files
+    assert(!(_isBundled
+             && (PlatformHelper::getPlatform() == NG_PLATFORM_ANDROID
+                 || PlatformHelper::getPlatform() == NG_PLATFORM_IOS))); // Can't overwrite bundled files on Android or iOS
     
     const char* finalPath = platformSpecificFilePath();
     FILE *file = openFile(finalPath, "w+");

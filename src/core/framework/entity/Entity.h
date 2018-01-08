@@ -28,70 +28,64 @@ class InputMemoryBitStream;
 class Move;
 class EntityController;
 
-#define NW_TYPE_DECL(inCode) \
-public: \
-enum { kClassId = inCode }; \
-virtual uint32_t getNetworkType();
-
-#define NW_TYPE_IMPL(name) \
-uint32_t name::getNetworkType() { return kClassId; }
-
 struct EntityDef
 {
-    EntityDef()
-    {
-        controller = "DefaultEntityController";
-        width = 1.0f;
-        height = 1.0f;
-        restitution = 0.0f;
-        density = 0.0f;
-        friction = 0.2f;
-        isStaticBody = true;
-        fixedRotation = true;
-        bullet = false;
-        isSensor = false;
-        isCharacter = false;
-    }
-    
+    uint32_t type;
     std::string controller;
     float width;
     float height;
     float restitution;
     float density;
     float friction;
-    bool isStaticBody;
+    bool staticBody;
     bool fixedRotation;
     bool bullet;
-    bool isSensor;
-    bool isCharacter;
+    bool sensor;
+    bool character;
+    bool stateSensitive;
+    
+    EntityDef()
+    {
+        type = 'ENTY';
+        controller = "DefaultController";
+        width = 1;
+        height = 1;
+        restitution = 0;
+        density = 0;
+        friction = 0.2f;
+        staticBody = true;
+        fixedRotation = true;
+        bullet = false;
+        sensor = false;
+        character = false;
+        stateSensitive = false;
+    }
 };
 
 class Entity
 {
+    /// TODO, fixme
+    friend class RobotController;
+    
     NGRTTI_DECL;
     
-    NW_TYPE_DECL(NW_TYPE_Entity);
-    
 public:
-    Entity(EntityDef inEntityDef, b2World& world, bool isServer);
-    virtual ~Entity();
+    Entity(EntityDef& inEntityDef, b2World& world, bool isServer);
+    ~Entity();
     
-    virtual void update() = 0;
-    virtual bool shouldCollide(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB) = 0;
-    virtual void handleBeginContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB) = 0;
-    virtual void handleEndContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB) = 0;
-    virtual uint32_t getAllStateMask() const = 0;
-    virtual void read(InputMemoryBitStream& inInputStream) = 0;
-    virtual uint32_t write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState) = 0;
-    virtual bool needsMoveReplay() = 0;
+    void update();
+    bool shouldCollide(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB);
+    void handleBeginContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB);
+    void handleEndContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB);
+    void read(InputMemoryBitStream& inInputStream);
+    uint16_t write(OutputMemoryBitStream& inOutputStream, uint16_t inDirtyState);
+    void recallLastReadState();
     
-    virtual void recallLastReadState();
-    virtual void postRead();
-    virtual void deinitPhysics();
-    
+    void deinitPhysics();
     void handleBeginFootContact(Entity* inEntity);
     void handleEndFootContact(Entity* inEntity);
-    
+    EntityDef& getEntityDef();
+    EntityController* getEntityController();
     void setStateTime(float stateTime);
     float getStateTime();
     b2Body* getBody();
@@ -100,47 +94,74 @@ public:
     const b2Vec2& getPosition();
     void setVelocity(b2Vec2 velocity);
     const b2Vec2& getVelocity();
-    void setColor(Color color);
-    Color& getColor();
     float getWidth();
     float getHeight();
     void setAngle(float angle);
     float getAngle();
-    
     void setID(uint32_t inID);
     uint32_t getID();
-    
     bool isGrounded();
     bool isFalling();
-    
     void requestDeletion();
     bool isRequestingDeletion();
     
-protected:
-    b2World& _worldRef;
-    EntityDef _entityDef;
+private:
+    enum ReplicationState
+    {
+        ENTY_Pose = 1 << 0
+    };
+    
+    EntityDef& _entityDef;
     EntityController* _controller;
+    b2World& _worldRef;
+    bool _isServer;
+    
+    /// Physics
     b2Body* _body;
     b2Fixture* _fixture;
     b2Fixture* _groundSensorFixture;
-    float _stateTime;
-    uint8_t _numGroundContacts;
-    Color _color;
-    uint32_t _readState;
-    bool _isServer;
     
-    // Cached Last Known Values (from previous frame)
-    b2Vec2 _velocityLastKnown;
-    b2Vec2 _positionLastKnown;
-    float _angleLastKnown;
-    uint8_t _numGroundContactsLastKnown;
+    struct Pose
+    {
+        float stateTime;
+        uint8_t state;
+        b2Vec2 velocity;
+        b2Vec2 position;
+        float angle;
+        uint8_t numGroundContacts;
+        
+        Pose()
+        {
+            stateTime = 0;
+            state = 0;
+            velocity = b2Vec2_zero;
+            position = b2Vec2_zero;
+            angle = 0;
+            numGroundContacts = 0;
+        }
+        
+        friend bool operator==(Pose& lhs, Pose& rhs)
+        {
+            return
+            // Don't force a network write if only stateTime is different
+            lhs.stateTime         == rhs.stateTime &&
+            lhs.state             == rhs.state &&
+            lhs.velocity          == rhs.velocity &&
+            lhs.position          == rhs.position &&
+            lhs.angle             == rhs.angle &&
+            lhs.numGroundContacts == rhs.numGroundContacts;
+        }
+        
+        friend bool operator!=(Pose& lhs, Pose& rhs)
+        {
+            return !(lhs == rhs);
+        }
+    };
+    Pose _pose;
+    Pose _poseCache;
     
-    void interpolateClientSidePrediction(b2Vec2& inOldVelocity, b2Vec2& inOldPos);
-    bool interpolateVectorsIfNecessary(b2Vec2& inA, const b2Vec2& inB, float& syncTracker, const char* vectorType);
+    uint16_t _readState;
     
-private:
-    float _timeVelocityBecameOutOfSync;
-    float _timePositionBecameOutOfSync;
     uint32_t _ID;
     bool _isRequestingDeletion;
 };

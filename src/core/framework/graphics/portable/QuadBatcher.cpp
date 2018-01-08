@@ -40,10 +40,10 @@ void QuadBatcher::renderRect(NGRect &r, Color &c)
     float x2 = x1 + r.getWidth();
     float y2 = y1 + r.getHeight();
     
-    _rendererHelper->addVertexCoordinate(x1, y1, 0, c.red, c.green, c.blue, c.alpha);
-    _rendererHelper->addVertexCoordinate(x1, y2, 0, c.red, c.green, c.blue, c.alpha);
-    _rendererHelper->addVertexCoordinate(x2, y2, 0, c.red, c.green, c.blue, c.alpha);
-    _rendererHelper->addVertexCoordinate(x2, y1, 0, c.red, c.green, c.blue, c.alpha);
+    _rendererHelper->addVertexCoordinate(x1, y1, c.red, c.green, c.blue, c.alpha);
+    _rendererHelper->addVertexCoordinate(x1, y2, c.red, c.green, c.blue, c.alpha);
+    _rendererHelper->addVertexCoordinate(x2, y2, c.red, c.green, c.blue, c.alpha);
+    _rendererHelper->addVertexCoordinate(x2, y1, c.red, c.green, c.blue, c.alpha);
     
     _numQuads++;
 }
@@ -54,10 +54,10 @@ void QuadBatcher::renderQuad(float x1, float y1,
                              float x4, float y4,
                              Color &c)
 {
-    _rendererHelper->addVertexCoordinate(x1, y1, 0, c.red, c.green, c.blue, c.alpha);
-    _rendererHelper->addVertexCoordinate(x2, y2, 0, c.red, c.green, c.blue, c.alpha);
-    _rendererHelper->addVertexCoordinate(x3, y3, 0, c.red, c.green, c.blue, c.alpha);
-    _rendererHelper->addVertexCoordinate(x4, y4, 0, c.red, c.green, c.blue, c.alpha);
+    _rendererHelper->addVertexCoordinate(x1, y1, c.red, c.green, c.blue, c.alpha);
+    _rendererHelper->addVertexCoordinate(x2, y2, c.red, c.green, c.blue, c.alpha);
+    _rendererHelper->addVertexCoordinate(x3, y3, c.red, c.green, c.blue, c.alpha);
+    _rendererHelper->addVertexCoordinate(x4, y4, c.red, c.green, c.blue, c.alpha);
     
     _numQuads++;
 }

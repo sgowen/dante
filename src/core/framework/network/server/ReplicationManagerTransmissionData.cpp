@@ -99,7 +99,7 @@ void ReplicationManagerTransmissionData::handleCreateDeliveryFailure(uint32_t in
     Entity* entity = FWInstanceManager::getServerEntityManager()->getEntityByID(inNetworkId);
     if (entity)
     {
-        _replicationManagerServer->replicateCreate(inNetworkId, entity->getAllStateMask());
+        _replicationManagerServer->replicateCreate(inNetworkId, NG_ALL_STATE);
     }
 }
 

@@ -23,9 +23,9 @@ NGTextureShader::NGTextureShader(RendererHelper& inRendererHelper, const char* v
     _uniforms.push_back(new NGShaderUniformInput("u_Matrix", 64));
     _uniforms.push_back(new NGShaderUniformInput("u_TextureUnit"));
     
-    _inputLayout.push_back(new NGShaderVarInput("a_Position", 3, 0));
-    _inputLayout.push_back(new NGShaderVarInput("a_Color", 4, 3));
-    _inputLayout.push_back(new NGShaderVarInput("a_TexCoord", 2, 7));
+    _inputLayout.push_back(new NGShaderVarInput("a_Position", 2, 0));
+    _inputLayout.push_back(new NGShaderVarInput("a_Color", 4, 2));
+    _inputLayout.push_back(new NGShaderVarInput("a_TexCoord", 2, 6));
 }
 
 void NGTextureShader::bind(void* data)

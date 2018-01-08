@@ -52,16 +52,6 @@
 #define GAME_WIDTH CAM_WIDTH * 3.0f // meters
 #define GAME_HEIGHT 16.0f // meters
 
-#define DEAD_ZONE_LEFT -10.0f // meters
-#define DEAD_ZONE_RIGHT GAME_WIDTH + 10.0f // meters
-#define DEAD_ZONE_BOTTOM -2.0f // meters
-
-//// Network ////
-
-#define NW_TYPE_Ground 'GRND'
-#define NW_TYPE_Robot 'ROBT'
-#define NW_TYPE_Crate 'CRAT'
-
 //// Non-Steam ////
 
 // UDP port for the server to bind on

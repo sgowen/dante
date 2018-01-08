@@ -10,25 +10,23 @@
 
 #include "framework/network/portable/FWInstanceManager.h"
 
-#include "framework/entity/EntityRegistry.h"
-
 #include <assert.h>
 
 EntityManager* FWInstanceManager::s_clientEntityManagerInstance = NULL;
 EntityManager* FWInstanceManager::s_serverEntityManagerInstance = NULL;
 
-void FWInstanceManager::createClientEntityManager(HandleEntityCreatedFunc handleEntityCreatedFunc, HandleEntityDeletionFunc handleEntityDeletionFunc)
+void FWInstanceManager::createClientEntityManager(HandleEntityCreatedFunc handleEntityCreatedFunc, HandleEntityDeletionFunc handleEntityDeletionFunc, EntityCreationFunc inEntityCreationFunc)
 {
     assert(!s_clientEntityManagerInstance);
     
-    s_clientEntityManagerInstance = new EntityManager(handleEntityCreatedFunc, handleEntityDeletionFunc);
+    s_clientEntityManagerInstance = new EntityManager(handleEntityCreatedFunc, handleEntityDeletionFunc, inEntityCreationFunc);
 }
 
-void FWInstanceManager::createServerEntityManager(HandleEntityCreatedFunc handleEntityCreatedFunc, HandleEntityDeletionFunc handleEntityDeletionFunc)
+void FWInstanceManager::createServerEntityManager(HandleEntityCreatedFunc handleEntityCreatedFunc, HandleEntityDeletionFunc handleEntityDeletionFunc, EntityCreationFunc inEntityCreationFunc)
 {
     assert(!s_serverEntityManagerInstance);
     
-    s_serverEntityManagerInstance = new EntityManager(handleEntityCreatedFunc, handleEntityDeletionFunc);
+    s_serverEntityManagerInstance = new EntityManager(handleEntityCreatedFunc, handleEntityDeletionFunc, inEntityCreationFunc);
 }
 
 void FWInstanceManager::destroyClientEntityManager()
@@ -55,18 +53,6 @@ EntityManager* FWInstanceManager::getClientEntityManager()
 EntityManager* FWInstanceManager::getServerEntityManager()
 {
     return s_serverEntityManagerInstance;
-}
-
-EntityRegistry* FWInstanceManager::getClientEntityRegistry()
-{
-    static EntityRegistry instance = EntityRegistry();
-    return &instance;
-}
-
-EntityRegistry* FWInstanceManager::getServerEntityRegistry()
-{
-    static EntityRegistry instance = EntityRegistry();
-    return &instance;
 }
 
 FWInstanceManager::FWInstanceManager()

@@ -11,9 +11,7 @@
 #include "game/logic/World.h"
 
 #include "framework/entity/Entity.h"
-#include "game/logic/Robot.h"
-#include "game/logic/Crate.h"
-#include "game/logic/Ground.h"
+#include "game/logic/RobotController.h"
 #include "Box2D/Box2D.h"
 
 #include "framework/network/server/NetworkManagerServer.h"
@@ -25,30 +23,21 @@
 #include "game/logic/GameInputManager.h"
 #include "framework/network/client/NetworkManagerClient.h"
 #include "framework/util/StringUtil.h"
+#include <framework/entity/EntityMapper.h>
 
-#define WORLD_CREATE_CLIENT_IMPL(name) \
-Entity* World::sClientCreate##name() \
-{ \
-    b2World& world = InstanceManager::getClientWorld()->getWorld(); \
-    return new name(world, false); \
+Entity* World::sServerCreateEntity(uint32_t inFourCCName)
+{
+    b2World& world = InstanceManager::getServerWorld()->getWorld();
+    Entity* ret = EntityMapper::getInstance()->createEntity(inFourCCName, world, true);
+    NG_SERVER->registerEntity(ret);
+    return ret;
 }
 
-#define WORLD_CREATE_SERVER_IMPL(name) \
-Entity* World::sServerCreate##name() \
-{ \
-    b2World& world = InstanceManager::getServerWorld()->getWorld(); \
-    Entity* ret = new name(world, true); \
-    NG_SERVER->registerEntity(ret); \
-    return ret; \
+Entity* World::sClientCreateEntity(uint32_t inFourCCName)
+{
+    b2World& world = InstanceManager::getClientWorld()->getWorld();
+    return EntityMapper::getInstance()->createEntity(inFourCCName, world, false);
 }
-
-WORLD_CREATE_CLIENT_IMPL(Ground);
-WORLD_CREATE_CLIENT_IMPL(Robot);
-WORLD_CREATE_CLIENT_IMPL(Crate);
-
-WORLD_CREATE_SERVER_IMPL(Ground);
-WORLD_CREATE_SERVER_IMPL(Robot);
-WORLD_CREATE_SERVER_IMPL(Crate);
 
 World::World(bool isServer) :
 _entityContactListener(new EntityContactListener()),
@@ -78,7 +67,7 @@ void World::addEntity(Entity* inEntity)
 {
     _entities.push_back(inEntity);
     
-    if (inEntity->getRTTI().derivesFrom(Robot::rtti))
+    if (inEntity->getEntityDef().type == 'ROBT')
     {
         _players.push_back(inEntity);
     }
@@ -86,7 +75,7 @@ void World::addEntity(Entity* inEntity)
 
 void World::removeEntity(Entity* inEntity)
 {
-    if (inEntity->getRTTI().derivesFrom(Robot::rtti))
+    if (inEntity->getEntityDef().type == 'ROBT')
     {
         int len = static_cast<int>(_players.size());
         int indexToRemove = -1;
@@ -162,7 +151,7 @@ void World::postRead()
     {
         for (Entity* entity : _players)
         {
-            Robot* robot = static_cast<Robot*>(entity);
+            RobotController* robot = static_cast<RobotController*>(entity->getEntityController());
             if (NG_CLIENT->isPlayerIdLocal(robot->getPlayerId()))
             {
                 robot->processInput(move.getInputState());
@@ -175,11 +164,6 @@ void World::postRead()
         {
             entity->update();
         }
-    }
-    
-    for (Entity* entity : _entities)
-    {
-        entity->postRead();
     }
 }
 
@@ -194,7 +178,7 @@ void World::update()
             {
                 for (Entity* entity : _players)
                 {
-                    Robot* robot = static_cast<Robot*>(entity);
+                    RobotController* robot = static_cast<RobotController*>(entity->getEntityController());
                     
                     // is there a move we haven't processed yet?
                     ClientProxy* client = NG_SERVER->getClientProxy(robot->getPlayerId());
@@ -247,7 +231,7 @@ void World::update()
         {
             for (Entity* entity : _players)
             {
-                Robot* robot = static_cast<Robot*>(entity);
+                RobotController* robot = static_cast<RobotController*>(entity->getEntityController());
                 if (NG_CLIENT->isPlayerIdLocal(robot->getPlayerId()))
                 {
                     robot->processInput(pendingMove->getInputState(), true);
@@ -264,14 +248,14 @@ void World::update()
     }
 }
 
-Robot* World::getRobotWithPlayerId(uint8_t inPlayerID)
+Entity* World::getRobotWithPlayerId(uint8_t inPlayerID)
 {
     for (Entity* entity : _players)
     {
-        Robot* robot = static_cast<Robot*>(entity);
+        RobotController* robot = static_cast<RobotController*>(entity->getEntityController());
         if (robot->getPlayerId() == inPlayerID)
         {
-            return robot;
+            return entity;
         }
     }
     
@@ -293,7 +277,7 @@ void World::removeAllCrates()
 {
     for (Entity* entity : _entities)
     {
-        if (entity->getRTTI().derivesFrom(Crate::rtti))
+        if (entity->getEntityDef().type == 'CRAT')
         {
             entity->requestDeletion();
         }
@@ -317,7 +301,7 @@ bool World::hasCrates()
 {
     for (Entity* entity : _entities)
     {
-        if (entity->getRTTI().derivesFrom(Crate::rtti))
+        if (entity->getEntityDef().type == 'CRAT')
         {
             return true;
         }

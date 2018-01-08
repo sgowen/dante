@@ -11,26 +11,19 @@
 
 #include "framework/entity/EntityManager.h"
 
-class EntityRegistry;
-
 #define CLIENT_ENTITY_MGR FWInstanceManager::getClientEntityManager()
-#define CLIENT_ENTITY_REG FWInstanceManager::getClientEntityRegistry()
 
 #define SERVER_ENTITY_MGR FWInstanceManager::getServerEntityManager()
-#define SERVER_ENTITY_REG FWInstanceManager::getServerEntityRegistry()
 
 class FWInstanceManager
 {
 public:
-    static void createClientEntityManager(HandleEntityCreatedFunc handleEntityCreatedFunc, HandleEntityDeletionFunc handleEntityDeletionFunc);
-    static void createServerEntityManager(HandleEntityCreatedFunc handleEntityCreatedFunc, HandleEntityDeletionFunc handleEntityDeletionFunc);
+    static void createClientEntityManager(HandleEntityCreatedFunc handleEntityCreatedFunc, HandleEntityDeletionFunc handleEntityDeletionFunc, EntityCreationFunc inEntityCreationFunc);
+    static void createServerEntityManager(HandleEntityCreatedFunc handleEntityCreatedFunc, HandleEntityDeletionFunc handleEntityDeletionFunc, EntityCreationFunc inEntityCreationFunc);
     static void destroyClientEntityManager();
     static void destroyServerEntityManager();
     static EntityManager* getClientEntityManager();
     static EntityManager* getServerEntityManager();
-    
-    static EntityRegistry* getClientEntityRegistry();
-    static EntityRegistry* getServerEntityRegistry();
     
 private:
     static EntityManager* s_clientEntityManagerInstance;

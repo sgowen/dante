@@ -33,14 +33,14 @@ SocketServerHelper::~SocketServerHelper()
             SocketAddress* userAddress = static_cast<SocketAddress*>(clientProxy->getMachineAddress());
             
             OutputMemoryBitStream packet;
-            packet.write(NW_PACKET_TYPE_SERVER_EXIT);
+            packet.write(static_cast<uint8_t>(NW_PACKET_TYPE_SERVER_EXIT));
             
             sendPacket(packet, userAddress);
         }
     }
 }
 
-void SocketServerHelper::processSpecialPacket(uint32_t packetType, InputMemoryBitStream& inInputStream, MachineAddress* inFromAddress)
+void SocketServerHelper::processSpecialPacket(uint8_t packetType, InputMemoryBitStream& inInputStream, MachineAddress* inFromAddress)
 {
     switch (packetType)
     {

@@ -126,7 +126,7 @@ void NetworkManagerServer::registerEntity(Entity* inEntity)
     //tell all client proxies this is new...
     for (const auto& pair: _addressHashToClientMap)
     {
-        pair.second->getReplicationManagerServer().replicateCreate(inEntity->getID(), inEntity->getAllStateMask());
+        pair.second->getReplicationManagerServer().replicateCreate(inEntity->getID(), NG_ALL_STATE);
     }
 }
 
@@ -248,7 +248,7 @@ void NetworkManagerServer::processPacket(InputMemoryBitStream& inInputStream, Ma
         {
             LOG("New Client with %s", inFromAddress->toString().c_str());
             
-            //didn't find one? it's a new cilent..is the a HELO? if so, create a client proxy...
+            //didn't find one? it's a new cilent..is the a NW_PACKET_TYPE_HELLO? if so, create a client proxy...
             handlePacketFromNewClient(inInputStream, inFromAddress);
         }
         else
@@ -285,7 +285,7 @@ void NetworkManagerServer::sendPacket(const OutputMemoryBitStream& inOutputStrea
 void NetworkManagerServer::handlePacketFromNewClient(InputMemoryBitStream& inInputStream, MachineAddress* inFromAddress)
 {
     // read the beginning- is it a hello?
-    uint32_t packetType;
+    uint8_t packetType;
     inInputStream.read(packetType);
     if (packetType == NW_PACKET_TYPE_HELLO)
     {
@@ -318,8 +318,7 @@ void NetworkManagerServer::handlePacketFromNewClient(InputMemoryBitStream& inInp
         // and now init the replication manager with everything we know about!
         for (const auto& pair: FWInstanceManager::getServerEntityManager()->getMap())
         {
-            Entity* pe = pair.second;
-            newClientProxy->getReplicationManagerServer().replicateCreate(pair.first, pe->getAllStateMask());
+            newClientProxy->getReplicationManagerServer().replicateCreate(pair.first, NG_ALL_STATE);
         }
         
         updateNextPlayerId();
@@ -335,7 +334,7 @@ void NetworkManagerServer::processPacket(ClientProxy* inClientProxy, InputMemory
     //remember we got a packet so we know not to disconnect for a bit
     inClientProxy->updateLastPacketTime();
     
-    uint32_t packetType;
+    uint8_t packetType;
     inInputStream.read(packetType);
     
     switch (packetType)
@@ -367,7 +366,7 @@ void NetworkManagerServer::sendWelcomePacket(ClientProxy* inClientProxy)
 {
     OutputMemoryBitStream packet;
     
-    packet.write(NW_PACKET_TYPE_WELCOME);
+    packet.write(static_cast<uint8_t>(NW_PACKET_TYPE_WELCOME));
     packet.write(inClientProxy->getPlayerId());
     
     LOG("Server welcoming new client '%s' as player %d", inClientProxy->getName().c_str(), inClientProxy->getPlayerId());
@@ -381,20 +380,17 @@ void NetworkManagerServer::sendStatePacketToClient(ClientProxy* inClientProxy)
     OutputMemoryBitStream statePacket;
     
     //it's state!
-    statePacket.write(NW_PACKET_TYPE_STATE);
-    
+    statePacket.write(static_cast<uint8_t>(NW_PACKET_TYPE_STATE));
 #ifdef NG_LOG
     LOG("Outgoing statePacket Bit Length 1: %d \n", statePacket.getBitLength());
 #endif
     
     InFlightPacket* ifp = inClientProxy->getDeliveryNotificationManager().writeState(statePacket);
-    
 #ifdef NG_LOG
     LOG("Outgoing statePacket Bit Length 2: %d \n", statePacket.getBitLength());
 #endif
     
     writeLastMoveTimestampIfDirty(statePacket, inClientProxy);
-    
 #ifdef NG_LOG
     LOG("Outgoing statePacket Bit Length 3: %d \n", statePacket.getBitLength());
 #endif
@@ -403,7 +399,6 @@ void NetworkManagerServer::sendStatePacketToClient(ClientProxy* inClientProxy)
     rmtd->reset(&inClientProxy->getReplicationManagerServer(), &_replicationManagerTransmissionDatas);
     
     inClientProxy->getReplicationManagerServer().write(statePacket, rmtd);
-    
 #ifdef NG_LOG
     LOG("Outgoing statePacket Bit Length 4: %d \n", statePacket.getBitLength());
 #endif
@@ -415,7 +410,6 @@ void NetworkManagerServer::sendStatePacketToClient(ClientProxy* inClientProxy)
     }
     
     ifp->setTransmissionData('RPLM', rmtd);
-    
 #ifdef NG_LOG
     LOG("Outgoing statePacket Bit Length F: %d \n", statePacket.getBitLength());
 #endif
@@ -526,7 +520,7 @@ void NetworkManagerServer::handleAddLocalPlayerPacket(ClientProxy* inClientProxy
     else
     {
         OutputMemoryBitStream packet;
-        packet.write(NW_PACKET_TYPE_LOCAL_PLAYER_DENIED);
+        packet.write(static_cast<uint8_t>(NW_PACKET_TYPE_LOCAL_PLAYER_DENIED));
         
         sendPacket(packet, inClientProxy->getMachineAddress());
     }
@@ -538,7 +532,7 @@ void NetworkManagerServer::sendLocalPlayerAddedPacket(ClientProxy* inClientProxy
     
     OutputMemoryBitStream packet;
     
-    packet.write(NW_PACKET_TYPE_LOCAL_PLAYER_ADDED);
+    packet.write(static_cast<uint8_t>(NW_PACKET_TYPE_LOCAL_PLAYER_ADDED));
     packet.write(playerId);
     
     std::string localPlayerName = StringUtil::format("%s(%d)", inClientProxy->getName().c_str(), index);

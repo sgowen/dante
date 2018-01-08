@@ -15,57 +15,31 @@
 #include <vector>
 
 class Entity;
-class Robot;
-class Projectile;
-class Crate;
 class b2World;
 
 class EntityContactListener;
 class EntityContactFilter;
 
-#define WORLD_CREATE_CLIENT_DECL(name) \
-static Entity* sClientCreate##name()
-
-#define WORLD_CREATE_SERVER_DECL(name) \
-static Entity* sServerCreate##name()
-
 class World
 {
 public:
-    WORLD_CREATE_CLIENT_DECL(Ground);
-    WORLD_CREATE_CLIENT_DECL(Robot);
-    WORLD_CREATE_CLIENT_DECL(Crate);
-    
-    WORLD_CREATE_SERVER_DECL(Ground);
-    WORLD_CREATE_SERVER_DECL(Robot);
-    WORLD_CREATE_SERVER_DECL(Crate);    
+    static Entity* sServerCreateEntity(uint32_t inFourCCName);
+    static Entity* sClientCreateEntity(uint32_t inFourCCName);
     
     World(bool isServer);
-    
     ~World();
     
     void addEntity(Entity* inEntity);
-    
     void removeEntity(Entity* inEntity);
-    
     void postRead();
-    
     void update();
-    
-    Robot* getRobotWithPlayerId(uint8_t inPlayerID);
-    
+    Entity* getRobotWithPlayerId(uint8_t inPlayerID);
     void killAllEnemys();
-    
     void removeAllCrates();
-    
     bool hasEnemys();
-    
     bool hasCrates();
-    
     std::vector<Entity*>& getPlayers();
-    
     std::vector<Entity*>& getEntities();
-    
     b2World& getWorld();
     
 private:

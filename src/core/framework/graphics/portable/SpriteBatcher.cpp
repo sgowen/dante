@@ -122,10 +122,10 @@ void SpriteBatcher::renderSprite(float x, float y, float width, float height, fl
         uFinal[3] = tr._u2;
     }
     
-    _rendererHelper->addVertexCoordinate(xFinal[0], yFinal[0], 0, c.red, c.green, c.blue, c.alpha, uFinal[0], tr._v2);
-    _rendererHelper->addVertexCoordinate(xFinal[1], yFinal[1], 0, c.red, c.green, c.blue, c.alpha, uFinal[1], tr._v1);
-    _rendererHelper->addVertexCoordinate(xFinal[2], yFinal[2], 0, c.red, c.green, c.blue, c.alpha, uFinal[2], tr._v1);
-    _rendererHelper->addVertexCoordinate(xFinal[3], yFinal[3], 0, c.red, c.green, c.blue, c.alpha, uFinal[3], tr._v2);
+    _rendererHelper->addVertexCoordinate(xFinal[0], yFinal[0], c.red, c.green, c.blue, c.alpha, uFinal[0], tr._v2);
+    _rendererHelper->addVertexCoordinate(xFinal[1], yFinal[1], c.red, c.green, c.blue, c.alpha, uFinal[1], tr._v1);
+    _rendererHelper->addVertexCoordinate(xFinal[2], yFinal[2], c.red, c.green, c.blue, c.alpha, uFinal[2], tr._v1);
+    _rendererHelper->addVertexCoordinate(xFinal[3], yFinal[3], c.red, c.green, c.blue, c.alpha, uFinal[3], tr._v2);
     
     _numSprites++;
 }

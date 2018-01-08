@@ -10,6 +10,8 @@ ECHO .
 ECHO .
 %XOREncryptDecryptTool% shader_003_frag.cso shader_003_frag.ngs
 ECHO .
+%XOREncryptDecryptTool% shader_004_frag.cso shader_004_frag.ngs
+ECHO .
 %XOREncryptDecryptTool% shader_001_vert.cso shader_001_vert.ngs
 ECHO .
 %XOREncryptDecryptTool% shader_002_vert.cso shader_002_vert.ngs
@@ -30,6 +32,8 @@ ECHO .
 %XOREncryptDecryptTool% texture_003.dds texture_003.ngt
 ECHO .
 %XOREncryptDecryptTool% texture_004.dds texture_004.ngt
+ECHO .
+%XOREncryptDecryptTool% texture_005.dds texture_005.ngt
 ECHO .
 
 del /s *.dds

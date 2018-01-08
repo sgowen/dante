@@ -30,7 +30,7 @@ _name(inName)
 SocketClientHelper::~SocketClientHelper()
 {
     OutputMemoryBitStream packet;
-    packet.write(NW_PACKET_TYPE_CLIENT_EXIT);
+    packet.write(static_cast<uint8_t>(NW_PACKET_TYPE_CLIENT_EXIT));
     sendPacket(packet);
     
     if (_serverAddress)
@@ -39,7 +39,7 @@ SocketClientHelper::~SocketClientHelper()
     }
 }
 
-void SocketClientHelper::processSpecialPacket(uint32_t packetType, InputMemoryBitStream& inInputStream, MachineAddress* inFromAddress)
+void SocketClientHelper::processSpecialPacket(uint8_t packetType, InputMemoryBitStream& inInputStream, MachineAddress* inFromAddress)
 {
     switch (packetType)
     {

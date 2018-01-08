@@ -15,7 +15,7 @@ ReplicationCommand::ReplicationCommand()
     // Empty
 }
 
-ReplicationCommand::ReplicationCommand(uint32_t inInitialDirtyState) : _action(RA_Create), _dirtyState(inInitialDirtyState)
+ReplicationCommand::ReplicationCommand(uint16_t inInitialDirtyState) : _action(RA_Create), _dirtyState(inInitialDirtyState)
 {
     // Empty
 }
@@ -29,7 +29,7 @@ void ReplicationCommand::handleCreateAckd()
     }
 }
 
-void ReplicationCommand::addDirtyState(uint32_t inState)
+void ReplicationCommand::addDirtyState(uint16_t inState)
 {
     _dirtyState |= inState;
 }
@@ -49,14 +49,15 @@ ReplicationAction ReplicationCommand::getAction() const
     return _action;
 }
 
-uint32_t ReplicationCommand::getDirtyState() const
+uint16_t ReplicationCommand::getDirtyState() const
 {
     return _dirtyState;
 }
 
-void ReplicationCommand::clearDirtyState(uint32_t inStateToClear)
+void ReplicationCommand::clearDirtyState(uint16_t inStateToClear)
 {
-    _dirtyState &= ~inStateToClear;
+    _dirtyState = 0;
+//    _dirtyState &= ~inStateToClear;
     
     if (_action == RA_Destroy)
     {
