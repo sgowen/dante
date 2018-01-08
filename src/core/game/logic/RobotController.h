@@ -49,6 +49,15 @@ public:
 private:
     enum RobotState
     {
+        RobotState_Idle,
+        RobotState_Punching,
+        RobotState_Running,
+        RobotState_Running_Fast,
+        RobotState_Jumping
+    };
+    
+    enum RobotStateFlags
+    {
         ROBT_MAIN_ACTION = 1 << 0,
         ROBT_SPRINTING = 1 << 1,
         ROBT_FIRST_JUMP = 1 << 2,

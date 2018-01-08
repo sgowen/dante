@@ -155,6 +155,7 @@ void Entity::read(InputMemoryBitStream& inInputStream)
         {
             inInputStream.read(_pose.stateTime);
             inInputStream.read(_pose.state);
+            inInputStream.read(_pose.stateFlags);
         }
         
         inInputStream.read(_pose.velocity);
@@ -205,6 +206,7 @@ uint16_t Entity::write(OutputMemoryBitStream& inOutputStream, uint16_t inDirtySt
         {
             inOutputStream.write(_pose.stateTime);
             inOutputStream.write(_pose.state);
+            inOutputStream.write(_pose.stateFlags);
         }
         
         inOutputStream.write(_pose.velocity);
@@ -305,8 +307,7 @@ b2Body* Entity::getBody()
 void Entity::setPosition(b2Vec2 position)
 {
     _pose.position = position;
-    _pose.angle = _body->GetAngle();
-    _body->SetTransform(_pose.position, _pose.angle);
+    _body->SetTransform(_pose.position, _body->GetAngle());
 }
 
 const b2Vec2& Entity::getPosition()
@@ -339,9 +340,8 @@ float Entity::getHeight()
 
 void Entity::setAngle(float angle)
 {
-    _pose.position = _body->GetPosition();
     _pose.angle = angle;
-    _body->SetTransform(_pose.position, _pose.angle);
+    _body->SetTransform(_body->GetPosition(), _pose.angle);
 }
 
 float Entity::getAngle()
@@ -388,6 +388,11 @@ bool Entity::isServer()
 bool Entity::isFacingLeft()
 {
     return _pose.isFacingLeft;
+}
+
+uint8_t Entity::getState()
+{
+    return _pose.state;
 }
 
 Entity::Pose& Entity::getPose()

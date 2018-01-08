@@ -62,6 +62,9 @@ RobotController::~RobotController()
 
 void RobotController::update()
 {
+    bool isMoving = _entity->getVelocity().x < -0.5f || _entity->getVelocity().x > 0.5f;
+    _entity->getPose().state = _entity->isGrounded() && getNumJumps() == 0 ? isMainAction() ? RobotState_Punching : !isMoving ? RobotState_Idle : isSprinting() ? RobotState_Running_Fast : RobotState_Running : RobotState_Jumping;
+    
     if (_stats.health == 0)
     {
         _entity->requestDeletion();
@@ -188,9 +191,9 @@ void RobotController::processInput(InputState* inInputState, bool isPending)
     bool isSprinting = inputState->isSprinting();
     if (isSprinting)
     {
-        if (!isFlagSet(_entity->getPose().state, ROBT_SPRINTING))
+        if (!isFlagSet(_entity->getPose().stateFlags, ROBT_SPRINTING))
         {
-            setFlag(_entity->getPose().state, ROBT_SPRINTING);
+            setFlag(_entity->getPose().stateFlags, ROBT_SPRINTING);
             
             if (isPending)
             {
@@ -206,7 +209,7 @@ void RobotController::processInput(InputState* inInputState, bool isPending)
     }
     else
     {
-        removeFlag(_entity->getPose().state, ROBT_SPRINTING);
+        removeFlag(_entity->getPose().stateFlags, ROBT_SPRINTING);
         
         if ((inputState->getDesiredRightAmount() > 0 && velocity.x < SPEED)
             || (inputState->getDesiredRightAmount() < 0 && velocity.x > -SPEED))
@@ -221,9 +224,9 @@ void RobotController::processInput(InputState* inInputState, bool isPending)
         {
             _entity->setVelocity(b2Vec2(velocity.x, 0));
             _entity->getPose().stateTime = 0;
-            removeFlag(_entity->getPose().state, ROBT_FIRST_JUMP_COMPLETED);
-            removeFlag(_entity->getPose().state, ROBT_SECOND_JUMP);
-            setFlag(_entity->getPose().state, ROBT_FIRST_JUMP);
+            removeFlag(_entity->getPose().stateFlags, ROBT_FIRST_JUMP_COMPLETED);
+            removeFlag(_entity->getPose().stateFlags, ROBT_SECOND_JUMP);
+            setFlag(_entity->getPose().stateFlags, ROBT_FIRST_JUMP);
             
             if (isPending)
             {
@@ -232,18 +235,18 @@ void RobotController::processInput(InputState* inInputState, bool isPending)
         }
         else if (getNumJumps() == 0)
         {
-            removeFlag(_entity->getPose().state, ROBT_SECOND_JUMP);
-            setFlag(_entity->getPose().state, ROBT_FIRST_JUMP);
-            setFlag(_entity->getPose().state, ROBT_FIRST_JUMP_COMPLETED);
+            removeFlag(_entity->getPose().stateFlags, ROBT_SECOND_JUMP);
+            setFlag(_entity->getPose().stateFlags, ROBT_FIRST_JUMP);
+            setFlag(_entity->getPose().stateFlags, ROBT_FIRST_JUMP_COMPLETED);
         }
         
         if (getNumJumps() == 1)
         {
-            if (isFlagSet(_entity->getPose().state, ROBT_FIRST_JUMP_COMPLETED))
+            if (isFlagSet(_entity->getPose().stateFlags, ROBT_FIRST_JUMP_COMPLETED))
             {
                 _entity->getPose().stateTime = 0;
-                removeFlag(_entity->getPose().state, ROBT_FIRST_JUMP);
-                setFlag(_entity->getPose().state, ROBT_SECOND_JUMP);
+                removeFlag(_entity->getPose().stateFlags, ROBT_FIRST_JUMP);
+                setFlag(_entity->getPose().stateFlags, ROBT_SECOND_JUMP);
                 _entity->setVelocity(b2Vec2(velocity.x, 0));
                 
                 if (isPending)
@@ -266,17 +269,17 @@ void RobotController::processInput(InputState* inInputState, bool isPending)
     }
     else
     {
-        if (!isFlagSet(_entity->getPose().state, ROBT_FIRST_JUMP_COMPLETED))
+        if (!isFlagSet(_entity->getPose().stateFlags, ROBT_FIRST_JUMP_COMPLETED))
         {
-            setFlag(_entity->getPose().state, ROBT_FIRST_JUMP_COMPLETED);
+            setFlag(_entity->getPose().stateFlags, ROBT_FIRST_JUMP_COMPLETED);
         }
     }
     
     if (_entity->isGrounded() && _entity->getPose().stateTime > 0.3f)
     {
-        removeFlag(_entity->getPose().state, ROBT_FIRST_JUMP_COMPLETED);
-        removeFlag(_entity->getPose().state, ROBT_FIRST_JUMP);
-        removeFlag(_entity->getPose().state, ROBT_SECOND_JUMP);
+        removeFlag(_entity->getPose().stateFlags, ROBT_FIRST_JUMP_COMPLETED);
+        removeFlag(_entity->getPose().stateFlags, ROBT_FIRST_JUMP);
+        removeFlag(_entity->getPose().stateFlags, ROBT_SECOND_JUMP);
     }
     
     _entity->getBody()->ApplyLinearImpulse(b2Vec2(sideForce,vertForce), _entity->getBody()->GetWorldCenter(), true);
@@ -285,11 +288,11 @@ void RobotController::processInput(InputState* inInputState, bool isPending)
     
     if (inputState->isMainAction())
     {
-        setFlag(_entity->getPose().state, ROBT_MAIN_ACTION);
+        setFlag(_entity->getPose().stateFlags, ROBT_MAIN_ACTION);
     }
     else
     {
-        removeFlag(_entity->getPose().state, ROBT_MAIN_ACTION);
+        removeFlag(_entity->getPose().stateFlags, ROBT_MAIN_ACTION);
     }
 }
 
@@ -330,11 +333,11 @@ uint8_t RobotController::getHealth()
 
 uint8_t RobotController::getNumJumps()
 {
-    if (isFlagSet(_entity->getPose().state, ROBT_FIRST_JUMP))
+    if (isFlagSet(_entity->getPose().stateFlags, ROBT_FIRST_JUMP))
     {
         return 1;
     }
-    else if (isFlagSet(_entity->getPose().state, ROBT_SECOND_JUMP))
+    else if (isFlagSet(_entity->getPose().stateFlags, ROBT_SECOND_JUMP))
     {
         return 2;
     }
@@ -344,10 +347,10 @@ uint8_t RobotController::getNumJumps()
 
 bool RobotController::isMainAction()
 {
-    return isFlagSet(_entity->getPose().state, ROBT_MAIN_ACTION);
+    return isFlagSet(_entity->getPose().stateFlags, ROBT_MAIN_ACTION);
 }
 
 bool RobotController::isSprinting()
 {
-    return isFlagSet(_entity->getPose().state, ROBT_SPRINTING);
+    return isFlagSet(_entity->getPose().stateFlags, ROBT_SPRINTING);
 }

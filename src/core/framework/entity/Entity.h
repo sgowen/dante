@@ -103,11 +103,13 @@ public:
     bool isRequestingDeletion();
     bool isServer();
     bool isFacingLeft();
+    uint8_t getState();
     
     struct Pose
     {
         float stateTime;
         uint8_t state;
+        uint8_t stateFlags;
         b2Vec2 velocity;
         b2Vec2 position;
         float angle;
@@ -117,6 +119,7 @@ public:
         Pose()
         {
             stateTime = 0;
+            stateFlags = 0;
             state = 0;
             velocity = b2Vec2_zero;
             position = b2Vec2_zero;
@@ -130,6 +133,7 @@ public:
             return
             lhs.stateTime         == rhs.stateTime &&
             lhs.state             == rhs.state &&
+            lhs.stateFlags        == rhs.stateFlags &&
             lhs.velocity          == rhs.velocity &&
             lhs.position          == rhs.position &&
             lhs.angle             == rhs.angle &&

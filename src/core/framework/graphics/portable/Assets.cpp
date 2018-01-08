@@ -81,9 +81,9 @@ void Assets::initWithJson(const char* json)
         }
     }
     
-    if (d.HasMember("textureRegions"))
+    if (d.HasMember("mappings"))
     {
-        Value& v = d["textureRegions"];
+        Value& v = d["mappings"];
         
         assert(v.IsObject());
         for (Value::ConstMemberIterator i = v.MemberBegin(); i != v.MemberEnd(); ++i)
@@ -100,59 +100,43 @@ void Assets::initWithJson(const char* json)
             int textureWidth = iv["textureWidth"].GetInt();
             int textureHeight = iv["textureHeight"].GetInt();
             
-            assert(!_textureRegions[key]);
-            _textureRegions[key] = new TextureRegion(textureName, x, y, regionWidth, regionHeight, textureWidth, textureHeight);
-        }
-    }
-    
-    if (d.HasMember("animations"))
-    {
-        Value& v = d["animations"];
-        
-        assert(v.IsObject());
-        for (Value::ConstMemberIterator i = v.MemberBegin(); i != v.MemberEnd(); ++i)
-        {
-            const Value& iv = i->value;
-            assert(iv.IsObject());
-            
-            std::string key = i->name.GetString();
-            std::string textureName = iv["textureName"].GetString();
-            int x = iv["x"].GetInt();
-            int y = iv["y"].GetInt();
-            int regionWidth = iv["regionWidth"].GetInt();
-            int regionHeight = iv["regionHeight"].GetInt();
-            int animationWidth = iv["animationWidth"].GetInt();
-            int animationHeight = iv["animationHeight"].GetInt();
-            int textureWidth = iv["textureWidth"].GetInt();
-            int textureHeight = iv["textureHeight"].GetInt();
-            bool looping = iv["looping"].GetBool();
-            
-            int firstLoopingFrame = iv["firstLoopingFrame"].GetInt();
-            int xPadding = iv["xPadding"].GetInt();
-            int yPadding = iv["yPadding"].GetInt();
-            
-            assert(!_animations[key]);
-            
-            if (iv.HasMember("frameTimes"))
+            if (iv.HasMember("animationWidth"))
             {
-                const Value& va = iv["frameTimes"];
-                assert(va.IsArray());
+                int animationWidth = iv["animationWidth"].GetInt();
+                int animationHeight = iv["animationHeight"].GetInt();
+                bool looping = iv["looping"].GetBool();
+                int firstLoopingFrame = iv["firstLoopingFrame"].GetInt();
+                int xPadding = iv["xPadding"].GetInt();
+                int yPadding = iv["yPadding"].GetInt();
                 
-                std::vector<float> frameTimes;
-                for (SizeType i = 0; i < va.Size(); ++i)
+                assert(!_animations[key]);
+                
+                if (iv.HasMember("frameTimes"))
                 {
-                    const Value& iva = va[i];
-                    frameTimes.push_back(iva.GetFloat());
+                    const Value& va = iv["frameTimes"];
+                    assert(va.IsArray());
+                    
+                    std::vector<float> frameTimes;
+                    for (SizeType i = 0; i < va.Size(); ++i)
+                    {
+                        const Value& iva = va[i];
+                        frameTimes.push_back(iva.GetFloat());
+                    }
+                    
+                    _animations[key] = new NGAnimation(textureName, x, y, regionWidth, regionHeight, animationWidth, animationHeight, textureWidth, textureHeight, looping, firstLoopingFrame, xPadding, yPadding, frameTimes);
                 }
-                
-                _animations[key] = new NGAnimation(textureName, x, y, regionWidth, regionHeight, animationWidth, animationHeight, textureWidth, textureHeight, looping, firstLoopingFrame, xPadding, yPadding, frameTimes);
+                else
+                {
+                    float frameTime = iv["frameTime"].GetFloat();
+                    int numFrames = iv["numFrames"].GetInt();
+                    
+                    _animations[key] = new NGAnimation(textureName, x, y, regionWidth, regionHeight, animationWidth, animationHeight, textureWidth, textureHeight, looping, firstLoopingFrame, xPadding, yPadding, frameTime, numFrames);
+                }
             }
             else
             {
-                float frameTime = iv["frameTime"].GetFloat();
-                int numFrames = iv["numFrames"].GetInt();
-                
-                _animations[key] = new NGAnimation(textureName, x, y, regionWidth, regionHeight, animationWidth, animationHeight, textureWidth, textureHeight, looping, firstLoopingFrame, xPadding, yPadding, frameTime, numFrames);
+                assert(!_textureRegions[key]);
+                _textureRegions[key] = new TextureRegion(textureName, x, y, regionWidth, regionHeight, textureWidth, textureHeight);
             }
         }
     }
