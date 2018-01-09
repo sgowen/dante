@@ -13,6 +13,12 @@
 
 class MainInputState;
 
+enum StudioInputState
+{
+    SIS_NONE = 0,
+    SIS_ESCAPE
+};
+
 class StudioInputManager
 {
 public:

@@ -204,28 +204,24 @@ bool GameEngine::handleNonMoveInput()
 {
     int menuState = GameInputManager::getInstance()->getMenuState();
     
-    if (menuState == MIS_CLIENT_MAIN_TOGGLE_MUSIC)
+    if (menuState == GIS_CLIENT_MAIN_TOGGLE_MUSIC)
     {
         NG_AUDIO_ENGINE->setMusicDisabled(!NG_AUDIO_ENGINE->isMusicDisabled());
     }
-    else if (menuState == MIS_CLIENT_MAIN_TOGGLE_SOUND)
+    else if (menuState == GIS_CLIENT_MAIN_TOGGLE_SOUND)
     {
         NG_AUDIO_ENGINE->setSoundDisabled(!NG_AUDIO_ENGINE->isSoundDisabled());
     }
     
     if (Server::getInstance())
     {
-        if (menuState == MIS_SERVER_TOGGLE_OBJECTS)
-        {
-            Server::getInstance()->toggleObjects();
-        }
-        else if (menuState == MIS_SERVER_TOGGLE_SERVER_DISPLAY)
+        if (menuState == GIS_SERVER_TOGGLE_SERVER_DISPLAY)
         {
             Server::getInstance()->toggleDisplaying();
         }
     }
     
-    if (menuState == MIS_TOGGLE_PHYSICS_DISPLAY)
+    if (menuState == GIS_TOGGLE_PHYSICS_DISPLAY)
     {
         if (isFlagSet(_state, GE_DISPLAY_BOX_2D))
         {
@@ -242,19 +238,19 @@ bool GameEngine::handleNonMoveInput()
     {
         NG_CLIENT->requestToAddLocalPlayer();
     }
-    else if (menuState == MIS_ESCAPE)
+    else if (menuState == GIS_ESCAPE)
     {
         return true;
     }
-    else if (menuState == MIS_LOCAL_PLAYER_DROP_OUT_1)
+    else if (menuState == GIS_LOCAL_PLAYER_DROP_OUT_1)
     {
         NG_CLIENT->requestToDropLocalPlayer(1);
     }
-    else if (menuState == MIS_LOCAL_PLAYER_DROP_OUT_2)
+    else if (menuState == GIS_LOCAL_PLAYER_DROP_OUT_2)
     {
         NG_CLIENT->requestToDropLocalPlayer(2);
     }
-    else if (menuState == MIS_LOCAL_PLAYER_DROP_OUT_3)
+    else if (menuState == GIS_LOCAL_PLAYER_DROP_OUT_3)
     {
         NG_CLIENT->requestToDropLocalPlayer(3);
     }

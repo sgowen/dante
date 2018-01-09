@@ -95,24 +95,9 @@ uint8_t Server::getPlayerIdForRobotBeingCreated()
     return _playerIdForRobotBeingCreated;
 }
 
-void Server::toggleObjects()
-{
-    _isSpawningObjects = !_isSpawningObjects;
-    
-    if (!_isSpawningObjects)
-    {
-        InstanceManager::getServerWorld()->removeAllCrates();
-    }
-}
-
 void Server::toggleDisplaying()
 {
     _isDisplaying = !_isDisplaying;
-}
-
-bool Server::isSpawningObjects()
-{
-    return _isSpawningObjects;
 }
 
 bool Server::isDisplaying()
@@ -127,9 +112,8 @@ void Server::handleNewClient(uint8_t playerId, std::string playerName)
     if (NG_SERVER->getNumClientsConnected() == 1)
     {
         // This is our first client!
-        // Let's spawn some nasty stuff for it to fight!
         
-        _stateTimeNoEnemies = 0;
+        spawnGroundsIfNecessary();
     }
 }
 
@@ -194,24 +178,27 @@ void Server::spawnRobotForPlayer(uint8_t inPlayerId, std::string inPlayerName)
     
     // Doing this last on purpose
     robot->setPlayerId(inPlayerId);
-    
-    spawnGroundsIfNecessary();
 }
 
 void Server::spawnCratesIfNecessary()
 {
-    if (!_isSpawningObjects || InstanceManager::getServerWorld()->hasCrates())
+    if (InstanceManager::getServerWorld()->hasCrates())
     {
         return;
     }
     
     srand(static_cast<unsigned>(time(0)));
     
-    for (uint32_t i = 0; i < 35; ++i)
+    /// We really shouldn't have any more than 32 dynamic
+    /// objects in addition to the players in a given zone
+    /// so that we can fit our entire state inside
+    /// of a single packet, which needs to be a max of
+    /// 1200 bytes (any larger will be dropped by some routers).
+    for (uint32_t i = 0; i < 32; ++i)
     {
         Entity* entity = SERVER_ENTITY_MGR->createEntity('CRAT');
         
-        int xSeed = rand() % 5 + 1;
+        int xSeed = rand() % 5 + 2;
         float posX = xSeed * GAME_WIDTH / 2;
         float posY = (rand() % static_cast<int>(GAME_HEIGHT - entity->getHeight() * 2)) + (2.0f + entity->getHeight() * 2);
         
@@ -219,7 +206,7 @@ void Server::spawnCratesIfNecessary()
     }
 }
 
-Server::Server(bool isSteam) : _stateTime(0), _frameStateTime(0), _stateTimeNoEnemies(0), _playerIdForRobotBeingCreated(0), _isSpawningObjects(false), _isDisplaying(false), _hasSpawnedGrounds(false)
+Server::Server(bool isSteam) : _stateTime(0), _frameStateTime(0), _playerIdForRobotBeingCreated(0), _isDisplaying(false), _hasSpawnedGrounds(false)
 {
     FWInstanceManager::createServerEntityManager(InstanceManager::sHandleEntityCreatedOnServer, InstanceManager::sHandleEntityDeletedOnServer, World::sServerCreateEntity);
     

@@ -74,32 +74,26 @@ void GameInputManager::update()
     KEYBOARD_INPUT_MANAGER->process();
     GAME_PAD_INPUT_MANAGER->process();
     
-    _menuState = MIS_NONE;
+    _menuState = GIS_NONE;
     
     for (std::vector<KeyboardEvent *>::iterator i = KEYBOARD_INPUT_MANAGER->getEvents().begin(); i != KEYBOARD_INPUT_MANAGER->getEvents().end(); ++i)
     {
         switch ((*i)->getKey())
         {
             case NG_KEY_M:
-                _menuState = (*i)->isUp() ? MIS_CLIENT_MAIN_TOGGLE_MUSIC : _menuState;
+                _menuState = (*i)->isUp() ? GIS_CLIENT_MAIN_TOGGLE_MUSIC : _menuState;
                 continue;
             case NG_KEY_S:
-                _menuState = (*i)->isUp() ? MIS_CLIENT_MAIN_TOGGLE_SOUND : _menuState;
-                continue;
-            case NG_KEY_E:
-                _menuState = (*i)->isUp() ? MIS_SERVER_TOGGLE_ENEMIES : _menuState;
-                continue;
-            case NG_KEY_O:
-                _menuState = (*i)->isUp() ? MIS_SERVER_TOGGLE_OBJECTS : _menuState;
+                _menuState = (*i)->isUp() ? GIS_CLIENT_MAIN_TOGGLE_SOUND : _menuState;
                 continue;
             case NG_KEY_I:
-                _menuState = (*i)->isUp() ? MIS_SERVER_TOGGLE_SERVER_DISPLAY : _menuState;
+                _menuState = (*i)->isUp() ? GIS_SERVER_TOGGLE_SERVER_DISPLAY : _menuState;
                 continue;
             case NG_KEY_P:
-                _menuState = (*i)->isUp() ? MIS_TOGGLE_PHYSICS_DISPLAY : _menuState;
+                _menuState = (*i)->isUp() ? GIS_TOGGLE_PHYSICS_DISPLAY : _menuState;
                 continue;
             case NG_KEY_ESCAPE:
-                _menuState = (*i)->isUp() ? MIS_ESCAPE : _menuState;
+                _menuState = (*i)->isUp() ? GIS_ESCAPE : _menuState;
                 continue;
             default:
             {
@@ -154,15 +148,15 @@ void GameInputManager::update()
                         continue;
                     case NG_KEY_SEVEN:
                         _currentState->getGameInputState(1)._playerId = INPUT_UNASSIGNED;
-                        _menuState = (*i)->isDown() ? MIS_LOCAL_PLAYER_DROP_OUT_1 : MIS_NONE;
+                        _menuState = (*i)->isDown() ? GIS_LOCAL_PLAYER_DROP_OUT_1 : GIS_NONE;
                         continue;
                     case NG_KEY_EIGHT:
                         _currentState->getGameInputState(2)._playerId = INPUT_UNASSIGNED;
-                        _menuState = (*i)->isDown() ? MIS_LOCAL_PLAYER_DROP_OUT_2 : MIS_NONE;
+                        _menuState = (*i)->isDown() ? GIS_LOCAL_PLAYER_DROP_OUT_2 : GIS_NONE;
                         continue;
                     case NG_KEY_NINE:
                         _currentState->getGameInputState(3)._playerId = INPUT_UNASSIGNED;
-                        _menuState = (*i)->isDown() ? MIS_LOCAL_PLAYER_DROP_OUT_3 : MIS_NONE;
+                        _menuState = (*i)->isDown() ? GIS_LOCAL_PLAYER_DROP_OUT_3 : GIS_NONE;
                         continue;
 #endif
                     default:
@@ -239,21 +233,21 @@ void GameInputManager::update()
                 if ((*i)->getIndex() == 3)
                 {
                     _currentState->getGameInputState((*i)->getIndex())._playerId = INPUT_UNASSIGNED;
-                    _menuState = !(*i)->isPressed() ? MIS_LOCAL_PLAYER_DROP_OUT_3 : MIS_NONE;
+                    _menuState = !(*i)->isPressed() ? GIS_LOCAL_PLAYER_DROP_OUT_3 : GIS_NONE;
                 }
                 else if ((*i)->getIndex() == 2)
                 {
                     _currentState->getGameInputState((*i)->getIndex())._playerId = INPUT_UNASSIGNED;
-                    _menuState = !(*i)->isPressed() ? MIS_LOCAL_PLAYER_DROP_OUT_2 : MIS_NONE;
+                    _menuState = !(*i)->isPressed() ? GIS_LOCAL_PLAYER_DROP_OUT_2 : GIS_NONE;
                 }
                 else if ((*i)->getIndex() == 1)
                 {
                     _currentState->getGameInputState((*i)->getIndex())._playerId = INPUT_UNASSIGNED;
-                    _menuState = !(*i)->isPressed() ? MIS_LOCAL_PLAYER_DROP_OUT_1 : MIS_NONE;
+                    _menuState = !(*i)->isPressed() ? GIS_LOCAL_PLAYER_DROP_OUT_1 : GIS_NONE;
                 }
                 else
                 {
-                    _menuState = (*i)->isPressed() ? MIS_ESCAPE : _menuState;
+                    _menuState = (*i)->isPressed() ? GIS_ESCAPE : _menuState;
                 }
             }
                 continue;
@@ -337,7 +331,7 @@ const Move& GameInputManager::sampleInputAsMove()
 GameInputManager::GameInputManager() :
 _currentState(static_cast<MainInputState*>(POOLED_OBJ_MGR->borrowInputState())),
 _pendingMove(NULL),
-_menuState(MIS_NONE),
+_menuState(GIS_NONE),
 _isTimeToProcessInput(false)
 {
     // Empty

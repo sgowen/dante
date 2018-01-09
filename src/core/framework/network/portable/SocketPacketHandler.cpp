@@ -67,7 +67,7 @@ void SocketPacketHandler::sendPacket(const OutputMemoryBitStream& inOutputStream
     }
     
 #ifdef NG_LOG
-    LOG("Outgoing packet Bit Length: %d \n", inOutputStream.getBitLength());
+    LOG("%s Outgoing packet Bit Length: %d \n", _isServer ? "Server" : "Client", inOutputStream.getBitLength());
 #endif
 
     SocketAddress* inFromSocketAddress = static_cast<SocketAddress*>(inFromAddress);

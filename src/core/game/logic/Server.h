@@ -25,9 +25,7 @@ public:
     
     void update();
     uint8_t getPlayerIdForRobotBeingCreated();
-    void toggleObjects();
     void toggleDisplaying();
-    bool isSpawningObjects();
     bool isDisplaying();
 
 private:
@@ -35,9 +33,7 @@ private:
     
     double _stateTime;
     double _frameStateTime;
-    double _stateTimeNoEnemies;
     uint8_t _playerIdForRobotBeingCreated;
-    bool _isSpawningObjects;
     bool _isDisplaying;
     bool _hasSpawnedGrounds;
     
@@ -47,7 +43,6 @@ private:
     void spawnGroundsIfNecessary();
     void spawnRobotForPlayer(uint8_t inPlayerId, std::string inPlayerName);
     void spawnCratesIfNecessary();
-    void clearClientMoves();
     
     // ctor, copy ctor, and assignment should be private in a Singleton
     Server(bool isSteam);

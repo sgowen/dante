@@ -39,6 +39,7 @@ _groundSensorFixture(NULL),
 _pose(),
 _poseCache(_pose),
 _readState(0),
+_state(0),
 _ID(0),
 _isRequestingDeletion(false)
 {
@@ -95,7 +96,7 @@ void Entity::update()
         requestDeletion();
     }
     
-    _controller->update();
+    _state = _controller->update();
     
     updatePoseFromBody();
     
@@ -104,7 +105,7 @@ void Entity::update()
         if (_poseCache != _pose)
         {
             _poseCache = _pose;
-            NG_SERVER->setStateDirty(getID(), ENTY_Pose);
+            NG_SERVER->setStateDirty(getID(), ReadStateFlag_Pose);
         }
     }
 }
@@ -155,7 +156,6 @@ void Entity::read(InputMemoryBitStream& inInputStream)
         {
             inInputStream.read(_pose.stateTime);
             inInputStream.read(_pose.state);
-            inInputStream.read(_pose.stateFlags);
         }
         
         inInputStream.read(_pose.velocity);
@@ -175,7 +175,7 @@ void Entity::read(InputMemoryBitStream& inInputStream)
         
         updateBodyFromPose();
         
-        setFlag(_readState, ENTY_Pose);
+        setFlag(_readState, ReadStateFlag_Pose);
         _poseCache = _pose;
     }
     
@@ -184,7 +184,7 @@ void Entity::read(InputMemoryBitStream& inInputStream)
 
 void Entity::recallLastReadState()
 {
-    if (isFlagSet(_readState, ENTY_Pose))
+    if (isFlagSet(_readState, ReadStateFlag_Pose))
     {
         _pose = _poseCache;
         
@@ -198,7 +198,7 @@ uint16_t Entity::write(OutputMemoryBitStream& inOutputStream, uint16_t inDirtySt
 {
     uint16_t writtenState = 0;
     
-    bool pose = isFlagSet(inDirtyState, ENTY_Pose);
+    bool pose = isFlagSet(inDirtyState, ReadStateFlag_Pose);
     inOutputStream.write(pose);
     if (pose)
     {
@@ -206,7 +206,6 @@ uint16_t Entity::write(OutputMemoryBitStream& inOutputStream, uint16_t inDirtySt
         {
             inOutputStream.write(_pose.stateTime);
             inOutputStream.write(_pose.state);
-            inOutputStream.write(_pose.stateFlags);
         }
         
         inOutputStream.write(_pose.velocity);
@@ -224,7 +223,7 @@ uint16_t Entity::write(OutputMemoryBitStream& inOutputStream, uint16_t inDirtySt
         
         inOutputStream.write(_pose.isFacingLeft);
         
-        setFlag(writtenState, ENTY_Pose);
+        setFlag(writtenState, ReadStateFlag_Pose);
     }
     
     return _controller->write(inOutputStream, writtenState, inDirtyState);
@@ -394,7 +393,7 @@ std::string& Entity::getMapping()
 {
     std::map<std::string, std::string>& mappings = _entityDef.mappings;
     std::map<uint8_t, std::string>& stateMappings = _controller->getStateMappings();
-    auto q = stateMappings.find(_pose.state);
+    auto q = stateMappings.find(_state);
     
     assert(q != stateMappings.end());
     

@@ -18,6 +18,19 @@ class Move;
 
 #define INPUT_MANAGER_CALLBACKS GameInputManager::sRemoveProcessedMoves, GameInputManager::sGetMoveList, GameInputManager::sOnPlayerWelcomed
 
+enum GameInputState
+{
+    GIS_NONE = 0,
+    GIS_ESCAPE,
+    GIS_LOCAL_PLAYER_DROP_OUT_1,
+    GIS_LOCAL_PLAYER_DROP_OUT_2,
+    GIS_LOCAL_PLAYER_DROP_OUT_3,
+    GIS_SERVER_TOGGLE_SERVER_DISPLAY,
+    GIS_TOGGLE_PHYSICS_DISPLAY,
+    GIS_CLIENT_MAIN_TOGGLE_MUSIC,
+    GIS_CLIENT_MAIN_TOGGLE_SOUND
+};
+
 class GameInputManager
 {
 public:

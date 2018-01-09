@@ -179,7 +179,7 @@ bool TitleEngine::handleInput(Engine* engine)
     
     if (TitleInputManager::getInstance()->isLiveMode())
     {
-        if (menuState == MIS_ESCAPE)
+        if (menuState == TIS_ESCAPE)
         {
             TitleInputManager::getInstance()->setLiveInputMode(false);
             
@@ -216,7 +216,7 @@ bool TitleEngine::handleInput(Engine* engine)
     }
     else if (NG_SERVER)
     {
-        if (menuState == MIS_ESCAPE)
+        if (menuState == TIS_ESCAPE)
         {
             disconnect();
             return true;
@@ -224,7 +224,7 @@ bool TitleEngine::handleInput(Engine* engine)
     }
     else
     {
-        if (menuState == MIS_ENTER_STUDIO)
+        if (menuState == TIS_ENTER_STUDIO)
         {
             if (PlatformHelper::getPlatform() != NG_PLATFORM_ANDROID
                 && PlatformHelper::getPlatform() != NG_PLATFORM_IOS)
@@ -233,15 +233,15 @@ bool TitleEngine::handleInput(Engine* engine)
                 return true;
             }
         }
-        else if (menuState == MIS_ACTIVATE_STEAM)
+        else if (menuState == TIS_ACTIVATE_STEAM)
         {
             activateSteam();
         }
-        else if (menuState == MIS_DEACTIVATE_STEAM)
+        else if (menuState == TIS_DEACTIVATE_STEAM)
         {
             deactivateSteam();
         }
-        else if (menuState == MIS_START_SERVER)
+        else if (menuState == TIS_START_SERVER)
         {
             if (_isSteam)
             {
@@ -255,7 +255,7 @@ bool TitleEngine::handleInput(Engine* engine)
                 TitleInputManager::getInstance()->setLiveInputMode(true);
             }
         }
-        else if (menuState == MIS_JOIN_LOCAL_SERVER)
+        else if (menuState == TIS_JOIN_LOCAL_SERVER)
         {
             if (!_isSteam)
             {
@@ -264,7 +264,7 @@ bool TitleEngine::handleInput(Engine* engine)
                 TitleInputManager::getInstance()->setLiveInputMode(true);
             }
         }
-        else if (menuState == MIS_STEAM_REFRESH_LAN_SERVERS)
+        else if (menuState == TIS_STEAM_REFRESH_LAN_SERVERS)
         {
 #ifdef NG_STEAM
             if (NG_STEAM_GAME_SERVICES)
@@ -273,7 +273,7 @@ bool TitleEngine::handleInput(Engine* engine)
             }
 #endif
         }
-        else if (menuState == MIS_STEAM_REFRESH_INTERNET_SERVERS)
+        else if (menuState == TIS_STEAM_REFRESH_INTERNET_SERVERS)
         {
 #ifdef NG_STEAM
             if (NG_STEAM_GAME_SERVICES)
@@ -282,15 +282,15 @@ bool TitleEngine::handleInput(Engine* engine)
             }
 #endif
         }
-        else if (menuState == MIS_STEAM_JOIN_SERVER_1
-                 || menuState == MIS_STEAM_JOIN_SERVER_2
-                 || menuState == MIS_STEAM_JOIN_SERVER_3
-                 || menuState == MIS_STEAM_JOIN_SERVER_4)
+        else if (menuState == TIS_STEAM_JOIN_SERVER_1
+                 || menuState == TIS_STEAM_JOIN_SERVER_2
+                 || menuState == TIS_STEAM_JOIN_SERVER_3
+                 || menuState == TIS_STEAM_JOIN_SERVER_4)
         {
 #ifdef NG_STEAM
             if (NG_STEAM_GAME_SERVICES && !NG_STEAM_GAME_SERVICES->isRequestingServers())
             {
-                int serverIndex = menuState - 7; // eh, hacky I know, but whatever
+                int serverIndex = menuState - TIS_STEAM_JOIN_SERVER_1; // eh, hacky I know, but whatever
                 std::vector<NGSteamGameServer> gameServers = NG_STEAM_GAME_SERVICES->getGameServers();
                 if (gameServers.size() > serverIndex)
                 {
@@ -299,7 +299,7 @@ bool TitleEngine::handleInput(Engine* engine)
             }
 #endif
         }
-        else if (menuState == MIS_ESCAPE)
+        else if (menuState == TIS_ESCAPE)
         {
             engine->setRequestedAction(REQUESTED_ACTION_EXIT);
             return true;
@@ -375,12 +375,6 @@ void TitleEngine::startServer()
     _state = TE_MAIN_MENU_STARTING_SERVER;
     
     Server::create(_isSteam);
-    
-    if (PlatformHelper::getPlatform() == NG_PLATFORM_ANDROID
-        || PlatformHelper::getPlatform() == NG_PLATFORM_IOS)
-    {
-        Server::getInstance()->toggleObjects();
-    }
     
     assert(NG_SERVER);
 }

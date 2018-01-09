@@ -113,7 +113,6 @@ public:
     {
         float stateTime;
         uint8_t state;
-        uint8_t stateFlags;
         b2Vec2 velocity;
         b2Vec2 position;
         float angle;
@@ -123,7 +122,6 @@ public:
         Pose()
         {
             stateTime = 0;
-            stateFlags = 0;
             state = 0;
             velocity = b2Vec2_zero;
             position = b2Vec2_zero;
@@ -137,7 +135,6 @@ public:
             return
             lhs.stateTime         == rhs.stateTime &&
             lhs.state             == rhs.state &&
-            lhs.stateFlags        == rhs.stateFlags &&
             lhs.velocity          == rhs.velocity &&
             lhs.position          == rhs.position &&
             lhs.angle             == rhs.angle &&
@@ -153,9 +150,9 @@ public:
     Pose& getPose();
     
 private:
-    enum ReplicationState
+    enum ReadStateFlag
     {
-        ENTY_Pose = 1 << 0
+        ReadStateFlag_Pose = 1 << 0
     };
     
     EntityDef& _entityDef;
@@ -168,11 +165,12 @@ private:
     b2Fixture* _fixture;
     b2Fixture* _groundSensorFixture;
     
+    /// Network
     Pose _pose;
     Pose _poseCache;
     
     uint16_t _readState;
-    
+    uint8_t _state;
     uint32_t _ID;
     bool _isRequestingDeletion;
     

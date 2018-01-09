@@ -392,7 +392,7 @@ _isRequestingToJoinServer(false)
     if (!Steamworks_InitCEGLibrary())
     {
         LOG("Steamworks_InitCEGLibrary() failed");
-        alert("Fatal Error", "Steam must be running to play this game (InitDrmLibrary() failed).");
+        alert("Warning", "Steam must be running to play this game (InitDrmLibrary() failed).");
         _status = STEAM_INIT_FAIL_DRM;
         return;
     }
@@ -407,7 +407,7 @@ _isRequestingToJoinServer(false)
     if (!SteamAPI_Init())
     {
         LOG("SteamAPI_Init() failed");
-        alert("Fatal Error", "Steam must be running to play this game (SteamAPI_Init() failed).");
+        alert("Warning", "Steam must be running to play this game (SteamAPI_Init() failed).");
         _status = STEAM_INIT_FAIL_API_INIT;
         return;
     }
@@ -421,7 +421,7 @@ _isRequestingToJoinServer(false)
     if (!SteamUser()->BLoggedOn())
     {
         LOG("Steam user is not logged in");
-        alert("Fatal Error", "Steam user must be logged in to play this game (SteamUser()->BLoggedOn() returned false).");
+        alert("Warning", "Steam user must be logged in to play this game (SteamUser()->BLoggedOn() returned false).");
         _status = STEAM_INIT_FAIL_LOGGED_ON;
         return;
     }
@@ -432,7 +432,7 @@ _isRequestingToJoinServer(false)
     if (!SteamController()->Init())
     {
         LOG("SteamController()->Init failed.");
-        alert("Fatal Error", "SteamController()->Init failed.");
+        alert("Warning", "SteamController()->Init failed.");
         _status = STEAM_INIT_FAIL_CONTROLLER_INIT;
         return;
     }

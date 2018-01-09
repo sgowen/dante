@@ -146,7 +146,7 @@ bool StudioEngine::handleInput()
 {
     int menuState = StudioInputManager::getInstance()->getMenuState();
     
-    if (menuState == MIS_ESCAPE)
+    if (menuState == SIS_ESCAPE)
     {
         return true;
     }

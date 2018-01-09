@@ -42,7 +42,7 @@ void StudioInputManager::update()
     KEYBOARD_INPUT_MANAGER->process();
     GAME_PAD_INPUT_MANAGER->process();
     
-    _menuState = MIS_NONE;
+    _menuState = SIS_NONE;
     
     if (_isLiveMode)
     {
@@ -92,7 +92,7 @@ void StudioInputManager::update()
                 {
                     if (keyboardEvent->getKey() == NG_KEY_ESCAPE)
                     {
-                        _menuState = MIS_ESCAPE;
+                        _menuState = SIS_ESCAPE;
                         return;
                     }
                 }
@@ -119,7 +119,7 @@ void StudioInputManager::update()
             switch ((*i)->getKey())
             {
                 case NG_KEY_ESCAPE:
-                    _menuState = MIS_ESCAPE;
+                    _menuState = SIS_ESCAPE;
                     continue;
                 default:
                     continue;
@@ -170,7 +170,7 @@ std::string StudioInputManager::getLiveInput()
 }
 
 StudioInputManager::StudioInputManager() :
-_menuState(MIS_NONE),
+_menuState(SIS_NONE),
 _isLiveMode(false),
 _isTimeToProcessInput(false)
 {

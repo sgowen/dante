@@ -27,9 +27,9 @@ DefaultController::~DefaultController()
     // Empty
 }
 
-void DefaultController::update()
+uint8_t DefaultController::update()
 {
-    // Empty
+    return 0;
 }
 
 bool DefaultController::shouldCollide(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB)

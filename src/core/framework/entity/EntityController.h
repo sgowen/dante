@@ -26,7 +26,7 @@ public:
     EntityController(Entity* inEntity);
     virtual ~EntityController();
     
-    virtual void update() = 0;
+    virtual uint8_t update() = 0;
     virtual bool shouldCollide(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB) = 0;
     virtual void handleBeginContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB) = 0;
     virtual void handleEndContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB) = 0;

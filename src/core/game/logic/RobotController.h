@@ -26,7 +26,7 @@ public:
     RobotController(Entity* inEntity);
     virtual ~RobotController();
     
-    virtual void update();
+    virtual uint8_t update();
     virtual bool shouldCollide(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB);
     virtual void handleBeginContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB);
     virtual void handleEndContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB);
@@ -47,28 +47,28 @@ public:
     bool isSprinting();
     
 private:
-    enum RobotState
+    enum State
     {
-        RobotState_Idle,
-        RobotState_Punching,
-        RobotState_Running,
-        RobotState_Running_Fast,
-        RobotState_Jumping
+        State_Idle,
+        State_Punching,
+        State_Running,
+        State_Running_Fast,
+        State_Jumping
     };
     
-    enum RobotStateFlags
+    enum StateFlags
     {
-        ROBT_MAIN_ACTION = 1 << 0,
-        ROBT_SPRINTING = 1 << 1,
-        ROBT_FIRST_JUMP = 1 << 2,
-        ROBT_FIRST_JUMP_COMPLETED = 1 << 3,
-        ROBT_SECOND_JUMP = 1 << 4
+        StateFlag_MainAction = 1 << 0,
+        StateFlag_Sprinting = 1 << 1,
+        StateFlag_FirstJump = 1 << 2,
+        StateFlag_FirstJumpCompleted = 1 << 3,
+        StateFlag_SecondJump = 1 << 4
     };
     
-    enum RobotReplicationState
+    enum ReadStateFlag
     {
-        ROBT_PlayerInfo = 1 << 1,
-        ROBT_Stats = 1 << 2
+        ReadStateFlag_PlayerInfo = 1 << 1,
+        ReadStateFlag_Stats = 1 << 2
     };
     
     struct PlayerInfo
