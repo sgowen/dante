@@ -128,6 +128,7 @@ void GameEngine::update(Engine* engine)
     NG_STEAM_GAME_SERVICES->update(false);
 #endif
     
+    /// Only for hosts
     if (Server::getInstance())
     {
         Server::getInstance()->update();

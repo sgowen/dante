@@ -78,7 +78,6 @@ void Server::update()
     Timing::getInstance()->updateManual(_stateTime, FRAME_RATE);
     
     NG_SERVER->processIncomingPackets();
-    NG_SERVER->checkForDisconnects();
     
     InstanceManager::getServerWorld()->update();
     

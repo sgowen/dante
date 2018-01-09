@@ -80,10 +80,8 @@ void NetworkManagerServer::sHandleClientDisconnected(ClientProxy* inClientProxy)
 void NetworkManagerServer::processIncomingPackets()
 {
     _serverHelper->processIncomingPackets();
-}
-
-void NetworkManagerServer::checkForDisconnects()
-{
+    
+    /// Check for disconnects
     std::vector<ClientProxy*> clientsToDC;
     
     float minAllowedLastPacketFromClientTime = Timing::getInstance()->getFrameStartTime() - NW_CLIENT_TIMEOUT;

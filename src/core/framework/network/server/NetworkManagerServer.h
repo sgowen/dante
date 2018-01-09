@@ -52,8 +52,6 @@ public:
     
     void processIncomingPackets();
     
-    void checkForDisconnects();
-    
     void sendOutgoingPackets();
     
     void registerEntity(Entity* inEntity);
