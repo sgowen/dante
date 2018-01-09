@@ -9,6 +9,10 @@
 #ifndef __noctisgames__SpriteBatcher__
 #define __noctisgames__SpriteBatcher__
 
+#include <framework/graphics/portable/VertexProgramInput.h>
+
+#include <vector>
+
 class RendererHelper;
 class NGTexture;
 class NGShader;
@@ -30,6 +34,7 @@ public:
 
 private:
     RendererHelper* _rendererHelper;
+    std::vector<TEXTURE_VERTEX> _vertices;
     int _numSprites;
 };
 

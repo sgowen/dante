@@ -15,6 +15,7 @@
 #include "framework/entity/EntityController.h"
 
 #include "framework/util/NGSTDUtil.h"
+#include "framework/util/StringUtil.h"
 #include <framework/file/portable/JsonFile.h>
 
 #include "rapidjson/document.h"
@@ -89,6 +90,14 @@ void EntityMapper::initWithJson(const char* json)
             
             entry->type = key;
             entry->controller = iv["controller"].GetString();
+            const Value& ivv = iv["mappings"];
+            for (Value::ConstMemberIterator ii = ivv.MemberBegin(); ii != ivv.MemberEnd(); ++ii)
+            {
+                std::string name = ii->name.GetString();
+                std::string value = ii->value.GetString();
+                uint8_t index = StringUtil::stringToNumber(name, 0);
+                entry->mappings.insert(std::make_pair(index, value));
+            }
             entry->width = static_cast<float>(iv["width"].GetInt());
             entry->height = static_cast<float>(iv["height"].GetInt());
             entry->restitution = iv["restitution"].GetFloat();

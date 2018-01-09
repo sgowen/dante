@@ -19,7 +19,7 @@
 
 LineBatcher::LineBatcher(RendererHelper* inRendererHelper) : _rendererHelper(inRendererHelper), _numLines(0)
 {
-    // Empty
+    _vertices.reserve(MAX_BATCH_SIZE * VERTICES_PER_RECTANGLE);
 }
 
 LineBatcher::~LineBatcher()
@@ -29,7 +29,8 @@ LineBatcher::~LineBatcher()
 
 void LineBatcher::beginBatch()
 {
-    _rendererHelper->clearColorVertices();
+    _vertices.clear();
+    
     _numLines = 0;
 }
 
@@ -40,8 +41,8 @@ void LineBatcher::renderLine(Line &line, Color &c)
     float eX = line.getEnd().getX();
     float eY = line.getEnd().getY();
     
-    _rendererHelper->addVertexCoordinate(oX, oY, c.red, c.green, c.blue, c.alpha);
-    _rendererHelper->addVertexCoordinate(eX, eY, c.red, c.green, c.blue, c.alpha);
+    _vertices.push_back(COLOR_VERTEX(oX, oY, c.red, c.green, c.blue, c.alpha));
+    _vertices.push_back(COLOR_VERTEX(eX, eY, c.red, c.green, c.blue, c.alpha));
     
     _numLines++;
 }
@@ -50,7 +51,7 @@ void LineBatcher::endBatch(NGShader &shader)
 {
     if (_numLines > 0)
     {
-        shader.bind();
+        shader.bind(&_vertices);
         
         _rendererHelper->draw(NGPrimitiveType_Lines, 0, VERTICES_PER_LINE * _numLines);
         

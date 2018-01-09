@@ -41,11 +41,11 @@ public:
 
     virtual void bindNGShader(ShaderProgramWrapper* shaderProgramWrapper);
 
-    virtual void mapScreenVertices(std::vector<NGShaderVarInput*>& inputLayout);
+    virtual void mapScreenVertices(std::vector<NGShaderVarInput*>& inputLayout, std::vector<SCREEN_VERTEX>& vertices);
     virtual void unmapScreenVertices();
-    virtual void mapTextureVertices(std::vector<NGShaderVarInput*>& inputLayout);
+    virtual void mapTextureVertices(std::vector<NGShaderVarInput*>& inputLayout, std::vector<TEXTURE_VERTEX>& vertices);
     virtual void unmapTextureVertices();
-    virtual void mapColorVertices(std::vector<NGShaderVarInput*>& inputLayout);
+    virtual void mapColorVertices(std::vector<NGShaderVarInput*>& inputLayout, std::vector<COLOR_VERTEX>& vertices);
     virtual void unmapColorVertices();
 
     virtual void draw(NGPrimitiveType renderPrimitiveType, uint32_t first, uint32_t count);

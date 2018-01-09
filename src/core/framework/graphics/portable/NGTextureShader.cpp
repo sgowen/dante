@@ -28,9 +28,10 @@ NGTextureShader::NGTextureShader(RendererHelper& inRendererHelper, const char* v
     _inputLayout.push_back(new NGShaderVarInput("a_TexCoord", 2, 6));
 }
 
-void NGTextureShader::bind(void* data)
+void NGTextureShader::bind(void* vertices, void* data1, void* data2)
 {
-    assert(data != NULL);
+    assert(vertices != NULL);
+    assert(data1 != NULL);
     
     _rendererHelper.bindNGShader(_shaderProgramWrapper);
     
@@ -38,9 +39,10 @@ void NGTextureShader::bind(void* data)
     
     _rendererHelper.bindMatrix(_uniforms[0]);
     
-    _rendererHelper.bindTexture(NGTextureSlot_ZERO, static_cast<NGTexture*>(data), _uniforms[1]);
+    _rendererHelper.bindTexture(NGTextureSlot_ZERO, static_cast<NGTexture*>(data1), _uniforms[1]);
     
-    _rendererHelper.mapTextureVertices(_inputLayout);
+    std::vector<TEXTURE_VERTEX>* textureVertices = static_cast<std::vector<TEXTURE_VERTEX>* >(vertices);
+    _rendererHelper.mapTextureVertices(_inputLayout, *textureVertices);
 }
 
 void NGTextureShader::unbind()

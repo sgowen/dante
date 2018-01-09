@@ -9,6 +9,8 @@
 #ifndef __noctisgames__CircleBatcher__
 #define __noctisgames__CircleBatcher__
 
+#include <framework/graphics/portable/VertexProgramInput.h>
+
 #include <vector>
 
 class RendererHelper;
@@ -31,6 +33,7 @@ public:
     
 private:
     RendererHelper* _rendererHelper;
+    std::vector<COLOR_VERTEX> _vertices;
     std::vector<int> _circles;
     int _numPoints;
     

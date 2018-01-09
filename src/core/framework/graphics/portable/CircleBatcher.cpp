@@ -24,7 +24,7 @@
 
 CircleBatcher::CircleBatcher(RendererHelper* inRendererHelper) : _rendererHelper(inRendererHelper), _numPoints(0)
 {
-    // Empty
+    _vertices.reserve(MAX_BATCH_SIZE * VERTICES_PER_RECTANGLE);
 }
 
 CircleBatcher::~CircleBatcher()
@@ -34,7 +34,7 @@ CircleBatcher::~CircleBatcher()
 
 void CircleBatcher::beginBatch()
 {
-    _rendererHelper->clearColorVertices();
+    _vertices.clear();
     
     _circles.clear();
 }
@@ -85,7 +85,7 @@ void CircleBatcher::renderPartialCircle(Circle &circle, int arcDegrees, Color &c
 
 void CircleBatcher::endBatch(NGShader &shader)
 {
-    shader.bind();
+    shader.bind(&_vertices);
     
     int offset = 0;
     for (std::vector<int>::iterator i = _circles.begin(); i != _circles.end(); ++i)
@@ -100,7 +100,7 @@ void CircleBatcher::endBatch(NGShader &shader)
 
 void CircleBatcher::addVertexCoordinate(float x, float y, float r, float g, float b, float a)
 {
-    _rendererHelper->addVertexCoordinate(x, y, r, g, b, a);
+    _vertices.push_back(COLOR_VERTEX(x, y, r, g, b, a));
     
     ++_numPoints;
 }

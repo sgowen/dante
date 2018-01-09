@@ -25,7 +25,7 @@ public:
     
     virtual ~NGShader();
     
-    virtual void bind(void* data = NULL) = 0;
+    virtual void bind(void* vertices, void* data1 = NULL, void* data2 = NULL) = 0;
     
     virtual void unbind() = 0;
     

@@ -9,6 +9,10 @@
 #ifndef __noctisgames__LineBatcher__
 #define __noctisgames__LineBatcher__
 
+#include <framework/graphics/portable/VertexProgramInput.h>
+
+#include <vector>
+
 class RendererHelper;
 class NGShader;
 class Line;
@@ -28,6 +32,7 @@ public:
     
 private:
     RendererHelper* _rendererHelper;
+    std::vector<COLOR_VERTEX> _vertices;
     int _numLines;
 };
 

@@ -175,19 +175,19 @@ void DirectXRendererHelper::bindNGShader(ShaderProgramWrapper* shaderProgramWrap
     }
 }
 
-void DirectXRendererHelper::mapTextureVertices(std::vector<NGShaderVarInput*>& inputLayout)
+void DirectXRendererHelper::mapScreenVertices(std::vector<NGShaderVarInput*>& inputLayout, std::vector<SCREEN_VERTEX>& vertices)
 {
-    mapVertices(_textureVertexBuffer, _textureVertices);
+    mapVertices(_screenVertexBuffer, vertices);
 }
 
-void DirectXRendererHelper::mapColorVertices(std::vector<NGShaderVarInput*>& inputLayout)
+void DirectXRendererHelper::mapTextureVertices(std::vector<NGShaderVarInput*>& inputLayout, std::vector<TEXTURE_VERTEX>& vertices)
 {
-    mapVertices(_colorVertexBuffer, _colorVertices);
+    mapVertices(_textureVertexBuffer, vertices);
 }
 
-void DirectXRendererHelper::mapScreenVertices(std::vector<NGShaderVarInput*>& inputLayout)
+void DirectXRendererHelper::mapColorVertices(std::vector<NGShaderVarInput*>& inputLayout, std::vector<COLOR_VERTEX>& vertices)
 {
-    mapVertices(_screenVertexBuffer, _screenVertices);
+    mapVertices(_colorVertexBuffer, vertices);
 }
 
 void DirectXRendererHelper::draw(NGPrimitiveType renderPrimitiveType, uint32_t first, uint32_t count)

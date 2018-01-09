@@ -53,35 +53,20 @@ public:
     
     virtual void bindNGShader(ShaderProgramWrapper* shaderProgramWrapper) = 0;
     
-    virtual void mapScreenVertices(std::vector<NGShaderVarInput*>& inputLayout) = 0;
+    virtual void mapScreenVertices(std::vector<NGShaderVarInput*>& inputLayout, std::vector<SCREEN_VERTEX>& vertices) = 0;
     virtual void unmapScreenVertices();
-    virtual void mapTextureVertices(std::vector<NGShaderVarInput*>& inputLayout) = 0;
+    virtual void mapTextureVertices(std::vector<NGShaderVarInput*>& inputLayout, std::vector<TEXTURE_VERTEX>& vertices) = 0;
     virtual void unmapTextureVertices();
-    virtual void mapColorVertices(std::vector<NGShaderVarInput*>& inputLayout) = 0;
+    virtual void mapColorVertices(std::vector<NGShaderVarInput*>& inputLayout, std::vector<COLOR_VERTEX>& vertices) = 0;
     virtual void unmapColorVertices();
     
     virtual void draw(NGPrimitiveType renderPrimitiveType, uint32_t first, uint32_t count) = 0;
     virtual void drawIndexed(NGPrimitiveType renderPrimitiveType, uint32_t first, uint32_t count) = 0;
     
-    void clearTextureVertices();
-    void clearColorVertices();
-    void clearScreenVertices();
-    
-    void addVertexCoordinate(float x, float y, float r, float g, float b, float a, float u, float v);
-    void addVertexCoordinate(float x, float y, float r, float g, float b, float a);
-    void addVertexCoordinate(float x, float y);
-    
-    std::vector<TEXTURE_VERTEX>& getTextureVertices();
-    std::vector<COLOR_VERTEX>& getColorVertices();
-    std::vector<SCREEN_VERTEX>& getScreenVertices();
-    
 protected:
     NGTexture* _framebuffer;
     
     std::vector<TextureWrapper *> _framebuffers;
-    std::vector<TEXTURE_VERTEX> _textureVertices;
-    std::vector<COLOR_VERTEX> _colorVertices;
-    std::vector<SCREEN_VERTEX> _screenVertices;
     std::vector<uint16_t> _indices;
     
     mat4x4 _matrix;

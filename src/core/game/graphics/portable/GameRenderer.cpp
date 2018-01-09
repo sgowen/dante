@@ -86,7 +86,9 @@
 GameRenderer::GameRenderer() : Renderer(),
 _textureManager(new TextureManager("game_assets.cfg")),
 _rendererHelper(RENDERER_HELPER_FACTORY->createRendererHelper()),
-_spriteBatcher(new SpriteBatcher(_rendererHelper)),
+_spriteBatcher1(new SpriteBatcher(_rendererHelper)),
+_spriteBatcher2(new SpriteBatcher(_rendererHelper)),
+_spriteBatcher3(new SpriteBatcher(_rendererHelper)),
 _fillQuadBatcher(new QuadBatcher(_rendererHelper, true)),
 _boundsQuadBatcher(new QuadBatcher(_rendererHelper, false)),
 _lineBatcher(new LineBatcher(_rendererHelper)),
@@ -109,7 +111,9 @@ GameRenderer::~GameRenderer()
     
     delete _textureManager;
     delete _rendererHelper;
-    delete _spriteBatcher;
+    delete _spriteBatcher1;
+    delete _spriteBatcher2;
+    delete _spriteBatcher3;
     delete _fillQuadBatcher;
     delete _boundsQuadBatcher;
     delete _lineBatcher;
@@ -302,82 +306,55 @@ void GameRenderer::renderWorld(int flags)
 
 void GameRenderer::renderEntities(World* world, bool isServer)
 {
-    _spriteBatcher->beginBatch();
+    _spriteBatcher1->beginBatch();
+    _spriteBatcher2->beginBatch();
+    _spriteBatcher3->beginBatch();
     std::vector<Entity*> entities = world->getEntities();
-    for (Entity* go : entities)
+    for (Entity* e : entities)
     {
+        TextureRegion tr = ASSETS->findTextureRegion(e->getMapping(), e->getStateTime());
         Color c = Color::WHITE;
-        if (isServer)
-        {
-            c.alpha = 0.5f;
-        }
         
-        if (go->getEntityDef().type == 'GRND')
+        EntityController* ec = e->getEntityController();
+        if (ec->getRTTI().derivesFrom(RobotController::rtti))
         {
-            TextureRegion tr = ASSETS->findTextureRegion("Map_Ground", go->getStateTime());
+            RobotController* r = static_cast<RobotController*>(ec);
             
-            _spriteBatcher->renderSprite(go->getPosition().x, go->getPosition().y, go->getWidth(), go->getHeight(), go->getAngle(), c, tr, go->isFacingLeft());
+            uint8_t pId = r->getPlayerId();
+            c = pId == 1 ? Color::WHITE : pId == 2 ? Color::RED : pId == 3 ? Color::GREEN : Color::BLUE;
+            
+            if (r->isSprinting())
+            {
+                c.alpha = (rand() % 50) * 0.01f + 0.25f;
+            }
+            
+            if (isServer)
+            {
+                c.alpha /= 2.0f;
+            }
+            
+            _spriteBatcher1->renderSprite(e->getPosition().x, e->getPosition().y, e->getWidth(), e->getHeight(), e->getAngle(), c, tr, e->isFacingLeft());
         }
-        else if (go->getEntityDef().type == 'CRAT')
+        else
         {
-            TextureRegion tr = ASSETS->findTextureRegion("Map_Crate", go->getStateTime());
+            if (isServer)
+            {
+                c.alpha /= 2.0f;
+            }
             
-            _spriteBatcher->renderSprite(go->getPosition().x, go->getPosition().y, go->getWidth(), go->getHeight(), go->getAngle(), c, tr, go->isFacingLeft());
+            _spriteBatcher3->renderSprite(e->getPosition().x, e->getPosition().y, e->getWidth(), e->getHeight(), e->getAngle(), c, tr, e->isFacingLeft());
         }
     }
-    _spriteBatcher->endBatch(_textureManager->getTextures()[3], *_textureNGShader);
-    
-    _spriteBatcher->beginBatch();
-    std::vector<Entity*> players = world->getPlayers();
-    for (Entity* e : players)
-    {
-        RobotController* r = static_cast<RobotController*>(e->getEntityController());
-        
-        Color c = Color::WHITE;
-        static Color Red(1.0f, 0.0f, 0.0f, 1);
-        static Color Green(0.0f, 1.0f, 0.0f, 1);
-        static Color Blue(0.0f, 0.0f, 1.0f, 1);
-        
-        switch (r->getPlayerId())
-        {
-            case 2:
-                c = Red;
-                break;
-            case 3:
-                c = Green;
-                break;
-            case 4:
-                c = Blue;
-                break;
-            default:
-                break;
-        }
-        
-        if (r->isSprinting())
-        {
-            c = Color(c.red, c.green, c.blue, c.alpha);
-            c.alpha = (rand() % 50) * 0.01f + 0.25f;
-        }
-        
-        bool isMoving = e->getVelocity().x < -0.5f || e->getVelocity().x > 0.5f;
-        TextureRegion tr = ASSETS->findTextureRegion(e->isGrounded() && r->getNumJumps() == 0 ? r->isMainAction() ? "Bot_Punching" : !isMoving ? "Bot_Idle" : r->isSprinting() ? "Bot_Running_Fast" : "Bot_Running" : "Bot_Jumping", e->getStateTime());
-        
-        if (isServer)
-        {
-            c.alpha /= 2.0f;
-        }
-        
-        _spriteBatcher->renderSprite(e->getPosition().x, e->getPosition().y, e->getWidth(), e->getHeight(), e->getAngle(), c, tr, e->isFacingLeft());
-    }
-    
-    _spriteBatcher->endBatch(_textureManager->getTextures()[1], *_textureNGShader);
+    _spriteBatcher1->endBatch(_textureManager->getTextures()[1], *_textureNGShader);
+    _spriteBatcher2->endBatch(_textureManager->getTextures()[2], *_textureNGShader);
+    _spriteBatcher3->endBatch(_textureManager->getTextures()[3], *_textureNGShader);
 }
 
 void GameRenderer::renderUI(int flags)
 {
     _rendererHelper->updateMatrix(0, CAM_WIDTH, 0, CAM_HEIGHT);
     
-    _spriteBatcher->beginBatch();
+    _spriteBatcher1->beginBatch();
     
     if (NG_CLIENT->getState() == NCS_Welcomed)
     {
@@ -415,17 +392,6 @@ void GameRenderer::renderUI(int flags)
         {
             bool activePlayerIds[4] = {false};
             
-            int enemyCount = 0;
-            int objectCount = 0;
-            std::vector<Entity*> entities = InstanceManager::getClientWorld()->getEntities();
-            for (Entity* go : entities)
-            {
-                if (go->getEntityDef().type == 'CRAT')
-                {
-                    ++objectCount;
-                }
-            }
-            
             std::vector<Entity*> players = InstanceManager::getClientWorld()->getPlayers();
             for (Entity* entity : players)
             {
@@ -446,9 +412,6 @@ void GameRenderer::renderUI(int flags)
                     renderText(StringUtil::format("%i|%s", (i + 1), "Connect a controller to join...").c_str(), 0.5f, CAM_HEIGHT - ((i + 1) * 0.5f), Color::WHITE);
                 }
             }
-            
-            renderText(StringUtil::format("Enemies: %i", enemyCount).c_str(), 0.5f, CAM_HEIGHT - 4.0f, Color::WHITE, FONT_ALIGN_LEFT);
-            renderText(StringUtil::format("Objects: %i", objectCount).c_str(), 0.5f, CAM_HEIGHT - 4.5f, Color::WHITE, FONT_ALIGN_LEFT);
         }
     }
     else
@@ -456,7 +419,7 @@ void GameRenderer::renderUI(int flags)
         renderText(StringUtil::format("%s, 'ESC' to exit", "Joining Server...").c_str(), 0.5f, CAM_HEIGHT - 3.5f, Color::WHITE, FONT_ALIGN_LEFT);
     }
     
-    _spriteBatcher->endBatch(_textureManager->getTextures()[0], *_textureNGShader);
+    _spriteBatcher1->endBatch(_textureManager->getTextures()[0], *_textureNGShader);
 }
 
 void GameRenderer::renderText(const char* inStr, float x, float y, const Color& inColor, int justification)
@@ -467,7 +430,7 @@ void GameRenderer::renderText(const char* inStr, float x, float y, const Color& 
     
     std::string text(inStr);
     
-    _font->renderText(*_spriteBatcher, text, x, y, fgWidth, fgHeight, fontColor, justification);
+    _font->renderText(*_spriteBatcher1, text, x, y, fgWidth, fgHeight, fontColor, justification);
 }
 
 void GameRenderer::endFrame()
@@ -477,13 +440,14 @@ void GameRenderer::endFrame()
     _rendererHelper->bindToScreenFramebuffer();
     _rendererHelper->clearFramebufferWithColor(0, 0, 0, 1);
     
-    _rendererHelper->clearScreenVertices();
-    _rendererHelper->addVertexCoordinate(-1, -1);
-    _rendererHelper->addVertexCoordinate(-1, 1);
-    _rendererHelper->addVertexCoordinate(1, 1);
-    _rendererHelper->addVertexCoordinate(1, -1);
+    static std::vector<SCREEN_VERTEX> screenVertices;
+    screenVertices.clear();
+    screenVertices.push_back(SCREEN_VERTEX(-1, -1));
+    screenVertices.push_back(SCREEN_VERTEX(-1, 1));
+    screenVertices.push_back(SCREEN_VERTEX(1, 1));
+    screenVertices.push_back(SCREEN_VERTEX(1, -1));
     
-    _framebufferToScreenNGShader->bind(_rendererHelper->getFramebuffer(_framebufferIndex));
+    _framebufferToScreenNGShader->bind(&screenVertices, _rendererHelper->getFramebuffer(_framebufferIndex));
     _rendererHelper->drawIndexed(NGPrimitiveType_Triangles, 0, INDICES_PER_RECTANGLE);
     _framebufferToScreenNGShader->unbind();
 }

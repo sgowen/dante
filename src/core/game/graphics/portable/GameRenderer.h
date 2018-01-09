@@ -47,7 +47,9 @@ public:
 private:
     TextureManager* _textureManager;
     RendererHelper* _rendererHelper;
-    SpriteBatcher* _spriteBatcher;
+    SpriteBatcher* _spriteBatcher1;
+    SpriteBatcher* _spriteBatcher2;
+    SpriteBatcher* _spriteBatcher3;
     QuadBatcher* _fillQuadBatcher;
     QuadBatcher* _boundsQuadBatcher;
     LineBatcher* _lineBatcher;

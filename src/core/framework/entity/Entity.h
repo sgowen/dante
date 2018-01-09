@@ -18,6 +18,7 @@
 #include "framework/util/NGRTTI.h"
 
 #include <stdint.h>
+#include <map>
 
 class b2World;
 struct b2Vec2;
@@ -33,6 +34,7 @@ struct EntityDef
 {
     uint32_t type;
     std::string controller;
+    std::map<uint8_t, std::string> mappings;
     float width;
     float height;
     float restitution;
@@ -103,7 +105,7 @@ public:
     bool isRequestingDeletion();
     bool isServer();
     bool isFacingLeft();
-    uint8_t getState();
+    std::string& getMapping();
     
     struct Pose
     {

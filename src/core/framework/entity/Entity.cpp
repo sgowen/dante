@@ -390,9 +390,16 @@ bool Entity::isFacingLeft()
     return _pose.isFacingLeft;
 }
 
-uint8_t Entity::getState()
+std::string& Entity::getMapping()
 {
-    return _pose.state;
+    std::map<uint8_t, std::string>& mappings = _entityDef.mappings;
+    auto q = mappings.find(_pose.state);
+    
+    assert(q != mappings.end());
+    
+    std::string& mapping = q->second;
+    
+    return mapping;
 }
 
 Entity::Pose& Entity::getPose()

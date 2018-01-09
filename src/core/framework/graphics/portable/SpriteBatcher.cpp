@@ -22,7 +22,7 @@
 
 SpriteBatcher::SpriteBatcher(RendererHelper* inRendererHelper) : _rendererHelper(inRendererHelper), _numSprites(0)
 {
-    // Empty
+    _vertices.reserve(MAX_BATCH_SIZE * VERTICES_PER_RECTANGLE);
 }
 
 SpriteBatcher::~SpriteBatcher()
@@ -32,7 +32,7 @@ SpriteBatcher::~SpriteBatcher()
 
 void SpriteBatcher::beginBatch()
 {
-    _rendererHelper->clearTextureVertices();
+    _vertices.clear();
     
     _numSprites = 0;
 }
@@ -122,19 +122,19 @@ void SpriteBatcher::renderSprite(float x, float y, float width, float height, fl
         uFinal[3] = tr._u2;
     }
     
-    _rendererHelper->addVertexCoordinate(xFinal[0], yFinal[0], c.red, c.green, c.blue, c.alpha, uFinal[0], tr._v2);
-    _rendererHelper->addVertexCoordinate(xFinal[1], yFinal[1], c.red, c.green, c.blue, c.alpha, uFinal[1], tr._v1);
-    _rendererHelper->addVertexCoordinate(xFinal[2], yFinal[2], c.red, c.green, c.blue, c.alpha, uFinal[2], tr._v1);
-    _rendererHelper->addVertexCoordinate(xFinal[3], yFinal[3], c.red, c.green, c.blue, c.alpha, uFinal[3], tr._v2);
+    _vertices.push_back(TEXTURE_VERTEX(xFinal[0], yFinal[0], c.red, c.green, c.blue, c.alpha, uFinal[0], tr._v2));
+    _vertices.push_back(TEXTURE_VERTEX(xFinal[1], yFinal[1], c.red, c.green, c.blue, c.alpha, uFinal[1], tr._v1));
+    _vertices.push_back(TEXTURE_VERTEX(xFinal[2], yFinal[2], c.red, c.green, c.blue, c.alpha, uFinal[2], tr._v1));
+    _vertices.push_back(TEXTURE_VERTEX(xFinal[3], yFinal[3], c.red, c.green, c.blue, c.alpha, uFinal[3], tr._v2));
     
-    _numSprites++;
+    ++_numSprites;
 }
 
 void SpriteBatcher::endBatch(NGTexture* texture, NGShader& shader)
 {
     if (_numSprites > 0)
     {
-        shader.bind(texture);
+        shader.bind(&_vertices, texture);
         
         _rendererHelper->drawIndexed(NGPrimitiveType_Triangles, 0, _numSprites * INDICES_PER_RECTANGLE);
         

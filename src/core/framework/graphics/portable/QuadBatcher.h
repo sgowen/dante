@@ -9,6 +9,10 @@
 #ifndef __noctisgames__QuadBatcher__
 #define __noctisgames__QuadBatcher__
 
+#include <framework/graphics/portable/VertexProgramInput.h>
+
+#include <vector>
+
 class RendererHelper;
 class NGShader;
 class NGRect;
@@ -32,6 +36,7 @@ public:
     
 private:
     RendererHelper* _rendererHelper;
+    std::vector<COLOR_VERTEX> _vertices;
     bool _isFill;
     int _numQuads;
 };

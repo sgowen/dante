@@ -15,6 +15,8 @@ public:
     static Color WHITE;
     static Color BLACK;
     static Color RED;
+    static Color GREEN;
+    static Color BLUE;
     static Color DARK_RED;
     
     float red;
