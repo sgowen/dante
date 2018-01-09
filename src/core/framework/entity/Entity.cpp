@@ -90,12 +90,12 @@ void Entity::update()
         _pose.stateTime += FRAME_RATE;
     }
     
-    _controller->update();
-    
     if (getPosition().y < -5)
     {
         requestDeletion();
     }
+    
+    _controller->update();
     
     updatePoseFromBody();
     
@@ -392,12 +392,19 @@ bool Entity::isFacingLeft()
 
 std::string& Entity::getMapping()
 {
-    std::map<uint8_t, std::string>& mappings = _entityDef.mappings;
-    auto q = mappings.find(_pose.state);
+    std::map<std::string, std::string>& mappings = _entityDef.mappings;
+    std::map<uint8_t, std::string>& stateMappings = _controller->getStateMappings();
+    auto q = stateMappings.find(_pose.state);
     
-    assert(q != mappings.end());
+    assert(q != stateMappings.end());
     
-    std::string& mapping = q->second;
+    std::string& key = q->second;
+    
+    auto q2 = mappings.find(key);
+    
+    assert(q2 != mappings.end());
+    
+    std::string& mapping = q2->second;
     
     return mapping;
 }

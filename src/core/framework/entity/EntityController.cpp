@@ -21,3 +21,8 @@ EntityController::~EntityController()
 {
     // Empty
 }
+
+std::map<uint8_t, std::string>& EntityController::getStateMappings()
+{
+    return _stateMappings;
+}

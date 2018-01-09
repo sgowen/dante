@@ -24,8 +24,7 @@ Box2DDebugRenderer::Box2DDebugRenderer(QuadBatcher& fillQuadBatcher, QuadBatcher
 _fillQuadBatcher(fillQuadBatcher),
 _boundsQuadBatcher(boundsQuadBatcher),
 _lineBatcher(lineBatcher),
-_circleBatcher(circleBatcher),
-_world(NULL)
+_circleBatcher(circleBatcher)
 {
     // Empty
 }
@@ -84,29 +83,22 @@ void Box2DDebugRenderer::DrawPoint(const b2Vec2& p, float32 size, const b2Color&
     // TODO
 }
 
-void Box2DDebugRenderer::render(NGShader& shaderProgram)
+void Box2DDebugRenderer::render(b2World* world, NGShader& shaderProgram)
 {
-    if (!_world)
-    {
-        return;
-    }
+    assert(world);
+    
+    world->SetDebugDraw(this);
+    AppendFlags(e_shapeBit);
     
     _boundsQuadBatcher.beginBatch();
     _fillQuadBatcher.beginBatch();
     _lineBatcher.beginBatch();
     _circleBatcher.beginBatch();
     
-    _world->DrawDebugData();
+    world->DrawDebugData();
     
     _boundsQuadBatcher.endBatch(shaderProgram);
     _fillQuadBatcher.endBatch(shaderProgram);
     _lineBatcher.endBatch(shaderProgram);
     _circleBatcher.endBatch(shaderProgram);
-}
-
-void Box2DDebugRenderer::setWorld(b2World* world)
-{
-    _world = world;
-    _world->SetDebugDraw(this);
-    AppendFlags(e_shapeBit);
 }

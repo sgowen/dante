@@ -32,7 +32,7 @@
 #define MIS_SERVER_TOGGLE_ENEMIES 16
 #define MIS_SERVER_TOGGLE_OBJECTS 17
 #define MIS_SERVER_TOGGLE_SERVER_DISPLAY 18
-#define MIS_SERVER_TOGGLE_PHYSICS_DISPLAY 19
+#define MIS_TOGGLE_PHYSICS_DISPLAY 19
 #define MIS_CLIENT_MAIN_TOGGLE_MUSIC 20
 #define MIS_CLIENT_MAIN_TOGGLE_SOUND 21
 
@@ -77,9 +77,9 @@ public:
     
     MainInputState();
     
-    virtual bool write(OutputMemoryBitStream& inOutputStream) const;
+    virtual void write(OutputMemoryBitStream& inOutputStream) const;
     
-    virtual bool read(InputMemoryBitStream& inInputStream);
+    virtual void read(InputMemoryBitStream& inInputStream);
     
     virtual void reset();
     

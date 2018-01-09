@@ -32,6 +32,10 @@ NGSteamPacketHandler::~NGSteamPacketHandler()
 
 void NGSteamPacketHandler::sendPacket(const OutputMemoryBitStream& inOutputStream, MachineAddress* inFromAddress)
 {
+#ifdef NG_LOG
+    LOG("Outgoing packet Bit Length: %d \n", inOutputStream.getBitLength());
+#endif
+    
     NGSteamAddress* inFromSteamAddress = static_cast<NGSteamAddress*>(inFromAddress);
     
     ISteamNetworking* steamNetworking = _isServer ? SteamGameServerNetworking() : SteamNetworking();

@@ -33,18 +33,18 @@ Move::~Move()
     // Empty
 }
 
-bool Move::write(OutputMemoryBitStream& inOutputStream) const
+void Move::write(OutputMemoryBitStream& inOutputStream) const
 {
     inOutputStream.write(_timestamp);
     
-    return _inputState->write(inOutputStream);
+    _inputState->write(inOutputStream);
 }
 
-bool Move::read(InputMemoryBitStream& inInputStream)
+void Move::read(InputMemoryBitStream& inInputStream)
 {
     inInputStream.read(_timestamp);
     
-    return _inputState->read(inInputStream);
+    _inputState->read(inInputStream);
 }
 
 bool Move::isEqual(const Move* inMove) const

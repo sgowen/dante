@@ -222,16 +222,17 @@ bool GameEngine::handleNonMoveInput()
         {
             Server::getInstance()->toggleDisplaying();
         }
-        else if (menuState == MIS_SERVER_TOGGLE_PHYSICS_DISPLAY)
+    }
+    
+    if (menuState == MIS_TOGGLE_PHYSICS_DISPLAY)
+    {
+        if (isFlagSet(_state, GE_DISPLAY_BOX_2D))
         {
-            if (isFlagSet(_state, GE_DISPLAY_BOX_2D))
-            {
-                removeFlag(_state, GE_DISPLAY_BOX_2D);
-            }
-            else
-            {
-                setFlag(_state, GE_DISPLAY_BOX_2D);
-            }
+            removeFlag(_state, GE_DISPLAY_BOX_2D);
+        }
+        else
+        {
+            setFlag(_state, GE_DISPLAY_BOX_2D);
         }
     }
     

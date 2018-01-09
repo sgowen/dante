@@ -86,9 +86,6 @@
 GameRenderer::GameRenderer() : Renderer(),
 _textureManager(new TextureManager("game_assets.cfg")),
 _rendererHelper(RENDERER_HELPER_FACTORY->createRendererHelper()),
-_spriteBatcher1(new SpriteBatcher(_rendererHelper)),
-_spriteBatcher2(new SpriteBatcher(_rendererHelper)),
-_spriteBatcher3(new SpriteBatcher(_rendererHelper)),
 _fillQuadBatcher(new QuadBatcher(_rendererHelper, true)),
 _boundsQuadBatcher(new QuadBatcher(_rendererHelper, false)),
 _lineBatcher(new LineBatcher(_rendererHelper)),
@@ -102,7 +99,10 @@ _font(new Font("texture_001.ngt", 0, 0, 16, 64, 75, TEXTURE_SIZE_1024)),
 _camBounds(new NGRect(0, 0, CAM_WIDTH, CAM_HEIGHT)),
 _framebufferIndex(0)
 {
-    // Empty
+    for (int i = 0; i < NUM_SPRITE_BATCHERS; ++i)
+    {
+        _spriteBatchers[i] = new SpriteBatcher(_rendererHelper);
+    }
 }
 
 GameRenderer::~GameRenderer()
@@ -111,9 +111,10 @@ GameRenderer::~GameRenderer()
     
     delete _textureManager;
     delete _rendererHelper;
-    delete _spriteBatcher1;
-    delete _spriteBatcher2;
-    delete _spriteBatcher3;
+    for (int i = 0; i < NUM_SPRITE_BATCHERS; ++i)
+    {
+        delete _spriteBatchers[i];
+    }
     delete _fillQuadBatcher;
     delete _boundsQuadBatcher;
     delete _lineBatcher;
@@ -293,68 +294,53 @@ void GameRenderer::renderWorld(int flags)
     
     if (isFlagSet(flags, GE_DISPLAY_BOX_2D))
     {
-        _box2DDebugRenderer->setWorld(&InstanceManager::getClientWorld()->getWorld());
-        _box2DDebugRenderer->render(*_colorNGShader);
+        _box2DDebugRenderer->render(&InstanceManager::getClientWorld()->getWorld(), *_colorNGShader);
         
         if (Server::getInstance() && Server::getInstance()->isDisplaying())
         {
-            _box2DDebugRenderer->setWorld(&InstanceManager::getServerWorld()->getWorld());
-            _box2DDebugRenderer->render(*_colorNGShader);
+            _box2DDebugRenderer->render(&InstanceManager::getServerWorld()->getWorld(), *_colorNGShader);
         }
     }
 }
 
 void GameRenderer::renderEntities(World* world, bool isServer)
 {
-    _spriteBatcher1->beginBatch();
-    _spriteBatcher2->beginBatch();
-    _spriteBatcher3->beginBatch();
+    for (int i = 0; i < NUM_SPRITE_BATCHERS; ++i)
+    {
+        _spriteBatchers[i]->beginBatch();
+    }
+    
+    std::string textures[NUM_SPRITE_BATCHERS];
+    
     std::vector<Entity*> entities = world->getEntities();
     for (Entity* e : entities)
     {
         TextureRegion tr = ASSETS->findTextureRegion(e->getMapping(), e->getStateTime());
-        Color c = Color::WHITE;
         
-        EntityController* ec = e->getEntityController();
-        if (ec->getRTTI().derivesFrom(RobotController::rtti))
+        Color c = Color::WHITE;
+        if (isServer)
         {
-            RobotController* r = static_cast<RobotController*>(ec);
-            
-            uint8_t pId = r->getPlayerId();
-            c = pId == 1 ? Color::WHITE : pId == 2 ? Color::RED : pId == 3 ? Color::GREEN : Color::BLUE;
-            
-            if (r->isSprinting())
-            {
-                c.alpha = (rand() % 50) * 0.01f + 0.25f;
-            }
-            
-            if (isServer)
-            {
-                c.alpha /= 2.0f;
-            }
-            
-            _spriteBatcher1->renderSprite(e->getPosition().x, e->getPosition().y, e->getWidth(), e->getHeight(), e->getAngle(), c, tr, e->isFacingLeft());
+            c.alpha /= 2.0f;
         }
-        else
+        
+        _spriteBatchers[e->getEntityDef().layer]->renderSprite(e->getPosition().x, e->getPosition().y, e->getWidth(), e->getHeight(), e->getAngle(), c, tr, e->isFacingLeft());
+        textures[e->getEntityDef().layer] = tr.getTextureName();
+    }
+    
+    for (int i = 0; i < NUM_SPRITE_BATCHERS; ++i)
+    {
+        if (textures[i].length() > 0)
         {
-            if (isServer)
-            {
-                c.alpha /= 2.0f;
-            }
-            
-            _spriteBatcher3->renderSprite(e->getPosition().x, e->getPosition().y, e->getWidth(), e->getHeight(), e->getAngle(), c, tr, e->isFacingLeft());
+            _spriteBatchers[i]->endBatch(_textureManager->getTextureWithName(textures[i]), *_textureNGShader);
         }
     }
-    _spriteBatcher1->endBatch(_textureManager->getTextures()[1], *_textureNGShader);
-    _spriteBatcher2->endBatch(_textureManager->getTextures()[2], *_textureNGShader);
-    _spriteBatcher3->endBatch(_textureManager->getTextures()[3], *_textureNGShader);
 }
 
 void GameRenderer::renderUI(int flags)
 {
     _rendererHelper->updateMatrix(0, CAM_WIDTH, 0, CAM_HEIGHT);
     
-    _spriteBatcher1->beginBatch();
+    _spriteBatchers[0]->beginBatch();
     
     if (NG_CLIENT->getState() == NCS_Welcomed)
     {
@@ -385,8 +371,9 @@ void GameRenderer::renderUI(int flags)
         {
             renderText(StringUtil::format("'O'     Objects %s", Server::getInstance()->isSpawningObjects() ? " ON" : "OFF").c_str(), CAM_WIDTH - 0.5f, CAM_HEIGHT - (row++ * padding), Color::WHITE, FONT_ALIGN_RIGHT);
             renderText(StringUtil::format("'I'       DEBUG %s", Server::getInstance()->isDisplaying() ? " ON" : "OFF").c_str(), CAM_WIDTH - 0.5f, CAM_HEIGHT - (row++ * padding), Color::WHITE, FONT_ALIGN_RIGHT);
-            renderText(StringUtil::format("'P' BOX2D DEBUG %s", isFlagSet(flags, GE_DISPLAY_BOX_2D) ? " ON" : "OFF").c_str(), CAM_WIDTH - 0.5f, CAM_HEIGHT - (row++ * padding), Color::WHITE, FONT_ALIGN_RIGHT);
         }
+        
+        renderText(StringUtil::format("'P' BOX2D DEBUG %s", isFlagSet(flags, GE_DISPLAY_BOX_2D) ? " ON" : "OFF").c_str(), CAM_WIDTH - 0.5f, CAM_HEIGHT - (row++ * padding), Color::WHITE, FONT_ALIGN_RIGHT);
         
         if (InstanceManager::getClientWorld())
         {
@@ -419,7 +406,7 @@ void GameRenderer::renderUI(int flags)
         renderText(StringUtil::format("%s, 'ESC' to exit", "Joining Server...").c_str(), 0.5f, CAM_HEIGHT - 3.5f, Color::WHITE, FONT_ALIGN_LEFT);
     }
     
-    _spriteBatcher1->endBatch(_textureManager->getTextures()[0], *_textureNGShader);
+    _spriteBatchers[0]->endBatch(_textureManager->getTextures()[0], *_textureNGShader);
 }
 
 void GameRenderer::renderText(const char* inStr, float x, float y, const Color& inColor, int justification)
@@ -430,7 +417,7 @@ void GameRenderer::renderText(const char* inStr, float x, float y, const Color& 
     
     std::string text(inStr);
     
-    _font->renderText(*_spriteBatcher1, text, x, y, fgWidth, fgHeight, fontColor, justification);
+    _font->renderText(*_spriteBatchers[0], text, x, y, fgWidth, fgHeight, fontColor, justification);
 }
 
 void GameRenderer::endFrame()

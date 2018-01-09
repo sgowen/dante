@@ -24,32 +24,21 @@ MainInputState::MainInputState() : InputState()
     // Empty
 }
 
-bool MainInputState::write(OutputMemoryBitStream& inOutputStream) const
+void MainInputState::write(OutputMemoryBitStream& inOutputStream) const
 {
-    bool ret = false;
-    
     for (int i = 0; i < MAX_NUM_PLAYERS_PER_SERVER; ++i)
     {
-        if (_gameMainInputStates[i]._playerId != INPUT_UNASSIGNED)
+        bool playerId = _gameMainInputStates[i]._playerId != INPUT_UNASSIGNED;
+        inOutputStream.write(playerId);
+        if (playerId)
         {
-            inOutputStream.write(true);
             _gameMainInputStates[i].write(inOutputStream);
-            
-            ret = true;
-        }
-        else
-        {
-            inOutputStream.write(false);
         }
     }
-    
-    return ret;
 }
 
-bool MainInputState::read(InputMemoryBitStream& inInputStream)
+void MainInputState::read(InputMemoryBitStream& inInputStream)
 {
-    bool ret = false;
-    
     bool isInputAssignedBit;
     
     for (int i = 0; i < MAX_NUM_PLAYERS_PER_SERVER; ++i)
@@ -58,12 +47,8 @@ bool MainInputState::read(InputMemoryBitStream& inInputStream)
         if (isInputAssignedBit)
         {
             _gameMainInputStates[i].read(inInputStream);
-            
-            ret = true;
         }
     }
-    
-    return ret;
 }
 
 void MainInputState::reset()

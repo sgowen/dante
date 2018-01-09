@@ -384,19 +384,10 @@ void NetworkManagerServer::sendStatePacketToClient(ClientProxy* inClientProxy)
     
     //it's state!
     statePacket.write(static_cast<uint8_t>(NW_PACKET_TYPE_STATE));
-#ifdef NG_LOG
-    LOG("Outgoing statePacket Bit Length 1: %d \n", statePacket.getBitLength());
-#endif
     
     InFlightPacket* ifp = inClientProxy->getDeliveryNotificationManager().writeState(statePacket);
-#ifdef NG_LOG
-    LOG("Outgoing statePacket Bit Length 2: %d \n", statePacket.getBitLength());
-#endif
     
     writeLastMoveTimestampIfDirty(statePacket, inClientProxy);
-#ifdef NG_LOG
-    LOG("Outgoing statePacket Bit Length 3: %d \n", statePacket.getBitLength());
-#endif
     
     ReplicationManagerTransmissionData* rmtd = _replicationManagerTransmissionDatas.obtain();
     rmtd->reset(&inClientProxy->getReplicationManagerServer(), &_replicationManagerTransmissionDatas);
@@ -410,9 +401,6 @@ void NetworkManagerServer::sendStatePacketToClient(ClientProxy* inClientProxy)
     }
     
     ifp->setTransmissionData('RPLM', rmtd);
-#ifdef NG_LOG
-    LOG("Outgoing statePacket Bit Length F: %d \n", statePacket.getBitLength());
-#endif
     
     sendPacket(statePacket, inClientProxy->getMachineAddress());
 }

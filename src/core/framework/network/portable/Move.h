@@ -24,9 +24,9 @@ public:
     
     ~Move();
     
-    bool write(OutputMemoryBitStream& inOutputStream) const;
+    void write(OutputMemoryBitStream& inOutputStream) const;
     
-    bool read(InputMemoryBitStream& inInputStream);
+    void read(InputMemoryBitStream& inInputStream);
     
     bool isEqual(const Move* inMove) const;
     

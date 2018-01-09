@@ -84,8 +84,6 @@ void Server::update()
     
     spawnCratesIfNecessary();
     
-    clearClientMoves();
-    
     NG_SERVER->sendOutgoingPackets();
     
 #ifdef NG_STEAM
@@ -171,12 +169,12 @@ void Server::spawnGroundsIfNecessary()
         return;
     }
     
-    for (int i = 0; i < 3; ++i)
+    for (int i = 0; i < 4; ++i)
     {
         Entity* entity = SERVER_ENTITY_MGR->createEntity('GRND');
-        int xSeed = rand() % 5 + 1;
-        float posX = i == 0 ? GAME_WIDTH / 2 : xSeed * GAME_WIDTH / 3;
-        entity->setPosition(b2Vec2(posX, 2));
+        float posX = i * GAME_WIDTH / 2;
+        float posY = 2;
+        entity->setPosition(b2Vec2(posX, posY));
     }
     
     _hasSpawnedGrounds = true;
@@ -210,28 +208,15 @@ void Server::spawnCratesIfNecessary()
     
     srand(static_cast<unsigned>(time(0)));
     
-    for (uint32_t i = 0; i < 4; ++i)
+    for (uint32_t i = 0; i < 35; ++i)
     {
         Entity* entity = SERVER_ENTITY_MGR->createEntity('CRAT');
         
-        int xSeed = rand() % 3 + 1;
-        float posX = xSeed * GAME_WIDTH / 4;
+        int xSeed = rand() % 5 + 1;
+        float posX = xSeed * GAME_WIDTH / 2;
         float posY = (rand() % static_cast<int>(GAME_HEIGHT - entity->getHeight() * 2)) + (2.0f + entity->getHeight() * 2);
         
         entity->setPosition(b2Vec2(posX, posY));
-    }
-}
-
-void Server::clearClientMoves()
-{
-    for (uint8_t i = 0; i < MAX_NUM_PLAYERS_PER_SERVER; ++i)
-    {
-        ClientProxy* client = NG_SERVER->getClientProxy(i + 1);
-        if (client)
-        {
-            MoveList& moveList = client->getUnprocessedMoveList();
-            moveList.removeProcessedMoves(client->getUnprocessedMoveList().getLastProcessedMoveTimestamp());
-        }
     }
 }
 

@@ -96,7 +96,7 @@ void GameInputManager::update()
                 _menuState = (*i)->isUp() ? MIS_SERVER_TOGGLE_SERVER_DISPLAY : _menuState;
                 continue;
             case NG_KEY_P:
-                _menuState = (*i)->isUp() ? MIS_SERVER_TOGGLE_PHYSICS_DISPLAY : _menuState;
+                _menuState = (*i)->isUp() ? MIS_TOGGLE_PHYSICS_DISPLAY : _menuState;
                 continue;
             case NG_KEY_ESCAPE:
                 _menuState = (*i)->isUp() ? MIS_ESCAPE : _menuState;
@@ -122,25 +122,47 @@ void GameInputManager::update()
                         _currentState->getGameInputState(0)._isMainAction = (*i)->isDown();
                         continue;
 #ifdef _DEBUG
-                    // Player 2, Debug Only
-                    case NG_KEY_ARROW_UP:
+                    // Add local players, debug Only
+                    case NG_KEY_TWO:
                         _currentState->getGameInputState(1)._isJumping = (*i)->isDown();
+                        continue;
+                    case NG_KEY_THREE:
+                        _currentState->getGameInputState(2)._isJumping = (*i)->isDown();
+                        continue;
+                    case NG_KEY_FOUR:
+                        _currentState->getGameInputState(3)._isJumping = (*i)->isDown();
                         continue;
                     case NG_KEY_ARROW_LEFT:
                         _currentState->getGameInputState(1)._isMovingLeft = (*i)->isDown();
+                        _currentState->getGameInputState(2)._isMovingLeft = (*i)->isDown();
+                        _currentState->getGameInputState(3)._isMovingLeft = (*i)->isDown();
                         continue;
                     case NG_KEY_ARROW_RIGHT:
                         _currentState->getGameInputState(1)._isMovingRight = (*i)->isDown();
+                        _currentState->getGameInputState(2)._isMovingRight = (*i)->isDown();
+                        _currentState->getGameInputState(3)._isMovingRight = (*i)->isDown();
                         continue;
                     case NG_KEY_COMMA:
                         _currentState->getGameInputState(1)._isSprinting = (*i)->isDown();
+                        _currentState->getGameInputState(2)._isSprinting = (*i)->isDown();
+                        _currentState->getGameInputState(3)._isSprinting = (*i)->isDown();
                         continue;
                     case NG_KEY_PERIOD:
                         _currentState->getGameInputState(1)._isMainAction = (*i)->isDown();
+                        _currentState->getGameInputState(2)._isMainAction = (*i)->isDown();
+                        _currentState->getGameInputState(3)._isMainAction = (*i)->isDown();
                         continue;
-                    case NG_KEY_CARRIAGE_RETURN:
+                    case NG_KEY_SEVEN:
                         _currentState->getGameInputState(1)._playerId = INPUT_UNASSIGNED;
                         _menuState = (*i)->isDown() ? MIS_LOCAL_PLAYER_DROP_OUT_1 : MIS_NONE;
+                        continue;
+                    case NG_KEY_EIGHT:
+                        _currentState->getGameInputState(2)._playerId = INPUT_UNASSIGNED;
+                        _menuState = (*i)->isDown() ? MIS_LOCAL_PLAYER_DROP_OUT_2 : MIS_NONE;
+                        continue;
+                    case NG_KEY_NINE:
+                        _currentState->getGameInputState(3)._playerId = INPUT_UNASSIGNED;
+                        _menuState = (*i)->isDown() ? MIS_LOCAL_PLAYER_DROP_OUT_3 : MIS_NONE;
                         continue;
 #endif
                     default:

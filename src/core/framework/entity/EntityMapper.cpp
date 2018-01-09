@@ -95,14 +95,14 @@ void EntityMapper::initWithJson(const char* json)
             {
                 std::string name = ii->name.GetString();
                 std::string value = ii->value.GetString();
-                uint8_t index = StringUtil::stringToNumber(name, 0);
-                entry->mappings.insert(std::make_pair(index, value));
+                entry->mappings.insert(std::make_pair(name, value));
             }
             entry->width = static_cast<float>(iv["width"].GetInt());
             entry->height = static_cast<float>(iv["height"].GetInt());
             entry->restitution = iv["restitution"].GetFloat();
             entry->density = iv["density"].GetFloat();
             entry->friction = iv["friction"].GetFloat();
+            entry->layer = iv["layer"].GetInt();
             entry->staticBody = iv["staticBody"].GetBool();
             entry->fixedRotation = iv["fixedRotation"].GetBool();
             entry->bullet = iv["bullet"].GetBool();

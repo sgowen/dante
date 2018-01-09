@@ -230,6 +230,16 @@ void World::update()
                     }
                 }
             }
+            
+            for (uint8_t i = 0; i < MAX_NUM_PLAYERS_PER_SERVER; ++i)
+            {
+                ClientProxy* client = NG_SERVER->getClientProxy(i + 1);
+                if (client)
+                {
+                    MoveList& moveList = client->getUnprocessedMoveList();
+                    moveList.removeProcessedMoves(client->getUnprocessedMoveList().getLastProcessedMoveTimestamp());
+                }
+            }
         }
     }
     else

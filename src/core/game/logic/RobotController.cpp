@@ -52,7 +52,11 @@ _playerInfoCache(_playerInfo),
 _stats(),
 _statsCache(_stats)
 {
-    // Empty
+    _stateMappings.insert(std::make_pair(0, "Idle"));
+    _stateMappings.insert(std::make_pair(1, "Punching"));
+    _stateMappings.insert(std::make_pair(2, "Running"));
+    _stateMappings.insert(std::make_pair(3, "Sprinting"));
+    _stateMappings.insert(std::make_pair(4, "Jumping"));
 }
 
 RobotController::~RobotController()

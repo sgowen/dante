@@ -32,6 +32,8 @@ class Box2DDebugRenderer;
 class Font;
 class World;
 
+#define NUM_SPRITE_BATCHERS 8
+
 class GameRenderer : public Renderer
 {
 public:
@@ -47,9 +49,7 @@ public:
 private:
     TextureManager* _textureManager;
     RendererHelper* _rendererHelper;
-    SpriteBatcher* _spriteBatcher1;
-    SpriteBatcher* _spriteBatcher2;
-    SpriteBatcher* _spriteBatcher3;
+    SpriteBatcher* _spriteBatchers[NUM_SPRITE_BATCHERS];
     QuadBatcher* _fillQuadBatcher;
     QuadBatcher* _boundsQuadBatcher;
     LineBatcher* _lineBatcher;

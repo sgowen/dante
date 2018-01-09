@@ -34,12 +34,13 @@ struct EntityDef
 {
     uint32_t type;
     std::string controller;
-    std::map<uint8_t, std::string> mappings;
+    std::map<std::string, std::string> mappings;
     float width;
     float height;
     float restitution;
     float density;
     float friction;
+    int layer;
     bool staticBody;
     bool fixedRotation;
     bool bullet;
@@ -56,6 +57,7 @@ struct EntityDef
         restitution = 0;
         density = 0;
         friction = 0.2f;
+        layer = 0;
         staticBody = true;
         fixedRotation = true;
         bullet = false;

@@ -65,6 +65,10 @@ void SocketPacketHandler::sendPacket(const OutputMemoryBitStream& inOutputStream
     {
         return;
     }
+    
+#ifdef NG_LOG
+    LOG("Outgoing packet Bit Length: %d \n", inOutputStream.getBitLength());
+#endif
 
     SocketAddress* inFromSocketAddress = static_cast<SocketAddress*>(inFromAddress);
     int sentByteCount = _socket->sendToAddress(inOutputStream.getBufferPtr(), inOutputStream.getByteLength(), *inFromSocketAddress);

@@ -10,7 +10,7 @@
 
 #include "framework/graphics/portable/TextureRegion.h"
 
-TextureRegion::TextureRegion(std::string textureName, int x, int y, int regionWidth, int regionHeight, int textureWidth, int textureHeight)
+TextureRegion::TextureRegion(std::string textureName, int x, int y, int regionWidth, int regionHeight, int textureWidth, int textureHeight) : _textureName(textureName)
 {
     init(x, y, regionWidth, regionHeight, textureWidth, textureHeight);
 }

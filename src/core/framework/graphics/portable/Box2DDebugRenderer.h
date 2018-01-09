@@ -21,7 +21,6 @@ class Box2DDebugRenderer : public b2Draw
 {
 public:
     Box2DDebugRenderer(QuadBatcher& fillQuadBatcher, QuadBatcher& boundsQuadBatcher, LineBatcher& lineBatcher, CircleBatcher& circleBatcher);
-    
     virtual ~Box2DDebugRenderer();
     
     /// Draw a closed polygon provided in CCW order.
@@ -46,16 +45,13 @@ public:
     /// Draw a point.
     virtual void DrawPoint(const b2Vec2& p, float32 size, const b2Color& color);
     
-    void render(NGShader& shaderProgram);
-    
-    void setWorld(b2World* world);
+    void render(b2World* world, NGShader& shaderProgram);
     
 private:
     QuadBatcher& _fillQuadBatcher;
     QuadBatcher& _boundsQuadBatcher;
     LineBatcher& _lineBatcher;
     CircleBatcher& _circleBatcher;
-    b2World* _world;
 };
 
 #endif /* defined(__noctisgames__Box2DDebugRenderer__) */

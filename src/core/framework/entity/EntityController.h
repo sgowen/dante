@@ -11,6 +11,8 @@
 
 #include "framework/util/NGRTTI.h"
 
+#include <map>
+
 class Entity;
 class InputMemoryBitStream;
 class OutputMemoryBitStream;
@@ -32,8 +34,11 @@ public:
     virtual void recallLastReadState(uint16_t& inReadState) = 0;
     virtual uint16_t write(OutputMemoryBitStream& inOutputStream, uint16_t inWrittenState, uint16_t inDirtyState) = 0;
     
+    std::map<uint8_t, std::string>& getStateMappings();
+    
 protected:
     Entity* _entity;
+    std::map<uint8_t, std::string> _stateMappings;
 };
 
 #endif /* defined(__noctisgames__EntityController__) */

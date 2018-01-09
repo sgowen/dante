@@ -238,3 +238,17 @@ std::vector<NGTexture*>& TextureManager::getTextures()
 {
     return _textures;
 }
+
+NGTexture* TextureManager::getTextureWithName(std::string name)
+{
+    using namespace std;
+    for (vector<NGTexture *>::iterator i = _textures.begin(); i != _textures.end(); ++i)
+    {
+        if ((*i)->name == name)
+        {
+            return (*i);
+        }
+    }
+    
+    assert(false);
+}

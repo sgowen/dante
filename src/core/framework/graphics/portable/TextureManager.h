@@ -37,6 +37,7 @@ public:
     bool isLoadingData();
     
     std::vector<NGTexture*>& getTextures();
+    NGTexture* getTextureWithName(std::string name);
     
 private:
     const char* _assetsCfgPath;

@@ -23,9 +23,9 @@ public:
     
     virtual ~InputState();
     
-    virtual bool write(OutputMemoryBitStream& inOutputStream) const = 0;
+    virtual void write(OutputMemoryBitStream& inOutputStream) const = 0;
     
-    virtual bool read(InputMemoryBitStream& inInputStream) = 0;
+    virtual void read(InputMemoryBitStream& inInputStream) = 0;
     
     virtual void reset() = 0;
     
