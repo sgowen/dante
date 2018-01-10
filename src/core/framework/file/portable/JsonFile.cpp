@@ -26,7 +26,7 @@
 #endif
 
 #include "rapidjson/document.h"
-#include "rapidjson/writer.h"
+#include "rapidjson/prettywriter.h"
 #include "rapidjson/stringbuffer.h"
 
 #include <assert.h>
@@ -155,7 +155,7 @@ const char* JsonFile::serialize()
         using namespace rapidjson;
         
         static StringBuffer s;
-        Writer<StringBuffer> w(s);
+        PrettyWriter<StringBuffer> w(s);
         
         s.Clear();
         
