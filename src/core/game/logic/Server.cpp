@@ -234,15 +234,15 @@ void Server::spawnGroundsIfNecessary()
     }
     {
         Entity* e = SERVER_ENTITY_MGR->createEntity('T003');
-        e->setPosition(b2Vec2(10, 14));
+        e->setPosition(b2Vec2(13, 16));
     }
     {
         Entity* e = SERVER_ENTITY_MGR->createEntity('T003');
-        e->setPosition(b2Vec2(12, 14));
+        e->setPosition(b2Vec2(15, 16));
     }
     {
         Entity* e = SERVER_ENTITY_MGR->createEntity('T003');
-        e->setPosition(b2Vec2(14, 14));
+        e->setPosition(b2Vec2(17, 16));
     }
     
     _hasSpawnedGrounds = true;
