@@ -15,18 +15,18 @@
 EntityManager* FWInstanceManager::s_clientEntityManagerInstance = NULL;
 EntityManager* FWInstanceManager::s_serverEntityManagerInstance = NULL;
 
-void FWInstanceManager::createClientEntityManager(HandleEntityCreatedFunc handleEntityCreatedFunc, HandleEntityDeletionFunc handleEntityDeletionFunc, EntityCreationFunc inEntityCreationFunc)
+void FWInstanceManager::createClientEntityManager(HandleEntityCreatedFunc handleEntityCreatedFunc, HandleEntityDeletionFunc handleEntityDeletionFunc)
 {
     assert(!s_clientEntityManagerInstance);
     
-    s_clientEntityManagerInstance = new EntityManager(handleEntityCreatedFunc, handleEntityDeletionFunc, inEntityCreationFunc);
+    s_clientEntityManagerInstance = new EntityManager(handleEntityCreatedFunc, handleEntityDeletionFunc);
 }
 
-void FWInstanceManager::createServerEntityManager(HandleEntityCreatedFunc handleEntityCreatedFunc, HandleEntityDeletionFunc handleEntityDeletionFunc, EntityCreationFunc inEntityCreationFunc)
+void FWInstanceManager::createServerEntityManager(HandleEntityCreatedFunc handleEntityCreatedFunc, HandleEntityDeletionFunc handleEntityDeletionFunc)
 {
     assert(!s_serverEntityManagerInstance);
     
-    s_serverEntityManagerInstance = new EntityManager(handleEntityCreatedFunc, handleEntityDeletionFunc, inEntityCreationFunc);
+    s_serverEntityManagerInstance = new EntityManager(handleEntityCreatedFunc, handleEntityDeletionFunc);
 }
 
 void FWInstanceManager::destroyClientEntityManager()

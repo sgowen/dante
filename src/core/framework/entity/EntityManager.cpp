@@ -15,10 +15,9 @@
 #include "framework/util/StringUtil.h"
 #include "framework/util/NGSTDUtil.h"
 
-EntityManager::EntityManager(HandleEntityCreatedFunc inHandleEntityCreatedFunc, HandleEntityDeletionFunc inHandleEntityDeletionFunc, EntityCreationFunc inEntityCreationFunc) :
+EntityManager::EntityManager(HandleEntityCreatedFunc inHandleEntityCreatedFunc, HandleEntityDeletionFunc inHandleEntityDeletionFunc) :
 _handleEntityCreatedFunc(inHandleEntityCreatedFunc),
-_handleEntityDeletionFunc(inHandleEntityDeletionFunc),
-_entityCreationFunc(inEntityCreationFunc)
+_handleEntityDeletionFunc(inHandleEntityDeletionFunc)
 {
     // Empty
 }
@@ -26,11 +25,6 @@ _entityCreationFunc(inEntityCreationFunc)
 EntityManager::~EntityManager()
 {
     NGSTDUtil::cleanUpMapOfEntityPointers(_entityMap);
-}
-
-Entity* EntityManager::createEntity(uint32_t inFourCCName)
-{
-    return _entityCreationFunc(inFourCCName);
 }
 
 Entity* EntityManager::getEntityByID(uint32_t inID) const

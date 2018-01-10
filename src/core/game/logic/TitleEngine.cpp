@@ -387,7 +387,7 @@ void TitleEngine::joinServer(Engine* engine)
     
     EntityMapper::getInstance()->initWithJsonFile("entities.cfg", true);
     
-    FWInstanceManager::createClientEntityManager(InstanceManager::sHandleEntityCreatedOnClient, InstanceManager::sHandleEntityDeletedOnClient, World::sClientCreateEntity);
+    FWInstanceManager::createClientEntityManager(InstanceManager::sHandleEntityCreatedOnClient, InstanceManager::sHandleEntityDeletedOnClient);
     
     ClientHelper* clientHelper = NULL;
     if (_isSteam)

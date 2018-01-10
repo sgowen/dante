@@ -25,18 +25,6 @@
 #include "framework/util/StringUtil.h"
 #include <framework/entity/EntityMapper.h>
 
-Entity* World::sServerCreateEntity(uint32_t inFourCCName)
-{
-    Entity* ret = EntityMapper::getInstance()->createEntity(inFourCCName, true);
-    NG_SERVER->registerEntity(ret);
-    return ret;
-}
-
-Entity* World::sClientCreateEntity(uint32_t inFourCCName)
-{
-    return EntityMapper::getInstance()->createEntity(inFourCCName, false);
-}
-
 World::World(bool isServer) :
 _world(new b2World(b2Vec2(0.0f, -9.8f))),
 _entityContactListener(new EntityContactListener()),

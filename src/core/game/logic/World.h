@@ -23,9 +23,6 @@ class EntityContactFilter;
 class World
 {
 public:
-    static Entity* sServerCreateEntity(uint32_t inFourCCName);
-    static Entity* sClientCreateEntity(uint32_t inFourCCName);
-    
     World(bool isServer);
     ~World();
     

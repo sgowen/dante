@@ -14,6 +14,7 @@
 
 #include "framework/network/portable/FWInstanceManager.h"
 #include "framework/entity/EntityManager.h"
+#include "framework/entity/EntityMapper.h"
 #include "framework/entity/Entity.h"
 #include "framework/network/portable/ReplicationAction.h"
 
@@ -63,7 +64,7 @@ void ReplicationManagerClient::readAndDoCreateAction(InputMemoryBitStream& inInp
     if (!entity)
     {
         //create the object and map it...
-        entity = CLIENT_ENTITY_MGR->createEntity(fourCCName);
+        entity = EntityMapper::getInstance()->createEntity(fourCCName, false);
         entity->setID(inNetworkId);
         
         CLIENT_ENTITY_MGR->registerEntity(entity);

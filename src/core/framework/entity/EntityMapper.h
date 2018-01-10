@@ -13,7 +13,7 @@
 #include <string>
 
 class Entity;
-class EntityDef;
+struct EntityDef;
 class EntityController;
 
 typedef EntityController* (*EntityControllerCreationFunc)(Entity* inEntity);

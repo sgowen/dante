@@ -96,7 +96,7 @@ void ReplicationManagerTransmissionData::handleDeliverySuccess(DeliveryNotificat
 void ReplicationManagerTransmissionData::handleCreateDeliveryFailure(uint32_t inNetworkId) const
 {
     //does the object still exist? it might be dead, in which case we don't resend a create
-    Entity* entity = FWInstanceManager::getServerEntityManager()->getEntityByID(inNetworkId);
+    Entity* entity = SERVER_ENTITY_MGR->getEntityByID(inNetworkId);
     if (entity)
     {
         _replicationManagerServer->replicateCreate(inNetworkId, NG_ALL_STATE);
@@ -106,7 +106,7 @@ void ReplicationManagerTransmissionData::handleCreateDeliveryFailure(uint32_t in
 void ReplicationManagerTransmissionData::handleUpdateStateDeliveryFailure(uint32_t inNetworkId, uint32_t inState, DeliveryNotificationManager* inDeliveryNotificationManager) const
 {
     //does the object still exist? it might be dead, in which case we don't resend an update
-    if (FWInstanceManager::getServerEntityManager()->getEntityByID(inNetworkId))
+    if (SERVER_ENTITY_MGR->getEntityByID(inNetworkId))
     {
         //look in all future in flight packets, in all transmissions
         //remove written state from dirty state

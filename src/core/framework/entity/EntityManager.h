@@ -13,17 +13,15 @@
 
 class Entity;
 
-typedef Entity* (*EntityCreationFunc)(uint32_t inFourCCName);
 typedef void (*HandleEntityCreatedFunc)(Entity* inEntity);
 typedef void (*HandleEntityDeletionFunc)(Entity* inEntity);
 
 class EntityManager
 {
 public:
-    EntityManager(HandleEntityCreatedFunc inHandleEntityCreatedFunc, HandleEntityDeletionFunc inHandleEntityDeletionFunc, EntityCreationFunc inEntityCreationFunc);
+    EntityManager(HandleEntityCreatedFunc inHandleEntityCreatedFunc, HandleEntityDeletionFunc inHandleEntityDeletionFunc);
     ~EntityManager();
     
-    Entity* createEntity(uint32_t inFourCCName);
     Entity* getEntityByID(uint32_t inID) const;
     void registerEntity(Entity* inEntity);
     void deregisterEntity(Entity* inEntity);
@@ -33,7 +31,6 @@ public:
 private:
     HandleEntityCreatedFunc _handleEntityCreatedFunc;
     HandleEntityDeletionFunc _handleEntityDeletionFunc;
-    EntityCreationFunc _entityCreationFunc;
     
     std::map<uint32_t, Entity*> _entityMap;
 };

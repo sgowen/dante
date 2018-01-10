@@ -122,7 +122,7 @@ void NetworkManagerServer::registerEntity(Entity* inEntity)
     inEntity->setID(_entityID);
     
     //add mapping from network id to game object
-    FWInstanceManager::getServerEntityManager()->registerEntity(inEntity);
+    SERVER_ENTITY_MGR->registerEntity(inEntity);
     
     //tell all client proxies this is new...
     for (const auto& pair: _addressHashToClientMap)
@@ -135,7 +135,7 @@ void NetworkManagerServer::deregisterEntity(Entity* inEntity)
 {
     uint32_t networkId = inEntity->getID();
     
-    FWInstanceManager::getServerEntityManager()->deregisterEntity(inEntity);
+    SERVER_ENTITY_MGR->deregisterEntity(inEntity);
     
     //tell all client proxies to STOP replicating!
     //tell all client proxies this is new...
@@ -317,7 +317,7 @@ void NetworkManagerServer::handlePacketFromNewClient(InputMemoryBitStream& inInp
         sendWelcomePacket(newClientProxy);
         
         // and now init the replication manager with everything we know about!
-        for (const auto& pair: FWInstanceManager::getServerEntityManager()->getMap())
+        for (const auto& pair: SERVER_ENTITY_MGR->getMap())
         {
             newClientProxy->getReplicationManagerServer().replicateCreate(pair.first, NG_ALL_STATE);
         }

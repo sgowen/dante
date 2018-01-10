@@ -42,6 +42,7 @@ private:
     void deleteRobotWithPlayerId(uint8_t playerId);
     void spawnRobotForPlayer(uint8_t inPlayerId, std::string inPlayerName);
     void spawnObjectsIfNecessary();
+    Entity* createAndRegisterEntity(uint32_t inFourCCName);
     
     // ctor, copy ctor, and assignment should be private in a Singleton
     Server(bool isSteam);

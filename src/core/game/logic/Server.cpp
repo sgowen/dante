@@ -26,6 +26,7 @@
 #include "framework/network/portable/MachineAddress.h"
 #include <game/logic/GameConstants.h>
 #include <game/logic/PlayerController.h>
+#include "framework/entity/EntityMapper.h"
 
 #ifdef NG_STEAM
 #include <framework/network/steam/NGSteamServerHelper.h>
@@ -146,7 +147,7 @@ void Server::deleteRobotWithPlayerId(uint8_t playerId)
 void Server::spawnRobotForPlayer(uint8_t inPlayerId, std::string inPlayerName)
 {
     _playerIdForRobotBeingCreated = inPlayerId;
-    Entity* entity = SERVER_ENTITY_MGR->createEntity('ROBT');
+    Entity* entity = createAndRegisterEntity('ROBT');
     entity->setPosition(b2Vec2(5, 8));
     
     PlayerController* robot = static_cast<PlayerController*>(entity->getEntityController());
@@ -165,79 +166,79 @@ void Server::spawnObjectsIfNecessary()
     }
     
     {
-        Entity* e = SERVER_ENTITY_MGR->createEntity('G001');
+        Entity* e = createAndRegisterEntity('G001');
         e->setPosition(b2Vec2(0, 2));
     }
     {
-        Entity* e = SERVER_ENTITY_MGR->createEntity('G002');
+        Entity* e = createAndRegisterEntity('G002');
         e->setPosition(b2Vec2(2, 2));
     }
     {
-        Entity* e = SERVER_ENTITY_MGR->createEntity('G003');
+        Entity* e = createAndRegisterEntity('G003');
         e->setPosition(b2Vec2(4, 2));
     }
     {
-        Entity* e = SERVER_ENTITY_MGR->createEntity('G004');
+        Entity* e = createAndRegisterEntity('G004');
         e->setPosition(b2Vec2(6, 2));
     }
     {
-        Entity* e = SERVER_ENTITY_MGR->createEntity('G005');
+        Entity* e = createAndRegisterEntity('G005');
         e->setPosition(b2Vec2(8, 2));
     }
     {
-        Entity* e = SERVER_ENTITY_MGR->createEntity('G006');
+        Entity* e = createAndRegisterEntity('G006');
         e->setPosition(b2Vec2(10, 2));
     }
     {
-        Entity* e = SERVER_ENTITY_MGR->createEntity('G007');
+        Entity* e = createAndRegisterEntity('G007');
         e->setPosition(b2Vec2(12, 2));
     }
     {
-        Entity* e = SERVER_ENTITY_MGR->createEntity('G008');
+        Entity* e = createAndRegisterEntity('G008');
         e->setPosition(b2Vec2(14, 2));
     }
     {
-        Entity* e = SERVER_ENTITY_MGR->createEntity('G009');
+        Entity* e = createAndRegisterEntity('G009');
         e->setPosition(b2Vec2(16, 2));
     }
     {
-        Entity* e = SERVER_ENTITY_MGR->createEntity('G010');
+        Entity* e = createAndRegisterEntity('G010');
         e->setPosition(b2Vec2(18, 2));
     }
     {
-        Entity* e = SERVER_ENTITY_MGR->createEntity('G011');
+        Entity* e = createAndRegisterEntity('G011');
         e->setPosition(b2Vec2(20, 2));
     }
     {
-        Entity* e = SERVER_ENTITY_MGR->createEntity('G012');
+        Entity* e = createAndRegisterEntity('G012');
         e->setPosition(b2Vec2(22, 2));
     }
     {
-        Entity* e = SERVER_ENTITY_MGR->createEntity('G013');
+        Entity* e = createAndRegisterEntity('G013');
         e->setPosition(b2Vec2(24, 2));
     }
     {
-        Entity* e = SERVER_ENTITY_MGR->createEntity('G014');
+        Entity* e = createAndRegisterEntity('G014');
         e->setPosition(b2Vec2(26, 2));
     }
     {
-        Entity* e = SERVER_ENTITY_MGR->createEntity('T001');
+        Entity* e = createAndRegisterEntity('T001');
         e->setPosition(b2Vec2(7, 8));
     }
     {
-        Entity* e = SERVER_ENTITY_MGR->createEntity('T002');
+        Entity* e = createAndRegisterEntity('T002');
         e->setPosition(b2Vec2(14, 10));
     }
     {
-        Entity* e = SERVER_ENTITY_MGR->createEntity('T003');
+        Entity* e = createAndRegisterEntity('T003');
         e->setPosition(b2Vec2(13, 16));
     }
     {
-        Entity* e = SERVER_ENTITY_MGR->createEntity('T003');
+        Entity* e = createAndRegisterEntity('T003');
         e->setPosition(b2Vec2(15, 16));
     }
     {
-        Entity* e = SERVER_ENTITY_MGR->createEntity('T003');
+        Entity* e = createAndRegisterEntity('T003');
         e->setPosition(b2Vec2(17, 16));
     }
     
@@ -250,7 +251,7 @@ void Server::spawnObjectsIfNecessary()
     /// 1200 bytes (any larger will be dropped by some routers).
     for (uint32_t i = 0; i < 8; ++i)
     {
-        Entity* entity = SERVER_ENTITY_MGR->createEntity('CRAT');
+        Entity* entity = createAndRegisterEntity('CRAT');
         
         int xSeed = rand() % 2 + 1;
         float posX = xSeed * 7;
@@ -262,9 +263,18 @@ void Server::spawnObjectsIfNecessary()
     _hasSpawnedObjects = true;
 }
 
+Entity* Server::createAndRegisterEntity(uint32_t inFourCCName)
+{
+    Entity* ret = EntityMapper::getInstance()->createEntity(inFourCCName, true);
+    
+    NG_SERVER->registerEntity(ret);
+    
+    return ret;
+}
+
 Server::Server(bool isSteam) : _stateTime(0), _frameStateTime(0), _playerIdForRobotBeingCreated(0), _isDisplaying(false), _hasSpawnedObjects(false)
 {
-    FWInstanceManager::createServerEntityManager(InstanceManager::sHandleEntityCreatedOnServer, InstanceManager::sHandleEntityDeletedOnServer, World::sServerCreateEntity);
+    FWInstanceManager::createServerEntityManager(InstanceManager::sHandleEntityCreatedOnServer, InstanceManager::sHandleEntityDeletedOnServer);
     
     if (isSteam)
     {
