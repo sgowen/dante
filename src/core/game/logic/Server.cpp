@@ -111,8 +111,7 @@ void Server::handleNewClient(uint8_t playerId, std::string playerName)
     {
         // This is our first client!
         
-        spawnGroundsIfNecessary();
-        spawnCratesIfNecessary();
+        spawnObjectsIfNecessary();
     }
 }
 
@@ -161,9 +160,9 @@ void Server::spawnRobotForPlayer(uint8_t inPlayerId, std::string inPlayerName)
     robot->setPlayerId(inPlayerId);
 }
 
-void Server::spawnGroundsIfNecessary()
+void Server::spawnObjectsIfNecessary()
 {
-    if (_hasSpawnedGrounds)
+    if (_hasSpawnedObjects)
     {
         return;
     }
@@ -245,16 +244,6 @@ void Server::spawnGroundsIfNecessary()
         e->setPosition(b2Vec2(17, 16));
     }
     
-    _hasSpawnedGrounds = true;
-}
-
-void Server::spawnCratesIfNecessary()
-{
-    if (_hasSpawnedCrates)
-    {
-        return;
-    }
-    
     srand(static_cast<unsigned>(time(0)));
     
     /// We really shouldn't have any more than 32 dynamic
@@ -273,10 +262,10 @@ void Server::spawnCratesIfNecessary()
         entity->setPosition(b2Vec2(posX, posY));
     }
     
-    _hasSpawnedCrates = true;
+    _hasSpawnedObjects = true;
 }
 
-Server::Server(bool isSteam) : _stateTime(0), _frameStateTime(0), _playerIdForRobotBeingCreated(0), _isDisplaying(false), _hasSpawnedGrounds(false), _hasSpawnedCrates(false)
+Server::Server(bool isSteam) : _stateTime(0), _frameStateTime(0), _playerIdForRobotBeingCreated(0), _isDisplaying(false), _hasSpawnedObjects(false)
 {
     FWInstanceManager::createServerEntityManager(InstanceManager::sHandleEntityCreatedOnServer, InstanceManager::sHandleEntityDeletedOnServer, World::sServerCreateEntity);
     
