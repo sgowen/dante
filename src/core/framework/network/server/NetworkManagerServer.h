@@ -35,56 +35,36 @@ class NetworkManagerServer
 {
 public:
     static void create(ServerHelper* inServerHelper, HandleNewClientFunc inHandleNewClientFunc, HandleLostClientFunc inHandleLostClientFunc, InputStateCreationFunc inInputStateCreationFunc);
-    
+    static NetworkManagerServer* getInstance();
     static void destroy();
     
-    static NetworkManagerServer* getInstance();
-    
     static void sProcessPacket(InputMemoryBitStream& inInputStream, MachineAddress* inFromAddress);
-    
     static void sHandleNoResponse();
-    
     static void sHandleConnectionReset(MachineAddress* inFromAddress);
-    
     static ClientProxy* sGetClientProxy(uint8_t inPlayerId);
-    
     static void sHandleClientDisconnected(ClientProxy* inClientProxy);
     
     void processIncomingPackets();
-    
     void sendOutgoingPackets();
-    
     void registerEntity(Entity* inEntity);
-    
     void deregisterEntity(Entity* inEntity);
-    
     void setStateDirty(uint32_t inNetworkId, uint16_t inDirtyState);
-    
     ClientProxy* getClientProxy(uint8_t inPlayerId) const;
-    
     int getAverageMoveCount() const;
-    
     int getLowestNonHostMoveCount() const;
-    
     int getHostMoveCount() const;
-    
     uint8_t getNumClientsConnected();
-    
     MachineAddress* getServerAddress();
-    
     bool isConnected();
-    
     ServerHelper* getServerHelper();
     
 private:
     static NetworkManagerServer* s_instance;
     
     ServerHelper* _serverHelper;
-    
     HandleNewClientFunc _handleNewClientFunc;
     HandleLostClientFunc _handleLostClientFunc;
     InputStateCreationFunc _inputStateCreationFunc;
-    
     NoctisGames::NGPool<ReplicationManagerTransmissionData> _replicationManagerTransmissionDatas;
     std::map<size_t, ClientProxy*> _addressHashToClientMap;
     std::map<int, ClientProxy*> _playerIDToClientMap;
@@ -92,33 +72,19 @@ private:
     uint32_t _entityID;
     
     void processPacket(InputMemoryBitStream& inInputStream, MachineAddress* inFromAddress);
-    
     void handleNoResponse();
-    
     void handleConnectionReset(MachineAddress* inFromAddress);
-    
     void sendPacket(const OutputMemoryBitStream& inOutputStream, MachineAddress* inFromAddress);
-    
     void handlePacketFromNewClient(InputMemoryBitStream& inInputStream, MachineAddress* inFromAddress);
-    
     void processPacket(ClientProxy* inClientProxy, InputMemoryBitStream& inInputStream);
-    
     void sendWelcomePacket(ClientProxy* inClientProxy);
-    
     void sendLocalPlayerAddedPacket(ClientProxy* inClientProxy, uint8_t index);
-    
     void sendStatePacketToClient(ClientProxy* inClientProxy);
-    
     void writeLastMoveTimestampIfDirty(OutputMemoryBitStream& inOutputStream, ClientProxy* inClientProxy);
-    
     void handleInputPacket(ClientProxy* inClientProxy, InputMemoryBitStream& inInputStream);
-    
     void handleAddLocalPlayerPacket(ClientProxy* inClientProxy, InputMemoryBitStream& inInputStream);
-    
     void handleDropLocalPlayerPacket(ClientProxy* inClientProxy, InputMemoryBitStream& inInputStream);
-    
     void handleClientDisconnected(ClientProxy* inClientProxy);
-    
     void updateNextPlayerId();
     
     // ctor, copy ctor, and assignment should be private in a Singleton

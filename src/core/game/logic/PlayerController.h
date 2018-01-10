@@ -35,12 +35,17 @@ public:
     virtual uint16_t write(OutputMemoryBitStream& inOutputStream, uint16_t inWrittenState, uint16_t inDirtyState);
     
     void processInput(InputState* inInputState, bool isPending = false);
-    void setAddressHash(uint64_t addressHash);
+    
+    /// Pose
+    void setAddressHash(uint64_t inValue);
     uint64_t getAddressHash() const;
-    void setPlayerId(uint8_t inPlayerId);
+    void setPlayerId(uint8_t inValue);
     uint8_t getPlayerId() const;
-    void setPlayerName(std::string playerName);
+    void setMap(uint8_t inValue);
+    uint8_t getMap() const;
+    void setPlayerName(std::string inValue);
     std::string& getPlayerName();
+    
     uint8_t getHealth();
     uint8_t getNumJumps();
     bool isMainAction();
@@ -76,12 +81,14 @@ private:
     {
         uint64_t addressHash;
         uint8_t playerId;
+        uint8_t map;
         std::string playerName;
         
         PlayerInfo()
         {
             addressHash = 0;
             playerId = 0;
+            map = 0;
             playerName = "Robot";
         }
         
@@ -90,6 +97,7 @@ private:
             return
             lhs.addressHash == rhs.addressHash &&
             lhs.playerId    == rhs.playerId &&
+            lhs.map         == rhs.map &&
             lhs.playerName  == rhs.playerName;
         }
         

@@ -39,17 +39,17 @@ void NetworkManagerServer::create(ServerHelper* inServerHelper, HandleNewClientF
     s_instance = new NetworkManagerServer(inServerHelper, inHandleNewClientFunc, inHandleLostClientFunc, inInputStateCreationFunc);
 }
 
+NetworkManagerServer * NetworkManagerServer::getInstance()
+{
+    return s_instance;
+}
+
 void NetworkManagerServer::destroy()
 {
     assert(s_instance);
     
     delete s_instance;
     s_instance = NULL;
-}
-
-NetworkManagerServer * NetworkManagerServer::getInstance()
-{
-    return s_instance;
 }
 
 void NetworkManagerServer::sProcessPacket(InputMemoryBitStream& inInputStream, MachineAddress* inFromAddress)
@@ -118,7 +118,7 @@ void NetworkManagerServer::sendOutgoingPackets()
 
 void NetworkManagerServer::registerEntity(Entity* inEntity)
 {
-    ++_entityID;
+    _entityID = clamp(_entityID + 1, NETWORK_ENTITY_ID_END, NETWORK_ENTITY_ID_BEGIN);
     inEntity->setID(_entityID);
     
     //add mapping from network id to game object
@@ -597,7 +597,7 @@ _handleNewClientFunc(inHandleNewClientFunc),
 _handleLostClientFunc(inHandleLostClientFunc),
 _inputStateCreationFunc(inInputStateCreationFunc),
 _nextPlayerId(1),
-_entityID(0)
+_entityID(NETWORK_ENTITY_ID_BEGIN)
 {
     // Empty
 }

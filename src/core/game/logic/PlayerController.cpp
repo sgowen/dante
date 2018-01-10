@@ -304,9 +304,9 @@ void PlayerController::processInput(InputState* inInputState, bool isPending)
     }
 }
 
-void PlayerController::setAddressHash(uint64_t addressHash)
+void PlayerController::setAddressHash(uint64_t inValue)
 {
-    _playerInfo.addressHash = addressHash;
+    _playerInfo.addressHash = inValue;
 }
 
 uint64_t PlayerController::getAddressHash() const
@@ -314,9 +314,9 @@ uint64_t PlayerController::getAddressHash() const
     return _playerInfo.addressHash;
 }
 
-void PlayerController::setPlayerId(uint8_t inPlayerId)
+void PlayerController::setPlayerId(uint8_t inValue)
 {
-    _playerInfo.playerId = inPlayerId;
+    _playerInfo.playerId = inValue;
 }
 
 uint8_t PlayerController::getPlayerId() const
@@ -324,9 +324,19 @@ uint8_t PlayerController::getPlayerId() const
     return _playerInfo.playerId;
 }
 
-void PlayerController::setPlayerName(std::string playerName)
+void PlayerController::setMap(uint8_t inValue)
 {
-    _playerInfo.playerName = playerName;
+    _playerInfo.map = inValue;
+}
+
+uint8_t PlayerController::getMap() const
+{
+    return _playerInfo.map;
+}
+
+void PlayerController::setPlayerName(std::string inValue)
+{
+    _playerInfo.playerName = inValue;
 }
 
 std::string& PlayerController::getPlayerName()

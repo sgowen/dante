@@ -147,16 +147,13 @@ void Server::spawnRobotForPlayer(uint8_t inPlayerId, std::string inPlayerName)
 {
     _playerIdForRobotBeingCreated = inPlayerId;
     Entity* entity = SERVER_ENTITY_MGR->createEntity('ROBT');
+    entity->setPosition(b2Vec2(5, 8));
+    
     PlayerController* robot = static_cast<PlayerController*>(entity->getEntityController());
     
     ClientProxy* client = NG_SERVER->getClientProxy(inPlayerId);
     robot->setAddressHash(client->getMachineAddress()->getHash());
-    
     robot->setPlayerName(inPlayerName);
-    float posX = 5;
-    entity->setPosition(b2Vec2(posX, 8));
-    
-    // Doing this last on purpose
     robot->setPlayerId(inPlayerId);
 }
 
