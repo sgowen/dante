@@ -58,7 +58,7 @@ public:
     
     void deregisterEntity(Entity* inEntity);
     
-    void setStateDirty(uint32_t inNetworkId, uint32_t inDirtyState);
+    void setStateDirty(uint32_t inNetworkId, uint16_t inDirtyState);
     
     ClientProxy* getClientProxy(uint8_t inPlayerId) const;
     

@@ -145,7 +145,7 @@ void NetworkManagerServer::deregisterEntity(Entity* inEntity)
     }
 }
 
-void NetworkManagerServer::setStateDirty(uint32_t inNetworkId, uint32_t inDirtyState)
+void NetworkManagerServer::setStateDirty(uint32_t inNetworkId, uint16_t inDirtyState)
 {
     //tell everybody this is dirty
     for (const auto& pair: _addressHashToClientMap)
