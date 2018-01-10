@@ -154,7 +154,7 @@ void Server::spawnRobotForPlayer(uint8_t inPlayerId, std::string inPlayerName)
     robot->setAddressHash(client->getMachineAddress()->getHash());
     
     robot->setPlayerName(inPlayerName);
-    float posX = GAME_WIDTH / 2;
+    float posX = 5;
     entity->setPosition(b2Vec2(posX, 8));
     
     // Doing this last on purpose
@@ -168,12 +168,81 @@ void Server::spawnGroundsIfNecessary()
         return;
     }
     
-    for (int i = 0; i < 4; ++i)
     {
-        Entity* entity = SERVER_ENTITY_MGR->createEntity('GRND');
-        float posX = i * GAME_WIDTH / 2;
-        float posY = 2;
-        entity->setPosition(b2Vec2(posX, posY));
+        Entity* e = SERVER_ENTITY_MGR->createEntity('G001');
+        e->setPosition(b2Vec2(0, 2));
+    }
+    {
+        Entity* e = SERVER_ENTITY_MGR->createEntity('G002');
+        e->setPosition(b2Vec2(2, 2));
+    }
+    {
+        Entity* e = SERVER_ENTITY_MGR->createEntity('G003');
+        e->setPosition(b2Vec2(4, 2));
+    }
+    {
+        Entity* e = SERVER_ENTITY_MGR->createEntity('G004');
+        e->setPosition(b2Vec2(6, 2));
+    }
+    {
+        Entity* e = SERVER_ENTITY_MGR->createEntity('G005');
+        e->setPosition(b2Vec2(8, 2));
+    }
+    {
+        Entity* e = SERVER_ENTITY_MGR->createEntity('G006');
+        e->setPosition(b2Vec2(10, 2));
+    }
+    {
+        Entity* e = SERVER_ENTITY_MGR->createEntity('G007');
+        e->setPosition(b2Vec2(12, 2));
+    }
+    {
+        Entity* e = SERVER_ENTITY_MGR->createEntity('G008');
+        e->setPosition(b2Vec2(14, 2));
+    }
+    {
+        Entity* e = SERVER_ENTITY_MGR->createEntity('G009');
+        e->setPosition(b2Vec2(16, 2));
+    }
+    {
+        Entity* e = SERVER_ENTITY_MGR->createEntity('G010');
+        e->setPosition(b2Vec2(18, 2));
+    }
+    {
+        Entity* e = SERVER_ENTITY_MGR->createEntity('G011');
+        e->setPosition(b2Vec2(20, 2));
+    }
+    {
+        Entity* e = SERVER_ENTITY_MGR->createEntity('G012');
+        e->setPosition(b2Vec2(22, 2));
+    }
+    {
+        Entity* e = SERVER_ENTITY_MGR->createEntity('G013');
+        e->setPosition(b2Vec2(24, 2));
+    }
+    {
+        Entity* e = SERVER_ENTITY_MGR->createEntity('G014');
+        e->setPosition(b2Vec2(26, 2));
+    }
+    {
+        Entity* e = SERVER_ENTITY_MGR->createEntity('T001');
+        e->setPosition(b2Vec2(7, 8));
+    }
+    {
+        Entity* e = SERVER_ENTITY_MGR->createEntity('T002');
+        e->setPosition(b2Vec2(14, 10));
+    }
+    {
+        Entity* e = SERVER_ENTITY_MGR->createEntity('T003');
+        e->setPosition(b2Vec2(10, 14));
+    }
+    {
+        Entity* e = SERVER_ENTITY_MGR->createEntity('T003');
+        e->setPosition(b2Vec2(12, 14));
+    }
+    {
+        Entity* e = SERVER_ENTITY_MGR->createEntity('T003');
+        e->setPosition(b2Vec2(14, 14));
     }
     
     _hasSpawnedGrounds = true;
@@ -197,9 +266,9 @@ void Server::spawnCratesIfNecessary()
     {
         Entity* entity = SERVER_ENTITY_MGR->createEntity('CRAT');
         
-        int xSeed = rand() % 5 + 2;
-        float posX = xSeed * GAME_WIDTH / 2;
-        float posY = (rand() % static_cast<int>(GAME_HEIGHT - entity->getHeight() * 2)) + (2.0f + entity->getHeight() * 2);
+        int xSeed = rand() % 2 + 1;
+        float posX = xSeed * 7;
+        float posY = (rand() % static_cast<int>(GAME_HEIGHT - entity->getHeight() * 2)) + (2.0f + entity->getHeight() * 2) + 10;
         
         entity->setPosition(b2Vec2(posX, posY));
     }

@@ -25,6 +25,8 @@ ECHO Encrypting Textures...
 
 cd ..\textures
 
+%XOREncryptDecryptTool% texture_000.dds texture_000.ngt
+ECHO .
 %XOREncryptDecryptTool% texture_001.dds texture_001.ngt
 ECHO .
 %XOREncryptDecryptTool% texture_002.dds texture_002.ngt
@@ -34,6 +36,8 @@ ECHO .
 %XOREncryptDecryptTool% texture_004.dds texture_004.ngt
 ECHO .
 %XOREncryptDecryptTool% texture_005.dds texture_005.ngt
+ECHO .
+%XOREncryptDecryptTool% texture_006.dds texture_006.ngt
 ECHO .
 
 del /s *.dds

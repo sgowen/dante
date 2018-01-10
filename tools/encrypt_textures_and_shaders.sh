@@ -25,6 +25,8 @@ echo "Encrypting Textures..."
 
 cd "$1/assets/textures"
 
+$XOREncryptDecryptTool texture_000.png texture_000.ngt
+echo "."
 $XOREncryptDecryptTool texture_001.png texture_001.ngt
 echo "."
 $XOREncryptDecryptTool texture_002.png texture_002.ngt
@@ -34,4 +36,6 @@ echo "."
 $XOREncryptDecryptTool texture_004.png texture_004.ngt
 echo "."
 $XOREncryptDecryptTool texture_005.png texture_005.ngt
+echo "."
+$XOREncryptDecryptTool texture_006.png texture_006.ngt
 echo "."
