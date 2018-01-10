@@ -117,7 +117,7 @@ int GlfwMain::exec(EngineController* engineController)
     int height = 480;
 
 #ifndef DEBUG
-//#define NG_LAUNCH_AS_FULL_SCREEN
+#define NG_LAUNCH_AS_FULL_SCREEN
 #endif
     
 #ifdef NG_LAUNCH_AS_FULL_SCREEN

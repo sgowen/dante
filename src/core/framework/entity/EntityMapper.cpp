@@ -10,7 +10,6 @@
 
 #include "EntityMapper.h"
 
-#include "Box2D/Box2D.h"
 #include "framework/entity/Entity.h"
 #include "framework/entity/EntityController.h"
 
@@ -115,7 +114,7 @@ void EntityMapper::initWithJson(const char* json)
     }
 }
 
-Entity* EntityMapper::createEntity(uint32_t inFourCCName, b2World& world, bool isServer)
+Entity* EntityMapper::createEntity(uint32_t inFourCCName, bool isServer)
 {
     auto q = _entityDescriptors.find(inFourCCName);
     
@@ -123,7 +122,7 @@ Entity* EntityMapper::createEntity(uint32_t inFourCCName, b2World& world, bool i
     
     EntityDef* entityDef = q->second;
     
-    return new Entity(*entityDef, world, isServer);
+    return new Entity(*entityDef, isServer);
 }
 
 void EntityMapper::registerFunction(std::string name, EntityControllerCreationFunc inCreationFunction)

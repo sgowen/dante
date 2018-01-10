@@ -27,28 +27,22 @@
 
 Entity* World::sServerCreateEntity(uint32_t inFourCCName)
 {
-    b2World& world = InstanceManager::getServerWorld()->getWorld();
-    Entity* ret = EntityMapper::getInstance()->createEntity(inFourCCName, world, true);
+    Entity* ret = EntityMapper::getInstance()->createEntity(inFourCCName, true);
     NG_SERVER->registerEntity(ret);
     return ret;
 }
 
 Entity* World::sClientCreateEntity(uint32_t inFourCCName)
 {
-    b2World& world = InstanceManager::getClientWorld()->getWorld();
-    return EntityMapper::getInstance()->createEntity(inFourCCName, world, false);
+    return EntityMapper::getInstance()->createEntity(inFourCCName, false);
 }
 
 World::World(bool isServer) :
+_world(new b2World(b2Vec2(0.0f, -9.8f))),
 _entityContactListener(new EntityContactListener()),
 _entityContactFilter(new EntityContactFilter()),
 _isServer(isServer)
 {
-    // Define the gravity vector.
-    b2Vec2 gravity(0.0f, -9.8f);
-    
-    // Construct a world object, which will hold and simulate the rigid bodies.
-    _world = new b2World(gravity);
     _world->SetContactListener(_entityContactListener);
     _world->SetContactFilter(_entityContactFilter);
 }
@@ -73,9 +67,11 @@ World::~World()
 
 void World::addEntity(Entity* inEntity)
 {
+    inEntity->initPhysics(getWorld());
+    
     _entities.push_back(inEntity);
     
-    if (inEntity->getEntityDef().type == 'ROBT')
+    if (inEntity->getEntityController()->getRTTI().derivesFrom(RobotController::rtti))
     {
         _players.push_back(inEntity);
     }
@@ -83,7 +79,7 @@ void World::addEntity(Entity* inEntity)
 
 void World::removeEntity(Entity* inEntity)
 {
-    if (inEntity->getEntityDef().type == 'ROBT')
+    if (inEntity->getEntityController()->getRTTI().derivesFrom(RobotController::rtti))
     {
         int len = static_cast<int>(_players.size());
         int indexToRemove = -1;
@@ -131,7 +127,7 @@ void World::removeEntity(Entity* inEntity)
         
         _entities.pop_back();
         
-        inEntity->deinitPhysics();
+        inEntity->deinitPhysics(getWorld());
         
         if (_isServer)
         {
@@ -142,11 +138,6 @@ void World::removeEntity(Entity* inEntity)
 
 void World::postRead()
 {
-    if (!NG_CLIENT->hasReceivedNewState())
-    {
-        return;
-    }
-    
     for (Entity* entity : _entities)
     {
         entity->recallLastReadState();
@@ -160,7 +151,7 @@ void World::postRead()
         for (Entity* entity : _players)
         {
             RobotController* robot = static_cast<RobotController*>(entity->getEntityController());
-            if (NG_CLIENT->isPlayerIdLocal(robot->getPlayerId()))
+            if (robot->isLocalPlayer())
             {
                 robot->processInput(move.getInputState());
             }
@@ -188,14 +179,11 @@ void World::update()
                 {
                     RobotController* robot = static_cast<RobotController*>(entity->getEntityController());
                     
-                    // is there a move we haven't processed yet?
                     ClientProxy* client = NG_SERVER->getClientProxy(robot->getPlayerId());
                     if (client)
                     {
                         MoveList& moveList = client->getUnprocessedMoveList();
-                        
                         Move* move = moveList.getMoveAtIndex(i);
-                        
                         if (move)
                         {
                             robot->processInput(move->getInputState());
@@ -209,8 +197,6 @@ void World::update()
                 
                 stepPhysics();
                 
-                // Update all game objects- sometimes they want to die, so we need to tread carefully...
-                
                 int len = static_cast<int>(_entities.size());
                 for (int i = 0, c = len; i < c; ++i)
                 {
@@ -221,7 +207,6 @@ void World::update()
                         entity->update();
                     }
                     
-                    // You might suddenly want to die after your update, so check again
                     if (entity->isRequestingDeletion())
                     {
                         removeEntity(entity);
@@ -250,7 +235,7 @@ void World::update()
             for (Entity* entity : _players)
             {
                 RobotController* robot = static_cast<RobotController*>(entity->getEntityController());
-                if (NG_CLIENT->isPlayerIdLocal(robot->getPlayerId()))
+                if (robot->isLocalPlayer())
                 {
                     robot->processInput(pendingMove->getInputState(), true);
                 }
@@ -278,30 +263,6 @@ Entity* World::getRobotWithPlayerId(uint8_t inPlayerID)
     }
     
     return NULL;
-}
-
-void World::removeAllCrates()
-{
-    for (Entity* entity : _entities)
-    {
-        if (entity->getEntityDef().type == 'CRAT')
-        {
-            entity->requestDeletion();
-        }
-    }
-}
-
-bool World::hasCrates()
-{
-    for (Entity* entity : _entities)
-    {
-        if (entity->getEntityDef().type == 'CRAT')
-        {
-            return true;
-        }
-    }
-    
-    return false;
 }
 
 std::vector<Entity*>& World::getPlayers()

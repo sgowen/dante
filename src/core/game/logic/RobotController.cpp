@@ -50,7 +50,8 @@ RobotController::RobotController(Entity* inEntity) : EntityController(inEntity),
 _playerInfo(),
 _playerInfoCache(_playerInfo),
 _stats(),
-_statsCache(_stats)
+_statsCache(_stats),
+_isLocalPlayer(false)
 {
     _stateMappings.insert(std::make_pair(0, "Idle"));
     _stateMappings.insert(std::make_pair(1, "Punching"));
@@ -122,6 +123,8 @@ void RobotController::read(InputMemoryBitStream& inInputStream, uint16_t& inRead
         inInputStream.read(_playerInfo.addressHash);
         inInputStream.read<uint8_t, 3>(_playerInfo.playerId);
         inInputStream.read(_playerInfo.playerName);
+        
+        _isLocalPlayer = NG_CLIENT->isPlayerIdLocal(_playerInfo.playerId);
         
         setFlag(inReadState, ReadStateFlag_PlayerInfo);
         _playerInfoCache = _playerInfo;
@@ -357,4 +360,9 @@ bool RobotController::isMainAction()
 bool RobotController::isSprinting()
 {
     return isFlagSet(_entity->getPose().state, StateFlag_Sprinting);
+}
+
+bool RobotController::isLocalPlayer()
+{
+    return _isLocalPlayer;
 }

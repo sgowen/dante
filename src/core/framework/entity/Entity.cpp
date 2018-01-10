@@ -28,10 +28,9 @@
 
 NGRTTI_IMPL_NOPARENT(Entity);
 
-Entity::Entity(EntityDef& inEntityDef, b2World& world, bool isServer) :
+Entity::Entity(EntityDef& inEntityDef, bool isServer) :
 _entityDef(inEntityDef),
 _controller(EntityMapper::getInstance()->createEntityController(inEntityDef.controller, this)),
-_worldRef(world),
 _isServer(isServer),
 _body(NULL),
 _fixture(NULL),
@@ -43,44 +42,11 @@ _state(0),
 _ID(0),
 _isRequestingDeletion(false)
 {
-    b2BodyDef bodyDef;
-    bodyDef.position.Set(0, 0);
-    bodyDef.type = _entityDef.staticBody ? b2_staticBody : b2_dynamicBody;
-    bodyDef.fixedRotation = _entityDef.fixedRotation;
-    bodyDef.bullet = _entityDef.bullet;
-    
-    b2PolygonShape shape;
-    shape.SetAsBox(inEntityDef.width / 2, inEntityDef.height / 2);
-    
-    b2FixtureDef fixtureDef;
-    fixtureDef.shape = &shape;
-    fixtureDef.isSensor = _entityDef.sensor;
-    fixtureDef.density = _entityDef.density;
-    fixtureDef.friction = _entityDef.friction;
-    fixtureDef.restitution = _entityDef.restitution;
-    
-    _body = _worldRef.CreateBody(&bodyDef);
-    _body->SetUserData(this);
-    
-    _fixture = _body->CreateFixture(&fixtureDef);
-    _fixture->SetUserData(this);
-    
-    if (_entityDef.character)
-    {
-        b2PolygonShape groundContact;
-        groundContact.SetAsBox(inEntityDef.width * 0.48f, inEntityDef.height / 8, b2Vec2(0, -inEntityDef.height / 2), 0);
-        b2FixtureDef fixtureDefGroundContact;
-        fixtureDefGroundContact.shape = &groundContact;
-        fixtureDefGroundContact.isSensor = true;
-        _groundSensorFixture = _body->CreateFixture(&fixtureDefGroundContact);
-        _groundSensorFixture->SetUserData(this);
-    }
+    // Empty
 }
 
 Entity::~Entity()
 {
-    deinitPhysics();
-    
     delete _controller;
 }
 
@@ -229,13 +195,51 @@ uint16_t Entity::write(OutputMemoryBitStream& inOutputStream, uint16_t inDirtySt
     return _controller->write(inOutputStream, writtenState, inDirtyState);
 }
 
-void Entity::deinitPhysics()
+void Entity::initPhysics(b2World& world)
 {
-    if (!_body)
+    assert(!_body);
+    assert(!_fixture);
+    assert(!_groundSensorFixture);
+    
+    b2BodyDef bodyDef;
+    bodyDef.position.Set(0, 0);
+    bodyDef.type = _entityDef.staticBody ? b2_staticBody : b2_dynamicBody;
+    bodyDef.fixedRotation = _entityDef.fixedRotation;
+    bodyDef.bullet = _entityDef.bullet;
+    
+    b2PolygonShape shape;
+    shape.SetAsBox(_entityDef.width / 2, _entityDef.height / 2);
+    
+    b2FixtureDef fixtureDef;
+    fixtureDef.shape = &shape;
+    fixtureDef.isSensor = _entityDef.sensor;
+    fixtureDef.density = _entityDef.density;
+    fixtureDef.friction = _entityDef.friction;
+    fixtureDef.restitution = _entityDef.restitution;
+    
+    _body = world.CreateBody(&bodyDef);
+    _body->SetUserData(this);
+    
+    _fixture = _body->CreateFixture(&fixtureDef);
+    _fixture->SetUserData(this);
+    
+    if (_entityDef.character)
     {
-        // Physics already deinitialized
-        return;
+        b2PolygonShape groundContact;
+        groundContact.SetAsBox(_entityDef.width * 0.48f, _entityDef.height / 8, b2Vec2(0, -_entityDef.height / 2), 0);
+        b2FixtureDef fixtureDefGroundContact;
+        fixtureDefGroundContact.shape = &groundContact;
+        fixtureDefGroundContact.isSensor = true;
+        _groundSensorFixture = _body->CreateFixture(&fixtureDefGroundContact);
+        _groundSensorFixture->SetUserData(this);
     }
+}
+
+void Entity::deinitPhysics(b2World& world)
+{
+    assert(_body);
+    assert(_fixture);
+    assert(!_entityDef.character || _groundSensorFixture);
     
     if (_fixture)
     {
@@ -251,7 +255,7 @@ void Entity::deinitPhysics()
     
     if (_body)
     {
-        _worldRef.DestroyBody(_body);
+        world.DestroyBody(_body);
         _body = NULL;
     }
 }
@@ -306,24 +310,40 @@ b2Body* Entity::getBody()
 void Entity::setPosition(b2Vec2 position)
 {
     _pose.position = position;
-    _body->SetTransform(_pose.position, _body->GetAngle());
+    
+    if (_body)
+    {
+        _body->SetTransform(_pose.position, _body->GetAngle());
+    }
 }
 
 const b2Vec2& Entity::getPosition()
 {
-    _pose.position = _body->GetPosition();
+    if (_body)
+    {
+        _pose.position = _body->GetPosition();
+    }
+    
     return _pose.position;
 }
 
 void Entity::setVelocity(b2Vec2 velocity)
 {
     _pose.velocity = velocity;
-    _body->SetLinearVelocity(_pose.velocity);
+    
+    if (_body)
+    {
+        _body->SetLinearVelocity(_pose.velocity);
+    }
 }
 
 const b2Vec2& Entity::getVelocity()
 {
-    _pose.velocity = _body->GetLinearVelocity();
+    if (_body)
+    {
+        _pose.velocity = _body->GetLinearVelocity();
+    }
+    
     return _pose.velocity;
 }
 
@@ -340,12 +360,20 @@ float Entity::getHeight()
 void Entity::setAngle(float angle)
 {
     _pose.angle = angle;
-    _body->SetTransform(_body->GetPosition(), _pose.angle);
+    
+    if (_body)
+    {
+        _body->SetTransform(_body->GetPosition(), _pose.angle);
+    }
 }
 
 float Entity::getAngle()
 {
-    _pose.angle = _body->GetAngle();
+    if (_body)
+    {
+        _pose.angle = _body->GetAngle();
+    }
+    
     return _pose.angle;
 }
 
@@ -389,7 +417,7 @@ bool Entity::isFacingLeft()
     return _pose.isFacingLeft;
 }
 
-std::string& Entity::getMapping()
+std::string& Entity::getTextureMapping()
 {
     std::map<std::string, std::string>& mappings = _entityDef.mappings;
     std::map<uint8_t, std::string>& stateMappings = _controller->getStateMappings();

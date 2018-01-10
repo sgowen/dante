@@ -81,8 +81,6 @@ void Server::update()
     
     InstanceManager::getServerWorld()->update();
     
-    spawnCratesIfNecessary();
-    
     NG_SERVER->sendOutgoingPackets();
     
 #ifdef NG_STEAM
@@ -114,6 +112,7 @@ void Server::handleNewClient(uint8_t playerId, std::string playerName)
         // This is our first client!
         
         spawnGroundsIfNecessary();
+        spawnCratesIfNecessary();
     }
 }
 
@@ -145,6 +144,23 @@ void Server::deleteRobotWithPlayerId(uint8_t playerId)
     }
 }
 
+void Server::spawnRobotForPlayer(uint8_t inPlayerId, std::string inPlayerName)
+{
+    _playerIdForRobotBeingCreated = inPlayerId;
+    Entity* entity = SERVER_ENTITY_MGR->createEntity('ROBT');
+    RobotController* robot = static_cast<RobotController*>(entity->getEntityController());
+    
+    ClientProxy* client = NG_SERVER->getClientProxy(inPlayerId);
+    robot->setAddressHash(client->getMachineAddress()->getHash());
+    
+    robot->setPlayerName(inPlayerName);
+    float posX = GAME_WIDTH / 2;
+    entity->setPosition(b2Vec2(posX, 8));
+    
+    // Doing this last on purpose
+    robot->setPlayerId(inPlayerId);
+}
+
 void Server::spawnGroundsIfNecessary()
 {
     if (_hasSpawnedGrounds)
@@ -163,26 +179,9 @@ void Server::spawnGroundsIfNecessary()
     _hasSpawnedGrounds = true;
 }
 
-void Server::spawnRobotForPlayer(uint8_t inPlayerId, std::string inPlayerName)
-{
-    _playerIdForRobotBeingCreated = inPlayerId;
-    Entity* entity = SERVER_ENTITY_MGR->createEntity('ROBT');
-    RobotController* robot = static_cast<RobotController*>(entity->getEntityController());
-    
-    ClientProxy* client = NG_SERVER->getClientProxy(inPlayerId);
-    robot->setAddressHash(client->getMachineAddress()->getHash());
-    
-    robot->setPlayerName(inPlayerName);
-    float posX = GAME_WIDTH / 2;
-    entity->setPosition(b2Vec2(posX, 8));
-    
-    // Doing this last on purpose
-    robot->setPlayerId(inPlayerId);
-}
-
 void Server::spawnCratesIfNecessary()
 {
-    if (InstanceManager::getServerWorld()->hasCrates())
+    if (_hasSpawnedCrates)
     {
         return;
     }
@@ -204,9 +203,11 @@ void Server::spawnCratesIfNecessary()
         
         entity->setPosition(b2Vec2(posX, posY));
     }
+    
+    _hasSpawnedCrates = true;
 }
 
-Server::Server(bool isSteam) : _stateTime(0), _frameStateTime(0), _playerIdForRobotBeingCreated(0), _isDisplaying(false), _hasSpawnedGrounds(false)
+Server::Server(bool isSteam) : _stateTime(0), _frameStateTime(0), _playerIdForRobotBeingCreated(0), _isDisplaying(false), _hasSpawnedGrounds(false), _hasSpawnedCrates(false)
 {
     FWInstanceManager::createServerEntityManager(InstanceManager::sHandleEntityCreatedOnServer, InstanceManager::sHandleEntityDeletedOnServer, World::sServerCreateEntity);
     

@@ -47,24 +47,6 @@ struct EntityDef
     bool sensor;
     bool character;
     bool stateSensitive;
-    
-    EntityDef()
-    {
-        type = 'ENTY';
-        controller = "DefaultController";
-        width = 1;
-        height = 1;
-        restitution = 0;
-        density = 0;
-        friction = 0.2f;
-        layer = 0;
-        staticBody = true;
-        fixedRotation = true;
-        bullet = false;
-        sensor = false;
-        character = false;
-        stateSensitive = false;
-    }
 };
 
 class Entity
@@ -72,7 +54,7 @@ class Entity
     NGRTTI_DECL;
     
 public:
-    Entity(EntityDef& inEntityDef, b2World& world, bool isServer);
+    Entity(EntityDef& inEntityDef, bool isServer);
     ~Entity();
     
     void update();
@@ -83,7 +65,8 @@ public:
     void recallLastReadState();
     uint16_t write(OutputMemoryBitStream& inOutputStream, uint16_t inDirtyState);
     
-    void deinitPhysics();
+    void initPhysics(b2World& world);
+    void deinitPhysics(b2World& world);
     void handleBeginFootContact(Entity* inEntity);
     void handleEndFootContact(Entity* inEntity);
     EntityDef& getEntityDef();
@@ -107,7 +90,7 @@ public:
     bool isRequestingDeletion();
     bool isServer();
     bool isFacingLeft();
-    std::string& getMapping();
+    std::string& getTextureMapping();
     
     struct Pose
     {
@@ -157,7 +140,6 @@ private:
     
     EntityDef& _entityDef;
     EntityController* _controller;
-    b2World& _worldRef;
     bool _isServer;
     
     /// Physics

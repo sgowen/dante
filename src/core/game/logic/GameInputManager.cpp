@@ -310,11 +310,6 @@ MoveList& GameInputManager::getMoveList()
     return _moveList;
 }
 
-bool GameInputManager::isPlayerIdLocalHost(uint8_t playerId)
-{
-    return _currentState->isPlayerIdLocalHost(playerId);
-}
-
 int GameInputManager::getMenuState()
 {
     return _menuState;

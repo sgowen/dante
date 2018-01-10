@@ -104,31 +104,34 @@ void GameEngine::update(Engine* engine)
     Timing::getInstance()->updateManual(_stateTime, FRAME_RATE);
     
     NG_CLIENT->processIncomingPackets();
-    
-    InstanceManager::getClientWorld()->postRead();
-    
-    GameInputManager::getInstance()->update();
+    if (NG_CLIENT->getState() == NCS_Disconnected)
+    {
+        engine->getStateMachine().revertToPreviousState();
+        return;
+    }
+    else if (NG_CLIENT->hasReceivedNewState())
+    {
+        InstanceManager::getClientWorld()->postRead();
+    }
     
     NG_AUDIO_ENGINE->update();
     
-    InstanceManager::getClientWorld()->update();
-    
-    GameInputManager::getInstance()->clearPendingMove();
-    
-    NG_CLIENT->sendOutgoingPackets();
-    
-    if (NG_CLIENT->getState() == NCS_Disconnected
-        || handleNonMoveInput())
+    GameInputManager::getInstance()->update();
+    if (handleNonMoveInput())
     {
         engine->getStateMachine().revertToPreviousState();
         return;
     }
     
+    InstanceManager::getClientWorld()->update();
+    GameInputManager::getInstance()->clearPendingMove();
+    NG_CLIENT->sendOutgoingPackets();
+    
 #ifdef NG_STEAM
     NG_STEAM_GAME_SERVICES->update(false);
 #endif
     
-    /// Only for hosts
+    /// Only for host
     if (Server::getInstance())
     {
         Server::getInstance()->update();

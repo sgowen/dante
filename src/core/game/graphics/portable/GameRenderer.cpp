@@ -206,7 +206,7 @@ void GameRenderer::updateCamera()
         {
             RobotController* robot = static_cast<RobotController*>(entity->getEntityController());
             
-            if (NG_CLIENT->isPlayerIdLocal(robot->getPlayerId()))
+            if (robot->isLocalPlayer())
             {
                 // Adjust camera based on the player position
                 
@@ -315,7 +315,7 @@ void GameRenderer::renderEntities(World* world, bool isServer)
     std::vector<Entity*> entities = world->getEntities();
     for (Entity* e : entities)
     {
-        TextureRegion tr = ASSETS->findTextureRegion(e->getMapping(), e->getStateTime());
+        TextureRegion tr = ASSETS->findTextureRegion(e->getTextureMapping(), e->getStateTime());
         
         Color c = Color::WHITE;
         if (isServer)

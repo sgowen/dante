@@ -47,7 +47,6 @@ public:
     void clearPendingMove();
     MainInputState* getInputState();
     MoveList& getMoveList();
-    bool isPlayerIdLocalHost(uint8_t playerId);
     int getMenuState();
     
 private:

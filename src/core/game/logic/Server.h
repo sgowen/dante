@@ -36,12 +36,13 @@ private:
     uint8_t _playerIdForRobotBeingCreated;
     bool _isDisplaying;
     bool _hasSpawnedGrounds;
+    bool _hasSpawnedCrates;
     
     void handleNewClient(uint8_t playerId, std::string playerName);
     void handleLostClient(ClientProxy* inClientProxy, uint8_t index);
     void deleteRobotWithPlayerId(uint8_t playerId);
-    void spawnGroundsIfNecessary();
     void spawnRobotForPlayer(uint8_t inPlayerId, std::string inPlayerName);
+    void spawnGroundsIfNecessary();
     void spawnCratesIfNecessary();
     
     // ctor, copy ctor, and assignment should be private in a Singleton

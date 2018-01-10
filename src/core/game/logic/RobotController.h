@@ -45,6 +45,7 @@ public:
     uint8_t getNumJumps();
     bool isMainAction();
     bool isSprinting();
+    bool isLocalPlayer();
     
 private:
     enum State
@@ -122,6 +123,8 @@ private:
     };
     Stats _stats;
     Stats _statsCache;
+    
+    bool _isLocalPlayer;
 };
 
 #endif /* defined(__noctisgames__RobotController__) */
