@@ -12,16 +12,15 @@
 #include "framework/graphics/portable/Color.h"
 #include "framework/util/FrameworkConstants.h"
 #include "framework/math/MathUtil.h"
-
 #include "Box2D/Common/b2Math.h"
 
 #include "framework/util/NGRTTI.h"
 
 #include <stdint.h>
 #include <map>
+#include <vector>
 
 class b2World;
-struct b2Vec2;
 class b2Body;
 class b2Fixture;
 class b2Contact;
@@ -30,22 +29,40 @@ class InputMemoryBitStream;
 class Move;
 class EntityController;
 
+enum FixtureFlags
+{
+    FixtureFlag_Box = 1 << 0,
+    FixtureFlag_Sensor = 1 << 1,
+    FixtureFlag_GroundContact = 1 << 2
+};
+
+struct FixtureDef
+{
+    std::vector<b2Vec2> vertices;
+    b2Vec2 center;
+    float restitution;
+    float density;
+    float friction;
+    int flags;
+};
+
+enum BodyFlags
+{
+    BodyFlag_Static = 1 << 0,
+    BodyFlag_FixedRotation = 1 << 1,
+    BodyFlag_Bullet = 1 << 2
+};
+
 struct EntityDef
 {
     uint32_t type;
     std::string controller;
     std::map<std::string, std::string> mappings;
+    std::vector<FixtureDef> fixtures;
+    int bodyFlags;
     float width;
     float height;
-    float restitution;
-    float density;
-    float friction;
     int layer;
-    bool staticBody;
-    bool fixedRotation;
-    bool bullet;
-    bool sensor;
-    bool character;
     bool stateSensitive;
 };
 
@@ -67,8 +84,6 @@ public:
     
     void initPhysics(b2World& world);
     void deinitPhysics(b2World& world);
-    void handleBeginFootContact(Entity* inEntity);
-    void handleEndFootContact(Entity* inEntity);
     EntityDef& getEntityDef();
     EntityController* getEntityController();
     void setStateTime(float stateTime);
@@ -144,7 +159,7 @@ private:
     
     /// Physics
     b2Body* _body;
-    b2Fixture* _fixture;
+    std::vector<b2Fixture*> _fixtures;
     b2Fixture* _groundSensorFixture;
     
     /// Network

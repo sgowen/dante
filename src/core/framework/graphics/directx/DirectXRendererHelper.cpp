@@ -224,7 +224,7 @@ void DirectXRendererHelper::createFramebufferObject()
     textureDesc.ArraySize = 1;
     textureDesc.Format = DXGI_FORMAT_B8G8R8A8_UNORM;
     textureDesc.SampleDesc.Count = 1;
-    textureDesc.Usage = D3D11_USAGE_DEFAULT;
+    textureDesc.Usage = D3D11_USAGameEngineState_Default;
     textureDesc.BindFlags = D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE;
     textureDesc.CPUAccessFlags = 0;
     textureDesc.MiscFlags = 0;
@@ -333,7 +333,7 @@ void DirectXRendererHelper::createIndexBuffer()
     
     indexBufferDesc.ByteWidth = sizeof(short) * MAX_BATCH_SIZE * INDICES_PER_RECTANGLE;
     indexBufferDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
-    indexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
+    indexBufferDesc.Usage = D3D11_USAGameEngineState_Default;
     
     D3D11_SUBRESOURCE_DATA indexDataDesc = { 0 };
     

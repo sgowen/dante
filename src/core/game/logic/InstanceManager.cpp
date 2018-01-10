@@ -12,7 +12,7 @@
 
 #include "framework/entity/Entity.h"
 #include "game/logic/World.h"
-#include <game/logic/RobotController.h>
+#include <game/logic/PlayerController.h>
 
 #include <assert.h>
 
@@ -82,7 +82,7 @@ uint64_t InstanceManager::sGetPlayerAddressHashForIndexOnClient(uint8_t inPlayer
     Entity* entity = InstanceManager::sGetPlayerEntityForIDOnClient(inPlayerIndex + 1);
     if (entity)
     {
-        RobotController* robot = static_cast<RobotController*>(entity->getEntityController());
+        PlayerController* robot = static_cast<PlayerController*>(entity->getEntityController());
         assert(robot);
         ret = robot->getAddressHash();
     }

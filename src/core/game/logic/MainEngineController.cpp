@@ -15,7 +15,7 @@
 #include "game/logic/StudioEngine.h"
 #include <framework/entity/EntityMapper.h>
 #include <framework/entity/DefaultController.h>
-#include <game/logic/RobotController.h>
+#include <game/logic/PlayerController.h>
 
 NGRTTI_IMPL(MainEngineController, EngineController);
 
@@ -26,7 +26,7 @@ MainEngineController::MainEngineController()
     StudioEngine::create();
     
     EntityMapper::getInstance()->registerFunction("DefaultController", DefaultController::create);
-    EntityMapper::getInstance()->registerFunction("RobotController", RobotController::create);
+    EntityMapper::getInstance()->registerFunction("PlayerController", PlayerController::create);
 }
 
 MainEngineController::~MainEngineController()

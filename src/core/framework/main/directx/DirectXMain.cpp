@@ -128,7 +128,8 @@ int DirectXMain::exec(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmd
 			return 1;
 		}
 
-#ifdef NG_LAUNCH_AS_FULL_SCREEN
+#ifndef _DEBUG
+        /// Launch directly into full screen
 		ShowWindow(hwnd, SW_SHOWMAXIMIZED);
 #else
 		SetWindowLongPtr(hwnd, GWL_STYLE, WS_OVERLAPPEDWINDOW);

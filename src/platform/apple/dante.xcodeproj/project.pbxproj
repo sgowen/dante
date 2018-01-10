@@ -281,7 +281,7 @@
 		BB5AFE691FB35AAF005FBD52 /* RendererHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF13F1EA94ED900F0866E /* RendererHelper.cpp */; };
 		BB5AFE6A1FB35AAF005FBD52 /* TextureLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF1411EA94ED900F0866E /* TextureLoader.cpp */; };
 		BB5AFE6B1FB35AAF005FBD52 /* LineBatcher.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF1431EA94ED900F0866E /* LineBatcher.cpp */; };
-		BB5AFE6D1FB35AAF005FBD52 /* QuadBatcher.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF1471EA94ED900F0866E /* QuadBatcher.cpp */; };
+		BB5AFE6D1FB35AAF005FBD52 /* PolygonBatcher.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF1471EA94ED900F0866E /* PolygonBatcher.cpp */; };
 		BB5AFE6F1FB35AAF005FBD52 /* Renderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB5833CE1EEDDAFC0084DA20 /* Renderer.cpp */; };
 		BB5AFE711FB35AAF005FBD52 /* SpriteBatcher.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF14D1EA94ED900F0866E /* SpriteBatcher.cpp */; };
 		BB5AFE731FB35AAF005FBD52 /* TextureLoaderFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF1511EA94ED900F0866E /* TextureLoaderFactory.cpp */; };
@@ -339,8 +339,8 @@
 		BB8308711EC2AD1F00435E7E /* SocketAddressFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB83082E1EC2AD1F00435E7E /* SocketAddressFactory.cpp */; };
 		BB8308741EC2AD1F00435E7E /* SocketUtil.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8308301EC2AD1F00435E7E /* SocketUtil.cpp */; };
 		BB8308801EC2AD1F00435E7E /* UDPSocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8308391EC2AD1F00435E7E /* UDPSocket.cpp */; };
-		BB9A452E2003370900E872E1 /* RobotController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB9A452C2003370900E872E1 /* RobotController.cpp */; };
-		BB9A452F2003370900E872E1 /* RobotController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB9A452C2003370900E872E1 /* RobotController.cpp */; };
+		BB9A452E2003370900E872E1 /* PlayerController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB9A452C2003370900E872E1 /* PlayerController.cpp */; };
+		BB9A452F2003370900E872E1 /* PlayerController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB9A452C2003370900E872E1 /* PlayerController.cpp */; };
 		BB9EE50D1FC092BA000F5389 /* AssetDataHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB9EE50A1FC092BA000F5389 /* AssetDataHandler.cpp */; };
 		BB9EE50E1FC092BA000F5389 /* AssetDataHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB9EE50A1FC092BA000F5389 /* AssetDataHandler.cpp */; };
 		BB9EE5141FC092C5000F5389 /* apple_asset_data_handler.mm in Sources */ = {isa = PBXBuildFile; fileRef = BB9EE5101FC092C4000F5389 /* apple_asset_data_handler.mm */; };
@@ -360,7 +360,7 @@
 		BBAEF2641EA94EDA00F0866E /* RendererHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF13F1EA94ED900F0866E /* RendererHelper.cpp */; };
 		BBAEF2661EA94EDA00F0866E /* TextureLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF1411EA94ED900F0866E /* TextureLoader.cpp */; };
 		BBAEF2681EA94EDA00F0866E /* LineBatcher.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF1431EA94ED900F0866E /* LineBatcher.cpp */; };
-		BBAEF26C1EA94EDA00F0866E /* QuadBatcher.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF1471EA94ED900F0866E /* QuadBatcher.cpp */; };
+		BBAEF26C1EA94EDA00F0866E /* PolygonBatcher.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF1471EA94ED900F0866E /* PolygonBatcher.cpp */; };
 		BBAEF2721EA94EDA00F0866E /* SpriteBatcher.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF14D1EA94ED900F0866E /* SpriteBatcher.cpp */; };
 		BBAEF2761EA94EDA00F0866E /* TextureLoaderFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF1511EA94ED900F0866E /* TextureLoaderFactory.cpp */; };
 		BBAEF2781EA94EDA00F0866E /* TextureRegion.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF1531EA94ED900F0866E /* TextureRegion.cpp */; };
@@ -969,7 +969,6 @@
 		BB7251A61EE105780024C71C /* InputState.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = InputState.cpp; sourceTree = "<group>"; };
 		BB7251A71EE105780024C71C /* InputState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InputState.h; sourceTree = "<group>"; };
 		BB7428361EB2A98500B7628D /* pch.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = pch.h; sourceTree = "<group>"; };
-		BB7428391EB2AF4200B7628D /* FlagUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlagUtil.h; sourceTree = "<group>"; };
 		BB74283A1EB2AF4200B7628D /* macros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = macros.h; sourceTree = "<group>"; };
 		BB74283B1EB2AF4200B7628D /* NGRollingPool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NGRollingPool.h; sourceTree = "<group>"; };
 		BB74283C1EB2AF4200B7628D /* NGSTDUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NGSTDUtil.h; sourceTree = "<group>"; };
@@ -1004,8 +1003,8 @@
 		BB83083A1EC2AD1F00435E7E /* UDPSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UDPSocket.h; sourceTree = "<group>"; };
 		BB9527B51FDEFF0700AC2E67 /* OpenSLESManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OpenSLESManager.h; sourceTree = "<group>"; };
 		BB9527B61FDEFF0700AC2E67 /* OpenSLESManager.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = OpenSLESManager.cpp; sourceTree = "<group>"; };
-		BB9A452C2003370900E872E1 /* RobotController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RobotController.cpp; sourceTree = "<group>"; };
-		BB9A452D2003370900E872E1 /* RobotController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RobotController.h; sourceTree = "<group>"; };
+		BB9A452C2003370900E872E1 /* PlayerController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PlayerController.cpp; sourceTree = "<group>"; };
+		BB9A452D2003370900E872E1 /* PlayerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayerController.h; sourceTree = "<group>"; };
 		BB9EE50A1FC092BA000F5389 /* AssetDataHandler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AssetDataHandler.cpp; sourceTree = "<group>"; };
 		BB9EE50B1FC092BA000F5389 /* FileData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileData.h; sourceTree = "<group>"; };
 		BB9EE50C1FC092BA000F5389 /* AssetDataHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AssetDataHandler.h; sourceTree = "<group>"; };
@@ -1042,8 +1041,8 @@
 		BBAEF1421EA94ED900F0866E /* TextureLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextureLoader.h; sourceTree = "<group>"; };
 		BBAEF1431EA94ED900F0866E /* LineBatcher.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LineBatcher.cpp; sourceTree = "<group>"; };
 		BBAEF1441EA94ED900F0866E /* LineBatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LineBatcher.h; sourceTree = "<group>"; };
-		BBAEF1471EA94ED900F0866E /* QuadBatcher.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = QuadBatcher.cpp; sourceTree = "<group>"; };
-		BBAEF1481EA94ED900F0866E /* QuadBatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QuadBatcher.h; sourceTree = "<group>"; };
+		BBAEF1471EA94ED900F0866E /* PolygonBatcher.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PolygonBatcher.cpp; sourceTree = "<group>"; };
+		BBAEF1481EA94ED900F0866E /* PolygonBatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PolygonBatcher.h; sourceTree = "<group>"; };
 		BBAEF14D1EA94ED900F0866E /* SpriteBatcher.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SpriteBatcher.cpp; sourceTree = "<group>"; };
 		BBAEF14E1EA94ED900F0866E /* SpriteBatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpriteBatcher.h; sourceTree = "<group>"; };
 		BBAEF1511EA94ED900F0866E /* TextureLoaderFactory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TextureLoaderFactory.cpp; sourceTree = "<group>"; };
@@ -2445,8 +2444,8 @@
 				BB65315A1FED56C700963997 /* MainInputState.h */,
 				BB6E7B051F940F13006C0024 /* PooledObjectsManager.cpp */,
 				BB6E7B061F940F13006C0024 /* PooledObjectsManager.h */,
-				BB9A452C2003370900E872E1 /* RobotController.cpp */,
-				BB9A452D2003370900E872E1 /* RobotController.h */,
+				BB9A452C2003370900E872E1 /* PlayerController.cpp */,
+				BB9A452D2003370900E872E1 /* PlayerController.h */,
 				BB65315D1FED56C800963997 /* Server.cpp */,
 				BB65315F1FED56C800963997 /* Server.h */,
 				BBFE83211FFF1B3D00E5F650 /* StudioEngine.cpp */,
@@ -2525,7 +2524,6 @@
 			isa = PBXGroup;
 			children = (
 				BBB1D3AA1FC8CA4D00B74BAC /* ContainerUtil.h */,
-				BB7428391EB2AF4200B7628D /* FlagUtil.h */,
 				BBCDF24D1F3796C3006E94B0 /* FPSUtil.cpp */,
 				BBCDF24E1F3796C3006E94B0 /* FPSUtil.h */,
 				BB61CB581EC9FA1B000E0291 /* FrameworkConstants.h */,
@@ -2771,8 +2769,8 @@
 				BB1C3C0D1FE77301002E4AA6 /* NGTextureShader.cpp */,
 				BB1C3C0A1FE77301002E4AA6 /* NGTextureShader.h */,
 				BB0CA6F11FE5B7130011B75B /* NGTextureSlot.h */,
-				BBAEF1471EA94ED900F0866E /* QuadBatcher.cpp */,
-				BBAEF1481EA94ED900F0866E /* QuadBatcher.h */,
+				BBAEF1471EA94ED900F0866E /* PolygonBatcher.cpp */,
+				BBAEF1481EA94ED900F0866E /* PolygonBatcher.h */,
 				BB5833CE1EEDDAFC0084DA20 /* Renderer.cpp */,
 				BB5833CF1EEDDAFC0084DA20 /* Renderer.h */,
 				BBAEF13F1EA94ED900F0866E /* RendererHelper.cpp */,
@@ -3981,7 +3979,7 @@
 				BB6F59911FBDEA0D00BD7697 /* context.c in Sources */,
 				BBD5541C1FDB2EA800E00AD6 /* b2ContactSolver.cpp in Sources */,
 				BB5833CD1EEDDA330084DA20 /* main.cpp in Sources */,
-				BBAEF26C1EA94EDA00F0866E /* QuadBatcher.cpp in Sources */,
+				BBAEF26C1EA94EDA00F0866E /* PolygonBatcher.cpp in Sources */,
 				BBD5545E1FDB2EA800E00AD6 /* b2PolygonShape.cpp in Sources */,
 				BBD554601FDB2EA800E00AD6 /* b2TimeOfImpact.cpp in Sources */,
 				BBD554321FDB2EA800E00AD6 /* b2RevoluteJoint.cpp in Sources */,
@@ -3997,7 +3995,7 @@
 				BBAEF29C1EA94EDA00F0866E /* Triangle.cpp in Sources */,
 				BBAEF2681EA94EDA00F0866E /* LineBatcher.cpp in Sources */,
 				BB31B5B11FC205D5005F1C0A /* KeyboardInputManager.cpp in Sources */,
-				BB9A452E2003370900E872E1 /* RobotController.cpp in Sources */,
+				BB9A452E2003370900E872E1 /* PlayerController.cpp in Sources */,
 				BBB1D3AE1FC8CB9800B74BAC /* NGExtension.cpp in Sources */,
 				BB6531641FED56CA00963997 /* Server.cpp in Sources */,
 				BB31B5AD1FC205D5005F1C0A /* CursorConverter.cpp in Sources */,
@@ -4187,7 +4185,7 @@
 				BB5AFE6B1FB35AAF005FBD52 /* LineBatcher.cpp in Sources */,
 				BBD554111FDB2EA800E00AD6 /* b2Fixture.cpp in Sources */,
 				BBD554531FDB2EA800E00AD6 /* b2CollideCircle.cpp in Sources */,
-				BB5AFE6D1FB35AAF005FBD52 /* QuadBatcher.cpp in Sources */,
+				BB5AFE6D1FB35AAF005FBD52 /* PolygonBatcher.cpp in Sources */,
 				BB5AFE6F1FB35AAF005FBD52 /* Renderer.cpp in Sources */,
 				BB5AFE711FB35AAF005FBD52 /* SpriteBatcher.cpp in Sources */,
 				BB5AFE731FB35AAF005FBD52 /* TextureLoaderFactory.cpp in Sources */,
@@ -4220,7 +4218,7 @@
 				BBE4E40C1FEDD03F004193F1 /* Box2DDebugRenderer.cpp in Sources */,
 				BB1C3C0F1FE77301002E4AA6 /* NGFramebufferToScreenShader.cpp in Sources */,
 				BB5AFE3B1FB35A77005FBD52 /* FWInstanceManager.cpp in Sources */,
-				BB9A452F2003370900E872E1 /* RobotController.cpp in Sources */,
+				BB9A452F2003370900E872E1 /* PlayerController.cpp in Sources */,
 				BBD554311FDB2EA800E00AD6 /* b2MotorJoint.cpp in Sources */,
 				BB5AFE3C1FB35A77005FBD52 /* InputState.cpp in Sources */,
 				BB31B5AC1FC205D5005F1C0A /* CursorInputManager.cpp in Sources */,

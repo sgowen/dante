@@ -15,7 +15,7 @@
 #include "game/logic/World.h"
 #include "framework/graphics/portable/Box2DDebugRenderer.h"
 #include "framework/graphics/portable/SpriteBatcher.h"
-#include "framework/graphics/portable/QuadBatcher.h"
+#include "framework/graphics/portable/PolygonBatcher.h"
 #include "framework/graphics/portable/LineBatcher.h"
 #include "framework/graphics/portable/CircleBatcher.h"
 #include "framework/graphics/portable/NGShaderLoader.h"
@@ -53,9 +53,8 @@
 #include "framework/graphics/portable/Color.h"
 #include "framework/math/Circle.h"
 #include "framework/graphics/portable/CircleBatcher.h"
-#include "framework/graphics/portable/QuadBatcher.h"
+#include "framework/graphics/portable/PolygonBatcher.h"
 #include "framework/graphics/portable/LineBatcher.h"
-#include "framework/util/FlagUtil.h"
 #include "framework/util/FrameworkConstants.h"
 #include "framework/graphics/portable/TextureWrapper.h"
 #include "framework/graphics/portable/TextureDataWrapper.h"
@@ -71,7 +70,7 @@
 #include "framework/graphics/portable/NGTextureDesc.h"
 #include "framework/graphics/portable/Assets.h"
 #include <game/logic/GameEngine.h>
-#include <game/logic/RobotController.h>
+#include <game/logic/PlayerController.h>
 
 #ifdef NG_STEAM
 #include "framework/network/steam/NGSteamGameServer.h"
@@ -86,11 +85,11 @@
 GameRenderer::GameRenderer() : Renderer(),
 _textureManager(new TextureManager("game_assets.cfg")),
 _rendererHelper(RENDERER_HELPER_FACTORY->createRendererHelper()),
-_fillQuadBatcher(new QuadBatcher(_rendererHelper, true)),
-_boundsQuadBatcher(new QuadBatcher(_rendererHelper, false)),
+_fillPolygonBatcher(new PolygonBatcher(_rendererHelper, true)),
+_boundsPolygonBatcher(new PolygonBatcher(_rendererHelper, false)),
 _lineBatcher(new LineBatcher(_rendererHelper)),
 _circleBatcher(new CircleBatcher(_rendererHelper)),
-_box2DDebugRenderer(new Box2DDebugRenderer(*_fillQuadBatcher, *_boundsQuadBatcher, *_lineBatcher, *_circleBatcher)),
+_box2DDebugRenderer(new Box2DDebugRenderer(*_fillPolygonBatcher, *_boundsPolygonBatcher, *_lineBatcher, *_circleBatcher)),
 _shaderProgramLoader(SHADER_PROGRAM_LOADER_FACTORY->createNGShaderLoader()),
 _textureNGShader(new NGTextureShader(*_rendererHelper, "shader_003_vert.ngs", "shader_003_frag.ngs")),
 _colorNGShader(new NGGeometryShader(*_rendererHelper, "shader_001_vert.ngs", "shader_001_frag.ngs")),
@@ -115,8 +114,8 @@ GameRenderer::~GameRenderer()
     {
         delete _spriteBatchers[i];
     }
-    delete _fillQuadBatcher;
-    delete _boundsQuadBatcher;
+    delete _fillPolygonBatcher;
+    delete _boundsPolygonBatcher;
     delete _lineBatcher;
     delete _circleBatcher;
     delete _box2DDebugRenderer;
@@ -204,7 +203,7 @@ void GameRenderer::updateCamera()
         
         for (Entity* entity : InstanceManager::getClientWorld()->getPlayers())
         {
-            RobotController* robot = static_cast<RobotController*>(entity->getEntityController());
+            PlayerController* robot = static_cast<PlayerController*>(entity->getEntityController());
             
             if (robot->isLocalPlayer())
             {
@@ -292,7 +291,7 @@ void GameRenderer::renderWorld(int flags)
         renderEntities(InstanceManager::getServerWorld(), true);
     }
     
-    if (isFlagSet(flags, GE_DISPLAY_BOX_2D))
+    if (flags & GameEngineState_DisplayBox2D)
     {
         _box2DDebugRenderer->render(&InstanceManager::getClientWorld()->getWorld(), *_colorNGShader);
         
@@ -372,7 +371,7 @@ void GameRenderer::renderUI(int flags)
             renderText(StringUtil::format("'I'       DEBUG %s", Server::getInstance()->isDisplaying() ? " ON" : "OFF").c_str(), CAM_WIDTH - 0.5f, CAM_HEIGHT - (row++ * padding), Color::WHITE, FONT_ALIGN_RIGHT);
         }
         
-        renderText(StringUtil::format("'P' BOX2D DEBUG %s", isFlagSet(flags, GE_DISPLAY_BOX_2D) ? " ON" : "OFF").c_str(), CAM_WIDTH - 0.5f, CAM_HEIGHT - (row++ * padding), Color::WHITE, FONT_ALIGN_RIGHT);
+        renderText(StringUtil::format("'P' BOX2D DEBUG %s", flags & GameEngineState_DisplayBox2D ? " ON" : "OFF").c_str(), CAM_WIDTH - 0.5f, CAM_HEIGHT - (row++ * padding), Color::WHITE, FONT_ALIGN_RIGHT);
         
         if (InstanceManager::getClientWorld())
         {
@@ -381,7 +380,7 @@ void GameRenderer::renderUI(int flags)
             std::vector<Entity*> players = InstanceManager::getClientWorld()->getPlayers();
             for (Entity* entity : players)
             {
-                RobotController* robot = static_cast<RobotController*>(entity->getEntityController());
+                PlayerController* robot = static_cast<PlayerController*>(entity->getEntityController());
                 
                 int playerId = robot->getPlayerId();
                 if (playerId >= 1 && playerId <= 4)

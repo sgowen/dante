@@ -15,7 +15,7 @@
 #include "game/logic/World.h"
 #include "framework/graphics/portable/Box2DDebugRenderer.h"
 #include "framework/graphics/portable/SpriteBatcher.h"
-#include "framework/graphics/portable/QuadBatcher.h"
+#include "framework/graphics/portable/PolygonBatcher.h"
 #include "framework/graphics/portable/LineBatcher.h"
 #include "framework/graphics/portable/CircleBatcher.h"
 #include "framework/graphics/portable/NGShaderLoader.h"
@@ -53,9 +53,8 @@
 #include "framework/graphics/portable/Color.h"
 #include "framework/math/Circle.h"
 #include "framework/graphics/portable/CircleBatcher.h"
-#include "framework/graphics/portable/QuadBatcher.h"
+#include "framework/graphics/portable/PolygonBatcher.h"
 #include "framework/graphics/portable/LineBatcher.h"
-#include "framework/util/FlagUtil.h"
 #include "framework/util/FrameworkConstants.h"
 #include "framework/graphics/portable/TextureWrapper.h"
 #include "framework/graphics/portable/TextureDataWrapper.h"
@@ -86,8 +85,8 @@ TitleRenderer::TitleRenderer() : Renderer(),
 _textureManager(new TextureManager("title_assets.cfg")),
 _rendererHelper(RENDERER_HELPER_FACTORY->createRendererHelper()),
 _spriteBatcher(new SpriteBatcher(_rendererHelper)),
-_fillQuadBatcher(new QuadBatcher(_rendererHelper, true)),
-_boundsQuadBatcher(new QuadBatcher(_rendererHelper, false)),
+_fillPolygonBatcher(new PolygonBatcher(_rendererHelper, true)),
+_boundsPolygonBatcher(new PolygonBatcher(_rendererHelper, false)),
 _lineBatcher(new LineBatcher(_rendererHelper)),
 _circleBatcher(new CircleBatcher(_rendererHelper)),
 _shaderProgramLoader(SHADER_PROGRAM_LOADER_FACTORY->createNGShaderLoader()),
@@ -107,8 +106,8 @@ TitleRenderer::~TitleRenderer()
     delete _textureManager;
     delete _rendererHelper;
     delete _spriteBatcher;
-    delete _fillQuadBatcher;
-    delete _boundsQuadBatcher;
+    delete _fillPolygonBatcher;
+    delete _boundsPolygonBatcher;
     delete _lineBatcher;
     delete _circleBatcher;
     delete _shaderProgramLoader;
@@ -155,19 +154,19 @@ void TitleRenderer::render(int flags)
         
         switch (flags)
         {
-            case TE_MAIN_MENU_STEAM_OFF:
+            case TitleEngineState_SteamOff:
                 renderMainMenuSteamOffText();
                 break;
-            case TE_MAIN_MENU_STEAM_ON:
+            case TitleEngineState_SteamOn:
                 renderMainMenuSteamOnText();
                 break;
-            case TE_MAIN_MENU_STARTING_SERVER:
+            case TitleEngineState_ServerStarting:
                 renderStartingServerText();
                 break;
-            case TE_MAIN_MENU_ENTERING_USERNAME:
+            case TitleEngineState_InputName:
                 renderEnterUsernameText();
                 break;
-            case TE_MAIN_MENU_JOINING_LOCAL_SERVER_BY_IP:
+            case TitleEngineState_InputIp:
                 renderJoiningLocalServerByIPText();
                 break;
             default:

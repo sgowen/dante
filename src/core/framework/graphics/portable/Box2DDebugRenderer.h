@@ -11,7 +11,7 @@
 
 #include "Box2D/Common/b2Draw.h"
 
-class QuadBatcher;
+class PolygonBatcher;
 class LineBatcher;
 class CircleBatcher;
 class NGShader;
@@ -20,7 +20,7 @@ class b2World;
 class Box2DDebugRenderer : public b2Draw
 {
 public:
-    Box2DDebugRenderer(QuadBatcher& fillQuadBatcher, QuadBatcher& boundsQuadBatcher, LineBatcher& lineBatcher, CircleBatcher& circleBatcher);
+    Box2DDebugRenderer(PolygonBatcher& fillPolygonBatcher, PolygonBatcher& boundsPolygonBatcher, LineBatcher& lineBatcher, CircleBatcher& circleBatcher);
     virtual ~Box2DDebugRenderer();
     
     /// Draw a closed polygon provided in CCW order.
@@ -48,8 +48,8 @@ public:
     void render(b2World* world, NGShader& shaderProgram);
     
 private:
-    QuadBatcher& _fillQuadBatcher;
-    QuadBatcher& _boundsQuadBatcher;
+    PolygonBatcher& _fillPolygonBatcher;
+    PolygonBatcher& _boundsPolygonBatcher;
     LineBatcher& _lineBatcher;
     CircleBatcher& _circleBatcher;
 };

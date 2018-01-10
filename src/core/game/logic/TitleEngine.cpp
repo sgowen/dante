@@ -36,7 +36,6 @@
 #include "framework/audio/portable/NGAudioEngine.h"
 #include "framework/util/NGExtension.h"
 #include "framework/util/PlatformHelper.h"
-#include "framework/util/FlagUtil.h"
 #include "framework/graphics/portable/Assets.h"
 #include "framework/util/FrameworkConstants.h"
 #include "framework/audio/portable/NGAudioEngine.h"
@@ -82,7 +81,7 @@ TitleEngine::TitleEngine() : EngineState(),
 _config(new JsonFile("game.cfg")),
 _renderer(new TitleRenderer()),
 _isSteam(false),
-_state(TE_MAIN_MENU_STEAM_OFF)
+_state(TitleEngineState_SteamOff)
 {
     NoctisGames::NGExtension::setInstance(NoctisGames::DefaultNGExtension::getInstance());
     
@@ -183,17 +182,17 @@ bool TitleEngine::handleInput(Engine* engine)
         {
             TitleInputManager::getInstance()->setLiveInputMode(false);
             
-            _state = _isSteam ? TE_MAIN_MENU_STEAM_ON : TE_MAIN_MENU_STEAM_OFF;
+            _state = _isSteam ? TitleEngineState_SteamOn : TitleEngineState_SteamOff;
         }
         else if (TitleInputManager::getInstance()->isTimeToProcessInput())
         {
-            if (_state == TE_MAIN_MENU_JOINING_LOCAL_SERVER_BY_IP)
+            if (_state == TitleEngineState_InputIp)
             {
                 _serverIPAddress = StringUtil::format("%s:%d", TitleInputManager::getInstance()->getLiveInput().c_str(), SERVER_PORT);
                 _name.clear();
-                _state = TE_MAIN_MENU_ENTERING_USERNAME;
+                _state = TitleEngineState_InputName;
             }
-            else if (_state == TE_MAIN_MENU_ENTERING_USERNAME)
+            else if (_state == TitleEngineState_InputName)
             {
                 _name = TitleInputManager::getInstance()->getLiveInput();
                 if (_name.length() > 0)
@@ -251,7 +250,7 @@ bool TitleEngine::handleInput(Engine* engine)
             {
                 _serverIPAddress.clear();
                 _name.clear();
-                _state = TE_MAIN_MENU_ENTERING_USERNAME;
+                _state = TitleEngineState_InputName;
                 TitleInputManager::getInstance()->setLiveInputMode(true);
             }
         }
@@ -260,7 +259,7 @@ bool TitleEngine::handleInput(Engine* engine)
             if (!_isSteam)
             {
                 _serverIPAddress.clear();
-                _state = TE_MAIN_MENU_JOINING_LOCAL_SERVER_BY_IP;
+                _state = TitleEngineState_InputIp;
                 TitleInputManager::getInstance()->setLiveInputMode(true);
             }
         }
@@ -311,7 +310,7 @@ bool TitleEngine::handleInput(Engine* engine)
 
 void TitleEngine::activateSteam()
 {
-    _state = TE_MAIN_MENU_STEAM_OFF;
+    _state = TitleEngineState_SteamOff;
     
 #ifdef NG_STEAM
     if (!NGSteamGameServices::getInstance())
@@ -320,7 +319,7 @@ void TitleEngine::activateSteam()
     }
     
     _isSteam = NG_STEAM_GAME_SERVICES->getStatus() == STEAM_INIT_SUCCESS;
-    _state = _isSteam ? TE_MAIN_MENU_STEAM_ON : TE_MAIN_MENU_STEAM_OFF;
+    _state = _isSteam ? TitleEngineState_SteamOn : TitleEngineState_SteamOff;
 #endif
 }
 
@@ -359,7 +358,7 @@ void TitleEngine::deactivateSteam()
     }
     
     _isSteam = false;
-    _state = TE_MAIN_MENU_STEAM_OFF;
+    _state = TitleEngineState_SteamOff;
 #endif
 }
 
@@ -372,7 +371,7 @@ void TitleEngine::startServer()
         PooledObjectsManager::create();
     }
     
-    _state = TE_MAIN_MENU_STARTING_SERVER;
+    _state = TitleEngineState_ServerStarting;
     
     Server::create(_isSteam);
     
@@ -429,5 +428,5 @@ void TitleEngine::disconnect()
         PooledObjectsManager::destroy();
     }
     
-    _state = _isSteam ? TE_MAIN_MENU_STEAM_ON : TE_MAIN_MENU_STEAM_OFF;
+    _state = _isSteam ? TitleEngineState_SteamOn : TitleEngineState_SteamOff;
 }

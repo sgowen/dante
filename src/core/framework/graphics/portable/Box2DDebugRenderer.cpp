@@ -10,7 +10,7 @@
 
 #include <framework/graphics/portable/Box2DDebugRenderer.h>
 
-#include "framework/graphics/portable/QuadBatcher.h"
+#include "framework/graphics/portable/PolygonBatcher.h"
 #include "framework/graphics/portable/LineBatcher.h"
 #include "framework/graphics/portable/CircleBatcher.h"
 #include <framework/graphics/portable/NGShader.h>
@@ -20,9 +20,9 @@
 #include "framework/math/Circle.h"
 #include "framework/graphics/portable/Color.h"
 
-Box2DDebugRenderer::Box2DDebugRenderer(QuadBatcher& fillQuadBatcher, QuadBatcher& boundsQuadBatcher, LineBatcher& lineBatcher, CircleBatcher& circleBatcher) :
-_fillQuadBatcher(fillQuadBatcher),
-_boundsQuadBatcher(boundsQuadBatcher),
+Box2DDebugRenderer::Box2DDebugRenderer(PolygonBatcher& fillPolygonBatcher, PolygonBatcher& boundsPolygonBatcher, LineBatcher& lineBatcher, CircleBatcher& circleBatcher) :
+_fillPolygonBatcher(fillPolygonBatcher),
+_boundsPolygonBatcher(boundsPolygonBatcher),
 _lineBatcher(lineBatcher),
 _circleBatcher(circleBatcher)
 {
@@ -36,26 +36,14 @@ Box2DDebugRenderer::~Box2DDebugRenderer()
 
 void Box2DDebugRenderer::DrawPolygon(const b2Vec2* vertices, int32 vertexCount, const b2Color& color)
 {
-    if (vertexCount == 4)
-    {
-        Color c = Color(color.r, color.g, color.b, color.a / 2);
-        _boundsQuadBatcher.renderQuad(vertices[0].x, vertices[0].y,
-                                      vertices[1].x, vertices[1].y,
-                                      vertices[2].x, vertices[2].y,
-                                      vertices[3].x, vertices[3].y, c);
-    }
+    Color c = Color(color.r, color.g, color.b, color.a / 2);
+    _boundsPolygonBatcher.renderPolygon(vertices, vertexCount, c);
 }
 
 void Box2DDebugRenderer::DrawSolidPolygon(const b2Vec2* vertices, int32 vertexCount, const b2Color& color)
 {
-    if (vertexCount == 4)
-    {
-        Color c = Color(color.r, color.g, color.b, color.a / 2);
-        _fillQuadBatcher.renderQuad(vertices[0].x, vertices[0].y,
-                                    vertices[1].x, vertices[1].y,
-                                    vertices[2].x, vertices[2].y,
-                                    vertices[3].x, vertices[3].y, c);
-    }
+    Color c = Color(color.r, color.g, color.b, color.a / 2);
+    _fillPolygonBatcher.renderPolygon(vertices, vertexCount, c);
 }
 
 void Box2DDebugRenderer::DrawCircle(const b2Vec2& center, float32 radius, const b2Color& color)
@@ -90,15 +78,15 @@ void Box2DDebugRenderer::render(b2World* world, NGShader& shaderProgram)
     world->SetDebugDraw(this);
     AppendFlags(e_shapeBit);
     
-    _boundsQuadBatcher.beginBatch();
-    _fillQuadBatcher.beginBatch();
+    _boundsPolygonBatcher.beginBatch();
+    _fillPolygonBatcher.beginBatch();
     _lineBatcher.beginBatch();
     _circleBatcher.beginBatch();
     
     world->DrawDebugData();
     
-    _boundsQuadBatcher.endBatch(shaderProgram);
-    _fillQuadBatcher.endBatch(shaderProgram);
+    _boundsPolygonBatcher.endBatch(shaderProgram);
+    _fillPolygonBatcher.endBatch(shaderProgram);
     _lineBatcher.endBatch(shaderProgram);
     _circleBatcher.endBatch(shaderProgram);
 }

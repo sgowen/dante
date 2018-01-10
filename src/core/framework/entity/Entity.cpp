@@ -23,7 +23,6 @@
 #include "framework/util/StringUtil.h"
 #include "framework/math/MathUtil.h"
 #include <framework/entity/EntityMapper.h>
-#include <framework/util/FlagUtil.h>
 #include <framework/network/server/NetworkManagerServer.h>
 
 NGRTTI_IMPL_NOPARENT(Entity);
@@ -33,7 +32,6 @@ _entityDef(inEntityDef),
 _controller(EntityMapper::getInstance()->createEntityController(inEntityDef.controller, this)),
 _isServer(isServer),
 _body(NULL),
-_fixture(NULL),
 _groundSensorFixture(NULL),
 _pose(),
 _poseCache(_pose),
@@ -90,7 +88,7 @@ void Entity::handleBeginContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixtu
 {
     if (inFixtureA == _groundSensorFixture)
     {
-        handleBeginFootContact(inEntity);
+        _pose.numGroundContacts = clamp(_pose.numGroundContacts + 1, 3, 0);
     }
     
     _controller->handleBeginContact(inEntity, inFixtureA, inFixtureB);
@@ -100,10 +98,7 @@ void Entity::handleEndContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture
 {
     if (inFixtureA == _groundSensorFixture)
     {
-        if (inEntity->getEntityDef().type != _entityDef.type)
-        {
-            handleEndFootContact(inEntity);
-        }
+        _pose.numGroundContacts = clamp(_pose.numGroundContacts - 1, 3, 0);
     }
     
     _controller->handleEndContact(inEntity, inFixtureA, inFixtureB);
@@ -127,12 +122,13 @@ void Entity::read(InputMemoryBitStream& inInputStream)
         inInputStream.read(_pose.velocity);
         inInputStream.read(_pose.position);
         
-        if (!_entityDef.fixedRotation)
+        bool fixedRotation = _entityDef.bodyFlags & BodyFlag_FixedRotation;
+        if (!fixedRotation)
         {
             inInputStream.read(_pose.angle);
         }
         
-        if (_entityDef.character)
+        if (_groundSensorFixture)
         {
             inInputStream.read<uint8_t, 2>(_pose.numGroundContacts);
         }
@@ -141,7 +137,7 @@ void Entity::read(InputMemoryBitStream& inInputStream)
         
         updateBodyFromPose();
         
-        setFlag(_readState, ReadStateFlag_Pose);
+        _readState |= ReadStateFlag_Pose;
         _poseCache = _pose;
     }
     
@@ -150,7 +146,7 @@ void Entity::read(InputMemoryBitStream& inInputStream)
 
 void Entity::recallLastReadState()
 {
-    if (isFlagSet(_readState, ReadStateFlag_Pose))
+    if (_readState & ReadStateFlag_Pose)
     {
         _pose = _poseCache;
         
@@ -164,7 +160,7 @@ uint16_t Entity::write(OutputMemoryBitStream& inOutputStream, uint16_t inDirtySt
 {
     uint16_t writtenState = 0;
     
-    bool pose = isFlagSet(inDirtyState, ReadStateFlag_Pose);
+    bool pose = inDirtyState & ReadStateFlag_Pose;
     inOutputStream.write(pose);
     if (pose)
     {
@@ -177,19 +173,20 @@ uint16_t Entity::write(OutputMemoryBitStream& inOutputStream, uint16_t inDirtySt
         inOutputStream.write(_pose.velocity);
         inOutputStream.write(_pose.position);
         
-        if (!_entityDef.fixedRotation)
+        bool fixedRotation = _entityDef.bodyFlags & BodyFlag_FixedRotation;
+        if (!fixedRotation)
         {
             inOutputStream.write(_pose.angle);
         }
         
-        if (_entityDef.character)
+        if (_groundSensorFixture)
         {
             inOutputStream.write<uint8_t, 2>(_pose.numGroundContacts);
         }
         
         inOutputStream.write(_pose.isFacingLeft);
         
-        setFlag(writtenState, ReadStateFlag_Pose);
+        writtenState |= ReadStateFlag_Pose;
     }
     
     return _controller->write(inOutputStream, writtenState, inDirtyState);
@@ -198,87 +195,74 @@ uint16_t Entity::write(OutputMemoryBitStream& inOutputStream, uint16_t inDirtySt
 void Entity::initPhysics(b2World& world)
 {
     assert(!_body);
-    assert(!_fixture);
-    assert(!_groundSensorFixture);
     
     b2BodyDef bodyDef;
-    bodyDef.position.Set(0, 0);
-    bodyDef.type = _entityDef.staticBody ? b2_staticBody : b2_dynamicBody;
-    bodyDef.fixedRotation = _entityDef.fixedRotation;
-    bodyDef.bullet = _entityDef.bullet;
-    
-    b2PolygonShape shape;
-    shape.SetAsBox(_entityDef.width / 2, _entityDef.height / 2);
-    
-    b2FixtureDef fixtureDef;
-    fixtureDef.shape = &shape;
-    fixtureDef.isSensor = _entityDef.sensor;
-    fixtureDef.density = _entityDef.density;
-    fixtureDef.friction = _entityDef.friction;
-    fixtureDef.restitution = _entityDef.restitution;
-    
+    bodyDef.position.SetZero();
+    bodyDef.type = _entityDef.bodyFlags & BodyFlag_Static ? b2_staticBody : b2_dynamicBody;
+    bodyDef.fixedRotation = _entityDef.bodyFlags & BodyFlag_FixedRotation;
+    bodyDef.bullet = _entityDef.bodyFlags & BodyFlag_Bullet;
     _body = world.CreateBody(&bodyDef);
     _body->SetUserData(this);
     
-    _fixture = _body->CreateFixture(&fixtureDef);
-    _fixture->SetUserData(this);
-    
-    if (_entityDef.character)
+    for (std::vector<FixtureDef>::iterator i = _entityDef.fixtures.begin(); i != _entityDef.fixtures.end(); ++i)
     {
-        b2PolygonShape groundContact;
-        groundContact.SetAsBox(_entityDef.width * 0.48f, _entityDef.height / 8, b2Vec2(0, -_entityDef.height / 2), 0);
-        b2FixtureDef fixtureDefGroundContact;
-        fixtureDefGroundContact.shape = &groundContact;
-        fixtureDefGroundContact.isSensor = true;
-        _groundSensorFixture = _body->CreateFixture(&fixtureDefGroundContact);
-        _groundSensorFixture->SetUserData(this);
+        FixtureDef def = *i;
+        b2PolygonShape shape;
+        if (def.flags & FixtureFlag_Box)
+        {
+            float wFactor = _entityDef.width * def.vertices[0].x;
+            float hFactor = _entityDef.height * def.vertices[0].y;
+            def.center.Set(def.center.x * _entityDef.width, def.center.y * _entityDef.height);
+            
+            shape.SetAsBox(wFactor, hFactor, def.center, 0);
+        }
+        else
+        {
+            for (std::vector<b2Vec2>::iterator i = def.vertices.begin(); i != def.vertices.end(); ++i)
+            {
+                b2Vec2& vertex = (*i);
+                vertex.Set(vertex.x * _entityDef.width, vertex.y * _entityDef.height);
+            }
+            
+            int count = static_cast<int>(def.vertices.size());
+            shape.Set(&def.vertices[0], count);
+        }
+        
+        b2FixtureDef fixtureDef;
+        fixtureDef.shape = &shape;
+        fixtureDef.isSensor = def.flags & FixtureFlag_Sensor;
+        fixtureDef.density = def.density;
+        fixtureDef.friction = def.friction;
+        fixtureDef.restitution = def.restitution;
+        b2Fixture* fixture = _body->CreateFixture(&fixtureDef);
+        fixture->SetUserData(this);
+        
+        if (def.flags & FixtureFlag_GroundContact)
+        {
+            _groundSensorFixture = fixture;
+        }
+        
+        _fixtures.push_back(fixture);
     }
 }
 
 void Entity::deinitPhysics(b2World& world)
 {
     assert(_body);
-    assert(_fixture);
-    assert(!_entityDef.character || _groundSensorFixture);
     
-    if (_fixture)
+    for (std::vector<b2Fixture*>::iterator i = _fixtures.begin(); i != _fixtures.end(); )
     {
-        _body->DestroyFixture(_fixture);
-        _fixture = NULL;
+        _body->DestroyFixture(*i);
+        
+        i = _fixtures.erase(i);
     }
     
-    if (_groundSensorFixture)
-    {
-        _body->DestroyFixture(_groundSensorFixture);
-        _groundSensorFixture = NULL;
-    }
+    _groundSensorFixture = NULL;
     
     if (_body)
     {
         world.DestroyBody(_body);
         _body = NULL;
-    }
-}
-
-void Entity::handleBeginFootContact(Entity* inEntity)
-{
-    ++_pose.numGroundContacts;
-    
-    if (_pose.numGroundContacts > 3)
-    {
-        _pose.numGroundContacts = 0;
-    }
-}
-
-void Entity::handleEndFootContact(Entity* inEntity)
-{
-    if (_pose.numGroundContacts == 1)
-    {
-        _pose.numGroundContacts = 0;
-    }
-    else
-    {
-        --_pose.numGroundContacts;
     }
 }
 
@@ -446,7 +430,8 @@ void Entity::updatePoseFromBody()
     _pose.velocity = getVelocity();
     _pose.position = getPosition();
     
-    if (!_entityDef.fixedRotation)
+    bool fixedRotation = _entityDef.bodyFlags & BodyFlag_FixedRotation;
+    if (!fixedRotation)
     {
         _pose.angle = getAngle();
     }
@@ -457,7 +442,8 @@ void Entity::updateBodyFromPose()
     setVelocity(_pose.velocity);
     setPosition(_pose.position);
     
-    if (!_entityDef.fixedRotation)
+    bool fixedRotation = _entityDef.bodyFlags & BodyFlag_FixedRotation;
+    if (!fixedRotation)
     {
         setAngle(_pose.angle);
     }

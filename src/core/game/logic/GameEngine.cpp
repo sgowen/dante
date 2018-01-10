@@ -35,7 +35,6 @@
 #include "framework/audio/portable/NGAudioEngine.h"
 #include "framework/util/NGExtension.h"
 #include "framework/util/PlatformHelper.h"
-#include "framework/util/FlagUtil.h"
 #include "framework/graphics/portable/Assets.h"
 #include "framework/util/FrameworkConstants.h"
 #include "framework/audio/portable/NGAudioEngine.h"
@@ -76,7 +75,7 @@ void GameEngine::destroy()
 GameEngine::GameEngine() : EngineState(),
 _renderer(new GameRenderer()),
 _stateTime(0),
-_state(GE_DEFAULT)
+_state(GameEngineState_Default)
 {
     // Empty
 }
@@ -92,7 +91,7 @@ void GameEngine::enter(Engine* engine)
     createWindowSizeDependentResources(engine->getScreenWidth(), engine->getScreenHeight(), engine->getRenderWidth(), engine->getRenderHeight(), engine->getCursorWidth(), engine->getCursorHeight());
     
     _stateTime = 0;
-    _state = GE_DEFAULT;
+    _state = GameEngineState_Default;
     
     GameInputManager::create();
 }
@@ -226,13 +225,13 @@ bool GameEngine::handleNonMoveInput()
     
     if (menuState == GIS_TOGGLE_PHYSICS_DISPLAY)
     {
-        if (isFlagSet(_state, GE_DISPLAY_BOX_2D))
+        if (_state & GameEngineState_DisplayBox2D)
         {
-            removeFlag(_state, GE_DISPLAY_BOX_2D);
+            _state &= ~GameEngineState_DisplayBox2D;
         }
         else
         {
-            setFlag(_state, GE_DISPLAY_BOX_2D);
+            _state |= GameEngineState_DisplayBox2D;
         }
     }
     

@@ -25,7 +25,7 @@
 #include "framework/network/server/SocketServerHelper.h"
 #include "framework/network/portable/MachineAddress.h"
 #include <game/logic/GameConstants.h>
-#include <game/logic/RobotController.h>
+#include <game/logic/PlayerController.h>
 
 #ifdef NG_STEAM
 #include <framework/network/steam/NGSteamServerHelper.h>
@@ -148,7 +148,7 @@ void Server::spawnRobotForPlayer(uint8_t inPlayerId, std::string inPlayerName)
 {
     _playerIdForRobotBeingCreated = inPlayerId;
     Entity* entity = SERVER_ENTITY_MGR->createEntity('ROBT');
-    RobotController* robot = static_cast<RobotController*>(entity->getEntityController());
+    PlayerController* robot = static_cast<PlayerController*>(entity->getEntityController());
     
     ClientProxy* client = NG_SERVER->getClientProxy(inPlayerId);
     robot->setAddressHash(client->getMachineAddress()->getHash());
@@ -262,7 +262,7 @@ void Server::spawnCratesIfNecessary()
     /// so that we can fit our entire state inside
     /// of a single packet, which needs to be a max of
     /// 1200 bytes (any larger will be dropped by some routers).
-    for (uint32_t i = 0; i < 32; ++i)
+    for (uint32_t i = 0; i < 8; ++i)
     {
         Entity* entity = SERVER_ENTITY_MGR->createEntity('CRAT');
         

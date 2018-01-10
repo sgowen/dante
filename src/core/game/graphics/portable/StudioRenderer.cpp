@@ -15,7 +15,7 @@
 #include "game/logic/World.h"
 #include "framework/graphics/portable/Box2DDebugRenderer.h"
 #include "framework/graphics/portable/SpriteBatcher.h"
-#include "framework/graphics/portable/QuadBatcher.h"
+#include "framework/graphics/portable/PolygonBatcher.h"
 #include "framework/graphics/portable/LineBatcher.h"
 #include "framework/graphics/portable/CircleBatcher.h"
 #include "framework/graphics/portable/NGShaderLoader.h"
@@ -53,9 +53,8 @@
 #include "framework/graphics/portable/Color.h"
 #include "framework/math/Circle.h"
 #include "framework/graphics/portable/CircleBatcher.h"
-#include "framework/graphics/portable/QuadBatcher.h"
+#include "framework/graphics/portable/PolygonBatcher.h"
 #include "framework/graphics/portable/LineBatcher.h"
-#include "framework/util/FlagUtil.h"
 #include "framework/util/FrameworkConstants.h"
 #include "framework/graphics/portable/TextureWrapper.h"
 #include "framework/graphics/portable/TextureDataWrapper.h"
@@ -85,8 +84,8 @@ StudioRenderer::StudioRenderer() : Renderer(),
 _textureManager(new TextureManager("title_assets.cfg")),
 _rendererHelper(RENDERER_HELPER_FACTORY->createRendererHelper()),
 _spriteBatcher(new SpriteBatcher(_rendererHelper)),
-_fillQuadBatcher(new QuadBatcher(_rendererHelper, true)),
-_boundsQuadBatcher(new QuadBatcher(_rendererHelper, false)),
+_fillPolygonBatcher(new PolygonBatcher(_rendererHelper, true)),
+_boundsPolygonBatcher(new PolygonBatcher(_rendererHelper, false)),
 _lineBatcher(new LineBatcher(_rendererHelper)),
 _circleBatcher(new CircleBatcher(_rendererHelper)),
 _shaderProgramLoader(SHADER_PROGRAM_LOADER_FACTORY->createNGShaderLoader()),
@@ -106,8 +105,8 @@ StudioRenderer::~StudioRenderer()
     delete _textureManager;
     delete _rendererHelper;
     delete _spriteBatcher;
-    delete _fillQuadBatcher;
-    delete _boundsQuadBatcher;
+    delete _fillPolygonBatcher;
+    delete _boundsPolygonBatcher;
     delete _lineBatcher;
     delete _circleBatcher;
     delete _shaderProgramLoader;

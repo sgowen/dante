@@ -17,7 +17,7 @@
 
 class TextureManager;
 class SpriteBatcher;
-class QuadBatcher;
+class PolygonBatcher;
 class LineBatcher;
 class CircleBatcher;
 class NGShaderLoader;
@@ -50,8 +50,8 @@ private:
     TextureManager* _textureManager;
     RendererHelper* _rendererHelper;
     SpriteBatcher* _spriteBatchers[NUM_SPRITE_BATCHERS];
-    QuadBatcher* _fillQuadBatcher;
-    QuadBatcher* _boundsQuadBatcher;
+    PolygonBatcher* _fillPolygonBatcher;
+    PolygonBatcher* _boundsPolygonBatcher;
     LineBatcher* _lineBatcher;
     CircleBatcher* _circleBatcher;
     Box2DDebugRenderer* _box2DDebugRenderer;

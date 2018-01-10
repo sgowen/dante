@@ -11,7 +11,7 @@
 #include "game/logic/World.h"
 
 #include "framework/entity/Entity.h"
-#include "game/logic/RobotController.h"
+#include "game/logic/PlayerController.h"
 #include "Box2D/Box2D.h"
 
 #include "framework/network/server/NetworkManagerServer.h"
@@ -71,7 +71,7 @@ void World::addEntity(Entity* inEntity)
     
     _entities.push_back(inEntity);
     
-    if (inEntity->getEntityController()->getRTTI().derivesFrom(RobotController::rtti))
+    if (inEntity->getEntityController()->getRTTI().derivesFrom(PlayerController::rtti))
     {
         _players.push_back(inEntity);
     }
@@ -79,7 +79,7 @@ void World::addEntity(Entity* inEntity)
 
 void World::removeEntity(Entity* inEntity)
 {
-    if (inEntity->getEntityController()->getRTTI().derivesFrom(RobotController::rtti))
+    if (inEntity->getEntityController()->getRTTI().derivesFrom(PlayerController::rtti))
     {
         int len = static_cast<int>(_players.size());
         int indexToRemove = -1;
@@ -150,7 +150,7 @@ void World::postRead()
     {
         for (Entity* entity : _players)
         {
-            RobotController* robot = static_cast<RobotController*>(entity->getEntityController());
+            PlayerController* robot = static_cast<PlayerController*>(entity->getEntityController());
             if (robot->isLocalPlayer())
             {
                 robot->processInput(move.getInputState());
@@ -177,7 +177,7 @@ void World::update()
             {
                 for (Entity* entity : _players)
                 {
-                    RobotController* robot = static_cast<RobotController*>(entity->getEntityController());
+                    PlayerController* robot = static_cast<PlayerController*>(entity->getEntityController());
                     
                     ClientProxy* client = NG_SERVER->getClientProxy(robot->getPlayerId());
                     if (client)
@@ -234,7 +234,7 @@ void World::update()
         {
             for (Entity* entity : _players)
             {
-                RobotController* robot = static_cast<RobotController*>(entity->getEntityController());
+                PlayerController* robot = static_cast<PlayerController*>(entity->getEntityController());
                 if (robot->isLocalPlayer())
                 {
                     robot->processInput(pendingMove->getInputState(), true);
@@ -255,7 +255,7 @@ Entity* World::getRobotWithPlayerId(uint8_t inPlayerID)
 {
     for (Entity* entity : _players)
     {
-        RobotController* robot = static_cast<RobotController*>(entity->getEntityController());
+        PlayerController* robot = static_cast<PlayerController*>(entity->getEntityController());
         if (robot->getPlayerId() == inPlayerID)
         {
             return entity;

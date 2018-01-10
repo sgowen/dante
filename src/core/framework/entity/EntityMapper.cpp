@@ -89,24 +89,60 @@ void EntityMapper::initWithJson(const char* json)
             
             entry->type = key;
             entry->controller = iv["controller"].GetString();
-            const Value& ivv = iv["mappings"];
-            for (Value::ConstMemberIterator ii = ivv.MemberBegin(); ii != ivv.MemberEnd(); ++ii)
             {
-                std::string name = ii->name.GetString();
-                std::string value = ii->value.GetString();
-                entry->mappings.insert(std::make_pair(name, value));
+                const Value& v = iv["mappings"];
+                assert(v.IsObject());
+                for (Value::ConstMemberIterator i = v.MemberBegin(); i != v.MemberEnd(); ++i)
+                {
+                    std::string name = i->name.GetString();
+                    std::string value = i->value.GetString();
+                    entry->mappings.insert(std::make_pair(name, value));
+                }
             }
+            {
+                const Value& v = iv["fixtures"];
+                assert(v.IsArray());
+                for (SizeType i = 0; i < v.Size(); ++i)
+                {
+                    const Value& iv = v[i];
+                    assert(iv.IsObject());
+                    FixtureDef fixtureDef;
+                    fixtureDef.restitution = iv["restitution"].GetFloat();
+                    fixtureDef.density = iv["density"].GetFloat();
+                    fixtureDef.friction = iv["friction"].GetFloat();
+                    fixtureDef.flags = iv["flags"].GetInt();
+                    
+                    {
+                        const Value& iiv = iv["vertices"];
+                        assert(iiv.IsArray());
+                        for (SizeType i = 0; i < iiv.Size(); ++i)
+                        {
+                            const Value& iiiv = iiv[i];
+                            assert(iiiv.IsObject());
+                            float x = iiiv["x"].GetFloat();
+                            float y = iiiv["y"].GetFloat();
+                            fixtureDef.vertices.push_back(b2Vec2(x, y));
+                        }
+                    }
+                    
+                    float x = 0;
+                    float y = 0;
+                    if (iv.HasMember("center"))
+                    {
+                        const Value& iiv = iv["center"];
+                        assert(iiv.IsObject());
+                        x = iiv["x"].GetFloat();
+                        y = iiv["y"].GetFloat();
+                    }
+                    fixtureDef.center.Set(x, y);
+                    
+                    entry->fixtures.push_back(fixtureDef);
+                }
+            }
+            entry->bodyFlags = iv["bodyFlags"].GetInt();
             entry->width = static_cast<float>(iv["width"].GetInt());
             entry->height = static_cast<float>(iv["height"].GetInt());
-            entry->restitution = iv["restitution"].GetFloat();
-            entry->density = iv["density"].GetFloat();
-            entry->friction = iv["friction"].GetFloat();
             entry->layer = iv["layer"].GetInt();
-            entry->staticBody = iv["staticBody"].GetBool();
-            entry->fixedRotation = iv["fixedRotation"].GetBool();
-            entry->bullet = iv["bullet"].GetBool();
-            entry->sensor = iv["sensor"].GetBool();
-            entry->character = iv["character"].GetBool();
             entry->stateSensitive = iv["stateSensitive"].GetBool();
             
             _entityDescriptors[key] = entry;

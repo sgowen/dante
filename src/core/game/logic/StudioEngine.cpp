@@ -35,7 +35,6 @@
 #include "framework/audio/portable/NGAudioEngine.h"
 #include "framework/util/NGExtension.h"
 #include "framework/util/PlatformHelper.h"
-#include "framework/util/FlagUtil.h"
 #include "framework/graphics/portable/Assets.h"
 #include "framework/util/FrameworkConstants.h"
 #include "framework/audio/portable/NGAudioEngine.h"
@@ -75,7 +74,7 @@ void StudioEngine::destroy()
 
 StudioEngine::StudioEngine() : EngineState(),
 _renderer(new StudioRenderer()),
-_state(SE_DEFAULT)
+_state(StudioEngineState_Default)
 {
     // Empty
 }
@@ -90,7 +89,7 @@ void StudioEngine::enter(Engine* engine)
     createDeviceDependentResources();
     createWindowSizeDependentResources(engine->getScreenWidth(), engine->getScreenHeight(), engine->getRenderWidth(), engine->getRenderHeight(), engine->getCursorWidth(), engine->getCursorHeight());
     
-    _state = SE_DEFAULT;
+    _state = StudioEngineState_Default;
 }
 
 void StudioEngine::update(Engine* engine)

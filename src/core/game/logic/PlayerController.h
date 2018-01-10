@@ -1,13 +1,13 @@
 //
-//  RobotController.h
+//  PlayerController.h
 //  dante
 //
 //  Created by Stephen Gowen on 1/5/18.
 //  Copyright © 2018 Noctis Games. All rights reserved.
 //
 
-#ifndef __noctisgames__RobotController__
-#define __noctisgames__RobotController__
+#ifndef __noctisgames__PlayerController__
+#define __noctisgames__PlayerController__
 
 #include <framework/entity/EntityController.h>
 
@@ -16,15 +16,15 @@
 class InputState;
 class Move;
 
-class RobotController : public EntityController
+class PlayerController : public EntityController
 {
     NGRTTI_DECL;
     
 public:
     static EntityController* create(Entity* inEntity);
     
-    RobotController(Entity* inEntity);
-    virtual ~RobotController();
+    PlayerController(Entity* inEntity);
+    virtual ~PlayerController();
     
     virtual uint8_t update();
     virtual bool shouldCollide(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB);
@@ -127,4 +127,4 @@ private:
     bool _isLocalPlayer;
 };
 
-#endif /* defined(__noctisgames__RobotController__) */
+#endif /* defined(__noctisgames__PlayerController__) */

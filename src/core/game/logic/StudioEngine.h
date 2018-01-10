@@ -17,7 +17,10 @@
 
 class StudioRenderer;
 
-#define SE_DEFAULT 1 << 0
+enum StudioEngineState
+{
+    StudioEngineState_Default = 1 << 0
+};
 
 class StudioEngine : public EngineState
 {

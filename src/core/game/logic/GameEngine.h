@@ -17,8 +17,11 @@
 
 class GameRenderer;
 
-#define GE_DEFAULT 1 << 0
-#define GE_DISPLAY_BOX_2D 1 << 1
+enum GameEngineState
+{
+    GameEngineState_Default = 1 << 0,
+    GameEngineState_DisplayBox2D = 1 << 1
+};
 
 class GameEngine : public EngineState
 {
