@@ -530,16 +530,6 @@
 		BBFE832C1FFF1C6D00E5F650 /* StudioInputManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBFE83291FFF1C6C00E5F650 /* StudioInputManager.cpp */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXContainerItemProxy section */
-		BB57225F2005A1B200C71B53 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = BB5722442005A1B200C71B53 /* steamworksexample.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 503C6CB21268F34200B66E3B;
-			remoteInfo = steamworksexample;
-		};
-/* End PBXContainerItemProxy section */
-
 /* Begin PBXCopyFilesBuildPhase section */
 		BB13BD511E58E72C0073C08F /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
@@ -861,97 +851,6 @@
 		BB50671C1FB3708700CADEEA /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		BB50671D1FB3708E00CADEEA /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		BB50671E1FB3709200CADEEA /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
-		BB5721FA2005A1B200C71B53 /* Sun.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Sun.cpp; sourceTree = "<group>"; };
-		BB5721FB2005A1B200C71B53 /* Ship.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Ship.h; sourceTree = "<group>"; };
-		BB5721FC2005A1B200C71B53 /* SpaceWarEntity.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SpaceWarEntity.h; sourceTree = "<group>"; };
-		BB5721FD2005A1B200C71B53 /* MainMenu.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = MainMenu.cpp; sourceTree = "<group>"; };
-		BB5721FE2005A1B200C71B53 /* MainMenu.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MainMenu.h; sourceTree = "<group>"; };
-		BB5721FF2005A1B200C71B53 /* Messages.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Messages.h; sourceTree = "<group>"; };
-		BB5722002005A1B200C71B53 /* stdafx.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = stdafx.h; sourceTree = "<group>"; };
-		BB5722012005A1B200C71B53 /* D3D9VRDistort.cso */ = {isa = PBXFileReference; lastKnownFileType = file; path = D3D9VRDistort.cso; sourceTree = "<group>"; };
-		BB5722022005A1B200C71B53 /* SteamworksExample.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = SteamworksExample.sh; sourceTree = "<group>"; };
-		BB5722032005A1B200C71B53 /* Friends.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Friends.h; sourceTree = "<group>"; };
-		BB5722042005A1B200C71B53 /* PhotonBeam.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PhotonBeam.h; sourceTree = "<group>"; };
-		BB5722052005A1B200C71B53 /* stdafx_ps3.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = stdafx_ps3.h; sourceTree = "<group>"; };
-		BB5722072005A1B200C71B53 /* steam_appid.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = steam_appid.txt; sourceTree = "<group>"; };
-		BB5722082005A1B200C71B53 /* steamworksexample-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "steamworksexample-Info.plist"; sourceTree = "<group>"; };
-		BB5722092005A1B200C71B53 /* StatsAndAchievements.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = StatsAndAchievements.cpp; sourceTree = "<group>"; };
-		BB57220A2005A1B200C71B53 /* gameengineps3.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = gameengineps3.h; sourceTree = "<group>"; };
-		BB57220B2005A1B200C71B53 /* flags.mak */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.make; path = flags.mak; sourceTree = "<group>"; };
-		BB57220C2005A1B200C71B53 /* musicplayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = musicplayer.h; sourceTree = "<group>"; };
-		BB57220D2005A1B200C71B53 /* RemoteStorage.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = RemoteStorage.cpp; sourceTree = "<group>"; };
-		BB5722102005A1B200C71B53 /* steam_appid.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = steam_appid.txt; sourceTree = "<group>"; };
-		BB5722122005A1B200C71B53 /* steam_appid.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = steam_appid.txt; sourceTree = "<group>"; };
-		BB5722132005A1B200C71B53 /* Makefile */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
-		BB5722142005A1B200C71B53 /* gameenginewin32.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = gameenginewin32.h; sourceTree = "<group>"; };
-		BB5722152005A1B200C71B53 /* SpaceWarRes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SpaceWarRes.h; sourceTree = "<group>"; };
-		BB5722162005A1B200C71B53 /* glew.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = glew.c; sourceTree = "<group>"; };
-		BB5722172005A1B200C71B53 /* Leaderboards.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Leaderboards.cpp; sourceTree = "<group>"; };
-		BB5722182005A1B200C71B53 /* DejaVuSans.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = DejaVuSans.ttf; sourceTree = "<group>"; };
-		BB5722192005A1B200C71B53 /* Lobby.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Lobby.h; sourceTree = "<group>"; };
-		BB57221A2005A1B200C71B53 /* SpaceWarServer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SpaceWarServer.h; sourceTree = "<group>"; };
-		BB57221B2005A1B200C71B53 /* voicechat.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = voicechat.cpp; sourceTree = "<group>"; };
-		BB57221C2005A1B200C71B53 /* clanchatroom.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = clanchatroom.cpp; sourceTree = "<group>"; };
-		BB57221D2005A1B200C71B53 /* Friends.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Friends.cpp; sourceTree = "<group>"; };
-		BB57221E2005A1B200C71B53 /* remotestoragesync.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = remotestoragesync.h; sourceTree = "<group>"; };
-		BB57221F2005A1B200C71B53 /* gameengineosx.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = gameengineosx.mm; sourceTree = "<group>"; };
-		BB5722202005A1B200C71B53 /* SpaceWarServer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SpaceWarServer.cpp; sourceTree = "<group>"; };
-		BB5722212005A1B200C71B53 /* p2pauth.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = p2pauth.cpp; sourceTree = "<group>"; };
-		BB5722222005A1B200C71B53 /* htmlsurface.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = htmlsurface.cpp; sourceTree = "<group>"; };
-		BB5722232005A1B200C71B53 /* RemoteStorage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RemoteStorage.h; sourceTree = "<group>"; };
-		BB5722242005A1B200C71B53 /* BaseMenu.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BaseMenu.h; sourceTree = "<group>"; };
-		BB5722262005A1B200C71B53 /* steam_appid.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = steam_appid.txt; sourceTree = "<group>"; };
-		BB5722272005A1B200C71B53 /* SteamworksExample.sln */ = {isa = PBXFileReference; lastKnownFileType = text; path = SteamworksExample.sln; sourceTree = "<group>"; };
-		BB5722282005A1B200C71B53 /* ServerBrowser.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ServerBrowser.cpp; sourceTree = "<group>"; };
-		BB5722292005A1B200C71B53 /* Leaderboards.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Leaderboards.h; sourceTree = "<group>"; };
-		BB57222A2005A1B200C71B53 /* SimpleProtobuf.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SimpleProtobuf.cpp; sourceTree = "<group>"; };
-		BB57222B2005A1B200C71B53 /* Inventory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Inventory.h; sourceTree = "<group>"; };
-		BB57222C2005A1B200C71B53 /* remotestoragesync.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = remotestoragesync.cpp; sourceTree = "<group>"; };
-		BB57222D2005A1B200C71B53 /* GameEngine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GameEngine.h; sourceTree = "<group>"; };
-		BB57222E2005A1B200C71B53 /* SimpleProtobuf.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SimpleProtobuf.h; sourceTree = "<group>"; };
-		BB57222F2005A1B200C71B53 /* StarField.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StarField.h; sourceTree = "<group>"; };
-		BB5722302005A1B200C71B53 /* controller.vdf */ = {isa = PBXFileReference; lastKnownFileType = text; path = controller.vdf; sourceTree = "<group>"; };
-		BB5722312005A1B200C71B53 /* htmlsurface.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = htmlsurface.h; sourceTree = "<group>"; };
-		BB5722322005A1B200C71B53 /* glstringosx.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = glstringosx.mm; sourceTree = "<group>"; };
-		BB5722332005A1B200C71B53 /* connectingmenu.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = connectingmenu.cpp; sourceTree = "<group>"; };
-		BB5722342005A1B200C71B53 /* PhotonBeam.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = PhotonBeam.cpp; sourceTree = "<group>"; };
-		BB5722352005A1B200C71B53 /* SpaceWarEntity.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SpaceWarEntity.cpp; sourceTree = "<group>"; };
-		BB5722362005A1B200C71B53 /* voicechat.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = voicechat.h; sourceTree = "<group>"; };
-		BB5722372005A1B200C71B53 /* gameenginesdl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = gameenginesdl.h; sourceTree = "<group>"; };
-		BB5722382005A1B200C71B53 /* SpaceWar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SpaceWar.h; sourceTree = "<group>"; };
-		BB5722392005A1B200C71B53 /* gameenginewin32.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = gameenginewin32.cpp; sourceTree = "<group>"; };
-		BB57223A2005A1B200C71B53 /* QuitMenu.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = QuitMenu.cpp; sourceTree = "<group>"; };
-		BB57223B2005A1B200C71B53 /* SpaceWarClient.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SpaceWarClient.h; sourceTree = "<group>"; };
-		BB57223C2005A1B200C71B53 /* gameengineosx.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = gameengineosx.h; sourceTree = "<group>"; };
-		BB57223E2005A1B200C71B53 /* glxew.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = glxew.h; sourceTree = "<group>"; };
-		BB57223F2005A1B200C71B53 /* wglew.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = wglew.h; sourceTree = "<group>"; };
-		BB5722402005A1B200C71B53 /* glew.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = glew.h; sourceTree = "<group>"; };
-		BB5722412005A1B200C71B53 /* SpaceWarClient.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SpaceWarClient.cpp; sourceTree = "<group>"; };
-		BB5722422005A1B200C71B53 /* ServerBrowserMenu.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ServerBrowserMenu.h; sourceTree = "<group>"; };
-		BB5722432005A1B200C71B53 /* clanchatroom.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = clanchatroom.h; sourceTree = "<group>"; };
-		BB5722442005A1B200C71B53 /* steamworksexample.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = steamworksexample.xcodeproj; sourceTree = "<group>"; };
-		BB5722472005A1B200C71B53 /* p2pauth.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = p2pauth.h; sourceTree = "<group>"; };
-		BB5722482005A1B200C71B53 /* musicplayer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = musicplayer.cpp; sourceTree = "<group>"; };
-		BB5722492005A1B200C71B53 /* gameenginesdl.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = gameenginesdl.cpp; sourceTree = "<group>"; };
-		BB57224A2005A1B200C71B53 /* Sun.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Sun.h; sourceTree = "<group>"; };
-		BB57224B2005A1B200C71B53 /* connectingmenu.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = connectingmenu.h; sourceTree = "<group>"; };
-		BB57224C2005A1B200C71B53 /* SteamworksExample.vcproj */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = SteamworksExample.vcproj; sourceTree = "<group>"; };
-		BB57224D2005A1B200C71B53 /* VectorEntity.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VectorEntity.h; sourceTree = "<group>"; };
-		BB57224E2005A1B200C71B53 /* Lobby.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Lobby.cpp; sourceTree = "<group>"; };
-		BB57224F2005A1B200C71B53 /* stdafx.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = stdafx.cpp; sourceTree = "<group>"; };
-		BB5722502005A1B200C71B53 /* BaseMenu.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = BaseMenu.cpp; sourceTree = "<group>"; };
-		BB5722512005A1B200C71B53 /* DejaVuSans.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = DejaVuSans.txt; sourceTree = "<group>"; };
-		BB5722522005A1B200C71B53 /* ServerBrowser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ServerBrowser.h; sourceTree = "<group>"; };
-		BB5722532005A1B200C71B53 /* Inventory.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Inventory.cpp; sourceTree = "<group>"; };
-		BB5722542005A1B200C71B53 /* StatsAndAchievements.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StatsAndAchievements.h; sourceTree = "<group>"; };
-		BB5722552005A1B200C71B53 /* Main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Main.cpp; sourceTree = "<group>"; };
-		BB5722562005A1B200C71B53 /* Ship.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Ship.cpp; sourceTree = "<group>"; };
-		BB5722572005A1B200C71B53 /* glstringosx.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = glstringosx.h; sourceTree = "<group>"; };
-		BB5722582005A1B200C71B53 /* StarField.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = StarField.cpp; sourceTree = "<group>"; };
-		BB5722592005A1B200C71B53 /* QuitMenu.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QuitMenu.h; sourceTree = "<group>"; };
-		BB57225A2005A1B200C71B53 /* gameengineps3.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = gameengineps3.cpp; sourceTree = "<group>"; };
-		BB57225C2005A1B200C71B53 /* steam_appid.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = steam_appid.txt; sourceTree = "<group>"; };
-		BB57225D2005A1B200C71B53 /* VectorEntity.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = VectorEntity.cpp; sourceTree = "<group>"; };
 		BB5833731EEDBBC50084DA20 /* steam_appid.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = steam_appid.txt; sourceTree = "<group>"; };
 		BB5833771EEDBF7E0084DA20 /* NGSteamGameServices.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NGSteamGameServices.cpp; sourceTree = "<group>"; };
 		BB5833791EEDBFB20084DA20 /* NGSteamGameServices.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NGSteamGameServices.h; sourceTree = "<group>"; };
@@ -1953,7 +1852,6 @@
 		BB1913161FABB76E00BDC6D0 /* steamworks_sdk */ = {
 			isa = PBXGroup;
 			children = (
-				BB5721F92005A1B200C71B53 /* steamworksexample */,
 				BB1914451FABB78C00BDC6D0 /* public */,
 				BB19136D1FABB76E00BDC6D0 /* redistributable_bin */,
 			);
@@ -2309,168 +2207,6 @@
 				BB0B84E62002C8F400D17988 /* texture_005.png */,
 			);
 			path = textures;
-			sourceTree = "<group>";
-		};
-		BB5721F92005A1B200C71B53 /* steamworksexample */ = {
-			isa = PBXGroup;
-			children = (
-				BB5721FA2005A1B200C71B53 /* Sun.cpp */,
-				BB5721FB2005A1B200C71B53 /* Ship.h */,
-				BB5721FC2005A1B200C71B53 /* SpaceWarEntity.h */,
-				BB5721FD2005A1B200C71B53 /* MainMenu.cpp */,
-				BB5721FE2005A1B200C71B53 /* MainMenu.h */,
-				BB5721FF2005A1B200C71B53 /* Messages.h */,
-				BB5722002005A1B200C71B53 /* stdafx.h */,
-				BB5722012005A1B200C71B53 /* D3D9VRDistort.cso */,
-				BB5722022005A1B200C71B53 /* SteamworksExample.sh */,
-				BB5722032005A1B200C71B53 /* Friends.h */,
-				BB5722042005A1B200C71B53 /* PhotonBeam.h */,
-				BB5722052005A1B200C71B53 /* stdafx_ps3.h */,
-				BB5722062005A1B200C71B53 /* osx */,
-				BB5722092005A1B200C71B53 /* StatsAndAchievements.cpp */,
-				BB57220A2005A1B200C71B53 /* gameengineps3.h */,
-				BB57220B2005A1B200C71B53 /* flags.mak */,
-				BB57220C2005A1B200C71B53 /* musicplayer.h */,
-				BB57220D2005A1B200C71B53 /* RemoteStorage.cpp */,
-				BB57220E2005A1B200C71B53 /* win64 */,
-				BB5722132005A1B200C71B53 /* Makefile */,
-				BB5722142005A1B200C71B53 /* gameenginewin32.h */,
-				BB5722152005A1B200C71B53 /* SpaceWarRes.h */,
-				BB5722162005A1B200C71B53 /* glew.c */,
-				BB5722172005A1B200C71B53 /* Leaderboards.cpp */,
-				BB5722182005A1B200C71B53 /* DejaVuSans.ttf */,
-				BB5722192005A1B200C71B53 /* Lobby.h */,
-				BB57221A2005A1B200C71B53 /* SpaceWarServer.h */,
-				BB57221B2005A1B200C71B53 /* voicechat.cpp */,
-				BB57221C2005A1B200C71B53 /* clanchatroom.cpp */,
-				BB57221D2005A1B200C71B53 /* Friends.cpp */,
-				BB57221E2005A1B200C71B53 /* remotestoragesync.h */,
-				BB57221F2005A1B200C71B53 /* gameengineosx.mm */,
-				BB5722202005A1B200C71B53 /* SpaceWarServer.cpp */,
-				BB5722212005A1B200C71B53 /* p2pauth.cpp */,
-				BB5722222005A1B200C71B53 /* htmlsurface.cpp */,
-				BB5722232005A1B200C71B53 /* RemoteStorage.h */,
-				BB5722242005A1B200C71B53 /* BaseMenu.h */,
-				BB5722252005A1B200C71B53 /* release */,
-				BB5722272005A1B200C71B53 /* SteamworksExample.sln */,
-				BB5722282005A1B200C71B53 /* ServerBrowser.cpp */,
-				BB5722292005A1B200C71B53 /* Leaderboards.h */,
-				BB57222A2005A1B200C71B53 /* SimpleProtobuf.cpp */,
-				BB57222B2005A1B200C71B53 /* Inventory.h */,
-				BB57222C2005A1B200C71B53 /* remotestoragesync.cpp */,
-				BB57222D2005A1B200C71B53 /* GameEngine.h */,
-				BB57222E2005A1B200C71B53 /* SimpleProtobuf.h */,
-				BB57222F2005A1B200C71B53 /* StarField.h */,
-				BB5722302005A1B200C71B53 /* controller.vdf */,
-				BB5722312005A1B200C71B53 /* htmlsurface.h */,
-				BB5722322005A1B200C71B53 /* glstringosx.mm */,
-				BB5722332005A1B200C71B53 /* connectingmenu.cpp */,
-				BB5722342005A1B200C71B53 /* PhotonBeam.cpp */,
-				BB5722352005A1B200C71B53 /* SpaceWarEntity.cpp */,
-				BB5722362005A1B200C71B53 /* voicechat.h */,
-				BB5722372005A1B200C71B53 /* gameenginesdl.h */,
-				BB5722382005A1B200C71B53 /* SpaceWar.h */,
-				BB5722392005A1B200C71B53 /* gameenginewin32.cpp */,
-				BB57223A2005A1B200C71B53 /* QuitMenu.cpp */,
-				BB57223B2005A1B200C71B53 /* SpaceWarClient.h */,
-				BB57223C2005A1B200C71B53 /* gameengineosx.h */,
-				BB57223D2005A1B200C71B53 /* GL */,
-				BB5722412005A1B200C71B53 /* SpaceWarClient.cpp */,
-				BB5722422005A1B200C71B53 /* ServerBrowserMenu.h */,
-				BB5722432005A1B200C71B53 /* clanchatroom.h */,
-				BB5722442005A1B200C71B53 /* steamworksexample.xcodeproj */,
-				BB5722472005A1B200C71B53 /* p2pauth.h */,
-				BB5722482005A1B200C71B53 /* musicplayer.cpp */,
-				BB5722492005A1B200C71B53 /* gameenginesdl.cpp */,
-				BB57224A2005A1B200C71B53 /* Sun.h */,
-				BB57224B2005A1B200C71B53 /* connectingmenu.h */,
-				BB57224C2005A1B200C71B53 /* SteamworksExample.vcproj */,
-				BB57224D2005A1B200C71B53 /* VectorEntity.h */,
-				BB57224E2005A1B200C71B53 /* Lobby.cpp */,
-				BB57224F2005A1B200C71B53 /* stdafx.cpp */,
-				BB5722502005A1B200C71B53 /* BaseMenu.cpp */,
-				BB5722512005A1B200C71B53 /* DejaVuSans.txt */,
-				BB5722522005A1B200C71B53 /* ServerBrowser.h */,
-				BB5722532005A1B200C71B53 /* Inventory.cpp */,
-				BB5722542005A1B200C71B53 /* StatsAndAchievements.h */,
-				BB5722552005A1B200C71B53 /* Main.cpp */,
-				BB5722562005A1B200C71B53 /* Ship.cpp */,
-				BB5722572005A1B200C71B53 /* glstringosx.h */,
-				BB5722582005A1B200C71B53 /* StarField.cpp */,
-				BB5722592005A1B200C71B53 /* QuitMenu.h */,
-				BB57225A2005A1B200C71B53 /* gameengineps3.cpp */,
-				BB57225B2005A1B200C71B53 /* debug */,
-				BB57225D2005A1B200C71B53 /* VectorEntity.cpp */,
-			);
-			path = steamworksexample;
-			sourceTree = "<group>";
-		};
-		BB5722062005A1B200C71B53 /* osx */ = {
-			isa = PBXGroup;
-			children = (
-				BB5722072005A1B200C71B53 /* steam_appid.txt */,
-				BB5722082005A1B200C71B53 /* steamworksexample-Info.plist */,
-			);
-			path = osx;
-			sourceTree = "<group>";
-		};
-		BB57220E2005A1B200C71B53 /* win64 */ = {
-			isa = PBXGroup;
-			children = (
-				BB57220F2005A1B200C71B53 /* release */,
-				BB5722112005A1B200C71B53 /* debug */,
-			);
-			path = win64;
-			sourceTree = "<group>";
-		};
-		BB57220F2005A1B200C71B53 /* release */ = {
-			isa = PBXGroup;
-			children = (
-				BB5722102005A1B200C71B53 /* steam_appid.txt */,
-			);
-			path = release;
-			sourceTree = "<group>";
-		};
-		BB5722112005A1B200C71B53 /* debug */ = {
-			isa = PBXGroup;
-			children = (
-				BB5722122005A1B200C71B53 /* steam_appid.txt */,
-			);
-			path = debug;
-			sourceTree = "<group>";
-		};
-		BB5722252005A1B200C71B53 /* release */ = {
-			isa = PBXGroup;
-			children = (
-				BB5722262005A1B200C71B53 /* steam_appid.txt */,
-			);
-			path = release;
-			sourceTree = "<group>";
-		};
-		BB57223D2005A1B200C71B53 /* GL */ = {
-			isa = PBXGroup;
-			children = (
-				BB57223E2005A1B200C71B53 /* glxew.h */,
-				BB57223F2005A1B200C71B53 /* wglew.h */,
-				BB5722402005A1B200C71B53 /* glew.h */,
-			);
-			path = GL;
-			sourceTree = "<group>";
-		};
-		BB5722452005A1B200C71B53 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				BB5722602005A1B200C71B53 /* steamworksexample.app */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		BB57225B2005A1B200C71B53 /* debug */ = {
-			isa = PBXGroup;
-			children = (
-				BB57225C2005A1B200C71B53 /* steam_appid.txt */,
-			);
-			path = debug;
 			sourceTree = "<group>";
 		};
 		BB5833761EEDBF7E0084DA20 /* steam */ = {
@@ -3997,12 +3733,6 @@
 			mainGroup = 0ADF186B178E2185005DA99E;
 			productRefGroup = 0ADF1875178E2185005DA99E /* Products */;
 			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = BB5722452005A1B200C71B53 /* Products */;
-					ProjectRef = BB5722442005A1B200C71B53 /* steamworksexample.xcodeproj */;
-				},
-			);
 			projectRoot = "";
 			targets = (
 				BB44C3091DB0303F003E633F /* dante */,
@@ -4010,16 +3740,6 @@
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXReferenceProxy section */
-		BB5722602005A1B200C71B53 /* steamworksexample.app */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.application;
-			path = steamworksexample.app;
-			remoteRef = BB57225F2005A1B200C71B53 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		BB44C3081DB0303F003E633F /* Resources */ = {
