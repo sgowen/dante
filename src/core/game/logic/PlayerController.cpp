@@ -266,13 +266,13 @@ void PlayerController::processInput(InputState* inInputState, bool isPending)
             }
             else
             {
-                vertForce = _entity->getBody()->GetMass() * (2.5f - _entity->getPose().stateTime * 0.25f);
+                vertForce = _entity->getBody()->GetMass() * (1.5f - _entity->getPose().stateTime * 0.25f);
             }
         }
         
         if (getNumJumps() == 2)
         {
-            vertForce = _entity->getBody()->GetMass() * (2.0f - _entity->getPose().stateTime * 0.2f);
+            vertForce = _entity->getBody()->GetMass() * (0.6f - _entity->getPose().stateTime * 0.1f);
         }
         
         vertForce = clamp(vertForce, _entity->getBody()->GetMass() * 8.0f, 0);
