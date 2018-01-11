@@ -41,15 +41,14 @@ public:
     uint64_t getAddressHash() const;
     void setPlayerId(uint8_t inValue);
     uint8_t getPlayerId() const;
-    void setMap(uint8_t inValue);
-    uint8_t getMap() const;
+    void setMap(uint32_t inValue);
+    uint32_t getMap() const;
     void setPlayerName(std::string inValue);
     std::string& getPlayerName();
     
     uint8_t getHealth();
     uint8_t getNumJumps();
     bool isMainAction();
-    bool isSprinting();
     bool isMoving();
     bool isLocalPlayer();
     
@@ -59,17 +58,15 @@ private:
         State_Idle,
         State_Punching,
         State_Running,
-        State_Running_Fast,
         State_Jumping
     };
     
     enum StateFlags
     {
         StateFlag_MainAction = 1 << 0,
-        StateFlag_Sprinting = 1 << 1,
-        StateFlag_FirstJump = 1 << 2,
-        StateFlag_FirstJumpCompleted = 1 << 3,
-        StateFlag_SecondJump = 1 << 4
+        StateFlag_FirstJump = 1 << 1,
+        StateFlag_FirstJumpCompleted = 1 << 2,
+        StateFlag_SecondJump = 1 << 3
     };
     
     enum ReadStateFlag
@@ -82,7 +79,7 @@ private:
     {
         uint64_t addressHash;
         uint8_t playerId;
-        uint8_t map;
+        uint32_t map;
         std::string playerName;
         
         PlayerInfo()

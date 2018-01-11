@@ -21,14 +21,15 @@ class Move;
 enum GameInputState
 {
     GIS_NONE = 0,
-    GIS_ESCAPE,
+    GIS_LOCAL_PLAYER_DROP_OUT_0,
     GIS_LOCAL_PLAYER_DROP_OUT_1,
     GIS_LOCAL_PLAYER_DROP_OUT_2,
     GIS_LOCAL_PLAYER_DROP_OUT_3,
-    GIS_SERVER_TOGGLE_SERVER_DISPLAY,
-    GIS_TOGGLE_PHYSICS_DISPLAY,
     GIS_CLIENT_MAIN_TOGGLE_MUSIC,
-    GIS_CLIENT_MAIN_TOGGLE_SOUND
+    GIS_CLIENT_MAIN_TOGGLE_SOUND,
+    GIS_TOGGLE_PHYSICS_DISPLAY,
+    GIS_TOGGLE_INTERPOLATION,
+    GIS_SERVER_TOGGLE_SERVER_DISPLAY,
 };
 
 class GameInputManager
@@ -59,6 +60,8 @@ private:
     bool _isTimeToProcessInput;
     
     const Move& sampleInputAsMove();
+    
+    void dropPlayer(int index);
     
     // ctor, copy ctor, and assignment should be private in a Singleton
     GameInputManager();

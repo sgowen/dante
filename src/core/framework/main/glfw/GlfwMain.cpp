@@ -117,6 +117,10 @@ int GlfwMain::exec(EngineController* engineController)
     int height = 480;
 
 #ifndef DEBUG
+#define LAUNCH_FULL_SCREEN
+#endif
+    
+#ifdef LAUNCH_FULL_SCREEN
     /// Launch directly into full screen
     monitor = glfwGetPrimaryMonitor();
 

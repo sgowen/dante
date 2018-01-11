@@ -26,13 +26,10 @@ public:
     void createDeviceDependentResources();
     void createWindowSizeDependentResources(int screenWidth, int screenHeight, int renderWidth, int renderHeight, int cursorWidth, int cursorHeight);
     void releaseDeviceDependentResources();
-    
     void onResume();
     void onPause();
-    
     void update(double deltaTime);
     void render();
-    
     EngineController* getEngineController();
     StateMachine<Engine, EngineState>& getStateMachine();
     void setRequestedAction(int inValue);
@@ -57,7 +54,6 @@ private:
     int _renderHeight;
     int _cursorWidth;
     int _cursorHeight;
-    bool _areDeviceDependentResourcesCreated;
 };
 
 #endif /* defined(__noctisgames__Engine__) */

@@ -10,10 +10,12 @@
 
 #include "game/logic/GameEngine.h"
 
-#include "framework/file/portable/JsonFile.h"
 #include <game/graphics/portable/GameRenderer.h>
-
+#include "game/logic/World.h"
+#include "game/logic/GameInputManager.h"
+#include "framework/util/Timing.h"
 #include "game/logic/Server.h"
+
 #include "game/logic/GameConstants.h"
 #include "framework/input/CursorInputManager.h"
 #include "framework/input/CursorEvent.h"
@@ -24,8 +26,6 @@
 #include "framework/network/server/NetworkManagerServer.h"
 #include "framework/network/portable/SocketAddressFactory.h"
 #include "framework/network/portable/SocketUtil.h"
-#include "game/logic/GameInputManager.h"
-#include "game/logic/World.h"
 #include "game/logic/InstanceManager.h"
 #include "game/logic/MainInputState.h"
 #include "framework/network/portable/FWInstanceManager.h"
@@ -38,7 +38,6 @@
 #include "framework/graphics/portable/Assets.h"
 #include "framework/util/FrameworkConstants.h"
 #include "framework/audio/portable/NGAudioEngine.h"
-#include "framework/util/Timing.h"
 #include "framework/util/FPSUtil.h"
 #include "framework/input/CursorConverter.h"
 
@@ -74,10 +73,14 @@ void GameEngine::destroy()
 
 GameEngine::GameEngine() : EngineState(),
 _renderer(new GameRenderer()),
+_world(NULL),
+_inputManager(NULL),
+_timing(NULL),
+_server(NULL),
 _stateTime(0),
 _state(GameEngineState_Default)
 {
-    // Empty
+    _state |= GameEngineState_Interpolation;
 }
 
 GameEngine::~GameEngine()
@@ -91,16 +94,20 @@ void GameEngine::enter(Engine* engine)
     createWindowSizeDependentResources(engine->getScreenWidth(), engine->getScreenHeight(), engine->getRenderWidth(), engine->getRenderHeight(), engine->getCursorWidth(), engine->getCursorHeight());
     
     _stateTime = 0;
-    _state = GameEngineState_Default;
     
     GameInputManager::create();
+    
+    _world = InstanceManager::getClientWorld();
+    _inputManager = GameInputManager::getInstance();
+    _timing = Timing::getInstance();
+    _server = Server::getInstance();
 }
 
 void GameEngine::update(Engine* engine)
 {
     _stateTime += FRAME_RATE;
     
-    Timing::getInstance()->updateManual(_stateTime, FRAME_RATE);
+    _timing->updateManual(_stateTime, FRAME_RATE);
     
     NG_CLIENT->processIncomingPackets();
     if (NG_CLIENT->getState() == NCS_Disconnected)
@@ -110,20 +117,20 @@ void GameEngine::update(Engine* engine)
     }
     else if (NG_CLIENT->hasReceivedNewState())
     {
-        InstanceManager::getClientWorld()->postRead();
+        _world->postRead();
     }
     
     NG_AUDIO_ENGINE->update();
     
-    GameInputManager::getInstance()->update();
+    _inputManager->update();
     if (handleNonMoveInput())
     {
         engine->getStateMachine().revertToPreviousState();
         return;
     }
     
-    InstanceManager::getClientWorld()->update();
-    GameInputManager::getInstance()->clearPendingMove();
+    _world->update();
+    _inputManager->clearPendingMove();
     NG_CLIENT->sendOutgoingPackets();
     
 #ifdef NG_STEAM
@@ -131,9 +138,9 @@ void GameEngine::update(Engine* engine)
 #endif
     
     /// Only for host
-    if (Server::getInstance())
+    if (_server)
     {
-        Server::getInstance()->update();
+        _server->update();
     }
 }
 
@@ -197,64 +204,84 @@ void GameEngine::onPause()
     NG_AUDIO_ENGINE->pause();
 }
 
-void GameEngine::render()
+void GameEngine::render(double alpha)
 {
+    if (_state & GameEngineState_Interpolation)
+    {
+        _world->interpolate(alpha);
+    }
+    
     _renderer->render(_state);
+    
+    if (_state & GameEngineState_Interpolation)
+    {
+        _world->postRender();
+    }
 }
 
 bool GameEngine::handleNonMoveInput()
 {
-    int menuState = GameInputManager::getInstance()->getMenuState();
-    
-    if (menuState == GIS_CLIENT_MAIN_TOGGLE_MUSIC)
+    int menuState = _inputManager->getMenuState();
+    switch (menuState)
     {
-        NG_AUDIO_ENGINE->setMusicDisabled(!NG_AUDIO_ENGINE->isMusicDisabled());
-    }
-    else if (menuState == GIS_CLIENT_MAIN_TOGGLE_SOUND)
-    {
-        NG_AUDIO_ENGINE->setSoundDisabled(!NG_AUDIO_ENGINE->isSoundDisabled());
-    }
-    
-    if (Server::getInstance())
-    {
-        if (menuState == GIS_SERVER_TOGGLE_SERVER_DISPLAY)
+        case GIS_LOCAL_PLAYER_DROP_OUT_0:
+            return true;
+        case GIS_LOCAL_PLAYER_DROP_OUT_1:
+            NG_CLIENT->requestToDropLocalPlayer(1);
+            break;
+        case GIS_LOCAL_PLAYER_DROP_OUT_2:
+            NG_CLIENT->requestToDropLocalPlayer(2);
+            break;
+        case GIS_LOCAL_PLAYER_DROP_OUT_3:
+            NG_CLIENT->requestToDropLocalPlayer(3);
+            break;
+        case GIS_CLIENT_MAIN_TOGGLE_MUSIC:
+            NG_AUDIO_ENGINE->setMusicDisabled(!NG_AUDIO_ENGINE->isMusicDisabled());
+            break;
+        case GIS_CLIENT_MAIN_TOGGLE_SOUND:
+            NG_AUDIO_ENGINE->setSoundDisabled(!NG_AUDIO_ENGINE->isSoundDisabled());
+            break;
+        case GIS_TOGGLE_PHYSICS_DISPLAY:
         {
-            Server::getInstance()->toggleDisplaying();
+            if (_state & GameEngineState_DisplayBox2D)
+            {
+                _state &= ~GameEngineState_DisplayBox2D;
+            }
+            else
+            {
+                _state |= GameEngineState_DisplayBox2D;
+            }
         }
-    }
-    
-    if (menuState == GIS_TOGGLE_PHYSICS_DISPLAY)
-    {
-        if (_state & GameEngineState_DisplayBox2D)
+            break;
+        case GIS_TOGGLE_INTERPOLATION:
         {
-            _state &= ~GameEngineState_DisplayBox2D;
+            if (_state & GameEngineState_Interpolation)
+            {
+                _state &= ~GameEngineState_Interpolation;
+            }
+            else
+            {
+                _state |= GameEngineState_Interpolation;
+            }
         }
-        else
+            break;
+        case GIS_SERVER_TOGGLE_SERVER_DISPLAY:
         {
-            _state |= GameEngineState_DisplayBox2D;
+            if (_server)
+            {
+                _server->toggleDisplaying();
+            }
         }
-    }
-    
-    MainInputState* inputState = GameInputManager::getInstance()->getInputState();
-    if (inputState->isRequestingToAddLocalPlayer())
-    {
-        NG_CLIENT->requestToAddLocalPlayer();
-    }
-    else if (menuState == GIS_ESCAPE)
-    {
-        return true;
-    }
-    else if (menuState == GIS_LOCAL_PLAYER_DROP_OUT_1)
-    {
-        NG_CLIENT->requestToDropLocalPlayer(1);
-    }
-    else if (menuState == GIS_LOCAL_PLAYER_DROP_OUT_2)
-    {
-        NG_CLIENT->requestToDropLocalPlayer(2);
-    }
-    else if (menuState == GIS_LOCAL_PLAYER_DROP_OUT_3)
-    {
-        NG_CLIENT->requestToDropLocalPlayer(3);
+            break;
+        default:
+        {
+            MainInputState* inputState = _inputManager->getInputState();
+            if (inputState->isRequestingToAddLocalPlayer())
+            {
+                NG_CLIENT->requestToAddLocalPlayer();
+            }
+        }
+            break;
     }
     
     return false;

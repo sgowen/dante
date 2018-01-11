@@ -76,21 +76,24 @@ public:
         ReadStateFlag_Pose = 1 << 0
     };
     
-    Entity(EntityDef& inEntityDef, bool isServer);
+    Entity(EntityDef& inEntityDef, int x = 0, int y = 0, bool isServer = false);
     ~Entity();
     
     void update();
+    void interpolate(double alpha);
+    void postRender();
     bool shouldCollide(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB);
     void handleBeginContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB);
     void handleEndContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB);
     void read(InputMemoryBitStream& inInputStream);
     void recallLastReadState();
     uint16_t write(OutputMemoryBitStream& inOutputStream, uint16_t inDirtyState);
-    
     void initPhysics(b2World& world);
     void deinitPhysics(b2World& world);
+    void updatePoseFromBody();
+    void updateBodyFromPose();
     EntityDef& getEntityDef();
-    EntityController* getEntityController();
+    EntityController* getController();
     uint16_t getStateTime();
     b2Body* getBody();
     void setPosition(b2Vec2 position);
@@ -120,12 +123,12 @@ public:
         uint8_t numGroundContacts;
         bool isFacingLeft;
         
-        Pose()
+        Pose(float x, float y)
         {
             stateTime = 0;
             state = 0;
             velocity = b2Vec2_zero;
-            position = b2Vec2_zero;
+            position = b2Vec2(x, y);
             angle = 0;
             numGroundContacts = 0;
             isFacingLeft = false;
@@ -164,14 +167,12 @@ private:
     /// Network
     Pose _pose;
     Pose _poseCache;
+    Pose _poseInterpolateCache;
     
     uint16_t _readState;
     uint8_t _state;
     uint32_t _ID;
     bool _isRequestingDeletion;
-    
-    void updatePoseFromBody();
-    void updateBodyFromPose();
 };
 
 #endif /* defined(__noctisgames__Entity__) */

@@ -30,16 +30,10 @@ public:
         
     public:
         void write(OutputMemoryBitStream& inOutputStream) const;
-        
         void read(InputMemoryBitStream& inInputStream);
-        
         int getDesiredRightAmount();
-        
         bool isJumping();
-        
         bool isMainAction();
-        
-        bool isSprinting();
         
     private:
         uint8_t _playerId;
@@ -47,7 +41,6 @@ public:
         bool _isMovingLeft;
         bool _isJumping;
         bool _isMainAction;
-        bool _isSprinting;
         
         GameInputState();
     };
@@ -55,19 +48,13 @@ public:
     MainInputState();
     
     virtual void write(OutputMemoryBitStream& inOutputStream) const;
-    
     virtual void read(InputMemoryBitStream& inInputStream);
-    
     virtual void reset();
-    
     virtual bool isEqual(InputState* inInputState) const;
-    
     virtual void copyTo(InputState* inInputState) const;
     
     void activateNextPlayer(uint8_t playerId);
-    
     GameInputState* getGameInputStateForPlayerId(uint8_t playerId);
-    
     bool isRequestingToAddLocalPlayer() const;
     
 private:

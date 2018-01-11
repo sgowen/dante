@@ -28,7 +28,7 @@ public:
     void initWithJsonFile(const char* jsonFile, bool isBundled, bool useEncryption = false);
     void initWithJson(const char* json);
     
-    Entity* createEntity(uint32_t inFourCCName, bool isServer);
+    Entity* createEntity(uint32_t inFourCCName, int x = 0, int y = 0, bool isServer = false);
     
     void registerFunction(std::string name, EntityControllerCreationFunc inCreationFunction);
     EntityController* createEntityController(std::string name, Entity* inEntity);

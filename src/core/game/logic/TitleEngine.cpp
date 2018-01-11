@@ -167,7 +167,7 @@ void TitleEngine::onPause()
     // Empty
 }
 
-void TitleEngine::render()
+void TitleEngine::render(double alpha)
 {
     _renderer->render(_state);
 }

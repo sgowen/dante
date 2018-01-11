@@ -21,15 +21,12 @@ public:
     virtual void enter(Engine* engine) = 0;
     virtual void update(Engine* engine) = 0;
     virtual void exit(Engine* engine) = 0;
-    
     virtual void createDeviceDependentResources() = 0;
     virtual void createWindowSizeDependentResources(int screenWidth, int screenHeight, int renderWidth, int renderHeight, int cursorWidth, int cursorHeight) = 0;
     virtual void releaseDeviceDependentResources() = 0;
-    
     virtual void onResume() = 0;
     virtual void onPause() = 0;
-    
-    virtual void render() = 0;
+    virtual void render(double alpha) = 0;
 
 protected:
     EngineState();

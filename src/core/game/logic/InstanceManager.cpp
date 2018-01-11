@@ -82,7 +82,7 @@ uint64_t InstanceManager::sGetPlayerAddressHashForIndexOnClient(uint8_t inPlayer
     Entity* entity = InstanceManager::sGetPlayerEntityForIDOnClient(inPlayerIndex + 1);
     if (entity)
     {
-        PlayerController* robot = static_cast<PlayerController*>(entity->getEntityController());
+        PlayerController* robot = static_cast<PlayerController*>(entity->getController());
         assert(robot);
         ret = robot->getAddressHash();
     }

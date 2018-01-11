@@ -129,6 +129,10 @@ int DirectXMain::exec(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmd
 		}
 
 #ifndef _DEBUG
+#define LAUNCH_FULL_SCREEN
+#endif
+        
+#ifdef LAUNCH_FULL_SCREEN
         /// Launch directly into full screen
 		ShowWindow(hwnd, SW_SHOWMAXIMIZED);
 #else

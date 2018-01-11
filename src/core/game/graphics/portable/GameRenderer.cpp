@@ -203,7 +203,7 @@ void GameRenderer::updateCamera()
         
         for (Entity* entity : InstanceManager::getClientWorld()->getPlayers())
         {
-            PlayerController* robot = static_cast<PlayerController*>(entity->getEntityController());
+            PlayerController* robot = static_cast<PlayerController*>(entity->getController());
             
             if (robot->isLocalPlayer())
             {
@@ -363,15 +363,17 @@ void GameRenderer::renderUI(int flags)
         // Controls
         ++row;
         
-        renderText(StringUtil::format("'S'       Sound %s", NG_AUDIO_ENGINE->isSoundDisabled() ? "OFF" : " ON").c_str(), CAM_WIDTH - 0.5f, CAM_HEIGHT - (row++ * padding), Color::WHITE, FONT_ALIGN_RIGHT);
-        renderText(StringUtil::format("'M'       Music %s", NG_AUDIO_ENGINE->isMusicDisabled() ? "OFF" : " ON").c_str(), CAM_WIDTH - 0.5f, CAM_HEIGHT - (row++ * padding), Color::WHITE, FONT_ALIGN_RIGHT);
+        renderText(StringUtil::format("'S'         Sound %s", NG_AUDIO_ENGINE->isSoundDisabled() ? "OFF" : " ON").c_str(), CAM_WIDTH - 0.5f, CAM_HEIGHT - (row++ * padding), Color::WHITE, FONT_ALIGN_RIGHT);
+        renderText(StringUtil::format("'M'         Music %s", NG_AUDIO_ENGINE->isMusicDisabled() ? "OFF" : " ON").c_str(), CAM_WIDTH - 0.5f, CAM_HEIGHT - (row++ * padding), Color::WHITE, FONT_ALIGN_RIGHT);
+        
+        renderText(StringUtil::format("'P'   BOX2D DEBUG %s", flags & GameEngineState_DisplayBox2D ? " ON" : "OFF").c_str(), CAM_WIDTH - 0.5f, CAM_HEIGHT - (row++ * padding), Color::WHITE, FONT_ALIGN_RIGHT);
+        
+        renderText(StringUtil::format("'L' INTERPOLATION %s", flags & GameEngineState_Interpolation ? " ON" : "OFF").c_str(), CAM_WIDTH - 0.5f, CAM_HEIGHT - (row++ * padding), Color::WHITE, FONT_ALIGN_RIGHT);
         
         if (Server::getInstance())
         {
-            renderText(StringUtil::format("'I'       DEBUG %s", Server::getInstance()->isDisplaying() ? " ON" : "OFF").c_str(), CAM_WIDTH - 0.5f, CAM_HEIGHT - (row++ * padding), Color::WHITE, FONT_ALIGN_RIGHT);
+            renderText(StringUtil::format("'I'         DEBUG %s", Server::getInstance()->isDisplaying() ? " ON" : "OFF").c_str(), CAM_WIDTH - 0.5f, CAM_HEIGHT - (row++ * padding), Color::WHITE, FONT_ALIGN_RIGHT);
         }
-        
-        renderText(StringUtil::format("'P' BOX2D DEBUG %s", flags & GameEngineState_DisplayBox2D ? " ON" : "OFF").c_str(), CAM_WIDTH - 0.5f, CAM_HEIGHT - (row++ * padding), Color::WHITE, FONT_ALIGN_RIGHT);
         
         if (InstanceManager::getClientWorld())
         {
@@ -380,7 +382,7 @@ void GameRenderer::renderUI(int flags)
             std::vector<Entity*> players = InstanceManager::getClientWorld()->getPlayers();
             for (Entity* entity : players)
             {
-                PlayerController* robot = static_cast<PlayerController*>(entity->getEntityController());
+                PlayerController* robot = static_cast<PlayerController*>(entity->getController());
                 
                 int playerId = robot->getPlayerId();
                 if (playerId >= 1 && playerId <= 4)

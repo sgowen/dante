@@ -28,8 +28,7 @@ _screenHeight(0),
 _renderWidth(0),
 _renderHeight(0),
 _cursorWidth(0),
-_cursorHeight(0),
-_areDeviceDependentResourcesCreated(false)
+_cursorHeight(0)
 {
     _stateMachine.setCurrentState(engineController->getInitialState());
 }
@@ -42,8 +41,6 @@ Engine::~Engine()
 void Engine::createDeviceDependentResources()
 {
     _stateMachine.getCurrentState()->createDeviceDependentResources();
-    
-    _areDeviceDependentResourcesCreated = true;
 }
 
 void Engine::createWindowSizeDependentResources(int screenWidth, int screenHeight, int renderWidth, int renderHeight, int cursorWidth, int cursorHeight)
@@ -61,8 +58,6 @@ void Engine::createWindowSizeDependentResources(int screenWidth, int screenHeigh
 void Engine::releaseDeviceDependentResources()
 {
     _stateMachine.getCurrentState()->releaseDeviceDependentResources();
-    
-    _areDeviceDependentResourcesCreated = false;
 }
 
 void Engine::onResume()
@@ -91,7 +86,7 @@ void Engine::update(double deltaTime)
 
 void Engine::render()
 {
-    _stateMachine.getCurrentState()->render();
+    _stateMachine.getCurrentState()->render(_frameStateTime / FRAME_RATE);
 }
 
 EngineController* Engine::getEngineController()
@@ -147,9 +142,4 @@ int Engine::getCursorWidth()
 int Engine::getCursorHeight()
 {
     return _cursorHeight;
-}
-
-bool Engine::areDeviceDependentResourcesCreated()
-{
-    return _areDeviceDependentResourcesCreated;
 }

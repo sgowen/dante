@@ -81,19 +81,25 @@ void GameInputManager::update()
         switch ((*i)->getKey())
         {
             case NG_KEY_M:
-                _menuState = (*i)->isUp() ? GIS_CLIENT_MAIN_TOGGLE_MUSIC : _menuState;
+                _menuState = (*i)->isDown() ? GIS_CLIENT_MAIN_TOGGLE_MUSIC : _menuState;
                 continue;
             case NG_KEY_S:
-                _menuState = (*i)->isUp() ? GIS_CLIENT_MAIN_TOGGLE_SOUND : _menuState;
+                _menuState = (*i)->isDown() ? GIS_CLIENT_MAIN_TOGGLE_SOUND : _menuState;
                 continue;
             case NG_KEY_I:
-                _menuState = (*i)->isUp() ? GIS_SERVER_TOGGLE_SERVER_DISPLAY : _menuState;
+                _menuState = (*i)->isDown() ? GIS_SERVER_TOGGLE_SERVER_DISPLAY : _menuState;
                 continue;
             case NG_KEY_P:
-                _menuState = (*i)->isUp() ? GIS_TOGGLE_PHYSICS_DISPLAY : _menuState;
+                _menuState = (*i)->isDown() ? GIS_TOGGLE_PHYSICS_DISPLAY : _menuState;
+                continue;
+            case NG_KEY_L:
+                _menuState = (*i)->isDown() ? GIS_TOGGLE_INTERPOLATION : _menuState;
                 continue;
             case NG_KEY_ESCAPE:
-                _menuState = (*i)->isUp() ? GIS_ESCAPE : _menuState;
+                if ((*i)->isDown())
+                {
+                    dropPlayer(0);
+                }
                 continue;
             default:
             {
@@ -108,9 +114,6 @@ void GameInputManager::update()
                         continue;
                     case NG_KEY_D:
                         _currentState->getGameInputState(0)._isMovingRight = (*i)->isDown();
-                        continue;
-                    case NG_KEY_ARROW_DOWN:
-                        _currentState->getGameInputState(0)._isSprinting = (*i)->isDown();
                         continue;
                     case NG_KEY_SPACE_BAR:
                         _currentState->getGameInputState(0)._isMainAction = (*i)->isDown();
@@ -136,27 +139,28 @@ void GameInputManager::update()
                         _currentState->getGameInputState(2)._isMovingRight = (*i)->isDown();
                         _currentState->getGameInputState(3)._isMovingRight = (*i)->isDown();
                         continue;
-                    case NG_KEY_COMMA:
-                        _currentState->getGameInputState(1)._isSprinting = (*i)->isDown();
-                        _currentState->getGameInputState(2)._isSprinting = (*i)->isDown();
-                        _currentState->getGameInputState(3)._isSprinting = (*i)->isDown();
-                        continue;
                     case NG_KEY_PERIOD:
                         _currentState->getGameInputState(1)._isMainAction = (*i)->isDown();
                         _currentState->getGameInputState(2)._isMainAction = (*i)->isDown();
                         _currentState->getGameInputState(3)._isMainAction = (*i)->isDown();
                         continue;
                     case NG_KEY_SEVEN:
-                        _currentState->getGameInputState(1)._playerId = INPUT_UNASSIGNED;
-                        _menuState = (*i)->isDown() ? GIS_LOCAL_PLAYER_DROP_OUT_1 : GIS_NONE;
+                        if ((*i)->isDown())
+                        {
+                            dropPlayer(1);
+                        }
                         continue;
                     case NG_KEY_EIGHT:
-                        _currentState->getGameInputState(2)._playerId = INPUT_UNASSIGNED;
-                        _menuState = (*i)->isDown() ? GIS_LOCAL_PLAYER_DROP_OUT_2 : GIS_NONE;
+                        if ((*i)->isDown())
+                        {
+                            dropPlayer(2);
+                        }
                         continue;
                     case NG_KEY_NINE:
-                        _currentState->getGameInputState(3)._playerId = INPUT_UNASSIGNED;
-                        _menuState = (*i)->isDown() ? GIS_LOCAL_PLAYER_DROP_OUT_3 : GIS_NONE;
+                        if ((*i)->isDown())
+                        {
+                            dropPlayer(3);
+                        }
                         continue;
 #endif
                     default:
@@ -168,8 +172,7 @@ void GameInputManager::update()
     
     bool isMovingRight[4] = {false};
     bool isMovingLeft[4] = {false};
-    bool isSprinting[4] = {false};
-    bool isShooting[4] = {false};
+    bool isAction[4] = {false};
     
     for (std::vector<GamePadEvent *>::iterator i = GAME_PAD_INPUT_MANAGER->getEvents().begin(); i != GAME_PAD_INPUT_MANAGER->getEvents().end(); ++i)
     {
@@ -212,44 +215,19 @@ void GameInputManager::update()
                 }
             }
                 continue;
-            case GamePadEventType_BUMPER_LEFT:
-            case GamePadEventType_BUMPER_RIGHT:
-                if (!isSprinting[(*i)->getIndex()])
-                {
-                    _currentState->getGameInputState((*i)->getIndex())._isSprinting = (*i)->isPressed();
-                    isSprinting[(*i)->getIndex()] = _currentState->getGameInputState((*i)->getIndex())._isSprinting;
-                }
-                continue;
             case GamePadEventType_X_BUTTON:
             case GamePadEventType_TRIGGER:
-                if (!isShooting[(*i)->getIndex()])
+                if (!isAction[(*i)->getIndex()])
                 {
                     _currentState->getGameInputState((*i)->getIndex())._isMainAction = (*i)->getX() > 0 || (*i)->getY() > 0;
-                    isShooting[(*i)->getIndex()] = _currentState->getGameInputState((*i)->getIndex())._isMainAction;
+                    isAction[(*i)->getIndex()] = _currentState->getGameInputState((*i)->getIndex())._isMainAction;
                 }
                 continue;
             case GamePadEventType_BACK_BUTTON:
-            {
-                if ((*i)->getIndex() == 3)
+                if ((*i)->isPressed())
                 {
-                    _currentState->getGameInputState((*i)->getIndex())._playerId = INPUT_UNASSIGNED;
-                    _menuState = !(*i)->isPressed() ? GIS_LOCAL_PLAYER_DROP_OUT_3 : GIS_NONE;
+                    dropPlayer((*i)->getIndex());
                 }
-                else if ((*i)->getIndex() == 2)
-                {
-                    _currentState->getGameInputState((*i)->getIndex())._playerId = INPUT_UNASSIGNED;
-                    _menuState = !(*i)->isPressed() ? GIS_LOCAL_PLAYER_DROP_OUT_2 : GIS_NONE;
-                }
-                else if ((*i)->getIndex() == 1)
-                {
-                    _currentState->getGameInputState((*i)->getIndex())._playerId = INPUT_UNASSIGNED;
-                    _menuState = !(*i)->isPressed() ? GIS_LOCAL_PLAYER_DROP_OUT_1 : GIS_NONE;
-                }
-                else
-                {
-                    _menuState = (*i)->isPressed() ? GIS_ESCAPE : _menuState;
-                }
-            }
                 continue;
             default:
                 continue;
@@ -271,16 +249,13 @@ void GameInputManager::update()
                 if ((*i)->getType() == CursorEventType_DOWN)
                 {
                     _currentState->getGameInputState(0)._isJumping = true;
-                    _currentState->getGameInputState(0)._isMainAction = true;
                 }
             }
             else
             {
                 _currentState->getGameInputState(0)._isMovingLeft = false;
                 _currentState->getGameInputState(0)._isMovingRight = false;
-                
                 _currentState->getGameInputState(0)._isJumping = false;
-                _currentState->getGameInputState(0)._isMainAction = false;
                 
                 continue;
             }
@@ -321,6 +296,12 @@ const Move& GameInputManager::sampleInputAsMove()
     _currentState->copyTo(inputState);
     
     return _moveList.addMove(inputState, Timing::getInstance()->getFrameStartTime());
+}
+
+void GameInputManager::dropPlayer(int index)
+{
+    _currentState->getGameInputState(index)._playerId = INPUT_UNASSIGNED;
+    _menuState = GIS_LOCAL_PLAYER_DROP_OUT_0 + index;
 }
 
 GameInputManager::GameInputManager() :

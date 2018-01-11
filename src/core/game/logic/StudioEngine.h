@@ -34,13 +34,12 @@ public:
     virtual void enter(Engine* engine);
     virtual void update(Engine* engine);
     virtual void exit(Engine* engine);
-    
     virtual void createDeviceDependentResources();
     virtual void createWindowSizeDependentResources(int screenWidth, int screenHeight, int renderWidth, int renderHeight, int cursorWidth, int cursorHeight);
     virtual void releaseDeviceDependentResources();
     virtual void onResume();
     virtual void onPause();
-    virtual void render();
+    virtual void render(double alpha);
     
 private:
     static StudioEngine* s_instance;

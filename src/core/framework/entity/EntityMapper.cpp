@@ -154,7 +154,7 @@ void EntityMapper::initWithJson(const char* json)
     }
 }
 
-Entity* EntityMapper::createEntity(uint32_t inFourCCName, bool isServer)
+Entity* EntityMapper::createEntity(uint32_t inFourCCName, int x, int y, bool isServer)
 {
     auto q = _entityDescriptors.find(inFourCCName);
     
@@ -162,7 +162,7 @@ Entity* EntityMapper::createEntity(uint32_t inFourCCName, bool isServer)
     
     EntityDef* entityDef = q->second;
     
-    return new Entity(*entityDef, isServer);
+    return new Entity(*entityDef, x, y, isServer);
 }
 
 void EntityMapper::registerFunction(std::string name, EntityControllerCreationFunc inCreationFunction)

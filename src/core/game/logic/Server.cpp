@@ -147,10 +147,9 @@ void Server::deleteRobotWithPlayerId(uint8_t playerId)
 void Server::spawnRobotForPlayer(uint8_t inPlayerId, std::string inPlayerName)
 {
     _playerIdForRobotBeingCreated = inPlayerId;
-    Entity* entity = createAndRegisterEntity('ROBT');
-    entity->setPosition(b2Vec2(2, 8));
+    Entity* e = createAndRegisterEntity('ROBT', 2, 8);
     
-    PlayerController* robot = static_cast<PlayerController*>(entity->getEntityController());
+    PlayerController* robot = static_cast<PlayerController*>(e->getController());
     
     ClientProxy* client = NG_SERVER->getClientProxy(inPlayerId);
     robot->setAddressHash(client->getMachineAddress()->getHash());
@@ -165,82 +164,27 @@ void Server::spawnObjectsIfNecessary()
         return;
     }
     
-    {
-        Entity* e = createAndRegisterEntity('G001');
-        e->setPosition(b2Vec2(0, 2));
-    }
-    {
-        Entity* e = createAndRegisterEntity('G002');
-        e->setPosition(b2Vec2(2, 2));
-    }
-    {
-        Entity* e = createAndRegisterEntity('G003');
-        e->setPosition(b2Vec2(4, 2));
-    }
-    {
-        Entity* e = createAndRegisterEntity('G004');
-        e->setPosition(b2Vec2(6, 2));
-    }
-    {
-        Entity* e = createAndRegisterEntity('G005');
-        e->setPosition(b2Vec2(8, 2));
-    }
-    {
-        Entity* e = createAndRegisterEntity('G006');
-        e->setPosition(b2Vec2(10, 2));
-    }
-    {
-        Entity* e = createAndRegisterEntity('G007');
-        e->setPosition(b2Vec2(12, 2));
-    }
-    {
-        Entity* e = createAndRegisterEntity('G008');
-        e->setPosition(b2Vec2(14, 2));
-    }
-    {
-        Entity* e = createAndRegisterEntity('G009');
-        e->setPosition(b2Vec2(16, 2));
-    }
-    {
-        Entity* e = createAndRegisterEntity('G010');
-        e->setPosition(b2Vec2(18, 2));
-    }
-    {
-        Entity* e = createAndRegisterEntity('G011');
-        e->setPosition(b2Vec2(20, 2));
-    }
-    {
-        Entity* e = createAndRegisterEntity('G012');
-        e->setPosition(b2Vec2(22, 2));
-    }
-    {
-        Entity* e = createAndRegisterEntity('G013');
-        e->setPosition(b2Vec2(24, 2));
-    }
-    {
-        Entity* e = createAndRegisterEntity('G014');
-        e->setPosition(b2Vec2(26, 2));
-    }
-    {
-        Entity* e = createAndRegisterEntity('T001');
-        e->setPosition(b2Vec2(6, 7));
-    }
-    {
-        Entity* e = createAndRegisterEntity('T002');
-        e->setPosition(b2Vec2(14, 9));
-    }
-    {
-        Entity* e = createAndRegisterEntity('T003');
-        e->setPosition(b2Vec2(16, 15));
-    }
-    {
-        Entity* e = createAndRegisterEntity('T003');
-        e->setPosition(b2Vec2(18, 14));
-    }
-    {
-        Entity* e = createAndRegisterEntity('T003');
-        e->setPosition(b2Vec2(20, 13));
-    }
+    createAndRegisterEntity('G001', 0, 2);
+    createAndRegisterEntity('G002', 2, 2);
+    createAndRegisterEntity('G003', 4, 2);
+    createAndRegisterEntity('G004', 6, 2);
+    createAndRegisterEntity('G005', 8, 2);
+    createAndRegisterEntity('G006', 10, 2);
+    createAndRegisterEntity('G007', 12, 2);
+    createAndRegisterEntity('G008', 14, 2);
+    createAndRegisterEntity('G009', 16, 2);
+    createAndRegisterEntity('G010', 18, 2);
+    createAndRegisterEntity('G011', 20, 2);
+    createAndRegisterEntity('G012', 22, 2);
+    createAndRegisterEntity('G013', 24, 2);
+    createAndRegisterEntity('G014', 26, 2);
+    createAndRegisterEntity('T001', 6, 7);
+    createAndRegisterEntity('T002', 14, 9);
+    createAndRegisterEntity('T003', 16, 15);
+    createAndRegisterEntity('T003', 18, 14);
+    createAndRegisterEntity('T003', 20, 13);
+    
+    return;
     
     srand(static_cast<unsigned>(time(0)));
     
@@ -251,21 +195,19 @@ void Server::spawnObjectsIfNecessary()
     /// 1200 bytes (any larger will be dropped by some routers).
     for (uint32_t i = 0; i < 8; ++i)
     {
-        Entity* entity = createAndRegisterEntity('CRAT');
-        
         int xSeed = rand() % 2 + 1;
         float posX = xSeed * 8;
-        float posY = (rand() % static_cast<int>(GAME_HEIGHT - entity->getHeight() * 2)) + (2.0f + entity->getHeight() * 2) + 10;
+        float posY = (rand() % static_cast<int>(GAME_HEIGHT - 8)) + 20;
         
-        entity->setPosition(b2Vec2(posX, posY));
+        createAndRegisterEntity('CRAT', posX, posY);
     }
     
     _hasSpawnedObjects = true;
 }
 
-Entity* Server::createAndRegisterEntity(uint32_t inFourCCName)
+Entity* Server::createAndRegisterEntity(uint32_t inFourCCName, int x, int y)
 {
-    Entity* ret = EntityMapper::getInstance()->createEntity(inFourCCName, true);
+    Entity* ret = EntityMapper::getInstance()->createEntity(inFourCCName, x, y, true);
     
     NG_SERVER->registerEntity(ret);
     

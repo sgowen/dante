@@ -136,7 +136,7 @@ void StudioEngine::onPause()
     // Empty
 }
 
-void StudioEngine::render()
+void StudioEngine::render(double alpha)
 {
     _renderer->render(_state);
 }

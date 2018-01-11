@@ -60,7 +60,6 @@ void MainInputState::reset()
         gis._isMovingLeft = false;
         gis._isJumping = false;
         gis._isMainAction = false;
-        gis._isSprinting = false;
     }
 }
 
@@ -75,7 +74,6 @@ bool MainInputState::isEqual(InputState* inInputState) const
         if (in->_gameMainInputStates[i]._isMovingLeft != _gameMainInputStates[i]._isMovingLeft) { return false; }
         if (in->_gameMainInputStates[i]._isJumping != _gameMainInputStates[i]._isJumping) { return false; }
         if (in->_gameMainInputStates[i]._isMainAction != _gameMainInputStates[i]._isMainAction) { return false; }
-        if (in->_gameMainInputStates[i]._isSprinting != _gameMainInputStates[i]._isSprinting) { return false; }
     }
     
     return true;
@@ -92,7 +90,6 @@ void MainInputState::copyTo(InputState* inInputState) const
         inMainInputState->_gameMainInputStates[i]._isMovingLeft = _gameMainInputStates[i]._isMovingLeft;
         inMainInputState->_gameMainInputStates[i]._isJumping = _gameMainInputStates[i]._isJumping;
         inMainInputState->_gameMainInputStates[i]._isMainAction = _gameMainInputStates[i]._isMainAction;
-        inMainInputState->_gameMainInputStates[i]._isSprinting = _gameMainInputStates[i]._isSprinting;
     }
 }
 
@@ -147,7 +144,6 @@ void MainInputState::GameInputState::write(OutputMemoryBitStream& inOutputStream
     inOutputStream.write(_isMovingLeft);
     inOutputStream.write(_isJumping);
     inOutputStream.write(_isMainAction);
-    inOutputStream.write(_isSprinting);
 }
 
 void MainInputState::GameInputState::read(InputMemoryBitStream& inInputStream)
@@ -157,7 +153,6 @@ void MainInputState::GameInputState::read(InputMemoryBitStream& inInputStream)
     inInputStream.read(_isMovingLeft);
     inInputStream.read(_isJumping);
     inInputStream.read(_isMainAction);
-    inInputStream.read(_isSprinting);
 }
 
 int MainInputState::GameInputState::getDesiredRightAmount()
@@ -187,18 +182,12 @@ bool MainInputState::GameInputState::isMainAction()
     return _isMainAction;
 }
 
-bool MainInputState::GameInputState::isSprinting()
-{
-    return _isSprinting;
-}
-
 MainInputState::GameInputState::GameInputState() :
 _playerId(INPUT_UNASSIGNED),
 _isMovingRight(false),
 _isMovingLeft(false),
 _isJumping(false),
-_isMainAction(false),
-_isSprinting(false)
+_isMainAction(false)
 {
     // Empty
 }

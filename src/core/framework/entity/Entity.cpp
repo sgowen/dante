@@ -27,14 +27,15 @@
 
 NGRTTI_IMPL_NOPARENT(Entity);
 
-Entity::Entity(EntityDef& inEntityDef, bool isServer) :
+Entity::Entity(EntityDef& inEntityDef, int x, int y, bool isServer) :
 _entityDef(inEntityDef),
 _controller(EntityMapper::getInstance()->createEntityController(inEntityDef.controller, this)),
 _isServer(isServer),
 _body(NULL),
 _groundSensorFixture(NULL),
-_pose(),
+_pose(x, y),
 _poseCache(_pose),
+_poseInterpolateCache(_pose),
 _readState(0),
 _state(0),
 _ID(0),
@@ -50,6 +51,8 @@ Entity::~Entity()
 
 void Entity::update()
 {
+    updatePoseFromBody();
+    
     if (_entityDef.stateSensitive)
     {
         ++_pose.stateTime;
@@ -62,7 +65,7 @@ void Entity::update()
     
     _state = _controller->update();
     
-    updatePoseFromBody();
+    updateBodyFromPose();
     
     if (_isServer)
     {
@@ -71,6 +74,31 @@ void Entity::update()
             _poseCache = _pose;
             NG_SERVER->setStateDirty(getID(), ReadStateFlag_Pose);
         }
+    }
+}
+
+void Entity::interpolate(double alpha)
+{
+    if (_body->GetType() == b2_dynamicBody && _body->IsActive())
+    {
+        float x = _pose.position.x * alpha + _poseInterpolateCache.position.x * (1.0f - alpha);
+        float y = _pose.position.y * alpha + _poseInterpolateCache.position.y * (1.0f - alpha);
+        float a = _pose.angle * alpha + _poseInterpolateCache.angle * (1.0f - alpha);
+        
+        _poseInterpolateCache.position = _pose.position;
+        _poseInterpolateCache.angle = _pose.angle;
+        
+        _pose.position.Set(x, y);
+        _pose.angle = a;
+    }
+}
+
+void Entity::postRender()
+{
+    if (_body->GetType() == b2_dynamicBody && _body->IsActive())
+    {
+        _pose.position = _poseInterpolateCache.position;
+        _pose.angle = _poseInterpolateCache.angle;
     }
 }
 
@@ -201,7 +229,7 @@ void Entity::initPhysics(b2World& world)
     assert(!_body);
     
     b2BodyDef bodyDef;
-    bodyDef.position.SetZero();
+    bodyDef.position.Set(_pose.position.x, _pose.position.y);
     bodyDef.type = _entityDef.bodyFlags & BodyFlag_Static ? b2_staticBody : b2_dynamicBody;
     bodyDef.fixedRotation = _entityDef.bodyFlags & BodyFlag_FixedRotation;
     bodyDef.bullet = _entityDef.bodyFlags & BodyFlag_Bullet;
@@ -270,12 +298,31 @@ void Entity::deinitPhysics(b2World& world)
     }
 }
 
+void Entity::updatePoseFromBody()
+{
+    if (_body)
+    {
+        _pose.velocity = _body->GetLinearVelocity();
+        _pose.position = _body->GetPosition();
+        _pose.angle = _body->GetAngle();
+    }
+}
+
+void Entity::updateBodyFromPose()
+{
+    if (_body)
+    {
+        _body->SetLinearVelocity(_pose.velocity);
+        _body->SetTransform(_pose.position, _pose.angle);
+    }
+}
+
 EntityDef& Entity::getEntityDef()
 {
     return _entityDef;
 }
 
-EntityController* Entity::getEntityController()
+EntityController* Entity::getController()
 {
     return _controller;
 }
@@ -293,40 +340,20 @@ b2Body* Entity::getBody()
 void Entity::setPosition(b2Vec2 position)
 {
     _pose.position = position;
-    
-    if (_body)
-    {
-        _body->SetTransform(_pose.position, _body->GetAngle());
-    }
 }
 
 const b2Vec2& Entity::getPosition()
 {
-    if (_body)
-    {
-        _pose.position = _body->GetPosition();
-    }
-    
     return _pose.position;
 }
 
 void Entity::setVelocity(b2Vec2 velocity)
 {
     _pose.velocity = velocity;
-    
-    if (_body)
-    {
-        _body->SetLinearVelocity(_pose.velocity);
-    }
 }
 
 const b2Vec2& Entity::getVelocity()
 {
-    if (_body)
-    {
-        _pose.velocity = _body->GetLinearVelocity();
-    }
-    
     return _pose.velocity;
 }
 
@@ -343,20 +370,10 @@ float Entity::getHeight()
 void Entity::setAngle(float angle)
 {
     _pose.angle = angle;
-    
-    if (_body)
-    {
-        _body->SetTransform(_body->GetPosition(), _pose.angle);
-    }
 }
 
 float Entity::getAngle()
 {
-    if (_body)
-    {
-        _pose.angle = _body->GetAngle();
-    }
-    
     return _pose.angle;
 }
 
@@ -422,28 +439,4 @@ Entity::Pose& Entity::getPose()
 Entity::Pose& Entity::getPoseCache()
 {
     return _poseCache;
-}
-
-void Entity::updatePoseFromBody()
-{
-    _pose.velocity = getVelocity();
-    _pose.position = getPosition();
-    
-    bool fixedRotation = _entityDef.bodyFlags & BodyFlag_FixedRotation;
-    if (!fixedRotation)
-    {
-        _pose.angle = getAngle();
-    }
-}
-
-void Entity::updateBodyFromPose()
-{
-    setVelocity(_pose.velocity);
-    setPosition(_pose.position);
-    
-    bool fixedRotation = _entityDef.bodyFlags & BodyFlag_FixedRotation;
-    if (!fixedRotation)
-    {
-        setAngle(_pose.angle);
-    }
 }

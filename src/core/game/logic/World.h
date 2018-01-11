@@ -30,6 +30,8 @@ public:
     void removeEntity(Entity* inEntity);
     void postRead();
     void update();
+    void interpolate(double alpha);
+    void postRender();
     Entity* getRobotWithPlayerId(uint8_t inPlayerID);
     std::vector<Entity*>& getPlayers();
     std::vector<Entity*>& getEntities();
@@ -38,9 +40,11 @@ public:
 private:
     std::vector<Entity*> _players;
     std::vector<Entity*> _entities;
+    std::vector<Entity*> _mapEntities;
     b2World* _world;
     EntityContactListener* _entityContactListener;
     EntityContactFilter* _entityContactFilter;
+    uint32_t _map;
     bool _isServer;
     
     void stepPhysics();

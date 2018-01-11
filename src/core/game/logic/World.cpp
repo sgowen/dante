@@ -29,6 +29,7 @@ World::World(bool isServer) :
 _world(new b2World(b2Vec2(0.0f, -9.8f))),
 _entityContactListener(new EntityContactListener()),
 _entityContactFilter(new EntityContactFilter()),
+_map(0),
 _isServer(isServer)
 {
     _world->SetContactListener(_entityContactListener);
@@ -59,7 +60,7 @@ void World::addEntity(Entity* inEntity)
     
     _entities.push_back(inEntity);
     
-    if (inEntity->getEntityController()->getRTTI().derivesFrom(PlayerController::rtti))
+    if (inEntity->getController()->getRTTI().derivesFrom(PlayerController::rtti))
     {
         _players.push_back(inEntity);
     }
@@ -67,7 +68,7 @@ void World::addEntity(Entity* inEntity)
 
 void World::removeEntity(Entity* inEntity)
 {
-    if (inEntity->getEntityController()->getRTTI().derivesFrom(PlayerController::rtti))
+    if (inEntity->getController()->getRTTI().derivesFrom(PlayerController::rtti))
     {
         int len = static_cast<int>(_players.size());
         int indexToRemove = -1;
@@ -138,7 +139,7 @@ void World::postRead()
     {
         for (Entity* entity : _players)
         {
-            PlayerController* robot = static_cast<PlayerController*>(entity->getEntityController());
+            PlayerController* robot = static_cast<PlayerController*>(entity->getController());
             if (robot->isLocalPlayer())
             {
                 robot->processInput(move.getInputState());
@@ -165,7 +166,7 @@ void World::update()
             {
                 for (Entity* entity : _players)
                 {
-                    PlayerController* robot = static_cast<PlayerController*>(entity->getEntityController());
+                    PlayerController* robot = static_cast<PlayerController*>(entity->getController());
                     
                     ClientProxy* client = NG_SERVER->getClientProxy(robot->getPlayerId());
                     if (client)
@@ -222,7 +223,7 @@ void World::update()
         {
             for (Entity* entity : _players)
             {
-                PlayerController* robot = static_cast<PlayerController*>(entity->getEntityController());
+                PlayerController* robot = static_cast<PlayerController*>(entity->getController());
                 if (robot->isLocalPlayer())
                 {
                     robot->processInput(pendingMove->getInputState(), true);
@@ -239,11 +240,27 @@ void World::update()
     }
 }
 
+void World::interpolate(double alpha)
+{
+    for (Entity* entity : _entities)
+    {
+        entity->interpolate(alpha);
+    }
+}
+
+void World::postRender()
+{
+    for (Entity* entity : _entities)
+    {
+        entity->postRender();
+    }
+}
+
 Entity* World::getRobotWithPlayerId(uint8_t inPlayerID)
 {
     for (Entity* entity : _players)
     {
-        PlayerController* robot = static_cast<PlayerController*>(entity->getEntityController());
+        PlayerController* robot = static_cast<PlayerController*>(entity->getController());
         if (robot->getPlayerId() == inPlayerID)
         {
             return entity;

@@ -35,8 +35,7 @@
 
 NGRTTI_IMPL(PlayerController, EntityController);
 
-#define SPEED 7.0f
-#define SPRINT_SPEED SPEED * 1.5f
+#define SPEED 5.0f
 
 EntityController* PlayerController::create(Entity* inEntity)
 {
@@ -53,8 +52,7 @@ _isLocalPlayer(false)
     _stateMappings.insert(std::make_pair(0, "Idle"));
     _stateMappings.insert(std::make_pair(1, "Punching"));
     _stateMappings.insert(std::make_pair(2, "Running"));
-    _stateMappings.insert(std::make_pair(3, "Sprinting"));
-    _stateMappings.insert(std::make_pair(4, "Jumping"));
+    _stateMappings.insert(std::make_pair(3, "Jumping"));
 }
 
 PlayerController::~PlayerController()
@@ -90,7 +88,18 @@ uint8_t PlayerController::update()
         }
     }
     
-    return _entity->isGrounded() && getNumJumps() == 0 ? isMainAction() ? State_Punching : !isMoving() ? State_Idle : isSprinting() ? State_Running_Fast : State_Running : State_Jumping;
+    bool isGrounded = _entity->isGrounded();
+    uint8_t numJumps = getNumJumps();
+    bool mainAction = isMainAction();
+    bool moving = isMoving();
+    
+    return isGrounded && numJumps == 0 ?
+                mainAction ?
+                    State_Punching :
+                !moving ?
+                    State_Idle :
+                State_Running :
+            State_Jumping;
 }
 
 bool PlayerController::shouldCollide(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB)
@@ -118,6 +127,7 @@ void PlayerController::read(InputMemoryBitStream& inInputStream, uint16_t& inRea
     {
         inInputStream.read(_playerInfo.addressHash);
         inInputStream.read<uint8_t, 3>(_playerInfo.playerId);
+        inInputStream.read(_playerInfo.map);
         inInputStream.read(_playerInfo.playerName);
         
         _isLocalPlayer = NG_CLIENT->isPlayerIdLocal(_playerInfo.playerId);
@@ -139,20 +149,17 @@ void PlayerController::read(InputMemoryBitStream& inInputStream, uint16_t& inRea
     {
         if (inReadState & Entity::ReadStateFlag_Pose)
         {
-            if (!(_entity->getPoseCache().state & StateFlag_Sprinting) &&
-                (_entity->getPose().state & StateFlag_Sprinting))
-            {
-                Util::playSound(SOUND_ID_ACTIVATE_SPRINT, _entity->getPosition());
-            }
+            uint8_t& oldState = _entity->getPoseCache().state;
+            uint8_t& newState = _entity->getPose().state;
             
-            if (!(_entity->getPoseCache().state & StateFlag_FirstJump) &&
-                (_entity->getPose().state & StateFlag_FirstJump))
+            if (!(oldState & StateFlag_FirstJump) &&
+                (newState & StateFlag_FirstJump))
             {
                 Util::playSound(SOUND_ID_ROBOT_JUMP, _entity->getPosition());
             }
             
-            if (!(_entity->getPoseCache().state & StateFlag_SecondJump) &&
-                (_entity->getPose().state & StateFlag_SecondJump))
+            if (!(oldState & StateFlag_SecondJump) &&
+                (newState & StateFlag_SecondJump))
             {
                 Util::playSound(SOUND_ID_ROBOT_JUMP, _entity->getPosition());
             }
@@ -183,6 +190,7 @@ uint16_t PlayerController::write(OutputMemoryBitStream& inOutputStream, uint16_t
     {
         inOutputStream.write(_playerInfo.addressHash);
         inOutputStream.write<uint8_t, 3>(_playerInfo.playerId);
+        inOutputStream.write(_playerInfo.map);
         inOutputStream.write(_playerInfo.playerName);
         
         writtenState |= ReadStateFlag_PlayerInfo;
@@ -285,35 +293,14 @@ void PlayerController::processInput(InputState* inInputState, bool isPending)
         _entity->getPose().state &= ~StateFlag_SecondJump;
     }
     
-    float speed = 0;
-    bool wasMoving = isMoving();
-    bool isSprinting = inputState->isSprinting();
-    if (isSprinting)
+    float right = inputState->getDesiredRightAmount();
+    bool isRight = right > 0;
+    bool isLeft = right < 0;
+    if ((isRight && velocity.x < SPEED) ||
+        (isLeft && velocity.x > -SPEED))
     {
-        bool wasSprinting = _entity->getPose().state & StateFlag_Sprinting;
-        if (!wasSprinting)
-        {
-            _entity->getPose().state |= StateFlag_Sprinting;
-            
-            if (isPending)
-            {
-                Util::playSound(SOUND_ID_ACTIVATE_SPRINT, _entity->getPosition());
-            }
-        }
-        
-        speed = SPRINT_SPEED;
-    }
-    else
-    {
-        _entity->getPose().state &= ~StateFlag_Sprinting;
-        
-        speed = SPEED;
-    }
-    
-    if ((inputState->getDesiredRightAmount() > 0 && velocity.x < speed)
-        || (inputState->getDesiredRightAmount() < 0 && velocity.x > -speed))
-    {
-        sideForce = inputState->getDesiredRightAmount() * _entity->getBody()->GetMass() * (speed / 2);
+        sideForce = right * _entity->getBody()->GetMass() * SPEED / 2;
+        sideForce = clamp(sideForce, _entity->getBody()->GetMass() * SPEED, _entity->getBody()->GetMass() * -SPEED);
     }
     
     bool wasMainAction = _entity->getPose().state & StateFlag_MainAction;
@@ -339,15 +326,11 @@ void PlayerController::processInput(InputState* inInputState, bool isPending)
         sideForce = 0;
     }
     
-    if (!wasMoving && sideForce != 0)
-    {
-        _entity->getPose().stateTime = 0;
-    }
-    
-    _entity->getPose().isFacingLeft = sideForce < 0 ? true : sideForce > 0 ? false : _entity->getPose().isFacingLeft;
+    _entity->getPose().isFacingLeft = isLeft ? true : isRight ? false : _entity->getPose().isFacingLeft;
     
     if (sideForce != 0 || vertForce != 0)
     {
+        _entity->updateBodyFromPose();
         _entity->getBody()->ApplyLinearImpulse(b2Vec2(sideForce,vertForce), _entity->getBody()->GetWorldCenter(), true);
     }
 }
@@ -372,12 +355,12 @@ uint8_t PlayerController::getPlayerId() const
     return _playerInfo.playerId;
 }
 
-void PlayerController::setMap(uint8_t inValue)
+void PlayerController::setMap(uint32_t inValue)
 {
     _playerInfo.map = inValue;
 }
 
-uint8_t PlayerController::getMap() const
+uint32_t PlayerController::getMap() const
 {
     return _playerInfo.map;
 }
@@ -414,11 +397,6 @@ uint8_t PlayerController::getNumJumps()
 bool PlayerController::isMainAction()
 {
     return _entity->getPose().state & StateFlag_MainAction;
-}
-
-bool PlayerController::isSprinting()
-{
-    return _entity->getPose().state & StateFlag_Sprinting;
 }
 
 bool PlayerController::isMoving()
