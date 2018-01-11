@@ -17,28 +17,21 @@ class TextureRegion;
 class NGAnimation
 {
 public:
-    NGAnimation(std::string textureName, int x, int y, int regionWidth, int regionHeight, int animationWidth, int animationHeight, int textureWidth, int textureHeight, bool looping, int firstLoopingFrame, int xPadding, int yPadding, std::vector<float> frameTimes);
-    
-    NGAnimation(std::string textureName, int x, int y, int regionWidth, int regionHeight, int animationWidth, int animationHeight, int textureWidth, int textureHeight, bool looping, int firstLoopingFrame, int xPadding, int yPadding, float frameTime, int numFrames);
-    
+    NGAnimation(std::string textureName, int x, int y, int regionWidth, int regionHeight, int animationWidth, int animationHeight, int textureWidth, int textureHeight, bool looping, int firstLoopingFrame, int xPadding, int yPadding, std::vector<uint16_t> frameTimes);
+    NGAnimation(std::string textureName, int x, int y, int regionWidth, int regionHeight, int animationWidth, int animationHeight, int textureWidth, int textureHeight, bool looping, int firstLoopingFrame, int xPadding, int yPadding, uint16_t frameTime, int numFrames);
     ~NGAnimation();
     
-    TextureRegion& getTextureRegion(float stateTime);
-    
-    TextureRegion& getTextureRegion(int keyFrameNumber);
-    
-    int getKeyFrameNumber(float stateTime);
-    
-    bool hasFrameTimes();
-    
+    TextureRegion& getTextureRegion(uint16_t stateTime);
+    TextureRegion& getTextureRegionAtKeyFrame(uint16_t keyFrameNumber);
+    uint16_t getKeyFrameNumber(uint16_t stateTime);
     std::string& getTextureName();
     
 private:
     std::vector<TextureRegion> _textureRegions;
-    std::vector<float> _frameTimes;
+    std::vector<uint16_t> _frameTimes;
     std::string _textureName;
-    float _cycleTime;
-    int _firstLoopingFrame;
+    uint16_t _cycleTime;
+    uint16_t _firstLoopingFrame;
     bool _isLooping;
     
     void loadTextureRegions(int x, int y, int regionWidth, int regionHeight, int animationWidth, int animationHeight, int textureWidth, int textureHeight, int numFrames, int xPadding = 0, int yPadding = 0);

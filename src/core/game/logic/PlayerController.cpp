@@ -227,17 +227,20 @@ void PlayerController::processInput(InputState* inInputState, bool isPending)
     
     if (inputState->isJumping())
     {
-        if (_entity->isGrounded() && getNumJumps() == 0)
+        if (_entity->isGrounded())
         {
-            _entity->setVelocity(b2Vec2(velocity.x, 0));
-            _entity->getPose().stateTime = 0;
-            _entity->getPose().state &= ~StateFlag_FirstJumpCompleted;
-            _entity->getPose().state &= ~StateFlag_SecondJump;
-            _entity->getPose().state |= StateFlag_FirstJump;
-            
-            if (isPending)
+            if (getNumJumps() == 0)
             {
-                Util::playSound(SOUND_ID_ROBOT_JUMP, _entity->getPosition());
+                _entity->setVelocity(b2Vec2(velocity.x, 0));
+                _entity->getPose().stateTime = 0;
+                _entity->getPose().state &= ~StateFlag_FirstJumpCompleted;
+                _entity->getPose().state &= ~StateFlag_SecondJump;
+                _entity->getPose().state |= StateFlag_FirstJump;
+                
+                if (isPending)
+                {
+                    Util::playSound(SOUND_ID_ROBOT_JUMP, _entity->getPosition());
+                }
             }
         }
         else if (getNumJumps() == 0)
@@ -263,13 +266,13 @@ void PlayerController::processInput(InputState* inInputState, bool isPending)
             }
             else
             {
-                vertForce = _entity->getBody()->GetMass() * (11.25f - (7.0f + (_entity->getPose().stateTime + 0.25f) * 10));
+                vertForce = _entity->getBody()->GetMass() * (9 - _entity->getPose().stateTime * 8);
             }
         }
         
         if (getNumJumps() == 2)
         {
-            vertForce = _entity->getBody()->GetMass() * (10.25f - (6.0f + (_entity->getPose().stateTime + 0.25f) * 10));
+            vertForce = _entity->getBody()->GetMass() * (8 - _entity->getPose().stateTime * 7);
         }
         
         vertForce = clamp(vertForce, _entity->getBody()->GetMass() * 8.0f, 0);
@@ -283,7 +286,7 @@ void PlayerController::processInput(InputState* inInputState, bool isPending)
         }
     }
     
-    if (_entity->isGrounded() && _entity->getPose().stateTime > 0.3f)
+    if (_entity->isGrounded() && _entity->getPose().stateTime >= 3)
     {
         _entity->getPose().state &= ~StateFlag_FirstJumpCompleted;
         _entity->getPose().state &= ~StateFlag_FirstJump;
@@ -294,13 +297,22 @@ void PlayerController::processInput(InputState* inInputState, bool isPending)
     
     _entity->getPose().isFacingLeft = sideForce < 0 ? true : sideForce > 0 ? false : _entity->getPose().isFacingLeft;
     
+    bool wasMainAction = _entity->getPose().state & StateFlag_MainAction;
     if (inputState->isMainAction())
     {
         _entity->getPose().state |= StateFlag_MainAction;
+        if (!wasMainAction)
+        {
+            _entity->getPose().stateTime = 0;
+        }
     }
     else
     {
         _entity->getPose().state &= ~StateFlag_MainAction;
+        if (wasMainAction)
+        {
+            _entity->getPose().stateTime = 0;
+        }
     }
 }
 

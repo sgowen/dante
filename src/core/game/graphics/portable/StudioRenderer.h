@@ -40,7 +40,6 @@ public:
     virtual void createDeviceDependentResources();
     virtual void createWindowSizeDependentResources(int screenWidth, int screenHeight, int renderWidth, int renderHeight);
     virtual void releaseDeviceDependentResources();
-    
     virtual void render(int flags = 0);
     
 private:

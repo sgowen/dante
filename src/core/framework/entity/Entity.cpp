@@ -52,7 +52,7 @@ void Entity::update()
 {
     if (_entityDef.stateSensitive)
     {
-        _pose.stateTime += FRAME_RATE;
+        ++_pose.stateTime;
     }
     
     if (getPosition().y < -5)
@@ -276,12 +276,7 @@ EntityController* Entity::getEntityController()
     return _controller;
 }
 
-void Entity::setStateTime(float stateTime)
-{
-    _pose.stateTime = stateTime;
-}
-
-float Entity::getStateTime()
+uint16_t Entity::getStateTime()
 {
     return _pose.stateTime;
 }
@@ -374,11 +369,6 @@ uint32_t Entity::getID()
 bool Entity::isGrounded()
 {
     return _pose.numGroundContacts > 0;
-}
-
-bool Entity::isFalling()
-{
-    return _pose.numGroundContacts == 0;
 }
 
 void Entity::requestDeletion()

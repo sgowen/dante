@@ -12,7 +12,10 @@
 
 #include "framework/graphics/portable/TextureRegion.h"
 
-NGAnimation::NGAnimation(std::string textureName, int x, int y, int regionWidth, int regionHeight, int animationWidth, int animationHeight, int textureWidth, int textureHeight, bool isLooping, int firstLoopingFrame, int xPadding, int yPadding, std::vector<float> frameTimes) : _textureName(textureName), _cycleTime(0), _firstLoopingFrame(firstLoopingFrame), _isLooping(isLooping)
+#include <math.h>
+#include <assert.h>
+
+NGAnimation::NGAnimation(std::string textureName, int x, int y, int regionWidth, int regionHeight, int animationWidth, int animationHeight, int textureWidth, int textureHeight, bool isLooping, int firstLoopingFrame, int xPadding, int yPadding, std::vector<uint16_t> frameTimes) : _textureName(textureName), _cycleTime(0), _firstLoopingFrame(firstLoopingFrame), _isLooping(isLooping)
 {
     int numFrames = static_cast<int>(frameTimes.size());
     
@@ -21,13 +24,15 @@ NGAnimation::NGAnimation(std::string textureName, int x, int y, int regionWidth,
     _frameTimes.reserve(numFrames);
     for (int i = 0; i < numFrames; ++i)
     {
-        float f = frameTimes[i];
+        uint16_t f = frameTimes[i];
         _frameTimes.push_back(f);
         _cycleTime += f;
     }
+    
+    assert(_cycleTime > 0);
 }
 
-NGAnimation::NGAnimation(std::string textureName, int x, int y, int regionWidth, int regionHeight, int animationWidth, int animationHeight, int textureWidth, int textureHeight, bool isLooping, int firstLoopingFrame, int xPadding, int yPadding, float frameTime, int numFrames) : _textureName(textureName), _cycleTime(0), _firstLoopingFrame(firstLoopingFrame), _isLooping(isLooping)
+NGAnimation::NGAnimation(std::string textureName, int x, int y, int regionWidth, int regionHeight, int animationWidth, int animationHeight, int textureWidth, int textureHeight, bool isLooping, int firstLoopingFrame, int xPadding, int yPadding, uint16_t frameTime, int numFrames) : _textureName(textureName), _cycleTime(0), _firstLoopingFrame(firstLoopingFrame), _isLooping(isLooping)
 {
 	loadTextureRegions(x, y, regionWidth, regionHeight, animationWidth, animationHeight, textureWidth, textureHeight, numFrames, xPadding, yPadding);
 
@@ -37,6 +42,8 @@ NGAnimation::NGAnimation(std::string textureName, int x, int y, int regionWidth,
 		_frameTimes.push_back(frameTime);
 		_cycleTime += frameTime;
 	}
+    
+    assert(_cycleTime > 0);
 }
 
 NGAnimation::~NGAnimation()
@@ -45,46 +52,44 @@ NGAnimation::~NGAnimation()
     _frameTimes.clear();
 }
 
-TextureRegion& NGAnimation::getTextureRegion(float stateTime)
+TextureRegion& NGAnimation::getTextureRegion(uint16_t stateTime)
 {
 	int keyFrameNumber = getKeyFrameNumber(stateTime);
 
-	return getTextureRegion(keyFrameNumber);
+	return getTextureRegionAtKeyFrame(keyFrameNumber);
 }
 
-TextureRegion& NGAnimation::getTextureRegion(int keyFrameNumber)
+TextureRegion& NGAnimation::getTextureRegionAtKeyFrame(uint16_t keyFrameNumber)
 {
 	return _textureRegions.at(keyFrameNumber);
 }
 
-int NGAnimation::getKeyFrameNumber(float stateTime)
+uint16_t NGAnimation::getKeyFrameNumber(uint16_t stateTime)
 {
-    unsigned int i = 0;
-    
-    if (stateTime > _cycleTime && _cycleTime > 0)
+    if (stateTime >= _cycleTime)
     {
         if (_isLooping)
         {
-            float cycleTime = _cycleTime;
-            for ( ; i < _firstLoopingFrame; ++i)
+            uint16_t cycleTime = _cycleTime;
+            if (_firstLoopingFrame > 0)
             {
-                cycleTime -= _frameTimes.at(i);
+                for (uint16_t i = 0; i < _firstLoopingFrame; ++i)
+                {
+                    cycleTime -= _frameTimes.at(i);
+                }
             }
             
-            while (stateTime > cycleTime)
-            {
-                stateTime -= cycleTime;
-            }
+            stateTime %= cycleTime;
         }
         else
         {
-            return ((int) _frameTimes.size()) - 1;
+            return static_cast<int>(_frameTimes.size()) - 1;
         }
     }
     
-    for ( ; i < _frameTimes.size(); ++i)
+    for (uint16_t i = 0; i < _frameTimes.size(); ++i)
     {
-        float frameTime = _frameTimes.at(i);
+        uint16_t frameTime = _frameTimes.at(i);
         
         if (stateTime < frameTime)
         {
@@ -95,11 +100,6 @@ int NGAnimation::getKeyFrameNumber(float stateTime)
     }
     
     return 0;
-}
-
-bool NGAnimation::hasFrameTimes()
-{
-    return _frameTimes.size() > 0;
 }
 
 std::string& NGAnimation::getTextureName()

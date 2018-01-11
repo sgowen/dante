@@ -116,18 +116,18 @@ void Assets::initWithJson(const char* json)
                     const Value& va = iv["frameTimes"];
                     assert(va.IsArray());
                     
-                    std::vector<float> frameTimes;
+                    std::vector<uint16_t> frameTimes;
                     for (SizeType i = 0; i < va.Size(); ++i)
                     {
                         const Value& iva = va[i];
-                        frameTimes.push_back(iva.GetFloat());
+                        frameTimes.push_back(iva.GetInt());
                     }
                     
                     _animations[key] = new NGAnimation(textureName, x, y, regionWidth, regionHeight, animationWidth, animationHeight, textureWidth, textureHeight, looping, firstLoopingFrame, xPadding, yPadding, frameTimes);
                 }
                 else
                 {
-                    float frameTime = iv["frameTime"].GetFloat();
+                    uint16_t frameTime = iv["frameTime"].GetInt();
                     int numFrames = iv["numFrames"].GetInt();
                     
                     _animations[key] = new NGAnimation(textureName, x, y, regionWidth, regionHeight, animationWidth, animationHeight, textureWidth, textureHeight, looping, firstLoopingFrame, xPadding, yPadding, frameTime, numFrames);
@@ -142,7 +142,7 @@ void Assets::initWithJson(const char* json)
     }
 }
 
-TextureRegion& Assets::findTextureRegion(std::string key, float stateTime)
+TextureRegion& Assets::findTextureRegion(std::string key, uint16_t stateTime)
 {
     auto q = _textureRegions.find(key);
     

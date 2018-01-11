@@ -86,8 +86,7 @@ public:
     void deinitPhysics(b2World& world);
     EntityDef& getEntityDef();
     EntityController* getEntityController();
-    void setStateTime(float stateTime);
-    float getStateTime();
+    uint16_t getStateTime();
     b2Body* getBody();
     void setPosition(b2Vec2 position);
     const b2Vec2& getPosition();
@@ -100,7 +99,6 @@ public:
     void setID(uint32_t inID);
     uint32_t getID();
     bool isGrounded();
-    bool isFalling();
     void requestDeletion();
     bool isRequestingDeletion();
     bool isServer();
@@ -109,7 +107,7 @@ public:
     
     struct Pose
     {
-        float stateTime;
+        uint16_t stateTime;
         uint8_t state;
         b2Vec2 velocity;
         b2Vec2 position;

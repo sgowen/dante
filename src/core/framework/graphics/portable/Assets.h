@@ -29,7 +29,7 @@ public:
     void initWithJsonFile(const char* jsonFile, bool isBundled, bool useEncryption = false);
     void initWithJson(const char* json);
     
-    TextureRegion& findTextureRegion(std::string key, float stateTime);
+    TextureRegion& findTextureRegion(std::string key, uint16_t stateTime);
     
     TextureRegion& findTextureRegion(std::string key);
     

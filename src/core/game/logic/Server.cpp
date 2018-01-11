@@ -148,7 +148,7 @@ void Server::spawnRobotForPlayer(uint8_t inPlayerId, std::string inPlayerName)
 {
     _playerIdForRobotBeingCreated = inPlayerId;
     Entity* entity = createAndRegisterEntity('ROBT');
-    entity->setPosition(b2Vec2(5, 8));
+    entity->setPosition(b2Vec2(3, 8));
     
     PlayerController* robot = static_cast<PlayerController*>(entity->getEntityController());
     
