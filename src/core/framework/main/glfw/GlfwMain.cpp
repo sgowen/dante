@@ -134,7 +134,7 @@ int GlfwMain::exec(EngineController* engineController)
     }
 #endif
 
-    window = glfwCreateWindow(width, height, "Project Dante", monitor, NULL);
+    window = glfwCreateWindow(width, height, "Noctis Games", monitor, NULL);
     if (!window)
     {
         glfwTerminate();

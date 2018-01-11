@@ -36,19 +36,12 @@ public:
     static TitleInputManager* getInstance();
     
     void update();
-    
     void setLiveInputMode(bool isLiveMode);
-    
     bool isLiveMode();
-    
     bool isTimeToProcessInput();
-    
     void onInputProcessed();
-    
     int getMenuState();
-    
     std::string& getLiveInputRef();
-    
     std::string getLiveInput();
     
 private:

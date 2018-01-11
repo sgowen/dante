@@ -50,6 +50,7 @@ public:
     uint8_t getNumJumps();
     bool isMainAction();
     bool isSprinting();
+    bool isMoving();
     bool isLocalPlayer();
     
 private:

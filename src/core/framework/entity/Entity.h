@@ -71,6 +71,11 @@ class Entity
     NGRTTI_DECL;
     
 public:
+    enum ReadStateFlag
+    {
+        ReadStateFlag_Pose = 1 << 0
+    };
+    
     Entity(EntityDef& inEntityDef, bool isServer);
     ~Entity();
     
@@ -144,13 +149,9 @@ public:
         }
     };
     Pose& getPose();
+    Pose& getPoseCache();
     
 private:
-    enum ReadStateFlag
-    {
-        ReadStateFlag_Pose = 1 << 0
-    };
-    
     EntityDef& _entityDef;
     EntityController* _controller;
     bool _isServer;

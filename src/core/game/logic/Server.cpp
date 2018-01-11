@@ -148,7 +148,7 @@ void Server::spawnRobotForPlayer(uint8_t inPlayerId, std::string inPlayerName)
 {
     _playerIdForRobotBeingCreated = inPlayerId;
     Entity* entity = createAndRegisterEntity('ROBT');
-    entity->setPosition(b2Vec2(3, 8));
+    entity->setPosition(b2Vec2(2, 8));
     
     PlayerController* robot = static_cast<PlayerController*>(entity->getEntityController());
     
@@ -223,23 +223,23 @@ void Server::spawnObjectsIfNecessary()
     }
     {
         Entity* e = createAndRegisterEntity('T001');
-        e->setPosition(b2Vec2(7, 8));
+        e->setPosition(b2Vec2(6, 7));
     }
     {
         Entity* e = createAndRegisterEntity('T002');
-        e->setPosition(b2Vec2(14, 10));
+        e->setPosition(b2Vec2(14, 9));
     }
     {
         Entity* e = createAndRegisterEntity('T003');
-        e->setPosition(b2Vec2(13, 16));
+        e->setPosition(b2Vec2(16, 15));
     }
     {
         Entity* e = createAndRegisterEntity('T003');
-        e->setPosition(b2Vec2(15, 16));
+        e->setPosition(b2Vec2(18, 14));
     }
     {
         Entity* e = createAndRegisterEntity('T003');
-        e->setPosition(b2Vec2(17, 16));
+        e->setPosition(b2Vec2(20, 13));
     }
     
     srand(static_cast<unsigned>(time(0)));
@@ -254,7 +254,7 @@ void Server::spawnObjectsIfNecessary()
         Entity* entity = createAndRegisterEntity('CRAT');
         
         int xSeed = rand() % 2 + 1;
-        float posX = xSeed * 7;
+        float posX = xSeed * 8;
         float posY = (rand() % static_cast<int>(GAME_HEIGHT - entity->getHeight() * 2)) + (2.0f + entity->getHeight() * 2) + 10;
         
         entity->setPosition(b2Vec2(posX, posY));

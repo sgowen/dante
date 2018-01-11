@@ -138,10 +138,14 @@ void Entity::read(InputMemoryBitStream& inInputStream)
         updateBodyFromPose();
         
         _readState |= ReadStateFlag_Pose;
-        _poseCache = _pose;
     }
     
     _controller->read(inInputStream, _readState);
+    
+    if (_readState & ReadStateFlag_Pose)
+    {
+        _poseCache = _pose;
+    }
 }
 
 void Entity::recallLastReadState()
@@ -413,6 +417,11 @@ std::string& Entity::getTextureMapping()
 Entity::Pose& Entity::getPose()
 {
     return _pose;
+}
+
+Entity::Pose& Entity::getPoseCache()
+{
+    return _poseCache;
 }
 
 void Entity::updatePoseFromBody()

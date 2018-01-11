@@ -35,10 +35,8 @@
 
 NGRTTI_IMPL(PlayerController, EntityController);
 
-#define SPEED 8.0f
+#define SPEED 7.0f
 #define SPRINT_SPEED SPEED * 1.5f
-#define MOVEMENT_FORCE SPEED * 6
-#define SPRINT_MOVEMENT_FORCE MOVEMENT_FORCE * 1.5f
 
 EntityController* PlayerController::create(Entity* inEntity)
 {
@@ -92,8 +90,7 @@ uint8_t PlayerController::update()
         }
     }
     
-    bool isMoving = _entity->getVelocity().x < -0.01f || _entity->getVelocity().x > 0.01f;
-    return _entity->isGrounded() && getNumJumps() == 0 ? isMainAction() ? State_Punching : !isMoving ? State_Idle : isSprinting() ? State_Running_Fast : State_Running : State_Jumping;
+    return _entity->isGrounded() && getNumJumps() == 0 ? isMainAction() ? State_Punching : !isMoving() ? State_Idle : isSprinting() ? State_Running_Fast : State_Running : State_Jumping;
 }
 
 bool PlayerController::shouldCollide(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB)
@@ -136,6 +133,30 @@ void PlayerController::read(InputMemoryBitStream& inInputStream, uint16_t& inRea
         
         inReadState |= ReadStateFlag_Stats;
         _statsCache = _stats;
+    }
+    
+    if (!isLocalPlayer())
+    {
+        if (inReadState & Entity::ReadStateFlag_Pose)
+        {
+            if (!(_entity->getPoseCache().state & StateFlag_Sprinting) &&
+                (_entity->getPose().state & StateFlag_Sprinting))
+            {
+                Util::playSound(SOUND_ID_ACTIVATE_SPRINT, _entity->getPosition());
+            }
+            
+            if (!(_entity->getPoseCache().state & StateFlag_FirstJump) &&
+                (_entity->getPose().state & StateFlag_FirstJump))
+            {
+                Util::playSound(SOUND_ID_ROBOT_JUMP, _entity->getPosition());
+            }
+            
+            if (!(_entity->getPoseCache().state & StateFlag_SecondJump) &&
+                (_entity->getPose().state & StateFlag_SecondJump))
+            {
+                Util::playSound(SOUND_ID_ROBOT_JUMP, _entity->getPosition());
+            }
+        }
     }
 }
 
@@ -194,6 +215,8 @@ void PlayerController::processInput(InputState* inInputState, bool isPending)
     float sideForce = 0;
     float vertForce = 0;
     
+    float speed = SPEED;
+    bool wasMoving = isMoving();
     bool isSprinting = inputState->isSprinting();
     if (isSprinting)
     {
@@ -208,22 +231,25 @@ void PlayerController::processInput(InputState* inInputState, bool isPending)
             }
         }
         
-        if ((inputState->getDesiredRightAmount() > 0 && velocity.x < SPRINT_SPEED)
-            || (inputState->getDesiredRightAmount() < 0 && velocity.x > -SPRINT_SPEED))
-        {
-            sideForce = inputState->getDesiredRightAmount() * SPRINT_MOVEMENT_FORCE;
-        }
+        speed = SPRINT_SPEED;
     }
     else
     {
         _entity->getPose().state &= ~StateFlag_Sprinting;
-        
-        if ((inputState->getDesiredRightAmount() > 0 && velocity.x < SPEED)
-            || (inputState->getDesiredRightAmount() < 0 && velocity.x > -SPEED))
-        {
-            sideForce = inputState->getDesiredRightAmount() * MOVEMENT_FORCE;
-        }
     }
+    
+    if ((inputState->getDesiredRightAmount() > 0 && velocity.x < speed)
+        || (inputState->getDesiredRightAmount() < 0 && velocity.x > -speed))
+    {
+        sideForce = inputState->getDesiredRightAmount() * _entity->getBody()->GetMass() * (speed / 2);
+    }
+    
+    if (!wasMoving && sideForce != 0)
+    {
+        _entity->getPose().stateTime = 0;
+    }
+    
+    static float maxVelocityY = 2.7f;
     
     if (inputState->isJumping())
     {
@@ -266,7 +292,7 @@ void PlayerController::processInput(InputState* inInputState, bool isPending)
             }
             else
             {
-                vertForce = _entity->getBody()->GetMass() * (2.4f - _entity->getPose().stateTime * 0.4f);
+                vertForce = _entity->getBody()->GetMass() * (maxVelocityY - _entity->getPose().stateTime * 0.45f);
             }
         }
         
@@ -275,7 +301,7 @@ void PlayerController::processInput(InputState* inInputState, bool isPending)
             vertForce = _entity->getBody()->GetMass() * (1.8f - _entity->getPose().stateTime * 0.3f);
         }
         
-        vertForce = clamp(vertForce, _entity->getBody()->GetMass() * 8.0f, 0);
+        vertForce = clamp(vertForce, _entity->getBody()->GetMass() * maxVelocityY, 0);
     }
     else
     {
@@ -383,6 +409,11 @@ bool PlayerController::isMainAction()
 bool PlayerController::isSprinting()
 {
     return _entity->getPose().state & StateFlag_Sprinting;
+}
+
+bool PlayerController::isMoving()
+{
+    return _entity->getVelocity().x < -0.01f || _entity->getVelocity().x > 0.01f;
 }
 
 bool PlayerController::isLocalPlayer()
