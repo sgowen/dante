@@ -97,17 +97,20 @@ void Assets::initWithJson(const char* json)
             int y = iv["y"].GetInt();
             int regionWidth = iv["regionWidth"].GetInt();
             int regionHeight = iv["regionHeight"].GetInt();
-            int textureWidth = iv["textureWidth"].GetInt();
-            int textureHeight = iv["textureHeight"].GetInt();
-            
-            if (iv.HasMember("animationWidth"))
+            int textureWidth = 2048;
+            int textureHeight = 2048;
+            if (iv.HasMember("textureWidth") && iv.HasMember("textureHeight"))
             {
-                int animationWidth = iv["animationWidth"].GetInt();
-                int animationHeight = iv["animationHeight"].GetInt();
+                textureWidth = iv["textureWidth"].GetInt();
+                textureHeight = iv["textureHeight"].GetInt();
+            }
+            
+            if (iv.HasMember("frameTimes") || iv.HasMember("frameTime"))
+            {
                 bool looping = iv["looping"].GetBool();
-                int firstLoopingFrame = iv["firstLoopingFrame"].GetInt();
-                int xPadding = iv["xPadding"].GetInt();
-                int yPadding = iv["yPadding"].GetInt();
+                int firstLoopingFrame = iv.HasMember("firstLoopingFrame") ? iv["firstLoopingFrame"].GetInt() : 0;
+                int xPadding = iv.HasMember("xPadding") ? iv["xPadding"].GetInt() : 0;
+                int yPadding = iv.HasMember("yPadding") ? iv["yPadding"].GetInt() : 0;
                 
                 assert(!_animations[key]);
                 
@@ -123,12 +126,30 @@ void Assets::initWithJson(const char* json)
                         frameTimes.push_back(iva.GetInt());
                     }
                     
+                    int numFrames = static_cast<int>(frameTimes.size());
+                    
+                    int animationWidth = regionWidth * numFrames;
+                    int animationHeight = regionHeight;
+                    if (iv.HasMember("animationWidth") && iv.HasMember("animationHeight"))
+                    {
+                        animationWidth = iv["animationWidth"].GetInt();
+                        animationHeight = iv["animationHeight"].GetInt();
+                    }
+                    
                     _animations[key] = new NGAnimation(textureName, x, y, regionWidth, regionHeight, animationWidth, animationHeight, textureWidth, textureHeight, looping, firstLoopingFrame, xPadding, yPadding, frameTimes);
                 }
                 else
                 {
                     uint16_t frameTime = iv["frameTime"].GetInt();
                     int numFrames = iv["numFrames"].GetInt();
+                    
+                    int animationWidth = regionWidth * numFrames;
+                    int animationHeight = regionHeight;
+                    if (iv.HasMember("animationWidth") && iv.HasMember("animationHeight"))
+                    {
+                        animationWidth = iv["animationWidth"].GetInt();
+                        animationHeight = iv["animationHeight"].GetInt();
+                    }
                     
                     _animations[key] = new NGAnimation(textureName, x, y, regionWidth, regionHeight, animationWidth, animationHeight, textureWidth, textureHeight, looping, firstLoopingFrame, xPadding, yPadding, frameTime, numFrames);
                 }

@@ -304,6 +304,12 @@ void GameRenderer::renderWorld(int flags)
 
 void GameRenderer::renderEntities(World* world, bool isServer)
 {
+    Color c = Color::WHITE;
+    if (isServer)
+    {
+        c.alpha /= 2.0f;
+    }
+    
     for (int i = 0; i < NUM_SPRITE_BATCHERS; ++i)
     {
         _spriteBatchers[i]->beginBatch();
@@ -315,12 +321,6 @@ void GameRenderer::renderEntities(World* world, bool isServer)
     for (Entity* e : entities)
     {
         TextureRegion tr = ASSETS->findTextureRegion(e->getTextureMapping(), e->getStateTime());
-        
-        Color c = Color::WHITE;
-        if (isServer)
-        {
-            c.alpha /= 2.0f;
-        }
         
         _spriteBatchers[e->getEntityDef().layer]->renderSprite(e->getPosition().x, e->getPosition().y, e->getWidth(), e->getHeight(), e->getAngle(), c, tr, e->isFacingLeft());
         textures[e->getEntityDef().layer] = tr.getTextureName();

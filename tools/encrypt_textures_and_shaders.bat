@@ -39,5 +39,9 @@ ECHO .
 ECHO .
 %XOREncryptDecryptTool% texture_006.dds texture_006.ngt
 ECHO .
+%XOREncryptDecryptTool% texture_007.dds texture_007.ngt
+ECHO .
+%XOREncryptDecryptTool% texture_008.dds texture_008.ngt
+ECHO .
 
 del /s *.dds

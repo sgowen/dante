@@ -215,41 +215,7 @@ void PlayerController::processInput(InputState* inInputState, bool isPending)
     float sideForce = 0;
     float vertForce = 0;
     
-    float speed = SPEED;
-    bool wasMoving = isMoving();
-    bool isSprinting = inputState->isSprinting();
-    if (isSprinting)
-    {
-        bool wasSprinting = _entity->getPose().state & StateFlag_Sprinting;
-        if (!wasSprinting)
-        {
-            _entity->getPose().state |= StateFlag_Sprinting;
-            
-            if (isPending)
-            {
-                Util::playSound(SOUND_ID_ACTIVATE_SPRINT, _entity->getPosition());
-            }
-        }
-        
-        speed = SPRINT_SPEED;
-    }
-    else
-    {
-        _entity->getPose().state &= ~StateFlag_Sprinting;
-    }
-    
-    if ((inputState->getDesiredRightAmount() > 0 && velocity.x < speed)
-        || (inputState->getDesiredRightAmount() < 0 && velocity.x > -speed))
-    {
-        sideForce = inputState->getDesiredRightAmount() * _entity->getBody()->GetMass() * (speed / 2);
-    }
-    
-    if (!wasMoving && sideForce != 0)
-    {
-        _entity->getPose().stateTime = 0;
-    }
-    
-    static float maxVelocityY = 2.7f;
+    static float maxVelocityY = 3.0f;
     
     if (inputState->isJumping())
     {
@@ -292,13 +258,13 @@ void PlayerController::processInput(InputState* inInputState, bool isPending)
             }
             else
             {
-                vertForce = _entity->getBody()->GetMass() * (maxVelocityY - _entity->getPose().stateTime * 0.45f);
+                vertForce = _entity->getBody()->GetMass() * (maxVelocityY - _entity->getPose().stateTime * 0.5f);
             }
         }
         
         if (getNumJumps() == 2)
         {
-            vertForce = _entity->getBody()->GetMass() * (1.8f - _entity->getPose().stateTime * 0.3f);
+            vertForce = _entity->getBody()->GetMass() * (2.1f - _entity->getPose().stateTime * 0.35f);
         }
         
         vertForce = clamp(vertForce, _entity->getBody()->GetMass() * maxVelocityY, 0);
@@ -319,26 +285,70 @@ void PlayerController::processInput(InputState* inInputState, bool isPending)
         _entity->getPose().state &= ~StateFlag_SecondJump;
     }
     
-    _entity->getBody()->ApplyLinearImpulse(b2Vec2(sideForce,vertForce), _entity->getBody()->GetWorldCenter(), true);
-    
-    _entity->getPose().isFacingLeft = sideForce < 0 ? true : sideForce > 0 ? false : _entity->getPose().isFacingLeft;
-    
-    bool wasMainAction = _entity->getPose().state & StateFlag_MainAction;
-    if (inputState->isMainAction())
+    float speed = 0;
+    bool wasMoving = isMoving();
+    bool isSprinting = inputState->isSprinting();
+    if (isSprinting)
     {
-        _entity->getPose().state |= StateFlag_MainAction;
-        if (!wasMainAction)
+        bool wasSprinting = _entity->getPose().state & StateFlag_Sprinting;
+        if (!wasSprinting)
         {
-            _entity->getPose().stateTime = 0;
+            _entity->getPose().state |= StateFlag_Sprinting;
+            
+            if (isPending)
+            {
+                Util::playSound(SOUND_ID_ACTIVATE_SPRINT, _entity->getPosition());
+            }
         }
+        
+        speed = SPRINT_SPEED;
     }
     else
     {
+        _entity->getPose().state &= ~StateFlag_Sprinting;
+        
+        speed = SPEED;
+    }
+    
+    if ((inputState->getDesiredRightAmount() > 0 && velocity.x < speed)
+        || (inputState->getDesiredRightAmount() < 0 && velocity.x > -speed))
+    {
+        sideForce = inputState->getDesiredRightAmount() * _entity->getBody()->GetMass() * (speed / 2);
+    }
+    
+    bool wasMainAction = _entity->getPose().state & StateFlag_MainAction;
+    bool isMainAction = false;
+    if (inputState->isMainAction() && _entity->isGrounded())
+    {
+        isMainAction = true;
+        _entity->getPose().state |= StateFlag_MainAction;
+    }
+    else
+    {
+        isMainAction = false;
         _entity->getPose().state &= ~StateFlag_MainAction;
-        if (wasMainAction)
-        {
-            _entity->getPose().stateTime = 0;
-        }
+    }
+    
+    if (wasMainAction != isMainAction)
+    {
+        _entity->getPose().stateTime = 0;
+    }
+    
+    if (isMainAction)
+    {
+        sideForce = 0;
+    }
+    
+    if (!wasMoving && sideForce != 0)
+    {
+        _entity->getPose().stateTime = 0;
+    }
+    
+    _entity->getPose().isFacingLeft = sideForce < 0 ? true : sideForce > 0 ? false : _entity->getPose().isFacingLeft;
+    
+    if (sideForce != 0 || vertForce != 0)
+    {
+        _entity->getBody()->ApplyLinearImpulse(b2Vec2(sideForce,vertForce), _entity->getBody()->GetWorldCenter(), true);
     }
 }
 

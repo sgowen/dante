@@ -39,3 +39,7 @@ $XOREncryptDecryptTool texture_005.png texture_005.ngt
 echo "."
 $XOREncryptDecryptTool texture_006.png texture_006.ngt
 echo "."
+$XOREncryptDecryptTool texture_007.png texture_007.ngt
+echo "."
+$XOREncryptDecryptTool texture_008.png texture_008.ngt
+echo "."

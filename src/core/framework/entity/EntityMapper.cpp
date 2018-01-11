@@ -62,8 +62,12 @@ void EntityMapper::initWithJson(const char* json)
     Document d;
     d.Parse<0>(json);
     
-    assert(d.HasMember("entities"));
-    
+    if(d.HasMember("layers"))
+    {
+        
+    }
+        
+    if(d.HasMember("entities"))
     {
         Value& v = d["entities"];
         
