@@ -266,13 +266,13 @@ void PlayerController::processInput(InputState* inInputState, bool isPending)
             }
             else
             {
-                vertForce = _entity->getBody()->GetMass() * (9 - _entity->getPose().stateTime * 8);
+                vertForce = _entity->getBody()->GetMass() * (2.5f - _entity->getPose().stateTime * 0.25f);
             }
         }
         
         if (getNumJumps() == 2)
         {
-            vertForce = _entity->getBody()->GetMass() * (8 - _entity->getPose().stateTime * 7);
+            vertForce = _entity->getBody()->GetMass() * (2.0f - _entity->getPose().stateTime * 0.2f);
         }
         
         vertForce = clamp(vertForce, _entity->getBody()->GetMass() * 8.0f, 0);
@@ -286,7 +286,7 @@ void PlayerController::processInput(InputState* inInputState, bool isPending)
         }
     }
     
-    if (_entity->isGrounded() && _entity->getPose().stateTime >= 3)
+    if (_entity->isGrounded() && _entity->getPose().stateTime >= 12)
     {
         _entity->getPose().state &= ~StateFlag_FirstJumpCompleted;
         _entity->getPose().state &= ~StateFlag_FirstJump;
