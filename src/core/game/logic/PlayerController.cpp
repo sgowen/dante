@@ -35,7 +35,7 @@
 
 NGRTTI_IMPL(PlayerController, EntityController);
 
-#define SPEED 5.0f
+#define SPEED 6.0f
 
 EntityController* PlayerController::create(Entity* inEntity)
 {
@@ -220,7 +220,6 @@ void PlayerController::processInput(InputState* inInputState, bool isPending)
     
     const b2Vec2& velocity = _entity->getVelocity();
     
-    float sideForce = 0;
     float vertForce = 0;
     
     static float maxVelocityY = 3.0f;
@@ -296,12 +295,6 @@ void PlayerController::processInput(InputState* inInputState, bool isPending)
     float right = inputState->getDesiredRightAmount();
     bool isRight = right > 0;
     bool isLeft = right < 0;
-    if ((isRight && velocity.x < SPEED) ||
-        (isLeft && velocity.x > -SPEED))
-    {
-        sideForce = right * _entity->getBody()->GetMass() * SPEED / 2;
-        sideForce = clamp(sideForce, _entity->getBody()->GetMass() * SPEED, _entity->getBody()->GetMass() * -SPEED);
-    }
     
     bool wasMainAction = _entity->getPose().state & StateFlag_MainAction;
     bool isMainAction = false;
@@ -321,17 +314,49 @@ void PlayerController::processInput(InputState* inInputState, bool isPending)
         _entity->getPose().stateTime = 0;
     }
     
-    if (isMainAction)
+#define MS_LEFT 0
+    #define MS_STOP 1
+    #define MS_RIGHT 2
+    int moveState = MS_STOP;
+    if (!isMainAction)
     {
-        sideForce = 0;
+        if (isRight)
+        {
+            moveState = MS_RIGHT;
+        }
+        else if (isLeft)
+        {
+            moveState = MS_LEFT;
+        }
+    }
+    
+    const b2Vec2& vel = velocity;
+    float desiredVel = 0;
+    switch (moveState)
+    {
+        case MS_LEFT:
+            desiredVel =b2Max( vel.x - 1, -SPEED );
+            break;
+        case MS_STOP:
+            desiredVel = vel.x * 0.9f;
+            break;
+        case MS_RIGHT:
+            desiredVel = b2Min( vel.x + 1,  SPEED );
+            break;
+    }
+    float velChange = desiredVel - vel.x;
+    float impulse = _entity->getBody()->GetMass() * velChange; //disregard time factor
+    if (impulse != 0)
+    {
+        _entity->getBody()->ApplyLinearImpulse( b2Vec2(impulse,0), _entity->getBody()->GetWorldCenter(), true);
     }
     
     _entity->getPose().isFacingLeft = isLeft ? true : isRight ? false : _entity->getPose().isFacingLeft;
     
-    if (sideForce != 0 || vertForce != 0)
+    if (vertForce != 0)
     {
         _entity->updateBodyFromPose();
-        _entity->getBody()->ApplyLinearImpulse(b2Vec2(sideForce,vertForce), _entity->getBody()->GetWorldCenter(), true);
+        _entity->getBody()->ApplyLinearImpulse(b2Vec2(0,vertForce), _entity->getBody()->GetWorldCenter(), true);
     }
 }
 

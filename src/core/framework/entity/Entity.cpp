@@ -291,11 +291,8 @@ void Entity::deinitPhysics(b2World& world)
     
     _groundSensorFixture = NULL;
     
-    if (_body)
-    {
-        world.DestroyBody(_body);
-        _body = NULL;
-    }
+    world.DestroyBody(_body);
+    _body = NULL;
 }
 
 void Entity::updatePoseFromBody()

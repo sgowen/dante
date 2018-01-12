@@ -164,6 +164,8 @@ void Server::spawnObjectsIfNecessary()
         return;
     }
     
+    _hasSpawnedObjects = true;
+    
     createAndRegisterEntity('G001', 0, 2);
     createAndRegisterEntity('G002', 2, 2);
     createAndRegisterEntity('G003', 4, 2);
@@ -184,8 +186,6 @@ void Server::spawnObjectsIfNecessary()
     createAndRegisterEntity('T003', 18, 14);
     createAndRegisterEntity('T003', 20, 13);
     
-    return;
-    
     srand(static_cast<unsigned>(time(0)));
     
     /// We really shouldn't have any more than 32 dynamic
@@ -201,8 +201,6 @@ void Server::spawnObjectsIfNecessary()
         
         createAndRegisterEntity('CRAT', posX, posY);
     }
-    
-    _hasSpawnedObjects = true;
 }
 
 Entity* Server::createAndRegisterEntity(uint32_t inFourCCName, int x, int y)
