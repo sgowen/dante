@@ -32,9 +32,11 @@ public:
     void update();
     void interpolate(double alpha);
     void postRender();
+    void loadMap();
     Entity* getRobotWithPlayerId(uint8_t inPlayerID);
     std::vector<Entity*>& getPlayers();
     std::vector<Entity*>& getEntities();
+    std::vector<Entity*>& getMapEntities();
     b2World& getWorld();
     
 private:

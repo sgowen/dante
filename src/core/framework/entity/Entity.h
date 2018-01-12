@@ -89,7 +89,7 @@ public:
     void recallLastReadState();
     uint16_t write(OutputMemoryBitStream& inOutputStream, uint16_t inDirtyState);
     void initPhysics(b2World& world);
-    void deinitPhysics(b2World& world);
+    void deinitPhysics();
     void updatePoseFromBody();
     void updateBodyFromPose();
     EntityDef& getEntityDef();

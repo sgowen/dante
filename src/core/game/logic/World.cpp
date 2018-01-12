@@ -23,6 +23,7 @@
 #include "game/logic/GameInputManager.h"
 #include "framework/network/client/NetworkManagerClient.h"
 #include "framework/util/StringUtil.h"
+#include <framework/util/NGSTDUtil.h>
 #include <framework/entity/EntityMapper.h>
 
 World::World(bool isServer) :
@@ -47,6 +48,8 @@ World::~World()
         --i;
         --c;
     }
+    
+    NGSTDUtil::cleanUpVectorOfPointers(_mapEntities);
     
     delete _entityContactListener;
     delete _entityContactFilter;
@@ -116,7 +119,7 @@ void World::removeEntity(Entity* inEntity)
         
         _entities.pop_back();
         
-        inEntity->deinitPhysics(getWorld());
+        inEntity->deinitPhysics();
         
         if (_isServer)
         {
@@ -256,6 +259,38 @@ void World::postRender()
     }
 }
 
+void World::loadMap()
+{
+    for (int i = 0; i < 10; ++i)
+    {
+        _mapEntities.push_back(EntityMapper::getInstance()->createEntity('G001', 0 + i * 30, 2, _isServer));
+        _mapEntities.push_back(EntityMapper::getInstance()->createEntity('G002', 2 + i * 30, 2, _isServer));
+        _mapEntities.push_back(EntityMapper::getInstance()->createEntity('G003', 4 + i * 30, 2, _isServer));
+        _mapEntities.push_back(EntityMapper::getInstance()->createEntity('G004', 6 + i * 30, 2, _isServer));
+        _mapEntities.push_back(EntityMapper::getInstance()->createEntity('G005', 8 + i * 30, 2, _isServer));
+        _mapEntities.push_back(EntityMapper::getInstance()->createEntity('G006', 10 + i * 30, 2, _isServer));
+        _mapEntities.push_back(EntityMapper::getInstance()->createEntity('G007', 12 + i * 30, 2, _isServer));
+        _mapEntities.push_back(EntityMapper::getInstance()->createEntity('G008', 14 + i * 30, 2, _isServer));
+        _mapEntities.push_back(EntityMapper::getInstance()->createEntity('G009', 16 + i * 30, 2, _isServer));
+        _mapEntities.push_back(EntityMapper::getInstance()->createEntity('G010', 18 + i * 30, 2, _isServer));
+        _mapEntities.push_back(EntityMapper::getInstance()->createEntity('G011', 20 + i * 30, 2, _isServer));
+        _mapEntities.push_back(EntityMapper::getInstance()->createEntity('G012', 22 + i * 30, 2, _isServer));
+        _mapEntities.push_back(EntityMapper::getInstance()->createEntity('G013', 24 + i * 30, 2, _isServer));
+        _mapEntities.push_back(EntityMapper::getInstance()->createEntity('G014', 26 + i * 30, 2, _isServer));
+        
+        _mapEntities.push_back(EntityMapper::getInstance()->createEntity('T001', 6 + i * 22, 7, _isServer));
+        _mapEntities.push_back(EntityMapper::getInstance()->createEntity('T002', 14 + i * 22, 9, _isServer));
+        _mapEntities.push_back(EntityMapper::getInstance()->createEntity('T003', 16 + i * 22, 15, _isServer));
+        _mapEntities.push_back(EntityMapper::getInstance()->createEntity('T003', 18 + i * 22, 14, _isServer));
+        _mapEntities.push_back(EntityMapper::getInstance()->createEntity('T003', 20 + i * 22, 13, _isServer));
+    }
+    
+    for (Entity* entity : _mapEntities)
+    {
+        entity->initPhysics(getWorld());
+    }
+}
+
 Entity* World::getRobotWithPlayerId(uint8_t inPlayerID)
 {
     for (Entity* entity : _players)
@@ -278,6 +313,11 @@ std::vector<Entity*>& World::getPlayers()
 std::vector<Entity*>& World::getEntities()
 {
     return _entities;
+}
+
+std::vector<Entity*>& World::getMapEntities()
+{
+    return _mapEntities;
 }
 
 b2World& World::getWorld()

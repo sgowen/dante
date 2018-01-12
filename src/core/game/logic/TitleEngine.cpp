@@ -405,6 +405,7 @@ void TitleEngine::joinServer(Engine* engine)
     assert(NG_CLIENT);
     
     InstanceManager::createClientWorld();
+    InstanceManager::getClientWorld()->loadMap();
     
     engine->getStateMachine().changeState(GameEngine::getInstance());
 }

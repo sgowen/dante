@@ -164,27 +164,9 @@ void Server::spawnObjectsIfNecessary()
         return;
     }
     
-    _hasSpawnedObjects = true;
+    InstanceManager::getServerWorld()->loadMap();
     
-    createAndRegisterEntity('G001', 0, 2);
-    createAndRegisterEntity('G002', 2, 2);
-    createAndRegisterEntity('G003', 4, 2);
-    createAndRegisterEntity('G004', 6, 2);
-    createAndRegisterEntity('G005', 8, 2);
-    createAndRegisterEntity('G006', 10, 2);
-    createAndRegisterEntity('G007', 12, 2);
-    createAndRegisterEntity('G008', 14, 2);
-    createAndRegisterEntity('G009', 16, 2);
-    createAndRegisterEntity('G010', 18, 2);
-    createAndRegisterEntity('G011', 20, 2);
-    createAndRegisterEntity('G012', 22, 2);
-    createAndRegisterEntity('G013', 24, 2);
-    createAndRegisterEntity('G014', 26, 2);
-    createAndRegisterEntity('T001', 6, 7);
-    createAndRegisterEntity('T002', 14, 9);
-    createAndRegisterEntity('T003', 16, 15);
-    createAndRegisterEntity('T003', 18, 14);
-    createAndRegisterEntity('T003', 20, 13);
+    _hasSpawnedObjects = true;
     
     srand(static_cast<unsigned>(time(0)));
     

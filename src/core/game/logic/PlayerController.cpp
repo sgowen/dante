@@ -35,7 +35,7 @@
 
 NGRTTI_IMPL(PlayerController, EntityController);
 
-#define SPEED 6.0f
+#define SPEED 7.0f
 
 EntityController* PlayerController::create(Entity* inEntity)
 {
@@ -338,7 +338,7 @@ void PlayerController::processInput(InputState* inInputState, bool isPending)
             desiredVel =b2Max( vel.x - 1, -SPEED );
             break;
         case MS_STOP:
-            desiredVel = vel.x * 0.9f;
+            desiredVel = vel.x * 0.85f;
             break;
         case MS_RIGHT:
             desiredVel = b2Min( vel.x + 1,  SPEED );

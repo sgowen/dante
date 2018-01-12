@@ -278,7 +278,7 @@ void Entity::initPhysics(b2World& world)
     }
 }
 
-void Entity::deinitPhysics(b2World& world)
+void Entity::deinitPhysics()
 {
     assert(_body);
     
@@ -291,7 +291,8 @@ void Entity::deinitPhysics(b2World& world)
     
     _groundSensorFixture = NULL;
     
-    world.DestroyBody(_body);
+    b2World* world = _body->GetWorld();
+    world->DestroyBody(_body);
     _body = NULL;
 }
 
