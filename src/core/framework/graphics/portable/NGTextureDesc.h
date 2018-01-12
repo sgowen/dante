@@ -16,8 +16,16 @@ struct NGTextureDesc
     std::string _textureName;
     bool _repeatS;
     bool _isEncrypted;
+    bool _hasNormal;
     
-    NGTextureDesc(std::string inTextureName, bool repeatS = false, bool isEncrypted = false) : _textureName(inTextureName), _repeatS(repeatS), _isEncrypted(isEncrypted) {}
+    NGTextureDesc(std::string inTextureName, bool repeatS, bool isEncrypted, bool hasNormal) :
+    _textureName(inTextureName),
+    _repeatS(repeatS),
+    _isEncrypted(isEncrypted),
+    _hasNormal(hasNormal)
+    {
+        // I normally don't allow definitions in headers, but sometimes I'm cool with it
+    }
 };
 
 #endif /* defined(__noctisgames__NGTextureDesc__) */

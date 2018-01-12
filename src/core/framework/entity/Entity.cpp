@@ -58,9 +58,12 @@ void Entity::update()
         ++_pose.stateTime;
     }
     
-    if (getPosition().y < -5)
+    if (_isServer)
     {
-        requestDeletion();
+        if (getPosition().y < -5)
+        {
+            requestDeletion();
+        }
     }
     
     _state = _controller->update();

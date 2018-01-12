@@ -62,13 +62,13 @@ PlayerController::~PlayerController()
 
 uint8_t PlayerController::update()
 {
-    if (_stats.health == 0)
-    {
-        _entity->requestDeletion();
-    }
-    
     if (_entity->isServer())
     {
+        if (_stats.health == 0)
+        {
+            _entity->requestDeletion();
+        }
+        
         if (_entity->isRequestingDeletion())
         {
             // Respawn
@@ -127,7 +127,6 @@ void PlayerController::read(InputMemoryBitStream& inInputStream, uint16_t& inRea
     {
         inInputStream.read(_playerInfo.addressHash);
         inInputStream.read<uint8_t, 3>(_playerInfo.playerId);
-        inInputStream.read(_playerInfo.map);
         inInputStream.read(_playerInfo.playerName);
         
         _isLocalPlayer = NG_CLIENT->isPlayerIdLocal(_playerInfo.playerId);
@@ -190,7 +189,6 @@ uint16_t PlayerController::write(OutputMemoryBitStream& inOutputStream, uint16_t
     {
         inOutputStream.write(_playerInfo.addressHash);
         inOutputStream.write<uint8_t, 3>(_playerInfo.playerId);
-        inOutputStream.write(_playerInfo.map);
         inOutputStream.write(_playerInfo.playerName);
         
         writtenState |= ReadStateFlag_PlayerInfo;
@@ -314,19 +312,23 @@ void PlayerController::processInput(InputState* inInputState, bool isPending)
         _entity->getPose().stateTime = 0;
     }
     
-#define MS_LEFT 0
-    #define MS_STOP 1
-    #define MS_RIGHT 2
+    static const int MS_LEFT = 0;
+    static const int MS_STOP = 1;
+    static const int MS_RIGHT = 2;
+    
     int moveState = MS_STOP;
     if (!isMainAction)
     {
-        if (isRight)
+        if (_entity->isGrounded())
         {
-            moveState = MS_RIGHT;
-        }
-        else if (isLeft)
-        {
-            moveState = MS_LEFT;
+            if (isRight)
+            {
+                moveState = MS_RIGHT;
+            }
+            else if (isLeft)
+            {
+                moveState = MS_LEFT;
+            }
         }
     }
     
@@ -338,14 +340,14 @@ void PlayerController::processInput(InputState* inInputState, bool isPending)
             desiredVel =b2Max( vel.x - 1, -SPEED );
             break;
         case MS_STOP:
-            desiredVel = vel.x * 0.85f;
+            desiredVel = vel.x * 0.99f;
             break;
         case MS_RIGHT:
             desiredVel = b2Min( vel.x + 1,  SPEED );
             break;
     }
     float velChange = desiredVel - vel.x;
-    float impulse = _entity->getBody()->GetMass() * velChange; //disregard time factor
+    float impulse = _entity->getBody()->GetMass() * velChange;
     if (impulse != 0)
     {
         _entity->getBody()->ApplyLinearImpulse( b2Vec2(impulse,0), _entity->getBody()->GetWorldCenter(), true);
@@ -378,16 +380,6 @@ void PlayerController::setPlayerId(uint8_t inValue)
 uint8_t PlayerController::getPlayerId() const
 {
     return _playerInfo.playerId;
-}
-
-void PlayerController::setMap(uint32_t inValue)
-{
-    _playerInfo.map = inValue;
-}
-
-uint32_t PlayerController::getMap() const
-{
-    return _playerInfo.map;
 }
 
 void PlayerController::setPlayerName(std::string inValue)

@@ -36,7 +36,7 @@ TextureManager::~TextureManager()
     
     delete _textureLoader;
     
-    NGSTDUtil::cleanUpVectorOfPointers(_textures);
+    NGSTDUtil::cleanUpMapOfPointers(_textures);
 }
 
 void TextureManager::createDeviceDependentResources()
@@ -48,13 +48,22 @@ void TextureManager::createDeviceDependentResources()
         std::vector<NGTextureDesc*>& textureDescs = ASSETS->getTextureDescriptors();
         for (NGTextureDesc* td : textureDescs)
         {
-            _textures.push_back(new NGTexture(td->_textureName, this, td->_repeatS, td->_isEncrypted));
+            _textures[td->_textureName] = new NGTexture(td->_textureName, this, td->_repeatS, td->_isEncrypted);
+            
+            if (td->_hasNormal)
+            {
+                std::string normalMapName = td->_textureName;
+                std::string prefix = "n_";
+                normalMapName.insert(0, prefix);
+                
+                _textures[normalMapName] = new NGTexture(normalMapName, this, td->_repeatS, td->_isEncrypted);
+            }
         }
     }
     
-    for (NGTexture* t : _textures)
+    for (std::map<std::string, NGTexture*>::iterator i = _textures.begin(); i != _textures.end(); ++i)
     {
-        loadTextureAsync(t);
+        loadTextureAsync(i->second);
     }
 }
 
@@ -64,9 +73,9 @@ void TextureManager::releaseDeviceDependentResources()
 
 	cleanUpThreads();
     
-    for (NGTexture* t : _textures)
+    for (std::map<std::string, NGTexture*>::iterator i = _textures.begin(); i != _textures.end(); ++i)
     {
-        unloadTexture(t);
+        unloadTexture(i->second);
     }
     
     _textures.clear();
@@ -166,9 +175,9 @@ void TextureManager::unloadTexture(NGTexture* texture)
 
 bool TextureManager::ensureTextures()
 {
-    for (NGTexture* t : _textures)
+    for (std::map<std::string, NGTexture*>::iterator i = _textures.begin(); i != _textures.end(); ++i)
     {
-        if (!ensureTexture(t))
+        if (!ensureTexture(i->second))
         {
             return false;
         }
@@ -234,21 +243,13 @@ bool TextureManager::isLoadingData()
     return _loadingTextures.size() > 0;
 }
 
-std::vector<NGTexture*>& TextureManager::getTextures()
-{
-    return _textures;
-}
-
 NGTexture* TextureManager::getTextureWithName(std::string name)
 {
-    using namespace std;
-    for (vector<NGTexture *>::iterator i = _textures.begin(); i != _textures.end(); ++i)
-    {
-        if ((*i)->name == name)
-        {
-            return (*i);
-        }
-    }
+    auto q = _textures.find(name);
     
-    assert(false);
+    assert(q != _textures.end());
+    
+    NGTexture* ret = q->second;
+    
+    return ret;
 }

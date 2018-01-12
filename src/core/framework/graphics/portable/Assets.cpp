@@ -74,10 +74,11 @@ void Assets::initWithJson(const char* json)
         {
             const Value& iv = v[i];
             std::string textureName = iv["textureName"].GetString();
-            bool repeatS = iv["repeatS"].GetBool();
-            bool isEncrypted = iv["isEncrypted"].GetBool();
+            bool repeatS = iv.HasMember("repeatS") ? iv["repeatS"].GetBool() : false;
+            bool isEncrypted = iv.HasMember("isEncrypted") ? iv["isEncrypted"].GetBool() : true;
+            bool hasNormal = iv.HasMember("hasNormal") ? iv["hasNormal"].GetBool() : true;
             
-            _textures.push_back(new NGTextureDesc(textureName, repeatS, isEncrypted));
+            _textures.push_back(new NGTextureDesc(textureName, repeatS, isEncrypted, hasNormal));
         }
     }
     
@@ -107,7 +108,7 @@ void Assets::initWithJson(const char* json)
             
             if (iv.HasMember("frameTimes") || iv.HasMember("frameTime"))
             {
-                bool looping = iv["looping"].GetBool();
+                bool looping = iv.HasMember("looping") ? iv["looping"].GetBool() : true;
                 int firstLoopingFrame = iv.HasMember("firstLoopingFrame") ? iv["firstLoopingFrame"].GetInt() : 0;
                 int xPadding = iv.HasMember("xPadding") ? iv["xPadding"].GetInt() : 0;
                 int yPadding = iv.HasMember("yPadding") ? iv["yPadding"].GetInt() : 0;

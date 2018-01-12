@@ -117,6 +117,7 @@ void GameEngine::update(Engine* engine)
     }
     else if (NG_CLIENT->hasReceivedNewState())
     {
+        _world->loadMapIfNecessary(NG_CLIENT->getMap());
         _world->postRead();
     }
     
@@ -270,6 +271,14 @@ bool GameEngine::handleNonMoveInput()
             if (_server)
             {
                 _server->toggleDisplaying();
+            }
+        }
+            break;
+        case GIS_SERVER_TOGGLE_MAP:
+        {
+            if (_server)
+            {
+                _server->toggleMap();
             }
         }
             break;

@@ -139,6 +139,14 @@ void InputMemoryBitStream::read(std::string& inString)
 
 void InputMemoryBitStream::read(b2Vec2& outVector)
 {
+#ifdef NG_LOG
+    // Disable optimizations
+    bool isZero;
+    read(isZero);
+    read(outVector.x);
+    read(isZero);
+    read(outVector.y);
+#else
     bool isZero;
     read(isZero);
     if (isZero)
@@ -159,6 +167,7 @@ void InputMemoryBitStream::read(b2Vec2& outVector)
     {
         read(outVector.y);
     }
+#endif
 }
 
 void InputMemoryBitStream::read(Color& outColor)

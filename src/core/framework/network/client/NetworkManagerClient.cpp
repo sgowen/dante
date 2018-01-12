@@ -184,6 +184,11 @@ NetworkClientState NetworkManagerClient::getState() const
     return _state;
 }
 
+uint32_t NetworkManagerClient::getMap()
+{
+    return _map;
+}
+
 void NetworkManagerClient::processPacket(InputMemoryBitStream& inInputStream, MachineAddress* inFromAddress)
 {
     _lastServerCommunicationTimestamp = Timing::getInstance()->getFrameStartTime();
@@ -324,6 +329,8 @@ void NetworkManagerClient::readLastMoveProcessedOnServerTimestamp(InputMemoryBit
         
         float rtt = Timing::getInstance()->getFrameStartTime() - _lastMoveProcessedByServerTimestamp;
         _avgRoundTripTime->update(rtt);
+        
+        inInputStream.read(_map);
         
         _removeProcessedMovesFunc(_lastMoveProcessedByServerTimestamp);
     }

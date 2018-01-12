@@ -135,7 +135,7 @@ void TitleInputManager::update()
     {
         for (std::vector<KeyboardEvent *>::iterator i = KEYBOARD_INPUT_MANAGER->getEvents().begin(); i != KEYBOARD_INPUT_MANAGER->getEvents().end(); ++i)
         {
-            if (!(*i)->isUp())
+            if (!(*i)->isDown())
             {
                 continue;
             }

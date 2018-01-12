@@ -13,6 +13,7 @@
 
 #include <memory>
 #include <vector>
+#include <string>
 
 class Entity;
 class b2World;
@@ -32,26 +33,32 @@ public:
     void update();
     void interpolate(double alpha);
     void postRender();
-    void loadMap();
+    void loadMapIfNecessary(uint32_t map);
+    std::string& getMapName();
     Entity* getRobotWithPlayerId(uint8_t inPlayerID);
     std::vector<Entity*>& getPlayers();
-    std::vector<Entity*>& getEntities();
-    std::vector<Entity*>& getMapEntities();
+    std::vector<Entity*>& getDynamicEntities();
+    std::vector<Entity*>& getStaticEntities();
+    std::vector<Entity*>& getLayers();
     b2World& getWorld();
     
 private:
     std::vector<Entity*> _players;
-    std::vector<Entity*> _entities;
-    std::vector<Entity*> _mapEntities;
+    std::vector<Entity*> _dynamicEntities;
+    std::vector<Entity*> _staticEntities;
+    std::vector<Entity*> _layers;
     b2World* _world;
     EntityContactListener* _entityContactListener;
     EntityContactFilter* _entityContactFilter;
     uint32_t _map;
+    std::string _mapName;
     bool _isServer;
     
     void stepPhysics();
-    
     int getMoveCount();
+    Entity* createAndRegisterEntity(uint32_t inFourCCName, int x, int y);
+    void clearEntities(std::vector<Entity*>& entities);
+    void updateAndRemoveEntitiesAsNeeded(std::vector<Entity*>& entities);
 };
 
 #include "Box2D/Dynamics/b2WorldCallbacks.h"
@@ -61,7 +68,6 @@ class b2Contact;
 class EntityContactListener : public b2ContactListener
 {
     virtual void BeginContact(b2Contact* contact);
-    
     virtual void EndContact(b2Contact* contact);
 };
 

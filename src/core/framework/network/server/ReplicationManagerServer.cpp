@@ -53,7 +53,7 @@ void ReplicationManagerServer::write(OutputMemoryBitStream& inOutputStream, Repl
         ReplicationCommand& replicationCommand = pair.second;
         if (replicationCommand.hasDirtyState())
         {
-            int networkId = pair.first;
+            uint32_t networkId = pair.first;
             
             //well, first write the network id...
             inOutputStream.write(networkId);

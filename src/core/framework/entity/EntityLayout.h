@@ -27,7 +27,6 @@ public:
     
     void initWithJsonFile(const char* jsonFile, bool isBundled, bool useEncryption = false);
     void initWithJson(const char* json);
-    
     std::vector<EntityLayoutDef*>& getEntityLayoutDefs();
     
 private:

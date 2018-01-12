@@ -86,14 +86,17 @@ void GameInputManager::update()
             case NG_KEY_S:
                 _menuState = (*i)->isDown() ? GIS_CLIENT_MAIN_TOGGLE_SOUND : _menuState;
                 continue;
-            case NG_KEY_I:
-                _menuState = (*i)->isDown() ? GIS_SERVER_TOGGLE_SERVER_DISPLAY : _menuState;
-                continue;
             case NG_KEY_P:
                 _menuState = (*i)->isDown() ? GIS_TOGGLE_PHYSICS_DISPLAY : _menuState;
                 continue;
             case NG_KEY_L:
                 _menuState = (*i)->isDown() ? GIS_TOGGLE_INTERPOLATION : _menuState;
+                continue;
+            case NG_KEY_I:
+                _menuState = (*i)->isDown() ? GIS_SERVER_TOGGLE_SERVER_DISPLAY : _menuState;
+                continue;
+            case NG_KEY_T:
+                _menuState = (*i)->isDown() ? GIS_SERVER_TOGGLE_MAP : _menuState;
                 continue;
             case NG_KEY_ESCAPE:
                 if ((*i)->isDown())

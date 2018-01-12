@@ -79,14 +79,12 @@ private:
     {
         uint64_t addressHash;
         uint8_t playerId;
-        uint32_t map;
         std::string playerName;
         
         PlayerInfo()
         {
             addressHash = 0;
             playerId = 0;
-            map = 0;
             playerName = "Robot";
         }
         
@@ -95,7 +93,6 @@ private:
             return
             lhs.addressHash == rhs.addressHash &&
             lhs.playerId    == rhs.playerId &&
-            lhs.map         == rhs.map &&
             lhs.playerName  == rhs.playerName;
         }
         

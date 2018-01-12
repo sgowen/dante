@@ -55,17 +55,16 @@ public:
     void sendOutgoingPackets();
     void requestToAddLocalPlayer();
     void requestToDropLocalPlayer(uint8_t index);
-    
     const WeightedTimedMovingAverage& getBytesReceivedPerSecond() const;
     const WeightedTimedMovingAverage& getBytesSentPerSecond() const;
     const WeightedTimedMovingAverage& getAvgRoundTripTime()	const;
-    
     float getRoundTripTime() const;
     bool isPlayerIdLocal(uint8_t inPlayerId) const;
     bool hasReceivedNewState();
     std::map<uint8_t, uint8_t>& getPlayerIds();
     std::string& getPlayerName();
     NetworkClientState getState() const;
+    uint32_t getMap();
     
 private:
     static NetworkManagerClient* s_instance;
@@ -87,6 +86,7 @@ private:
     bool _isRequestingToAddLocalPlayer;
     uint8_t _isRequestingToDropLocalPlayer;
     bool _hasReceivedNewState;
+    uint32_t _map;
     
     void processPacket(InputMemoryBitStream& inInputStream, MachineAddress* inFromAddress);
     void handleNoResponse();

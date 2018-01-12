@@ -89,11 +89,6 @@ void Server::update()
 #endif
 }
 
-uint8_t Server::getPlayerIdForRobotBeingCreated()
-{
-    return _playerIdForRobotBeingCreated;
-}
-
 void Server::toggleDisplaying()
 {
     _isDisplaying = !_isDisplaying;
@@ -104,6 +99,20 @@ bool Server::isDisplaying()
     return _isDisplaying;
 }
 
+void Server::toggleMap()
+{
+    if (_map == 'Z001')
+    {
+        _map = 'Z002';
+    }
+    else
+    {
+        _map = 'Z001';
+    }
+    
+    InstanceManager::getServerWorld()->loadMapIfNecessary(_map);
+}
+
 void Server::handleNewClient(uint8_t playerId, std::string playerName)
 {
     spawnRobotForPlayer(playerId, playerName);
@@ -112,7 +121,7 @@ void Server::handleNewClient(uint8_t playerId, std::string playerName)
     {
         // This is our first client!
         
-        spawnObjectsIfNecessary();
+        InstanceManager::getServerWorld()->loadMapIfNecessary(_map);
     }
 }
 
@@ -146,8 +155,7 @@ void Server::deleteRobotWithPlayerId(uint8_t playerId)
 
 void Server::spawnRobotForPlayer(uint8_t inPlayerId, std::string inPlayerName)
 {
-    _playerIdForRobotBeingCreated = inPlayerId;
-    Entity* e = createAndRegisterEntity('ROBT', 2, 8);
+    Entity* e = EntityMapper::getInstance()->createEntity('ROBT', 2 + inPlayerId * 16, 8, true);
     
     PlayerController* robot = static_cast<PlayerController*>(e->getController());
     
@@ -155,46 +163,11 @@ void Server::spawnRobotForPlayer(uint8_t inPlayerId, std::string inPlayerName)
     robot->setAddressHash(client->getMachineAddress()->getHash());
     robot->setPlayerName(inPlayerName);
     robot->setPlayerId(inPlayerId);
+    
+    NG_SERVER->registerEntity(e);
 }
 
-void Server::spawnObjectsIfNecessary()
-{
-    if (_hasSpawnedObjects)
-    {
-        return;
-    }
-    
-    InstanceManager::getServerWorld()->loadMap();
-    
-    _hasSpawnedObjects = true;
-    
-    srand(static_cast<unsigned>(time(0)));
-    
-    /// We really shouldn't have any more than 32 dynamic
-    /// objects in addition to the players in a given zone
-    /// so that we can fit our entire state inside
-    /// of a single packet, which needs to be a max of
-    /// 1200 bytes (any larger will be dropped by some routers).
-    for (uint32_t i = 0; i < 4; ++i)
-    {
-        int xSeed = rand() % 2 + 1;
-        float posX = xSeed * 8;
-        float posY = (rand() % static_cast<int>(GAME_HEIGHT - 8)) + 20;
-        
-        createAndRegisterEntity('CRAT', posX, posY);
-    }
-}
-
-Entity* Server::createAndRegisterEntity(uint32_t inFourCCName, int x, int y)
-{
-    Entity* ret = EntityMapper::getInstance()->createEntity(inFourCCName, x, y, true);
-    
-    NG_SERVER->registerEntity(ret);
-    
-    return ret;
-}
-
-Server::Server(bool isSteam) : _stateTime(0), _frameStateTime(0), _playerIdForRobotBeingCreated(0), _isDisplaying(false), _hasSpawnedObjects(false)
+Server::Server(bool isSteam) : _stateTime(0), _frameStateTime(0), _map('Z001'), _isDisplaying(false)
 {
     FWInstanceManager::createServerEntityManager(InstanceManager::sHandleEntityCreatedOnServer, InstanceManager::sHandleEntityDeletedOnServer);
     

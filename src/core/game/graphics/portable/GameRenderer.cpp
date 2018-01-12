@@ -318,7 +318,7 @@ void GameRenderer::renderEntities(World* world, bool isServer)
     std::string textures[NUM_SPRITE_BATCHERS];
     
     {
-        std::vector<Entity*> entities = world->getEntities();
+        std::vector<Entity*> entities = world->getPlayers();
         for (Entity* e : entities)
         {
             TextureRegion tr = ASSETS->findTextureRegion(e->getTextureMapping(), e->getStateTime());
@@ -329,7 +329,18 @@ void GameRenderer::renderEntities(World* world, bool isServer)
     }
     
     {
-        std::vector<Entity*> entities = world->getMapEntities();
+        std::vector<Entity*> entities = world->getDynamicEntities();
+        for (Entity* e : entities)
+        {
+            TextureRegion tr = ASSETS->findTextureRegion(e->getTextureMapping(), e->getStateTime());
+            
+            _spriteBatchers[e->getEntityDef().layer]->renderSprite(e->getPosition().x, e->getPosition().y, e->getWidth(), e->getHeight(), e->getAngle(), c, tr, e->isFacingLeft());
+            textures[e->getEntityDef().layer] = tr.getTextureName();
+        }
+    }
+    
+    {
+        std::vector<Entity*> entities = world->getStaticEntities();
         for (Entity* e : entities)
         {
             TextureRegion tr = ASSETS->findTextureRegion(e->getTextureMapping(), e->getStateTime());
@@ -376,16 +387,17 @@ void GameRenderer::renderUI(int flags)
         // Controls
         ++row;
         
-        renderText(StringUtil::format("'S'         Sound %s", NG_AUDIO_ENGINE->isSoundDisabled() ? "OFF" : " ON").c_str(), CAM_WIDTH - 0.5f, CAM_HEIGHT - (row++ * padding), Color::WHITE, FONT_ALIGN_RIGHT);
-        renderText(StringUtil::format("'M'         Music %s", NG_AUDIO_ENGINE->isMusicDisabled() ? "OFF" : " ON").c_str(), CAM_WIDTH - 0.5f, CAM_HEIGHT - (row++ * padding), Color::WHITE, FONT_ALIGN_RIGHT);
+        renderText(StringUtil::format("'S'         Sound %s", NG_AUDIO_ENGINE->isSoundDisabled() ? " OFF" : "  ON").c_str(), CAM_WIDTH - 0.5f, CAM_HEIGHT - (row++ * padding), Color::WHITE, FONT_ALIGN_RIGHT);
+        renderText(StringUtil::format("'M'         Music %s", NG_AUDIO_ENGINE->isMusicDisabled() ? " OFF" : "  ON").c_str(), CAM_WIDTH - 0.5f, CAM_HEIGHT - (row++ * padding), Color::WHITE, FONT_ALIGN_RIGHT);
         
-        renderText(StringUtil::format("'P'   BOX2D DEBUG %s", flags & GameEngineState_DisplayBox2D ? " ON" : "OFF").c_str(), CAM_WIDTH - 0.5f, CAM_HEIGHT - (row++ * padding), Color::WHITE, FONT_ALIGN_RIGHT);
+        renderText(StringUtil::format("'P'   Box2D Debug %s", flags & GameEngineState_DisplayBox2D ? "  ON" : " OFF").c_str(), CAM_WIDTH - 0.5f, CAM_HEIGHT - (row++ * padding), Color::WHITE, FONT_ALIGN_RIGHT);
         
-        renderText(StringUtil::format("'L' INTERPOLATION %s", flags & GameEngineState_Interpolation ? " ON" : "OFF").c_str(), CAM_WIDTH - 0.5f, CAM_HEIGHT - (row++ * padding), Color::WHITE, FONT_ALIGN_RIGHT);
+        renderText(StringUtil::format("'L' InterPolation %s", flags & GameEngineState_Interpolation ? "  ON" : " OFF").c_str(), CAM_WIDTH - 0.5f, CAM_HEIGHT - (row++ * padding), Color::WHITE, FONT_ALIGN_RIGHT);
         
         if (Server::getInstance())
         {
-            renderText(StringUtil::format("'I'         DEBUG %s", Server::getInstance()->isDisplaying() ? " ON" : "OFF").c_str(), CAM_WIDTH - 0.5f, CAM_HEIGHT - (row++ * padding), Color::WHITE, FONT_ALIGN_RIGHT);
+            renderText(StringUtil::format("'I'         Debug %s", Server::getInstance()->isDisplaying() ? "  ON" : " OFF").c_str(), CAM_WIDTH - 0.5f, CAM_HEIGHT - (row++ * padding), Color::WHITE, FONT_ALIGN_RIGHT);
+            renderText(StringUtil::format("'T'    Toggle Map %s", InstanceManager::getServerWorld()->getMapName().c_str()).c_str(), CAM_WIDTH - 0.5f, CAM_HEIGHT - (row++ * padding), Color::WHITE, FONT_ALIGN_RIGHT);
         }
         
         if (InstanceManager::getClientWorld())
@@ -419,7 +431,7 @@ void GameRenderer::renderUI(int flags)
         renderText(StringUtil::format("%s, 'ESC' to exit", "Joining Server...").c_str(), 0.5f, CAM_HEIGHT - 3.5f, Color::WHITE, FONT_ALIGN_LEFT);
     }
     
-    _spriteBatchers[0]->endBatch(_textureManager->getTextures()[0], *_textureNGShader);
+    _spriteBatchers[0]->endBatch(_textureManager->getTextureWithName("texture_000.ngt"), *_textureNGShader);
 }
 
 void GameRenderer::renderText(const char* inStr, float x, float y, const Color& inColor, int justification)

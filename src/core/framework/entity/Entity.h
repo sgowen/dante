@@ -137,13 +137,16 @@ public:
         friend bool operator==(Pose& lhs, Pose& rhs)
         {
             return
-            lhs.stateTime         == rhs.stateTime &&
-            lhs.state             == rhs.state &&
-            lhs.velocity          == rhs.velocity &&
-            lhs.position          == rhs.position &&
-            lhs.angle             == rhs.angle &&
-            lhs.numGroundContacts == rhs.numGroundContacts &&
-            lhs.isFacingLeft      == rhs.isFacingLeft;
+                          lhs.stateTime         == rhs.stateTime &&
+                          lhs.state             == rhs.state &&
+            isCloseEnough(lhs.velocity,            rhs.velocity) &&
+            isCloseEnough(lhs.position,            rhs.position) &&
+            isCloseEnough(lhs.angle,               rhs.angle) &&
+//                          lhs.velocity          == rhs.velocity &&
+//                          lhs.position          == rhs.position &&
+//                          lhs.angle             == rhs.angle &&
+                          lhs.numGroundContacts == rhs.numGroundContacts &&
+                          lhs.isFacingLeft      == rhs.isFacingLeft;
         }
         
         friend bool operator!=(Pose& lhs, Pose& rhs)

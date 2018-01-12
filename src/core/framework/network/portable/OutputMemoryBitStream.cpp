@@ -104,6 +104,13 @@ void OutputMemoryBitStream::write(bool inData)
 
 void OutputMemoryBitStream::write(const b2Vec2& inVector)
 {
+#ifdef NG_LOG
+    // Disable optimizations
+    write(false);
+    write(inVector.x);
+    write(false);
+    write(inVector.y);
+#else
     bool isZero = inVector.x == 0;
     write(isZero);
     if (!isZero)
@@ -117,6 +124,7 @@ void OutputMemoryBitStream::write(const b2Vec2& inVector)
     {
         write(inVector.y);
     }
+#endif
 }
 
 void OutputMemoryBitStream::write(Color& inColor)

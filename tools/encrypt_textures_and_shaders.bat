@@ -44,4 +44,23 @@ ECHO .
 %XOREncryptDecryptTool% texture_008.dds texture_008.ngt
 ECHO .
 
+ECHO Encrypting Normal Maps...
+
+%XOREncryptDecryptTool% n_texture_001.dds n_texture_001.ngt
+ECHO .
+%XOREncryptDecryptTool% n_texture_002.dds n_texture_002.ngt
+ECHO .
+%XOREncryptDecryptTool% n_texture_003.dds n_texture_003.ngt
+ECHO .
+%XOREncryptDecryptTool% n_texture_004.dds n_texture_004.ngt
+ECHO .
+%XOREncryptDecryptTool% n_texture_005.dds n_texture_005.ngt
+ECHO .
+%XOREncryptDecryptTool% n_texture_006.dds n_texture_006.ngt
+ECHO .
+%XOREncryptDecryptTool% n_texture_007.dds n_texture_007.ngt
+ECHO .
+%XOREncryptDecryptTool% n_texture_008.dds n_texture_008.ngt
+ECHO .
+
 del /s *.dds

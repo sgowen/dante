@@ -2,7 +2,7 @@
 
 XOREncryptDecryptTool="$1/tools/$2"
 
-echo "Encrypting Textures..."
+echo "Encrypting Shaders..."
 
 cd "$1/src/core/framework/graphics/opengl/shader"
 
@@ -42,4 +42,23 @@ echo "."
 $XOREncryptDecryptTool texture_007.png texture_007.ngt
 echo "."
 $XOREncryptDecryptTool texture_008.png texture_008.ngt
+echo "."
+
+echo "Encrypting Normal Maps..."
+
+$XOREncryptDecryptTool n_texture_001.png n_texture_001.ngt
+echo "."
+$XOREncryptDecryptTool n_texture_002.png n_texture_002.ngt
+echo "."
+$XOREncryptDecryptTool n_texture_003.png n_texture_003.ngt
+echo "."
+$XOREncryptDecryptTool n_texture_004.png n_texture_004.ngt
+echo "."
+$XOREncryptDecryptTool n_texture_005.png n_texture_005.ngt
+echo "."
+$XOREncryptDecryptTool n_texture_006.png n_texture_006.ngt
+echo "."
+$XOREncryptDecryptTool n_texture_007.png n_texture_007.ngt
+echo "."
+$XOREncryptDecryptTool n_texture_008.png n_texture_008.ngt
 echo "."

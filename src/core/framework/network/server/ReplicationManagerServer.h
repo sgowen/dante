@@ -34,7 +34,7 @@ public:
     void write(OutputMemoryBitStream& inOutputStream, ReplicationManagerTransmissionData* ioTransmissinData);
     
 private:
-    std::map<int, ReplicationCommand> _networkIdToReplicationCommand;
+    std::map<uint32_t, ReplicationCommand> _networkIdToReplicationCommand;
     
     uint16_t writeCreateAction(OutputMemoryBitStream& inOutputStream, uint32_t inNetworkId, uint16_t inDirtyState);
     

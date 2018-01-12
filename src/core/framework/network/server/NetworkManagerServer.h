@@ -57,6 +57,7 @@ public:
     MachineAddress* getServerAddress();
     bool isConnected();
     ServerHelper* getServerHelper();
+    void setMap(uint32_t inValue);
     
 private:
     static NetworkManagerServer* s_instance;
@@ -70,6 +71,7 @@ private:
     std::map<int, ClientProxy*> _playerIDToClientMap;
     uint8_t _nextPlayerId;
     uint32_t _entityID;
+    uint32_t _map;
     
     void processPacket(InputMemoryBitStream& inInputStream, MachineAddress* inFromAddress);
     void handleNoResponse();

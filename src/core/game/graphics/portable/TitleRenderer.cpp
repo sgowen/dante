@@ -172,7 +172,7 @@ void TitleRenderer::render(int flags)
             default:
                 break;
         }
-        _spriteBatcher->endBatch(_textureManager->getTextures()[0], *_textureNGShader);
+        _spriteBatcher->endBatch(_textureManager->getTextureWithName("texture_000.ngt"), *_textureNGShader);
     }
     
     endFrame();

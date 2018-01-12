@@ -238,6 +238,11 @@ ServerHelper* NetworkManagerServer::getServerHelper()
     return _serverHelper;
 }
 
+void NetworkManagerServer::setMap(uint32_t inValue)
+{
+    _map = inValue;
+}
+
 void NetworkManagerServer::processPacket(InputMemoryBitStream& inInputStream, MachineAddress* inFromAddress)
 {
     //try to get the client proxy for this address
@@ -390,6 +395,10 @@ void NetworkManagerServer::sendStatePacketToClient(ClientProxy* inClientProxy)
     ReplicationManagerTransmissionData* rmtd = _replicationManagerTransmissionDatas.obtain();
     rmtd->reset(&inClientProxy->getReplicationManagerServer(), &_replicationManagerTransmissionDatas);
     
+#ifdef NG_LOG
+    LOG("Pre-State Outgoing packet Bit Length: %d \n", statePacket.getBitLength());
+#endif
+    
     inClientProxy->getReplicationManagerServer().write(statePacket, rmtd);
     
     TransmissionData* currentTransmissionData = ifp->getTransmissionData('RPLM');
@@ -405,7 +414,6 @@ void NetworkManagerServer::sendStatePacketToClient(ClientProxy* inClientProxy)
 
 void NetworkManagerServer::writeLastMoveTimestampIfDirty(OutputMemoryBitStream& inOutputStream, ClientProxy* inClientProxy)
 {
-    //first, dirty?
     bool isTimestampDirty = inClientProxy->isLastMoveTimestampDirty();
     inOutputStream.write(isTimestampDirty);
     if (isTimestampDirty)
@@ -413,6 +421,9 @@ void NetworkManagerServer::writeLastMoveTimestampIfDirty(OutputMemoryBitStream& 
         float lastProcessedMoveTimestamp = inClientProxy->getUnprocessedMoveList().getLastProcessedMoveTimestamp();
         
         inOutputStream.write(lastProcessedMoveTimestamp);
+        
+        // which map are we on?
+        inOutputStream.write(_map);
         
         inClientProxy->setIsLastMoveTimestampDirty(false);
     }
@@ -597,7 +608,8 @@ _handleNewClientFunc(inHandleNewClientFunc),
 _handleLostClientFunc(inHandleLostClientFunc),
 _inputStateCreationFunc(inInputStateCreationFunc),
 _nextPlayerId(1),
-_entityID(NETWORK_ENTITY_ID_BEGIN)
+_entityID(NETWORK_ENTITY_ID_BEGIN),
+_map(0)
 {
     // Empty
 }
