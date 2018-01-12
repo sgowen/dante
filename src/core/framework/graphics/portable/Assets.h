@@ -26,7 +26,7 @@ public:
     
     static void sDeserializerFunc(const char* data);
     
-    void initWithJsonFile(const char* jsonFile, bool isBundled, bool useEncryption = false);
+    void initWithJsonFile(const char* jsonFile, bool isBundled = true, bool useEncryption = false);
     void initWithJson(const char* json);
     TextureRegion& findTextureRegion(std::string key, uint16_t stateTime);
     TextureRegion& findTextureRegion(std::string key);

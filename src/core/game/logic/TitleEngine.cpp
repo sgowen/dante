@@ -31,6 +31,7 @@
 #include "framework/network/portable/FWInstanceManager.h"
 #include "framework/entity/EntityManager.h"
 #include "framework/entity/EntityMapper.h"
+#include "framework/entity/EntityLayoutMapper.h"
 #include "framework/network/client/SocketClientHelper.h"
 #include "framework/network/portable/MachineAddress.h"
 #include "framework/audio/portable/NGAudioEngine.h"
@@ -385,7 +386,8 @@ void TitleEngine::joinServer(Engine* engine)
         PooledObjectsManager::create();
     }
     
-    EntityMapper::getInstance()->initWithJsonFile("entities.cfg", true);
+    EntityMapper::getInstance()->initWithJsonFile("entities.cfg");
+    EntityLayoutMapper::getInstance()->initWithJsonFile("maps.cfg");
     
     FWInstanceManager::createClientEntityManager(InstanceManager::sHandleEntityCreatedOnClient, InstanceManager::sHandleEntityDeletedOnClient);
     

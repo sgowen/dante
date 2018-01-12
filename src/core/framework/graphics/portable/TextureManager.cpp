@@ -41,7 +41,7 @@ TextureManager::~TextureManager()
 
 void TextureManager::createDeviceDependentResources()
 {
-    ASSETS->initWithJsonFile(_assetsCfgPath, true);
+    ASSETS->initWithJsonFile(_assetsCfgPath);
     
     if (_textures.size() == 0)
     {

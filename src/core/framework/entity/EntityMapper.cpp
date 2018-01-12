@@ -87,7 +87,7 @@ void EntityMapper::initWithJson(const char* json)
             (uint32_t)chars[2] << 8  |
             (uint32_t)chars[3];
             
-            assert(!_entityDescriptors[key]);
+            assert(_entityDescriptors.find(key) == _entityDescriptors.end());
             
             EntityDef* entry = new EntityDef();
             

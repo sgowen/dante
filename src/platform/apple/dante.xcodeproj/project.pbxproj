@@ -22,6 +22,8 @@
 		BB0B84E0200284C100D17988 /* shader_004_frag.ngs in Resources */ = {isa = PBXBuildFile; fileRef = BB0B84DE200284C100D17988 /* shader_004_frag.ngs */; };
 		BB16190D20092BFD00AF0117 /* zone_2.cfg in Resources */ = {isa = PBXBuildFile; fileRef = BB16190C20092BFD00AF0117 /* zone_2.cfg */; };
 		BB16190E20092BFD00AF0117 /* zone_2.cfg in Resources */ = {isa = PBXBuildFile; fileRef = BB16190C20092BFD00AF0117 /* zone_2.cfg */; };
+		BB16191120096FD300AF0117 /* EntityLayoutMapper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB16190F20096FD200AF0117 /* EntityLayoutMapper.cpp */; };
+		BB16191220096FD300AF0117 /* EntityLayoutMapper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB16190F20096FD200AF0117 /* EntityLayoutMapper.cpp */; };
 		BB1914441FABB78400BDC6D0 /* libsteam_api.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BB1914431FABB78400BDC6D0 /* libsteam_api.dylib */; };
 		BB19148E1FABBD1300BDC6D0 /* libsteam_api.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BB1914431FABB78400BDC6D0 /* libsteam_api.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		BB1C3BF91FE75FD3002E4AA6 /* Color.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB1C3BF81FE75FD3002E4AA6 /* Color.cpp */; };
@@ -619,6 +621,8 @@
 		BB0CA6F01FE5B08D0011B75B /* NGPrimitiveType.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NGPrimitiveType.h; sourceTree = "<group>"; };
 		BB0CA6F11FE5B7130011B75B /* NGTextureSlot.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NGTextureSlot.h; sourceTree = "<group>"; };
 		BB16190C20092BFD00AF0117 /* zone_2.cfg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = zone_2.cfg; sourceTree = "<group>"; };
+		BB16190F20096FD200AF0117 /* EntityLayoutMapper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EntityLayoutMapper.cpp; sourceTree = "<group>"; };
+		BB16191020096FD300AF0117 /* EntityLayoutMapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EntityLayoutMapper.h; sourceTree = "<group>"; };
 		BB190EA41FAB910900BDC6D0 /* allocators.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = allocators.h; sourceTree = "<group>"; };
 		BB190EA51FAB910900BDC6D0 /* cursorstreamwrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = cursorstreamwrapper.h; sourceTree = "<group>"; };
 		BB190EA61FAB910900BDC6D0 /* document.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = document.h; sourceTree = "<group>"; };
@@ -2586,6 +2590,8 @@
 				BBEF6FFE200028220030076A /* EntityController.h */,
 				BB1F153B2006BE50009129AC /* EntityLayout.cpp */,
 				BB1F153C2006BE50009129AC /* EntityLayout.h */,
+				BB16190F20096FD200AF0117 /* EntityLayoutMapper.cpp */,
+				BB16191020096FD300AF0117 /* EntityLayoutMapper.h */,
 				BBAEF0C11EA94ED900F0866E /* EntityManager.cpp */,
 				BBAEF0C21EA94ED900F0866E /* EntityManager.h */,
 				BBEF7020200062C40030076A /* EntityMapper.cpp */,
@@ -3894,6 +3900,7 @@
 				BBD554461FDB2EA800E00AD6 /* b2BlockAllocator.cpp in Sources */,
 				BB27D23D1FC6567A00ED42FD /* NSMutableDictionary+WeakReferences.m in Sources */,
 				BB27D23E1FC6567A00ED42FD /* NSMutableArray+WeakReferences.m in Sources */,
+				BB16191120096FD300AF0117 /* EntityLayoutMapper.cpp in Sources */,
 				BB6531601FED56CA00963997 /* MainInputState.cpp in Sources */,
 				BBD5541A1FDB2EA800E00AD6 /* b2PolygonContact.cpp in Sources */,
 				BB27D2801FC6588B00ED42FD /* OALAudioSession.m in Sources */,
@@ -4276,6 +4283,7 @@
 				BB5AFE261FB35A0B005FBD52 /* NGAudioEngine.cpp in Sources */,
 				BB27D26E1FC6572600ED42FD /* AppleSound.cpp in Sources */,
 				BBD5540D1FDB2EA800E00AD6 /* b2Body.cpp in Sources */,
+				BB16191220096FD300AF0117 /* EntityLayoutMapper.cpp in Sources */,
 				BB8091FE1FF4131600F84D1D /* TextureManager.cpp in Sources */,
 				BBFE83091FFEBFF900E5F650 /* MainEngineController.cpp in Sources */,
 				BB5AFE111FB359DE005FBD52 /* Util.cpp in Sources */,
