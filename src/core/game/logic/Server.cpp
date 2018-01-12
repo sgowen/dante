@@ -193,7 +193,7 @@ void Server::spawnObjectsIfNecessary()
     /// so that we can fit our entire state inside
     /// of a single packet, which needs to be a max of
     /// 1200 bytes (any larger will be dropped by some routers).
-    for (uint32_t i = 0; i < 8; ++i)
+    for (uint32_t i = 0; i < 4; ++i)
     {
         int xSeed = rand() % 2 + 1;
         float posX = xSeed * 8;
