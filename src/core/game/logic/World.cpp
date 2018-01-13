@@ -57,7 +57,7 @@ void World::addEntity(Entity* inEntity)
 {
     inEntity->initPhysics(getWorld());
     
-    if (inEntity->getController()->getRTTI().derivesFrom(PlayerController::rtti))
+    if (inEntity->getEntityDef().type == 'ROBT')
     {
         _players.push_back(inEntity);
     }
@@ -70,7 +70,7 @@ void World::addEntity(Entity* inEntity)
 void World::removeEntity(Entity* inEntity)
 {
     std::vector<Entity*>* pEntities = NULL;
-    if (inEntity->getController()->getRTTI().derivesFrom(PlayerController::rtti))
+    if (inEntity->getEntityDef().type == 'ROBT')
     {
         pEntities = &_players;
     }
