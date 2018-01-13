@@ -45,8 +45,6 @@
 		BB1E897B1EF4A81500B0D78A /* PacketHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB1E89791EF4A81500B0D78A /* PacketHandler.cpp */; };
 		BB1E89811EF4B2BA00B0D78A /* SocketPacketHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB1E897F1EF4B2BA00B0D78A /* SocketPacketHandler.cpp */; };
 		BB1E89841EF4B4F400B0D78A /* NGSteamPacketHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB1E89821EF4B4F400B0D78A /* NGSteamPacketHandler.cpp */; };
-		BB1F153D2006BE51009129AC /* EntityLayout.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB1F153B2006BE50009129AC /* EntityLayout.cpp */; };
-		BB1F153E2006BE51009129AC /* EntityLayout.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB1F153B2006BE50009129AC /* EntityLayout.cpp */; };
 		BB2022F31FE8281D00BBB053 /* NGShaderUniformInput.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB2022F11FE8281C00BBB053 /* NGShaderUniformInput.cpp */; };
 		BB2022F41FE8281D00BBB053 /* NGShaderUniformInput.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB2022F11FE8281C00BBB053 /* NGShaderUniformInput.cpp */; };
 		BB27D22E1FC6567A00ED42FD /* OALAudioTracks.m in Sources */ = {isa = PBXBuildFile; fileRef = BB27D1DE1FC655FF00ED42FD /* OALAudioTracks.m */; };
@@ -718,8 +716,6 @@
 		BB1E89801EF4B2BA00B0D78A /* SocketPacketHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SocketPacketHandler.h; sourceTree = "<group>"; };
 		BB1E89821EF4B4F400B0D78A /* NGSteamPacketHandler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NGSteamPacketHandler.cpp; sourceTree = "<group>"; };
 		BB1E89831EF4B4F400B0D78A /* NGSteamPacketHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NGSteamPacketHandler.h; sourceTree = "<group>"; };
-		BB1F153B2006BE50009129AC /* EntityLayout.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EntityLayout.cpp; sourceTree = "<group>"; };
-		BB1F153C2006BE50009129AC /* EntityLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EntityLayout.h; sourceTree = "<group>"; };
 		BB2022F11FE8281C00BBB053 /* NGShaderUniformInput.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NGShaderUniformInput.cpp; sourceTree = "<group>"; };
 		BB2022F21FE8281C00BBB053 /* NGShaderUniformInput.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NGShaderUniformInput.h; sourceTree = "<group>"; };
 		BB27D1DB1FC655FF00ED42FD /* OALSimpleAudio.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OALSimpleAudio.h; sourceTree = "<group>"; };
@@ -2588,8 +2584,6 @@
 				BBAEF0C01EA94ED900F0866E /* Entity.h */,
 				BBEF6FFD200028220030076A /* EntityController.cpp */,
 				BBEF6FFE200028220030076A /* EntityController.h */,
-				BB1F153B2006BE50009129AC /* EntityLayout.cpp */,
-				BB1F153C2006BE50009129AC /* EntityLayout.h */,
 				BB16190F20096FD200AF0117 /* EntityLayoutMapper.cpp */,
 				BB16191020096FD300AF0117 /* EntityLayoutMapper.h */,
 				BBAEF0C11EA94ED900F0866E /* EntityManager.cpp */,
@@ -4035,7 +4029,6 @@
 				BBBD14971EE06BB3003F9307 /* Timing.cpp in Sources */,
 				BBAEF27A1EA94EDA00F0866E /* NGTexture.cpp in Sources */,
 				BBD5540C1FDB2EA800E00AD6 /* b2Body.cpp in Sources */,
-				BB1F153D2006BE51009129AC /* EntityLayout.cpp in Sources */,
 				BBAA69E51EE488DF00451615 /* TransmissionData.cpp in Sources */,
 				BBAEF2A41EA94EDA00F0866E /* AudioEngineHelperFactory.cpp in Sources */,
 				BB31B5A91FC205D5005F1C0A /* KeyboardEvent.cpp in Sources */,
@@ -4156,7 +4149,6 @@
 				BBB1D3AF1FC8CB9800B74BAC /* NGExtension.cpp in Sources */,
 				BB27D25C1FC6567F00ED42FD /* OALAudioActions.m in Sources */,
 				BB27D25D1FC6567F00ED42FD /* OALSuspendHandler.m in Sources */,
-				BB1F153E2006BE51009129AC /* EntityLayout.cpp in Sources */,
 				BBD554231FDB2EA800E00AD6 /* b2Contact.cpp in Sources */,
 				BB31B5A61FC205D5005F1C0A /* CursorEvent.cpp in Sources */,
 				BBD5541F1FDB2EA800E00AD6 /* b2CircleContact.cpp in Sources */,

@@ -55,19 +55,62 @@ void EntityMapper::initWithJsonFile(const char* path, bool isBundled, bool useEn
 
 void EntityMapper::initWithJson(const char* json)
 {
-    _entityDescriptors.clear();
+    NGSTDUtil::cleanUpMapOfPointers(_entityDescriptors);
     
     using namespace rapidjson;
     
     Document d;
     d.Parse<0>(json);
     
-    if(d.HasMember("layers"))
+    if (d.HasMember("layers"))
     {
+        Value& v = d["layers"];
         
+        assert(v.IsObject());
+        for (Value::ConstMemberIterator i = v.MemberBegin(); i != v.MemberEnd(); ++i)
+        {
+            const Value& iv = i->value;
+            assert(iv.IsObject());
+            
+            std::string keyStr = i->name.GetString();
+            assert(keyStr.length() == 4);
+            
+            const char* chars = keyStr.c_str();
+            
+            uint32_t key = (uint32_t)chars[0] << 24 |
+            (uint32_t)chars[1] << 16 |
+            (uint32_t)chars[2] << 8  |
+            (uint32_t)chars[3];
+            
+            assert(_entityDescriptors.find(key) == _entityDescriptors.end());
+            
+            EntityDef* entry = new EntityDef();
+            
+            entry->type = key;
+            entry->controller = std::string("DefaultController");
+            
+            {
+                const Value& v = iv["mappings"];
+                assert(v.IsObject());
+                for (Value::ConstMemberIterator i = v.MemberBegin(); i != v.MemberEnd(); ++i)
+                {
+                    std::string name = i->name.GetString();
+                    std::string value = i->value.GetString();
+                    entry->mappings.insert(std::make_pair(name, value));
+                }
+            }
+            
+            entry->bodyFlags = 0;
+            entry->width = static_cast<float>(iv["width"].GetInt());
+            entry->height = static_cast<float>(iv["height"].GetInt());
+            entry->layer = iv["layer"].GetInt();
+            entry->stateSensitive = false;
+            
+            _entityDescriptors[key] = entry;
+        }
     }
         
-    if(d.HasMember("entities"))
+    if (d.HasMember("entities"))
     {
         Value& v = d["entities"];
         
@@ -93,6 +136,7 @@ void EntityMapper::initWithJson(const char* json)
             
             entry->type = key;
             entry->controller = iv["controller"].GetString();
+            
             {
                 const Value& v = iv["mappings"];
                 assert(v.IsObject());

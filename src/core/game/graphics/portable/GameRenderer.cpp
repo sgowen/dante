@@ -318,6 +318,17 @@ void GameRenderer::renderEntities(World* world, bool isServer)
     std::string textures[NUM_SPRITE_BATCHERS];
     
     {
+        std::vector<Entity*> entities = world->getLayers();
+        for (Entity* e : entities)
+        {
+            TextureRegion tr = ASSETS->findTextureRegion(e->getTextureMapping(), e->getStateTime());
+            
+            _spriteBatchers[e->getEntityDef().layer]->renderSprite(e->getPosition().x, e->getPosition().y, e->getWidth(), e->getHeight(), e->getAngle(), c, tr, e->isFacingLeft());
+            textures[e->getEntityDef().layer] = tr.getTextureName();
+        }
+    }
+    
+    {
         std::vector<Entity*> entities = world->getPlayers();
         for (Entity* e : entities)
         {

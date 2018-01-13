@@ -17,7 +17,6 @@
 
 class Entity;
 class b2World;
-
 class EntityContactListener;
 class EntityContactFilter;
 
@@ -56,7 +55,6 @@ private:
     
     void stepPhysics();
     int getMoveCount();
-    Entity* createAndRegisterEntity(uint32_t inFourCCName, int x, int y);
     void clearEntities(std::vector<Entity*>& entities);
     void updateAndRemoveEntitiesAsNeeded(std::vector<Entity*>& entities);
 };

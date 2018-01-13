@@ -222,6 +222,7 @@ void PlayerController::processInput(InputState* inInputState, bool isPending)
     
     static float maxVelocityY = 3.0f;
     
+    bool isDoubleJumpFrame = false;
     if (inputState->isJumping())
     {
         if (_entity->isGrounded())
@@ -316,10 +317,16 @@ void PlayerController::processInput(InputState* inInputState, bool isPending)
     static const int MS_STOP = 1;
     static const int MS_RIGHT = 2;
     
+    const b2Vec2& vel = velocity;
+    if (getNumJumps() == 2 && vel.y > 0)
+    {
+        isDoubleJumpFrame = true;
+    }
+    
     int moveState = MS_STOP;
     if (!isMainAction)
     {
-        if (_entity->isGrounded())
+        if (_entity->isGrounded() || isDoubleJumpFrame)
         {
             if (isRight)
             {
@@ -332,18 +339,17 @@ void PlayerController::processInput(InputState* inInputState, bool isPending)
         }
     }
     
-    const b2Vec2& vel = velocity;
     float desiredVel = 0;
     switch (moveState)
     {
         case MS_LEFT:
-            desiredVel =b2Max( vel.x - 1, -SPEED );
+            desiredVel = b2Max(vel.x - 1, -SPEED);
             break;
         case MS_STOP:
             desiredVel = vel.x * 0.99f;
             break;
         case MS_RIGHT:
-            desiredVel = b2Min( vel.x + 1,  SPEED );
+            desiredVel = b2Min(vel.x + 1, SPEED);
             break;
     }
     float velChange = desiredVel - vel.x;

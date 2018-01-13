@@ -11,7 +11,6 @@
 #include "game/logic/World.h"
 
 #include "framework/entity/Entity.h"
-#include "game/logic/PlayerController.h"
 #include "Box2D/Box2D.h"
 
 #include "framework/network/server/NetworkManagerServer.h"
@@ -22,9 +21,11 @@
 #include "framework/network/portable/MoveList.h"
 #include "game/logic/GameInputManager.h"
 #include "framework/network/client/NetworkManagerClient.h"
+#include "game/logic/PlayerController.h"
 #include "framework/util/StringUtil.h"
 #include <framework/util/NGSTDUtil.h>
 #include <framework/entity/EntityMapper.h>
+#include <framework/entity/EntityLayoutMapper.h>
 
 World::World(bool isServer) :
 _world(new b2World(b2Vec2(0.0f, -9.8f))),
@@ -41,18 +42,14 @@ World::~World()
 {
     clearEntities(_players);
     clearEntities(_dynamicEntities);
-    
     for (Entity* entity : _staticEntities)
     {
         entity->deinitPhysics();
     }
     NGSTDUtil::cleanUpVectorOfPointers(_staticEntities);
-    
     NGSTDUtil::cleanUpVectorOfPointers(_layers);
-    
     delete _entityContactListener;
     delete _entityContactFilter;
-    
     delete _world;
 }
 
@@ -302,52 +299,28 @@ void World::loadMapIfNecessary(uint32_t map)
         Server::sHandleNewClient(playerIds[i], playerNames[i]);
     }
     
-    /// TODO, load from json
-    for (int i = 0; i < 10; ++i)
+    EntityLayoutMapper::getInstance()->loadEntityLayout(_map);
+    EntityLayoutDef& entityLayoutDef = EntityLayoutMapper::getInstance()->getEntityLayoutDef();
+    
+    for (EntityPosDef epd : entityLayoutDef.layers)
     {
-        _staticEntities.push_back(EntityMapper::getInstance()->createEntity('G001', 0 + i * 30, 2, _isServer));
-        _staticEntities.push_back(EntityMapper::getInstance()->createEntity('G002', 2 + i * 30, 2, _isServer));
-        _staticEntities.push_back(EntityMapper::getInstance()->createEntity('G003', 4 + i * 30, 2, _isServer));
-        _staticEntities.push_back(EntityMapper::getInstance()->createEntity('G004', 6 + i * 30, 2, _isServer));
-        _staticEntities.push_back(EntityMapper::getInstance()->createEntity('G005', 8 + i * 30, 2, _isServer));
-        _staticEntities.push_back(EntityMapper::getInstance()->createEntity('G006', 10 + i * 30, 2, _isServer));
-        _staticEntities.push_back(EntityMapper::getInstance()->createEntity('G007', 12 + i * 30, 2, _isServer));
-        _staticEntities.push_back(EntityMapper::getInstance()->createEntity('G008', 14 + i * 30, 2, _isServer));
-        _staticEntities.push_back(EntityMapper::getInstance()->createEntity('G009', 16 + i * 30, 2, _isServer));
-        _staticEntities.push_back(EntityMapper::getInstance()->createEntity('G010', 18 + i * 30, 2, _isServer));
-        _staticEntities.push_back(EntityMapper::getInstance()->createEntity('G011', 20 + i * 30, 2, _isServer));
-        _staticEntities.push_back(EntityMapper::getInstance()->createEntity('G012', 22 + i * 30, 2, _isServer));
-        _staticEntities.push_back(EntityMapper::getInstance()->createEntity('G013', 24 + i * 30, 2, _isServer));
-        _staticEntities.push_back(EntityMapper::getInstance()->createEntity('G014', 26 + i * 30, 2, _isServer));
-        
-        _staticEntities.push_back(EntityMapper::getInstance()->createEntity('T001', 6 + i * 22, 7, _isServer));
-        _staticEntities.push_back(EntityMapper::getInstance()->createEntity('T002', 14 + i * 22, 9, _isServer));
-        _staticEntities.push_back(EntityMapper::getInstance()->createEntity('T003', 16 + i * 22, 15, _isServer));
-        _staticEntities.push_back(EntityMapper::getInstance()->createEntity('T003', 18 + i * 22, 14, _isServer));
-        _staticEntities.push_back(EntityMapper::getInstance()->createEntity('T003', 20 + i * 22, 13, _isServer));
+        Entity* e = EntityMapper::getInstance()->createEntity(epd.type, epd.x, epd.y, _isServer);
+        _layers.push_back(e);
     }
     
-    for (Entity* entity : _staticEntities)
+    for (EntityPosDef epd : entityLayoutDef.staticEntities)
     {
-        entity->initPhysics(getWorld());
+        Entity* e = EntityMapper::getInstance()->createEntity(epd.type, epd.x, epd.y, _isServer);
+        e->initPhysics(getWorld());
+        _staticEntities.push_back(e);
     }
     
     if (_isServer)
     {
-        srand(static_cast<unsigned>(time(0)));
-        
-        /// We really shouldn't have any more than 32 dynamic
-        /// objects including the players in a given zone
-        /// so that we can fit our entire state inside
-        /// of a single packet, which needs to be a max of
-        /// 1200 bytes (any larger will be dropped by some routers).
-        for (uint32_t i = 0; i < 28; ++i)
+        for (EntityPosDef epd : entityLayoutDef.dynamicEntities)
         {
-            int xSeed = rand() % 10 + 1;
-            float posX = xSeed * 20;
-            float posY = (rand() % static_cast<int>(8)) + 20;
-            
-            createAndRegisterEntity('CRAT', posX, posY);
+            Entity* e = EntityMapper::getInstance()->createEntity(epd.type, epd.x, epd.y, _isServer);
+            NG_SERVER->registerEntity(e);
         }
     }
 }
@@ -430,15 +403,6 @@ int World::getMoveCount()
         
         LOG("lowestNonHostMoveCount: %d, hostMoveCount: %d, finalMoveCount(avg): %d", lowestNonHostMoveCount, hostMoveCount, ret);
     }
-    
-    return ret;
-}
-
-Entity* World::createAndRegisterEntity(uint32_t inFourCCName, int x, int y)
-{
-    Entity* ret = EntityMapper::getInstance()->createEntity(inFourCCName, x, y, true);
-    
-    NG_SERVER->registerEntity(ret);
     
     return ret;
 }
