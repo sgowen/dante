@@ -29,7 +29,6 @@ FileData WindowsAssetDataHandler::getAssetData(const char* relativePath, bool is
     {
         FILE *stream;
         assert(fopen_s(&stream, relativePath, "r") == 0);
-        
         assert(stream != NULL);
         
 		// seek to end of file
@@ -108,12 +107,12 @@ void WindowsAssetDataHandler::releaseAssetData(const FileData* fileData)
 
     if (fileData->flags > 0)
     {
-        const std::vector<uint8_t>* handle = static_cast<const std::vector<uint8_t>*>(file_data->file_handle);
+        const std::vector<uint8_t>* handle = static_cast<const std::vector<uint8_t>*>(fileData->file_handle);
         delete handle;
     }
     else
     {
-        const std::string* handle = static_cast<const std::string*>(file_data->file_handle);
+        const std::string* handle = static_cast<const std::string*>(fileData->file_handle);
         delete handle;
     }
 }
@@ -122,4 +121,3 @@ WindowsAssetDataHandler::WindowsAssetDataHandler() : AssetDataHandler()
 {
     // Empty
 }
-
