@@ -34,7 +34,7 @@
 #include <stdlib.h>
 #include <sstream>
 
-JsonFile::JsonFile(const char* filePath, bool isBundled, bool useEncryption) : _filePath(filePath), _isBundled(isBundled), _useEncryption(useEncryption), _serializerFunc(NULL), _deserializerFunc(NULL)
+JsonFile::JsonFile(const char* filePath, bool isBundled, bool useEncryption) : _filePath(filePath), _isBundled(isBundled), _useEncryption(useEncryption), _deserializerFunc(NULL), _serializerFunc(NULL)
 {
     // Empty
 }
