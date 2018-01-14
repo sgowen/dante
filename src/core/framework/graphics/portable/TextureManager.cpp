@@ -63,7 +63,7 @@ void TextureManager::createDeviceDependentResources()
     
     for (std::map<std::string, NGTexture*>::iterator i = _textures.begin(); i != _textures.end(); ++i)
     {
-        loadTextureAsync(i->second);
+        loadTextureSync(i->second);
     }
 }
 

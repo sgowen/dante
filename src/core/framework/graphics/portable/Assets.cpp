@@ -171,6 +171,7 @@ TextureRegion& Assets::findTextureRegion(std::string key, uint16_t stateTime)
     if (q != _textureRegions.end())
     {
         TextureRegion* tr = q->second;
+		assert(tr);
         
         return *tr;
     }
@@ -181,6 +182,7 @@ TextureRegion& Assets::findTextureRegion(std::string key, uint16_t stateTime)
         assert(q2 != _animations.end());
         
         NGAnimation* anim = q2->second;
+		assert(anim);
         
         return anim->getTextureRegion(stateTime);
     }

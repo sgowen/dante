@@ -18,7 +18,7 @@ typedef const char* (*SerializerFunc)();
 class JsonFile
 {
 public:
-    JsonFile(const char* filePath, bool isBundled = false, bool useEncryption = false);
+    JsonFile(const char* filePath, bool isBundled = true, bool useEncryption = false);
     
     void setDeserializerFunc(DeserializerFunc deserializerFunc);
     void setSerializerFunc(SerializerFunc serializerFunc);
