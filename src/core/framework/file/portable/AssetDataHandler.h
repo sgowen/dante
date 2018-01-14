@@ -15,14 +15,13 @@ class AssetDataHandler
 {
 public:
     static AssetDataHandler* getAssetDataHandler();
-    
+
     virtual FileData getAssetData(const char* relativePath, bool isText = false) = 0;
-    
     virtual void releaseAssetData(const FileData* fileData) = 0;
-    
+
 protected:
     AssetDataHandler();
-    
+
 private:
     // ctor, copy ctor, and assignment should be private in a Singleton
     AssetDataHandler(const AssetDataHandler&);
