@@ -64,11 +64,9 @@ void DirectXRendererHelper::createDeviceDependentResources()
     
     createBlendStates();
     createSamplerStates();
-    
     createVertexBuffer(_textureVertexBuffer, _textureVertices, MAX_BATCH_SIZE * VERTICES_PER_RECTANGLE);
     createVertexBuffer(_colorVertexBuffer, _colorVertices, MAX_BATCH_SIZE * VERTICES_PER_RECTANGLE);
     createVertexBuffer(_screenVertexBuffer, _screenVertices, 4);
-    
     createIndexBuffer();
 }
 
