@@ -35,7 +35,8 @@
 
 NGRTTI_IMPL(PlayerController, EntityController);
 
-#define SPEED 7.0f
+#define SPEED 14.0f
+#define MAX_Y_VELOCITY 5.0f
 
 EntityController* PlayerController::create(Entity* inEntity)
 {
@@ -220,8 +221,6 @@ void PlayerController::processInput(InputState* inInputState, bool isPending)
     
     float vertForce = 0;
     
-    static float maxVelocityY = 3.0f;
-    
     bool isDoubleJumpFrame = false;
     if (inputState->isJumping())
     {
@@ -264,16 +263,16 @@ void PlayerController::processInput(InputState* inInputState, bool isPending)
             }
             else
             {
-                vertForce = _entity->getBody()->GetMass() * (maxVelocityY - _entity->getPose().stateTime * 0.5f);
+                vertForce = _entity->getBody()->GetMass() * (MAX_Y_VELOCITY - _entity->getPose().stateTime * 0.5f);
             }
         }
         
         if (getNumJumps() == 2)
         {
-            vertForce = _entity->getBody()->GetMass() * (2.1f - _entity->getPose().stateTime * 0.35f);
+            vertForce = _entity->getBody()->GetMass() * (MAX_Y_VELOCITY * 0.75f - _entity->getPose().stateTime * 0.35f);
         }
         
-        vertForce = clamp(vertForce, _entity->getBody()->GetMass() * maxVelocityY, 0);
+        vertForce = clamp(vertForce, _entity->getBody()->GetMass() * MAX_Y_VELOCITY, 0);
     }
     else
     {
@@ -308,7 +307,7 @@ void PlayerController::processInput(InputState* inInputState, bool isPending)
         _entity->getPose().state &= ~StateFlag_MainAction;
     }
     
-    if (wasMainAction != isMainAction)
+    if (isMainAction && !wasMainAction)
     {
         _entity->getPose().stateTime = 0;
     }
@@ -318,7 +317,7 @@ void PlayerController::processInput(InputState* inInputState, bool isPending)
     static const int MS_RIGHT = 2;
     
     const b2Vec2& vel = velocity;
-    if (getNumJumps() == 2 && vel.y > 0)
+    if (getNumJumps() == 2)
     {
         isDoubleJumpFrame = true;
     }

@@ -95,12 +95,16 @@ _textureNGShader(new NGTextureShader(*_rendererHelper, "shader_003_vert.ngs", "s
 _colorNGShader(new NGGeometryShader(*_rendererHelper, "shader_001_vert.ngs", "shader_001_frag.ngs")),
 _framebufferToScreenNGShader(new NGFramebufferToScreenShader(*_rendererHelper, "shader_002_vert.ngs", "shader_002_frag.ngs")),
 _font(new Font("texture_000.ngt", 0, 0, 16, 64, 75, TEXTURE_SIZE_1024)),
-_camBounds(new NGRect(0, 0, CAM_WIDTH, CAM_HEIGHT)),
 _framebufferIndex(0)
 {
     for (int i = 0; i < NUM_SPRITE_BATCHERS; ++i)
     {
         _spriteBatchers[i] = new SpriteBatcher(_rendererHelper);
+    }
+    
+    for (int i = 0; i < NUM_CAMERAS; ++i)
+    {
+        _camBounds[i] = new NGRect(0, 0, CAM_WIDTH, CAM_HEIGHT);
     }
 }
 
@@ -121,6 +125,10 @@ GameRenderer::~GameRenderer()
     delete _box2DDebugRenderer;
     delete _shaderProgramLoader;
     delete _font;
+    for (int i = 0; i < NUM_CAMERAS; ++i)
+    {
+        delete _camBounds[i];
+    }
     delete _textureNGShader;
     delete _colorNGShader;
     delete _framebufferToScreenNGShader;
@@ -158,11 +166,7 @@ void GameRenderer::render(int flags)
     if (_textureManager->ensureTextures())
     {
         updateCamera();
-        
-        renderBackground();
-        
         renderWorld(flags);
-        
         renderUI(flags);
     }
     
@@ -188,9 +192,9 @@ void GameRenderer::setFramebuffer(int framebufferIndex)
 
 void GameRenderer::updateCamera()
 {
-    _camBounds->getLowerLeft().set(0, 0);
-    _camBounds->setWidth(CAM_WIDTH);
-    _camBounds->setHeight(CAM_HEIGHT);
+    _camBounds[3]->getLowerLeft().set(0, 0);
+//    _fgCamBounds->setWidth(CAM_WIDTH);
+//    _fgCamBounds->setHeight(CAM_HEIGHT);
     
     if (NG_CLIENT && NG_CLIENT->getState() == NCS_Welcomed)
     {
@@ -266,23 +270,23 @@ void GameRenderer::updateCamera()
             float x = pX - w * 0.5f;
             
             float y = pY - h * 0.5f;
-            y = clamp(y, GAME_HEIGHT, 0);
+            y = clamp(y, CAM_HEIGHT, 0);
             
-            _camBounds->getLowerLeft().set(x, y);
-            _camBounds->setWidth(w);
-            _camBounds->setHeight(h);
+            _camBounds[3]->getLowerLeft().set(x, y);
+            _camBounds[2]->getLowerLeft().set(x / 2, y / 2);
+            _camBounds[1]->getLowerLeft().set(x / 4, y / 4);
+            _camBounds[0]->getLowerLeft().set(x / 8, y / 8);
+//            _fgCamBounds->setWidth(w);
+//            _fgCamBounds->setHeight(h);
         }
     }
 }
 
-void GameRenderer::renderBackground()
-{
-    // TODO
-}
-
 void GameRenderer::renderWorld(int flags)
 {
-    _rendererHelper->updateMatrix(_camBounds->getLeft(), _camBounds->getRight(), _camBounds->getBottom(), _camBounds->getTop());
+    renderLayers(InstanceManager::getClientWorld());
+    
+    _rendererHelper->updateMatrix(_camBounds[3]->getLeft(), _camBounds[3]->getRight(), _camBounds[3]->getBottom(), _camBounds[3]->getTop());
     
     renderEntities(InstanceManager::getClientWorld(), false);
     
@@ -302,6 +306,34 @@ void GameRenderer::renderWorld(int flags)
     }
 }
 
+void GameRenderer::renderLayers(World* world)
+{
+    for (int i = 0; i < 3; ++i)
+    {
+        _spriteBatchers[i]->beginBatch();
+    }
+    
+    std::string textures[3];
+    
+    std::vector<Entity*> entities = world->getLayers();
+    for (Entity* e : entities)
+    {
+        TextureRegion tr = ASSETS->findTextureRegion(e->getTextureMapping(), e->getStateTime());
+        
+        _spriteBatchers[e->getEntityDef().layer]->renderSprite(e->getPosition().x, e->getPosition().y, e->getWidth(), e->getHeight(), e->getAngle(), Color::WHITE, tr, e->isFacingLeft());
+        textures[e->getEntityDef().layer] = tr.getTextureName();
+    }
+    
+    for (int i = 0; i < 3; ++i)
+    {
+        if (textures[i].length() > 0)
+        {
+            _rendererHelper->updateMatrix(_camBounds[i]->getLeft(), _camBounds[i]->getRight(), _camBounds[i]->getBottom(), _camBounds[i]->getTop());
+            _spriteBatchers[i]->endBatch(_textureManager->getTextureWithName(textures[i]), *_textureNGShader);
+        }
+    }
+}
+
 void GameRenderer::renderEntities(World* world, bool isServer)
 {
     Color c = Color::WHITE;
@@ -316,17 +348,6 @@ void GameRenderer::renderEntities(World* world, bool isServer)
     }
     
     std::string textures[NUM_SPRITE_BATCHERS];
-    
-    {
-        std::vector<Entity*> entities = world->getLayers();
-        for (Entity* e : entities)
-        {
-            TextureRegion tr = ASSETS->findTextureRegion(e->getTextureMapping(), e->getStateTime());
-            
-            _spriteBatchers[e->getEntityDef().layer]->renderSprite(e->getPosition().x, e->getPosition().y, e->getWidth(), e->getHeight(), e->getAngle(), c, tr, e->isFacingLeft());
-            textures[e->getEntityDef().layer] = tr.getTextureName();
-        }
-    }
     
     {
         std::vector<Entity*> entities = world->getPlayers();
@@ -379,7 +400,7 @@ void GameRenderer::renderUI(int flags)
     if (NG_CLIENT->getState() == NCS_Welcomed)
     {
         int row = 1;
-        static float padding = 0.5f;
+        static float padding = 1;
         
         int fps = FPSUtil::getInstance()->getFPS();
         renderText(StringUtil::format("FPS %d", fps).c_str(), CAM_WIDTH - 0.5f, CAM_HEIGHT - (row++ * padding), Color::WHITE, FONT_ALIGN_RIGHT);
@@ -423,7 +444,7 @@ void GameRenderer::renderUI(int flags)
                 int playerId = robot->getPlayerId();
                 if (playerId >= 1 && playerId <= 4)
                 {
-                    renderText(StringUtil::format("%i|%s - %i HP", playerId, robot->getPlayerName().c_str(), robot->getHealth()).c_str(), 0.5f, CAM_HEIGHT - (playerId * 0.5f), Color::WHITE);
+                    renderText(StringUtil::format("%i|%s - %i HP", playerId, robot->getPlayerName().c_str(), robot->getHealth()).c_str(), 0.5f, CAM_HEIGHT - (playerId * 1.0f), Color::WHITE);
                     activePlayerIds[playerId - 1] = true;
                 }
             }
@@ -432,14 +453,14 @@ void GameRenderer::renderUI(int flags)
             {
                 if (!activePlayerIds[i])
                 {
-                    renderText(StringUtil::format("%i|%s", (i + 1), "Connect a controller to join...").c_str(), 0.5f, CAM_HEIGHT - ((i + 1) * 0.5f), Color::WHITE);
+                    renderText(StringUtil::format("%i|%s", (i + 1), "Connect a controller to join...").c_str(), 0.5f, CAM_HEIGHT - ((i + 1) * 1.0f), Color::WHITE);
                 }
             }
         }
     }
     else
     {
-        renderText(StringUtil::format("%s, 'ESC' to exit", "Joining Server...").c_str(), 0.5f, CAM_HEIGHT - 3.5f, Color::WHITE, FONT_ALIGN_LEFT);
+        renderText(StringUtil::format("%s, 'ESC' to exit", "Joining Server...").c_str(), 0.5f, CAM_HEIGHT - 4, Color::WHITE, FONT_ALIGN_LEFT);
     }
     
     _spriteBatchers[0]->endBatch(_textureManager->getTextureWithName("texture_000.ngt"), *_textureNGShader);

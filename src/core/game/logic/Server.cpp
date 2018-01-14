@@ -155,7 +155,7 @@ void Server::deleteRobotWithPlayerId(uint8_t playerId)
 
 void Server::spawnRobotForPlayer(uint8_t inPlayerId, std::string inPlayerName)
 {
-    Entity* e = EntityMapper::getInstance()->createEntity('ROBT', 2 + inPlayerId * 16, 8, true);
+    Entity* e = EntityMapper::getInstance()->createEntity('ROBT', 2 + inPlayerId * 4, 24, true);
     
     PlayerController* robot = static_cast<PlayerController*>(e->getController());
     

@@ -41,16 +41,8 @@
 
 //// Matrix Definitions ////
 
-#define CAM_WIDTH 36.0f // meters
-#define CAM_HEIGHT 20.25f // meters
-
-//// World Definitions ////
-
-#define GRID_CELL_SIZE 0.140625f
-
-// these values are temporary, the real game will have dynamic widths and heights
-#define GAME_WIDTH CAM_WIDTH * 3.0f // meters
-#define GAME_HEIGHT 16.0f // meters
+#define CAM_WIDTH 72.0f // meters
+#define CAM_HEIGHT 40.5f // meters
 
 //// Non-Steam ////
 

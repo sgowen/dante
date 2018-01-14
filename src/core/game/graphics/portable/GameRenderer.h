@@ -33,6 +33,7 @@ class Font;
 class World;
 
 #define NUM_SPRITE_BATCHERS 8
+#define NUM_CAMERAS 4
 
 class GameRenderer : public Renderer
 {
@@ -56,7 +57,7 @@ private:
     Box2DDebugRenderer* _box2DDebugRenderer;
     NGShaderLoader* _shaderProgramLoader;
     Font* _font;
-    NGRect* _camBounds;
+    NGRect* _camBounds[NUM_CAMERAS];
     NGShader* _textureNGShader;
     NGShader* _colorNGShader;
     NGShader* _framebufferToScreenNGShader;
@@ -67,6 +68,7 @@ private:
     void updateCamera();
     void renderBackground();
     void renderWorld(int flags);
+    void renderLayers(World* world);
     void renderEntities(World* world, bool isServer);
     void renderUI(int engineState);
     void renderText(const char* inStr, float x, float y, const Color& inColor, int justification = FONT_ALIGN_LEFT);

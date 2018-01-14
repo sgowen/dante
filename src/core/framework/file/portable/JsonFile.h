@@ -22,15 +22,10 @@ public:
     
     void setDeserializerFunc(DeserializerFunc deserializerFunc);
     void setSerializerFunc(SerializerFunc serializerFunc);
-    
     void save();
-    
     void load();
-    
     void clear();
-    
     std::string findValue(std::string key);
-    
     void setValue(std::string key, std::string value);
 
 private:
@@ -42,11 +37,8 @@ private:
     std::map<std::string, std::string> _keyValues;
     
     const char* serialize();
-    
     void deserialize(const char* data);
-    
     const char* platformSpecificFilePath();
-    
     FILE* openFile(const char* path, const char* mode);
 };
 

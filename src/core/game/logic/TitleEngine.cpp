@@ -47,6 +47,7 @@
 #include "game/logic/GameInputManager.h"
 #include "game/logic/StudioEngine.h"
 #include "game/logic/PooledObjectsManager.h"
+#include <framework/util/Config.h>
 
 #ifdef NG_STEAM
 #include "framework/network/steam/NGSteamClientHelper.h"
@@ -79,7 +80,6 @@ void TitleEngine::destroy()
 }
 
 TitleEngine::TitleEngine() : EngineState(),
-_config(new JsonFile("game.cfg")),
 _renderer(new TitleRenderer()),
 _isSteam(false),
 _state(TitleEngineState_SteamOff)
@@ -91,7 +91,6 @@ _state(TitleEngineState_SteamOff)
 
 TitleEngine::~TitleEngine()
 {
-    delete _config;
     delete _renderer;
     
 	deactivateSteam();
@@ -142,7 +141,7 @@ void TitleEngine::createDeviceDependentResources()
 {
     _renderer->createDeviceDependentResources();
     
-    _config->load();
+    Config::getInstance()->initWithJsonFile("game.cfg");
 }
 
 void TitleEngine::createWindowSizeDependentResources(int screenWidth, int screenHeight, int renderWidth, int renderHeight, int cursorWidth, int cursorHeight)

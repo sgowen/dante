@@ -15,7 +15,6 @@
 #include "framework/network/steam/NGSteam.h"
 #endif
 
-class JsonFile;
 class TitleRenderer;
 
 enum TitleEngineState
@@ -49,7 +48,6 @@ public:
 private:
     static TitleEngine* s_instance;
     
-    JsonFile* _config;
     TitleRenderer* _renderer;
     std::string _serverIPAddress;
     std::string _name;

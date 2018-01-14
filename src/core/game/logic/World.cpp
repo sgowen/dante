@@ -26,9 +26,10 @@
 #include <framework/util/NGSTDUtil.h>
 #include <framework/entity/EntityMapper.h>
 #include <framework/entity/EntityLayoutMapper.h>
+#include <framework/util/Config.h>
 
 World::World(bool isServer) :
-_world(new b2World(b2Vec2(0.0f, -9.8f))),
+_world(new b2World(b2Vec2(0.0f, Config::getInstance()->getFloat("gravity")))),
 _entityContactListener(new EntityContactListener()),
 _entityContactFilter(new EntityContactFilter()),
 _map(0),

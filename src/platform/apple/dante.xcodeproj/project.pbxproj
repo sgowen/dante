@@ -121,6 +121,8 @@
 		BB31B5B21FC205D5005F1C0A /* KeyboardInputManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB31B5A31FC205D4005F1C0A /* KeyboardInputManager.cpp */; };
 		BB3BAEE11FB4A1FA00F5F8B0 /* TitleInputManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB3BAEDF1FB4A1F900F5F8B0 /* TitleInputManager.cpp */; };
 		BB3BAEE21FB4A1FA00F5F8B0 /* TitleInputManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB3BAEDF1FB4A1F900F5F8B0 /* TitleInputManager.cpp */; };
+		BB3F1195200AE0DA00C30B06 /* Config.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB3F1193200AE0D900C30B06 /* Config.cpp */; };
+		BB3F1196200AE0DA00C30B06 /* Config.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB3F1193200AE0D900C30B06 /* Config.cpp */; };
 		BB4253D21EF58DA5003F6D2A /* ClientHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB4253D01EF58DA5003F6D2A /* ClientHelper.cpp */; };
 		BB4253D51EF58E00003F6D2A /* ServerHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB4253D41EF58E00003F6D2A /* ServerHelper.cpp */; };
 		BB4253DA1EF59793003F6D2A /* NGSteamClientHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB4253D61EF59793003F6D2A /* NGSteamClientHelper.cpp */; };
@@ -808,6 +810,8 @@
 		BB39C8921FB2700900CF6699 /* NGGraphics.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NGGraphics.h; sourceTree = "<group>"; };
 		BB3BAEDF1FB4A1F900F5F8B0 /* TitleInputManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TitleInputManager.cpp; sourceTree = "<group>"; };
 		BB3BAEE01FB4A1F900F5F8B0 /* TitleInputManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TitleInputManager.h; sourceTree = "<group>"; };
+		BB3F1193200AE0D900C30B06 /* Config.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Config.cpp; sourceTree = "<group>"; };
+		BB3F1194200AE0DA00C30B06 /* Config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Config.h; sourceTree = "<group>"; };
 		BB4253D01EF58DA5003F6D2A /* ClientHelper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ClientHelper.cpp; sourceTree = "<group>"; };
 		BB4253D11EF58DA5003F6D2A /* ClientHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClientHelper.h; sourceTree = "<group>"; };
 		BB4253D31EF58E00003F6D2A /* ServerHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ServerHelper.h; sourceTree = "<group>"; };
@@ -2435,6 +2439,8 @@
 		BB7428381EB2AF4100B7628D /* util */ = {
 			isa = PBXGroup;
 			children = (
+				BB3F1193200AE0D900C30B06 /* Config.cpp */,
+				BB3F1194200AE0DA00C30B06 /* Config.h */,
 				BBB1D3AA1FC8CA4D00B74BAC /* ContainerUtil.h */,
 				BBCDF24D1F3796C3006E94B0 /* FPSUtil.cpp */,
 				BBCDF24E1F3796C3006E94B0 /* FPSUtil.h */,
@@ -4016,6 +4022,7 @@
 				BBAEF2561EA94EDA00F0866E /* NGAnimation.cpp in Sources */,
 				BB9EE50D1FC092BA000F5389 /* AssetDataHandler.cpp in Sources */,
 				BBAEF29A1EA94EDA00F0866E /* OverlapTester.cpp in Sources */,
+				BB3F1195200AE0DA00C30B06 /* Config.cpp in Sources */,
 				BB5833781EEDBF7E0084DA20 /* NGSteamGameServices.cpp in Sources */,
 				BBAEF2721EA94EDA00F0866E /* SpriteBatcher.cpp in Sources */,
 				BBF226CF1EC12CDE00573356 /* ReplicationManagerClient.cpp in Sources */,
@@ -4110,6 +4117,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BBD3E8651FB2872A00328E35 /* ViewController.mm in Sources */,
+				BB3F1196200AE0DA00C30B06 /* Config.cpp in Sources */,
 				BBD554171FDB2EA800E00AD6 /* b2ChainAndCircleContact.cpp in Sources */,
 				BBFE83281FFF1B5A00E5F650 /* StudioRenderer.cpp in Sources */,
 				BB5AFE771FB35AB6005FBD52 /* JsonFile.cpp in Sources */,
