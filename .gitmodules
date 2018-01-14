@@ -25,6 +25,6 @@
 [submodule "src/3rdparty/rapidjson"]
 	path = src/3rdparty/rapidjson
 	url = https://github.com/NoctisGames/rapidjson.git
-[submodule "dante-assets"]
-	path = dante-assets
+[submodule "assets"]
+	path = assets
 	url = https://stephen_gowen@bitbucket.org/stephen_gowen/dante-assets.git
