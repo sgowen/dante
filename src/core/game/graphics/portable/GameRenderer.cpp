@@ -193,8 +193,9 @@ void GameRenderer::setFramebuffer(int framebufferIndex)
 void GameRenderer::updateCamera()
 {
     _camBounds[3]->getLowerLeft().set(0, 0);
-//    _fgCamBounds->setWidth(CAM_WIDTH);
-//    _fgCamBounds->setHeight(CAM_HEIGHT);
+    _camBounds[2]->getLowerLeft().set(0, 0);
+    _camBounds[1]->getLowerLeft().set(0, 0);
+    _camBounds[0]->getLowerLeft().set(0, 0);
     
     if (NG_CLIENT && NG_CLIENT->getState() == NCS_Welcomed)
     {
@@ -238,10 +239,10 @@ void GameRenderer::updateCamera()
         
         if (!needsInit)
         {
-            left -= CAM_WIDTH * 0.33f;
-            right += CAM_WIDTH * 0.33f;
-            bottom -= CAM_HEIGHT * 0.33f;
-            top += CAM_HEIGHT * 0.33f;
+            left -= CAM_WIDTH / 2;
+            right += CAM_WIDTH / 2;
+            bottom -= CAM_HEIGHT / 2;
+            top += CAM_HEIGHT / 2;
             
             float pX = (left + right) / 2.0f;
             float pY = (bottom + top) / 2.0f;
@@ -276,8 +277,6 @@ void GameRenderer::updateCamera()
             _camBounds[2]->getLowerLeft().set(x / 2, y / 2);
             _camBounds[1]->getLowerLeft().set(x / 4, y / 4);
             _camBounds[0]->getLowerLeft().set(x / 8, y / 8);
-//            _fgCamBounds->setWidth(w);
-//            _fgCamBounds->setHeight(h);
         }
     }
 }

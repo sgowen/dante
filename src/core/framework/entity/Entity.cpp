@@ -313,8 +313,16 @@ void Entity::updateBodyFromPose()
 {
     if (_body)
     {
-        _body->SetLinearVelocity(_pose.velocity);
-        _body->SetTransform(_pose.position, _pose.angle);
+        if (!isCloseEnough(_pose.velocity, _body->GetLinearVelocity()))
+        {
+            _body->SetLinearVelocity(_pose.velocity);
+        }
+        
+        if (!isCloseEnough(_pose.position, _body->GetPosition()) ||
+            !isCloseEnough(_pose.angle, _body->GetAngle()))
+        {
+            _body->SetTransform(_pose.position, _pose.angle);
+        }
     }
 }
 

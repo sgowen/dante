@@ -812,6 +812,15 @@
 		BB3BAEE01FB4A1F900F5F8B0 /* TitleInputManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TitleInputManager.h; sourceTree = "<group>"; };
 		BB3F1193200AE0D900C30B06 /* Config.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Config.cpp; sourceTree = "<group>"; };
 		BB3F1194200AE0DA00C30B06 /* Config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Config.h; sourceTree = "<group>"; };
+		BB3F1198200AF50400C30B06 /* texture_004.psd */ = {isa = PBXFileReference; lastKnownFileType = file; path = texture_004.psd; sourceTree = "<group>"; };
+		BB3F1199200AF50400C30B06 /* texture_005.psd */ = {isa = PBXFileReference; lastKnownFileType = file; path = texture_005.psd; sourceTree = "<group>"; };
+		BB3F119A200AF50400C30B06 /* texture_007.psd */ = {isa = PBXFileReference; lastKnownFileType = file; path = texture_007.psd; sourceTree = "<group>"; };
+		BB3F119B200AF50400C30B06 /* texture_006.psd */ = {isa = PBXFileReference; lastKnownFileType = file; path = texture_006.psd; sourceTree = "<group>"; };
+		BB3F119C200AF50400C30B06 /* texture_002.psd */ = {isa = PBXFileReference; lastKnownFileType = file; path = texture_002.psd; sourceTree = "<group>"; };
+		BB3F119D200AF50400C30B06 /* texture_003.psd */ = {isa = PBXFileReference; lastKnownFileType = file; path = texture_003.psd; sourceTree = "<group>"; };
+		BB3F119E200AF50400C30B06 /* texture_001.psd */ = {isa = PBXFileReference; lastKnownFileType = file; path = texture_001.psd; sourceTree = "<group>"; };
+		BB3F119F200AF50400C30B06 /* texture_000.psd */ = {isa = PBXFileReference; lastKnownFileType = file; path = texture_000.psd; sourceTree = "<group>"; };
+		BB3F11A0200AF50400C30B06 /* texture_008.psd */ = {isa = PBXFileReference; lastKnownFileType = file; path = texture_008.psd; sourceTree = "<group>"; };
 		BB4253D01EF58DA5003F6D2A /* ClientHelper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ClientHelper.cpp; sourceTree = "<group>"; };
 		BB4253D11EF58DA5003F6D2A /* ClientHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClientHelper.h; sourceTree = "<group>"; };
 		BB4253D31EF58E00003F6D2A /* ServerHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ServerHelper.h; sourceTree = "<group>"; };
@@ -2133,6 +2142,22 @@
 				BBCB152E1FCCECD50076FD60 /* OpenSLESSoundWrapper.h */,
 			);
 			path = android;
+			sourceTree = "<group>";
+		};
+		BB3F1197200AF50400C30B06 /* source */ = {
+			isa = PBXGroup;
+			children = (
+				BB3F119F200AF50400C30B06 /* texture_000.psd */,
+				BB3F119E200AF50400C30B06 /* texture_001.psd */,
+				BB3F119C200AF50400C30B06 /* texture_002.psd */,
+				BB3F119D200AF50400C30B06 /* texture_003.psd */,
+				BB3F1198200AF50400C30B06 /* texture_004.psd */,
+				BB3F1199200AF50400C30B06 /* texture_005.psd */,
+				BB3F119B200AF50400C30B06 /* texture_006.psd */,
+				BB3F119A200AF50400C30B06 /* texture_007.psd */,
+				BB3F11A0200AF50400C30B06 /* texture_008.psd */,
+			);
+			path = source;
 			sourceTree = "<group>";
 		};
 		BB44C31E1DB030B3003E633F /* mac */ = {
@@ -3522,6 +3547,7 @@
 		BBF5380E20071991003D276D /* assets */ = {
 			isa = PBXGroup;
 			children = (
+				BB3F1197200AF50400C30B06 /* source */,
 				BBF5382220071991003D276D /* config */,
 				BBF5380F20071991003D276D /* music */,
 				BBF5383320071991003D276D /* sounds */,

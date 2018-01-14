@@ -41,8 +41,8 @@
 
 //// Matrix Definitions ////
 
-#define CAM_WIDTH 72.0f // meters
-#define CAM_HEIGHT 40.5f // meters
+#define CAM_WIDTH 64.0f // meters
+#define CAM_HEIGHT 36.0f // meters
 
 //// Non-Steam ////
 
