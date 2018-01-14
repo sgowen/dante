@@ -34,7 +34,7 @@ TextureDataWrapper* DirectXTextureLoader::loadTextureData(NGTexture* texture)
 {
     const char* textureName = texture->name.c_str();
 
-	std::string s("data\\textures\\");
+	std::string s("assets\\textures\\");
 	s += std::string(textureName);
 	const char* finalPath = s.c_str();
     

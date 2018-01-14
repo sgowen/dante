@@ -42,7 +42,7 @@ TextureDataWrapper* OpenGLTextureLoader::loadTextureData(NGTexture* texture)
 
     const char* finalTextureFileName;
 #if defined __linux__ && !defined(__ANDROID__)
-    std::string s1("data/textures/");
+    std::string s1("assets/textures/");
     s1 += std::string(textureName);
     finalTextureFileName = s1.c_str();
 #else

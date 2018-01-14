@@ -33,11 +33,11 @@ DirectXProgramLoader::~DirectXProgramLoader()
 
 ShaderProgramWrapper* DirectXProgramLoader::loadNGShader(const char* vertexShaderName, const char* fragmentShaderName, std::vector<NGShaderUniformInput*>& uniforms, std::vector<NGShaderVarInput*>& inputLayout)
 {
-    std::string s1("data\\shaders\\");
+    std::string s1("assets\\shaders\\");
 	s1 += std::string(vertexShaderName);
 	const char* finalVertexShaderFileName = s1.c_str();
 
-	std::string s2("data\\shaders\\");
+	std::string s2("assets\\shaders\\");
 	s2 += std::string(fragmentShaderName);
 	const char* finalFragmentShaderFileName = s2.c_str();
 

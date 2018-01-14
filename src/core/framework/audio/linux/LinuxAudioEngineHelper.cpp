@@ -39,7 +39,7 @@ void LinuxAudioEngineHelper::resume()
 
 SoundWrapper* LinuxAudioEngineHelper::loadSound(int soundId, const char *path, int numInstances)
 {
-    std::string s1(soundId == 1337 ? "data/music/" : "data/sounds/");
+    std::string s1(soundId == 1337 ? "assets/music/" : "assets/sounds/");
     s1 += std::string(path);
     const char* finalPath = s1.c_str();
 

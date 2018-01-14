@@ -19,12 +19,6 @@ public:
     
     TextureRegion(std::string textureName, int x, int y, int regionWidth, int regionHeight, int textureWidth, int textureHeight);
     
-    void init(int x, int y, int regionWidth, int regionHeight, int textureWidth, int textureHeight);
-    
-    // Useful for parallax
-    void initX(int x);
-    void initY(int y);
-    
     std::string& getTextureName();
     
 private:

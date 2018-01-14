@@ -58,7 +58,7 @@ void DirectXAudioEngineHelper::resume()
 
 SoundWrapper* DirectXAudioEngineHelper::loadSound(int soundId, const char *path, int numInstances)
 {
-    std::string s(soundId == 1337 ? "data\\music\\" : "data\\sounds\\");
+    std::string s(soundId == 1337 ? "assets\\music\\" : "assets\\sounds\\");
     s += std::string(path);
     const char* finalPath = s.c_str();
 

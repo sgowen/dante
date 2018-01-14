@@ -40,11 +40,11 @@ ShaderProgramWrapper* OpenGLProgramLoader::loadNGShader(const char* vertexShader
     const char* finalVertexShaderFileName;
     const char* finalFragmentShaderFileName;
 #if defined __linux__ && !defined(__ANDROID__)
-    std::string s1("data/shaders/");
+    std::string s1("assets/shaders/");
     s1 += std::string(vertexShaderName);
     finalVertexShaderFileName = s1.c_str();
     
-    std::string s2("data/shaders/");
+    std::string s2("assets/shaders/");
     s2 += std::string(fragmentShaderName);
     finalFragmentShaderFileName = s2.c_str();
 #else

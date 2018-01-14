@@ -37,11 +37,11 @@ void EntityMapper::initWithJsonFile(const char* path, bool isBundled, bool useEn
 {
     const char* finalPath;
 #if defined __linux__ && !defined(__ANDROID__)
-    std::string s("data/config/");
+    std::string s("assets/config/");
     s += std::string(path);
     finalPath = s.c_str();
 #elif defined _WIN32
-    std::string s("data\\config\\");
+    std::string s("assets\\config\\");
     s += std::string(path);
     finalPath = s.c_str();
 #else
