@@ -32,11 +32,9 @@
 #include "framework/network/portable/FWInstanceManager.h"
 #include "game/logic/Util.h"
 #include "game/logic/Server.h"
+#include "framework/util/Config.h"
 
 NGRTTI_IMPL(PlayerController, EntityController);
-
-#define SPEED 14.0f
-#define MAX_Y_VELOCITY 5.0f
 
 EntityController* PlayerController::create(Entity* inEntity)
 {
@@ -48,6 +46,8 @@ _playerInfo(),
 _playerInfoCache(_playerInfo),
 _stats(),
 _statsCache(_stats),
+_maxXVelocity(Config::getInstance()->getFloat("maxRobotXVelocity")),
+_maxYVelocity(Config::getInstance()->getFloat("maxRobotYVelocity")),
 _isLocalPlayer(false)
 {
     _stateMappings.insert(std::make_pair(0, "Idle"));
@@ -263,16 +263,16 @@ void PlayerController::processInput(InputState* inInputState, bool isPending)
             }
             else
             {
-                vertForce = _entity->getBody()->GetMass() * (MAX_Y_VELOCITY - _entity->getPose().stateTime * 0.5f);
+                vertForce = _entity->getBody()->GetMass() * (_maxYVelocity - _entity->getPose().stateTime * 0.5f);
             }
         }
         
         if (getNumJumps() == 2)
         {
-            vertForce = _entity->getBody()->GetMass() * (MAX_Y_VELOCITY * 0.75f - _entity->getPose().stateTime * 0.35f);
+            vertForce = _entity->getBody()->GetMass() * (_maxYVelocity * 0.75f - _entity->getPose().stateTime * 0.35f);
         }
         
-        vertForce = clamp(vertForce, _entity->getBody()->GetMass() * MAX_Y_VELOCITY, 0);
+        vertForce = clamp(vertForce, _entity->getBody()->GetMass() * _maxYVelocity, 0);
     }
     else
     {
@@ -342,13 +342,13 @@ void PlayerController::processInput(InputState* inInputState, bool isPending)
     switch (moveState)
     {
         case MS_LEFT:
-            desiredVel = b2Max(vel.x - 1, -SPEED);
+            desiredVel = b2Max(vel.x - 1, -_maxXVelocity);
             break;
         case MS_STOP:
             desiredVel = vel.x * 0.99f;
             break;
         case MS_RIGHT:
-            desiredVel = b2Min(vel.x + 1, SPEED);
+            desiredVel = b2Min(vel.x + 1, _maxXVelocity);
             break;
     }
     float velChange = desiredVel - vel.x;

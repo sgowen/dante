@@ -127,6 +127,8 @@ private:
     Stats _stats;
     Stats _statsCache;
     
+    float _maxXVelocity;
+    float _maxYVelocity;
     bool _isLocalPlayer;
 };
 
