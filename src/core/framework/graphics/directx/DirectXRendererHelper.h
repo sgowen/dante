@@ -15,40 +15,26 @@ class DirectXRendererHelper : public RendererHelper
 {
 public:
     static void init(ID3D11Device* d3dDevice, ID3D11DeviceContext* d3dContext, ID3D11RenderTargetView* d3dRenderTargetView);
-    
     static ID3D11Device* getD3dDevice();
-    
     static ID3D11DeviceContext* getD3dContext();
     
     DirectXRendererHelper();
-    
     virtual ~DirectXRendererHelper();
 
 	virtual void createDeviceDependentResources();
-
 	virtual void releaseDeviceDependentResources();
-    
     virtual NGTexture* getFramebuffer(int index);
-    
     virtual void bindToOffscreenFramebuffer(int index);
-    
     virtual void clearFramebufferWithColor(float r, float g, float b, float a);
-    
     virtual void bindToScreenFramebuffer();
-    
     virtual void useNormalBlending();
     virtual void useScreenBlending();
-    
     virtual void bindMatrix(NGShaderUniformInput* uniform);
-    
     virtual void bindTexture(NGTextureSlot textureSlot, NGTexture* texture, NGShaderUniformInput* uniform = NULL);
-    
     virtual void bindNGShader(ShaderProgramWrapper* shaderProgramWrapper);
-    
     virtual void mapScreenVertices(std::vector<NGShaderVarInput*>& inputLayout, std::vector<SCREEN_VERTEX>& vertices);
     virtual void mapTextureVertices(std::vector<NGShaderVarInput*>& inputLayout, std::vector<TEXTURE_VERTEX>& vertices);
     virtual void mapColorVertices(std::vector<NGShaderVarInput*>& inputLayout, std::vector<COLOR_VERTEX>& vertices);
-    
     virtual void draw(NGPrimitiveType renderPrimitiveType, uint32_t first, uint32_t count);
     virtual void drawIndexed(NGPrimitiveType renderPrimitiveType, uint32_t first, uint32_t count);
     
@@ -65,18 +51,17 @@ private:
     std::vector<ID3D11Texture2D*> _offscreenRenderTargets;
     std::vector<ID3D11RenderTargetView*> _offscreenRenderTargetViews;
     std::vector<ID3D11ShaderResourceView*> _offscreenShaderResourceViews;
-    
     Microsoft::WRL::ComPtr<ID3D11BlendState> _blendState;
     Microsoft::WRL::ComPtr<ID3D11BlendState> _screenBlendState;
     Microsoft::WRL::ComPtr<ID3D11Buffer> _indexbuffer;
-    
     Microsoft::WRL::ComPtr<ID3D11SamplerState> _sbSamplerState;
     Microsoft::WRL::ComPtr<ID3D11SamplerState> _sbWrapSamplerState;
-    
     Microsoft::WRL::ComPtr<ID3D11Buffer> _textureVertexBuffer;
     Microsoft::WRL::ComPtr<ID3D11Buffer> _colorVertexBuffer;
     Microsoft::WRL::ComPtr<ID3D11Buffer> _screenVertexBuffer;
-    
+	std::vector<TEXTURE_VERTEX> _textureVertices;
+	std::vector<COLOR_VERTEX> _colorVertices;
+	std::vector<SCREEN_VERTEX> _screenVertices;
 	int _framebufferIndex;
     
     template <typename T>
@@ -85,13 +70,13 @@ private:
         D3D11_MAPPED_SUBRESOURCE mappedResource;
         ZeroMemory(&mappedResource, sizeof(D3D11_MAPPED_SUBRESOURCE));
         
-        //    Disable GPU access to the vertex buffer data.
+        // Disable GPU access to the vertex buffer data.
         s_d3dContext->Map(vertexBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
         
-        //    Update the vertex buffer here.
+        // Update the vertex buffer here.
         memcpy(mappedResource.pData, &vertices.front(), sizeof(T) * vertices.size());
         
-        //    Reenable GPU access to the vertex buffer data.
+        // Reenable GPU access to the vertex buffer data.
         s_d3dContext->Unmap(vertexBuffer.Get(), 0);
         
         // Set the vertex buffer

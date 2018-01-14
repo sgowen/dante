@@ -177,17 +177,26 @@ void DirectXRendererHelper::bindNGShader(ShaderProgramWrapper* shaderProgramWrap
 
 void DirectXRendererHelper::mapScreenVertices(std::vector<NGShaderVarInput*>& inputLayout, std::vector<SCREEN_VERTEX>& vertices)
 {
-    mapVertices(_screenVertexBuffer, vertices);
+	_screenVertices.clear();
+	_screenVertices.swap(vertices);
+
+    mapVertices(_screenVertexBuffer, _screenVertices);
 }
 
 void DirectXRendererHelper::mapTextureVertices(std::vector<NGShaderVarInput*>& inputLayout, std::vector<TEXTURE_VERTEX>& vertices)
 {
-    mapVertices(_textureVertexBuffer, vertices);
+	_textureVertices.clear();
+	_textureVertices.swap(vertices);
+
+    mapVertices(_textureVertexBuffer, _textureVertices);
 }
 
 void DirectXRendererHelper::mapColorVertices(std::vector<NGShaderVarInput*>& inputLayout, std::vector<COLOR_VERTEX>& vertices)
 {
-    mapVertices(_colorVertexBuffer, vertices);
+	_colorVertices.clear();
+	_colorVertices.swap(vertices);
+
+    mapVertices(_colorVertexBuffer, _colorVertices);
 }
 
 void DirectXRendererHelper::draw(NGPrimitiveType renderPrimitiveType, uint32_t first, uint32_t count)
@@ -224,7 +233,7 @@ void DirectXRendererHelper::createFramebufferObject()
     textureDesc.ArraySize = 1;
     textureDesc.Format = DXGI_FORMAT_B8G8R8A8_UNORM;
     textureDesc.SampleDesc.Count = 1;
-    textureDesc.Usage = D3D11_USAGameEngineState_Default;
+    textureDesc.Usage = D3D11_USAGE_DEFAULT;
     textureDesc.BindFlags = D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE;
     textureDesc.CPUAccessFlags = 0;
     textureDesc.MiscFlags = 0;
@@ -333,7 +342,7 @@ void DirectXRendererHelper::createIndexBuffer()
     
     indexBufferDesc.ByteWidth = sizeof(short) * MAX_BATCH_SIZE * INDICES_PER_RECTANGLE;
     indexBufferDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
-    indexBufferDesc.Usage = D3D11_USAGameEngineState_Default;
+    indexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
     
     D3D11_SUBRESOURCE_DATA indexDataDesc = { 0 };
     
