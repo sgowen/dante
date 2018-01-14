@@ -85,17 +85,20 @@ void CircleBatcher::renderPartialCircle(Circle &circle, int arcDegrees, Color &c
 
 void CircleBatcher::endBatch(NGShader &shader)
 {
-    shader.bind(&_vertices);
-    
-    int offset = 0;
-    for (std::vector<int>::iterator i = _circles.begin(); i != _circles.end(); ++i)
-    {
-        int numPoints = (*i);
-        _rendererHelper->draw(NGPrimitiveType_TriangleStrip, offset, numPoints);
-        offset += numPoints;
-    }
-    
-    shader.unbind();
+	if (_circles.size() > 0)
+	{
+		shader.bind(&_vertices);
+
+		int offset = 0;
+		for (std::vector<int>::iterator i = _circles.begin(); i != _circles.end(); ++i)
+		{
+			int numPoints = (*i);
+			_rendererHelper->draw(NGPrimitiveType_TriangleStrip, offset, numPoints);
+			offset += numPoints;
+		}
+
+		shader.unbind();
+	}
 }
 
 void CircleBatcher::addVertexCoordinate(float x, float y, float r, float g, float b, float a)
