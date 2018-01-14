@@ -62,6 +62,9 @@ void appleReleaseAssetData(const FileData *file_data)
 {
     assert(file_data != NULL);
     assert(file_data->file_handle != NULL);
+    
+    const std::string* handle = static_cast<const std::string*>(file_data->file_handle);
+    delete handle;
 }
 
 const char * getPathInsideNSDocuments(const char* relative_path)

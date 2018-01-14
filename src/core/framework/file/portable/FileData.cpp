@@ -10,10 +10,11 @@
 
 #include "framework/file/portable/FileData.h"
 
-FileData::FileData(long data_length_in, void *data_in, void *file_handle_in) :
+FileData::FileData(long data_length_in, void *data_in, void *file_handle_in, int flags_in) :
 data_length(data_length_in),
 data(data_in),
-file_handle(file_handle_in)
+file_handle(file_handle_in),
+flags(flags_in)
 {
 	// Empty
 }
@@ -21,7 +22,8 @@ file_handle(file_handle_in)
 FileData::FileData(const FileData& inFileData) :
 data_length(inFileData.data_length),
 data(inFileData.data),
-file_handle(inFileData.file_handle)
+file_handle(inFileData.file_handle),
+flags(inFileData.flags)
 {
     // Empty
 }

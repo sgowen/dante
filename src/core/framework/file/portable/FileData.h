@@ -15,9 +15,9 @@ public:
     const long data_length;
     const void *data;
     const void *file_handle;
+    const int flags;
 
-	FileData(long data_length_in, void *data_in, void *file_handle_in);
-    
+	FileData(long data_length_in, void *data_in, void *file_handle_in, int flags_in = 0);
     FileData(const FileData& inFileData);
 };
 
