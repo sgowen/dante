@@ -116,10 +116,10 @@ int GlfwMain::exec(EngineController* engineController)
     int width = 800;
     int height = 480;
 
-#ifndef DEBUG
+#ifndef _DEBUG && !defined(DEBUG)
 #define LAUNCH_FULL_SCREEN
 #endif
-    
+
 #ifdef LAUNCH_FULL_SCREEN
     /// Launch directly into full screen
     monitor = glfwGetPrimaryMonitor();
@@ -165,7 +165,7 @@ int GlfwMain::exec(EngineController* engineController)
 #endif
 
     double lastTime = 0;
-    
+
     Engine engine(engineController);
     engine.createDeviceDependentResources();
 
@@ -300,7 +300,7 @@ int GlfwMain::exec(EngineController* engineController)
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
-    
+
     engine.releaseDeviceDependentResources();
 
     glfwDestroyWindow(window);
