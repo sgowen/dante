@@ -116,7 +116,7 @@ int GlfwMain::exec(EngineController* engineController)
     int width = 800;
     int height = 480;
 
-#ifndef _DEBUG && !defined(DEBUG)
+#if !defined(_DEBUG) && !defined(DEBUG)
 #define LAUNCH_FULL_SCREEN
 #endif
 
