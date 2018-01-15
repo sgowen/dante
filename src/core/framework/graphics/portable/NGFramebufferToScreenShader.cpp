@@ -31,7 +31,6 @@ void NGFramebufferToScreenShader::bind(void* vertices, void* data1, void* data2)
     assert(data1 != NULL);
     
     _rendererHelper.bindNGShader(_shaderProgramWrapper);
-    _rendererHelper.useScreenBlending();
     _rendererHelper.bindTexture(NGTextureSlot_ZERO, static_cast<NGTexture*>(data1), _uniforms[0]);
     
     std::vector<SCREEN_VERTEX>* screenVertices = static_cast<std::vector<SCREEN_VERTEX>* >(vertices);
@@ -41,8 +40,6 @@ void NGFramebufferToScreenShader::bind(void* vertices, void* data1, void* data2)
 void NGFramebufferToScreenShader::unbind()
 {
     _rendererHelper.unmapScreenVertices();
-    
     _rendererHelper.bindTexture(NGTextureSlot_ZERO, NULL);
-    
     _rendererHelper.bindNGShader(NULL);
 }

@@ -184,14 +184,14 @@ void GameRenderer::render(int flags)
     endFrame();
 }
 
-void GameRenderer::setFramebuffer(int framebufferIndex)
+void GameRenderer::setFramebuffer(int framebufferIndex, float r, float g, float b, float a)
 {
     assert(framebufferIndex >= 0);
     
     _framebufferIndex = framebufferIndex;
     
     _rendererHelper->bindToOffscreenFramebuffer(_framebufferIndex);
-    _rendererHelper->clearFramebufferWithColor(0, 0, 0, 0);
+    _rendererHelper->clearFramebufferWithColor(r, g, b, a);
 }
 
 void GameRenderer::updateCamera()
@@ -287,6 +287,70 @@ void GameRenderer::updateCamera()
     }
 }
 
+void GameRenderer::renderWorld()
+{
+    _rendererHelper->useNormalBlending();
+    setFramebuffer(0);
+    renderLayers(InstanceManager::getClientWorld(), false);
+    setFramebuffer(1);
+    renderLayers(InstanceManager::getClientWorld(), true);
+    
+    float x = _camBounds[3]->getLeft() + _camBounds[3]->getWidth() / 2;
+    float y = _camBounds[3]->getBottom() + _camBounds[3]->getHeight() / 2;
+    _rendererHelper->updateMatrix(_camBounds[3]->getLeft(), _camBounds[3]->getRight(), _camBounds[3]->getBottom(), _camBounds[3]->getTop());
+    setFramebuffer(2, 0, 0, 0, 0);
+    _rendererHelper->useScreenBlending();
+    renderEntities(InstanceManager::getClientWorld(), false, false);
+    setFramebuffer(3, 0, 0, 0, 0);
+    _rendererHelper->useScreenBlending();
+    renderEntities(InstanceManager::getClientWorld(), true, false);
+    
+    static TextureRegion tr = TextureRegion("framebuffer", 0, 0, 1, 1, 1, 1);
+    
+    _rendererHelper->useScreenBlending();
+//    for (int i = 0; i < 3; ++i)
+    {
+        setFramebuffer(4, 0, 0, 0, 0);
+        _spriteBatchers[0]->beginBatch();
+        _spriteBatchers[0]->renderSprite(x, y, _camBounds[3]->getWidth(), _camBounds[3]->getHeight(), 0, tr);
+        _spriteBatchers[0]->endBatch(_lightingNGShader, _rendererHelper->getFramebuffer(0), _rendererHelper->getFramebuffer(1));
+    }
+    
+    {
+        setFramebuffer(5, 0, 0, 0, 0);
+        _spriteBatchers[0]->beginBatch();
+        _spriteBatchers[0]->renderSprite(x, y, _camBounds[3]->getWidth(), _camBounds[3]->getHeight(), 0, tr);
+        _spriteBatchers[0]->endBatch(_lightingNGShader, _rendererHelper->getFramebuffer(2), _rendererHelper->getFramebuffer(3));
+    }
+    
+    setFramebuffer(6);
+    
+    static std::vector<SCREEN_VERTEX> screenVertices;
+    screenVertices.clear();
+    screenVertices.push_back(SCREEN_VERTEX(-1, -1));
+    screenVertices.push_back(SCREEN_VERTEX(-1, 1));
+    screenVertices.push_back(SCREEN_VERTEX(1, 1));
+    screenVertices.push_back(SCREEN_VERTEX(1, -1));
+    
+    _rendererHelper->useScreenBlending();
+    {
+        _framebufferToScreenNGShader->bind(&screenVertices, _rendererHelper->getFramebuffer(4));
+        _rendererHelper->drawIndexed(NGPrimitiveType_Triangles, 0, INDICES_PER_RECTANGLE);
+        _framebufferToScreenNGShader->unbind();
+    }
+    
+    {
+        _framebufferToScreenNGShader->bind(&screenVertices, _rendererHelper->getFramebuffer(5));
+        _rendererHelper->drawIndexed(NGPrimitiveType_Triangles, 0, INDICES_PER_RECTANGLE);
+        _framebufferToScreenNGShader->unbind();
+    }
+    
+//    if (Server::getInstance() && Server::getInstance()->isDisplaying())
+//    {
+//        renderEntities(InstanceManager::getServerWorld(), true, true);
+//    }
+}
+
 void GameRenderer::renderLayers(World* world, bool isNormals)
 {
     for (int i = 0; i < 3; ++i)
@@ -307,84 +371,12 @@ void GameRenderer::renderLayers(World* world, bool isNormals)
     
     for (int i = 0; i < 3; ++i)
     {
-        int fb = isNormals ? i + 3 : i;
-        setFramebuffer(fb);
-        
         if (textures[i].length() > 0)
         {
             _rendererHelper->updateMatrix(_camBounds[i]->getLeft(), _camBounds[i]->getRight(), _camBounds[i]->getBottom(), _camBounds[i]->getTop());
             _spriteBatchers[i]->endBatch(_textureNGShader, _textureManager->getTextureWithName(textures[i]));
         }
     }
-}
-
-void GameRenderer::renderWorld()
-{
-    renderLayers(InstanceManager::getClientWorld(), false);
-    renderLayers(InstanceManager::getClientWorld(), true);
-    
-    float x = _camBounds[3]->getLeft() + _camBounds[3]->getWidth() / 2;
-    float y = _camBounds[3]->getBottom() + _camBounds[3]->getHeight() / 2;
-    _rendererHelper->updateMatrix(_camBounds[3]->getLeft(), _camBounds[3]->getRight(), _camBounds[3]->getBottom(), _camBounds[3]->getTop());
-    setFramebuffer(6);
-    renderEntities(InstanceManager::getClientWorld(), false, false);
-    setFramebuffer(7);
-    renderEntities(InstanceManager::getClientWorld(), true, false);
-    
-    static TextureRegion tr = TextureRegion("framebuffer", 0, 0, 1, 1, 1, 1);
-    
-    for (int i = 0; i < 3; ++i)
-    {
-        setFramebuffer(i + 8);
-        _spriteBatchers[0]->beginBatch();
-        _spriteBatchers[0]->renderSprite(x, y, _camBounds[3]->getWidth(), _camBounds[3]->getHeight(), 0, tr);
-        _spriteBatchers[0]->endBatch(_lightingNGShader, _rendererHelper->getFramebuffer(i), _rendererHelper->getFramebuffer(i + 3));
-    }
-    
-    {
-        setFramebuffer(11);
-        _spriteBatchers[0]->beginBatch();
-        _spriteBatchers[0]->renderSprite(x, y, _camBounds[3]->getWidth(), _camBounds[3]->getHeight(), 0, tr);
-        _spriteBatchers[0]->endBatch(_lightingNGShader, _rendererHelper->getFramebuffer(6), _rendererHelper->getFramebuffer(7));
-    }
-    
-    setFramebuffer(12);
-    
-    static std::vector<SCREEN_VERTEX> screenVertices;
-    screenVertices.clear();
-    screenVertices.push_back(SCREEN_VERTEX(-1, -1));
-    screenVertices.push_back(SCREEN_VERTEX(-1, 1));
-    screenVertices.push_back(SCREEN_VERTEX(1, 1));
-    screenVertices.push_back(SCREEN_VERTEX(1, -1));
-    
-    {
-        _framebufferToScreenNGShader->bind(&screenVertices, _rendererHelper->getFramebuffer(8));
-        _rendererHelper->drawIndexed(NGPrimitiveType_Triangles, 0, INDICES_PER_RECTANGLE);
-        _framebufferToScreenNGShader->unbind();
-    }
-    
-    {
-        _framebufferToScreenNGShader->bind(&screenVertices, _rendererHelper->getFramebuffer(9));
-        _rendererHelper->drawIndexed(NGPrimitiveType_Triangles, 0, INDICES_PER_RECTANGLE);
-        _framebufferToScreenNGShader->unbind();
-    }
-    
-    {
-        _framebufferToScreenNGShader->bind(&screenVertices, _rendererHelper->getFramebuffer(10));
-        _rendererHelper->drawIndexed(NGPrimitiveType_Triangles, 0, INDICES_PER_RECTANGLE);
-        _framebufferToScreenNGShader->unbind();
-    }
-    
-    {
-        _framebufferToScreenNGShader->bind(&screenVertices, _rendererHelper->getFramebuffer(11));
-        _rendererHelper->drawIndexed(NGPrimitiveType_Triangles, 0, INDICES_PER_RECTANGLE);
-        _framebufferToScreenNGShader->unbind();
-    }
-    
-//    if (Server::getInstance() && Server::getInstance()->isDisplaying())
-//    {
-//        renderEntities(InstanceManager::getServerWorld(), true, true);
-//    }
 }
 
 void GameRenderer::renderEntities(World* world, bool isNormals, bool isServer)
@@ -448,10 +440,10 @@ void GameRenderer::renderBox2D()
 {
     _box2DDebugRenderer->render(&InstanceManager::getClientWorld()->getWorld(), _colorNGShader);
     
-//    if (Server::getInstance() && Server::getInstance()->isDisplaying())
-//    {
-//        _box2DDebugRenderer->render(&InstanceManager::getServerWorld()->getWorld(), _colorNGShader);
-//    }
+    if (Server::getInstance() && Server::getInstance()->isDisplaying())
+    {
+        _box2DDebugRenderer->render(&InstanceManager::getServerWorld()->getWorld(), _colorNGShader);
+    }
 }
 
 void GameRenderer::renderUI(int flags)
@@ -526,6 +518,7 @@ void GameRenderer::renderUI(int flags)
         renderText(StringUtil::format("%s, 'ESC' to exit", "Joining Server...").c_str(), 0.5f, CAM_HEIGHT - 4, Color::WHITE, FONT_ALIGN_LEFT);
     }
     
+    _rendererHelper->useNormalBlending();
     _spriteBatchers[0]->endBatch(_textureNGShader, _textureManager->getTextureWithName("texture_000.ngt"));
 }
 
@@ -557,4 +550,6 @@ void GameRenderer::endFrame()
     _framebufferToScreenNGShader->bind(&screenVertices, _rendererHelper->getFramebuffer(_framebufferIndex));
     _rendererHelper->drawIndexed(NGPrimitiveType_Triangles, 0, INDICES_PER_RECTANGLE);
     _framebufferToScreenNGShader->unbind();
+    
+    _rendererHelper->useNoBlending();
 }

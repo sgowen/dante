@@ -34,7 +34,6 @@ void NGTextureShader::bind(void* vertices, void* data1, void* data2)
     assert(data1 != NULL);
     
     _rendererHelper.bindNGShader(_shaderProgramWrapper);
-    _rendererHelper.useNormalBlending();
     _rendererHelper.bindMatrix(_uniforms[0]);
     _rendererHelper.bindTexture(NGTextureSlot_ZERO, static_cast<NGTexture*>(data1), _uniforms[1]);
     

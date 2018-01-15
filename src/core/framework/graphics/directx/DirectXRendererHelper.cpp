@@ -138,6 +138,11 @@ void DirectXRendererHelper::useScreenBlending()
     s_d3dContext->OMSetBlendState(_screenBlendState.Get(), 0, 0xffffffff);
 }
 
+void DirectXRendererHelper::useNoBlending()
+{
+    s_d3dContext->OMSetBlendState(NULL, 0, 0xffffffff);
+}
+
 void DirectXRendererHelper::bindMatrix(NGShaderUniformInput* uniform)
 {
     UNUSED(uniform);

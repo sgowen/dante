@@ -39,6 +39,7 @@ public:
     virtual void bindToScreenFramebuffer() = 0;
     virtual void useNormalBlending() = 0;
     virtual void useScreenBlending() = 0;
+    virtual void useNoBlending() = 0;
     virtual void bindMatrix(NGShaderUniformInput* uniform) = 0;
     virtual void bindVector3(NGShaderUniformInput* uniform, Vector3& inValue) = 0;
     virtual void bindColor(NGShaderUniformInput* uniform, Color& inValue) = 0;

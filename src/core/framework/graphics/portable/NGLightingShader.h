@@ -22,7 +22,7 @@ public:
     virtual void bind(void* vertices, void* data1 = NULL, void* data2 = NULL);
     virtual void unbind();
     
-    void config(float lightPosX, float lightPosY);
+    void config(float lightPosX, float lightPosY, float lightPosZ = DEFAULT_LIGHT_Z);
     
 private:
     static float DEFAULT_LIGHT_Z;

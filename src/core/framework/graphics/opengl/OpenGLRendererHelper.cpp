@@ -97,6 +97,11 @@ void OpenGLRendererHelper::useScreenBlending()
     glEnable(GL_BLEND);
 }
 
+void OpenGLRendererHelper::useNoBlending()
+{
+    glDisable(GL_BLEND);
+}
+
 void OpenGLRendererHelper::bindMatrix(NGShaderUniformInput* uniform)
 {
     glUniformMatrix4fv(uniform->_attribute, 1, GL_FALSE, (GLfloat*)_matrix);
@@ -148,11 +153,6 @@ void OpenGLRendererHelper::bindTexture(NGTextureSlot textureSlot, NGTexture* tex
 void OpenGLRendererHelper::bindNGShader(ShaderProgramWrapper* shaderProgramWrapper)
 {
     glUseProgram(shaderProgramWrapper == NULL ? 0 : shaderProgramWrapper->_programObjectId);
-    
-    if (!shaderProgramWrapper)
-    {
-        glDisable(GL_BLEND);
-    }
 }
 
 void OpenGLRendererHelper::mapTextureVertices(std::vector<NGShaderVarInput*>& inputLayout, std::vector<TEXTURE_VERTEX>& vertices)

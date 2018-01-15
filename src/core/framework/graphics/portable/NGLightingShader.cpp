@@ -47,7 +47,6 @@ void NGLightingShader::bind(void* vertices, void* data1, void* data2)
     assert(data2 != NULL);
     
     _rendererHelper.bindNGShader(_shaderProgramWrapper);
-    _rendererHelper.useNormalBlending();
     _rendererHelper.bindMatrix(_uniforms[0]);
     _rendererHelper.bindVector3(_uniforms[1], _lightPos);
     _rendererHelper.bindColor(_uniforms[2], LIGHT_COLOR);
@@ -68,7 +67,7 @@ void NGLightingShader::unbind()
     _rendererHelper.bindNGShader(NULL);
 }
 
-void NGLightingShader::config(float lightPosX, float lightPosY)
+void NGLightingShader::config(float lightPosX, float lightPosY, float lightPosZ)
 {
-    _lightPos.set(lightPosX, lightPosY, DEFAULT_LIGHT_Z);
+    _lightPos.set(lightPosX, lightPosY, lightPosZ);
 }

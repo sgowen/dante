@@ -65,10 +65,10 @@ private:
     NGShader* _framebufferToScreenNGShader;
     int _framebufferIndex;
     
-    void setFramebuffer(int framebufferIndex);
+    void setFramebuffer(int framebufferIndex, float r = 0, float g = 0, float b = 0, float a = 0);
     void updateCamera();
-    void renderLayers(World* world, bool isNormals);
     void renderWorld();
+    void renderLayers(World* world, bool isNormals);
     void renderEntities(World* world, bool isServer, bool isNormals);
     void renderBox2D();
     void renderUI(int engineState);

@@ -57,8 +57,7 @@ private:
     NGShader* _framebufferToScreenNGShader;
     int _framebufferIndex;
     
-    void beginFrame();
-    void setFramebuffer(int framebufferIndex);
+    void setFramebuffer(int framebufferIndex, float r = 0, float g = 0, float b = 0, float a = 0);
     void renderText(const char* inStr, float x, float y, const Color& inColor, int justification = FONT_ALIGN_LEFT);
     void endFrame();
 };

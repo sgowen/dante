@@ -144,7 +144,7 @@ void TitleRenderer::releaseDeviceDependentResources()
 
 void TitleRenderer::render(int flags)
 {
-    beginFrame();
+    setFramebuffer(0);
     
     if (_textureManager->ensureTextures())
     {
@@ -172,27 +172,21 @@ void TitleRenderer::render(int flags)
             default:
                 break;
         }
+        _rendererHelper->useNormalBlending();
         _spriteBatcher->endBatch(_textureNGShader, _textureManager->getTextureWithName("texture_000.ngt"));
     }
     
     endFrame();
 }
 
-void TitleRenderer::beginFrame()
-{
-    _textureManager->handleAsyncTextureLoads();
-    
-    setFramebuffer(0);
-}
-
-void TitleRenderer::setFramebuffer(int framebufferIndex)
+void TitleRenderer::setFramebuffer(int framebufferIndex, float r, float g, float b, float a)
 {
     assert(framebufferIndex >= 0);
     
     _framebufferIndex = framebufferIndex;
     
     _rendererHelper->bindToOffscreenFramebuffer(_framebufferIndex);
-    _rendererHelper->clearFramebufferWithColor(0, 0, 0, 1);
+    _rendererHelper->clearFramebufferWithColor(r, g, b, a);
 }
 
 void TitleRenderer::renderMainMenuSteamOffText()
@@ -285,4 +279,6 @@ void TitleRenderer::endFrame()
     _framebufferToScreenNGShader->bind(&screenVertices, _rendererHelper->getFramebuffer(_framebufferIndex));
     _rendererHelper->drawIndexed(NGPrimitiveType_Triangles, 0, INDICES_PER_RECTANGLE);
     _framebufferToScreenNGShader->unbind();
+    
+    _rendererHelper->useNoBlending();
 }
