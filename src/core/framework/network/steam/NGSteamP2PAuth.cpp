@@ -106,7 +106,7 @@ void NGSteamP2PAuth::startAuthPlayer(uint8 iSlot, CSteamID steamID)
     }
 }
 
-bool NGSteamP2PAuth::handleMessage(uint32 packetType, InputMemoryBitStream& inInputStream)
+bool NGSteamP2PAuth::handleMessage(uint8 packetType, InputMemoryBitStream& inInputStream)
 {
 	switch (packetType)
 	{
@@ -234,8 +234,7 @@ bool NGSteamP2PAuthPlayer::isAuthOk()
                 char rgch[128];
                 sprintf(rgch, "P2P:: Nothing received for account=%d\n", _steamID.GetAccountID());
                 LOG(rgch);
-                /// TODO, fixme
-                //return false;
+                return false;
             }
         }
 
@@ -265,8 +264,7 @@ bool NGSteamP2PAuthPlayer::isAuthOk()
                 char rgch[128];
                 sprintf(rgch, "P2P:: No ticket received for account=%d\n", _steamID.GetAccountID());
                 LOG(rgch);
-                /// TODO, fixme
-                //return false;
+                return false;
             }
         }
     }

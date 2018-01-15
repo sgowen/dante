@@ -36,7 +36,7 @@ public:
     void endGame();
     void startAuthPlayer(uint8 iSlot, CSteamID steamID);
     void registerPlayer(uint8 iSlot, CSteamID steamID);
-    bool handleMessage(uint32 packetType, InputMemoryBitStream& inInputStream);
+    bool handleMessage(uint8 packetType, InputMemoryBitStream& inInputStream);
     void internalinitPlayer(uint8 iSlot, CSteamID steamID, bool bStartAuthProcess);
 };
 
