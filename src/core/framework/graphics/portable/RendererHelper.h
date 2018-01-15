@@ -20,6 +20,7 @@ struct TextureWrapper;
 class ShaderProgramWrapper;
 class NGShaderUniformInput;
 class NGShaderVarInput;
+class Vector2;
 class Vector3;
 class Color;
 
@@ -41,6 +42,7 @@ public:
     virtual void useScreenBlending() = 0;
     virtual void useNoBlending() = 0;
     virtual void bindMatrix(NGShaderUniformInput* uniform) = 0;
+    virtual void bindVector2(NGShaderUniformInput* uniform, Vector2& inValue) = 0;
     virtual void bindVector3(NGShaderUniformInput* uniform, Vector3& inValue) = 0;
     virtual void bindColor(NGShaderUniformInput* uniform, Color& inValue) = 0;
     virtual void bindTexture(NGTextureSlot textureSlot, NGTexture* texture, NGShaderUniformInput* uniform = NULL) = 0;
@@ -53,6 +55,9 @@ public:
     virtual void unmapColorVertices();
     virtual void draw(NGPrimitiveType renderPrimitiveType, uint32_t first, uint32_t count) = 0;
     virtual void drawIndexed(NGPrimitiveType renderPrimitiveType, uint32_t first, uint32_t count) = 0;
+    
+    int getRenderWidth();
+    int getRenderHeight();
     
 protected:
     std::vector<NGTexture *> _framebufferWrappers;

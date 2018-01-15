@@ -14,6 +14,7 @@
 #include "framework/graphics/portable/TextureWrapper.h"
 #include "framework/graphics/portable/ShaderProgramWrapper.h"
 #include "framework/graphics/portable/NGShaderUniformInput.h"
+#include <framework/math/Vector2.h>
 #include <framework/math/Vector3.h>
 #include <framework/graphics/portable/Color.h>
 
@@ -105,6 +106,11 @@ void OpenGLRendererHelper::useNoBlending()
 void OpenGLRendererHelper::bindMatrix(NGShaderUniformInput* uniform)
 {
     glUniformMatrix4fv(uniform->_attribute, 1, GL_FALSE, (GLfloat*)_matrix);
+}
+
+void OpenGLRendererHelper::bindVector2(NGShaderUniformInput* uniform, Vector2& inValue)
+{
+    glUniform2f(uniform->_attribute, inValue.getX(), inValue.getY());
 }
 
 void OpenGLRendererHelper::bindVector3(NGShaderUniformInput* uniform, Vector3& inValue)

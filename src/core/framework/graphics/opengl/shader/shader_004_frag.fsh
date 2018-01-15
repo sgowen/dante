@@ -12,6 +12,7 @@ varying vec2 v_TexCoord;
 varying vec3 v_LightPos;
 
 //values used for shading algorithm...
+uniform vec2 u_Resolution;
 uniform vec4 u_LightColor;      //light RGBA -- alpha is intensity
 uniform vec4 u_AmbientColor;    //ambient RGBA -- alpha is intensity
 uniform vec3 u_Falloff;         //attenuation coefficients
@@ -24,13 +25,11 @@ void main()
     //RGB of our normal map
     vec3 NormalMap = texture2D(u_NormalMapUnit, v_TexCoord).rgb;
     
-    vec2 Resolution = vec2(1440.0, 900.0);
-    
     //The delta position of light
-    vec3 LightDir = vec3(v_LightPos.xy - (gl_FragCoord.xy / Resolution.xy), v_LightPos.z);
+    vec3 LightDir = vec3(v_LightPos.xy - (gl_FragCoord.xy / u_Resolution.xy), v_LightPos.z);
     
     //Correct for aspect ratio
-    LightDir.x *= Resolution.x / Resolution.y;
+    LightDir.x *= u_Resolution.x / u_Resolution.y;
     
     //Determine distance (used for attenuation) BEFORE we normalize our LightDir
     float D = length(LightDir);

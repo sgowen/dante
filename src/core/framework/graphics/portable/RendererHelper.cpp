@@ -12,6 +12,7 @@
 
 #include "framework/graphics/portable/NGTexture.h"
 #include "framework/graphics/portable/TextureWrapper.h"
+#include <framework/math/Vector2.h>
 #include <framework/math/Vector3.h>
 #include <framework/graphics/portable/Color.h>
 
@@ -82,6 +83,11 @@ void RendererHelper::updateMatrix(float left, float right, float bottom, float t
     mat4x4_ortho(_matrix, left, right, bottom, top, -1, 1);
 }
 
+void RendererHelper::unmapScreenVertices()
+{
+    // Unused
+}
+
 void RendererHelper::unmapTextureVertices()
 {
     // Unused
@@ -92,9 +98,14 @@ void RendererHelper::unmapColorVertices()
     // Unused
 }
 
-void RendererHelper::unmapScreenVertices()
+int RendererHelper::getRenderWidth()
 {
-    // Unused
+    return _renderWidth;
+}
+
+int RendererHelper::getRenderHeight()
+{
+    return _renderHeight;
 }
 
 void RendererHelper::createFramebufferObjects()

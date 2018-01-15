@@ -29,6 +29,7 @@ public:
     virtual void useScreenBlending();
     virtual void useNoBlending();
     virtual void bindMatrix(NGShaderUniformInput* uniform);
+    virtual void bindVector2(NGShaderUniformInput* uniform, Vector2& inValue);
     virtual void bindVector3(NGShaderUniformInput* uniform, Vector3& inValue);
     virtual void bindColor(NGShaderUniformInput* uniform, Color& inValue);
     virtual void bindTexture(NGTextureSlot textureSlot, NGTexture* texture, NGShaderUniformInput* uniform = NULL);

@@ -15,6 +15,7 @@
 #include "framework/graphics/portable/ShaderProgramWrapper.h"
 #include "framework/graphics/portable/NGShaderUniformInput.h"
 #include "framework/graphics/portable/NGShaderVarInput.h"
+#include <framework/math/Vector2.h>
 #include <framework/math/Vector3.h>
 #include <framework/graphics/portable/Color.h>
 
@@ -151,6 +152,11 @@ void DirectXRendererHelper::bindMatrix(NGShaderUniformInput* uniform)
     
     // send the final matrix to video memory
 	s_d3dContext->UpdateSubresource(uniform->_constantbuffer.Get(), 0, 0, &_matrix, 0, 0);
+}
+
+void DirectXRendererHelper::bindVector2(NGShaderUniformInput* uniform, Vector2& inValue)
+{
+    /// TODO
 }
 
 void DirectXRendererHelper::bindVector3(NGShaderUniformInput* uniform, Vector3& inValue)

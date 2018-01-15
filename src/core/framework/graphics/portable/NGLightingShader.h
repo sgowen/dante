@@ -11,6 +11,7 @@
 
 #include "framework/graphics/portable/NGShader.h"
 
+#include <framework/math/Vector2.h>
 #include <framework/math/Vector3.h>
 #include <framework/graphics/portable/Color.h>
 
@@ -22,10 +23,11 @@ public:
     virtual void bind(void* vertices, void* data1 = NULL, void* data2 = NULL);
     virtual void unbind();
     
-    void configXY(float lightPosX, float lightPosY);
+    void config(float resolutionX, float resolutionY, float lightPosX, float lightPosY);
     void configZ(float lightPosZ);
     
 private:
+    Vector2 _resolution;
     float _defaultLightZ;
     Vector3 _lightPos;
     Color _lightColor; // Light RGB and intensity (alpha)

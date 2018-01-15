@@ -213,7 +213,7 @@ void GameRenderer::updateCamera()
                 x = entity->getPosition().x;
                 y = entity->getPosition().y;
                 
-                _lightingNGShader->configXY(x, y);
+                _lightingNGShader->config(_rendererHelper->getRenderWidth(), _rendererHelper->getRenderHeight(), x, y);
                 
                 x -= CAM_WIDTH * 0.5f;
                 
