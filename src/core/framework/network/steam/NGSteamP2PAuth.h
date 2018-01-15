@@ -46,7 +46,6 @@ public:
     CSteamID _steamID;
 
 	NGSteamP2PAuthPlayer(NGSteamP2PNetworkTransport *pNetworkTransport);
-
 	~NGSteamP2PAuthPlayer();
 
     void endGame();
@@ -79,7 +78,6 @@ class NGSteamP2PNetworkTransport
 {
 public:
 	NGSteamP2PNetworkTransport(NetworkHelper* networkHelper);
-
     ~NGSteamP2PNetworkTransport();
 
 	void sendTicket(CSteamID steamIDFrom, CSteamID steamIDTo, uint32 cubTicket, uint8 *pubTicket);
@@ -98,17 +96,15 @@ class MsgP2PSendingTicket
 public:
     MsgP2PSendingTicket();
 
-    DWORD getMessageType();
-
+    uint8 getMessageType();
     void setToken(const char *pchToken, uint32 unLen);
     uint32 getTokenLen();
     const char* getTokenPtr();
-
     void setSteamID(uint64 ulSteamID);
     uint64 getSteamID();
 
 private:
-    const DWORD _dwMessageType;
+    const uint8 _messageType;
     uint32 _uTokenLen;
     char _rgchToken[1024];
     uint64 _ulSteamID;

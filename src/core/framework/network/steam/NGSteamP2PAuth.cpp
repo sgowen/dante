@@ -364,14 +364,14 @@ void NGSteamP2PNetworkTransport::onP2PSessionConnectFail(P2PSessionConnectFail_t
     // we can just use the normal timeout
 }
 
-MsgP2PSendingTicket::MsgP2PSendingTicket() : _dwMessageType(k_EMsgP2PSendingTicket)
+MsgP2PSendingTicket::MsgP2PSendingTicket() : _messageType(k_EMsgP2PSendingTicket)
 {
     // Empty
 }
 
-DWORD MsgP2PSendingTicket::getMessageType()
+uint8 MsgP2PSendingTicket::getMessageType()
 {
-    return _dwMessageType;
+    return _messageType;
 }
 
 void MsgP2PSendingTicket::setToken(const char *pchToken, uint32 unLen)
