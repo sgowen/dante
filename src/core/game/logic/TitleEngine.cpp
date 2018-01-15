@@ -11,7 +11,7 @@
 #include "game/logic/TitleEngine.h"
 
 #include "framework/file/portable/JsonFile.h"
-#include <game/graphics/portable/TitleRenderer.h>
+#include <game/graphics/TitleRenderer.h>
 
 #include "game/logic/Server.h"
 #include "game/logic/GameConstants.h"

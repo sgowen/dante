@@ -9,17 +9,9 @@
 /* Begin PBXBuildFile section */
 		BB04A6B81FC3746800E0EB89 /* GlfwMain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBFA49DC1FC367AF00233514 /* GlfwMain.cpp */; };
 		BB04A6C11FC383A800E0EB89 /* IOSMain.mm in Sources */ = {isa = PBXBuildFile; fileRef = BB04A6C01FC383A800E0EB89 /* IOSMain.mm */; };
-		BB052CC71EBA8ADD007FA789 /* shader_001_frag.ngs in Resources */ = {isa = PBXBuildFile; fileRef = BB052CC01EBA8ADD007FA789 /* shader_001_frag.ngs */; };
-		BB052CC91EBA8ADD007FA789 /* shader_001_vert.ngs in Resources */ = {isa = PBXBuildFile; fileRef = BB052CC11EBA8ADD007FA789 /* shader_001_vert.ngs */; };
-		BB052CCB1EBA8ADD007FA789 /* shader_002_frag.ngs in Resources */ = {isa = PBXBuildFile; fileRef = BB052CC21EBA8ADD007FA789 /* shader_002_frag.ngs */; };
-		BB052CCD1EBA8ADD007FA789 /* shader_002_vert.ngs in Resources */ = {isa = PBXBuildFile; fileRef = BB052CC31EBA8ADD007FA789 /* shader_002_vert.ngs */; };
-		BB052CCF1EBA8ADD007FA789 /* shader_003_frag.ngs in Resources */ = {isa = PBXBuildFile; fileRef = BB052CC41EBA8ADD007FA789 /* shader_003_frag.ngs */; };
-		BB052CD11EBA8ADD007FA789 /* shader_003_vert.ngs in Resources */ = {isa = PBXBuildFile; fileRef = BB052CC51EBA8ADD007FA789 /* shader_003_vert.ngs */; };
 		BB0756E01FE6107F008E0E08 /* RendererHelperFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB0756DE1FE6107F008E0E08 /* RendererHelperFactory.cpp */; };
 		BB0756E11FE6107F008E0E08 /* RendererHelperFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB0756DE1FE6107F008E0E08 /* RendererHelperFactory.cpp */; };
 		BB07A78D1FC60FD900AE5051 /* vulkan.c in Sources */ = {isa = PBXBuildFile; fileRef = BB07A78C1FC60FD900AE5051 /* vulkan.c */; };
-		BB0B84DF200284C100D17988 /* shader_004_frag.ngs in Resources */ = {isa = PBXBuildFile; fileRef = BB0B84DE200284C100D17988 /* shader_004_frag.ngs */; };
-		BB0B84E0200284C100D17988 /* shader_004_frag.ngs in Resources */ = {isa = PBXBuildFile; fileRef = BB0B84DE200284C100D17988 /* shader_004_frag.ngs */; };
 		BB16190D20092BFD00AF0117 /* zone_2.cfg in Resources */ = {isa = PBXBuildFile; fileRef = BB16190C20092BFD00AF0117 /* zone_2.cfg */; };
 		BB16190E20092BFD00AF0117 /* zone_2.cfg in Resources */ = {isa = PBXBuildFile; fileRef = BB16190C20092BFD00AF0117 /* zone_2.cfg */; };
 		BB16191120096FD300AF0117 /* EntityLayoutMapper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB16190F20096FD200AF0117 /* EntityLayoutMapper.cpp */; };
@@ -121,8 +113,6 @@
 		BB31B5B21FC205D5005F1C0A /* KeyboardInputManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB31B5A31FC205D4005F1C0A /* KeyboardInputManager.cpp */; };
 		BB36A270200C415600953CDC /* NGLightingShader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB36A26E200C415400953CDC /* NGLightingShader.cpp */; };
 		BB36A271200C415600953CDC /* NGLightingShader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB36A26E200C415400953CDC /* NGLightingShader.cpp */; };
-		BB36A278200C56E500953CDC /* shader_004_vert.ngs in Resources */ = {isa = PBXBuildFile; fileRef = BB36A277200C56E500953CDC /* shader_004_vert.ngs */; };
-		BB36A279200C56E500953CDC /* shader_004_vert.ngs in Resources */ = {isa = PBXBuildFile; fileRef = BB36A277200C56E500953CDC /* shader_004_vert.ngs */; };
 		BB3BAEE11FB4A1FA00F5F8B0 /* TitleInputManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB3BAEDF1FB4A1F900F5F8B0 /* TitleInputManager.cpp */; };
 		BB3BAEE21FB4A1FA00F5F8B0 /* TitleInputManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB3BAEDF1FB4A1F900F5F8B0 /* TitleInputManager.cpp */; };
 		BB3F1195200AE0DA00C30B06 /* Config.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB3F1193200AE0D900C30B06 /* Config.cpp */; };
@@ -165,18 +155,6 @@
 		BB50672C1FB370A300CADEEA /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB5067121FB3704C00CADEEA /* AVFoundation.framework */; };
 		BB50672D1FB370A300CADEEA /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB5067111FB3704700CADEEA /* CoreMedia.framework */; };
 		BB50672E1FB370A300CADEEA /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB5067101FB3703C00CADEEA /* IOKit.framework */; };
-		BB50672F1FB3712E00CADEEA /* shader_001_frag.fsh in Resources */ = {isa = PBXBuildFile; fileRef = BB052CD21EBA8AE9007FA789 /* shader_001_frag.fsh */; };
-		BB5067301FB3712E00CADEEA /* shader_001_frag.ngs in Resources */ = {isa = PBXBuildFile; fileRef = BB052CC01EBA8ADD007FA789 /* shader_001_frag.ngs */; };
-		BB5067311FB3712E00CADEEA /* shader_001_vert.ngs in Resources */ = {isa = PBXBuildFile; fileRef = BB052CC11EBA8ADD007FA789 /* shader_001_vert.ngs */; };
-		BB5067321FB3712E00CADEEA /* shader_001_vert.vsh in Resources */ = {isa = PBXBuildFile; fileRef = BB052CD31EBA8AE9007FA789 /* shader_001_vert.vsh */; };
-		BB5067331FB3712E00CADEEA /* shader_002_frag.fsh in Resources */ = {isa = PBXBuildFile; fileRef = BB052CD41EBA8AE9007FA789 /* shader_002_frag.fsh */; };
-		BB5067341FB3712E00CADEEA /* shader_002_frag.ngs in Resources */ = {isa = PBXBuildFile; fileRef = BB052CC21EBA8ADD007FA789 /* shader_002_frag.ngs */; };
-		BB5067351FB3712E00CADEEA /* shader_002_vert.ngs in Resources */ = {isa = PBXBuildFile; fileRef = BB052CC31EBA8ADD007FA789 /* shader_002_vert.ngs */; };
-		BB5067361FB3712E00CADEEA /* shader_002_vert.vsh in Resources */ = {isa = PBXBuildFile; fileRef = BB052CD51EBA8AE9007FA789 /* shader_002_vert.vsh */; };
-		BB5067371FB3712E00CADEEA /* shader_003_frag.fsh in Resources */ = {isa = PBXBuildFile; fileRef = BB052CD61EBA8AE9007FA789 /* shader_003_frag.fsh */; };
-		BB5067381FB3712E00CADEEA /* shader_003_frag.ngs in Resources */ = {isa = PBXBuildFile; fileRef = BB052CC41EBA8ADD007FA789 /* shader_003_frag.ngs */; };
-		BB5067391FB3712E00CADEEA /* shader_003_vert.ngs in Resources */ = {isa = PBXBuildFile; fileRef = BB052CC51EBA8ADD007FA789 /* shader_003_vert.ngs */; };
-		BB50673A1FB3712E00CADEEA /* shader_003_vert.vsh in Resources */ = {isa = PBXBuildFile; fileRef = BB052CD71EBA8AE9007FA789 /* shader_003_vert.vsh */; };
 		BB5833751EEDBBC90084DA20 /* steam_appid.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = BB5833731EEDBBC50084DA20 /* steam_appid.txt */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		BB5833781EEDBF7E0084DA20 /* NGSteamGameServices.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB5833771EEDBF7E0084DA20 /* NGSteamGameServices.cpp */; };
 		BB5833CD1EEDDA330084DA20 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB5833CC1EEDDA330084DA20 /* main.cpp */; };
@@ -202,7 +180,6 @@
 		BB5AFDB91FB3595F005FBD52 /* pngwrite.c in Sources */ = {isa = PBXBuildFile; fileRef = BB44C5981DB03A7C003E633F /* pngwrite.c */; };
 		BB5AFDBA1FB3595F005FBD52 /* pngwtran.c in Sources */ = {isa = PBXBuildFile; fileRef = BB44C5991DB03A7C003E633F /* pngwtran.c */; };
 		BB5AFDBB1FB3595F005FBD52 /* pngwutil.c in Sources */ = {isa = PBXBuildFile; fileRef = BB44C59A1DB03A7C003E633F /* pngwutil.c */; };
-		BB5AFE081FB359DE005FBD52 /* TitleRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB6E7AFA1F940F13006C0024 /* TitleRenderer.cpp */; };
 		BB5AFE0B1FB359DE005FBD52 /* TitleEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB6E7B021F940F13006C0024 /* TitleEngine.cpp */; };
 		BB5AFE0C1FB359DE005FBD52 /* PooledObjectsManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB6E7B051F940F13006C0024 /* PooledObjectsManager.cpp */; };
 		BB5AFE111FB359DE005FBD52 /* Util.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB6E7B0F1F940F13006C0024 /* Util.cpp */; };
@@ -278,7 +255,6 @@
 		BB6531651FED56CA00963997 /* Server.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB65315D1FED56C800963997 /* Server.cpp */; };
 		BB6531681FED575B00963997 /* InstanceManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB6531661FED575B00963997 /* InstanceManager.cpp */; };
 		BB6531691FED575B00963997 /* InstanceManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB6531661FED575B00963997 /* InstanceManager.cpp */; };
-		BB6E7B151F940F2B006C0024 /* TitleRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB6E7AFA1F940F13006C0024 /* TitleRenderer.cpp */; };
 		BB6E7B181F940F2B006C0024 /* TitleEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB6E7B021F940F13006C0024 /* TitleEngine.cpp */; };
 		BB6E7B191F940F2B006C0024 /* PooledObjectsManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB6E7B051F940F13006C0024 /* PooledObjectsManager.cpp */; };
 		BB6E7B1E1F940F2B006C0024 /* Util.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB6E7B0F1F940F13006C0024 /* Util.cpp */; };
@@ -495,6 +471,28 @@
 		BBEF7026200078320030076A /* DefaultController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBEF7024200078320030076A /* DefaultController.cpp */; };
 		BBEF7027200078320030076A /* DefaultController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBEF7024200078320030076A /* DefaultController.cpp */; };
 		BBF226CF1EC12CDE00573356 /* ReplicationManagerClient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF226B01EC12CDE00573356 /* ReplicationManagerClient.cpp */; };
+		BBF3CC4C200D712400CFF412 /* shader_001_frag.ngs in Resources */ = {isa = PBXBuildFile; fileRef = BBF3CC44200D712300CFF412 /* shader_001_frag.ngs */; };
+		BBF3CC4D200D712400CFF412 /* shader_001_frag.ngs in Resources */ = {isa = PBXBuildFile; fileRef = BBF3CC44200D712300CFF412 /* shader_001_frag.ngs */; };
+		BBF3CC4E200D712400CFF412 /* shader_004_vert.ngs in Resources */ = {isa = PBXBuildFile; fileRef = BBF3CC45200D712300CFF412 /* shader_004_vert.ngs */; };
+		BBF3CC4F200D712400CFF412 /* shader_004_vert.ngs in Resources */ = {isa = PBXBuildFile; fileRef = BBF3CC45200D712300CFF412 /* shader_004_vert.ngs */; };
+		BBF3CC50200D712400CFF412 /* shader_003_frag.ngs in Resources */ = {isa = PBXBuildFile; fileRef = BBF3CC46200D712400CFF412 /* shader_003_frag.ngs */; };
+		BBF3CC51200D712400CFF412 /* shader_003_frag.ngs in Resources */ = {isa = PBXBuildFile; fileRef = BBF3CC46200D712400CFF412 /* shader_003_frag.ngs */; };
+		BBF3CC52200D712400CFF412 /* shader_001_vert.ngs in Resources */ = {isa = PBXBuildFile; fileRef = BBF3CC47200D712400CFF412 /* shader_001_vert.ngs */; };
+		BBF3CC53200D712400CFF412 /* shader_001_vert.ngs in Resources */ = {isa = PBXBuildFile; fileRef = BBF3CC47200D712400CFF412 /* shader_001_vert.ngs */; };
+		BBF3CC54200D712400CFF412 /* shader_002_frag.ngs in Resources */ = {isa = PBXBuildFile; fileRef = BBF3CC48200D712400CFF412 /* shader_002_frag.ngs */; };
+		BBF3CC55200D712400CFF412 /* shader_002_frag.ngs in Resources */ = {isa = PBXBuildFile; fileRef = BBF3CC48200D712400CFF412 /* shader_002_frag.ngs */; };
+		BBF3CC56200D712400CFF412 /* shader_004_frag.ngs in Resources */ = {isa = PBXBuildFile; fileRef = BBF3CC49200D712400CFF412 /* shader_004_frag.ngs */; };
+		BBF3CC57200D712400CFF412 /* shader_004_frag.ngs in Resources */ = {isa = PBXBuildFile; fileRef = BBF3CC49200D712400CFF412 /* shader_004_frag.ngs */; };
+		BBF3CC58200D712400CFF412 /* shader_002_vert.ngs in Resources */ = {isa = PBXBuildFile; fileRef = BBF3CC4A200D712400CFF412 /* shader_002_vert.ngs */; };
+		BBF3CC59200D712400CFF412 /* shader_002_vert.ngs in Resources */ = {isa = PBXBuildFile; fileRef = BBF3CC4A200D712400CFF412 /* shader_002_vert.ngs */; };
+		BBF3CC5A200D712400CFF412 /* shader_003_vert.ngs in Resources */ = {isa = PBXBuildFile; fileRef = BBF3CC4B200D712400CFF412 /* shader_003_vert.ngs */; };
+		BBF3CC5B200D712400CFF412 /* shader_003_vert.ngs in Resources */ = {isa = PBXBuildFile; fileRef = BBF3CC4B200D712400CFF412 /* shader_003_vert.ngs */; };
+		BBF3CC62200D724D00CFF412 /* GameRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF3CC5C200D724C00CFF412 /* GameRenderer.cpp */; };
+		BBF3CC63200D724D00CFF412 /* GameRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF3CC5C200D724C00CFF412 /* GameRenderer.cpp */; };
+		BBF3CC64200D724D00CFF412 /* TitleRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF3CC5F200D724C00CFF412 /* TitleRenderer.cpp */; };
+		BBF3CC65200D724D00CFF412 /* TitleRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF3CC5F200D724C00CFF412 /* TitleRenderer.cpp */; };
+		BBF3CC66200D724D00CFF412 /* StudioRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF3CC61200D724D00CFF412 /* StudioRenderer.cpp */; };
+		BBF3CC67200D724D00CFF412 /* StudioRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF3CC61200D724D00CFF412 /* StudioRenderer.cpp */; };
 		BBF5383A20071992003D276D /* music_001.wav in Resources */ = {isa = PBXBuildFile; fileRef = BBF5381020071991003D276D /* music_001.wav */; };
 		BBF5383B20071992003D276D /* music_001.wav in Resources */ = {isa = PBXBuildFile; fileRef = BBF5381020071991003D276D /* music_001.wav */; };
 		BBF5384E20071992003D276D /* texture_004.ngt in Resources */ = {isa = PBXBuildFile; fileRef = BBF5381B20071991003D276D /* texture_004.ngt */; };
@@ -552,14 +550,10 @@
 		BBFE830C1FFEC23000E5F650 /* EngineState.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBFE830A1FFEC23000E5F650 /* EngineState.cpp */; };
 		BBFE830F1FFEC69500E5F650 /* GameEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBFE830E1FFEC69500E5F650 /* GameEngine.cpp */; };
 		BBFE83101FFEC69500E5F650 /* GameEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBFE830E1FFEC69500E5F650 /* GameEngine.cpp */; };
-		BBFE83131FFEC6AD00E5F650 /* GameRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBFE83111FFEC6AD00E5F650 /* GameRenderer.cpp */; };
-		BBFE83141FFEC6AD00E5F650 /* GameRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBFE83111FFEC6AD00E5F650 /* GameRenderer.cpp */; };
 		BBFE83171FFEC87300E5F650 /* GameInputManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBFE83161FFEC87300E5F650 /* GameInputManager.cpp */; };
 		BBFE83181FFEC87300E5F650 /* GameInputManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBFE83161FFEC87300E5F650 /* GameInputManager.cpp */; };
 		BBFE83231FFF1B3D00E5F650 /* StudioEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBFE83211FFF1B3D00E5F650 /* StudioEngine.cpp */; };
 		BBFE83241FFF1B3D00E5F650 /* StudioEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBFE83211FFF1B3D00E5F650 /* StudioEngine.cpp */; };
-		BBFE83271FFF1B5A00E5F650 /* StudioRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBFE83261FFF1B5A00E5F650 /* StudioRenderer.cpp */; };
-		BBFE83281FFF1B5A00E5F650 /* StudioRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBFE83261FFF1B5A00E5F650 /* StudioRenderer.cpp */; };
 		BBFE832B1FFF1C6D00E5F650 /* StudioInputManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBFE83291FFF1C6C00E5F650 /* StudioInputManager.cpp */; };
 		BBFE832C1FFF1C6D00E5F650 /* StudioInputManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBFE83291FFF1C6C00E5F650 /* StudioInputManager.cpp */; };
 /* End PBXBuildFile section */
@@ -592,18 +586,6 @@
 		BB04A6BC1FC3759B00E0EB89 /* AndroidMain.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = AndroidMain.cpp; sourceTree = "<group>"; };
 		BB04A6BF1FC383A800E0EB89 /* IOSMain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOSMain.h; sourceTree = "<group>"; };
 		BB04A6C01FC383A800E0EB89 /* IOSMain.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = IOSMain.mm; sourceTree = "<group>"; };
-		BB052CC01EBA8ADD007FA789 /* shader_001_frag.ngs */ = {isa = PBXFileReference; lastKnownFileType = file; path = shader_001_frag.ngs; sourceTree = "<group>"; };
-		BB052CC11EBA8ADD007FA789 /* shader_001_vert.ngs */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = shader_001_vert.ngs; sourceTree = "<group>"; };
-		BB052CC21EBA8ADD007FA789 /* shader_002_frag.ngs */ = {isa = PBXFileReference; lastKnownFileType = file; path = shader_002_frag.ngs; sourceTree = "<group>"; };
-		BB052CC31EBA8ADD007FA789 /* shader_002_vert.ngs */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = shader_002_vert.ngs; sourceTree = "<group>"; };
-		BB052CC41EBA8ADD007FA789 /* shader_003_frag.ngs */ = {isa = PBXFileReference; lastKnownFileType = file; path = shader_003_frag.ngs; sourceTree = "<group>"; };
-		BB052CC51EBA8ADD007FA789 /* shader_003_vert.ngs */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = shader_003_vert.ngs; sourceTree = "<group>"; };
-		BB052CD21EBA8AE9007FA789 /* shader_001_frag.fsh */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = shader_001_frag.fsh; sourceTree = "<group>"; };
-		BB052CD31EBA8AE9007FA789 /* shader_001_vert.vsh */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = shader_001_vert.vsh; sourceTree = "<group>"; };
-		BB052CD41EBA8AE9007FA789 /* shader_002_frag.fsh */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = shader_002_frag.fsh; sourceTree = "<group>"; };
-		BB052CD51EBA8AE9007FA789 /* shader_002_vert.vsh */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = shader_002_vert.vsh; sourceTree = "<group>"; };
-		BB052CD61EBA8AE9007FA789 /* shader_003_frag.fsh */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = shader_003_frag.fsh; sourceTree = "<group>"; };
-		BB052CD71EBA8AE9007FA789 /* shader_003_vert.vsh */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = shader_003_vert.vsh; sourceTree = "<group>"; };
 		BB0756DE1FE6107F008E0E08 /* RendererHelperFactory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RendererHelperFactory.cpp; sourceTree = "<group>"; };
 		BB0756DF1FE6107F008E0E08 /* RendererHelperFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RendererHelperFactory.h; sourceTree = "<group>"; };
 		BB0756E41FE63796008E0E08 /* VertexProgramInput.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VertexProgramInput.h; sourceTree = "<group>"; };
@@ -619,9 +601,6 @@
 		BB07A78B1FC60F7900AE5051 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../../../README.md; sourceTree = "<group>"; };
 		BB07A78C1FC60FD900AE5051 /* vulkan.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = vulkan.c; sourceTree = "<group>"; };
 		BB07A78E1FC61AD700AE5051 /* StepTimer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StepTimer.h; sourceTree = "<group>"; };
-		BB0B84DE200284C100D17988 /* shader_004_frag.ngs */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = shader_004_frag.ngs; sourceTree = "<group>"; };
-		BB0B84E1200284CE00D17988 /* shader_004_frag.fsh */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = shader_004_frag.fsh; sourceTree = "<group>"; };
-		BB0B84E22002857C00D17988 /* shader_004_frag.hlsl */ = {isa = PBXFileReference; lastKnownFileType = text; path = shader_004_frag.hlsl; sourceTree = "<group>"; };
 		BB0CA6F01FE5B08D0011B75B /* NGPrimitiveType.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NGPrimitiveType.h; sourceTree = "<group>"; };
 		BB0CA6F11FE5B7130011B75B /* NGTextureSlot.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NGTextureSlot.h; sourceTree = "<group>"; };
 		BB16190C20092BFD00AF0117 /* zone_2.cfg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = zone_2.cfg; sourceTree = "<group>"; };
@@ -814,8 +793,6 @@
 		BB36A26D200BBF1400953CDC /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		BB36A26E200C415400953CDC /* NGLightingShader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NGLightingShader.cpp; sourceTree = "<group>"; };
 		BB36A26F200C415400953CDC /* NGLightingShader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NGLightingShader.h; sourceTree = "<group>"; };
-		BB36A276200C56DA00953CDC /* shader_004_vert.vsh */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = shader_004_vert.vsh; sourceTree = "<group>"; };
-		BB36A277200C56E500953CDC /* shader_004_vert.ngs */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = shader_004_vert.ngs; sourceTree = "<group>"; };
 		BB39C8921FB2700900CF6699 /* NGGraphics.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NGGraphics.h; sourceTree = "<group>"; };
 		BB3BAEDF1FB4A1F900F5F8B0 /* TitleInputManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TitleInputManager.cpp; sourceTree = "<group>"; };
 		BB3BAEE01FB4A1F900F5F8B0 /* TitleInputManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TitleInputManager.h; sourceTree = "<group>"; };
@@ -893,12 +870,6 @@
 		BB5833A01EEDD6470084DA20 /* DirectXRendererHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DirectXRendererHelper.h; sourceTree = "<group>"; };
 		BB5833A51EEDD6470084DA20 /* DirectXTextureLoader.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = DirectXTextureLoader.cpp; sourceTree = "<group>"; };
 		BB5833A61EEDD6470084DA20 /* DirectXTextureLoader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DirectXTextureLoader.h; sourceTree = "<group>"; };
-		BB5833AA1EEDD6470084DA20 /* shader_001_frag.hlsl */ = {isa = PBXFileReference; lastKnownFileType = text; path = shader_001_frag.hlsl; sourceTree = "<group>"; };
-		BB5833AB1EEDD6470084DA20 /* shader_001_vert.hlsl */ = {isa = PBXFileReference; lastKnownFileType = text; path = shader_001_vert.hlsl; sourceTree = "<group>"; };
-		BB5833AC1EEDD6470084DA20 /* shader_002_frag.hlsl */ = {isa = PBXFileReference; lastKnownFileType = text; path = shader_002_frag.hlsl; sourceTree = "<group>"; };
-		BB5833AD1EEDD6470084DA20 /* shader_002_vert.hlsl */ = {isa = PBXFileReference; lastKnownFileType = text; path = shader_002_vert.hlsl; sourceTree = "<group>"; };
-		BB5833AE1EEDD6470084DA20 /* shader_003_frag.hlsl */ = {isa = PBXFileReference; lastKnownFileType = text; path = shader_003_frag.hlsl; sourceTree = "<group>"; };
-		BB5833AF1EEDD6470084DA20 /* shader_003_vert.hlsl */ = {isa = PBXFileReference; lastKnownFileType = text; path = shader_003_vert.hlsl; sourceTree = "<group>"; };
 		BB5833C51EEDD6580084DA20 /* DirectXAudioEngineHelper.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = DirectXAudioEngineHelper.cpp; sourceTree = "<group>"; };
 		BB5833C61EEDD6580084DA20 /* DirectXAudioEngineHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DirectXAudioEngineHelper.h; sourceTree = "<group>"; };
 		BB5833C71EEDD6580084DA20 /* DirectXSound.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = DirectXSound.cpp; sourceTree = "<group>"; };
@@ -928,8 +899,6 @@
 		BB6E7A8A1F93CE1B006C0024 /* fast_mutex.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = fast_mutex.h; sourceTree = "<group>"; };
 		BB6E7A8B1F93CE1B006C0024 /* tinythread.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = tinythread.cpp; sourceTree = "<group>"; };
 		BB6E7A8C1F93CE1B006C0024 /* tinythread.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = tinythread.h; sourceTree = "<group>"; };
-		BB6E7AFA1F940F13006C0024 /* TitleRenderer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = TitleRenderer.cpp; sourceTree = "<group>"; };
-		BB6E7AFB1F940F13006C0024 /* TitleRenderer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TitleRenderer.h; sourceTree = "<group>"; };
 		BB6E7AFF1F940F13006C0024 /* GameConstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GameConstants.h; sourceTree = "<group>"; };
 		BB6E7B021F940F13006C0024 /* TitleEngine.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = TitleEngine.cpp; sourceTree = "<group>"; };
 		BB6E7B031F940F13006C0024 /* TitleEngine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TitleEngine.h; sourceTree = "<group>"; };
@@ -1672,7 +1641,36 @@
 		BBEF7025200078320030076A /* DefaultController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DefaultController.h; sourceTree = "<group>"; };
 		BBF226B01EC12CDE00573356 /* ReplicationManagerClient.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ReplicationManagerClient.cpp; sourceTree = "<group>"; };
 		BBF226B11EC12CDE00573356 /* ReplicationManagerClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReplicationManagerClient.h; sourceTree = "<group>"; };
-		BBF3CC2A200D637000CFF412 /* shader_004_vert.hlsl */ = {isa = PBXFileReference; lastKnownFileType = text; path = shader_004_vert.hlsl; sourceTree = "<group>"; };
+		BBF3CC2C200D70F300CFF412 /* shader_003_vert.hlsl */ = {isa = PBXFileReference; lastKnownFileType = text; path = shader_003_vert.hlsl; sourceTree = "<group>"; };
+		BBF3CC2D200D70F300CFF412 /* shader_003_frag.fsh */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = shader_003_frag.fsh; sourceTree = "<group>"; };
+		BBF3CC2E200D70F300CFF412 /* shader_002_frag.fsh */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = shader_002_frag.fsh; sourceTree = "<group>"; };
+		BBF3CC2F200D70F300CFF412 /* shader_004_vert.vsh */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = shader_004_vert.vsh; sourceTree = "<group>"; };
+		BBF3CC32200D70F300CFF412 /* shader_001_frag.hlsl */ = {isa = PBXFileReference; lastKnownFileType = text; path = shader_001_frag.hlsl; sourceTree = "<group>"; };
+		BBF3CC33200D70F300CFF412 /* shader_003_vert.vsh */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = shader_003_vert.vsh; sourceTree = "<group>"; };
+		BBF3CC34200D70F300CFF412 /* shader_002_vert.vsh */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = shader_002_vert.vsh; sourceTree = "<group>"; };
+		BBF3CC35200D70F300CFF412 /* shader_002_vert.hlsl */ = {isa = PBXFileReference; lastKnownFileType = text; path = shader_002_vert.hlsl; sourceTree = "<group>"; };
+		BBF3CC37200D70F300CFF412 /* shader_004_vert.hlsl */ = {isa = PBXFileReference; lastKnownFileType = text; path = shader_004_vert.hlsl; sourceTree = "<group>"; };
+		BBF3CC38200D70F300CFF412 /* shader_004_frag.fsh */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = shader_004_frag.fsh; sourceTree = "<group>"; };
+		BBF3CC3A200D70F300CFF412 /* shader_001_vert.hlsl */ = {isa = PBXFileReference; lastKnownFileType = text; path = shader_001_vert.hlsl; sourceTree = "<group>"; };
+		BBF3CC3C200D70F300CFF412 /* shader_002_frag.hlsl */ = {isa = PBXFileReference; lastKnownFileType = text; path = shader_002_frag.hlsl; sourceTree = "<group>"; };
+		BBF3CC3D200D70F300CFF412 /* shader_004_frag.hlsl */ = {isa = PBXFileReference; lastKnownFileType = text; path = shader_004_frag.hlsl; sourceTree = "<group>"; };
+		BBF3CC3E200D70F300CFF412 /* shader_001_frag.fsh */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = shader_001_frag.fsh; sourceTree = "<group>"; };
+		BBF3CC40200D70F300CFF412 /* shader_003_frag.hlsl */ = {isa = PBXFileReference; lastKnownFileType = text; path = shader_003_frag.hlsl; sourceTree = "<group>"; };
+		BBF3CC43200D70F300CFF412 /* shader_001_vert.vsh */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = shader_001_vert.vsh; sourceTree = "<group>"; };
+		BBF3CC44200D712300CFF412 /* shader_001_frag.ngs */ = {isa = PBXFileReference; lastKnownFileType = file; path = shader_001_frag.ngs; sourceTree = "<group>"; };
+		BBF3CC45200D712300CFF412 /* shader_004_vert.ngs */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = shader_004_vert.ngs; sourceTree = "<group>"; };
+		BBF3CC46200D712400CFF412 /* shader_003_frag.ngs */ = {isa = PBXFileReference; lastKnownFileType = file; path = shader_003_frag.ngs; sourceTree = "<group>"; };
+		BBF3CC47200D712400CFF412 /* shader_001_vert.ngs */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = shader_001_vert.ngs; sourceTree = "<group>"; };
+		BBF3CC48200D712400CFF412 /* shader_002_frag.ngs */ = {isa = PBXFileReference; lastKnownFileType = file; path = shader_002_frag.ngs; sourceTree = "<group>"; };
+		BBF3CC49200D712400CFF412 /* shader_004_frag.ngs */ = {isa = PBXFileReference; lastKnownFileType = file; path = shader_004_frag.ngs; sourceTree = "<group>"; };
+		BBF3CC4A200D712400CFF412 /* shader_002_vert.ngs */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = shader_002_vert.ngs; sourceTree = "<group>"; };
+		BBF3CC4B200D712400CFF412 /* shader_003_vert.ngs */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = shader_003_vert.ngs; sourceTree = "<group>"; };
+		BBF3CC5C200D724C00CFF412 /* GameRenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameRenderer.cpp; sourceTree = "<group>"; };
+		BBF3CC5D200D724C00CFF412 /* GameRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameRenderer.h; sourceTree = "<group>"; };
+		BBF3CC5E200D724C00CFF412 /* StudioRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StudioRenderer.h; sourceTree = "<group>"; };
+		BBF3CC5F200D724C00CFF412 /* TitleRenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TitleRenderer.cpp; sourceTree = "<group>"; };
+		BBF3CC60200D724C00CFF412 /* TitleRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TitleRenderer.h; sourceTree = "<group>"; };
+		BBF3CC61200D724D00CFF412 /* StudioRenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StudioRenderer.cpp; sourceTree = "<group>"; };
 		BBF5381020071991003D276D /* music_001.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = music_001.wav; sourceTree = "<group>"; };
 		BBF5381B20071991003D276D /* texture_004.ngt */ = {isa = PBXFileReference; lastKnownFileType = file; path = texture_004.ngt; sourceTree = "<group>"; };
 		BBF5381C20071991003D276D /* texture_005.ngt */ = {isa = PBXFileReference; lastKnownFileType = file; path = texture_005.ngt; sourceTree = "<group>"; };
@@ -1724,14 +1722,10 @@
 		BBFE830A1FFEC23000E5F650 /* EngineState.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EngineState.cpp; sourceTree = "<group>"; };
 		BBFE830D1FFEC69400E5F650 /* GameEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameEngine.h; sourceTree = "<group>"; };
 		BBFE830E1FFEC69500E5F650 /* GameEngine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameEngine.cpp; sourceTree = "<group>"; };
-		BBFE83111FFEC6AD00E5F650 /* GameRenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameRenderer.cpp; sourceTree = "<group>"; };
-		BBFE83121FFEC6AD00E5F650 /* GameRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameRenderer.h; sourceTree = "<group>"; };
 		BBFE83151FFEC87200E5F650 /* GameInputManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameInputManager.h; sourceTree = "<group>"; };
 		BBFE83161FFEC87300E5F650 /* GameInputManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameInputManager.cpp; sourceTree = "<group>"; };
 		BBFE83211FFF1B3D00E5F650 /* StudioEngine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StudioEngine.cpp; sourceTree = "<group>"; };
 		BBFE83221FFF1B3D00E5F650 /* StudioEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StudioEngine.h; sourceTree = "<group>"; };
-		BBFE83251FFF1B5A00E5F650 /* StudioRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StudioRenderer.h; sourceTree = "<group>"; };
-		BBFE83261FFF1B5A00E5F650 /* StudioRenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StudioRenderer.cpp; sourceTree = "<group>"; };
 		BBFE83291FFF1C6C00E5F650 /* StudioInputManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StudioInputManager.cpp; sourceTree = "<group>"; };
 		BBFE832A1FFF1C6D00E5F650 /* StudioInputManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StudioInputManager.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -1979,29 +1973,6 @@
 				BB19147A1FABB78C00BDC6D0 /* steamuniverse.h */,
 			);
 			path = steam;
-			sourceTree = "<group>";
-		};
-		BB1CC7711EB9662A00696C06 /* shader */ = {
-			isa = PBXGroup;
-			children = (
-				BB052CD21EBA8AE9007FA789 /* shader_001_frag.fsh */,
-				BB052CC01EBA8ADD007FA789 /* shader_001_frag.ngs */,
-				BB052CC11EBA8ADD007FA789 /* shader_001_vert.ngs */,
-				BB052CD31EBA8AE9007FA789 /* shader_001_vert.vsh */,
-				BB052CD41EBA8AE9007FA789 /* shader_002_frag.fsh */,
-				BB052CC21EBA8ADD007FA789 /* shader_002_frag.ngs */,
-				BB052CC31EBA8ADD007FA789 /* shader_002_vert.ngs */,
-				BB052CD51EBA8AE9007FA789 /* shader_002_vert.vsh */,
-				BB052CD61EBA8AE9007FA789 /* shader_003_frag.fsh */,
-				BB052CC41EBA8ADD007FA789 /* shader_003_frag.ngs */,
-				BB052CC51EBA8ADD007FA789 /* shader_003_vert.ngs */,
-				BB052CD71EBA8AE9007FA789 /* shader_003_vert.vsh */,
-				BB0B84E1200284CE00D17988 /* shader_004_frag.fsh */,
-				BB0B84DE200284C100D17988 /* shader_004_frag.ngs */,
-				BB36A277200C56E500953CDC /* shader_004_vert.ngs */,
-				BB36A276200C56DA00953CDC /* shader_004_vert.vsh */,
-			);
-			path = shader;
 			sourceTree = "<group>";
 		};
 		BB27D13D1FC655FF00ED42FD /* ObjectAL-for-iPhone */ = {
@@ -2263,24 +2234,8 @@
 				BB5833A01EEDD6470084DA20 /* DirectXRendererHelper.h */,
 				BB5833A51EEDD6470084DA20 /* DirectXTextureLoader.cpp */,
 				BB5833A61EEDD6470084DA20 /* DirectXTextureLoader.h */,
-				BB5833A91EEDD6470084DA20 /* shader */,
 			);
 			path = directx;
-			sourceTree = "<group>";
-		};
-		BB5833A91EEDD6470084DA20 /* shader */ = {
-			isa = PBXGroup;
-			children = (
-				BB5833AA1EEDD6470084DA20 /* shader_001_frag.hlsl */,
-				BB5833AB1EEDD6470084DA20 /* shader_001_vert.hlsl */,
-				BB5833AC1EEDD6470084DA20 /* shader_002_frag.hlsl */,
-				BB5833AD1EEDD6470084DA20 /* shader_002_vert.hlsl */,
-				BB5833AE1EEDD6470084DA20 /* shader_003_frag.hlsl */,
-				BB5833AF1EEDD6470084DA20 /* shader_003_vert.hlsl */,
-				BB0B84E22002857C00D17988 /* shader_004_frag.hlsl */,
-				BBF3CC2A200D637000CFF412 /* shader_004_vert.hlsl */,
-			);
-			path = shader;
 			sourceTree = "<group>";
 		};
 		BB5833B81EEDD6580084DA20 /* directx */ = {
@@ -2364,22 +2319,14 @@
 		BB6E7AF41F940F13006C0024 /* graphics */ = {
 			isa = PBXGroup;
 			children = (
-				BB6E7AF51F940F13006C0024 /* portable */,
+				BBF3CC5C200D724C00CFF412 /* GameRenderer.cpp */,
+				BBF3CC5D200D724C00CFF412 /* GameRenderer.h */,
+				BBF3CC61200D724D00CFF412 /* StudioRenderer.cpp */,
+				BBF3CC5E200D724C00CFF412 /* StudioRenderer.h */,
+				BBF3CC5F200D724C00CFF412 /* TitleRenderer.cpp */,
+				BBF3CC60200D724C00CFF412 /* TitleRenderer.h */,
 			);
 			path = graphics;
-			sourceTree = "<group>";
-		};
-		BB6E7AF51F940F13006C0024 /* portable */ = {
-			isa = PBXGroup;
-			children = (
-				BBFE83111FFEC6AD00E5F650 /* GameRenderer.cpp */,
-				BBFE83121FFEC6AD00E5F650 /* GameRenderer.h */,
-				BBFE83261FFF1B5A00E5F650 /* StudioRenderer.cpp */,
-				BBFE83251FFF1B5A00E5F650 /* StudioRenderer.h */,
-				BB6E7AFA1F940F13006C0024 /* TitleRenderer.cpp */,
-				BB6E7AFB1F940F13006C0024 /* TitleRenderer.h */,
-			);
-			path = portable;
 			sourceTree = "<group>";
 		};
 		BB6E7AFC1F940F13006C0024 /* logic */ = {
@@ -2682,7 +2629,6 @@
 				BBAEF11C1EA94ED900F0866E /* OpenGLRendererHelper.h */,
 				BBAEF1211EA94ED900F0866E /* OpenGLTextureLoader.cpp */,
 				BBAEF1221EA94ED900F0866E /* OpenGLTextureLoader.h */,
-				BB1CC7711EB9662A00696C06 /* shader */,
 			);
 			path = opengl;
 			sourceTree = "<group>";
@@ -3559,9 +3505,41 @@
 			path = client;
 			sourceTree = "<group>";
 		};
+		BBF3CC2B200D70F300CFF412 /* shader */ = {
+			isa = PBXGroup;
+			children = (
+				BBF3CC3E200D70F300CFF412 /* shader_001_frag.fsh */,
+				BBF3CC32200D70F300CFF412 /* shader_001_frag.hlsl */,
+				BBF3CC44200D712300CFF412 /* shader_001_frag.ngs */,
+				BBF3CC3A200D70F300CFF412 /* shader_001_vert.hlsl */,
+				BBF3CC47200D712400CFF412 /* shader_001_vert.ngs */,
+				BBF3CC43200D70F300CFF412 /* shader_001_vert.vsh */,
+				BBF3CC2E200D70F300CFF412 /* shader_002_frag.fsh */,
+				BBF3CC3C200D70F300CFF412 /* shader_002_frag.hlsl */,
+				BBF3CC48200D712400CFF412 /* shader_002_frag.ngs */,
+				BBF3CC35200D70F300CFF412 /* shader_002_vert.hlsl */,
+				BBF3CC4A200D712400CFF412 /* shader_002_vert.ngs */,
+				BBF3CC34200D70F300CFF412 /* shader_002_vert.vsh */,
+				BBF3CC2D200D70F300CFF412 /* shader_003_frag.fsh */,
+				BBF3CC40200D70F300CFF412 /* shader_003_frag.hlsl */,
+				BBF3CC46200D712400CFF412 /* shader_003_frag.ngs */,
+				BBF3CC2C200D70F300CFF412 /* shader_003_vert.hlsl */,
+				BBF3CC4B200D712400CFF412 /* shader_003_vert.ngs */,
+				BBF3CC33200D70F300CFF412 /* shader_003_vert.vsh */,
+				BBF3CC38200D70F300CFF412 /* shader_004_frag.fsh */,
+				BBF3CC3D200D70F300CFF412 /* shader_004_frag.hlsl */,
+				BBF3CC49200D712400CFF412 /* shader_004_frag.ngs */,
+				BBF3CC37200D70F300CFF412 /* shader_004_vert.hlsl */,
+				BBF3CC45200D712300CFF412 /* shader_004_vert.ngs */,
+				BBF3CC2F200D70F300CFF412 /* shader_004_vert.vsh */,
+			);
+			path = shader;
+			sourceTree = "<group>";
+		};
 		BBF5380E20071991003D276D /* assets */ = {
 			isa = PBXGroup;
 			children = (
+				BBF3CC2B200D70F300CFF412 /* shader */,
 				BBF5382220071991003D276D /* config */,
 				BBF5380F20071991003D276D /* music */,
 				BB36A26D200BBF1400953CDC /* README.md */,
@@ -3789,10 +3767,9 @@
 			files = (
 				BBF5388220071992003D276D /* sound_005.wav in Resources */,
 				BB44C3291DB030B3003E633F /* Assets.xcassets in Resources */,
+				BBF3CC58200D712400CFF412 /* shader_002_vert.ngs in Resources */,
 				BBF5385C20071992003D276D /* game.cfg in Resources */,
 				BBF5387C20071992003D276D /* sound_003.wav in Resources */,
-				BB052CCD1EBA8ADD007FA789 /* shader_002_vert.ngs in Resources */,
-				BB052CCB1EBA8ADD007FA789 /* shader_002_frag.ngs in Resources */,
 				BB89C9A8200914AC00330100 /* n_texture_004.ngt in Resources */,
 				BBF5386420071992003D276D /* zone_1.cfg in Resources */,
 				BB89C9A6200914AC00330100 /* n_texture_002.ngt in Resources */,
@@ -3805,28 +3782,29 @@
 				BBF5385A20071992003D276D /* texture_000.ngt in Resources */,
 				BBF5386620071992003D276D /* maps.cfg in Resources */,
 				BBF5386220071992003D276D /* entities.cfg in Resources */,
-				BB052CC91EBA8ADD007FA789 /* shader_001_vert.ngs in Resources */,
 				BBF5385220071992003D276D /* texture_006.ngt in Resources */,
+				BBF3CC5A200D712400CFF412 /* shader_003_vert.ngs in Resources */,
 				BBF5383A20071992003D276D /* music_001.wav in Resources */,
 				BB89C99C200914AC00330100 /* n_texture_006.ngt in Resources */,
 				BB89C9A2200914AC00330100 /* n_texture_007.ngt in Resources */,
+				BBF3CC52200D712400CFF412 /* shader_001_vert.ngs in Resources */,
 				BB89C9A0200914AC00330100 /* n_texture_001.ngt in Resources */,
-				BB052CCF1EBA8ADD007FA789 /* shader_003_frag.ngs in Resources */,
+				BBF3CC4E200D712400CFF412 /* shader_004_vert.ngs in Resources */,
 				BBF5385420071992003D276D /* texture_002.ngt in Resources */,
+				BBF3CC50200D712400CFF412 /* shader_003_frag.ngs in Resources */,
 				BBF5388A200719B6003D276D /* texture_007.ngt in Resources */,
+				BBF3CC56200D712400CFF412 /* shader_004_frag.ngs in Resources */,
 				BBF5388420071992003D276D /* sound_004.wav in Resources */,
 				BB89C99E200914AC00330100 /* n_texture_003.ngt in Resources */,
-				BB0B84DF200284C100D17988 /* shader_004_frag.ngs in Resources */,
 				BBF5385020071992003D276D /* texture_005.ngt in Resources */,
 				BBF5388020071992003D276D /* sound_006.wav in Resources */,
 				BBF5384E20071992003D276D /* texture_004.ngt in Resources */,
 				BBF5387A20071992003D276D /* sound_001.wav in Resources */,
 				BB16190D20092BFD00AF0117 /* zone_2.cfg in Resources */,
-				BB052CC71EBA8ADD007FA789 /* shader_001_frag.ngs in Resources */,
-				BB36A278200C56E500953CDC /* shader_004_vert.ngs in Resources */,
+				BBF3CC54200D712400CFF412 /* shader_002_frag.ngs in Resources */,
+				BBF3CC4C200D712400CFF412 /* shader_001_frag.ngs in Resources */,
 				BBF5385E20071992003D276D /* title_assets.cfg in Resources */,
 				BB89C99A200914AC00330100 /* n_texture_005.ngt in Resources */,
-				BB052CD11EBA8ADD007FA789 /* shader_003_vert.ngs in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3836,49 +3814,43 @@
 			files = (
 				BB16190E20092BFD00AF0117 /* zone_2.cfg in Resources */,
 				BBF5388120071992003D276D /* sound_006.wav in Resources */,
+				BBF3CC51200D712400CFF412 /* shader_003_frag.ngs in Resources */,
 				BBF5386520071992003D276D /* zone_1.cfg in Resources */,
 				BBD3E86D1FB2872A00328E35 /* LaunchScreen.storyboard in Resources */,
 				BBD3E86A1FB2872A00328E35 /* Assets.xcassets in Resources */,
 				BBF5385720071992003D276D /* texture_003.ngt in Resources */,
-				BB50672F1FB3712E00CADEEA /* shader_001_frag.fsh in Resources */,
-				BB5067301FB3712E00CADEEA /* shader_001_frag.ngs in Resources */,
 				BBF5387D20071992003D276D /* sound_003.wav in Resources */,
 				BBF5388320071992003D276D /* sound_005.wav in Resources */,
-				BB5067311FB3712E00CADEEA /* shader_001_vert.ngs in Resources */,
-				BB5067321FB3712E00CADEEA /* shader_001_vert.vsh in Resources */,
 				BBF5385920071992003D276D /* texture_001.ngt in Resources */,
-				BB5067331FB3712E00CADEEA /* shader_002_frag.fsh in Resources */,
 				BBF5386720071992003D276D /* maps.cfg in Resources */,
 				BBF5387F20071992003D276D /* sound_002.wav in Resources */,
+				BBF3CC4F200D712400CFF412 /* shader_004_vert.ngs in Resources */,
 				BBF5385320071992003D276D /* texture_006.ngt in Resources */,
 				BB89C9A3200914AC00330100 /* n_texture_007.ngt in Resources */,
-				BB5067341FB3712E00CADEEA /* shader_002_frag.ngs in Resources */,
-				BB5067351FB3712E00CADEEA /* shader_002_vert.ngs in Resources */,
 				BB89C99D200914AC00330100 /* n_texture_006.ngt in Resources */,
 				BB89C9A9200914AC00330100 /* n_texture_004.ngt in Resources */,
-				BB5067361FB3712E00CADEEA /* shader_002_vert.vsh in Resources */,
 				BBF5385F20071992003D276D /* title_assets.cfg in Resources */,
-				BB5067371FB3712E00CADEEA /* shader_003_frag.fsh in Resources */,
+				BBF3CC57200D712400CFF412 /* shader_004_frag.ngs in Resources */,
 				BB89C99F200914AC00330100 /* n_texture_003.ngt in Resources */,
+				BBF3CC5B200D712400CFF412 /* shader_003_vert.ngs in Resources */,
 				BB89C9A1200914AC00330100 /* n_texture_001.ngt in Resources */,
-				BB5067381FB3712E00CADEEA /* shader_003_frag.ngs in Resources */,
 				BBF5384F20071992003D276D /* texture_004.ngt in Resources */,
-				BB5067391FB3712E00CADEEA /* shader_003_vert.ngs in Resources */,
 				BBF5385D20071992003D276D /* game.cfg in Resources */,
-				BB0B84E0200284C100D17988 /* shader_004_frag.ngs in Resources */,
 				BBF5385B20071992003D276D /* texture_000.ngt in Resources */,
 				BBF5383B20071992003D276D /* music_001.wav in Resources */,
 				BBF5388520071992003D276D /* sound_004.wav in Resources */,
+				BBF3CC4D200D712400CFF412 /* shader_001_frag.ngs in Resources */,
 				BBF5388B200719B6003D276D /* texture_007.ngt in Resources */,
 				BBF5386120071992003D276D /* game_assets.cfg in Resources */,
-				BB50673A1FB3712E00CADEEA /* shader_003_vert.vsh in Resources */,
 				BB89C9A5200914AC00330100 /* n_texture_008.ngt in Resources */,
 				BB89C9A7200914AC00330100 /* n_texture_002.ngt in Resources */,
 				BB89C99B200914AC00330100 /* n_texture_005.ngt in Resources */,
 				BBF5387B20071992003D276D /* sound_001.wav in Resources */,
+				BBF3CC59200D712400CFF412 /* shader_002_vert.ngs in Resources */,
+				BBF3CC53200D712400CFF412 /* shader_001_vert.ngs in Resources */,
+				BBF3CC55200D712400CFF412 /* shader_002_frag.ngs in Resources */,
 				BBF53889200719B6003D276D /* texture_008.ngt in Resources */,
 				BBF5386320071992003D276D /* entities.cfg in Resources */,
-				BB36A279200C56E500953CDC /* shader_004_vert.ngs in Resources */,
 				BBD3E8681FB2872A00328E35 /* Main.storyboard in Resources */,
 				BBF5385520071992003D276D /* texture_002.ngt in Resources */,
 				BBF5385120071992003D276D /* texture_005.ngt in Resources */,
@@ -3928,6 +3900,7 @@
 				BBD554261FDB2EA800E00AD6 /* b2WeldJoint.cpp in Sources */,
 				BB27D2301FC6567A00ED42FD /* OALAudioTrackNotifications.m in Sources */,
 				BB27D2311FC6567A00ED42FD /* ALDevice.m in Sources */,
+				BBF3CC66200D724D00CFF412 /* StudioRenderer.cpp in Sources */,
 				BB27D2321FC6567A00ED42FD /* ALListener.m in Sources */,
 				BB27D2331FC6567A00ED42FD /* ALChannelSource.m in Sources */,
 				BB27D2341FC6567A00ED42FD /* OpenALManager.m in Sources */,
@@ -3960,7 +3933,6 @@
 				BB27D2451FC6567A00ED42FD /* OALSuspendHandler.m in Sources */,
 				BB6E7B241F940FD4006C0024 /* tinythread.cpp in Sources */,
 				BB04A6B81FC3746800E0EB89 /* GlfwMain.cpp in Sources */,
-				BB6E7B151F940F2B006C0024 /* TitleRenderer.cpp in Sources */,
 				BBD554621FDB2EA800E00AD6 /* b2BroadPhase.cpp in Sources */,
 				BB1C3C1A1FE7868E002E4AA6 /* NGShaderVarInput.cpp in Sources */,
 				BB27D26B1FC6572600ED42FD /* AppleAudioEngineHelper.cpp in Sources */,
@@ -4021,7 +3993,6 @@
 				BB1E897B1EF4A81500B0D78A /* PacketHandler.cpp in Sources */,
 				BB8308741EC2AD1F00435E7E /* SocketUtil.cpp in Sources */,
 				BB6F59791FBDE97D00BD7697 /* cocoa_window.m in Sources */,
-				BBFE83131FFEC6AD00E5F650 /* GameRenderer.cpp in Sources */,
 				BB31B5AF1FC205D5005F1C0A /* GamePadEvent.cpp in Sources */,
 				BB4253E11EF598C1003F6D2A /* SocketClientHelper.cpp in Sources */,
 				BB7251951EE105330024C71C /* NetworkManagerClient.cpp in Sources */,
@@ -4078,6 +4049,7 @@
 				BB7428411EB2AF4200B7628D /* NGRTTI.cpp in Sources */,
 				BBAEF2401EA94EDA00F0866E /* OpenGLRendererHelper.cpp in Sources */,
 				BBAEF25E1EA94EDA00F0866E /* Font.cpp in Sources */,
+				BBF3CC64200D724D00CFF412 /* TitleRenderer.cpp in Sources */,
 				BBBD14971EE06BB3003F9307 /* Timing.cpp in Sources */,
 				BBAEF27A1EA94EDA00F0866E /* NGTexture.cpp in Sources */,
 				BBD5540C1FDB2EA800E00AD6 /* b2Body.cpp in Sources */,
@@ -4092,6 +4064,7 @@
 				BBD554581FDB2EA800E00AD6 /* b2ChainShape.cpp in Sources */,
 				BB44CB861DB053C0003E633F /* pngread.c in Sources */,
 				BB44CB871DB053C0003E633F /* pngrio.c in Sources */,
+				BBF3CC62200D724D00CFF412 /* GameRenderer.cpp in Sources */,
 				BBD5544E1FDB2EA800E00AD6 /* b2Math.cpp in Sources */,
 				BBCB93211FC252790020703A /* FileData.cpp in Sources */,
 				BBCFF1C51ECD312E003EE520 /* Assets.cpp in Sources */,
@@ -4148,7 +4121,6 @@
 				BBD554221FDB2EA800E00AD6 /* b2Contact.cpp in Sources */,
 				BB6F598F1FBDEA0D00BD7697 /* monitor.c in Sources */,
 				BB1E89841EF4B4F400B0D78A /* NGSteamPacketHandler.cpp in Sources */,
-				BBFE83271FFF1B5A00E5F650 /* StudioRenderer.cpp in Sources */,
 				BBD554481FDB2EA800E00AD6 /* b2Settings.cpp in Sources */,
 				BBAEF1F21EA94EDA00F0866E /* EntityManager.cpp in Sources */,
 				BBAEF2021EA94EDA00F0866E /* JsonFile.cpp in Sources */,
@@ -4164,7 +4136,6 @@
 				BBD3E8651FB2872A00328E35 /* ViewController.mm in Sources */,
 				BB3F1196200AE0DA00C30B06 /* Config.cpp in Sources */,
 				BBD554171FDB2EA800E00AD6 /* b2ChainAndCircleContact.cpp in Sources */,
-				BBFE83281FFF1B5A00E5F650 /* StudioRenderer.cpp in Sources */,
 				BB5AFE771FB35AB6005FBD52 /* JsonFile.cpp in Sources */,
 				BB1C3BFA1FE75FD3002E4AA6 /* Color.cpp in Sources */,
 				BB27D2461FC6567F00ED42FD /* OALAudioTracks.m in Sources */,
@@ -4253,10 +4224,10 @@
 				BB5AFE191FB359EA005FBD52 /* NGRTTI.cpp in Sources */,
 				BB5AFE1A1FB359EA005FBD52 /* StringUtil.cpp in Sources */,
 				BB5AFE1B1FB359EA005FBD52 /* Timing.cpp in Sources */,
+				BBF3CC63200D724D00CFF412 /* GameRenderer.cpp in Sources */,
 				BBD5541B1FDB2EA800E00AD6 /* b2PolygonContact.cpp in Sources */,
 				BB5AFE1C1FB359EA005FBD52 /* WeightedTimedMovingAverage.cpp in Sources */,
 				BB31B5A81FC205D5005F1C0A /* GamePadInputManager.cpp in Sources */,
-				BB5AFE081FB359DE005FBD52 /* TitleRenderer.cpp in Sources */,
 				BB5AFE351FB35A77005FBD52 /* ClientHelper.cpp in Sources */,
 				BBD554331FDB2EA800E00AD6 /* b2RevoluteJoint.cpp in Sources */,
 				BBD554431FDB2EA800E00AD6 /* b2Rope.cpp in Sources */,
@@ -4305,6 +4276,7 @@
 				BB5AFE4F1FB35A77005FBD52 /* ReplicationManagerServer.cpp in Sources */,
 				BB1C3C131FE77301002E4AA6 /* NGTextureShader.cpp in Sources */,
 				BB5AFE501FB35A77005FBD52 /* ReplicationManagerTransmissionData.cpp in Sources */,
+				BBF3CC67200D724D00CFF412 /* StudioRenderer.cpp in Sources */,
 				BB5AFE511FB35A77005FBD52 /* SocketServerHelper.cpp in Sources */,
 				BB5AFE0B1FB359DE005FBD52 /* TitleEngine.cpp in Sources */,
 				BB5AFE0C1FB359DE005FBD52 /* PooledObjectsManager.cpp in Sources */,
@@ -4349,6 +4321,7 @@
 				BB5AFDAE1FB3595F005FBD52 /* pngerror.c in Sources */,
 				BBD5540F1FDB2EA800E00AD6 /* b2World.cpp in Sources */,
 				BB5AFDAF1FB3595F005FBD52 /* pngget.c in Sources */,
+				BBF3CC65200D724D00CFF412 /* TitleRenderer.cpp in Sources */,
 				BBD554451FDB2EA800E00AD6 /* b2Draw.cpp in Sources */,
 				BB1C3C031FE76BE0002E4AA6 /* NGShaderLoaderFactory.cpp in Sources */,
 				BB5AFDB01FB3595F005FBD52 /* pngmem.c in Sources */,
@@ -4361,7 +4334,6 @@
 				BB5AFDB51FB3595F005FBD52 /* pngrutil.c in Sources */,
 				BB5AFDB61FB3595F005FBD52 /* pngset.c in Sources */,
 				BB9EE5171FC092C5000F5389 /* AppleAssetDataHandler.cpp in Sources */,
-				BBFE83141FFEC6AD00E5F650 /* GameRenderer.cpp in Sources */,
 				BB5AFDB71FB3595F005FBD52 /* pngtrans.c in Sources */,
 				BBD554211FDB2EA800E00AD6 /* b2EdgeAndCircleContact.cpp in Sources */,
 				BB5AFDB81FB3595F005FBD52 /* pngwio.c in Sources */,

@@ -74,8 +74,7 @@ android {
     task copyShaders(type: Copy)
     copyShaders {
         description = 'Copies shaders into project assets'
-        from '../../../../src/core/framework/graphics/opengl/shader'
-        from '../../../../src/core/game/graphics/opengl/shader'
+        from '../../../../assets/shader'
         into 'src/main/assets'
         include('*.ngs')
     }

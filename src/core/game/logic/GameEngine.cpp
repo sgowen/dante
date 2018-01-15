@@ -10,7 +10,7 @@
 
 #include "game/logic/GameEngine.h"
 
-#include <game/graphics/portable/GameRenderer.h>
+#include <game/graphics/GameRenderer.h>
 #include "game/logic/World.h"
 #include "game/logic/GameInputManager.h"
 #include "framework/util/Timing.h"
