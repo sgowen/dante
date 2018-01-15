@@ -331,7 +331,6 @@ void NetworkManagerServer::handlePacketFromNewClient(InputMemoryBitStream& inInp
     }
     else
     {
-        LOG("packetType: %d", packetType);
         _serverHelper->processSpecialPacket(packetType, inInputStream, inFromAddress);
     }
 }
