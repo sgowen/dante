@@ -62,23 +62,23 @@ enum EMessage
 {
     // Server messages
     k_EMsgServerBegin = NW_PACKET_TYPE_COUNT+1,
-    k_EMsgServerSendInfo = k_EMsgServerBegin+1,
-    k_EMsgServerFailAuthentication = k_EMsgServerBegin+2,
-    k_EMsgServerPassAuthentication = k_EMsgServerBegin+3,
-    k_EMsgServerExiting = k_EMsgServerBegin+4,
+    k_EMsgServerSendInfo = NW_PACKET_TYPE_COUNT+2,
+    k_EMsgServerFailAuthentication = NW_PACKET_TYPE_COUNT+3,
+    k_EMsgServerPassAuthentication = NW_PACKET_TYPE_COUNT+4,
+    k_EMsgServerExiting = NW_PACKET_TYPE_COUNT+5,
 
     // Client messages
-    k_EMsgClientBegin = k_EMsgServerExiting+1,
-    k_EMsgClientInitiateConnection = k_EMsgClientBegin+1, // Msg from client to server when trying to connect
-    k_EMsgClientBeginAuthentication = k_EMsgClientBegin+2,
-    k_EMsgClientLeavingServer = k_EMsgClientBegin+3,
+    k_EMsgClientBegin = NW_PACKET_TYPE_COUNT+6,
+    k_EMsgClientInitiateConnection = NW_PACKET_TYPE_COUNT+7, // Msg from client to server when trying to connect
+    k_EMsgClientBeginAuthentication = NW_PACKET_TYPE_COUNT+8,
+    k_EMsgClientLeavingServer = NW_PACKET_TYPE_COUNT+9,
 
     // P2P authentication messages
-    k_EMsgP2PBegin = k_EMsgClientLeavingServer+1,
-    k_EMsgP2PSendingTicket = k_EMsgP2PBegin+1,
+    k_EMsgP2PBegin = NW_PACKET_TYPE_COUNT+10,
+    k_EMsgP2PSendingTicket = NW_PACKET_TYPE_COUNT+11,
 
     // force 8-bit size enum so the wire protocol doesn't get outgrown later
-    k_EForceDWORD  = 0xFF,
+    k_EForceDWORD  = 0xFFu,
 };
 
 #endif /* defined(__noctisgames__NGSteam__) */

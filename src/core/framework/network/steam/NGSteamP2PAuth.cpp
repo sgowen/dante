@@ -335,7 +335,7 @@ void NGSteamP2PNetworkTransport::sendTicket(CSteamID steamIDFrom, CSteamID steam
     msg.setSteamID(steamIDFrom.ConvertToUint64());
 
     OutputMemoryBitStream packet;
-    packet.write(msg.getMessageType());
+    packet.write(static_cast<uint8_t>(msg.getMessageType()));
     packet.write(msg.getSteamID());
     packet.write(msg.getTokenLen());
     packet.writeBytes(msg.getTokenPtr(), msg.getTokenLen());
