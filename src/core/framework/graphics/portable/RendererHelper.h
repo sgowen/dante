@@ -17,7 +17,7 @@
 
 class NGTexture;
 struct TextureWrapper;
-class ShaderProgramWrapper;
+struct ShaderProgramWrapper;
 class NGShaderUniformInput;
 class NGShaderVarInput;
 

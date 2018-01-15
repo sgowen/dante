@@ -201,7 +201,7 @@ void DirectXRendererHelper::bindVector4(NGShaderUniformInput* uniform, vec4& inV
     s_d3dContext->UpdateSubresource(uniform->_constantbuffer.Get(), 0, 0, &inValue, 0, 0);
 }
 
-void OpenGLRendererHelper::bindMatrix(NGShaderUniformInput* uniform, mat4x4& inValue)
+void DirectXRendererHelper::bindMatrix(NGShaderUniformInput* uniform, mat4x4& inValue)
 {
     if (uniform->_isFragment)
     {

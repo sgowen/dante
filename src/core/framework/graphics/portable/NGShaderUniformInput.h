@@ -11,7 +11,7 @@
 
 #include <framework/graphics/portable/NGGraphics.h>
 
-class ShaderProgramWrapper;
+struct ShaderProgramWrapper;
 
 class NGShaderUniformInput
 {

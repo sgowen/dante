@@ -30,7 +30,7 @@ public:
     virtual void useNormalBlending();
     virtual void useScreenBlending();
     virtual void useNoBlending();
-    virtual void bindInteger(NGShaderUniformInput* uniform, int inValue) = 0;
+    virtual void bindInteger(NGShaderUniformInput* uniform, int inValue);
     virtual void bindVector2(NGShaderUniformInput* uniform, vec2& inValue);
     virtual void bindVector3(NGShaderUniformInput* uniform, vec3& inValue);
     virtual void bindVector4(NGShaderUniformInput* uniform, vec4& inValue);
