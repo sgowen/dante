@@ -28,7 +28,7 @@ public:
     void beginBatch();
     void renderRect(NGRect &r, Color &c);
     void renderPolygon(const b2Vec2* vertices, int vertexCount, Color &c);
-    void endBatch(NGShader &shader);
+    void endBatch(NGShader* shader);
     
 private:
     RendererHelper* _rendererHelper;

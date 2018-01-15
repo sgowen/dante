@@ -119,6 +119,12 @@
 		BB31B5B01FC205D5005F1C0A /* GamePadEvent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB31B59F1FC205D0005F1C0A /* GamePadEvent.cpp */; };
 		BB31B5B11FC205D5005F1C0A /* KeyboardInputManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB31B5A31FC205D4005F1C0A /* KeyboardInputManager.cpp */; };
 		BB31B5B21FC205D5005F1C0A /* KeyboardInputManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB31B5A31FC205D4005F1C0A /* KeyboardInputManager.cpp */; };
+		BB36A270200C415600953CDC /* NGLightingShader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB36A26E200C415400953CDC /* NGLightingShader.cpp */; };
+		BB36A271200C415600953CDC /* NGLightingShader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB36A26E200C415400953CDC /* NGLightingShader.cpp */; };
+		BB36A274200C43E900953CDC /* Vector3.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB36A272200C43E800953CDC /* Vector3.cpp */; };
+		BB36A275200C43E900953CDC /* Vector3.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB36A272200C43E800953CDC /* Vector3.cpp */; };
+		BB36A278200C56E500953CDC /* shader_004_vert.ngs in Resources */ = {isa = PBXBuildFile; fileRef = BB36A277200C56E500953CDC /* shader_004_vert.ngs */; };
+		BB36A279200C56E500953CDC /* shader_004_vert.ngs in Resources */ = {isa = PBXBuildFile; fileRef = BB36A277200C56E500953CDC /* shader_004_vert.ngs */; };
 		BB3BAEE11FB4A1FA00F5F8B0 /* TitleInputManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB3BAEDF1FB4A1F900F5F8B0 /* TitleInputManager.cpp */; };
 		BB3BAEE21FB4A1FA00F5F8B0 /* TitleInputManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB3BAEDF1FB4A1F900F5F8B0 /* TitleInputManager.cpp */; };
 		BB3F1195200AE0DA00C30B06 /* Config.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB3F1193200AE0D900C30B06 /* Config.cpp */; };
@@ -808,6 +814,12 @@
 		BB31B5A31FC205D4005F1C0A /* KeyboardInputManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KeyboardInputManager.cpp; sourceTree = "<group>"; };
 		BB31B5A41FC205D5005F1C0A /* KeyboardInputManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeyboardInputManager.h; sourceTree = "<group>"; };
 		BB36A26D200BBF1400953CDC /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		BB36A26E200C415400953CDC /* NGLightingShader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NGLightingShader.cpp; sourceTree = "<group>"; };
+		BB36A26F200C415400953CDC /* NGLightingShader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NGLightingShader.h; sourceTree = "<group>"; };
+		BB36A272200C43E800953CDC /* Vector3.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Vector3.cpp; sourceTree = "<group>"; };
+		BB36A273200C43E900953CDC /* Vector3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Vector3.h; sourceTree = "<group>"; };
+		BB36A276200C56DA00953CDC /* shader_004_vert.vsh */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = shader_004_vert.vsh; sourceTree = "<group>"; };
+		BB36A277200C56E500953CDC /* shader_004_vert.ngs */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = shader_004_vert.ngs; sourceTree = "<group>"; };
 		BB39C8921FB2700900CF6699 /* NGGraphics.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NGGraphics.h; sourceTree = "<group>"; };
 		BB3BAEDF1FB4A1F900F5F8B0 /* TitleInputManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TitleInputManager.cpp; sourceTree = "<group>"; };
 		BB3BAEE01FB4A1F900F5F8B0 /* TitleInputManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TitleInputManager.h; sourceTree = "<group>"; };
@@ -1989,6 +2001,8 @@
 				BB052CD71EBA8AE9007FA789 /* shader_003_vert.vsh */,
 				BB0B84E1200284CE00D17988 /* shader_004_frag.fsh */,
 				BB0B84DE200284C100D17988 /* shader_004_frag.ngs */,
+				BB36A277200C56E500953CDC /* shader_004_vert.ngs */,
+				BB36A276200C56DA00953CDC /* shader_004_vert.vsh */,
 			);
 			path = shader;
 			sourceTree = "<group>";
@@ -2698,6 +2712,8 @@
 				BB1C3C0B1FE77301002E4AA6 /* NGGeometryShader.cpp */,
 				BB1C3C091FE77301002E4AA6 /* NGGeometryShader.h */,
 				BB39C8921FB2700900CF6699 /* NGGraphics.h */,
+				BB36A26E200C415400953CDC /* NGLightingShader.cpp */,
+				BB36A26F200C415400953CDC /* NGLightingShader.h */,
 				BB0CA6F01FE5B08D0011B75B /* NGPrimitiveType.h */,
 				BBAEF1391EA94ED900F0866E /* NGShader.cpp */,
 				BBAEF13A1EA94ED900F0866E /* NGShader.h */,
@@ -2781,6 +2797,8 @@
 				BBAEF1821EA94ED900F0866E /* Triangle.h */,
 				BBAEF1831EA94ED900F0866E /* Vector2.cpp */,
 				BBAEF1841EA94ED900F0866E /* Vector2.h */,
+				BB36A272200C43E800953CDC /* Vector3.cpp */,
+				BB36A273200C43E900953CDC /* Vector3.h */,
 			);
 			path = math;
 			sourceTree = "<group>";
@@ -3809,6 +3827,7 @@
 				BBF5387A20071992003D276D /* sound_001.wav in Resources */,
 				BB16190D20092BFD00AF0117 /* zone_2.cfg in Resources */,
 				BB052CC71EBA8ADD007FA789 /* shader_001_frag.ngs in Resources */,
+				BB36A278200C56E500953CDC /* shader_004_vert.ngs in Resources */,
 				BBF5385E20071992003D276D /* title_assets.cfg in Resources */,
 				BB89C99A200914AC00330100 /* n_texture_005.ngt in Resources */,
 				BB052CD11EBA8ADD007FA789 /* shader_003_vert.ngs in Resources */,
@@ -3863,6 +3882,7 @@
 				BBF5387B20071992003D276D /* sound_001.wav in Resources */,
 				BBF53889200719B6003D276D /* texture_008.ngt in Resources */,
 				BBF5386320071992003D276D /* entities.cfg in Resources */,
+				BB36A279200C56E500953CDC /* shader_004_vert.ngs in Resources */,
 				BBD3E8681FB2872A00328E35 /* Main.storyboard in Resources */,
 				BBF5385520071992003D276D /* texture_002.ngt in Resources */,
 				BBF5385120071992003D276D /* texture_005.ngt in Resources */,
@@ -3968,6 +3988,7 @@
 				BB6F59751FBDE97D00BD7697 /* cocoa_joystick.m in Sources */,
 				BBD554181FDB2EA800E00AD6 /* b2PolygonAndCircleContact.cpp in Sources */,
 				BBD554121FDB2EA800E00AD6 /* b2ChainAndPolygonContact.cpp in Sources */,
+				BB36A270200C415600953CDC /* NGLightingShader.cpp in Sources */,
 				BBD554541FDB2EA800E00AD6 /* b2CollidePolygon.cpp in Sources */,
 				BB1C3C0E1FE77301002E4AA6 /* NGFramebufferToScreenShader.cpp in Sources */,
 				BBAEF2941EA94EDA00F0866E /* Circle.cpp in Sources */,
@@ -3998,6 +4019,7 @@
 				BB6F59811FBDE9C400BD7697 /* posix_thread.c in Sources */,
 				BBAEF2981EA94EDA00F0866E /* NGRect.cpp in Sources */,
 				BBD554521FDB2EA800E00AD6 /* b2CollideCircle.cpp in Sources */,
+				BB36A274200C43E900953CDC /* Vector3.cpp in Sources */,
 				BB31B5A51FC205D5005F1C0A /* CursorEvent.cpp in Sources */,
 				BB6F597E1FBDE9C400BD7697 /* egl_context.c in Sources */,
 				BB4253D21EF58DA5003F6D2A /* ClientHelper.cpp in Sources */,
@@ -4190,6 +4212,7 @@
 				BBD5541F1FDB2EA800E00AD6 /* b2CircleContact.cpp in Sources */,
 				BB5AFE7B1FB35ACA005FBD52 /* Entity.cpp in Sources */,
 				BB5AFE7C1FB35ACA005FBD52 /* EntityManager.cpp in Sources */,
+				BB36A275200C43E900953CDC /* Vector3.cpp in Sources */,
 				BBD554291FDB2EA800E00AD6 /* b2MouseJoint.cpp in Sources */,
 				BBD5545D1FDB2EA800E00AD6 /* b2CircleShape.cpp in Sources */,
 				BB1C3BFF1FE76967002E4AA6 /* NGShaderLoader.cpp in Sources */,
@@ -4337,6 +4360,7 @@
 				BB5AFDB01FB3595F005FBD52 /* pngmem.c in Sources */,
 				BB6531631FED56CA00963997 /* World.cpp in Sources */,
 				BB5AFDB11FB3595F005FBD52 /* pngpread.c in Sources */,
+				BB36A271200C415600953CDC /* NGLightingShader.cpp in Sources */,
 				BB5AFDB21FB3595F005FBD52 /* pngread.c in Sources */,
 				BB5AFDB31FB3595F005FBD52 /* pngrio.c in Sources */,
 				BB5AFDB41FB3595F005FBD52 /* pngrtran.c in Sources */,

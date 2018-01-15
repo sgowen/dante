@@ -30,6 +30,8 @@ public:
     virtual void useNormalBlending();
     virtual void useScreenBlending();
     virtual void bindMatrix(NGShaderUniformInput* uniform);
+    virtual void bindVector3(NGShaderUniformInput* uniform, Vector3& inValue);
+    virtual void bindColor(NGShaderUniformInput* uniform, Color& inValue);
     virtual void bindTexture(NGTextureSlot textureSlot, NGTexture* texture, NGShaderUniformInput* uniform = NULL);
     virtual void bindNGShader(ShaderProgramWrapper* shaderProgramWrapper);
     virtual void mapScreenVertices(std::vector<NGShaderVarInput*>& inputLayout, std::vector<SCREEN_VERTEX>& vertices);

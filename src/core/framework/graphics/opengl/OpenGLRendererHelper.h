@@ -17,37 +17,27 @@ class OpenGLRendererHelper : public RendererHelper
 {
 public:
     OpenGLRendererHelper();
-
     virtual ~OpenGLRendererHelper();
 
     virtual void createDeviceDependentResources();
-
     virtual void releaseDeviceDependentResources();
-
     virtual NGTexture* getFramebuffer(int index);
-
     virtual void bindToOffscreenFramebuffer(int index);
-
     virtual void clearFramebufferWithColor(float r, float g, float b, float a);
-
     virtual void bindToScreenFramebuffer();
-
     virtual void useNormalBlending();
     virtual void useScreenBlending();
-
     virtual void bindMatrix(NGShaderUniformInput* uniform);
-
+    virtual void bindVector3(NGShaderUniformInput* uniform, Vector3& inValue);
+    virtual void bindColor(NGShaderUniformInput* uniform, Color& inValue);
     virtual void bindTexture(NGTextureSlot textureSlot, NGTexture* texture, NGShaderUniformInput* uniform = NULL);
-
     virtual void bindNGShader(ShaderProgramWrapper* shaderProgramWrapper);
-
     virtual void mapScreenVertices(std::vector<NGShaderVarInput*>& inputLayout, std::vector<SCREEN_VERTEX>& vertices);
     virtual void unmapScreenVertices();
     virtual void mapTextureVertices(std::vector<NGShaderVarInput*>& inputLayout, std::vector<TEXTURE_VERTEX>& vertices);
     virtual void unmapTextureVertices();
     virtual void mapColorVertices(std::vector<NGShaderVarInput*>& inputLayout, std::vector<COLOR_VERTEX>& vertices);
     virtual void unmapColorVertices();
-
     virtual void draw(NGPrimitiveType renderPrimitiveType, uint32_t first, uint32_t count);
     virtual void drawIndexed(NGPrimitiveType renderPrimitiveType, uint32_t first, uint32_t count);
 

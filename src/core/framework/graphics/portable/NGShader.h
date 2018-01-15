@@ -22,17 +22,13 @@ class NGShader
 {
 public:
     NGShader(RendererHelper& inRendererHelper, const char* vertexShaderName, const char* fragmentShaderName);
-    
     virtual ~NGShader();
     
     virtual void bind(void* vertices, void* data1 = NULL, void* data2 = NULL) = 0;
-    
     virtual void unbind() = 0;
     
     void load(NGShaderLoader& shaderProgramLoader);
-    
     void unload(NGShaderLoader& shaderProgramLoader);
-    
     bool isLoaded();
     
 protected:

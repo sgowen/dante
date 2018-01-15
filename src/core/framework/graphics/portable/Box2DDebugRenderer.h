@@ -45,7 +45,7 @@ public:
     /// Draw a point.
     virtual void DrawPoint(const b2Vec2& p, float32 size, const b2Color& color);
     
-    void render(b2World* world, NGShader& shaderProgram);
+    void render(b2World* world, NGShader* shaderProgram);
     
 private:
     PolygonBatcher& _fillPolygonBatcher;

@@ -155,7 +155,7 @@ void StudioRenderer::render(int flags)
         
         renderText("'ESC' to exit",                         CAM_WIDTH / 2, CAM_HEIGHT - 9, Color::WHITE, FONT_ALIGN_CENTERED);
         
-        _spriteBatcher->endBatch(_textureManager->getTextureWithName("texture_000.ngt"), *_textureNGShader);
+        _spriteBatcher->endBatch(_textureNGShader, _textureManager->getTextureWithName("texture_000.ngt"));
     }
     
     endFrame();

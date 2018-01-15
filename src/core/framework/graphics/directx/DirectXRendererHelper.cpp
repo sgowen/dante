@@ -15,6 +15,8 @@
 #include "framework/graphics/portable/ShaderProgramWrapper.h"
 #include "framework/graphics/portable/NGShaderUniformInput.h"
 #include "framework/graphics/portable/NGShaderVarInput.h"
+#include <framework/math/Vector3.h>
+#include <framework/graphics/portable/Color.h>
 
 #include "framework/util/NGSTDUtil.h"
 #include "PlatformHelpers.h"
@@ -89,9 +91,9 @@ void DirectXRendererHelper::releaseDeviceDependentResources()
 
 NGTexture* DirectXRendererHelper::getFramebuffer(int index)
 {
-    _framebuffer->textureWrapper = _framebuffers[index];
+    _framebufferWrappers[index]->textureWrapper = _framebuffers[index];
     
-    return _framebuffer;
+    return _framebufferWrappers[index];
 }
 
 void DirectXRendererHelper::bindToOffscreenFramebuffer(int index)
@@ -144,6 +146,16 @@ void DirectXRendererHelper::bindMatrix(NGShaderUniformInput* uniform)
     
     // send the final matrix to video memory
 	s_d3dContext->UpdateSubresource(uniform->_constantbuffer.Get(), 0, 0, &_matrix, 0, 0);
+}
+
+void DirectXRendererHelper::bindVector3(NGShaderUniformInput* uniform, Vector3& inValue)
+{
+    /// TODO
+}
+
+void DirectXRendererHelper::bindColor(NGShaderUniformInput* uniform, Color& inValue)
+{
+    /// TODO
 }
 
 void DirectXRendererHelper::bindTexture(NGTextureSlot textureSlot, NGTexture* texture, NGShaderUniformInput* uniform)

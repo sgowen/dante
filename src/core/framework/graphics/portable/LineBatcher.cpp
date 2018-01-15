@@ -17,6 +17,8 @@
 
 #include <framework/util/FrameworkConstants.h>
 
+#include <assert.h>
+
 LineBatcher::LineBatcher(RendererHelper* inRendererHelper) : _rendererHelper(inRendererHelper), _numLines(0)
 {
     _vertices.reserve(MAX_BATCH_SIZE * VERTICES_PER_RECTANGLE);
@@ -47,14 +49,16 @@ void LineBatcher::renderLine(Line &line, Color &c)
     _numLines++;
 }
 
-void LineBatcher::endBatch(NGShader &shader)
+void LineBatcher::endBatch(NGShader* shader)
 {
+    assert(shader);
+    
     if (_numLines > 0)
     {
-        shader.bind(&_vertices);
+        shader->bind(&_vertices);
         
         _rendererHelper->draw(NGPrimitiveType_Lines, 0, VERTICES_PER_LINE * _numLines);
         
-        shader.unbind();
+        shader->unbind();
     }
 }

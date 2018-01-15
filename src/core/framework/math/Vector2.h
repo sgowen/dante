@@ -64,9 +64,6 @@ public:
     float getX() const;
     float getY() const;
     
-    float& getXRef();
-    float& getYRef();
-    
 private:
     float _x;
     float _y;

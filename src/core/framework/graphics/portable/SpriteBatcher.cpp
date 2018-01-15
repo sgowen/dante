@@ -19,6 +19,7 @@
 #include <framework/util/FrameworkConstants.h>
 
 #include <math.h>
+#include <assert.h>
 
 SpriteBatcher::SpriteBatcher(RendererHelper* inRendererHelper) : _rendererHelper(inRendererHelper), _numSprites(0)
 {
@@ -130,14 +131,16 @@ void SpriteBatcher::renderSprite(float x, float y, float width, float height, fl
     ++_numSprites;
 }
 
-void SpriteBatcher::endBatch(NGTexture* texture, NGShader& shader)
+void SpriteBatcher::endBatch(NGShader* shader, NGTexture* texture, NGTexture* normalMap)
 {
+    assert(shader);
+    
     if (_numSprites > 0)
     {
-        shader.bind(&_vertices, texture);
+        shader->bind(&_vertices, texture, normalMap);
         
         _rendererHelper->drawIndexed(NGPrimitiveType_Triangles, 0, _numSprites * INDICES_PER_RECTANGLE);
         
-        shader.unbind();
+        shader->unbind();
     }
 }

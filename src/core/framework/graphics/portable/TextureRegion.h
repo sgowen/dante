@@ -20,9 +20,11 @@ public:
     TextureRegion(std::string textureName, int x, int y, int regionWidth, int regionHeight, int textureWidth, int textureHeight);
     
     std::string& getTextureName();
+    std::string& getNormalMapName();
     
 private:
     std::string _textureName;
+    std::string _normalMapName;
 };
 
 #endif /* defined(__noctisgames__TextureRegion__) */

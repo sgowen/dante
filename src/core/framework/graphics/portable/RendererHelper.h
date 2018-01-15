@@ -20,51 +20,41 @@ struct TextureWrapper;
 class ShaderProgramWrapper;
 class NGShaderUniformInput;
 class NGShaderVarInput;
+class Vector3;
+class Color;
 
 class RendererHelper
 {
 public:
     RendererHelper();
-    
     virtual ~RendererHelper();
 
 	virtual void createDeviceDependentResources() = 0;
-
 	virtual void createWindowSizeDependentResources(int screenWidth, int screenHeight, int renderWidth, int renderHeight);
-
 	virtual void releaseDeviceDependentResources() = 0;
-    
     virtual NGTexture* getFramebuffer(int index) = 0;
-    
     virtual void updateMatrix(float left, float right, float bottom, float top);
-    
     virtual void bindToOffscreenFramebuffer(int index) = 0;
-    
     virtual void clearFramebufferWithColor(float r, float g, float b, float a) = 0;
-    
     virtual void bindToScreenFramebuffer() = 0;
-    
     virtual void useNormalBlending() = 0;
     virtual void useScreenBlending() = 0;
-    
     virtual void bindMatrix(NGShaderUniformInput* uniform) = 0;
-    
+    virtual void bindVector3(NGShaderUniformInput* uniform, Vector3& inValue) = 0;
+    virtual void bindColor(NGShaderUniformInput* uniform, Color& inValue) = 0;
     virtual void bindTexture(NGTextureSlot textureSlot, NGTexture* texture, NGShaderUniformInput* uniform = NULL) = 0;
-    
     virtual void bindNGShader(ShaderProgramWrapper* shaderProgramWrapper) = 0;
-    
     virtual void mapScreenVertices(std::vector<NGShaderVarInput*>& inputLayout, std::vector<SCREEN_VERTEX>& vertices) = 0;
     virtual void unmapScreenVertices();
     virtual void mapTextureVertices(std::vector<NGShaderVarInput*>& inputLayout, std::vector<TEXTURE_VERTEX>& vertices) = 0;
     virtual void unmapTextureVertices();
     virtual void mapColorVertices(std::vector<NGShaderVarInput*>& inputLayout, std::vector<COLOR_VERTEX>& vertices) = 0;
     virtual void unmapColorVertices();
-    
     virtual void draw(NGPrimitiveType renderPrimitiveType, uint32_t first, uint32_t count) = 0;
     virtual void drawIndexed(NGPrimitiveType renderPrimitiveType, uint32_t first, uint32_t count) = 0;
     
 protected:
-    NGTexture* _framebuffer;
+    std::vector<NGTexture *> _framebufferWrappers;
     
     std::vector<TextureWrapper *> _framebuffers;
     std::vector<uint16_t> _indices;

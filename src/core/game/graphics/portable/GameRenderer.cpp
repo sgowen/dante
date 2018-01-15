@@ -27,6 +27,7 @@
 #include "framework/math/NGRect.h"
 #include "framework/graphics/portable/NGTexture.h"
 #include "framework/graphics/portable/Box2DDebugRenderer.h"
+#include <framework/graphics/portable/NGLightingShader.h>
 
 #include "framework/graphics/portable/Assets.h"
 #include "framework/graphics/portable/RendererHelper.h"
@@ -93,6 +94,7 @@ _box2DDebugRenderer(new Box2DDebugRenderer(*_fillPolygonBatcher, *_boundsPolygon
 _shaderProgramLoader(SHADER_PROGRAM_LOADER_FACTORY->createNGShaderLoader()),
 _textureNGShader(new NGTextureShader(*_rendererHelper, "shader_003_vert.ngs", "shader_003_frag.ngs")),
 _colorNGShader(new NGGeometryShader(*_rendererHelper, "shader_001_vert.ngs", "shader_001_frag.ngs")),
+_lightingNGShader(new NGLightingShader(*_rendererHelper, "shader_004_vert.ngs", "shader_004_frag.ngs")),
 _framebufferToScreenNGShader(new NGFramebufferToScreenShader(*_rendererHelper, "shader_002_vert.ngs", "shader_002_frag.ngs")),
 _font(new Font("texture_000.ngt", 0, 0, 16, 64, 75, TEXTURE_SIZE_1024)),
 _framebufferIndex(0)
@@ -131,6 +133,7 @@ GameRenderer::~GameRenderer()
     }
     delete _textureNGShader;
     delete _colorNGShader;
+    delete _lightingNGShader;
     delete _framebufferToScreenNGShader;
 }
 
@@ -141,6 +144,7 @@ void GameRenderer::createDeviceDependentResources()
     
     _textureNGShader->load(*_shaderProgramLoader);
     _colorNGShader->load(*_shaderProgramLoader);
+    _lightingNGShader->load(*_shaderProgramLoader);
     _framebufferToScreenNGShader->load(*_shaderProgramLoader);
 }
 
@@ -156,28 +160,28 @@ void GameRenderer::releaseDeviceDependentResources()
     
     _textureNGShader->unload(*_shaderProgramLoader);
     _colorNGShader->unload(*_shaderProgramLoader);
+    _lightingNGShader->unload(*_shaderProgramLoader);
     _framebufferToScreenNGShader->unload(*_shaderProgramLoader);
 }
 
 void GameRenderer::render(int flags)
 {
-    beginFrame();
+    setFramebuffer(0);
     
     if (_textureManager->ensureTextures())
     {
         updateCamera();
-        renderWorld(flags);
-        renderUI(flags);
+        renderWorld();
+        
+        if (flags & GameEngineState_DisplayBox2D)
+        {
+            renderBox2D();
+        }
+        
+//        renderUI(flags);
     }
     
     endFrame();
-}
-
-void GameRenderer::beginFrame()
-{
-    _textureManager->handleAsyncTextureLoads();
-    
-    setFramebuffer(0);
 }
 
 void GameRenderer::setFramebuffer(int framebufferIndex)
@@ -187,7 +191,7 @@ void GameRenderer::setFramebuffer(int framebufferIndex)
     _framebufferIndex = framebufferIndex;
     
     _rendererHelper->bindToOffscreenFramebuffer(_framebufferIndex);
-    _rendererHelper->clearFramebufferWithColor(0, 0, 0, 1);
+    _rendererHelper->clearFramebufferWithColor(0, 0, 0, 0);
 }
 
 void GameRenderer::updateCamera()
@@ -216,6 +220,8 @@ void GameRenderer::updateCamera()
                 
                 float pX = entity->getPosition().x;
                 float pY = entity->getPosition().y;
+                
+                _lightingNGShader->config(pX, pY);
                 
                 if (needsInit)
                 {
@@ -281,31 +287,7 @@ void GameRenderer::updateCamera()
     }
 }
 
-void GameRenderer::renderWorld(int flags)
-{
-    renderLayers(InstanceManager::getClientWorld());
-    
-    _rendererHelper->updateMatrix(_camBounds[3]->getLeft(), _camBounds[3]->getRight(), _camBounds[3]->getBottom(), _camBounds[3]->getTop());
-    
-    renderEntities(InstanceManager::getClientWorld(), false);
-    
-    if (Server::getInstance() && Server::getInstance()->isDisplaying())
-    {
-        renderEntities(InstanceManager::getServerWorld(), true);
-    }
-    
-    if (flags & GameEngineState_DisplayBox2D)
-    {
-        _box2DDebugRenderer->render(&InstanceManager::getClientWorld()->getWorld(), *_colorNGShader);
-        
-        if (Server::getInstance() && Server::getInstance()->isDisplaying())
-        {
-            _box2DDebugRenderer->render(&InstanceManager::getServerWorld()->getWorld(), *_colorNGShader);
-        }
-    }
-}
-
-void GameRenderer::renderLayers(World* world)
+void GameRenderer::renderLayers(World* world, bool isNormals)
 {
     for (int i = 0; i < 3; ++i)
     {
@@ -320,20 +302,92 @@ void GameRenderer::renderLayers(World* world)
         TextureRegion tr = ASSETS->findTextureRegion(e->getTextureMapping(), e->getStateTime());
         
         _spriteBatchers[e->getEntityDef().layer]->renderSprite(e->getPosition().x, e->getPosition().y, e->getWidth(), e->getHeight(), e->getAngle(), Color::WHITE, tr, e->isFacingLeft());
-        textures[e->getEntityDef().layer] = tr.getTextureName();
+        textures[e->getEntityDef().layer] = isNormals ? tr.getNormalMapName() : tr.getTextureName();
     }
     
     for (int i = 0; i < 3; ++i)
     {
+        int fb = isNormals ? i + 3 : i;
+        setFramebuffer(fb);
+        
         if (textures[i].length() > 0)
         {
             _rendererHelper->updateMatrix(_camBounds[i]->getLeft(), _camBounds[i]->getRight(), _camBounds[i]->getBottom(), _camBounds[i]->getTop());
-            _spriteBatchers[i]->endBatch(_textureManager->getTextureWithName(textures[i]), *_textureNGShader);
+            _spriteBatchers[i]->endBatch(_textureNGShader, _textureManager->getTextureWithName(textures[i]));
         }
     }
 }
 
-void GameRenderer::renderEntities(World* world, bool isServer)
+void GameRenderer::renderWorld()
+{
+    renderLayers(InstanceManager::getClientWorld(), false);
+    renderLayers(InstanceManager::getClientWorld(), true);
+    
+    float x = _camBounds[3]->getLeft() + _camBounds[3]->getWidth() / 2;
+    float y = _camBounds[3]->getBottom() + _camBounds[3]->getHeight() / 2;
+    _rendererHelper->updateMatrix(_camBounds[3]->getLeft(), _camBounds[3]->getRight(), _camBounds[3]->getBottom(), _camBounds[3]->getTop());
+    setFramebuffer(6);
+    renderEntities(InstanceManager::getClientWorld(), false, false);
+    setFramebuffer(7);
+    renderEntities(InstanceManager::getClientWorld(), true, false);
+    
+    static TextureRegion tr = TextureRegion("framebuffer", 0, 0, 1, 1, 1, 1);
+    
+    for (int i = 0; i < 3; ++i)
+    {
+        setFramebuffer(i + 8);
+        _spriteBatchers[0]->beginBatch();
+        _spriteBatchers[0]->renderSprite(x, y, _camBounds[3]->getWidth(), _camBounds[3]->getHeight(), 0, tr);
+        _spriteBatchers[0]->endBatch(_lightingNGShader, _rendererHelper->getFramebuffer(i), _rendererHelper->getFramebuffer(i + 3));
+    }
+    
+    {
+        setFramebuffer(11);
+        _spriteBatchers[0]->beginBatch();
+        _spriteBatchers[0]->renderSprite(x, y, _camBounds[3]->getWidth(), _camBounds[3]->getHeight(), 0, tr);
+        _spriteBatchers[0]->endBatch(_lightingNGShader, _rendererHelper->getFramebuffer(6), _rendererHelper->getFramebuffer(7));
+    }
+    
+    setFramebuffer(12);
+    
+    static std::vector<SCREEN_VERTEX> screenVertices;
+    screenVertices.clear();
+    screenVertices.push_back(SCREEN_VERTEX(-1, -1));
+    screenVertices.push_back(SCREEN_VERTEX(-1, 1));
+    screenVertices.push_back(SCREEN_VERTEX(1, 1));
+    screenVertices.push_back(SCREEN_VERTEX(1, -1));
+    
+    {
+        _framebufferToScreenNGShader->bind(&screenVertices, _rendererHelper->getFramebuffer(8));
+        _rendererHelper->drawIndexed(NGPrimitiveType_Triangles, 0, INDICES_PER_RECTANGLE);
+        _framebufferToScreenNGShader->unbind();
+    }
+    
+    {
+        _framebufferToScreenNGShader->bind(&screenVertices, _rendererHelper->getFramebuffer(9));
+        _rendererHelper->drawIndexed(NGPrimitiveType_Triangles, 0, INDICES_PER_RECTANGLE);
+        _framebufferToScreenNGShader->unbind();
+    }
+    
+    {
+        _framebufferToScreenNGShader->bind(&screenVertices, _rendererHelper->getFramebuffer(10));
+        _rendererHelper->drawIndexed(NGPrimitiveType_Triangles, 0, INDICES_PER_RECTANGLE);
+        _framebufferToScreenNGShader->unbind();
+    }
+    
+    {
+        _framebufferToScreenNGShader->bind(&screenVertices, _rendererHelper->getFramebuffer(11));
+        _rendererHelper->drawIndexed(NGPrimitiveType_Triangles, 0, INDICES_PER_RECTANGLE);
+        _framebufferToScreenNGShader->unbind();
+    }
+    
+//    if (Server::getInstance() && Server::getInstance()->isDisplaying())
+//    {
+//        renderEntities(InstanceManager::getServerWorld(), true, true);
+//    }
+}
+
+void GameRenderer::renderEntities(World* world, bool isNormals, bool isServer)
 {
     Color c = Color::WHITE;
     if (isServer)
@@ -355,7 +409,7 @@ void GameRenderer::renderEntities(World* world, bool isServer)
             TextureRegion tr = ASSETS->findTextureRegion(e->getTextureMapping(), e->getStateTime());
             
             _spriteBatchers[e->getEntityDef().layer]->renderSprite(e->getPosition().x, e->getPosition().y, e->getWidth(), e->getHeight(), e->getAngle(), c, tr, e->isFacingLeft());
-            textures[e->getEntityDef().layer] = tr.getTextureName();
+            textures[e->getEntityDef().layer] = isNormals ? tr.getNormalMapName() : tr.getTextureName();
         }
     }
     
@@ -366,7 +420,7 @@ void GameRenderer::renderEntities(World* world, bool isServer)
             TextureRegion tr = ASSETS->findTextureRegion(e->getTextureMapping(), e->getStateTime());
             
             _spriteBatchers[e->getEntityDef().layer]->renderSprite(e->getPosition().x, e->getPosition().y, e->getWidth(), e->getHeight(), e->getAngle(), c, tr, e->isFacingLeft());
-            textures[e->getEntityDef().layer] = tr.getTextureName();
+            textures[e->getEntityDef().layer] = isNormals ? tr.getNormalMapName() : tr.getTextureName();
         }
     }
     
@@ -377,7 +431,7 @@ void GameRenderer::renderEntities(World* world, bool isServer)
             TextureRegion tr = ASSETS->findTextureRegion(e->getTextureMapping(), e->getStateTime());
             
             _spriteBatchers[e->getEntityDef().layer]->renderSprite(e->getPosition().x, e->getPosition().y, e->getWidth(), e->getHeight(), e->getAngle(), c, tr, e->isFacingLeft());
-            textures[e->getEntityDef().layer] = tr.getTextureName();
+            textures[e->getEntityDef().layer] = isNormals ? tr.getNormalMapName() : tr.getTextureName();
         }
     }
     
@@ -385,9 +439,19 @@ void GameRenderer::renderEntities(World* world, bool isServer)
     {
         if (textures[i].length() > 0)
         {
-            _spriteBatchers[i]->endBatch(_textureManager->getTextureWithName(textures[i]), *_textureNGShader);
+            _spriteBatchers[i]->endBatch(_textureNGShader, _textureManager->getTextureWithName(textures[i]));
         }
     }
+}
+
+void GameRenderer::renderBox2D()
+{
+    _box2DDebugRenderer->render(&InstanceManager::getClientWorld()->getWorld(), _colorNGShader);
+    
+//    if (Server::getInstance() && Server::getInstance()->isDisplaying())
+//    {
+//        _box2DDebugRenderer->render(&InstanceManager::getServerWorld()->getWorld(), _colorNGShader);
+//    }
 }
 
 void GameRenderer::renderUI(int flags)
@@ -462,7 +526,7 @@ void GameRenderer::renderUI(int flags)
         renderText(StringUtil::format("%s, 'ESC' to exit", "Joining Server...").c_str(), 0.5f, CAM_HEIGHT - 4, Color::WHITE, FONT_ALIGN_LEFT);
     }
     
-    _spriteBatchers[0]->endBatch(_textureManager->getTextureWithName("texture_000.ngt"), *_textureNGShader);
+    _spriteBatchers[0]->endBatch(_textureNGShader, _textureManager->getTextureWithName("texture_000.ngt"));
 }
 
 void GameRenderer::renderText(const char* inStr, float x, float y, const Color& inColor, int justification)

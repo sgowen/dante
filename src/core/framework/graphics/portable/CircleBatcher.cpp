@@ -19,6 +19,7 @@
 #include "framework/util/macros.h"
 
 #include <math.h>
+#include <assert.h>
 
 #define DEGREE_SPACING 6
 
@@ -83,11 +84,13 @@ void CircleBatcher::renderPartialCircle(Circle &circle, int arcDegrees, Color &c
     _circles.push_back(_numPoints);
 }
 
-void CircleBatcher::endBatch(NGShader &shader)
+void CircleBatcher::endBatch(NGShader* shader)
 {
+    assert(shader);
+    
 	if (_circles.size() > 0)
 	{
-		shader.bind(&_vertices);
+		shader->bind(&_vertices);
 
 		int offset = 0;
 		for (std::vector<int>::iterator i = _circles.begin(); i != _circles.end(); ++i)
@@ -97,7 +100,7 @@ void CircleBatcher::endBatch(NGShader &shader)
 			offset += numPoints;
 		}
 
-		shader.unbind();
+		shader->unbind();
 	}
 }
 

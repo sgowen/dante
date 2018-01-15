@@ -31,6 +31,7 @@ class NGTexture;
 class Box2DDebugRenderer;
 class Font;
 class World;
+class NGLightingShader;
 
 #define NUM_SPRITE_BATCHERS 8
 #define NUM_CAMERAS 4
@@ -60,16 +61,16 @@ private:
     NGRect* _camBounds[NUM_CAMERAS];
     NGShader* _textureNGShader;
     NGShader* _colorNGShader;
+    NGLightingShader* _lightingNGShader;
     NGShader* _framebufferToScreenNGShader;
     int _framebufferIndex;
     
-    void beginFrame();
     void setFramebuffer(int framebufferIndex);
     void updateCamera();
-    void renderBackground();
-    void renderWorld(int flags);
-    void renderLayers(World* world);
-    void renderEntities(World* world, bool isServer);
+    void renderLayers(World* world, bool isNormals);
+    void renderWorld();
+    void renderEntities(World* world, bool isServer, bool isNormals);
+    void renderBox2D();
     void renderUI(int engineState);
     void renderText(const char* inStr, float x, float y, const Color& inColor, int justification = FONT_ALIGN_LEFT);
     void endFrame();
