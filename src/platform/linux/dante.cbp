@@ -431,6 +431,8 @@
 		<Unit filename="../../core/framework/graphics/portable/NGGeometryShader.cpp" />
 		<Unit filename="../../core/framework/graphics/portable/NGGeometryShader.h" />
 		<Unit filename="../../core/framework/graphics/portable/NGGraphics.h" />
+		<Unit filename="../../core/framework/graphics/portable/NGLightingShader.cpp" />
+		<Unit filename="../../core/framework/graphics/portable/NGLightingShader.h" />
 		<Unit filename="../../core/framework/graphics/portable/NGPrimitiveType.h" />
 		<Unit filename="../../core/framework/graphics/portable/NGShader.cpp" />
 		<Unit filename="../../core/framework/graphics/portable/NGShader.h" />
@@ -508,6 +510,8 @@
 		<Unit filename="../../core/framework/math/Triangle.h" />
 		<Unit filename="../../core/framework/math/Vector2.cpp" />
 		<Unit filename="../../core/framework/math/Vector2.h" />
+		<Unit filename="../../core/framework/math/Vector3.cpp" />
+		<Unit filename="../../core/framework/math/Vector3.h" />
 		<Unit filename="../../core/framework/network/client/ClientHelper.cpp" />
 		<Unit filename="../../core/framework/network/client/ClientHelper.h" />
 		<Unit filename="../../core/framework/network/client/NetworkManagerClient.cpp" />
