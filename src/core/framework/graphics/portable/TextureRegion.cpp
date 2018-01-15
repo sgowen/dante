@@ -10,7 +10,7 @@
 
 #include "framework/graphics/portable/TextureRegion.h"
 
-TextureRegion::TextureRegion(std::string textureName, int x, int y, int regionWidth, int regionHeight, int textureWidth, int textureHeight) : _textureName(textureName)
+TextureRegion::TextureRegion(std::string textureName, int x, int y, int regionWidth, int regionHeight, int textureWidth, int textureHeight) : _textureName(textureName), _normalMapName("n_" + _textureName)
 {
     _x = (double) x;
     _y = (double) y;
@@ -28,4 +28,9 @@ TextureRegion::TextureRegion(std::string textureName, int x, int y, int regionWi
 std::string& TextureRegion::getTextureName()
 {
     return _textureName;
+}
+
+std::string& TextureRegion::getNormalMapName()
+{
+    return _normalMapName;
 }

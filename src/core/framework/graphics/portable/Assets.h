@@ -30,7 +30,7 @@ public:
     void initWithJson(const char* json);
     TextureRegion& findTextureRegion(std::string key, uint16_t stateTime);
     TextureRegion& findTextureRegion(std::string key);
-    NGAnimation& findNGAnimation(std::string key);
+    NGAnimation& findAnimation(std::string key);
     std::vector<NGTextureDesc*>& getTextureDescriptors();
     std::map<std::string, TextureRegion*>& getTextureRegionMap();
     std::map<std::string, NGAnimation*>& getAnimationsMap();

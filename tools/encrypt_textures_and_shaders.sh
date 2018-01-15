@@ -20,6 +20,8 @@ $XOREncryptDecryptTool shader_002_vert.vsh shader_002_vert.ngs
 echo "."
 $XOREncryptDecryptTool shader_003_vert.vsh shader_003_vert.ngs
 echo "."
+$XOREncryptDecryptTool shader_004_vert.vsh shader_004_vert.ngs
+echo "."
 
 echo "Encrypting Textures..."
 

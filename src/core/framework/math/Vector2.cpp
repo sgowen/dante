@@ -224,13 +224,3 @@ float Vector2::getY() const
 {
     return _y;
 }
-
-float& Vector2::getXRef()
-{
-    return _x;
-}
-
-float& Vector2::getYRef()
-{
-    return _y;
-}

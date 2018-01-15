@@ -13,6 +13,8 @@
 
 class JsonFile;
 
+#define NG_CFG (Config::getInstance())
+
 class Config
 {
 public:

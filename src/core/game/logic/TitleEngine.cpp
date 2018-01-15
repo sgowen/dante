@@ -47,7 +47,6 @@
 #include "game/logic/GameInputManager.h"
 #include "game/logic/StudioEngine.h"
 #include "game/logic/PooledObjectsManager.h"
-#include <framework/util/Config.h>
 
 #ifdef NG_STEAM
 #include "framework/network/steam/NGSteamClientHelper.h"
@@ -140,8 +139,6 @@ void TitleEngine::exit(Engine* engine)
 void TitleEngine::createDeviceDependentResources()
 {
     _renderer->createDeviceDependentResources();
-    
-    Config::getInstance()->initWithJsonFile("game.cfg");
 }
 
 void TitleEngine::createWindowSizeDependentResources(int screenWidth, int screenHeight, int renderWidth, int renderHeight, int cursorWidth, int cursorHeight)

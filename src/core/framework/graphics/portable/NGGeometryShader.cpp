@@ -31,9 +31,6 @@ void NGGeometryShader::bind(void* vertices, void* data1, void* data2)
     assert(vertices != NULL);
     
     _rendererHelper.bindNGShader(_shaderProgramWrapper);
-    
-    _rendererHelper.useNormalBlending();
-    
     _rendererHelper.bindMatrix(_uniforms[0]);
     
     std::vector<COLOR_VERTEX>* colorVertices = static_cast<std::vector<COLOR_VERTEX>* >(vertices);
@@ -43,6 +40,5 @@ void NGGeometryShader::bind(void* vertices, void* data1, void* data2)
 void NGGeometryShader::unbind()
 {
     _rendererHelper.unmapColorVertices();
-    
     _rendererHelper.bindNGShader(NULL);
 }

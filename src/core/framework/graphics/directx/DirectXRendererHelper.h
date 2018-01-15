@@ -29,7 +29,10 @@ public:
     virtual void bindToScreenFramebuffer();
     virtual void useNormalBlending();
     virtual void useScreenBlending();
+    virtual void useNoBlending();
     virtual void bindMatrix(NGShaderUniformInput* uniform);
+    virtual void bindVector3(NGShaderUniformInput* uniform, Vector3& inValue);
+    virtual void bindColor(NGShaderUniformInput* uniform, Color& inValue);
     virtual void bindTexture(NGTextureSlot textureSlot, NGTexture* texture, NGShaderUniformInput* uniform = NULL);
     virtual void bindNGShader(ShaderProgramWrapper* shaderProgramWrapper);
     virtual void mapScreenVertices(std::vector<NGShaderVarInput*>& inputLayout, std::vector<SCREEN_VERTEX>& vertices);
@@ -62,7 +65,7 @@ private:
 	std::vector<TEXTURE_VERTEX> _textureVertices;
 	std::vector<COLOR_VERTEX> _colorVertices;
 	std::vector<SCREEN_VERTEX> _screenVertices;
-	int _framebufferIndex;
+	int _fbIndex;
     
     template <typename T>
     void mapVertices(Microsoft::WRL::ComPtr<ID3D11Buffer>& vertexBuffer, std::vector<T>& vertices)

@@ -93,7 +93,7 @@ _textureNGShader(new NGTextureShader(*_rendererHelper, "shader_003_vert.ngs", "s
 _colorNGShader(new NGGeometryShader(*_rendererHelper, "shader_001_vert.ngs", "shader_001_frag.ngs")),
 _framebufferToScreenNGShader(new NGFramebufferToScreenShader(*_rendererHelper, "shader_002_vert.ngs", "shader_002_frag.ngs")),
 _font(new Font("texture_001.ngt", 0, 0, 16, 64, 75, TEXTURE_SIZE_1024)),
-_framebufferIndex(0)
+_fbIndex(0)
 {
     // Empty
 }
@@ -143,7 +143,7 @@ void StudioRenderer::releaseDeviceDependentResources()
 
 void StudioRenderer::render(int flags)
 {
-    beginFrame();
+    setFramebuffer(0);
     
     if (_textureManager->ensureTextures())
     {
@@ -155,27 +155,21 @@ void StudioRenderer::render(int flags)
         
         renderText("'ESC' to exit",                         CAM_WIDTH / 2, CAM_HEIGHT - 9, Color::WHITE, FONT_ALIGN_CENTERED);
         
-        _spriteBatcher->endBatch(_textureManager->getTextureWithName("texture_000.ngt"), *_textureNGShader);
+        _rendererHelper->useNormalBlending();
+        _spriteBatcher->endBatch(_textureNGShader, _textureManager->getTextureWithName("texture_000.ngt"));
     }
     
     endFrame();
 }
 
-void StudioRenderer::beginFrame()
-{
-    _textureManager->handleAsyncTextureLoads();
-    
-    setFramebuffer(0);
-}
-
-void StudioRenderer::setFramebuffer(int framebufferIndex)
+void StudioRenderer::setFramebuffer(int framebufferIndex, float r, float g, float b, float a)
 {
     assert(framebufferIndex >= 0);
     
-    _framebufferIndex = framebufferIndex;
+    _fbIndex = framebufferIndex;
     
-    _rendererHelper->bindToOffscreenFramebuffer(_framebufferIndex);
-    _rendererHelper->clearFramebufferWithColor(0, 0, 0, 1);
+    _rendererHelper->bindToOffscreenFramebuffer(_fbIndex);
+    _rendererHelper->clearFramebufferWithColor(r, g, b, a);
 }
 
 void StudioRenderer::renderText(const char* inStr, float x, float y, const Color& inColor, int justification)
@@ -191,7 +185,7 @@ void StudioRenderer::renderText(const char* inStr, float x, float y, const Color
 
 void StudioRenderer::endFrame()
 {
-    assert(_framebufferIndex >= 0);
+    assert(_fbIndex >= 0);
     
     _rendererHelper->bindToScreenFramebuffer();
     _rendererHelper->clearFramebufferWithColor(0, 0, 0, 1);
@@ -203,7 +197,9 @@ void StudioRenderer::endFrame()
     screenVertices.push_back(SCREEN_VERTEX(1, 1));
     screenVertices.push_back(SCREEN_VERTEX(1, -1));
     
-    _framebufferToScreenNGShader->bind(&screenVertices, _rendererHelper->getFramebuffer(_framebufferIndex));
+    _framebufferToScreenNGShader->bind(&screenVertices, _rendererHelper->getFramebuffer(_fbIndex));
     _rendererHelper->drawIndexed(NGPrimitiveType_Triangles, 0, INDICES_PER_RECTANGLE);
     _framebufferToScreenNGShader->unbind();
+    
+    _rendererHelper->useNoBlending();
 }

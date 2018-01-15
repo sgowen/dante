@@ -34,11 +34,7 @@ void NGTextureShader::bind(void* vertices, void* data1, void* data2)
     assert(data1 != NULL);
     
     _rendererHelper.bindNGShader(_shaderProgramWrapper);
-    
-    _rendererHelper.useNormalBlending();
-    
     _rendererHelper.bindMatrix(_uniforms[0]);
-    
     _rendererHelper.bindTexture(NGTextureSlot_ZERO, static_cast<NGTexture*>(data1), _uniforms[1]);
     
     std::vector<TEXTURE_VERTEX>* textureVertices = static_cast<std::vector<TEXTURE_VERTEX>* >(vertices);
@@ -48,8 +44,6 @@ void NGTextureShader::bind(void* vertices, void* data1, void* data2)
 void NGTextureShader::unbind()
 {
     _rendererHelper.unmapTextureVertices();
-    
     _rendererHelper.bindTexture(NGTextureSlot_ZERO, NULL);
-    
     _rendererHelper.bindNGShader(NULL);
 }

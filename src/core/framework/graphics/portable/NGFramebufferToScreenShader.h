@@ -17,7 +17,6 @@ public:
     NGFramebufferToScreenShader(RendererHelper& inRendererHelper, const char* vertexShaderName, const char* fragmentShaderName);
     
     virtual void bind(void* vertices, void* data1 = NULL, void* data2 = NULL);
-    
     virtual void unbind();
 };
 

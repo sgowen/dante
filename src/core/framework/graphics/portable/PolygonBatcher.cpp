@@ -75,11 +75,13 @@ void PolygonBatcher::renderPolygon(const b2Vec2* vertices, int vertexCount, Colo
     }
 }
 
-void PolygonBatcher::endBatch(NGShader &shader)
+void PolygonBatcher::endBatch(NGShader* shader)
 {
+    assert(shader);
+    
     if (_numQuads > 0)
     {
-        shader.bind(&_quadVertices);
+        shader->bind(&_quadVertices);
         
         if (_isFill)
         {
@@ -93,12 +95,12 @@ void PolygonBatcher::endBatch(NGShader &shader)
             }
         }
         
-        shader.unbind();
+        shader->unbind();
     }
     
     if (_numTriangles > 0)
     {
-        shader.bind(&_triangleVertices);
+        shader->bind(&_triangleVertices);
         
         if (_isFill)
         {
@@ -109,6 +111,6 @@ void PolygonBatcher::endBatch(NGShader &shader)
             _rendererHelper->draw(NGPrimitiveType_LineStrip, 0, VERTICES_PER_TRIANGLE * _numTriangles);
         }
         
-        shader.unbind();
+        shader->unbind();
     }
 }

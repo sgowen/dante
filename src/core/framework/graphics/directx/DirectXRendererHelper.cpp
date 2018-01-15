@@ -15,6 +15,8 @@
 #include "framework/graphics/portable/ShaderProgramWrapper.h"
 #include "framework/graphics/portable/NGShaderUniformInput.h"
 #include "framework/graphics/portable/NGShaderVarInput.h"
+#include <framework/math/Vector3.h>
+#include <framework/graphics/portable/Color.h>
 
 #include "framework/util/NGSTDUtil.h"
 #include "PlatformHelpers.h"
@@ -46,7 +48,7 @@ ID3D11DeviceContext* DirectXRendererHelper::getD3dContext()
     return s_d3dContext;
 }
 
-DirectXRendererHelper::DirectXRendererHelper() : RendererHelper(), _framebufferIndex(0)
+DirectXRendererHelper::DirectXRendererHelper() : RendererHelper(), _fbIndex(0)
 {
 	// Empty
 }
@@ -89,16 +91,16 @@ void DirectXRendererHelper::releaseDeviceDependentResources()
 
 NGTexture* DirectXRendererHelper::getFramebuffer(int index)
 {
-    _framebuffer->textureWrapper = _framebuffers[index];
+    _framebufferWrappers[index]->textureWrapper = _framebuffers[index];
     
-    return _framebuffer;
+    return _framebufferWrappers[index];
 }
 
 void DirectXRendererHelper::bindToOffscreenFramebuffer(int index)
 {
     s_d3dContext->OMSetRenderTargets(1, &_offscreenRenderTargetViews[index], NULL);
     
-	_framebufferIndex = index;
+	_fbIndex = index;
 }
 
 void DirectXRendererHelper::clearFramebufferWithColor(float r, float g, float b, float a)
@@ -106,13 +108,13 @@ void DirectXRendererHelper::clearFramebufferWithColor(float r, float g, float b,
     float color[] = { r, g, b, a };
 
     ID3D11RenderTargetView * targets[1] = {};
-    if (_framebufferIndex < 0)
+    if (_fbIndex < 0)
     {
 		targets[0] = s_d3dRenderTargetView;
     }
     else
     {
-        targets[0] = _offscreenRenderTargetViews[_framebufferIndex];
+        targets[0] = _offscreenRenderTargetViews[_fbIndex];
     }
     
 	s_d3dContext->ClearRenderTargetView(targets[0], color);
@@ -123,7 +125,7 @@ void DirectXRendererHelper::bindToScreenFramebuffer()
     ID3D11RenderTargetView *const targets[1] = { s_d3dRenderTargetView };
 	s_d3dContext->OMSetRenderTargets(1, targets, NULL);
     
-    _framebufferIndex = -1;
+    _fbIndex = -1;
 }
 
 void DirectXRendererHelper::useNormalBlending()
@@ -136,6 +138,11 @@ void DirectXRendererHelper::useScreenBlending()
     s_d3dContext->OMSetBlendState(_screenBlendState.Get(), 0, 0xffffffff);
 }
 
+void DirectXRendererHelper::useNoBlending()
+{
+    s_d3dContext->OMSetBlendState(NULL, 0, 0xffffffff);
+}
+
 void DirectXRendererHelper::bindMatrix(NGShaderUniformInput* uniform)
 {
     UNUSED(uniform);
@@ -144,6 +151,16 @@ void DirectXRendererHelper::bindMatrix(NGShaderUniformInput* uniform)
     
     // send the final matrix to video memory
 	s_d3dContext->UpdateSubresource(uniform->_constantbuffer.Get(), 0, 0, &_matrix, 0, 0);
+}
+
+void DirectXRendererHelper::bindVector3(NGShaderUniformInput* uniform, Vector3& inValue)
+{
+    /// TODO
+}
+
+void DirectXRendererHelper::bindColor(NGShaderUniformInput* uniform, Color& inValue)
+{
+    /// TODO
 }
 
 void DirectXRendererHelper::bindTexture(NGTextureSlot textureSlot, NGTexture* texture, NGShaderUniformInput* uniform)

@@ -25,10 +25,8 @@ public:
     ~LineBatcher();
     
     void beginBatch();
-    
     void renderLine(Line &line, Color &c);
-    
-    void endBatch(NGShader &shader);
+    void endBatch(NGShader* shader);
     
 private:
     RendererHelper* _rendererHelper;

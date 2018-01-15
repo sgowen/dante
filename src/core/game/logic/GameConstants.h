@@ -43,6 +43,7 @@
 
 #define CAM_WIDTH 64.0f // meters
 #define CAM_HEIGHT 36.0f // meters
+#define GAME_HEIGHT CAM_HEIGHT * 20 // meters
 
 //// Non-Steam ////
 

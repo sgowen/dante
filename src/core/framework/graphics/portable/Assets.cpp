@@ -199,7 +199,7 @@ TextureRegion& Assets::findTextureRegion(std::string key)
     return *tr;
 }
 
-NGAnimation& Assets::findNGAnimation(std::string key)
+NGAnimation& Assets::findAnimation(std::string key)
 {
     auto q = _animations.find(key);
     

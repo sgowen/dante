@@ -71,7 +71,7 @@ void Box2DDebugRenderer::DrawPoint(const b2Vec2& p, float32 size, const b2Color&
     // TODO
 }
 
-void Box2DDebugRenderer::render(b2World* world, NGShader& shaderProgram)
+void Box2DDebugRenderer::render(b2World* world, NGShader* shader)
 {
     assert(world);
     
@@ -85,8 +85,8 @@ void Box2DDebugRenderer::render(b2World* world, NGShader& shaderProgram)
     
     world->DrawDebugData();
     
-    _boundsPolygonBatcher.endBatch(shaderProgram);
-    _fillPolygonBatcher.endBatch(shaderProgram);
-    _lineBatcher.endBatch(shaderProgram);
-    _circleBatcher.endBatch(shaderProgram);
+    _boundsPolygonBatcher.endBatch(shader);
+    _fillPolygonBatcher.endBatch(shader);
+    _lineBatcher.endBatch(shader);
+    _circleBatcher.endBatch(shader);
 }

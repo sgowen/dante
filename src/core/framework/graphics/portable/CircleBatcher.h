@@ -25,11 +25,9 @@ public:
     ~CircleBatcher();
     
     void beginBatch();
-    
     void renderCircle(Circle &circle, Color &c);
     void renderPartialCircle(Circle &circle, int arcDegrees, Color &c);
-    
-    void endBatch(NGShader &shader);
+    void endBatch(NGShader* shader);
     
 private:
     RendererHelper* _rendererHelper;

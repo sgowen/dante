@@ -55,10 +55,9 @@ private:
     NGShader* _textureNGShader;
     NGShader* _colorNGShader;
     NGShader* _framebufferToScreenNGShader;
-    int _framebufferIndex;
+    int _fbIndex;
     
-    void beginFrame();
-    void setFramebuffer(int framebufferIndex);
+    void setFramebuffer(int framebufferIndex, float r = 0, float g = 0, float b = 0, float a = 0);
     void renderMainMenuSteamOffText();
     void renderMainMenuSteamOnText();
     void renderStartingServerText();

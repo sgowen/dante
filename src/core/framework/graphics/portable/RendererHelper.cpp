@@ -12,16 +12,26 @@
 
 #include "framework/graphics/portable/NGTexture.h"
 #include "framework/graphics/portable/TextureWrapper.h"
+#include <framework/math/Vector3.h>
+#include <framework/graphics/portable/Color.h>
 
 #include <framework/util/FrameworkConstants.h>
+#include <framework/util/NGSTDUtil.h>
 
-RendererHelper::RendererHelper() : _framebuffer(new NGTexture("framebuffer", NULL, false)), _screenWidth(1), _screenHeight(1), _renderWidth(1), _renderHeight(1)
+RendererHelper::RendererHelper() : _screenWidth(1), _screenHeight(1), _renderWidth(1), _renderHeight(1)
 {
+    for (int i = 0; i < NUM_FRAMEBUFFERS; ++i)
+    {
+        _framebufferWrappers.push_back(new NGTexture("framebuffer", NULL, false));
+    }
+    
     generateIndices(MAX_BATCH_SIZE);
 }
 
 RendererHelper::~RendererHelper()
 {
+    NGSTDUtil::cleanUpVectorOfPointers(_framebufferWrappers);
+    
     _indices.clear();
 }
 

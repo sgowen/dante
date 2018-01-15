@@ -14,6 +14,8 @@
 #include "framework/graphics/portable/TextureWrapper.h"
 #include "framework/graphics/portable/ShaderProgramWrapper.h"
 #include "framework/graphics/portable/NGShaderUniformInput.h"
+#include <framework/math/Vector3.h>
+#include <framework/graphics/portable/Color.h>
 
 #include "framework/util/NGSTDUtil.h"
 
@@ -53,9 +55,9 @@ void OpenGLRendererHelper::releaseDeviceDependentResources()
 
 NGTexture* OpenGLRendererHelper::getFramebuffer(int index)
 {
-    _framebuffer->textureWrapper = _framebuffers[index];
+    _framebufferWrappers[index]->textureWrapper = _framebuffers[index];
 
-    return _framebuffer;
+    return _framebufferWrappers[index];
 }
 
 void OpenGLRendererHelper::bindToOffscreenFramebuffer(int index)
@@ -95,9 +97,24 @@ void OpenGLRendererHelper::useScreenBlending()
     glEnable(GL_BLEND);
 }
 
+void OpenGLRendererHelper::useNoBlending()
+{
+    glDisable(GL_BLEND);
+}
+
 void OpenGLRendererHelper::bindMatrix(NGShaderUniformInput* uniform)
 {
     glUniformMatrix4fv(uniform->_attribute, 1, GL_FALSE, (GLfloat*)_matrix);
+}
+
+void OpenGLRendererHelper::bindVector3(NGShaderUniformInput* uniform, Vector3& inValue)
+{
+    glUniform3f(uniform->_attribute, inValue.getX(), inValue.getY(), inValue.getZ());
+}
+
+void OpenGLRendererHelper::bindColor(NGShaderUniformInput* uniform, Color& inValue)
+{
+    glUniform4f(uniform->_attribute, inValue.red, inValue.green, inValue.blue, inValue.alpha);
 }
 
 inline int slotIndexForTextureSlot(NGTextureSlot textureSlot)
@@ -136,11 +153,6 @@ void OpenGLRendererHelper::bindTexture(NGTextureSlot textureSlot, NGTexture* tex
 void OpenGLRendererHelper::bindNGShader(ShaderProgramWrapper* shaderProgramWrapper)
 {
     glUseProgram(shaderProgramWrapper == NULL ? 0 : shaderProgramWrapper->_programObjectId);
-    
-    if (!shaderProgramWrapper)
-    {
-        glDisable(GL_BLEND);
-    }
 }
 
 void OpenGLRendererHelper::mapTextureVertices(std::vector<NGShaderVarInput*>& inputLayout, std::vector<TEXTURE_VERTEX>& vertices)

@@ -18,6 +18,8 @@ ECHO .
 ECHO .
 %XOREncryptDecryptTool% shader_003_vert.cso shader_003_vert.ngs
 ECHO .
+%XOREncryptDecryptTool% shader_004_vert.cso shader_004_vert.ngs
+ECHO .
 
 del /s *.cso
 
