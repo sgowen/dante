@@ -4,7 +4,7 @@ XOREncryptDecryptTool="$1/tools/$2"
 
 echo "Encrypting Shaders..."
 
-cd "$1/src/core/framework/graphics/opengl/shader"
+cd "$1/assets/shader"
 
 $XOREncryptDecryptTool shader_001_frag.fsh shader_001_frag.ngs
 echo "."

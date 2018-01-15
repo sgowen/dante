@@ -2,7 +2,7 @@ ECHO Encrypting Shaders...
 
 set XOREncryptDecryptTool="%cd%/XOREncryptDecrypt.exe"
 
-cd ..\src\platform\windows\assets\shaders
+cd ..\shaders
 
 %XOREncryptDecryptTool% shader_001_frag.cso shader_001_frag.ngs
 ECHO .

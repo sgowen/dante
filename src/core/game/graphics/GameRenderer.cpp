@@ -8,7 +8,7 @@
 
 #include "pch.h"
 
-#include "game/graphics/portable/GameRenderer.h"
+#include "game/graphics/GameRenderer.h"
 
 #include "framework/graphics/portable/TextureManager.h"
 #include "framework/graphics/portable/Font.h"

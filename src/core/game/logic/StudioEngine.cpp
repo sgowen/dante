@@ -11,7 +11,7 @@
 #include "game/logic/StudioEngine.h"
 
 #include "framework/file/portable/JsonFile.h"
-#include <game/graphics/portable/StudioRenderer.h>
+#include <game/graphics/StudioRenderer.h>
 
 #include "game/logic/Server.h"
 #include "game/logic/GameConstants.h"
