@@ -264,7 +264,8 @@ bool NGSteamP2PAuthPlayer::isAuthOk()
                 char rgch[128];
                 sprintf(rgch, "P2P:: No ticket received for account=%d\n", _steamID.GetAccountID());
                 LOG(rgch);
-                return false;
+                /// TODO, fixme
+                //return false;
             }
         }
     }
