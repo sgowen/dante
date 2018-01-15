@@ -101,7 +101,7 @@ _fbIndex(0)
 StudioRenderer::~StudioRenderer()
 {
     releaseDeviceDependentResources();
-    
+
     delete _textureManager;
     delete _rendererHelper;
     delete _spriteBatcher;
@@ -120,7 +120,7 @@ void StudioRenderer::createDeviceDependentResources()
 {
     _rendererHelper->createDeviceDependentResources();
     _textureManager->createDeviceDependentResources();
-    
+
     _textureNGShader->load(*_shaderProgramLoader);
     _colorNGShader->load(*_shaderProgramLoader);
     _framebufferToScreenNGShader->load(*_shaderProgramLoader);
@@ -135,7 +135,7 @@ void StudioRenderer::releaseDeviceDependentResources()
 {
     _rendererHelper->releaseDeviceDependentResources();
     _textureManager->releaseDeviceDependentResources();
-    
+
     _textureNGShader->unload(*_shaderProgramLoader);
     _colorNGShader->unload(*_shaderProgramLoader);
     _framebufferToScreenNGShader->unload(*_shaderProgramLoader);
@@ -143,31 +143,31 @@ void StudioRenderer::releaseDeviceDependentResources()
 
 void StudioRenderer::render(int flags)
 {
-    setFramebuffer(0);
-    
+    setFramebuffer(0, 0, 0, 0, 1);
+    _rendererHelper->useNormalBlending();
+
     if (_textureManager->ensureTextures())
     {
         _rendererHelper->updateMatrix(0, CAM_WIDTH, 0, CAM_HEIGHT);
-        
+
         _spriteBatcher->beginBatch();
-        
+
         renderText("Awwww yeah, prepare for the Studio!!!", CAM_WIDTH / 2, CAM_HEIGHT - 2, Color::WHITE, FONT_ALIGN_CENTERED);
-        
+
         renderText("'ESC' to exit",                         CAM_WIDTH / 2, CAM_HEIGHT - 9, Color::WHITE, FONT_ALIGN_CENTERED);
-        
-        _rendererHelper->useNormalBlending();
+
         _spriteBatcher->endBatch(_textureNGShader, _textureManager->getTextureWithName("texture_000.ngt"));
     }
-    
+
     endFrame();
 }
 
 void StudioRenderer::setFramebuffer(int framebufferIndex, float r, float g, float b, float a)
 {
     assert(framebufferIndex >= 0);
-    
+
     _fbIndex = framebufferIndex;
-    
+
     _rendererHelper->bindToOffscreenFramebuffer(_fbIndex);
     _rendererHelper->clearFramebufferWithColor(r, g, b, a);
 }
@@ -177,29 +177,30 @@ void StudioRenderer::renderText(const char* inStr, float x, float y, const Color
     Color fontColor = Color(inColor.red, inColor.green, inColor.blue, inColor.alpha);
     float fgWidth = CAM_WIDTH / 60;
     float fgHeight = fgWidth * 1.171875f;
-    
+
     std::string text(inStr);
-    
+
     _font->renderText(*_spriteBatcher, text, x, y, fgWidth, fgHeight, fontColor, justification);
 }
 
 void StudioRenderer::endFrame()
 {
     assert(_fbIndex >= 0);
-    
+
     _rendererHelper->bindToScreenFramebuffer();
     _rendererHelper->clearFramebufferWithColor(0, 0, 0, 1);
-    
+    _rendererHelper->useScreenBlending();
+
     static std::vector<SCREEN_VERTEX> screenVertices;
     screenVertices.clear();
     screenVertices.push_back(SCREEN_VERTEX(-1, -1));
     screenVertices.push_back(SCREEN_VERTEX(-1, 1));
     screenVertices.push_back(SCREEN_VERTEX(1, 1));
     screenVertices.push_back(SCREEN_VERTEX(1, -1));
-    
+
     _framebufferToScreenNGShader->bind(&screenVertices, _rendererHelper->getFramebuffer(_fbIndex));
     _rendererHelper->drawIndexed(NGPrimitiveType_Triangles, 0, INDICES_PER_RECTANGLE);
     _framebufferToScreenNGShader->unbind();
-    
+
     _rendererHelper->useNoBlending();
 }

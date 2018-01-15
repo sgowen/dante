@@ -12,6 +12,7 @@
 #include <framework/graphics/portable/VertexProgramInput.h>
 
 #include <vector>
+#include <cstddef>
 
 class RendererHelper;
 class NGTexture;

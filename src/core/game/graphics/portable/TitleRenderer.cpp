@@ -102,7 +102,7 @@ _fbIndex(0)
 TitleRenderer::~TitleRenderer()
 {
     releaseDeviceDependentResources();
-    
+
     delete _textureManager;
     delete _rendererHelper;
     delete _spriteBatcher;
@@ -121,7 +121,7 @@ void TitleRenderer::createDeviceDependentResources()
 {
     _rendererHelper->createDeviceDependentResources();
     _textureManager->createDeviceDependentResources();
-    
+
     _textureNGShader->load(*_shaderProgramLoader);
     _colorNGShader->load(*_shaderProgramLoader);
     _framebufferToScreenNGShader->load(*_shaderProgramLoader);
@@ -136,7 +136,7 @@ void TitleRenderer::releaseDeviceDependentResources()
 {
     _rendererHelper->releaseDeviceDependentResources();
     _textureManager->releaseDeviceDependentResources();
-    
+
     _textureNGShader->unload(*_shaderProgramLoader);
     _colorNGShader->unload(*_shaderProgramLoader);
     _framebufferToScreenNGShader->unload(*_shaderProgramLoader);
@@ -144,14 +144,15 @@ void TitleRenderer::releaseDeviceDependentResources()
 
 void TitleRenderer::render(int flags)
 {
-    setFramebuffer(0);
-    
+    setFramebuffer(0, 0, 0, 0, 1);
+    _rendererHelper->useNormalBlending();
+
     if (_textureManager->ensureTextures())
     {
         _rendererHelper->updateMatrix(0, CAM_WIDTH, 0, CAM_HEIGHT);
-        
+
         _spriteBatcher->beginBatch();
-        
+
         switch (flags)
         {
             case TitleEngineState_SteamOff:
@@ -172,19 +173,19 @@ void TitleRenderer::render(int flags)
             default:
                 break;
         }
-        _rendererHelper->useNormalBlending();
+
         _spriteBatcher->endBatch(_textureNGShader, _textureManager->getTextureWithName("texture_000.ngt"));
     }
-    
+
     endFrame();
 }
 
 void TitleRenderer::setFramebuffer(int framebufferIndex, float r, float g, float b, float a)
 {
     assert(framebufferIndex >= 0);
-    
+
     _fbIndex = framebufferIndex;
-    
+
     _rendererHelper->bindToOffscreenFramebuffer(_fbIndex);
     _rendererHelper->clearFramebufferWithColor(r, g, b, a);
 }
@@ -196,11 +197,11 @@ void TitleRenderer::renderMainMenuSteamOffText()
     {
         renderText("'E' to enter Studio",   CAM_WIDTH / 2, CAM_HEIGHT - 2, Color::WHITE, FONT_ALIGN_CENTERED);
     }
-    
+
     renderText("'A' to activate Steam",     CAM_WIDTH / 2, CAM_HEIGHT - 4, Color::WHITE, FONT_ALIGN_CENTERED);
     renderText("'S' to start local server", CAM_WIDTH / 2, CAM_HEIGHT - 6, Color::WHITE, FONT_ALIGN_CENTERED);
     renderText("'J' to join server by IP",  CAM_WIDTH / 2, CAM_HEIGHT - 8, Color::WHITE, FONT_ALIGN_CENTERED);
-    
+
     renderText("'ESC' to exit game", CAM_WIDTH / 2, 4, Color::WHITE, FONT_ALIGN_CENTERED);
 }
 
@@ -211,12 +212,12 @@ void TitleRenderer::renderMainMenuSteamOnText()
     {
         renderText("'E' to enter Studio",                 CAM_WIDTH / 2, CAM_HEIGHT - 2, Color::WHITE, FONT_ALIGN_CENTERED);
     }
-    
+
     renderText("'D' to deactivate Steam",                 CAM_WIDTH / 2, CAM_HEIGHT - 4, Color::WHITE, FONT_ALIGN_CENTERED);
     renderText("'S' to start steam server",               CAM_WIDTH / 2, CAM_HEIGHT - 6, Color::WHITE, FONT_ALIGN_CENTERED);
     renderText("'L' to refresh list of LAN servers",      CAM_WIDTH / 2, CAM_HEIGHT - 8, Color::WHITE, FONT_ALIGN_CENTERED);
     renderText("'I' to refresh list of Internet servers", CAM_WIDTH / 2, CAM_HEIGHT - 10, Color::WHITE, FONT_ALIGN_CENTERED);
-    
+
 #ifdef NG_STEAM
     std::vector<NGSteamGameServer> gameServers = NG_STEAM_GAME_SERVICES->getGameServers();
     int index = 0;
@@ -224,11 +225,11 @@ void TitleRenderer::renderMainMenuSteamOnText()
     {
         int serverNumber = index + 1;
         renderText(StringUtil::format("'%i' %s", serverNumber, gameServer.getDisplayString()).c_str(), CAM_WIDTH / 2, CAM_HEIGHT - 13.0f - (index * 0.5f), Color::WHITE, FONT_ALIGN_CENTERED);
-        
+
         ++index;
     }
 #endif
-    
+
     renderText("'ESC' to exit game", CAM_WIDTH / 2, 4, Color::WHITE, FONT_ALIGN_CENTERED);
 }
 
@@ -240,14 +241,14 @@ void TitleRenderer::renderStartingServerText()
 void TitleRenderer::renderEnterUsernameText()
 {
     renderText("Enter Username to join, 'ESC' to exit", CAM_WIDTH / 2, CAM_HEIGHT - 4, Color::WHITE, FONT_ALIGN_CENTERED);
-    
+
     renderText(TitleInputManager::getInstance()->getLiveInputRef().c_str(), CAM_WIDTH / 2, CAM_HEIGHT - 8, Color::WHITE, FONT_ALIGN_CENTERED);
 }
 
 void TitleRenderer::renderJoiningLocalServerByIPText()
 {
     renderText("Enter Server Address to join, 'ESC' to exit", CAM_WIDTH / 2, CAM_HEIGHT - 4, Color::WHITE, FONT_ALIGN_CENTERED);
-    
+
     renderText(TitleInputManager::getInstance()->getLiveInputRef().c_str(), CAM_WIDTH / 2, CAM_HEIGHT - 8, Color::WHITE, FONT_ALIGN_CENTERED);
 }
 
@@ -256,29 +257,30 @@ void TitleRenderer::renderText(const char* inStr, float x, float y, const Color&
     Color fontColor = Color(inColor.red, inColor.green, inColor.blue, inColor.alpha);
     float fgWidth = CAM_WIDTH / 60;
     float fgHeight = fgWidth * 1.171875f;
-    
+
     std::string text(inStr);
-    
+
     _font->renderText(*_spriteBatcher, text, x, y, fgWidth, fgHeight, fontColor, justification);
 }
 
 void TitleRenderer::endFrame()
 {
     assert(_fbIndex >= 0);
-    
+
     _rendererHelper->bindToScreenFramebuffer();
     _rendererHelper->clearFramebufferWithColor(0, 0, 0, 1);
-    
+    _rendererHelper->useScreenBlending();
+
     static std::vector<SCREEN_VERTEX> screenVertices;
     screenVertices.clear();
     screenVertices.push_back(SCREEN_VERTEX(-1, -1));
     screenVertices.push_back(SCREEN_VERTEX(-1, 1));
     screenVertices.push_back(SCREEN_VERTEX(1, 1));
     screenVertices.push_back(SCREEN_VERTEX(1, -1));
-    
+
     _framebufferToScreenNGShader->bind(&screenVertices, _rendererHelper->getFramebuffer(_fbIndex));
     _rendererHelper->drawIndexed(NGPrimitiveType_Triangles, 0, INDICES_PER_RECTANGLE);
     _framebufferToScreenNGShader->unbind();
-    
+
     _rendererHelper->useNoBlending();
 }
