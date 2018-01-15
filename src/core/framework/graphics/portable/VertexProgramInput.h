@@ -9,6 +9,8 @@
 #ifndef __noctisgames__VertexProgramInput__
 #define __noctisgames__VertexProgramInput__
 
+typedef float vec2[2];
+typedef float vec3[3];
 typedef float vec4[4];
 typedef vec4 mat4x4[4];
 

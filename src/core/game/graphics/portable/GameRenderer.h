@@ -12,8 +12,10 @@
 #include "framework/graphics/portable/Renderer.h"
 
 #include "framework/graphics/portable/FontAlign.h"
+#include <framework/graphics/portable/VertexProgramInput.h>
 
 #include <string>
+#include <vector>
 
 class TextureManager;
 class SpriteBatcher;
@@ -64,6 +66,7 @@ private:
     NGLightingShader* _lightingNGShader;
     NGShader* _framebufferToScreenNGShader;
     int _fbIndex;
+    std::vector<SCREEN_VERTEX> _screenVertices;
     
     void setFramebuffer(int framebufferIndex, float r = 0, float g = 0, float b = 0, float a = 0);
     void updateCamera();

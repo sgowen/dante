@@ -12,9 +12,6 @@
 
 #include "framework/graphics/portable/NGTexture.h"
 #include "framework/graphics/portable/TextureWrapper.h"
-#include <framework/math/Vector2.h>
-#include <framework/math/Vector3.h>
-#include <framework/graphics/portable/Color.h>
 
 #include <framework/util/FrameworkConstants.h>
 #include <framework/util/NGSTDUtil.h>

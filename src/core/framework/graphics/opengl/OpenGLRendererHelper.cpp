@@ -14,9 +14,6 @@
 #include "framework/graphics/portable/TextureWrapper.h"
 #include "framework/graphics/portable/ShaderProgramWrapper.h"
 #include "framework/graphics/portable/NGShaderUniformInput.h"
-#include <framework/math/Vector2.h>
-#include <framework/math/Vector3.h>
-#include <framework/graphics/portable/Color.h>
 
 #include "framework/util/NGSTDUtil.h"
 
@@ -103,24 +100,34 @@ void OpenGLRendererHelper::useNoBlending()
     glDisable(GL_BLEND);
 }
 
+void OpenGLRendererHelper::bindInteger(NGShaderUniformInput* uniform, int inValue)
+{
+    glUniform1i(uniform->_attribute, inValue);
+}
+
+void OpenGLRendererHelper::bindVector2(NGShaderUniformInput* uniform, vec2& inValue)
+{
+    glUniform2f(uniform->_attribute, inValue[0], inValue[1]);
+}
+
+void OpenGLRendererHelper::bindVector3(NGShaderUniformInput* uniform, vec3& inValue)
+{
+    glUniform3f(uniform->_attribute, inValue[0], inValue[1], inValue[2]);
+}
+
+void OpenGLRendererHelper::bindVector4(NGShaderUniformInput* uniform, vec4& inValue)
+{
+    glUniform4f(uniform->_attribute, inValue[0], inValue[1], inValue[2], inValue[3]);
+}
+
+void OpenGLRendererHelper::bindMatrix(NGShaderUniformInput* uniform, mat4x4& inValue)
+{
+    glUniformMatrix4fv(uniform->_attribute, 1, GL_FALSE, (GLfloat*)inValue);
+}
+
 void OpenGLRendererHelper::bindMatrix(NGShaderUniformInput* uniform)
 {
     glUniformMatrix4fv(uniform->_attribute, 1, GL_FALSE, (GLfloat*)_matrix);
-}
-
-void OpenGLRendererHelper::bindVector2(NGShaderUniformInput* uniform, Vector2& inValue)
-{
-    glUniform2f(uniform->_attribute, inValue.getX(), inValue.getY());
-}
-
-void OpenGLRendererHelper::bindVector3(NGShaderUniformInput* uniform, Vector3& inValue)
-{
-    glUniform3f(uniform->_attribute, inValue.getX(), inValue.getY(), inValue.getZ());
-}
-
-void OpenGLRendererHelper::bindColor(NGShaderUniformInput* uniform, Color& inValue)
-{
-    glUniform4f(uniform->_attribute, inValue.red, inValue.green, inValue.blue, inValue.alpha);
 }
 
 inline int slotIndexForTextureSlot(NGTextureSlot textureSlot)

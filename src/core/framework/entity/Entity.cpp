@@ -159,6 +159,9 @@ void Entity::read(InputMemoryBitStream& inInputStream)
             inInputStream.read(_pose.angle);
         }
         
+        _poseInterpolateCache.position = _pose.position;
+        _poseInterpolateCache.angle = _pose.angle;
+        
         if (_groundSensorFixture)
         {
             inInputStream.read<uint8_t, 2>(_pose.numGroundContacts);
@@ -306,6 +309,9 @@ void Entity::updatePoseFromBody()
         _pose.velocity = _body->GetLinearVelocity();
         _pose.position = _body->GetPosition();
         _pose.angle = _body->GetAngle();
+        
+        _poseInterpolateCache.position = _pose.position;
+        _poseInterpolateCache.angle = _pose.angle;
     }
 }
 

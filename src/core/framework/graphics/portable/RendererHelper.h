@@ -20,9 +20,6 @@ struct TextureWrapper;
 class ShaderProgramWrapper;
 class NGShaderUniformInput;
 class NGShaderVarInput;
-class Vector2;
-class Vector3;
-class Color;
 
 class RendererHelper
 {
@@ -41,10 +38,12 @@ public:
     virtual void useNormalBlending() = 0;
     virtual void useScreenBlending() = 0;
     virtual void useNoBlending() = 0;
+    virtual void bindInteger(NGShaderUniformInput* uniform, int inValue) = 0;
+    virtual void bindVector2(NGShaderUniformInput* uniform, vec2& inValue) = 0;
+    virtual void bindVector3(NGShaderUniformInput* uniform, vec3& inValue) = 0;
+    virtual void bindVector4(NGShaderUniformInput* uniform, vec4& inValue) = 0;
+    virtual void bindMatrix(NGShaderUniformInput* uniform, mat4x4& inValue) = 0;
     virtual void bindMatrix(NGShaderUniformInput* uniform) = 0;
-    virtual void bindVector2(NGShaderUniformInput* uniform, Vector2& inValue) = 0;
-    virtual void bindVector3(NGShaderUniformInput* uniform, Vector3& inValue) = 0;
-    virtual void bindColor(NGShaderUniformInput* uniform, Color& inValue) = 0;
     virtual void bindTexture(NGTextureSlot textureSlot, NGTexture* texture, NGShaderUniformInput* uniform = NULL) = 0;
     virtual void bindNGShader(ShaderProgramWrapper* shaderProgramWrapper) = 0;
     virtual void mapScreenVertices(std::vector<NGShaderVarInput*>& inputLayout, std::vector<SCREEN_VERTEX>& vertices) = 0;

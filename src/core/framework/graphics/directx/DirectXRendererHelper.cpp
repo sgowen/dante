@@ -15,9 +15,6 @@
 #include "framework/graphics/portable/ShaderProgramWrapper.h"
 #include "framework/graphics/portable/NGShaderUniformInput.h"
 #include "framework/graphics/portable/NGShaderVarInput.h"
-#include <framework/math/Vector2.h>
-#include <framework/math/Vector3.h>
-#include <framework/graphics/portable/Color.h>
 
 #include "framework/util/NGSTDUtil.h"
 #include "PlatformHelpers.h"
@@ -144,6 +141,31 @@ void DirectXRendererHelper::useNoBlending()
     s_d3dContext->OMSetBlendState(NULL, 0, 0xffffffff);
 }
 
+void DirectXRendererHelper::bindInteger(NGShaderUniformInput* uniform, int inValue)
+{
+    /// TODO
+}
+
+void DirectXRendererHelper::bindVector2(NGShaderUniformInput* uniform, vec2& inValue)
+{
+    /// TODO
+}
+
+void DirectXRendererHelper::bindVector3(NGShaderUniformInput* uniform, vec3& inValue)
+{
+    /// TODO
+}
+
+void DirectXRendererHelper::bindVector4(NGShaderUniformInput* uniform, vec4& inValue)
+{
+    /// TODO
+}
+
+void OpenGLRendererHelper::bindMatrix(NGShaderUniformInput* uniform, mat4x4& inValue)
+{
+    /// TODO
+}
+
 void DirectXRendererHelper::bindMatrix(NGShaderUniformInput* uniform)
 {
     UNUSED(uniform);
@@ -151,22 +173,7 @@ void DirectXRendererHelper::bindMatrix(NGShaderUniformInput* uniform)
     s_d3dContext->VSSetConstantBuffers(0, 1, uniform->_constantbuffer.GetAddressOf());
     
     // send the final matrix to video memory
-	s_d3dContext->UpdateSubresource(uniform->_constantbuffer.Get(), 0, 0, &_matrix, 0, 0);
-}
-
-void DirectXRendererHelper::bindVector2(NGShaderUniformInput* uniform, Vector2& inValue)
-{
-    /// TODO
-}
-
-void DirectXRendererHelper::bindVector3(NGShaderUniformInput* uniform, Vector3& inValue)
-{
-    /// TODO
-}
-
-void DirectXRendererHelper::bindColor(NGShaderUniformInput* uniform, Color& inValue)
-{
-    /// TODO
+    s_d3dContext->UpdateSubresource(uniform->_constantbuffer.Get(), 0, 0, &_matrix, 0, 0);
 }
 
 void DirectXRendererHelper::bindTexture(NGTextureSlot textureSlot, NGTexture* texture, NGShaderUniformInput* uniform)

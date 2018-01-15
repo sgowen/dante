@@ -72,6 +72,7 @@
 #include "framework/graphics/portable/Assets.h"
 #include <game/logic/GameEngine.h>
 #include <game/logic/PlayerController.h>
+#include <framework/util/Config.h>
 
 #ifdef NG_STEAM
 #include "framework/network/steam/NGSteamGameServer.h"
@@ -108,6 +109,12 @@ _fbIndex(0)
     {
         _camBounds[i] = new NGRect(0, 0, CAM_WIDTH, CAM_HEIGHT);
     }
+    
+    _screenVertices.reserve(4);
+    _screenVertices.push_back(SCREEN_VERTEX(-1, -1));
+    _screenVertices.push_back(SCREEN_VERTEX(-1, 1));
+    _screenVertices.push_back(SCREEN_VERTEX(1, 1));
+    _screenVertices.push_back(SCREEN_VERTEX(1, -1));
 }
 
 GameRenderer::~GameRenderer()
@@ -151,6 +158,8 @@ void GameRenderer::createDeviceDependentResources()
 void GameRenderer::createWindowSizeDependentResources(int screenWidth, int screenHeight, int renderWidth, int renderHeight)
 {
     _rendererHelper->createWindowSizeDependentResources(screenWidth, screenHeight, renderWidth, renderHeight);
+    
+    _lightingNGShader->configResolution(_rendererHelper->getRenderWidth(), _rendererHelper->getRenderHeight());
 }
 
 void GameRenderer::releaseDeviceDependentResources()
@@ -166,6 +175,7 @@ void GameRenderer::releaseDeviceDependentResources()
 
 void GameRenderer::render(int flags)
 {
+    _lightingNGShader->resetLights();
     setFramebuffer(0);
     
     if (_textureManager->ensureTextures())
@@ -198,29 +208,34 @@ void GameRenderer::setFramebuffer(int framebufferIndex, float r, float g, float 
 void GameRenderer::updateCamera()
 {
     // Adjust camera based on the player position
-    
     float x = 0;
     float y = 0;
     
     if (NG_CLIENT && NG_CLIENT->getState() == NCS_Welcomed)
     {
+        bool isCamInitialized = false;
+        int numLights = 0;
+        
         for (Entity* entity : InstanceManager::getClientWorld()->getPlayers())
         {
             PlayerController* robot = static_cast<PlayerController*>(entity->getController());
             
-            if (robot->isLocalPlayer())
+            float pX = entity->getPosition().x;
+            float pY = entity->getPosition().y;
+            
+            _lightingNGShader->configLight(numLights++, pX, pY + entity->getHeight() / 4);
+            
+            if (!isCamInitialized && robot->isLocalPlayer())
             {
-                x = entity->getPosition().x;
-                y = entity->getPosition().y;
-                
-                _lightingNGShader->config(_rendererHelper->getRenderWidth(), _rendererHelper->getRenderHeight(), x, y);
+                x = pX;
+                y = pY;
                 
                 x -= CAM_WIDTH * 0.5f;
                 
                 y -= CAM_HEIGHT * 0.5f;
                 y = clamp(y, GAME_HEIGHT, 0);
                 
-                break;
+                isCamInitialized = true;
             }
         }
     }
@@ -275,6 +290,7 @@ void GameRenderer::renderWorld(int flags)
         fbBegin = _fbIndex + 1;
         
         {
+            _lightingNGShader->configZ(NG_CFG->getFloat("defaultLightZ") * 1.25f);
             setFramebuffer(_fbIndex + 1, 0, 0, 0, 0);
             _spriteBatchers[0]->beginBatch();
             _spriteBatchers[0]->renderSprite(x, y, _camBounds[3]->getWidth(), _camBounds[3]->getHeight(), 0, tr);
@@ -282,6 +298,7 @@ void GameRenderer::renderWorld(int flags)
         }
         
         {
+            _lightingNGShader->configZ(NG_CFG->getFloat("defaultLightZ"));
             setFramebuffer(_fbIndex + 1, 0, 0, 0, 0);
             _spriteBatchers[0]->beginBatch();
             _spriteBatchers[0]->renderSprite(x, y, _camBounds[3]->getWidth(), _camBounds[3]->getHeight(), 0, tr);
@@ -291,17 +308,10 @@ void GameRenderer::renderWorld(int flags)
     
     setFramebuffer(_fbIndex + 1);
     
-    static std::vector<SCREEN_VERTEX> screenVertices;
-    screenVertices.clear();
-    screenVertices.push_back(SCREEN_VERTEX(-1, -1));
-    screenVertices.push_back(SCREEN_VERTEX(-1, 1));
-    screenVertices.push_back(SCREEN_VERTEX(1, 1));
-    screenVertices.push_back(SCREEN_VERTEX(1, -1));
-    
     _rendererHelper->useScreenBlending();
     for (int i = fbBegin; i < _fbIndex; ++i)
     {
-        _framebufferToScreenNGShader->bind(&screenVertices, _rendererHelper->getFramebuffer(i));
+        _framebufferToScreenNGShader->bind(&_screenVertices, _rendererHelper->getFramebuffer(i));
         _rendererHelper->drawIndexed(NGPrimitiveType_Triangles, 0, INDICES_PER_RECTANGLE);
         _framebufferToScreenNGShader->unbind();
     }
@@ -494,14 +504,7 @@ void GameRenderer::endFrame()
     _rendererHelper->bindToScreenFramebuffer();
     _rendererHelper->clearFramebufferWithColor(0, 0, 0, 1);
     
-    static std::vector<SCREEN_VERTEX> screenVertices;
-    screenVertices.clear();
-    screenVertices.push_back(SCREEN_VERTEX(-1, -1));
-    screenVertices.push_back(SCREEN_VERTEX(-1, 1));
-    screenVertices.push_back(SCREEN_VERTEX(1, 1));
-    screenVertices.push_back(SCREEN_VERTEX(1, -1));
-    
-    _framebufferToScreenNGShader->bind(&screenVertices, _rendererHelper->getFramebuffer(_fbIndex));
+    _framebufferToScreenNGShader->bind(&_screenVertices, _rendererHelper->getFramebuffer(_fbIndex));
     _rendererHelper->drawIndexed(NGPrimitiveType_Triangles, 0, INDICES_PER_RECTANGLE);
     _framebufferToScreenNGShader->unbind();
     

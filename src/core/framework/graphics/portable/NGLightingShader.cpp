@@ -20,22 +20,40 @@
 #include <assert.h>
 
 NGLightingShader::NGLightingShader(RendererHelper& inRendererHelper, const char* vertexShaderName, const char* fragmentShaderName) : NGShader(inRendererHelper, vertexShaderName, fragmentShaderName),
-_resolution(1440.0f, 900.0f),
-_defaultLightZ(NG_CFG->getFloat("defaultLightZ")),
-_lightPos(0, 0, _defaultLightZ),
-_lightColor(NG_CFG->getFloat("LightColorR"), NG_CFG->getFloat("LightColorG"), NG_CFG->getFloat("LightColorB"), NG_CFG->getFloat("LightColorA")),
-_ambientColor(NG_CFG->getFloat("AmbientColorR"), NG_CFG->getFloat("AmbientColorG"), NG_CFG->getFloat("AmbientColorB"), NG_CFG->getFloat("AmbientColorA")),
-_fallOff(NG_CFG->getFloat("LightFalloffX"), NG_CFG->getFloat("LightFalloffY"), NG_CFG->getFloat("LightFalloffZ"))
+_defaultLightZ(NG_CFG->getFloat("defaultLightZ"))
 {
+    _resolution[0] = 1440.0f;
+    _resolution[1] = 900.0f;
+    
+    _lights[0][0] = 0;
+    _lights[0][1] = 0;
+    _lights[0][2] = _defaultLightZ;
+    _lights[0][3] = 0;
+    
+    _lightColor[0] = NG_CFG->getFloat("LightColorR");
+    _lightColor[1] = NG_CFG->getFloat("LightColorG");
+    _lightColor[2] = NG_CFG->getFloat("LightColorB");
+    _lightColor[3] = NG_CFG->getFloat("LightColorA");
+    
+    _ambientColor[0] = NG_CFG->getFloat("AmbientColorR");
+    _ambientColor[1] = NG_CFG->getFloat("AmbientColorG");
+    _ambientColor[2] = NG_CFG->getFloat("AmbientColorB");
+    _ambientColor[3] = NG_CFG->getFloat("AmbientColorA");
+    
+    _fallOff[0] = NG_CFG->getFloat("LightFalloffX");
+    _fallOff[1] = NG_CFG->getFloat("LightFalloffY");
+    _fallOff[2] = NG_CFG->getFloat("LightFalloffZ");
+    _fallOff[3] = 0;
+    
     // Vertex Shader
     _uniforms.push_back(new NGShaderUniformInput("u_Matrix", 64));
-    _uniforms.push_back(new NGShaderUniformInput("u_LightPos", 12));
+    _uniforms.push_back(new NGShaderUniformInput("u_Lights", 64));
     
     // Fragment Shader
-    _uniforms.push_back(new NGShaderUniformInput("u_Resolution", 8));
     _uniforms.push_back(new NGShaderUniformInput("u_LightColor", 16));
     _uniforms.push_back(new NGShaderUniformInput("u_AmbientColor", 16));
-    _uniforms.push_back(new NGShaderUniformInput("u_Falloff", 12));
+    _uniforms.push_back(new NGShaderUniformInput("u_Falloff", 16));
+    _uniforms.push_back(new NGShaderUniformInput("u_Resolution", 8));
 
     _uniforms.push_back(new NGShaderUniformInput("u_TextureUnit"));
     _uniforms.push_back(new NGShaderUniformInput("u_NormalMapUnit"));
@@ -53,11 +71,11 @@ void NGLightingShader::bind(void* vertices, void* data1, void* data2)
     
     _rendererHelper.bindNGShader(_shaderProgramWrapper);
     _rendererHelper.bindMatrix(_uniforms[0]);
-    _rendererHelper.bindVector3(_uniforms[1], _lightPos);
-    _rendererHelper.bindVector2(_uniforms[2], _resolution);
-    _rendererHelper.bindColor(_uniforms[3], _lightColor);
-    _rendererHelper.bindColor(_uniforms[4], _ambientColor);
-    _rendererHelper.bindVector3(_uniforms[5], _fallOff);
+    _rendererHelper.bindMatrix(_uniforms[1], _lights);
+    _rendererHelper.bindVector4(_uniforms[2], _lightColor);
+    _rendererHelper.bindVector4(_uniforms[3], _ambientColor);
+    _rendererHelper.bindVector4(_uniforms[4], _fallOff);
+    _rendererHelper.bindVector2(_uniforms[5], _resolution);
     _rendererHelper.bindTexture(NGTextureSlot_ZERO, static_cast<NGTexture*>(data1), _uniforms[6]);
     _rendererHelper.bindTexture(NGTextureSlot_ONE, static_cast<NGTexture*>(data2), _uniforms[7]);
     
@@ -73,14 +91,32 @@ void NGLightingShader::unbind()
     _rendererHelper.bindNGShader(NULL);
 }
 
-void NGLightingShader::config(float resolutionX, float resolutionY, float lightPosX, float lightPosY)
+void NGLightingShader::configResolution(float resolutionX, float resolutionY)
 {
-    _resolution.set(resolutionX, resolutionY);
-    
-    _lightPos.set(lightPosX, lightPosY, _defaultLightZ);
+    _resolution[0] = resolutionX;
+    _resolution[1] = resolutionY;
+}
+
+void NGLightingShader::resetLights()
+{
+    for (int i = 0; i < 4; ++i)
+    {
+        _lights[i][3] = 0;
+    }
+}
+
+void NGLightingShader::configLight(int index, float lightPosX, float lightPosY)
+{
+    _lights[index][0] = lightPosX;
+    _lights[index][1] = lightPosY;
+    _lights[index][2] = _defaultLightZ;
+    _lights[index][3] = 1;
 }
 
 void NGLightingShader::configZ(float lightPosZ)
 {
-    _lightPos.setZ(lightPosZ);
+    for (int i = 0; i < 4; ++i)
+    {
+        _lights[i][2] = lightPosZ;
+    }
 }
