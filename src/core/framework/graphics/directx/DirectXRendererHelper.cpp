@@ -143,34 +143,82 @@ void DirectXRendererHelper::useNoBlending()
 
 void DirectXRendererHelper::bindInteger(NGShaderUniformInput* uniform, int inValue)
 {
-    /// TODO
+    if (uniform->_isFragment)
+    {
+        s_d3dContext->PSSetConstantBuffers(uniform->_index, 1, uniform->_constantbuffer.GetAddressOf());
+    }
+    else
+    {
+        s_d3dContext->VSSetConstantBuffers(uniform->_index, 1, uniform->_constantbuffer.GetAddressOf());
+    }
+    
+    // send the final matrix to video memory
+    s_d3dContext->UpdateSubresource(uniform->_constantbuffer.Get(), 0, 0, &inValue, 0, 0);
 }
 
 void DirectXRendererHelper::bindVector2(NGShaderUniformInput* uniform, vec2& inValue)
 {
-    /// TODO
+    if (uniform->_isFragment)
+    {
+        s_d3dContext->PSSetConstantBuffers(uniform->_index, 1, uniform->_constantbuffer.GetAddressOf());
+    }
+    else
+    {
+        s_d3dContext->VSSetConstantBuffers(uniform->_index, 1, uniform->_constantbuffer.GetAddressOf());
+    }
+    
+    // send the final matrix to video memory
+    s_d3dContext->UpdateSubresource(uniform->_constantbuffer.Get(), 0, 0, &inValue, 0, 0);
 }
 
 void DirectXRendererHelper::bindVector3(NGShaderUniformInput* uniform, vec3& inValue)
 {
-    /// TODO
+    if (uniform->_isFragment)
+    {
+        s_d3dContext->PSSetConstantBuffers(uniform->_index, 1, uniform->_constantbuffer.GetAddressOf());
+    }
+    else
+    {
+        s_d3dContext->VSSetConstantBuffers(uniform->_index, 1, uniform->_constantbuffer.GetAddressOf());
+    }
+    
+    // send the final matrix to video memory
+    s_d3dContext->UpdateSubresource(uniform->_constantbuffer.Get(), 0, 0, &inValue, 0, 0);
 }
 
 void DirectXRendererHelper::bindVector4(NGShaderUniformInput* uniform, vec4& inValue)
 {
-    /// TODO
+    if (uniform->_isFragment)
+    {
+        s_d3dContext->PSSetConstantBuffers(uniform->_index, 1, uniform->_constantbuffer.GetAddressOf());
+    }
+    else
+    {
+        s_d3dContext->VSSetConstantBuffers(uniform->_index, 1, uniform->_constantbuffer.GetAddressOf());
+    }
+    
+    // send the final matrix to video memory
+    s_d3dContext->UpdateSubresource(uniform->_constantbuffer.Get(), 0, 0, &inValue, 0, 0);
 }
 
 void OpenGLRendererHelper::bindMatrix(NGShaderUniformInput* uniform, mat4x4& inValue)
 {
-    /// TODO
+    if (uniform->_isFragment)
+    {
+        s_d3dContext->PSSetConstantBuffers(uniform->_index, 1, uniform->_constantbuffer.GetAddressOf());
+    }
+    else
+    {
+        s_d3dContext->VSSetConstantBuffers(uniform->_index, 1, uniform->_constantbuffer.GetAddressOf());
+    }
+    
+    // send the final matrix to video memory
+    s_d3dContext->UpdateSubresource(uniform->_constantbuffer.Get(), 0, 0, &inValue, 0, 0);
 }
 
 void DirectXRendererHelper::bindMatrix(NGShaderUniformInput* uniform)
 {
-    UNUSED(uniform);
-    
-    s_d3dContext->VSSetConstantBuffers(0, 1, uniform->_constantbuffer.GetAddressOf());
+    s_d3dContext->VSSetConstantBuffers(uniform->_index, 1, uniform->_constantbuffer.GetAddressOf());
     
     // send the final matrix to video memory
     s_d3dContext->UpdateSubresource(uniform->_constantbuffer.Get(), 0, 0, &_matrix, 0, 0);

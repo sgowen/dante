@@ -17,7 +17,7 @@
 #include "PlatformHelpers.h"
 #endif
 
-NGShaderUniformInput::NGShaderUniformInput(const char* attribName, int byteWidth) : _attribName(attribName), _byteWidth(byteWidth)
+NGShaderUniformInput::NGShaderUniformInput(const char* attribName, int index, int byteWidth, bool isFragment) : _attribName(attribName), _index(index), _byteWidth(byteWidth), _isFragment(isFragment)
 {
     // Empty
 }

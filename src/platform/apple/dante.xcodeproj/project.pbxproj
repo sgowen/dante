@@ -1672,6 +1672,7 @@
 		BBEF7025200078320030076A /* DefaultController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DefaultController.h; sourceTree = "<group>"; };
 		BBF226B01EC12CDE00573356 /* ReplicationManagerClient.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ReplicationManagerClient.cpp; sourceTree = "<group>"; };
 		BBF226B11EC12CDE00573356 /* ReplicationManagerClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReplicationManagerClient.h; sourceTree = "<group>"; };
+		BBF3CC2A200D637000CFF412 /* shader_004_vert.hlsl */ = {isa = PBXFileReference; lastKnownFileType = text; path = shader_004_vert.hlsl; sourceTree = "<group>"; };
 		BBF5381020071991003D276D /* music_001.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = music_001.wav; sourceTree = "<group>"; };
 		BBF5381B20071991003D276D /* texture_004.ngt */ = {isa = PBXFileReference; lastKnownFileType = file; path = texture_004.ngt; sourceTree = "<group>"; };
 		BBF5381C20071991003D276D /* texture_005.ngt */ = {isa = PBXFileReference; lastKnownFileType = file; path = texture_005.ngt; sourceTree = "<group>"; };
@@ -2277,6 +2278,7 @@
 				BB5833AE1EEDD6470084DA20 /* shader_003_frag.hlsl */,
 				BB5833AF1EEDD6470084DA20 /* shader_003_vert.hlsl */,
 				BB0B84E22002857C00D17988 /* shader_004_frag.hlsl */,
+				BBF3CC2A200D637000CFF412 /* shader_004_vert.hlsl */,
 			);
 			path = shader;
 			sourceTree = "<group>";

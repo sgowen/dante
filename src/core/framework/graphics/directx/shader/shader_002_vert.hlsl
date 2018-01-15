@@ -1,10 +1,9 @@
 struct VOut
 {
 	float4 position : SV_POSITION;
-	float2 texcoord: TEXCOORD;        // texture coordinates
+	float2 texcoord: TEXCOORD;
 };
 
-// Vertex Shader
 VOut main(float2 position : a_Position)
 {
     VOut output;

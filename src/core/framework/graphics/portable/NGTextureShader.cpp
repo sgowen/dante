@@ -20,8 +20,8 @@
 
 NGTextureShader::NGTextureShader(RendererHelper& inRendererHelper, const char* vertexShaderName, const char* fragmentShaderName) : NGShader(inRendererHelper, vertexShaderName, fragmentShaderName)
 {
-    _uniforms.push_back(new NGShaderUniformInput("u_Matrix", 64));
-    _uniforms.push_back(new NGShaderUniformInput("u_TextureUnit"));
+    _uniforms.push_back(new NGShaderUniformInput("u_Matrix", 0, 64, false));
+    _uniforms.push_back(new NGShaderUniformInput("u_TextureUnit", 1));
     
     _inputLayout.push_back(new NGShaderVarInput("a_Position", 2, 0));
     _inputLayout.push_back(new NGShaderVarInput("a_Color", 4, 2));

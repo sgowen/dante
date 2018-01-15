@@ -1,6 +1,6 @@
 cbuffer ConstantBuffer
 {
-	float4x4 matFinal;
+	float4x4 u_Matrix;
 }
 
 struct VOut
@@ -9,12 +9,11 @@ struct VOut
 	float4 color : COLOR;
 };
 
-// Vertex Shader
 VOut main(float2 position : a_Position, float4 color : a_Color)
 {
     VOut output;
 
-	output.position = mul(matFinal, float4(position, 0, 1));
+	output.position = mul(u_Matrix, float4(position, 0, 1));
 	output.color = color;
 
 	return output;
