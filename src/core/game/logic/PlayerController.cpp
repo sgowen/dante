@@ -46,8 +46,8 @@ _playerInfo(),
 _playerInfoCache(_playerInfo),
 _stats(),
 _statsCache(_stats),
-_maxXVelocity(Config::getInstance()->getFloat("maxRobotXVelocity")),
-_maxYVelocity(Config::getInstance()->getFloat("maxRobotYVelocity")),
+_maxXVelocity(NG_CFG->getFloat("maxRobotXVelocity")),
+_maxYVelocity(NG_CFG->getFloat("maxRobotYVelocity")),
 _isLocalPlayer(false)
 {
     _stateMappings.insert(std::make_pair(0, "Idle"));

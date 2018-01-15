@@ -80,7 +80,7 @@ _server(NULL),
 _stateTime(0),
 _state(GameEngineState_Default)
 {
-    _state |= GameEngineState_Interpolation;
+    _state |= GameEngineState_Interpolation | GameEngineState_Lighting;
 }
 
 GameEngine::~GameEngine()
@@ -266,7 +266,19 @@ bool GameEngine::handleNonMoveInput()
             }
         }
             break;
-        case GIS_SERVER_TOGGLE_SERVER_DISPLAY:
+        case GIS_TOGGLE_LIGHTING:
+        {
+            if (_state & GameEngineState_Lighting)
+            {
+                _state &= ~GameEngineState_Lighting;
+            }
+            else
+            {
+                _state |= GameEngineState_Lighting;
+            }
+        }
+            break;
+        case GIS_SERVER_TOGGLE_DISPLAY:
         {
             if (_server)
             {

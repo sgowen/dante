@@ -92,8 +92,11 @@ void GameInputManager::update()
             case NG_KEY_L:
                 _menuState = (*i)->isDown() ? GIS_TOGGLE_INTERPOLATION : _menuState;
                 continue;
+            case NG_KEY_Z:
+                _menuState = (*i)->isDown() ? GIS_TOGGLE_LIGHTING : _menuState;
+                continue;
             case NG_KEY_I:
-                _menuState = (*i)->isDown() ? GIS_SERVER_TOGGLE_SERVER_DISPLAY : _menuState;
+                _menuState = (*i)->isDown() ? GIS_SERVER_TOGGLE_DISPLAY : _menuState;
                 continue;
             case NG_KEY_T:
                 _menuState = (*i)->isDown() ? GIS_SERVER_TOGGLE_MAP : _menuState;

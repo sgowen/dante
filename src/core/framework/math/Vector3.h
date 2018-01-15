@@ -18,6 +18,9 @@ public:
     Vector3(const Vector3 &cSource);
     
     Vector3 set(float x, float y, float z);
+    Vector3 setX(float x);
+    Vector3 setY(float y);
+    Vector3 setZ(float z);
     
     float getX() const;
     float getY() const;

@@ -16,11 +16,14 @@
 #include <framework/entity/EntityMapper.h>
 #include <framework/entity/DefaultController.h>
 #include <game/logic/PlayerController.h>
+#include <framework/util/Config.h>
 
 NGRTTI_IMPL(MainEngineController, EngineController);
 
 MainEngineController::MainEngineController()
 {
+    NG_CFG->initWithJsonFile("game.cfg");
+    
     TitleEngine::create();
     GameEngine::create();
     StudioEngine::create();

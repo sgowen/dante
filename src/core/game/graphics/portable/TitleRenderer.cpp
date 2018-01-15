@@ -94,7 +94,7 @@ _textureNGShader(new NGTextureShader(*_rendererHelper, "shader_003_vert.ngs", "s
 _colorNGShader(new NGGeometryShader(*_rendererHelper, "shader_001_vert.ngs", "shader_001_frag.ngs")),
 _framebufferToScreenNGShader(new NGFramebufferToScreenShader(*_rendererHelper, "shader_002_vert.ngs", "shader_002_frag.ngs")),
 _font(new Font("texture_001.ngt", 0, 0, 16, 64, 75, TEXTURE_SIZE_1024)),
-_framebufferIndex(0)
+_fbIndex(0)
 {
     // Empty
 }
@@ -183,9 +183,9 @@ void TitleRenderer::setFramebuffer(int framebufferIndex, float r, float g, float
 {
     assert(framebufferIndex >= 0);
     
-    _framebufferIndex = framebufferIndex;
+    _fbIndex = framebufferIndex;
     
-    _rendererHelper->bindToOffscreenFramebuffer(_framebufferIndex);
+    _rendererHelper->bindToOffscreenFramebuffer(_fbIndex);
     _rendererHelper->clearFramebufferWithColor(r, g, b, a);
 }
 
@@ -264,7 +264,7 @@ void TitleRenderer::renderText(const char* inStr, float x, float y, const Color&
 
 void TitleRenderer::endFrame()
 {
-    assert(_framebufferIndex >= 0);
+    assert(_fbIndex >= 0);
     
     _rendererHelper->bindToScreenFramebuffer();
     _rendererHelper->clearFramebufferWithColor(0, 0, 0, 1);
@@ -276,7 +276,7 @@ void TitleRenderer::endFrame()
     screenVertices.push_back(SCREEN_VERTEX(1, 1));
     screenVertices.push_back(SCREEN_VERTEX(1, -1));
     
-    _framebufferToScreenNGShader->bind(&screenVertices, _rendererHelper->getFramebuffer(_framebufferIndex));
+    _framebufferToScreenNGShader->bind(&screenVertices, _rendererHelper->getFramebuffer(_fbIndex));
     _rendererHelper->drawIndexed(NGPrimitiveType_Triangles, 0, INDICES_PER_RECTANGLE);
     _framebufferToScreenNGShader->unbind();
     

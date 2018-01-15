@@ -25,7 +25,8 @@ enum GameEngineState
 {
     GameEngineState_Default = 1 << 0,
     GameEngineState_DisplayBox2D = 1 << 1,
-    GameEngineState_Interpolation = 1 << 2
+    GameEngineState_Interpolation = 1 << 2,
+    GameEngineState_Lighting = 1 << 3
 };
 
 class GameEngine : public EngineState

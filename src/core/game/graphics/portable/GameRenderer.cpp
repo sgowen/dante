@@ -97,7 +97,7 @@ _colorNGShader(new NGGeometryShader(*_rendererHelper, "shader_001_vert.ngs", "sh
 _lightingNGShader(new NGLightingShader(*_rendererHelper, "shader_004_vert.ngs", "shader_004_frag.ngs")),
 _framebufferToScreenNGShader(new NGFramebufferToScreenShader(*_rendererHelper, "shader_002_vert.ngs", "shader_002_frag.ngs")),
 _font(new Font("texture_000.ngt", 0, 0, 16, 64, 75, TEXTURE_SIZE_1024)),
-_framebufferIndex(0)
+_fbIndex(0)
 {
     for (int i = 0; i < NUM_SPRITE_BATCHERS; ++i)
     {
@@ -171,14 +171,15 @@ void GameRenderer::render(int flags)
     if (_textureManager->ensureTextures())
     {
         updateCamera();
-        renderWorld();
+        renderWorld(flags);
         
+        _rendererHelper->useScreenBlending();
         if (flags & GameEngineState_DisplayBox2D)
         {
             renderBox2D();
         }
         
-//        renderUI(flags);
+        renderUI(flags);
     }
     
     endFrame();
@@ -188,142 +189,107 @@ void GameRenderer::setFramebuffer(int framebufferIndex, float r, float g, float 
 {
     assert(framebufferIndex >= 0);
     
-    _framebufferIndex = framebufferIndex;
+    _fbIndex = framebufferIndex;
     
-    _rendererHelper->bindToOffscreenFramebuffer(_framebufferIndex);
+    _rendererHelper->bindToOffscreenFramebuffer(_fbIndex);
     _rendererHelper->clearFramebufferWithColor(r, g, b, a);
 }
 
 void GameRenderer::updateCamera()
 {
-    _camBounds[3]->getLowerLeft().set(0, 0);
-    _camBounds[2]->getLowerLeft().set(0, 0);
-    _camBounds[1]->getLowerLeft().set(0, 0);
-    _camBounds[0]->getLowerLeft().set(0, 0);
+    // Adjust camera based on the player position
+    
+    float x = 0;
+    float y = 0;
     
     if (NG_CLIENT && NG_CLIENT->getState() == NCS_Welcomed)
     {
-        float left = 0;
-        float right = 0;
-        float bottom = 0;
-        float top = 0;
-        
-        bool needsInit = true;
-        
         for (Entity* entity : InstanceManager::getClientWorld()->getPlayers())
         {
             PlayerController* robot = static_cast<PlayerController*>(entity->getController());
             
             if (robot->isLocalPlayer())
             {
-                // Adjust camera based on the player position
+                x = entity->getPosition().x;
+                y = entity->getPosition().y;
                 
-                float pX = entity->getPosition().x;
-                float pY = entity->getPosition().y;
+                _lightingNGShader->configXY(x, y);
                 
-                _lightingNGShader->config(pX, pY);
+                x -= CAM_WIDTH * 0.5f;
                 
-                if (needsInit)
-                {
-                    left = pX;
-                    right = pX;
-                    bottom = pY;
-                    top = pY;
-                    
-                    needsInit = false;
-                }
-                else
-                {
-                    left = MIN(pX, left);
-                    right = MAX(pX, right);
-                    
-                    bottom = MIN(pY, bottom);
-                    top = MAX(pY, top);
-                }
+                y -= CAM_HEIGHT * 0.5f;
+                y = clamp(y, GAME_HEIGHT, 0);
+                
+                break;
             }
-        }
-        
-        if (!needsInit)
-        {
-            left -= CAM_WIDTH / 2;
-            right += CAM_WIDTH / 2;
-            bottom -= CAM_HEIGHT / 2;
-            top += CAM_HEIGHT / 2;
-            
-            float pX = (left + right) / 2.0f;
-            float pY = (bottom + top) / 2.0f;
-            float w = right - left;
-            float h = top - bottom;
-            
-            if (w < CAM_WIDTH)
-            {
-                w = CAM_WIDTH;
-            }
-            
-            if (h < CAM_HEIGHT)
-            {
-                h = CAM_HEIGHT;
-            }
-            
-            if (w > CAM_WIDTH)
-            {
-                h = w * (CAM_HEIGHT / CAM_WIDTH);
-            }
-            else if (h > CAM_HEIGHT)
-            {
-                w = h * (CAM_WIDTH / CAM_HEIGHT);
-            }
-            
-            float x = pX - w * 0.5f;
-            
-            float y = pY - h * 0.5f;
-            y = clamp(y, CAM_HEIGHT, 0);
-            
-            _camBounds[3]->getLowerLeft().set(x, y);
-            _camBounds[2]->getLowerLeft().set(x / 2, y / 2);
-            _camBounds[1]->getLowerLeft().set(x / 4, y / 4);
-            _camBounds[0]->getLowerLeft().set(x / 8, y / 8);
         }
     }
+    
+    _camBounds[3]->getLowerLeft().set(x, y);
+    _camBounds[2]->getLowerLeft().set(x / 2, y / 2);
+    _camBounds[1]->getLowerLeft().set(x / 4, y / 4);
+    _camBounds[0]->getLowerLeft().set(x / 8, y / 8);
 }
 
-void GameRenderer::renderWorld()
+void GameRenderer::renderWorld(int flags)
 {
     _rendererHelper->useNormalBlending();
     setFramebuffer(0);
     renderLayers(InstanceManager::getClientWorld(), false);
-    setFramebuffer(1);
-    renderLayers(InstanceManager::getClientWorld(), true);
+    if (flags & GameEngineState_Lighting)
+    {
+        setFramebuffer(_fbIndex + 1);
+        renderLayers(InstanceManager::getClientWorld(), true);
+    }
     
-    float x = _camBounds[3]->getLeft() + _camBounds[3]->getWidth() / 2;
-    float y = _camBounds[3]->getBottom() + _camBounds[3]->getHeight() / 2;
     _rendererHelper->updateMatrix(_camBounds[3]->getLeft(), _camBounds[3]->getRight(), _camBounds[3]->getBottom(), _camBounds[3]->getTop());
-    setFramebuffer(2, 0, 0, 0, 0);
+    setFramebuffer(_fbIndex + 1, 0, 0, 0, 0);
     _rendererHelper->useScreenBlending();
     renderEntities(InstanceManager::getClientWorld(), false, false);
-    setFramebuffer(3, 0, 0, 0, 0);
-    _rendererHelper->useScreenBlending();
-    renderEntities(InstanceManager::getClientWorld(), true, false);
-    
-    static TextureRegion tr = TextureRegion("framebuffer", 0, 0, 1, 1, 1, 1);
-    
-    _rendererHelper->useScreenBlending();
-//    for (int i = 0; i < 3; ++i)
+    if (Server::getInstance() && Server::getInstance()->isDisplaying())
     {
-        setFramebuffer(4, 0, 0, 0, 0);
-        _spriteBatchers[0]->beginBatch();
-        _spriteBatchers[0]->renderSprite(x, y, _camBounds[3]->getWidth(), _camBounds[3]->getHeight(), 0, tr);
-        _spriteBatchers[0]->endBatch(_lightingNGShader, _rendererHelper->getFramebuffer(0), _rendererHelper->getFramebuffer(1));
+        renderEntities(InstanceManager::getServerWorld(), false, true);
+    }
+    if (flags & GameEngineState_Lighting)
+    {
+        setFramebuffer(_fbIndex + 1, 0, 0, 0, 0);
+        _rendererHelper->useScreenBlending();
+        renderEntities(InstanceManager::getClientWorld(), true, false);
+        if (Server::getInstance() && Server::getInstance()->isDisplaying())
+        {
+            renderEntities(InstanceManager::getServerWorld(), true, true);
+        }
     }
     
+    int fbBegin = 0;
+    
+    if (flags & GameEngineState_Lighting)
     {
-        setFramebuffer(5, 0, 0, 0, 0);
-        _spriteBatchers[0]->beginBatch();
-        _spriteBatchers[0]->renderSprite(x, y, _camBounds[3]->getWidth(), _camBounds[3]->getHeight(), 0, tr);
-        _spriteBatchers[0]->endBatch(_lightingNGShader, _rendererHelper->getFramebuffer(2), _rendererHelper->getFramebuffer(3));
+        static TextureRegion tr = TextureRegion("framebuffer", 0, 0, 1, 1, 1, 1);
+        
+        float x = _camBounds[3]->getLeft() + _camBounds[3]->getWidth() / 2;
+        float y = _camBounds[3]->getBottom() + _camBounds[3]->getHeight() / 2;
+        
+        _rendererHelper->useScreenBlending();
+        
+        fbBegin = _fbIndex + 1;
+        
+        {
+            setFramebuffer(_fbIndex + 1, 0, 0, 0, 0);
+            _spriteBatchers[0]->beginBatch();
+            _spriteBatchers[0]->renderSprite(x, y, _camBounds[3]->getWidth(), _camBounds[3]->getHeight(), 0, tr);
+            _spriteBatchers[0]->endBatch(_lightingNGShader, _rendererHelper->getFramebuffer(0), _rendererHelper->getFramebuffer(1));
+        }
+        
+        {
+            setFramebuffer(_fbIndex + 1, 0, 0, 0, 0);
+            _spriteBatchers[0]->beginBatch();
+            _spriteBatchers[0]->renderSprite(x, y, _camBounds[3]->getWidth(), _camBounds[3]->getHeight(), 0, tr);
+            _spriteBatchers[0]->endBatch(_lightingNGShader, _rendererHelper->getFramebuffer(2), _rendererHelper->getFramebuffer(3));
+        }
     }
     
-    setFramebuffer(6);
+    setFramebuffer(_fbIndex + 1);
     
     static std::vector<SCREEN_VERTEX> screenVertices;
     screenVertices.clear();
@@ -333,22 +299,12 @@ void GameRenderer::renderWorld()
     screenVertices.push_back(SCREEN_VERTEX(1, -1));
     
     _rendererHelper->useScreenBlending();
+    for (int i = fbBegin; i < _fbIndex; ++i)
     {
-        _framebufferToScreenNGShader->bind(&screenVertices, _rendererHelper->getFramebuffer(4));
+        _framebufferToScreenNGShader->bind(&screenVertices, _rendererHelper->getFramebuffer(i));
         _rendererHelper->drawIndexed(NGPrimitiveType_Triangles, 0, INDICES_PER_RECTANGLE);
         _framebufferToScreenNGShader->unbind();
     }
-    
-    {
-        _framebufferToScreenNGShader->bind(&screenVertices, _rendererHelper->getFramebuffer(5));
-        _rendererHelper->drawIndexed(NGPrimitiveType_Triangles, 0, INDICES_PER_RECTANGLE);
-        _framebufferToScreenNGShader->unbind();
-    }
-    
-//    if (Server::getInstance() && Server::getInstance()->isDisplaying())
-//    {
-//        renderEntities(InstanceManager::getServerWorld(), true, true);
-//    }
 }
 
 void GameRenderer::renderLayers(World* world, bool isNormals)
@@ -476,10 +432,9 @@ void GameRenderer::renderUI(int flags)
         
         renderText(StringUtil::format("'S'         Sound %s", NG_AUDIO_ENGINE->isSoundDisabled() ? " OFF" : "  ON").c_str(), CAM_WIDTH - 0.5f, CAM_HEIGHT - (row++ * padding), Color::WHITE, FONT_ALIGN_RIGHT);
         renderText(StringUtil::format("'M'         Music %s", NG_AUDIO_ENGINE->isMusicDisabled() ? " OFF" : "  ON").c_str(), CAM_WIDTH - 0.5f, CAM_HEIGHT - (row++ * padding), Color::WHITE, FONT_ALIGN_RIGHT);
-        
         renderText(StringUtil::format("'P'   Box2D Debug %s", flags & GameEngineState_DisplayBox2D ? "  ON" : " OFF").c_str(), CAM_WIDTH - 0.5f, CAM_HEIGHT - (row++ * padding), Color::WHITE, FONT_ALIGN_RIGHT);
-        
-        renderText(StringUtil::format("'L' InterPolation %s", flags & GameEngineState_Interpolation ? "  ON" : " OFF").c_str(), CAM_WIDTH - 0.5f, CAM_HEIGHT - (row++ * padding), Color::WHITE, FONT_ALIGN_RIGHT);
+        renderText(StringUtil::format("'L' Interpolation %s", flags & GameEngineState_Interpolation ? "  ON" : " OFF").c_str(), CAM_WIDTH - 0.5f, CAM_HEIGHT - (row++ * padding), Color::WHITE, FONT_ALIGN_RIGHT);
+        renderText(StringUtil::format("'Z'      Lighting %s", flags & GameEngineState_Lighting ? "  ON" : " OFF").c_str(), CAM_WIDTH - 0.5f, CAM_HEIGHT - (row++ * padding), Color::WHITE, FONT_ALIGN_RIGHT);
         
         if (Server::getInstance())
         {
@@ -518,7 +473,6 @@ void GameRenderer::renderUI(int flags)
         renderText(StringUtil::format("%s, 'ESC' to exit", "Joining Server...").c_str(), 0.5f, CAM_HEIGHT - 4, Color::WHITE, FONT_ALIGN_LEFT);
     }
     
-    _rendererHelper->useNormalBlending();
     _spriteBatchers[0]->endBatch(_textureNGShader, _textureManager->getTextureWithName("texture_000.ngt"));
 }
 
@@ -535,7 +489,7 @@ void GameRenderer::renderText(const char* inStr, float x, float y, const Color& 
 
 void GameRenderer::endFrame()
 {
-    assert(_framebufferIndex >= 0);
+    assert(_fbIndex >= 0);
     
     _rendererHelper->bindToScreenFramebuffer();
     _rendererHelper->clearFramebufferWithColor(0, 0, 0, 1);
@@ -547,7 +501,7 @@ void GameRenderer::endFrame()
     screenVertices.push_back(SCREEN_VERTEX(1, 1));
     screenVertices.push_back(SCREEN_VERTEX(1, -1));
     
-    _framebufferToScreenNGShader->bind(&screenVertices, _rendererHelper->getFramebuffer(_framebufferIndex));
+    _framebufferToScreenNGShader->bind(&screenVertices, _rendererHelper->getFramebuffer(_fbIndex));
     _rendererHelper->drawIndexed(NGPrimitiveType_Triangles, 0, INDICES_PER_RECTANGLE);
     _framebufferToScreenNGShader->unbind();
     

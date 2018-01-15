@@ -22,23 +22,15 @@ public:
     virtual void bind(void* vertices, void* data1 = NULL, void* data2 = NULL);
     virtual void unbind();
     
-    void config(float lightPosX, float lightPosY, float lightPosZ = DEFAULT_LIGHT_Z);
+    void configXY(float lightPosX, float lightPosY);
+    void configZ(float lightPosZ);
     
 private:
-    static float DEFAULT_LIGHT_Z;
-    
-    static Vector3 LIGHT_POS;
-    
-    //Light RGB and intensity (alpha)
-    static Color LIGHT_COLOR;
-    
-    //Ambient RGB and intensity (alpha)
-    static Color AMBIENT_COLOR;
-    
-    //Attenuation coefficients for light falloff
-    static Vector3 FALLOFF;
-    
+    float _defaultLightZ;
     Vector3 _lightPos;
+    Color _lightColor; // Light RGB and intensity (alpha)
+    Color _ambientColor; // Ambient RGB and intensity (alpha)
+    Vector3 _fallOff; // Attenuation coefficients for light falloff
 };
 
 #endif /* defined(__noctisgames__NGLightingShader__) */

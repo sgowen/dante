@@ -37,6 +37,27 @@ Vector3 Vector3::set(float x, float y, float z)
     return *this;
 }
 
+Vector3 Vector3::setX(float x)
+{
+    _x = x;
+    
+    return *this;
+}
+
+Vector3 Vector3::setY(float y)
+{
+    _y = y;
+    
+    return *this;
+}
+
+Vector3 Vector3::setZ(float z)
+{
+    _z = z;
+    
+    return *this;
+}
+
 float Vector3::getX() const
 {
     return _x;

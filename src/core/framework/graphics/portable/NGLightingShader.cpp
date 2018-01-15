@@ -15,16 +15,16 @@
 #include <framework/graphics/portable/NGShaderUniformInput.h>
 #include <framework/graphics/portable/NGShaderVarInput.h>
 #include <framework/graphics/portable/ShaderProgramWrapper.h>
+#include <framework/util/Config.h>
 
 #include <assert.h>
 
-float NGLightingShader::DEFAULT_LIGHT_Z = 0.075f;
-Vector3 NGLightingShader::LIGHT_POS(0.0f, 0.0f, DEFAULT_LIGHT_Z);
-Color NGLightingShader::LIGHT_COLOR(1.0f, 0.8f, 0.6f, 1.0f);
-Color NGLightingShader::AMBIENT_COLOR(0.6f, 0.6f, 1.0f, 0.4f);
-Vector3 NGLightingShader::FALLOFF(0.8f, 3.0f, 20.0f);
-
-NGLightingShader::NGLightingShader(RendererHelper& inRendererHelper, const char* vertexShaderName, const char* fragmentShaderName) : NGShader(inRendererHelper, vertexShaderName, fragmentShaderName)
+NGLightingShader::NGLightingShader(RendererHelper& inRendererHelper, const char* vertexShaderName, const char* fragmentShaderName) : NGShader(inRendererHelper, vertexShaderName, fragmentShaderName),
+_defaultLightZ(NG_CFG->getFloat("defaultLightZ")),
+_lightPos(0, 0, _defaultLightZ),
+_lightColor(NG_CFG->getFloat("LightColorR"), NG_CFG->getFloat("LightColorG"), NG_CFG->getFloat("LightColorB"), NG_CFG->getFloat("LightColorA")),
+_ambientColor(NG_CFG->getFloat("AmbientColorR"), NG_CFG->getFloat("AmbientColorG"), NG_CFG->getFloat("AmbientColorB"), NG_CFG->getFloat("AmbientColorA")),
+_fallOff(NG_CFG->getFloat("LightFalloffX"), NG_CFG->getFloat("LightFalloffY"), NG_CFG->getFloat("LightFalloffZ"))
 {
     _uniforms.push_back(new NGShaderUniformInput("u_Matrix", 64));
     _uniforms.push_back(new NGShaderUniformInput("u_LightPos", 12));
@@ -49,9 +49,9 @@ void NGLightingShader::bind(void* vertices, void* data1, void* data2)
     _rendererHelper.bindNGShader(_shaderProgramWrapper);
     _rendererHelper.bindMatrix(_uniforms[0]);
     _rendererHelper.bindVector3(_uniforms[1], _lightPos);
-    _rendererHelper.bindColor(_uniforms[2], LIGHT_COLOR);
-    _rendererHelper.bindColor(_uniforms[3], AMBIENT_COLOR);
-    _rendererHelper.bindVector3(_uniforms[4], FALLOFF);
+    _rendererHelper.bindColor(_uniforms[2], _lightColor);
+    _rendererHelper.bindColor(_uniforms[3], _ambientColor);
+    _rendererHelper.bindVector3(_uniforms[4], _fallOff);
     _rendererHelper.bindTexture(NGTextureSlot_ZERO, static_cast<NGTexture*>(data1), _uniforms[5]);
     _rendererHelper.bindTexture(NGTextureSlot_ONE, static_cast<NGTexture*>(data2), _uniforms[6]);
     
@@ -67,7 +67,12 @@ void NGLightingShader::unbind()
     _rendererHelper.bindNGShader(NULL);
 }
 
-void NGLightingShader::config(float lightPosX, float lightPosY, float lightPosZ)
+void NGLightingShader::configXY(float lightPosX, float lightPosY)
 {
-    _lightPos.set(lightPosX, lightPosY, lightPosZ);
+    _lightPos.set(lightPosX, lightPosY, _defaultLightZ);
+}
+
+void NGLightingShader::configZ(float lightPosZ)
+{
+    _lightPos.setZ(lightPosZ);
 }

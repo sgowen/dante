@@ -65,7 +65,7 @@ private:
 	std::vector<TEXTURE_VERTEX> _textureVertices;
 	std::vector<COLOR_VERTEX> _colorVertices;
 	std::vector<SCREEN_VERTEX> _screenVertices;
-	int _framebufferIndex;
+	int _fbIndex;
     
     template <typename T>
     void mapVertices(Microsoft::WRL::ComPtr<ID3D11Buffer>& vertexBuffer, std::vector<T>& vertices)

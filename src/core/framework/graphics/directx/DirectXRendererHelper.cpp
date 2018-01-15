@@ -48,7 +48,7 @@ ID3D11DeviceContext* DirectXRendererHelper::getD3dContext()
     return s_d3dContext;
 }
 
-DirectXRendererHelper::DirectXRendererHelper() : RendererHelper(), _framebufferIndex(0)
+DirectXRendererHelper::DirectXRendererHelper() : RendererHelper(), _fbIndex(0)
 {
 	// Empty
 }
@@ -100,7 +100,7 @@ void DirectXRendererHelper::bindToOffscreenFramebuffer(int index)
 {
     s_d3dContext->OMSetRenderTargets(1, &_offscreenRenderTargetViews[index], NULL);
     
-	_framebufferIndex = index;
+	_fbIndex = index;
 }
 
 void DirectXRendererHelper::clearFramebufferWithColor(float r, float g, float b, float a)
@@ -108,13 +108,13 @@ void DirectXRendererHelper::clearFramebufferWithColor(float r, float g, float b,
     float color[] = { r, g, b, a };
 
     ID3D11RenderTargetView * targets[1] = {};
-    if (_framebufferIndex < 0)
+    if (_fbIndex < 0)
     {
 		targets[0] = s_d3dRenderTargetView;
     }
     else
     {
-        targets[0] = _offscreenRenderTargetViews[_framebufferIndex];
+        targets[0] = _offscreenRenderTargetViews[_fbIndex];
     }
     
 	s_d3dContext->ClearRenderTargetView(targets[0], color);
@@ -125,7 +125,7 @@ void DirectXRendererHelper::bindToScreenFramebuffer()
     ID3D11RenderTargetView *const targets[1] = { s_d3dRenderTargetView };
 	s_d3dContext->OMSetRenderTargets(1, targets, NULL);
     
-    _framebufferIndex = -1;
+    _fbIndex = -1;
 }
 
 void DirectXRendererHelper::useNormalBlending()
