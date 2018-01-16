@@ -76,7 +76,7 @@
 			<Add before="mkdir -p $(PROJECT_DIR)assets/music" />
 			<Add before="mkdir -p $(PROJECT_DIR)assets/textures" />
 			<Add before="cp -R $(PROJECT_DIR)../../../assets/config/*.cfg $(PROJECT_DIR)assets/config/" />
-			<Add before="cp -R $(PROJECT_DIR)../../../src/core/framework/graphics/opengl/shader/*.ngs $(PROJECT_DIR)assets/shaders/" />
+			<Add before="cp -R $(PROJECT_DIR)../../../assets/shaders/*.ngs $(PROJECT_DIR)assets/shaders/" />
 			<Add before="cp -R $(PROJECT_DIR)../../../assets/sounds/*.wav $(PROJECT_DIR)assets/sounds/" />
 			<Add before="cp -R $(PROJECT_DIR)../../../assets/music/*.wav $(PROJECT_DIR)assets/music/" />
 			<Add before="cp -R $(PROJECT_DIR)../../../assets/textures/*.ngt $(PROJECT_DIR)assets/textures/" />
@@ -510,8 +510,6 @@
 		<Unit filename="../../core/framework/math/Triangle.h" />
 		<Unit filename="../../core/framework/math/Vector2.cpp" />
 		<Unit filename="../../core/framework/math/Vector2.h" />
-		<Unit filename="../../core/framework/math/Vector3.cpp" />
-		<Unit filename="../../core/framework/math/Vector3.h" />
 		<Unit filename="../../core/framework/network/client/ClientHelper.cpp" />
 		<Unit filename="../../core/framework/network/client/ClientHelper.h" />
 		<Unit filename="../../core/framework/network/client/NetworkManagerClient.cpp" />
@@ -615,12 +613,12 @@
 		<Unit filename="../../core/framework/util/WeightedTimedMovingAverage.cpp" />
 		<Unit filename="../../core/framework/util/WeightedTimedMovingAverage.h" />
 		<Unit filename="../../core/framework/util/macros.h" />
-		<Unit filename="../../core/game/graphics/portable/GameRenderer.cpp" />
-		<Unit filename="../../core/game/graphics/portable/GameRenderer.h" />
-		<Unit filename="../../core/game/graphics/portable/StudioRenderer.cpp" />
-		<Unit filename="../../core/game/graphics/portable/StudioRenderer.h" />
-		<Unit filename="../../core/game/graphics/portable/TitleRenderer.cpp" />
-		<Unit filename="../../core/game/graphics/portable/TitleRenderer.h" />
+		<Unit filename="../../core/game/graphics/GameRenderer.cpp" />
+		<Unit filename="../../core/game/graphics/GameRenderer.h" />
+		<Unit filename="../../core/game/graphics/StudioRenderer.cpp" />
+		<Unit filename="../../core/game/graphics/StudioRenderer.h" />
+		<Unit filename="../../core/game/graphics/TitleRenderer.cpp" />
+		<Unit filename="../../core/game/graphics/TitleRenderer.h" />
 		<Unit filename="../../core/game/logic/GameConstants.h" />
 		<Unit filename="../../core/game/logic/GameEngine.cpp" />
 		<Unit filename="../../core/game/logic/GameEngine.h" />
