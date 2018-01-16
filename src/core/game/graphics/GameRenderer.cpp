@@ -109,12 +109,6 @@ _fbIndex(0)
     {
         _camBounds[i] = new NGRect(0, 0, CAM_WIDTH, CAM_HEIGHT);
     }
-    
-    _screenVertices.reserve(4);
-    _screenVertices.push_back(SCREEN_VERTEX(-1, -1));
-    _screenVertices.push_back(SCREEN_VERTEX(-1, 1));
-    _screenVertices.push_back(SCREEN_VERTEX(1, 1));
-    _screenVertices.push_back(SCREEN_VERTEX(1, -1));
 }
 
 GameRenderer::~GameRenderer()
@@ -311,6 +305,13 @@ void GameRenderer::renderWorld(int flags)
     _rendererHelper->useScreenBlending();
     for (int i = fbBegin; i < _fbIndex; ++i)
     {
+		_screenVertices.clear();
+		_screenVertices.reserve(4);
+		_screenVertices.push_back(SCREEN_VERTEX(-1, -1));
+		_screenVertices.push_back(SCREEN_VERTEX(-1, 1));
+		_screenVertices.push_back(SCREEN_VERTEX(1, 1));
+		_screenVertices.push_back(SCREEN_VERTEX(1, -1));
+
         _framebufferToScreenNGShader->bind(&_screenVertices, _rendererHelper->getFramebuffer(i));
         _rendererHelper->drawIndexed(NGPrimitiveType_Triangles, 0, INDICES_PER_RECTANGLE);
         _framebufferToScreenNGShader->unbind();
@@ -504,6 +505,13 @@ void GameRenderer::endFrame()
     _rendererHelper->bindToScreenFramebuffer();
     _rendererHelper->clearFramebufferWithColor(0, 0, 0, 1);
     
+	_screenVertices.clear();
+	_screenVertices.reserve(4);
+	_screenVertices.push_back(SCREEN_VERTEX(-1, -1));
+	_screenVertices.push_back(SCREEN_VERTEX(-1, 1));
+	_screenVertices.push_back(SCREEN_VERTEX(1, 1));
+	_screenVertices.push_back(SCREEN_VERTEX(1, -1));
+
     _framebufferToScreenNGShader->bind(&_screenVertices, _rendererHelper->getFramebuffer(_fbIndex));
     _rendererHelper->drawIndexed(NGPrimitiveType_Triangles, 0, INDICES_PER_RECTANGLE);
     _framebufferToScreenNGShader->unbind();

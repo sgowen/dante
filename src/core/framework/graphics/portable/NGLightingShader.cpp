@@ -24,6 +24,8 @@ _defaultLightZ(NG_CFG->getFloat("defaultLightZ"))
 {
     _resolution[0] = 1440.0f;
     _resolution[1] = 900.0f;
+	_resolution[2] = 0;
+	_resolution[3] = 0;
     
     _lights[0][0] = 0;
     _lights[0][1] = 0;
@@ -53,7 +55,7 @@ _defaultLightZ(NG_CFG->getFloat("defaultLightZ"))
     _uniforms.push_back(new NGShaderUniformInput("u_LightColor",    2, 16, true));
     _uniforms.push_back(new NGShaderUniformInput("u_AmbientColor",  3, 16, true));
     _uniforms.push_back(new NGShaderUniformInput("u_Falloff",       4, 16, true));
-    _uniforms.push_back(new NGShaderUniformInput("u_Resolution",    5,  8, true));
+    _uniforms.push_back(new NGShaderUniformInput("u_Resolution",    5, 16, true));
 
     _uniforms.push_back(new NGShaderUniformInput("u_TextureUnit",   6));
     _uniforms.push_back(new NGShaderUniformInput("u_NormalMapUnit", 7));
@@ -75,7 +77,7 @@ void NGLightingShader::bind(void* vertices, void* data1, void* data2)
     _rendererHelper.bindVector4(                                                    _uniforms[2], _lightColor);
     _rendererHelper.bindVector4(                                                    _uniforms[3], _ambientColor);
     _rendererHelper.bindVector4(                                                    _uniforms[4], _fallOff);
-    _rendererHelper.bindVector2(                                                    _uniforms[5], _resolution);
+    _rendererHelper.bindVector4(                                                    _uniforms[5], _resolution);
     _rendererHelper.bindTexture(NGTextureSlot_ZERO, static_cast<NGTexture*>(data1), _uniforms[6]);
     _rendererHelper.bindTexture(NGTextureSlot_ONE, static_cast<NGTexture*>(data2),  _uniforms[7]);
     

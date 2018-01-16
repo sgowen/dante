@@ -32,7 +32,7 @@ private:
     vec4 _lightColor; // Light RGB and intensity (alpha)
     vec4 _ambientColor; // Ambient RGB and intensity (alpha)
     vec4 _fallOff; // Attenuation coefficients for light falloff
-    vec2 _resolution;
+    vec4 _resolution;
 };
 
 #endif /* defined(__noctisgames__NGLightingShader__) */
