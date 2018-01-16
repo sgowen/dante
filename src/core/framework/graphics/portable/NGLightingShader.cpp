@@ -27,10 +27,17 @@ _defaultLightZ(NG_CFG->getFloat("defaultLightZ"))
 	_resolution[2] = 0;
 	_resolution[3] = 0;
     
-    _lights[0][0] = 0;
-    _lights[0][1] = 0;
-    _lights[0][2] = _defaultLightZ;
-    _lights[0][3] = 0;
+#ifdef _WIN32
+	_lights[0][0] = 0;
+	_lights[1][0] = 0;
+	_lights[2][0] = _defaultLightZ;
+	_lights[3][0] = 0;
+#else
+	_lights[0][0] = 0;
+	_lights[0][1] = 0;
+	_lights[0][2] = _defaultLightZ;
+	_lights[0][3] = 0;
+#endif
     
     _lightColor[0] = NG_CFG->getFloat("LightColorR");
     _lightColor[1] = NG_CFG->getFloat("LightColorG");
@@ -52,13 +59,13 @@ _defaultLightZ(NG_CFG->getFloat("defaultLightZ"))
     _uniforms.push_back(new NGShaderUniformInput("u_Lights",        1, 64, false));
     
     // Fragment Shader
-    _uniforms.push_back(new NGShaderUniformInput("u_LightColor",    2, 16, true));
-    _uniforms.push_back(new NGShaderUniformInput("u_AmbientColor",  3, 16, true));
-    _uniforms.push_back(new NGShaderUniformInput("u_Falloff",       4, 16, true));
-    _uniforms.push_back(new NGShaderUniformInput("u_Resolution",    5, 16, true));
+    _uniforms.push_back(new NGShaderUniformInput("u_LightColor",    0, 16, true));
+    _uniforms.push_back(new NGShaderUniformInput("u_AmbientColor",  1, 16, true));
+    _uniforms.push_back(new NGShaderUniformInput("u_Falloff",       2, 16, true));
+    _uniforms.push_back(new NGShaderUniformInput("u_Resolution",    3, 16, true));
 
-    _uniforms.push_back(new NGShaderUniformInput("u_TextureUnit",   6));
-    _uniforms.push_back(new NGShaderUniformInput("u_NormalMapUnit", 7));
+    _uniforms.push_back(new NGShaderUniformInput("u_TextureUnit",   0));
+    _uniforms.push_back(new NGShaderUniformInput("u_NormalMapUnit", 1));
     
     _inputLayout.push_back(new NGShaderVarInput("a_Position", 2, 0));
     _inputLayout.push_back(new NGShaderVarInput("a_Color", 4, 2));
@@ -87,7 +94,7 @@ void NGLightingShader::bind(void* vertices, void* data1, void* data2)
 
 void NGLightingShader::unbind()
 {
-    _rendererHelper.unmapScreenVertices();
+    _rendererHelper.unmapTextureVertices();
     _rendererHelper.bindTexture(NGTextureSlot_ZERO, NULL);
     _rendererHelper.bindTexture(NGTextureSlot_ONE, NULL);
     _rendererHelper.bindNGShader(NULL);
@@ -103,22 +110,37 @@ void NGLightingShader::resetLights()
 {
     for (int i = 0; i < 4; ++i)
     {
-        _lights[i][3] = 0;
+#ifdef _WIN32
+		_lights[3][i] = 0;
+#else
+		_lights[i][3] = 0;
+#endif
     }
 }
 
 void NGLightingShader::configLight(int index, float lightPosX, float lightPosY)
 {
-    _lights[index][0] = lightPosX;
-    _lights[index][1] = lightPosY;
-    _lights[index][2] = _defaultLightZ;
-    _lights[index][3] = 1;
+#ifdef _WIN32
+	_lights[0][index] = lightPosX;
+	_lights[1][index] = lightPosY;
+	_lights[2][index] = _defaultLightZ;
+	_lights[3][index] = 1;
+#else
+	_lights[index][0] = lightPosX;
+	_lights[index][1] = lightPosY;
+	_lights[index][2] = _defaultLightZ;
+	_lights[index][3] = 1;
+#endif
 }
 
 void NGLightingShader::configZ(float lightPosZ)
 {
     for (int i = 0; i < 4; ++i)
     {
-        _lights[i][2] = lightPosZ;
+#ifdef _WIN32
+		_lights[2][i] = lightPosZ;
+#else
+		_lights[i][2] = lightPosZ;
+#endif
     }
 }

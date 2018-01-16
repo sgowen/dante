@@ -369,12 +369,12 @@ void DirectXRendererHelper::createBlendStates()
 {
     D3D11_BLEND_DESC bd;
     bd.RenderTarget[0].BlendEnable = TRUE;
-    bd.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
-    bd.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA;
-    bd.RenderTarget[0].DestBlend = D3D11_BLEND_INV_SRC_ALPHA;
-    bd.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
+	bd.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA;
+	bd.RenderTarget[0].DestBlend = D3D11_BLEND_INV_SRC_ALPHA;
     bd.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ONE;
     bd.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ZERO;
+	bd.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
+	bd.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
     bd.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
     bd.IndependentBlendEnable = FALSE;
     bd.AlphaToCoverageEnable = FALSE;
@@ -382,7 +382,9 @@ void DirectXRendererHelper::createBlendStates()
     s_d3dDevice->CreateBlendState(&bd, &_blendState);
     
     bd.RenderTarget[0].SrcBlend = D3D11_BLEND_ONE;
-    bd.RenderTarget[0].DestBlend = D3D11_BLEND_ONE;
+    bd.RenderTarget[0].DestBlend = D3D11_BLEND_INV_SRC_ALPHA;
+	bd.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ONE;
+	bd.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_INV_SRC_ALPHA;
     
     s_d3dDevice->CreateBlendState(&bd, &_screenBlendState);
 }
