@@ -73,6 +73,7 @@
 #include <game/logic/GameEngine.h>
 #include <game/logic/PlayerController.h>
 #include <framework/util/Config.h>
+#include <framework/graphics/portable/VertexProgramInput.h>
 
 #ifdef NG_STEAM
 #include "framework/network/steam/NGSteamGameServer.h"
@@ -80,9 +81,9 @@
 #endif
 
 #include <sstream>
-#include <ctime> // rand
 #include <string>
 #include <assert.h>
+#include <vector>
 
 GameRenderer::GameRenderer() : Renderer(),
 _textureManager(new TextureManager("game_assets.cfg")),
@@ -305,14 +306,15 @@ void GameRenderer::renderWorld(int flags)
     _rendererHelper->useScreenBlending();
     for (int i = fbBegin; i < _fbIndex; ++i)
     {
-		_screenVertices.clear();
-		_screenVertices.reserve(4);
-		_screenVertices.push_back(SCREEN_VERTEX(-1, -1));
-		_screenVertices.push_back(SCREEN_VERTEX(-1, 1));
-		_screenVertices.push_back(SCREEN_VERTEX(1, 1));
-		_screenVertices.push_back(SCREEN_VERTEX(1, -1));
+        static std::vector<SCREEN_VERTEX> screenVertices;
+		screenVertices.clear();
+		screenVertices.reserve(4);
+		screenVertices.push_back(SCREEN_VERTEX(-1, -1));
+		screenVertices.push_back(SCREEN_VERTEX(-1, 1));
+		screenVertices.push_back(SCREEN_VERTEX(1, 1));
+		screenVertices.push_back(SCREEN_VERTEX(1, -1));
 
-        _framebufferToScreenNGShader->bind(&_screenVertices, _rendererHelper->getFramebuffer(i));
+        _framebufferToScreenNGShader->bind(&screenVertices, _rendererHelper->getFramebuffer(i));
         _rendererHelper->drawIndexed(NGPrimitiveType_Triangles, 0, INDICES_PER_RECTANGLE);
         _framebufferToScreenNGShader->unbind();
     }
@@ -505,14 +507,15 @@ void GameRenderer::endFrame()
     _rendererHelper->bindToScreenFramebuffer();
     _rendererHelper->clearFramebufferWithColor(0, 0, 0, 1);
     
-	_screenVertices.clear();
-	_screenVertices.reserve(4);
-	_screenVertices.push_back(SCREEN_VERTEX(-1, -1));
-	_screenVertices.push_back(SCREEN_VERTEX(-1, 1));
-	_screenVertices.push_back(SCREEN_VERTEX(1, 1));
-	_screenVertices.push_back(SCREEN_VERTEX(1, -1));
+    static std::vector<SCREEN_VERTEX> screenVertices;
+    screenVertices.clear();
+    screenVertices.reserve(4);
+    screenVertices.push_back(SCREEN_VERTEX(-1, -1));
+    screenVertices.push_back(SCREEN_VERTEX(-1, 1));
+    screenVertices.push_back(SCREEN_VERTEX(1, 1));
+    screenVertices.push_back(SCREEN_VERTEX(1, -1));
 
-    _framebufferToScreenNGShader->bind(&_screenVertices, _rendererHelper->getFramebuffer(_fbIndex));
+    _framebufferToScreenNGShader->bind(&screenVertices, _rendererHelper->getFramebuffer(_fbIndex));
     _rendererHelper->drawIndexed(NGPrimitiveType_Triangles, 0, INDICES_PER_RECTANGLE);
     _framebufferToScreenNGShader->unbind();
     
