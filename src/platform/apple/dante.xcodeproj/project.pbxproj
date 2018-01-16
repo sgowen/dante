@@ -794,6 +794,10 @@
 		BB36A26E200C415400953CDC /* NGLightingShader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NGLightingShader.cpp; sourceTree = "<group>"; };
 		BB36A26F200C415400953CDC /* NGLightingShader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NGLightingShader.h; sourceTree = "<group>"; };
 		BB39C8921FB2700900CF6699 /* NGGraphics.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NGGraphics.h; sourceTree = "<group>"; };
+		BB3AEE31200EBA5E00DA543D /* XOREncryptDecrypt.exe */ = {isa = PBXFileReference; lastKnownFileType = file; path = XOREncryptDecrypt.exe; sourceTree = "<group>"; };
+		BB3AEE32200EBA5E00DA543D /* fxc.exe */ = {isa = PBXFileReference; lastKnownFileType = file; path = fxc.exe; sourceTree = "<group>"; };
+		BB3AEE33200EBA5E00DA543D /* refresh_assets.bat */ = {isa = PBXFileReference; lastKnownFileType = text; path = refresh_assets.bat; sourceTree = "<group>"; };
+		BB3AEE34200EBA5E00DA543D /* texconv.exe */ = {isa = PBXFileReference; lastKnownFileType = file; path = texconv.exe; sourceTree = "<group>"; };
 		BB3BAEDF1FB4A1F900F5F8B0 /* TitleInputManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TitleInputManager.cpp; sourceTree = "<group>"; };
 		BB3BAEE01FB4A1F900F5F8B0 /* TitleInputManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TitleInputManager.h; sourceTree = "<group>"; };
 		BB3F1193200AE0D900C30B06 /* Config.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Config.cpp; sourceTree = "<group>"; };
@@ -2125,6 +2129,17 @@
 				BBCB152E1FCCECD50076FD60 /* OpenSLESSoundWrapper.h */,
 			);
 			path = android;
+			sourceTree = "<group>";
+		};
+		BB3AEE30200EBA5E00DA543D /* windows */ = {
+			isa = PBXGroup;
+			children = (
+				BB3AEE31200EBA5E00DA543D /* XOREncryptDecrypt.exe */,
+				BB3AEE32200EBA5E00DA543D /* fxc.exe */,
+				BB3AEE33200EBA5E00DA543D /* refresh_assets.bat */,
+				BB3AEE34200EBA5E00DA543D /* texconv.exe */,
+			);
+			path = windows;
 			sourceTree = "<group>";
 		};
 		BB3F1197200AF50400C30B06 /* source */ = {
@@ -3539,13 +3554,14 @@
 		BBF5380E20071991003D276D /* assets */ = {
 			isa = PBXGroup;
 			children = (
-				BBF3CC2B200D70F300CFF412 /* shaders */,
 				BBF5382220071991003D276D /* config */,
 				BBF5380F20071991003D276D /* music */,
 				BB36A26D200BBF1400953CDC /* README.md */,
+				BBF3CC2B200D70F300CFF412 /* shaders */,
 				BBF5383320071991003D276D /* sounds */,
 				BB3F1197200AF50400C30B06 /* source */,
 				BBF5381120071991003D276D /* textures */,
+				BB3AEE30200EBA5E00DA543D /* windows */,
 			);
 			name = assets;
 			path = ../../../assets;
