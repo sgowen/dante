@@ -45,7 +45,7 @@ DX::DirectXDeviceResources::DirectXDeviceResources(DXGI_FORMAT backBufferFormat,
     m_backBufferCount(backBufferCount),
     m_d3dMinFeatureLevel(minFeatureLevel),
     m_window(0),
-    m_d3dFeatureLevel(D3D_FEATURE_LEVEL_11_0),
+    m_d3dFeatureLevel(D3D_FEATURE_LEVEL_9_1),
     m_outputSize{0, 0, 1, 1},
     m_deviceNotify(nullptr),
 	m_iClampWidth(-1),
@@ -74,7 +74,12 @@ void DX::DirectXDeviceResources::CreateDeviceResources()
     static const D3D_FEATURE_LEVEL s_featureLevels[] =
     {
         D3D_FEATURE_LEVEL_11_1,
-        D3D_FEATURE_LEVEL_11_0
+        D3D_FEATURE_LEVEL_11_0,
+		D3D_FEATURE_LEVEL_10_1,
+		D3D_FEATURE_LEVEL_10_0,
+		D3D_FEATURE_LEVEL_9_3,
+		D3D_FEATURE_LEVEL_9_2,
+		D3D_FEATURE_LEVEL_9_1
     };
 
     UINT featLevelCount = 0;
