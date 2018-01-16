@@ -3505,7 +3505,7 @@
 			path = client;
 			sourceTree = "<group>";
 		};
-		BBF3CC2B200D70F300CFF412 /* shader */ = {
+		BBF3CC2B200D70F300CFF412 /* shaders */ = {
 			isa = PBXGroup;
 			children = (
 				BBF3CC3E200D70F300CFF412 /* shader_001_frag.fsh */,
@@ -3533,13 +3533,13 @@
 				BBF3CC45200D712300CFF412 /* shader_004_vert.ngs */,
 				BBF3CC2F200D70F300CFF412 /* shader_004_vert.vsh */,
 			);
-			path = shader;
+			path = shaders;
 			sourceTree = "<group>";
 		};
 		BBF5380E20071991003D276D /* assets */ = {
 			isa = PBXGroup;
 			children = (
-				BBF3CC2B200D70F300CFF412 /* shader */,
+				BBF3CC2B200D70F300CFF412 /* shaders */,
 				BBF5382220071991003D276D /* config */,
 				BBF5380F20071991003D276D /* music */,
 				BB36A26D200BBF1400953CDC /* README.md */,
