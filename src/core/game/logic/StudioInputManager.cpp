@@ -109,6 +109,8 @@ void StudioInputManager::update()
     }
     else
     {
+        _scrollValue = clamp(CURSOR_INPUT_MANAGER->getScrollWheelValue(), 8, 1);
+        
         for (std::vector<CursorEvent *>::iterator i = CURSOR_INPUT_MANAGER->getEvents().begin(); i != CURSOR_INPUT_MANAGER->getEvents().end(); ++i)
         {
             CursorEvent& e = *(*i);

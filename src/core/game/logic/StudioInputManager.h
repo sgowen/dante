@@ -48,6 +48,7 @@ private:
     bool _isLiveMode;
     bool _isTimeToProcessInput;
     bool _isControl;
+    int _scrollValue;
     
     bool isTimeToSampleInput();
     
