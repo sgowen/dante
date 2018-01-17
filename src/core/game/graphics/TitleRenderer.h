@@ -64,6 +64,7 @@ private:
     void renderEnterUsernameText();
     void renderJoiningLocalServerByIPText();
     void renderText(const char* inStr, float x, float y, const Color& inColor, int justification = FONT_ALIGN_LEFT);
+    void testRenderingSuite();
     void endFrame();
 };
 

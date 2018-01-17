@@ -176,6 +176,8 @@ void TitleRenderer::render(int flags)
 
         _spriteBatcher->endBatch(_textureNGShader, _textureManager->getTextureWithName("texture_000.ngt"));
     }
+    
+    testRenderingSuite();
 
     endFrame();
 }
@@ -261,6 +263,33 @@ void TitleRenderer::renderText(const char* inStr, float x, float y, const Color&
     std::string text(inStr);
 
     _font->renderText(*_spriteBatcher, text, x, y, fgWidth, fgHeight, fontColor, justification);
+}
+
+void TitleRenderer::testRenderingSuite()
+{
+    _rendererHelper->updateMatrix(0, 16, 0, 9);
+    
+    _circleBatcher->beginBatch();
+    static Circle c1(10, 4, 2);
+    _circleBatcher->renderCircle(c1, Color::RED);
+    static Circle c2(7, 7, 2);
+    _circleBatcher->renderPartialCircle(c2, 135, Color::RED);
+    _circleBatcher->endBatch(_colorNGShader);
+    
+    static NGRect r1(1, 1, 2, 1);
+    _boundsPolygonBatcher->beginBatch();
+    _boundsPolygonBatcher->renderRect(r1, Color::RED);
+    _boundsPolygonBatcher->endBatch(_colorNGShader);
+    
+    static NGRect r2(4, 1, 2, 1);
+    _fillPolygonBatcher->beginBatch();
+    _fillPolygonBatcher->renderRect(r2, Color::RED);
+    _fillPolygonBatcher->endBatch(_colorNGShader);
+    
+    static Line line(3, 3, 5, 5);
+    _lineBatcher->beginBatch();
+    _lineBatcher->renderLine(line, Color::RED);
+    _lineBatcher->endBatch(_colorNGShader);
 }
 
 void TitleRenderer::endFrame()
