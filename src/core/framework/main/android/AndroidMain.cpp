@@ -168,18 +168,27 @@ void AndroidMain::exec(android_app* state, EngineController* engineController)
         return;
     }
     
+#ifdef USE_NDK_PROFILER
+    monstartup("native-lib.so");
+#endif
+    
     _app = state;
+    
+    JNIEnv *jni;
+    _app->activity->vm->AttachCurrentThread(&jni, NULL);
+    AndroidAssetDataHandler::getInstance()->init(jni, _app->activity->clazz);
+    AndroidAudioEngineHelper::getInstance()->init();
+    _app->activity->vm->DetachCurrentThread();
+    
+    engineController->init();
     _engine = new Engine(engineController);
     
     state->userData = this;
     state->onAppCmd = AndroidMain::handleCmd;
     state->onInputEvent = AndroidMain::handleInput;
     
-#ifdef USE_NDK_PROFILER
-    monstartup("native-lib.so");
-#endif
-    
-    while (1)
+    bool running = true;
+    while (running)
     {
         // Read all pending events.
         int events;
@@ -198,7 +207,8 @@ void AndroidMain::exec(android_app* state, EngineController* engineController)
             if (state->destroyRequested != 0)
             {
                 termDisplay();
-                return;
+                running = false;
+                break;
             }
         }
         
@@ -207,6 +217,11 @@ void AndroidMain::exec(android_app* state, EngineController* engineController)
             drawFrame();
         }
     }
+    
+    delete _engine;
+    
+    AndroidAudioEngineHelper::getInstance()->deinit();
+    AndroidAssetDataHandler::getInstance()->deinit();
 }
 
 int AndroidMain::initDisplay()
@@ -235,13 +250,6 @@ int AndroidMain::initDisplay()
 
 void AndroidMain::loadResources()
 {
-    JNIEnv *jni;
-    _app->activity->vm->AttachCurrentThread(&jni, NULL);
-    
-    AndroidAssetDataHandler::getInstance()->init(jni, _app->activity->clazz);
-    
-    AndroidAudioEngineHelper::getInstance()->init();
-    
     int width = _glContext->GetScreenWidth();
     int height = _glContext->GetScreenHeight();
     
@@ -255,17 +263,10 @@ void AndroidMain::loadResources()
     {
         _engine->createWindowSizeDependentResources(width, height, width > 1440 ? 1440 : width, height > 900 ? 900 : height, width, height);
     }
-    
-    _app->activity->vm->DetachCurrentThread();
-    return;
 }
 
 void AndroidMain::unloadResources()
 {
-    AndroidAudioEngineHelper::getInstance()->deinit();
-    
-    AndroidAssetDataHandler::getInstance()->deinit();
-    
     _engine->releaseDeviceDependentResources();
 }
 

@@ -401,6 +401,7 @@ void DirectXMain::Initialize(EngineController* engineController, HWND window, in
 {
 	_deviceResources->SetWindow(window, width, height);
     
+    engineController->init();
     _engine = new Engine(engineController);
 
 	_deviceResources->CreateDeviceResources();

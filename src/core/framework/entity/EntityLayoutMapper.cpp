@@ -64,7 +64,7 @@ void EntityLayoutMapper::initWithJson(const char* data)
     using namespace rapidjson;
     
     Document d;
-    d.Parse<0>(data);
+    d.Parse<kParseStopWhenDoneFlag>(data);
     
     assert(d.IsObject());
     for (Value::ConstMemberIterator i = d.MemberBegin(); i != d.MemberEnd(); ++i)
@@ -124,7 +124,7 @@ void EntityLayoutMapper::loadEntityLayout(const char* data)
     using namespace rapidjson;
     
     Document d;
-    d.Parse<0>(data);
+    d.Parse<kParseStopWhenDoneFlag>(data);
     
     if (d.HasMember("layers"))
     {

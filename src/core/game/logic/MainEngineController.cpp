@@ -22,6 +22,18 @@ NGRTTI_IMPL(MainEngineController, EngineController);
 
 MainEngineController::MainEngineController()
 {
+    // Empty
+}
+
+MainEngineController::~MainEngineController()
+{
+    StudioEngine::destroy();
+    GameEngine::destroy();
+    TitleEngine::destroy();
+}
+
+void MainEngineController::init()
+{
     NG_CFG->initWithJsonFile("game.cfg");
     
     TitleEngine::create();
@@ -30,13 +42,6 @@ MainEngineController::MainEngineController()
     
     EntityMapper::getInstance()->registerFunction("DefaultController", DefaultController::create);
     EntityMapper::getInstance()->registerFunction("PlayerController", PlayerController::create);
-}
-
-MainEngineController::~MainEngineController()
-{
-    StudioEngine::destroy();
-    GameEngine::destroy();
-    TitleEngine::destroy();
 }
 
 EngineState* MainEngineController::getInitialState()

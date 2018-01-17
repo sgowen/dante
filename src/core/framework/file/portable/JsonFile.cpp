@@ -191,7 +191,7 @@ void JsonFile::deserialize(const char *data)
         _keyValues.clear();
 
         rapidjson::Document d;
-        d.Parse<0>(data);
+        d.Parse<kParseStopWhenDoneFlag>(data);
 
         if (d.IsObject())
         {
