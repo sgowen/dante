@@ -43,22 +43,12 @@ SoundWrapper* AndroidAudioEngineHelper::loadMusic(const char* path)
     return loadSound(1337, path);
 }
 
-void AndroidAudioEngineHelper::init()
+AndroidAudioEngineHelper::AndroidAudioEngineHelper() : AudioEngineHelper()
 {
     OpenSLESManager::create();
 }
 
-void AndroidAudioEngineHelper::deinit()
-{
-    OpenSLESManager::destroy();
-}
-
-AndroidAudioEngineHelper::AndroidAudioEngineHelper() : AudioEngineHelper()
-{
-    // Empty
-}
-
 AndroidAudioEngineHelper::~AndroidAudioEngineHelper()
 {
-    // Empty
+    OpenSLESManager::destroy();
 }

@@ -24,9 +24,6 @@ public:
     virtual SoundWrapper* loadSound(int soundId, const char *path, int numInstances = 1);
     virtual SoundWrapper* loadMusic(const char* path);
     
-    void init();
-    void deinit();
-    
 private:
     // ctor, copy ctor, and assignment should be private in a Singleton
     AndroidAudioEngineHelper();

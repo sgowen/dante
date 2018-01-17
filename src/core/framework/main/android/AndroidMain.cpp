@@ -177,7 +177,6 @@ void AndroidMain::exec(android_app* state, EngineController* engineController)
     JNIEnv *jni;
     _app->activity->vm->AttachCurrentThread(&jni, NULL);
     AndroidAssetDataHandler::getInstance()->init(jni, _app->activity->clazz);
-    AndroidAudioEngineHelper::getInstance()->init();
     _app->activity->vm->DetachCurrentThread();
     
     engineController->init();
@@ -220,7 +219,6 @@ void AndroidMain::exec(android_app* state, EngineController* engineController)
     
     delete _engine;
     
-    AndroidAudioEngineHelper::getInstance()->deinit();
     AndroidAssetDataHandler::getInstance()->deinit();
 }
 
