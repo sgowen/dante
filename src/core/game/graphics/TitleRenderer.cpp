@@ -176,8 +176,6 @@ void TitleRenderer::render(int flags)
 
         _spriteBatcher->endBatch(_textureNGShader, _textureManager->getTextureWithName("texture_000.ngt"));
     }
-    
-    testRenderingSuite();
 
     endFrame();
 }
