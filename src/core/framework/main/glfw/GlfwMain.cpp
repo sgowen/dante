@@ -166,6 +166,7 @@ int GlfwMain::exec(EngineController* engineController)
 
     double lastTime = 0;
 
+    engineController->init();
     Engine engine(engineController);
     engine.createDeviceDependentResources();
 

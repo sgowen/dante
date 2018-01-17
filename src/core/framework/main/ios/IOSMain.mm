@@ -156,6 +156,7 @@
 - (void)setupGL
 {
     EngineController* engineController = [self createEngineController];
+    engineController->init();
     _engine = new Engine(engineController);
     
     [EAGLContext setCurrentContext:self.context];

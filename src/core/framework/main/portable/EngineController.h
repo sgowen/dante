@@ -21,6 +21,7 @@ public:
     EngineController();
     virtual ~EngineController();
     
+    virtual void init() = 0;
     virtual EngineState* getInitialState() = 0;
 };
 

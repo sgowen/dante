@@ -62,7 +62,7 @@ void Assets::initWithJson(const char* json)
     using namespace rapidjson;
     
     Document d;
-    d.Parse<0>(json);
+    d.Parse<kParseStopWhenDoneFlag>(json);
     
     assert(d.HasMember("textures"));
     
