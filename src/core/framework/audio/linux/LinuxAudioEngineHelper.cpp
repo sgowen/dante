@@ -16,12 +16,6 @@
 
 #include <AL/alut.h>
 
-LinuxAudioEngineHelper* LinuxAudioEngineHelper::getInstance()
-{
-    static LinuxAudioEngineHelper instance = LinuxAudioEngineHelper();
-    return &instance;
-}
-
 void LinuxAudioEngineHelper::update(int flags)
 {
     // Empty
