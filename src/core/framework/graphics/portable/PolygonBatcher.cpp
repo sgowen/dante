@@ -57,23 +57,16 @@ void PolygonBatcher::renderPolygon(const b2Vec2* vertices, int vertexCount, Colo
 {
     if (vertexCount == 4)
     {
-#ifdef _WIN32
 		for (int i = (vertexCount - 1); i >= 0; --i)
 		{
 			_quadVertices.push_back(COLOR_VERTEX(vertices[i].x, vertices[i].y, c.red, c.green, c.blue, c.alpha));
 		}
-#else
-		for (int i = 0; i < vertexCount; ++i)
-		{
-			_quadVertices.push_back(COLOR_VERTEX(vertices[i].x, vertices[i].y, c.red, c.green, c.blue, c.alpha));
-		}
-#endif
         
         ++_numQuads;
     }
     else if (vertexCount == 3)
     {
-        for (int i = 0; i < vertexCount; ++i)
+		for (int i = (vertexCount - 1); i >= 0; --i)
         {
             _triangleVertices.push_back(COLOR_VERTEX(vertices[i].x, vertices[i].y, c.red, c.green, c.blue, c.alpha));
         }
