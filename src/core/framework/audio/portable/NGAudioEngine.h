@@ -19,60 +19,41 @@ class AudioEngineHelper;
 class NGAudioEngine
 {
 public:
+    static void create();
     static NGAudioEngine* getInstance();
+    static void destroy();
     
     void update(int flags = 0);
-    
     void pause();
-    
     void resume();
-    
     void loadSound(int soundId, const char *path, int numInstances = 1);
-    
     void playSound(int soundId, float inVolume = 1.0f, bool isLooping = false);
-    
     void stopSound(int soundId);
-    
     void pauseSound(int soundId);
-    
     void resumeSound(int soundId);
-    
     void stopAllSounds();
-    
     void pauseAllSounds();
-    
     void resumeAllSounds();
-    
     void loadMusic(const char *path);
-    
     void playMusic(bool isLooping = true, float inVolume = 1.0f);
-    
     void setMusicVolume(float volume);
-    
     void stopMusic();
-    
     void pauseMusic();
-    
     void resumeMusic();
-    
     bool isMusicPlaying();
-    
     bool isMusicLoaded();
-    
     bool isMusicDisabled();
-    
     void setMusicDisabled(bool isMusicDisabled);
-    
     bool isSoundDisabled();
-    
     void setSoundDisabled(bool isSoundDisabled);
-    
     void reset();
     
 private:
+    static NGAudioEngine* s_instance;
+    
+    AudioEngineHelper* _audioEngineHelper;
     std::map<int, SoundWrapper*> _sounds;
     SoundWrapper* _music;
-    AudioEngineHelper* _audioEngineHelper;
     int _numSoundsPlayedThisFrame;
     bool _isMusicDisabled;
     bool _isSoundDisabled;

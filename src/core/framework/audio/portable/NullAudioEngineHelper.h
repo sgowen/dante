@@ -13,17 +13,13 @@
 
 class NullAudioEngineHelper : public AudioEngineHelper
 {
+    friend class AudioEngineHelperFactory;
+    
 public:
-	static NullAudioEngineHelper* getInstance();
-    
-    virtual void update(int flags = 0);
-    
+	virtual void update(int flags = 0);
     virtual void pause();
-    
     virtual void resume();
-    
     virtual SoundWrapper* loadSound(int soundId, const char *path, int numInstances = 1);
-    
     virtual SoundWrapper* loadMusic(const char* path);
 
 private:

@@ -15,17 +15,12 @@ class AudioEngineHelper
 {
 public:
     AudioEngineHelper();
-    
     virtual ~AudioEngineHelper();
     
     virtual void update(int flags = 0) = 0;
-    
     virtual void pause() = 0;
-    
     virtual void resume() = 0;
-    
     virtual SoundWrapper* loadSound(int soundId, const char *path, int numInstances = 1) = 0;
-    
     virtual SoundWrapper* loadMusic(const char* path) = 0;
 };
 

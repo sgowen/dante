@@ -14,12 +14,6 @@
 
 #include "framework/audio/directx/DirectXSoundWrapper.h"
 
-DirectXAudioEngineHelper* DirectXAudioEngineHelper::getInstance()
-{
-    static DirectXAudioEngineHelper instance = DirectXAudioEngineHelper();
-    return &instance;
-}
-
 void DirectXAudioEngineHelper::update(int flags)
 {
     if (flags == -1)

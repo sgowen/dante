@@ -30,18 +30,18 @@ AudioEngineHelperFactory* AudioEngineHelperFactory::getInstance()
     return &instance;
 }
 
-AudioEngineHelper* AudioEngineHelperFactory::getAudioEngineHelper()
+AudioEngineHelper* AudioEngineHelperFactory::createAudioEngineHelper()
 {
 #if defined __APPLE__
-    return AppleAudioEngineHelper::getInstance();
+    return new AppleAudioEngineHelper();
 #elif defined __ANDROID__
-    return AndroidAudioEngineHelper::getInstance();
+    return new AndroidAudioEngineHelper();
 #elif defined __linux__
-    return LinuxAudioEngineHelper::getInstance();
+    return new LinuxAudioEngineHelper();
 #elif defined _WIN32
-	return DirectXAudioEngineHelper::getInstance();
+	return new DirectXAudioEngineHelper();
 #else
-    return NullAudioEngineHelper::getInstance();
+    return new NullAudioEngineHelper();
 #endif
 
     assert(false);

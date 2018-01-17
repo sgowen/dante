@@ -158,6 +158,8 @@ void GameEngine::createDeviceDependentResources()
 {
     _renderer->createDeviceDependentResources();
     
+    NGAudioEngine::create();
+    
     NG_AUDIO_ENGINE->loadSound(SOUND_ID_ROBOT_JUMP, SOUND_ROBOT_JUMP, 4);
     NG_AUDIO_ENGINE->loadSound(SOUND_ID_EXPLOSION, SOUND_EXPLOSION, 8);
     NG_AUDIO_ENGINE->loadSound(SOUND_ID_DEATH, SOUND_DEATH, 2);
@@ -192,7 +194,7 @@ void GameEngine::releaseDeviceDependentResources()
 {
     _renderer->releaseDeviceDependentResources();
     
-    NG_AUDIO_ENGINE->reset();
+    NGAudioEngine::destroy();
 }
 
 void GameEngine::onResume()

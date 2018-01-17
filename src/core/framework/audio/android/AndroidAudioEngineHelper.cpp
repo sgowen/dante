@@ -16,12 +16,6 @@
 
 #include <assert.h>
 
-AndroidAudioEngineHelper* AndroidAudioEngineHelper::getInstance()
-{
-    static AndroidAudioEngineHelper instance = AndroidAudioEngineHelper();
-    return &instance;
-}
-
 void AndroidAudioEngineHelper::update(int flags)
 {
     // Empty

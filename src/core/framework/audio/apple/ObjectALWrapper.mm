@@ -8,6 +8,8 @@
 
 #include "framework/audio/apple/ObjectALWrapper.h"
 
+#import "ARCSafe_MemMgmt.h"
+
 ALDevice* gDevice = nil;
 ALContext* gContext = nil;
 ALChannelSource* gChannel = nil;
@@ -97,6 +99,12 @@ NSMutableArray* gSounds = nil;
 
 void initObjectAL()
 {
+    gSounds = nil;
+    gMusicTrack = nil;
+    gChannel = nil;
+    gContext = nil;
+    gDevice = nil;
+    
     // Create the device and context.
     // Note that it's easier to just let OALSimpleAudio handle
     // these rather than make and manage them yourself.
@@ -127,13 +135,11 @@ void deinitObjectAL()
 {
     // Stop all music and sound effects.
     [gChannel stop];
+    [gChannel clear];
+    [gChannel resetToDefault];
+    
     [gMusicTrack stop];
-    
     [gSounds removeAllObjects];
-    
-    gMusicTrack = nil;
-    
-    gChannel = nil;
     
     // Note: You'll likely only have one device and context open throughout
     // your program, so in a real program you'd be better off making a
@@ -141,8 +147,11 @@ void deinitObjectAL()
     // allocating/deallocating it here.
     // Most of the demos just let OALSimpleAudio manage the device and context
     // for them.
-    gContext = nil;
-    gDevice = nil;
+    as_release(gSounds);
+    as_release(gMusicTrack);
+    as_release(gChannel);
+    as_release(gContext);
+    as_release(gDevice);
 }
 
 void pauseObjectAL()

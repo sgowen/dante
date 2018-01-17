@@ -22,10 +22,26 @@
 
 #define MAX_SOUNDS_TO_PLAY_PER_FRAME 3
 
-NGAudioEngine* NGAudioEngine::getInstance()
+NGAudioEngine* NGAudioEngine::s_instance = NULL;
+
+void NGAudioEngine::create()
 {
-    static NGAudioEngine instance = NGAudioEngine();
-    return &instance;
+    assert(!s_instance);
+    
+    s_instance = new NGAudioEngine();
+}
+
+NGAudioEngine * NGAudioEngine::getInstance()
+{
+    return s_instance;
+}
+
+void NGAudioEngine::destroy()
+{
+    assert(s_instance);
+    
+    delete s_instance;
+    s_instance = NULL;
 }
 
 void NGAudioEngine::update(int flags)
@@ -320,17 +336,6 @@ void NGAudioEngine::setSoundDisabled(bool isSoundDisabled)
     _isSoundDisabled = isSoundDisabled;
 }
 
-void NGAudioEngine::reset()
-{
-    NGSTDUtil::cleanUpMapOfPointers(_sounds);
-    
-    if (_music)
-    {
-        delete _music;
-        _music = NULL;
-    }
-}
-
 SoundWrapper* NGAudioEngine::findSound(int soundId)
 {
     auto q = _sounds.find(soundId);
@@ -343,8 +348,8 @@ SoundWrapper* NGAudioEngine::findSound(int soundId)
 }
 
 NGAudioEngine::NGAudioEngine() :
+_audioEngineHelper(NG_AUDIO_ENGINE_HELPER_FACTORY->createAudioEngineHelper()),
 _music(NULL),
-_audioEngineHelper(NG_AUDIO_ENGINE_HELPER_FACTORY->getAudioEngineHelper()),
 _numSoundsPlayedThisFrame(0),
 _isMusicDisabled(false),
 _isSoundDisabled(false)
@@ -354,5 +359,13 @@ _isSoundDisabled(false)
 
 NGAudioEngine::~NGAudioEngine()
 {
-    reset();
+    NGSTDUtil::cleanUpMapOfPointers(_sounds);
+    
+    if (_music)
+    {
+        delete _music;
+        _music = NULL;
+    }
+    
+    delete _audioEngineHelper;
 }

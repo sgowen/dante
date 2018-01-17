@@ -15,12 +15,14 @@ class AudioEngineHelper;
 
 class AudioEngineHelperFactory
 {
+    friend class NGAudioEngine;
+    
 public:
 	static AudioEngineHelperFactory* getInstance();
-    
-    AudioEngineHelper* getAudioEngineHelper();
 
 private:
+    AudioEngineHelper* createAudioEngineHelper();
+    
     // ctor, copy ctor, and assignment should be private in a Singleton
     AudioEngineHelperFactory();
     AudioEngineHelperFactory(const AudioEngineHelperFactory&);

@@ -14,12 +14,6 @@
 
 #include "framework/audio/portable/NullSoundWrapper.h"
 
-NullAudioEngineHelper* NullAudioEngineHelper::getInstance()
-{
-    static NullAudioEngineHelper instance = NullAudioEngineHelper();
-    return &instance;
-}
-
 void NullAudioEngineHelper::update(int flags)
 {
     // Empty
