@@ -407,6 +407,8 @@ void GameRenderer::renderEntities(World* world, bool isNormals, bool isServer)
 
 void GameRenderer::renderBox2D()
 {
+	_rendererHelper->updateMatrix(_camBounds[3]->getLeft(), _camBounds[3]->getRight(), _camBounds[3]->getBottom(), _camBounds[3]->getTop());
+
     _box2DDebugRenderer->render(&InstanceManager::getClientWorld()->getWorld(), _colorNGShader);
     
     if (Server::getInstance() && Server::getInstance()->isDisplaying())
