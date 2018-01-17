@@ -12,6 +12,7 @@
 #include "framework/graphics/portable/Renderer.h"
 
 #include "framework/graphics/portable/FontAlign.h"
+#include "framework/math/Vector2.h"
 
 #include <string>
 
@@ -31,6 +32,9 @@ class NGTexture;
 class Font;
 class World;
 
+#define NUM_SPRITE_BATCHERS 8
+#define NUM_CAMERAS 4
+
 class StudioRenderer : public Renderer
 {
 public:
@@ -45,7 +49,7 @@ public:
 private:
     TextureManager* _textureManager;
     RendererHelper* _rendererHelper;
-    SpriteBatcher* _spriteBatcher;
+    SpriteBatcher* _spriteBatchers[NUM_SPRITE_BATCHERS];
     PolygonBatcher* _fillPolygonBatcher;
     PolygonBatcher* _boundsPolygonBatcher;
     LineBatcher* _lineBatcher;
@@ -55,9 +59,15 @@ private:
     NGShader* _textureNGShader;
     NGShader* _colorNGShader;
     NGShader* _framebufferToScreenNGShader;
+    NGRect* _camBounds[NUM_CAMERAS];
+    Vector2 _lastCursor;
+    Vector2 _cursor;
+    int _camScale;
     int _fbIndex;
     
     void setFramebuffer(int framebufferIndex, float r = 0, float g = 0, float b = 0, float a = 0);
+    void renderGrid();
+    void renderUI();
     void renderText(const char* inStr, float x, float y, const Color& inColor, int justification = FONT_ALIGN_LEFT);
     void endFrame();
 };

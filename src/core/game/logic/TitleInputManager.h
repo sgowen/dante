@@ -46,7 +46,7 @@ public:
     
 private:
     std::string _liveInput;
-    int _menuState;
+    int _inputState;
     bool _isLiveMode;
     bool _isTimeToProcessInput;
     

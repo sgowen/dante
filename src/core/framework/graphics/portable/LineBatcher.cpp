@@ -49,6 +49,14 @@ void LineBatcher::renderLine(Line &line, Color &c)
     _numLines++;
 }
 
+void LineBatcher::renderLine(float oX, float oY, float eX, float eY, Color &c)
+{
+    _vertices.push_back(COLOR_VERTEX(oX, oY, c.red, c.green, c.blue, c.alpha));
+    _vertices.push_back(COLOR_VERTEX(eX, eY, c.red, c.green, c.blue, c.alpha));
+    
+    _numLines++;
+}
+
 void LineBatcher::endBatch(NGShader* shader)
 {
     assert(shader);

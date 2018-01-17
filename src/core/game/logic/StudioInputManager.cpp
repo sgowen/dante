@@ -42,7 +42,7 @@ void StudioInputManager::update()
     KEYBOARD_INPUT_MANAGER->process();
     GAME_PAD_INPUT_MANAGER->process();
     
-    _menuState = SIS_NONE;
+    _inputState = SIS_NONE;
     
     if (_isLiveMode)
     {
@@ -92,7 +92,7 @@ void StudioInputManager::update()
                 {
                     if (keyboardEvent->getKey() == NG_KEY_ESCAPE)
                     {
-                        _menuState = SIS_ESCAPE;
+                        _inputState = SIS_ESCAPE;
                         return;
                     }
                 }
@@ -109,17 +109,37 @@ void StudioInputManager::update()
     }
     else
     {
+        for (std::vector<CursorEvent *>::iterator i = CURSOR_INPUT_MANAGER->getEvents().begin(); i != CURSOR_INPUT_MANAGER->getEvents().end(); ++i)
+        {
+            CursorEvent& e = *(*i);
+            CURSOR_CONVERTER->convert(e);
+            switch (e.getType())
+            {
+                case CursorEventType_DOWN:
+                    _downCursor.set(e.getX(), e.getY());
+                    continue;
+                case CursorEventType_DRAGGED:
+                    _dragCursor.set(e.getX(), e.getY());
+                    continue;
+                case CursorEventType_UP:
+                    _upCursor.set(e.getX(), e.getY());
+                    break;
+                default:
+                    break;
+            }
+        }
+        
         for (std::vector<KeyboardEvent *>::iterator i = KEYBOARD_INPUT_MANAGER->getEvents().begin(); i != KEYBOARD_INPUT_MANAGER->getEvents().end(); ++i)
         {
-            if (!(*i)->isUp())
+            KeyboardEvent& e = *(*i);
+            switch (e.getKey())
             {
-                continue;
-            }
-            
-            switch ((*i)->getKey())
-            {
+                case NG_KEY_CMD:
+                case NG_KEY_CTRL:
+                    _isControl = !e.isUp();
+                    continue;
                 case NG_KEY_ESCAPE:
-                    _menuState = SIS_ESCAPE;
+                    _inputState = e.isUp() ? SIS_NONE : SIS_ESCAPE;
                     continue;
                 default:
                     continue;
@@ -156,7 +176,7 @@ void StudioInputManager::onInputProcessed()
 
 int StudioInputManager::getMenuState()
 {
-    return _menuState;
+    return _inputState;
 }
 
 std::string& StudioInputManager::getLiveInputRef()
@@ -170,7 +190,11 @@ std::string StudioInputManager::getLiveInput()
 }
 
 StudioInputManager::StudioInputManager() :
-_menuState(SIS_NONE),
+_downCursor(),
+_dragCursor(),
+_upCursor(),
+_liveInput(),
+_inputState(SIS_NONE),
 _isLiveMode(false),
 _isTimeToProcessInput(false)
 {

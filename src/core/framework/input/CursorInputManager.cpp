@@ -21,7 +21,12 @@ CursorInputManager* CursorInputManager::getInstance()
     return &instance;
 }
 
-void CursorInputManager::onTouch(CursorEventType type, float x, float y)
+void CursorInputManager::setScrollWheelValue(float inValue)
+{
+    _scrollWheelValue = inValue;
+}
+
+void CursorInputManager::onInput(CursorEventType type, float x, float y)
 {
     if (type == CursorEventType_DRAGGED
         && _pool->getBufferSize() >= MAX_DRAGGED_EVENTS_PER_FRAME)
@@ -42,7 +47,10 @@ std::vector<CursorEvent*>& CursorInputManager::getEvents()
     return _pool->getObjects();
 }
 
-#pragma mark private
+float CursorInputManager::getScrollWheelValue()
+{
+    return _scrollWheelValue;
+}
 
 void CursorInputManager::addEvent(CursorEventType type, float x, float y)
 {
@@ -54,7 +62,7 @@ void CursorInputManager::addEvent(CursorEventType type, float x, float y)
     _pool->add(e);
 }
 
-CursorInputManager::CursorInputManager() : _pool(new NGRollingPool<CursorEvent>(POOL_SIZE))
+CursorInputManager::CursorInputManager() : _pool(new NGRollingPool<CursorEvent>(POOL_SIZE)), _scrollWheelValue(0)
 {
     // Empty
 }

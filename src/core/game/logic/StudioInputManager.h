@@ -9,6 +9,8 @@
 #ifndef __noctisgames__StudioInputManager__
 #define __noctisgames__StudioInputManager__
 
+#include <framework/math/Vector2.h>
+
 #include <string>
 
 class MainInputState;
@@ -19,8 +21,12 @@ enum StudioInputState
     SIS_ESCAPE
 };
 
+#define STUDIO_INPUT StudioInputManager::getInstance()
+
 class StudioInputManager
 {
+    friend class StudioRenderer;
+    
 public:
     static StudioInputManager* getInstance();
     
@@ -34,10 +40,14 @@ public:
     std::string getLiveInput();
     
 private:
+    Vector2 _downCursor;
+    Vector2 _dragCursor;
+    Vector2 _upCursor;
     std::string _liveInput;
-    int _menuState;
+    int _inputState;
     bool _isLiveMode;
     bool _isTimeToProcessInput;
+    bool _isControl;
     
     bool isTimeToSampleInput();
     

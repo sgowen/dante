@@ -26,6 +26,7 @@ public:
     
     void beginBatch();
     void renderLine(Line &line, Color &c);
+    void renderLine(float oX, float oY, float eX, float eY, Color &c);
     void endBatch(NGShader* shader);
     
 private:

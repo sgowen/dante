@@ -19,7 +19,9 @@ public:
 
     static void error_callback(int error, const char* description);
     static void joystick_callback(int jid, int event);
+    static void mouse_scroll_callback(GLFWwindow* window, double x, double y);
     static void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
+    static void mouse_cursor_pos_callback(GLFWwindow*, double x, double y);
     static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
 
     int exec(EngineController* engineController);

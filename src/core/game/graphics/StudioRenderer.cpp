@@ -69,6 +69,9 @@
 #include <framework/graphics/portable/NGFramebufferToScreenShader.h>
 #include "framework/graphics/portable/NGTextureDesc.h"
 #include "framework/graphics/portable/Assets.h"
+#include "framework/input/CursorInputManager.h"
+#include "framework/input/CursorConverter.h"
+#include <game/logic/StudioInputManager.h>
 
 #ifdef NG_STEAM
 #include "framework/network/steam/NGSteamGameServer.h"
@@ -81,9 +84,8 @@
 #include <assert.h>
 
 StudioRenderer::StudioRenderer() : Renderer(),
-_textureManager(new TextureManager("title_assets.cfg")),
+_textureManager(new TextureManager("game_assets.cfg")),
 _rendererHelper(RENDERER_HELPER_FACTORY->createRendererHelper()),
-_spriteBatcher(new SpriteBatcher(_rendererHelper)),
 _fillPolygonBatcher(new PolygonBatcher(_rendererHelper, true)),
 _boundsPolygonBatcher(new PolygonBatcher(_rendererHelper, false)),
 _lineBatcher(new LineBatcher(_rendererHelper)),
@@ -93,9 +95,20 @@ _textureNGShader(new NGTextureShader(*_rendererHelper, "shader_003_vert.ngs", "s
 _colorNGShader(new NGGeometryShader(*_rendererHelper, "shader_001_vert.ngs", "shader_001_frag.ngs")),
 _framebufferToScreenNGShader(new NGFramebufferToScreenShader(*_rendererHelper, "shader_002_vert.ngs", "shader_002_frag.ngs")),
 _font(new Font("texture_001.ngt", 0, 0, 16, 64, 75, 1024, 1024)),
+_lastCursor(0, 0),
+_cursor(_lastCursor),
+_camScale(1),
 _fbIndex(0)
 {
-    // Empty
+    for (int i = 0; i < NUM_SPRITE_BATCHERS; ++i)
+    {
+        _spriteBatchers[i] = new SpriteBatcher(_rendererHelper);
+    }
+    
+    for (int i = 0; i < NUM_CAMERAS; ++i)
+    {
+        _camBounds[i] = new NGRect(0, 0, SMALLEST_CAM_WIDTH, SMALLEST_CAM_HEIGHT);
+    }
 }
 
 StudioRenderer::~StudioRenderer()
@@ -104,7 +117,10 @@ StudioRenderer::~StudioRenderer()
 
     delete _textureManager;
     delete _rendererHelper;
-    delete _spriteBatcher;
+    for (int i = 0; i < NUM_SPRITE_BATCHERS; ++i)
+    {
+        delete _spriteBatchers[i];
+    }
     delete _fillPolygonBatcher;
     delete _boundsPolygonBatcher;
     delete _lineBatcher;
@@ -114,6 +130,10 @@ StudioRenderer::~StudioRenderer()
     delete _textureNGShader;
     delete _colorNGShader;
     delete _framebufferToScreenNGShader;
+    for (int i = 0; i < NUM_CAMERAS; ++i)
+    {
+        delete _camBounds[i];
+    }
 }
 
 void StudioRenderer::createDeviceDependentResources()
@@ -143,20 +163,34 @@ void StudioRenderer::releaseDeviceDependentResources()
 
 void StudioRenderer::render(int flags)
 {
+    _lastCursor.set(STUDIO_INPUT->_dragCursor);
+    _camScale = clamp(CURSOR_INPUT_MANAGER->getScrollWheelValue(), 8, 1);
+    
+    float x = 0;//_lastCursor.getX();
+    float y = 0;//_lastCursor.getY();
+    float w = SMALLEST_CAM_WIDTH * _camScale;
+    float h = SMALLEST_CAM_HEIGHT * _camScale;
+    
+    CURSOR_CONVERTER->setCamSize(w, h);
+    
+    _camBounds[3]->getLowerLeft().set(x, y);
+    _camBounds[2]->getLowerLeft().set(x / 2, y / 2);
+    _camBounds[1]->getLowerLeft().set(x / 4, y / 4);
+    _camBounds[0]->getLowerLeft().set(x / 8, y / 8);
+    
+    for (int i = 0; i < NUM_CAMERAS; ++i)
+    {
+        _camBounds[i]->setWidth(w);
+        _camBounds[i]->setHeight(h);
+    }
+    
     setFramebuffer(0, 0, 0, 0, 1);
     _rendererHelper->useNormalBlending();
 
     if (_textureManager->ensureTextures())
     {
-        _rendererHelper->updateMatrix(0, CAM_WIDTH, 0, CAM_HEIGHT);
-
-        _spriteBatcher->beginBatch();
-
-        renderText("Awwww yeah, prepare for the Studio!!!", CAM_WIDTH / 2, CAM_HEIGHT - 2, Color::WHITE, FONT_ALIGN_CENTERED);
-
-        renderText("'ESC' to exit",                         CAM_WIDTH / 2, CAM_HEIGHT - 9, Color::WHITE, FONT_ALIGN_CENTERED);
-
-        _spriteBatcher->endBatch(_textureNGShader, _textureManager->getTextureWithName("texture_000.ngt"));
+        renderGrid();
+        renderUI();
     }
 
     endFrame();
@@ -172,6 +206,40 @@ void StudioRenderer::setFramebuffer(int framebufferIndex, float r, float g, floa
     _rendererHelper->clearFramebufferWithColor(r, g, b, a);
 }
 
+void StudioRenderer::renderGrid()
+{
+    static Color lineColor = Color::WHITE;
+    lineColor.alpha = 0.5f;
+    
+    int camWidth = SMALLEST_CAM_WIDTH * _camScale;
+    int camHeight = SMALLEST_CAM_HEIGHT * _camScale;
+    
+    _rendererHelper->updateMatrix(_camBounds[3]->getLeft(), _camBounds[3]->getRight(), _camBounds[3]->getBottom(), _camBounds[3]->getTop());
+    
+    _lineBatcher->beginBatch();
+    for (int i = 0; i <= camWidth; ++i)
+    {
+        _lineBatcher->renderLine(i, 0, i, camHeight, lineColor);
+    }
+    for (int i = 0; i <= camHeight; ++i)
+    {
+        _lineBatcher->renderLine(0, i, camWidth, i, lineColor);
+    }
+    _lineBatcher->renderLine(0, 0, 0, camHeight, Color::RED);
+    _lineBatcher->renderLine(0, 0, 0, camWidth, Color::RED);
+    _lineBatcher->endBatch(_colorNGShader);
+}
+
+void StudioRenderer::renderUI()
+{
+    _rendererHelper->updateMatrix(0, CAM_WIDTH, 0, CAM_HEIGHT);
+    
+    _spriteBatchers[0]->beginBatch();
+    renderText("Awwww yeah, prepare for the Studio!!!", CAM_WIDTH / 2, CAM_HEIGHT - 2, Color::WHITE, FONT_ALIGN_CENTERED);
+    renderText("'ESC' to exit",                         CAM_WIDTH / 2, CAM_HEIGHT - 9, Color::WHITE, FONT_ALIGN_CENTERED);
+    _spriteBatchers[0]->endBatch(_textureNGShader, _textureManager->getTextureWithName("texture_000.ngt"));
+}
+
 void StudioRenderer::renderText(const char* inStr, float x, float y, const Color& inColor, int justification)
 {
     Color fontColor = Color(inColor.red, inColor.green, inColor.blue, inColor.alpha);
@@ -180,7 +248,7 @@ void StudioRenderer::renderText(const char* inStr, float x, float y, const Color
 
     std::string text(inStr);
 
-    _font->renderText(*_spriteBatcher, text, x, y, fgWidth, fgHeight, fontColor, justification);
+    _font->renderText(*_spriteBatchers[0], text, x, y, fgWidth, fgHeight, fontColor, justification);
 }
 
 void StudioRenderer::endFrame()

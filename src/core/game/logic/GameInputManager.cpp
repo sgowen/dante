@@ -74,32 +74,32 @@ void GameInputManager::update()
     KEYBOARD_INPUT_MANAGER->process();
     GAME_PAD_INPUT_MANAGER->process();
     
-    _menuState = GIS_NONE;
+    _inputState = GIS_NONE;
     
     for (std::vector<KeyboardEvent *>::iterator i = KEYBOARD_INPUT_MANAGER->getEvents().begin(); i != KEYBOARD_INPUT_MANAGER->getEvents().end(); ++i)
     {
         switch ((*i)->getKey())
         {
             case NG_KEY_M:
-                _menuState = (*i)->isDown() ? GIS_CLIENT_MAIN_TOGGLE_MUSIC : _menuState;
+                _inputState = (*i)->isDown() ? GIS_CLIENT_MAIN_TOGGLE_MUSIC : _inputState;
                 continue;
             case NG_KEY_S:
-                _menuState = (*i)->isDown() ? GIS_CLIENT_MAIN_TOGGLE_SOUND : _menuState;
+                _inputState = (*i)->isDown() ? GIS_CLIENT_MAIN_TOGGLE_SOUND : _inputState;
                 continue;
             case NG_KEY_P:
-                _menuState = (*i)->isDown() ? GIS_TOGGLE_PHYSICS_DISPLAY : _menuState;
+                _inputState = (*i)->isDown() ? GIS_TOGGLE_PHYSICS_DISPLAY : _inputState;
                 continue;
             case NG_KEY_L:
-                _menuState = (*i)->isDown() ? GIS_TOGGLE_INTERPOLATION : _menuState;
+                _inputState = (*i)->isDown() ? GIS_TOGGLE_INTERPOLATION : _inputState;
                 continue;
             case NG_KEY_Z:
-                _menuState = (*i)->isDown() ? GIS_TOGGLE_LIGHTING : _menuState;
+                _inputState = (*i)->isDown() ? GIS_TOGGLE_LIGHTING : _inputState;
                 continue;
             case NG_KEY_I:
-                _menuState = (*i)->isDown() ? GIS_SERVER_TOGGLE_DISPLAY : _menuState;
+                _inputState = (*i)->isDown() ? GIS_SERVER_TOGGLE_DISPLAY : _inputState;
                 continue;
             case NG_KEY_T:
-                _menuState = (*i)->isDown() ? GIS_SERVER_TOGGLE_MAP : _menuState;
+                _inputState = (*i)->isDown() ? GIS_SERVER_TOGGLE_MAP : _inputState;
                 continue;
             case NG_KEY_ESCAPE:
                 if ((*i)->isDown())
@@ -248,7 +248,7 @@ void GameInputManager::update()
             if ((*i)->getType() == CursorEventType_DOWN
                 || (*i)->getType() == CursorEventType_DRAGGED)
             {
-                Vector2& vec = CURSOR_CONVERTER->touchToWorld(*(*i));
+                Vector2& vec = CURSOR_CONVERTER->convert(*(*i));
                 _currentState->getGameInputState(0)._isMovingLeft = vec.getX() < (CAM_WIDTH / 2);
                 _currentState->getGameInputState(0)._isMovingRight = vec.getX() > (CAM_WIDTH / 2);
                 
@@ -293,7 +293,7 @@ MoveList& GameInputManager::getMoveList()
 
 int GameInputManager::getMenuState()
 {
-    return _menuState;
+    return _inputState;
 }
 
 const Move& GameInputManager::sampleInputAsMove()
@@ -307,13 +307,13 @@ const Move& GameInputManager::sampleInputAsMove()
 void GameInputManager::dropPlayer(int index)
 {
     _currentState->getGameInputState(index)._playerId = INPUT_UNASSIGNED;
-    _menuState = GIS_LOCAL_PLAYER_DROP_OUT_0 + index;
+    _inputState = GIS_LOCAL_PLAYER_DROP_OUT_0 + index;
 }
 
 GameInputManager::GameInputManager() :
 _currentState(static_cast<MainInputState*>(POOLED_OBJ_MGR->borrowInputState())),
 _pendingMove(NULL),
-_menuState(GIS_NONE),
+_inputState(GIS_NONE),
 _isTimeToProcessInput(false)
 {
     // Empty

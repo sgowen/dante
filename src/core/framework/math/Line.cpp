@@ -10,7 +10,7 @@
 
 #include "framework/math/Line.h"
 
-Line::Line(float x1, float y1, float x2, float y2) : _origin(x1, y1), _end(x2, y2)
+Line::Line(float oX, float oY, float eX, float eY) : _origin(oX, oY), _end(eX, eY)
 {
     // Empty
 }

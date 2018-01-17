@@ -32,16 +32,16 @@ _camHeight(1)
     // Empty
 }
 
-Vector2& CursorConverter::touchToWorld(CursorEvent& touchEvent)
+Vector2& CursorConverter::convert(CursorEvent& cursorEvent)
 {
 #if TARGET_OS_IPHONE
-    _cursor.set((touchEvent.getX() / _cursorWidth) * _camWidth, (1 - touchEvent.getY() / _cursorHeight) * _camHeight);
+    _cursor.set((cursorEvent.getX() / _cursorWidth) * _camWidth, (1 - cursorEvent.getY() / _cursorHeight) * _camHeight);
 #elif TARGET_OS_OSX
-    _cursor.set((touchEvent.getX() / _cursorWidth) * _camWidth, (touchEvent.getY() / _cursorHeight) * _camHeight);
+    _cursor.set((cursorEvent.getX() / _cursorWidth) * _camWidth, (cursorEvent.getY() / _cursorHeight) * _camHeight);
 #elif __ANDROID__
-    _cursor.set((touchEvent.getX() / _cursorWidth) * _camWidth, (1 - touchEvent.getY() / _cursorHeight) * _camHeight);
+    _cursor.set((cursorEvent.getX() / _cursorWidth) * _camWidth, (1 - cursorEvent.getY() / _cursorHeight) * _camHeight);
 #elif defined _WIN32
-	_cursor.set(touchEvent.getX() / _cursorWidth * _camWidth, _camHeight - (touchEvent.getY() / _cursorHeight * _camHeight));
+	_cursor.set(cursorEvent.getX() / _cursorWidth * _camWidth, _camHeight - (cursorEvent.getY() / _cursorHeight * _camHeight));
 #endif
     
     return _cursor;

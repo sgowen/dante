@@ -23,14 +23,15 @@ class CursorInputManager
 public:
     static CursorInputManager* getInstance();
     
-    void onTouch(CursorEventType type, float x, float y);
-    
+    void setScrollWheelValue(float inValue);
+    void onInput(CursorEventType type, float x, float y);
     void process();
-    
     std::vector<CursorEvent*>& getEvents();
+    float getScrollWheelValue();
     
 private:
     NGRollingPool<CursorEvent>* _pool;
+    float _scrollWheelValue;
     
     void addEvent(CursorEventType type, float x, float y);
     

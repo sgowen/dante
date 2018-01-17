@@ -14,10 +14,9 @@
 class Line
 {
 public:
-    Line(float x1, float y1, float x2, float y2);
+    Line(float oX, float oY, float eX, float eY);
     
     Vector2& getOrigin();
-    
     Vector2& getEnd();
     
 private:

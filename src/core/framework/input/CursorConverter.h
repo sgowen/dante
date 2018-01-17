@@ -20,10 +20,8 @@ class CursorConverter
 public:
     static CursorConverter* getInstance();
     
-    Vector2& touchToWorld(CursorEvent& touchEvent);
-    
+    Vector2& convert(CursorEvent& cursorEvent);
     void setCursorSize(int width, int height);
-    
     void setCamSize(float camWidth, float camHeight);
     
 private:

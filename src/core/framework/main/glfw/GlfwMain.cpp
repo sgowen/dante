@@ -16,6 +16,7 @@
 #include "framework/input/GamePadInputManager.h"
 #include "framework/input/GamePadEventType.h"
 #include "framework/util/FrameworkConstants.h"
+#include "framework/math/MathUtil.h"
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -62,6 +63,19 @@ void GlfwMain::joystick_callback(int jid, int event)
     }
 }
 
+void GlfwMain::mouse_scroll_callback(GLFWwindow* window, double x, double y)
+{
+    static double scrollWheelValue = 0;
+    
+    scrollWheelValue += y;
+    
+    scrollWheelValue = clamp(scrollWheelValue, 8, 0);
+    
+    CURSOR_INPUT_MANAGER->setScrollWheelValue(scrollWheelValue);
+}
+
+static bool isDown = false;
+
 void GlfwMain::mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
 {
     static double cursorX;
@@ -72,16 +86,23 @@ void GlfwMain::mouse_button_callback(GLFWwindow* window, int button, int action,
     switch (action)
     {
         case GLFW_PRESS:
-            CURSOR_INPUT_MANAGER->onTouch(CursorEventType_DOWN, cursorX, cursorY);
-            break;
-        case GLFW_REPEAT:
-            CURSOR_INPUT_MANAGER->onTouch(CursorEventType_DRAGGED, cursorX, cursorY);
+            CURSOR_INPUT_MANAGER->onInput(CursorEventType_DOWN, cursorX, cursorY);
+            isDown = true;
             break;
         case GLFW_RELEASE:
-            CURSOR_INPUT_MANAGER->onTouch(CursorEventType_UP, cursorX, cursorY);
+            isDown = false;
+            CURSOR_INPUT_MANAGER->onInput(CursorEventType_UP, cursorX, cursorY);
             break;
         default:
             break;
+    }
+}
+
+void GlfwMain::mouse_cursor_pos_callback(GLFWwindow*, double x, double y)
+{
+    if (isDown)
+    {
+        CURSOR_INPUT_MANAGER->onInput(CursorEventType_DRAGGED, x, y);
     }
 }
 
@@ -155,6 +176,8 @@ int GlfwMain::exec(EngineController* engineController)
 
     glfwSetJoystickCallback(GlfwMain::joystick_callback);
     glfwSetMouseButtonCallback(window, GlfwMain::mouse_button_callback);
+    glfwSetCursorPosCallback(window, GlfwMain::mouse_cursor_pos_callback);
+    glfwSetScrollCallback(window, GlfwMain::mouse_scroll_callback);
     glfwSetKeyCallback(window, GlfwMain::key_callback);
 
     glfwMakeContextCurrent(window);

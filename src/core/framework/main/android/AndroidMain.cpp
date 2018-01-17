@@ -119,7 +119,7 @@ int32_t AndroidMain::handleInput(android_app* app, AInputEvent* event)
             {
                 float x = AMotionEvent_getX(event, pointerIndex);
                 float y = AMotionEvent_getY(event, pointerIndex);
-                CURSOR_INPUT_MANAGER->onTouch(CursorEventType_DOWN, x, y);
+                CURSOR_INPUT_MANAGER->onInput(CursorEventType_DOWN, x, y);
             }
                 break;
             case AMOTION_EVENT_ACTION_UP:
@@ -128,7 +128,7 @@ int32_t AndroidMain::handleInput(android_app* app, AInputEvent* event)
             {
                 float x = AMotionEvent_getX(event, pointerIndex);
                 float y = AMotionEvent_getY(event, pointerIndex);
-                CURSOR_INPUT_MANAGER->onTouch(CursorEventType_UP, x, y);
+                CURSOR_INPUT_MANAGER->onInput(CursorEventType_UP, x, y);
             }
                 break;
             case AMOTION_EVENT_ACTION_MOVE:
@@ -138,7 +138,7 @@ int32_t AndroidMain::handleInput(android_app* app, AInputEvent* event)
                     pointerIndex = i;
                     float x = AMotionEvent_getX(event, pointerIndex);
                     float y = AMotionEvent_getY(event, pointerIndex);
-                    CURSOR_INPUT_MANAGER->onTouch(CursorEventType_DRAGGED, x, y);
+                    CURSOR_INPUT_MANAGER->onInput(CursorEventType_DRAGGED, x, y);
                 }
             }
                 break;

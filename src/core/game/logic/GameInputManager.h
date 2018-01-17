@@ -58,7 +58,7 @@ private:
     MainInputState* _currentState;
     MoveList _moveList;
     const Move* _pendingMove;
-    int _menuState;
+    int _inputState;
     bool _isTimeToProcessInput;
     
     const Move& sampleInputAsMove();

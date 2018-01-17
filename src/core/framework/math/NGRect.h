@@ -17,25 +17,15 @@ public:
     NGRect(float x, float y, float width, float height, float angle = 0);
     
     Vector2& getLowerLeft();
-    
     float getRight();
-    
     float getTop();
-    
     float getLeft();
-    
     float getBottom();
-    
     float getWidth();
-    
     void setWidth(float width);
-    
     float getHeight();
-    
     void setHeight(float height);
-    
     float getAngle();
-    
     void setAngle(float angle);
     
 private:

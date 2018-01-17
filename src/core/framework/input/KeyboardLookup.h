@@ -57,6 +57,9 @@
 #define NG_KEY_Y 0x0059
 #define NG_KEY_Z 0x005A
 
+#define NG_KEY_CTRL 341
+#define NG_KEY_CMD 343
+
 #define NG_KEY_DELETE 0x007F
 
 #ifdef _WIN32
@@ -131,6 +134,8 @@ inline std::vector<unsigned short>& getAllSupportedKeys()
 		keys.push_back(NG_KEY_X);
 		keys.push_back(NG_KEY_Y);
 		keys.push_back(NG_KEY_Z);
+        keys.push_back(NG_KEY_CTRL);
+        keys.push_back(NG_KEY_CMD);
 		keys.push_back(NG_KEY_DELETE);
 		keys.push_back(NG_KEY_ARROW_UP);
 		keys.push_back(NG_KEY_ARROW_DOWN);

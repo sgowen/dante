@@ -96,21 +96,21 @@
 {
     UITouch *touch = [touches anyObject];
     CGPoint pos = [touch locationInView: [UIApplication sharedApplication].keyWindow];
-    CURSOR_INPUT_MANAGER->onTouch(CursorEventType_DOWN, pos.x, pos.y);
+    CURSOR_INPUT_MANAGER->onInput(CursorEventType_DOWN, pos.x, pos.y);
 }
 
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
 {
     UITouch *touch = [touches anyObject];
     CGPoint pos = [touch locationInView: [UIApplication sharedApplication].keyWindow];
-    CURSOR_INPUT_MANAGER->onTouch(CursorEventType_DRAGGED, pos.x, pos.y);
+    CURSOR_INPUT_MANAGER->onInput(CursorEventType_DRAGGED, pos.x, pos.y);
 }
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
     UITouch *touch = [touches anyObject];
     CGPoint pos = [touch locationInView: [UIApplication sharedApplication].keyWindow];
-    CURSOR_INPUT_MANAGER->onTouch(CursorEventType_UP, pos.x, pos.y);
+    CURSOR_INPUT_MANAGER->onInput(CursorEventType_UP, pos.x, pos.y);
 }
 
 - (BOOL)prefersStatusBarHidden

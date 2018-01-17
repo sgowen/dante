@@ -43,7 +43,7 @@ void TitleInputManager::update()
     KEYBOARD_INPUT_MANAGER->process();
     GAME_PAD_INPUT_MANAGER->process();
     
-    _menuState = TIS_NONE;
+    _inputState = TIS_NONE;
     
     if (_isLiveMode)
     {
@@ -93,7 +93,7 @@ void TitleInputManager::update()
                 {
                     if (keyboardEvent->getKey() == NG_KEY_ESCAPE)
                     {
-                        _menuState = TIS_ESCAPE;
+                        _inputState = TIS_ESCAPE;
                         return;
                     }
                 }
@@ -143,40 +143,40 @@ void TitleInputManager::update()
             switch ((*i)->getKey())
             {
                 case NG_KEY_E:
-                    _menuState = TIS_ENTER_STUDIO;
+                    _inputState = TIS_ENTER_STUDIO;
                     continue;
                 case NG_KEY_A:
-                    _menuState = TIS_ACTIVATE_STEAM;
+                    _inputState = TIS_ACTIVATE_STEAM;
                     continue;
                 case NG_KEY_D:
-                    _menuState = TIS_DEACTIVATE_STEAM;
+                    _inputState = TIS_DEACTIVATE_STEAM;
                     continue;
                 case NG_KEY_S:
-                    _menuState = TIS_START_SERVER;
+                    _inputState = TIS_START_SERVER;
                     continue;
                 case NG_KEY_J:
-                    _menuState = TIS_JOIN_LOCAL_SERVER;
+                    _inputState = TIS_JOIN_LOCAL_SERVER;
                     continue;
                 case NG_KEY_L:
-                    _menuState = TIS_STEAM_REFRESH_LAN_SERVERS;
+                    _inputState = TIS_STEAM_REFRESH_LAN_SERVERS;
                     continue;
                 case NG_KEY_I:
-                    _menuState = TIS_STEAM_REFRESH_INTERNET_SERVERS;
+                    _inputState = TIS_STEAM_REFRESH_INTERNET_SERVERS;
                     continue;
                 case NG_KEY_ONE:
-                    _menuState = TIS_STEAM_JOIN_SERVER_1;
+                    _inputState = TIS_STEAM_JOIN_SERVER_1;
                     continue;
                 case NG_KEY_TWO:
-                    _menuState = TIS_STEAM_JOIN_SERVER_2;
+                    _inputState = TIS_STEAM_JOIN_SERVER_2;
                     continue;
                 case NG_KEY_THREE:
-                    _menuState = TIS_STEAM_JOIN_SERVER_3;
+                    _inputState = TIS_STEAM_JOIN_SERVER_3;
                     continue;
                 case NG_KEY_FOUR:
-                    _menuState = TIS_STEAM_JOIN_SERVER_4;
+                    _inputState = TIS_STEAM_JOIN_SERVER_4;
                     continue;
                 case NG_KEY_ESCAPE:
-                    _menuState = TIS_ESCAPE;
+                    _inputState = TIS_ESCAPE;
                     continue;
                 default:
                     continue;
@@ -193,10 +193,10 @@ void TitleInputManager::update()
             switch ((*i)->getType())
             {
                 case GamePadEventType_START_BUTTON:
-                    _menuState = TIS_START_SERVER;
+                    _inputState = TIS_START_SERVER;
                     continue;
                 case GamePadEventType_BACK_BUTTON:
-                    _menuState = TIS_ESCAPE;
+                    _inputState = TIS_ESCAPE;
                     continue;
                 default:
                     continue;
@@ -210,7 +210,7 @@ void TitleInputManager::update()
             {
                 if ((*i)->getType() == CursorEventType_UP)
                 {
-                    _menuState = TIS_START_SERVER;
+                    _inputState = TIS_START_SERVER;
                 }
                 else
                 {
@@ -249,7 +249,7 @@ void TitleInputManager::onInputProcessed()
 
 int TitleInputManager::getMenuState()
 {
-    return _menuState;
+    return _inputState;
 }
 
 std::string& TitleInputManager::getLiveInputRef()
@@ -263,7 +263,7 @@ std::string TitleInputManager::getLiveInput()
 }
 
 TitleInputManager::TitleInputManager() :
-_menuState(TIS_NONE),
+_inputState(TIS_NONE),
 _isLiveMode(false),
 _isTimeToProcessInput(false)
 {

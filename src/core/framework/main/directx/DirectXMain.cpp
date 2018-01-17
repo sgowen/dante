@@ -461,17 +461,17 @@ void DirectXMain::Update(DX::StepTimer const& timer)
 	{
 		if (_isPointerPressed && mouse.leftButton)
 		{
-			CURSOR_INPUT_MANAGER->onTouch(CursorEventType_DRAGGED, float(mouse.x), float(mouse.y));
+			CURSOR_INPUT_MANAGER->onInput(CursorEventType_DRAGGED, float(mouse.x), float(mouse.y));
 		}
 		else if (mouse.leftButton && !_isPointerPressed)
 		{
-			CURSOR_INPUT_MANAGER->onTouch(CursorEventType_DOWN, float(mouse.x), float(mouse.y));
+			CURSOR_INPUT_MANAGER->onInput(CursorEventType_DOWN, float(mouse.x), float(mouse.y));
 
 			_isPointerPressed = true;
 		}
 		else if (_isPointerPressed && !mouse.leftButton)
 		{
-			CURSOR_INPUT_MANAGER->onTouch(CursorEventType_UP, float(mouse.x), float(mouse.y));
+			CURSOR_INPUT_MANAGER->onInput(CursorEventType_UP, float(mouse.x), float(mouse.y));
 
 			_isPointerPressed = false;
 		}
