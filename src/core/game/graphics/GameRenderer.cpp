@@ -98,7 +98,7 @@ _textureNGShader(new NGTextureShader(*_rendererHelper, "shader_003_vert.ngs", "s
 _colorNGShader(new NGGeometryShader(*_rendererHelper, "shader_001_vert.ngs", "shader_001_frag.ngs")),
 _lightingNGShader(new NGLightingShader(*_rendererHelper, "shader_004_vert.ngs", "shader_004_frag.ngs")),
 _framebufferToScreenNGShader(new NGFramebufferToScreenShader(*_rendererHelper, "shader_002_vert.ngs", "shader_002_frag.ngs")),
-_font(new Font("texture_000.ngt", 0, 0, 16, 64, 75, TEXTURE_SIZE_1024)),
+_font(new Font("texture_000.ngt", 0, 0, 16, 64, 75, 1024, 1024)),
 _fbIndex(0)
 {
     for (int i = 0; i < NUM_SPRITE_BATCHERS; ++i)
@@ -226,8 +226,9 @@ void GameRenderer::updateCamera()
                 y = pY;
                 
                 x -= CAM_WIDTH * 0.5f;
-                
                 y -= CAM_HEIGHT * 0.5f;
+                
+                /// TODO, fixme - this really shouldn't be needed in a fully dynamic game
                 y = clamp(y, GAME_HEIGHT, 0);
                 
                 isCamInitialized = true;
