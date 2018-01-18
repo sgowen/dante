@@ -168,18 +168,8 @@ void GameEngine::createDeviceDependentResources()
     NG_AUDIO_ENGINE->loadSound(SOUND_ID_HEADSHOT, SOUND_HEADSHOT, 4);
     
     NG_AUDIO_ENGINE->loadMusic(MUSIC_DEMO);
-    
-    if (PlatformHelper::getPlatform() != NG_PLATFORM_ANDROID
-        && PlatformHelper::getPlatform() != NG_PLATFORM_IOS)
-    {
-        // No keyboard on mobile, meaning we can't hit the S key to turn on sound
-        NG_AUDIO_ENGINE->setSoundDisabled(true);
-        NG_AUDIO_ENGINE->setMusicDisabled(true);
-    }
-    else
-    {
-        NG_AUDIO_ENGINE->playMusic();
-    }
+
+	NG_AUDIO_ENGINE->playMusic();
 }
 
 void GameEngine::createWindowSizeDependentResources(int screenWidth, int screenHeight, int renderWidth, int renderHeight, int cursorWidth, int cursorHeight)
