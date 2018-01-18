@@ -170,12 +170,10 @@ void GameRenderer::releaseDeviceDependentResources()
 
 void GameRenderer::render(int flags)
 {
-    _lightingNGShader->resetLights();
     setFramebuffer(0);
     
     if (_textureManager->ensureTextures())
     {
-        updateCamera();
         renderWorld(flags);
         
         _rendererHelper->useScreenBlending();
@@ -190,18 +188,10 @@ void GameRenderer::render(int flags)
     endFrame();
 }
 
-void GameRenderer::setFramebuffer(int framebufferIndex, float r, float g, float b, float a)
-{
-    assert(framebufferIndex >= 0);
-    
-    _fbIndex = framebufferIndex;
-    
-    _rendererHelper->bindToOffscreenFramebuffer(_fbIndex);
-    _rendererHelper->clearFramebufferWithColor(r, g, b, a);
-}
-
 void GameRenderer::updateCamera()
 {
+    _lightingNGShader->resetLights();
+    
     // Adjust camera based on the player position
     float x = 0;
     float y = 0;
@@ -240,6 +230,16 @@ void GameRenderer::updateCamera()
     _camBounds[2]->getLowerLeft().set(x / 2, y / 2);
     _camBounds[1]->getLowerLeft().set(x / 4, y / 4);
     _camBounds[0]->getLowerLeft().set(x / 8, y / 8);
+}
+
+void GameRenderer::setFramebuffer(int framebufferIndex, float r, float g, float b, float a)
+{
+    assert(framebufferIndex >= 0);
+    
+    _fbIndex = framebufferIndex;
+    
+    _rendererHelper->bindToOffscreenFramebuffer(_fbIndex);
+    _rendererHelper->clearFramebufferWithColor(r, g, b, a);
 }
 
 void GameRenderer::renderWorld(int flags)

@@ -46,6 +46,8 @@ public:
     virtual void releaseDeviceDependentResources();
     virtual void render(int flags = 0);
     
+    void updateCamera(float x, float y, float w, float h);
+    
 private:
     TextureManager* _textureManager;
     RendererHelper* _rendererHelper;
@@ -60,9 +62,6 @@ private:
     NGShader* _colorNGShader;
     NGShader* _framebufferToScreenNGShader;
     NGRect* _camBounds[NUM_CAMERAS];
-    Vector2 _lastCursor;
-    Vector2 _cursor;
-    int _camScale;
     int _fbIndex;
     
     void setFramebuffer(int framebufferIndex, float r = 0, float g = 0, float b = 0, float a = 0);

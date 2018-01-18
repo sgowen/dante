@@ -13,7 +13,7 @@
 
 #include <string>
 
-class MainInputState;
+class StudioEngine;
 
 enum StudioInputState
 {
@@ -30,7 +30,7 @@ class StudioInputManager
 public:
     static StudioInputManager* getInstance();
     
-    void update();
+    void update(StudioEngine* engine);
     void setLiveInputMode(bool isLiveMode);
     bool isLiveMode();
     bool isTimeToProcessInput();
@@ -42,6 +42,8 @@ public:
 private:
     Vector2 _downCursor;
     Vector2 _dragCursor;
+    Vector2 _deltaCursor;
+    Vector2 _cursor;
     Vector2 _upCursor;
     std::string _liveInput;
     int _inputState;
@@ -49,8 +51,9 @@ private:
     bool _isTimeToProcessInput;
     bool _isControl;
     int _scrollValue;
+    int _lastScrollValue;
     
-    bool isTimeToSampleInput();
+    void updateCamera(StudioEngine* engine);
     
     // ctor, copy ctor, and assignment should be private in a Singleton
     StudioInputManager();

@@ -67,7 +67,7 @@ void GlfwMain::mouse_scroll_callback(GLFWwindow* window, double x, double y)
 {
     static double scrollWheelValue = 0;
     
-    scrollWheelValue += y;
+    scrollWheelValue -= y;
     
     scrollWheelValue = clamp(scrollWheelValue, 8, 0);
     

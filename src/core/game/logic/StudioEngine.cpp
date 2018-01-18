@@ -94,7 +94,7 @@ void StudioEngine::enter(Engine* engine)
 
 void StudioEngine::update(Engine* engine)
 {
-    StudioInputManager::getInstance()->update();
+    StudioInputManager::getInstance()->update(this);
     
     if (handleInput())
     {

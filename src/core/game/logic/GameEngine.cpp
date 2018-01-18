@@ -204,6 +204,8 @@ void GameEngine::render(double alpha)
         _world->interpolate(alpha);
     }
     
+    _renderer->updateCamera();
+    
     _renderer->render(_state);
     
     if (_state & GameEngineState_Interpolation)

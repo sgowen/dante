@@ -10,8 +10,7 @@
 
 #include "game/logic/StudioInputManager.h"
 
-#include "game/logic/MainInputState.h"
-#include "framework/network/portable/Move.h"
+#include "game/logic/StudioEngine.h"
 
 #include "framework/util/Timing.h"
 #include "framework/input/CursorInputManager.h"
@@ -27,6 +26,7 @@
 #include "framework/util/StringUtil.h"
 #include "framework/math/MathUtil.h"
 #include "framework/util/FrameworkConstants.h"
+#include "game/graphics/StudioRenderer.h"
 
 #include <sstream>
 
@@ -36,7 +36,7 @@ StudioInputManager* StudioInputManager::getInstance()
     return &instance;
 }
 
-void StudioInputManager::update()
+void StudioInputManager::update(StudioEngine* engine)
 {
     CURSOR_INPUT_MANAGER->process();
     KEYBOARD_INPUT_MANAGER->process();
@@ -111,20 +111,31 @@ void StudioInputManager::update()
     {
         _scrollValue = clamp(CURSOR_INPUT_MANAGER->getScrollWheelValue(), 8, 1);
         
+        CURSOR_CONVERTER->setCamSize(SMALLEST_CAM_WIDTH * _scrollValue, SMALLEST_CAM_HEIGHT * _scrollValue);
+        
         for (std::vector<CursorEvent *>::iterator i = CURSOR_INPUT_MANAGER->getEvents().begin(); i != CURSOR_INPUT_MANAGER->getEvents().end(); ++i)
         {
             CursorEvent& e = *(*i);
-            CURSOR_CONVERTER->convert(e);
+            Vector2& c = CURSOR_CONVERTER->convert(e);
             switch (e.getType())
             {
                 case CursorEventType_DOWN:
-                    _downCursor.set(e.getX(), e.getY());
+                    _downCursor.set(c);
+                    _dragCursor.set(c);
+                    _deltaCursor.set(0, 0);
                     continue;
                 case CursorEventType_DRAGGED:
-                    _dragCursor.set(e.getX(), e.getY());
+                {
+                    Vector2 delta = c;
+                    delta -= _dragCursor;
+                    _dragCursor.set(c);
+                    delta *= 2;
+                    _deltaCursor.set(delta);
+                }
                     continue;
                 case CursorEventType_UP:
-                    _upCursor.set(e.getX(), e.getY());
+                    _upCursor.set(c);
+                    _deltaCursor.set(0, 0);
                     break;
                 default:
                     break;
@@ -148,6 +159,8 @@ void StudioInputManager::update()
             }
         }
     }
+    
+    updateCamera(engine);
 }
 
 void StudioInputManager::setLiveInputMode(bool isLiveMode)
@@ -191,14 +204,46 @@ std::string StudioInputManager::getLiveInput()
     return _liveInput;
 }
 
+void StudioInputManager::updateCamera(StudioEngine *engine)
+{
+    float dx = _deltaCursor.getX();
+    float dy = _deltaCursor.getY();
+    float x = _cursor.getX();
+    float y = _cursor.getY();
+    x -= dx;
+    y += dy;
+    _cursor.set(x, y);
+    
+    int w = SMALLEST_CAM_WIDTH * _scrollValue;
+    int h = SMALLEST_CAM_HEIGHT * _scrollValue;
+    
+    if (_lastScrollValue != _scrollValue)
+    {
+        float dw = SMALLEST_CAM_WIDTH * _lastScrollValue;
+        float dh = SMALLEST_CAM_HEIGHT * _lastScrollValue;
+        dw -= w;
+        dh -= h;
+        _cursor.add(dw / 2, dh / 2);
+    }
+    
+    _lastScrollValue = _scrollValue;
+    
+    engine->_renderer->updateCamera(_cursor.getX(), _cursor.getY(), w, h);
+}
+
 StudioInputManager::StudioInputManager() :
 _downCursor(),
 _dragCursor(),
+_deltaCursor(),
+_cursor(),
 _upCursor(),
 _liveInput(),
 _inputState(SIS_NONE),
 _isLiveMode(false),
-_isTimeToProcessInput(false)
+_isTimeToProcessInput(false),
+_isControl(false),
+_scrollValue(1),
+_lastScrollValue(1)
 {
     // Empty
 }

@@ -24,6 +24,8 @@ enum StudioEngineState
 
 class StudioEngine : public EngineState
 {
+    friend class StudioInputManager;
+    
     NGRTTI_DECL;
     
 public:

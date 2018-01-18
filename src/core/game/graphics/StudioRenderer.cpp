@@ -95,9 +95,6 @@ _textureNGShader(new NGTextureShader(*_rendererHelper, "shader_003_vert.ngs", "s
 _colorNGShader(new NGGeometryShader(*_rendererHelper, "shader_001_vert.ngs", "shader_001_frag.ngs")),
 _framebufferToScreenNGShader(new NGFramebufferToScreenShader(*_rendererHelper, "shader_002_vert.ngs", "shader_002_frag.ngs")),
 _font(new Font("texture_001.ngt", 0, 0, 16, 64, 75, 1024, 1024)),
-_lastCursor(0, 0),
-_cursor(_lastCursor),
-_camScale(1),
 _fbIndex(0)
 {
     for (int i = 0; i < NUM_SPRITE_BATCHERS; ++i)
@@ -163,27 +160,6 @@ void StudioRenderer::releaseDeviceDependentResources()
 
 void StudioRenderer::render(int flags)
 {
-    _lastCursor.set(STUDIO_INPUT->_dragCursor);
-    _camScale = clamp(CURSOR_INPUT_MANAGER->getScrollWheelValue(), 8, 1);
-    
-    float x = 0;//_lastCursor.getX();
-    float y = 0;//_lastCursor.getY();
-    float w = SMALLEST_CAM_WIDTH * _camScale;
-    float h = SMALLEST_CAM_HEIGHT * _camScale;
-    
-    CURSOR_CONVERTER->setCamSize(w, h);
-    
-    _camBounds[3]->getLowerLeft().set(x, y);
-    _camBounds[2]->getLowerLeft().set(x / 2, y / 2);
-    _camBounds[1]->getLowerLeft().set(x / 4, y / 4);
-    _camBounds[0]->getLowerLeft().set(x / 8, y / 8);
-    
-    for (int i = 0; i < NUM_CAMERAS; ++i)
-    {
-        _camBounds[i]->setWidth(w);
-        _camBounds[i]->setHeight(h);
-    }
-    
     setFramebuffer(0, 0, 0, 0, 1);
     _rendererHelper->useNormalBlending();
 
@@ -194,6 +170,20 @@ void StudioRenderer::render(int flags)
     }
 
     endFrame();
+}
+
+void StudioRenderer::updateCamera(float x, float y, float w, float h)
+{
+    _camBounds[3]->getLowerLeft().set(x, y);
+    _camBounds[2]->getLowerLeft().set(x / 2, y / 2);
+    _camBounds[1]->getLowerLeft().set(x / 4, y / 4);
+    _camBounds[0]->getLowerLeft().set(x / 8, y / 8);
+    
+    for (int i = 0; i < NUM_CAMERAS; ++i)
+    {
+        _camBounds[i]->setWidth(w);
+        _camBounds[i]->setHeight(h);
+    }
 }
 
 void StudioRenderer::setFramebuffer(int framebufferIndex, float r, float g, float b, float a)
@@ -211,8 +201,8 @@ void StudioRenderer::renderGrid()
     static Color lineColor = Color::WHITE;
     lineColor.alpha = 0.5f;
     
-    int camWidth = SMALLEST_CAM_WIDTH * _camScale;
-    int camHeight = SMALLEST_CAM_HEIGHT * _camScale;
+    int camWidth = SMALLEST_CAM_WIDTH * STUDIO_INPUT->_scrollValue;
+    int camHeight = SMALLEST_CAM_HEIGHT * STUDIO_INPUT->_scrollValue;
     
     _rendererHelper->updateMatrix(_camBounds[3]->getLeft(), _camBounds[3]->getRight(), _camBounds[3]->getBottom(), _camBounds[3]->getTop());
     
@@ -226,7 +216,7 @@ void StudioRenderer::renderGrid()
         _lineBatcher->renderLine(0, i, camWidth, i, lineColor);
     }
     _lineBatcher->renderLine(0, 0, 0, camHeight, Color::RED);
-    _lineBatcher->renderLine(0, 0, 0, camWidth, Color::RED);
+    _lineBatcher->renderLine(0, 0, camWidth, 0, Color::RED);
     _lineBatcher->endBatch(_colorNGShader);
 }
 
