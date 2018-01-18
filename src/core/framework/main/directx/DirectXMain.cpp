@@ -21,6 +21,7 @@
 #include "framework/util/macros.h"
 #include "framework/audio/portable/NGAudioEngine.h"
 #include "framework/input/KeyboardLookup.h"
+#include "framework/math/MathUtil.h"
 
 #include "Audio.h"
 #include "DirectXColors.h"
@@ -477,6 +478,14 @@ void DirectXMain::Update(DX::StepTimer const& timer)
 		}
 	}
 
+	{
+		static double scrollWheelValue = 0;
+		scrollWheelValue += mouse.scrollWheelValue;
+		scrollWheelValue = clamp(scrollWheelValue, 8, 0);
+		CURSOR_INPUT_MANAGER->setScrollWheelValue(scrollWheelValue);
+		_mouse->ResetScrollWheelValue();
+	}
+
 	for (int i = 0; i < MAX_NUM_PLAYERS_PER_SERVER; ++i)
 	{
 		auto gamePadState = _gamePad->GetState(i);
@@ -751,8 +760,8 @@ void DirectXMain::OnWindowSizeChanged(int width, int height)
 // Properties
 void DirectXMain::GetDefaultSize(int& width, int& height) const
 {
-	width = 800;
-    height = 600;
+	width = 1600;
+    height = 960;
 }
 #pragma endregion
 
