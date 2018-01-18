@@ -21,7 +21,7 @@ WindowsAssetDataHandler* WindowsAssetDataHandler::getInstance()
 	return &instance;
 }
 
-FileData WindowsAssetDataHandler::getAssetData(const char* relativePath, bool isText)
+FileData WindowsAssetDataHandler::getAssetData(const char* relativePath)
 {
 	assert(relativePath != NULL);
 
@@ -65,7 +65,7 @@ FileData WindowsAssetDataHandler::getAssetData(const char* relativePath, bool is
 
 	delete name;
 
-	return FileData(blob->size(), blob->data(), blob, 1);
+	return FileData(blob->size(), blob->data(), blob);
 }
 
 void WindowsAssetDataHandler::releaseAssetData(const FileData* fileData)
@@ -73,16 +73,8 @@ void WindowsAssetDataHandler::releaseAssetData(const FileData* fileData)
 	assert(fileData != NULL);
 	assert(fileData->file_handle != NULL);
 
-	if (fileData->flags > 0)
-	{
-		const std::vector<uint8_t>* handle = static_cast<const std::vector<uint8_t>*>(fileData->file_handle);
-		delete handle;
-	}
-	else
-	{
-		const std::string* handle = static_cast<const std::string*>(fileData->file_handle);
-		delete handle;
-	}
+    const std::vector<uint8_t>* handle = static_cast<const std::vector<uint8_t>*>(fileData->file_handle);
+    delete handle;
 }
 
 WindowsAssetDataHandler::WindowsAssetDataHandler() : AssetDataHandler()

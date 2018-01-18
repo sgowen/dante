@@ -16,7 +16,7 @@ class LinuxAssetDataHandler : public AssetDataHandler
 public:
 	static LinuxAssetDataHandler* getInstance();
 
-    virtual FileData getAssetData(const char* relativePath, bool isText);
+    virtual FileData getAssetData(const char* relativePath);
     virtual void releaseAssetData(const FileData* fileData);
 
 private:

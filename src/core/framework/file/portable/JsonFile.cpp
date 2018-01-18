@@ -78,7 +78,7 @@ void JsonFile::load()
 
     if (_isBundled)
     {
-        const FileData fileData = AssetDataHandler::getAssetDataHandler()->getAssetData(_filePath, true);
+        const FileData fileData = AssetDataHandler::getAssetDataHandler()->getAssetData(_filePath);
         const char* data = (const char*)fileData.data;
         std::string rawData;
         rawData.clear();

@@ -21,15 +21,12 @@ class AndroidAssetDataHandler : public AssetDataHandler
 public:
 	static AndroidAssetDataHandler* getInstance();
     
-    void init(JNIEnv* jni, jobject activity);
-    
-    void deinit();
-    
-    const char* getPathInsideApk(const char* filePath);
-    
-    virtual FileData getAssetData(const char* relativePath, bool isText);
-    
+    virtual FileData getAssetData(const char* relativePath);
     virtual void releaseAssetData(const FileData* fileData);
+    
+    void init(JNIEnv* jni, jobject activity);
+    void deinit();
+    const char* getPathInsideApk(const char* filePath);
 
 private:
     AAssetManager* mAssetManager;

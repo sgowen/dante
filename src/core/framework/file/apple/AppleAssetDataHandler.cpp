@@ -16,7 +16,7 @@ AppleAssetDataHandler* AppleAssetDataHandler::getInstance()
     return &instance;
 }
 
-FileData AppleAssetDataHandler::getAssetData(const char* relativePath, bool isText)
+FileData AppleAssetDataHandler::getAssetData(const char* relativePath)
 {
     return appleGetAssetData(relativePath);
 }

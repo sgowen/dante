@@ -76,7 +76,7 @@ const char* AndroidAssetDataHandler::getPathInsideApk(const char* filePath)
     return _pathInsideApk.c_str();
 }
 
-FileData AndroidAssetDataHandler::getAssetData(const char* relativePath, bool isText)
+FileData AndroidAssetDataHandler::getAssetData(const char* relativePath)
 {
     assert(relativePath != NULL);
     
