@@ -989,14 +989,6 @@
 		BB89C997200914AC00330100 /* n_texture_008.ngt */ = {isa = PBXFileReference; lastKnownFileType = file; path = n_texture_008.ngt; sourceTree = "<group>"; };
 		BB89C998200914AC00330100 /* n_texture_002.ngt */ = {isa = PBXFileReference; lastKnownFileType = file; path = n_texture_002.ngt; sourceTree = "<group>"; };
 		BB89C999200914AC00330100 /* n_texture_004.ngt */ = {isa = PBXFileReference; lastKnownFileType = text; path = n_texture_004.ngt; sourceTree = "<group>"; };
-		BB89C9AA200914D900330100 /* n_texture_004.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = n_texture_004.png; sourceTree = "<group>"; };
-		BB89C9AB200914D900330100 /* n_texture_006.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = n_texture_006.png; sourceTree = "<group>"; };
-		BB89C9AC200914DA00330100 /* n_texture_003.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = n_texture_003.png; sourceTree = "<group>"; };
-		BB89C9AD200914DA00330100 /* n_texture_007.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = n_texture_007.png; sourceTree = "<group>"; };
-		BB89C9AE200914DA00330100 /* n_texture_001.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = n_texture_001.png; sourceTree = "<group>"; };
-		BB89C9AF200914DA00330100 /* n_texture_002.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = n_texture_002.png; sourceTree = "<group>"; };
-		BB89C9B0200914DA00330100 /* n_texture_005.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = n_texture_005.png; sourceTree = "<group>"; };
-		BB89C9B1200914DA00330100 /* n_texture_008.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = n_texture_008.png; sourceTree = "<group>"; };
 		BB9527B51FDEFF0700AC2E67 /* OpenSLESManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OpenSLESManager.h; sourceTree = "<group>"; };
 		BB9527B61FDEFF0700AC2E67 /* OpenSLESManager.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = OpenSLESManager.cpp; sourceTree = "<group>"; };
 		BB9A452C2003370900E872E1 /* PlayerController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PlayerController.cpp; sourceTree = "<group>"; };
@@ -1697,15 +1689,6 @@
 		BBF5383920071991003D276D /* sound_004.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = sound_004.wav; sourceTree = "<group>"; };
 		BBF53886200719B6003D276D /* texture_008.ngt */ = {isa = PBXFileReference; lastKnownFileType = file; path = texture_008.ngt; sourceTree = "<group>"; };
 		BBF53887200719B6003D276D /* texture_007.ngt */ = {isa = PBXFileReference; lastKnownFileType = file; path = texture_007.ngt; sourceTree = "<group>"; };
-		BBF5388C200719DD003D276D /* texture_003.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = texture_003.png; sourceTree = "<group>"; };
-		BBF5388D200719DD003D276D /* texture_005.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = texture_005.png; sourceTree = "<group>"; };
-		BBF5388E200719DE003D276D /* texture_001.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = texture_001.png; sourceTree = "<group>"; };
-		BBF5388F200719DE003D276D /* texture_002.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = texture_002.png; sourceTree = "<group>"; };
-		BBF53890200719DE003D276D /* texture_007.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = texture_007.png; sourceTree = "<group>"; };
-		BBF53891200719DE003D276D /* texture_006.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = texture_006.png; sourceTree = "<group>"; };
-		BBF53892200719DE003D276D /* texture_000.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = texture_000.png; sourceTree = "<group>"; };
-		BBF53893200719DE003D276D /* texture_004.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = texture_004.png; sourceTree = "<group>"; };
-		BBF53894200719DE003D276D /* texture_008.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = texture_008.png; sourceTree = "<group>"; };
 		BBFA49DB1FC367AF00233514 /* GlfwMain.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GlfwMain.h; sourceTree = "<group>"; };
 		BBFA49DC1FC367AF00233514 /* GlfwMain.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = GlfwMain.cpp; sourceTree = "<group>"; };
 		BBFA49DE1FC367AF00233514 /* DirectXMain.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = DirectXMain.cpp; sourceTree = "<group>"; };
@@ -2134,10 +2117,10 @@
 		BB3AEE30200EBA5E00DA543D /* windows */ = {
 			isa = PBXGroup;
 			children = (
-				BB3AEE31200EBA5E00DA543D /* XOREncryptDecrypt.exe */,
 				BB3AEE32200EBA5E00DA543D /* fxc.exe */,
 				BB3AEE33200EBA5E00DA543D /* refresh_assets.bat */,
 				BB3AEE34200EBA5E00DA543D /* texconv.exe */,
+				BB3AEE31200EBA5E00DA543D /* XOREncryptDecrypt.exe */,
 			);
 			path = windows;
 			sourceTree = "<group>";
@@ -3524,28 +3507,28 @@
 			isa = PBXGroup;
 			children = (
 				BBF3CC3E200D70F300CFF412 /* shader_001_frag.fsh */,
-				BBF3CC32200D70F300CFF412 /* shader_001_frag.hlsl */,
-				BBF3CC44200D712300CFF412 /* shader_001_frag.ngs */,
-				BBF3CC3A200D70F300CFF412 /* shader_001_vert.hlsl */,
-				BBF3CC47200D712400CFF412 /* shader_001_vert.ngs */,
-				BBF3CC43200D70F300CFF412 /* shader_001_vert.vsh */,
 				BBF3CC2E200D70F300CFF412 /* shader_002_frag.fsh */,
-				BBF3CC3C200D70F300CFF412 /* shader_002_frag.hlsl */,
-				BBF3CC48200D712400CFF412 /* shader_002_frag.ngs */,
-				BBF3CC35200D70F300CFF412 /* shader_002_vert.hlsl */,
-				BBF3CC4A200D712400CFF412 /* shader_002_vert.ngs */,
-				BBF3CC34200D70F300CFF412 /* shader_002_vert.vsh */,
 				BBF3CC2D200D70F300CFF412 /* shader_003_frag.fsh */,
-				BBF3CC40200D70F300CFF412 /* shader_003_frag.hlsl */,
-				BBF3CC46200D712400CFF412 /* shader_003_frag.ngs */,
-				BBF3CC2C200D70F300CFF412 /* shader_003_vert.hlsl */,
-				BBF3CC4B200D712400CFF412 /* shader_003_vert.ngs */,
-				BBF3CC33200D70F300CFF412 /* shader_003_vert.vsh */,
 				BBF3CC38200D70F300CFF412 /* shader_004_frag.fsh */,
+				BBF3CC32200D70F300CFF412 /* shader_001_frag.hlsl */,
+				BBF3CC3A200D70F300CFF412 /* shader_001_vert.hlsl */,
+				BBF3CC3C200D70F300CFF412 /* shader_002_frag.hlsl */,
+				BBF3CC35200D70F300CFF412 /* shader_002_vert.hlsl */,
+				BBF3CC40200D70F300CFF412 /* shader_003_frag.hlsl */,
+				BBF3CC2C200D70F300CFF412 /* shader_003_vert.hlsl */,
 				BBF3CC3D200D70F300CFF412 /* shader_004_frag.hlsl */,
-				BBF3CC49200D712400CFF412 /* shader_004_frag.ngs */,
 				BBF3CC37200D70F300CFF412 /* shader_004_vert.hlsl */,
+				BBF3CC44200D712300CFF412 /* shader_001_frag.ngs */,
+				BBF3CC47200D712400CFF412 /* shader_001_vert.ngs */,
+				BBF3CC48200D712400CFF412 /* shader_002_frag.ngs */,
+				BBF3CC4A200D712400CFF412 /* shader_002_vert.ngs */,
+				BBF3CC46200D712400CFF412 /* shader_003_frag.ngs */,
+				BBF3CC4B200D712400CFF412 /* shader_003_vert.ngs */,
+				BBF3CC49200D712400CFF412 /* shader_004_frag.ngs */,
 				BBF3CC45200D712300CFF412 /* shader_004_vert.ngs */,
+				BBF3CC43200D70F300CFF412 /* shader_001_vert.vsh */,
+				BBF3CC34200D70F300CFF412 /* shader_002_vert.vsh */,
+				BBF3CC33200D70F300CFF412 /* shader_003_vert.vsh */,
 				BBF3CC2F200D70F300CFF412 /* shader_004_vert.vsh */,
 			);
 			path = shaders;
@@ -3579,39 +3562,22 @@
 			isa = PBXGroup;
 			children = (
 				BB89C995200914AC00330100 /* n_texture_001.ngt */,
-				BB89C9AE200914DA00330100 /* n_texture_001.png */,
 				BB89C998200914AC00330100 /* n_texture_002.ngt */,
-				BB89C9AF200914DA00330100 /* n_texture_002.png */,
 				BB89C994200914AC00330100 /* n_texture_003.ngt */,
-				BB89C9AC200914DA00330100 /* n_texture_003.png */,
 				BB89C999200914AC00330100 /* n_texture_004.ngt */,
-				BB89C9AA200914D900330100 /* n_texture_004.png */,
 				BB89C992200914AB00330100 /* n_texture_005.ngt */,
-				BB89C9B0200914DA00330100 /* n_texture_005.png */,
 				BB89C993200914AC00330100 /* n_texture_006.ngt */,
-				BB89C9AB200914D900330100 /* n_texture_006.png */,
 				BB89C996200914AC00330100 /* n_texture_007.ngt */,
-				BB89C9AD200914DA00330100 /* n_texture_007.png */,
 				BB89C997200914AC00330100 /* n_texture_008.ngt */,
-				BB89C9B1200914DA00330100 /* n_texture_008.png */,
 				BBF5382120071991003D276D /* texture_000.ngt */,
-				BBF53892200719DE003D276D /* texture_000.png */,
 				BBF5382020071991003D276D /* texture_001.ngt */,
-				BBF5388E200719DE003D276D /* texture_001.png */,
 				BBF5381E20071991003D276D /* texture_002.ngt */,
-				BBF5388F200719DE003D276D /* texture_002.png */,
 				BBF5381F20071991003D276D /* texture_003.ngt */,
-				BBF5388C200719DD003D276D /* texture_003.png */,
 				BBF5381B20071991003D276D /* texture_004.ngt */,
-				BBF53893200719DE003D276D /* texture_004.png */,
 				BBF5381C20071991003D276D /* texture_005.ngt */,
-				BBF5388D200719DD003D276D /* texture_005.png */,
 				BBF5381D20071991003D276D /* texture_006.ngt */,
-				BBF53891200719DE003D276D /* texture_006.png */,
 				BBF53887200719B6003D276D /* texture_007.ngt */,
-				BBF53890200719DE003D276D /* texture_007.png */,
 				BBF53886200719B6003D276D /* texture_008.ngt */,
-				BBF53894200719DE003D276D /* texture_008.png */,
 			);
 			path = textures;
 			sourceTree = "<group>";
@@ -3634,11 +3600,11 @@
 			isa = PBXGroup;
 			children = (
 				BBF5383420071991003D276D /* sound_001.wav */,
-				BBF5383520071991003D276D /* sound_003.wav */,
 				BBF5383620071991003D276D /* sound_002.wav */,
-				BBF5383720071991003D276D /* sound_006.wav */,
-				BBF5383820071991003D276D /* sound_005.wav */,
+				BBF5383520071991003D276D /* sound_003.wav */,
 				BBF5383920071991003D276D /* sound_004.wav */,
+				BBF5383820071991003D276D /* sound_005.wav */,
+				BBF5383720071991003D276D /* sound_006.wav */,
 			);
 			path = sounds;
 			sourceTree = "<group>";
