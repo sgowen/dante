@@ -31,38 +31,15 @@ FileData LinuxAssetDataHandler::getAssetData(const char* relativePath, bool isTe
     // get current file position which is end from seek
     long size = ftell(stream);
 
-    if (isText)
-    {
-        std::string* rawDataP = new std::string();
-        std::string& rawData = *rawDataP;
+    fseek(stream, 0, SEEK_SET);
 
-        // allocate string space and set length
+    void* buffer = malloc(size);
+    fread(buffer, size, 1, stream);
 
-        rawData.resize(size);
+    assert(ferror(stream) == 0);
+    fclose(stream);
 
-        // go back to beginning of file for read
-        rewind(stream);
-
-        // read 1*size bytes from sfile into ss
-        fread(&rawData[0], 1, size, stream);
-
-        // close the file
-        fclose(stream);
-
-        return FileData(size, (void*)rawData.c_str(), rawDataP);
-    }
-    else
-    {
-        fseek(stream, 0, SEEK_SET);
-
-        void* buffer = malloc(size);
-        fread(buffer, size, 1, stream);
-
-        assert(ferror(stream) == 0);
-        fclose(stream);
-
-        return FileData(size, buffer, NULL);
-    }
+    return FileData(size, buffer, NULL);
 }
 
 void LinuxAssetDataHandler::releaseAssetData(const FileData* fileData)
@@ -70,15 +47,7 @@ void LinuxAssetDataHandler::releaseAssetData(const FileData* fileData)
     assert(fileData != NULL);
     assert(fileData->data != NULL);
 
-    if (fileData->file_handle != NULL)
-    {
-        const std::string* handle = static_cast<const std::string*>(fileData->file_handle);
-        delete handle;
-    }
-    else
-    {
-        free((void *)fileData->data);
-    }
+    free((void *)fileData->data);
 }
 
 LinuxAssetDataHandler::LinuxAssetDataHandler() : AssetDataHandler()
