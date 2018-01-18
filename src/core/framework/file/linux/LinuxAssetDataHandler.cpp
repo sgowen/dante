@@ -18,7 +18,7 @@ LinuxAssetDataHandler* LinuxAssetDataHandler::getInstance()
     return &instance;
 }
 
-FileData LinuxAssetDataHandler::getAssetData(const char* relativePath, bool isText)
+FileData LinuxAssetDataHandler::getAssetData(const char* relativePath)
 {
     assert(relativePath != NULL);
 
