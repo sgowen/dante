@@ -221,11 +221,12 @@ void StudioInputManager::updateCamera(StudioEngine *engine)
     {
         float dw = SMALLEST_CAM_WIDTH * _lastScrollValue;
         float dh = SMALLEST_CAM_HEIGHT * _lastScrollValue;
-        dw -= w;
-        dh -= h;
-        _cursor.add(dw / 2, dh / 2);
+        dw /= w;
+        dh /= h;
+        x *= dw;
+        y *= dh;
+        _cursor.set(x, y);
     }
-    
     _lastScrollValue = _scrollValue;
     
     engine->_renderer->updateCamera(_cursor.getX(), _cursor.getY(), w, h);

@@ -71,7 +71,6 @@
 #include "framework/graphics/portable/Assets.h"
 #include "framework/input/CursorInputManager.h"
 #include "framework/input/CursorConverter.h"
-#include <game/logic/StudioInputManager.h>
 
 #ifdef NG_STEAM
 #include "framework/network/steam/NGSteamGameServer.h"
@@ -201,8 +200,8 @@ void StudioRenderer::renderGrid()
     static Color lineColor = Color::WHITE;
     lineColor.alpha = 0.5f;
     
-    int camWidth = SMALLEST_CAM_WIDTH * STUDIO_INPUT->_scrollValue;
-    int camHeight = SMALLEST_CAM_HEIGHT * STUDIO_INPUT->_scrollValue;
+    int camWidth = _camBounds[3]->getWidth();
+    int camHeight = _camBounds[3]->getHeight();
     
     _rendererHelper->updateMatrix(_camBounds[3]->getLeft(), _camBounds[3]->getRight(), _camBounds[3]->getBottom(), _camBounds[3]->getTop());
     
