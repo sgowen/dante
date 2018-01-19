@@ -408,8 +408,8 @@ void DirectXMain::Initialize(EngineController* engineController, HWND window, in
 	_deviceResources->CreateDeviceResources();
 	CreateDeviceDependentResources();
 
-    int clampWidth = 1440;
-    int clampHeight = 900;
+    int clampWidth = -1;//1440;
+    int clampHeight = -1;//900;
 	_deviceResources->CreateWindowSizeDependentResources(clampWidth, clampHeight);
 	CreateWindowSizeDependentResources();
 
@@ -760,8 +760,8 @@ void DirectXMain::OnWindowSizeChanged(int width, int height)
 // Properties
 void DirectXMain::GetDefaultSize(int& width, int& height) const
 {
-	width = 1600;
-    height = 960;
+	width = 800;
+    height = 480;
 }
 #pragma endregion
 
@@ -787,11 +787,11 @@ void DirectXMain::CreateWindowSizeDependentResources()
 	LONG touchWidth = width;
 	LONG touchHeight = height;
 
-    int clampWidth = 1440;
-    int clampHeight = 900;
-    
-	width = width > clampWidth ? clampWidth : width;
-	height = height > clampHeight ? clampHeight : height;
+//    int clampWidth = 1440;
+//    int clampHeight = 900;
+//    
+//    width = width > clampWidth ? clampWidth : width;
+//    height = height > clampHeight ? clampHeight : height;
 
 	_engine->createWindowSizeDependentResources(screenWidth, screenHeight, width, height, touchWidth, touchHeight);
 }
