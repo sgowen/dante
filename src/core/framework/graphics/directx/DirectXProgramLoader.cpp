@@ -19,8 +19,6 @@
 #include "framework/util/StringUtil.h"
 #include <framework/graphics/directx/DirectXRendererHelper.h>
 
-#include "PlatformHelpers.h"
-
 DirectXProgramLoader::DirectXProgramLoader() : NGShaderLoader()
 {
     // Empty
@@ -51,7 +49,7 @@ ShaderProgramWrapper* DirectXProgramLoader::loadNGShader(const char* vertexShade
     
     ID3D11Device* d3dDevice = DirectXRendererHelper::getD3dDevice();
     
-	DirectX::ThrowIfFailed(
+	DX::ThrowIfFailed(
 		d3dDevice->CreateVertexShader(
 			vertex_shader_source_output,
 			vertex_shader_source.data_length,
@@ -70,7 +68,7 @@ ShaderProgramWrapper* DirectXProgramLoader::loadNGShader(const char* vertexShade
         inputElementDescs.push_back(svi->_attribute);
     }
 
-	DirectX::ThrowIfFailed(
+	DX::ThrowIfFailed(
 		d3dDevice->CreateInputLayout(
             &inputElementDescs.front(),
 			inputElementDescs.size(),
@@ -84,7 +82,7 @@ ShaderProgramWrapper* DirectXProgramLoader::loadNGShader(const char* vertexShade
     unsigned char* fragment_shader_source_output = (unsigned char*) malloc(fragment_shader_source.data_length);
     StringUtil::encryptDecrypt((unsigned char*)fragment_shader_source.data, fragment_shader_source_output, fragment_shader_source.data_length);
     
-	DirectX::ThrowIfFailed(
+	DX::ThrowIfFailed(
 		d3dDevice->CreatePixelShader(
 			fragment_shader_source_output,
 			fragment_shader_source.data_length,

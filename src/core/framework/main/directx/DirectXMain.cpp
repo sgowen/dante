@@ -120,32 +120,31 @@ int DirectXMain::exec(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmd
 
 		AdjustWindowRect(&rc, WS_OVERLAPPEDWINDOW, FALSE);
 
-		HWND hwnd = CreateWindowEx(WS_EX_TOPMOST, L"NGWindowClass", L"Noctis Games", WS_POPUP,
+#ifndef _DEBUG
+#define LAUNCH_FULL_SCREEN
+#endif
+
+#ifdef LAUNCH_FULL_SCREEN
+		/// Launch directly into full screen
+		HWND hwnd = CreateWindowEx(WS_EX_TOPMOST, L"NGWindowClass", L"Direct3D Win32 Game2", WS_POPUP,
 			CW_USEDEFAULT, CW_USEDEFAULT, rc.right - rc.left, rc.bottom - rc.top, nullptr, nullptr, hInstance,
 			nullptr);
+#else
+		HWND hwnd = CreateWindowEx(0, L"NGWindowClass", L"Direct3D Win32 Game2", WS_OVERLAPPEDWINDOW,
+			CW_USEDEFAULT, CW_USEDEFAULT, rc.right - rc.left, rc.bottom - rc.top, nullptr, nullptr, hInstance,
+			nullptr);
+#endif
 
 		if (!hwnd)
 		{
 			return 1;
 		}
 
-#ifndef _DEBUG
-#define LAUNCH_FULL_SCREEN
-#endif
-        
 #ifdef LAUNCH_FULL_SCREEN
-        /// Launch directly into full screen
+		/// Launch directly into full screen
 		ShowWindow(hwnd, SW_SHOWMAXIMIZED);
 #else
-		SetWindowLongPtr(hwnd, GWL_STYLE, WS_OVERLAPPEDWINDOW);
-		SetWindowLongPtr(hwnd, GWL_EXSTYLE, 0);
-
-		int width = w;
-		int height = h;
-
-		ShowWindow(hwnd, SW_SHOWNORMAL);
-
-		SetWindowPos(hwnd, HWND_TOP, 0, 0, width, height, SWP_NOMOVE | SWP_NOZORDER | SWP_FRAMECHANGED);
+		ShowWindow(hwnd, nCmdShow);
 #endif
 
 		SetWindowLongPtr(hwnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(DX_MAIN));
@@ -325,8 +324,8 @@ LRESULT CALLBACK DirectXMain::WndProc(HWND hWnd, UINT message, WPARAM wParam, LP
 				SetWindowLongPtr(hWnd, GWL_STYLE, WS_OVERLAPPEDWINDOW);
 				SetWindowLongPtr(hWnd, GWL_EXSTYLE, 0);
 
-				int width = 800;
-				int height = 600;
+				int width;
+				int height;
 				if (directXMain)
 				{
 					directXMain->GetDefaultSize(width, height);
@@ -767,7 +766,7 @@ void DirectXMain::OnWindowSizeChanged(int width, int height)
 void DirectXMain::GetDefaultSize(int& width, int& height) const
 {
 	width = 800;
-    height = 480;
+    height = 600;
 }
 #pragma endregion
 

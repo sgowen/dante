@@ -21,7 +21,6 @@
 #include "framework/graphics/directx/DirectXRendererHelper.h"
 
 #include "DDSTextureLoader.h"
-#include "PlatformHelpers.h"
 
 #include <string>
 
@@ -53,7 +52,7 @@ TextureDataWrapper* DirectXTextureLoader::loadTextureData(NGTexture* texture)
     ID3D11ShaderResourceView *pShaderResourceView;
     
 	ID3D11Device* d3dDevice = DirectXRendererHelper::getD3dDevice();
-    DirectX::ThrowIfFailed(DirectX::CreateDDSTextureFromMemory(d3dDevice, (const uint8_t*)output, fileData.data_length, NULL, &pShaderResourceView));
+	DX::ThrowIfFailed(DirectX::CreateDDSTextureFromMemory(d3dDevice, (const uint8_t*)output, fileData.data_length, NULL, &pShaderResourceView));
     
     AssetDataHandler::getAssetDataHandler()->releaseAssetData(&fileData);
     

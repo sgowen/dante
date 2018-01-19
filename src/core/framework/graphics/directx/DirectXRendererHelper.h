@@ -116,7 +116,7 @@ private:
         vertexBufferData.SysMemPitch = 0;
         vertexBufferData.SysMemSlicePitch = 0;
         
-        DirectX::ThrowIfFailed(s_d3dDevice->CreateBuffer(&vertexBufferDesc, &vertexBufferData, &vertexBuffer));
+        DX::ThrowIfFailed(s_d3dDevice->CreateBuffer(&vertexBufferDesc, &vertexBufferData, &vertexBuffer));
     }
     
     void createBlendStates();

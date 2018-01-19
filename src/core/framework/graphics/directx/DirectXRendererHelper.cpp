@@ -17,7 +17,6 @@
 #include "framework/graphics/portable/NGShaderVarInput.h"
 
 #include "framework/util/NGSTDUtil.h"
-#include "PlatformHelpers.h"
 #include <framework/util/FrameworkConstants.h>
 #include <framework/util/macros.h>
 
@@ -315,7 +314,7 @@ void DirectXRendererHelper::createFramebufferObject()
     textureDesc.MiscFlags = 0;
     
     // Create the render target texture.
-    DirectX::ThrowIfFailed(s_d3dDevice->CreateTexture2D(&textureDesc, NULL, &_offscreenRenderTarget));
+    DX::ThrowIfFailed(s_d3dDevice->CreateTexture2D(&textureDesc, NULL, &_offscreenRenderTarget));
     
     // Setup the description of the render target view.
     renderTargetViewDesc.Format = textureDesc.Format;
@@ -323,7 +322,7 @@ void DirectXRendererHelper::createFramebufferObject()
     renderTargetViewDesc.Texture2D.MipSlice = 0;
     
     // Create the render target view.
-    DirectX::ThrowIfFailed(s_d3dDevice->CreateRenderTargetView(_offscreenRenderTarget, &renderTargetViewDesc, &_offscreenRenderTargetView));
+    DX::ThrowIfFailed(s_d3dDevice->CreateRenderTargetView(_offscreenRenderTarget, &renderTargetViewDesc, &_offscreenRenderTargetView));
     
     // Setup the description of the shader resource view.
     shaderResourceViewDesc.Format = textureDesc.Format;
@@ -332,7 +331,7 @@ void DirectXRendererHelper::createFramebufferObject()
     shaderResourceViewDesc.Texture2D.MipLevels = 1;
     
     // Create the shader resource view.
-    DirectX::ThrowIfFailed(s_d3dDevice->CreateShaderResourceView(_offscreenRenderTarget, &shaderResourceViewDesc, &_offscreenShaderResourceView));
+    DX::ThrowIfFailed(s_d3dDevice->CreateShaderResourceView(_offscreenRenderTarget, &shaderResourceViewDesc, &_offscreenShaderResourceView));
     
     _offscreenRenderTargets.push_back(_offscreenRenderTarget);
     _offscreenRenderTargetViews.push_back(_offscreenRenderTargetView);
@@ -426,5 +425,5 @@ void DirectXRendererHelper::createIndexBuffer()
     
     indexDataDesc.pSysMem = &_indices[0];
     
-    DirectX::ThrowIfFailed(s_d3dDevice->CreateBuffer(&indexBufferDesc, &indexDataDesc, &_indexbuffer));
+    DX::ThrowIfFailed(s_d3dDevice->CreateBuffer(&indexBufferDesc, &indexDataDesc, &_indexbuffer));
 }

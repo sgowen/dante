@@ -14,7 +14,6 @@
 
 #if defined _WIN32
 #include "framework/graphics/directx/DirectXRendererHelper.h"
-#include "PlatformHelpers.h"
 #endif
 
 NGShaderUniformInput::NGShaderUniformInput(const char* attribName, int index, int byteWidth, bool isFragment) : _attribName(attribName), _index(index), _byteWidth(byteWidth), _isFragment(isFragment)
@@ -34,7 +33,7 @@ void NGShaderUniformInput::build(ShaderProgramWrapper* inShaderProgramWrapper)
         bd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
         
         ID3D11Device* d3dDevice = DirectXRendererHelper::getD3dDevice();
-        DirectX::ThrowIfFailed(d3dDevice->CreateBuffer(&bd, NULL, &_constantbuffer));
+        DX::ThrowIfFailed(d3dDevice->CreateBuffer(&bd, NULL, &_constantbuffer));
     }
 #elif defined __APPLE__ || defined __ANDROID__ || defined __linux__
     _attribute = glGetUniformLocation(inShaderProgramWrapper->_programObjectId, _attribName);
