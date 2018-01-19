@@ -200,7 +200,12 @@ LRESULT CALLBACK DirectXMain::WndProc(HWND hWnd, UINT message, WPARAM wParam, LP
 	static bool s_in_sizemove = false;
 	static bool s_in_suspend = false;
 	static bool s_minimized = false;
+
+#ifdef LAUNCH_FULL_SCREEN
 	static bool s_fullscreen = true;
+#else
+	static bool s_fullscreen = false;
+#endif
 
 	auto directXMain = reinterpret_cast<DirectXMain*>(GetWindowLongPtr(hWnd, GWLP_USERDATA));
 
@@ -766,7 +771,7 @@ void DirectXMain::OnWindowSizeChanged(int width, int height)
 void DirectXMain::GetDefaultSize(int& width, int& height) const
 {
 	width = 800;
-    height = 600;
+    height = 480;
 }
 #pragma endregion
 
