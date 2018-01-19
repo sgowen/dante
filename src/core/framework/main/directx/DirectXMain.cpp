@@ -419,9 +419,7 @@ void DirectXMain::Initialize(EngineController* engineController, HWND window, in
 	_deviceResources->CreateDeviceResources();
 	CreateDeviceDependentResources();
 
-    int clampWidth = 1440;
-    int clampHeight = 900;
-	_deviceResources->CreateWindowSizeDependentResources(clampWidth, clampHeight);
+	_deviceResources->CreateWindowSizeDependentResources();
 	CreateWindowSizeDependentResources();
 
 	_keyboard = std::make_unique<Keyboard>();
@@ -796,12 +794,9 @@ void DirectXMain::CreateWindowSizeDependentResources()
 	LONG height = screenHeight;
 	LONG touchWidth = width;
 	LONG touchHeight = height;
-
-    int clampWidth = 1440;
-    int clampHeight = 900;
     
-    width = width > clampWidth ? clampWidth : width;
-    height = height > clampHeight ? clampHeight : height;
+    width = width > CLAMP_WIDTH ? CLAMP_WIDTH : width;
+    height = height > CLAMP_HEIGHT ? CLAMP_HEIGHT : height;
 
 	_engine->createWindowSizeDependentResources(screenWidth, screenHeight, width, height, touchWidth, touchHeight);
 }

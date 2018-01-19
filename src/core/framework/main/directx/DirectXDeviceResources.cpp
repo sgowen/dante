@@ -48,9 +48,7 @@ DirectXDeviceResources::DirectXDeviceResources(DXGI_FORMAT backBufferFormat, DXG
     m_outputSize{0, 0, 1, 1},
 	m_colorSpace(DXGI_COLOR_SPACE_RGB_FULL_G22_NONE_P709),
 	m_options(flags),
-    m_deviceNotify(nullptr),
-	_clampWidth(-1),
-	_clampHeight(-1)
+    m_deviceNotify(nullptr)
 {
 }
 
@@ -216,11 +214,8 @@ void DirectXDeviceResources::CreateDeviceResources()
 }
 
 // These resources need to be recreated every time the window size is changed.
-void DirectXDeviceResources::CreateWindowSizeDependentResources(int clampWidth, int clampHeight)
+void DirectXDeviceResources::CreateWindowSizeDependentResources()
 {
-	_clampWidth = clampWidth;
-	_clampHeight = clampHeight;
-
 	if (!m_window)
 	{
 		throw std::exception("Call SetWindow with a valid Win32 window handle");
@@ -239,16 +234,14 @@ void DirectXDeviceResources::CreateWindowSizeDependentResources(int clampWidth, 
 	UINT backBufferWidth = std::max<UINT>(m_outputSize.right - m_outputSize.left, 1);
 	UINT backBufferHeight = std::max<UINT>(m_outputSize.bottom - m_outputSize.top, 1);
 
-	if (clampWidth > 0
-		&& backBufferWidth > clampWidth)
+	if (backBufferWidth > CLAMP_WIDTH)
 	{
-		backBufferWidth = clampWidth;
+		backBufferWidth = CLAMP_WIDTH;
 	}
 
-	if (clampHeight > 0
-		&& backBufferHeight > clampHeight)
+	if (backBufferHeight > CLAMP_HEIGHT)
 	{
-		backBufferHeight = clampHeight;
+		backBufferHeight = CLAMP_HEIGHT;
 	}
 
 	if (m_swapChain)
@@ -386,7 +379,7 @@ bool DirectXDeviceResources::WindowSizeChanged(int width, int height)
 	}
 
     m_outputSize = newRc;
-    CreateWindowSizeDependentResources(_clampWidth, _clampHeight);
+    CreateWindowSizeDependentResources();
     return true;
 }
 

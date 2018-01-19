@@ -6,6 +6,9 @@
 
 #include "pch.h"
 
+#define CLAMP_WIDTH 1366
+#define CLAMP_HEIGHT 768
+
 namespace DX
 {
     // Provides an interface for an application that owns DirectXDeviceResources to be notified of the device being lost or created.
@@ -29,7 +32,7 @@ namespace DX
 			                   unsigned int flags = 0);
 
         void CreateDeviceResources();
-        void CreateWindowSizeDependentResources(int clampWidth = -1, int clampHeight = -1);
+        void CreateWindowSizeDependentResources();
         void SetWindow(HWND window, int width, int height);
         bool WindowSizeChanged(int width, int height);
         void HandleDeviceLost();
@@ -109,8 +112,5 @@ namespace DX
 
 		// The IDeviceNotify can be held directly as it owns the DeviceResources.
 		IDeviceNotify*                                  m_deviceNotify;
-
-		int _clampWidth;
-		int _clampHeight;
     };
 }
