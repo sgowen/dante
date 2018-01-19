@@ -208,8 +208,15 @@ LRESULT CALLBACK DirectXMain::WndProc(HWND hWnd, UINT message, WPARAM wParam, LP
 	switch (message)
 	{
 	case WM_PAINT:
-		hdc = BeginPaint(hWnd, &ps);
-		EndPaint(hWnd, &ps);
+		if (s_in_sizemove && directXMain)
+		{
+			directXMain->Tick();
+		}
+		else
+		{
+			hdc = BeginPaint(hWnd, &ps);
+			EndPaint(hWnd, &ps);
+		}
 		break;
 
 	case WM_SIZE:
@@ -408,8 +415,8 @@ void DirectXMain::Initialize(EngineController* engineController, HWND window, in
 	_deviceResources->CreateDeviceResources();
 	CreateDeviceDependentResources();
 
-    int clampWidth = -1;//1440;
-    int clampHeight = -1;//900;
+    int clampWidth = 1440;
+    int clampHeight = 900;
 	_deviceResources->CreateWindowSizeDependentResources(clampWidth, clampHeight);
 	CreateWindowSizeDependentResources();
 
@@ -417,10 +424,9 @@ void DirectXMain::Initialize(EngineController* engineController, HWND window, in
 
 	_mouse = std::make_unique<Mouse>();
 	_mouse->SetMode(Mouse::MODE_ABSOLUTE); // Use MODE_RELATIVE for displaying your own mouse pointer (like Diablo or Age of Empires)
+	_mouse->SetWindow(window);
 
 	_gamePad = std::make_unique<GamePad>();
-
-    _mouse->SetWindow(window);
 }
 
 void DirectXMain::OnNewAudioDevice()
@@ -787,11 +793,11 @@ void DirectXMain::CreateWindowSizeDependentResources()
 	LONG touchWidth = width;
 	LONG touchHeight = height;
 
-//    int clampWidth = 1440;
-//    int clampHeight = 900;
-//    
-//    width = width > clampWidth ? clampWidth : width;
-//    height = height > clampHeight ? clampHeight : height;
+    int clampWidth = 1440;
+    int clampHeight = 900;
+    
+    width = width > clampWidth ? clampWidth : width;
+    height = height > clampHeight ? clampHeight : height;
 
 	_engine->createWindowSizeDependentResources(screenWidth, screenHeight, width, height, touchWidth, touchHeight);
 }
