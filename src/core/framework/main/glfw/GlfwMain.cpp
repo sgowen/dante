@@ -100,6 +100,8 @@ void GlfwMain::mouse_button_callback(GLFWwindow* window, int button, int action,
 
 void GlfwMain::mouse_cursor_pos_callback(GLFWwindow*, double x, double y)
 {
+    CURSOR_INPUT_MANAGER->setCursorPosition(x, y);
+    
     if (isDown)
     {
         CURSOR_INPUT_MANAGER->onInput(CursorEventType_DRAGGED, x, y);

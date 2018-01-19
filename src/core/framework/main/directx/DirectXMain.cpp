@@ -468,6 +468,8 @@ void DirectXMain::Update(DX::StepTimer const& timer)
 	auto mouse = _mouse->GetState();
 	if (mouse.positionMode == Mouse::MODE_ABSOLUTE)
 	{
+        CURSOR_INPUT_MANAGER->setCursorPosition(float(mouse.x), float(mouse.y));
+        
 		if (_isPointerPressed && mouse.leftButton)
 		{
 			CURSOR_INPUT_MANAGER->onInput(CursorEventType_DRAGGED, float(mouse.x), float(mouse.y));

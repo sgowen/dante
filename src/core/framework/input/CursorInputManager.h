@@ -11,6 +11,7 @@
 
 #include "framework/input/CursorEventType.h"
 #include "framework/util/NGRollingPool.h"
+#include "framework/math/Vector2.h"
 
 #include <vector>
 
@@ -23,14 +24,17 @@ class CursorInputManager
 public:
     static CursorInputManager* getInstance();
     
+    void setCursorPosition(float x, float y);
     void setScrollWheelValue(float inValue);
     void onInput(CursorEventType type, float x, float y);
     void process();
     std::vector<CursorEvent*>& getEvents();
+    Vector2& getCursorPosition();
     float getScrollWheelValue();
     
 private:
     NGRollingPool<CursorEvent>* _pool;
+    Vector2 _cursorPosition;
     float _scrollWheelValue;
     
     void addEvent(CursorEventType type, float x, float y);

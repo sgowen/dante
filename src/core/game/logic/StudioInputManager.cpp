@@ -129,7 +129,6 @@ void StudioInputManager::update(StudioEngine* engine)
                     Vector2 delta = c;
                     delta -= _dragCursor;
                     _dragCursor.set(c);
-                    delta *= 2;
                     _deltaCursor.set(delta);
                 }
                     continue;
@@ -219,15 +218,11 @@ void StudioInputManager::updateCamera(StudioEngine *engine)
     
     if (_lastScrollValue != _scrollValue)
     {
-        float dw = SMALLEST_CAM_WIDTH * _lastScrollValue;
-        float dh = SMALLEST_CAM_HEIGHT * _lastScrollValue;
-        dw /= w;
-        dh /= h;
-        x *= dw;
-        y *= dh;
-        _cursor.set(x, y);
+        _cursor.set(CURSOR_CONVERTER->convert(CURSOR_INPUT_MANAGER->getCursorPosition()));
+        _cursor.sub(w / 2, h / 2);
+        
+        _lastScrollValue = _scrollValue;
     }
-    _lastScrollValue = _scrollValue;
     
     engine->_renderer->updateCamera(_cursor.getX(), _cursor.getY(), w, h);
 }

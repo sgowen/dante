@@ -21,6 +21,11 @@ CursorInputManager* CursorInputManager::getInstance()
     return &instance;
 }
 
+void CursorInputManager::setCursorPosition(float x, float y)
+{
+    _cursorPosition.set(x, y);
+}
+
 void CursorInputManager::setScrollWheelValue(float inValue)
 {
     _scrollWheelValue = inValue;
@@ -47,6 +52,11 @@ std::vector<CursorEvent*>& CursorInputManager::getEvents()
     return _pool->getObjects();
 }
 
+Vector2& CursorInputManager::getCursorPosition()
+{
+    return _cursorPosition;
+}
+
 float CursorInputManager::getScrollWheelValue()
 {
     return _scrollWheelValue;
@@ -62,7 +72,7 @@ void CursorInputManager::addEvent(CursorEventType type, float x, float y)
     _pool->add(e);
 }
 
-CursorInputManager::CursorInputManager() : _pool(new NGRollingPool<CursorEvent>(POOL_SIZE)), _scrollWheelValue(0)
+CursorInputManager::CursorInputManager() : _pool(new NGRollingPool<CursorEvent>(POOL_SIZE)), _cursorPosition(), _scrollWheelValue(0)
 {
     // Empty
 }

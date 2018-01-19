@@ -21,6 +21,7 @@ public:
     static CursorConverter* getInstance();
     
     Vector2& convert(CursorEvent& cursorEvent);
+    Vector2& convert(Vector2& cursorPosition);
     void setCursorSize(int width, int height);
     void setCamSize(float camWidth, float camHeight);
     

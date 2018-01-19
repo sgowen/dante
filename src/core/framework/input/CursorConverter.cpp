@@ -47,6 +47,21 @@ Vector2& CursorConverter::convert(CursorEvent& cursorEvent)
     return _cursor;
 }
 
+Vector2& CursorConverter::convert(Vector2& cursorPosition)
+{
+#if TARGET_OS_IPHONE
+    _cursor.set((cursorPosition.getX() / _cursorWidth) * _camWidth, (1 - cursorPosition.getY() / _cursorHeight) * _camHeight);
+#elif TARGET_OS_OSX
+    _cursor.set((cursorPosition.getX() / _cursorWidth) * _camWidth, (cursorPosition.getY() / _cursorHeight) * _camHeight);
+#elif __ANDROID__
+    _cursor.set((cursorPosition.getX() / _cursorWidth) * _camWidth, (1 - cursorPosition.getY() / _cursorHeight) * _camHeight);
+#elif defined _WIN32
+    _cursor.set(cursorPosition.getX() / _cursorWidth * _camWidth, _camHeight - (cursorPosition.getY() / _cursorHeight * _camHeight));
+#endif
+    
+    return _cursor;
+}
+
 void CursorConverter::setCursorSize(int width, int height)
 {
     _cursorWidth = (float) width;
