@@ -22,8 +22,8 @@
 NGLightingShader::NGLightingShader(RendererHelper& inRendererHelper, const char* vertexShaderName, const char* fragmentShaderName) : NGShader(inRendererHelper, vertexShaderName, fragmentShaderName),
 _defaultLightZ(NG_CFG->getFloat("defaultLightZ"))
 {
-    _resolution[0] = 1440.0f;
-    _resolution[1] = 900.0f;
+    _resolution[0] = 1366.0f;
+    _resolution[1] = 768.0f;
 	_resolution[2] = 0;
 	_resolution[3] = 0;
     

@@ -259,7 +259,7 @@ void AndroidMain::loadResources()
     }
     else
     {
-        _engine->createWindowSizeDependentResources(width, height, width > 1440 ? 1440 : width, height > 900 ? 900 : height, width, height);
+        _engine->createWindowSizeDependentResources(width, height, width > 1366 ? 1366 : width, height > 768 ? 768 : height, width, height);
     }
 }
 

@@ -201,7 +201,7 @@ int GlfwMain::exec(EngineController* engineController)
 
         if (width != glWidth || height != glHeight)
         {
-            engine.createWindowSizeDependentResources(width, height, width > 1440 ? 1440 : width, height > 900 ? 900 : height, width, height);
+            engine.createWindowSizeDependentResources(width, height, width > 1366 ? 1366 : width, height > 768 ? 768 : height, width, height);
 
             glWidth = width;
             glHeight = height;
