@@ -169,7 +169,8 @@ void GameEngine::createDeviceDependentResources()
     
     NG_AUDIO_ENGINE->loadMusic(MUSIC_DEMO);
 
-	NG_AUDIO_ENGINE->playMusic();
+    NG_AUDIO_ENGINE->setMusicDisabled(true);
+    NG_AUDIO_ENGINE->setSoundDisabled(true);
 }
 
 void GameEngine::createWindowSizeDependentResources(int screenWidth, int screenHeight, int renderWidth, int renderHeight, int cursorWidth, int cursorHeight)
