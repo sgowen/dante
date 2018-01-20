@@ -82,9 +82,6 @@ void GlfwMain::mouse_button_callback(GLFWwindow* window, int button, int action,
     static double y;
 
     glfwGetCursorPos(window, &x, &y);
-
-    x *= 2;
-    y *= 2;
     
     switch (action)
     {
@@ -103,9 +100,6 @@ void GlfwMain::mouse_button_callback(GLFWwindow* window, int button, int action,
 
 void GlfwMain::mouse_cursor_pos_callback(GLFWwindow*, double x, double y)
 {
-    x *= 2;
-    y *= 2;
-    
     CURSOR_INPUT_MANAGER->setCursorPosition(x, y);
     
     if (isDown)
@@ -209,7 +203,7 @@ int GlfwMain::exec(EngineController* engineController)
 
         if (width != glWidth || height != glHeight)
         {
-            engine.createWindowSizeDependentResources(width, height, width > 1366 ? 1366 : width, height > 768 ? 768 : height, width, height);
+            engine.createWindowSizeDependentResources(width, height, width > 1366 ? 1366 : width, height > 768 ? 768 : height, width / 2, height / 2);
 
             glWidth = width;
             glHeight = height;
