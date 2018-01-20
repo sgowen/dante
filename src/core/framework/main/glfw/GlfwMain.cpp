@@ -78,20 +78,23 @@ static bool isDown = false;
 
 void GlfwMain::mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
 {
-    static double cursorX;
-    static double cursorY;
+    static double x;
+    static double y;
 
-    glfwGetCursorPos(window, &cursorX, &cursorY);
+    glfwGetCursorPos(window, &x, &y);
 
+    x *= 2;
+    y *= 2;
+    
     switch (action)
     {
         case GLFW_PRESS:
-            CURSOR_INPUT_MANAGER->onInput(CursorEventType_DOWN, cursorX, cursorY);
+            CURSOR_INPUT_MANAGER->onInput(CursorEventType_DOWN, x, y);
             isDown = true;
             break;
         case GLFW_RELEASE:
             isDown = false;
-            CURSOR_INPUT_MANAGER->onInput(CursorEventType_UP, cursorX, cursorY);
+            CURSOR_INPUT_MANAGER->onInput(CursorEventType_UP, x, y);
             break;
         default:
             break;
@@ -100,6 +103,9 @@ void GlfwMain::mouse_button_callback(GLFWwindow* window, int button, int action,
 
 void GlfwMain::mouse_cursor_pos_callback(GLFWwindow*, double x, double y)
 {
+    x *= 2;
+    y *= 2;
+    
     CURSOR_INPUT_MANAGER->setCursorPosition(x, y);
     
     if (isDown)

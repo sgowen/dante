@@ -110,7 +110,6 @@ void StudioInputManager::update(StudioEngine* engine)
     else
     {
         _scrollValue = clamp(CURSOR_INPUT_MANAGER->getScrollWheelValue(), 8, 1);
-        
         CURSOR_CONVERTER->setCamSize(SMALLEST_CAM_WIDTH * _scrollValue, SMALLEST_CAM_HEIGHT * _scrollValue);
         
         for (std::vector<CursorEvent *>::iterator i = CURSOR_INPUT_MANAGER->getEvents().begin(); i != CURSOR_INPUT_MANAGER->getEvents().end(); ++i)
@@ -149,6 +148,26 @@ void StudioInputManager::update(StudioEngine* engine)
                 case NG_KEY_CMD:
                 case NG_KEY_CTRL:
                     _isControl = !e.isUp();
+                    continue;
+                case NG_KEY_ARROW_UP:
+                {
+                    if (e.isDown())
+                    {
+                        _scrollValue = clamp(_scrollValue - 1, 8, 1);
+                        CURSOR_INPUT_MANAGER->setScrollWheelValue(_scrollValue);
+                        CURSOR_CONVERTER->setCamSize(SMALLEST_CAM_WIDTH * _scrollValue, SMALLEST_CAM_HEIGHT * _scrollValue);
+                    }
+                }
+                    continue;
+                case NG_KEY_ARROW_DOWN:
+                {
+                    if (e.isDown())
+                    {
+                        _scrollValue = clamp(_scrollValue + 1, 8, 1);
+                        CURSOR_INPUT_MANAGER->setScrollWheelValue(_scrollValue);
+                        CURSOR_CONVERTER->setCamSize(SMALLEST_CAM_WIDTH * _scrollValue, SMALLEST_CAM_HEIGHT * _scrollValue);
+                    }
+                }
                     continue;
                 case NG_KEY_ESCAPE:
                     _inputState = e.isUp() ? SIS_NONE : SIS_ESCAPE;
@@ -211,15 +230,32 @@ void StudioInputManager::updateCamera(StudioEngine *engine)
     float y = _cursor.getY();
     x -= dx;
     y += dy;
+    
+    if (x < 0)
+    {
+        x = 0;
+    }
+    if (y < 0)
+    {
+        y = 0;
+    }
     _cursor.set(x, y);
+    _deltaCursor.set(0, 0);
+    
+    
     
     int w = SMALLEST_CAM_WIDTH * _scrollValue;
     int h = SMALLEST_CAM_HEIGHT * _scrollValue;
     
     if (_lastScrollValue != _scrollValue)
     {
-        _cursor.set(CURSOR_CONVERTER->convert(CURSOR_INPUT_MANAGER->getCursorPosition()));
-        _cursor.sub(w / 2, h / 2);
+        Vector2& rc = CURSOR_INPUT_MANAGER->getCursorPosition();
+        Vector2& c = CURSOR_CONVERTER->convert(rc);
+        _cursor.set(c);
+        
+        int dw = SMALLEST_CAM_WIDTH * _lastScrollValue;
+        int dh = SMALLEST_CAM_HEIGHT * _lastScrollValue;
+        _cursor.sub(w / 2.0f, h / 2.0f);
         
         _lastScrollValue = _scrollValue;
     }

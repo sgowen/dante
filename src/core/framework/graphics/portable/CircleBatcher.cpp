@@ -42,6 +42,11 @@ void CircleBatcher::beginBatch()
 
 void CircleBatcher::renderCircle(Circle &circle, Color &c)
 {
+    renderCircle(circle.getCenter().getX(), circle.getCenter().getY(), circle.getRadius(), c);
+}
+
+void CircleBatcher::renderCircle(float x, float y, float radius, Color &c)
+{
     _numPoints = 0;
     
     for (int i = 0; i <= 360; i += DEGREE_SPACING)
@@ -50,15 +55,19 @@ void CircleBatcher::renderCircle(Circle &circle, Color &c)
         float cos = cosf(rad);
         float sin = sinf(rad);
         
-        addVertexCoordinate(cos * circle.getRadius() + circle.getCenter().getX(), sin * circle.getRadius() + circle.getCenter().getY(), c.red, c.green, c.blue, c.alpha);
-        
-        addVertexCoordinate(circle.getCenter().getX(), circle.getCenter().getY(), c.red, c.green, c.blue, c.alpha);
+        addVertexCoordinate(cos * radius + x, sin * radius + y, c.red, c.green, c.blue, c.alpha);
+        addVertexCoordinate(x, y, c.red, c.green, c.blue, c.alpha);
     }
     
     _circles.push_back(_numPoints);
 }
 
 void CircleBatcher::renderPartialCircle(Circle &circle, int arcDegrees, Color &c)
+{
+    renderPartialCircle(circle.getCenter().getX(), circle.getCenter().getY(), circle.getRadius(), arcDegrees, c);
+}
+
+void CircleBatcher::renderPartialCircle(float x, float y, float radius, int arcDegrees, Color &c)
 {
     _numPoints = 0;
     
@@ -68,18 +77,16 @@ void CircleBatcher::renderPartialCircle(Circle &circle, int arcDegrees, Color &c
         float cos = cosf(rad);
         float sin = sinf(rad);
         
-        addVertexCoordinate(cos * circle.getRadius() + circle.getCenter().getX(), sin * circle.getRadius() + circle.getCenter().getY(), c.red, c.green, c.blue, c.alpha);
-        
-        addVertexCoordinate(circle.getCenter().getX(), circle.getCenter().getY(), c.red, c.green, c.blue, c.alpha);
+        addVertexCoordinate(cos * radius + x, sin * radius + y, c.red, c.green, c.blue, c.alpha);
+        addVertexCoordinate(x, y, c.red, c.green, c.blue, c.alpha);
     }
     
     float rad = DEGREES_TO_RADIANS(450 - arcDegrees);
     float cos = cosf(rad);
     float sin = sinf(rad);
     
-    addVertexCoordinate(cos * circle.getRadius() + circle.getCenter().getX(), sin * circle.getRadius() + circle.getCenter().getY(), c.red, c.green, c.blue, c.alpha);
-    
-    addVertexCoordinate(circle.getCenter().getX(), circle.getCenter().getY(), c.red, c.green, c.blue, c.alpha);
+    addVertexCoordinate(cos * radius + x, sin * radius + y, c.red, c.green, c.blue, c.alpha);
+    addVertexCoordinate(x, y, c.red, c.green, c.blue, c.alpha);
     
     _circles.push_back(_numPoints);
 }

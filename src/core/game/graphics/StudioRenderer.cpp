@@ -200,11 +200,16 @@ void StudioRenderer::renderGrid()
     static Color lineColor = Color::WHITE;
     lineColor.alpha = 0.5f;
     
-    int camWidth = _camBounds[3]->getWidth();
-    int camHeight = _camBounds[3]->getHeight();
+    int camWidth = SMALLEST_CAM_WIDTH * 16;
+    int camHeight = SMALLEST_CAM_HEIGHT * 16;
     
     _rendererHelper->updateMatrix(_camBounds[3]->getLeft(), _camBounds[3]->getRight(), _camBounds[3]->getBottom(), _camBounds[3]->getTop());
     
+    _circleBatcher->beginBatch();
+    _circleBatcher->renderCircle(15, 15, 15, Color::GREEN);
+    _circleBatcher->renderCircle(30, 30, 10, Color::GREEN);
+    _circleBatcher->renderCircle(75, 75, 20, Color::GREEN);
+    _circleBatcher->endBatch(_colorNGShader);
     _lineBatcher->beginBatch();
     for (int i = 0; i <= camWidth; ++i)
     {
@@ -224,8 +229,11 @@ void StudioRenderer::renderUI()
     _rendererHelper->updateMatrix(0, CAM_WIDTH, 0, CAM_HEIGHT);
     
     _spriteBatchers[0]->beginBatch();
-    renderText("Awwww yeah, prepare for the Studio!!!", CAM_WIDTH / 2, CAM_HEIGHT - 2, Color::WHITE, FONT_ALIGN_CENTERED);
-    renderText("'ESC' to exit",                         CAM_WIDTH / 2, CAM_HEIGHT - 9, Color::WHITE, FONT_ALIGN_CENTERED);
+    Vector2& rc = CURSOR_INPUT_MANAGER->getCursorPosition();
+    Vector2& c = CURSOR_CONVERTER->convert(rc);
+    renderText(StringUtil::format("Raw Cursor Pos: %f, %f", rc.getX(), rc.getY()).c_str(), CAM_WIDTH / 2, 8, Color::WHITE, FONT_ALIGN_CENTERED);
+    renderText(StringUtil::format("    Cursor Pos: %f, %f",  c.getX(),  c.getY()).c_str(), CAM_WIDTH / 2, 6, Color::WHITE, FONT_ALIGN_CENTERED);
+    renderText("'ESC' to exit",                         CAM_WIDTH / 2, 4, Color::WHITE, FONT_ALIGN_CENTERED);
     _spriteBatchers[0]->endBatch(_textureNGShader, _textureManager->getTextureWithName("texture_000.ngt"));
 }
 

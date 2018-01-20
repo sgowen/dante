@@ -26,7 +26,9 @@ public:
     
     void beginBatch();
     void renderCircle(Circle &circle, Color &c);
+    void renderCircle(float x, float y, float radius, Color &c);
     void renderPartialCircle(Circle &circle, int arcDegrees, Color &c);
+    void renderPartialCircle(float x, float y, float radius, int arcDegrees, Color &c);
     void endBatch(NGShader* shader);
     
 private:

@@ -52,7 +52,7 @@ Vector2& CursorConverter::convert(Vector2& cursorPosition)
 #if TARGET_OS_IPHONE
     _cursor.set((cursorPosition.getX() / _cursorWidth) * _camWidth, (1 - cursorPosition.getY() / _cursorHeight) * _camHeight);
 #elif TARGET_OS_OSX
-    _cursor.set((cursorPosition.getX() / _cursorWidth) * _camWidth, (cursorPosition.getY() / _cursorHeight) * _camHeight);
+    _cursor.set((cursorPosition.getX() / _cursorWidth) * _camWidth, (1 - cursorPosition.getY() / _cursorHeight) * _camHeight);
 #elif __ANDROID__
     _cursor.set((cursorPosition.getX() / _cursorWidth) * _camWidth, (1 - cursorPosition.getY() / _cursorHeight) * _camHeight);
 #elif defined _WIN32
