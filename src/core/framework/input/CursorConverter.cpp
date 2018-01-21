@@ -34,14 +34,10 @@ _camHeight(1)
 
 Vector2& CursorConverter::convert(CursorEvent& cursorEvent)
 {
-#if TARGET_OS_IPHONE
-    _cursor.set((cursorEvent.getX() / _cursorWidth) * _camWidth, (1 - cursorEvent.getY() / _cursorHeight) * _camHeight);
-#elif TARGET_OS_OSX
-    _cursor.set((cursorEvent.getX() / _cursorWidth) * _camWidth, (1 - cursorEvent.getY() / _cursorHeight) * _camHeight);
-#elif __ANDROID__
-    _cursor.set((cursorEvent.getX() / _cursorWidth) * _camWidth, (1 - cursorEvent.getY() / _cursorHeight) * _camHeight);
-#elif defined _WIN32
+#ifdef _WIN32
 	_cursor.set(cursorEvent.getX() / _cursorWidth * _camWidth, _camHeight - (cursorEvent.getY() / _cursorHeight * _camHeight));
+#else
+	_cursor.set((cursorEvent.getX() / _cursorWidth) * _camWidth, (1 - cursorEvent.getY() / _cursorHeight) * _camHeight);
 #endif
     
     return _cursor;
@@ -49,14 +45,10 @@ Vector2& CursorConverter::convert(CursorEvent& cursorEvent)
 
 Vector2& CursorConverter::convert(Vector2& cursorPosition)
 {
-#if TARGET_OS_IPHONE
-    _cursor.set((cursorPosition.getX() / _cursorWidth) * _camWidth, (1 - cursorPosition.getY() / _cursorHeight) * _camHeight);
-#elif TARGET_OS_OSX
-    _cursor.set((cursorPosition.getX() / _cursorWidth) * _camWidth, (1 - cursorPosition.getY() / _cursorHeight) * _camHeight);
-#elif __ANDROID__
-    _cursor.set((cursorPosition.getX() / _cursorWidth) * _camWidth, (1 - cursorPosition.getY() / _cursorHeight) * _camHeight);
-#elif defined _WIN32
+#ifdef _WIN32
     _cursor.set(cursorPosition.getX() / _cursorWidth * _camWidth, _camHeight - (cursorPosition.getY() / _cursorHeight * _camHeight));
+#else
+	_cursor.set((cursorPosition.getX() / _cursorWidth) * _camWidth, (1 - cursorPosition.getY() / _cursorHeight) * _camHeight);
 #endif
     
     return _cursor;
