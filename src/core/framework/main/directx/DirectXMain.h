@@ -74,6 +74,7 @@ private:
 	std::unique_ptr<DirectX::GamePad> _gamePad;
 	DirectX::GamePad::ButtonStateTracker _buttons[4];
 
+	EngineController* _engineController;
 	Engine* _engine;
 
 	float _dpi;
