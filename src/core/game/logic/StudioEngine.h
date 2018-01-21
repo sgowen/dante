@@ -21,7 +21,8 @@ class World;
 
 enum StudioEngineState
 {
-    StudioEngineState_Default = 1 << 0
+    StudioEngineState_Default = 1 << 0,
+    StudioEngineState_DisplayBox2D = 1 << 1,
 };
 
 class StudioEngine : public EngineState

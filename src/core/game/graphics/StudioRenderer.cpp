@@ -13,7 +13,6 @@
 #include "framework/graphics/portable/TextureManager.h"
 #include "framework/graphics/portable/Font.h"
 #include "game/logic/World.h"
-#include "framework/graphics/portable/Box2DDebugRenderer.h"
 #include "framework/graphics/portable/SpriteBatcher.h"
 #include "framework/graphics/portable/PolygonBatcher.h"
 #include "framework/graphics/portable/LineBatcher.h"
@@ -91,6 +90,7 @@ _fillPolygonBatcher(new PolygonBatcher(_rendererHelper, true)),
 _boundsPolygonBatcher(new PolygonBatcher(_rendererHelper, false)),
 _lineBatcher(new LineBatcher(_rendererHelper)),
 _circleBatcher(new CircleBatcher(_rendererHelper)),
+_box2DDebugRenderer(new Box2DDebugRenderer(*_fillPolygonBatcher, *_boundsPolygonBatcher, *_lineBatcher, *_circleBatcher)),
 _shaderProgramLoader(SHADER_PROGRAM_LOADER_FACTORY->createNGShaderLoader()),
 _textureNGShader(new NGTextureShader(*_rendererHelper, "shader_003_vert.ngs", "shader_003_frag.ngs")),
 _colorNGShader(new NGGeometryShader(*_rendererHelper, "shader_001_vert.ngs", "shader_001_frag.ngs")),
@@ -167,6 +167,13 @@ void StudioRenderer::render(int flags)
     if (_textureManager->ensureTextures())
     {
         renderWorld();
+        
+        _rendererHelper->useScreenBlending();
+        if (flags & StudioEngineState_DisplayBox2D)
+        {
+            renderBox2D();
+        }
+        
         renderGrid();
         renderUI();
     }
@@ -312,6 +319,13 @@ void StudioRenderer::renderEntities()
             _spriteBatchers[i]->endBatch(_textureNGShader, _textureManager->getTextureWithName(textures[i]));
         }
     }
+}
+
+void StudioRenderer::renderBox2D()
+{
+    _rendererHelper->updateMatrix(_camBounds[3]->getLeft(), _camBounds[3]->getRight(), _camBounds[3]->getBottom(), _camBounds[3]->getTop());
+    
+    _box2DDebugRenderer->render(&_world->getWorld(), _colorNGShader);
 }
 
 void StudioRenderer::renderGrid()
