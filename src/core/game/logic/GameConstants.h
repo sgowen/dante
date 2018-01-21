@@ -45,7 +45,6 @@
 #define CAM_HEIGHT 36
 #define SMALLEST_CAM_WIDTH 16
 #define SMALLEST_CAM_HEIGHT 9
-#define GAME_HEIGHT CAM_HEIGHT * 20 // meters
 
 //// Non-Steam ////
 

@@ -84,6 +84,7 @@
 #include <string>
 #include <assert.h>
 #include <vector>
+#include <cfloat>
 
 GameRenderer::GameRenderer() : Renderer(),
 _textureManager(new TextureManager("game_assets.cfg")),
@@ -218,8 +219,7 @@ void GameRenderer::updateCamera()
                 x -= CAM_WIDTH * 0.5f;
                 y -= CAM_HEIGHT * 0.5f;
                 
-                /// TODO, fixme - this really shouldn't be needed in a fully dynamic game
-                y = clamp(y, GAME_HEIGHT, 0);
+                y = clamp(y, FLT_MAX, 0);
                 
                 isCamInitialized = true;
             }

@@ -81,6 +81,7 @@
 #include <ctime> // rand
 #include <string>
 #include <assert.h>
+#include <cfloat>
 
 StudioRenderer::StudioRenderer() : Renderer(),
 _textureManager(new TextureManager("game_assets.cfg")),
@@ -200,8 +201,10 @@ void StudioRenderer::renderGrid()
     static Color lineColor = Color::WHITE;
     lineColor.alpha = 0.5f;
     
-    int camWidth = SMALLEST_CAM_WIDTH * 16;
-    int camHeight = SMALLEST_CAM_HEIGHT * 16;
+    int left = clamp(_camBounds[3]->getLeft(), FLT_MAX, 0);
+    int bottom = clamp(_camBounds[3]->getBottom(), FLT_MAX, 0);
+    int camWidth = _camBounds[3]->getRight();
+    int camHeight = _camBounds[3]->getTop();
     
     _rendererHelper->updateMatrix(_camBounds[3]->getLeft(), _camBounds[3]->getRight(), _camBounds[3]->getBottom(), _camBounds[3]->getTop());
     
@@ -211,11 +214,11 @@ void StudioRenderer::renderGrid()
     _circleBatcher->renderCircle(75, 75, 20, Color::GREEN);
     _circleBatcher->endBatch(_colorNGShader);
     _lineBatcher->beginBatch();
-    for (int i = 0; i <= camWidth; ++i)
+    for (int i = left; i <= camWidth; ++i)
     {
         _lineBatcher->renderLine(i, 0, i, camHeight, lineColor);
     }
-    for (int i = 0; i <= camHeight; ++i)
+    for (int i = bottom; i <= camHeight; ++i)
     {
         _lineBatcher->renderLine(0, i, camWidth, i, lineColor);
     }
@@ -229,10 +232,6 @@ void StudioRenderer::renderUI()
     _rendererHelper->updateMatrix(0, CAM_WIDTH, 0, CAM_HEIGHT);
     
     _spriteBatchers[0]->beginBatch();
-    Vector2& rc = CURSOR_INPUT_MANAGER->getCursorPosition();
-    Vector2& c = CURSOR_CONVERTER->convert(rc);
-    renderText(StringUtil::format("Raw Cursor Pos: %f, %f", rc.getX(), rc.getY()).c_str(), CAM_WIDTH / 2, 8, Color::WHITE, FONT_ALIGN_CENTERED);
-    renderText(StringUtil::format("    Cursor Pos: %f, %f",  c.getX(),  c.getY()).c_str(), CAM_WIDTH / 2, 6, Color::WHITE, FONT_ALIGN_CENTERED);
     renderText("'ESC' to exit",                         CAM_WIDTH / 2, 4, Color::WHITE, FONT_ALIGN_CENTERED);
     _spriteBatchers[0]->endBatch(_textureNGShader, _textureManager->getTextureWithName("texture_000.ngt"));
 }
