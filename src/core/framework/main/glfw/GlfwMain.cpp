@@ -186,7 +186,9 @@ int GlfwMain::exec(EngineController* engineController)
     double lastTime = 0;
 
     engineController->init();
-    Engine engine(engineController);
+    Engine* engineP = new Engine(engineController);
+    
+    Engine& engine = *engineP;
     engine.createDeviceDependentResources();
 
     int glWidth = 0, glHeight = 0;
@@ -322,6 +324,8 @@ int GlfwMain::exec(EngineController* engineController)
     }
 
     engine.releaseDeviceDependentResources();
+    
+    delete engineP;
     
     engineController->deinit();
 

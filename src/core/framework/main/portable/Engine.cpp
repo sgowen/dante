@@ -35,7 +35,7 @@ _cursorHeight(0)
 
 Engine::~Engine()
 {
-    delete _engineController;
+    // Empty
 }
 
 void Engine::createDeviceDependentResources()

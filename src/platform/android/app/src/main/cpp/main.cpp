@@ -19,5 +19,6 @@ void android_main(android_app* state)
 {
     app_dummy();
 
-    AndroidMain::getInstance()->exec(state, new MainEngineController());
+    MainEngineController controller;
+    AndroidMain::getInstance()->exec(state, &controller);
 }

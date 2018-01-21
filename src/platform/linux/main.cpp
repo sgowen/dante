@@ -12,5 +12,6 @@
 
 int main(void)
 {
-    return GlfwMain::getInstance()->exec(new MainEngineController());
+    MainEngineController controller;
+    return GlfwMain::getInstance()->exec(&controller);
 }

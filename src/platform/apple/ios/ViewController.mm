@@ -14,7 +14,8 @@
 
 - (EngineController *)createEngineController
 {
-    return new MainEngineController();
+    static MainEngineController controller;
+    return &controller;
 }
 
 @end

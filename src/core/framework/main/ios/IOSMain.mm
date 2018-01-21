@@ -185,7 +185,6 @@
     delete _engine;
     
     _engineController->deinit();
-    delete _engineController;
 }
 
 - (void)onResume
