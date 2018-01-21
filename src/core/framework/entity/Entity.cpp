@@ -39,6 +39,7 @@ _poseInterpolateCache(_pose),
 _readState(0),
 _state(0),
 _ID(0),
+_deadZoneY(-_entityDef.height / 2.0f),
 _isRequestingDeletion(false)
 {
     // Empty
@@ -60,7 +61,7 @@ void Entity::update()
     
     if (_isServer)
     {
-        if (getPosition().y < -5)
+        if (getPosition().y < _deadZoneY)
         {
             requestDeletion();
         }

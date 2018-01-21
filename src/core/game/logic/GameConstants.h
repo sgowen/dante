@@ -43,8 +43,6 @@
 
 #define CAM_WIDTH 64
 #define CAM_HEIGHT 36
-#define SMALLEST_CAM_WIDTH 16
-#define SMALLEST_CAM_HEIGHT 9
 
 //// Non-Steam ////
 

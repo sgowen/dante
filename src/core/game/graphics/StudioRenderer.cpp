@@ -105,7 +105,7 @@ _fbIndex(0)
     
     for (int i = 0; i < NUM_CAMERAS; ++i)
     {
-        _camBounds[i] = new NGRect(0, 0, SMALLEST_CAM_WIDTH, SMALLEST_CAM_HEIGHT);
+        _camBounds[i] = new NGRect(0, 0, CAM_WIDTH, CAM_HEIGHT);
     }
 }
 
@@ -168,13 +168,16 @@ void StudioRenderer::render(int flags)
     {
         renderWorld();
         
-        _rendererHelper->useScreenBlending();
         if (flags & StudioEngineState_DisplayBox2D)
         {
             renderBox2D();
         }
         
-        renderGrid();
+        if (flags & StudioEngineState_DisplayGrid)
+        {
+            renderGrid();
+        }
+        
         renderUI();
     }
 

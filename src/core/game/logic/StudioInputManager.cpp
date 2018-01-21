@@ -128,8 +128,8 @@ void StudioInputManager::update(StudioEngine* engine)
     {
         _scrollValue += CURSOR_INPUT_MANAGER->getScrollWheelValue();
         CURSOR_INPUT_MANAGER->resetScrollValue();
-        _scrollValue = clamp(_scrollValue, 16, 1);
-        CURSOR_CONVERTER->setCamSize(SMALLEST_CAM_WIDTH * _scrollValue, SMALLEST_CAM_HEIGHT * _scrollValue);
+        _scrollValue = clamp(_scrollValue, 8, 1);
+        CURSOR_CONVERTER->setCamSize(CAM_WIDTH * _scrollValue, CAM_HEIGHT * _scrollValue);
         
         for (std::vector<CursorEvent *>::iterator i = CURSOR_INPUT_MANAGER->getEvents().begin(); i != CURSOR_INPUT_MANAGER->getEvents().end(); ++i)
         {
@@ -181,25 +181,25 @@ void StudioInputManager::update(StudioEngine* engine)
                 case NG_KEY_ARROW_LEFT:
                     if (e.isDown() || e.isHeld())
                     {
-                        _cursor.sub(SMALLEST_CAM_WIDTH / 4, 0);
+                        _cursor.sub(CAM_WIDTH / 4, 0);
                     }
                     continue;
                 case NG_KEY_ARROW_RIGHT:
                     if (e.isDown() || e.isHeld())
                     {
-                        _cursor.add(SMALLEST_CAM_WIDTH / 4, 0);
+                        _cursor.add(CAM_WIDTH / 4, 0);
                     }
                     continue;
                 case NG_KEY_ARROW_DOWN:
                     if (e.isDown() || e.isHeld())
                     {
-                        _cursor.sub(0, SMALLEST_CAM_HEIGHT / 4);
+                        _cursor.sub(0, CAM_HEIGHT / 4);
                     }
                     continue;
                 case NG_KEY_ARROW_UP:
                     if (e.isDown() || e.isHeld())
                     {
-                        _cursor.add(0, SMALLEST_CAM_HEIGHT / 4);
+                        _cursor.add(0, CAM_HEIGHT / 4);
                     }
                     continue;
                 case NG_KEY_O:
@@ -225,6 +225,12 @@ void StudioInputManager::update(StudioEngine* engine)
                     if (e.isDown())
                     {
                         engine->_state ^= StudioEngineState_DisplayBox2D;
+                    }
+                    continue;
+                case NG_KEY_G:
+                    if (e.isDown())
+                    {
+                        engine->_state ^= StudioEngineState_DisplayGrid;
                     }
                     continue;
                 case NG_KEY_ESCAPE:
@@ -282,17 +288,17 @@ std::string StudioInputManager::getLiveInput()
 
 void StudioInputManager::updateCamera(StudioEngine *engine)
 {
-    int w = SMALLEST_CAM_WIDTH * _scrollValue;
-    int h = SMALLEST_CAM_HEIGHT * _scrollValue;
+    int w = CAM_WIDTH * _scrollValue;
+    int h = CAM_HEIGHT * _scrollValue;
     
     if (_lastScrollValue != _scrollValue)
     {
-        CURSOR_CONVERTER->setCamSize(SMALLEST_CAM_WIDTH * _lastScrollValue, SMALLEST_CAM_HEIGHT * _lastScrollValue);
+        CURSOR_CONVERTER->setCamSize(CAM_WIDTH * _lastScrollValue, CAM_HEIGHT * _lastScrollValue);
         Vector2& rc = CURSOR_INPUT_MANAGER->getCursorPosition();
         Vector2 c = CURSOR_CONVERTER->convert(rc);
         
-        int dw = SMALLEST_CAM_WIDTH * _lastScrollValue;
-        int dh = SMALLEST_CAM_HEIGHT * _lastScrollValue;
+        int dw = CAM_WIDTH * _lastScrollValue;
+        int dh = CAM_HEIGHT * _lastScrollValue;
         
         float xFactor = c.getX() / dw;
         float yFactor = c.getY() / dh;
@@ -304,7 +310,7 @@ void StudioInputManager::updateCamera(StudioEngine *engine)
         _cursor = center;
         
         _lastScrollValue = _scrollValue;
-        CURSOR_CONVERTER->setCamSize(SMALLEST_CAM_WIDTH * _scrollValue, SMALLEST_CAM_HEIGHT * _scrollValue);
+        CURSOR_CONVERTER->setCamSize(CAM_WIDTH * _scrollValue, CAM_HEIGHT * _scrollValue);
     }
     
     engine->_renderer->updateCamera(_cursor.getX(), _cursor.getY(), w, h);
@@ -314,8 +320,8 @@ void StudioInputManager::resetCamera()
 {
     _scrollValue = 4;
     _lastScrollValue = 4;
-    int w = SMALLEST_CAM_WIDTH * _scrollValue;
-    int h = SMALLEST_CAM_HEIGHT * _scrollValue;
+    int w = CAM_WIDTH * _scrollValue;
+    int h = CAM_HEIGHT * _scrollValue;
     CURSOR_INPUT_MANAGER->resetScrollValue();
     CURSOR_CONVERTER->setCamSize(w, h);
     _cursor.set(0, 0);

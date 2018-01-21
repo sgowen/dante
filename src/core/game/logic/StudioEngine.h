@@ -23,6 +23,7 @@ enum StudioEngineState
 {
     StudioEngineState_Default = 1 << 0,
     StudioEngineState_DisplayBox2D = 1 << 1,
+    StudioEngineState_DisplayGrid = 1 << 2
 };
 
 class StudioEngine : public EngineState

@@ -36,13 +36,13 @@ Box2DDebugRenderer::~Box2DDebugRenderer()
 
 void Box2DDebugRenderer::DrawPolygon(const b2Vec2* vertices, int32 vertexCount, const b2Color& color)
 {
-    Color c = Color(color.r, color.g, color.b, color.a / 2);
+    Color c = Color(color.r, color.g, color.b, 0.3f);
     _boundsPolygonBatcher.renderPolygon(vertices, vertexCount, c);
 }
 
 void Box2DDebugRenderer::DrawSolidPolygon(const b2Vec2* vertices, int32 vertexCount, const b2Color& color)
 {
-    Color c = Color(color.r, color.g, color.b, color.a / 2);
+    Color c = Color(color.r, color.g, color.b, 0.3f);
     _fillPolygonBatcher.renderPolygon(vertices, vertexCount, c);
 }
 

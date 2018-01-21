@@ -177,7 +177,6 @@ void GameRenderer::render(int flags)
     {
         renderWorld(flags);
         
-        _rendererHelper->useScreenBlending();
         if (flags & GameEngineState_DisplayBox2D)
         {
             renderBox2D();
