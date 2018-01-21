@@ -181,25 +181,25 @@ void StudioInputManager::update(StudioEngine* engine)
                 case NG_KEY_ARROW_LEFT:
                     if (e.isDown() || e.isHeld())
                     {
-                        _cursor.sub(CAM_WIDTH / 4, 0);
+                        _cursor.sub(CAM_WIDTH / 16, 0);
                     }
                     continue;
                 case NG_KEY_ARROW_RIGHT:
                     if (e.isDown() || e.isHeld())
                     {
-                        _cursor.add(CAM_WIDTH / 4, 0);
+                        _cursor.add(CAM_WIDTH / 16, 0);
                     }
                     continue;
                 case NG_KEY_ARROW_DOWN:
                     if (e.isDown() || e.isHeld())
                     {
-                        _cursor.sub(0, CAM_HEIGHT / 4);
+                        _cursor.sub(0, CAM_HEIGHT / 16);
                     }
                     continue;
                 case NG_KEY_ARROW_UP:
                     if (e.isDown() || e.isHeld())
                     {
-                        _cursor.add(0, CAM_HEIGHT / 4);
+                        _cursor.add(0, CAM_HEIGHT / 16);
                     }
                     continue;
                 case NG_KEY_O:
@@ -211,14 +211,9 @@ void StudioInputManager::update(StudioEngine* engine)
                 case NG_KEY_S:
                     if (e.isDown())
                     {
-                        if (_isControl)
-                        {
-                            engine->_world->saveMapAs('Z999');
-                        }
-                        else
-                        {
-                            engine->_world->saveMap();
-                        }
+                        engine->_world->saveMap();
+                        std::string toast = StringUtil::format("%s saved!", engine->_world->getMapName().c_str());
+                        engine->_renderer->displayToast(toast.c_str());
                     }
                     continue;
                 case NG_KEY_P:
@@ -313,13 +308,13 @@ void StudioInputManager::updateCamera(StudioEngine *engine)
         CURSOR_CONVERTER->setCamSize(CAM_WIDTH * _scrollValue, CAM_HEIGHT * _scrollValue);
     }
     
-    engine->_renderer->updateCamera(_cursor.getX(), _cursor.getY(), w, h);
+    engine->_renderer->update(_cursor.getX(), _cursor.getY(), w, h, _scrollValue);
 }
 
 void StudioInputManager::resetCamera()
 {
-    _scrollValue = 4;
-    _lastScrollValue = 4;
+    _scrollValue = 1;
+    _lastScrollValue = 1;
     int w = CAM_WIDTH * _scrollValue;
     int h = CAM_HEIGHT * _scrollValue;
     CURSOR_INPUT_MANAGER->resetScrollValue();

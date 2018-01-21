@@ -218,6 +218,7 @@ void GameRenderer::updateCamera()
                 x -= CAM_WIDTH * 0.5f;
                 y -= CAM_HEIGHT * 0.5f;
                 
+                x = clamp(x, FLT_MAX, 0);
                 y = clamp(y, FLT_MAX, 0);
                 
                 isCamInitialized = true;

@@ -96,7 +96,9 @@ _textureNGShader(new NGTextureShader(*_rendererHelper, "shader_003_vert.ngs", "s
 _colorNGShader(new NGGeometryShader(*_rendererHelper, "shader_001_vert.ngs", "shader_001_frag.ngs")),
 _framebufferToScreenNGShader(new NGFramebufferToScreenShader(*_rendererHelper, "shader_002_vert.ngs", "shader_002_frag.ngs")),
 _font(new Font("texture_001.ngt", 0, 0, 16, 64, 75, 1024, 1024)),
-_fbIndex(0)
+_toastStateTime(0),
+_fbIndex(0),
+_scrollValue(1)
 {
     for (int i = 0; i < NUM_SPRITE_BATCHERS; ++i)
     {
@@ -184,8 +186,10 @@ void StudioRenderer::render(int flags)
     endFrame();
 }
 
-void StudioRenderer::updateCamera(float x, float y, float w, float h)
+void StudioRenderer::update(float x, float y, float w, float h, int scale)
 {
+    _scrollValue = scale;
+    
     _camBounds[3]->getLowerLeft().set(x, y);
     _camBounds[2]->getLowerLeft().set(x / 2, y / 2);
     _camBounds[1]->getLowerLeft().set(x / 4, y / 4);
@@ -196,11 +200,27 @@ void StudioRenderer::updateCamera(float x, float y, float w, float h)
         _camBounds[i]->setWidth(w);
         _camBounds[i]->setHeight(h);
     }
+    
+    if (_toasts.size() > 0)
+    {
+        ++_toastStateTime;
+        if (_toastStateTime >= 60)
+        {
+            _toasts.pop_front();
+            _toastStateTime = 0;
+        }
+    }
 }
 
 void StudioRenderer::setWorld(World* inValue)
 {
     _world = inValue;
+}
+
+void StudioRenderer::displayToast(std::string toast)
+{
+    _toasts.push_back(toast);
+    _toastStateTime = 0;
 }
 
 void StudioRenderer::setFramebuffer(int framebufferIndex, float r, float g, float b, float a)
@@ -221,6 +241,7 @@ void StudioRenderer::renderWorld()
     _rendererHelper->useNormalBlending();
     renderLayers();
     
+    _rendererHelper->updateMatrix(_camBounds[3]->getLeft(), _camBounds[3]->getRight(), _camBounds[3]->getBottom(), _camBounds[3]->getTop());
     setFramebuffer(1);
     _rendererHelper->useScreenBlending();
     renderEntities();
@@ -266,6 +287,7 @@ void StudioRenderer::renderLayers()
     {
         if (textures[i].length() > 0)
         {
+            _rendererHelper->updateMatrix(_camBounds[i]->getLeft(), _camBounds[i]->getRight(), _camBounds[i]->getBottom(), _camBounds[i]->getTop());
             _spriteBatchers[i]->endBatch(_textureNGShader, _textureManager->getTextureWithName(textures[i]));
         }
     }
@@ -362,8 +384,13 @@ void StudioRenderer::renderUI()
 {
     _rendererHelper->updateMatrix(0, CAM_WIDTH, 0, CAM_HEIGHT);
     
+    int y = CAM_HEIGHT - 2;
     _spriteBatchers[0]->beginBatch();
-    renderText("'ESC' to exit",                         CAM_WIDTH / 2, 4, Color::WHITE, FONT_ALIGN_CENTERED);
+    for (std::string t : _toasts)
+    {
+        renderText(t.c_str(), CAM_WIDTH / 2, y, Color::WHITE, FONT_ALIGN_CENTERED);
+        y -= 2;
+    }
     _spriteBatchers[0]->endBatch(_textureNGShader, _textureManager->getTextureWithName("texture_000.ngt"));
 }
 

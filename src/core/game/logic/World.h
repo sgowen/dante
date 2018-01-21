@@ -41,7 +41,6 @@ public:
     void postRender();
     void loadMap(uint32_t map);
     void saveMap();
-    void saveMapAs(uint32_t map);
     std::string& getMapName();
     Entity* getPlayerWithId(uint8_t inPlayerID);
     std::vector<Entity*>& getPlayers();

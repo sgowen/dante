@@ -96,7 +96,7 @@ void StudioEngine::enter(Engine* engine)
     _input = StudioInputManager::getInstance();
     _world = new World(WorldFlag_MapLoadAll);
     _world->loadMap('Z001');
-    _state = StudioEngineState_Default;
+    _state = StudioEngineState_DisplayGrid;
     
     _renderer->setWorld(_world);
 }

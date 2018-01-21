@@ -18,6 +18,7 @@
 
 #include "rapidjson/document.h"
 #include "rapidjson/stringbuffer.h"
+#include "rapidjson/prettywriter.h"
 
 #include <assert.h>
 
@@ -37,22 +38,16 @@ void EntityLayoutMapper::sLayoutDeserializerFunc(const char* data)
     EntityLayoutMapper::getInstance()->loadEntityLayout(data);
 }
 
+const char* EntityLayoutMapper::sLayoutSerializerFunc()
+{
+    return EntityLayoutMapper::getInstance()->save();
+}
+
 void EntityLayoutMapper::initWithJsonFile(const char* path, bool isBundled, bool useEncryption)
 {
-    const char* finalPath;
-#if defined __linux__ && !defined(__ANDROID__)
-    std::string s("assets/config/");
-    s += std::string(path);
-    finalPath = s.c_str();
-#elif defined _WIN32
-    std::string s("assets\\config\\");
-    s += std::string(path);
-    finalPath = s.c_str();
-#else
-    finalPath = path;
-#endif
+    std::string finalPath = adjustPath(path);
     
-    JsonFile jsonFile(finalPath, isBundled, useEncryption);
+    JsonFile jsonFile(finalPath.c_str(), isBundled, useEncryption);
     jsonFile.setDeserializerFunc(sLayoutsDeserializerFunc);
     jsonFile.load();
 }
@@ -95,21 +90,9 @@ void EntityLayoutMapper::loadEntityLayout(uint32_t name)
     _entityLayoutDef.dynamicEntities.clear();
     
     std::string path = getJsonConfigFilePath(name);
+    std::string finalPath = adjustPath(path.c_str());
     
-    const char* finalPath;
-#if defined __linux__ && !defined(__ANDROID__)
-    std::string s("assets/config/");
-    s += path;
-    finalPath = s.c_str();
-#elif defined _WIN32
-    std::string s("assets\\config\\");
-    s += path;
-    finalPath = s.c_str();
-#else
-    finalPath = path.c_str();
-#endif
-    
-    JsonFile jsonFile(finalPath);
+    JsonFile jsonFile(finalPath.c_str());
     jsonFile.setDeserializerFunc(sLayoutDeserializerFunc);
     jsonFile.load();
 }
@@ -214,9 +197,129 @@ void EntityLayoutMapper::loadEntityLayout(const char* data)
     }
 }
 
-void EntityLayoutMapper::saveEntityLayout(uint32_t name, EntityLayoutDef& layout)
+const char* EntityLayoutMapper::save()
 {
+    assert(_layoutToSave);
     
+    using namespace rapidjson;
+    
+    static StringBuffer s;
+    PrettyWriter<StringBuffer> w(s);
+    
+    s.Clear();
+
+    w.StartObject();
+    
+    if (_layoutToSave->layers.size() > 0)
+    {
+        w.String("layers");
+        w.StartArray();
+        for (EntityPosDef epd : _layoutToSave->layers)
+        {
+            w.StartObject();
+            {
+                w.String("type");
+                char chars[5];
+                chars[4] = '\0';
+                chars[3] = (char)(epd.type & 0xFF);
+                chars[2] = (char)(epd.type >> 8 & 0xFF);
+                chars[1] = (char)(epd.type >> 16 & 0xFF);
+                chars[0] = (char)(epd.type >> 24 & 0xFF);
+                std::string type = std::string(chars);
+                w.String(type.c_str());
+            }
+            {
+                w.String("x");
+                w.Int(epd.x);
+            }
+            {
+                w.String("y");
+                w.Int(epd.y);
+            }
+            w.EndObject();
+        }
+        w.EndArray();
+    }
+    
+    if (_layoutToSave->staticEntities.size() > 0)
+    {
+        w.String("staticEntities");
+        w.StartArray();
+        for (EntityPosDef epd : _layoutToSave->staticEntities)
+        {
+            w.StartObject();
+            {
+                w.String("type");
+                char chars[5];
+                chars[4] = '\0';
+                chars[3] = (char)(epd.type & 0xFF);
+                chars[2] = (char)(epd.type >> 8 & 0xFF);
+                chars[1] = (char)(epd.type >> 16 & 0xFF);
+                chars[0] = (char)(epd.type >> 24 & 0xFF);
+                std::string type = std::string(chars);
+                w.String(type.c_str());
+            }
+            {
+                w.String("x");
+                w.Int(epd.x);
+            }
+            {
+                w.String("y");
+                w.Int(epd.y);
+            }
+            w.EndObject();
+        }
+        w.EndArray();
+    }
+    
+    if (_layoutToSave->dynamicEntities.size() > 0)
+    {
+        w.String("dynamicEntities");
+        w.StartArray();
+        for (EntityPosDef epd : _layoutToSave->dynamicEntities)
+        {
+            w.StartObject();
+            {
+                w.String("type");
+                char chars[5];
+                chars[4] = '\0';
+                chars[3] = (char)(epd.type & 0xFF);
+                chars[2] = (char)(epd.type >> 8 & 0xFF);
+                chars[1] = (char)(epd.type >> 16 & 0xFF);
+                chars[0] = (char)(epd.type >> 24 & 0xFF);
+                std::string type = std::string(chars);
+                w.String(type.c_str());
+            }
+            {
+                w.String("x");
+                w.Int(epd.x);
+            }
+            {
+                w.String("y");
+                w.Int(epd.y);
+            }
+            w.EndObject();
+        }
+        w.EndArray();
+    }
+    
+    w.EndObject();
+    
+    return s.GetString();
+}
+
+void EntityLayoutMapper::saveEntityLayout(uint32_t name, EntityLayoutDef* layout)
+{
+    assert(layout);
+    
+    _layoutToSave = layout;
+    
+    std::string path = getJsonConfigFilePath(name);
+    std::string finalPath = adjustPath(path.c_str());
+    
+    JsonFile jsonFile(finalPath.c_str());
+    jsonFile.setSerializerFunc(sLayoutSerializerFunc);
+    jsonFile.save();
 }
 
 std::string EntityLayoutMapper::getJsonConfigFilePath(uint32_t inFourCCName)
@@ -228,7 +331,25 @@ std::string EntityLayoutMapper::getJsonConfigFilePath(uint32_t inFourCCName)
     return q->second;
 }
 
-EntityLayoutMapper::EntityLayoutMapper()
+std::string EntityLayoutMapper::adjustPath(const char* path)
+{
+    const char* finalPath;
+#if defined __linux__ && !defined(__ANDROID__)
+    std::string s("assets/config/");
+    s += std::string(path);
+    finalPath = s.c_str();
+#elif defined _WIN32
+    std::string s("assets\\config\\");
+    s += std::string(path);
+    finalPath = s.c_str();
+#else
+    finalPath = path;
+#endif
+    
+    return std::string(finalPath);
+}
+
+EntityLayoutMapper::EntityLayoutMapper() : _layoutToSave(NULL)
 {
     // Empty
 }

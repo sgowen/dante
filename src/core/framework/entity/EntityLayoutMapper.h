@@ -35,19 +35,23 @@ public:
     
     static void sLayoutsDeserializerFunc(const char* data);
     static void sLayoutDeserializerFunc(const char* data);
+    static const char* sLayoutSerializerFunc();
     
     void initWithJsonFile(const char* jsonFile, bool isBundled = true, bool useEncryption = false);
     void initWithJson(const char* data);
     void loadEntityLayout(uint32_t name);
-    void saveEntityLayout(uint32_t name, EntityLayoutDef& layout);
+    const char* save();
+    void saveEntityLayout(uint32_t name, EntityLayoutDef* layout);
     EntityLayoutDef& getEntityLayoutDef();
     
 private:
     std::map<uint32_t, std::string> _layouts;
     EntityLayoutDef _entityLayoutDef;
+    EntityLayoutDef* _layoutToSave;
     
     void loadEntityLayout(const char* data);
     std::string getJsonConfigFilePath(uint32_t inFourCCName);
+    std::string adjustPath(const char* path);
     
     // ctor, copy ctor, and assignment should be private in a Singleton
     EntityLayoutMapper();

@@ -15,6 +15,7 @@
 #include "framework/math/Vector2.h"
 
 #include <string>
+#include <deque>
 
 class TextureManager;
 class SpriteBatcher;
@@ -48,8 +49,9 @@ public:
     virtual void releaseDeviceDependentResources();
     virtual void render(int flags = 0);
     
-    void updateCamera(float x, float y, float w, float h);
+    void update(float x, float y, float w, float h, int scale);
     void setWorld(World* inValue);
+    void displayToast(std::string toast);
     
 private:
     TextureManager* _textureManager;
@@ -67,7 +69,10 @@ private:
     NGShader* _framebufferToScreenNGShader;
     NGRect* _camBounds[NUM_CAMERAS];
     World* _world;
+    std::deque<std::string> _toasts;
+    int _toastStateTime;
     int _fbIndex;
+    int _scrollValue;
     
     void setFramebuffer(int framebufferIndex, float r = 0, float g = 0, float b = 0, float a = 0);
     void renderWorld();

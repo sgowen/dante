@@ -332,11 +332,6 @@ void World::loadMap(uint32_t map)
 
 void World::saveMap()
 {
-    saveMapAs(_map);
-}
-
-void World::saveMapAs(uint32_t map)
-{
     EntityLayoutDef layout;
     
     for (Entity* e : _layers)
@@ -354,7 +349,7 @@ void World::saveMapAs(uint32_t map)
         layout.dynamicEntities.push_back(EntityPosDef(e->getEntityDef().type, e->getPosition().x, e->getPosition().y));
     }
     
-    EntityLayoutMapper::getInstance()->saveEntityLayout(map, layout);
+    EntityLayoutMapper::getInstance()->saveEntityLayout(_map, &layout);
 }
 
 std::string& World::getMapName()
