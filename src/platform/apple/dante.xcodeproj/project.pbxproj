@@ -117,6 +117,8 @@
 		BB3BAEE21FB4A1FA00F5F8B0 /* TitleInputManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB3BAEDF1FB4A1F900F5F8B0 /* TitleInputManager.cpp */; };
 		BB3F1195200AE0DA00C30B06 /* Config.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB3F1193200AE0D900C30B06 /* Config.cpp */; };
 		BB3F1196200AE0DA00C30B06 /* Config.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB3F1193200AE0D900C30B06 /* Config.cpp */; };
+		BB3F51EF2015412F00A657F8 /* CrawlerController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB3F51ED2015412E00A657F8 /* CrawlerController.cpp */; };
+		BB3F51F02015412F00A657F8 /* CrawlerController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB3F51ED2015412E00A657F8 /* CrawlerController.cpp */; };
 		BB4253D21EF58DA5003F6D2A /* ClientHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB4253D01EF58DA5003F6D2A /* ClientHelper.cpp */; };
 		BB4253D51EF58E00003F6D2A /* ServerHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB4253D41EF58E00003F6D2A /* ServerHelper.cpp */; };
 		BB4253DA1EF59793003F6D2A /* NGSteamClientHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB4253D61EF59793003F6D2A /* NGSteamClientHelper.cpp */; };
@@ -811,6 +813,8 @@
 		BB3F119E200AF50400C30B06 /* texture_001.psd */ = {isa = PBXFileReference; lastKnownFileType = file; path = texture_001.psd; sourceTree = "<group>"; };
 		BB3F119F200AF50400C30B06 /* texture_000.psd */ = {isa = PBXFileReference; lastKnownFileType = file; path = texture_000.psd; sourceTree = "<group>"; };
 		BB3F11A0200AF50400C30B06 /* texture_008.psd */ = {isa = PBXFileReference; lastKnownFileType = file; path = texture_008.psd; sourceTree = "<group>"; };
+		BB3F51ED2015412E00A657F8 /* CrawlerController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CrawlerController.cpp; sourceTree = "<group>"; };
+		BB3F51EE2015412F00A657F8 /* CrawlerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CrawlerController.h; sourceTree = "<group>"; };
 		BB4253D01EF58DA5003F6D2A /* ClientHelper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ClientHelper.cpp; sourceTree = "<group>"; };
 		BB4253D11EF58DA5003F6D2A /* ClientHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClientHelper.h; sourceTree = "<group>"; };
 		BB4253D31EF58E00003F6D2A /* ServerHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ServerHelper.h; sourceTree = "<group>"; };
@@ -2330,6 +2334,8 @@
 		BB6E7AFC1F940F13006C0024 /* logic */ = {
 			isa = PBXGroup;
 			children = (
+				BB3F51ED2015412E00A657F8 /* CrawlerController.cpp */,
+				BB3F51EE2015412F00A657F8 /* CrawlerController.h */,
 				BB6E7AFF1F940F13006C0024 /* GameConstants.h */,
 				BBFE830E1FFEC69500E5F650 /* GameEngine.cpp */,
 				BBFE830D1FFEC69400E5F650 /* GameEngine.h */,
@@ -2341,10 +2347,10 @@
 				BBFE83071FFEBFF900E5F650 /* MainEngineController.h */,
 				BB65315B1FED56C800963997 /* MainInputState.cpp */,
 				BB65315A1FED56C700963997 /* MainInputState.h */,
-				BB6E7B051F940F13006C0024 /* PooledObjectsManager.cpp */,
-				BB6E7B061F940F13006C0024 /* PooledObjectsManager.h */,
 				BB9A452C2003370900E872E1 /* PlayerController.cpp */,
 				BB9A452D2003370900E872E1 /* PlayerController.h */,
+				BB6E7B051F940F13006C0024 /* PooledObjectsManager.cpp */,
+				BB6E7B061F940F13006C0024 /* PooledObjectsManager.h */,
 				BB65315D1FED56C800963997 /* Server.cpp */,
 				BB65315F1FED56C800963997 /* Server.h */,
 				BBFE83211FFF1B3D00E5F650 /* StudioEngine.cpp */,
@@ -3955,6 +3961,7 @@
 				BB44CB811DB053C0003E633F /* png.c in Sources */,
 				BB1C3C061FE76C65002E4AA6 /* OpenGLProgramLoader.cpp in Sources */,
 				BB6F59781FBDE97D00BD7697 /* cocoa_monitor.m in Sources */,
+				BB3F51EF2015412F00A657F8 /* CrawlerController.cpp in Sources */,
 				BB7267FD1EEC7049004F33F9 /* ClientProxy.cpp in Sources */,
 				BBAEF2781EA94EDA00F0866E /* TextureRegion.cpp in Sources */,
 				BB7267FE1EEC704B004F33F9 /* NetworkManagerServer.cpp in Sources */,
@@ -4213,6 +4220,7 @@
 				BB5AFE351FB35A77005FBD52 /* ClientHelper.cpp in Sources */,
 				BBD554331FDB2EA800E00AD6 /* b2RevoluteJoint.cpp in Sources */,
 				BBD554431FDB2EA800E00AD6 /* b2Rope.cpp in Sources */,
+				BB3F51F02015412F00A657F8 /* CrawlerController.cpp in Sources */,
 				BB5AFE361FB35A77005FBD52 /* NetworkManagerClient.cpp in Sources */,
 				BBFE83051FFEBC8200E5F650 /* EngineController.cpp in Sources */,
 				BB5AFE371FB35A77005FBD52 /* ReplicationManagerClient.cpp in Sources */,

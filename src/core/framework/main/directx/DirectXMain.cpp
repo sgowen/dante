@@ -840,6 +840,8 @@ DirectXMain::~DirectXMain()
     _engine->releaseDeviceDependentResources();
     
 	delete _engine;
+    
+    engineController->deinit();
 
 	_deviceResources.reset();
 }

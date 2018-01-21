@@ -15,7 +15,8 @@
 
 @interface IOSMain ()
 {
-    Engine *_engine;
+    EngineController* _engineController;
+    Engine* _engine;
 }
 
 @property (strong, nonatomic) EAGLContext *context;
@@ -155,9 +156,9 @@
 
 - (void)setupGL
 {
-    EngineController* engineController = [self createEngineController];
-    engineController->init();
-    _engine = new Engine(engineController);
+    _engineController = [self createEngineController];
+    _engineController->init();
+    _engine = new Engine(_engineController);
     
     [EAGLContext setCurrentContext:self.context];
     
@@ -181,8 +182,10 @@
     [EAGLContext setCurrentContext:self.context];
     
     _engine->releaseDeviceDependentResources();
-    
     delete _engine;
+    
+    _engineController->deinit();
+    delete _engineController;
 }
 
 - (void)onResume

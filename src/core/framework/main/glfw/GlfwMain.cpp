@@ -322,6 +322,8 @@ int GlfwMain::exec(EngineController* engineController)
     }
 
     engine.releaseDeviceDependentResources();
+    
+    engineController->deinit();
 
     glfwDestroyWindow(window);
 

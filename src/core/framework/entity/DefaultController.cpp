@@ -19,7 +19,7 @@ EntityController* DefaultController::create(Entity* inEntity)
 
 DefaultController::DefaultController(Entity* inEntity) : EntityController(inEntity)
 {
-    _stateMappings.insert(std::make_pair(0, "Idle"));
+    // Empty
 }
 
 DefaultController::~DefaultController()

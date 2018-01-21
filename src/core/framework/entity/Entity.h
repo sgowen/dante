@@ -57,7 +57,7 @@ struct EntityDef
 {
     uint32_t type;
     std::string controller;
-    std::map<std::string, std::string> mappings;
+    std::map<int, std::string> mappings;
     std::vector<FixtureDef> fixtures;
     int bodyFlags;
     float width;
@@ -113,6 +113,8 @@ public:
     bool isFacingLeft();
     std::string& getTextureMapping();
     
+#define NG_CLOSE_ENOUGH_IS_FINE
+    
     struct Pose
     {
         uint16_t stateTime;
@@ -139,12 +141,15 @@ public:
             return
                           lhs.stateTime         == rhs.stateTime &&
                           lhs.state             == rhs.state &&
+#ifdef NG_CLOSE_ENOUGH_IS_FINE
             isCloseEnough(lhs.velocity,            rhs.velocity) &&
             isCloseEnough(lhs.position,            rhs.position) &&
             isCloseEnough(lhs.angle,               rhs.angle) &&
-//                          lhs.velocity          == rhs.velocity &&
-//                          lhs.position          == rhs.position &&
-//                          lhs.angle             == rhs.angle &&
+#else
+                          lhs.velocity          == rhs.velocity &&
+                          lhs.position          == rhs.position &&
+                          lhs.angle             == rhs.angle &&
+#endif
                           lhs.numGroundContacts == rhs.numGroundContacts &&
                           lhs.isFacingLeft      == rhs.isFacingLeft;
         }

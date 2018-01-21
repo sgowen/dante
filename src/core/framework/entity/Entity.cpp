@@ -430,21 +430,11 @@ bool Entity::isFacingLeft()
 
 std::string& Entity::getTextureMapping()
 {
-    std::map<std::string, std::string>& mappings = _entityDef.mappings;
-    std::map<uint8_t, std::string>& stateMappings = _controller->getStateMappings();
-    auto q = stateMappings.find(_state);
+    auto q = _entityDef.mappings.find(_state);
     
-    assert(q != stateMappings.end());
+    assert(q != _entityDef.mappings.end());
     
-    std::string& key = q->second;
-    
-    auto q2 = mappings.find(key);
-    
-    assert(q2 != mappings.end());
-    
-    std::string& mapping = q2->second;
-    
-    return mapping;
+    return q->second;
 }
 
 Entity::Pose& Entity::getPose()

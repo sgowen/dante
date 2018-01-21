@@ -50,10 +50,7 @@ _maxXVelocity(NG_CFG->getFloat("maxRobotXVelocity")),
 _maxYVelocity(NG_CFG->getFloat("maxRobotYVelocity")),
 _isLocalPlayer(false)
 {
-    _stateMappings.insert(std::make_pair(0, "Idle"));
-    _stateMappings.insert(std::make_pair(1, "Punching"));
-    _stateMappings.insert(std::make_pair(2, "Running"));
-    _stateMappings.insert(std::make_pair(3, "Jumping"));
+    // Empty
 }
 
 PlayerController::~PlayerController()
@@ -65,6 +62,11 @@ uint8_t PlayerController::update()
 {
     if (_entity->isServer())
     {
+        if (isMainAction() && (_entity->getPose().stateTime == 1 || _entity->getPose().stateTime == 4 || _entity->getPose().stateTime == 7))
+        {
+            /// See if we hit something
+        }
+            
         if (_stats.health == 0)
         {
             _entity->requestDeletion();
@@ -423,7 +425,7 @@ bool PlayerController::isMainAction()
 
 bool PlayerController::isMoving()
 {
-    return _entity->getVelocity().x < -0.01f || _entity->getVelocity().x > 0.01f;
+    return !isCloseEnough(_entity->getVelocity().x, 0);
 }
 
 bool PlayerController::isLocalPlayer()

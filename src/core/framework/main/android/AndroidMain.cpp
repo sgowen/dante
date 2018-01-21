@@ -217,7 +217,11 @@ void AndroidMain::exec(android_app* state, EngineController* engineController)
         }
     }
     
+    _engine->releaseDeviceDependentResources();
+    
     delete _engine;
+    
+    engineController->deinit();
     
     AndroidAssetDataHandler::getInstance()->deinit();
 }
@@ -369,10 +373,5 @@ _hasFocus(false)
 
 AndroidMain::~AndroidMain()
 {
-    if (_engine)
-    {
-        _engine->releaseDeviceDependentResources();
-        
-        delete _engine;
-    }
+    // Empty
 }

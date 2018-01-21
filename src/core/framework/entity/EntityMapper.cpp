@@ -95,8 +95,9 @@ void EntityMapper::initWithJson(const char* json)
                 for (Value::ConstMemberIterator i = v.MemberBegin(); i != v.MemberEnd(); ++i)
                 {
                     std::string name = i->name.GetString();
+                    int state = StringUtil::stringToNumber<int>(name);
                     std::string value = i->value.GetString();
-                    entry->mappings.insert(std::make_pair(name, value));
+                    entry->mappings.insert(std::make_pair(state, value));
                 }
             }
             
@@ -143,8 +144,9 @@ void EntityMapper::initWithJson(const char* json)
                 for (Value::ConstMemberIterator i = v.MemberBegin(); i != v.MemberEnd(); ++i)
                 {
                     std::string name = i->name.GetString();
+                    int state = StringUtil::stringToNumber<int>(name);
                     std::string value = i->value.GetString();
-                    entry->mappings.insert(std::make_pair(name, value));
+                    entry->mappings.insert(std::make_pair(state, value));
                 }
             }
             {
