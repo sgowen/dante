@@ -224,8 +224,8 @@ std::string StudioInputManager::getLiveInput()
 
 void StudioInputManager::updateCamera(StudioEngine *engine)
 {
-    float dx = _deltaCursor.getX();
-    float dy = _deltaCursor.getY();
+    float dx = _deltaCursor.getX() * 2;
+    float dy = _deltaCursor.getY() * 2;
     float x = _cursor.getX();
     float y = _cursor.getY();
     x -= dx;
@@ -239,20 +239,24 @@ void StudioInputManager::updateCamera(StudioEngine *engine)
     
     if (_lastScrollValue != _scrollValue)
     {
-//        Vector2& rc = CURSOR_INPUT_MANAGER->getCursorPosition();
-//        Vector2& c = CURSOR_CONVERTER->convert(rc);
+        CURSOR_CONVERTER->setCamSize(SMALLEST_CAM_WIDTH * _lastScrollValue, SMALLEST_CAM_HEIGHT * _lastScrollValue);
+        Vector2& rc = CURSOR_INPUT_MANAGER->getCursorPosition();
+        Vector2 c = CURSOR_CONVERTER->convert(rc);
         
         int dw = SMALLEST_CAM_WIDTH * _lastScrollValue;
         int dh = SMALLEST_CAM_HEIGHT * _lastScrollValue;
         
-        Vector2 center = _cursor;
-        center.add(dw / 2.0f, dh / 2.0f);
+        float xFactor = c.getX() / dw;
+        float yFactor = c.getY() / dh;
         
-        center.sub(w / 2.0f, h / 2.0f);
+        Vector2 center = _cursor;
+        center.add(dw * xFactor, dh * yFactor);
+        center.sub(w * xFactor, h * yFactor);
         
         _cursor = center;
         
         _lastScrollValue = _scrollValue;
+        CURSOR_CONVERTER->setCamSize(SMALLEST_CAM_WIDTH * _scrollValue, SMALLEST_CAM_HEIGHT * _scrollValue);
     }
     
     engine->_renderer->updateCamera(_cursor.getX(), _cursor.getY(), w, h);
