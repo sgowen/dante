@@ -126,11 +126,11 @@ int DirectXMain::exec(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmd
 
 #ifdef LAUNCH_FULL_SCREEN
 		/// Launch directly into full screen
-		HWND hwnd = CreateWindowEx(WS_EX_TOPMOST, L"NGWindowClass", L"Direct3D Win32 Game2", WS_POPUP,
+		HWND hwnd = CreateWindowEx(WS_EX_TOPMOST, L"NGWindowClass", L"Project Dante", WS_POPUP,
 			CW_USEDEFAULT, CW_USEDEFAULT, rc.right - rc.left, rc.bottom - rc.top, nullptr, nullptr, hInstance,
 			nullptr);
 #else
-		HWND hwnd = CreateWindowEx(0, L"NGWindowClass", L"Direct3D Win32 Game2", WS_OVERLAPPEDWINDOW,
+		HWND hwnd = CreateWindowEx(0, L"NGWindowClass", L"Project Dante", WS_OVERLAPPEDWINDOW,
 			CW_USEDEFAULT, CW_USEDEFAULT, rc.right - rc.left, rc.bottom - rc.top, nullptr, nullptr, hInstance,
 			nullptr);
 #endif
