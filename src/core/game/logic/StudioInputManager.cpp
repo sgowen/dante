@@ -27,13 +27,30 @@
 #include "framework/math/MathUtil.h"
 #include "framework/util/FrameworkConstants.h"
 #include "game/graphics/StudioRenderer.h"
+#include "game/logic/World.h"
 
 #include <sstream>
 
-StudioInputManager* StudioInputManager::getInstance()
+StudioInputManager* StudioInputManager::s_instance = NULL;
+
+void StudioInputManager::create()
 {
-    static StudioInputManager instance = StudioInputManager();
-    return &instance;
+    assert(!s_instance);
+    
+    s_instance = new StudioInputManager();
+}
+
+StudioInputManager * StudioInputManager::getInstance()
+{
+    return s_instance;
+}
+
+void StudioInputManager::destroy()
+{
+    assert(s_instance);
+    
+    delete s_instance;
+    s_instance = NULL;
 }
 
 void StudioInputManager::update(StudioEngine* engine)
@@ -109,7 +126,10 @@ void StudioInputManager::update(StudioEngine* engine)
     }
     else
     {
-        _scrollValue = clamp(CURSOR_INPUT_MANAGER->getScrollWheelValue(), 16, 1);
+        _rawScrollValue += CURSOR_INPUT_MANAGER->getScrollWheelValue();
+        _rawScrollValue = clamp(_rawScrollValue, 16, 1);
+        CURSOR_INPUT_MANAGER->resetScrollValue();
+        _scrollValue = clamp(_rawScrollValue, 16, 1);
         CURSOR_CONVERTER->setCamSize(SMALLEST_CAM_WIDTH * _scrollValue, SMALLEST_CAM_HEIGHT * _scrollValue);
         
         for (std::vector<CursorEvent *>::iterator i = CURSOR_INPUT_MANAGER->getEvents().begin(); i != CURSOR_INPUT_MANAGER->getEvents().end(); ++i)
@@ -181,6 +201,25 @@ void StudioInputManager::update(StudioEngine* engine)
                     if (e.isDown() || e.isHeld())
                     {
                         _cursor.add(0, SMALLEST_CAM_HEIGHT / 4);
+                    }
+                    continue;
+                case NG_KEY_O:
+                    if (e.isDown())
+                    {
+                        resetCamera();
+                    }
+                    continue;
+                case NG_KEY_S:
+                    if (e.isDown())
+                    {
+                        if (_isControl)
+                        {
+                            engine->_world->saveMapAs('Z999');
+                        }
+                        else
+                        {
+                            engine->_world->saveMap();
+                        }
                     }
                     continue;
                 case NG_KEY_ESCAPE:
@@ -266,6 +305,18 @@ void StudioInputManager::updateCamera(StudioEngine *engine)
     engine->_renderer->updateCamera(_cursor.getX(), _cursor.getY(), w, h);
 }
 
+void StudioInputManager::resetCamera()
+{
+    _rawScrollValue = 4;
+    _scrollValue = 4;
+    _lastScrollValue = 4;
+    int w = SMALLEST_CAM_WIDTH * _scrollValue;
+    int h = SMALLEST_CAM_HEIGHT * _scrollValue;
+    CURSOR_INPUT_MANAGER->resetScrollValue();
+    CURSOR_CONVERTER->setCamSize(w, h);
+    _cursor.set(0, 0);
+}
+
 StudioInputManager::StudioInputManager() :
 _downCursor(),
 _dragCursor(),
@@ -277,8 +328,9 @@ _inputState(SIS_NONE),
 _isLiveMode(false),
 _isTimeToProcessInput(false),
 _isControl(false),
+_rawScrollValue(0),
 _scrollValue(1),
 _lastScrollValue(1)
 {
-    // Empty
+    resetCamera();
 }

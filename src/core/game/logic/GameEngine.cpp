@@ -74,11 +74,12 @@ void GameEngine::destroy()
 GameEngine::GameEngine() : EngineState(),
 _renderer(new GameRenderer()),
 _world(NULL),
-_inputManager(NULL),
+_input(NULL),
 _timing(NULL),
 _server(NULL),
 _stateTime(0),
-_state(GameEngineState_Default)
+_state(GameEngineState_Default),
+_map(0)
 {
     _state |= GameEngineState_Interpolation | GameEngineState_Lighting;
 }
@@ -97,8 +98,9 @@ void GameEngine::enter(Engine* engine)
     
     GameInputManager::create();
     
-    _world = InstanceManager::getClientWorld();
-    _inputManager = GameInputManager::getInstance();
+    _world = new World();
+    InstanceManager::setClientWorld(_world);
+    _input = GameInputManager::getInstance();
     _timing = Timing::getInstance();
     _server = Server::getInstance();
 }
@@ -117,21 +119,27 @@ void GameEngine::update(Engine* engine)
     }
     else if (NG_CLIENT->hasReceivedNewState())
     {
-        _world->loadMapIfNecessary(NG_CLIENT->getMap());
+        uint32_t map = NG_CLIENT->getMap();
+        if (_map != map)
+        {
+            _map = map;
+            _world->loadMap(_map);
+        }
+        
         _world->postRead();
     }
     
     NG_AUDIO_ENGINE->update();
     
-    _inputManager->update();
+    _input->update();
     if (handleNonMoveInput())
     {
         engine->getStateMachine().revertToPreviousState();
         return;
     }
     
-    _world->update();
-    _inputManager->clearPendingMove();
+    _world->updateClient();
+    _input->clearPendingMove();
     NG_CLIENT->sendOutgoingPackets();
     
 #ifdef NG_STEAM
@@ -150,6 +158,9 @@ void GameEngine::exit(Engine* engine)
     releaseDeviceDependentResources();
     
     GameInputManager::destroy();
+    
+    delete _world;
+    InstanceManager::setClientWorld(NULL);
     
     Timing::getInstance()->updateManual(0, FRAME_RATE);
 }
@@ -217,7 +228,7 @@ void GameEngine::render(double alpha)
 
 bool GameEngine::handleNonMoveInput()
 {
-    int menuState = _inputManager->getMenuState();
+    int menuState = _input->getMenuState();
     switch (menuState)
     {
         case GIS_LOCAL_PLAYER_DROP_OUT_0:
@@ -291,7 +302,7 @@ bool GameEngine::handleNonMoveInput()
             break;
         default:
         {
-            MainInputState* inputState = _inputManager->getInputState();
+            MainInputState* inputState = _input->getInputState();
             if (inputState->isRequestingToAddLocalPlayer())
             {
                 NG_CLIENT->requestToAddLocalPlayer();

@@ -382,9 +382,6 @@ void TitleEngine::joinServer(Engine* engine)
         PooledObjectsManager::create();
     }
     
-    EntityMapper::getInstance()->initWithJsonFile("entities.cfg");
-    EntityLayoutMapper::getInstance()->initWithJsonFile("maps.cfg");
-    
     FWInstanceManager::createClientEntityManager(InstanceManager::sHandleEntityCreatedOnClient, InstanceManager::sHandleEntityDeletedOnClient);
     
     ClientHelper* clientHelper = NULL;
@@ -402,8 +399,6 @@ void TitleEngine::joinServer(Engine* engine)
     NetworkManagerClient::create(clientHelper, INPUT_MANAGER_CALLBACKS);
     assert(NG_CLIENT);
     
-    InstanceManager::createClientWorld();
-    
     engine->getStateMachine().changeState(GameEngine::getInstance());
 }
 
@@ -411,7 +406,6 @@ void TitleEngine::disconnect()
 {
     if (NG_CLIENT)
     {
-        InstanceManager::destroyClientWorld();
         NetworkManagerClient::destroy();
         FWInstanceManager::destroyClientEntityManager();
     }

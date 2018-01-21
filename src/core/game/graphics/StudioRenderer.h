@@ -31,6 +31,7 @@ class NGRect;
 class NGTexture;
 class Font;
 class World;
+class StudioEngine;
 
 #define NUM_SPRITE_BATCHERS 8
 #define NUM_CAMERAS 4
@@ -47,6 +48,7 @@ public:
     virtual void render(int flags = 0);
     
     void updateCamera(float x, float y, float w, float h);
+    void setWorld(World* inValue);
     
 private:
     TextureManager* _textureManager;
@@ -62,9 +64,13 @@ private:
     NGShader* _colorNGShader;
     NGShader* _framebufferToScreenNGShader;
     NGRect* _camBounds[NUM_CAMERAS];
+    World* _world;
     int _fbIndex;
     
     void setFramebuffer(int framebufferIndex, float r = 0, float g = 0, float b = 0, float a = 0);
+    void renderWorld();
+    void renderLayers();
+    void renderEntities();
     void renderGrid();
     void renderUI();
     void renderText(const char* inStr, float x, float y, const Color& inColor, int justification = FONT_ALIGN_LEFT);

@@ -29,7 +29,7 @@ void Util::playSound(int soundId, const b2Vec2& position)
     {
         uint8_t playerId = entry.second;
         
-        Entity* playerRobot = InstanceManager::getClientWorld()->getRobotWithPlayerId(playerId);
+        Entity* playerRobot = InstanceManager::getClientWorld()->getPlayerWithId(playerId);
         
         if (playerRobot)
         {

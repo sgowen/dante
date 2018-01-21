@@ -25,7 +25,8 @@ public:
     static CursorInputManager* getInstance();
     
     void setCursorPosition(float x, float y);
-    void setScrollWheelValue(float inValue);
+    void onScroll(float inValue);
+    void resetScrollValue();
     void onInput(CursorEventType type, float x, float y);
     void process();
     std::vector<CursorEvent*>& getEvents();

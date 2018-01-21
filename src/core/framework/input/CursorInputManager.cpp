@@ -26,9 +26,14 @@ void CursorInputManager::setCursorPosition(float x, float y)
     _cursorPosition.set(x, y);
 }
 
-void CursorInputManager::setScrollWheelValue(float inValue)
+void CursorInputManager::onScroll(float inValue)
 {
-    _scrollWheelValue = inValue;
+    _scrollWheelValue += inValue;
+}
+
+void CursorInputManager::resetScrollValue()
+{
+    _scrollWheelValue = 0;
 }
 
 void CursorInputManager::onInput(CursorEventType type, float x, float y)

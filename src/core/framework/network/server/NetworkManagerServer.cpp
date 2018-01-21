@@ -165,6 +165,36 @@ ClientProxy* NetworkManagerServer::getClientProxy(uint8_t inPlayerId) const
     return NULL;
 }
 
+int NetworkManagerServer::getMoveCount()
+{
+    int ret = 0;
+    
+    int lowestNonHostMoveCount = getLowestNonHostMoveCount();
+    int hostMoveCount = getHostMoveCount();
+    
+    if (lowestNonHostMoveCount == -1
+        || (hostMoveCount <= lowestNonHostMoveCount
+            && (hostMoveCount * 2) >= lowestNonHostMoveCount))
+    {
+        ret = hostMoveCount;
+    }
+    else if (lowestNonHostMoveCount <= hostMoveCount
+             && (lowestNonHostMoveCount * 2) >= hostMoveCount)
+    {
+        ret = lowestNonHostMoveCount;
+    }
+    else if (lowestNonHostMoveCount >= 8 || hostMoveCount >= 8)
+    {
+        ret = getAverageMoveCount();
+        
+#ifdef NG_LOG
+        LOG("lowestNonHostMoveCount: %d, hostMoveCount: %d, finalMoveCount(avg): %d", lowestNonHostMoveCount, hostMoveCount, ret);
+#endif
+    }
+    
+    return ret;
+}
+
 int NetworkManagerServer::getAverageMoveCount() const
 {
     int ret = 0;

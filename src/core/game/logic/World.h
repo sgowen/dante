@@ -15,6 +15,12 @@
 #include <vector>
 #include <string>
 
+enum WorldFlags
+{
+    WorldFlag_Server = 1 << 0,
+    WorldFlag_MapLoadAll = 1 << 1
+};
+
 class Entity;
 class b2World;
 class EntityContactListener;
@@ -23,18 +29,21 @@ class EntityContactFilter;
 class World
 {
 public:
-    World(bool isServer);
+    World(int flags = 0);
     ~World();
     
     void addEntity(Entity* inEntity);
     void removeEntity(Entity* inEntity);
+    void updateServer();
     void postRead();
-    void update();
+    void updateClient();
     void interpolate(double alpha);
     void postRender();
-    void loadMapIfNecessary(uint32_t map);
+    void loadMap(uint32_t map);
+    void saveMap();
+    void saveMapAs(uint32_t map);
     std::string& getMapName();
-    Entity* getRobotWithPlayerId(uint8_t inPlayerID);
+    Entity* getPlayerWithId(uint8_t inPlayerID);
     std::vector<Entity*>& getPlayers();
     std::vector<Entity*>& getDynamicEntities();
     std::vector<Entity*>& getStaticEntities();
@@ -51,10 +60,9 @@ private:
     EntityContactFilter* _entityContactFilter;
     uint32_t _map;
     std::string _mapName;
-    bool _isServer;
+    int _flags;
     
     void stepPhysics();
-    int getMoveCount();
     void clearEntities(std::vector<Entity*>& entities);
     void updateAndRemoveEntitiesAsNeeded(std::vector<Entity*>& entities);
 };

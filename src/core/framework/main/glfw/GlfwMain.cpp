@@ -65,13 +65,7 @@ void GlfwMain::joystick_callback(int jid, int event)
 
 void GlfwMain::mouse_scroll_callback(GLFWwindow* window, double x, double y)
 {
-    static double scrollWheelValue = 0;
-    
-    scrollWheelValue -= y;
-    
-    scrollWheelValue = clamp(scrollWheelValue, 16, 0);
-    
-    CURSOR_INPUT_MANAGER->setScrollWheelValue(scrollWheelValue);
+    CURSOR_INPUT_MANAGER->onScroll(-y);
 }
 
 static bool isDown = false;

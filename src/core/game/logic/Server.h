@@ -11,6 +11,7 @@
 
 #include <string>
 
+class World;
 class ClientProxy;
 class Entity;
 
@@ -32,6 +33,7 @@ public:
 private:
     static Server* s_instance;
     
+    World* _world;
     double _stateTime;
     double _frameStateTime;
     uint32_t _map;

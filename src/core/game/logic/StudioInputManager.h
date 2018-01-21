@@ -21,14 +21,14 @@ enum StudioInputState
     SIS_ESCAPE
 };
 
-#define STUDIO_INPUT StudioInputManager::getInstance()
-
 class StudioInputManager
 {
     friend class StudioRenderer;
     
 public:
+    static void create();
     static StudioInputManager* getInstance();
+    static void destroy();
     
     void update(StudioEngine* engine);
     void setLiveInputMode(bool isLiveMode);
@@ -40,6 +40,8 @@ public:
     std::string getLiveInput();
     
 private:
+    static StudioInputManager* s_instance;
+    
     Vector2 _downCursor;
     Vector2 _dragCursor;
     Vector2 _deltaCursor;
@@ -50,10 +52,12 @@ private:
     bool _isLiveMode;
     bool _isTimeToProcessInput;
     bool _isControl;
+    int _rawScrollValue;
     int _scrollValue;
     int _lastScrollValue;
     
     void updateCamera(StudioEngine* engine);
+    void resetCamera();
     
     // ctor, copy ctor, and assignment should be private in a Singleton
     StudioInputManager();

@@ -28,12 +28,12 @@
 #include <framework/entity/EntityLayoutMapper.h>
 #include <framework/util/Config.h>
 
-World::World(bool isServer) :
+World::World(int flags) :
 _world(new b2World(b2Vec2(0.0f, NG_CFG->getFloat("gravity")))),
 _entityContactListener(new EntityContactListener()),
 _entityContactFilter(new EntityContactFilter()),
 _map(0),
-_isServer(isServer)
+_flags(flags)
 {
     _world->SetContactListener(_entityContactListener);
     _world->SetContactFilter(_entityContactFilter);
@@ -106,9 +106,54 @@ void World::removeEntity(Entity* inEntity)
         
         inEntity->deinitPhysics();
         
-        if (_isServer)
+        if (_flags & WorldFlag_Server)
         {
             NG_SERVER->deregisterEntity(inEntity);
+        }
+    }
+}
+
+void World::updateServer()
+{
+    int moveCount = NG_SERVER->getMoveCount();
+    if (moveCount > 0)
+    {
+        for (int i = 0; i < moveCount; ++i)
+        {
+            for (Entity* entity : _players)
+            {
+                PlayerController* robot = static_cast<PlayerController*>(entity->getController());
+                
+                ClientProxy* client = NG_SERVER->getClientProxy(robot->getPlayerId());
+                if (client)
+                {
+                    MoveList& moveList = client->getUnprocessedMoveList();
+                    Move* move = moveList.getMoveAtIndex(i);
+                    if (move)
+                    {
+                        robot->processInput(move->getInputState());
+                        
+                        moveList.markMoveAsProcessed(move);
+                        
+                        client->setIsLastMoveTimestampDirty(true);
+                    }
+                }
+            }
+            
+            stepPhysics();
+            
+            updateAndRemoveEntitiesAsNeeded(_players);
+            updateAndRemoveEntitiesAsNeeded(_dynamicEntities);
+        }
+        
+        for (uint8_t i = 0; i < MAX_NUM_PLAYERS_PER_SERVER; ++i)
+        {
+            ClientProxy* client = NG_SERVER->getClientProxy(i + 1);
+            if (client)
+            {
+                MoveList& moveList = client->getUnprocessedMoveList();
+                moveList.removeProcessedMoves(client->getUnprocessedMoveList().getLastProcessedMoveTimestamp());
+            }
         }
     }
 }
@@ -153,77 +198,30 @@ void World::postRead()
     }
 }
 
-void World::update()
+void World::updateClient()
 {
-    if (_isServer)
+    const Move* pendingMove = GameInputManager::getInstance()->getPendingMove();
+    if (pendingMove)
     {
-        int moveCount = getMoveCount();
-        if (moveCount > 0)
+        for (Entity* entity : _players)
         {
-            for (int i = 0; i < moveCount; ++i)
+            PlayerController* robot = static_cast<PlayerController*>(entity->getController());
+            if (robot->isLocalPlayer())
             {
-                for (Entity* entity : _players)
-                {
-                    PlayerController* robot = static_cast<PlayerController*>(entity->getController());
-                    
-                    ClientProxy* client = NG_SERVER->getClientProxy(robot->getPlayerId());
-                    if (client)
-                    {
-                        MoveList& moveList = client->getUnprocessedMoveList();
-                        Move* move = moveList.getMoveAtIndex(i);
-                        if (move)
-                        {
-                            robot->processInput(move->getInputState());
-                            
-                            moveList.markMoveAsProcessed(move);
-
-							client->setIsLastMoveTimestampDirty(true);
-                        }
-                    }
-                }
-                
-                stepPhysics();
-                
-                updateAndRemoveEntitiesAsNeeded(_players);
-                updateAndRemoveEntitiesAsNeeded(_dynamicEntities);
-            }
-            
-            for (uint8_t i = 0; i < MAX_NUM_PLAYERS_PER_SERVER; ++i)
-            {
-                ClientProxy* client = NG_SERVER->getClientProxy(i + 1);
-                if (client)
-                {
-                    MoveList& moveList = client->getUnprocessedMoveList();
-                    moveList.removeProcessedMoves(client->getUnprocessedMoveList().getLastProcessedMoveTimestamp());
-                }
+                robot->processInput(pendingMove->getInputState(), true);
             }
         }
-    }
-    else
-    {
-        const Move* pendingMove = GameInputManager::getInstance()->getPendingMove();
-        if (pendingMove)
+        
+        stepPhysics();
+        
+        for (Entity* e : _players)
         {
-            for (Entity* entity : _players)
-            {
-                PlayerController* robot = static_cast<PlayerController*>(entity->getController());
-                if (robot->isLocalPlayer())
-                {
-                    robot->processInput(pendingMove->getInputState(), true);
-                }
-            }
-            
-            stepPhysics();
-            
-            for (Entity* e : _players)
-            {
-                e->update();
-            }
-            
-            for (Entity* e : _dynamicEntities)
-            {
-                e->update();
-            }
+            e->update();
+        }
+        
+        for (Entity* e : _dynamicEntities)
+        {
+            e->update();
         }
     }
 }
@@ -244,13 +242,8 @@ void World::postRender()
     }
 }
 
-void World::loadMapIfNecessary(uint32_t map)
+void World::loadMap(uint32_t map)
 {
-    if (_map == map)
-    {
-        return;
-    }
-    
     _map = map;
     
     char chars[5];
@@ -274,7 +267,7 @@ void World::loadMapIfNecessary(uint32_t map)
     std::vector<uint8_t> playerIds;
     std::vector<std::string> playerNames;
     
-    if (_isServer)
+    if (_flags & WorldFlag_Server)
     {
         for (Entity* entity : _players)
         {
@@ -292,12 +285,16 @@ void World::loadMapIfNecessary(uint32_t map)
     
     if (_map == 0)
     {
+        LOG("Error! Map cannot be 0!");
         return;
     }
     
-    for (int i = 0; i < playerIds.size(); ++i)
+    if (_flags & WorldFlag_Server)
     {
-        Server::sHandleNewClient(playerIds[i], playerNames[i]);
+        for (int i = 0; i < playerIds.size(); ++i)
+        {
+            Server::sHandleNewClient(playerIds[i], playerNames[i]);
+        }
     }
     
     EntityLayoutMapper::getInstance()->loadEntityLayout(_map);
@@ -305,25 +302,59 @@ void World::loadMapIfNecessary(uint32_t map)
     
     for (EntityPosDef epd : entityLayoutDef.layers)
     {
-        Entity* e = EntityMapper::getInstance()->createEntity(epd.type, epd.x, epd.y, _isServer);
+        Entity* e = EntityMapper::getInstance()->createEntity(epd.type, epd.x, epd.y, _flags & WorldFlag_Server);
         _layers.push_back(e);
     }
     
     for (EntityPosDef epd : entityLayoutDef.staticEntities)
     {
-        Entity* e = EntityMapper::getInstance()->createEntity(epd.type, epd.x, epd.y, _isServer);
+        Entity* e = EntityMapper::getInstance()->createEntity(epd.type, epd.x, epd.y, _flags & WorldFlag_Server);
         e->initPhysics(getWorld());
         _staticEntities.push_back(e);
     }
     
-    if (_isServer)
+    if (_flags & WorldFlag_MapLoadAll)
     {
         for (EntityPosDef epd : entityLayoutDef.dynamicEntities)
         {
-            Entity* e = EntityMapper::getInstance()->createEntity(epd.type, epd.x, epd.y, _isServer);
-            NG_SERVER->registerEntity(e);
+            Entity* e = EntityMapper::getInstance()->createEntity(epd.type, epd.x, epd.y, _flags & WorldFlag_Server);
+            if (_flags & WorldFlag_Server)
+            {
+                NG_SERVER->registerEntity(e);
+            }
+            else
+            {
+                addEntity(e);
+            }
         }
     }
+}
+
+void World::saveMap()
+{
+    saveMapAs(_map);
+}
+
+void World::saveMapAs(uint32_t map)
+{
+    EntityLayoutDef layout;
+    
+    for (Entity* e : _layers)
+    {
+        layout.layers.push_back(EntityPosDef(e->getEntityDef().type, e->getPosition().x, e->getPosition().y));
+    }
+    
+    for (Entity* e : _staticEntities)
+    {
+        layout.staticEntities.push_back(EntityPosDef(e->getEntityDef().type, e->getPosition().x, e->getPosition().y));
+    }
+    
+    for (Entity* e : _dynamicEntities)
+    {
+        layout.dynamicEntities.push_back(EntityPosDef(e->getEntityDef().type, e->getPosition().x, e->getPosition().y));
+    }
+    
+    EntityLayoutMapper::getInstance()->saveEntityLayout(map, layout);
 }
 
 std::string& World::getMapName()
@@ -331,7 +362,7 @@ std::string& World::getMapName()
     return _mapName;
 }
 
-Entity* World::getRobotWithPlayerId(uint8_t inPlayerID)
+Entity* World::getPlayerWithId(uint8_t inPlayerID)
 {
     for (Entity* entity : _players)
     {
@@ -378,34 +409,6 @@ void World::stepPhysics()
     // Instruct the world to perform a single step of simulation.
     // It is generally best to keep the time step and iterations fixed.
     _world->Step(FRAME_RATE, velocityIterations, positionIterations);
-}
-
-int World::getMoveCount()
-{
-    int ret = 0;
-    
-    int lowestNonHostMoveCount = NG_SERVER->getLowestNonHostMoveCount();
-    int hostMoveCount = NG_SERVER->getHostMoveCount();
-    
-    if (lowestNonHostMoveCount == -1
-        || (hostMoveCount <= lowestNonHostMoveCount
-            && (hostMoveCount * 2) >= lowestNonHostMoveCount))
-    {
-        ret = hostMoveCount;
-    }
-    else if (lowestNonHostMoveCount <= hostMoveCount
-             && (lowestNonHostMoveCount * 2) >= hostMoveCount)
-    {
-        ret = lowestNonHostMoveCount;
-    }
-    else if (lowestNonHostMoveCount >= 8 || hostMoveCount >= 8)
-    {
-        ret = NG_SERVER->getAverageMoveCount();
-        
-        LOG("lowestNonHostMoveCount: %d, hostMoveCount: %d, finalMoveCount(avg): %d", lowestNonHostMoveCount, hostMoveCount, ret);
-    }
-    
-    return ret;
 }
 
 void World::clearEntities(std::vector<Entity*>& entities)

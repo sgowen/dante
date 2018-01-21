@@ -19,34 +19,14 @@
 World* InstanceManager::s_clientWorldInstance = NULL;
 World* InstanceManager::s_serverWorldInstance = NULL;
 
-void InstanceManager::createClientWorld()
+void InstanceManager::setClientWorld(World* inValue)
 {
-    assert(!s_clientWorldInstance);
-    
-    s_clientWorldInstance = new World(false);
+    s_clientWorldInstance = inValue;
 }
 
-void InstanceManager::createServerWorld()
+void InstanceManager::setServerWorld(World* inValue)
 {
-    assert(!s_serverWorldInstance);
-    
-    s_serverWorldInstance = new World(true);
-}
-
-void InstanceManager::destroyClientWorld()
-{
-    assert(s_clientWorldInstance);
-    
-    delete s_clientWorldInstance;
-    s_clientWorldInstance = NULL;
-}
-
-void InstanceManager::destroyServerWorld()
-{
-    assert(s_serverWorldInstance);
-    
-    delete s_serverWorldInstance;
-    s_serverWorldInstance = NULL;
+    s_serverWorldInstance = inValue;
 }
 
 World* InstanceManager::getClientWorld()
@@ -96,7 +76,7 @@ Entity* InstanceManager::sGetPlayerEntityForIDOnClient(uint8_t inPlayerID)
     
     if (InstanceManager::getClientWorld())
     {
-        ret = InstanceManager::getClientWorld()->getRobotWithPlayerId(inPlayerID);
+        ret = InstanceManager::getClientWorld()->getPlayerWithId(inPlayerID);
     }
     
     return ret;

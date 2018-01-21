@@ -10,11 +10,11 @@
 
 #include "game/logic/Server.h"
 
+#include "game/logic/World.h"
 #include "framework/network/server/ClientProxy.h"
 #include "framework/entity/Entity.h"
 
 #include "framework/network/server/NetworkManagerServer.h"
-#include "game/logic/World.h"
 #include "framework/util/Timing.h"
 #include "framework/util/FrameworkConstants.h"
 #include "framework/network/portable/SocketUtil.h"
@@ -80,7 +80,7 @@ void Server::update()
     
     NG_SERVER->processIncomingPackets();
     
-    InstanceManager::getServerWorld()->update();
+    InstanceManager::getServerWorld()->updateServer();
     
     NG_SERVER->sendOutgoingPackets();
     
@@ -110,7 +110,7 @@ void Server::toggleMap()
         _map = 'Z001';
     }
     
-    InstanceManager::getServerWorld()->loadMapIfNecessary(_map);
+    InstanceManager::getServerWorld()->loadMap(_map);
 }
 
 void Server::handleNewClient(uint8_t playerId, std::string playerName)
@@ -121,7 +121,12 @@ void Server::handleNewClient(uint8_t playerId, std::string playerName)
     {
         // This is our first client!
         
-        InstanceManager::getServerWorld()->loadMapIfNecessary(_map);
+        if (_map == 0)
+        {
+            _map = 'Z001';
+            
+            InstanceManager::getServerWorld()->loadMap(_map);
+        }
     }
 }
 
@@ -146,7 +151,7 @@ void Server::handleLostClient(ClientProxy* inClientProxy, uint8_t index)
 
 void Server::deleteRobotWithPlayerId(uint8_t playerId)
 {
-    Entity* entity = InstanceManager::getServerWorld()->getRobotWithPlayerId(playerId);
+    Entity* entity = InstanceManager::getServerWorld()->getPlayerWithId(playerId);
     if (entity)
     {
         entity->requestDeletion();
@@ -167,7 +172,7 @@ void Server::spawnRobotForPlayer(uint8_t inPlayerId, std::string inPlayerName)
     NG_SERVER->registerEntity(e);
 }
 
-Server::Server(bool isSteam) : _stateTime(0), _frameStateTime(0), _map('Z001'), _isDisplaying(false)
+Server::Server(bool isSteam) : _world(NULL), _stateTime(0), _frameStateTime(0), _map(0), _isDisplaying(false)
 {
     FWInstanceManager::createServerEntityManager(InstanceManager::sHandleEntityCreatedOnServer, InstanceManager::sHandleEntityDeletedOnServer);
     
@@ -183,12 +188,14 @@ Server::Server(bool isSteam) : _stateTime(0), _frameStateTime(0), _map('Z001'), 
     }
     assert(NG_SERVER);
     
-    InstanceManager::createServerWorld();
+    _world = new World(WorldFlag_Server | WorldFlag_MapLoadAll);
+    InstanceManager::setServerWorld(_world);
 }
 
 Server::~Server()
 {
-    InstanceManager::destroyServerWorld();
+    delete _world;
+    InstanceManager::setServerWorld(NULL);
     NetworkManagerServer::destroy();
     FWInstanceManager::destroyServerEntityManager();
 }

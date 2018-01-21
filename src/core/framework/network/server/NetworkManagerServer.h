@@ -50,6 +50,7 @@ public:
     void deregisterEntity(Entity* inEntity);
     void setStateDirty(uint32_t inNetworkId, uint16_t inDirtyState);
     ClientProxy* getClientProxy(uint8_t inPlayerId) const;
+    int getMoveCount();
     int getAverageMoveCount() const;
     int getLowestNonHostMoveCount() const;
     int getHostMoveCount() const;

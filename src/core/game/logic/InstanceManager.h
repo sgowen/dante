@@ -17,10 +17,8 @@ class World;
 class InstanceManager
 {
 public:
-    static void createClientWorld();
-    static void createServerWorld();
-    static void destroyClientWorld();
-    static void destroyServerWorld();
+    static void setClientWorld(World* inValue);
+    static void setServerWorld(World* inValue);
     static World* getClientWorld();
     static World* getServerWorld();
     

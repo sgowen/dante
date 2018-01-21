@@ -17,6 +17,8 @@ struct EntityPosDef
     uint32_t type;
     float x;
     float y;
+    
+    EntityPosDef(uint32_t inType = 0, float inX = 0, float inY = 0) : type(inType), x(inX), y(inY) {}
 };
 
 struct EntityLayoutDef
@@ -37,6 +39,7 @@ public:
     void initWithJsonFile(const char* jsonFile, bool isBundled = true, bool useEncryption = false);
     void initWithJson(const char* data);
     void loadEntityLayout(uint32_t name);
+    void saveEntityLayout(uint32_t name, EntityLayoutDef& layout);
     EntityLayoutDef& getEntityLayoutDef();
     
 private:

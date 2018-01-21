@@ -214,6 +214,11 @@ void EntityLayoutMapper::loadEntityLayout(const char* data)
     }
 }
 
+void EntityLayoutMapper::saveEntityLayout(uint32_t name, EntityLayoutDef& layout)
+{
+    
+}
+
 std::string EntityLayoutMapper::getJsonConfigFilePath(uint32_t inFourCCName)
 {
     auto q = _layouts.find(inFourCCName);

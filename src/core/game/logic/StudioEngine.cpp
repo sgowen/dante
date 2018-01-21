@@ -74,6 +74,8 @@ void StudioEngine::destroy()
 
 StudioEngine::StudioEngine() : EngineState(),
 _renderer(new StudioRenderer()),
+_input(NULL),
+_world(NULL),
 _state(StudioEngineState_Default)
 {
     // Empty
@@ -89,12 +91,19 @@ void StudioEngine::enter(Engine* engine)
     createDeviceDependentResources();
     createWindowSizeDependentResources(engine->getScreenWidth(), engine->getScreenHeight(), engine->getRenderWidth(), engine->getRenderHeight(), engine->getCursorWidth(), engine->getCursorHeight());
     
+    StudioInputManager::create();
+    
+    _input = StudioInputManager::getInstance();
+    _world = new World(WorldFlag_MapLoadAll);
+    _world->loadMap('Z001');
     _state = StudioEngineState_Default;
+    
+    _renderer->setWorld(_world);
 }
 
 void StudioEngine::update(Engine* engine)
 {
-    StudioInputManager::getInstance()->update(this);
+    _input->update(this);
     
     if (handleInput())
     {
@@ -106,6 +115,10 @@ void StudioEngine::update(Engine* engine)
 void StudioEngine::exit(Engine* engine)
 {
     releaseDeviceDependentResources();
+    
+    StudioInputManager::destroy();
+    
+    delete _world;
 }
 
 void StudioEngine::createDeviceDependentResources()
@@ -143,7 +156,7 @@ void StudioEngine::render(double alpha)
 
 bool StudioEngine::handleInput()
 {
-    int menuState = StudioInputManager::getInstance()->getMenuState();
+    int menuState = _input->getMenuState();
     
     if (menuState == SIS_ESCAPE)
     {

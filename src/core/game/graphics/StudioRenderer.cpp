@@ -27,6 +27,7 @@
 #include "framework/math/NGRect.h"
 #include "framework/graphics/portable/NGTexture.h"
 #include "framework/graphics/portable/Box2DDebugRenderer.h"
+#include <game/logic/StudioEngine.h>
 
 #include "framework/graphics/portable/Assets.h"
 #include "framework/graphics/portable/RendererHelper.h"
@@ -165,6 +166,7 @@ void StudioRenderer::render(int flags)
 
     if (_textureManager->ensureTextures())
     {
+        renderWorld();
         renderGrid();
         renderUI();
     }
@@ -186,6 +188,11 @@ void StudioRenderer::updateCamera(float x, float y, float w, float h)
     }
 }
 
+void StudioRenderer::setWorld(World* inValue)
+{
+    _world = inValue;
+}
+
 void StudioRenderer::setFramebuffer(int framebufferIndex, float r, float g, float b, float a)
 {
     assert(framebufferIndex >= 0);
@@ -196,23 +203,130 @@ void StudioRenderer::setFramebuffer(int framebufferIndex, float r, float g, floa
     _rendererHelper->clearFramebufferWithColor(r, g, b, a);
 }
 
-void StudioRenderer::renderGrid()
+void StudioRenderer::renderWorld()
 {
-    static Color lineColor = Color::WHITE;
-    lineColor.alpha = 0.5f;
-    
-    int left = clamp(_camBounds[3]->getLeft(), FLT_MAX, 0);
-    int bottom = clamp(_camBounds[3]->getBottom(), FLT_MAX, 0);
-    int camWidth = _camBounds[3]->getRight();
-    int camHeight = _camBounds[3]->getTop();
-    
     _rendererHelper->updateMatrix(_camBounds[3]->getLeft(), _camBounds[3]->getRight(), _camBounds[3]->getBottom(), _camBounds[3]->getTop());
     
-    _circleBatcher->beginBatch();
-    _circleBatcher->renderCircle(15, 15, 15, Color::GREEN);
-    _circleBatcher->renderCircle(30, 30, 10, Color::GREEN);
-    _circleBatcher->renderCircle(75, 75, 20, Color::GREEN);
-    _circleBatcher->endBatch(_colorNGShader);
+    setFramebuffer(0);
+    _rendererHelper->useNormalBlending();
+    renderLayers();
+    
+    setFramebuffer(1);
+    _rendererHelper->useScreenBlending();
+    renderEntities();
+    
+    setFramebuffer(2);
+    
+    _rendererHelper->useScreenBlending();
+    for (int i = 0; i < _fbIndex; ++i)
+    {
+        static std::vector<SCREEN_VERTEX> screenVertices;
+        screenVertices.clear();
+        screenVertices.reserve(4);
+        screenVertices.push_back(SCREEN_VERTEX(-1, -1));
+        screenVertices.push_back(SCREEN_VERTEX(-1, 1));
+        screenVertices.push_back(SCREEN_VERTEX(1, 1));
+        screenVertices.push_back(SCREEN_VERTEX(1, -1));
+        
+        _framebufferToScreenNGShader->bind(&screenVertices, _rendererHelper->getFramebuffer(i));
+        _rendererHelper->drawIndexed(NGPrimitiveType_Triangles, 0, INDICES_PER_RECTANGLE);
+        _framebufferToScreenNGShader->unbind();
+    }
+}
+
+void StudioRenderer::renderLayers()
+{
+    for (int i = 0; i < 3; ++i)
+    {
+        _spriteBatchers[i]->beginBatch();
+    }
+    
+    std::string textures[3];
+    
+    std::vector<Entity*> entities = _world->getLayers();
+    for (Entity* e : entities)
+    {
+        TextureRegion tr = ASSETS->findTextureRegion(e->getTextureMapping(), e->getStateTime());
+        
+        _spriteBatchers[e->getEntityDef().layer]->renderSprite(e->getPosition().x, e->getPosition().y, e->getWidth(), e->getHeight(), e->getAngle(), Color::WHITE, tr, e->isFacingLeft());
+        textures[e->getEntityDef().layer] = tr.getTextureName();
+    }
+    
+    for (int i = 0; i < 3; ++i)
+    {
+        if (textures[i].length() > 0)
+        {
+            _spriteBatchers[i]->endBatch(_textureNGShader, _textureManager->getTextureWithName(textures[i]));
+        }
+    }
+}
+
+void StudioRenderer::renderEntities()
+{
+    Color c = Color::WHITE;
+    
+    for (int i = 0; i < NUM_SPRITE_BATCHERS; ++i)
+    {
+        _spriteBatchers[i]->beginBatch();
+    }
+    
+    std::string textures[NUM_SPRITE_BATCHERS];
+    
+    {
+        std::vector<Entity*> entities = _world->getPlayers();
+        for (Entity* e : entities)
+        {
+            TextureRegion tr = ASSETS->findTextureRegion(e->getTextureMapping(), e->getStateTime());
+            
+            _spriteBatchers[e->getEntityDef().layer]->renderSprite(e->getPosition().x, e->getPosition().y, e->getWidth(), e->getHeight(), e->getAngle(), c, tr, e->isFacingLeft());
+            textures[e->getEntityDef().layer] = tr.getTextureName();
+        }
+    }
+    
+    {
+        std::vector<Entity*> entities = _world->getDynamicEntities();
+        for (Entity* e : entities)
+        {
+            TextureRegion tr = ASSETS->findTextureRegion(e->getTextureMapping(), e->getStateTime());
+            
+            _spriteBatchers[e->getEntityDef().layer]->renderSprite(e->getPosition().x, e->getPosition().y, e->getWidth(), e->getHeight(), e->getAngle(), c, tr, e->isFacingLeft());
+            textures[e->getEntityDef().layer] = tr.getTextureName();
+        }
+    }
+    
+    {
+        std::vector<Entity*> entities = _world->getStaticEntities();
+        for (Entity* e : entities)
+        {
+            TextureRegion tr = ASSETS->findTextureRegion(e->getTextureMapping(), e->getStateTime());
+            
+            _spriteBatchers[e->getEntityDef().layer]->renderSprite(e->getPosition().x, e->getPosition().y, e->getWidth(), e->getHeight(), e->getAngle(), c, tr, e->isFacingLeft());
+            textures[e->getEntityDef().layer] = tr.getTextureName();
+        }
+    }
+    
+    for (int i = 0; i < NUM_SPRITE_BATCHERS; ++i)
+    {
+        if (textures[i].length() > 0)
+        {
+            _spriteBatchers[i]->endBatch(_textureNGShader, _textureManager->getTextureWithName(textures[i]));
+        }
+    }
+}
+
+void StudioRenderer::renderGrid()
+{
+    int left = clamp(_camBounds[3]->getLeft(), FLT_MAX, 0);
+    int bottom = clamp(_camBounds[3]->getBottom(), FLT_MAX, 0);
+    int camWidth = _camBounds[3]->getRight() + 1;
+    int camHeight = _camBounds[3]->getTop() + 1;
+    
+    Color lineColor = Color::WHITE;
+    lineColor.alpha = 0.25f;
+    
+    _rendererHelper->useNormalBlending();
+    _rendererHelper->updateMatrix(_camBounds[3]->getLeft(), _camBounds[3]->getRight(), _camBounds[3]->getBottom(), _camBounds[3]->getTop());
+    
     _lineBatcher->beginBatch();
     for (int i = left; i <= camWidth; ++i)
     {

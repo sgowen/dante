@@ -16,6 +16,8 @@
 #endif
 
 class StudioRenderer;
+class StudioInputManager;
+class World;
 
 enum StudioEngineState
 {
@@ -25,6 +27,7 @@ enum StudioEngineState
 class StudioEngine : public EngineState
 {
     friend class StudioInputManager;
+    friend class StudioRenderer;
     
     NGRTTI_DECL;
     
@@ -47,6 +50,8 @@ private:
     static StudioEngine* s_instance;
     
     StudioRenderer* _renderer;
+    StudioInputManager* _input;
+    World* _world;
     int _state;
     
     bool handleInput();

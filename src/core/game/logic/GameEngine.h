@@ -31,6 +31,8 @@ enum GameEngineState
 
 class GameEngine : public EngineState
 {
+    friend class GameRenderer;
+    
     NGRTTI_DECL;
     
 public:
@@ -53,11 +55,12 @@ private:
     
     GameRenderer* _renderer;
     World* _world;
-    GameInputManager* _inputManager;
+    GameInputManager* _input;
     Timing* _timing;
     Server* _server;
     double _stateTime;
     uint8_t _state;
+    uint32_t _map;
     
     bool handleNonMoveInput();
     
