@@ -94,6 +94,7 @@ void GameEngine::enter(Engine* engine)
     createDeviceDependentResources();
     createWindowSizeDependentResources(engine->getScreenWidth(), engine->getScreenHeight(), engine->getRenderWidth(), engine->getRenderHeight(), engine->getCursorWidth(), engine->getCursorHeight());
     
+    _map = 0;
     _stateTime = 0;
     
     GameInputManager::create();
@@ -249,40 +250,13 @@ bool GameEngine::handleNonMoveInput()
             NG_AUDIO_ENGINE->setSoundDisabled(!NG_AUDIO_ENGINE->isSoundDisabled());
             break;
         case GIS_TOGGLE_PHYSICS_DISPLAY:
-        {
-            if (_state & GameEngineState_DisplayBox2D)
-            {
-                _state &= ~GameEngineState_DisplayBox2D;
-            }
-            else
-            {
-                _state |= GameEngineState_DisplayBox2D;
-            }
-        }
+            _state ^= GameEngineState_DisplayBox2D;
             break;
         case GIS_TOGGLE_INTERPOLATION:
-        {
-            if (_state & GameEngineState_Interpolation)
-            {
-                _state &= ~GameEngineState_Interpolation;
-            }
-            else
-            {
-                _state |= GameEngineState_Interpolation;
-            }
-        }
+            _state ^= GameEngineState_Interpolation;
             break;
         case GIS_TOGGLE_LIGHTING:
-        {
-            if (_state & GameEngineState_Lighting)
-            {
-                _state &= ~GameEngineState_Lighting;
-            }
-            else
-            {
-                _state |= GameEngineState_Lighting;
-            }
-        }
+            _state ^= GameEngineState_Lighting;
             break;
         case GIS_SERVER_TOGGLE_DISPLAY:
         {

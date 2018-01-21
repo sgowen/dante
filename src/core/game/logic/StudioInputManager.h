@@ -52,7 +52,6 @@ private:
     bool _isLiveMode;
     bool _isTimeToProcessInput;
     bool _isControl;
-    int _rawScrollValue;
     int _scrollValue;
     int _lastScrollValue;
     

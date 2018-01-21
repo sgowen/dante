@@ -32,6 +32,7 @@ class NGTexture;
 class Font;
 class World;
 class StudioEngine;
+class Box2DDebugRenderer;
 
 #define NUM_SPRITE_BATCHERS 8
 #define NUM_CAMERAS 4
@@ -58,6 +59,7 @@ private:
     PolygonBatcher* _boundsPolygonBatcher;
     LineBatcher* _lineBatcher;
     CircleBatcher* _circleBatcher;
+    Box2DDebugRenderer* _box2DDebugRenderer;
     NGShaderLoader* _shaderProgramLoader;
     Font* _font;
     NGShader* _textureNGShader;
@@ -71,6 +73,7 @@ private:
     void renderWorld();
     void renderLayers();
     void renderEntities();
+    void renderBox2D();
     void renderGrid();
     void renderUI();
     void renderText(const char* inStr, float x, float y, const Color& inColor, int justification = FONT_ALIGN_LEFT);
