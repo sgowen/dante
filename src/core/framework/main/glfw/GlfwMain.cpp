@@ -69,7 +69,7 @@ void GlfwMain::mouse_scroll_callback(GLFWwindow* window, double x, double y)
     
     scrollWheelValue -= y;
     
-    scrollWheelValue = clamp(scrollWheelValue, 8, 0);
+    scrollWheelValue = clamp(scrollWheelValue, 16, 0);
     
     CURSOR_INPUT_MANAGER->setScrollWheelValue(scrollWheelValue);
 }

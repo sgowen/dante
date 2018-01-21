@@ -109,7 +109,7 @@ void StudioInputManager::update(StudioEngine* engine)
     }
     else
     {
-        _scrollValue = clamp(CURSOR_INPUT_MANAGER->getScrollWheelValue(), 8, 1);
+        _scrollValue = clamp(CURSOR_INPUT_MANAGER->getScrollWheelValue(), 16, 1);
         CURSOR_CONVERTER->setCamSize(SMALLEST_CAM_WIDTH * _scrollValue, SMALLEST_CAM_HEIGHT * _scrollValue);
         
         for (std::vector<CursorEvent *>::iterator i = CURSOR_INPUT_MANAGER->getEvents().begin(); i != CURSOR_INPUT_MANAGER->getEvents().end(); ++i)
@@ -129,6 +129,16 @@ void StudioInputManager::update(StudioEngine* engine)
                     delta -= _dragCursor;
                     _dragCursor.set(c);
                     _deltaCursor.set(delta);
+                    
+                    float dx = _deltaCursor.getX() * 2;
+                    float dy = _deltaCursor.getY() * 2;
+                    float x = _cursor.getX();
+                    float y = _cursor.getY();
+                    x -= dx;
+                    y -= dy;
+                    
+                    _cursor.set(x, y);
+                    _deltaCursor.set(0, 0);
                 }
                     continue;
                 case CursorEventType_UP:
@@ -149,25 +159,29 @@ void StudioInputManager::update(StudioEngine* engine)
                 case NG_KEY_CTRL:
                     _isControl = !e.isUp();
                     continue;
-                case NG_KEY_ARROW_UP:
-                {
-                    if (e.isDown())
+                case NG_KEY_ARROW_LEFT:
+                    if (e.isDown() || e.isHeld())
                     {
-                        _scrollValue = clamp(_scrollValue - 1, 8, 1);
-                        CURSOR_INPUT_MANAGER->setScrollWheelValue(_scrollValue);
-                        CURSOR_CONVERTER->setCamSize(SMALLEST_CAM_WIDTH * _scrollValue, SMALLEST_CAM_HEIGHT * _scrollValue);
+                        _cursor.sub(SMALLEST_CAM_WIDTH / 4, 0);
                     }
-                }
+                    continue;
+                case NG_KEY_ARROW_RIGHT:
+                    if (e.isDown() || e.isHeld())
+                    {
+                        _cursor.add(SMALLEST_CAM_WIDTH / 4, 0);
+                    }
                     continue;
                 case NG_KEY_ARROW_DOWN:
-                {
-                    if (e.isDown())
+                    if (e.isDown() || e.isHeld())
                     {
-                        _scrollValue = clamp(_scrollValue + 1, 8, 1);
-                        CURSOR_INPUT_MANAGER->setScrollWheelValue(_scrollValue);
-                        CURSOR_CONVERTER->setCamSize(SMALLEST_CAM_WIDTH * _scrollValue, SMALLEST_CAM_HEIGHT * _scrollValue);
+                        _cursor.sub(0, SMALLEST_CAM_HEIGHT / 4);
                     }
-                }
+                    continue;
+                case NG_KEY_ARROW_UP:
+                    if (e.isDown() || e.isHeld())
+                    {
+                        _cursor.add(0, SMALLEST_CAM_HEIGHT / 4);
+                    }
                     continue;
                 case NG_KEY_ESCAPE:
                     _inputState = e.isUp() ? SIS_NONE : SIS_ESCAPE;
@@ -224,16 +238,6 @@ std::string StudioInputManager::getLiveInput()
 
 void StudioInputManager::updateCamera(StudioEngine *engine)
 {
-    float dx = _deltaCursor.getX() * 2;
-    float dy = _deltaCursor.getY() * 2;
-    float x = _cursor.getX();
-    float y = _cursor.getY();
-    x -= dx;
-    y += dy;
-    
-    _cursor.set(x, y);
-    _deltaCursor.set(0, 0);
-    
     int w = SMALLEST_CAM_WIDTH * _scrollValue;
     int h = SMALLEST_CAM_HEIGHT * _scrollValue;
     

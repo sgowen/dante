@@ -491,7 +491,7 @@ void DirectXMain::Update(DX::StepTimer const& timer)
 	{
 		static double scrollWheelValue = 0;
 		scrollWheelValue -= mouse.scrollWheelValue;
-		scrollWheelValue = clamp(scrollWheelValue, 8, 0);
+		scrollWheelValue = clamp(scrollWheelValue, 16, 0);
 		CURSOR_INPUT_MANAGER->setScrollWheelValue(scrollWheelValue);
 		_mouse->ResetScrollWheelValue();
 	}
