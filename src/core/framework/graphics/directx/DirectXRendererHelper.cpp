@@ -140,7 +140,7 @@ void DirectXRendererHelper::useNoBlending()
     s_d3dContext->OMSetBlendState(NULL, 0, 0xffffffff);
 }
 
-void DirectXRendererHelper::bindInteger(NGShaderUniformInput* uniform, int inValue)
+void DirectXRendererHelper::bindInt4(NGShaderUniformInput* uniform, int4& inValue)
 {
     if (uniform->_isFragment)
     {
@@ -155,37 +155,7 @@ void DirectXRendererHelper::bindInteger(NGShaderUniformInput* uniform, int inVal
     s_d3dContext->UpdateSubresource(uniform->_constantbuffer.Get(), 0, 0, &inValue, 0, 0);
 }
 
-void DirectXRendererHelper::bindVector2(NGShaderUniformInput* uniform, vec2& inValue)
-{
-    if (uniform->_isFragment)
-    {
-        s_d3dContext->PSSetConstantBuffers(uniform->_index, 1, uniform->_constantbuffer.GetAddressOf());
-    }
-    else
-    {
-        s_d3dContext->VSSetConstantBuffers(uniform->_index, 1, uniform->_constantbuffer.GetAddressOf());
-    }
-    
-    // send the final matrix to video memory
-    s_d3dContext->UpdateSubresource(uniform->_constantbuffer.Get(), 0, 0, &inValue, 0, 0);
-}
-
-void DirectXRendererHelper::bindVector3(NGShaderUniformInput* uniform, vec3& inValue)
-{
-    if (uniform->_isFragment)
-    {
-        s_d3dContext->PSSetConstantBuffers(uniform->_index, 1, uniform->_constantbuffer.GetAddressOf());
-    }
-    else
-    {
-        s_d3dContext->VSSetConstantBuffers(uniform->_index, 1, uniform->_constantbuffer.GetAddressOf());
-    }
-    
-    // send the final matrix to video memory
-    s_d3dContext->UpdateSubresource(uniform->_constantbuffer.Get(), 0, 0, &inValue, 0, 0);
-}
-
-void DirectXRendererHelper::bindVector4(NGShaderUniformInput* uniform, vec4& inValue)
+void DirectXRendererHelper::bindFloat4(NGShaderUniformInput* uniform, float4& inValue)
 {
     if (uniform->_isFragment)
     {
@@ -250,7 +220,7 @@ void DirectXRendererHelper::bindNGShader(ShaderProgramWrapper* shaderProgramWrap
     }
 }
 
-void DirectXRendererHelper::mapScreenVertices(std::vector<NGShaderVarInput*>& inputLayout, std::vector<SCREEN_VERTEX>& vertices)
+void DirectXRendererHelper::mapScreenVertices(std::vector<NGShaderVarInput*>& inputLayout, std::vector<VERTEX_2D>& vertices)
 {
 	_screenVertices.clear();
 	_screenVertices.swap(vertices);
@@ -258,7 +228,7 @@ void DirectXRendererHelper::mapScreenVertices(std::vector<NGShaderVarInput*>& in
     mapVertices(_screenVertexBuffer, _screenVertices);
 }
 
-void DirectXRendererHelper::mapTextureVertices(std::vector<NGShaderVarInput*>& inputLayout, std::vector<TEXTURE_VERTEX>& vertices)
+void DirectXRendererHelper::mapTextureVertices(std::vector<NGShaderVarInput*>& inputLayout, std::vector<VERTEX_2D_TEXTURE>& vertices)
 {
 	_textureVertices.clear();
 	_textureVertices.swap(vertices);
@@ -266,7 +236,7 @@ void DirectXRendererHelper::mapTextureVertices(std::vector<NGShaderVarInput*>& i
     mapVertices(_textureVertexBuffer, _textureVertices);
 }
 
-void DirectXRendererHelper::mapColorVertices(std::vector<NGShaderVarInput*>& inputLayout, std::vector<COLOR_VERTEX>& vertices)
+void DirectXRendererHelper::mapColorVertices(std::vector<NGShaderVarInput*>& inputLayout, std::vector<VERTEX_2D>& vertices)
 {
 	_colorVertices.clear();
 	_colorVertices.swap(vertices);

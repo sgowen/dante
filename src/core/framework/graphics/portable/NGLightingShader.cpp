@@ -26,12 +26,10 @@ _defaultLightZ(NG_CFG->getFloat("defaultLightZ"))
 	_lights[0][0] = 0;
 	_lights[1][0] = 0;
 	_lights[2][0] = _defaultLightZ;
-	_lights[3][0] = 0;
 #else
 	_lights[0][0] = 0;
 	_lights[0][1] = 0;
 	_lights[0][2] = _defaultLightZ;
-	_lights[0][3] = 0;
 #endif
     
     _lightColor[0] = NG_CFG->getFloat("LightColorR");
@@ -47,7 +45,8 @@ _defaultLightZ(NG_CFG->getFloat("defaultLightZ"))
     _fallOff[0] = NG_CFG->getFloat("LightFalloffX");
     _fallOff[1] = NG_CFG->getFloat("LightFalloffY");
     _fallOff[2] = NG_CFG->getFloat("LightFalloffZ");
-    _fallOff[3] = 0;
+    
+    _numLights[0] = 0;
     
     // Vertex Shader
     _uniforms.push_back(new NGShaderUniformInput("u_Matrix",        0, 64, false));
@@ -57,13 +56,13 @@ _defaultLightZ(NG_CFG->getFloat("defaultLightZ"))
     _uniforms.push_back(new NGShaderUniformInput("u_LightColor",    0, 16, true));
     _uniforms.push_back(new NGShaderUniformInput("u_AmbientColor",  1, 16, true));
     _uniforms.push_back(new NGShaderUniformInput("u_Falloff",       2, 16, true));
+    _uniforms.push_back(new NGShaderUniformInput("u_NumLights",     3, 16, true));
 
     _uniforms.push_back(new NGShaderUniformInput("u_TextureUnit",   0));
     _uniforms.push_back(new NGShaderUniformInput("u_NormalMapUnit", 1));
     
     _inputLayout.push_back(new NGShaderVarInput("a_Position", 2, 0));
-    _inputLayout.push_back(new NGShaderVarInput("a_Color", 4, 2));
-    _inputLayout.push_back(new NGShaderVarInput("a_TexCoord", 2, 6));
+    _inputLayout.push_back(new NGShaderVarInput("a_TexCoord", 2, 2));
 }
 
 void NGLightingShader::bind(void* vertices, void* data1, void* data2)
@@ -75,13 +74,14 @@ void NGLightingShader::bind(void* vertices, void* data1, void* data2)
     _rendererHelper.bindNGShader(_shaderProgramWrapper);
     _rendererHelper.bindMatrix(                                                     _uniforms[0]);
     _rendererHelper.bindMatrix(                                                     _uniforms[1], _lights);
-    _rendererHelper.bindVector4(                                                    _uniforms[2], _lightColor);
-    _rendererHelper.bindVector4(                                                    _uniforms[3], _ambientColor);
-    _rendererHelper.bindVector4(                                                    _uniforms[4], _fallOff);
-    _rendererHelper.bindTexture(NGTextureSlot_ZERO, static_cast<NGTexture*>(data1), _uniforms[5]);
-    _rendererHelper.bindTexture(NGTextureSlot_ONE, static_cast<NGTexture*>(data2),  _uniforms[6]);
+    _rendererHelper.bindFloat4(                                                     _uniforms[2], _lightColor);
+    _rendererHelper.bindFloat4(                                                     _uniforms[3], _ambientColor);
+    _rendererHelper.bindFloat4(                                                     _uniforms[4], _fallOff);
+    _rendererHelper.bindInt4(                                                       _uniforms[5], _numLights);
+    _rendererHelper.bindTexture(NGTextureSlot_ZERO, static_cast<NGTexture*>(data1), _uniforms[6]);
+    _rendererHelper.bindTexture(NGTextureSlot_ONE, static_cast<NGTexture*>(data2),  _uniforms[7]);
     
-    std::vector<TEXTURE_VERTEX>* textureVertices = static_cast<std::vector<TEXTURE_VERTEX>* >(vertices);
+    std::vector<VERTEX_2D_TEXTURE>* textureVertices = static_cast<std::vector<VERTEX_2D_TEXTURE>* >(vertices);
     _rendererHelper.mapTextureVertices(_inputLayout, *textureVertices);
 }
 
@@ -95,28 +95,21 @@ void NGLightingShader::unbind()
 
 void NGLightingShader::resetLights()
 {
-    for (int i = 0; i < 4; ++i)
-    {
-#ifdef _WIN32
-		_lights[3][i] = 0;
-#else
-		_lights[i][3] = 0;
-#endif
-    }
+    _numLights[0] = 0;
 }
 
 void NGLightingShader::configLight(int index, float lightPosX, float lightPosY)
 {
+    _numLights[0] = index + 1;
+    
 #ifdef _WIN32
 	_lights[0][index] = lightPosX;
 	_lights[1][index] = lightPosY;
 	_lights[2][index] = _defaultLightZ;
-	_lights[3][index] = 1;
 #else
 	_lights[index][0] = lightPosX;
 	_lights[index][1] = lightPosY;
 	_lights[index][2] = _defaultLightZ;
-	_lights[index][3] = 1;
 #endif
 }
 

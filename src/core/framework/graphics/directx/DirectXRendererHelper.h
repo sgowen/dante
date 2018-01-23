@@ -30,17 +30,15 @@ public:
     virtual void useNormalBlending();
     virtual void useScreenBlending();
     virtual void useNoBlending();
-    virtual void bindInteger(NGShaderUniformInput* uniform, int inValue);
-    virtual void bindVector2(NGShaderUniformInput* uniform, vec2& inValue);
-    virtual void bindVector3(NGShaderUniformInput* uniform, vec3& inValue);
-    virtual void bindVector4(NGShaderUniformInput* uniform, vec4& inValue);
+    virtual void bindInt4(NGShaderUniformInput* uniform, int4& inValue);
+    virtual void bindFloat4(NGShaderUniformInput* uniform, float4& inValue);
     virtual void bindMatrix(NGShaderUniformInput* uniform, mat4x4& inValue);
     virtual void bindMatrix(NGShaderUniformInput* uniform);
     virtual void bindTexture(NGTextureSlot textureSlot, NGTexture* texture, NGShaderUniformInput* uniform = NULL);
     virtual void bindNGShader(ShaderProgramWrapper* shaderProgramWrapper);
-    virtual void mapScreenVertices(std::vector<NGShaderVarInput*>& inputLayout, std::vector<SCREEN_VERTEX>& vertices);
-    virtual void mapTextureVertices(std::vector<NGShaderVarInput*>& inputLayout, std::vector<TEXTURE_VERTEX>& vertices);
-    virtual void mapColorVertices(std::vector<NGShaderVarInput*>& inputLayout, std::vector<COLOR_VERTEX>& vertices);
+    virtual void mapScreenVertices(std::vector<NGShaderVarInput*>& inputLayout, std::vector<VERTEX_2D>& vertices);
+    virtual void mapTextureVertices(std::vector<NGShaderVarInput*>& inputLayout, std::vector<VERTEX_2D_TEXTURE>& vertices);
+    virtual void mapColorVertices(std::vector<NGShaderVarInput*>& inputLayout, std::vector<VERTEX_2D>& vertices);
     virtual void draw(NGPrimitiveType renderPrimitiveType, uint32_t first, uint32_t count);
     virtual void drawIndexed(NGPrimitiveType renderPrimitiveType, uint32_t first, uint32_t count);
     
@@ -65,9 +63,9 @@ private:
     Microsoft::WRL::ComPtr<ID3D11Buffer> _textureVertexBuffer;
     Microsoft::WRL::ComPtr<ID3D11Buffer> _colorVertexBuffer;
     Microsoft::WRL::ComPtr<ID3D11Buffer> _screenVertexBuffer;
-	std::vector<TEXTURE_VERTEX> _textureVertices;
-	std::vector<COLOR_VERTEX> _colorVertices;
-	std::vector<SCREEN_VERTEX> _screenVertices;
+	std::vector<VERTEX_2D_TEXTURE> _textureVertices;
+	std::vector<VERTEX_2D> _colorVertices;
+	std::vector<VERTEX_2D> _screenVertices;
 	int _fbIndex;
     
     template <typename T>

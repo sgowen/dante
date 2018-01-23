@@ -40,12 +40,12 @@ void CircleBatcher::beginBatch()
     _circles.clear();
 }
 
-void CircleBatcher::renderCircle(Circle &circle, Color &c)
+void CircleBatcher::renderCircle(Circle &circle)
 {
-    renderCircle(circle.getCenter().getX(), circle.getCenter().getY(), circle.getRadius(), c);
+    renderCircle(circle.getCenter().getX(), circle.getCenter().getY(), circle.getRadius());
 }
 
-void CircleBatcher::renderCircle(float x, float y, float radius, Color &c)
+void CircleBatcher::renderCircle(float x, float y, float radius)
 {
     _numPoints = 0;
     
@@ -55,19 +55,19 @@ void CircleBatcher::renderCircle(float x, float y, float radius, Color &c)
         float cos = cosf(rad);
         float sin = sinf(rad);
         
-        addVertexCoordinate(cos * radius + x, sin * radius + y, c.red, c.green, c.blue, c.alpha);
-        addVertexCoordinate(x, y, c.red, c.green, c.blue, c.alpha);
+        addVertexCoordinate(cos * radius + x, sin * radius + y);
+        addVertexCoordinate(x, y);
     }
     
     _circles.push_back(_numPoints);
 }
 
-void CircleBatcher::renderPartialCircle(Circle &circle, int arcDegrees, Color &c)
+void CircleBatcher::renderPartialCircle(Circle &circle, int arcDegrees)
 {
-    renderPartialCircle(circle.getCenter().getX(), circle.getCenter().getY(), circle.getRadius(), arcDegrees, c);
+    renderPartialCircle(circle.getCenter().getX(), circle.getCenter().getY(), circle.getRadius(), arcDegrees);
 }
 
-void CircleBatcher::renderPartialCircle(float x, float y, float radius, int arcDegrees, Color &c)
+void CircleBatcher::renderPartialCircle(float x, float y, float radius, int arcDegrees)
 {
     _numPoints = 0;
     
@@ -77,27 +77,27 @@ void CircleBatcher::renderPartialCircle(float x, float y, float radius, int arcD
         float cos = cosf(rad);
         float sin = sinf(rad);
         
-        addVertexCoordinate(cos * radius + x, sin * radius + y, c.red, c.green, c.blue, c.alpha);
-        addVertexCoordinate(x, y, c.red, c.green, c.blue, c.alpha);
+        addVertexCoordinate(cos * radius + x, sin * radius + y);
+        addVertexCoordinate(x, y);
     }
     
     float rad = DEGREES_TO_RADIANS(450 - arcDegrees);
     float cos = cosf(rad);
     float sin = sinf(rad);
     
-    addVertexCoordinate(cos * radius + x, sin * radius + y, c.red, c.green, c.blue, c.alpha);
-    addVertexCoordinate(x, y, c.red, c.green, c.blue, c.alpha);
+    addVertexCoordinate(cos * radius + x, sin * radius + y);
+    addVertexCoordinate(x, y);
     
     _circles.push_back(_numPoints);
 }
 
-void CircleBatcher::endBatch(NGShader* shader)
+void CircleBatcher::endBatch(NGShader* shader, Color &c)
 {
     assert(shader);
     
 	if (_circles.size() > 0)
 	{
-		shader->bind(&_vertices);
+		shader->bind(&_vertices, &c);
 
 		int offset = 0;
 		for (std::vector<int>::iterator i = _circles.begin(); i != _circles.end(); ++i)
@@ -111,9 +111,9 @@ void CircleBatcher::endBatch(NGShader* shader)
 	}
 }
 
-void CircleBatcher::addVertexCoordinate(float x, float y, float r, float g, float b, float a)
+void CircleBatcher::addVertexCoordinate(float x, float y)
 {
-    _vertices.push_back(COLOR_VERTEX(x, y, r, g, b, a));
+    _vertices.push_back(VERTEX_2D(x, y));
     
     ++_numPoints;
 }

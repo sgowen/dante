@@ -26,14 +26,14 @@ public:
     ~PolygonBatcher();
     
     void beginBatch();
-    void renderRect(NGRect &r, Color &c);
-    void renderPolygon(const b2Vec2* vertices, int vertexCount, Color &c);
-    void endBatch(NGShader* shader);
+    void renderRect(NGRect &r);
+    void renderPolygon(const b2Vec2* vertices, int vertexCount);
+    void endBatch(NGShader* shader, Color &c);
     
 private:
     RendererHelper* _rendererHelper;
-    std::vector<COLOR_VERTEX> _quadVertices;
-    std::vector<COLOR_VERTEX> _triangleVertices;
+    std::vector<VERTEX_2D> _quadVertices;
+    std::vector<VERTEX_2D> _triangleVertices;
     bool _isFill;
     int _numQuads;
     int _numTriangles;

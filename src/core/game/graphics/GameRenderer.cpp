@@ -305,13 +305,13 @@ void GameRenderer::renderWorld(int flags)
     _rendererHelper->useScreenBlending();
     for (int i = fbBegin; i < _fbIndex; ++i)
     {
-        static std::vector<SCREEN_VERTEX> screenVertices;
+        static std::vector<VERTEX_2D> screenVertices;
 		screenVertices.clear();
 		screenVertices.reserve(4);
-		screenVertices.push_back(SCREEN_VERTEX(-1, -1));
-		screenVertices.push_back(SCREEN_VERTEX(-1, 1));
-		screenVertices.push_back(SCREEN_VERTEX(1, 1));
-		screenVertices.push_back(SCREEN_VERTEX(1, -1));
+		screenVertices.push_back(VERTEX_2D(-1, -1));
+		screenVertices.push_back(VERTEX_2D(-1, 1));
+		screenVertices.push_back(VERTEX_2D(1, 1));
+		screenVertices.push_back(VERTEX_2D(1, -1));
 
         _framebufferToScreenNGShader->bind(&screenVertices, _rendererHelper->getFramebuffer(i));
         _rendererHelper->drawIndexed(NGPrimitiveType_Triangles, 0, INDICES_PER_RECTANGLE);
@@ -333,7 +333,7 @@ void GameRenderer::renderLayers(World* world, bool isNormals)
     {
         TextureRegion tr = ASSETS->findTextureRegion(e->getTextureMapping(), e->getStateTime());
         
-        _spriteBatchers[e->getEntityDef().layer]->renderSprite(e->getPosition().x, e->getPosition().y, e->getWidth(), e->getHeight(), e->getAngle(), Color::WHITE, tr, e->isFacingLeft());
+        _spriteBatchers[e->getEntityDef().layer]->renderSprite(e->getPosition().x, e->getPosition().y, e->getWidth(), e->getHeight(), e->getAngle(), tr, e->isFacingLeft());
         textures[e->getEntityDef().layer] = isNormals ? tr.getNormalMapName() : tr.getTextureName();
     }
     
@@ -349,12 +349,6 @@ void GameRenderer::renderLayers(World* world, bool isNormals)
 
 void GameRenderer::renderEntities(World* world, bool isNormals, bool isServer)
 {
-    Color c = Color::WHITE;
-    if (isServer)
-    {
-        c.alpha /= 2.0f;
-    }
-    
     for (int i = 0; i < NUM_SPRITE_BATCHERS; ++i)
     {
         _spriteBatchers[i]->beginBatch();
@@ -368,7 +362,7 @@ void GameRenderer::renderEntities(World* world, bool isNormals, bool isServer)
         {
             TextureRegion tr = ASSETS->findTextureRegion(e->getTextureMapping(), e->getStateTime());
             
-            _spriteBatchers[e->getEntityDef().layer]->renderSprite(e->getPosition().x, e->getPosition().y, e->getWidth(), e->getHeight(), e->getAngle(), c, tr, e->isFacingLeft());
+            _spriteBatchers[e->getEntityDef().layer]->renderSprite(e->getPosition().x, e->getPosition().y, e->getWidth(), e->getHeight(), e->getAngle(), tr, e->isFacingLeft());
             textures[e->getEntityDef().layer] = isNormals ? tr.getNormalMapName() : tr.getTextureName();
         }
     }
@@ -379,7 +373,7 @@ void GameRenderer::renderEntities(World* world, bool isNormals, bool isServer)
         {
             TextureRegion tr = ASSETS->findTextureRegion(e->getTextureMapping(), e->getStateTime());
             
-            _spriteBatchers[e->getEntityDef().layer]->renderSprite(e->getPosition().x, e->getPosition().y, e->getWidth(), e->getHeight(), e->getAngle(), c, tr, e->isFacingLeft());
+            _spriteBatchers[e->getEntityDef().layer]->renderSprite(e->getPosition().x, e->getPosition().y, e->getWidth(), e->getHeight(), e->getAngle(), tr, e->isFacingLeft());
             textures[e->getEntityDef().layer] = isNormals ? tr.getNormalMapName() : tr.getTextureName();
         }
     }
@@ -390,7 +384,7 @@ void GameRenderer::renderEntities(World* world, bool isNormals, bool isServer)
         {
             TextureRegion tr = ASSETS->findTextureRegion(e->getTextureMapping(), e->getStateTime());
             
-            _spriteBatchers[e->getEntityDef().layer]->renderSprite(e->getPosition().x, e->getPosition().y, e->getWidth(), e->getHeight(), e->getAngle(), c, tr, e->isFacingLeft());
+            _spriteBatchers[e->getEntityDef().layer]->renderSprite(e->getPosition().x, e->getPosition().y, e->getWidth(), e->getHeight(), e->getAngle(), tr, e->isFacingLeft());
             textures[e->getEntityDef().layer] = isNormals ? tr.getNormalMapName() : tr.getTextureName();
         }
     }
@@ -508,13 +502,13 @@ void GameRenderer::endFrame()
     _rendererHelper->bindToScreenFramebuffer();
     _rendererHelper->clearFramebufferWithColor(0, 0, 0, 1);
     
-    static std::vector<SCREEN_VERTEX> screenVertices;
+    static std::vector<VERTEX_2D> screenVertices;
     screenVertices.clear();
     screenVertices.reserve(4);
-    screenVertices.push_back(SCREEN_VERTEX(-1, -1));
-    screenVertices.push_back(SCREEN_VERTEX(-1, 1));
-    screenVertices.push_back(SCREEN_VERTEX(1, 1));
-    screenVertices.push_back(SCREEN_VERTEX(1, -1));
+    screenVertices.push_back(VERTEX_2D(-1, -1));
+    screenVertices.push_back(VERTEX_2D(-1, 1));
+    screenVertices.push_back(VERTEX_2D(1, 1));
+    screenVertices.push_back(VERTEX_2D(1, -1));
 
     _framebufferToScreenNGShader->bind(&screenVertices, _rendererHelper->getFramebuffer(_fbIndex));
     _rendererHelper->drawIndexed(NGPrimitiveType_Triangles, 0, INDICES_PER_RECTANGLE);

@@ -25,19 +25,19 @@ public:
     ~CircleBatcher();
     
     void beginBatch();
-    void renderCircle(Circle &circle, Color &c);
-    void renderCircle(float x, float y, float radius, Color &c);
-    void renderPartialCircle(Circle &circle, int arcDegrees, Color &c);
-    void renderPartialCircle(float x, float y, float radius, int arcDegrees, Color &c);
-    void endBatch(NGShader* shader);
+    void renderCircle(Circle &circle);
+    void renderCircle(float x, float y, float radius);
+    void renderPartialCircle(Circle &circle, int arcDegrees);
+    void renderPartialCircle(float x, float y, float radius, int arcDegrees);
+    void endBatch(NGShader* shader, Color &c);
     
 private:
     RendererHelper* _rendererHelper;
-    std::vector<COLOR_VERTEX> _vertices;
+    std::vector<VERTEX_2D> _vertices;
     std::vector<int> _circles;
     int _numPoints;
     
-    void addVertexCoordinate(float x, float y, float r, float g, float b, float a);
+    void addVertexCoordinate(float x, float y);
 };
 
 #endif /* defined(__noctisgames__CircleBatcher__) */

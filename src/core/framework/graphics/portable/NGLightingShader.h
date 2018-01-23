@@ -28,9 +28,10 @@ public:
 private:
     float _defaultLightZ;
     mat4x4 _lights;
-    vec4 _lightColor; // Light RGB and intensity (alpha)
-    vec4 _ambientColor; // Ambient RGB and intensity (alpha)
-    vec4 _fallOff; // Attenuation coefficients for light falloff
+    float4 _lightColor; // Light RGB and intensity (alpha)
+    float4 _ambientColor; // Ambient RGB and intensity (alpha)
+    float4 _fallOff; // Attenuation coefficients for light falloff
+    int4 _numLights;
 };
 
 #endif /* defined(__noctisgames__NGLightingShader__) */

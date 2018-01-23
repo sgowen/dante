@@ -176,6 +176,8 @@ void TitleRenderer::render(int flags)
 
         _spriteBatcher->endBatch(_textureNGShader, _textureManager->getTextureWithName("texture_000.ngt"));
     }
+    
+    //testRenderingSuite();
 
     endFrame();
 }
@@ -269,25 +271,25 @@ void TitleRenderer::testRenderingSuite()
     
     _circleBatcher->beginBatch();
     static Circle c1(10, 4, 2);
-    _circleBatcher->renderCircle(c1, Color::RED);
+    _circleBatcher->renderCircle(c1);
     static Circle c2(7, 7, 2);
-    _circleBatcher->renderPartialCircle(c2, 135, Color::RED);
-    _circleBatcher->endBatch(_colorNGShader);
+    _circleBatcher->renderPartialCircle(c2, 135);
+    _circleBatcher->endBatch(_colorNGShader, Color::RED);
     
     static NGRect r1(1, 1, 2, 1);
     _boundsPolygonBatcher->beginBatch();
-    _boundsPolygonBatcher->renderRect(r1, Color::RED);
-    _boundsPolygonBatcher->endBatch(_colorNGShader);
+    _boundsPolygonBatcher->renderRect(r1);
+    _boundsPolygonBatcher->endBatch(_colorNGShader, Color::RED);
     
     static NGRect r2(4, 1, 2, 1);
     _fillPolygonBatcher->beginBatch();
-    _fillPolygonBatcher->renderRect(r2, Color::RED);
-    _fillPolygonBatcher->endBatch(_colorNGShader);
+    _fillPolygonBatcher->renderRect(r2);
+    _fillPolygonBatcher->endBatch(_colorNGShader, Color::RED);
     
     static Line line(3, 3, 5, 5);
     _lineBatcher->beginBatch();
-    _lineBatcher->renderLine(line, Color::RED);
-    _lineBatcher->endBatch(_colorNGShader);
+    _lineBatcher->renderLine(line);
+    _lineBatcher->endBatch(_colorNGShader, Color::RED);
 }
 
 void TitleRenderer::endFrame()
@@ -298,12 +300,12 @@ void TitleRenderer::endFrame()
     _rendererHelper->clearFramebufferWithColor(0, 0, 0, 1);
     _rendererHelper->useScreenBlending();
 
-    static std::vector<SCREEN_VERTEX> screenVertices;
+    static std::vector<VERTEX_2D> screenVertices;
     screenVertices.clear();
-    screenVertices.push_back(SCREEN_VERTEX(-1, -1));
-    screenVertices.push_back(SCREEN_VERTEX(-1, 1));
-    screenVertices.push_back(SCREEN_VERTEX(1, 1));
-    screenVertices.push_back(SCREEN_VERTEX(1, -1));
+    screenVertices.push_back(VERTEX_2D(-1, -1));
+    screenVertices.push_back(VERTEX_2D(-1, 1));
+    screenVertices.push_back(VERTEX_2D(1, 1));
+    screenVertices.push_back(VERTEX_2D(1, -1));
 
     _framebufferToScreenNGShader->bind(&screenVertices, _rendererHelper->getFramebuffer(_fbIndex));
     _rendererHelper->drawIndexed(NGPrimitiveType_Triangles, 0, INDICES_PER_RECTANGLE);

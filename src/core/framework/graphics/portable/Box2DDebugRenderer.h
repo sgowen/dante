@@ -45,13 +45,14 @@ public:
     /// Draw a point.
     virtual void DrawPoint(const b2Vec2& p, float32 size, const b2Color& color);
     
-    void render(b2World* world, NGShader* shaderProgram);
+    void render(b2World* world, NGShader* shader);
     
 private:
     PolygonBatcher& _fillPolygonBatcher;
     PolygonBatcher& _boundsPolygonBatcher;
     LineBatcher& _lineBatcher;
     CircleBatcher& _circleBatcher;
+    NGShader* _shader;
 };
 
 #endif /* defined(__noctisgames__Box2DDebugRenderer__) */

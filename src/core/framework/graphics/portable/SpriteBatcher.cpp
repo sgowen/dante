@@ -40,11 +40,6 @@ void SpriteBatcher::beginBatch()
 
 void SpriteBatcher::renderSprite(float x, float y, float width, float height, float angle, TextureRegion& tr, bool flipX)
 {
-    renderSprite(x, y, width, height, angle, Color::WHITE, tr, flipX);
-}
-
-void SpriteBatcher::renderSprite(float x, float y, float width, float height, float angle, Color &c, TextureRegion& tr, bool flipX)
-{
     float xFinal[4], yFinal[4], uFinal[4];
     
     if (angle != 0)
@@ -123,10 +118,10 @@ void SpriteBatcher::renderSprite(float x, float y, float width, float height, fl
         uFinal[3] = tr._u2;
     }
     
-    _vertices.push_back(TEXTURE_VERTEX(xFinal[0], yFinal[0], c.red, c.green, c.blue, c.alpha, uFinal[0], tr._v2));
-    _vertices.push_back(TEXTURE_VERTEX(xFinal[1], yFinal[1], c.red, c.green, c.blue, c.alpha, uFinal[1], tr._v1));
-    _vertices.push_back(TEXTURE_VERTEX(xFinal[2], yFinal[2], c.red, c.green, c.blue, c.alpha, uFinal[2], tr._v1));
-    _vertices.push_back(TEXTURE_VERTEX(xFinal[3], yFinal[3], c.red, c.green, c.blue, c.alpha, uFinal[3], tr._v2));
+    _vertices.push_back(VERTEX_2D_TEXTURE(xFinal[0], yFinal[0], uFinal[0], tr._v2));
+    _vertices.push_back(VERTEX_2D_TEXTURE(xFinal[1], yFinal[1], uFinal[1], tr._v1));
+    _vertices.push_back(VERTEX_2D_TEXTURE(xFinal[2], yFinal[2], uFinal[2], tr._v1));
+    _vertices.push_back(VERTEX_2D_TEXTURE(xFinal[3], yFinal[3], uFinal[3], tr._v2));
     
     ++_numSprites;
 }

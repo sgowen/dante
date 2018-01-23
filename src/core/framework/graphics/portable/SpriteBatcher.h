@@ -28,12 +28,11 @@ public:
 
     void beginBatch();
     void renderSprite(float x, float y, float width, float height, float angle, TextureRegion& tr, bool flipX = false);
-    void renderSprite(float x, float y, float width, float height, float angle, Color &c, TextureRegion& tr, bool flipX = false);
     void endBatch(NGShader* shader, NGTexture* texture, NGTexture* normalMap = NULL);
 
 private:
     RendererHelper* _rendererHelper;
-    std::vector<TEXTURE_VERTEX> _vertices;
+    std::vector<VERTEX_2D_TEXTURE> _vertices;
     int _numSprites;
 };
 

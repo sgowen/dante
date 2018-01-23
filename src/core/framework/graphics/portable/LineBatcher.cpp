@@ -36,34 +36,34 @@ void LineBatcher::beginBatch()
     _numLines = 0;
 }
 
-void LineBatcher::renderLine(Line &line, Color &c)
+void LineBatcher::renderLine(Line &line)
 {
     float oX = line.getOrigin().getX();
     float oY = line.getOrigin().getY();
     float eX = line.getEnd().getX();
     float eY = line.getEnd().getY();
     
-    _vertices.push_back(COLOR_VERTEX(oX, oY, c.red, c.green, c.blue, c.alpha));
-    _vertices.push_back(COLOR_VERTEX(eX, eY, c.red, c.green, c.blue, c.alpha));
+    _vertices.push_back(VERTEX_2D(oX, oY));
+    _vertices.push_back(VERTEX_2D(eX, eY));
     
     _numLines++;
 }
 
-void LineBatcher::renderLine(float oX, float oY, float eX, float eY, Color &c)
+void LineBatcher::renderLine(float oX, float oY, float eX, float eY)
 {
-    _vertices.push_back(COLOR_VERTEX(oX, oY, c.red, c.green, c.blue, c.alpha));
-    _vertices.push_back(COLOR_VERTEX(eX, eY, c.red, c.green, c.blue, c.alpha));
+    _vertices.push_back(VERTEX_2D(oX, oY));
+    _vertices.push_back(VERTEX_2D(eX, eY));
     
     _numLines++;
 }
 
-void LineBatcher::endBatch(NGShader* shader)
+void LineBatcher::endBatch(NGShader* shader, Color &c)
 {
     assert(shader);
     
     if (_numLines > 0)
     {
-        shader->bind(&_vertices);
+        shader->bind(&_vertices, &c);
         
         _rendererHelper->draw(NGPrimitiveType_Lines, 0, VERTICES_PER_LINE * _numLines);
         

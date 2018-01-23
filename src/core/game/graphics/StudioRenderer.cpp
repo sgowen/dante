@@ -251,13 +251,13 @@ void StudioRenderer::renderWorld()
     _rendererHelper->useScreenBlending();
     for (int i = 0; i < _fbIndex; ++i)
     {
-        static std::vector<SCREEN_VERTEX> screenVertices;
+        static std::vector<VERTEX_2D> screenVertices;
         screenVertices.clear();
         screenVertices.reserve(4);
-        screenVertices.push_back(SCREEN_VERTEX(-1, -1));
-        screenVertices.push_back(SCREEN_VERTEX(-1, 1));
-        screenVertices.push_back(SCREEN_VERTEX(1, 1));
-        screenVertices.push_back(SCREEN_VERTEX(1, -1));
+        screenVertices.push_back(VERTEX_2D(-1, -1));
+        screenVertices.push_back(VERTEX_2D(-1, 1));
+        screenVertices.push_back(VERTEX_2D(1, 1));
+        screenVertices.push_back(VERTEX_2D(1, -1));
         
         _framebufferToScreenNGShader->bind(&screenVertices, _rendererHelper->getFramebuffer(i));
         _rendererHelper->drawIndexed(NGPrimitiveType_Triangles, 0, INDICES_PER_RECTANGLE);
@@ -279,7 +279,7 @@ void StudioRenderer::renderLayers()
     {
         TextureRegion tr = ASSETS->findTextureRegion(e->getTextureMapping(), e->getStateTime());
         
-        _spriteBatchers[e->getEntityDef().layer]->renderSprite(e->getPosition().x, e->getPosition().y, e->getWidth(), e->getHeight(), e->getAngle(), Color::WHITE, tr, e->isFacingLeft());
+        _spriteBatchers[e->getEntityDef().layer]->renderSprite(e->getPosition().x, e->getPosition().y, e->getWidth(), e->getHeight(), e->getAngle(), tr, e->isFacingLeft());
         textures[e->getEntityDef().layer] = tr.getTextureName();
     }
     
@@ -295,8 +295,6 @@ void StudioRenderer::renderLayers()
 
 void StudioRenderer::renderEntities()
 {
-    Color c = Color::WHITE;
-    
     for (int i = 0; i < NUM_SPRITE_BATCHERS; ++i)
     {
         _spriteBatchers[i]->beginBatch();
@@ -310,7 +308,7 @@ void StudioRenderer::renderEntities()
         {
             TextureRegion tr = ASSETS->findTextureRegion(e->getTextureMapping(), e->getStateTime());
             
-            _spriteBatchers[e->getEntityDef().layer]->renderSprite(e->getPosition().x, e->getPosition().y, e->getWidth(), e->getHeight(), e->getAngle(), c, tr, e->isFacingLeft());
+            _spriteBatchers[e->getEntityDef().layer]->renderSprite(e->getPosition().x, e->getPosition().y, e->getWidth(), e->getHeight(), e->getAngle(), tr, e->isFacingLeft());
             textures[e->getEntityDef().layer] = tr.getTextureName();
         }
     }
@@ -321,7 +319,7 @@ void StudioRenderer::renderEntities()
         {
             TextureRegion tr = ASSETS->findTextureRegion(e->getTextureMapping(), e->getStateTime());
             
-            _spriteBatchers[e->getEntityDef().layer]->renderSprite(e->getPosition().x, e->getPosition().y, e->getWidth(), e->getHeight(), e->getAngle(), c, tr, e->isFacingLeft());
+            _spriteBatchers[e->getEntityDef().layer]->renderSprite(e->getPosition().x, e->getPosition().y, e->getWidth(), e->getHeight(), e->getAngle(), tr, e->isFacingLeft());
             textures[e->getEntityDef().layer] = tr.getTextureName();
         }
     }
@@ -332,7 +330,7 @@ void StudioRenderer::renderEntities()
         {
             TextureRegion tr = ASSETS->findTextureRegion(e->getTextureMapping(), e->getStateTime());
             
-            _spriteBatchers[e->getEntityDef().layer]->renderSprite(e->getPosition().x, e->getPosition().y, e->getWidth(), e->getHeight(), e->getAngle(), c, tr, e->isFacingLeft());
+            _spriteBatchers[e->getEntityDef().layer]->renderSprite(e->getPosition().x, e->getPosition().y, e->getWidth(), e->getHeight(), e->getAngle(), tr, e->isFacingLeft());
             textures[e->getEntityDef().layer] = tr.getTextureName();
         }
     }
@@ -369,15 +367,18 @@ void StudioRenderer::renderGrid()
     _lineBatcher->beginBatch();
     for (int i = left; i <= camWidth; ++i)
     {
-        _lineBatcher->renderLine(i, 0, i, camHeight, lineColor);
+        _lineBatcher->renderLine(i, 0, i, camHeight);
     }
     for (int i = bottom; i <= camHeight; ++i)
     {
-        _lineBatcher->renderLine(0, i, camWidth, i, lineColor);
+        _lineBatcher->renderLine(0, i, camWidth, i);
     }
-    _lineBatcher->renderLine(0, 0, 0, camHeight, Color::RED);
-    _lineBatcher->renderLine(0, 0, camWidth, 0, Color::RED);
-    _lineBatcher->endBatch(_colorNGShader);
+    _lineBatcher->endBatch(_colorNGShader, lineColor);
+    
+    _lineBatcher->beginBatch();
+    _lineBatcher->renderLine(0, 0, 0, camHeight);
+    _lineBatcher->renderLine(0, 0, camWidth, 0);
+    _lineBatcher->endBatch(_colorNGShader, Color::RED);
 }
 
 void StudioRenderer::renderUI()
@@ -413,12 +414,12 @@ void StudioRenderer::endFrame()
     _rendererHelper->clearFramebufferWithColor(0, 0, 0, 1);
     _rendererHelper->useScreenBlending();
 
-    static std::vector<SCREEN_VERTEX> screenVertices;
+    static std::vector<VERTEX_2D> screenVertices;
     screenVertices.clear();
-    screenVertices.push_back(SCREEN_VERTEX(-1, -1));
-    screenVertices.push_back(SCREEN_VERTEX(-1, 1));
-    screenVertices.push_back(SCREEN_VERTEX(1, 1));
-    screenVertices.push_back(SCREEN_VERTEX(1, -1));
+    screenVertices.push_back(VERTEX_2D(-1, -1));
+    screenVertices.push_back(VERTEX_2D(-1, 1));
+    screenVertices.push_back(VERTEX_2D(1, 1));
+    screenVertices.push_back(VERTEX_2D(1, -1));
 
     _framebufferToScreenNGShader->bind(&screenVertices, _rendererHelper->getFramebuffer(_fbIndex));
     _rendererHelper->drawIndexed(NGPrimitiveType_Triangles, 0, INDICES_PER_RECTANGLE);

@@ -38,28 +38,28 @@ void PolygonBatcher::beginBatch()
     _numTriangles = 0;
 }
 
-void PolygonBatcher::renderRect(NGRect &r, Color &c)
+void PolygonBatcher::renderRect(NGRect &r)
 {
     float x1 = r.getLeft();
     float y1 = r.getBottom();
     float x2 = x1 + r.getWidth();
     float y2 = y1 + r.getHeight();
     
-    _quadVertices.push_back(COLOR_VERTEX(x1, y1, c.red, c.green, c.blue, c.alpha));
-    _quadVertices.push_back(COLOR_VERTEX(x1, y2, c.red, c.green, c.blue, c.alpha));
-    _quadVertices.push_back(COLOR_VERTEX(x2, y2, c.red, c.green, c.blue, c.alpha));
-    _quadVertices.push_back(COLOR_VERTEX(x2, y1, c.red, c.green, c.blue, c.alpha));
+    _quadVertices.push_back(VERTEX_2D(x1, y1));
+    _quadVertices.push_back(VERTEX_2D(x1, y2));
+    _quadVertices.push_back(VERTEX_2D(x2, y2));
+    _quadVertices.push_back(VERTEX_2D(x2, y1));
     
     ++_numQuads;
 }
 
-void PolygonBatcher::renderPolygon(const b2Vec2* vertices, int vertexCount, Color &c)
+void PolygonBatcher::renderPolygon(const b2Vec2* vertices, int vertexCount)
 {
     if (vertexCount == 4)
     {
 		for (int i = (vertexCount - 1); i >= 0; --i)
 		{
-			_quadVertices.push_back(COLOR_VERTEX(vertices[i].x, vertices[i].y, c.red, c.green, c.blue, c.alpha));
+			_quadVertices.push_back(VERTEX_2D(vertices[i].x, vertices[i].y));
 		}
         
         ++_numQuads;
@@ -68,20 +68,20 @@ void PolygonBatcher::renderPolygon(const b2Vec2* vertices, int vertexCount, Colo
     {
 		for (int i = (vertexCount - 1); i >= 0; --i)
         {
-            _triangleVertices.push_back(COLOR_VERTEX(vertices[i].x, vertices[i].y, c.red, c.green, c.blue, c.alpha));
+            _triangleVertices.push_back(VERTEX_2D(vertices[i].x, vertices[i].y));
         }
         
         ++_numTriangles;
     }
 }
 
-void PolygonBatcher::endBatch(NGShader* shader)
+void PolygonBatcher::endBatch(NGShader* shader, Color &c)
 {
     assert(shader);
     
     if (_numQuads > 0)
     {
-        shader->bind(&_quadVertices);
+        shader->bind(&_quadVertices, &c);
         
         if (_isFill)
         {
@@ -100,7 +100,7 @@ void PolygonBatcher::endBatch(NGShader* shader)
     
     if (_numTriangles > 0)
     {
-        shader->bind(&_triangleVertices);
+        shader->bind(&_triangleVertices, &c);
         
         if (_isFill)
         {

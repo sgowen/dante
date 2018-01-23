@@ -100,22 +100,12 @@ void OpenGLRendererHelper::useNoBlending()
     glDisable(GL_BLEND);
 }
 
-void OpenGLRendererHelper::bindInteger(NGShaderUniformInput* uniform, int inValue)
+void OpenGLRendererHelper::bindInt4(NGShaderUniformInput* uniform, int4& inValue)
 {
-    glUniform1i(uniform->_attribute, inValue);
+    glUniform4i(uniform->_attribute, inValue[0], inValue[1], inValue[2], inValue[3]);
 }
 
-void OpenGLRendererHelper::bindVector2(NGShaderUniformInput* uniform, vec2& inValue)
-{
-    glUniform2f(uniform->_attribute, inValue[0], inValue[1]);
-}
-
-void OpenGLRendererHelper::bindVector3(NGShaderUniformInput* uniform, vec3& inValue)
-{
-    glUniform3f(uniform->_attribute, inValue[0], inValue[1], inValue[2]);
-}
-
-void OpenGLRendererHelper::bindVector4(NGShaderUniformInput* uniform, vec4& inValue)
+void OpenGLRendererHelper::bindFloat4(NGShaderUniformInput* uniform, float4& inValue)
 {
     glUniform4f(uniform->_attribute, inValue[0], inValue[1], inValue[2], inValue[3]);
 }
@@ -168,7 +158,7 @@ void OpenGLRendererHelper::bindNGShader(ShaderProgramWrapper* shaderProgramWrapp
     glUseProgram(shaderProgramWrapper == NULL ? 0 : shaderProgramWrapper->_programObjectId);
 }
 
-void OpenGLRendererHelper::mapTextureVertices(std::vector<NGShaderVarInput*>& inputLayout, std::vector<TEXTURE_VERTEX>& vertices)
+void OpenGLRendererHelper::mapTextureVertices(std::vector<NGShaderVarInput*>& inputLayout, std::vector<VERTEX_2D_TEXTURE>& vertices)
 {
     mapVertices(_textureVboObject, vertices, inputLayout);
 }
@@ -178,7 +168,7 @@ void OpenGLRendererHelper::unmapTextureVertices()
     unmapVertices(_textureVboObject);
 }
 
-void OpenGLRendererHelper::mapColorVertices(std::vector<NGShaderVarInput*>& inputLayout, std::vector<COLOR_VERTEX>& vertices)
+void OpenGLRendererHelper::mapColorVertices(std::vector<NGShaderVarInput*>& inputLayout, std::vector<VERTEX_2D>& vertices)
 {
     mapVertices(_colorVboObject, vertices, inputLayout);
 }
@@ -188,7 +178,7 @@ void OpenGLRendererHelper::unmapColorVertices()
     unmapVertices(_colorVboObject);
 }
 
-void OpenGLRendererHelper::mapScreenVertices(std::vector<NGShaderVarInput*>& inputLayout, std::vector<SCREEN_VERTEX>& vertices)
+void OpenGLRendererHelper::mapScreenVertices(std::vector<NGShaderVarInput*>& inputLayout, std::vector<VERTEX_2D>& vertices)
 {
     mapVertices(_screenVboObject, vertices, inputLayout);
 }

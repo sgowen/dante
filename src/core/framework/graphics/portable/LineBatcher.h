@@ -25,13 +25,13 @@ public:
     ~LineBatcher();
     
     void beginBatch();
-    void renderLine(Line &line, Color &c);
-    void renderLine(float oX, float oY, float eX, float eY, Color &c);
-    void endBatch(NGShader* shader);
+    void renderLine(Line &line);
+    void renderLine(float oX, float oY, float eX, float eY);
+    void endBatch(NGShader* shader, Color &c);
     
 private:
     RendererHelper* _rendererHelper;
-    std::vector<COLOR_VERTEX> _vertices;
+    std::vector<VERTEX_2D> _vertices;
     int _numLines;
 };
 
