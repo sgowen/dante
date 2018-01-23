@@ -126,12 +126,9 @@ void StudioInputManager::update(StudioEngine* engine)
     }
     else
     {
-        _rawScrollValue += CURSOR_INPUT_MANAGER->getScrollWheelValue();
-        _rawScrollValue = clamp(_rawScrollValue, 16, 1);
-        LOG("_rawScrollValue : %f", _rawScrollValue);
+        _rawScrollValue = clamp(_rawScrollValue + CURSOR_INPUT_MANAGER->getScrollWheelValue(), 16, 1);
         CURSOR_INPUT_MANAGER->resetScrollValue();
         _scrollValue = clamp(_rawScrollValue, 16, 1);
-        LOG("a _scrollValue : %d", _scrollValue);
         CURSOR_CONVERTER->setCamSize(CAM_WIDTH * _scrollValue, CAM_HEIGHT * _scrollValue);
         
         for (std::vector<CursorEvent *>::iterator i = CURSOR_INPUT_MANAGER->getEvents().begin(); i != CURSOR_INPUT_MANAGER->getEvents().end(); ++i)
