@@ -12,10 +12,6 @@
 
 #include "framework/input/CursorEvent.h"
 
-#ifdef __APPLE__
-#include "TargetConditionals.h"
-#endif
-
 CursorConverter* CursorConverter::getInstance()
 {
     static CursorConverter instance = CursorConverter();
@@ -34,23 +30,13 @@ _camHeight(1)
 
 Vector2& CursorConverter::convert(CursorEvent& cursorEvent)
 {
-#ifdef _WIN32
-	_cursor.set(cursorEvent.getX() / _cursorWidth * _camWidth, _camHeight - (cursorEvent.getY() / _cursorHeight * _camHeight));
-#else
 	_cursor.set((cursorEvent.getX() / _cursorWidth) * _camWidth, (1 - cursorEvent.getY() / _cursorHeight) * _camHeight);
-#endif
-    
     return _cursor;
 }
 
 Vector2& CursorConverter::convert(Vector2& cursorPosition)
 {
-#ifdef _WIN32
-    _cursor.set(cursorPosition.getX() / _cursorWidth * _camWidth, _camHeight - (cursorPosition.getY() / _cursorHeight * _camHeight));
-#else
 	_cursor.set((cursorPosition.getX() / _cursorWidth) * _camWidth, (1 - cursorPosition.getY() / _cursorHeight) * _camHeight);
-#endif
-    
     return _cursor;
 }
 
