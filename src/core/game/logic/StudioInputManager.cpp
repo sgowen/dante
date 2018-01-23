@@ -126,9 +126,12 @@ void StudioInputManager::update(StudioEngine* engine)
     }
     else
     {
-        _scrollValue += CURSOR_INPUT_MANAGER->getScrollWheelValue();
+        _rawScrollValue += CURSOR_INPUT_MANAGER->getScrollWheelValue();
+        _rawScrollValue = clamp(_rawScrollValue, 16, 1);
+        LOG("_rawScrollValue : %f", _rawScrollValue);
         CURSOR_INPUT_MANAGER->resetScrollValue();
-        _scrollValue = clamp(_scrollValue, 8, 1);
+        _scrollValue = clamp(_rawScrollValue, 16, 1);
+        LOG("a _scrollValue : %d", _scrollValue);
         CURSOR_CONVERTER->setCamSize(CAM_WIDTH * _scrollValue, CAM_HEIGHT * _scrollValue);
         
         for (std::vector<CursorEvent *>::iterator i = CURSOR_INPUT_MANAGER->getEvents().begin(); i != CURSOR_INPUT_MANAGER->getEvents().end(); ++i)
@@ -304,6 +307,7 @@ void StudioInputManager::updateCamera(StudioEngine *engine)
         
         _cursor = center;
         
+        _rawScrollValue = _scrollValue;
         _lastScrollValue = _scrollValue;
         CURSOR_CONVERTER->setCamSize(CAM_WIDTH * _scrollValue, CAM_HEIGHT * _scrollValue);
     }
@@ -313,6 +317,7 @@ void StudioInputManager::updateCamera(StudioEngine *engine)
 
 void StudioInputManager::resetCamera()
 {
+    _rawScrollValue = 1;
     _scrollValue = 1;
     _lastScrollValue = 1;
     int w = CAM_WIDTH * _scrollValue;
@@ -333,6 +338,7 @@ _inputState(SIS_NONE),
 _isLiveMode(false),
 _isTimeToProcessInput(false),
 _isControl(false),
+_rawScrollValue(1),
 _scrollValue(1),
 _lastScrollValue(1)
 {

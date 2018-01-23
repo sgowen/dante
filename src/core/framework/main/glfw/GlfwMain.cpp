@@ -201,7 +201,7 @@ int GlfwMain::exec(EngineController* engineController)
         {
             int cursorWidth = width;
             int cursorHeight = height;
-#if defined(__APPLE__) && !defined(LAUNCH_FULL_SCREEN)
+#if defined(__APPLE__) && !defined(_DEBUG)
             cursorWidth /= 2;
             cursorHeight /= 2;
 #endif
