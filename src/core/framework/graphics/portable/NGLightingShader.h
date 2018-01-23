@@ -21,7 +21,6 @@ public:
     virtual void bind(void* vertices, void* data1 = NULL, void* data2 = NULL);
     virtual void unbind();
     
-    void configResolution(float resolutionX, float resolutionY);
     void resetLights();
     void configLight(int index, float lightPosX, float lightPosY);
     void configZ(float lightPosZ);
@@ -32,7 +31,6 @@ private:
     vec4 _lightColor; // Light RGB and intensity (alpha)
     vec4 _ambientColor; // Ambient RGB and intensity (alpha)
     vec4 _fallOff; // Attenuation coefficients for light falloff
-    vec4 _resolution;
 };
 
 #endif /* defined(__noctisgames__NGLightingShader__) */

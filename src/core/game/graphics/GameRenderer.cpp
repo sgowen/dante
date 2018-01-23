@@ -154,8 +154,6 @@ void GameRenderer::createDeviceDependentResources()
 void GameRenderer::createWindowSizeDependentResources(int screenWidth, int screenHeight, int renderWidth, int renderHeight)
 {
     _rendererHelper->createWindowSizeDependentResources(screenWidth, screenHeight, renderWidth, renderHeight);
-    
-    _lightingNGShader->configResolution(_rendererHelper->getRenderWidth(), _rendererHelper->getRenderHeight());
 }
 
 void GameRenderer::releaseDeviceDependentResources()

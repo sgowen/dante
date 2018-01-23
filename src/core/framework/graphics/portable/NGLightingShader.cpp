@@ -22,11 +22,6 @@
 NGLightingShader::NGLightingShader(RendererHelper& inRendererHelper, const char* vertexShaderName, const char* fragmentShaderName) : NGShader(inRendererHelper, vertexShaderName, fragmentShaderName),
 _defaultLightZ(NG_CFG->getFloat("defaultLightZ"))
 {
-    _resolution[0] = 1366.0f;
-    _resolution[1] = 768.0f;
-	_resolution[2] = 0;
-	_resolution[3] = 0;
-    
 #ifdef _WIN32
 	_lights[0][0] = 0;
 	_lights[1][0] = 0;
@@ -62,7 +57,6 @@ _defaultLightZ(NG_CFG->getFloat("defaultLightZ"))
     _uniforms.push_back(new NGShaderUniformInput("u_LightColor",    0, 16, true));
     _uniforms.push_back(new NGShaderUniformInput("u_AmbientColor",  1, 16, true));
     _uniforms.push_back(new NGShaderUniformInput("u_Falloff",       2, 16, true));
-    _uniforms.push_back(new NGShaderUniformInput("u_Resolution",    3, 16, true));
 
     _uniforms.push_back(new NGShaderUniformInput("u_TextureUnit",   0));
     _uniforms.push_back(new NGShaderUniformInput("u_NormalMapUnit", 1));
@@ -84,9 +78,8 @@ void NGLightingShader::bind(void* vertices, void* data1, void* data2)
     _rendererHelper.bindVector4(                                                    _uniforms[2], _lightColor);
     _rendererHelper.bindVector4(                                                    _uniforms[3], _ambientColor);
     _rendererHelper.bindVector4(                                                    _uniforms[4], _fallOff);
-    _rendererHelper.bindVector4(                                                    _uniforms[5], _resolution);
-    _rendererHelper.bindTexture(NGTextureSlot_ZERO, static_cast<NGTexture*>(data1), _uniforms[6]);
-    _rendererHelper.bindTexture(NGTextureSlot_ONE, static_cast<NGTexture*>(data2),  _uniforms[7]);
+    _rendererHelper.bindTexture(NGTextureSlot_ZERO, static_cast<NGTexture*>(data1), _uniforms[5]);
+    _rendererHelper.bindTexture(NGTextureSlot_ONE, static_cast<NGTexture*>(data2),  _uniforms[6]);
     
     std::vector<TEXTURE_VERTEX>* textureVertices = static_cast<std::vector<TEXTURE_VERTEX>* >(vertices);
     _rendererHelper.mapTextureVertices(_inputLayout, *textureVertices);
@@ -98,12 +91,6 @@ void NGLightingShader::unbind()
     _rendererHelper.bindTexture(NGTextureSlot_ZERO, NULL);
     _rendererHelper.bindTexture(NGTextureSlot_ONE, NULL);
     _rendererHelper.bindNGShader(NULL);
-}
-
-void NGLightingShader::configResolution(float resolutionX, float resolutionY)
-{
-    _resolution[0] = resolutionX;
-    _resolution[1] = resolutionY;
 }
 
 void NGLightingShader::resetLights()
