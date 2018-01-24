@@ -321,12 +321,6 @@
       <TreatOutputAsContent>true</TreatOutputAsContent>
       <LinkObjects>false</LinkObjects>
     </CustomBuild>
-    <CustomBuild Include="..\..\..\assets\shaders\*.hlsl">
-      <ExcludedFromBuild>true</ExcludedFromBuild>
-      <DeploymentContent>false</DeploymentContent>
-      <TreatOutputAsContent>false</TreatOutputAsContent>
-      <LinkObjects>false</LinkObjects>
-    </CustomBuild>
     <CustomBuild Include="..\..\..\assets\shaders\*.ngs">
       <ExcludedFromBuild>false</ExcludedFromBuild>
       <DeploymentContent>false</DeploymentContent>
@@ -339,16 +333,10 @@
     <CustomBuild Include="..\..\..\assets\sounds\*.wav">
       <ExcludedFromBuild>false</ExcludedFromBuild>
       <DeploymentContent>false</DeploymentContent>
-      <Command>xcopy /y %(Identity) $(SolutionDir)assets\sounds	\</Command>
+      <Command>xcopy /y %(Identity) $(SolutionDir)assets\sounds\</Command>
       <Message>Copying %(Identity) to sln folder</Message>
       <Outputs>%(Filename).wav</Outputs>
       <TreatOutputAsContent>true</TreatOutputAsContent>
-      <LinkObjects>false</LinkObjects>
-    </CustomBuild>
-    <CustomBuild Include="..\..\..\assets\textures\*.png">
-      <ExcludedFromBuild>true</ExcludedFromBuild>
-      <DeploymentContent>false</DeploymentContent>
-      <TreatOutputAsContent>false</TreatOutputAsContent>
       <LinkObjects>false</LinkObjects>
     </CustomBuild>
     <CustomBuild Include="..\..\..\assets\textures\*.ngt">
@@ -368,7 +356,25 @@
     <Manifest Include="settings.manifest" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="..\..\..\assets\textures\*.png">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+      <DeploymentContent>false</DeploymentContent>
+    </Image>
     <Image Include="icon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="..\..\..\assets\shaders\*.hlsl">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+      <DeploymentContent>false</DeploymentContent>
+    </FxCompile>
+    <FxCompile Include="..\..\..\assets\shaders\*.vsh">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+      <DeploymentContent>false</DeploymentContent>
+    </FxCompile>
+    <FxCompile Include="..\..\..\assets\shaders\*.fsh">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+      <DeploymentContent>false</DeploymentContent>
+    </FxCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
