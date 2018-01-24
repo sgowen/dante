@@ -56,8 +56,8 @@ android {
     }
 
     task runEncryptionBeforeBuild(type: Exec) {
-        workingDir = '../../../../tools'
-        commandLine 'sh', './encrypt_textures_and_shaders.sh', '/Users/sgowen/Dropbox/Documents/freelance/NoctisGames/github/dante', 'XOREncryptDecrypt'
+        workingDir = '../../../../assets/posix'
+        commandLine 'sh', './refresh_assets.sh', '/Users/sgowen/Dropbox/Documents/freelance/NoctisGames/github/dante', 'XOREncryptDecrypt'
     }
     preBuild.dependsOn(runEncryptionBeforeBuild)
 

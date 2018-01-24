@@ -599,7 +599,6 @@
 		BB07A5111FC5F11D00AE5051 /* LinuxSoundWrapper.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = LinuxSoundWrapper.cpp; sourceTree = "<group>"; };
 		BB07A5121FC5F11D00AE5051 /* LinuxSoundWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LinuxSoundWrapper.h; sourceTree = "<group>"; };
 		BB07A5131FC5F11D00AE5051 /* LinuxSound.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = LinuxSound.cpp; sourceTree = "<group>"; };
-		BB07A78A1FC60F4900AE5051 /* XOREncryptDecryptLinux */ = {isa = PBXFileReference; lastKnownFileType = file; path = XOREncryptDecryptLinux; sourceTree = "<group>"; };
 		BB07A78B1FC60F7900AE5051 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../../../README.md; sourceTree = "<group>"; };
 		BB07A78C1FC60FD900AE5051 /* vulkan.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = vulkan.c; sourceTree = "<group>"; };
 		BB07A78E1FC61AD700AE5051 /* StepTimer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StepTimer.h; sourceTree = "<group>"; };
@@ -815,6 +814,26 @@
 		BB3F11A0200AF50400C30B06 /* texture_008.psd */ = {isa = PBXFileReference; lastKnownFileType = file; path = texture_008.psd; sourceTree = "<group>"; };
 		BB3F51ED2015412E00A657F8 /* CrawlerController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CrawlerController.cpp; sourceTree = "<group>"; };
 		BB3F51EE2015412F00A657F8 /* CrawlerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CrawlerController.h; sourceTree = "<group>"; };
+		BB406D3C2019128500FCC1C5 /* n_texture_004.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = n_texture_004.png; sourceTree = "<group>"; };
+		BB406D3D2019128500FCC1C5 /* texture_002.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = texture_002.png; sourceTree = "<group>"; };
+		BB406D3E2019128600FCC1C5 /* texture_007.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = texture_007.png; sourceTree = "<group>"; };
+		BB406D3F2019128600FCC1C5 /* n_texture_005.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = n_texture_005.png; sourceTree = "<group>"; };
+		BB406D402019128600FCC1C5 /* n_texture_008.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = n_texture_008.png; sourceTree = "<group>"; };
+		BB406D412019128600FCC1C5 /* texture_004.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = texture_004.png; sourceTree = "<group>"; };
+		BB406D422019128600FCC1C5 /* n_texture_006.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = n_texture_006.png; sourceTree = "<group>"; };
+		BB406D432019128600FCC1C5 /* n_texture_007.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = n_texture_007.png; sourceTree = "<group>"; };
+		BB406D442019128700FCC1C5 /* n_texture_003.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = n_texture_003.png; sourceTree = "<group>"; };
+		BB406D452019128700FCC1C5 /* texture_001.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = texture_001.png; sourceTree = "<group>"; };
+		BB406D462019128700FCC1C5 /* n_texture_001.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = n_texture_001.png; sourceTree = "<group>"; };
+		BB406D472019128700FCC1C5 /* texture_003.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = texture_003.png; sourceTree = "<group>"; };
+		BB406D482019128700FCC1C5 /* n_texture_002.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = n_texture_002.png; sourceTree = "<group>"; };
+		BB406D492019128700FCC1C5 /* texture_000.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = texture_000.png; sourceTree = "<group>"; };
+		BB406D4A2019128700FCC1C5 /* texture_005.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = texture_005.png; sourceTree = "<group>"; };
+		BB406D4B2019128700FCC1C5 /* texture_006.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = texture_006.png; sourceTree = "<group>"; };
+		BB406D4C2019128800FCC1C5 /* texture_008.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = texture_008.png; sourceTree = "<group>"; };
+		BB406D5220191C7800FCC1C5 /* refresh_assets.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = refresh_assets.sh; sourceTree = "<group>"; };
+		BB406D5320191C7800FCC1C5 /* XOREncryptDecryptLinux */ = {isa = PBXFileReference; lastKnownFileType = file; path = XOREncryptDecryptLinux; sourceTree = "<group>"; };
+		BB406D5420191C7800FCC1C5 /* XOREncryptDecrypt */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = XOREncryptDecrypt; sourceTree = "<group>"; };
 		BB4253D01EF58DA5003F6D2A /* ClientHelper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ClientHelper.cpp; sourceTree = "<group>"; };
 		BB4253D11EF58DA5003F6D2A /* ClientHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClientHelper.h; sourceTree = "<group>"; };
 		BB4253D31EF58E00003F6D2A /* ServerHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ServerHelper.h; sourceTree = "<group>"; };
@@ -1099,11 +1118,6 @@
 		BBCB93161FC217DD0020703A /* WindowsAssetDataHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WindowsAssetDataHandler.h; sourceTree = "<group>"; };
 		BBCB93171FC2295B0020703A /* State.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = State.h; sourceTree = "<group>"; };
 		BBCB93181FC2295C0020703A /* StateMachine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StateMachine.h; sourceTree = "<group>"; };
-		BBCB931A1FC234B50020703A /* encrypt_textures_and_shaders.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = encrypt_textures_and_shaders.sh; sourceTree = "<group>"; };
-		BBCB931B1FC234B50020703A /* encrypt_textures_and_shaders.bat */ = {isa = PBXFileReference; lastKnownFileType = text; path = encrypt_textures_and_shaders.bat; sourceTree = "<group>"; };
-		BBCB931D1FC236B30020703A /* XOREncryptDecrypt.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = XOREncryptDecrypt.c; sourceTree = "<group>"; };
-		BBCB931E1FC236B30020703A /* XOREncryptDecrypt.exe */ = {isa = PBXFileReference; lastKnownFileType = file; path = XOREncryptDecrypt.exe; sourceTree = "<group>"; };
-		BBCB931F1FC236B30020703A /* XOREncryptDecrypt */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = XOREncryptDecrypt; sourceTree = "<group>"; };
 		BBCB93201FC252790020703A /* FileData.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FileData.cpp; sourceTree = "<group>"; };
 		BBCDF24D1F3796C3006E94B0 /* FPSUtil.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FPSUtil.cpp; sourceTree = "<group>"; };
 		BBCDF24E1F3796C3006E94B0 /* FPSUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FPSUtil.h; sourceTree = "<group>"; };
@@ -1772,7 +1786,6 @@
 				BB44C31E1DB030B3003E633F /* mac */,
 				0ADF1875178E2185005DA99E /* Products */,
 				BB07A78B1FC60F7900AE5051 /* README.md */,
-				BBCB93191FC234B50020703A /* tools */,
 			);
 			sourceTree = "<group>";
 		};
@@ -2143,6 +2156,16 @@
 				BB3F11A0200AF50400C30B06 /* texture_008.psd */,
 			);
 			path = source;
+			sourceTree = "<group>";
+		};
+		BB406D5120191C7800FCC1C5 /* posix */ = {
+			isa = PBXGroup;
+			children = (
+				BB406D5220191C7800FCC1C5 /* refresh_assets.sh */,
+				BB406D5320191C7800FCC1C5 /* XOREncryptDecryptLinux */,
+				BB406D5420191C7800FCC1C5 /* XOREncryptDecrypt */,
+			);
+			path = posix;
 			sourceTree = "<group>";
 		};
 		BB44C31E1DB030B3003E633F /* mac */ = {
@@ -2800,20 +2823,6 @@
 				BBCB93161FC217DD0020703A /* WindowsAssetDataHandler.h */,
 			);
 			path = windows;
-			sourceTree = "<group>";
-		};
-		BBCB93191FC234B50020703A /* tools */ = {
-			isa = PBXGroup;
-			children = (
-				BBCB931B1FC234B50020703A /* encrypt_textures_and_shaders.bat */,
-				BBCB931A1FC234B50020703A /* encrypt_textures_and_shaders.sh */,
-				BBCB931F1FC236B30020703A /* XOREncryptDecrypt */,
-				BBCB931D1FC236B30020703A /* XOREncryptDecrypt.c */,
-				BBCB931E1FC236B30020703A /* XOREncryptDecrypt.exe */,
-				BB07A78A1FC60F4900AE5051 /* XOREncryptDecryptLinux */,
-			);
-			name = tools;
-			path = ../../../tools;
 			sourceTree = "<group>";
 		};
 		BBD3E85F1FB2872A00328E35 /* ios */ = {
@@ -3545,6 +3554,7 @@
 			children = (
 				BBF5382220071991003D276D /* config */,
 				BBF5380F20071991003D276D /* music */,
+				BB406D5120191C7800FCC1C5 /* posix */,
 				BB36A26D200BBF1400953CDC /* README.md */,
 				BBF3CC2B200D70F300CFF412 /* shaders */,
 				BBF5383320071991003D276D /* sounds */,
@@ -3584,6 +3594,23 @@
 				BBF5381D20071991003D276D /* texture_006.ngt */,
 				BBF53887200719B6003D276D /* texture_007.ngt */,
 				BBF53886200719B6003D276D /* texture_008.ngt */,
+				BB406D462019128700FCC1C5 /* n_texture_001.png */,
+				BB406D482019128700FCC1C5 /* n_texture_002.png */,
+				BB406D442019128700FCC1C5 /* n_texture_003.png */,
+				BB406D3C2019128500FCC1C5 /* n_texture_004.png */,
+				BB406D3F2019128600FCC1C5 /* n_texture_005.png */,
+				BB406D422019128600FCC1C5 /* n_texture_006.png */,
+				BB406D432019128600FCC1C5 /* n_texture_007.png */,
+				BB406D402019128600FCC1C5 /* n_texture_008.png */,
+				BB406D492019128700FCC1C5 /* texture_000.png */,
+				BB406D452019128700FCC1C5 /* texture_001.png */,
+				BB406D3D2019128500FCC1C5 /* texture_002.png */,
+				BB406D472019128700FCC1C5 /* texture_003.png */,
+				BB406D412019128600FCC1C5 /* texture_004.png */,
+				BB406D4A2019128700FCC1C5 /* texture_005.png */,
+				BB406D4B2019128700FCC1C5 /* texture_006.png */,
+				BB406D3E2019128600FCC1C5 /* texture_007.png */,
+				BB406D4C2019128800FCC1C5 /* texture_008.png */,
 			);
 			path = textures;
 			sourceTree = "<group>";
@@ -3859,7 +3886,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cd $SRCROOT/../../../tools\n./encrypt_textures_and_shaders.sh $SRCROOT/../../.. XOREncryptDecrypt";
+			shellScript = "cd $SRCROOT/../../../assets/posix\n./refresh_assets.sh $SRCROOT/../../.. XOREncryptDecrypt";
 		};
 		BB5065681FB36E7A00CADEEA /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -3872,7 +3899,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cd $SRCROOT/../../../tools\n./encrypt_textures_and_shaders.sh $SRCROOT/../../.. XOREncryptDecrypt";
+			shellScript = "cd $SRCROOT/../../../assets/posix\n./refresh_assets.sh $SRCROOT/../../.. XOREncryptDecrypt";
 		};
 /* End PBXShellScriptBuildPhase section */
 
