@@ -148,16 +148,6 @@ void StudioInputManager::update(StudioEngine* engine)
                     delta -= _dragCursor;
                     _dragCursor.set(c);
                     _deltaCursor.set(delta);
-                    
-                    float dx = _deltaCursor.getX() * 2;
-                    float dy = _deltaCursor.getY() * 2;
-                    float x = _cursor.getX();
-                    float y = _cursor.getY();
-                    x -= dx;
-                    y -= dy;
-                    
-                    _cursor.set(x, y);
-                    _deltaCursor.set(0, 0);
                 }
                     continue;
                 case CursorEventType_UP:
@@ -178,31 +168,46 @@ void StudioInputManager::update(StudioEngine* engine)
                 case NG_KEY_CTRL:
                     _isControl = !e.isUp();
                     continue;
+                case NG_KEY_ZERO:
+                    _layerFlag ^= e.isDown() ? StudioLayerFlag_0 : 0;
+                    continue;
+                case NG_KEY_ONE:
+                    _layerFlag ^= e.isDown() ? StudioLayerFlag_1 : 0;
+                    continue;
+                case NG_KEY_TWO:
+                    _layerFlag ^= e.isDown() ? StudioLayerFlag_2 : 0;
+                    continue;
+                case NG_KEY_THREE:
+                    _layerFlag ^= e.isDown() ? StudioLayerFlag_3 : 0;
+                    continue;
+                case NG_KEY_FOUR:
+                    _layerFlag ^= e.isDown() ? StudioLayerFlag_4 : 0;
+                    continue;
+                case NG_KEY_FIVE:
+                    _layerFlag ^= e.isDown() ? StudioLayerFlag_5 : 0;
+                    continue;
+                case NG_KEY_SIX:
+                    _layerFlag ^= e.isDown() ? StudioLayerFlag_6 : 0;
+                    continue;
+                case NG_KEY_SEVEN:
+                    _layerFlag ^= e.isDown() ? StudioLayerFlag_7 : 0;
+                    continue;
+                case NG_KEY_EIGHT:
+                    _layerFlag ^= e.isDown() ? StudioLayerFlag_8 : 0;
+                    continue;
                 case NG_KEY_ARROW_LEFT:
-                    if (e.isDown() || e.isHeld())
-                    {
-                        _cursor.sub(CAM_WIDTH / 16, 0);
-                    }
+                    isPanningLeft = e.isDown();
                     continue;
                 case NG_KEY_ARROW_RIGHT:
-                    if (e.isDown() || e.isHeld())
-                    {
-                        _cursor.add(CAM_WIDTH / 16, 0);
-                    }
+                    isPanningRight = e.isDown();
                     continue;
                 case NG_KEY_ARROW_DOWN:
-                    if (e.isDown() || e.isHeld())
-                    {
-                        _cursor.sub(0, CAM_HEIGHT / 16);
-                    }
+                    isPanningDown = e.isDown();
                     continue;
                 case NG_KEY_ARROW_UP:
-                    if (e.isDown() || e.isHeld())
-                    {
-                        _cursor.add(0, CAM_HEIGHT / 16);
-                    }
+                    isPanningUp = e.isDown();
                     continue;
-                case NG_KEY_O:
+                case NG_KEY_R:
                     if (e.isDown())
                     {
                         resetCamera();
@@ -285,6 +290,10 @@ void StudioInputManager::updateCamera(StudioEngine *engine)
 {
     int w = CAM_WIDTH * _scrollValue;
     int h = CAM_HEIGHT * _scrollValue;
+    float topPan = h * 0.9f;
+    float bottomPan = h * 0.1f;
+    float rightPan = w * 0.9f;
+    float leftPan = w * 0.1f;
     
     if (_lastScrollValue != _scrollValue)
     {
@@ -307,6 +316,28 @@ void StudioInputManager::updateCamera(StudioEngine *engine)
         _rawScrollValue = _scrollValue;
         _lastScrollValue = _scrollValue;
         CURSOR_CONVERTER->setCamSize(CAM_WIDTH * _scrollValue, CAM_HEIGHT * _scrollValue);
+    }
+    
+    {
+        /// Update Camera based on mouse being near edges
+        Vector2& rc = CURSOR_INPUT_MANAGER->getCursorPosition();
+        Vector2 c = CURSOR_CONVERTER->convert(rc);
+        if (c.getY() > topPan || isPanningUp)
+        {
+            _cursor.add(0, h / CAM_HEIGHT / 2.0f);
+        }
+        if (c.getY() < bottomPan || isPanningDown)
+        {
+            _cursor.sub(0, h / CAM_HEIGHT / 2.0f);
+        }
+        if (c.getX() > rightPan || isPanningRight)
+        {
+            _cursor.add(w / CAM_WIDTH / 2.0f, 0);
+        }
+        if (c.getX() < leftPan || isPanningLeft)
+        {
+            _cursor.sub(w / CAM_WIDTH / 2.0f, 0);
+        }
     }
     
     engine->_renderer->update(_cursor.getX(), _cursor.getY(), w, h, _scrollValue);
@@ -337,7 +368,12 @@ _isTimeToProcessInput(false),
 _isControl(false),
 _rawScrollValue(1),
 _scrollValue(1),
-_lastScrollValue(1)
+_lastScrollValue(1),
+_layerFlag(StudioLayerFlag_All),
+isPanningUp(false),
+isPanningDown(false),
+isPanningRight(false),
+isPanningLeft(false)
 {
     resetCamera();
 }

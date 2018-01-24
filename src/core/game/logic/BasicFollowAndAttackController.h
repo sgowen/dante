@@ -1,25 +1,25 @@
 //
-//  CrawlerController.h
+//  BasicFollowAndAttackController.h
 //  dante
 //
 //  Created by Stephen Gowen on 1/5/18.
 //  Copyright © 2018 Noctis Games. All rights reserved.
 //
 
-#ifndef __noctisgames__CrawlerController__
-#define __noctisgames__CrawlerController__
+#ifndef __noctisgames__BasicFollowAndAttackController__
+#define __noctisgames__BasicFollowAndAttackController__
 
 #include <framework/entity/EntityController.h>
 
-class CrawlerController : public EntityController
+class BasicFollowAndAttackController : public EntityController
 {
     NGRTTI_DECL;
     
 public:
     static EntityController* create(Entity* inEntity);
     
-    CrawlerController(Entity* inEntity);
-    virtual ~CrawlerController();
+    BasicFollowAndAttackController(Entity* inEntity);
+    virtual ~BasicFollowAndAttackController();
     
     virtual uint8_t update();
     virtual bool shouldCollide(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB);
@@ -92,4 +92,4 @@ private:
     float _maxXVelocity;
 };
 
-#endif /* defined(__noctisgames__CrawlerController__) */
+#endif /* defined(__noctisgames__BasicFollowAndAttackController__) */

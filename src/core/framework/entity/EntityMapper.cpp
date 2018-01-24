@@ -227,9 +227,14 @@ EntityController* EntityMapper::createEntityController(std::string name, Entity*
     return creationFunc(inEntity);
 }
 
-std::map<uint32_t, EntityDef*>& EntityMapper::getEntityDescriptors()
+const std::map<uint32_t, EntityDef*>& EntityMapper::getEntityDescriptors()
 {
     return _entityDescriptors;
+}
+
+const std::map<std::string, EntityControllerCreationFunc>& EntityMapper::getEntityControllerMap()
+{
+    return _nameToEntityControllerCreationFunctionMap;
 }
 
 EntityMapper::EntityMapper()

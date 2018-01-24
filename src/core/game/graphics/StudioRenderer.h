@@ -80,7 +80,7 @@ private:
     void renderEntities();
     void renderBox2D();
     void renderGrid();
-    void renderUI();
+    void renderUI(int flags);
     void renderText(const char* inStr, float x, float y, const Color& inColor, int justification = FONT_ALIGN_LEFT);
     void endFrame();
 };

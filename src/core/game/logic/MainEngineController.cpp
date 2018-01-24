@@ -16,7 +16,7 @@
 #include <framework/entity/EntityMapper.h>
 #include <framework/entity/EntityLayoutMapper.h>
 #include <framework/entity/DefaultController.h>
-#include <game/logic/CrawlerController.h>
+#include <game/logic/BasicFollowAndAttackController.h>
 #include <game/logic/PlayerController.h>
 #include <framework/util/Config.h>
 
@@ -42,7 +42,7 @@ void MainEngineController::init()
     GameEngine::create();
     StudioEngine::create();
     
-    EntityMapper::getInstance()->registerFunction("CrawlerController", CrawlerController::create);
+    EntityMapper::getInstance()->registerFunction("BasicFollowAndAttackController", BasicFollowAndAttackController::create);
     EntityMapper::getInstance()->registerFunction("DefaultController", DefaultController::create);
     EntityMapper::getInstance()->registerFunction("PlayerController", PlayerController::create);
 }

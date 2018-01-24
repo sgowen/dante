@@ -1,5 +1,5 @@
 //
-//  CrawlerController.cpp
+//  BasicFollowAndAttackController.cpp
 //  dante
 //
 //  Created by Stephen Gowen on 1/5/18.
@@ -8,7 +8,7 @@
 
 #include "pch.h"
 
-#include <game/logic/CrawlerController.h>
+#include <game/logic/BasicFollowAndAttackController.h>
 
 #include <framework/entity/Entity.h>
 #include "framework/network/portable/InputMemoryBitStream.h"
@@ -34,14 +34,14 @@
 #include "game/logic/Server.h"
 #include "framework/util/Config.h"
 
-NGRTTI_IMPL(CrawlerController, EntityController);
+NGRTTI_IMPL(BasicFollowAndAttackController, EntityController);
 
-EntityController* CrawlerController::create(Entity* inEntity)
+EntityController* BasicFollowAndAttackController::create(Entity* inEntity)
 {
-    return new CrawlerController(inEntity);
+    return new BasicFollowAndAttackController(inEntity);
 }
 
-CrawlerController::CrawlerController(Entity* inEntity) : EntityController(inEntity),
+BasicFollowAndAttackController::BasicFollowAndAttackController(Entity* inEntity) : EntityController(inEntity),
 _stats(),
 _statsCache(_stats),
 _maxXVelocity(4)
@@ -49,12 +49,12 @@ _maxXVelocity(4)
     // Empty
 }
 
-CrawlerController::~CrawlerController()
+BasicFollowAndAttackController::~BasicFollowAndAttackController()
 {
     // Empty
 }
 
-uint8_t CrawlerController::update()
+uint8_t BasicFollowAndAttackController::update()
 {
     if (!isDying() && _stats.health == 0)
     {
@@ -78,23 +78,23 @@ uint8_t CrawlerController::update()
     return isDying() ? State_Dying : isAttacking() ? State_Attacking : isMoving() ? State_Moving : State_Idle;
 }
 
-bool CrawlerController::shouldCollide(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB)
+bool BasicFollowAndAttackController::shouldCollide(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB)
 {
     // Don't collide with other crawlers
     return inEntity->getEntityDef().type != _entity->getEntityDef().type;
 }
 
-void CrawlerController::handleBeginContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB)
+void BasicFollowAndAttackController::handleBeginContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB)
 {
     // Empty
 }
 
-void CrawlerController::handleEndContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB)
+void BasicFollowAndAttackController::handleEndContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB)
 {
     // Empty
 }
 
-void CrawlerController::read(InputMemoryBitStream& inInputStream, uint16_t& inReadState)
+void BasicFollowAndAttackController::read(InputMemoryBitStream& inInputStream, uint16_t& inReadState)
 {
     bool stateBit;
     
@@ -108,7 +108,7 @@ void CrawlerController::read(InputMemoryBitStream& inInputStream, uint16_t& inRe
     }
 }
 
-void CrawlerController::recallLastReadState(uint16_t& inReadState)
+void BasicFollowAndAttackController::recallLastReadState(uint16_t& inReadState)
 {
     if (inReadState & ReadStateFlag_Stats)
     {
@@ -116,7 +116,7 @@ void CrawlerController::recallLastReadState(uint16_t& inReadState)
     }
 }
 
-uint16_t CrawlerController::write(OutputMemoryBitStream& inOutputStream, uint16_t inWrittenState, uint16_t inDirtyState)
+uint16_t BasicFollowAndAttackController::write(OutputMemoryBitStream& inOutputStream, uint16_t inWrittenState, uint16_t inDirtyState)
 {
     uint16_t writtenState = inWrittenState;
     
@@ -132,27 +132,27 @@ uint16_t CrawlerController::write(OutputMemoryBitStream& inOutputStream, uint16_
     return writtenState;
 }
 
-void CrawlerController::takeDamage(uint8_t damage)
+void BasicFollowAndAttackController::takeDamage(uint8_t damage)
 {
     _stats.health -= damage;
 }
 
-uint8_t CrawlerController::getHealth()
+uint8_t BasicFollowAndAttackController::getHealth()
 {
     return _stats.health;
 }
 
-bool CrawlerController::isDying()
+bool BasicFollowAndAttackController::isDying()
 {
     return _entity->getPose().state & StateFlag_Dying;
 }
 
-bool CrawlerController::isAttacking()
+bool BasicFollowAndAttackController::isAttacking()
 {
     return _entity->getPose().state & StateFlag_Attacking;
 }
 
-bool CrawlerController::isMoving()
+bool BasicFollowAndAttackController::isMoving()
 {
     return !isCloseEnough(_entity->getVelocity().x, 0);
 }

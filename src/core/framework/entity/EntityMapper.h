@@ -30,7 +30,8 @@ public:
     Entity* createEntity(uint32_t inFourCCName, int x = 0, int y = 0, bool isServer = false);
     void registerFunction(std::string name, EntityControllerCreationFunc inCreationFunction);
     EntityController* createEntityController(std::string name, Entity* inEntity);
-    std::map<uint32_t, EntityDef*>& getEntityDescriptors();
+    const std::map<uint32_t, EntityDef*>& getEntityDescriptors();
+    const std::map<std::string, EntityControllerCreationFunc>& getEntityControllerMap();
     
 private:
     std::map<uint32_t, EntityDef*> _entityDescriptors;
