@@ -1,94 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Assets">
+    <Filter Include="Audio">
       <UniqueIdentifier>3abefd9f-583e-42a5-a923-d8efb46319e3</UniqueIdentifier>
-      <Extensions>wav;png</Extensions>
+      <Extensions>wav</Extensions>
+    </Filter>
+    <Filter Include="Config">
+      <UniqueIdentifier>3abefd9f-583e-42a5-a923-d8efb46319f3</UniqueIdentifier>
+      <Extensions>cfg</Extensions>
+    </Filter>
+    <Filter Include="Textures">
+      <UniqueIdentifier>3abefd9f-583e-42a5-a923-d8efb46319b3</UniqueIdentifier>
+      <Extensions>png</Extensions>
     </Filter>
     <Filter Include="Shaders">
       <UniqueIdentifier>{b18237f9-8ca2-4fab-bf24-da4b112010b6}</UniqueIdentifier>
       <Extensions>hlsl</Extensions>
     </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="..\..\3rdparty\Box2D\Box2D\Box2D\*.h" />
-    <ClInclude Include="..\..\3rdparty\Box2D\Box2D\Box2D\Collision\*.h" />
-    <ClInclude Include="..\..\3rdparty\Box2D\Box2D\Box2D\Collision\Shapes\*.h" />
-    <ClInclude Include="..\..\3rdparty\Box2D\Box2D\Box2D\Common\*.h" />
-    <ClInclude Include="..\..\3rdparty\Box2D\Box2D\Box2D\Dynamics\*.h" />
-    <ClInclude Include="..\..\3rdparty\Box2D\Box2D\Box2D\Dynamics\Contacts\*.h" />
-    <ClInclude Include="..\..\3rdparty\Box2D\Box2D\Box2D\Dynamics\Joints\*.h" />
-    <ClInclude Include="..\..\3rdparty\Box2D\Box2D\Box2D\Rope\*.h" />
-    <ClInclude Include="..\..\3rdparty\DirectXTK\Audio\SoundCommon.h" />
-    <ClInclude Include="..\..\3rdparty\DirectXTK\Audio\WaveBankReader.h" />
-    <ClInclude Include="..\..\3rdparty\DirectXTK\Audio\WAVFileReader.h" />
-    <ClInclude Include="..\..\3rdparty\DirectXTK\Inc\Audio.h" />
-    <ClInclude Include="..\..\3rdparty\DirectXTK\Inc\DDSTextureLoader.h" />
-    <ClInclude Include="..\..\3rdparty\DirectXTK\Inc\DirectXHelpers.h" />
-    <ClInclude Include="..\..\3rdparty\DirectXTK\Inc\GamePad.h" />
-    <ClInclude Include="..\..\3rdparty\DirectXTK\Inc\Keyboard.h" />
-    <ClInclude Include="..\..\3rdparty\DirectXTK\Inc\Mouse.h" />
-    <ClInclude Include="..\..\3rdparty\DirectXTK\Src\dds.h" />
-    <ClInclude Include="..\..\3rdparty\DirectXTK\Src\LoaderHelpers.h" />
-    <ClInclude Include="..\..\3rdparty\DirectXTK\Src\PlatformHelpers.h" />
-    <ClInclude Include="..\..\3rdparty\TinyThread\source\*.h" />
-    <ClInclude Include="..\..\core\framework\entity\*.h" />
-    <ClInclude Include="..\..\core\framework\file\portable\*.h" />
-    <ClInclude Include="..\..\core\framework\file\windows\*.h" />
-    <ClInclude Include="..\..\core\framework\graphics\directx\*.h" />
-    <ClInclude Include="..\..\core\framework\graphics\portable\*.h" />
-    <ClInclude Include="..\..\core\framework\input\*.h" />
-    <ClInclude Include="..\..\core\framework\math\*.h" />
-    <ClInclude Include="..\..\core\framework\network\client\*.h" />
-    <ClInclude Include="..\..\core\framework\network\portable\*.h" />
-    <ClInclude Include="..\..\core\framework\network\server\*.h" />
-    <ClInclude Include="..\..\core\framework\network\steam\*.h" />
-    <ClInclude Include="..\..\core\framework\audio\portable\*.h" />
-    <ClInclude Include="..\..\core\framework\audio\directx\*.h" />
-    <ClInclude Include="..\..\core\framework\util\*.h" />
-    <ClInclude Include="..\..\core\game\graphics\*.h" />
-    <ClInclude Include="..\..\core\game\logic\*.h" />
-    <ClInclude Include="*.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="..\..\3rdparty\Box2D\Box2D\Box2D\Collision\*.cpp" />
-    <ClCompile Include="..\..\3rdparty\Box2D\Box2D\Box2D\Collision\Shapes\*.cpp" />
-    <ClCompile Include="..\..\3rdparty\Box2D\Box2D\Box2D\Common\*.cpp" />
-    <ClCompile Include="..\..\3rdparty\Box2D\Box2D\Box2D\Dynamics\*.cpp" />
-    <ClCompile Include="..\..\3rdparty\Box2D\Box2D\Box2D\Dynamics\Contacts\*.cpp" />
-    <ClCompile Include="..\..\3rdparty\Box2D\Box2D\Box2D\Dynamics\Joints\*.cpp" />
-    <ClCompile Include="..\..\3rdparty\Box2D\Box2D\Box2D\Rope\*.cpp" />
-    <ClCompile Include="..\..\3rdparty\DirectXTK\Audio\AudioEngine.cpp" />
-    <ClCompile Include="..\..\3rdparty\DirectXTK\Audio\DynamicSoundEffectInstance.cpp" />
-    <ClCompile Include="..\..\3rdparty\DirectXTK\Audio\SoundCommon.cpp" />
-    <ClCompile Include="..\..\3rdparty\DirectXTK\Audio\SoundEffect.cpp" />
-    <ClCompile Include="..\..\3rdparty\DirectXTK\Audio\SoundEffectInstance.cpp" />
-    <ClCompile Include="..\..\3rdparty\DirectXTK\Audio\WaveBank.cpp" />
-    <ClCompile Include="..\..\3rdparty\DirectXTK\Audio\WaveBankReader.cpp" />
-    <ClCompile Include="..\..\3rdparty\DirectXTK\Audio\WAVFileReader.cpp" />
-    <ClCompile Include="..\..\3rdparty\DirectXTK\Src\DDSTextureLoader.cpp" />
-    <ClCompile Include="..\..\3rdparty\DirectXTK\Src\GamePad.cpp" />
-    <ClCompile Include="..\..\3rdparty\DirectXTK\Src\Keyboard.cpp" />
-    <ClCompile Include="..\..\3rdparty\DirectXTK\Src\Mouse.cpp" />
-    <ClCompile Include="..\..\3rdparty\TinyThread\source\*.cpp" />
-    <ClCompile Include="..\..\core\framework\entity\*.cpp" />
-    <ClCompile Include="..\..\core\framework\file\portable\*.cpp" />
-    <ClCompile Include="..\..\core\framework\file\windows\*.cpp" />
-    <ClCompile Include="..\..\core\framework\graphics\directx\*.cpp" />
-    <ClCompile Include="..\..\core\framework\graphics\portable\*.cpp" />
-    <ClCompile Include="..\..\core\framework\input\*.cpp" />
-    <ClCompile Include="..\..\core\framework\math\*.cpp" />
-    <ClCompile Include="..\..\core\framework\network\client\*.cpp" />
-    <ClCompile Include="..\..\core\framework\network\portable\*.cpp" />
-    <ClCompile Include="..\..\core\framework\network\server\*.cpp" />
-    <ClCompile Include="..\..\core\framework\network\steam\*.cpp" />
-    <ClCompile Include="..\..\core\framework\audio\portable\*.cpp" />
-    <ClCompile Include="..\..\core\framework\audio\directx\*.cpp" />
-    <ClCompile Include="..\..\core\framework\util\*.cpp" />
-    <ClCompile Include="..\..\core\game\graphics\*.cpp" />
-    <ClCompile Include="..\..\core\game\logic\*.cpp" />
-    <ClCompile Include="Main.cpp" />
-    <ClCompile Include="pch.cpp" />
+    <Filter Include="Source">
+      <UniqueIdentifier>{b18237f9-8ca2-4fab-bf24-da4b112010b2}</UniqueIdentifier>
+      <Extensions>h;cpp</Extensions>
+    </Filter>
+    <Filter Include="Encrypted">
+      <UniqueIdentifier>{b18237f9-8ca2-4fab-bf24-da4b112010b1}</UniqueIdentifier>
+      <Extensions>ngs;ngt</Extensions>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />
@@ -100,28 +36,5 @@
     <Manifest Include="settings.manifest">
       <Filter>Assets</Filter>
     </Manifest>
-  </ItemGroup>
-  <ItemGroup>
-    <FxCompile Include="..\..\..\assets\shaders\*frag.hlsl">
-      <Filter>Shaders</Filter>
-    </FxCompile>
-    <FxCompile Include="..\..\..\assets\shaders\*vert.hlsl">
-      <Filter>Shaders</Filter>
-    </FxCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <CustomBuild Include="..\..\..\assets\config\*.cfg">
-      <Filter>Assets</Filter>
-    </CustomBuild>
-    <CustomBuild Include="..\..\..\assets\textures\*.png">
-      <Filter>Assets</Filter>
-    </CustomBuild>
-    <CustomBuild Include="..\..\..\assets\music\*.wav">
-      <Filter>Assets</Filter>
-    </CustomBuild>
-    <CustomBuild Include="..\..\..\assets\sounds\*.wav">
-      <Filter>Assets</Filter>
-    </CustomBuild>
-    <CustomBuild Include="..\..\..\assets\config\*.cfg" />
   </ItemGroup>
 </Project>
