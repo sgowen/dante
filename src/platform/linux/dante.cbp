@@ -67,8 +67,8 @@
 		</Linker>
 		<ExtraCommands>
 			<Add before="#!/bin/bash" />
-			<Add before="chmod 777 $(PROJECT_DIR)../../../tools/encrypt_textures_and_shaders.sh" />
-			<Add before="/bin/bash $(PROJECT_DIR)../../../tools/encrypt_textures_and_shaders.sh $(PROJECT_DIR)../../../ XOREncryptDecryptLinux" />
+			<Add before="chmod 777 $(PROJECT_DIR)../../../assets/posix/refresh_assets.sh" />
+			<Add before="/bin/bash $(PROJECT_DIR)../../../assets/posix/refresh_assets.sh $(PROJECT_DIR)../../../ XOREncryptDecryptLinux" />
 			<Add before="mkdir -p $(PROJECT_DIR)assets" />
 			<Add before="mkdir -p $(PROJECT_DIR)assets/config" />
 			<Add before="mkdir -p $(PROJECT_DIR)assets/shaders" />
