@@ -279,11 +279,12 @@ void World::loadMap(uint32_t map)
             playerIds.push_back(robot->getPlayerId());
             playerNames.push_back(robot->getPlayerName());
         }
-        
+    }
+    
+    if (_flags & WorldFlag_MapLoadAll)
+    {
         clearEntities(_players);
         clearEntities(_dynamicEntities);
-        
-        NG_SERVER->setMap(_map);
     }
     
     if (_map == 0)
@@ -297,6 +298,8 @@ void World::loadMap(uint32_t map)
     
     if (_flags & WorldFlag_Server)
     {
+        NG_SERVER->setMap(_map);
+        
         for (int i = 0; i < playerIds.size(); ++i)
         {
             Server::sHandleNewClient(playerIds[i], playerNames[i]);

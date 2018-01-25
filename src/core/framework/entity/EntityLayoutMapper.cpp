@@ -54,6 +54,7 @@ void EntityLayoutMapper::initWithJsonFile(const char* path, bool isBundled, bool
 
 void EntityLayoutMapper::initWithJson(const char* data)
 {
+    _maps.clear();
     _layouts.clear();
     
     using namespace rapidjson;
@@ -79,7 +80,10 @@ void EntityLayoutMapper::initWithJson(const char* data)
         
         assert(_layouts.find(key) == _layouts.end());
         
-        _layouts[key] = iv.GetString();
+        std::string fileName = iv.GetString();
+        
+        _maps.push_back(MapDef(key, keyStr, fileName));
+        _layouts[key] = fileName;
     }
 }
 
@@ -100,6 +104,11 @@ void EntityLayoutMapper::loadEntityLayout(uint32_t name)
 EntityLayoutDef& EntityLayoutMapper::getEntityLayoutDef()
 {
     return _entityLayoutDef;
+}
+
+std::vector<MapDef>& EntityLayoutMapper::getMaps()
+{
+    return _maps;
 }
 
 void EntityLayoutMapper::loadEntityLayout(const char* data)
@@ -356,5 +365,6 @@ EntityLayoutMapper::EntityLayoutMapper() : _layoutToSave(NULL)
 
 EntityLayoutMapper::~EntityLayoutMapper()
 {
+    _maps.clear();
     _layouts.clear();
 }

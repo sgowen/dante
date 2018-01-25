@@ -110,7 +110,12 @@ bool OverlapTester::doesNGRectOverlapTriangle(NGRect &r, Triangle &t)
 
 bool OverlapTester::isPointInNGRect(Vector2 p, NGRect &r)
 {
-    return r.getLeft() <= p.getX() && r.getLeft() + r.getWidth() >= p.getX() && r.getBottom() <= p.getY() && r.getTop() >= p.getY();
+    return isPointInNGRect(p.getX(), p.getY(), r);
+}
+
+bool OverlapTester::isPointInNGRect(float x, float y, NGRect &r)
+{
+    return r.getLeft() <= x && r.getLeft() + r.getWidth() >= x && r.getBottom() <= y && r.getTop() >= y;
 }
 
 bool OverlapTester::isPointInCircle(Vector2 &p, Circle &c)

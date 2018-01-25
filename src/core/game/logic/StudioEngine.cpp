@@ -95,10 +95,10 @@ void StudioEngine::enter(Engine* engine)
     
     _input = StudioInputManager::getInstance();
     _world = new World(WorldFlag_MapLoadAll);
-    _world->loadMap('Z001');
     _state = StudioEngineState_DisplayGrid | StudioEngineState_DisplayControls | StudioEngineState_LayerAll;
     
     _input->setEngine(this);
+    _renderer->setInputManager(_input);
 }
 
 void StudioEngine::update(Engine* engine)

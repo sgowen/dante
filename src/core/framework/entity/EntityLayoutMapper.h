@@ -11,6 +11,7 @@
 
 #include <map>
 #include <vector>
+#include <string>
 
 struct EntityPosDef
 {
@@ -28,6 +29,15 @@ struct EntityLayoutDef
     std::vector<EntityPosDef> dynamicEntities;
 };
 
+struct MapDef
+{
+    uint32_t key;
+    std::string name;
+    std::string value;
+    
+    MapDef(uint32_t inKey, std::string inName, std::string inValue) : key(inKey), name(inName), value(inValue) {}
+};
+
 class EntityLayoutMapper
 {
 public:
@@ -43,9 +53,11 @@ public:
     const char* save();
     void saveEntityLayout(uint32_t name, EntityLayoutDef* layout);
     EntityLayoutDef& getEntityLayoutDef();
+    std::vector<MapDef>& getMaps();
     std::string getJsonConfigFilePath(uint32_t inFourCCName);
     
 private:
+    std::vector<MapDef> _maps;
     std::map<uint32_t, std::string> _layouts;
     EntityLayoutDef _entityLayoutDef;
     EntityLayoutDef* _layoutToSave;

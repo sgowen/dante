@@ -34,6 +34,7 @@ class World;
 class StudioEngine;
 class Box2DDebugRenderer;
 class StudioEngine;
+class StudioInputManager;
 
 #define NUM_SPRITE_BATCHERS 10
 #define NUM_CAMERAS 4
@@ -50,6 +51,8 @@ public:
     virtual void render();
     
     void setEngine(StudioEngine* inValue);
+    void setInputManager(StudioInputManager* inValue);
+    
     void update(float x, float y, float w, float h, int scale);
     void displayToast(std::string toast);
     
@@ -73,6 +76,7 @@ private:
     int _fbIndex;
     int _scrollValue;
     StudioEngine* _engine;
+    StudioInputManager* _input;
     uint32_t _engineState;
     
     void setFramebuffer(int framebufferIndex, float r = 0, float g = 0, float b = 0, float a = 0);

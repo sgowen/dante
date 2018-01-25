@@ -11,6 +11,7 @@
 #include "game/logic/StudioInputManager.h"
 
 #include "game/logic/StudioEngine.h"
+#include <framework/entity/Entity.h>
 
 #include "framework/util/Timing.h"
 #include "framework/input/CursorInputManager.h"
@@ -28,6 +29,9 @@
 #include "framework/util/FrameworkConstants.h"
 #include "game/graphics/StudioRenderer.h"
 #include "game/logic/World.h"
+#include <framework/entity/EntityLayoutMapper.h>
+#include <framework/math/OverlapTester.h>
+#include <framework/math/NGRect.h>
 
 #include <sstream>
 
@@ -56,6 +60,11 @@ void StudioInputManager::destroy()
 void StudioInputManager::setEngine(StudioEngine* inValue)
 {
     _engine = inValue;
+}
+
+int StudioInputManager::getMenuState()
+{
+    return _inputState;
 }
 
 void StudioInputManager::update()
@@ -125,150 +134,265 @@ void StudioInputManager::update()
     }
     else
     {
-        _rawScrollValue = clamp(_rawScrollValue + CURSOR_INPUT_MANAGER->getScrollWheelValue(), 16, 1);
-        CURSOR_INPUT_MANAGER->resetScrollValue();
-        _scrollValue = clamp(_rawScrollValue, 16, 1);
-        CURSOR_CONVERTER->setCamSize(CAM_WIDTH * _scrollValue, CAM_HEIGHT * _scrollValue);
-        
-        for (std::vector<CursorEvent *>::iterator i = CURSOR_INPUT_MANAGER->getEvents().begin(); i != CURSOR_INPUT_MANAGER->getEvents().end(); ++i)
+        if (_engine->_state & StudioEngineState_DisplayLoadMapDialog)
         {
-            CursorEvent& e = *(*i);
-            Vector2& c = CURSOR_CONVERTER->convert(e);
-            switch (e.getType())
-            {
-                case CursorEventType_DOWN:
-                    _downCursor.set(c);
-                    _dragCursor.set(c);
-                    _deltaCursor.set(0, 0);
-                    continue;
-                case CursorEventType_DRAGGED:
-                {
-                    Vector2 delta = c;
-                    delta -= _dragCursor;
-                    _dragCursor.set(c);
-                    _deltaCursor.set(delta);
-                }
-                    continue;
-                case CursorEventType_UP:
-                    _upCursor.set(c);
-                    _deltaCursor.set(0, 0);
-                    break;
-                default:
-                    break;
-            }
+            handleLoadMapDialogInput();
         }
-        
-        for (std::vector<KeyboardEvent *>::iterator i = KEYBOARD_INPUT_MANAGER->getEvents().begin(); i != KEYBOARD_INPUT_MANAGER->getEvents().end(); ++i)
+        else
         {
-            KeyboardEvent& e = *(*i);
-            switch (e.getKey())
+            handleDefaultInput();
+            updateCamera();
+        }
+    }
+}
+
+void StudioInputManager::handleDefaultInput()
+{
+    _rawScrollValue = clamp(_rawScrollValue + CURSOR_INPUT_MANAGER->getScrollWheelValue(), 16, 1);
+    CURSOR_INPUT_MANAGER->resetScrollValue();
+    _scrollValue = clamp(_rawScrollValue, 16, 1);
+    CURSOR_CONVERTER->setCamSize(CAM_WIDTH * _scrollValue, CAM_HEIGHT * _scrollValue);
+    
+    for (std::vector<CursorEvent *>::iterator i = CURSOR_INPUT_MANAGER->getEvents().begin(); i != CURSOR_INPUT_MANAGER->getEvents().end(); ++i)
+    {
+        CursorEvent& e = *(*i);
+        Vector2& c = CURSOR_CONVERTER->convert(e);
+        switch (e.getType())
+        {
+            case CursorEventType_DOWN:
             {
-                case NG_KEY_CMD:
-                case NG_KEY_CTRL:
-                    _isControl = e.isPressed();
-                    continue;
-                case NG_KEY_ZERO:
-                    _engine->_state ^= e.isDown() ? StudioEngineState_Layer0 : 0;
-                    continue;
-                case NG_KEY_ONE:
-                    _engine->_state ^= e.isDown() ? StudioEngineState_Layer1 : 0;
-                    continue;
-                case NG_KEY_TWO:
-                    _engine->_state ^= e.isDown() ? StudioEngineState_Layer2 : 0;
-                    continue;
-                case NG_KEY_THREE:
-                    _engine->_state ^= e.isDown() ? StudioEngineState_Layer3 : 0;
-                    continue;
-                case NG_KEY_FOUR:
-                    _engine->_state ^= e.isDown() ? StudioEngineState_Layer4 : 0;
-                    continue;
-                case NG_KEY_FIVE:
-                    _engine->_state ^= e.isDown() ? StudioEngineState_Layer5 : 0;
-                    continue;
-                case NG_KEY_SIX:
-                    _engine->_state ^= e.isDown() ? StudioEngineState_Layer6 : 0;
-                    continue;
-                case NG_KEY_SEVEN:
-                    _engine->_state ^= e.isDown() ? StudioEngineState_Layer7 : 0;
-                    continue;
-                case NG_KEY_EIGHT:
-                    _engine->_state ^= e.isDown() ? StudioEngineState_Layer8 : 0;
-                    continue;
-                case NG_KEY_NINE:
-                    _engine->_state ^= e.isDown() ? StudioEngineState_Layer9 : 0;
-                    continue;
-                case NG_KEY_ARROW_LEFT:
-                    isPanningLeft = e.isPressed();
-                    continue;
-                case NG_KEY_ARROW_RIGHT:
-                    isPanningRight = e.isPressed();
-                    continue;
-                case NG_KEY_ARROW_DOWN:
-                    isPanningDown = e.isPressed();
-                    continue;
-                case NG_KEY_ARROW_UP:
-                    isPanningUp = e.isPressed();
-                    continue;
-                case NG_KEY_C:
-                    _engine->_state ^= e.isDown() ? StudioEngineState_DisplayControls : 0;
-                    continue;
-                case NG_KEY_A:
-                    _engine->_state ^= e.isDown() ? StudioEngineState_DisplayAssets : 0;
-                    continue;
-                case NG_KEY_E:
-                    _engine->_state ^= e.isDown() ? StudioEngineState_DisplayEntities : 0;
-                    continue;
-                case NG_KEY_R:
-                    if (e.isDown())
+                _downCursor.set(c);
+                _dragCursor.set(c);
+                _deltaCursor.set(0, 0);
+                
+                _activeEntity = getEntityAtPosition(_downCursor.getX(), _downCursor.getY());
+                _activeEntityCursor.set(_downCursor);
+            }
+                continue;
+            case CursorEventType_DRAGGED:
+            {
+                Vector2 delta = c;
+                delta -= _dragCursor;
+                _dragCursor.set(c);
+                _deltaCursor.set(delta);
+                
+                if (_activeEntity)
+                {
+                    const b2Vec2& position = _activeEntity->getPosition();
+                    float x = position.x + _deltaCursor.getX();
+                    float y = position.y + _deltaCursor.getY();
+                    _activeEntity->setPosition(b2Vec2(x, y));
+                }
+            }
+                continue;
+            case CursorEventType_UP:
+            {
+                _upCursor.set(c);
+                _deltaCursor.set(0, 0);
+                
+                _activeEntity = NULL;
+            }
+                break;
+            default:
+                break;
+        }
+    }
+    
+    for (std::vector<KeyboardEvent *>::iterator i = KEYBOARD_INPUT_MANAGER->getEvents().begin(); i != KEYBOARD_INPUT_MANAGER->getEvents().end(); ++i)
+    {
+        KeyboardEvent& e = *(*i);
+        switch (e.getKey())
+        {
+            case NG_KEY_CMD:
+            case NG_KEY_CTRL:
+                _isControl = e.isPressed();
+                continue;
+            case NG_KEY_ZERO:
+                _engine->_state ^= e.isDown() ? StudioEngineState_Layer0 : 0;
+                continue;
+            case NG_KEY_ONE:
+                _engine->_state ^= e.isDown() ? StudioEngineState_Layer1 : 0;
+                continue;
+            case NG_KEY_TWO:
+                _engine->_state ^= e.isDown() ? StudioEngineState_Layer2 : 0;
+                continue;
+            case NG_KEY_THREE:
+                _engine->_state ^= e.isDown() ? StudioEngineState_Layer3 : 0;
+                continue;
+            case NG_KEY_FOUR:
+                _engine->_state ^= e.isDown() ? StudioEngineState_Layer4 : 0;
+                continue;
+            case NG_KEY_FIVE:
+                _engine->_state ^= e.isDown() ? StudioEngineState_Layer5 : 0;
+                continue;
+            case NG_KEY_SIX:
+                _engine->_state ^= e.isDown() ? StudioEngineState_Layer6 : 0;
+                continue;
+            case NG_KEY_SEVEN:
+                _engine->_state ^= e.isDown() ? StudioEngineState_Layer7 : 0;
+                continue;
+            case NG_KEY_EIGHT:
+                _engine->_state ^= e.isDown() ? StudioEngineState_Layer8 : 0;
+                continue;
+            case NG_KEY_NINE:
+                _engine->_state ^= e.isDown() ? StudioEngineState_Layer9 : 0;
+                continue;
+            case NG_KEY_ARROW_LEFT:
+                _isPanningLeft = e.isPressed();
+                continue;
+            case NG_KEY_ARROW_RIGHT:
+                _isPanningRight = e.isPressed();
+                continue;
+            case NG_KEY_ARROW_DOWN:
+                _isPanningDown = e.isPressed();
+                continue;
+            case NG_KEY_ARROW_UP:
+                _isPanningUp = e.isPressed();
+                continue;
+            case NG_KEY_C:
+                _engine->_state ^= e.isDown() ? StudioEngineState_DisplayControls : 0;
+                continue;
+            case NG_KEY_A:
+                _engine->_state ^= e.isDown() ? StudioEngineState_DisplayAssets : 0;
+                continue;
+            case NG_KEY_E:
+                _engine->_state ^= e.isDown() ? StudioEngineState_DisplayEntities : 0;
+                continue;
+            case NG_KEY_R:
+                if (e.isDown())
+                {
+                    resetCamera();
+                }
+                continue;
+            case NG_KEY_N:
+                _engine->_state |= e.isDown() ? StudioEngineState_DisplayNewMapDialog : 0;
+                continue;
+            case NG_KEY_L:
+                _engine->_state |= e.isDown() ? StudioEngineState_DisplayLoadMapDialog : 0;
+                continue;
+            case NG_KEY_S:
+                if (e.isDown())
+                {
+                    if (_isControl)
                     {
-                        resetCamera();
+                        _engine->_state |= e.isDown() ? StudioEngineState_DisplaySaveMapAsDialog : 0;
                     }
-                    continue;
-                case NG_KEY_N:
-                    if (e.isDown())
+                    else
                     {
-                        /// TODO, prompt for new key / filename combo, update maps.cfg, and then load it
+                        _engine->_world->saveMap();
+                        _engine->_renderer->displayToast(StringUtil::format("%s saved!", _engine->_world->getMapName().c_str()).c_str());
                     }
-                    continue;
-                case NG_KEY_L:
-                    if (e.isDown())
-                    {
-                        /// TODO, prompt user to pick a map to load
-                    }
-                    continue;
-                case NG_KEY_S:
-                    if (e.isDown())
-                    {
-                        if (_isControl)
-                        {
-                            /// TODO, prompt for new key / filename combo and then save
-                        }
-                        else
-                        {
-                            _engine->_world->saveMap();
-                            _engine->_renderer->displayToast(StringUtil::format("%s saved!", _engine->_world->getMapName().c_str()).c_str());
-                        }
-                    }
-                    continue;
-                case NG_KEY_P:
-                    _engine->_state ^= e.isDown() ? StudioEngineState_DisplayParallax : 0;
-                    continue;
-                case NG_KEY_B:
-                    _engine->_state ^= e.isDown() ? StudioEngineState_DisplayBox2D : 0;
-                    continue;
-                case NG_KEY_G:
-                    _engine->_state ^= e.isDown() ? StudioEngineState_DisplayGrid : 0;
-                    continue;
-                case NG_KEY_ESCAPE:
-                    _inputState = e.isDown() ? SIS_ESCAPE : SIS_NONE;
-                    continue;
-                default:
-                    continue;
+                }
+                continue;
+            case NG_KEY_P:
+                _engine->_state ^= e.isDown() ? StudioEngineState_DisplayParallax : 0;
+                continue;
+            case NG_KEY_B:
+                _engine->_state ^= e.isDown() ? StudioEngineState_DisplayBox2D : 0;
+                continue;
+            case NG_KEY_G:
+                _engine->_state ^= e.isDown() ? StudioEngineState_DisplayGrid : 0;
+                continue;
+            case NG_KEY_ESCAPE:
+                _inputState = e.isDown() ? SIS_ESCAPE : SIS_NONE;
+                continue;
+            default:
+                continue;
+        }
+    }
+}
+
+void StudioInputManager::handleLoadMapDialogInput()
+{
+    for (std::vector<KeyboardEvent *>::iterator i = KEYBOARD_INPUT_MANAGER->getEvents().begin(); i != KEYBOARD_INPUT_MANAGER->getEvents().end(); ++i)
+    {
+        KeyboardEvent& e = *(*i);
+        switch (e.getKey())
+        {
+            case NG_KEY_ARROW_DOWN:
+                _selectionIndex = clamp(_selectionIndex + (e.isDown() ? 1 : 0), 1, 0);
+                continue;
+            case NG_KEY_ARROW_UP:
+                _selectionIndex = clamp(_selectionIndex - (e.isDown() ? 1 : 0), 1, 0);
+                continue;
+            case NG_KEY_CARRIAGE_RETURN:
+            {
+                std::vector<MapDef>& maps = EntityLayoutMapper::getInstance()->getMaps();
+                uint32_t map = maps[_selectionIndex].key;
+                _engine->_world->loadMap(map);
+                _engine->_state &= ~StudioEngineState_DisplayLoadMapDialog;
+            }
+                continue;
+            case NG_KEY_ESCAPE:
+                _inputState = e.isDown() ? SIS_ESCAPE : SIS_NONE;
+                continue;
+            default:
+                continue;
+        }
+    }
+}
+
+Entity* StudioInputManager::getEntityAtPosition(float x, float y)
+{
+    std::vector<Entity*>& dynamicEntities = _engine->_world->getDynamicEntities();
+    std::vector<Entity*>& staticEntities = _engine->_world->getStaticEntities();
+    std::vector<Entity*>& layers = _engine->_world->getLayers();
+    
+    for (std::vector<Entity*>::iterator i = dynamicEntities.begin(); i != dynamicEntities.end(); ++i)
+    {
+        Entity* e = (*i);
+        int layer = e->getEntityDef().layer;
+        if (_engine->_state & (1 << (layer + StudioEngineState_LayerBitBegin)))
+        {
+            float eX = e->getPosition().x;
+            float eY = e->getPosition().y;
+            float eW = e->getWidth();
+            float eH = e->getHeight();
+            NGRect entityBounds = NGRect(eX - eW / 2, eY - eH / 2, eW, eH);
+            if (OverlapTester::isPointInNGRect(x, y, entityBounds))
+            {
+                return e;
             }
         }
     }
     
-    updateCamera();
+    for (std::vector<Entity*>::iterator i = staticEntities.begin(); i != staticEntities.end(); ++i)
+    {
+        Entity* e = (*i);
+        int layer = e->getEntityDef().layer;
+        if (_engine->_state & (1 << (layer + StudioEngineState_LayerBitBegin)))
+        {
+            float eX = e->getPosition().x;
+            float eY = e->getPosition().y;
+            float eW = e->getWidth();
+            float eH = e->getHeight();
+            NGRect entityBounds = NGRect(eX - eW / 2, eY - eH / 2, eW, eH);
+            if (OverlapTester::isPointInNGRect(x, y, entityBounds))
+            {
+                return e;
+            }
+        }
+    }
+    
+    for (std::vector<Entity*>::iterator i = layers.begin(); i != layers.end(); ++i)
+    {
+        Entity* e = (*i);
+        int layer = e->getEntityDef().layer;
+        if (_engine->_state & (1 << (layer + StudioEngineState_LayerBitBegin)))
+        {
+            float eX = e->getPosition().x;
+            float eY = e->getPosition().y;
+            float eW = e->getWidth();
+            float eH = e->getHeight();
+            NGRect entityBounds = NGRect(eX - eW / 2, eY - eH / 2, eW, eH);
+            if (OverlapTester::isPointInNGRect(x, y, entityBounds))
+            {
+                return e;
+            }
+        }
+    }
+    
+    return NULL;
 }
 
 void StudioInputManager::setLiveInputMode(bool isLiveMode)
@@ -295,11 +419,6 @@ void StudioInputManager::onInputProcessed()
 {
     _liveInput.clear();
     _isTimeToProcessInput = false;
-}
-
-int StudioInputManager::getMenuState()
-{
-    return _inputState;
 }
 
 std::string& StudioInputManager::getLiveInputRef()
@@ -348,19 +467,19 @@ void StudioInputManager::updateCamera()
         /// Update Camera based on mouse being near edges
         Vector2& rc = CURSOR_INPUT_MANAGER->getCursorPosition();
         Vector2 c = CURSOR_CONVERTER->convert(rc);
-        if (c.getY() > topPan || isPanningUp)
+        if (c.getY() > topPan || _isPanningUp)
         {
             _cursor.add(0, h / CAM_HEIGHT / 2.0f);
         }
-        if (c.getY() < bottomPan || isPanningDown)
+        if (c.getY() < bottomPan || _isPanningDown)
         {
             _cursor.sub(0, h / CAM_HEIGHT / 2.0f);
         }
-        if (c.getX() > rightPan || isPanningRight)
+        if (c.getX() > rightPan || _isPanningRight)
         {
             _cursor.add(w / CAM_WIDTH / 2.0f, 0);
         }
-        if (c.getX() < leftPan || isPanningLeft)
+        if (c.getX() < leftPan || _isPanningLeft)
         {
             _cursor.sub(w / CAM_WIDTH / 2.0f, 0);
         }
@@ -395,10 +514,13 @@ _isControl(false),
 _rawScrollValue(1),
 _scrollValue(1),
 _lastScrollValue(1),
-isPanningUp(false),
-isPanningDown(false),
-isPanningRight(false),
-isPanningLeft(false),
+_isPanningUp(false),
+_isPanningDown(false),
+_isPanningRight(false),
+_isPanningLeft(false),
+_selectionIndex(0),
+_activeEntity(NULL),
+_activeEntityCursor(),
 _engine(NULL)
 {
     resetCamera();

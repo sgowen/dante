@@ -14,6 +14,7 @@
 #include <string>
 
 class StudioEngine;
+class Entity;
 
 enum StudioInputState
 {
@@ -31,14 +32,8 @@ public:
     static void destroy();
     
     void setEngine(StudioEngine* inValue);
-    void update();
-    void setLiveInputMode(bool isLiveMode);
-    bool isLiveMode();
-    bool isTimeToProcessInput();
-    void onInputProcessed();
     int getMenuState();
-    std::string& getLiveInputRef();
-    std::string getLiveInput();
+    void update();
     
 private:
     static StudioInputManager* s_instance;
@@ -56,14 +51,29 @@ private:
     float _rawScrollValue;
     int _scrollValue;
     int _lastScrollValue;
-    bool isPanningUp;
-    bool isPanningDown;
-    bool isPanningRight;
-    bool isPanningLeft;
+    bool _isPanningUp;
+    bool _isPanningDown;
+    bool _isPanningRight;
+    bool _isPanningLeft;
+    int _selectionIndex;
+    Entity* _activeEntity;
+    Vector2 _activeEntityCursor;
     StudioEngine* _engine;
     
     void updateCamera();
     void resetCamera();
+    
+    void handleDefaultInput();
+    void handleLoadMapDialogInput();
+    
+    Entity* getEntityAtPosition(float x, float y);
+    
+    void setLiveInputMode(bool isLiveMode);
+    bool isLiveMode();
+    bool isTimeToProcessInput();
+    void onInputProcessed();
+    std::string& getLiveInputRef();
+    std::string getLiveInput();
     
     // ctor, copy ctor, and assignment should be private in a Singleton
     StudioInputManager();

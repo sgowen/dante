@@ -27,6 +27,7 @@
 #include "framework/graphics/portable/NGTexture.h"
 #include "framework/graphics/portable/Box2DDebugRenderer.h"
 #include <game/logic/StudioEngine.h>
+#include <game/logic/StudioInputManager.h>
 
 #include "framework/graphics/portable/Assets.h"
 #include "framework/graphics/portable/RendererHelper.h"
@@ -71,6 +72,7 @@
 #include "framework/graphics/portable/Assets.h"
 #include "framework/input/CursorInputManager.h"
 #include "framework/input/CursorConverter.h"
+#include <framework/entity/EntityLayoutMapper.h>
 
 #ifdef NG_STEAM
 #include "framework/network/steam/NGSteamGameServer.h"
@@ -100,6 +102,7 @@ _toastStateTime(0),
 _fbIndex(0),
 _scrollValue(1),
 _engine(NULL),
+_input(NULL),
 _engineState(0)
 {
     for (int i = 0; i < NUM_SPRITE_BATCHERS; ++i)
@@ -195,6 +198,11 @@ void StudioRenderer::setEngine(StudioEngine* inValue)
     _engine = inValue;
 }
 
+void StudioRenderer::setInputManager(StudioInputManager* inValue)
+{
+    _input = inValue;
+}
+
 void StudioRenderer::update(float x, float y, float w, float h, int scale)
 {
     _scrollValue = scale;
@@ -250,6 +258,15 @@ void StudioRenderer::renderWorld()
     _rendererHelper->useScreenBlending();
     renderEntities();
     
+    Entity* e = _input->_activeEntity;
+    if (e)
+    {
+        _spriteBatchers[0]->beginBatch();
+        TextureRegion tr = ASSETS->findTextureRegion(e->getTextureMapping(), e->getStateTime());
+        _spriteBatchers[0]->renderSprite(e->getPosition().x, e->getPosition().y, e->getWidth(), e->getHeight(), e->getAngle(), tr, e->isFacingLeft());
+        _spriteBatchers[0]->endBatch(_textureNGShader, _textureManager->getTextureWithName(tr.getTextureName()), NULL, Color::RED);
+    }
+    
     setFramebuffer(2);
     
     _rendererHelper->useScreenBlending();
@@ -283,6 +300,11 @@ void StudioRenderer::renderLayers()
     std::vector<Entity*> entities = _engine->_world->getLayers();
     for (Entity* e : entities)
     {
+        if (e == _input->_activeEntity)
+        {
+            continue;
+        }
+        
         TextureRegion tr = ASSETS->findTextureRegion(e->getTextureMapping(), e->getStateTime());
         
         _spriteBatchers[e->getEntityDef().layer]->renderSprite(e->getPosition().x, e->getPosition().y, e->getWidth(), e->getHeight(), e->getAngle(), tr, e->isFacingLeft());
@@ -322,6 +344,11 @@ void StudioRenderer::renderEntities()
         std::vector<Entity*> entities = _engine->_world->getPlayers();
         for (Entity* e : entities)
         {
+            if (e == _input->_activeEntity)
+            {
+                continue;
+            }
+            
             TextureRegion tr = ASSETS->findTextureRegion(e->getTextureMapping(), e->getStateTime());
             
             _spriteBatchers[e->getEntityDef().layer]->renderSprite(e->getPosition().x, e->getPosition().y, e->getWidth(), e->getHeight(), e->getAngle(), tr, e->isFacingLeft());
@@ -333,6 +360,11 @@ void StudioRenderer::renderEntities()
         std::vector<Entity*> entities = _engine->_world->getDynamicEntities();
         for (Entity* e : entities)
         {
+            if (e == _input->_activeEntity)
+            {
+                continue;
+            }
+            
             TextureRegion tr = ASSETS->findTextureRegion(e->getTextureMapping(), e->getStateTime());
             
             _spriteBatchers[e->getEntityDef().layer]->renderSprite(e->getPosition().x, e->getPosition().y, e->getWidth(), e->getHeight(), e->getAngle(), tr, e->isFacingLeft());
@@ -344,6 +376,11 @@ void StudioRenderer::renderEntities()
         std::vector<Entity*> entities = _engine->_world->getStaticEntities();
         for (Entity* e : entities)
         {
+            if (e == _input->_activeEntity)
+            {
+                continue;
+            }
+            
             TextureRegion tr = ASSETS->findTextureRegion(e->getTextureMapping(), e->getStateTime());
             
             _spriteBatchers[e->getEntityDef().layer]->renderSprite(e->getPosition().x, e->getPosition().y, e->getWidth(), e->getHeight(), e->getAngle(), tr, e->isFacingLeft());
@@ -431,7 +468,40 @@ void StudioRenderer::renderUI()
         _spriteBatchers[0]->endBatch(_textureNGShader, _textureManager->getTextureWithName("texture_000.ngt"));
     }
     
-    if (_engineState & StudioEngineState_DisplayControls)
+    if (_engineState & StudioEngineState_DisplayLoadMapDialog)
+    {
+        /// Maps
+        std::vector<MapDef>& maps = EntityLayoutMapper::getInstance()->getMaps();
+        int numMaps = static_cast<int>(maps.size());
+        
+        _fillPolygonBatcher->beginBatch();
+        int width = CAM_WIDTH / 3;
+        int height = numMaps + 3;
+        NGRect window = NGRect(CAM_WIDTH / 2 - width / 2, CAM_HEIGHT - 4 - height - 1, width, height);
+        Color windowColor = Color::BLUE;
+        windowColor.alpha = 0.5f;
+        _fillPolygonBatcher->renderRect(window);
+        _fillPolygonBatcher->endBatch(_colorNGShader, windowColor);
+        
+        int row = 2;
+        static float padding = 1;
+        
+        _spriteBatchers[0]->beginBatch();
+        renderText("Load Map", CAM_WIDTH / 2, CAM_HEIGHT - 4 - (row++ * padding), FONT_ALIGN_CENTERED);
+        _spriteBatchers[0]->endBatch(_textureNGShader, _textureManager->getTextureWithName("texture_000.ngt"));
+        
+        ++row;
+        
+        for (int i = 0; i < numMaps; ++i)
+        {
+            MapDef& mp = maps[i];
+            
+            _spriteBatchers[0]->beginBatch();
+            renderText(StringUtil::format("%s | %s", mp.name.c_str(), mp.value.c_str()).c_str(), CAM_WIDTH / 2, CAM_HEIGHT - 4 - (row++ * padding), FONT_ALIGN_CENTERED);
+            _spriteBatchers[0]->endBatch(_textureNGShader, _textureManager->getTextureWithName("texture_000.ngt"), NULL, i == _input->_selectionIndex ? Color::WHITE : Color::BLACK);
+        }
+    }
+    else if (_engineState & StudioEngineState_DisplayControls)
     {
         /// Controls
         _fillPolygonBatcher->beginBatch();
@@ -464,11 +534,6 @@ void StudioRenderer::renderUI()
         renderText(StringUtil::format("[E]  %s Entities", _engineState & StudioEngineState_DisplayEntities ? "Hide   " : "Display").c_str(), CAM_WIDTH - 2, CAM_HEIGHT - (row++ * padding), FONT_ALIGN_RIGHT);
         
         _spriteBatchers[0]->endBatch(_textureNGShader, _textureManager->getTextureWithName("texture_000.ngt"));
-    }
-    
-    if (_engineState & StudioEngineState_DisplayLoadMapDialog)
-    {
-        
     }
     
     {

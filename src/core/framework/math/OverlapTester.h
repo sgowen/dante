@@ -19,19 +19,13 @@ class OverlapTester
 {
 public:
     static bool doCirclesOverlap(Circle &c1, Circle &c2);
-    
     static bool doNGRectsOverlap(NGRect &r1, NGRect &r2);
-    
     static bool doesNGRectOverlapTriangle(NGRect &r, Triangle &t);
-    
     static bool overlapCircleNGRect(Circle &c, NGRect &r);
-    
     static bool isPointInNGRect(Vector2 p, NGRect &r);
-    
+    static bool isPointInNGRect(float x, float y, NGRect &r);
     static bool isPointInCircle(Vector2 &p, Circle &c);
-    
     static bool isPointInTriangle(Vector2 &p, Triangle &t);
-    
     static bool doLineAndNGRectOverlap(Line &l, NGRect &r);
 
 private:
