@@ -12,6 +12,10 @@
 		BB0756E01FE6107F008E0E08 /* RendererHelperFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB0756DE1FE6107F008E0E08 /* RendererHelperFactory.cpp */; };
 		BB0756E11FE6107F008E0E08 /* RendererHelperFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB0756DE1FE6107F008E0E08 /* RendererHelperFactory.cpp */; };
 		BB07A78D1FC60FD900AE5051 /* vulkan.c in Sources */ = {isa = PBXBuildFile; fileRef = BB07A78C1FC60FD900AE5051 /* vulkan.c */; };
+		BB13C9ED201A72C50061C565 /* texture_009.ngt in Resources */ = {isa = PBXBuildFile; fileRef = BB13C9EC201A72C50061C565 /* texture_009.ngt */; };
+		BB13C9EE201A72C50061C565 /* texture_009.ngt in Resources */ = {isa = PBXBuildFile; fileRef = BB13C9EC201A72C50061C565 /* texture_009.ngt */; };
+		BB13C9F1201A73240061C565 /* n_texture_009.ngt in Resources */ = {isa = PBXBuildFile; fileRef = BB13C9F0201A73240061C565 /* n_texture_009.ngt */; };
+		BB13C9F2201A73240061C565 /* n_texture_009.ngt in Resources */ = {isa = PBXBuildFile; fileRef = BB13C9F0201A73240061C565 /* n_texture_009.ngt */; };
 		BB16190D20092BFD00AF0117 /* zone_2.cfg in Resources */ = {isa = PBXBuildFile; fileRef = BB16190C20092BFD00AF0117 /* zone_2.cfg */; };
 		BB16190E20092BFD00AF0117 /* zone_2.cfg in Resources */ = {isa = PBXBuildFile; fileRef = BB16190C20092BFD00AF0117 /* zone_2.cfg */; };
 		BB16191120096FD300AF0117 /* EntityLayoutMapper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB16190F20096FD200AF0117 /* EntityLayoutMapper.cpp */; };
@@ -604,6 +608,11 @@
 		BB07A78E1FC61AD700AE5051 /* StepTimer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StepTimer.h; sourceTree = "<group>"; };
 		BB0CA6F01FE5B08D0011B75B /* NGPrimitiveType.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NGPrimitiveType.h; sourceTree = "<group>"; };
 		BB0CA6F11FE5B7130011B75B /* NGTextureSlot.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NGTextureSlot.h; sourceTree = "<group>"; };
+		BB13C9EB201A72530061C565 /* texture_009.psd */ = {isa = PBXFileReference; lastKnownFileType = file; path = texture_009.psd; sourceTree = "<group>"; };
+		BB13C9EC201A72C50061C565 /* texture_009.ngt */ = {isa = PBXFileReference; lastKnownFileType = file; path = texture_009.ngt; sourceTree = "<group>"; };
+		BB13C9EF201A72CD0061C565 /* texture_009.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = texture_009.png; sourceTree = "<group>"; };
+		BB13C9F0201A73240061C565 /* n_texture_009.ngt */ = {isa = PBXFileReference; lastKnownFileType = file; path = n_texture_009.ngt; sourceTree = "<group>"; };
+		BB13C9F3201A73310061C565 /* n_texture_009.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = n_texture_009.png; sourceTree = "<group>"; };
 		BB16190C20092BFD00AF0117 /* zone_2.cfg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = zone_2.cfg; sourceTree = "<group>"; };
 		BB16190F20096FD200AF0117 /* EntityLayoutMapper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EntityLayoutMapper.cpp; sourceTree = "<group>"; };
 		BB16191020096FD300AF0117 /* EntityLayoutMapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EntityLayoutMapper.h; sourceTree = "<group>"; };
@@ -2154,6 +2163,7 @@
 				BB3F119B200AF50400C30B06 /* texture_006.psd */,
 				BB3F119A200AF50400C30B06 /* texture_007.psd */,
 				BB3F11A0200AF50400C30B06 /* texture_008.psd */,
+				BB13C9EB201A72530061C565 /* texture_009.psd */,
 			);
 			path = source;
 			sourceTree = "<group>";
@@ -3585,6 +3595,7 @@
 				BB89C993200914AC00330100 /* n_texture_006.ngt */,
 				BB89C996200914AC00330100 /* n_texture_007.ngt */,
 				BB89C997200914AC00330100 /* n_texture_008.ngt */,
+				BB13C9F0201A73240061C565 /* n_texture_009.ngt */,
 				BBF5382120071991003D276D /* texture_000.ngt */,
 				BBF5382020071991003D276D /* texture_001.ngt */,
 				BBF5381E20071991003D276D /* texture_002.ngt */,
@@ -3594,6 +3605,7 @@
 				BBF5381D20071991003D276D /* texture_006.ngt */,
 				BBF53887200719B6003D276D /* texture_007.ngt */,
 				BBF53886200719B6003D276D /* texture_008.ngt */,
+				BB13C9EC201A72C50061C565 /* texture_009.ngt */,
 				BB406D462019128700FCC1C5 /* n_texture_001.png */,
 				BB406D482019128700FCC1C5 /* n_texture_002.png */,
 				BB406D442019128700FCC1C5 /* n_texture_003.png */,
@@ -3602,6 +3614,7 @@
 				BB406D422019128600FCC1C5 /* n_texture_006.png */,
 				BB406D432019128600FCC1C5 /* n_texture_007.png */,
 				BB406D402019128600FCC1C5 /* n_texture_008.png */,
+				BB13C9F3201A73310061C565 /* n_texture_009.png */,
 				BB406D492019128700FCC1C5 /* texture_000.png */,
 				BB406D452019128700FCC1C5 /* texture_001.png */,
 				BB406D3D2019128500FCC1C5 /* texture_002.png */,
@@ -3611,6 +3624,7 @@
 				BB406D4B2019128700FCC1C5 /* texture_006.png */,
 				BB406D3E2019128600FCC1C5 /* texture_007.png */,
 				BB406D4C2019128800FCC1C5 /* texture_008.png */,
+				BB13C9EF201A72CD0061C565 /* texture_009.png */,
 			);
 			path = textures;
 			sourceTree = "<group>";
@@ -3797,6 +3811,7 @@
 				BBF5385A20071992003D276D /* texture_000.ngt in Resources */,
 				BBF5386620071992003D276D /* maps.cfg in Resources */,
 				BBF5386220071992003D276D /* entities.cfg in Resources */,
+				BB13C9ED201A72C50061C565 /* texture_009.ngt in Resources */,
 				BBF5385220071992003D276D /* texture_006.ngt in Resources */,
 				BBF3CC5A200D712400CFF412 /* shader_003_vert.ngs in Resources */,
 				BBF5383A20071992003D276D /* music_001.wav in Resources */,
@@ -3809,6 +3824,7 @@
 				BBF3CC50200D712400CFF412 /* shader_003_frag.ngs in Resources */,
 				BBF5388A200719B6003D276D /* texture_007.ngt in Resources */,
 				BBF3CC56200D712400CFF412 /* shader_004_frag.ngs in Resources */,
+				BB13C9F1201A73240061C565 /* n_texture_009.ngt in Resources */,
 				BBF5388420071992003D276D /* sound_004.wav in Resources */,
 				BB89C99E200914AC00330100 /* n_texture_003.ngt in Resources */,
 				BBF5385020071992003D276D /* texture_005.ngt in Resources */,
@@ -3831,6 +3847,7 @@
 				BBF5388120071992003D276D /* sound_006.wav in Resources */,
 				BBF3CC51200D712400CFF412 /* shader_003_frag.ngs in Resources */,
 				BBF5386520071992003D276D /* zone_1.cfg in Resources */,
+				BB13C9EE201A72C50061C565 /* texture_009.ngt in Resources */,
 				BBD3E86D1FB2872A00328E35 /* LaunchScreen.storyboard in Resources */,
 				BBD3E86A1FB2872A00328E35 /* Assets.xcassets in Resources */,
 				BBF5385720071992003D276D /* texture_003.ngt in Resources */,
@@ -3860,6 +3877,7 @@
 				BB89C9A5200914AC00330100 /* n_texture_008.ngt in Resources */,
 				BB89C9A7200914AC00330100 /* n_texture_002.ngt in Resources */,
 				BB89C99B200914AC00330100 /* n_texture_005.ngt in Resources */,
+				BB13C9F2201A73240061C565 /* n_texture_009.ngt in Resources */,
 				BBF5387B20071992003D276D /* sound_001.wav in Resources */,
 				BBF3CC59200D712400CFF412 /* shader_002_vert.ngs in Resources */,
 				BBF3CC53200D712400CFF412 /* shader_001_vert.ngs in Resources */,

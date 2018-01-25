@@ -33,7 +33,7 @@ class World;
 class NGLightingShader;
 class GameEngine;
 
-#define NUM_SPRITE_BATCHERS 8
+#define NUM_SPRITE_BATCHERS 10
 #define NUM_CAMERAS 4
 
 class GameRenderer : public Renderer
