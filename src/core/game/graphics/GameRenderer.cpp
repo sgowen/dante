@@ -100,7 +100,9 @@ _colorNGShader(new NGGeometryShader(*_rendererHelper, "shader_001_vert.ngs", "sh
 _lightingNGShader(new NGLightingShader(*_rendererHelper, "shader_004_vert.ngs", "shader_004_frag.ngs")),
 _framebufferToScreenNGShader(new NGFramebufferToScreenShader(*_rendererHelper, "shader_002_vert.ngs", "shader_002_frag.ngs")),
 _font(new Font("texture_000.ngt", 0, 0, 16, 64, 75, 1024, 1024)),
-_fbIndex(0)
+_fbIndex(0),
+_engine(NULL),
+_engineState(0)
 {
     for (int i = 0; i < NUM_SPRITE_BATCHERS; ++i)
     {
@@ -167,23 +169,30 @@ void GameRenderer::releaseDeviceDependentResources()
     _framebufferToScreenNGShader->unload(*_shaderProgramLoader);
 }
 
-void GameRenderer::render(int flags)
+void GameRenderer::render()
 {
+    _engineState = _engine->_state;
+    
     setFramebuffer(0);
     
     if (_textureManager->ensureTextures())
     {
-        renderWorld(flags);
+        renderWorld();
         
-        if (flags & GameEngineState_DisplayBox2D)
+        if (_engineState & GameEngineState_DisplayBox2D)
         {
             renderBox2D();
         }
         
-        renderUI(flags);
+        renderUI();
     }
     
     endFrame();
+}
+
+void GameRenderer::setEngine(GameEngine* inValue)
+{
+    _engine = inValue;
 }
 
 void GameRenderer::updateCamera()
@@ -240,12 +249,12 @@ void GameRenderer::setFramebuffer(int framebufferIndex, float r, float g, float 
     _rendererHelper->clearFramebufferWithColor(r, g, b, a);
 }
 
-void GameRenderer::renderWorld(int flags)
+void GameRenderer::renderWorld()
 {
     _rendererHelper->useNormalBlending();
     setFramebuffer(0);
     renderLayers(InstanceManager::getClientWorld(), false);
-    if (flags & GameEngineState_Lighting)
+    if (_engineState & GameEngineState_Lighting)
     {
         setFramebuffer(_fbIndex + 1);
         renderLayers(InstanceManager::getClientWorld(), true);
@@ -259,7 +268,7 @@ void GameRenderer::renderWorld(int flags)
     {
         renderEntities(InstanceManager::getServerWorld(), false, true);
     }
-    if (flags & GameEngineState_Lighting)
+    if (_engineState & GameEngineState_Lighting)
     {
         setFramebuffer(_fbIndex + 1, 0, 0, 0, 0);
         _rendererHelper->useScreenBlending();
@@ -272,7 +281,7 @@ void GameRenderer::renderWorld(int flags)
     
     int fbBegin = 0;
     
-    if (flags & GameEngineState_Lighting)
+    if (_engineState & GameEngineState_Lighting)
     {
         static TextureRegion tr = TextureRegion("framebuffer", 0, 0, 1, 1, 1, 1);
         
@@ -284,7 +293,7 @@ void GameRenderer::renderWorld(int flags)
         fbBegin = _fbIndex + 1;
         
         {
-            _lightingNGShader->configZ(NG_CFG->getFloat("defaultLightZ") * 1.25f);
+            _lightingNGShader->configZ(_engine->_lightZ * NG_CFG->getFloat("backgroundLightZFactor"));
             setFramebuffer(_fbIndex + 1, 0, 0, 0, 0);
             _spriteBatchers[0]->beginBatch();
             _spriteBatchers[0]->renderSprite(x, y, _camBounds[3]->getWidth(), _camBounds[3]->getHeight(), 0, tr);
@@ -292,7 +301,7 @@ void GameRenderer::renderWorld(int flags)
         }
         
         {
-            _lightingNGShader->configZ(NG_CFG->getFloat("defaultLightZ"));
+            _lightingNGShader->configZ(_engine->_lightZ);
             setFramebuffer(_fbIndex + 1, 0, 0, 0, 0);
             _spriteBatchers[0]->beginBatch();
             _spriteBatchers[0]->renderSprite(x, y, _camBounds[3]->getWidth(), _camBounds[3]->getHeight(), 0, tr);
@@ -410,7 +419,7 @@ void GameRenderer::renderBox2D()
     }
 }
 
-void GameRenderer::renderUI(int flags)
+void GameRenderer::renderUI()
 {
     _rendererHelper->updateMatrix(0, CAM_WIDTH, 0, CAM_HEIGHT);
     
@@ -440,14 +449,19 @@ void GameRenderer::renderUI(int flags)
         
         renderText(StringUtil::format("[S]         Sound %s", NG_AUDIO_ENGINE->isSoundDisabled() ? " OFF" : "  ON").c_str(), CAM_WIDTH - 0.5f, CAM_HEIGHT - (row++ * padding), FONT_ALIGN_RIGHT);
         renderText(StringUtil::format("[M]         Music %s", NG_AUDIO_ENGINE->isMusicDisabled() ? " OFF" : "  ON").c_str(), CAM_WIDTH - 0.5f, CAM_HEIGHT - (row++ * padding), FONT_ALIGN_RIGHT);
-        renderText(StringUtil::format("[B]   Box2D Debug %s", flags & GameEngineState_DisplayBox2D ? "  ON" : " OFF").c_str(), CAM_WIDTH - 0.5f, CAM_HEIGHT - (row++ * padding), FONT_ALIGN_RIGHT);
-        renderText(StringUtil::format("[L] Interpolation %s", flags & GameEngineState_Interpolation ? "  ON" : " OFF").c_str(), CAM_WIDTH - 0.5f, CAM_HEIGHT - (row++ * padding), FONT_ALIGN_RIGHT);
-        renderText(StringUtil::format("[Z]      Lighting %s", flags & GameEngineState_Lighting ? "  ON" : " OFF").c_str(), CAM_WIDTH - 0.5f, CAM_HEIGHT - (row++ * padding), FONT_ALIGN_RIGHT);
+        renderText(StringUtil::format("[B]   Box2D Debug %s", _engineState & GameEngineState_DisplayBox2D ? "  ON" : " OFF").c_str(), CAM_WIDTH - 0.5f, CAM_HEIGHT - (row++ * padding), FONT_ALIGN_RIGHT);
+        renderText(StringUtil::format("[L] Interpolation %s", _engineState & GameEngineState_Interpolation ? "  ON" : " OFF").c_str(), CAM_WIDTH - 0.5f, CAM_HEIGHT - (row++ * padding), FONT_ALIGN_RIGHT);
+        std::string lightZ = StringUtil::format("%f", _engine->_lightZ);
+        renderText(StringUtil::format("[Z]  Lighting %s", _engineState & GameEngineState_Lighting ? lightZ.c_str() : "     OFF").c_str(), CAM_WIDTH - 0.5f, CAM_HEIGHT - (row++ * padding), FONT_ALIGN_RIGHT);
         
         if (Server::getInstance())
         {
             renderText(StringUtil::format("[I]         Debug %s", Server::getInstance()->isDisplaying() ? "  ON" : " OFF").c_str(), CAM_WIDTH - 0.5f, CAM_HEIGHT - (row++ * padding), FONT_ALIGN_RIGHT);
             renderText(StringUtil::format("[T]    Toggle Map %s", InstanceManager::getServerWorld()->getMapName().c_str()).c_str(), CAM_WIDTH - 0.5f, CAM_HEIGHT - (row++ * padding), FONT_ALIGN_RIGHT);
+        }
+        else
+        {
+            renderText(StringUtil::format("              Map %s", InstanceManager::getClientWorld()->getMapName().c_str()).c_str(), CAM_WIDTH - 0.5f, CAM_HEIGHT - (row++ * padding), FONT_ALIGN_RIGHT);
         }
         
         if (InstanceManager::getClientWorld())

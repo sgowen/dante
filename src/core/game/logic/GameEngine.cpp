@@ -40,6 +40,7 @@
 #include "framework/audio/portable/NGAudioEngine.h"
 #include "framework/util/FPSUtil.h"
 #include "framework/input/CursorConverter.h"
+#include <framework/util/Config.h>
 
 #ifdef NG_STEAM
 #include "framework/network/steam/NGSteamClientHelper.h"
@@ -79,9 +80,12 @@ _timing(NULL),
 _server(NULL),
 _stateTime(0),
 _state(GameEngineState_Default),
-_map(0)
+_map(0),
+_lightZ(NG_CFG->getFloat("defaultLightZ"))
 {
     _state |= GameEngineState_Interpolation | GameEngineState_Lighting;
+    
+    _renderer->setEngine(this);
 }
 
 GameEngine::~GameEngine()
@@ -104,6 +108,8 @@ void GameEngine::enter(Engine* engine)
     _input = GameInputManager::getInstance();
     _timing = Timing::getInstance();
     _server = Server::getInstance();
+    
+    _input->setEngine(this);
 }
 
 void GameEngine::update(Engine* engine)
@@ -219,7 +225,7 @@ void GameEngine::render(double alpha)
     
     _renderer->updateCamera();
     
-    _renderer->render(_state);
+    _renderer->render();
     
     if (_state & GameEngineState_Interpolation)
     {
@@ -259,20 +265,16 @@ bool GameEngine::handleNonMoveInput()
             _state ^= GameEngineState_Lighting;
             break;
         case GIS_SERVER_TOGGLE_DISPLAY:
-        {
             if (_server)
             {
                 _server->toggleDisplaying();
             }
-        }
             break;
         case GIS_SERVER_TOGGLE_MAP:
-        {
             if (_server)
             {
                 _server->toggleMap();
             }
-        }
             break;
         default:
         {

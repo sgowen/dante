@@ -12,6 +12,7 @@
 
 #include "game/logic/MainInputState.h"
 #include "framework/network/portable/Move.h"
+#include <game/logic/GameEngine.h>
 
 #include "framework/util/Timing.h"
 #include "framework/input/CursorInputManager.h"
@@ -68,6 +69,11 @@ void GameInputManager::sOnPlayerWelcomed(uint8_t playerId)
     getInstance()->_currentState->activateNextPlayer(playerId);
 }
 
+void GameInputManager::setEngine(GameEngine* inValue)
+{
+    _engine = inValue;
+}
+
 void GameInputManager::update()
 {
     CURSOR_INPUT_MANAGER->process();
@@ -78,92 +84,99 @@ void GameInputManager::update()
     
     for (std::vector<KeyboardEvent *>::iterator i = KEYBOARD_INPUT_MANAGER->getEvents().begin(); i != KEYBOARD_INPUT_MANAGER->getEvents().end(); ++i)
     {
-        switch ((*i)->getKey())
+        KeyboardEvent& e = *(*i);
+        switch (e.getKey())
         {
             case NG_KEY_M:
-                _inputState = (*i)->isDown() ? GIS_CLIENT_MAIN_TOGGLE_MUSIC : _inputState;
+                _inputState = e.isDown() ? GIS_CLIENT_MAIN_TOGGLE_MUSIC : _inputState;
                 continue;
             case NG_KEY_S:
-                _inputState = (*i)->isDown() ? GIS_CLIENT_MAIN_TOGGLE_SOUND : _inputState;
+                _inputState = e.isDown() ? GIS_CLIENT_MAIN_TOGGLE_SOUND : _inputState;
                 continue;
             case NG_KEY_B:
-                _inputState = (*i)->isDown() ? GIS_TOGGLE_PHYSICS_DISPLAY : _inputState;
+                _inputState = e.isDown() ? GIS_TOGGLE_PHYSICS_DISPLAY : _inputState;
                 continue;
             case NG_KEY_L:
-                _inputState = (*i)->isDown() ? GIS_TOGGLE_INTERPOLATION : _inputState;
+                _inputState = e.isDown() ? GIS_TOGGLE_INTERPOLATION : _inputState;
                 continue;
             case NG_KEY_Z:
-                _inputState = (*i)->isDown() ? GIS_TOGGLE_LIGHTING : _inputState;
+                _inputState = e.isDown() ? GIS_TOGGLE_LIGHTING : _inputState;
                 continue;
             case NG_KEY_I:
-                _inputState = (*i)->isDown() ? GIS_SERVER_TOGGLE_DISPLAY : _inputState;
+                _inputState = e.isDown() ? GIS_SERVER_TOGGLE_DISPLAY : _inputState;
                 continue;
             case NG_KEY_T:
-                _inputState = (*i)->isDown() ? GIS_SERVER_TOGGLE_MAP : _inputState;
+                _inputState = e.isDown() ? GIS_SERVER_TOGGLE_MAP : _inputState;
+                continue;
+            case NG_KEY_ARROW_UP:
+                _lightZDelta = e.isPressed() ? 0.001f : 0;
+                continue;
+            case NG_KEY_ARROW_DOWN:
+                _lightZDelta = e.isPressed() ? -0.001f : 0;
                 continue;
             case NG_KEY_ESCAPE:
-                if ((*i)->isDown())
+                if (e.isDown())
                 {
                     dropPlayer(0);
                 }
                 continue;
             default:
             {
-                switch ((*i)->getKey())
+                switch (e.getKey())
                 {
                     // Player 1
                     case NG_KEY_W:
-                        _currentState->getGameInputState(0)._isJumping = (*i)->isDown();
+                        _currentState->getGameInputState(0)._isJumping = e.isPressed();
                         continue;
                     case NG_KEY_A:
-                        _currentState->getGameInputState(0)._isMovingLeft = (*i)->isDown();
+                        _currentState->getGameInputState(0)._isMovingLeft = e.isPressed();
                         continue;
                     case NG_KEY_D:
-                        _currentState->getGameInputState(0)._isMovingRight = (*i)->isDown();
+                        _currentState->getGameInputState(0)._isMovingRight = e.isPressed();
                         continue;
                     case NG_KEY_SPACE_BAR:
-                        _currentState->getGameInputState(0)._isMainAction = (*i)->isDown();
+                        _currentState->getGameInputState(0)._isMainAction = e.isPressed();
                         continue;
 #ifdef _DEBUG
                     // Add local players, debug Only
                     case NG_KEY_TWO:
-                        _currentState->getGameInputState(1)._isJumping = (*i)->isDown();
+                        _currentState->getGameInputState(1)._isJumping = e.isPressed();
                         continue;
                     case NG_KEY_THREE:
-                        _currentState->getGameInputState(2)._isJumping = (*i)->isDown();
+                        _currentState->getGameInputState(2)._isJumping = e.isPressed();
                         continue;
                     case NG_KEY_FOUR:
-                        _currentState->getGameInputState(3)._isJumping = (*i)->isDown();
+                        _currentState->getGameInputState(3)._isJumping = e.isPressed();
                         continue;
                     case NG_KEY_ARROW_LEFT:
-                        _currentState->getGameInputState(1)._isMovingLeft = (*i)->isDown();
-                        _currentState->getGameInputState(2)._isMovingLeft = (*i)->isDown();
-                        _currentState->getGameInputState(3)._isMovingLeft = (*i)->isDown();
+                        _currentState->getGameInputState(1)._isMovingLeft = e.isPressed();
+                        _currentState->getGameInputState(2)._isMovingLeft = e.isPressed();
+                        _currentState->getGameInputState(3)._isMovingLeft = e.isPressed();
                         continue;
                     case NG_KEY_ARROW_RIGHT:
-                        _currentState->getGameInputState(1)._isMovingRight = (*i)->isDown();
-                        _currentState->getGameInputState(2)._isMovingRight = (*i)->isDown();
-                        _currentState->getGameInputState(3)._isMovingRight = (*i)->isDown();
+                        _currentState->getGameInputState(1)._isMovingRight = e.isPressed();
+                        _currentState->getGameInputState(2)._isMovingRight = e.isPressed();
+                        _currentState->getGameInputState(3)._isMovingRight = e.isPressed();
                         continue;
                     case NG_KEY_PERIOD:
-                        _currentState->getGameInputState(1)._isMainAction = (*i)->isDown();
-                        _currentState->getGameInputState(2)._isMainAction = (*i)->isDown();
-                        _currentState->getGameInputState(3)._isMainAction = (*i)->isDown();
+                        _currentState->getGameInputState(1)._isMainAction = e.isPressed();
+                        _currentState->getGameInputState(2)._isMainAction = e.isPressed();
+                        _currentState->getGameInputState(3)._isMainAction = e.isPressed();
                         continue;
                     case NG_KEY_SEVEN:
-                        if ((*i)->isDown())
+                        if (e.isDown())
                         {
                             dropPlayer(1);
                         }
                         continue;
                     case NG_KEY_EIGHT:
-                        if ((*i)->isDown())
+                        if (e.isDown())
                         {
                             dropPlayer(2);
                         }
                         continue;
                     case NG_KEY_NINE:
-                        if ((*i)->isDown())
+                        if (e.isDown())
                         {
                             dropPlayer(3);
                         }
@@ -268,6 +281,7 @@ void GameInputManager::update()
         }
     }
     
+    _engine->_lightZ = clamp(_engine->_lightZ + _lightZDelta, 0.3f, -0.1f);
     _pendingMove = &sampleInputAsMove();
 }
 
@@ -314,7 +328,9 @@ GameInputManager::GameInputManager() :
 _currentState(static_cast<MainInputState*>(POOLED_OBJ_MGR->borrowInputState())),
 _pendingMove(NULL),
 _inputState(GIS_NONE),
-_isTimeToProcessInput(false)
+_isTimeToProcessInput(false),
+_engine(NULL),
+_lightZDelta(0)
 {
     // Empty
 }

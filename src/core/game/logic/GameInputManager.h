@@ -15,6 +15,7 @@
 
 class MainInputState;
 class Move;
+class GameEngine;
 
 #define INPUT_MANAGER_CALLBACKS GameInputManager::sRemoveProcessedMoves, GameInputManager::sGetMoveList, GameInputManager::sOnPlayerWelcomed
 
@@ -45,6 +46,7 @@ public:
     static MoveList& sGetMoveList();
     static void sOnPlayerWelcomed(uint8_t playerId);
     
+    void setEngine(GameEngine* inValue);
     void update();
     const Move* getPendingMove();
     void clearPendingMove();
@@ -60,6 +62,8 @@ private:
     const Move* _pendingMove;
     int _inputState;
     bool _isTimeToProcessInput;
+    GameEngine* _engine;
+    float _lightZDelta;
     
     const Move& sampleInputAsMove();
     

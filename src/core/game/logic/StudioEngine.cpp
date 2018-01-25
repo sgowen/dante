@@ -78,7 +78,7 @@ _input(NULL),
 _world(NULL),
 _state(StudioEngineState_Default)
 {
-    // Empty
+    _renderer->setEngine(this);
 }
 
 StudioEngine::~StudioEngine()
@@ -96,14 +96,14 @@ void StudioEngine::enter(Engine* engine)
     _input = StudioInputManager::getInstance();
     _world = new World(WorldFlag_MapLoadAll);
     _world->loadMap('Z001');
-    _state = StudioEngineState_DisplayGrid | StudioEngineState_LayerAll;
+    _state = StudioEngineState_DisplayGrid | StudioEngineState_DisplayControls | StudioEngineState_LayerAll;
     
-    _renderer->setWorld(_world);
+    _input->setEngine(this);
 }
 
 void StudioEngine::update(Engine* engine)
 {
-    _input->update(this);
+    _input->update();
     
     if (handleInput())
     {
@@ -151,7 +151,7 @@ void StudioEngine::onPause()
 
 void StudioEngine::render(double alpha)
 {
-    _renderer->render(_state);
+    _renderer->render();
 }
 
 bool StudioEngine::handleInput()

@@ -10,8 +10,7 @@
 
 #include "game/logic/TitleInputManager.h"
 
-#include "game/logic/MainInputState.h"
-#include "framework/network/portable/Move.h"
+#include "game/logic/TitleEngine.h"
 
 #include "framework/util/Timing.h"
 #include "framework/input/CursorInputManager.h"
@@ -35,6 +34,11 @@ TitleInputManager* TitleInputManager::getInstance()
 {
     static TitleInputManager instance = TitleInputManager();
     return &instance;
+}
+
+void TitleInputManager::setEngine(TitleEngine* inValue)
+{
+    _engine = inValue;
 }
 
 void TitleInputManager::update()
@@ -256,7 +260,8 @@ std::string TitleInputManager::getLiveInput()
 TitleInputManager::TitleInputManager() :
 _inputState(TIS_NONE),
 _isLiveMode(false),
-_isTimeToProcessInput(false)
+_isTimeToProcessInput(false),
+_engine(NULL)
 {
     // Empty
 }

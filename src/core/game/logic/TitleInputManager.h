@@ -28,13 +28,14 @@ enum TitleInputState
     TIS_ESCAPE
 };
 
-class MainInputState;
+class TitleEngine;
 
 class TitleInputManager
 {
 public:
     static TitleInputManager* getInstance();
     
+    void setEngine(TitleEngine* inValue);
     void update();
     void setLiveInputMode(bool isLiveMode);
     bool isLiveMode();
@@ -49,6 +50,7 @@ private:
     int _inputState;
     bool _isLiveMode;
     bool _isTimeToProcessInput;
+    TitleEngine* _engine;
     
     bool isTimeToSampleInput();
     

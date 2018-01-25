@@ -30,7 +30,8 @@ public:
     static StudioInputManager* getInstance();
     static void destroy();
     
-    void update(StudioEngine* engine);
+    void setEngine(StudioEngine* inValue);
+    void update();
     void setLiveInputMode(bool isLiveMode);
     bool isLiveMode();
     bool isTimeToProcessInput();
@@ -59,8 +60,9 @@ private:
     bool isPanningDown;
     bool isPanningRight;
     bool isPanningLeft;
+    StudioEngine* _engine;
     
-    void updateCamera(StudioEngine* engine);
+    void updateCamera();
     void resetCamera();
     
     // ctor, copy ctor, and assignment should be private in a Singleton

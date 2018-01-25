@@ -43,6 +43,7 @@ public:
     const char* save();
     void saveEntityLayout(uint32_t name, EntityLayoutDef* layout);
     EntityLayoutDef& getEntityLayoutDef();
+    std::string getJsonConfigFilePath(uint32_t inFourCCName);
     
 private:
     std::map<uint32_t, std::string> _layouts;
@@ -50,7 +51,6 @@ private:
     EntityLayoutDef* _layoutToSave;
     
     void loadEntityLayout(const char* data);
-    std::string getJsonConfigFilePath(uint32_t inFourCCName);
     std::string adjustPath(const char* path);
     
     // ctor, copy ctor, and assignment should be private in a Singleton

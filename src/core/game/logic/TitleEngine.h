@@ -28,6 +28,8 @@ enum TitleEngineState
 
 class TitleEngine : public EngineState
 {
+    friend class TitleRenderer;
+    
     NGRTTI_DECL;
     
 public:
@@ -55,7 +57,7 @@ private:
     CSteamID _serverSteamID;
 #endif
     bool _isSteam;
-    int _state;
+    uint32_t _state;
     
     bool handleInput(Engine* engine);
     void activateSteam();

@@ -41,7 +41,9 @@ public:
     void postRender();
     void loadMap(uint32_t map);
     void saveMap();
+    void saveMapAs(uint32_t map);
     std::string& getMapName();
+    std::string& getMapFileName();
     Entity* getPlayerWithId(uint8_t inPlayerID);
     std::vector<Entity*>& getPlayers();
     std::vector<Entity*>& getDynamicEntities();
@@ -58,6 +60,7 @@ private:
     EntityContactListener* _entityContactListener;
     EntityContactFilter* _entityContactFilter;
     uint32_t _map;
+    std::string _mapFileName;
     std::string _mapName;
     int _flags;
     

@@ -33,6 +33,8 @@ _world(new b2World(b2Vec2(0.0f, NG_CFG->getFloat("gravity")))),
 _entityContactListener(new EntityContactListener()),
 _entityContactFilter(new EntityContactFilter()),
 _map(0),
+_mapFileName(),
+_mapName(),
 _flags(flags)
 {
     _world->SetContactListener(_entityContactListener);
@@ -254,7 +256,8 @@ void World::loadMap(uint32_t map)
     chars[1] = (char)(map >> 16 & 0xFF);
     chars[0] = (char)(map >> 24 & 0xFF);
     
-    _mapName = std::string(chars);
+    _mapName = "";
+    _mapFileName = "";
     
     for (Entity* entity : _staticEntities)
     {
@@ -288,6 +291,9 @@ void World::loadMap(uint32_t map)
         LOG("Error! Map cannot be 0!");
         return;
     }
+    
+    _mapName = std::string(chars);
+    _mapFileName = EntityLayoutMapper::getInstance()->getJsonConfigFilePath(_map);
     
     if (_flags & WorldFlag_Server)
     {
@@ -332,6 +338,11 @@ void World::loadMap(uint32_t map)
 
 void World::saveMap()
 {
+    saveMapAs(_map);
+}
+
+void World::saveMapAs(uint32_t map)
+{
     EntityLayoutDef layout;
     
     for (Entity* e : _layers)
@@ -349,12 +360,20 @@ void World::saveMap()
         layout.dynamicEntities.push_back(EntityPosDef(e->getEntityDef().type, e->getPosition().x, e->getPosition().y));
     }
     
-    EntityLayoutMapper::getInstance()->saveEntityLayout(_map, &layout);
+    EntityLayoutMapper::getInstance()->saveEntityLayout(map, &layout);
+    
+    // If the save was successful, update current map
+    _map = map;
 }
 
 std::string& World::getMapName()
 {
     return _mapName;
+}
+
+std::string& World::getMapFileName()
+{
+    return _mapFileName;
 }
 
 Entity* World::getPlayerWithId(uint8_t inPlayerID)

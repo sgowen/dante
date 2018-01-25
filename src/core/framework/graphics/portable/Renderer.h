@@ -19,7 +19,7 @@ public:
 	virtual void createWindowSizeDependentResources(int screenWidth, int screenHeight, int renderWidth, int renderHeight) = 0;
     virtual void releaseDeviceDependentResources() = 0;
     
-    virtual void render(int flags = 0) = 0;
+    virtual void render() = 0;
 };
 
 #endif /* defined(__noctisgames__Renderer__) */

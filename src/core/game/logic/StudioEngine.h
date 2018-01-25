@@ -21,19 +21,27 @@ class World;
 
 enum StudioEngineState
 {
-    StudioEngineState_Default = 1 << 0,
-    StudioEngineState_DisplayBox2D = 1 << 1,
-    StudioEngineState_DisplayGrid = 1 << 2,
-    StudioEngineState_DisplayParallax = 1 << 3,
-    StudioEngineState_Layer0 = 1 << 4,
-    StudioEngineState_Layer1 = 1 << 5,
-    StudioEngineState_Layer2 = 1 << 6,
-    StudioEngineState_Layer3 = 1 << 7,
-    StudioEngineState_Layer4 = 1 << 8,
-    StudioEngineState_Layer5 = 1 << 9,
-    StudioEngineState_Layer6 = 1 << 10,
-    StudioEngineState_Layer7 = 1 << 11,
-    StudioEngineState_Layer8 = 1 << 12,
+    StudioEngineState_Default =                1 << 0,
+    StudioEngineState_DisplayBox2D =           1 << 1,
+    StudioEngineState_DisplayGrid =            1 << 2,
+    StudioEngineState_DisplayParallax =        1 << 3,
+    StudioEngineState_DisplayControls =        1 << 4,
+    StudioEngineState_DisplayAssets =          1 << 5,
+    StudioEngineState_DisplayEntities =        1 << 6,
+    StudioEngineState_DisplayNewMapDialog =    1 << 7,
+    StudioEngineState_DisplayLoadMapDialog =   1 << 8,
+    StudioEngineState_DisplaySaveMapDialog =   1 << 9,
+    StudioEngineState_DisplaySaveMapAsDialog = 1 << 10,
+    StudioEngineState_LayerBitBegin =               11,
+    StudioEngineState_Layer0 =                 1 << 11,
+    StudioEngineState_Layer1 =                 1 << 12,
+    StudioEngineState_Layer2 =                 1 << 13,
+    StudioEngineState_Layer3 =                 1 << 14,
+    StudioEngineState_Layer4 =                 1 << 15,
+    StudioEngineState_Layer5 =                 1 << 16,
+    StudioEngineState_Layer6 =                 1 << 17,
+    StudioEngineState_Layer7 =                 1 << 18,
+    StudioEngineState_Layer8 =                 1 << 19,
     
     StudioEngineState_LayerAll = StudioEngineState_Layer0 | StudioEngineState_Layer1 | StudioEngineState_Layer2 | StudioEngineState_Layer3 | StudioEngineState_Layer4 | StudioEngineState_Layer5 | StudioEngineState_Layer6 | StudioEngineState_Layer7 | StudioEngineState_Layer8
 };
@@ -66,7 +74,7 @@ private:
     StudioRenderer* _renderer;
     StudioInputManager* _input;
     World* _world;
-    int _state;
+    uint32_t _state;
     
     bool handleInput();
     

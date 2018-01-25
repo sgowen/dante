@@ -33,6 +33,7 @@ class Font;
 class World;
 class StudioEngine;
 class Box2DDebugRenderer;
+class StudioEngine;
 
 #define NUM_SPRITE_BATCHERS 10
 #define NUM_CAMERAS 4
@@ -46,10 +47,10 @@ public:
     virtual void createDeviceDependentResources();
     virtual void createWindowSizeDependentResources(int screenWidth, int screenHeight, int renderWidth, int renderHeight);
     virtual void releaseDeviceDependentResources();
-    virtual void render(int flags = 0);
+    virtual void render();
     
+    void setEngine(StudioEngine* inValue);
     void update(float x, float y, float w, float h, int scale);
-    void setWorld(World* inValue);
     void displayToast(std::string toast);
     
 private:
@@ -67,19 +68,20 @@ private:
     NGShader* _colorNGShader;
     NGShader* _framebufferToScreenNGShader;
     NGRect* _camBounds[NUM_CAMERAS];
-    World* _world;
     std::deque<std::string> _toasts;
     int _toastStateTime;
     int _fbIndex;
     int _scrollValue;
+    StudioEngine* _engine;
+    uint32_t _engineState;
     
     void setFramebuffer(int framebufferIndex, float r = 0, float g = 0, float b = 0, float a = 0);
-    void renderWorld(int flags);
-    void renderLayers(int flags);
-    void renderEntities(int flags);
+    void renderWorld();
+    void renderLayers();
+    void renderEntities();
     void renderBox2D();
     void renderGrid();
-    void renderUI(int flags);
+    void renderUI();
     void renderText(const char* inStr, float x, float y, int justification = FONT_ALIGN_LEFT);
     void endFrame();
 };

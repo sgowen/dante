@@ -37,7 +37,7 @@ int KeyboardEvent::getStatus()
 
 bool KeyboardEvent::isDown()
 {
-    return _status == KEYBOARD_STATUS_DOWN || _status == KEYBOARD_STATUS_HELD;
+    return _status == KEYBOARD_STATUS_DOWN;
 }
 
 bool KeyboardEvent::isHeld()
@@ -48,4 +48,9 @@ bool KeyboardEvent::isHeld()
 bool KeyboardEvent::isUp()
 {
     return _status == KEYBOARD_STATUS_UP;
+}
+
+bool KeyboardEvent::isPressed()
+{
+    return _status == KEYBOARD_STATUS_DOWN || _status == KEYBOARD_STATUS_HELD;
 }

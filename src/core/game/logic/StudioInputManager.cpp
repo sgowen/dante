@@ -53,7 +53,12 @@ void StudioInputManager::destroy()
     s_instance = NULL;
 }
 
-void StudioInputManager::update(StudioEngine* engine)
+void StudioInputManager::setEngine(StudioEngine* inValue)
+{
+    _engine = inValue;
+}
+
+void StudioInputManager::update()
 {
     CURSOR_INPUT_MANAGER->process();
     KEYBOARD_INPUT_MANAGER->process();
@@ -160,46 +165,55 @@ void StudioInputManager::update(StudioEngine* engine)
             {
                 case NG_KEY_CMD:
                 case NG_KEY_CTRL:
-                    _isControl = !e.isUp();
+                    _isControl = e.isPressed();
                     continue;
                 case NG_KEY_ZERO:
-                    engine->_state ^= e.isDown() ? StudioEngineState_Layer0 : 0;
+                    _engine->_state ^= e.isDown() ? StudioEngineState_Layer0 : 0;
                     continue;
                 case NG_KEY_ONE:
-                    engine->_state ^= e.isDown() ? StudioEngineState_Layer1 : 0;
+                    _engine->_state ^= e.isDown() ? StudioEngineState_Layer1 : 0;
                     continue;
                 case NG_KEY_TWO:
-                    engine->_state ^= e.isDown() ? StudioEngineState_Layer2 : 0;
+                    _engine->_state ^= e.isDown() ? StudioEngineState_Layer2 : 0;
                     continue;
                 case NG_KEY_THREE:
-                    engine->_state ^= e.isDown() ? StudioEngineState_Layer3 : 0;
+                    _engine->_state ^= e.isDown() ? StudioEngineState_Layer3 : 0;
                     continue;
                 case NG_KEY_FOUR:
-                    engine->_state ^= e.isDown() ? StudioEngineState_Layer4 : 0;
+                    _engine->_state ^= e.isDown() ? StudioEngineState_Layer4 : 0;
                     continue;
                 case NG_KEY_FIVE:
-                    engine->_state ^= e.isDown() ? StudioEngineState_Layer5 : 0;
+                    _engine->_state ^= e.isDown() ? StudioEngineState_Layer5 : 0;
                     continue;
                 case NG_KEY_SIX:
-                    engine->_state ^= e.isDown() ? StudioEngineState_Layer6 : 0;
+                    _engine->_state ^= e.isDown() ? StudioEngineState_Layer6 : 0;
                     continue;
                 case NG_KEY_SEVEN:
-                    engine->_state ^= e.isDown() ? StudioEngineState_Layer7 : 0;
+                    _engine->_state ^= e.isDown() ? StudioEngineState_Layer7 : 0;
                     continue;
                 case NG_KEY_EIGHT:
-                    engine->_state ^= e.isDown() ? StudioEngineState_Layer8 : 0;
+                    _engine->_state ^= e.isDown() ? StudioEngineState_Layer8 : 0;
                     continue;
                 case NG_KEY_ARROW_LEFT:
-                    isPanningLeft = e.isDown();
+                    isPanningLeft = e.isPressed();
                     continue;
                 case NG_KEY_ARROW_RIGHT:
-                    isPanningRight = e.isDown();
+                    isPanningRight = e.isPressed();
                     continue;
                 case NG_KEY_ARROW_DOWN:
-                    isPanningDown = e.isDown();
+                    isPanningDown = e.isPressed();
                     continue;
                 case NG_KEY_ARROW_UP:
-                    isPanningUp = e.isDown();
+                    isPanningUp = e.isPressed();
+                    continue;
+                case NG_KEY_C:
+                    _engine->_state ^= e.isDown() ? StudioEngineState_DisplayControls : 0;
+                    continue;
+                case NG_KEY_A:
+                    _engine->_state ^= e.isDown() ? StudioEngineState_DisplayAssets : 0;
+                    continue;
+                case NG_KEY_E:
+                    _engine->_state ^= e.isDown() ? StudioEngineState_DisplayEntities : 0;
                     continue;
                 case NG_KEY_R:
                     if (e.isDown())
@@ -207,22 +221,40 @@ void StudioInputManager::update(StudioEngine* engine)
                         resetCamera();
                     }
                     continue;
+                case NG_KEY_N:
+                    if (e.isDown())
+                    {
+                        /// TODO, prompt for new key / filename combo, update maps.cfg, and then load it
+                    }
+                    continue;
+                case NG_KEY_L:
+                    if (e.isDown())
+                    {
+                        /// TODO, prompt user to pick a map to load
+                    }
+                    continue;
                 case NG_KEY_S:
                     if (e.isDown())
                     {
-                        engine->_world->saveMap();
-                        std::string toast = StringUtil::format("%s saved!", engine->_world->getMapName().c_str());
-                        engine->_renderer->displayToast(toast.c_str());
+                        if (_isControl)
+                        {
+                            /// TODO, prompt for new key / filename combo and then save
+                        }
+                        else
+                        {
+                            _engine->_world->saveMap();
+                            _engine->_renderer->displayToast(StringUtil::format("%s saved!", _engine->_world->getMapName().c_str()).c_str());
+                        }
                     }
                     continue;
                 case NG_KEY_P:
-                    engine->_state ^= e.isDown() ? StudioEngineState_DisplayParallax : 0;
+                    _engine->_state ^= e.isDown() ? StudioEngineState_DisplayParallax : 0;
                     continue;
                 case NG_KEY_B:
-                    engine->_state ^= e.isDown() ? StudioEngineState_DisplayBox2D : 0;
+                    _engine->_state ^= e.isDown() ? StudioEngineState_DisplayBox2D : 0;
                     continue;
                 case NG_KEY_G:
-                    engine->_state ^= e.isDown() ? StudioEngineState_DisplayGrid : 0;
+                    _engine->_state ^= e.isDown() ? StudioEngineState_DisplayGrid : 0;
                     continue;
                 case NG_KEY_ESCAPE:
                     _inputState = e.isDown() ? SIS_ESCAPE : SIS_NONE;
@@ -233,7 +265,7 @@ void StudioInputManager::update(StudioEngine* engine)
         }
     }
     
-    updateCamera(engine);
+    updateCamera();
 }
 
 void StudioInputManager::setLiveInputMode(bool isLiveMode)
@@ -277,7 +309,7 @@ std::string StudioInputManager::getLiveInput()
     return _liveInput;
 }
 
-void StudioInputManager::updateCamera(StudioEngine *engine)
+void StudioInputManager::updateCamera()
 {
     int w = CAM_WIDTH * _scrollValue;
     int h = CAM_HEIGHT * _scrollValue;
@@ -331,7 +363,7 @@ void StudioInputManager::updateCamera(StudioEngine *engine)
         }
     }
     
-    engine->_renderer->update(_cursor.getX(), _cursor.getY(), w, h, _scrollValue);
+    _engine->_renderer->update(_cursor.getX(), _cursor.getY(), w, h, _scrollValue);
 }
 
 void StudioInputManager::resetCamera()
@@ -363,7 +395,8 @@ _lastScrollValue(1),
 isPanningUp(false),
 isPanningDown(false),
 isPanningRight(false),
-isPanningLeft(false)
+isPanningLeft(false),
+_engine(NULL)
 {
     resetCamera();
 }

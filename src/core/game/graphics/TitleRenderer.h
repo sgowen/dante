@@ -28,7 +28,7 @@ class TextureRegion;
 class NGRect;
 class NGTexture;
 class Font;
-class World;
+class TitleEngine;
 
 class TitleRenderer : public Renderer
 {
@@ -39,7 +39,9 @@ public:
     virtual void createDeviceDependentResources();
     virtual void createWindowSizeDependentResources(int screenWidth, int screenHeight, int renderWidth, int renderHeight);
     virtual void releaseDeviceDependentResources();
-    virtual void render(int flags = 0);
+    virtual void render();
+    
+    void setEngine(TitleEngine* inValue);
     
 private:
     TextureManager* _textureManager;
@@ -55,6 +57,8 @@ private:
     NGShader* _colorNGShader;
     NGShader* _framebufferToScreenNGShader;
     int _fbIndex;
+    TitleEngine* _engine;
+    uint32_t _engineState;
     
     void setFramebuffer(int framebufferIndex, float r = 0, float g = 0, float b = 0, float a = 0);
     void renderMainMenuSteamOffText();

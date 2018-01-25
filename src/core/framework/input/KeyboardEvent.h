@@ -25,6 +25,7 @@ public:
     bool isDown();
     bool isHeld();
     bool isUp();
+    bool isPressed();
     
 private:
     unsigned short _sKey;

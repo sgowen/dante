@@ -94,7 +94,9 @@ _textureNGShader(new NGTextureShader(*_rendererHelper, "shader_003_vert.ngs", "s
 _colorNGShader(new NGGeometryShader(*_rendererHelper, "shader_001_vert.ngs", "shader_001_frag.ngs")),
 _framebufferToScreenNGShader(new NGFramebufferToScreenShader(*_rendererHelper, "shader_002_vert.ngs", "shader_002_frag.ngs")),
 _font(new Font("texture_001.ngt", 0, 0, 16, 64, 75, 1024, 1024)),
-_fbIndex(0)
+_fbIndex(0),
+_engine(NULL),
+_engineState(0)
 {
     // Empty
 }
@@ -142,8 +144,10 @@ void TitleRenderer::releaseDeviceDependentResources()
     _framebufferToScreenNGShader->unload(*_shaderProgramLoader);
 }
 
-void TitleRenderer::render(int flags)
+void TitleRenderer::render()
 {
+    _engineState = _engine->_state;
+    
     setFramebuffer(0, 0, 0, 0, 1);
     _rendererHelper->useNormalBlending();
 
@@ -153,7 +157,7 @@ void TitleRenderer::render(int flags)
 
         _spriteBatcher->beginBatch();
 
-        switch (flags)
+        switch (_engineState)
         {
             case TitleEngineState_SteamOff:
                 renderMainMenuSteamOffText();
@@ -180,6 +184,11 @@ void TitleRenderer::render(int flags)
     //testRenderingSuite();
 
     endFrame();
+}
+
+void TitleRenderer::setEngine(TitleEngine* inValue)
+{
+    _engine = inValue;
 }
 
 void TitleRenderer::setFramebuffer(int framebufferIndex, float r, float g, float b, float a)

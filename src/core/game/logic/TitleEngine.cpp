@@ -86,6 +86,8 @@ _state(TitleEngineState_SteamOff)
     NoctisGames::NGExtension::setInstance(NoctisGames::DefaultNGExtension::getInstance());
     
     activateSteam();
+    
+    _renderer->setEngine(this);
 }
 
 TitleEngine::~TitleEngine()
@@ -101,6 +103,8 @@ void TitleEngine::enter(Engine* engine)
     
     createDeviceDependentResources();
     createWindowSizeDependentResources(engine->getScreenWidth(), engine->getScreenHeight(), engine->getRenderWidth(), engine->getRenderHeight(), engine->getCursorWidth(), engine->getCursorHeight());
+    
+    TitleInputManager::getInstance()->setEngine(this);
 }
 
 void TitleEngine::update(Engine* engine)
@@ -166,7 +170,7 @@ void TitleEngine::onPause()
 
 void TitleEngine::render(double alpha)
 {
-    _renderer->render(_state);
+    _renderer->render();
 }
 
 bool TitleEngine::handleInput(Engine* engine)
