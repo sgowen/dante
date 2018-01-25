@@ -190,6 +190,8 @@ void StudioInputManager::handleDefaultInput()
                 _upCursor.set(c);
                 _deltaCursor.set(0, 0);
                 
+                /// TODO, align entity to grid
+                
                 _activeEntity = NULL;
             }
                 break;
