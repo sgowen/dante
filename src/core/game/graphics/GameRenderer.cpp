@@ -330,12 +330,14 @@ void GameRenderer::renderWorld()
 
 void GameRenderer::renderLayers(World* world, bool isNormals)
 {
-    for (int i = 0; i < 3; ++i)
+    static const int NUM_LAYERS = 4;
+    
+    for (int i = 0; i < NUM_LAYERS; ++i)
     {
         _spriteBatchers[i]->beginBatch();
     }
     
-    std::string textures[3];
+    std::string textures[NUM_LAYERS];
     
     std::vector<Entity*> entities = world->getLayers();
     for (Entity* e : entities)
@@ -346,7 +348,7 @@ void GameRenderer::renderLayers(World* world, bool isNormals)
         textures[e->getEntityDef().layer] = isNormals ? tr.getNormalMapName() : tr.getTextureName();
     }
     
-    for (int i = 0; i < 3; ++i)
+    for (int i = 0; i < NUM_LAYERS; ++i)
     {
         if (textures[i].length() > 0)
         {

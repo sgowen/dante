@@ -271,12 +271,14 @@ void StudioRenderer::renderWorld()
 
 void StudioRenderer::renderLayers()
 {
-    for (int i = 0; i < 3; ++i)
+    static const int NUM_LAYERS = 4;
+    
+    for (int i = 0; i < NUM_LAYERS; ++i)
     {
         _spriteBatchers[i]->beginBatch();
     }
     
-    std::string textures[3];
+    std::string textures[NUM_LAYERS];
     
     std::vector<Entity*> entities = _engine->_world->getLayers();
     for (Entity* e : entities)
@@ -287,13 +289,14 @@ void StudioRenderer::renderLayers()
         textures[e->getEntityDef().layer] = tr.getTextureName();
     }
     
-    for (int i = 0; i < 3; ++i)
+    for (int i = 0; i < NUM_LAYERS; ++i)
     {
         if (textures[i].length() > 0)
         {
             if ((i == 0 && _engineState & StudioEngineState_Layer0) ||
                 (i == 1 && _engineState & StudioEngineState_Layer1) ||
-                (i == 2 && _engineState & StudioEngineState_Layer2))
+                (i == 2 && _engineState & StudioEngineState_Layer2) ||
+                (i == 3 && _engineState & StudioEngineState_Layer3))
             {
                 if (_engineState & StudioEngineState_DisplayParallax)
                 {
@@ -432,8 +435,8 @@ void StudioRenderer::renderUI()
     {
         /// Controls
         _fillPolygonBatcher->beginBatch();
-        int width = 20;
-        int height = 9;
+        int width = 22;
+        int height = 15;
         NGRect window = NGRect(CAM_WIDTH - width - 1, CAM_HEIGHT - height - 1, width, height);
         Color windowColor = Color::BLUE;
         windowColor.alpha = 0.5f;
@@ -445,18 +448,27 @@ void StudioRenderer::renderUI()
         int row = 2;
         static float padding = 1;
         
-        renderText(StringUtil::format("[B] Box2D Debug %s", _engineState & StudioEngineState_DisplayBox2D ? " ON" : "OFF").c_str(), CAM_WIDTH - 2, CAM_HEIGHT - (row++ * padding), FONT_ALIGN_RIGHT);
-        renderText(StringUtil::format("[G]        Grid %s", _engineState & StudioEngineState_DisplayGrid ? " ON" : "OFF").c_str(), CAM_WIDTH - 2, CAM_HEIGHT - (row++ * padding), FONT_ALIGN_RIGHT);
-        renderText(StringUtil::format("[P]    Parallax %s", _engineState & StudioEngineState_DisplayParallax ? " ON" : "OFF").c_str(), CAM_WIDTH - 2, CAM_HEIGHT - (row++ * padding), FONT_ALIGN_RIGHT);
-        
+        renderText(StringUtil::format("[B]   Box2D Debug %s", _engineState & StudioEngineState_DisplayBox2D ? " ON" : "OFF").c_str(), CAM_WIDTH - 2, CAM_HEIGHT - (row++ * padding), FONT_ALIGN_RIGHT);
+        renderText(StringUtil::format("[G]          Grid %s", _engineState & StudioEngineState_DisplayGrid ? " ON" : "OFF").c_str(), CAM_WIDTH - 2, CAM_HEIGHT - (row++ * padding), FONT_ALIGN_RIGHT);
+        renderText(StringUtil::format("[P]      Parallax %s", _engineState & StudioEngineState_DisplayParallax ? " ON" : "OFF").c_str(), CAM_WIDTH - 2, CAM_HEIGHT - (row++ * padding), FONT_ALIGN_RIGHT);
         ++row;
-        
-        renderText(StringUtil::format("[R] Reset Camera   ").c_str(), CAM_WIDTH - 2, CAM_HEIGHT - (row++ * padding), FONT_ALIGN_RIGHT);
-        renderText(StringUtil::format("[N]          New   ").c_str(), CAM_WIDTH - 2, CAM_HEIGHT - (row++ * padding), FONT_ALIGN_RIGHT);
-        renderText(StringUtil::format("[L]         Load   ").c_str(), CAM_WIDTH - 2, CAM_HEIGHT - (row++ * padding), FONT_ALIGN_RIGHT);
-        renderText(StringUtil::format("[S]         Save   ").c_str(), CAM_WIDTH - 2, CAM_HEIGHT - (row++ * padding), FONT_ALIGN_RIGHT);
+        renderText(StringUtil::format("[R]      Reset Camera").c_str(), CAM_WIDTH - 2, CAM_HEIGHT - (row++ * padding), FONT_ALIGN_RIGHT);
+        ++row;
+        renderText(StringUtil::format("[N]               New").c_str(), CAM_WIDTH - 2, CAM_HEIGHT - (row++ * padding), FONT_ALIGN_RIGHT);
+        renderText(StringUtil::format("[L]              Load").c_str(), CAM_WIDTH - 2, CAM_HEIGHT - (row++ * padding), FONT_ALIGN_RIGHT);
+        renderText(StringUtil::format("[S]              Save").c_str(), CAM_WIDTH - 2, CAM_HEIGHT - (row++ * padding), FONT_ALIGN_RIGHT);
+        renderText(StringUtil::format("[CTRL+S]      Save As").c_str(), CAM_WIDTH - 2, CAM_HEIGHT - (row++ * padding), FONT_ALIGN_RIGHT);
+        ++row;
+        renderText(StringUtil::format("[C]  %s Controls", _engineState & StudioEngineState_DisplayControls ? "Hide   " : "Display").c_str(), CAM_WIDTH - 2, CAM_HEIGHT - (row++ * padding), FONT_ALIGN_RIGHT);
+        renderText(StringUtil::format("[A]  %s   Assets", _engineState & StudioEngineState_DisplayAssets ? "Hide   " : "Display").c_str(), CAM_WIDTH - 2, CAM_HEIGHT - (row++ * padding), FONT_ALIGN_RIGHT);
+        renderText(StringUtil::format("[E]  %s Entities", _engineState & StudioEngineState_DisplayEntities ? "Hide   " : "Display").c_str(), CAM_WIDTH - 2, CAM_HEIGHT - (row++ * padding), FONT_ALIGN_RIGHT);
         
         _spriteBatchers[0]->endBatch(_textureNGShader, _textureManager->getTextureWithName("texture_000.ngt"));
+    }
+    
+    if (_engineState & StudioEngineState_DisplayLoadMapDialog)
+    {
+        
     }
     
     {
@@ -470,7 +482,7 @@ void StudioRenderer::renderUI()
         int column = 1;
         static float padding = 1;
         
-        for (int i = 0; i < 9; ++i)
+        for (int i = 0; i < StudioEngineState_NumLayers; ++i)
         {
             _spriteBatchers[0]->beginBatch();
             renderText(StringUtil::format("%d", i).c_str(), 1 + (column++ * padding), 1, FONT_ALIGN_RIGHT);
@@ -480,7 +492,7 @@ void StudioRenderer::renderUI()
         {
             /// Render Map Info in the center of the bar
             _spriteBatchers[0]->beginBatch();
-            renderText(StringUtil::format("map %s | %s", _engine->_world->getMapName().c_str(), _engine->_world->getMapFileName().c_str()).c_str(), CAM_WIDTH / 2, 1, FONT_ALIGN_CENTERED);
+            renderText(StringUtil::format("%s | %s", _engine->_world->getMapName().c_str(), _engine->_world->getMapFileName().c_str()).c_str(), CAM_WIDTH / 2, 1, FONT_ALIGN_CENTERED);
             _spriteBatchers[0]->endBatch(_textureNGShader, _textureManager->getTextureWithName("texture_000.ngt"), NULL, Color::WHITE);
         }
         

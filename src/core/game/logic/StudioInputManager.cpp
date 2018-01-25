@@ -194,6 +194,9 @@ void StudioInputManager::update()
                 case NG_KEY_EIGHT:
                     _engine->_state ^= e.isDown() ? StudioEngineState_Layer8 : 0;
                     continue;
+                case NG_KEY_NINE:
+                    _engine->_state ^= e.isDown() ? StudioEngineState_Layer9 : 0;
+                    continue;
                 case NG_KEY_ARROW_LEFT:
                     isPanningLeft = e.isPressed();
                     continue;

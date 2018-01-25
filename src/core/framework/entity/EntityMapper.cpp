@@ -87,6 +87,7 @@ void EntityMapper::initWithJson(const char* json)
             EntityDef* entry = new EntityDef();
             
             entry->type = key;
+            entry->name = iv["name"].GetString();
             entry->controller = std::string("DefaultController");
             
             {
@@ -136,6 +137,7 @@ void EntityMapper::initWithJson(const char* json)
             EntityDef* entry = new EntityDef();
             
             entry->type = key;
+            entry->name = iv["name"].GetString();
             entry->controller = iv["controller"].GetString();
             
             {
