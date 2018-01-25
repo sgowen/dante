@@ -14,7 +14,6 @@
 #include "framework/graphics/portable/NGTexture.h"
 #include "framework/graphics/portable/NGShader.h"
 #include "framework/graphics/portable/TextureRegion.h"
-#include "framework/graphics/portable/Color.h"
 
 #include <framework/util/FrameworkConstants.h>
 
@@ -126,13 +125,13 @@ void SpriteBatcher::renderSprite(float x, float y, float width, float height, fl
     ++_numSprites;
 }
 
-void SpriteBatcher::endBatch(NGShader* shader, NGTexture* texture, NGTexture* normalMap)
+void SpriteBatcher::endBatch(NGShader* shader, NGTexture* texture, NGTexture* normalMap, Color& c)
 {
     assert(shader);
     
     if (_numSprites > 0)
     {
-        shader->bind(&_vertices, texture, normalMap);
+        shader->bind(&_vertices, texture, normalMap, &c);
         
         _rendererHelper->drawIndexed(NGPrimitiveType_Triangles, 0, _numSprites * INDICES_PER_RECTANGLE);
         

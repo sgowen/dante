@@ -319,7 +319,7 @@ void PlayerController::processInput(InputState* inInputState, bool isPending)
     static const int MS_RIGHT = 2;
     
     const b2Vec2& vel = velocity;
-    if (getNumJumps() == 2)
+    if (getNumJumps() == 2 && _entity->getPose().stateTime < 12)
     {
         isDoubleJumpFrame = true;
     }
@@ -345,27 +345,27 @@ void PlayerController::processInput(InputState* inInputState, bool isPending)
     {
         case MS_LEFT:
             desiredVel = b2Max(vel.x - 1, -_maxXVelocity);
+            isLeft = true;
             break;
         case MS_STOP:
             desiredVel = vel.x * 0.99f;
+            isLeft = false;
+            isRight = false;
             break;
         case MS_RIGHT:
             desiredVel = b2Min(vel.x + 1, _maxXVelocity);
+            isRight = true;
             break;
     }
     float velChange = desiredVel - vel.x;
     float impulse = _entity->getBody()->GetMass() * velChange;
-    if (impulse != 0)
-    {
-        _entity->getBody()->ApplyLinearImpulse( b2Vec2(impulse,0), _entity->getBody()->GetWorldCenter(), true);
-    }
     
     _entity->getPose().isFacingLeft = isLeft ? true : isRight ? false : _entity->getPose().isFacingLeft;
     
-    if (vertForce != 0)
+    if (impulse != 0 || vertForce != 0)
     {
         _entity->updateBodyFromPose();
-        _entity->getBody()->ApplyLinearImpulse(b2Vec2(0,vertForce), _entity->getBody()->GetWorldCenter(), true);
+        _entity->getBody()->ApplyLinearImpulse(b2Vec2(impulse,vertForce), _entity->getBody()->GetWorldCenter(), true);
     }
 }
 

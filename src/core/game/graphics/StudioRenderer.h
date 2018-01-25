@@ -27,7 +27,6 @@ class RendererHelper;
 class NGShader;
 class Entity;
 class TextureRegion;
-class Color;
 class NGRect;
 class NGTexture;
 class Font;
@@ -35,7 +34,7 @@ class World;
 class StudioEngine;
 class Box2DDebugRenderer;
 
-#define NUM_SPRITE_BATCHERS 8
+#define NUM_SPRITE_BATCHERS 10
 #define NUM_CAMERAS 4
 
 class StudioRenderer : public Renderer
@@ -75,13 +74,13 @@ private:
     int _scrollValue;
     
     void setFramebuffer(int framebufferIndex, float r = 0, float g = 0, float b = 0, float a = 0);
-    void renderWorld();
-    void renderLayers();
-    void renderEntities();
+    void renderWorld(int flags);
+    void renderLayers(int flags);
+    void renderEntities(int flags);
     void renderBox2D();
     void renderGrid();
     void renderUI(int flags);
-    void renderText(const char* inStr, float x, float y, const Color& inColor, int justification = FONT_ALIGN_LEFT);
+    void renderText(const char* inStr, float x, float y, int justification = FONT_ALIGN_LEFT);
     void endFrame();
 };
 

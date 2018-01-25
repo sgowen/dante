@@ -197,72 +197,66 @@ void TitleRenderer::renderMainMenuSteamOffText()
     if (PlatformHelper::getPlatform() != NG_PLATFORM_ANDROID
         && PlatformHelper::getPlatform() != NG_PLATFORM_IOS)
     {
-        renderText("[E] to enter Studio",   CAM_WIDTH / 2, CAM_HEIGHT - 2, Color::WHITE, FONT_ALIGN_CENTERED);
+        renderText("[E] to enter Studio",   CAM_WIDTH / 4, CAM_HEIGHT - 2, FONT_ALIGN_LEFT);
+        renderText("[A] to activate Steam", CAM_WIDTH / 4, CAM_HEIGHT - 4, FONT_ALIGN_LEFT);
     }
+    
+    renderText("[S] to start local server", CAM_WIDTH / 4, CAM_HEIGHT - 6, FONT_ALIGN_LEFT);
+    renderText("[J] to join server by IP",  CAM_WIDTH / 4, CAM_HEIGHT - 8, FONT_ALIGN_LEFT);
 
-    renderText("[A] to activate Steam",     CAM_WIDTH / 2, CAM_HEIGHT - 4, Color::WHITE, FONT_ALIGN_CENTERED);
-    renderText("[S] to start local server", CAM_WIDTH / 2, CAM_HEIGHT - 6, Color::WHITE, FONT_ALIGN_CENTERED);
-    renderText("[J] to join server by IP",  CAM_WIDTH / 2, CAM_HEIGHT - 8, Color::WHITE, FONT_ALIGN_CENTERED);
-
-    renderText("[ESC] to exit game", CAM_WIDTH / 2, 4, Color::WHITE, FONT_ALIGN_CENTERED);
+    renderText("[ESC] to exit game", CAM_WIDTH / 2, 4, FONT_ALIGN_CENTERED);
 }
 
 void TitleRenderer::renderMainMenuSteamOnText()
 {
-    if (PlatformHelper::getPlatform() != NG_PLATFORM_ANDROID
-        && PlatformHelper::getPlatform() != NG_PLATFORM_IOS)
-    {
-        renderText("[E] to enter Studio",                 CAM_WIDTH / 2, CAM_HEIGHT - 2, Color::WHITE, FONT_ALIGN_CENTERED);
-    }
-
-    renderText("[D] to deactivate Steam",                 CAM_WIDTH / 2, CAM_HEIGHT - 4, Color::WHITE, FONT_ALIGN_CENTERED);
-    renderText("[S] to start steam server",               CAM_WIDTH / 2, CAM_HEIGHT - 6, Color::WHITE, FONT_ALIGN_CENTERED);
-    renderText("[L] to refresh list of LAN servers",      CAM_WIDTH / 2, CAM_HEIGHT - 8, Color::WHITE, FONT_ALIGN_CENTERED);
-    renderText("[I] to refresh list of Internet servers", CAM_WIDTH / 2, CAM_HEIGHT - 10, Color::WHITE, FONT_ALIGN_CENTERED);
-
+    renderText("[E] to enter Studio",                     CAM_WIDTH / 4, CAM_HEIGHT - 2, FONT_ALIGN_LEFT);
+    renderText("[D] to deactivate Steam",                 CAM_WIDTH / 4, CAM_HEIGHT - 4, FONT_ALIGN_LEFT);
+    renderText("[S] to start steam server",               CAM_WIDTH / 4, CAM_HEIGHT - 6, FONT_ALIGN_LEFT);
+    renderText("[L] to refresh list of LAN servers",      CAM_WIDTH / 4, CAM_HEIGHT - 8, FONT_ALIGN_LEFT);
+    renderText("[I] to refresh list of Internet servers", CAM_WIDTH / 4, CAM_HEIGHT - 10, FONT_ALIGN_LEFT);
+    
 #ifdef NG_STEAM
     std::vector<NGSteamGameServer> gameServers = NG_STEAM_GAME_SERVICES->getGameServers();
     int index = 0;
     for (NGSteamGameServer gameServer : gameServers)
     {
         int serverNumber = index + 1;
-        renderText(StringUtil::format("[%i] %s", serverNumber, gameServer.getDisplayString()).c_str(), CAM_WIDTH / 2, CAM_HEIGHT - 13.0f - (index * 0.5f), Color::WHITE, FONT_ALIGN_CENTERED);
+        renderText(StringUtil::format("[%i] %s", serverNumber, gameServer.getDisplayString()).c_str(), CAM_WIDTH / 2, CAM_HEIGHT - 13.0f - (index * 0.5f), FONT_ALIGN_CENTERED);
 
         ++index;
     }
 #endif
 
-    renderText("[ESC] to exit game", CAM_WIDTH / 2, 4, Color::WHITE, FONT_ALIGN_CENTERED);
+    renderText("[ESC] to exit game", CAM_WIDTH / 2, 4, FONT_ALIGN_CENTERED);
 }
 
 void TitleRenderer::renderStartingServerText()
 {
-    renderText("Server starting, [ESC] to exit", CAM_WIDTH / 2, CAM_HEIGHT - 4, Color::WHITE, FONT_ALIGN_CENTERED);
+    renderText("Server starting, [ESC] to exit", CAM_WIDTH / 2, CAM_HEIGHT - 4, FONT_ALIGN_CENTERED);
 }
 
 void TitleRenderer::renderEnterUsernameText()
 {
-    renderText("Enter Username to join, [ESC] to exit", CAM_WIDTH / 2, CAM_HEIGHT - 4, Color::WHITE, FONT_ALIGN_CENTERED);
+    renderText("Enter Username to join, [ESC] to exit", CAM_WIDTH / 2, CAM_HEIGHT - 4, FONT_ALIGN_CENTERED);
 
-    renderText(TitleInputManager::getInstance()->getLiveInputRef().c_str(), CAM_WIDTH / 2, CAM_HEIGHT - 8, Color::WHITE, FONT_ALIGN_CENTERED);
+    renderText(TitleInputManager::getInstance()->getLiveInputRef().c_str(), CAM_WIDTH / 2, CAM_HEIGHT - 8, FONT_ALIGN_CENTERED);
 }
 
 void TitleRenderer::renderJoiningLocalServerByIPText()
 {
-    renderText("Enter Server Address to join, [ESC] to exit", CAM_WIDTH / 2, CAM_HEIGHT - 4, Color::WHITE, FONT_ALIGN_CENTERED);
+    renderText("Enter Server Address to join, [ESC] to exit", CAM_WIDTH / 2, CAM_HEIGHT - 4, FONT_ALIGN_CENTERED);
 
-    renderText(TitleInputManager::getInstance()->getLiveInputRef().c_str(), CAM_WIDTH / 2, CAM_HEIGHT - 8, Color::WHITE, FONT_ALIGN_CENTERED);
+    renderText(TitleInputManager::getInstance()->getLiveInputRef().c_str(), CAM_WIDTH / 2, CAM_HEIGHT - 8, FONT_ALIGN_CENTERED);
 }
 
-void TitleRenderer::renderText(const char* inStr, float x, float y, const Color& inColor, int justification)
+void TitleRenderer::renderText(const char* inStr, float x, float y, int justification)
 {
-    Color fontColor = Color(inColor.red, inColor.green, inColor.blue, inColor.alpha);
     float fgWidth = CAM_WIDTH / 60;
     float fgHeight = fgWidth * 1.171875f;
 
     std::string text(inStr);
 
-    _font->renderText(*_spriteBatcher, text, x, y, fgWidth, fgHeight, fontColor, justification);
+    _font->renderText(*_spriteBatcher, text, x, y, fgWidth, fgHeight, justification);
 }
 
 void TitleRenderer::testRenderingSuite()

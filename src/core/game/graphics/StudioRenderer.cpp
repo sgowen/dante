@@ -168,7 +168,7 @@ void StudioRenderer::render(int flags)
 
     if (_textureManager->ensureTextures())
     {
-        renderWorld();
+        renderWorld(flags);
         
         if (flags & StudioEngineState_DisplayBox2D)
         {
@@ -233,18 +233,18 @@ void StudioRenderer::setFramebuffer(int framebufferIndex, float r, float g, floa
     _rendererHelper->clearFramebufferWithColor(r, g, b, a);
 }
 
-void StudioRenderer::renderWorld()
+void StudioRenderer::renderWorld(int flags)
 {
     _rendererHelper->updateMatrix(_camBounds[3]->getLeft(), _camBounds[3]->getRight(), _camBounds[3]->getBottom(), _camBounds[3]->getTop());
     
     setFramebuffer(0);
     _rendererHelper->useNormalBlending();
-    renderLayers();
+    renderLayers(flags);
     
     _rendererHelper->updateMatrix(_camBounds[3]->getLeft(), _camBounds[3]->getRight(), _camBounds[3]->getBottom(), _camBounds[3]->getTop());
     setFramebuffer(1);
     _rendererHelper->useScreenBlending();
-    renderEntities();
+    renderEntities(flags);
     
     setFramebuffer(2);
     
@@ -265,7 +265,7 @@ void StudioRenderer::renderWorld()
     }
 }
 
-void StudioRenderer::renderLayers()
+void StudioRenderer::renderLayers(int flags)
 {
     for (int i = 0; i < 3; ++i)
     {
@@ -287,13 +287,22 @@ void StudioRenderer::renderLayers()
     {
         if (textures[i].length() > 0)
         {
-            _rendererHelper->updateMatrix(_camBounds[i]->getLeft(), _camBounds[i]->getRight(), _camBounds[i]->getBottom(), _camBounds[i]->getTop());
-            _spriteBatchers[i]->endBatch(_textureNGShader, _textureManager->getTextureWithName(textures[i]));
+            if ((i == 0 && flags & StudioEngineState_Layer0) ||
+                (i == 1 && flags & StudioEngineState_Layer1) ||
+                (i == 2 && flags & StudioEngineState_Layer2))
+            {
+                if (flags & StudioEngineState_DisplayParallax)
+                {
+                    _rendererHelper->updateMatrix(_camBounds[i]->getLeft(), _camBounds[i]->getRight(), _camBounds[i]->getBottom(), _camBounds[i]->getTop());
+                }
+                
+                _spriteBatchers[i]->endBatch(_textureNGShader, _textureManager->getTextureWithName(textures[i]));
+            }
         }
     }
 }
 
-void StudioRenderer::renderEntities()
+void StudioRenderer::renderEntities(int flags)
 {
     for (int i = 0; i < NUM_SPRITE_BATCHERS; ++i)
     {
@@ -339,7 +348,18 @@ void StudioRenderer::renderEntities()
     {
         if (textures[i].length() > 0)
         {
-            _spriteBatchers[i]->endBatch(_textureNGShader, _textureManager->getTextureWithName(textures[i]));
+            if ((i == 0 && flags & StudioEngineState_Layer0) ||
+                (i == 1 && flags & StudioEngineState_Layer1) ||
+                (i == 2 && flags & StudioEngineState_Layer2) ||
+                (i == 3 && flags & StudioEngineState_Layer3) ||
+                (i == 4 && flags & StudioEngineState_Layer4) ||
+                (i == 5 && flags & StudioEngineState_Layer5) ||
+                (i == 6 && flags & StudioEngineState_Layer6) ||
+                (i == 7 && flags & StudioEngineState_Layer7) ||
+                (i == 8 && flags & StudioEngineState_Layer8))
+            {
+                _spriteBatchers[i]->endBatch(_textureNGShader, _textureManager->getTextureWithName(textures[i]));
+            }
         }
     }
 }
@@ -395,7 +415,7 @@ void StudioRenderer::renderUI(int flags)
         {
             NGRect window = NGRect(CAM_WIDTH / 2 - t.length() / 2.0f - 1, y - 1, t.length() + 1, 2);
             _fillPolygonBatcher->renderRect(window);
-            renderText(t.c_str(), CAM_WIDTH / 2, y, Color::WHITE, FONT_ALIGN_CENTERED);
+            renderText(t.c_str(), CAM_WIDTH / 2, y, FONT_ALIGN_CENTERED);
             y -= 2;
         }
         Color windowColor = Color::BLUE;
@@ -407,7 +427,7 @@ void StudioRenderer::renderUI(int flags)
     {
         /// Controls
         _fillPolygonBatcher->beginBatch();
-        NGRect window = NGRect(CAM_WIDTH - 21, CAM_HEIGHT - 7, 20, 6);
+        NGRect window = NGRect(CAM_WIDTH - 21, CAM_HEIGHT - 8, 20, 7);
         Color windowColor = Color::BLUE;
         windowColor.alpha = 0.5f;
         _fillPolygonBatcher->renderRect(window);
@@ -418,13 +438,14 @@ void StudioRenderer::renderUI(int flags)
         int row = 2;
         static float padding = 1;
         
-        renderText(StringUtil::format("[P] Box2D Debug %s", flags & StudioEngineState_DisplayBox2D ? " ON" : "OFF").c_str(), CAM_WIDTH - 2, CAM_HEIGHT - (row++ * padding), Color::WHITE, FONT_ALIGN_RIGHT);
-        renderText(StringUtil::format("[G]        Grid %s", flags & StudioEngineState_DisplayGrid ? " ON" : "OFF").c_str(), CAM_WIDTH - 2, CAM_HEIGHT - (row++ * padding), Color::WHITE, FONT_ALIGN_RIGHT);
+        renderText(StringUtil::format("[B] Box2D Debug %s", flags & StudioEngineState_DisplayBox2D ? " ON" : "OFF").c_str(), CAM_WIDTH - 2, CAM_HEIGHT - (row++ * padding), FONT_ALIGN_RIGHT);
+        renderText(StringUtil::format("[G]        Grid %s", flags & StudioEngineState_DisplayGrid ? " ON" : "OFF").c_str(), CAM_WIDTH - 2, CAM_HEIGHT - (row++ * padding), FONT_ALIGN_RIGHT);
+        renderText(StringUtil::format("[P]    Parallax %s", flags & StudioEngineState_DisplayParallax ? " ON" : "OFF").c_str(), CAM_WIDTH - 2, CAM_HEIGHT - (row++ * padding), FONT_ALIGN_RIGHT);
         
         ++row;
         
-        renderText(StringUtil::format("[R]    Reset Camera").c_str(), CAM_WIDTH - 2, CAM_HEIGHT - (row++ * padding), Color::WHITE, FONT_ALIGN_RIGHT);
-        renderText(StringUtil::format("[S]            Save").c_str(), CAM_WIDTH - 2, CAM_HEIGHT - (row++ * padding), Color::WHITE, FONT_ALIGN_RIGHT);
+        renderText(StringUtil::format("[R] Reset Camera   ").c_str(), CAM_WIDTH - 2, CAM_HEIGHT - (row++ * padding), FONT_ALIGN_RIGHT);
+        renderText(StringUtil::format("[S]         Save   ").c_str(), CAM_WIDTH - 2, CAM_HEIGHT - (row++ * padding), FONT_ALIGN_RIGHT);
         
         _spriteBatchers[0]->endBatch(_textureNGShader, _textureManager->getTextureWithName("texture_000.ngt"));
     }
@@ -433,21 +454,30 @@ void StudioRenderer::renderUI(int flags)
         /// Bottom Bar
         _fillPolygonBatcher->beginBatch();
         NGRect bar = NGRect(0, 0, CAM_WIDTH, 2);
-        Color barColor = Color(0.3f, 0.3f, 0.3f, 0.75f);
+        Color barColor = Color(0.25f, 0.25f, 0.25f, 0.8f);
         _fillPolygonBatcher->renderRect(bar);
         _fillPolygonBatcher->endBatch(_colorNGShader, barColor);
+        
+        int column = 1;
+        static float padding = 1;
+        
+        for (int i = 0; i < 9; ++i)
+        {
+            _spriteBatchers[0]->beginBatch();
+            renderText(StringUtil::format("%d", i).c_str(), 1 + (column++ * padding), 1, FONT_ALIGN_RIGHT);
+            _spriteBatchers[0]->endBatch(_textureNGShader, _textureManager->getTextureWithName("texture_000.ngt"), NULL, flags & (1 << (i + 4)) ? Color::WHITE : Color::BLACK);
+        }
     }
 }
 
-void StudioRenderer::renderText(const char* inStr, float x, float y, const Color& inColor, int justification)
+void StudioRenderer::renderText(const char* inStr, float x, float y, int justification)
 {
-    Color fontColor = Color(inColor.red, inColor.green, inColor.blue, inColor.alpha);
     float fgWidth = CAM_WIDTH / 64;
     float fgHeight = fgWidth * (75.0f / 64.0f);
 
     std::string text(inStr);
 
-    _font->renderText(*_spriteBatchers[0], text, x, y, fgWidth, fgHeight, fontColor, justification);
+    _font->renderText(*_spriteBatchers[0], text, x, y, fgWidth, fgHeight, justification);
 }
 
 void StudioRenderer::endFrame()

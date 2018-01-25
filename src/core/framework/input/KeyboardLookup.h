@@ -146,6 +146,20 @@ inline std::vector<unsigned short>& getAllSupportedKeys()
 	return keys;
 }
 
+inline char charForKey(unsigned short key)
+{
+    char ret = key;
+
+#ifdef _WIN32
+    if (key == NG_KEY_PERIOD)
+    {
+        ret = NG_KEY_ASCII_PERIOD;
+    }
+#endif
+    
+    return ret;
+}
+
 inline bool isKeySupported(unsigned short key)
 {
 	std::vector<unsigned short>& keys = getAllSupportedKeys();

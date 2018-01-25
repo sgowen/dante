@@ -25,7 +25,6 @@ class RendererHelper;
 class NGShader;
 class Entity;
 class TextureRegion;
-class Color;
 class NGRect;
 class NGTexture;
 class Box2DDebugRenderer;
@@ -73,7 +72,7 @@ private:
     void renderEntities(World* world, bool isServer, bool isNormals);
     void renderBox2D();
     void renderUI(int engineState);
-    void renderText(const char* inStr, float x, float y, const Color& inColor, int justification = FONT_ALIGN_LEFT);
+    void renderText(const char* inStr, float x, float y, int justification = FONT_ALIGN_LEFT);
     void endFrame();
 };
 

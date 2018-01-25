@@ -25,7 +25,7 @@ NGFramebufferToScreenShader::NGFramebufferToScreenShader(RendererHelper& inRende
     _inputLayout.push_back(new NGShaderVarInput("a_Position", 2, 0));
 }
 
-void NGFramebufferToScreenShader::bind(void* vertices, void* data1, void* data2)
+void NGFramebufferToScreenShader::bind(void* vertices, void* data1, void* data2, void* data3)
 {
     assert(vertices != NULL);
     assert(data1 != NULL);

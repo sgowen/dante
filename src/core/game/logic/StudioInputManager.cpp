@@ -95,13 +95,7 @@ void StudioInputManager::update(StudioEngine* engine)
                     }
                     else
                     {
-						unsigned short key = keyboardEvent->getKey();
-#ifdef _WIN32
-						if (key == NG_KEY_PERIOD)
-						{
-							key = NG_KEY_ASCII_PERIOD;
-						}
-#endif
+                        char key = charForKey(keyboardEvent->getKey());
                         ss << StringUtil::format("%c", key);
                     }
                 }
@@ -169,31 +163,31 @@ void StudioInputManager::update(StudioEngine* engine)
                     _isControl = !e.isUp();
                     continue;
                 case NG_KEY_ZERO:
-                    _layerFlag ^= e.isDown() ? StudioLayerFlag_0 : 0;
+                    engine->_state ^= e.isDown() ? StudioEngineState_Layer0 : 0;
                     continue;
                 case NG_KEY_ONE:
-                    _layerFlag ^= e.isDown() ? StudioLayerFlag_1 : 0;
+                    engine->_state ^= e.isDown() ? StudioEngineState_Layer1 : 0;
                     continue;
                 case NG_KEY_TWO:
-                    _layerFlag ^= e.isDown() ? StudioLayerFlag_2 : 0;
+                    engine->_state ^= e.isDown() ? StudioEngineState_Layer2 : 0;
                     continue;
                 case NG_KEY_THREE:
-                    _layerFlag ^= e.isDown() ? StudioLayerFlag_3 : 0;
+                    engine->_state ^= e.isDown() ? StudioEngineState_Layer3 : 0;
                     continue;
                 case NG_KEY_FOUR:
-                    _layerFlag ^= e.isDown() ? StudioLayerFlag_4 : 0;
+                    engine->_state ^= e.isDown() ? StudioEngineState_Layer4 : 0;
                     continue;
                 case NG_KEY_FIVE:
-                    _layerFlag ^= e.isDown() ? StudioLayerFlag_5 : 0;
+                    engine->_state ^= e.isDown() ? StudioEngineState_Layer5 : 0;
                     continue;
                 case NG_KEY_SIX:
-                    _layerFlag ^= e.isDown() ? StudioLayerFlag_6 : 0;
+                    engine->_state ^= e.isDown() ? StudioEngineState_Layer6 : 0;
                     continue;
                 case NG_KEY_SEVEN:
-                    _layerFlag ^= e.isDown() ? StudioLayerFlag_7 : 0;
+                    engine->_state ^= e.isDown() ? StudioEngineState_Layer7 : 0;
                     continue;
                 case NG_KEY_EIGHT:
-                    _layerFlag ^= e.isDown() ? StudioLayerFlag_8 : 0;
+                    engine->_state ^= e.isDown() ? StudioEngineState_Layer8 : 0;
                     continue;
                 case NG_KEY_ARROW_LEFT:
                     isPanningLeft = e.isDown();
@@ -222,19 +216,16 @@ void StudioInputManager::update(StudioEngine* engine)
                     }
                     continue;
                 case NG_KEY_P:
-                    if (e.isDown())
-                    {
-                        engine->_state ^= StudioEngineState_DisplayBox2D;
-                    }
+                    engine->_state ^= e.isDown() ? StudioEngineState_DisplayParallax : 0;
+                    continue;
+                case NG_KEY_B:
+                    engine->_state ^= e.isDown() ? StudioEngineState_DisplayBox2D : 0;
                     continue;
                 case NG_KEY_G:
-                    if (e.isDown())
-                    {
-                        engine->_state ^= StudioEngineState_DisplayGrid;
-                    }
+                    engine->_state ^= e.isDown() ? StudioEngineState_DisplayGrid : 0;
                     continue;
                 case NG_KEY_ESCAPE:
-                    _inputState = e.isUp() ? SIS_NONE : SIS_ESCAPE;
+                    _inputState = e.isDown() ? SIS_ESCAPE : SIS_NONE;
                     continue;
                 default:
                     continue;
@@ -369,7 +360,6 @@ _isControl(false),
 _rawScrollValue(1),
 _scrollValue(1),
 _lastScrollValue(1),
-_layerFlag(StudioLayerFlag_All),
 isPanningUp(false),
 isPanningDown(false),
 isPanningRight(false),

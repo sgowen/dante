@@ -33,19 +33,20 @@ NGTextureShader::NGTextureShader(RendererHelper& inRendererHelper, const char* v
     _inputLayout.push_back(new NGShaderVarInput("a_TexCoord", 2, 2));
 }
 
-void NGTextureShader::bind(void* vertices, void* data1, void* data2)
+void NGTextureShader::bind(void* vertices, void* data1, void* data2, void* data3)
 {
     assert(vertices != NULL);
     assert(data1 != NULL);
+    assert(data3 != NULL);
     
     _rendererHelper.bindNGShader(_shaderProgramWrapper);
     _rendererHelper.bindMatrix(_uniforms[0]);
-    /// TODO, allow pass in color
-    static float4 float4Color;
-    float4Color[0] = Color::WHITE.red;
-    float4Color[1] = Color::WHITE.green;
-    float4Color[2] = Color::WHITE.blue;
-    float4Color[3] = Color::WHITE.alpha;
+    Color* color = static_cast<Color* >(data3);
+    float4 float4Color;
+    float4Color[0] = color->red;
+    float4Color[1] = color->green;
+    float4Color[2] = color->blue;
+    float4Color[3] = color->alpha;
     _rendererHelper.bindFloat4(_uniforms[1], float4Color);
     _rendererHelper.bindTexture(NGTextureSlot_ZERO, static_cast<NGTexture*>(data1), _uniforms[2]);
     

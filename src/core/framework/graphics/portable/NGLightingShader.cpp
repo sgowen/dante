@@ -65,7 +65,7 @@ _defaultLightZ(NG_CFG->getFloat("defaultLightZ"))
     _inputLayout.push_back(new NGShaderVarInput("a_TexCoord", 2, 2));
 }
 
-void NGLightingShader::bind(void* vertices, void* data1, void* data2)
+void NGLightingShader::bind(void* vertices, void* data1, void* data2, void* data3)
 {
     assert(vertices != NULL);
     assert(data1 != NULL);

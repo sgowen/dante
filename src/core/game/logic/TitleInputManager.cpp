@@ -79,13 +79,7 @@ void TitleInputManager::update()
                     }
                     else
                     {
-						unsigned short key = keyboardEvent->getKey();
-#ifdef _WIN32
-						if (key == NG_KEY_PERIOD)
-						{
-							key = NG_KEY_ASCII_PERIOD;
-						}
-#endif
+                        char key = charForKey(keyboardEvent->getKey());
                         ss << StringUtil::format("%c", key);
                     }
                 }
@@ -135,48 +129,45 @@ void TitleInputManager::update()
     {
         for (std::vector<KeyboardEvent *>::iterator i = KEYBOARD_INPUT_MANAGER->getEvents().begin(); i != KEYBOARD_INPUT_MANAGER->getEvents().end(); ++i)
         {
-            if (!(*i)->isDown())
-            {
-                continue;
-            }
+            KeyboardEvent& e = *(*i);
             
-            switch ((*i)->getKey())
+            switch (e.getKey())
             {
                 case NG_KEY_E:
-                    _inputState = TIS_ENTER_STUDIO;
+                    _inputState = e.isDown() ? TIS_ENTER_STUDIO : TIS_NONE;
                     continue;
                 case NG_KEY_A:
-                    _inputState = TIS_ACTIVATE_STEAM;
+                    _inputState = e.isDown() ? TIS_ACTIVATE_STEAM : TIS_NONE;
                     continue;
                 case NG_KEY_D:
-                    _inputState = TIS_DEACTIVATE_STEAM;
+                    _inputState = e.isDown() ? TIS_DEACTIVATE_STEAM : TIS_NONE;
                     continue;
                 case NG_KEY_S:
-                    _inputState = TIS_START_SERVER;
+                    _inputState = e.isDown() ? TIS_START_SERVER : TIS_NONE;
                     continue;
                 case NG_KEY_J:
-                    _inputState = TIS_JOIN_LOCAL_SERVER;
+                    _inputState = e.isDown() ? TIS_JOIN_LOCAL_SERVER : TIS_NONE;
                     continue;
                 case NG_KEY_L:
-                    _inputState = TIS_STEAM_REFRESH_LAN_SERVERS;
+                    _inputState = e.isDown() ? TIS_STEAM_REFRESH_LAN_SERVERS : TIS_NONE;
                     continue;
                 case NG_KEY_I:
-                    _inputState = TIS_STEAM_REFRESH_INTERNET_SERVERS;
+                    _inputState = e.isDown() ? TIS_STEAM_REFRESH_INTERNET_SERVERS : TIS_NONE;
                     continue;
                 case NG_KEY_ONE:
-                    _inputState = TIS_STEAM_JOIN_SERVER_1;
+                    _inputState = e.isDown() ? TIS_STEAM_JOIN_SERVER_1 : TIS_NONE;
                     continue;
                 case NG_KEY_TWO:
-                    _inputState = TIS_STEAM_JOIN_SERVER_2;
+                    _inputState = e.isDown() ? TIS_STEAM_JOIN_SERVER_2 : TIS_NONE;
                     continue;
                 case NG_KEY_THREE:
-                    _inputState = TIS_STEAM_JOIN_SERVER_3;
+                    _inputState = e.isDown() ? TIS_STEAM_JOIN_SERVER_3 : TIS_NONE;
                     continue;
                 case NG_KEY_FOUR:
-                    _inputState = TIS_STEAM_JOIN_SERVER_4;
+                    _inputState = e.isDown() ? TIS_STEAM_JOIN_SERVER_4 : TIS_NONE;
                     continue;
                 case NG_KEY_ESCAPE:
-                    _inputState = TIS_ESCAPE;
+                    _inputState = e.isDown() ? TIS_ESCAPE : TIS_NONE;
                     continue;
                 default:
                     continue;

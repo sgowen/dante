@@ -10,6 +10,7 @@
 #define __noctisgames__SpriteBatcher__
 
 #include <framework/graphics/portable/VertexProgramInput.h>
+#include <framework/graphics/portable/Color.h>
 
 #include <vector>
 #include <cstddef>
@@ -18,7 +19,6 @@ class RendererHelper;
 class NGTexture;
 class NGShader;
 class TextureRegion;
-class Color;
 
 class SpriteBatcher
 {
@@ -28,7 +28,7 @@ public:
 
     void beginBatch();
     void renderSprite(float x, float y, float width, float height, float angle, TextureRegion& tr, bool flipX = false);
-    void endBatch(NGShader* shader, NGTexture* texture, NGTexture* normalMap = NULL);
+    void endBatch(NGShader* shader, NGTexture* texture, NGTexture* normalMap = NULL, Color& c = Color::WHITE);
 
 private:
     RendererHelper* _rendererHelper;

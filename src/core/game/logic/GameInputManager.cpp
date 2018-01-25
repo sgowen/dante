@@ -86,7 +86,7 @@ void GameInputManager::update()
             case NG_KEY_S:
                 _inputState = (*i)->isDown() ? GIS_CLIENT_MAIN_TOGGLE_SOUND : _inputState;
                 continue;
-            case NG_KEY_P:
+            case NG_KEY_B:
                 _inputState = (*i)->isDown() ? GIS_TOGGLE_PHYSICS_DISPLAY : _inputState;
                 continue;
             case NG_KEY_L:

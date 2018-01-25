@@ -21,21 +21,6 @@ enum StudioInputState
     SIS_ESCAPE
 };
 
-enum StudioLayerFlag
-{
-    StudioLayerFlag_0 = 1 << 0,
-    StudioLayerFlag_1 = 1 << 1,
-    StudioLayerFlag_2 = 1 << 2,
-    StudioLayerFlag_3 = 1 << 3,
-    StudioLayerFlag_4 = 1 << 4,
-    StudioLayerFlag_5 = 1 << 5,
-    StudioLayerFlag_6 = 1 << 6,
-    StudioLayerFlag_7 = 1 << 7,
-    StudioLayerFlag_8 = 1 << 8,
-    
-    StudioLayerFlag_All = StudioLayerFlag_0 | StudioLayerFlag_1 | StudioLayerFlag_2 | StudioLayerFlag_3 | StudioLayerFlag_4 | StudioLayerFlag_5 | StudioLayerFlag_6 | StudioLayerFlag_7 | StudioLayerFlag_8
-};
-
 class StudioInputManager
 {
     friend class StudioRenderer;
@@ -70,7 +55,6 @@ private:
     float _rawScrollValue;
     int _scrollValue;
     int _lastScrollValue;
-    int _layerFlag;
     bool isPanningUp;
     bool isPanningDown;
     bool isPanningRight;

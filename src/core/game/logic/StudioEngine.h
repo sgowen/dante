@@ -23,7 +23,19 @@ enum StudioEngineState
 {
     StudioEngineState_Default = 1 << 0,
     StudioEngineState_DisplayBox2D = 1 << 1,
-    StudioEngineState_DisplayGrid = 1 << 2
+    StudioEngineState_DisplayGrid = 1 << 2,
+    StudioEngineState_DisplayParallax = 1 << 3,
+    StudioEngineState_Layer0 = 1 << 4,
+    StudioEngineState_Layer1 = 1 << 5,
+    StudioEngineState_Layer2 = 1 << 6,
+    StudioEngineState_Layer3 = 1 << 7,
+    StudioEngineState_Layer4 = 1 << 8,
+    StudioEngineState_Layer5 = 1 << 9,
+    StudioEngineState_Layer6 = 1 << 10,
+    StudioEngineState_Layer7 = 1 << 11,
+    StudioEngineState_Layer8 = 1 << 12,
+    
+    StudioEngineState_LayerAll = StudioEngineState_Layer0 | StudioEngineState_Layer1 | StudioEngineState_Layer2 | StudioEngineState_Layer3 | StudioEngineState_Layer4 | StudioEngineState_Layer5 | StudioEngineState_Layer6 | StudioEngineState_Layer7 | StudioEngineState_Layer8
 };
 
 class StudioEngine : public EngineState

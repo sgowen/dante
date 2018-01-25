@@ -25,7 +25,6 @@ class RendererHelper;
 class NGShader;
 class Entity;
 class TextureRegion;
-class Color;
 class NGRect;
 class NGTexture;
 class Font;
@@ -63,7 +62,7 @@ private:
     void renderStartingServerText();
     void renderEnterUsernameText();
     void renderJoiningLocalServerByIPText();
-    void renderText(const char* inStr, float x, float y, const Color& inColor, int justification = FONT_ALIGN_LEFT);
+    void renderText(const char* inStr, float x, float y, int justification = FONT_ALIGN_LEFT);
     void testRenderingSuite();
     void endFrame();
 };

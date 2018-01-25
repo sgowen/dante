@@ -38,7 +38,7 @@ Font::~Font()
     _glyphs.clear();
 }
 
-void Font::renderText(SpriteBatcher &spriteBatcher, std::string &text, float x, float y, float width, float height, Color color, int justification)
+void Font::renderText(SpriteBatcher &spriteBatcher, std::string &text, float x, float y, float width, float height, int justification)
 {
     unsigned long len = text.length();
     
@@ -57,31 +57,13 @@ void Font::renderText(SpriteBatcher &spriteBatcher, std::string &text, float x, 
 	{
 		int c = ((int)text.at(i));
 
-        renderAsciiChar(spriteBatcher, c, x, y, width, height, color);
+        renderAsciiChar(spriteBatcher, c, x, y, width, height);
 
 		x += width;
 	}
 }
 
-void Font::renderText(SpriteBatcher &spriteBatcher, std::string &text, float x, float y, float width, float height, std::vector<Color>& charColors)
-{
-    unsigned long len = text.length();
-    
-    float result = width / 2;
-    x -= len * result;
-    x += width / 2;
-    
-    for (unsigned int i = 0; i < len; ++i)
-    {
-        int c = (int) text.at(i);
-        
-        renderAsciiChar(spriteBatcher, c, x, y, width, height, charColors.at(i));
-        
-        x += width;
-    }
-}
-
-void Font::renderAsciiChar(SpriteBatcher &spriteBatcher, int asciiChar, float x, float y, float width, float height, Color color)
+void Font::renderAsciiChar(SpriteBatcher &spriteBatcher, int asciiChar, float x, float y, float width, float height)
 {
     if (asciiChar < 0 || asciiChar > 175)
     {
