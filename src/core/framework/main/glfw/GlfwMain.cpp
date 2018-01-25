@@ -199,13 +199,11 @@ int GlfwMain::exec(EngineController* engineController)
 
         if (width != glWidth || height != glHeight)
         {
-            int cursorWidth = width;
-            int cursorHeight = height;
-#if defined(__APPLE__) && !defined(_DEBUG)
-            cursorWidth /= 2;
-            cursorHeight /= 2;
-#endif
-            engine.createWindowSizeDependentResources(width, height, width > 1366 ? 1366 : width, height > 768 ? 768 : height, cursorWidth, cursorHeight);
+            int screenWidth = 0;
+            int screenHeight = 0;
+            glfwGetWindowSize(window, &screenWidth, &screenHeight);
+            
+            engine.createWindowSizeDependentResources(width, height, width > 1366 ? 1366 : width, height > 768 ? 768 : height, screenWidth, screenHeight);
 
             glWidth = width;
             glHeight = height;
