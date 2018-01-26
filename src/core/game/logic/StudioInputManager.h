@@ -12,6 +12,7 @@
 #include <framework/math/Vector2.h>
 
 #include <string>
+#include <vector>
 
 class StudioEngine;
 class Entity;
@@ -56,16 +57,23 @@ private:
     bool _isPanningRight;
     bool _isPanningLeft;
     int _selectionIndex;
+    int _selectionIndexDir;
+    std::vector<Entity*> _entities;
     Entity* _activeEntity;
     Vector2 _activeEntityCursor;
     StudioEngine* _engine;
+    bool _isDraggingActiveEntityOverDeleteZone;
     
     void updateCamera();
     void resetCamera();
     
     void handleDefaultInput();
+    void handleEntitiesInput();
     void handleLoadMapDialogInput();
     
+    void onMapLoaded();
+    void onEntityAdded(Entity* e);
+    void onEntityRemoved(Entity* e);
     Entity* getEntityAtPosition(float x, float y);
     
     void setLiveInputMode(bool isLiveMode);

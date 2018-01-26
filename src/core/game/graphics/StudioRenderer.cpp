@@ -188,6 +188,17 @@ void StudioRenderer::render()
         }
         
         renderUI();
+        
+        Entity* e = _input->_activeEntity;
+        if (e)
+        {
+            _rendererHelper->useNormalBlending();
+            _spriteBatchers[0]->beginBatch();
+            TextureRegion tr = ASSETS->findTextureRegion(e->getTextureMapping(), e->getStateTime());
+            _spriteBatchers[0]->renderSprite(e->getPosition().x, e->getPosition().y, e->getWidth(), e->getHeight(), e->getAngle(), tr, e->isFacingLeft());
+            Color c = _input->_isDraggingActiveEntityOverDeleteZone ? Color::HALF : Color::DOUBLE;
+            _spriteBatchers[0]->endBatch(_textureNGShader, _textureManager->getTextureWithName(tr.getTextureName()), NULL, c);
+        }
     }
 
     endFrame();
@@ -257,15 +268,6 @@ void StudioRenderer::renderWorld()
     setFramebuffer(1);
     _rendererHelper->useScreenBlending();
     renderEntities();
-    
-    Entity* e = _input->_activeEntity;
-    if (e)
-    {
-        _spriteBatchers[0]->beginBatch();
-        TextureRegion tr = ASSETS->findTextureRegion(e->getTextureMapping(), e->getStateTime());
-        _spriteBatchers[0]->renderSprite(e->getPosition().x, e->getPosition().y, e->getWidth(), e->getHeight(), e->getAngle(), tr, e->isFacingLeft());
-        _spriteBatchers[0]->endBatch(_textureNGShader, _textureManager->getTextureWithName(tr.getTextureName()), NULL, Color::RED);
-    }
     
     setFramebuffer(2);
     
@@ -577,7 +579,27 @@ void StudioRenderer::renderUI()
             renderText("E", 1 + (column++ * padding), 1, FONT_ALIGN_LEFT);
             _spriteBatchers[0]->endBatch(_textureNGShader, _textureManager->getTextureWithName("texture_000.ngt"), NULL, _engineState & StudioEngineState_DisplayEntities ? Color::WHITE : Color::BLACK);
         }
+    }
+    
+    Entity* e = _input->_activeEntity;
+    if (e)
+    {
+        /// Render Delete Zone
+        _fillPolygonBatcher->beginBatch();
+        int width = CAM_WIDTH / 3;
+        int height = 4;
+        NGRect window = NGRect(CAM_WIDTH / 2 - width / 2, CAM_HEIGHT - 4 - height - 1, width, height);
+        Color windowColor = Color::RED;
+        windowColor.alpha = 0.5f;
+        _fillPolygonBatcher->renderRect(window);
+        _fillPolygonBatcher->endBatch(_colorNGShader, windowColor);
         
+        int row = 3;
+        static float padding = 1;
+        
+        _spriteBatchers[0]->beginBatch();
+        renderText("DELETE", CAM_WIDTH / 2, CAM_HEIGHT - 4 - (row++ * padding), FONT_ALIGN_CENTERED);
+        _spriteBatchers[0]->endBatch(_textureNGShader, _textureManager->getTextureWithName("texture_000.ngt"));
     }
 }
 

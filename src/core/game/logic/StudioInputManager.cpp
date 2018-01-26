@@ -137,6 +137,12 @@ void StudioInputManager::update()
         if (_engine->_state & StudioEngineState_DisplayLoadMapDialog)
         {
             handleLoadMapDialogInput();
+            _selectionIndex = clamp(_selectionIndex + _selectionIndexDir, 1, 0);
+        }
+        else if (_engine->_state & StudioEngineState_DisplayEntities)
+        {
+            handleEntitiesInput();
+            _selectionIndex = clamp(_selectionIndex + _selectionIndexDir, 1, 0);
         }
         else
         {
@@ -152,6 +158,10 @@ void StudioInputManager::handleDefaultInput()
     CURSOR_INPUT_MANAGER->resetScrollValue();
     _scrollValue = clamp(_rawScrollValue, 16, 1);
     CURSOR_CONVERTER->setCamSize(CAM_WIDTH * _scrollValue, CAM_HEIGHT * _scrollValue);
+    
+    int width = CAM_WIDTH / 3;
+    int height = 3;
+    static NGRect deleteWindow = NGRect(CAM_WIDTH / 2 - width / 2, CAM_HEIGHT - 4 - height - 1, width, height);
     
     for (std::vector<CursorEvent *>::iterator i = CURSOR_INPUT_MANAGER->getEvents().begin(); i != CURSOR_INPUT_MANAGER->getEvents().end(); ++i)
     {
@@ -183,6 +193,14 @@ void StudioInputManager::handleDefaultInput()
                     float x = position.x + _deltaCursor.getX();
                     float y = position.y + _deltaCursor.getY();
                     _activeEntity->setPosition(b2Vec2(x, y));
+                    
+                    float eX = _activeEntity->getPosition().x;
+                    float eY = _activeEntity->getPosition().y;
+                    float eW = _activeEntity->getWidth();
+                    float eH = _activeEntity->getHeight();
+                    NGRect entityBounds = NGRect(eX - eW / 2, eY - eH / 2, eW, eH);
+                    
+                    _isDraggingActiveEntityOverDeleteZone = OverlapTester::doNGRectsOverlap(deleteWindow, entityBounds);
                 }
             }
                 continue;
@@ -315,6 +333,36 @@ void StudioInputManager::handleDefaultInput()
     }
 }
 
+void StudioInputManager::handleEntitiesInput()
+{
+    for (std::vector<KeyboardEvent *>::iterator i = KEYBOARD_INPUT_MANAGER->getEvents().begin(); i != KEYBOARD_INPUT_MANAGER->getEvents().end(); ++i)
+    {
+        KeyboardEvent& e = *(*i);
+        switch (e.getKey())
+        {
+            case NG_KEY_ARROW_DOWN:
+                _selectionIndexDir = e.isPressed() ? 1 : 0;
+                continue;
+            case NG_KEY_ARROW_UP:
+                _selectionIndexDir = e.isPressed() ? -1 : 0;
+                continue;
+            case NG_KEY_CARRIAGE_RETURN:
+            {
+                if (e.isDown())
+                {
+                    _engine->_state &= ~StudioEngineState_DisplayEntities;
+                }
+            }
+                continue;
+            case NG_KEY_ESCAPE:
+                _engine->_state &= e.isDown() ? ~StudioEngineState_DisplayEntities : 0;
+                continue;
+            default:
+                continue;
+        }
+    }
+}
+
 void StudioInputManager::handleLoadMapDialogInput()
 {
     for (std::vector<KeyboardEvent *>::iterator i = KEYBOARD_INPUT_MANAGER->getEvents().begin(); i != KEYBOARD_INPUT_MANAGER->getEvents().end(); ++i)
@@ -323,21 +371,25 @@ void StudioInputManager::handleLoadMapDialogInput()
         switch (e.getKey())
         {
             case NG_KEY_ARROW_DOWN:
-                _selectionIndex = clamp(_selectionIndex + (e.isDown() ? 1 : 0), 1, 0);
+                _selectionIndexDir = e.isPressed() ? 1 : 0;
                 continue;
             case NG_KEY_ARROW_UP:
-                _selectionIndex = clamp(_selectionIndex - (e.isDown() ? 1 : 0), 1, 0);
+                _selectionIndexDir = e.isPressed() ? -1 : 0;
                 continue;
             case NG_KEY_CARRIAGE_RETURN:
             {
-                std::vector<MapDef>& maps = EntityLayoutMapper::getInstance()->getMaps();
-                uint32_t map = maps[_selectionIndex].key;
-                _engine->_world->loadMap(map);
-                _engine->_state &= ~StudioEngineState_DisplayLoadMapDialog;
+                if (e.isDown())
+                {
+                    std::vector<MapDef>& maps = EntityLayoutMapper::getInstance()->getMaps();
+                    uint32_t map = maps[_selectionIndex].key;
+                    _engine->_world->loadMap(map);
+                    onMapLoaded();
+                    _engine->_state &= ~StudioEngineState_DisplayLoadMapDialog;
+                }
             }
                 continue;
             case NG_KEY_ESCAPE:
-                _inputState = e.isDown() ? SIS_ESCAPE : SIS_NONE;
+                _engine->_state &= e.isDown() ? ~StudioEngineState_DisplayLoadMapDialog : 0;
                 continue;
             default:
                 continue;
@@ -345,49 +397,58 @@ void StudioInputManager::handleLoadMapDialogInput()
     }
 }
 
-Entity* StudioInputManager::getEntityAtPosition(float x, float y)
+bool layerSort(Entity* l, Entity* r)
 {
+    return (l->getEntityDef().layer > r->getEntityDef().layer);
+}
+
+void StudioInputManager::onMapLoaded()
+{
+    _entities.clear();
+    
     std::vector<Entity*>& dynamicEntities = _engine->_world->getDynamicEntities();
     std::vector<Entity*>& staticEntities = _engine->_world->getStaticEntities();
     std::vector<Entity*>& layers = _engine->_world->getLayers();
     
-    for (std::vector<Entity*>::iterator i = staticEntities.begin(); i != staticEntities.end(); ++i)
+    size_t size = dynamicEntities.size();
+    size += staticEntities.size();
+    size += layers.size();
+    
+    _entities.reserve(size);
+    
+    _entities.insert(_entities.end(), dynamicEntities.begin(), dynamicEntities.end());
+    _entities.insert(_entities.end(), staticEntities.begin(), staticEntities.end());
+    _entities.insert(_entities.end(), layers.begin(), layers.end());
+    
+    std::sort(_entities.begin(), _entities.end(), layerSort);
+}
+
+void StudioInputManager::onEntityAdded(Entity* e)
+{
+    _entities.push_back(e);
+    std::sort(_entities.begin(), _entities.end(), layerSort);
+}
+
+void StudioInputManager::onEntityRemoved(Entity* e)
+{
+    for (std::vector<Entity*>::iterator i = _entities.begin(); i != _entities.end(); )
     {
-        Entity* e = (*i);
-        int layer = e->getEntityDef().layer;
-        if (_engine->_state & (1 << (layer + StudioEngineState_LayerBitBegin)))
+        Entity* ie = (*i);
+        if (ie == e)
         {
-            float eX = e->getPosition().x;
-            float eY = e->getPosition().y;
-            float eW = e->getWidth();
-            float eH = e->getHeight();
-            NGRect entityBounds = NGRect(eX - eW / 2, eY - eH / 2, eW, eH);
-            if (OverlapTester::isPointInNGRect(x, y, entityBounds))
-            {
-                return e;
-            }
+            i = _entities.erase(i);
+            return;
+        }
+        else
+        {
+            ++i;
         }
     }
-    
-    for (std::vector<Entity*>::iterator i = dynamicEntities.begin(); i != dynamicEntities.end(); ++i)
-    {
-        Entity* e = (*i);
-        int layer = e->getEntityDef().layer;
-        if (_engine->_state & (1 << (layer + StudioEngineState_LayerBitBegin)))
-        {
-            float eX = e->getPosition().x;
-            float eY = e->getPosition().y;
-            float eW = e->getWidth();
-            float eH = e->getHeight();
-            NGRect entityBounds = NGRect(eX - eW / 2, eY - eH / 2, eW, eH);
-            if (OverlapTester::isPointInNGRect(x, y, entityBounds))
-            {
-                return e;
-            }
-        }
-    }
-    
-    for (std::vector<Entity*>::iterator i = layers.begin(); i != layers.end(); ++i)
+}
+
+Entity* StudioInputManager::getEntityAtPosition(float x, float y)
+{
+    for (std::vector<Entity*>::iterator i = _entities.begin(); i != _entities.end(); ++i)
     {
         Entity* e = (*i);
         int layer = e->getEntityDef().layer;
@@ -532,9 +593,11 @@ _isPanningDown(false),
 _isPanningRight(false),
 _isPanningLeft(false),
 _selectionIndex(0),
+_selectionIndexDir(0),
 _activeEntity(NULL),
 _activeEntityCursor(),
-_engine(NULL)
+_engine(NULL),
+_isDraggingActiveEntityOverDeleteZone(false)
 {
     resetCamera();
 }

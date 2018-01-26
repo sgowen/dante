@@ -17,6 +17,8 @@ public:
     static Color RED;
     static Color GREEN;
     static Color BLUE;
+    static Color HALF;
+    static Color DOUBLE;
     
     float red;
     float green;
