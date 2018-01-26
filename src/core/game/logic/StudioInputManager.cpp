@@ -190,7 +190,14 @@ void StudioInputManager::handleDefaultInput()
                 _upCursor.set(c);
                 _deltaCursor.set(0, 0);
                 
-                /// TODO, align entity to grid
+                const b2Vec2& position = _activeEntity->getPosition();
+                float width = _activeEntity->getWidth();
+                float height = _activeEntity->getHeight();
+                float x = clamp(position.x, FLT_MAX, width / 2);
+                float y = clamp(position.y, FLT_MAX, height / 2);
+                x = floor(x);
+                y = floor(y);
+                _activeEntity->setPosition(b2Vec2(x, y));
                 
                 _activeEntity = NULL;
             }
