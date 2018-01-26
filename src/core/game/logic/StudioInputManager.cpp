@@ -165,8 +165,9 @@ void StudioInputManager::handleDefaultInput()
                 _dragCursor.set(c);
                 _deltaCursor.set(0, 0);
                 
-                _activeEntity = getEntityAtPosition(_downCursor.getX(), _downCursor.getY());
-                _activeEntityCursor.set(_downCursor);
+                _activeEntityCursor.set(_cursor);
+                _activeEntityCursor += _downCursor;
+                _activeEntity = getEntityAtPosition(_activeEntityCursor.getX(), _activeEntityCursor.getY());
             }
                 continue;
             case CursorEventType_DRAGGED:
@@ -347,7 +348,7 @@ Entity* StudioInputManager::getEntityAtPosition(float x, float y)
     std::vector<Entity*>& staticEntities = _engine->_world->getStaticEntities();
     std::vector<Entity*>& layers = _engine->_world->getLayers();
     
-    for (std::vector<Entity*>::iterator i = dynamicEntities.begin(); i != dynamicEntities.end(); ++i)
+    for (std::vector<Entity*>::iterator i = staticEntities.begin(); i != staticEntities.end(); ++i)
     {
         Entity* e = (*i);
         int layer = e->getEntityDef().layer;
@@ -365,7 +366,7 @@ Entity* StudioInputManager::getEntityAtPosition(float x, float y)
         }
     }
     
-    for (std::vector<Entity*>::iterator i = staticEntities.begin(); i != staticEntities.end(); ++i)
+    for (std::vector<Entity*>::iterator i = dynamicEntities.begin(); i != dynamicEntities.end(); ++i)
     {
         Entity* e = (*i);
         int layer = e->getEntityDef().layer;
