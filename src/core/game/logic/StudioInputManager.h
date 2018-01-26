@@ -61,9 +61,12 @@ private:
     float _selectionIndexDir;
     std::vector<Entity*> _entities;
     Entity* _activeEntity;
+    Entity* _lastActiveEntity;
     Vector2 _activeEntityCursor;
+    Vector2 _activeEntityDeltaCursor;
     StudioEngine* _engine;
     bool _isDraggingActiveEntityOverDeleteZone;
+    bool _hasTouchedScreen;
     
     void updateCamera();
     void resetCamera();
@@ -76,6 +79,7 @@ private:
     void onEntityAdded(Entity* e);
     void onEntityRemoved(Entity* e);
     Entity* getEntityAtPosition(float x, float y);
+    bool entityExistsAtPosition(Entity* e, float x, float y);
     
     void setLiveInputMode(bool isLiveMode);
     bool isLiveMode();

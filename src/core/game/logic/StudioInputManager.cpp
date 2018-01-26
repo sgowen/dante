@@ -176,13 +176,22 @@ void StudioInputManager::handleDefaultInput()
         {
             case CursorEventType_DOWN:
             {
+                _hasTouchedScreen = true;
+                
                 _downCursor.set(c);
                 _dragCursor.set(c);
                 _deltaCursor.set(0, 0);
                 
+                _activeEntityDeltaCursor.set(0, 0);
                 _activeEntityCursor.set(_cursor);
                 _activeEntityCursor += _downCursor;
                 _activeEntity = getEntityAtPosition(_activeEntityCursor.getX(), _activeEntityCursor.getY());
+                if (_activeEntity)
+                {
+                    _activeEntityDeltaCursor.set(_activeEntity->getPosition().x, _activeEntity->getPosition().y);
+                    _activeEntityDeltaCursor -= _activeEntityCursor;
+                    _lastActiveEntity = NULL;
+                }
             }
                 continue;
             case CursorEventType_DRAGGED:
@@ -195,9 +204,11 @@ void StudioInputManager::handleDefaultInput()
                 if (_activeEntity)
                 {
                     _activeEntityCursor += _deltaCursor;
-                    _activeEntity->setPosition(b2Vec2(_activeEntityCursor.getX(), _activeEntityCursor.getY()));
+                    Vector2 entityPos = _activeEntityCursor;
+                    entityPos += _activeEntityDeltaCursor;
+                    _activeEntity->setPosition(b2Vec2(entityPos.getX(), entityPos.getY()));
                     
-                    Vector2 normalizedCursor = _activeEntityCursor;
+                    Vector2 normalizedCursor = entityPos;
                     normalizedCursor -= _cursor;
                     normalizedCursor /= _scrollValue;
                     float eW = _activeEntity->getWidth() / _scrollValue;
@@ -217,6 +228,7 @@ void StudioInputManager::handleDefaultInput()
                 {
                     if (_isDraggingActiveEntityOverDeleteZone)
                     {
+                        _lastActiveEntity = NULL;
                         onEntityRemoved(_activeEntity);
                         _engine->_world->mapRemoveEntity(_activeEntity);
                     }
@@ -230,10 +242,12 @@ void StudioInputManager::handleDefaultInput()
                         x = floor(x);
                         y = floor(y);
                         _activeEntity->setPosition(b2Vec2(x, y));
+                        
+                        _lastActiveEntity = _activeEntity;
                     }
+                    
+                    _activeEntity = NULL;
                 }
-                
-                _activeEntity = NULL;
             }
                 break;
             default:
@@ -332,7 +346,7 @@ void StudioInputManager::handleDefaultInput()
                 if (e.isDown())
                 {
                     _engine->_world->clear();
-                    _entities.clear();
+                    onMapLoaded();
                 }
                 continue;
             case NG_KEY_T:
@@ -434,6 +448,8 @@ void StudioInputManager::handleEntitiesInput()
                     float spawnY = clamp(CAM_HEIGHT * _scrollValue / 2 + _cursor.getY(), FLT_MAX, entityDef->height / 2.0f);
                     Entity* e = EntityMapper::getInstance()->createEntityFromDef(entityDef, floor(spawnX), floor(spawnY), false);
                     _engine->_world->mapAddEntity(e);
+                    _lastActiveEntity = e;
+                    _isDraggingActiveEntityOverDeleteZone = false;
                     onEntityAdded(e);
                     _engine->_state &= ~StudioEngineState_DisplayEntities;
                 }
@@ -491,6 +507,8 @@ bool layerSort(Entity* l, Entity* r)
 
 void StudioInputManager::onMapLoaded()
 {
+    _activeEntity = NULL;
+    _lastActiveEntity = NULL;
     _entities.clear();
     
     std::vector<Entity*>& dynamicEntities = _engine->_world->getDynamicEntities();
@@ -535,18 +553,18 @@ void StudioInputManager::onEntityRemoved(Entity* e)
 
 Entity* StudioInputManager::getEntityAtPosition(float x, float y)
 {
+    if (_lastActiveEntity && entityExistsAtPosition(_lastActiveEntity, x, y))
+    {
+        return _lastActiveEntity;
+    }
+    
     for (std::vector<Entity*>::iterator i = _entities.begin(); i != _entities.end(); ++i)
     {
         Entity* e = (*i);
         int layer = e->getEntityDef().layer;
         if (_engine->_state & (1 << (layer + StudioEngineState_LayerBitBegin)))
         {
-            float eX = e->getPosition().x;
-            float eY = e->getPosition().y;
-            float eW = e->getWidth();
-            float eH = e->getHeight();
-            NGRect entityBounds = NGRect(eX - eW / 2, eY - eH / 2, eW, eH);
-            if (OverlapTester::isPointInNGRect(x, y, entityBounds))
+            if (entityExistsAtPosition(e, x, y))
             {
                 return e;
             }
@@ -554,6 +572,21 @@ Entity* StudioInputManager::getEntityAtPosition(float x, float y)
     }
     
     return NULL;
+}
+
+bool StudioInputManager::entityExistsAtPosition(Entity* e, float x, float y)
+{
+    float eX = e->getPosition().x;
+    float eY = e->getPosition().y;
+    float eW = e->getWidth();
+    float eH = e->getHeight();
+    NGRect entityBounds = NGRect(eX - eW / 2, eY - eH / 2, eW, eH);
+    if (OverlapTester::isPointInNGRect(x, y, entityBounds))
+    {
+        return true;
+    }
+    
+    return false;
 }
 
 void StudioInputManager::setLiveInputMode(bool isLiveMode)
@@ -596,10 +629,10 @@ void StudioInputManager::updateCamera()
 {
     int w = CAM_WIDTH * _scrollValue;
     int h = CAM_HEIGHT * _scrollValue;
-    float topPan = h * 0.9f;
-    float bottomPan = h * 0.1f;
-    float rightPan = w * 0.9f;
-    float leftPan = w * 0.1f;
+    float topPan = h * 0.95f;
+    float bottomPan = h * 0.05f;
+    float rightPan = w * 0.95f;
+    float leftPan = w * 0.05f;
     
     if (_lastScrollValue != _scrollValue)
     {
@@ -628,22 +661,22 @@ void StudioInputManager::updateCamera()
         /// Update Camera based on mouse being near edges
         Vector2& rc = CURSOR_INPUT_MANAGER->getCursorPosition();
         Vector2 c = CURSOR_CONVERTER->convert(rc);
-        if (c.getY() > topPan || _isPanningUp)
+        if ((_hasTouchedScreen && c.getY() > topPan) || _isPanningUp)
         {
             _cursor.add(0, h / CAM_HEIGHT / 2.0f);
             _activeEntityCursor.add(0, h / CAM_HEIGHT / 2.0f);
         }
-        if (c.getY() < bottomPan || _isPanningDown)
+        if ((_hasTouchedScreen && c.getY() < bottomPan) || _isPanningDown)
         {
             _cursor.sub(0, h / CAM_HEIGHT / 2.0f);
             _activeEntityCursor.sub(0, h / CAM_HEIGHT / 2.0f);
         }
-        if (c.getX() > rightPan || _isPanningRight)
+        if ((_hasTouchedScreen && c.getX() > rightPan) || _isPanningRight)
         {
             _cursor.add(w / CAM_WIDTH / 2.0f, 0);
             _activeEntityCursor.add(w / CAM_WIDTH / 2.0f, 0);
         }
-        if (c.getX() < leftPan || _isPanningLeft)
+        if ((_hasTouchedScreen && c.getX() < leftPan) || _isPanningLeft)
         {
             _cursor.sub(w / CAM_WIDTH / 2.0f, 0);
             _activeEntityCursor.sub(w / CAM_WIDTH / 2.0f, 0);
@@ -687,9 +720,11 @@ _selectionIndex(0),
 _rawSelectionIndex(0),
 _selectionIndexDir(0),
 _activeEntity(NULL),
+_lastActiveEntity(NULL),
 _activeEntityCursor(),
 _engine(NULL),
-_isDraggingActiveEntityOverDeleteZone(false)
+_isDraggingActiveEntityOverDeleteZone(false),
+_hasTouchedScreen(false)
 {
     resetCamera();
 }

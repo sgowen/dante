@@ -180,6 +180,22 @@ void StudioRenderer::render()
     {
         renderWorld();
         
+        Entity* e = _input->_activeEntity;
+        if (!e)
+        {
+            e = _input->_lastActiveEntity;
+        }
+        if (e)
+        {
+            _rendererHelper->updateMatrix(_camBounds[3]->getLeft(), _camBounds[3]->getRight(), _camBounds[3]->getBottom(), _camBounds[3]->getTop());
+            _rendererHelper->useNormalBlending();
+            _spriteBatchers[0]->beginBatch();
+            TextureRegion tr = ASSETS->findTextureRegion(e->getTextureMapping(), e->getStateTime());
+            _spriteBatchers[0]->renderSprite(e->getPosition().x, e->getPosition().y, e->getWidth(), e->getHeight(), e->getAngle(), tr, e->isFacingLeft());
+            Color c = _input->_isDraggingActiveEntityOverDeleteZone ? Color::HALF : Color::DOUBLE;
+            _spriteBatchers[0]->endBatch(_textureNGShader, _textureManager->getTextureWithName(tr.getTextureName()), NULL, c);
+        }
+        
         if (_engineState & StudioEngineState_DisplayBox2D)
         {
             renderBox2D();
@@ -191,18 +207,6 @@ void StudioRenderer::render()
         }
         
         renderUI();
-        
-        Entity* e = _input->_activeEntity;
-        if (e)
-        {
-            _rendererHelper->updateMatrix(_camBounds[3]->getLeft(), _camBounds[3]->getRight(), _camBounds[3]->getBottom(), _camBounds[3]->getTop());
-            _rendererHelper->useNormalBlending();
-            _spriteBatchers[0]->beginBatch();
-            TextureRegion tr = ASSETS->findTextureRegion(e->getTextureMapping(), e->getStateTime());
-            _spriteBatchers[0]->renderSprite(e->getPosition().x, e->getPosition().y, e->getWidth(), e->getHeight(), e->getAngle(), tr, e->isFacingLeft());
-            Color c = _input->_isDraggingActiveEntityOverDeleteZone ? Color::HALF : Color::DOUBLE;
-            _spriteBatchers[0]->endBatch(_textureNGShader, _textureManager->getTextureWithName(tr.getTextureName()), NULL, c);
-        }
     }
 
     endFrame();
@@ -538,19 +542,7 @@ void StudioRenderer::renderUI()
         {
             if (textures[i].length() > 0)
             {
-                if ((i == 0 && _engineState & StudioEngineState_Layer0) ||
-                    (i == 1 && _engineState & StudioEngineState_Layer1) ||
-                    (i == 2 && _engineState & StudioEngineState_Layer2) ||
-                    (i == 3 && _engineState & StudioEngineState_Layer3) ||
-                    (i == 4 && _engineState & StudioEngineState_Layer4) ||
-                    (i == 5 && _engineState & StudioEngineState_Layer5) ||
-                    (i == 6 && _engineState & StudioEngineState_Layer6) ||
-                    (i == 7 && _engineState & StudioEngineState_Layer7) ||
-                    (i == 8 && _engineState & StudioEngineState_Layer8) ||
-                    (i == 8 && _engineState & StudioEngineState_Layer9))
-                {
-                    _spriteBatchers[i]->endBatch(_textureNGShader, _textureManager->getTextureWithName(textures[i]));
-                }
+                _spriteBatchers[i]->endBatch(_textureNGShader, _textureManager->getTextureWithName(textures[i]));
             }
         }
     }
