@@ -30,6 +30,7 @@
 #include "game/graphics/StudioRenderer.h"
 #include "game/logic/World.h"
 #include <framework/entity/EntityLayoutMapper.h>
+#include <framework/entity/EntityMapper.h>
 #include <framework/math/OverlapTester.h>
 #include <framework/math/NGRect.h>
 
@@ -142,7 +143,9 @@ void StudioInputManager::update()
         else if (_engine->_state & StudioEngineState_DisplayEntities)
         {
             handleEntitiesInput();
-            _selectionIndex = clamp(_selectionIndex + _selectionIndexDir, 1, 0);
+            const std::vector<EntityDef*>& entityDescriptors = EntityMapper::getInstance()->getEntityDescriptors();
+            int numEntityIndices = static_cast<int>(entityDescriptors.size()) - 1;
+            _selectionIndex = clamp(_selectionIndex + _selectionIndexDir, numEntityIndices, 0);
         }
         else
         {
@@ -189,16 +192,15 @@ void StudioInputManager::handleDefaultInput()
                 
                 if (_activeEntity)
                 {
-                    const b2Vec2& position = _activeEntity->getPosition();
-                    float x = position.x + _deltaCursor.getX();
-                    float y = position.y + _deltaCursor.getY();
-                    _activeEntity->setPosition(b2Vec2(x, y));
+                    _activeEntityCursor += _deltaCursor;
+                    _activeEntity->setPosition(b2Vec2(_activeEntityCursor.getX(), _activeEntityCursor.getY()));
                     
-                    float eX = _activeEntity->getPosition().x;
-                    float eY = _activeEntity->getPosition().y;
-                    float eW = _activeEntity->getWidth();
-                    float eH = _activeEntity->getHeight();
-                    NGRect entityBounds = NGRect(eX - eW / 2, eY - eH / 2, eW, eH);
+                    Vector2 normalizedCursor = _activeEntityCursor;
+                    normalizedCursor -= _cursor;
+                    normalizedCursor /= _scrollValue;
+                    float eW = _activeEntity->getWidth() / _scrollValue;
+                    float eH = _activeEntity->getHeight() / _scrollValue;
+                    NGRect entityBounds = NGRect(normalizedCursor.getX() - eW / 2, normalizedCursor.getY() - eH / 2, eW, eH);
                     
                     _isDraggingActiveEntityOverDeleteZone = OverlapTester::doNGRectsOverlap(deleteWindow, entityBounds);
                 }
@@ -211,14 +213,22 @@ void StudioInputManager::handleDefaultInput()
                 
                 if (_activeEntity)
                 {
-                    const b2Vec2& position = _activeEntity->getPosition();
-                    float width = _activeEntity->getWidth();
-                    float height = _activeEntity->getHeight();
-                    float x = clamp(position.x, FLT_MAX, width / 2);
-                    float y = clamp(position.y, FLT_MAX, height / 2);
-                    x = floor(x);
-                    y = floor(y);
-                    _activeEntity->setPosition(b2Vec2(x, y));
+                    if (_isDraggingActiveEntityOverDeleteZone)
+                    {
+                        onEntityRemoved(_activeEntity);
+                        _engine->_world->mapRemoveEntity(_activeEntity);
+                    }
+                    else
+                    {
+                        const b2Vec2& position = _activeEntity->getPosition();
+                        float width = _activeEntity->getWidth();
+                        float height = _activeEntity->getHeight();
+                        float x = clamp(position.x, FLT_MAX, width / 2);
+                        float y = clamp(position.y, FLT_MAX, height / 2);
+                        x = floor(x);
+                        y = floor(y);
+                        _activeEntity->setPosition(b2Vec2(x, y));
+                    }
                 }
                 
                 _activeEntity = NULL;
@@ -350,11 +360,16 @@ void StudioInputManager::handleEntitiesInput()
             {
                 if (e.isDown())
                 {
+                    const std::vector<EntityDef*>& entityDescriptors = EntityMapper::getInstance()->getEntityDescriptors();
+                    EntityDef* entityDef = entityDescriptors[_selectionIndex];
+                    Entity* e = EntityMapper::getInstance()->createEntityFromDef(entityDef, floor(CAM_WIDTH / 2), floor(CAM_HEIGHT / 2), false);
+                    _engine->_world->mapAddEntity(e);
                     _engine->_state &= ~StudioEngineState_DisplayEntities;
                 }
             }
                 continue;
             case NG_KEY_ESCAPE:
+            case NG_KEY_E:
                 _engine->_state &= e.isDown() ? ~StudioEngineState_DisplayEntities : 0;
                 continue;
             default:
@@ -544,18 +559,22 @@ void StudioInputManager::updateCamera()
         if (c.getY() > topPan || _isPanningUp)
         {
             _cursor.add(0, h / CAM_HEIGHT / 2.0f);
+            _activeEntityCursor.add(0, h / CAM_HEIGHT / 2.0f);
         }
         if (c.getY() < bottomPan || _isPanningDown)
         {
             _cursor.sub(0, h / CAM_HEIGHT / 2.0f);
+            _activeEntityCursor.sub(0, h / CAM_HEIGHT / 2.0f);
         }
         if (c.getX() > rightPan || _isPanningRight)
         {
             _cursor.add(w / CAM_WIDTH / 2.0f, 0);
+            _activeEntityCursor.add(w / CAM_WIDTH / 2.0f, 0);
         }
         if (c.getX() < leftPan || _isPanningLeft)
         {
             _cursor.sub(w / CAM_WIDTH / 2.0f, 0);
+            _activeEntityCursor.sub(w / CAM_WIDTH / 2.0f, 0);
         }
     }
     

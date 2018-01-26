@@ -32,14 +32,16 @@ public:
     World(int flags = 0);
     ~World();
     
-    void addEntity(Entity* inEntity);
-    void removeEntity(Entity* inEntity);
+    void addDynamicEntity(Entity* inEntity);
+    void removeDynamicEntity(Entity* inEntity);
     void updateServer();
     void postRead();
     void updateClient();
     void interpolate(double alpha);
     void postRender();
     void loadMap(uint32_t map);
+    void mapAddEntity(Entity* e);
+    void mapRemoveEntity(Entity* e);
     void saveMap();
     void saveMapAs(uint32_t map);
     std::string& getMapName();
@@ -65,7 +67,7 @@ private:
     int _flags;
     
     void stepPhysics();
-    void clearEntities(std::vector<Entity*>& entities);
+    void clearDynamicEntities(std::vector<Entity*>& entities);
     void updateAndRemoveEntitiesAsNeeded(std::vector<Entity*>& entities);
 };
 

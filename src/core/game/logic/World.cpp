@@ -43,8 +43,8 @@ _flags(flags)
 
 World::~World()
 {
-    clearEntities(_players);
-    clearEntities(_dynamicEntities);
+    clearDynamicEntities(_players);
+    clearDynamicEntities(_dynamicEntities);
     for (Entity* entity : _staticEntities)
     {
         entity->deinitPhysics();
@@ -56,7 +56,7 @@ World::~World()
     delete _world;
 }
 
-void World::addEntity(Entity* inEntity)
+void World::addDynamicEntity(Entity* inEntity)
 {
     inEntity->initPhysics(getWorld());
     
@@ -70,7 +70,7 @@ void World::addEntity(Entity* inEntity)
     }
 }
 
-void World::removeEntity(Entity* inEntity)
+void World::removeDynamicEntity(Entity* inEntity)
 {
     std::vector<Entity*>* pEntities = NULL;
     if (inEntity->getEntityDef().type == 'ROBT')
@@ -88,10 +88,21 @@ void World::removeEntity(Entity* inEntity)
     int indexToRemove = -1;
     for (int i = 0; i < len; ++i)
     {
-        if (entities[i]->getID() == inEntity->getID())
+        if (_flags & WorldFlag_MapLoadAll)
         {
-            indexToRemove = i;
-            break;
+            if (entities[i] == inEntity)
+            {
+                indexToRemove = i;
+                break;
+            }
+        }
+        else
+        {
+            if (entities[i]->getID() == inEntity->getID())
+            {
+                indexToRemove = i;
+                break;
+            }
         }
     }
     
@@ -108,9 +119,16 @@ void World::removeEntity(Entity* inEntity)
         
         inEntity->deinitPhysics();
         
-        if (_flags & WorldFlag_Server)
+        if (_flags & WorldFlag_MapLoadAll)
         {
-            NG_SERVER->deregisterEntity(inEntity);
+            if (_flags & WorldFlag_Server)
+            {
+                NG_SERVER->deregisterEntity(inEntity);
+            }
+            else
+            {
+                delete inEntity;
+            }
         }
     }
 }
@@ -259,32 +277,18 @@ void World::loadMap(uint32_t map)
     _mapName = "";
     _mapFileName = "";
     
-    for (Entity* entity : _staticEntities)
+    for (Entity* e : _staticEntities)
     {
-        entity->deinitPhysics();
+        e->deinitPhysics();
     }
     
     NGSTDUtil::cleanUpVectorOfPointers(_staticEntities);
     NGSTDUtil::cleanUpVectorOfPointers(_layers);
     
-    std::vector<uint8_t> playerIds;
-    std::vector<std::string> playerNames;
-    
-    if (_flags & WorldFlag_Server)
-    {
-        for (Entity* entity : _players)
-        {
-            PlayerController* robot = static_cast<PlayerController*>(entity->getController());
-            
-            playerIds.push_back(robot->getPlayerId());
-            playerNames.push_back(robot->getPlayerName());
-        }
-    }
-    
     if (_flags & WorldFlag_MapLoadAll)
     {
-        clearEntities(_players);
-        clearEntities(_dynamicEntities);
+        clearDynamicEntities(_players);
+        clearDynamicEntities(_dynamicEntities);
     }
     
     if (_map == 0)
@@ -296,45 +300,94 @@ void World::loadMap(uint32_t map)
     _mapName = std::string(chars);
     _mapFileName = EntityLayoutMapper::getInstance()->getJsonConfigFilePath(_map);
     
-    if (_flags & WorldFlag_Server)
-    {
-        NG_SERVER->setMap(_map);
-        
-        for (int i = 0; i < playerIds.size(); ++i)
-        {
-            Server::sHandleNewClient(playerIds[i], playerNames[i]);
-        }
-    }
-    
     EntityLayoutMapper::getInstance()->loadEntityLayout(_map);
     EntityLayoutDef& entityLayoutDef = EntityLayoutMapper::getInstance()->getEntityLayoutDef();
     
-    for (EntityPosDef epd : entityLayoutDef.layers)
+    for (EntityPosDef epd : entityLayoutDef.entities)
     {
         Entity* e = EntityMapper::getInstance()->createEntity(epd.type, epd.x, epd.y, _flags & WorldFlag_Server);
+        mapAddEntity(e);
+    }
+}
+
+void World::mapAddEntity(Entity *e)
+{
+    bool isLayer = e->getEntityDef().fixtures.size() == 0 && e->getEntityDef().bodyFlags == 0;
+    bool isStatic = e->getEntityDef().fixtures.size() > 0 && (e->getEntityDef().bodyFlags & BodyFlag_Static);
+    bool isDynamic = e->getEntityDef().fixtures.size() > 0 && !(e->getEntityDef().bodyFlags & BodyFlag_Static);
+    
+    if (isLayer)
+    {
         _layers.push_back(e);
     }
-    
-    for (EntityPosDef epd : entityLayoutDef.staticEntities)
+    else if (isStatic)
     {
-        Entity* e = EntityMapper::getInstance()->createEntity(epd.type, epd.x, epd.y, _flags & WorldFlag_Server);
         e->initPhysics(getWorld());
         _staticEntities.push_back(e);
     }
-    
-    if (_flags & WorldFlag_MapLoadAll)
+    else if (isDynamic)
     {
-        for (EntityPosDef epd : entityLayoutDef.dynamicEntities)
+        if (_flags & WorldFlag_MapLoadAll)
         {
-            Entity* e = EntityMapper::getInstance()->createEntity(epd.type, epd.x, epd.y, _flags & WorldFlag_Server);
             if (_flags & WorldFlag_Server)
             {
                 NG_SERVER->registerEntity(e);
             }
             else
             {
-                addEntity(e);
+                addDynamicEntity(e);
             }
+        }
+    }
+}
+
+void World::mapRemoveEntity(Entity* e)
+{
+    bool isLayer = e->getEntityDef().fixtures.size() == 0 && e->getEntityDef().bodyFlags == 0;
+    bool isStatic = e->getEntityDef().fixtures.size() > 0 && (e->getEntityDef().bodyFlags & BodyFlag_Static);
+    bool isDynamic = e->getEntityDef().fixtures.size() > 0 && !(e->getEntityDef().bodyFlags & BodyFlag_Static);
+    
+    if (isLayer)
+    {
+        for (std::vector<Entity*>::iterator i = _layers.begin(); i != _layers.end(); )
+        {
+            if (e == (*i))
+            {
+                delete *i;
+                
+                i = _layers.erase(i);
+                break;
+            }
+            else
+            {
+                ++i;
+            }
+        }
+    }
+    else if (isStatic)
+    {
+        e->deinitPhysics();
+        
+        for (std::vector<Entity*>::iterator i = _staticEntities.begin(); i != _staticEntities.end(); )
+        {
+            if (e == (*i))
+            {
+                delete *i;
+                
+                i = _staticEntities.erase(i);
+                break;
+            }
+            else
+            {
+                ++i;
+            }
+        }
+    }
+    else if (isDynamic)
+    {
+        if (_flags & WorldFlag_MapLoadAll)
+        {
+            removeDynamicEntity(e);
         }
     }
 }
@@ -350,17 +403,17 @@ void World::saveMapAs(uint32_t map)
     
     for (Entity* e : _layers)
     {
-        layout.layers.push_back(EntityPosDef(e->getEntityDef().type, e->getPosition().x, e->getPosition().y));
+        layout.entities.push_back(EntityPosDef(e->getEntityDef().type, e->getPosition().x, e->getPosition().y));
     }
     
     for (Entity* e : _staticEntities)
     {
-        layout.staticEntities.push_back(EntityPosDef(e->getEntityDef().type, e->getPosition().x, e->getPosition().y));
+        layout.entities.push_back(EntityPosDef(e->getEntityDef().type, e->getPosition().x, e->getPosition().y));
     }
     
     for (Entity* e : _dynamicEntities)
     {
-        layout.dynamicEntities.push_back(EntityPosDef(e->getEntityDef().type, e->getPosition().x, e->getPosition().y));
+        layout.entities.push_back(EntityPosDef(e->getEntityDef().type, e->getPosition().x, e->getPosition().y));
     }
     
     EntityLayoutMapper::getInstance()->saveEntityLayout(map, &layout);
@@ -428,14 +481,14 @@ void World::stepPhysics()
     _world->Step(FRAME_RATE, velocityIterations, positionIterations);
 }
 
-void World::clearEntities(std::vector<Entity*>& entities)
+void World::clearDynamicEntities(std::vector<Entity*>& entities)
 {
     int len = static_cast<int>(entities.size());
     for (int i = 0, c = len; i < c; ++i)
     {
         Entity* entity = entities[i];
         
-        removeEntity(entity);
+        removeDynamicEntity(entity);
         --i;
         --c;
     }
@@ -455,7 +508,7 @@ void World::updateAndRemoveEntitiesAsNeeded(std::vector<Entity*>& entities)
         
         if (entity->isRequestingDeletion())
         {
-            removeEntity(entity);
+            removeDynamicEntity(entity);
             --i;
             --c;
         }

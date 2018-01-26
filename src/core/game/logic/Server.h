@@ -10,6 +10,7 @@
 #define __noctisgames__Server__
 
 #include <string>
+#include <vector>
 
 class World;
 class ClientProxy;
@@ -34,6 +35,8 @@ private:
     static Server* s_instance;
     
     World* _world;
+    std::vector<uint8_t> _playerIds;
+    std::vector<std::string> _playerNames;
     double _stateTime;
     double _frameStateTime;
     uint32_t _map;
@@ -43,8 +46,7 @@ private:
     void handleLostClient(ClientProxy* inClientProxy, uint8_t index);
     void deleteRobotWithPlayerId(uint8_t playerId);
     void spawnRobotForPlayer(uint8_t inPlayerId, std::string inPlayerName);
-    void spawnObjectsIfNecessary();
-    Entity* createAndRegisterEntity(uint32_t inFourCCName, int x, int y);
+    void loadMap();
     
     // ctor, copy ctor, and assignment should be private in a Singleton
     Server(bool isSteam);

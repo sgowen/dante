@@ -110,7 +110,7 @@ void Server::toggleMap()
         _map = 'Z001';
     }
     
-    InstanceManager::getServerWorld()->loadMap(_map);
+    loadMap();
 }
 
 void Server::handleNewClient(uint8_t playerId, std::string playerName)
@@ -125,7 +125,7 @@ void Server::handleNewClient(uint8_t playerId, std::string playerName)
         {
             _map = 'Z001';
             
-            InstanceManager::getServerWorld()->loadMap(_map);
+            loadMap();
         }
     }
 }
@@ -151,10 +151,36 @@ void Server::handleLostClient(ClientProxy* inClientProxy, uint8_t index)
 
 void Server::deleteRobotWithPlayerId(uint8_t playerId)
 {
-    Entity* entity = InstanceManager::getServerWorld()->getPlayerWithId(playerId);
-    if (entity)
+    Entity* e = InstanceManager::getServerWorld()->getPlayerWithId(playerId);
+    if (e)
     {
-        entity->requestDeletion();
+        for (std::vector<uint8_t>::iterator i = _playerIds.begin(); i != _playerIds.end(); )
+        {
+            if (playerId == (*i))
+            {
+                i = _playerIds.erase(i);
+            }
+            else
+            {
+                ++i;
+            }
+        }
+        
+        PlayerController* robot = static_cast<PlayerController*>(e->getController());
+        std::string& playerName = robot->getPlayerName();
+        for (std::vector<std::string>::iterator i = _playerNames.begin(); i != _playerNames.end(); )
+        {
+            if (playerName == (*i))
+            {
+                i = _playerNames.erase(i);
+            }
+            else
+            {
+                ++i;
+            }
+        }
+        
+        e->requestDeletion();
     }
 }
 
@@ -169,12 +195,30 @@ void Server::spawnRobotForPlayer(uint8_t inPlayerId, std::string inPlayerName)
     robot->setPlayerName(inPlayerName);
     robot->setPlayerId(inPlayerId);
     
+    _playerIds.push_back(inPlayerId);
+    _playerNames.push_back(inPlayerName);
+    
     NG_SERVER->registerEntity(e);
+}
+
+void Server::loadMap()
+{
+    std::vector<uint8_t> playerIds = _playerIds;
+    std::vector<std::string> playerNames = _playerNames;
+    
+    InstanceManager::getServerWorld()->loadMap(_map);
+    
+    NG_SERVER->setMap(_map);
+    
+    for (int i = 0; i < playerIds.size(); ++i)
+    {
+        handleNewClient(playerIds[i], playerNames[i]);
+    }
 }
 
 Server::Server(bool isSteam) : _world(NULL), _stateTime(0), _frameStateTime(0), _map(0), _isDisplaying(false)
 {
-    FWInstanceManager::createServerEntityManager(InstanceManager::sHandleEntityCreatedOnServer, InstanceManager::sHandleEntityDeletedOnServer);
+    FWInstanceManager::createServerEntityManager(InstanceManager::sHandleDynamicEntityCreatedOnServer, InstanceManager::sHandleDynamicEntityDeletedOnServer);
     
     if (isSteam)
     {

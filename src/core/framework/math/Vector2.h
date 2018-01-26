@@ -42,6 +42,9 @@ public:
     Vector2 operator*=(float scalar);
     Vector2 mul(float scalar);
     
+    Vector2 operator/=(float scalar);
+    Vector2 div(float scalar);
+    
     float len();
     float lenSquared();
     

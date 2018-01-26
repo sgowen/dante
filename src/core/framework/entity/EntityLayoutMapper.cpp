@@ -89,9 +89,7 @@ void EntityLayoutMapper::initWithJson(const char* data)
 
 void EntityLayoutMapper::loadEntityLayout(uint32_t name)
 {
-    _entityLayoutDef.layers.clear();
-    _entityLayoutDef.staticEntities.clear();
-    _entityLayoutDef.dynamicEntities.clear();
+    _entityLayoutDef.entities.clear();
     
     std::string path = getJsonConfigFilePath(name);
     std::string finalPath = adjustPath(path.c_str());
@@ -118,9 +116,9 @@ void EntityLayoutMapper::loadEntityLayout(const char* data)
     Document d;
     d.Parse<kParseStopWhenDoneFlag>(data);
     
-    if (d.HasMember("layers"))
+    if (d.HasMember("entities"))
     {
-        Value& v = d["layers"];
+        Value& v = d["entities"];
         
         assert(v.IsArray());
         for (SizeType i = 0; i < v.Size(); ++i)
@@ -143,65 +141,7 @@ void EntityLayoutMapper::loadEntityLayout(const char* data)
             entityPosDef.x = static_cast<float>(iv["x"].GetInt());
             entityPosDef.y = static_cast<float>(iv["y"].GetInt());
             
-            _entityLayoutDef.layers.push_back(entityPosDef);
-        }
-    }
-    
-    if (d.HasMember("staticEntities"))
-    {
-        Value& v = d["staticEntities"];
-        
-        assert(v.IsArray());
-        for (SizeType i = 0; i < v.Size(); ++i)
-        {
-            const Value& iv = v[i];
-            assert(iv.IsObject());
-            
-            std::string keyStr = iv["type"].GetString();
-            assert(keyStr.length() == 4);
-            
-            const char* chars = keyStr.c_str();
-            
-            uint32_t key = (uint32_t)chars[0] << 24 |
-            (uint32_t)chars[1] << 16 |
-            (uint32_t)chars[2] << 8  |
-            (uint32_t)chars[3];
-            
-            EntityPosDef entityPosDef;
-            entityPosDef.type = key;
-            entityPosDef.x = static_cast<float>(iv["x"].GetInt());
-            entityPosDef.y = static_cast<float>(iv["y"].GetInt());
-            
-            _entityLayoutDef.staticEntities.push_back(entityPosDef);
-        }
-    }
-    
-    if (d.HasMember("dynamicEntities"))
-    {
-        Value& v = d["dynamicEntities"];
-        
-        assert(v.IsArray());
-        for (SizeType i = 0; i < v.Size(); ++i)
-        {
-            const Value& iv = v[i];
-            assert(iv.IsObject());
-            
-            std::string keyStr = iv["type"].GetString();
-            assert(keyStr.length() == 4);
-            
-            const char* chars = keyStr.c_str();
-            
-            uint32_t key = (uint32_t)chars[0] << 24 |
-            (uint32_t)chars[1] << 16 |
-            (uint32_t)chars[2] << 8  |
-            (uint32_t)chars[3];
-            
-            EntityPosDef entityPosDef;
-            entityPosDef.type = key;
-            entityPosDef.x = static_cast<float>(iv["x"].GetInt());
-            entityPosDef.y = static_cast<float>(iv["y"].GetInt());
-            
-            _entityLayoutDef.dynamicEntities.push_back(entityPosDef);
+            _entityLayoutDef.entities.push_back(entityPosDef);
         }
     }
 }
@@ -219,73 +159,11 @@ const char* EntityLayoutMapper::save()
 
     w.StartObject();
     
-    if (_layoutToSave->layers.size() > 0)
+    if (_layoutToSave->entities.size() > 0)
     {
-        w.String("layers");
+        w.String("entities");
         w.StartArray();
-        for (EntityPosDef epd : _layoutToSave->layers)
-        {
-            w.StartObject();
-            {
-                w.String("type");
-                char chars[5];
-                chars[4] = '\0';
-                chars[3] = (char)(epd.type & 0xFF);
-                chars[2] = (char)(epd.type >> 8 & 0xFF);
-                chars[1] = (char)(epd.type >> 16 & 0xFF);
-                chars[0] = (char)(epd.type >> 24 & 0xFF);
-                std::string type = std::string(chars);
-                w.String(type.c_str());
-            }
-            {
-                w.String("x");
-                w.Int(epd.x);
-            }
-            {
-                w.String("y");
-                w.Int(epd.y);
-            }
-            w.EndObject();
-        }
-        w.EndArray();
-    }
-    
-    if (_layoutToSave->staticEntities.size() > 0)
-    {
-        w.String("staticEntities");
-        w.StartArray();
-        for (EntityPosDef epd : _layoutToSave->staticEntities)
-        {
-            w.StartObject();
-            {
-                w.String("type");
-                char chars[5];
-                chars[4] = '\0';
-                chars[3] = (char)(epd.type & 0xFF);
-                chars[2] = (char)(epd.type >> 8 & 0xFF);
-                chars[1] = (char)(epd.type >> 16 & 0xFF);
-                chars[0] = (char)(epd.type >> 24 & 0xFF);
-                std::string type = std::string(chars);
-                w.String(type.c_str());
-            }
-            {
-                w.String("x");
-                w.Int(epd.x);
-            }
-            {
-                w.String("y");
-                w.Int(epd.y);
-            }
-            w.EndObject();
-        }
-        w.EndArray();
-    }
-    
-    if (_layoutToSave->dynamicEntities.size() > 0)
-    {
-        w.String("dynamicEntities");
-        w.StartArray();
-        for (EntityPosDef epd : _layoutToSave->dynamicEntities)
+        for (EntityPosDef epd : _layoutToSave->entities)
         {
             w.StartObject();
             {

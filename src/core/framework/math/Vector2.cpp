@@ -131,6 +131,19 @@ Vector2 Vector2::mul(float scalar)
     return *this;
 }
 
+Vector2 Vector2::operator/=(float scalar)
+{
+    return div(scalar);
+}
+
+Vector2 Vector2::div(float scalar)
+{
+    _x /= scalar;
+    _y /= scalar;
+    
+    return *this;
+}
+
 float Vector2::len()
 {
     return sqrtf(_x * _x + _y * _y);

@@ -10,6 +10,7 @@
 #define __noctisgames__EntityMapper__
 
 #include <map>
+#include <vector>
 #include <string>
 
 class Entity;
@@ -28,13 +29,15 @@ public:
     void initWithJsonFile(const char* jsonFile, bool isBundled = true, bool useEncryption = false);
     void initWithJson(const char* json);
     Entity* createEntity(uint32_t inFourCCName, int x = 0, int y = 0, bool isServer = false);
+    Entity* createEntityFromDef(EntityDef* entityDef, int x = 0, int y = 0, bool isServer = false);
     void registerFunction(std::string name, EntityControllerCreationFunc inCreationFunction);
     EntityController* createEntityController(std::string name, Entity* inEntity);
-    const std::map<uint32_t, EntityDef*>& getEntityDescriptors();
+    const std::vector<EntityDef*>& getEntityDescriptors();
     const std::map<std::string, EntityControllerCreationFunc>& getEntityControllerMap();
     
 private:
-    std::map<uint32_t, EntityDef*> _entityDescriptors;
+    std::vector<EntityDef*> _entityDescriptors;
+    std::map<uint32_t, EntityDef*> _entityDescriptorsMap;
     std::map<std::string, EntityControllerCreationFunc> _nameToEntityControllerCreationFunctionMap;
     
     // ctor, copy ctor, and assignment should be private in a Singleton

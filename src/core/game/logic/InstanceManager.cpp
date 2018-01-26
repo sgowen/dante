@@ -39,19 +39,19 @@ World* InstanceManager::getServerWorld()
     return s_serverWorldInstance;
 }
 
-void InstanceManager::sHandleEntityCreatedOnClient(Entity* inEntity)
+void InstanceManager::sHandleDynamicEntityCreatedOnClient(Entity* inEntity)
 {
     if (InstanceManager::getClientWorld())
     {
-        InstanceManager::getClientWorld()->addEntity(inEntity);
+        InstanceManager::getClientWorld()->addDynamicEntity(inEntity);
     }
 }
 
-void InstanceManager::sHandleEntityDeletedOnClient(Entity* inEntity)
+void InstanceManager::sHandleDynamicEntityDeletedOnClient(Entity* inEntity)
 {
     if (InstanceManager::getClientWorld())
     {
-        InstanceManager::getClientWorld()->removeEntity(inEntity);
+        InstanceManager::getClientWorld()->removeDynamicEntity(inEntity);
     }
 }
 
@@ -82,19 +82,19 @@ Entity* InstanceManager::sGetPlayerEntityForIDOnClient(uint8_t inPlayerID)
     return ret;
 }
 
-void InstanceManager::sHandleEntityCreatedOnServer(Entity* inEntity)
+void InstanceManager::sHandleDynamicEntityCreatedOnServer(Entity* inEntity)
 {
     if (InstanceManager::getServerWorld())
     {
-        InstanceManager::getServerWorld()->addEntity(inEntity);
+        InstanceManager::getServerWorld()->addDynamicEntity(inEntity);
     }
 }
 
-void InstanceManager::sHandleEntityDeletedOnServer(Entity* inEntity)
+void InstanceManager::sHandleDynamicEntityDeletedOnServer(Entity* inEntity)
 {
     if (InstanceManager::getServerWorld())
     {
-        InstanceManager::getServerWorld()->removeEntity(inEntity);
+        InstanceManager::getServerWorld()->removeDynamicEntity(inEntity);
     }
 }
 

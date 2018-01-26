@@ -386,7 +386,7 @@ void TitleEngine::joinServer(Engine* engine)
         PooledObjectsManager::create();
     }
     
-    FWInstanceManager::createClientEntityManager(InstanceManager::sHandleEntityCreatedOnClient, InstanceManager::sHandleEntityDeletedOnClient);
+    FWInstanceManager::createClientEntityManager(InstanceManager::sHandleDynamicEntityCreatedOnClient, InstanceManager::sHandleDynamicEntityDeletedOnClient);
     
     ClientHelper* clientHelper = NULL;
     if (_isSteam)

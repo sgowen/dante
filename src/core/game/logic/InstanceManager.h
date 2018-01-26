@@ -22,13 +22,13 @@ public:
     static World* getClientWorld();
     static World* getServerWorld();
     
-    static void sHandleEntityCreatedOnClient(Entity* inEntity);
-    static void sHandleEntityDeletedOnClient(Entity* inEntity);
+    static void sHandleDynamicEntityCreatedOnClient(Entity* inEntity);
+    static void sHandleDynamicEntityDeletedOnClient(Entity* inEntity);
     static uint64_t sGetPlayerAddressHashForIndexOnClient(uint8_t inPlayerIndex);
     static Entity* sGetPlayerEntityForIDOnClient(uint8_t inPlayerID);
     
-    static void sHandleEntityCreatedOnServer(Entity* inEntity);
-    static void sHandleEntityDeletedOnServer(Entity* inEntity);
+    static void sHandleDynamicEntityCreatedOnServer(Entity* inEntity);
+    static void sHandleDynamicEntityDeletedOnServer(Entity* inEntity);
     
 private:
     static World* s_clientWorldInstance;

@@ -24,9 +24,7 @@ struct EntityPosDef
 
 struct EntityLayoutDef
 {
-    std::vector<EntityPosDef> layers;
-    std::vector<EntityPosDef> staticEntities;
-    std::vector<EntityPosDef> dynamicEntities;
+    std::vector<EntityPosDef> entities;
 };
 
 struct MapDef

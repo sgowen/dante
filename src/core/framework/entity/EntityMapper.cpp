@@ -55,7 +55,7 @@ void EntityMapper::initWithJsonFile(const char* path, bool isBundled, bool useEn
 
 void EntityMapper::initWithJson(const char* json)
 {
-    NGSTDUtil::cleanUpMapOfPointers(_entityDescriptors);
+    NGSTDUtil::cleanUpMapOfPointers(_entityDescriptorsMap);
     
     using namespace rapidjson;
     
@@ -78,7 +78,7 @@ void EntityMapper::initWithJson(const char* json)
         (uint32_t)chars[2] << 8  |
         (uint32_t)chars[3];
         
-        assert(_entityDescriptors.find(key) == _entityDescriptors.end());
+        assert(_entityDescriptorsMap.find(key) == _entityDescriptorsMap.end());
         
         EntityDef* entry = new EntityDef();
         
@@ -144,18 +144,23 @@ void EntityMapper::initWithJson(const char* json)
         entry->layer = iv["layer"].GetInt();
         entry->stateSensitive = iv.HasMember("stateSensitive") ? iv["stateSensitive"].GetBool() : false;
         
-        _entityDescriptors[key] = entry;
+        _entityDescriptorsMap[key] = entry;
     }
 }
 
 Entity* EntityMapper::createEntity(uint32_t inFourCCName, int x, int y, bool isServer)
 {
-    auto q = _entityDescriptors.find(inFourCCName);
+    auto q = _entityDescriptorsMap.find(inFourCCName);
     
-    assert(q != _entityDescriptors.end());
+    assert(q != _entityDescriptorsMap.end());
     
     EntityDef* entityDef = q->second;
     
+    return createEntityFromDef(entityDef, x, y, isServer);
+}
+
+Entity* EntityMapper::createEntityFromDef(EntityDef* entityDef, int x, int y, bool isServer)
+{
     return new Entity(*entityDef, x, y, isServer);
 }
 
@@ -175,7 +180,7 @@ EntityController* EntityMapper::createEntityController(std::string name, Entity*
     return creationFunc(inEntity);
 }
 
-const std::map<uint32_t, EntityDef*>& EntityMapper::getEntityDescriptors()
+const std::vector<EntityDef*>& EntityMapper::getEntityDescriptors()
 {
     return _entityDescriptors;
 }
@@ -192,5 +197,5 @@ EntityMapper::EntityMapper()
 
 EntityMapper::~EntityMapper()
 {
-    NGSTDUtil::cleanUpMapOfPointers(_entityDescriptors);
+    NGSTDUtil::cleanUpMapOfPointers(_entityDescriptorsMap);
 }

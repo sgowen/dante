@@ -73,6 +73,7 @@
 #include "framework/input/CursorInputManager.h"
 #include "framework/input/CursorConverter.h"
 #include <framework/entity/EntityLayoutMapper.h>
+#include <framework/entity/EntityMapper.h>
 
 #ifdef NG_STEAM
 #include "framework/network/steam/NGSteamGameServer.h"
@@ -192,6 +193,7 @@ void StudioRenderer::render()
         Entity* e = _input->_activeEntity;
         if (e)
         {
+            _rendererHelper->updateMatrix(_camBounds[3]->getLeft(), _camBounds[3]->getRight(), _camBounds[3]->getBottom(), _camBounds[3]->getTop());
             _rendererHelper->useNormalBlending();
             _spriteBatchers[0]->beginBatch();
             TextureRegion tr = ASSETS->findTextureRegion(e->getTextureMapping(), e->getStateTime());
