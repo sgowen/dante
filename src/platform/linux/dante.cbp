@@ -619,8 +619,8 @@
 		<Unit filename="../../core/game/graphics/StudioRenderer.h" />
 		<Unit filename="../../core/game/graphics/TitleRenderer.cpp" />
 		<Unit filename="../../core/game/graphics/TitleRenderer.h" />
-		<Unit filename="../../core/game/logic/CrawlerController.cpp" />
-		<Unit filename="../../core/game/logic/CrawlerController.h" />
+		<Unit filename="../../core/game/logic/BasicFollowAndAttackController.cpp" />
+		<Unit filename="../../core/game/logic/BasicFollowAndAttackController.h" />
 		<Unit filename="../../core/game/logic/GameConstants.h" />
 		<Unit filename="../../core/game/logic/GameEngine.cpp" />
 		<Unit filename="../../core/game/logic/GameEngine.h" />
