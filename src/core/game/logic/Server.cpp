@@ -210,6 +210,9 @@ void Server::loadMap()
     
     NG_SERVER->setMap(_map);
     
+    _playerIds.clear();
+    _playerNames.clear();
+    
     for (int i = 0; i < playerIds.size(); ++i)
     {
         handleNewClient(playerIds[i], playerNames[i]);
