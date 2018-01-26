@@ -36,8 +36,8 @@ public:
     const std::map<std::string, EntityControllerCreationFunc>& getEntityControllerMap();
     
 private:
-    std::vector<EntityDef*> _entityDescriptors;
     std::map<uint32_t, EntityDef*> _entityDescriptorsMap;
+    std::vector<EntityDef*> _entityDescriptors;
     std::map<std::string, EntityControllerCreationFunc> _nameToEntityControllerCreationFunctionMap;
     
     // ctor, copy ctor, and assignment should be private in a Singleton

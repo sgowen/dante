@@ -56,6 +56,7 @@ enum BodyFlags
 struct EntityDef
 {
     std::string name;
+    std::string typeName;
     uint32_t type;
     std::string controller;
     std::map<int, std::string> mappings;

@@ -138,14 +138,16 @@ void StudioInputManager::update()
         if (_engine->_state & StudioEngineState_DisplayLoadMapDialog)
         {
             handleLoadMapDialogInput();
-            _selectionIndex = clamp(_selectionIndex + _selectionIndexDir, 1, 0);
+            _rawSelectionIndex = clamp(_rawSelectionIndex + _selectionIndexDir, 1, 0);
+            _selectionIndex = clamp(_rawSelectionIndex, 1, 0);
         }
         else if (_engine->_state & StudioEngineState_DisplayEntities)
         {
             handleEntitiesInput();
             const std::vector<EntityDef*>& entityDescriptors = EntityMapper::getInstance()->getEntityDescriptors();
             int numEntityIndices = static_cast<int>(entityDescriptors.size()) - 1;
-            _selectionIndex = clamp(_selectionIndex + _selectionIndexDir, numEntityIndices, 0);
+            _rawSelectionIndex = clamp(_rawSelectionIndex + _selectionIndexDir, numEntityIndices, 0);
+            _selectionIndex = clamp(_rawSelectionIndex, numEntityIndices, 0);
         }
         else
         {
@@ -164,7 +166,7 @@ void StudioInputManager::handleDefaultInput()
     
     int width = CAM_WIDTH / 3;
     int height = 3;
-    static NGRect deleteWindow = NGRect(CAM_WIDTH / 2 - width / 2, CAM_HEIGHT - 4 - height - 1, width, height);
+    static NGRect deleteWindow = NGRect(CAM_WIDTH / 2 - width / 2, CAM_HEIGHT - height - 1, width, height);
     
     for (std::vector<CursorEvent *>::iterator i = CURSOR_INPUT_MANAGER->getEvents().begin(); i != CURSOR_INPUT_MANAGER->getEvents().end(); ++i)
     {
@@ -295,9 +297,20 @@ void StudioInputManager::handleDefaultInput()
                 continue;
             case NG_KEY_A:
                 _engine->_state ^= e.isDown() ? StudioEngineState_DisplayAssets : 0;
+                if (e.isDown())
+                {
+                    _engine->_renderer->displayToast("Assets Management not yet implemented...");
+                }
                 continue;
             case NG_KEY_E:
-                _engine->_state ^= e.isDown() ? StudioEngineState_DisplayEntities : 0;
+                if (_engine->_world->isMapLoaded())
+                {
+                    _engine->_state ^= e.isDown() ? StudioEngineState_DisplayEntities : 0;
+                }
+                else if (e.isDown())
+                {
+                    _engine->_renderer->displayToast("Load a Map first!");
+                }
                 continue;
             case NG_KEY_R:
                 if (e.isDown())
@@ -307,9 +320,27 @@ void StudioInputManager::handleDefaultInput()
                 continue;
             case NG_KEY_N:
                 _engine->_state |= e.isDown() ? StudioEngineState_DisplayNewMapDialog : 0;
+                if (e.isDown())
+                {
+                    _engine->_renderer->displayToast("New Map not yet implemented...");
+                }
                 continue;
             case NG_KEY_L:
                 _engine->_state |= e.isDown() ? StudioEngineState_DisplayLoadMapDialog : 0;
+                continue;
+            case NG_KEY_X:
+                if (e.isDown())
+                {
+                    _engine->_world->clear();
+                    _entities.clear();
+                }
+                continue;
+            case NG_KEY_T:
+                if (e.isDown())
+                {
+                    /// TODO, test level
+                    _engine->_renderer->displayToast("Testing not yet implemented, so start a server to test...");
+                }
                 continue;
             case NG_KEY_S:
                 if (e.isDown())
@@ -317,6 +348,7 @@ void StudioInputManager::handleDefaultInput()
                     if (_isControl)
                     {
                         _engine->_state |= e.isDown() ? StudioEngineState_DisplaySaveMapAsDialog : 0;
+                        _engine->_renderer->displayToast("Save As not yet implemented...");
                     }
                     else
                     {
@@ -350,11 +382,41 @@ void StudioInputManager::handleEntitiesInput()
         KeyboardEvent& e = *(*i);
         switch (e.getKey())
         {
+            case NG_KEY_ZERO:
+                _engine->_state ^= e.isDown() ? StudioEngineState_Layer0 : 0;
+                continue;
+            case NG_KEY_ONE:
+                _engine->_state ^= e.isDown() ? StudioEngineState_Layer1 : 0;
+                continue;
+            case NG_KEY_TWO:
+                _engine->_state ^= e.isDown() ? StudioEngineState_Layer2 : 0;
+                continue;
+            case NG_KEY_THREE:
+                _engine->_state ^= e.isDown() ? StudioEngineState_Layer3 : 0;
+                continue;
+            case NG_KEY_FOUR:
+                _engine->_state ^= e.isDown() ? StudioEngineState_Layer4 : 0;
+                continue;
+            case NG_KEY_FIVE:
+                _engine->_state ^= e.isDown() ? StudioEngineState_Layer5 : 0;
+                continue;
+            case NG_KEY_SIX:
+                _engine->_state ^= e.isDown() ? StudioEngineState_Layer6 : 0;
+                continue;
+            case NG_KEY_SEVEN:
+                _engine->_state ^= e.isDown() ? StudioEngineState_Layer7 : 0;
+                continue;
+            case NG_KEY_EIGHT:
+                _engine->_state ^= e.isDown() ? StudioEngineState_Layer8 : 0;
+                continue;
+            case NG_KEY_NINE:
+                _engine->_state ^= e.isDown() ? StudioEngineState_Layer9 : 0;
+                continue;
             case NG_KEY_ARROW_DOWN:
-                _selectionIndexDir = e.isPressed() ? 1 : 0;
+                _selectionIndexDir = e.isPressed() ? 0.25f : 0;
                 continue;
             case NG_KEY_ARROW_UP:
-                _selectionIndexDir = e.isPressed() ? -1 : 0;
+                _selectionIndexDir = e.isPressed() ? -0.25f : 0;
                 continue;
             case NG_KEY_CARRIAGE_RETURN:
             {
@@ -362,14 +424,23 @@ void StudioInputManager::handleEntitiesInput()
                 {
                     const std::vector<EntityDef*>& entityDescriptors = EntityMapper::getInstance()->getEntityDescriptors();
                     EntityDef* entityDef = entityDescriptors[_selectionIndex];
-                    Entity* e = EntityMapper::getInstance()->createEntityFromDef(entityDef, floor(CAM_WIDTH / 2), floor(CAM_HEIGHT / 2), false);
+                    if (entityDef->type == 'ROBT')
+                    {
+                        _engine->_renderer->displayToast("Players can only be spawned by the server...");
+                        continue;
+                    }
+                    
+                    float spawnX = clamp(CAM_WIDTH * _scrollValue / 2 + _cursor.getX(), FLT_MAX, entityDef->width / 2.0f);
+                    float spawnY = clamp(CAM_HEIGHT * _scrollValue / 2 + _cursor.getY(), FLT_MAX, entityDef->height / 2.0f);
+                    Entity* e = EntityMapper::getInstance()->createEntityFromDef(entityDef, floor(spawnX), floor(spawnY), false);
                     _engine->_world->mapAddEntity(e);
+                    onEntityAdded(e);
                     _engine->_state &= ~StudioEngineState_DisplayEntities;
                 }
             }
                 continue;
             case NG_KEY_ESCAPE:
-            case NG_KEY_E:
+            case NG_KEY_BACK_SPACE:
                 _engine->_state &= e.isDown() ? ~StudioEngineState_DisplayEntities : 0;
                 continue;
             default:
@@ -386,10 +457,10 @@ void StudioInputManager::handleLoadMapDialogInput()
         switch (e.getKey())
         {
             case NG_KEY_ARROW_DOWN:
-                _selectionIndexDir = e.isPressed() ? 1 : 0;
+                _selectionIndexDir = e.isPressed() ? 0.25f : 0;
                 continue;
             case NG_KEY_ARROW_UP:
-                _selectionIndexDir = e.isPressed() ? -1 : 0;
+                _selectionIndexDir = e.isPressed() ? -0.25f : 0;
                 continue;
             case NG_KEY_CARRIAGE_RETURN:
             {
@@ -404,6 +475,7 @@ void StudioInputManager::handleLoadMapDialogInput()
             }
                 continue;
             case NG_KEY_ESCAPE:
+            case NG_KEY_BACK_SPACE:
                 _engine->_state &= e.isDown() ? ~StudioEngineState_DisplayLoadMapDialog : 0;
                 continue;
             default:
@@ -612,6 +684,7 @@ _isPanningDown(false),
 _isPanningRight(false),
 _isPanningLeft(false),
 _selectionIndex(0),
+_rawSelectionIndex(0),
 _selectionIndexDir(0),
 _activeEntity(NULL),
 _activeEntityCursor(),

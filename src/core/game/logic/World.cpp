@@ -277,25 +277,9 @@ void World::loadMap(uint32_t map)
     _mapName = "";
     _mapFileName = "";
     
-    for (Entity* e : _staticEntities)
-    {
-        e->deinitPhysics();
-    }
+    clear();
     
-    NGSTDUtil::cleanUpVectorOfPointers(_staticEntities);
-    NGSTDUtil::cleanUpVectorOfPointers(_layers);
-    
-    if (_flags & WorldFlag_MapLoadAll)
-    {
-        clearDynamicEntities(_players);
-        clearDynamicEntities(_dynamicEntities);
-    }
-    
-    if (_map == 0)
-    {
-        LOG("Error! Map cannot be 0!");
-        return;
-    }
+    assert(_map != 0);
     
     _mapName = std::string(chars);
     _mapFileName = EntityLayoutMapper::getInstance()->getJsonConfigFilePath(_map);
@@ -308,6 +292,11 @@ void World::loadMap(uint32_t map)
         Entity* e = EntityMapper::getInstance()->createEntity(epd.type, epd.x, epd.y, _flags & WorldFlag_Server);
         mapAddEntity(e);
     }
+}
+
+bool World::isMapLoaded()
+{
+    return _map != 0;
 }
 
 void World::mapAddEntity(Entity *e)
@@ -420,6 +409,23 @@ void World::saveMapAs(uint32_t map)
     
     // If the save was successful, update current map
     _map = map;
+}
+
+void World::clear()
+{
+    for (Entity* e : _staticEntities)
+    {
+        e->deinitPhysics();
+    }
+    
+    NGSTDUtil::cleanUpVectorOfPointers(_staticEntities);
+    NGSTDUtil::cleanUpVectorOfPointers(_layers);
+    
+    if (_flags & WorldFlag_MapLoadAll)
+    {
+        clearDynamicEntities(_players);
+        clearDynamicEntities(_dynamicEntities);
+    }
 }
 
 std::string& World::getMapName()

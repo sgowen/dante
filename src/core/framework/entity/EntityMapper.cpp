@@ -56,6 +56,7 @@ void EntityMapper::initWithJsonFile(const char* path, bool isBundled, bool useEn
 void EntityMapper::initWithJson(const char* json)
 {
     NGSTDUtil::cleanUpMapOfPointers(_entityDescriptorsMap);
+    _entityDescriptors.clear();
     
     using namespace rapidjson;
     
@@ -84,6 +85,7 @@ void EntityMapper::initWithJson(const char* json)
         
         entry->type = key;
         entry->name = iv["name"].GetString();
+        entry->typeName = keyStr;
         entry->controller = iv.HasMember("controller") ? iv["controller"].GetString() : "DefaultController";
         
         {
@@ -145,6 +147,7 @@ void EntityMapper::initWithJson(const char* json)
         entry->stateSensitive = iv.HasMember("stateSensitive") ? iv["stateSensitive"].GetBool() : false;
         
         _entityDescriptorsMap[key] = entry;
+        _entityDescriptors.push_back(entry);
     }
 }
 
@@ -198,4 +201,5 @@ EntityMapper::EntityMapper()
 EntityMapper::~EntityMapper()
 {
     NGSTDUtil::cleanUpMapOfPointers(_entityDescriptorsMap);
+    _entityDescriptors.clear();
 }

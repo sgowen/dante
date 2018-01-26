@@ -57,7 +57,8 @@ private:
     bool _isPanningRight;
     bool _isPanningLeft;
     int _selectionIndex;
-    int _selectionIndexDir;
+    float _rawSelectionIndex;
+    float _selectionIndexDir;
     std::vector<Entity*> _entities;
     Entity* _activeEntity;
     Vector2 _activeEntityCursor;

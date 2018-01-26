@@ -40,10 +40,12 @@ public:
     void interpolate(double alpha);
     void postRender();
     void loadMap(uint32_t map);
+    bool isMapLoaded();
     void mapAddEntity(Entity* e);
     void mapRemoveEntity(Entity* e);
     void saveMap();
     void saveMapAs(uint32_t map);
+    void clear();
     std::string& getMapName();
     std::string& getMapFileName();
     Entity* getPlayerWithId(uint8_t inPlayerID);

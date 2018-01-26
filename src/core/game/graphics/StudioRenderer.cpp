@@ -89,6 +89,7 @@
 StudioRenderer::StudioRenderer() : Renderer(),
 _textureManager(new TextureManager("game_assets.cfg")),
 _rendererHelper(RENDERER_HELPER_FACTORY->createRendererHelper()),
+_fontSpriteBatcher(new SpriteBatcher(_rendererHelper)),
 _fillPolygonBatcher(new PolygonBatcher(_rendererHelper, true)),
 _boundsPolygonBatcher(new PolygonBatcher(_rendererHelper, false)),
 _lineBatcher(new LineBatcher(_rendererHelper)),
@@ -123,6 +124,7 @@ StudioRenderer::~StudioRenderer()
 
     delete _textureManager;
     delete _rendererHelper;
+    delete _fontSpriteBatcher;
     for (int i = 0; i < NUM_SPRITE_BATCHERS; ++i)
     {
         delete _spriteBatchers[i];
@@ -234,7 +236,7 @@ void StudioRenderer::update(float x, float y, float w, float h, int scale)
     if (_toasts.size() > 0)
     {
         ++_toastStateTime;
-        if (_toastStateTime >= 60)
+        if (_toastStateTime >= 90)
         {
             _toasts.pop_front();
             _toastStateTime = 0;
@@ -404,7 +406,8 @@ void StudioRenderer::renderEntities()
                 (i == 5 && _engineState & StudioEngineState_Layer5) ||
                 (i == 6 && _engineState & StudioEngineState_Layer6) ||
                 (i == 7 && _engineState & StudioEngineState_Layer7) ||
-                (i == 8 && _engineState & StudioEngineState_Layer8))
+                (i == 8 && _engineState & StudioEngineState_Layer8) ||
+                (i == 8 && _engineState & StudioEngineState_Layer9))
             {
                 _spriteBatchers[i]->endBatch(_textureNGShader, _textureManager->getTextureWithName(textures[i]));
             }
@@ -454,24 +457,6 @@ void StudioRenderer::renderUI()
     _rendererHelper->useScreenBlending();
     _rendererHelper->updateMatrix(0, CAM_WIDTH, 0, CAM_HEIGHT);
     
-    {
-        /// Toasts
-        int y = CAM_HEIGHT - 2;
-        _fillPolygonBatcher->beginBatch();
-        _spriteBatchers[0]->beginBatch();
-        for (std::string t : _toasts)
-        {
-            NGRect window = NGRect(CAM_WIDTH / 2 - t.length() / 2.0f - 1, y - 1, t.length() + 1, 2);
-            _fillPolygonBatcher->renderRect(window);
-            renderText(t.c_str(), CAM_WIDTH / 2, y, FONT_ALIGN_CENTERED);
-            y -= 2;
-        }
-        Color windowColor = Color::BLUE;
-        windowColor.alpha = 0.5f;
-        _fillPolygonBatcher->endBatch(_colorNGShader, windowColor);
-        _spriteBatchers[0]->endBatch(_textureNGShader, _textureManager->getTextureWithName("texture_000.ngt"));
-    }
-    
     if (_engineState & StudioEngineState_DisplayLoadMapDialog)
     {
         /// Maps
@@ -490,9 +475,9 @@ void StudioRenderer::renderUI()
         int row = 2;
         static float padding = 1;
         
-        _spriteBatchers[0]->beginBatch();
+        _fontSpriteBatcher->beginBatch();
         renderText("Load Map", CAM_WIDTH / 2, CAM_HEIGHT - 4 - (row++ * padding), FONT_ALIGN_CENTERED);
-        _spriteBatchers[0]->endBatch(_textureNGShader, _textureManager->getTextureWithName("texture_000.ngt"));
+        _fontSpriteBatcher->endBatch(_textureNGShader, _textureManager->getTextureWithName("texture_000.ngt"));
         
         ++row;
         
@@ -500,9 +485,73 @@ void StudioRenderer::renderUI()
         {
             MapDef& mp = maps[i];
             
-            _spriteBatchers[0]->beginBatch();
+            _fontSpriteBatcher->beginBatch();
             renderText(StringUtil::format("%s | %s", mp.name.c_str(), mp.value.c_str()).c_str(), CAM_WIDTH / 2, CAM_HEIGHT - 4 - (row++ * padding), FONT_ALIGN_CENTERED);
-            _spriteBatchers[0]->endBatch(_textureNGShader, _textureManager->getTextureWithName("texture_000.ngt"), NULL, i == _input->_selectionIndex ? Color::WHITE : Color::BLACK);
+            _fontSpriteBatcher->endBatch(_textureNGShader, _textureManager->getTextureWithName("texture_000.ngt"), NULL, i == _input->_selectionIndex ? Color::WHITE : Color::BLACK);
+        }
+    }
+    else if (_engineState & StudioEngineState_DisplayEntities)
+    {
+        const std::vector<EntityDef*>& entityDescriptors = EntityMapper::getInstance()->getEntityDescriptors();
+        int numEntities = static_cast<int>(entityDescriptors.size());
+        
+        int width = CAM_WIDTH * 0.7f;
+        int height = numEntities + 3;
+        
+        _rendererHelper->updateMatrix(0, CAM_WIDTH, 0, CAM_HEIGHT);
+        
+        _fillPolygonBatcher->beginBatch();
+        
+        NGRect window = NGRect(1, CAM_HEIGHT - height - 1, width, height);
+        Color windowColor = Color::BLUE;
+        windowColor.alpha = 0.5f;
+        _fillPolygonBatcher->renderRect(window);
+        _fillPolygonBatcher->endBatch(_colorNGShader, windowColor);
+        
+        int selectionIndex = _input->_selectionIndex;
+        int row = 1;
+        static float padding = 5;
+        
+        for (int i = 0; i < NUM_SPRITE_BATCHERS; ++i)
+        {
+            _spriteBatchers[i]->beginBatch();
+        }
+        
+        std::string textures[NUM_SPRITE_BATCHERS];
+        
+        for (int i = clamp(selectionIndex - 4, numEntities - 1, 0); i < numEntities; ++i)
+        {
+            EntityDef* ed = entityDescriptors[i];
+            
+            _fontSpriteBatcher->beginBatch();
+            renderText(StringUtil::format("%s | %s", ed->typeName.c_str(), ed->name.c_str()).c_str(), 7, CAM_HEIGHT - 1 - (row * padding), FONT_ALIGN_LEFT);
+            _fontSpriteBatcher->endBatch(_textureNGShader, _textureManager->getTextureWithName("texture_000.ngt"), NULL, i == selectionIndex ? Color::WHITE : Color::BLACK);
+            
+            TextureRegion tr = ASSETS->findTextureRegion(ed->mappings[0], 0);
+            _spriteBatchers[ed->layer]->renderSprite(4, CAM_HEIGHT - 1 - (row * padding), 4, 4, 0, tr);
+            textures[ed->layer] = tr.getTextureName();
+            
+            ++row;
+        }
+        
+        for (int i = 0; i < NUM_SPRITE_BATCHERS; ++i)
+        {
+            if (textures[i].length() > 0)
+            {
+                if ((i == 0 && _engineState & StudioEngineState_Layer0) ||
+                    (i == 1 && _engineState & StudioEngineState_Layer1) ||
+                    (i == 2 && _engineState & StudioEngineState_Layer2) ||
+                    (i == 3 && _engineState & StudioEngineState_Layer3) ||
+                    (i == 4 && _engineState & StudioEngineState_Layer4) ||
+                    (i == 5 && _engineState & StudioEngineState_Layer5) ||
+                    (i == 6 && _engineState & StudioEngineState_Layer6) ||
+                    (i == 7 && _engineState & StudioEngineState_Layer7) ||
+                    (i == 8 && _engineState & StudioEngineState_Layer8) ||
+                    (i == 8 && _engineState & StudioEngineState_Layer9))
+                {
+                    _spriteBatchers[i]->endBatch(_textureNGShader, _textureManager->getTextureWithName(textures[i]));
+                }
+            }
         }
     }
     else if (_engineState & StudioEngineState_DisplayControls)
@@ -510,14 +559,14 @@ void StudioRenderer::renderUI()
         /// Controls
         _fillPolygonBatcher->beginBatch();
         int width = 22;
-        int height = 15;
+        int height = 17;
         NGRect window = NGRect(CAM_WIDTH - width - 1, CAM_HEIGHT - height - 1, width, height);
         Color windowColor = Color::BLUE;
         windowColor.alpha = 0.5f;
         _fillPolygonBatcher->renderRect(window);
         _fillPolygonBatcher->endBatch(_colorNGShader, windowColor);
         
-        _spriteBatchers[0]->beginBatch();
+        _fontSpriteBatcher->beginBatch();
         
         int row = 2;
         static float padding = 1;
@@ -527,6 +576,8 @@ void StudioRenderer::renderUI()
         renderText(StringUtil::format("[P]      Parallax %s", _engineState & StudioEngineState_DisplayParallax ? " ON" : "OFF").c_str(), CAM_WIDTH - 2, CAM_HEIGHT - (row++ * padding), FONT_ALIGN_RIGHT);
         ++row;
         renderText(StringUtil::format("[R]      Reset Camera").c_str(), CAM_WIDTH - 2, CAM_HEIGHT - (row++ * padding), FONT_ALIGN_RIGHT);
+        renderText(StringUtil::format("[X]       Reset World").c_str(), CAM_WIDTH - 2, CAM_HEIGHT - (row++ * padding), FONT_ALIGN_RIGHT);
+        renderText(StringUtil::format("[T]         Test Zone").c_str(), CAM_WIDTH - 2, CAM_HEIGHT - (row++ * padding), FONT_ALIGN_RIGHT);
         ++row;
         renderText(StringUtil::format("[N]               New").c_str(), CAM_WIDTH - 2, CAM_HEIGHT - (row++ * padding), FONT_ALIGN_RIGHT);
         renderText(StringUtil::format("[L]              Load").c_str(), CAM_WIDTH - 2, CAM_HEIGHT - (row++ * padding), FONT_ALIGN_RIGHT);
@@ -537,7 +588,7 @@ void StudioRenderer::renderUI()
         renderText(StringUtil::format("[A]  %s   Assets", _engineState & StudioEngineState_DisplayAssets ? "Hide   " : "Display").c_str(), CAM_WIDTH - 2, CAM_HEIGHT - (row++ * padding), FONT_ALIGN_RIGHT);
         renderText(StringUtil::format("[E]  %s Entities", _engineState & StudioEngineState_DisplayEntities ? "Hide   " : "Display").c_str(), CAM_WIDTH - 2, CAM_HEIGHT - (row++ * padding), FONT_ALIGN_RIGHT);
         
-        _spriteBatchers[0]->endBatch(_textureNGShader, _textureManager->getTextureWithName("texture_000.ngt"));
+        _fontSpriteBatcher->endBatch(_textureNGShader, _textureManager->getTextureWithName("texture_000.ngt"));
     }
     
     {
@@ -553,33 +604,33 @@ void StudioRenderer::renderUI()
         
         for (int i = 0; i < StudioEngineState_NumLayers; ++i)
         {
-            _spriteBatchers[0]->beginBatch();
+            _fontSpriteBatcher->beginBatch();
             renderText(StringUtil::format("%d", i).c_str(), 1 + (column++ * padding), 1, FONT_ALIGN_RIGHT);
-            _spriteBatchers[0]->endBatch(_textureNGShader, _textureManager->getTextureWithName("texture_000.ngt"), NULL, _engineState & (1 << (i + StudioEngineState_LayerBitBegin)) ? Color::WHITE : Color::BLACK);
+            _fontSpriteBatcher->endBatch(_textureNGShader, _textureManager->getTextureWithName("texture_000.ngt"), NULL, _engineState & (1 << (i + StudioEngineState_LayerBitBegin)) ? Color::WHITE : Color::BLACK);
         }
         
         {
             /// Render Map Info in the center of the bar
-            _spriteBatchers[0]->beginBatch();
+            _fontSpriteBatcher->beginBatch();
             renderText(StringUtil::format("%s | %s", _engine->_world->getMapName().c_str(), _engine->_world->getMapFileName().c_str()).c_str(), CAM_WIDTH / 2, 1, FONT_ALIGN_CENTERED);
-            _spriteBatchers[0]->endBatch(_textureNGShader, _textureManager->getTextureWithName("texture_000.ngt"), NULL, Color::WHITE);
+            _fontSpriteBatcher->endBatch(_textureNGShader, _textureManager->getTextureWithName("texture_000.ngt"), NULL, Color::WHITE);
         }
         
         column = 56;
         {
-            _spriteBatchers[0]->beginBatch();
+            _fontSpriteBatcher->beginBatch();
             renderText("C", 1 + (column++ * padding), 1, FONT_ALIGN_LEFT);
-            _spriteBatchers[0]->endBatch(_textureNGShader, _textureManager->getTextureWithName("texture_000.ngt"), NULL, _engineState & StudioEngineState_DisplayControls ? Color::WHITE : Color::BLACK);
+            _fontSpriteBatcher->endBatch(_textureNGShader, _textureManager->getTextureWithName("texture_000.ngt"), NULL, _engineState & StudioEngineState_DisplayControls ? Color::WHITE : Color::BLACK);
         }
         {
-            _spriteBatchers[0]->beginBatch();
+            _fontSpriteBatcher->beginBatch();
             renderText("A", 1 + (column++ * padding), 1, FONT_ALIGN_LEFT);
-            _spriteBatchers[0]->endBatch(_textureNGShader, _textureManager->getTextureWithName("texture_000.ngt"), NULL, _engineState & StudioEngineState_DisplayAssets ? Color::WHITE : Color::BLACK);
+            _fontSpriteBatcher->endBatch(_textureNGShader, _textureManager->getTextureWithName("texture_000.ngt"), NULL, _engineState & StudioEngineState_DisplayAssets ? Color::WHITE : Color::BLACK);
         }
         {
-            _spriteBatchers[0]->beginBatch();
+            _fontSpriteBatcher->beginBatch();
             renderText("E", 1 + (column++ * padding), 1, FONT_ALIGN_LEFT);
-            _spriteBatchers[0]->endBatch(_textureNGShader, _textureManager->getTextureWithName("texture_000.ngt"), NULL, _engineState & StudioEngineState_DisplayEntities ? Color::WHITE : Color::BLACK);
+            _fontSpriteBatcher->endBatch(_textureNGShader, _textureManager->getTextureWithName("texture_000.ngt"), NULL, _engineState & StudioEngineState_DisplayEntities ? Color::WHITE : Color::BLACK);
         }
     }
     
@@ -589,19 +640,37 @@ void StudioRenderer::renderUI()
         /// Render Delete Zone
         _fillPolygonBatcher->beginBatch();
         int width = CAM_WIDTH / 3;
-        int height = 4;
-        NGRect window = NGRect(CAM_WIDTH / 2 - width / 2, CAM_HEIGHT - 4 - height - 1, width, height);
+        int height = 3;
+        static NGRect deleteWindow = NGRect(CAM_WIDTH / 2 - width / 2, CAM_HEIGHT - height - 1, width, height);
         Color windowColor = Color::RED;
         windowColor.alpha = 0.5f;
-        _fillPolygonBatcher->renderRect(window);
+        _fillPolygonBatcher->renderRect(deleteWindow);
         _fillPolygonBatcher->endBatch(_colorNGShader, windowColor);
         
         int row = 3;
         static float padding = 1;
         
-        _spriteBatchers[0]->beginBatch();
-        renderText("DELETE", CAM_WIDTH / 2, CAM_HEIGHT - 4 - (row++ * padding), FONT_ALIGN_CENTERED);
-        _spriteBatchers[0]->endBatch(_textureNGShader, _textureManager->getTextureWithName("texture_000.ngt"));
+        _fontSpriteBatcher->beginBatch();
+        renderText("DELETE", CAM_WIDTH / 2, CAM_HEIGHT - (row++ * padding), FONT_ALIGN_CENTERED);
+        _fontSpriteBatcher->endBatch(_textureNGShader, _textureManager->getTextureWithName("texture_000.ngt"));
+    }
+    
+    {
+        /// Toasts
+        int y = CAM_HEIGHT - 2;
+        _fillPolygonBatcher->beginBatch();
+        _fontSpriteBatcher->beginBatch();
+        for (std::string t : _toasts)
+        {
+            NGRect window = NGRect(CAM_WIDTH / 2 - t.length() / 2.0f - 1, y - 1, t.length() + 1, 2);
+            _fillPolygonBatcher->renderRect(window);
+            renderText(t.c_str(), CAM_WIDTH / 2, y, FONT_ALIGN_CENTERED);
+            y -= 2;
+        }
+        Color windowColor = Color::BLUE;
+        windowColor.alpha = 0.5f;
+        _fillPolygonBatcher->endBatch(_colorNGShader, windowColor);
+        _fontSpriteBatcher->endBatch(_textureNGShader, _textureManager->getTextureWithName("texture_000.ngt"));
     }
 }
 
@@ -612,7 +681,7 @@ void StudioRenderer::renderText(const char* inStr, float x, float y, int justifi
 
     std::string text(inStr);
 
-    _font->renderText(*_spriteBatchers[0], text, x, y, fgWidth, fgHeight, justification);
+    _font->renderText(*_fontSpriteBatcher, text, x, y, fgWidth, fgHeight, justification);
 }
 
 void StudioRenderer::endFrame()

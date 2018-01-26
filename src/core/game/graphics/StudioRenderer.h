@@ -60,6 +60,7 @@ private:
     TextureManager* _textureManager;
     RendererHelper* _rendererHelper;
     SpriteBatcher* _spriteBatchers[NUM_SPRITE_BATCHERS];
+    SpriteBatcher* _fontSpriteBatcher;
     PolygonBatcher* _fillPolygonBatcher;
     PolygonBatcher* _boundsPolygonBatcher;
     LineBatcher* _lineBatcher;
