@@ -18,37 +18,14 @@
 
 #define VERSION_STRING "1.0.0.0"
 
-//// Sound Definitions ////
-
-#define SOUND_ID_NONE 0
-#define SOUND_ID_ROBOT_JUMP 1
-#define SOUND_ID_EXPLOSION 2
-#define SOUND_ID_DEATH 3
-#define SOUND_ID_FIRE_ROCKET 4
-#define SOUND_ID_ACTIVATE_SPRINT 5
-#define SOUND_ID_HEADSHOT 6
-
-#define SOUND_ROBOT_JUMP "sound_001.wav"
-#define SOUND_EXPLOSION "sound_002.wav"
-#define SOUND_DEATH "sound_003.wav"
-#define SOUND_FIRE_ROCKET "sound_004.wav"
-#define SOUND_ACTIVATE_SPRINT "sound_005.wav"
-#define SOUND_HEADSHOT "sound_006.wav"
-
-//// Music Definitions ////
-
-#define MUSIC_DEMO "music_001.wav"
-
 //// Matrix Definitions ////
 
 #define CAM_WIDTH 64
 #define CAM_HEIGHT 36
 
 //// Non-Steam ////
-
 // UDP port for the server to bind on
 #define SERVER_PORT 9999
-
 // This allows us to run both a debug and a release socket-based client on the same machine
 #if defined(DEBUG) || defined(_DEBUG)
 #define CLIENT_PORT 1339

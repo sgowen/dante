@@ -178,14 +178,8 @@ void GameEngine::createDeviceDependentResources()
     
     NGAudioEngine::create();
     
-    NG_AUDIO_ENGINE->loadSound(SOUND_ID_ROBOT_JUMP, SOUND_ROBOT_JUMP, 4);
-    NG_AUDIO_ENGINE->loadSound(SOUND_ID_EXPLOSION, SOUND_EXPLOSION, 8);
-    NG_AUDIO_ENGINE->loadSound(SOUND_ID_DEATH, SOUND_DEATH, 2);
-    NG_AUDIO_ENGINE->loadSound(SOUND_ID_FIRE_ROCKET, SOUND_FIRE_ROCKET, 8);
-    NG_AUDIO_ENGINE->loadSound(SOUND_ID_ACTIVATE_SPRINT, SOUND_ACTIVATE_SPRINT, 4);
-    NG_AUDIO_ENGINE->loadSound(SOUND_ID_HEADSHOT, SOUND_HEADSHOT, 4);
-    
-    NG_AUDIO_ENGINE->loadMusic(MUSIC_DEMO);
+    NG_AUDIO_ENGINE->loadSound(1, "sound_001.wav", 4);
+    NG_AUDIO_ENGINE->loadMusic("music_001.wav");
 
     NG_AUDIO_ENGINE->setMusicDisabled(true);
     NG_AUDIO_ENGINE->setSoundDisabled(true);
@@ -224,13 +218,14 @@ void GameEngine::render(double alpha)
     }
     
     _renderer->updateCamera();
-    
     _renderer->render();
     
     if (_state & GameEngineState_Interpolation)
     {
         _world->postRender();
     }
+    
+    NG_AUDIO_ENGINE->render();
 }
 
 bool GameEngine::handleNonMoveInput()

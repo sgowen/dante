@@ -154,16 +154,12 @@ void PlayerController::read(InputMemoryBitStream& inInputStream, uint16_t& inRea
             uint8_t& oldState = _entity->getPoseCache().state;
             uint8_t& newState = _entity->getPose().state;
             
-            if (!(oldState & StateFlag_FirstJump) &&
-                (newState & StateFlag_FirstJump))
+            if ((!(oldState & StateFlag_FirstJump) &&
+                (newState & StateFlag_FirstJump)) ||
+                (!(oldState & StateFlag_SecondJump) &&
+                 (newState & StateFlag_SecondJump)))
             {
-                Util::playSound(SOUND_ID_ROBOT_JUMP, _entity->getPosition());
-            }
-            
-            if (!(oldState & StateFlag_SecondJump) &&
-                (newState & StateFlag_SecondJump))
-            {
-                Util::playSound(SOUND_ID_ROBOT_JUMP, _entity->getPosition());
+                Util::playSound(1, _entity->getPosition());
             }
         }
     }
@@ -238,7 +234,7 @@ void PlayerController::processInput(InputState* inInputState, bool isPending)
                 
                 if (isPending)
                 {
-                    Util::playSound(SOUND_ID_ROBOT_JUMP, _entity->getPosition());
+                    Util::playSound(1, _entity->getPosition());
                 }
             }
         }
@@ -260,7 +256,7 @@ void PlayerController::processInput(InputState* inInputState, bool isPending)
                 
                 if (isPending)
                 {
-                    Util::playSound(SOUND_ID_ROBOT_JUMP, _entity->getPosition());
+                    Util::playSound(1, _entity->getPosition());
                 }
             }
             else

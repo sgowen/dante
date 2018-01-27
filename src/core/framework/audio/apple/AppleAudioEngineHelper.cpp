@@ -43,11 +43,7 @@ SoundWrapper* AppleAudioEngineHelper::loadSound(int soundId, const char *path, i
 
 SoundWrapper* AppleAudioEngineHelper::loadMusic(const char* path)
 {
-    const char* bundlePath = getBundlePath(path);
-    
-    AppleSoundWrapper* sound = new AppleSoundWrapper(1337, bundlePath);
-    
-    return sound;
+    return loadSound(1337, path);
 }
 
 AppleAudioEngineHelper::AppleAudioEngineHelper() : AudioEngineHelper()

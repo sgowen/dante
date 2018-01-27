@@ -46,9 +46,35 @@ void NGAudioEngine::destroy()
 
 void NGAudioEngine::update(int flags)
 {
+    _audioEngineHelper->update(flags);
+}
+
+void NGAudioEngine::render()
+{
+    int len = static_cast<int>(_soundsToPlay.size());
+    for (int i = 0; i < len; ++i)
+    {
+        Sound* sound = _soundsToPlay[i];
+        float volume = _soundsVolumes[i];
+        bool isLooping = _soundsLooping[i];
+        
+        sound->setVolume(volume);
+        sound->play(isLooping);
+    }
+    
+    _soundsToPlay.clear();
+    _soundsVolumes.clear();
+    _soundsLooping.clear();
+    
     _numSoundsPlayedThisFrame = 0;
     
-    _audioEngineHelper->update(flags);
+    if (_musicState == 1)
+    {
+        _music->getSoundInstance()->play(_isMusicLooping);
+        _music->getSoundInstance()->setVolume(_musicVolume);
+    }
+    
+    _musicState = 0;
 }
 
 void NGAudioEngine::pause()
@@ -89,8 +115,9 @@ void NGAudioEngine::playSound(int soundId, float inVolume, bool isLooping)
     
     float volume = clamp(inVolume, 1, 0);
     
-    sound->setVolume(volume);
-    sound->play(isLooping);
+    _soundsToPlay.push_back(sound);
+    _soundsVolumes.push_back(volume);
+    _soundsLooping.push_back(isLooping);
 }
 
 void NGAudioEngine::stopSound(int soundId)
@@ -233,10 +260,9 @@ void NGAudioEngine::playMusic(bool isLooping, float inVolume)
     
     if (_music)
     {
-        float volume = clamp(inVolume, 1, 0);
-        
-        _music->getSoundInstance()->play(isLooping);
-        _music->getSoundInstance()->setVolume(volume);
+        _musicState = 1;
+        _musicVolume = clamp(inVolume, 1, 0);
+        _isMusicLooping = isLooping;
     }
 }
 
@@ -351,6 +377,9 @@ NGAudioEngine::NGAudioEngine() :
 _audioEngineHelper(NG_AUDIO_ENGINE_HELPER_FACTORY->createAudioEngineHelper()),
 _music(NULL),
 _numSoundsPlayedThisFrame(0),
+_musicState(0),
+_musicVolume(0),
+_isMusicLooping(false),
 _isMusicDisabled(false),
 _isSoundDisabled(false)
 {

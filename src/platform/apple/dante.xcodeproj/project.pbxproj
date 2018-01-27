@@ -529,16 +529,6 @@
 		BBF5386720071992003D276D /* maps.cfg in Resources */ = {isa = PBXBuildFile; fileRef = BBF5382820071991003D276D /* maps.cfg */; };
 		BBF5387A20071992003D276D /* sound_001.wav in Resources */ = {isa = PBXBuildFile; fileRef = BBF5383420071991003D276D /* sound_001.wav */; };
 		BBF5387B20071992003D276D /* sound_001.wav in Resources */ = {isa = PBXBuildFile; fileRef = BBF5383420071991003D276D /* sound_001.wav */; };
-		BBF5387C20071992003D276D /* sound_003.wav in Resources */ = {isa = PBXBuildFile; fileRef = BBF5383520071991003D276D /* sound_003.wav */; };
-		BBF5387D20071992003D276D /* sound_003.wav in Resources */ = {isa = PBXBuildFile; fileRef = BBF5383520071991003D276D /* sound_003.wav */; };
-		BBF5387E20071992003D276D /* sound_002.wav in Resources */ = {isa = PBXBuildFile; fileRef = BBF5383620071991003D276D /* sound_002.wav */; };
-		BBF5387F20071992003D276D /* sound_002.wav in Resources */ = {isa = PBXBuildFile; fileRef = BBF5383620071991003D276D /* sound_002.wav */; };
-		BBF5388020071992003D276D /* sound_006.wav in Resources */ = {isa = PBXBuildFile; fileRef = BBF5383720071991003D276D /* sound_006.wav */; };
-		BBF5388120071992003D276D /* sound_006.wav in Resources */ = {isa = PBXBuildFile; fileRef = BBF5383720071991003D276D /* sound_006.wav */; };
-		BBF5388220071992003D276D /* sound_005.wav in Resources */ = {isa = PBXBuildFile; fileRef = BBF5383820071991003D276D /* sound_005.wav */; };
-		BBF5388320071992003D276D /* sound_005.wav in Resources */ = {isa = PBXBuildFile; fileRef = BBF5383820071991003D276D /* sound_005.wav */; };
-		BBF5388420071992003D276D /* sound_004.wav in Resources */ = {isa = PBXBuildFile; fileRef = BBF5383920071991003D276D /* sound_004.wav */; };
-		BBF5388520071992003D276D /* sound_004.wav in Resources */ = {isa = PBXBuildFile; fileRef = BBF5383920071991003D276D /* sound_004.wav */; };
 		BBF53888200719B6003D276D /* texture_008.ngt in Resources */ = {isa = PBXBuildFile; fileRef = BBF53886200719B6003D276D /* texture_008.ngt */; };
 		BBF53889200719B6003D276D /* texture_008.ngt in Resources */ = {isa = PBXBuildFile; fileRef = BBF53886200719B6003D276D /* texture_008.ngt */; };
 		BBF5388A200719B6003D276D /* texture_007.ngt in Resources */ = {isa = PBXBuildFile; fileRef = BBF53887200719B6003D276D /* texture_007.ngt */; };
@@ -1709,11 +1699,6 @@
 		BBF5382720071991003D276D /* zone_1.cfg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = zone_1.cfg; sourceTree = "<group>"; };
 		BBF5382820071991003D276D /* maps.cfg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = maps.cfg; sourceTree = "<group>"; };
 		BBF5383420071991003D276D /* sound_001.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = sound_001.wav; sourceTree = "<group>"; };
-		BBF5383520071991003D276D /* sound_003.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = sound_003.wav; sourceTree = "<group>"; };
-		BBF5383620071991003D276D /* sound_002.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = sound_002.wav; sourceTree = "<group>"; };
-		BBF5383720071991003D276D /* sound_006.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = sound_006.wav; sourceTree = "<group>"; };
-		BBF5383820071991003D276D /* sound_005.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = sound_005.wav; sourceTree = "<group>"; };
-		BBF5383920071991003D276D /* sound_004.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = sound_004.wav; sourceTree = "<group>"; };
 		BBF53886200719B6003D276D /* texture_008.ngt */ = {isa = PBXFileReference; lastKnownFileType = file; path = texture_008.ngt; sourceTree = "<group>"; };
 		BBF53887200719B6003D276D /* texture_007.ngt */ = {isa = PBXFileReference; lastKnownFileType = file; path = texture_007.ngt; sourceTree = "<group>"; };
 		BBFA49DB1FC367AF00233514 /* GlfwMain.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GlfwMain.h; sourceTree = "<group>"; };
@@ -3647,11 +3632,6 @@
 			isa = PBXGroup;
 			children = (
 				BBF5383420071991003D276D /* sound_001.wav */,
-				BBF5383620071991003D276D /* sound_002.wav */,
-				BBF5383520071991003D276D /* sound_003.wav */,
-				BBF5383920071991003D276D /* sound_004.wav */,
-				BBF5383820071991003D276D /* sound_005.wav */,
-				BBF5383720071991003D276D /* sound_006.wav */,
 			);
 			path = sounds;
 			sourceTree = "<group>";
@@ -3794,17 +3774,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BBF5388220071992003D276D /* sound_005.wav in Resources */,
 				BB44C3291DB030B3003E633F /* Assets.xcassets in Resources */,
 				BBF3CC58200D712400CFF412 /* shader_002_vert.ngs in Resources */,
 				BBF5385C20071992003D276D /* game.cfg in Resources */,
-				BBF5387C20071992003D276D /* sound_003.wav in Resources */,
 				BB89C9A8200914AC00330100 /* n_texture_004.ngt in Resources */,
 				BBF5386420071992003D276D /* zone_1.cfg in Resources */,
 				BB89C9A6200914AC00330100 /* n_texture_002.ngt in Resources */,
 				BBF53888200719B6003D276D /* texture_008.ngt in Resources */,
 				BBF5385820071992003D276D /* texture_001.ngt in Resources */,
-				BBF5387E20071992003D276D /* sound_002.wav in Resources */,
 				BBF5386020071992003D276D /* game_assets.cfg in Resources */,
 				BBF5385620071992003D276D /* texture_003.ngt in Resources */,
 				BB89C9A4200914AC00330100 /* n_texture_008.ngt in Resources */,
@@ -3825,10 +3802,8 @@
 				BBF5388A200719B6003D276D /* texture_007.ngt in Resources */,
 				BBF3CC56200D712400CFF412 /* shader_004_frag.ngs in Resources */,
 				BB13C9F1201A73240061C565 /* n_texture_009.ngt in Resources */,
-				BBF5388420071992003D276D /* sound_004.wav in Resources */,
 				BB89C99E200914AC00330100 /* n_texture_003.ngt in Resources */,
 				BBF5385020071992003D276D /* texture_005.ngt in Resources */,
-				BBF5388020071992003D276D /* sound_006.wav in Resources */,
 				BBF5384E20071992003D276D /* texture_004.ngt in Resources */,
 				BBF5387A20071992003D276D /* sound_001.wav in Resources */,
 				BB16190D20092BFD00AF0117 /* zone_2.cfg in Resources */,
@@ -3844,18 +3819,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				BB16190E20092BFD00AF0117 /* zone_2.cfg in Resources */,
-				BBF5388120071992003D276D /* sound_006.wav in Resources */,
 				BBF3CC51200D712400CFF412 /* shader_003_frag.ngs in Resources */,
 				BBF5386520071992003D276D /* zone_1.cfg in Resources */,
 				BB13C9EE201A72C50061C565 /* texture_009.ngt in Resources */,
 				BBD3E86D1FB2872A00328E35 /* LaunchScreen.storyboard in Resources */,
 				BBD3E86A1FB2872A00328E35 /* Assets.xcassets in Resources */,
 				BBF5385720071992003D276D /* texture_003.ngt in Resources */,
-				BBF5387D20071992003D276D /* sound_003.wav in Resources */,
-				BBF5388320071992003D276D /* sound_005.wav in Resources */,
 				BBF5385920071992003D276D /* texture_001.ngt in Resources */,
 				BBF5386720071992003D276D /* maps.cfg in Resources */,
-				BBF5387F20071992003D276D /* sound_002.wav in Resources */,
 				BBF3CC4F200D712400CFF412 /* shader_004_vert.ngs in Resources */,
 				BBF5385320071992003D276D /* texture_006.ngt in Resources */,
 				BB89C9A3200914AC00330100 /* n_texture_007.ngt in Resources */,
@@ -3870,7 +3841,6 @@
 				BBF5385D20071992003D276D /* game.cfg in Resources */,
 				BBF5385B20071992003D276D /* texture_000.ngt in Resources */,
 				BBF5383B20071992003D276D /* music_001.wav in Resources */,
-				BBF5388520071992003D276D /* sound_004.wav in Resources */,
 				BBF3CC4D200D712400CFF412 /* shader_001_frag.ngs in Resources */,
 				BBF5388B200719B6003D276D /* texture_007.ngt in Resources */,
 				BBF5386120071992003D276D /* game_assets.cfg in Resources */,

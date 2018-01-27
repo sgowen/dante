@@ -12,8 +12,10 @@
 #define NG_AUDIO_ENGINE (NGAudioEngine::getInstance())
 
 #include <map>
+#include <vector>
 
 class SoundWrapper;
+class Sound;
 class AudioEngineHelper;
 
 class NGAudioEngine
@@ -24,6 +26,7 @@ public:
     static void destroy();
     
     void update(int flags = 0);
+    void render();
     void pause();
     void resume();
     void loadSound(int soundId, const char *path, int numInstances = 1);
@@ -53,8 +56,14 @@ private:
     
     AudioEngineHelper* _audioEngineHelper;
     std::map<int, SoundWrapper*> _sounds;
+    std::vector<Sound*> _soundsToPlay;
+    std::vector<float> _soundsVolumes;
+    std::vector<bool> _soundsLooping;
     SoundWrapper* _music;
     int _numSoundsPlayedThisFrame;
+    int _musicState;
+    float _musicVolume;
+    bool _isMusicLooping;
     bool _isMusicDisabled;
     bool _isSoundDisabled;
     
