@@ -516,6 +516,12 @@ void StudioRenderer::renderUI()
         int row = 1;
         static float padding = 5;
         
+        _fontSpriteBatcher->beginBatch();
+        renderText("Entities", width / 2, CAM_HEIGHT - 1 - (row * padding), FONT_ALIGN_CENTERED);
+        _fontSpriteBatcher->endBatch(_textureNGShader, _textureManager->getTextureWithName("texture_000.ngt"));
+        
+        ++row;
+        
         for (int i = 0; i < NUM_SPRITE_BATCHERS; ++i)
         {
             _spriteBatchers[i]->beginBatch();
@@ -523,7 +529,7 @@ void StudioRenderer::renderUI()
         
         std::string textures[NUM_SPRITE_BATCHERS];
         
-        for (int i = clamp(selectionIndex - 4, numEntities - 1, 0); i < numEntities; ++i)
+        for (int i = clamp(selectionIndex - 2, numEntities - 1, 0); i < numEntities; ++i)
         {
             EntityDef* ed = entityDescriptors[i];
             

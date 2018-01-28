@@ -231,6 +231,8 @@ void StudioInputManager::handleDefaultInput()
                         _lastActiveEntity = NULL;
                         onEntityRemoved(_activeEntity);
                         _engine->_world->mapRemoveEntity(_activeEntity);
+                        
+                        _isDraggingActiveEntityOverDeleteZone = false;
                     }
                     else
                     {
