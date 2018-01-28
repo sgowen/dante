@@ -79,6 +79,7 @@ private:
     StudioEngine* _engine;
     StudioInputManager* _input;
     uint32_t _engineState;
+    NGTexture* _fontTexture;
     
     void setFramebuffer(int framebufferIndex, float r = 0, float g = 0, float b = 0, float a = 0);
     void renderWorld();

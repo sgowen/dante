@@ -10,7 +10,7 @@
 #define __noctisgames__FontJustificationType__
 
 #define FONT_ALIGN_LEFT 0
-#define FONT_ALIGN_CENTERED 1
+#define FONT_ALIGN_CENTER 1
 #define FONT_ALIGN_RIGHT 2
 
 #endif /* defined(__noctisgames__FontJustificationType__) */

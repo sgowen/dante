@@ -213,7 +213,7 @@ void TitleRenderer::renderMainMenuSteamOffText()
     renderText("[S] to start local server", CAM_WIDTH / 4, CAM_HEIGHT - 6, FONT_ALIGN_LEFT);
     renderText("[J] to join server by IP",  CAM_WIDTH / 4, CAM_HEIGHT - 8, FONT_ALIGN_LEFT);
 
-    renderText("[ESC] to exit game", CAM_WIDTH / 2, 4, FONT_ALIGN_CENTERED);
+    renderText("[ESC] to exit game", CAM_WIDTH / 2, 4, FONT_ALIGN_CENTER);
 }
 
 void TitleRenderer::renderMainMenuSteamOnText()
@@ -230,32 +230,32 @@ void TitleRenderer::renderMainMenuSteamOnText()
     for (NGSteamGameServer gameServer : gameServers)
     {
         int serverNumber = index + 1;
-        renderText(StringUtil::format("[%i] %s", serverNumber, gameServer.getDisplayString()).c_str(), CAM_WIDTH / 2, CAM_HEIGHT - 13.0f - (index * 0.5f), FONT_ALIGN_CENTERED);
+        renderText(StringUtil::format("[%i] %s", serverNumber, gameServer.getDisplayString()).c_str(), CAM_WIDTH / 2, CAM_HEIGHT - 13.0f - (index * 0.5f), FONT_ALIGN_CENTER);
 
         ++index;
     }
 #endif
 
-    renderText("[ESC] to exit game", CAM_WIDTH / 2, 4, FONT_ALIGN_CENTERED);
+    renderText("[ESC] to exit game", CAM_WIDTH / 2, 4, FONT_ALIGN_CENTER);
 }
 
 void TitleRenderer::renderStartingServerText()
 {
-    renderText("Server starting, [ESC] to exit", CAM_WIDTH / 2, CAM_HEIGHT - 4, FONT_ALIGN_CENTERED);
+    renderText("Server starting, [ESC] to exit", CAM_WIDTH / 2, CAM_HEIGHT - 4, FONT_ALIGN_CENTER);
 }
 
 void TitleRenderer::renderEnterUsernameText()
 {
-    renderText("Enter Username to join, [ESC] to exit", CAM_WIDTH / 2, CAM_HEIGHT - 4, FONT_ALIGN_CENTERED);
+    renderText("Enter Username to join, [ESC] to exit", CAM_WIDTH / 2, CAM_HEIGHT - 4, FONT_ALIGN_CENTER);
 
-    renderText(TitleInputManager::getInstance()->getLiveInputRef().c_str(), CAM_WIDTH / 2, CAM_HEIGHT - 8, FONT_ALIGN_CENTERED);
+    renderText(TitleInputManager::getInstance()->getLiveInputRef().c_str(), CAM_WIDTH / 2, CAM_HEIGHT - 8, FONT_ALIGN_CENTER);
 }
 
 void TitleRenderer::renderJoiningLocalServerByIPText()
 {
-    renderText("Enter Server Address to join, [ESC] to exit", CAM_WIDTH / 2, CAM_HEIGHT - 4, FONT_ALIGN_CENTERED);
+    renderText("Enter Server Address to join, [ESC] to exit", CAM_WIDTH / 2, CAM_HEIGHT - 4, FONT_ALIGN_CENTER);
 
-    renderText(TitleInputManager::getInstance()->getLiveInputRef().c_str(), CAM_WIDTH / 2, CAM_HEIGHT - 8, FONT_ALIGN_CENTERED);
+    renderText(TitleInputManager::getInstance()->getLiveInputRef().c_str(), CAM_WIDTH / 2, CAM_HEIGHT - 8, FONT_ALIGN_CENTER);
 }
 
 void TitleRenderer::renderText(const char* inStr, float x, float y, int justification)

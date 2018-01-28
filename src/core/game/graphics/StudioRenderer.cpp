@@ -148,6 +148,8 @@ void StudioRenderer::createDeviceDependentResources()
 {
     _rendererHelper->createDeviceDependentResources();
     _textureManager->createDeviceDependentResources();
+    
+    _fontTexture = _textureManager->getTextureWithName("texture_000.ngt");
 
     _textureNGShader->load(*_shaderProgramLoader);
     _colorNGShader->load(*_shaderProgramLoader);
@@ -480,8 +482,8 @@ void StudioRenderer::renderUI()
         static float padding = 1;
         
         _fontSpriteBatcher->beginBatch();
-        renderText("Load Map", CAM_WIDTH / 2, CAM_HEIGHT - 4 - (row++ * padding), FONT_ALIGN_CENTERED);
-        _fontSpriteBatcher->endBatch(_textureNGShader, _textureManager->getTextureWithName("texture_000.ngt"));
+        renderText("Load Map", CAM_WIDTH / 2, CAM_HEIGHT - 4 - (row++ * padding), FONT_ALIGN_CENTER);
+        _fontSpriteBatcher->endBatch(_textureNGShader, _fontTexture);
         
         ++row;
         
@@ -490,8 +492,8 @@ void StudioRenderer::renderUI()
             MapDef& mp = maps[i];
             
             _fontSpriteBatcher->beginBatch();
-            renderText(StringUtil::format("%s | %s", mp.name.c_str(), mp.value.c_str()).c_str(), CAM_WIDTH / 2, CAM_HEIGHT - 4 - (row++ * padding), FONT_ALIGN_CENTERED);
-            _fontSpriteBatcher->endBatch(_textureNGShader, _textureManager->getTextureWithName("texture_000.ngt"), NULL, i == _input->_selectionIndex ? Color::WHITE : Color::BLACK);
+            renderText(StringUtil::format("%s | %s", mp.name.c_str(), mp.value.c_str()).c_str(), CAM_WIDTH / 2, CAM_HEIGHT - 4 - (row++ * padding), FONT_ALIGN_CENTER);
+            _fontSpriteBatcher->endBatch(_textureNGShader, _fontTexture, NULL, i == _input->_selectionIndex ? Color::WHITE : Color::BLACK);
         }
     }
     else if (_engineState & StudioEngineState_DisplayEntities)
@@ -517,8 +519,8 @@ void StudioRenderer::renderUI()
         static float padding = 5;
         
         _fontSpriteBatcher->beginBatch();
-        renderText("Entities", width / 2, CAM_HEIGHT - 1 - (row * padding), FONT_ALIGN_CENTERED);
-        _fontSpriteBatcher->endBatch(_textureNGShader, _textureManager->getTextureWithName("texture_000.ngt"));
+        renderText("Entities", width / 2, CAM_HEIGHT - 1 - (row * padding), FONT_ALIGN_CENTER);
+        _fontSpriteBatcher->endBatch(_textureNGShader, _fontTexture);
         
         ++row;
         
@@ -535,7 +537,7 @@ void StudioRenderer::renderUI()
             
             _fontSpriteBatcher->beginBatch();
             renderText(StringUtil::format("%s | %s", ed->typeName.c_str(), ed->name.c_str()).c_str(), 7, CAM_HEIGHT - 1 - (row * padding), FONT_ALIGN_LEFT);
-            _fontSpriteBatcher->endBatch(_textureNGShader, _textureManager->getTextureWithName("texture_000.ngt"), NULL, i == selectionIndex ? Color::WHITE : Color::BLACK);
+            _fontSpriteBatcher->endBatch(_textureNGShader, _fontTexture, NULL, i == selectionIndex ? Color::WHITE : Color::BLACK);
             
             TextureRegion tr = ASSETS->findTextureRegion(ed->mappings[0], 0);
             _spriteBatchers[ed->layer]->renderSprite(4, CAM_HEIGHT - 1 - (row * padding), 4, 4, 0, tr);
@@ -586,7 +588,7 @@ void StudioRenderer::renderUI()
         renderText(StringUtil::format("[A]  %s   Assets", _engineState & StudioEngineState_DisplayAssets ? "Hide   " : "Display").c_str(), CAM_WIDTH - 2, CAM_HEIGHT - (row++ * padding), FONT_ALIGN_RIGHT);
         renderText(StringUtil::format("[E]  %s Entities", _engineState & StudioEngineState_DisplayEntities ? "Hide   " : "Display").c_str(), CAM_WIDTH - 2, CAM_HEIGHT - (row++ * padding), FONT_ALIGN_RIGHT);
         
-        _fontSpriteBatcher->endBatch(_textureNGShader, _textureManager->getTextureWithName("texture_000.ngt"));
+        _fontSpriteBatcher->endBatch(_textureNGShader, _fontTexture);
     }
     
     {
@@ -603,32 +605,42 @@ void StudioRenderer::renderUI()
         for (int i = 0; i < StudioEngineState_NumLayers; ++i)
         {
             _fontSpriteBatcher->beginBatch();
-            renderText(StringUtil::format("%d", i).c_str(), 1 + (column++ * padding), 1, FONT_ALIGN_RIGHT);
-            _fontSpriteBatcher->endBatch(_textureNGShader, _textureManager->getTextureWithName("texture_000.ngt"), NULL, _engineState & (1 << (i + StudioEngineState_LayerBitBegin)) ? Color::WHITE : Color::BLACK);
+            renderText(StringUtil::format("%d", i).c_str(), 1 + (column++ * padding), 1.5f, FONT_ALIGN_RIGHT);
+            _fontSpriteBatcher->endBatch(_textureNGShader, _fontTexture, NULL, _engineState & (1 << (i + StudioEngineState_LayerBitBegin)) ? Color::WHITE : Color::BLACK);
         }
+        
+        _fontSpriteBatcher->beginBatch();
+        renderText("Layers", 1 + column / 2.0f, 0.5f, FONT_ALIGN_CENTER);
+        _fontSpriteBatcher->endBatch(_textureNGShader, _fontTexture, NULL, Color::WHITE);
         
         {
             /// Render Map Info in the center of the bar
             _fontSpriteBatcher->beginBatch();
-            renderText(StringUtil::format("%s | %s", _engine->_world->getMapName().c_str(), _engine->_world->getMapFileName().c_str()).c_str(), CAM_WIDTH / 2, 1, FONT_ALIGN_CENTERED);
-            _fontSpriteBatcher->endBatch(_textureNGShader, _textureManager->getTextureWithName("texture_000.ngt"), NULL, Color::WHITE);
+            renderText(StringUtil::format("%s | %s", _engine->_world->getMapName().c_str(), _engine->_world->getMapFileName().c_str()).c_str(), CAM_WIDTH / 2, 1.5f, FONT_ALIGN_CENTER);
+            _fontSpriteBatcher->endBatch(_textureNGShader, _fontTexture, NULL, Color::WHITE);
+            
+            _fontSpriteBatcher->beginBatch();
+            renderText("Map", CAM_WIDTH / 2, 0.5f, FONT_ALIGN_CENTER);
+            _fontSpriteBatcher->endBatch(_textureNGShader, _fontTexture, NULL, Color::WHITE);
         }
         
         column = 56;
         {
             _fontSpriteBatcher->beginBatch();
-            renderText("C", 1 + (column++ * padding), 1, FONT_ALIGN_LEFT);
-            _fontSpriteBatcher->endBatch(_textureNGShader, _textureManager->getTextureWithName("texture_000.ngt"), NULL, _engineState & StudioEngineState_DisplayControls ? Color::WHITE : Color::BLACK);
-        }
-        {
+            renderText("C", 1 + (column++ * padding), 1.5f, FONT_ALIGN_LEFT);
+            _fontSpriteBatcher->endBatch(_textureNGShader, _fontTexture, NULL, _engineState & StudioEngineState_DisplayControls ? Color::WHITE : Color::BLACK);
+            
             _fontSpriteBatcher->beginBatch();
-            renderText("A", 1 + (column++ * padding), 1, FONT_ALIGN_LEFT);
-            _fontSpriteBatcher->endBatch(_textureNGShader, _textureManager->getTextureWithName("texture_000.ngt"), NULL, _engineState & StudioEngineState_DisplayAssets ? Color::WHITE : Color::BLACK);
-        }
-        {
+            renderText("A", 1 + (column++ * padding), 1.5f, FONT_ALIGN_LEFT);
+            _fontSpriteBatcher->endBatch(_textureNGShader, _fontTexture, NULL, _engineState & StudioEngineState_DisplayAssets ? Color::WHITE : Color::BLACK);
+            
             _fontSpriteBatcher->beginBatch();
-            renderText("E", 1 + (column++ * padding), 1, FONT_ALIGN_LEFT);
-            _fontSpriteBatcher->endBatch(_textureNGShader, _textureManager->getTextureWithName("texture_000.ngt"), NULL, _engineState & StudioEngineState_DisplayEntities ? Color::WHITE : Color::BLACK);
+            renderText("E", 1 + (column++ * padding), 1.5f, FONT_ALIGN_LEFT);
+            _fontSpriteBatcher->endBatch(_textureNGShader, _fontTexture, NULL, _engineState & StudioEngineState_DisplayEntities ? Color::WHITE : Color::BLACK);
+            
+            _fontSpriteBatcher->beginBatch();
+            renderText("Windows", 58, 0.5f, FONT_ALIGN_CENTER);
+            _fontSpriteBatcher->endBatch(_textureNGShader, _fontTexture, NULL, Color::WHITE);
         }
     }
     
@@ -649,8 +661,8 @@ void StudioRenderer::renderUI()
         static float padding = 1;
         
         _fontSpriteBatcher->beginBatch();
-        renderText("DELETE", CAM_WIDTH / 2, CAM_HEIGHT - (row++ * padding), FONT_ALIGN_CENTERED);
-        _fontSpriteBatcher->endBatch(_textureNGShader, _textureManager->getTextureWithName("texture_000.ngt"));
+        renderText("DELETE", CAM_WIDTH / 2, CAM_HEIGHT - (row++ * padding), FONT_ALIGN_CENTER);
+        _fontSpriteBatcher->endBatch(_textureNGShader, _fontTexture);
     }
     
     {
@@ -662,13 +674,13 @@ void StudioRenderer::renderUI()
         {
             NGRect window = NGRect(CAM_WIDTH / 2 - t.length() / 2.0f - 1, y - 1, t.length() + 1, 2);
             _fillPolygonBatcher->renderRect(window);
-            renderText(t.c_str(), CAM_WIDTH / 2, y, FONT_ALIGN_CENTERED);
+            renderText(t.c_str(), CAM_WIDTH / 2, y, FONT_ALIGN_CENTER);
             y -= 2;
         }
         Color windowColor = Color::BLUE;
         windowColor.alpha = 0.5f;
         _fillPolygonBatcher->endBatch(_colorNGShader, windowColor);
-        _fontSpriteBatcher->endBatch(_textureNGShader, _textureManager->getTextureWithName("texture_000.ngt"));
+        _fontSpriteBatcher->endBatch(_textureNGShader, _fontTexture);
     }
 }
 
