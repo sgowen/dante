@@ -87,7 +87,6 @@ private:
     std::vector<bool> _soundsLooping;
     SoundWrapper* _music;
     std::string _musicPath;
-    int _numSoundsPlayedThisFrame;
     std::vector<int> _musicStates;
     float _musicVolume;
     bool _isMusicLooping;

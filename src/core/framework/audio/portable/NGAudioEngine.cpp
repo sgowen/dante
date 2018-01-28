@@ -51,8 +51,6 @@ void NGAudioEngine::update(int flags)
 
 void NGAudioEngine::render()
 {
-    _numSoundsPlayedThisFrame = 0;
-    
     if (_state == AudioEngineState_Resume)
     {
         _audioEngineHelper->resume();
@@ -194,15 +192,13 @@ void NGAudioEngine::playSound(int soundId, float inVolume, bool isLooping)
 {
     if (_areSoundsDisabled
         || soundId <= 0
-        || _numSoundsPlayedThisFrame >= MAX_SOUNDS_TO_PLAY_PER_FRAME)
+        || _soundsToPlay.size() >= MAX_SOUNDS_TO_PLAY_PER_FRAME)
     {
         return;
     }
     
     SoundWrapper* soundWrapper = findSound(soundId);
-    
     Sound* sound = soundWrapper->getSoundInstance();
-    
     float volume = clamp(inVolume, 1, 0);
     
     _soundsToPlay.push_back(sound);
@@ -467,7 +463,6 @@ NGAudioEngine::NGAudioEngine() :
 _audioEngineHelper(NG_AUDIO_ENGINE_HELPER_FACTORY->createAudioEngineHelper()),
 _music(NULL),
 _musicPath(),
-_numSoundsPlayedThisFrame(0),
 _state(AudioEngineState_None),
 _musicVolume(0),
 _isMusicLooping(false),
