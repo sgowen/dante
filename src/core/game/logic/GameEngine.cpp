@@ -182,7 +182,7 @@ void GameEngine::createDeviceDependentResources()
     NG_AUDIO_ENGINE->loadMusic("music_001.wav");
 
     NG_AUDIO_ENGINE->setMusicDisabled(true);
-    NG_AUDIO_ENGINE->setSoundDisabled(true);
+    NG_AUDIO_ENGINE->setSoundsDisabled(true);
 }
 
 void GameEngine::createWindowSizeDependentResources(int screenWidth, int screenHeight, int renderWidth, int renderHeight, int cursorWidth, int cursorHeight)
@@ -248,7 +248,7 @@ bool GameEngine::handleNonMoveInput()
             NG_AUDIO_ENGINE->setMusicDisabled(!NG_AUDIO_ENGINE->isMusicDisabled());
             break;
         case GIS_CLIENT_MAIN_TOGGLE_SOUND:
-            NG_AUDIO_ENGINE->setSoundDisabled(!NG_AUDIO_ENGINE->isSoundDisabled());
+            NG_AUDIO_ENGINE->setSoundsDisabled(!NG_AUDIO_ENGINE->areSoundsDisabled());
             break;
         case GIS_TOGGLE_PHYSICS_DISPLAY:
             _state ^= GameEngineState_DisplayBox2D;

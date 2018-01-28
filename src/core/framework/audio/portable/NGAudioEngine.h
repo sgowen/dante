@@ -13,10 +13,29 @@
 
 #include <map>
 #include <vector>
+#include <string>
 
 class SoundWrapper;
 class Sound;
 class AudioEngineHelper;
+
+enum AudioEngineState
+{
+    AudioEngineState_None = 0,
+    AudioEngineState_Pause,
+    AudioEngineState_Resume
+};
+
+enum MusicState
+{
+    MusicState_None = 0,
+    MusicState_Load,
+    MusicState_Stop,
+    MusicState_Pause,
+    MusicState_Resume,
+    MusicState_SetVolume,
+    MusicState_Play
+};
 
 class NGAudioEngine
 {
@@ -39,7 +58,7 @@ public:
     void resumeAllSounds();
     void loadMusic(const char *path);
     void playMusic(bool isLooping = true, float inVolume = 1.0f);
-    void setMusicVolume(float volume);
+    void setMusicVolume(float inVolume);
     void stopMusic();
     void pauseMusic();
     void resumeMusic();
@@ -47,25 +66,33 @@ public:
     bool isMusicLoaded();
     bool isMusicDisabled();
     void setMusicDisabled(bool isMusicDisabled);
-    bool isSoundDisabled();
-    void setSoundDisabled(bool isSoundDisabled);
+    bool areSoundsDisabled();
+    void setSoundsDisabled(bool areSoundsDisabled);
     void reset();
     
 private:
     static NGAudioEngine* s_instance;
     
     AudioEngineHelper* _audioEngineHelper;
+    int _state;
     std::map<int, SoundWrapper*> _sounds;
+    std::vector<int> _soundIdsToLoad;
+    std::vector<std::string> _soundPathsToLoad;
+    std::vector<int> _soundNumInstancesToLoad;
     std::vector<Sound*> _soundsToPlay;
+    std::vector<Sound*> _soundsToStop;
+    std::vector<Sound*> _soundsToPause;
+    std::vector<Sound*> _soundsToResume;
     std::vector<float> _soundsVolumes;
     std::vector<bool> _soundsLooping;
     SoundWrapper* _music;
+    std::string _musicPath;
     int _numSoundsPlayedThisFrame;
-    int _musicState;
+    std::vector<int> _musicStates;
     float _musicVolume;
     bool _isMusicLooping;
     bool _isMusicDisabled;
-    bool _isSoundDisabled;
+    bool _areSoundsDisabled;
     
     SoundWrapper* findSound(int soundId);
     

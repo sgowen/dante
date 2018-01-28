@@ -51,58 +51,148 @@ void NGAudioEngine::update(int flags)
 
 void NGAudioEngine::render()
 {
-    int len = static_cast<int>(_soundsToPlay.size());
-    for (int i = 0; i < len; ++i)
-    {
-        Sound* sound = _soundsToPlay[i];
-        float volume = _soundsVolumes[i];
-        bool isLooping = _soundsLooping[i];
-        
-        sound->setVolume(volume);
-        sound->play(isLooping);
-    }
-    
-    _soundsToPlay.clear();
-    _soundsVolumes.clear();
-    _soundsLooping.clear();
-    
     _numSoundsPlayedThisFrame = 0;
     
-    if (_musicState == 1)
+    if (_state == AudioEngineState_Resume)
     {
-        _music->getSoundInstance()->play(_isMusicLooping);
-        _music->getSoundInstance()->setVolume(_musicVolume);
+        _audioEngineHelper->resume();
     }
     
-    _musicState = 0;
+    {
+        int len = static_cast<int>(_soundIdsToLoad.size());
+        for (int i = 0; i < len; ++i)
+        {
+            int soundId = _soundIdsToLoad[i];
+            std::string& path = _soundPathsToLoad[i];
+            int numInstances = _soundNumInstancesToLoad[i];
+            
+            SoundWrapper* sound = _audioEngineHelper->loadSound(soundId, path.c_str(), numInstances);
+            _sounds.insert(std::make_pair(soundId, sound));
+        }
+        _soundIdsToLoad.clear();
+        _soundPathsToLoad.clear();
+        _soundNumInstancesToLoad.clear();
+    }
+    
+    {
+        int len = static_cast<int>(_soundsToPlay.size());
+        for (int i = 0; i < len; ++i)
+        {
+            Sound* sound = _soundsToPlay[i];
+            float volume = _soundsVolumes[i];
+            bool isLooping = _soundsLooping[i];
+            
+            sound->setVolume(volume);
+            sound->play(isLooping);
+        }
+        _soundsToPlay.clear();
+        _soundsVolumes.clear();
+        _soundsLooping.clear();
+    }
+    
+    {
+        int len = static_cast<int>(_soundsToStop.size());
+        for (int i = 0; i < len; ++i)
+        {
+            Sound* sound = _soundsToStop[i];
+            sound->stop();
+        }
+        _soundsToStop.clear();
+    }
+    
+    {
+        int len = static_cast<int>(_soundsToPause.size());
+        for (int i = 0; i < len; ++i)
+        {
+            Sound* sound = _soundsToPause[i];
+            sound->pause();
+        }
+        _soundsToPause.clear();
+    }
+    
+    {
+        int len = static_cast<int>(_soundsToResume.size());
+        for (int i = 0; i < len; ++i)
+        {
+            Sound* sound = _soundsToResume[i];
+            sound->resume();
+        }
+        _soundsToResume.clear();
+    }
+    
+    {
+        int len = static_cast<int>(_musicStates.size());
+        for (int i = 0; i < len; ++i)
+        {
+            int musicState = _musicStates[i];
+            switch (musicState)
+            {
+                case MusicState_Load:
+                    if (_music)
+                    {
+                        _music->getSoundInstance()->stop();
+                        
+                        delete _music;
+                    }
+                    _music = _audioEngineHelper->loadMusic(_musicPath.c_str());
+                    break;
+                case MusicState_Stop:
+                    _music->getSoundInstance()->stop();
+                    break;
+                case MusicState_Pause:
+                    _music->getSoundInstance()->pause();
+                    break;
+                case MusicState_Resume:
+                    if (_music->getSoundInstance()->isPaused())
+                    {
+                        _music->getSoundInstance()->resume();
+                    }
+                    break;
+                case MusicState_SetVolume:
+                    _music->getSoundInstance()->setVolume(_musicVolume);
+                    break;
+                case MusicState_Play:
+                    _music->getSoundInstance()->play(_isMusicLooping);
+                    _music->getSoundInstance()->setVolume(_musicVolume);
+                    break;
+                case MusicState_None:
+                default:
+                    break;
+            }
+        }
+        _musicStates.clear();
+    }
+    
+    if (_state == AudioEngineState_Pause)
+    {
+        _audioEngineHelper->pause();
+    }
 }
 
 void NGAudioEngine::pause()
 {
+    _state = AudioEngineState_Pause;
     pauseMusic();
     pauseAllSounds();
-    
-    _audioEngineHelper->pause();
 }
 
 void NGAudioEngine::resume()
 {
-    _audioEngineHelper->resume();
-    
+    _state = AudioEngineState_Resume;
     resumeMusic();
     resumeAllSounds();
 }
 
 void NGAudioEngine::loadSound(int soundId, const char *path, int numInstances)
 {
-    SoundWrapper* sound = _audioEngineHelper->loadSound(soundId, path, numInstances);
-    
-    _sounds.insert(std::make_pair(soundId, sound));
+    _soundIdsToLoad.push_back(soundId);
+    _soundPathsToLoad.push_back(path);
+    _soundNumInstancesToLoad.push_back(numInstances);
 }
 
 void NGAudioEngine::playSound(int soundId, float inVolume, bool isLooping)
 {
-    if (_isSoundDisabled
+    if (_areSoundsDisabled
         || soundId <= 0
         || _numSoundsPlayedThisFrame >= MAX_SOUNDS_TO_PLAY_PER_FRAME)
     {
@@ -122,7 +212,7 @@ void NGAudioEngine::playSound(int soundId, float inVolume, bool isLooping)
 
 void NGAudioEngine::stopSound(int soundId)
 {
-    if (_isSoundDisabled)
+    if (_areSoundsDisabled)
     {
         return;
     }
@@ -134,7 +224,7 @@ void NGAudioEngine::stopSound(int soundId)
         Sound* sound = soundWrapper->getSoundInstance();
         if (sound->isPlaying())
         {
-            sound->stop();
+            _soundsToStop.push_back(sound);
             
             return;
         }
@@ -143,7 +233,7 @@ void NGAudioEngine::stopSound(int soundId)
 
 void NGAudioEngine::pauseSound(int soundId)
 {
-    if (_isSoundDisabled)
+    if (_areSoundsDisabled)
     {
         return;
     }
@@ -155,7 +245,7 @@ void NGAudioEngine::pauseSound(int soundId)
         Sound* sound = soundWrapper->getSoundInstance();
         if (sound->isPlaying())
         {
-            sound->pause();
+            _soundsToPause.push_back(sound);
             
             return;
         }
@@ -164,7 +254,7 @@ void NGAudioEngine::pauseSound(int soundId)
 
 void NGAudioEngine::resumeSound(int soundId)
 {
-    if (_isSoundDisabled)
+    if (_areSoundsDisabled)
     {
         return;
     }
@@ -176,7 +266,7 @@ void NGAudioEngine::resumeSound(int soundId)
         Sound* sound = soundWrapper->getSoundInstance();
         if (sound->isPaused())
         {
-            sound->resume();
+            _soundsToResume.push_back(sound);
             
             return;
         }
@@ -185,7 +275,7 @@ void NGAudioEngine::resumeSound(int soundId)
 
 void NGAudioEngine::stopAllSounds()
 {
-    if (_isSoundDisabled)
+    if (_areSoundsDisabled)
     {
         return;
     }
@@ -195,14 +285,14 @@ void NGAudioEngine::stopAllSounds()
         std::vector<Sound *> sounds = (*i).second->getSounds();
         for (std::vector<Sound *>::iterator i = sounds.begin(); i != sounds.end(); ++i)
         {
-            (*i)->stop();
+            _soundsToStop.push_back((*i));
         }
     }
 }
 
 void NGAudioEngine::pauseAllSounds()
 {
-    if (_isSoundDisabled)
+    if (_areSoundsDisabled)
     {
         return;
     }
@@ -212,14 +302,14 @@ void NGAudioEngine::pauseAllSounds()
         std::vector<Sound *> sounds = (*i).second->getSounds();
         for (std::vector<Sound *>::iterator i = sounds.begin(); i != sounds.end(); ++i)
         {
-            (*i)->pause();
+            _soundsToPause.push_back((*i));
         }
     }
 }
 
 void NGAudioEngine::resumeAllSounds()
 {
-    if (_isSoundDisabled)
+    if (_areSoundsDisabled)
     {
         return;
     }
@@ -229,7 +319,7 @@ void NGAudioEngine::resumeAllSounds()
         std::vector<Sound *> sounds = (*i).second->getSounds();
         for (std::vector<Sound *>::iterator i = sounds.begin(); i != sounds.end(); ++i)
         {
-            (*i)->resume();
+            _soundsToResume.push_back((*i));
         }
     }
 }
@@ -241,14 +331,8 @@ void NGAudioEngine::loadMusic(const char *path)
         return;
     }
     
-    if (_music)
-    {
-        _music->getSoundInstance()->stop();
-        
-        delete _music;
-    }
-    
-    _music = _audioEngineHelper->loadMusic(path);
+    _musicPath = std::string(path);
+    _musicStates.push_back(MusicState_Load);
 }
 
 void NGAudioEngine::playMusic(bool isLooping, float inVolume)
@@ -260,13 +344,13 @@ void NGAudioEngine::playMusic(bool isLooping, float inVolume)
     
     if (_music)
     {
-        _musicState = 1;
         _musicVolume = clamp(inVolume, 1, 0);
         _isMusicLooping = isLooping;
+        _musicStates.push_back(MusicState_Play);
     }
 }
 
-void NGAudioEngine::setMusicVolume(float volume)
+void NGAudioEngine::setMusicVolume(float inVolume)
 {
     if (_isMusicDisabled)
     {
@@ -275,7 +359,8 @@ void NGAudioEngine::setMusicVolume(float volume)
     
     if (_music)
     {
-        _music->getSoundInstance()->setVolume(volume);
+        _musicVolume = clamp(inVolume, 1, 0);
+        _musicStates.push_back(MusicState_SetVolume);
     }
 }
 
@@ -288,7 +373,7 @@ void NGAudioEngine::stopMusic()
     
     if (_music)
     {
-        _music->getSoundInstance()->stop();
+        _musicStates.push_back(MusicState_Stop);
     }
 }
 
@@ -301,7 +386,7 @@ void NGAudioEngine::pauseMusic()
     
     if (_music)
     {
-        _music->getSoundInstance()->pause();
+        _musicStates.push_back(MusicState_Pause);
     }
 }
 
@@ -312,9 +397,9 @@ void NGAudioEngine::resumeMusic()
         return;
     }
     
-    if (_music && _music->getSoundInstance()->isPaused())
+    if (_music)
     {
-        _music->getSoundInstance()->resume();
+        _musicStates.push_back(MusicState_Resume);
     }
 }
 
@@ -338,28 +423,33 @@ bool NGAudioEngine::isMusicDisabled()
     return _isMusicDisabled;
 }
 
-void NGAudioEngine::setMusicDisabled(bool isMusicDisabled)
+void NGAudioEngine::setMusicDisabled(bool inValue)
 {
-    if (_isMusicDisabled && !isMusicDisabled)
-    {
-        _isMusicDisabled = false;
-        playMusic();
-    }
-    else if (!_isMusicDisabled && isMusicDisabled)
+    if (!_isMusicDisabled && inValue)
     {
         stopMusic();
         _isMusicDisabled = true;
     }
+    else if (_isMusicDisabled && !inValue)
+    {
+        _isMusicDisabled = false;
+        playMusic();
+    }
 }
 
-bool NGAudioEngine::isSoundDisabled()
+bool NGAudioEngine::areSoundsDisabled()
 {
-    return _isSoundDisabled;
+    return _areSoundsDisabled;
 }
 
-void NGAudioEngine::setSoundDisabled(bool isSoundDisabled)
+void NGAudioEngine::setSoundsDisabled(bool inValue)
 {
-    _isSoundDisabled = isSoundDisabled;
+    if (!_areSoundsDisabled && inValue)
+    {
+        stopAllSounds();
+    }
+    
+    _areSoundsDisabled = inValue;
 }
 
 SoundWrapper* NGAudioEngine::findSound(int soundId)
@@ -376,12 +466,13 @@ SoundWrapper* NGAudioEngine::findSound(int soundId)
 NGAudioEngine::NGAudioEngine() :
 _audioEngineHelper(NG_AUDIO_ENGINE_HELPER_FACTORY->createAudioEngineHelper()),
 _music(NULL),
+_musicPath(),
 _numSoundsPlayedThisFrame(0),
-_musicState(0),
+_state(AudioEngineState_None),
 _musicVolume(0),
 _isMusicLooping(false),
 _isMusicDisabled(false),
-_isSoundDisabled(false)
+_areSoundsDisabled(false)
 {
     // Empty
 }

@@ -449,7 +449,7 @@ void GameRenderer::renderUI()
         // Controls
         ++row;
         
-        renderText(StringUtil::format("[S]         Sound %s", NG_AUDIO_ENGINE->isSoundDisabled() ? " OFF" : "  ON").c_str(), CAM_WIDTH - 0.5f, CAM_HEIGHT - (row++ * padding), FONT_ALIGN_RIGHT);
+        renderText(StringUtil::format("[S]         Sound %s", NG_AUDIO_ENGINE->areSoundsDisabled() ? " OFF" : "  ON").c_str(), CAM_WIDTH - 0.5f, CAM_HEIGHT - (row++ * padding), FONT_ALIGN_RIGHT);
         renderText(StringUtil::format("[M]         Music %s", NG_AUDIO_ENGINE->isMusicDisabled() ? " OFF" : "  ON").c_str(), CAM_WIDTH - 0.5f, CAM_HEIGHT - (row++ * padding), FONT_ALIGN_RIGHT);
         renderText(StringUtil::format("[B]   Box2D Debug %s", _engineState & GameEngineState_DisplayBox2D ? "  ON" : " OFF").c_str(), CAM_WIDTH - 0.5f, CAM_HEIGHT - (row++ * padding), FONT_ALIGN_RIGHT);
         renderText(StringUtil::format("[L] Interpolation %s", _engineState & GameEngineState_Interpolation ? "  ON" : " OFF").c_str(), CAM_WIDTH - 0.5f, CAM_HEIGHT - (row++ * padding), FONT_ALIGN_RIGHT);
