@@ -89,16 +89,30 @@ void EntityMapper::initWithJson(const char* json)
         entry->controller = iv.HasMember("controller") ? iv["controller"].GetString() : "DefaultController";
         
         {
-            const Value& v = iv["mappings"];
+            const Value& v = iv["textureMappings"];
             assert(v.IsObject());
             for (Value::ConstMemberIterator i = v.MemberBegin(); i != v.MemberEnd(); ++i)
             {
                 std::string name = i->name.GetString();
                 int state = StringUtil::stringToNumber<int>(name);
                 std::string value = i->value.GetString();
-                entry->mappings.insert(std::make_pair(state, value));
+                entry->textureMappings.insert(std::make_pair(state, value));
             }
         }
+        
+        if (iv.HasMember("soundMappings"))
+        {
+            const Value& v = iv["soundMappings"];
+            assert(v.IsObject());
+            for (Value::ConstMemberIterator i = v.MemberBegin(); i != v.MemberEnd(); ++i)
+            {
+                std::string name = i->name.GetString();
+                int state = StringUtil::stringToNumber<int>(name);
+                int soundId = i->value.GetInt();
+                entry->soundMappings.insert(std::make_pair(state, soundId));
+            }
+        }
+        
         if (iv.HasMember("fixtures"))
         {
             const Value& v = iv["fixtures"];

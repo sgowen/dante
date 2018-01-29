@@ -413,9 +413,7 @@ void DirectXMain::Initialize(EngineController* engineController, HWND window, in
 {
 	_deviceResources->SetWindow(window, width, height);
     
-	_engineController = engineController;
-	_engineController->init();
-    _engine = new Engine(_engineController);
+    _engine = new Engine(engineController);
 
 	_deviceResources->CreateDeviceResources();
 	CreateDeviceDependentResources();
@@ -841,8 +839,6 @@ DirectXMain::~DirectXMain()
     _engine->releaseDeviceDependentResources();
     
 	delete _engine;
-    
-	_engineController->deinit();
 
 	_deviceResources.reset();
 }

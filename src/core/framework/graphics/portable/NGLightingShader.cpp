@@ -20,7 +20,7 @@
 #include <assert.h>
 
 NGLightingShader::NGLightingShader(RendererHelper& inRendererHelper, const char* vertexShaderName, const char* fragmentShaderName) : NGShader(inRendererHelper, vertexShaderName, fragmentShaderName),
-_defaultLightZ(NG_CFG->getFloat("defaultLightZ"))
+_defaultLightZ(0)
 {
 #ifdef _WIN32
 	_lights[0][0] = 0;
@@ -31,20 +31,6 @@ _defaultLightZ(NG_CFG->getFloat("defaultLightZ"))
 	_lights[0][1] = 0;
 	_lights[0][2] = _defaultLightZ;
 #endif
-    
-    _lightColor[0] = NG_CFG->getFloat("LightColorR");
-    _lightColor[1] = NG_CFG->getFloat("LightColorG");
-    _lightColor[2] = NG_CFG->getFloat("LightColorB");
-    _lightColor[3] = NG_CFG->getFloat("LightColorA");
-    
-    _ambientColor[0] = NG_CFG->getFloat("AmbientColorR");
-    _ambientColor[1] = NG_CFG->getFloat("AmbientColorG");
-    _ambientColor[2] = NG_CFG->getFloat("AmbientColorB");
-    _ambientColor[3] = NG_CFG->getFloat("AmbientColorA");
-    
-    _fallOff[0] = NG_CFG->getFloat("LightFalloffX");
-    _fallOff[1] = NG_CFG->getFloat("LightFalloffY");
-    _fallOff[2] = NG_CFG->getFloat("LightFalloffZ");
     
     _numLights[0] = 0;
     
@@ -91,6 +77,25 @@ void NGLightingShader::unbind()
     _rendererHelper.bindTexture(NGTextureSlot_ZERO, NULL);
     _rendererHelper.bindTexture(NGTextureSlot_ONE, NULL);
     _rendererHelper.bindNGShader(NULL);
+}
+
+void NGLightingShader::onLoaded()
+{
+    _defaultLightZ = NG_CFG->getFloat("defaultLightZ");
+    
+    _lightColor[0] = NG_CFG->getFloat("LightColorR");
+    _lightColor[1] = NG_CFG->getFloat("LightColorG");
+    _lightColor[2] = NG_CFG->getFloat("LightColorB");
+    _lightColor[3] = NG_CFG->getFloat("LightColorA");
+    
+    _ambientColor[0] = NG_CFG->getFloat("AmbientColorR");
+    _ambientColor[1] = NG_CFG->getFloat("AmbientColorG");
+    _ambientColor[2] = NG_CFG->getFloat("AmbientColorB");
+    _ambientColor[3] = NG_CFG->getFloat("AmbientColorA");
+    
+    _fallOff[0] = NG_CFG->getFloat("LightFalloffX");
+    _fallOff[1] = NG_CFG->getFloat("LightFalloffY");
+    _fallOff[2] = NG_CFG->getFloat("LightFalloffZ");
 }
 
 void NGLightingShader::resetLights()

@@ -185,7 +185,6 @@ int GlfwMain::exec(EngineController* engineController)
 
     double lastTime = 0;
 
-    engineController->init();
     Engine* engineP = new Engine(engineController);
     
     Engine& engine = *engineP;
@@ -330,8 +329,6 @@ int GlfwMain::exec(EngineController* engineController)
     engine.releaseDeviceDependentResources();
     
     delete engineP;
-    
-    engineController->deinit();
 
     glfwDestroyWindow(window);
 

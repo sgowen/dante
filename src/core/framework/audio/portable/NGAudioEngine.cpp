@@ -17,6 +17,8 @@
 #include "framework/audio/portable/AudioEngineHelperFactory.h"
 #include "framework/util/NGSTDUtil.h"
 #include "framework/math/MathUtil.h"
+#include <framework/file/portable/Assets.h>
+#include <framework/audio/portable/SoundDesc.h>
 
 #include <assert.h>
 
@@ -54,22 +56,6 @@ void NGAudioEngine::render()
     if (_state == AudioEngineState_Resume)
     {
         _audioEngineHelper->resume();
-    }
-    
-    {
-        int len = static_cast<int>(_soundIdsToLoad.size());
-        for (int i = 0; i < len; ++i)
-        {
-            int soundId = _soundIdsToLoad[i];
-            std::string& path = _soundPathsToLoad[i];
-            int numInstances = _soundNumInstancesToLoad[i];
-            
-            SoundWrapper* sound = _audioEngineHelper->loadSound(soundId, path.c_str(), numInstances);
-            _sounds.insert(std::make_pair(soundId, sound));
-        }
-        _soundIdsToLoad.clear();
-        _soundPathsToLoad.clear();
-        _soundNumInstancesToLoad.clear();
     }
     
     {
@@ -125,15 +111,6 @@ void NGAudioEngine::render()
             int musicState = _musicStates[i];
             switch (musicState)
             {
-                case MusicState_Load:
-                    if (_music)
-                    {
-                        _music->getSoundInstance()->stop();
-                        
-                        delete _music;
-                    }
-                    _music = _audioEngineHelper->loadMusic(_musicPath.c_str());
-                    break;
                 case MusicState_Stop:
                     _music->getSoundInstance()->stop();
                     break;
@@ -181,11 +158,27 @@ void NGAudioEngine::resume()
     resumeAllSounds();
 }
 
+void NGAudioEngine::loadFromAssets()
+{
+    std::vector<SoundDesc*>& soundDescs = ASSETS->getSoundDescriptors();
+    for (SoundDesc* sd : soundDescs)
+    {
+        int soundId = sd->_soundId;
+        if (soundId == 1337)
+        {
+            loadMusic(sd->_soundName.c_str());
+        }
+        else
+        {
+            loadSound(soundId, sd->_soundName.c_str(), sd->_numInstances);
+        }
+    }
+}
+
 void NGAudioEngine::loadSound(int soundId, const char *path, int numInstances)
 {
-    _soundIdsToLoad.push_back(soundId);
-    _soundPathsToLoad.push_back(path);
-    _soundNumInstancesToLoad.push_back(numInstances);
+    SoundWrapper* sound = _audioEngineHelper->loadSound(soundId, path, numInstances);
+    _sounds.insert(std::make_pair(soundId, sound));
 }
 
 void NGAudioEngine::playSound(int soundId, float inVolume, bool isLooping)
@@ -327,8 +320,13 @@ void NGAudioEngine::loadMusic(const char *path)
         return;
     }
     
-    _musicPath = std::string(path);
-    _musicStates.push_back(MusicState_Load);
+    if (_music)
+    {
+        _music->getSoundInstance()->stop();
+        
+        delete _music;
+    }
+    _music = _audioEngineHelper->loadMusic(path);
 }
 
 void NGAudioEngine::playMusic(bool isLooping, float inVolume)
@@ -462,7 +460,6 @@ SoundWrapper* NGAudioEngine::findSound(int soundId)
 NGAudioEngine::NGAudioEngine() :
 _audioEngineHelper(NG_AUDIO_ENGINE_HELPER_FACTORY->createAudioEngineHelper()),
 _music(NULL),
-_musicPath(),
 _state(AudioEngineState_None),
 _musicVolume(0),
 _isMusicLooping(false),

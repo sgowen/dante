@@ -29,7 +29,7 @@
 #include <game/logic/StudioEngine.h>
 #include <game/logic/StudioInputManager.h>
 
-#include "framework/graphics/portable/Assets.h"
+#include "framework/file/portable/Assets.h"
 #include "framework/graphics/portable/RendererHelper.h"
 #include "game/logic/GameConstants.h"
 #include "framework/math/NGRect.h"
@@ -69,7 +69,7 @@
 #include <framework/graphics/portable/NGGeometryShader.h>
 #include <framework/graphics/portable/NGFramebufferToScreenShader.h>
 #include "framework/graphics/portable/NGTextureDesc.h"
-#include "framework/graphics/portable/Assets.h"
+#include "framework/file/portable/Assets.h"
 #include "framework/input/CursorInputManager.h"
 #include "framework/input/CursorConverter.h"
 #include <framework/entity/EntityLayoutMapper.h>
@@ -87,7 +87,7 @@
 #include <cfloat>
 
 StudioRenderer::StudioRenderer() : Renderer(),
-_textureManager(new TextureManager("game_assets.cfg")),
+_textureManager(new TextureManager()),
 _rendererHelper(RENDERER_HELPER_FACTORY->createRendererHelper()),
 _fontSpriteBatcher(new SpriteBatcher(_rendererHelper)),
 _fillPolygonBatcher(new PolygonBatcher(_rendererHelper, true)),
@@ -539,7 +539,7 @@ void StudioRenderer::renderUI()
             renderText(StringUtil::format("%s | %s", ed->typeName.c_str(), ed->name.c_str()).c_str(), 7, CAM_HEIGHT - 1 - (row * padding), FONT_ALIGN_LEFT);
             _fontSpriteBatcher->endBatch(_textureNGShader, _fontTexture, NULL, i == selectionIndex ? Color::WHITE : Color::BLACK);
             
-            TextureRegion tr = ASSETS->findTextureRegion(ed->mappings[0], 0);
+            TextureRegion tr = ASSETS->findTextureRegion(ed->textureMappings[0], 0);
             _spriteBatchers[ed->layer]->renderSprite(4, CAM_HEIGHT - 1 - (row * padding), 4, 4, 0, tr);
             textures[ed->layer] = tr.getTextureName();
             

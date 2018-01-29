@@ -60,3 +60,8 @@ void NGTextureShader::unbind()
     _rendererHelper.bindTexture(NGTextureSlot_ZERO, NULL);
     _rendererHelper.bindNGShader(NULL);
 }
+
+void NGTextureShader::onLoaded()
+{
+    // Empty
+}

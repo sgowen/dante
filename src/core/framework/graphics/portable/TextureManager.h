@@ -21,7 +21,7 @@ class NGTexture;
 class TextureManager
 {
 public:
-    TextureManager(const char* assetsCfgPath);
+    TextureManager();
     ~TextureManager();
     
     void createDeviceDependentResources();
@@ -38,7 +38,6 @@ public:
     NGTexture* getTextureWithName(std::string name);
     
 private:
-    const char* _assetsCfgPath;
     std::map<std::string, NGTexture*> _textures;
     std::vector<NGTexture*> _loadingTextures;
     std::vector<tthread::thread*> _textureDataLoadingThreads;

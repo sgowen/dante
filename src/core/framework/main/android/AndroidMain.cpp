@@ -179,7 +179,6 @@ void AndroidMain::exec(android_app* state, EngineController* engineController)
     AndroidAssetDataHandler::getInstance()->init(jni, _app->activity->clazz);
     _app->activity->vm->DetachCurrentThread();
     
-    engineController->init();
     _engine = new Engine(engineController);
     
     state->userData = this;
@@ -220,8 +219,6 @@ void AndroidMain::exec(android_app* state, EngineController* engineController)
     _engine->releaseDeviceDependentResources();
     
     delete _engine;
-    
-    engineController->deinit();
     
     AndroidAssetDataHandler::getInstance()->deinit();
 }

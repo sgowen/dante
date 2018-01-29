@@ -18,13 +18,12 @@
 #include "framework/graphics/portable/TextureLoaderFactory.h"
 #include "framework/util/NGSTDUtil.h"
 #include "framework/graphics/portable/NGTextureDesc.h"
-#include "framework/graphics/portable/Assets.h"
+#include "framework/file/portable/Assets.h"
 
 #include <string>
 #include <assert.h>
 
-TextureManager::TextureManager(const char* assetsCfgPath) :
-_assetsCfgPath(assetsCfgPath),
+TextureManager::TextureManager() :
 _textureLoader(TEXTURE_LOADER_FACTORY->createTextureLoader())
 {
     // Empty
@@ -41,8 +40,6 @@ TextureManager::~TextureManager()
 
 void TextureManager::createDeviceDependentResources()
 {
-    ASSETS->initWithJsonFile(_assetsCfgPath);
-    
     if (_textures.size() == 0)
     {
         std::vector<NGTextureDesc*>& textureDescs = ASSETS->getTextureDescriptors();

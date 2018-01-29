@@ -29,7 +29,6 @@ enum AudioEngineState
 enum MusicState
 {
     MusicState_None = 0,
-    MusicState_Load,
     MusicState_Stop,
     MusicState_Pause,
     MusicState_Resume,
@@ -48,6 +47,7 @@ public:
     void render();
     void pause();
     void resume();
+    void loadFromAssets();
     void loadSound(int soundId, const char *path, int numInstances = 1);
     void playSound(int soundId, float inVolume = 1.0f, bool isLooping = false);
     void stopSound(int soundId);
@@ -76,9 +76,6 @@ private:
     AudioEngineHelper* _audioEngineHelper;
     int _state;
     std::map<int, SoundWrapper*> _sounds;
-    std::vector<int> _soundIdsToLoad;
-    std::vector<std::string> _soundPathsToLoad;
-    std::vector<int> _soundNumInstancesToLoad;
     std::vector<Sound*> _soundsToPlay;
     std::vector<Sound*> _soundsToStop;
     std::vector<Sound*> _soundsToPause;
@@ -86,7 +83,6 @@ private:
     std::vector<float> _soundsVolumes;
     std::vector<bool> _soundsLooping;
     SoundWrapper* _music;
-    std::string _musicPath;
     std::vector<int> _musicStates;
     float _musicVolume;
     bool _isMusicLooping;

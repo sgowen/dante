@@ -32,6 +32,7 @@ NGShader::~NGShader()
 void NGShader::load(NGShaderLoader& shaderProgramLoader)
 {
     _shaderProgramWrapper = shaderProgramLoader.loadNGShader(_vertexShaderName, _fragmentShaderName, _uniforms, _inputLayout);
+    onLoaded();
 }
 
 void NGShader::unload(NGShaderLoader& shaderProgramLoader)

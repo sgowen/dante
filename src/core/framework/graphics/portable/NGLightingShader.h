@@ -20,7 +20,9 @@ public:
     
     virtual void bind(void* vertices, void* data1 = NULL, void* data2 = NULL, void* data3 = NULL);
     virtual void unbind();
+    virtual void onLoaded();
     
+    void onConfigLoaded();
     void resetLights();
     void configLight(int index, float lightPosX, float lightPosY);
     void configZ(float lightPosZ);

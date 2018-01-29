@@ -69,6 +69,7 @@ private:
     GameEngine* _engine;
     int _fbIndex;
     uint32_t _engineState;
+    float _backgroundLightZFactor;
     
     void setFramebuffer(int framebufferIndex, float r = 0, float g = 0, float b = 0, float a = 0);
     void renderWorld();

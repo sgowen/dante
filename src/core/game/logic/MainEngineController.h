@@ -19,8 +19,6 @@ public:
     MainEngineController();
     virtual ~MainEngineController();
     
-    virtual void init();
-    virtual void deinit();
     virtual EngineState* getInitialState();
 };
 

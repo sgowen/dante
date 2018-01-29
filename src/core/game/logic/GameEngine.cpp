@@ -35,12 +35,14 @@
 #include "framework/audio/portable/NGAudioEngine.h"
 #include "framework/util/NGExtension.h"
 #include "framework/util/PlatformHelper.h"
-#include "framework/graphics/portable/Assets.h"
+#include "framework/file/portable/Assets.h"
 #include "framework/util/FrameworkConstants.h"
 #include "framework/audio/portable/NGAudioEngine.h"
 #include "framework/util/FPSUtil.h"
 #include "framework/input/CursorConverter.h"
 #include <framework/util/Config.h>
+#include <framework/entity/EntityMapper.h>
+#include <framework/entity/EntityLayoutMapper.h>
 
 #ifdef NG_STEAM
 #include "framework/network/steam/NGSteamClientHelper.h"
@@ -81,7 +83,7 @@ _server(NULL),
 _stateTime(0),
 _state(GameEngineState_Default),
 _map(0),
-_lightZ(NG_CFG->getFloat("defaultLightZ"))
+_lightZ(0)
 {
     _state |= GameEngineState_Interpolation | GameEngineState_Lighting;
     
@@ -174,12 +176,18 @@ void GameEngine::exit(Engine* engine)
 
 void GameEngine::createDeviceDependentResources()
 {
+    NG_CFG->initWithJsonFile("global.cfg");
+    EntityMapper::getInstance()->initWithJsonFile("entities.cfg");
+    EntityLayoutMapper::getInstance()->initWithJsonFile("maps.cfg");
+    ASSETS->initWithJsonFile("game_assets.cfg");
+    
+    _lightZ = NG_CFG->getFloat("defaultLightZ");
+    
     _renderer->createDeviceDependentResources();
     
     NGAudioEngine::create();
     
-    NG_AUDIO_ENGINE->loadSound(1, "sound_001.wav", 4);
-    NG_AUDIO_ENGINE->loadMusic("music_001.wav");
+    NG_AUDIO_ENGINE->loadFromAssets();
 
     NG_AUDIO_ENGINE->setMusicDisabled(true);
     NG_AUDIO_ENGINE->setSoundsDisabled(true);

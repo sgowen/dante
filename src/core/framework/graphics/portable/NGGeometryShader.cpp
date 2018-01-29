@@ -55,3 +55,8 @@ void NGGeometryShader::unbind()
     _rendererHelper.unmapColorVertices();
     _rendererHelper.bindNGShader(NULL);
 }
+
+void NGGeometryShader::onLoaded()
+{
+    // Empty
+}

@@ -13,6 +13,7 @@
 #include <string>
 #include <vector>
 
+struct SoundDesc;
 struct NGTextureDesc;
 class TextureRegion;
 class NGAnimation;
@@ -31,11 +32,13 @@ public:
     TextureRegion& findTextureRegion(std::string key, uint16_t stateTime);
     TextureRegion& findTextureRegion(std::string key);
     NGAnimation& findAnimation(std::string key);
+    std::vector<SoundDesc*>& getSoundDescriptors();
     std::vector<NGTextureDesc*>& getTextureDescriptors();
     std::map<std::string, TextureRegion*>& getTextureRegionMap();
     std::map<std::string, NGAnimation*>& getAnimationsMap();
 
 private:
+    std::vector<SoundDesc*> _sounds;
     std::vector<NGTextureDesc*> _textures;
     std::map<std::string, TextureRegion*> _textureRegions;
     std::map<std::string, NGAnimation*> _animations;

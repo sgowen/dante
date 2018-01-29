@@ -18,6 +18,7 @@ public:
     
     virtual void bind(void* vertices, void* data1 = NULL, void* data2 = NULL, void* data3 = NULL);
     virtual void unbind();
+    virtual void onLoaded();
 };
 
 #endif /* defined(__noctisgames__NGTextureShader__) */

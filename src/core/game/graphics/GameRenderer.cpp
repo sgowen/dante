@@ -29,7 +29,7 @@
 #include "framework/graphics/portable/Box2DDebugRenderer.h"
 #include <framework/graphics/portable/NGLightingShader.h>
 
-#include "framework/graphics/portable/Assets.h"
+#include "framework/file/portable/Assets.h"
 #include "framework/graphics/portable/RendererHelper.h"
 #include "game/logic/GameConstants.h"
 #include "framework/math/NGRect.h"
@@ -69,7 +69,7 @@
 #include <framework/graphics/portable/NGGeometryShader.h>
 #include <framework/graphics/portable/NGFramebufferToScreenShader.h>
 #include "framework/graphics/portable/NGTextureDesc.h"
-#include "framework/graphics/portable/Assets.h"
+#include "framework/file/portable/Assets.h"
 #include <game/logic/GameEngine.h>
 #include <game/logic/PlayerController.h>
 #include <framework/util/Config.h>
@@ -87,7 +87,7 @@
 #include <cfloat>
 
 GameRenderer::GameRenderer() : Renderer(),
-_textureManager(new TextureManager("game_assets.cfg")),
+_textureManager(new TextureManager()),
 _rendererHelper(RENDERER_HELPER_FACTORY->createRendererHelper()),
 _fillPolygonBatcher(new PolygonBatcher(_rendererHelper, true)),
 _boundsPolygonBatcher(new PolygonBatcher(_rendererHelper, false)),
@@ -102,7 +102,8 @@ _framebufferToScreenNGShader(new NGFramebufferToScreenShader(*_rendererHelper, "
 _font(new Font("texture_000.ngt", 0, 0, 16, 64, 75, 1024, 1024)),
 _fbIndex(0),
 _engine(NULL),
-_engineState(0)
+_engineState(0),
+_backgroundLightZFactor(0)
 {
     for (int i = 0; i < NUM_SPRITE_BATCHERS; ++i)
     {
@@ -146,6 +147,8 @@ void GameRenderer::createDeviceDependentResources()
 {
     _rendererHelper->createDeviceDependentResources();
     _textureManager->createDeviceDependentResources();
+    
+    _backgroundLightZFactor = NG_CFG->getFloat("backgroundLightZFactor");
     
     _textureNGShader->load(*_shaderProgramLoader);
     _colorNGShader->load(*_shaderProgramLoader);
@@ -293,7 +296,7 @@ void GameRenderer::renderWorld()
         fbBegin = _fbIndex + 1;
         
         {
-            _lightingNGShader->configZ(_engine->_lightZ * NG_CFG->getFloat("backgroundLightZFactor"));
+            _lightingNGShader->configZ(_engine->_lightZ * _backgroundLightZFactor);
             setFramebuffer(_fbIndex + 1, 0, 0, 0, 0);
             _spriteBatchers[0]->beginBatch();
             _spriteBatchers[0]->renderSprite(x, y, _camBounds[3]->getWidth(), _camBounds[3]->getHeight(), 0, tr);

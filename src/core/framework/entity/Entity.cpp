@@ -430,11 +430,24 @@ bool Entity::isFacingLeft()
 
 std::string& Entity::getTextureMapping()
 {
-    auto q = _entityDef.mappings.find(_state);
+    auto q = _entityDef.textureMappings.find(_state);
     
-    assert(q != _entityDef.mappings.end());
+    assert(q != _entityDef.textureMappings.end());
     
     return q->second;
+}
+
+int Entity::getSoundMapping(int state)
+{
+    auto q = _entityDef.soundMappings.find(state);
+    
+    if (q != _entityDef.soundMappings.end())
+    {
+        return q->second;
+    }
+    
+    // No sound for this state
+    return 0;
 }
 
 Entity::Pose& Entity::getPose()

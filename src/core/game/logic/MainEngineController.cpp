@@ -14,7 +14,6 @@
 #include "game/logic/GameEngine.h"
 #include "game/logic/StudioEngine.h"
 #include <framework/entity/EntityMapper.h>
-#include <framework/entity/EntityLayoutMapper.h>
 #include <framework/entity/DefaultController.h>
 #include <game/logic/BasicFollowAndAttackController.h>
 #include <game/logic/PlayerController.h>
@@ -24,20 +23,6 @@ NGRTTI_IMPL(MainEngineController, EngineController);
 
 MainEngineController::MainEngineController()
 {
-    // Empty
-}
-
-MainEngineController::~MainEngineController()
-{
-    // Empty
-}
-
-void MainEngineController::init()
-{
-    NG_CFG->initWithJsonFile("game.cfg");
-    EntityMapper::getInstance()->initWithJsonFile("entities.cfg");
-    EntityLayoutMapper::getInstance()->initWithJsonFile("maps.cfg");
-    
     TitleEngine::create();
     GameEngine::create();
     StudioEngine::create();
@@ -47,7 +32,7 @@ void MainEngineController::init()
     EntityMapper::getInstance()->registerFunction("PlayerController", PlayerController::create);
 }
 
-void MainEngineController::deinit()
+MainEngineController::~MainEngineController()
 {
     StudioEngine::destroy();
     GameEngine::destroy();

@@ -28,7 +28,7 @@
 #include "framework/graphics/portable/NGTexture.h"
 #include "framework/graphics/portable/Box2DDebugRenderer.h"
 
-#include "framework/graphics/portable/Assets.h"
+#include "framework/file/portable/Assets.h"
 #include "framework/graphics/portable/RendererHelper.h"
 #include "game/logic/GameConstants.h"
 #include "framework/math/NGRect.h"
@@ -68,7 +68,7 @@
 #include <framework/graphics/portable/NGGeometryShader.h>
 #include <framework/graphics/portable/NGFramebufferToScreenShader.h>
 #include "framework/graphics/portable/NGTextureDesc.h"
-#include "framework/graphics/portable/Assets.h"
+#include "framework/file/portable/Assets.h"
 #include "framework/util/PlatformHelper.h"
 
 #ifdef NG_STEAM
@@ -82,7 +82,7 @@
 #include <assert.h>
 
 TitleRenderer::TitleRenderer() : Renderer(),
-_textureManager(new TextureManager("title_assets.cfg")),
+_textureManager(new TextureManager()),
 _rendererHelper(RENDERER_HELPER_FACTORY->createRendererHelper()),
 _spriteBatcher(new SpriteBatcher(_rendererHelper)),
 _fillPolygonBatcher(new PolygonBatcher(_rendererHelper, true)),

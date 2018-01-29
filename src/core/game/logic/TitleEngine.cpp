@@ -37,7 +37,7 @@
 #include "framework/audio/portable/NGAudioEngine.h"
 #include "framework/util/NGExtension.h"
 #include "framework/util/PlatformHelper.h"
-#include "framework/graphics/portable/Assets.h"
+#include "framework/file/portable/Assets.h"
 #include "framework/util/FrameworkConstants.h"
 #include "framework/audio/portable/NGAudioEngine.h"
 #include "framework/util/Timing.h"
@@ -47,6 +47,9 @@
 #include "game/logic/GameInputManager.h"
 #include "game/logic/StudioEngine.h"
 #include "game/logic/PooledObjectsManager.h"
+#include <framework/util/Config.h>
+#include <framework/entity/EntityMapper.h>
+#include <framework/entity/EntityLayoutMapper.h>
 
 #ifdef NG_STEAM
 #include "framework/network/steam/NGSteamClientHelper.h"
@@ -142,6 +145,11 @@ void TitleEngine::exit(Engine* engine)
 
 void TitleEngine::createDeviceDependentResources()
 {
+    NG_CFG->initWithJsonFile("global.cfg");
+    EntityMapper::getInstance()->initWithJsonFile("entities.cfg");
+    EntityLayoutMapper::getInstance()->initWithJsonFile("maps.cfg");
+    ASSETS->initWithJsonFile("title_assets.cfg");
+    
     _renderer->createDeviceDependentResources();
 }
 

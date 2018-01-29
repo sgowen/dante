@@ -59,7 +59,8 @@ struct EntityDef
     std::string typeName;
     uint32_t type;
     std::string controller;
-    std::map<int, std::string> mappings;
+    std::map<int, std::string> textureMappings;
+    std::map<int, int> soundMappings;
     std::vector<FixtureDef> fixtures;
     int bodyFlags;
     float width;
@@ -114,6 +115,7 @@ public:
     bool isServer();
     bool isFacingLeft();
     std::string& getTextureMapping();
+    int getSoundMapping(int state);
     
 #define NG_CLOSE_ENOUGH_IS_FINE
     
