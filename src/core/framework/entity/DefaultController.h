@@ -28,12 +28,6 @@ public:
     virtual void read(InputMemoryBitStream& inInputStream, uint16_t& inReadState);
     virtual void recallLastReadState(uint16_t& inReadState);
     virtual uint16_t write(OutputMemoryBitStream& inOutputStream, uint16_t inWrittenState, uint16_t inDirtyState);
-    virtual std::vector<std::string> getStates()
-    {
-        std::vector<std::string> ret;
-        ret.push_back("Idle");
-        return ret;
-    }
 };
 
 #endif /* defined(__noctisgames__DefaultController__) */

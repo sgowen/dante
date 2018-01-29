@@ -34,7 +34,6 @@ public:
     virtual void read(InputMemoryBitStream& inInputStream, uint16_t& inReadState) = 0;
     virtual void recallLastReadState(uint16_t& inReadState) = 0;
     virtual uint16_t write(OutputMemoryBitStream& inOutputStream, uint16_t inWrittenState, uint16_t inDirtyState) = 0;
-    virtual std::vector<std::string> getStates() = 0;
     
 protected:
     Entity* _entity;
