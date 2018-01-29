@@ -401,6 +401,8 @@
 		<Unit filename="../../core/framework/file/linux/LinuxAssetDataHandler.h" />
 		<Unit filename="../../core/framework/file/portable/AssetDataHandler.cpp" />
 		<Unit filename="../../core/framework/file/portable/AssetDataHandler.h" />
+		<Unit filename="../../core/framework/file/portable/Assets.cpp" />
+		<Unit filename="../../core/framework/file/portable/Assets.h" />
 		<Unit filename="../../core/framework/file/portable/FileData.cpp" />
 		<Unit filename="../../core/framework/file/portable/FileData.h" />
 		<Unit filename="../../core/framework/file/portable/JsonFile.cpp" />
@@ -411,8 +413,6 @@
 		<Unit filename="../../core/framework/graphics/opengl/OpenGLRendererHelper.h" />
 		<Unit filename="../../core/framework/graphics/opengl/OpenGLTextureLoader.cpp" />
 		<Unit filename="../../core/framework/graphics/opengl/OpenGLTextureLoader.h" />
-		<Unit filename="../../core/framework/graphics/portable/Assets.cpp" />
-		<Unit filename="../../core/framework/graphics/portable/Assets.h" />
 		<Unit filename="../../core/framework/graphics/portable/Box2DDebugRenderer.cpp" />
 		<Unit filename="../../core/framework/graphics/portable/Box2DDebugRenderer.h" />
 		<Unit filename="../../core/framework/graphics/portable/CircleBatcher.cpp" />
