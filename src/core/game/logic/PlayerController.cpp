@@ -360,7 +360,6 @@ void PlayerController::processInput(InputState* inInputState, bool isPending)
     
     if (impulse != 0 || vertForce != 0)
     {
-        _entity->updateBodyFromPose();
         _entity->getBody()->ApplyLinearImpulse(b2Vec2(impulse,vertForce), _entity->getBody()->GetWorldCenter(), true);
     }
 }

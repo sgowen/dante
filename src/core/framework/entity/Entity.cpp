@@ -69,8 +69,6 @@ void Entity::update()
     
     _state = _controller->update();
     
-    updateBodyFromPose();
-    
     if (_isServer)
     {
         if (_poseCache != _pose)
@@ -356,6 +354,8 @@ b2Body* Entity::getBody()
 void Entity::setPosition(b2Vec2 position)
 {
     _pose.position = position;
+    
+    updateBodyFromPose();
 }
 
 const b2Vec2& Entity::getPosition()
@@ -366,6 +366,8 @@ const b2Vec2& Entity::getPosition()
 void Entity::setVelocity(b2Vec2 velocity)
 {
     _pose.velocity = velocity;
+    
+    updateBodyFromPose();
 }
 
 const b2Vec2& Entity::getVelocity()
