@@ -160,7 +160,6 @@ void GameRenderer::createDeviceDependentResources()
     _parallaxLayer1FactorY = NG_CFG->getFloat("ParallaxLayer1FactorY");
     _parallaxLayer2FactorX = NG_CFG->getFloat("ParallaxLayer2FactorX");
     _parallaxLayer2FactorY = NG_CFG->getFloat("ParallaxLayer2FactorY");
-    
     _backgroundLightZFactor = NG_CFG->getFloat("BackgroundLightZFactor");
     
     _textureNGShader->load(*_shaderProgramLoader);

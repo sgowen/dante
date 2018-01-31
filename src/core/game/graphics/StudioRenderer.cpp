@@ -74,6 +74,7 @@
 #include "framework/input/CursorConverter.h"
 #include <framework/entity/EntityLayoutMapper.h>
 #include <framework/entity/EntityMapper.h>
+#include <framework/util/Config.h>
 
 #ifdef NG_STEAM
 #include "framework/network/steam/NGSteamGameServer.h"
@@ -154,6 +155,13 @@ void StudioRenderer::createDeviceDependentResources()
 {
     _rendererHelper->createDeviceDependentResources();
     _textureManager->createDeviceDependentResources();
+    
+    _parallaxLayer0FactorX = NG_CFG->getFloat("ParallaxLayer0FactorX");
+    _parallaxLayer0FactorY = NG_CFG->getFloat("ParallaxLayer0FactorY");
+    _parallaxLayer1FactorX = NG_CFG->getFloat("ParallaxLayer1FactorX");
+    _parallaxLayer1FactorY = NG_CFG->getFloat("ParallaxLayer1FactorY");
+    _parallaxLayer2FactorX = NG_CFG->getFloat("ParallaxLayer2FactorX");
+    _parallaxLayer2FactorY = NG_CFG->getFloat("ParallaxLayer2FactorY");
     
     _fontTexture = _textureManager->getTextureWithName("texture_000.ngt");
 
