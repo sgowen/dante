@@ -19,7 +19,9 @@
 #include "framework/util/NGSTDUtil.h"
 #include <framework/util/FrameworkConstants.h>
 #include <framework/util/macros.h>
+#include <framework/util/Config.h>
 
+#include <string>
 #include <assert.h>
 
 using namespace DirectX;
@@ -360,6 +362,39 @@ void DirectXRendererHelper::createBlendStates()
 
 void DirectXRendererHelper::createSamplerStates()
 {
+    std::string textureFilterMin = NG_CFG->getString("TextureFilterMin");
+    std::string textureFilterMax = NG_CFG->getString("TextureFilterMax");
+    int minFilter;
+    if (mipmap)
+    {
+        minFilter = textureFilterMin == "NEAREST" ? 4 : 5;
+    }
+    else
+    {
+        minFilter = textureFilterMin == "NEAREST" ? 0 : 1;
+    }
+    int maxFilter = textureFilterMax == "NEAREST" ? 0 : 1;
+    
+    D3D11_FILTER_TYPE dxMin = D3D11_FILTER_TYPE_POINT;
+    D3D11_FILTER_TYPE dxMip = D3D11_FILTER_TYPE_POINT;
+    switch (minFilter)
+    {
+        case 0: dxMin = D3D11_FILTER_TYPE_POINT;  dxMip = D3D11_FILTER_TYPE_POINT;  break;
+        case 1: dxMin = D3D11_FILTER_TYPE_LINEAR; dxMip = D3D11_FILTER_TYPE_POINT;  break;
+        case 2: dxMin = D3D11_FILTER_TYPE_POINT;  dxMip = D3D11_FILTER_TYPE_POINT;  break;
+        case 3: dxMin = D3D11_FILTER_TYPE_LINEAR; dxMip = D3D11_FILTER_TYPE_POINT;  break;
+        case 4: dxMin = D3D11_FILTER_TYPE_POINT;  dxMip = D3D11_FILTER_TYPE_LINEAR; break;
+        case 5: dxMin = D3D11_FILTER_TYPE_LINEAR; dxMip = D3D11_FILTER_TYPE_LINEAR; break;
+        default: assert(false);
+    }
+    D3D11_FILTER_TYPE dxMag = D3D11_FILTER_TYPE_POINT;
+    switch (magFilter)
+    {
+        case 0: dxMag = D3D11_FILTER_TYPE_POINT;  break;
+        case 1: dxMag = D3D11_FILTER_TYPE_LINEAR; break;
+        default: assert(false);
+    }
+    
     D3D11_SAMPLER_DESC sd;
     sd.Filter = D3D11_FILTER_ANISOTROPIC;
     sd.MaxAnisotropy = 16;
@@ -371,10 +406,9 @@ void DirectXRendererHelper::createSamplerStates()
     sd.BorderColor[2] = 0.0f;
     sd.BorderColor[3] = 0.0f;
     sd.MinLOD = 0.0f;
-    sd.MaxLOD = FLT_MAX;
+    sd.MaxLOD = 0.0f;
     sd.MipLODBias = 0.0f;
-    sd.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR; // linear filtering
-    sd.MinLOD = 5.0f; // mip level 5 will appear blurred
+    sd.Filter = D3D11_ENCODE_BASIC_FILTER(dxMin, dxMag, dxMip, static_cast<D3D11_COMPARISON_FUNC>(false));
     
     s_d3dDevice->CreateSamplerState(&sd, _sbSamplerState.GetAddressOf());
     
