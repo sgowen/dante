@@ -194,6 +194,7 @@ int GlfwMain::exec(EngineController* engineController)
 
     while (!glfwWindowShouldClose(window))
     {
+        glfwPollEvents();
         glfwGetFramebufferSize(window, &width, &height);
 
         if (width != glWidth || height != glHeight)
@@ -323,7 +324,6 @@ int GlfwMain::exec(EngineController* engineController)
         engine.render();
 
         glfwSwapBuffers(window);
-        glfwPollEvents();
     }
 
     engine.releaseDeviceDependentResources();
