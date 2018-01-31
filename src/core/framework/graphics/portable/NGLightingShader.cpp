@@ -81,7 +81,7 @@ void NGLightingShader::unbind()
 
 void NGLightingShader::onLoaded()
 {
-    _defaultLightZ = NG_CFG->getFloat("defaultLightZ");
+    _defaultLightZ = NG_CFG->getFloat("DefaultLightZ");
     
     _lightColor[0] = NG_CFG->getFloat("LightColorR");
     _lightColor[1] = NG_CFG->getFloat("LightColorG");

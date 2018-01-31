@@ -203,7 +203,7 @@ int GlfwMain::exec(EngineController* engineController)
             int screenHeight = 0;
             glfwGetWindowSize(window, &screenWidth, &screenHeight);
             
-            engine.createWindowSizeDependentResources(width, height, width > 1366 ? 1366 : width, height > 768 ? 768 : height, screenWidth, screenHeight);
+            engine.createWindowSizeDependentResources(width, height, screenWidth, screenHeight);
 
             glWidth = width;
             glHeight = height;

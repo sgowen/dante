@@ -29,7 +29,7 @@
 #include <framework/util/Config.h>
 
 World::World(int flags) :
-_world(new b2World(b2Vec2(0.0f, NG_CFG->getFloat("gravity")))),
+_world(new b2World(b2Vec2(0.0f, NG_CFG->getFloat("Gravity")))),
 _entityContactListener(new EntityContactListener()),
 _entityContactFilter(new EntityContactFilter()),
 _map(0),

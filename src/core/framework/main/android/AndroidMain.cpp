@@ -253,15 +253,7 @@ void AndroidMain::loadResources()
     int height = _glContext->GetScreenHeight();
     
     _engine->createDeviceDependentResources();
-    
-    if (_glContext->GetScreenWidth() < 2560)
-    {
-        _engine->createWindowSizeDependentResources(width, height, width > 1280 ? 1280 : width, height > 720 ? 720 : height, width, height);
-    }
-    else
-    {
-        _engine->createWindowSizeDependentResources(width, height, width > 1366 ? 1366 : width, height > 768 ? 768 : height, width, height);
-    }
+    _engine->createWindowSizeDependentResources(width, height);
 }
 
 void AndroidMain::unloadResources()

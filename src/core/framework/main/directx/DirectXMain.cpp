@@ -788,15 +788,8 @@ void DirectXMain::CreateWindowSizeDependentResources()
 	RECT outputSize = _deviceResources->GetOutputSize();
     LONG screenWidth = outputSize.right - outputSize.left;
     LONG screenHeight = outputSize.bottom - outputSize.top;
-    LONG width = screenWidth;
-	LONG height = screenHeight;
-	LONG touchWidth = width;
-	LONG touchHeight = height;
-    
-    width = width > CLAMP_WIDTH ? CLAMP_WIDTH : width;
-    height = height > CLAMP_HEIGHT ? CLAMP_HEIGHT : height;
 
-	_engine->createWindowSizeDependentResources(screenWidth, screenHeight, width, height, touchWidth, touchHeight);
+	_engine->createWindowSizeDependentResources(screenWidth, screenHeight);
 }
 
 void DirectXMain::beginPixEvent(PCWSTR pFormat, DX::DirectXDeviceResources* deviceResources)

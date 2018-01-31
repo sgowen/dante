@@ -15,6 +15,7 @@
 #include "framework/graphics/portable/ShaderProgramWrapper.h"
 #include "framework/graphics/portable/NGShaderUniformInput.h"
 
+#include <framework/util/Config.h>
 #include "framework/util/NGSTDUtil.h"
 
 #include <assert.h>
@@ -203,12 +204,17 @@ void OpenGLRendererHelper::createFramebufferObject()
     GLuint fbo_texture;
     GLuint fbo;
 
+    std::string framebufferFilterMin = NG_CFG->getString("FramebufferFilterMin");
+    std::string framebufferFilterMax = NG_CFG->getString("FramebufferFilterMax");
+    GLint minFilter = framebufferFilterMin == "NEAREST" ? GL_NEAREST : GL_LINEAR;
+    GLint maxFilter = framebufferFilterMax == "NEAREST" ? GL_NEAREST : GL_LINEAR;
+    
     // Texture
     glActiveTexture(GL_TEXTURE0);
     glGenTextures(1, &fbo_texture);
     glBindTexture(GL_TEXTURE_2D, fbo_texture);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, minFilter);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, maxFilter);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, _renderWidth, _renderHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);

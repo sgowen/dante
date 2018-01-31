@@ -172,7 +172,7 @@
     float touchWidth = [UIScreen mainScreen].bounds.size.width;
     float touchHeight = [UIScreen mainScreen].bounds.size.height;
     
-    _engine->createWindowSizeDependentResources(width, height, width > 1366 ? 1366 : width, height > 768 ? 768 : height, touchWidth, touchHeight);
+    _engine->createWindowSizeDependentResources(width, height, touchWidth, touchHeight);
 }
 
 - (void)tearDownGL

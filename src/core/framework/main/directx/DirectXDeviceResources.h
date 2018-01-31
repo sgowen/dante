@@ -6,9 +6,6 @@
 
 #include "pch.h"
 
-#define CLAMP_WIDTH 1366
-#define CLAMP_HEIGHT 768
-
 namespace DX
 {
     // Provides an interface for an application that owns DirectXDeviceResources to be notified of the device being lost or created.

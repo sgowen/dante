@@ -24,7 +24,7 @@ public:
     ~Engine();
     
     void createDeviceDependentResources();
-    void createWindowSizeDependentResources(int screenWidth, int screenHeight, int renderWidth, int renderHeight, int cursorWidth, int cursorHeight);
+    void createWindowSizeDependentResources(int screenWidth, int screenHeight, int cursorWidth = 0, int cursorHeight = 0);
     void releaseDeviceDependentResources();
     void onResume();
     void onPause();
@@ -50,8 +50,6 @@ private:
     int _requestedAction;
     int _screenWidth;
     int _screenHeight;
-    int _renderWidth;
-    int _renderHeight;
     int _cursorWidth;
     int _cursorHeight;
 };

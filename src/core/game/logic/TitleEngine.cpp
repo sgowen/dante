@@ -105,7 +105,7 @@ void TitleEngine::enter(Engine* engine)
     disconnect();
     
     createDeviceDependentResources();
-    createWindowSizeDependentResources(engine->getScreenWidth(), engine->getScreenHeight(), engine->getRenderWidth(), engine->getRenderHeight(), engine->getCursorWidth(), engine->getCursorHeight());
+    createWindowSizeDependentResources(engine->getScreenWidth(), engine->getScreenHeight(), engine->getCursorWidth(), engine->getCursorHeight());
     
     TitleInputManager::getInstance()->setEngine(this);
 }
@@ -153,9 +153,9 @@ void TitleEngine::createDeviceDependentResources()
     _renderer->createDeviceDependentResources();
 }
 
-void TitleEngine::createWindowSizeDependentResources(int screenWidth, int screenHeight, int renderWidth, int renderHeight, int cursorWidth, int cursorHeight)
+void TitleEngine::createWindowSizeDependentResources(int screenWidth, int screenHeight, int cursorWidth, int cursorHeight)
 {
-    _renderer->createWindowSizeDependentResources(screenWidth, screenHeight, renderWidth, renderHeight);
+    _renderer->createWindowSizeDependentResources(screenWidth, screenHeight, NG_CFG->getInt("FramebufferSize"), NG_CFG->getInt("FramebufferSize"));
     
     CURSOR_CONVERTER->setCamSize(CAM_WIDTH, CAM_HEIGHT);
     CURSOR_CONVERTER->setCursorSize(cursorWidth, cursorHeight);

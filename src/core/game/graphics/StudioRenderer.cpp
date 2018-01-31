@@ -105,7 +105,13 @@ _fbIndex(0),
 _scrollValue(1),
 _engine(NULL),
 _input(NULL),
-_engineState(0)
+_engineState(0),
+_parallaxLayer0FactorX(0),
+_parallaxLayer0FactorY(0),
+_parallaxLayer1FactorX(0),
+_parallaxLayer1FactorY(0),
+_parallaxLayer2FactorX(0),
+_parallaxLayer2FactorY(0)
 {
     for (int i = 0; i < NUM_SPRITE_BATCHERS; ++i)
     {
@@ -229,9 +235,9 @@ void StudioRenderer::update(float x, float y, float w, float h, int scale)
     _scrollValue = scale;
     
     _camBounds[3]->getLowerLeft().set(x, y);
-    _camBounds[2]->getLowerLeft().set(x / 2, y / 2);
-    _camBounds[1]->getLowerLeft().set(x / 4, y / 4);
-    _camBounds[0]->getLowerLeft().set(x / 8, y / 8);
+    _camBounds[2]->getLowerLeft().set(x * _parallaxLayer2FactorX, y * _parallaxLayer2FactorY);
+    _camBounds[1]->getLowerLeft().set(x * _parallaxLayer1FactorX, y * _parallaxLayer1FactorY);
+    _camBounds[0]->getLowerLeft().set(x * _parallaxLayer0FactorX, y * _parallaxLayer0FactorY);
     
     for (int i = 0; i < NUM_CAMERAS; ++i)
     {

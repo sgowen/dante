@@ -103,6 +103,12 @@ _font(new Font("texture_000.ngt", 0, 0, 16, 64, 75, 1024, 1024)),
 _fbIndex(0),
 _engine(NULL),
 _engineState(0),
+_parallaxLayer0FactorX(0),
+_parallaxLayer0FactorY(0),
+_parallaxLayer1FactorX(0),
+_parallaxLayer1FactorY(0),
+_parallaxLayer2FactorX(0),
+_parallaxLayer2FactorY(0),
 _backgroundLightZFactor(0)
 {
     for (int i = 0; i < NUM_SPRITE_BATCHERS; ++i)
@@ -148,7 +154,14 @@ void GameRenderer::createDeviceDependentResources()
     _rendererHelper->createDeviceDependentResources();
     _textureManager->createDeviceDependentResources();
     
-    _backgroundLightZFactor = NG_CFG->getFloat("backgroundLightZFactor");
+    _parallaxLayer0FactorX = NG_CFG->getFloat("ParallaxLayer0FactorX");
+    _parallaxLayer0FactorY = NG_CFG->getFloat("ParallaxLayer0FactorY");
+    _parallaxLayer1FactorX = NG_CFG->getFloat("ParallaxLayer1FactorX");
+    _parallaxLayer1FactorY = NG_CFG->getFloat("ParallaxLayer1FactorY");
+    _parallaxLayer2FactorX = NG_CFG->getFloat("ParallaxLayer2FactorX");
+    _parallaxLayer2FactorY = NG_CFG->getFloat("ParallaxLayer2FactorY");
+    
+    _backgroundLightZFactor = NG_CFG->getFloat("BackgroundLightZFactor");
     
     _textureNGShader->load(*_shaderProgramLoader);
     _colorNGShader->load(*_shaderProgramLoader);
@@ -237,9 +250,9 @@ void GameRenderer::updateCamera()
     }
     
     _camBounds[3]->getLowerLeft().set(x, y);
-    _camBounds[2]->getLowerLeft().set(x / 2, y / 2);
-    _camBounds[1]->getLowerLeft().set(x / 4, y / 4);
-    _camBounds[0]->getLowerLeft().set(x / 8, y / 8);
+    _camBounds[2]->getLowerLeft().set(x * _parallaxLayer2FactorX, y * _parallaxLayer2FactorY);
+    _camBounds[1]->getLowerLeft().set(x * _parallaxLayer1FactorX, y * _parallaxLayer1FactorY);
+    _camBounds[0]->getLowerLeft().set(x * _parallaxLayer0FactorX, y * _parallaxLayer0FactorY);
 }
 
 void GameRenderer::setFramebuffer(int framebufferIndex, float r, float g, float b, float a)

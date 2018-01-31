@@ -7,6 +7,8 @@
 
 #include "framework/main/directx/DirectXDeviceResources.h"
 
+#include <framework/util/Config.h>
+
 using namespace DirectX;
 using namespace DX;
 
@@ -234,14 +236,14 @@ void DirectXDeviceResources::CreateWindowSizeDependentResources()
 	UINT backBufferWidth = std::max<UINT>(m_outputSize.right - m_outputSize.left, 1);
 	UINT backBufferHeight = std::max<UINT>(m_outputSize.bottom - m_outputSize.top, 1);
 
-	if (backBufferWidth > CLAMP_WIDTH)
+	if (backBufferWidth > NG_CFG->getInt("FramebufferSize"))
 	{
-		backBufferWidth = CLAMP_WIDTH;
+		backBufferWidth = NG_CFG->getInt("FramebufferSize");
 	}
 
-	if (backBufferHeight > CLAMP_HEIGHT)
+	if (backBufferHeight > NG_CFG->getInt("FramebufferSize"))
 	{
-		backBufferHeight = CLAMP_HEIGHT;
+		backBufferHeight = NG_CFG->getInt("FramebufferSize");
 	}
 
 	if (m_swapChain)

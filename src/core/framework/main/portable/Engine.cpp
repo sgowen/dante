@@ -25,8 +25,6 @@ _frameStateTime(0),
 _requestedAction(REQUESTED_ACTION_UPDATE),
 _screenWidth(0),
 _screenHeight(0),
-_renderWidth(0),
-_renderHeight(0),
 _cursorWidth(0),
 _cursorHeight(0)
 {
@@ -43,16 +41,14 @@ void Engine::createDeviceDependentResources()
     _stateMachine.getCurrentState()->createDeviceDependentResources();
 }
 
-void Engine::createWindowSizeDependentResources(int screenWidth, int screenHeight, int renderWidth, int renderHeight, int cursorWidth, int cursorHeight)
+void Engine::createWindowSizeDependentResources(int screenWidth, int screenHeight, int cursorWidth, int cursorHeight)
 {
     _screenWidth = screenWidth;
     _screenHeight = screenHeight;
-    _renderWidth = renderWidth;
-    _renderHeight = renderHeight;
-    _cursorWidth = cursorWidth;
-    _cursorHeight = cursorHeight;
+    _cursorWidth = cursorWidth > 0 ? cursorWidth : screenWidth;
+    _cursorHeight = cursorHeight > 0 ? cursorHeight : screenHeight;
     
-    _stateMachine.getCurrentState()->createWindowSizeDependentResources(screenWidth, screenHeight, renderWidth, renderHeight, cursorWidth, cursorHeight);
+    _stateMachine.getCurrentState()->createWindowSizeDependentResources(screenWidth, screenHeight, cursorWidth, cursorHeight);
 }
 
 void Engine::releaseDeviceDependentResources()
@@ -122,16 +118,6 @@ int Engine::getScreenWidth()
 int Engine::getScreenHeight()
 {
     return _screenHeight;
-}
-
-int Engine::getRenderWidth()
-{
-    return _renderWidth;
-}
-
-int Engine::getRenderHeight()
-{
-    return _renderHeight;
 }
 
 int Engine::getCursorWidth()

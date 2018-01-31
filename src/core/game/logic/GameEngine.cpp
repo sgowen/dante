@@ -98,7 +98,7 @@ GameEngine::~GameEngine()
 void GameEngine::enter(Engine* engine)
 {
     createDeviceDependentResources();
-    createWindowSizeDependentResources(engine->getScreenWidth(), engine->getScreenHeight(), engine->getRenderWidth(), engine->getRenderHeight(), engine->getCursorWidth(), engine->getCursorHeight());
+    createWindowSizeDependentResources(engine->getScreenWidth(), engine->getScreenHeight(), engine->getCursorWidth(), engine->getCursorHeight());
     
     _map = 0;
     _stateTime = 0;
@@ -181,7 +181,7 @@ void GameEngine::createDeviceDependentResources()
     EntityLayoutMapper::getInstance()->initWithJsonFile("maps.cfg");
     ASSETS->initWithJsonFile("game_assets.cfg");
     
-    _lightZ = NG_CFG->getFloat("defaultLightZ");
+    _lightZ = NG_CFG->getFloat("DefaultLightZ");
     
     _renderer->createDeviceDependentResources();
     
@@ -193,9 +193,9 @@ void GameEngine::createDeviceDependentResources()
     NG_AUDIO_ENGINE->setSoundsDisabled(true);
 }
 
-void GameEngine::createWindowSizeDependentResources(int screenWidth, int screenHeight, int renderWidth, int renderHeight, int cursorWidth, int cursorHeight)
+void GameEngine::createWindowSizeDependentResources(int screenWidth, int screenHeight, int cursorWidth, int cursorHeight)
 {
-    _renderer->createWindowSizeDependentResources(screenWidth, screenHeight, renderWidth, renderHeight);
+    _renderer->createWindowSizeDependentResources(screenWidth, screenHeight, NG_CFG->getInt("FramebufferSize"), NG_CFG->getInt("FramebufferSize"));
     
     CURSOR_CONVERTER->setCamSize(CAM_WIDTH, CAM_HEIGHT);
     CURSOR_CONVERTER->setCursorSize(cursorWidth, cursorHeight);

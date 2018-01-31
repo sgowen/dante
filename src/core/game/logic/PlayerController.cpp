@@ -46,8 +46,8 @@ _playerInfo(),
 _playerInfoCache(_playerInfo),
 _stats(),
 _statsCache(_stats),
-_maxXVelocity(NG_CFG->getFloat("maxRobotXVelocity")),
-_maxYVelocity(NG_CFG->getFloat("maxRobotYVelocity")),
+_maxXVelocity(NG_CFG->getFloat("MaxRobotVelocityX")),
+_maxYVelocity(NG_CFG->getFloat("MaxRobotVelocityY")),
 _isLocalPlayer(false)
 {
     // Empty

@@ -16,8 +16,6 @@
 
 //// Network ////
 
-#define NW_TYPE_Entity 'ENTT'
-
 #define NW_PACKET_TYPE_HELLO 0x01u
 #define NW_PACKET_TYPE_WELCOME 0x02u
 #define NW_PACKET_TYPE_STATE 0x03u

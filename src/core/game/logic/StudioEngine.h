@@ -64,7 +64,7 @@ public:
     virtual void update(Engine* engine);
     virtual void exit(Engine* engine);
     virtual void createDeviceDependentResources();
-    virtual void createWindowSizeDependentResources(int screenWidth, int screenHeight, int renderWidth, int renderHeight, int cursorWidth, int cursorHeight);
+    virtual void createWindowSizeDependentResources(int screenWidth, int screenHeight, int cursorWidth, int cursorHeight);
     virtual void releaseDeviceDependentResources();
     virtual void onResume();
     virtual void onPause();

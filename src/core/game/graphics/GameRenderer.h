@@ -69,6 +69,12 @@ private:
     GameEngine* _engine;
     int _fbIndex;
     uint32_t _engineState;
+    float _parallaxLayer0FactorX;
+    float _parallaxLayer0FactorY;
+    float _parallaxLayer1FactorX;
+    float _parallaxLayer1FactorY;
+    float _parallaxLayer2FactorX;
+    float _parallaxLayer2FactorY;
     float _backgroundLightZFactor;
     
     void setFramebuffer(int framebufferIndex, float r = 0, float g = 0, float b = 0, float a = 0);
