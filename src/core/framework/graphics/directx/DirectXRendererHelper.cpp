@@ -364,16 +364,8 @@ void DirectXRendererHelper::createSamplerStates()
 {
     std::string textureFilterMin = NG_CFG->getString("TextureFilterMin");
     std::string textureFilterMax = NG_CFG->getString("TextureFilterMax");
-    int minFilter;
-    if (mipmap)
-    {
-        minFilter = textureFilterMin == "NEAREST" ? 4 : 5;
-    }
-    else
-    {
-        minFilter = textureFilterMin == "NEAREST" ? 0 : 1;
-    }
-    int maxFilter = textureFilterMax == "NEAREST" ? 0 : 1;
+    int minFilter = textureFilterMin == "NEAREST" ? 0 : 1;
+    int magFilter = textureFilterMax == "NEAREST" ? 0 : 1;
     
     D3D11_FILTER_TYPE dxMin = D3D11_FILTER_TYPE_POINT;
     D3D11_FILTER_TYPE dxMip = D3D11_FILTER_TYPE_POINT;
