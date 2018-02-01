@@ -206,7 +206,8 @@ void DirectXRendererHelper::bindTexture(NGTextureSlot textureSlot, NGTexture* te
     if (texture)
     {
         s_deviceResources->GetD3DDeviceContext()->PSSetShaderResources(textureSlot, 1, &texture->textureWrapper->texture);
-        s_deviceResources->GetD3DDeviceContext()->PSSetSamplers(textureSlot, 1, texture->_isFramebuffer ? _framebufferSamplerState : texture->_repeatS ? _textureWrapSamplerState.GetAddressOf() : _textureSamplerState.GetAddressOf());
+		ID3D11SamplerState *const *ppSamplers = texture->_isFramebuffer ? _framebufferSamplerState.GetAddressOf() : texture->_repeatS ? _textureWrapSamplerState.GetAddressOf() : _textureSamplerState.GetAddressOf();
+        s_deviceResources->GetD3DDeviceContext()->PSSetSamplers(textureSlot, 1, ppSamplers);
     }
     else
     {
