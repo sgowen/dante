@@ -377,7 +377,7 @@ void DirectXRendererHelper::createSamplerStates()
     sd.BorderColor[2] = 0.0f;
     sd.BorderColor[3] = 0.0f;
     sd.MinLOD = 0.0f;
-    sd.MaxLOD = 0.0f;
+    sd.MaxLOD = FLT_MAX;
     sd.MipLODBias = 0.0f;
     
     {
@@ -437,7 +437,7 @@ D3D11_FILTER DirectXRendererHelper::filterForMinAndMag(std::string& cfgFilterMin
         default: assert(false);
     }
     
-    return D3D11_ENCODE_BASIC_FILTER(dxMin, dxMag, dxMip, static_cast<D3D11_COMPARISON_FUNC>(false));
+    return D3D11_ENCODE_BASIC_FILTER(dxMin, dxMag, dxMip, static_cast<D3D11_COMPARISON_FUNC>(0));
 }
 
 void DirectXRendererHelper::createIndexBuffer()
