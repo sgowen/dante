@@ -341,10 +341,7 @@ void StudioRenderer::renderLayers()
     {
         if (textures[i].length() > 0)
         {
-            if ((i == 0 && _engineState & StudioEngineState_Layer0) ||
-                (i == 1 && _engineState & StudioEngineState_Layer1) ||
-                (i == 2 && _engineState & StudioEngineState_Layer2) ||
-                (i == 3 && _engineState & StudioEngineState_Layer3))
+            if (_engineState & (1 << (i + StudioEngineState_LayerBitBegin)))
             {
                 if (_engineState & StudioEngineState_DisplayParallax)
                 {
@@ -418,16 +415,7 @@ void StudioRenderer::renderEntities()
     {
         if (textures[i].length() > 0)
         {
-            if ((i == 0 && _engineState & StudioEngineState_Layer0) ||
-                (i == 1 && _engineState & StudioEngineState_Layer1) ||
-                (i == 2 && _engineState & StudioEngineState_Layer2) ||
-                (i == 3 && _engineState & StudioEngineState_Layer3) ||
-                (i == 4 && _engineState & StudioEngineState_Layer4) ||
-                (i == 5 && _engineState & StudioEngineState_Layer5) ||
-                (i == 6 && _engineState & StudioEngineState_Layer6) ||
-                (i == 7 && _engineState & StudioEngineState_Layer7) ||
-                (i == 8 && _engineState & StudioEngineState_Layer8) ||
-                (i == 8 && _engineState & StudioEngineState_Layer9))
+            if (_engineState & (1 << (i + StudioEngineState_LayerBitBegin)))
             {
                 _spriteBatchers[i]->endBatch(_textureNGShader, _textureManager->getTextureWithName(textures[i]));
             }
@@ -587,6 +575,7 @@ void StudioRenderer::renderUI()
         
         renderText(StringUtil::format("[B]   Box2D Debug %s", _engineState & StudioEngineState_DisplayBox2D ? " ON" : "OFF").c_str(), CAM_WIDTH - 2, CAM_HEIGHT - (row++ * padding), FONT_ALIGN_RIGHT);
         renderText(StringUtil::format("[G]          Grid %s", _engineState & StudioEngineState_DisplayGrid ? " ON" : "OFF").c_str(), CAM_WIDTH - 2, CAM_HEIGHT - (row++ * padding), FONT_ALIGN_RIGHT);
+        renderText(StringUtil::format("[D]   Debug Types %s", _engineState & StudioEngineState_DisplayTypes ? " ON" : "OFF").c_str(), CAM_WIDTH - 2, CAM_HEIGHT - (row++ * padding), FONT_ALIGN_RIGHT);
         renderText(StringUtil::format("[P]      Parallax %s", _engineState & StudioEngineState_DisplayParallax ? " ON" : "OFF").c_str(), CAM_WIDTH - 2, CAM_HEIGHT - (row++ * padding), FONT_ALIGN_RIGHT);
         ++row;
         renderText(StringUtil::format("[R]      Reset Camera").c_str(), CAM_WIDTH - 2, CAM_HEIGHT - (row++ * padding), FONT_ALIGN_RIGHT);

@@ -296,6 +296,9 @@ void StudioInputManager::handleDefaultInput()
             case NG_KEY_NINE:
                 _engine->_state ^= e.isDown() ? StudioEngineState_Layer9 : 0;
                 continue;
+            case NG_KEY_D:
+                _engine->_state ^= e.isDown() ? StudioEngineState_DisplayTypes : 0;
+                continue;
             case NG_KEY_ARROW_LEFT:
                 _isPanningLeft = e.isPressed();
                 continue;
