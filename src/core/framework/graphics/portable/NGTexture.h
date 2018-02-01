@@ -23,6 +23,7 @@ public:
     TextureWrapper* textureWrapper;
     TextureManager* _textureManager;
     bool _repeatS;
+    bool _isFramebuffer;
     bool _isEncrypted;
     bool _isLoadingData;
     

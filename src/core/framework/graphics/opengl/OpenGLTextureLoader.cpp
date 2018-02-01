@@ -278,21 +278,21 @@ GLuint createTexture(const GLsizei width, const GLsizei height, const GLenum typ
 
     glBindTexture(GL_TEXTURE_2D, texture_object_id);
     
-    std::string textureFilterMin = NG_CFG->getString("TextureFilterMin");
-    std::string textureFilterMax = NG_CFG->getString("TextureFilterMax");
-    GLint minFilter;
+    std::string cfgFilterMin = NG_CFG->getString("TextureFilterMin");
+    std::string cfgFilterMag = NG_CFG->getString("TextureFilterMag");
+    GLint filterMin;
     if (mipmap)
     {
-        minFilter = textureFilterMin == "NEAREST" ? GL_NEAREST_MIPMAP_LINEAR : GL_LINEAR_MIPMAP_LINEAR;
+        filterMin = cfgFilterMin == "NEAREST" ? GL_NEAREST_MIPMAP_LINEAR : GL_LINEAR_MIPMAP_LINEAR;
     }
     else
     {
-        minFilter = textureFilterMin == "NEAREST" ? GL_NEAREST : GL_LINEAR;
+        filterMin = cfgFilterMin == "NEAREST" ? GL_NEAREST : GL_LINEAR;
     }
-    GLint maxFilter = textureFilterMax == "NEAREST" ? GL_NEAREST : GL_LINEAR;
+    GLint filterMag = cfgFilterMag == "NEAREST" ? GL_NEAREST : GL_LINEAR;
 
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, minFilter);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, maxFilter);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, filterMin);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, filterMag);
 
     // Wrap texture at left/right edges
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, repeat_s ? GL_REPEAT : GL_CLAMP_TO_EDGE);

@@ -26,25 +26,21 @@
 
 using namespace DirectX;
 
-ID3D11Device* DirectXRendererHelper::s_d3dDevice = NULL;
-ID3D11DeviceContext* DirectXRendererHelper::s_d3dContext = NULL;
-ID3D11RenderTargetView* DirectXRendererHelper::s_d3dRenderTargetView = NULL;
+DX::DirectXDeviceResources* DirectXRendererHelper::s_deviceResources = NULL;
 
-void DirectXRendererHelper::init(ID3D11Device* d3dDevice, ID3D11DeviceContext* d3dContext, ID3D11RenderTargetView* d3dRenderTargetView)
+void DirectXRendererHelper::init(DX::DirectXDeviceResources* deviceResources)
 {
-    s_d3dDevice = d3dDevice;
-    s_d3dContext = d3dContext;
-    s_d3dRenderTargetView = d3dRenderTargetView;
+    s_deviceResources = deviceResources;
 }
 
 ID3D11Device* DirectXRendererHelper::getD3dDevice()
 {
-    return s_d3dDevice;
+    return s_deviceResources->GetD3DDevice();
 }
 
 ID3D11DeviceContext* DirectXRendererHelper::getD3dContext()
 {
-    return s_d3dContext;
+    return s_deviceResources->GetD3DDeviceContext();
 }
 
 DirectXRendererHelper::DirectXRendererHelper() : RendererHelper(), _fbIndex(0)
@@ -78,8 +74,8 @@ void DirectXRendererHelper::releaseDeviceDependentResources()
     _blendState.Reset();
     _screenBlendState.Reset();
     
-    _sbSamplerState.Reset();
-    _sbWrapSamplerState.Reset();
+    _textureSamplerState.Reset();
+    _textureWrapSamplerState.Reset();
     
     _textureVertexBuffer.Reset();
     _colorVertexBuffer.Reset();
@@ -97,7 +93,11 @@ NGTexture* DirectXRendererHelper::getFramebuffer(int index)
 
 void DirectXRendererHelper::bindToOffscreenFramebuffer(int index)
 {
-    s_d3dContext->OMSetRenderTargets(1, &_offscreenRenderTargetViews[index], NULL);
+    s_deviceResources->GetD3DDeviceContext()->OMSetRenderTargets(1, &_offscreenRenderTargetViews[index], NULL);
+    
+    // Set the viewport.
+    auto viewport = s_deviceResources->GetOffScreenViewport();
+    s_deviceResources->GetD3DDeviceContext()->RSSetViewports(1, &viewport);
     
 	_fbIndex = index;
 }
@@ -109,90 +109,94 @@ void DirectXRendererHelper::clearFramebufferWithColor(float r, float g, float b,
     ID3D11RenderTargetView * targets[1] = {};
     if (_fbIndex < 0)
     {
-		targets[0] = s_d3dRenderTargetView;
+		targets[0] = s_deviceResources->GetRenderTargetView();
     }
     else
     {
         targets[0] = _offscreenRenderTargetViews[_fbIndex];
     }
     
-	s_d3dContext->ClearRenderTargetView(targets[0], color);
+	s_deviceResources->GetD3DDeviceContext()->ClearRenderTargetView(targets[0], color);
 }
 
 void DirectXRendererHelper::bindToScreenFramebuffer()
 {
-    ID3D11RenderTargetView *const targets[1] = { s_d3dRenderTargetView };
-	s_d3dContext->OMSetRenderTargets(1, targets, NULL);
+    ID3D11RenderTargetView *const targets[1] = { s_deviceResources->GetRenderTargetView() };
+	s_deviceResources->GetD3DDeviceContext()->OMSetRenderTargets(1, targets, NULL);
+    
+    // Set the viewport.
+    auto viewport = s_deviceResources->GetScreenViewport();
+    s_deviceResources->GetD3DDeviceContext()->RSSetViewports(1, &viewport);
     
     _fbIndex = -1;
 }
 
 void DirectXRendererHelper::useNormalBlending()
 {
-    s_d3dContext->OMSetBlendState(_blendState.Get(), 0, 0xffffffff);
+    s_deviceResources->GetD3DDeviceContext()->OMSetBlendState(_blendState.Get(), 0, 0xffffffff);
 }
 
 void DirectXRendererHelper::useScreenBlending()
 {
-    s_d3dContext->OMSetBlendState(_screenBlendState.Get(), 0, 0xffffffff);
+    s_deviceResources->GetD3DDeviceContext()->OMSetBlendState(_screenBlendState.Get(), 0, 0xffffffff);
 }
 
 void DirectXRendererHelper::useNoBlending()
 {
-    s_d3dContext->OMSetBlendState(NULL, 0, 0xffffffff);
+    s_deviceResources->GetD3DDeviceContext()->OMSetBlendState(NULL, 0, 0xffffffff);
 }
 
 void DirectXRendererHelper::bindInt4(NGShaderUniformInput* uniform, int4& inValue)
 {
     if (uniform->_isFragment)
     {
-        s_d3dContext->PSSetConstantBuffers(uniform->_index, 1, uniform->_constantbuffer.GetAddressOf());
+        s_deviceResources->GetD3DDeviceContext()->PSSetConstantBuffers(uniform->_index, 1, uniform->_constantbuffer.GetAddressOf());
     }
     else
     {
-        s_d3dContext->VSSetConstantBuffers(uniform->_index, 1, uniform->_constantbuffer.GetAddressOf());
+        s_deviceResources->GetD3DDeviceContext()->VSSetConstantBuffers(uniform->_index, 1, uniform->_constantbuffer.GetAddressOf());
     }
     
     // send the final matrix to video memory
-    s_d3dContext->UpdateSubresource(uniform->_constantbuffer.Get(), 0, 0, &inValue, 0, 0);
+    s_deviceResources->GetD3DDeviceContext()->UpdateSubresource(uniform->_constantbuffer.Get(), 0, 0, &inValue, 0, 0);
 }
 
 void DirectXRendererHelper::bindFloat4(NGShaderUniformInput* uniform, float4& inValue)
 {
     if (uniform->_isFragment)
     {
-        s_d3dContext->PSSetConstantBuffers(uniform->_index, 1, uniform->_constantbuffer.GetAddressOf());
+        s_deviceResources->GetD3DDeviceContext()->PSSetConstantBuffers(uniform->_index, 1, uniform->_constantbuffer.GetAddressOf());
     }
     else
     {
-        s_d3dContext->VSSetConstantBuffers(uniform->_index, 1, uniform->_constantbuffer.GetAddressOf());
+        s_deviceResources->GetD3DDeviceContext()->VSSetConstantBuffers(uniform->_index, 1, uniform->_constantbuffer.GetAddressOf());
     }
     
     // send the final matrix to video memory
-    s_d3dContext->UpdateSubresource(uniform->_constantbuffer.Get(), 0, 0, &inValue, 0, 0);
+    s_deviceResources->GetD3DDeviceContext()->UpdateSubresource(uniform->_constantbuffer.Get(), 0, 0, &inValue, 0, 0);
 }
 
 void DirectXRendererHelper::bindMatrix(NGShaderUniformInput* uniform, mat4x4& inValue)
 {
     if (uniform->_isFragment)
     {
-        s_d3dContext->PSSetConstantBuffers(uniform->_index, 1, uniform->_constantbuffer.GetAddressOf());
+        s_deviceResources->GetD3DDeviceContext()->PSSetConstantBuffers(uniform->_index, 1, uniform->_constantbuffer.GetAddressOf());
     }
     else
     {
-        s_d3dContext->VSSetConstantBuffers(uniform->_index, 1, uniform->_constantbuffer.GetAddressOf());
+        s_deviceResources->GetD3DDeviceContext()->VSSetConstantBuffers(uniform->_index, 1, uniform->_constantbuffer.GetAddressOf());
     }
     
     // send the final matrix to video memory
-    s_d3dContext->UpdateSubresource(uniform->_constantbuffer.Get(), 0, 0, &inValue, 0, 0);
+    s_deviceResources->GetD3DDeviceContext()->UpdateSubresource(uniform->_constantbuffer.Get(), 0, 0, &inValue, 0, 0);
 }
 
 void DirectXRendererHelper::bindMatrix(NGShaderUniformInput* uniform)
 {
-    s_d3dContext->VSSetConstantBuffers(uniform->_index, 1, uniform->_constantbuffer.GetAddressOf());
+    s_deviceResources->GetD3DDeviceContext()->VSSetConstantBuffers(uniform->_index, 1, uniform->_constantbuffer.GetAddressOf());
     
     // send the final matrix to video memory
-    s_d3dContext->UpdateSubresource(uniform->_constantbuffer.Get(), 0, 0, &_matrix, 0, 0);
+    s_deviceResources->GetD3DDeviceContext()->UpdateSubresource(uniform->_constantbuffer.Get(), 0, 0, &_matrix, 0, 0);
 }
 
 void DirectXRendererHelper::bindTexture(NGTextureSlot textureSlot, NGTexture* texture, NGShaderUniformInput* uniform)
@@ -201,13 +205,13 @@ void DirectXRendererHelper::bindTexture(NGTextureSlot textureSlot, NGTexture* te
     
     if (texture)
     {
-        s_d3dContext->PSSetShaderResources(textureSlot, 1, &texture->textureWrapper->texture);
-        s_d3dContext->PSSetSamplers(textureSlot, 1, texture->_repeatS ? _sbWrapSamplerState.GetAddressOf() : _sbSamplerState.GetAddressOf());
+        s_deviceResources->GetD3DDeviceContext()->PSSetShaderResources(textureSlot, 1, &texture->textureWrapper->texture);
+        s_deviceResources->GetD3DDeviceContext()->PSSetSamplers(textureSlot, 1, texture->_isFramebuffer ? _framebufferSamplerState : texture->_repeatS ? _textureWrapSamplerState.GetAddressOf() : _textureSamplerState.GetAddressOf());
     }
     else
     {
         ID3D11ShaderResourceView *pSRV[1] = { NULL };
-        s_d3dContext->PSSetShaderResources(textureSlot, 1, pSRV);
+        s_deviceResources->GetD3DDeviceContext()->PSSetShaderResources(textureSlot, 1, pSRV);
     }
 }
 
@@ -216,9 +220,9 @@ void DirectXRendererHelper::bindNGShader(ShaderProgramWrapper* shaderProgramWrap
     if (shaderProgramWrapper)
     {
         // set the shader objects as the active shaders
-        s_d3dContext->VSSetShader(shaderProgramWrapper->_vertexShader.Get(), NULL, 0);
-        s_d3dContext->IASetInputLayout(shaderProgramWrapper->_inputLayout.Get());
-        s_d3dContext->PSSetShader(shaderProgramWrapper->_pixelShader.Get(), NULL, 0);
+        s_deviceResources->GetD3DDeviceContext()->VSSetShader(shaderProgramWrapper->_vertexShader.Get(), NULL, 0);
+        s_deviceResources->GetD3DDeviceContext()->IASetInputLayout(shaderProgramWrapper->_inputLayout.Get());
+        s_deviceResources->GetD3DDeviceContext()->PSSetShader(shaderProgramWrapper->_pixelShader.Get(), NULL, 0);
     }
 }
 
@@ -248,16 +252,16 @@ void DirectXRendererHelper::mapColorVertices(std::vector<NGShaderVarInput*>& inp
 
 void DirectXRendererHelper::draw(NGPrimitiveType renderPrimitiveType, uint32_t first, uint32_t count)
 {
-    s_d3dContext->IASetPrimitiveTopology(static_cast<D3D11_PRIMITIVE_TOPOLOGY>(renderPrimitiveType));
-    s_d3dContext->Draw(count, first);
+    s_deviceResources->GetD3DDeviceContext()->IASetPrimitiveTopology(static_cast<D3D11_PRIMITIVE_TOPOLOGY>(renderPrimitiveType));
+    s_deviceResources->GetD3DDeviceContext()->Draw(count, first);
 }
 
 void DirectXRendererHelper::drawIndexed(NGPrimitiveType renderPrimitiveType, uint32_t first, uint32_t count)
 {
-    s_d3dContext->IASetIndexBuffer(_indexbuffer.Get(), DXGI_FORMAT_R16_UINT, 0);
+    s_deviceResources->GetD3DDeviceContext()->IASetIndexBuffer(_indexbuffer.Get(), DXGI_FORMAT_R16_UINT, 0);
     
-    s_d3dContext->IASetPrimitiveTopology(static_cast<D3D11_PRIMITIVE_TOPOLOGY>(renderPrimitiveType));
-    s_d3dContext->DrawIndexed(count, first, 0);
+    s_deviceResources->GetD3DDeviceContext()->IASetPrimitiveTopology(static_cast<D3D11_PRIMITIVE_TOPOLOGY>(renderPrimitiveType));
+    s_deviceResources->GetD3DDeviceContext()->DrawIndexed(count, first, 0);
 }
 
 void DirectXRendererHelper::createFramebufferObject()
@@ -286,7 +290,7 @@ void DirectXRendererHelper::createFramebufferObject()
     textureDesc.MiscFlags = 0;
     
     // Create the render target texture.
-    DX::ThrowIfFailed(s_d3dDevice->CreateTexture2D(&textureDesc, NULL, &_offscreenRenderTarget));
+    DX::ThrowIfFailed(s_deviceResources->GetD3DDevice()->CreateTexture2D(&textureDesc, NULL, &_offscreenRenderTarget));
     
     // Setup the description of the render target view.
     renderTargetViewDesc.Format = textureDesc.Format;
@@ -294,7 +298,7 @@ void DirectXRendererHelper::createFramebufferObject()
     renderTargetViewDesc.Texture2D.MipSlice = 0;
     
     // Create the render target view.
-    DX::ThrowIfFailed(s_d3dDevice->CreateRenderTargetView(_offscreenRenderTarget, &renderTargetViewDesc, &_offscreenRenderTargetView));
+    DX::ThrowIfFailed(s_deviceResources->GetD3DDevice()->CreateRenderTargetView(_offscreenRenderTarget, &renderTargetViewDesc, &_offscreenRenderTargetView));
     
     // Setup the description of the shader resource view.
     shaderResourceViewDesc.Format = textureDesc.Format;
@@ -303,7 +307,7 @@ void DirectXRendererHelper::createFramebufferObject()
     shaderResourceViewDesc.Texture2D.MipLevels = 1;
     
     // Create the shader resource view.
-    DX::ThrowIfFailed(s_d3dDevice->CreateShaderResourceView(_offscreenRenderTarget, &shaderResourceViewDesc, &_offscreenShaderResourceView));
+    DX::ThrowIfFailed(s_deviceResources->GetD3DDevice()->CreateShaderResourceView(_offscreenRenderTarget, &shaderResourceViewDesc, &_offscreenShaderResourceView));
     
     _offscreenRenderTargets.push_back(_offscreenRenderTarget);
     _offscreenRenderTargetViews.push_back(_offscreenRenderTargetView);
@@ -350,47 +354,21 @@ void DirectXRendererHelper::createBlendStates()
     bd.IndependentBlendEnable = FALSE;
     bd.AlphaToCoverageEnable = FALSE;
     
-    s_d3dDevice->CreateBlendState(&bd, &_blendState);
+    s_deviceResources->GetD3DDevice()->CreateBlendState(&bd, &_blendState);
     
     bd.RenderTarget[0].SrcBlend = D3D11_BLEND_ONE;
     bd.RenderTarget[0].DestBlend = D3D11_BLEND_INV_SRC_ALPHA;
 	bd.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ONE;
 	bd.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_INV_SRC_ALPHA;
     
-    s_d3dDevice->CreateBlendState(&bd, &_screenBlendState);
+    s_deviceResources->GetD3DDevice()->CreateBlendState(&bd, &_screenBlendState);
 }
 
 void DirectXRendererHelper::createSamplerStates()
 {
-    std::string textureFilterMin = NG_CFG->getString("TextureFilterMin");
-    std::string textureFilterMax = NG_CFG->getString("TextureFilterMax");
-    int minFilter = textureFilterMin == "NEAREST" ? 0 : 1;
-    int magFilter = textureFilterMax == "NEAREST" ? 0 : 1;
-    
-    D3D11_FILTER_TYPE dxMin = D3D11_FILTER_TYPE_POINT;
-    D3D11_FILTER_TYPE dxMip = D3D11_FILTER_TYPE_POINT;
-    switch (minFilter)
-    {
-        case 0: dxMin = D3D11_FILTER_TYPE_POINT;  dxMip = D3D11_FILTER_TYPE_POINT;  break;
-        case 1: dxMin = D3D11_FILTER_TYPE_LINEAR; dxMip = D3D11_FILTER_TYPE_POINT;  break;
-        case 2: dxMin = D3D11_FILTER_TYPE_POINT;  dxMip = D3D11_FILTER_TYPE_POINT;  break;
-        case 3: dxMin = D3D11_FILTER_TYPE_LINEAR; dxMip = D3D11_FILTER_TYPE_POINT;  break;
-        case 4: dxMin = D3D11_FILTER_TYPE_POINT;  dxMip = D3D11_FILTER_TYPE_LINEAR; break;
-        case 5: dxMin = D3D11_FILTER_TYPE_LINEAR; dxMip = D3D11_FILTER_TYPE_LINEAR; break;
-        default: assert(false);
-    }
-    D3D11_FILTER_TYPE dxMag = D3D11_FILTER_TYPE_POINT;
-    switch (magFilter)
-    {
-        case 0: dxMag = D3D11_FILTER_TYPE_POINT;  break;
-        case 1: dxMag = D3D11_FILTER_TYPE_LINEAR; break;
-        default: assert(false);
-    }
-    
     D3D11_SAMPLER_DESC sd;
     sd.Filter = D3D11_FILTER_ANISOTROPIC;
     sd.MaxAnisotropy = 16;
-    sd.AddressU = D3D11_TEXTURE_ADDRESS_CLAMP;
     sd.AddressV = D3D11_TEXTURE_ADDRESS_CLAMP;
     sd.AddressW = D3D11_TEXTURE_ADDRESS_CLAMP;
     sd.BorderColor[0] = 0.0f;
@@ -400,13 +378,65 @@ void DirectXRendererHelper::createSamplerStates()
     sd.MinLOD = 0.0f;
     sd.MaxLOD = 0.0f;
     sd.MipLODBias = 0.0f;
-    sd.Filter = D3D11_ENCODE_BASIC_FILTER(dxMin, dxMag, dxMip, static_cast<D3D11_COMPARISON_FUNC>(false));
     
-    s_d3dDevice->CreateSamplerState(&sd, _sbSamplerState.GetAddressOf());
+    {
+        std::string cfgFilterMin = NG_CFG->getString("TextureFilterMin");
+        std::string cfgFilterMag = NG_CFG->getString("TextureFilterMag");
+        
+        sd.Filter = filterForMinAndMag(cfgFilterMin, cfgFilterMag);
+        
+        sd.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
+        s_deviceResources->GetD3DDevice()->CreateSamplerState(&sd, _textureWrapSamplerState.GetAddressOf());
+        
+        sd.AddressU = D3D11_TEXTURE_ADDRESS_CLAMP;
+        s_deviceResources->GetD3DDevice()->CreateSamplerState(&sd, _textureSamplerState.GetAddressOf());
+    }
     
-    sd.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
+    {
+        std::string cfgFilterMin = NG_CFG->getString("FramebufferFilterMin");
+        std::string cfgFilterMag = NG_CFG->getString("FramebufferFilterMag");
+        
+        sd.Filter = filterForMinAndMag(cfgFilterMin, cfgFilterMag);
+        
+        sd.AddressU = D3D11_TEXTURE_ADDRESS_CLAMP;
+        s_deviceResources->GetD3DDevice()->CreateSamplerState(&sd, _framebufferSamplerState.GetAddressOf());
+    }
+}
+
+D3D11_FILTER DirectXRendererHelper::filterForMinAndMag(std::string& cfgFilterMin, std::string& cfgFilterMag)
+{
+    static const int GL_NEAREST = 0;
+    static const int GL_LINEAR = 1;
+    static const int GL_NEAREST_MIPMAP_NEAREST = 2;
+    static const int GL_LINEAR_MIPMAP_NEAREST = 3;
+    static const int GL_NEAREST_MIPMAP_LINEAR = 4;
+    static const int GL_LINEAR_MIPMAP_LINEAR = 5;
     
-    s_d3dDevice->CreateSamplerState(&sd, _sbWrapSamplerState.GetAddressOf());
+    int filterMin = cfgFilterMin == "NEAREST" ? GL_NEAREST : GL_LINEAR;
+    int filterMag = cfgFilterMag == "NEAREST" ? GL_NEAREST : GL_LINEAR;
+    
+    D3D11_FILTER_TYPE dxMin = D3D11_FILTER_TYPE_POINT;
+    D3D11_FILTER_TYPE dxMip = D3D11_FILTER_TYPE_POINT;
+    switch (filterMin)
+    {
+        case GL_NEAREST:                dxMin = D3D11_FILTER_TYPE_POINT;  dxMip = D3D11_FILTER_TYPE_POINT;  break;
+        case GL_LINEAR:                 dxMin = D3D11_FILTER_TYPE_LINEAR; dxMip = D3D11_FILTER_TYPE_POINT;  break;
+        case GL_NEAREST_MIPMAP_NEAREST: dxMin = D3D11_FILTER_TYPE_POINT;  dxMip = D3D11_FILTER_TYPE_POINT;  break;
+        case GL_LINEAR_MIPMAP_NEAREST:  dxMin = D3D11_FILTER_TYPE_LINEAR; dxMip = D3D11_FILTER_TYPE_POINT;  break;
+        case GL_NEAREST_MIPMAP_LINEAR:  dxMin = D3D11_FILTER_TYPE_POINT;  dxMip = D3D11_FILTER_TYPE_LINEAR; break;
+        case GL_LINEAR_MIPMAP_LINEAR:   dxMin = D3D11_FILTER_TYPE_LINEAR; dxMip = D3D11_FILTER_TYPE_LINEAR; break;
+        default: assert(false);
+    }
+    
+    D3D11_FILTER_TYPE dxMag = D3D11_FILTER_TYPE_POINT;
+    switch (filterMag)
+    {
+        case GL_NEAREST: dxMag = D3D11_FILTER_TYPE_POINT;  break;
+        case GL_LINEAR:  dxMag = D3D11_FILTER_TYPE_LINEAR; break;
+        default: assert(false);
+    }
+    
+    return D3D11_ENCODE_BASIC_FILTER(dxMin, dxMag, dxMip, static_cast<D3D11_COMPARISON_FUNC>(false));
 }
 
 void DirectXRendererHelper::createIndexBuffer()
@@ -421,5 +451,5 @@ void DirectXRendererHelper::createIndexBuffer()
     
     indexDataDesc.pSysMem = &_indices[0];
     
-    DX::ThrowIfFailed(s_d3dDevice->CreateBuffer(&indexBufferDesc, &indexDataDesc, &_indexbuffer));
+    DX::ThrowIfFailed(s_deviceResources->GetD3DDevice()->CreateBuffer(&indexBufferDesc, &indexDataDesc, &_indexbuffer));
 }

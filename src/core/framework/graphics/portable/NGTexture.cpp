@@ -14,7 +14,10 @@
 #include "framework/graphics/portable/TextureWrapper.h"
 #include "framework/graphics/portable/TextureManager.h"
 
-NGTexture::NGTexture(std::string inName, TextureManager* textureManager, bool repeatS, bool isEncrypted) : name(inName), textureDataWrapper(NULL), textureWrapper(NULL), _textureManager(textureManager), _repeatS(repeatS), _isEncrypted(isEncrypted), _isLoadingData(false)
+NGTexture::NGTexture(std::string inName, TextureManager* textureManager, bool repeatS, bool isEncrypted) : name(inName), textureDataWrapper(NULL), textureWrapper(NULL), _textureManager(textureManager), _repeatS(repeatS), _isFramebuffer(false), _isEncrypted(isEncrypted), _isLoadingData(false)
 {
-    // Empty
+    if (inName == "framebuffer")
+    {
+        _isFramebuffer = true;
+    }
 }

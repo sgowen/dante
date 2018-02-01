@@ -80,6 +80,7 @@ void OpenGLRendererHelper::bindToScreenFramebuffer()
 
     glViewport(0, 0, _screenWidth, _screenHeight);
     glScissor(0, 0, _screenWidth, _screenHeight);
+    glEnable(GL_SCISSOR_TEST);
 }
 
 void OpenGLRendererHelper::useNormalBlending()
@@ -204,17 +205,17 @@ void OpenGLRendererHelper::createFramebufferObject()
     GLuint fbo_texture;
     GLuint fbo;
 
-    std::string framebufferFilterMin = NG_CFG->getString("FramebufferFilterMin");
-    std::string framebufferFilterMax = NG_CFG->getString("FramebufferFilterMax");
-    GLint minFilter = framebufferFilterMin == "NEAREST" ? GL_NEAREST : GL_LINEAR;
-    GLint maxFilter = framebufferFilterMax == "NEAREST" ? GL_NEAREST : GL_LINEAR;
+    std::string cfgFilterMin = NG_CFG->getString("FramebufferFilterMin");
+    std::string cfgFilterMag = NG_CFG->getString("FramebufferFilterMag");
+    GLint filterMin = cfgFilterMin == "NEAREST" ? GL_NEAREST : GL_LINEAR;
+    GLint filterMag = cfgFilterMag == "NEAREST" ? GL_NEAREST : GL_LINEAR;
     
     // Texture
     glActiveTexture(GL_TEXTURE0);
     glGenTextures(1, &fbo_texture);
     glBindTexture(GL_TEXTURE_2D, fbo_texture);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, minFilter);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, maxFilter);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, filterMin);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, filterMag);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, _renderWidth, _renderHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);

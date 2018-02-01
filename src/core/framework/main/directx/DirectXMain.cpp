@@ -775,17 +775,13 @@ void DirectXMain::GetDefaultSize(int& width, int& height) const
 // These are the resources that depend on the device.
 void DirectXMain::CreateDeviceDependentResources()
 {
-    DirectXRendererHelper::init(_deviceResources->GetD3DDevice(), _deviceResources->GetD3DDeviceContext(), _deviceResources->GetRenderTargetView());
-
-	_engine->createDeviceDependentResources();
+    _engine->createDeviceDependentResources();
 }
 
 // Allocate all memory resources that change on a window SizeChanged event.
 void DirectXMain::CreateWindowSizeDependentResources()
 {
-    DirectXRendererHelper::init(_deviceResources->GetD3DDevice(), _deviceResources->GetD3DDeviceContext(), _deviceResources->GetRenderTargetView());
-
-	RECT outputSize = _deviceResources->GetOutputSize();
+    RECT outputSize = _deviceResources->GetOutputSize();
     LONG screenWidth = outputSize.right - outputSize.left;
     LONG screenHeight = outputSize.bottom - outputSize.top;
 
@@ -824,7 +820,7 @@ DirectXMain::DirectXMain() : _engine(NULL), _dpi(0), _isPointerPressed(false), _
 	_deviceResources = std::make_unique<DX::DirectXDeviceResources>();
 	_deviceResources->RegisterDeviceNotify(this);
 
-    DirectXRendererHelper::init(_deviceResources->GetD3DDevice(), _deviceResources->GetD3DDeviceContext(), _deviceResources->GetRenderTargetView());
+    DirectXRendererHelper::init(_deviceResources.get());
 }
 
 DirectXMain::~DirectXMain()

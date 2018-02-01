@@ -41,6 +41,7 @@ namespace
 // Constructor for DirectXDeviceResources.
 DirectXDeviceResources::DirectXDeviceResources(DXGI_FORMAT backBufferFormat, DXGI_FORMAT depthBufferFormat, UINT backBufferCount, D3D_FEATURE_LEVEL minFeatureLevel, unsigned int flags) :
     m_screenViewport{},
+    m_offScreenViewport{},
     m_backBufferFormat(backBufferFormat),
     m_depthBufferFormat(depthBufferFormat),
     m_backBufferCount(backBufferCount),
@@ -233,18 +234,10 @@ void DirectXDeviceResources::CreateWindowSizeDependentResources()
 	m_d3dContext->Flush();
 
 	// Determine the render target size in pixels.
-	UINT backBufferWidth = std::max<UINT>(m_outputSize.right - m_outputSize.left, 1);
-	UINT backBufferHeight = std::max<UINT>(m_outputSize.bottom - m_outputSize.top, 1);
-
-	if (backBufferWidth > NG_CFG->getInt("FramebufferSize"))
-	{
-		backBufferWidth = NG_CFG->getInt("FramebufferSize");
-	}
-
-	if (backBufferHeight > NG_CFG->getInt("FramebufferSize"))
-	{
-		backBufferHeight = NG_CFG->getInt("FramebufferSize");
-	}
+    UINT screenWidth = std::max<UINT>(m_outputSize.right - m_outputSize.left, 1);
+    UINT screenHeight = std::max<UINT>(m_outputSize.bottom - m_outputSize.top, 1);
+    UINT backBufferWidth = NG_CFG->getInt("FramebufferSize");
+	UINT backBufferHeight = NG_CFG->getInt("FramebufferSize");
 
 	if (m_swapChain)
 	{
@@ -347,12 +340,8 @@ void DirectXDeviceResources::CreateWindowSizeDependentResources()
 	}
 
 	// Set the 3D rendering viewport to target the entire window.
-	m_screenViewport = CD3D11_VIEWPORT(
-		0.0f,
-		0.0f,
-		static_cast<float>(backBufferWidth),
-		static_cast<float>(backBufferHeight)
-	);
+	m_screenViewport = CD3D11_VIEWPORT(0.0f, 0.0f, static_cast<float>(screenWidth), static_cast<float>(screenHeight));
+    m_offScreenViewport = CD3D11_VIEWPORT(0.0f, 0.0f, static_cast<float>(backBufferWidth), static_cast<float>(backBufferHeight));
 }
 
 // This method is called when the Win32 window is created (or re-created).

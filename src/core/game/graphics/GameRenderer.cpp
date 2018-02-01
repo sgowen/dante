@@ -531,6 +531,7 @@ void GameRenderer::endFrame()
     
     _rendererHelper->bindToScreenFramebuffer();
     _rendererHelper->clearFramebufferWithColor(0, 0, 0, 1);
+    _rendererHelper->useScreenBlending();
     
     static std::vector<VERTEX_2D> screenVertices;
     screenVertices.clear();
