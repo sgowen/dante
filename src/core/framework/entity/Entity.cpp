@@ -245,10 +245,10 @@ void Entity::initPhysics(b2World& world)
     {
         FixtureDef def = *i;
         b2Shape* shape;
+        b2PolygonShape polygonShape;
+        b2CircleShape circleShape;
         if (def.flags & FixtureFlag_Circle)
         {
-            b2CircleShape circleShape;
-            
             circleShape.m_p.Set(def.center.x * _entityDef.width, def.center.y * _entityDef.height);
             circleShape.m_radius = def.vertices[0].x * _entityDef.width;
             
@@ -256,7 +256,6 @@ void Entity::initPhysics(b2World& world)
         }
         else
         {
-            b2PolygonShape polygonShape;
             if (def.flags & FixtureFlag_Box)
             {
                 float wFactor = _entityDef.width * def.vertices[0].x;
