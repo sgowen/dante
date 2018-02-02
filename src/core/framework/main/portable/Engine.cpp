@@ -48,7 +48,7 @@ void Engine::createWindowSizeDependentResources(int screenWidth, int screenHeigh
     _cursorWidth = cursorWidth > 0 ? cursorWidth : screenWidth;
     _cursorHeight = cursorHeight > 0 ? cursorHeight : screenHeight;
     
-    _stateMachine.getCurrentState()->createWindowSizeDependentResources(screenWidth, screenHeight, cursorWidth, cursorHeight);
+    _stateMachine.getCurrentState()->createWindowSizeDependentResources(_screenWidth, _screenHeight, _cursorWidth, _cursorHeight);
 }
 
 void Engine::releaseDeviceDependentResources()
