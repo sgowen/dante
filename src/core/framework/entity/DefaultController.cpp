@@ -32,6 +32,16 @@ uint8_t DefaultController::update()
     return 0;
 }
 
+void DefaultController::receiveMessage(uint16_t message, void* data)
+{
+    // Empty
+}
+
+void DefaultController::onFixturesCreated(std::vector<b2Fixture*>& fixtures)
+{
+    // Empty
+}
+
 bool DefaultController::shouldCollide(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB)
 {
     return true;

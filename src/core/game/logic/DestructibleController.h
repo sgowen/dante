@@ -1,25 +1,25 @@
 //
-//  BasicFollowAndAttackController.h
+//  DestructibleController.h
 //  dante
 //
-//  Created by Stephen Gowen on 1/5/18.
+//  Created by Stephen Gowen on 2/2/18.
 //  Copyright © 2018 Noctis Games. All rights reserved.
 //
 
-#ifndef __noctisgames__BasicFollowAndAttackController__
-#define __noctisgames__BasicFollowAndAttackController__
+#ifndef __noctisgames__DestructibleController__
+#define __noctisgames__DestructibleController__
 
 #include <framework/entity/EntityController.h>
 
-class BasicFollowAndAttackController : public EntityController
+class DestructibleController : public EntityController
 {
     NGRTTI_DECL;
     
 public:
     static EntityController* create(Entity* inEntity);
     
-    BasicFollowAndAttackController(Entity* inEntity);
-    virtual ~BasicFollowAndAttackController();
+    DestructibleController(Entity* inEntity);
+    virtual ~DestructibleController();
     
     virtual uint8_t update();
     virtual void receiveMessage(uint16_t message, void* data = NULL);
@@ -33,23 +33,21 @@ public:
     
     /// Helpers
     uint8_t getHealth();
-    bool isDying();
-    bool isAttacking();
+    bool isDestructing();
     bool isMoving();
     
 private:
     enum State
     {
         State_Idle = 0,
-        State_Moving,
-        State_Attacking,
-        State_Dying
+        State_OneThirdDamaged,
+        State_TwoThirdsDamaged,
+        State_Destructing
     };
     
     enum StateFlags
     {
-        StateFlag_Attacking = 1 << 0,
-        StateFlag_Dying = 1 << 1
+        StateFlag_Destructing = 1 << 0
     };
     
     enum ReadStateFlag
@@ -79,10 +77,6 @@ private:
     };
     Stats _stats;
     Stats _statsCache;
-    
-    /// Non-Networked
-    b2Fixture* _attackSensorFixture;
-    float _maxXVelocity;
 };
 
-#endif /* defined(__noctisgames__BasicFollowAndAttackController__) */
+#endif /* defined(__noctisgames__DestructibleController__) */

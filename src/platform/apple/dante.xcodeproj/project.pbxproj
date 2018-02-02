@@ -470,6 +470,8 @@
 		BBD554671FDB2EA800E00AD6 /* b2Collision.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBD5540B1FDB2EA800E00AD6 /* b2Collision.cpp */; };
 		BBE4E40B1FEDD03F004193F1 /* Box2DDebugRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBE4E4091FEDD03F004193F1 /* Box2DDebugRenderer.cpp */; };
 		BBE4E40C1FEDD03F004193F1 /* Box2DDebugRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBE4E4091FEDD03F004193F1 /* Box2DDebugRenderer.cpp */; };
+		BBEC68582025139900661E46 /* DestructibleController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBEC68562025139700661E46 /* DestructibleController.cpp */; };
+		BBEC68592025139900661E46 /* DestructibleController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBEC68562025139700661E46 /* DestructibleController.cpp */; };
 		BBEF6FFF200028220030076A /* EntityController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBEF6FFD200028220030076A /* EntityController.cpp */; };
 		BBEF7000200028220030076A /* EntityController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBEF6FFD200028220030076A /* EntityController.cpp */; };
 		BBEF7022200062C40030076A /* EntityMapper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBEF7020200062C40030076A /* EntityMapper.cpp */; };
@@ -1647,6 +1649,8 @@
 		BBE4E4081FEDC2D5004193F1 /* World.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = World.h; sourceTree = "<group>"; };
 		BBE4E4091FEDD03F004193F1 /* Box2DDebugRenderer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Box2DDebugRenderer.cpp; sourceTree = "<group>"; };
 		BBE4E40A1FEDD03F004193F1 /* Box2DDebugRenderer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Box2DDebugRenderer.h; sourceTree = "<group>"; };
+		BBEC68562025139700661E46 /* DestructibleController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DestructibleController.cpp; sourceTree = "<group>"; };
+		BBEC68572025139800661E46 /* DestructibleController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DestructibleController.h; sourceTree = "<group>"; };
 		BBEF6FFD200028220030076A /* EntityController.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = EntityController.cpp; sourceTree = "<group>"; };
 		BBEF6FFE200028220030076A /* EntityController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EntityController.h; sourceTree = "<group>"; };
 		BBEF7020200062C40030076A /* EntityMapper.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = EntityMapper.cpp; sourceTree = "<group>"; };
@@ -2355,6 +2359,8 @@
 			children = (
 				BB3F51ED2015412E00A657F8 /* BasicFollowAndAttackController.cpp */,
 				BB3F51EE2015412F00A657F8 /* BasicFollowAndAttackController.h */,
+				BBEC68562025139700661E46 /* DestructibleController.cpp */,
+				BBEC68572025139800661E46 /* DestructibleController.h */,
 				BB6E7AFF1F940F13006C0024 /* GameConstants.h */,
 				BBFE830E1FFEC69500E5F650 /* GameEngine.cpp */,
 				BBFE830D1FFEC69400E5F650 /* GameEngine.h */,
@@ -3953,6 +3959,7 @@
 				BB1C3C021FE76BE0002E4AA6 /* NGShaderLoaderFactory.cpp in Sources */,
 				BBD5544A1FDB2EA800E00AD6 /* b2Timer.cpp in Sources */,
 				BBD5543E1FDB2EA800E00AD6 /* b2Island.cpp in Sources */,
+				BBEC68582025139900661E46 /* DestructibleController.cpp in Sources */,
 				BB27D2671FC6572600ED42FD /* AppleSoundWrapper.cpp in Sources */,
 				BBFE830B1FFEC23000E5F650 /* EngineState.cpp in Sources */,
 				BBD554101FDB2EA800E00AD6 /* b2Fixture.cpp in Sources */,
@@ -4262,6 +4269,7 @@
 				BBD554191FDB2EA800E00AD6 /* b2PolygonAndCircleContact.cpp in Sources */,
 				BB5AFE421FB35A77005FBD52 /* TransmissionData.cpp in Sources */,
 				BB5AFE431FB35A77005FBD52 /* Move.cpp in Sources */,
+				BBEC68592025139900661E46 /* DestructibleController.cpp in Sources */,
 				BB5AFE441FB35A77005FBD52 /* MoveList.cpp in Sources */,
 				BBD554131FDB2EA800E00AD6 /* b2ChainAndPolygonContact.cpp in Sources */,
 				BB5AFE451FB35A77005FBD52 /* OutputMemoryBitStream.cpp in Sources */,

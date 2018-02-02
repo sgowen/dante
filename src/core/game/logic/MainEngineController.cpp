@@ -16,6 +16,7 @@
 #include <framework/entity/EntityMapper.h>
 #include <framework/entity/DefaultController.h>
 #include <game/logic/BasicFollowAndAttackController.h>
+#include <game/logic/DestructibleController.h>
 #include <game/logic/PlayerController.h>
 #include <framework/util/Config.h>
 
@@ -29,6 +30,7 @@ MainEngineController::MainEngineController()
     
     EntityMapper::getInstance()->registerFunction("BasicFollowAndAttackController", BasicFollowAndAttackController::create);
     EntityMapper::getInstance()->registerFunction("DefaultController", DefaultController::create);
+    EntityMapper::getInstance()->registerFunction("DestructibleController", DestructibleController::create);
     EntityMapper::getInstance()->registerFunction("PlayerController", PlayerController::create);
 }
 

@@ -163,7 +163,7 @@ void Entity::read(InputMemoryBitStream& inInputStream)
         
         if (_groundSensorFixture)
         {
-            inInputStream.read<uint8_t, 2>(_pose.numGroundContacts);
+            inInputStream.read<uint8_t, 3>(_pose.numGroundContacts);
         }
         
         inInputStream.read(_pose.isFacingLeft);
@@ -218,7 +218,7 @@ uint16_t Entity::write(OutputMemoryBitStream& inOutputStream, uint16_t inDirtySt
         
         if (_groundSensorFixture)
         {
-            inOutputStream.write<uint8_t, 2>(_pose.numGroundContacts);
+            inOutputStream.write<uint8_t, 3>(_pose.numGroundContacts);
         }
         
         inOutputStream.write(_pose.isFacingLeft);
@@ -294,6 +294,8 @@ void Entity::initPhysics(b2World& world)
         
         _fixtures.push_back(fixture);
     }
+    
+    _controller->onFixturesCreated(_fixtures);
 }
 
 void Entity::deinitPhysics()

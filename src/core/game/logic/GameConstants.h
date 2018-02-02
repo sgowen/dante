@@ -23,6 +23,10 @@
 #define CAM_WIDTH 64
 #define CAM_HEIGHT 36
 
+//// Entity Message Definitions ////
+
+#define ENTITY_MESSAGE_DAMAGE 0x01u
+
 //// Non-Steam ////
 // UDP port for the server to bind on
 #define SERVER_PORT 9999

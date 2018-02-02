@@ -27,6 +27,8 @@ public:
     virtual ~PlayerController();
     
     virtual uint8_t update();
+    virtual void receiveMessage(uint16_t message, void* data = NULL);
+    virtual void onFixturesCreated(std::vector<b2Fixture*>& fixtures);
     virtual bool shouldCollide(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB);
     virtual void handleBeginContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB);
     virtual void handleEndContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB);
@@ -109,7 +111,7 @@ private:
         
         Stats()
         {
-            health = 255;
+            health = 3;
         }
         
         friend bool operator==(Stats& lhs, Stats& rhs)
@@ -126,6 +128,8 @@ private:
     Stats _stats;
     Stats _statsCache;
     
+    /// Non-Networked
+    b2Fixture* _attackSensorFixture;
     float _maxXVelocity;
     float _maxYVelocity;
     bool _isLocalPlayer;

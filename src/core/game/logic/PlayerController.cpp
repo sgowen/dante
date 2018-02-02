@@ -46,6 +46,7 @@ _playerInfo(),
 _playerInfoCache(_playerInfo),
 _stats(),
 _statsCache(_stats),
+_attackSensorFixture(NULL),
 _maxXVelocity(NG_CFG->getFloat("MaxRobotVelocityX")),
 _maxYVelocity(NG_CFG->getFloat("MaxRobotVelocityY")),
 _isLocalPlayer(false)
@@ -62,11 +63,6 @@ uint8_t PlayerController::update()
 {
     if (_entity->isServer())
     {
-        if (isMainAction() && (_entity->getPose().stateTime == 1 || _entity->getPose().stateTime == 4 || _entity->getPose().stateTime == 7))
-        {
-            /// See if we hit something
-        }
-            
         if (_stats.health == 0)
         {
             _entity->requestDeletion();
@@ -103,6 +99,34 @@ uint8_t PlayerController::update()
                     State_Idle :
                 State_Running :
             State_Jumping;
+}
+
+void PlayerController::receiveMessage(uint16_t message, void* data)
+{
+    switch (message)
+    {
+        case ENTITY_MESSAGE_DAMAGE:
+        {
+            uint32_t* damageP = static_cast<uint32_t*>(data);
+            uint32_t& damage = *damageP;
+            damage = clamp(damage, _stats.health, 0);
+            _stats.health -= damage;
+            if (_stats.health == 0)
+            {
+                /// TODO
+            }
+        }
+            break;
+        default:
+            break;
+    }
+}
+
+void PlayerController::onFixturesCreated(std::vector<b2Fixture*>& fixtures)
+{
+    assert(fixtures.size() == 3);
+    _attackSensorFixture = fixtures[2];
+    assert(_attackSensorFixture);
 }
 
 bool PlayerController::shouldCollide(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB)

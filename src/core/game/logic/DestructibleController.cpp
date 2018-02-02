@@ -1,14 +1,14 @@
 //
-//  BasicFollowAndAttackController.cpp
+//  DestructibleController.cpp
 //  dante
 //
-//  Created by Stephen Gowen on 1/5/18.
+//  Created by Stephen Gowen on 2/2/18.
 //  Copyright © 2018 Noctis Games. All rights reserved.
 //
 
 #include "pch.h"
 
-#include <game/logic/BasicFollowAndAttackController.h>
+#include <game/logic/DestructibleController.h>
 
 #include <framework/entity/Entity.h>
 #include "framework/network/portable/InputMemoryBitStream.h"
@@ -34,32 +34,30 @@
 #include "game/logic/Server.h"
 #include "framework/util/Config.h"
 
-NGRTTI_IMPL(BasicFollowAndAttackController, EntityController);
+NGRTTI_IMPL(DestructibleController, EntityController);
 
-EntityController* BasicFollowAndAttackController::create(Entity* inEntity)
+EntityController* DestructibleController::create(Entity* inEntity)
 {
-    return new BasicFollowAndAttackController(inEntity);
+    return new DestructibleController(inEntity);
 }
 
-BasicFollowAndAttackController::BasicFollowAndAttackController(Entity* inEntity) : EntityController(inEntity),
+DestructibleController::DestructibleController(Entity* inEntity) : EntityController(inEntity),
 _stats(),
-_statsCache(_stats),
-_attackSensorFixture(NULL),
-_maxXVelocity(4)
+_statsCache(_stats)
 {
     // Empty
 }
 
-BasicFollowAndAttackController::~BasicFollowAndAttackController()
+DestructibleController::~DestructibleController()
 {
     // Empty
 }
 
-uint8_t BasicFollowAndAttackController::update()
+uint8_t DestructibleController::update()
 {
     if (_entity->isServer())
     {
-        if (isDying() && _entity->getPose().stateTime > 300)
+        if (isDestructing() && _entity->getPose().stateTime > 300)
         {
             _entity->requestDeletion();
         }
@@ -71,10 +69,10 @@ uint8_t BasicFollowAndAttackController::update()
         }
     }
     
-    return isDying() ? State_Dying : isAttacking() ? State_Attacking : isMoving() ? State_Moving : State_Idle;
+    return isDestructing() ? State_Destructing : State_Idle;
 }
 
-void BasicFollowAndAttackController::receiveMessage(uint16_t message, void* data)
+void DestructibleController::receiveMessage(uint16_t message, void* data)
 {
     switch (message)
     {
@@ -86,7 +84,7 @@ void BasicFollowAndAttackController::receiveMessage(uint16_t message, void* data
             _stats.health -= damage;
             if (_stats.health == 0)
             {
-                _entity->getPose().state |= StateFlag_Dying;
+                _entity->getPose().state |= State_Destructing;
                 _entity->getPose().stateTime = 0;
             }
         }
@@ -96,30 +94,27 @@ void BasicFollowAndAttackController::receiveMessage(uint16_t message, void* data
     }
 }
 
-void BasicFollowAndAttackController::onFixturesCreated(std::vector<b2Fixture*>& fixtures)
-{
-    assert(fixtures.size() == 2);
-    _attackSensorFixture = fixtures[1];
-    assert(_attackSensorFixture);
-}
-
-bool BasicFollowAndAttackController::shouldCollide(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB)
-{
-    // Don't collide with other crawlers
-    return inEntity->getEntityDef().type != _entity->getEntityDef().type;
-}
-
-void BasicFollowAndAttackController::handleBeginContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB)
+void DestructibleController::onFixturesCreated(std::vector<b2Fixture*>& fixtures)
 {
     // Empty
 }
 
-void BasicFollowAndAttackController::handleEndContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB)
+bool DestructibleController::shouldCollide(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB)
+{
+    return true;
+}
+
+void DestructibleController::handleBeginContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB)
 {
     // Empty
 }
 
-void BasicFollowAndAttackController::read(InputMemoryBitStream& inInputStream, uint16_t& inReadState)
+void DestructibleController::handleEndContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB)
+{
+    // Empty
+}
+
+void DestructibleController::read(InputMemoryBitStream& inInputStream, uint16_t& inReadState)
 {
     bool stateBit;
     
@@ -133,7 +128,7 @@ void BasicFollowAndAttackController::read(InputMemoryBitStream& inInputStream, u
     }
 }
 
-void BasicFollowAndAttackController::recallLastReadState(uint16_t& inReadState)
+void DestructibleController::recallLastReadState(uint16_t& inReadState)
 {
     if (inReadState & ReadStateFlag_Stats)
     {
@@ -141,7 +136,7 @@ void BasicFollowAndAttackController::recallLastReadState(uint16_t& inReadState)
     }
 }
 
-uint16_t BasicFollowAndAttackController::write(OutputMemoryBitStream& inOutputStream, uint16_t inWrittenState, uint16_t inDirtyState)
+uint16_t DestructibleController::write(OutputMemoryBitStream& inOutputStream, uint16_t inWrittenState, uint16_t inDirtyState)
 {
     uint16_t writtenState = inWrittenState;
     
@@ -157,22 +152,17 @@ uint16_t BasicFollowAndAttackController::write(OutputMemoryBitStream& inOutputSt
     return writtenState;
 }
 
-uint8_t BasicFollowAndAttackController::getHealth()
+uint8_t DestructibleController::getHealth()
 {
     return _stats.health;
 }
 
-bool BasicFollowAndAttackController::isDying()
+bool DestructibleController::isDestructing()
 {
-    return _entity->getPose().state & StateFlag_Dying;
+    return _entity->getPose().state & StateFlag_Destructing;
 }
 
-bool BasicFollowAndAttackController::isAttacking()
-{
-    return _entity->getPose().state & StateFlag_Attacking;
-}
-
-bool BasicFollowAndAttackController::isMoving()
+bool DestructibleController::isMoving()
 {
     return !isCloseEnough(_entity->getVelocity().x, 0);
 }
