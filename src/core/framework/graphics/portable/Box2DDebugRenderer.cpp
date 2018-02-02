@@ -45,10 +45,19 @@ void Box2DDebugRenderer::DrawPolygon(const b2Vec2* vertices, int32 vertexCount, 
 
 void Box2DDebugRenderer::DrawSolidPolygon(const b2Vec2* vertices, int32 vertexCount, const b2Color& color)
 {
-    Color c = Color(color.r, color.g, color.b, 0.3f);
-    _fillPolygonBatcher.beginBatch();
-    _fillPolygonBatcher.renderPolygon(vertices, vertexCount);
-    _fillPolygonBatcher.endBatch(_shader, c);
+    {
+        Color c = Color(color.r, color.g, color.b, 0.3f);
+        _fillPolygonBatcher.beginBatch();
+        _fillPolygonBatcher.renderPolygon(vertices, vertexCount);
+        _fillPolygonBatcher.endBatch(_shader, c);
+    }
+    
+    {
+        Color c = Color(1, 0, 0, 0.3f);
+        _boundsPolygonBatcher.beginBatch();
+        _boundsPolygonBatcher.renderPolygon(vertices, vertexCount);
+        _boundsPolygonBatcher.endBatch(_shader, c);
+    }
 }
 
 void Box2DDebugRenderer::DrawCircle(const b2Vec2& center, float32 radius, const b2Color& color)
