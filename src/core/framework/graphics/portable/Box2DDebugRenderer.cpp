@@ -62,12 +62,22 @@ void Box2DDebugRenderer::DrawSolidPolygon(const b2Vec2* vertices, int32 vertexCo
 
 void Box2DDebugRenderer::DrawCircle(const b2Vec2& center, float32 radius, const b2Color& color)
 {
-    // TODO
+    {
+        Color c = Color(color.r, color.g, color.b, 0.3f);
+        _circleBatcher.beginBatch();
+        _circleBatcher.renderCircle(center.x, center.y, radius);
+        _circleBatcher.endBatch(_shader, c);
+    }
 }
 
 void Box2DDebugRenderer::DrawSolidCircle(const b2Vec2& center, float32 radius, const b2Vec2& axis, const b2Color& color)
 {
-    // TODO
+    {
+        Color c = Color(color.r, color.g, color.b, 0.3f);
+        _circleBatcher.beginBatch();
+        _circleBatcher.renderCircle(center.x, center.y, radius);
+        _circleBatcher.endBatch(_shader, c);
+    }
 }
 
 void Box2DDebugRenderer::DrawSegment(const b2Vec2& p1, const b2Vec2& p2, const b2Color& color)

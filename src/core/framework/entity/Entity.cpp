@@ -244,29 +244,43 @@ void Entity::initPhysics(b2World& world)
     for (std::vector<FixtureDef>::iterator i = _entityDef.fixtures.begin(); i != _entityDef.fixtures.end(); ++i)
     {
         FixtureDef def = *i;
-        b2PolygonShape shape;
-        if (def.flags & FixtureFlag_Box)
+        b2Shape* shape;
+        if (def.flags & FixtureFlag_Circle)
         {
-            float wFactor = _entityDef.width * def.vertices[0].x;
-            float hFactor = _entityDef.height * def.vertices[0].y;
-            def.center.Set(def.center.x * _entityDef.width, def.center.y * _entityDef.height);
+            b2CircleShape circleShape;
             
-            shape.SetAsBox(wFactor, hFactor, def.center, 0);
+            circleShape.m_p.Set(def.center.x * _entityDef.width, def.center.y * _entityDef.height);
+            circleShape.m_radius = def.vertices[0].x * _entityDef.width;
+            
+            shape = &circleShape;
         }
         else
         {
-            for (std::vector<b2Vec2>::iterator i = def.vertices.begin(); i != def.vertices.end(); ++i)
+            b2PolygonShape polygonShape;
+            if (def.flags & FixtureFlag_Box)
             {
-                b2Vec2& vertex = (*i);
-                vertex.Set(vertex.x * _entityDef.width, vertex.y * _entityDef.height);
+                float wFactor = _entityDef.width * def.vertices[0].x;
+                float hFactor = _entityDef.height * def.vertices[0].y;
+                def.center.Set(def.center.x * _entityDef.width, def.center.y * _entityDef.height);
+                
+                polygonShape.SetAsBox(wFactor, hFactor, def.center, 0);
             }
-            
-            int count = static_cast<int>(def.vertices.size());
-            shape.Set(&def.vertices[0], count);
+            else
+            {
+                for (std::vector<b2Vec2>::iterator i = def.vertices.begin(); i != def.vertices.end(); ++i)
+                {
+                    b2Vec2& vertex = (*i);
+                    vertex.Set(vertex.x * _entityDef.width, vertex.y * _entityDef.height);
+                }
+                
+                int count = static_cast<int>(def.vertices.size());
+                polygonShape.Set(&def.vertices[0], count);
+            }
+            shape = &polygonShape;
         }
         
         b2FixtureDef fixtureDef;
-        fixtureDef.shape = &shape;
+        fixtureDef.shape = shape;
         fixtureDef.isSensor = def.flags & FixtureFlag_Sensor;
         fixtureDef.density = def.density;
         fixtureDef.friction = def.friction;

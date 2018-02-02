@@ -321,6 +321,11 @@ void StudioRenderer::renderLayers()
         _spriteBatchers[i]->beginBatch();
     }
     
+    if (_engineState & StudioEngineState_DisplayTypes)
+    {
+        _fontSpriteBatcher->beginBatch();
+    }
+    
     std::string textures[NUM_LAYERS];
     
     std::vector<Entity*> entities = _engine->_world->getLayers();
@@ -335,6 +340,12 @@ void StudioRenderer::renderLayers()
         
         _spriteBatchers[e->getEntityDef().layer]->renderSprite(e->getPosition().x, e->getPosition().y, e->getWidth(), e->getHeight(), e->getAngle(), tr, e->isFacingLeft());
         textures[e->getEntityDef().layer] = tr.getTextureName();
+        
+        if ((_engineState & StudioEngineState_DisplayTypes) &&
+            _engineState & (1 << (e->getEntityDef().layer + StudioEngineState_LayerBitBegin)))
+        {
+            renderText(e->getEntityDef().typeName.c_str(), e->getPosition().x, e->getPosition().y, FONT_ALIGN_CENTER);
+        }
     }
     
     for (int i = 0; i < NUM_LAYERS; ++i)
@@ -352,6 +363,11 @@ void StudioRenderer::renderLayers()
             }
         }
     }
+    
+    if (_engineState & StudioEngineState_DisplayTypes)
+    {
+        _fontSpriteBatcher->endBatch(_textureNGShader, _fontTexture);
+    }
 }
 
 void StudioRenderer::renderEntities()
@@ -359,6 +375,11 @@ void StudioRenderer::renderEntities()
     for (int i = 0; i < NUM_SPRITE_BATCHERS; ++i)
     {
         _spriteBatchers[i]->beginBatch();
+    }
+    
+    if (_engineState & StudioEngineState_DisplayTypes)
+    {
+        _fontSpriteBatcher->beginBatch();
     }
     
     std::string textures[NUM_SPRITE_BATCHERS];
@@ -376,6 +397,12 @@ void StudioRenderer::renderEntities()
             
             _spriteBatchers[e->getEntityDef().layer]->renderSprite(e->getPosition().x, e->getPosition().y, e->getWidth(), e->getHeight(), e->getAngle(), tr, e->isFacingLeft());
             textures[e->getEntityDef().layer] = tr.getTextureName();
+            
+            if ((_engineState & StudioEngineState_DisplayTypes) &&
+                _engineState & (1 << (e->getEntityDef().layer + StudioEngineState_LayerBitBegin)))
+            {
+                renderText(e->getEntityDef().typeName.c_str(), e->getPosition().x, e->getPosition().y, FONT_ALIGN_CENTER);
+            }
         }
     }
     
@@ -392,6 +419,12 @@ void StudioRenderer::renderEntities()
             
             _spriteBatchers[e->getEntityDef().layer]->renderSprite(e->getPosition().x, e->getPosition().y, e->getWidth(), e->getHeight(), e->getAngle(), tr, e->isFacingLeft());
             textures[e->getEntityDef().layer] = tr.getTextureName();
+            
+            if ((_engineState & StudioEngineState_DisplayTypes) &&
+                _engineState & (1 << (e->getEntityDef().layer + StudioEngineState_LayerBitBegin)))
+            {
+                renderText(e->getEntityDef().typeName.c_str(), e->getPosition().x, e->getPosition().y, FONT_ALIGN_CENTER);
+            }
         }
     }
     
@@ -408,6 +441,12 @@ void StudioRenderer::renderEntities()
             
             _spriteBatchers[e->getEntityDef().layer]->renderSprite(e->getPosition().x, e->getPosition().y, e->getWidth(), e->getHeight(), e->getAngle(), tr, e->isFacingLeft());
             textures[e->getEntityDef().layer] = tr.getTextureName();
+            
+            if ((_engineState & StudioEngineState_DisplayTypes) &&
+                _engineState & (1 << (e->getEntityDef().layer + StudioEngineState_LayerBitBegin)))
+            {
+                renderText(e->getEntityDef().typeName.c_str(), e->getPosition().x, e->getPosition().y, FONT_ALIGN_CENTER);
+            }
         }
     }
     
@@ -420,6 +459,11 @@ void StudioRenderer::renderEntities()
                 _spriteBatchers[i]->endBatch(_textureNGShader, _textureManager->getTextureWithName(textures[i]));
             }
         }
+    }
+    
+    if (_engineState & StudioEngineState_DisplayTypes)
+    {
+        _fontSpriteBatcher->endBatch(_textureNGShader, _fontTexture);
     }
 }
 
@@ -561,7 +605,7 @@ void StudioRenderer::renderUI()
         /// Controls
         _fillPolygonBatcher->beginBatch();
         int width = 22;
-        int height = 17;
+        int height = 18;
         NGRect window = NGRect(CAM_WIDTH - width - 1, CAM_HEIGHT - height - 1, width, height);
         Color windowColor = Color::BLUE;
         windowColor.alpha = 0.5f;

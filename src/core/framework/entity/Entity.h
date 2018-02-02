@@ -33,7 +33,8 @@ enum FixtureFlags
 {
     FixtureFlag_Box = 1 << 0,
     FixtureFlag_Sensor = 1 << 1,
-    FixtureFlag_GroundContact = 1 << 2
+    FixtureFlag_GroundContact = 1 << 2,
+    FixtureFlag_Circle = 1 << 3
 };
 
 struct FixtureDef
