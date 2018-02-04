@@ -102,17 +102,17 @@ void GameInputManager::update()
             case NG_KEY_Z:
                 _inputState = e.isDown() ? GIS_TOGGLE_LIGHTING : _inputState;
                 continue;
-            case NG_KEY_I:
-                _inputState = e.isDown() ? GIS_SERVER_TOGGLE_DISPLAY : _inputState;
-                continue;
             case NG_KEY_T:
                 _inputState = e.isDown() ? GIS_SERVER_TOGGLE_MAP : _inputState;
                 continue;
+            case NG_KEY_U:
+                _engine->_displayUI = e.isDown() ? !_engine->_displayUI : _engine->_displayUI;
+                continue;
             case NG_KEY_ARROW_UP:
-                _lightZDelta = e.isPressed() ? 0.001f : 0;
+                _playerLightZDelta = e.isPressed() ? 0.001f : 0;
                 continue;
             case NG_KEY_ARROW_DOWN:
-                _lightZDelta = e.isPressed() ? -0.001f : 0;
+                _playerLightZDelta = e.isPressed() ? -0.001f : 0;
                 continue;
             case NG_KEY_ESCAPE:
                 if (e.isDown())
@@ -281,7 +281,7 @@ void GameInputManager::update()
         }
     }
     
-    _engine->_lightZ = clamp(_engine->_lightZ + _lightZDelta, 0.3f, -0.1f);
+    _engine->_playerLightZ = clamp(_engine->_playerLightZ + _playerLightZDelta, 0.3f, -0.1f);
     _pendingMove = &sampleInputAsMove();
 }
 
@@ -330,7 +330,7 @@ _pendingMove(NULL),
 _inputState(GIS_NONE),
 _isTimeToProcessInput(false),
 _engine(NULL),
-_lightZDelta(0)
+_playerLightZDelta(0)
 {
     // Empty
 }

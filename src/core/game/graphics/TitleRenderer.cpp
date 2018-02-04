@@ -93,7 +93,7 @@ _shaderProgramLoader(SHADER_PROGRAM_LOADER_FACTORY->createNGShaderLoader()),
 _textureNGShader(new NGTextureShader(*_rendererHelper, "shader_003_vert.ngs", "shader_003_frag.ngs")),
 _colorNGShader(new NGGeometryShader(*_rendererHelper, "shader_001_vert.ngs", "shader_001_frag.ngs")),
 _framebufferToScreenNGShader(new NGFramebufferToScreenShader(*_rendererHelper, "shader_002_vert.ngs", "shader_002_frag.ngs")),
-_font(new Font("texture_001.ngt", 0, 0, 16, 64, 75, 1024, 1024)),
+_font(new Font(0, 0, 16, 64, 75, 1024, 1024)),
 _fbIndex(0),
 _engine(NULL),
 _engineState(0)

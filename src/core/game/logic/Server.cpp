@@ -89,16 +89,6 @@ void Server::update()
 #endif
 }
 
-void Server::toggleDisplaying()
-{
-    _isDisplaying = !_isDisplaying;
-}
-
-bool Server::isDisplaying()
-{
-    return _isDisplaying;
-}
-
 void Server::toggleMap()
 {
     if (_map == 'Z001')
@@ -219,7 +209,7 @@ void Server::loadMap()
     }
 }
 
-Server::Server(bool isSteam) : _world(NULL), _stateTime(0), _frameStateTime(0), _map(0), _isDisplaying(false)
+Server::Server(bool isSteam) : _world(NULL), _stateTime(0), _frameStateTime(0), _map(0)
 {
     FWInstanceManager::createServerEntityManager(InstanceManager::sHandleDynamicEntityCreatedOnServer, InstanceManager::sHandleDynamicEntityDeletedOnServer);
     

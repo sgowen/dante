@@ -48,6 +48,13 @@ void Config::initWithJsonFile(const char* path, bool isBundled, bool useEncrypti
     _jsonFile->load();
 }
 
+bool Config::getBool(std::string key)
+{
+    std::string val = _jsonFile->findValue(key);
+    bool ret = StringUtil::stringToNumber<bool>(val);
+    return ret;
+}
+
 int Config::getInt(std::string key)
 {
     std::string val = _jsonFile->findValue(key);

@@ -13,6 +13,8 @@
 
 #include <framework/graphics/portable/VertexProgramInput.h>
 
+#define NUM_LIGHTS 12
+
 class NGLightingShader : public NGShader
 {
 public:
@@ -20,19 +22,19 @@ public:
     
     virtual void bind(void* vertices, void* data1 = NULL, void* data2 = NULL, void* data3 = NULL);
     virtual void unbind();
-    virtual void onLoaded();
     
-    void onConfigLoaded();
     void resetLights();
-    void configLight(int index, float lightPosX, float lightPosY);
-    void configZ(float lightPosZ);
+    void configAmbientLight(float r, float g, float b, float a);
+    void configureFallOff(float x, float y, float z);
+    void addLight(float lightPosX, float lightPosY, float lightPosZ, float lightColorR, float lightColorG, float lightColorB, float lightColorA);
     
 private:
-    mat4x4 _lights;
-    float4 _lightColor; // Light RGB and intensity (alpha)
+    float4 _lightPositions[NUM_LIGHTS];
+    float4 _lightColors[NUM_LIGHTS]; // Light RGB and intensity (alpha)
     float4 _ambientColor; // Ambient RGB and intensity (alpha)
     float4 _fallOff; // Attenuation coefficients for light falloff
     int4 _numLights;
+    int _lightIndex;
 };
 
 #endif /* defined(__noctisgames__NGLightingShader__) */

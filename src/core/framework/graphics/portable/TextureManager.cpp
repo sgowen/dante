@@ -244,9 +244,11 @@ NGTexture* TextureManager::getTextureWithName(std::string name)
 {
     auto q = _textures.find(name);
     
-    assert(q != _textures.end());
-    
-    NGTexture* ret = q->second;
+    NGTexture* ret = NULL;
+    if (q != _textures.end())
+    {
+        ret = q->second;
+    }
     
     return ret;
 }

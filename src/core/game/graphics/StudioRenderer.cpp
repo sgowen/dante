@@ -91,6 +91,7 @@ StudioRenderer::StudioRenderer() : Renderer(),
 _textureManager(new TextureManager()),
 _rendererHelper(RENDERER_HELPER_FACTORY->createRendererHelper()),
 _fontSpriteBatcher(new SpriteBatcher(_rendererHelper)),
+_fbSpriteBatcher(new SpriteBatcher(_rendererHelper)),
 _fillPolygonBatcher(new PolygonBatcher(_rendererHelper, true)),
 _boundsPolygonBatcher(new PolygonBatcher(_rendererHelper, false)),
 _lineBatcher(new LineBatcher(_rendererHelper)),
@@ -100,7 +101,7 @@ _shaderProgramLoader(SHADER_PROGRAM_LOADER_FACTORY->createNGShaderLoader()),
 _textureNGShader(new NGTextureShader(*_rendererHelper, "shader_003_vert.ngs", "shader_003_frag.ngs")),
 _colorNGShader(new NGGeometryShader(*_rendererHelper, "shader_001_vert.ngs", "shader_001_frag.ngs")),
 _framebufferToScreenNGShader(new NGFramebufferToScreenShader(*_rendererHelper, "shader_002_vert.ngs", "shader_002_frag.ngs")),
-_font(new Font("texture_001.ngt", 0, 0, 16, 64, 75, 1024, 1024)),
+_font(new Font(0, 0, 16, 64, 75, 1024, 1024)),
 _toastStateTime(0),
 _fbIndex(0),
 _scrollValue(1),
@@ -123,6 +124,12 @@ _parallaxLayer2FactorY(0)
     {
         _camBounds[i] = new NGRect(0, 0, CAM_WIDTH, CAM_HEIGHT);
     }
+    
+    _screenVertices.reserve(4);
+    _screenVertices.push_back(VERTEX_2D(-1, -1));
+    _screenVertices.push_back(VERTEX_2D(-1, 1));
+    _screenVertices.push_back(VERTEX_2D(1, 1));
+    _screenVertices.push_back(VERTEX_2D(1, -1));
 }
 
 StudioRenderer::~StudioRenderer()
@@ -132,6 +139,7 @@ StudioRenderer::~StudioRenderer()
     delete _textureManager;
     delete _rendererHelper;
     delete _fontSpriteBatcher;
+    delete _fbSpriteBatcher;
     for (int i = 0; i < NUM_SPRITE_BATCHERS; ++i)
     {
         delete _spriteBatchers[i];
@@ -282,96 +290,8 @@ void StudioRenderer::setFramebuffer(int framebufferIndex, float r, float g, floa
 
 void StudioRenderer::renderWorld()
 {
-    _rendererHelper->updateMatrix(_camBounds[3]->getLeft(), _camBounds[3]->getRight(), _camBounds[3]->getBottom(), _camBounds[3]->getTop());
+    World* world = _engine->_world;
     
-    setFramebuffer(0);
-    _rendererHelper->useNormalBlending();
-    renderLayers();
-    
-    _rendererHelper->updateMatrix(_camBounds[3]->getLeft(), _camBounds[3]->getRight(), _camBounds[3]->getBottom(), _camBounds[3]->getTop());
-    setFramebuffer(1);
-    _rendererHelper->useScreenBlending();
-    renderEntities();
-    
-    setFramebuffer(2);
-    
-    _rendererHelper->useScreenBlending();
-    for (int i = 0; i < _fbIndex; ++i)
-    {
-        static std::vector<VERTEX_2D> screenVertices;
-        screenVertices.clear();
-        screenVertices.reserve(4);
-        screenVertices.push_back(VERTEX_2D(-1, -1));
-        screenVertices.push_back(VERTEX_2D(-1, 1));
-        screenVertices.push_back(VERTEX_2D(1, 1));
-        screenVertices.push_back(VERTEX_2D(1, -1));
-        
-        _framebufferToScreenNGShader->bind(&screenVertices, _rendererHelper->getFramebuffer(i));
-        _rendererHelper->drawIndexed(NGPrimitiveType_Triangles, 0, INDICES_PER_RECTANGLE);
-        _framebufferToScreenNGShader->unbind();
-    }
-}
-
-void StudioRenderer::renderLayers()
-{
-    static const int NUM_LAYERS = 4;
-    
-    for (int i = 0; i < NUM_LAYERS; ++i)
-    {
-        _spriteBatchers[i]->beginBatch();
-    }
-    
-    if (_engineState & StudioEngineState_DisplayTypes)
-    {
-        _fontSpriteBatcher->beginBatch();
-    }
-    
-    std::string textures[NUM_LAYERS];
-    
-    std::vector<Entity*> entities = _engine->_world->getLayers();
-    for (Entity* e : entities)
-    {
-        if (e == _input->_activeEntity)
-        {
-            continue;
-        }
-        
-        TextureRegion tr = ASSETS->findTextureRegion(e->getTextureMapping(), e->getStateTime());
-        
-        _spriteBatchers[e->getEntityDef().layer]->renderSprite(e->getPosition().x, e->getPosition().y, e->getWidth(), e->getHeight(), e->getAngle(), tr, e->isFacingLeft());
-        textures[e->getEntityDef().layer] = tr.getTextureName();
-        
-        if ((_engineState & StudioEngineState_DisplayTypes) &&
-            _engineState & (1 << (e->getEntityDef().layer + StudioEngineState_LayerBitBegin)))
-        {
-            renderText(e->getEntityDef().typeName.c_str(), e->getPosition().x, e->getPosition().y, FONT_ALIGN_CENTER);
-        }
-    }
-    
-    for (int i = 0; i < NUM_LAYERS; ++i)
-    {
-        if (textures[i].length() > 0)
-        {
-            if (_engineState & (1 << (i + StudioEngineState_LayerBitBegin)))
-            {
-                if (_engineState & StudioEngineState_DisplayParallax)
-                {
-                    _rendererHelper->updateMatrix(_camBounds[i]->getLeft(), _camBounds[i]->getRight(), _camBounds[i]->getBottom(), _camBounds[i]->getTop());
-                }
-                
-                _spriteBatchers[i]->endBatch(_textureNGShader, _textureManager->getTextureWithName(textures[i]));
-            }
-        }
-    }
-    
-    if (_engineState & StudioEngineState_DisplayTypes)
-    {
-        _fontSpriteBatcher->endBatch(_textureNGShader, _fontTexture);
-    }
-}
-
-void StudioRenderer::renderEntities()
-{
     for (int i = 0; i < NUM_SPRITE_BATCHERS; ++i)
     {
         _spriteBatchers[i]->beginBatch();
@@ -385,14 +305,9 @@ void StudioRenderer::renderEntities()
     std::string textures[NUM_SPRITE_BATCHERS];
     
     {
-        std::vector<Entity*> entities = _engine->_world->getPlayers();
+        std::vector<Entity*> entities = world->getLayers();
         for (Entity* e : entities)
         {
-            if (e == _input->_activeEntity)
-            {
-                continue;
-            }
-            
             TextureRegion tr = ASSETS->findTextureRegion(e->getTextureMapping(), e->getStateTime());
             
             _spriteBatchers[e->getEntityDef().layer]->renderSprite(e->getPosition().x, e->getPosition().y, e->getWidth(), e->getHeight(), e->getAngle(), tr, e->isFacingLeft());
@@ -407,14 +322,9 @@ void StudioRenderer::renderEntities()
     }
     
     {
-        std::vector<Entity*> entities = _engine->_world->getDynamicEntities();
+        std::vector<Entity*> entities = world->getPlayers();
         for (Entity* e : entities)
         {
-            if (e == _input->_activeEntity)
-            {
-                continue;
-            }
-            
             TextureRegion tr = ASSETS->findTextureRegion(e->getTextureMapping(), e->getStateTime());
             
             _spriteBatchers[e->getEntityDef().layer]->renderSprite(e->getPosition().x, e->getPosition().y, e->getWidth(), e->getHeight(), e->getAngle(), tr, e->isFacingLeft());
@@ -429,14 +339,9 @@ void StudioRenderer::renderEntities()
     }
     
     {
-        std::vector<Entity*> entities = _engine->_world->getStaticEntities();
+        std::vector<Entity*> entities = world->getDynamicEntities();
         for (Entity* e : entities)
         {
-            if (e == _input->_activeEntity)
-            {
-                continue;
-            }
-            
             TextureRegion tr = ASSETS->findTextureRegion(e->getTextureMapping(), e->getStateTime());
             
             _spriteBatchers[e->getEntityDef().layer]->renderSprite(e->getPosition().x, e->getPosition().y, e->getWidth(), e->getHeight(), e->getAngle(), tr, e->isFacingLeft());
@@ -450,15 +355,50 @@ void StudioRenderer::renderEntities()
         }
     }
     
-    for (int i = 0; i < NUM_SPRITE_BATCHERS; ++i)
     {
-        if (textures[i].length() > 0)
+        std::vector<Entity*> entities = world->getStaticEntities();
+        for (Entity* e : entities)
         {
-            if (_engineState & (1 << (i + StudioEngineState_LayerBitBegin)))
+            TextureRegion tr = ASSETS->findTextureRegion(e->getTextureMapping(), e->getStateTime());
+            
+            _spriteBatchers[e->getEntityDef().layer]->renderSprite(e->getPosition().x, e->getPosition().y, e->getWidth(), e->getHeight(), e->getAngle(), tr, e->isFacingLeft());
+            textures[e->getEntityDef().layer] = tr.getTextureName();
+            
+            if ((_engineState & StudioEngineState_DisplayTypes) &&
+                _engineState & (1 << (e->getEntityDef().layer + StudioEngineState_LayerBitBegin)))
             {
-                _spriteBatchers[i]->endBatch(_textureNGShader, _textureManager->getTextureWithName(textures[i]));
+                renderText(e->getEntityDef().typeName.c_str(), e->getPosition().x, e->getPosition().y, FONT_ALIGN_CENTER);
             }
         }
+    }
+    
+    _rendererHelper->useNormalBlending();
+    
+    setFramebuffer(0);
+    for (int i = 0; i < 5; ++i)
+    {
+        endBatchWithTexture(_spriteBatchers[i], _textureManager->getTextureWithName(textures[i]), i);
+    }
+    
+    setFramebuffer(1);
+    endBatchWithTexture(_spriteBatchers[5], _textureManager->getTextureWithName(textures[5]), 5);
+    
+    setFramebuffer(2);
+    for (int i = 6; i < 9; ++i)
+    {
+        endBatchWithTexture(_spriteBatchers[i], _textureManager->getTextureWithName(textures[i]), i);
+    }
+    
+    int fbBegin = 0;
+    int fbEnd = 3;
+    
+    _rendererHelper->useScreenBlending();
+    setFramebuffer(9);
+    for (int i = fbBegin; i < fbEnd; ++i)
+    {
+        _framebufferToScreenNGShader->bind(&_screenVertices, _rendererHelper->getFramebuffer(i));
+        _rendererHelper->drawIndexed(NGPrimitiveType_Triangles, 0, INDICES_PER_RECTANGLE);
+        _framebufferToScreenNGShader->unbind();
     }
     
     if (_engineState & StudioEngineState_DisplayTypes)
@@ -467,10 +407,26 @@ void StudioRenderer::renderEntities()
     }
 }
 
+void StudioRenderer::endBatchWithTexture(SpriteBatcher* sb, NGTexture* tex, int layer)
+{
+    if (tex && _engineState & (1 << (layer + StudioEngineState_LayerBitBegin)))
+    {
+        int c = clamp(layer, 3, 0);
+        if (!(_engineState & StudioEngineState_DisplayParallax))
+        {
+            c = 3;
+        }
+        
+        _rendererHelper->updateMatrix(_camBounds[c]->getLeft(), _camBounds[c]->getRight(), _camBounds[c]->getBottom(), _camBounds[c]->getTop());
+        
+        sb->endBatch(_textureNGShader, tex);
+    }
+}
+
 void StudioRenderer::renderBox2D()
 {
+    _rendererHelper->useScreenBlending();
     _rendererHelper->updateMatrix(_camBounds[3]->getLeft(), _camBounds[3]->getRight(), _camBounds[3]->getBottom(), _camBounds[3]->getTop());
-    
     _box2DDebugRenderer->render(&_engine->_world->getWorld(), _colorNGShader);
 }
 

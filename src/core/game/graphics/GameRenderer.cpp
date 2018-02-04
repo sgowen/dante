@@ -89,6 +89,8 @@
 GameRenderer::GameRenderer() : Renderer(),
 _textureManager(new TextureManager()),
 _rendererHelper(RENDERER_HELPER_FACTORY->createRendererHelper()),
+_fontSpriteBatcher(new SpriteBatcher(_rendererHelper)),
+_fbSpriteBatcher(new SpriteBatcher(_rendererHelper)),
 _fillPolygonBatcher(new PolygonBatcher(_rendererHelper, true)),
 _boundsPolygonBatcher(new PolygonBatcher(_rendererHelper, false)),
 _lineBatcher(new LineBatcher(_rendererHelper)),
@@ -99,7 +101,7 @@ _textureNGShader(new NGTextureShader(*_rendererHelper, "shader_003_vert.ngs", "s
 _colorNGShader(new NGGeometryShader(*_rendererHelper, "shader_001_vert.ngs", "shader_001_frag.ngs")),
 _lightingNGShader(new NGLightingShader(*_rendererHelper, "shader_004_vert.ngs", "shader_004_frag.ngs")),
 _framebufferToScreenNGShader(new NGFramebufferToScreenShader(*_rendererHelper, "shader_002_vert.ngs", "shader_002_frag.ngs")),
-_font(new Font("texture_000.ngt", 0, 0, 16, 64, 75, 1024, 1024)),
+_font(new Font(0, 0, 16, 64, 75, 1024, 1024)),
 _fbIndex(0),
 _engine(NULL),
 _engineState(0),
@@ -109,7 +111,9 @@ _parallaxLayer1FactorX(0),
 _parallaxLayer1FactorY(0),
 _parallaxLayer2FactorX(0),
 _parallaxLayer2FactorY(0),
-_backgroundLightZFactor(0)
+_fontTexture(NULL),
+_behindPlayerLightZFactor(0),
+_frontPlayerLightZFactor(0)
 {
     for (int i = 0; i < NUM_SPRITE_BATCHERS; ++i)
     {
@@ -120,6 +124,12 @@ _backgroundLightZFactor(0)
     {
         _camBounds[i] = new NGRect(0, 0, CAM_WIDTH, CAM_HEIGHT);
     }
+    
+    _screenVertices.reserve(4);
+    _screenVertices.push_back(VERTEX_2D(-1, -1));
+    _screenVertices.push_back(VERTEX_2D(-1, 1));
+    _screenVertices.push_back(VERTEX_2D(1, 1));
+    _screenVertices.push_back(VERTEX_2D(1, -1));
 }
 
 GameRenderer::~GameRenderer()
@@ -128,6 +138,8 @@ GameRenderer::~GameRenderer()
     
     delete _textureManager;
     delete _rendererHelper;
+    delete _fontSpriteBatcher;
+    delete _fbSpriteBatcher;
     for (int i = 0; i < NUM_SPRITE_BATCHERS; ++i)
     {
         delete _spriteBatchers[i];
@@ -160,7 +172,21 @@ void GameRenderer::createDeviceDependentResources()
     _parallaxLayer1FactorY = NG_CFG->getFloat("ParallaxLayer1FactorY");
     _parallaxLayer2FactorX = NG_CFG->getFloat("ParallaxLayer2FactorX");
     _parallaxLayer2FactorY = NG_CFG->getFloat("ParallaxLayer2FactorY");
-    _backgroundLightZFactor = NG_CFG->getFloat("BackgroundLightZFactor");
+    _playerLightColor[0] = NG_CFG->getFloat("PlayerLightColorR");
+    _playerLightColor[1] = NG_CFG->getFloat("PlayerLightColorG");
+    _playerLightColor[2] = NG_CFG->getFloat("PlayerLightColorB");
+    _playerLightColor[3] = NG_CFG->getFloat("PlayerLightColorA");
+    _ambientColor[0] = NG_CFG->getFloat("AmbientColorR");
+    _ambientColor[1] = NG_CFG->getFloat("AmbientColorG");
+    _ambientColor[2] = NG_CFG->getFloat("AmbientColorB");
+    _ambientColor[3] = NG_CFG->getFloat("AmbientColorA");
+    _fallOff[0] = NG_CFG->getFloat("LightFalloffX");
+    _fallOff[1] = NG_CFG->getFloat("LightFalloffY");
+    _fallOff[2] = NG_CFG->getFloat("LightFalloffZ");
+    _behindPlayerLightZFactor = NG_CFG->getFloat("BehindPlayerLightZFactor");
+    _frontPlayerLightZFactor = NG_CFG->getFloat("FrontPlayerLightZFactor");
+    
+    _fontTexture = _textureManager->getTextureWithName("texture_000.ngt");
     
     _textureNGShader->load(*_shaderProgramLoader);
     _colorNGShader->load(*_shaderProgramLoader);
@@ -188,10 +214,10 @@ void GameRenderer::render()
 {
     _engineState = _engine->_state;
     
-    setFramebuffer(0);
-    
     if (_textureManager->ensureTextures())
     {
+        updateCamera();
+        
         renderWorld();
         
         if (_engineState & GameEngineState_DisplayBox2D)
@@ -199,10 +225,13 @@ void GameRenderer::render()
             renderBox2D();
         }
         
-        renderUI();
+        if (_engine->_displayUI)
+        {
+            renderUI();
+        }
+        
+        endFrame();
     }
-    
-    endFrame();
 }
 
 void GameRenderer::setEngine(GameEngine* inValue)
@@ -212,26 +241,25 @@ void GameRenderer::setEngine(GameEngine* inValue)
 
 void GameRenderer::updateCamera()
 {
-    _lightingNGShader->resetLights();
-    
     // Adjust camera based on the player position
     float x = 0;
     float y = 0;
     
     if (NG_CLIENT && NG_CLIENT->getState() == NCS_Welcomed)
     {
+        _playerLights.clear();
+        _lights.clear();
+        
         bool isCamInitialized = false;
-        int numLights = 0;
         
         for (Entity* entity : InstanceManager::getClientWorld()->getPlayers())
         {
-            PlayerController* robot = static_cast<PlayerController*>(entity->getController());
-            
             float pX = entity->getPosition().x;
             float pY = entity->getPosition().y;
             
-            _lightingNGShader->configLight(numLights++, pX, pY + entity->getHeight() / 4);
+            _playerLights.push_back(LightDef(pX, pY + entity->getHeight() / 4, _playerLightColor[0], _playerLightColor[1], _playerLightColor[2], _playerLightColor[3]));
             
+            PlayerController* robot = static_cast<PlayerController*>(entity->getController());
             if (!isCamInitialized && robot->isLocalPlayer())
             {
                 x = pX;
@@ -244,6 +272,18 @@ void GameRenderer::updateCamera()
                 y = clamp(y, FLT_MAX, 0);
                 
                 isCamInitialized = true;
+            }
+        }
+        
+        /// Temporary
+        for (Entity* entity : InstanceManager::getClientWorld()->getLayers())
+        {
+            if (entity->getEntityDef().type == 'Z1S1')
+            {
+                float pX = entity->getPosition().x;
+                float pY = entity->getPosition().y;
+                
+                _lights.push_back(LightDef(pX, pY, 1, 0, 0, 1));
             }
         }
     }
@@ -266,121 +306,27 @@ void GameRenderer::setFramebuffer(int framebufferIndex, float r, float g, float 
 
 void GameRenderer::renderWorld()
 {
-    _rendererHelper->useNormalBlending();
-    setFramebuffer(0);
-    renderLayers(InstanceManager::getClientWorld(), false);
-    if (_engineState & GameEngineState_Lighting)
-    {
-        setFramebuffer(_fbIndex + 1);
-        renderLayers(InstanceManager::getClientWorld(), true);
-    }
+    World* world = InstanceManager::getClientWorld();
     
-    _rendererHelper->updateMatrix(_camBounds[3]->getLeft(), _camBounds[3]->getRight(), _camBounds[3]->getBottom(), _camBounds[3]->getTop());
-    setFramebuffer(_fbIndex + 1, 0, 0, 0, 0);
-    _rendererHelper->useScreenBlending();
-    renderEntities(InstanceManager::getClientWorld(), false, false);
-    if (Server::getInstance() && Server::getInstance()->isDisplaying())
-    {
-        renderEntities(InstanceManager::getServerWorld(), false, true);
-    }
-    if (_engineState & GameEngineState_Lighting)
-    {
-        setFramebuffer(_fbIndex + 1, 0, 0, 0, 0);
-        _rendererHelper->useScreenBlending();
-        renderEntities(InstanceManager::getClientWorld(), true, false);
-        if (Server::getInstance() && Server::getInstance()->isDisplaying())
-        {
-            renderEntities(InstanceManager::getServerWorld(), true, true);
-        }
-    }
-    
-    int fbBegin = 0;
-    
-    if (_engineState & GameEngineState_Lighting)
-    {
-        static TextureRegion tr = TextureRegion("framebuffer", 0, 0, 1, 1, 1, 1);
-        
-        float x = _camBounds[3]->getLeft() + _camBounds[3]->getWidth() / 2;
-        float y = _camBounds[3]->getBottom() + _camBounds[3]->getHeight() / 2;
-        
-        _rendererHelper->useScreenBlending();
-        
-        fbBegin = _fbIndex + 1;
-        
-        {
-            _lightingNGShader->configZ(_engine->_lightZ * _backgroundLightZFactor);
-            setFramebuffer(_fbIndex + 1, 0, 0, 0, 0);
-            _spriteBatchers[0]->beginBatch();
-            _spriteBatchers[0]->renderSprite(x, y, _camBounds[3]->getWidth(), _camBounds[3]->getHeight(), 0, tr);
-            _spriteBatchers[0]->endBatch(_lightingNGShader, _rendererHelper->getFramebuffer(0), _rendererHelper->getFramebuffer(1));
-        }
-        
-        {
-            _lightingNGShader->configZ(_engine->_lightZ);
-            setFramebuffer(_fbIndex + 1, 0, 0, 0, 0);
-            _spriteBatchers[0]->beginBatch();
-            _spriteBatchers[0]->renderSprite(x, y, _camBounds[3]->getWidth(), _camBounds[3]->getHeight(), 0, tr);
-            _spriteBatchers[0]->endBatch(_lightingNGShader, _rendererHelper->getFramebuffer(2), _rendererHelper->getFramebuffer(3));
-        }
-    }
-    
-    setFramebuffer(_fbIndex + 1);
-    
-    _rendererHelper->useScreenBlending();
-    for (int i = fbBegin; i < _fbIndex; ++i)
-    {
-        static std::vector<VERTEX_2D> screenVertices;
-		screenVertices.clear();
-		screenVertices.reserve(4);
-		screenVertices.push_back(VERTEX_2D(-1, -1));
-		screenVertices.push_back(VERTEX_2D(-1, 1));
-		screenVertices.push_back(VERTEX_2D(1, 1));
-		screenVertices.push_back(VERTEX_2D(1, -1));
-
-        _framebufferToScreenNGShader->bind(&screenVertices, _rendererHelper->getFramebuffer(i));
-        _rendererHelper->drawIndexed(NGPrimitiveType_Triangles, 0, INDICES_PER_RECTANGLE);
-        _framebufferToScreenNGShader->unbind();
-    }
-}
-
-void GameRenderer::renderLayers(World* world, bool isNormals)
-{
-    static const int NUM_LAYERS = 4;
-    
-    for (int i = 0; i < NUM_LAYERS; ++i)
-    {
-        _spriteBatchers[i]->beginBatch();
-    }
-    
-    std::string textures[NUM_LAYERS];
-    
-    std::vector<Entity*> entities = world->getLayers();
-    for (Entity* e : entities)
-    {
-        TextureRegion tr = ASSETS->findTextureRegion(e->getTextureMapping(), e->getStateTime());
-        
-        _spriteBatchers[e->getEntityDef().layer]->renderSprite(e->getPosition().x, e->getPosition().y, e->getWidth(), e->getHeight(), e->getAngle(), tr, e->isFacingLeft());
-        textures[e->getEntityDef().layer] = isNormals ? tr.getNormalMapName() : tr.getTextureName();
-    }
-    
-    for (int i = 0; i < NUM_LAYERS; ++i)
-    {
-        if (textures[i].length() > 0)
-        {
-            _rendererHelper->updateMatrix(_camBounds[i]->getLeft(), _camBounds[i]->getRight(), _camBounds[i]->getBottom(), _camBounds[i]->getTop());
-            _spriteBatchers[i]->endBatch(_textureNGShader, _textureManager->getTextureWithName(textures[i]));
-        }
-    }
-}
-
-void GameRenderer::renderEntities(World* world, bool isNormals, bool isServer)
-{
     for (int i = 0; i < NUM_SPRITE_BATCHERS; ++i)
     {
         _spriteBatchers[i]->beginBatch();
     }
     
     std::string textures[NUM_SPRITE_BATCHERS];
+    std::string normals[NUM_SPRITE_BATCHERS];
+    
+    {
+        std::vector<Entity*> entities = world->getLayers();
+        for (Entity* e : entities)
+        {
+            TextureRegion tr = ASSETS->findTextureRegion(e->getTextureMapping(), e->getStateTime());
+            
+            _spriteBatchers[e->getEntityDef().layer]->renderSprite(e->getPosition().x, e->getPosition().y, e->getWidth(), e->getHeight(), e->getAngle(), tr, e->isFacingLeft());
+            textures[e->getEntityDef().layer] = tr.getTextureName();
+            normals[e->getEntityDef().layer] = tr.getNormalMapName();
+        }
+    }
     
     {
         std::vector<Entity*> entities = world->getPlayers();
@@ -389,7 +335,8 @@ void GameRenderer::renderEntities(World* world, bool isNormals, bool isServer)
             TextureRegion tr = ASSETS->findTextureRegion(e->getTextureMapping(), e->getStateTime());
             
             _spriteBatchers[e->getEntityDef().layer]->renderSprite(e->getPosition().x, e->getPosition().y, e->getWidth(), e->getHeight(), e->getAngle(), tr, e->isFacingLeft());
-            textures[e->getEntityDef().layer] = isNormals ? tr.getNormalMapName() : tr.getTextureName();
+            textures[e->getEntityDef().layer] = tr.getTextureName();
+            normals[e->getEntityDef().layer] = tr.getNormalMapName();
         }
     }
     
@@ -400,7 +347,8 @@ void GameRenderer::renderEntities(World* world, bool isNormals, bool isServer)
             TextureRegion tr = ASSETS->findTextureRegion(e->getTextureMapping(), e->getStateTime());
             
             _spriteBatchers[e->getEntityDef().layer]->renderSprite(e->getPosition().x, e->getPosition().y, e->getWidth(), e->getHeight(), e->getAngle(), tr, e->isFacingLeft());
-            textures[e->getEntityDef().layer] = isNormals ? tr.getNormalMapName() : tr.getTextureName();
+            textures[e->getEntityDef().layer] = tr.getTextureName();
+            normals[e->getEntityDef().layer] = tr.getNormalMapName();
         }
     }
     
@@ -411,16 +359,137 @@ void GameRenderer::renderEntities(World* world, bool isNormals, bool isServer)
             TextureRegion tr = ASSETS->findTextureRegion(e->getTextureMapping(), e->getStateTime());
             
             _spriteBatchers[e->getEntityDef().layer]->renderSprite(e->getPosition().x, e->getPosition().y, e->getWidth(), e->getHeight(), e->getAngle(), tr, e->isFacingLeft());
-            textures[e->getEntityDef().layer] = isNormals ? tr.getNormalMapName() : tr.getTextureName();
+            textures[e->getEntityDef().layer] = tr.getTextureName();
+            normals[e->getEntityDef().layer] = tr.getNormalMapName();
         }
     }
     
-    for (int i = 0; i < NUM_SPRITE_BATCHERS; ++i)
+    _rendererHelper->useNormalBlending();
+    
+    setFramebuffer(0);
+    for (int i = 0; i < 5; ++i)
     {
-        if (textures[i].length() > 0)
+        endBatchWithTexture(_spriteBatchers[i], _textureManager->getTextureWithName(textures[i]), i);
+    }
+    
+    setFramebuffer(1);
+    endBatchWithTexture(_spriteBatchers[5], _textureManager->getTextureWithName(textures[5]), 5);
+    
+    setFramebuffer(2);
+    for (int i = 6; i < 9; ++i)
+    {
+        endBatchWithTexture(_spriteBatchers[i], _textureManager->getTextureWithName(textures[i]), i);
+    }
+    
+    int fbBegin = 0;
+    int fbEnd = 3;
+    if (_engineState & GameEngineState_Lighting)
+    {
+        setFramebuffer(3);
+        for (int i = 0; i < 5; ++i)
         {
-            _spriteBatchers[i]->endBatch(_textureNGShader, _textureManager->getTextureWithName(textures[i]));
+            endBatchWithTexture(_spriteBatchers[i], _textureManager->getTextureWithName(normals[i]), i);
         }
+        
+        setFramebuffer(4);
+        endBatchWithTexture(_spriteBatchers[5], _textureManager->getTextureWithName(normals[5]), 5);
+        
+        setFramebuffer(5);
+        for (int i = 6; i < 9; ++i)
+        {
+            endBatchWithTexture(_spriteBatchers[i], _textureManager->getTextureWithName(normals[i]), i);
+        }
+        
+        {
+            /// Use Lighting Shader
+            static TextureRegion tr = TextureRegion("framebuffer", 0, 0, 1, 1, 1, 1);
+            
+            float x = _camBounds[3]->getLeft() + _camBounds[3]->getWidth() / 2;
+            float y = _camBounds[3]->getBottom() + _camBounds[3]->getHeight() / 2;
+            
+            _rendererHelper->useScreenBlending();
+            
+            fbBegin = 6;
+            fbEnd = 9;
+            
+            {
+                _lightingNGShader->resetLights();
+                _lightingNGShader->configAmbientLight(_ambientColor[0], _ambientColor[1], _ambientColor[2], _ambientColor[3]);
+                _lightingNGShader->configureFallOff(_fallOff[0], _fallOff[1], _fallOff[2]);
+                for (int j = 0 ; j < _playerLights.size(); ++j)
+                {
+                    LightDef& ld = _playerLights[j];
+                    _lightingNGShader->addLight(ld._lightPosX, ld._lightPosY, _behindPlayerLightZFactor * _engine->_playerLightZ, ld._lightColorR, ld._lightColorG, ld._lightColorB, ld._lightColorA);
+                }
+                for (int j = 0 ; j < _lights.size(); ++j)
+                {
+                    LightDef& ld = _lights[j];
+                    _lightingNGShader->addLight(ld._lightPosX, ld._lightPosY, _behindPlayerLightZFactor * _engine->_playerLightZ, ld._lightColorR, ld._lightColorG, ld._lightColorB, ld._lightColorA);
+                }
+                
+                setFramebuffer(6, 0, 0, 0, 0);
+                _fbSpriteBatcher->beginBatch();
+                _fbSpriteBatcher->renderSprite(x, y, _camBounds[3]->getWidth(), _camBounds[3]->getHeight(), 0, tr);
+                _fbSpriteBatcher->endBatch(_lightingNGShader, _rendererHelper->getFramebuffer(0), _rendererHelper->getFramebuffer(3));
+            }
+            
+            {
+                _lightingNGShader->resetLights();
+                _lightingNGShader->configAmbientLight(1, 1, 1, 1);
+                _lightingNGShader->configureFallOff(_fallOff[0], _fallOff[1], _fallOff[2]);
+                for (int j = 0 ; j < _lights.size(); ++j)
+                {
+                    LightDef& ld = _lights[j];
+                    _lightingNGShader->addLight(ld._lightPosX, ld._lightPosY, _engine->_playerLightZ, ld._lightColorR, ld._lightColorG, ld._lightColorB, ld._lightColorA);
+                }
+                
+                setFramebuffer(7, 0, 0, 0, 0);
+                _fbSpriteBatcher->beginBatch();
+                _fbSpriteBatcher->renderSprite(x, y, _camBounds[3]->getWidth(), _camBounds[3]->getHeight(), 0, tr);
+                _fbSpriteBatcher->endBatch(_lightingNGShader, _rendererHelper->getFramebuffer(1), _rendererHelper->getFramebuffer(4));
+            }
+            
+            {
+                _lightingNGShader->resetLights();
+                _lightingNGShader->configAmbientLight(_ambientColor[0], _ambientColor[1], _ambientColor[2], _ambientColor[3]);
+                _lightingNGShader->configureFallOff(_fallOff[0], _fallOff[1], _fallOff[2]);
+                for (int j = 0 ; j < _playerLights.size(); ++j)
+                {
+                    LightDef& ld = _playerLights[j];
+                    _lightingNGShader->addLight(ld._lightPosX, ld._lightPosY, _frontPlayerLightZFactor * _engine->_playerLightZ, ld._lightColorR, ld._lightColorG, ld._lightColorB, ld._lightColorA);
+                }
+                for (int j = 0 ; j < _lights.size(); ++j)
+                {
+                    LightDef& ld = _lights[j];
+                    _lightingNGShader->addLight(ld._lightPosX, ld._lightPosY, _frontPlayerLightZFactor * _engine->_playerLightZ, ld._lightColorR, ld._lightColorG, ld._lightColorB, ld._lightColorA);
+                }
+                
+                setFramebuffer(8, 0, 0, 0, 0);
+                _fbSpriteBatcher->beginBatch();
+                _fbSpriteBatcher->renderSprite(x, y, _camBounds[3]->getWidth(), _camBounds[3]->getHeight(), 0, tr);
+                _fbSpriteBatcher->endBatch(_lightingNGShader, _rendererHelper->getFramebuffer(2), _rendererHelper->getFramebuffer(5));
+            }
+        }
+    }
+    
+    _rendererHelper->useScreenBlending();
+    setFramebuffer(9);
+    for (int i = fbBegin; i < fbEnd; ++i)
+    {
+        _framebufferToScreenNGShader->bind(&_screenVertices, _rendererHelper->getFramebuffer(i));
+        _rendererHelper->drawIndexed(NGPrimitiveType_Triangles, 0, INDICES_PER_RECTANGLE);
+        _framebufferToScreenNGShader->unbind();
+    }
+}
+
+void GameRenderer::endBatchWithTexture(SpriteBatcher* sb, NGTexture* tex, int layer)
+{
+    if (tex)
+    {
+        int c = clamp(layer, 3, 0);
+        _rendererHelper->updateMatrix(_camBounds[c]->getLeft(), _camBounds[c]->getRight(), _camBounds[c]->getBottom(), _camBounds[c]->getTop());
+        
+        sb->endBatch(_textureNGShader, tex);
     }
 }
 
@@ -429,18 +498,13 @@ void GameRenderer::renderBox2D()
 	_rendererHelper->updateMatrix(_camBounds[3]->getLeft(), _camBounds[3]->getRight(), _camBounds[3]->getBottom(), _camBounds[3]->getTop());
 
     _box2DDebugRenderer->render(&InstanceManager::getClientWorld()->getWorld(), _colorNGShader);
-    
-    if (Server::getInstance() && Server::getInstance()->isDisplaying())
-    {
-        _box2DDebugRenderer->render(&InstanceManager::getServerWorld()->getWorld(), _colorNGShader);
-    }
 }
 
 void GameRenderer::renderUI()
 {
     _rendererHelper->updateMatrix(0, CAM_WIDTH, 0, CAM_HEIGHT);
     
-    _spriteBatchers[0]->beginBatch();
+    _fontSpriteBatcher->beginBatch();
     
     if (NG_CLIENT->getState() == NCS_Welcomed)
     {
@@ -468,12 +532,12 @@ void GameRenderer::renderUI()
         renderText(StringUtil::format("[M]         Music %s", NG_AUDIO_ENGINE->isMusicDisabled() ? " OFF" : "  ON").c_str(), CAM_WIDTH - 0.5f, CAM_HEIGHT - (row++ * padding), FONT_ALIGN_RIGHT);
         renderText(StringUtil::format("[B]   Box2D Debug %s", _engineState & GameEngineState_DisplayBox2D ? "  ON" : " OFF").c_str(), CAM_WIDTH - 0.5f, CAM_HEIGHT - (row++ * padding), FONT_ALIGN_RIGHT);
         renderText(StringUtil::format("[L] Interpolation %s", _engineState & GameEngineState_Interpolation ? "  ON" : " OFF").c_str(), CAM_WIDTH - 0.5f, CAM_HEIGHT - (row++ * padding), FONT_ALIGN_RIGHT);
-        std::string lightZ = StringUtil::format("%f", _engine->_lightZ);
+        std::string lightZ = StringUtil::format("%f", _engine->_playerLightZ);
         renderText(StringUtil::format("[Z]  Lighting %s", _engineState & GameEngineState_Lighting ? lightZ.c_str() : "     OFF").c_str(), CAM_WIDTH - 0.5f, CAM_HEIGHT - (row++ * padding), FONT_ALIGN_RIGHT);
+        renderText(StringUtil::format("[U]    Display UI %s", _engine->_displayUI ? "  ON" : " OFF").c_str(), CAM_WIDTH - 0.5f, CAM_HEIGHT - (row++ * padding), FONT_ALIGN_RIGHT);
         
         if (Server::getInstance())
         {
-            renderText(StringUtil::format("[I]         Debug %s", Server::getInstance()->isDisplaying() ? "  ON" : " OFF").c_str(), CAM_WIDTH - 0.5f, CAM_HEIGHT - (row++ * padding), FONT_ALIGN_RIGHT);
             renderText(StringUtil::format("[T]    Toggle Map %s", InstanceManager::getServerWorld()->getMapName().c_str()).c_str(), CAM_WIDTH - 0.5f, CAM_HEIGHT - (row++ * padding), FONT_ALIGN_RIGHT);
         }
         else
@@ -512,7 +576,7 @@ void GameRenderer::renderUI()
         renderText(StringUtil::format("%s, [ESC] to exit", "Joining Server...").c_str(), 0.5f, CAM_HEIGHT - 4, FONT_ALIGN_LEFT);
     }
     
-    _spriteBatchers[0]->endBatch(_textureNGShader, _textureManager->getTextureWithName("texture_000.ngt"));
+    _fontSpriteBatcher->endBatch(_textureNGShader, _fontTexture);
 }
 
 void GameRenderer::renderText(const char* inStr, float x, float y, int justification)
@@ -522,7 +586,7 @@ void GameRenderer::renderText(const char* inStr, float x, float y, int justifica
     
     std::string text(inStr);
     
-    _font->renderText(*_spriteBatchers[0], text, x, y, fgWidth, fgHeight, justification);
+    _font->renderText(*_fontSpriteBatcher, text, x, y, fgWidth, fgHeight, justification);
 }
 
 void GameRenderer::endFrame()
@@ -532,16 +596,8 @@ void GameRenderer::endFrame()
     _rendererHelper->bindToScreenFramebuffer();
     _rendererHelper->clearFramebufferWithColor(0, 0, 0, 1);
     _rendererHelper->useScreenBlending();
-    
-    static std::vector<VERTEX_2D> screenVertices;
-    screenVertices.clear();
-    screenVertices.reserve(4);
-    screenVertices.push_back(VERTEX_2D(-1, -1));
-    screenVertices.push_back(VERTEX_2D(-1, 1));
-    screenVertices.push_back(VERTEX_2D(1, 1));
-    screenVertices.push_back(VERTEX_2D(1, -1));
 
-    _framebufferToScreenNGShader->bind(&screenVertices, _rendererHelper->getFramebuffer(_fbIndex));
+    _framebufferToScreenNGShader->bind(&_screenVertices, _rendererHelper->getFramebuffer(_fbIndex));
     _rendererHelper->drawIndexed(NGPrimitiveType_Triangles, 0, INDICES_PER_RECTANGLE);
     _framebufferToScreenNGShader->unbind();
     

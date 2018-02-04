@@ -12,8 +12,10 @@
 #include "framework/graphics/portable/Renderer.h"
 
 #include "framework/graphics/portable/FontAlign.h"
+#include <framework/graphics/portable/VertexProgramInput.h>
 
 #include <string>
+#include <vector>
 
 class TextureManager;
 class SpriteBatcher;
@@ -36,6 +38,18 @@ class GameEngine;
 #define NUM_SPRITE_BATCHERS 10
 #define NUM_CAMERAS 4
 
+struct LightDef
+{
+    float _lightPosX;
+    float _lightPosY;
+    float _lightColorR;
+    float _lightColorG;
+    float _lightColorB;
+    float _lightColorA;
+    
+    LightDef(float lightPosX, float lightPosY, float lightColorR, float lightColorG, float lightColorB, float lightColorA) : _lightPosX(lightPosX), _lightPosY(lightPosY), _lightColorR(lightColorR), _lightColorG(lightColorG), _lightColorB(lightColorB), _lightColorA(lightColorA) {}
+};
+
 class GameRenderer : public Renderer
 {
 public:
@@ -48,12 +62,13 @@ public:
     virtual void render();
     
     void setEngine(GameEngine* inValue);
-    void updateCamera();
     
 private:
     TextureManager* _textureManager;
     RendererHelper* _rendererHelper;
     SpriteBatcher* _spriteBatchers[NUM_SPRITE_BATCHERS];
+    SpriteBatcher* _fontSpriteBatcher;
+    SpriteBatcher* _fbSpriteBatcher;
     PolygonBatcher* _fillPolygonBatcher;
     PolygonBatcher* _boundsPolygonBatcher;
     LineBatcher* _lineBatcher;
@@ -69,18 +84,26 @@ private:
     GameEngine* _engine;
     int _fbIndex;
     uint32_t _engineState;
+    NGTexture* _fontTexture;
+    std::vector<VERTEX_2D> _screenVertices;
+    std::vector<LightDef> _playerLights;
+    std::vector<LightDef> _lights;
     float _parallaxLayer0FactorX;
     float _parallaxLayer0FactorY;
     float _parallaxLayer1FactorX;
     float _parallaxLayer1FactorY;
     float _parallaxLayer2FactorX;
     float _parallaxLayer2FactorY;
-    float _backgroundLightZFactor;
+    float _playerLightColor[4];
+    float _ambientColor[4];
+    float _fallOff[3];
+    float _behindPlayerLightZFactor;
+    float _frontPlayerLightZFactor;
     
+    void updateCamera();
     void setFramebuffer(int framebufferIndex, float r = 0, float g = 0, float b = 0, float a = 0);
     void renderWorld();
-    void renderLayers(World* world, bool isNormals);
-    void renderEntities(World* world, bool isServer, bool isNormals);
+    void endBatchWithTexture(SpriteBatcher* sb, NGTexture* tex, int layer);
     void renderBox2D();
     void renderUI();
     void renderText(const char* inStr, float x, float y, int justification = FONT_ALIGN_LEFT);

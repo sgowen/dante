@@ -83,7 +83,8 @@ _server(NULL),
 _stateTime(0),
 _state(GameEngineState_Default),
 _map(0),
-_lightZ(0)
+_playerLightZ(0),
+_displayUI(true)
 {
     _state |= GameEngineState_Interpolation | GameEngineState_Lighting;
     
@@ -181,7 +182,7 @@ void GameEngine::createDeviceDependentResources()
     EntityLayoutMapper::getInstance()->initWithJsonFile("maps.cfg");
     ASSETS->initWithJsonFile("game_assets.cfg");
     
-    _lightZ = NG_CFG->getFloat("DefaultLightZ");
+    _playerLightZ = NG_CFG->getFloat("PlayerLightZ");
     
     _renderer->createDeviceDependentResources();
     
@@ -225,7 +226,6 @@ void GameEngine::render(double alpha)
         _world->interpolate(alpha);
     }
     
-    _renderer->updateCamera();
     _renderer->render();
     
     if (_state & GameEngineState_Interpolation)
@@ -266,12 +266,6 @@ bool GameEngine::handleNonMoveInput()
             break;
         case GIS_TOGGLE_LIGHTING:
             _state ^= GameEngineState_Lighting;
-            break;
-        case GIS_SERVER_TOGGLE_DISPLAY:
-            if (_server)
-            {
-                _server->toggleDisplaying();
-            }
             break;
         case GIS_SERVER_TOGGLE_MAP:
             if (_server)

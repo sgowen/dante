@@ -43,8 +43,3 @@ void NGFramebufferToScreenShader::unbind()
     _rendererHelper.bindTexture(NGTextureSlot_ZERO, NULL);
     _rendererHelper.bindNGShader(NULL);
 }
-
-void NGFramebufferToScreenShader::onLoaded()
-{
-    // Empty
-}

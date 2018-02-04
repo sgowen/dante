@@ -34,6 +34,7 @@ public:
     virtual void useNoBlending();
     virtual void bindInt4(NGShaderUniformInput* uniform, int4& inValue);
     virtual void bindFloat4(NGShaderUniformInput* uniform, float4& inValue);
+    virtual void bindFloat4Array(NGShaderUniformInput* uniform, int count, float4* inValue);
     virtual void bindMatrix(NGShaderUniformInput* uniform, mat4x4& inValue);
     virtual void bindMatrix(NGShaderUniformInput* uniform);
     virtual void bindTexture(NGTextureSlot textureSlot, NGTexture* texture, NGShaderUniformInput* uniform = NULL);
@@ -122,6 +123,7 @@ private:
     void createSamplerStates();
     D3D11_FILTER filterForMinAndMag(std::string& cfgFilterMin, std::string& cfgFilterMag);
     void createIndexBuffer();
+    void bindConstantBuffer(NGShaderUniformInput* uniform, const void *pSrcData);
 };
 
 #endif /* defined(__noctisgames__DirectXRendererHelper__) */

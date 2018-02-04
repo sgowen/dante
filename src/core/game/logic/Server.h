@@ -27,8 +27,6 @@ public:
     
     void update();
     uint8_t getPlayerIdForRobotBeingCreated();
-    void toggleDisplaying();
-    bool isDisplaying();
     void toggleMap();
 
 private:
@@ -40,7 +38,6 @@ private:
     double _stateTime;
     double _frameStateTime;
     uint32_t _map;
-    bool _isDisplaying;
     
     void handleNewClient(uint8_t playerId, std::string playerName);
     void handleLostClient(ClientProxy* inClientProxy, uint8_t index);

@@ -31,7 +31,6 @@ enum GameInputState
     GIS_TOGGLE_PHYSICS_DISPLAY,
     GIS_TOGGLE_INTERPOLATION,
     GIS_TOGGLE_LIGHTING,
-    GIS_SERVER_TOGGLE_DISPLAY,
     GIS_SERVER_TOGGLE_MAP
 };
 
@@ -63,7 +62,7 @@ private:
     int _inputState;
     bool _isTimeToProcessInput;
     GameEngine* _engine;
-    float _lightZDelta;
+    float _playerLightZDelta;
     
     const Move& sampleInputAsMove();
     

@@ -30,6 +30,7 @@ public:
     virtual void useNoBlending();
     virtual void bindInt4(NGShaderUniformInput* uniform, int4& inValue);
     virtual void bindFloat4(NGShaderUniformInput* uniform, float4& inValue);
+    virtual void bindFloat4Array(NGShaderUniformInput* uniform, int count, float4* inValue);
     virtual void bindMatrix(NGShaderUniformInput* uniform, mat4x4& inValue);
     virtual void bindMatrix(NGShaderUniformInput* uniform);
     virtual void bindTexture(NGTextureSlot textureSlot, NGTexture* texture, NGShaderUniformInput* uniform = NULL);

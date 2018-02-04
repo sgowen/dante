@@ -112,6 +112,11 @@ void OpenGLRendererHelper::bindFloat4(NGShaderUniformInput* uniform, float4& inV
     glUniform4f(uniform->_attribute, inValue[0], inValue[1], inValue[2], inValue[3]);
 }
 
+void OpenGLRendererHelper::bindFloat4Array(NGShaderUniformInput* uniform, int count, float4* inValue)
+{
+    glUniform4fv(uniform->_attribute, count, (const GLfloat*)inValue);
+}
+
 void OpenGLRendererHelper::bindMatrix(NGShaderUniformInput* uniform, mat4x4& inValue)
 {
     glUniformMatrix4fv(uniform->_attribute, 1, GL_FALSE, (GLfloat*)inValue);

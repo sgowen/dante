@@ -148,55 +148,27 @@ void DirectXRendererHelper::useNoBlending()
 
 void DirectXRendererHelper::bindInt4(NGShaderUniformInput* uniform, int4& inValue)
 {
-    if (uniform->_isFragment)
-    {
-        s_deviceResources->GetD3DDeviceContext()->PSSetConstantBuffers(uniform->_index, 1, uniform->_constantbuffer.GetAddressOf());
-    }
-    else
-    {
-        s_deviceResources->GetD3DDeviceContext()->VSSetConstantBuffers(uniform->_index, 1, uniform->_constantbuffer.GetAddressOf());
-    }
-    
-    // send the final matrix to video memory
-    s_deviceResources->GetD3DDeviceContext()->UpdateSubresource(uniform->_constantbuffer.Get(), 0, 0, &inValue, 0, 0);
+	bindConstantBuffer(uniform, inValue);
 }
 
 void DirectXRendererHelper::bindFloat4(NGShaderUniformInput* uniform, float4& inValue)
 {
-    if (uniform->_isFragment)
-    {
-        s_deviceResources->GetD3DDeviceContext()->PSSetConstantBuffers(uniform->_index, 1, uniform->_constantbuffer.GetAddressOf());
-    }
-    else
-    {
-        s_deviceResources->GetD3DDeviceContext()->VSSetConstantBuffers(uniform->_index, 1, uniform->_constantbuffer.GetAddressOf());
-    }
-    
-    // send the final matrix to video memory
-    s_deviceResources->GetD3DDeviceContext()->UpdateSubresource(uniform->_constantbuffer.Get(), 0, 0, &inValue, 0, 0);
+	bindConstantBuffer(uniform, inValue);
+}
+
+void DirectXRendererHelper::bindFloat4Array(NGShaderUniformInput* uniform, int count, float4* inValue)
+{
+	bindConstantBuffer(uniform, inValue);
 }
 
 void DirectXRendererHelper::bindMatrix(NGShaderUniformInput* uniform, mat4x4& inValue)
 {
-    if (uniform->_isFragment)
-    {
-        s_deviceResources->GetD3DDeviceContext()->PSSetConstantBuffers(uniform->_index, 1, uniform->_constantbuffer.GetAddressOf());
-    }
-    else
-    {
-        s_deviceResources->GetD3DDeviceContext()->VSSetConstantBuffers(uniform->_index, 1, uniform->_constantbuffer.GetAddressOf());
-    }
-    
-    // send the final matrix to video memory
-    s_deviceResources->GetD3DDeviceContext()->UpdateSubresource(uniform->_constantbuffer.Get(), 0, 0, &inValue, 0, 0);
+	bindConstantBuffer(uniform, &inValue);
 }
 
 void DirectXRendererHelper::bindMatrix(NGShaderUniformInput* uniform)
 {
-    s_deviceResources->GetD3DDeviceContext()->VSSetConstantBuffers(uniform->_index, 1, uniform->_constantbuffer.GetAddressOf());
-    
-    // send the final matrix to video memory
-    s_deviceResources->GetD3DDeviceContext()->UpdateSubresource(uniform->_constantbuffer.Get(), 0, 0, &_matrix, 0, 0);
+	bindConstantBuffer(uniform, &_matrix);
 }
 
 void DirectXRendererHelper::bindTexture(NGTextureSlot textureSlot, NGTexture* texture, NGShaderUniformInput* uniform)
@@ -230,7 +202,7 @@ void DirectXRendererHelper::bindNGShader(ShaderProgramWrapper* shaderProgramWrap
 void DirectXRendererHelper::mapScreenVertices(std::vector<NGShaderVarInput*>& inputLayout, std::vector<VERTEX_2D>& vertices)
 {
 	_screenVertices.clear();
-	_screenVertices.swap(vertices);
+    _screenVertices.insert(_screenVertices.end(), vertices.begin(), vertices.end());
 
     mapVertices(_screenVertexBuffer, _screenVertices);
 }
@@ -238,7 +210,7 @@ void DirectXRendererHelper::mapScreenVertices(std::vector<NGShaderVarInput*>& in
 void DirectXRendererHelper::mapTextureVertices(std::vector<NGShaderVarInput*>& inputLayout, std::vector<VERTEX_2D_TEXTURE>& vertices)
 {
 	_textureVertices.clear();
-	_textureVertices.swap(vertices);
+    _textureVertices.insert(_textureVertices.end(), vertices.begin(), vertices.end());
 
     mapVertices(_textureVertexBuffer, _textureVertices);
 }
@@ -246,7 +218,7 @@ void DirectXRendererHelper::mapTextureVertices(std::vector<NGShaderVarInput*>& i
 void DirectXRendererHelper::mapColorVertices(std::vector<NGShaderVarInput*>& inputLayout, std::vector<VERTEX_2D>& vertices)
 {
 	_colorVertices.clear();
-	_colorVertices.swap(vertices);
+    _colorVertices.insert(_colorVertices.end(), vertices.begin(), vertices.end());
 
     mapVertices(_colorVertexBuffer, _colorVertices);
 }
@@ -453,4 +425,18 @@ void DirectXRendererHelper::createIndexBuffer()
     indexDataDesc.pSysMem = &_indices[0];
     
     DX::ThrowIfFailed(s_deviceResources->GetD3DDevice()->CreateBuffer(&indexBufferDesc, &indexDataDesc, &_indexbuffer));
+}
+
+void DirectXRendererHelper::bindConstantBuffer(NGShaderUniformInput* uniform, const void *pSrcData)
+{
+	if (uniform->_isFragment)
+	{
+		s_deviceResources->GetD3DDeviceContext()->PSSetConstantBuffers(uniform->_index, 1, uniform->_constantbuffer.GetAddressOf());
+	}
+	else
+	{
+		s_deviceResources->GetD3DDeviceContext()->VSSetConstantBuffers(uniform->_index, 1, uniform->_constantbuffer.GetAddressOf());
+	}
+
+	s_deviceResources->GetD3DDeviceContext()->UpdateSubresource(uniform->_constantbuffer.Get(), 0, 0, pSrcData, 0, 0);
 }

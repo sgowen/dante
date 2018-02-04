@@ -14,14 +14,14 @@
 #include "framework/graphics/portable/TextureRegion.h"
 #include "framework/graphics/portable/Color.h"
 
-Font::Font(std::string textureName, int offsetX, int offsetY, int glyphsPerRow, int glyphWidth, int glyphHeight, int textureWidth, int textureHeight)
+Font::Font(int offsetX, int offsetY, int glyphsPerRow, int glyphWidth, int glyphHeight, int textureWidth, int textureHeight)
 {
 	int x = offsetX;
 	int y = offsetY;
 
 	for (int i = 0; i < 176; ++i)
 	{
-		_glyphs.push_back(TextureRegion(textureName, x, y, glyphWidth, glyphHeight, textureWidth, textureHeight));
+		_glyphs.push_back(TextureRegion("font", x, y, glyphWidth, glyphHeight, textureWidth, textureHeight));
 
 		x += glyphWidth;
 
