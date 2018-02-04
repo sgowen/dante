@@ -19,17 +19,16 @@
 
 #include <assert.h>
 
-NGLightingShader::NGLightingShader(RendererHelper& inRendererHelper, const char* vertexShaderName, const char* fragmentShaderName) : NGShader(inRendererHelper, vertexShaderName, fragmentShaderName),
-_defaultLightZ(0)
+NGLightingShader::NGLightingShader(RendererHelper& inRendererHelper, const char* vertexShaderName, const char* fragmentShaderName) : NGShader(inRendererHelper, vertexShaderName, fragmentShaderName)
 {
 #ifdef _WIN32
 	_lights[0][0] = 0;
 	_lights[1][0] = 0;
-	_lights[2][0] = _defaultLightZ;
+	_lights[2][0] = 1;
 #else
 	_lights[0][0] = 0;
 	_lights[0][1] = 0;
-	_lights[0][2] = _defaultLightZ;
+	_lights[0][2] = 1;
 #endif
     
     _numLights[0] = 0;
@@ -81,8 +80,6 @@ void NGLightingShader::unbind()
 
 void NGLightingShader::onLoaded()
 {
-    _defaultLightZ = NG_CFG->getFloat("DefaultLightZ");
-    
     _lightColor[0] = NG_CFG->getFloat("LightColorR");
     _lightColor[1] = NG_CFG->getFloat("LightColorG");
     _lightColor[2] = NG_CFG->getFloat("LightColorB");
@@ -110,11 +107,11 @@ void NGLightingShader::configLight(int index, float lightPosX, float lightPosY)
 #ifdef _WIN32
 	_lights[0][index] = lightPosX;
 	_lights[1][index] = lightPosY;
-	_lights[2][index] = _defaultLightZ;
+	_lights[2][index] = 0.1;
 #else
 	_lights[index][0] = lightPosX;
 	_lights[index][1] = lightPosY;
-	_lights[index][2] = _defaultLightZ;
+	_lights[index][2] = 0.1;
 #endif
 }
 

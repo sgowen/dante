@@ -28,7 +28,6 @@ public:
     void configZ(float lightPosZ);
     
 private:
-    float _defaultLightZ;
     mat4x4 _lights;
     float4 _lightColor; // Light RGB and intensity (alpha)
     float4 _ambientColor; // Ambient RGB and intensity (alpha)
