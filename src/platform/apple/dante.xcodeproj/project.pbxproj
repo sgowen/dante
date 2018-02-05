@@ -1070,7 +1070,6 @@
 		BBAEF1791EA94ED900F0866E /* Circle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Circle.h; sourceTree = "<group>"; };
 		BBAEF17A1EA94ED900F0866E /* Line.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Line.cpp; sourceTree = "<group>"; };
 		BBAEF17B1EA94ED900F0866E /* Line.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Line.h; sourceTree = "<group>"; };
-		BBAEF17C1EA94ED900F0866E /* MathUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MathUtil.h; sourceTree = "<group>"; };
 		BBAEF17D1EA94ED900F0866E /* NGRect.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NGRect.cpp; sourceTree = "<group>"; };
 		BBAEF17E1EA94ED900F0866E /* NGRect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NGRect.h; sourceTree = "<group>"; };
 		BBAEF17F1EA94ED900F0866E /* OverlapTester.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OverlapTester.cpp; sourceTree = "<group>"; };
@@ -1649,6 +1648,7 @@
 		BBE4E4081FEDC2D5004193F1 /* World.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = World.h; sourceTree = "<group>"; };
 		BBE4E4091FEDD03F004193F1 /* Box2DDebugRenderer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Box2DDebugRenderer.cpp; sourceTree = "<group>"; };
 		BBE4E40A1FEDD03F004193F1 /* Box2DDebugRenderer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Box2DDebugRenderer.h; sourceTree = "<group>"; };
+		BBE916BC2028E48C009DF8DA /* MathUtil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MathUtil.h; sourceTree = "<group>"; };
 		BBEC68562025139700661E46 /* DestructibleController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DestructibleController.cpp; sourceTree = "<group>"; };
 		BBEC68572025139800661E46 /* DestructibleController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DestructibleController.h; sourceTree = "<group>"; };
 		BBEF6FFD200028220030076A /* EntityController.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = EntityController.cpp; sourceTree = "<group>"; };
@@ -2461,6 +2461,7 @@
 				BB61CB581EC9FA1B000E0291 /* FrameworkConstants.h */,
 				BBB1D3AB1FC8CA4D00B74BAC /* HashMap.h */,
 				BB74283A1EB2AF4200B7628D /* macros.h */,
+				BBE916BC2028E48C009DF8DA /* MathUtil.h */,
 				BBB1D3AD1FC8CB9700B74BAC /* NGExtension.cpp */,
 				BBB1D3AC1FC8CB9700B74BAC /* NGExtension.h */,
 				BBB1D3A81FC8C65F00B74BAC /* NGPool.h */,
@@ -2761,7 +2762,6 @@
 				BBAEF1791EA94ED900F0866E /* Circle.h */,
 				BBAEF17A1EA94ED900F0866E /* Line.cpp */,
 				BBAEF17B1EA94ED900F0866E /* Line.h */,
-				BBAEF17C1EA94ED900F0866E /* MathUtil.h */,
 				BBAEF17D1EA94ED900F0866E /* NGRect.cpp */,
 				BBAEF17E1EA94ED900F0866E /* NGRect.h */,
 				BBAEF17F1EA94ED900F0866E /* OverlapTester.cpp */,

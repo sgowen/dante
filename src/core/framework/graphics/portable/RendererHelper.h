@@ -28,10 +28,7 @@ public:
     virtual ~RendererHelper();
 
 	virtual void createDeviceDependentResources() = 0;
-	virtual void createWindowSizeDependentResources(int screenWidth, int screenHeight, int renderWidth, int renderHeight);
-	virtual void releaseDeviceDependentResources() = 0;
-    virtual NGTexture* getFramebuffer(int index) = 0;
-    virtual void updateMatrix(float left, float right, float bottom, float top);
+    virtual void releaseDeviceDependentResources() = 0;
     virtual void bindToOffscreenFramebuffer(int index) = 0;
     virtual void clearFramebufferWithColor(float r, float g, float b, float a) = 0;
     virtual void bindToScreenFramebuffer() = 0;
@@ -45,38 +42,27 @@ public:
     virtual void bindMatrix(NGShaderUniformInput* uniform) = 0;
     virtual void bindTexture(NGTextureSlot textureSlot, NGTexture* texture, NGShaderUniformInput* uniform = NULL) = 0;
     virtual void bindNGShader(ShaderProgramWrapper* shaderProgramWrapper) = 0;
-    virtual void mapScreenVertices(std::vector<NGShaderVarInput*>& inputLayout, std::vector<VERTEX_2D>& vertices) = 0;
-    virtual void unmapScreenVertices();
     virtual void mapTextureVertices(std::vector<NGShaderVarInput*>& inputLayout, std::vector<VERTEX_2D_TEXTURE>& vertices) = 0;
-    virtual void unmapTextureVertices();
-    virtual void mapColorVertices(std::vector<NGShaderVarInput*>& inputLayout, std::vector<VERTEX_2D>& vertices) = 0;
-    virtual void unmapColorVertices();
+    virtual void mapBasicVertices(std::vector<NGShaderVarInput*>& inputLayout, std::vector<VERTEX_2D>& vertices) = 0;
     virtual void draw(NGPrimitiveType renderPrimitiveType, uint32_t first, uint32_t count) = 0;
     virtual void drawIndexed(NGPrimitiveType renderPrimitiveType, uint32_t first, uint32_t count) = 0;
     
-    int getRenderWidth();
-    int getRenderHeight();
+    void createWindowSizeDependentResources(int screenWidth, int screenHeight, int renderWidth, int renderHeight);
+    void updateMatrix(float left, float right, float bottom, float top);
+    NGTexture* getFramebuffer(int index);
     
 protected:
     std::vector<NGTexture *> _framebufferWrappers;
-    
-    std::vector<TextureWrapper *> _framebuffers;
-    std::vector<uint16_t> _indices;
-    
     mat4x4 _matrix;
-    
     int _screenWidth;
     int _screenHeight;
     int _renderWidth;
     int _renderHeight;
     
-    virtual void createFramebufferObject() = 0;
-    virtual void releaseFramebuffers() = 0;
+    virtual TextureWrapper* createFramebuffer() = 0;
+    virtual void platformReleaseFramebuffers() = 0;
     
-    void createFramebufferObjects();
-    
-private:
-    void generateIndices(int maxBatchSize);
+    void releaseFramebuffers();
 };
 
 #endif /* defined(__noctisgames__RendererHelper__) */

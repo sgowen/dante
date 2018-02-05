@@ -88,12 +88,12 @@ private:
     std::vector<VERTEX_2D> _screenVertices;
     std::vector<LightDef> _playerLights;
     std::vector<LightDef> _lights;
-    float _parallaxLayer0FactorX;
-    float _parallaxLayer0FactorY;
-    float _parallaxLayer1FactorX;
-    float _parallaxLayer1FactorY;
-    float _parallaxLayer2FactorX;
-    float _parallaxLayer2FactorY;
+    double _parallaxLayer0FactorX;
+    double _parallaxLayer0FactorY;
+    double _parallaxLayer1FactorX;
+    double _parallaxLayer1FactorY;
+    double _parallaxLayer2FactorX;
+    double _parallaxLayer2FactorY;
     float _playerLightColor[4];
     float _ambientColor[4];
     float _fallOff[3];

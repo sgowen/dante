@@ -83,12 +83,12 @@ private:
     uint32_t _engineState;
     NGTexture* _fontTexture;
     std::vector<VERTEX_2D> _screenVertices;
-    float _parallaxLayer0FactorX;
-    float _parallaxLayer0FactorY;
-    float _parallaxLayer1FactorX;
-    float _parallaxLayer1FactorY;
-    float _parallaxLayer2FactorX;
-    float _parallaxLayer2FactorY;
+    double _parallaxLayer0FactorX;
+    double _parallaxLayer0FactorY;
+    double _parallaxLayer1FactorX;
+    double _parallaxLayer1FactorY;
+    double _parallaxLayer2FactorX;
+    double _parallaxLayer2FactorY;
     
     void setFramebuffer(int framebufferIndex, float r = 0, float g = 0, float b = 0, float a = 0);
     void renderWorld();

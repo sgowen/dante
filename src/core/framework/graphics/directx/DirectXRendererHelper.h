@@ -25,7 +25,6 @@ public:
 
 	virtual void createDeviceDependentResources();
 	virtual void releaseDeviceDependentResources();
-    virtual NGTexture* getFramebuffer(int index);
     virtual void bindToOffscreenFramebuffer(int index);
     virtual void clearFramebufferWithColor(float r, float g, float b, float a);
     virtual void bindToScreenFramebuffer();
@@ -39,15 +38,14 @@ public:
     virtual void bindMatrix(NGShaderUniformInput* uniform);
     virtual void bindTexture(NGTextureSlot textureSlot, NGTexture* texture, NGShaderUniformInput* uniform = NULL);
     virtual void bindNGShader(ShaderProgramWrapper* shaderProgramWrapper);
-    virtual void mapScreenVertices(std::vector<NGShaderVarInput*>& inputLayout, std::vector<VERTEX_2D>& vertices);
-    virtual void mapTextureVertices(std::vector<NGShaderVarInput*>& inputLayout, std::vector<VERTEX_2D_TEXTURE>& vertices);
-    virtual void mapColorVertices(std::vector<NGShaderVarInput*>& inputLayout, std::vector<VERTEX_2D>& vertices);
+	virtual void mapTextureVertices(std::vector<NGShaderVarInput*>& inputLayout, std::vector<VERTEX_2D_TEXTURE>& vertices);
+	virtual void mapBasicVertices(std::vector<NGShaderVarInput*>& inputLayout, std::vector<VERTEX_2D>& vertices);
     virtual void draw(NGPrimitiveType renderPrimitiveType, uint32_t first, uint32_t count);
     virtual void drawIndexed(NGPrimitiveType renderPrimitiveType, uint32_t first, uint32_t count);
     
 protected:
-    virtual void createFramebufferObject();
-    virtual void releaseFramebuffers();
+    virtual TextureWrapper* createFramebuffer();
+    virtual void platformReleaseFramebuffers();
     
 private:
     // Cached pointer to device resources.
@@ -56,18 +54,14 @@ private:
     std::vector<ID3D11Texture2D*> _offscreenRenderTargets;
     std::vector<ID3D11RenderTargetView*> _offscreenRenderTargetViews;
     std::vector<ID3D11ShaderResourceView*> _offscreenShaderResourceViews;
+    Microsoft::WRL::ComPtr<ID3D11Buffer> _textureVertexBuffer;
+    Microsoft::WRL::ComPtr<ID3D11Buffer> _basicVertexBuffer;
+    Microsoft::WRL::ComPtr<ID3D11Buffer> _indexbuffer;
     Microsoft::WRL::ComPtr<ID3D11BlendState> _blendState;
     Microsoft::WRL::ComPtr<ID3D11BlendState> _screenBlendState;
-    Microsoft::WRL::ComPtr<ID3D11Buffer> _indexbuffer;
     Microsoft::WRL::ComPtr<ID3D11SamplerState> _textureSamplerState;
     Microsoft::WRL::ComPtr<ID3D11SamplerState> _textureWrapSamplerState;
     Microsoft::WRL::ComPtr<ID3D11SamplerState> _framebufferSamplerState;
-    Microsoft::WRL::ComPtr<ID3D11Buffer> _textureVertexBuffer;
-    Microsoft::WRL::ComPtr<ID3D11Buffer> _colorVertexBuffer;
-    Microsoft::WRL::ComPtr<ID3D11Buffer> _screenVertexBuffer;
-	std::vector<VERTEX_2D_TEXTURE> _textureVertices;
-	std::vector<VERTEX_2D> _colorVertices;
-	std::vector<VERTEX_2D> _screenVertices;
 	int _fbIndex;
     
     template <typename T>
@@ -92,9 +86,9 @@ private:
     }
     
     template <typename T>
-    void createVertexBuffer(Microsoft::WRL::ComPtr<ID3D11Buffer>& vertexBuffer, std::vector<T>& vertices, uint32_t size)
+    void createVertexBuffer(Microsoft::WRL::ComPtr<ID3D11Buffer>& vertexBuffer, uint32_t size)
     {
-        vertices.clear();
+        std::vector<T> vertices;
         vertices.reserve(size);
         
         T vertex;
@@ -119,10 +113,10 @@ private:
         DX::ThrowIfFailed(s_deviceResources->GetD3DDevice()->CreateBuffer(&vertexBufferDesc, &vertexBufferData, &vertexBuffer));
     }
     
+    void createIndexBuffer();
     void createBlendStates();
     void createSamplerStates();
     D3D11_FILTER filterForMinAndMag(std::string& cfgFilterMin, std::string& cfgFilterMag);
-    void createIndexBuffer();
     void bindConstantBuffer(NGShaderUniformInput* uniform, const void *pSrcData);
 };
 

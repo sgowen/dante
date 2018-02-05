@@ -22,7 +22,7 @@
 #include "game/logic/GameConstants.h"
 #include "framework/util/Timing.h"
 #include "framework/util/StringUtil.h"
-#include "framework/math/MathUtil.h"
+#include "framework/util/MathUtil.h"
 #include "framework/network/server/NetworkManagerServer.h"
 #include "framework/network/server/ClientProxy.h"
 #include "framework/network/client/NetworkManagerClient.h"

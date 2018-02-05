@@ -18,7 +18,7 @@
 #include "framework/audio/android/AndroidAudioEngineHelper.h"
 #include "framework/util/FrameworkConstants.h"
 #include "framework/input/KeyboardLookup.h"
-#include "framework/math/MathUtil.h"
+#include "framework/util/MathUtil.h"
 
 #include <chrono>
 

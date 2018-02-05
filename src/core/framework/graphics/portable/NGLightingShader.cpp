@@ -65,7 +65,6 @@ void NGLightingShader::bind(void* vertices, void* data1, void* data2, void* data
 
 void NGLightingShader::unbind()
 {
-    _rendererHelper.unmapTextureVertices();
     _rendererHelper.bindTexture(NGTextureSlot_ZERO, NULL);
     _rendererHelper.bindTexture(NGTextureSlot_ONE, NULL);
     _rendererHelper.bindNGShader(NULL);

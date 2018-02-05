@@ -45,7 +45,7 @@
 #include "game/logic/TitleInputManager.h"
 #include "framework/network/server/NetworkManagerServer.h"
 #include "framework/network/portable/MachineAddress.h"
-#include "framework/math/MathUtil.h"
+#include "framework/util/MathUtil.h"
 #include "framework/audio/portable/NGAudioEngine.h"
 #include "game/logic/Server.h"
 #include "game/logic/TitleEngine.h"

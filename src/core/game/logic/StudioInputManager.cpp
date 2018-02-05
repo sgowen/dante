@@ -25,7 +25,7 @@
 #include "game/logic/GameConstants.h"
 #include "framework/input/KeyboardLookup.h"
 #include "framework/util/StringUtil.h"
-#include "framework/math/MathUtil.h"
+#include "framework/util/MathUtil.h"
 #include "framework/util/FrameworkConstants.h"
 #include "game/graphics/StudioRenderer.h"
 #include "game/logic/World.h"

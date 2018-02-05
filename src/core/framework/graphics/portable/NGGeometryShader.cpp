@@ -46,12 +46,11 @@ void NGGeometryShader::bind(void* vertices, void* data1, void* data2, void* data
     float4Color[3] = color->alpha;
     _rendererHelper.bindFloat4(_uniforms[1], float4Color);
     
-    std::vector<VERTEX_2D>* colorVertices = static_cast<std::vector<VERTEX_2D>* >(vertices);
-    _rendererHelper.mapColorVertices(_inputLayout, *colorVertices);
+    std::vector<VERTEX_2D>* basicVertices = static_cast<std::vector<VERTEX_2D>* >(vertices);
+    _rendererHelper.mapBasicVertices(_inputLayout, *basicVertices);
 }
 
 void NGGeometryShader::unbind()
 {
-    _rendererHelper.unmapColorVertices();
     _rendererHelper.bindNGShader(NULL);
 }

@@ -16,7 +16,7 @@
 #include "framework/input/GamePadInputManager.h"
 #include "framework/input/GamePadEventType.h"
 #include "framework/util/FrameworkConstants.h"
-#include "framework/math/MathUtil.h"
+#include "framework/util/MathUtil.h"
 
 #include <stdlib.h>
 #include <stdio.h>

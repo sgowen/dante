@@ -14,13 +14,14 @@
 #include "framework/graphics/portable/TextureWrapper.h"
 #include "framework/graphics/portable/ShaderProgramWrapper.h"
 #include "framework/graphics/portable/NGShaderUniformInput.h"
+#include <framework/util/FrameworkConstants.h>
 
 #include <framework/util/Config.h>
 #include "framework/util/NGSTDUtil.h"
 
 #include <assert.h>
 
-OpenGLRendererHelper::OpenGLRendererHelper() : RendererHelper(), _screenVboObject(0), _textureVboObject(0), _colorVboObject(0), _screenFBO(0), _maxTextureSize(64)
+OpenGLRendererHelper::OpenGLRendererHelper() : RendererHelper(), _textureVertexBuffer(0), _basicVertexBuffer(0), _screenFBO(0)
 {
     // Empty
 }
@@ -32,31 +33,23 @@ OpenGLRendererHelper::~OpenGLRendererHelper()
 
 void OpenGLRendererHelper::createDeviceDependentResources()
 {
+    assert(_fbos.size() == 0);
+    assert(_fbo_textures.size() == 0);
+    
     glGetIntegerv(GL_FRAMEBUFFER_BINDING, &_screenFBO);
-    glGetIntegerv(GL_MAX_TEXTURE_SIZE, &_maxTextureSize);
-
-    if (_renderWidth > -1
-        && _renderHeight > -1)
-    {
-        releaseFramebuffers();
-        createFramebufferObjects();
-    }
+    
+    createVertexBuffer<VERTEX_2D_TEXTURE>(_textureVertexBuffer, MAX_BATCH_SIZE * VERTICES_PER_RECTANGLE);
+    createVertexBuffer<VERTEX_2D>(_basicVertexBuffer, MAX_BATCH_SIZE * VERTICES_PER_RECTANGLE);
+    createIndexBuffer();
 }
 
 void OpenGLRendererHelper::releaseDeviceDependentResources()
 {
     releaseFramebuffers();
     
-    glDeleteBuffers(1, &_screenVboObject);
-    glDeleteBuffers(1, &_textureVboObject);
-    glDeleteBuffers(1, &_colorVboObject);
-}
-
-NGTexture* OpenGLRendererHelper::getFramebuffer(int index)
-{
-    _framebufferWrappers[index]->textureWrapper = _framebuffers[index];
-
-    return _framebufferWrappers[index];
+    glDeleteBuffers(1, &_textureVertexBuffer);
+    glDeleteBuffers(1, &_basicVertexBuffer);
+    glDeleteBuffers(1, &_indexBuffer);
 }
 
 void OpenGLRendererHelper::bindToOffscreenFramebuffer(int index)
@@ -167,32 +160,12 @@ void OpenGLRendererHelper::bindNGShader(ShaderProgramWrapper* shaderProgramWrapp
 
 void OpenGLRendererHelper::mapTextureVertices(std::vector<NGShaderVarInput*>& inputLayout, std::vector<VERTEX_2D_TEXTURE>& vertices)
 {
-    mapVertices(_textureVboObject, vertices, inputLayout);
+    mapVertices(_textureVertexBuffer, vertices, inputLayout);
 }
 
-void OpenGLRendererHelper::unmapTextureVertices()
+void OpenGLRendererHelper::mapBasicVertices(std::vector<NGShaderVarInput*>& inputLayout, std::vector<VERTEX_2D>& vertices)
 {
-    unmapVertices(_textureVboObject);
-}
-
-void OpenGLRendererHelper::mapColorVertices(std::vector<NGShaderVarInput*>& inputLayout, std::vector<VERTEX_2D>& vertices)
-{
-    mapVertices(_colorVboObject, vertices, inputLayout);
-}
-
-void OpenGLRendererHelper::unmapColorVertices()
-{
-    unmapVertices(_colorVboObject);
-}
-
-void OpenGLRendererHelper::mapScreenVertices(std::vector<NGShaderVarInput*>& inputLayout, std::vector<VERTEX_2D>& vertices)
-{
-    mapVertices(_screenVboObject, vertices, inputLayout);
-}
-
-void OpenGLRendererHelper::unmapScreenVertices()
-{
-    unmapVertices(_screenVboObject);
+    mapVertices(_basicVertexBuffer, vertices, inputLayout);
 }
 
 void OpenGLRendererHelper::draw(NGPrimitiveType renderPrimitiveType, uint32_t first, uint32_t count)
@@ -202,10 +175,11 @@ void OpenGLRendererHelper::draw(NGPrimitiveType renderPrimitiveType, uint32_t fi
 
 void OpenGLRendererHelper::drawIndexed(NGPrimitiveType renderPrimitiveType, uint32_t first, uint32_t count)
 {
-    glDrawElements(renderPrimitiveType, count, GL_UNSIGNED_SHORT, &_indices[first]);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _indexBuffer);
+    glDrawElements(renderPrimitiveType, count, GL_UNSIGNED_SHORT, (void*)0);
 }
 
-void OpenGLRendererHelper::createFramebufferObject()
+TextureWrapper* OpenGLRendererHelper::createFramebuffer()
 {
     GLuint fbo_texture;
     GLuint fbo;
@@ -240,30 +214,42 @@ void OpenGLRendererHelper::createFramebufferObject()
     _fbo_textures.push_back(fbo_texture);
     _fbos.push_back(fbo);
 
-    _framebuffers.push_back(new TextureWrapper(fbo_texture));
+    return new TextureWrapper(fbo_texture);
 }
 
-void OpenGLRendererHelper::releaseFramebuffers()
+void OpenGLRendererHelper::platformReleaseFramebuffers()
 {
     for (std::vector<GLuint>::iterator i = _fbo_textures.begin(); i != _fbo_textures.end(); ++i)
     {
         glDeleteTextures(1, &(*i));
     }
 
-    _fbo_textures.clear();
-
     for (std::vector<GLuint>::iterator i = _fbos.begin(); i != _fbos.end(); ++i)
     {
         glDeleteFramebuffers(1, &(*i));
     }
-
+    
+    _fbo_textures.clear();
     _fbos.clear();
-
-    NGSTDUtil::cleanUpVectorOfPointers(_framebuffers);
 }
 
-void OpenGLRendererHelper::unmapVertices(GLuint& vertexBuffer)
+void OpenGLRendererHelper::createIndexBuffer()
 {
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-    glDeleteBuffers(1, &vertexBuffer);
+    std::vector<uint16_t> indices;
+    indices.reserve(MAX_BATCH_SIZE * INDICES_PER_RECTANGLE);
+    
+    uint16_t j = 0;
+    for (int i = 0; i < MAX_BATCH_SIZE * INDICES_PER_RECTANGLE; i += INDICES_PER_RECTANGLE, j += VERTICES_PER_RECTANGLE)
+    {
+        indices.push_back(j);
+        indices.push_back(j + 1);
+        indices.push_back(j + 2);
+        indices.push_back(j + 2);
+        indices.push_back(j + 3);
+        indices.push_back(j + 0);
+    }
+    
+    glGenBuffers(1, &_indexBuffer);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _indexBuffer);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint16_t) * indices.size(), &indices[0], GL_STATIC_DRAW);
 }

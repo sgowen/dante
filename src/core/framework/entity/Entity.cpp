@@ -21,7 +21,7 @@
 #include "framework/util/macros.h"
 #include "framework/network/client/NetworkManagerClient.h"
 #include "framework/util/StringUtil.h"
-#include "framework/math/MathUtil.h"
+#include "framework/util/MathUtil.h"
 #include <framework/entity/EntityMapper.h>
 #include <framework/network/server/NetworkManagerServer.h>
 

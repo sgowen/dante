@@ -15,22 +15,16 @@
 
 #include <framework/util/FrameworkConstants.h>
 #include <framework/util/NGSTDUtil.h>
+#include <framework/util/MathUtil.h>
 
 RendererHelper::RendererHelper() : _screenWidth(1), _screenHeight(1), _renderWidth(1), _renderHeight(1)
 {
-    for (int i = 0; i < NUM_FRAMEBUFFERS; ++i)
-    {
-        _framebufferWrappers.push_back(new NGTexture("framebuffer", NULL, false));
-    }
-    
-    generateIndices(MAX_BATCH_SIZE);
+    // Empty
 }
 
 RendererHelper::~RendererHelper()
 {
-    NGSTDUtil::cleanUpVectorOfPointers(_framebufferWrappers);
-    
-    _indices.clear();
+    releaseFramebuffers();
 }
 
 void RendererHelper::createWindowSizeDependentResources(int screenWidth, int screenHeight, int renderWidth, int renderHeight)
@@ -41,90 +35,36 @@ void RendererHelper::createWindowSizeDependentResources(int screenWidth, int scr
     _renderHeight = renderHeight;
     
     releaseFramebuffers();
-    createFramebufferObjects();
-}
-
-inline void mat4x4_identity(mat4x4 M)
-{
-    int i, j;
-    for (i=0; i<4; ++i)
+    
+    for (int i = 0; i < NUM_FRAMEBUFFERS; ++i)
     {
-        for (j=0; j<4; ++j)
-        {
-            M[i][j] = i==j ? 1.f : 0.f;
-        }
+        TextureWrapper* framebuffer = createFramebuffer();
+        NGTexture* texture = new NGTexture("framebuffer", NULL, false);
+        texture->textureWrapper = framebuffer;
+        _framebufferWrappers.push_back(texture);
     }
-}
-
-inline void mat4x4_ortho(mat4x4 M, float l, float r, float b, float t, float n, float f)
-{
-    M[0][0] = 2.f/(r-l);
-    M[0][1] = M[0][2] = M[0][3] = 0.f;
-    
-    M[1][1] = 2.f/(t-b);
-    M[1][0] = M[1][2] = M[1][3] = 0.f;
-    
-    M[2][2] = -2.f/(f-n);
-    M[2][0] = M[2][1] = M[2][3] = 0.f;
-    
-    M[3][0] = -(r+l)/(r-l);
-    M[3][1] = -(t+b)/(t-b);
-    M[3][2] = -(f+n)/(f-n);
-    M[3][3] = 1.f;
 }
 
 void RendererHelper::updateMatrix(float left, float right, float bottom, float top)
 {
     mat4x4_identity(_matrix);
-    
     mat4x4_ortho(_matrix, left, right, bottom, top, -1, 1);
 }
 
-void RendererHelper::unmapScreenVertices()
+NGTexture* RendererHelper::getFramebuffer(int index)
 {
-    // Unused
+    return _framebufferWrappers[index];
 }
 
-void RendererHelper::unmapTextureVertices()
+void RendererHelper::releaseFramebuffers()
 {
-    // Unused
-}
-
-void RendererHelper::unmapColorVertices()
-{
-    // Unused
-}
-
-int RendererHelper::getRenderWidth()
-{
-    return _renderWidth;
-}
-
-int RendererHelper::getRenderHeight()
-{
-    return _renderHeight;
-}
-
-void RendererHelper::createFramebufferObjects()
-{
-    for (int i = 0; i < NUM_FRAMEBUFFERS; ++i)
+    for (std::vector<NGTexture*>::iterator i = _framebufferWrappers.begin(); i != _framebufferWrappers.end(); ++i)
     {
-        createFramebufferObject();
+        NGTexture* texture = (*i);
+        delete texture->textureWrapper;
     }
-}
-
-void RendererHelper::generateIndices(int maxBatchSize)
-{
-    _indices.reserve(maxBatchSize * INDICES_PER_RECTANGLE);
     
-    uint16_t j = 0;
-    for (int i = 0; i < maxBatchSize * INDICES_PER_RECTANGLE; i += INDICES_PER_RECTANGLE, j += VERTICES_PER_RECTANGLE)
-    {
-        _indices.push_back(j);
-        _indices.push_back(j + 1);
-        _indices.push_back(j + 2);
-        _indices.push_back(j + 2);
-        _indices.push_back(j + 3);
-        _indices.push_back(j + 0);
-    }
+    NGSTDUtil::cleanUpVectorOfPointers(_framebufferWrappers);
+    
+    platformReleaseFramebuffers();
 }

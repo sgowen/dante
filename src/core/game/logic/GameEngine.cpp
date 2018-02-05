@@ -21,7 +21,7 @@
 #include "framework/input/CursorEvent.h"
 #include "framework/input/CursorConverter.h"
 #include "framework/util/StringUtil.h"
-#include "framework/math/MathUtil.h"
+#include "framework/util/MathUtil.h"
 #include "framework/network/client/NetworkManagerClient.h"
 #include "framework/network/server/NetworkManagerServer.h"
 #include "framework/network/portable/SocketAddressFactory.h"

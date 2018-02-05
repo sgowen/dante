@@ -21,7 +21,7 @@
 #include "framework/util/macros.h"
 #include "framework/audio/portable/NGAudioEngine.h"
 #include "framework/input/KeyboardLookup.h"
-#include "framework/math/MathUtil.h"
+#include "framework/util/MathUtil.h"
 
 #include "Audio.h"
 #include "DirectXColors.h"

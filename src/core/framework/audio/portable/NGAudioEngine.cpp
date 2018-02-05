@@ -16,7 +16,7 @@
 
 #include "framework/audio/portable/AudioEngineHelperFactory.h"
 #include "framework/util/NGSTDUtil.h"
-#include "framework/math/MathUtil.h"
+#include "framework/util/MathUtil.h"
 #include <framework/file/portable/Assets.h>
 #include <framework/audio/portable/SoundDesc.h>
 

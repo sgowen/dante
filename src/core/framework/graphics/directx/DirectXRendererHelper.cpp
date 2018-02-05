@@ -59,36 +59,27 @@ void DirectXRendererHelper::createDeviceDependentResources()
     assert(_offscreenRenderTargetViews.size() == 0);
     assert(_offscreenShaderResourceViews.size() == 0);
     
+    createVertexBuffer<VERTEX_2D_TEXTURE>(_textureVertexBuffer, MAX_BATCH_SIZE * VERTICES_PER_RECTANGLE);
+    createVertexBuffer<VERTEX_2D>(_basicVertexBuffer, MAX_BATCH_SIZE * VERTICES_PER_RECTANGLE);
+    createIndexBuffer();
+    
     createBlendStates();
     createSamplerStates();
-    createVertexBuffer(_textureVertexBuffer, _textureVertices, MAX_BATCH_SIZE * VERTICES_PER_RECTANGLE);
-    createVertexBuffer(_colorVertexBuffer, _colorVertices, MAX_BATCH_SIZE * VERTICES_PER_RECTANGLE);
-    createVertexBuffer(_screenVertexBuffer, _screenVertices, 4);
-    createIndexBuffer();
 }
 
 void DirectXRendererHelper::releaseDeviceDependentResources()
 {
     releaseFramebuffers();
     
+    _textureVertexBuffer.Reset();
+    _basicVertexBuffer.Reset();
+    _indexbuffer.Reset();
+    
     _blendState.Reset();
     _screenBlendState.Reset();
-    
     _textureSamplerState.Reset();
     _textureWrapSamplerState.Reset();
-    
-    _textureVertexBuffer.Reset();
-    _colorVertexBuffer.Reset();
-    _screenVertexBuffer.Reset();
-    
-    _indexbuffer.Reset();
-}
-
-NGTexture* DirectXRendererHelper::getFramebuffer(int index)
-{
-    _framebufferWrappers[index]->textureWrapper = _framebuffers[index];
-    
-    return _framebufferWrappers[index];
+    _framebufferSamplerState.Reset();
 }
 
 void DirectXRendererHelper::bindToOffscreenFramebuffer(int index)
@@ -199,28 +190,14 @@ void DirectXRendererHelper::bindNGShader(ShaderProgramWrapper* shaderProgramWrap
     }
 }
 
-void DirectXRendererHelper::mapScreenVertices(std::vector<NGShaderVarInput*>& inputLayout, std::vector<VERTEX_2D>& vertices)
-{
-	_screenVertices.clear();
-    _screenVertices.insert(_screenVertices.end(), vertices.begin(), vertices.end());
-
-    mapVertices(_screenVertexBuffer, _screenVertices);
-}
-
 void DirectXRendererHelper::mapTextureVertices(std::vector<NGShaderVarInput*>& inputLayout, std::vector<VERTEX_2D_TEXTURE>& vertices)
 {
-	_textureVertices.clear();
-    _textureVertices.insert(_textureVertices.end(), vertices.begin(), vertices.end());
-
-    mapVertices(_textureVertexBuffer, _textureVertices);
+	mapVertices(_textureVertexBuffer, vertices);
 }
 
-void DirectXRendererHelper::mapColorVertices(std::vector<NGShaderVarInput*>& inputLayout, std::vector<VERTEX_2D>& vertices)
+void DirectXRendererHelper::mapBasicVertices(std::vector<NGShaderVarInput*>& inputLayout, std::vector<VERTEX_2D>& vertices)
 {
-	_colorVertices.clear();
-    _colorVertices.insert(_colorVertices.end(), vertices.begin(), vertices.end());
-
-    mapVertices(_colorVertexBuffer, _colorVertices);
+	mapVertices(_basicVertexBuffer, vertices);
 }
 
 void DirectXRendererHelper::draw(NGPrimitiveType renderPrimitiveType, uint32_t first, uint32_t count)
@@ -237,7 +214,7 @@ void DirectXRendererHelper::drawIndexed(NGPrimitiveType renderPrimitiveType, uin
     s_deviceResources->GetD3DDeviceContext()->DrawIndexed(count, first, 0);
 }
 
-void DirectXRendererHelper::createFramebufferObject()
+TextureWrapper* DirectXRendererHelper::createFramebuffer()
 {
     ID3D11Texture2D* _offscreenRenderTarget;
     ID3D11RenderTargetView* _offscreenRenderTargetView;
@@ -286,10 +263,10 @@ void DirectXRendererHelper::createFramebufferObject()
     _offscreenRenderTargetViews.push_back(_offscreenRenderTargetView);
     _offscreenShaderResourceViews.push_back(_offscreenShaderResourceView);
     
-    _framebuffers.push_back(new TextureWrapper(_offscreenShaderResourceView));
+    return new TextureWrapper(_offscreenShaderResourceView);
 }
 
-void DirectXRendererHelper::releaseFramebuffers()
+void DirectXRendererHelper::platformReleaseFramebuffers()
 {
     for (std::vector<ID3D11Texture2D*>::iterator i = _offscreenRenderTargets.begin(); i != _offscreenRenderTargets.end(); ++i)
     {
@@ -309,8 +286,35 @@ void DirectXRendererHelper::releaseFramebuffers()
     _offscreenRenderTargets.clear();
     _offscreenRenderTargetViews.clear();
     _offscreenShaderResourceViews.clear();
+}
+
+void DirectXRendererHelper::createIndexBuffer()
+{
+    std::vector<uint16_t> indices;
+    indices.reserve(MAX_BATCH_SIZE * INDICES_PER_RECTANGLE);
     
-    NGSTDUtil::cleanUpVectorOfPointers(_framebuffers);
+    uint16_t j = 0;
+    for (int i = 0; i < MAX_BATCH_SIZE * INDICES_PER_RECTANGLE; i += INDICES_PER_RECTANGLE, j += VERTICES_PER_RECTANGLE)
+    {
+        indices.push_back(j);
+        indices.push_back(j + 1);
+        indices.push_back(j + 2);
+        indices.push_back(j + 2);
+        indices.push_back(j + 3);
+        indices.push_back(j + 0);
+    }
+    
+    D3D11_BUFFER_DESC indexBufferDesc = { 0 };
+    
+    indexBufferDesc.ByteWidth = sizeof(uint16_t) * indices.size();
+    indexBufferDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
+    indexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
+    
+    D3D11_SUBRESOURCE_DATA indexDataDesc = { 0 };
+    
+    indexDataDesc.pSysMem = &indices[0];
+    
+    DX::ThrowIfFailed(s_deviceResources->GetD3DDevice()->CreateBuffer(&indexBufferDesc, &indexDataDesc, &_indexbuffer));
 }
 
 void DirectXRendererHelper::createBlendStates()
@@ -410,21 +414,6 @@ D3D11_FILTER DirectXRendererHelper::filterForMinAndMag(std::string& cfgFilterMin
     }
     
     return D3D11_ENCODE_BASIC_FILTER(dxMin, dxMag, dxMip, static_cast<D3D11_COMPARISON_FUNC>(0));
-}
-
-void DirectXRendererHelper::createIndexBuffer()
-{
-    D3D11_BUFFER_DESC indexBufferDesc = { 0 };
-    
-    indexBufferDesc.ByteWidth = sizeof(short) * MAX_BATCH_SIZE * INDICES_PER_RECTANGLE;
-    indexBufferDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
-    indexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
-    
-    D3D11_SUBRESOURCE_DATA indexDataDesc = { 0 };
-    
-    indexDataDesc.pSysMem = &_indices[0];
-    
-    DX::ThrowIfFailed(s_deviceResources->GetD3DDevice()->CreateBuffer(&indexBufferDesc, &indexDataDesc, &_indexbuffer));
 }
 
 void DirectXRendererHelper::bindConstantBuffer(NGShaderUniformInput* uniform, const void *pSrcData)

@@ -11,7 +11,7 @@
 
 #include "framework/graphics/portable/Color.h"
 #include "framework/util/FrameworkConstants.h"
-#include "framework/math/MathUtil.h"
+#include "framework/util/MathUtil.h"
 #include "Box2D/Common/b2Math.h"
 
 #include "framework/util/NGRTTI.h"

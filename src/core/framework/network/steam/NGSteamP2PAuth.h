@@ -11,7 +11,7 @@
 
 #include "framework/network/steam/NGSteam.h"
 #include "framework/util/FrameworkConstants.h"
-#include "framework/math/MathUtil.h"
+#include "framework/util/MathUtil.h"
 
 class InputMemoryBitStream;
 class NetworkHelper;

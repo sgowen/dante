@@ -46,7 +46,7 @@
 #include "game/logic/TitleInputManager.h"
 #include "framework/network/server/NetworkManagerServer.h"
 #include "framework/network/portable/MachineAddress.h"
-#include "framework/math/MathUtil.h"
+#include "framework/util/MathUtil.h"
 #include "framework/audio/portable/NGAudioEngine.h"
 #include "game/logic/Server.h"
 #include "game/logic/TitleEngine.h"
@@ -164,12 +164,12 @@ void StudioRenderer::createDeviceDependentResources()
     _rendererHelper->createDeviceDependentResources();
     _textureManager->createDeviceDependentResources();
     
-    _parallaxLayer0FactorX = NG_CFG->getFloat("ParallaxLayer0FactorX");
-    _parallaxLayer0FactorY = NG_CFG->getFloat("ParallaxLayer0FactorY");
-    _parallaxLayer1FactorX = NG_CFG->getFloat("ParallaxLayer1FactorX");
-    _parallaxLayer1FactorY = NG_CFG->getFloat("ParallaxLayer1FactorY");
-    _parallaxLayer2FactorX = NG_CFG->getFloat("ParallaxLayer2FactorX");
-    _parallaxLayer2FactorY = NG_CFG->getFloat("ParallaxLayer2FactorY");
+    _parallaxLayer0FactorX = NG_CFG->getDouble("ParallaxLayer0FactorX");
+    _parallaxLayer0FactorY = NG_CFG->getDouble("ParallaxLayer0FactorY");
+    _parallaxLayer1FactorX = NG_CFG->getDouble("ParallaxLayer1FactorX");
+    _parallaxLayer1FactorY = NG_CFG->getDouble("ParallaxLayer1FactorY");
+    _parallaxLayer2FactorX = NG_CFG->getDouble("ParallaxLayer2FactorX");
+    _parallaxLayer2FactorY = NG_CFG->getDouble("ParallaxLayer2FactorY");
     
     _fontTexture = _textureManager->getTextureWithName("texture_000.ngt");
 

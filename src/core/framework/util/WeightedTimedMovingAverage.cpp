@@ -11,7 +11,7 @@
 #include "framework/util/WeightedTimedMovingAverage.h"
 
 #include "framework/util/Timing.h"
-#include "framework/math/MathUtil.h"
+#include "framework/util/MathUtil.h"
 
 WeightedTimedMovingAverage::WeightedTimedMovingAverage(float inDuration) : _duration(inDuration), _value(0.f)
 {

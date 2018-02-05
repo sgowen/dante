@@ -10,7 +10,7 @@
 
 #include <framework/audio/android/OpenSLESSound.h>
 
-#include <framework/math/MathUtil.h>
+#include <framework/util/MathUtil.h>
 
 #include <assert.h>
 
