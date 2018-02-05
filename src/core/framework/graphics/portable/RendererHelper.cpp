@@ -35,6 +35,7 @@ void RendererHelper::createWindowSizeDependentResources(int screenWidth, int scr
     _renderHeight = renderHeight;
     
     releaseFramebuffers();
+    platformReleaseFramebuffers();
     
     for (int i = 0; i < NUM_FRAMEBUFFERS; ++i)
     {
@@ -65,6 +66,4 @@ void RendererHelper::releaseFramebuffers()
     }
     
     NGSTDUtil::cleanUpVectorOfPointers(_framebufferWrappers);
-    
-    platformReleaseFramebuffers();
 }

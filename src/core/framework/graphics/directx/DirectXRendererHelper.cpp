@@ -69,7 +69,7 @@ void DirectXRendererHelper::createDeviceDependentResources()
 
 void DirectXRendererHelper::releaseDeviceDependentResources()
 {
-    releaseFramebuffers();
+    platformReleaseFramebuffers();
     
     _textureVertexBuffer.Reset();
     _basicVertexBuffer.Reset();

@@ -45,7 +45,7 @@ void OpenGLRendererHelper::createDeviceDependentResources()
 
 void OpenGLRendererHelper::releaseDeviceDependentResources()
 {
-    releaseFramebuffers();
+    platformReleaseFramebuffers();
     
     glDeleteBuffers(1, &_textureVertexBuffer);
     glDeleteBuffers(1, &_basicVertexBuffer);
