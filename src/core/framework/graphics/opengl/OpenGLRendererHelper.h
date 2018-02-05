@@ -45,10 +45,8 @@ protected:
 
 private:
     GLint _screenFBO;
-    
     std::vector<GLuint> _fbos;
     std::vector<GLuint> _fbo_textures;
-
     GLuint _textureVertexBuffer;
     GLuint _basicVertexBuffer;
     GLuint _indexBuffer;
