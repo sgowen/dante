@@ -12,6 +12,7 @@
 
 #include "framework/util/StringUtil.h"
 #include <framework/file/portable/JsonFile.h>
+#include <framework/file/portable/FileUtil.h>
 
 #include "rapidjson/document.h"
 #include "rapidjson/stringbuffer.h"
@@ -31,7 +32,7 @@ void Config::initWithJsonFile(const char* fileName, bool isBundled, bool useEncr
         delete _jsonFile;
     }
     
-    std::string filePath = JsonFile::filePathForConfigFile(fileName);
+    std::string filePath = FileUtil::filePathForConfig(fileName);
     
     _jsonFile = new JsonFile(filePath.c_str(), isBundled, useEncryption);
     _jsonFile->load();

@@ -18,8 +18,6 @@ typedef const char* (*SerializerFunc)();
 class JsonFile
 {
 public:
-    static std::string filePathForConfigFile(const char* fileName);
-    
     JsonFile(const char* filePath, bool isBundled = true, bool useEncryption = false);
     
     void setDeserializerFunc(DeserializerFunc deserializerFunc);

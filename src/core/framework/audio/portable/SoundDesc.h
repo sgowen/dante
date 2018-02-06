@@ -9,6 +9,7 @@
 #ifndef __noctisgames__SoundDesc__
 #define __noctisgames__SoundDesc__
 
+#include <framework/file/portable/FileUtil.h>
 #include <string>
 
 struct SoundDesc
@@ -24,15 +25,7 @@ struct SoundDesc
     _numInstances(inNumInstances)
     {
         // I normally don't allow definitions in headers, but sometimes I'm cool with it
-#ifdef _WIN32
-        _soundFilePath = _soundId == 1337 ? "assets\\music\\" : "assets\\sounds\\";
-        _soundFilePath += _soundName;
-#elif defined __linux__ && !defined(__ANDROID__)
-        _soundFilePath = _soundId == 1337 ? "assets/music/" : "assets/sounds/";
-        _soundFilePath += _soundName;
-#else
-        _soundFilePath = _soundName;
-#endif
+        _soundFilePath = _soundId == 1337 ? FileUtil::filePathForMusic(_soundName.c_str()) : FileUtil::filePathForSound(_soundName.c_str());
     }
 };
 

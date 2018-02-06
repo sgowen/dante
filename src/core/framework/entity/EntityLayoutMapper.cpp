@@ -15,6 +15,7 @@
 #include "framework/util/NGSTDUtil.h"
 #include "framework/util/StringUtil.h"
 #include <framework/file/portable/JsonFile.h>
+#include <framework/file/portable/FileUtil.h>
 
 #include "rapidjson/document.h"
 #include "rapidjson/stringbuffer.h"
@@ -45,7 +46,7 @@ const char* EntityLayoutMapper::sLayoutSerializerFunc()
 
 void EntityLayoutMapper::initWithJsonFile(const char* fileName, bool isBundled, bool useEncryption)
 {
-    std::string filePath = JsonFile::filePathForConfigFile(fileName);
+    std::string filePath = FileUtil::filePathForConfig(fileName);
     
     JsonFile jsonFile(filePath.c_str(), isBundled, useEncryption);
     jsonFile.setDeserializerFunc(sLayoutsDeserializerFunc);
@@ -92,7 +93,7 @@ void EntityLayoutMapper::loadEntityLayout(uint32_t name)
     _entityLayoutDef.entities.clear();
     
     std::string path = getJsonConfigFilePath(name);
-    std::string filePath = JsonFile::filePathForConfigFile(path.c_str());
+    std::string filePath = FileUtil::filePathForConfig(path.c_str());
     
     JsonFile jsonFile(filePath.c_str());
     jsonFile.setDeserializerFunc(sLayoutDeserializerFunc);
@@ -202,7 +203,7 @@ void EntityLayoutMapper::saveEntityLayout(uint32_t name, EntityLayoutDef* layout
     _layoutToSave = layout;
     
     std::string path = getJsonConfigFilePath(name);
-    std::string filePath = JsonFile::filePathForConfigFile(path.c_str());
+    std::string filePath = FileUtil::filePathForConfig(path.c_str());
     
     JsonFile jsonFile(filePath.c_str());
     jsonFile.setSerializerFunc(sLayoutSerializerFunc);

@@ -16,26 +16,13 @@
 #include <framework/graphics/portable/NGShaderVarInput.h>
 #include <framework/graphics/portable/ShaderProgramWrapper.h>
 
+#include <framework/file/portable/FileUtil.h>
 #include <framework/util/NGSTDUtil.h>
 
 NGShader::NGShader(RendererHelper& inRendererHelper, const char* vertexShaderName, const char* fragmentShaderName) : _rendererHelper(inRendererHelper), _shaderProgramWrapper(NULL)
 {
-#ifdef _WIN32
-    _vertexShaderFilePath = "assets\\shaders\\";
-    _vertexShaderFilePath += std::string(vertexShaderName);
-    
-    _fragmentShaderFilePath = "assets\\shaders\\";
-    _fragmentShaderFilePath += std::string(fragmentShaderName);
-#elif defined __linux__ && !defined(__ANDROID__)
-    _vertexShaderFilePath = "assets/shaders/";
-    _vertexShaderFilePath += std::string(vertexShaderName);
-    
-    _fragmentShaderFilePath = "assets/shaders/";
-    _fragmentShaderFilePath += std::string(fragmentShaderName);
-#else
-    _vertexShaderFilePath = vertexShaderName;
-    _fragmentShaderFilePath = fragmentShaderName;
-#endif
+    _vertexShaderFilePath = FileUtil::filePathForShader(vertexShaderName);
+    _fragmentShaderFilePath = FileUtil::filePathForShader(fragmentShaderName);
 }
 
 NGShader::~NGShader()

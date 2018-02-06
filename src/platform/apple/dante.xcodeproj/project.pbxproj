@@ -252,6 +252,8 @@
 		BB5AFE771FB35AB6005FBD52 /* JsonFile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF0D91EA94ED900F0866E /* JsonFile.cpp */; };
 		BB5AFE7B1FB35ACA005FBD52 /* Entity.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF0BF1EA94ED900F0866E /* Entity.cpp */; };
 		BB5AFE7C1FB35ACA005FBD52 /* EntityManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF0C11EA94ED900F0866E /* EntityManager.cpp */; };
+		BB640BE4202A328700629758 /* FileUtil.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB640BE3202A328600629758 /* FileUtil.cpp */; };
+		BB640BE5202A328700629758 /* FileUtil.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB640BE3202A328600629758 /* FileUtil.cpp */; };
 		BB6531601FED56CA00963997 /* MainInputState.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB65315B1FED56C800963997 /* MainInputState.cpp */; };
 		BB6531611FED56CA00963997 /* MainInputState.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB65315B1FED56C800963997 /* MainInputState.cpp */; };
 		BB6531621FED56CA00963997 /* World.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB65315C1FED56C800963997 /* World.cpp */; };
@@ -917,6 +919,8 @@
 		BB5B332F1FDDBDE700B2D145 /* PlatformHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PlatformHelper.h; sourceTree = "<group>"; };
 		BB5F46FA1ED38D61005FEC0C /* SocketAddressFamily.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SocketAddressFamily.h; sourceTree = "<group>"; };
 		BB61CB581EC9FA1B000E0291 /* FrameworkConstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FrameworkConstants.h; sourceTree = "<group>"; };
+		BB640BE2202A328600629758 /* FileUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileUtil.h; sourceTree = "<group>"; };
+		BB640BE3202A328600629758 /* FileUtil.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FileUtil.cpp; sourceTree = "<group>"; };
 		BB65315A1FED56C700963997 /* MainInputState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainInputState.h; sourceTree = "<group>"; };
 		BB65315B1FED56C800963997 /* MainInputState.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MainInputState.cpp; sourceTree = "<group>"; };
 		BB65315C1FED56C800963997 /* World.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = World.cpp; sourceTree = "<group>"; };
@@ -2636,6 +2640,8 @@
 				BB81BAA1201F806F00F5B088 /* Assets.h */,
 				BBCB93201FC252790020703A /* FileData.cpp */,
 				BB9EE50B1FC092BA000F5389 /* FileData.h */,
+				BB640BE3202A328600629758 /* FileUtil.cpp */,
+				BB640BE2202A328600629758 /* FileUtil.h */,
 				BBAEF0D91EA94ED900F0866E /* JsonFile.cpp */,
 				BBAEF0DA1EA94ED900F0866E /* JsonFile.h */,
 			);
@@ -4099,6 +4105,7 @@
 				BBD5543A1FDB2EA800E00AD6 /* b2PulleyJoint.cpp in Sources */,
 				BB6F59801FBDE9C400BD7697 /* osmesa_context.c in Sources */,
 				BBD5542C1FDB2EA800E00AD6 /* b2DistanceJoint.cpp in Sources */,
+				BB640BE4202A328700629758 /* FileUtil.cpp in Sources */,
 				BBD554501FDB2EA800E00AD6 /* b2Distance.cpp in Sources */,
 				BB44CB8A1DB053C0003E633F /* pngset.c in Sources */,
 				BB44CB8B1DB053C0003E633F /* pngtrans.c in Sources */,
@@ -4189,6 +4196,7 @@
 				BB27D25D1FC6567F00ED42FD /* OALSuspendHandler.m in Sources */,
 				BBD554231FDB2EA800E00AD6 /* b2Contact.cpp in Sources */,
 				BB31B5A61FC205D5005F1C0A /* CursorEvent.cpp in Sources */,
+				BB640BE5202A328700629758 /* FileUtil.cpp in Sources */,
 				BBD5541F1FDB2EA800E00AD6 /* b2CircleContact.cpp in Sources */,
 				BB5AFE7B1FB35ACA005FBD52 /* Entity.cpp in Sources */,
 				BB5AFE7C1FB35ACA005FBD52 /* EntityManager.cpp in Sources */,

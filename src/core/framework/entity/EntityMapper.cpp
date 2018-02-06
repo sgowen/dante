@@ -16,6 +16,7 @@
 #include "framework/util/NGSTDUtil.h"
 #include "framework/util/StringUtil.h"
 #include <framework/file/portable/JsonFile.h>
+#include <framework/file/portable/FileUtil.h>
 
 #include "rapidjson/document.h"
 #include "rapidjson/stringbuffer.h"
@@ -35,7 +36,7 @@ void EntityMapper::sDeserializerFunc(const char* data)
 
 void EntityMapper::initWithJsonFile(const char* fileName, bool isBundled, bool useEncryption)
 {
-    std::string filePath = JsonFile::filePathForConfigFile(fileName);
+    std::string filePath = FileUtil::filePathForConfig(fileName);
     
     JsonFile jsonFile(filePath.c_str(), isBundled, useEncryption);
     jsonFile.setDeserializerFunc(sDeserializerFunc);
