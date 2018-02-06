@@ -10,6 +10,7 @@
 #define __noctisgames__NGShaderLoader__
 
 #include <vector>
+#include <string>
 
 struct ShaderProgramWrapper;
 class NGShaderVarInput;
@@ -19,11 +20,9 @@ class NGShaderLoader
 {
 public:
     NGShaderLoader();
-    
     virtual ~NGShaderLoader();
     
-    virtual ShaderProgramWrapper* loadNGShader(const char* vertexShaderName, const char* fragmentShaderName, std::vector<NGShaderUniformInput*>& uniforms, std::vector<NGShaderVarInput*>& inputLayout) = 0;
-    
+    virtual ShaderProgramWrapper* loadNGShader(std::string& vertexShaderFilePath, std::string& fragmentShaderFilePath, std::vector<NGShaderUniformInput*>& uniforms, std::vector<NGShaderVarInput*>& inputLayout) = 0;
     virtual void destroyNGShader(ShaderProgramWrapper* shaderProgramWrapper, std::vector<NGShaderUniformInput*>& uniforms, std::vector<NGShaderVarInput*>& inputLayout) = 0;
 };
 

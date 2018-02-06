@@ -32,7 +32,7 @@ void NGShaderUniformInput::build(ShaderProgramWrapper* inShaderProgramWrapper)
         bd.ByteWidth = _byteWidth;
         bd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
         
-        ID3D11Device* d3dDevice = DirectXRendererHelper::getD3dDevice();
+        ID3D11Device* d3dDevice = DirectXRendererHelper::getD3DDevice();
         DX::ThrowIfFailed(d3dDevice->CreateBuffer(&bd, NULL, &_constantbuffer));
     }
 #elif defined __APPLE__ || defined __ANDROID__ || defined __linux__

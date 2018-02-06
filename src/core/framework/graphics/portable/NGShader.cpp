@@ -18,9 +18,24 @@
 
 #include <framework/util/NGSTDUtil.h>
 
-NGShader::NGShader(RendererHelper& inRendererHelper, const char* vertexShaderName, const char* fragmentShaderName) : _rendererHelper(inRendererHelper), _vertexShaderName(vertexShaderName), _fragmentShaderName(fragmentShaderName), _shaderProgramWrapper(NULL)
+NGShader::NGShader(RendererHelper& inRendererHelper, const char* vertexShaderName, const char* fragmentShaderName) : _rendererHelper(inRendererHelper), _shaderProgramWrapper(NULL)
 {
-    // Empty
+#ifdef _WIN32
+    _vertexShaderFilePath = "assets\\shaders\\";
+    _vertexShaderFilePath += std::string(vertexShaderName);
+    
+    _fragmentShaderFilePath = "assets\\shaders\\";
+    _fragmentShaderFilePath += std::string(fragmentShaderName);
+#elif defined __linux__ && !defined(__ANDROID__)
+    _vertexShaderFilePath = "assets/shaders/";
+    _vertexShaderFilePath += std::string(vertexShaderName);
+    
+    _fragmentShaderFilePath = "assets/shaders/";
+    _fragmentShaderFilePath += std::string(fragmentShaderName);
+#else
+    _vertexShaderFilePath = vertexShaderName;
+    _fragmentShaderFilePath = fragmentShaderName;
+#endif
 }
 
 NGShader::~NGShader()
@@ -31,7 +46,7 @@ NGShader::~NGShader()
 
 void NGShader::load(NGShaderLoader& shaderProgramLoader)
 {
-    _shaderProgramWrapper = shaderProgramLoader.loadNGShader(_vertexShaderName, _fragmentShaderName, _uniforms, _inputLayout);
+    _shaderProgramWrapper = shaderProgramLoader.loadNGShader(_vertexShaderFilePath, _fragmentShaderFilePath, _uniforms, _inputLayout);
 }
 
 void NGShader::unload(NGShaderLoader& shaderProgramLoader)

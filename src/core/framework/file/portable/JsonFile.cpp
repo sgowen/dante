@@ -34,6 +34,22 @@
 #include <stdlib.h>
 #include <sstream>
 
+std::string JsonFile::filePathForConfigFile(const char* fileName)
+{
+    std::string ret;
+#ifdef _WIN32
+    ret = "assets\\config\\";
+    ret += std::string(fileName);
+#elif defined __linux__ && !defined(__ANDROID__)
+    ret = "assets/config/";
+    ret += std::string(fileName);
+#else
+    ret = fileName;
+#endif
+    
+    return ret;
+}
+
 JsonFile::JsonFile(const char* filePath, bool isBundled, bool useEncryption) : _filePath(filePath), _isBundled(isBundled), _useEncryption(useEncryption), _deserializerFunc(NULL), _serializerFunc(NULL)
 {
     // Empty

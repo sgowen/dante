@@ -17,11 +17,9 @@ class DirectXProgramLoader : public NGShaderLoader
 {
 public:
     DirectXProgramLoader();
-    
     virtual ~DirectXProgramLoader();
     
-    virtual ShaderProgramWrapper* loadNGShader(const char* vertexShaderName, const char* fragmentShaderName, std::vector<NGShaderUniformInput*>& uniforms, std::vector<NGShaderVarInput*>& inputLayout);
-    
+    virtual ShaderProgramWrapper* loadNGShader(std::string& vertexShaderFilePath, std::string& fragmentShaderFilePath, std::vector<NGShaderUniformInput*>& uniforms, std::vector<NGShaderVarInput*>& inputLayout);
     virtual void destroyNGShader(ShaderProgramWrapper* shaderProgramWrapper, std::vector<NGShaderUniformInput*>& uniforms, std::vector<NGShaderVarInput*>& inputLayout);
 };
 

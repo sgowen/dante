@@ -19,6 +19,7 @@ class NGTexture
 {
 public:
     std::string name;
+    std::string filePath;
     TextureDataWrapper* textureDataWrapper;
     TextureWrapper* textureWrapper;
     TextureManager* _textureManager;

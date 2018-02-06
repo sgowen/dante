@@ -99,6 +99,7 @@ private:
     float _fallOff[3];
     float _behindPlayerLightZFactor;
     float _frontPlayerLightZFactor;
+    float _robotLightPositionFactorY;
     
     void updateCamera();
     void setFramebuffer(int framebufferIndex, float r = 0, float g = 0, float b = 0, float a = 0);

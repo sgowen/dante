@@ -17,8 +17,8 @@ class DirectXRendererHelper : public RendererHelper
 {
 public:
     static void init(DX::DirectXDeviceResources* deviceResources);
-    static ID3D11Device* getD3dDevice();
-    static ID3D11DeviceContext* getD3dContext();
+    static ID3D11Device* getD3DDevice();
+    static ID3D11DeviceContext* getD3DContext();
     
     DirectXRendererHelper();
     virtual ~DirectXRendererHelper();
@@ -71,18 +71,18 @@ private:
         ZeroMemory(&mappedResource, sizeof(D3D11_MAPPED_SUBRESOURCE));
         
         // Disable GPU access to the vertex buffer data.
-        s_deviceResources->GetD3DDeviceContext()->Map(vertexBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+        getD3DContext()->Map(vertexBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
         
         // Update the vertex buffer here.
         memcpy(mappedResource.pData, &vertices.front(), sizeof(T) * vertices.size());
         
         // Reenable GPU access to the vertex buffer data.
-        s_deviceResources->GetD3DDeviceContext()->Unmap(vertexBuffer.Get(), 0);
+        getD3DContext()->Unmap(vertexBuffer.Get(), 0);
         
         // Set the vertex buffer
         UINT stride = sizeof(T);
         UINT offset = 0;
-        s_deviceResources->GetD3DDeviceContext()->IASetVertexBuffers(0, 1, vertexBuffer.GetAddressOf(), &stride, &offset);
+        getD3DContext()->IASetVertexBuffers(0, 1, vertexBuffer.GetAddressOf(), &stride, &offset);
     }
     
     template <typename T>
@@ -110,7 +110,7 @@ private:
         vertexBufferData.SysMemPitch = 0;
         vertexBufferData.SysMemSlicePitch = 0;
         
-        DX::ThrowIfFailed(s_deviceResources->GetD3DDevice()->CreateBuffer(&vertexBufferDesc, &vertexBufferData, &vertexBuffer));
+        DX::ThrowIfFailed(getD3DDevice()->CreateBuffer(&vertexBufferDesc, &vertexBufferData, &vertexBuffer));
     }
     
     void createIndexBuffer();

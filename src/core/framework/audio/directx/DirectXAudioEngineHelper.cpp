@@ -52,13 +52,7 @@ void DirectXAudioEngineHelper::resume()
 
 SoundWrapper* DirectXAudioEngineHelper::loadSound(int soundId, const char *path, int numInstances)
 {
-    std::string s(soundId == 1337 ? "assets\\music\\" : "assets\\sounds\\");
-    s += std::string(path);
-    const char* finalPath = s.c_str();
-
-    DirectXSoundWrapper* sound = new DirectXSoundWrapper(soundId, finalPath, _audEngine.get(), numInstances);
-    
-    return sound;
+    return new DirectXSoundWrapper(soundId, path, _audEngine.get(), numInstances);
 }
 
 SoundWrapper* DirectXAudioEngineHelper::loadMusic(const char* path)

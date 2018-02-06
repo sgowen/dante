@@ -33,22 +33,11 @@ void EntityMapper::sDeserializerFunc(const char* data)
     EntityMapper::getInstance()->initWithJson(data);
 }
 
-void EntityMapper::initWithJsonFile(const char* path, bool isBundled, bool useEncryption)
+void EntityMapper::initWithJsonFile(const char* fileName, bool isBundled, bool useEncryption)
 {
-    const char* finalPath;
-#if defined __linux__ && !defined(__ANDROID__)
-    std::string s("assets/config/");
-    s += std::string(path);
-    finalPath = s.c_str();
-#elif defined _WIN32
-    std::string s("assets\\config\\");
-    s += std::string(path);
-    finalPath = s.c_str();
-#else
-    finalPath = path;
-#endif
+    std::string filePath = JsonFile::filePathForConfigFile(fileName);
     
-    JsonFile jsonFile(finalPath, isBundled, useEncryption);
+    JsonFile jsonFile(filePath.c_str(), isBundled, useEncryption);
     jsonFile.setDeserializerFunc(sDeserializerFunc);
     jsonFile.load();
 }

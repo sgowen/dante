@@ -113,7 +113,8 @@ _parallaxLayer2FactorX(0),
 _parallaxLayer2FactorY(0),
 _fontTexture(NULL),
 _behindPlayerLightZFactor(0),
-_frontPlayerLightZFactor(0)
+_frontPlayerLightZFactor(0),
+_robotLightPositionFactorY(0)
 {
     for (int i = 0; i < NUM_SPRITE_BATCHERS; ++i)
     {
@@ -185,6 +186,7 @@ void GameRenderer::createDeviceDependentResources()
     _fallOff[2] = NG_CFG->getFloat("LightFalloffZ");
     _behindPlayerLightZFactor = NG_CFG->getFloat("BehindPlayerLightZFactor");
     _frontPlayerLightZFactor = NG_CFG->getFloat("FrontPlayerLightZFactor");
+    _robotLightPositionFactorY = NG_CFG->getFloat("RobotLightPositionFactorY");
     
     _fontTexture = _textureManager->getTextureWithName("texture_000.ngt");
     
@@ -256,8 +258,9 @@ void GameRenderer::updateCamera()
         {
             float pX = entity->getPosition().x;
             float pY = entity->getPosition().y;
+            float lightPosY = pY - entity->getHeight() / 2 + entity->getHeight() * _robotLightPositionFactorY;
             
-            _playerLights.push_back(LightDef(pX, pY + entity->getHeight() / 4, _playerLightColor[0], _playerLightColor[1], _playerLightColor[2], _playerLightColor[3]));
+            _playerLights.push_back(LightDef(pX, lightPosY, _playerLightColor[0], _playerLightColor[1], _playerLightColor[2], _playerLightColor[3]));
             
             PlayerController* robot = static_cast<PlayerController*>(entity->getController());
             if (!isCamInitialized && robot->isLocalPlayer())

@@ -33,12 +33,12 @@ void DirectXRendererHelper::init(DX::DirectXDeviceResources* deviceResources)
     s_deviceResources = deviceResources;
 }
 
-ID3D11Device* DirectXRendererHelper::getD3dDevice()
+ID3D11Device* DirectXRendererHelper::getD3DDevice()
 {
     return s_deviceResources->GetD3DDevice();
 }
 
-ID3D11DeviceContext* DirectXRendererHelper::getD3dContext()
+ID3D11DeviceContext* DirectXRendererHelper::getD3DContext()
 {
     return s_deviceResources->GetD3DDeviceContext();
 }
@@ -84,11 +84,11 @@ void DirectXRendererHelper::releaseDeviceDependentResources()
 
 void DirectXRendererHelper::bindToOffscreenFramebuffer(int index)
 {
-    s_deviceResources->GetD3DDeviceContext()->OMSetRenderTargets(1, &_offscreenRenderTargetViews[index], NULL);
+    getD3DContext()->OMSetRenderTargets(1, &_offscreenRenderTargetViews[index], NULL);
     
     // Set the viewport.
     auto viewport = s_deviceResources->GetOffScreenViewport();
-    s_deviceResources->GetD3DDeviceContext()->RSSetViewports(1, &viewport);
+    getD3DContext()->RSSetViewports(1, &viewport);
     
 	_fbIndex = index;
 }
@@ -107,34 +107,34 @@ void DirectXRendererHelper::clearFramebufferWithColor(float r, float g, float b,
         targets[0] = _offscreenRenderTargetViews[_fbIndex];
     }
     
-	s_deviceResources->GetD3DDeviceContext()->ClearRenderTargetView(targets[0], color);
+	getD3DContext()->ClearRenderTargetView(targets[0], color);
 }
 
 void DirectXRendererHelper::bindToScreenFramebuffer()
 {
     ID3D11RenderTargetView *const targets[1] = { s_deviceResources->GetRenderTargetView() };
-	s_deviceResources->GetD3DDeviceContext()->OMSetRenderTargets(1, targets, NULL);
+	getD3DContext()->OMSetRenderTargets(1, targets, NULL);
     
     // Set the viewport.
     auto viewport = s_deviceResources->GetScreenViewport();
-    s_deviceResources->GetD3DDeviceContext()->RSSetViewports(1, &viewport);
+    getD3DContext()->RSSetViewports(1, &viewport);
     
     _fbIndex = -1;
 }
 
 void DirectXRendererHelper::useNormalBlending()
 {
-    s_deviceResources->GetD3DDeviceContext()->OMSetBlendState(_blendState.Get(), 0, 0xffffffff);
+    getD3DContext()->OMSetBlendState(_blendState.Get(), 0, 0xffffffff);
 }
 
 void DirectXRendererHelper::useScreenBlending()
 {
-    s_deviceResources->GetD3DDeviceContext()->OMSetBlendState(_screenBlendState.Get(), 0, 0xffffffff);
+    getD3DContext()->OMSetBlendState(_screenBlendState.Get(), 0, 0xffffffff);
 }
 
 void DirectXRendererHelper::useNoBlending()
 {
-    s_deviceResources->GetD3DDeviceContext()->OMSetBlendState(NULL, 0, 0xffffffff);
+    getD3DContext()->OMSetBlendState(NULL, 0, 0xffffffff);
 }
 
 void DirectXRendererHelper::bindInt4(NGShaderUniformInput* uniform, int4& inValue)
@@ -168,14 +168,14 @@ void DirectXRendererHelper::bindTexture(NGTextureSlot textureSlot, NGTexture* te
     
     if (texture)
     {
-        s_deviceResources->GetD3DDeviceContext()->PSSetShaderResources(textureSlot, 1, &texture->textureWrapper->texture);
+        getD3DContext()->PSSetShaderResources(textureSlot, 1, &texture->textureWrapper->texture);
 		ID3D11SamplerState *const *ppSamplers = texture->_isFramebuffer ? _framebufferSamplerState.GetAddressOf() : texture->_repeatS ? _textureWrapSamplerState.GetAddressOf() : _textureSamplerState.GetAddressOf();
-        s_deviceResources->GetD3DDeviceContext()->PSSetSamplers(textureSlot, 1, ppSamplers);
+        getD3DContext()->PSSetSamplers(textureSlot, 1, ppSamplers);
     }
     else
     {
         ID3D11ShaderResourceView *pSRV[1] = { NULL };
-        s_deviceResources->GetD3DDeviceContext()->PSSetShaderResources(textureSlot, 1, pSRV);
+        getD3DContext()->PSSetShaderResources(textureSlot, 1, pSRV);
     }
 }
 
@@ -184,9 +184,9 @@ void DirectXRendererHelper::bindNGShader(ShaderProgramWrapper* shaderProgramWrap
     if (shaderProgramWrapper)
     {
         // set the shader objects as the active shaders
-        s_deviceResources->GetD3DDeviceContext()->VSSetShader(shaderProgramWrapper->_vertexShader.Get(), NULL, 0);
-        s_deviceResources->GetD3DDeviceContext()->IASetInputLayout(shaderProgramWrapper->_inputLayout.Get());
-        s_deviceResources->GetD3DDeviceContext()->PSSetShader(shaderProgramWrapper->_pixelShader.Get(), NULL, 0);
+        getD3DContext()->VSSetShader(shaderProgramWrapper->_vertexShader.Get(), NULL, 0);
+        getD3DContext()->IASetInputLayout(shaderProgramWrapper->_inputLayout.Get());
+        getD3DContext()->PSSetShader(shaderProgramWrapper->_pixelShader.Get(), NULL, 0);
     }
 }
 
@@ -202,16 +202,16 @@ void DirectXRendererHelper::mapBasicVertices(std::vector<NGShaderVarInput*>& inp
 
 void DirectXRendererHelper::draw(NGPrimitiveType renderPrimitiveType, uint32_t first, uint32_t count)
 {
-    s_deviceResources->GetD3DDeviceContext()->IASetPrimitiveTopology(static_cast<D3D11_PRIMITIVE_TOPOLOGY>(renderPrimitiveType));
-    s_deviceResources->GetD3DDeviceContext()->Draw(count, first);
+    getD3DContext()->IASetPrimitiveTopology(static_cast<D3D11_PRIMITIVE_TOPOLOGY>(renderPrimitiveType));
+    getD3DContext()->Draw(count, first);
 }
 
 void DirectXRendererHelper::drawIndexed(NGPrimitiveType renderPrimitiveType, uint32_t first, uint32_t count)
 {
-    s_deviceResources->GetD3DDeviceContext()->IASetIndexBuffer(_indexbuffer.Get(), DXGI_FORMAT_R16_UINT, 0);
+    getD3DContext()->IASetIndexBuffer(_indexbuffer.Get(), DXGI_FORMAT_R16_UINT, 0);
     
-    s_deviceResources->GetD3DDeviceContext()->IASetPrimitiveTopology(static_cast<D3D11_PRIMITIVE_TOPOLOGY>(renderPrimitiveType));
-    s_deviceResources->GetD3DDeviceContext()->DrawIndexed(count, first, 0);
+    getD3DContext()->IASetPrimitiveTopology(static_cast<D3D11_PRIMITIVE_TOPOLOGY>(renderPrimitiveType));
+    getD3DContext()->DrawIndexed(count, first, 0);
 }
 
 TextureWrapper* DirectXRendererHelper::createFramebuffer()
@@ -240,7 +240,7 @@ TextureWrapper* DirectXRendererHelper::createFramebuffer()
     textureDesc.MiscFlags = 0;
     
     // Create the render target texture.
-    DX::ThrowIfFailed(s_deviceResources->GetD3DDevice()->CreateTexture2D(&textureDesc, NULL, &_offscreenRenderTarget));
+    DX::ThrowIfFailed(getD3DDevice()->CreateTexture2D(&textureDesc, NULL, &_offscreenRenderTarget));
     
     // Setup the description of the render target view.
     renderTargetViewDesc.Format = textureDesc.Format;
@@ -248,7 +248,7 @@ TextureWrapper* DirectXRendererHelper::createFramebuffer()
     renderTargetViewDesc.Texture2D.MipSlice = 0;
     
     // Create the render target view.
-    DX::ThrowIfFailed(s_deviceResources->GetD3DDevice()->CreateRenderTargetView(_offscreenRenderTarget, &renderTargetViewDesc, &_offscreenRenderTargetView));
+    DX::ThrowIfFailed(getD3DDevice()->CreateRenderTargetView(_offscreenRenderTarget, &renderTargetViewDesc, &_offscreenRenderTargetView));
     
     // Setup the description of the shader resource view.
     shaderResourceViewDesc.Format = textureDesc.Format;
@@ -257,7 +257,7 @@ TextureWrapper* DirectXRendererHelper::createFramebuffer()
     shaderResourceViewDesc.Texture2D.MipLevels = 1;
     
     // Create the shader resource view.
-    DX::ThrowIfFailed(s_deviceResources->GetD3DDevice()->CreateShaderResourceView(_offscreenRenderTarget, &shaderResourceViewDesc, &_offscreenShaderResourceView));
+    DX::ThrowIfFailed(getD3DDevice()->CreateShaderResourceView(_offscreenRenderTarget, &shaderResourceViewDesc, &_offscreenShaderResourceView));
     
     _offscreenRenderTargets.push_back(_offscreenRenderTarget);
     _offscreenRenderTargetViews.push_back(_offscreenRenderTargetView);
@@ -290,11 +290,12 @@ void DirectXRendererHelper::platformReleaseFramebuffers()
 
 void DirectXRendererHelper::createIndexBuffer()
 {
+    size_t size = MAX_BATCH_SIZE * INDICES_PER_RECTANGLE;
     std::vector<uint16_t> indices;
-    indices.reserve(MAX_BATCH_SIZE * INDICES_PER_RECTANGLE);
+    indices.reserve(size);
     
     uint16_t j = 0;
-    for (int i = 0; i < MAX_BATCH_SIZE * INDICES_PER_RECTANGLE; i += INDICES_PER_RECTANGLE, j += VERTICES_PER_RECTANGLE)
+    for (int i = 0; i < size; i += INDICES_PER_RECTANGLE, j += VERTICES_PER_RECTANGLE)
     {
         indices.push_back(j);
         indices.push_back(j + 1);
@@ -314,7 +315,7 @@ void DirectXRendererHelper::createIndexBuffer()
     
     indexDataDesc.pSysMem = &indices[0];
     
-    DX::ThrowIfFailed(s_deviceResources->GetD3DDevice()->CreateBuffer(&indexBufferDesc, &indexDataDesc, &_indexbuffer));
+    DX::ThrowIfFailed(getD3DDevice()->CreateBuffer(&indexBufferDesc, &indexDataDesc, &_indexbuffer));
 }
 
 void DirectXRendererHelper::createBlendStates()
@@ -331,14 +332,14 @@ void DirectXRendererHelper::createBlendStates()
     bd.IndependentBlendEnable = FALSE;
     bd.AlphaToCoverageEnable = FALSE;
     
-    s_deviceResources->GetD3DDevice()->CreateBlendState(&bd, &_blendState);
+    getD3DDevice()->CreateBlendState(&bd, &_blendState);
     
     bd.RenderTarget[0].SrcBlend = D3D11_BLEND_ONE;
     bd.RenderTarget[0].DestBlend = D3D11_BLEND_INV_SRC_ALPHA;
 	bd.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ONE;
 	bd.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_INV_SRC_ALPHA;
     
-    s_deviceResources->GetD3DDevice()->CreateBlendState(&bd, &_screenBlendState);
+    getD3DDevice()->CreateBlendState(&bd, &_screenBlendState);
 }
 
 void DirectXRendererHelper::createSamplerStates()
@@ -363,10 +364,10 @@ void DirectXRendererHelper::createSamplerStates()
         sd.Filter = filterForMinAndMag(cfgFilterMin, cfgFilterMag);
         
         sd.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
-        s_deviceResources->GetD3DDevice()->CreateSamplerState(&sd, _textureWrapSamplerState.GetAddressOf());
+        getD3DDevice()->CreateSamplerState(&sd, _textureWrapSamplerState.GetAddressOf());
         
         sd.AddressU = D3D11_TEXTURE_ADDRESS_CLAMP;
-        s_deviceResources->GetD3DDevice()->CreateSamplerState(&sd, _textureSamplerState.GetAddressOf());
+        getD3DDevice()->CreateSamplerState(&sd, _textureSamplerState.GetAddressOf());
     }
     
     {
@@ -376,7 +377,7 @@ void DirectXRendererHelper::createSamplerStates()
         sd.Filter = filterForMinAndMag(cfgFilterMin, cfgFilterMag);
         
         sd.AddressU = D3D11_TEXTURE_ADDRESS_CLAMP;
-        s_deviceResources->GetD3DDevice()->CreateSamplerState(&sd, _framebufferSamplerState.GetAddressOf());
+        getD3DDevice()->CreateSamplerState(&sd, _framebufferSamplerState.GetAddressOf());
     }
 }
 
@@ -420,12 +421,12 @@ void DirectXRendererHelper::bindConstantBuffer(NGShaderUniformInput* uniform, co
 {
 	if (uniform->_isFragment)
 	{
-		s_deviceResources->GetD3DDeviceContext()->PSSetConstantBuffers(uniform->_index, 1, uniform->_constantbuffer.GetAddressOf());
+		getD3DContext()->PSSetConstantBuffers(uniform->_index, 1, uniform->_constantbuffer.GetAddressOf());
 	}
 	else
 	{
-		s_deviceResources->GetD3DDeviceContext()->VSSetConstantBuffers(uniform->_index, 1, uniform->_constantbuffer.GetAddressOf());
+		getD3DContext()->VSSetConstantBuffers(uniform->_index, 1, uniform->_constantbuffer.GetAddressOf());
 	}
 
-	s_deviceResources->GetD3DDeviceContext()->UpdateSubresource(uniform->_constantbuffer.Get(), 0, 0, pSrcData, 0, 0);
+	getD3DContext()->UpdateSubresource(uniform->_constantbuffer.Get(), 0, 0, pSrcData, 0, 0);
 }

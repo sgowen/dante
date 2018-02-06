@@ -20,7 +20,7 @@ class Config
 public:
     static Config* getInstance();
     
-    void initWithJsonFile(const char* jsonFile, bool isBundled = true, bool useEncryption = false);
+    void initWithJsonFile(const char* fileName, bool isBundled = true, bool useEncryption = false);
     bool getBool(std::string key);
     int getInt(std::string key);
     float getFloat(std::string key);

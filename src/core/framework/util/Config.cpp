@@ -24,27 +24,16 @@ Config* Config::getInstance()
     return &instance;
 }
 
-void Config::initWithJsonFile(const char* path, bool isBundled, bool useEncryption)
+void Config::initWithJsonFile(const char* fileName, bool isBundled, bool useEncryption)
 {
     if (_jsonFile)
     {
         delete _jsonFile;
     }
     
-    const char* finalPath;
-#if defined __linux__ && !defined(__ANDROID__)
-    std::string s("assets/config/");
-    s += std::string(path);
-    finalPath = s.c_str();
-#elif defined _WIN32
-    std::string s("assets\\config\\");
-    s += std::string(path);
-    finalPath = s.c_str();
-#else
-    finalPath = path;
-#endif
+    std::string filePath = JsonFile::filePathForConfigFile(fileName);
     
-    _jsonFile = new JsonFile(finalPath, isBundled, useEncryption);
+    _jsonFile = new JsonFile(filePath.c_str(), isBundled, useEncryption);
     _jsonFile->load();
 }
 

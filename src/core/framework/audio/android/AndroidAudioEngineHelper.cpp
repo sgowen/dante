@@ -33,9 +33,7 @@ void AndroidAudioEngineHelper::resume()
 
 SoundWrapper* AndroidAudioEngineHelper::loadSound(int soundId, const char *path, int numInstances)
 {
-    OpenSLESSoundWrapper* sound = new OpenSLESSoundWrapper(OpenSLESManager::getInstance(), soundId, path, numInstances);
-    
-    return sound;
+    return new OpenSLESSoundWrapper(OpenSLESManager::getInstance(), soundId, path, numInstances);
 }
 
 SoundWrapper* AndroidAudioEngineHelper::loadMusic(const char* path)

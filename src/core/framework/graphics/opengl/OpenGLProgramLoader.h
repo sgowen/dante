@@ -17,18 +17,14 @@ class OpenGLProgramLoader : public NGShaderLoader
 {
 public:
     OpenGLProgramLoader();
-    
     virtual ~OpenGLProgramLoader();
     
-    virtual ShaderProgramWrapper* loadNGShader(const char* vertexShaderName, const char* fragmentShaderName, std::vector<NGShaderUniformInput*>& uniforms, std::vector<NGShaderVarInput*>& inputLayout);
-    
+    virtual ShaderProgramWrapper* loadNGShader(std::string& vertexShaderFilePath, std::string& fragmentShaderFilePath, std::vector<NGShaderUniformInput*>& uniforms, std::vector<NGShaderVarInput*>& inputLayout);
     virtual void destroyNGShader(ShaderProgramWrapper* shaderProgramWrapper, std::vector<NGShaderUniformInput*>& uniforms, std::vector<NGShaderVarInput*>& inputLayout);
     
 private:
     GLuint buildProgram(const void * vertex_shader_source, const int vertex_shader_source_length, const void * fragment_shader_source, const int fragment_shader_source_length);
-    
     GLuint compileShader(const GLenum type, const void* source, const GLint length);
-    
     GLuint linkProgram(const GLuint vertex_shader, const GLuint fragment_shader);
 };
 

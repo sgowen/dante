@@ -32,28 +32,10 @@ OpenGLProgramLoader::~OpenGLProgramLoader()
     // Empty
 }
 
-ShaderProgramWrapper* OpenGLProgramLoader::loadNGShader(const char* vertexShaderName, const char* fragmentShaderName, std::vector<NGShaderUniformInput*>& uniforms, std::vector<NGShaderVarInput*>& inputLayout)
+ShaderProgramWrapper* OpenGLProgramLoader::loadNGShader(std::string& vertexShaderFilePath, std::string& fragmentShaderFilePath, std::vector<NGShaderUniformInput*>& uniforms, std::vector<NGShaderVarInput*>& inputLayout)
 {
-    assert(vertexShaderName != NULL);
-    assert(fragmentShaderName != NULL);
-    
-    const char* finalVertexShaderFileName;
-    const char* finalFragmentShaderFileName;
-#if defined __linux__ && !defined(__ANDROID__)
-    std::string s1("assets/shaders/");
-    s1 += std::string(vertexShaderName);
-    finalVertexShaderFileName = s1.c_str();
-    
-    std::string s2("assets/shaders/");
-    s2 += std::string(fragmentShaderName);
-    finalFragmentShaderFileName = s2.c_str();
-#else
-    finalVertexShaderFileName = vertexShaderName;
-    finalFragmentShaderFileName = fragmentShaderName;
-#endif
-    
-    const FileData vertex_shader_source = AssetDataHandler::getAssetDataHandler()->getAssetData(finalVertexShaderFileName);
-    const FileData fragment_shader_source = AssetDataHandler::getAssetDataHandler()->getAssetData(finalFragmentShaderFileName);
+    const FileData vertex_shader_source = AssetDataHandler::getAssetDataHandler()->getAssetData(vertexShaderFilePath.c_str());
+    const FileData fragment_shader_source = AssetDataHandler::getAssetDataHandler()->getAssetData(fragmentShaderFilePath.c_str());
 
     unsigned char* vertex_shader_source_output = (unsigned char*) malloc(vertex_shader_source.data_length);
     StringUtil::encryptDecrypt((unsigned char*)vertex_shader_source.data, vertex_shader_source_output, vertex_shader_source.data_length);

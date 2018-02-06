@@ -15,6 +15,7 @@ struct SoundDesc
 {
     int _soundId;
     std::string _soundName;
+    std::string _soundFilePath;
     int _numInstances;
     
     SoundDesc(int inSoundId, std::string inSoundName, int inNumInstances) :
@@ -23,6 +24,15 @@ struct SoundDesc
     _numInstances(inNumInstances)
     {
         // I normally don't allow definitions in headers, but sometimes I'm cool with it
+#ifdef _WIN32
+        _soundFilePath = _soundId == 1337 ? "assets\\music\\" : "assets\\sounds\\";
+        _soundFilePath += _soundName;
+#elif defined __linux__ && !defined(__ANDROID__)
+        _soundFilePath = _soundId == 1337 ? "assets/music/" : "assets/sounds/";
+        _soundFilePath += _soundName;
+#else
+        _soundFilePath = _soundName;
+#endif
     }
 };
 

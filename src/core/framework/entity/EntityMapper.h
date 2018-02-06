@@ -26,7 +26,7 @@ public:
     
     static void sDeserializerFunc(const char* data);
     
-    void initWithJsonFile(const char* jsonFile, bool isBundled = true, bool useEncryption = false);
+    void initWithJsonFile(const char* fileName, bool isBundled = true, bool useEncryption = false);
     void initWithJson(const char* json);
     Entity* createEntity(uint32_t inFourCCName, int x = 0, int y = 0, bool isServer = false);
     Entity* createEntityFromDef(EntityDef* entityDef, int x = 0, int y = 0, bool isServer = false);

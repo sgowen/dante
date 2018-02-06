@@ -11,6 +11,7 @@
 
 #include <cstddef>
 #include <vector>
+#include <string>
 
 class RendererHelper;
 class NGShaderLoader;
@@ -33,11 +34,11 @@ public:
     
 protected:
     RendererHelper& _rendererHelper;
-    const char* _vertexShaderName;
-    const char* _fragmentShaderName;
+    ShaderProgramWrapper* _shaderProgramWrapper;
     std::vector<NGShaderUniformInput*> _uniforms;
     std::vector<NGShaderVarInput*> _inputLayout;
-    ShaderProgramWrapper* _shaderProgramWrapper;
+    std::string _vertexShaderFilePath;
+    std::string _fragmentShaderFilePath;
 };
 
 #endif /* defined(__noctisgames__NGShader__) */

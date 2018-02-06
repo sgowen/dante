@@ -43,11 +43,11 @@ const char* EntityLayoutMapper::sLayoutSerializerFunc()
     return EntityLayoutMapper::getInstance()->save();
 }
 
-void EntityLayoutMapper::initWithJsonFile(const char* path, bool isBundled, bool useEncryption)
+void EntityLayoutMapper::initWithJsonFile(const char* fileName, bool isBundled, bool useEncryption)
 {
-    std::string finalPath = adjustPath(path);
+    std::string filePath = JsonFile::filePathForConfigFile(fileName);
     
-    JsonFile jsonFile(finalPath.c_str(), isBundled, useEncryption);
+    JsonFile jsonFile(filePath.c_str(), isBundled, useEncryption);
     jsonFile.setDeserializerFunc(sLayoutsDeserializerFunc);
     jsonFile.load();
 }
@@ -92,9 +92,9 @@ void EntityLayoutMapper::loadEntityLayout(uint32_t name)
     _entityLayoutDef.entities.clear();
     
     std::string path = getJsonConfigFilePath(name);
-    std::string finalPath = adjustPath(path.c_str());
+    std::string filePath = JsonFile::filePathForConfigFile(path.c_str());
     
-    JsonFile jsonFile(finalPath.c_str());
+    JsonFile jsonFile(filePath.c_str());
     jsonFile.setDeserializerFunc(sLayoutDeserializerFunc);
     jsonFile.load();
 }
@@ -202,9 +202,9 @@ void EntityLayoutMapper::saveEntityLayout(uint32_t name, EntityLayoutDef* layout
     _layoutToSave = layout;
     
     std::string path = getJsonConfigFilePath(name);
-    std::string finalPath = adjustPath(path.c_str());
+    std::string filePath = JsonFile::filePathForConfigFile(path.c_str());
     
-    JsonFile jsonFile(finalPath.c_str());
+    JsonFile jsonFile(filePath.c_str());
     jsonFile.setSerializerFunc(sLayoutSerializerFunc);
     jsonFile.save();
 }
@@ -216,24 +216,6 @@ std::string EntityLayoutMapper::getJsonConfigFilePath(uint32_t inFourCCName)
     assert(q != _layouts.end());
     
     return q->second;
-}
-
-std::string EntityLayoutMapper::adjustPath(const char* path)
-{
-    const char* finalPath;
-#if defined __linux__ && !defined(__ANDROID__)
-    std::string s("assets/config/");
-    s += std::string(path);
-    finalPath = s.c_str();
-#elif defined _WIN32
-    std::string s("assets\\config\\");
-    s += std::string(path);
-    finalPath = s.c_str();
-#else
-    finalPath = path;
-#endif
-    
-    return std::string(finalPath);
 }
 
 EntityLayoutMapper::EntityLayoutMapper() : _layoutToSave(NULL)

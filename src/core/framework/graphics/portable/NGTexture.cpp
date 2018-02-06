@@ -16,8 +16,18 @@
 
 NGTexture::NGTexture(std::string inName, TextureManager* textureManager, bool repeatS, bool isEncrypted) : name(inName), textureDataWrapper(NULL), textureWrapper(NULL), _textureManager(textureManager), _repeatS(repeatS), _isFramebuffer(false), _isEncrypted(isEncrypted), _isLoadingData(false)
 {
-    if (inName == "framebuffer")
+    if (name == "framebuffer")
     {
         _isFramebuffer = true;
     }
+    
+#ifdef _WIN32
+    filePath = "assets\\textures\\";
+    filePath += name;
+#elif defined __linux__ && !defined(__ANDROID__)
+    filePath = "assets/textures/";
+    filePath += name;
+#else
+    filePath = name;
+#endif
 }

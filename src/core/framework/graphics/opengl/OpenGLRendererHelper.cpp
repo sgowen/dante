@@ -235,11 +235,12 @@ void OpenGLRendererHelper::platformReleaseFramebuffers()
 
 void OpenGLRendererHelper::createIndexBuffer()
 {
+    size_t size = MAX_BATCH_SIZE * INDICES_PER_RECTANGLE;
     std::vector<uint16_t> indices;
-    indices.reserve(MAX_BATCH_SIZE * INDICES_PER_RECTANGLE);
+    indices.reserve(size);
     
     uint16_t j = 0;
-    for (int i = 0; i < MAX_BATCH_SIZE * INDICES_PER_RECTANGLE; i += INDICES_PER_RECTANGLE, j += VERTICES_PER_RECTANGLE)
+    for (int i = 0; i < size; i += INDICES_PER_RECTANGLE, j += VERTICES_PER_RECTANGLE)
     {
         indices.push_back(j);
         indices.push_back(j + 1);

@@ -39,18 +39,7 @@ OpenGLTextureLoader::OpenGLTextureLoader() : TextureLoader()
 
 TextureDataWrapper* OpenGLTextureLoader::loadTextureData(NGTexture* texture)
 {
-    const char* textureName = texture->name.c_str();
-
-    const char* finalTextureFileName;
-#if defined __linux__ && !defined(__ANDROID__)
-    std::string s1("assets/textures/");
-    s1 += std::string(textureName);
-    finalTextureFileName = s1.c_str();
-#else
-    finalTextureFileName = textureName;
-#endif
-
-    const FileData fileData = AssetDataHandler::getAssetDataHandler()->getAssetData(finalTextureFileName);
+    const FileData fileData = AssetDataHandler::getAssetDataHandler()->getAssetData(texture->filePath.c_str());
     void* output = NULL;
     if (texture->_isEncrypted)
     {

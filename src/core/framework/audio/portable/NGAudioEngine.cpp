@@ -166,11 +166,11 @@ void NGAudioEngine::loadFromAssets()
         int soundId = sd->_soundId;
         if (soundId == 1337)
         {
-            loadMusic(sd->_soundName.c_str());
+            loadMusic(sd->_soundFilePath.c_str());
         }
         else
         {
-            loadSound(soundId, sd->_soundName.c_str(), sd->_numInstances);
+            loadSound(soundId, sd->_soundFilePath.c_str(), sd->_numInstances);
         }
     }
 }
