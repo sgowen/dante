@@ -35,7 +35,7 @@ NGLightingShader::NGLightingShader(RendererHelper& inRendererHelper, const char*
     _uniforms.push_back(new NGShaderUniformInput("u_TextureUnit",     0));
     _uniforms.push_back(new NGShaderUniformInput("u_NormalMapUnit",   1));
     
-    // Vertex
+    // Vertices
     _inputLayout.push_back(new NGShaderVarInput("a_Position", 2, 0));
     _inputLayout.push_back(new NGShaderVarInput("a_TexCoord", 2, 2));
     

@@ -27,8 +27,10 @@ NGTextureShader::NGTextureShader(RendererHelper& inRendererHelper, const char* v
     // Fragment Shader
     _uniforms.push_back(new NGShaderUniformInput("u_Color", 0, 16, true));
     
+    // Textures
     _uniforms.push_back(new NGShaderUniformInput("u_TextureUnit", 1));
     
+    // Vertices
     _inputLayout.push_back(new NGShaderVarInput("a_Position", 2, 0));
     _inputLayout.push_back(new NGShaderVarInput("a_TexCoord", 2, 2));
 }
@@ -40,6 +42,7 @@ void NGTextureShader::bind(void* vertices, void* data1, void* data2, void* data3
     assert(data3 != NULL);
     
     _rendererHelper.bindNGShader(_shaderProgramWrapper);
+    
     _rendererHelper.bindMatrix(_uniforms[0]);
     Color* color = static_cast<Color* >(data3);
     float4 float4Color;

@@ -20,8 +20,10 @@
 
 NGFramebufferToScreenShader::NGFramebufferToScreenShader(RendererHelper& inRendererHelper, const char* vertexShaderName, const char* fragmentShaderName) : NGShader(inRendererHelper, vertexShaderName, fragmentShaderName)
 {
+    // Textures
     _uniforms.push_back(new NGShaderUniformInput("u_TextureUnit", 0));
     
+    // Vertices
     _inputLayout.push_back(new NGShaderVarInput("a_Position", 2, 0));
 }
 

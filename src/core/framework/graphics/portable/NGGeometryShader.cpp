@@ -27,6 +27,7 @@ NGGeometryShader::NGGeometryShader(RendererHelper& inRendererHelper, const char*
     // Fragment Shader
     _uniforms.push_back(new NGShaderUniformInput("u_Color", 0, 16, true));
     
+    // Vertices
     _inputLayout.push_back(new NGShaderVarInput("a_Position", 2, 0));
 }
 

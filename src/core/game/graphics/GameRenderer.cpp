@@ -187,6 +187,18 @@ void GameRenderer::createDeviceDependentResources()
     _behindPlayerLightZFactor = NG_CFG->getFloat("BehindPlayerLightZFactor");
     _frontPlayerLightZFactor = NG_CFG->getFloat("FrontPlayerLightZFactor");
     _robotLightPositionFactorY = NG_CFG->getFloat("RobotLightPositionFactorY");
+    _tempStaticLight1[0] = NG_CFG->getFloat("TempStaticLight1X");
+    _tempStaticLight1[1] = NG_CFG->getFloat("TempStaticLight1Y");
+    _tempStaticLight1[2] = NG_CFG->getFloat("TempStaticLight1R");
+    _tempStaticLight1[3] = NG_CFG->getFloat("TempStaticLight1G");
+    _tempStaticLight1[4] = NG_CFG->getFloat("TempStaticLight1B");
+    _tempStaticLight1[5] = NG_CFG->getFloat("TempStaticLight1A");
+    _tempStaticLight2[0] = NG_CFG->getFloat("TempStaticLight2X");
+    _tempStaticLight2[1] = NG_CFG->getFloat("TempStaticLight2Y");
+    _tempStaticLight2[2] = NG_CFG->getFloat("TempStaticLight2R");
+    _tempStaticLight2[3] = NG_CFG->getFloat("TempStaticLight2G");
+    _tempStaticLight2[4] = NG_CFG->getFloat("TempStaticLight2B");
+    _tempStaticLight2[5] = NG_CFG->getFloat("TempStaticLight2A");
     
     _fontTexture = _textureManager->getTextureWithName("texture_000.ngt");
     
@@ -279,16 +291,8 @@ void GameRenderer::updateCamera()
         }
         
         /// Temporary
-        for (Entity* entity : InstanceManager::getClientWorld()->getLayers())
-        {
-            if (entity->getEntityDef().type == 'Z1S1')
-            {
-                float pX = entity->getPosition().x;
-                float pY = entity->getPosition().y;
-                
-                _lights.push_back(LightDef(pX, pY, 1, 0, 0, 1));
-            }
-        }
+        _lights.push_back(LightDef(_tempStaticLight1[0], _tempStaticLight1[1], _tempStaticLight1[2], _tempStaticLight1[3], _tempStaticLight1[4], _tempStaticLight1[5]));
+        _lights.push_back(LightDef(_tempStaticLight2[0], _tempStaticLight2[1], _tempStaticLight2[2], _tempStaticLight2[3], _tempStaticLight2[4], _tempStaticLight2[5]));
     }
     
     _camBounds[3]->getLowerLeft().set(x, y);
