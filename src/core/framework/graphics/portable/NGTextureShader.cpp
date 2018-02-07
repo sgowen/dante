@@ -35,13 +35,13 @@ NGTextureShader::NGTextureShader(RendererHelper& inRendererHelper, const char* v
     _inputLayout.push_back(new NGShaderVarInput("a_TexCoord", 2, 2));
 }
 
-void NGTextureShader::bind(void* vertices, void* data1, void* data2, void* data3)
+void NGTextureShader::bind(void* input, void* data1, void* data2, void* data3)
 {
-    assert(vertices != NULL);
+    assert(input != NULL);
     assert(data1 != NULL);
     assert(data3 != NULL);
     
-    _rendererHelper.bindNGShader(_shaderProgramWrapper);
+    _rendererHelper.bindShader(_shaderProgramWrapper);
     
     _rendererHelper.bindMatrix(_uniforms[0]);
     Color* color = static_cast<Color* >(data3);
@@ -53,12 +53,12 @@ void NGTextureShader::bind(void* vertices, void* data1, void* data2, void* data3
     _rendererHelper.bindFloat4(_uniforms[1], float4Color);
     _rendererHelper.bindTexture(NGTextureSlot_ZERO, static_cast<NGTexture*>(data1), _uniforms[2]);
     
-    std::vector<VERTEX_2D_TEXTURE>* textureVertices = static_cast<std::vector<VERTEX_2D_TEXTURE>* >(vertices);
-    _rendererHelper.mapTextureVertices(_inputLayout, *textureVertices);
+    std::vector<VERTEX_2D_TEXTURE>* vertices = static_cast<std::vector<VERTEX_2D_TEXTURE>* >(input);
+    _rendererHelper.mapTextureVertices(*vertices);
 }
 
 void NGTextureShader::unbind()
 {
     _rendererHelper.bindTexture(NGTextureSlot_ZERO, NULL);
-    _rendererHelper.bindNGShader(NULL);
+    _rendererHelper.bindShader(NULL);
 }

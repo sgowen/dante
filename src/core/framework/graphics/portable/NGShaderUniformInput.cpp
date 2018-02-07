@@ -16,14 +16,25 @@
 #include "framework/graphics/directx/DirectXRendererHelper.h"
 #endif
 
-NGShaderUniformInput::NGShaderUniformInput(const char* attribName, int index, int byteWidth, bool isFragment) : _attribName(attribName), _index(index), _byteWidth(byteWidth), _isFragment(isFragment)
+NGShaderUniformInput::NGShaderUniformInput(const char* attribName, int index, int byteWidth, bool isFragment) :
+_attribName(attribName),
+_index(index),
+_byteWidth(byteWidth),
+_isFragment(isFragment),
+#if defined __APPLE__ || defined __ANDROID__ || defined __linux__
+_attribute(0)
+#elif _WIN32
+_constantbuffer(NULL)
+#endif
 {
     // Empty
 }
 
 void NGShaderUniformInput::build(ShaderProgramWrapper* inShaderProgramWrapper)
 {
-#if defined _WIN32
+#if defined __APPLE__ || defined __ANDROID__ || defined __linux__
+    _attribute = glGetUniformLocation(inShaderProgramWrapper->_programObjectId, _attribName);
+#elif defined _WIN32
     if (_byteWidth > 0)
     {
         D3D11_BUFFER_DESC bd = { 0 };
@@ -33,9 +44,10 @@ void NGShaderUniformInput::build(ShaderProgramWrapper* inShaderProgramWrapper)
         bd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
         
         ID3D11Device* d3dDevice = DirectXRendererHelper::getD3DDevice();
-        DX::ThrowIfFailed(d3dDevice->CreateBuffer(&bd, NULL, &_constantbuffer));
+        
+        ID3D11Buffer* constantbuffer;
+        DX::ThrowIfFailed(d3dDevice->CreateBuffer(&bd, NULL, &constantbuffer));
+        _constantbuffer = constantbuffer;
     }
-#elif defined __APPLE__ || defined __ANDROID__ || defined __linux__
-    _attribute = glGetUniformLocation(inShaderProgramWrapper->_programObjectId, _attribName);
 #endif
 }

@@ -40,12 +40,9 @@ ShaderProgramWrapper* DirectXProgramLoader::loadNGShader(std::string& vertexShad
     unsigned char* fragment_shader_source_output = (unsigned char*) malloc(fragment_shader_source.data_length);
     StringUtil::encryptDecrypt((unsigned char*)fragment_shader_source.data, fragment_shader_source_output, fragment_shader_source.data_length);
     
-	Microsoft::WRL::ComPtr<ID3D11VertexShader> pVertexShader;
-	Microsoft::WRL::ComPtr<ID3D11InputLayout> pInputLayout;
-	Microsoft::WRL::ComPtr<ID3D11PixelShader> pPixelShader;
-    
     ID3D11Device* d3dDevice = DirectXRendererHelper::getD3DDevice();
     
+    ID3D11VertexShader* pVertexShader;
 	DX::ThrowIfFailed(
 		d3dDevice->CreateVertexShader(
 			vertex_shader_source_output,
@@ -65,6 +62,7 @@ ShaderProgramWrapper* DirectXProgramLoader::loadNGShader(std::string& vertexShad
         inputElementDescs.push_back(svi->_attribute);
     }
 
+    ID3D11InputLayout* pInputLayout;
 	DX::ThrowIfFailed(
 		d3dDevice->CreateInputLayout(
             &inputElementDescs.front(),
@@ -75,6 +73,7 @@ ShaderProgramWrapper* DirectXProgramLoader::loadNGShader(std::string& vertexShad
 		)
 	);
     
+    ID3D11PixelShader* pPixelShader;
 	DX::ThrowIfFailed(
 		d3dDevice->CreatePixelShader(
 			fragment_shader_source_output,
@@ -104,14 +103,17 @@ void DirectXProgramLoader::destroyNGShader(ShaderProgramWrapper* shaderProgramWr
 {
     assert(shaderProgramWrapper != NULL);
     
-    shaderProgramWrapper->_vertexShader.Reset();
-    shaderProgramWrapper->_inputLayout.Reset();
-    shaderProgramWrapper->_pixelShader.Reset();
+    shaderProgramWrapper->_vertexShader->Release();
+    shaderProgramWrapper->_inputLayout->Release();
+    shaderProgramWrapper->_pixelShader->Release();
     
     for (std::vector<NGShaderUniformInput*>::iterator i = uniforms.begin(); i != uniforms.end(); ++i)
     {
         NGShaderUniformInput* sui = (*i);
         
-        sui->_constantbuffer.Reset();
+		if (sui->_constantbuffer)
+		{
+			sui->_constantbuffer->Release();
+		}
     }
 }

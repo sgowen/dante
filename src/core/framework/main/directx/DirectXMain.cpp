@@ -31,11 +31,9 @@ extern void exitGame();
 
 using namespace DirectX;
 
-using Microsoft::WRL::ComPtr;
+#define DX_MAIN (DirectXMain::getInstance())
 
 DirectXMain* DirectXMain::s_instance = NULL;
-
-#define DX_MAIN (DirectXMain::getInstance())
 
 void DirectXMain::create()
 {

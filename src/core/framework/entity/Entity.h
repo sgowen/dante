@@ -9,7 +9,6 @@
 #ifndef __noctisgames__Entity__
 #define __noctisgames__Entity__
 
-#include "framework/graphics/portable/Color.h"
 #include "framework/util/FrameworkConstants.h"
 #include "framework/util/MathUtil.h"
 #include "Box2D/Common/b2Math.h"

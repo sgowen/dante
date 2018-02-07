@@ -19,7 +19,6 @@ class NGTexture;
 struct TextureWrapper;
 struct ShaderProgramWrapper;
 class NGShaderUniformInput;
-class NGShaderVarInput;
 
 class RendererHelper
 {
@@ -40,10 +39,10 @@ public:
     virtual void bindFloat4Array(NGShaderUniformInput* uniform, int count, float4* inValue) = 0;
     virtual void bindMatrix(NGShaderUniformInput* uniform, mat4x4& inValue) = 0;
     virtual void bindMatrix(NGShaderUniformInput* uniform) = 0;
+    virtual void bindShader(ShaderProgramWrapper* shaderProgramWrapper) = 0;
     virtual void bindTexture(NGTextureSlot textureSlot, NGTexture* texture, NGShaderUniformInput* uniform = NULL) = 0;
-    virtual void bindNGShader(ShaderProgramWrapper* shaderProgramWrapper) = 0;
-    virtual void mapTextureVertices(std::vector<NGShaderVarInput*>& inputLayout, std::vector<VERTEX_2D_TEXTURE>& vertices) = 0;
-    virtual void mapBasicVertices(std::vector<NGShaderVarInput*>& inputLayout, std::vector<VERTEX_2D>& vertices) = 0;
+    virtual void mapTextureVertices(std::vector<VERTEX_2D_TEXTURE>& vertices) = 0;
+    virtual void mapVertices(std::vector<VERTEX_2D>& vertices) = 0;
     virtual void draw(NGPrimitiveType renderPrimitiveType, uint32_t first, uint32_t count) = 0;
     virtual void drawIndexed(NGPrimitiveType renderPrimitiveType, uint32_t first, uint32_t count) = 0;
     

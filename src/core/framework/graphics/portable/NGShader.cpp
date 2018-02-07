@@ -43,7 +43,6 @@ void NGShader::unload(NGShaderLoader& shaderProgramLoader)
         shaderProgramLoader.destroyNGShader(_shaderProgramWrapper, _uniforms, _inputLayout);
         
         delete _shaderProgramWrapper;
-        
         _shaderProgramWrapper = NULL;
     }
 }

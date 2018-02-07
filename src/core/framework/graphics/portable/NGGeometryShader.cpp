@@ -31,12 +31,12 @@ NGGeometryShader::NGGeometryShader(RendererHelper& inRendererHelper, const char*
     _inputLayout.push_back(new NGShaderVarInput("a_Position", 2, 0));
 }
 
-void NGGeometryShader::bind(void* vertices, void* data1, void* data2, void* data3)
+void NGGeometryShader::bind(void* input, void* data1, void* data2, void* data3)
 {
-    assert(vertices != NULL);
+    assert(input != NULL);
     assert(data1 != NULL);
     
-    _rendererHelper.bindNGShader(_shaderProgramWrapper);
+    _rendererHelper.bindShader(_shaderProgramWrapper);
     _rendererHelper.bindMatrix(_uniforms[0]);
     
     Color* color = static_cast<Color* >(data1);
@@ -47,11 +47,11 @@ void NGGeometryShader::bind(void* vertices, void* data1, void* data2, void* data
     float4Color[3] = color->alpha;
     _rendererHelper.bindFloat4(_uniforms[1], float4Color);
     
-    std::vector<VERTEX_2D>* basicVertices = static_cast<std::vector<VERTEX_2D>* >(vertices);
-    _rendererHelper.mapBasicVertices(_inputLayout, *basicVertices);
+    std::vector<VERTEX_2D>* vertices = static_cast<std::vector<VERTEX_2D>* >(input);
+    _rendererHelper.mapVertices(*vertices);
 }
 
 void NGGeometryShader::unbind()
 {
-    _rendererHelper.bindNGShader(NULL);
+    _rendererHelper.bindShader(NULL);
 }

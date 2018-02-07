@@ -16,12 +16,18 @@
 #include "framework/graphics/portable/NGShaderUniformInput.h"
 #include <framework/util/FrameworkConstants.h>
 
+#include "framework/graphics/portable/NGShaderVarInput.h"
 #include <framework/util/Config.h>
 #include "framework/util/NGSTDUtil.h"
 
 #include <assert.h>
 
-OpenGLRendererHelper::OpenGLRendererHelper() : RendererHelper(), _textureVertexBuffer(0), _basicVertexBuffer(0), _screenFBO(0)
+OpenGLRendererHelper::OpenGLRendererHelper() : RendererHelper(),
+_screenFBO(0),
+_textureVertexBuffer(0),
+_vertexBuffer(0),
+_indexBuffer(0),
+_currentShaderProgramWrapper(NULL)
 {
     // Empty
 }
@@ -38,8 +44,8 @@ void OpenGLRendererHelper::createDeviceDependentResources()
     
     glGetIntegerv(GL_FRAMEBUFFER_BINDING, &_screenFBO);
     
-    createVertexBuffer<VERTEX_2D_TEXTURE>(_textureVertexBuffer, MAX_BATCH_SIZE * VERTICES_PER_RECTANGLE);
-    createVertexBuffer<VERTEX_2D>(_basicVertexBuffer, MAX_BATCH_SIZE * VERTICES_PER_RECTANGLE);
+    createVertexBuffer<VERTEX_2D_TEXTURE>(_textureVertexBuffer, MAX_BATCH_SIZE * VERTICES_PER_RECTANGLE, true);
+    createVertexBuffer<VERTEX_2D>(_vertexBuffer, VERTICES_PER_RECTANGLE, true);
     createIndexBuffer();
 }
 
@@ -48,7 +54,7 @@ void OpenGLRendererHelper::releaseDeviceDependentResources()
     platformReleaseFramebuffers();
     
     glDeleteBuffers(1, &_textureVertexBuffer);
-    glDeleteBuffers(1, &_basicVertexBuffer);
+    glDeleteBuffers(1, &_vertexBuffer);
     glDeleteBuffers(1, &_indexBuffer);
 }
 
@@ -133,6 +139,13 @@ inline int slotIndexForTextureSlot(NGTextureSlot textureSlot)
     assert(false);
 }
 
+void OpenGLRendererHelper::bindShader(ShaderProgramWrapper* shaderProgramWrapper)
+{
+    glUseProgram(shaderProgramWrapper == NULL ? 0 : shaderProgramWrapper->_programObjectId);
+    
+    _currentShaderProgramWrapper = shaderProgramWrapper;
+}
+
 void OpenGLRendererHelper::bindTexture(NGTextureSlot textureSlot, NGTexture* texture, NGShaderUniformInput* uniform)
 {
     glActiveTexture(textureSlot);
@@ -153,19 +166,14 @@ void OpenGLRendererHelper::bindTexture(NGTextureSlot textureSlot, NGTexture* tex
     }
 }
 
-void OpenGLRendererHelper::bindNGShader(ShaderProgramWrapper* shaderProgramWrapper)
+void OpenGLRendererHelper::mapTextureVertices(std::vector<VERTEX_2D_TEXTURE>& vertices)
 {
-    glUseProgram(shaderProgramWrapper == NULL ? 0 : shaderProgramWrapper->_programObjectId);
+    mapVertices(_textureVertexBuffer, vertices, true);
 }
 
-void OpenGLRendererHelper::mapTextureVertices(std::vector<NGShaderVarInput*>& inputLayout, std::vector<VERTEX_2D_TEXTURE>& vertices)
+void OpenGLRendererHelper::mapVertices(std::vector<VERTEX_2D>& vertices)
 {
-    mapVertices(_textureVertexBuffer, vertices, inputLayout);
-}
-
-void OpenGLRendererHelper::mapBasicVertices(std::vector<NGShaderVarInput*>& inputLayout, std::vector<VERTEX_2D>& vertices)
-{
-    mapVertices(_basicVertexBuffer, vertices, inputLayout);
+    mapVertices(_vertexBuffer, vertices, true);
 }
 
 void OpenGLRendererHelper::draw(NGPrimitiveType renderPrimitiveType, uint32_t first, uint32_t count)

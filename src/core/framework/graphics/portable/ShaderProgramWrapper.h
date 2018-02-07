@@ -11,18 +11,27 @@
 
 #include "framework/graphics/portable/NGGraphics.h"
 
+#if defined __APPLE__ || defined __ANDROID__ || defined __linux__
+#include <framework/graphics/portable/NGShaderUniformInput.h>
+#include <framework/graphics/portable/NGShaderVarInput.h>
+
+#include <vector>
+#endif
+
 struct ShaderProgramWrapper
 {
 #if defined __APPLE__ || defined __ANDROID__ || defined __linux__
     GLuint _programObjectId;
+    std::vector<NGShaderUniformInput*>& _uniforms;
+    std::vector<NGShaderVarInput*>& _inputLayout;
 
-    ShaderProgramWrapper(GLuint programObjectId) : _programObjectId(programObjectId) {}
+    ShaderProgramWrapper(GLuint programObjectId, std::vector<NGShaderUniformInput*>& uniforms, std::vector<NGShaderVarInput*>& inputLayout) : _programObjectId(programObjectId), _uniforms(uniforms), _inputLayout(inputLayout) {}
 #elif defined _WIN32
-    Microsoft::WRL::ComPtr<ID3D11VertexShader> _vertexShader;
-    Microsoft::WRL::ComPtr<ID3D11InputLayout> _inputLayout;
-    Microsoft::WRL::ComPtr<ID3D11PixelShader> _pixelShader;
+    ID3D11VertexShader* _vertexShader;
+    ID3D11InputLayout* _inputLayout;
+    ID3D11PixelShader* _pixelShader;
 
-    ShaderProgramWrapper(Microsoft::WRL::ComPtr<ID3D11VertexShader> vertexShader, Microsoft::WRL::ComPtr<ID3D11InputLayout> inputLayout, Microsoft::WRL::ComPtr<ID3D11PixelShader> pixelShader) : _vertexShader(vertexShader), _inputLayout(inputLayout), _pixelShader(pixelShader) {}
+    ShaderProgramWrapper(ID3D11VertexShader* vertexShader, ID3D11InputLayout* inputLayout, ID3D11PixelShader* pixelShader) : _vertexShader(vertexShader), _inputLayout(inputLayout), _pixelShader(pixelShader) {}
 #endif
 };
 

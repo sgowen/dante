@@ -51,7 +51,7 @@ ShaderProgramWrapper* OpenGLProgramLoader::loadNGShader(std::string& vertexShade
     free((void *)vertex_shader_source_output);
     free((void *)fragment_shader_source_output);
     
-    ShaderProgramWrapper* ret = new ShaderProgramWrapper(programObjectId);
+    ShaderProgramWrapper* ret = new ShaderProgramWrapper(programObjectId, uniforms, inputLayout);
     
     int totalSize = 0;
     for (std::vector<NGShaderVarInput*>::iterator i = inputLayout.begin(); i != inputLayout.end(); ++i)

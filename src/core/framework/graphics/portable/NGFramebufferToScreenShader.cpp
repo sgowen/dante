@@ -27,20 +27,20 @@ NGFramebufferToScreenShader::NGFramebufferToScreenShader(RendererHelper& inRende
     _inputLayout.push_back(new NGShaderVarInput("a_Position", 2, 0));
 }
 
-void NGFramebufferToScreenShader::bind(void* vertices, void* data1, void* data2, void* data3)
+void NGFramebufferToScreenShader::bind(void* input, void* data1, void* data2, void* data3)
 {
-    assert(vertices != NULL);
+    assert(input != NULL);
     assert(data1 != NULL);
     
-    _rendererHelper.bindNGShader(_shaderProgramWrapper);
+    _rendererHelper.bindShader(_shaderProgramWrapper);
     _rendererHelper.bindTexture(NGTextureSlot_ZERO, static_cast<NGTexture*>(data1), _uniforms[0]);
     
-    std::vector<VERTEX_2D>* screenVertices = static_cast<std::vector<VERTEX_2D>* >(vertices);
-    _rendererHelper.mapBasicVertices(_inputLayout, *screenVertices);
+    std::vector<VERTEX_2D>* vertices = static_cast<std::vector<VERTEX_2D>* >(input);
+    _rendererHelper.mapVertices(*vertices);
 }
 
 void NGFramebufferToScreenShader::unbind()
 {
     _rendererHelper.bindTexture(NGTextureSlot_ZERO, NULL);
-    _rendererHelper.bindNGShader(NULL);
+    _rendererHelper.bindShader(NULL);
 }

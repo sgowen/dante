@@ -42,13 +42,13 @@ NGLightingShader::NGLightingShader(RendererHelper& inRendererHelper, const char*
     resetLights();
 }
 
-void NGLightingShader::bind(void* vertices, void* data1, void* data2, void* data3)
+void NGLightingShader::bind(void* input, void* data1, void* data2, void* data3)
 {
-    assert(vertices != NULL);
+    assert(input != NULL);
     assert(data1 != NULL);
     assert(data2 != NULL);
     
-    _rendererHelper.bindNGShader(_shaderProgramWrapper);
+    _rendererHelper.bindShader(_shaderProgramWrapper);
     _rendererHelper.bindMatrix(                                                     _uniforms[0]);
     _rendererHelper.bindFloat4Array(                                                _uniforms[1], _numLights[0], _lightPositions);
     _rendererHelper.bindInt4(                                                       _uniforms[2], _numLights);
@@ -59,15 +59,15 @@ void NGLightingShader::bind(void* vertices, void* data1, void* data2, void* data
     _rendererHelper.bindTexture(NGTextureSlot_ZERO, static_cast<NGTexture*>(data1), _uniforms[7]);
     _rendererHelper.bindTexture(NGTextureSlot_ONE, static_cast<NGTexture*>(data2),  _uniforms[8]);
     
-    std::vector<VERTEX_2D_TEXTURE>* textureVertices = static_cast<std::vector<VERTEX_2D_TEXTURE>* >(vertices);
-    _rendererHelper.mapTextureVertices(_inputLayout, *textureVertices);
+    std::vector<VERTEX_2D_TEXTURE>* vertices = static_cast<std::vector<VERTEX_2D_TEXTURE>* >(input);
+    _rendererHelper.mapTextureVertices(*vertices);
 }
 
 void NGLightingShader::unbind()
 {
     _rendererHelper.bindTexture(NGTextureSlot_ZERO, NULL);
     _rendererHelper.bindTexture(NGTextureSlot_ONE, NULL);
-    _rendererHelper.bindNGShader(NULL);
+    _rendererHelper.bindShader(NULL);
 }
 
 void NGLightingShader::resetLights()

@@ -11,7 +11,7 @@
 
 enum ReplicationAction
 {
-    RA_Create,
+    RA_Create = 1,
     RA_Update,
     RA_Destroy
 };

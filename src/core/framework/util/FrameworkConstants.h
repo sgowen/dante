@@ -47,7 +47,7 @@
 
 //// Rendering ////
 
-#define MAX_BATCH_SIZE 16384
+#define MAX_BATCH_SIZE 0x0000FFFFu
 #define NUM_FRAMEBUFFERS 10
 
 #define VERTICES_PER_LINE 2
