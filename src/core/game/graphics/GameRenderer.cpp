@@ -88,7 +88,6 @@ GameRenderer::GameRenderer() : Renderer(),
 _textureManager(new TextureManager()),
 _rendererHelper(RENDERER_HELPER_FACTORY->createRendererHelper()),
 _fontSpriteBatcher(new SpriteBatcher(_rendererHelper)),
-_fbSpriteBatcher(new SpriteBatcher(_rendererHelper)),
 _fillPolygonBatcher(new PolygonBatcher(_rendererHelper, true)),
 _boundsPolygonBatcher(new PolygonBatcher(_rendererHelper, false)),
 _lineBatcher(new LineBatcher(_rendererHelper)),
@@ -131,7 +130,6 @@ GameRenderer::~GameRenderer()
     delete _textureManager;
     delete _rendererHelper;
     delete _fontSpriteBatcher;
-    delete _fbSpriteBatcher;
     for (int i = 0; i < NUM_SPRITE_BATCHERS; ++i)
     {
         delete _spriteBatchers[i];
@@ -370,11 +368,6 @@ void GameRenderer::renderWorld()
         
         {
             /// Use Lighting Shader
-            static TextureRegion tr = TextureRegion("framebuffer", 0, 0, 1, 1, 1, 1);
-            
-            float x = _camBounds[3]->getLeft() + _camBounds[3]->getWidth() / 2;
-            float y = _camBounds[3]->getBottom() + _camBounds[3]->getHeight() / 2;
-            
             _rendererHelper->useScreenBlending();
             
             fbBegin = 6;
@@ -396,9 +389,10 @@ void GameRenderer::renderWorld()
                 }
                 
                 setFramebuffer(6, 0, 0, 0, 0);
-                _fbSpriteBatcher->beginBatch();
-                _fbSpriteBatcher->renderSprite(x, y, _camBounds[3]->getWidth(), _camBounds[3]->getHeight(), 0, tr);
-                _fbSpriteBatcher->endBatch(_lightingNGShader, _rendererHelper->getFramebuffer(0), _rendererHelper->getFramebuffer(3));
+                _lightingNGShader->bind(_rendererHelper->getFramebuffer(0), _rendererHelper->getFramebuffer(3));
+                _rendererHelper->bindScreenVertexBuffer();
+                _rendererHelper->drawIndexed(NGPrimitiveType_Triangles, 0, INDICES_PER_RECTANGLE);
+                _framebufferToScreenNGShader->unbind();
             }
             
             {
@@ -412,9 +406,10 @@ void GameRenderer::renderWorld()
                 }
                 
                 setFramebuffer(7, 0, 0, 0, 0);
-                _fbSpriteBatcher->beginBatch();
-                _fbSpriteBatcher->renderSprite(x, y, _camBounds[3]->getWidth(), _camBounds[3]->getHeight(), 0, tr);
-                _fbSpriteBatcher->endBatch(_lightingNGShader, _rendererHelper->getFramebuffer(1), _rendererHelper->getFramebuffer(4));
+                _lightingNGShader->bind(_rendererHelper->getFramebuffer(1), _rendererHelper->getFramebuffer(4));
+                _rendererHelper->bindScreenVertexBuffer();
+                _rendererHelper->drawIndexed(NGPrimitiveType_Triangles, 0, INDICES_PER_RECTANGLE);
+                _framebufferToScreenNGShader->unbind();
             }
             
             {
@@ -433,9 +428,10 @@ void GameRenderer::renderWorld()
                 }
                 
                 setFramebuffer(8, 0, 0, 0, 0);
-                _fbSpriteBatcher->beginBatch();
-                _fbSpriteBatcher->renderSprite(x, y, _camBounds[3]->getWidth(), _camBounds[3]->getHeight(), 0, tr);
-                _fbSpriteBatcher->endBatch(_lightingNGShader, _rendererHelper->getFramebuffer(2), _rendererHelper->getFramebuffer(5));
+                _lightingNGShader->bind(_rendererHelper->getFramebuffer(2), _rendererHelper->getFramebuffer(5));
+                _rendererHelper->bindScreenVertexBuffer();
+                _rendererHelper->drawIndexed(NGPrimitiveType_Triangles, 0, INDICES_PER_RECTANGLE);
+                _framebufferToScreenNGShader->unbind();
             }
         }
     }

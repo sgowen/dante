@@ -20,16 +20,13 @@
 
 NGLightingShader::NGLightingShader(RendererHelper& inRendererHelper, const char* vertexShaderName, const char* fragmentShaderName) : NGShader(inRendererHelper, vertexShaderName, fragmentShaderName), _lightIndex(0)
 {
-    // Vertex Shader
-    _uniforms.push_back(new NGShaderUniformInput("u_Matrix",          0,  64, false));
-    _uniforms.push_back(new NGShaderUniformInput("u_LightPositions",  1, 192, false));
-    _uniforms.push_back(new NGShaderUniformInput("u_NumLights",       2,  16, false));
-    
     // Fragment Shader
-    _uniforms.push_back(new NGShaderUniformInput("u_LightColors",     0, 192, true));
-    _uniforms.push_back(new NGShaderUniformInput("u_AmbientColor",    1,  16, true));
-    _uniforms.push_back(new NGShaderUniformInput("u_Falloff",         2,  16, true));
-    _uniforms.push_back(new NGShaderUniformInput("u_NumLights",       3,  16, true));
+    _uniforms.push_back(new NGShaderUniformInput("u_Matrix",          0,  64, true));
+    _uniforms.push_back(new NGShaderUniformInput("u_LightPositions",  1, 192, true));
+    _uniforms.push_back(new NGShaderUniformInput("u_LightColors",     2, 192, true));
+    _uniforms.push_back(new NGShaderUniformInput("u_AmbientColor",    3,  16, true));
+    _uniforms.push_back(new NGShaderUniformInput("u_Falloff",         4,  16, true));
+    _uniforms.push_back(new NGShaderUniformInput("u_NumLights",       5,  16, true));
 
     // Textures
     _uniforms.push_back(new NGShaderUniformInput("u_TextureUnit",     0));
@@ -37,7 +34,6 @@ NGLightingShader::NGLightingShader(RendererHelper& inRendererHelper, const char*
     
     // Vertices
     _inputLayout.push_back(new NGShaderVarInput("a_Position", 2, 0));
-    _inputLayout.push_back(new NGShaderVarInput("a_TexCoord", 2, 2));
     
     resetLights();
 }
@@ -50,13 +46,12 @@ void NGLightingShader::bind(void* data1, void* data2, void* data3)
     _rendererHelper.bindShader(_shaderProgramWrapper);
     _rendererHelper.bindMatrix(                                                     _uniforms[0]);
     _rendererHelper.bindFloat4Array(                                                _uniforms[1], _numLights[0], _lightPositions);
-    _rendererHelper.bindInt4(                                                       _uniforms[2], _numLights);
-    _rendererHelper.bindFloat4Array(                                                _uniforms[3], _numLights[0], _lightColors);
-    _rendererHelper.bindFloat4(                                                     _uniforms[4], _ambientColor);
-    _rendererHelper.bindFloat4(                                                     _uniforms[5], _fallOff);
-    _rendererHelper.bindInt4(                                                       _uniforms[6], _numLights);
-    _rendererHelper.bindTexture(NGTextureSlot_ZERO, static_cast<NGTexture*>(data1), _uniforms[7]);
-    _rendererHelper.bindTexture(NGTextureSlot_ONE, static_cast<NGTexture*>(data2),  _uniforms[8]);
+    _rendererHelper.bindFloat4Array(                                                _uniforms[2], _numLights[0], _lightColors);
+    _rendererHelper.bindFloat4(                                                     _uniforms[3], _ambientColor);
+    _rendererHelper.bindFloat4(                                                     _uniforms[4], _fallOff);
+    _rendererHelper.bindInt4(                                                       _uniforms[5], _numLights);
+    _rendererHelper.bindTexture(NGTextureSlot_ZERO, static_cast<NGTexture*>(data1), _uniforms[6]);
+    _rendererHelper.bindTexture(NGTextureSlot_ONE, static_cast<NGTexture*>(data2),  _uniforms[7]);
 }
 
 void NGLightingShader::unbind()

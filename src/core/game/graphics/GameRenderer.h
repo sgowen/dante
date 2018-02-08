@@ -70,7 +70,6 @@ private:
     std::string _textures[NUM_SPRITE_BATCHERS];
     std::string _normals[NUM_SPRITE_BATCHERS];
     SpriteBatcher* _fontSpriteBatcher;
-    SpriteBatcher* _fbSpriteBatcher;
     PolygonBatcher* _fillPolygonBatcher;
     PolygonBatcher* _boundsPolygonBatcher;
     LineBatcher* _lineBatcher;
