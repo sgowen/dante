@@ -140,11 +140,7 @@ void OpenGLRendererHelper::bindTexture(NGTextureSlot textureSlot, NGTexture* tex
     if (texture)
     {
         glEnable(GL_TEXTURE_2D);
-        
-        if (uniform)
-        {
-            glUniform1i(uniform->_attribute, slotIndexForTextureSlot(textureSlot));
-        }
+        glUniform1i(uniform->_attribute, slotIndexForTextureSlot(textureSlot));
     }
     else
     {
