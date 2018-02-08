@@ -55,6 +55,8 @@ private:
     std::vector<GLuint> _fbos;
     std::vector<GLuint> _fbo_textures;
     ShaderProgramWrapper* _currentShaderProgramWrapper;
+    
+    void bindInputLayout(std::vector<NGShaderVarInput*>& inputLayout);
 };
 
 #endif /* defined(__noctisgames__OpenGLRendererHelper__) */

@@ -60,15 +60,23 @@ private:
     std::vector<ID3D11ShaderResourceView*> _offscreenShaderResourceViews;
     ID3D11BlendState* _blendState;
     ID3D11BlendState* _screenBlendState;
-    ID3D11SamplerState* _textureSamplerState;
-    ID3D11SamplerState* _textureWrapSamplerState;
-    ID3D11SamplerState* _framebufferSamplerState;
+    ID3D11SamplerState* _textureSamplerState1; // mipmap: true, min: GL_NEAREST, min: GL_NEAREST
+    ID3D11SamplerState* _textureSamplerState2; // mipmap: true, min: GL_LINEAR,  min: GL_NEAREST
+    ID3D11SamplerState* _textureSamplerState3; // mipmap: true, min: GL_LINEAR,  min: GL_LINEAR
+    ID3D11SamplerState* _textureSamplerState4; // mipmap: true, min: GL_NEAREST,  min: GL_LINEAR
+    ID3D11SamplerState* _textureSamplerState5; // mipmap: false, min: GL_NEAREST, min: GL_NEAREST
+    ID3D11SamplerState* _textureSamplerState6; // mipmap: false, min: GL_LINEAR,  min: GL_NEAREST
+    ID3D11SamplerState* _textureSamplerState7; // mipmap: false, min: GL_LINEAR,  min: GL_LINEAR
+    ID3D11SamplerState* _textureSamplerState8; // mipmap: false, min: GL_NEAREST,  min: GL_LINEAR
+    ID3D11SamplerState* _framebufferSamplerState; // mipmap: false, min: FramebufferFilterMin, mag: FramebufferFilterMag
 	int _fbIndex;
     
     void createBlendStates();
     void createSamplerStates();
-    D3D11_FILTER filterForMinAndMag(std::string& cfgFilterMin, std::string& cfgFilterMag, bool mipmap = false);
-    void bindVertexBuffer(ID3D11Buffer* buffer, const void *data, size_t size, UINT stride);
+    D3D11_FILTER filterForMinAndMag(std::string cfgFilterMin, std::string cfgFilterMag, bool mipmap = false);
+    ID3D11SamplerState* getSamplerStateForTexture(NGTexture* texture);
+    void mapVertexBuffer(ID3D11Buffer* buffer, const void *data, size_t size, UINT stride);
+    void bindVertexBuffer(ID3D11Buffer* buffer, UINT stride);
     void bindConstantBuffer(NGShaderUniformInput* uniform, const void *pSrcData);
 };
 

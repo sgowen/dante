@@ -571,7 +571,7 @@ void GameRenderer::renderUI()
 
 void GameRenderer::renderText(const char* inStr, float x, float y, int justification)
 {
-    float fgWidth = CAM_WIDTH / 60;
+    float fgWidth = CAM_WIDTH / 64;
     float fgHeight = fgWidth * 1.171875f;
     
     std::string text(inStr);

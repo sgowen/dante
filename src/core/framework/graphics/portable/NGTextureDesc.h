@@ -17,12 +17,18 @@ struct NGTextureDesc
     bool _repeatS;
     bool _isEncrypted;
     bool _hasNormal;
+    std::string _textureFilterMin;
+    std::string _textureFilterMag;
+    bool _textureFilterMipMap;
     
-    NGTextureDesc(std::string inTextureName, bool repeatS, bool isEncrypted, bool hasNormal) :
-    _textureName(inTextureName),
+    NGTextureDesc(std::string textureName, bool repeatS, bool isEncrypted, bool hasNormal, std::string textureFilterMin, std::string textureFilterMag, bool textureFilterMipMap) :
+    _textureName(textureName),
     _repeatS(repeatS),
     _isEncrypted(isEncrypted),
-    _hasNormal(hasNormal)
+    _hasNormal(hasNormal),
+    _textureFilterMin(textureFilterMin),
+    _textureFilterMag(textureFilterMag),
+    _textureFilterMipMap(textureFilterMipMap)
     {
         // I normally don't allow definitions in headers, but sometimes I'm cool with it
     }

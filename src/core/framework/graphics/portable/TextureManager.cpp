@@ -45,7 +45,7 @@ void TextureManager::createDeviceDependentResources()
         std::vector<NGTextureDesc*>& textureDescs = ASSETS->getTextureDescriptors();
         for (NGTextureDesc* td : textureDescs)
         {
-            _textures[td->_textureName] = new NGTexture(td->_textureName, this, td->_repeatS, td->_isEncrypted);
+            _textures[td->_textureName] = new NGTexture(td->_textureName, this, td);
             
             if (td->_hasNormal)
             {
@@ -53,7 +53,7 @@ void TextureManager::createDeviceDependentResources()
                 std::string prefix = "n_";
                 normalMapName.insert(0, prefix);
                 
-                _textures[normalMapName] = new NGTexture(normalMapName, this, td->_repeatS, td->_isEncrypted);
+                _textures[normalMapName] = new NGTexture(normalMapName, this, td);
             }
         }
     }
@@ -101,7 +101,7 @@ void TextureManager::loadTextureSync(NGTexture* texture)
 {
     loadTextureDataSync(texture);
     
-    texture->textureWrapper = _textureLoader->loadTexture(texture->textureDataWrapper, texture->_repeatS);
+    texture->textureWrapper = _textureLoader->loadTexture(texture->textureDataWrapper, texture->_desc);
     
     delete texture->textureDataWrapper;
     texture->textureDataWrapper = NULL;
@@ -204,7 +204,7 @@ void TextureManager::handleAsyncTextureLoads()
     {
         if ((*i)->textureDataWrapper)
         {
-            (*i)->textureWrapper = _textureLoader->loadTexture((*i)->textureDataWrapper, (*i)->_repeatS);
+            (*i)->textureWrapper = _textureLoader->loadTexture((*i)->textureDataWrapper, (*i)->_desc);
             
             delete (*i)->textureDataWrapper;
             (*i)->textureDataWrapper = NULL;

@@ -17,9 +17,7 @@ public:
     DirectXTextureLoader();
     
     virtual TextureDataWrapper* loadTextureData(NGTexture* texture);
-    
-    virtual TextureWrapper* loadTexture(TextureDataWrapper* textureData, bool repeatS = false);
-    
+    virtual TextureWrapper* loadTexture(TextureDataWrapper* textureData, NGTextureDesc* textureDesc);
     virtual void destroyTexture(TextureWrapper& textureWrapper);
 };
 

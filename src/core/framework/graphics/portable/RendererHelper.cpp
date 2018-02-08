@@ -84,7 +84,7 @@ void RendererHelper::createWindowSizeDependentResources(int screenWidth, int scr
     for (int i = 0; i < NUM_FRAMEBUFFERS; ++i)
     {
         TextureWrapper* framebuffer = createFramebuffer();
-        NGTexture* texture = new NGTexture("framebuffer", NULL, false);
+        NGTexture* texture = new NGTexture("framebuffer", NULL, NULL);
         texture->textureWrapper = framebuffer;
         _framebufferWrappers.push_back(texture);
     }

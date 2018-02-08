@@ -151,62 +151,35 @@ void OpenGLRendererHelper::bindTexture(NGTextureSlot textureSlot, NGTexture* tex
 void OpenGLRendererHelper::mapTextureVertices(std::vector<VERTEX_2D_TEXTURE>& vertices, bool isDynamic, int gpuBufferIndex)
 {
     GLuint& buffer = isDynamic ? _dynamicTextureVertexBuffers[gpuBufferIndex]->buffer : _staticTextureVertexBuffers[gpuBufferIndex]->buffer;
-    
     glBindBuffer(GL_ARRAY_BUFFER, buffer);
-    
     glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(VERTEX_2D_TEXTURE) * vertices.size(), &vertices[0]);
     
-    std::vector<NGShaderVarInput*>& inputLayout = _currentShaderProgramWrapper->_inputLayout;
-    for (std::vector<NGShaderVarInput*>::iterator i = inputLayout.begin(); i != inputLayout.end(); ++i)
-    {
-        NGShaderVarInput* svi = (*i);
-        
-        glVertexAttribPointer(svi->_attribute, svi->_size, GL_FLOAT, GL_FALSE, svi->_stride, svi->_bufferOffset);
-    }
+    bindInputLayout(_currentShaderProgramWrapper->_inputLayout);
 }
 
 void OpenGLRendererHelper::mapVertices(std::vector<VERTEX_2D>& vertices, bool isDynamic, int gpuBufferIndex)
 {
     GLuint& buffer = isDynamic ? _dynamicVertexBuffers[gpuBufferIndex]->buffer : _staticVertexBuffers[gpuBufferIndex]->buffer;
-    
     glBindBuffer(GL_ARRAY_BUFFER, buffer);
     glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(VERTEX_2D) * vertices.size(), &vertices[0]);
     
-    std::vector<NGShaderVarInput*>& inputLayout = _currentShaderProgramWrapper->_inputLayout;
-    for (std::vector<NGShaderVarInput*>::iterator i = inputLayout.begin(); i != inputLayout.end(); ++i)
-    {
-        NGShaderVarInput* svi = (*i);
-        
-        glVertexAttribPointer(svi->_attribute, svi->_size, GL_FLOAT, GL_FALSE, svi->_stride, svi->_bufferOffset);
-    }
+    bindInputLayout(_currentShaderProgramWrapper->_inputLayout);
 }
 
 void OpenGLRendererHelper::bindTextureVertexBuffer(int gpuBufferIndex)
 {
     GLuint& buffer = _staticTextureVertexBuffers[gpuBufferIndex]->buffer;
-    
     glBindBuffer(GL_ARRAY_BUFFER, buffer);
     
-    std::vector<NGShaderVarInput*>& inputLayout = _currentShaderProgramWrapper->_inputLayout;
-    for (std::vector<NGShaderVarInput*>::iterator i = inputLayout.begin(); i != inputLayout.end(); ++i)
-    {
-        NGShaderVarInput* svi = (*i);
-        
-        glVertexAttribPointer(svi->_attribute, svi->_size, GL_FLOAT, GL_FALSE, svi->_stride, svi->_bufferOffset);
-    }
+    bindInputLayout(_currentShaderProgramWrapper->_inputLayout);
 }
 
 void OpenGLRendererHelper::bindScreenVertexBuffer()
 {
-    glBindBuffer(GL_ARRAY_BUFFER, _staticScreenVertexBuffer->buffer);
+    GLuint& buffer = _staticScreenVertexBuffer->buffer;
+    glBindBuffer(GL_ARRAY_BUFFER, buffer);
     
-    std::vector<NGShaderVarInput*>& inputLayout = _currentShaderProgramWrapper->_inputLayout;
-    for (std::vector<NGShaderVarInput*>::iterator i = inputLayout.begin(); i != inputLayout.end(); ++i)
-    {
-        NGShaderVarInput* svi = (*i);
-        
-        glVertexAttribPointer(svi->_attribute, svi->_size, GL_FLOAT, GL_FALSE, svi->_stride, svi->_bufferOffset);
-    }
+    bindInputLayout(_currentShaderProgramWrapper->_inputLayout);
 }
 
 void OpenGLRendererHelper::draw(NGPrimitiveType renderPrimitiveType, uint32_t first, uint32_t count)
@@ -289,4 +262,14 @@ void OpenGLRendererHelper::platformReleaseFramebuffers()
     
     _fbo_textures.clear();
     _fbos.clear();
+}
+
+void OpenGLRendererHelper::bindInputLayout(std::vector<NGShaderVarInput*>& inputLayout)
+{
+    for (std::vector<NGShaderVarInput*>::iterator i = inputLayout.begin(); i != inputLayout.end(); ++i)
+    {
+        NGShaderVarInput* svi = (*i);
+        
+        glVertexAttribPointer(svi->_attribute, svi->_size, GL_FLOAT, GL_FALSE, svi->_stride, svi->_bufferOffset);
+    }
 }

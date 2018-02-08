@@ -16,6 +16,7 @@
 #include "framework/graphics/portable/NGShaderUniformInput.h"
 #include "framework/graphics/portable/NGShaderVarInput.h"
 
+#include "framework/graphics/portable/NGTextureDesc.h"
 #include "framework/util/NGSTDUtil.h"
 #include <framework/util/FrameworkConstants.h>
 #include <framework/util/macros.h>
@@ -46,8 +47,14 @@ ID3D11DeviceContext* DirectXRendererHelper::getD3DContext()
 DirectXRendererHelper::DirectXRendererHelper() : RendererHelper(),
 _blendState(NULL),
 _screenBlendState(NULL),
-_textureSamplerState(NULL),
-_textureWrapSamplerState(NULL),
+_textureSamplerState1(NULL),
+_textureSamplerState2(NULL),
+_textureSamplerState3(NULL),
+_textureSamplerState4(NULL),
+_textureSamplerState5(NULL),
+_textureSamplerState6(NULL),
+_textureSamplerState7(NULL),
+_textureSamplerState8(NULL),
 _framebufferSamplerState(NULL),
 _fbIndex(0)
 {
@@ -77,8 +84,14 @@ void DirectXRendererHelper::releaseDeviceDependentResources()
     
     _blendState->Release();
     _screenBlendState->Release();
-    _textureSamplerState->Release();
-    _textureWrapSamplerState->Release();
+    _textureSamplerState1->Release();
+    _textureSamplerState2->Release();
+    _textureSamplerState3->Release();
+    _textureSamplerState4->Release();
+    _textureSamplerState5->Release();
+    _textureSamplerState6->Release();
+    _textureSamplerState7->Release();
+    _textureSamplerState8->Release();
     _framebufferSamplerState->Release();
 }
 
@@ -180,8 +193,8 @@ void DirectXRendererHelper::bindTexture(NGTextureSlot textureSlot, NGTexture* te
     if (texture)
     {
         getD3DContext()->PSSetShaderResources(textureSlot, 1, &texture->textureWrapper->texture);
-		ID3D11SamplerState *const *ppSamplers = texture->_isFramebuffer ? &_framebufferSamplerState : texture->_repeatS ? &_textureWrapSamplerState : &_textureSamplerState;
-        getD3DContext()->PSSetSamplers(textureSlot, 1, ppSamplers);
+        ID3D11SamplerState* samplerState = getSamplerStateForTexture(texture);
+        getD3DContext()->PSSetSamplers(textureSlot, 1, &samplerState);
     }
     else
     {
@@ -194,34 +207,28 @@ void DirectXRendererHelper::mapTextureVertices(std::vector<VERTEX_2D_TEXTURE>& v
 {
     ID3D11Buffer* buffer = isDynamic ? _dynamicTextureVertexBuffers[gpuBufferIndex]->buffer : _staticTextureVertexBuffers[gpuBufferIndex]->buffer;
     
-    bindVertexBuffer(buffer, &vertices[0], sizeof(VERTEX_2D_TEXTURE) * vertices.size(), sizeof(VERTEX_2D_TEXTURE));
+    mapVertexBuffer(buffer, &vertices[0], vertices.size(), sizeof(VERTEX_2D_TEXTURE));
 }
 
 void DirectXRendererHelper::mapVertices(std::vector<VERTEX_2D>& vertices, bool isDynamic, int gpuBufferIndex)
 {
     ID3D11Buffer* buffer = isDynamic ? _dynamicVertexBuffers[gpuBufferIndex]->buffer : _staticVertexBuffers[gpuBufferIndex]->buffer;
     
-    bindVertexBuffer(buffer, &vertices[0], sizeof(VERTEX_2D) * vertices.size(), sizeof(VERTEX_2D));
+    mapVertexBuffer(buffer, &vertices[0], vertices.size(), sizeof(VERTEX_2D));
 }
 
 void DirectXRendererHelper::bindTextureVertexBuffer(int gpuBufferIndex)
 {
     ID3D11Buffer* buffer = _staticTextureVertexBuffers[gpuBufferIndex]->buffer;
     
-    // Set the vertex buffer
-    UINT stride = sizeof(VERTEX_2D_TEXTURE);
-    UINT offset = 0;
-    getD3DContext()->IASetVertexBuffers(0, 1, &buffer, &stride, &offset);
+    bindVertexBuffer(buffer, sizeof(VERTEX_2D_TEXTURE));
 }
 
 void DirectXRendererHelper::bindScreenVertexBuffer()
 {
     ID3D11Buffer* buffer = _staticScreenVertexBuffer->buffer;
     
-    // Set the vertex buffer
-    UINT stride = sizeof(VERTEX_2D);
-    UINT offset = 0;
-    getD3DContext()->IASetVertexBuffers(0, 1, &buffer, &stride, &offset);
+    bindVertexBuffer(buffer, sizeof(VERTEX_2D));
 }
 
 void DirectXRendererHelper::draw(NGPrimitiveType renderPrimitiveType, uint32_t first, uint32_t count)
@@ -233,7 +240,6 @@ void DirectXRendererHelper::draw(NGPrimitiveType renderPrimitiveType, uint32_t f
 void DirectXRendererHelper::drawIndexed(NGPrimitiveType renderPrimitiveType, uint32_t first, uint32_t count)
 {
     getD3DContext()->IASetIndexBuffer(_indexBuffer->buffer, DXGI_FORMAT_R16_UINT, 0);
-    
     getD3DContext()->IASetPrimitiveTopology(static_cast<D3D11_PRIMITIVE_TOPOLOGY>(renderPrimitiveType));
     getD3DContext()->DrawIndexed(count, first, 0);
 }
@@ -368,11 +374,9 @@ void DirectXRendererHelper::createBlendStates()
 
 void DirectXRendererHelper::createSamplerStates()
 {
-    bool mipmap = NG_CFG->getBool("TextureFilterMipMap");
-    
     D3D11_SAMPLER_DESC sd;
-    sd.Filter = D3D11_FILTER_ANISOTROPIC;
-    sd.MaxAnisotropy = 16;
+	sd.MaxAnisotropy = 16;
+    sd.AddressU = D3D11_TEXTURE_ADDRESS_CLAMP;
     sd.AddressV = D3D11_TEXTURE_ADDRESS_CLAMP;
     sd.AddressW = D3D11_TEXTURE_ADDRESS_CLAMP;
     sd.BorderColor[0] = 0.0f;
@@ -380,48 +384,102 @@ void DirectXRendererHelper::createSamplerStates()
     sd.BorderColor[2] = 0.0f;
     sd.BorderColor[3] = 0.0f;
     sd.MinLOD = 0.0f;
-    sd.MaxLOD = mipmap ? FLT_MAX : 0.0f;
+    sd.MaxLOD = 0.0f;
     sd.MipLODBias = 0.0f;
-    
-    {
-        std::string cfgFilterMin = NG_CFG->getString("TextureFilterMin");
-        std::string cfgFilterMag = NG_CFG->getString("TextureFilterMag");
-        
-        sd.Filter = filterForMinAndMag(cfgFilterMin, cfgFilterMag, mipmap);
-        
-        sd.AddressU = D3D11_TEXTURE_ADDRESS_CLAMP;
-        ID3D11SamplerState* textureSamplerState;
-        getD3DDevice()->CreateSamplerState(&sd, &textureSamplerState);
-        _textureSamplerState = textureSamplerState;
-        
-        sd.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
-        ID3D11SamplerState* textureWrapSamplerState;
-        getD3DDevice()->CreateSamplerState(&sd, &textureWrapSamplerState);
-        _textureWrapSamplerState = textureWrapSamplerState;
-    }
     
     {
         std::string cfgFilterMin = NG_CFG->getString("FramebufferFilterMin");
         std::string cfgFilterMag = NG_CFG->getString("FramebufferFilterMag");
         
-        sd.Filter = filterForMinAndMag(cfgFilterMin, cfgFilterMag);
+        sd.Filter = filterForMinAndMag(cfgFilterMin, cfgFilterMag, false);
         
-        sd.AddressU = D3D11_TEXTURE_ADDRESS_CLAMP;
-        ID3D11SamplerState* framebufferSamplerState;
-        getD3DDevice()->CreateSamplerState(&sd, &framebufferSamplerState);
-        _framebufferSamplerState = framebufferSamplerState;
+        ID3D11SamplerState* samplerState;
+        getD3DDevice()->CreateSamplerState(&sd, &samplerState);
+        _framebufferSamplerState = samplerState;
+    }
+    
+    {
+        sd.MaxLOD = FLT_MAX;
+        sd.Filter = filterForMinAndMag("NEAREST", "NEAREST", true);
+        
+        ID3D11SamplerState* samplerState;
+        getD3DDevice()->CreateSamplerState(&sd, &samplerState);
+        _textureSamplerState1 = samplerState;
+    }
+    
+    {
+        sd.MaxLOD = FLT_MAX;
+        sd.Filter = filterForMinAndMag("LINEAR", "NEAREST", true);
+        
+        ID3D11SamplerState* samplerState;
+        getD3DDevice()->CreateSamplerState(&sd, &samplerState);
+        _textureSamplerState2 = samplerState;
+    }
+    
+    {
+        sd.MaxLOD = FLT_MAX;
+        sd.Filter = filterForMinAndMag("LINEAR", "LINEAR", true);
+        
+        ID3D11SamplerState* samplerState;
+        getD3DDevice()->CreateSamplerState(&sd, &samplerState);
+        _textureSamplerState3 = samplerState;
+    }
+    
+    {
+        sd.MaxLOD = FLT_MAX;
+        sd.Filter = filterForMinAndMag("NEAREST", "LINEAR", true);
+        
+        ID3D11SamplerState* samplerState;
+        getD3DDevice()->CreateSamplerState(&sd, &samplerState);
+        _textureSamplerState4 = samplerState;
+    }
+    
+    {
+        sd.MaxLOD = FLT_MAX;
+        sd.Filter = filterForMinAndMag("NEAREST", "NEAREST", false);
+        
+        ID3D11SamplerState* samplerState;
+        getD3DDevice()->CreateSamplerState(&sd, &samplerState);
+        _textureSamplerState5 = samplerState;
+    }
+    
+    {
+        sd.MaxLOD = FLT_MAX;
+        sd.Filter = filterForMinAndMag("LINEAR", "NEAREST", false);
+        
+        ID3D11SamplerState* samplerState;
+        getD3DDevice()->CreateSamplerState(&sd, &samplerState);
+        _textureSamplerState6 = samplerState;
+    }
+    
+    {
+        sd.MaxLOD = FLT_MAX;
+        sd.Filter = filterForMinAndMag("LINEAR", "LINEAR", false);
+        
+        ID3D11SamplerState* samplerState;
+        getD3DDevice()->CreateSamplerState(&sd, &samplerState);
+        _textureSamplerState7 = samplerState;
+    }
+    
+    {
+        sd.MaxLOD = FLT_MAX;
+        sd.Filter = filterForMinAndMag("NEAREST", "LINEAR", false);
+        
+        ID3D11SamplerState* samplerState;
+        getD3DDevice()->CreateSamplerState(&sd, &samplerState);
+        _textureSamplerState8 = samplerState;
     }
 }
 
-D3D11_FILTER DirectXRendererHelper::filterForMinAndMag(std::string& cfgFilterMin, std::string& cfgFilterMag, bool mipmap)
+#define GL_NEAREST 0
+#define GL_LINEAR 1
+#define GL_NEAREST_MIPMAP_NEAREST 2
+#define GL_LINEAR_MIPMAP_NEAREST 3
+#define GL_NEAREST_MIPMAP_LINEAR 4
+#define GL_LINEAR_MIPMAP_LINEAR 5
+
+D3D11_FILTER DirectXRendererHelper::filterForMinAndMag(std::string cfgFilterMin, std::string cfgFilterMag, bool mipmap)
 {
-    static const int GL_NEAREST = 0;
-    static const int GL_LINEAR = 1;
-    static const int GL_NEAREST_MIPMAP_NEAREST = 2;
-    static const int GL_LINEAR_MIPMAP_NEAREST = 3;
-    static const int GL_NEAREST_MIPMAP_LINEAR = 4;
-    static const int GL_LINEAR_MIPMAP_LINEAR = 5;
-    
     int filterMin;
     if (mipmap)
     {
@@ -457,7 +515,66 @@ D3D11_FILTER DirectXRendererHelper::filterForMinAndMag(std::string& cfgFilterMin
     return D3D11_ENCODE_BASIC_FILTER(dxMin, dxMag, dxMip, static_cast<D3D11_COMPARISON_FUNC>(0));
 }
 
-void DirectXRendererHelper::bindVertexBuffer(ID3D11Buffer* buffer, const void *data, size_t size, UINT stride)
+ID3D11SamplerState* DirectXRendererHelper::getSamplerStateForTexture(NGTexture* texture)
+{
+    if (texture->_isFramebuffer)
+    {
+        return _framebufferSamplerState;
+    }
+    
+    NGTextureDesc* textureDesc = texture->_desc;
+    
+    std::string& cfgFilterMin = textureDesc->_textureFilterMin;
+    std::string& cfgFilterMag = textureDesc->_textureFilterMag;
+    bool mipmap = textureDesc->_textureFilterMipMap;
+    
+    int filterMin;
+    if (mipmap)
+    {
+        filterMin = cfgFilterMin == "NEAREST" ? GL_LINEAR_MIPMAP_NEAREST : GL_LINEAR_MIPMAP_LINEAR;
+    }
+    else
+    {
+        filterMin = cfgFilterMin == "NEAREST" ? GL_NEAREST : GL_LINEAR;
+    }
+    int filterMag = cfgFilterMag == "NEAREST" ? GL_NEAREST : GL_LINEAR;
+    
+    if (     filterMin == GL_LINEAR_MIPMAP_NEAREST && filterMag == GL_NEAREST)
+    {
+        return _textureSamplerState1;
+    }
+    else if (filterMin == GL_LINEAR_MIPMAP_LINEAR && filterMag == GL_NEAREST)
+    {
+        return _textureSamplerState2;
+    }
+    else if (filterMin == GL_LINEAR_MIPMAP_LINEAR && filterMag == GL_LINEAR)
+    {
+        return _textureSamplerState3;
+    }
+    else if (filterMin == GL_LINEAR_MIPMAP_NEAREST && filterMag == GL_LINEAR)
+    {
+        return _textureSamplerState4;
+    }
+    else if (filterMin == GL_NEAREST && filterMag == GL_NEAREST)
+    {
+        return _textureSamplerState5;
+    }
+    else if (filterMin == GL_LINEAR && filterMag == GL_NEAREST)
+    {
+        return _textureSamplerState6;
+    }
+    else if (filterMin == GL_LINEAR && filterMag == GL_LINEAR)
+    {
+        return _textureSamplerState7;
+    }
+    else
+    {
+        // filterMin == GL_NEAREST && filterMag == GL_LINEAR
+        return _textureSamplerState8;
+    }
+}
+
+void DirectXRendererHelper::mapVertexBuffer(ID3D11Buffer* buffer, const void *data, size_t size, UINT stride)
 {
     D3D11_MAPPED_SUBRESOURCE mappedResource;
     ZeroMemory(&mappedResource, sizeof(D3D11_MAPPED_SUBRESOURCE));
@@ -466,11 +583,16 @@ void DirectXRendererHelper::bindVertexBuffer(ID3D11Buffer* buffer, const void *d
     getD3DContext()->Map(buffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
     
     // Update the vertex buffer here.
-    memcpy(mappedResource.pData, data, size);
+    memcpy(mappedResource.pData, data, size * stride);
     
     // Reenable GPU access to the vertex buffer data.
     getD3DContext()->Unmap(buffer, 0);
     
+    bindVertexBuffer(buffer, stride);
+}
+
+void DirectXRendererHelper::bindVertexBuffer(ID3D11Buffer* buffer, UINT stride)
+{
     // Set the vertex buffer
     UINT offset = 0;
     getD3DContext()->IASetVertexBuffers(0, 1, &buffer, &stride, &offset);

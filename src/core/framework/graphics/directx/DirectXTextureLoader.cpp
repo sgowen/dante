@@ -13,6 +13,7 @@
 #include "framework/graphics/portable/TextureDataWrapper.h"
 #include <framework/graphics/portable/NGTexture.h>
 #include "framework/graphics/portable/TextureWrapper.h"
+#include "framework/graphics/portable/NGTextureDesc.h"
 
 #include "framework/file/portable/AssetDataHandler.h"
 #include "framework/file/portable/FileData.h"
@@ -33,7 +34,7 @@ TextureDataWrapper* DirectXTextureLoader::loadTextureData(NGTexture* texture)
 {
     const FileData fileData = AssetDataHandler::getAssetDataHandler()->getAssetData(texture->filePath.c_str());
     void* output = NULL;
-    if (texture->_isEncrypted)
+    if (texture->_desc->_isEncrypted)
     {
         output = malloc(fileData.data_length);
         StringUtil::encryptDecrypt((unsigned char*)fileData.data, (unsigned char*) output, fileData.data_length);
@@ -52,7 +53,7 @@ TextureDataWrapper* DirectXTextureLoader::loadTextureData(NGTexture* texture)
     
     TextureDataWrapper* tdw = new TextureDataWrapper(pShaderResourceView);
     
-    if (texture->_isEncrypted)
+    if (texture->_desc->_isEncrypted)
     {
         free((void *)output);
     }
@@ -60,9 +61,9 @@ TextureDataWrapper* DirectXTextureLoader::loadTextureData(NGTexture* texture)
     return tdw;
 }
 
-TextureWrapper* DirectXTextureLoader::loadTexture(TextureDataWrapper* textureData, bool repeatS)
+TextureWrapper* DirectXTextureLoader::loadTexture(TextureDataWrapper* textureData, NGTextureDesc* textureDesc)
 {
-    UNUSED(repeatS);
+    UNUSED(textureDesc);
     
     return new TextureWrapper(textureData->texture);
 }
