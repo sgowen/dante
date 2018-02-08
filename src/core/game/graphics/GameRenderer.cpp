@@ -392,7 +392,7 @@ void GameRenderer::renderWorld()
                 _lightingNGShader->bind(_rendererHelper->getFramebuffer(0), _rendererHelper->getFramebuffer(3));
                 _rendererHelper->bindScreenVertexBuffer();
                 _rendererHelper->drawIndexed(NGPrimitiveType_Triangles, 0, INDICES_PER_RECTANGLE);
-                _framebufferToScreenNGShader->unbind();
+                _lightingNGShader->unbind();
             }
             
             {
@@ -409,7 +409,7 @@ void GameRenderer::renderWorld()
                 _lightingNGShader->bind(_rendererHelper->getFramebuffer(1), _rendererHelper->getFramebuffer(4));
                 _rendererHelper->bindScreenVertexBuffer();
                 _rendererHelper->drawIndexed(NGPrimitiveType_Triangles, 0, INDICES_PER_RECTANGLE);
-                _framebufferToScreenNGShader->unbind();
+                _lightingNGShader->unbind();
             }
             
             {
@@ -431,7 +431,7 @@ void GameRenderer::renderWorld()
                 _lightingNGShader->bind(_rendererHelper->getFramebuffer(2), _rendererHelper->getFramebuffer(5));
                 _rendererHelper->bindScreenVertexBuffer();
                 _rendererHelper->drawIndexed(NGPrimitiveType_Triangles, 0, INDICES_PER_RECTANGLE);
-                _framebufferToScreenNGShader->unbind();
+                _lightingNGShader->unbind();
             }
         }
     }
