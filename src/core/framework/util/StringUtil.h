@@ -54,6 +54,16 @@ public:
 
         return value;
     }
+    
+    static bool stringToBool(const std::string &str, bool defVal = false)
+    {
+        if (str.length() > 0)
+        {
+            return str == "true";
+        }
+        
+        return defVal;
+    }
 
     template<size_t maxLenInChars>
     static void sprintf_safe(OUT_Z_ARRAY char (&pDest)[maxLenInChars], const char *pFormat, ...)

@@ -40,6 +40,7 @@ public:
     virtual void bindTexture(NGTextureSlot textureSlot, NGTexture* texture, NGShaderUniformInput* uniform = NULL);
     virtual void mapTextureVertices(std::vector<VERTEX_2D_TEXTURE>& vertices, bool isDynamic = true, int gpuBufferIndex = 0);
     virtual void mapVertices(std::vector<VERTEX_2D>& vertices, bool isDynamic = true, int gpuBufferIndex = 0);
+    virtual void bindTextureVertexBuffer(int gpuBufferIndex);
     virtual void bindScreenVertexBuffer();
     virtual void draw(NGPrimitiveType renderPrimitiveType, uint32_t first, uint32_t count);
     virtual void drawIndexed(NGPrimitiveType renderPrimitiveType, uint32_t first, uint32_t count);
@@ -66,8 +67,8 @@ private:
     
     void createBlendStates();
     void createSamplerStates();
-    D3D11_FILTER filterForMinAndMag(std::string& cfgFilterMin, std::string& cfgFilterMag);
-    void bindVertexBuffer(ID3D11Buffer* buffer, const void *data, size_t size);
+    D3D11_FILTER filterForMinAndMag(std::string& cfgFilterMin, std::string& cfgFilterMag, bool mipmap = false);
+    void bindVertexBuffer(ID3D11Buffer* buffer, const void *data, size_t size, UINT stride);
     void bindConstantBuffer(NGShaderUniformInput* uniform, const void *pSrcData);
 };
 

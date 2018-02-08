@@ -126,9 +126,7 @@ _parallaxLayer2FactorY(0)
 
 StudioRenderer::~StudioRenderer()
 {
-    releaseDeviceDependentResources();
-
-    delete _textureManager;
+	delete _textureManager;
     delete _rendererHelper;
     delete _fontSpriteBatcher;
     delete _fbSpriteBatcher;

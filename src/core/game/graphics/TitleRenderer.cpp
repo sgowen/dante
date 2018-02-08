@@ -101,8 +101,6 @@ _engineState(0)
 
 TitleRenderer::~TitleRenderer()
 {
-    releaseDeviceDependentResources();
-
     delete _textureManager;
     delete _rendererHelper;
     delete _spriteBatcher;

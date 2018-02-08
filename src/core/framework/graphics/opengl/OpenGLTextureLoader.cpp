@@ -30,7 +30,7 @@ extern "C"
 OpenGLPngImageData* getOpenGLPngImageDataFromFileData(const void* png_data, const int png_data_size);
 void releaseOpenGLPngImageData(const OpenGLPngImageData* data);
 GLuint loadPngAssetIntoTexture(OpenGLPngImageData* OpenGLPngImageData, bool repeatS = false);
-GLuint createTexture(const GLsizei width, const GLsizei height, const GLenum type, const GLvoid* pixels, bool repeatS = false, bool mipmap = false);
+GLuint createTexture(const GLsizei width, const GLsizei height, const GLenum type, const GLvoid* pixels, bool repeatS = false);
 
 OpenGLTextureLoader::OpenGLTextureLoader() : TextureLoader()
 {
@@ -252,14 +252,14 @@ static GLenum getGlColorFormat(const int png_color_format)
 
 GLuint loadPngAssetIntoTexture(OpenGLPngImageData* inOpenGLPngImageData, bool repeatS)
 {
-    const GLuint texture_object_id = createTexture(inOpenGLPngImageData->_width, inOpenGLPngImageData->_height, inOpenGLPngImageData->_glColorFormat, inOpenGLPngImageData->_data, repeatS, true);
+    const GLuint texture_object_id = createTexture(inOpenGLPngImageData->_width, inOpenGLPngImageData->_height, inOpenGLPngImageData->_glColorFormat, inOpenGLPngImageData->_data, repeatS);
 
     releaseOpenGLPngImageData(inOpenGLPngImageData);
 
     return texture_object_id;
 }
 
-GLuint createTexture(const GLsizei width, const GLsizei height, const GLenum type, const GLvoid* pixels, bool repeat_s, bool mipmap)
+GLuint createTexture(const GLsizei width, const GLsizei height, const GLenum type, const GLvoid* pixels, bool repeat_s)
 {
     GLuint texture_object_id;
     glGenTextures(1, &texture_object_id);
@@ -267,12 +267,13 @@ GLuint createTexture(const GLsizei width, const GLsizei height, const GLenum typ
 
     glBindTexture(GL_TEXTURE_2D, texture_object_id);
     
+    bool mipmap = NG_CFG->getBool("TextureFilterMipMap");
     std::string cfgFilterMin = NG_CFG->getString("TextureFilterMin");
     std::string cfgFilterMag = NG_CFG->getString("TextureFilterMag");
     GLint filterMin;
     if (mipmap)
     {
-        filterMin = cfgFilterMin == "NEAREST" ? GL_NEAREST_MIPMAP_LINEAR : GL_LINEAR_MIPMAP_LINEAR;
+        filterMin = cfgFilterMin == "NEAREST" ? GL_LINEAR_MIPMAP_NEAREST : GL_LINEAR_MIPMAP_LINEAR;
     }
     else
     {

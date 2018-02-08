@@ -128,8 +128,6 @@ _robotLightPositionFactorY(0)
 
 GameRenderer::~GameRenderer()
 {
-    releaseDeviceDependentResources();
-    
     delete _textureManager;
     delete _rendererHelper;
     delete _fontSpriteBatcher;
