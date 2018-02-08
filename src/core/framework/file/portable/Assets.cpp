@@ -113,8 +113,8 @@ void Assets::initWithJson(const char* json)
                     int y = iv["y"].GetInt();
                     int regionWidth = iv["regionWidth"].GetInt();
                     int regionHeight = iv["regionHeight"].GetInt();
-                    int textureWidth = 2048;
-                    int textureHeight = 2048;
+                    int textureWidth = 1024;
+                    int textureHeight = 1024;
                     if (iv.HasMember("textureWidth") && iv.HasMember("textureHeight"))
                     {
                         textureWidth = iv["textureWidth"].GetInt();
