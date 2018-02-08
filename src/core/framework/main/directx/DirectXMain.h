@@ -80,16 +80,11 @@ private:
 	bool _isPointerPressed;
 	bool _isDeviceLost;
 
-    void Update(DX::StepTimer const& timer);
-    void Render();
-
-    void Clear();
-
     void CreateDeviceDependentResources();
     void CreateWindowSizeDependentResources();
 
-	void beginPixEvent(PCWSTR pFormat, DX::DirectXDeviceResources* deviceResources = NULL);
-	void endPixEvent(DX::DirectXDeviceResources* deviceResources = NULL);
+	void beginPixEvent(PCWSTR pFormat);
+	void endPixEvent();
 
 private:
 	// ctor, copy ctor, and assignment should be private in a Singleton

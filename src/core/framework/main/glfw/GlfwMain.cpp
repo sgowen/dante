@@ -194,6 +194,9 @@ int GlfwMain::exec(EngineController* engineController)
 
     while (!glfwWindowShouldClose(window))
     {
+        double deltaTime = glfwGetTime() - lastTime;
+        lastTime = glfwGetTime();
+        
         glfwPollEvents();
         glfwGetFramebufferSize(window, &width, &height);
 
@@ -300,11 +303,6 @@ int GlfwMain::exec(EngineController* engineController)
                 }
             }
         }
-
-        double time = glfwGetTime();
-
-        double deltaTime = time - lastTime;
-        lastTime = time;
 
         int requestedAction = engine.getRequestedAction();
 

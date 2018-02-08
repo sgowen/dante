@@ -188,6 +188,12 @@ void AndroidMain::exec(android_app* state, EngineController* engineController)
     bool running = true;
     while (running)
     {
+        // Checks elapsed time since last frame. It is important to
+        // work on double with current time to avoid losing accuracy
+        // Then we can go back to float for elapsed time.
+        _deltaTime = timeNow() - _lastTime;
+        _lastTime = timeNow();
+        
         // Read all pending events.
         int events;
         android_poll_source* source;
@@ -275,13 +281,6 @@ void AndroidMain::drawFrame()
     using namespace std;
     using namespace std::chrono;
     
-    // Checks elapsed time since last frame. It is important to
-    // work on double with current time to avoid losing accuracy
-    // Then we can go back to float for elapsed time.
-    double lCurrentTime = timeNow();
-    _deltaTime = (lCurrentTime - _lastTime);
-    _lastTime = lCurrentTime;
-    
     int requestedAction = _engine->getRequestedAction();
     
     switch (requestedAction)
@@ -297,7 +296,6 @@ void AndroidMain::drawFrame()
     }
     
     _engine->update(_deltaTime);
-    
     _engine->render();
     
     if (EGL_SUCCESS != _glContext->Swap())
