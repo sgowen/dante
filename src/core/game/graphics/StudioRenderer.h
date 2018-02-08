@@ -12,7 +12,6 @@
 #include "framework/graphics/portable/Renderer.h"
 
 #include "framework/graphics/portable/FontAlign.h"
-#include <framework/graphics/portable/VertexProgramInput.h>
 
 #include <string>
 #include <deque>
@@ -63,6 +62,7 @@ private:
     SpriteBatcher* _fontSpriteBatcher;
     SpriteBatcher* _fbSpriteBatcher;
     SpriteBatcher* _spriteBatchers[NUM_SPRITE_BATCHERS];
+    std::string _textures[NUM_SPRITE_BATCHERS];
     PolygonBatcher* _fillPolygonBatcher;
     PolygonBatcher* _boundsPolygonBatcher;
     LineBatcher* _lineBatcher;
@@ -82,7 +82,6 @@ private:
     StudioInputManager* _input;
     uint32_t _engineState;
     NGTexture* _fontTexture;
-    std::vector<VERTEX_2D> _screenVertices;
     double _parallaxLayer0FactorX;
     double _parallaxLayer0FactorY;
     double _parallaxLayer1FactorX;
@@ -92,6 +91,7 @@ private:
     
     void setFramebuffer(int framebufferIndex, float r = 0, float g = 0, float b = 0, float a = 0);
     void renderWorld();
+    void renderEntities(std::vector<Entity*>& entities);
     void endBatchWithTexture(SpriteBatcher* sb, NGTexture* tex, int layer);
     void renderBox2D();
     void renderGrid();

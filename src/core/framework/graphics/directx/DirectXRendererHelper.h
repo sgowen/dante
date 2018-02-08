@@ -38,12 +38,15 @@ public:
     virtual void bindMatrix(NGShaderUniformInput* uniform);
     virtual void bindShader(ShaderProgramWrapper* shaderProgramWrapper);
     virtual void bindTexture(NGTextureSlot textureSlot, NGTexture* texture, NGShaderUniformInput* uniform = NULL);
-    virtual void mapTextureVertices(std::vector<VERTEX_2D_TEXTURE>& vertices);
-    virtual void mapVertices(std::vector<VERTEX_2D>& vertices);
+    virtual void mapTextureVertices(std::vector<VERTEX_2D_TEXTURE>& vertices, bool isDynamic = true, int gpuBufferIndex = 0);
+    virtual void mapVertices(std::vector<VERTEX_2D>& vertices, bool isDynamic = true, int gpuBufferIndex = 0);
+    virtual void bindScreenVertexBuffer();
     virtual void draw(NGPrimitiveType renderPrimitiveType, uint32_t first, uint32_t count);
     virtual void drawIndexed(NGPrimitiveType renderPrimitiveType, uint32_t first, uint32_t count);
     
 protected:
+    virtual GPUBufferWrapper* createGPUBuffer(size_t size, const void *data, bool isDynamic, bool isVertex);
+    virtual void disposeGPUBuffer(GPUBufferWrapper* gpuBuffer);
     virtual TextureWrapper* createFramebuffer();
     virtual void platformReleaseFramebuffers();
     
@@ -54,9 +57,6 @@ private:
     std::vector<ID3D11Texture2D*> _offscreenRenderTargets;
     std::vector<ID3D11RenderTargetView*> _offscreenRenderTargetViews;
     std::vector<ID3D11ShaderResourceView*> _offscreenShaderResourceViews;
-    ID3D11Buffer* _textureVertexBuffer;
-    ID3D11Buffer* _vertexBuffer;
-    ID3D11Buffer* _indexbuffer;
     ID3D11BlendState* _blendState;
     ID3D11BlendState* _screenBlendState;
     ID3D11SamplerState* _textureSamplerState;
@@ -64,57 +64,10 @@ private:
     ID3D11SamplerState* _framebufferSamplerState;
 	int _fbIndex;
     
-    template <typename T>
-    void mapVertices(ID3D11Buffer* vertexBuffer, std::vector<T>& vertices)
-    {
-        D3D11_MAPPED_SUBRESOURCE mappedResource;
-        ZeroMemory(&mappedResource, sizeof(D3D11_MAPPED_SUBRESOURCE));
-        
-        // Disable GPU access to the vertex buffer data.
-        getD3DContext()->Map(vertexBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
-        
-        // Update the vertex buffer here.
-        memcpy(mappedResource.pData, &vertices[0], sizeof(T) * vertices.size());
-        
-        // Reenable GPU access to the vertex buffer data.
-        getD3DContext()->Unmap(vertexBuffer, 0);
-        
-        // Set the vertex buffer
-        UINT stride = sizeof(T);
-        UINT offset = 0;
-        getD3DContext()->IASetVertexBuffers(0, 1, &vertexBuffer, &stride, &offset);
-    }
-    
-    template <typename T>
-    void createVertexBuffer(ID3D11Buffer** vertexBuffer, uint32_t size)
-    {
-        std::vector<T> vertices;
-        vertices.reserve(size);
-        
-        T vertex;
-        for (int i = 0; i < size; ++i)
-        {
-            vertices.push_back(vertex);
-        }
-        
-        D3D11_BUFFER_DESC vertexBufferDesc = { 0 };
-        vertexBufferDesc.ByteWidth = sizeof(T) * vertices.size();
-        vertexBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
-        vertexBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-        vertexBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-        
-        D3D11_SUBRESOURCE_DATA vertexBufferData = { 0 };
-        vertexBufferData.pSysMem = &vertices[0];
-        
-        ID3D11Buffer* buffer;
-        DX::ThrowIfFailed(getD3DDevice()->CreateBuffer(&vertexBufferDesc, &vertexBufferData, &buffer));
-        *vertexBuffer = buffer;
-    }
-    
-    void createIndexBuffer();
     void createBlendStates();
     void createSamplerStates();
     D3D11_FILTER filterForMinAndMag(std::string& cfgFilterMin, std::string& cfgFilterMag);
+    void bindVertexBuffer(ID3D11Buffer* buffer, const void *data, size_t size);
     void bindConstantBuffer(NGShaderUniformInput* uniform, const void *pSrcData);
 };
 

@@ -24,7 +24,6 @@ public:
     virtual ~OpenGLRendererHelper();
 
     virtual void createDeviceDependentResources();
-    virtual void releaseDeviceDependentResources();
     virtual void bindToOffscreenFramebuffer(int index);
     virtual void clearFramebufferWithColor(float r, float g, float b, float a);
     virtual void bindToScreenFramebuffer();
@@ -38,12 +37,16 @@ public:
     virtual void bindMatrix(NGShaderUniformInput* uniform);
     virtual void bindShader(ShaderProgramWrapper* shaderProgramWrapper);
     virtual void bindTexture(NGTextureSlot textureSlot, NGTexture* texture, NGShaderUniformInput* uniform = NULL);
-    virtual void mapTextureVertices(std::vector<VERTEX_2D_TEXTURE>& vertices);
-    virtual void mapVertices(std::vector<VERTEX_2D>& vertices);
+    virtual void mapTextureVertices(std::vector<VERTEX_2D_TEXTURE>& vertices, bool isDynamic = true, int gpuBufferIndex = 0);
+    virtual void mapVertices(std::vector<VERTEX_2D>& vertices, bool isDynamic = true, int gpuBufferIndex = 0);
+    virtual void bindTextureVertexBuffer(int gpuBufferIndex);
+    virtual void bindScreenVertexBuffer();
     virtual void draw(NGPrimitiveType renderPrimitiveType, uint32_t first, uint32_t count);
     virtual void drawIndexed(NGPrimitiveType renderPrimitiveType, uint32_t first, uint32_t count);
 
 protected:
+    virtual GPUBufferWrapper* createGPUBuffer(size_t size, const void *data, bool isDynamic, bool isVertex);
+    virtual void disposeGPUBuffer(GPUBufferWrapper* gpuBuffer);
     virtual TextureWrapper* createFramebuffer();
     virtual void platformReleaseFramebuffers();
 
@@ -51,51 +54,7 @@ private:
     GLint _screenFBO;
     std::vector<GLuint> _fbos;
     std::vector<GLuint> _fbo_textures;
-    GLuint _textureVertexBuffer;
-    GLuint _vertexBuffer;
-    GLuint _indexBuffer;
     ShaderProgramWrapper* _currentShaderProgramWrapper;
-    
-    template <typename T>
-    void mapVertices(GLuint& vertexBuffer, std::vector<T>& vertices, bool isDynamic)
-    {
-        glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
-        
-        if (isDynamic)
-        {
-            glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(T) * vertices.size(), &vertices[0]);
-        }
-        
-        if (_currentShaderProgramWrapper)
-        {
-            std::vector<NGShaderVarInput*>& inputLayout = _currentShaderProgramWrapper->_inputLayout;
-            for (std::vector<NGShaderVarInput*>::iterator i = inputLayout.begin(); i != inputLayout.end(); ++i)
-            {
-                NGShaderVarInput* svi = (*i);
-                
-                glVertexAttribPointer(svi->_attribute, svi->_size, GL_FLOAT, GL_FALSE, svi->_stride, svi->_bufferOffset);
-            }
-        }
-    }
-    
-    template <typename T>
-    void createVertexBuffer(GLuint& vertexBuffer, uint32_t size, bool isDynamic)
-    {
-        std::vector<T> vertices;
-        vertices.reserve(size);
-        
-        T vertex;
-        for (int i = 0; i < size; ++i)
-        {
-            vertices.push_back(vertex);
-        }
-        
-        glGenBuffers(1, &vertexBuffer);
-        glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
-        glBufferData(GL_ARRAY_BUFFER, sizeof(T) * vertices.size(), &vertices[0], isDynamic ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW);
-    }
-    
-    void createIndexBuffer();
 };
 
 #endif /* defined(__noctisgames__OpenGLRendererHelper__) */

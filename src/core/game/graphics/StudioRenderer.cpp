@@ -122,12 +122,6 @@ _parallaxLayer2FactorY(0)
     {
         _camBounds[i] = new NGRect(0, 0, CAM_WIDTH, CAM_HEIGHT);
     }
-    
-    _screenVertices.reserve(4);
-    _screenVertices.push_back(VERTEX_2D(-1, -1));
-    _screenVertices.push_back(VERTEX_2D(-1, 1));
-    _screenVertices.push_back(VERTEX_2D(1, 1));
-    _screenVertices.push_back(VERTEX_2D(1, -1));
 }
 
 StudioRenderer::~StudioRenderer()
@@ -300,91 +294,28 @@ void StudioRenderer::renderWorld()
         _fontSpriteBatcher->beginBatch();
     }
     
-    std::string textures[NUM_SPRITE_BATCHERS];
+    std::fill(_textures, _textures + NUM_SPRITE_BATCHERS, "");
     
-    {
-        std::vector<Entity*> entities = world->getLayers();
-        for (Entity* e : entities)
-        {
-            TextureRegion tr = ASSETS->findTextureRegion(e->getTextureMapping(), e->getStateTime());
-            
-            _spriteBatchers[e->getEntityDef().layer]->renderSprite(e->getPosition().x, e->getPosition().y, e->getWidth(), e->getHeight(), e->getAngle(), tr, e->isFacingLeft());
-            textures[e->getEntityDef().layer] = tr.getTextureName();
-            
-            if ((_engineState & StudioEngineState_DisplayTypes) &&
-                _engineState & (1 << (e->getEntityDef().layer + StudioEngineState_LayerBitBegin)))
-            {
-                renderText(e->getEntityDef().typeName.c_str(), e->getPosition().x, e->getPosition().y, FONT_ALIGN_CENTER);
-            }
-        }
-    }
-    
-    {
-        std::vector<Entity*> entities = world->getPlayers();
-        for (Entity* e : entities)
-        {
-            TextureRegion tr = ASSETS->findTextureRegion(e->getTextureMapping(), e->getStateTime());
-            
-            _spriteBatchers[e->getEntityDef().layer]->renderSprite(e->getPosition().x, e->getPosition().y, e->getWidth(), e->getHeight(), e->getAngle(), tr, e->isFacingLeft());
-            textures[e->getEntityDef().layer] = tr.getTextureName();
-            
-            if ((_engineState & StudioEngineState_DisplayTypes) &&
-                _engineState & (1 << (e->getEntityDef().layer + StudioEngineState_LayerBitBegin)))
-            {
-                renderText(e->getEntityDef().typeName.c_str(), e->getPosition().x, e->getPosition().y, FONT_ALIGN_CENTER);
-            }
-        }
-    }
-    
-    {
-        std::vector<Entity*> entities = world->getDynamicEntities();
-        for (Entity* e : entities)
-        {
-            TextureRegion tr = ASSETS->findTextureRegion(e->getTextureMapping(), e->getStateTime());
-            
-            _spriteBatchers[e->getEntityDef().layer]->renderSprite(e->getPosition().x, e->getPosition().y, e->getWidth(), e->getHeight(), e->getAngle(), tr, e->isFacingLeft());
-            textures[e->getEntityDef().layer] = tr.getTextureName();
-            
-            if ((_engineState & StudioEngineState_DisplayTypes) &&
-                _engineState & (1 << (e->getEntityDef().layer + StudioEngineState_LayerBitBegin)))
-            {
-                renderText(e->getEntityDef().typeName.c_str(), e->getPosition().x, e->getPosition().y, FONT_ALIGN_CENTER);
-            }
-        }
-    }
-    
-    {
-        std::vector<Entity*> entities = world->getStaticEntities();
-        for (Entity* e : entities)
-        {
-            TextureRegion tr = ASSETS->findTextureRegion(e->getTextureMapping(), e->getStateTime());
-            
-            _spriteBatchers[e->getEntityDef().layer]->renderSprite(e->getPosition().x, e->getPosition().y, e->getWidth(), e->getHeight(), e->getAngle(), tr, e->isFacingLeft());
-            textures[e->getEntityDef().layer] = tr.getTextureName();
-            
-            if ((_engineState & StudioEngineState_DisplayTypes) &&
-                _engineState & (1 << (e->getEntityDef().layer + StudioEngineState_LayerBitBegin)))
-            {
-                renderText(e->getEntityDef().typeName.c_str(), e->getPosition().x, e->getPosition().y, FONT_ALIGN_CENTER);
-            }
-        }
-    }
+    renderEntities(world->getLayers());
+    renderEntities(world->getStaticEntities());
+    renderEntities(world->getPlayers());
+    renderEntities(world->getDynamicEntities());
     
     _rendererHelper->useNormalBlending();
     
     setFramebuffer(0);
     for (int i = 0; i < 5; ++i)
     {
-        endBatchWithTexture(_spriteBatchers[i], _textureManager->getTextureWithName(textures[i]), i);
+        endBatchWithTexture(_spriteBatchers[i], _textureManager->getTextureWithName(_textures[i]), i);
     }
     
     setFramebuffer(1);
-    endBatchWithTexture(_spriteBatchers[5], _textureManager->getTextureWithName(textures[5]), 5);
+    endBatchWithTexture(_spriteBatchers[5], _textureManager->getTextureWithName(_textures[5]), 5);
     
     setFramebuffer(2);
     for (int i = 6; i < 9; ++i)
     {
-        endBatchWithTexture(_spriteBatchers[i], _textureManager->getTextureWithName(textures[i]), i);
+        endBatchWithTexture(_spriteBatchers[i], _textureManager->getTextureWithName(_textures[i]), i);
     }
     
     int fbBegin = 0;
@@ -394,7 +325,8 @@ void StudioRenderer::renderWorld()
     setFramebuffer(9);
     for (int i = fbBegin; i < fbEnd; ++i)
     {
-        _framebufferToScreenNGShader->bind(&_screenVertices, _rendererHelper->getFramebuffer(i));
+        _framebufferToScreenNGShader->bind(_rendererHelper->getFramebuffer(i));
+        _rendererHelper->bindScreenVertexBuffer();
         _rendererHelper->drawIndexed(NGPrimitiveType_Triangles, 0, INDICES_PER_RECTANGLE);
         _framebufferToScreenNGShader->unbind();
     }
@@ -402,6 +334,23 @@ void StudioRenderer::renderWorld()
     if (_engineState & StudioEngineState_DisplayTypes)
     {
         _fontSpriteBatcher->endBatch(_textureNGShader, _fontTexture);
+    }
+}
+
+void StudioRenderer::renderEntities(std::vector<Entity*>& entities)
+{
+    for (Entity* e : entities)
+    {
+        TextureRegion tr = ASSETS->findTextureRegion(e->getTextureMapping(), e->getStateTime());
+        
+        _spriteBatchers[e->getEntityDef().layer]->renderSprite(e->getPosition().x, e->getPosition().y, e->getWidth(), e->getHeight(), e->getAngle(), tr, e->isFacingLeft());
+        _textures[e->getEntityDef().layer] = tr.getTextureName();
+        
+        if ((_engineState & StudioEngineState_DisplayTypes) &&
+            _engineState & (1 << (e->getEntityDef().layer + StudioEngineState_LayerBitBegin)))
+        {
+            renderText(e->getEntityDef().typeName.c_str(), e->getPosition().x, e->getPosition().y, FONT_ALIGN_CENTER);
+        }
     }
 }
 
@@ -529,7 +478,7 @@ void StudioRenderer::renderUI()
             _spriteBatchers[i]->beginBatch();
         }
         
-        std::string textures[NUM_SPRITE_BATCHERS];
+        std::fill(_textures, _textures + NUM_SPRITE_BATCHERS, "");
         
         for (int i = clamp(selectionIndex - 2, numEntities - 1, 0); i < numEntities; ++i)
         {
@@ -541,16 +490,16 @@ void StudioRenderer::renderUI()
             
             TextureRegion tr = ASSETS->findTextureRegion(ed->textureMappings[0], 0);
             _spriteBatchers[ed->layer]->renderSprite(4, CAM_HEIGHT - 1 - (row * padding), 4, 4, 0, tr);
-            textures[ed->layer] = tr.getTextureName();
+            _textures[ed->layer] = tr.getTextureName();
             
             ++row;
         }
         
         for (int i = 0; i < NUM_SPRITE_BATCHERS; ++i)
         {
-            if (textures[i].length() > 0)
+            if (_textures[i].length() > 0)
             {
-                _spriteBatchers[i]->endBatch(_textureNGShader, _textureManager->getTextureWithName(textures[i]));
+                _spriteBatchers[i]->endBatch(_textureNGShader, _textureManager->getTextureWithName(_textures[i]));
             }
         }
     }
@@ -703,14 +652,8 @@ void StudioRenderer::endFrame()
     _rendererHelper->clearFramebufferWithColor(0, 0, 0, 1);
     _rendererHelper->useScreenBlending();
 
-    static std::vector<VERTEX_2D> screenVertices;
-    screenVertices.clear();
-    screenVertices.push_back(VERTEX_2D(-1, -1));
-    screenVertices.push_back(VERTEX_2D(-1, 1));
-    screenVertices.push_back(VERTEX_2D(1, 1));
-    screenVertices.push_back(VERTEX_2D(1, -1));
-
-    _framebufferToScreenNGShader->bind(&screenVertices, _rendererHelper->getFramebuffer(_fbIndex));
+    _framebufferToScreenNGShader->bind(_rendererHelper->getFramebuffer(_fbIndex));
+    _rendererHelper->bindScreenVertexBuffer();
     _rendererHelper->drawIndexed(NGPrimitiveType_Triangles, 0, INDICES_PER_RECTANGLE);
     _framebufferToScreenNGShader->unbind();
 

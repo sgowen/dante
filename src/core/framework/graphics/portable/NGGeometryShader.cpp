@@ -31,9 +31,8 @@ NGGeometryShader::NGGeometryShader(RendererHelper& inRendererHelper, const char*
     _inputLayout.push_back(new NGShaderVarInput("a_Position", 2, 0));
 }
 
-void NGGeometryShader::bind(void* input, void* data1, void* data2, void* data3)
+void NGGeometryShader::bind(void* data1, void* data2, void* data3)
 {
-    assert(input != NULL);
     assert(data1 != NULL);
     
     _rendererHelper.bindShader(_shaderProgramWrapper);
@@ -46,9 +45,6 @@ void NGGeometryShader::bind(void* input, void* data1, void* data2, void* data3)
     float4Color[2] = color->blue;
     float4Color[3] = color->alpha;
     _rendererHelper.bindFloat4(_uniforms[1], float4Color);
-    
-    std::vector<VERTEX_2D>* vertices = static_cast<std::vector<VERTEX_2D>* >(input);
-    _rendererHelper.mapVertices(*vertices);
 }
 
 void NGGeometryShader::unbind()

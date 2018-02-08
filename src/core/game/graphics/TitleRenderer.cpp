@@ -301,14 +301,8 @@ void TitleRenderer::endFrame()
     _rendererHelper->clearFramebufferWithColor(0, 0, 0, 1);
     _rendererHelper->useScreenBlending();
 
-    static std::vector<VERTEX_2D> screenVertices;
-    screenVertices.clear();
-    screenVertices.push_back(VERTEX_2D(-1, -1));
-    screenVertices.push_back(VERTEX_2D(-1, 1));
-    screenVertices.push_back(VERTEX_2D(1, 1));
-    screenVertices.push_back(VERTEX_2D(1, -1));
-
-    _framebufferToScreenNGShader->bind(&screenVertices, _rendererHelper->getFramebuffer(_fbIndex));
+    _framebufferToScreenNGShader->bind(_rendererHelper->getFramebuffer(_fbIndex));
+    _rendererHelper->bindScreenVertexBuffer();
     _rendererHelper->drawIndexed(NGPrimitiveType_Triangles, 0, INDICES_PER_RECTANGLE);
     _framebufferToScreenNGShader->unbind();
 

@@ -20,7 +20,7 @@
 #include <math.h>
 #include <assert.h>
 
-SpriteBatcher::SpriteBatcher(RendererHelper* inRendererHelper) : _rendererHelper(inRendererHelper), _numSprites(0)
+SpriteBatcher::SpriteBatcher(RendererHelper* inRendererHelper) : _rendererHelper(inRendererHelper), _numSprites(0), _isDynamic(true), _index(0), _isStaticBatchRendered(false)
 {
     _vertices.reserve(MAX_BATCH_SIZE * VERTICES_PER_RECTANGLE);
 }
@@ -33,7 +33,6 @@ SpriteBatcher::~SpriteBatcher()
 void SpriteBatcher::beginBatch()
 {
     _vertices.clear();
-    
     _numSprites = 0;
 }
 
@@ -131,7 +130,24 @@ void SpriteBatcher::endBatch(NGShader* shader, NGTexture* texture, NGTexture* no
     
     if (_numSprites > 0)
     {
-        shader->bind(&_vertices, texture, normalMap, &c);
+        shader->bind(texture, normalMap, &c);
+        
+        if (_isDynamic)
+        {
+            _rendererHelper->mapTextureVertices(_vertices, true);
+        }
+        else
+        {
+            if (_isStaticBatchRendered)
+            {
+                _rendererHelper->bindTextureVertexBuffer(_index);
+            }
+            else
+            {
+                _rendererHelper->mapTextureVertices(_vertices, false, _index);
+                _isStaticBatchRendered = true;
+            }
+        }
         
         _rendererHelper->drawIndexed(NGPrimitiveType_Triangles, 0, _numSprites * INDICES_PER_RECTANGLE);
         

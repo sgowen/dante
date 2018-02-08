@@ -12,6 +12,7 @@
 #include <framework/graphics/portable/NGPrimitiveType.h>
 #include <framework/graphics/portable/NGTextureSlot.h>
 #include <framework/graphics/portable/VertexProgramInput.h>
+#include <framework/graphics/portable/GPUBufferWrapper.h>
 
 #include <vector>
 
@@ -26,8 +27,8 @@ public:
     RendererHelper();
     virtual ~RendererHelper();
 
-	virtual void createDeviceDependentResources() = 0;
-    virtual void releaseDeviceDependentResources() = 0;
+	virtual void createDeviceDependentResources();
+    virtual void releaseDeviceDependentResources();
     virtual void bindToOffscreenFramebuffer(int index) = 0;
     virtual void clearFramebufferWithColor(float r, float g, float b, float a) = 0;
     virtual void bindToScreenFramebuffer() = 0;
@@ -41,8 +42,10 @@ public:
     virtual void bindMatrix(NGShaderUniformInput* uniform) = 0;
     virtual void bindShader(ShaderProgramWrapper* shaderProgramWrapper) = 0;
     virtual void bindTexture(NGTextureSlot textureSlot, NGTexture* texture, NGShaderUniformInput* uniform = NULL) = 0;
-    virtual void mapTextureVertices(std::vector<VERTEX_2D_TEXTURE>& vertices) = 0;
-    virtual void mapVertices(std::vector<VERTEX_2D>& vertices) = 0;
+    virtual void mapTextureVertices(std::vector<VERTEX_2D_TEXTURE>& vertices, bool isDynamic = true, int gpuBufferIndex = 0) = 0;
+    virtual void mapVertices(std::vector<VERTEX_2D>& vertices, bool isDynamic = true, int gpuBufferIndex = 0) = 0;
+    virtual void bindTextureVertexBuffer(int gpuBufferIndex) = 0;
+    virtual void bindScreenVertexBuffer() = 0;
     virtual void draw(NGPrimitiveType renderPrimitiveType, uint32_t first, uint32_t count) = 0;
     virtual void drawIndexed(NGPrimitiveType renderPrimitiveType, uint32_t first, uint32_t count) = 0;
     
@@ -52,15 +55,27 @@ public:
     
 protected:
     std::vector<NGTexture *> _framebufferWrappers;
+    std::vector<GPUBufferWrapper* > _dynamicTextureVertexBuffers;
+    std::vector<GPUBufferWrapper* > _staticTextureVertexBuffers;
+    std::vector<GPUBufferWrapper* > _dynamicVertexBuffers;
+    std::vector<GPUBufferWrapper* > _staticVertexBuffers;
+    GPUBufferWrapper* _indexBuffer;
+    GPUBufferWrapper* _staticScreenVertexBuffer;
     mat4x4 _matrix;
     int _screenWidth;
     int _screenHeight;
     int _renderWidth;
     int _renderHeight;
     
+    virtual GPUBufferWrapper* createGPUBuffer(size_t size, const void *data, bool isDynamic, bool isVertex) = 0;
+    virtual void disposeGPUBuffer(GPUBufferWrapper* gpuBuffer) = 0;
     virtual TextureWrapper* createFramebuffer() = 0;
     virtual void platformReleaseFramebuffers() = 0;
     
+private:
+    void createIndexBuffer();
+    void createStaticScreenVertexBuffer();
+    void disposeAllGPUBuffers(std::vector<GPUBufferWrapper* >& buffers);
     void releaseFramebuffers();
 };
 

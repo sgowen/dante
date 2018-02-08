@@ -59,18 +59,16 @@ _fbIndex(0)
 
 DirectXRendererHelper::~DirectXRendererHelper()
 {
-	releaseDeviceDependentResources();
+	// Empty
 }
 
 void DirectXRendererHelper::createDeviceDependentResources()
 {
+    RendererHelper::createDeviceDependentResources();
+    
     assert(_offscreenRenderTargets.size() == 0);
     assert(_offscreenRenderTargetViews.size() == 0);
     assert(_offscreenShaderResourceViews.size() == 0);
-    
-    createVertexBuffer<VERTEX_2D_TEXTURE>(&_textureVertexBuffer, MAX_BATCH_SIZE * VERTICES_PER_RECTANGLE);
-    createVertexBuffer<VERTEX_2D>(&_vertexBuffer, MAX_BATCH_SIZE * VERTICES_PER_RECTANGLE);
-    createIndexBuffer();
     
     createBlendStates();
     createSamplerStates();
@@ -78,35 +76,13 @@ void DirectXRendererHelper::createDeviceDependentResources()
 
 void DirectXRendererHelper::releaseDeviceDependentResources()
 {
-    platformReleaseFramebuffers();
+    RendererHelper::releaseDeviceDependentResources();
     
-    if (_textureVertexBuffer &&
-        _vertexBuffer &&
-        _indexbuffer &&
-        _blendState &&
-        _screenBlendState &&
-        _textureSamplerState &&
-        _textureWrapSamplerState &&
-        _framebufferSamplerState)
-    {
-        _textureVertexBuffer->Release();
-        _vertexBuffer->Release();
-        _indexbuffer->Release();
-        _blendState->Release();
-        _screenBlendState->Release();
-        _textureSamplerState->Release();
-        _textureWrapSamplerState->Release();
-        _framebufferSamplerState->Release();
-        
-        _textureVertexBuffer = NULL;
-        _vertexBuffer = NULL;
-        _indexbuffer = NULL;
-        _blendState = NULL;
-        _screenBlendState = NULL;
-        _textureSamplerState = NULL;
-        _textureWrapSamplerState = NULL;
-        _framebufferSamplerState = NULL;
-    }
+    _blendState->Release();
+    _screenBlendState->Release();
+    _textureSamplerState->Release();
+    _textureWrapSamplerState->Release();
+    _framebufferSamplerState->Release();
 }
 
 void DirectXRendererHelper::bindToOffscreenFramebuffer(int index)
@@ -217,14 +193,28 @@ void DirectXRendererHelper::bindTexture(NGTextureSlot textureSlot, NGTexture* te
     }
 }
 
-void DirectXRendererHelper::mapTextureVertices(std::vector<VERTEX_2D_TEXTURE>& vertices)
+void DirectXRendererHelper::mapTextureVertices(std::vector<VERTEX_2D_TEXTURE>& vertices, bool isDynamic, int gpuBufferIndex)
 {
-	mapVertices(_textureVertexBuffer, vertices);
+    ID3D11Buffer* buffer = isDynamic ? _dynamicTextureVertexBuffers[gpuBufferIndex]->buffer : _staticTextureVertexBuffers[gpuBufferIndex]->buffer;
+    
+    bindVertexBuffer(buffer, &vertices[0], sizeof(VERTEX_2D_TEXTURE) * vertices.size());
 }
 
-void DirectXRendererHelper::mapVertices(std::vector<VERTEX_2D>& vertices)
+void DirectXRendererHelper::mapVertices(std::vector<VERTEX_2D>& vertices, bool isDynamic, int gpuBufferIndex)
 {
-	mapVertices(_vertexBuffer, vertices);
+    ID3D11Buffer* buffer = isDynamic ? _dynamicVertexBuffers[gpuBufferIndex]->buffer : _staticVertexBuffers[gpuBufferIndex]->buffer;
+    
+    bindVertexBuffer(buffer, &vertices[0], sizeof(VERTEX_2D) * vertices.size());
+}
+
+void DirectXRendererHelper::bindScreenVertexBuffer()
+{
+    ID3D11Buffer* buffer = _staticScreenVertexBuffer->buffer;
+    
+    // Set the vertex buffer
+    UINT stride = sizeof(T);
+    UINT offset = 0;
+    getD3DContext()->IASetVertexBuffers(0, 1, &buffer, &stride, &offset);
 }
 
 void DirectXRendererHelper::draw(NGPrimitiveType renderPrimitiveType, uint32_t first, uint32_t count)
@@ -239,6 +229,31 @@ void DirectXRendererHelper::drawIndexed(NGPrimitiveType renderPrimitiveType, uin
     
     getD3DContext()->IASetPrimitiveTopology(static_cast<D3D11_PRIMITIVE_TOPOLOGY>(renderPrimitiveType));
     getD3DContext()->DrawIndexed(count, first, 0);
+}
+
+GPUBufferWrapper* DirectXRendererHelper::createGPUBuffer(size_t size, const void *data, bool isDynamic, bool isVertex)
+{
+    D3D11_BUFFER_DESC bufferDesc = { 0 };
+    bufferDesc.ByteWidth = size;
+    bufferDesc.Usage = isDynamic ? D3D11_USAGE_DYNAMIC : D3D11_USAGE_DEFAULT;
+    bufferDesc.BindFlags = isVertex ? D3D11_BIND_VERTEX_BUFFER : D3D11_BIND_INDEX_BUFFER;
+    bufferDesc.CPUAccessFlags = isVertex ? D3D11_CPU_ACCESS_WRITE : 0;
+    
+    D3D11_SUBRESOURCE_DATA bufferData = { 0 };
+    bufferData.pSysMem = data;
+    
+    ID3D11Buffer* buffer;
+    DX::ThrowIfFailed(getD3DDevice()->CreateBuffer(&bufferDesc, &bufferData, &buffer));
+    
+    return new GPUBufferWrapper(buffer);
+}
+
+void DirectXRendererHelper::disposeGPUBuffer(GPUBufferWrapper* gpuBuffer)
+{
+    assert(gpuBuffer != NULL);
+    assert(gpuBuffer->buffer != NULL);
+    
+    gpuBuffer->buffer->Release();
 }
 
 TextureWrapper* DirectXRendererHelper::createFramebuffer()
@@ -313,36 +328,6 @@ void DirectXRendererHelper::platformReleaseFramebuffers()
     _offscreenRenderTargets.clear();
     _offscreenRenderTargetViews.clear();
     _offscreenShaderResourceViews.clear();
-}
-
-void DirectXRendererHelper::createIndexBuffer()
-{
-    size_t size = MAX_BATCH_SIZE * INDICES_PER_RECTANGLE;
-    std::vector<uint16_t> indices;
-    indices.reserve(size);
-    
-    uint16_t j = 0;
-    for (int i = 0; i < size; i += INDICES_PER_RECTANGLE, j += VERTICES_PER_RECTANGLE)
-    {
-        indices.push_back(j);
-        indices.push_back(j + 1);
-        indices.push_back(j + 2);
-        indices.push_back(j + 2);
-        indices.push_back(j + 3);
-        indices.push_back(j + 0);
-    }
-    
-    D3D11_BUFFER_DESC indexBufferDesc = { 0 };
-    indexBufferDesc.ByteWidth = sizeof(uint16_t) * indices.size();
-    indexBufferDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
-    indexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
-    
-    D3D11_SUBRESOURCE_DATA indexDataDesc = { 0 };
-    indexDataDesc.pSysMem = &indices[0];
-    
-    ID3D11Buffer* indexbuffer;
-    DX::ThrowIfFailed(getD3DDevice()->CreateBuffer(&indexBufferDesc, &indexDataDesc, &indexbuffer));
-    _indexbuffer = indexbuffer;
 }
 
 void DirectXRendererHelper::createBlendStates()
@@ -452,6 +437,26 @@ D3D11_FILTER DirectXRendererHelper::filterForMinAndMag(std::string& cfgFilterMin
     }
     
     return D3D11_ENCODE_BASIC_FILTER(dxMin, dxMag, dxMip, static_cast<D3D11_COMPARISON_FUNC>(0));
+}
+
+void DirectXRendererHelper::bindVertexBuffer(ID3D11Buffer* buffer, const void *data, size_t size)
+{
+    D3D11_MAPPED_SUBRESOURCE mappedResource;
+    ZeroMemory(&mappedResource, sizeof(D3D11_MAPPED_SUBRESOURCE));
+    
+    // Disable GPU access to the vertex buffer data.
+    getD3DContext()->Map(buffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+    
+    // Update the vertex buffer here.
+    memcpy(mappedResource.pData, data, size);
+    
+    // Reenable GPU access to the vertex buffer data.
+    getD3DContext()->Unmap(buffer, 0);
+    
+    // Set the vertex buffer
+    UINT stride = sizeof(T);
+    UINT offset = 0;
+    getD3DContext()->IASetVertexBuffers(0, 1, &buffer, &stride, &offset);
 }
 
 void DirectXRendererHelper::bindConstantBuffer(NGShaderUniformInput* uniform, const void *pSrcData)

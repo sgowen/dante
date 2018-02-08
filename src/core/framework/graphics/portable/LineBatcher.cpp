@@ -32,7 +32,6 @@ LineBatcher::~LineBatcher()
 void LineBatcher::beginBatch()
 {
     _vertices.clear();
-    
     _numLines = 0;
 }
 
@@ -63,8 +62,9 @@ void LineBatcher::endBatch(NGShader* shader, Color &c)
     
     if (_numLines > 0)
     {
-        shader->bind(&_vertices, &c);
+        shader->bind(&c);
         
+        _rendererHelper->mapVertices(_vertices);
         _rendererHelper->draw(NGPrimitiveType_Lines, 0, VERTICES_PER_LINE * _numLines);
         
         shader->unbind();

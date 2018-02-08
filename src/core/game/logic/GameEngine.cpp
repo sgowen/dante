@@ -134,6 +134,7 @@ void GameEngine::update(Engine* engine)
         {
             _map = map;
             _world->loadMap(_map);
+            _renderer->onNewMapLoaded();
         }
         
         _world->postRead();

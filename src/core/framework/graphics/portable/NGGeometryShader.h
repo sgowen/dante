@@ -16,7 +16,7 @@ class NGGeometryShader : public NGShader
 public:
     NGGeometryShader(RendererHelper& inRendererHelper, const char* vertexShaderName, const char* fragmentShaderName);
     
-    virtual void bind(void* input, void* data1 = NULL, void* data2 = NULL, void* data3 = NULL);
+    virtual void bind(void* data1 = NULL, void* data2 = NULL, void* data3 = NULL);
     virtual void unbind();
 };
 

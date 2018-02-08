@@ -42,9 +42,8 @@ NGLightingShader::NGLightingShader(RendererHelper& inRendererHelper, const char*
     resetLights();
 }
 
-void NGLightingShader::bind(void* input, void* data1, void* data2, void* data3)
+void NGLightingShader::bind(void* data1, void* data2, void* data3)
 {
-    assert(input != NULL);
     assert(data1 != NULL);
     assert(data2 != NULL);
     
@@ -58,9 +57,6 @@ void NGLightingShader::bind(void* input, void* data1, void* data2, void* data3)
     _rendererHelper.bindInt4(                                                       _uniforms[6], _numLights);
     _rendererHelper.bindTexture(NGTextureSlot_ZERO, static_cast<NGTexture*>(data1), _uniforms[7]);
     _rendererHelper.bindTexture(NGTextureSlot_ONE, static_cast<NGTexture*>(data2),  _uniforms[8]);
-    
-    std::vector<VERTEX_2D_TEXTURE>* vertices = static_cast<std::vector<VERTEX_2D_TEXTURE>* >(input);
-    _rendererHelper.mapTextureVertices(*vertices);
 }
 
 void NGLightingShader::unbind()

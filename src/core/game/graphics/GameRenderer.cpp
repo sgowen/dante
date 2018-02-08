@@ -101,6 +101,7 @@ _lightingNGShader(new NGLightingShader(*_rendererHelper, "shader_004_vert.ngs", 
 _framebufferToScreenNGShader(new NGFramebufferToScreenShader(*_rendererHelper, "shader_002_vert.ngs", "shader_002_frag.ngs")),
 _font(new Font(0, 0, 16, 64, 75, 1024, 1024)),
 _fbIndex(0),
+_map(0),
 _engine(NULL),
 _engineState(0),
 _parallaxLayer0FactorX(0),
@@ -123,12 +124,6 @@ _robotLightPositionFactorY(0)
     {
         _camBounds[i] = new NGRect(0, 0, CAM_WIDTH, CAM_HEIGHT);
     }
-    
-    _screenVertices.reserve(4);
-    _screenVertices.push_back(VERTEX_2D(-1, -1));
-    _screenVertices.push_back(VERTEX_2D(-1, 1));
-    _screenVertices.push_back(VERTEX_2D(1, 1));
-    _screenVertices.push_back(VERTEX_2D(1, -1));
 }
 
 GameRenderer::~GameRenderer()
@@ -246,6 +241,16 @@ void GameRenderer::render()
     }
 }
 
+void GameRenderer::onNewMapLoaded()
+{
+    for (int i = 0; i < NUM_SPRITE_BATCHERS; ++i)
+    {
+        _spriteBatchers[i]->_isDynamic = true;
+        _spriteBatchers[i]->_isStaticBatchRendered = false;
+        _spriteBatchers[i]->_index = i;
+    }
+}
+
 void GameRenderer::setEngine(GameEngine* inValue)
 {
     _engine = inValue;
@@ -316,75 +321,34 @@ void GameRenderer::renderWorld()
     
     for (int i = 0; i < NUM_SPRITE_BATCHERS; ++i)
     {
-        _spriteBatchers[i]->beginBatch();
-    }
-    
-    std::string textures[NUM_SPRITE_BATCHERS];
-    std::string normals[NUM_SPRITE_BATCHERS];
-    
-    {
-        std::vector<Entity*> entities = world->getLayers();
-        for (Entity* e : entities)
+        if (_spriteBatchers[i]->_isDynamic)
         {
-            TextureRegion tr = ASSETS->findTextureRegion(e->getTextureMapping(), e->getStateTime());
-            
-            _spriteBatchers[e->getEntityDef().layer]->renderSprite(e->getPosition().x, e->getPosition().y, e->getWidth(), e->getHeight(), e->getAngle(), tr, e->isFacingLeft());
-            textures[e->getEntityDef().layer] = tr.getTextureName();
-            normals[e->getEntityDef().layer] = tr.getNormalMapName();
+            _spriteBatchers[i]->beginBatch();
         }
     }
     
-    {
-        std::vector<Entity*> entities = world->getPlayers();
-        for (Entity* e : entities)
-        {
-            TextureRegion tr = ASSETS->findTextureRegion(e->getTextureMapping(), e->getStateTime());
-            
-            _spriteBatchers[e->getEntityDef().layer]->renderSprite(e->getPosition().x, e->getPosition().y, e->getWidth(), e->getHeight(), e->getAngle(), tr, e->isFacingLeft());
-            textures[e->getEntityDef().layer] = tr.getTextureName();
-            normals[e->getEntityDef().layer] = tr.getNormalMapName();
-        }
-    }
+    std::fill(_textures, _textures + NUM_SPRITE_BATCHERS, "");
     
-    {
-        std::vector<Entity*> entities = world->getDynamicEntities();
-        for (Entity* e : entities)
-        {
-            TextureRegion tr = ASSETS->findTextureRegion(e->getTextureMapping(), e->getStateTime());
-            
-            _spriteBatchers[e->getEntityDef().layer]->renderSprite(e->getPosition().x, e->getPosition().y, e->getWidth(), e->getHeight(), e->getAngle(), tr, e->isFacingLeft());
-            textures[e->getEntityDef().layer] = tr.getTextureName();
-            normals[e->getEntityDef().layer] = tr.getNormalMapName();
-        }
-    }
-    
-    {
-        std::vector<Entity*> entities = world->getStaticEntities();
-        for (Entity* e : entities)
-        {
-            TextureRegion tr = ASSETS->findTextureRegion(e->getTextureMapping(), e->getStateTime());
-            
-            _spriteBatchers[e->getEntityDef().layer]->renderSprite(e->getPosition().x, e->getPosition().y, e->getWidth(), e->getHeight(), e->getAngle(), tr, e->isFacingLeft());
-            textures[e->getEntityDef().layer] = tr.getTextureName();
-            normals[e->getEntityDef().layer] = tr.getNormalMapName();
-        }
-    }
+    renderEntities(world->getLayers());
+    renderEntities(world->getStaticEntities());
+    renderEntities(world->getPlayers());
+    renderEntities(world->getDynamicEntities());
     
     _rendererHelper->useNormalBlending();
     
     setFramebuffer(0);
     for (int i = 0; i < 5; ++i)
     {
-        endBatchWithTexture(_spriteBatchers[i], _textureManager->getTextureWithName(textures[i]), i);
+        endBatchWithTexture(_spriteBatchers[i], _textureManager->getTextureWithName(_textures[i]), i);
     }
     
     setFramebuffer(1);
-    endBatchWithTexture(_spriteBatchers[5], _textureManager->getTextureWithName(textures[5]), 5);
+    endBatchWithTexture(_spriteBatchers[5], _textureManager->getTextureWithName(_textures[5]), 5);
     
     setFramebuffer(2);
     for (int i = 6; i < 9; ++i)
     {
-        endBatchWithTexture(_spriteBatchers[i], _textureManager->getTextureWithName(textures[i]), i);
+        endBatchWithTexture(_spriteBatchers[i], _textureManager->getTextureWithName(_textures[i]), i);
     }
     
     int fbBegin = 0;
@@ -394,16 +358,16 @@ void GameRenderer::renderWorld()
         setFramebuffer(3);
         for (int i = 0; i < 5; ++i)
         {
-            endBatchWithTexture(_spriteBatchers[i], _textureManager->getTextureWithName(normals[i]), i);
+            endBatchWithTexture(_spriteBatchers[i], _textureManager->getTextureWithName(_normals[i]), i);
         }
         
         setFramebuffer(4);
-        endBatchWithTexture(_spriteBatchers[5], _textureManager->getTextureWithName(normals[5]), 5);
+        endBatchWithTexture(_spriteBatchers[5], _textureManager->getTextureWithName(_normals[5]), 5);
         
         setFramebuffer(5);
         for (int i = 6; i < 9; ++i)
         {
-            endBatchWithTexture(_spriteBatchers[i], _textureManager->getTextureWithName(normals[i]), i);
+            endBatchWithTexture(_spriteBatchers[i], _textureManager->getTextureWithName(_normals[i]), i);
         }
         
         {
@@ -482,9 +446,29 @@ void GameRenderer::renderWorld()
     setFramebuffer(9);
     for (int i = fbBegin; i < fbEnd; ++i)
     {
-        _framebufferToScreenNGShader->bind(&_screenVertices, _rendererHelper->getFramebuffer(i));
+        _framebufferToScreenNGShader->bind(_rendererHelper->getFramebuffer(i));
+        _rendererHelper->bindScreenVertexBuffer();
         _rendererHelper->drawIndexed(NGPrimitiveType_Triangles, 0, INDICES_PER_RECTANGLE);
         _framebufferToScreenNGShader->unbind();
+    }
+}
+
+void GameRenderer::renderEntities(std::vector<Entity*>& entities)
+{
+    for (Entity* e : entities)
+    {
+        TextureRegion tr = ASSETS->findTextureRegion(e->getTextureMapping(), e->getStateTime());
+        
+        int layer = e->getEntityDef().layer;
+        _textures[e->getEntityDef().layer] = tr.getTextureName();
+        _normals[e->getEntityDef().layer] = tr.getNormalMapName();
+        
+        if (_spriteBatchers[layer]->_isStaticBatchRendered)
+        {
+            continue;
+        }
+        
+        _spriteBatchers[layer]->renderSprite(e->getPosition().x, e->getPosition().y, e->getWidth(), e->getHeight(), e->getAngle(), tr, e->isFacingLeft());
     }
 }
 
@@ -495,6 +479,8 @@ void GameRenderer::endBatchWithTexture(SpriteBatcher* sb, NGTexture* tex, int la
         int c = clamp(layer, 3, 0);
         _rendererHelper->updateMatrix(_camBounds[c]->getLeft(), _camBounds[c]->getRight(), _camBounds[c]->getBottom(), _camBounds[c]->getTop());
         
+        _spriteBatchers[layer]->_index = layer;
+        _spriteBatchers[layer]->_isDynamic = layer == 4 || layer == 5 || layer == 6 || layer == 7;
         sb->endBatch(_textureNGShader, tex);
     }
 }
@@ -603,7 +589,8 @@ void GameRenderer::endFrame()
     _rendererHelper->clearFramebufferWithColor(0, 0, 0, 1);
     _rendererHelper->useScreenBlending();
 
-    _framebufferToScreenNGShader->bind(&_screenVertices, _rendererHelper->getFramebuffer(_fbIndex));
+    _framebufferToScreenNGShader->bind(_rendererHelper->getFramebuffer(_fbIndex));
+    _rendererHelper->bindScreenVertexBuffer();
     _rendererHelper->drawIndexed(NGPrimitiveType_Triangles, 0, INDICES_PER_RECTANGLE);
     _framebufferToScreenNGShader->unbind();
     

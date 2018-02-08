@@ -23,6 +23,9 @@ class TextureRegion;
 class SpriteBatcher
 {
 public:
+    int _index;
+    bool _isDynamic;
+    bool _isStaticBatchRendered;
     SpriteBatcher(RendererHelper* inRendererHelper);
     ~SpriteBatcher();
 

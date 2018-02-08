@@ -36,7 +36,6 @@ CircleBatcher::~CircleBatcher()
 void CircleBatcher::beginBatch()
 {
     _vertices.clear();
-    
     _circles.clear();
 }
 
@@ -97,7 +96,9 @@ void CircleBatcher::endBatch(NGShader* shader, Color &c)
     
 	if (_circles.size() > 0)
 	{
-		shader->bind(&_vertices, &c);
+		shader->bind(&c);
+        
+        _rendererHelper->mapVertices(_vertices);
 
 		int offset = 0;
 		for (std::vector<int>::iterator i = _circles.begin(); i != _circles.end(); ++i)

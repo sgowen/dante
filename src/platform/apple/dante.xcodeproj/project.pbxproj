@@ -1012,6 +1012,7 @@
 		BB8308381EC2AD1F00435E7E /* TransmissionData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransmissionData.h; sourceTree = "<group>"; };
 		BB8308391EC2AD1F00435E7E /* UDPSocket.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = UDPSocket.cpp; sourceTree = "<group>"; };
 		BB83083A1EC2AD1F00435E7E /* UDPSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UDPSocket.h; sourceTree = "<group>"; };
+		BB87676D202B64D5003E0C81 /* GPUBufferWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GPUBufferWrapper.h; sourceTree = "<group>"; };
 		BB89C992200914AB00330100 /* n_texture_005.ngt */ = {isa = PBXFileReference; lastKnownFileType = text; path = n_texture_005.ngt; sourceTree = "<group>"; };
 		BB89C993200914AC00330100 /* n_texture_006.ngt */ = {isa = PBXFileReference; lastKnownFileType = file; path = n_texture_006.ngt; sourceTree = "<group>"; };
 		BB89C994200914AC00330100 /* n_texture_003.ngt */ = {isa = PBXFileReference; lastKnownFileType = text; path = n_texture_003.ngt; sourceTree = "<group>"; };
@@ -2683,6 +2684,7 @@
 				BBAEF1371EA94ED900F0866E /* Font.cpp */,
 				BBAEF1381EA94ED900F0866E /* Font.h */,
 				BB2AC5451EFC382C0012B990 /* FontAlign.h */,
+				BB87676D202B64D5003E0C81 /* GPUBufferWrapper.h */,
 				BBAEF1431EA94ED900F0866E /* LineBatcher.cpp */,
 				BBAEF1441EA94ED900F0866E /* LineBatcher.h */,
 				BBAEF12E1EA94ED900F0866E /* NGAnimation.cpp */,
