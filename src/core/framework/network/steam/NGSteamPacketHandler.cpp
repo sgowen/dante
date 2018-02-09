@@ -20,6 +20,8 @@
 #include "framework/util/StringUtil.h"
 #include "framework/network/portable/Network.h"
 
+#include <assert.h>
+
 NGSteamPacketHandler::NGSteamPacketHandler(bool isServer, ProcessPacketFunc processPacketFunc, HandleNoResponseFunc handleNoResponseFunc, HandleConnectionResetFunc handleConnectionResetFunc) : PacketHandler(isServer, processPacketFunc, handleNoResponseFunc, handleConnectionResetFunc)
 {
     // Empty
@@ -57,10 +59,10 @@ void NGSteamPacketHandler::sendPacket(const OutputMemoryBitStream& inOutputStrea
 void NGSteamPacketHandler::readIncomingPacketsIntoQueue()
 {
     static char packetMem[NW_MAX_PACKET_SIZE];
+    static uint32 packetSize = sizeof(packetMem);
     
     bzero(packetMem, NW_MAX_PACKET_SIZE);
     
-    static uint32 packetSize = sizeof(packetMem);
     uint32_t incomingSize = 0;
     InputMemoryBitStream inputStream(packetMem, packetSize * 8);
     CSteamID fromId;
@@ -78,6 +80,8 @@ void NGSteamPacketHandler::readIncomingPacketsIntoQueue()
             uint32_t readByteCount;
             if (steamNetworking->ReadP2PPacket(packetMem, packetSize, &readByteCount, &fromId))
             {
+                assert(readByteCount <= packetSize);
+                
                 if (readByteCount > 0)
                 {
                     inputStream.resetToCapacity(readByteCount);

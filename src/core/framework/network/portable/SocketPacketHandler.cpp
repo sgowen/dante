@@ -25,6 +25,7 @@
 #include "framework/network/portable/Network.h"
 
 #include <string.h>
+#include <assert.h>
 
 SocketPacketHandler::SocketPacketHandler(bool isServer, uint16_t inPort, ProcessPacketFunc processPacketFunc, HandleNoResponseFunc handleNoResponseFunc, HandleConnectionResetFunc handleConnectionResetFunc) : PacketHandler(isServer, processPacketFunc, handleNoResponseFunc, handleConnectionResetFunc), _socketAddress(new SocketAddress(INADDR_ANY, inPort)), _socket(NULL), _isInitialized(false)
 {
@@ -96,10 +97,10 @@ void SocketPacketHandler::readIncomingPacketsIntoQueue()
     }
 
     static char packetMem[NW_MAX_PACKET_SIZE];
+    static uint32_t packetSize = sizeof(packetMem);
 
     bzero(packetMem, NW_MAX_PACKET_SIZE);
 
-    static uint32_t packetSize = sizeof(packetMem);
     InputMemoryBitStream inputStream(packetMem, packetSize * 8);
     SocketAddress fromAddress;
 
@@ -110,6 +111,8 @@ void SocketPacketHandler::readIncomingPacketsIntoQueue()
     while (receivedPacketCount < NW_MAX_NUM_PACKETS_PER_FRAME)
     {
         int readByteCount = _socket->receiveFromAddress(packetMem, packetSize, fromAddress);
+        assert(readByteCount <= packetSize);
+        
         if (readByteCount == 0)
         {
             // nothing to read
