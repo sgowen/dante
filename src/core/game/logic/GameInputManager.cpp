@@ -96,10 +96,10 @@ void GameInputManager::update()
             case NG_KEY_B:
                 _inputState = e.isDown() ? GIS_TOGGLE_PHYSICS_DISPLAY : _inputState;
                 continue;
-            case NG_KEY_L:
+            case NG_KEY_I:
                 _inputState = e.isDown() ? GIS_TOGGLE_INTERPOLATION : _inputState;
                 continue;
-            case NG_KEY_Z:
+            case NG_KEY_L:
                 _inputState = e.isDown() ? GIS_TOGGLE_LIGHTING : _inputState;
                 continue;
             case NG_KEY_T:
