@@ -19,7 +19,7 @@
 
 #include "game/logic/World.h"
 #include "framework/util/macros.h"
-#include "game/logic/GameConstants.h"
+#include "framework/util/Constants.h"
 #include "framework/util/Timing.h"
 #include "framework/util/StringUtil.h"
 #include "framework/util/MathUtil.h"
@@ -33,6 +33,7 @@
 #include "game/logic/Util.h"
 #include "game/logic/Server.h"
 #include "framework/util/Config.h"
+#include <game/logic/GameConfig.h>
 
 NGRTTI_IMPL(PlayerController, EntityController);
 
@@ -47,8 +48,6 @@ _playerInfoCache(_playerInfo),
 _stats(),
 _statsCache(_stats),
 _attackSensorFixture(NULL),
-_maxXVelocity(NG_CFG->getFloat("MaxRobotVelocityX")),
-_maxYVelocity(NG_CFG->getFloat("MaxRobotVelocityY")),
 _isLocalPlayer(false)
 {
     // Empty
@@ -285,16 +284,16 @@ void PlayerController::processInput(InputState* inInputState, bool isPending)
             }
             else
             {
-                vertForce = _entity->getBody()->GetMass() * (_maxYVelocity - _entity->getPose().stateTime * 0.5f);
+                vertForce = _entity->getBody()->GetMass() * (GM_CFG->_maxYVelocity - _entity->getPose().stateTime * 0.5f);
             }
         }
         
         if (getNumJumps() == 2)
         {
-            vertForce = _entity->getBody()->GetMass() * (_maxYVelocity * 0.75f - _entity->getPose().stateTime * 0.35f);
+            vertForce = _entity->getBody()->GetMass() * (GM_CFG->_maxYVelocity * 0.75f - _entity->getPose().stateTime * 0.35f);
         }
         
-        vertForce = clamp(vertForce, _entity->getBody()->GetMass() * _maxYVelocity, 0);
+        vertForce = clamp(vertForce, _entity->getBody()->GetMass() * GM_CFG->_maxYVelocity, 0);
     }
     else
     {
@@ -364,7 +363,7 @@ void PlayerController::processInput(InputState* inInputState, bool isPending)
     switch (moveState)
     {
         case MS_LEFT:
-            desiredVel = b2Max(vel.x - 1, -_maxXVelocity);
+            desiredVel = b2Max(vel.x - 1, -GM_CFG->_maxXVelocity);
             isLeft = true;
             break;
         case MS_STOP:
@@ -373,7 +372,7 @@ void PlayerController::processInput(InputState* inInputState, bool isPending)
             isRight = false;
             break;
         case MS_RIGHT:
-            desiredVel = b2Min(vel.x + 1, _maxXVelocity);
+            desiredVel = b2Min(vel.x + 1, GM_CFG->_maxXVelocity);
             isRight = true;
             break;
     }

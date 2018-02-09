@@ -23,12 +23,13 @@
 #include "framework/input/GamePadInputManager.h"
 #include "framework/input/GamePadEvent.h"
 #include "game/logic/PooledObjectsManager.h"
-#include "game/logic/GameConstants.h"
+#include "framework/util/Constants.h"
 #include "framework/input/KeyboardLookup.h"
 #include "framework/util/StringUtil.h"
 #include "framework/util/MathUtil.h"
-#include "framework/util/FrameworkConstants.h"
+#include "framework/util/Constants.h"
 #include "framework/util/PlatformHelper.h"
+#include <game/logic/GameConfig.h>
 
 #include <sstream>
 
@@ -262,8 +263,8 @@ void GameInputManager::update()
                 || (*i)->getType() == CursorEventType_DRAGGED)
             {
                 Vector2& vec = CURSOR_CONVERTER->convert(*(*i));
-                _currentState->getGameInputState(0)._isMovingLeft = vec.getX() < (CAM_WIDTH / 2);
-                _currentState->getGameInputState(0)._isMovingRight = vec.getX() > (CAM_WIDTH / 2);
+                _currentState->getGameInputState(0)._isMovingLeft = vec.getX() < (GM_CFG->_camWidth / 2);
+                _currentState->getGameInputState(0)._isMovingRight = vec.getX() > (GM_CFG->_camWidth / 2);
                 
                 if ((*i)->getType() == CursorEventType_DOWN)
                 {
@@ -281,7 +282,7 @@ void GameInputManager::update()
         }
     }
     
-    _engine->_playerLightZ = clamp(_engine->_playerLightZ + _playerLightZDelta, 0.3f, -0.1f);
+    GM_CFG->_playerLightZ = clamp(GM_CFG->_playerLightZ + _playerLightZDelta, 0.3f, -0.1f);
     _pendingMove = &sampleInputAsMove();
 }
 

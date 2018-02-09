@@ -12,7 +12,7 @@
 
 #include "framework/input/GamePadEvent.h"
 
-#include "framework/util/FrameworkConstants.h"
+#include "framework/util/Constants.h"
 
 #define POOL_SIZE 16384
 

@@ -31,7 +31,7 @@
 #include "framework/graphics/portable/Color.h"
 #include "framework/file/portable/Assets.h"
 #include "framework/graphics/portable/RendererHelper.h"
-#include "game/logic/GameConstants.h"
+#include "framework/util/Constants.h"
 #include "framework/math/NGRect.h"
 #include "framework/math/Line.h"
 #include "framework/graphics/portable/SpriteBatcher.h"
@@ -54,7 +54,7 @@
 #include "framework/graphics/portable/CircleBatcher.h"
 #include "framework/graphics/portable/PolygonBatcher.h"
 #include "framework/graphics/portable/LineBatcher.h"
-#include "framework/util/FrameworkConstants.h"
+#include "framework/util/Constants.h"
 #include "framework/graphics/portable/TextureWrapper.h"
 #include "framework/graphics/portable/TextureDataWrapper.h"
 #include "framework/graphics/portable/TextureLoaderFactory.h"
@@ -73,6 +73,7 @@
 #include <framework/entity/EntityLayoutMapper.h>
 #include <framework/entity/EntityMapper.h>
 #include <framework/util/Config.h>
+#include <game/logic/GameConfig.h>
 
 #ifdef NG_STEAM
 #include "framework/network/steam/NGSteamGameServer.h"
@@ -105,13 +106,7 @@ _fbIndex(0),
 _scrollValue(1),
 _engine(NULL),
 _input(NULL),
-_engineState(0),
-_parallaxLayer0FactorX(0),
-_parallaxLayer0FactorY(0),
-_parallaxLayer1FactorX(0),
-_parallaxLayer1FactorY(0),
-_parallaxLayer2FactorX(0),
-_parallaxLayer2FactorY(0)
+_engineState(0)
 {
     for (int i = 0; i < NUM_SPRITE_BATCHERS; ++i)
     {
@@ -120,7 +115,7 @@ _parallaxLayer2FactorY(0)
     
     for (int i = 0; i < NUM_CAMERAS; ++i)
     {
-        _camBounds[i] = new NGRect(0, 0, CAM_WIDTH, CAM_HEIGHT);
+        _camBounds[i] = new NGRect(0, 0, GM_CFG->_camWidth, GM_CFG->_camHeight);
     }
 }
 
@@ -154,12 +149,11 @@ void StudioRenderer::createDeviceDependentResources()
     _rendererHelper->createDeviceDependentResources();
     _textureManager->createDeviceDependentResources();
     
-    _parallaxLayer0FactorX = NG_CFG->getDouble("ParallaxLayer0FactorX");
-    _parallaxLayer0FactorY = NG_CFG->getDouble("ParallaxLayer0FactorY");
-    _parallaxLayer1FactorX = NG_CFG->getDouble("ParallaxLayer1FactorX");
-    _parallaxLayer1FactorY = NG_CFG->getDouble("ParallaxLayer1FactorY");
-    _parallaxLayer2FactorX = NG_CFG->getDouble("ParallaxLayer2FactorX");
-    _parallaxLayer2FactorY = NG_CFG->getDouble("ParallaxLayer2FactorY");
+    for (int i = 0; i < NUM_CAMERAS; ++i)
+    {
+        _camBounds[i]->setWidth(GM_CFG->_camWidth);
+        _camBounds[i]->setHeight(GM_CFG->_camHeight);
+    }
     
     _fontTexture = _textureManager->getTextureWithName("texture_000.ngt");
 
@@ -241,9 +235,9 @@ void StudioRenderer::update(float x, float y, float w, float h, int scale)
     _scrollValue = scale;
     
     _camBounds[3]->getLowerLeft().set(x, y);
-    _camBounds[2]->getLowerLeft().set(x * _parallaxLayer2FactorX, y * _parallaxLayer2FactorY);
-    _camBounds[1]->getLowerLeft().set(x * _parallaxLayer1FactorX, y * _parallaxLayer1FactorY);
-    _camBounds[0]->getLowerLeft().set(x * _parallaxLayer0FactorX, y * _parallaxLayer0FactorY);
+    _camBounds[2]->getLowerLeft().set(x * GM_CFG->_parallaxLayer2FactorX, y * GM_CFG->_parallaxLayer2FactorY);
+    _camBounds[1]->getLowerLeft().set(x * GM_CFG->_parallaxLayer1FactorX, y * GM_CFG->_parallaxLayer1FactorY);
+    _camBounds[0]->getLowerLeft().set(x * GM_CFG->_parallaxLayer0FactorX, y * GM_CFG->_parallaxLayer0FactorY);
     
     for (int i = 0; i < NUM_CAMERAS; ++i)
     {
@@ -408,7 +402,7 @@ void StudioRenderer::renderGrid()
 void StudioRenderer::renderUI()
 {
     _rendererHelper->useScreenBlending();
-    _rendererHelper->updateMatrix(0, CAM_WIDTH, 0, CAM_HEIGHT);
+    _rendererHelper->updateMatrix(0, GM_CFG->_camWidth, 0, GM_CFG->_camHeight);
     
     if (_engineState & StudioEngineState_DisplayLoadMapDialog)
     {
@@ -417,9 +411,9 @@ void StudioRenderer::renderUI()
         int numMaps = static_cast<int>(maps.size());
         
         _fillPolygonBatcher->beginBatch();
-        int width = CAM_WIDTH / 3;
+        int width = GM_CFG->_camWidth / 3;
         int height = numMaps + 3;
-        NGRect window = NGRect(CAM_WIDTH / 2 - width / 2, CAM_HEIGHT - 4 - height - 1, width, height);
+        NGRect window = NGRect(GM_CFG->_camWidth / 2 - width / 2, GM_CFG->_camHeight - 4 - height - 1, width, height);
         Color windowColor = Color::BLUE;
         windowColor.alpha = 0.5f;
         _fillPolygonBatcher->renderRect(window);
@@ -429,7 +423,7 @@ void StudioRenderer::renderUI()
         static float padding = 1;
         
         _fontSpriteBatcher->beginBatch();
-        renderText("Load Map", CAM_WIDTH / 2, CAM_HEIGHT - 4 - (row++ * padding), FONT_ALIGN_CENTER);
+        renderText("Load Map", GM_CFG->_camWidth / 2, GM_CFG->_camHeight - 4 - (row++ * padding), FONT_ALIGN_CENTER);
         _fontSpriteBatcher->endBatch(_textureNGShader, _fontTexture);
         
         ++row;
@@ -439,7 +433,7 @@ void StudioRenderer::renderUI()
             MapDef& mp = maps[i];
             
             _fontSpriteBatcher->beginBatch();
-            renderText(StringUtil::format("%s | %s", mp.name.c_str(), mp.value.c_str()).c_str(), CAM_WIDTH / 2, CAM_HEIGHT - 4 - (row++ * padding), FONT_ALIGN_CENTER);
+            renderText(StringUtil::format("%s | %s", mp.name.c_str(), mp.value.c_str()).c_str(), GM_CFG->_camWidth / 2, GM_CFG->_camHeight - 4 - (row++ * padding), FONT_ALIGN_CENTER);
             _fontSpriteBatcher->endBatch(_textureNGShader, _fontTexture, NULL, i == _input->_selectionIndex ? Color::WHITE : Color::BLACK);
         }
     }
@@ -448,14 +442,14 @@ void StudioRenderer::renderUI()
         const std::vector<EntityDef*>& entityDescriptors = EntityMapper::getInstance()->getEntityDescriptors();
         int numEntities = static_cast<int>(entityDescriptors.size());
         
-        int width = CAM_WIDTH * 0.7f;
+        int width = GM_CFG->_camWidth * 0.7f;
         int height = numEntities + 3;
         
-        _rendererHelper->updateMatrix(0, CAM_WIDTH, 0, CAM_HEIGHT);
+        _rendererHelper->updateMatrix(0, GM_CFG->_camWidth, 0, GM_CFG->_camHeight);
         
         _fillPolygonBatcher->beginBatch();
         
-        NGRect window = NGRect(1, CAM_HEIGHT - height - 1, width, height);
+        NGRect window = NGRect(1, GM_CFG->_camHeight - height - 1, width, height);
         Color windowColor = Color::BLUE;
         windowColor.alpha = 0.5f;
         _fillPolygonBatcher->renderRect(window);
@@ -466,7 +460,7 @@ void StudioRenderer::renderUI()
         static float padding = 5;
         
         _fontSpriteBatcher->beginBatch();
-        renderText("Entities", width / 2, CAM_HEIGHT - 1 - (row * padding), FONT_ALIGN_CENTER);
+        renderText("Entities", width / 2, GM_CFG->_camHeight - 1 - (row * padding), FONT_ALIGN_CENTER);
         _fontSpriteBatcher->endBatch(_textureNGShader, _fontTexture);
         
         ++row;
@@ -483,11 +477,11 @@ void StudioRenderer::renderUI()
             EntityDef* ed = entityDescriptors[i];
             
             _fontSpriteBatcher->beginBatch();
-            renderText(StringUtil::format("%s | %s", ed->typeName.c_str(), ed->name.c_str()).c_str(), 7, CAM_HEIGHT - 1 - (row * padding), FONT_ALIGN_LEFT);
+            renderText(StringUtil::format("%s | %s", ed->typeName.c_str(), ed->name.c_str()).c_str(), 7, GM_CFG->_camHeight - 1 - (row * padding), FONT_ALIGN_LEFT);
             _fontSpriteBatcher->endBatch(_textureNGShader, _fontTexture, NULL, i == selectionIndex ? Color::WHITE : Color::BLACK);
             
             TextureRegion tr = ASSETS->findTextureRegion(ed->textureMappings[0], 0);
-            _spriteBatchers[ed->layer]->renderSprite(4, CAM_HEIGHT - 1 - (row * padding), 4, 4, 0, tr);
+            _spriteBatchers[ed->layer]->renderSprite(4, GM_CFG->_camHeight - 1 - (row * padding), 4, 4, 0, tr);
             _textures[ed->layer] = tr.getTextureName();
             
             ++row;
@@ -507,7 +501,7 @@ void StudioRenderer::renderUI()
         _fillPolygonBatcher->beginBatch();
         int width = 22;
         int height = 18;
-        NGRect window = NGRect(CAM_WIDTH - width - 1, CAM_HEIGHT - height - 1, width, height);
+        NGRect window = NGRect(GM_CFG->_camWidth - width - 1, GM_CFG->_camHeight - height - 1, width, height);
         Color windowColor = Color::BLUE;
         windowColor.alpha = 0.5f;
         _fillPolygonBatcher->renderRect(window);
@@ -518,23 +512,23 @@ void StudioRenderer::renderUI()
         int row = 2;
         static float padding = 1;
         
-        renderText(StringUtil::format("[B]   Box2D Debug %s", _engineState & StudioEngineState_DisplayBox2D ? " ON" : "OFF").c_str(), CAM_WIDTH - 2, CAM_HEIGHT - (row++ * padding), FONT_ALIGN_RIGHT);
-        renderText(StringUtil::format("[G]          Grid %s", _engineState & StudioEngineState_DisplayGrid ? " ON" : "OFF").c_str(), CAM_WIDTH - 2, CAM_HEIGHT - (row++ * padding), FONT_ALIGN_RIGHT);
-        renderText(StringUtil::format("[D]   Debug Types %s", _engineState & StudioEngineState_DisplayTypes ? " ON" : "OFF").c_str(), CAM_WIDTH - 2, CAM_HEIGHT - (row++ * padding), FONT_ALIGN_RIGHT);
-        renderText(StringUtil::format("[P]      Parallax %s", _engineState & StudioEngineState_DisplayParallax ? " ON" : "OFF").c_str(), CAM_WIDTH - 2, CAM_HEIGHT - (row++ * padding), FONT_ALIGN_RIGHT);
+        renderText(StringUtil::format("[B]   Box2D Debug %s", _engineState & StudioEngineState_DisplayBox2D ? " ON" : "OFF").c_str(), GM_CFG->_camWidth - 2, GM_CFG->_camHeight - (row++ * padding), FONT_ALIGN_RIGHT);
+        renderText(StringUtil::format("[G]          Grid %s", _engineState & StudioEngineState_DisplayGrid ? " ON" : "OFF").c_str(), GM_CFG->_camWidth - 2, GM_CFG->_camHeight - (row++ * padding), FONT_ALIGN_RIGHT);
+        renderText(StringUtil::format("[D]   Debug Types %s", _engineState & StudioEngineState_DisplayTypes ? " ON" : "OFF").c_str(), GM_CFG->_camWidth - 2, GM_CFG->_camHeight - (row++ * padding), FONT_ALIGN_RIGHT);
+        renderText(StringUtil::format("[P]      Parallax %s", _engineState & StudioEngineState_DisplayParallax ? " ON" : "OFF").c_str(), GM_CFG->_camWidth - 2, GM_CFG->_camHeight - (row++ * padding), FONT_ALIGN_RIGHT);
         ++row;
-        renderText(StringUtil::format("[R]      Reset Camera").c_str(), CAM_WIDTH - 2, CAM_HEIGHT - (row++ * padding), FONT_ALIGN_RIGHT);
-        renderText(StringUtil::format("[X]       Reset World").c_str(), CAM_WIDTH - 2, CAM_HEIGHT - (row++ * padding), FONT_ALIGN_RIGHT);
-        renderText(StringUtil::format("[T]         Test Zone").c_str(), CAM_WIDTH - 2, CAM_HEIGHT - (row++ * padding), FONT_ALIGN_RIGHT);
+        renderText(StringUtil::format("[R]      Reset Camera").c_str(), GM_CFG->_camWidth - 2, GM_CFG->_camHeight - (row++ * padding), FONT_ALIGN_RIGHT);
+        renderText(StringUtil::format("[X]       Reset World").c_str(), GM_CFG->_camWidth - 2, GM_CFG->_camHeight - (row++ * padding), FONT_ALIGN_RIGHT);
+        renderText(StringUtil::format("[T]         Test Zone").c_str(), GM_CFG->_camWidth - 2, GM_CFG->_camHeight - (row++ * padding), FONT_ALIGN_RIGHT);
         ++row;
-        renderText(StringUtil::format("[N]               New").c_str(), CAM_WIDTH - 2, CAM_HEIGHT - (row++ * padding), FONT_ALIGN_RIGHT);
-        renderText(StringUtil::format("[L]              Load").c_str(), CAM_WIDTH - 2, CAM_HEIGHT - (row++ * padding), FONT_ALIGN_RIGHT);
-        renderText(StringUtil::format("[S]              Save").c_str(), CAM_WIDTH - 2, CAM_HEIGHT - (row++ * padding), FONT_ALIGN_RIGHT);
-        renderText(StringUtil::format("[CTRL+S]      Save As").c_str(), CAM_WIDTH - 2, CAM_HEIGHT - (row++ * padding), FONT_ALIGN_RIGHT);
+        renderText(StringUtil::format("[N]               New").c_str(), GM_CFG->_camWidth - 2, GM_CFG->_camHeight - (row++ * padding), FONT_ALIGN_RIGHT);
+        renderText(StringUtil::format("[L]              Load").c_str(), GM_CFG->_camWidth - 2, GM_CFG->_camHeight - (row++ * padding), FONT_ALIGN_RIGHT);
+        renderText(StringUtil::format("[S]              Save").c_str(), GM_CFG->_camWidth - 2, GM_CFG->_camHeight - (row++ * padding), FONT_ALIGN_RIGHT);
+        renderText(StringUtil::format("[CTRL+S]      Save As").c_str(), GM_CFG->_camWidth - 2, GM_CFG->_camHeight - (row++ * padding), FONT_ALIGN_RIGHT);
         ++row;
-        renderText(StringUtil::format("[C]  %s Controls", _engineState & StudioEngineState_DisplayControls ? "Hide   " : "Display").c_str(), CAM_WIDTH - 2, CAM_HEIGHT - (row++ * padding), FONT_ALIGN_RIGHT);
-        renderText(StringUtil::format("[A]  %s   Assets", _engineState & StudioEngineState_DisplayAssets ? "Hide   " : "Display").c_str(), CAM_WIDTH - 2, CAM_HEIGHT - (row++ * padding), FONT_ALIGN_RIGHT);
-        renderText(StringUtil::format("[E]  %s Entities", _engineState & StudioEngineState_DisplayEntities ? "Hide   " : "Display").c_str(), CAM_WIDTH - 2, CAM_HEIGHT - (row++ * padding), FONT_ALIGN_RIGHT);
+        renderText(StringUtil::format("[C]  %s Controls", _engineState & StudioEngineState_DisplayControls ? "Hide   " : "Display").c_str(), GM_CFG->_camWidth - 2, GM_CFG->_camHeight - (row++ * padding), FONT_ALIGN_RIGHT);
+        renderText(StringUtil::format("[A]  %s   Assets", _engineState & StudioEngineState_DisplayAssets ? "Hide   " : "Display").c_str(), GM_CFG->_camWidth - 2, GM_CFG->_camHeight - (row++ * padding), FONT_ALIGN_RIGHT);
+        renderText(StringUtil::format("[E]  %s Entities", _engineState & StudioEngineState_DisplayEntities ? "Hide   " : "Display").c_str(), GM_CFG->_camWidth - 2, GM_CFG->_camHeight - (row++ * padding), FONT_ALIGN_RIGHT);
         
         _fontSpriteBatcher->endBatch(_textureNGShader, _fontTexture);
     }
@@ -542,7 +536,7 @@ void StudioRenderer::renderUI()
     {
         /// Bottom Bar
         _fillPolygonBatcher->beginBatch();
-        NGRect bar = NGRect(0, 0, CAM_WIDTH, 2);
+        NGRect bar = NGRect(0, 0, GM_CFG->_camWidth, 2);
         Color barColor = Color(0.33f, 0.33f, 0.33f, 0.85f);
         _fillPolygonBatcher->renderRect(bar);
         _fillPolygonBatcher->endBatch(_colorNGShader, barColor);
@@ -564,11 +558,11 @@ void StudioRenderer::renderUI()
         {
             /// Render Map Info in the center of the bar
             _fontSpriteBatcher->beginBatch();
-            renderText(StringUtil::format("%s | %s", _engine->_world->getMapName().c_str(), _engine->_world->getMapFileName().c_str()).c_str(), CAM_WIDTH / 2, 1.5f, FONT_ALIGN_CENTER);
+            renderText(StringUtil::format("%s | %s", _engine->_world->getMapName().c_str(), _engine->_world->getMapFileName().c_str()).c_str(), GM_CFG->_camWidth / 2, 1.5f, FONT_ALIGN_CENTER);
             _fontSpriteBatcher->endBatch(_textureNGShader, _fontTexture, NULL, Color::WHITE);
             
             _fontSpriteBatcher->beginBatch();
-            renderText("Map", CAM_WIDTH / 2, 0.5f, FONT_ALIGN_CENTER);
+            renderText("Map", GM_CFG->_camWidth / 2, 0.5f, FONT_ALIGN_CENTER);
             _fontSpriteBatcher->endBatch(_textureNGShader, _fontTexture, NULL, Color::WHITE);
         }
         
@@ -597,9 +591,9 @@ void StudioRenderer::renderUI()
     {
         /// Render Delete Zone
         _fillPolygonBatcher->beginBatch();
-        int width = CAM_WIDTH / 3;
+        int width = GM_CFG->_camWidth / 3;
         int height = 3;
-        static NGRect deleteWindow = NGRect(CAM_WIDTH / 2 - width / 2, CAM_HEIGHT - height - 1, width, height);
+        static NGRect deleteWindow = NGRect(GM_CFG->_camWidth / 2 - width / 2, GM_CFG->_camHeight - height - 1, width, height);
         Color windowColor = Color::RED;
         windowColor.alpha = 0.5f;
         _fillPolygonBatcher->renderRect(deleteWindow);
@@ -609,20 +603,20 @@ void StudioRenderer::renderUI()
         static float padding = 1;
         
         _fontSpriteBatcher->beginBatch();
-        renderText("DELETE", CAM_WIDTH / 2, CAM_HEIGHT - (row++ * padding), FONT_ALIGN_CENTER);
+        renderText("DELETE", GM_CFG->_camWidth / 2, GM_CFG->_camHeight - (row++ * padding), FONT_ALIGN_CENTER);
         _fontSpriteBatcher->endBatch(_textureNGShader, _fontTexture);
     }
     
     {
         /// Toasts
-        int y = CAM_HEIGHT - 2;
+        int y = GM_CFG->_camHeight - 2;
         _fillPolygonBatcher->beginBatch();
         _fontSpriteBatcher->beginBatch();
         for (std::string t : _toasts)
         {
-            NGRect window = NGRect(CAM_WIDTH / 2 - t.length() / 2.0f - 1, y - 1, t.length() + 1, 2);
+            NGRect window = NGRect(GM_CFG->_camWidth / 2 - t.length() / 2.0f - 1, y - 1, t.length() + 1, 2);
             _fillPolygonBatcher->renderRect(window);
-            renderText(t.c_str(), CAM_WIDTH / 2, y, FONT_ALIGN_CENTER);
+            renderText(t.c_str(), GM_CFG->_camWidth / 2, y, FONT_ALIGN_CENTER);
             y -= 2;
         }
         Color windowColor = Color::BLUE;
@@ -634,7 +628,7 @@ void StudioRenderer::renderUI()
 
 void StudioRenderer::renderText(const char* inStr, float x, float y, int justification)
 {
-    float fgWidth = CAM_WIDTH / 64;
+    float fgWidth = GM_CFG->_camWidth / 64;
     float fgHeight = fgWidth * (75.0f / 64.0f);
 
     std::string text(inStr);

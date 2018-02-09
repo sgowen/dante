@@ -25,7 +25,7 @@
 #include "framework/util/StringUtil.h"
 #include "framework/network/portable/FWInstanceManager.h"
 #include "framework/util/NGSTDUtil.h"
-#include "framework/util/FrameworkConstants.h"
+#include "framework/util/Constants.h"
 #include "framework/network/client/NetworkManagerClient.h"
 
 #include <assert.h>

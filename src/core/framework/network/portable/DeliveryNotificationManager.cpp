@@ -13,7 +13,7 @@
 #include "framework/network/portable/OutputMemoryBitStream.h"
 #include "framework/network/portable/InputMemoryBitStream.h"
 #include "framework/util/StringUtil.h"
-#include "framework/util/FrameworkConstants.h"
+#include "framework/util/Constants.h"
 
 DeliveryNotificationManager::DeliveryNotificationManager(bool inShouldSendAcks, bool inShouldprocessAcks) :
 _nextOutgoingSequenceNumber(0),

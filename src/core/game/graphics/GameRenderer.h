@@ -89,20 +89,6 @@ private:
     NGTexture* _fontTexture;
     std::vector<LightDef> _playerLights;
     std::vector<LightDef> _lights;
-    double _parallaxLayer0FactorX;
-    double _parallaxLayer0FactorY;
-    double _parallaxLayer1FactorX;
-    double _parallaxLayer1FactorY;
-    double _parallaxLayer2FactorX;
-    double _parallaxLayer2FactorY;
-    float _playerLightColor[4];
-    float _ambientColor[4];
-    float _fallOff[3];
-    float _behindPlayerLightZFactor;
-    float _frontPlayerLightZFactor;
-    float _robotLightPositionFactorY;
-    float _tempStaticLight1[6];
-    float _tempStaticLight2[6];
     
     void updateCamera();
     void setFramebuffer(int framebufferIndex, float r = 0, float g = 0, float b = 0, float a = 0);

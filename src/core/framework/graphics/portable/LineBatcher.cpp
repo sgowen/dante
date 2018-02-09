@@ -15,7 +15,7 @@
 #include "framework/math/Line.h"
 #include "framework/graphics/portable/Color.h"
 
-#include <framework/util/FrameworkConstants.h>
+#include <framework/util/Constants.h>
 
 #include <assert.h>
 

@@ -1,13 +1,13 @@
 //
-//  FrameworkConstants.h
+//  Constants.h
 //  noctisgames-framework
 //
 //  Created by Stephen Gowen on 5/2/17.
 //  Copyright (c) 2017 Noctis Games. All rights reserved.
 //
 
-#ifndef __noctisgames__FrameworkConstants__
-#define __noctisgames__FrameworkConstants__
+#ifndef __noctisgames__Constants__
+#define __noctisgames__Constants__
 
 //// Requested Action Definitions ////
 
@@ -45,6 +45,10 @@
 #define NETWORK_ENTITY_ID_BEGIN 0x00010000u
 #define NETWORK_ENTITY_ID_END   0xFFFFFFFFu
 
+//// Entity Message Definitions ////
+
+#define ENTITY_MESSAGE_DAMAGE 0x01u
+
 //// Rendering ////
 
 #define MAX_BATCH_SIZE 4096
@@ -61,4 +65,4 @@
 
 #define FRAME_RATE (1.0 / 60.0) // 60 frames per second
 
-#endif /* defined(__noctisgames__FrameworkConstants__) */
+#endif /* defined(__noctisgames__Constants__) */

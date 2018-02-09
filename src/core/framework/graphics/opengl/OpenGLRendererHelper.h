@@ -13,7 +13,7 @@
 
 #include "framework/graphics/portable/ShaderProgramWrapper.h"
 #include "framework/graphics/portable/NGShaderUniformInput.h"
-#include <framework/util/FrameworkConstants.h>
+#include <framework/util/Constants.h>
 
 #include "framework/graphics/portable/NGShaderVarInput.h"
 

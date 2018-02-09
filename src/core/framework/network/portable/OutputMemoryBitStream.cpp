@@ -14,7 +14,7 @@
 #include "framework/graphics/portable/Color.h"
 #include "framework/util/MathUtil.h"
 #include "framework/util/StringUtil.h"
-#include "framework/util/FrameworkConstants.h"
+#include "framework/util/Constants.h"
 
 #include <cstring>	// memcpy()
 

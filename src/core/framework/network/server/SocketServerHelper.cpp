@@ -14,7 +14,7 @@
 #include "framework/network/portable/SocketPacketHandler.h"
 #include "framework/util/macros.h"
 #include "framework/util/StringUtil.h"
-#include "framework/util/FrameworkConstants.h"
+#include "framework/util/Constants.h"
 #include "framework/network/server/ClientProxy.h"
 #include "framework/network/portable/OutputMemoryBitStream.h"
 

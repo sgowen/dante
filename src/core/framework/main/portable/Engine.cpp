@@ -13,7 +13,7 @@
 #include "framework/main/portable/EngineController.h"
 #include "framework/main/portable/EngineState.h"
 
-#include "framework/util/FrameworkConstants.h"
+#include "framework/util/Constants.h"
 #include "framework/util/FPSUtil.h"
 
 NGRTTI_IMPL_NOPARENT(Engine);

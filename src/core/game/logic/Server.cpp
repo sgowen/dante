@@ -16,7 +16,7 @@
 
 #include "framework/network/server/NetworkManagerServer.h"
 #include "framework/util/Timing.h"
-#include "framework/util/FrameworkConstants.h"
+#include "framework/util/Constants.h"
 #include "framework/network/portable/SocketUtil.h"
 #include "game/logic/PooledObjectsManager.h"
 #include "game/logic/InstanceManager.h"
@@ -24,9 +24,10 @@
 #include "framework/entity/EntityManager.h"
 #include "framework/network/server/SocketServerHelper.h"
 #include "framework/network/portable/MachineAddress.h"
-#include <game/logic/GameConstants.h>
+#include <framework/util/Constants.h>
 #include <game/logic/PlayerController.h>
 #include "framework/entity/EntityMapper.h"
+#include <game/logic/GameConfig.h>
 
 #ifdef NG_STEAM
 #include <framework/network/steam/NGSteamServerHelper.h>
@@ -216,12 +217,12 @@ Server::Server(bool isSteam) : _world(NULL), _stateTime(0), _frameStateTime(0), 
     if (isSteam)
     {
 #ifdef NG_STEAM
-        NetworkManagerServer::create(new NGSteamServerHelper(STEAM_GAME_DIR, VERSION_STRING, STEAM_PRODUCT_NAME, STEAM_PRODUCT_DESC, SERVER_PORT, NG_SERVER_CALLBACKS), SERVER_CALLBACKS);
+        NetworkManagerServer::create(new NGSteamServerHelper(GM_CFG->_steamGameDir, GM_CFG->_versionName, GM_CFG->_steamProductName, GM_CFG->_steamProductDescription, GM_CFG->_serverPort, NG_SERVER_CALLBACKS), SERVER_CALLBACKS);
 #endif
     }
     else
     {
-        NetworkManagerServer::create(new SocketServerHelper(SERVER_PORT, NG_SERVER_CALLBACKS), SERVER_CALLBACKS);
+        NetworkManagerServer::create(new SocketServerHelper(GM_CFG->_serverPort, NG_SERVER_CALLBACKS), SERVER_CALLBACKS);
     }
     assert(NG_SERVER);
     

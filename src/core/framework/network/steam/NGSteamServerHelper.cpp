@@ -16,7 +16,7 @@
 #include "framework/network/steam/NGSteamPacketHandler.h"
 #include "framework/network/steam/NGSteamGameServices.h"
 #include "framework/util/StringUtil.h"
-#include "framework/util/FrameworkConstants.h"
+#include "framework/util/Constants.h"
 #include "framework/network/portable/OutputMemoryBitStream.h"
 #include "framework/util/Timing.h"
 
@@ -28,8 +28,8 @@
 // UDP port for the master server updater to listen on
 #define STEAM_MASTER_SERVER_UPDATER_PORT 27016
 
-NGSteamServerHelper::NGSteamServerHelper(const char* inGameDir, const char* inVersionString, const char* inProductName, const char* inGameDescription, uint16 inPort, ProcessPacketFunc inProcessPacketFunc, HandleNoResponseFunc inHandleNoResponseFunc, HandleConnectionResetFunc inHandleConnectionResetFunc, GetClientProxyFunc inGetClientProxyFunc, HandleClientDisconnectedFunc inHandleClientDisconnectedFunc) : ServerHelper(new NGSteamPacketHandler(true, inProcessPacketFunc, inHandleNoResponseFunc, inHandleConnectionResetFunc), inGetClientProxyFunc, inHandleClientDisconnectedFunc),
-_inGameDir(inGameDir),
+NGSteamServerHelper::NGSteamServerHelper(std::string inGameDir, std::string inVersionString, std::string inProductName, std::string inGameDescription, uint16 inPort, ProcessPacketFunc inProcessPacketFunc, HandleNoResponseFunc inHandleNoResponseFunc, HandleConnectionResetFunc inHandleConnectionResetFunc, GetClientProxyFunc inGetClientProxyFunc, HandleClientDisconnectedFunc inHandleClientDisconnectedFunc) : ServerHelper(new NGSteamPacketHandler(true, inProcessPacketFunc, inHandleNoResponseFunc, inHandleConnectionResetFunc), inGetClientProxyFunc, inHandleClientDisconnectedFunc),
+_gameDir(inGameDir),
 _serverSteamAddress(new NGSteamAddress()),
 _isConnectedToSteam(false),
 _outgoingPacketAddress(new NGSteamAddress())
@@ -38,7 +38,7 @@ _outgoingPacketAddress(new NGSteamAddress())
     // for both Authentication (making sure users own games) and secure mode, VAC running in our game
     // and kicking users who are VAC banned
     
-    if (!SteamGameServer_Init(INADDR_ANY, STEAM_SERVER_PORT, inPort, STEAM_MASTER_SERVER_UPDATER_PORT, eServerModeAuthenticationAndSecure, inVersionString))
+    if (!SteamGameServer_Init(INADDR_ANY, STEAM_SERVER_PORT, inPort, STEAM_MASTER_SERVER_UPDATER_PORT, eServerModeAuthenticationAndSecure, inVersionString.c_str()))
     {
         LOG("SteamGameServer_Init call failed");
     }
@@ -49,12 +49,12 @@ _outgoingPacketAddress(new NGSteamAddress())
         // This is currently required for all games.  However, soon we will be
         // using the AppID for most purposes, and this string will only be needed
         // for mods.  it may not be changed after the server has logged on
-        SteamGameServer()->SetModDir(_inGameDir);
+        SteamGameServer()->SetModDir(_gameDir.c_str());
         
         // These fields are currently required, but will go away soon.
         // See their documentation for more info
-        SteamGameServer()->SetProduct(inProductName);
-        SteamGameServer()->SetGameDescription(inGameDescription);
+        SteamGameServer()->SetProduct(inProductName.c_str());
+        SteamGameServer()->SetGameDescription(inGameDescription.c_str());
         
         // We don't support specators in our game.
         // .... but if we did:
@@ -385,7 +385,7 @@ void NGSteamServerHelper::sendDataToClient(CSteamID steamIDUser, const OutputMem
 
 void NGSteamServerHelper::onSteamServersConnected(SteamServersConnected_t *pLogonSuccess)
 {
-    LOG("%s connected to Steam successfully", _inGameDir);
+    LOG("%s connected to Steam successfully", _gameDir.c_str());
     
     _isConnectedToSteam = true;
     
@@ -396,14 +396,14 @@ void NGSteamServerHelper::onSteamServersConnected(SteamServersConnected_t *pLogo
 
 void NGSteamServerHelper::onSteamServersConnectFailure(SteamServerConnectFailure_t *pConnectFailure)
 {
-    LOG("%s failed to connect to Steam", _inGameDir);
+    LOG("%s failed to connect to Steam", _gameDir.c_str());
     
     _isConnectedToSteam = false;
 }
 
 void NGSteamServerHelper::onSteamServersDisconnected(SteamServersDisconnected_t *pLoggedOff)
 {
-    LOG("%s got logged out of Steam", _inGameDir);
+    LOG("%s got logged out of Steam", _gameDir.c_str());
     
     _isConnectedToSteam = false;
 }
@@ -412,11 +412,11 @@ void NGSteamServerHelper::onPolicyResponse(GSPolicyResponse_t *pPolicyResponse)
 {
     if (SteamGameServer()->BSecure())
     {
-        LOG("%s is VAC Secure!", _inGameDir);
+        LOG("%s is VAC Secure!", _gameDir.c_str());
     }
     else
     {
-        LOG("%s is not VAC Secure!", _inGameDir);
+        LOG("%s is not VAC Secure!", _gameDir.c_str());
     }
     
     LOG("Game Server Steam ID: %llu", SteamGameServer()->GetSteamID().ConvertToUint64());

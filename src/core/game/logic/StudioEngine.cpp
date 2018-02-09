@@ -14,7 +14,7 @@
 #include <game/graphics/StudioRenderer.h>
 
 #include "game/logic/Server.h"
-#include "game/logic/GameConstants.h"
+#include "framework/util/Constants.h"
 #include "framework/input/CursorInputManager.h"
 #include "framework/input/CursorEvent.h"
 #include "framework/input/CursorConverter.h"
@@ -36,7 +36,7 @@
 #include "framework/util/NGExtension.h"
 #include "framework/util/PlatformHelper.h"
 #include "framework/file/portable/Assets.h"
-#include "framework/util/FrameworkConstants.h"
+#include "framework/util/Constants.h"
 #include "framework/audio/portable/NGAudioEngine.h"
 #include "framework/util/Timing.h"
 #include "framework/util/FPSUtil.h"
@@ -44,6 +44,7 @@
 #include <framework/util/Config.h>
 #include <framework/entity/EntityMapper.h>
 #include <framework/entity/EntityLayoutMapper.h>
+#include <game/logic/GameConfig.h>
 
 #ifdef NG_STEAM
 #include "framework/network/steam/NGSteamClientHelper.h"
@@ -126,7 +127,7 @@ void StudioEngine::exit(Engine* engine)
 
 void StudioEngine::createDeviceDependentResources()
 {
-    NG_CFG->initWithJsonFile("global.cfg");
+    GM_CFG->initWithJsonFile("global.cfg");
     EntityMapper::getInstance()->initWithJsonFile("entities.cfg");
     EntityLayoutMapper::getInstance()->initWithJsonFile("maps.cfg");
     ASSETS->initWithJsonFile("game_assets.cfg");
@@ -136,9 +137,9 @@ void StudioEngine::createDeviceDependentResources()
 
 void StudioEngine::createWindowSizeDependentResources(int screenWidth, int screenHeight, int cursorWidth, int cursorHeight)
 {
-    _renderer->createWindowSizeDependentResources(screenWidth, screenHeight, NG_CFG->getInt("FramebufferSize"), NG_CFG->getInt("FramebufferSize"));
+    _renderer->createWindowSizeDependentResources(screenWidth, screenHeight, FW_CFG->getInt("FramebufferWidth"), FW_CFG->getInt("FramebufferHeight"));
     
-    CURSOR_CONVERTER->setCamSize(CAM_WIDTH, CAM_HEIGHT);
+    CURSOR_CONVERTER->setCamSize(GM_CFG->_camWidth, GM_CFG->_camHeight);
     CURSOR_CONVERTER->setCursorSize(cursorWidth, cursorHeight);
 }
 

@@ -14,7 +14,7 @@
 #include "framework/graphics/portable/TextureWrapper.h"
 #include "framework/graphics/portable/ShaderProgramWrapper.h"
 #include "framework/graphics/portable/NGShaderUniformInput.h"
-#include <framework/util/FrameworkConstants.h>
+#include <framework/util/Constants.h>
 
 #include "framework/graphics/portable/NGShaderVarInput.h"
 #include <framework/util/Config.h>
@@ -215,8 +215,8 @@ TextureWrapper* OpenGLRendererHelper::createFramebuffer()
     GLuint fbo_texture;
     GLuint fbo;
 
-    std::string cfgFilterMin = NG_CFG->getString("FramebufferFilterMin");
-    std::string cfgFilterMag = NG_CFG->getString("FramebufferFilterMag");
+    std::string cfgFilterMin = FW_CFG->getString("FramebufferFilterMin");
+    std::string cfgFilterMag = FW_CFG->getString("FramebufferFilterMag");
     GLint filterMin = cfgFilterMin == "NEAREST" ? GL_NEAREST : GL_LINEAR;
     GLint filterMag = cfgFilterMag == "NEAREST" ? GL_NEAREST : GL_LINEAR;
     

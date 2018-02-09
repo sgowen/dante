@@ -15,7 +15,7 @@
 #include "framework/graphics/portable/NGShader.h"
 #include "framework/graphics/portable/TextureRegion.h"
 
-#include <framework/util/FrameworkConstants.h>
+#include <framework/util/Constants.h>
 
 #include <math.h>
 #include <assert.h>

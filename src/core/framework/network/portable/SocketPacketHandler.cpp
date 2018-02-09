@@ -21,7 +21,7 @@
 #include "framework/util/Timing.h"
 #include "framework/network/portable/SocketAddressFamily.h"
 #include "framework/util/macros.h"
-#include "framework/util/FrameworkConstants.h"
+#include "framework/util/Constants.h"
 #include "framework/network/portable/Network.h"
 
 #include <string.h>

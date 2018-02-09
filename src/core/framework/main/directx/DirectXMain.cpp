@@ -17,7 +17,7 @@
 #include "framework/input/CursorInputManager.h"
 #include "framework/input/KeyboardInputManager.h"
 #include "framework/input/GamePadInputManager.h"
-#include "framework/util/FrameworkConstants.h"
+#include "framework/util/Constants.h"
 #include "framework/util/macros.h"
 #include "framework/audio/portable/NGAudioEngine.h"
 #include "framework/input/KeyboardLookup.h"

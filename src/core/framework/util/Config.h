@@ -9,11 +9,11 @@
 #ifndef __noctisgames__Config__
 #define __noctisgames__Config__
 
+#define FW_CFG (Config::getInstance())
+
 #include <string>
 
 class JsonFile;
-
-#define NG_CFG (Config::getInstance())
 
 class Config
 {

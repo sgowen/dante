@@ -13,7 +13,7 @@
 #include "framework/network/portable/MachineAddress.h"
 
 #include "framework/util/Timing.h"
-#include "framework/util/FrameworkConstants.h"
+#include "framework/util/Constants.h"
 
 ClientProxy::ClientProxy(MachineAddress* inMachineAddress, const std::string& inName, uint8_t inPlayerId) :
 _deliveryNotificationManager(DeliveryNotificationManager(false, true)),

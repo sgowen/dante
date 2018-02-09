@@ -21,11 +21,11 @@
 #include "framework/input/GamePadInputManager.h"
 #include "framework/input/GamePadEvent.h"
 #include "game/logic/PooledObjectsManager.h"
-#include "game/logic/GameConstants.h"
+#include "framework/util/Constants.h"
 #include "framework/input/KeyboardLookup.h"
 #include "framework/util/StringUtil.h"
 #include "framework/util/MathUtil.h"
-#include "framework/util/FrameworkConstants.h"
+#include "framework/util/Constants.h"
 #include "framework/util/PlatformHelper.h"
 
 #include <sstream>

@@ -30,7 +30,7 @@
 #include "framework/graphics/portable/Color.h"
 #include "framework/file/portable/Assets.h"
 #include "framework/graphics/portable/RendererHelper.h"
-#include "game/logic/GameConstants.h"
+#include "framework/util/Constants.h"
 #include "framework/math/NGRect.h"
 #include "framework/math/Line.h"
 #include "framework/graphics/portable/SpriteBatcher.h"
@@ -53,7 +53,7 @@
 #include "framework/graphics/portable/CircleBatcher.h"
 #include "framework/graphics/portable/PolygonBatcher.h"
 #include "framework/graphics/portable/LineBatcher.h"
-#include "framework/util/FrameworkConstants.h"
+#include "framework/util/Constants.h"
 #include "framework/graphics/portable/TextureWrapper.h"
 #include "framework/graphics/portable/TextureDataWrapper.h"
 #include "framework/graphics/portable/TextureLoaderFactory.h"
@@ -68,6 +68,7 @@
 #include "framework/graphics/portable/NGTextureDesc.h"
 #include "framework/file/portable/Assets.h"
 #include "framework/util/PlatformHelper.h"
+#include <game/logic/GameConfig.h>
 
 #ifdef NG_STEAM
 #include "framework/network/steam/NGSteamGameServer.h"
@@ -149,7 +150,7 @@ void TitleRenderer::render()
 
     if (_textureManager->ensureTextures())
     {
-        _rendererHelper->updateMatrix(0, CAM_WIDTH, 0, CAM_HEIGHT);
+        _rendererHelper->updateMatrix(0, GM_CFG->_camWidth, 0, GM_CFG->_camHeight);
 
         _spriteBatcher->beginBatch();
 
@@ -202,23 +203,23 @@ void TitleRenderer::renderMainMenuSteamOffText()
     if (PlatformHelper::getPlatform() != NG_PLATFORM_ANDROID
         && PlatformHelper::getPlatform() != NG_PLATFORM_IOS)
     {
-        renderText("[E] to enter Studio",   CAM_WIDTH / 4, CAM_HEIGHT - 2, FONT_ALIGN_LEFT);
-        renderText("[A] to activate Steam", CAM_WIDTH / 4, CAM_HEIGHT - 4, FONT_ALIGN_LEFT);
+        renderText("[E] to enter Studio",   GM_CFG->_camWidth / 4, GM_CFG->_camHeight - 2, FONT_ALIGN_LEFT);
+        renderText("[A] to activate Steam", GM_CFG->_camWidth / 4, GM_CFG->_camHeight - 4, FONT_ALIGN_LEFT);
     }
     
-    renderText("[S] to start local server", CAM_WIDTH / 4, CAM_HEIGHT - 6, FONT_ALIGN_LEFT);
-    renderText("[J] to join server by IP",  CAM_WIDTH / 4, CAM_HEIGHT - 8, FONT_ALIGN_LEFT);
+    renderText("[S] to start local server", GM_CFG->_camWidth / 4, GM_CFG->_camHeight - 6, FONT_ALIGN_LEFT);
+    renderText("[J] to join server by IP",  GM_CFG->_camWidth / 4, GM_CFG->_camHeight - 8, FONT_ALIGN_LEFT);
 
-    renderText("[ESC] to exit game", CAM_WIDTH / 2, 4, FONT_ALIGN_CENTER);
+    renderText("[ESC] to exit game", GM_CFG->_camWidth / 2, 4, FONT_ALIGN_CENTER);
 }
 
 void TitleRenderer::renderMainMenuSteamOnText()
 {
-    renderText("[E] to enter Studio",                     CAM_WIDTH / 4, CAM_HEIGHT - 2, FONT_ALIGN_LEFT);
-    renderText("[D] to deactivate Steam",                 CAM_WIDTH / 4, CAM_HEIGHT - 4, FONT_ALIGN_LEFT);
-    renderText("[S] to start steam server",               CAM_WIDTH / 4, CAM_HEIGHT - 6, FONT_ALIGN_LEFT);
-    renderText("[L] to refresh list of LAN servers",      CAM_WIDTH / 4, CAM_HEIGHT - 8, FONT_ALIGN_LEFT);
-    renderText("[I] to refresh list of Internet servers", CAM_WIDTH / 4, CAM_HEIGHT - 10, FONT_ALIGN_LEFT);
+    renderText("[E] to enter Studio",                     GM_CFG->_camWidth / 4, GM_CFG->_camHeight - 2, FONT_ALIGN_LEFT);
+    renderText("[D] to deactivate Steam",                 GM_CFG->_camWidth / 4, GM_CFG->_camHeight - 4, FONT_ALIGN_LEFT);
+    renderText("[S] to start steam server",               GM_CFG->_camWidth / 4, GM_CFG->_camHeight - 6, FONT_ALIGN_LEFT);
+    renderText("[L] to refresh list of LAN servers",      GM_CFG->_camWidth / 4, GM_CFG->_camHeight - 8, FONT_ALIGN_LEFT);
+    renderText("[I] to refresh list of Internet servers", GM_CFG->_camWidth / 4, GM_CFG->_camHeight - 10, FONT_ALIGN_LEFT);
     
 #ifdef NG_STEAM
     std::vector<NGSteamGameServer> gameServers = NG_STEAM_GAME_SERVICES->getGameServers();
@@ -226,37 +227,37 @@ void TitleRenderer::renderMainMenuSteamOnText()
     for (NGSteamGameServer gameServer : gameServers)
     {
         int serverNumber = index + 1;
-        renderText(StringUtil::format("[%i] %s", serverNumber, gameServer.getDisplayString()).c_str(), CAM_WIDTH / 2, CAM_HEIGHT - 13.0f - (index * 0.5f), FONT_ALIGN_CENTER);
+        renderText(StringUtil::format("[%i] %s", serverNumber, gameServer.getDisplayString()).c_str(), GM_CFG->_camWidth / 2, GM_CFG->_camHeight - 13.0f - (index * 0.5f), FONT_ALIGN_CENTER);
 
         ++index;
     }
 #endif
 
-    renderText("[ESC] to exit game", CAM_WIDTH / 2, 4, FONT_ALIGN_CENTER);
+    renderText("[ESC] to exit game", GM_CFG->_camWidth / 2, 4, FONT_ALIGN_CENTER);
 }
 
 void TitleRenderer::renderStartingServerText()
 {
-    renderText("Server starting, [ESC] to exit", CAM_WIDTH / 2, CAM_HEIGHT - 4, FONT_ALIGN_CENTER);
+    renderText("Server starting, [ESC] to exit", GM_CFG->_camWidth / 2, GM_CFG->_camHeight - 4, FONT_ALIGN_CENTER);
 }
 
 void TitleRenderer::renderEnterUsernameText()
 {
-    renderText("Enter Username to join, [ESC] to exit", CAM_WIDTH / 2, CAM_HEIGHT - 4, FONT_ALIGN_CENTER);
+    renderText("Enter Username to join, [ESC] to exit", GM_CFG->_camWidth / 2, GM_CFG->_camHeight - 4, FONT_ALIGN_CENTER);
 
-    renderText(TitleInputManager::getInstance()->getLiveInputRef().c_str(), CAM_WIDTH / 2, CAM_HEIGHT - 8, FONT_ALIGN_CENTER);
+    renderText(TitleInputManager::getInstance()->getLiveInputRef().c_str(), GM_CFG->_camWidth / 2, GM_CFG->_camHeight - 8, FONT_ALIGN_CENTER);
 }
 
 void TitleRenderer::renderJoiningLocalServerByIPText()
 {
-    renderText("Enter Server Address to join, [ESC] to exit", CAM_WIDTH / 2, CAM_HEIGHT - 4, FONT_ALIGN_CENTER);
+    renderText("Enter Server Address to join, [ESC] to exit", GM_CFG->_camWidth / 2, GM_CFG->_camHeight - 4, FONT_ALIGN_CENTER);
 
-    renderText(TitleInputManager::getInstance()->getLiveInputRef().c_str(), CAM_WIDTH / 2, CAM_HEIGHT - 8, FONT_ALIGN_CENTER);
+    renderText(TitleInputManager::getInstance()->getLiveInputRef().c_str(), GM_CFG->_camWidth / 2, GM_CFG->_camHeight - 8, FONT_ALIGN_CENTER);
 }
 
 void TitleRenderer::renderText(const char* inStr, float x, float y, int justification)
 {
-    float fgWidth = CAM_WIDTH / 64;
+    float fgWidth = GM_CFG->_camWidth / 64;
     float fgHeight = fgWidth * 1.171875f;
 
     std::string text(inStr);

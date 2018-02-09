@@ -16,7 +16,7 @@
 #include "framework/input/KeyboardInputManager.h"
 #include "framework/file/android/AndroidAssetDataHandler.h"
 #include "framework/audio/android/AndroidAudioEngineHelper.h"
-#include "framework/util/FrameworkConstants.h"
+#include "framework/util/Constants.h"
 #include "framework/input/KeyboardLookup.h"
 #include "framework/util/MathUtil.h"
 

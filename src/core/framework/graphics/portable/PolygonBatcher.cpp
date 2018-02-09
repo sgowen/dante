@@ -16,7 +16,7 @@
 #include "framework/graphics/portable/Color.h"
 #include "Box2D/Common/b2Math.h"
 
-#include <framework/util/FrameworkConstants.h>
+#include <framework/util/Constants.h>
 
 PolygonBatcher::PolygonBatcher(RendererHelper* inRendererHelper, bool isFill) : _rendererHelper(inRendererHelper), _isFill(isFill), _numQuads(0), _numTriangles(0)
 {

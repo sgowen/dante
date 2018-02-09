@@ -19,7 +19,7 @@
 
 #include "game/logic/World.h"
 #include "framework/util/macros.h"
-#include "game/logic/GameConstants.h"
+#include "framework/util/Constants.h"
 #include "framework/util/Timing.h"
 #include "framework/util/StringUtil.h"
 #include "framework/util/MathUtil.h"

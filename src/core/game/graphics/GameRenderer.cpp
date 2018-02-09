@@ -31,7 +31,7 @@
 #include "framework/graphics/portable/Color.h"
 #include "framework/file/portable/Assets.h"
 #include "framework/graphics/portable/RendererHelper.h"
-#include "game/logic/GameConstants.h"
+#include "framework/util/Constants.h"
 #include "framework/math/NGRect.h"
 #include "framework/math/Line.h"
 #include "framework/graphics/portable/SpriteBatcher.h"
@@ -54,7 +54,7 @@
 #include "framework/graphics/portable/CircleBatcher.h"
 #include "framework/graphics/portable/PolygonBatcher.h"
 #include "framework/graphics/portable/LineBatcher.h"
-#include "framework/util/FrameworkConstants.h"
+#include "framework/util/Constants.h"
 #include "framework/graphics/portable/TextureWrapper.h"
 #include "framework/graphics/portable/TextureDataWrapper.h"
 #include "framework/graphics/portable/TextureLoaderFactory.h"
@@ -71,6 +71,7 @@
 #include <game/logic/GameEngine.h>
 #include <game/logic/PlayerController.h>
 #include <framework/util/Config.h>
+#include <game/logic/GameConfig.h>
 #include <framework/graphics/portable/VertexProgramInput.h>
 
 #ifdef NG_STEAM
@@ -103,16 +104,7 @@ _fbIndex(0),
 _map(0),
 _engine(NULL),
 _engineState(0),
-_parallaxLayer0FactorX(0),
-_parallaxLayer0FactorY(0),
-_parallaxLayer1FactorX(0),
-_parallaxLayer1FactorY(0),
-_parallaxLayer2FactorX(0),
-_parallaxLayer2FactorY(0),
-_fontTexture(NULL),
-_behindPlayerLightZFactor(0),
-_frontPlayerLightZFactor(0),
-_robotLightPositionFactorY(0)
+_fontTexture(NULL)
 {
     for (int i = 0; i < NUM_SPRITE_BATCHERS; ++i)
     {
@@ -121,7 +113,7 @@ _robotLightPositionFactorY(0)
     
     for (int i = 0; i < NUM_CAMERAS; ++i)
     {
-        _camBounds[i] = new NGRect(0, 0, CAM_WIDTH, CAM_HEIGHT);
+        _camBounds[i] = new NGRect(0, 0, GM_CFG->_camWidth, GM_CFG->_camHeight);
     }
 }
 
@@ -156,40 +148,13 @@ void GameRenderer::createDeviceDependentResources()
     _rendererHelper->createDeviceDependentResources();
     _textureManager->createDeviceDependentResources();
     
-    _parallaxLayer0FactorX = NG_CFG->getDouble("ParallaxLayer0FactorX");
-    _parallaxLayer0FactorY = NG_CFG->getDouble("ParallaxLayer0FactorY");
-    _parallaxLayer1FactorX = NG_CFG->getDouble("ParallaxLayer1FactorX");
-    _parallaxLayer1FactorY = NG_CFG->getDouble("ParallaxLayer1FactorY");
-    _parallaxLayer2FactorX = NG_CFG->getDouble("ParallaxLayer2FactorX");
-    _parallaxLayer2FactorY = NG_CFG->getDouble("ParallaxLayer2FactorY");
-    _playerLightColor[0] = NG_CFG->getFloat("PlayerLightColorR");
-    _playerLightColor[1] = NG_CFG->getFloat("PlayerLightColorG");
-    _playerLightColor[2] = NG_CFG->getFloat("PlayerLightColorB");
-    _playerLightColor[3] = NG_CFG->getFloat("PlayerLightColorA");
-    _ambientColor[0] = NG_CFG->getFloat("AmbientColorR");
-    _ambientColor[1] = NG_CFG->getFloat("AmbientColorG");
-    _ambientColor[2] = NG_CFG->getFloat("AmbientColorB");
-    _ambientColor[3] = NG_CFG->getFloat("AmbientColorA");
-    _fallOff[0] = NG_CFG->getFloat("LightFalloffX");
-    _fallOff[1] = NG_CFG->getFloat("LightFalloffY");
-    _fallOff[2] = NG_CFG->getFloat("LightFalloffZ");
-    _behindPlayerLightZFactor = NG_CFG->getFloat("BehindPlayerLightZFactor");
-    _frontPlayerLightZFactor = NG_CFG->getFloat("FrontPlayerLightZFactor");
-    _robotLightPositionFactorY = NG_CFG->getFloat("RobotLightPositionFactorY");
-    _tempStaticLight1[0] = NG_CFG->getFloat("TempStaticLight1X");
-    _tempStaticLight1[1] = NG_CFG->getFloat("TempStaticLight1Y");
-    _tempStaticLight1[2] = NG_CFG->getFloat("TempStaticLight1R");
-    _tempStaticLight1[3] = NG_CFG->getFloat("TempStaticLight1G");
-    _tempStaticLight1[4] = NG_CFG->getFloat("TempStaticLight1B");
-    _tempStaticLight1[5] = NG_CFG->getFloat("TempStaticLight1A");
-    _tempStaticLight2[0] = NG_CFG->getFloat("TempStaticLight2X");
-    _tempStaticLight2[1] = NG_CFG->getFloat("TempStaticLight2Y");
-    _tempStaticLight2[2] = NG_CFG->getFloat("TempStaticLight2R");
-    _tempStaticLight2[3] = NG_CFG->getFloat("TempStaticLight2G");
-    _tempStaticLight2[4] = NG_CFG->getFloat("TempStaticLight2B");
-    _tempStaticLight2[5] = NG_CFG->getFloat("TempStaticLight2A");
-    
     _fontTexture = _textureManager->getTextureWithName("texture_000.ngt");
+    
+    for (int i = 0; i < NUM_CAMERAS; ++i)
+    {
+        _camBounds[i]->setWidth(GM_CFG->_camWidth);
+        _camBounds[i]->setHeight(GM_CFG->_camHeight);
+    }
     
     _textureNGShader->load(*_shaderProgramLoader);
     _colorNGShader->load(*_shaderProgramLoader);
@@ -269,9 +234,9 @@ void GameRenderer::updateCamera()
         {
             float pX = entity->getPosition().x;
             float pY = entity->getPosition().y;
-            float lightPosY = pY - entity->getHeight() / 2 + entity->getHeight() * _robotLightPositionFactorY;
+            float lightPosY = pY - entity->getHeight() / 2 + entity->getHeight() * GM_CFG->_robotLightPositionFactorY;
             
-            _playerLights.push_back(LightDef(pX, lightPosY, _playerLightColor[0], _playerLightColor[1], _playerLightColor[2], _playerLightColor[3]));
+            _playerLights.push_back(LightDef(pX, lightPosY, GM_CFG->_playerLightColor[0], GM_CFG->_playerLightColor[1], GM_CFG->_playerLightColor[2], GM_CFG->_playerLightColor[3]));
             
             PlayerController* robot = static_cast<PlayerController*>(entity->getController());
             if (!isCamInitialized && robot->isLocalPlayer())
@@ -279,8 +244,8 @@ void GameRenderer::updateCamera()
                 x = pX;
                 y = pY;
                 
-                x -= CAM_WIDTH * 0.5f;
-                y -= CAM_HEIGHT * 0.5f;
+                x -= GM_CFG->_camWidth * 0.5f;
+                y -= GM_CFG->_camHeight * 0.5f;
                 
                 x = clamp(x, FLT_MAX, 0);
                 y = clamp(y, FLT_MAX, 0);
@@ -290,15 +255,15 @@ void GameRenderer::updateCamera()
         }
         
         /// Temporary
-        _lights.push_back(LightDef(_tempStaticLight1[0], _tempStaticLight1[1], _tempStaticLight1[2], _tempStaticLight1[3], _tempStaticLight1[4], _tempStaticLight1[5]));
-        _lights.push_back(LightDef(_tempStaticLight2[0], _tempStaticLight2[1], _tempStaticLight2[2], _tempStaticLight2[3], _tempStaticLight2[4], _tempStaticLight2[5]));
+        _lights.push_back(LightDef(GM_CFG->_tempStaticLight1[0], GM_CFG->_tempStaticLight1[1], GM_CFG->_tempStaticLight1[2], GM_CFG->_tempStaticLight1[3], GM_CFG->_tempStaticLight1[4], GM_CFG->_tempStaticLight1[5]));
+        _lights.push_back(LightDef(GM_CFG->_tempStaticLight2[0], GM_CFG->_tempStaticLight2[1], GM_CFG->_tempStaticLight2[2], GM_CFG->_tempStaticLight2[3], GM_CFG->_tempStaticLight2[4], GM_CFG->_tempStaticLight2[5]));
     }
     
     _camBounds[3]->getLowerLeft().set(x, y);
     
-    _camBounds[2]->getLowerLeft().set(x * _parallaxLayer2FactorX, y * _parallaxLayer2FactorY);
-    _camBounds[1]->getLowerLeft().set(x * _parallaxLayer1FactorX, y * _parallaxLayer1FactorY);
-    _camBounds[0]->getLowerLeft().set(x * _parallaxLayer0FactorX, y * _parallaxLayer0FactorY);
+    _camBounds[2]->getLowerLeft().set(x * GM_CFG->_parallaxLayer2FactorX, y * GM_CFG->_parallaxLayer2FactorY);
+    _camBounds[1]->getLowerLeft().set(x * GM_CFG->_parallaxLayer1FactorX, y * GM_CFG->_parallaxLayer1FactorY);
+    _camBounds[0]->getLowerLeft().set(x * GM_CFG->_parallaxLayer0FactorX, y * GM_CFG->_parallaxLayer0FactorY);
 }
 
 void GameRenderer::setFramebuffer(int framebufferIndex, float r, float g, float b, float a)
@@ -375,17 +340,17 @@ void GameRenderer::renderWorld()
             
             {
                 _lightingNGShader->resetLights();
-                _lightingNGShader->configAmbientLight(_ambientColor[0], _ambientColor[1], _ambientColor[2], _ambientColor[3]);
-                _lightingNGShader->configureFallOff(_fallOff[0], _fallOff[1], _fallOff[2]);
+                _lightingNGShader->configAmbientLight(GM_CFG->_ambientColor[0], GM_CFG->_ambientColor[1], GM_CFG->_ambientColor[2], GM_CFG->_ambientColor[3]);
+                _lightingNGShader->configureFallOff(GM_CFG->_fallOff[0], GM_CFG->_fallOff[1], GM_CFG->_fallOff[2]);
                 for (int j = 0 ; j < _playerLights.size(); ++j)
                 {
                     LightDef& ld = _playerLights[j];
-                    _lightingNGShader->addLight(ld._lightPosX, ld._lightPosY, _behindPlayerLightZFactor * _engine->_playerLightZ, ld._lightColorR, ld._lightColorG, ld._lightColorB, ld._lightColorA);
+                    _lightingNGShader->addLight(ld._lightPosX, ld._lightPosY, GM_CFG->_behindPlayerLightZFactor * GM_CFG->_playerLightZ, ld._lightColorR, ld._lightColorG, ld._lightColorB, ld._lightColorA);
                 }
                 for (int j = 0 ; j < _lights.size(); ++j)
                 {
                     LightDef& ld = _lights[j];
-                    _lightingNGShader->addLight(ld._lightPosX, ld._lightPosY, _behindPlayerLightZFactor * _engine->_playerLightZ, ld._lightColorR, ld._lightColorG, ld._lightColorB, ld._lightColorA);
+                    _lightingNGShader->addLight(ld._lightPosX, ld._lightPosY, GM_CFG->_behindPlayerLightZFactor * GM_CFG->_playerLightZ, ld._lightColorR, ld._lightColorG, ld._lightColorB, ld._lightColorA);
                 }
                 
                 setFramebuffer(6, 0, 0, 0, 0);
@@ -398,11 +363,11 @@ void GameRenderer::renderWorld()
             {
                 _lightingNGShader->resetLights();
                 _lightingNGShader->configAmbientLight(1, 1, 1, 1);
-                _lightingNGShader->configureFallOff(_fallOff[0], _fallOff[1], _fallOff[2]);
+                _lightingNGShader->configureFallOff(GM_CFG->_fallOff[0], GM_CFG->_fallOff[1], GM_CFG->_fallOff[2]);
                 for (int j = 0 ; j < _lights.size(); ++j)
                 {
                     LightDef& ld = _lights[j];
-                    _lightingNGShader->addLight(ld._lightPosX, ld._lightPosY, _engine->_playerLightZ, ld._lightColorR, ld._lightColorG, ld._lightColorB, ld._lightColorA);
+                    _lightingNGShader->addLight(ld._lightPosX, ld._lightPosY, GM_CFG->_playerLightZ, ld._lightColorR, ld._lightColorG, ld._lightColorB, ld._lightColorA);
                 }
                 
                 setFramebuffer(7, 0, 0, 0, 0);
@@ -414,17 +379,17 @@ void GameRenderer::renderWorld()
             
             {
                 _lightingNGShader->resetLights();
-                _lightingNGShader->configAmbientLight(_ambientColor[0], _ambientColor[1], _ambientColor[2], _ambientColor[3]);
-                _lightingNGShader->configureFallOff(_fallOff[0], _fallOff[1], _fallOff[2]);
+                _lightingNGShader->configAmbientLight(GM_CFG->_ambientColor[0], GM_CFG->_ambientColor[1], GM_CFG->_ambientColor[2], GM_CFG->_ambientColor[3]);
+                _lightingNGShader->configureFallOff(GM_CFG->_fallOff[0], GM_CFG->_fallOff[1], GM_CFG->_fallOff[2]);
                 for (int j = 0 ; j < _playerLights.size(); ++j)
                 {
                     LightDef& ld = _playerLights[j];
-                    _lightingNGShader->addLight(ld._lightPosX, ld._lightPosY, _frontPlayerLightZFactor * _engine->_playerLightZ, ld._lightColorR, ld._lightColorG, ld._lightColorB, ld._lightColorA);
+                    _lightingNGShader->addLight(ld._lightPosX, ld._lightPosY, GM_CFG->_frontPlayerLightZFactor * GM_CFG->_playerLightZ, ld._lightColorR, ld._lightColorG, ld._lightColorB, ld._lightColorA);
                 }
                 for (int j = 0 ; j < _lights.size(); ++j)
                 {
                     LightDef& ld = _lights[j];
-                    _lightingNGShader->addLight(ld._lightPosX, ld._lightPosY, _frontPlayerLightZFactor * _engine->_playerLightZ, ld._lightColorR, ld._lightColorG, ld._lightColorB, ld._lightColorA);
+                    _lightingNGShader->addLight(ld._lightPosX, ld._lightPosY, GM_CFG->_frontPlayerLightZFactor * GM_CFG->_playerLightZ, ld._lightColorR, ld._lightColorG, ld._lightColorB, ld._lightColorA);
                 }
                 
                 setFramebuffer(8, 0, 0, 0, 0);
@@ -488,7 +453,7 @@ void GameRenderer::renderBox2D()
 
 void GameRenderer::renderUI()
 {
-    _rendererHelper->updateMatrix(0, CAM_WIDTH, 0, CAM_HEIGHT);
+    _rendererHelper->updateMatrix(0, GM_CFG->_camWidth, 0, GM_CFG->_camHeight);
     
     _fontSpriteBatcher->beginBatch();
     
@@ -498,37 +463,37 @@ void GameRenderer::renderUI()
         static float padding = 1;
         
         int fps = FPSUtil::getInstance()->getFPS();
-        renderText(StringUtil::format("FPS %d", fps).c_str(), CAM_WIDTH - 0.5f, CAM_HEIGHT - (row++ * padding), FONT_ALIGN_RIGHT);
+        renderText(StringUtil::format("FPS %d", fps).c_str(), GM_CFG->_camWidth - 0.5f, GM_CFG->_camHeight - (row++ * padding), FONT_ALIGN_RIGHT);
         
         float rttMS = NG_CLIENT->getAvgRoundTripTime().getValue() * 1000.f;
-        renderText(StringUtil::format("RTT %d ms", static_cast<int>(rttMS)).c_str(), CAM_WIDTH - 0.5f, CAM_HEIGHT - (row++ * padding), FONT_ALIGN_RIGHT);
+        renderText(StringUtil::format("RTT %d ms", static_cast<int>(rttMS)).c_str(), GM_CFG->_camWidth - 0.5f, GM_CFG->_camHeight - (row++ * padding), FONT_ALIGN_RIGHT);
         
         const WeightedTimedMovingAverage& bpsIn = NG_CLIENT->getBytesReceivedPerSecond();
         int bpsInInt = static_cast<int>(bpsIn.getValue());
-        renderText(StringUtil::format(" In %d Bps", bpsInInt).c_str(), CAM_WIDTH - 0.5f, CAM_HEIGHT - (row++ * padding), FONT_ALIGN_RIGHT);
+        renderText(StringUtil::format(" In %d Bps", bpsInInt).c_str(), GM_CFG->_camWidth - 0.5f, GM_CFG->_camHeight - (row++ * padding), FONT_ALIGN_RIGHT);
         
         const WeightedTimedMovingAverage& bpsOut = NG_CLIENT->getBytesSentPerSecond();
         int bpsOutInt = static_cast<int>(bpsOut.getValue());
-        renderText(StringUtil::format("Out %d Bps", bpsOutInt).c_str(), CAM_WIDTH - 0.5f, CAM_HEIGHT - (row++ * padding), FONT_ALIGN_RIGHT);
+        renderText(StringUtil::format("Out %d Bps", bpsOutInt).c_str(), GM_CFG->_camWidth - 0.5f, GM_CFG->_camHeight - (row++ * padding), FONT_ALIGN_RIGHT);
         
         // Controls
         ++row;
         
-        renderText(StringUtil::format("[S]         Sound %s", NG_AUDIO_ENGINE->areSoundsDisabled() ? " OFF" : "  ON").c_str(), CAM_WIDTH - 0.5f, CAM_HEIGHT - (row++ * padding), FONT_ALIGN_RIGHT);
-        renderText(StringUtil::format("[M]         Music %s", NG_AUDIO_ENGINE->isMusicDisabled() ? " OFF" : "  ON").c_str(), CAM_WIDTH - 0.5f, CAM_HEIGHT - (row++ * padding), FONT_ALIGN_RIGHT);
-        renderText(StringUtil::format("[B]   Box2D Debug %s", _engineState & GameEngineState_DisplayBox2D ? "  ON" : " OFF").c_str(), CAM_WIDTH - 0.5f, CAM_HEIGHT - (row++ * padding), FONT_ALIGN_RIGHT);
-        renderText(StringUtil::format("[I] Interpolation %s", _engineState & GameEngineState_Interpolation ? "  ON" : " OFF").c_str(), CAM_WIDTH - 0.5f, CAM_HEIGHT - (row++ * padding), FONT_ALIGN_RIGHT);
-        std::string lightZ = StringUtil::format("%f", _engine->_playerLightZ);
-        renderText(StringUtil::format("[L]  Lighting %s", _engineState & GameEngineState_Lighting ? lightZ.c_str() : "     OFF").c_str(), CAM_WIDTH - 0.5f, CAM_HEIGHT - (row++ * padding), FONT_ALIGN_RIGHT);
-        renderText(StringUtil::format("[U]    Display UI %s", _engine->_displayUI ? "  ON" : " OFF").c_str(), CAM_WIDTH - 0.5f, CAM_HEIGHT - (row++ * padding), FONT_ALIGN_RIGHT);
+        renderText(StringUtil::format("[S]         Sound %s", NG_AUDIO_ENGINE->areSoundsDisabled() ? " OFF" : "  ON").c_str(), GM_CFG->_camWidth - 0.5f, GM_CFG->_camHeight - (row++ * padding), FONT_ALIGN_RIGHT);
+        renderText(StringUtil::format("[M]         Music %s", NG_AUDIO_ENGINE->isMusicDisabled() ? " OFF" : "  ON").c_str(), GM_CFG->_camWidth - 0.5f, GM_CFG->_camHeight - (row++ * padding), FONT_ALIGN_RIGHT);
+        renderText(StringUtil::format("[B]   Box2D Debug %s", _engineState & GameEngineState_DisplayBox2D ? "  ON" : " OFF").c_str(), GM_CFG->_camWidth - 0.5f, GM_CFG->_camHeight - (row++ * padding), FONT_ALIGN_RIGHT);
+        renderText(StringUtil::format("[I] Interpolation %s", _engineState & GameEngineState_Interpolation ? "  ON" : " OFF").c_str(), GM_CFG->_camWidth - 0.5f, GM_CFG->_camHeight - (row++ * padding), FONT_ALIGN_RIGHT);
+        std::string lightZ = StringUtil::format("%f", GM_CFG->_playerLightZ);
+        renderText(StringUtil::format("[L]  Lighting %s", _engineState & GameEngineState_Lighting ? lightZ.c_str() : "     OFF").c_str(), GM_CFG->_camWidth - 0.5f, GM_CFG->_camHeight - (row++ * padding), FONT_ALIGN_RIGHT);
+        renderText(StringUtil::format("[U]    Display UI %s", _engine->_displayUI ? "  ON" : " OFF").c_str(), GM_CFG->_camWidth - 0.5f, GM_CFG->_camHeight - (row++ * padding), FONT_ALIGN_RIGHT);
         
         if (Server::getInstance())
         {
-            renderText(StringUtil::format("[T]    Toggle Map %s", InstanceManager::getServerWorld()->getMapName().c_str()).c_str(), CAM_WIDTH - 0.5f, CAM_HEIGHT - (row++ * padding), FONT_ALIGN_RIGHT);
+            renderText(StringUtil::format("[T]    Toggle Map %s", InstanceManager::getServerWorld()->getMapName().c_str()).c_str(), GM_CFG->_camWidth - 0.5f, GM_CFG->_camHeight - (row++ * padding), FONT_ALIGN_RIGHT);
         }
         else
         {
-            renderText(StringUtil::format("              Map %s", InstanceManager::getClientWorld()->getMapName().c_str()).c_str(), CAM_WIDTH - 0.5f, CAM_HEIGHT - (row++ * padding), FONT_ALIGN_RIGHT);
+            renderText(StringUtil::format("              Map %s", InstanceManager::getClientWorld()->getMapName().c_str()).c_str(), GM_CFG->_camWidth - 0.5f, GM_CFG->_camHeight - (row++ * padding), FONT_ALIGN_RIGHT);
         }
         
         if (InstanceManager::getClientWorld())
@@ -543,7 +508,7 @@ void GameRenderer::renderUI()
                 int playerId = robot->getPlayerId();
                 if (playerId >= 1 && playerId <= 4)
                 {
-                    renderText(StringUtil::format("%i|%s - %i HP", playerId, robot->getPlayerName().c_str(), robot->getHealth()).c_str(), 0.5f, CAM_HEIGHT - (playerId * 1.0f));
+                    renderText(StringUtil::format("%i|%s - %i HP", playerId, robot->getPlayerName().c_str(), robot->getHealth()).c_str(), 0.5f, GM_CFG->_camHeight - (playerId * 1.0f));
                     activePlayerIds[playerId - 1] = true;
                 }
             }
@@ -552,14 +517,14 @@ void GameRenderer::renderUI()
             {
                 if (!activePlayerIds[i])
                 {
-                    renderText(StringUtil::format("%i|%s", (i + 1), "Connect a controller to join...").c_str(), 0.5f, CAM_HEIGHT - ((i + 1) * 1.0f));
+                    renderText(StringUtil::format("%i|%s", (i + 1), "Connect a controller to join...").c_str(), 0.5f, GM_CFG->_camHeight - ((i + 1) * 1.0f));
                 }
             }
         }
     }
     else
     {
-        renderText(StringUtil::format("%s, [ESC] to exit", "Joining Server...").c_str(), 0.5f, CAM_HEIGHT - 4, FONT_ALIGN_LEFT);
+        renderText(StringUtil::format("%s, [ESC] to exit", "Joining Server...").c_str(), 0.5f, GM_CFG->_camHeight - 4, FONT_ALIGN_LEFT);
     }
     
     _fontSpriteBatcher->endBatch(_textureNGShader, _fontTexture);
@@ -567,7 +532,7 @@ void GameRenderer::renderUI()
 
 void GameRenderer::renderText(const char* inStr, float x, float y, int justification)
 {
-    float fgWidth = CAM_WIDTH / 64;
+    float fgWidth = GM_CFG->_camWidth / 64;
     float fgHeight = fgWidth * 1.171875f;
     
     std::string text(inStr);

@@ -13,7 +13,9 @@
 
 #include "framework/network/steam/NGSteam.h"
 #include "framework/network/portable/PacketHandler.h"
-#include "framework/util/FrameworkConstants.h"
+#include "framework/util/Constants.h"
+
+#include <string>
 
 class NGSteamAddress;
 class ClientProxy;
@@ -21,7 +23,7 @@ class ClientProxy;
 class NGSteamServerHelper : public ServerHelper
 {
 public:
-    NGSteamServerHelper(const char* inGameDir, const char* inVersionString, const char* inProductName, const char* inGameDescription, uint16 inPort, ProcessPacketFunc inProcessPacketFunc, HandleNoResponseFunc inHandleNoResponseFunc, HandleConnectionResetFunc inHandleConnectionResetFunc, GetClientProxyFunc inGetClientProxyFunc, HandleClientDisconnectedFunc inHandleClientDisconnectedFunc);
+    NGSteamServerHelper(std::string inGameDir, std::string inVersionString, std::string inProductName, std::string inGameDescription, uint16 inPort, ProcessPacketFunc inProcessPacketFunc, HandleNoResponseFunc inHandleNoResponseFunc, HandleConnectionResetFunc inHandleConnectionResetFunc, GetClientProxyFunc inGetClientProxyFunc, HandleClientDisconnectedFunc inHandleClientDisconnectedFunc);
     
     virtual ~NGSteamServerHelper();
     
@@ -38,7 +40,7 @@ public:
     void kickPlayerOffServer(CSteamID steamID);
     
 private:
-    const char* _inGameDir;
+    std::string _gameDir;
     NGSteamAddress* _serverSteamAddress;
     std::string _serverName;
     bool _isConnectedToSteam;

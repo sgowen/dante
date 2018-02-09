@@ -18,7 +18,7 @@
 
 #include "framework/graphics/portable/NGTextureDesc.h"
 #include "framework/util/NGSTDUtil.h"
-#include <framework/util/FrameworkConstants.h>
+#include <framework/util/Constants.h>
 #include <framework/util/macros.h>
 #include <framework/util/Config.h>
 
@@ -388,8 +388,8 @@ void DirectXRendererHelper::createSamplerStates()
     sd.MipLODBias = 0.0f;
     
     {
-        std::string cfgFilterMin = NG_CFG->getString("FramebufferFilterMin");
-        std::string cfgFilterMag = NG_CFG->getString("FramebufferFilterMag");
+        std::string cfgFilterMin = FW_CFG->getString("FramebufferFilterMin");
+        std::string cfgFilterMag = FW_CFG->getString("FramebufferFilterMag");
         
         sd.Filter = filterForMinAndMag(cfgFilterMin, cfgFilterMag, false);
         

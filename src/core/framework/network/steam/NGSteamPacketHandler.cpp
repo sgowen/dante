@@ -16,7 +16,7 @@
 #include "framework/network/portable/InputMemoryBitStream.h"
 #include "framework/util/Timing.h"
 #include "framework/network/steam/NGSteam.h"
-#include "framework/util/FrameworkConstants.h"
+#include "framework/util/Constants.h"
 #include "framework/util/StringUtil.h"
 #include "framework/network/portable/Network.h"
 

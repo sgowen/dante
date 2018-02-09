@@ -13,7 +13,7 @@
 #include "framework/graphics/portable/NGTexture.h"
 #include "framework/graphics/portable/TextureWrapper.h"
 
-#include <framework/util/FrameworkConstants.h>
+#include <framework/util/Constants.h>
 #include <framework/util/NGSTDUtil.h>
 #include <framework/util/MathUtil.h>
 

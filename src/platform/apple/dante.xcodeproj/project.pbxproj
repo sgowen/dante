@@ -320,6 +320,8 @@
 		BB89C9A7200914AC00330100 /* n_texture_002.ngt in Resources */ = {isa = PBXBuildFile; fileRef = BB89C998200914AC00330100 /* n_texture_002.ngt */; };
 		BB89C9A8200914AC00330100 /* n_texture_004.ngt in Resources */ = {isa = PBXBuildFile; fileRef = BB89C999200914AC00330100 /* n_texture_004.ngt */; };
 		BB89C9A9200914AC00330100 /* n_texture_004.ngt in Resources */ = {isa = PBXBuildFile; fileRef = BB89C999200914AC00330100 /* n_texture_004.ngt */; };
+		BB8CAB90202DF54D001BEB37 /* GameConfig.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8CAB8E202DF54C001BEB37 /* GameConfig.cpp */; };
+		BB8CAB91202DF54D001BEB37 /* GameConfig.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8CAB8E202DF54C001BEB37 /* GameConfig.cpp */; };
 		BB9A452E2003370900E872E1 /* PlayerController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB9A452C2003370900E872E1 /* PlayerController.cpp */; };
 		BB9A452F2003370900E872E1 /* PlayerController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB9A452C2003370900E872E1 /* PlayerController.cpp */; };
 		BB9EE50D1FC092BA000F5389 /* AssetDataHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB9EE50A1FC092BA000F5389 /* AssetDataHandler.cpp */; };
@@ -918,7 +920,7 @@
 		BB5A0AA71FB36DD1005FBD52 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = ../../../../../../../../../../../System/Library/Frameworks/GLKit.framework; sourceTree = "<group>"; };
 		BB5B332F1FDDBDE700B2D145 /* PlatformHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PlatformHelper.h; sourceTree = "<group>"; };
 		BB5F46FA1ED38D61005FEC0C /* SocketAddressFamily.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SocketAddressFamily.h; sourceTree = "<group>"; };
-		BB61CB581EC9FA1B000E0291 /* FrameworkConstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FrameworkConstants.h; sourceTree = "<group>"; };
+		BB61CB581EC9FA1B000E0291 /* Constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		BB640BE2202A328600629758 /* FileUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileUtil.h; sourceTree = "<group>"; };
 		BB640BE3202A328600629758 /* FileUtil.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FileUtil.cpp; sourceTree = "<group>"; };
 		BB65315A1FED56C700963997 /* MainInputState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainInputState.h; sourceTree = "<group>"; };
@@ -931,7 +933,6 @@
 		BB6E7A8A1F93CE1B006C0024 /* fast_mutex.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = fast_mutex.h; sourceTree = "<group>"; };
 		BB6E7A8B1F93CE1B006C0024 /* tinythread.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = tinythread.cpp; sourceTree = "<group>"; };
 		BB6E7A8C1F93CE1B006C0024 /* tinythread.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = tinythread.h; sourceTree = "<group>"; };
-		BB6E7AFF1F940F13006C0024 /* GameConstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GameConstants.h; sourceTree = "<group>"; };
 		BB6E7B021F940F13006C0024 /* TitleEngine.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = TitleEngine.cpp; sourceTree = "<group>"; };
 		BB6E7B031F940F13006C0024 /* TitleEngine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TitleEngine.h; sourceTree = "<group>"; };
 		BB6E7B051F940F13006C0024 /* PooledObjectsManager.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = PooledObjectsManager.cpp; sourceTree = "<group>"; };
@@ -1021,6 +1022,8 @@
 		BB89C997200914AC00330100 /* n_texture_008.ngt */ = {isa = PBXFileReference; lastKnownFileType = file; path = n_texture_008.ngt; sourceTree = "<group>"; };
 		BB89C998200914AC00330100 /* n_texture_002.ngt */ = {isa = PBXFileReference; lastKnownFileType = file; path = n_texture_002.ngt; sourceTree = "<group>"; };
 		BB89C999200914AC00330100 /* n_texture_004.ngt */ = {isa = PBXFileReference; lastKnownFileType = text; path = n_texture_004.ngt; sourceTree = "<group>"; };
+		BB8CAB8E202DF54C001BEB37 /* GameConfig.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameConfig.cpp; sourceTree = "<group>"; };
+		BB8CAB8F202DF54C001BEB37 /* GameConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameConfig.h; sourceTree = "<group>"; };
 		BB9527B51FDEFF0700AC2E67 /* OpenSLESManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OpenSLESManager.h; sourceTree = "<group>"; };
 		BB9527B61FDEFF0700AC2E67 /* OpenSLESManager.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = OpenSLESManager.cpp; sourceTree = "<group>"; };
 		BB9A452C2003370900E872E1 /* PlayerController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PlayerController.cpp; sourceTree = "<group>"; };
@@ -2366,7 +2369,8 @@
 				BB3F51EE2015412F00A657F8 /* BasicFollowAndAttackController.h */,
 				BBEC68562025139700661E46 /* DestructibleController.cpp */,
 				BBEC68572025139800661E46 /* DestructibleController.h */,
-				BB6E7AFF1F940F13006C0024 /* GameConstants.h */,
+				BB8CAB8E202DF54C001BEB37 /* GameConfig.cpp */,
+				BB8CAB8F202DF54C001BEB37 /* GameConfig.h */,
 				BBFE830E1FFEC69500E5F650 /* GameEngine.cpp */,
 				BBFE830D1FFEC69400E5F650 /* GameEngine.h */,
 				BBFE83161FFEC87300E5F650 /* GameInputManager.cpp */,
@@ -2460,10 +2464,10 @@
 			children = (
 				BB3F1193200AE0D900C30B06 /* Config.cpp */,
 				BB3F1194200AE0DA00C30B06 /* Config.h */,
+				BB61CB581EC9FA1B000E0291 /* Constants.h */,
 				BBB1D3AA1FC8CA4D00B74BAC /* ContainerUtil.h */,
 				BBCDF24D1F3796C3006E94B0 /* FPSUtil.cpp */,
 				BBCDF24E1F3796C3006E94B0 /* FPSUtil.h */,
-				BB61CB581EC9FA1B000E0291 /* FrameworkConstants.h */,
 				BBB1D3AB1FC8CA4D00B74BAC /* HashMap.h */,
 				BB74283A1EB2AF4200B7628D /* macros.h */,
 				BBE916BC2028E48C009DF8DA /* MathUtil.h */,
@@ -4014,6 +4018,7 @@
 				BB1E897B1EF4A81500B0D78A /* PacketHandler.cpp in Sources */,
 				BB8308741EC2AD1F00435E7E /* SocketUtil.cpp in Sources */,
 				BB6F59791FBDE97D00BD7697 /* cocoa_window.m in Sources */,
+				BB8CAB90202DF54D001BEB37 /* GameConfig.cpp in Sources */,
 				BB31B5AF1FC205D5005F1C0A /* GamePadEvent.cpp in Sources */,
 				BB4253E11EF598C1003F6D2A /* SocketClientHelper.cpp in Sources */,
 				BB7251951EE105330024C71C /* NetworkManagerClient.cpp in Sources */,
@@ -4296,6 +4301,7 @@
 				BBD554571FDB2EA800E00AD6 /* b2DynamicTree.cpp in Sources */,
 				BBD554651FDB2EA800E00AD6 /* b2CollideEdge.cpp in Sources */,
 				BB5AFE4D1FB35A77005FBD52 /* ServerHelper.cpp in Sources */,
+				BB8CAB91202DF54D001BEB37 /* GameConfig.cpp in Sources */,
 				BB9EE50E1FC092BA000F5389 /* AssetDataHandler.cpp in Sources */,
 				BB5AFE4E1FB35A77005FBD52 /* NetworkManagerServer.cpp in Sources */,
 				BB5AFE4F1FB35A77005FBD52 /* ReplicationManagerServer.cpp in Sources */,

@@ -22,17 +22,18 @@
 #include "framework/input/GamePadInputManager.h"
 #include "framework/input/GamePadEvent.h"
 #include "game/logic/PooledObjectsManager.h"
-#include "game/logic/GameConstants.h"
+#include "framework/util/Constants.h"
 #include "framework/input/KeyboardLookup.h"
 #include "framework/util/StringUtil.h"
 #include "framework/util/MathUtil.h"
-#include "framework/util/FrameworkConstants.h"
+#include "framework/util/Constants.h"
 #include "game/graphics/StudioRenderer.h"
 #include "game/logic/World.h"
 #include <framework/entity/EntityLayoutMapper.h>
 #include <framework/entity/EntityMapper.h>
 #include <framework/math/OverlapTester.h>
 #include <framework/math/NGRect.h>
+#include <game/logic/GameConfig.h>
 
 #include <sstream>
 
@@ -162,11 +163,11 @@ void StudioInputManager::handleDefaultInput()
     _rawScrollValue = clamp(_rawScrollValue + CURSOR_INPUT_MANAGER->getScrollWheelValue(), 16, 1);
     CURSOR_INPUT_MANAGER->resetScrollValue();
     _scrollValue = clamp(_rawScrollValue, 16, 1);
-    CURSOR_CONVERTER->setCamSize(CAM_WIDTH * _scrollValue, CAM_HEIGHT * _scrollValue);
+    CURSOR_CONVERTER->setCamSize(GM_CFG->_camWidth * _scrollValue, GM_CFG->_camHeight * _scrollValue);
     
-    int width = CAM_WIDTH / 3;
+    int width = GM_CFG->_camWidth / 3;
     int height = 3;
-    static NGRect deleteWindow = NGRect(CAM_WIDTH / 2 - width / 2, CAM_HEIGHT - height - 1, width, height);
+    static NGRect deleteWindow = NGRect(GM_CFG->_camWidth / 2 - width / 2, GM_CFG->_camHeight - height - 1, width, height);
     
     for (std::vector<CursorEvent *>::iterator i = CURSOR_INPUT_MANAGER->getEvents().begin(); i != CURSOR_INPUT_MANAGER->getEvents().end(); ++i)
     {
@@ -449,8 +450,8 @@ void StudioInputManager::handleEntitiesInput()
                         continue;
                     }
                     
-                    float spawnX = clamp(CAM_WIDTH * _scrollValue / 2 + _cursor.getX(), FLT_MAX, entityDef->width / 2.0f);
-                    float spawnY = clamp(CAM_HEIGHT * _scrollValue / 2 + _cursor.getY(), FLT_MAX, entityDef->height / 2.0f);
+                    float spawnX = clamp(GM_CFG->_camWidth * _scrollValue / 2 + _cursor.getX(), FLT_MAX, entityDef->width / 2.0f);
+                    float spawnY = clamp(GM_CFG->_camHeight * _scrollValue / 2 + _cursor.getY(), FLT_MAX, entityDef->height / 2.0f);
                     Entity* e = EntityMapper::getInstance()->createEntityFromDef(entityDef, floor(spawnX), floor(spawnY), false);
                     _engine->_world->mapAddEntity(e);
                     _lastActiveEntity = e;
@@ -632,8 +633,8 @@ std::string StudioInputManager::getLiveInput()
 
 void StudioInputManager::updateCamera()
 {
-    int w = CAM_WIDTH * _scrollValue;
-    int h = CAM_HEIGHT * _scrollValue;
+    int w = GM_CFG->_camWidth * _scrollValue;
+    int h = GM_CFG->_camHeight * _scrollValue;
     float topPan = h * 0.95f;
     float bottomPan = h * 0.05f;
     float rightPan = w * 0.95f;
@@ -641,12 +642,12 @@ void StudioInputManager::updateCamera()
     
     if (_lastScrollValue != _scrollValue)
     {
-        CURSOR_CONVERTER->setCamSize(CAM_WIDTH * _lastScrollValue, CAM_HEIGHT * _lastScrollValue);
+        CURSOR_CONVERTER->setCamSize(GM_CFG->_camWidth * _lastScrollValue, GM_CFG->_camHeight * _lastScrollValue);
         Vector2& rc = CURSOR_INPUT_MANAGER->getCursorPosition();
         Vector2 c = CURSOR_CONVERTER->convert(rc);
         
-        int dw = CAM_WIDTH * _lastScrollValue;
-        int dh = CAM_HEIGHT * _lastScrollValue;
+        int dw = GM_CFG->_camWidth * _lastScrollValue;
+        int dh = GM_CFG->_camHeight * _lastScrollValue;
         
         float xFactor = c.getX() / dw;
         float yFactor = c.getY() / dh;
@@ -659,7 +660,7 @@ void StudioInputManager::updateCamera()
         
         _rawScrollValue = _scrollValue;
         _lastScrollValue = _scrollValue;
-        CURSOR_CONVERTER->setCamSize(CAM_WIDTH * _scrollValue, CAM_HEIGHT * _scrollValue);
+        CURSOR_CONVERTER->setCamSize(GM_CFG->_camWidth * _scrollValue, GM_CFG->_camHeight * _scrollValue);
     }
     
     {
@@ -668,23 +669,23 @@ void StudioInputManager::updateCamera()
         Vector2 c = CURSOR_CONVERTER->convert(rc);
         if ((_hasTouchedScreen && c.getY() > topPan) || _isPanningUp)
         {
-            _cursor.add(0, h / CAM_HEIGHT / 2.0f);
-            _activeEntityCursor.add(0, h / CAM_HEIGHT / 2.0f);
+            _cursor.add(0, h / GM_CFG->_camHeight / 2.0f);
+            _activeEntityCursor.add(0, h / GM_CFG->_camHeight / 2.0f);
         }
         if ((_hasTouchedScreen && c.getY() < bottomPan) || _isPanningDown)
         {
-            _cursor.sub(0, h / CAM_HEIGHT / 2.0f);
-            _activeEntityCursor.sub(0, h / CAM_HEIGHT / 2.0f);
+            _cursor.sub(0, h / GM_CFG->_camHeight / 2.0f);
+            _activeEntityCursor.sub(0, h / GM_CFG->_camHeight / 2.0f);
         }
         if ((_hasTouchedScreen && c.getX() > rightPan) || _isPanningRight)
         {
-            _cursor.add(w / CAM_WIDTH / 2.0f, 0);
-            _activeEntityCursor.add(w / CAM_WIDTH / 2.0f, 0);
+            _cursor.add(w / GM_CFG->_camWidth / 2.0f, 0);
+            _activeEntityCursor.add(w / GM_CFG->_camWidth / 2.0f, 0);
         }
         if ((_hasTouchedScreen && c.getX() < leftPan) || _isPanningLeft)
         {
-            _cursor.sub(w / CAM_WIDTH / 2.0f, 0);
-            _activeEntityCursor.sub(w / CAM_WIDTH / 2.0f, 0);
+            _cursor.sub(w / GM_CFG->_camWidth / 2.0f, 0);
+            _activeEntityCursor.sub(w / GM_CFG->_camWidth / 2.0f, 0);
         }
     }
     
@@ -696,8 +697,8 @@ void StudioInputManager::resetCamera()
     _rawScrollValue = 1;
     _scrollValue = 1;
     _lastScrollValue = 1;
-    int w = CAM_WIDTH * _scrollValue;
-    int h = CAM_HEIGHT * _scrollValue;
+    int w = GM_CFG->_camWidth * _scrollValue;
+    int h = GM_CFG->_camHeight * _scrollValue;
     CURSOR_INPUT_MANAGER->resetScrollValue();
     CURSOR_CONVERTER->setCamSize(w, h);
     _cursor.set(0, 0);

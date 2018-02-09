@@ -130,8 +130,6 @@ private:
     
     /// Non-Networked
     b2Fixture* _attackSensorFixture;
-    float _maxXVelocity;
-    float _maxYVelocity;
     bool _isLocalPlayer;
 };
 

@@ -55,7 +55,7 @@ typedef unsigned char uint8;
 #define Steamworks_SelfCheck()
 #endif
 
-#include <framework/util/FrameworkConstants.h>
+#include <framework/util/Constants.h>
 
 // Steam Auth Network message types
 enum EMessage

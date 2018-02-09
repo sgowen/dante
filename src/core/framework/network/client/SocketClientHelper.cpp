@@ -16,7 +16,7 @@
 #include "framework/network/portable/SocketAddressFactory.h"
 #include "framework/util/macros.h"
 #include "framework/network/portable/OutputMemoryBitStream.h"
-#include "framework/util/FrameworkConstants.h"
+#include "framework/util/Constants.h"
 #include "framework/util/StringUtil.h"
 
 SocketClientHelper::SocketClientHelper(std::string inServerIPAddress, std::string inName, uint16_t inPort, ProcessPacketFunc processPacketFunc, HandleNoResponseFunc handleNoResponseFunc, HandleConnectionResetFunc handleConnectionResetFunc) :

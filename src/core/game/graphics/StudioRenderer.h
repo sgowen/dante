@@ -82,12 +82,6 @@ private:
     StudioInputManager* _input;
     uint32_t _engineState;
     NGTexture* _fontTexture;
-    double _parallaxLayer0FactorX;
-    double _parallaxLayer0FactorY;
-    double _parallaxLayer1FactorX;
-    double _parallaxLayer1FactorY;
-    double _parallaxLayer2FactorX;
-    double _parallaxLayer2FactorY;
     
     void setFramebuffer(int framebufferIndex, float r = 0, float g = 0, float b = 0, float a = 0);
     void renderWorld();

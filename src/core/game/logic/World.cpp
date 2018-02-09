@@ -26,10 +26,10 @@
 #include <framework/util/NGSTDUtil.h>
 #include <framework/entity/EntityMapper.h>
 #include <framework/entity/EntityLayoutMapper.h>
-#include <framework/util/Config.h>
+#include <game/logic/GameConfig.h>
 
 World::World(int flags) :
-_world(new b2World(b2Vec2(0.0f, NG_CFG->getFloat("Gravity")))),
+_world(new b2World(b2Vec2(0.0f, GM_CFG->_gravity))),
 _entityContactListener(new EntityContactListener()),
 _entityContactFilter(new EntityContactFilter()),
 _map(0),

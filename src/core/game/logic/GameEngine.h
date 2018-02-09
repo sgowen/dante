@@ -62,7 +62,6 @@ private:
     double _stateTime;
     uint32_t _state;
     uint32_t _map;
-    float _playerLightZ;
     bool _displayUI;
     
     bool handleNonMoveInput();

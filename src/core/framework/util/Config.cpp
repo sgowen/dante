@@ -10,14 +10,10 @@
 
 #include "Config.h"
 
-#include "framework/util/StringUtil.h"
 #include <framework/file/portable/JsonFile.h>
+
 #include <framework/file/portable/FileUtil.h>
-
-#include "rapidjson/document.h"
-#include "rapidjson/stringbuffer.h"
-
-#include <assert.h>
+#include <framework/util/StringUtil.h>
 
 Config* Config::getInstance()
 {
@@ -68,9 +64,7 @@ double Config::getDouble(std::string key)
 
 std::string Config::getString(std::string key)
 {
-    std::string ret = _jsonFile->findValue(key);
-    
-    return ret;
+    return _jsonFile->findValue(key);
 }
 
 Config::Config() : _jsonFile(NULL)

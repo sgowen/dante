@@ -13,7 +13,7 @@
 
 #include "framework/network/portable/PacketHandler.h"
 #include "framework/network/steam/NGSteam.h"
-#include "framework/util/FrameworkConstants.h"
+#include "framework/util/Constants.h"
 
 class NGSteamP2PAuth;
 class NGSteamAddress;

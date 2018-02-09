@@ -15,7 +15,7 @@
 #include "framework/graphics/portable/NGShader.h"
 #include "framework/graphics/portable/Color.h"
 
-#include "framework/util/FrameworkConstants.h"
+#include "framework/util/Constants.h"
 #include "framework/util/macros.h"
 
 #include <math.h>

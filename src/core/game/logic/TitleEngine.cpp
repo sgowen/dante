@@ -14,7 +14,7 @@
 #include <game/graphics/TitleRenderer.h>
 
 #include "game/logic/Server.h"
-#include "game/logic/GameConstants.h"
+#include "framework/util/Constants.h"
 #include "framework/input/CursorInputManager.h"
 #include "framework/input/CursorEvent.h"
 #include "framework/input/CursorConverter.h"
@@ -38,7 +38,7 @@
 #include "framework/util/NGExtension.h"
 #include "framework/util/PlatformHelper.h"
 #include "framework/file/portable/Assets.h"
-#include "framework/util/FrameworkConstants.h"
+#include "framework/util/Constants.h"
 #include "framework/audio/portable/NGAudioEngine.h"
 #include "framework/util/Timing.h"
 #include "framework/util/FPSUtil.h"
@@ -48,6 +48,7 @@
 #include "game/logic/StudioEngine.h"
 #include "game/logic/PooledObjectsManager.h"
 #include <framework/util/Config.h>
+#include <game/logic/GameConfig.h>
 #include <framework/entity/EntityMapper.h>
 #include <framework/entity/EntityLayoutMapper.h>
 
@@ -145,7 +146,7 @@ void TitleEngine::exit(Engine* engine)
 
 void TitleEngine::createDeviceDependentResources()
 {
-    NG_CFG->initWithJsonFile("global.cfg");
+    GM_CFG->initWithJsonFile("global.cfg");
     EntityMapper::getInstance()->initWithJsonFile("entities.cfg");
     EntityLayoutMapper::getInstance()->initWithJsonFile("maps.cfg");
     ASSETS->initWithJsonFile("title_assets.cfg");
@@ -155,9 +156,9 @@ void TitleEngine::createDeviceDependentResources()
 
 void TitleEngine::createWindowSizeDependentResources(int screenWidth, int screenHeight, int cursorWidth, int cursorHeight)
 {
-    _renderer->createWindowSizeDependentResources(screenWidth, screenHeight, NG_CFG->getInt("FramebufferSize"), NG_CFG->getInt("FramebufferSize"));
+    _renderer->createWindowSizeDependentResources(screenWidth, screenHeight, FW_CFG->getInt("FramebufferWidth"), FW_CFG->getInt("FramebufferHeight"));
     
-    CURSOR_CONVERTER->setCamSize(CAM_WIDTH, CAM_HEIGHT);
+    CURSOR_CONVERTER->setCamSize(GM_CFG->_camWidth, GM_CFG->_camHeight);
     CURSOR_CONVERTER->setCursorSize(cursorWidth, cursorHeight);
 }
 
@@ -197,7 +198,7 @@ bool TitleEngine::handleInput(Engine* engine)
         {
             if (_state == TitleEngineState_InputIp)
             {
-                _serverIPAddress = StringUtil::format("%s:%d", TitleInputManager::getInstance()->getLiveInput().c_str(), SERVER_PORT);
+                _serverIPAddress = StringUtil::format("%s:%d", TitleInputManager::getInstance()->getLiveInput().c_str(), GM_CFG->_serverPort);
                 _name.clear();
                 _state = TitleEngineState_InputName;
             }
@@ -324,7 +325,7 @@ void TitleEngine::activateSteam()
 #ifdef NG_STEAM
     if (!NGSteamGameServices::getInstance())
     {
-        NGSteamGameServices::create(STEAM_GAME_DIR);
+        NGSteamGameServices::create(GM_CFG->_steamGameDir.c_str());
     }
     
     _isSteam = NG_STEAM_GAME_SERVICES->getStatus() == STEAM_INIT_SUCCESS;
@@ -405,7 +406,7 @@ void TitleEngine::joinServer(Engine* engine)
     }
     else
     {
-        clientHelper = new SocketClientHelper(_serverIPAddress, _name, CLIENT_PORT, NG_CLIENT_CALLBACKS);
+        clientHelper = new SocketClientHelper(_serverIPAddress, _name, GM_CFG->_clientPort, NG_CLIENT_CALLBACKS);
     }
     
     NetworkManagerClient::create(clientHelper, INPUT_MANAGER_CALLBACKS);
