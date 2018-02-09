@@ -41,7 +41,7 @@ public:
     virtual void bindTexture(NGTextureSlot textureSlot, NGTexture* texture, NGShaderUniformInput* uniform = NULL);
     virtual void mapTextureVertices(std::vector<VERTEX_2D_TEXTURE>& vertices, bool isDynamic = true, int gpuBufferIndex = 0);
     virtual void mapVertices(std::vector<VERTEX_2D>& vertices, bool isDynamic = true, int gpuBufferIndex = 0);
-    virtual void bindTextureVertexBuffer(int gpuBufferIndex);
+    virtual void bindStaticTextureVertexBuffer(int gpuBufferIndex);
     virtual void bindScreenVertexBuffer();
     virtual void draw(NGPrimitiveType renderPrimitiveType, uint32_t first, uint32_t count);
     virtual void drawIndexed(NGPrimitiveType renderPrimitiveType, uint32_t first, uint32_t count);

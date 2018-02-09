@@ -140,7 +140,7 @@ void SpriteBatcher::endBatch(NGShader* shader, NGTexture* texture, NGTexture* no
         {
             if (_isStaticBatchRendered)
             {
-                _rendererHelper->bindTextureVertexBuffer(_index);
+                _rendererHelper->bindStaticTextureVertexBuffer(_index);
             }
             else
             {

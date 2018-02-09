@@ -11,8 +11,6 @@
 
 #include "framework/graphics/portable/Renderer.h"
 
-#include "framework/graphics/portable/FontAlign.h"
-
 #include <string>
 #include <deque>
 #include <vector>
@@ -90,7 +88,7 @@ private:
     void renderBox2D();
     void renderGrid();
     void renderUI();
-    void renderText(const char* inStr, float x, float y, int justification = FONT_ALIGN_LEFT);
+    void renderText(const char* inStr, float x, float y, int justification);
     void endFrame();
 };
 

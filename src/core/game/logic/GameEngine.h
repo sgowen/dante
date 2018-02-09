@@ -26,7 +26,8 @@ enum GameEngineState
     GameEngineState_Default = 1 << 0,
     GameEngineState_DisplayBox2D = 1 << 1,
     GameEngineState_Interpolation = 1 << 2,
-    GameEngineState_Lighting = 1 << 3
+    GameEngineState_Lighting = 1 << 3,
+    GameEngineState_DisplayUI = 1 << 4
 };
 
 class GameEngine : public EngineState
@@ -62,7 +63,6 @@ private:
     double _stateTime;
     uint32_t _state;
     uint32_t _map;
-    bool _displayUI;
     
     bool handleNonMoveInput();
     

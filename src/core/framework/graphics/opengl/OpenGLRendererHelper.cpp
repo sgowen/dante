@@ -166,7 +166,7 @@ void OpenGLRendererHelper::mapVertices(std::vector<VERTEX_2D>& vertices, bool is
     bindInputLayout(_currentShaderProgramWrapper->_inputLayout);
 }
 
-void OpenGLRendererHelper::bindTextureVertexBuffer(int gpuBufferIndex)
+void OpenGLRendererHelper::bindStaticTextureVertexBuffer(int gpuBufferIndex)
 {
     GLuint& buffer = _staticTextureVertexBuffers[gpuBufferIndex]->buffer;
     glBindBuffer(GL_ARRAY_BUFFER, buffer);

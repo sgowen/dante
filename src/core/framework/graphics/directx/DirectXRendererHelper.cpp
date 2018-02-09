@@ -221,7 +221,7 @@ void DirectXRendererHelper::mapVertices(std::vector<VERTEX_2D>& vertices, bool i
     mapVertexBuffer(buffer, &vertices[0], vertices.size(), sizeof(VERTEX_2D));
 }
 
-void DirectXRendererHelper::bindTextureVertexBuffer(int gpuBufferIndex)
+void DirectXRendererHelper::bindStaticTextureVertexBuffer(int gpuBufferIndex)
 {
     ID3D11Buffer* buffer = _staticTextureVertexBuffers[gpuBufferIndex]->buffer;
     

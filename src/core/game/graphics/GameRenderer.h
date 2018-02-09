@@ -11,8 +11,6 @@
 
 #include "framework/graphics/portable/Renderer.h"
 
-#include "framework/graphics/portable/FontAlign.h"
-
 #include <string>
 #include <vector>
 
@@ -49,6 +47,18 @@ struct LightDef
     LightDef(float lightPosX, float lightPosY, float lightColorR, float lightColorG, float lightColorB, float lightColorA) : _lightPosX(lightPosX), _lightPosY(lightPosY), _lightColorR(lightColorR), _lightColorG(lightColorG), _lightColorB(lightColorB), _lightColorA(lightColorA) {}
 };
 
+enum TextDisplayState
+{
+    TextDisplayState_Player1 =       1 << 0,
+    TextDisplayState_Player2 =       1 << 1,
+    TextDisplayState_Player3 =       1 << 2,
+    TextDisplayState_Player4 =       1 << 3,
+    TextDisplayState_SoundDisabled = 1 << 4,
+    TextDisplayState_MusicDisabled = 1 << 5,
+    TextDisplayState_MapZone1 =      1 << 6,
+    TextDisplayState_MapZone2 =      1 << 7
+};
+
 class GameRenderer : public Renderer
 {
 public:
@@ -69,7 +79,8 @@ private:
     SpriteBatcher* _spriteBatchers[NUM_SPRITE_BATCHERS];
     std::string _textures[NUM_SPRITE_BATCHERS];
     std::string _normals[NUM_SPRITE_BATCHERS];
-    SpriteBatcher* _fontSpriteBatcher;
+    SpriteBatcher* _staticFontSpriteBatcher;
+    SpriteBatcher* _dynamicFontSpriteBatcher;
     PolygonBatcher* _fillPolygonBatcher;
     PolygonBatcher* _boundsPolygonBatcher;
     LineBatcher* _lineBatcher;
@@ -89,6 +100,7 @@ private:
     NGTexture* _fontTexture;
     std::vector<LightDef> _playerLights;
     std::vector<LightDef> _lights;
+    uint32_t _textDisplayState;
     
     void updateCamera();
     void setFramebuffer(int framebufferIndex, float r = 0, float g = 0, float b = 0, float a = 0);
@@ -97,8 +109,9 @@ private:
     void endBatchWithTexture(SpriteBatcher* sb, NGTexture* tex, int layer);
     void renderBox2D();
     void renderUI();
-    void renderText(const char* inStr, float x, float y, int justification = FONT_ALIGN_LEFT);
+    void renderText(SpriteBatcher* sb, const char* inStr, float x, float y, int justification);
     void endFrame();
+    uint32_t calcTextDisplayState();
 };
 
 #endif /* defined(__noctisgames__GameRenderer__) */

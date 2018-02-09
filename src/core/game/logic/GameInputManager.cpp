@@ -107,7 +107,7 @@ void GameInputManager::update()
                 _inputState = e.isDown() ? GIS_SERVER_TOGGLE_MAP : _inputState;
                 continue;
             case NG_KEY_U:
-                _engine->_displayUI = e.isDown() ? !_engine->_displayUI : _engine->_displayUI;
+                _engine->_state ^= e.isDown() ? GameEngineState_DisplayUI : 0;
                 continue;
             case NG_KEY_ARROW_UP:
                 _playerLightZDelta = e.isPressed() ? 0.001f : 0;

@@ -87,7 +87,8 @@
 GameRenderer::GameRenderer() : Renderer(),
 _textureManager(new TextureManager()),
 _rendererHelper(RENDERER_HELPER_FACTORY->createRendererHelper()),
-_fontSpriteBatcher(new SpriteBatcher(_rendererHelper)),
+_staticFontSpriteBatcher(new SpriteBatcher(_rendererHelper)),
+_dynamicFontSpriteBatcher(new SpriteBatcher(_rendererHelper)),
 _fillPolygonBatcher(new PolygonBatcher(_rendererHelper, true)),
 _boundsPolygonBatcher(new PolygonBatcher(_rendererHelper, false)),
 _lineBatcher(new LineBatcher(_rendererHelper)),
@@ -103,24 +104,30 @@ _fbIndex(0),
 _map(0),
 _engine(NULL),
 _engineState(0),
-_fontTexture(NULL)
+_fontTexture(NULL),
+_textDisplayState(0)
 {
     for (int i = 0; i < NUM_SPRITE_BATCHERS; ++i)
     {
         _spriteBatchers[i] = new SpriteBatcher(_rendererHelper);
+        _spriteBatchers[i]->_index = i;
     }
     
     for (int i = 0; i < NUM_CAMERAS; ++i)
     {
         _camBounds[i] = new NGRect(0, 0, GM_CFG->_camWidth, GM_CFG->_camHeight);
     }
+    
+    _staticFontSpriteBatcher->_index = 10;
+    _dynamicFontSpriteBatcher->_index = 10;
 }
 
 GameRenderer::~GameRenderer()
 {
     delete _textureManager;
     delete _rendererHelper;
-    delete _fontSpriteBatcher;
+    delete _staticFontSpriteBatcher;
+    delete _dynamicFontSpriteBatcher;
     for (int i = 0; i < NUM_SPRITE_BATCHERS; ++i)
     {
         delete _spriteBatchers[i];
@@ -179,7 +186,16 @@ void GameRenderer::releaseDeviceDependentResources()
 
 void GameRenderer::render()
 {
+    uint32_t textDisplayState = calcTextDisplayState();
+    if (_engineState != _engine->_state ||
+        _textDisplayState != textDisplayState)
+    {
+        _staticFontSpriteBatcher->_isDynamic = true;
+        _staticFontSpriteBatcher->_isStaticBatchRendered = false;
+    }
+    
     _engineState = _engine->_state;
+    _textDisplayState = textDisplayState;
     
     if (_textureManager->ensureTextures())
     {
@@ -192,7 +208,7 @@ void GameRenderer::render()
             renderBox2D();
         }
         
-        if (_engine->_displayUI)
+        if (_engineState & GameEngineState_DisplayUI)
         {
             renderUI();
         }
@@ -222,41 +238,38 @@ void GameRenderer::updateCamera()
     float x = 0;
     float y = 0;
     
-    if (NG_CLIENT && NG_CLIENT->getState() == NCS_Welcomed)
+    _playerLights.clear();
+    _lights.clear();
+    
+    bool isCamInitialized = false;
+    
+    for (Entity* entity : InstanceManager::getClientWorld()->getPlayers())
     {
-        _playerLights.clear();
-        _lights.clear();
+        float pX = entity->getPosition().x;
+        float pY = entity->getPosition().y;
+        float lightPosY = pY - entity->getHeight() / 2 + entity->getHeight() * GM_CFG->_robotLightPositionFactorY;
         
-        bool isCamInitialized = false;
+        _playerLights.push_back(LightDef(pX, lightPosY, GM_CFG->_playerLightColor[0], GM_CFG->_playerLightColor[1], GM_CFG->_playerLightColor[2], GM_CFG->_playerLightColor[3]));
         
-        for (Entity* entity : InstanceManager::getClientWorld()->getPlayers())
+        PlayerController* robot = static_cast<PlayerController*>(entity->getController());
+        if (!isCamInitialized && robot->isLocalPlayer())
         {
-            float pX = entity->getPosition().x;
-            float pY = entity->getPosition().y;
-            float lightPosY = pY - entity->getHeight() / 2 + entity->getHeight() * GM_CFG->_robotLightPositionFactorY;
+            x = pX;
+            y = pY;
             
-            _playerLights.push_back(LightDef(pX, lightPosY, GM_CFG->_playerLightColor[0], GM_CFG->_playerLightColor[1], GM_CFG->_playerLightColor[2], GM_CFG->_playerLightColor[3]));
+            x -= GM_CFG->_camWidth * 0.5f;
+            y -= GM_CFG->_camHeight * 0.5f;
             
-            PlayerController* robot = static_cast<PlayerController*>(entity->getController());
-            if (!isCamInitialized && robot->isLocalPlayer())
-            {
-                x = pX;
-                y = pY;
-                
-                x -= GM_CFG->_camWidth * 0.5f;
-                y -= GM_CFG->_camHeight * 0.5f;
-                
-                x = clamp(x, FLT_MAX, 0);
-                y = clamp(y, FLT_MAX, 0);
-                
-                isCamInitialized = true;
-            }
+            x = clamp(x, FLT_MAX, 0);
+            y = clamp(y, FLT_MAX, 0);
+            
+            isCamInitialized = true;
         }
-        
-        /// Temporary
-        _lights.push_back(LightDef(GM_CFG->_tempStaticLight1[0], GM_CFG->_tempStaticLight1[1], GM_CFG->_tempStaticLight1[2], GM_CFG->_tempStaticLight1[3], GM_CFG->_tempStaticLight1[4], GM_CFG->_tempStaticLight1[5]));
-        _lights.push_back(LightDef(GM_CFG->_tempStaticLight2[0], GM_CFG->_tempStaticLight2[1], GM_CFG->_tempStaticLight2[2], GM_CFG->_tempStaticLight2[3], GM_CFG->_tempStaticLight2[4], GM_CFG->_tempStaticLight2[5]));
     }
+    
+    /// Temporary
+    _lights.push_back(LightDef(GM_CFG->_tempStaticLight1[0], GM_CFG->_tempStaticLight1[1], GM_CFG->_tempStaticLight1[2], GM_CFG->_tempStaticLight1[3], GM_CFG->_tempStaticLight1[4], GM_CFG->_tempStaticLight1[5]));
+    _lights.push_back(LightDef(GM_CFG->_tempStaticLight2[0], GM_CFG->_tempStaticLight2[1], GM_CFG->_tempStaticLight2[2], GM_CFG->_tempStaticLight2[3], GM_CFG->_tempStaticLight2[4], GM_CFG->_tempStaticLight2[5]));
     
     _camBounds[3]->getLowerLeft().set(x, y);
     
@@ -454,49 +467,56 @@ void GameRenderer::renderUI()
 {
     _rendererHelper->updateMatrix(0, GM_CFG->_camWidth, 0, GM_CFG->_camHeight);
     
-    _fontSpriteBatcher->beginBatch();
+    if (_staticFontSpriteBatcher->_isDynamic)
+    {
+        _staticFontSpriteBatcher->beginBatch();
+    }
     
     if (NG_CLIENT->getState() == NCS_Welcomed)
     {
+        _dynamicFontSpriteBatcher->beginBatch();
+        
         int row = 1;
         static float padding = 1;
         
         int fps = FPSUtil::getInstance()->getFPS();
-        renderText(StringUtil::format("FPS %d", fps).c_str(), GM_CFG->_camWidth - 0.5f, GM_CFG->_camHeight - (row++ * padding), FONT_ALIGN_RIGHT);
+        renderText(_dynamicFontSpriteBatcher, StringUtil::format("FPS %d", fps).c_str(), GM_CFG->_camWidth - 0.5f, GM_CFG->_camHeight - (row++ * padding), FONT_ALIGN_RIGHT);
         
         float rttMS = NG_CLIENT->getAvgRoundTripTime().getValue() * 1000.f;
-        renderText(StringUtil::format("RTT %d ms", static_cast<int>(rttMS)).c_str(), GM_CFG->_camWidth - 0.5f, GM_CFG->_camHeight - (row++ * padding), FONT_ALIGN_RIGHT);
+        renderText(_dynamicFontSpriteBatcher, StringUtil::format("RTT %d ms", static_cast<int>(rttMS)).c_str(), GM_CFG->_camWidth - 0.5f, GM_CFG->_camHeight - (row++ * padding), FONT_ALIGN_RIGHT);
         
         const WeightedTimedMovingAverage& bpsIn = NG_CLIENT->getBytesReceivedPerSecond();
         int bpsInInt = static_cast<int>(bpsIn.getValue());
-        renderText(StringUtil::format(" In %d Bps", bpsInInt).c_str(), GM_CFG->_camWidth - 0.5f, GM_CFG->_camHeight - (row++ * padding), FONT_ALIGN_RIGHT);
+        renderText(_dynamicFontSpriteBatcher, StringUtil::format(" In %d Bps", bpsInInt).c_str(), GM_CFG->_camWidth - 0.5f, GM_CFG->_camHeight - (row++ * padding), FONT_ALIGN_RIGHT);
         
         const WeightedTimedMovingAverage& bpsOut = NG_CLIENT->getBytesSentPerSecond();
         int bpsOutInt = static_cast<int>(bpsOut.getValue());
-        renderText(StringUtil::format("Out %d Bps", bpsOutInt).c_str(), GM_CFG->_camWidth - 0.5f, GM_CFG->_camHeight - (row++ * padding), FONT_ALIGN_RIGHT);
+        renderText(_dynamicFontSpriteBatcher, StringUtil::format("Out %d Bps", bpsOutInt).c_str(), GM_CFG->_camWidth - 0.5f, GM_CFG->_camHeight - (row++ * padding), FONT_ALIGN_RIGHT);
         
-        // Controls
-        ++row;
+        _dynamicFontSpriteBatcher->endBatch(_textureNGShader, _fontTexture);
         
-        renderText(StringUtil::format("[S]         Sound %s", NG_AUDIO_ENGINE->areSoundsDisabled() ? " OFF" : "  ON").c_str(), GM_CFG->_camWidth - 0.5f, GM_CFG->_camHeight - (row++ * padding), FONT_ALIGN_RIGHT);
-        renderText(StringUtil::format("[M]         Music %s", NG_AUDIO_ENGINE->isMusicDisabled() ? " OFF" : "  ON").c_str(), GM_CFG->_camWidth - 0.5f, GM_CFG->_camHeight - (row++ * padding), FONT_ALIGN_RIGHT);
-        renderText(StringUtil::format("[B]   Box2D Debug %s", _engineState & GameEngineState_DisplayBox2D ? "  ON" : " OFF").c_str(), GM_CFG->_camWidth - 0.5f, GM_CFG->_camHeight - (row++ * padding), FONT_ALIGN_RIGHT);
-        renderText(StringUtil::format("[I] Interpolation %s", _engineState & GameEngineState_Interpolation ? "  ON" : " OFF").c_str(), GM_CFG->_camWidth - 0.5f, GM_CFG->_camHeight - (row++ * padding), FONT_ALIGN_RIGHT);
-        std::string lightZ = StringUtil::format("%f", GM_CFG->_playerLightZ);
-        renderText(StringUtil::format("[L]  Lighting %s", _engineState & GameEngineState_Lighting ? lightZ.c_str() : "     OFF").c_str(), GM_CFG->_camWidth - 0.5f, GM_CFG->_camHeight - (row++ * padding), FONT_ALIGN_RIGHT);
-        renderText(StringUtil::format("[U]    Display UI %s", _engine->_displayUI ? "  ON" : " OFF").c_str(), GM_CFG->_camWidth - 0.5f, GM_CFG->_camHeight - (row++ * padding), FONT_ALIGN_RIGHT);
-        
-        if (Server::getInstance())
+        if (!_staticFontSpriteBatcher->_isStaticBatchRendered)
         {
-            renderText(StringUtil::format("[T]    Toggle Map %s", InstanceManager::getServerWorld()->getMapName().c_str()).c_str(), GM_CFG->_camWidth - 0.5f, GM_CFG->_camHeight - (row++ * padding), FONT_ALIGN_RIGHT);
-        }
-        else
-        {
-            renderText(StringUtil::format("              Map %s", InstanceManager::getClientWorld()->getMapName().c_str()).c_str(), GM_CFG->_camWidth - 0.5f, GM_CFG->_camHeight - (row++ * padding), FONT_ALIGN_RIGHT);
-        }
-        
-        if (InstanceManager::getClientWorld())
-        {
+            // Controls
+            ++row;
+            
+            renderText(_staticFontSpriteBatcher, StringUtil::format("[S]         Sound %s", NG_AUDIO_ENGINE->areSoundsDisabled() ? " OFF" : "  ON").c_str(), GM_CFG->_camWidth - 0.5f, GM_CFG->_camHeight - (row++ * padding), FONT_ALIGN_RIGHT);
+            renderText(_staticFontSpriteBatcher, StringUtil::format("[M]         Music %s", NG_AUDIO_ENGINE->isMusicDisabled() ? " OFF" : "  ON").c_str(), GM_CFG->_camWidth - 0.5f, GM_CFG->_camHeight - (row++ * padding), FONT_ALIGN_RIGHT);
+            renderText(_staticFontSpriteBatcher, StringUtil::format("[B]   Box2D Debug %s", _engineState & GameEngineState_DisplayBox2D ? "  ON" : " OFF").c_str(), GM_CFG->_camWidth - 0.5f, GM_CFG->_camHeight - (row++ * padding), FONT_ALIGN_RIGHT);
+            renderText(_staticFontSpriteBatcher, StringUtil::format("[I] Interpolation %s", _engineState & GameEngineState_Interpolation ? "  ON" : " OFF").c_str(), GM_CFG->_camWidth - 0.5f, GM_CFG->_camHeight - (row++ * padding), FONT_ALIGN_RIGHT);
+            std::string lightZ = StringUtil::format("%f", GM_CFG->_playerLightZ);
+            renderText(_staticFontSpriteBatcher, StringUtil::format("[L]  Lighting %s", _engineState & GameEngineState_Lighting ? lightZ.c_str() : "     OFF").c_str(), GM_CFG->_camWidth - 0.5f, GM_CFG->_camHeight - (row++ * padding), FONT_ALIGN_RIGHT);
+            renderText(_staticFontSpriteBatcher, StringUtil::format("[U]    Display UI %s", _engineState & GameEngineState_DisplayUI ? "  ON" : " OFF").c_str(), GM_CFG->_camWidth - 0.5f, GM_CFG->_camHeight - (row++ * padding), FONT_ALIGN_RIGHT);
+            
+            if (Server::getInstance())
+            {
+                renderText(_staticFontSpriteBatcher, StringUtil::format("[T]    Toggle Map %s", InstanceManager::getClientWorld()->getMapName().c_str()).c_str(), GM_CFG->_camWidth - 0.5f, GM_CFG->_camHeight - (row++ * padding), FONT_ALIGN_RIGHT);
+            }
+            else
+            {
+                renderText(_staticFontSpriteBatcher, StringUtil::format("              Map %s", InstanceManager::getClientWorld()->getMapName().c_str()).c_str(), GM_CFG->_camWidth - 0.5f, GM_CFG->_camHeight - (row++ * padding), FONT_ALIGN_RIGHT);
+            }
+            
             bool activePlayerIds[4] = {false};
             
             std::vector<Entity*> players = InstanceManager::getClientWorld()->getPlayers();
@@ -507,7 +527,7 @@ void GameRenderer::renderUI()
                 int playerId = robot->getPlayerId();
                 if (playerId >= 1 && playerId <= 4)
                 {
-                    renderText(StringUtil::format("%i|%s - %i HP", playerId, robot->getPlayerName().c_str(), robot->getHealth()).c_str(), 0.5f, GM_CFG->_camHeight - (playerId * 1.0f));
+                    renderText(_staticFontSpriteBatcher, StringUtil::format("%i|%s", playerId, robot->getPlayerName().c_str()).c_str(), 0.5f, GM_CFG->_camHeight - (playerId * 1.0f), FONT_ALIGN_LEFT);
                     activePlayerIds[playerId - 1] = true;
                 }
             }
@@ -516,27 +536,28 @@ void GameRenderer::renderUI()
             {
                 if (!activePlayerIds[i])
                 {
-                    renderText(StringUtil::format("%i|%s", (i + 1), "Connect a controller to join...").c_str(), 0.5f, GM_CFG->_camHeight - ((i + 1) * 1.0f));
+                    renderText(_staticFontSpriteBatcher, StringUtil::format("%i|%s", (i + 1), "Connect a controller to join...").c_str(), 0.5f, GM_CFG->_camHeight - ((i + 1) * 1.0f), FONT_ALIGN_LEFT);
                 }
             }
         }
     }
     else
     {
-        renderText(StringUtil::format("%s, [ESC] to exit", "Joining Server...").c_str(), 0.5f, GM_CFG->_camHeight - 4, FONT_ALIGN_LEFT);
+        renderText(_staticFontSpriteBatcher, StringUtil::format("%s, [ESC] to exit", "Joining Server...").c_str(), 0.5f, GM_CFG->_camHeight - 4, FONT_ALIGN_LEFT);
     }
     
-    _fontSpriteBatcher->endBatch(_textureNGShader, _fontTexture);
+    _staticFontSpriteBatcher->_isDynamic = false;
+    _staticFontSpriteBatcher->endBatch(_textureNGShader, _fontTexture);
 }
 
-void GameRenderer::renderText(const char* inStr, float x, float y, int justification)
+void GameRenderer::renderText(SpriteBatcher* sb, const char* inStr, float x, float y, int justification)
 {
     float fgWidth = GM_CFG->_camWidth / 64;
     float fgHeight = fgWidth * 1.171875f;
     
     std::string text(inStr);
     
-    _font->renderText(*_fontSpriteBatcher, text, x, y, fgWidth, fgHeight, justification);
+    _font->renderText(*sb, text, x, y, fgWidth, fgHeight, justification);
 }
 
 void GameRenderer::endFrame()
@@ -553,4 +574,30 @@ void GameRenderer::endFrame()
     _framebufferToScreenNGShader->unbind();
     
     _rendererHelper->useNoBlending();
+}
+
+uint32_t GameRenderer::calcTextDisplayState()
+{
+    uint32_t ret = 0;
+    
+    std::vector<Entity*> players = InstanceManager::getClientWorld()->getPlayers();
+    for (Entity* entity : players)
+    {
+        PlayerController* robot = static_cast<PlayerController*>(entity->getController());
+        
+        int playerId = robot->getPlayerId();
+        if (playerId >= 1 && playerId <= 4)
+        {
+            int bitShift = playerId - 1;
+            ret |= 1 << bitShift;
+        }
+    }
+    
+    ret |= NG_AUDIO_ENGINE->areSoundsDisabled() ? TextDisplayState_SoundDisabled : 0;
+    ret |= NG_AUDIO_ENGINE->isMusicDisabled() ? TextDisplayState_MusicDisabled : 0;
+    
+    std::string& mapName = InstanceManager::getClientWorld()->getMapName();
+    ret |= mapName == "Z001" ? TextDisplayState_MapZone1 : mapName == "Z002" ? TextDisplayState_MapZone2 : 0;
+    
+    return ret;
 }

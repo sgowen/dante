@@ -82,10 +82,9 @@ _timing(NULL),
 _server(NULL),
 _stateTime(0),
 _state(GameEngineState_Default),
-_map(0),
-_displayUI(true)
+_map(0)
 {
-    _state |= GameEngineState_Interpolation | GameEngineState_Lighting;
+    _state |= GameEngineState_Interpolation | GameEngineState_Lighting | GameEngineState_DisplayUI;
     
     _renderer->setEngine(this);
 }
