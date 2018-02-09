@@ -405,6 +405,8 @@
 		<Unit filename="../../core/framework/file/portable/Assets.h" />
 		<Unit filename="../../core/framework/file/portable/FileData.cpp" />
 		<Unit filename="../../core/framework/file/portable/FileData.h" />
+		<Unit filename="../../core/framework/file/portable/FileUtil.cpp" />
+		<Unit filename="../../core/framework/file/portable/FileUtil.h" />
 		<Unit filename="../../core/framework/file/portable/JsonFile.cpp" />
 		<Unit filename="../../core/framework/file/portable/JsonFile.h" />
 		<Unit filename="../../core/framework/graphics/opengl/OpenGLProgramLoader.cpp" />
@@ -422,6 +424,7 @@
 		<Unit filename="../../core/framework/graphics/portable/Font.cpp" />
 		<Unit filename="../../core/framework/graphics/portable/Font.h" />
 		<Unit filename="../../core/framework/graphics/portable/FontAlign.h" />
+		<Unit filename="../../core/framework/graphics/portable/GPUBufferWrapper.h" />
 		<Unit filename="../../core/framework/graphics/portable/LineBatcher.cpp" />
 		<Unit filename="../../core/framework/graphics/portable/LineBatcher.h" />
 		<Unit filename="../../core/framework/graphics/portable/NGAnimation.cpp" />
@@ -501,7 +504,6 @@
 		<Unit filename="../../core/framework/math/Circle.h" />
 		<Unit filename="../../core/framework/math/Line.cpp" />
 		<Unit filename="../../core/framework/math/Line.h" />
-		<Unit filename="../../core/framework/math/MathUtil.h" />
 		<Unit filename="../../core/framework/math/NGRect.cpp" />
 		<Unit filename="../../core/framework/math/NGRect.h" />
 		<Unit filename="../../core/framework/math/OverlapTester.cpp" />
@@ -594,6 +596,7 @@
 		<Unit filename="../../core/framework/util/FPSUtil.h" />
 		<Unit filename="../../core/framework/util/FrameworkConstants.h" />
 		<Unit filename="../../core/framework/util/HashMap.h" />
+		<Unit filename="../../core/framework/util/MathUtil.h" />
 		<Unit filename="../../core/framework/util/NGExtension.cpp" />
 		<Unit filename="../../core/framework/util/NGExtension.h" />
 		<Unit filename="../../core/framework/util/NGPool.h" />
