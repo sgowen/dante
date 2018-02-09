@@ -9,11 +9,11 @@
 #ifndef __noctisgames__OpenGLProgramLoader__
 #define __noctisgames__OpenGLProgramLoader__
 
-#include <framework/graphics/portable/NGShaderLoader.h>
+#include <framework/graphics/portable/ShaderProgramLoader.h>
 
 #include "framework/graphics/portable/NGGraphics.h"
 
-class OpenGLProgramLoader : public NGShaderLoader
+class OpenGLProgramLoader : public ShaderProgramLoader
 {
 public:
     OpenGLProgramLoader();

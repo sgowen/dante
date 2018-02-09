@@ -24,10 +24,10 @@
 		BB19148E1FABBD1300BDC6D0 /* libsteam_api.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BB1914431FABB78400BDC6D0 /* libsteam_api.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		BB1C3BF91FE75FD3002E4AA6 /* Color.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB1C3BF81FE75FD3002E4AA6 /* Color.cpp */; };
 		BB1C3BFA1FE75FD3002E4AA6 /* Color.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB1C3BF81FE75FD3002E4AA6 /* Color.cpp */; };
-		BB1C3BFE1FE76967002E4AA6 /* NGShaderLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB1C3BFC1FE76966002E4AA6 /* NGShaderLoader.cpp */; };
-		BB1C3BFF1FE76967002E4AA6 /* NGShaderLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB1C3BFC1FE76966002E4AA6 /* NGShaderLoader.cpp */; };
-		BB1C3C021FE76BE0002E4AA6 /* NGShaderLoaderFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB1C3C011FE76BE0002E4AA6 /* NGShaderLoaderFactory.cpp */; };
-		BB1C3C031FE76BE0002E4AA6 /* NGShaderLoaderFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB1C3C011FE76BE0002E4AA6 /* NGShaderLoaderFactory.cpp */; };
+		BB1C3BFE1FE76967002E4AA6 /* ShaderProgramLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB1C3BFC1FE76966002E4AA6 /* ShaderProgramLoader.cpp */; };
+		BB1C3BFF1FE76967002E4AA6 /* ShaderProgramLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB1C3BFC1FE76966002E4AA6 /* ShaderProgramLoader.cpp */; };
+		BB1C3C021FE76BE0002E4AA6 /* ShaderProgramLoaderFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB1C3C011FE76BE0002E4AA6 /* ShaderProgramLoaderFactory.cpp */; };
+		BB1C3C031FE76BE0002E4AA6 /* ShaderProgramLoaderFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB1C3C011FE76BE0002E4AA6 /* ShaderProgramLoaderFactory.cpp */; };
 		BB1C3C061FE76C65002E4AA6 /* OpenGLProgramLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB1C3C051FE76C65002E4AA6 /* OpenGLProgramLoader.cpp */; };
 		BB1C3C071FE76C65002E4AA6 /* OpenGLProgramLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB1C3C051FE76C65002E4AA6 /* OpenGLProgramLoader.cpp */; };
 		BB1C3C0E1FE77301002E4AA6 /* NGFramebufferToScreenShader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB1C3C081FE77301002E4AA6 /* NGFramebufferToScreenShader.cpp */; };
@@ -687,10 +687,10 @@
 		BB1C3BF71FE75FD3002E4AA6 /* Color.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Color.h; sourceTree = "<group>"; };
 		BB1C3BF81FE75FD3002E4AA6 /* Color.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Color.cpp; sourceTree = "<group>"; };
 		BB1C3BFB1FE7694C002E4AA6 /* ShaderProgramWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShaderProgramWrapper.h; sourceTree = "<group>"; };
-		BB1C3BFC1FE76966002E4AA6 /* NGShaderLoader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NGShaderLoader.cpp; sourceTree = "<group>"; };
-		BB1C3BFD1FE76967002E4AA6 /* NGShaderLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NGShaderLoader.h; sourceTree = "<group>"; };
-		BB1C3C001FE76BDF002E4AA6 /* NGShaderLoaderFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NGShaderLoaderFactory.h; sourceTree = "<group>"; };
-		BB1C3C011FE76BE0002E4AA6 /* NGShaderLoaderFactory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NGShaderLoaderFactory.cpp; sourceTree = "<group>"; };
+		BB1C3BFC1FE76966002E4AA6 /* ShaderProgramLoader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ShaderProgramLoader.cpp; sourceTree = "<group>"; };
+		BB1C3BFD1FE76967002E4AA6 /* ShaderProgramLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShaderProgramLoader.h; sourceTree = "<group>"; };
+		BB1C3C001FE76BDF002E4AA6 /* ShaderProgramLoaderFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShaderProgramLoaderFactory.h; sourceTree = "<group>"; };
+		BB1C3C011FE76BE0002E4AA6 /* ShaderProgramLoaderFactory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ShaderProgramLoaderFactory.cpp; sourceTree = "<group>"; };
 		BB1C3C041FE76C65002E4AA6 /* OpenGLProgramLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenGLProgramLoader.h; sourceTree = "<group>"; };
 		BB1C3C051FE76C65002E4AA6 /* OpenGLProgramLoader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OpenGLProgramLoader.cpp; sourceTree = "<group>"; };
 		BB1C3C081FE77301002E4AA6 /* NGFramebufferToScreenShader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NGFramebufferToScreenShader.cpp; sourceTree = "<group>"; };
@@ -2703,10 +2703,6 @@
 				BB0CA6F01FE5B08D0011B75B /* NGPrimitiveType.h */,
 				BBAEF1391EA94ED900F0866E /* NGShader.cpp */,
 				BBAEF13A1EA94ED900F0866E /* NGShader.h */,
-				BB1C3BFC1FE76966002E4AA6 /* NGShaderLoader.cpp */,
-				BB1C3BFD1FE76967002E4AA6 /* NGShaderLoader.h */,
-				BB1C3C011FE76BE0002E4AA6 /* NGShaderLoaderFactory.cpp */,
-				BB1C3C001FE76BDF002E4AA6 /* NGShaderLoaderFactory.h */,
 				BB2022F11FE8281C00BBB053 /* NGShaderUniformInput.cpp */,
 				BB2022F21FE8281C00BBB053 /* NGShaderUniformInput.h */,
 				BB1C3C181FE7868E002E4AA6 /* NGShaderVarInput.cpp */,
@@ -2725,6 +2721,10 @@
 				BBAEF1401EA94ED900F0866E /* RendererHelper.h */,
 				BB0756DE1FE6107F008E0E08 /* RendererHelperFactory.cpp */,
 				BB0756DF1FE6107F008E0E08 /* RendererHelperFactory.h */,
+				BB1C3BFC1FE76966002E4AA6 /* ShaderProgramLoader.cpp */,
+				BB1C3BFD1FE76967002E4AA6 /* ShaderProgramLoader.h */,
+				BB1C3C011FE76BE0002E4AA6 /* ShaderProgramLoaderFactory.cpp */,
+				BB1C3C001FE76BDF002E4AA6 /* ShaderProgramLoaderFactory.h */,
 				BB1C3BFB1FE7694C002E4AA6 /* ShaderProgramWrapper.h */,
 				BBAEF14D1EA94ED900F0866E /* SpriteBatcher.cpp */,
 				BBAEF14E1EA94ED900F0866E /* SpriteBatcher.h */,
@@ -3968,7 +3968,7 @@
 				BB6F59771FBDE97D00BD7697 /* cocoa_time.c in Sources */,
 				BB6E7B1E1F940F2B006C0024 /* Util.cpp in Sources */,
 				BBD5541E1FDB2EA800E00AD6 /* b2CircleContact.cpp in Sources */,
-				BB1C3C021FE76BE0002E4AA6 /* NGShaderLoaderFactory.cpp in Sources */,
+				BB1C3C021FE76BE0002E4AA6 /* ShaderProgramLoaderFactory.cpp in Sources */,
 				BBD5544A1FDB2EA800E00AD6 /* b2Timer.cpp in Sources */,
 				BBD5543E1FDB2EA800E00AD6 /* b2Island.cpp in Sources */,
 				BBEC68582025139900661E46 /* DestructibleController.cpp in Sources */,
@@ -4033,7 +4033,7 @@
 				BBD554381FDB2EA800E00AD6 /* b2PrismaticJoint.cpp in Sources */,
 				BB6F598E1FBDEA0D00BD7697 /* input.c in Sources */,
 				BBAEF2961EA94EDA00F0866E /* Line.cpp in Sources */,
-				BB1C3BFE1FE76967002E4AA6 /* NGShaderLoader.cpp in Sources */,
+				BB1C3BFE1FE76967002E4AA6 /* ShaderProgramLoader.cpp in Sources */,
 				BB7251A41EE105490024C71C /* MoveList.cpp in Sources */,
 				BB44CB821DB053C0003E633F /* pngerror.c in Sources */,
 				BBAFD3331EF45EEA004F2742 /* FWInstanceManager.cpp in Sources */,
@@ -4209,7 +4209,7 @@
 				BB5AFE7C1FB35ACA005FBD52 /* EntityManager.cpp in Sources */,
 				BBD554291FDB2EA800E00AD6 /* b2MouseJoint.cpp in Sources */,
 				BBD5545D1FDB2EA800E00AD6 /* b2CircleShape.cpp in Sources */,
-				BB1C3BFF1FE76967002E4AA6 /* NGShaderLoader.cpp in Sources */,
+				BB1C3BFF1FE76967002E4AA6 /* ShaderProgramLoader.cpp in Sources */,
 				BBD554591FDB2EA800E00AD6 /* b2ChainShape.cpp in Sources */,
 				BB5AFE5B1FB35AAE005FBD52 /* OpenGLRendererHelper.cpp in Sources */,
 				BBFA49E61FC3702D00233514 /* Engine.cpp in Sources */,
@@ -4354,7 +4354,7 @@
 				BB5AFDAF1FB3595F005FBD52 /* pngget.c in Sources */,
 				BBF3CC65200D724D00CFF412 /* TitleRenderer.cpp in Sources */,
 				BBD554451FDB2EA800E00AD6 /* b2Draw.cpp in Sources */,
-				BB1C3C031FE76BE0002E4AA6 /* NGShaderLoaderFactory.cpp in Sources */,
+				BB1C3C031FE76BE0002E4AA6 /* ShaderProgramLoaderFactory.cpp in Sources */,
 				BB5AFDB01FB3595F005FBD52 /* pngmem.c in Sources */,
 				BB6531631FED56CA00963997 /* World.cpp in Sources */,
 				BB5AFDB11FB3595F005FBD52 /* pngpread.c in Sources */,

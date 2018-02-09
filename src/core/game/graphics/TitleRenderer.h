@@ -20,7 +20,7 @@ class SpriteBatcher;
 class PolygonBatcher;
 class LineBatcher;
 class CircleBatcher;
-class NGShaderLoader;
+class ShaderProgramLoader;
 class RendererHelper;
 class NGShader;
 class Entity;
@@ -51,7 +51,7 @@ private:
     PolygonBatcher* _boundsPolygonBatcher;
     LineBatcher* _lineBatcher;
     CircleBatcher* _circleBatcher;
-    NGShaderLoader* _shaderProgramLoader;
+    ShaderProgramLoader* _shaderProgramLoader;
     Font* _font;
     NGShader* _textureNGShader;
     NGShader* _colorNGShader;

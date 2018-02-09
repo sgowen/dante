@@ -18,7 +18,7 @@
 #include "framework/graphics/portable/PolygonBatcher.h"
 #include "framework/graphics/portable/LineBatcher.h"
 #include "framework/graphics/portable/CircleBatcher.h"
-#include "framework/graphics/portable/NGShaderLoader.h"
+#include "framework/graphics/portable/ShaderProgramLoader.h"
 #include "framework/graphics/portable/RendererHelper.h"
 #include "framework/graphics/portable/NGShader.h"
 #include "framework/entity/Entity.h"
@@ -57,7 +57,7 @@
 #include "framework/graphics/portable/TextureWrapper.h"
 #include "framework/graphics/portable/TextureDataWrapper.h"
 #include "framework/graphics/portable/TextureLoaderFactory.h"
-#include "framework/graphics/portable/NGShaderLoaderFactory.h"
+#include "framework/graphics/portable/ShaderProgramLoaderFactory.h"
 #include "framework/graphics/portable/RendererHelperFactory.h"
 #include "framework/util/NGSTDUtil.h"
 #include "framework/math/Circle.h"
@@ -88,10 +88,10 @@ _fillPolygonBatcher(new PolygonBatcher(_rendererHelper, true)),
 _boundsPolygonBatcher(new PolygonBatcher(_rendererHelper, false)),
 _lineBatcher(new LineBatcher(_rendererHelper)),
 _circleBatcher(new CircleBatcher(_rendererHelper)),
-_shaderProgramLoader(SHADER_PROGRAM_LOADER_FACTORY->createNGShaderLoader()),
-_textureNGShader(new NGTextureShader(*_rendererHelper, "shader_003_vert.ngs", "shader_003_frag.ngs")),
-_colorNGShader(new NGGeometryShader(*_rendererHelper, "shader_001_vert.ngs", "shader_001_frag.ngs")),
-_framebufferToScreenNGShader(new NGFramebufferToScreenShader(*_rendererHelper, "shader_002_vert.ngs", "shader_002_frag.ngs")),
+_shaderProgramLoader(SHADER_PROGRAM_LOADER_FACTORY->createShaderLoader()),
+_textureNGShader(new NGTextureShader(*_rendererHelper)),
+_colorNGShader(new NGGeometryShader(*_rendererHelper)),
+_framebufferToScreenNGShader(new NGFramebufferToScreenShader(*_rendererHelper)),
 _font(new Font(0, 0, 16, 64, 75, 1024, 1024)),
 _fbIndex(0),
 _engine(NULL),

@@ -14,7 +14,7 @@
 #include <string>
 
 class RendererHelper;
-class NGShaderLoader;
+class ShaderProgramLoader;
 class NGShaderUniformInput;
 class NGShaderVarInput;
 struct ShaderProgramWrapper;
@@ -28,8 +28,8 @@ public:
     virtual void bind(void* data1 = NULL, void* data2 = NULL, void* data3 = NULL) = 0;
     virtual void unbind() = 0;
     
-    void load(NGShaderLoader& shaderProgramLoader);
-    void unload(NGShaderLoader& shaderProgramLoader);
+    void load(ShaderProgramLoader& shaderProgramLoader);
+    void unload(ShaderProgramLoader& shaderProgramLoader);
     bool isLoaded();
     
 protected:

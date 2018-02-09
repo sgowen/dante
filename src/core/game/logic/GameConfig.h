@@ -18,26 +18,6 @@ class GameConfig
 public:
     static GameConfig* getInstance();
     
-    int _camWidth;
-    int _camHeight;
-    float _playerLightZ;
-    float _gravity;
-    float _maxXVelocity;
-    float _maxYVelocity;
-    double _parallaxLayer0FactorX;
-    double _parallaxLayer0FactorY;
-    double _parallaxLayer1FactorX;
-    double _parallaxLayer1FactorY;
-    double _parallaxLayer2FactorX;
-    double _parallaxLayer2FactorY;
-    float _playerLightColor[4];
-    float _ambientColor[4];
-    float _fallOff[3];
-    float _behindPlayerLightZFactor;
-    float _frontPlayerLightZFactor;
-    float _robotLightPositionFactorY;
-    float _tempStaticLight1[6];
-    float _tempStaticLight2[6];
     int _versionMajor;
     int _versionMinor;
     int _versionBuild;
@@ -48,6 +28,33 @@ public:
     std::string _steamGameDir;
     std::string _steamProductName;
     std::string _steamProductDescription;
+    int _framebufferWidth;
+    int _framebufferHeight;
+    int _camWidth;
+    int _camHeight;
+    std::string _framebufferFilterMin;
+    std::string _framebufferFilterMag;
+    std::string _defaultTextureFilterMin;
+    std::string _defaultTextureFilterMag;
+    bool _defaultTextureFilterMipMap;
+    double _parallaxLayer0FactorX;
+    double _parallaxLayer0FactorY;
+    double _parallaxLayer1FactorX;
+    double _parallaxLayer1FactorY;
+    double _parallaxLayer2FactorX;
+    double _parallaxLayer2FactorY;
+    float _gravity;
+    float _robotLightPositionFactorY;
+    float _maxXVelocity;
+    float _maxYVelocity;
+    float _playerLightZ;
+    float _behindPlayerLightZFactor;
+    float _frontPlayerLightZFactor;
+    float _playerLightColor[4];
+    float _ambientColor[4];
+    float _fallOff[3];
+    float _tempStaticLight1[6];
+    float _tempStaticLight2[6];
     
     void initWithJsonFile(const char* fileName, bool isBundled = true, bool useEncryption = false);
     

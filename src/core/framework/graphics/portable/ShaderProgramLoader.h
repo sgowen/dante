@@ -1,13 +1,13 @@
 //
-//  NGShaderLoader.h
+//  ShaderProgramLoader.h
 //  noctisgames-framework
 //
 //  Created by Stephen Gowen on 12/17/17.
 //  Copyright © 2017 Noctis Games. All rights reserved.
 //
 
-#ifndef __noctisgames__NGShaderLoader__
-#define __noctisgames__NGShaderLoader__
+#ifndef __noctisgames__ShaderProgramLoader__
+#define __noctisgames__ShaderProgramLoader__
 
 #include <vector>
 #include <string>
@@ -16,14 +16,14 @@ struct ShaderProgramWrapper;
 class NGShaderVarInput;
 class NGShaderUniformInput;
 
-class NGShaderLoader
+class ShaderProgramLoader
 {
 public:
-    NGShaderLoader();
-    virtual ~NGShaderLoader();
+    ShaderProgramLoader();
+    virtual ~ShaderProgramLoader();
     
     virtual ShaderProgramWrapper* loadNGShader(std::string& vertexShaderFilePath, std::string& fragmentShaderFilePath, std::vector<NGShaderUniformInput*>& uniforms, std::vector<NGShaderVarInput*>& inputLayout) = 0;
     virtual void destroyNGShader(ShaderProgramWrapper* shaderProgramWrapper, std::vector<NGShaderUniformInput*>& uniforms, std::vector<NGShaderVarInput*>& inputLayout) = 0;
 };
 
-#endif /* defined(__noctisgames__NGShaderLoader__) */
+#endif /* defined(__noctisgames__ShaderProgramLoader__) */

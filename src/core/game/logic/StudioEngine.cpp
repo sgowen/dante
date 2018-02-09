@@ -41,7 +41,6 @@
 #include "framework/util/Timing.h"
 #include "framework/util/FPSUtil.h"
 #include "framework/input/CursorConverter.h"
-#include <framework/util/Config.h>
 #include <framework/entity/EntityMapper.h>
 #include <framework/entity/EntityLayoutMapper.h>
 #include <game/logic/GameConfig.h>
@@ -137,7 +136,7 @@ void StudioEngine::createDeviceDependentResources()
 
 void StudioEngine::createWindowSizeDependentResources(int screenWidth, int screenHeight, int cursorWidth, int cursorHeight)
 {
-    _renderer->createWindowSizeDependentResources(screenWidth, screenHeight, FW_CFG->getInt("FramebufferWidth"), FW_CFG->getInt("FramebufferHeight"));
+    _renderer->createWindowSizeDependentResources(screenWidth, screenHeight, GM_CFG->_framebufferWidth, GM_CFG->_framebufferHeight);
     
     CURSOR_CONVERTER->setCamSize(GM_CFG->_camWidth, GM_CFG->_camHeight);
     CURSOR_CONVERTER->setCursorSize(cursorWidth, cursorHeight);

@@ -11,7 +11,7 @@
 #include "framework/graphics/portable/NGShader.h"
 
 #include <framework/graphics/portable/RendererHelper.h>
-#include <framework/graphics/portable/NGShaderLoader.h>
+#include <framework/graphics/portable/ShaderProgramLoader.h>
 #include <framework/graphics/portable/NGShaderUniformInput.h>
 #include <framework/graphics/portable/NGShaderVarInput.h>
 #include <framework/graphics/portable/ShaderProgramWrapper.h>
@@ -31,12 +31,12 @@ NGShader::~NGShader()
     NGSTDUtil::cleanUpVectorOfPointers(_inputLayout);
 }
 
-void NGShader::load(NGShaderLoader& shaderProgramLoader)
+void NGShader::load(ShaderProgramLoader& shaderProgramLoader)
 {
     _shaderProgramWrapper = shaderProgramLoader.loadNGShader(_vertexShaderFilePath, _fragmentShaderFilePath, _uniforms, _inputLayout);
 }
 
-void NGShader::unload(NGShaderLoader& shaderProgramLoader)
+void NGShader::unload(ShaderProgramLoader& shaderProgramLoader)
 {
     if (_shaderProgramWrapper != NULL)
     {

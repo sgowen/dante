@@ -439,10 +439,6 @@
 		<Unit filename="../../core/framework/graphics/portable/NGPrimitiveType.h" />
 		<Unit filename="../../core/framework/graphics/portable/NGShader.cpp" />
 		<Unit filename="../../core/framework/graphics/portable/NGShader.h" />
-		<Unit filename="../../core/framework/graphics/portable/NGShaderLoader.cpp" />
-		<Unit filename="../../core/framework/graphics/portable/NGShaderLoader.h" />
-		<Unit filename="../../core/framework/graphics/portable/NGShaderLoaderFactory.cpp" />
-		<Unit filename="../../core/framework/graphics/portable/NGShaderLoaderFactory.h" />
 		<Unit filename="../../core/framework/graphics/portable/NGShaderUniformInput.cpp" />
 		<Unit filename="../../core/framework/graphics/portable/NGShaderUniformInput.h" />
 		<Unit filename="../../core/framework/graphics/portable/NGShaderVarInput.cpp" />
@@ -461,6 +457,10 @@
 		<Unit filename="../../core/framework/graphics/portable/RendererHelper.h" />
 		<Unit filename="../../core/framework/graphics/portable/RendererHelperFactory.cpp" />
 		<Unit filename="../../core/framework/graphics/portable/RendererHelperFactory.h" />
+		<Unit filename="../../core/framework/graphics/portable/ShaderProgramLoader.cpp" />
+		<Unit filename="../../core/framework/graphics/portable/ShaderProgramLoader.h" />
+		<Unit filename="../../core/framework/graphics/portable/ShaderProgramLoaderFactory.cpp" />
+		<Unit filename="../../core/framework/graphics/portable/ShaderProgramLoaderFactory.h" />
 		<Unit filename="../../core/framework/graphics/portable/ShaderProgramWrapper.h" />
 		<Unit filename="../../core/framework/graphics/portable/SpriteBatcher.cpp" />
 		<Unit filename="../../core/framework/graphics/portable/SpriteBatcher.h" />
@@ -626,7 +626,8 @@
 		<Unit filename="../../core/game/logic/BasicFollowAndAttackController.h" />
 		<Unit filename="../../core/game/logic/DestructibleController.cpp" />
 		<Unit filename="../../core/game/logic/DestructibleController.h" />
-		<Unit filename="../../core/game/logic/GameConstants.h" />
+		<Unit filename="../../core/game/logic/GameConfig.cpp" />
+		<Unit filename="../../core/game/logic/GameConfig.h" />
 		<Unit filename="../../core/game/logic/GameEngine.cpp" />
 		<Unit filename="../../core/game/logic/GameEngine.h" />
 		<Unit filename="../../core/game/logic/GameInputManager.cpp" />

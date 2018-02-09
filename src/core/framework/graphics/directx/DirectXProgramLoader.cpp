@@ -19,7 +19,7 @@
 #include "framework/util/StringUtil.h"
 #include <framework/graphics/directx/DirectXRendererHelper.h>
 
-DirectXProgramLoader::DirectXProgramLoader() : NGShaderLoader()
+DirectXProgramLoader::DirectXProgramLoader() : ShaderProgramLoader()
 {
     // Empty
 }

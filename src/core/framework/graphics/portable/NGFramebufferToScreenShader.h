@@ -14,7 +14,7 @@
 class NGFramebufferToScreenShader : public NGShader
 {
 public:
-    NGFramebufferToScreenShader(RendererHelper& inRendererHelper, const char* vertexShaderName, const char* fragmentShaderName);
+    NGFramebufferToScreenShader(RendererHelper& inRendererHelper);
     
     virtual void bind(void* data1 = NULL, void* data2 = NULL, void* data3 = NULL);
     virtual void unbind();

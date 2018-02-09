@@ -27,8 +27,10 @@ public:
     RendererHelper();
     virtual ~RendererHelper();
 
-	virtual void createDeviceDependentResources();
+    virtual void createDeviceDependentResources();
+    virtual void createWindowSizeDependentResources(int screenWidth, int screenHeight, int renderWidth, int renderHeight);
     virtual void releaseDeviceDependentResources();
+    
     virtual void bindToOffscreenFramebuffer(int index) = 0;
     virtual void clearFramebufferWithColor(float r, float g, float b, float a) = 0;
     virtual void bindToScreenFramebuffer() = 0;
@@ -49,7 +51,6 @@ public:
     virtual void draw(NGPrimitiveType renderPrimitiveType, uint32_t first, uint32_t count) = 0;
     virtual void drawIndexed(NGPrimitiveType renderPrimitiveType, uint32_t first, uint32_t count) = 0;
     
-    void createWindowSizeDependentResources(int screenWidth, int screenHeight, int renderWidth, int renderHeight);
     void updateMatrix(float left, float right, float bottom, float top);
     NGTexture* getFramebuffer(int index);
     

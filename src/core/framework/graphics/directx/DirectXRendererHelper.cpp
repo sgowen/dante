@@ -47,6 +47,7 @@ ID3D11DeviceContext* DirectXRendererHelper::getD3DContext()
 DirectXRendererHelper::DirectXRendererHelper() : RendererHelper(),
 _blendState(NULL),
 _screenBlendState(NULL),
+_framebufferSamplerState(NULL),
 _textureSamplerState1(NULL),
 _textureSamplerState2(NULL),
 _textureSamplerState3(NULL),
@@ -55,7 +56,6 @@ _textureSamplerState5(NULL),
 _textureSamplerState6(NULL),
 _textureSamplerState7(NULL),
 _textureSamplerState8(NULL),
-_framebufferSamplerState(NULL),
 _fbIndex(0)
 {
 	// Empty
@@ -78,12 +78,20 @@ void DirectXRendererHelper::createDeviceDependentResources()
     createSamplerStates();
 }
 
+void DirectXRendererHelper::createWindowSizeDependentResources(int screenWidth, int screenHeight, int renderWidth, int renderHeight)
+{
+    RendererHelper::createWindowSizeDependentResources(screenWidth, screenHeight, renderWidth, renderHeight);
+    
+    _offScreenViewport = CD3D11_VIEWPORT(0.0f, 0.0f, static_cast<float>(renderWidth), static_cast<float>(renderHeight));
+}
+
 void DirectXRendererHelper::releaseDeviceDependentResources()
 {
     RendererHelper::releaseDeviceDependentResources();
     
     _blendState->Release();
     _screenBlendState->Release();
+    _framebufferSamplerState->Release();
     _textureSamplerState1->Release();
     _textureSamplerState2->Release();
     _textureSamplerState3->Release();
@@ -92,16 +100,13 @@ void DirectXRendererHelper::releaseDeviceDependentResources()
     _textureSamplerState6->Release();
     _textureSamplerState7->Release();
     _textureSamplerState8->Release();
-    _framebufferSamplerState->Release();
 }
 
 void DirectXRendererHelper::bindToOffscreenFramebuffer(int index)
 {
     getD3DContext()->OMSetRenderTargets(1, &_offscreenRenderTargetViews[index], NULL);
     
-    // Set the viewport.
-    auto viewport = s_deviceResources->GetOffScreenViewport();
-    getD3DContext()->RSSetViewports(1, &viewport);
+    getD3DContext()->RSSetViewports(1, &_offScreenViewport);
     
 	_fbIndex = index;
 }
@@ -128,8 +133,7 @@ void DirectXRendererHelper::bindToScreenFramebuffer()
     ID3D11RenderTargetView *const targets[1] = { s_deviceResources->GetRenderTargetView() };
 	getD3DContext()->OMSetRenderTargets(1, targets, NULL);
     
-    // Set the viewport.
-    auto viewport = s_deviceResources->GetScreenViewport();
+    D3D11_VIEWPORT viewport = s_deviceResources->GetScreenViewport();
     getD3DContext()->RSSetViewports(1, &viewport);
     
     _fbIndex = -1;

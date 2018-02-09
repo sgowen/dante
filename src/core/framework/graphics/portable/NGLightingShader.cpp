@@ -11,14 +11,14 @@
 #include "framework/graphics/portable/NGLightingShader.h"
 
 #include <framework/graphics/portable/RendererHelper.h>
-#include <framework/graphics/portable/NGShaderLoader.h>
+#include <framework/graphics/portable/ShaderProgramLoader.h>
 #include <framework/graphics/portable/NGShaderUniformInput.h>
 #include <framework/graphics/portable/NGShaderVarInput.h>
 #include <framework/graphics/portable/ShaderProgramWrapper.h>
 
 #include <assert.h>
 
-NGLightingShader::NGLightingShader(RendererHelper& inRendererHelper, const char* vertexShaderName, const char* fragmentShaderName) : NGShader(inRendererHelper, vertexShaderName, fragmentShaderName), _lightIndex(0)
+NGLightingShader::NGLightingShader(RendererHelper& inRendererHelper) : NGShader(inRendererHelper, "shader_004_vert.ngs", "shader_004_frag.ngs"), _lightIndex(0)
 {
     // Fragment Shader
     _uniforms.push_back(new NGShaderUniformInput("u_Matrix",          0,  64, true));

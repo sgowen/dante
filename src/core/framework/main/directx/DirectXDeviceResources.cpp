@@ -7,8 +7,6 @@
 
 #include "framework/main/directx/DirectXDeviceResources.h"
 
-#include <framework/util/Config.h>
-
 using namespace DirectX;
 using namespace DX;
 
@@ -41,7 +39,6 @@ namespace
 // Constructor for DirectXDeviceResources.
 DirectXDeviceResources::DirectXDeviceResources(DXGI_FORMAT backBufferFormat, DXGI_FORMAT depthBufferFormat, UINT backBufferCount, D3D_FEATURE_LEVEL minFeatureLevel, unsigned int flags) :
     m_screenViewport{},
-    m_offScreenViewport{},
     m_backBufferFormat(backBufferFormat),
     m_depthBufferFormat(depthBufferFormat),
     m_backBufferCount(backBufferCount),
@@ -339,7 +336,6 @@ void DirectXDeviceResources::CreateWindowSizeDependentResources()
 
 	// Set the 3D rendering viewport to target the entire window.
 	m_screenViewport = CD3D11_VIEWPORT(0.0f, 0.0f, static_cast<float>(backBufferWidth), static_cast<float>(backBufferHeight));
-    m_offScreenViewport = CD3D11_VIEWPORT(0.0f, 0.0f, static_cast<float>(FW_CFG->getInt("FramebufferWidth")), static_cast<float>(FW_CFG->getInt("FramebufferHeight")));
 }
 
 // This method is called when the Win32 window is created (or re-created).

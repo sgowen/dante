@@ -9,11 +9,11 @@
 #ifndef __noctisgames__DirectXProgramLoader__
 #define __noctisgames__DirectXProgramLoader__
 
-#include <framework/graphics/portable/NGShaderLoader.h>
+#include <framework/graphics/portable/ShaderProgramLoader.h>
 
 #include "framework/graphics/portable/NGGraphics.h"
 
-class DirectXProgramLoader : public NGShaderLoader
+class DirectXProgramLoader : public ShaderProgramLoader
 {
 public:
     DirectXProgramLoader();

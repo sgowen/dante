@@ -51,7 +51,7 @@
 
 //// Rendering ////
 
-#define MAX_BATCH_SIZE 8192
+#define MAX_BATCH_SIZE 16384
 #define NUM_FRAMEBUFFERS 10
 #define NUM_TEXTURE_VERTEX_BUFFERS 10
 #define NUM_VERTEX_BUFFERS 10

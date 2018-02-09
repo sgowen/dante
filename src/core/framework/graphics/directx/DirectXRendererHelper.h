@@ -24,6 +24,7 @@ public:
     virtual ~DirectXRendererHelper();
 
 	virtual void createDeviceDependentResources();
+    virtual void createWindowSizeDependentResources(int screenWidth, int screenHeight, int renderWidth, int renderHeight);
 	virtual void releaseDeviceDependentResources();
     virtual void bindToOffscreenFramebuffer(int index);
     virtual void clearFramebufferWithColor(float r, float g, float b, float a);
@@ -58,8 +59,10 @@ private:
     std::vector<ID3D11Texture2D*> _offscreenRenderTargets;
     std::vector<ID3D11RenderTargetView*> _offscreenRenderTargetViews;
     std::vector<ID3D11ShaderResourceView*> _offscreenShaderResourceViews;
+    D3D11_VIEWPORT _offScreenViewport;
     ID3D11BlendState* _blendState;
     ID3D11BlendState* _screenBlendState;
+    ID3D11SamplerState* _framebufferSamplerState; // mipmap: false, min: FramebufferFilterMin, mag: FramebufferFilterMag
     ID3D11SamplerState* _textureSamplerState1; // mipmap: true, min: GL_NEAREST, min: GL_NEAREST
     ID3D11SamplerState* _textureSamplerState2; // mipmap: true, min: GL_LINEAR,  min: GL_NEAREST
     ID3D11SamplerState* _textureSamplerState3; // mipmap: true, min: GL_LINEAR,  min: GL_LINEAR
@@ -68,7 +71,6 @@ private:
     ID3D11SamplerState* _textureSamplerState6; // mipmap: false, min: GL_LINEAR,  min: GL_NEAREST
     ID3D11SamplerState* _textureSamplerState7; // mipmap: false, min: GL_LINEAR,  min: GL_LINEAR
     ID3D11SamplerState* _textureSamplerState8; // mipmap: false, min: GL_NEAREST,  min: GL_LINEAR
-    ID3D11SamplerState* _framebufferSamplerState; // mipmap: false, min: FramebufferFilterMin, mag: FramebufferFilterMag
 	int _fbIndex;
     
     void createBlendStates();

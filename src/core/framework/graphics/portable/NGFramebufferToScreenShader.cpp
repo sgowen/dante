@@ -11,14 +11,14 @@
 #include "framework/graphics/portable/NGFramebufferToScreenShader.h"
 
 #include <framework/graphics/portable/RendererHelper.h>
-#include <framework/graphics/portable/NGShaderLoader.h>
+#include <framework/graphics/portable/ShaderProgramLoader.h>
 #include <framework/graphics/portable/NGShaderUniformInput.h>
 #include <framework/graphics/portable/NGShaderVarInput.h>
 #include <framework/graphics/portable/ShaderProgramWrapper.h>
 
 #include <assert.h>
 
-NGFramebufferToScreenShader::NGFramebufferToScreenShader(RendererHelper& inRendererHelper, const char* vertexShaderName, const char* fragmentShaderName) : NGShader(inRendererHelper, vertexShaderName, fragmentShaderName)
+NGFramebufferToScreenShader::NGFramebufferToScreenShader(RendererHelper& inRendererHelper) : NGShader(inRendererHelper, "shader_002_vert.ngs", "shader_002_frag.ngs")
 {
     // Textures
     _uniforms.push_back(new NGShaderUniformInput("u_TextureUnit", 0));

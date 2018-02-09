@@ -24,6 +24,7 @@ public:
     virtual ~OpenGLRendererHelper();
 
     virtual void createDeviceDependentResources();
+    
     virtual void bindToOffscreenFramebuffer(int index);
     virtual void clearFramebufferWithColor(float r, float g, float b, float a);
     virtual void bindToScreenFramebuffer();

@@ -22,7 +22,7 @@
 #include <string>
 #include <cstring>
 
-OpenGLProgramLoader::OpenGLProgramLoader() : NGShaderLoader()
+OpenGLProgramLoader::OpenGLProgramLoader() : ShaderProgramLoader()
 {
     // Empty
 }

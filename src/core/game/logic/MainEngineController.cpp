@@ -18,7 +18,6 @@
 #include <game/logic/BasicFollowAndAttackController.h>
 #include <game/logic/DestructibleController.h>
 #include <game/logic/PlayerController.h>
-#include <framework/util/Config.h>
 
 NGRTTI_IMPL(MainEngineController, EngineController);
 

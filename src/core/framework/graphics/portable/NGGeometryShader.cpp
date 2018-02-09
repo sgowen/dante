@@ -11,7 +11,7 @@
 #include "framework/graphics/portable/NGGeometryShader.h"
 
 #include <framework/graphics/portable/RendererHelper.h>
-#include <framework/graphics/portable/NGShaderLoader.h>
+#include <framework/graphics/portable/ShaderProgramLoader.h>
 #include <framework/graphics/portable/NGShaderUniformInput.h>
 #include <framework/graphics/portable/NGShaderVarInput.h>
 #include <framework/graphics/portable/ShaderProgramWrapper.h>
@@ -19,7 +19,7 @@
 
 #include <assert.h>
 
-NGGeometryShader::NGGeometryShader(RendererHelper& inRendererHelper, const char* vertexShaderName, const char* fragmentShaderName) : NGShader(inRendererHelper, vertexShaderName, fragmentShaderName)
+NGGeometryShader::NGGeometryShader(RendererHelper& inRendererHelper) : NGShader(inRendererHelper, "shader_001_vert.ngs", "shader_001_frag.ngs")
 {
     // Vertex Shader
     _uniforms.push_back(new NGShaderUniformInput("u_Matrix", 0, 64, false));
