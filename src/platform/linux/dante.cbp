@@ -29,7 +29,7 @@
 				<Compiler>
 					<Add option="-O2" />
 					<Add option="-std=c++11" />
-					<Add option="-DNG_STEAM -DPOSIX -D_GLFW_X11 -DNG_LAUNCH_AS_FULL_SCREEN -fpermissive" />
+					<Add option="-DNG_STEAM -DPOSIX -DNDEBUG -D_GLFW_X11 -fpermissive" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
