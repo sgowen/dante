@@ -25,7 +25,6 @@ public:
     static void sHandleDynamicEntityCreatedOnClient(Entity* inEntity);
     static void sHandleDynamicEntityDeletedOnClient(Entity* inEntity);
     static uint64_t sGetPlayerAddressHashForIndexOnClient(uint8_t inPlayerIndex);
-    static Entity* sGetPlayerEntityForIDOnClient(uint8_t inPlayerID);
     
     static void sHandleDynamicEntityCreatedOnServer(Entity* inEntity);
     static void sHandleDynamicEntityDeletedOnServer(Entity* inEntity);

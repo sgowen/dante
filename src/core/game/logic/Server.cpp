@@ -13,13 +13,11 @@
 #include <game/logic/World.h>
 #include <framework/network/server/ClientProxy.h>
 #include <framework/entity/Entity.h>
-#include <game/game/MainInputState.h>
 
 #include <framework/network/server/NetworkManagerServer.h>
 #include <framework/util/Timing.h>
 #include <framework/util/Constants.h>
 #include <framework/network/portable/SocketUtil.h>
-#include <game/logic/PooledObjectsManager.h>
 #include <game/logic/InstanceManager.h>
 #include <framework/network/portable/FWInstanceManager.h>
 #include <framework/entity/EntityManager.h>
@@ -40,7 +38,7 @@
 #include <ctime> // rand
 #include <assert.h>
 
-#define SERVER_CALLBACKS Server::sHandleNewClient, Server::sHandleLostClient, PooledObjectsManager::borrowInputState
+#define SERVER_CALLBACKS Server::sHandleNewClient, Server::sHandleLostClient, Server::sHandleInputStateCreation, Server::sHandleInputStateRelease
 
 Server* Server::s_instance = NULL;
 
@@ -74,6 +72,16 @@ void Server::sHandleLostClient(ClientProxy* inClientProxy, uint8_t index)
     getInstance()->handleLostClient(inClientProxy, index);
 }
 
+InputState* Server::sHandleInputStateCreation()
+{
+    return getInstance()->handleInputStateCreation();
+}
+
+void Server::sHandleInputStateRelease(InputState* inputState)
+{
+    getInstance()->handleInputStateRelease(inputState);
+}
+
 void Server::update()
 {
     _stateTime += FRAME_RATE;
@@ -82,7 +90,7 @@ void Server::update()
     
     NG_SERVER->processIncomingPackets();
     
-    InstanceManager::getServerWorld()->updateServer();
+    _world->updateServer();
     
     NG_SERVER->sendOutgoingPackets();
     
@@ -141,9 +149,23 @@ void Server::handleLostClient(ClientProxy* inClientProxy, uint8_t index)
     }
 }
 
+InputState* Server::handleInputStateCreation()
+{
+    InputState* ret = _inputStates.obtain();
+    ret->reset();
+    
+    return ret;
+}
+
+void Server::handleInputStateRelease(InputState* inputState)
+{
+    GameInputState* mainInputState = static_cast<GameInputState*>(inputState);
+    _inputStates.free(mainInputState);
+}
+
 void Server::deleteRobotWithPlayerId(uint8_t playerId)
 {
-    Entity* e = InstanceManager::getServerWorld()->getPlayerWithId(playerId);
+    Entity* e = _world->getPlayerWithId(playerId);
     if (e)
     {
         for (std::vector<uint8_t>::iterator i = _playerIds.begin(); i != _playerIds.end(); )
@@ -198,7 +220,7 @@ void Server::loadMap()
     std::vector<uint8_t> playerIds = _playerIds;
     std::vector<std::string> playerNames = _playerNames;
     
-    InstanceManager::getServerWorld()->loadMap(_map);
+    _world->loadMap(_map);
     
     NG_SERVER->setMap(_map);
     

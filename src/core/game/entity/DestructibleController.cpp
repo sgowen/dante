@@ -14,7 +14,7 @@
 #include <framework/network/portable/InputMemoryBitStream.h>
 #include <framework/network/portable/OutputMemoryBitStream.h>
 #include <Box2D/Box2D.h>
-#include <game/game/MainInputState.h>
+#include <game/game/GameInputState.h>
 #include <framework/network/portable/Move.h>
 
 #include <game/logic/World.h>

@@ -10,28 +10,29 @@
 #define __noctisgames__GameInputManager__
 
 #include <framework/network/portable/MoveList.h>
+#include <framework/util/NGPool.h>
+#include <game/game/GameInputState.h>
 
 #include <string>
 
-class MainInputState;
 class Move;
 class GameEngine;
 
 #define INPUT_MANAGER_CALLBACKS GameInputManager::sRemoveProcessedMoves, GameInputManager::sGetMoveList, GameInputManager::sOnPlayerWelcomed
 
-enum GameInputState
+enum GameInputManagerState
 {
-    GIS_NONE = 0,
-    GIS_LOCAL_PLAYER_DROP_OUT_0,
-    GIS_LOCAL_PLAYER_DROP_OUT_1,
-    GIS_LOCAL_PLAYER_DROP_OUT_2,
-    GIS_LOCAL_PLAYER_DROP_OUT_3,
-    GIS_CLIENT_MAIN_TOGGLE_MUSIC,
-    GIS_CLIENT_MAIN_TOGGLE_SOUND,
-    GIS_TOGGLE_PHYSICS_DISPLAY,
-    GIS_TOGGLE_INTERPOLATION,
-    GIS_TOGGLE_LIGHTING,
-    GIS_SERVER_TOGGLE_MAP
+    GIMS_NONE = 0,
+    GIMS_LOCAL_PLAYER_DROP_OUT_0,
+    GIMS_LOCAL_PLAYER_DROP_OUT_1,
+    GIMS_LOCAL_PLAYER_DROP_OUT_2,
+    GIMS_LOCAL_PLAYER_DROP_OUT_3,
+    GIMS_CLIENT_MAIN_TOGGLE_MUSIC,
+    GIMS_CLIENT_MAIN_TOGGLE_SOUND,
+    GIMS_TOGGLE_PHYSICS_DISPLAY,
+    GIMS_TOGGLE_INTERPOLATION,
+    GIMS_TOGGLE_LIGHTING,
+    GIMS_SERVER_TOGGLE_MAP
 };
 
 class GameInputManager
@@ -44,19 +45,21 @@ public:
     static void sRemoveProcessedMoves(float inLastMoveProcessedOnServerTimestamp);
     static MoveList& sGetMoveList();
     static void sOnPlayerWelcomed(uint8_t playerId);
+    static void sHandleInputStateRelease(InputState* inputState);
     
     void setEngine(GameEngine* inValue);
     void update();
     const Move* getPendingMove();
     void clearPendingMove();
-    MainInputState* getInputState();
+    GameInputState* getInputState();
     MoveList& getMoveList();
     int getMenuState();
     
 private:
     static GameInputManager* s_instance;
     
-    MainInputState* _currentState;
+    NoctisGames::NGPool<GameInputState> _inputStates;
+    GameInputState* _currentState;
     MoveList _moveList;
     const Move* _pendingMove;
     int _inputState;

@@ -17,10 +17,10 @@
 class StudioEngine;
 class Entity;
 
-enum StudioInputState
+enum StudioInputManagerState
 {
-    SIS_NONE = 0,
-    SIS_ESCAPE
+    SIMS_NONE = 0,
+    SIMS_ESCAPE
 };
 
 class StudioInputManager

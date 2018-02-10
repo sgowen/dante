@@ -9,13 +9,15 @@
 #ifndef __noctisgames__Server__
 #define __noctisgames__Server__
 
+#include <framework/util/NGPool.h>
+#include <game/game/GameInputState.h>
+
 #include <string>
 #include <vector>
 
 class World;
 class ClientProxy;
 class Entity;
-class InputState;
 
 class Server
 {
@@ -25,7 +27,8 @@ public:
     static void destroy();
     static void sHandleNewClient(uint8_t playerId, std::string playerName);
     static void sHandleLostClient(ClientProxy* inClientProxy, uint8_t index);
-    static InputState* borrowInputState();
+    static InputState* sHandleInputStateCreation();
+    static void sHandleInputStateRelease(InputState* inputState);
     
     void update();
     uint8_t getPlayerIdForRobotBeingCreated();
@@ -35,6 +38,7 @@ private:
     static Server* s_instance;
     
     World* _world;
+    NoctisGames::NGPool<GameInputState> _inputStates;
     std::vector<uint8_t> _playerIds;
     std::vector<std::string> _playerNames;
     double _stateTime;
@@ -43,6 +47,8 @@ private:
     
     void handleNewClient(uint8_t playerId, std::string playerName);
     void handleLostClient(ClientProxy* inClientProxy, uint8_t index);
+    InputState* handleInputStateCreation();
+    void handleInputStateRelease(InputState* inputState);
     void deleteRobotWithPlayerId(uint8_t playerId);
     void spawnRobotForPlayer(uint8_t inPlayerId, std::string inPlayerName);
     void loadMap();

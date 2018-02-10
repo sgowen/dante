@@ -14,7 +14,7 @@
 #include <framework/network/portable/InputMemoryBitStream.h>
 #include <framework/network/portable/OutputMemoryBitStream.h>
 #include <Box2D/Box2D.h>
-#include <game/game/MainInputState.h>
+#include <game/game/GameInputState.h>
 #include <framework/network/portable/Move.h>
 
 #include <game/logic/World.h>
@@ -230,9 +230,9 @@ uint16_t PlayerController::write(OutputMemoryBitStream& inOutputStream, uint16_t
 
 void PlayerController::processInput(InputState* inInputState, bool isPending)
 {
-    MainInputState* is = static_cast<MainInputState*>(inInputState);
+    GameInputState* is = static_cast<GameInputState*>(inInputState);
     uint8_t playerId = getPlayerId();
-    MainInputState::GameInputState* inputState = is->getGameInputStateForPlayerId(playerId);
+    GameInputState::PlayerInputState* inputState = is->getPlayerInputStateForID(playerId);
     if (inputState == NULL)
     {
         return;

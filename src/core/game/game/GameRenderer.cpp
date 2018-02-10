@@ -243,7 +243,7 @@ void GameRenderer::updateCamera()
     
     bool isCamInitialized = false;
     
-    for (Entity* entity : InstanceManager::getClientWorld()->getPlayers())
+    for (Entity* entity : _engine->_world->getPlayers())
     {
         float pX = entity->getPosition().x;
         float pY = entity->getPosition().y;
@@ -290,7 +290,7 @@ void GameRenderer::setFramebuffer(int framebufferIndex, float r, float g, float 
 
 void GameRenderer::renderWorld()
 {
-    World* world = InstanceManager::getClientWorld();
+    World* world = _engine->_world;
     
     for (int i = 0; i < NUM_SPRITE_BATCHERS; ++i)
     {
@@ -460,7 +460,7 @@ void GameRenderer::renderBox2D()
 {
 	_rendererHelper->updateMatrix(_camBounds[3]->getLeft(), _camBounds[3]->getRight(), _camBounds[3]->getBottom(), _camBounds[3]->getTop());
 
-    _box2DDebugRenderer->render(&InstanceManager::getClientWorld()->getWorld(), _colorNGShader);
+    _box2DDebugRenderer->render(&_engine->_world->getWorld(), _colorNGShader);
 }
 
 void GameRenderer::renderUI()
@@ -510,16 +510,16 @@ void GameRenderer::renderUI()
             
             if (Server::getInstance())
             {
-                renderText(_staticFontSpriteBatcher, StringUtil::format("[T]    Toggle Map %s", InstanceManager::getClientWorld()->getMapName().c_str()).c_str(), GM_CFG->_camWidth - 0.5f, GM_CFG->_camHeight - (row++ * padding), FONT_ALIGN_RIGHT);
+                renderText(_staticFontSpriteBatcher, StringUtil::format("[T]    Toggle Map %s", _engine->_world->getMapName().c_str()).c_str(), GM_CFG->_camWidth - 0.5f, GM_CFG->_camHeight - (row++ * padding), FONT_ALIGN_RIGHT);
             }
             else
             {
-                renderText(_staticFontSpriteBatcher, StringUtil::format("              Map %s", InstanceManager::getClientWorld()->getMapName().c_str()).c_str(), GM_CFG->_camWidth - 0.5f, GM_CFG->_camHeight - (row++ * padding), FONT_ALIGN_RIGHT);
+                renderText(_staticFontSpriteBatcher, StringUtil::format("              Map %s", _engine->_world->getMapName().c_str()).c_str(), GM_CFG->_camWidth - 0.5f, GM_CFG->_camHeight - (row++ * padding), FONT_ALIGN_RIGHT);
             }
             
             bool activePlayerIds[4] = {false};
             
-            std::vector<Entity*> players = InstanceManager::getClientWorld()->getPlayers();
+            std::vector<Entity*> players = _engine->_world->getPlayers();
             for (Entity* entity : players)
             {
                 PlayerController* robot = static_cast<PlayerController*>(entity->getController());
@@ -580,7 +580,7 @@ uint32_t GameRenderer::calcTextDisplayState()
 {
     uint32_t ret = 0;
     
-    std::vector<Entity*> players = InstanceManager::getClientWorld()->getPlayers();
+    std::vector<Entity*> players = _engine->_world->getPlayers();
     for (Entity* entity : players)
     {
         PlayerController* robot = static_cast<PlayerController*>(entity->getController());
@@ -596,7 +596,7 @@ uint32_t GameRenderer::calcTextDisplayState()
     ret |= NG_AUDIO_ENGINE->areSoundsDisabled() ? TextDisplayState_SoundDisabled : 0;
     ret |= NG_AUDIO_ENGINE->isMusicDisabled() ? TextDisplayState_MusicDisabled : 0;
     
-    std::string& mapName = InstanceManager::getClientWorld()->getMapName();
+    std::string& mapName = _engine->_world->getMapName();
     ret |= mapName == "Z001" ? TextDisplayState_MapZone1 : mapName == "Z002" ? TextDisplayState_MapZone2 : 0;
     
     return ret;

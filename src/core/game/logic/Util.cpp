@@ -23,33 +23,26 @@ void Util::playSound(int soundId, const b2Vec2& position)
     float volume = 1;
     float robotVolume = 0;
     
-    std::map<uint8_t, uint8_t> indexToPlayerIdMap = NG_CLIENT->getPlayerIds();
+    std::vector<Entity*>& players = InstanceManager::getClientWorld()->getPlayers();
     
-    for (auto const &entry : indexToPlayerIdMap)
+    for (Entity* e : players)
     {
-        uint8_t playerId = entry.second;
+        float distance = b2Distance(e->getPosition(), position);
         
-        Entity* playerRobot = InstanceManager::getClientWorld()->getPlayerWithId(playerId);
+        float factor = distance / 5.0f;
         
-        if (playerRobot)
+        if (distance > 0 && factor > 0)
         {
-            float distance = b2Distance(playerRobot->getPosition(), position);
+            float newRobotVolume = 1.0f / (factor * factor);
             
-            float factor = distance / 5.0f;
-            
-            if (distance > 0 && factor > 0)
+            if (newRobotVolume > robotVolume)
             {
-                float newRobotVolume = 1.0f / (factor * factor);
-                
-                if (newRobotVolume > robotVolume)
-                {
-                    robotVolume = newRobotVolume;
-                }
+                robotVolume = newRobotVolume;
             }
-            else
-            {
-                robotVolume = 1;
-            }
+        }
+        else
+        {
+            robotVolume = 1;
         }
     }
     

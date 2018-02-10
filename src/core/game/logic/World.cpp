@@ -172,7 +172,7 @@ void World::updateServer()
             if (client)
             {
                 MoveList& moveList = client->getUnprocessedMoveList();
-                moveList.removeProcessedMoves(client->getUnprocessedMoveList().getLastProcessedMoveTimestamp());
+                moveList.removeProcessedMoves(client->getUnprocessedMoveList().getLastProcessedMoveTimestamp(), Server::sHandleInputStateRelease);
             }
         }
     }

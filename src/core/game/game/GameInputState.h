@@ -1,13 +1,13 @@
 //
-//  MainInputState.h
+//  GameInputState.h
 //  dante
 //
 //  Created by Stephen Gowen on 5/15/17.
 //  Copyright (c) 2017 Noctis Games. All rights reserved.
 //
 
-#ifndef __noctisgames__MainInputState__
-#define __noctisgames__MainInputState__
+#ifndef __noctisgames__GameInputState__
+#define __noctisgames__GameInputState__
 
 #include <framework/network/portable/InputState.h>
 
@@ -16,16 +16,16 @@
 class OutputMemoryBitStream;
 class InputMemoryBitStream;
 
-class MainInputState : public InputState
+class GameInputState : public InputState
 {
     NGRTTI_DECL;
     
     friend class GameInputManager;
     
 public:
-    class GameInputState
+    class PlayerInputState
     {
-        friend class MainInputState;
+        friend class GameInputState;
         friend class GameInputManager;
         
     public:
@@ -42,10 +42,10 @@ public:
         bool _isJumping;
         bool _isMainAction;
         
-        GameInputState();
+        PlayerInputState();
     };
     
-    MainInputState();
+    GameInputState();
     
     virtual void write(OutputMemoryBitStream& inOutputStream) const;
     virtual void read(InputMemoryBitStream& inInputStream);
@@ -54,13 +54,13 @@ public:
     virtual void copyTo(InputState* inInputState) const;
     
     void activateNextPlayer(uint8_t playerId);
-    GameInputState* getGameInputStateForPlayerId(uint8_t playerId);
+    PlayerInputState* getPlayerInputStateForID(uint8_t playerId);
     bool isRequestingToAddLocalPlayer() const;
     
 private:
-    GameInputState _gameMainInputStates[4];
+    PlayerInputState _playerInputStates[4];
     
-    GameInputState& getGameInputState(int index);
+    PlayerInputState& getPlayerInputState(int index);
 };
 
-#endif /* defined(__noctisgames__MainInputState__) */
+#endif /* defined(__noctisgames__GameInputState__) */

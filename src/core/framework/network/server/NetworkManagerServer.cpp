@@ -32,11 +32,11 @@
 
 NetworkManagerServer* NetworkManagerServer::s_instance = NULL;
 
-void NetworkManagerServer::create(ServerHelper* inServerHelper, HandleNewClientFunc inHandleNewClientFunc, HandleLostClientFunc inHandleLostClientFunc, InputStateCreationFunc inInputStateCreationFunc)
+void NetworkManagerServer::create(ServerHelper* inServerHelper, HandleNewClientFunc handleNewClientFunc, HandleLostClientFunc handleLostClientFunc, InputStateCreationFunc inputStateCreationFunc, InputStateReleaseFunc inputStateReleaseFunc)
 {
     assert(!s_instance);
     
-    s_instance = new NetworkManagerServer(inServerHelper, inHandleNewClientFunc, inHandleLostClientFunc, inInputStateCreationFunc);
+    s_instance = new NetworkManagerServer(inServerHelper, handleNewClientFunc, handleLostClientFunc, inputStateCreationFunc, inputStateReleaseFunc);
 }
 
 NetworkManagerServer * NetworkManagerServer::getInstance()
@@ -52,9 +52,9 @@ void NetworkManagerServer::destroy()
     s_instance = NULL;
 }
 
-void NetworkManagerServer::sProcessPacket(InputMemoryBitStream& inInputStream, MachineAddress* inFromAddress)
+void NetworkManagerServer::sProcessPacket(InputMemoryBitStream& inputStream, MachineAddress* inFromAddress)
 {
-    NG_SERVER->processPacket(inInputStream, inFromAddress);
+    NG_SERVER->processPacket(inputStream, inFromAddress);
 }
 
 void NetworkManagerServer::sHandleNoResponse()
@@ -273,7 +273,7 @@ void NetworkManagerServer::setMap(uint32_t inValue)
     _map = inValue;
 }
 
-void NetworkManagerServer::processPacket(InputMemoryBitStream& inInputStream, MachineAddress* inFromAddress)
+void NetworkManagerServer::processPacket(InputMemoryBitStream& inputStream, MachineAddress* inFromAddress)
 {
     //try to get the client proxy for this address
     //pass this to the client proxy to process
@@ -285,7 +285,7 @@ void NetworkManagerServer::processPacket(InputMemoryBitStream& inInputStream, Ma
             LOG("New Client with %s", inFromAddress->toString().c_str());
             
             //didn't find one? it's a new cilent..is the a NW_PACKET_TYPE_HELLO? if so, create a client proxy...
-            handlePacketFromNewClient(inInputStream, inFromAddress);
+            handlePacketFromNewClient(inputStream, inFromAddress);
         }
         else
         {
@@ -294,7 +294,7 @@ void NetworkManagerServer::processPacket(InputMemoryBitStream& inInputStream, Ma
     }
     else
     {
-        processPacket((*it).second, inInputStream);
+        processPacket((*it).second, inputStream);
     }
 }
 
@@ -318,16 +318,16 @@ void NetworkManagerServer::sendPacket(const OutputMemoryBitStream& inOutputStrea
     _serverHelper->sendPacket(inOutputStream, inFromAddress);
 }
 
-void NetworkManagerServer::handlePacketFromNewClient(InputMemoryBitStream& inInputStream, MachineAddress* inFromAddress)
+void NetworkManagerServer::handlePacketFromNewClient(InputMemoryBitStream& inputStream, MachineAddress* inFromAddress)
 {
     // read the beginning- is it a hello?
     uint8_t packetType;
-    inInputStream.read(packetType);
+    inputStream.read(packetType);
     if (packetType == NW_PACKET_TYPE_HELLO)
     {
         // read the name
         std::string name;
-        inInputStream.read(name);
+        inputStream.read(name);
         
         if (_addressHashToClientMap.size() == 0)
         {
@@ -361,17 +361,17 @@ void NetworkManagerServer::handlePacketFromNewClient(InputMemoryBitStream& inInp
     }
     else
     {
-        _serverHelper->processSpecialPacket(packetType, inInputStream, inFromAddress);
+        _serverHelper->processSpecialPacket(packetType, inputStream, inFromAddress);
     }
 }
 
-void NetworkManagerServer::processPacket(ClientProxy* inClientProxy, InputMemoryBitStream& inInputStream)
+void NetworkManagerServer::processPacket(ClientProxy* inClientProxy, InputMemoryBitStream& inputStream)
 {
     //remember we got a packet so we know not to disconnect for a bit
     inClientProxy->updateLastPacketTime();
     
     uint8_t packetType;
-    inInputStream.read(packetType);
+    inputStream.read(packetType);
     
     switch (packetType)
     {
@@ -381,19 +381,19 @@ void NetworkManagerServer::processPacket(ClientProxy* inClientProxy, InputMemory
             sendWelcomePacket(inClientProxy);
             break;
         case NW_PACKET_TYPE_INPUT:
-            if (inClientProxy->getDeliveryNotificationManager().readAndProcessState(inInputStream))
+            if (inClientProxy->getDeliveryNotificationManager().readAndProcessState(inputStream))
             {
-                handleInputPacket(inClientProxy, inInputStream);
+                handleInputPacket(inClientProxy, inputStream);
             }
             break;
         case NW_PACKET_TYPE_ADD_LOCAL_PLAYER:
-            handleAddLocalPlayerPacket(inClientProxy, inInputStream);
+            handleAddLocalPlayerPacket(inClientProxy, inputStream);
             break;
         case NW_PACKET_TYPE_DROP_LOCAL_PLAYER:
-            handleDropLocalPlayerPacket(inClientProxy, inInputStream);
+            handleDropLocalPlayerPacket(inClientProxy, inputStream);
             break;
         default:
-            _serverHelper->processSpecialPacket(packetType, inInputStream, inClientProxy->getMachineAddress());
+            _serverHelper->processSpecialPacket(packetType, inputStream, inClientProxy->getMachineAddress());
             break;
     }
 }
@@ -459,10 +459,10 @@ void NetworkManagerServer::writeLastMoveTimestampIfDirty(OutputMemoryBitStream& 
     }
 }
 
-void NetworkManagerServer::handleInputPacket(ClientProxy* inClientProxy, InputMemoryBitStream& inInputStream)
+void NetworkManagerServer::handleInputPacket(ClientProxy* inClientProxy, InputMemoryBitStream& inputStream)
 {
     uint8_t moveCount = 0;
-    inInputStream.read<uint8_t, 2>(moveCount);
+    inputStream.read<uint8_t, 2>(moveCount);
     
 	InputState* referenceInputState = NULL;
 	bool isRefInputStateOrphaned = false;
@@ -472,7 +472,7 @@ void NetworkManagerServer::handleInputPacket(ClientProxy* inClientProxy, InputMe
         Move move = Move(_inputStateCreationFunc());
         
         bool isCopy;
-        inInputStream.read(isCopy);
+        inputStream.read(isCopy);
         if (isCopy)
         {
             if (!referenceInputState)
@@ -483,19 +483,20 @@ void NetworkManagerServer::handleInputPacket(ClientProxy* inClientProxy, InputMe
             }
             
             float timeStamp;
-            inInputStream.read(timeStamp);
+            inputStream.read(timeStamp);
             move.setTimestamp(timeStamp);
             
             move.copyInputState(referenceInputState);
         }
         else
         {
-            move.read(inInputStream);
+            move.read(inputStream);
         }
 
 		if (isRefInputStateOrphaned && referenceInputState)
 		{
-            referenceInputState->setInUse(false);
+            _inputStateReleaseFunc(referenceInputState);
+            referenceInputState = NULL;
 		}
 
 		referenceInputState = move.getInputState();
@@ -512,17 +513,18 @@ void NetworkManagerServer::handleInputPacket(ClientProxy* inClientProxy, InputMe
     
     if (isRefInputStateOrphaned && referenceInputState)
     {
-        referenceInputState->setInUse(false);
+        _inputStateReleaseFunc(referenceInputState);
+        referenceInputState = NULL;
     }
 }
 
-void NetworkManagerServer::handleAddLocalPlayerPacket(ClientProxy* inClientProxy, InputMemoryBitStream& inInputStream)
+void NetworkManagerServer::handleAddLocalPlayerPacket(ClientProxy* inClientProxy, InputMemoryBitStream& inputStream)
 {
     if (_playerIDToClientMap.size() < MAX_NUM_PLAYERS_PER_SERVER)
     {
         // read the current number of local players for this client at the time when the request was made
         uint8_t requestedIndex;
-        inInputStream.read(requestedIndex);
+        inputStream.read(requestedIndex);
         
         uint8_t playerId = inClientProxy->getPlayerId(requestedIndex);
         if (playerId == INPUT_UNASSIGNED)
@@ -569,11 +571,11 @@ void NetworkManagerServer::sendLocalPlayerAddedPacket(ClientProxy* inClientProxy
     sendPacket(packet, inClientProxy->getMachineAddress());
 }
 
-void NetworkManagerServer::handleDropLocalPlayerPacket(ClientProxy* inClientProxy, InputMemoryBitStream& inInputStream)
+void NetworkManagerServer::handleDropLocalPlayerPacket(ClientProxy* inClientProxy, InputMemoryBitStream& inputStream)
 {
     // read the index to drop
     uint8_t index;
-    inInputStream.read(index);
+    inputStream.read(index);
     
     if (index < 1)
     {
@@ -632,11 +634,12 @@ void NetworkManagerServer::updateNextPlayerId()
     LOG("_nextPlayerId: %d", _nextPlayerId);
 }
 
-NetworkManagerServer::NetworkManagerServer(ServerHelper* inServerHelper, HandleNewClientFunc inHandleNewClientFunc, HandleLostClientFunc inHandleLostClientFunc, InputStateCreationFunc inInputStateCreationFunc) :
+NetworkManagerServer::NetworkManagerServer(ServerHelper* inServerHelper, HandleNewClientFunc handleNewClientFunc, HandleLostClientFunc handleLostClientFunc, InputStateCreationFunc inputStateCreationFunc, InputStateReleaseFunc inputStateReleaseFunc) :
 _serverHelper(inServerHelper),
-_handleNewClientFunc(inHandleNewClientFunc),
-_handleLostClientFunc(inHandleLostClientFunc),
-_inputStateCreationFunc(inInputStateCreationFunc),
+_handleNewClientFunc(handleNewClientFunc),
+_handleLostClientFunc(handleLostClientFunc),
+_inputStateCreationFunc(inputStateCreationFunc),
+_inputStateReleaseFunc(inputStateReleaseFunc),
 _nextPlayerId(1),
 _entityID(NETWORK_ENTITY_ID_BEGIN),
 _map(0)

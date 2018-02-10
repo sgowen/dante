@@ -41,17 +41,17 @@ World* InstanceManager::getServerWorld()
 
 void InstanceManager::sHandleDynamicEntityCreatedOnClient(Entity* inEntity)
 {
-    if (InstanceManager::getClientWorld())
+    if (s_clientWorldInstance)
     {
-        InstanceManager::getClientWorld()->addDynamicEntity(inEntity);
+        s_clientWorldInstance->addDynamicEntity(inEntity);
     }
 }
 
 void InstanceManager::sHandleDynamicEntityDeletedOnClient(Entity* inEntity)
 {
-    if (InstanceManager::getClientWorld())
+    if (s_clientWorldInstance)
     {
-        InstanceManager::getClientWorld()->removeDynamicEntity(inEntity);
+        s_clientWorldInstance->removeDynamicEntity(inEntity);
     }
 }
 
@@ -59,9 +59,11 @@ uint64_t InstanceManager::sGetPlayerAddressHashForIndexOnClient(uint8_t inPlayer
 {
     uint64_t ret = 0;
  
-    Entity* entity = InstanceManager::sGetPlayerEntityForIDOnClient(inPlayerIndex + 1);
-    if (entity)
+    if (s_clientWorldInstance)
     {
+        Entity* entity = s_clientWorldInstance->getPlayerWithId(inPlayerIndex + 1);
+        assert(entity);
+        
         PlayerController* robot = static_cast<PlayerController*>(entity->getController());
         assert(robot);
         ret = robot->getAddressHash();
@@ -70,31 +72,19 @@ uint64_t InstanceManager::sGetPlayerAddressHashForIndexOnClient(uint8_t inPlayer
     return ret;
 }
 
-Entity* InstanceManager::sGetPlayerEntityForIDOnClient(uint8_t inPlayerID)
-{
-    Entity* ret = NULL;
-    
-    if (InstanceManager::getClientWorld())
-    {
-        ret = InstanceManager::getClientWorld()->getPlayerWithId(inPlayerID);
-    }
-    
-    return ret;
-}
-
 void InstanceManager::sHandleDynamicEntityCreatedOnServer(Entity* inEntity)
 {
-    if (InstanceManager::getServerWorld())
+    if (s_serverWorldInstance)
     {
-        InstanceManager::getServerWorld()->addDynamicEntity(inEntity);
+        s_serverWorldInstance->addDynamicEntity(inEntity);
     }
 }
 
 void InstanceManager::sHandleDynamicEntityDeletedOnServer(Entity* inEntity)
 {
-    if (InstanceManager::getServerWorld())
+    if (s_serverWorldInstance)
     {
-        InstanceManager::getServerWorld()->removeDynamicEntity(inEntity);
+        s_serverWorldInstance->removeDynamicEntity(inEntity);
     }
 }
 

@@ -30,11 +30,12 @@ class Entity;
 typedef void (*HandleNewClientFunc)(uint8_t playerId, std::string playerName);
 typedef void (*HandleLostClientFunc)(ClientProxy* inClientProxy, uint8_t index);
 typedef InputState* (*InputStateCreationFunc)();
+typedef void (*InputStateReleaseFunc)(InputState* inputState);
 
 class NetworkManagerServer
 {
 public:
-    static void create(ServerHelper* inServerHelper, HandleNewClientFunc inHandleNewClientFunc, HandleLostClientFunc inHandleLostClientFunc, InputStateCreationFunc inInputStateCreationFunc);
+    static void create(ServerHelper* inServerHelper, HandleNewClientFunc inHandleNewClientFunc, HandleLostClientFunc inHandleLostClientFunc, InputStateCreationFunc inInputStateCreationFunc, InputStateReleaseFunc inputStateReleaseFunc);
     static NetworkManagerServer* getInstance();
     static void destroy();
     
@@ -67,6 +68,7 @@ private:
     HandleNewClientFunc _handleNewClientFunc;
     HandleLostClientFunc _handleLostClientFunc;
     InputStateCreationFunc _inputStateCreationFunc;
+    InputStateReleaseFunc _inputStateReleaseFunc;
     NoctisGames::NGPool<ReplicationManagerTransmissionData> _replicationManagerTransmissionDatas;
     std::map<size_t, ClientProxy*> _addressHashToClientMap;
     std::map<int, ClientProxy*> _playerIDToClientMap;
@@ -91,7 +93,7 @@ private:
     void updateNextPlayerId();
     
     // ctor, copy ctor, and assignment should be private in a Singleton
-    NetworkManagerServer(ServerHelper* inServerHelper, HandleNewClientFunc inHandleNewClientFunc, HandleLostClientFunc inHandleLostClientFunc, InputStateCreationFunc inInputStateCreationFunc);
+    NetworkManagerServer(ServerHelper* inServerHelper, HandleNewClientFunc inHandleNewClientFunc, HandleLostClientFunc inHandleLostClientFunc, InputStateCreationFunc inInputStateCreationFunc, InputStateReleaseFunc inputStateReleaseFunc);
     ~NetworkManagerServer();
     NetworkManagerServer(const NetworkManagerServer&);
     NetworkManagerServer& operator=(const NetworkManagerServer&);

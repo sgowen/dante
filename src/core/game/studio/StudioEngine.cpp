@@ -27,7 +27,7 @@
 #include <game/studio/StudioInputManager.h>
 #include <game/logic/World.h>
 #include <game/logic/InstanceManager.h>
-#include <game/game/MainInputState.h>
+#include <game/game/GameInputState.h>
 #include <framework/network/portable/FWInstanceManager.h>
 #include <framework/entity/EntityManager.h>
 #include <framework/network/client/SocketClientHelper.h>
@@ -166,7 +166,7 @@ bool StudioEngine::handleInput()
 {
     int menuState = _input->getMenuState();
     
-    if (menuState == SIS_ESCAPE)
+    if (menuState == SIMS_ESCAPE)
     {
         return true;
     }

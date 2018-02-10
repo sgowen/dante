@@ -53,11 +53,11 @@ void MoveList::markMoveAsProcessed(Move* move)
     _lastProcessedMoveTimestamp = move->getTimestamp();
 }
 
-void MoveList::removeProcessedMoves(float inLastMoveProcessedOnServerTimestamp)
+void MoveList::removeProcessedMoves(float inLastMoveProcessedOnServerTimestamp, InputStateReleaseFunc inputStateReleaseFunc)
 {
     while (!_moves.empty() && _moves.front().getTimestamp() <= inLastMoveProcessedOnServerTimestamp)
     {
-        _moves.front().getInputState()->setInUse(false);
+        inputStateReleaseFunc(_moves.front().getInputState());
 
         _moves.pop_front();
     }

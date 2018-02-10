@@ -20,7 +20,6 @@
 #include <framework/input/KeyboardEvent.h>
 #include <framework/input/GamePadInputManager.h>
 #include <framework/input/GamePadEvent.h>
-#include <game/logic/PooledObjectsManager.h>
 #include <framework/util/Constants.h>
 #include <framework/input/KeyboardLookup.h>
 #include <framework/util/StringUtil.h>
@@ -47,7 +46,7 @@ void TitleInputManager::update()
     KEYBOARD_INPUT_MANAGER->process();
     GAME_PAD_INPUT_MANAGER->process();
     
-    _inputState = TIS_NONE;
+    _inputState = TIMS_NONE;
     
     if (_isLiveMode)
     {
@@ -91,7 +90,7 @@ void TitleInputManager::update()
                 {
                     if (keyboardEvent->getKey() == NG_KEY_ESCAPE)
                     {
-                        _inputState = TIS_ESCAPE;
+                        _inputState = TIMS_ESCAPE;
                         return;
                     }
                 }
@@ -138,40 +137,40 @@ void TitleInputManager::update()
             switch (e.getKey())
             {
                 case NG_KEY_E:
-                    _inputState = e.isDown() ? TIS_ENTER_STUDIO : TIS_NONE;
+                    _inputState = e.isDown() ? TIMS_ENTER_STUDIO : TIMS_NONE;
                     continue;
                 case NG_KEY_A:
-                    _inputState = e.isDown() ? TIS_ACTIVATE_STEAM : TIS_NONE;
+                    _inputState = e.isDown() ? TIMS_ACTIVATE_STEAM : TIMS_NONE;
                     continue;
                 case NG_KEY_D:
-                    _inputState = e.isDown() ? TIS_DEACTIVATE_STEAM : TIS_NONE;
+                    _inputState = e.isDown() ? TIMS_DEACTIVATE_STEAM : TIMS_NONE;
                     continue;
                 case NG_KEY_S:
-                    _inputState = e.isDown() ? TIS_START_SERVER : TIS_NONE;
+                    _inputState = e.isDown() ? TIMS_START_SERVER : TIMS_NONE;
                     continue;
                 case NG_KEY_J:
-                    _inputState = e.isDown() ? TIS_JOIN_LOCAL_SERVER : TIS_NONE;
+                    _inputState = e.isDown() ? TIMS_JOIN_LOCAL_SERVER : TIMS_NONE;
                     continue;
                 case NG_KEY_L:
-                    _inputState = e.isDown() ? TIS_STEAM_REFRESH_LAN_SERVERS : TIS_NONE;
+                    _inputState = e.isDown() ? TIMS_STEAM_REFRESH_LAN_SERVERS : TIMS_NONE;
                     continue;
                 case NG_KEY_I:
-                    _inputState = e.isDown() ? TIS_STEAM_REFRESH_INTERNET_SERVERS : TIS_NONE;
+                    _inputState = e.isDown() ? TIMS_STEAM_REFRESH_INTERNET_SERVERS : TIMS_NONE;
                     continue;
                 case NG_KEY_ONE:
-                    _inputState = e.isDown() ? TIS_STEAM_JOIN_SERVER_1 : TIS_NONE;
+                    _inputState = e.isDown() ? TIMS_STEAM_JOIN_SERVER_1 : TIMS_NONE;
                     continue;
                 case NG_KEY_TWO:
-                    _inputState = e.isDown() ? TIS_STEAM_JOIN_SERVER_2 : TIS_NONE;
+                    _inputState = e.isDown() ? TIMS_STEAM_JOIN_SERVER_2 : TIMS_NONE;
                     continue;
                 case NG_KEY_THREE:
-                    _inputState = e.isDown() ? TIS_STEAM_JOIN_SERVER_3 : TIS_NONE;
+                    _inputState = e.isDown() ? TIMS_STEAM_JOIN_SERVER_3 : TIMS_NONE;
                     continue;
                 case NG_KEY_FOUR:
-                    _inputState = e.isDown() ? TIS_STEAM_JOIN_SERVER_4 : TIS_NONE;
+                    _inputState = e.isDown() ? TIMS_STEAM_JOIN_SERVER_4 : TIMS_NONE;
                     continue;
                 case NG_KEY_ESCAPE:
-                    _inputState = e.isDown() ? TIS_ESCAPE : TIS_NONE;
+                    _inputState = e.isDown() ? TIMS_ESCAPE : TIMS_NONE;
                     continue;
                 default:
                     continue;
@@ -188,10 +187,10 @@ void TitleInputManager::update()
             switch ((*i)->getType())
             {
                 case GamePadEventType_START_BUTTON:
-                    _inputState = TIS_START_SERVER;
+                    _inputState = TIMS_START_SERVER;
                     continue;
                 case GamePadEventType_BACK_BUTTON:
-                    _inputState = TIS_ESCAPE;
+                    _inputState = TIMS_ESCAPE;
                     continue;
                 default:
                     continue;
@@ -205,7 +204,7 @@ void TitleInputManager::update()
             {
                 if ((*i)->getType() == CursorEventType_UP)
                 {
-                    _inputState = TIS_START_SERVER;
+                    _inputState = TIMS_START_SERVER;
                 }
                 else
                 {
@@ -258,7 +257,7 @@ std::string TitleInputManager::getLiveInput()
 }
 
 TitleInputManager::TitleInputManager() :
-_inputState(TIS_NONE),
+_inputState(TIMS_NONE),
 _isLiveMode(false),
 _isTimeToProcessInput(false),
 _engine(NULL)

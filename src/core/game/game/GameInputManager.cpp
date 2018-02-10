@@ -10,7 +10,7 @@
 
 #include <game/game/GameInputManager.h>
 
-#include <game/game/MainInputState.h>
+#include <game/game/GameInputState.h>
 #include <framework/network/portable/Move.h>
 #include <game/game/GameEngine.h>
 
@@ -22,7 +22,6 @@
 #include <framework/input/KeyboardEvent.h>
 #include <framework/input/GamePadInputManager.h>
 #include <framework/input/GamePadEvent.h>
-#include <game/logic/PooledObjectsManager.h>
 #include <framework/util/Constants.h>
 #include <framework/input/KeyboardLookup.h>
 #include <framework/util/StringUtil.h>
@@ -57,7 +56,7 @@ void GameInputManager::destroy()
 
 void GameInputManager::sRemoveProcessedMoves(float inLastMoveProcessedOnServerTimestamp)
 {
-    getInstance()->getMoveList().removeProcessedMoves(inLastMoveProcessedOnServerTimestamp);
+    getInstance()->getMoveList().removeProcessedMoves(inLastMoveProcessedOnServerTimestamp, GameInputManager::sHandleInputStateRelease);
 }
 
 MoveList& GameInputManager::sGetMoveList()
@@ -68,6 +67,12 @@ MoveList& GameInputManager::sGetMoveList()
 void GameInputManager::sOnPlayerWelcomed(uint8_t playerId)
 {
     getInstance()->_currentState->activateNextPlayer(playerId);
+}
+
+void GameInputManager::sHandleInputStateRelease(InputState* inputState)
+{
+    GameInputState* mainInputState = static_cast<GameInputState*>(inputState);
+    getInstance()->_inputStates.free(mainInputState);
 }
 
 void GameInputManager::setEngine(GameEngine* inValue)
@@ -81,7 +86,7 @@ void GameInputManager::update()
     KEYBOARD_INPUT_MANAGER->process();
     GAME_PAD_INPUT_MANAGER->process();
     
-    _inputState = GIS_NONE;
+    _inputState = GIMS_NONE;
     
     for (std::vector<KeyboardEvent *>::iterator i = KEYBOARD_INPUT_MANAGER->getEvents().begin(); i != KEYBOARD_INPUT_MANAGER->getEvents().end(); ++i)
     {
@@ -89,22 +94,22 @@ void GameInputManager::update()
         switch (e.getKey())
         {
             case NG_KEY_M:
-                _inputState = e.isDown() ? GIS_CLIENT_MAIN_TOGGLE_MUSIC : _inputState;
+                _inputState = e.isDown() ? GIMS_CLIENT_MAIN_TOGGLE_MUSIC : _inputState;
                 continue;
             case NG_KEY_S:
-                _inputState = e.isDown() ? GIS_CLIENT_MAIN_TOGGLE_SOUND : _inputState;
+                _inputState = e.isDown() ? GIMS_CLIENT_MAIN_TOGGLE_SOUND : _inputState;
                 continue;
             case NG_KEY_B:
-                _inputState = e.isDown() ? GIS_TOGGLE_PHYSICS_DISPLAY : _inputState;
+                _inputState = e.isDown() ? GIMS_TOGGLE_PHYSICS_DISPLAY : _inputState;
                 continue;
             case NG_KEY_I:
-                _inputState = e.isDown() ? GIS_TOGGLE_INTERPOLATION : _inputState;
+                _inputState = e.isDown() ? GIMS_TOGGLE_INTERPOLATION : _inputState;
                 continue;
             case NG_KEY_L:
-                _inputState = e.isDown() ? GIS_TOGGLE_LIGHTING : _inputState;
+                _inputState = e.isDown() ? GIMS_TOGGLE_LIGHTING : _inputState;
                 continue;
             case NG_KEY_T:
-                _inputState = e.isDown() ? GIS_SERVER_TOGGLE_MAP : _inputState;
+                _inputState = e.isDown() ? GIMS_SERVER_TOGGLE_MAP : _inputState;
                 continue;
             case NG_KEY_U:
                 _engine->_state ^= e.isDown() ? GameEngineState_DisplayUI : 0;
@@ -127,42 +132,42 @@ void GameInputManager::update()
                 {
                     // Player 1
                     case NG_KEY_W:
-                        _currentState->getGameInputState(0)._isJumping = e.isPressed();
+                        _currentState->getPlayerInputState(0)._isJumping = e.isPressed();
                         continue;
                     case NG_KEY_A:
-                        _currentState->getGameInputState(0)._isMovingLeft = e.isPressed();
+                        _currentState->getPlayerInputState(0)._isMovingLeft = e.isPressed();
                         continue;
                     case NG_KEY_D:
-                        _currentState->getGameInputState(0)._isMovingRight = e.isPressed();
+                        _currentState->getPlayerInputState(0)._isMovingRight = e.isPressed();
                         continue;
                     case NG_KEY_SPACE_BAR:
-                        _currentState->getGameInputState(0)._isMainAction = e.isPressed();
+                        _currentState->getPlayerInputState(0)._isMainAction = e.isPressed();
                         continue;
 #ifdef _DEBUG
                     // Add local players, debug Only
                     case NG_KEY_TWO:
-                        _currentState->getGameInputState(1)._isJumping = e.isPressed();
+                        _currentState->getPlayerInputState(1)._isJumping = e.isPressed();
                         continue;
                     case NG_KEY_THREE:
-                        _currentState->getGameInputState(2)._isJumping = e.isPressed();
+                        _currentState->getPlayerInputState(2)._isJumping = e.isPressed();
                         continue;
                     case NG_KEY_FOUR:
-                        _currentState->getGameInputState(3)._isJumping = e.isPressed();
+                        _currentState->getPlayerInputState(3)._isJumping = e.isPressed();
                         continue;
                     case NG_KEY_ARROW_LEFT:
-                        _currentState->getGameInputState(1)._isMovingLeft = e.isPressed();
-                        _currentState->getGameInputState(2)._isMovingLeft = e.isPressed();
-                        _currentState->getGameInputState(3)._isMovingLeft = e.isPressed();
+                        _currentState->getPlayerInputState(1)._isMovingLeft = e.isPressed();
+                        _currentState->getPlayerInputState(2)._isMovingLeft = e.isPressed();
+                        _currentState->getPlayerInputState(3)._isMovingLeft = e.isPressed();
                         continue;
                     case NG_KEY_ARROW_RIGHT:
-                        _currentState->getGameInputState(1)._isMovingRight = e.isPressed();
-                        _currentState->getGameInputState(2)._isMovingRight = e.isPressed();
-                        _currentState->getGameInputState(3)._isMovingRight = e.isPressed();
+                        _currentState->getPlayerInputState(1)._isMovingRight = e.isPressed();
+                        _currentState->getPlayerInputState(2)._isMovingRight = e.isPressed();
+                        _currentState->getPlayerInputState(3)._isMovingRight = e.isPressed();
                         continue;
                     case NG_KEY_PERIOD:
-                        _currentState->getGameInputState(1)._isMainAction = e.isPressed();
-                        _currentState->getGameInputState(2)._isMainAction = e.isPressed();
-                        _currentState->getGameInputState(3)._isMainAction = e.isPressed();
+                        _currentState->getPlayerInputState(1)._isMainAction = e.isPressed();
+                        _currentState->getPlayerInputState(2)._isMainAction = e.isPressed();
+                        _currentState->getPlayerInputState(3)._isMainAction = e.isPressed();
                         continue;
                     case NG_KEY_SEVEN:
                         if (e.isDown())
@@ -199,14 +204,14 @@ void GameInputManager::update()
         switch ((*i)->getType())
         {
             case GamePadEventType_A_BUTTON:
-                _currentState->getGameInputState((*i)->getIndex())._isJumping = (*i)->isPressed();
+                _currentState->getPlayerInputState((*i)->getIndex())._isJumping = (*i)->isPressed();
                 continue;
             case GamePadEventType_D_PAD_RIGHT:
             {
                 if (!isMovingRight[(*i)->getIndex()])
                 {
-                    _currentState->getGameInputState((*i)->getIndex())._isMovingRight = (*i)->isPressed();
-                    isMovingRight[(*i)->getIndex()] = _currentState->getGameInputState((*i)->getIndex())._isMovingRight;
+                    _currentState->getPlayerInputState((*i)->getIndex())._isMovingRight = (*i)->isPressed();
+                    isMovingRight[(*i)->getIndex()] = _currentState->getPlayerInputState((*i)->getIndex())._isMovingRight;
                 }
             }
                 continue;
@@ -214,8 +219,8 @@ void GameInputManager::update()
             {
                 if (!isMovingLeft[(*i)->getIndex()])
                 {
-                    _currentState->getGameInputState((*i)->getIndex())._isMovingLeft = (*i)->isPressed();
-                    isMovingLeft[(*i)->getIndex()] = _currentState->getGameInputState((*i)->getIndex())._isMovingLeft;
+                    _currentState->getPlayerInputState((*i)->getIndex())._isMovingLeft = (*i)->isPressed();
+                    isMovingLeft[(*i)->getIndex()] = _currentState->getPlayerInputState((*i)->getIndex())._isMovingLeft;
                 }
             }
                 continue;
@@ -224,14 +229,14 @@ void GameInputManager::update()
                 float val = sanitizeCloseToZeroValue((*i)->getX());
                 if (!isMovingRight[(*i)->getIndex()])
                 {
-                    _currentState->getGameInputState((*i)->getIndex())._isMovingRight = val > 0;
-                    isMovingRight[(*i)->getIndex()] = _currentState->getGameInputState((*i)->getIndex())._isMovingRight;
+                    _currentState->getPlayerInputState((*i)->getIndex())._isMovingRight = val > 0;
+                    isMovingRight[(*i)->getIndex()] = _currentState->getPlayerInputState((*i)->getIndex())._isMovingRight;
                 }
                 
                 if (!isMovingLeft[(*i)->getIndex()])
                 {
-                    _currentState->getGameInputState((*i)->getIndex())._isMovingLeft = val < 0;
-                    isMovingLeft[(*i)->getIndex()] = _currentState->getGameInputState((*i)->getIndex())._isMovingLeft;
+                    _currentState->getPlayerInputState((*i)->getIndex())._isMovingLeft = val < 0;
+                    isMovingLeft[(*i)->getIndex()] = _currentState->getPlayerInputState((*i)->getIndex())._isMovingLeft;
                 }
             }
                 continue;
@@ -239,8 +244,8 @@ void GameInputManager::update()
             case GamePadEventType_TRIGGER:
                 if (!isAction[(*i)->getIndex()])
                 {
-                    _currentState->getGameInputState((*i)->getIndex())._isMainAction = (*i)->getX() > 0 || (*i)->getY() > 0;
-                    isAction[(*i)->getIndex()] = _currentState->getGameInputState((*i)->getIndex())._isMainAction;
+                    _currentState->getPlayerInputState((*i)->getIndex())._isMainAction = (*i)->getX() > 0 || (*i)->getY() > 0;
+                    isAction[(*i)->getIndex()] = _currentState->getPlayerInputState((*i)->getIndex())._isMainAction;
                 }
                 continue;
             case GamePadEventType_BACK_BUTTON:
@@ -263,19 +268,19 @@ void GameInputManager::update()
                 || (*i)->getType() == CursorEventType_DRAGGED)
             {
                 Vector2& vec = CURSOR_CONVERTER->convert(*(*i));
-                _currentState->getGameInputState(0)._isMovingLeft = vec.getX() < (GM_CFG->_camWidth / 2);
-                _currentState->getGameInputState(0)._isMovingRight = vec.getX() > (GM_CFG->_camWidth / 2);
+                _currentState->getPlayerInputState(0)._isMovingLeft = vec.getX() < (GM_CFG->_camWidth / 2);
+                _currentState->getPlayerInputState(0)._isMovingRight = vec.getX() > (GM_CFG->_camWidth / 2);
                 
                 if ((*i)->getType() == CursorEventType_DOWN)
                 {
-                    _currentState->getGameInputState(0)._isJumping = true;
+                    _currentState->getPlayerInputState(0)._isJumping = true;
                 }
             }
             else
             {
-                _currentState->getGameInputState(0)._isMovingLeft = false;
-                _currentState->getGameInputState(0)._isMovingRight = false;
-                _currentState->getGameInputState(0)._isJumping = false;
+                _currentState->getPlayerInputState(0)._isMovingLeft = false;
+                _currentState->getPlayerInputState(0)._isMovingRight = false;
+                _currentState->getPlayerInputState(0)._isJumping = false;
                 
                 continue;
             }
@@ -296,7 +301,7 @@ void GameInputManager::clearPendingMove()
     _pendingMove = NULL;
 }
 
-MainInputState* GameInputManager::getInputState()
+GameInputState* GameInputManager::getInputState()
 {
     return _currentState;
 }
@@ -313,7 +318,7 @@ int GameInputManager::getMenuState()
 
 const Move& GameInputManager::sampleInputAsMove()
 {
-    MainInputState* inputState = static_cast<MainInputState*>(POOLED_OBJ_MGR->borrowInputState());
+    GameInputState* inputState = _inputStates.obtain();
     _currentState->copyTo(inputState);
     
     return _moveList.addMove(inputState, Timing::getInstance()->getFrameStartTime());
@@ -321,14 +326,14 @@ const Move& GameInputManager::sampleInputAsMove()
 
 void GameInputManager::dropPlayer(int index)
 {
-    _currentState->getGameInputState(index)._playerId = INPUT_UNASSIGNED;
-    _inputState = GIS_LOCAL_PLAYER_DROP_OUT_0 + index;
+    _currentState->getPlayerInputState(index)._playerId = INPUT_UNASSIGNED;
+    _inputState = GIMS_LOCAL_PLAYER_DROP_OUT_0 + index;
 }
 
 GameInputManager::GameInputManager() :
-_currentState(static_cast<MainInputState*>(POOLED_OBJ_MGR->borrowInputState())),
+_currentState(_inputStates.obtain()),
 _pendingMove(NULL),
-_inputState(GIS_NONE),
+_inputState(GIMS_NONE),
 _isTimeToProcessInput(false),
 _engine(NULL),
 _playerLightZDelta(0)

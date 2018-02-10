@@ -27,7 +27,7 @@
 #include <framework/network/portable/SocketAddressFactory.h>
 #include <framework/network/portable/SocketUtil.h>
 #include <game/logic/InstanceManager.h>
-#include <game/game/MainInputState.h>
+#include <game/game/GameInputState.h>
 #include <framework/network/portable/FWInstanceManager.h>
 #include <framework/entity/EntityManager.h>
 #include <framework/network/client/SocketClientHelper.h>
@@ -238,33 +238,33 @@ bool GameEngine::handleNonMoveInput()
     int menuState = _input->getMenuState();
     switch (menuState)
     {
-        case GIS_LOCAL_PLAYER_DROP_OUT_0:
+        case GIMS_LOCAL_PLAYER_DROP_OUT_0:
             return true;
-        case GIS_LOCAL_PLAYER_DROP_OUT_1:
+        case GIMS_LOCAL_PLAYER_DROP_OUT_1:
             NG_CLIENT->requestToDropLocalPlayer(1);
             break;
-        case GIS_LOCAL_PLAYER_DROP_OUT_2:
+        case GIMS_LOCAL_PLAYER_DROP_OUT_2:
             NG_CLIENT->requestToDropLocalPlayer(2);
             break;
-        case GIS_LOCAL_PLAYER_DROP_OUT_3:
+        case GIMS_LOCAL_PLAYER_DROP_OUT_3:
             NG_CLIENT->requestToDropLocalPlayer(3);
             break;
-        case GIS_CLIENT_MAIN_TOGGLE_MUSIC:
+        case GIMS_CLIENT_MAIN_TOGGLE_MUSIC:
             NG_AUDIO_ENGINE->setMusicDisabled(!NG_AUDIO_ENGINE->isMusicDisabled());
             break;
-        case GIS_CLIENT_MAIN_TOGGLE_SOUND:
+        case GIMS_CLIENT_MAIN_TOGGLE_SOUND:
             NG_AUDIO_ENGINE->setSoundsDisabled(!NG_AUDIO_ENGINE->areSoundsDisabled());
             break;
-        case GIS_TOGGLE_PHYSICS_DISPLAY:
+        case GIMS_TOGGLE_PHYSICS_DISPLAY:
             _state ^= GameEngineState_DisplayBox2D;
             break;
-        case GIS_TOGGLE_INTERPOLATION:
+        case GIMS_TOGGLE_INTERPOLATION:
             _state ^= GameEngineState_Interpolation;
             break;
-        case GIS_TOGGLE_LIGHTING:
+        case GIMS_TOGGLE_LIGHTING:
             _state ^= GameEngineState_Lighting;
             break;
-        case GIS_SERVER_TOGGLE_MAP:
+        case GIMS_SERVER_TOGGLE_MAP:
             if (_server)
             {
                 _server->toggleMap();
@@ -272,7 +272,7 @@ bool GameEngine::handleNonMoveInput()
             break;
         default:
         {
-            MainInputState* inputState = _input->getInputState();
+            GameInputState* inputState = _input->getInputState();
             if (inputState->isRequestingToAddLocalPlayer())
             {
                 NG_CLIENT->requestToAddLocalPlayer();

@@ -21,7 +21,6 @@
 #include <framework/input/KeyboardEvent.h>
 #include <framework/input/GamePadInputManager.h>
 #include <framework/input/GamePadEvent.h>
-#include <game/logic/PooledObjectsManager.h>
 #include <framework/util/Constants.h>
 #include <framework/input/KeyboardLookup.h>
 #include <framework/util/StringUtil.h>
@@ -75,7 +74,7 @@ void StudioInputManager::update()
     KEYBOARD_INPUT_MANAGER->process();
     GAME_PAD_INPUT_MANAGER->process();
     
-    _inputState = SIS_NONE;
+    _inputState = SIMS_NONE;
     
     if (_isLiveMode)
     {
@@ -119,7 +118,7 @@ void StudioInputManager::update()
                 {
                     if (keyboardEvent->getKey() == NG_KEY_ESCAPE)
                     {
-                        _inputState = SIS_ESCAPE;
+                        _inputState = SIMS_ESCAPE;
                         return;
                     }
                 }
@@ -387,7 +386,7 @@ void StudioInputManager::handleDefaultInput()
                 _engine->_state ^= e.isDown() ? StudioEngineState_DisplayGrid : 0;
                 continue;
             case NG_KEY_ESCAPE:
-                _inputState = e.isDown() ? SIS_ESCAPE : SIS_NONE;
+                _inputState = e.isDown() ? SIMS_ESCAPE : SIMS_NONE;
                 continue;
             default:
                 continue;
@@ -711,7 +710,7 @@ _deltaCursor(),
 _cursor(),
 _upCursor(),
 _liveInput(),
-_inputState(SIS_NONE),
+_inputState(SIMS_NONE),
 _isLiveMode(false),
 _isTimeToProcessInput(false),
 _isControl(false),

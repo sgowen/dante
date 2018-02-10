@@ -27,7 +27,7 @@
 #include <game/title/TitleInputManager.h>
 #include <game/logic/World.h>
 #include <game/logic/InstanceManager.h>
-#include <game/game/MainInputState.h>
+#include <game/game/GameInputState.h>
 #include <framework/network/portable/FWInstanceManager.h>
 #include <framework/entity/EntityManager.h>
 #include <framework/entity/EntityMapper.h>
@@ -46,7 +46,6 @@
 #include <game/game/GameEngine.h>
 #include <game/game/GameInputManager.h>
 #include <game/studio/StudioEngine.h>
-#include <game/logic/PooledObjectsManager.h>
 #include <game/logic/GameConfig.h>
 #include <framework/entity/EntityMapper.h>
 #include <framework/entity/EntityLayoutMapper.h>
@@ -187,7 +186,7 @@ bool TitleEngine::handleInput(Engine* engine)
     
     if (TitleInputManager::getInstance()->isLiveMode())
     {
-        if (menuState == TIS_ESCAPE)
+        if (menuState == TIMS_ESCAPE)
         {
             TitleInputManager::getInstance()->setLiveInputMode(false);
             
@@ -224,7 +223,7 @@ bool TitleEngine::handleInput(Engine* engine)
     }
     else if (NG_SERVER)
     {
-        if (menuState == TIS_ESCAPE)
+        if (menuState == TIMS_ESCAPE)
         {
             disconnect();
             return true;
@@ -232,7 +231,7 @@ bool TitleEngine::handleInput(Engine* engine)
     }
     else
     {
-        if (menuState == TIS_ENTER_STUDIO)
+        if (menuState == TIMS_ENTER_STUDIO)
         {
             if (PlatformHelper::getPlatform() != NG_PLATFORM_ANDROID
                 && PlatformHelper::getPlatform() != NG_PLATFORM_IOS)
@@ -241,15 +240,15 @@ bool TitleEngine::handleInput(Engine* engine)
                 return true;
             }
         }
-        else if (menuState == TIS_ACTIVATE_STEAM)
+        else if (menuState == TIMS_ACTIVATE_STEAM)
         {
             activateSteam();
         }
-        else if (menuState == TIS_DEACTIVATE_STEAM)
+        else if (menuState == TIMS_DEACTIVATE_STEAM)
         {
             deactivateSteam();
         }
-        else if (menuState == TIS_START_SERVER)
+        else if (menuState == TIMS_START_SERVER)
         {
             if (_isSteam)
             {
@@ -263,7 +262,7 @@ bool TitleEngine::handleInput(Engine* engine)
                 TitleInputManager::getInstance()->setLiveInputMode(true);
             }
         }
-        else if (menuState == TIS_JOIN_LOCAL_SERVER)
+        else if (menuState == TIMS_JOIN_LOCAL_SERVER)
         {
             if (!_isSteam)
             {
@@ -272,7 +271,7 @@ bool TitleEngine::handleInput(Engine* engine)
                 TitleInputManager::getInstance()->setLiveInputMode(true);
             }
         }
-        else if (menuState == TIS_STEAM_REFRESH_LAN_SERVERS)
+        else if (menuState == TIMS_STEAM_REFRESH_LAN_SERVERS)
         {
 #ifdef NG_STEAM
             if (NG_STEAM_GAME_SERVICES)
@@ -281,7 +280,7 @@ bool TitleEngine::handleInput(Engine* engine)
             }
 #endif
         }
-        else if (menuState == TIS_STEAM_REFRESH_INTERNET_SERVERS)
+        else if (menuState == TIMS_STEAM_REFRESH_INTERNET_SERVERS)
         {
 #ifdef NG_STEAM
             if (NG_STEAM_GAME_SERVICES)
@@ -290,15 +289,15 @@ bool TitleEngine::handleInput(Engine* engine)
             }
 #endif
         }
-        else if (menuState == TIS_STEAM_JOIN_SERVER_1
-                 || menuState == TIS_STEAM_JOIN_SERVER_2
-                 || menuState == TIS_STEAM_JOIN_SERVER_3
-                 || menuState == TIS_STEAM_JOIN_SERVER_4)
+        else if (menuState == TIMS_STEAM_JOIN_SERVER_1
+                 || menuState == TIMS_STEAM_JOIN_SERVER_2
+                 || menuState == TIMS_STEAM_JOIN_SERVER_3
+                 || menuState == TIMS_STEAM_JOIN_SERVER_4)
         {
 #ifdef NG_STEAM
             if (NG_STEAM_GAME_SERVICES && !NG_STEAM_GAME_SERVICES->isRequestingServers())
             {
-                int serverIndex = menuState - TIS_STEAM_JOIN_SERVER_1; // eh, hacky I know, but whatever
+                int serverIndex = menuState - TIMS_STEAM_JOIN_SERVER_1; // eh, hacky I know, but whatever
                 std::vector<NGSteamGameServer> gameServers = NG_STEAM_GAME_SERVICES->getGameServers();
                 if (gameServers.size() > serverIndex)
                 {
@@ -307,7 +306,7 @@ bool TitleEngine::handleInput(Engine* engine)
             }
 #endif
         }
-        else if (menuState == TIS_ESCAPE)
+        else if (menuState == TIMS_ESCAPE)
         {
             engine->setRequestedAction(REQUESTED_ACTION_EXIT);
             return true;
@@ -375,11 +374,6 @@ void TitleEngine::startServer()
 {
     disconnect();
     
-    if (!PooledObjectsManager::getInstance())
-    {
-        PooledObjectsManager::create();
-    }
-    
     _state = TitleEngineState_ServerStarting;
     
     Server::create(_isSteam);
@@ -389,11 +383,6 @@ void TitleEngine::startServer()
 
 void TitleEngine::joinServer(Engine* engine)
 {
-    if (!PooledObjectsManager::getInstance())
-    {
-        PooledObjectsManager::create();
-    }
-    
     FWInstanceManager::createClientEntityManager(InstanceManager::sHandleDynamicEntityCreatedOnClient, InstanceManager::sHandleDynamicEntityDeletedOnClient);
     
     ClientHelper* clientHelper = NULL;
@@ -425,11 +414,6 @@ void TitleEngine::disconnect()
     if (Server::getInstance())
     {
         Server::destroy();
-    }
-    
-    if (PooledObjectsManager::getInstance())
-    {
-        PooledObjectsManager::destroy();
     }
     
     _state = _isSteam ? TitleEngineState_SteamOn : TitleEngineState_SteamOff;
