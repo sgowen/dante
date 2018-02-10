@@ -8,25 +8,25 @@
 
 #include "pch.h"
 
-#include "game/title/TitleInputManager.h"
+#include <game/title/TitleInputManager.h>
 
-#include "game/title/TitleEngine.h"
+#include <game/title/TitleEngine.h>
 
-#include "framework/util/Timing.h"
-#include "framework/input/CursorInputManager.h"
-#include "framework/input/CursorEvent.h"
-#include "framework/input/CursorConverter.h"
-#include "framework/input/KeyboardInputManager.h"
-#include "framework/input/KeyboardEvent.h"
-#include "framework/input/GamePadInputManager.h"
-#include "framework/input/GamePadEvent.h"
-#include "game/logic/PooledObjectsManager.h"
-#include "framework/util/Constants.h"
-#include "framework/input/KeyboardLookup.h"
-#include "framework/util/StringUtil.h"
-#include "framework/util/MathUtil.h"
-#include "framework/util/Constants.h"
-#include "framework/util/PlatformHelper.h"
+#include <framework/util/Timing.h>
+#include <framework/input/CursorInputManager.h>
+#include <framework/input/CursorEvent.h>
+#include <framework/input/CursorConverter.h>
+#include <framework/input/KeyboardInputManager.h>
+#include <framework/input/KeyboardEvent.h>
+#include <framework/input/GamePadInputManager.h>
+#include <framework/input/GamePadEvent.h>
+#include <game/logic/PooledObjectsManager.h>
+#include <framework/util/Constants.h>
+#include <framework/input/KeyboardLookup.h>
+#include <framework/util/StringUtil.h>
+#include <framework/util/MathUtil.h>
+#include <framework/util/Constants.h>
+#include <framework/util/PlatformHelper.h>
 
 #include <sstream>
 

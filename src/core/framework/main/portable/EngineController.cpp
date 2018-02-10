@@ -8,7 +8,7 @@
 
 #include "pch.h"
 
-#include "framework/main/portable/EngineController.h"
+#include <framework/main/portable/EngineController.h>
 
 NGRTTI_IMPL_NOPARENT(EngineController);
 

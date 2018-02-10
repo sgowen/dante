@@ -8,7 +8,7 @@
 
 #include "pch.h"
 
-#include "framework/audio/portable/Sound.h"
+#include <framework/audio/portable/Sound.h>
 
 Sound::Sound(int soundId) : _soundId(soundId)
 {

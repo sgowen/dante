@@ -8,12 +8,12 @@
 
 #include "pch.h"
 
-#include "framework/entity/EntityManager.h"
+#include <framework/entity/EntityManager.h>
 
-#include "framework/entity/Entity.h"
+#include <framework/entity/Entity.h>
 
-#include "framework/util/StringUtil.h"
-#include "framework/util/NGSTDUtil.h"
+#include <framework/util/StringUtil.h>
+#include <framework/util/NGSTDUtil.h>
 
 EntityManager::EntityManager(HandleEntityCreatedFunc inHandleEntityCreatedFunc, HandleEntityDeletionFunc inHandleEntityDeletionFunc) :
 _handleEntityCreatedFunc(inHandleEntityCreatedFunc),

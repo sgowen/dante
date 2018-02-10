@@ -9,8 +9,8 @@
 #ifndef __noctisgames__DeliveryNotificationManager__
 #define __noctisgames__DeliveryNotificationManager__
 
-#include "framework/network/portable/InFlightPacket.h"
-#include "framework/network/portable/AckRange.h"
+#include <framework/network/portable/InFlightPacket.h>
+#include <framework/network/portable/AckRange.h>
 
 #include <deque>
 #include <stdint.h>

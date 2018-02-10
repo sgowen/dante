@@ -8,9 +8,9 @@
 
 #include "pch.h"
 
-#include "framework/input/CursorConverter.h"
+#include <framework/input/CursorConverter.h>
 
-#include "framework/input/CursorEvent.h"
+#include <framework/input/CursorEvent.h>
 
 CursorConverter* CursorConverter::getInstance()
 {

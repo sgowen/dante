@@ -9,8 +9,8 @@
 #ifndef __noctisgames__ReplicationCommand__
 #define __noctisgames__ReplicationCommand__
 
-#include "framework/network/portable/ReplicationAction.h"
-#include "framework/network/portable/Network.h"
+#include <framework/network/portable/ReplicationAction.h>
+#include <framework/network/portable/Network.h>
 
 class ReplicationManagerTransmissionData;
 class OutputMemoryBitStream;

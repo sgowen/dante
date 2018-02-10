@@ -8,15 +8,15 @@
 
 #include "pch.h"
 
-#include "game/logic/Util.h"
+#include <game/logic/Util.h>
 
-#include "Box2D/Box2D.h"
+#include <Box2D/Box2D.h>
 
-#include "framework/network/client/NetworkManagerClient.h"
-#include "game/logic/InstanceManager.h"
-#include "game/logic/World.h"
-#include "framework/audio/portable/NGAudioEngine.h"
-#include "framework/entity/Entity.h"
+#include <framework/network/client/NetworkManagerClient.h>
+#include <game/logic/InstanceManager.h>
+#include <game/logic/World.h>
+#include <framework/audio/portable/NGAudioEngine.h>
+#include <framework/entity/Entity.h>
 
 void Util::playSound(int soundId, const b2Vec2& position)
 {

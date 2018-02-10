@@ -8,7 +8,7 @@
 
 #include "pch.h"
 
-#include "framework/graphics/portable/RendererHelperFactory.h"
+#include <framework/graphics/portable/RendererHelperFactory.h>
 
 RendererHelperFactory* RendererHelperFactory::getInstance()
 {
@@ -17,10 +17,10 @@ RendererHelperFactory* RendererHelperFactory::getInstance()
 }
 
 #if defined __APPLE__ || defined __ANDROID__ || defined __linux__
-#include "framework/graphics/opengl/OpenGLRendererHelper.h"
+#include <framework/graphics/opengl/OpenGLRendererHelper.h>
 RendererHelper* RendererHelperFactory::createRendererHelper() { return new OpenGLRendererHelper(); }
 #elif defined _WIN32
-#include "framework/graphics/directx/DirectXRendererHelper.h"
+#include <framework/graphics/directx/DirectXRendererHelper.h>
 RendererHelper* RendererHelperFactory::createRendererHelper() { return new DirectXRendererHelper(); }
 #endif
 

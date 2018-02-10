@@ -9,7 +9,7 @@
 #ifndef __noctisgames__AppleSound__
 #define __noctisgames__AppleSound__
 
-#include "framework/audio/portable/Sound.h"
+#include <framework/audio/portable/Sound.h>
 
 class AppleSound : public Sound
 {

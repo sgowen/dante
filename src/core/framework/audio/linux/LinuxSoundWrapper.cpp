@@ -6,9 +6,9 @@
 //  Copyright (c) 2017 Noctis Games. All rights reserved.
 //
 
-#include "framework/audio/linux/LinuxSoundWrapper.h"
+#include <framework/audio/linux/LinuxSoundWrapper.h>
 
-#include "framework/audio/linux/LinuxSound.h"
+#include <framework/audio/linux/LinuxSound.h>
 
 LinuxSoundWrapper::LinuxSoundWrapper(int soundId, const char *path, int numInstances) : SoundWrapper(soundId, numInstances)
 {

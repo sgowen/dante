@@ -9,7 +9,7 @@
 #ifndef __noctisgames__NullSound__
 #define __noctisgames__NullSound__
 
-#include "framework/audio/portable/Sound.h"
+#include <framework/audio/portable/Sound.h>
 
 class NullSound : public Sound
 {

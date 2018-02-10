@@ -9,7 +9,7 @@
 #ifndef __noctisgames__AndroidAudioEngineHelper__
 #define __noctisgames__AndroidAudioEngineHelper__
 
-#include "framework/audio/portable/AudioEngineHelper.h"
+#include <framework/audio/portable/AudioEngineHelper.h>
 
 #include <vector>
 

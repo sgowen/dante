@@ -9,7 +9,7 @@
 #ifndef __noctisgames__NGLightingShader__
 #define __noctisgames__NGLightingShader__
 
-#include "framework/graphics/portable/NGShader.h"
+#include <framework/graphics/portable/NGShader.h>
 
 #include <framework/graphics/portable/VertexProgramInput.h>
 

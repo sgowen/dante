@@ -9,11 +9,11 @@
 #ifndef __noctisgames__Entity__
 #define __noctisgames__Entity__
 
-#include "framework/util/Constants.h"
-#include "framework/util/MathUtil.h"
-#include "Box2D/Common/b2Math.h"
+#include <framework/util/Constants.h>
+#include <framework/util/MathUtil.h>
+#include <Box2D/Common/b2Math.h>
 
-#include "framework/util/NGRTTI.h"
+#include <framework/util/NGRTTI.h>
 
 #include <stdint.h>
 #include <map>

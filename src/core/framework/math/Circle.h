@@ -9,7 +9,7 @@
 #ifndef __noctisgames__Circle__
 #define __noctisgames__Circle__
 
-#include "framework/math/Vector2.h"
+#include <framework/math/Vector2.h>
 
 class Circle
 {

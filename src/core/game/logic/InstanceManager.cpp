@@ -8,10 +8,10 @@
 
 #include "pch.h"
 
-#include "game/logic/InstanceManager.h"
+#include <game/logic/InstanceManager.h>
 
-#include "framework/entity/Entity.h"
-#include "game/logic/World.h"
+#include <framework/entity/Entity.h>
+#include <game/logic/World.h>
 #include <game/entity/PlayerController.h>
 
 #include <assert.h>

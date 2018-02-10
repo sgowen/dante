@@ -9,7 +9,7 @@
 #ifndef __noctisgames__PacketHandler__
 #define __noctisgames__PacketHandler__
 
-#include "framework/network/portable/InputMemoryBitStream.h"
+#include <framework/network/portable/InputMemoryBitStream.h>
 
 #include <queue>
 #include <list>

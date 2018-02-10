@@ -8,17 +8,17 @@
 
 #include "pch.h"
 
-#include "framework/graphics/portable/TextureManager.h"
+#include <framework/graphics/portable/TextureManager.h>
 
-#include "framework/graphics/portable/TextureLoader.h"
-#include "framework/graphics/portable/NGTexture.h"
+#include <framework/graphics/portable/TextureLoader.h>
+#include <framework/graphics/portable/NGTexture.h>
 
-#include "framework/graphics/portable/TextureWrapper.h"
-#include "framework/graphics/portable/TextureDataWrapper.h"
-#include "framework/graphics/portable/TextureLoaderFactory.h"
-#include "framework/util/NGSTDUtil.h"
-#include "framework/graphics/portable/NGTextureDesc.h"
-#include "framework/file/portable/Assets.h"
+#include <framework/graphics/portable/TextureWrapper.h>
+#include <framework/graphics/portable/TextureDataWrapper.h>
+#include <framework/graphics/portable/TextureLoaderFactory.h>
+#include <framework/util/NGSTDUtil.h>
+#include <framework/graphics/portable/NGTextureDesc.h>
+#include <framework/file/portable/Assets.h>
 
 #include <string>
 #include <assert.h>

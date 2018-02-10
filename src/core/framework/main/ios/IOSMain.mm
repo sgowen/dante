@@ -6,12 +6,12 @@
 //  Copyright © 2017 Noctis Games. All rights reserved.
 //
 
-#import "IOSMain.h"
+#import "IOSMain.h>
 
 // C++
-#include "framework/main/portable/Engine.h"
-#include "framework/input/CursorInputManager.h"
-#include "framework/util/Constants.h"
+#include <framework/main/portable/Engine.h>
+#include <framework/input/CursorInputManager.h>
+#include <framework/util/Constants.h>
 
 @interface IOSMain ()
 {

@@ -9,7 +9,7 @@
 #ifndef __noctisgames__NGFramebufferToScreenShader__
 #define __noctisgames__NGFramebufferToScreenShader__
 
-#include "framework/graphics/portable/NGShader.h"
+#include <framework/graphics/portable/NGShader.h>
 
 class NGFramebufferToScreenShader : public NGShader
 {

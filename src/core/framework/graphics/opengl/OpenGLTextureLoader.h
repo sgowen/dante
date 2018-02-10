@@ -9,7 +9,7 @@
 #ifndef __noctisgames__OpenGLTextureLoader__
 #define __noctisgames__OpenGLTextureLoader__
 
-#include "framework/graphics/portable/TextureLoader.h"
+#include <framework/graphics/portable/TextureLoader.h>
 
 class OpenGLTextureLoader : public TextureLoader
 {

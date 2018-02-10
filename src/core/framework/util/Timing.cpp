@@ -8,7 +8,7 @@
 
 #include "pch.h"
 
-#include "framework/util/Timing.h"
+#include <framework/util/Timing.h>
 
 Timing* Timing::getInstance()
 {

@@ -8,25 +8,25 @@
 
 #include "pch.h"
 
-#include "framework/network/server/NetworkManagerServer.h"
+#include <framework/network/server/NetworkManagerServer.h>
 
-#include "framework/network/server/ServerHelper.h"
-#include "framework/network/portable/InputMemoryBitStream.h"
-#include "framework/network/portable/OutputMemoryBitStream.h"
-#include "framework/network/portable/DeliveryNotificationManager.h"
-#include "framework/network/portable/MachineAddress.h"
-#include "framework/network/server/ClientProxy.h"
-#include "framework/network/portable/InputState.h"
-#include "framework/entity/Entity.h"
+#include <framework/network/server/ServerHelper.h>
+#include <framework/network/portable/InputMemoryBitStream.h>
+#include <framework/network/portable/OutputMemoryBitStream.h>
+#include <framework/network/portable/DeliveryNotificationManager.h>
+#include <framework/network/portable/MachineAddress.h>
+#include <framework/network/server/ClientProxy.h>
+#include <framework/network/portable/InputState.h>
+#include <framework/entity/Entity.h>
 
-#include "framework/util/StringUtil.h"
-#include "framework/util/Timing.h"
-#include "framework/entity/EntityManager.h"
-#include "framework/util/StringUtil.h"
-#include "framework/network/portable/FWInstanceManager.h"
-#include "framework/util/NGSTDUtil.h"
-#include "framework/util/Constants.h"
-#include "framework/network/client/NetworkManagerClient.h"
+#include <framework/util/StringUtil.h>
+#include <framework/util/Timing.h>
+#include <framework/entity/EntityManager.h>
+#include <framework/util/StringUtil.h>
+#include <framework/network/portable/FWInstanceManager.h>
+#include <framework/util/NGSTDUtil.h>
+#include <framework/util/Constants.h>
+#include <framework/network/client/NetworkManagerClient.h>
 
 #include <assert.h>
 
@@ -495,7 +495,7 @@ void NetworkManagerServer::handleInputPacket(ClientProxy* inClientProxy, InputMe
 
 		if (isRefInputStateOrphaned && referenceInputState)
 		{
-			referenceInputState->setInUse(false);
+            referenceInputState->setInUse(false);
 		}
 
 		referenceInputState = move.getInputState();

@@ -9,7 +9,7 @@
 #ifndef __noctisgames__Triangle__
 #define __noctisgames__Triangle__
 
-#include "framework/math/Line.h"
+#include <framework/math/Line.h>
 
 class Vector2;
 

@@ -6,9 +6,9 @@
 //  Copyright (c) 2017 Noctis Games. All rights reserved.
 //
 
-#include "framework/main/glfw/GlfwMain.h"
+#include <framework/main/glfw/GlfwMain.h>
 
-#include "game/logic/MainEngineController.h"
+#include <game/logic/MainEngineController.h>
 
 int main(void)
 {

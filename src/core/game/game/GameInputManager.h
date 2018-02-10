@@ -9,7 +9,7 @@
 #ifndef __noctisgames__GameInputManager__
 #define __noctisgames__GameInputManager__
 
-#include "framework/network/portable/MoveList.h"
+#include <framework/network/portable/MoveList.h>
 
 #include <string>
 

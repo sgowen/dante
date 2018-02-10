@@ -8,14 +8,14 @@
 
 #include "pch.h"
 
-#include "framework/math/OverlapTester.h"
+#include <framework/math/OverlapTester.h>
 
-#include "framework/util/macros.h"
-#include "framework/math/NGRect.h"
-#include "framework/math/Circle.h"
-#include "framework/math/Vector2.h"
-#include "framework/math/Triangle.h"
-#include "framework/math/Line.h"
+#include <framework/util/macros.h>
+#include <framework/math/NGRect.h>
+#include <framework/math/Circle.h>
+#include <framework/math/Vector2.h>
+#include <framework/math/Triangle.h>
+#include <framework/math/Line.h>
 
 #include <stdio.h>
 #include <stdlib.h>

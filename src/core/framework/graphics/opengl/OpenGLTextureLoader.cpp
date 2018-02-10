@@ -6,16 +6,16 @@
 //  Copyright (c) 2017 Noctis Games. All rights reserved.
 //
 
-#include "framework/graphics/opengl/OpenGLTextureLoader.h"
+#include <framework/graphics/opengl/OpenGLTextureLoader.h>
 
-#include "framework/graphics/portable/TextureDataWrapper.h"
+#include <framework/graphics/portable/TextureDataWrapper.h>
 #include <framework/graphics/portable/NGTexture.h>
-#include "framework/graphics/portable/TextureWrapper.h"
+#include <framework/graphics/portable/TextureWrapper.h>
 #include <framework/graphics/portable/NGTextureDesc.h>
 
-#include "framework/file/portable/AssetDataHandler.h"
-#include "framework/file/portable/FileData.h"
-#include "framework/util/StringUtil.h"
+#include <framework/file/portable/AssetDataHandler.h>
+#include <framework/file/portable/FileData.h>
+#include <framework/util/StringUtil.h>
 
 extern "C"
 {

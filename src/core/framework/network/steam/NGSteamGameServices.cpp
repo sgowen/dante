@@ -8,11 +8,11 @@
 
 #include "pch.h"
 
-#include "framework/network/steam/NGSteamGameServices.h"
+#include <framework/network/steam/NGSteamGameServices.h>
 
-#include "framework/util/StringUtil.h"
-#include "framework/util/Constants.h"
-#include "framework/util/macros.h"
+#include <framework/util/StringUtil.h>
+#include <framework/util/Constants.h>
+#include <framework/util/macros.h>
 
 #include <assert.h>
 

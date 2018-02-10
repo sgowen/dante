@@ -8,17 +8,17 @@
 
 #include "pch.h"
 
-#include "framework/graphics/opengl/OpenGLRendererHelper.h"
+#include <framework/graphics/opengl/OpenGLRendererHelper.h>
 
-#include "framework/graphics/portable/NGTexture.h"
-#include "framework/graphics/portable/TextureWrapper.h"
-#include "framework/graphics/portable/ShaderProgramWrapper.h"
-#include "framework/graphics/portable/NGShaderUniformInput.h"
+#include <framework/graphics/portable/NGTexture.h>
+#include <framework/graphics/portable/TextureWrapper.h>
+#include <framework/graphics/portable/ShaderProgramWrapper.h>
+#include <framework/graphics/portable/NGShaderUniformInput.h>
 #include <framework/util/Constants.h>
 
-#include "framework/graphics/portable/NGShaderVarInput.h"
+#include <framework/graphics/portable/NGShaderVarInput.h>
 #include <framework/util/Config.h>
-#include "framework/util/NGSTDUtil.h"
+#include <framework/util/NGSTDUtil.h>
 
 #include <assert.h>
 

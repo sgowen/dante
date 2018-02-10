@@ -9,7 +9,7 @@
 #ifndef __noctisgames__InFlightPacket__
 #define __noctisgames__InFlightPacket__
 
-#include "framework/network/portable/TransmissionData.h"
+#include <framework/network/portable/TransmissionData.h>
 
 #include <map>
 #include <stdint.h>

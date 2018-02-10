@@ -8,46 +8,46 @@
 
 #include "pch.h"
 
-#include "game/game/GameEngine.h"
+#include <game/game/GameEngine.h>
 
 #include <game/game/GameRenderer.h>
-#include "game/logic/World.h"
-#include "game/game/GameInputManager.h"
-#include "framework/util/Timing.h"
-#include "game/logic/Server.h"
+#include <game/logic/World.h>
+#include <game/game/GameInputManager.h>
+#include <framework/util/Timing.h>
+#include <game/logic/Server.h>
 
-#include "framework/util/Constants.h"
-#include "framework/input/CursorInputManager.h"
-#include "framework/input/CursorEvent.h"
-#include "framework/input/CursorConverter.h"
-#include "framework/util/StringUtil.h"
-#include "framework/util/MathUtil.h"
-#include "framework/network/client/NetworkManagerClient.h"
-#include "framework/network/server/NetworkManagerServer.h"
-#include "framework/network/portable/SocketAddressFactory.h"
-#include "framework/network/portable/SocketUtil.h"
-#include "game/logic/InstanceManager.h"
-#include "game/game/MainInputState.h"
-#include "framework/network/portable/FWInstanceManager.h"
-#include "framework/entity/EntityManager.h"
-#include "framework/network/client/SocketClientHelper.h"
-#include "framework/network/portable/MachineAddress.h"
-#include "framework/audio/portable/NGAudioEngine.h"
-#include "framework/util/NGExtension.h"
-#include "framework/util/PlatformHelper.h"
-#include "framework/file/portable/Assets.h"
-#include "framework/util/Constants.h"
-#include "framework/audio/portable/NGAudioEngine.h"
-#include "framework/util/FPSUtil.h"
-#include "framework/input/CursorConverter.h"
+#include <framework/util/Constants.h>
+#include <framework/input/CursorInputManager.h>
+#include <framework/input/CursorEvent.h>
+#include <framework/input/CursorConverter.h>
+#include <framework/util/StringUtil.h>
+#include <framework/util/MathUtil.h>
+#include <framework/network/client/NetworkManagerClient.h>
+#include <framework/network/server/NetworkManagerServer.h>
+#include <framework/network/portable/SocketAddressFactory.h>
+#include <framework/network/portable/SocketUtil.h>
+#include <game/logic/InstanceManager.h>
+#include <game/game/MainInputState.h>
+#include <framework/network/portable/FWInstanceManager.h>
+#include <framework/entity/EntityManager.h>
+#include <framework/network/client/SocketClientHelper.h>
+#include <framework/network/portable/MachineAddress.h>
+#include <framework/audio/portable/NGAudioEngine.h>
+#include <framework/util/NGExtension.h>
+#include <framework/util/PlatformHelper.h>
+#include <framework/file/portable/Assets.h>
+#include <framework/util/Constants.h>
+#include <framework/audio/portable/NGAudioEngine.h>
+#include <framework/util/FPSUtil.h>
+#include <framework/input/CursorConverter.h>
 #include <framework/entity/EntityMapper.h>
 #include <framework/entity/EntityLayoutMapper.h>
 #include <game/logic/GameConfig.h>
 
 #ifdef NG_STEAM
-#include "framework/network/steam/NGSteamClientHelper.h"
-#include "framework/network/steam/NGSteamAddress.h"
-#include "framework/network/steam/NGSteamGameServices.h"
+#include <framework/network/steam/NGSteamClientHelper.h>
+#include <framework/network/steam/NGSteamAddress.h>
+#include <framework/network/steam/NGSteamGameServices.h>
 #endif
 
 NGRTTI_IMPL(GameEngine, EngineState);

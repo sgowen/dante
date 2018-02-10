@@ -8,7 +8,7 @@
 
 #include "pch.h"
 
-#include "framework/graphics/portable/ShaderProgramLoaderFactory.h"
+#include <framework/graphics/portable/ShaderProgramLoaderFactory.h>
 
 ShaderProgramLoaderFactory* ShaderProgramLoaderFactory::getInstance()
 {
@@ -17,10 +17,10 @@ ShaderProgramLoaderFactory* ShaderProgramLoaderFactory::getInstance()
 }
 
 #if defined __APPLE__ || defined __ANDROID__ || defined __linux__
-#include "framework/graphics/opengl/OpenGLProgramLoader.h"
+#include <framework/graphics/opengl/OpenGLProgramLoader.h>
 ShaderProgramLoader* ShaderProgramLoaderFactory::createShaderLoader() { return new OpenGLProgramLoader(); }
 #elif defined _WIN32
-#include "framework/graphics/directx/DirectXProgramLoader.h"
+#include <framework/graphics/directx/DirectXProgramLoader.h>
 ShaderProgramLoader* ShaderProgramLoaderFactory::createShaderLoader() { return new DirectXProgramLoader(); }
 #endif
 

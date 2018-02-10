@@ -9,9 +9,9 @@
 #ifndef __noctisgames__NGSteamP2PAuth__
 #define __noctisgames__NGSteamP2PAuth__
 
-#include "framework/network/steam/NGSteam.h"
-#include "framework/util/Constants.h"
-#include "framework/util/MathUtil.h"
+#include <framework/network/steam/NGSteam.h>
+#include <framework/util/Constants.h>
+#include <framework/util/MathUtil.h>
 
 class InputMemoryBitStream;
 class NetworkHelper;

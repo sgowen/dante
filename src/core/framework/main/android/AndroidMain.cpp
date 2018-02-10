@@ -6,19 +6,19 @@
 //  Copyright (c) 2017 Noctis Games. All rights reserved.
 //
 
-#include "framework/main/android/AndroidMain.h"
+#include <framework/main/android/AndroidMain.h>
 
-#include "framework/main/portable/EngineController.h"
-#include "framework/main/portable/Engine.h"
+#include <framework/main/portable/EngineController.h>
+#include <framework/main/portable/Engine.h>
 
-#include "framework/main/portable/EngineState.h"
-#include "framework/input/CursorInputManager.h"
-#include "framework/input/KeyboardInputManager.h"
-#include "framework/file/android/AndroidAssetDataHandler.h"
-#include "framework/audio/android/AndroidAudioEngineHelper.h"
-#include "framework/util/Constants.h"
-#include "framework/input/KeyboardLookup.h"
-#include "framework/util/MathUtil.h"
+#include <framework/main/portable/EngineState.h>
+#include <framework/input/CursorInputManager.h>
+#include <framework/input/KeyboardInputManager.h>
+#include <framework/file/android/AndroidAssetDataHandler.h>
+#include <framework/audio/android/AndroidAudioEngineHelper.h>
+#include <framework/util/Constants.h>
+#include <framework/input/KeyboardLookup.h>
+#include <framework/util/MathUtil.h>
 
 #include <chrono>
 

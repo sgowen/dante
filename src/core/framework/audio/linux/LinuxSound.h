@@ -9,7 +9,7 @@
 #ifndef __noctisgames__LinuxSound__
 #define __noctisgames__LinuxSound__
 
-#include "framework/audio/portable/Sound.h"
+#include <framework/audio/portable/Sound.h>
 
 #include <AL/al.h>
 

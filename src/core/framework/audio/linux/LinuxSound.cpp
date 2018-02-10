@@ -8,7 +8,7 @@
 
 #include "pch.h"
 
-#include "framework/audio/linux/LinuxSound.h"
+#include <framework/audio/linux/LinuxSound.h>
 
 #include <assert.h>
 

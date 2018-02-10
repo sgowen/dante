@@ -8,7 +8,7 @@
 
 #include "pch.h"
 
-#include "framework/graphics/portable/Color.h"
+#include <framework/graphics/portable/Color.h>
 
 Color Color::WHITE = Color(1.0f, 1.0f, 1.0f, 1.0f);
 Color Color::BLACK = Color(0.0f, 0.0f, 0.0f, 1.0f);

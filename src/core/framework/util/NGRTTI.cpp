@@ -8,7 +8,7 @@
 
 #include "pch.h"
 
-#include "framework/util/NGRTTI.h"
+#include <framework/util/NGRTTI.h>
 
 NGRTTI::NGRTTI(const std::string& className) : _className(className), _pBaseNGRTTI(NULL)
 {

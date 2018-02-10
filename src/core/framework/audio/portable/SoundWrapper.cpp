@@ -8,11 +8,11 @@
 
 #include "pch.h"
 
-#include "framework/audio/portable/SoundWrapper.h"
+#include <framework/audio/portable/SoundWrapper.h>
 
-#include "framework/audio/portable/Sound.h"
+#include <framework/audio/portable/Sound.h>
 
-#include "framework/util/NGSTDUtil.h"
+#include <framework/util/NGSTDUtil.h>
 
 SoundWrapper::SoundWrapper(int soundId, int numInstances) :
 _soundIndex(0),

@@ -6,9 +6,9 @@
 //  Copyright © 2017 Noctis Games. All rights reserved.
 //
 
-#include "framework/main/android/AndroidMain.h"
+#include <framework/main/android/AndroidMain.h>
 
-#include "game/logic/MainEngineController.h"
+#include <game/logic/MainEngineController.h>
 
 /**
  * This is the main entry point of a native application that is using

@@ -8,11 +8,11 @@
 
 #include "pch.h"
 
-#include "framework/audio/directx/DirectXSoundWrapper.h"
+#include <framework/audio/directx/DirectXSoundWrapper.h>
 
-#include "framework/audio/directx/DirectXSound.h"
+#include <framework/audio/directx/DirectXSound.h>
 
-#include "framework/util/NGSTDUtil.h"
+#include <framework/util/NGSTDUtil.h>
 
 DirectXSoundWrapper::DirectXSoundWrapper(int soundId, const char *path, DirectX::AudioEngine* audioEngine, int numInstances) : SoundWrapper(soundId, numInstances)
 {

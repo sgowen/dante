@@ -9,7 +9,7 @@
 #ifndef __noctisgames__StudioRenderer__
 #define __noctisgames__StudioRenderer__
 
-#include "framework/graphics/portable/Renderer.h"
+#include <framework/graphics/portable/Renderer.h>
 
 #include <string>
 #include <deque>

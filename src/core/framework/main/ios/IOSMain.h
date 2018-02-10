@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <GLKit/GLKit.h>
 
-#include "framework/main/portable/EngineController.h"
+#include <framework/main/portable/EngineController.h>
 
 @interface IOSMain : GLKViewController
 

@@ -6,17 +6,17 @@
 //  Copyright (c) 2017 Noctis Games. All rights reserved.
 //
 
-#include "framework/main/glfw/GlfwMain.h"
+#include <framework/main/glfw/GlfwMain.h>
 
-#include "framework/main/portable/EngineController.h"
+#include <framework/main/portable/EngineController.h>
 
-#include "framework/main/portable/Engine.h"
-#include "framework/input/CursorInputManager.h"
-#include "framework/input/KeyboardInputManager.h"
-#include "framework/input/GamePadInputManager.h"
-#include "framework/input/GamePadEventType.h"
-#include "framework/util/Constants.h"
-#include "framework/util/MathUtil.h"
+#include <framework/main/portable/Engine.h>
+#include <framework/input/CursorInputManager.h>
+#include <framework/input/KeyboardInputManager.h>
+#include <framework/input/GamePadInputManager.h>
+#include <framework/input/GamePadEventType.h>
+#include <framework/util/Constants.h>
+#include <framework/util/MathUtil.h>
 
 #include <stdlib.h>
 #include <stdio.h>

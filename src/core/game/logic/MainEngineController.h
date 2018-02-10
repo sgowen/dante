@@ -9,7 +9,7 @@
 #ifndef __noctisgames__MainEngineController__
 #define __noctisgames__MainEngineController__
 
-#include "framework/main/portable/EngineController.h"
+#include <framework/main/portable/EngineController.h>
 
 class MainEngineController : public EngineController
 {

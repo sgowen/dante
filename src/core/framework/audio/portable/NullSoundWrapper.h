@@ -9,7 +9,7 @@
 #ifndef __noctisgames__NullSoundWrapper__
 #define __noctisgames__NullSoundWrapper__
 
-#include "framework/audio/portable/SoundWrapper.h"
+#include <framework/audio/portable/SoundWrapper.h>
 
 class NullSoundWrapper : public SoundWrapper
 {

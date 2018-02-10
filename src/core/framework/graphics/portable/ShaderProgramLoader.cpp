@@ -8,8 +8,8 @@
 
 #include "pch.h"
 
-#include "framework/graphics/portable/ShaderProgramLoader.h"
-#include "framework/graphics/portable/NGShaderVarInput.h"
+#include <framework/graphics/portable/ShaderProgramLoader.h>
+#include <framework/graphics/portable/NGShaderVarInput.h>
 
 ShaderProgramLoader::ShaderProgramLoader()
 {

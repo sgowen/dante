@@ -9,7 +9,7 @@
 #ifndef __noctisgames__MathUtil__
 #define __noctisgames__MathUtil__
 
-#include "Box2D/Common/b2Math.h"
+#include <Box2D/Common/b2Math.h>
 #include <framework/graphics/portable/VertexProgramInput.h>
 
 #include <math.h>

@@ -8,11 +8,11 @@
 
 #include "pch.h"
 
-#include "framework/math/Vector2.h"
+#include <framework/math/Vector2.h>
 
-#include "framework/util/macros.h"
+#include <framework/util/macros.h>
 
-#include "framework/util/MathUtil.h"
+#include <framework/util/MathUtil.h>
 
 const Vector2 Vector2::Zero(0.0f, 0.0f);
 

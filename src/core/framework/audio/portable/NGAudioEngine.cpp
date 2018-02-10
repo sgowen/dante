@@ -8,15 +8,15 @@
 
 #include "pch.h"
 
-#include "framework/audio/portable/NGAudioEngine.h"
+#include <framework/audio/portable/NGAudioEngine.h>
 
-#include "framework/audio/portable/SoundWrapper.h"
-#include "framework/audio/portable/Sound.h"
-#include "framework/audio/portable/AudioEngineHelper.h"
+#include <framework/audio/portable/SoundWrapper.h>
+#include <framework/audio/portable/Sound.h>
+#include <framework/audio/portable/AudioEngineHelper.h>
 
-#include "framework/audio/portable/AudioEngineHelperFactory.h"
-#include "framework/util/NGSTDUtil.h"
-#include "framework/util/MathUtil.h"
+#include <framework/audio/portable/AudioEngineHelperFactory.h>
+#include <framework/util/NGSTDUtil.h>
+#include <framework/util/MathUtil.h>
 #include <framework/file/portable/Assets.h>
 #include <framework/audio/portable/SoundDesc.h>
 

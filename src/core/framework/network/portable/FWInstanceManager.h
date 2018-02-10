@@ -9,7 +9,7 @@
 #ifndef __noctisgames__FWInstanceManager__
 #define __noctisgames__FWInstanceManager__
 
-#include "framework/entity/EntityManager.h"
+#include <framework/entity/EntityManager.h>
 
 #define CLIENT_ENTITY_MGR FWInstanceManager::getClientEntityManager()
 

@@ -8,25 +8,25 @@
 
 #include "pch.h"
 
-#include "framework/network/client/NetworkManagerClient.h"
+#include <framework/network/client/NetworkManagerClient.h>
 
-#include "framework/network/client/SocketClientHelper.h"
-#include "framework/network/portable/InputMemoryBitStream.h"
-#include "framework/network/portable/OutputMemoryBitStream.h"
-#include "framework/network/portable/DeliveryNotificationManager.h"
-#include "framework/network/portable/MachineAddress.h"
-#include "framework/entity/Entity.h"
-#include "framework/network/portable/MoveList.h"
-#include "framework/network/client/ReplicationManagerClient.h"
-#include "framework/util/WeightedTimedMovingAverage.h"
-#include "framework/network/portable/SocketAddress.h"
+#include <framework/network/client/SocketClientHelper.h>
+#include <framework/network/portable/InputMemoryBitStream.h>
+#include <framework/network/portable/OutputMemoryBitStream.h>
+#include <framework/network/portable/DeliveryNotificationManager.h>
+#include <framework/network/portable/MachineAddress.h>
+#include <framework/entity/Entity.h>
+#include <framework/network/portable/MoveList.h>
+#include <framework/network/client/ReplicationManagerClient.h>
+#include <framework/util/WeightedTimedMovingAverage.h>
+#include <framework/network/portable/SocketAddress.h>
 
-#include "framework/entity/EntityManager.h"
-#include "framework/util/StringUtil.h"
-#include "framework/util/Timing.h"
-#include "framework/network/portable/SocketAddressFactory.h"
-#include "framework/network/portable/FWInstanceManager.h"
-#include "framework/util/macros.h"
+#include <framework/entity/EntityManager.h>
+#include <framework/util/StringUtil.h>
+#include <framework/util/Timing.h>
+#include <framework/network/portable/SocketAddressFactory.h>
+#include <framework/network/portable/FWInstanceManager.h>
+#include <framework/util/macros.h>
 
 #include <assert.h>
 

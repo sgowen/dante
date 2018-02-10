@@ -8,7 +8,7 @@
 
 #include "pch.h"
 
-#include "framework/network/client/ClientHelper.h"
+#include <framework/network/client/ClientHelper.h>
 
 ClientHelper::ClientHelper(PacketHandler* packetHandler) : NetworkHelper(packetHandler), _state(CLIENT_NOT_READY_TO_SAY_HELLO)
 {

@@ -9,11 +9,11 @@
 #ifndef __noctisgames__NGSteamServerHelper__
 #define __noctisgames__NGSteamServerHelper__
 
-#include "framework/network/server/ServerHelper.h"
+#include <framework/network/server/ServerHelper.h>
 
-#include "framework/network/steam/NGSteam.h"
-#include "framework/network/portable/PacketHandler.h"
-#include "framework/util/Constants.h"
+#include <framework/network/steam/NGSteam.h>
+#include <framework/network/portable/PacketHandler.h>
+#include <framework/util/Constants.h>
 
 #include <string>
 

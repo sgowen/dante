@@ -9,10 +9,10 @@
 #ifndef __noctisgames__StudioEngine__
 #define __noctisgames__StudioEngine__
 
-#include "framework/main/portable/EngineState.h"
+#include <framework/main/portable/EngineState.h>
 
 #ifdef NG_STEAM
-#include "framework/network/steam/NGSteam.h"
+#include <framework/network/steam/NGSteam.h>
 #endif
 
 class StudioRenderer;

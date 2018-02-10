@@ -9,7 +9,7 @@
 #ifndef __noctisgames__Box2DDebugRenderer__
 #define __noctisgames__Box2DDebugRenderer__
 
-#include "Box2D/Common/b2Draw.h"
+#include <Box2D/Common/b2Draw.h>
 
 class PolygonBatcher;
 class LineBatcher;

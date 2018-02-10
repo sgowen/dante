@@ -8,15 +8,15 @@
 
 #include "pch.h"
 
-#include "framework/network/client/ReplicationManagerClient.h"
+#include <framework/network/client/ReplicationManagerClient.h>
 
-#include "framework/network/portable/InputMemoryBitStream.h"
+#include <framework/network/portable/InputMemoryBitStream.h>
 
-#include "framework/network/portable/FWInstanceManager.h"
-#include "framework/entity/EntityManager.h"
-#include "framework/entity/EntityMapper.h"
-#include "framework/entity/Entity.h"
-#include "framework/network/portable/ReplicationAction.h"
+#include <framework/network/portable/FWInstanceManager.h>
+#include <framework/entity/EntityManager.h>
+#include <framework/entity/EntityMapper.h>
+#include <framework/entity/Entity.h>
+#include <framework/network/portable/ReplicationAction.h>
 
 #include <cassert>
 

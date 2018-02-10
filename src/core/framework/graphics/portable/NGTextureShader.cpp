@@ -8,7 +8,7 @@
 
 #include "pch.h"
 
-#include "framework/graphics/portable/NGTextureShader.h"
+#include <framework/graphics/portable/NGTextureShader.h>
 
 #include <framework/graphics/portable/RendererHelper.h>
 #include <framework/graphics/portable/ShaderProgramLoader.h>

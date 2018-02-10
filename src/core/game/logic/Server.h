@@ -15,6 +15,7 @@
 class World;
 class ClientProxy;
 class Entity;
+class InputState;
 
 class Server
 {
@@ -24,6 +25,7 @@ public:
     static void destroy();
     static void sHandleNewClient(uint8_t playerId, std::string playerName);
     static void sHandleLostClient(ClientProxy* inClientProxy, uint8_t index);
+    static InputState* borrowInputState();
     
     void update();
     uint8_t getPlayerIdForRobotBeingCreated();

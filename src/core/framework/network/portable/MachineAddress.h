@@ -9,7 +9,7 @@
 #ifndef __noctisgames__MachineAddress__
 #define __noctisgames__MachineAddress__
 
-#include "framework/util/NGRTTI.h"
+#include <framework/util/NGRTTI.h>
 
 #include <string>
 

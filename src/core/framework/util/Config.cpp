@@ -8,7 +8,7 @@
 
 #include "pch.h"
 
-#include "Config.h"
+#include <framework/util/Config.h>
 
 #include <framework/file/portable/JsonFile.h>
 

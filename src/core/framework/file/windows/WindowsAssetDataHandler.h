@@ -9,7 +9,7 @@
 #ifndef __noctisgames__WindowsAssetDataHandler__
 #define __noctisgames__WindowsAssetDataHandler__
 
-#include "framework/file/portable/AssetDataHandler.h"
+#include <framework/file/portable/AssetDataHandler.h>
 
 class WindowsAssetDataHandler : public AssetDataHandler
 {

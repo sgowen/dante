@@ -8,13 +8,13 @@
 
 #include "pch.h"
 
-#include "framework/graphics/portable/PolygonBatcher.h"
+#include <framework/graphics/portable/PolygonBatcher.h>
 
-#include "framework/graphics/portable/RendererHelper.h"
-#include "framework/graphics/portable/NGShader.h"
-#include "framework/math/NGRect.h"
-#include "framework/graphics/portable/Color.h"
-#include "Box2D/Common/b2Math.h"
+#include <framework/graphics/portable/RendererHelper.h>
+#include <framework/graphics/portable/NGShader.h>
+#include <framework/math/NGRect.h>
+#include <framework/graphics/portable/Color.h>
+#include <Box2D/Common/b2Math.h>
 
 #include <framework/util/Constants.h>
 

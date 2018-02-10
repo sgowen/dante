@@ -8,9 +8,9 @@
 
 #include "pch.h"
 
-#include "framework/network/portable/PacketHandler.h"
+#include <framework/network/portable/PacketHandler.h>
 
-#include "framework/util/WeightedTimedMovingAverage.h"
+#include <framework/util/WeightedTimedMovingAverage.h>
 
 PacketHandler::PacketHandler(bool isServer, ProcessPacketFunc processPacketFunc, HandleNoResponseFunc handleNoResponseFunc, HandleConnectionResetFunc handleConnectionResetFunc) :
 _processPacketFunc(processPacketFunc),

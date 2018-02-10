@@ -8,9 +8,9 @@
 
 #include "pch.h"
 
-#include "framework/audio/apple/AppleSound.h"
+#include <framework/audio/apple/AppleSound.h>
 
-#include "framework/audio/apple/ObjectALWrapper.h"
+#include <framework/audio/apple/ObjectALWrapper.h>
 
 AppleSound::AppleSound(int soundId, const char *path, float volume) : Sound(soundId),
 _objectALSoundIndex(-1),

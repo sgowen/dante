@@ -9,9 +9,9 @@
 #ifndef __noctisgames__CursorInputManager__
 #define __noctisgames__CursorInputManager__
 
-#include "framework/input/CursorEventType.h"
-#include "framework/util/NGRollingPool.h"
-#include "framework/math/Vector2.h"
+#include <framework/input/CursorEventType.h>
+#include <framework/util/NGRollingPool.h>
+#include <framework/math/Vector2.h>
 
 #include <vector>
 

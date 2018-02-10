@@ -9,7 +9,7 @@
 #ifndef __noctisgames__CursorEvent__
 #define __noctisgames__CursorEvent__
 
-#include "framework/input/CursorEventType.h"
+#include <framework/input/CursorEventType.h>
 
 class CursorEvent
 {

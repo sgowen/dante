@@ -8,9 +8,9 @@
 
 #include "pch.h"
 
-#include "framework/graphics/portable/NGAnimation.h"
+#include <framework/graphics/portable/NGAnimation.h>
 
-#include "framework/graphics/portable/TextureRegion.h"
+#include <framework/graphics/portable/TextureRegion.h>
 
 #include <math.h>
 #include <assert.h>

@@ -9,9 +9,9 @@
 #ifndef __noctisgames__SocketClientHelper__
 #define __noctisgames__SocketClientHelper__
 
-#include "framework/network/client/ClientHelper.h"
+#include <framework/network/client/ClientHelper.h>
 
-#include "framework/network/portable/PacketHandler.h"
+#include <framework/network/portable/PacketHandler.h>
 
 class SocketAddress;
 

@@ -9,7 +9,7 @@
 #ifndef __noctisgames__NGPrimitiveType__
 #define __noctisgames__NGPrimitiveType__
 
-#include "framework/graphics/portable/NGGraphics.h"
+#include <framework/graphics/portable/NGGraphics.h>
 
 typedef enum
 {

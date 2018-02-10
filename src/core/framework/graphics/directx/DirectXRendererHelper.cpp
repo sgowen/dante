@@ -8,16 +8,16 @@
 
 #include "pch.h"
 
-#include "framework/graphics/directx/DirectXRendererHelper.h"
+#include <framework/graphics/directx/DirectXRendererHelper.h>
 
-#include "framework/graphics/portable/NGTexture.h"
-#include "framework/graphics/portable/TextureWrapper.h"
-#include "framework/graphics/portable/ShaderProgramWrapper.h"
-#include "framework/graphics/portable/NGShaderUniformInput.h"
-#include "framework/graphics/portable/NGShaderVarInput.h"
+#include <framework/graphics/portable/NGTexture.h>
+#include <framework/graphics/portable/TextureWrapper.h>
+#include <framework/graphics/portable/ShaderProgramWrapper.h>
+#include <framework/graphics/portable/NGShaderUniformInput.h>
+#include <framework/graphics/portable/NGShaderVarInput.h>
 
-#include "framework/graphics/portable/NGTextureDesc.h"
-#include "framework/util/NGSTDUtil.h"
+#include <framework/graphics/portable/NGTextureDesc.h>
+#include <framework/util/NGSTDUtil.h>
 #include <framework/util/Constants.h>
 #include <framework/util/macros.h>
 #include <framework/util/Config.h>

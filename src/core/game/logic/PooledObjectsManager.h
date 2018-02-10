@@ -9,7 +9,7 @@
 #ifndef __noctisgames__PooledObjectsManager__
 #define __noctisgames__PooledObjectsManager__
 
-#include "framework/util/NGRollingPool.h"
+#include <framework/util/NGRollingPool.h>
 
 #include <vector>
 

@@ -9,7 +9,7 @@
 #ifndef __noctisgames__World__
 #define __noctisgames__World__
 
-#include "framework/util/Constants.h"
+#include <framework/util/Constants.h>
 
 #include <memory>
 #include <vector>
@@ -73,7 +73,7 @@ private:
     void updateAndRemoveEntitiesAsNeeded(std::vector<Entity*>& entities);
 };
 
-#include "Box2D/Dynamics/b2WorldCallbacks.h"
+#include <Box2D/Dynamics/b2WorldCallbacks.h>
 
 class b2Contact;
 

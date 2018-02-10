@@ -8,14 +8,14 @@
 
 #include "pch.h"
 
-#include "framework/network/portable/NetworkHelper.h"
+#include <framework/network/portable/NetworkHelper.h>
 
-#include "framework/network/portable/OutputMemoryBitStream.h"
-#include "framework/network/portable/MachineAddress.h"
-#include "framework/util/WeightedTimedMovingAverage.h"
-#include "framework/network/portable/PacketHandler.h"
+#include <framework/network/portable/OutputMemoryBitStream.h>
+#include <framework/network/portable/MachineAddress.h>
+#include <framework/util/WeightedTimedMovingAverage.h>
+#include <framework/network/portable/PacketHandler.h>
 
-#include "framework/network/portable/InputMemoryBitStream.h"
+#include <framework/network/portable/InputMemoryBitStream.h>
 
 NetworkHelper::NetworkHelper(PacketHandler* packetHandler) : _packetHandler(packetHandler)
 {

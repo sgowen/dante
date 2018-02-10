@@ -6,7 +6,7 @@
 //  Copyright (c) 2017 Noctis Games. All rights reserved.
 //
 
-#include "framework/graphics/portable/NGGraphics.h"
+#include <framework/graphics/portable/NGGraphics.h>
 
 #include <GLFW/glfw3.h>
 

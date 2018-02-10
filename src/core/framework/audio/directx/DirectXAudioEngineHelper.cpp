@@ -8,11 +8,11 @@
 
 #include "pch.h"
 
-#include "framework/audio/directx/DirectXAudioEngineHelper.h"
+#include <framework/audio/directx/DirectXAudioEngineHelper.h>
 
-#include "framework/audio/portable/SoundWrapper.h"
+#include <framework/audio/portable/SoundWrapper.h>
 
-#include "framework/audio/directx/DirectXSoundWrapper.h"
+#include <framework/audio/directx/DirectXSoundWrapper.h>
 
 void DirectXAudioEngineHelper::update(int flags)
 {

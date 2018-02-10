@@ -9,7 +9,7 @@
 #ifndef __noctisgames__LinuxAudioEngineHelper__
 #define __noctisgames__LinuxAudioEngineHelper__
 
-#include "framework/audio/portable/AudioEngineHelper.h"
+#include <framework/audio/portable/AudioEngineHelper.h>
 
 class LinuxAudioEngineHelper : public AudioEngineHelper
 {

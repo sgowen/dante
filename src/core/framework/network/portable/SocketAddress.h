@@ -9,11 +9,11 @@
 #ifndef __noctisgames__SocketAddress__
 #define __noctisgames__SocketAddress__
 
-#include "framework/network/portable/MachineAddress.h"
+#include <framework/network/portable/MachineAddress.h>
 
-#include "framework/network/portable/Network.h"
+#include <framework/network/portable/Network.h>
 
-#include "framework/util/NGRTTI.h"
+#include <framework/util/NGRTTI.h>
 
 #include <string>
 

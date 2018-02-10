@@ -9,10 +9,10 @@
 #ifndef __noctisgames__TitleEngine__
 #define __noctisgames__TitleEngine__
 
-#include "framework/main/portable/EngineState.h"
+#include <framework/main/portable/EngineState.h>
 
 #ifdef NG_STEAM
-#include "framework/network/steam/NGSteam.h"
+#include <framework/network/steam/NGSteam.h>
 #endif
 
 class TitleRenderer;

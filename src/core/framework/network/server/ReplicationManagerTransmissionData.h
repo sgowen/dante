@@ -9,11 +9,11 @@
 #ifndef __noctisgames__ReplicationManagerTransmissionData__
 #define __noctisgames__ReplicationManagerTransmissionData__
 
-#include "framework/network/portable/TransmissionData.h"
+#include <framework/network/portable/TransmissionData.h>
 
-#include "framework/network/portable/ReplicationCommand.h"
-#include "framework/network/portable/ReplicationAction.h"
-#include "framework/util/NGPool.h"
+#include <framework/network/portable/ReplicationCommand.h>
+#include <framework/network/portable/ReplicationAction.h>
+#include <framework/util/NGPool.h>
 
 #include <vector>
 

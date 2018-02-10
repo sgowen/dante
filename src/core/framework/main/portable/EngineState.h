@@ -9,7 +9,7 @@
 #ifndef __noctisgames__EngineState__
 #define __noctisgames__EngineState__
 
-#include "framework/util/NGRTTI.h"
+#include <framework/util/NGRTTI.h>
 #include <framework/util/State.h>
 #include <framework/main/portable/Engine.h>
 

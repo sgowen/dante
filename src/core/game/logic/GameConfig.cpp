@@ -8,7 +8,7 @@
 
 #include "pch.h"
 
-#include "GameConfig.h"
+#include <game/logic/GameConfig.h>
 
 #include <framework/util/Config.h>
 

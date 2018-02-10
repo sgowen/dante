@@ -8,7 +8,7 @@
 
 #include "pch.h"
 
-#include "framework/graphics/portable/TextureRegion.h"
+#include <framework/graphics/portable/TextureRegion.h>
 
 TextureRegion::TextureRegion(std::string textureName, int x, int y, int regionWidth, int regionHeight, int textureWidth, int textureHeight) : _textureName(textureName), _normalMapName("n_" + _textureName)
 {

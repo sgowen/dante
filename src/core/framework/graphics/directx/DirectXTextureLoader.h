@@ -9,7 +9,7 @@
 #ifndef __noctisgames__DirectXTextureLoader__
 #define __noctisgames__DirectXTextureLoader__
 
-#include "framework/graphics/portable/TextureLoader.h"
+#include <framework/graphics/portable/TextureLoader.h>
 
 class DirectXTextureLoader : public TextureLoader
 {

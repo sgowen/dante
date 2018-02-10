@@ -8,11 +8,11 @@
 
 #include "pch.h"
 
-#include "framework/audio/android/OpenSLESSoundWrapper.h"
+#include <framework/audio/android/OpenSLESSoundWrapper.h>
 
-#include "framework/audio/android/OpenSLESManager.h"
+#include <framework/audio/android/OpenSLESManager.h>
 
-#include "framework/audio/android/OpenSLESSound.h"
+#include <framework/audio/android/OpenSLESSound.h>
 
 OpenSLESSoundWrapper::OpenSLESSoundWrapper(OpenSLESManager* openSLESManager, int soundId, const char *path, int numInstances) : SoundWrapper(soundId, numInstances)
 {

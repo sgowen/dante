@@ -8,7 +8,7 @@
 
 #include "pch.h"
 
-#include "EntityController.h"
+#include <framework/entity/EntityController.h>
 
 NGRTTI_IMPL_NOPARENT(EntityController);
 

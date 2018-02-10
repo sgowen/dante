@@ -8,7 +8,7 @@
 
 #include "pch.h"
 
-#include "framework/input/KeyboardEvent.h"
+#include <framework/input/KeyboardEvent.h>
 
 KeyboardEvent::KeyboardEvent(unsigned short key, int status) : _sKey(key), _status(status)
 {

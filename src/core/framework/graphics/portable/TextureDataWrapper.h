@@ -10,7 +10,7 @@
 #define __noctisgames__TextureDataWrapper__
 
 #if defined __APPLE__ || defined __ANDROID__ || defined __linux__
-#include "framework/graphics/portable/NGGraphics.h"
+#include <framework/graphics/portable/NGGraphics.h>
 
 struct OpenGLPngImageData
 {

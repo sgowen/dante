@@ -9,13 +9,13 @@
 #ifndef __noctisgames__OpenGLRendererHelper__
 #define __noctisgames__OpenGLRendererHelper__
 
-#include "framework/graphics/portable/RendererHelper.h"
+#include <framework/graphics/portable/RendererHelper.h>
 
-#include "framework/graphics/portable/ShaderProgramWrapper.h"
-#include "framework/graphics/portable/NGShaderUniformInput.h"
+#include <framework/graphics/portable/ShaderProgramWrapper.h>
+#include <framework/graphics/portable/NGShaderUniformInput.h>
 #include <framework/util/Constants.h>
 
-#include "framework/graphics/portable/NGShaderVarInput.h"
+#include <framework/graphics/portable/NGShaderVarInput.h>
 
 class OpenGLRendererHelper : public RendererHelper
 {

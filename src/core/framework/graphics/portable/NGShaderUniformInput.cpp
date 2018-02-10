@@ -8,12 +8,12 @@
 
 #include "pch.h"
 
-#include "framework/graphics/portable/NGShaderUniformInput.h"
+#include <framework/graphics/portable/NGShaderUniformInput.h>
 
-#include "framework/graphics/portable/ShaderProgramWrapper.h"
+#include <framework/graphics/portable/ShaderProgramWrapper.h>
 
 #if defined _WIN32
-#include "framework/graphics/directx/DirectXRendererHelper.h"
+#include <framework/graphics/directx/DirectXRendererHelper.h>
 #endif
 
 NGShaderUniformInput::NGShaderUniformInput(const char* attribName, int index, int byteWidth, bool isFragment) :

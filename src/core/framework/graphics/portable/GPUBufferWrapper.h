@@ -9,7 +9,7 @@
 #ifndef __noctisgames__GPUBufferWrapper__
 #define __noctisgames__GPUBufferWrapper__
 
-#include "framework/graphics/portable/NGGraphics.h"
+#include <framework/graphics/portable/NGGraphics.h>
 
 struct GPUBufferWrapper
 {

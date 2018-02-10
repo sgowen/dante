@@ -8,16 +8,16 @@
 
 #include "pch.h"
 
-#include "framework/network/client/SocketClientHelper.h"
+#include <framework/network/client/SocketClientHelper.h>
 
-#include "framework/network/portable/SocketAddress.h"
+#include <framework/network/portable/SocketAddress.h>
 
-#include "framework/network/portable/SocketPacketHandler.h"
-#include "framework/network/portable/SocketAddressFactory.h"
-#include "framework/util/macros.h"
-#include "framework/network/portable/OutputMemoryBitStream.h"
-#include "framework/util/Constants.h"
-#include "framework/util/StringUtil.h"
+#include <framework/network/portable/SocketPacketHandler.h>
+#include <framework/network/portable/SocketAddressFactory.h>
+#include <framework/util/macros.h>
+#include <framework/network/portable/OutputMemoryBitStream.h>
+#include <framework/util/Constants.h>
+#include <framework/util/StringUtil.h>
 
 SocketClientHelper::SocketClientHelper(std::string inServerIPAddress, std::string inName, uint16_t inPort, ProcessPacketFunc processPacketFunc, HandleNoResponseFunc handleNoResponseFunc, HandleConnectionResetFunc handleConnectionResetFunc) :
 ClientHelper(new SocketPacketHandler(false, inPort, processPacketFunc, handleNoResponseFunc, handleConnectionResetFunc)),

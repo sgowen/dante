@@ -9,7 +9,7 @@
 #ifndef __noctisgames__EntityController__
 #define __noctisgames__EntityController__
 
-#include "framework/util/NGRTTI.h"
+#include <framework/util/NGRTTI.h>
 
 #include <vector>
 #include <string>

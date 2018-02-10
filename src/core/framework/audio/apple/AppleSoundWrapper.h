@@ -9,7 +9,7 @@
 #ifndef __noctisgames__AppleSoundWrapper__
 #define __noctisgames__AppleSoundWrapper__
 
-#include "framework/audio/portable/SoundWrapper.h"
+#include <framework/audio/portable/SoundWrapper.h>
 
 class AppleSoundWrapper : public SoundWrapper
 {

@@ -6,13 +6,13 @@
 //  Copyright (c) 2017 Noctis Games. All rights reserved.
 //
 
-#include "framework/audio/android/AndroidAudioEngineHelper.h"
+#include <framework/audio/android/AndroidAudioEngineHelper.h>
 
-#include "framework/audio/portable/SoundWrapper.h"
+#include <framework/audio/portable/SoundWrapper.h>
 
-#include "framework/audio/android/OpenSLESManager.h"
-#include "framework/audio/android/OpenSLESSoundWrapper.h"
-#include "framework/util/NGSTDUtil.h"
+#include <framework/audio/android/OpenSLESManager.h>
+#include <framework/audio/android/OpenSLESSoundWrapper.h>
+#include <framework/util/NGSTDUtil.h>
 
 #include <assert.h>
 

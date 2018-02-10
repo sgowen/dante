@@ -9,11 +9,11 @@
 #ifndef __noctisgames__NGSteamClientHelper__
 #define __noctisgames__NGSteamClientHelper__
 
-#include "framework/network/client/ClientHelper.h"
+#include <framework/network/client/ClientHelper.h>
 
-#include "framework/network/portable/PacketHandler.h"
-#include "framework/network/steam/NGSteam.h"
-#include "framework/util/Constants.h"
+#include <framework/network/portable/PacketHandler.h>
+#include <framework/network/steam/NGSteam.h>
+#include <framework/util/Constants.h>
 
 class NGSteamP2PAuth;
 class NGSteamAddress;

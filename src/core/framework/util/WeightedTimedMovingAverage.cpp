@@ -8,10 +8,10 @@
 
 #include "pch.h"
 
-#include "framework/util/WeightedTimedMovingAverage.h"
+#include <framework/util/WeightedTimedMovingAverage.h>
 
-#include "framework/util/Timing.h"
-#include "framework/util/MathUtil.h"
+#include <framework/util/Timing.h>
+#include <framework/util/MathUtil.h>
 
 WeightedTimedMovingAverage::WeightedTimedMovingAverage(float inDuration) : _duration(inDuration), _value(0.f)
 {

@@ -8,15 +8,15 @@
 
 #include "pch.h"
 
-#include "framework/graphics/directx/DirectXProgramLoader.h"
+#include <framework/graphics/directx/DirectXProgramLoader.h>
 
-#include "framework/graphics/portable/ShaderProgramWrapper.h"
-#include "framework/graphics/portable/NGShaderVarInput.h"
-#include "framework/graphics/portable/NGShaderUniformInput.h"
+#include <framework/graphics/portable/ShaderProgramWrapper.h>
+#include <framework/graphics/portable/NGShaderVarInput.h>
+#include <framework/graphics/portable/NGShaderUniformInput.h>
 
-#include "framework/file/portable/AssetDataHandler.h"
-#include "framework/file/portable/FileData.h"
-#include "framework/util/StringUtil.h"
+#include <framework/file/portable/AssetDataHandler.h>
+#include <framework/file/portable/FileData.h>
+#include <framework/util/StringUtil.h>
 #include <framework/graphics/directx/DirectXRendererHelper.h>
 
 DirectXProgramLoader::DirectXProgramLoader() : ShaderProgramLoader()

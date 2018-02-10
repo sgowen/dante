@@ -8,9 +8,9 @@
 
 #include "pch.h"
 
-#include "framework/graphics/portable/NGShaderVarInput.h"
+#include <framework/graphics/portable/NGShaderVarInput.h>
 
-#include "framework/graphics/portable/ShaderProgramWrapper.h"
+#include <framework/graphics/portable/ShaderProgramWrapper.h>
 
 #include <framework/util/macros.h>
 

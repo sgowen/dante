@@ -8,7 +8,7 @@
 
 #include "pch.h"
 
-#include "framework/file/windows/WindowsAssetDataHandler.h"
+#include <framework/file/windows/WindowsAssetDataHandler.h>
 
 #include <stdint.h>
 #include <fstream>

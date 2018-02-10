@@ -8,14 +8,14 @@
 
 #include "pch.h"
 
-#include "framework/network/portable/InputState.h"
+#include <framework/network/portable/InputState.h>
 
-#include "framework/network/portable/OutputMemoryBitStream.h"
-#include "framework/network/portable/InputMemoryBitStream.h"
+#include <framework/network/portable/OutputMemoryBitStream.h>
+#include <framework/network/portable/InputMemoryBitStream.h>
 
 NGRTTI_IMPL_NOPARENT(InputState);
 
-InputState::InputState() : _isInUse(false)
+InputState::InputState()
 {
     // Empty
 }
@@ -23,14 +23,4 @@ InputState::InputState() : _isInUse(false)
 InputState::~InputState()
 {
     // Empty
-}
-
-void InputState::setInUse(bool inUse)
-{
-    _isInUse = inUse;
-}
-
-bool InputState::isInUse() const
-{
-    return _isInUse;
 }

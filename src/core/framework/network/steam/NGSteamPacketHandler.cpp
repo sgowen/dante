@@ -8,17 +8,17 @@
 
 #include "pch.h"
 
-#include "framework/network/steam/NGSteamPacketHandler.h"
+#include <framework/network/steam/NGSteamPacketHandler.h>
 
-#include "framework/network/portable/OutputMemoryBitStream.h"
-#include "framework/network/portable/MachineAddress.h"
+#include <framework/network/portable/OutputMemoryBitStream.h>
+#include <framework/network/portable/MachineAddress.h>
 
-#include "framework/network/portable/InputMemoryBitStream.h"
-#include "framework/util/Timing.h"
-#include "framework/network/steam/NGSteam.h"
-#include "framework/util/Constants.h"
-#include "framework/util/StringUtil.h"
-#include "framework/network/portable/Network.h"
+#include <framework/network/portable/InputMemoryBitStream.h>
+#include <framework/util/Timing.h>
+#include <framework/network/steam/NGSteam.h>
+#include <framework/util/Constants.h>
+#include <framework/util/StringUtil.h>
+#include <framework/network/portable/Network.h>
 
 #include <assert.h>
 

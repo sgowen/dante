@@ -9,7 +9,7 @@
 #ifndef __noctisgames__AppleAudioEngineHelper__
 #define __noctisgames__AppleAudioEngineHelper__
 
-#include "framework/audio/portable/AudioEngineHelper.h"
+#include <framework/audio/portable/AudioEngineHelper.h>
 
 class AppleAudioEngineHelper : public AudioEngineHelper
 {

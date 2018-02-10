@@ -38,16 +38,16 @@ typedef unsigned char uint8;
 
 #include <stddef.h>
 
-#include "steam/steam_api.h"
-#include "steam/steamtypes.h"
-#include "steam/isteamuserstats.h"
-#include "steam/isteamremotestorage.h"
-#include "steam/isteammatchmaking.h"
-#include "steam/steam_gameserver.h"
+#include <steam/steam_api.h>
+#include <steam/steamtypes.h>
+#include <steam/isteamuserstats.h>
+#include <steam/isteamremotestorage.h>
+#include <steam/isteammatchmaking.h>
+#include <steam/steam_gameserver.h>
 
 #ifdef STEAM_CEG
 // Steam DRM header file
-#include "cegclient.h"
+#include <cegclient.h>
 #else
 #define Steamworks_InitCEGLibrary() (true)
 #define Steamworks_TermCEGLibrary()

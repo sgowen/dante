@@ -8,18 +8,18 @@
 
 #include "pch.h"
 
-#include "EntityMapper.h"
+#include <framework/entity/EntityMapper.h>
 
-#include "framework/entity/Entity.h"
-#include "framework/entity/EntityController.h"
+#include <framework/entity/Entity.h>
+#include <framework/entity/EntityController.h>
 
-#include "framework/util/NGSTDUtil.h"
-#include "framework/util/StringUtil.h"
+#include <framework/util/NGSTDUtil.h>
+#include <framework/util/StringUtil.h>
 #include <framework/file/portable/JsonFile.h>
 #include <framework/file/portable/FileUtil.h>
 
-#include "rapidjson/document.h"
-#include "rapidjson/stringbuffer.h"
+#include <rapidjson/document.h>
+#include <rapidjson/stringbuffer.h>
 
 #include <assert.h>
 

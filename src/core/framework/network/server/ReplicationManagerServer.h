@@ -9,9 +9,9 @@
 #ifndef __noctisgames__ReplicationManagerServer__
 #define __noctisgames__ReplicationManagerServer__
 
-#include "framework/network/portable/Network.h"
+#include <framework/network/portable/Network.h>
 
-#include "framework/network/portable/ReplicationCommand.h"
+#include <framework/network/portable/ReplicationCommand.h>
 
 #include <map>
 

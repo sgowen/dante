@@ -8,12 +8,12 @@
 
 #include "pch.h"
 
-#include "framework/graphics/portable/LineBatcher.h"
+#include <framework/graphics/portable/LineBatcher.h>
 
-#include "framework/graphics/portable/RendererHelper.h"
-#include "framework/graphics/portable/NGShader.h"
-#include "framework/math/Line.h"
-#include "framework/graphics/portable/Color.h"
+#include <framework/graphics/portable/RendererHelper.h>
+#include <framework/graphics/portable/NGShader.h>
+#include <framework/math/Line.h>
+#include <framework/graphics/portable/Color.h>
 
 #include <framework/util/Constants.h>
 

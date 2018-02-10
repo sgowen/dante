@@ -9,7 +9,7 @@
 #ifndef __noctisgames__TitleRenderer__
 #define __noctisgames__TitleRenderer__
 
-#include "framework/graphics/portable/Renderer.h"
+#include <framework/graphics/portable/Renderer.h>
 
 #include <string>
 

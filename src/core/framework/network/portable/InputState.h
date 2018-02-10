@@ -9,7 +9,7 @@
 #ifndef __noctisgames__InputState__
 #define __noctisgames__InputState__
 
-#include "framework/util/NGRTTI.h"
+#include <framework/util/NGRTTI.h>
 
 class OutputMemoryBitStream;
 class InputMemoryBitStream;
@@ -20,25 +20,13 @@ class InputState
     
 public:
     InputState();
-    
     virtual ~InputState();
     
     virtual void write(OutputMemoryBitStream& inOutputStream) const = 0;
-    
     virtual void read(InputMemoryBitStream& inInputStream) = 0;
-    
     virtual void reset() = 0;
-    
     virtual bool isEqual(InputState* inInputState) const = 0;
-    
     virtual void copyTo(InputState* inInputState) const = 0;
-    
-    void setInUse(bool inUse);
-    
-    bool isInUse() const;
-    
-private:
-    bool _isInUse;
 };
 
 #endif /* defined(__noctisgames__InputState__) */

@@ -9,7 +9,7 @@
 #ifndef __noctisgames__NGSteamGameServer__
 #define __noctisgames__NGSteamGameServer__
 
-#include "framework/network/steam/NGSteam.h"
+#include <framework/network/steam/NGSteam.h>
 
 class NGSteamGameServer
 {

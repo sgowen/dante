@@ -9,7 +9,7 @@
 #ifndef __noctisgames__GameRenderer__
 #define __noctisgames__GameRenderer__
 
-#include "framework/graphics/portable/Renderer.h"
+#include <framework/graphics/portable/Renderer.h>
 
 #include <string>
 #include <vector>

@@ -5,7 +5,7 @@
 
 #include "pch.h"
 
-#include "framework/main/directx/DirectXDeviceResources.h"
+#include <framework/main/directx/DirectXDeviceResources.h>
 
 using namespace DirectX;
 using namespace DX;

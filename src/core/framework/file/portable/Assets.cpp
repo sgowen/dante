@@ -8,20 +8,20 @@
 
 #include "pch.h"
 
-#include "framework/file/portable/Assets.h"
+#include <framework/file/portable/Assets.h>
 
-#include "framework/audio/portable/SoundDesc.h"
-#include "framework/graphics/portable/NGTextureDesc.h"
-#include "framework/graphics/portable/TextureRegion.h"
-#include "framework/graphics/portable/NGAnimation.h"
+#include <framework/audio/portable/SoundDesc.h>
+#include <framework/graphics/portable/NGTextureDesc.h>
+#include <framework/graphics/portable/TextureRegion.h>
+#include <framework/graphics/portable/NGAnimation.h>
 
-#include "framework/util/NGSTDUtil.h"
+#include <framework/util/NGSTDUtil.h>
 #include <framework/file/portable/JsonFile.h>
 #include <framework/file/portable/FileUtil.h>
 #include <framework/util/Config.h>
 
-#include "rapidjson/document.h"
-#include "rapidjson/stringbuffer.h"
+#include <rapidjson/document.h>
+#include <rapidjson/stringbuffer.h>
 
 #include <assert.h>
 

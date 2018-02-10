@@ -8,7 +8,7 @@
 
 #include "pch.h"
 
-#include "framework/input/CursorEvent.h"
+#include <framework/input/CursorEvent.h>
 
 CursorEvent::CursorEvent(CursorEventType type, float x, float y)
 {

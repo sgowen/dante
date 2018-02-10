@@ -8,12 +8,12 @@
 
 #include "pch.h"
 
-#include "framework/audio/android/OpenSLESSound.h"
+#include <framework/audio/android/OpenSLESSound.h>
 
 #include <framework/audio/android/OpenSLESManager.h>
 #include <framework/file/portable/FileData.h>
 
-#include "framework/file/portable/AssetDataHandler.h"
+#include <framework/file/portable/AssetDataHandler.h>
 
 #include <assert.h>
 

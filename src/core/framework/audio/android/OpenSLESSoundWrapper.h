@@ -9,7 +9,7 @@
 #ifndef __noctisgames__OpenSLESSoundWrapper__
 #define __noctisgames__OpenSLESSoundWrapper__
 
-#include "framework/audio/portable/SoundWrapper.h"
+#include <framework/audio/portable/SoundWrapper.h>
 
 class OpenSLESManager;
 

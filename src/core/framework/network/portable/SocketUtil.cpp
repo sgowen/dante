@@ -8,10 +8,10 @@
 
 #include "pch.h"
 
-#include "framework/network/portable/SocketUtil.h"
+#include <framework/network/portable/SocketUtil.h>
 
-#include "framework/network/portable/Network.h"
-#include "framework/util/StringUtil.h"
+#include <framework/network/portable/Network.h>
+#include <framework/util/StringUtil.h>
 
 SocketUtil* SocketUtil::getInstance()
 {

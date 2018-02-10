@@ -9,7 +9,7 @@
 #ifndef __noctisgames__NGGeometryShader__
 #define __noctisgames__NGGeometryShader__
 
-#include "framework/graphics/portable/NGShader.h"
+#include <framework/graphics/portable/NGShader.h>
 
 class NGGeometryShader : public NGShader
 {

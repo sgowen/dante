@@ -8,11 +8,11 @@
 
 #include "pch.h"
 
-#include "framework/network/portable/MoveList.h"
+#include <framework/network/portable/MoveList.h>
 
-#include "framework/network/portable/InputState.h"
-#include "framework/util/Timing.h"
-#include "framework/util/StringUtil.h"
+#include <framework/network/portable/InputState.h>
+#include <framework/util/Timing.h>
+#include <framework/util/StringUtil.h>
 
 MoveList::MoveList(): _lastMoveTimestamp(-1.0f), _lastProcessedMoveTimestamp(-1.0f)
 {
@@ -57,7 +57,7 @@ void MoveList::removeProcessedMoves(float inLastMoveProcessedOnServerTimestamp)
 {
     while (!_moves.empty() && _moves.front().getTimestamp() <= inLastMoveProcessedOnServerTimestamp)
     {
-		_moves.front().getInputState()->setInUse(false);
+        _moves.front().getInputState()->setInUse(false);
 
         _moves.pop_front();
     }

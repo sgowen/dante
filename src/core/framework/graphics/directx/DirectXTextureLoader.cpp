@@ -8,20 +8,20 @@
 
 #include "pch.h"
 
-#include "framework/graphics/directx/DirectXTextureLoader.h"
+#include <framework/graphics/directx/DirectXTextureLoader.h>
 
-#include "framework/graphics/portable/TextureDataWrapper.h"
+#include <framework/graphics/portable/TextureDataWrapper.h>
 #include <framework/graphics/portable/NGTexture.h>
-#include "framework/graphics/portable/TextureWrapper.h"
-#include "framework/graphics/portable/NGTextureDesc.h"
+#include <framework/graphics/portable/TextureWrapper.h>
+#include <framework/graphics/portable/NGTextureDesc.h>
 
-#include "framework/file/portable/AssetDataHandler.h"
-#include "framework/file/portable/FileData.h"
-#include "framework/util/StringUtil.h"
-#include "framework/util/macros.h"
-#include "framework/graphics/directx/DirectXRendererHelper.h"
+#include <framework/file/portable/AssetDataHandler.h>
+#include <framework/file/portable/FileData.h>
+#include <framework/util/StringUtil.h>
+#include <framework/util/macros.h>
+#include <framework/graphics/directx/DirectXRendererHelper.h>
 
-#include "DDSTextureLoader.h"
+#include "DDSTextureLoader.h>
 
 #include <string>
 

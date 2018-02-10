@@ -8,10 +8,10 @@
 
 #include "pch.h"
 
-#include "framework/graphics/portable/RendererHelper.h"
+#include <framework/graphics/portable/RendererHelper.h>
 
-#include "framework/graphics/portable/NGTexture.h"
-#include "framework/graphics/portable/TextureWrapper.h"
+#include <framework/graphics/portable/NGTexture.h>
+#include <framework/graphics/portable/TextureWrapper.h>
 
 #include <framework/util/Constants.h>
 #include <framework/util/NGSTDUtil.h>

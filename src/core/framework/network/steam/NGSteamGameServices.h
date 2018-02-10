@@ -9,8 +9,8 @@
 #ifndef __noctisgames__NGSteamGameServices__
 #define __noctisgames__NGSteamGameServices__
 
-#include "framework/network/steam/NGSteam.h"
-#include "framework/network/steam/NGSteamGameServer.h"
+#include <framework/network/steam/NGSteam.h>
+#include <framework/network/steam/NGSteamGameServer.h>
 
 #include <string>
 #include <vector>

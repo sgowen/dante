@@ -9,7 +9,7 @@
 #ifndef __noctisgames__EngineController__
 #define __noctisgames__EngineController__
 
-#include "framework/util/NGRTTI.h"
+#include <framework/util/NGRTTI.h>
 
 class EngineState;
 

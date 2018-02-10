@@ -11,7 +11,7 @@
 
 #include <cassert>
 
-#include "framework/util/State.h"
+#include <framework/util/State.h>
 
 template <class entity_type, class state_type>
 class StateMachine

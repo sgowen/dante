@@ -8,10 +8,10 @@
 
 #include "pch.h"
 
-#include "framework/network/portable/InputMemoryBitStream.h"
+#include <framework/network/portable/InputMemoryBitStream.h>
 
-#include "Box2D/Box2D.h"
-#include "framework/graphics/portable/Color.h"
+#include <Box2D/Box2D.h>
+#include <framework/graphics/portable/Color.h>
 
 #include <cstring>	// memcpy()
 

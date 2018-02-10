@@ -9,7 +9,7 @@
 #ifndef __noctisgames__DirectXAudioEngineHelper__
 #define __noctisgames__DirectXAudioEngineHelper__
 
-#include "framework/audio/portable/AudioEngineHelper.h"
+#include <framework/audio/portable/AudioEngineHelper.h>
 
 #include "Audio.h"
 

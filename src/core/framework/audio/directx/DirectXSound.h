@@ -9,7 +9,7 @@
 #ifndef __noctisgames__DirectXSound__
 #define __noctisgames__DirectXSound__
 
-#include "framework/audio/portable/Sound.h"
+#include <framework/audio/portable/Sound.h>
 
 #include "Audio.h"
 

@@ -9,7 +9,7 @@
 #ifndef __noctisgames__Line__
 #define __noctisgames__Line__
 
-#include "framework/math/Vector2.h"
+#include <framework/math/Vector2.h>
 
 class Line
 {

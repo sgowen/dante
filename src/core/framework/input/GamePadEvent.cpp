@@ -8,7 +8,7 @@
 
 #include "pch.h"
 
-#include "framework/input/GamePadEvent.h"
+#include <framework/input/GamePadEvent.h>
 
 GamePadEvent::GamePadEvent(GamePadEventType type, int index, float x, float y) :
 _type(type),

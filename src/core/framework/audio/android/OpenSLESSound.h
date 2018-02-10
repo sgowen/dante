@@ -9,7 +9,7 @@
 #ifndef __noctisgames__OpenSLESSound__
 #define __noctisgames__OpenSLESSound__
 
-#include "framework/audio/portable/Sound.h"
+#include <framework/audio/portable/Sound.h>
 
 #include <cstdlib>
 

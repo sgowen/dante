@@ -8,23 +8,23 @@
 
 #include "pch.h"
 
-#include "framework/main/directx/DirectXMain.h"
+#include <framework/main/directx/DirectXMain.h>
 
-#include "framework/main/portable/EngineController.h"
-#include "framework/main/portable/Engine.h"
+#include <framework/main/portable/EngineController.h>
+#include <framework/main/portable/Engine.h>
 
-#include "framework/graphics/directx/DirectXRendererHelper.h"
-#include "framework/input/CursorInputManager.h"
-#include "framework/input/KeyboardInputManager.h"
-#include "framework/input/GamePadInputManager.h"
-#include "framework/util/Constants.h"
-#include "framework/util/macros.h"
-#include "framework/audio/portable/NGAudioEngine.h"
-#include "framework/input/KeyboardLookup.h"
-#include "framework/util/MathUtil.h"
+#include <framework/graphics/directx/DirectXRendererHelper.h>
+#include <framework/input/CursorInputManager.h>
+#include <framework/input/KeyboardInputManager.h>
+#include <framework/input/GamePadInputManager.h>
+#include <framework/util/Constants.h>
+#include <framework/util/macros.h>
+#include <framework/audio/portable/NGAudioEngine.h>
+#include <framework/input/KeyboardLookup.h>
+#include <framework/util/MathUtil.h>
 
 #include "Audio.h"
-#include "DirectXColors.h"
+#include "DirectXColors.h>
 #include <Dbt.h>
 
 extern void exitGame();

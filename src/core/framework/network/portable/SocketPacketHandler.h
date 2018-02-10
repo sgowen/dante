@@ -9,10 +9,10 @@
 #ifndef __noctisgames__SocketPacketHandler__
 #define __noctisgames__SocketPacketHandler__
 
-#include "framework/network/portable/PacketHandler.h"
+#include <framework/network/portable/PacketHandler.h>
 
-#include "framework/network/portable/InputMemoryBitStream.h"
-#include "framework/network/portable/SocketAddress.h"
+#include <framework/network/portable/InputMemoryBitStream.h>
+#include <framework/network/portable/SocketAddress.h>
 
 #include <queue>
 #include <list>

@@ -9,9 +9,9 @@
 #ifndef __noctisgames__MainInputState__
 #define __noctisgames__MainInputState__
 
-#include "framework/network/portable/InputState.h"
+#include <framework/network/portable/InputState.h>
 
-#include "framework/util/NGRTTI.h"
+#include <framework/util/NGRTTI.h>
 
 class OutputMemoryBitStream;
 class InputMemoryBitStream;

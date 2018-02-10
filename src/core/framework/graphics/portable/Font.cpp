@@ -8,11 +8,11 @@
 
 #include "pch.h"
 
-#include "framework/graphics/portable/Font.h"
+#include <framework/graphics/portable/Font.h>
 
-#include "framework/graphics/portable/SpriteBatcher.h"
-#include "framework/graphics/portable/TextureRegion.h"
-#include "framework/graphics/portable/Color.h"
+#include <framework/graphics/portable/SpriteBatcher.h>
+#include <framework/graphics/portable/TextureRegion.h>
+#include <framework/graphics/portable/Color.h>
 
 Font::Font(int offsetX, int offsetY, int glyphsPerRow, int glyphWidth, int glyphHeight, int textureWidth, int textureHeight)
 {

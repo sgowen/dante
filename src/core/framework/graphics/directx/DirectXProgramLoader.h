@@ -11,7 +11,7 @@
 
 #include <framework/graphics/portable/ShaderProgramLoader.h>
 
-#include "framework/graphics/portable/NGGraphics.h"
+#include <framework/graphics/portable/NGGraphics.h>
 
 class DirectXProgramLoader : public ShaderProgramLoader
 {

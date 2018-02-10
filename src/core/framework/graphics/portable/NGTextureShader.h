@@ -9,7 +9,7 @@
 #ifndef __noctisgames__NGTextureShader__
 #define __noctisgames__NGTextureShader__
 
-#include "framework/graphics/portable/NGShader.h"
+#include <framework/graphics/portable/NGShader.h>
 
 class NGTextureShader : public NGShader
 {

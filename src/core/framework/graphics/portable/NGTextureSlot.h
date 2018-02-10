@@ -9,7 +9,7 @@
 #ifndef __noctisgames__NGTextureSlot__
 #define __noctisgames__NGTextureSlot__
 
-#include "framework/graphics/portable/NGGraphics.h"
+#include <framework/graphics/portable/NGGraphics.h>
 
 typedef enum
 {

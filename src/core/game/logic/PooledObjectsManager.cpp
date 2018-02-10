@@ -8,11 +8,11 @@
 
 #include "pch.h"
 
-#include "game/logic/PooledObjectsManager.h"
+#include <game/logic/PooledObjectsManager.h>
 
-#include "game/game/MainInputState.h"
-#include "framework/util/MathUtil.h"
-#include "framework/util/Constants.h"
+#include <game/game/MainInputState.h>
+#include <framework/util/MathUtil.h>
+#include <framework/util/Constants.h>
 
 #define POOL_SIZE MAX(NW_SERVER_TIMEOUT, NW_CLIENT_TIMEOUT) * (MAX_NUM_PLAYERS_PER_SERVER * 2) * 60
 
