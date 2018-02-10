@@ -11,9 +11,9 @@
 #include <framework/main/directx/DirectXDeviceResources.h>
 #include <framework/main/directx/StepTimer.h>
 
-#include "Keyboard.h>
-#include "Mouse.h>
-#include "GamePad.h>
+#include "Keyboard.h"
+#include "Mouse.h"
+#include "GamePad.h"
 
 #include <string>
 #include <vector>

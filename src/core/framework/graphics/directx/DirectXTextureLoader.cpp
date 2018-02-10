@@ -21,7 +21,7 @@
 #include <framework/util/macros.h>
 #include <framework/graphics/directx/DirectXRendererHelper.h>
 
-#include "DDSTextureLoader.h>
+#include "DDSTextureLoader.h"
 
 #include <string>
 

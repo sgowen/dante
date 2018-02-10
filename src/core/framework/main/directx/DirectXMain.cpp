@@ -24,7 +24,7 @@
 #include <framework/util/MathUtil.h>
 
 #include "Audio.h"
-#include "DirectXColors.h>
+#include "DirectXColors.h"
 #include <Dbt.h>
 
 extern void exitGame();
