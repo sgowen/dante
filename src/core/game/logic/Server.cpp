@@ -251,7 +251,7 @@ void Server::loadMap()
     }
 }
 
-Server::Server(bool isSteam) : _world(NULL), _stateTime(0), _frameStateTime(0), _map(0)
+Server::Server(bool isSteam) : _world(new World(WorldFlag_Server | WorldFlag_MapLoadAll)), _stateTime(0), _frameStateTime(0), _map(0)
 {
     if (isSteam)
     {
@@ -265,8 +265,6 @@ Server::Server(bool isSteam) : _world(NULL), _stateTime(0), _frameStateTime(0), 
     }
     
     assert(NG_SERVER);
-    
-    _world = new World(WorldFlag_Server | WorldFlag_MapLoadAll);
 }
 
 Server::~Server()
