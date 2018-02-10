@@ -79,8 +79,6 @@ private:
     World* _world;
     uint32_t _state;
     
-    bool handleInput();
-    
     StudioEngine();
     virtual ~StudioEngine();
 };

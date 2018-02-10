@@ -29,6 +29,9 @@
 #include <framework/util/Constants.h>
 #include <framework/util/PlatformHelper.h>
 #include <game/logic/GameConfig.h>
+#include <framework/audio/portable/NGAudioEngine.h>
+#include <game/logic/Server.h>
+#include <framework/network/client/NetworkManagerClient.h>
 
 #include <sstream>
 
@@ -94,22 +97,31 @@ void GameInputManager::update()
         switch (e.getKey())
         {
             case NG_KEY_M:
-                _inputState = e.isDown() ? GIMS_CLIENT_MAIN_TOGGLE_MUSIC : _inputState;
+                if (e.isDown())
+                {
+                    NG_AUDIO_ENGINE->setMusicDisabled(!NG_AUDIO_ENGINE->isMusicDisabled());
+                }
                 continue;
             case NG_KEY_S:
-                _inputState = e.isDown() ? GIMS_CLIENT_MAIN_TOGGLE_SOUND : _inputState;
+                if (e.isDown())
+                {
+                    NG_AUDIO_ENGINE->setSoundsDisabled(!NG_AUDIO_ENGINE->areSoundsDisabled());
+                }
                 continue;
             case NG_KEY_B:
-                _inputState = e.isDown() ? GIMS_TOGGLE_PHYSICS_DISPLAY : _inputState;
+                _engine->_state ^= e.isDown() ? GameEngineState_DisplayBox2D : 0;
                 continue;
             case NG_KEY_I:
-                _inputState = e.isDown() ? GIMS_TOGGLE_INTERPOLATION : _inputState;
+                _engine->_state ^= e.isDown() ? GameEngineState_Interpolation : 0;
                 continue;
             case NG_KEY_L:
-                _inputState = e.isDown() ? GIMS_TOGGLE_LIGHTING : _inputState;
+                _engine->_state ^= e.isDown() ? GameEngineState_Lighting : 0;
                 continue;
             case NG_KEY_T:
-                _inputState = e.isDown() ? GIMS_SERVER_TOGGLE_MAP : _inputState;
+                if (e.isDown() && _engine->_server)
+                {
+                    _engine->_server->toggleMap();
+                }
                 continue;
             case NG_KEY_U:
                 _engine->_state ^= e.isDown() ? GameEngineState_DisplayUI : 0;
@@ -287,6 +299,11 @@ void GameInputManager::update()
         }
     }
     
+    if (_currentState->isRequestingToAddLocalPlayer())
+    {
+        NG_CLIENT->requestToAddLocalPlayer();
+    }
+    
     GM_CFG->_playerLightZ = clamp(GM_CFG->_playerLightZ + _playerLightZDelta, 0.3f, -0.1f);
     _pendingMove = &sampleInputAsMove();
 }
@@ -327,7 +344,15 @@ const Move& GameInputManager::sampleInputAsMove()
 void GameInputManager::dropPlayer(int index)
 {
     _currentState->getPlayerInputState(index)._playerId = INPUT_UNASSIGNED;
-    _inputState = GIMS_LOCAL_PLAYER_DROP_OUT_0 + index;
+    
+    if (index > 0)
+    {
+        NG_CLIENT->requestToDropLocalPlayer(1);
+    }
+    else
+    {
+        _inputState = GIMS_ESCAPE;
+    }
 }
 
 GameInputManager::GameInputManager() :

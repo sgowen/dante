@@ -147,6 +147,8 @@ void TitleEngine::createDeviceDependentResources()
     EntityLayoutMapper::getInstance()->initWithJsonFile("maps.cfg");
     ASSETS->initWithJsonFile("title_assets.cfg");
     
+    CURSOR_CONVERTER->setCamSize(GM_CFG->_camWidth, GM_CFG->_camHeight);
+    
     _renderer->createDeviceDependentResources();
 }
 
@@ -154,7 +156,6 @@ void TitleEngine::createWindowSizeDependentResources(int screenWidth, int screen
 {
     _renderer->createWindowSizeDependentResources(screenWidth, screenHeight, GM_CFG->_framebufferWidth, GM_CFG->_framebufferHeight);
     
-    CURSOR_CONVERTER->setCamSize(GM_CFG->_camWidth, GM_CFG->_camHeight);
     CURSOR_CONVERTER->setCursorSize(cursorWidth, cursorHeight);
 }
 

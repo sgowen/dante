@@ -307,17 +307,18 @@ void GameRenderer::renderWorld()
     renderEntities(world->getDynamicEntities());
     
     _rendererHelper->useNormalBlending();
-    
-    setFramebuffer(0);
+    setFramebuffer(0, 0, 0, 0, 0);
     for (int i = 0; i < 5; ++i)
     {
         endBatchWithTexture(_spriteBatchers[i], _textureManager->getTextureWithName(_textures[i]), i);
     }
     
-    setFramebuffer(1);
+    _rendererHelper->useScreenBlending();
+    setFramebuffer(1, 0, 0, 0, 0);
     endBatchWithTexture(_spriteBatchers[5], _textureManager->getTextureWithName(_textures[5]), 5);
     
-    setFramebuffer(2);
+    _rendererHelper->useNormalBlending();
+    setFramebuffer(2, 0, 0, 0, 0);
     for (int i = 6; i < 9; ++i)
     {
         endBatchWithTexture(_spriteBatchers[i], _textureManager->getTextureWithName(_textures[i]), i);
@@ -335,7 +336,7 @@ void GameRenderer::renderWorld()
     }
     
     _rendererHelper->useScreenBlending();
-    setFramebuffer(9);
+    setFramebuffer(9, 0, 0, 0, 0);
     for (int i = fbBegin; i < fbEnd; ++i)
     {
         _framebufferToScreenNGShader->bind(_rendererHelper->getFramebuffer(i));
@@ -366,22 +367,24 @@ void GameRenderer::renderEntities(std::vector<Entity*>& entities)
 
 void GameRenderer::renderLighting()
 {
-    setFramebuffer(3);
+    _rendererHelper->useNormalBlending();
+    setFramebuffer(3, 0, 0, 0, 0);
     for (int i = 0; i < 5; ++i)
     {
         endBatchWithTexture(_spriteBatchers[i], _textureManager->getTextureWithName(_normals[i]), i);
     }
     
-    setFramebuffer(4);
+    _rendererHelper->useScreenBlending();
+    setFramebuffer(4, 0, 0, 0, 0);
     endBatchWithTexture(_spriteBatchers[5], _textureManager->getTextureWithName(_normals[5]), 5);
     
-    setFramebuffer(5);
+    _rendererHelper->useNormalBlending();
+    setFramebuffer(5, 0, 0, 0, 0);
     for (int i = 6; i < 9; ++i)
     {
         endBatchWithTexture(_spriteBatchers[i], _textureManager->getTextureWithName(_normals[i]), i);
     }
     
-    /// Use Lighting Shader
     _rendererHelper->useScreenBlending();
     
     {

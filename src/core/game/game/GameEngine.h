@@ -71,8 +71,6 @@ private:
     uint32_t _state;
     uint32_t _map;
     
-    bool handleNonMoveInput();
-    
     GameEngine();
     virtual ~GameEngine();
 };

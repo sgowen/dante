@@ -36,7 +36,6 @@
 #include <framework/util/PlatformHelper.h>
 #include <framework/file/portable/Assets.h>
 #include <framework/util/Constants.h>
-#include <framework/audio/portable/NGAudioEngine.h>
 #include <framework/util/FPSUtil.h>
 #include <framework/input/CursorConverter.h>
 #include <framework/entity/EntityMapper.h>
@@ -79,6 +78,7 @@ void GameEngine::sHandleDynamicEntityCreatedOnClient(Entity* inEntity)
 {
     GameEngine* engine = GameEngine::getInstance();
     assert(engine);
+    
     World* world = engine->_world;
     assert(world);
     
@@ -89,6 +89,7 @@ void GameEngine::sHandleDynamicEntityDeletedOnClient(Entity* inEntity)
 {
     GameEngine* engine = GameEngine::getInstance();
     assert(engine);
+    
     World* world = engine->_world;
     assert(world);
     
@@ -99,6 +100,7 @@ uint64_t GameEngine::sGetPlayerAddressHashForIndexOnClient(uint8_t inPlayerIndex
 {
     GameEngine* engine = GameEngine::getInstance();
     assert(engine);
+    
     World* world = engine->_world;
     assert(world);
     
@@ -178,7 +180,7 @@ void GameEngine::update(Engine* engine)
     NG_AUDIO_ENGINE->update();
     
     _input->update();
-    if (handleNonMoveInput())
+    if (_input->getMenuState() == GIMS_ESCAPE)
     {
         engine->getStateMachine().revertToPreviousState();
         return;
@@ -192,9 +194,9 @@ void GameEngine::update(Engine* engine)
     NG_STEAM_GAME_SERVICES->update(false);
 #endif
     
-    /// Only for host
     if (_server)
     {
+        /// Only for host
         _server->update();
     }
 }
@@ -217,12 +219,12 @@ void GameEngine::createDeviceDependentResources()
     EntityLayoutMapper::getInstance()->initWithJsonFile("maps.cfg");
     ASSETS->initWithJsonFile("game_assets.cfg");
     
+    CURSOR_CONVERTER->setCamSize(GM_CFG->_camWidth, GM_CFG->_camHeight);
+    
     _renderer->createDeviceDependentResources();
     
     NGAudioEngine::create();
-    
     NG_AUDIO_ENGINE->loadFromAssets();
-
     NG_AUDIO_ENGINE->setMusicDisabled(true);
     NG_AUDIO_ENGINE->setSoundsDisabled(true);
 }
@@ -231,7 +233,6 @@ void GameEngine::createWindowSizeDependentResources(int screenWidth, int screenH
 {
     _renderer->createWindowSizeDependentResources(screenWidth, screenHeight, GM_CFG->_framebufferWidth, GM_CFG->_framebufferHeight);
     
-    CURSOR_CONVERTER->setCamSize(GM_CFG->_camWidth, GM_CFG->_camHeight);
     CURSOR_CONVERTER->setCursorSize(cursorWidth, cursorHeight);
 }
 
@@ -267,55 +268,4 @@ void GameEngine::render(double alpha)
     }
     
     NG_AUDIO_ENGINE->render();
-}
-
-bool GameEngine::handleNonMoveInput()
-{
-    int menuState = _input->getMenuState();
-    switch (menuState)
-    {
-        case GIMS_LOCAL_PLAYER_DROP_OUT_0:
-            return true;
-        case GIMS_LOCAL_PLAYER_DROP_OUT_1:
-            NG_CLIENT->requestToDropLocalPlayer(1);
-            break;
-        case GIMS_LOCAL_PLAYER_DROP_OUT_2:
-            NG_CLIENT->requestToDropLocalPlayer(2);
-            break;
-        case GIMS_LOCAL_PLAYER_DROP_OUT_3:
-            NG_CLIENT->requestToDropLocalPlayer(3);
-            break;
-        case GIMS_CLIENT_MAIN_TOGGLE_MUSIC:
-            NG_AUDIO_ENGINE->setMusicDisabled(!NG_AUDIO_ENGINE->isMusicDisabled());
-            break;
-        case GIMS_CLIENT_MAIN_TOGGLE_SOUND:
-            NG_AUDIO_ENGINE->setSoundsDisabled(!NG_AUDIO_ENGINE->areSoundsDisabled());
-            break;
-        case GIMS_TOGGLE_PHYSICS_DISPLAY:
-            _state ^= GameEngineState_DisplayBox2D;
-            break;
-        case GIMS_TOGGLE_INTERPOLATION:
-            _state ^= GameEngineState_Interpolation;
-            break;
-        case GIMS_TOGGLE_LIGHTING:
-            _state ^= GameEngineState_Lighting;
-            break;
-        case GIMS_SERVER_TOGGLE_MAP:
-            if (_server)
-            {
-                _server->toggleMap();
-            }
-            break;
-        default:
-        {
-            GameInputState* inputState = _input->getInputState();
-            if (inputState->isRequestingToAddLocalPlayer())
-            {
-                NG_CLIENT->requestToAddLocalPlayer();
-            }
-        }
-            break;
-    }
-    
-    return false;
 }

@@ -106,10 +106,9 @@ void StudioEngine::update(Engine* engine)
 {
     _input->update();
     
-    if (handleInput())
+    if (_input->getMenuState() == SIMS_ESCAPE)
     {
         engine->getStateMachine().revertToPreviousState();
-        return;
     }
 }
 
@@ -129,6 +128,8 @@ void StudioEngine::createDeviceDependentResources()
     EntityLayoutMapper::getInstance()->initWithJsonFile("maps.cfg");
     ASSETS->initWithJsonFile("game_assets.cfg");
     
+    CURSOR_CONVERTER->setCamSize(GM_CFG->_camWidth, GM_CFG->_camHeight);
+    
     _renderer->createDeviceDependentResources();
 }
 
@@ -136,7 +137,6 @@ void StudioEngine::createWindowSizeDependentResources(int screenWidth, int scree
 {
     _renderer->createWindowSizeDependentResources(screenWidth, screenHeight, GM_CFG->_framebufferWidth, GM_CFG->_framebufferHeight);
     
-    CURSOR_CONVERTER->setCamSize(GM_CFG->_camWidth, GM_CFG->_camHeight);
     CURSOR_CONVERTER->setCursorSize(cursorWidth, cursorHeight);
 }
 
@@ -158,16 +158,4 @@ void StudioEngine::onPause()
 void StudioEngine::render(double alpha)
 {
     _renderer->render();
-}
-
-bool StudioEngine::handleInput()
-{
-    int menuState = _input->getMenuState();
-    
-    if (menuState == SIMS_ESCAPE)
-    {
-        return true;
-    }
-    
-    return false;
 }
