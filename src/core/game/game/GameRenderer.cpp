@@ -325,91 +325,13 @@ void GameRenderer::renderWorld()
     
     int fbBegin = 0;
     int fbEnd = 3;
+    
     if (_engineState & GameEngineState_Lighting)
     {
-        setFramebuffer(3);
-        for (int i = 0; i < 5; ++i)
-        {
-            endBatchWithTexture(_spriteBatchers[i], _textureManager->getTextureWithName(_normals[i]), i);
-        }
+        fbBegin = 6;
+        fbEnd = 9;
         
-        setFramebuffer(4);
-        endBatchWithTexture(_spriteBatchers[5], _textureManager->getTextureWithName(_normals[5]), 5);
-        
-        setFramebuffer(5);
-        for (int i = 6; i < 9; ++i)
-        {
-            endBatchWithTexture(_spriteBatchers[i], _textureManager->getTextureWithName(_normals[i]), i);
-        }
-        
-        {
-            /// Use Lighting Shader
-            _rendererHelper->useScreenBlending();
-            
-            fbBegin = 6;
-            fbEnd = 9;
-            
-            {
-                _lightingNGShader->resetLights();
-                _lightingNGShader->configAmbientLight(GM_CFG->_ambientColor[0], GM_CFG->_ambientColor[1], GM_CFG->_ambientColor[2], GM_CFG->_ambientColor[3]);
-                _lightingNGShader->configureFallOff(GM_CFG->_fallOff[0], GM_CFG->_fallOff[1], GM_CFG->_fallOff[2]);
-                for (int j = 0 ; j < _playerLights.size(); ++j)
-                {
-                    LightDef& ld = _playerLights[j];
-                    _lightingNGShader->addLight(ld._lightPosX, ld._lightPosY, GM_CFG->_behindPlayerLightZFactor * GM_CFG->_playerLightZ, ld._lightColorR, ld._lightColorG, ld._lightColorB, ld._lightColorA);
-                }
-                for (int j = 0 ; j < _lights.size(); ++j)
-                {
-                    LightDef& ld = _lights[j];
-                    _lightingNGShader->addLight(ld._lightPosX, ld._lightPosY, GM_CFG->_behindPlayerLightZFactor * GM_CFG->_playerLightZ, ld._lightColorR, ld._lightColorG, ld._lightColorB, ld._lightColorA);
-                }
-                
-                setFramebuffer(6, 0, 0, 0, 0);
-                _lightingNGShader->bind(_rendererHelper->getFramebuffer(0), _rendererHelper->getFramebuffer(3));
-                _rendererHelper->bindScreenVertexBuffer();
-                _rendererHelper->drawIndexed(NGPrimitiveType_Triangles, 0, INDICES_PER_RECTANGLE);
-                _lightingNGShader->unbind();
-            }
-            
-            {
-                _lightingNGShader->resetLights();
-                _lightingNGShader->configAmbientLight(1, 1, 1, 1);
-                _lightingNGShader->configureFallOff(GM_CFG->_fallOff[0], GM_CFG->_fallOff[1], GM_CFG->_fallOff[2]);
-                for (int j = 0 ; j < _lights.size(); ++j)
-                {
-                    LightDef& ld = _lights[j];
-                    _lightingNGShader->addLight(ld._lightPosX, ld._lightPosY, GM_CFG->_playerLightZ, ld._lightColorR, ld._lightColorG, ld._lightColorB, ld._lightColorA);
-                }
-                
-                setFramebuffer(7, 0, 0, 0, 0);
-                _lightingNGShader->bind(_rendererHelper->getFramebuffer(1), _rendererHelper->getFramebuffer(4));
-                _rendererHelper->bindScreenVertexBuffer();
-                _rendererHelper->drawIndexed(NGPrimitiveType_Triangles, 0, INDICES_PER_RECTANGLE);
-                _lightingNGShader->unbind();
-            }
-            
-            {
-                _lightingNGShader->resetLights();
-                _lightingNGShader->configAmbientLight(GM_CFG->_ambientColor[0], GM_CFG->_ambientColor[1], GM_CFG->_ambientColor[2], GM_CFG->_ambientColor[3]);
-                _lightingNGShader->configureFallOff(GM_CFG->_fallOff[0], GM_CFG->_fallOff[1], GM_CFG->_fallOff[2]);
-                for (int j = 0 ; j < _playerLights.size(); ++j)
-                {
-                    LightDef& ld = _playerLights[j];
-                    _lightingNGShader->addLight(ld._lightPosX, ld._lightPosY, GM_CFG->_frontPlayerLightZFactor * GM_CFG->_playerLightZ, ld._lightColorR, ld._lightColorG, ld._lightColorB, ld._lightColorA);
-                }
-                for (int j = 0 ; j < _lights.size(); ++j)
-                {
-                    LightDef& ld = _lights[j];
-                    _lightingNGShader->addLight(ld._lightPosX, ld._lightPosY, GM_CFG->_frontPlayerLightZFactor * GM_CFG->_playerLightZ, ld._lightColorR, ld._lightColorG, ld._lightColorB, ld._lightColorA);
-                }
-                
-                setFramebuffer(8, 0, 0, 0, 0);
-                _lightingNGShader->bind(_rendererHelper->getFramebuffer(2), _rendererHelper->getFramebuffer(5));
-                _rendererHelper->bindScreenVertexBuffer();
-                _rendererHelper->drawIndexed(NGPrimitiveType_Triangles, 0, INDICES_PER_RECTANGLE);
-                _lightingNGShader->unbind();
-            }
-        }
+        renderLighting();
     }
     
     _rendererHelper->useScreenBlending();
@@ -439,6 +361,88 @@ void GameRenderer::renderEntities(std::vector<Entity*>& entities)
         }
         
         _spriteBatchers[layer]->renderSprite(e->getPosition().x, e->getPosition().y, e->getWidth(), e->getHeight(), e->getAngle(), tr, e->isFacingLeft());
+    }
+}
+
+void GameRenderer::renderLighting()
+{
+    setFramebuffer(3);
+    for (int i = 0; i < 5; ++i)
+    {
+        endBatchWithTexture(_spriteBatchers[i], _textureManager->getTextureWithName(_normals[i]), i);
+    }
+    
+    setFramebuffer(4);
+    endBatchWithTexture(_spriteBatchers[5], _textureManager->getTextureWithName(_normals[5]), 5);
+    
+    setFramebuffer(5);
+    for (int i = 6; i < 9; ++i)
+    {
+        endBatchWithTexture(_spriteBatchers[i], _textureManager->getTextureWithName(_normals[i]), i);
+    }
+    
+    /// Use Lighting Shader
+    _rendererHelper->useScreenBlending();
+    
+    {
+        _lightingNGShader->resetLights();
+        _lightingNGShader->configAmbientLight(GM_CFG->_ambientColor[0], GM_CFG->_ambientColor[1], GM_CFG->_ambientColor[2], GM_CFG->_ambientColor[3]);
+        _lightingNGShader->configureFallOff(GM_CFG->_fallOff[0], GM_CFG->_fallOff[1], GM_CFG->_fallOff[2]);
+        for (int j = 0 ; j < _playerLights.size(); ++j)
+        {
+            LightDef& ld = _playerLights[j];
+            _lightingNGShader->addLight(ld._lightPosX, ld._lightPosY, GM_CFG->_behindPlayerLightZFactor * GM_CFG->_playerLightZ, ld._lightColorR, ld._lightColorG, ld._lightColorB, ld._lightColorA);
+        }
+        for (int j = 0 ; j < _lights.size(); ++j)
+        {
+            LightDef& ld = _lights[j];
+            _lightingNGShader->addLight(ld._lightPosX, ld._lightPosY, GM_CFG->_behindPlayerLightZFactor * GM_CFG->_playerLightZ, ld._lightColorR, ld._lightColorG, ld._lightColorB, ld._lightColorA);
+        }
+        
+        setFramebuffer(6, 0, 0, 0, 0);
+        _lightingNGShader->bind(_rendererHelper->getFramebuffer(0), _rendererHelper->getFramebuffer(3));
+        _rendererHelper->bindScreenVertexBuffer();
+        _rendererHelper->drawIndexed(NGPrimitiveType_Triangles, 0, INDICES_PER_RECTANGLE);
+        _lightingNGShader->unbind();
+    }
+    
+    {
+        _lightingNGShader->resetLights();
+        _lightingNGShader->configAmbientLight(1, 1, 1, 1);
+        _lightingNGShader->configureFallOff(GM_CFG->_fallOff[0], GM_CFG->_fallOff[1], GM_CFG->_fallOff[2]);
+        for (int j = 0 ; j < _lights.size(); ++j)
+        {
+            LightDef& ld = _lights[j];
+            _lightingNGShader->addLight(ld._lightPosX, ld._lightPosY, GM_CFG->_playerLightZ, ld._lightColorR, ld._lightColorG, ld._lightColorB, ld._lightColorA);
+        }
+        
+        setFramebuffer(7, 0, 0, 0, 0);
+        _lightingNGShader->bind(_rendererHelper->getFramebuffer(1), _rendererHelper->getFramebuffer(4));
+        _rendererHelper->bindScreenVertexBuffer();
+        _rendererHelper->drawIndexed(NGPrimitiveType_Triangles, 0, INDICES_PER_RECTANGLE);
+        _lightingNGShader->unbind();
+    }
+    
+    {
+        _lightingNGShader->resetLights();
+        _lightingNGShader->configAmbientLight(GM_CFG->_ambientColor[0], GM_CFG->_ambientColor[1], GM_CFG->_ambientColor[2], GM_CFG->_ambientColor[3]);
+        _lightingNGShader->configureFallOff(GM_CFG->_fallOff[0], GM_CFG->_fallOff[1], GM_CFG->_fallOff[2]);
+        for (int j = 0 ; j < _playerLights.size(); ++j)
+        {
+            LightDef& ld = _playerLights[j];
+            _lightingNGShader->addLight(ld._lightPosX, ld._lightPosY, GM_CFG->_frontPlayerLightZFactor * GM_CFG->_playerLightZ, ld._lightColorR, ld._lightColorG, ld._lightColorB, ld._lightColorA);
+        }
+        for (int j = 0 ; j < _lights.size(); ++j)
+        {
+            LightDef& ld = _lights[j];
+            _lightingNGShader->addLight(ld._lightPosX, ld._lightPosY, GM_CFG->_frontPlayerLightZFactor * GM_CFG->_playerLightZ, ld._lightColorR, ld._lightColorG, ld._lightColorB, ld._lightColorA);
+        }
+        
+        setFramebuffer(8, 0, 0, 0, 0);
+        _lightingNGShader->bind(_rendererHelper->getFramebuffer(2), _rendererHelper->getFramebuffer(5));
+        _rendererHelper->bindScreenVertexBuffer();
+        _rendererHelper->drawIndexed(NGPrimitiveType_Triangles, 0, INDICES_PER_RECTANGLE);
+        _lightingNGShader->unbind();
     }
 }
 

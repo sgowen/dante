@@ -106,6 +106,7 @@ private:
     void setFramebuffer(int framebufferIndex, float r = 0, float g = 0, float b = 0, float a = 0);
     void renderWorld();
     void renderEntities(std::vector<Entity*>& entities);
+    void renderLighting();
     void endBatchWithTexture(SpriteBatcher* sb, NGTexture* tex, int layer);
     void renderBox2D();
     void renderUI();
