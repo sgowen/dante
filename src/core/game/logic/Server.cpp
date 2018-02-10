@@ -18,8 +18,6 @@
 #include <framework/util/Timing.h>
 #include <framework/util/Constants.h>
 #include <framework/network/portable/SocketUtil.h>
-#include <game/logic/InstanceManager.h>
-#include <framework/network/portable/FWInstanceManager.h>
 #include <framework/entity/EntityManager.h>
 #include <framework/network/server/SocketServerHelper.h>
 #include <framework/network/portable/MachineAddress.h>
@@ -60,6 +58,26 @@ void Server::destroy()
     
     delete s_instance;
     s_instance = NULL;
+}
+
+void Server::sHandleDynamicEntityCreatedOnServer(Entity* inEntity)
+{
+    Server* server = Server::getInstance();
+    assert(server);
+    World* world = server->_world;
+    assert(world);
+    
+    world->addDynamicEntity(inEntity);
+}
+
+void Server::sHandleDynamicEntityDeletedOnServer(Entity* inEntity)
+{
+    Server* server = Server::getInstance();
+    assert(server);
+    World* world = server->_world;
+    assert(world);
+    
+    world->removeDynamicEntity(inEntity);
 }
 
 void Server::sHandleNewClient(uint8_t playerId, std::string playerName)
@@ -235,28 +253,24 @@ void Server::loadMap()
 
 Server::Server(bool isSteam) : _world(NULL), _stateTime(0), _frameStateTime(0), _map(0)
 {
-    FWInstanceManager::createServerEntityManager(InstanceManager::sHandleDynamicEntityCreatedOnServer, InstanceManager::sHandleDynamicEntityDeletedOnServer);
-    
     if (isSteam)
     {
 #ifdef NG_STEAM
-        NetworkManagerServer::create(new NGSteamServerHelper(GM_CFG->_steamGameDir, GM_CFG->_versionName, GM_CFG->_steamProductName, GM_CFG->_steamProductDescription, GM_CFG->_serverPort, NG_SERVER_CALLBACKS), SERVER_CALLBACKS);
+        NetworkManagerServer::create(new NGSteamServerHelper(GM_CFG->_steamGameDir, GM_CFG->_versionName, GM_CFG->_steamProductName, GM_CFG->_steamProductDescription, GM_CFG->_serverPort, NG_SERVER_CALLBACKS), Server::sHandleDynamicEntityCreatedOnServer, Server::sHandleDynamicEntityDeletedOnServer, SERVER_CALLBACKS);
 #endif
     }
     else
     {
-        NetworkManagerServer::create(new SocketServerHelper(GM_CFG->_serverPort, NG_SERVER_CALLBACKS), SERVER_CALLBACKS);
+        NetworkManagerServer::create(new SocketServerHelper(GM_CFG->_serverPort, NG_SERVER_CALLBACKS), Server::sHandleDynamicEntityCreatedOnServer, Server::sHandleDynamicEntityDeletedOnServer, SERVER_CALLBACKS);
     }
+    
     assert(NG_SERVER);
     
     _world = new World(WorldFlag_Server | WorldFlag_MapLoadAll);
-    InstanceManager::setServerWorld(_world);
 }
 
 Server::~Server()
 {
     delete _world;
-    InstanceManager::setServerWorld(NULL);
     NetworkManagerServer::destroy();
-    FWInstanceManager::destroyServerEntityManager();
 }

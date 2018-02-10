@@ -21,22 +21,20 @@
 #include <framework/util/WeightedTimedMovingAverage.h>
 #include <framework/network/portable/SocketAddress.h>
 
-#include <framework/entity/EntityManager.h>
 #include <framework/util/StringUtil.h>
 #include <framework/util/Timing.h>
 #include <framework/network/portable/SocketAddressFactory.h>
-#include <framework/network/portable/FWInstanceManager.h>
 #include <framework/util/macros.h>
 
 #include <assert.h>
 
 NetworkManagerClient* NetworkManagerClient::s_instance = NULL;
 
-void NetworkManagerClient::create(ClientHelper* inClientHelper, RemoveProcessedMovesFunc inRemoveProcessedMovesFunc, GetMoveListFunc inGetMoveListFunc, OnPlayerWelcomedFunc inOnPlayerWelcomedFunc)
+void NetworkManagerClient::create(ClientHelper* inClientHelper, HandleEntityCreatedFunc handleEntityCreatedFunc, HandleEntityDeletionFunc handleEntityDeletionFunc, RemoveProcessedMovesFunc inRemoveProcessedMovesFunc, GetMoveListFunc inGetMoveListFunc, OnPlayerWelcomedFunc inOnPlayerWelcomedFunc)
 {
     assert(!s_instance);
     
-    s_instance = new NetworkManagerClient(inClientHelper, inRemoveProcessedMovesFunc, inGetMoveListFunc, inOnPlayerWelcomedFunc);
+    s_instance = new NetworkManagerClient(inClientHelper, handleEntityCreatedFunc, handleEntityDeletionFunc, inRemoveProcessedMovesFunc, inGetMoveListFunc, inOnPlayerWelcomedFunc);
 }
 
 NetworkManagerClient * NetworkManagerClient::getInstance()
@@ -450,12 +448,13 @@ void NetworkManagerClient::updateNextIndex()
     }
 }
 
-NetworkManagerClient::NetworkManagerClient(ClientHelper* inClientHelper, RemoveProcessedMovesFunc inRemoveProcessedMovesFunc, GetMoveListFunc inGetMoveListFunc, OnPlayerWelcomedFunc inOnPlayerWelcomedFunc) :
+NetworkManagerClient::NetworkManagerClient(ClientHelper* inClientHelper, HandleEntityCreatedFunc handleEntityCreatedFunc, HandleEntityDeletionFunc handleEntityDeletionFunc, RemoveProcessedMovesFunc inRemoveProcessedMovesFunc, GetMoveListFunc inGetMoveListFunc, OnPlayerWelcomedFunc inOnPlayerWelcomedFunc) :
 _clientHelper(inClientHelper),
 _removeProcessedMovesFunc(inRemoveProcessedMovesFunc),
 _getMoveListFunc(inGetMoveListFunc),
 _onPlayerWelcomedFunc(inOnPlayerWelcomedFunc),
-_replicationManagerClient(new ReplicationManagerClient()),
+_entityManager(new EntityManager(handleEntityCreatedFunc, handleEntityDeletionFunc)),
+_replicationManagerClient(new ReplicationManagerClient(_entityManager)),
 _avgRoundTripTime(new WeightedTimedMovingAverage(1.f)),
 _state(NCS_Uninitialized),
 _deliveryNotificationManager(new DeliveryNotificationManager(true, false)),
@@ -473,7 +472,8 @@ _hasReceivedNewState(false)
 NetworkManagerClient::~NetworkManagerClient()
 {
     delete _clientHelper;
-    delete _deliveryNotificationManager;
+    delete _entityManager;
     delete _replicationManagerClient;
     delete _avgRoundTripTime;
+    delete _deliveryNotificationManager;
 }

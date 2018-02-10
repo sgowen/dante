@@ -19,15 +19,11 @@ class SocketClientHelper : public ClientHelper
 {
 public:
     SocketClientHelper(std::string inServerIPAddress, std::string inName, uint16_t inPort, ProcessPacketFunc processPacketFunc, HandleNoResponseFunc handleNoResponseFunc, HandleConnectionResetFunc handleConnectionResetFunc);
-    
     virtual ~SocketClientHelper();
     
     virtual void processSpecialPacket(uint8_t packetType, InputMemoryBitStream& inInputStream, MachineAddress* inFromAddress);
-    
     virtual void handleUninitialized();
-    
     virtual void sendPacket(const OutputMemoryBitStream& inOutputStream);
-    
     virtual std::string& getName();
     
 private:

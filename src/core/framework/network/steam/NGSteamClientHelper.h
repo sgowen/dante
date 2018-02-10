@@ -24,17 +24,12 @@ class NGSteamClientHelper : public ClientHelper
 {
 public:
     NGSteamClientHelper(CSteamID serverSteamID, GetPlayerAddressHashFunc getPlayerAddressHashFunc, ProcessPacketFunc processPacketFunc, HandleNoResponseFunc handleNoResponseFunc, HandleConnectionResetFunc handleConnectionResetFunc);
-    
     virtual ~NGSteamClientHelper();
     
     virtual void processIncomingPackets();
-    
     virtual void processSpecialPacket(uint8_t packetType, InputMemoryBitStream& inInputStream, MachineAddress* inFromAddress);
-    
     virtual void handleUninitialized();
-    
     virtual void sendPacket(const OutputMemoryBitStream& inOutputStream);
-    
     virtual std::string& getName();
     
 private:
@@ -64,9 +59,7 @@ private:
     HAuthTicket _hAuthTicket;
     
     void onReceiveServerInfo(CSteamID steamIDGameServer, bool bVACSecure, const char *pchServerName);
-    
     void updateRichPresenceConnectionInfo();
-    
     void updateState();
 };
 

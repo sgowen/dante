@@ -11,14 +11,22 @@
 
 #include <framework/network/portable/Network.h>
 
+#define GM_UTIL (Util::getInstance())
+
 struct b2Vec2;
+class World;
 
 class Util
 {
 public:
-    static void playSound(int soundId, const b2Vec2& position);
+    static Util* getInstance();
+    
+    void playSound(int soundId, const b2Vec2& position);
+    void setWorld(World* world);
     
 private:
+    World* _world;
+    
     // ctor, copy ctor, and assignment should be private in a Singleton
     Util();
     ~Util();

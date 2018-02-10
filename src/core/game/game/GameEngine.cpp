@@ -10,6 +10,7 @@
 
 #include <game/game/GameEngine.h>
 
+#include <framework/entity/Entity.h>
 #include <game/game/GameRenderer.h>
 #include <game/logic/World.h>
 #include <game/game/GameInputManager.h>
@@ -26,9 +27,7 @@
 #include <framework/network/server/NetworkManagerServer.h>
 #include <framework/network/portable/SocketAddressFactory.h>
 #include <framework/network/portable/SocketUtil.h>
-#include <game/logic/InstanceManager.h>
 #include <game/game/GameInputState.h>
-#include <framework/network/portable/FWInstanceManager.h>
 #include <framework/entity/EntityManager.h>
 #include <framework/network/client/SocketClientHelper.h>
 #include <framework/network/portable/MachineAddress.h>
@@ -43,6 +42,8 @@
 #include <framework/entity/EntityMapper.h>
 #include <framework/entity/EntityLayoutMapper.h>
 #include <game/logic/GameConfig.h>
+#include <game/logic/Util.h>
+#include <game/entity/PlayerController.h>
 
 #ifdef NG_STEAM
 #include <framework/network/steam/NGSteamClientHelper.h>
@@ -61,7 +62,7 @@ void GameEngine::create()
     s_instance = new GameEngine();
 }
 
-GameEngine * GameEngine::getInstance()
+GameEngine* GameEngine::getInstance()
 {
     return s_instance;
 }
@@ -72,6 +73,42 @@ void GameEngine::destroy()
     
     delete s_instance;
     s_instance = NULL;
+}
+
+void GameEngine::sHandleDynamicEntityCreatedOnClient(Entity* inEntity)
+{
+    GameEngine* engine = GameEngine::getInstance();
+    assert(engine);
+    World* world = engine->_world;
+    assert(world);
+    
+    world->addDynamicEntity(inEntity);
+}
+
+void GameEngine::sHandleDynamicEntityDeletedOnClient(Entity* inEntity)
+{
+    GameEngine* engine = GameEngine::getInstance();
+    assert(engine);
+    World* world = engine->_world;
+    assert(world);
+    
+    world->removeDynamicEntity(inEntity);
+}
+
+uint64_t GameEngine::sGetPlayerAddressHashForIndexOnClient(uint8_t inPlayerIndex)
+{
+    GameEngine* engine = GameEngine::getInstance();
+    assert(engine);
+    World* world = engine->_world;
+    assert(world);
+    
+    Entity* entity = world->getPlayerWithId(inPlayerIndex + 1);
+    assert(entity);
+    
+    PlayerController* robot = static_cast<PlayerController*>(entity->getController());
+    assert(robot);
+    
+    return robot->getAddressHash();
 }
 
 GameEngine::GameEngine() : EngineState(),
@@ -105,7 +142,7 @@ void GameEngine::enter(Engine* engine)
     GameInputManager::create();
     
     _world = new World();
-    InstanceManager::setClientWorld(_world);
+    GM_UTIL->setWorld(_world);
     _input = GameInputManager::getInstance();
     _timing = Timing::getInstance();
     _server = Server::getInstance();
@@ -169,7 +206,6 @@ void GameEngine::exit(Engine* engine)
     GameInputManager::destroy();
     
     delete _world;
-    InstanceManager::setClientWorld(NULL);
     
     Timing::getInstance()->updateManual(0, FRAME_RATE);
 }

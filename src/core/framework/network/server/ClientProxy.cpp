@@ -10,13 +10,16 @@
 
 #include <framework/network/server/ClientProxy.h>
 
+#include <framework/entity/EntityManager.h>
+#include <framework/network/server/ReplicationManagerServer.h>
 #include <framework/network/portable/MachineAddress.h>
 
 #include <framework/util/Timing.h>
 #include <framework/util/Constants.h>
 
-ClientProxy::ClientProxy(MachineAddress* inMachineAddress, const std::string& inName, uint8_t inPlayerId) :
+ClientProxy::ClientProxy(EntityManager* entityManager, MachineAddress* inMachineAddress, const std::string& inName, uint8_t inPlayerId) :
 _deliveryNotificationManager(DeliveryNotificationManager(false, true)),
+_replicationManagerServer(new ReplicationManagerServer(entityManager)),
 _machineAddress(inMachineAddress->createNewCopy()),
 _name(inName),
 _lastPacketFromClientTime(0),
@@ -62,7 +65,7 @@ DeliveryNotificationManager& ClientProxy::getDeliveryNotificationManager()
     return _deliveryNotificationManager;
 }
 
-ReplicationManagerServer& ClientProxy::getReplicationManagerServer()
+ReplicationManagerServer* ClientProxy::getReplicationManagerServer()
 {
     return _replicationManagerServer;
 }

@@ -15,6 +15,9 @@
 #include <framework/network/steam/NGSteam.h>
 #endif
 
+#define GAME_ENGINE_CALLBACKS GameEngine::sHandleDynamicEntityCreatedOnClient, GameEngine::sHandleDynamicEntityDeletedOnClient
+
+class Entity;
 class GameRenderer;
 class World;
 class GameInputManager;
@@ -41,6 +44,10 @@ public:
     static void create();
     static GameEngine* getInstance();
     static void destroy();
+    
+    static void sHandleDynamicEntityCreatedOnClient(Entity* inEntity);
+    static void sHandleDynamicEntityDeletedOnClient(Entity* inEntity);
+    static uint64_t sGetPlayerAddressHashForIndexOnClient(uint8_t inPlayerIndex);
     
     virtual void enter(Engine* engine);
     virtual void update(Engine* engine);

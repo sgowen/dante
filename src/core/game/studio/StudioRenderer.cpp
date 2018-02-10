@@ -41,7 +41,6 @@
 #include <framework/util/StringUtil.h>
 #include <framework/util/WeightedTimedMovingAverage.h>
 #include <framework/util/NGSTDUtil.h>
-#include <game/logic/InstanceManager.h>
 #include <game/title/TitleInputManager.h>
 #include <framework/network/server/NetworkManagerServer.h>
 #include <framework/network/portable/MachineAddress.h>

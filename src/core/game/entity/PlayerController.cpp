@@ -28,8 +28,6 @@
 #include <framework/network/client/NetworkManagerClient.h>
 #include <game/game/GameInputManager.h>
 #include <framework/audio/portable/NGAudioEngine.h>
-#include <game/logic/InstanceManager.h>
-#include <framework/network/portable/FWInstanceManager.h>
 #include <game/logic/Util.h>
 #include <game/logic/Server.h>
 #include <framework/util/Config.h>
@@ -182,7 +180,7 @@ void PlayerController::read(InputMemoryBitStream& inInputStream, uint16_t& inRea
                 (!(oldState & StateFlag_SecondJump) &&
                  (newState & StateFlag_SecondJump)))
             {
-                Util::playSound(_entity->getSoundMapping(State_Jumping), _entity->getPosition());
+                GM_UTIL->playSound(_entity->getSoundMapping(State_Jumping), _entity->getPosition());
             }
         }
     }
@@ -257,7 +255,7 @@ void PlayerController::processInput(InputState* inInputState, bool isPending)
                 
                 if (isPending)
                 {
-                    Util::playSound(_entity->getSoundMapping(State_Jumping), _entity->getPosition());
+                    GM_UTIL->playSound(_entity->getSoundMapping(State_Jumping), _entity->getPosition());
                 }
             }
         }
@@ -279,7 +277,7 @@ void PlayerController::processInput(InputState* inInputState, bool isPending)
                 
                 if (isPending)
                 {
-                    Util::playSound(_entity->getSoundMapping(State_Jumping), _entity->getPosition());
+                    GM_UTIL->playSound(_entity->getSoundMapping(State_Jumping), _entity->getPosition());
                 }
             }
             else

@@ -10,14 +10,19 @@
 
 #include <framework/network/server/ReplicationManagerServer.h>
 
+#include <framework/entity/EntityManager.h>
 #include <framework/network/portable/OutputMemoryBitStream.h>
 #include <framework/network/server/ReplicationManagerTransmissionData.h>
 
-#include <framework/network/portable/FWInstanceManager.h>
 #include <framework/entity/EntityManager.h>
 #include <framework/network/portable/ReplicationAction.h>
 #include <framework/util/macros.h>
 #include <framework/entity/Entity.h>
+
+ReplicationManagerServer::ReplicationManagerServer(EntityManager* entityManager) : _entityManager(entityManager)
+{
+    // Empty
+}
 
 void ReplicationManagerServer::replicateCreate(uint32_t inNetworkId, uint16_t inInitialDirtyState)
 {
@@ -91,7 +96,7 @@ void ReplicationManagerServer::write(OutputMemoryBitStream& inOutputStream, Repl
 uint16_t ReplicationManagerServer::writeCreateAction(OutputMemoryBitStream& inOutputStream, uint32_t inNetworkId, uint16_t inDirtyState)
 {
     //need object
-    Entity* entity = SERVER_ENTITY_MGR->getEntityByID(inNetworkId);
+    Entity* entity = _entityManager->getEntityByID(inNetworkId);
     //need 4 cc
     inOutputStream.write(entity->getEntityDef().type);
     
@@ -101,7 +106,7 @@ uint16_t ReplicationManagerServer::writeCreateAction(OutputMemoryBitStream& inOu
 uint16_t ReplicationManagerServer::writeUpdateAction(OutputMemoryBitStream& inOutputStream, uint32_t inNetworkId, uint16_t inDirtyState)
 {
     //need object
-    Entity* entity = SERVER_ENTITY_MGR->getEntityByID(inNetworkId);
+    Entity* entity = _entityManager->getEntityByID(inNetworkId);
     
     //if we can't find the entity on the other side, we won't be able to read the written data (since we won't know which class wrote it)
     //so we need to know how many bytes to skip.

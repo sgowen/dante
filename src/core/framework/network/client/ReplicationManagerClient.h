@@ -11,20 +11,21 @@
 
 #include <cstdint>
 
+class EntityManager;
 class InputMemoryBitStream;
 
 class ReplicationManagerClient
 {
 public:
-    ReplicationManagerClient();
+    ReplicationManagerClient(EntityManager* entityManager);
     
     void read(InputMemoryBitStream& inInputStream);
     
 private:
+    EntityManager* _entityManager;
+    
     void readAndDoCreateAction(InputMemoryBitStream& inInputStream, uint32_t inNetworkId);
-    
     void readAndDoUpdateAction(InputMemoryBitStream& inInputStream, uint32_t inNetworkId);
-    
     void readAndDoDestroyAction(InputMemoryBitStream& inInputStream, uint32_t inNetworkId);
 };
 

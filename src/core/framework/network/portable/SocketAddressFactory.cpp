@@ -61,9 +61,9 @@ SocketAddress* SocketAddressFactory::createIPv4FromString(const std::string& inS
         return NULL;
     }
     
-    auto toRet = new SocketAddress(*result->ai_addr);
+    SocketAddress* ret = new SocketAddress(*result->ai_addr);
     
     freeaddrinfo(result);
     
-    return toRet;
+    return ret;
 }

@@ -12,7 +12,6 @@
 
 #include <framework/network/server/ReplicationManagerServer.h>
 
-#include <framework/network/portable/FWInstanceManager.h>
 #include <framework/entity/EntityManager.h>
 #include <framework/entity/Entity.h>
 #include <framework/network/portable/ReplicationAction.h>
@@ -22,25 +21,6 @@ ReplicationManagerTransmissionData::ReplicationManagerTransmissionData() :
 _replicationManagerServer(NULL)
 {
     // Empty
-}
-
-void ReplicationManagerTransmissionData::reset(ReplicationManagerServer* inReplicationManagerServer, NoctisGames::NGPool<ReplicationManagerTransmissionData>* replicationManagerTransmissionDatas)
-{
-    _replicationManagerServer = inReplicationManagerServer;
-    _replicationManagerTransmissionDatas = replicationManagerTransmissionDatas;
-    _transmissions.clear();
-}
-
-void ReplicationManagerTransmissionData::addTransmission(uint32_t inNetworkId, ReplicationAction inAction, uint32_t inState)
-{
-    /*
-     //it would be silly if we already had a transmission for this network id in here...
-     for (const auto& transmission: _transmissions)
-     {
-     assert(inNetworkId != transmission.getID());
-     }
-     */
-    _transmissions.push_back(ReplicationTransmission(inNetworkId, inAction, inState));
 }
 
 void ReplicationManagerTransmissionData::free()
@@ -93,10 +73,33 @@ void ReplicationManagerTransmissionData::handleDeliverySuccess(DeliveryNotificat
     }
 }
 
+void ReplicationManagerTransmissionData::reset(ReplicationManagerServer* inReplicationManagerServer, EntityManager* entityManager, NoctisGames::NGPool<ReplicationManagerTransmissionData>* replicationManagerTransmissionDatas)
+{
+    _replicationManagerServer = inReplicationManagerServer;
+    _entityManager = entityManager;
+    _replicationManagerTransmissionDatas = replicationManagerTransmissionDatas;
+    _transmissions.clear();
+}
+
+void ReplicationManagerTransmissionData::addTransmission(uint32_t inNetworkId, ReplicationAction inAction, uint32_t inState)
+{
+    /*
+     //it would be silly if we already had a transmission for this network id in here...
+     for (const auto& transmission: _transmissions)
+     {
+     assert(inNetworkId != transmission.getID());
+     }
+     */
+    _transmissions.push_back(ReplicationTransmission(inNetworkId, inAction, inState));
+}
+
 void ReplicationManagerTransmissionData::handleCreateDeliveryFailure(uint32_t inNetworkId) const
 {
+    assert(_replicationManagerServer);
+    assert(_entityManager);
+    
     //does the object still exist? it might be dead, in which case we don't resend a create
-    Entity* entity = SERVER_ENTITY_MGR->getEntityByID(inNetworkId);
+    Entity* entity = _entityManager->getEntityByID(inNetworkId);
     if (entity)
     {
         _replicationManagerServer->replicateCreate(inNetworkId, NG_ALL_STATE);
@@ -105,8 +108,11 @@ void ReplicationManagerTransmissionData::handleCreateDeliveryFailure(uint32_t in
 
 void ReplicationManagerTransmissionData::handleUpdateStateDeliveryFailure(uint32_t inNetworkId, uint32_t inState, DeliveryNotificationManager* inDeliveryNotificationManager) const
 {
+    assert(_replicationManagerServer);
+    assert(_entityManager);
+    
     //does the object still exist? it might be dead, in which case we don't resend an update
-    if (SERVER_ENTITY_MGR->getEntityByID(inNetworkId))
+    if (_entityManager->getEntityByID(inNetworkId))
     {
         //look in all future in flight packets, in all transmissions
         //remove written state from dirty state

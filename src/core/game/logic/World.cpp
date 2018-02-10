@@ -14,7 +14,6 @@
 #include <Box2D/Box2D.h>
 
 #include <framework/network/server/NetworkManagerServer.h>
-#include <game/logic/InstanceManager.h>
 #include <framework/util/Timing.h>
 #include <game/logic/Server.h>
 #include <framework/network/server/ClientProxy.h>

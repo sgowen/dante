@@ -9,8 +9,9 @@
 #ifndef __noctisgames__NetworkManagerServer__
 #define __noctisgames__NetworkManagerServer__
 
-#include <framework/util/NGPool.h>
+#include <framework/entity/EntityManager.h>
 #include <framework/network/server/ReplicationManagerTransmissionData.h>
+#include <framework/util/NGPool.h>
 
 #include <map>
 
@@ -35,7 +36,7 @@ typedef void (*InputStateReleaseFunc)(InputState* inputState);
 class NetworkManagerServer
 {
 public:
-    static void create(ServerHelper* inServerHelper, HandleNewClientFunc inHandleNewClientFunc, HandleLostClientFunc inHandleLostClientFunc, InputStateCreationFunc inInputStateCreationFunc, InputStateReleaseFunc inputStateReleaseFunc);
+    static void create(ServerHelper* inServerHelper, HandleEntityCreatedFunc handleEntityCreatedFunc, HandleEntityDeletionFunc handleEntityDeletionFunc, HandleNewClientFunc inHandleNewClientFunc, HandleLostClientFunc inHandleLostClientFunc, InputStateCreationFunc inInputStateCreationFunc, InputStateReleaseFunc inputStateReleaseFunc);
     static NetworkManagerServer* getInstance();
     static void destroy();
     
@@ -69,6 +70,7 @@ private:
     HandleLostClientFunc _handleLostClientFunc;
     InputStateCreationFunc _inputStateCreationFunc;
     InputStateReleaseFunc _inputStateReleaseFunc;
+    EntityManager* _entityManager;
     NoctisGames::NGPool<ReplicationManagerTransmissionData> _replicationManagerTransmissionDatas;
     std::map<size_t, ClientProxy*> _addressHashToClientMap;
     std::map<int, ClientProxy*> _playerIDToClientMap;
@@ -93,7 +95,7 @@ private:
     void updateNextPlayerId();
     
     // ctor, copy ctor, and assignment should be private in a Singleton
-    NetworkManagerServer(ServerHelper* inServerHelper, HandleNewClientFunc inHandleNewClientFunc, HandleLostClientFunc inHandleLostClientFunc, InputStateCreationFunc inInputStateCreationFunc, InputStateReleaseFunc inputStateReleaseFunc);
+    NetworkManagerServer(ServerHelper* inServerHelper, HandleEntityCreatedFunc handleEntityCreatedFunc, HandleEntityDeletionFunc handleEntityDeletionFunc, HandleNewClientFunc inHandleNewClientFunc, HandleLostClientFunc inHandleLostClientFunc, InputStateCreationFunc inInputStateCreationFunc, InputStateReleaseFunc inputStateReleaseFunc);
     ~NetworkManagerServer();
     NetworkManagerServer(const NetworkManagerServer&);
     NetworkManagerServer& operator=(const NetworkManagerServer&);

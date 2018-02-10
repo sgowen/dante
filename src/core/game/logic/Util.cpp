@@ -11,19 +11,23 @@
 #include <game/logic/Util.h>
 
 #include <Box2D/Box2D.h>
-
-#include <framework/network/client/NetworkManagerClient.h>
-#include <game/logic/InstanceManager.h>
 #include <game/logic/World.h>
+
 #include <framework/audio/portable/NGAudioEngine.h>
 #include <framework/entity/Entity.h>
+
+Util* Util::getInstance()
+{
+    static Util instance = Util();
+    return &instance;
+}
 
 void Util::playSound(int soundId, const b2Vec2& position)
 {
     float volume = 1;
     float robotVolume = 0;
     
-    std::vector<Entity*>& players = InstanceManager::getClientWorld()->getPlayers();
+    std::vector<Entity*>& players = _world->getPlayers();
     
     for (Entity* e : players)
     {
@@ -49,6 +53,11 @@ void Util::playSound(int soundId, const b2Vec2& position)
     volume = robotVolume;
     
     NG_AUDIO_ENGINE->playSound(soundId, volume);
+}
+
+void Util::setWorld(World* world)
+{
+    _world = world;
 }
 
 Util::Util()

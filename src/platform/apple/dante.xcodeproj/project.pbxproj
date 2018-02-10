@@ -231,7 +231,6 @@
 		BB5AFE381FB35A77005FBD52 /* SocketClientHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB4253DF1EF598C1003F6D2A /* SocketClientHelper.cpp */; };
 		BB5AFE391FB35A77005FBD52 /* AckRange.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8308091EC2AD1F00435E7E /* AckRange.cpp */; };
 		BB5AFE3A1FB35A77005FBD52 /* DeliveryNotificationManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB83080C1EC2AD1F00435E7E /* DeliveryNotificationManager.cpp */; };
-		BB5AFE3B1FB35A77005FBD52 /* FWInstanceManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAFD3311EF45EEA004F2742 /* FWInstanceManager.cpp */; };
 		BB5AFE3C1FB35A77005FBD52 /* InputState.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB7251A61EE105780024C71C /* InputState.cpp */; };
 		BB5AFE3D1FB35A77005FBD52 /* MachineAddress.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAFD32B1EF44813004F2742 /* MachineAddress.cpp */; };
 		BB5AFE3E1FB35A77005FBD52 /* NetworkHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB4253E21EF5B078003F6D2A /* NetworkHelper.cpp */; };
@@ -278,8 +277,6 @@
 		BB6531631FED56CA00963997 /* World.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB65315C1FED56C800963997 /* World.cpp */; };
 		BB6531641FED56CA00963997 /* Server.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB65315D1FED56C800963997 /* Server.cpp */; };
 		BB6531651FED56CA00963997 /* Server.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB65315D1FED56C800963997 /* Server.cpp */; };
-		BB6531681FED575B00963997 /* InstanceManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB6531661FED575B00963997 /* InstanceManager.cpp */; };
-		BB6531691FED575B00963997 /* InstanceManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB6531661FED575B00963997 /* InstanceManager.cpp */; };
 		BB6E7B1E1F940F2B006C0024 /* Util.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB6E7B0F1F940F13006C0024 /* Util.cpp */; };
 		BB6E7B241F940FD4006C0024 /* tinythread.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB6E7A8B1F93CE1B006C0024 /* tinythread.cpp */; };
 		BB6F59751FBDE97D00BD7697 /* cocoa_joystick.m in Sources */ = {isa = PBXBuildFile; fileRef = BB6F596F1FBDE97D00BD7697 /* cocoa_joystick.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -375,7 +372,6 @@
 		BBAEF2AC1EA94EDA00F0866E /* NGAudioEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF1961EA94ED900F0866E /* NGAudioEngine.cpp */; };
 		BBAFD32D1EF44813004F2742 /* MachineAddress.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAFD32B1EF44813004F2742 /* MachineAddress.cpp */; };
 		BBAFD3301EF4496D004F2742 /* NGSteamAddress.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAFD32E1EF4496D004F2742 /* NGSteamAddress.cpp */; };
-		BBAFD3331EF45EEA004F2742 /* FWInstanceManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAFD3311EF45EEA004F2742 /* FWInstanceManager.cpp */; };
 		BBB1D3AE1FC8CB9800B74BAC /* NGExtension.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBB1D3AD1FC8CB9700B74BAC /* NGExtension.cpp */; };
 		BBB1D3AF1FC8CB9800B74BAC /* NGExtension.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBB1D3AD1FC8CB9700B74BAC /* NGExtension.cpp */; };
 		BBBCB2EB1EF090E900B77938 /* NGSteam.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBBCB2EA1EF090E900B77938 /* NGSteam.cpp */; };
@@ -946,8 +942,6 @@
 		BB65315C1FED56C800963997 /* World.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = World.cpp; sourceTree = "<group>"; };
 		BB65315D1FED56C800963997 /* Server.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Server.cpp; sourceTree = "<group>"; };
 		BB65315F1FED56C800963997 /* Server.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Server.h; sourceTree = "<group>"; };
-		BB6531661FED575B00963997 /* InstanceManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = InstanceManager.cpp; sourceTree = "<group>"; };
-		BB6531671FED575B00963997 /* InstanceManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InstanceManager.h; sourceTree = "<group>"; };
 		BB6E7A8A1F93CE1B006C0024 /* fast_mutex.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = fast_mutex.h; sourceTree = "<group>"; };
 		BB6E7A8B1F93CE1B006C0024 /* tinythread.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = tinythread.cpp; sourceTree = "<group>"; };
 		BB6E7A8C1F93CE1B006C0024 /* tinythread.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = tinythread.h; sourceTree = "<group>"; };
@@ -1112,8 +1106,6 @@
 		BBAFD32C1EF44813004F2742 /* MachineAddress.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MachineAddress.h; sourceTree = "<group>"; };
 		BBAFD32E1EF4496D004F2742 /* NGSteamAddress.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NGSteamAddress.cpp; sourceTree = "<group>"; };
 		BBAFD32F1EF4496D004F2742 /* NGSteamAddress.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NGSteamAddress.h; sourceTree = "<group>"; };
-		BBAFD3311EF45EEA004F2742 /* FWInstanceManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FWInstanceManager.cpp; sourceTree = "<group>"; };
-		BBAFD3321EF45EEA004F2742 /* FWInstanceManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FWInstanceManager.h; sourceTree = "<group>"; };
 		BBB1D3A81FC8C65F00B74BAC /* NGPool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NGPool.h; sourceTree = "<group>"; };
 		BBB1D3A91FC8CA4D00B74BAC /* Vector.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Vector.h; sourceTree = "<group>"; };
 		BBB1D3AA1FC8CA4D00B74BAC /* ContainerUtil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ContainerUtil.h; sourceTree = "<group>"; };
@@ -2407,8 +2399,6 @@
 			children = (
 				BB8CAB8E202DF54C001BEB37 /* GameConfig.cpp */,
 				BB8CAB8F202DF54C001BEB37 /* GameConfig.h */,
-				BB6531661FED575B00963997 /* InstanceManager.cpp */,
-				BB6531671FED575B00963997 /* InstanceManager.h */,
 				BBFE83061FFEBFF900E5F650 /* MainEngineController.cpp */,
 				BBFE83071FFEBFF900E5F650 /* MainEngineController.h */,
 				BB65315D1FED56C800963997 /* Server.cpp */,
@@ -2536,8 +2526,6 @@
 				BB83080A1EC2AD1F00435E7E /* AckRange.h */,
 				BB83080C1EC2AD1F00435E7E /* DeliveryNotificationManager.cpp */,
 				BB83080D1EC2AD1F00435E7E /* DeliveryNotificationManager.h */,
-				BBAFD3311EF45EEA004F2742 /* FWInstanceManager.cpp */,
-				BBAFD3321EF45EEA004F2742 /* FWInstanceManager.h */,
 				BB8308141EC2AD1F00435E7E /* InFlightPacket.cpp */,
 				BB8308151EC2AD1F00435E7E /* InFlightPacket.h */,
 				BBBD14C11EE0C9B4003F9307 /* InputMemoryBitStream.cpp */,
@@ -4051,7 +4039,6 @@
 				BB1C3BFE1FE76967002E4AA6 /* ShaderProgramLoader.cpp in Sources */,
 				BB7251A41EE105490024C71C /* MoveList.cpp in Sources */,
 				BB44CB821DB053C0003E633F /* pngerror.c in Sources */,
-				BBAFD3331EF45EEA004F2742 /* FWInstanceManager.cpp in Sources */,
 				BB4253DE1EF598AC003F6D2A /* SocketServerHelper.cpp in Sources */,
 				BB31E570202E7B8400A3AD1C /* TitleRenderer.cpp in Sources */,
 				BBAEF29C1EA94EDA00F0866E /* Triangle.cpp in Sources */,
@@ -4109,7 +4096,6 @@
 				BB44CB871DB053C0003E633F /* pngrio.c in Sources */,
 				BBD5544E1FDB2EA800E00AD6 /* b2Math.cpp in Sources */,
 				BBCB93211FC252790020703A /* FileData.cpp in Sources */,
-				BB6531681FED575B00963997 /* InstanceManager.cpp in Sources */,
 				BB9EE5161FC092C5000F5389 /* AppleAssetDataHandler.cpp in Sources */,
 				BBAEF1F01EA94EDA00F0866E /* Entity.cpp in Sources */,
 				BB31E56C202E7B8400A3AD1C /* StudioEngine.cpp in Sources */,
@@ -4286,7 +4272,6 @@
 				BB5AFE3A1FB35A77005FBD52 /* DeliveryNotificationManager.cpp in Sources */,
 				BBE4E40C1FEDD03F004193F1 /* Box2DDebugRenderer.cpp in Sources */,
 				BB1C3C0F1FE77301002E4AA6 /* NGFramebufferToScreenShader.cpp in Sources */,
-				BB5AFE3B1FB35A77005FBD52 /* FWInstanceManager.cpp in Sources */,
 				BBD554311FDB2EA800E00AD6 /* b2MotorJoint.cpp in Sources */,
 				BB5AFE3C1FB35A77005FBD52 /* InputState.cpp in Sources */,
 				BB31B5AC1FC205D5005F1C0A /* CursorInputManager.cpp in Sources */,
@@ -4355,7 +4340,6 @@
 				BBD5543D1FDB2EA800E00AD6 /* b2RopeJoint.cpp in Sources */,
 				BBCB93221FC252790020703A /* FileData.cpp in Sources */,
 				BBD554251FDB2EA800E00AD6 /* b2WorldCallbacks.cpp in Sources */,
-				BB6531691FED575B00963997 /* InstanceManager.cpp in Sources */,
 				BBD5544D1FDB2EA800E00AD6 /* b2StackAllocator.cpp in Sources */,
 				BBD5541D1FDB2EA800E00AD6 /* b2ContactSolver.cpp in Sources */,
 				BB31E56D202E7B8400A3AD1C /* StudioEngine.cpp in Sources */,

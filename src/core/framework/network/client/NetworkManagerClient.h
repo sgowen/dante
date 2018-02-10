@@ -9,6 +9,8 @@
 #ifndef __noctisgames__NetworkManagerClient__
 #define __noctisgames__NetworkManagerClient__
 
+#include <framework/entity/EntityManager.h>
+
 #include <string>
 #include <map>
 #include <vector>
@@ -43,7 +45,7 @@ enum NetworkClientState
 class NetworkManagerClient
 {
 public:
-    static void create(ClientHelper* inClientHelper, RemoveProcessedMovesFunc inRemoveProcessedMovesFunc, GetMoveListFunc inGetMoveListFunc, OnPlayerWelcomedFunc inOnPlayerWelcomedFunc);
+    static void create(ClientHelper* inClientHelper, HandleEntityCreatedFunc handleEntityCreatedFunc, HandleEntityDeletionFunc handleEntityDeletionFunc, RemoveProcessedMovesFunc inRemoveProcessedMovesFunc, GetMoveListFunc inGetMoveListFunc, OnPlayerWelcomedFunc inOnPlayerWelcomedFunc);
     static NetworkManagerClient* getInstance();
     static void destroy();
     
@@ -74,6 +76,7 @@ private:
     GetMoveListFunc _getMoveListFunc;
     OnPlayerWelcomedFunc _onPlayerWelcomedFunc;
     DeliveryNotificationManager* _deliveryNotificationManager;
+    EntityManager* _entityManager;
     ReplicationManagerClient* _replicationManagerClient;
     NetworkClientState _state;
     float _timeOfLastHello;
@@ -105,7 +108,7 @@ private:
     void updateNextIndex();
     
     // ctor, copy ctor, and assignment should be private in a Singleton
-    NetworkManagerClient(ClientHelper* inClientHelper, RemoveProcessedMovesFunc inRemoveProcessedMovesFunc, GetMoveListFunc inGetMoveListFunc, OnPlayerWelcomedFunc inOnPlayerWelcomedFunc);
+    NetworkManagerClient(ClientHelper* inClientHelper, HandleEntityCreatedFunc handleEntityCreatedFunc, HandleEntityDeletionFunc handleEntityDeletionFunc, RemoveProcessedMovesFunc inRemoveProcessedMovesFunc, GetMoveListFunc inGetMoveListFunc, OnPlayerWelcomedFunc inOnPlayerWelcomedFunc);
     ~NetworkManagerClient();
     NetworkManagerClient(const NetworkManagerClient&);
     NetworkManagerClient& operator=(const NetworkManagerClient&);

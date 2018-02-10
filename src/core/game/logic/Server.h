@@ -25,6 +25,10 @@ public:
     static void create(bool isSteam);
     static Server* getInstance();
     static void destroy();
+    
+    static void sHandleDynamicEntityCreatedOnServer(Entity* inEntity);
+    static void sHandleDynamicEntityDeletedOnServer(Entity* inEntity);
+    
     static void sHandleNewClient(uint8_t playerId, std::string playerName);
     static void sHandleLostClient(ClientProxy* inClientProxy, uint8_t index);
     static InputState* sHandleInputStateCreation();

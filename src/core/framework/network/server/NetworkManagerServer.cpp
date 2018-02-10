@@ -23,20 +23,20 @@
 #include <framework/util/Timing.h>
 #include <framework/entity/EntityManager.h>
 #include <framework/util/StringUtil.h>
-#include <framework/network/portable/FWInstanceManager.h>
 #include <framework/util/NGSTDUtil.h>
 #include <framework/util/Constants.h>
 #include <framework/network/client/NetworkManagerClient.h>
+#include <framework/network/server/ReplicationManagerServer.h>
 
 #include <assert.h>
 
 NetworkManagerServer* NetworkManagerServer::s_instance = NULL;
 
-void NetworkManagerServer::create(ServerHelper* inServerHelper, HandleNewClientFunc handleNewClientFunc, HandleLostClientFunc handleLostClientFunc, InputStateCreationFunc inputStateCreationFunc, InputStateReleaseFunc inputStateReleaseFunc)
+void NetworkManagerServer::create(ServerHelper* inServerHelper, HandleEntityCreatedFunc handleEntityCreatedFunc, HandleEntityDeletionFunc handleEntityDeletionFunc, HandleNewClientFunc handleNewClientFunc, HandleLostClientFunc handleLostClientFunc, InputStateCreationFunc inputStateCreationFunc, InputStateReleaseFunc inputStateReleaseFunc)
 {
     assert(!s_instance);
     
-    s_instance = new NetworkManagerServer(inServerHelper, handleNewClientFunc, handleLostClientFunc, inputStateCreationFunc, inputStateReleaseFunc);
+    s_instance = new NetworkManagerServer(inServerHelper, handleEntityCreatedFunc, handleEntityDeletionFunc, handleNewClientFunc, handleLostClientFunc, inputStateCreationFunc, inputStateReleaseFunc);
 }
 
 NetworkManagerServer * NetworkManagerServer::getInstance()
@@ -122,12 +122,12 @@ void NetworkManagerServer::registerEntity(Entity* inEntity)
     inEntity->setID(_entityID);
     
     //add mapping from network id to game object
-    SERVER_ENTITY_MGR->registerEntity(inEntity);
+    _entityManager->registerEntity(inEntity);
     
     //tell all client proxies this is new...
     for (const auto& pair: _addressHashToClientMap)
     {
-        pair.second->getReplicationManagerServer().replicateCreate(inEntity->getID(), NG_ALL_STATE);
+        pair.second->getReplicationManagerServer()->replicateCreate(inEntity->getID(), NG_ALL_STATE);
     }
 }
 
@@ -135,13 +135,13 @@ void NetworkManagerServer::deregisterEntity(Entity* inEntity)
 {
     uint32_t networkId = inEntity->getID();
     
-    SERVER_ENTITY_MGR->deregisterEntity(inEntity);
+    _entityManager->deregisterEntity(inEntity);
     
     //tell all client proxies to STOP replicating!
     //tell all client proxies this is new...
     for (const auto& pair: _addressHashToClientMap)
     {
-        pair.second->getReplicationManagerServer().replicateDestroy(networkId);
+        pair.second->getReplicationManagerServer()->replicateDestroy(networkId);
     }
 }
 
@@ -150,7 +150,7 @@ void NetworkManagerServer::setStateDirty(uint32_t inNetworkId, uint16_t inDirtyS
     //tell everybody this is dirty
     for (const auto& pair: _addressHashToClientMap)
     {
-        pair.second->getReplicationManagerServer().setStateDirty(inNetworkId, inDirtyState);
+        pair.second->getReplicationManagerServer()->setStateDirty(inNetworkId, inDirtyState);
     }
 }
 
@@ -338,7 +338,7 @@ void NetworkManagerServer::handlePacketFromNewClient(InputMemoryBitStream& input
             }
         }
         
-        ClientProxy* newClientProxy = new ClientProxy(inFromAddress, name, _nextPlayerId);
+        ClientProxy* newClientProxy = new ClientProxy(_entityManager, inFromAddress, name, _nextPlayerId);
         _addressHashToClientMap[inFromAddress->getHash()] = newClientProxy;
         _playerIDToClientMap[newClientProxy->getPlayerId()] = newClientProxy;
         
@@ -352,9 +352,9 @@ void NetworkManagerServer::handlePacketFromNewClient(InputMemoryBitStream& input
         sendWelcomePacket(newClientProxy);
         
         // and now init the replication manager with everything we know about!
-        for (const auto& pair: SERVER_ENTITY_MGR->getMap())
+        for (const auto& pair: _entityManager->getMap())
         {
-            newClientProxy->getReplicationManagerServer().replicateCreate(pair.first, NG_ALL_STATE);
+            newClientProxy->getReplicationManagerServer()->replicateCreate(pair.first, NG_ALL_STATE);
         }
         
         updateNextPlayerId();
@@ -423,13 +423,13 @@ void NetworkManagerServer::sendStatePacketToClient(ClientProxy* inClientProxy)
     writeLastMoveTimestampIfDirty(statePacket, inClientProxy);
     
     ReplicationManagerTransmissionData* rmtd = _replicationManagerTransmissionDatas.obtain();
-    rmtd->reset(&inClientProxy->getReplicationManagerServer(), &_replicationManagerTransmissionDatas);
+    rmtd->reset(inClientProxy->getReplicationManagerServer(), _entityManager, &_replicationManagerTransmissionDatas);
     
 #ifdef NG_LOG
     LOG("Pre-State Outgoing packet Bit Length: %d \n", statePacket.getBitLength());
 #endif
     
-    inClientProxy->getReplicationManagerServer().write(statePacket, rmtd);
+    inClientProxy->getReplicationManagerServer()->write(statePacket, rmtd);
     
     TransmissionData* currentTransmissionData = ifp->getTransmissionData('RPLM');
     if (currentTransmissionData)
@@ -634,12 +634,13 @@ void NetworkManagerServer::updateNextPlayerId()
     LOG("_nextPlayerId: %d", _nextPlayerId);
 }
 
-NetworkManagerServer::NetworkManagerServer(ServerHelper* inServerHelper, HandleNewClientFunc handleNewClientFunc, HandleLostClientFunc handleLostClientFunc, InputStateCreationFunc inputStateCreationFunc, InputStateReleaseFunc inputStateReleaseFunc) :
+NetworkManagerServer::NetworkManagerServer(ServerHelper* inServerHelper, HandleEntityCreatedFunc handleEntityCreatedFunc, HandleEntityDeletionFunc handleEntityDeletionFunc, HandleNewClientFunc handleNewClientFunc, HandleLostClientFunc handleLostClientFunc, InputStateCreationFunc inputStateCreationFunc, InputStateReleaseFunc inputStateReleaseFunc) :
 _serverHelper(inServerHelper),
 _handleNewClientFunc(handleNewClientFunc),
 _handleLostClientFunc(handleLostClientFunc),
 _inputStateCreationFunc(inputStateCreationFunc),
 _inputStateReleaseFunc(inputStateReleaseFunc),
+_entityManager(new EntityManager(handleEntityCreatedFunc, handleEntityDeletionFunc)),
 _nextPlayerId(1),
 _entityID(NETWORK_ENTITY_ID_BEGIN),
 _map(0)
@@ -650,6 +651,7 @@ _map(0)
 NetworkManagerServer::~NetworkManagerServer()
 {
     delete _serverHelper;
+    delete _entityManager;
     
     NGSTDUtil::cleanUpMapOfPointers(_addressHashToClientMap);
     

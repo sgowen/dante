@@ -26,9 +26,7 @@
 #include <framework/network/portable/SocketUtil.h>
 #include <game/title/TitleInputManager.h>
 #include <game/logic/World.h>
-#include <game/logic/InstanceManager.h>
 #include <game/game/GameInputState.h>
-#include <framework/network/portable/FWInstanceManager.h>
 #include <framework/entity/EntityManager.h>
 #include <framework/entity/EntityMapper.h>
 #include <framework/entity/EntityLayoutMapper.h>
@@ -383,21 +381,17 @@ void TitleEngine::startServer()
 
 void TitleEngine::joinServer(Engine* engine)
 {
-    FWInstanceManager::createClientEntityManager(InstanceManager::sHandleDynamicEntityCreatedOnClient, InstanceManager::sHandleDynamicEntityDeletedOnClient);
-    
-    ClientHelper* clientHelper = NULL;
     if (_isSteam)
     {
 #ifdef NG_STEAM
-        clientHelper = new NGSteamClientHelper(_serverSteamID, InstanceManager::sGetPlayerAddressHashForIndexOnClient, NG_CLIENT_CALLBACKS);
+        NetworkManagerClient::create(new NGSteamClientHelper(_serverSteamID, GameEngine::sGetPlayerAddressHashForIndexOnClient, NG_CLIENT_CALLBACKS), GAME_ENGINE_CALLBACKS, INPUT_MANAGER_CALLBACKS);
 #endif
     }
     else
     {
-        clientHelper = new SocketClientHelper(_serverIPAddress, _name, GM_CFG->_clientPort, NG_CLIENT_CALLBACKS);
+        NetworkManagerClient::create(new SocketClientHelper(_serverIPAddress, _name, GM_CFG->_clientPort, NG_CLIENT_CALLBACKS), GAME_ENGINE_CALLBACKS, INPUT_MANAGER_CALLBACKS);
     }
     
-    NetworkManagerClient::create(clientHelper, INPUT_MANAGER_CALLBACKS);
     assert(NG_CLIENT);
     
     engine->getStateMachine().changeState(GameEngine::getInstance());
@@ -408,7 +402,6 @@ void TitleEngine::disconnect()
     if (NG_CLIENT)
     {
         NetworkManagerClient::destroy();
-        FWInstanceManager::destroyClientEntityManager();
     }
     
     if (Server::getInstance())

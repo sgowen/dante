@@ -28,8 +28,6 @@
 #include <framework/network/client/NetworkManagerClient.h>
 #include <game/game/GameInputManager.h>
 #include <framework/audio/portable/NGAudioEngine.h>
-#include <game/logic/InstanceManager.h>
-#include <framework/network/portable/FWInstanceManager.h>
 #include <game/logic/Util.h>
 #include <game/logic/Server.h>
 #include <framework/util/Config.h>
