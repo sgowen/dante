@@ -292,16 +292,17 @@ void StudioRenderer::renderWorld()
     renderEntities(world->getDynamicEntities());
     
     _rendererHelper->useNormalBlending();
-    
     setFramebuffer(0);
     for (int i = 0; i < 5; ++i)
     {
         endBatchWithTexture(_spriteBatchers[i], _textureManager->getTextureWithName(_textures[i]), i);
     }
     
+    _rendererHelper->useScreenBlending();
     setFramebuffer(1);
     endBatchWithTexture(_spriteBatchers[5], _textureManager->getTextureWithName(_textures[5]), 5);
     
+    _rendererHelper->useNormalBlending();
     setFramebuffer(2);
     for (int i = 6; i < 9; ++i)
     {

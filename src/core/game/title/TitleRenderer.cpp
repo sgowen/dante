@@ -144,7 +144,7 @@ void TitleRenderer::render()
 {
     _engineState = _engine->_state;
     
-    setFramebuffer(0, 0, 0, 0, 1);
+    setFramebuffer(0);
     _rendererHelper->useNormalBlending();
 
     if (_textureManager->ensureTextures())

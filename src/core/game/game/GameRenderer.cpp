@@ -307,18 +307,18 @@ void GameRenderer::renderWorld()
     renderEntities(world->getDynamicEntities());
     
     _rendererHelper->useNormalBlending();
-    setFramebuffer(0, 0, 0, 0, 0);
+    setFramebuffer(0);
     for (int i = 0; i < 5; ++i)
     {
         endBatchWithTexture(_spriteBatchers[i], _textureManager->getTextureWithName(_textures[i]), i);
     }
     
     _rendererHelper->useScreenBlending();
-    setFramebuffer(1, 0, 0, 0, 0);
+    setFramebuffer(1);
     endBatchWithTexture(_spriteBatchers[5], _textureManager->getTextureWithName(_textures[5]), 5);
     
     _rendererHelper->useNormalBlending();
-    setFramebuffer(2, 0, 0, 0, 0);
+    setFramebuffer(2);
     for (int i = 6; i < 9; ++i)
     {
         endBatchWithTexture(_spriteBatchers[i], _textureManager->getTextureWithName(_textures[i]), i);
@@ -336,7 +336,7 @@ void GameRenderer::renderWorld()
     }
     
     _rendererHelper->useScreenBlending();
-    setFramebuffer(9, 0, 0, 0, 0);
+    setFramebuffer(9);
     for (int i = fbBegin; i < fbEnd; ++i)
     {
         _framebufferToScreenNGShader->bind(_rendererHelper->getFramebuffer(i));
@@ -368,18 +368,18 @@ void GameRenderer::renderEntities(std::vector<Entity*>& entities)
 void GameRenderer::renderLighting()
 {
     _rendererHelper->useNormalBlending();
-    setFramebuffer(3, 0, 0, 0, 0);
+    setFramebuffer(3);
     for (int i = 0; i < 5; ++i)
     {
         endBatchWithTexture(_spriteBatchers[i], _textureManager->getTextureWithName(_normals[i]), i);
     }
     
     _rendererHelper->useScreenBlending();
-    setFramebuffer(4, 0, 0, 0, 0);
+    setFramebuffer(4);
     endBatchWithTexture(_spriteBatchers[5], _textureManager->getTextureWithName(_normals[5]), 5);
     
     _rendererHelper->useNormalBlending();
-    setFramebuffer(5, 0, 0, 0, 0);
+    setFramebuffer(5);
     for (int i = 6; i < 9; ++i)
     {
         endBatchWithTexture(_spriteBatchers[i], _textureManager->getTextureWithName(_normals[i]), i);
@@ -402,7 +402,7 @@ void GameRenderer::renderLighting()
             _lightingNGShader->addLight(ld._lightPosX, ld._lightPosY, GM_CFG->_behindPlayerLightZFactor * GM_CFG->_playerLightZ, ld._lightColorR, ld._lightColorG, ld._lightColorB, ld._lightColorA);
         }
         
-        setFramebuffer(6, 0, 0, 0, 0);
+        setFramebuffer(6);
         _lightingNGShader->bind(_rendererHelper->getFramebuffer(0), _rendererHelper->getFramebuffer(3));
         _rendererHelper->bindScreenVertexBuffer();
         _rendererHelper->drawIndexed(NGPrimitiveType_Triangles, 0, INDICES_PER_RECTANGLE);
@@ -419,7 +419,7 @@ void GameRenderer::renderLighting()
             _lightingNGShader->addLight(ld._lightPosX, ld._lightPosY, GM_CFG->_playerLightZ, ld._lightColorR, ld._lightColorG, ld._lightColorB, ld._lightColorA);
         }
         
-        setFramebuffer(7, 0, 0, 0, 0);
+        setFramebuffer(7);
         _lightingNGShader->bind(_rendererHelper->getFramebuffer(1), _rendererHelper->getFramebuffer(4));
         _rendererHelper->bindScreenVertexBuffer();
         _rendererHelper->drawIndexed(NGPrimitiveType_Triangles, 0, INDICES_PER_RECTANGLE);
@@ -441,7 +441,7 @@ void GameRenderer::renderLighting()
             _lightingNGShader->addLight(ld._lightPosX, ld._lightPosY, GM_CFG->_frontPlayerLightZFactor * GM_CFG->_playerLightZ, ld._lightColorR, ld._lightColorG, ld._lightColorB, ld._lightColorA);
         }
         
-        setFramebuffer(8, 0, 0, 0, 0);
+        setFramebuffer(8);
         _lightingNGShader->bind(_rendererHelper->getFramebuffer(2), _rendererHelper->getFramebuffer(5));
         _rendererHelper->bindScreenVertexBuffer();
         _rendererHelper->drawIndexed(NGPrimitiveType_Triangles, 0, INDICES_PER_RECTANGLE);
