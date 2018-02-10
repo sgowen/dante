@@ -25,7 +25,7 @@
 #include "framework/network/server/SocketServerHelper.h"
 #include "framework/network/portable/MachineAddress.h"
 #include <framework/util/Constants.h>
-#include <game/logic/PlayerController.h>
+#include <game/entity/PlayerController.h>
 #include "framework/entity/EntityMapper.h"
 #include <game/logic/GameConfig.h>
 

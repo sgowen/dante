@@ -10,14 +10,14 @@
 
 #include "game/logic/MainEngineController.h"
 
-#include "game/logic/TitleEngine.h"
-#include "game/logic/GameEngine.h"
-#include "game/logic/StudioEngine.h"
+#include "game/title/TitleEngine.h"
+#include "game/game/GameEngine.h"
+#include "game/studio/StudioEngine.h"
 #include <framework/entity/EntityMapper.h>
 #include <framework/entity/DefaultController.h>
-#include <game/logic/BasicFollowAndAttackController.h>
-#include <game/logic/DestructibleController.h>
-#include <game/logic/PlayerController.h>
+#include <game/entity/BasicFollowAndAttackController.h>
+#include <game/entity/DestructibleController.h>
+#include <game/entity/PlayerController.h>
 
 NGRTTI_IMPL(MainEngineController, EngineController);
 

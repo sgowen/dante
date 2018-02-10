@@ -8,10 +8,10 @@
 
 #include "pch.h"
 
-#include "game/logic/TitleEngine.h"
+#include "game/title/TitleEngine.h"
 
 #include "framework/file/portable/JsonFile.h"
-#include <game/graphics/TitleRenderer.h>
+#include <game/title/TitleRenderer.h>
 
 #include "game/logic/Server.h"
 #include "framework/util/Constants.h"
@@ -24,10 +24,10 @@
 #include "framework/network/server/NetworkManagerServer.h"
 #include "framework/network/portable/SocketAddressFactory.h"
 #include "framework/network/portable/SocketUtil.h"
-#include "game/logic/TitleInputManager.h"
+#include "game/title/TitleInputManager.h"
 #include "game/logic/World.h"
 #include "game/logic/InstanceManager.h"
-#include "game/logic/MainInputState.h"
+#include "game/game/MainInputState.h"
 #include "framework/network/portable/FWInstanceManager.h"
 #include "framework/entity/EntityManager.h"
 #include "framework/entity/EntityMapper.h"
@@ -43,9 +43,9 @@
 #include "framework/util/Timing.h"
 #include "framework/util/FPSUtil.h"
 #include "framework/input/CursorConverter.h"
-#include "game/logic/GameEngine.h"
-#include "game/logic/GameInputManager.h"
-#include "game/logic/StudioEngine.h"
+#include "game/game/GameEngine.h"
+#include "game/game/GameInputManager.h"
+#include "game/studio/StudioEngine.h"
 #include "game/logic/PooledObjectsManager.h"
 #include <game/logic/GameConfig.h>
 #include <framework/entity/EntityMapper.h>

@@ -12,7 +12,7 @@
 
 #include "framework/entity/Entity.h"
 #include "game/logic/World.h"
-#include <game/logic/PlayerController.h>
+#include <game/entity/PlayerController.h>
 
 #include <assert.h>
 

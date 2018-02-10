@@ -8,9 +8,9 @@
 
 #include "pch.h"
 
-#include "game/logic/TitleInputManager.h"
+#include "game/title/TitleInputManager.h"
 
-#include "game/logic/TitleEngine.h"
+#include "game/title/TitleEngine.h"
 
 #include "framework/util/Timing.h"
 #include "framework/input/CursorInputManager.h"

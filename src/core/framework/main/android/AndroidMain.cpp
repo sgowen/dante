@@ -161,6 +161,15 @@ int32_t AndroidMain::handleInput(android_app* app, AInputEvent* event)
     return 0;
 }
 
+double timeNow()
+{
+    // Retrieves current time with a monotonic clock to ensure
+    // time goes forward and is not subject to system changes.
+    timespec lTimeVal;
+    clock_gettime(CLOCK_MONOTONIC, &lTimeVal);
+    return lTimeVal.tv_sec + (lTimeVal.tv_nsec * 1.0e-9);
+}
+
 void AndroidMain::exec(android_app* state, EngineController* engineController)
 {
     if (!engineController)
@@ -265,15 +274,6 @@ void AndroidMain::loadResources()
 void AndroidMain::unloadResources()
 {
     _engine->releaseDeviceDependentResources();
-}
-
-double timeNow()
-{
-    // Retrieves current time with a monotonic clock to ensure
-    // time goes forward and is not subject to system changes.
-    timespec lTimeVal;
-    clock_gettime(CLOCK_MONOTONIC, &lTimeVal);
-    return lTimeVal.tv_sec + (lTimeVal.tv_nsec * 1.0e-9);
 }
 
 void AndroidMain::drawFrame()

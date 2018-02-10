@@ -8,9 +8,9 @@
 
 #include "pch.h"
 
-#include "game/logic/StudioInputManager.h"
+#include "game/studio/StudioInputManager.h"
 
-#include "game/logic/StudioEngine.h"
+#include "game/studio/StudioEngine.h"
 #include <framework/entity/Entity.h>
 
 #include "framework/util/Timing.h"
@@ -27,7 +27,7 @@
 #include "framework/util/StringUtil.h"
 #include "framework/util/MathUtil.h"
 #include "framework/util/Constants.h"
-#include "game/graphics/StudioRenderer.h"
+#include "game/studio/StudioRenderer.h"
 #include "game/logic/World.h"
 #include <framework/entity/EntityLayoutMapper.h>
 #include <framework/entity/EntityMapper.h>

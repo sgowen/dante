@@ -8,7 +8,7 @@
 
 #include "pch.h"
 
-#include "game/graphics/StudioRenderer.h"
+#include "game/studio/StudioRenderer.h"
 
 #include "framework/graphics/portable/TextureManager.h"
 #include "framework/graphics/portable/Font.h"
@@ -25,8 +25,8 @@
 #include "framework/math/NGRect.h"
 #include "framework/graphics/portable/NGTexture.h"
 #include "framework/graphics/portable/Box2DDebugRenderer.h"
-#include <game/logic/StudioEngine.h>
-#include <game/logic/StudioInputManager.h>
+#include <game/studio/StudioEngine.h>
+#include <game/studio/StudioInputManager.h>
 
 #include "framework/graphics/portable/Color.h"
 #include "framework/file/portable/Assets.h"
@@ -42,13 +42,13 @@
 #include "framework/util/WeightedTimedMovingAverage.h"
 #include "framework/util/NGSTDUtil.h"
 #include "game/logic/InstanceManager.h"
-#include "game/logic/TitleInputManager.h"
+#include "game/title/TitleInputManager.h"
 #include "framework/network/server/NetworkManagerServer.h"
 #include "framework/network/portable/MachineAddress.h"
 #include "framework/util/MathUtil.h"
 #include "framework/audio/portable/NGAudioEngine.h"
 #include "game/logic/Server.h"
-#include "game/logic/TitleEngine.h"
+#include "game/title/TitleEngine.h"
 #include "framework/util/FPSUtil.h"
 #include "framework/math/Circle.h"
 #include "framework/graphics/portable/CircleBatcher.h"

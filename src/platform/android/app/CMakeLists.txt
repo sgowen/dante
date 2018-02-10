@@ -34,8 +34,11 @@ file(GLOB_RECURSE CPP_FRAMEWORK_FILES_14 "${source_dir}/core/framework/util/*cpp
 file(GLOB_RECURSE CPP_FRAMEWORK_FILES_15 "${source_dir}/core/framework/main/android/*cpp")
 file(GLOB_RECURSE CPP_FRAMEWORK_FILES_16 "${source_dir}/core/framework/main/portable/*cpp")
 
-file(GLOB_RECURSE CPP_GAME_FILES_1 "${source_dir}/core/game/graphics/*cpp")
-file(GLOB_RECURSE CPP_GAME_FILES_2 "${source_dir}/core/game/logic/*cpp")
+file(GLOB_RECURSE CPP_GAME_FILES_1 "${source_dir}/core/game/entity/*cpp")
+file(GLOB_RECURSE CPP_GAME_FILES_2 "${source_dir}/core/game/game/*cpp")
+file(GLOB_RECURSE CPP_GAME_FILES_3 "${source_dir}/core/game/logic/*cpp")
+file(GLOB_RECURSE CPP_GAME_FILES_4 "${source_dir}/core/game/studio/*cpp")
+file(GLOB_RECURSE CPP_GAME_FILES_5 "${source_dir}/core/game/title/*cpp")
 
 file(GLOB CPP_ANDROID_FILES "src/main/cpp/*.cpp")
 
@@ -108,6 +111,8 @@ add_library( # Sets the name of the library.
              ${CPP_GAME_FILES_1}
              ${CPP_GAME_FILES_2}
              ${CPP_GAME_FILES_3}
+             ${CPP_GAME_FILES_4}
+             ${CPP_GAME_FILES_5}
 
              ${CPP_ANDROID_FILES}
 )

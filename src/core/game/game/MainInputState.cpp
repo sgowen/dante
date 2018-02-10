@@ -8,7 +8,7 @@
 
 #include "pch.h"
 
-#include "game/logic/MainInputState.h"
+#include "game/game/MainInputState.h"
 
 #include "framework/network/portable/OutputMemoryBitStream.h"
 #include "framework/network/portable/InputMemoryBitStream.h"

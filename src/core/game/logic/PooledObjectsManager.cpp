@@ -10,7 +10,7 @@
 
 #include "game/logic/PooledObjectsManager.h"
 
-#include "game/logic/MainInputState.h"
+#include "game/game/MainInputState.h"
 #include "framework/util/MathUtil.h"
 #include "framework/util/Constants.h"
 

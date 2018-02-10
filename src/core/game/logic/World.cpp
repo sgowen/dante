@@ -19,9 +19,9 @@
 #include "game/logic/Server.h"
 #include "framework/network/server/ClientProxy.h"
 #include "framework/network/portable/MoveList.h"
-#include "game/logic/GameInputManager.h"
+#include "game/game/GameInputManager.h"
 #include "framework/network/client/NetworkManagerClient.h"
-#include "game/logic/PlayerController.h"
+#include "game/entity/PlayerController.h"
 #include "framework/util/StringUtil.h"
 #include <framework/util/NGSTDUtil.h>
 #include <framework/entity/EntityMapper.h>

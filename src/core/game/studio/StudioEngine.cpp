@@ -8,10 +8,10 @@
 
 #include "pch.h"
 
-#include "game/logic/StudioEngine.h"
+#include "game/studio/StudioEngine.h"
 
 #include "framework/file/portable/JsonFile.h"
-#include <game/graphics/StudioRenderer.h>
+#include <game/studio/StudioRenderer.h>
 
 #include "game/logic/Server.h"
 #include "framework/util/Constants.h"
@@ -24,10 +24,10 @@
 #include "framework/network/server/NetworkManagerServer.h"
 #include "framework/network/portable/SocketAddressFactory.h"
 #include "framework/network/portable/SocketUtil.h"
-#include "game/logic/StudioInputManager.h"
+#include "game/studio/StudioInputManager.h"
 #include "game/logic/World.h"
 #include "game/logic/InstanceManager.h"
-#include "game/logic/MainInputState.h"
+#include "game/game/MainInputState.h"
 #include "framework/network/portable/FWInstanceManager.h"
 #include "framework/entity/EntityManager.h"
 #include "framework/network/client/SocketClientHelper.h"

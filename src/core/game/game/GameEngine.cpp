@@ -8,11 +8,11 @@
 
 #include "pch.h"
 
-#include "game/logic/GameEngine.h"
+#include "game/game/GameEngine.h"
 
-#include <game/graphics/GameRenderer.h>
+#include <game/game/GameRenderer.h>
 #include "game/logic/World.h"
-#include "game/logic/GameInputManager.h"
+#include "game/game/GameInputManager.h"
 #include "framework/util/Timing.h"
 #include "game/logic/Server.h"
 
@@ -27,7 +27,7 @@
 #include "framework/network/portable/SocketAddressFactory.h"
 #include "framework/network/portable/SocketUtil.h"
 #include "game/logic/InstanceManager.h"
-#include "game/logic/MainInputState.h"
+#include "game/game/MainInputState.h"
 #include "framework/network/portable/FWInstanceManager.h"
 #include "framework/entity/EntityManager.h"
 #include "framework/network/client/SocketClientHelper.h"

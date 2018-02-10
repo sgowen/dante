@@ -8,11 +8,11 @@
 
 #include "pch.h"
 
-#include "game/logic/GameInputManager.h"
+#include "game/game/GameInputManager.h"
 
-#include "game/logic/MainInputState.h"
+#include "game/game/MainInputState.h"
 #include "framework/network/portable/Move.h"
-#include <game/logic/GameEngine.h>
+#include <game/game/GameEngine.h>
 
 #include "framework/util/Timing.h"
 #include "framework/input/CursorInputManager.h"

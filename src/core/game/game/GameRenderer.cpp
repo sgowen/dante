@@ -8,7 +8,7 @@
 
 #include "pch.h"
 
-#include "game/graphics/GameRenderer.h"
+#include "game/game/GameRenderer.h"
 
 #include "framework/graphics/portable/TextureManager.h"
 #include "framework/graphics/portable/Font.h"
@@ -42,13 +42,13 @@
 #include "framework/util/WeightedTimedMovingAverage.h"
 #include "framework/util/NGSTDUtil.h"
 #include "game/logic/InstanceManager.h"
-#include "game/logic/GameInputManager.h"
+#include "game/game/GameInputManager.h"
 #include "framework/network/server/NetworkManagerServer.h"
 #include "framework/network/portable/MachineAddress.h"
 #include "framework/util/MathUtil.h"
 #include "framework/audio/portable/NGAudioEngine.h"
 #include "game/logic/Server.h"
-#include "game/logic/TitleEngine.h"
+#include "game/title/TitleEngine.h"
 #include "framework/util/FPSUtil.h"
 #include "framework/math/Circle.h"
 #include "framework/graphics/portable/CircleBatcher.h"
@@ -68,8 +68,8 @@
 #include <framework/graphics/portable/NGFramebufferToScreenShader.h>
 #include "framework/graphics/portable/NGTextureDesc.h"
 #include "framework/file/portable/Assets.h"
-#include <game/logic/GameEngine.h>
-#include <game/logic/PlayerController.h>
+#include <game/game/GameEngine.h>
+#include <game/entity/PlayerController.h>
 #include <game/logic/GameConfig.h>
 #include <framework/graphics/portable/VertexProgramInput.h>
 

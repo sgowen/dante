@@ -8,13 +8,13 @@
 
 #include "pch.h"
 
-#include <game/logic/BasicFollowAndAttackController.h>
+#include <game/entity/BasicFollowAndAttackController.h>
 
 #include <framework/entity/Entity.h>
 #include "framework/network/portable/InputMemoryBitStream.h"
 #include "framework/network/portable/OutputMemoryBitStream.h"
 #include "Box2D/Box2D.h"
-#include "game/logic/MainInputState.h"
+#include "game/game/MainInputState.h"
 #include "framework/network/portable/Move.h"
 
 #include "game/logic/World.h"
@@ -26,7 +26,7 @@
 #include "framework/network/server/NetworkManagerServer.h"
 #include "framework/network/server/ClientProxy.h"
 #include "framework/network/client/NetworkManagerClient.h"
-#include "game/logic/GameInputManager.h"
+#include "game/game/GameInputManager.h"
 #include "framework/audio/portable/NGAudioEngine.h"
 #include "game/logic/InstanceManager.h"
 #include "framework/network/portable/FWInstanceManager.h"
