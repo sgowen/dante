@@ -33,14 +33,14 @@ NGShader::~NGShader()
 
 void NGShader::load(ShaderProgramLoader& shaderProgramLoader)
 {
-    _shaderProgramWrapper = shaderProgramLoader.loadNGShader(_vertexShaderFilePath, _fragmentShaderFilePath, _uniforms, _inputLayout);
+    _shaderProgramWrapper = shaderProgramLoader.loadShader(_vertexShaderFilePath, _fragmentShaderFilePath, _uniforms, _inputLayout);
 }
 
 void NGShader::unload(ShaderProgramLoader& shaderProgramLoader)
 {
     if (_shaderProgramWrapper != NULL)
     {
-        shaderProgramLoader.destroyNGShader(_shaderProgramWrapper, _uniforms, _inputLayout);
+        shaderProgramLoader.destroyShader(_shaderProgramWrapper, _uniforms, _inputLayout);
         
         delete _shaderProgramWrapper;
         _shaderProgramWrapper = NULL;

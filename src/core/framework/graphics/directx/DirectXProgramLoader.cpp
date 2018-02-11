@@ -29,7 +29,7 @@ DirectXProgramLoader::~DirectXProgramLoader()
     // Empty
 }
 
-ShaderProgramWrapper* DirectXProgramLoader::loadNGShader(std::string& vertexShaderFilePath, std::string& fragmentShaderFilePath, std::vector<NGShaderUniformInput*>& uniforms, std::vector<NGShaderVarInput*>& inputLayout)
+ShaderProgramWrapper* DirectXProgramLoader::loadShader(std::string& vertexShaderFilePath, std::string& fragmentShaderFilePath, std::vector<NGShaderUniformInput*>& uniforms, std::vector<NGShaderVarInput*>& inputLayout)
 {
     const FileData vertex_shader_source = AssetDataHandler::getAssetDataHandler()->getAssetData(vertexShaderFilePath.c_str());
     const FileData fragment_shader_source = AssetDataHandler::getAssetDataHandler()->getAssetData(fragmentShaderFilePath.c_str());
@@ -99,7 +99,7 @@ ShaderProgramWrapper* DirectXProgramLoader::loadNGShader(std::string& vertexShad
     return ret;
 }
 
-void DirectXProgramLoader::destroyNGShader(ShaderProgramWrapper* shaderProgramWrapper, std::vector<NGShaderUniformInput*>& uniforms, std::vector<NGShaderVarInput*>& inputLayout)
+void DirectXProgramLoader::destroyShader(ShaderProgramWrapper* shaderProgramWrapper, std::vector<NGShaderUniformInput*>& uniforms, std::vector<NGShaderVarInput*>& inputLayout)
 {
     assert(shaderProgramWrapper != NULL);
     

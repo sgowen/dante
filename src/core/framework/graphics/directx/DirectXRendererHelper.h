@@ -11,12 +11,11 @@
 
 #include <framework/graphics/portable/RendererHelper.h>
 
-#include <framework/main/directx/DirectXDeviceResources.h>
-
 class DirectXRendererHelper : public RendererHelper
 {
 public:
-    static void init(DX::DirectXDeviceResources* deviceResources);
+    static void init(ID3D11Device* d3dDevice, ID3D11DeviceContext* d3dContext);
+    static void init(ID3D11RenderTargetView* renderTargetView, D3D11_VIEWPORT screenViewport);
     static ID3D11Device* getD3DDevice();
     static ID3D11DeviceContext* getD3DContext();
     
@@ -54,7 +53,10 @@ protected:
     
 private:
     // Cached pointer to device resources.
-    static DX::DirectXDeviceResources* s_deviceResources;
+    static ID3D11Device* s_d3dDevice;
+    static ID3D11DeviceContext* s_d3dContext;
+    static ID3D11RenderTargetView* s_d3dRenderTargetView;
+    static D3D11_VIEWPORT s_screenViewport;
     
     std::vector<ID3D11Texture2D*> _offscreenRenderTargets;
     std::vector<ID3D11RenderTargetView*> _offscreenRenderTargetViews;

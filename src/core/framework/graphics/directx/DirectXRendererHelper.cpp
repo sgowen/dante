@@ -27,21 +27,35 @@
 
 using namespace DirectX;
 
-DX::DirectXDeviceResources* DirectXRendererHelper::s_deviceResources = NULL;
+ID3D11Device* DirectXRendererHelper::s_d3dDevice = NULL;
+ID3D11DeviceContext* DirectXRendererHelper::s_d3dContext = NULL;
+ID3D11RenderTargetView* DirectXRendererHelper::s_d3dRenderTargetView = NULL;
+D3D11_VIEWPORT DirectXRendererHelper::s_screenViewport = {};
 
-void DirectXRendererHelper::init(DX::DirectXDeviceResources* deviceResources)
+void DirectXRendererHelper::init(ID3D11Device* d3dDevice, ID3D11DeviceContext* d3dContext)
 {
-    s_deviceResources = deviceResources;
+    s_d3dDevice = d3dDevice;
+    s_d3dContext = d3dContext;
+}
+
+void DirectXRendererHelper::init(ID3D11RenderTargetView* renderTargetView, D3D11_VIEWPORT screenViewport)
+{
+    s_d3dRenderTargetView = renderTargetView;
+    s_screenViewport = screenViewport;
 }
 
 ID3D11Device* DirectXRendererHelper::getD3DDevice()
 {
-    return s_deviceResources->GetD3DDevice();
+    assert(s_d3dDevice);
+    
+    return s_d3dDevice;
 }
 
 ID3D11DeviceContext* DirectXRendererHelper::getD3DContext()
 {
-    return s_deviceResources->GetD3DDeviceContext();
+    assert(s_d3dContext);
+    
+    return s_d3dContext;
 }
 
 DirectXRendererHelper::DirectXRendererHelper() : RendererHelper(),
@@ -118,7 +132,7 @@ void DirectXRendererHelper::clearFramebufferWithColor(float r, float g, float b,
     ID3D11RenderTargetView * targets[1] = {};
     if (_fbIndex < 0)
     {
-		targets[0] = s_deviceResources->GetRenderTargetView();
+		targets[0] = s_d3dRenderTargetView;
     }
     else
     {
@@ -130,11 +144,10 @@ void DirectXRendererHelper::clearFramebufferWithColor(float r, float g, float b,
 
 void DirectXRendererHelper::bindToScreenFramebuffer()
 {
-    ID3D11RenderTargetView *const targets[1] = { s_deviceResources->GetRenderTargetView() };
+    ID3D11RenderTargetView *const targets[1] = { s_d3dRenderTargetView };
 	getD3DContext()->OMSetRenderTargets(1, targets, NULL);
     
-    D3D11_VIEWPORT viewport = s_deviceResources->GetScreenViewport();
-    getD3DContext()->RSSetViewports(1, &viewport);
+    getD3DContext()->RSSetViewports(1, &s_screenViewport);
     
     _fbIndex = -1;
 }

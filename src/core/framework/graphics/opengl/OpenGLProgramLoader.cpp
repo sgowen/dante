@@ -32,7 +32,7 @@ OpenGLProgramLoader::~OpenGLProgramLoader()
     // Empty
 }
 
-ShaderProgramWrapper* OpenGLProgramLoader::loadNGShader(std::string& vertexShaderFilePath, std::string& fragmentShaderFilePath, std::vector<NGShaderUniformInput*>& uniforms, std::vector<NGShaderVarInput*>& inputLayout)
+ShaderProgramWrapper* OpenGLProgramLoader::loadShader(std::string& vertexShaderFilePath, std::string& fragmentShaderFilePath, std::vector<NGShaderUniformInput*>& uniforms, std::vector<NGShaderVarInput*>& inputLayout)
 {
     const FileData vertex_shader_source = AssetDataHandler::getAssetDataHandler()->getAssetData(vertexShaderFilePath.c_str());
     const FileData fragment_shader_source = AssetDataHandler::getAssetDataHandler()->getAssetData(fragmentShaderFilePath.c_str());
@@ -72,7 +72,7 @@ ShaderProgramWrapper* OpenGLProgramLoader::loadNGShader(std::string& vertexShade
     return ret;
 }
 
-void OpenGLProgramLoader::destroyNGShader(ShaderProgramWrapper* shaderProgramWrapper, std::vector<NGShaderUniformInput*>& uniforms, std::vector<NGShaderVarInput*>& inputLayout)
+void OpenGLProgramLoader::destroyShader(ShaderProgramWrapper* shaderProgramWrapper, std::vector<NGShaderUniformInput*>& uniforms, std::vector<NGShaderVarInput*>& inputLayout)
 {
     glDeleteProgram(shaderProgramWrapper->_programObjectId);
 }
