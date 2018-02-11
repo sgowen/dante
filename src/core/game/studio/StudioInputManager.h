@@ -46,7 +46,6 @@ private:
     Vector2 _upCursor;
     std::string _liveInput;
     int _inputState;
-    bool _isLiveMode;
     bool _isTimeToProcessInput;
     bool _isControl;
     float _rawScrollValue;
@@ -72,6 +71,8 @@ private:
     void resetCamera();
     
     void handleDefaultInput();
+    void handleTextInput();
+    void handleTestSessionInput();
     void handleEntitiesInput();
     void handleLoadMapDialogInput();
     
@@ -81,12 +82,7 @@ private:
     Entity* getEntityAtPosition(float x, float y);
     bool entityExistsAtPosition(Entity* e, float x, float y);
     
-    void setLiveInputMode(bool isLiveMode);
-    bool isLiveMode();
-    bool isTimeToProcessInput();
     void onInputProcessed();
-    std::string& getLiveInputRef();
-    std::string getLiveInput();
     
     // ctor, copy ctor, and assignment should be private in a Singleton
     StudioInputManager();

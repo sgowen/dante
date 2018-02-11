@@ -365,3 +365,8 @@ _playerLightZDelta(0)
 {
     // Empty
 }
+
+GameInputManager::~GameInputManager()
+{
+    _inputStates.free(_currentState);
+}

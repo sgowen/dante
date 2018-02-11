@@ -76,84 +76,26 @@ void StudioInputManager::update()
     
     _inputState = SIMS_NONE;
     
-    if (_isLiveMode)
+    if (_engine->_state & StudioEngineState_TextInput)
     {
-        std::stringstream ss;
-        
-        for (std::vector<KeyboardEvent *>::iterator i = KEYBOARD_INPUT_MANAGER->getEvents().begin(); i != KEYBOARD_INPUT_MANAGER->getEvents().end(); ++i)
-        {
-            KeyboardEvent* keyboardEvent = (*i);
-            if (isKeySupported(keyboardEvent->getKey()))
-            {
-                if (keyboardEvent->isDown()
-                    && !keyboardEvent->isHeld())
-                {
-                    if (keyboardEvent->getKey() == NG_KEY_CARRIAGE_RETURN)
-                    {
-                        _isTimeToProcessInput = true;
-                        return;
-                    }
-                    else if (keyboardEvent->getKey() == NG_KEY_ESCAPE)
-                    {
-                        return;
-                    }
-                    else if (keyboardEvent->getKey() == NG_KEY_BACK_SPACE
-                             || keyboardEvent->getKey() == NG_KEY_DELETE)
-                    {
-                        std::string s = ss.str();
-                        _liveInput += s;
-                        if (_liveInput.end() > _liveInput.begin())
-                        {
-                            _liveInput.erase(_liveInput.end() - 1, _liveInput.end());
-                        }
-                        return;
-                    }
-                    else
-                    {
-                        char key = charForKey(keyboardEvent->getKey());
-                        ss << StringUtil::format("%c", key);
-                    }
-                }
-                else if (keyboardEvent->isUp())
-                {
-                    if (keyboardEvent->getKey() == NG_KEY_ESCAPE)
-                    {
-                        _inputState = SIMS_ESCAPE;
-                        return;
-                    }
-                }
-            }
-        }
-        
-        std::string s = ss.str();
-        _liveInput += s;
-        if (_liveInput.length() > 16)
-        {
-            int sub = static_cast<int>(_liveInput.length()) - 16;
-            _liveInput.erase(_liveInput.end() - sub, _liveInput.end());
-        }
+        handleTextInput();
+    }
+    else if (_engine->_state & StudioEngineState_TestSession)
+    {
+        handleTestSessionInput();
+    }
+    else if (_engine->_state & StudioEngineState_DisplayLoadMapDialog)
+    {
+        handleLoadMapDialogInput();
+    }
+    else if (_engine->_state & StudioEngineState_DisplayEntities)
+    {
+        handleEntitiesInput();
     }
     else
     {
-        if (_engine->_state & StudioEngineState_DisplayLoadMapDialog)
-        {
-            handleLoadMapDialogInput();
-            _rawSelectionIndex = clamp(_rawSelectionIndex + _selectionIndexDir, 1, 0);
-            _selectionIndex = clamp(_rawSelectionIndex, 1, 0);
-        }
-        else if (_engine->_state & StudioEngineState_DisplayEntities)
-        {
-            handleEntitiesInput();
-            const std::vector<EntityDef*>& entityDescriptors = EntityMapper::getInstance()->getEntityDescriptors();
-            int numEntityIndices = static_cast<int>(entityDescriptors.size()) - 1;
-            _rawSelectionIndex = clamp(_rawSelectionIndex + _selectionIndexDir, numEntityIndices, 0);
-            _selectionIndex = clamp(_rawSelectionIndex, numEntityIndices, 0);
-        }
-        else
-        {
-            handleDefaultInput();
-            updateCamera();
-        }
+        handleDefaultInput();
+        updateCamera();
     }
 }
 
@@ -394,6 +336,69 @@ void StudioInputManager::handleDefaultInput()
     }
 }
 
+void StudioInputManager::handleTextInput()
+{
+    std::stringstream ss;
+    
+    for (std::vector<KeyboardEvent *>::iterator i = KEYBOARD_INPUT_MANAGER->getEvents().begin(); i != KEYBOARD_INPUT_MANAGER->getEvents().end(); ++i)
+    {
+        KeyboardEvent* keyboardEvent = (*i);
+        if (isKeySupported(keyboardEvent->getKey()))
+        {
+            if (keyboardEvent->isDown()
+                && !keyboardEvent->isHeld())
+            {
+                if (keyboardEvent->getKey() == NG_KEY_CARRIAGE_RETURN)
+                {
+                    _isTimeToProcessInput = true;
+                    return;
+                }
+                else if (keyboardEvent->getKey() == NG_KEY_ESCAPE)
+                {
+                    return;
+                }
+                else if (keyboardEvent->getKey() == NG_KEY_BACK_SPACE
+                         || keyboardEvent->getKey() == NG_KEY_DELETE)
+                {
+                    std::string s = ss.str();
+                    _liveInput += s;
+                    if (_liveInput.end() > _liveInput.begin())
+                    {
+                        _liveInput.erase(_liveInput.end() - 1, _liveInput.end());
+                    }
+                    return;
+                }
+                else
+                {
+                    char key = charForKey(keyboardEvent->getKey());
+                    ss << StringUtil::format("%c", key);
+                }
+            }
+            else if (keyboardEvent->isUp())
+            {
+                if (keyboardEvent->getKey() == NG_KEY_ESCAPE)
+                {
+                    _inputState = SIMS_ESCAPE;
+                    return;
+                }
+            }
+        }
+    }
+    
+    std::string s = ss.str();
+    _liveInput += s;
+    if (_liveInput.length() > 16)
+    {
+        int sub = static_cast<int>(_liveInput.length()) - 16;
+        _liveInput.erase(_liveInput.end() - sub, _liveInput.end());
+    }
+}
+
+void StudioInputManager::handleTestSessionInput()
+{
+    /// TODO
+}
+
 void StudioInputManager::handleEntitiesInput()
 {
     for (std::vector<KeyboardEvent *>::iterator i = KEYBOARD_INPUT_MANAGER->getEvents().begin(); i != KEYBOARD_INPUT_MANAGER->getEvents().end(); ++i)
@@ -468,6 +473,11 @@ void StudioInputManager::handleEntitiesInput()
                 continue;
         }
     }
+    
+    const std::vector<EntityDef*>& entityDescriptors = EntityMapper::getInstance()->getEntityDescriptors();
+    int numEntityIndices = static_cast<int>(entityDescriptors.size()) - 1;
+    _rawSelectionIndex = clamp(_rawSelectionIndex + _selectionIndexDir, numEntityIndices, 0);
+    _selectionIndex = clamp(_rawSelectionIndex, numEntityIndices, 0);
 }
 
 void StudioInputManager::handleLoadMapDialogInput()
@@ -503,6 +513,9 @@ void StudioInputManager::handleLoadMapDialogInput()
                 continue;
         }
     }
+    
+    _rawSelectionIndex = clamp(_rawSelectionIndex + _selectionIndexDir, 1, 0);
+    _selectionIndex = clamp(_rawSelectionIndex, 1, 0);
 }
 
 bool layerSort(Entity* l, Entity* r)
@@ -594,40 +607,10 @@ bool StudioInputManager::entityExistsAtPosition(Entity* e, float x, float y)
     return false;
 }
 
-void StudioInputManager::setLiveInputMode(bool isLiveMode)
-{
-    _isLiveMode = isLiveMode;
-    
-    if (_isLiveMode)
-    {
-        _liveInput.clear();
-    }
-}
-
-bool StudioInputManager::isLiveMode()
-{
-    return _isLiveMode;
-}
-
-bool StudioInputManager::isTimeToProcessInput()
-{
-    return _isTimeToProcessInput;
-}
-
 void StudioInputManager::onInputProcessed()
 {
     _liveInput.clear();
     _isTimeToProcessInput = false;
-}
-
-std::string& StudioInputManager::getLiveInputRef()
-{
-    return _liveInput;
-}
-
-std::string StudioInputManager::getLiveInput()
-{
-    return _liveInput;
 }
 
 void StudioInputManager::updateCamera()
@@ -711,7 +694,6 @@ _cursor(),
 _upCursor(),
 _liveInput(),
 _inputState(SIMS_NONE),
-_isLiveMode(false),
 _isTimeToProcessInput(false),
 _isControl(false),
 _rawScrollValue(1),
