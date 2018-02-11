@@ -65,12 +65,6 @@ void PlayerController::update()
             _entity->requestDeletion();
         }
         
-        if (_entity->isRequestingDeletion())
-        {
-            // Respawn
-            Server::sHandleNewClient(_playerInfo.playerId, _playerInfo.playerName);
-        }
-        
         if (_playerInfoCache != _playerInfo)
         {
             _playerInfoCache = _playerInfo;
@@ -178,10 +172,8 @@ void PlayerController::read(InputMemoryBitStream& inInputStream, uint16_t& inRea
             uint8_t& oldState = _entity->getPoseCache().state;
             uint8_t& newState = _entity->getPose().state;
             
-            if ((!(oldState & StateFlag_FirstJump) &&
-                (newState & StateFlag_FirstJump)) ||
-                (!(oldState & StateFlag_SecondJump) &&
-                 (newState & StateFlag_SecondJump)))
+            if (!(oldState & StateFlag_FirstJump) &&
+                (newState & StateFlag_FirstJump))
             {
                 GM_UTIL->playSound(_entity->getSoundMapping(State_Jumping), _entity->getPosition());
             }
@@ -253,7 +245,6 @@ void PlayerController::processInput(InputState* inInputState, bool isPending)
                 _entity->setVelocity(b2Vec2(velocity.x, 0));
                 _entity->getPose().stateTime = 0;
                 _entity->getPose().state &= ~StateFlag_FirstJumpCompleted;
-                _entity->getPose().state &= ~StateFlag_SecondJump;
                 _entity->getPose().state |= StateFlag_FirstJump;
                 
                 if (isPending)
@@ -264,34 +255,16 @@ void PlayerController::processInput(InputState* inInputState, bool isPending)
         }
         else if (getNumJumps() == 0)
         {
-            _entity->getPose().state &= ~StateFlag_SecondJump;
             _entity->getPose().state |= StateFlag_FirstJump;
             _entity->getPose().state |= StateFlag_FirstJumpCompleted;
         }
         
         if (getNumJumps() == 1)
         {
-            if (_entity->getPose().state & StateFlag_FirstJumpCompleted)
-            {
-                _entity->getPose().stateTime = 0;
-                _entity->getPose().state &= ~StateFlag_FirstJump;
-                _entity->getPose().state |= StateFlag_SecondJump;
-                _entity->setVelocity(b2Vec2(velocity.x, 0));
-                
-                if (isPending)
-                {
-                    GM_UTIL->playSound(_entity->getSoundMapping(State_Jumping), _entity->getPosition());
-                }
-            }
-            else
+            if (!(_entity->getPose().state & StateFlag_FirstJumpCompleted))
             {
                 vertForce = _entity->getBody()->GetMass() * (GM_CFG->_maxYVelocity - _entity->getPose().stateTime * 0.5f);
             }
-        }
-        
-        if (getNumJumps() == 2)
-        {
-            vertForce = _entity->getBody()->GetMass() * (GM_CFG->_maxYVelocity * 0.75f - _entity->getPose().stateTime * 0.35f);
         }
         
         vertForce = clamp(vertForce, _entity->getBody()->GetMass() * GM_CFG->_maxYVelocity, 0);
@@ -309,7 +282,6 @@ void PlayerController::processInput(InputState* inInputState, bool isPending)
     {
         _entity->getPose().state &= ~StateFlag_FirstJumpCompleted;
         _entity->getPose().state &= ~StateFlag_FirstJump;
-        _entity->getPose().state &= ~StateFlag_SecondJump;
     }
     
     float right = inputState->getDesiredRightAmount();
@@ -428,10 +400,6 @@ uint8_t PlayerController::getNumJumps()
     if (_entity->getPose().state & StateFlag_FirstJump)
     {
         return 1;
-    }
-    else if (_entity->getPose().state & StateFlag_SecondJump)
-    {
-        return 2;
     }
     
     return 0;

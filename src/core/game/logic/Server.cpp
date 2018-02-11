@@ -78,6 +78,16 @@ void Server::sHandleDynamicEntityDeletedOnServer(Entity* inEntity)
     assert(world);
     
     world->removeDynamicEntity(inEntity);
+    
+    EntityController* controller = inEntity->getController();
+    if (controller->getRTTI().derivesFrom(PlayerController::rtti))
+    {
+        PlayerController* robot = static_cast<PlayerController*>(controller);
+        assert(robot);
+        
+        // Respawn
+        getInstance()->spawnRobotForPlayer(robot->getPlayerId(), robot->getPlayerName());
+    }
 }
 
 void Server::sHandleNewClient(uint8_t playerId, std::string playerName)
@@ -133,8 +143,6 @@ void Server::toggleMap()
 
 void Server::handleNewClient(uint8_t playerId, std::string playerName)
 {
-    spawnRobotForPlayer(playerId, playerName);
-    
     if (NG_SERVER->getNumClientsConnected() == 1)
     {
         // This is our first client!
@@ -146,6 +154,11 @@ void Server::handleNewClient(uint8_t playerId, std::string playerName)
             loadMap();
         }
     }
+    
+    spawnRobotForPlayer(playerId, playerName);
+    
+    _playerIds.push_back(playerId);
+    _playerNames.push_back(playerName);
 }
 
 void Server::handleLostClient(ClientProxy* inClientProxy, uint8_t index)
@@ -226,9 +239,6 @@ void Server::spawnRobotForPlayer(uint8_t inPlayerId, std::string inPlayerName)
     robot->setAddressHash(client->getMachineAddress()->getHash());
     robot->setPlayerName(inPlayerName);
     robot->setPlayerId(inPlayerId);
-    
-    _playerIds.push_back(inPlayerId);
-    _playerNames.push_back(inPlayerName);
     
     NG_SERVER->registerEntity(e);
 }

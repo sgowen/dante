@@ -59,18 +59,15 @@ void Entity::update()
         ++_pose.stateTime;
     }
     
+    _controller->update();
+    
     if (_isServer)
     {
         if (getPosition().y < _deadZoneY)
         {
             requestDeletion();
         }
-    }
-    
-    _controller->update();
-    
-    if (_isServer)
-    {
+        
         if (_poseCache != _pose)
         {
             _poseCache = _pose;

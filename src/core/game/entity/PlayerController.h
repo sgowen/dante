@@ -67,8 +67,7 @@ private:
     {
         StateFlag_MainAction = 1 << 0,
         StateFlag_FirstJump = 1 << 1,
-        StateFlag_FirstJumpCompleted = 1 << 2,
-        StateFlag_SecondJump = 1 << 3
+        StateFlag_FirstJumpCompleted = 1 << 2
     };
     
     enum ReadStateFlag
