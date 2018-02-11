@@ -33,7 +33,6 @@
 #include <framework/network/client/SocketClientHelper.h>
 #include <framework/network/portable/MachineAddress.h>
 #include <framework/audio/portable/NGAudioEngine.h>
-#include <framework/util/NGExtension.h>
 #include <framework/util/PlatformHelper.h>
 #include <framework/file/portable/Assets.h>
 #include <framework/util/Constants.h>
@@ -83,18 +82,12 @@ _renderer(new TitleRenderer()),
 _isSteam(false),
 _state(TitleEngineState_SteamOff)
 {
-    NoctisGames::NGExtension::setInstance(NoctisGames::DefaultNGExtension::getInstance());
-    
-    activateSteam();
-    
     _renderer->setEngine(this);
 }
 
 TitleEngine::~TitleEngine()
 {
     delete _renderer;
-    
-	deactivateSteam();
 }
 
 void TitleEngine::enter(Engine* engine)
@@ -105,6 +98,8 @@ void TitleEngine::enter(Engine* engine)
     createWindowSizeDependentResources(engine->getScreenWidth(), engine->getScreenHeight(), engine->getCursorWidth(), engine->getCursorHeight());
     
     TitleInputManager::getInstance()->setEngine(this);
+    
+    activateSteam();
 }
 
 void TitleEngine::update(Engine* engine)
@@ -307,6 +302,7 @@ bool TitleEngine::handleInput(Engine* engine)
         }
         else if (menuState == TIMS_ESCAPE)
         {
+            deactivateSteam();
             engine->setRequestedAction(REQUESTED_ACTION_EXIT);
             return true;
         }

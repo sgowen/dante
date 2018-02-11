@@ -182,7 +182,6 @@ private:
     Pose _poseInterpolateCache;
     
     uint16_t _readState;
-    uint8_t _state;
     uint32_t _ID;
     float _deadZoneY;
     bool _isRequestingDeletion;

@@ -53,7 +53,7 @@ BasicFollowAndAttackController::~BasicFollowAndAttackController()
     // Empty
 }
 
-uint8_t BasicFollowAndAttackController::update()
+void BasicFollowAndAttackController::update()
 {
     if (_entity->isServer())
     {
@@ -68,7 +68,10 @@ uint8_t BasicFollowAndAttackController::update()
             NG_SERVER->setStateDirty(_entity->getID(), ReadStateFlag_Stats);
         }
     }
-    
+}
+
+uint8_t BasicFollowAndAttackController::getState()
+{
     return isDying() ? State_Dying : isAttacking() ? State_Attacking : isMoving() ? State_Moving : State_Idle;
 }
 

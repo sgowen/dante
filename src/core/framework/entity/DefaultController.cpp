@@ -27,7 +27,12 @@ DefaultController::~DefaultController()
     // Empty
 }
 
-uint8_t DefaultController::update()
+void DefaultController::update()
+{
+    // Empty
+}
+
+uint8_t DefaultController::getState()
 {
     return 0;
 }

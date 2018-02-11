@@ -10,6 +10,7 @@
 
 #include <game/logic/MainEngineController.h>
 
+#include <framework/util/NGExtension.h>
 #include <game/title/TitleEngine.h>
 #include <game/game/GameEngine.h>
 #include <game/studio/StudioEngine.h>
@@ -23,6 +24,8 @@ NGRTTI_IMPL(MainEngineController, EngineController);
 
 MainEngineController::MainEngineController()
 {
+    NoctisGames::NGExtension::setInstance(NoctisGames::DefaultNGExtension::getInstance());
+    
     TitleEngine::create();
     GameEngine::create();
     StudioEngine::create();

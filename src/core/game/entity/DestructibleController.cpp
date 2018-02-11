@@ -51,7 +51,7 @@ DestructibleController::~DestructibleController()
     // Empty
 }
 
-uint8_t DestructibleController::update()
+void DestructibleController::update()
 {
     if (_entity->isServer())
     {
@@ -66,7 +66,10 @@ uint8_t DestructibleController::update()
             NG_SERVER->setStateDirty(_entity->getID(), ReadStateFlag_Stats);
         }
     }
-    
+}
+
+uint8_t DestructibleController::getState()
+{
     return isDestructing() ? State_Destructing : State_Idle;
 }
 

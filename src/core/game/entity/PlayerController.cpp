@@ -56,7 +56,7 @@ PlayerController::~PlayerController()
     // Empty
 }
 
-uint8_t PlayerController::update()
+void PlayerController::update()
 {
     if (_entity->isServer())
     {
@@ -83,19 +83,22 @@ uint8_t PlayerController::update()
             NG_SERVER->setStateDirty(_entity->getID(), ReadStateFlag_Stats);
         }
     }
-    
+}
+
+uint8_t PlayerController::getState()
+{
     bool isGrounded = _entity->isGrounded();
     uint8_t numJumps = getNumJumps();
     bool mainAction = isMainAction();
     bool moving = isMoving();
     
     return isGrounded && numJumps == 0 ?
-                mainAction ?
-                    State_Punching :
-                !moving ?
-                    State_Idle :
-                State_Running :
-            State_Jumping;
+    mainAction ?
+    State_Punching :
+    !moving ?
+    State_Idle :
+    State_Running :
+    State_Jumping;
 }
 
 void PlayerController::receiveMessage(uint16_t message, void* data)

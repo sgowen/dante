@@ -37,7 +37,6 @@ _pose(x, y),
 _poseCache(_pose),
 _poseInterpolateCache(_pose),
 _readState(0),
-_state(0),
 _ID(0),
 _deadZoneY(-_entityDef.height / 2.0f),
 _isRequestingDeletion(false),
@@ -68,7 +67,7 @@ void Entity::update()
         }
     }
     
-    _state = _controller->update();
+    _controller->update();
     
     if (_isServer)
     {
@@ -398,7 +397,7 @@ bool Entity::isFacingLeft()
 
 std::string& Entity::getTextureMapping()
 {
-    auto q = _entityDef.textureMappings.find(_state);
+    auto q = _entityDef.textureMappings.find(_controller->getState());
     
     assert(q != _entityDef.textureMappings.end());
     

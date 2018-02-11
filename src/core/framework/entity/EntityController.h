@@ -27,7 +27,8 @@ public:
     EntityController(Entity* inEntity);
     virtual ~EntityController();
     
-    virtual uint8_t update() = 0;
+    virtual void update() = 0;
+    virtual uint8_t getState() = 0;
     virtual void receiveMessage(uint16_t message, void* data = NULL) = 0;
     virtual void onFixturesCreated(std::vector<b2Fixture*>& fixtures) = 0;
     virtual bool shouldCollide(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB) = 0;

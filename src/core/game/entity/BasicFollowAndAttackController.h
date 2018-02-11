@@ -21,7 +21,8 @@ public:
     BasicFollowAndAttackController(Entity* inEntity);
     virtual ~BasicFollowAndAttackController();
     
-    virtual uint8_t update();
+    virtual void update();
+    virtual uint8_t getState();
     virtual void receiveMessage(uint16_t message, void* data = NULL);
     virtual void onFixturesCreated(std::vector<b2Fixture*>& fixtures);
     virtual bool shouldCollide(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB);
