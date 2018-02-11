@@ -57,7 +57,7 @@ void BasicFollowAndAttackController::update()
 {
     if (_entity->isServer())
     {
-        if (isDying() && _entity->getPose().stateTime > 300)
+        if (isDying() && _entity->getPose().stateTime >= 120)
         {
             _entity->requestDeletion();
         }

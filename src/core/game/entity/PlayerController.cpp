@@ -46,7 +46,8 @@ _playerInfoCache(_playerInfo),
 _stats(),
 _statsCache(_stats),
 _attackSensorFixture(NULL),
-_isLocalPlayer(false)
+_isLocalPlayer(false),
+_isPendingInput(false)
 {
     // Empty
 }
@@ -211,6 +212,7 @@ void PlayerController::processInput(InputState* inInputState, bool isPending)
         return;
     }
     
+    _isPendingInput = isPending;
     uint8_t state = _entity->getPose().state;
     uint8_t inputState = playerInputState->getInputState();
     switch (state)
@@ -218,8 +220,14 @@ void PlayerController::processInput(InputState* inInputState, bool isPending)
         case State_Idle:
             processInputForIdleState(inputState);
             break;
-        case State_MainAction:
-            processInputForMainActionState(inputState);
+        case State_FirstPunch:
+            processInputForFirstPunchState(inputState);
+            break;
+        case State_SecondPunch:
+            processInputForSecondPunchState(inputState);
+            break;
+        case State_ThirdPunch:
+            processInputForThirdPunchState(inputState);
             break;
         case State_Running:
             processInputForRunningState(inputState);
@@ -227,7 +235,7 @@ void PlayerController::processInput(InputState* inInputState, bool isPending)
         case State_Jumping:
             processInputForJumpingState(inputState);
             break;
-        case State_FirstJumpCompleted:
+        case State_JumpCompleted:
             processInputForFirstJumpCompletedState(inputState);
             break;
         default:
@@ -297,7 +305,39 @@ void PlayerController::processInputForIdleState(uint8_t inputState)
     }
 }
 
-void PlayerController::processInputForMainActionState(uint8_t inputState)
+void PlayerController::processInputForFirstPunchState(uint8_t inputState)
+{
+    handleMainActionInput(inputState);
+    
+    if (_entity->getPose().state == State_Idle)
+    {
+        handleMovementInput(inputState);
+    }
+    
+    if (_entity->getPose().state == State_Idle ||
+        _entity->getPose().state == State_Running)
+    {
+        handleJumpInput(inputState);
+    }
+}
+
+void PlayerController::processInputForSecondPunchState(uint8_t inputState)
+{
+    handleMainActionInput(inputState);
+    
+    if (_entity->getPose().state == State_Idle)
+    {
+        handleMovementInput(inputState);
+    }
+    
+    if (_entity->getPose().state == State_Idle ||
+        _entity->getPose().state == State_Running)
+    {
+        handleJumpInput(inputState);
+    }
+}
+
+void PlayerController::processInputForThirdPunchState(uint8_t inputState)
 {
     handleMainActionInput(inputState);
     
@@ -333,17 +373,6 @@ void PlayerController::processInputForRunningState(uint8_t inputState)
 void PlayerController::processInputForJumpingState(uint8_t inputState)
 {
     handleJumpInput(inputState);
-    
-    if (_entity->getPose().state == State_Idle)
-    {
-        handleMovementInput(inputState);
-    }
-    
-    if (_entity->getPose().state == State_Idle ||
-        _entity->getPose().state == State_Running)
-    {
-        handleMainActionInput(inputState);
-    }
 }
 
 void PlayerController::processInputForFirstJumpCompletedState(uint8_t inputState)
@@ -357,21 +386,24 @@ void PlayerController::handleMovementInput(uint8_t inputState)
     static const int STOP = 1;
     static const int RIGHT = 2;
     
-    int moveState;
-    if (inputState & GameInputStateFlags_MovingRight)
+    _entity->getPose().state = State_Idle;
+    int moveState = STOP;
+    if (_entity->isGrounded())
     {
-        _entity->getPose().state = State_Running;
-        moveState = RIGHT;
-    }
-    else if (inputState & GameInputStateFlags_MovingLeft)
-    {
-        _entity->getPose().state = State_Running;
-        moveState = LEFT;
+        if (inputState & GameInputStateFlags_MovingRight)
+        {
+            _entity->getPose().state = State_Running;
+            moveState = RIGHT;
+        }
+        else if (inputState & GameInputStateFlags_MovingLeft)
+        {
+            _entity->getPose().state = State_Running;
+            moveState = LEFT;
+        }
     }
     else
     {
-        _entity->getPose().state = State_Idle;
-        moveState = STOP;
+        _entity->getPose().state = State_JumpCompleted;
     }
     
     const b2Vec2& vel = _entity->getVelocity();
@@ -402,55 +434,133 @@ void PlayerController::handleMovementInput(uint8_t inputState)
 
 void PlayerController::handleMainActionInput(uint8_t inputState)
 {
-    bool wasMainAction = _entity->getPose().state == State_MainAction;
-    if (inputState & GameInputStateFlags_MainAction)
+    bool isFirstPunch = _entity->getPose().state == State_FirstPunch;
+    bool isSecondPunch = _entity->getPose().state == State_SecondPunch;
+    bool isThirdPunch = _entity->getPose().state == State_ThirdPunch;
+    if (inputState & GameInputStateFlags_MainAction && _entity->isGrounded())
+    {
+        if (_entity->getPose().stateFlags == 0 && !isFirstPunch && !isSecondPunch && !isThirdPunch)
+        {
+            _entity->getPose().state = State_FirstPunch;
+            _entity->getPose().stateTime = 0;
+            _entity->getPose().stateFlags = 0;
+        }
+        else if (_entity->getPose().stateFlags == MainActionFlags_ReadyForSecondPunch &&
+                 _entity->getPose().stateTime < 18 &&
+                 !isSecondPunch)
+        {
+            _entity->getPose().stateFlags = MainActionFlags_ToThrowSecondPunch;
+        }
+        else if (_entity->getPose().stateFlags == MainActionFlags_ReadyForThirdPunch &&
+                 _entity->getPose().stateTime < 18 &&
+                 !isThirdPunch)
+        {
+            _entity->getPose().stateFlags = MainActionFlags_ToThrowThirdPunch;
+        }
+        
+        if (_entity->getPose().stateFlags == MainActionFlags_ToThrowSecondPunch &&
+            _entity->getPose().stateTime > 18)
+        {
+            _entity->getPose().state = State_SecondPunch;
+            _entity->getPose().stateTime = 0;
+            _entity->getPose().stateFlags = 0;
+        }
+        else if (_entity->getPose().stateFlags == MainActionFlags_ToThrowThirdPunch &&
+                 _entity->getPose().stateTime > 18)
+        {
+            _entity->getPose().state = State_ThirdPunch;
+            _entity->getPose().stateTime = 0;
+            _entity->getPose().stateFlags = 0;
+        }
+    }
+    else
     {
         if (_entity->isGrounded())
         {
-            _entity->getPose().state = State_MainAction;
-            
-            if (!wasMainAction)
+            if (isFirstPunch)
             {
-                _entity->getPose().stateTime = 0;
+                if (_entity->getPose().stateFlags == 0)
+                {
+                    _entity->getPose().stateFlags = MainActionFlags_ReadyForSecondPunch;
+                }
+            }
+            else if (isSecondPunch)
+            {
+                if (_entity->getPose().stateFlags == 0)
+                {
+                    _entity->getPose().stateFlags = MainActionFlags_ReadyForThirdPunch;
+                }
+            }
+            else if (isThirdPunch)
+            {
+                _entity->getPose().stateFlags = 0;
             }
         }
-    }
-    else if (wasMainAction)
-    {
-        _entity->getPose().state = State_Idle;
+        else if (isFirstPunch || isSecondPunch || isThirdPunch)
+        {
+            _entity->getPose().state = State_Idle;
+            _entity->getPose().stateFlags = 0;
+        }
+        
+        if (_entity->getPose().stateFlags == MainActionFlags_ToThrowSecondPunch &&
+            _entity->getPose().stateTime > 18)
+        {
+            _entity->getPose().state = State_SecondPunch;
+            _entity->getPose().stateTime = 0;
+            _entity->getPose().stateFlags = 0;
+        }
+        else if (_entity->getPose().stateFlags == MainActionFlags_ToThrowThirdPunch &&
+                 _entity->getPose().stateTime > 18)
+        {
+            _entity->getPose().state = State_ThirdPunch;
+            _entity->getPose().stateTime = 0;
+            _entity->getPose().stateFlags = 0;
+        }
+        
+        if ((isFirstPunch && _entity->getPose().stateTime > 18) ||
+            (isSecondPunch && _entity->getPose().stateTime > 18) ||
+            (isThirdPunch && _entity->getPose().stateTime > 30))
+        {
+            _entity->getPose().state = State_Idle;
+            _entity->getPose().stateFlags = 0;
+        }
     }
 }
 
 void PlayerController::handleJumpInput(uint8_t inputState)
 {
-    if (inputState & GameInputStateFlags_Jumping)
+    bool isJumping = _entity->getPose().state == State_Jumping;
+    if (inputState & GameInputStateFlags_Jumping && _entity->isGrounded())
     {
-        if (_entity->isGrounded() && _entity->getPose().state != State_Jumping)
+        if (!isJumping)
         {
             _entity->setVelocity(b2Vec2(_entity->getVelocity().x, 0));
             _entity->getPose().stateTime = 0;
             _entity->getPose().state = State_Jumping;
         }
         
+        float vertForce = 0;
         if (_entity->getPose().state == State_Jumping)
         {
-            float vertForce = _entity->getBody()->GetMass() * (GM_CFG->_maxYVelocity - _entity->getPose().stateTime * 0.5f);
+            vertForce = _entity->getBody()->GetMass() * (GM_CFG->_maxYVelocity - _entity->getPose().stateTime * 0.5f);
             vertForce = clamp(vertForce, _entity->getBody()->GetMass() * GM_CFG->_maxYVelocity, 0);
             _entity->getBody()->ApplyLinearImpulse(b2Vec2(0, vertForce), _entity->getBody()->GetWorldCenter(), true);
         }
-    }
-    else
-    {
-        if (_entity->getPose().state == State_Jumping)
+        
+        if (_entity->getPose().stateTime > 18 || vertForce <= 0)
         {
-            _entity->getPose().state = State_FirstJumpCompleted;
+            _entity->getPose().state = State_JumpCompleted;
         }
+    }
+    else if (isJumping)
+    {
+        _entity->getPose().state = State_JumpCompleted;
     }
 }
 
 void PlayerController::handleJumpCompletedInput(uint8_t inputState)
 {
-    if (_entity->isGrounded() && _entity->getPose().stateTime >= 12)
+    if (_entity->isGrounded() && _entity->getPose().stateTime > 18)
     {
         _entity->getPose().state = State_Idle;
     }

@@ -56,7 +56,7 @@ void Entity::update()
     
     if (_entityDef.stateSensitive)
     {
-        ++_pose.stateTime;
+        _pose.stateTime = clamp(_pose.stateTime + 1, 255, 0);
     }
     
     _controller->update();
@@ -144,6 +144,7 @@ void Entity::read(InputMemoryBitStream& inInputStream)
         {
             inInputStream.read(_pose.stateTime);
             inInputStream.read(_pose.state);
+            inInputStream.read<uint8_t, 4>(_pose.stateFlags);
         }
         
         inInputStream.read(_pose.velocity);
@@ -202,6 +203,7 @@ uint16_t Entity::write(OutputMemoryBitStream& inOutputStream, uint16_t inDirtySt
         {
             inOutputStream.write(_pose.stateTime);
             inOutputStream.write(_pose.state);
+            inOutputStream.write<uint8_t, 4>(_pose.stateFlags);
         }
         
         inOutputStream.write(_pose.velocity);

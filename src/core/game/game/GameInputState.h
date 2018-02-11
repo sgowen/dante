@@ -15,7 +15,6 @@
 
 enum GameInputStateFlags
 {
-    GameInputStateFlags_None =        0,
     GameInputStateFlags_MovingRight = 1 << 0,
     GameInputStateFlags_MovingLeft =  1 << 1,
     GameInputStateFlags_Jumping =     1 << 2,

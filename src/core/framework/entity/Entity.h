@@ -117,12 +117,11 @@ public:
     std::string& getTextureMapping();
     int getSoundMapping(int state);
     
-#define NG_CLOSE_ENOUGH_IS_FINE
-    
     struct Pose
     {
-        uint16_t stateTime;
+        uint8_t stateTime;
         uint8_t state;
+        uint8_t stateFlags;
         b2Vec2 velocity;
         b2Vec2 position;
         float angle;
@@ -133,18 +132,22 @@ public:
         {
             stateTime = 0;
             state = 0;
+            stateFlags = 0;
             velocity = b2Vec2_zero;
             position = b2Vec2(x, y);
             angle = 0;
             numGroundContacts = 0;
             isFacingLeft = false;
         }
+       
+#define NG_CLOSE_ENOUGH_IS_FINE
         
         friend bool operator==(Pose& lhs, Pose& rhs)
         {
             return
                           lhs.stateTime         == rhs.stateTime &&
                           lhs.state             == rhs.state &&
+                          lhs.stateFlags        == rhs.stateFlags &&
 #ifdef NG_CLOSE_ENOUGH_IS_FINE
             isCloseEnough(lhs.velocity,            rhs.velocity) &&
             isCloseEnough(lhs.position,            rhs.position) &&

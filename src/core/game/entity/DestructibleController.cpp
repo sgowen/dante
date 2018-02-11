@@ -55,7 +55,7 @@ void DestructibleController::update()
 {
     if (_entity->isServer())
     {
-        if (isDestructing() && _entity->getPose().stateTime > 300)
+        if (isDestructing() && _entity->getPose().stateTime >= 120)
         {
             _entity->requestDeletion();
         }

@@ -54,10 +54,20 @@ private:
     enum State
     {
         State_Idle = 0,
-        State_MainAction,
+        State_FirstPunch,
+        State_SecondPunch,
+        State_ThirdPunch,
         State_Running,
         State_Jumping,
-        State_FirstJumpCompleted
+        State_JumpCompleted
+    };
+    
+    enum MainActionFlags
+    {
+        MainActionFlags_ReadyForSecondPunch = 1,
+        MainActionFlags_ToThrowSecondPunch,
+        MainActionFlags_ReadyForThirdPunch,
+        MainActionFlags_ToThrowThirdPunch
     };
     
     enum ReadStateFlag
@@ -121,9 +131,12 @@ private:
     /// Non-Networked
     b2Fixture* _attackSensorFixture;
     bool _isLocalPlayer;
+    bool _isPendingInput;
     
     void processInputForIdleState(uint8_t inputState);
-    void processInputForMainActionState(uint8_t inputState);
+    void processInputForFirstPunchState(uint8_t inputState);
+    void processInputForSecondPunchState(uint8_t inputState);
+    void processInputForThirdPunchState(uint8_t inputState);
     void processInputForRunningState(uint8_t inputState);
     void processInputForJumpingState(uint8_t inputState);
     void processInputForFirstJumpCompletedState(uint8_t inputState);
