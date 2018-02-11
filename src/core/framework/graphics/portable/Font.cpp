@@ -21,7 +21,7 @@ Font::Font(int offsetX, int offsetY, int glyphsPerRow, int glyphWidth, int glyph
 
 	for (int i = 0; i < 176; ++i)
 	{
-		_glyphs.push_back(TextureRegion("font", x, y, glyphWidth, glyphHeight, textureWidth, textureHeight));
+		_glyphs.push_back(TextureRegion("font", x, y, glyphWidth, glyphHeight, textureWidth, textureHeight, 0));
 
 		x += glyphWidth;
 

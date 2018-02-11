@@ -352,9 +352,9 @@ void GameRenderer::renderEntities(std::vector<Entity*>& entities)
     {
         TextureRegion tr = ASSETS->findTextureRegion(e->getTextureMapping(), e->getStateTime());
         
-        int layer = e->getEntityDef().layer;
-        _textures[e->getEntityDef().layer] = tr.getTextureName();
-        _normals[e->getEntityDef().layer] = tr.getNormalMapName();
+        int layer = tr._layer;
+        _textures[layer] = tr.getTextureName();
+        _normals[layer] = tr.getNormalMapName();
         
         if (_spriteBatchers[layer]->_isStaticBatchRendered)
         {

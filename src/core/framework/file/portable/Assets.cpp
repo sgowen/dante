@@ -93,6 +93,7 @@ void Assets::initWithJson(const char* json)
         {
             const Value& iv = v[i];
             std::string textureName = iv["textureName"].GetString();
+            int layer = iv.HasMember("layer") ? iv["layer"].GetInt() : 0;
             bool repeatS = iv.HasMember("repeatS") ? iv["repeatS"].GetBool() : false;
             bool isEncrypted = iv.HasMember("isEncrypted") ? iv["isEncrypted"].GetBool() : true;
             bool hasNormal = iv.HasMember("hasNormal") ? iv["hasNormal"].GetBool() : true;
@@ -100,7 +101,7 @@ void Assets::initWithJson(const char* json)
             std::string textureFilterMag = iv.HasMember("textureFilterMag") ? iv["textureFilterMag"].GetString() : FW_CFG->getString("DefaultTextureFilterMag");
             bool textureFilterMipMap = iv.HasMember("textureFilterMipMap") ? iv["textureFilterMipMap"].GetBool() : FW_CFG->getBool("DefaultTextureFilterMipMap");
             
-            _textures.push_back(new NGTextureDesc(textureName, repeatS, isEncrypted, hasNormal, textureFilterMin, textureFilterMag, textureFilterMipMap));
+            _textures.push_back(new NGTextureDesc(textureName, layer, repeatS, isEncrypted, hasNormal, textureFilterMin, textureFilterMag, textureFilterMipMap));
             
             if (iv.HasMember("mappings"))
             {
@@ -156,7 +157,7 @@ void Assets::initWithJson(const char* json)
                                 animationHeight = iv["animationHeight"].GetInt();
                             }
                             
-                            _animations[key] = new NGAnimation(textureName, x, y, regionWidth, regionHeight, animationWidth, animationHeight, textureWidth, textureHeight, looping, firstLoopingFrame, xPadding, yPadding, frameTimes);
+                            _animations[key] = new NGAnimation(textureName, x, y, regionWidth, regionHeight, animationWidth, animationHeight, textureWidth, textureHeight, looping, firstLoopingFrame, xPadding, yPadding, layer, frameTimes);
                         }
                         else
                         {
@@ -171,13 +172,13 @@ void Assets::initWithJson(const char* json)
                                 animationHeight = iv["animationHeight"].GetInt();
                             }
                             
-                            _animations[key] = new NGAnimation(textureName, x, y, regionWidth, regionHeight, animationWidth, animationHeight, textureWidth, textureHeight, looping, firstLoopingFrame, xPadding, yPadding, frameTime, numFrames);
+                            _animations[key] = new NGAnimation(textureName, x, y, regionWidth, regionHeight, animationWidth, animationHeight, textureWidth, textureHeight, looping, firstLoopingFrame, xPadding, yPadding, layer, frameTime, numFrames);
                         }
                     }
                     else
                     {
                         assert(!_textureRegions[key]);
-                        _textureRegions[key] = new TextureRegion(textureName, x, y, regionWidth, regionHeight, textureWidth, textureHeight);
+                        _textureRegions[key] = new TextureRegion(textureName, x, y, regionWidth, regionHeight, textureWidth, textureHeight, layer);
                     }
                 }
             }

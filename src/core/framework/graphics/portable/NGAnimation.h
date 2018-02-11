@@ -17,8 +17,8 @@ class TextureRegion;
 class NGAnimation
 {
 public:
-    NGAnimation(std::string textureName, int x, int y, int regionWidth, int regionHeight, int animationWidth, int animationHeight, int textureWidth, int textureHeight, bool looping, int firstLoopingFrame, int xPadding, int yPadding, std::vector<uint16_t> frameTimes);
-    NGAnimation(std::string textureName, int x, int y, int regionWidth, int regionHeight, int animationWidth, int animationHeight, int textureWidth, int textureHeight, bool looping, int firstLoopingFrame, int xPadding, int yPadding, uint16_t frameTime, int numFrames);
+    NGAnimation(std::string textureName, int x, int y, int regionWidth, int regionHeight, int animationWidth, int animationHeight, int textureWidth, int textureHeight, bool looping, int firstLoopingFrame, int xPadding, int yPadding, int layer, std::vector<uint16_t> frameTimes);
+    NGAnimation(std::string textureName, int x, int y, int regionWidth, int regionHeight, int animationWidth, int animationHeight, int textureWidth, int textureHeight, bool looping, int firstLoopingFrame, int xPadding, int yPadding, int layer, uint16_t frameTime, int numFrames);
     ~NGAnimation();
     
     TextureRegion& getTextureRegion(uint16_t stateTime);
@@ -34,7 +34,7 @@ private:
     uint16_t _firstLoopingFrame;
     bool _isLooping;
     
-    void loadTextureRegions(int x, int y, int regionWidth, int regionHeight, int animationWidth, int animationHeight, int textureWidth, int textureHeight, int numFrames, int xPadding = 0, int yPadding = 0);
+    void loadTextureRegions(int x, int y, int regionWidth, int regionHeight, int animationWidth, int animationHeight, int textureWidth, int textureHeight, int numFrames, int xPadding, int yPadding, int layer);
 };
 
 #endif /* defined(__noctisgames__NGAnimation__) */

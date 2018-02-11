@@ -14,6 +14,7 @@
 struct NGTextureDesc
 {
     std::string _textureName;
+    int _layer;
     bool _repeatS;
     bool _isEncrypted;
     bool _hasNormal;
@@ -21,8 +22,9 @@ struct NGTextureDesc
     std::string _textureFilterMag;
     bool _textureFilterMipMap;
     
-    NGTextureDesc(std::string textureName, bool repeatS, bool isEncrypted, bool hasNormal, std::string textureFilterMin, std::string textureFilterMag, bool textureFilterMipMap) :
+    NGTextureDesc(std::string textureName, int layer, bool repeatS, bool isEncrypted, bool hasNormal, std::string textureFilterMin, std::string textureFilterMag, bool textureFilterMipMap) :
     _textureName(textureName),
+    _layer(layer),
     _repeatS(repeatS),
     _isEncrypted(isEncrypted),
     _hasNormal(hasNormal),

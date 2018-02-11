@@ -334,11 +334,11 @@ void StudioRenderer::renderEntities(std::vector<Entity*>& entities)
     {
         TextureRegion tr = ASSETS->findTextureRegion(e->getTextureMapping(), e->getStateTime());
         
-        _spriteBatchers[e->getEntityDef().layer]->renderSprite(e->getPosition().x, e->getPosition().y, e->getWidth(), e->getHeight(), e->getAngle(), tr, e->isFacingLeft());
-        _textures[e->getEntityDef().layer] = tr.getTextureName();
+        _spriteBatchers[tr._layer]->renderSprite(e->getPosition().x, e->getPosition().y, e->getWidth(), e->getHeight(), e->getAngle(), tr, e->isFacingLeft());
+        _textures[tr._layer] = tr.getTextureName();
         
         if ((_engineState & StudioEngineState_DisplayTypes) &&
-            _engineState & (1 << (e->getEntityDef().layer + StudioEngineState_LayerBitBegin)))
+            _engineState & (1 << (tr._layer + StudioEngineState_LayerBitBegin)))
         {
             renderText(e->getEntityDef().typeName.c_str(), e->getPosition().x, e->getPosition().y, FONT_ALIGN_CENTER);
         }
@@ -480,8 +480,8 @@ void StudioRenderer::renderUI()
             _fontSpriteBatcher->endBatch(_textureNGShader, _fontTexture, NULL, i == selectionIndex ? Color::WHITE : Color::BLACK);
             
             TextureRegion tr = ASSETS->findTextureRegion(ed->textureMappings[0], 0);
-            _spriteBatchers[ed->layer]->renderSprite(4, GM_CFG->_camHeight - 1 - (row * padding), 4, 4, 0, tr);
-            _textures[ed->layer] = tr.getTextureName();
+            _spriteBatchers[tr._layer]->renderSprite(4, GM_CFG->_camHeight - 1 - (row * padding), 4, 4, 0, tr);
+            _textures[tr._layer] = tr.getTextureName();
             
             ++row;
         }

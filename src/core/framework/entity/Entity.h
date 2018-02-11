@@ -65,7 +65,6 @@ struct EntityDef
     int bodyFlags;
     float width;
     float height;
-    int layer;
     bool stateSensitive;
 };
 

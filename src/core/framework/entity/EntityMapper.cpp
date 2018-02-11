@@ -147,7 +147,6 @@ void EntityMapper::initWithJson(const char* json)
         entry->bodyFlags = iv.HasMember("bodyFlags") ? iv["bodyFlags"].GetInt() : 0;
         entry->width = static_cast<float>(iv["width"].GetInt());
         entry->height = static_cast<float>(iv["height"].GetInt());
-        entry->layer = iv["layer"].GetInt();
         entry->stateSensitive = iv.HasMember("stateSensitive") ? iv["stateSensitive"].GetBool() : false;
         
         _entityDescriptorsMap[key] = entry;

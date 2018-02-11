@@ -36,6 +36,8 @@
 #include <framework/network/client/NetworkManagerClient.h>
 #include <framework/network/server/NetworkManagerServer.h>
 #include <game/logic/Server.h>
+#include <framework/graphics/portable/TextureRegion.h>
+#include <framework/file/portable/Assets.h>
 
 #include <sstream>
 
@@ -537,7 +539,10 @@ void StudioInputManager::handleLoadMapDialogInput()
 
 bool layerSort(Entity* l, Entity* r)
 {
-    return (l->getEntityDef().layer > r->getEntityDef().layer);
+    TextureRegion ltr = ASSETS->findTextureRegion(l->getTextureMapping(), l->getStateTime());
+    TextureRegion rtr = ASSETS->findTextureRegion(r->getTextureMapping(), r->getStateTime());
+    
+    return (ltr._layer > rtr._layer);
 }
 
 void StudioInputManager::onMapLoaded()
@@ -596,7 +601,8 @@ Entity* StudioInputManager::getEntityAtPosition(float x, float y)
     for (std::vector<Entity*>::iterator i = _entities.begin(); i != _entities.end(); ++i)
     {
         Entity* e = (*i);
-        int layer = e->getEntityDef().layer;
+        TextureRegion tr = ASSETS->findTextureRegion(e->getTextureMapping(), e->getStateTime());
+        int layer = tr._layer;
         if (_engine->_state & (1 << (layer + StudioEngineState_LayerBitBegin)))
         {
             if (entityExistsAtPosition(e, x, y))
