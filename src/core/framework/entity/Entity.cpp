@@ -40,7 +40,8 @@ _readState(0),
 _state(0),
 _ID(0),
 _deadZoneY(-_entityDef.height / 2.0f),
-_isRequestingDeletion(false)
+_isRequestingDeletion(false),
+_isBodyFacingLeft(false)
 {
     // Empty
 }
@@ -241,75 +242,14 @@ void Entity::initPhysics(b2World& world)
     _body = world.CreateBody(&bodyDef);
     _body->SetUserData(this);
     
-    for (std::vector<FixtureDef>::iterator i = _entityDef.fixtures.begin(); i != _entityDef.fixtures.end(); ++i)
-    {
-        FixtureDef def = *i;
-        b2Shape* shape;
-        b2PolygonShape polygonShape;
-        b2CircleShape circleShape;
-        if (def.flags & FixtureFlag_Circle)
-        {
-            circleShape.m_p.Set(def.center.x * _entityDef.width, def.center.y * _entityDef.height);
-            circleShape.m_radius = def.vertices[0].x * _entityDef.width;
-            
-            shape = &circleShape;
-        }
-        else
-        {
-            if (def.flags & FixtureFlag_Box)
-            {
-                float wFactor = _entityDef.width * def.vertices[0].x;
-                float hFactor = _entityDef.height * def.vertices[0].y;
-                def.center.Set(def.center.x * _entityDef.width, def.center.y * _entityDef.height);
-                
-                polygonShape.SetAsBox(wFactor, hFactor, def.center, 0);
-            }
-            else
-            {
-                for (std::vector<b2Vec2>::iterator i = def.vertices.begin(); i != def.vertices.end(); ++i)
-                {
-                    b2Vec2& vertex = (*i);
-                    vertex.Set(vertex.x * _entityDef.width, vertex.y * _entityDef.height);
-                }
-                
-                int count = static_cast<int>(def.vertices.size());
-                polygonShape.Set(&def.vertices[0], count);
-            }
-            shape = &polygonShape;
-        }
-        
-        b2FixtureDef fixtureDef;
-        fixtureDef.shape = shape;
-        fixtureDef.isSensor = def.flags & FixtureFlag_Sensor;
-        fixtureDef.density = def.density;
-        fixtureDef.friction = def.friction;
-        fixtureDef.restitution = def.restitution;
-        b2Fixture* fixture = _body->CreateFixture(&fixtureDef);
-        fixture->SetUserData(this);
-        
-        if (def.flags & FixtureFlag_GroundContact)
-        {
-            _groundSensorFixture = fixture;
-        }
-        
-        _fixtures.push_back(fixture);
-    }
-    
-    _controller->onFixturesCreated(_fixtures);
+    createFixtures();
 }
 
 void Entity::deinitPhysics()
 {
     assert(_body);
     
-    for (std::vector<b2Fixture*>::iterator i = _fixtures.begin(); i != _fixtures.end(); )
-    {
-        _body->DestroyFixture(*i);
-        
-        i = _fixtures.erase(i);
-    }
-    
-    _groundSensorFixture = NULL;
+    destroyFixtures();
     
     b2World* world = _body->GetWorld();
     world->DestroyBody(_body);
@@ -318,31 +258,42 @@ void Entity::deinitPhysics()
 
 void Entity::updatePoseFromBody()
 {
-    if (_body)
+    if (!_body)
     {
-        _pose.velocity = _body->GetLinearVelocity();
-        _pose.position = _body->GetPosition();
-        _pose.angle = _body->GetAngle();
-        
-        _poseInterpolateCache.position = _pose.position;
-        _poseInterpolateCache.angle = _pose.angle;
+        return;
     }
+    
+    _pose.velocity = _body->GetLinearVelocity();
+    _pose.position = _body->GetPosition();
+    _pose.angle = _body->GetAngle();
+    
+    _poseInterpolateCache.position = _pose.position;
+    _poseInterpolateCache.angle = _pose.angle;
 }
 
 void Entity::updateBodyFromPose()
 {
-    if (_body)
+    if (!_body)
     {
-        if (!isCloseEnough(_pose.velocity, _body->GetLinearVelocity()))
-        {
-            _body->SetLinearVelocity(_pose.velocity);
-        }
-        
-        if (!isCloseEnough(_pose.position, _body->GetPosition()) ||
-            !isCloseEnough(_pose.angle, _body->GetAngle()))
-        {
-            _body->SetTransform(_pose.position, _pose.angle);
-        }
+        return;
+    }
+    
+    if (!isCloseEnough(_pose.velocity, _body->GetLinearVelocity()))
+    {
+        _body->SetLinearVelocity(_pose.velocity);
+    }
+    
+    if (!isCloseEnough(_pose.position, _body->GetPosition()) ||
+        !isCloseEnough(_pose.angle, _body->GetAngle()))
+    {
+        _body->SetTransform(_pose.position, _pose.angle);
+    }
+    
+    if (_isBodyFacingLeft != _pose.isFacingLeft)
+    {
+        destroyFixtures();
+        _isBodyFacingLeft = _pose.isFacingLeft;
+        createFixtures();
     }
 }
 
@@ -475,4 +426,80 @@ Entity::Pose& Entity::getPose()
 Entity::Pose& Entity::getPoseCache()
 {
     return _poseCache;
+}
+
+void Entity::createFixtures()
+{
+    for (std::vector<FixtureDef>::iterator i = _entityDef.fixtures.begin(); i != _entityDef.fixtures.end(); ++i)
+    {
+        FixtureDef def = *i;
+        if (_isBodyFacingLeft)
+        {
+            def.center.x = -def.center.x;
+        }
+        
+        b2Shape* shape;
+        b2PolygonShape polygonShape;
+        b2CircleShape circleShape;
+        if (def.flags & FixtureFlag_Circle)
+        {
+            circleShape.m_p.Set(def.center.x * _entityDef.width, def.center.y * _entityDef.height);
+            circleShape.m_radius = def.vertices[0].x * _entityDef.width;
+            
+            shape = &circleShape;
+        }
+        else
+        {
+            if (def.flags & FixtureFlag_Box)
+            {
+                float wFactor = _entityDef.width * def.vertices[0].x;
+                float hFactor = _entityDef.height * def.vertices[0].y;
+                def.center.Set(def.center.x * _entityDef.width, def.center.y * _entityDef.height);
+                
+                polygonShape.SetAsBox(wFactor, hFactor, def.center, 0);
+            }
+            else
+            {
+                for (std::vector<b2Vec2>::iterator i = def.vertices.begin(); i != def.vertices.end(); ++i)
+                {
+                    b2Vec2& vertex = (*i);
+                    vertex.Set(vertex.x * _entityDef.width, vertex.y * _entityDef.height);
+                }
+                
+                int count = static_cast<int>(def.vertices.size());
+                polygonShape.Set(&def.vertices[0], count);
+            }
+            shape = &polygonShape;
+        }
+        
+        b2FixtureDef fixtureDef;
+        fixtureDef.shape = shape;
+        fixtureDef.isSensor = def.flags & FixtureFlag_Sensor;
+        fixtureDef.density = def.density;
+        fixtureDef.friction = def.friction;
+        fixtureDef.restitution = def.restitution;
+        b2Fixture* fixture = _body->CreateFixture(&fixtureDef);
+        fixture->SetUserData(this);
+        
+        if (def.flags & FixtureFlag_GroundContact)
+        {
+            _groundSensorFixture = fixture;
+        }
+        
+        _fixtures.push_back(fixture);
+    }
+    
+    _controller->onFixturesCreated(_fixtures);
+}
+
+void Entity::destroyFixtures()
+{
+    for (std::vector<b2Fixture*>::iterator i = _fixtures.begin(); i != _fixtures.end(); )
+    {
+        _body->DestroyFixture(*i);
+        
+        i = _fixtures.erase(i);
+    }
+    
+    _groundSensorFixture = NULL;
 }

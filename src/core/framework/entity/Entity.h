@@ -186,6 +186,10 @@ private:
     uint32_t _ID;
     float _deadZoneY;
     bool _isRequestingDeletion;
+    bool _isBodyFacingLeft;
+    
+    void createFixtures();
+    void destroyFixtures();
 };
 
 #endif /* defined(__noctisgames__Entity__) */
