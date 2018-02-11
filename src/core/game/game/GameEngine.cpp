@@ -104,13 +104,17 @@ uint64_t GameEngine::sGetPlayerAddressHashForIndexOnClient(uint8_t inPlayerIndex
     World* world = engine->_world;
     assert(world);
     
+    uint64_t ret = 0;
     Entity* entity = world->getPlayerWithId(inPlayerIndex + 1);
-    assert(entity);
+    if (entity)
+    {
+        PlayerController* robot = static_cast<PlayerController*>(entity->getController());
+        assert(robot);
+        
+        ret = robot->getAddressHash();
+    }
     
-    PlayerController* robot = static_cast<PlayerController*>(entity->getController());
-    assert(robot);
-    
-    return robot->getAddressHash();
+    return ret;
 }
 
 GameEngine::GameEngine() : EngineState(),

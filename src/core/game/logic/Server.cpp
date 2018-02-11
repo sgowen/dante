@@ -231,11 +231,14 @@ void Server::deleteRobotWithPlayerId(uint8_t playerId)
 
 void Server::spawnRobotForPlayer(uint8_t inPlayerId, std::string inPlayerName)
 {
-    Entity* e = EntityMapper::getInstance()->createEntity('ROBT', 32, 16, true);
-    
-    PlayerController* robot = static_cast<PlayerController*>(e->getController());
-    
     ClientProxy* client = NG_SERVER->getClientProxy(inPlayerId);
+    if (!client)
+    {
+        return;
+    }
+    
+    Entity* e = EntityMapper::getInstance()->createEntity('ROBT', 32, 16, true);
+    PlayerController* robot = static_cast<PlayerController*>(e->getController());
     robot->setAddressHash(client->getMachineAddress()->getHash());
     robot->setPlayerName(inPlayerName);
     robot->setPlayerId(inPlayerId);

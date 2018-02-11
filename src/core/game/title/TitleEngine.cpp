@@ -83,6 +83,8 @@ _isSteam(false),
 _state(TitleEngineState_SteamOff)
 {
     _renderer->setEngine(this);
+    
+    activateSteam();
 }
 
 TitleEngine::~TitleEngine()
@@ -98,8 +100,6 @@ void TitleEngine::enter(Engine* engine)
     createWindowSizeDependentResources(engine->getScreenWidth(), engine->getScreenHeight(), engine->getCursorWidth(), engine->getCursorHeight());
     
     TitleInputManager::getInstance()->setEngine(this);
-    
-    activateSteam();
 }
 
 void TitleEngine::update(Engine* engine)
