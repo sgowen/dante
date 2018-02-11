@@ -68,11 +68,6 @@ void DestructibleController::update()
     }
 }
 
-uint8_t DestructibleController::getState()
-{
-    return isDestructing() ? State_Destructing : State_Idle;
-}
-
 void DestructibleController::receiveMessage(uint16_t message, void* data)
 {
     switch (message)

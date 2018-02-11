@@ -32,11 +32,6 @@ void DefaultController::update()
     // Empty
 }
 
-uint8_t DefaultController::getState()
-{
-    return 0;
-}
-
 void DefaultController::receiveMessage(uint16_t message, void* data)
 {
     // Empty

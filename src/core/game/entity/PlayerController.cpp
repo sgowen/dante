@@ -79,22 +79,6 @@ void PlayerController::update()
     }
 }
 
-uint8_t PlayerController::getState()
-{
-    bool isGrounded = _entity->isGrounded();
-    uint8_t numJumps = getNumJumps();
-    bool mainAction = isMainAction();
-    bool moving = isMoving();
-    
-    return isGrounded && numJumps == 0 ?
-    mainAction ?
-    State_Punching :
-    !moving ?
-    State_Idle :
-    State_Running :
-    State_Jumping;
-}
-
 void PlayerController::receiveMessage(uint16_t message, void* data)
 {
     switch (message)
@@ -169,11 +153,11 @@ void PlayerController::read(InputMemoryBitStream& inInputStream, uint16_t& inRea
     {
         if (inReadState & Entity::ReadStateFlag_Pose)
         {
-            uint8_t& oldState = _entity->getPoseCache().state;
-            uint8_t& newState = _entity->getPose().state;
+            uint8_t oldState = _entity->getPoseCache().state;
+            uint8_t newState = _entity->getPose().state;
             
-            if (!(oldState & StateFlag_FirstJump) &&
-                (newState & StateFlag_FirstJump))
+            if (oldState != State_Jumping &&
+                newState == State_Jumping)
             {
                 GM_UTIL->playSound(_entity->getSoundMapping(State_Jumping), _entity->getPosition());
             }
@@ -235,17 +219,16 @@ void PlayerController::processInput(InputState* inInputState, bool isPending)
     
     float vertForce = 0;
     
-    bool isDoubleJumpFrame = false;
     if (inputState->isJumping())
     {
         if (_entity->isGrounded())
         {
-            if (getNumJumps() == 0)
+            if (_entity->getPose().state == State_Idle ||
+                _entity->getPose().state == State_Running)
             {
                 _entity->setVelocity(b2Vec2(velocity.x, 0));
                 _entity->getPose().stateTime = 0;
-                _entity->getPose().state &= ~StateFlag_FirstJumpCompleted;
-                _entity->getPose().state |= StateFlag_FirstJump;
+                _entity->getPose().state = State_Jumping;
                 
                 if (isPending)
                 {
@@ -253,55 +236,51 @@ void PlayerController::processInput(InputState* inInputState, bool isPending)
                 }
             }
         }
-        else if (getNumJumps() == 0)
+        else if (_entity->getPose().state == State_Idle)
         {
-            _entity->getPose().state |= StateFlag_FirstJump;
-            _entity->getPose().state |= StateFlag_FirstJumpCompleted;
+            _entity->getPose().state = State_FirstJumpCompleted;
         }
         
-        if (getNumJumps() == 1)
+        if (_entity->getPose().state == State_Jumping)
         {
-            if (!(_entity->getPose().state & StateFlag_FirstJumpCompleted))
-            {
-                vertForce = _entity->getBody()->GetMass() * (GM_CFG->_maxYVelocity - _entity->getPose().stateTime * 0.5f);
-            }
+            vertForce = _entity->getBody()->GetMass() * (GM_CFG->_maxYVelocity - _entity->getPose().stateTime * 0.5f);
         }
         
         vertForce = clamp(vertForce, _entity->getBody()->GetMass() * GM_CFG->_maxYVelocity, 0);
     }
     else
     {
-        bool wasFirstJumpCompleted = _entity->getPose().state & StateFlag_FirstJumpCompleted;
-        if (!wasFirstJumpCompleted)
+        if (_entity->getPose().state == State_Jumping)
         {
-            _entity->getPose().state |= StateFlag_FirstJumpCompleted;
+            _entity->getPose().state = State_FirstJumpCompleted;
         }
     }
     
-    if (_entity->isGrounded() && _entity->getPose().stateTime >= 12)
+    if (_entity->isGrounded() &&
+        (_entity->getPose().state == State_FirstJumpCompleted || _entity->getPose().state == State_Jumping) &&
+        _entity->getPose().stateTime >= 12)
     {
-        _entity->getPose().state &= ~StateFlag_FirstJumpCompleted;
-        _entity->getPose().state &= ~StateFlag_FirstJump;
+        _entity->getPose().state = State_Idle;
     }
     
     float right = inputState->getDesiredRightAmount();
     bool isRight = right > 0;
     bool isLeft = right < 0;
     
-    bool wasMainAction = _entity->getPose().state & StateFlag_MainAction;
-    bool isMainAction = false;
-    if (inputState->isMainAction() && _entity->isGrounded())
+    bool wasMainAction = _entity->getPose().state == State_MainAction;
+    if (inputState->isMainAction())
     {
-        isMainAction = true;
-        _entity->getPose().state |= StateFlag_MainAction;
+        if (_entity->isGrounded())
+        {
+            _entity->getPose().state = State_MainAction;
+        }
     }
-    else
+    else if (wasMainAction)
     {
-        isMainAction = false;
-        _entity->getPose().state &= ~StateFlag_MainAction;
+        _entity->getPose().state = State_Idle;
     }
     
-    if (isMainAction && !wasMainAction)
+    if (_entity->getPose().state == State_MainAction && !wasMainAction)
     {
         _entity->getPose().stateTime = 0;
     }
@@ -311,24 +290,18 @@ void PlayerController::processInput(InputState* inInputState, bool isPending)
     static const int MS_RIGHT = 2;
     
     const b2Vec2& vel = velocity;
-    if (getNumJumps() == 2 && _entity->getPose().stateTime < 12)
-    {
-        isDoubleJumpFrame = true;
-    }
     
     int moveState = MS_STOP;
-    if (!isMainAction)
+    if (_entity->isGrounded() &&
+        (_entity->getPose().state == State_Idle || _entity->getPose().state == State_Running))
     {
-        if (_entity->isGrounded() || isDoubleJumpFrame)
+        if (isRight)
         {
-            if (isRight)
-            {
-                moveState = MS_RIGHT;
-            }
-            else if (isLeft)
-            {
-                moveState = MS_LEFT;
-            }
+            moveState = MS_RIGHT;
+        }
+        else if (isLeft)
+        {
+            moveState = MS_LEFT;
         }
     }
     
@@ -336,15 +309,27 @@ void PlayerController::processInput(InputState* inInputState, bool isPending)
     switch (moveState)
     {
         case MS_LEFT:
+            if (_entity->getPose().state == State_Idle)
+            {
+                _entity->getPose().state = State_Running;
+            }
             desiredVel = b2Max(vel.x - 1, -GM_CFG->_maxXVelocity);
             isLeft = true;
             break;
         case MS_STOP:
+            if (_entity->getPose().state == State_Running)
+            {
+                _entity->getPose().state = State_Idle;
+            }
             desiredVel = vel.x * 0.99f;
             isLeft = false;
             isRight = false;
             break;
         case MS_RIGHT:
+            if (_entity->getPose().state == State_Idle)
+            {
+                _entity->getPose().state = State_Running;
+            }
             desiredVel = b2Min(vel.x + 1, GM_CFG->_maxXVelocity);
             isRight = true;
             break;
@@ -393,26 +378,6 @@ std::string& PlayerController::getPlayerName()
 uint8_t PlayerController::getHealth()
 {
     return _stats.health;
-}
-
-uint8_t PlayerController::getNumJumps()
-{
-    if (_entity->getPose().state & StateFlag_FirstJump)
-    {
-        return 1;
-    }
-    
-    return 0;
-}
-
-bool PlayerController::isMainAction()
-{
-    return _entity->getPose().state & StateFlag_MainAction;
-}
-
-bool PlayerController::isMoving()
-{
-    return !isCloseEnough(_entity->getVelocity().x, 0);
 }
 
 bool PlayerController::isLocalPlayer()

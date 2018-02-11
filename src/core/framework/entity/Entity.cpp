@@ -115,7 +115,7 @@ void Entity::handleBeginContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixtu
 {
     if (inFixtureA == _groundSensorFixture)
     {
-        _pose.numGroundContacts = clamp(_pose.numGroundContacts + 1, 3, 0);
+        _pose.numGroundContacts = clamp(_pose.numGroundContacts + 1, 7, 0);
     }
     
     _controller->handleBeginContact(inEntity, inFixtureA, inFixtureB);
@@ -125,7 +125,7 @@ void Entity::handleEndContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture
 {
     if (inFixtureA == _groundSensorFixture)
     {
-        _pose.numGroundContacts = clamp(_pose.numGroundContacts - 1, 3, 0);
+        _pose.numGroundContacts = clamp(_pose.numGroundContacts - 1, 7, 0);
     }
     
     _controller->handleEndContact(inEntity, inFixtureA, inFixtureB);
@@ -394,7 +394,7 @@ bool Entity::isFacingLeft()
 
 std::string& Entity::getTextureMapping()
 {
-    auto q = _entityDef.textureMappings.find(_controller->getState());
+    auto q = _entityDef.textureMappings.find(_pose.state);
     
     assert(q != _entityDef.textureMappings.end());
     

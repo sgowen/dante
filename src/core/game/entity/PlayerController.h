@@ -27,7 +27,6 @@ public:
     virtual ~PlayerController();
     
     virtual void update();
-    virtual uint8_t getState();
     virtual void receiveMessage(uint16_t message, void* data = NULL);
     virtual void onFixturesCreated(std::vector<b2Fixture*>& fixtures);
     virtual bool shouldCollide(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB);
@@ -49,25 +48,16 @@ public:
     void setPlayerName(std::string inValue);
     std::string& getPlayerName();
     uint8_t getHealth();
-    uint8_t getNumJumps();
-    bool isMainAction();
-    bool isMoving();
     bool isLocalPlayer();
     
 private:
     enum State
     {
         State_Idle = 0,
-        State_Punching,
+        State_MainAction,
         State_Running,
-        State_Jumping
-    };
-    
-    enum StateFlags
-    {
-        StateFlag_MainAction = 1 << 0,
-        StateFlag_FirstJump = 1 << 1,
-        StateFlag_FirstJumpCompleted = 1 << 2
+        State_Jumping,
+        State_FirstJumpCompleted
     };
     
     enum ReadStateFlag

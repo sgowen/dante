@@ -70,11 +70,6 @@ void BasicFollowAndAttackController::update()
     }
 }
 
-uint8_t BasicFollowAndAttackController::getState()
-{
-    return isDying() ? State_Dying : isAttacking() ? State_Attacking : isMoving() ? State_Moving : State_Idle;
-}
-
 void BasicFollowAndAttackController::receiveMessage(uint16_t message, void* data)
 {
     switch (message)
