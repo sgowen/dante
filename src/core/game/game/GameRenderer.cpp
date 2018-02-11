@@ -514,7 +514,8 @@ void GameRenderer::renderUI()
             renderText(_staticFontSpriteBatcher, StringUtil::format("[L]  Lighting %s", _engineState & GameEngineState_Lighting ? lightZ.c_str() : "     OFF").c_str(), GM_CFG->_camWidth - 0.5f, GM_CFG->_camHeight - (row++ * padding), FONT_ALIGN_RIGHT);
             renderText(_staticFontSpriteBatcher, StringUtil::format("[U]    Display UI %s", _engineState & GameEngineState_DisplayUI ? "  ON" : " OFF").c_str(), GM_CFG->_camWidth - 0.5f, GM_CFG->_camHeight - (row++ * padding), FONT_ALIGN_RIGHT);
             
-            if (Server::getInstance())
+            Server* server = Server::getInstance();
+            if (server && !(server->getFlags() & ServerFlag_TestSession))
             {
                 renderText(_staticFontSpriteBatcher, StringUtil::format("[T]    Toggle Map %s", _engine->_world->getMapName().c_str()).c_str(), GM_CFG->_camWidth - 0.5f, GM_CFG->_camHeight - (row++ * padding), FONT_ALIGN_RIGHT);
             }

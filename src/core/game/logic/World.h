@@ -29,7 +29,7 @@ class EntityContactFilter;
 class World
 {
 public:
-    World(int flags = 0);
+    World(uint32_t flags = 0);
     ~World();
     
     void addDynamicEntity(Entity* inEntity);
@@ -66,11 +66,12 @@ private:
     uint32_t _map;
     std::string _mapFileName;
     std::string _mapName;
-    int _flags;
+    uint32_t _flags;
     
     void stepPhysics();
     void clearDynamicEntities(std::vector<Entity*>& entities);
     void updateAndRemoveEntitiesAsNeeded(std::vector<Entity*>& entities);
+    void postUpdateAndRemoveEntitiesAsNeeded(std::vector<Entity*>& entities);
 };
 
 #include <Box2D/Dynamics/b2WorldCallbacks.h>

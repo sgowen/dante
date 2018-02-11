@@ -27,7 +27,7 @@
 
 NGRTTI_IMPL_NOPARENT(Entity);
 
-Entity::Entity(EntityDef& inEntityDef, int x, int y, bool isServer) :
+Entity::Entity(EntityDef inEntityDef, int x, int y, bool isServer) :
 _entityDef(inEntityDef),
 _controller(EntityMapper::getInstance()->createEntityController(inEntityDef.controller, this)),
 _isServer(isServer),
@@ -60,7 +60,10 @@ void Entity::update()
     }
     
     _controller->update();
-    
+}
+
+void Entity::postUpdate()
+{
     if (_isServer)
     {
         if (getPosition().y < _deadZoneY)
@@ -74,6 +77,8 @@ void Entity::update()
             NG_SERVER->setStateDirty(getID(), ReadStateFlag_Pose);
         }
     }
+    
+    _controller->postUpdate();
 }
 
 void Entity::interpolate(double alpha)

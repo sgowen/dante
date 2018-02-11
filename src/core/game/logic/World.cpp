@@ -27,7 +27,7 @@
 #include <framework/entity/EntityLayoutMapper.h>
 #include <game/logic/GameConfig.h>
 
-World::World(int flags) :
+World::World(uint32_t flags) :
 _world(new b2World(b2Vec2(0.0f, GM_CFG->_gravity))),
 _entityContactListener(new EntityContactListener()),
 _entityContactFilter(new EntityContactFilter()),
@@ -165,6 +165,9 @@ void World::updateServer()
             updateAndRemoveEntitiesAsNeeded(_dynamicEntities);
         }
         
+        postUpdateAndRemoveEntitiesAsNeeded(_players);
+        postUpdateAndRemoveEntitiesAsNeeded(_dynamicEntities);
+        
         for (uint8_t i = 0; i < MAX_NUM_PLAYERS_PER_SERVER; ++i)
         {
             ClientProxy* client = NG_SERVER->getClientProxy(i + 1);
@@ -281,11 +284,19 @@ void World::loadMap(uint32_t map)
     assert(_map != 0);
     
     _mapName = std::string(chars);
-    _mapFileName = EntityLayoutMapper::getInstance()->getJsonConfigFilePath(_map);
     
-    EntityLayoutMapper::getInstance()->loadEntityLayout(_map);
+    if (map == 'TEST')
+    {
+        _mapFileName = std::string("test.cfg");
+        EntityLayoutMapper::getInstance()->loadEntityLayout(_mapFileName);
+    }
+    else
+    {
+        _mapFileName = EntityLayoutMapper::getInstance()->getJsonConfigFilePath(_map);
+        EntityLayoutMapper::getInstance()->loadEntityLayout(_map);
+    }
+    
     EntityLayoutDef& entityLayoutDef = EntityLayoutMapper::getInstance()->getEntityLayoutDef();
-    
     for (EntityPosDef epd : entityLayoutDef.entities)
     {
         Entity* e = EntityMapper::getInstance()->createEntity(epd.type, epd.x, epd.y, _flags & WorldFlag_Server);
@@ -404,10 +415,17 @@ void World::saveMapAs(uint32_t map)
         layout.entities.push_back(EntityPosDef(e->getEntityDef().type, e->getPosition().x, e->getPosition().y));
     }
     
-    EntityLayoutMapper::getInstance()->saveEntityLayout(map, &layout);
-    
-    // If the save was successful, update current map
-    _map = map;
+    if (map == 'TEST')
+    {
+        EntityLayoutMapper::getInstance()->saveEntityLayout(std::string("test.cfg"), &layout);
+    }
+    else
+    {
+        EntityLayoutMapper::getInstance()->saveEntityLayout(map, &layout);
+        
+        // If the save was successful, update current map
+        _map = map;
+    }
 }
 
 void World::clear()
@@ -509,6 +527,27 @@ void World::updateAndRemoveEntitiesAsNeeded(std::vector<Entity*>& entities)
         if (!entity->isRequestingDeletion())
         {
             entity->update();
+        }
+        
+        if (entity->isRequestingDeletion())
+        {
+            removeDynamicEntity(entity);
+            --i;
+            --c;
+        }
+    }
+}
+
+void World::postUpdateAndRemoveEntitiesAsNeeded(std::vector<Entity*>& entities)
+{
+    int len = static_cast<int>(entities.size());
+    for (int i = 0, c = len; i < c; ++i)
+    {
+        Entity* entity = entities[i];
+        
+        if (!entity->isRequestingDeletion())
+        {
+            entity->postUpdate();
         }
         
         if (entity->isRequestingDeletion())

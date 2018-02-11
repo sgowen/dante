@@ -48,8 +48,10 @@ public:
     void initWithJsonFile(const char* fileName, bool isBundled = true, bool useEncryption = false);
     void initWithJson(const char* data);
     void loadEntityLayout(uint32_t name);
+    void loadEntityLayout(std::string filePath);
     const char* save();
     void saveEntityLayout(uint32_t name, EntityLayoutDef* layout);
+    void saveEntityLayout(std::string filePath, EntityLayoutDef* layout);
     EntityLayoutDef& getEntityLayoutDef();
     std::vector<MapDef>& getMaps();
     std::string getJsonConfigFilePath(uint32_t inFourCCName);

@@ -94,12 +94,12 @@ TitleEngine::~TitleEngine()
 
 void TitleEngine::enter(Engine* engine)
 {
-    disconnect();
-    
     createDeviceDependentResources();
     createWindowSizeDependentResources(engine->getScreenWidth(), engine->getScreenHeight(), engine->getCursorWidth(), engine->getCursorHeight());
     
     TitleInputManager::getInstance()->setEngine(this);
+    
+    _state = _isSteam ? TitleEngineState_SteamOn : TitleEngineState_SteamOff;
 }
 
 void TitleEngine::update(Engine* engine)
@@ -371,7 +371,7 @@ void TitleEngine::startServer()
     
     _state = TitleEngineState_ServerStarting;
     
-    Server::create(_isSteam);
+    Server::create(_isSteam ? ServerFlag_Steam : 0);
     
     assert(NG_SERVER);
 }

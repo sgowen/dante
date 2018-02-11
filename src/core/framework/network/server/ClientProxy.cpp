@@ -52,7 +52,7 @@ const std::string& ClientProxy::getName() const
 
 void ClientProxy::updateLastPacketTime()
 {
-    _lastPacketFromClientTime = Timing::getInstance()->getFrameStartTime();
+    _lastPacketFromClientTime = NG_TIME->getTime();
 }
 
 float ClientProxy::getLastPacketFromClientTime() const

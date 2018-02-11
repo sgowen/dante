@@ -42,6 +42,11 @@
 #include <framework/entity/EntityMapper.h>
 #include <framework/entity/EntityLayoutMapper.h>
 #include <game/logic/GameConfig.h>
+#include <framework/util/macros.h>
+#include <framework/network/client/SocketClientHelper.h>
+#include <game/game/GameEngine.h>
+#include <game/game/GameInputManager.h>
+#include <game/title/TitleEngine.h>
 
 #ifdef NG_STEAM
 #include <framework/network/steam/NGSteamClientHelper.h>
@@ -75,16 +80,20 @@ void StudioEngine::destroy()
 
 StudioEngine::StudioEngine() : EngineState(),
 _renderer(new StudioRenderer()),
-_input(NULL),
-_world(NULL),
-_state(StudioEngineState_Default)
+_world(new World(WorldFlag_MapLoadAll)),
+_state(StudioEngineState_DisplayGrid | StudioEngineState_DisplayControls | StudioEngineState_LayerAll)
 {
+    StudioInputManager::create();
+    StudioInputManager::getInstance()->setEngine(this);
+    
     _renderer->setEngine(this);
+    _renderer->setInputManager(StudioInputManager::getInstance());
 }
 
 StudioEngine::~StudioEngine()
 {
     delete _renderer;
+    delete _world;
 }
 
 void StudioEngine::enter(Engine* engine)
@@ -92,33 +101,38 @@ void StudioEngine::enter(Engine* engine)
     createDeviceDependentResources();
     createWindowSizeDependentResources(engine->getScreenWidth(), engine->getScreenHeight(), engine->getCursorWidth(), engine->getCursorHeight());
     
-    StudioInputManager::create();
+    SET_BIT(_state, StudioEngineState_TestSession, false);
     
-    _input = StudioInputManager::getInstance();
-    _world = new World(WorldFlag_MapLoadAll);
-    _state = StudioEngineState_DisplayGrid | StudioEngineState_DisplayControls | StudioEngineState_LayerAll;
-    
-    _input->setEngine(this);
-    _renderer->setInputManager(_input);
+    engine->getStateMachine().setPreviousState(TitleEngine::getInstance());
 }
 
 void StudioEngine::update(Engine* engine)
 {
-    _input->update();
-    
-    if (_input->getMenuState() == SIMS_ESCAPE)
+    if (_state & StudioEngineState_TestSession)
     {
-        engine->getStateMachine().revertToPreviousState();
+        if (NG_SERVER && NG_SERVER->isConnected())
+        {
+            NetworkManagerClient::create(new SocketClientHelper(std::string("localhost:9999"), std::string("TEST"), GM_CFG->_clientPort, NG_CLIENT_CALLBACKS), GAME_ENGINE_CALLBACKS, INPUT_MANAGER_CALLBACKS);
+            
+            assert(NG_CLIENT);
+            
+            engine->getStateMachine().changeState(GameEngine::getInstance());
+        }
+    }
+    else
+    {
+        StudioInputManager::getInstance()->update();
+        
+        if (StudioInputManager::getInstance()->getMenuState() == SIMS_ESCAPE)
+        {
+            engine->getStateMachine().revertToPreviousState();
+        }
     }
 }
 
 void StudioEngine::exit(Engine* engine)
 {
     releaseDeviceDependentResources();
-    
-    StudioInputManager::destroy();
-    
-    delete _world;
 }
 
 void StudioEngine::createDeviceDependentResources()

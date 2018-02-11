@@ -189,7 +189,7 @@ uint32_t NetworkManagerClient::getMap()
 
 void NetworkManagerClient::processPacket(InputMemoryBitStream& inInputStream, MachineAddress* inFromAddress)
 {
-    _lastServerCommunicationTimestamp = Timing::getInstance()->getFrameStartTime();
+    _lastServerCommunicationTimestamp = NG_TIME->getTime();
     
     uint8_t packetType;
     inInputStream.read(packetType);
@@ -219,7 +219,7 @@ void NetworkManagerClient::processPacket(InputMemoryBitStream& inInputStream, Ma
 
 void NetworkManagerClient::handleNoResponse()
 {
-    float time = Timing::getInstance()->getFrameStartTime();
+    float time = NG_TIME->getTime();
     
     float timeout = _state == NCS_Uninitialized ? NW_CONNECT_TO_SERVER_TIMEOUT : NW_SERVER_TIMEOUT;
     if (time > _lastServerCommunicationTimestamp + timeout)
@@ -240,7 +240,7 @@ void NetworkManagerClient::sendPacket(const OutputMemoryBitStream& inOutputStrea
 
 void NetworkManagerClient::updateSayingHello()
 {
-    float time = Timing::getInstance()->getFrameStartTime();
+    float time = NG_TIME->getTime();
     
     if (time > _timeOfLastHello + NW_CLIENT_TIME_BETWEEN_HELLOS)
     {
@@ -325,7 +325,7 @@ void NetworkManagerClient::readLastMoveProcessedOnServerTimestamp(InputMemoryBit
     {
         inInputStream.read(_lastMoveProcessedByServerTimestamp);
         
-        float rtt = Timing::getInstance()->getFrameStartTime() - _lastMoveProcessedByServerTimestamp;
+        float rtt = NG_TIME->getTime() - _lastMoveProcessedByServerTimestamp;
         _avgRoundTripTime->update(rtt);
         
         inInputStream.read(_map);
@@ -402,7 +402,7 @@ void NetworkManagerClient::updateAddLocalPlayerRequest()
     {
         _isRequestingToDropLocalPlayer = 0;
         
-        float time = Timing::getInstance()->getFrameStartTime();
+        float time = NG_TIME->getTime();
         
         if (time > _timeOfLastHello + NW_CLIENT_TIME_BETWEEN_HELLOS)
         {
@@ -460,7 +460,7 @@ _state(NCS_Uninitialized),
 _deliveryNotificationManager(new DeliveryNotificationManager(true, false)),
 _timeOfLastHello(0.0f),
 _lastMoveProcessedByServerTimestamp(0.0f),
-_lastServerCommunicationTimestamp(Timing::getInstance()->getFrameStartTime()),
+_lastServerCommunicationTimestamp(NG_TIME->getTime()),
 _isRequestingToAddLocalPlayer(false),
 _isRequestingToDropLocalPlayer(0),
 _nextIndex(0),

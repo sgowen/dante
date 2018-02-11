@@ -16,7 +16,6 @@
 #endif
 
 class StudioRenderer;
-class StudioInputManager;
 class World;
 
 enum StudioEngineState
@@ -79,7 +78,6 @@ private:
     static StudioEngine* s_instance;
     
     StudioRenderer* _renderer;
-    StudioInputManager* _input;
     World* _world;
     uint32_t _state;
     

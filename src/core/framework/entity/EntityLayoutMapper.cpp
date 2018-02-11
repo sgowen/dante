@@ -90,10 +90,15 @@ void EntityLayoutMapper::initWithJson(const char* data)
 
 void EntityLayoutMapper::loadEntityLayout(uint32_t name)
 {
-    _entityLayoutDef.entities.clear();
-    
     std::string path = getJsonConfigFilePath(name);
     std::string filePath = FileUtil::filePathForConfig(path.c_str());
+    
+    loadEntityLayout(filePath);
+}
+
+void EntityLayoutMapper::loadEntityLayout(std::string filePath)
+{
+    _entityLayoutDef.entities.clear();
     
     JsonFile jsonFile(filePath.c_str());
     jsonFile.setDeserializerFunc(sLayoutDeserializerFunc);
@@ -198,12 +203,17 @@ const char* EntityLayoutMapper::save()
 
 void EntityLayoutMapper::saveEntityLayout(uint32_t name, EntityLayoutDef* layout)
 {
+    std::string path = getJsonConfigFilePath(name);
+    std::string filePath = FileUtil::filePathForConfig(path.c_str());
+    
+    saveEntityLayout(filePath, layout);
+}
+
+void EntityLayoutMapper::saveEntityLayout(std::string filePath, EntityLayoutDef* layout)
+{
     assert(layout);
     
     _layoutToSave = layout;
-    
-    std::string path = getJsonConfigFilePath(name);
-    std::string filePath = FileUtil::filePathForConfig(path.c_str());
     
     JsonFile jsonFile(filePath.c_str());
     jsonFile.setSerializerFunc(sLayoutSerializerFunc);

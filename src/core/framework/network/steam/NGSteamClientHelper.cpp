@@ -220,7 +220,7 @@ void NGSteamClientHelper::handleUninitialized()
             break;
         case k_EClientConnectedPendingAuthentication:
         {
-            float time = Timing::getInstance()->getFrameStartTime();
+            float time = NG_TIME->getTime();
 
             if (time > _timeOfLastMsgClientBeginAuthentication + 7.0f)
             {

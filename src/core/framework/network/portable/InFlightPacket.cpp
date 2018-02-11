@@ -14,7 +14,7 @@
 
 InFlightPacket::InFlightPacket(uint16_t inSequenceNumber) :
 _sequenceNumber(inSequenceNumber),
-_timeDispatched(Timing::getInstance()->getFrameStartTime()),
+_timeDispatched(NG_TIME->getTime()),
 _inKey(0)
 {
     //null out other transmision data params...

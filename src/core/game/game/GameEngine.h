@@ -20,9 +20,6 @@
 class Entity;
 class GameRenderer;
 class World;
-class GameInputManager;
-class Timing;
-class Server;
 
 enum GameEngineState
 {
@@ -64,9 +61,6 @@ private:
     
     GameRenderer* _renderer;
     World* _world;
-    GameInputManager* _input;
-    Timing* _timing;
-    Server* _server;
     double _stateTime;
     uint32_t _state;
     uint32_t _map;

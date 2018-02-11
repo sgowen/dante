@@ -32,6 +32,11 @@ void DefaultController::update()
     // Empty
 }
 
+void DefaultController::postUpdate()
+{
+    // Empty
+}
+
 void DefaultController::receiveMessage(uint16_t message, void* data)
 {
     // Empty

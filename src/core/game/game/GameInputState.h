@@ -15,10 +15,10 @@
 
 enum GameInputStateFlags
 {
-    GameInputStateFlags_MovingRight = 1 << 0,
-    GameInputStateFlags_MovingLeft =  1 << 1,
-    GameInputStateFlags_Jumping =     1 << 2,
-    GameInputStateFlags_MainAction =  1 << 3
+    GameInputStateFlag_MovingRight = 1 << 0,
+    GameInputStateFlag_MovingLeft =  1 << 1,
+    GameInputStateFlag_Jumping =     1 << 2,
+    GameInputStateFlag_MainAction =  1 << 3
 };
 
 class OutputMemoryBitStream;

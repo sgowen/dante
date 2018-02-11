@@ -142,7 +142,7 @@ void SocketPacketHandler::readIncomingPacketsIntoQueue()
             //we'll pretend it wasn't received until simulated latency from now
             //this doesn't sim jitter, for that we would need to.....
 
-            float simulatedReceivedTime = Timing::getInstance()->getFrameStartTime();
+            float simulatedReceivedTime = NG_TIME->getTime();
             _packetQueue.push(ReceivedPacket(simulatedReceivedTime, inputStream, fromAddress));
         }
         else
@@ -163,7 +163,7 @@ void SocketPacketHandler::processQueuedPackets()
     while (!_packetQueue.empty())
     {
         ReceivedPacket& nextPacket = _packetQueue.front();
-        if (Timing::getInstance()->getFrameStartTime() > nextPacket.getReceivedTime())
+        if (NG_TIME->getTime() > nextPacket.getReceivedTime())
         {
             _processPacketFunc(nextPacket.getPacketBuffer(), &nextPacket.getFromAddress());
             _packetQueue.pop();

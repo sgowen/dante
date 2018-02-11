@@ -27,6 +27,7 @@ public:
     virtual ~PlayerController();
     
     virtual void update();
+    virtual void postUpdate();
     virtual void receiveMessage(uint16_t message, void* data = NULL);
     virtual void onFixturesCreated(std::vector<b2Fixture*>& fixtures);
     virtual bool shouldCollide(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB);
@@ -64,10 +65,10 @@ private:
     
     enum MainActionFlags
     {
-        MainActionFlags_ReadyForSecondPunch = 1,
-        MainActionFlags_ToThrowSecondPunch,
-        MainActionFlags_ReadyForThirdPunch,
-        MainActionFlags_ToThrowThirdPunch
+        MainActionFlag_ReadyForSecondPunch = 1,
+        MainActionFlag_ToThrowSecondPunch,
+        MainActionFlag_ReadyForThirdPunch,
+        MainActionFlag_ToThrowThirdPunch
     };
     
     enum ReadStateFlag
@@ -130,6 +131,7 @@ private:
     
     /// Non-Networked
     b2Fixture* _attackSensorFixture;
+    Entity* _target;
     bool _isLocalPlayer;
     bool _isPendingInput;
     

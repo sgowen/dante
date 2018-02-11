@@ -15,7 +15,7 @@
 
 WeightedTimedMovingAverage::WeightedTimedMovingAverage(float inDuration) : _duration(inDuration), _value(0.f)
 {
-    _timeLastEntryMade = Timing::getInstance()->getFrameStartTime();
+    _timeLastEntryMade = NG_TIME->getTime();
 }
 
 void WeightedTimedMovingAverage::updatePerSecond(float inValue)
@@ -25,7 +25,7 @@ void WeightedTimedMovingAverage::updatePerSecond(float inValue)
         return;
     }
     
-    float time = Timing::getInstance()->getFrameStartTime();
+    float time = NG_TIME->getTime();
     float timeSinceLastEntry = clamp(time - _timeLastEntryMade, 10, 0);
     
     float valueOverTime = inValue / timeSinceLastEntry;
@@ -49,7 +49,7 @@ void WeightedTimedMovingAverage::update(float inValue)
         return;
     }
     
-    float time = Timing::getInstance()->getFrameStartTime();
+    float time = NG_TIME->getTime();
     float timeSinceLastEntry = clamp(time - _timeLastEntryMade, 10, 0);
     
     // now update our value by whatever amount of the duration that was..

@@ -46,6 +46,7 @@ _playerInfoCache(_playerInfo),
 _stats(),
 _statsCache(_stats),
 _attackSensorFixture(NULL),
+_target(NULL),
 _isLocalPlayer(false),
 _isPendingInput(false)
 {
@@ -59,24 +60,26 @@ PlayerController::~PlayerController()
 
 void PlayerController::update()
 {
-    if (_entity->isServer())
+    /// TODO
+}
+
+void PlayerController::postUpdate()
+{
+    if (_stats.health == 0)
     {
-        if (_stats.health == 0)
-        {
-            _entity->requestDeletion();
-        }
-        
-        if (_playerInfoCache != _playerInfo)
-        {
-            _playerInfoCache = _playerInfo;
-            NG_SERVER->setStateDirty(_entity->getID(), ReadStateFlag_PlayerInfo);
-        }
-        
-        if (_statsCache != _stats)
-        {
-            _statsCache = _stats;
-            NG_SERVER->setStateDirty(_entity->getID(), ReadStateFlag_Stats);
-        }
+        _entity->requestDeletion();
+    }
+    
+    if (_playerInfoCache != _playerInfo)
+    {
+        _playerInfoCache = _playerInfo;
+        NG_SERVER->setStateDirty(_entity->getID(), ReadStateFlag_PlayerInfo);
+    }
+    
+    if (_statsCache != _stats)
+    {
+        _statsCache = _stats;
+        NG_SERVER->setStateDirty(_entity->getID(), ReadStateFlag_Stats);
     }
 }
 
@@ -390,12 +393,12 @@ void PlayerController::handleMovementInput(uint8_t inputState)
     int moveState = STOP;
     if (_entity->isGrounded())
     {
-        if (inputState & GameInputStateFlags_MovingRight)
+        if (inputState & GameInputStateFlag_MovingRight)
         {
             _entity->getPose().state = State_Running;
             moveState = RIGHT;
         }
-        else if (inputState & GameInputStateFlags_MovingLeft)
+        else if (inputState & GameInputStateFlag_MovingLeft)
         {
             _entity->getPose().state = State_Running;
             moveState = LEFT;
@@ -437,7 +440,7 @@ void PlayerController::handleMainActionInput(uint8_t inputState)
     bool isFirstPunch = _entity->getPose().state == State_FirstPunch;
     bool isSecondPunch = _entity->getPose().state == State_SecondPunch;
     bool isThirdPunch = _entity->getPose().state == State_ThirdPunch;
-    if (inputState & GameInputStateFlags_MainAction && _entity->isGrounded())
+    if (inputState & GameInputStateFlag_MainAction && _entity->isGrounded())
     {
         if (_entity->getPose().stateFlags == 0 && !isFirstPunch && !isSecondPunch && !isThirdPunch)
         {
@@ -445,27 +448,27 @@ void PlayerController::handleMainActionInput(uint8_t inputState)
             _entity->getPose().stateTime = 0;
             _entity->getPose().stateFlags = 0;
         }
-        else if (_entity->getPose().stateFlags == MainActionFlags_ReadyForSecondPunch &&
+        else if (_entity->getPose().stateFlags == MainActionFlag_ReadyForSecondPunch &&
                  _entity->getPose().stateTime < 18 &&
                  !isSecondPunch)
         {
-            _entity->getPose().stateFlags = MainActionFlags_ToThrowSecondPunch;
+            _entity->getPose().stateFlags = MainActionFlag_ToThrowSecondPunch;
         }
-        else if (_entity->getPose().stateFlags == MainActionFlags_ReadyForThirdPunch &&
+        else if (_entity->getPose().stateFlags == MainActionFlag_ReadyForThirdPunch &&
                  _entity->getPose().stateTime < 18 &&
                  !isThirdPunch)
         {
-            _entity->getPose().stateFlags = MainActionFlags_ToThrowThirdPunch;
+            _entity->getPose().stateFlags = MainActionFlag_ToThrowThirdPunch;
         }
         
-        if (_entity->getPose().stateFlags == MainActionFlags_ToThrowSecondPunch &&
+        if (_entity->getPose().stateFlags == MainActionFlag_ToThrowSecondPunch &&
             _entity->getPose().stateTime > 18)
         {
             _entity->getPose().state = State_SecondPunch;
             _entity->getPose().stateTime = 0;
             _entity->getPose().stateFlags = 0;
         }
-        else if (_entity->getPose().stateFlags == MainActionFlags_ToThrowThirdPunch &&
+        else if (_entity->getPose().stateFlags == MainActionFlag_ToThrowThirdPunch &&
                  _entity->getPose().stateTime > 18)
         {
             _entity->getPose().state = State_ThirdPunch;
@@ -481,14 +484,14 @@ void PlayerController::handleMainActionInput(uint8_t inputState)
             {
                 if (_entity->getPose().stateFlags == 0)
                 {
-                    _entity->getPose().stateFlags = MainActionFlags_ReadyForSecondPunch;
+                    _entity->getPose().stateFlags = MainActionFlag_ReadyForSecondPunch;
                 }
             }
             else if (isSecondPunch)
             {
                 if (_entity->getPose().stateFlags == 0)
                 {
-                    _entity->getPose().stateFlags = MainActionFlags_ReadyForThirdPunch;
+                    _entity->getPose().stateFlags = MainActionFlag_ReadyForThirdPunch;
                 }
             }
             else if (isThirdPunch)
@@ -502,14 +505,14 @@ void PlayerController::handleMainActionInput(uint8_t inputState)
             _entity->getPose().stateFlags = 0;
         }
         
-        if (_entity->getPose().stateFlags == MainActionFlags_ToThrowSecondPunch &&
+        if (_entity->getPose().stateFlags == MainActionFlag_ToThrowSecondPunch &&
             _entity->getPose().stateTime > 18)
         {
             _entity->getPose().state = State_SecondPunch;
             _entity->getPose().stateTime = 0;
             _entity->getPose().stateFlags = 0;
         }
-        else if (_entity->getPose().stateFlags == MainActionFlags_ToThrowThirdPunch &&
+        else if (_entity->getPose().stateFlags == MainActionFlag_ToThrowThirdPunch &&
                  _entity->getPose().stateTime > 18)
         {
             _entity->getPose().state = State_ThirdPunch;
@@ -530,7 +533,7 @@ void PlayerController::handleMainActionInput(uint8_t inputState)
 void PlayerController::handleJumpInput(uint8_t inputState)
 {
     bool isJumping = _entity->getPose().state == State_Jumping;
-    if (inputState & GameInputStateFlags_Jumping && _entity->isGrounded())
+    if (inputState & GameInputStateFlag_Jumping && _entity->isGrounded())
     {
         if (!isJumping)
         {

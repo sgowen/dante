@@ -40,11 +40,11 @@
 
 Server* Server::s_instance = NULL;
 
-void Server::create(bool isSteam)
+void Server::create(uint32_t flags, void* data)
 {
     assert(!s_instance);
     
-    s_instance = new Server(isSteam);
+    s_instance = new Server(flags, data);
 }
 
 Server * Server::getInstance()
@@ -114,7 +114,7 @@ void Server::update()
 {
     _stateTime += FRAME_RATE;
     
-    Timing::getInstance()->updateManual(_stateTime, FRAME_RATE);
+    NG_TIME->setTime(_stateTime);
     
     NG_SERVER->processIncomingPackets();
     
@@ -129,6 +129,11 @@ void Server::update()
 
 void Server::toggleMap()
 {
+    if (_flags & ServerFlag_TestSession)
+    {
+        return;
+    }
+    
     if (_map == 'Z001')
     {
         _map = 'Z002';
@@ -141,17 +146,31 @@ void Server::toggleMap()
     loadMap();
 }
 
+uint32_t Server::getFlags()
+{
+    return _flags;
+}
+
 void Server::handleNewClient(uint8_t playerId, std::string playerName)
 {
     if (NG_SERVER->getNumClientsConnected() == 1)
     {
         // This is our first client!
         
-        if (_map == 0)
+        if (_flags & ServerFlag_TestSession)
         {
-            _map = 'Z001';
-            
+            uint32_t* map = static_cast<uint32_t*>(_data);
+            _map = *map;
             loadMap();
+        }
+        else
+        {
+            if (_map == 0)
+            {
+                _map = 'Z001';
+                
+                loadMap();
+            }
         }
     }
     
@@ -264,9 +283,15 @@ void Server::loadMap()
     }
 }
 
-Server::Server(bool isSteam) : _world(new World(WorldFlag_Server | WorldFlag_MapLoadAll)), _stateTime(0), _frameStateTime(0), _map(0)
+Server::Server(uint32_t flags, void* data) :
+_flags(flags),
+_data(data),
+_world(new World(WorldFlag_Server | WorldFlag_MapLoadAll)),
+_stateTime(0),
+_frameStateTime(0),
+_map(0)
 {
-    if (isSteam)
+    if (_flags & ServerFlag_Steam)
     {
 #ifdef NG_STEAM
         NetworkManagerServer::create(new NGSteamServerHelper(GM_CFG->_steamGameDir, GM_CFG->_versionName, GM_CFG->_steamProductName, GM_CFG->_steamProductDescription, GM_CFG->_serverPort, NG_SERVER_CALLBACKS), Server::sHandleDynamicEntityCreatedOnServer, Server::sHandleDynamicEntityDeletedOnServer, SERVER_CALLBACKS);

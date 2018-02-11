@@ -33,10 +33,14 @@
 #include <framework/math/OverlapTester.h>
 #include <framework/math/NGRect.h>
 #include <game/logic/GameConfig.h>
+#include <framework/network/client/NetworkManagerClient.h>
+#include <framework/network/server/NetworkManagerServer.h>
+#include <game/logic/Server.h>
 
 #include <sstream>
 
 StudioInputManager* StudioInputManager::s_instance = NULL;
+uint32_t StudioInputManager::s_testMap = 'TEST';
 
 void StudioInputManager::create()
 {
@@ -76,19 +80,20 @@ void StudioInputManager::update()
     
     _inputState = SIMS_NONE;
     
-    if (_engine->_state & StudioEngineState_TextInput)
+    uint32_t state = _engine->_state;
+    if (state & StudioEngineState_TextInput)
     {
         handleTextInput();
     }
-    else if (_engine->_state & StudioEngineState_TestSession)
+    else if (state & StudioEngineState_TestSession)
     {
         handleTestSessionInput();
     }
-    else if (_engine->_state & StudioEngineState_DisplayLoadMapDialog)
+    else if (state & StudioEngineState_DisplayLoadMapDialog)
     {
         handleLoadMapDialogInput();
     }
-    else if (_engine->_state & StudioEngineState_DisplayEntities)
+    else if (state & StudioEngineState_DisplayEntities)
     {
         handleEntitiesInput();
     }
@@ -297,11 +302,23 @@ void StudioInputManager::handleDefaultInput()
                 }
                 continue;
             case NG_KEY_T:
-                if (e.isDown())
+            {
+                if (NG_CLIENT)
                 {
-                    /// TODO, test level
-                    _engine->_renderer->displayToast("Testing not yet implemented, so start a server to test...");
+                    NetworkManagerClient::destroy();
                 }
+                
+                if (Server::getInstance())
+                {
+                    Server::destroy();
+                }
+                
+                Server::create(ServerFlag_TestSession, &s_testMap);
+                assert(NG_SERVER);
+                
+                _engine->_world->saveMapAs(s_testMap);
+                _engine->_state |= e.isDown() ? StudioEngineState_TestSession : 0;
+            }
                 continue;
             case NG_KEY_S:
                 if (e.isDown())

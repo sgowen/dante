@@ -79,10 +79,11 @@ public:
         ReadStateFlag_Pose = 1 << 0
     };
     
-    Entity(EntityDef& inEntityDef, int x = 0, int y = 0, bool isServer = false);
+    Entity(EntityDef inEntityDef, int x = 0, int y = 0, bool isServer = false);
     ~Entity();
     
     void update();
+    void postUpdate();
     void interpolate(double alpha);
     void postRender();
     bool shouldCollide(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB);
@@ -170,7 +171,7 @@ public:
     Pose& getPoseCache();
     
 private:
-    EntityDef& _entityDef;
+    EntityDef _entityDef;
     EntityController* _controller;
     bool _isServer;
     

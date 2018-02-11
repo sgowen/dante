@@ -38,6 +38,7 @@ public:
     
 private:
     static StudioInputManager* s_instance;
+    static uint32_t s_testMap;
     
     Vector2 _downCursor;
     Vector2 _dragCursor;

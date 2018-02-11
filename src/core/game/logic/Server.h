@@ -15,6 +15,12 @@
 #include <string>
 #include <vector>
 
+enum ServerFlags
+{
+    ServerFlag_Steam =       1 << 0,
+    ServerFlag_TestSession = 1 << 1
+};
+
 class World;
 class ClientProxy;
 class Entity;
@@ -22,7 +28,7 @@ class Entity;
 class Server
 {
 public:
-    static void create(bool isSteam);
+    static void create(uint32_t flags, void* data = NULL);
     static Server* getInstance();
     static void destroy();
     
@@ -37,10 +43,13 @@ public:
     void update();
     uint8_t getPlayerIdForRobotBeingCreated();
     void toggleMap();
+    uint32_t getFlags();
 
 private:
     static Server* s_instance;
     
+    uint32_t _flags;
+    void* _data;
     World* _world;
     NoctisGames::NGPool<GameInputState> _inputStates;
     std::vector<uint8_t> _playerIds;
@@ -58,7 +67,7 @@ private:
     void loadMap();
     
     // ctor, copy ctor, and assignment should be private in a Singleton
-    Server(bool isSteam);
+    Server(uint32_t flags, void* data = NULL);
     ~Server();
     Server(const Server&);
     Server& operator=(const Server&);

@@ -168,7 +168,7 @@ NGSteamP2PAuthPlayer::NGSteamP2PAuthPlayer(NGSteamP2PNetworkTransport *pNetworkT
     _bSentTicket = false;
     _bSubmittedHisTicket = false;
     _bHaveAnswer = false;
-    _connectTime = Timing::getInstance()->getFrameStartTime();
+    _connectTime = NG_TIME->getTime();
     _cubTicketIGaveThisUser = 0;
     _cubTicketHeGaveMe = 0;
 }
@@ -188,7 +188,7 @@ void NGSteamP2PAuthPlayer::OnBeginAuthResponse(ValidateAuthTicketResponse_t *pCa
         char rgch[128];
         sprintf(rgch, "P2P:: Received steam response for account=%d\n", _steamID.GetAccountID());
         LOG(rgch);
-        _answerTime = Timing::getInstance()->getFrameStartTime();
+        _answerTime = NG_TIME->getTime();
         _bHaveAnswer = true;
         _eAuthSessionResponse = pCallback->m_eAuthSessionResponse;
     }
@@ -200,7 +200,7 @@ void NGSteamP2PAuthPlayer::initPlayer(CSteamID steamID)
     _bSentTicket = false;
     _bSubmittedHisTicket = false;
     _bHaveAnswer = false;
-    _connectTime = Timing::getInstance()->getFrameStartTime();
+    _connectTime = NG_TIME->getTime();
     _cubTicketIGaveThisUser = 0;
     _cubTicketHeGaveMe = 0;
 }
@@ -219,7 +219,7 @@ void NGSteamP2PAuthPlayer::startAuthPlayer()
     _bSentTicket = true;
 
     // start a timer on this, if we dont get a ticket back within reasonable time, mark him timed out
-    _ticketTime = Timing::getInstance()->getFrameStartTime();
+    _ticketTime = NG_TIME->getTime();
 }
 
 bool NGSteamP2PAuthPlayer::isAuthOk()
@@ -229,7 +229,7 @@ bool NGSteamP2PAuthPlayer::isAuthOk()
         // Timeout if we fail to establish communication with this player
         if (!_bSentTicket && !_bSubmittedHisTicket)
         {
-            if (Timing::getInstance()->getFrameStartTime() - _connectTime > 30)
+            if (NG_TIME->getTime() - _connectTime > 30)
             {
                 char rgch[128];
                 sprintf(rgch, "P2P:: Nothing received for account=%d\n", _steamID.GetAccountID());
@@ -259,7 +259,7 @@ bool NGSteamP2PAuthPlayer::isAuthOk()
         // last: if i sent him a ticket and he has not reciprocated, time out after 30 sec
         if (_bSentTicket && !_bSubmittedHisTicket)
         {
-            if (Timing::getInstance()->getFrameStartTime() - _ticketTime > 30)
+            if (NG_TIME->getTime() - _ticketTime > 30)
             {
                 char rgch[128];
                 sprintf(rgch, "P2P:: No ticket received for account=%d\n", _steamID.GetAccountID());

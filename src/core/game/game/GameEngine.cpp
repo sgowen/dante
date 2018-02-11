@@ -120,9 +120,6 @@ uint64_t GameEngine::sGetPlayerAddressHash(uint8_t inPlayerIndex)
 GameEngine::GameEngine() : EngineState(),
 _renderer(new GameRenderer()),
 _world(NULL),
-_input(NULL),
-_timing(NULL),
-_server(NULL),
 _stateTime(0),
 _state(GameEngineState_Default),
 _map(0)
@@ -146,21 +143,17 @@ void GameEngine::enter(Engine* engine)
     _stateTime = 0;
     
     GameInputManager::create();
+    GameInputManager::getInstance()->setEngine(this);
     
     _world = new World();
     GM_UTIL->setWorld(_world);
-    _input = GameInputManager::getInstance();
-    _timing = Timing::getInstance();
-    _server = Server::getInstance();
-    
-    _input->setEngine(this);
 }
 
 void GameEngine::update(Engine* engine)
 {
     _stateTime += FRAME_RATE;
     
-    _timing->updateManual(_stateTime, FRAME_RATE);
+    NG_TIME->setTime(_stateTime);
     
     NG_CLIENT->processIncomingPackets();
     if (NG_CLIENT->getState() == NCS_Disconnected)
@@ -183,25 +176,25 @@ void GameEngine::update(Engine* engine)
     
     NG_AUDIO_ENGINE->update();
     
-    _input->update();
-    if (_input->getMenuState() == GIMS_ESCAPE)
+    GameInputManager::getInstance()->update();
+    if (GameInputManager::getInstance()->getMenuState() == GIMS_ESCAPE)
     {
         engine->getStateMachine().revertToPreviousState();
         return;
     }
     
     _world->updateClient();
-    _input->clearPendingMove();
+    GameInputManager::getInstance()->clearPendingMove();
     NG_CLIENT->sendOutgoingPackets();
     
 #ifdef NG_STEAM
     NG_STEAM_GAME_SERVICES->update(false);
 #endif
     
-    if (_server)
+    if (Server::getInstance())
     {
         /// Only for host
-        _server->update();
+        Server::getInstance()->update();
     }
 }
 
@@ -213,7 +206,17 @@ void GameEngine::exit(Engine* engine)
     
     delete _world;
     
-    Timing::getInstance()->updateManual(0, FRAME_RATE);
+    if (NG_CLIENT)
+    {
+        NetworkManagerClient::destroy();
+    }
+    
+    if (Server::getInstance())
+    {
+        Server::destroy();
+    }
+    
+    NG_TIME->setTime(0);
 }
 
 void GameEngine::createDeviceDependentResources()

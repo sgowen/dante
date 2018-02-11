@@ -84,7 +84,7 @@ void NetworkManagerServer::processIncomingPackets()
     /// Check for disconnects
     std::vector<ClientProxy*> clientsToDC;
     
-    float minAllowedLastPacketFromClientTime = Timing::getInstance()->getFrameStartTime() - NW_CLIENT_TIMEOUT;
+    float minAllowedLastPacketFromClientTime = NG_TIME->getTime() - NW_CLIENT_TIMEOUT;
     for (const auto& pair: _addressHashToClientMap)
     {
         if (pair.second->getLastPacketFromClientTime() < minAllowedLastPacketFromClientTime)
@@ -107,7 +107,7 @@ void NetworkManagerServer::sendOutgoingPackets()
     {
         ClientProxy* clientProxy = it->second;
         //process any timed out packets while we're going through the list
-        clientProxy->getDeliveryNotificationManager().processTimedOutPackets(Timing::getInstance()->getFrameStartTime());
+        clientProxy->getDeliveryNotificationManager().processTimedOutPackets(NG_TIME->getTime());
         
         if (clientProxy->isLastMoveTimestampDirty())
         {

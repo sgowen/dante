@@ -22,6 +22,7 @@ public:
     virtual ~DestructibleController();
     
     virtual void update();
+    virtual void postUpdate();
     virtual void receiveMessage(uint16_t message, void* data = NULL);
     virtual void onFixturesCreated(std::vector<b2Fixture*>& fixtures);
     virtual bool shouldCollide(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB);

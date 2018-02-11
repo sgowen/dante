@@ -53,18 +53,20 @@ DestructibleController::~DestructibleController()
 
 void DestructibleController::update()
 {
-    if (_entity->isServer())
+    /// TODO
+}
+
+void DestructibleController::postUpdate()
+{
+    if (isDestructing() && _entity->getPose().stateTime >= 120)
     {
-        if (isDestructing() && _entity->getPose().stateTime >= 120)
-        {
-            _entity->requestDeletion();
-        }
-        
-        if (_statsCache != _stats)
-        {
-            _statsCache = _stats;
-            NG_SERVER->setStateDirty(_entity->getID(), ReadStateFlag_Stats);
-        }
+        _entity->requestDeletion();
+    }
+    
+    if (_statsCache != _stats)
+    {
+        _statsCache = _stats;
+        NG_SERVER->setStateDirty(_entity->getID(), ReadStateFlag_Stats);
     }
 }
 
