@@ -121,8 +121,8 @@ void PlayerController::receiveMessage(uint16_t message, void* data)
 
 void PlayerController::onFixturesCreated(std::vector<b2Fixture*>& fixtures)
 {
-    assert(fixtures.size() == 3);
-    _attackSensorFixture = fixtures[2];
+    assert(fixtures.size() == 4);
+    _attackSensorFixture = fixtures[3];
     assert(_attackSensorFixture);
 }
 
