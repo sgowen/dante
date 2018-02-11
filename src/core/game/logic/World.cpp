@@ -154,7 +154,7 @@ void World::updateServer()
                         
                         moveList.markMoveAsProcessed(move);
                         
-                        client->setIsLastMoveTimestampDirty(true);
+                        client->setLastMoveTimestampDirty(true);
                     }
                 }
             }

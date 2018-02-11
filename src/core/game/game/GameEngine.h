@@ -47,7 +47,7 @@ public:
     
     static void sHandleDynamicEntityCreatedOnClient(Entity* inEntity);
     static void sHandleDynamicEntityDeletedOnClient(Entity* inEntity);
-    static uint64_t sGetPlayerAddressHashForIndexOnClient(uint8_t inPlayerIndex);
+    static uint64_t sGetPlayerAddressHash(uint8_t inPlayerIndex);
     
     virtual void enter(Engine* engine);
     virtual void update(Engine* engine);

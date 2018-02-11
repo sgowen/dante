@@ -75,7 +75,7 @@ MoveList& ClientProxy::getUnprocessedMoveList()
     return _unprocessedMoveList;
 }
 
-void ClientProxy::setIsLastMoveTimestampDirty(bool inIsDirty)
+void ClientProxy::setLastMoveTimestampDirty(bool inIsDirty)
 {
     _isLastMoveTimestampDirty = inIsDirty;
 }

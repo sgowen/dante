@@ -96,7 +96,7 @@ void GameEngine::sHandleDynamicEntityDeletedOnClient(Entity* inEntity)
     world->removeDynamicEntity(inEntity);
 }
 
-uint64_t GameEngine::sGetPlayerAddressHashForIndexOnClient(uint8_t inPlayerIndex)
+uint64_t GameEngine::sGetPlayerAddressHash(uint8_t inPlayerIndex)
 {
     GameEngine* engine = GameEngine::getInstance();
     assert(engine);

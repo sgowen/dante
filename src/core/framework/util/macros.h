@@ -21,4 +21,6 @@
 #define ARRAYSIZE(A) ( sizeof(A) / sizeof(A[0]) )
 #endif
 
+#define SET_BIT(val, bit, set) val = (val & ~bit) | (set ? bit : 0);
+
 #endif /* defined(__noctisgames__macros__) */

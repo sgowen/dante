@@ -121,6 +121,19 @@ private:
     /// Non-Networked
     b2Fixture* _attackSensorFixture;
     bool _isLocalPlayer;
+    
+    void processInputForIdleState(uint8_t inputState);
+    void processInputForMainActionState(uint8_t inputState);
+    void processInputForRunningState(uint8_t inputState);
+    void processInputForJumpingState(uint8_t inputState);
+    void processInputForFirstJumpCompletedState(uint8_t inputState);
+    
+    void handleMovementInput(uint8_t inputState);
+    void handleMainActionInput(uint8_t inputState);
+    void handleJumpInput(uint8_t inputState);
+    void handleJumpCompletedInput(uint8_t inputState);
+    
+    void handleSound(uint8_t fromState, uint8_t toState);
 };
 
 #endif /* defined(__noctisgames__PlayerController__) */

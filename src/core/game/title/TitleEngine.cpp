@@ -381,7 +381,7 @@ void TitleEngine::joinServer(Engine* engine)
     if (_isSteam)
     {
 #ifdef NG_STEAM
-        NetworkManagerClient::create(new NGSteamClientHelper(_serverSteamID, GameEngine::sGetPlayerAddressHashForIndexOnClient, NG_CLIENT_CALLBACKS), GAME_ENGINE_CALLBACKS, INPUT_MANAGER_CALLBACKS);
+        NetworkManagerClient::create(new NGSteamClientHelper(_serverSteamID, GameEngine::sGetPlayerAddressHash, NG_CLIENT_CALLBACKS), GAME_ENGINE_CALLBACKS, INPUT_MANAGER_CALLBACKS);
 #endif
     }
     else

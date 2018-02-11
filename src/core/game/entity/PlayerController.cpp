@@ -153,14 +153,10 @@ void PlayerController::read(InputMemoryBitStream& inInputStream, uint16_t& inRea
     {
         if (inReadState & Entity::ReadStateFlag_Pose)
         {
-            uint8_t oldState = _entity->getPoseCache().state;
-            uint8_t newState = _entity->getPose().state;
+            uint8_t fromState = _entity->getPoseCache().state;
+            uint8_t toState = _entity->getPose().state;
             
-            if (oldState != State_Jumping &&
-                newState == State_Jumping)
-            {
-                GM_UTIL->playSound(_entity->getSoundMapping(State_Jumping), _entity->getPosition());
-            }
+            handleSound(fromState, toState);
         }
     }
 }
@@ -209,139 +205,38 @@ void PlayerController::processInput(InputState* inInputState, bool isPending)
 {
     GameInputState* is = static_cast<GameInputState*>(inInputState);
     uint8_t playerId = getPlayerId();
-    GameInputState::PlayerInputState* inputState = is->getPlayerInputStateForID(playerId);
-    if (inputState == NULL)
+    GameInputState::PlayerInputState* playerInputState = is->getPlayerInputStateForID(playerId);
+    if (playerInputState == NULL)
     {
         return;
     }
     
-    const b2Vec2& velocity = _entity->getVelocity();
-    
-    float vertForce = 0;
-    
-    if (inputState->isJumping())
+    uint8_t state = _entity->getPose().state;
+    uint8_t inputState = playerInputState->getInputState();
+    switch (state)
     {
-        if (_entity->isGrounded())
-        {
-            if (_entity->getPose().state == State_Idle ||
-                _entity->getPose().state == State_Running)
-            {
-                _entity->setVelocity(b2Vec2(velocity.x, 0));
-                _entity->getPose().stateTime = 0;
-                _entity->getPose().state = State_Jumping;
-                
-                if (isPending)
-                {
-                    GM_UTIL->playSound(_entity->getSoundMapping(State_Jumping), _entity->getPosition());
-                }
-            }
-        }
-        else if (_entity->getPose().state == State_Idle)
-        {
-            _entity->getPose().state = State_FirstJumpCompleted;
-        }
-        
-        if (_entity->getPose().state == State_Jumping)
-        {
-            vertForce = _entity->getBody()->GetMass() * (GM_CFG->_maxYVelocity - _entity->getPose().stateTime * 0.5f);
-        }
-        
-        vertForce = clamp(vertForce, _entity->getBody()->GetMass() * GM_CFG->_maxYVelocity, 0);
-    }
-    else
-    {
-        if (_entity->getPose().state == State_Jumping)
-        {
-            _entity->getPose().state = State_FirstJumpCompleted;
-        }
-    }
-    
-    if (_entity->isGrounded() &&
-        (_entity->getPose().state == State_FirstJumpCompleted || _entity->getPose().state == State_Jumping) &&
-        _entity->getPose().stateTime >= 12)
-    {
-        _entity->getPose().state = State_Idle;
-    }
-    
-    float right = inputState->getDesiredRightAmount();
-    bool isRight = right > 0;
-    bool isLeft = right < 0;
-    
-    bool wasMainAction = _entity->getPose().state == State_MainAction;
-    if (inputState->isMainAction())
-    {
-        if (_entity->isGrounded())
-        {
-            _entity->getPose().state = State_MainAction;
-        }
-    }
-    else if (wasMainAction)
-    {
-        _entity->getPose().state = State_Idle;
-    }
-    
-    if (_entity->getPose().state == State_MainAction && !wasMainAction)
-    {
-        _entity->getPose().stateTime = 0;
-    }
-    
-    static const int MS_LEFT = 0;
-    static const int MS_STOP = 1;
-    static const int MS_RIGHT = 2;
-    
-    const b2Vec2& vel = velocity;
-    
-    int moveState = MS_STOP;
-    if (_entity->isGrounded() &&
-        (_entity->getPose().state == State_Idle || _entity->getPose().state == State_Running))
-    {
-        if (isRight)
-        {
-            moveState = MS_RIGHT;
-        }
-        else if (isLeft)
-        {
-            moveState = MS_LEFT;
-        }
-    }
-    
-    float desiredVel = 0;
-    switch (moveState)
-    {
-        case MS_LEFT:
-            if (_entity->getPose().state == State_Idle)
-            {
-                _entity->getPose().state = State_Running;
-            }
-            desiredVel = b2Max(vel.x - 1, -GM_CFG->_maxXVelocity);
-            isLeft = true;
+        case State_Idle:
+            processInputForIdleState(inputState);
             break;
-        case MS_STOP:
-            if (_entity->getPose().state == State_Running)
-            {
-                _entity->getPose().state = State_Idle;
-            }
-            desiredVel = vel.x * 0.99f;
-            isLeft = false;
-            isRight = false;
+        case State_MainAction:
+            processInputForMainActionState(inputState);
             break;
-        case MS_RIGHT:
-            if (_entity->getPose().state == State_Idle)
-            {
-                _entity->getPose().state = State_Running;
-            }
-            desiredVel = b2Min(vel.x + 1, GM_CFG->_maxXVelocity);
-            isRight = true;
+        case State_Running:
+            processInputForRunningState(inputState);
+            break;
+        case State_Jumping:
+            processInputForJumpingState(inputState);
+            break;
+        case State_FirstJumpCompleted:
+            processInputForFirstJumpCompletedState(inputState);
+            break;
+        default:
             break;
     }
-    float velChange = desiredVel - vel.x;
-    float impulse = _entity->getBody()->GetMass() * velChange;
     
-    _entity->getPose().isFacingLeft = isLeft ? true : isRight ? false : _entity->getPose().isFacingLeft;
-    
-    if (impulse != 0 || vertForce != 0)
+    if (isPending)
     {
-        _entity->getBody()->ApplyLinearImpulse(b2Vec2(impulse,vertForce), _entity->getBody()->GetWorldCenter(), true);
+        handleSound(state, _entity->getPose().state);
     }
 }
 
@@ -383,4 +278,197 @@ uint8_t PlayerController::getHealth()
 bool PlayerController::isLocalPlayer()
 {
     return _isLocalPlayer;
+}
+
+void PlayerController::processInputForIdleState(uint8_t inputState)
+{
+    handleMovementInput(inputState);
+    
+    if (_entity->getPose().state == State_Idle ||
+        _entity->getPose().state == State_Running)
+    {
+        handleMainActionInput(inputState);
+    }
+    
+    if (_entity->getPose().state == State_Idle ||
+        _entity->getPose().state == State_Running)
+    {
+        handleJumpInput(inputState);
+    }
+}
+
+void PlayerController::processInputForMainActionState(uint8_t inputState)
+{
+    handleMainActionInput(inputState);
+    
+    if (_entity->getPose().state == State_Idle)
+    {
+        handleMovementInput(inputState);
+    }
+    
+    if (_entity->getPose().state == State_Idle ||
+        _entity->getPose().state == State_Running)
+    {
+        handleJumpInput(inputState);
+    }
+}
+
+void PlayerController::processInputForRunningState(uint8_t inputState)
+{
+    handleMovementInput(inputState);
+    
+    if (_entity->getPose().state == State_Idle ||
+        _entity->getPose().state == State_Running)
+    {
+        handleMainActionInput(inputState);
+    }
+    
+    if (_entity->getPose().state == State_Idle ||
+        _entity->getPose().state == State_Running)
+    {
+        handleJumpInput(inputState);
+    }
+}
+
+void PlayerController::processInputForJumpingState(uint8_t inputState)
+{
+    handleJumpInput(inputState);
+    
+    if (_entity->getPose().state == State_Idle)
+    {
+        handleMovementInput(inputState);
+    }
+    
+    if (_entity->getPose().state == State_Idle ||
+        _entity->getPose().state == State_Running)
+    {
+        handleMainActionInput(inputState);
+    }
+}
+
+void PlayerController::processInputForFirstJumpCompletedState(uint8_t inputState)
+{
+    handleJumpCompletedInput(inputState);
+}
+
+void PlayerController::handleMovementInput(uint8_t inputState)
+{
+    static const int LEFT = 0;
+    static const int STOP = 1;
+    static const int RIGHT = 2;
+    
+    int moveState;
+    if (inputState & GameInputStateFlags_MovingRight)
+    {
+        _entity->getPose().state = State_Running;
+        moveState = RIGHT;
+    }
+    else if (inputState & GameInputStateFlags_MovingLeft)
+    {
+        _entity->getPose().state = State_Running;
+        moveState = LEFT;
+    }
+    else
+    {
+        _entity->getPose().state = State_Idle;
+        moveState = STOP;
+    }
+    
+    const b2Vec2& vel = _entity->getVelocity();
+    float desiredVel = 0;
+    switch (moveState)
+    {
+        case LEFT:
+            desiredVel = b2Max(vel.x - 1, -GM_CFG->_maxXVelocity);
+            break;
+        case STOP:
+            desiredVel = vel.x * 0.99f;
+            break;
+        case RIGHT:
+            desiredVel = b2Min(vel.x + 1, GM_CFG->_maxXVelocity);
+            break;
+    }
+    
+    float velChange = desiredVel - vel.x;
+    float impulse = _entity->getBody()->GetMass() * velChange;
+    
+    _entity->getPose().isFacingLeft = moveState == LEFT ? true : moveState == RIGHT ? false : _entity->getPose().isFacingLeft;
+    
+    if (!isCloseEnough(impulse, 0))
+    {
+        _entity->getBody()->ApplyLinearImpulse(b2Vec2(impulse, 0), _entity->getBody()->GetWorldCenter(), true);
+    }
+}
+
+void PlayerController::handleMainActionInput(uint8_t inputState)
+{
+    bool wasMainAction = _entity->getPose().state == State_MainAction;
+    if (inputState & GameInputStateFlags_MainAction)
+    {
+        if (_entity->isGrounded())
+        {
+            _entity->getPose().state = State_MainAction;
+            
+            if (!wasMainAction)
+            {
+                _entity->getPose().stateTime = 0;
+            }
+        }
+    }
+    else if (wasMainAction)
+    {
+        _entity->getPose().state = State_Idle;
+    }
+}
+
+void PlayerController::handleJumpInput(uint8_t inputState)
+{
+    if (inputState & GameInputStateFlags_Jumping)
+    {
+        if (_entity->isGrounded() && _entity->getPose().state != State_Jumping)
+        {
+            _entity->setVelocity(b2Vec2(_entity->getVelocity().x, 0));
+            _entity->getPose().stateTime = 0;
+            _entity->getPose().state = State_Jumping;
+        }
+        
+        if (_entity->getPose().state == State_Jumping)
+        {
+            float vertForce = _entity->getBody()->GetMass() * (GM_CFG->_maxYVelocity - _entity->getPose().stateTime * 0.5f);
+            vertForce = clamp(vertForce, _entity->getBody()->GetMass() * GM_CFG->_maxYVelocity, 0);
+            _entity->getBody()->ApplyLinearImpulse(b2Vec2(0, vertForce), _entity->getBody()->GetWorldCenter(), true);
+        }
+    }
+    else
+    {
+        if (_entity->getPose().state == State_Jumping)
+        {
+            _entity->getPose().state = State_FirstJumpCompleted;
+        }
+    }
+}
+
+void PlayerController::handleJumpCompletedInput(uint8_t inputState)
+{
+    if (_entity->isGrounded() && _entity->getPose().stateTime >= 12)
+    {
+        _entity->getPose().state = State_Idle;
+    }
+}
+
+void PlayerController::handleSound(uint8_t fromState, uint8_t toState)
+{
+    if (fromState == toState)
+    {
+        return;
+    }
+    
+    switch (toState)
+    {
+        case State_Jumping:
+            GM_UTIL->playSound(_entity->getSoundMapping(State_Jumping), _entity->getPosition());
+            break;
+        default:
+            break;
+    }
 }

@@ -13,6 +13,15 @@
 
 #include <framework/util/NGRTTI.h>
 
+enum GameInputStateFlags
+{
+    GameInputStateFlags_None =        0,
+    GameInputStateFlags_MovingRight = 1 << 0,
+    GameInputStateFlags_MovingLeft =  1 << 1,
+    GameInputStateFlags_Jumping =     1 << 2,
+    GameInputStateFlags_MainAction =  1 << 3
+};
+
 class OutputMemoryBitStream;
 class InputMemoryBitStream;
 
@@ -31,16 +40,11 @@ public:
     public:
         void write(OutputMemoryBitStream& inOutputStream) const;
         void read(InputMemoryBitStream& inInputStream);
-        int getDesiredRightAmount();
-        bool isJumping();
-        bool isMainAction();
+        uint8_t getInputState();
         
     private:
         uint8_t _playerId;
-        bool _isMovingRight;
-        bool _isMovingLeft;
-        bool _isJumping;
-        bool _isMainAction;
+        uint8_t _inputState;
         
         PlayerInputState();
     };

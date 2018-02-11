@@ -455,7 +455,7 @@ void NetworkManagerServer::writeLastMoveTimestampIfDirty(OutputMemoryBitStream& 
         // which map are we on?
         inOutputStream.write(_map);
         
-        inClientProxy->setIsLastMoveTimestampDirty(false);
+        inClientProxy->setLastMoveTimestampDirty(false);
     }
 }
 

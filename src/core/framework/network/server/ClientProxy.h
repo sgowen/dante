@@ -33,7 +33,7 @@ public:
     DeliveryNotificationManager& getDeliveryNotificationManager();
     ReplicationManagerServer* getReplicationManagerServer();
     MoveList& getUnprocessedMoveList();
-    void setIsLastMoveTimestampDirty(bool inIsDirty);
+    void setLastMoveTimestampDirty(bool inIsDirty);
     bool isLastMoveTimestampDirty() const;
     void onLocalPlayerAdded(uint8_t playerId);
     void onLocalPlayerRemoved(uint8_t playerId);

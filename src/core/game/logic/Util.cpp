@@ -15,6 +15,7 @@
 
 #include <framework/audio/portable/NGAudioEngine.h>
 #include <framework/entity/Entity.h>
+#include <game/entity/PlayerController.h>
 
 Util* Util::getInstance()
 {
@@ -25,28 +26,30 @@ Util* Util::getInstance()
 void Util::playSound(int soundId, const b2Vec2& position)
 {
     float volume = 1;
-    float robotVolume = 0;
+    float robotVolume = 1;
     
     std::vector<Entity*>& players = _world->getPlayers();
     
     for (Entity* e : players)
     {
-        float distance = b2Distance(e->getPosition(), position);
+        PlayerController* robot = static_cast<PlayerController*>(e->getController());
+        assert(robot);
         
+        if (!robot->isLocalPlayer())
+        {
+            continue;
+        }
+        
+        float distance = b2Distance(e->getPosition(), position);
         float factor = distance / 5.0f;
         
         if (distance > 0 && factor > 0)
         {
             float newRobotVolume = 1.0f / (factor * factor);
-            
-            if (newRobotVolume > robotVolume)
+            if (newRobotVolume < robotVolume)
             {
                 robotVolume = newRobotVolume;
             }
-        }
-        else
-        {
-            robotVolume = 1;
         }
     }
     
