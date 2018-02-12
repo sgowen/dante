@@ -67,6 +67,7 @@ public:
     std::string& getPlayerName();
     NetworkClientState getState() const;
     uint32_t getMap();
+    EntityManager* getEntityManager();
     
 private:
     static NetworkManagerClient* s_instance;

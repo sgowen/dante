@@ -187,6 +187,11 @@ uint32_t NetworkManagerClient::getMap()
     return _map;
 }
 
+EntityManager* NetworkManagerClient::getEntityManager()
+{
+    return _entityManager;
+}
+
 void NetworkManagerClient::processPacket(InputMemoryBitStream& inInputStream, MachineAddress* inFromAddress)
 {
     _lastServerCommunicationTimestamp = NG_TIME->getTime();

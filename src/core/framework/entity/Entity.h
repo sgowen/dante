@@ -81,7 +81,7 @@ public:
     Entity(EntityDef inEntityDef, int x = 0, int y = 0, bool isServer = false);
     ~Entity();
     
-    void update();
+    void update(bool isLive = false);
     void postUpdate();
     void interpolate(double alpha);
     void postRender();

@@ -79,7 +79,17 @@ void GameConfig::initWithJsonFile(const char* fileName, bool isBundled, bool use
     _tempStaticLight2[5] = FW_CFG->getFloat("TempStaticLight2A");
 }
 
-GameConfig::GameConfig()
+void GameConfig::setWorld(World* world)
+{
+    _world = world;
+}
+
+World* GameConfig::getWorld()
+{
+    return _world;
+}
+
+GameConfig::GameConfig() : _world(NULL)
 {
     // Empty
 }

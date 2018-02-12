@@ -10,17 +10,31 @@
 
 #include <game/logic/Util.h>
 
+#include <framework/entity/Entity.h>
 #include <Box2D/Box2D.h>
 #include <game/logic/World.h>
 
 #include <framework/audio/portable/NGAudioEngine.h>
-#include <framework/entity/Entity.h>
 #include <game/entity/PlayerController.h>
 
 Util* Util::getInstance()
 {
     static Util instance = Util();
     return &instance;
+}
+
+void Util::handleSound(Entity* e, uint8_t fromState, uint8_t toState)
+{
+    if (fromState == toState)
+    {
+        return;
+    }
+    
+    int soundMapping = e->getSoundMapping(toState);
+    if (soundMapping > 0)
+    {
+        playSound(soundMapping, e->getPosition());
+    }
 }
 
 void Util::playSound(int soundId, const b2Vec2& position)

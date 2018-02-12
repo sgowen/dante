@@ -13,6 +13,8 @@
 
 #include <string>
 
+class World;
+
 class GameConfig
 {
 public:
@@ -57,8 +59,12 @@ public:
     float _tempStaticLight2[6];
     
     void initWithJsonFile(const char* fileName, bool isBundled = true, bool useEncryption = false);
+    void setWorld(World* world);
+    World* getWorld();
     
-private:    
+private:
+    World* _world;
+    
     // ctor, copy ctor, and assignment should be private in a Singleton
     GameConfig();
     ~GameConfig();

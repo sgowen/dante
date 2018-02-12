@@ -13,6 +13,7 @@
 
 #define GM_UTIL (Util::getInstance())
 
+class Entity;
 struct b2Vec2;
 class World;
 
@@ -21,6 +22,7 @@ class Util
 public:
     static Util* getInstance();
     
+    void handleSound(Entity* e, uint8_t fromState, uint8_t toState);
     void playSound(int soundId, const b2Vec2& position);
     void setWorld(World* world);
     

@@ -61,6 +61,7 @@ public:
     bool isConnected();
     ServerHelper* getServerHelper();
     void setMap(uint32_t inValue);
+    EntityManager* getEntityManager();
     
 private:
     static NetworkManagerServer* s_instance;

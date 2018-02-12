@@ -134,6 +134,8 @@ void World::removeDynamicEntity(Entity* inEntity)
 
 void World::updateServer()
 {
+    GM_CFG->setWorld(this);
+    
     int moveCount = NG_SERVER->getMoveCount();
     if (moveCount > 0)
     {
@@ -182,6 +184,8 @@ void World::updateServer()
 
 void World::postRead()
 {
+    GM_CFG->setWorld(this);
+    
     for (Entity* e : _players)
     {
         e->recallLastReadState();
@@ -222,6 +226,8 @@ void World::postRead()
 
 void World::updateClient()
 {
+    GM_CFG->setWorld(this);
+    
     const Move* pendingMove = GameInputManager::getInstance()->getPendingMove();
     if (pendingMove)
     {
@@ -238,12 +244,12 @@ void World::updateClient()
         
         for (Entity* e : _players)
         {
-            e->update();
+            e->update(true);
         }
         
         for (Entity* e : _dynamicEntities)
         {
-            e->update();
+            e->update(true);
         }
     }
 }
@@ -312,8 +318,8 @@ bool World::isMapLoaded()
 void World::mapAddEntity(Entity *e)
 {
     bool isLayer = e->getEntityDef().fixtures.size() == 0 && e->getEntityDef().bodyFlags == 0;
-    bool isStatic = e->getEntityDef().fixtures.size() > 0 && (e->getEntityDef().bodyFlags & BodyFlag_Static);
-    bool isDynamic = e->getEntityDef().fixtures.size() > 0 && !(e->getEntityDef().bodyFlags & BodyFlag_Static);
+    bool isStatic = e->getEntityDef().fixtures.size() > 0 && (e->getEntityDef().bodyFlags & BodyFlag_Static) && !e->getEntityDef().stateSensitive;
+    bool isDynamic = e->getEntityDef().fixtures.size() > 0 && (!(e->getEntityDef().bodyFlags & BodyFlag_Static) || e->getEntityDef().stateSensitive);
     
     if (isLayer)
     {
@@ -588,5 +594,6 @@ bool EntityContactFilter::ShouldCollide(b2Fixture* fixtureA, b2Fixture* fixtureB
     Entity* entityA = static_cast<Entity*>(fixtureA->GetUserData());
     Entity* entityB = static_cast<Entity*>(fixtureB->GetUserData());
     
-    return entityA->shouldCollide(entityB, fixtureA, fixtureB);
+    return entityA->shouldCollide(entityB, fixtureA, fixtureB) &&
+    entityB->shouldCollide(entityA, fixtureB, fixtureA);
 }

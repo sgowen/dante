@@ -27,7 +27,7 @@ DefaultController::~DefaultController()
     // Empty
 }
 
-void DefaultController::update()
+void DefaultController::update(bool isLive)
 {
     // Empty
 }
@@ -37,7 +37,7 @@ void DefaultController::postUpdate()
     // Empty
 }
 
-void DefaultController::receiveMessage(uint16_t message, void* data)
+void DefaultController::receiveMessage(uint16_t message, bool isLive, void* data)
 {
     // Empty
 }

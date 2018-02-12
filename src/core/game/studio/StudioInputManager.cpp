@@ -305,35 +305,52 @@ void StudioInputManager::handleDefaultInput()
                 continue;
             case NG_KEY_T:
             {
-                if (NG_CLIENT)
+                if (e.isDown())
                 {
-                    NetworkManagerClient::destroy();
+                    if (_engine->_world->getDynamicEntities().size() > 24)
+                    {
+                        _engine->_renderer->displayToast("Cannot have more than 24 dynamic entities!");
+                    }
+                    else
+                    {
+                        if (NG_CLIENT)
+                        {
+                            NetworkManagerClient::destroy();
+                        }
+                        
+                        if (Server::getInstance())
+                        {
+                            Server::destroy();
+                        }
+                        
+                        Server::create(ServerFlag_TestSession, &s_testMap);
+                        assert(NG_SERVER);
+                        
+                        _engine->_world->saveMapAs(s_testMap);
+                        _engine->_state |= StudioEngineState_TestSession;
+                    }
                 }
-                
-                if (Server::getInstance())
-                {
-                    Server::destroy();
-                }
-                
-                Server::create(ServerFlag_TestSession, &s_testMap);
-                assert(NG_SERVER);
-                
-                _engine->_world->saveMapAs(s_testMap);
-                _engine->_state |= e.isDown() ? StudioEngineState_TestSession : 0;
             }
                 continue;
             case NG_KEY_S:
                 if (e.isDown())
                 {
-                    if (_isControl)
+                    if (_engine->_world->getDynamicEntities().size() > 24)
                     {
-                        _engine->_state |= e.isDown() ? StudioEngineState_DisplaySaveMapAsDialog : 0;
-                        _engine->_renderer->displayToast("Save As not yet implemented...");
+                        _engine->_renderer->displayToast("Cannot have more than 24 dynamic entities!");
                     }
                     else
                     {
-                        _engine->_world->saveMap();
-                        _engine->_renderer->displayToast(StringUtil::format("%s saved!", _engine->_world->getMapName().c_str()).c_str());
+                        if (_isControl)
+                        {
+                            _engine->_state |= e.isDown() ? StudioEngineState_DisplaySaveMapAsDialog : 0;
+                            _engine->_renderer->displayToast("Save As not yet implemented...");
+                        }
+                        else
+                        {
+                            _engine->_world->saveMap();
+                            _engine->_renderer->displayToast(StringUtil::format("%s saved!", _engine->_world->getMapName().c_str()).c_str());
+                        }
                     }
                 }
                 continue;

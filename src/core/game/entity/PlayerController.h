@@ -26,9 +26,9 @@ public:
     PlayerController(Entity* inEntity);
     virtual ~PlayerController();
     
-    virtual void update();
+    virtual void update(bool isLive = false);
     virtual void postUpdate();
-    virtual void receiveMessage(uint16_t message, void* data = NULL);
+    virtual void receiveMessage(uint16_t message, bool isLive, void* data = NULL);
     virtual void onFixturesCreated(std::vector<b2Fixture*>& fixtures);
     virtual bool shouldCollide(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB);
     virtual void handleBeginContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB);
@@ -37,7 +37,7 @@ public:
     virtual void recallLastReadState(uint16_t& inReadState);
     virtual uint16_t write(OutputMemoryBitStream& inOutputStream, uint16_t inWrittenState, uint16_t inDirtyState);
     
-    void processInput(InputState* inInputState, bool isPending = false);
+    void processInput(InputState* inInputState, bool isLive = false);
     
     /// Helpers
     void setAddressHash(uint64_t inValue);
@@ -48,7 +48,6 @@ public:
     uint32_t getMap() const;
     void setPlayerName(std::string inValue);
     std::string& getPlayerName();
-    uint8_t getHealth();
     bool isLocalPlayer();
     
 private:
@@ -109,16 +108,19 @@ private:
     struct Stats
     {
         uint8_t health;
+        uint32_t target;
         
         Stats()
         {
             health = 3;
+            target = 0;
         }
         
         friend bool operator==(Stats& lhs, Stats& rhs)
         {
             return
-            lhs.health == rhs.health;
+            lhs.health == rhs.health &&
+            lhs.target == rhs.target;
         }
         
         friend bool operator!=(Stats& lhs, Stats& rhs)
@@ -131,9 +133,7 @@ private:
     
     /// Non-Networked
     b2Fixture* _attackSensorFixture;
-    Entity* _target;
     bool _isLocalPlayer;
-    bool _isPendingInput;
     
     void processInputForIdleState(uint8_t inputState);
     void processInputForFirstPunchState(uint8_t inputState);

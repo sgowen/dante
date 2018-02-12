@@ -21,9 +21,9 @@ public:
     DestructibleController(Entity* inEntity);
     virtual ~DestructibleController();
     
-    virtual void update();
+    virtual void update(bool isLive = false);
     virtual void postUpdate();
-    virtual void receiveMessage(uint16_t message, void* data = NULL);
+    virtual void receiveMessage(uint16_t message, bool isLive, void* data = NULL);
     virtual void onFixturesCreated(std::vector<b2Fixture*>& fixtures);
     virtual bool shouldCollide(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB);
     virtual void handleBeginContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB);
@@ -32,23 +32,13 @@ public:
     virtual void recallLastReadState(uint16_t& inReadState);
     virtual uint16_t write(OutputMemoryBitStream& inOutputStream, uint16_t inWrittenState, uint16_t inDirtyState);
     
-    /// Helpers
-    uint8_t getHealth();
-    bool isDestructing();
-    bool isMoving();
-    
 private:
     enum State
     {
-        State_Idle = 0,
+        State_Undamaged = 0,
         State_OneThirdDamaged,
         State_TwoThirdsDamaged,
         State_Destructing
-    };
-    
-    enum StateFlags
-    {
-        StateFlag_Destructing = 1 << 0
     };
     
     enum ReadStateFlag

@@ -21,9 +21,9 @@ public:
     DefaultController(Entity* inEntity);
     virtual ~DefaultController();
     
-    virtual void update();
+    virtual void update(bool isLive = false);
     virtual void postUpdate();
-    virtual void receiveMessage(uint16_t message, void* data = NULL);
+    virtual void receiveMessage(uint16_t message, bool isLive, void* data = NULL);
     virtual void onFixturesCreated(std::vector<b2Fixture*>& fixtures);
     virtual bool shouldCollide(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB);
     virtual void handleBeginContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB);

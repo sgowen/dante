@@ -21,9 +21,9 @@ public:
     BasicFollowAndAttackController(Entity* inEntity);
     virtual ~BasicFollowAndAttackController();
     
-    virtual void update();
+    virtual void update(bool isLive = false);
     virtual void postUpdate();
-    virtual void receiveMessage(uint16_t message, void* data = NULL);
+    virtual void receiveMessage(uint16_t message, bool isLive, void* data = NULL);
     virtual void onFixturesCreated(std::vector<b2Fixture*>& fixtures);
     virtual bool shouldCollide(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB);
     virtual void handleBeginContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB);
@@ -31,12 +31,6 @@ public:
     virtual void read(InputMemoryBitStream& inInputStream, uint16_t& inReadState);
     virtual void recallLastReadState(uint16_t& inReadState);
     virtual uint16_t write(OutputMemoryBitStream& inOutputStream, uint16_t inWrittenState, uint16_t inDirtyState);
-    
-    /// Helpers
-    uint8_t getHealth();
-    bool isDying();
-    bool isAttacking();
-    bool isMoving();
     
 private:
     enum State
@@ -47,12 +41,6 @@ private:
         State_Dying
     };
     
-    enum StateFlags
-    {
-        StateFlag_Attacking = 1 << 0,
-        StateFlag_Dying = 1 << 1
-    };
-    
     enum ReadStateFlag
     {
         ReadStateFlag_Stats = 1 << 1
@@ -61,16 +49,19 @@ private:
     struct Stats
     {
         uint8_t health;
+        uint32_t target;
         
         Stats()
         {
             health = 3;
+            target = 0;
         }
         
         friend bool operator==(Stats& lhs, Stats& rhs)
         {
             return
-            lhs.health == rhs.health;
+            lhs.health == rhs.health &&
+            lhs.target == rhs.target;
         }
         
         friend bool operator!=(Stats& lhs, Stats& rhs)
@@ -84,6 +75,14 @@ private:
     /// Non-Networked
     b2Fixture* _attackSensorFixture;
     float _maxXVelocity;
+    
+    /// Server Only
+    Entity* _target;
+    
+    void handleIdleState(bool isLive);
+    void handleMovingState(bool isLive);
+    void handleAttackingState(bool isLive);
+    void handleDyingState(bool isLive);
 };
 
 #endif /* defined(__noctisgames__BasicFollowAndAttackController__) */

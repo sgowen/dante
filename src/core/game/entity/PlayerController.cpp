@@ -46,9 +46,7 @@ _playerInfoCache(_playerInfo),
 _stats(),
 _statsCache(_stats),
 _attackSensorFixture(NULL),
-_target(NULL),
-_isLocalPlayer(false),
-_isPendingInput(false)
+_isLocalPlayer(false)
 {
     // Empty
 }
@@ -58,9 +56,26 @@ PlayerController::~PlayerController()
     // Empty
 }
 
-void PlayerController::update()
+void PlayerController::update(bool isLive)
 {
-    /// TODO
+    uint8_t& state = _entity->getPose().state;
+    uint8_t& stateTime = _entity->getPose().stateTime;
+    
+    if ((state == State_FirstPunch && stateTime == 1) ||
+        (state == State_SecondPunch && stateTime == 1) ||
+        (state == State_ThirdPunch && stateTime == 1))
+    {
+        if (_stats.target > 0)
+        {
+            EntityManager* entityManager = _entity->isServer() ? NG_SERVER->getEntityManager() : NG_CLIENT->getEntityManager();
+            Entity* e = entityManager->getEntityByID(_stats.target);
+            if (e)
+            {
+                uint32_t damage = state == State_ThirdPunch ? 2 : 1;
+                e->getController()->receiveMessage(ENTITY_MESSAGE_DAMAGE, isLive, &damage);
+            }
+        }
+    }
 }
 
 void PlayerController::postUpdate()
@@ -83,17 +98,19 @@ void PlayerController::postUpdate()
     }
 }
 
-void PlayerController::receiveMessage(uint16_t message, void* data)
+void PlayerController::receiveMessage(uint16_t message, bool isLive, void* data)
 {
     switch (message)
     {
         case ENTITY_MESSAGE_DAMAGE:
         {
+            uint8_t& health = _stats.health;
+            
             uint32_t* damageP = static_cast<uint32_t*>(data);
             uint32_t& damage = *damageP;
-            damage = clamp(damage, _stats.health, 0);
-            _stats.health -= damage;
-            if (_stats.health == 0)
+            damage = clamp(damage, health, 0);
+            health -= damage;
+            if (health == 0)
             {
                 /// TODO
             }
@@ -119,12 +136,20 @@ bool PlayerController::shouldCollide(Entity* inEntity, b2Fixture* inFixtureA, b2
 
 void PlayerController::handleBeginContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB)
 {
-    // Empty
+    if (inFixtureA == _attackSensorFixture &&
+        !inFixtureB->IsSensor())
+    {
+        _stats.target = inEntity->getID();
+    }
 }
 
 void PlayerController::handleEndContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB)
 {
-    // Empty
+    if (inFixtureA == _attackSensorFixture &&
+        !inFixtureB->IsSensor())
+    {
+        _stats.target = 0;
+    }
 }
 
 void PlayerController::read(InputMemoryBitStream& inInputStream, uint16_t& inReadState)
@@ -148,6 +173,7 @@ void PlayerController::read(InputMemoryBitStream& inInputStream, uint16_t& inRea
     if (stateBit)
     {
         inInputStream.read(_stats.health);
+        inInputStream.read(_stats.target);
         
         inReadState |= ReadStateFlag_Stats;
         _statsCache = _stats;
@@ -155,27 +181,14 @@ void PlayerController::read(InputMemoryBitStream& inInputStream, uint16_t& inRea
     
     if (!isLocalPlayer())
     {
-        if (inReadState & Entity::ReadStateFlag_Pose)
-        {
-            uint8_t fromState = _entity->getPoseCache().state;
-            uint8_t toState = _entity->getPose().state;
-            
-            handleSound(fromState, toState);
-        }
+        GM_UTIL->handleSound(_entity, _entity->getPoseCache().state, _entity->getPose().state);
     }
 }
 
 void PlayerController::recallLastReadState(uint16_t& inReadState)
 {
-    if (inReadState & ReadStateFlag_PlayerInfo)
-    {
-        _playerInfo = _playerInfoCache;
-    }
-    
-    if (inReadState & ReadStateFlag_Stats)
-    {
-        _stats = _statsCache;
-    }
+    _playerInfo = _playerInfoCache;
+    _stats = _statsCache;
 }
 
 uint16_t PlayerController::write(OutputMemoryBitStream& inOutputStream, uint16_t inWrittenState, uint16_t inDirtyState)
@@ -198,6 +211,7 @@ uint16_t PlayerController::write(OutputMemoryBitStream& inOutputStream, uint16_t
     if (stats)
     {
         inOutputStream.write(_stats.health);
+        inOutputStream.write(_stats.target);
         
         writtenState |= ReadStateFlag_Stats;
     }
@@ -205,7 +219,7 @@ uint16_t PlayerController::write(OutputMemoryBitStream& inOutputStream, uint16_t
     return writtenState;
 }
 
-void PlayerController::processInput(InputState* inInputState, bool isPending)
+void PlayerController::processInput(InputState* inInputState, bool isLive)
 {
     GameInputState* is = static_cast<GameInputState*>(inInputState);
     uint8_t playerId = getPlayerId();
@@ -215,7 +229,6 @@ void PlayerController::processInput(InputState* inInputState, bool isPending)
         return;
     }
     
-    _isPendingInput = isPending;
     uint8_t state = _entity->getPose().state;
     uint8_t inputState = playerInputState->getInputState();
     switch (state)
@@ -245,9 +258,9 @@ void PlayerController::processInput(InputState* inInputState, bool isPending)
             break;
     }
     
-    if (isPending)
+    if (isLive)
     {
-        handleSound(state, _entity->getPose().state);
+        GM_UTIL->handleSound(_entity, state, _entity->getPose().state);
     }
 }
 
@@ -279,11 +292,6 @@ void PlayerController::setPlayerName(std::string inValue)
 std::string& PlayerController::getPlayerName()
 {
     return _playerInfo.playerName;
-}
-
-uint8_t PlayerController::getHealth()
-{
-    return _stats.health;
 }
 
 bool PlayerController::isLocalPlayer()
@@ -389,24 +397,27 @@ void PlayerController::handleMovementInput(uint8_t inputState)
     static const int STOP = 1;
     static const int RIGHT = 2;
     
-    _entity->getPose().state = State_Idle;
+    uint8_t& state = _entity->getPose().state;
+    uint8_t& stateTime = _entity->getPose().stateTime;
+    
+    state = State_Idle;
     int moveState = STOP;
     if (_entity->isGrounded())
     {
         if (inputState & GameInputStateFlag_MovingRight)
         {
-            _entity->getPose().state = State_Running;
+            state = State_Running;
             moveState = RIGHT;
         }
         else if (inputState & GameInputStateFlag_MovingLeft)
         {
-            _entity->getPose().state = State_Running;
+            state = State_Running;
             moveState = LEFT;
         }
     }
     else
     {
-        _entity->getPose().state = State_JumpCompleted;
+        state = State_JumpCompleted;
     }
     
     const b2Vec2& vel = _entity->getVelocity();
@@ -428,160 +439,157 @@ void PlayerController::handleMovementInput(uint8_t inputState)
     float impulse = _entity->getBody()->GetMass() * velChange;
     
     _entity->getPose().isFacingLeft = moveState == LEFT ? true : moveState == RIGHT ? false : _entity->getPose().isFacingLeft;
+    _entity->updateBodyFromPose();
     
     if (!isCloseEnough(impulse, 0))
     {
         _entity->getBody()->ApplyLinearImpulse(b2Vec2(impulse, 0), _entity->getBody()->GetWorldCenter(), true);
     }
+    
+    if ((state == State_Running && stateTime >= 60) ||
+        (state == State_Idle && stateTime >= 36))
+    {
+        stateTime = 0;
+    }
 }
 
 void PlayerController::handleMainActionInput(uint8_t inputState)
 {
-    bool isFirstPunch = _entity->getPose().state == State_FirstPunch;
-    bool isSecondPunch = _entity->getPose().state == State_SecondPunch;
-    bool isThirdPunch = _entity->getPose().state == State_ThirdPunch;
+    uint8_t& state = _entity->getPose().state;
+    uint8_t& stateTime = _entity->getPose().stateTime;
+    uint8_t& stateFlags = _entity->getPose().stateFlags;
+    
     if (inputState & GameInputStateFlag_MainAction && _entity->isGrounded())
     {
-        if (_entity->getPose().stateFlags == 0 && !isFirstPunch && !isSecondPunch && !isThirdPunch)
+        if (stateFlags == 0 && state != State_FirstPunch && state != State_SecondPunch && state != State_ThirdPunch)
         {
-            _entity->getPose().state = State_FirstPunch;
-            _entity->getPose().stateTime = 0;
-            _entity->getPose().stateFlags = 0;
+            state = State_FirstPunch;
+            stateTime = 0;
+            stateFlags = 0;
         }
-        else if (_entity->getPose().stateFlags == MainActionFlag_ReadyForSecondPunch &&
-                 _entity->getPose().stateTime < 18 &&
-                 !isSecondPunch)
+        else if (stateFlags == MainActionFlag_ReadyForSecondPunch &&
+                 stateTime < 18 &&
+                 state != State_SecondPunch)
         {
-            _entity->getPose().stateFlags = MainActionFlag_ToThrowSecondPunch;
+            stateFlags = MainActionFlag_ToThrowSecondPunch;
         }
-        else if (_entity->getPose().stateFlags == MainActionFlag_ReadyForThirdPunch &&
-                 _entity->getPose().stateTime < 18 &&
-                 !isThirdPunch)
+        else if (stateFlags == MainActionFlag_ReadyForThirdPunch &&
+                 stateTime < 18 &&
+                 state != State_ThirdPunch)
         {
-            _entity->getPose().stateFlags = MainActionFlag_ToThrowThirdPunch;
+            stateFlags = MainActionFlag_ToThrowThirdPunch;
         }
         
-        if (_entity->getPose().stateFlags == MainActionFlag_ToThrowSecondPunch &&
-            _entity->getPose().stateTime > 18)
+        if (stateFlags == MainActionFlag_ToThrowSecondPunch &&
+            stateTime > 18)
         {
-            _entity->getPose().state = State_SecondPunch;
-            _entity->getPose().stateTime = 0;
-            _entity->getPose().stateFlags = 0;
+            state = State_SecondPunch;
+            stateTime = 0;
+            stateFlags = 0;
         }
-        else if (_entity->getPose().stateFlags == MainActionFlag_ToThrowThirdPunch &&
-                 _entity->getPose().stateTime > 18)
+        else if (stateFlags == MainActionFlag_ToThrowThirdPunch &&
+                 stateTime > 18)
         {
-            _entity->getPose().state = State_ThirdPunch;
-            _entity->getPose().stateTime = 0;
-            _entity->getPose().stateFlags = 0;
+            state = State_ThirdPunch;
+            stateTime = 0;
+            stateFlags = 0;
         }
     }
     else
     {
         if (_entity->isGrounded())
         {
-            if (isFirstPunch)
+            if (state == State_FirstPunch)
             {
-                if (_entity->getPose().stateFlags == 0)
+                if (stateFlags == 0)
                 {
-                    _entity->getPose().stateFlags = MainActionFlag_ReadyForSecondPunch;
+                    stateFlags = MainActionFlag_ReadyForSecondPunch;
                 }
             }
-            else if (isSecondPunch)
+            else if (state == State_SecondPunch)
             {
-                if (_entity->getPose().stateFlags == 0)
+                if (stateFlags == 0)
                 {
-                    _entity->getPose().stateFlags = MainActionFlag_ReadyForThirdPunch;
+                    stateFlags = MainActionFlag_ReadyForThirdPunch;
                 }
             }
-            else if (isThirdPunch)
+            else if (state == State_ThirdPunch)
             {
-                _entity->getPose().stateFlags = 0;
+                stateFlags = 0;
             }
         }
-        else if (isFirstPunch || isSecondPunch || isThirdPunch)
+        else if (state == State_FirstPunch || state == State_SecondPunch || state == State_ThirdPunch)
         {
-            _entity->getPose().state = State_Idle;
-            _entity->getPose().stateFlags = 0;
+            state = State_Idle;
+            stateFlags = 0;
         }
         
-        if (_entity->getPose().stateFlags == MainActionFlag_ToThrowSecondPunch &&
-            _entity->getPose().stateTime > 18)
+        if (stateFlags == MainActionFlag_ToThrowSecondPunch &&
+            stateTime > 18)
         {
-            _entity->getPose().state = State_SecondPunch;
-            _entity->getPose().stateTime = 0;
-            _entity->getPose().stateFlags = 0;
+            state = State_SecondPunch;
+            stateTime = 0;
+            stateFlags = 0;
         }
-        else if (_entity->getPose().stateFlags == MainActionFlag_ToThrowThirdPunch &&
-                 _entity->getPose().stateTime > 18)
+        else if (stateFlags == MainActionFlag_ToThrowThirdPunch &&
+                 stateTime > 18)
         {
-            _entity->getPose().state = State_ThirdPunch;
-            _entity->getPose().stateTime = 0;
-            _entity->getPose().stateFlags = 0;
+            state = State_ThirdPunch;
+            stateTime = 0;
+            stateFlags = 0;
         }
         
-        if ((isFirstPunch && _entity->getPose().stateTime > 18) ||
-            (isSecondPunch && _entity->getPose().stateTime > 18) ||
-            (isThirdPunch && _entity->getPose().stateTime > 30))
+        if ((state == State_FirstPunch && stateTime > 18) ||
+            (state == State_SecondPunch && stateTime > 18) ||
+            (state == State_ThirdPunch && stateTime > 30))
         {
-            _entity->getPose().state = State_Idle;
-            _entity->getPose().stateFlags = 0;
+            state = State_Idle;
+            stateFlags = 0;
         }
     }
 }
 
 void PlayerController::handleJumpInput(uint8_t inputState)
 {
-    bool isJumping = _entity->getPose().state == State_Jumping;
+    uint8_t& state = _entity->getPose().state;
+    uint8_t& stateTime = _entity->getPose().stateTime;
+    
     if (inputState & GameInputStateFlag_Jumping && _entity->isGrounded())
     {
-        if (!isJumping)
+        if (state != State_Jumping)
         {
             _entity->setVelocity(b2Vec2(_entity->getVelocity().x, 0));
-            _entity->getPose().stateTime = 0;
-            _entity->getPose().state = State_Jumping;
+            stateTime = 0;
+            state = State_Jumping;
         }
         
         float vertForce = 0;
-        if (_entity->getPose().state == State_Jumping)
+        if (state == State_Jumping)
         {
-            vertForce = _entity->getBody()->GetMass() * (GM_CFG->_maxYVelocity - _entity->getPose().stateTime * 0.5f);
+            vertForce = _entity->getBody()->GetMass() * (GM_CFG->_maxYVelocity - stateTime * 0.5f);
             vertForce = clamp(vertForce, _entity->getBody()->GetMass() * GM_CFG->_maxYVelocity, 0);
             _entity->getBody()->ApplyLinearImpulse(b2Vec2(0, vertForce), _entity->getBody()->GetWorldCenter(), true);
         }
         
-        if (_entity->getPose().stateTime > 18 || vertForce <= 0)
+        if (stateTime > 18 || vertForce <= 0)
         {
-            _entity->getPose().state = State_JumpCompleted;
+            state = State_JumpCompleted;
         }
     }
-    else if (isJumping)
+    else if (state == State_Jumping)
     {
-        _entity->getPose().state = State_JumpCompleted;
+        state = State_JumpCompleted;
     }
 }
 
 void PlayerController::handleJumpCompletedInput(uint8_t inputState)
 {
-    if (_entity->isGrounded() && _entity->getPose().stateTime > 18)
-    {
-        _entity->getPose().state = State_Idle;
-    }
-}
-
-void PlayerController::handleSound(uint8_t fromState, uint8_t toState)
-{
-    if (fromState == toState)
-    {
-        return;
-    }
+    uint8_t& state = _entity->getPose().state;
+    uint8_t& stateTime = _entity->getPose().stateTime;
     
-    switch (toState)
+    if (_entity->isGrounded() &&
+        stateTime > 18)
     {
-        case State_Jumping:
-            GM_UTIL->playSound(_entity->getSoundMapping(State_Jumping), _entity->getPosition());
-            break;
-        default:
-            break;
+        state = State_Idle;
     }
 }

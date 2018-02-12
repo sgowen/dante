@@ -50,7 +50,7 @@ Entity::~Entity()
     delete _controller;
 }
 
-void Entity::update()
+void Entity::update(bool isLive)
 {
     updatePoseFromBody();
     
@@ -59,7 +59,7 @@ void Entity::update()
         _pose.stateTime = clamp(_pose.stateTime + 1, 255, 0);
     }
     
-    _controller->update();
+    _controller->update(isLive);
 }
 
 void Entity::postUpdate()
@@ -186,12 +186,9 @@ void Entity::read(InputMemoryBitStream& inInputStream)
 
 void Entity::recallLastReadState()
 {
-    if (_readState & ReadStateFlag_Pose)
-    {
-        _pose = _poseCache;
-        
-        updateBodyFromPose();
-    }
+    _pose = _poseCache;
+    
+    updateBodyFromPose();
     
     _controller->recallLastReadState(_readState);
 }

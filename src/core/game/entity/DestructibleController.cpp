@@ -51,14 +51,17 @@ DestructibleController::~DestructibleController()
     // Empty
 }
 
-void DestructibleController::update()
+void DestructibleController::update(bool isLive)
 {
     /// TODO
 }
 
 void DestructibleController::postUpdate()
 {
-    if (isDestructing() && _entity->getPose().stateTime >= 120)
+    uint8_t state = _entity->getPose().state;
+    uint8_t stateTime = _entity->getPose().stateTime;
+    
+    if (state == State_Destructing && stateTime >= 120)
     {
         _entity->requestDeletion();
     }
@@ -70,25 +73,46 @@ void DestructibleController::postUpdate()
     }
 }
 
-void DestructibleController::receiveMessage(uint16_t message, void* data)
+void DestructibleController::receiveMessage(uint16_t message, bool isLive, void* data)
 {
+    uint8_t fromState = _entity->getPose().state;
+    uint8_t& state = _entity->getPose().state;
+    uint8_t& stateTime = _entity->getPose().stateTime;
+    
     switch (message)
     {
         case ENTITY_MESSAGE_DAMAGE:
         {
+            uint8_t& health = _stats.health;
+            
             uint32_t* damageP = static_cast<uint32_t*>(data);
             uint32_t& damage = *damageP;
-            damage = clamp(damage, _stats.health, 0);
-            _stats.health -= damage;
-            if (_stats.health == 0)
+            damage = clamp(damage, health, 0);
+            health -= damage;
+            if (health == 2 && state != State_OneThirdDamaged)
             {
-                _entity->getPose().state |= State_Destructing;
-                _entity->getPose().stateTime = 0;
+                state = State_OneThirdDamaged;
+                stateTime = 0;
+            }
+            else if (health == 1 && state != State_TwoThirdsDamaged)
+            {
+                state = State_TwoThirdsDamaged;
+                stateTime = 0;
+            }
+            else if (health == 0 && state != State_Destructing)
+            {
+                state = State_Destructing;
+                stateTime = 0;
             }
         }
             break;
         default:
             break;
+    }
+    
+    if (isLive)
+    {
+        GM_UTIL->handleSound(_entity, fromState, state);
     }
 }
 
@@ -99,7 +123,7 @@ void DestructibleController::onFixturesCreated(std::vector<b2Fixture*>& fixtures
 
 bool DestructibleController::shouldCollide(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB)
 {
-    return true;
+    return _entity->getPose().state != State_Destructing;
 }
 
 void DestructibleController::handleBeginContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB)
@@ -128,10 +152,7 @@ void DestructibleController::read(InputMemoryBitStream& inInputStream, uint16_t&
 
 void DestructibleController::recallLastReadState(uint16_t& inReadState)
 {
-    if (inReadState & ReadStateFlag_Stats)
-    {
-        _stats = _statsCache;
-    }
+    _stats = _statsCache;
 }
 
 uint16_t DestructibleController::write(OutputMemoryBitStream& inOutputStream, uint16_t inWrittenState, uint16_t inDirtyState)
@@ -148,19 +169,4 @@ uint16_t DestructibleController::write(OutputMemoryBitStream& inOutputStream, ui
     }
     
     return writtenState;
-}
-
-uint8_t DestructibleController::getHealth()
-{
-    return _stats.health;
-}
-
-bool DestructibleController::isDestructing()
-{
-    return _entity->getPose().state & StateFlag_Destructing;
-}
-
-bool DestructibleController::isMoving()
-{
-    return !isCloseEnough(_entity->getVelocity().x, 0);
 }

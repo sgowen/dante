@@ -273,6 +273,11 @@ void NetworkManagerServer::setMap(uint32_t inValue)
     _map = inValue;
 }
 
+EntityManager* NetworkManagerServer::getEntityManager()
+{
+    return _entityManager;
+}
+
 void NetworkManagerServer::processPacket(InputMemoryBitStream& inputStream, MachineAddress* inFromAddress)
 {
     //try to get the client proxy for this address
