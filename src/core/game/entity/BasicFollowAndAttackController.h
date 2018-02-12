@@ -49,19 +49,16 @@ private:
     struct Stats
     {
         uint8_t health;
-        uint32_t target;
         
         Stats()
         {
             health = 3;
-            target = 0;
         }
         
         friend bool operator==(Stats& lhs, Stats& rhs)
         {
             return
-            lhs.health == rhs.health &&
-            lhs.target == rhs.target;
+            lhs.health == rhs.health;
         }
         
         friend bool operator!=(Stats& lhs, Stats& rhs)
@@ -78,6 +75,7 @@ private:
     
     /// Server Only
     Entity* _target;
+    Entity* _targetTouching;
     
     void handleIdleState(bool isLive);
     void handleMovingState(bool isLive);

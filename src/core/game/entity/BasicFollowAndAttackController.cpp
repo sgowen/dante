@@ -45,7 +45,8 @@ _stats(),
 _statsCache(_stats),
 _attackSensorFixture(NULL),
 _maxXVelocity(4),
-_target(NULL)
+_target(NULL),
+_targetTouching(NULL)
 {
     // Empty
 }
@@ -149,7 +150,7 @@ void BasicFollowAndAttackController::handleBeginContact(Entity* inEntity, b2Fixt
     if (inFixtureA == _attackSensorFixture &&
         !inFixtureB->IsSensor())
     {
-        _stats.target = inEntity->getID();
+        _targetTouching = inEntity;
     }
 }
 
@@ -158,7 +159,7 @@ void BasicFollowAndAttackController::handleEndContact(Entity* inEntity, b2Fixtur
     if (inFixtureA == _attackSensorFixture &&
         !inFixtureB->IsSensor())
     {
-        _stats.target = 0;
+        _targetTouching = NULL;
     }
 }
 
@@ -298,7 +299,7 @@ void BasicFollowAndAttackController::handleMovingState(bool isLive)
         stateTime = 0;
     }
     
-    if (_stats.target > 0)
+    if (_targetTouching)
     {
         state = State_Attacking;
         stateTime = 0;
@@ -310,17 +311,12 @@ void BasicFollowAndAttackController::handleAttackingState(bool isLive)
     uint8_t& state = _entity->getPose().state;
     uint8_t& stateTime = _entity->getPose().stateTime;
     
-    if (_stats.target > 0)
+    if (_targetTouching)
     {
         if (stateTime == 24)
         {
-            EntityManager* entityManager = _entity->isServer() ? NG_SERVER->getEntityManager() : NG_CLIENT->getEntityManager();
-            Entity* e = entityManager->getEntityByID(_stats.target);
-            if (e)
-            {
-                uint32_t damage = 1;
-                e->getController()->receiveMessage(ENTITY_MESSAGE_DAMAGE, isLive, &damage);
-            }
+            uint32_t damage = 1;
+            _targetTouching->getController()->receiveMessage(ENTITY_MESSAGE_DAMAGE, isLive, &damage);
         }
     }
     else
