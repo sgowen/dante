@@ -211,9 +211,6 @@ void BasicFollowAndAttackController::handleIdleState(bool isLive)
     
     for (Entity* e : players)
     {
-        PlayerController* robot = static_cast<PlayerController*>(e->getController());
-        assert(robot);
-        
         float distance = b2Distance(e->getPosition(), _entity->getPosition());
         if (distance < shortestDistance)
         {
