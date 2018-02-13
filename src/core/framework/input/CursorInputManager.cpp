@@ -36,7 +36,7 @@ void CursorInputManager::resetScrollValue()
     _scrollWheelValue = 0;
 }
 
-void CursorInputManager::onInput(CursorEventType type, float x, float y)
+void CursorInputManager::onInput(CursorEventType type, float x, float y, bool isAlt)
 {
     if (type == CursorEventType_DRAGGED
         && _pool->getBufferSize() >= MAX_DRAGGED_EVENTS_PER_FRAME)
@@ -44,7 +44,7 @@ void CursorInputManager::onInput(CursorEventType type, float x, float y)
         return;
     }
     
-    addEvent(type, x, y);
+    addEvent(type, x, y, isAlt);
 }
 
 void CursorInputManager::process()
@@ -67,12 +67,13 @@ float CursorInputManager::getScrollWheelValue()
     return _scrollWheelValue;
 }
 
-void CursorInputManager::addEvent(CursorEventType type, float x, float y)
+void CursorInputManager::addEvent(CursorEventType type, float x, float y, bool isAlt)
 {
     CursorEvent* e = _pool->newObject();
     e->setType(type);
     e->setX(x);
     e->setY(y);
+    e->setAlt(isAlt);
     
     _pool->add(e);
 }

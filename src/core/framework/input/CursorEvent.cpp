@@ -10,11 +10,12 @@
 
 #include <framework/input/CursorEvent.h>
 
-CursorEvent::CursorEvent(CursorEventType type, float x, float y)
+CursorEvent::CursorEvent(CursorEventType type, float x, float y, bool isAlt)
 {
     _type = type;
     _x = x;
     _y = y;
+    _isAlt = isAlt;
 }
 
 CursorEventType CursorEvent::getType()
@@ -45,4 +46,14 @@ float CursorEvent::getY()
 void CursorEvent::setY(float y)
 {
 	_y = y;
+}
+
+bool CursorEvent::isAlt()
+{
+    return _isAlt;
+}
+
+void CursorEvent::setAlt(bool value)
+{
+    _isAlt = value;
 }

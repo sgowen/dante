@@ -146,7 +146,6 @@ void GameEngine::enter(Engine* engine)
     GameInputManager::getInstance()->setEngine(this);
     
     _world = new World();
-    GM_UTIL->setWorld(_world);
 }
 
 void GameEngine::update(Engine* engine)

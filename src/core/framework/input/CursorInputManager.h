@@ -27,7 +27,7 @@ public:
     void setCursorPosition(float x, float y);
     void onScroll(float inValue);
     void resetScrollValue();
-    void onInput(CursorEventType type, float x, float y);
+    void onInput(CursorEventType type, float x, float y, bool isAlt = false);
     void process();
     std::vector<CursorEvent*>& getEvents();
     Vector2& getCursorPosition();
@@ -38,7 +38,7 @@ private:
     Vector2 _cursorPosition;
     float _scrollWheelValue;
     
-    void addEvent(CursorEventType type, float x, float y);
+    void addEvent(CursorEventType type, float x, float y, bool isAlt);
     
     // ctor, copy ctor, and assignment should be private in a Singleton
     CursorInputManager();

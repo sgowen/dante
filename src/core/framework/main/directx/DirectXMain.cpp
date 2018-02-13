@@ -471,6 +471,22 @@ void DirectXMain::Tick()
             
             _isPointerPressed = false;
         }
+        else if (_isPointerPressed && mouse.rightButton)
+        {
+            CURSOR_INPUT_MANAGER->onInput(CursorEventType_DRAGGED, float(mouse.x), float(mouse.y), true);
+        }
+        else if (mouse.rightButton && !_isPointerPressed)
+        {
+            CURSOR_INPUT_MANAGER->onInput(CursorEventType_DOWN, float(mouse.x), float(mouse.y), true);
+            
+            _isPointerPressed = true;
+        }
+        else if (_isPointerPressed && !mouse.rightButton)
+        {
+            CURSOR_INPUT_MANAGER->onInput(CursorEventType_UP, float(mouse.x), float(mouse.y), true);
+            
+            _isPointerPressed = false;
+        }
     }
     
     CURSOR_INPUT_MANAGER->onScroll(-mouse.scrollWheelValue);

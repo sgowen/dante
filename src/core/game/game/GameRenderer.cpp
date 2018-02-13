@@ -265,9 +265,15 @@ void GameRenderer::updateCamera()
     
     _camBounds[3]->getLowerLeft().set(x, y);
     
-    _camBounds[2]->getLowerLeft().set(x * GM_CFG->_parallaxLayer2FactorX, y * GM_CFG->_parallaxLayer2FactorY);
-    _camBounds[1]->getLowerLeft().set(x * GM_CFG->_parallaxLayer1FactorX, y * GM_CFG->_parallaxLayer1FactorY);
-    _camBounds[0]->getLowerLeft().set(x * GM_CFG->_parallaxLayer0FactorX, y * GM_CFG->_parallaxLayer0FactorY);
+    float w = static_cast<float>(GM_CFG->_camWidth);
+    float h = static_cast<float>(GM_CFG->_camHeight);
+    float px = fmodf(x, w);
+    float py = fmodf(y, h);
+    float bx = x - px;
+    float by = y - py;
+    _camBounds[2]->getLowerLeft().set(bx + px * GM_CFG->_parallaxLayer2FactorX, by + py * GM_CFG->_parallaxLayer2FactorY);
+    _camBounds[1]->getLowerLeft().set(bx + px * GM_CFG->_parallaxLayer1FactorX, by + py * GM_CFG->_parallaxLayer1FactorY);
+    _camBounds[0]->getLowerLeft().set(bx + px * GM_CFG->_parallaxLayer0FactorX, by + py * GM_CFG->_parallaxLayer0FactorY);
 }
 
 void GameRenderer::setFramebuffer(int framebufferIndex, float r, float g, float b, float a)

@@ -16,6 +16,7 @@
 
 #include <framework/audio/portable/NGAudioEngine.h>
 #include <game/entity/PlayerController.h>
+#include <game/logic/GameConfig.h>
 
 Util* Util::getInstance()
 {
@@ -39,10 +40,13 @@ void Util::handleSound(Entity* e, uint8_t fromState, uint8_t toState)
 
 void Util::playSound(int soundId, const b2Vec2& position)
 {
+    World* world = GM_CFG->getWorld();
+    assert(world);
+    
     float volume = 1;
     float robotVolume = 1;
     
-    std::vector<Entity*>& players = _world->getPlayers();
+    std::vector<Entity*>& players = world->getPlayers();
     
     for (Entity* e : players)
     {
@@ -70,11 +74,6 @@ void Util::playSound(int soundId, const b2Vec2& position)
     volume = robotVolume;
     
     NG_AUDIO_ENGINE->playSound(soundId, volume);
-}
-
-void Util::setWorld(World* world)
-{
-    _world = world;
 }
 
 Util::Util()

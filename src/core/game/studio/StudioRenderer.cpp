@@ -200,8 +200,7 @@ void StudioRenderer::render()
             _activeEntitySpriteBatcher->beginBatch(10);
             TextureRegion tr = ASSETS->findTextureRegion(e->getTextureMapping(), e->getStateTime());
             _activeEntitySpriteBatcher->renderSprite(e->getPosition().x, e->getPosition().y, e->getWidth(), e->getHeight(), e->getAngle(), tr, e->isFacingLeft());
-            Color c = _input->_isDraggingActiveEntityOverDeleteZone ? Color::HALF : Color::DOUBLE;
-            _activeEntitySpriteBatcher->endBatch(_textureNGShader, _textureManager->getTextureWithName(tr.getTextureName()), NULL, c);
+            _activeEntitySpriteBatcher->endBatch(_textureNGShader, _textureManager->getTextureWithName(tr.getTextureName()), NULL, Color::DOUBLE);
         }
         
         if (_engineState & StudioEngineState_DisplayBox2D)
@@ -235,9 +234,13 @@ void StudioRenderer::update(float x, float y, float w, float h, int scale)
     _scrollValue = scale;
     
     _camBounds[3]->getLowerLeft().set(x, y);
-    _camBounds[2]->getLowerLeft().set(x * GM_CFG->_parallaxLayer2FactorX, y * GM_CFG->_parallaxLayer2FactorY);
-    _camBounds[1]->getLowerLeft().set(x * GM_CFG->_parallaxLayer1FactorX, y * GM_CFG->_parallaxLayer1FactorY);
-    _camBounds[0]->getLowerLeft().set(x * GM_CFG->_parallaxLayer0FactorX, y * GM_CFG->_parallaxLayer0FactorY);
+    float px = fmodf(x, w);
+    float py = fmodf(y, h);
+    float bx = x - px;
+    float by = y - py;
+    _camBounds[2]->getLowerLeft().set(bx + px * GM_CFG->_parallaxLayer2FactorX, by + py * GM_CFG->_parallaxLayer2FactorY);
+    _camBounds[1]->getLowerLeft().set(bx + px * GM_CFG->_parallaxLayer1FactorX, by + py * GM_CFG->_parallaxLayer1FactorY);
+    _camBounds[0]->getLowerLeft().set(bx + px * GM_CFG->_parallaxLayer0FactorX, by + py * GM_CFG->_parallaxLayer0FactorY);
     
     for (int i = 0; i < NUM_CAMERAS; ++i)
     {
@@ -372,13 +375,19 @@ void StudioRenderer::renderBox2D()
 
 void StudioRenderer::renderGrid()
 {
-    int left = clamp(_camBounds[3]->getLeft(), FLT_MAX, 0);
-    int bottom = clamp(_camBounds[3]->getBottom(), FLT_MAX, 0);
+    float x = clamp(_camBounds[3]->getLeft(), FLT_MAX, 0);
+    float y = clamp(_camBounds[3]->getBottom(), FLT_MAX, 0);
+    float px = fmodf(x, GM_CFG->_camWidth);
+    float py = fmodf(y, GM_CFG->_camHeight);
+    float bx = x - px;
+    float by = y - py;
+    
+    int left = x;
+    int bottom = y;
+    int leftAligned = bx;
+    int bottomAligned = by;
     int camWidth = _camBounds[3]->getRight() + 1;
     int camHeight = _camBounds[3]->getTop() + 1;
-    
-    Color lineColor = Color::WHITE;
-    lineColor.alpha = 0.25f;
     
     _rendererHelper->useNormalBlending();
     _rendererHelper->updateMatrix(_camBounds[3]->getLeft(), _camBounds[3]->getRight(), _camBounds[3]->getBottom(), _camBounds[3]->getTop());
@@ -392,7 +401,20 @@ void StudioRenderer::renderGrid()
     {
         _lineBatcher->renderLine(0, i, camWidth, i);
     }
+    static Color lineColor = Color::WHITE;
+    lineColor.alpha = 0.25f;
     _lineBatcher->endBatch(_colorNGShader, lineColor);
+    
+    _lineBatcher->beginBatch();
+    for (int i = leftAligned; i <= camWidth; i += GM_CFG->_camWidth)
+    {
+        _lineBatcher->renderLine(i, 0, i, camHeight);
+    }
+    for (int i = bottomAligned; i <= camHeight; i += GM_CFG->_camHeight)
+    {
+        _lineBatcher->renderLine(0, i, camWidth, i);
+    }
+    _lineBatcher->endBatch(_colorNGShader, Color::GREEN);
     
     _lineBatcher->beginBatch();
     _lineBatcher->renderLine(0, 0, 0, camHeight);
@@ -585,27 +607,6 @@ void StudioRenderer::renderUI()
             renderText("Windows", 58, 0.5f, FONT_ALIGN_CENTER);
             _fontSpriteBatcher->endBatch(_textureNGShader, _fontTexture, NULL, Color::WHITE);
         }
-    }
-    
-    Entity* e = _input->_activeEntity;
-    if (e)
-    {
-        /// Render Delete Zone
-        _fillPolygonBatcher->beginBatch();
-        int width = GM_CFG->_camWidth / 3;
-        int height = 3;
-        static NGRect deleteWindow = NGRect(GM_CFG->_camWidth / 2 - width / 2, GM_CFG->_camHeight - height - 1, width, height);
-        Color windowColor = Color::RED;
-        windowColor.alpha = 0.5f;
-        _fillPolygonBatcher->renderRect(deleteWindow);
-        _fillPolygonBatcher->endBatch(_colorNGShader, windowColor);
-        
-        int row = 3;
-        static float padding = 1;
-        
-        _fontSpriteBatcher->beginBatch(INDEX_LAST_TEXTURE_VERTEX_BUFFER);
-        renderText("DELETE", GM_CFG->_camWidth / 2, GM_CFG->_camHeight - (row++ * padding), FONT_ALIGN_CENTER);
-        _fontSpriteBatcher->endBatch(_textureNGShader, _fontTexture);
     }
     
     {

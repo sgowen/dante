@@ -38,6 +38,7 @@
 #include <game/logic/Server.h>
 #include <framework/graphics/portable/TextureRegion.h>
 #include <framework/file/portable/Assets.h>
+#include <framework/util/macros.h>
 
 #include <sstream>
 
@@ -113,10 +114,6 @@ void StudioInputManager::handleDefaultInput()
     _scrollValue = clamp(_rawScrollValue, 16, 1);
     CURSOR_CONVERTER->setCamSize(GM_CFG->_camWidth * _scrollValue, GM_CFG->_camHeight * _scrollValue);
     
-    int width = GM_CFG->_camWidth / 3;
-    int height = 3;
-    static NGRect deleteWindow = NGRect(GM_CFG->_camWidth / 2 - width / 2, GM_CFG->_camHeight - height - 1, width, height);
-    
     for (std::vector<CursorEvent *>::iterator i = CURSOR_INPUT_MANAGER->getEvents().begin(); i != CURSOR_INPUT_MANAGER->getEvents().end(); ++i)
     {
         CursorEvent& e = *(*i);
@@ -134,12 +131,28 @@ void StudioInputManager::handleDefaultInput()
                 _activeEntityDeltaCursor.set(0, 0);
                 _activeEntityCursor.set(_cursor);
                 _activeEntityCursor += _downCursor;
-                _activeEntity = getEntityAtPosition(_activeEntityCursor.getX(), _activeEntityCursor.getY());
-                if (_activeEntity)
+                
+                if (e.isAlt())
                 {
-                    _activeEntityDeltaCursor.set(_activeEntity->getPosition().x, _activeEntity->getPosition().y);
-                    _activeEntityDeltaCursor -= _activeEntityCursor;
-                    _lastActiveEntity = NULL;
+                    if (_lastActiveEntity)
+                    {
+                        onEntityRemoved(_lastActiveEntity);
+                        _engine->_world->mapRemoveEntity(_lastActiveEntity);
+                        
+                        _activeEntity = NULL;
+                        _lastActiveEntity = NULL;
+                    }
+                }
+                else
+                {
+                    _activeEntity = getEntityAtPosition(_activeEntityCursor.getX(), _activeEntityCursor.getY());
+                    if (_activeEntity)
+                    {
+                        _activeEntityDeltaCursor.set(_activeEntity->getPosition().x, _activeEntity->getPosition().y);
+                        _activeEntityDeltaCursor -= _activeEntityCursor;
+                        
+                        _lastActiveEntity = NULL;
+                    }
                 }
             }
                 continue;
@@ -156,15 +169,6 @@ void StudioInputManager::handleDefaultInput()
                     Vector2 entityPos = _activeEntityCursor;
                     entityPos += _activeEntityDeltaCursor;
                     _activeEntity->setPosition(b2Vec2(entityPos.getX(), entityPos.getY()));
-                    
-                    Vector2 normalizedCursor = entityPos;
-                    normalizedCursor -= _cursor;
-                    normalizedCursor /= _scrollValue;
-                    float eW = _activeEntity->getWidth() / _scrollValue;
-                    float eH = _activeEntity->getHeight() / _scrollValue;
-                    NGRect entityBounds = NGRect(normalizedCursor.getX() - eW / 2, normalizedCursor.getY() - eH / 2, eW, eH);
-                    
-                    _isDraggingActiveEntityOverDeleteZone = OverlapTester::doNGRectsOverlap(deleteWindow, entityBounds);
                 }
             }
                 continue;
@@ -175,27 +179,16 @@ void StudioInputManager::handleDefaultInput()
                 
                 if (_activeEntity)
                 {
-                    if (_isDraggingActiveEntityOverDeleteZone)
-                    {
-                        _lastActiveEntity = NULL;
-                        onEntityRemoved(_activeEntity);
-                        _engine->_world->mapRemoveEntity(_activeEntity);
-                        
-                        _isDraggingActiveEntityOverDeleteZone = false;
-                    }
-                    else
-                    {
-                        const b2Vec2& position = _activeEntity->getPosition();
-                        float width = _activeEntity->getWidth();
-                        float height = _activeEntity->getHeight();
-                        float x = clamp(position.x, FLT_MAX, width / 2);
-                        float y = clamp(position.y, FLT_MAX, height / 2);
-                        x = floor(x);
-                        y = floor(y);
-                        _activeEntity->setPosition(b2Vec2(x, y));
-                        
-                        _lastActiveEntity = _activeEntity;
-                    }
+                    const b2Vec2& position = _activeEntity->getPosition();
+                    float width = _activeEntity->getWidth();
+                    float height = _activeEntity->getHeight();
+                    float x = clamp(position.x, FLT_MAX, width / 2);
+                    float y = clamp(position.y, FLT_MAX, height / 2);
+                    x = floor(x);
+                    y = floor(y);
+                    _activeEntity->setPosition(b2Vec2(x, y));
+                    
+                    _lastActiveEntity = _activeEntity;
                     
                     _activeEntity = NULL;
                 }
@@ -271,13 +264,16 @@ void StudioInputManager::handleDefaultInput()
                 }
                 continue;
             case NG_KEY_E:
-                if (_engine->_world->isMapLoaded())
+                if (e.isDown())
                 {
-                    _engine->_state ^= e.isDown() ? StudioEngineState_DisplayEntities : 0;
-                }
-                else if (e.isDown())
-                {
-                    _engine->_renderer->displayToast("Load a Map first!");
+                    if (_engine->_world->isMapLoaded())
+                    {
+                        _engine->_state |= StudioEngineState_DisplayEntities;
+                    }
+                    else
+                    {
+                        _engine->_renderer->displayToast("Load a Map first!");
+                    }
                 }
                 continue;
             case NG_KEY_R:
@@ -495,15 +491,18 @@ void StudioInputManager::handleEntitiesInput()
                     Entity* e = EntityMapper::getInstance()->createEntityFromDef(entityDef, floor(spawnX), floor(spawnY), false);
                     _engine->_world->mapAddEntity(e);
                     _lastActiveEntity = e;
-                    _isDraggingActiveEntityOverDeleteZone = false;
                     onEntityAdded(e);
                     _engine->_state &= ~StudioEngineState_DisplayEntities;
                 }
             }
                 continue;
+            case NG_KEY_E:
             case NG_KEY_ESCAPE:
             case NG_KEY_BACK_SPACE:
-                _engine->_state &= e.isDown() ? ~StudioEngineState_DisplayEntities : 0;
+                if (e.isDown())
+                {
+                    SET_BIT(_engine->_state, StudioEngineState_DisplayEntities, false);
+                }
                 continue;
             default:
                 continue;
@@ -750,7 +749,6 @@ _activeEntity(NULL),
 _lastActiveEntity(NULL),
 _activeEntityCursor(),
 _engine(NULL),
-_isDraggingActiveEntityOverDeleteZone(false),
 _hasTouchedScreen(false)
 {
     resetCamera();

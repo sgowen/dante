@@ -65,7 +65,6 @@ private:
     Vector2 _activeEntityCursor;
     Vector2 _activeEntityDeltaCursor;
     StudioEngine* _engine;
-    bool _isDraggingActiveEntityOverDeleteZone;
     bool _hasTouchedScreen;
     
     void updateCamera();

@@ -15,7 +15,6 @@
 
 class Entity;
 struct b2Vec2;
-class World;
 
 class Util
 {
@@ -24,10 +23,6 @@ public:
     
     void handleSound(Entity* e, uint8_t fromState, uint8_t toState);
     void playSound(int soundId, const b2Vec2& position);
-    void setWorld(World* world);
-    
-private:
-    World* _world;
     
     // ctor, copy ctor, and assignment should be private in a Singleton
     Util();
