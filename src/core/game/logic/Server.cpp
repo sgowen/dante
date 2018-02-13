@@ -79,14 +79,17 @@ void Server::sHandleDynamicEntityDeletedOnServer(Entity* inEntity)
     
     world->removeDynamicEntity(inEntity);
     
-    EntityController* controller = inEntity->getController();
-    if (controller->getRTTI().derivesFrom(PlayerController::rtti))
+    if (!server->_isLoadingMap)
     {
-        PlayerController* robot = static_cast<PlayerController*>(controller);
-        assert(robot);
-        
-        // Respawn
-        getInstance()->spawnRobotForPlayer(robot->getPlayerId(), robot->getPlayerName());
+        EntityController* controller = inEntity->getController();
+        if (controller->getRTTI().derivesFrom(PlayerController::rtti))
+        {
+            PlayerController* robot = static_cast<PlayerController*>(controller);
+            assert(robot);
+            
+            // Respawn
+            getInstance()->spawnRobotForPlayer(robot->getPlayerId(), robot->getPlayerName());
+        }
     }
 }
 
@@ -256,7 +259,19 @@ void Server::spawnRobotForPlayer(uint8_t inPlayerId, std::string inPlayerName)
         return;
     }
     
-    Entity* e = EntityMapper::getInstance()->createEntity('ROBT', 32, 16, true);
+    float spawnX = 32;
+    float spawnY = 16;
+    for (Entity* e : _world->getLayers())
+    {
+        if (e->getEntityDef().type == 'Z1S1')
+        {
+            spawnX = e->getPosition().x;
+            spawnY = e->getPosition().y - e->getHeight() / 2 + 9;
+            break;
+        }
+    }
+    
+    Entity* e = EntityMapper::getInstance()->createEntity('ROBT', spawnX, spawnY, true);
     PlayerController* robot = static_cast<PlayerController*>(e->getController());
     robot->setAddressHash(client->getMachineAddress()->getHash());
     robot->setPlayerName(inPlayerName);
@@ -267,6 +282,8 @@ void Server::spawnRobotForPlayer(uint8_t inPlayerId, std::string inPlayerName)
 
 void Server::loadMap()
 {
+    _isLoadingMap = true;
+    
     std::vector<uint8_t> playerIds = _playerIds;
     std::vector<std::string> playerNames = _playerNames;
     
@@ -281,6 +298,8 @@ void Server::loadMap()
     {
         handleNewClient(playerIds[i], playerNames[i]);
     }
+    
+    _isLoadingMap = false;
 }
 
 Server::Server(uint32_t flags, void* data) :
@@ -289,7 +308,8 @@ _data(data),
 _world(new World(WorldFlag_Server | WorldFlag_MapLoadAll)),
 _stateTime(0),
 _frameStateTime(0),
-_map(0)
+_map(0),
+_isLoadingMap(false)
 {
     if (_flags & ServerFlag_Steam)
     {

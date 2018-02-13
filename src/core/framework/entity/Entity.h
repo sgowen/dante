@@ -75,7 +75,8 @@ class Entity
 public:
     enum ReadStateFlag
     {
-        ReadStateFlag_Pose = 1 << 0
+        ReadStateFlag_Pose =  1 << 0,
+        ReadStateFlag_State = 1 << 1
     };
     
     Entity(EntityDef inEntityDef, int x = 0, int y = 0, bool isServer = false);
@@ -116,12 +117,10 @@ public:
     bool isFacingLeft();
     std::string& getTextureMapping();
     int getSoundMapping(int state);
+    bool isFixedRotation();
     
     struct Pose
     {
-        uint8_t stateTime;
-        uint8_t state;
-        uint8_t stateFlags;
         b2Vec2 velocity;
         b2Vec2 position;
         float angle;
@@ -130,24 +129,18 @@ public:
         
         Pose(float x, float y)
         {
-            stateTime = 0;
-            state = 0;
-            stateFlags = 0;
             velocity = b2Vec2_zero;
             position = b2Vec2(x, y);
             angle = 0;
             numGroundContacts = 0;
             isFacingLeft = false;
         }
-       
+        
 #define NG_CLOSE_ENOUGH_IS_FINE
         
         friend bool operator==(Pose& lhs, Pose& rhs)
         {
             return
-                          lhs.stateTime         == rhs.stateTime &&
-                          lhs.state             == rhs.state &&
-                          lhs.stateFlags        == rhs.stateFlags &&
 #ifdef NG_CLOSE_ENOUGH_IS_FINE
             isCloseEnough(lhs.velocity,            rhs.velocity) &&
             isCloseEnough(lhs.position,            rhs.position) &&
@@ -169,6 +162,37 @@ public:
     Pose& getPose();
     Pose& getPoseCache();
     
+    struct State
+    {
+        uint16_t stateTime;
+        uint8_t state;
+        uint8_t stateFlags;
+        
+        State()
+        {
+            stateTime = 0;
+            state = 0;
+            stateFlags = 0;
+        }
+        
+#define NG_CLOSE_ENOUGH_IS_FINE
+        
+        friend bool operator==(State& lhs, State& rhs)
+        {
+            return
+            lhs.stateTime         == rhs.stateTime &&
+            lhs.state             == rhs.state &&
+            lhs.stateFlags        == rhs.stateFlags;
+        }
+        
+        friend bool operator!=(State& lhs, State& rhs)
+        {
+            return !(lhs == rhs);
+        }
+    };
+    State& getState();
+    State& getStateCache();
+    
 private:
     EntityDef _entityDef;
     EntityController* _controller;
@@ -182,6 +206,9 @@ private:
     /// Network
     Pose _pose;
     Pose _poseCache;
+    State _state;
+    State _stateCache;
+    
     Pose _poseInterpolateCache;
     
     uint16_t _readState;

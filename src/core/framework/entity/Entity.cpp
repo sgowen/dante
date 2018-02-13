@@ -56,7 +56,7 @@ void Entity::update(bool isLive)
     
     if (_entityDef.stateSensitive)
     {
-        _pose.stateTime = clamp(_pose.stateTime + 1, 255, 0);
+        ++_state.stateTime;
     }
     
     _controller->update(isLive);
@@ -75,6 +75,12 @@ void Entity::postUpdate()
         {
             _poseCache = _pose;
             NG_SERVER->setStateDirty(getID(), ReadStateFlag_Pose);
+        }
+        
+        if (_stateCache != _state)
+        {
+            _stateCache = _state;
+            NG_SERVER->setStateDirty(getID(), ReadStateFlag_State);
         }
     }
     
@@ -120,7 +126,7 @@ void Entity::handleBeginContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixtu
 {
     if (inFixtureA == _groundSensorFixture)
     {
-        _pose.numGroundContacts = clamp(_pose.numGroundContacts + 1, 7, 0);
+        _pose.numGroundContacts = clamp(_pose.numGroundContacts + 1, 15, 0);
     }
     
     _controller->handleBeginContact(inEntity, inFixtureA, inFixtureB);
@@ -130,7 +136,7 @@ void Entity::handleEndContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture
 {
     if (inFixtureA == _groundSensorFixture)
     {
-        _pose.numGroundContacts = clamp(_pose.numGroundContacts - 1, 7, 0);
+        _pose.numGroundContacts = clamp(_pose.numGroundContacts - 1, 15, 0);
     }
     
     _controller->handleEndContact(inEntity, inFixtureA, inFixtureB);
@@ -145,18 +151,10 @@ void Entity::read(InputMemoryBitStream& inInputStream)
     inInputStream.read(stateBit);
     if (stateBit)
     {
-        if (_entityDef.stateSensitive)
-        {
-            inInputStream.read(_pose.stateTime);
-            inInputStream.read(_pose.state);
-            inInputStream.read<uint8_t, 4>(_pose.stateFlags);
-        }
-        
         inInputStream.read(_pose.velocity);
         inInputStream.read(_pose.position);
         
-        bool fixedRotation = _entityDef.bodyFlags & BodyFlag_FixedRotation;
-        if (!fixedRotation)
+        if (!isFixedRotation())
         {
             inInputStream.read(_pose.angle);
         }
@@ -166,7 +164,7 @@ void Entity::read(InputMemoryBitStream& inInputStream)
         
         if (_groundSensorFixture)
         {
-            inInputStream.read<uint8_t, 3>(_pose.numGroundContacts);
+            inInputStream.read<uint8_t, 4>(_pose.numGroundContacts);
         }
         
         inInputStream.read(_pose.isFacingLeft);
@@ -176,17 +174,36 @@ void Entity::read(InputMemoryBitStream& inInputStream)
         _readState |= ReadStateFlag_Pose;
     }
     
+    if (_entityDef.stateSensitive)
+    {
+        inInputStream.read(stateBit);
+        if (stateBit)
+        {
+            inInputStream.read(_state.stateTime);
+            inInputStream.read(_state.state);
+            inInputStream.read(_state.stateFlags);
+            
+            _readState |= ReadStateFlag_State;
+        }
+    }
+    
     _controller->read(inInputStream, _readState);
     
     if (_readState & ReadStateFlag_Pose)
     {
         _poseCache = _pose;
     }
+    
+    if (_readState & ReadStateFlag_State)
+    {
+        _stateCache = _state;
+    }
 }
 
 void Entity::recallLastReadState()
 {
     _pose = _poseCache;
+    _state = _stateCache;
     
     updateBodyFromPose();
     
@@ -201,30 +218,36 @@ uint16_t Entity::write(OutputMemoryBitStream& inOutputStream, uint16_t inDirtySt
     inOutputStream.write(pose);
     if (pose)
     {
-        if (_entityDef.stateSensitive)
-        {
-            inOutputStream.write(_pose.stateTime);
-            inOutputStream.write(_pose.state);
-            inOutputStream.write<uint8_t, 4>(_pose.stateFlags);
-        }
-        
         inOutputStream.write(_pose.velocity);
         inOutputStream.write(_pose.position);
         
-        bool fixedRotation = _entityDef.bodyFlags & BodyFlag_FixedRotation;
-        if (!fixedRotation)
+        if (!isFixedRotation())
         {
             inOutputStream.write(_pose.angle);
         }
         
         if (_groundSensorFixture)
         {
-            inOutputStream.write<uint8_t, 3>(_pose.numGroundContacts);
+            inOutputStream.write<uint8_t, 4>(_pose.numGroundContacts);
         }
         
         inOutputStream.write(_pose.isFacingLeft);
         
         writtenState |= ReadStateFlag_Pose;
+    }
+    
+    if (_entityDef.stateSensitive)
+    {
+        bool state = inDirtyState & ReadStateFlag_State;
+        inOutputStream.write(state);
+        if (state)
+        {
+            inOutputStream.write(_state.stateTime);
+            inOutputStream.write(_state.state);
+            inOutputStream.write(_state.stateFlags);
+            
+            writtenState |= ReadStateFlag_State;
+        }
     }
     
     return _controller->write(inOutputStream, writtenState, inDirtyState);
@@ -309,7 +332,7 @@ EntityController* Entity::getController()
 
 uint16_t Entity::getStateTime()
 {
-    return _pose.stateTime;
+    return _state.stateTime;
 }
 
 b2Body* Entity::getBody()
@@ -398,7 +421,7 @@ bool Entity::isFacingLeft()
 
 std::string& Entity::getTextureMapping()
 {
-    auto q = _entityDef.textureMappings.find(_pose.state);
+    auto q = _entityDef.textureMappings.find(_state.state);
     
     assert(q != _entityDef.textureMappings.end());
     
@@ -418,6 +441,11 @@ int Entity::getSoundMapping(int state)
     return 0;
 }
 
+bool Entity::isFixedRotation()
+{
+    return _entityDef.bodyFlags & BodyFlag_FixedRotation;
+}
+
 Entity::Pose& Entity::getPose()
 {
     return _pose;
@@ -426,6 +454,16 @@ Entity::Pose& Entity::getPose()
 Entity::Pose& Entity::getPoseCache()
 {
     return _poseCache;
+}
+
+Entity::State& Entity::getState()
+{
+    return _state;
+}
+
+Entity::State& Entity::getStateCache()
+{
+    return _stateCache;
 }
 
 void Entity::createFixtures()

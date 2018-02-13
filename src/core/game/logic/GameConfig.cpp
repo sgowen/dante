@@ -48,9 +48,10 @@ void GameConfig::initWithJsonFile(const char* fileName, bool isBundled, bool use
     _parallaxLayer2FactorX = FW_CFG->getDouble("ParallaxLayer2FactorX");
     _parallaxLayer2FactorY = FW_CFG->getDouble("ParallaxLayer2FactorY");
     _gravity = FW_CFG->getFloat("Gravity");
+    _maxCrawlerVelocityX = FW_CFG->getFloat("MaxCrawlerVelocityX");
     _robotLightPositionFactorY = FW_CFG->getFloat("RobotLightPositionFactorY");
-    _maxXVelocity = FW_CFG->getFloat("MaxRobotVelocityX");
-    _maxYVelocity = FW_CFG->getFloat("MaxRobotVelocityY");
+    _maxRobotVelocityX = FW_CFG->getFloat("MaxRobotVelocityX");
+    _maxRobotVelocityY = FW_CFG->getFloat("MaxRobotVelocityY");
     _playerLightZ = FW_CFG->getFloat("PlayerLightZ");
     _behindPlayerLightZFactor = FW_CFG->getFloat("BehindPlayerLightZFactor");
     _frontPlayerLightZFactor = FW_CFG->getFloat("FrontPlayerLightZFactor");

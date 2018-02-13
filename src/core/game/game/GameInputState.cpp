@@ -121,7 +121,8 @@ bool GameInputState::isRequestingToAddLocalPlayer() const
     for (int i = 1; i < MAX_NUM_PLAYERS_PER_SERVER; ++i)
     {
         if (_playerInputStates[i]._playerId == INPUT_UNASSIGNED
-            && _playerInputStates[i]._inputState > 0)
+            && (_playerInputStates[i]._inputState & GameInputStateFlag_Jumping ||
+                _playerInputStates[i]._inputState & GameInputStateFlag_MainAction))
         {
             return true;
         }

@@ -332,7 +332,7 @@ void NetworkManagerServer::handlePacketFromNewClient(InputMemoryBitStream& input
     {
         // read the name
         std::string name;
-        inputStream.read(name);
+        inputStream.readSmall(name);
         
         if (_addressHashToClientMap.size() == 0)
         {
@@ -443,6 +443,10 @@ void NetworkManagerServer::sendStatePacketToClient(ClientProxy* inClientProxy)
     }
     
     ifp->setTransmissionData('RPLM', rmtd);
+    
+#ifdef NG_LOG
+    LOG("Post-State Outgoing packet Bit Length: %d \n", statePacket.getBitLength());
+#endif
     
     sendPacket(statePacket, inClientProxy->getMachineAddress());
 }

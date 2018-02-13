@@ -72,8 +72,8 @@ private:
     
     enum ReadStateFlag
     {
-        ReadStateFlag_PlayerInfo = 1 << 1,
-        ReadStateFlag_Stats = 1 << 2
+        ReadStateFlag_PlayerInfo = 1 << 2,
+        ReadStateFlag_Stats =      1 << 3
     };
     
     struct PlayerInfo
@@ -133,6 +133,8 @@ private:
     
     /// Non-Networked
     b2Fixture* _attackSensorFixture;
+    
+    /// Client Only
     bool _isLocalPlayer;
     
     void processInputForIdleState(uint8_t inputState);

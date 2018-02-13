@@ -307,9 +307,9 @@ void StudioInputManager::handleDefaultInput()
             {
                 if (e.isDown())
                 {
-                    if (_engine->_world->getDynamicEntities().size() > 24)
+                    if (_engine->_world->getDynamicEntities().size() > MAX_NUM_DYNAMIC_ENTITIES)
                     {
-                        _engine->_renderer->displayToast("Cannot have more than 24 dynamic entities!");
+                        _engine->_renderer->displayToast(StringUtil::format("Cannot have more than %d dynamic entities!", MAX_NUM_DYNAMIC_ENTITIES));
                     }
                     else
                     {
@@ -335,9 +335,9 @@ void StudioInputManager::handleDefaultInput()
             case NG_KEY_S:
                 if (e.isDown())
                 {
-                    if (_engine->_world->getDynamicEntities().size() > 24)
+                    if (_engine->_world->getDynamicEntities().size() > MAX_NUM_DYNAMIC_ENTITIES)
                     {
-                        _engine->_renderer->displayToast("Cannot have more than 24 dynamic entities!");
+                        _engine->_renderer->displayToast(StringUtil::format("Cannot have more than %d dynamic entities!", MAX_NUM_DYNAMIC_ENTITIES));
                     }
                     else
                     {

@@ -43,7 +43,7 @@ private:
     
     enum ReadStateFlag
     {
-        ReadStateFlag_Stats = 1 << 1
+        ReadStateFlag_Stats = 1 << 2
     };
     
     struct Stats
@@ -71,11 +71,10 @@ private:
     
     /// Non-Networked
     b2Fixture* _attackSensorFixture;
-    float _maxXVelocity;
     
     /// Server Only
-    Entity* _target;
-    Entity* _targetTouching;
+    uint32_t _target;
+    uint32_t _targetTouching;
     
     void handleIdleState(bool isLive);
     void handleMovingState(bool isLive);

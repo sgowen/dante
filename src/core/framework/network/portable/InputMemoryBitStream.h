@@ -16,38 +16,26 @@
 #include <string>
 
 struct b2Vec2;
-class Color;
 
 class InputMemoryBitStream
 {
 public:
     InputMemoryBitStream(char* inBuffer, uint32_t inBitCount);
-    
     InputMemoryBitStream(const InputMemoryBitStream& inOther);
-    
     ~InputMemoryBitStream();
     
     const char*	getBufferPtr() const;
-    
     uint32_t getRemainingBitCount() const;
     
     void readBits(uint8_t& outData, uint32_t inBitCount);
-    
     void readBits(void* outData, uint32_t inBitCount);
-    
     void readBytes(void* outData, uint32_t inByteCount);
-    
     void readSignedBinaryValue(float& outData);
-    
     void read(bool& outData);
-    
     void resetToCapacity(uint32_t inByteCapacity);
-    
-    void read(std::string& inString);
-    
+    void readLarge(std::string& inString);
+    void readSmall(std::string& inString);
     void read(b2Vec2& outVector);
-    
-    void read(Color& outColor);
     
     template <typename T, uint32_t BIT_COUNT = sizeof(T) * 8>
     void read(T& outData)

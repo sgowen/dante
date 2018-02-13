@@ -46,9 +46,10 @@ public:
     double _parallaxLayer2FactorX;
     double _parallaxLayer2FactorY;
     float _gravity;
+    float _maxCrawlerVelocityX;
     float _robotLightPositionFactorY;
-    float _maxXVelocity;
-    float _maxYVelocity;
+    float _maxRobotVelocityX;
+    float _maxRobotVelocityY;
     float _playerLightZ;
     float _behindPlayerLightZFactor;
     float _frontPlayerLightZFactor;

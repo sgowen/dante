@@ -45,6 +45,9 @@
 #define NETWORK_ENTITY_ID_BEGIN 0x00010000u
 #define NETWORK_ENTITY_ID_END   0xFFFFFFFFu
 
+#define MAX_NUM_DYNAMIC_ENTITIES 24
+#define MAX_USER_NAME_LENGTH 16
+
 //// Entity Message Definitions ////
 
 #define ENTITY_MESSAGE_DAMAGE 0x01u

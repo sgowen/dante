@@ -58,8 +58,8 @@ PlayerController::~PlayerController()
 
 void PlayerController::update(bool isLive)
 {
-    uint8_t& state = _entity->getPose().state;
-    uint8_t& stateTime = _entity->getPose().stateTime;
+    uint8_t& state = _entity->getState().state;
+    uint16_t& stateTime = _entity->getState().stateTime;
     
     if ((state == State_FirstPunch && stateTime == 1) ||
         (state == State_SecondPunch && stateTime == 1) ||
@@ -161,7 +161,7 @@ void PlayerController::read(InputMemoryBitStream& inInputStream, uint16_t& inRea
     {
         inInputStream.read(_playerInfo.addressHash);
         inInputStream.read<uint8_t, 3>(_playerInfo.playerId);
-        inInputStream.read(_playerInfo.playerName);
+        inInputStream.readSmall(_playerInfo.playerName);
         
         _isLocalPlayer = NG_CLIENT->isPlayerIdLocal(_playerInfo.playerId);
         
@@ -181,7 +181,7 @@ void PlayerController::read(InputMemoryBitStream& inInputStream, uint16_t& inRea
     
     if (!isLocalPlayer())
     {
-        GM_UTIL->handleSound(_entity, _entity->getPoseCache().state, _entity->getPose().state);
+        GM_UTIL->handleSound(_entity, _entity->getStateCache().state, _entity->getState().state);
     }
 }
 
@@ -201,7 +201,7 @@ uint16_t PlayerController::write(OutputMemoryBitStream& inOutputStream, uint16_t
     {
         inOutputStream.write(_playerInfo.addressHash);
         inOutputStream.write<uint8_t, 3>(_playerInfo.playerId);
-        inOutputStream.write(_playerInfo.playerName);
+        inOutputStream.writeSmall(_playerInfo.playerName);
         
         writtenState |= ReadStateFlag_PlayerInfo;
     }
@@ -229,7 +229,7 @@ void PlayerController::processInput(InputState* inInputState, bool isLive)
         return;
     }
     
-    uint8_t state = _entity->getPose().state;
+    uint8_t state = _entity->getState().state;
     uint8_t inputState = playerInputState->getInputState();
     switch (state)
     {
@@ -260,7 +260,7 @@ void PlayerController::processInput(InputState* inInputState, bool isLive)
     
     if (isLive)
     {
-        GM_UTIL->handleSound(_entity, state, _entity->getPose().state);
+        GM_UTIL->handleSound(_entity, state, _entity->getState().state);
     }
 }
 
@@ -303,14 +303,14 @@ void PlayerController::processInputForIdleState(uint8_t inputState)
 {
     handleMovementInput(inputState);
     
-    if (_entity->getPose().state == State_Idle ||
-        _entity->getPose().state == State_Running)
+    if (_entity->getState().state == State_Idle ||
+        _entity->getState().state == State_Running)
     {
         handleMainActionInput(inputState);
     }
     
-    if (_entity->getPose().state == State_Idle ||
-        _entity->getPose().state == State_Running)
+    if (_entity->getState().state == State_Idle ||
+        _entity->getState().state == State_Running)
     {
         handleJumpInput(inputState);
     }
@@ -320,13 +320,13 @@ void PlayerController::processInputForFirstPunchState(uint8_t inputState)
 {
     handleMainActionInput(inputState);
     
-    if (_entity->getPose().state == State_Idle)
+    if (_entity->getState().state == State_Idle)
     {
         handleMovementInput(inputState);
     }
     
-    if (_entity->getPose().state == State_Idle ||
-        _entity->getPose().state == State_Running)
+    if (_entity->getState().state == State_Idle ||
+        _entity->getState().state == State_Running)
     {
         handleJumpInput(inputState);
     }
@@ -336,13 +336,13 @@ void PlayerController::processInputForSecondPunchState(uint8_t inputState)
 {
     handleMainActionInput(inputState);
     
-    if (_entity->getPose().state == State_Idle)
+    if (_entity->getState().state == State_Idle)
     {
         handleMovementInput(inputState);
     }
     
-    if (_entity->getPose().state == State_Idle ||
-        _entity->getPose().state == State_Running)
+    if (_entity->getState().state == State_Idle ||
+        _entity->getState().state == State_Running)
     {
         handleJumpInput(inputState);
     }
@@ -352,13 +352,13 @@ void PlayerController::processInputForThirdPunchState(uint8_t inputState)
 {
     handleMainActionInput(inputState);
     
-    if (_entity->getPose().state == State_Idle)
+    if (_entity->getState().state == State_Idle)
     {
         handleMovementInput(inputState);
     }
     
-    if (_entity->getPose().state == State_Idle ||
-        _entity->getPose().state == State_Running)
+    if (_entity->getState().state == State_Idle ||
+        _entity->getState().state == State_Running)
     {
         handleJumpInput(inputState);
     }
@@ -368,14 +368,14 @@ void PlayerController::processInputForRunningState(uint8_t inputState)
 {
     handleMovementInput(inputState);
     
-    if (_entity->getPose().state == State_Idle ||
-        _entity->getPose().state == State_Running)
+    if (_entity->getState().state == State_Idle ||
+        _entity->getState().state == State_Running)
     {
         handleMainActionInput(inputState);
     }
     
-    if (_entity->getPose().state == State_Idle ||
-        _entity->getPose().state == State_Running)
+    if (_entity->getState().state == State_Idle ||
+        _entity->getState().state == State_Running)
     {
         handleJumpInput(inputState);
     }
@@ -397,8 +397,7 @@ void PlayerController::handleMovementInput(uint8_t inputState)
     static const int STOP = 1;
     static const int RIGHT = 2;
     
-    uint8_t& state = _entity->getPose().state;
-    uint8_t& stateTime = _entity->getPose().stateTime;
+    uint8_t& state = _entity->getState().state;
     
     state = State_Idle;
     int moveState = STOP;
@@ -425,13 +424,13 @@ void PlayerController::handleMovementInput(uint8_t inputState)
     switch (moveState)
     {
         case LEFT:
-            desiredVel = b2Max(vel.x - 1, -GM_CFG->_maxXVelocity);
+            desiredVel = b2Max(vel.x - 1, -GM_CFG->_maxRobotVelocityX);
             break;
         case STOP:
             desiredVel = vel.x * 0.99f;
             break;
         case RIGHT:
-            desiredVel = b2Min(vel.x + 1, GM_CFG->_maxXVelocity);
+            desiredVel = b2Min(vel.x + 1, GM_CFG->_maxRobotVelocityX);
             break;
     }
     
@@ -445,19 +444,13 @@ void PlayerController::handleMovementInput(uint8_t inputState)
     {
         _entity->getBody()->ApplyLinearImpulse(b2Vec2(impulse, 0), _entity->getBody()->GetWorldCenter(), true);
     }
-    
-    if ((state == State_Running && stateTime >= 60) ||
-        (state == State_Idle && stateTime >= 36))
-    {
-        stateTime = 0;
-    }
 }
 
 void PlayerController::handleMainActionInput(uint8_t inputState)
 {
-    uint8_t& state = _entity->getPose().state;
-    uint8_t& stateTime = _entity->getPose().stateTime;
-    uint8_t& stateFlags = _entity->getPose().stateFlags;
+    uint8_t& state = _entity->getState().state;
+    uint16_t& stateTime = _entity->getState().stateTime;
+    uint8_t& stateFlags = _entity->getState().stateFlags;
     
     if (inputState & GameInputStateFlag_MainAction && _entity->isGrounded())
     {
@@ -467,28 +460,22 @@ void PlayerController::handleMainActionInput(uint8_t inputState)
             stateTime = 0;
             stateFlags = 0;
         }
-        else if (stateFlags == MainActionFlag_ReadyForSecondPunch &&
-                 stateTime < 18 &&
-                 state != State_SecondPunch)
+        else if (stateFlags == MainActionFlag_ReadyForSecondPunch && stateTime < 18 && state != State_SecondPunch)
         {
             stateFlags = MainActionFlag_ToThrowSecondPunch;
         }
-        else if (stateFlags == MainActionFlag_ReadyForThirdPunch &&
-                 stateTime < 18 &&
-                 state != State_ThirdPunch)
+        else if (stateFlags == MainActionFlag_ReadyForThirdPunch && stateTime < 18 && state != State_ThirdPunch)
         {
             stateFlags = MainActionFlag_ToThrowThirdPunch;
         }
         
-        if (stateFlags == MainActionFlag_ToThrowSecondPunch &&
-            stateTime > 18)
+        if (stateFlags == MainActionFlag_ToThrowSecondPunch && stateTime > 18)
         {
             state = State_SecondPunch;
             stateTime = 0;
             stateFlags = 0;
         }
-        else if (stateFlags == MainActionFlag_ToThrowThirdPunch &&
-                 stateTime > 18)
+        else if (stateFlags == MainActionFlag_ToThrowThirdPunch && stateTime > 18)
         {
             state = State_ThirdPunch;
             stateTime = 0;
@@ -524,15 +511,13 @@ void PlayerController::handleMainActionInput(uint8_t inputState)
             stateFlags = 0;
         }
         
-        if (stateFlags == MainActionFlag_ToThrowSecondPunch &&
-            stateTime > 18)
+        if (stateFlags == MainActionFlag_ToThrowSecondPunch && stateTime > 18)
         {
             state = State_SecondPunch;
             stateTime = 0;
             stateFlags = 0;
         }
-        else if (stateFlags == MainActionFlag_ToThrowThirdPunch &&
-                 stateTime > 18)
+        else if (stateFlags == MainActionFlag_ToThrowThirdPunch && stateTime > 18)
         {
             state = State_ThirdPunch;
             stateTime = 0;
@@ -551,8 +536,8 @@ void PlayerController::handleMainActionInput(uint8_t inputState)
 
 void PlayerController::handleJumpInput(uint8_t inputState)
 {
-    uint8_t& state = _entity->getPose().state;
-    uint8_t& stateTime = _entity->getPose().stateTime;
+    uint8_t& state = _entity->getState().state;
+    uint16_t& stateTime = _entity->getState().stateTime;
     
     if (inputState & GameInputStateFlag_Jumping && _entity->isGrounded())
     {
@@ -566,8 +551,8 @@ void PlayerController::handleJumpInput(uint8_t inputState)
         float vertForce = 0;
         if (state == State_Jumping)
         {
-            vertForce = _entity->getBody()->GetMass() * (GM_CFG->_maxYVelocity - stateTime * 0.5f);
-            vertForce = clamp(vertForce, _entity->getBody()->GetMass() * GM_CFG->_maxYVelocity, 0);
+            vertForce = _entity->getBody()->GetMass() * (GM_CFG->_maxRobotVelocityY - stateTime * 0.5f);
+            vertForce = clamp(vertForce, _entity->getBody()->GetMass() * GM_CFG->_maxRobotVelocityY, 0);
             _entity->getBody()->ApplyLinearImpulse(b2Vec2(0, vertForce), _entity->getBody()->GetWorldCenter(), true);
         }
         
@@ -584,11 +569,10 @@ void PlayerController::handleJumpInput(uint8_t inputState)
 
 void PlayerController::handleJumpCompletedInput(uint8_t inputState)
 {
-    uint8_t& state = _entity->getPose().state;
-    uint8_t& stateTime = _entity->getPose().stateTime;
+    uint8_t& state = _entity->getState().state;
+    uint16_t& stateTime = _entity->getState().stateTime;
     
-    if (_entity->isGrounded() &&
-        stateTime > 18)
+    if (_entity->isGrounded() && stateTime > 18)
     {
         state = State_Idle;
     }

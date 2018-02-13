@@ -11,7 +11,6 @@
 #include <framework/network/portable/OutputMemoryBitStream.h>
 
 #include <Box2D/Box2D.h>
-#include <framework/graphics/portable/Color.h>
 #include <framework/util/MathUtil.h>
 #include <framework/util/StringUtil.h>
 #include <framework/util/Constants.h>
@@ -127,18 +126,20 @@ void OutputMemoryBitStream::write(const b2Vec2& inVector)
 #endif
 }
 
-void OutputMemoryBitStream::write(Color& inColor)
-{
-    write(inColor.red);
-    write(inColor.green);
-    write(inColor.blue);
-    write(inColor.alpha);
-}
-
-void OutputMemoryBitStream::write(const std::string& inString)
+void OutputMemoryBitStream::writeLarge(const std::string& inString)
 {
     uint32_t elementCount = static_cast<uint32_t>(inString.size());
     elementCount = htonl(elementCount);
+    write(elementCount);
+    for (const auto& element : inString)
+    {
+        write(element);
+    }
+}
+
+void OutputMemoryBitStream::writeSmall(const std::string& inString)
+{
+    uint8_t elementCount = static_cast<uint8_t>(inString.size());
     write(elementCount);
     for (const auto& element : inString)
     {

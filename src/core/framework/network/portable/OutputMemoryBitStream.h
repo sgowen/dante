@@ -16,35 +16,25 @@
 #include <string>
 
 struct b2Vec2;
-class Color;
 
 class OutputMemoryBitStream
 {
 public:
     OutputMemoryBitStream();
-    
     ~OutputMemoryBitStream();
     
     void writeBits(uint8_t inData, uint32_t inBitCount);
-    
     void writeBits(const void* inData, uint32_t inBitCount);
     
     const char*	getBufferPtr() const;
-    
     uint32_t getBitLength() const;
-    
     uint32_t getByteLength() const;
     
     void writeBytes(const void* inData, uint32_t inByteCount);
-    
     void write(bool inData);
-    
     void write(const b2Vec2& inVector);
-    
-    void write(Color& inColor);
-    
-    void write(const std::string& inString);
-    
+    void writeLarge(const std::string& inString);
+    void writeSmall(const std::string& inString);
     void writeSignedBinaryValue(float inValue);
     
     template <typename T, uint32_t BIT_COUNT = sizeof(T) * 8>

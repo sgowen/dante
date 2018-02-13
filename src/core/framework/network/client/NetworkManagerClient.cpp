@@ -252,7 +252,7 @@ void NetworkManagerClient::updateSayingHello()
         OutputMemoryBitStream helloPacket;
         
         helloPacket.write(static_cast<uint8_t>(NW_PACKET_TYPE_HELLO));
-        helloPacket.write(getPlayerName());
+        helloPacket.writeSmall(getPlayerName());
         
         sendPacket(helloPacket);
         

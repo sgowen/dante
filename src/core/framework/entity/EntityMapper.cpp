@@ -156,18 +156,23 @@ void EntityMapper::initWithJson(const char* json)
 
 Entity* EntityMapper::createEntity(uint32_t inFourCCName, int x, int y, bool isServer)
 {
-    auto q = _entityDescriptorsMap.find(inFourCCName);
-    
-    assert(q != _entityDescriptorsMap.end());
-    
-    EntityDef* entityDef = q->second;
-    
-    return createEntityFromDef(entityDef, x, y, isServer);
+    return createEntityFromDef(getEntityDef(inFourCCName), x, y, isServer);
 }
 
 Entity* EntityMapper::createEntityFromDef(EntityDef* entityDef, int x, int y, bool isServer)
 {
     return new Entity(*entityDef, x, y, isServer);
+}
+
+EntityDef* EntityMapper::getEntityDef(uint32_t inFourCCName)
+{
+    auto q = _entityDescriptorsMap.find(inFourCCName);
+    
+    assert(q != _entityDescriptorsMap.end());
+    
+    EntityDef* ret = q->second;
+    
+    return ret;
 }
 
 void EntityMapper::registerFunction(std::string name, EntityControllerCreationFunc inCreationFunction)

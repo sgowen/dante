@@ -43,7 +43,7 @@ private:
     
     enum ReadStateFlag
     {
-        ReadStateFlag_Stats = 1 << 1
+        ReadStateFlag_Stats = 1 << 2
     };
     
     struct Stats

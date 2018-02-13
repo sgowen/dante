@@ -175,7 +175,7 @@ void NGSteamClientHelper::processSpecialPacket(uint8_t packetType, InputMemoryBi
                     std::string serverName;
                     inInputStream.read(steamIDGameServer);
                     inInputStream.read(bVACSecure);
-                    inInputStream.read(serverName);
+                    inInputStream.readLarge(serverName);
 
                     onReceiveServerInfo(CSteamID(steamIDGameServer), bVACSecure, serverName.c_str());
                 }

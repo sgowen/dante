@@ -11,7 +11,6 @@
 #include <framework/network/portable/InputMemoryBitStream.h>
 
 #include <Box2D/Box2D.h>
-#include <framework/graphics/portable/Color.h>
 
 #include <cstring>	// memcpy()
 
@@ -123,12 +122,24 @@ void InputMemoryBitStream::resetToCapacity(uint32_t inByteCapacity)
     _bitCapacity = inByteCapacity << 3; _bitHead = 0;
 }
 
-void InputMemoryBitStream::read(std::string& inString)
+void InputMemoryBitStream::readLarge(std::string& inString)
 {
     uint32_t elementCount;
     read(elementCount);
     
     elementCount = ntohl(elementCount);
+    
+    inString.resize(elementCount);
+    for (auto& element : inString)
+    {
+        read(element);
+    }
+}
+
+void InputMemoryBitStream::readSmall(std::string& inString)
+{
+    uint8_t elementCount;
+    read(elementCount);
     
     inString.resize(elementCount);
     for (auto& element : inString)
@@ -168,12 +179,4 @@ void InputMemoryBitStream::read(b2Vec2& outVector)
         read(outVector.y);
     }
 #endif
-}
-
-void InputMemoryBitStream::read(Color& outColor)
-{
-    read(outColor.red);
-    read(outColor.green);
-    read(outColor.blue);
-    read(outColor.alpha);
 }

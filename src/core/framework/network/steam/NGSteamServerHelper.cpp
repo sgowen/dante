@@ -130,7 +130,7 @@ void NGSteamServerHelper::processSpecialPacket(uint8_t packetType, InputMemoryBi
             packet.write(SteamGameServer()->GetSteamID().ConvertToUint64());
             // You can only make use of VAC when using the Steam authentication system
             packet.write(SteamGameServer()->BSecure());
-            packet.write(_serverName);
+            packet.writeLarge(_serverName);
             
             sendPacket(packet, inFromAddress);
         }

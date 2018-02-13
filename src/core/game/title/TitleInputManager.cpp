@@ -122,9 +122,9 @@ void TitleInputManager::update()
         
         std::string s = ss.str();
         _liveInput += s;
-        if (_liveInput.length() > 16)
+        if (_liveInput.length() > MAX_USER_NAME_LENGTH)
         {
-            int sub = static_cast<int>(_liveInput.length()) - 16;
+            int sub = static_cast<int>(_liveInput.length()) - MAX_USER_NAME_LENGTH;
             _liveInput.erase(_liveInput.end() - sub, _liveInput.end());
         }
     }

@@ -44,9 +44,8 @@ BasicFollowAndAttackController::BasicFollowAndAttackController(Entity* inEntity)
 _stats(),
 _statsCache(_stats),
 _attackSensorFixture(NULL),
-_maxXVelocity(4),
-_target(NULL),
-_targetTouching(NULL)
+_target(0),
+_targetTouching(0)
 {
     // Empty
 }
@@ -60,7 +59,7 @@ void BasicFollowAndAttackController::update(bool isLive)
 {
     if (_entity->isServer())
     {
-        uint8_t state = _entity->getPose().state;
+        uint8_t state = _entity->getState().state;
         switch (state)
         {
             case State_Idle:
@@ -83,8 +82,8 @@ void BasicFollowAndAttackController::update(bool isLive)
 
 void BasicFollowAndAttackController::postUpdate()
 {
-    uint8_t state = _entity->getPose().state;
-    uint8_t stateTime = _entity->getPose().stateTime;
+    uint8_t state = _entity->getState().state;
+    uint8_t stateTime = _entity->getState().stateTime;
     
     if (state == State_Dying && stateTime >= 120)
     {
@@ -100,9 +99,9 @@ void BasicFollowAndAttackController::postUpdate()
 
 void BasicFollowAndAttackController::receiveMessage(uint16_t message, bool isLive, void* data)
 {
-    uint8_t fromState = _entity->getPose().state;
-    uint8_t& state = _entity->getPose().state;
-    uint8_t& stateTime = _entity->getPose().stateTime;
+    uint8_t fromState = _entity->getState().state;
+    uint8_t& state = _entity->getState().state;
+    uint16_t& stateTime = _entity->getState().stateTime;
     
     switch (message)
     {
@@ -142,24 +141,28 @@ bool BasicFollowAndAttackController::shouldCollide(Entity* inEntity, b2Fixture* 
 {
     // Don't collide with other crawlers
     return inEntity->getEntityDef().type != _entity->getEntityDef().type &&
-    _entity->getPose().state != State_Dying;
+    _entity->getState().state != State_Dying;
 }
 
 void BasicFollowAndAttackController::handleBeginContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB)
 {
-    if (inFixtureA == _attackSensorFixture &&
-        !inFixtureB->IsSensor())
+    if (_entity->isServer() &&
+        inFixtureA == _attackSensorFixture &&
+        !inFixtureB->IsSensor() &&
+        inEntity->getController()->getRTTI().derivesFrom(PlayerController::rtti))
     {
-        _targetTouching = inEntity;
+        _targetTouching = inEntity->getID();
     }
 }
 
 void BasicFollowAndAttackController::handleEndContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB)
 {
-    if (inFixtureA == _attackSensorFixture &&
-        !inFixtureB->IsSensor())
+    if (_entity->isServer() &&
+        inFixtureA == _attackSensorFixture &&
+        !inFixtureB->IsSensor() &&
+        inEntity->getController()->getRTTI().derivesFrom(PlayerController::rtti))
     {
-        _targetTouching = NULL;
+        _targetTouching = 0;
     }
 }
 
@@ -176,7 +179,7 @@ void BasicFollowAndAttackController::read(InputMemoryBitStream& inInputStream, u
         _statsCache = _stats;
     }
     
-    GM_UTIL->handleSound(_entity, _entity->getPoseCache().state, _entity->getPose().state);
+    GM_UTIL->handleSound(_entity, _entity->getStateCache().state, _entity->getState().state);
 }
 
 void BasicFollowAndAttackController::recallLastReadState(uint16_t& inReadState)
@@ -215,41 +218,56 @@ void BasicFollowAndAttackController::handleIdleState(bool isLive)
         if (distance < shortestDistance)
         {
             shortestDistance = distance;
-            _target = e;
+            _target = e->getID();
         }
     }
     
-    uint8_t& state = _entity->getPose().state;
-    uint8_t& stateTime = _entity->getPose().stateTime;
+    uint8_t& state = _entity->getState().state;
+    uint16_t& stateTime = _entity->getState().stateTime;
     
     if (_target)
     {
         state = State_Moving;
         stateTime = 0;
     }
-    
-    if (stateTime >= 42)
-    {
-        stateTime = 0;
-    }
 }
 
 void BasicFollowAndAttackController::handleMovingState(bool isLive)
 {
-    uint8_t& state = _entity->getPose().state;
-    uint8_t& stateTime = _entity->getPose().stateTime;
-    float distance = b2Distance(_target->getPosition(), _entity->getPosition());
-    if (distance > GM_CFG->_camWidth / 3)
+    uint8_t& state = _entity->getState().state;
+    uint16_t& stateTime = _entity->getState().stateTime;
+    if (_targetTouching &&
+        NG_SERVER->getEntityManager()->getEntityByID(_targetTouching))
     {
-        _target = NULL;
+        state = State_Attacking;
+        stateTime = 0;
+        return;
+    }
+    
+    Entity* target = NG_SERVER->getEntityManager()->getEntityByID(_target);
+    if (target)
+    {
+        float distance = b2Distance(target->getPosition(), target->getPosition());
+        if (distance > GM_CFG->_camWidth / 3)
+        {
+            _target = 0;
+            state = State_Idle;
+            stateTime = 0;
+            
+            return;
+        }
+    }
+    else
+    {
+        _target = 0;
         state = State_Idle;
         stateTime = 0;
         
         return;
     }
     
-    bool isRight = _target->getPosition().x > _entity->getPosition().x;
-    bool isLeft = _target->getPosition().x < _entity->getPosition().x;
+    bool isRight = target->getPosition().x > _entity->getPosition().x;
+    bool isLeft = target->getPosition().x < _entity->getPosition().x;
     
     static const int LEFT = 0;
     static const int STOP = 1;
@@ -270,13 +288,13 @@ void BasicFollowAndAttackController::handleMovingState(bool isLive)
     switch (moveState)
     {
         case LEFT:
-            desiredVel = b2Max(vel.x - 1, -_maxXVelocity);
+            desiredVel = b2Max(vel.x - 1, -GM_CFG->_maxCrawlerVelocityX);
             break;
         case STOP:
             desiredVel = vel.x * 0.99f;
             break;
         case RIGHT:
-            desiredVel = b2Min(vel.x + 1, _maxXVelocity);
+            desiredVel = b2Min(vel.x + 1, GM_CFG->_maxCrawlerVelocityX);
             break;
     }
     
@@ -290,40 +308,26 @@ void BasicFollowAndAttackController::handleMovingState(bool isLive)
     {
         _entity->getBody()->ApplyLinearImpulse(b2Vec2(impulse, 0), _entity->getBody()->GetWorldCenter(), true);
     }
-    
-    if (stateTime >= 24)
-    {
-        stateTime = 0;
-    }
-    
-    if (_targetTouching)
-    {
-        state = State_Attacking;
-        stateTime = 0;
-    }
 }
 
 void BasicFollowAndAttackController::handleAttackingState(bool isLive)
 {
-    uint8_t& state = _entity->getPose().state;
-    uint8_t& stateTime = _entity->getPose().stateTime;
+    uint8_t& state = _entity->getState().state;
+    uint16_t& stateTime = _entity->getState().stateTime;
     
-    if (_targetTouching)
+    Entity* targetTouching = NG_SERVER->getEntityManager()->getEntityByID(_targetTouching);
+    if (targetTouching)
     {
-        if (stateTime == 24)
+        uint16_t animTime = stateTime % 30;
+        if (animTime == 24)
         {
             uint32_t damage = 1;
-            _targetTouching->getController()->receiveMessage(ENTITY_MESSAGE_DAMAGE, isLive, &damage);
+            targetTouching->getController()->receiveMessage(ENTITY_MESSAGE_DAMAGE, isLive, &damage);
         }
     }
     else
     {
         state = State_Idle;
-        stateTime = 0;
-    }
-    
-    if (stateTime >= 30)
-    {
         stateTime = 0;
     }
 }

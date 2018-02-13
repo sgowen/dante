@@ -58,8 +58,8 @@ void DestructibleController::update(bool isLive)
 
 void DestructibleController::postUpdate()
 {
-    uint8_t state = _entity->getPose().state;
-    uint8_t stateTime = _entity->getPose().stateTime;
+    uint8_t state = _entity->getState().state;
+    uint8_t stateTime = _entity->getState().stateTime;
     
     if (state == State_Destructing && stateTime >= 120)
     {
@@ -75,9 +75,9 @@ void DestructibleController::postUpdate()
 
 void DestructibleController::receiveMessage(uint16_t message, bool isLive, void* data)
 {
-    uint8_t fromState = _entity->getPose().state;
-    uint8_t& state = _entity->getPose().state;
-    uint8_t& stateTime = _entity->getPose().stateTime;
+    uint8_t fromState = _entity->getState().state;
+    uint8_t& state = _entity->getState().state;
+    uint16_t& stateTime = _entity->getState().stateTime;
     
     switch (message)
     {
@@ -123,7 +123,7 @@ void DestructibleController::onFixturesCreated(std::vector<b2Fixture*>& fixtures
 
 bool DestructibleController::shouldCollide(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB)
 {
-    return _entity->getPose().state != State_Destructing;
+    return _entity->getState().state != State_Destructing;
 }
 
 void DestructibleController::handleBeginContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB)

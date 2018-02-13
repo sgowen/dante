@@ -30,6 +30,7 @@ public:
     void initWithJson(const char* json);
     Entity* createEntity(uint32_t inFourCCName, int x = 0, int y = 0, bool isServer = false);
     Entity* createEntityFromDef(EntityDef* entityDef, int x = 0, int y = 0, bool isServer = false);
+    EntityDef* getEntityDef(uint32_t inFourCCName);
     void registerFunction(std::string name, EntityControllerCreationFunc inCreationFunction);
     EntityController* createEntityController(std::string name, Entity* inEntity);
     const std::vector<EntityDef*>& getEntityDescriptors();
