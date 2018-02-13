@@ -59,6 +59,7 @@ private:
     RendererHelper* _rendererHelper;
     SpriteBatcher* _fontSpriteBatcher;
     SpriteBatcher* _fbSpriteBatcher;
+    SpriteBatcher* _activeEntitySpriteBatcher;
     SpriteBatcher* _spriteBatchers[NUM_SPRITE_BATCHERS];
     std::string _textures[NUM_SPRITE_BATCHERS];
     PolygonBatcher* _fillPolygonBatcher;

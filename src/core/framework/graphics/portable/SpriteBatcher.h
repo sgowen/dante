@@ -15,6 +15,12 @@
 #include <vector>
 #include <cstddef>
 
+enum SpriteBatcherState
+{
+    SpriteBatcherState_Static =                1 << 0,
+    SpriteBatcherState_StaticBatchRenderered = 1 << 1
+};
+
 class RendererHelper;
 class NGTexture;
 class NGShader;
@@ -23,20 +29,24 @@ class TextureRegion;
 class SpriteBatcher
 {
 public:
-    int _index;
-    bool _isDynamic;
-    bool _isStaticBatchRendered;
     SpriteBatcher(RendererHelper* inRendererHelper);
     ~SpriteBatcher();
 
-    void beginBatch();
+    void beginBatch(int index);
     void renderSprite(float x, float y, float width, float height, float angle, TextureRegion& tr, bool flipX = false);
     void endBatch(NGShader* shader, NGTexture* texture, NGTexture* normalMap = NULL, Color& c = Color::WHITE);
 
+    void useDynamicConfig();
+    void useStaticConfig();
+    bool isDynamic();
+    bool isStaticBatchRendered();
+    
 private:
     RendererHelper* _rendererHelper;
     std::vector<VERTEX_2D_TEXTURE> _vertices;
     int _numSprites;
+    int _bufferIndex;
+    int _state;
 };
 
 #endif /* defined(__noctisgames__SpriteBatcher__) */

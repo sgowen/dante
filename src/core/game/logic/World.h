@@ -72,6 +72,10 @@ private:
     void clearDynamicEntities(std::vector<Entity*>& entities);
     void updateAndRemoveEntitiesAsNeeded(std::vector<Entity*>& entities);
     void postUpdateAndRemoveEntitiesAsNeeded(std::vector<Entity*>& entities);
+    
+    bool isLayer(Entity* e);
+    bool isStatic(Entity* e);
+    bool isDynamic(Entity* e);
 };
 
 #include <Box2D/Dynamics/b2WorldCallbacks.h>

@@ -44,9 +44,10 @@ public:
     virtual void bindMatrix(NGShaderUniformInput* uniform) = 0;
     virtual void bindShader(ShaderProgramWrapper* shaderProgramWrapper) = 0;
     virtual void bindTexture(NGTextureSlot textureSlot, NGTexture* texture, NGShaderUniformInput* uniform = NULL) = 0;
-    virtual void mapTextureVertices(std::vector<VERTEX_2D_TEXTURE>& vertices, bool isDynamic = true, int gpuBufferIndex = 0) = 0;
-    virtual void mapVertices(std::vector<VERTEX_2D>& vertices, bool isDynamic = true, int gpuBufferIndex = 0) = 0;
-    virtual void bindStaticTextureVertexBuffer(int gpuBufferIndex) = 0;
+    virtual void mapTextureVertices(std::vector<VERTEX_2D_TEXTURE>& vertices, bool useStaticBuffer = false, int gpuBufferIndex = 0) = 0;
+    virtual void mapVertices(std::vector<VERTEX_2D>& vertices, bool useStaticBuffer = false, int gpuBufferIndex = 0) = 0;
+    virtual void bindTextureVertexBuffer(bool useStaticBuffer = false, int gpuBufferIndex = 0) = 0;
+    virtual void bindVertexBuffer(bool useStaticBuffer = false, int gpuBufferIndex = 0) = 0;
     virtual void bindScreenVertexBuffer() = 0;
     virtual void draw(NGPrimitiveType renderPrimitiveType, uint32_t first, uint32_t count) = 0;
     virtual void drawIndexed(NGPrimitiveType renderPrimitiveType, uint32_t first, uint32_t count) = 0;
@@ -68,7 +69,7 @@ protected:
     int _renderWidth;
     int _renderHeight;
     
-    virtual GPUBufferWrapper* createGPUBuffer(size_t size, const void *data, bool isDynamic, bool isVertex) = 0;
+    virtual GPUBufferWrapper* createGPUBuffer(size_t size, const void *data, bool useStaticBuffer, bool isVertex) = 0;
     virtual void disposeGPUBuffer(GPUBufferWrapper* gpuBuffer) = 0;
     virtual TextureWrapper* createFramebuffer() = 0;
     virtual void platformReleaseFramebuffers() = 0;

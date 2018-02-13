@@ -151,7 +151,7 @@ void TitleRenderer::render()
     {
         _rendererHelper->updateMatrix(0, GM_CFG->_camWidth, 0, GM_CFG->_camHeight);
 
-        _spriteBatcher->beginBatch();
+        _spriteBatcher->beginBatch(INDEX_LAST_TEXTURE_VERTEX_BUFFER);
 
         switch (_engineState)
         {

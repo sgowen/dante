@@ -109,16 +109,12 @@ _textDisplayState(0)
     for (int i = 0; i < NUM_SPRITE_BATCHERS; ++i)
     {
         _spriteBatchers[i] = new SpriteBatcher(_rendererHelper);
-        _spriteBatchers[i]->_index = i;
     }
     
     for (int i = 0; i < NUM_CAMERAS; ++i)
     {
         _camBounds[i] = new NGRect(0, 0, GM_CFG->_camWidth, GM_CFG->_camHeight);
     }
-    
-    _staticFontSpriteBatcher->_index = 10;
-    _dynamicFontSpriteBatcher->_index = 10;
 }
 
 GameRenderer::~GameRenderer()
@@ -189,8 +185,7 @@ void GameRenderer::render()
     if (_engineState != _engine->_state ||
         _textDisplayState != textDisplayState)
     {
-        _staticFontSpriteBatcher->_isDynamic = true;
-        _staticFontSpriteBatcher->_isStaticBatchRendered = false;
+        _staticFontSpriteBatcher->useDynamicConfig();
     }
     
     _engineState = _engine->_state;
@@ -220,9 +215,7 @@ void GameRenderer::onNewMapLoaded()
 {
     for (int i = 0; i < NUM_SPRITE_BATCHERS; ++i)
     {
-        _spriteBatchers[i]->_isDynamic = true;
-        _spriteBatchers[i]->_isStaticBatchRendered = false;
-        _spriteBatchers[i]->_index = i;
+        _spriteBatchers[i]->useDynamicConfig();
     }
 }
 
@@ -293,9 +286,9 @@ void GameRenderer::renderWorld()
     
     for (int i = 0; i < NUM_SPRITE_BATCHERS; ++i)
     {
-        if (_spriteBatchers[i]->_isDynamic)
+        if (_spriteBatchers[i]->isDynamic())
         {
-            _spriteBatchers[i]->beginBatch();
+            _spriteBatchers[i]->beginBatch(i);
         }
     }
     
@@ -356,7 +349,7 @@ void GameRenderer::renderEntities(std::vector<Entity*>& entities)
         _textures[layer] = tr.getTextureName();
         _normals[layer] = tr.getNormalMapName();
         
-        if (_spriteBatchers[layer]->_isStaticBatchRendered)
+        if (_spriteBatchers[layer]->isStaticBatchRendered())
         {
             continue;
         }
@@ -456,8 +449,15 @@ void GameRenderer::endBatchWithTexture(SpriteBatcher* sb, NGTexture* tex, int la
         int c = clamp(layer, 3, 0);
         _rendererHelper->updateMatrix(_camBounds[c]->getLeft(), _camBounds[c]->getRight(), _camBounds[c]->getBottom(), _camBounds[c]->getTop());
         
-        _spriteBatchers[layer]->_index = layer;
-        _spriteBatchers[layer]->_isDynamic = layer == 4 || layer == 5 || layer == 6 || layer == 7;
+        if (layer == 0 ||
+            layer == 1 ||
+            layer == 2 ||
+            layer == 3 ||
+            layer == 8)
+        {
+            _spriteBatchers[layer]->useStaticConfig();
+        }
+        
         sb->endBatch(_textureNGShader, tex);
     }
 }
@@ -473,14 +473,14 @@ void GameRenderer::renderUI()
 {
     _rendererHelper->updateMatrix(0, GM_CFG->_camWidth, 0, GM_CFG->_camHeight);
     
-    if (_staticFontSpriteBatcher->_isDynamic)
+    if (_staticFontSpriteBatcher->isDynamic())
     {
-        _staticFontSpriteBatcher->beginBatch();
+        _staticFontSpriteBatcher->beginBatch(10);
     }
     
     if (NG_CLIENT->getState() == NCS_Welcomed)
     {
-        _dynamicFontSpriteBatcher->beginBatch();
+        _dynamicFontSpriteBatcher->beginBatch(10);
         
         int row = 1;
         static float padding = 1;
@@ -501,7 +501,7 @@ void GameRenderer::renderUI()
         
         _dynamicFontSpriteBatcher->endBatch(_textureNGShader, _fontTexture);
         
-        if (!_staticFontSpriteBatcher->_isStaticBatchRendered)
+        if (!_staticFontSpriteBatcher->isStaticBatchRendered())
         {
             // Controls
             ++row;
@@ -553,7 +553,7 @@ void GameRenderer::renderUI()
         renderText(_staticFontSpriteBatcher, StringUtil::format("%s, [ESC] to exit", "Joining Server...").c_str(), 0.5f, GM_CFG->_camHeight - 4, FONT_ALIGN_LEFT);
     }
     
-    _staticFontSpriteBatcher->_isDynamic = false;
+    _staticFontSpriteBatcher->useStaticConfig();
     _staticFontSpriteBatcher->endBatch(_textureNGShader, _fontTexture);
 }
 

@@ -148,27 +148,31 @@ void OpenGLRendererHelper::bindTexture(NGTextureSlot textureSlot, NGTexture* tex
     }
 }
 
-void OpenGLRendererHelper::mapTextureVertices(std::vector<VERTEX_2D_TEXTURE>& vertices, bool isDynamic, int gpuBufferIndex)
+void OpenGLRendererHelper::mapTextureVertices(std::vector<VERTEX_2D_TEXTURE>& vertices, bool useStaticBuffer, int gpuBufferIndex)
 {
-    GLuint& buffer = isDynamic ? _dynamicTextureVertexBuffers[gpuBufferIndex]->buffer : _staticTextureVertexBuffers[gpuBufferIndex]->buffer;
-    glBindBuffer(GL_ARRAY_BUFFER, buffer);
+    bindTextureVertexBuffer(useStaticBuffer, gpuBufferIndex);
+    
     glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(VERTEX_2D_TEXTURE) * vertices.size(), &vertices[0]);
-    
-    bindInputLayout(_currentShaderProgramWrapper->_inputLayout);
 }
 
-void OpenGLRendererHelper::mapVertices(std::vector<VERTEX_2D>& vertices, bool isDynamic, int gpuBufferIndex)
+void OpenGLRendererHelper::mapVertices(std::vector<VERTEX_2D>& vertices, bool useStaticBuffer, int gpuBufferIndex)
 {
-    GLuint& buffer = isDynamic ? _dynamicVertexBuffers[gpuBufferIndex]->buffer : _staticVertexBuffers[gpuBufferIndex]->buffer;
-    glBindBuffer(GL_ARRAY_BUFFER, buffer);
+    bindVertexBuffer(useStaticBuffer, gpuBufferIndex);
+    
     glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(VERTEX_2D) * vertices.size(), &vertices[0]);
+}
+
+void OpenGLRendererHelper::bindTextureVertexBuffer(bool useStaticBuffer, int gpuBufferIndex)
+{
+    GLuint& buffer = useStaticBuffer ? _staticTextureVertexBuffers[gpuBufferIndex]->buffer : _dynamicTextureVertexBuffers[gpuBufferIndex]->buffer;
+    glBindBuffer(GL_ARRAY_BUFFER, buffer);
     
     bindInputLayout(_currentShaderProgramWrapper->_inputLayout);
 }
 
-void OpenGLRendererHelper::bindStaticTextureVertexBuffer(int gpuBufferIndex)
+void OpenGLRendererHelper::bindVertexBuffer(bool useStaticBuffer, int gpuBufferIndex)
 {
-    GLuint& buffer = _staticTextureVertexBuffers[gpuBufferIndex]->buffer;
+    GLuint& buffer = useStaticBuffer ? _staticVertexBuffers[gpuBufferIndex]->buffer : _dynamicVertexBuffers[gpuBufferIndex]->buffer;
     glBindBuffer(GL_ARRAY_BUFFER, buffer);
     
     bindInputLayout(_currentShaderProgramWrapper->_inputLayout);
@@ -193,12 +197,12 @@ void OpenGLRendererHelper::drawIndexed(NGPrimitiveType renderPrimitiveType, uint
     glDrawElements(renderPrimitiveType, count, GL_UNSIGNED_SHORT, (void*)0);
 }
 
-GPUBufferWrapper* OpenGLRendererHelper::createGPUBuffer(size_t size, const void *data, bool isDynamic, bool isVertex)
+GPUBufferWrapper* OpenGLRendererHelper::createGPUBuffer(size_t size, const void *data, bool useStaticBuffer, bool isVertex)
 {
     GLuint buffer;
     glGenBuffers(1, &buffer);
     glBindBuffer(isVertex ? GL_ARRAY_BUFFER : GL_ELEMENT_ARRAY_BUFFER, buffer);
-    glBufferData(isVertex ? GL_ARRAY_BUFFER : GL_ELEMENT_ARRAY_BUFFER, size, data, isDynamic ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW);
+    glBufferData(isVertex ? GL_ARRAY_BUFFER : GL_ELEMENT_ARRAY_BUFFER, size, data, useStaticBuffer ? GL_STATIC_DRAW : GL_DYNAMIC_DRAW);
     
     return new GPUBufferWrapper(buffer);
 }

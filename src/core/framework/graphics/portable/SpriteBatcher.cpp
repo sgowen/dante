@@ -16,11 +16,12 @@
 #include <framework/graphics/portable/TextureRegion.h>
 
 #include <framework/util/Constants.h>
+#include <framework/util/StringUtil.h>
 
 #include <math.h>
 #include <assert.h>
 
-SpriteBatcher::SpriteBatcher(RendererHelper* inRendererHelper) : _rendererHelper(inRendererHelper), _numSprites(0), _isDynamic(true), _index(0), _isStaticBatchRendered(false)
+SpriteBatcher::SpriteBatcher(RendererHelper* inRendererHelper) : _rendererHelper(inRendererHelper), _numSprites(0), _bufferIndex(0), _state(0)
 {
     _vertices.reserve(MAX_BATCH_SIZE * VERTICES_PER_RECTANGLE);
 }
@@ -30,10 +31,12 @@ SpriteBatcher::~SpriteBatcher()
     // Empty
 }
 
-void SpriteBatcher::beginBatch()
+void SpriteBatcher::beginBatch(int index)
 {
     _vertices.clear();
     _numSprites = 0;
+    _bufferIndex = index;
+    _state = 0;
 }
 
 void SpriteBatcher::renderSprite(float x, float y, float width, float height, float angle, TextureRegion& tr, bool flipX)
@@ -132,25 +135,46 @@ void SpriteBatcher::endBatch(NGShader* shader, NGTexture* texture, NGTexture* no
     {
         shader->bind(texture, normalMap, &c);
         
-        if (_isDynamic)
+        bool staticDraw = _state & SpriteBatcherState_Static;
+        
+        if (_state & SpriteBatcherState_StaticBatchRenderered)
         {
-            _rendererHelper->mapTextureVertices(_vertices, true);
+#ifdef NG_LOG
+            LOG("Binding Texture Buffer numSprites:%d, staticDraw: %d, buffer: %d", _numSprites, staticDraw, _bufferIndex);
+#endif
+            _rendererHelper->bindTextureVertexBuffer(staticDraw, _bufferIndex);
         }
         else
         {
-            if (_isStaticBatchRendered)
-            {
-                _rendererHelper->bindStaticTextureVertexBuffer(_index);
-            }
-            else
-            {
-                _rendererHelper->mapTextureVertices(_vertices, false, _index);
-                _isStaticBatchRendered = true;
-            }
+#ifdef NG_LOG
+            LOG("Mapping Texture Vertices numSprites:%d, staticDraw: %d, buffer: %d", _numSprites, staticDraw, _bufferIndex);
+#endif
+            _rendererHelper->mapTextureVertices(_vertices, staticDraw, _bufferIndex);
+            _state |= staticDraw ? SpriteBatcherState_StaticBatchRenderered : 0;
         }
         
         _rendererHelper->drawIndexed(NGPrimitiveType_Triangles, 0, _numSprites * INDICES_PER_RECTANGLE);
         
         shader->unbind();
     }
+}
+
+void SpriteBatcher::useDynamicConfig()
+{
+    _state = 0;
+}
+
+void SpriteBatcher::useStaticConfig()
+{
+    _state |= SpriteBatcherState_Static;
+}
+
+bool SpriteBatcher::isDynamic()
+{
+    return !(_state & SpriteBatcherState_Static);
+}
+
+bool SpriteBatcher::isStaticBatchRendered()
+{
+    return _state & SpriteBatcherState_StaticBatchRenderered;
 }

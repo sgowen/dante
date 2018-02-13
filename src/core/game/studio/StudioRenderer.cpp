@@ -89,6 +89,7 @@ _textureManager(new TextureManager()),
 _rendererHelper(RENDERER_HELPER_FACTORY->createRendererHelper()),
 _fontSpriteBatcher(new SpriteBatcher(_rendererHelper)),
 _fbSpriteBatcher(new SpriteBatcher(_rendererHelper)),
+_activeEntitySpriteBatcher(new SpriteBatcher(_rendererHelper)),
 _fillPolygonBatcher(new PolygonBatcher(_rendererHelper, true)),
 _boundsPolygonBatcher(new PolygonBatcher(_rendererHelper, false)),
 _lineBatcher(new LineBatcher(_rendererHelper)),
@@ -123,6 +124,7 @@ StudioRenderer::~StudioRenderer()
     delete _rendererHelper;
     delete _fontSpriteBatcher;
     delete _fbSpriteBatcher;
+    delete _activeEntitySpriteBatcher;
     for (int i = 0; i < NUM_SPRITE_BATCHERS; ++i)
     {
         delete _spriteBatchers[i];
@@ -195,11 +197,11 @@ void StudioRenderer::render()
         {
             _rendererHelper->updateMatrix(_camBounds[3]->getLeft(), _camBounds[3]->getRight(), _camBounds[3]->getBottom(), _camBounds[3]->getTop());
             _rendererHelper->useNormalBlending();
-            _spriteBatchers[0]->beginBatch();
+            _activeEntitySpriteBatcher->beginBatch(10);
             TextureRegion tr = ASSETS->findTextureRegion(e->getTextureMapping(), e->getStateTime());
-            _spriteBatchers[0]->renderSprite(e->getPosition().x, e->getPosition().y, e->getWidth(), e->getHeight(), e->getAngle(), tr, e->isFacingLeft());
+            _activeEntitySpriteBatcher->renderSprite(e->getPosition().x, e->getPosition().y, e->getWidth(), e->getHeight(), e->getAngle(), tr, e->isFacingLeft());
             Color c = _input->_isDraggingActiveEntityOverDeleteZone ? Color::HALF : Color::DOUBLE;
-            _spriteBatchers[0]->endBatch(_textureNGShader, _textureManager->getTextureWithName(tr.getTextureName()), NULL, c);
+            _activeEntitySpriteBatcher->endBatch(_textureNGShader, _textureManager->getTextureWithName(tr.getTextureName()), NULL, c);
         }
         
         if (_engineState & StudioEngineState_DisplayBox2D)
@@ -276,12 +278,12 @@ void StudioRenderer::renderWorld()
     
     for (int i = 0; i < NUM_SPRITE_BATCHERS; ++i)
     {
-        _spriteBatchers[i]->beginBatch();
+        _spriteBatchers[i]->beginBatch(i);
     }
     
     if (_engineState & StudioEngineState_DisplayTypes)
     {
-        _fontSpriteBatcher->beginBatch();
+        _fontSpriteBatcher->beginBatch(INDEX_LAST_TEXTURE_VERTEX_BUFFER);
     }
     
     std::fill(_textures, _textures + NUM_SPRITE_BATCHERS, "");
@@ -421,7 +423,7 @@ void StudioRenderer::renderUI()
         int row = 2;
         static float padding = 1;
         
-        _fontSpriteBatcher->beginBatch();
+        _fontSpriteBatcher->beginBatch(INDEX_LAST_TEXTURE_VERTEX_BUFFER);
         renderText("Load Map", GM_CFG->_camWidth / 2, GM_CFG->_camHeight - 4 - (row++ * padding), FONT_ALIGN_CENTER);
         _fontSpriteBatcher->endBatch(_textureNGShader, _fontTexture);
         
@@ -431,7 +433,7 @@ void StudioRenderer::renderUI()
         {
             MapDef& mp = maps[i];
             
-            _fontSpriteBatcher->beginBatch();
+            _fontSpriteBatcher->beginBatch(INDEX_LAST_TEXTURE_VERTEX_BUFFER);
             renderText(StringUtil::format("%s | %s", mp.name.c_str(), mp.value.c_str()).c_str(), GM_CFG->_camWidth / 2, GM_CFG->_camHeight - 4 - (row++ * padding), FONT_ALIGN_CENTER);
             _fontSpriteBatcher->endBatch(_textureNGShader, _fontTexture, NULL, i == _input->_selectionIndex ? Color::WHITE : Color::BLACK);
         }
@@ -458,7 +460,7 @@ void StudioRenderer::renderUI()
         int row = 1;
         static float padding = 5;
         
-        _fontSpriteBatcher->beginBatch();
+        _fontSpriteBatcher->beginBatch(INDEX_LAST_TEXTURE_VERTEX_BUFFER);
         renderText("Entities", width / 2, GM_CFG->_camHeight - 1 - (row * padding), FONT_ALIGN_CENTER);
         _fontSpriteBatcher->endBatch(_textureNGShader, _fontTexture);
         
@@ -466,7 +468,7 @@ void StudioRenderer::renderUI()
         
         for (int i = 0; i < NUM_SPRITE_BATCHERS; ++i)
         {
-            _spriteBatchers[i]->beginBatch();
+            _spriteBatchers[i]->beginBatch(i);
         }
         
         std::fill(_textures, _textures + NUM_SPRITE_BATCHERS, "");
@@ -475,7 +477,7 @@ void StudioRenderer::renderUI()
         {
             EntityDef* ed = entityDescriptors[i];
             
-            _fontSpriteBatcher->beginBatch();
+            _fontSpriteBatcher->beginBatch(INDEX_LAST_TEXTURE_VERTEX_BUFFER);
             renderText(StringUtil::format("%s | %s", ed->typeName.c_str(), ed->name.c_str()).c_str(), 7, GM_CFG->_camHeight - 1 - (row * padding), FONT_ALIGN_LEFT);
             _fontSpriteBatcher->endBatch(_textureNGShader, _fontTexture, NULL, i == selectionIndex ? Color::WHITE : Color::BLACK);
             
@@ -506,7 +508,7 @@ void StudioRenderer::renderUI()
         _fillPolygonBatcher->renderRect(window);
         _fillPolygonBatcher->endBatch(_colorNGShader, windowColor);
         
-        _fontSpriteBatcher->beginBatch();
+        _fontSpriteBatcher->beginBatch(INDEX_LAST_TEXTURE_VERTEX_BUFFER);
         
         int row = 2;
         static float padding = 1;
@@ -545,41 +547,41 @@ void StudioRenderer::renderUI()
         
         for (int i = 0; i < StudioEngineState_NumLayers; ++i)
         {
-            _fontSpriteBatcher->beginBatch();
+            _fontSpriteBatcher->beginBatch(10);
             renderText(StringUtil::format("%d", i).c_str(), 1 + (column++ * padding), 1.5f, FONT_ALIGN_RIGHT);
             _fontSpriteBatcher->endBatch(_textureNGShader, _fontTexture, NULL, _engineState & (1 << (i + StudioEngineState_LayerBitBegin)) ? Color::WHITE : Color::BLACK);
         }
         
-        _fontSpriteBatcher->beginBatch();
+        _fontSpriteBatcher->beginBatch(INDEX_LAST_TEXTURE_VERTEX_BUFFER);
         renderText("Layers", 1 + column / 2.0f, 0.5f, FONT_ALIGN_CENTER);
         _fontSpriteBatcher->endBatch(_textureNGShader, _fontTexture, NULL, Color::WHITE);
         
         {
             /// Render Map Info in the center of the bar
-            _fontSpriteBatcher->beginBatch();
+            _fontSpriteBatcher->beginBatch(INDEX_LAST_TEXTURE_VERTEX_BUFFER);
             renderText(StringUtil::format("%s | %s", _engine->_world->getMapName().c_str(), _engine->_world->getMapFileName().c_str()).c_str(), GM_CFG->_camWidth / 2, 1.5f, FONT_ALIGN_CENTER);
             _fontSpriteBatcher->endBatch(_textureNGShader, _fontTexture, NULL, Color::WHITE);
             
-            _fontSpriteBatcher->beginBatch();
+            _fontSpriteBatcher->beginBatch(INDEX_LAST_TEXTURE_VERTEX_BUFFER);
             renderText("Map", GM_CFG->_camWidth / 2, 0.5f, FONT_ALIGN_CENTER);
             _fontSpriteBatcher->endBatch(_textureNGShader, _fontTexture, NULL, Color::WHITE);
         }
         
         column = 56;
         {
-            _fontSpriteBatcher->beginBatch();
+            _fontSpriteBatcher->beginBatch(INDEX_LAST_TEXTURE_VERTEX_BUFFER);
             renderText("C", 1 + (column++ * padding), 1.5f, FONT_ALIGN_LEFT);
             _fontSpriteBatcher->endBatch(_textureNGShader, _fontTexture, NULL, _engineState & StudioEngineState_DisplayControls ? Color::WHITE : Color::BLACK);
             
-            _fontSpriteBatcher->beginBatch();
+            _fontSpriteBatcher->beginBatch(INDEX_LAST_TEXTURE_VERTEX_BUFFER);
             renderText("A", 1 + (column++ * padding), 1.5f, FONT_ALIGN_LEFT);
             _fontSpriteBatcher->endBatch(_textureNGShader, _fontTexture, NULL, _engineState & StudioEngineState_DisplayAssets ? Color::WHITE : Color::BLACK);
             
-            _fontSpriteBatcher->beginBatch();
+            _fontSpriteBatcher->beginBatch(INDEX_LAST_TEXTURE_VERTEX_BUFFER);
             renderText("E", 1 + (column++ * padding), 1.5f, FONT_ALIGN_LEFT);
             _fontSpriteBatcher->endBatch(_textureNGShader, _fontTexture, NULL, _engineState & StudioEngineState_DisplayEntities ? Color::WHITE : Color::BLACK);
             
-            _fontSpriteBatcher->beginBatch();
+            _fontSpriteBatcher->beginBatch(INDEX_LAST_TEXTURE_VERTEX_BUFFER);
             renderText("Windows", 58, 0.5f, FONT_ALIGN_CENTER);
             _fontSpriteBatcher->endBatch(_textureNGShader, _fontTexture, NULL, Color::WHITE);
         }
@@ -601,7 +603,7 @@ void StudioRenderer::renderUI()
         int row = 3;
         static float padding = 1;
         
-        _fontSpriteBatcher->beginBatch();
+        _fontSpriteBatcher->beginBatch(INDEX_LAST_TEXTURE_VERTEX_BUFFER);
         renderText("DELETE", GM_CFG->_camWidth / 2, GM_CFG->_camHeight - (row++ * padding), FONT_ALIGN_CENTER);
         _fontSpriteBatcher->endBatch(_textureNGShader, _fontTexture);
     }
@@ -610,7 +612,7 @@ void StudioRenderer::renderUI()
         /// Toasts
         int y = GM_CFG->_camHeight - 2;
         _fillPolygonBatcher->beginBatch();
-        _fontSpriteBatcher->beginBatch();
+        _fontSpriteBatcher->beginBatch(INDEX_LAST_TEXTURE_VERTEX_BUFFER);
         for (std::string t : _toasts)
         {
             NGRect window = NGRect(GM_CFG->_camWidth / 2 - t.length() / 2.0f - 1, y - 1, t.length() + 1, 2);

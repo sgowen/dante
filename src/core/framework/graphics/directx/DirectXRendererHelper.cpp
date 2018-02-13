@@ -220,32 +220,46 @@ void DirectXRendererHelper::bindTexture(NGTextureSlot textureSlot, NGTexture* te
     }
 }
 
-void DirectXRendererHelper::mapTextureVertices(std::vector<VERTEX_2D_TEXTURE>& vertices, bool isDynamic, int gpuBufferIndex)
+void DirectXRendererHelper::mapTextureVertices(std::vector<VERTEX_2D_TEXTURE>& vertices, bool useStaticBuffer, int gpuBufferIndex)
 {
-    ID3D11Buffer* buffer = isDynamic ? _dynamicTextureVertexBuffers[gpuBufferIndex]->buffer : _staticTextureVertexBuffers[gpuBufferIndex]->buffer;
+    ID3D11Buffer* buffer = useStaticBuffer ? _staticTextureVertexBuffers[gpuBufferIndex]->buffer : _dynamicTextureVertexBuffers[gpuBufferIndex]->buffer;
     
-    mapVertexBuffer(buffer, &vertices[0], vertices.size(), sizeof(VERTEX_2D_TEXTURE));
+    UINT stride = sizeof(VERTEX_2D_TEXTURE);
+    mapVertexBuffer(buffer, &vertices[0], vertices.size(), stride);
+    bindVertexBuffer(buffer, stride);
 }
 
-void DirectXRendererHelper::mapVertices(std::vector<VERTEX_2D>& vertices, bool isDynamic, int gpuBufferIndex)
+void DirectXRendererHelper::mapVertices(std::vector<VERTEX_2D>& vertices, bool useStaticBuffer, int gpuBufferIndex)
 {
-    ID3D11Buffer* buffer = isDynamic ? _dynamicVertexBuffers[gpuBufferIndex]->buffer : _staticVertexBuffers[gpuBufferIndex]->buffer;
+    ID3D11Buffer* buffer = useStaticBuffer ? _staticVertexBuffers[gpuBufferIndex]->buffer : _dynamicVertexBuffers[gpuBufferIndex]->buffer;
     
-    mapVertexBuffer(buffer, &vertices[0], vertices.size(), sizeof(VERTEX_2D));
+    UINT stride = sizeof(VERTEX_2D);
+    mapVertexBuffer(buffer, &vertices[0], vertices.size(), stride);
+    bindVertexBuffer(buffer, stride);
 }
 
-void DirectXRendererHelper::bindStaticTextureVertexBuffer(int gpuBufferIndex)
+void DirectXRendererHelper::bindTextureVertexBuffer(bool useStaticBuffer, int gpuBufferIndex)
 {
-    ID3D11Buffer* buffer = _staticTextureVertexBuffers[gpuBufferIndex]->buffer;
+    ID3D11Buffer* buffer = useStaticBuffer ? _staticTextureVertexBuffers[gpuBufferIndex]->buffer : _dynamicTextureVertexBuffers[gpuBufferIndex]->buffer;
     
-    bindVertexBuffer(buffer, sizeof(VERTEX_2D_TEXTURE));
+    UINT stride = sizeof(VERTEX_2D_TEXTURE);
+    bindVertexBuffer(buffer, stride);
+}
+
+void DirectXRendererHelper::bindVertexBuffer(bool useStaticBuffer, int gpuBufferIndex)
+{
+    ID3D11Buffer* buffer = useStaticBuffer ? _staticVertexBuffers[gpuBufferIndex]->buffer : _dynamicVertexBuffers[gpuBufferIndex]->buffer;
+    
+    UINT stride = sizeof(VERTEX_2D);
+    bindVertexBuffer(buffer, stride);
 }
 
 void DirectXRendererHelper::bindScreenVertexBuffer()
 {
     ID3D11Buffer* buffer = _staticScreenVertexBuffer->buffer;
     
-    bindVertexBuffer(buffer, sizeof(VERTEX_2D));
+    UINT stride = sizeof(VERTEX_2D);
+    bindVertexBuffer(buffer, stride);
 }
 
 void DirectXRendererHelper::draw(NGPrimitiveType renderPrimitiveType, uint32_t first, uint32_t count)
@@ -261,7 +275,7 @@ void DirectXRendererHelper::drawIndexed(NGPrimitiveType renderPrimitiveType, uin
     getD3DContext()->DrawIndexed(count, first, 0);
 }
 
-GPUBufferWrapper* DirectXRendererHelper::createGPUBuffer(size_t size, const void *data, bool isDynamic, bool isVertex)
+GPUBufferWrapper* DirectXRendererHelper::createGPUBuffer(size_t size, const void *data, bool useStaticBuffer, bool isVertex)
 {
     D3D11_BUFFER_DESC bufferDesc = { 0 };
     bufferDesc.ByteWidth = size;
@@ -604,8 +618,6 @@ void DirectXRendererHelper::mapVertexBuffer(ID3D11Buffer* buffer, const void *da
     
     // Reenable GPU access to the vertex buffer data.
     getD3DContext()->Unmap(buffer, 0);
-    
-    bindVertexBuffer(buffer, stride);
 }
 
 void DirectXRendererHelper::bindVertexBuffer(ID3D11Buffer* buffer, UINT stride)
