@@ -105,6 +105,10 @@ void StudioInputManager::update()
         handleDefaultInput();
         updateCamera();
     }
+    
+    int w = GM_CFG->_camWidth * _scrollValue;
+    int h = GM_CFG->_camHeight * _scrollValue;
+    _engine->_renderer->update(_cursor.getX(), _cursor.getY(), w, h, _scrollValue);
 }
 
 void StudioInputManager::handleDefaultInput()
@@ -709,8 +713,6 @@ void StudioInputManager::updateCamera()
             _activeEntityCursor.sub(w / GM_CFG->_camWidth / 2.0f, 0);
         }
     }
-    
-    _engine->_renderer->update(_cursor.getX(), _cursor.getY(), w, h, _scrollValue);
 }
 
 void StudioInputManager::resetCamera()
