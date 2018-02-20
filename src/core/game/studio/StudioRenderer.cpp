@@ -234,8 +234,8 @@ void StudioRenderer::update(float x, float y, float w, float h, int scale)
     _scrollValue = scale;
     
     _camBounds[3]->getLowerLeft().set(x, y);
-    float px = fmodf(x, w);
-    float py = fmodf(y, h);
+    float px = fmodf(x, GM_CFG->_parallaxCamResetX);
+    float py = fmodf(y, GM_CFG->_parallaxCamResetY);
     float bx = x - px;
     float by = y - py;
     _camBounds[2]->getLowerLeft().set(bx + px * GM_CFG->_parallaxLayer2FactorX, by + py * GM_CFG->_parallaxLayer2FactorY);
@@ -377,8 +377,8 @@ void StudioRenderer::renderGrid()
 {
     float x = clamp(_camBounds[3]->getLeft(), FLT_MAX, 0);
     float y = clamp(_camBounds[3]->getBottom(), FLT_MAX, 0);
-    float px = fmodf(x, GM_CFG->_camWidth);
-    float py = fmodf(y, GM_CFG->_camHeight);
+    float px = fmodf(x, GM_CFG->_parallaxCamResetX);
+    float py = fmodf(y, GM_CFG->_parallaxCamResetY);
     float bx = x - px;
     float by = y - py;
     
@@ -406,11 +406,11 @@ void StudioRenderer::renderGrid()
     _lineBatcher->endBatch(_colorNGShader, lineColor);
     
     _lineBatcher->beginBatch();
-    for (int i = leftAligned; i <= camWidth; i += GM_CFG->_camWidth)
+    for (int i = leftAligned; i <= camWidth; i += GM_CFG->_parallaxCamResetX)
     {
         _lineBatcher->renderLine(i, 0, i, camHeight);
     }
-    for (int i = bottomAligned; i <= camHeight; i += GM_CFG->_camHeight)
+    for (int i = bottomAligned; i <= camHeight; i += GM_CFG->_parallaxCamResetY)
     {
         _lineBatcher->renderLine(0, i, camWidth, i);
     }

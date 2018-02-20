@@ -41,6 +41,8 @@ void GameConfig::initWithJsonFile(const char* fileName, bool isBundled, bool use
     _defaultTextureFilterMin = FW_CFG->getString("DefaultTextureFilterMin");
     _defaultTextureFilterMag = FW_CFG->getString("DefaultTextureFilterMag");
     _defaultTextureFilterMipMap = FW_CFG->getBool("DefaultTextureFilterMipMap");
+    _parallaxCamResetX = FW_CFG->getDouble("ParallaxCamResetX");
+    _parallaxCamResetY = FW_CFG->getDouble("ParallaxCamResetY");
     _parallaxLayer0FactorX = FW_CFG->getDouble("ParallaxLayer0FactorX");
     _parallaxLayer0FactorY = FW_CFG->getDouble("ParallaxLayer0FactorY");
     _parallaxLayer1FactorX = FW_CFG->getDouble("ParallaxLayer1FactorX");

@@ -39,6 +39,8 @@ public:
     std::string _defaultTextureFilterMin;
     std::string _defaultTextureFilterMag;
     bool _defaultTextureFilterMipMap;
+    int _parallaxCamResetX;
+    int _parallaxCamResetY;
     double _parallaxLayer0FactorX;
     double _parallaxLayer0FactorY;
     double _parallaxLayer1FactorX;
