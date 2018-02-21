@@ -520,7 +520,7 @@ void StudioRenderer::renderUI()
         _fillPolygonBatcher->beginBatch();
         int width = 22;
         int height = 18;
-        NGRect window = NGRect(GM_CFG->_camWidth - width - 1, GM_CFG->_camHeight - height - 1, width, height);
+        NGRect window = NGRect(GM_CFG->_camWidth - width - 1, GM_CFG->_camHeight - height - 3, width, height);
         Color windowColor = Color::BLUE;
         windowColor.alpha = 0.5f;
         _fillPolygonBatcher->renderRect(window);
@@ -528,7 +528,7 @@ void StudioRenderer::renderUI()
         
         _fontSpriteBatcher->beginBatch(INDEX_LAST_TEXTURE_VERTEX_BUFFER);
         
-        int row = 2;
+        int row = 4;
         static float padding = 1;
         
         renderText(StringUtil::format("[B]   Box2D Debug %s", _engineState & StudioEngineState_DisplayBox2D ? " ON" : "OFF").c_str(), GM_CFG->_camWidth - 2, GM_CFG->_camHeight - (row++ * padding), FONT_ALIGN_RIGHT);
@@ -553,54 +553,56 @@ void StudioRenderer::renderUI()
     }
     
     {
-        /// Bottom Bar
+        /// Top Bar
         _fillPolygonBatcher->beginBatch();
-        NGRect bar = NGRect(0, 0, GM_CFG->_camWidth, 2);
+        NGRect bar = NGRect(0, GM_CFG->_camHeight - 2, GM_CFG->_camWidth, 2);
         Color barColor = Color(0.33f, 0.33f, 0.33f, 0.85f);
         _fillPolygonBatcher->renderRect(bar);
         _fillPolygonBatcher->endBatch(_colorNGShader, barColor);
         
         int column = 1;
         static float padding = 1;
+        static float textY = GM_CFG->_camHeight - 2 + 1.5f;
+        static float textY2 = GM_CFG->_camHeight - 2 + 0.5f;
         
         for (int i = 0; i < StudioEngineState_NumLayers; ++i)
         {
             _fontSpriteBatcher->beginBatch(10);
-            renderText(StringUtil::format("%d", i).c_str(), 1 + (column++ * padding), 1.5f, FONT_ALIGN_RIGHT);
+            renderText(StringUtil::format("%d", i).c_str(), 1 + (column++ * padding), textY, FONT_ALIGN_RIGHT);
             _fontSpriteBatcher->endBatch(_textureNGShader, _fontTexture, NULL, _engineState & (1 << (i + StudioEngineState_LayerBitBegin)) ? Color::WHITE : Color::BLACK);
         }
         
         _fontSpriteBatcher->beginBatch(INDEX_LAST_TEXTURE_VERTEX_BUFFER);
-        renderText("Layers", 1 + column / 2.0f, 0.5f, FONT_ALIGN_CENTER);
+        renderText("Layers", 1 + column / 2.0f, textY2, FONT_ALIGN_CENTER);
         _fontSpriteBatcher->endBatch(_textureNGShader, _fontTexture, NULL, Color::WHITE);
         
         {
             /// Render Map Info in the center of the bar
             _fontSpriteBatcher->beginBatch(INDEX_LAST_TEXTURE_VERTEX_BUFFER);
-            renderText(StringUtil::format("%s | %s", _engine->_world->getMapName().c_str(), _engine->_world->getMapFileName().c_str()).c_str(), GM_CFG->_camWidth / 2, 1.5f, FONT_ALIGN_CENTER);
+            renderText(StringUtil::format("%s | %s", _engine->_world->getMapName().c_str(), _engine->_world->getMapFileName().c_str()).c_str(), GM_CFG->_camWidth / 2, textY, FONT_ALIGN_CENTER);
             _fontSpriteBatcher->endBatch(_textureNGShader, _fontTexture, NULL, Color::WHITE);
             
             _fontSpriteBatcher->beginBatch(INDEX_LAST_TEXTURE_VERTEX_BUFFER);
-            renderText("Map", GM_CFG->_camWidth / 2, 0.5f, FONT_ALIGN_CENTER);
+            renderText("Map", GM_CFG->_camWidth / 2, textY2, FONT_ALIGN_CENTER);
             _fontSpriteBatcher->endBatch(_textureNGShader, _fontTexture, NULL, Color::WHITE);
         }
         
         column = 56;
         {
             _fontSpriteBatcher->beginBatch(INDEX_LAST_TEXTURE_VERTEX_BUFFER);
-            renderText("C", 1 + (column++ * padding), 1.5f, FONT_ALIGN_LEFT);
+            renderText("C", 1 + (column++ * padding), textY, FONT_ALIGN_LEFT);
             _fontSpriteBatcher->endBatch(_textureNGShader, _fontTexture, NULL, _engineState & StudioEngineState_DisplayControls ? Color::WHITE : Color::BLACK);
             
             _fontSpriteBatcher->beginBatch(INDEX_LAST_TEXTURE_VERTEX_BUFFER);
-            renderText("A", 1 + (column++ * padding), 1.5f, FONT_ALIGN_LEFT);
+            renderText("A", 1 + (column++ * padding), textY, FONT_ALIGN_LEFT);
             _fontSpriteBatcher->endBatch(_textureNGShader, _fontTexture, NULL, _engineState & StudioEngineState_DisplayAssets ? Color::WHITE : Color::BLACK);
             
             _fontSpriteBatcher->beginBatch(INDEX_LAST_TEXTURE_VERTEX_BUFFER);
-            renderText("E", 1 + (column++ * padding), 1.5f, FONT_ALIGN_LEFT);
+            renderText("E", 1 + (column++ * padding), textY, FONT_ALIGN_LEFT);
             _fontSpriteBatcher->endBatch(_textureNGShader, _fontTexture, NULL, _engineState & StudioEngineState_DisplayEntities ? Color::WHITE : Color::BLACK);
             
             _fontSpriteBatcher->beginBatch(INDEX_LAST_TEXTURE_VERTEX_BUFFER);
-            renderText("Windows", 58, 0.5f, FONT_ALIGN_CENTER);
+            renderText("Windows", 58, textY2, FONT_ALIGN_CENTER);
             _fontSpriteBatcher->endBatch(_textureNGShader, _fontTexture, NULL, Color::WHITE);
         }
     }

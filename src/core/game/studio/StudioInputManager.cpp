@@ -717,9 +717,6 @@ void StudioInputManager::updateCamera()
 
 void StudioInputManager::resetCamera()
 {
-    _rawScrollValue = 1;
-    _scrollValue = 1;
-    _lastScrollValue = 1;
     int w = GM_CFG->_camWidth * _scrollValue;
     int h = GM_CFG->_camHeight * _scrollValue;
     CURSOR_INPUT_MANAGER->resetScrollValue();
