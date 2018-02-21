@@ -234,13 +234,9 @@ void StudioRenderer::update(float x, float y, float w, float h, int scale)
     _scrollValue = scale;
     
     _camBounds[3]->getLowerLeft().set(x, y);
-    float px = fmodf(x, GM_CFG->_parallaxCamResetX);
-    float py = fmodf(y, GM_CFG->_parallaxCamResetY);
-    float bx = x - px;
-    float by = y - py;
-    _camBounds[2]->getLowerLeft().set(bx + px * GM_CFG->_parallaxLayer2FactorX, by + py * GM_CFG->_parallaxLayer2FactorY);
-    _camBounds[1]->getLowerLeft().set(bx + px * GM_CFG->_parallaxLayer1FactorX, by + py * GM_CFG->_parallaxLayer1FactorY);
-    _camBounds[0]->getLowerLeft().set(bx + px * GM_CFG->_parallaxLayer0FactorX, by + py * GM_CFG->_parallaxLayer0FactorY);
+    _camBounds[2]->getLowerLeft().set(x * GM_CFG->_parallaxLayer2FactorX, y * GM_CFG->_parallaxLayer2FactorY);
+    _camBounds[1]->getLowerLeft().set(x * GM_CFG->_parallaxLayer1FactorX, y * GM_CFG->_parallaxLayer1FactorY);
+    _camBounds[0]->getLowerLeft().set(x * GM_CFG->_parallaxLayer0FactorX, y * GM_CFG->_parallaxLayer0FactorY);
     
     for (int i = 0; i < NUM_CAMERAS; ++i)
     {
@@ -377,8 +373,8 @@ void StudioRenderer::renderGrid()
 {
     float x = clamp(_camBounds[3]->getLeft(), FLT_MAX, 0);
     float y = clamp(_camBounds[3]->getBottom(), FLT_MAX, 0);
-    float px = fmodf(x, GM_CFG->_parallaxCamResetX);
-    float py = fmodf(y, GM_CFG->_parallaxCamResetY);
+    float px = fmodf(x, GM_CFG->_camWidth);
+    float py = fmodf(y, GM_CFG->_camHeight);
     float bx = x - px;
     float by = y - py;
     
@@ -406,11 +402,11 @@ void StudioRenderer::renderGrid()
     _lineBatcher->endBatch(_colorNGShader, lineColor);
     
     _lineBatcher->beginBatch();
-    for (int i = leftAligned; i <= camWidth; i += GM_CFG->_parallaxCamResetX)
+    for (int i = leftAligned; i <= camWidth; i += GM_CFG->_camWidth)
     {
         _lineBatcher->renderLine(i, 0, i, camHeight);
     }
-    for (int i = bottomAligned; i <= camHeight; i += GM_CFG->_parallaxCamResetY)
+    for (int i = bottomAligned; i <= camHeight; i += GM_CFG->_camHeight)
     {
         _lineBatcher->renderLine(0, i, camWidth, i);
     }
@@ -611,7 +607,7 @@ void StudioRenderer::renderUI()
     
     {
         /// Toasts
-        int y = GM_CFG->_camHeight - 2;
+        int y = GM_CFG->_camHeight - 4;
         _fillPolygonBatcher->beginBatch();
         _fontSpriteBatcher->beginBatch(INDEX_LAST_TEXTURE_VERTEX_BUFFER);
         for (std::string t : _toasts)

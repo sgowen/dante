@@ -264,14 +264,9 @@ void GameRenderer::updateCamera()
     _lights.push_back(LightDef(GM_CFG->_tempStaticLight2[0], GM_CFG->_tempStaticLight2[1], GM_CFG->_tempStaticLight2[2], GM_CFG->_tempStaticLight2[3], GM_CFG->_tempStaticLight2[4], GM_CFG->_tempStaticLight2[5]));
     
     _camBounds[3]->getLowerLeft().set(x, y);
-    
-    float px = fmodf(x, GM_CFG->_parallaxCamResetX);
-    float py = fmodf(y, GM_CFG->_parallaxCamResetY);
-    float bx = x - px;
-    float by = y - py;
-    _camBounds[2]->getLowerLeft().set(bx + px * GM_CFG->_parallaxLayer2FactorX, by + py * GM_CFG->_parallaxLayer2FactorY);
-    _camBounds[1]->getLowerLeft().set(bx + px * GM_CFG->_parallaxLayer1FactorX, by + py * GM_CFG->_parallaxLayer1FactorY);
-    _camBounds[0]->getLowerLeft().set(bx + px * GM_CFG->_parallaxLayer0FactorX, by + py * GM_CFG->_parallaxLayer0FactorY);
+    _camBounds[2]->getLowerLeft().set(x * GM_CFG->_parallaxLayer2FactorX, y * GM_CFG->_parallaxLayer2FactorY);
+    _camBounds[1]->getLowerLeft().set(x * GM_CFG->_parallaxLayer1FactorX, y * GM_CFG->_parallaxLayer1FactorY);
+    _camBounds[0]->getLowerLeft().set(x * GM_CFG->_parallaxLayer0FactorX, y * GM_CFG->_parallaxLayer0FactorY);
 }
 
 void GameRenderer::setFramebuffer(int framebufferIndex, float r, float g, float b, float a)
