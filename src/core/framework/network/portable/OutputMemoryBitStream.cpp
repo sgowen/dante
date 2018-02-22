@@ -128,10 +128,10 @@ void OutputMemoryBitStream::write(const b2Vec2& inVector)
 
 void OutputMemoryBitStream::writeLarge(const std::string& inString)
 {
-    uint32_t elementCount = static_cast<uint32_t>(inString.size());
-    elementCount = htonl(elementCount);
+    uint16_t elementCount = static_cast<uint16_t>(inString.size());
+    assert(elementCount <= 1198);
     write(elementCount);
-    for (const auto& element : inString)
+    for (const char& element : inString)
     {
         write(element);
     }

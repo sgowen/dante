@@ -124,10 +124,8 @@ void InputMemoryBitStream::resetToCapacity(uint32_t inByteCapacity)
 
 void InputMemoryBitStream::readLarge(std::string& inString)
 {
-    uint32_t elementCount;
+    uint16_t elementCount;
     read(elementCount);
-    
-    elementCount = ntohl(elementCount);
     
     inString.resize(elementCount);
     for (auto& element : inString)
