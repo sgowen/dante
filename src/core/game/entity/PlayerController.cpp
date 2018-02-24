@@ -460,11 +460,11 @@ void PlayerController::handleMainActionInput(uint8_t inputState)
             stateTime = 0;
             stateFlags = 0;
         }
-        else if (stateFlags == MainActionFlag_ReadyForSecondPunch && stateTime < 18 && state != State_SecondPunch)
+        else if (stateFlags == MainActionFlag_ReadyForSecondPunch && stateTime < 30 && state != State_SecondPunch)
         {
             stateFlags = MainActionFlag_ToThrowSecondPunch;
         }
-        else if (stateFlags == MainActionFlag_ReadyForThirdPunch && stateTime < 18 && state != State_ThirdPunch)
+        else if (stateFlags == MainActionFlag_ReadyForThirdPunch && stateTime < 30 && state != State_ThirdPunch)
         {
             stateFlags = MainActionFlag_ToThrowThirdPunch;
         }
@@ -524,8 +524,8 @@ void PlayerController::handleMainActionInput(uint8_t inputState)
             stateFlags = 0;
         }
         
-        if ((state == State_FirstPunch && stateTime > 18) ||
-            (state == State_SecondPunch && stateTime > 18) ||
+        if ((state == State_FirstPunch && stateTime > 30) ||
+            (state == State_SecondPunch && stateTime > 30) ||
             (state == State_ThirdPunch && stateTime > 30))
         {
             state = State_Idle;
