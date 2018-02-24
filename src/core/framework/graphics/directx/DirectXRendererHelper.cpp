@@ -122,6 +122,14 @@ void DirectXRendererHelper::bindToOffscreenFramebuffer(int index)
     
     getD3DContext()->RSSetViewports(1, &_offScreenViewport);
     
+    D3D11_RECT rects[1];
+    rects[0].left = _offScreenViewport.TopLeftX;
+    rects[0].right = _offScreenViewport.Width;
+    rects[0].top = _offScreenViewport.TopLeftY;
+    rects[0].bottom = _offScreenViewport.Height;
+    
+    getD3DContext()->RSSetScissorRects(1, rects);
+    
 	_fbIndex = index;
 }
 
@@ -148,6 +156,14 @@ void DirectXRendererHelper::bindToScreenFramebuffer()
 	getD3DContext()->OMSetRenderTargets(1, targets, NULL);
     
     getD3DContext()->RSSetViewports(1, &s_screenViewport);
+
+	D3D11_RECT rects[1];
+	rects[0].left = s_screenViewport.TopLeftX;
+	rects[0].right = s_screenViewport.Width;
+	rects[0].top = s_screenViewport.TopLeftY;
+	rects[0].bottom = s_screenViewport.Height;
+
+	getD3DContext()->RSSetScissorRects(1, rects);
     
     _fbIndex = -1;
 }
