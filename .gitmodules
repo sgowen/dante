@@ -27,4 +27,4 @@
 	url = https://github.com/NoctisGames/rapidjson.git
 [submodule "assets"]
 	path = assets
-	url = https://stephen_gowen@bitbucket.org/stephen_gowen/dante-assets.git
+	url = git@bitbucket.org:stephen_gowen/dante-assets.git
