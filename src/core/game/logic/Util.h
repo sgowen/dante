@@ -11,18 +11,14 @@
 
 #include <framework/network/portable/Network.h>
 
-#define GM_UTIL (Util::getInstance())
-
 class Entity;
 struct b2Vec2;
 
 class Util
 {
 public:
-    static Util* getInstance();
-    
-    void handleSound(Entity* e, uint8_t fromState, uint8_t toState);
-    void playSound(int soundId, const b2Vec2& position);
+    static void handleSound(Entity* e, uint8_t fromState, uint8_t toState);
+    static void playSound(int soundId, const b2Vec2& position);
     
     // ctor, copy ctor, and assignment should be private in a Singleton
     Util();

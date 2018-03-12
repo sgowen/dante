@@ -181,7 +181,7 @@ void PlayerController::read(InputMemoryBitStream& inInputStream, uint16_t& inRea
     
     if (!isLocalPlayer())
     {
-        GM_UTIL->handleSound(_entity, _entity->getStateCache().state, _entity->getState().state);
+        Util::handleSound(_entity, _entity->getStateCache().state, _entity->getState().state);
     }
 }
 
@@ -260,7 +260,7 @@ void PlayerController::processInput(InputState* inInputState, bool isLive)
     
     if (isLive)
     {
-        GM_UTIL->handleSound(_entity, state, _entity->getState().state);
+        Util::handleSound(_entity, state, _entity->getState().state);
     }
 }
 

@@ -126,7 +126,7 @@ void BasicFollowAndAttackController::receiveMessage(uint16_t message, bool isLiv
     
     if (isLive)
     {
-        GM_UTIL->handleSound(_entity, fromState, state);
+        Util::handleSound(_entity, fromState, state);
     }
 }
 
@@ -179,7 +179,7 @@ void BasicFollowAndAttackController::read(InputMemoryBitStream& inInputStream, u
         _statsCache = _stats;
     }
     
-    GM_UTIL->handleSound(_entity, _entity->getStateCache().state, _entity->getState().state);
+    Util::handleSound(_entity, _entity->getStateCache().state, _entity->getState().state);
 }
 
 void BasicFollowAndAttackController::recallLastReadState(uint16_t& inReadState)

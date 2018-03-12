@@ -18,12 +18,6 @@
 #include <game/entity/PlayerController.h>
 #include <game/logic/GameConfig.h>
 
-Util* Util::getInstance()
-{
-    static Util instance = Util();
-    return &instance;
-}
-
 void Util::handleSound(Entity* e, uint8_t fromState, uint8_t toState)
 {
     if (fromState == toState)

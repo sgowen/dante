@@ -112,7 +112,7 @@ void DestructibleController::receiveMessage(uint16_t message, bool isLive, void*
     
     if (isLive)
     {
-        GM_UTIL->handleSound(_entity, fromState, state);
+        Util::handleSound(_entity, fromState, state);
     }
 }
 
