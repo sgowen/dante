@@ -36,7 +36,7 @@
 #include <ctime> // rand
 #include <assert.h>
 
-#define SERVER_CALLBACKS Server::sHandleNewClient, Server::sHandleLostClient, Server::sHandleInputStateCreation, Server::sHandleInputStateRelease
+#define SERVER_CALLBACKS Server::sHandleDynamicEntityCreatedOnServer, Server::sHandleDynamicEntityDeletedOnServer, Server::sHandleNewClient, Server::sHandleLostClient, Server::sHandleInputStateCreation, Server::sHandleInputStateRelease
 
 Server* Server::s_instance = NULL;
 
@@ -307,19 +307,18 @@ _flags(flags),
 _data(data),
 _world(new World(WorldFlag_Server | WorldFlag_MapLoadAll)),
 _stateTime(0),
-_frameStateTime(0),
 _map(0),
 _isLoadingMap(false)
 {
     if (_flags & ServerFlag_Steam)
     {
 #ifdef NG_STEAM
-        NetworkManagerServer::create(new NGSteamServerHelper(GM_CFG->_steamGameDir, GM_CFG->_versionName, GM_CFG->_steamProductName, GM_CFG->_steamProductDescription, GM_CFG->_serverPort, NG_SERVER_CALLBACKS), Server::sHandleDynamicEntityCreatedOnServer, Server::sHandleDynamicEntityDeletedOnServer, SERVER_CALLBACKS);
+        NetworkManagerServer::create(new NGSteamServerHelper(GM_CFG->_steamGameDir, GM_CFG->_versionName, GM_CFG->_steamProductName, GM_CFG->_steamProductDescription, GM_CFG->_serverPort, NG_SERVER_CALLBACKS), SERVER_CALLBACKS);
 #endif
     }
     else
     {
-        NetworkManagerServer::create(new SocketServerHelper(GM_CFG->_serverPort, NG_SERVER_CALLBACKS), Server::sHandleDynamicEntityCreatedOnServer, Server::sHandleDynamicEntityDeletedOnServer, SERVER_CALLBACKS);
+        NetworkManagerServer::create(new SocketServerHelper(GM_CFG->_serverPort, NG_SERVER_CALLBACKS), SERVER_CALLBACKS);
     }
     
     assert(NG_SERVER);

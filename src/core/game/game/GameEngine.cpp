@@ -74,6 +74,27 @@ void GameEngine::destroy()
     s_instance = NULL;
 }
 
+uint64_t GameEngine::sGetPlayerAddressHash(uint8_t inPlayerIndex)
+{
+    GameEngine* engine = GameEngine::getInstance();
+    assert(engine);
+    
+    World* world = engine->_world;
+    assert(world);
+    
+    uint64_t ret = 0;
+    Entity* entity = world->getPlayerWithId(inPlayerIndex + 1);
+    if (entity)
+    {
+        PlayerController* robot = static_cast<PlayerController*>(entity->getController());
+        assert(robot);
+        
+        ret = robot->getAddressHash();
+    }
+    
+    return ret;
+}
+
 void GameEngine::sHandleDynamicEntityCreatedOnClient(Entity* inEntity)
 {
     GameEngine* engine = GameEngine::getInstance();
@@ -94,27 +115,6 @@ void GameEngine::sHandleDynamicEntityDeletedOnClient(Entity* inEntity)
     assert(world);
     
     world->removeDynamicEntity(inEntity);
-}
-
-uint64_t GameEngine::sGetPlayerAddressHash(uint8_t inPlayerIndex)
-{
-    GameEngine* engine = GameEngine::getInstance();
-    assert(engine);
-    
-    World* world = engine->_world;
-    assert(world);
-    
-    uint64_t ret = 0;
-    Entity* entity = world->getPlayerWithId(inPlayerIndex + 1);
-    if (entity)
-    {
-        PlayerController* robot = static_cast<PlayerController*>(entity->getController());
-        assert(robot);
-        
-        ret = robot->getAddressHash();
-    }
-    
-    return ret;
 }
 
 GameEngine::GameEngine() : EngineState(),

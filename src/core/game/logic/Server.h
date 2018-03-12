@@ -55,7 +55,6 @@ private:
     std::vector<uint8_t> _playerIds;
     std::vector<std::string> _playerNames;
     double _stateTime;
-    double _frameStateTime;
     uint32_t _map;
     bool _isLoadingMap;
     
