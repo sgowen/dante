@@ -237,7 +237,7 @@ void GameEngine::createDeviceDependentResources()
 
 void GameEngine::createWindowSizeDependentResources(int screenWidth, int screenHeight, int cursorWidth, int cursorHeight)
 {
-    _renderer->createWindowSizeDependentResources(screenWidth, screenHeight, GM_CFG->_framebufferWidth, GM_CFG->_framebufferHeight);
+    _renderer->createWindowSizeDependentResources(screenWidth, screenHeight);
     
     CURSOR_CONVERTER->setCursorSize(cursorWidth, cursorHeight);
 }

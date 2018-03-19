@@ -35,7 +35,7 @@ public:
     virtual ~TitleRenderer();
     
     virtual void createDeviceDependentResources();
-    virtual void createWindowSizeDependentResources(int screenWidth, int screenHeight, int renderWidth, int renderHeight);
+    virtual void createWindowSizeDependentResources(int screenWidth, int screenHeight);
     virtual void releaseDeviceDependentResources();
     virtual void render();
     

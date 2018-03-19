@@ -421,7 +421,12 @@ bool Entity::isFacingLeft()
 
 std::string& Entity::getTextureMapping()
 {
-    auto q = _entityDef.textureMappings.find(_state.state);
+    return getTextureMapping(_state.state);
+}
+
+std::string& Entity::getTextureMapping(uint8_t state)
+{
+    auto q = _entityDef.textureMappings.find(state);
     
     assert(q != _entityDef.textureMappings.end());
     

@@ -38,18 +38,34 @@ void OpenGLRendererHelper::createDeviceDependentResources()
 {
     RendererHelper::createDeviceDependentResources();
     
-    assert(_fbos.size() == 0);
-    assert(_fbo_textures.size() == 0);
+    assert(_offscreenFBOTextures.size() == 0);
+    assert(_offscreenFBOs.size() == 0);
+    assert(_FBOTextures.size() == 0);
+    assert(_FBOs.size() == 0);
     
     glGetIntegerv(GL_FRAMEBUFFER_BINDING, &_screenFBO);
 }
 
 void OpenGLRendererHelper::bindToOffscreenFramebuffer(int index)
 {
-    glBindFramebuffer(GL_FRAMEBUFFER, _fbos[index]);
+    glBindFramebuffer(GL_FRAMEBUFFER, _offscreenFBOs[index]);
 
-    glViewport(0, 0, _renderWidth, _renderHeight);
-    glScissor(0, 0, _renderWidth, _renderHeight);
+    bindToFramebuffer(_offscreenFramebufferDefs[index]);
+}
+
+void OpenGLRendererHelper::bindToFramebuffer(int index)
+{
+    glBindFramebuffer(GL_FRAMEBUFFER, _FBOs[index]);
+    
+    bindToFramebuffer(_framebufferDefs[index]);
+}
+
+void OpenGLRendererHelper::bindToScreenFramebuffer()
+{
+    glBindFramebuffer(GL_FRAMEBUFFER, _screenFBO);
+    
+    glViewport(0, 0, _screenWidth, _screenHeight);
+    glScissor(0, 0, _screenWidth, _screenHeight);
     glEnable(GL_SCISSOR_TEST);
 }
 
@@ -57,15 +73,6 @@ void OpenGLRendererHelper::clearFramebufferWithColor(float r, float g, float b, 
 {
     glClearColor(r, g, b, a);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
-}
-
-void OpenGLRendererHelper::bindToScreenFramebuffer()
-{
-    glBindFramebuffer(GL_FRAMEBUFFER, _screenFBO);
-
-    glViewport(0, 0, _screenWidth, _screenHeight);
-    glScissor(0, 0, _screenWidth, _screenHeight);
-    glEnable(GL_SCISSOR_TEST);
 }
 
 void OpenGLRendererHelper::useNormalBlending()
@@ -214,11 +221,64 @@ void OpenGLRendererHelper::disposeGPUBuffer(GPUBufferWrapper* gpuBuffer)
     glDeleteBuffers(1, &gpuBuffer->buffer);
 }
 
-TextureWrapper* OpenGLRendererHelper::createFramebuffer()
+TextureWrapper* OpenGLRendererHelper::createOffscreenFramebuffer(int renderWidth, int renderHeight)
 {
-    GLuint fbo_texture;
-    GLuint fbo;
+    GLuint fbo_texture = 0;
+    GLuint fbo = 0;
+    
+    createFramebuffer(fbo_texture, fbo, renderWidth, renderHeight);
+    
+    _offscreenFBOTextures.push_back(fbo_texture);
+    _offscreenFBOs.push_back(fbo);
+    
+    return new TextureWrapper(fbo_texture);
+}
 
+TextureWrapper* OpenGLRendererHelper::createFramebuffer(int renderWidth, int renderHeight)
+{
+    GLuint fbo_texture = 0;
+    GLuint fbo = 0;
+
+    createFramebuffer(fbo_texture, fbo, renderWidth, renderHeight);
+
+    _FBOTextures.push_back(fbo_texture);
+    _FBOs.push_back(fbo);
+
+    return new TextureWrapper(fbo_texture);
+}
+
+void OpenGLRendererHelper::platformReleaseOffscreenFramebuffers()
+{
+    for (std::vector<GLuint>::iterator i = _offscreenFBOTextures.begin(); i != _offscreenFBOTextures.end(); ++i)
+    {
+        glDeleteTextures(1, &(*i));
+    }
+    _offscreenFBOTextures.clear();
+    
+    for (std::vector<GLuint>::iterator i = _offscreenFBOs.begin(); i != _offscreenFBOs.end(); ++i)
+    {
+        glDeleteFramebuffers(1, &(*i));
+    }
+    _offscreenFBOs.clear();
+}
+
+void OpenGLRendererHelper::platformReleaseFramebuffers()
+{
+    for (std::vector<GLuint>::iterator i = _FBOTextures.begin(); i != _FBOTextures.end(); ++i)
+    {
+        glDeleteTextures(1, &(*i));
+    }
+    _FBOTextures.clear();
+
+    for (std::vector<GLuint>::iterator i = _FBOs.begin(); i != _FBOs.end(); ++i)
+    {
+        glDeleteFramebuffers(1, &(*i));
+    }
+    _FBOs.clear();
+}
+
+void OpenGLRendererHelper::createFramebuffer(GLuint& fbo_texture, GLuint& fbo, int renderWidth, int renderHeight)
+{
     std::string cfgFilterMin = FW_CFG->getString("FramebufferFilterMin");
     std::string cfgFilterMag = FW_CFG->getString("FramebufferFilterMag");
     GLint filterMin = cfgFilterMin == "NEAREST" ? GL_NEAREST : GL_LINEAR;
@@ -232,40 +292,28 @@ TextureWrapper* OpenGLRendererHelper::createFramebuffer()
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, filterMag);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, _renderWidth, _renderHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, renderWidth, renderHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
     glBindTexture(GL_TEXTURE_2D, 0);
-
+    
     // Framebuffer
     glGenFramebuffers(1, &fbo);
     glBindFramebuffer(GL_FRAMEBUFFER, fbo);
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, fbo_texture, 0);
-
+    
     GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
-
+    
     glBindFramebuffer(GL_FRAMEBUFFER, _screenFBO);
-
+    
     assert(status == GL_FRAMEBUFFER_COMPLETE);
-
-    _fbo_textures.push_back(fbo_texture);
-    _fbos.push_back(fbo);
-
-    return new TextureWrapper(fbo_texture);
 }
 
-void OpenGLRendererHelper::platformReleaseFramebuffers()
+void OpenGLRendererHelper::bindToFramebuffer(FramebufferDef& framebufferDef)
 {
-    for (std::vector<GLuint>::iterator i = _fbo_textures.begin(); i != _fbo_textures.end(); ++i)
-    {
-        glDeleteTextures(1, &(*i));
-    }
-
-    for (std::vector<GLuint>::iterator i = _fbos.begin(); i != _fbos.end(); ++i)
-    {
-        glDeleteFramebuffers(1, &(*i));
-    }
+    FramebufferDef& fbd = framebufferDef;
     
-    _fbo_textures.clear();
-    _fbos.clear();
+    glViewport(0, 0, fbd.renderWidth, fbd.renderHeight);
+    glScissor(0, 0, fbd.renderWidth, fbd.renderHeight);
+    glEnable(GL_SCISSOR_TEST);
 }
 
 void OpenGLRendererHelper::bindInputLayout(std::vector<NGShaderVarInput*>& inputLayout)

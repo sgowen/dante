@@ -142,12 +142,14 @@ void EntityLayoutMapper::loadEntityLayout(const char* data)
             (uint32_t)chars[2] << 8  |
             (uint32_t)chars[3];
             
-            EntityPosDef entityPosDef;
-            entityPosDef.type = key;
-            entityPosDef.x = static_cast<float>(iv["x"].GetInt());
-            entityPosDef.y = static_cast<float>(iv["y"].GetInt());
+            EntityPosDef epd;
+            epd.type = key;
+            epd.x = iv["x"].GetInt();
+            epd.y = iv["y"].GetInt();
+            epd.w = iv.HasMember("w") ? iv["w"].GetInt() : 0;
+            epd.h = iv.HasMember("h") ? iv["h"].GetInt() : 0;
             
-            _entityLayoutDef.entities.push_back(entityPosDef);
+            _entityLayoutDef.entities.push_back(epd);
         }
     }
 }
@@ -190,6 +192,16 @@ const char* EntityLayoutMapper::save()
             {
                 w.String("y");
                 w.Int(epd.y);
+            }
+            if (epd.w > 0)
+            {
+                w.String("w");
+                w.Int(epd.w);
+            }
+            if (epd.h > 0)
+            {
+                w.String("h");
+                w.Int(epd.h);
             }
             w.EndObject();
         }

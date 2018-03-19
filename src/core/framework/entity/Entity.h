@@ -50,7 +50,8 @@ enum BodyFlags
 {
     BodyFlag_Static = 1 << 0,
     BodyFlag_FixedRotation = 1 << 1,
-    BodyFlag_Bullet = 1 << 2
+    BodyFlag_Bullet = 1 << 2,
+    BodyFlag_Water = 1 << 3
 };
 
 struct EntityDef
@@ -79,7 +80,7 @@ public:
         ReadStateFlag_State = 1 << 1
     };
     
-    Entity(EntityDef inEntityDef, int x = 0, int y = 0, bool isServer = false);
+    Entity(EntityDef inEntityDef, int x, int y, bool isServer);
     ~Entity();
     
     void update(bool isLive = false);
@@ -116,6 +117,7 @@ public:
     bool isServer();
     bool isFacingLeft();
     std::string& getTextureMapping();
+    std::string& getTextureMapping(uint8_t state);
     int getSoundMapping(int state);
     bool isFixedRotation();
     

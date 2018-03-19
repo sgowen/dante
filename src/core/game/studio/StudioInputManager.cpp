@@ -492,7 +492,8 @@ void StudioInputManager::handleEntitiesInput()
                     
                     float spawnX = clamp(GM_CFG->_camWidth * _scrollValue / 2 + _cursor.getX(), FLT_MAX, entityDef->width / 2.0f);
                     float spawnY = clamp(GM_CFG->_camHeight * _scrollValue / 2 + _cursor.getY(), FLT_MAX, entityDef->height / 2.0f);
-                    Entity* e = EntityMapper::getInstance()->createEntityFromDef(entityDef, floor(spawnX), floor(spawnY), false);
+                    EntityPosDef epd(entityDef->type, floor(spawnX), floor(spawnY));
+                    Entity* e = EntityMapper::getInstance()->createEntityFromDef(entityDef, &epd, false);
                     _engine->_world->mapAddEntity(e);
                     _lastActiveEntity = e;
                     onEntityAdded(e);
@@ -586,6 +587,8 @@ void StudioInputManager::onMapLoaded()
     _entities.insert(_entities.end(), layers.begin(), layers.end());
     
     std::sort(_entities.begin(), _entities.end(), layerSort);
+    
+    _engine->_renderer->onMapLoaded();
 }
 
 void StudioInputManager::onEntityAdded(Entity* e)

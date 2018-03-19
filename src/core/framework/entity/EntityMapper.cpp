@@ -11,6 +11,7 @@
 #include <framework/entity/EntityMapper.h>
 
 #include <framework/entity/Entity.h>
+#include <framework/entity/EntityLayoutMapper.h>
 #include <framework/entity/EntityController.h>
 
 #include <framework/util/NGSTDUtil.h>
@@ -154,14 +155,20 @@ void EntityMapper::initWithJson(const char* json)
     }
 }
 
-Entity* EntityMapper::createEntity(uint32_t inFourCCName, int x, int y, bool isServer)
+Entity* EntityMapper::createEntity(EntityPosDef* inEntityPosDef, bool isServer)
 {
-    return createEntityFromDef(getEntityDef(inFourCCName), x, y, isServer);
+    return createEntityFromDef(getEntityDef(inEntityPosDef->type), inEntityPosDef, isServer);
 }
 
-Entity* EntityMapper::createEntityFromDef(EntityDef* entityDef, int x, int y, bool isServer)
+Entity* EntityMapper::createEntityFromDef(EntityDef* inEntityDef, EntityPosDef* inEntityPosDef, bool isServer)
 {
-    return new Entity(*entityDef, x, y, isServer);
+    EntityDef entityDef = *inEntityDef;
+    EntityPosDef& epd = *inEntityPosDef;
+    
+    entityDef.width = epd.w > 0 ? epd.w : inEntityDef->width;
+    entityDef.height = epd.h > 0 ? epd.h : inEntityDef->height;
+    
+    return new Entity(entityDef, epd.x, epd.y, isServer);
 }
 
 EntityDef* EntityMapper::getEntityDef(uint32_t inFourCCName)

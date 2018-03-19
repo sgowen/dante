@@ -24,6 +24,7 @@
 #include <framework/util/Constants.h>
 #include <game/entity/PlayerController.h>
 #include <framework/entity/EntityMapper.h>
+#include <framework/entity/EntityLayoutMapper.h>
 #include <game/logic/GameConfig.h>
 
 #ifdef NG_STEAM
@@ -271,7 +272,8 @@ void Server::spawnRobotForPlayer(uint8_t inPlayerId, std::string inPlayerName)
         }
     }
     
-    Entity* e = EntityMapper::getInstance()->createEntity('ROBT', spawnX, spawnY, true);
+    EntityPosDef epd('ROBT', spawnX, spawnY);
+    Entity* e = EntityMapper::getInstance()->createEntity(&epd, true);
     PlayerController* robot = static_cast<PlayerController*>(e->getController());
     robot->setAddressHash(client->getMachineAddress()->getHash());
     robot->setPlayerName(inPlayerName);

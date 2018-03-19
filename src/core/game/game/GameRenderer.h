@@ -66,7 +66,7 @@ public:
     virtual ~GameRenderer();
     
     virtual void createDeviceDependentResources();
-    virtual void createWindowSizeDependentResources(int screenWidth, int screenHeight, int renderWidth, int renderHeight);
+    virtual void createWindowSizeDependentResources(int screenWidth, int screenHeight);
     virtual void releaseDeviceDependentResources();
     virtual void render();
     
@@ -103,6 +103,7 @@ private:
     uint32_t _textDisplayState;
     
     void updateCamera();
+    void setOffscreenFramebuffer(int framebufferIndex, float r = 0, float g = 0, float b = 0, float a = 0);
     void setFramebuffer(int framebufferIndex, float r = 0, float g = 0, float b = 0, float a = 0);
     void renderWorld();
     void renderEntities(std::vector<Entity*>& entities);

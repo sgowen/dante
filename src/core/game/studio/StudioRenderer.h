@@ -14,6 +14,7 @@
 #include <string>
 #include <deque>
 #include <vector>
+#include <map>
 
 class TextureManager;
 class SpriteBatcher;
@@ -44,12 +45,13 @@ public:
     virtual ~StudioRenderer();
     
     virtual void createDeviceDependentResources();
-    virtual void createWindowSizeDependentResources(int screenWidth, int screenHeight, int renderWidth, int renderHeight);
+    virtual void createWindowSizeDependentResources(int screenWidth, int screenHeight);
     virtual void releaseDeviceDependentResources();
     virtual void render();
     
     void setEngine(StudioEngine* inValue);
     void setInputManager(StudioInputManager* inValue);
+    void onMapLoaded();
     
     void update(float x, float y, float w, float h, int scale);
     void displayToast(std::string toast);
@@ -74,6 +76,7 @@ private:
     NGShader* _framebufferToScreenNGShader;
     NGRect* _camBounds[NUM_CAMERAS];
     std::deque<std::string> _toasts;
+    std::map<int, int> _waterToFbIndex;
     int _toastStateTime;
     int _fbIndex;
     int _scrollValue;
@@ -82,6 +85,7 @@ private:
     uint32_t _engineState;
     NGTexture* _fontTexture;
     
+    void setOffscreenFramebuffer(int framebufferIndex, float r = 0, float g = 0, float b = 0, float a = 0);
     void setFramebuffer(int framebufferIndex, float r = 0, float g = 0, float b = 0, float a = 0);
     void renderWorld();
     void renderEntities(std::vector<Entity*>& entities);

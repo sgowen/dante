@@ -26,8 +26,9 @@ public:
     virtual void createDeviceDependentResources();
     
     virtual void bindToOffscreenFramebuffer(int index);
-    virtual void clearFramebufferWithColor(float r, float g, float b, float a);
+    virtual void bindToFramebuffer(int index);
     virtual void bindToScreenFramebuffer();
+    virtual void clearFramebufferWithColor(float r, float g, float b, float a);
     virtual void useNormalBlending();
     virtual void useScreenBlending();
     virtual void useNoBlending();
@@ -49,15 +50,21 @@ public:
 protected:
     virtual GPUBufferWrapper* createGPUBuffer(size_t size, const void *data, bool useStaticBuffer, bool isVertex);
     virtual void disposeGPUBuffer(GPUBufferWrapper* gpuBuffer);
-    virtual TextureWrapper* createFramebuffer();
+    virtual TextureWrapper* createOffscreenFramebuffer(int renderWidth, int renderHeight);
+    virtual TextureWrapper* createFramebuffer(int renderWidth, int renderHeight);
+    virtual void platformReleaseOffscreenFramebuffers();
     virtual void platformReleaseFramebuffers();
 
 private:
     GLint _screenFBO;
-    std::vector<GLuint> _fbos;
-    std::vector<GLuint> _fbo_textures;
+    std::vector<GLuint> _offscreenFBOTextures;
+    std::vector<GLuint> _offscreenFBOs;
+    std::vector<GLuint> _FBOTextures;
+    std::vector<GLuint> _FBOs;
     ShaderProgramWrapper* _currentShaderProgramWrapper;
     
+    void createFramebuffer(GLuint& fbo_texture, GLuint& fbo, int renderWidth, int renderHeight);
+    void bindToFramebuffer(FramebufferDef& framebufferDef);
     void bindInputLayout(std::vector<NGShaderVarInput*>& inputLayout);
 };
 

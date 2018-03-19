@@ -92,11 +92,9 @@ void DirectXRendererHelper::createDeviceDependentResources()
     createSamplerStates();
 }
 
-void DirectXRendererHelper::createWindowSizeDependentResources(int screenWidth, int screenHeight, int renderWidth, int renderHeight)
+void DirectXRendererHelper::createWindowSizeDependentResources(int screenWidth, int screenHeight)
 {
-    RendererHelper::createWindowSizeDependentResources(screenWidth, screenHeight, renderWidth, renderHeight);
-    
-    _offScreenViewport = CD3D11_VIEWPORT(0.0f, 0.0f, static_cast<float>(renderWidth), static_cast<float>(renderHeight));
+    RendererHelper::createWindowSizeDependentResources(screenWidth, screenHeight);
 }
 
 void DirectXRendererHelper::releaseDeviceDependentResources()
@@ -120,17 +118,36 @@ void DirectXRendererHelper::bindToOffscreenFramebuffer(int index)
 {
     getD3DContext()->OMSetRenderTargets(1, &_offscreenRenderTargetViews[index], NULL);
     
-    getD3DContext()->RSSetViewports(1, &_offScreenViewport);
+    bindToFramebuffer(_offscreenFramebufferDefs[index]);
+    
+	_fbIndex = index;
+}
+
+void DirectXRendererHelper::bindToFramebuffer(int index)
+{
+    getD3DContext()->OMSetRenderTargets(1, &_renderTargetViews[index], NULL);
+    
+    bindToFramebuffer(_framebufferDefs[index]);
+    
+    _fbIndex = index;
+}
+
+void DirectXRendererHelper::bindToScreenFramebuffer()
+{
+    ID3D11RenderTargetView *const targets[1] = { s_d3dRenderTargetView };
+    getD3DContext()->OMSetRenderTargets(1, targets, NULL);
+    
+    getD3DContext()->RSSetViewports(1, &s_screenViewport);
     
     D3D11_RECT rects[1];
-    rects[0].left = _offScreenViewport.TopLeftX;
-    rects[0].right = _offScreenViewport.Width;
-    rects[0].top = _offScreenViewport.TopLeftY;
-    rects[0].bottom = _offScreenViewport.Height;
+    rects[0].left = s_screenViewport.TopLeftX;
+    rects[0].right = s_screenViewport.Width;
+    rects[0].top = s_screenViewport.TopLeftY;
+    rects[0].bottom = s_screenViewport.Height;
     
     getD3DContext()->RSSetScissorRects(1, rects);
     
-	_fbIndex = index;
+    _fbIndex = -1;
 }
 
 void DirectXRendererHelper::clearFramebufferWithColor(float r, float g, float b, float a)
@@ -148,24 +165,6 @@ void DirectXRendererHelper::clearFramebufferWithColor(float r, float g, float b,
     }
     
 	getD3DContext()->ClearRenderTargetView(targets[0], color);
-}
-
-void DirectXRendererHelper::bindToScreenFramebuffer()
-{
-    ID3D11RenderTargetView *const targets[1] = { s_d3dRenderTargetView };
-	getD3DContext()->OMSetRenderTargets(1, targets, NULL);
-    
-    getD3DContext()->RSSetViewports(1, &s_screenViewport);
-
-	D3D11_RECT rects[1];
-	rects[0].left = s_screenViewport.TopLeftX;
-	rects[0].right = s_screenViewport.Width;
-	rects[0].top = s_screenViewport.TopLeftY;
-	rects[0].bottom = s_screenViewport.Height;
-
-	getD3DContext()->RSSetScissorRects(1, rects);
-    
-    _fbIndex = -1;
 }
 
 void DirectXRendererHelper::useNormalBlending()
@@ -317,59 +316,37 @@ void DirectXRendererHelper::disposeGPUBuffer(GPUBufferWrapper* gpuBuffer)
 	}
 }
 
-TextureWrapper* DirectXRendererHelper::createFramebuffer()
+TextureWrapper* DirectXRendererHelper::createOffscreenFramebuffer(int renderWidth, int renderHeight)
 {
-    ID3D11Texture2D* offscreenRenderTarget;
-    ID3D11RenderTargetView* offscreenRenderTargetView;
-    ID3D11ShaderResourceView* offscreenShaderResourceView;
+    ID3D11Texture2D* renderTarget;
+    ID3D11RenderTargetView* renderTargetView;
+    ID3D11ShaderResourceView* shaderResourceView;
     
-    D3D11_TEXTURE2D_DESC textureDesc;
-    D3D11_RENDER_TARGET_VIEW_DESC renderTargetViewDesc;
-    D3D11_SHADER_RESOURCE_VIEW_DESC shaderResourceViewDesc;
+    createFramebuffer(&renderTarget, &renderTargetView, &shaderResourceView, renderWidth, renderHeight);
     
-    // Initialize the render target texture description.
-    ZeroMemory(&textureDesc, sizeof(textureDesc));
-    
-    // Setup the render target texture description.
-    textureDesc.Width = _renderWidth;
-    textureDesc.Height = _renderHeight;
-    textureDesc.MipLevels = 1;
-    textureDesc.ArraySize = 1;
-    textureDesc.Format = DXGI_FORMAT_B8G8R8A8_UNORM;
-    textureDesc.SampleDesc.Count = 1;
-    textureDesc.Usage = D3D11_USAGE_DEFAULT;
-    textureDesc.BindFlags = D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE;
-    textureDesc.CPUAccessFlags = 0;
-    textureDesc.MiscFlags = 0;
-    
-    // Create the render target texture.
-    DX::ThrowIfFailed(getD3DDevice()->CreateTexture2D(&textureDesc, NULL, &offscreenRenderTarget));
-    
-    // Setup the description of the render target view.
-    renderTargetViewDesc.Format = textureDesc.Format;
-    renderTargetViewDesc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D;
-    renderTargetViewDesc.Texture2D.MipSlice = 0;
-    
-    // Create the render target view.
-    DX::ThrowIfFailed(getD3DDevice()->CreateRenderTargetView(offscreenRenderTarget, &renderTargetViewDesc, &offscreenRenderTargetView));
-    
-    // Setup the description of the shader resource view.
-    shaderResourceViewDesc.Format = textureDesc.Format;
-    shaderResourceViewDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
-    shaderResourceViewDesc.Texture2D.MostDetailedMip = 0;
-    shaderResourceViewDesc.Texture2D.MipLevels = 1;
-    
-    // Create the shader resource view.
-    DX::ThrowIfFailed(getD3DDevice()->CreateShaderResourceView(offscreenRenderTarget, &shaderResourceViewDesc, &offscreenShaderResourceView));
-    
-    _offscreenRenderTargets.push_back(offscreenRenderTarget);
-    _offscreenRenderTargetViews.push_back(offscreenRenderTargetView);
-    _offscreenShaderResourceViews.push_back(offscreenShaderResourceView);
+    _offscreenRenderTargets.push_back(renderTarget);
+    _offscreenRenderTargetViews.push_back(renderTargetView);
+    _offscreenShaderResourceViews.push_back(shaderResourceView);
     
     return new TextureWrapper(offscreenShaderResourceView);
 }
 
-void DirectXRendererHelper::platformReleaseFramebuffers()
+TextureWrapper* DirectXRendererHelper::createFramebuffer(int renderWidth, int renderHeight)
+{
+    ID3D11Texture2D* renderTarget;
+    ID3D11RenderTargetView* renderTargetView;
+    ID3D11ShaderResourceView* shaderResourceView;
+    
+    createFramebuffer(&renderTarget, &renderTargetView, &shaderResourceView, renderWidth, renderHeight);
+    
+    _renderTargets.push_back(renderTarget);
+    _renderTargetViews.push_back(renderTargetView);
+    _shaderResourceViews.push_back(shaderResourceView);
+    
+    return new TextureWrapper(shaderResourceView);
+}
+
+void DirectXRendererHelper::platformReleaseOffscreenFramebuffers()
 {
     for (std::vector<ID3D11Texture2D*>::iterator i = _offscreenRenderTargets.begin(); i != _offscreenRenderTargets.end(); ++i)
     {
@@ -389,6 +366,87 @@ void DirectXRendererHelper::platformReleaseFramebuffers()
     _offscreenRenderTargets.clear();
     _offscreenRenderTargetViews.clear();
     _offscreenShaderResourceViews.clear();
+}
+
+void DirectXRendererHelper::platformReleaseFramebuffers()
+{
+    for (std::vector<ID3D11Texture2D*>::iterator i = _renderTargets.begin(); i != _renderTargets.end(); ++i)
+    {
+        (*i)->Release();
+    }
+    
+    for (std::vector<ID3D11RenderTargetView*>::iterator i = _renderTargetViews.begin(); i != _renderTargetViews.end(); ++i)
+    {
+        (*i)->Release();
+    }
+    
+    for (std::vector<ID3D11ShaderResourceView*>::iterator i = _shaderResourceViews.begin(); i != _shaderResourceViews.end(); ++i)
+    {
+        (*i)->Release();
+    }
+    
+    _renderTargets.clear();
+    _renderTargetViews.clear();
+    _shaderResourceViews.clear();
+}
+
+void DirectXRendererHelper::createFramebuffer(ID3D11Texture2D** offscreenRenderTarget, ID3D11RenderTargetView** offscreenRenderTargetView, ID3D11ShaderResourceView** offscreenShaderResourceView, int renderWidth, int renderHeight)
+{
+    D3D11_TEXTURE2D_DESC textureDesc;
+    D3D11_RENDER_TARGET_VIEW_DESC renderTargetViewDesc;
+    D3D11_SHADER_RESOURCE_VIEW_DESC shaderResourceViewDesc;
+    
+    // Initialize the render target texture description.
+    ZeroMemory(&textureDesc, sizeof(textureDesc));
+    
+    // Setup the render target texture description.
+    textureDesc.Width = renderWidth;
+    textureDesc.Height = renderHeight;
+    textureDesc.MipLevels = 1;
+    textureDesc.ArraySize = 1;
+    textureDesc.Format = DXGI_FORMAT_B8G8R8A8_UNORM;
+    textureDesc.SampleDesc.Count = 1;
+    textureDesc.Usage = D3D11_USAGE_DEFAULT;
+    textureDesc.BindFlags = D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE;
+    textureDesc.CPUAccessFlags = 0;
+    textureDesc.MiscFlags = 0;
+    
+    // Create the render target texture.
+    DX::ThrowIfFailed(getD3DDevice()->CreateTexture2D(&textureDesc, NULL, offscreenRenderTarget));
+    
+    // Setup the description of the render target view.
+    renderTargetViewDesc.Format = textureDesc.Format;
+    renderTargetViewDesc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D;
+    renderTargetViewDesc.Texture2D.MipSlice = 0;
+    
+    // Create the render target view.
+    DX::ThrowIfFailed(getD3DDevice()->CreateRenderTargetView(*offscreenRenderTarget, &renderTargetViewDesc, offscreenRenderTargetView));
+    
+    // Setup the description of the shader resource view.
+    shaderResourceViewDesc.Format = textureDesc.Format;
+    shaderResourceViewDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
+    shaderResourceViewDesc.Texture2D.MostDetailedMip = 0;
+    shaderResourceViewDesc.Texture2D.MipLevels = 1;
+    
+    // Create the shader resource view.
+    DX::ThrowIfFailed(getD3DDevice()->CreateShaderResourceView(*offscreenRenderTarget, &shaderResourceViewDesc, offscreenShaderResourceView));
+}
+
+void DirectXRendererHelper::bindToFramebuffer(FramebufferDef& framebufferDef)
+{
+    FramebufferDef& fbd = framebufferDef;
+    
+    D3D11_VIEWPORT viewport = CD3D11_VIEWPORT(0.0f, 0.0f, static_cast<float>(fbd.renderWidth), static_cast<float>(fbd.renderHeight));
+    
+    getD3DContext()->RSSetViewports(1, &viewport);
+    
+    D3D11_RECT rects[1];
+    rects[0].left = viewport.TopLeftX;
+    rects[0].right = viewport.Width;
+    rects[0].top = viewport.TopLeftY;
+    rects[0].bottom = viewport.Height;
+    
+    getD3DContext()->RSSetScissorRects(1, rects);
 }
 
 void DirectXRendererHelper::createBlendStates()

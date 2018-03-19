@@ -72,6 +72,7 @@
 #include <framework/entity/EntityLayoutMapper.h>
 #include <framework/entity/EntityMapper.h>
 #include <game/logic/GameConfig.h>
+#include <framework/util/Config.h>
 
 #ifdef NG_STEAM
 #include <framework/network/steam/NGSteamGameServer.h>
@@ -146,6 +147,7 @@ StudioRenderer::~StudioRenderer()
 
 void StudioRenderer::createDeviceDependentResources()
 {
+    _rendererHelper->addOffscreenFramebuffers(FW_CFG->getInt("FramebufferWidth"), FW_CFG->getInt("FramebufferHeight"), NUM_OFFSCREEN_FRAMEBUFFERS);
     _rendererHelper->createDeviceDependentResources();
     _textureManager->createDeviceDependentResources();
     
@@ -162,9 +164,9 @@ void StudioRenderer::createDeviceDependentResources()
     _framebufferToScreenNGShader->load(*_shaderProgramLoader);
 }
 
-void StudioRenderer::createWindowSizeDependentResources(int screenWidth, int screenHeight, int renderWidth, int renderHeight)
+void StudioRenderer::createWindowSizeDependentResources(int screenWidth, int screenHeight)
 {
-    _rendererHelper->createWindowSizeDependentResources(screenWidth, screenHeight, renderWidth, renderHeight);
+    _rendererHelper->createWindowSizeDependentResources(screenWidth, screenHeight);
 }
 
 void StudioRenderer::releaseDeviceDependentResources()
@@ -181,7 +183,7 @@ void StudioRenderer::render()
 {
     _engineState = _engine->_state;
     
-    setFramebuffer(0, 0, 0, 0, 1);
+    setOffscreenFramebuffer(0, 0, 0, 0, 1);
     _rendererHelper->useNormalBlending();
 
     if (_textureManager->ensureTextures())
@@ -229,6 +231,23 @@ void StudioRenderer::setInputManager(StudioInputManager* inValue)
     _input = inValue;
 }
 
+void StudioRenderer::onMapLoaded()
+{
+    _waterToFbIndex.clear();
+    _rendererHelper->clearFramebuffers();
+    
+    World* world = _engine->_world;
+    for (Entity* e : world->getStaticEntities())
+    {
+        if (e->getEntityDef().bodyFlags & BodyFlag_Water)
+        {
+            int fbIndex = _rendererHelper->addFramebuffer(e->getWidth() * GRID_TO_PIXEL, e->getHeight() * GRID_TO_PIXEL);
+            _waterToFbIndex.insert(std::make_pair(e->getID(), fbIndex));
+            setFramebuffer(fbIndex);
+        }
+    }
+}
+
 void StudioRenderer::update(float x, float y, float w, float h, int scale)
 {
     _scrollValue = scale;
@@ -261,13 +280,23 @@ void StudioRenderer::displayToast(std::string toast)
     _toastStateTime = 0;
 }
 
+void StudioRenderer::setOffscreenFramebuffer(int framebufferIndex, float r, float g, float b, float a)
+{
+    assert(framebufferIndex >= 0);
+    
+    _fbIndex = framebufferIndex;
+    
+    _rendererHelper->bindToOffscreenFramebuffer(_fbIndex);
+    _rendererHelper->clearFramebufferWithColor(r, g, b, a);
+}
+
 void StudioRenderer::setFramebuffer(int framebufferIndex, float r, float g, float b, float a)
 {
     assert(framebufferIndex >= 0);
 
     _fbIndex = framebufferIndex;
 
-    _rendererHelper->bindToOffscreenFramebuffer(_fbIndex);
+    _rendererHelper->bindToFramebuffer(_fbIndex);
     _rendererHelper->clearFramebufferWithColor(r, g, b, a);
 }
 
@@ -293,18 +322,18 @@ void StudioRenderer::renderWorld()
     renderEntities(world->getDynamicEntities());
     
     _rendererHelper->useNormalBlending();
-    setFramebuffer(0);
+    setOffscreenFramebuffer(0);
     for (int i = 0; i < 5; ++i)
     {
         endBatchWithTexture(_spriteBatchers[i], _textureManager->getTextureWithName(_textures[i]), i);
     }
     
     _rendererHelper->useScreenBlending();
-    setFramebuffer(1);
+    setOffscreenFramebuffer(1);
     endBatchWithTexture(_spriteBatchers[5], _textureManager->getTextureWithName(_textures[5]), 5);
     
     _rendererHelper->useNormalBlending();
-    setFramebuffer(2);
+    setOffscreenFramebuffer(2);
     for (int i = 6; i < 9; ++i)
     {
         endBatchWithTexture(_spriteBatchers[i], _textureManager->getTextureWithName(_textures[i]), i);
@@ -314,10 +343,10 @@ void StudioRenderer::renderWorld()
     int fbEnd = 3;
     
     _rendererHelper->useScreenBlending();
-    setFramebuffer(9);
+    setOffscreenFramebuffer(9);
     for (int i = fbBegin; i < fbEnd; ++i)
     {
-        _framebufferToScreenNGShader->bind(_rendererHelper->getFramebuffer(i));
+        _framebufferToScreenNGShader->bind(_rendererHelper->getOffscreenFramebuffer(i));
         _rendererHelper->bindScreenVertexBuffer();
         _rendererHelper->drawIndexed(NGPrimitiveType_Triangles, 0, INDICES_PER_RECTANGLE);
         _framebufferToScreenNGShader->unbind();
@@ -644,7 +673,7 @@ void StudioRenderer::endFrame()
     _rendererHelper->clearFramebufferWithColor(0, 0, 0, 1);
     _rendererHelper->useScreenBlending();
 
-    _framebufferToScreenNGShader->bind(_rendererHelper->getFramebuffer(_fbIndex));
+    _framebufferToScreenNGShader->bind(_rendererHelper->getOffscreenFramebuffer(_fbIndex));
     _rendererHelper->bindScreenVertexBuffer();
     _rendererHelper->drawIndexed(NGPrimitiveType_Triangles, 0, INDICES_PER_RECTANGLE);
     _framebufferToScreenNGShader->unbind();

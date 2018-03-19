@@ -16,10 +16,12 @@
 struct EntityPosDef
 {
     uint32_t type;
-    float x;
-    float y;
+    int x;
+    int y;
+    int w;
+    int h;
     
-    EntityPosDef(uint32_t inType = 0, float inX = 0, float inY = 0) : type(inType), x(inX), y(inY) {}
+    EntityPosDef(uint32_t inType = 0, int inX = 0, int inY = 0, int inW = 0, int inH = 0) : type(inType), x(inX), y(inY), w(inW), h(inH) {}
 };
 
 struct EntityLayoutDef

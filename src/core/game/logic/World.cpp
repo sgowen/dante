@@ -305,7 +305,7 @@ void World::loadMap(uint32_t map)
     EntityLayoutDef& entityLayoutDef = EntityLayoutMapper::getInstance()->getEntityLayoutDef();
     for (EntityPosDef epd : entityLayoutDef.entities)
     {
-        Entity* e = EntityMapper::getInstance()->createEntity(epd.type, epd.x, epd.y, _flags & WorldFlag_Server);
+        Entity* e = EntityMapper::getInstance()->createEntity(&epd, _flags & WorldFlag_Server);
         mapAddEntity(e);
     }
 }
@@ -559,17 +559,21 @@ void World::postUpdateAndRemoveEntitiesAsNeeded(std::vector<Entity*>& entities)
 
 bool World::isLayer(Entity* e)
 {
-    return e->getEntityDef().fixtures.size() == 0 && e->getEntityDef().bodyFlags == 0;
+    return e->getEntityDef().fixtures.size() == 0 &&
+    e->getEntityDef().bodyFlags == 0;
 }
 
 bool World::isStatic(Entity* e)
 {
-    return e->getEntityDef().fixtures.size() > 0 && (e->getEntityDef().bodyFlags & BodyFlag_Static) && !e->getEntityDef().stateSensitive;
+    return e->getEntityDef().fixtures.size() > 0 &&
+    (e->getEntityDef().bodyFlags & BodyFlag_Static) &&
+    (!e->getEntityDef().stateSensitive || e->getEntityDef().bodyFlags & BodyFlag_Water);
 }
 
 bool World::isDynamic(Entity* e)
 {
-    return e->getEntityDef().fixtures.size() > 0 && (!(e->getEntityDef().bodyFlags & BodyFlag_Static) || e->getEntityDef().stateSensitive);
+    return e->getEntityDef().fixtures.size() > 0 &&
+    (!(e->getEntityDef().bodyFlags & BodyFlag_Static) || e->getEntityDef().stateSensitive);
 }
 
 void EntityContactListener::BeginContact(b2Contact* contact)

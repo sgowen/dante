@@ -23,11 +23,12 @@ public:
     virtual ~DirectXRendererHelper();
 
 	virtual void createDeviceDependentResources();
-    virtual void createWindowSizeDependentResources(int screenWidth, int screenHeight, int renderWidth, int renderHeight);
+    virtual void createWindowSizeDependentResources(int screenWidth, int screenHeight);
 	virtual void releaseDeviceDependentResources();
     virtual void bindToOffscreenFramebuffer(int index);
-    virtual void clearFramebufferWithColor(float r, float g, float b, float a);
+    virtual void bindToFramebuffer(int index);
     virtual void bindToScreenFramebuffer();
+    virtual void clearFramebufferWithColor(float r, float g, float b, float a);
     virtual void useNormalBlending();
     virtual void useScreenBlending();
     virtual void useNoBlending();
@@ -49,7 +50,9 @@ public:
 protected:
     virtual GPUBufferWrapper* createGPUBuffer(size_t size, const void *data, bool useStaticBuffer, bool isVertex);
     virtual void disposeGPUBuffer(GPUBufferWrapper* gpuBuffer);
-    virtual TextureWrapper* createFramebuffer();
+    virtual TextureWrapper* createOffscreenFramebuffer(int renderWidth, int renderHeight);
+    virtual TextureWrapper* createFramebuffer(int renderWidth, int renderHeight);
+    virtual void platformReleaseOffscreenFramebuffers();
     virtual void platformReleaseFramebuffers();
     
 private:
@@ -62,7 +65,9 @@ private:
     std::vector<ID3D11Texture2D*> _offscreenRenderTargets;
     std::vector<ID3D11RenderTargetView*> _offscreenRenderTargetViews;
     std::vector<ID3D11ShaderResourceView*> _offscreenShaderResourceViews;
-    D3D11_VIEWPORT _offScreenViewport;
+    std::vector<ID3D11Texture2D*> _renderTargets;
+    std::vector<ID3D11RenderTargetView*> _renderTargetViews;
+    std::vector<ID3D11ShaderResourceView*> _shaderResourceViews;
     ID3D11BlendState* _blendState;
     ID3D11BlendState* _screenBlendState;
     ID3D11SamplerState* _framebufferSamplerState; // mipmap: false, min: FramebufferFilterMin, mag: FramebufferFilterMag
@@ -76,6 +81,8 @@ private:
     ID3D11SamplerState* _textureSamplerState8; // mipmap: false, min: GL_NEAREST,  min: GL_LINEAR
 	int _fbIndex;
     
+    void createFramebuffer(ID3D11Texture2D** offscreenRenderTarget, ID3D11RenderTargetView** offscreenRenderTargetView, ID3D11ShaderResourceView** offscreenShaderResourceView, int renderWidth, int renderHeight);
+    void bindToFramebuffer(FramebufferDef& framebufferDef);
     void createBlendStates();
     void createSamplerStates();
     D3D11_FILTER filterForMinAndMag(std::string cfgFilterMin, std::string cfgFilterMag, bool mipmap = false);

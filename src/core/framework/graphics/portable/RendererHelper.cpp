@@ -19,7 +19,7 @@
 
 #include <algorithm>
 
-RendererHelper::RendererHelper() : _screenWidth(1), _screenHeight(1), _renderWidth(1), _renderHeight(1)
+RendererHelper::RendererHelper() : _screenWidth(1), _screenHeight(1)
 {
     // Empty
 }
@@ -31,6 +31,7 @@ RendererHelper::~RendererHelper()
 
 void RendererHelper::createDeviceDependentResources()
 {
+    assert(_offscreenFramebufferWrappers.size() == 0);
     assert(_framebufferWrappers.size() == 0);
     
     {
@@ -69,24 +70,26 @@ void RendererHelper::releaseDeviceDependentResources()
     disposeGPUBuffer(_indexBuffer);
     disposeGPUBuffer(_staticScreenVertexBuffer);
     
+    releaseOffscreenFramebuffers();
     releaseFramebuffers();
 }
 
-void RendererHelper::createWindowSizeDependentResources(int screenWidth, int screenHeight, int renderWidth, int renderHeight)
+void RendererHelper::createWindowSizeDependentResources(int screenWidth, int screenHeight)
 {
     _screenWidth = screenWidth;
     _screenHeight = screenHeight;
-    _renderWidth = renderWidth;
-    _renderHeight = renderHeight;
     
+    releaseOffscreenFramebuffers();
     releaseFramebuffers();
     
-    for (int i = 0; i < NUM_FRAMEBUFFERS; ++i)
+    for (int i = 0; i < static_cast<int>(_offscreenFramebufferDefs.size()); ++i)
     {
-        TextureWrapper* framebuffer = createFramebuffer();
-        NGTexture* texture = new NGTexture("framebuffer", NULL, NULL);
-        texture->textureWrapper = framebuffer;
-        _framebufferWrappers.push_back(texture);
+        _offscreenFramebufferWrappers.push_back(createOffscreenFramebuffer(_offscreenFramebufferDefs[i]));
+    }
+    
+    for (int i = 0; i < static_cast<int>(_framebufferDefs.size()); ++i)
+    {
+        _framebufferWrappers.push_back(createFramebuffer(_framebufferDefs[i]));
     }
 }
 
@@ -96,9 +99,61 @@ void RendererHelper::updateMatrix(float left, float right, float bottom, float t
     mat4x4_ortho(_matrix, left, right, bottom, top, -1, 1);
 }
 
+NGTexture* RendererHelper::getOffscreenFramebuffer(int index)
+{
+    return _offscreenFramebufferWrappers[index];
+}
+
 NGTexture* RendererHelper::getFramebuffer(int index)
 {
     return _framebufferWrappers[index];
+}
+
+void RendererHelper::addOffscreenFramebuffers(int renderWidth, int renderHeight, int numFramebuffers)
+{
+    _offscreenFramebufferDefs.clear();
+    
+    for (int i = 0; i < numFramebuffers; ++i)
+    {
+        _offscreenFramebufferDefs.push_back(FramebufferDef(renderWidth, renderHeight));
+    }
+}
+
+int RendererHelper::addFramebuffer(int renderWidth, int renderHeight)
+{
+    int ret = static_cast<int>(_framebufferDefs.size());
+    
+    FramebufferDef framebufferDef = FramebufferDef(renderWidth, renderHeight);
+    _framebufferDefs.push_back(framebufferDef);
+    
+    _framebufferWrappers.push_back(createFramebuffer(framebufferDef));
+    
+    return ret;
+}
+
+void RendererHelper::clearFramebuffers()
+{
+    _framebufferDefs.clear();
+    
+    releaseFramebuffers();
+}
+
+NGTexture* RendererHelper::createOffscreenFramebuffer(FramebufferDef framebufferDef)
+{
+    TextureWrapper* framebuffer = createOffscreenFramebuffer(framebufferDef.renderWidth, framebufferDef.renderHeight);
+    NGTexture* texture = new NGTexture("framebuffer", NULL, NULL);
+    texture->textureWrapper = framebuffer;
+    
+    return texture;
+}
+
+NGTexture* RendererHelper::createFramebuffer(FramebufferDef framebufferDef)
+{
+    TextureWrapper* framebuffer = createFramebuffer(framebufferDef.renderWidth, framebufferDef.renderHeight);
+    NGTexture* texture = new NGTexture("framebuffer", NULL, NULL);
+    texture->textureWrapper = framebuffer;
+    
+    return texture;
 }
 
 void RendererHelper::createIndexBuffer()
@@ -144,6 +199,17 @@ void RendererHelper::disposeAllGPUBuffers(std::vector<GPUBufferWrapper* >& buffe
     NGSTDUtil::cleanUpVectorOfPointers(buffers);
 }
 
+void RendererHelper::releaseOffscreenFramebuffers()
+{
+    for (std::vector<NGTexture*>::iterator i = _offscreenFramebufferWrappers.begin(); i != _offscreenFramebufferWrappers.end(); ++i)
+    {
+        NGTexture* texture = (*i);
+        delete texture->textureWrapper;
+    }
+    NGSTDUtil::cleanUpVectorOfPointers(_offscreenFramebufferWrappers);
+    platformReleaseOffscreenFramebuffers();
+}
+
 void RendererHelper::releaseFramebuffers()
 {
     for (std::vector<NGTexture*>::iterator i = _framebufferWrappers.begin(); i != _framebufferWrappers.end(); ++i)
@@ -151,8 +217,7 @@ void RendererHelper::releaseFramebuffers()
         NGTexture* texture = (*i);
         delete texture->textureWrapper;
     }
-    
     NGSTDUtil::cleanUpVectorOfPointers(_framebufferWrappers);
-    
     platformReleaseFramebuffers();
 }
+

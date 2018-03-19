@@ -16,7 +16,7 @@ public:
     virtual ~Renderer();
     
     virtual void createDeviceDependentResources() = 0;
-	virtual void createWindowSizeDependentResources(int screenWidth, int screenHeight, int renderWidth, int renderHeight) = 0;
+	virtual void createWindowSizeDependentResources(int screenWidth, int screenHeight) = 0;
     virtual void releaseDeviceDependentResources() = 0;
     virtual void render() = 0;
 };

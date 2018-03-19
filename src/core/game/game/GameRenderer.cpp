@@ -71,6 +71,7 @@
 #include <game/entity/PlayerController.h>
 #include <game/logic/GameConfig.h>
 #include <framework/graphics/portable/VertexProgramInput.h>
+#include <framework/util/Config.h>
 
 #ifdef NG_STEAM
 #include <framework/network/steam/NGSteamGameServer.h>
@@ -146,6 +147,7 @@ GameRenderer::~GameRenderer()
 
 void GameRenderer::createDeviceDependentResources()
 {
+    _rendererHelper->addOffscreenFramebuffers(FW_CFG->getInt("FramebufferWidth"), FW_CFG->getInt("FramebufferHeight"), NUM_OFFSCREEN_FRAMEBUFFERS);
     _rendererHelper->createDeviceDependentResources();
     _textureManager->createDeviceDependentResources();
     
@@ -163,9 +165,9 @@ void GameRenderer::createDeviceDependentResources()
     _framebufferToScreenNGShader->load(*_shaderProgramLoader);
 }
 
-void GameRenderer::createWindowSizeDependentResources(int screenWidth, int screenHeight, int renderWidth, int renderHeight)
+void GameRenderer::createWindowSizeDependentResources(int screenWidth, int screenHeight)
 {
-    _rendererHelper->createWindowSizeDependentResources(screenWidth, screenHeight, renderWidth, renderHeight);
+    _rendererHelper->createWindowSizeDependentResources(screenWidth, screenHeight);
 }
 
 void GameRenderer::releaseDeviceDependentResources()
@@ -269,13 +271,23 @@ void GameRenderer::updateCamera()
     _camBounds[0]->getLowerLeft().set(x * GM_CFG->_parallaxLayer0FactorX, y * GM_CFG->_parallaxLayer0FactorY);
 }
 
-void GameRenderer::setFramebuffer(int framebufferIndex, float r, float g, float b, float a)
+void GameRenderer::setOffscreenFramebuffer(int framebufferIndex, float r, float g, float b, float a)
 {
     assert(framebufferIndex >= 0);
     
     _fbIndex = framebufferIndex;
     
     _rendererHelper->bindToOffscreenFramebuffer(_fbIndex);
+    _rendererHelper->clearFramebufferWithColor(r, g, b, a);
+}
+
+void GameRenderer::setFramebuffer(int framebufferIndex, float r, float g, float b, float a)
+{
+    assert(framebufferIndex >= 0);
+    
+    _fbIndex = framebufferIndex;
+    
+    _rendererHelper->bindToFramebuffer(_fbIndex);
     _rendererHelper->clearFramebufferWithColor(r, g, b, a);
 }
 
@@ -299,18 +311,18 @@ void GameRenderer::renderWorld()
     renderEntities(world->getDynamicEntities());
     
     _rendererHelper->useNormalBlending();
-    setFramebuffer(0);
+    setOffscreenFramebuffer(0);
     for (int i = 0; i < 5; ++i)
     {
         endBatchWithTexture(_spriteBatchers[i], _textureManager->getTextureWithName(_textures[i]), i);
     }
     
     _rendererHelper->useScreenBlending();
-    setFramebuffer(1);
+    setOffscreenFramebuffer(1);
     endBatchWithTexture(_spriteBatchers[5], _textureManager->getTextureWithName(_textures[5]), 5);
     
     _rendererHelper->useNormalBlending();
-    setFramebuffer(2);
+    setOffscreenFramebuffer(2);
     for (int i = 6; i < 9; ++i)
     {
         endBatchWithTexture(_spriteBatchers[i], _textureManager->getTextureWithName(_textures[i]), i);
@@ -328,10 +340,10 @@ void GameRenderer::renderWorld()
     }
     
     _rendererHelper->useScreenBlending();
-    setFramebuffer(9);
+    setOffscreenFramebuffer(9);
     for (int i = fbBegin; i < fbEnd; ++i)
     {
-        _framebufferToScreenNGShader->bind(_rendererHelper->getFramebuffer(i));
+        _framebufferToScreenNGShader->bind(_rendererHelper->getOffscreenFramebuffer(i));
         _rendererHelper->bindScreenVertexBuffer();
         _rendererHelper->drawIndexed(NGPrimitiveType_Triangles, 0, INDICES_PER_RECTANGLE);
         _framebufferToScreenNGShader->unbind();
@@ -360,18 +372,18 @@ void GameRenderer::renderEntities(std::vector<Entity*>& entities)
 void GameRenderer::renderLighting()
 {
     _rendererHelper->useNormalBlending();
-    setFramebuffer(3);
+    setOffscreenFramebuffer(3);
     for (int i = 0; i < 5; ++i)
     {
         endBatchWithTexture(_spriteBatchers[i], _textureManager->getTextureWithName(_normals[i]), i);
     }
     
     _rendererHelper->useScreenBlending();
-    setFramebuffer(4);
+    setOffscreenFramebuffer(4);
     endBatchWithTexture(_spriteBatchers[5], _textureManager->getTextureWithName(_normals[5]), 5);
     
     _rendererHelper->useNormalBlending();
-    setFramebuffer(5);
+    setOffscreenFramebuffer(5);
     for (int i = 6; i < 9; ++i)
     {
         endBatchWithTexture(_spriteBatchers[i], _textureManager->getTextureWithName(_normals[i]), i);
@@ -394,8 +406,8 @@ void GameRenderer::renderLighting()
             _lightingNGShader->addLight(ld._lightPosX, ld._lightPosY, GM_CFG->_behindPlayerLightZFactor * GM_CFG->_playerLightZ, ld._lightColorR, ld._lightColorG, ld._lightColorB, ld._lightColorA);
         }
         
-        setFramebuffer(6);
-        _lightingNGShader->bind(_rendererHelper->getFramebuffer(0), _rendererHelper->getFramebuffer(3));
+        setOffscreenFramebuffer(6);
+        _lightingNGShader->bind(_rendererHelper->getOffscreenFramebuffer(0), _rendererHelper->getOffscreenFramebuffer(3));
         _rendererHelper->bindScreenVertexBuffer();
         _rendererHelper->drawIndexed(NGPrimitiveType_Triangles, 0, INDICES_PER_RECTANGLE);
         _lightingNGShader->unbind();
@@ -411,8 +423,8 @@ void GameRenderer::renderLighting()
             _lightingNGShader->addLight(ld._lightPosX, ld._lightPosY, GM_CFG->_playerLightZ, ld._lightColorR, ld._lightColorG, ld._lightColorB, ld._lightColorA);
         }
         
-        setFramebuffer(7);
-        _lightingNGShader->bind(_rendererHelper->getFramebuffer(1), _rendererHelper->getFramebuffer(4));
+        setOffscreenFramebuffer(7);
+        _lightingNGShader->bind(_rendererHelper->getOffscreenFramebuffer(1), _rendererHelper->getOffscreenFramebuffer(4));
         _rendererHelper->bindScreenVertexBuffer();
         _rendererHelper->drawIndexed(NGPrimitiveType_Triangles, 0, INDICES_PER_RECTANGLE);
         _lightingNGShader->unbind();
@@ -433,8 +445,8 @@ void GameRenderer::renderLighting()
             _lightingNGShader->addLight(ld._lightPosX, ld._lightPosY, GM_CFG->_frontPlayerLightZFactor * GM_CFG->_playerLightZ, ld._lightColorR, ld._lightColorG, ld._lightColorB, ld._lightColorA);
         }
         
-        setFramebuffer(8);
-        _lightingNGShader->bind(_rendererHelper->getFramebuffer(2), _rendererHelper->getFramebuffer(5));
+        setOffscreenFramebuffer(8);
+        _lightingNGShader->bind(_rendererHelper->getOffscreenFramebuffer(2), _rendererHelper->getOffscreenFramebuffer(5));
         _rendererHelper->bindScreenVertexBuffer();
         _rendererHelper->drawIndexed(NGPrimitiveType_Triangles, 0, INDICES_PER_RECTANGLE);
         _lightingNGShader->unbind();
@@ -574,7 +586,7 @@ void GameRenderer::endFrame()
     _rendererHelper->clearFramebufferWithColor(0, 0, 0, 1);
     _rendererHelper->useScreenBlending();
 
-    _framebufferToScreenNGShader->bind(_rendererHelper->getFramebuffer(_fbIndex));
+    _framebufferToScreenNGShader->bind(_rendererHelper->getOffscreenFramebuffer(_fbIndex));
     _rendererHelper->bindScreenVertexBuffer();
     _rendererHelper->drawIndexed(NGPrimitiveType_Triangles, 0, INDICES_PER_RECTANGLE);
     _framebufferToScreenNGShader->unbind();

@@ -10,19 +10,26 @@
 
 #include <framework/graphics/portable/RendererHelperFactory.h>
 
+#if defined __APPLE__ || defined __ANDROID__ || defined __linux__
+#include <framework/graphics/opengl/OpenGLRendererHelper.h>
+#elif defined _WIN32
+#include <framework/graphics/directx/DirectXRendererHelper.h>
+#endif
+
 RendererHelperFactory* RendererHelperFactory::getInstance()
 {
     static RendererHelperFactory instance = RendererHelperFactory();
     return &instance;
 }
 
+RendererHelper* RendererHelperFactory::createRendererHelper()
+{
 #if defined __APPLE__ || defined __ANDROID__ || defined __linux__
-#include <framework/graphics/opengl/OpenGLRendererHelper.h>
-RendererHelper* RendererHelperFactory::createRendererHelper() { return new OpenGLRendererHelper(); }
+    return new OpenGLRendererHelper();
 #elif defined _WIN32
-#include <framework/graphics/directx/DirectXRendererHelper.h>
-RendererHelper* RendererHelperFactory::createRendererHelper() { return new DirectXRendererHelper(); }
+    return new DirectXRendererHelper();
 #endif
+}
 
 RendererHelperFactory::RendererHelperFactory()
 {
