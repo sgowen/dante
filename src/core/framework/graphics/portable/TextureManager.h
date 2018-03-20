@@ -36,9 +36,11 @@ public:
     void cleanUpThreads();
     bool isLoadingData();
     NGTexture* getTextureWithName(std::string name);
+    void registerFramebuffer(std::string name, NGTexture* framebuffer);
     
 private:
     std::map<std::string, NGTexture*> _textures;
+    std::map<std::string, NGTexture*> _framebuffers;
     std::vector<NGTexture*> _loadingTextures;
     std::vector<tthread::thread*> _textureDataLoadingThreads;
 

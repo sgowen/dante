@@ -15,7 +15,7 @@ class DirectXRendererHelper : public RendererHelper
 {
 public:
     static void init(ID3D11Device* d3dDevice, ID3D11DeviceContext* d3dContext);
-    static void init(ID3D11RenderTargetView* renderTargetView, D3D11_VIEWPORT screenViewport);
+    static void init(ID3D11RenderTargetView* renderTargetView);
     static ID3D11Device* getD3DDevice();
     static ID3D11DeviceContext* getD3DContext();
     
@@ -25,9 +25,9 @@ public:
 	virtual void createDeviceDependentResources();
     virtual void createWindowSizeDependentResources(int screenWidth, int screenHeight);
 	virtual void releaseDeviceDependentResources();
-    virtual void bindToOffscreenFramebuffer(int index);
-    virtual void bindToFramebuffer(int index);
-    virtual void bindToScreenFramebuffer();
+    
+    virtual void bindFramebuffer(FramebufferWrapper* framebufferWrapper);
+    virtual void bindScreenFramebuffer();
     virtual void clearFramebufferWithColor(float r, float g, float b, float a);
     virtual void useNormalBlending();
     virtual void useScreenBlending();
@@ -49,18 +49,18 @@ public:
     
 protected:
     virtual GPUBufferWrapper* createGPUBuffer(size_t size, const void *data, bool useStaticBuffer, bool isVertex);
-    virtual void disposeGPUBuffer(GPUBufferWrapper* gpuBuffer);
+    virtual void destroyGPUBuffer(GPUBufferWrapper* gpuBuffer);
     virtual TextureWrapper* createOffscreenFramebuffer(int renderWidth, int renderHeight);
     virtual TextureWrapper* createFramebuffer(int renderWidth, int renderHeight);
     virtual void platformReleaseOffscreenFramebuffers();
     virtual void platformReleaseFramebuffers();
+    virtual void onFramebufferBinded(int renderWidth, int renderHeight);
     
 private:
     // Cached pointer to device resources.
     static ID3D11Device* s_d3dDevice;
     static ID3D11DeviceContext* s_d3dContext;
     static ID3D11RenderTargetView* s_d3dRenderTargetView;
-    static D3D11_VIEWPORT s_screenViewport;
     
     std::vector<ID3D11Texture2D*> _offscreenRenderTargets;
     std::vector<ID3D11RenderTargetView*> _offscreenRenderTargetViews;
@@ -82,7 +82,6 @@ private:
 	int _fbIndex;
     
     void createFramebuffer(ID3D11Texture2D** offscreenRenderTarget, ID3D11RenderTargetView** offscreenRenderTargetView, ID3D11ShaderResourceView** offscreenShaderResourceView, int renderWidth, int renderHeight);
-    void bindToFramebuffer(FramebufferDef& framebufferDef);
     void createBlendStates();
     void createSamplerStates();
     D3D11_FILTER filterForMinAndMag(std::string cfgFilterMin, std::string cfgFilterMag, bool mipmap = false);

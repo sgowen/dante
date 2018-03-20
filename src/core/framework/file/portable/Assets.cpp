@@ -252,6 +252,11 @@ std::map<std::string, NGAnimation*>& Assets::getAnimationsMap()
     return _animations;
 }
 
+void Assets::registerTextureRegion(std::string name, TextureRegion* textureRegion)
+{
+    _textureRegions.insert(std::make_pair(name, textureRegion));
+}
+
 Assets::Assets()
 {
     // Empty

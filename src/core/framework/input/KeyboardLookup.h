@@ -84,7 +84,7 @@
     #define NG_KEY_CARRIAGE_RETURN 0x0101
 #endif
 
-inline std::vector<unsigned short>& getAllSupportedKeys()
+inline std::vector<unsigned short>& getSupportedKeys()
 {
 	static std::vector<unsigned short> keys;
 	if (keys.size() == 0)
@@ -146,6 +146,26 @@ inline std::vector<unsigned short>& getAllSupportedKeys()
 	return keys;
 }
 
+inline std::vector<unsigned short>& getIntegerKeys()
+{
+    static std::vector<unsigned short> keys;
+    if (keys.size() == 0)
+    {
+        keys.push_back(NG_KEY_ZERO);
+        keys.push_back(NG_KEY_ONE);
+        keys.push_back(NG_KEY_TWO);
+        keys.push_back(NG_KEY_THREE);
+        keys.push_back(NG_KEY_FOUR);
+        keys.push_back(NG_KEY_FIVE);
+        keys.push_back(NG_KEY_SIX);
+        keys.push_back(NG_KEY_SEVEN);
+        keys.push_back(NG_KEY_EIGHT);
+        keys.push_back(NG_KEY_NINE);
+    }
+    
+    return keys;
+}
+
 inline char charForKey(unsigned short key)
 {
     char ret = key;
@@ -162,9 +182,16 @@ inline char charForKey(unsigned short key)
 
 inline bool isKeySupported(unsigned short key)
 {
-	std::vector<unsigned short>& keys = getAllSupportedKeys();
+	std::vector<unsigned short>& keys = getSupportedKeys();
 
 	return std::find(keys.begin(), keys.end(), key) != keys.end();
+}
+
+inline bool isKeyInteger(unsigned short key)
+{
+    std::vector<unsigned short>& keys = getIntegerKeys();
+    
+    return std::find(keys.begin(), keys.end(), key) != keys.end();
 }
 
 #endif /* defined(__noctisgames__KeyboardLookup__) */

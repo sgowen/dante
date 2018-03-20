@@ -24,7 +24,7 @@ _handleEntityDeletionFunc(inHandleEntityDeletionFunc)
 
 EntityManager::~EntityManager()
 {
-    NGSTDUtil::cleanUpMapOfEntityPointers(_entityMap);
+    NGSTDUtil::cleanUpMapOfPointers(_entityMap);
 }
 
 Entity* EntityManager::getEntityByID(uint32_t inID) const

@@ -64,24 +64,21 @@ void Entity::update(bool isLive)
 
 void Entity::postUpdate()
 {
-    if (_isServer)
+    if (getPosition().y < _deadZoneY)
     {
-        if (getPosition().y < _deadZoneY)
-        {
-            requestDeletion();
-        }
-        
-        if (_poseCache != _pose)
-        {
-            _poseCache = _pose;
-            NG_SERVER->setStateDirty(getID(), ReadStateFlag_Pose);
-        }
-        
-        if (_stateCache != _state)
-        {
-            _stateCache = _state;
-            NG_SERVER->setStateDirty(getID(), ReadStateFlag_State);
-        }
+        requestDeletion();
+    }
+    
+    if (_poseCache != _pose)
+    {
+        _poseCache = _pose;
+        NG_SERVER->setStateDirty(getID(), ReadStateFlag_Pose);
+    }
+    
+    if (_stateCache != _state)
+    {
+        _stateCache = _state;
+        NG_SERVER->setStateDirty(getID(), ReadStateFlag_State);
     }
     
     _controller->postUpdate();

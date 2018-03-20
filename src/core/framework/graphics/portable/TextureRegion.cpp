@@ -10,21 +10,21 @@
 
 #include <framework/graphics/portable/TextureRegion.h>
 
-TextureRegion::TextureRegion(std::string textureName, int x, int y, int regionWidth, int regionHeight, int textureWidth, int textureHeight, int layer) : _textureName(textureName), _normalMapName("n_" + _textureName)
+TextureRegion::TextureRegion(std::string textureName, int x, int y, int regionWidth, int regionHeight, int textureWidth, int textureHeight, int layer) :
+_x(x),
+_y(y),
+_regionWidth(regionWidth),
+_regionHeight(regionHeight),
+_textureWidth(textureWidth),
+_textureHeight(textureHeight),
+_layer(layer),
+_textureName(textureName),
+_normalMapName("n_" + _textureName)
 {
-    _x = (double) x;
-    _y = (double) y;
-    _regionWidth = (double) regionWidth;
-    _regionHeight = (double) regionHeight;
-    _textureWidth = (double) textureWidth;
-    _textureHeight = (double) textureHeight;
-    
-    _u1 = _x / _textureWidth;
-    _v1 = _y / _textureHeight;
-    _u2 = _u1 + _regionWidth / _textureWidth;
-    _v2 = _v1 + _regionHeight / _textureHeight;
-    
-    _layer = layer;
+    _u1 = _x / (double) _textureWidth;
+    _v1 = _y / (double) _textureHeight;
+    _u2 = _u1 + _regionWidth / (double) _textureWidth;
+    _v2 = _v1 + _regionHeight / (double) _textureHeight;
 }
 
 std::string& TextureRegion::getTextureName()

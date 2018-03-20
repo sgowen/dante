@@ -90,7 +90,7 @@ void StudioInputManager::update()
     }
     else if (state & StudioEngineState_TestSession)
     {
-        handleTestSessionInput();
+        //
     }
     else if (state & StudioEngineState_DisplayLoadMapDialog)
     {
@@ -328,6 +328,7 @@ void StudioInputManager::handleDefaultInput()
                         
                         _engine->_world->saveMapAs(s_testMap);
                         _engine->_state |= StudioEngineState_TestSession;
+                        return;
                     }
                 }
             }
@@ -378,23 +379,29 @@ void StudioInputManager::handleTextInput()
     
     for (std::vector<KeyboardEvent *>::iterator i = KEYBOARD_INPUT_MANAGER->getEvents().begin(); i != KEYBOARD_INPUT_MANAGER->getEvents().end(); ++i)
     {
-        KeyboardEvent* keyboardEvent = (*i);
-        if (isKeySupported(keyboardEvent->getKey()))
+        KeyboardEvent* e = (*i);
+        bool isSupported = true;
+        if (_engine->_textInputType == StudioEngineTextInputType_Integer)
         {
-            if (keyboardEvent->isDown()
-                && !keyboardEvent->isHeld())
+            isSupported = isKeyInteger(e->getKey());
+        }
+        
+        if (isKeySupported(e->getKey()))
+        {
+            if (e->isDown()
+                && !e->isHeld())
             {
-                if (keyboardEvent->getKey() == NG_KEY_CARRIAGE_RETURN)
+                if (e->getKey() == NG_KEY_CARRIAGE_RETURN)
                 {
-                    _isTimeToProcessInput = true;
+                    processInput();
                     return;
                 }
-                else if (keyboardEvent->getKey() == NG_KEY_ESCAPE)
+                else if (e->getKey() == NG_KEY_ESCAPE)
                 {
                     return;
                 }
-                else if (keyboardEvent->getKey() == NG_KEY_BACK_SPACE
-                         || keyboardEvent->getKey() == NG_KEY_DELETE)
+                else if (e->getKey() == NG_KEY_BACK_SPACE
+                         || e->getKey() == NG_KEY_DELETE)
                 {
                     std::string s = ss.str();
                     _liveInput += s;
@@ -404,15 +411,15 @@ void StudioInputManager::handleTextInput()
                     }
                     return;
                 }
-                else
+                else if (isSupported)
                 {
-                    char key = charForKey(keyboardEvent->getKey());
+                    char key = charForKey(e->getKey());
                     ss << StringUtil::format("%c", key);
                 }
             }
-            else if (keyboardEvent->isUp())
+            else if (e->isUp())
             {
-                if (keyboardEvent->getKey() == NG_KEY_ESCAPE)
+                if (e->getKey() == NG_KEY_ESCAPE)
                 {
                     _inputState = SIMS_ESCAPE;
                     return;
@@ -489,15 +496,15 @@ void StudioInputManager::handleEntitiesInput()
                         _engine->_renderer->displayToast("Players can only be spawned by the server...");
                         continue;
                     }
+                    else if (entityDef->type == 'WATR')
+                    {
+                        _engine->_state |= StudioEngineState_TextInput;
+                        _engine->_textInputField = StudioEngineTextInputField_WaterDepth;
+                        _engine->_textInputType = StudioEngineTextInputType_Integer;
+                        return;
+                    }
                     
-                    float spawnX = clamp(GM_CFG->_camWidth * _scrollValue / 2 + _cursor.getX(), FLT_MAX, entityDef->width / 2.0f);
-                    float spawnY = clamp(GM_CFG->_camHeight * _scrollValue / 2 + _cursor.getY(), FLT_MAX, entityDef->height / 2.0f);
-                    EntityPosDef epd(entityDef->type, floor(spawnX), floor(spawnY));
-                    Entity* e = EntityMapper::getInstance()->createEntityFromDef(entityDef, &epd, false);
-                    _engine->_world->mapAddEntity(e);
-                    _lastActiveEntity = e;
-                    onEntityAdded(e);
-                    _engine->_state &= ~StudioEngineState_DisplayEntities;
+                    mapAddEntity(entityDef);
                 }
             }
                 continue;
@@ -573,16 +580,19 @@ void StudioInputManager::onMapLoaded()
     _entities.clear();
     
     std::vector<Entity*>& dynamicEntities = _engine->_world->getDynamicEntities();
+    std::vector<Entity*>& waterBodies = _engine->_world->getWaterBodies();
     std::vector<Entity*>& staticEntities = _engine->_world->getStaticEntities();
     std::vector<Entity*>& layers = _engine->_world->getLayers();
     
     size_t size = dynamicEntities.size();
+    size += waterBodies.size();
     size += staticEntities.size();
     size += layers.size();
     
     _entities.reserve(size);
     
     _entities.insert(_entities.end(), dynamicEntities.begin(), dynamicEntities.end());
+    _entities.insert(_entities.end(), waterBodies.begin(), waterBodies.end());
     _entities.insert(_entities.end(), staticEntities.begin(), staticEntities.end());
     _entities.insert(_entities.end(), layers.begin(), layers.end());
     
@@ -599,6 +609,11 @@ void StudioInputManager::onEntityAdded(Entity* e)
 
 void StudioInputManager::onEntityRemoved(Entity* e)
 {
+    if (e->getEntityDef().type == 'WATR')
+    {
+        _engine->_renderer->onWaterRemoved(e);
+    }
+    
     for (std::vector<Entity*>::iterator i = _entities.begin(); i != _entities.end(); )
     {
         Entity* ie = (*i);
@@ -653,10 +668,66 @@ bool StudioInputManager::entityExistsAtPosition(Entity* e, float x, float y)
     return false;
 }
 
-void StudioInputManager::onInputProcessed()
+Entity* StudioInputManager::mapAddEntity(EntityDef* entityDef, int width, int height)
 {
-    _liveInput.clear();
-    _isTimeToProcessInput = false;
+    float spawnX = clamp(GM_CFG->_camWidth * _scrollValue / 2 + _cursor.getX(), FLT_MAX, entityDef->width / 2.0f);
+    float spawnY = clamp(GM_CFG->_camHeight * _scrollValue / 2 + _cursor.getY(), FLT_MAX, entityDef->height / 2.0f);
+    EntityPosDef epd(entityDef->type, floor(spawnX), floor(spawnY), width, height);
+    Entity* e = EntityMapper::getInstance()->createEntityFromDef(entityDef, &epd, false);
+    _engine->_world->mapAddEntity(e);
+    _lastActiveEntity = e;
+    onEntityAdded(e);
+    _engine->_state &= ~StudioEngineState_DisplayEntities;
+    
+    return e;
+}
+
+void StudioInputManager::processInput()
+{
+    bool clearInput = false;
+    bool exitTextInputState = false;
+    if (_engine->_textInputField == StudioEngineTextInputField_WaterDepth)
+    {
+        _waterDepth = StringUtil::stringToNumber<int>(_liveInput);
+        if (_waterDepth > 0)
+        {
+            _engine->_textInputField = StudioEngineTextInputField_WaterWidth;
+            clearInput = true;
+        }
+        else
+        {
+            _engine->_renderer->displayToast("Water Depth must be at least 2 tiles (2x16=32pix)");
+        }
+    }
+    else if (_engine->_textInputField == StudioEngineTextInputField_WaterWidth)
+    {
+        _waterWidth = StringUtil::stringToNumber<int>(_liveInput);
+        if (_waterWidth > 0)
+        {
+            Entity* e = mapAddEntity(EntityMapper::getInstance()->getEntityDef('WATR'), _waterWidth, _waterDepth);
+            _engine->_renderer->onWaterAdded(e);
+            _waterWidth = 0;
+            _waterDepth = 0;
+            clearInput = true;
+            exitTextInputState = true;
+        }
+        else
+        {
+            _engine->_renderer->displayToast("Water Width must be at least 2 tiles (2x16=32pix)");
+        }
+    }
+    
+    if (clearInput)
+    {
+        _liveInput.clear();
+    }
+    
+    if (exitTextInputState)
+    {
+        SET_BIT(_engine->_state, StudioEngineState_TextInput, false);
+        _engine->_textInputField = 0;
+        _engine->_textInputType = 0;
+    }
 }
 
 void StudioInputManager::updateCamera()
@@ -735,7 +806,6 @@ _cursor(),
 _upCursor(),
 _liveInput(),
 _inputState(SIMS_NONE),
-_isTimeToProcessInput(false),
 _isControl(false),
 _rawScrollValue(1),
 _scrollValue(1),
@@ -751,7 +821,9 @@ _activeEntity(NULL),
 _lastActiveEntity(NULL),
 _activeEntityCursor(),
 _engine(NULL),
-_hasTouchedScreen(false)
+_hasTouchedScreen(false),
+_waterWidth(0),
+_waterDepth(0)
 {
     resetCamera();
 }

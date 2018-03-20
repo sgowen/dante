@@ -36,6 +36,7 @@ public:
     std::vector<NGTextureDesc*>& getTextureDescriptors();
     std::map<std::string, TextureRegion*>& getTextureRegionMap();
     std::map<std::string, NGAnimation*>& getAnimationsMap();
+    void registerTextureRegion(std::string name, TextureRegion* textureRegion);
 
 private:
     std::vector<SoundDesc*> _sounds;

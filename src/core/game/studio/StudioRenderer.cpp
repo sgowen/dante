@@ -27,6 +27,7 @@
 #include <framework/graphics/portable/Box2DDebugRenderer.h>
 #include <game/studio/StudioEngine.h>
 #include <game/studio/StudioInputManager.h>
+#include <framework/graphics/portable/FramebufferWrapper.h>
 
 #include <framework/graphics/portable/Color.h>
 #include <framework/file/portable/Assets.h>
@@ -73,6 +74,7 @@
 #include <framework/entity/EntityMapper.h>
 #include <game/logic/GameConfig.h>
 #include <framework/util/Config.h>
+#include <framework/util/StringUtil.h>
 
 #ifdef NG_STEAM
 #include <framework/network/steam/NGSteamGameServer.h>
@@ -147,7 +149,6 @@ StudioRenderer::~StudioRenderer()
 
 void StudioRenderer::createDeviceDependentResources()
 {
-    _rendererHelper->addOffscreenFramebuffers(FW_CFG->getInt("FramebufferWidth"), FW_CFG->getInt("FramebufferHeight"), NUM_OFFSCREEN_FRAMEBUFFERS);
     _rendererHelper->createDeviceDependentResources();
     _textureManager->createDeviceDependentResources();
     
@@ -183,7 +184,7 @@ void StudioRenderer::render()
 {
     _engineState = _engine->_state;
     
-    setOffscreenFramebuffer(0, 0, 0, 0, 1);
+    bindOffscreenFramebuffer(0, 0, 0, 0, 1);
     _rendererHelper->useNormalBlending();
 
     if (_textureManager->ensureTextures())
@@ -233,19 +234,80 @@ void StudioRenderer::setInputManager(StudioInputManager* inValue)
 
 void StudioRenderer::onMapLoaded()
 {
-    _waterToFbIndex.clear();
     _rendererHelper->clearFramebuffers();
     
     World* world = _engine->_world;
-    for (Entity* e : world->getStaticEntities())
+    for (Entity* e : world->getWaterBodies())
     {
-        if (e->getEntityDef().bodyFlags & BodyFlag_Water)
+        onWaterAdded(e);
+    }
+}
+
+void StudioRenderer::onWaterAdded(Entity* e)
+{
+    _rendererHelper->useScreenBlending();
+    
+    int right = e->getWidth();
+    int top = e->getHeight();
+    _rendererHelper->updateMatrix(0, right, 0, top);
+    
+    TextureRegion trWaterSurface = ASSETS->findTextureRegion(e->getTextureMapping(0));
+    TextureRegion trWaterBody = ASSETS->findTextureRegion(e->getTextureMapping(1));
+    int tileHeight = trWaterSurface._regionHeight / GRID_TO_PIXEL;
+    int tileWidth = trWaterSurface._regionWidth / GRID_TO_PIXEL;
+    
+    _fbSpriteBatcher->beginBatch(0);
+    for (int j = 0; j < top; j += tileHeight)
+    {
+        for (int i = 0; i < right; i += tileWidth)
         {
-            int fbIndex = _rendererHelper->addFramebuffer(e->getWidth() * GRID_TO_PIXEL, e->getHeight() * GRID_TO_PIXEL);
-            _waterToFbIndex.insert(std::make_pair(e->getID(), fbIndex));
-            setFramebuffer(fbIndex);
+            float x = i + tileWidth / 2.0f;
+            float y = j + tileHeight / 2.0f;
+            
+            if (j == (top - tileHeight))
+            {
+                _fbSpriteBatcher->renderSprite(x, y, tileWidth, tileHeight, 0, trWaterSurface);
+            }
+            else
+            {
+                _fbSpriteBatcher->renderSprite(x, y, tileWidth, tileHeight, 0, trWaterBody);
+            }
         }
     }
+    
+    int renderWidth = e->getWidth() * GRID_TO_PIXEL;
+    int renderHeight = e->getHeight() * GRID_TO_PIXEL;
+    
+    std::string textureName = StringUtil::toString(e->getID());
+    std::string normalMapName = textureName;
+    normalMapName.insert(0, "n_");
+    
+    e->getEntityDef().textureMappings.insert(std::make_pair(2, textureName));
+    ASSETS->registerTextureRegion(textureName, new TextureRegion(textureName, 0, 0, renderWidth, renderHeight, renderWidth, renderHeight, 8));
+    
+    {
+        FramebufferWrapper* fb = _rendererHelper->addFramebuffer(renderWidth, renderHeight, textureName);
+        bindFramebuffer(fb);
+        _fbSpriteBatcher->endBatch(_textureNGShader, _textureManager->getTextureWithName(trWaterSurface.getTextureName()));
+        _textureManager->registerFramebuffer(textureName, fb->texture);
+    }
+    
+    {
+        FramebufferWrapper* fb = _rendererHelper->addFramebuffer(renderWidth, renderHeight, normalMapName);
+        bindFramebuffer(fb);
+        _fbSpriteBatcher->endBatch(_textureNGShader, _textureManager->getTextureWithName(trWaterSurface.getNormalMapName()));
+        _textureManager->registerFramebuffer(normalMapName, fb->texture);
+    }
+}
+
+void StudioRenderer::onWaterRemoved(Entity* e)
+{
+    std::string textureName = StringUtil::toString(e->getID());
+    std::string normalMapName = textureName;
+    normalMapName.insert(0, "n_");
+    
+    _rendererHelper->removeFramebuffer(textureName);
+    _rendererHelper->removeFramebuffer(normalMapName);
 }
 
 void StudioRenderer::update(float x, float y, float w, float h, int scale)
@@ -280,23 +342,20 @@ void StudioRenderer::displayToast(std::string toast)
     _toastStateTime = 0;
 }
 
-void StudioRenderer::setOffscreenFramebuffer(int framebufferIndex, float r, float g, float b, float a)
+void StudioRenderer::bindOffscreenFramebuffer(int fbIndex, float r, float g, float b, float a)
 {
-    assert(framebufferIndex >= 0);
+    assert(fbIndex >= 0);
     
-    _fbIndex = framebufferIndex;
+    _fbIndex = fbIndex;
     
-    _rendererHelper->bindToOffscreenFramebuffer(_fbIndex);
+    FramebufferWrapper* fb = _rendererHelper->getOffscreenFramebuffer(_fbIndex);
+    _rendererHelper->bindFramebuffer(fb);
     _rendererHelper->clearFramebufferWithColor(r, g, b, a);
 }
 
-void StudioRenderer::setFramebuffer(int framebufferIndex, float r, float g, float b, float a)
+void StudioRenderer::bindFramebuffer(FramebufferWrapper* fb, float r, float g, float b, float a)
 {
-    assert(framebufferIndex >= 0);
-
-    _fbIndex = framebufferIndex;
-
-    _rendererHelper->bindToFramebuffer(_fbIndex);
+    _rendererHelper->bindFramebuffer(fb);
     _rendererHelper->clearFramebufferWithColor(r, g, b, a);
 }
 
@@ -320,33 +379,36 @@ void StudioRenderer::renderWorld()
     renderEntities(world->getStaticEntities());
     renderEntities(world->getPlayers());
     renderEntities(world->getDynamicEntities());
+    renderEntities(world->getWaterBodies());
     
     _rendererHelper->useNormalBlending();
-    setOffscreenFramebuffer(0);
+    bindOffscreenFramebuffer(0);
     for (int i = 0; i < 5; ++i)
     {
         endBatchWithTexture(_spriteBatchers[i], _textureManager->getTextureWithName(_textures[i]), i);
     }
     
     _rendererHelper->useScreenBlending();
-    setOffscreenFramebuffer(1);
+    bindOffscreenFramebuffer(1);
     endBatchWithTexture(_spriteBatchers[5], _textureManager->getTextureWithName(_textures[5]), 5);
     
     _rendererHelper->useNormalBlending();
-    setOffscreenFramebuffer(2);
-    for (int i = 6; i < 9; ++i)
+    bindOffscreenFramebuffer(2);
+    for (int i = 6; i < 8; ++i)
     {
         endBatchWithTexture(_spriteBatchers[i], _textureManager->getTextureWithName(_textures[i]), i);
     }
+    endBatchWithTexture(_spriteBatchers[8], _textureManager->getTextureWithName(_textures[8]), 8);
+    endBatchWithTexture(_spriteBatchers[9], _textureManager->getTextureWithName(_textures[9]), 9);
     
     int fbBegin = 0;
     int fbEnd = 3;
     
     _rendererHelper->useScreenBlending();
-    setOffscreenFramebuffer(9);
+    bindOffscreenFramebuffer(9);
     for (int i = fbBegin; i < fbEnd; ++i)
     {
-        _framebufferToScreenNGShader->bind(_rendererHelper->getOffscreenFramebuffer(i));
+        _framebufferToScreenNGShader->bind(_rendererHelper->getOffscreenFramebuffer(i)->texture);
         _rendererHelper->bindScreenVertexBuffer();
         _rendererHelper->drawIndexed(NGPrimitiveType_Triangles, 0, INDICES_PER_RECTANGLE);
         _framebufferToScreenNGShader->unbind();
@@ -669,11 +731,11 @@ void StudioRenderer::endFrame()
 {
     assert(_fbIndex >= 0);
 
-    _rendererHelper->bindToScreenFramebuffer();
+    _rendererHelper->bindScreenFramebuffer();
     _rendererHelper->clearFramebufferWithColor(0, 0, 0, 1);
     _rendererHelper->useScreenBlending();
 
-    _framebufferToScreenNGShader->bind(_rendererHelper->getOffscreenFramebuffer(_fbIndex));
+    _framebufferToScreenNGShader->bind(_rendererHelper->getOffscreenFramebuffer(_fbIndex)->texture);
     _rendererHelper->bindScreenVertexBuffer();
     _rendererHelper->drawIndexed(NGPrimitiveType_Triangles, 0, INDICES_PER_RECTANGLE);
     _framebufferToScreenNGShader->unbind();

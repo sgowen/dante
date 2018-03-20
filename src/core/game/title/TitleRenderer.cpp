@@ -69,6 +69,7 @@
 #include <framework/util/PlatformHelper.h>
 #include <game/logic/GameConfig.h>
 #include <framework/util/Config.h>
+#include <framework/graphics/portable/FramebufferWrapper.h>
 
 #ifdef NG_STEAM
 #include <framework/network/steam/NGSteamGameServer.h>
@@ -118,7 +119,6 @@ TitleRenderer::~TitleRenderer()
 
 void TitleRenderer::createDeviceDependentResources()
 {
-    _rendererHelper->addOffscreenFramebuffers(FW_CFG->getInt("FramebufferWidth"), FW_CFG->getInt("FramebufferHeight"), NUM_OFFSCREEN_FRAMEBUFFERS);
     _rendererHelper->createDeviceDependentResources();
     _textureManager->createDeviceDependentResources();
 
@@ -146,7 +146,7 @@ void TitleRenderer::render()
 {
     _engineState = _engine->_state;
     
-    setFramebuffer(0);
+    bindFramebuffer(0);
     _rendererHelper->useNormalBlending();
 
     if (_textureManager->ensureTextures())
@@ -189,13 +189,14 @@ void TitleRenderer::setEngine(TitleEngine* inValue)
     _engine = inValue;
 }
 
-void TitleRenderer::setFramebuffer(int framebufferIndex, float r, float g, float b, float a)
+void TitleRenderer::bindFramebuffer(int fbIndex, float r, float g, float b, float a)
 {
-    assert(framebufferIndex >= 0);
+    assert(fbIndex >= 0);
 
-    _fbIndex = framebufferIndex;
+    _fbIndex = fbIndex;
 
-    _rendererHelper->bindToOffscreenFramebuffer(_fbIndex);
+    FramebufferWrapper* fb = _rendererHelper->getOffscreenFramebuffer(_fbIndex);
+    _rendererHelper->bindFramebuffer(fb);
     _rendererHelper->clearFramebufferWithColor(r, g, b, a);
 }
 
@@ -297,11 +298,11 @@ void TitleRenderer::endFrame()
 {
     assert(_fbIndex >= 0);
 
-    _rendererHelper->bindToScreenFramebuffer();
+    _rendererHelper->bindScreenFramebuffer();
     _rendererHelper->clearFramebufferWithColor(0, 0, 0, 1);
     _rendererHelper->useScreenBlending();
 
-    _framebufferToScreenNGShader->bind(_rendererHelper->getOffscreenFramebuffer(_fbIndex));
+    _framebufferToScreenNGShader->bind(_rendererHelper->getOffscreenFramebuffer(_fbIndex)->texture);
     _rendererHelper->bindScreenVertexBuffer();
     _rendererHelper->drawIndexed(NGPrimitiveType_Triangles, 0, INDICES_PER_RECTANGLE);
     _framebufferToScreenNGShader->unbind();

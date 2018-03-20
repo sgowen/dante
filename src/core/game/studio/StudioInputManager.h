@@ -16,6 +16,7 @@
 
 class StudioEngine;
 class Entity;
+struct EntityDef;
 
 enum StudioInputManagerState
 {
@@ -47,7 +48,6 @@ private:
     Vector2 _upCursor;
     std::string _liveInput;
     int _inputState;
-    bool _isTimeToProcessInput;
     bool _isControl;
     float _rawScrollValue;
     int _scrollValue;
@@ -66,6 +66,8 @@ private:
     Vector2 _activeEntityDeltaCursor;
     StudioEngine* _engine;
     bool _hasTouchedScreen;
+    int _waterWidth;
+    int _waterDepth;
     
     void updateCamera();
     void resetCamera();
@@ -81,8 +83,8 @@ private:
     void onEntityRemoved(Entity* e);
     Entity* getEntityAtPosition(float x, float y);
     bool entityExistsAtPosition(Entity* e, float x, float y);
-    
-    void onInputProcessed();
+    Entity* mapAddEntity(EntityDef* entityDef, int width = 0, int height = 0);
+    void processInput();
     
     // ctor, copy ctor, and assignment should be private in a Singleton
     StudioInputManager();

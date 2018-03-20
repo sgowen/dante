@@ -14,7 +14,7 @@
 #include <framework/graphics/portable/TextureWrapper.h>
 #include <framework/graphics/portable/ShaderProgramWrapper.h>
 #include <framework/graphics/portable/NGShaderUniformInput.h>
-#include <framework/graphics/portable/NGShaderVarInput.h>
+#include <framework/graphics/portable/FramebufferWrapper.h>
 
 #include <framework/graphics/portable/NGTextureDesc.h>
 #include <framework/util/NGSTDUtil.h>
@@ -30,7 +30,6 @@ using namespace DirectX;
 ID3D11Device* DirectXRendererHelper::s_d3dDevice = NULL;
 ID3D11DeviceContext* DirectXRendererHelper::s_d3dContext = NULL;
 ID3D11RenderTargetView* DirectXRendererHelper::s_d3dRenderTargetView = NULL;
-D3D11_VIEWPORT DirectXRendererHelper::s_screenViewport = {};
 
 void DirectXRendererHelper::init(ID3D11Device* d3dDevice, ID3D11DeviceContext* d3dContext)
 {
@@ -38,10 +37,9 @@ void DirectXRendererHelper::init(ID3D11Device* d3dDevice, ID3D11DeviceContext* d
     s_d3dContext = d3dContext;
 }
 
-void DirectXRendererHelper::init(ID3D11RenderTargetView* renderTargetView, D3D11_VIEWPORT screenViewport)
+void DirectXRendererHelper::init(ID3D11RenderTargetView* renderTargetView)
 {
     s_d3dRenderTargetView = renderTargetView;
-    s_screenViewport = screenViewport;
 }
 
 ID3D11Device* DirectXRendererHelper::getD3DDevice()
@@ -114,38 +112,31 @@ void DirectXRendererHelper::releaseDeviceDependentResources()
     _textureSamplerState8->Release();
 }
 
-void DirectXRendererHelper::bindToOffscreenFramebuffer(int index)
+void DirectXRendererHelper::bindOffscreenFramebuffer(int index)
 {
     getD3DContext()->OMSetRenderTargets(1, &_offscreenRenderTargetViews[index], NULL);
     
-    bindToFramebuffer(_offscreenFramebufferDefs[index]);
+    bindFramebuffer(_offscreenFramebufferDefs[index]);
     
 	_fbIndex = index;
 }
 
-void DirectXRendererHelper::bindToFramebuffer(int index)
+void DirectXRendererHelper::bindFramebuffer(int index)
 {
     getD3DContext()->OMSetRenderTargets(1, &_renderTargetViews[index], NULL);
     
-    bindToFramebuffer(_framebufferDefs[index]);
+    bindFramebuffer(_framebufferDefs[index]);
     
     _fbIndex = index;
 }
 
-void DirectXRendererHelper::bindToScreenFramebuffer()
+void DirectXRendererHelper::bindScreenFramebuffer()
 {
     ID3D11RenderTargetView *const targets[1] = { s_d3dRenderTargetView };
     getD3DContext()->OMSetRenderTargets(1, targets, NULL);
     
-    getD3DContext()->RSSetViewports(1, &s_screenViewport);
-    
-    D3D11_RECT rects[1];
-    rects[0].left = s_screenViewport.TopLeftX;
-    rects[0].right = s_screenViewport.Width;
-    rects[0].top = s_screenViewport.TopLeftY;
-    rects[0].bottom = s_screenViewport.Height;
-    
-    getD3DContext()->RSSetScissorRects(1, rects);
+    FramebufferDef fbd(_screenWidth, _screenHeight);
+    bindFramebuffer(fbd);
     
     _fbIndex = -1;
 }
@@ -307,7 +298,7 @@ GPUBufferWrapper* DirectXRendererHelper::createGPUBuffer(size_t size, const void
     return new GPUBufferWrapper(buffer);
 }
 
-void DirectXRendererHelper::disposeGPUBuffer(GPUBufferWrapper* gpuBuffer)
+void DirectXRendererHelper::destroyGPUBuffer(GPUBufferWrapper* gpuBuffer)
 {
 	if (gpuBuffer && gpuBuffer->buffer)
 	{
@@ -390,6 +381,21 @@ void DirectXRendererHelper::platformReleaseFramebuffers()
     _shaderResourceViews.clear();
 }
 
+void DirectXRendererHelper::onFramebufferBinded(int renderWidth, int renderHeight)
+{
+    D3D11_VIEWPORT viewport = CD3D11_VIEWPORT(0.0f, 0.0f, static_cast<float>(renderWidth), static_cast<float>(renderHeight));
+    
+    getD3DContext()->RSSetViewports(1, &viewport);
+    
+    D3D11_RECT rects[1];
+    rects[0].left = viewport.TopLeftX;
+    rects[0].right = viewport.Width;
+    rects[0].top = viewport.TopLeftY;
+    rects[0].bottom = viewport.Height;
+    
+    getD3DContext()->RSSetScissorRects(1, rects);
+}
+
 void DirectXRendererHelper::createFramebuffer(ID3D11Texture2D** offscreenRenderTarget, ID3D11RenderTargetView** offscreenRenderTargetView, ID3D11ShaderResourceView** offscreenShaderResourceView, int renderWidth, int renderHeight)
 {
     D3D11_TEXTURE2D_DESC textureDesc;
@@ -430,23 +436,6 @@ void DirectXRendererHelper::createFramebuffer(ID3D11Texture2D** offscreenRenderT
     
     // Create the shader resource view.
     DX::ThrowIfFailed(getD3DDevice()->CreateShaderResourceView(*offscreenRenderTarget, &shaderResourceViewDesc, offscreenShaderResourceView));
-}
-
-void DirectXRendererHelper::bindToFramebuffer(FramebufferDef& framebufferDef)
-{
-    FramebufferDef& fbd = framebufferDef;
-    
-    D3D11_VIEWPORT viewport = CD3D11_VIEWPORT(0.0f, 0.0f, static_cast<float>(fbd.renderWidth), static_cast<float>(fbd.renderHeight));
-    
-    getD3DContext()->RSSetViewports(1, &viewport);
-    
-    D3D11_RECT rects[1];
-    rects[0].left = viewport.TopLeftX;
-    rects[0].right = viewport.Width;
-    rects[0].top = viewport.TopLeftY;
-    rects[0].bottom = viewport.Height;
-    
-    getD3DContext()->RSSetScissorRects(1, rects);
 }
 
 void DirectXRendererHelper::createBlendStates()

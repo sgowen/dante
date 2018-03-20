@@ -15,19 +15,13 @@
 #include <framework/graphics/portable/GPUBufferWrapper.h>
 
 #include <vector>
+#include <map>
 
 class NGTexture;
 struct TextureWrapper;
 struct ShaderProgramWrapper;
 class NGShaderUniformInput;
-
-struct FramebufferDef
-{
-    int renderWidth;
-    int renderHeight;
-    
-    FramebufferDef(int inRenderWidth, int inRenderHeight) : renderWidth(inRenderWidth), renderHeight(inRenderHeight) {}
-};
+struct FramebufferWrapper;
 
 class RendererHelper
 {
@@ -39,9 +33,8 @@ public:
     virtual void createWindowSizeDependentResources(int screenWidth, int screenHeight);
     virtual void releaseDeviceDependentResources();
     
-    virtual void bindToOffscreenFramebuffer(int index) = 0;
-    virtual void bindToFramebuffer(int index) = 0;
-    virtual void bindToScreenFramebuffer() = 0;
+    virtual void bindFramebuffer(FramebufferWrapper* framebufferWrapper) = 0;
+    virtual void bindScreenFramebuffer() = 0;
     virtual void clearFramebufferWithColor(float r, float g, float b, float a) = 0;
     virtual void useNormalBlending() = 0;
     virtual void useScreenBlending() = 0;
@@ -62,21 +55,19 @@ public:
     virtual void drawIndexed(NGPrimitiveType renderPrimitiveType, uint32_t first, uint32_t count) = 0;
     
     void updateMatrix(float left, float right, float bottom, float top);
-    NGTexture* getOffscreenFramebuffer(int index);
-    NGTexture* getFramebuffer(int index);
-    void addOffscreenFramebuffers(int renderWidth, int renderHeight, int numFramebuffers);
-    int addFramebuffer(int renderWidth, int renderHeight);
+    FramebufferWrapper* getOffscreenFramebuffer(int fbIndex);
+    FramebufferWrapper* getFramebuffer(std::string name);
+    FramebufferWrapper* addFramebuffer(int renderWidth, int renderHeight, std::string name);
+    void removeFramebuffer(std::string name);
     void clearFramebuffers();
     
 protected:
-    std::vector<NGTexture *> _offscreenFramebufferWrappers;
-    std::vector<NGTexture *> _framebufferWrappers;
+    std::vector<FramebufferWrapper* > _offscreenFramebufferWrappers;
+    std::map<std::string, FramebufferWrapper* > _framebufferWrappers;
     std::vector<GPUBufferWrapper* > _dynamicTextureVertexBuffers;
     std::vector<GPUBufferWrapper* > _staticTextureVertexBuffers;
     std::vector<GPUBufferWrapper* > _dynamicVertexBuffers;
     std::vector<GPUBufferWrapper* > _staticVertexBuffers;
-    std::vector<FramebufferDef> _offscreenFramebufferDefs;
-    std::vector<FramebufferDef> _framebufferDefs;
     GPUBufferWrapper* _indexBuffer;
     GPUBufferWrapper* _staticScreenVertexBuffer;
     mat4x4 _matrix;
@@ -84,18 +75,16 @@ protected:
     int _screenHeight;
     
     virtual GPUBufferWrapper* createGPUBuffer(size_t size, const void *data, bool useStaticBuffer, bool isVertex) = 0;
-    virtual void disposeGPUBuffer(GPUBufferWrapper* gpuBuffer) = 0;
-    virtual TextureWrapper* createOffscreenFramebuffer(int renderWidth, int renderHeight) = 0;
-    virtual TextureWrapper* createFramebuffer(int renderWidth, int renderHeight) = 0;
-    virtual void platformReleaseOffscreenFramebuffers() = 0;
-    virtual void platformReleaseFramebuffers() = 0;
+    virtual void destroyGPUBuffer(GPUBufferWrapper* gpuBuffer) = 0;
+    virtual TextureWrapper* platformCreateFramebuffer(FramebufferWrapper* framebufferWrapper) = 0;
+    virtual void destroyFramebuffer(FramebufferWrapper* fb) = 0;
+    virtual void onFramebufferBinded(int renderWidth, int renderHeight) = 0;
     
 private:
-    NGTexture* createOffscreenFramebuffer(FramebufferDef framebufferDef);
-    NGTexture* createFramebuffer(FramebufferDef framebufferDef);
+    void createFramebuffer(FramebufferWrapper* framebufferWrapper);
     void createIndexBuffer();
     void createStaticScreenVertexBuffer();
-    void disposeAllGPUBuffers(std::vector<GPUBufferWrapper* >& buffers);
+    void destroyAllGPUBuffers(std::vector<GPUBufferWrapper* >& buffers);
     void releaseOffscreenFramebuffers();
     void releaseFramebuffers();
 };

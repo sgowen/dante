@@ -44,12 +44,21 @@ World::~World()
 {
     clearDynamicEntities(_players);
     clearDynamicEntities(_dynamicEntities);
+    
+    for (Entity* entity : _waterBodies)
+    {
+        entity->deinitPhysics();
+    }
+    NGSTDUtil::cleanUpVectorOfPointers(_waterBodies);
+    
     for (Entity* entity : _staticEntities)
     {
         entity->deinitPhysics();
     }
     NGSTDUtil::cleanUpVectorOfPointers(_staticEntities);
+    
     NGSTDUtil::cleanUpVectorOfPointers(_layers);
+    
     delete _entityContactListener;
     delete _entityContactFilter;
     delete _world;
@@ -165,10 +174,10 @@ void World::updateServer()
             
             updateAndRemoveEntitiesAsNeeded(_players);
             updateAndRemoveEntitiesAsNeeded(_dynamicEntities);
+            
+            postUpdateAndRemoveEntitiesAsNeeded(_players);
+            postUpdateAndRemoveEntitiesAsNeeded(_dynamicEntities);
         }
-        
-        postUpdateAndRemoveEntitiesAsNeeded(_players);
-        postUpdateAndRemoveEntitiesAsNeeded(_dynamicEntities);
         
         for (uint8_t i = 0; i < MAX_NUM_PLAYERS_PER_SERVER; ++i)
         {
@@ -321,6 +330,11 @@ void World::mapAddEntity(Entity *e)
     {
         _layers.push_back(e);
     }
+    else if (isWater(e))
+    {
+        e->initPhysics(getWorld());
+        _waterBodies.push_back(e);
+    }
     else if (isStatic(e))
     {
         e->initPhysics(getWorld());
@@ -353,7 +367,26 @@ void World::mapRemoveEntity(Entity* e)
                 delete *i;
                 
                 i = _layers.erase(i);
-                break;
+                return;
+            }
+            else
+            {
+                ++i;
+            }
+        }
+    }
+    else if (isWater(e))
+    {
+        e->deinitPhysics();
+        
+        for (std::vector<Entity*>::iterator i = _waterBodies.begin(); i != _waterBodies.end(); )
+        {
+            if (e == (*i))
+            {
+                delete *i;
+                
+                i = _waterBodies.erase(i);
+                return;
             }
             else
             {
@@ -372,7 +405,7 @@ void World::mapRemoveEntity(Entity* e)
                 delete *i;
                 
                 i = _staticEntities.erase(i);
-                break;
+                return;
             }
             else
             {
@@ -403,6 +436,11 @@ void World::saveMapAs(uint32_t map)
         layout.entities.push_back(EntityPosDef(e->getEntityDef().type, e->getPosition().x, e->getPosition().y));
     }
     
+    for (Entity* e : _waterBodies)
+    {
+        layout.entities.push_back(EntityPosDef(e->getEntityDef().type, e->getPosition().x, e->getPosition().y));
+    }
+    
     for (Entity* e : _staticEntities)
     {
         layout.entities.push_back(EntityPosDef(e->getEntityDef().type, e->getPosition().x, e->getPosition().y));
@@ -428,12 +466,18 @@ void World::saveMapAs(uint32_t map)
 
 void World::clear()
 {
+    for (Entity* e : _waterBodies)
+    {
+        e->deinitPhysics();
+    }
+    NGSTDUtil::cleanUpVectorOfPointers(_waterBodies);
+    
     for (Entity* e : _staticEntities)
     {
         e->deinitPhysics();
     }
-    
     NGSTDUtil::cleanUpVectorOfPointers(_staticEntities);
+    
     NGSTDUtil::cleanUpVectorOfPointers(_layers);
     
     if (_flags & WorldFlag_MapLoadAll)
@@ -475,6 +519,11 @@ std::vector<Entity*>& World::getPlayers()
 std::vector<Entity*>& World::getDynamicEntities()
 {
     return _dynamicEntities;
+}
+
+std::vector<Entity*>& World::getWaterBodies()
+{
+    return _waterBodies;
 }
 
 std::vector<Entity*>& World::getStaticEntities()
@@ -563,11 +612,16 @@ bool World::isLayer(Entity* e)
     e->getEntityDef().bodyFlags == 0;
 }
 
+bool World::isWater(Entity* e)
+{
+    return e->getEntityDef().bodyFlags & BodyFlag_Water;
+}
+
 bool World::isStatic(Entity* e)
 {
     return e->getEntityDef().fixtures.size() > 0 &&
     (e->getEntityDef().bodyFlags & BodyFlag_Static) &&
-    (!e->getEntityDef().stateSensitive || e->getEntityDef().bodyFlags & BodyFlag_Water);
+    !e->getEntityDef().stateSensitive;
 }
 
 bool World::isDynamic(Entity* e)

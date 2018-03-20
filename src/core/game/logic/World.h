@@ -51,6 +51,7 @@ public:
     Entity* getPlayerWithId(uint8_t inPlayerID);
     std::vector<Entity*>& getPlayers();
     std::vector<Entity*>& getDynamicEntities();
+    std::vector<Entity*>& getWaterBodies();
     std::vector<Entity*>& getStaticEntities();
     std::vector<Entity*>& getLayers();
     b2World& getWorld();
@@ -58,6 +59,7 @@ public:
 private:
     std::vector<Entity*> _players;
     std::vector<Entity*> _dynamicEntities;
+    std::vector<Entity*> _waterBodies;
     std::vector<Entity*> _staticEntities;
     std::vector<Entity*> _layers;
     b2World* _world;
@@ -74,6 +76,7 @@ private:
     void postUpdateAndRemoveEntitiesAsNeeded(std::vector<Entity*>& entities);
     
     bool isLayer(Entity* e);
+    bool isWater(Entity* e);
     bool isStatic(Entity* e);
     bool isDynamic(Entity* e);
 };

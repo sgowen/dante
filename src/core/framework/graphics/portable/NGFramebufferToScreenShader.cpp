@@ -31,8 +31,10 @@ void NGFramebufferToScreenShader::bind(void* data1, void* data2, void* data3)
 {
     assert(data1 != NULL);
     
+    NGTexture* texture = static_cast<NGTexture*>(data1);
+    
     _rendererHelper.bindShader(_shaderProgramWrapper);
-    _rendererHelper.bindTexture(NGTextureSlot_ZERO, static_cast<NGTexture*>(data1), _uniforms[0]);
+    _rendererHelper.bindTexture(NGTextureSlot_ZERO, texture, _uniforms[0]);
 }
 
 void NGFramebufferToScreenShader::unbind()

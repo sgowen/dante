@@ -11,11 +11,7 @@
 
 #include <framework/graphics/portable/RendererHelper.h>
 
-#include <framework/graphics/portable/ShaderProgramWrapper.h>
-#include <framework/graphics/portable/NGShaderUniformInput.h>
-#include <framework/util/Constants.h>
-
-#include <framework/graphics/portable/NGShaderVarInput.h>
+class NGShaderVarInput;
 
 class OpenGLRendererHelper : public RendererHelper
 {
@@ -25,9 +21,8 @@ public:
 
     virtual void createDeviceDependentResources();
     
-    virtual void bindToOffscreenFramebuffer(int index);
-    virtual void bindToFramebuffer(int index);
-    virtual void bindToScreenFramebuffer();
+    virtual void bindFramebuffer(FramebufferWrapper* framebufferWrapper);
+    virtual void bindScreenFramebuffer();
     virtual void clearFramebufferWithColor(float r, float g, float b, float a);
     virtual void useNormalBlending();
     virtual void useScreenBlending();
@@ -49,22 +44,15 @@ public:
 
 protected:
     virtual GPUBufferWrapper* createGPUBuffer(size_t size, const void *data, bool useStaticBuffer, bool isVertex);
-    virtual void disposeGPUBuffer(GPUBufferWrapper* gpuBuffer);
-    virtual TextureWrapper* createOffscreenFramebuffer(int renderWidth, int renderHeight);
-    virtual TextureWrapper* createFramebuffer(int renderWidth, int renderHeight);
-    virtual void platformReleaseOffscreenFramebuffers();
-    virtual void platformReleaseFramebuffers();
+    virtual void destroyGPUBuffer(GPUBufferWrapper* gpuBuffer);
+    virtual TextureWrapper* platformCreateFramebuffer(FramebufferWrapper* fb);
+    virtual void destroyFramebuffer(FramebufferWrapper* fb);
+    virtual void onFramebufferBinded(int renderWidth, int renderHeight);
 
 private:
     GLint _screenFBO;
-    std::vector<GLuint> _offscreenFBOTextures;
-    std::vector<GLuint> _offscreenFBOs;
-    std::vector<GLuint> _FBOTextures;
-    std::vector<GLuint> _FBOs;
     ShaderProgramWrapper* _currentShaderProgramWrapper;
     
-    void createFramebuffer(GLuint& fbo_texture, GLuint& fbo, int renderWidth, int renderHeight);
-    void bindToFramebuffer(FramebufferDef& framebufferDef);
     void bindInputLayout(std::vector<NGShaderVarInput*>& inputLayout);
 };
 

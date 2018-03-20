@@ -34,6 +34,7 @@ class StudioEngine;
 class Box2DDebugRenderer;
 class StudioEngine;
 class StudioInputManager;
+struct FramebufferWrapper;
 
 #define NUM_SPRITE_BATCHERS 10
 #define NUM_CAMERAS 4
@@ -52,6 +53,8 @@ public:
     void setEngine(StudioEngine* inValue);
     void setInputManager(StudioInputManager* inValue);
     void onMapLoaded();
+    void onWaterAdded(Entity* e);
+    void onWaterRemoved(Entity* e);
     
     void update(float x, float y, float w, float h, int scale);
     void displayToast(std::string toast);
@@ -76,7 +79,6 @@ private:
     NGShader* _framebufferToScreenNGShader;
     NGRect* _camBounds[NUM_CAMERAS];
     std::deque<std::string> _toasts;
-    std::map<int, int> _waterToFbIndex;
     int _toastStateTime;
     int _fbIndex;
     int _scrollValue;
@@ -85,8 +87,8 @@ private:
     uint32_t _engineState;
     NGTexture* _fontTexture;
     
-    void setOffscreenFramebuffer(int framebufferIndex, float r = 0, float g = 0, float b = 0, float a = 0);
-    void setFramebuffer(int framebufferIndex, float r = 0, float g = 0, float b = 0, float a = 0);
+    void bindOffscreenFramebuffer(int fbIndex, float r = 0, float g = 0, float b = 0, float a = 0);
+    void bindFramebuffer(FramebufferWrapper* fb, float r = 0, float g = 0, float b = 0, float a = 0);
     void renderWorld();
     void renderEntities(std::vector<Entity*>& entities);
     void endBatchWithTexture(SpriteBatcher* sb, NGTexture* tex, int layer);

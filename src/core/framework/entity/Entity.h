@@ -84,6 +84,7 @@ public:
     ~Entity();
     
     void update(bool isLive = false);
+    /// Handle Server State Changes
     void postUpdate();
     void interpolate(double alpha);
     void postRender();

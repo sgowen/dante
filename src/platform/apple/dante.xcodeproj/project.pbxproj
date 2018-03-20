@@ -953,6 +953,7 @@
 		BB61CB581EC9FA1B000E0291 /* Constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		BB640BE2202A328600629758 /* FileUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileUtil.h; sourceTree = "<group>"; };
 		BB640BE3202A328600629758 /* FileUtil.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FileUtil.cpp; sourceTree = "<group>"; };
+		BB651AE020603BB700F9B27B /* FramebufferWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FramebufferWrapper.h; sourceTree = "<group>"; };
 		BB65315C1FED56C800963997 /* World.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = World.cpp; sourceTree = "<group>"; };
 		BB65315D1FED56C800963997 /* Server.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Server.cpp; sourceTree = "<group>"; };
 		BB65315F1FED56C800963997 /* Server.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Server.h; sourceTree = "<group>"; };
@@ -2716,6 +2717,7 @@
 				BBAEF1371EA94ED900F0866E /* Font.cpp */,
 				BBAEF1381EA94ED900F0866E /* Font.h */,
 				BB2AC5451EFC382C0012B990 /* FontAlign.h */,
+				BB651AE020603BB700F9B27B /* FramebufferWrapper.h */,
 				BB87676D202B64D5003E0C81 /* GPUBufferWrapper.h */,
 				BBAEF1431EA94ED900F0866E /* LineBatcher.cpp */,
 				BBAEF1441EA94ED900F0866E /* LineBatcher.h */,

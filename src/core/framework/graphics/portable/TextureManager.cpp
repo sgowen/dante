@@ -36,6 +36,7 @@ TextureManager::~TextureManager()
     delete _textureLoader;
     
     NGSTDUtil::cleanUpMapOfPointers(_textures);
+    _framebuffers.clear();
 }
 
 void TextureManager::createDeviceDependentResources()
@@ -242,13 +243,31 @@ bool TextureManager::isLoadingData()
 
 NGTexture* TextureManager::getTextureWithName(std::string name)
 {
-    auto q = _textures.find(name);
-    
     NGTexture* ret = NULL;
-    if (q != _textures.end())
+    
     {
-        ret = q->second;
+        auto q = _textures.find(name);
+        
+        if (q != _textures.end())
+        {
+            ret = q->second;
+        }
+    }
+    
+    if (ret == NULL)
+    {
+        auto q = _framebuffers.find(name);
+        
+        if (q != _framebuffers.end())
+        {
+            ret = q->second;
+        }
     }
     
     return ret;
+}
+
+void TextureManager::registerFramebuffer(std::string name, NGTexture* framebuffer)
+{
+    _framebuffers[name] = framebuffer;
 }

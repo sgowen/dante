@@ -81,7 +81,9 @@ void StudioEngine::destroy()
 StudioEngine::StudioEngine() : EngineState(),
 _renderer(new StudioRenderer()),
 _world(new World(WorldFlag_MapLoadAll)),
-_state(StudioEngineState_DisplayGrid | StudioEngineState_DisplayControls | StudioEngineState_LayerAll)
+_state(StudioEngineState_DisplayGrid | StudioEngineState_DisplayControls | StudioEngineState_LayerAll),
+_textInputField(0),
+_textInputType(0)
 {
     StudioInputManager::create();
     StudioInputManager::getInstance()->setEngine(this);

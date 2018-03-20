@@ -28,7 +28,7 @@ public:
     bool _isFramebuffer;
     bool _isLoadingData;
     
-    NGTexture(std::string inName, TextureManager* textureManager, NGTextureDesc* desc);
+    NGTexture(std::string inName, TextureManager* textureManager = NULL, NGTextureDesc* desc = NULL, bool isFramebuffer = false);
 };
 
 #endif /* defined(__noctisgames__NGTexture__) */

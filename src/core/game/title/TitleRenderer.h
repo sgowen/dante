@@ -58,7 +58,7 @@ private:
     TitleEngine* _engine;
     uint32_t _engineState;
     
-    void setFramebuffer(int framebufferIndex, float r = 0, float g = 0, float b = 0, float a = 0);
+    void bindFramebuffer(int framebufferIndex, float r = 0, float g = 0, float b = 0, float a = 0);
     void renderMainMenuSteamOffText();
     void renderMainMenuSteamOnText();
     void renderStartingServerText();

@@ -17,12 +17,15 @@
 
 #include <framework/file/portable/FileUtil.h>
 
-NGTexture::NGTexture(std::string inName, TextureManager* textureManager, NGTextureDesc* desc) : name(inName), textureDataWrapper(NULL), textureWrapper(NULL), _textureManager(textureManager), _desc(desc), _isFramebuffer(false), _isLoadingData(false)
+NGTexture::NGTexture(std::string inName, TextureManager* textureManager, NGTextureDesc* desc, bool isFramebuffer) :
+name(inName),
+filePath(FileUtil::filePathForTexture(name.c_str())),
+textureDataWrapper(NULL),
+textureWrapper(NULL),
+_textureManager(textureManager),
+_desc(desc),
+_isFramebuffer(isFramebuffer),
+_isLoadingData(false)
 {
-    if (name == "framebuffer")
-    {
-        _isFramebuffer = true;
-    }
-    
-    filePath = FileUtil::filePathForTexture(name.c_str());
+    // Empty
 }

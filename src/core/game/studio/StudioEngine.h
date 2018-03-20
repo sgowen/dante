@@ -20,21 +20,20 @@ class World;
 
 enum StudioEngineState
 {
-    StudioEngineState_Default =                1 <<  0,
-    StudioEngineState_DisplayBox2D =           1 <<  1,
-    StudioEngineState_DisplayGrid =            1 <<  2,
-    StudioEngineState_DisplayTypes =           1 <<  3,
-    StudioEngineState_DisplayParallax =        1 <<  4,
-    StudioEngineState_DisplayControls =        1 <<  5,
-    StudioEngineState_DisplayAssets =          1 <<  6,
-    StudioEngineState_DisplayEntities =        1 <<  7,
-    StudioEngineState_DisplayNewMapDialog =    1 <<  8,
-    StudioEngineState_TextInput =              1 <<  9,
-    StudioEngineState_TestSession =            1 << 10,
-    StudioEngineState_DisplayLoadMapDialog =   1 << 11,
-    StudioEngineState_DisplaySaveMapDialog =   1 << 12,
-    StudioEngineState_DisplaySaveMapAsDialog = 1 << 13,
-    StudioEngineState_Interpolation =          1 << 14,
+    StudioEngineState_DisplayBox2D =           1 <<  0,
+    StudioEngineState_DisplayGrid =            1 <<  1,
+    StudioEngineState_DisplayTypes =           1 <<  2,
+    StudioEngineState_DisplayParallax =        1 <<  3,
+    StudioEngineState_DisplayControls =        1 <<  4,
+    StudioEngineState_DisplayAssets =          1 <<  5,
+    StudioEngineState_DisplayEntities =        1 <<  6,
+    StudioEngineState_DisplayNewMapDialog =    1 <<  7,
+    StudioEngineState_TextInput =              1 <<  8,
+    StudioEngineState_TestSession =            1 <<  9,
+    StudioEngineState_DisplayLoadMapDialog =   1 << 10,
+    StudioEngineState_DisplaySaveMapDialog =   1 << 11,
+    StudioEngineState_DisplaySaveMapAsDialog = 1 << 12,
+    StudioEngineState_Interpolation =          1 << 13,
     
     StudioEngineState_LayerBitBegin =               14,
     StudioEngineState_Layer0 =                 1 << 14,
@@ -50,6 +49,18 @@ enum StudioEngineState
     StudioEngineState_NumLayers =                   10,
     
     StudioEngineState_LayerAll = StudioEngineState_Layer0 | StudioEngineState_Layer1 | StudioEngineState_Layer2 | StudioEngineState_Layer3 | StudioEngineState_Layer4 | StudioEngineState_Layer5 | StudioEngineState_Layer6 | StudioEngineState_Layer7 | StudioEngineState_Layer8 | StudioEngineState_Layer9
+};
+
+enum StudioEngineTextInputField
+{
+    StudioEngineTextInputField_WaterDepth = 1,
+    StudioEngineTextInputField_WaterWidth = 2
+};
+
+enum StudioEngineTextInputType
+{
+    StudioEngineTextInputType_Text =    1,
+    StudioEngineTextInputType_Integer = 2,
 };
 
 class StudioEngine : public EngineState
@@ -80,6 +91,8 @@ private:
     StudioRenderer* _renderer;
     World* _world;
     uint32_t _state;
+    uint32_t _textInputField;
+    uint32_t _textInputType;
     
     StudioEngine();
     virtual ~StudioEngine();

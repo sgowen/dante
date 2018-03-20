@@ -438,7 +438,7 @@ void DirectXMain::Tick()
 {
     auto kb = _keyboard->GetState();
     _keys.Update(kb);
-    for (unsigned short key : getAllSupportedKeys())
+    for (unsigned short key : getSupportedKeys())
     {
         if (_keys.IsKeyPressed((DirectX::Keyboard::Keys)key))
         {
@@ -753,7 +753,7 @@ void DirectXMain::CreateDeviceDependentResources()
 // Allocate all memory resources that change on a window SizeChanged event.
 void DirectXMain::CreateWindowSizeDependentResources()
 {
-    DirectXRendererHelper::init(_deviceResources->GetRenderTargetView(), _deviceResources->GetScreenViewport());
+    DirectXRendererHelper::init(_deviceResources->GetRenderTargetView());
     
     RECT outputSize = _deviceResources->GetOutputSize();
     LONG screenWidth = outputSize.right - outputSize.left;
