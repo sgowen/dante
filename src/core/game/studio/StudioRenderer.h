@@ -87,10 +87,12 @@ private:
     uint32_t _engineState;
     NGTexture* _fontTexture;
     
+    void createFramebuffers();
     void bindOffscreenFramebuffer(int fbIndex, float r = 0, float g = 0, float b = 0, float a = 0);
     void bindFramebuffer(FramebufferWrapper* fb, float r = 0, float g = 0, float b = 0, float a = 0);
     void renderWorld();
     void renderEntities(std::vector<Entity*>& entities);
+    void renderWater(std::vector<Entity*>& entities);
     void endBatchWithTexture(SpriteBatcher* sb, NGTexture* tex, int layer);
     void renderBox2D();
     void renderGrid();

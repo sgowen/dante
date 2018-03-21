@@ -23,20 +23,16 @@ public:
     virtual ~DirectXRendererHelper();
 
 	virtual void createDeviceDependentResources();
-    virtual void createWindowSizeDependentResources(int screenWidth, int screenHeight);
 	virtual void releaseDeviceDependentResources();
     
-    virtual void bindFramebuffer(FramebufferWrapper* framebufferWrapper);
-    virtual void bindScreenFramebuffer();
     virtual void clearFramebufferWithColor(float r, float g, float b, float a);
     virtual void useNormalBlending();
     virtual void useScreenBlending();
-    virtual void useNoBlending();
+    virtual void disableBlending();
     virtual void bindInt4(NGShaderUniformInput* uniform, int4& inValue);
     virtual void bindFloat4(NGShaderUniformInput* uniform, float4& inValue);
     virtual void bindFloat4Array(NGShaderUniformInput* uniform, int count, float4* inValue);
     virtual void bindMatrix(NGShaderUniformInput* uniform, mat4x4& inValue);
-    virtual void bindMatrix(NGShaderUniformInput* uniform);
     virtual void bindShader(ShaderProgramWrapper* shaderProgramWrapper);
     virtual void bindTexture(NGTextureSlot textureSlot, NGTexture* texture, NGShaderUniformInput* uniform = NULL);
     virtual void mapTextureVertices(std::vector<VERTEX_2D_TEXTURE>& vertices, bool useStaticBuffer = false, int gpuBufferIndex = 0);
@@ -48,13 +44,13 @@ public:
     virtual void drawIndexed(NGPrimitiveType renderPrimitiveType, uint32_t first, uint32_t count);
     
 protected:
-    virtual GPUBufferWrapper* createGPUBuffer(size_t size, const void *data, bool useStaticBuffer, bool isVertex);
-    virtual void destroyGPUBuffer(GPUBufferWrapper* gpuBuffer);
-    virtual TextureWrapper* createOffscreenFramebuffer(int renderWidth, int renderHeight);
-    virtual TextureWrapper* createFramebuffer(int renderWidth, int renderHeight);
-    virtual void platformReleaseOffscreenFramebuffers();
-    virtual void platformReleaseFramebuffers();
-    virtual void onFramebufferBinded(int renderWidth, int renderHeight);
+    virtual void createScreenFramebufferWrapper(FramebufferWrapper* fbw);
+    virtual TextureWrapper* createFramebufferImpl(FramebufferWrapper* fbw);
+    virtual void destroyFramebufferImpl(FramebufferWrapper* fbw);
+    virtual void bindFramebufferImpl(FramebufferWrapper* fbw);
+    virtual void bindViewport(int renderWidth, int renderHeight);
+    virtual GPUBufferWrapper* createGPUBufferImpl(size_t size, const void *data, bool useStaticBuffer, bool isVertex);
+    virtual void destroyGPUBufferImpl(GPUBufferWrapper* gpuBuffer);
     
 private:
     // Cached pointer to device resources.
@@ -62,12 +58,6 @@ private:
     static ID3D11DeviceContext* s_d3dContext;
     static ID3D11RenderTargetView* s_d3dRenderTargetView;
     
-    std::vector<ID3D11Texture2D*> _offscreenRenderTargets;
-    std::vector<ID3D11RenderTargetView*> _offscreenRenderTargetViews;
-    std::vector<ID3D11ShaderResourceView*> _offscreenShaderResourceViews;
-    std::vector<ID3D11Texture2D*> _renderTargets;
-    std::vector<ID3D11RenderTargetView*> _renderTargetViews;
-    std::vector<ID3D11ShaderResourceView*> _shaderResourceViews;
     ID3D11BlendState* _blendState;
     ID3D11BlendState* _screenBlendState;
     ID3D11SamplerState* _framebufferSamplerState; // mipmap: false, min: FramebufferFilterMin, mag: FramebufferFilterMag
@@ -79,9 +69,8 @@ private:
     ID3D11SamplerState* _textureSamplerState6; // mipmap: false, min: GL_LINEAR,  min: GL_NEAREST
     ID3D11SamplerState* _textureSamplerState7; // mipmap: false, min: GL_LINEAR,  min: GL_LINEAR
     ID3D11SamplerState* _textureSamplerState8; // mipmap: false, min: GL_NEAREST,  min: GL_LINEAR
-	int _fbIndex;
+    FramebufferWrapper* _currentlyBoundFramebufferWrapper;
     
-    void createFramebuffer(ID3D11Texture2D** offscreenRenderTarget, ID3D11RenderTargetView** offscreenRenderTargetView, ID3D11ShaderResourceView** offscreenShaderResourceView, int renderWidth, int renderHeight);
     void createBlendStates();
     void createSamplerStates();
     D3D11_FILTER filterForMinAndMag(std::string cfgFilterMin, std::string cfgFilterMag, bool mipmap = false);

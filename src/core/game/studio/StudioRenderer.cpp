@@ -168,6 +168,8 @@ void StudioRenderer::createDeviceDependentResources()
 void StudioRenderer::createWindowSizeDependentResources(int screenWidth, int screenHeight)
 {
     _rendererHelper->createWindowSizeDependentResources(screenWidth, screenHeight);
+    
+    createFramebuffers();
 }
 
 void StudioRenderer::releaseDeviceDependentResources()
@@ -196,12 +198,13 @@ void StudioRenderer::render()
         {
             e = _input->_lastActiveEntity;
         }
+        
         if (e)
         {
             _rendererHelper->updateMatrix(_camBounds[3]->getLeft(), _camBounds[3]->getRight(), _camBounds[3]->getBottom(), _camBounds[3]->getTop());
             _rendererHelper->useNormalBlending();
             _activeEntitySpriteBatcher->beginBatch(10);
-            TextureRegion tr = ASSETS->findTextureRegion(e->getTextureMapping(), e->getStateTime());
+            TextureRegion& tr = ASSETS->findTextureRegion(e->getTextureMapping(), e->getStateTime());
             _activeEntitySpriteBatcher->renderSprite(e->getPosition().x, e->getPosition().y, e->getWidth(), e->getHeight(), e->getAngle(), tr, e->isFacingLeft());
             _activeEntitySpriteBatcher->endBatch(_textureNGShader, _textureManager->getTextureWithName(tr.getTextureName()), NULL, Color::DOUBLE);
         }
@@ -234,13 +237,9 @@ void StudioRenderer::setInputManager(StudioInputManager* inValue)
 
 void StudioRenderer::onMapLoaded()
 {
-    _rendererHelper->clearFramebuffers();
+    _rendererHelper->releaseFramebuffers();
     
-    World* world = _engine->_world;
-    for (Entity* e : world->getWaterBodies())
-    {
-        onWaterAdded(e);
-    }
+    createFramebuffers();
 }
 
 void StudioRenderer::onWaterAdded(Entity* e)
@@ -251,8 +250,8 @@ void StudioRenderer::onWaterAdded(Entity* e)
     int top = e->getHeight();
     _rendererHelper->updateMatrix(0, right, 0, top);
     
-    TextureRegion trWaterSurface = ASSETS->findTextureRegion(e->getTextureMapping(0));
-    TextureRegion trWaterBody = ASSETS->findTextureRegion(e->getTextureMapping(1));
+    TextureRegion& trWaterSurface = ASSETS->findTextureRegion(e->getTextureMapping(1));
+    TextureRegion& trWaterBody = ASSETS->findTextureRegion(e->getTextureMapping(2));
     int tileHeight = trWaterSurface._regionHeight / GRID_TO_PIXEL;
     int tileWidth = trWaterSurface._regionWidth / GRID_TO_PIXEL;
     
@@ -279,24 +278,45 @@ void StudioRenderer::onWaterAdded(Entity* e)
     int renderHeight = e->getHeight() * GRID_TO_PIXEL;
     
     std::string textureName = StringUtil::toString(e->getID());
-    std::string normalMapName = textureName;
-    normalMapName.insert(0, "n_");
+    std::string normalMapName = std::string("n_") + textureName;
     
-    e->getEntityDef().textureMappings.insert(std::make_pair(2, textureName));
-    ASSETS->registerTextureRegion(textureName, new TextureRegion(textureName, 0, 0, renderWidth, renderHeight, renderWidth, renderHeight, 8));
+    std::string textureNameTemp = std::string("temp_") + textureName;
+    std::string normalMapNameTemp = std::string("temp_") + normalMapName;
+    
+    e->getEntityDef().textureMappings.find(0)->second = textureName;
+    TextureRegion* tr = new TextureRegion(textureName, 0, 0, renderWidth, renderHeight, renderWidth, renderHeight, trWaterSurface._layer);
+    ASSETS->registerTextureRegion(textureName, tr);
     
     {
+        FramebufferWrapper* fbTemp = _rendererHelper->addFramebuffer(renderWidth, renderHeight, textureNameTemp);
+        bindFramebuffer(fbTemp);
+        _fbSpriteBatcher->endBatch(_textureNGShader, _textureManager->getTextureWithName(trWaterSurface.getTextureName()));
+        
         FramebufferWrapper* fb = _rendererHelper->addFramebuffer(renderWidth, renderHeight, textureName);
         bindFramebuffer(fb);
-        _fbSpriteBatcher->endBatch(_textureNGShader, _textureManager->getTextureWithName(trWaterSurface.getTextureName()));
-        _textureManager->registerFramebuffer(textureName, fb->texture);
+        
+        _fbSpriteBatcher->beginBatch(0);
+        _fbSpriteBatcher->renderSprite(e->getWidth() / 2, e->getHeight() / 2, e->getWidth(), e->getHeight(), 0, *tr);
+        _fbSpriteBatcher->endBatch(_textureNGShader, fbTemp->texture);
+        
+        _rendererHelper->removeFramebuffer(textureNameTemp);
+        _textureManager->registerFramebuffer(textureName, fb);
     }
     
     {
+        FramebufferWrapper* fbTemp = _rendererHelper->addFramebuffer(renderWidth, renderHeight, normalMapNameTemp);
+        bindFramebuffer(fbTemp);
+        _fbSpriteBatcher->endBatch(_textureNGShader, _textureManager->getTextureWithName(trWaterSurface.getNormalMapName()));
+        
         FramebufferWrapper* fb = _rendererHelper->addFramebuffer(renderWidth, renderHeight, normalMapName);
         bindFramebuffer(fb);
-        _fbSpriteBatcher->endBatch(_textureNGShader, _textureManager->getTextureWithName(trWaterSurface.getNormalMapName()));
-        _textureManager->registerFramebuffer(normalMapName, fb->texture);
+        
+        _fbSpriteBatcher->beginBatch(0);
+        _fbSpriteBatcher->renderSprite(e->getWidth() / 2, e->getHeight() / 2, e->getWidth(), e->getHeight(), 0, *tr);
+        _fbSpriteBatcher->endBatch(_textureNGShader, fbTemp->texture);
+        
+        _rendererHelper->removeFramebuffer(normalMapNameTemp);
+        _textureManager->registerFramebuffer(normalMapName, fb);
     }
 }
 
@@ -342,6 +362,15 @@ void StudioRenderer::displayToast(std::string toast)
     _toastStateTime = 0;
 }
 
+void StudioRenderer::createFramebuffers()
+{
+    World* world = _engine->_world;
+    for (Entity* e : world->getWaterBodies())
+    {
+        onWaterAdded(e);
+    }
+}
+
 void StudioRenderer::bindOffscreenFramebuffer(int fbIndex, float r, float g, float b, float a)
 {
     assert(fbIndex >= 0);
@@ -379,7 +408,6 @@ void StudioRenderer::renderWorld()
     renderEntities(world->getStaticEntities());
     renderEntities(world->getPlayers());
     renderEntities(world->getDynamicEntities());
-    renderEntities(world->getWaterBodies());
     
     _rendererHelper->useNormalBlending();
     bindOffscreenFramebuffer(0);
@@ -398,8 +426,12 @@ void StudioRenderer::renderWorld()
     {
         endBatchWithTexture(_spriteBatchers[i], _textureManager->getTextureWithName(_textures[i]), i);
     }
+    
+    // Should be Layer 7, but doesn't have to be I suppose...
+    renderWater(world->getWaterBodies());
+    
+    // Static Layer
     endBatchWithTexture(_spriteBatchers[8], _textureManager->getTextureWithName(_textures[8]), 8);
-    endBatchWithTexture(_spriteBatchers[9], _textureManager->getTextureWithName(_textures[9]), 9);
     
     int fbBegin = 0;
     int fbEnd = 3;
@@ -424,7 +456,7 @@ void StudioRenderer::renderEntities(std::vector<Entity*>& entities)
 {
     for (Entity* e : entities)
     {
-        TextureRegion tr = ASSETS->findTextureRegion(e->getTextureMapping(), e->getStateTime());
+        TextureRegion& tr = ASSETS->findTextureRegion(e->getTextureMapping(), e->getStateTime());
         
         _spriteBatchers[tr._layer]->renderSprite(e->getPosition().x, e->getPosition().y, e->getWidth(), e->getHeight(), e->getAngle(), tr, e->isFacingLeft());
         _textures[tr._layer] = tr.getTextureName();
@@ -434,6 +466,19 @@ void StudioRenderer::renderEntities(std::vector<Entity*>& entities)
         {
             renderText(e->getEntityDef().typeName.c_str(), e->getPosition().x, e->getPosition().y, FONT_ALIGN_CENTER);
         }
+    }
+}
+
+void StudioRenderer::renderWater(std::vector<Entity*>& entities)
+{
+    for (Entity* e : entities)
+    {
+        TextureRegion& tr = ASSETS->findTextureRegion(e->getTextureMapping(), e->getStateTime());
+        
+        int layer = tr._layer;
+        _spriteBatchers[layer]->beginBatch(layer);
+        _spriteBatchers[layer]->renderSprite(e->getPosition().x, e->getPosition().y, e->getWidth(), e->getHeight(), e->getAngle(), tr, e->isFacingLeft());
+        endBatchWithTexture(_spriteBatchers[layer], _textureManager->getTextureWithName(tr.getTextureName()), layer);
     }
 }
 
@@ -590,7 +635,7 @@ void StudioRenderer::renderUI()
             renderText(StringUtil::format("%s | %s", ed->typeName.c_str(), ed->name.c_str()).c_str(), 7, GM_CFG->_camHeight - 1 - (row * padding), FONT_ALIGN_LEFT);
             _fontSpriteBatcher->endBatch(_textureNGShader, _fontTexture, NULL, i == selectionIndex ? Color::WHITE : Color::BLACK);
             
-            TextureRegion tr = ASSETS->findTextureRegion(ed->textureMappings[0], 0);
+            TextureRegion& tr = ASSETS->findTextureRegion(ed->textureMappings[0], 0);
             _spriteBatchers[tr._layer]->renderSprite(4, GM_CFG->_camHeight - 1 - (row * padding), 4, 4, 0, tr);
             _textures[tr._layer] = tr.getTextureName();
             
@@ -740,5 +785,5 @@ void StudioRenderer::endFrame()
     _rendererHelper->drawIndexed(NGPrimitiveType_Triangles, 0, INDICES_PER_RECTANGLE);
     _framebufferToScreenNGShader->unbind();
 
-    _rendererHelper->useNoBlending();
+    _rendererHelper->disableBlending();
 }

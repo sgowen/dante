@@ -17,6 +17,7 @@
 
 class TextureLoader;
 class NGTexture;
+struct FramebufferWrapper;
 
 class TextureManager
 {
@@ -36,11 +37,11 @@ public:
     void cleanUpThreads();
     bool isLoadingData();
     NGTexture* getTextureWithName(std::string name);
-    void registerFramebuffer(std::string name, NGTexture* framebuffer);
+    void registerFramebuffer(std::string name, FramebufferWrapper* framebuffer);
     
 private:
     std::map<std::string, NGTexture*> _textures;
-    std::map<std::string, NGTexture*> _framebuffers;
+    std::map<std::string, FramebufferWrapper*> _framebuffers;
     std::vector<NGTexture*> _loadingTextures;
     std::vector<tthread::thread*> _textureDataLoadingThreads;
 

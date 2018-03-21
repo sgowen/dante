@@ -582,7 +582,7 @@ void GameRenderer::endFrame()
     _rendererHelper->drawIndexed(NGPrimitiveType_Triangles, 0, INDICES_PER_RECTANGLE);
     _framebufferToScreenNGShader->unbind();
     
-    _rendererHelper->useNoBlending();
+    _rendererHelper->disableBlending();
 }
 
 uint32_t GameRenderer::calcTextDisplayState()

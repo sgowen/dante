@@ -22,13 +22,13 @@ struct FramebufferWrapper
     GLuint fboTexture;
     GLuint fbo;
 
-    FramebufferWrapper(int inRenderWidth, int inRenderHeight) : renderWidth(inRenderWidth), renderHeight(inRenderHeight), texture(new NGTexture("framebuffer", NULL, NULL, false)), fboTexture(0), fbo(0) {}
+    FramebufferWrapper(int inRenderWidth, int inRenderHeight) : renderWidth(inRenderWidth), renderHeight(inRenderHeight), texture(NULL), fboTexture(0), fbo(0) {}
 #elif defined _WIN32
     ID3D11Texture2D* renderTarget;
     ID3D11RenderTargetView* renderTargetView;
     ID3D11ShaderResourceView* shaderResourceView;
 
-    FramebufferWrapper(int inRenderWidth, int inRenderHeight) : renderWidth(inRenderWidth), renderHeight(inRenderHeight), texture(new NGTexture("framebuffer", NULL, NULL, false)), renderTarget(NULL), renderTargetView(NULL), shaderResourceView(NULL) {}
+    FramebufferWrapper(int inRenderWidth, int inRenderHeight) : renderWidth(inRenderWidth), renderHeight(inRenderHeight), texture(NULL), renderTarget(NULL), renderTargetView(NULL), shaderResourceView(NULL) {}
 #endif
 };
 

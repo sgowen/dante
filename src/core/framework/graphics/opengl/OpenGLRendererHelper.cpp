@@ -25,7 +25,6 @@
 #include <assert.h>
 
 OpenGLRendererHelper::OpenGLRendererHelper() : RendererHelper(),
-_screenFBO(0),
 _currentShaderProgramWrapper(NULL)
 {
     // Empty
@@ -34,27 +33,6 @@ _currentShaderProgramWrapper(NULL)
 OpenGLRendererHelper::~OpenGLRendererHelper()
 {
     // Empty
-}
-
-void OpenGLRendererHelper::createDeviceDependentResources()
-{
-    RendererHelper::createDeviceDependentResources();
-    
-    glGetIntegerv(GL_FRAMEBUFFER_BINDING, &_screenFBO);
-}
-
-void OpenGLRendererHelper::bindFramebuffer(FramebufferWrapper* fb)
-{
-    glBindFramebuffer(GL_FRAMEBUFFER, fb->fbo);
-    
-    onFramebufferBinded(fb->renderWidth, fb->renderHeight);
-}
-
-void OpenGLRendererHelper::bindScreenFramebuffer()
-{
-    glBindFramebuffer(GL_FRAMEBUFFER, _screenFBO);
-    
-    onFramebufferBinded(_screenWidth, _screenHeight);
 }
 
 void OpenGLRendererHelper::clearFramebufferWithColor(float r, float g, float b, float a)
@@ -77,7 +55,7 @@ void OpenGLRendererHelper::useScreenBlending()
     glEnable(GL_BLEND);
 }
 
-void OpenGLRendererHelper::useNoBlending()
+void OpenGLRendererHelper::disableBlending()
 {
     glDisable(GL_BLEND);
 }
@@ -100,11 +78,6 @@ void OpenGLRendererHelper::bindFloat4Array(NGShaderUniformInput* uniform, int co
 void OpenGLRendererHelper::bindMatrix(NGShaderUniformInput* uniform, mat4x4& inValue)
 {
     glUniformMatrix4fv(uniform->_attribute, 1, GL_FALSE, (GLfloat*)inValue);
-}
-
-void OpenGLRendererHelper::bindMatrix(NGShaderUniformInput* uniform)
-{
-    glUniformMatrix4fv(uniform->_attribute, 1, GL_FALSE, (GLfloat*)_matrix);
 }
 
 inline int slotIndexForTextureSlot(NGTextureSlot textureSlot)
@@ -192,28 +165,19 @@ void OpenGLRendererHelper::drawIndexed(NGPrimitiveType renderPrimitiveType, uint
     glDrawElements(renderPrimitiveType, count, GL_UNSIGNED_SHORT, (void*)0);
 }
 
-GPUBufferWrapper* OpenGLRendererHelper::createGPUBuffer(size_t size, const void *data, bool useStaticBuffer, bool isVertex)
+void OpenGLRendererHelper::createScreenFramebufferWrapper(FramebufferWrapper* fbw)
 {
-    GLuint buffer;
-    glGenBuffers(1, &buffer);
-    glBindBuffer(isVertex ? GL_ARRAY_BUFFER : GL_ELEMENT_ARRAY_BUFFER, buffer);
-    glBufferData(isVertex ? GL_ARRAY_BUFFER : GL_ELEMENT_ARRAY_BUFFER, size, data, useStaticBuffer ? GL_STATIC_DRAW : GL_DYNAMIC_DRAW);
+    GLint screenFBO;
+    glGetIntegerv(GL_FRAMEBUFFER_BINDING, &screenFBO);
     
-    return new GPUBufferWrapper(buffer);
+    fbw->fbo = screenFBO;
 }
 
-void OpenGLRendererHelper::destroyGPUBuffer(GPUBufferWrapper* gpuBuffer)
+TextureWrapper* OpenGLRendererHelper::createFramebufferImpl(FramebufferWrapper* fbw)
 {
-    assert(gpuBuffer != NULL);
+    GLuint& fbo_texture = fbw->fboTexture;
+    GLuint& fbo = fbw->fbo;
     
-    glDeleteBuffers(1, &gpuBuffer->buffer);
-}
-
-TextureWrapper* OpenGLRendererHelper::platformCreateFramebuffer(FramebufferWrapper* fb)
-{
-    GLuint& fbo_texture = fb->fboTexture;
-    GLuint& fbo = fb->fbo;
-
     std::string cfgFilterMin = FW_CFG->getString("FramebufferFilterMin");
     std::string cfgFilterMag = FW_CFG->getString("FramebufferFilterMag");
     GLint filterMin = cfgFilterMin == "NEAREST" ? GL_NEAREST : GL_LINEAR;
@@ -227,7 +191,7 @@ TextureWrapper* OpenGLRendererHelper::platformCreateFramebuffer(FramebufferWrapp
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, filterMag);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, fb->renderWidth, fb->renderHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, fbw->renderWidth, fbw->renderHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
     glBindTexture(GL_TEXTURE_2D, 0);
     
     // Framebuffer
@@ -237,27 +201,47 @@ TextureWrapper* OpenGLRendererHelper::platformCreateFramebuffer(FramebufferWrapp
     
     GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
     
-    glBindFramebuffer(GL_FRAMEBUFFER, _screenFBO);
-    
     assert(status == GL_FRAMEBUFFER_COMPLETE);
-
+    
     return new TextureWrapper(fbo_texture);
 }
 
-void OpenGLRendererHelper::destroyFramebuffer(FramebufferWrapper* fb)
+void OpenGLRendererHelper::destroyFramebufferImpl(FramebufferWrapper* fbw)
 {
-    GLuint& fbo_texture = fb->fboTexture;
-    GLuint& fbo = fb->fbo;
+    GLuint& fbo_texture = fbw->fboTexture;
+    GLuint& fbo = fbw->fbo;
     
     glDeleteTextures(1, &fbo_texture);
     glDeleteFramebuffers(1, &fbo);
 }
 
-void OpenGLRendererHelper::onFramebufferBinded(int renderWidth, int renderHeight)
+void OpenGLRendererHelper::bindFramebufferImpl(FramebufferWrapper* fbw)
+{
+    glBindFramebuffer(GL_FRAMEBUFFER, fbw->fbo);
+}
+
+void OpenGLRendererHelper::bindViewport(int renderWidth, int renderHeight)
 {
     glViewport(0, 0, renderWidth, renderHeight);
     glScissor(0, 0, renderWidth, renderHeight);
     glEnable(GL_SCISSOR_TEST);
+}
+
+GPUBufferWrapper* OpenGLRendererHelper::createGPUBufferImpl(size_t size, const void *data, bool useStaticBuffer, bool isVertex)
+{
+    GLuint buffer;
+    glGenBuffers(1, &buffer);
+    glBindBuffer(isVertex ? GL_ARRAY_BUFFER : GL_ELEMENT_ARRAY_BUFFER, buffer);
+    glBufferData(isVertex ? GL_ARRAY_BUFFER : GL_ELEMENT_ARRAY_BUFFER, size, data, useStaticBuffer ? GL_STATIC_DRAW : GL_DYNAMIC_DRAW);
+    
+    return new GPUBufferWrapper(buffer);
+}
+
+void OpenGLRendererHelper::destroyGPUBufferImpl(GPUBufferWrapper* gpuBuffer)
+{
+    assert(gpuBuffer != NULL);
+    
+    glDeleteBuffers(1, &gpuBuffer->buffer);
 }
 
 void OpenGLRendererHelper::bindInputLayout(std::vector<NGShaderVarInput*>& inputLayout)

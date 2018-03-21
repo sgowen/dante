@@ -18,20 +18,15 @@ class OpenGLRendererHelper : public RendererHelper
 public:
     OpenGLRendererHelper();
     virtual ~OpenGLRendererHelper();
-
-    virtual void createDeviceDependentResources();
     
-    virtual void bindFramebuffer(FramebufferWrapper* framebufferWrapper);
-    virtual void bindScreenFramebuffer();
     virtual void clearFramebufferWithColor(float r, float g, float b, float a);
     virtual void useNormalBlending();
     virtual void useScreenBlending();
-    virtual void useNoBlending();
+    virtual void disableBlending();
     virtual void bindInt4(NGShaderUniformInput* uniform, int4& inValue);
     virtual void bindFloat4(NGShaderUniformInput* uniform, float4& inValue);
     virtual void bindFloat4Array(NGShaderUniformInput* uniform, int count, float4* inValue);
     virtual void bindMatrix(NGShaderUniformInput* uniform, mat4x4& inValue);
-    virtual void bindMatrix(NGShaderUniformInput* uniform);
     virtual void bindShader(ShaderProgramWrapper* shaderProgramWrapper);
     virtual void bindTexture(NGTextureSlot textureSlot, NGTexture* texture, NGShaderUniformInput* uniform = NULL);
     virtual void mapTextureVertices(std::vector<VERTEX_2D_TEXTURE>& vertices, bool useStaticBuffer = false, int gpuBufferIndex = 0);
@@ -43,14 +38,15 @@ public:
     virtual void drawIndexed(NGPrimitiveType renderPrimitiveType, uint32_t first, uint32_t count);
 
 protected:
-    virtual GPUBufferWrapper* createGPUBuffer(size_t size, const void *data, bool useStaticBuffer, bool isVertex);
-    virtual void destroyGPUBuffer(GPUBufferWrapper* gpuBuffer);
-    virtual TextureWrapper* platformCreateFramebuffer(FramebufferWrapper* fb);
-    virtual void destroyFramebuffer(FramebufferWrapper* fb);
-    virtual void onFramebufferBinded(int renderWidth, int renderHeight);
+    virtual void createScreenFramebufferWrapper(FramebufferWrapper* fbw);
+    virtual TextureWrapper* createFramebufferImpl(FramebufferWrapper* fbw);
+    virtual void destroyFramebufferImpl(FramebufferWrapper* fbw);
+    virtual void bindFramebufferImpl(FramebufferWrapper* fbw);
+    virtual void bindViewport(int renderWidth, int renderHeight);
+    virtual GPUBufferWrapper* createGPUBufferImpl(size_t size, const void *data, bool useStaticBuffer, bool isVertex);
+    virtual void destroyGPUBufferImpl(GPUBufferWrapper* gpuBuffer);
 
 private:
-    GLint _screenFBO;
     ShaderProgramWrapper* _currentShaderProgramWrapper;
     
     void bindInputLayout(std::vector<NGShaderVarInput*>& inputLayout);

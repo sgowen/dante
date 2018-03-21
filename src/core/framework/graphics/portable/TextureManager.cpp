@@ -12,6 +12,7 @@
 
 #include <framework/graphics/portable/TextureLoader.h>
 #include <framework/graphics/portable/NGTexture.h>
+#include <framework/graphics/portable/FramebufferWrapper.h>
 
 #include <framework/graphics/portable/TextureWrapper.h>
 #include <framework/graphics/portable/TextureDataWrapper.h>
@@ -260,14 +261,14 @@ NGTexture* TextureManager::getTextureWithName(std::string name)
         
         if (q != _framebuffers.end())
         {
-            ret = q->second;
+            ret = q->second->texture;
         }
     }
     
     return ret;
 }
 
-void TextureManager::registerFramebuffer(std::string name, NGTexture* framebuffer)
+void TextureManager::registerFramebuffer(std::string name, FramebufferWrapper* fb)
 {
-    _framebuffers[name] = framebuffer;
+    _framebuffers[name] = fb;
 }
