@@ -17,6 +17,7 @@
 #include <framework/graphics/portable/FramebufferWrapper.h>
 #include <framework/graphics/portable/NGShaderVarInput.h>
 
+#include <framework/graphics/portable/NGTextureDesc.h>
 #include <framework/graphics/portable/NGShaderVarInput.h>
 #include <framework/util/Config.h>
 #include <framework/util/NGSTDUtil.h>
@@ -103,7 +104,7 @@ void OpenGLRendererHelper::bindShader(ShaderProgramWrapper* shaderProgramWrapper
 void OpenGLRendererHelper::bindTexture(NGTextureSlot textureSlot, NGTexture* texture, NGShaderUniformInput* uniform)
 {
     glActiveTexture(textureSlot);
-    glBindTexture(GL_TEXTURE_2D, texture ? texture->textureWrapper->texture : 0);
+    glBindTexture(GL_TEXTURE_2D, texture ? texture->_textureWrapper->texture : 0);
     
     if (texture)
     {
@@ -178,8 +179,9 @@ TextureWrapper* OpenGLRendererHelper::createFramebufferImpl(FramebufferWrapper* 
     GLuint& fbo_texture = fbw->fboTexture;
     GLuint& fbo = fbw->fbo;
     
-    std::string cfgFilterMin = FW_CFG->getString("FramebufferFilterMin");
-    std::string cfgFilterMag = FW_CFG->getString("FramebufferFilterMag");
+    NGTextureDesc* td = fbw->texture->_desc;
+    std::string cfgFilterMin = td->_textureFilterMin;
+    std::string cfgFilterMag = td->_textureFilterMag;
     GLint filterMin = cfgFilterMin == "NEAREST" ? GL_NEAREST : GL_LINEAR;
     GLint filterMag = cfgFilterMag == "NEAREST" ? GL_NEAREST : GL_LINEAR;
     

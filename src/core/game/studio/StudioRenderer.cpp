@@ -163,13 +163,13 @@ void StudioRenderer::createDeviceDependentResources()
     _textureNGShader->load(*_shaderProgramLoader);
     _colorNGShader->load(*_shaderProgramLoader);
     _framebufferToScreenNGShader->load(*_shaderProgramLoader);
+    
+    createFramebuffers();
 }
 
 void StudioRenderer::createWindowSizeDependentResources(int screenWidth, int screenHeight)
 {
     _rendererHelper->createWindowSizeDependentResources(screenWidth, screenHeight);
-    
-    createFramebuffers();
 }
 
 void StudioRenderer::releaseDeviceDependentResources()
@@ -287,12 +287,16 @@ void StudioRenderer::onWaterAdded(Entity* e)
     TextureRegion* tr = new TextureRegion(textureName, 0, 0, renderWidth, renderHeight, renderWidth, renderHeight, trWaterSurface._layer);
     ASSETS->registerTextureRegion(textureName, tr);
     
+    NGTexture* texture = _textureManager->getTextureWithName(trWaterSurface.getTextureName());
+    std::string tfMin = texture->_desc->_textureFilterMin;
+    std::string tfMag = texture->_desc->_textureFilterMag;
+    
     {
-        FramebufferWrapper* fbTemp = _rendererHelper->addFramebuffer(renderWidth, renderHeight, textureNameTemp);
+        FramebufferWrapper* fbTemp = _rendererHelper->addFramebuffer(textureNameTemp, renderWidth, renderHeight, tfMin, tfMag);
         bindFramebuffer(fbTemp);
         _fbSpriteBatcher->endBatch(_textureNGShader, _textureManager->getTextureWithName(trWaterSurface.getTextureName()));
         
-        FramebufferWrapper* fb = _rendererHelper->addFramebuffer(renderWidth, renderHeight, textureName);
+        FramebufferWrapper* fb = _rendererHelper->addFramebuffer(textureName, renderWidth, renderHeight, tfMin, tfMag);
         bindFramebuffer(fb);
         
         _fbSpriteBatcher->beginBatch(0);
@@ -304,11 +308,11 @@ void StudioRenderer::onWaterAdded(Entity* e)
     }
     
     {
-        FramebufferWrapper* fbTemp = _rendererHelper->addFramebuffer(renderWidth, renderHeight, normalMapNameTemp);
+        FramebufferWrapper* fbTemp = _rendererHelper->addFramebuffer(normalMapNameTemp, renderWidth, renderHeight, tfMin, tfMag);
         bindFramebuffer(fbTemp);
         _fbSpriteBatcher->endBatch(_textureNGShader, _textureManager->getTextureWithName(trWaterSurface.getNormalMapName()));
         
-        FramebufferWrapper* fb = _rendererHelper->addFramebuffer(renderWidth, renderHeight, normalMapName);
+        FramebufferWrapper* fb = _rendererHelper->addFramebuffer(normalMapName, renderWidth, renderHeight, tfMin, tfMag);
         bindFramebuffer(fb);
         
         _fbSpriteBatcher->beginBatch(0);

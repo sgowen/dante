@@ -29,8 +29,8 @@ extern "C"
 
 OpenGLPngImageData* getOpenGLPngImageDataFromFileData(const void* png_data, const int png_data_size);
 void releaseOpenGLPngImageData(const OpenGLPngImageData* data);
-GLuint loadPngAssetIntoTexture(OpenGLPngImageData* OpenGLPngImageData, NGTextureDesc* textureDesc);
-GLuint createTexture(const GLsizei width, const GLsizei height, const GLenum type, const GLvoid* pixels, NGTextureDesc* textureDesc);
+GLuint loadPngAssetIntoTexture(OpenGLPngImageData* OpenGLPngImageData, NGTextureDesc* td);
+GLuint createTexture(const GLsizei width, const GLsizei height, const GLenum type, const GLvoid* pixels, NGTextureDesc* td);
 
 OpenGLTextureLoader::OpenGLTextureLoader() : TextureLoader()
 {
@@ -39,7 +39,7 @@ OpenGLTextureLoader::OpenGLTextureLoader() : TextureLoader()
 
 TextureDataWrapper* OpenGLTextureLoader::loadTextureData(NGTexture* texture)
 {
-    const FileData fileData = AssetDataHandler::getAssetDataHandler()->getAssetData(texture->filePath.c_str());
+    const FileData fileData = AssetDataHandler::getAssetDataHandler()->getAssetData(texture->_filePath.c_str());
     void* output = NULL;
     if (texture->_desc->_isEncrypted)
     {
@@ -65,9 +65,9 @@ TextureDataWrapper* OpenGLTextureLoader::loadTextureData(NGTexture* texture)
     return tdw;
 }
 
-TextureWrapper* OpenGLTextureLoader::loadTexture(TextureDataWrapper* textureData, NGTextureDesc* textureDesc)
+TextureWrapper* OpenGLTextureLoader::loadTexture(TextureDataWrapper* textureData, NGTextureDesc* td)
 {
-    TextureWrapper* ret = new TextureWrapper(loadPngAssetIntoTexture(textureData->_rawImageData, textureDesc));
+    TextureWrapper* ret = new TextureWrapper(loadPngAssetIntoTexture(textureData->_rawImageData, td));
     
     delete textureData->_rawImageData;
     textureData->_rawImageData = NULL;
@@ -250,16 +250,16 @@ static GLenum getGlColorFormat(const int png_color_format)
     return 0;
 }
 
-GLuint loadPngAssetIntoTexture(OpenGLPngImageData* inOpenGLPngImageData, NGTextureDesc* textureDesc)
+GLuint loadPngAssetIntoTexture(OpenGLPngImageData* inOpenGLPngImageData, NGTextureDesc* td)
 {
-    const GLuint texture_object_id = createTexture(inOpenGLPngImageData->_width, inOpenGLPngImageData->_height, inOpenGLPngImageData->_glColorFormat, inOpenGLPngImageData->_data, textureDesc);
+    const GLuint texture_object_id = createTexture(inOpenGLPngImageData->_width, inOpenGLPngImageData->_height, inOpenGLPngImageData->_glColorFormat, inOpenGLPngImageData->_data, td);
 
     releaseOpenGLPngImageData(inOpenGLPngImageData);
 
     return texture_object_id;
 }
 
-GLuint createTexture(const GLsizei width, const GLsizei height, const GLenum type, const GLvoid* pixels, NGTextureDesc* textureDesc)
+GLuint createTexture(const GLsizei width, const GLsizei height, const GLenum type, const GLvoid* pixels, NGTextureDesc* td)
 {
     GLuint texture_object_id;
     glGenTextures(1, &texture_object_id);
@@ -267,9 +267,9 @@ GLuint createTexture(const GLsizei width, const GLsizei height, const GLenum typ
 
     glBindTexture(GL_TEXTURE_2D, texture_object_id);
     
-    bool mipmap = textureDesc->_textureFilterMipMap;
-    std::string cfgFilterMin = textureDesc->_textureFilterMin;
-    std::string cfgFilterMag = textureDesc->_textureFilterMag;
+    bool mipmap = td->_textureFilterMipMap;
+    std::string cfgFilterMin = td->_textureFilterMin;
+    std::string cfgFilterMag = td->_textureFilterMag;
     GLint filterMin;
     if (mipmap)
     {
@@ -285,7 +285,7 @@ GLuint createTexture(const GLsizei width, const GLsizei height, const GLenum typ
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, filterMag);
 
     // Wrap texture at left/right edges
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, textureDesc->_repeatS ? GL_REPEAT : GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, td->_repeatS ? GL_REPEAT : GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
     glTexImage2D(GL_TEXTURE_2D, 0, type, width, height, 0, type, GL_UNSIGNED_BYTE, pixels);

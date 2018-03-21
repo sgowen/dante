@@ -21,7 +21,7 @@ public:
     virtual ~TextureLoader();
     
     virtual TextureDataWrapper* loadTextureData(NGTexture* texture) = 0;
-    virtual TextureWrapper* loadTexture(TextureDataWrapper* textureData, NGTextureDesc* textureDesc) = 0;
+    virtual TextureWrapper* loadTexture(TextureDataWrapper* textureData, NGTextureDesc* td) = 0;
     virtual void destroyTexture(TextureWrapper& textureWrapper) = 0;
 };
 

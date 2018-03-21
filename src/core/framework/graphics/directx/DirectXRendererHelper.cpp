@@ -59,7 +59,6 @@ ID3D11DeviceContext* DirectXRendererHelper::getD3DContext()
 DirectXRendererHelper::DirectXRendererHelper() : RendererHelper(),
 _blendState(NULL),
 _screenBlendState(NULL),
-_framebufferSamplerState(NULL),
 _textureSamplerState1(NULL),
 _textureSamplerState2(NULL),
 _textureSamplerState3(NULL),
@@ -92,7 +91,6 @@ void DirectXRendererHelper::releaseDeviceDependentResources()
     
     _blendState->Release();
     _screenBlendState->Release();
-    _framebufferSamplerState->Release();
     _textureSamplerState1->Release();
     _textureSamplerState2->Release();
     _textureSamplerState3->Release();
@@ -167,7 +165,7 @@ void DirectXRendererHelper::bindTexture(NGTextureSlot textureSlot, NGTexture* te
     
     if (texture)
     {
-        getD3DContext()->PSSetShaderResources(textureSlot, 1, &texture->textureWrapper->texture);
+        getD3DContext()->PSSetShaderResources(textureSlot, 1, &texture->_textureWrapper->texture);
         ID3D11SamplerState* samplerState = getSamplerStateForTexture(texture);
         getD3DContext()->PSSetSamplers(textureSlot, 1, &samplerState);
     }
@@ -381,17 +379,6 @@ void DirectXRendererHelper::createSamplerStates()
     sd.MipLODBias = 0.0f;
     
     {
-        std::string cfgFilterMin = FW_CFG->getString("FramebufferFilterMin");
-        std::string cfgFilterMag = FW_CFG->getString("FramebufferFilterMag");
-        
-        sd.Filter = filterForMinAndMag(cfgFilterMin, cfgFilterMag, false);
-        
-        ID3D11SamplerState* samplerState;
-        getD3DDevice()->CreateSamplerState(&sd, &samplerState);
-        _framebufferSamplerState = samplerState;
-    }
-    
-    {
         sd.MaxLOD = FLT_MAX;
         sd.Filter = filterForMinAndMag("NEAREST", "NEAREST", true);
         
@@ -510,11 +497,6 @@ D3D11_FILTER DirectXRendererHelper::filterForMinAndMag(std::string cfgFilterMin,
 
 ID3D11SamplerState* DirectXRendererHelper::getSamplerStateForTexture(NGTexture* texture)
 {
-    if (texture->_isFramebuffer)
-    {
-        return _framebufferSamplerState;
-    }
-    
     NGTextureDesc* textureDesc = texture->_desc;
     
     std::string& cfgFilterMin = textureDesc->_textureFilterMin;

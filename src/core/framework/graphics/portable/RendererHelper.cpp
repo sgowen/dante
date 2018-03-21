@@ -14,6 +14,7 @@
 #include <framework/graphics/portable/TextureWrapper.h>
 #include <framework/graphics/portable/FramebufferWrapper.h>
 
+#include <framework/graphics/portable/NGTextureDesc.h>
 #include <framework/util/Constants.h>
 #include <framework/util/NGSTDUtil.h>
 #include <framework/util/MathUtil.h>
@@ -22,7 +23,7 @@
 #include <algorithm>
 
 RendererHelper::RendererHelper() :
-_screenFramebufferWrapper(NULL),
+_screenFramebufferWrapper(new FramebufferWrapper(1, 1)),
 _indexBuffer(NULL),
 _staticScreenVertexBuffer(NULL)
 {
@@ -31,13 +32,31 @@ _staticScreenVertexBuffer(NULL)
 
 RendererHelper::~RendererHelper()
 {
-    // Empty
+    delete _screenFramebufferWrapper;
 }
 
 void RendererHelper::createDeviceDependentResources()
 {
-    assert(_indexBuffer == NULL);
-    assert(_staticScreenVertexBuffer == NULL);
+    assert(_offscreenFramebufferWrappers.size() == 0);
+    assert(_framebufferWrappers.size() == 0);
+    
+    assert(_dynamicTextureVertexBuffers.size() == 0);
+    assert(_staticTextureVertexBuffers.size() == 0);
+    assert(_dynamicVertexBuffers.size() == 0);
+    assert(_staticVertexBuffers.size() == 0);
+    
+    createScreenFramebufferWrapper(_screenFramebufferWrapper);
+    
+    int fbWidth = FW_CFG->getInt("FramebufferWidth");
+    int fbHeight = FW_CFG->getInt("FramebufferHeight");
+    std::string cfgFilterMin = FW_CFG->getString("FramebufferFilterMin");
+    std::string cfgFilterMag = FW_CFG->getString("FramebufferFilterMag");
+    for (int i = 0; i < NUM_OFFSCREEN_FRAMEBUFFERS; ++i)
+    {
+        FramebufferWrapper* fbw = new FramebufferWrapper(fbWidth, fbHeight);
+        createFramebuffer(fbw, cfgFilterMin, cfgFilterMag);
+        _offscreenFramebufferWrappers.push_back(fbw);
+    }
     
     {
         std::vector<VERTEX_2D_TEXTURE> vertices(MAX_BATCH_SIZE * VERTICES_PER_RECTANGLE);
@@ -67,7 +86,8 @@ void RendererHelper::createDeviceDependentResources()
 
 void RendererHelper::releaseDeviceDependentResources()
 {
-    releaseWindowSizeDependentResources();
+    releaseOffscreenFramebuffers();
+    releaseFramebuffers();
     
     destroyAllGPUBuffers(_dynamicTextureVertexBuffers);
     destroyAllGPUBuffers(_staticTextureVertexBuffers);
@@ -76,26 +96,15 @@ void RendererHelper::releaseDeviceDependentResources()
     
     destroyGPUBufferImpl(_indexBuffer);
     delete _indexBuffer;
-    _indexBuffer = NULL;
     
     destroyGPUBufferImpl(_staticScreenVertexBuffer);
     delete _staticScreenVertexBuffer;
-    _staticScreenVertexBuffer = NULL;
 }
 
 void RendererHelper::createWindowSizeDependentResources(int screenWidth, int screenHeight)
 {
-    releaseWindowSizeDependentResources();
-    
-    _screenFramebufferWrapper = new FramebufferWrapper(screenWidth, screenHeight);
-    createScreenFramebufferWrapper(_screenFramebufferWrapper);
-    
-    for (int i = 0; i < NUM_OFFSCREEN_FRAMEBUFFERS; ++i)
-    {
-        FramebufferWrapper* framebufferWrapper = new FramebufferWrapper(FW_CFG->getInt("FramebufferWidth"), FW_CFG->getInt("FramebufferHeight"));
-        createFramebuffer(framebufferWrapper);
-        _offscreenFramebufferWrappers.push_back(framebufferWrapper);
-    }
+    _screenFramebufferWrapper->renderWidth = screenWidth;
+    _screenFramebufferWrapper->renderHeight = screenHeight;
 }
 
 void RendererHelper::bindMatrix(NGShaderUniformInput* uniform)
@@ -121,13 +130,13 @@ void RendererHelper::bindScreenFramebuffer()
     bindFramebuffer(_screenFramebufferWrapper);
 }
 
-FramebufferWrapper* RendererHelper::addFramebuffer(int renderWidth, int renderHeight, std::string name)
+FramebufferWrapper* RendererHelper::addFramebuffer(std::string name, int renderWidth, int renderHeight, std::string textureFilterMin, std::string textureFilterMag)
 {
     auto q = _framebufferWrappers.find(name);
     assert(q == _framebufferWrappers.end());
     
     FramebufferWrapper* fbw = new FramebufferWrapper(renderWidth, renderHeight);
-    createFramebuffer(fbw);
+    createFramebuffer(fbw, textureFilterMin, textureFilterMag);
     
     _framebufferWrappers.insert(std::make_pair(name, fbw));
     
@@ -174,21 +183,11 @@ FramebufferWrapper* RendererHelper::getFramebuffer(std::string name)
     return ret;
 }
 
-void RendererHelper::releaseWindowSizeDependentResources()
+void RendererHelper::createFramebuffer(FramebufferWrapper* fbw, std::string textureFilterMin, std::string textureFilterMag)
 {
-    if (_screenFramebufferWrapper)
-    {
-        delete _screenFramebufferWrapper;
-        _screenFramebufferWrapper = NULL;
-    }
-    releaseOffscreenFramebuffers();
-    releaseFramebuffers();
-}
-
-void RendererHelper::createFramebuffer(FramebufferWrapper* fbw)
-{
-    fbw->texture = new NGTexture("framebuffer", NULL, NULL, true);
-    fbw->texture->textureWrapper = createFramebufferImpl(fbw);
+    NGTextureDesc* td = new NGTextureDesc("framebuffer", 0, false, false, false, textureFilterMin, textureFilterMag, false);
+    fbw->texture = new NGTexture("framebuffer", td);
+    fbw->texture->_textureWrapper = createFramebufferImpl(fbw);
 }
 
 void RendererHelper::destroyFramebuffer(FramebufferWrapper* fbw)
@@ -196,7 +195,8 @@ void RendererHelper::destroyFramebuffer(FramebufferWrapper* fbw)
     destroyFramebufferImpl(fbw);
     
     NGTexture* texture = fbw->texture;
-    delete texture->textureWrapper;
+    delete texture->_desc;
+    delete texture->_textureWrapper;
     delete texture;
 }
 
@@ -239,7 +239,6 @@ void RendererHelper::destroyAllGPUBuffers(std::vector<GPUBufferWrapper* >& buffe
     {
         destroyGPUBufferImpl((*i));
     }
-    
     NGSTDUtil::cleanUpVectorOfPointers(buffers);
 }
 

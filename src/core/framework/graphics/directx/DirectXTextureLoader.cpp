@@ -32,7 +32,7 @@ DirectXTextureLoader::DirectXTextureLoader() : TextureLoader()
 
 TextureDataWrapper* DirectXTextureLoader::loadTextureData(NGTexture* texture)
 {
-    const FileData fileData = AssetDataHandler::getAssetDataHandler()->getAssetData(texture->filePath.c_str());
+    const FileData fileData = AssetDataHandler::getAssetDataHandler()->getAssetData(texture->_filePath.c_str());
     void* output = NULL;
     if (texture->_desc->_isEncrypted)
     {
@@ -61,7 +61,7 @@ TextureDataWrapper* DirectXTextureLoader::loadTextureData(NGTexture* texture)
     return tdw;
 }
 
-TextureWrapper* DirectXTextureLoader::loadTexture(TextureDataWrapper* textureData, NGTextureDesc* textureDesc)
+TextureWrapper* DirectXTextureLoader::loadTexture(TextureDataWrapper* textureData, NGTextureDesc* td)
 {
     UNUSED(textureDesc);
     

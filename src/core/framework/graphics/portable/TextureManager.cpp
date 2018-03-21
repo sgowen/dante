@@ -47,7 +47,7 @@ void TextureManager::createDeviceDependentResources()
         std::vector<NGTextureDesc*>& textureDescs = ASSETS->getTextureDescriptors();
         for (NGTextureDesc* td : textureDescs)
         {
-            _textures[td->_textureName] = new NGTexture(td->_textureName, this, td);
+            _textures[td->_textureName] = new NGTexture(td->_textureName, td, this);
             
             if (td->_hasNormal)
             {
@@ -55,7 +55,7 @@ void TextureManager::createDeviceDependentResources()
                 std::string prefix = "n_";
                 normalMapName.insert(0, prefix);
                 
-                _textures[normalMapName] = new NGTexture(normalMapName, this, td);
+                _textures[normalMapName] = new NGTexture(normalMapName, td, this);
             }
         }
     }
@@ -87,26 +87,26 @@ void TextureManager::loadTextureDataSync(NGTexture* arg)
     NGTexture* texture = static_cast<NGTexture*>(arg);
     
     assert(texture->_textureManager != NULL);
-    assert(texture->name.length() > 0);
+    assert(texture->_name.length() > 0);
     
-    if (texture->textureWrapper
+    if (texture->_textureWrapper
         || texture->_isLoadingData)
     {
         return;
     }
     
     texture->_isLoadingData = true;
-    texture->textureDataWrapper = texture->_textureManager->_textureLoader->loadTextureData(texture);
+    texture->_textureDataWrapper = texture->_textureManager->_textureLoader->loadTextureData(texture);
 }
 
 void TextureManager::loadTextureSync(NGTexture* texture)
 {
     loadTextureDataSync(texture);
     
-    texture->textureWrapper = _textureLoader->loadTexture(texture->textureDataWrapper, texture->_desc);
+    texture->_textureWrapper = _textureLoader->loadTexture(texture->_textureDataWrapper, texture->_desc);
     
-    delete texture->textureDataWrapper;
-    texture->textureDataWrapper = NULL;
+    delete texture->_textureDataWrapper;
+    texture->_textureDataWrapper = NULL;
     
     texture->_isLoadingData = false;
 }
@@ -123,9 +123,9 @@ void tthreadLoadTextureDataSync(void* arg)
 void TextureManager::loadTextureAsync(NGTexture* texture)
 {
     assert(texture != NULL);
-    assert(texture->name.length() > 0);
+    assert(texture->_name.length() > 0);
     
-    if (texture->textureWrapper
+    if (texture->_textureWrapper
         || texture->_isLoadingData)
     {
         return;
@@ -155,18 +155,18 @@ void TextureManager::unloadTexture(NGTexture* texture)
         }
     }
     
-    if (texture->textureWrapper)
+    if (texture->_textureWrapper)
     {
-        _textureLoader->destroyTexture(*texture->textureWrapper);
+        _textureLoader->destroyTexture(*texture->_textureWrapper);
         
-        delete texture->textureWrapper;
-        texture->textureWrapper = NULL;
+        delete texture->_textureWrapper;
+        texture->_textureWrapper = NULL;
     }
     
-    if (texture->textureDataWrapper)
+    if (texture->_textureDataWrapper)
     {
-        delete texture->textureDataWrapper;
-        texture->textureDataWrapper = NULL;
+        delete texture->_textureDataWrapper;
+        texture->_textureDataWrapper = NULL;
     }
     
     texture->_isLoadingData = false;
@@ -187,7 +187,7 @@ bool TextureManager::ensureTextures()
 
 bool TextureManager::ensureTexture(NGTexture* texture)
 {
-    if (texture->textureWrapper == NULL)
+    if (texture->_textureWrapper == NULL)
     {
         if (!texture->_isLoadingData)
         {
@@ -204,12 +204,12 @@ void TextureManager::handleAsyncTextureLoads()
 {
     for (std::vector<NGTexture *>::iterator i = _loadingTextures.begin(); i != _loadingTextures.end(); )
     {
-        if ((*i)->textureDataWrapper)
+        if ((*i)->_textureDataWrapper)
         {
-            (*i)->textureWrapper = _textureLoader->loadTexture((*i)->textureDataWrapper, (*i)->_desc);
+            (*i)->_textureWrapper = _textureLoader->loadTexture((*i)->_textureDataWrapper, (*i)->_desc);
             
-            delete (*i)->textureDataWrapper;
-            (*i)->textureDataWrapper = NULL;
+            delete (*i)->_textureDataWrapper;
+            (*i)->_textureDataWrapper = NULL;
             
             (*i)->_isLoadingData = false;
             

@@ -201,8 +201,8 @@ int GlfwMain::exec(EngineController* engineController)
         lastTime = glfwGetTime();
         
         glfwPollEvents();
+        
         glfwGetFramebufferSize(window, &width, &height);
-
         if (width != glWidth || height != glHeight)
         {
             int screenWidth = 0;
