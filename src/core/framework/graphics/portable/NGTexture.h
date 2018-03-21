@@ -19,16 +19,15 @@ struct NGTextureDesc;
 class NGTexture
 {
 public:
-    std::string name;
-    std::string filePath;
-    TextureDataWrapper* textureDataWrapper;
-    TextureWrapper* textureWrapper;
+    std::string _name;
+    std::string _filePath;
+    TextureDataWrapper* _textureDataWrapper;
+    TextureWrapper* _textureWrapper;
     TextureManager* _textureManager;
     NGTextureDesc* _desc;
-    bool _isFramebuffer;
     bool _isLoadingData;
     
-    NGTexture(std::string inName, TextureManager* textureManager = NULL, NGTextureDesc* desc = NULL, bool isFramebuffer = false);
+    NGTexture(std::string name, NGTextureDesc* desc, TextureManager* textureManager = NULL);
 };
 
 #endif /* defined(__noctisgames__NGTexture__) */

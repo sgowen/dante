@@ -55,7 +55,7 @@ public:
     void updateMatrix(float left, float right, float bottom, float top);
     void bindFramebuffer(FramebufferWrapper* fbw);
     void bindScreenFramebuffer();
-    FramebufferWrapper* addFramebuffer(int renderWidth, int renderHeight, std::string name);
+    FramebufferWrapper* addFramebuffer(std::string name, int renderWidth, int renderHeight, std::string textureFilterMin, std::string textureFilterMag);
     void removeFramebuffer(std::string name);
     void releaseFramebuffers();
     FramebufferWrapper* getOffscreenFramebuffer(int fbIndex);
@@ -83,8 +83,7 @@ protected:
 private:
     mat4x4 _matrix;
     
-    void releaseWindowSizeDependentResources();
-    void createFramebuffer(FramebufferWrapper* fbw);
+    void createFramebuffer(FramebufferWrapper* fbw, std::string textureFilterMin, std::string textureFilterMag);
     void destroyFramebuffer(FramebufferWrapper* fbw);
     void createIndexBuffer();
     void createStaticScreenVertexBuffer();

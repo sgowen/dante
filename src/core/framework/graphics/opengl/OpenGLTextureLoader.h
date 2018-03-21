@@ -17,7 +17,7 @@ public:
     OpenGLTextureLoader();
     
     virtual TextureDataWrapper* loadTextureData(NGTexture* texture);
-    virtual TextureWrapper* loadTexture(TextureDataWrapper* textureData, NGTextureDesc* textureDesc);
+    virtual TextureWrapper* loadTexture(TextureDataWrapper* textureData, NGTextureDesc* td);
     virtual void destroyTexture(TextureWrapper& textureWrapper);
 };
 
