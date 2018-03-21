@@ -273,6 +273,10 @@
 		BB5AFE7C1FB35ACA005FBD52 /* EntityManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF0C11EA94ED900F0866E /* EntityManager.cpp */; };
 		BB640BE4202A328700629758 /* FileUtil.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB640BE3202A328600629758 /* FileUtil.cpp */; };
 		BB640BE5202A328700629758 /* FileUtil.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB640BE3202A328600629758 /* FileUtil.cpp */; };
+		BB651AEE20630EE000F9B27B /* shader_005_frag.ngs in Resources */ = {isa = PBXBuildFile; fileRef = BB651AED20630EDF00F9B27B /* shader_005_frag.ngs */; };
+		BB651AEF20630EE000F9B27B /* shader_005_frag.ngs in Resources */ = {isa = PBXBuildFile; fileRef = BB651AED20630EDF00F9B27B /* shader_005_frag.ngs */; };
+		BB651AF42063132D00F9B27B /* NGWaterShader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB651AF22063132C00F9B27B /* NGWaterShader.cpp */; };
+		BB651AF52063132D00F9B27B /* NGWaterShader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB651AF22063132C00F9B27B /* NGWaterShader.cpp */; };
 		BB6531621FED56CA00963997 /* World.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB65315C1FED56C800963997 /* World.cpp */; };
 		BB6531631FED56CA00963997 /* World.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB65315C1FED56C800963997 /* World.cpp */; };
 		BB6531641FED56CA00963997 /* Server.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB65315D1FED56C800963997 /* Server.cpp */; };
@@ -954,6 +958,11 @@
 		BB640BE2202A328600629758 /* FileUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileUtil.h; sourceTree = "<group>"; };
 		BB640BE3202A328600629758 /* FileUtil.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FileUtil.cpp; sourceTree = "<group>"; };
 		BB651AE020603BB700F9B27B /* FramebufferWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FramebufferWrapper.h; sourceTree = "<group>"; };
+		BB651AED20630EDF00F9B27B /* shader_005_frag.ngs */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = shader_005_frag.ngs; sourceTree = "<group>"; };
+		BB651AF020630EF100F9B27B /* shader_005_frag.fsh */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = shader_005_frag.fsh; sourceTree = "<group>"; };
+		BB651AF120630EF100F9B27B /* shader_005_frag.hlsl */ = {isa = PBXFileReference; lastKnownFileType = text; path = shader_005_frag.hlsl; sourceTree = "<group>"; };
+		BB651AF22063132C00F9B27B /* NGWaterShader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NGWaterShader.cpp; sourceTree = "<group>"; };
+		BB651AF32063132C00F9B27B /* NGWaterShader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NGWaterShader.h; sourceTree = "<group>"; };
 		BB65315C1FED56C800963997 /* World.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = World.cpp; sourceTree = "<group>"; };
 		BB65315D1FED56C800963997 /* Server.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Server.cpp; sourceTree = "<group>"; };
 		BB65315F1FED56C800963997 /* Server.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Server.h; sourceTree = "<group>"; };
@@ -2743,6 +2752,8 @@
 				BB1C3C0D1FE77301002E4AA6 /* NGTextureShader.cpp */,
 				BB1C3C0A1FE77301002E4AA6 /* NGTextureShader.h */,
 				BB0CA6F11FE5B7130011B75B /* NGTextureSlot.h */,
+				BB651AF22063132C00F9B27B /* NGWaterShader.cpp */,
+				BB651AF32063132C00F9B27B /* NGWaterShader.h */,
 				BBAEF1471EA94ED900F0866E /* PolygonBatcher.cpp */,
 				BBAEF1481EA94ED900F0866E /* PolygonBatcher.h */,
 				BB5833CE1EEDDAFC0084DA20 /* Renderer.cpp */,
@@ -3570,6 +3581,7 @@
 				BBF3CC2E200D70F300CFF412 /* shader_002_frag.fsh */,
 				BBF3CC2D200D70F300CFF412 /* shader_003_frag.fsh */,
 				BBF3CC38200D70F300CFF412 /* shader_004_frag.fsh */,
+				BB651AF020630EF100F9B27B /* shader_005_frag.fsh */,
 				BBF3CC32200D70F300CFF412 /* shader_001_frag.hlsl */,
 				BBF3CC3A200D70F300CFF412 /* shader_001_vert.hlsl */,
 				BBF3CC3C200D70F300CFF412 /* shader_002_frag.hlsl */,
@@ -3578,6 +3590,7 @@
 				BBF3CC2C200D70F300CFF412 /* shader_003_vert.hlsl */,
 				BBF3CC3D200D70F300CFF412 /* shader_004_frag.hlsl */,
 				BBF3CC37200D70F300CFF412 /* shader_004_vert.hlsl */,
+				BB651AF120630EF100F9B27B /* shader_005_frag.hlsl */,
 				BBF3CC44200D712300CFF412 /* shader_001_frag.ngs */,
 				BBF3CC47200D712400CFF412 /* shader_001_vert.ngs */,
 				BBF3CC48200D712400CFF412 /* shader_002_frag.ngs */,
@@ -3586,6 +3599,7 @@
 				BBF3CC4B200D712400CFF412 /* shader_003_vert.ngs */,
 				BBF3CC49200D712400CFF412 /* shader_004_frag.ngs */,
 				BBF3CC45200D712300CFF412 /* shader_004_vert.ngs */,
+				BB651AED20630EDF00F9B27B /* shader_005_frag.ngs */,
 				BBF3CC43200D70F300CFF412 /* shader_001_vert.vsh */,
 				BBF3CC34200D70F300CFF412 /* shader_002_vert.vsh */,
 				BBF3CC33200D70F300CFF412 /* shader_003_vert.vsh */,
@@ -3848,6 +3862,7 @@
 				BB89C9A4200914AC00330100 /* n_texture_008.ngt in Resources */,
 				BBF10DBB203100990032F29A /* sound_004.wav in Resources */,
 				BBF5385A20071992003D276D /* texture_000.ngt in Resources */,
+				BB651AEE20630EE000F9B27B /* shader_005_frag.ngs in Resources */,
 				BBF5386620071992003D276D /* maps.cfg in Resources */,
 				BBF5386220071992003D276D /* entities.cfg in Resources */,
 				BB13C9ED201A72C50061C565 /* texture_009.ngt in Resources */,
@@ -3921,6 +3936,7 @@
 				BBF5387B20071992003D276D /* sound_001.wav in Resources */,
 				BBF3CC59200D712400CFF412 /* shader_002_vert.ngs in Resources */,
 				BBF10DC720312E750032F29A /* sound_006.wav in Resources */,
+				BB651AEF20630EE000F9B27B /* shader_005_frag.ngs in Resources */,
 				BBF3CC53200D712400CFF412 /* shader_001_vert.ngs in Resources */,
 				BBF3CC55200D712400CFF412 /* shader_002_frag.ngs in Resources */,
 				BBF53889200719B6003D276D /* texture_008.ngt in Resources */,
@@ -4129,6 +4145,7 @@
 				BBBD14971EE06BB3003F9307 /* Timing.cpp in Sources */,
 				BBAEF27A1EA94EDA00F0866E /* NGTexture.cpp in Sources */,
 				BBD5540C1FDB2EA800E00AD6 /* b2Body.cpp in Sources */,
+				BB651AF42063132D00F9B27B /* NGWaterShader.cpp in Sources */,
 				BBAA69E51EE488DF00451615 /* TransmissionData.cpp in Sources */,
 				BBAEF2A41EA94EDA00F0866E /* AudioEngineHelperFactory.cpp in Sources */,
 				BB31B5A91FC205D5005F1C0A /* KeyboardEvent.cpp in Sources */,
@@ -4212,6 +4229,7 @@
 				BBD3E8651FB2872A00328E35 /* ViewController.mm in Sources */,
 				BB3F1196200AE0DA00C30B06 /* Config.cpp in Sources */,
 				BBD554171FDB2EA800E00AD6 /* b2ChainAndCircleContact.cpp in Sources */,
+				BB651AF52063132D00F9B27B /* NGWaterShader.cpp in Sources */,
 				BB5AFE771FB35AB6005FBD52 /* JsonFile.cpp in Sources */,
 				BB1C3BFA1FE75FD3002E4AA6 /* Color.cpp in Sources */,
 				BB27D2461FC6567F00ED42FD /* OALAudioTracks.m in Sources */,

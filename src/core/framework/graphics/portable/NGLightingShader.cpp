@@ -29,8 +29,8 @@ NGLightingShader::NGLightingShader(RendererHelper& inRendererHelper) : NGShader(
     _uniforms.push_back(new NGShaderUniformInput("u_NumLights",       5,  16, true));
 
     // Textures
-    _uniforms.push_back(new NGShaderUniformInput("u_TextureUnit",     0));
-    _uniforms.push_back(new NGShaderUniformInput("u_NormalMapUnit",   1));
+    _uniforms.push_back(new NGShaderUniformInput("u_Texture",         6));
+    _uniforms.push_back(new NGShaderUniformInput("u_NormalMap",       7));
     
     // Vertices
     _inputLayout.push_back(new NGShaderVarInput("a_Position", 2, 0));

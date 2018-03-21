@@ -689,7 +689,7 @@ void StudioInputManager::processInput()
     if (_engine->_textInputField == StudioEngineTextInputField_WaterDepth)
     {
         _waterDepth = StringUtil::stringToNumber<int>(_liveInput);
-        if (_waterDepth > 0)
+        if (_waterDepth > 0 && _waterDepth % 2 == 0)
         {
             _engine->_textInputField = StudioEngineTextInputField_WaterWidth;
             clearInput = true;
@@ -702,7 +702,7 @@ void StudioInputManager::processInput()
     else if (_engine->_textInputField == StudioEngineTextInputField_WaterWidth)
     {
         _waterWidth = StringUtil::stringToNumber<int>(_liveInput);
-        if (_waterWidth > 0)
+        if (_waterWidth > 0 && _waterWidth % 2 == 0)
         {
             Entity* e = mapAddEntity(EntityMapper::getInstance()->getEntityDef('WATR'), _waterWidth, _waterDepth);
             _engine->_renderer->onWaterAdded(e);

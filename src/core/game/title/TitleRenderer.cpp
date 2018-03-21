@@ -90,9 +90,9 @@ _boundsPolygonBatcher(new PolygonBatcher(_rendererHelper, false)),
 _lineBatcher(new LineBatcher(_rendererHelper)),
 _circleBatcher(new CircleBatcher(_rendererHelper)),
 _shaderProgramLoader(SHADER_PROGRAM_LOADER_FACTORY->createShaderLoader()),
-_textureNGShader(new NGTextureShader(*_rendererHelper)),
-_colorNGShader(new NGGeometryShader(*_rendererHelper)),
-_framebufferToScreenNGShader(new NGFramebufferToScreenShader(*_rendererHelper)),
+_textureShader(new NGTextureShader(*_rendererHelper)),
+_colorShader(new NGGeometryShader(*_rendererHelper)),
+_framebufferToScreenShader(new NGFramebufferToScreenShader(*_rendererHelper)),
 _font(new Font(0, 0, 16, 64, 75, 1024, 1024)),
 _fbIndex(0),
 _engine(NULL),
@@ -112,9 +112,9 @@ TitleRenderer::~TitleRenderer()
     delete _circleBatcher;
     delete _shaderProgramLoader;
     delete _font;
-    delete _textureNGShader;
-    delete _colorNGShader;
-    delete _framebufferToScreenNGShader;
+    delete _textureShader;
+    delete _colorShader;
+    delete _framebufferToScreenShader;
 }
 
 void TitleRenderer::createDeviceDependentResources()
@@ -122,9 +122,9 @@ void TitleRenderer::createDeviceDependentResources()
     _rendererHelper->createDeviceDependentResources();
     _textureManager->createDeviceDependentResources();
 
-    _textureNGShader->load(*_shaderProgramLoader);
-    _colorNGShader->load(*_shaderProgramLoader);
-    _framebufferToScreenNGShader->load(*_shaderProgramLoader);
+    _textureShader->load(*_shaderProgramLoader);
+    _colorShader->load(*_shaderProgramLoader);
+    _framebufferToScreenShader->load(*_shaderProgramLoader);
 }
 
 void TitleRenderer::createWindowSizeDependentResources(int screenWidth, int screenHeight)
@@ -137,9 +137,9 @@ void TitleRenderer::releaseDeviceDependentResources()
     _rendererHelper->releaseDeviceDependentResources();
     _textureManager->releaseDeviceDependentResources();
 
-    _textureNGShader->unload(*_shaderProgramLoader);
-    _colorNGShader->unload(*_shaderProgramLoader);
-    _framebufferToScreenNGShader->unload(*_shaderProgramLoader);
+    _textureShader->unload(*_shaderProgramLoader);
+    _colorShader->unload(*_shaderProgramLoader);
+    _framebufferToScreenShader->unload(*_shaderProgramLoader);
 }
 
 void TitleRenderer::render()
@@ -176,7 +176,7 @@ void TitleRenderer::render()
                 break;
         }
 
-        _spriteBatcher->endBatch(_textureNGShader, _textureManager->getTextureWithName("texture_000.ngt"));
+        _spriteBatcher->endBatch(_textureShader, _textureManager->getTextureWithName("texture_000.ngt"));
     }
     
     //testRenderingSuite();
@@ -276,22 +276,22 @@ void TitleRenderer::testRenderingSuite()
     _circleBatcher->renderCircle(c1);
     static Circle c2(7, 7, 2);
     _circleBatcher->renderPartialCircle(c2, 135);
-    _circleBatcher->endBatch(_colorNGShader, Color::RED);
+    _circleBatcher->endBatch(_colorShader, Color::RED);
     
     static NGRect r1(1, 1, 2, 1);
     _boundsPolygonBatcher->beginBatch();
     _boundsPolygonBatcher->renderRect(r1);
-    _boundsPolygonBatcher->endBatch(_colorNGShader, Color::RED);
+    _boundsPolygonBatcher->endBatch(_colorShader, Color::RED);
     
     static NGRect r2(4, 1, 2, 1);
     _fillPolygonBatcher->beginBatch();
     _fillPolygonBatcher->renderRect(r2);
-    _fillPolygonBatcher->endBatch(_colorNGShader, Color::RED);
+    _fillPolygonBatcher->endBatch(_colorShader, Color::RED);
     
     static Line line(3, 3, 5, 5);
     _lineBatcher->beginBatch();
     _lineBatcher->renderLine(line);
-    _lineBatcher->endBatch(_colorNGShader, Color::RED);
+    _lineBatcher->endBatch(_colorShader, Color::RED);
 }
 
 void TitleRenderer::endFrame()
@@ -302,10 +302,10 @@ void TitleRenderer::endFrame()
     _rendererHelper->clearFramebufferWithColor(0, 0, 0, 1);
     _rendererHelper->useScreenBlending();
 
-    _framebufferToScreenNGShader->bind(_rendererHelper->getOffscreenFramebuffer(_fbIndex)->texture);
+    _framebufferToScreenShader->bind(_rendererHelper->getOffscreenFramebuffer(_fbIndex)->texture);
     _rendererHelper->bindScreenVertexBuffer();
     _rendererHelper->drawIndexed(NGPrimitiveType_Triangles, 0, INDICES_PER_RECTANGLE);
-    _framebufferToScreenNGShader->unbind();
+    _framebufferToScreenShader->unbind();
 
     _rendererHelper->disableBlending();
 }

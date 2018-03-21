@@ -96,10 +96,10 @@ _lineBatcher(new LineBatcher(_rendererHelper)),
 _circleBatcher(new CircleBatcher(_rendererHelper)),
 _box2DDebugRenderer(new Box2DDebugRenderer(*_fillPolygonBatcher, *_boundsPolygonBatcher, *_lineBatcher, *_circleBatcher)),
 _shaderProgramLoader(SHADER_PROGRAM_LOADER_FACTORY->createShaderLoader()),
-_textureNGShader(new NGTextureShader(*_rendererHelper)),
-_colorNGShader(new NGGeometryShader(*_rendererHelper)),
+_textureShader(new NGTextureShader(*_rendererHelper)),
+_colorShader(new NGGeometryShader(*_rendererHelper)),
 _lightingNGShader(new NGLightingShader(*_rendererHelper)),
-_framebufferToScreenNGShader(new NGFramebufferToScreenShader(*_rendererHelper)),
+_framebufferToScreenShader(new NGFramebufferToScreenShader(*_rendererHelper)),
 _font(new Font(0, 0, 16, 64, 75, 1024, 1024)),
 _fbIndex(0),
 _map(0),
@@ -140,10 +140,10 @@ GameRenderer::~GameRenderer()
     {
         delete _camBounds[i];
     }
-    delete _textureNGShader;
-    delete _colorNGShader;
+    delete _textureShader;
+    delete _colorShader;
     delete _lightingNGShader;
-    delete _framebufferToScreenNGShader;
+    delete _framebufferToScreenShader;
 }
 
 void GameRenderer::createDeviceDependentResources()
@@ -159,10 +159,10 @@ void GameRenderer::createDeviceDependentResources()
         _camBounds[i]->setHeight(GM_CFG->_camHeight);
     }
     
-    _textureNGShader->load(*_shaderProgramLoader);
-    _colorNGShader->load(*_shaderProgramLoader);
+    _textureShader->load(*_shaderProgramLoader);
+    _colorShader->load(*_shaderProgramLoader);
     _lightingNGShader->load(*_shaderProgramLoader);
-    _framebufferToScreenNGShader->load(*_shaderProgramLoader);
+    _framebufferToScreenShader->load(*_shaderProgramLoader);
 }
 
 void GameRenderer::createWindowSizeDependentResources(int screenWidth, int screenHeight)
@@ -175,10 +175,10 @@ void GameRenderer::releaseDeviceDependentResources()
     _rendererHelper->releaseDeviceDependentResources();
     _textureManager->releaseDeviceDependentResources();
     
-    _textureNGShader->unload(*_shaderProgramLoader);
-    _colorNGShader->unload(*_shaderProgramLoader);
+    _textureShader->unload(*_shaderProgramLoader);
+    _colorShader->unload(*_shaderProgramLoader);
     _lightingNGShader->unload(*_shaderProgramLoader);
-    _framebufferToScreenNGShader->unload(*_shaderProgramLoader);
+    _framebufferToScreenShader->unload(*_shaderProgramLoader);
 }
 
 void GameRenderer::render()
@@ -334,10 +334,10 @@ void GameRenderer::renderWorld()
     bindOffscreenFramebuffer(9);
     for (int i = fbBegin; i < fbEnd; ++i)
     {
-        _framebufferToScreenNGShader->bind(_rendererHelper->getOffscreenFramebuffer(i)->texture);
+        _framebufferToScreenShader->bind(_rendererHelper->getOffscreenFramebuffer(i)->texture);
         _rendererHelper->bindScreenVertexBuffer();
         _rendererHelper->drawIndexed(NGPrimitiveType_Triangles, 0, INDICES_PER_RECTANGLE);
-        _framebufferToScreenNGShader->unbind();
+        _framebufferToScreenShader->unbind();
     }
 }
 
@@ -460,7 +460,7 @@ void GameRenderer::endBatchWithTexture(SpriteBatcher* sb, NGTexture* tex, int la
             _spriteBatchers[layer]->useStaticConfig();
         }
         
-        sb->endBatch(_textureNGShader, tex);
+        sb->endBatch(_textureShader, tex);
     }
 }
 
@@ -468,7 +468,7 @@ void GameRenderer::renderBox2D()
 {
 	_rendererHelper->updateMatrix(_camBounds[3]->getLeft(), _camBounds[3]->getRight(), _camBounds[3]->getBottom(), _camBounds[3]->getTop());
 
-    _box2DDebugRenderer->render(&_engine->_world->getWorld(), _colorNGShader);
+    _box2DDebugRenderer->render(&_engine->_world->getWorld(), _colorShader);
 }
 
 void GameRenderer::renderUI()
@@ -501,7 +501,7 @@ void GameRenderer::renderUI()
         int bpsOutInt = static_cast<int>(bpsOut.getValue());
         renderText(_dynamicFontSpriteBatcher, StringUtil::format("Out %d Bps", bpsOutInt).c_str(), GM_CFG->_camWidth - 0.5f, GM_CFG->_camHeight - (row++ * padding), FONT_ALIGN_RIGHT);
         
-        _dynamicFontSpriteBatcher->endBatch(_textureNGShader, _fontTexture);
+        _dynamicFontSpriteBatcher->endBatch(_textureShader, _fontTexture);
         
         if (!_staticFontSpriteBatcher->isStaticBatchRendered())
         {
@@ -556,7 +556,7 @@ void GameRenderer::renderUI()
     }
     
     _staticFontSpriteBatcher->useStaticConfig();
-    _staticFontSpriteBatcher->endBatch(_textureNGShader, _fontTexture);
+    _staticFontSpriteBatcher->endBatch(_textureShader, _fontTexture);
 }
 
 void GameRenderer::renderText(SpriteBatcher* sb, const char* inStr, float x, float y, int justification)
@@ -577,10 +577,10 @@ void GameRenderer::endFrame()
     _rendererHelper->clearFramebufferWithColor(0, 0, 0, 1);
     _rendererHelper->useScreenBlending();
 
-    _framebufferToScreenNGShader->bind(_rendererHelper->getOffscreenFramebuffer(_fbIndex)->texture);
+    _framebufferToScreenShader->bind(_rendererHelper->getOffscreenFramebuffer(_fbIndex)->texture);
     _rendererHelper->bindScreenVertexBuffer();
     _rendererHelper->drawIndexed(NGPrimitiveType_Triangles, 0, INDICES_PER_RECTANGLE);
-    _framebufferToScreenNGShader->unbind();
+    _framebufferToScreenShader->unbind();
     
     _rendererHelper->disableBlending();
 }

@@ -51,9 +51,9 @@ private:
     CircleBatcher* _circleBatcher;
     ShaderProgramLoader* _shaderProgramLoader;
     Font* _font;
-    NGShader* _textureNGShader;
-    NGShader* _colorNGShader;
-    NGShader* _framebufferToScreenNGShader;
+    NGShader* _textureShader;
+    NGShader* _colorShader;
+    NGShader* _framebufferToScreenShader;
     int _fbIndex;
     TitleEngine* _engine;
     uint32_t _engineState;

@@ -89,10 +89,10 @@ private:
     ShaderProgramLoader* _shaderProgramLoader;
     Font* _font;
     NGRect* _camBounds[NUM_CAMERAS];
-    NGShader* _textureNGShader;
-    NGShader* _colorNGShader;
+    NGShader* _textureShader;
+    NGShader* _colorShader;
     NGLightingShader* _lightingNGShader;
-    NGShader* _framebufferToScreenNGShader;
+    NGShader* _framebufferToScreenShader;
     GameEngine* _engine;
     int _fbIndex;
     uint32_t _map;
