@@ -424,6 +424,7 @@
 		<Unit filename="../../core/framework/graphics/portable/Font.cpp" />
 		<Unit filename="../../core/framework/graphics/portable/Font.h" />
 		<Unit filename="../../core/framework/graphics/portable/FontAlign.h" />
+		<Unit filename="../../core/framework/graphics/portable/FramebufferWrapper.h" />
 		<Unit filename="../../core/framework/graphics/portable/GPUBufferWrapper.h" />
 		<Unit filename="../../core/framework/graphics/portable/LineBatcher.cpp" />
 		<Unit filename="../../core/framework/graphics/portable/LineBatcher.h" />
@@ -449,6 +450,8 @@
 		<Unit filename="../../core/framework/graphics/portable/NGTextureShader.cpp" />
 		<Unit filename="../../core/framework/graphics/portable/NGTextureShader.h" />
 		<Unit filename="../../core/framework/graphics/portable/NGTextureSlot.h" />
+		<Unit filename="../../core/framework/graphics/portable/NGWaterShader.cpp" />
+		<Unit filename="../../core/framework/graphics/portable/NGWaterShader.h" />
 		<Unit filename="../../core/framework/graphics/portable/PolygonBatcher.cpp" />
 		<Unit filename="../../core/framework/graphics/portable/PolygonBatcher.h" />
 		<Unit filename="../../core/framework/graphics/portable/Renderer.cpp" />

@@ -63,7 +63,7 @@ TextureDataWrapper* DirectXTextureLoader::loadTextureData(NGTexture* texture)
 
 TextureWrapper* DirectXTextureLoader::loadTexture(TextureDataWrapper* textureData, NGTextureDesc* td)
 {
-    UNUSED(textureDesc);
+    UNUSED(td);
     
     return new TextureWrapper(textureData->texture);
 }
