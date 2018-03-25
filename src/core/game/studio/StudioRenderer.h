@@ -87,6 +87,7 @@ private:
     StudioEngine* _engine;
     StudioInputManager* _input;
     uint32_t _engineState;
+    uint32_t _textInputField;
     NGTexture* _fontTexture;
     
     void createFramebuffers();

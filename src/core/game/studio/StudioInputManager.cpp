@@ -88,10 +88,6 @@ void StudioInputManager::update()
     {
         handleTextInput();
     }
-    else if (state & StudioEngineState_TestSession)
-    {
-        //
-    }
     else if (state & StudioEngineState_DisplayLoadMapDialog)
     {
         handleLoadMapDialogInput();
@@ -109,6 +105,11 @@ void StudioInputManager::update()
     int w = GM_CFG->_camWidth * _scrollValue;
     int h = GM_CFG->_camHeight * _scrollValue;
     _engine->_renderer->update(_cursor.getX(), _cursor.getY(), w, h, _scrollValue);
+}
+
+std::string& StudioInputManager::getLiveInput()
+{
+    return _liveInput;
 }
 
 void StudioInputManager::handleDefaultInput()
@@ -435,11 +436,6 @@ void StudioInputManager::handleTextInput()
         int sub = static_cast<int>(_liveInput.length()) - 16;
         _liveInput.erase(_liveInput.end() - sub, _liveInput.end());
     }
-}
-
-void StudioInputManager::handleTestSessionInput()
-{
-    /// TODO
 }
 
 void StudioInputManager::handleEntitiesInput()

@@ -36,6 +36,7 @@ public:
     void setEngine(StudioEngine* inValue);
     int getMenuState();
     void update();
+    std::string& getLiveInput();
     
 private:
     static StudioInputManager* s_instance;
@@ -74,7 +75,6 @@ private:
     
     void handleDefaultInput();
     void handleTextInput();
-    void handleTestSessionInput();
     void handleEntitiesInput();
     void handleLoadMapDialogInput();
     

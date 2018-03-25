@@ -110,7 +110,8 @@ _fbIndex(0),
 _scrollValue(1),
 _engine(NULL),
 _input(NULL),
-_engineState(0)
+_engineState(0),
+_textInputField(0)
 {
     for (int i = 0; i < NUM_SPRITE_BATCHERS; ++i)
     {
@@ -189,6 +190,7 @@ void StudioRenderer::releaseDeviceDependentResources()
 void StudioRenderer::render()
 {
     _engineState = _engine->_state;
+    _textInputField = _engine->_textInputField;
     
     bindOffscreenFramebuffer(0, 0, 0, 0, 1);
     _rendererHelper->useNormalBlending();
@@ -583,7 +585,34 @@ void StudioRenderer::renderUI()
     _rendererHelper->useScreenBlending();
     _rendererHelper->updateMatrix(0, GM_CFG->_camWidth, 0, GM_CFG->_camHeight);
     
-    if (_engineState & StudioEngineState_DisplayLoadMapDialog)
+    if (_engineState & StudioEngineState_TextInput)
+    {
+        _fillPolygonBatcher->beginBatch();
+        int width = GM_CFG->_camWidth / 3;
+        int height = 5;
+        NGRect window = NGRect(GM_CFG->_camWidth / 2 - width / 2, GM_CFG->_camHeight - 4 - height - 1, width, height);
+        Color windowColor = Color::BLUE;
+        windowColor.alpha = 0.5f;
+        _fillPolygonBatcher->renderRect(window);
+        _fillPolygonBatcher->endBatch(_colorShader, windowColor);
+        
+        int row = 2;
+        static float padding = 1;
+        
+        _fontSpriteBatcher->beginBatch(INDEX_LAST_TEXTURE_VERTEX_BUFFER);
+        
+        if (_textInputField == StudioEngineTextInputField_WaterDepth)
+        {
+            renderText("Enter Water Depth", GM_CFG->_camWidth / 2, GM_CFG->_camHeight - 4 - (row++ * padding), FONT_ALIGN_CENTER);
+        }
+        else if (_textInputField == StudioEngineTextInputField_WaterWidth)
+        {
+            renderText("Enter Water Width", GM_CFG->_camWidth / 2, GM_CFG->_camHeight - 4 - (row++ * padding), FONT_ALIGN_CENTER);
+        }
+        renderText(_input->getLiveInput().c_str(), GM_CFG->_camWidth / 2, GM_CFG->_camHeight - 4 - (row++ * padding), FONT_ALIGN_CENTER);
+        _fontSpriteBatcher->endBatch(_textureShader, _fontTexture);
+    }
+    else if (_engineState & StudioEngineState_DisplayLoadMapDialog)
     {
         /// Maps
         std::vector<MapDef>& maps = EntityLayoutMapper::getInstance()->getMaps();
