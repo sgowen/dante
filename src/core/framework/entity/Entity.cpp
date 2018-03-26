@@ -121,7 +121,8 @@ bool Entity::shouldCollide(Entity *inEntity, b2Fixture* inFixtureA, b2Fixture* i
 
 void Entity::handleBeginContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB)
 {
-    if (inFixtureA == _groundSensorFixture)
+    if (inFixtureA == _groundSensorFixture &&
+        !inFixtureB->IsSensor())
     {
         _pose.numGroundContacts = clamp(_pose.numGroundContacts + 1, 15, 0);
     }
@@ -131,7 +132,8 @@ void Entity::handleBeginContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixtu
 
 void Entity::handleEndContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB)
 {
-    if (inFixtureA == _groundSensorFixture)
+    if (inFixtureA == _groundSensorFixture &&
+        !inFixtureB->IsSensor())
     {
         _pose.numGroundContacts = clamp(_pose.numGroundContacts - 1, 15, 0);
     }
