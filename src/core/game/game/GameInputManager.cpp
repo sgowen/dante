@@ -103,7 +103,7 @@ void GameInputManager::update()
                     NG_AUDIO_ENGINE->setMusicDisabled(!NG_AUDIO_ENGINE->isMusicDisabled());
                 }
                 continue;
-            case NG_KEY_S:
+            case NG_KEY_N:
                 if (e.isDown())
                 {
                     NG_AUDIO_ENGINE->setSoundsDisabled(!NG_AUDIO_ENGINE->areSoundsDisabled());
