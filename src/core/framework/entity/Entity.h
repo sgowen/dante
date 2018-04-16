@@ -58,15 +58,19 @@ struct EntityDef
 {
     std::string name;
     std::string typeName;
+    uint32_t ID;
     uint32_t type;
     std::string controller;
     std::map<int, std::string> textureMappings;
     std::map<int, int> soundMappings;
     std::vector<FixtureDef> fixtures;
     int bodyFlags;
-    float width;
-    float height;
+    int x;
+    int y;
+    int width;
+    int height;
     bool stateSensitive;
+    bool server;
 };
 
 class Entity
@@ -80,7 +84,7 @@ public:
         ReadStateFlag_State = 1 << 1
     };
     
-    Entity(EntityDef inEntityDef, int x, int y, bool isServer);
+    Entity(EntityDef inEntityDef);
     ~Entity();
     
     void update(bool isLive = false);
@@ -110,8 +114,7 @@ public:
     float getHeight();
     void setAngle(float angle);
     float getAngle();
-    void setID(uint32_t inID);
-    uint32_t getID();
+    const uint32_t getID();
     bool isGrounded();
     void requestDeletion();
     bool isRequestingDeletion();
@@ -215,7 +218,7 @@ private:
     Pose _poseInterpolateCache;
     
     uint16_t _readState;
-    uint32_t _ID;
+    const uint32_t _ID;
     float _deadZoneY;
     bool _isRequestingDeletion;
     bool _isBodyFacingLeft;

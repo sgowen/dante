@@ -10,10 +10,10 @@
 
 #include <game/studio/StudioInputManager.h>
 
+#include <framework/entity/EntityIDManager.h>
 #include <game/studio/StudioEngine.h>
 #include <framework/entity/Entity.h>
 
-#include <framework/util/Timing.h>
 #include <framework/input/CursorInputManager.h>
 #include <framework/input/CursorEvent.h>
 #include <framework/input/CursorConverter.h>
@@ -39,6 +39,7 @@
 #include <framework/graphics/portable/TextureRegion.h>
 #include <framework/file/portable/Assets.h>
 #include <framework/util/macros.h>
+#include <framework/util/InstanceManager.h>
 
 #include <sstream>
 
@@ -114,9 +115,9 @@ std::string& StudioInputManager::getLiveInput()
 
 void StudioInputManager::handleDefaultInput()
 {
-    _rawScrollValue = clamp(_rawScrollValue + CURSOR_INPUT_MANAGER->getScrollWheelValue(), 16, 1);
+    _rawScrollValue = clamp(_rawScrollValue + CURSOR_INPUT_MANAGER->getScrollWheelValue(), 1, 16);
     CURSOR_INPUT_MANAGER->resetScrollValue();
-    _scrollValue = clamp(_rawScrollValue, 16, 1);
+    _scrollValue = clamp(_rawScrollValue, 1, 16);
     CURSOR_CONVERTER->setCamSize(GM_CFG->_camWidth * _scrollValue, GM_CFG->_camHeight * _scrollValue);
     
     for (std::vector<CursorEvent *>::iterator i = CURSOR_INPUT_MANAGER->getEvents().begin(); i != CURSOR_INPUT_MANAGER->getEvents().end(); ++i)
@@ -187,8 +188,8 @@ void StudioInputManager::handleDefaultInput()
                     const b2Vec2& position = _activeEntity->getPosition();
                     float width = _activeEntity->getWidth();
                     float height = _activeEntity->getHeight();
-                    float x = clamp(position.x, FLT_MAX, width / 2);
-                    float y = clamp(position.y, FLT_MAX, height / 2);
+                    float x = clamp(position.x, width / 2, FLT_MAX);
+                    float y = clamp(position.y, height / 2, FLT_MAX);
                     x = floor(x);
                     y = floor(y);
                     _activeEntity->setPosition(b2Vec2(x, y));
@@ -519,8 +520,8 @@ void StudioInputManager::handleEntitiesInput()
     
     const std::vector<EntityDef*>& entityDescriptors = EntityMapper::getInstance()->getEntityDescriptors();
     int numEntityIndices = static_cast<int>(entityDescriptors.size()) - 1;
-    _rawSelectionIndex = clamp(_rawSelectionIndex + _selectionIndexDir, numEntityIndices, 0);
-    _selectionIndex = clamp(_rawSelectionIndex, numEntityIndices, 0);
+    _rawSelectionIndex = clamp(_rawSelectionIndex + _selectionIndexDir, 0, numEntityIndices);
+    _selectionIndex = clamp(_rawSelectionIndex, 0, numEntityIndices);
 }
 
 void StudioInputManager::handleLoadMapDialogInput()
@@ -557,8 +558,8 @@ void StudioInputManager::handleLoadMapDialogInput()
         }
     }
     
-    _rawSelectionIndex = clamp(_rawSelectionIndex + _selectionIndexDir, 1, 0);
-    _selectionIndex = clamp(_rawSelectionIndex, 1, 0);
+    _rawSelectionIndex = clamp(_rawSelectionIndex + _selectionIndexDir, 0, 1);
+    _selectionIndex = clamp(_rawSelectionIndex, 0, 1);
 }
 
 bool layerSort(Entity* l, Entity* r)
@@ -666,10 +667,10 @@ bool StudioInputManager::entityExistsAtPosition(Entity* e, float x, float y)
 
 Entity* StudioInputManager::mapAddEntity(EntityDef* entityDef, int width, int height)
 {
-    float spawnX = clamp(GM_CFG->_camWidth * _scrollValue / 2 + _cursor.getX(), FLT_MAX, entityDef->width / 2.0f);
-    float spawnY = clamp(GM_CFG->_camHeight * _scrollValue / 2 + _cursor.getY(), FLT_MAX, entityDef->height / 2.0f);
-    EntityPosDef epd(entityDef->type, floor(spawnX), floor(spawnY), width, height);
-    Entity* e = EntityMapper::getInstance()->createEntityFromDef(entityDef, &epd, false);
+    float spawnX = clamp(GM_CFG->_camWidth * _scrollValue / 2 + _cursor.getX(), entityDef->width / 2.0f, FLT_MAX);
+    float spawnY = clamp(GM_CFG->_camHeight * _scrollValue / 2 + _cursor.getY(), entityDef->height / 2.0f, FLT_MAX);
+    EntityInstanceDef eid(_entityIDManager->getNextStaticEntityID(), entityDef->type, floor(spawnX), floor(spawnY), width, height);
+    Entity* e = EntityMapper::getInstance()->createEntityFromDef(entityDef, &eid, false);
     _engine->_world->mapAddEntity(e);
     _lastActiveEntity = e;
     onEntityAdded(e);
@@ -795,6 +796,7 @@ void StudioInputManager::resetCamera()
 }
 
 StudioInputManager::StudioInputManager() :
+_entityIDManager(static_cast<EntityIDManager*>(INSTANCE_MANAGER->getInstance(INSTANCE_ENTITY_ID_MANAGER_STUDIO))),
 _downCursor(),
 _dragCursor(),
 _deltaCursor(),

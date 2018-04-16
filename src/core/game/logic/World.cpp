@@ -312,7 +312,7 @@ void World::loadMap(uint32_t map)
     }
     
     EntityLayoutDef& entityLayoutDef = EntityLayoutMapper::getInstance()->getEntityLayoutDef();
-    for (EntityPosDef epd : entityLayoutDef.entities)
+    for (EntityInstanceDef epd : entityLayoutDef.entities)
     {
         Entity* e = EntityMapper::getInstance()->createEntity(&epd, _flags & WorldFlag_Server);
         mapAddEntity(e);
@@ -433,22 +433,22 @@ void World::saveMapAs(uint32_t map)
     
     for (Entity* e : _layers)
     {
-        layout.entities.push_back(EntityPosDef(e->getEntityDef().type, e->getPosition().x, e->getPosition().y));
+        layout.entities.push_back(EntityInstanceDef(e->getID(), e->getEntityDef().type, e->getPosition().x, e->getPosition().y));
     }
     
     for (Entity* e : _waterBodies)
     {
-        layout.entities.push_back(EntityPosDef(e->getEntityDef().type, e->getPosition().x, e->getPosition().y));
+        layout.entities.push_back(EntityInstanceDef(e->getID(), e->getEntityDef().type, e->getPosition().x, e->getPosition().y, e->getWidth(), e->getHeight()));
     }
     
     for (Entity* e : _staticEntities)
     {
-        layout.entities.push_back(EntityPosDef(e->getEntityDef().type, e->getPosition().x, e->getPosition().y));
+        layout.entities.push_back(EntityInstanceDef(e->getID(), e->getEntityDef().type, e->getPosition().x, e->getPosition().y));
     }
     
     for (Entity* e : _dynamicEntities)
     {
-        layout.entities.push_back(EntityPosDef(e->getEntityDef().type, e->getPosition().x, e->getPosition().y));
+        layout.entities.push_back(EntityInstanceDef(e->getID(), e->getEntityDef().type, e->getPosition().x, e->getPosition().y));
     }
     
     if (map == 'TEST')

@@ -18,15 +18,16 @@
 #include <framework/network/server/ClientProxy.h>
 #include <framework/network/portable/InputState.h>
 #include <framework/entity/Entity.h>
+#include <framework/util/Timing.h>
 
 #include <framework/util/StringUtil.h>
-#include <framework/util/Timing.h>
 #include <framework/entity/EntityManager.h>
 #include <framework/util/StringUtil.h>
 #include <framework/util/NGSTDUtil.h>
 #include <framework/util/Constants.h>
 #include <framework/network/client/NetworkManagerClient.h>
 #include <framework/network/server/ReplicationManagerServer.h>
+#include <framework/util/InstanceManager.h>
 
 #include <assert.h>
 
@@ -84,7 +85,7 @@ void NetworkManagerServer::processIncomingPackets()
     /// Check for disconnects
     std::vector<ClientProxy*> clientsToDC;
     
-    float minAllowedLastPacketFromClientTime = NG_TIME->getTime() - NW_CLIENT_TIMEOUT;
+    float minAllowedLastPacketFromClientTime = _timing->getTime() - NW_CLIENT_TIMEOUT;
     for (const auto& pair: _addressHashToClientMap)
     {
         if (pair.second->getLastPacketFromClientTime() < minAllowedLastPacketFromClientTime)
@@ -107,7 +108,7 @@ void NetworkManagerServer::sendOutgoingPackets()
     {
         ClientProxy* clientProxy = it->second;
         //process any timed out packets while we're going through the list
-        clientProxy->getDeliveryNotificationManager().processTimedOutPackets(NG_TIME->getTime());
+        clientProxy->getDeliveryNotificationManager().processTimedOutPackets(_timing->getTime());
         
         if (clientProxy->isLastMoveTimestampDirty())
         {
@@ -118,9 +119,6 @@ void NetworkManagerServer::sendOutgoingPackets()
 
 void NetworkManagerServer::registerEntity(Entity* inEntity)
 {
-    _entityID = clamp(_entityID + 1, NETWORK_ENTITY_ID_END, NETWORK_ENTITY_ID_BEGIN);
-    inEntity->setID(_entityID);
-    
     //add mapping from network id to game object
     _entityManager->registerEntity(inEntity);
     
@@ -650,8 +648,8 @@ _handleLostClientFunc(handleLostClientFunc),
 _inputStateCreationFunc(inputStateCreationFunc),
 _inputStateReleaseFunc(inputStateReleaseFunc),
 _entityManager(new EntityManager(handleEntityCreatedFunc, handleEntityDeletionFunc)),
+_timing(static_cast<Timing*>(INSTANCE_MANAGER->getInstance(INSTANCE_TIME_SERVER))),
 _nextPlayerId(1),
-_entityID(NETWORK_ENTITY_ID_BEGIN),
 _map(0)
 {
     // Empty

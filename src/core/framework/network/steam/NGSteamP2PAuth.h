@@ -21,6 +21,8 @@ class NGSteamP2PAuthPlayer;
 class NGSteamP2PNetworkTransport;
 class MsgP2PSendingTicket;
 
+class Timing;
+
 class NGSteamP2PAuth
 {
 public:
@@ -29,7 +31,6 @@ public:
     NGSteamP2PNetworkTransport *_networkTransport;
 
     NGSteamP2PAuth(NetworkHelper* networkHelper);
-
     ~NGSteamP2PAuth();
 
     void playerDisconnect(uint8 iSlot);
@@ -54,9 +55,10 @@ public:
 	bool isAuthOk();
 	bool handleMessage(MsgP2PSendingTicket* msg);
 
-	STEAM_CALLBACK(NGSteamP2PAuthPlayer, OnBeginAuthResponse, ValidateAuthTicketResponse_t, _CallbackBeginAuthResponse);
+	STEAM_CALLBACK(NGSteamP2PAuthPlayer, OnBeginAuthResponse, ValidateAuthTicketResponse_t, _callbackBeginAuthResponse);
 
 private:
+    Timing* _timing;
 	bool _bSentTicket;
 	bool _bSubmittedHisTicket;
 	bool _bHaveAnswer;

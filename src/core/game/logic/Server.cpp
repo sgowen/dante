@@ -13,9 +13,10 @@
 #include <game/logic/World.h>
 #include <framework/network/server/ClientProxy.h>
 #include <framework/entity/Entity.h>
+#include <framework/util/Timing.h>
+#include <framework/entity/EntityIDManager.h>
 
 #include <framework/network/server/NetworkManagerServer.h>
-#include <framework/util/Timing.h>
 #include <framework/util/Constants.h>
 #include <framework/network/portable/SocketUtil.h>
 #include <framework/entity/EntityManager.h>
@@ -26,6 +27,7 @@
 #include <framework/entity/EntityMapper.h>
 #include <framework/entity/EntityLayoutMapper.h>
 #include <game/logic/GameConfig.h>
+#include <framework/util/InstanceManager.h>
 
 #ifdef NG_STEAM
 #include <framework/network/steam/NGSteamServerHelper.h>
@@ -118,7 +120,7 @@ void Server::update()
 {
     _stateTime += FRAME_RATE;
     
-    NG_TIME->setTime(_stateTime);
+    _timing->setTime(_stateTime);
     
     NG_SERVER->processIncomingPackets();
     
@@ -272,8 +274,8 @@ void Server::spawnRobotForPlayer(uint8_t inPlayerId, std::string inPlayerName)
         }
     }
     
-    EntityPosDef epd('ROBT', spawnX, spawnY);
-    Entity* e = EntityMapper::getInstance()->createEntity(&epd, true);
+    EntityInstanceDef eid(_entityIDManager->getNextDynamicEntityID(), 'ROBT', spawnX, spawnY);
+    Entity* e = EntityMapper::getInstance()->createEntity(&eid, true);
     PlayerController* robot = static_cast<PlayerController*>(e->getController());
     robot->setAddressHash(client->getMachineAddress()->getHash());
     robot->setPlayerName(inPlayerName);
@@ -307,6 +309,8 @@ void Server::loadMap()
 Server::Server(uint32_t flags, void* data) :
 _flags(flags),
 _data(data),
+_timing(static_cast<Timing*>(INSTANCE_MANAGER->getInstance(INSTANCE_TIME_SERVER))),
+_entityIDManager(static_cast<EntityIDManager*>(INSTANCE_MANAGER->getInstance(INSTANCE_ENTITY_ID_MANAGER_SERVER))),
 _world(new World(WorldFlag_Server | WorldFlag_MapLoadAll)),
 _stateTime(0),
 _map(0),

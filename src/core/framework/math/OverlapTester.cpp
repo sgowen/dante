@@ -10,7 +10,7 @@
 
 #include <framework/math/OverlapTester.h>
 
-#include <framework/util/macros.h>
+#include <framework/util/MathUtil.h>
 #include <framework/math/NGRect.h>
 #include <framework/math/Circle.h>
 #include <framework/math/Vector2.h>

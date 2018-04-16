@@ -21,23 +21,22 @@
 #include <framework/util/macros.h>
 #include <framework/network/client/NetworkManagerClient.h>
 #include <framework/util/StringUtil.h>
-#include <framework/util/MathUtil.h>
 #include <framework/entity/EntityMapper.h>
 #include <framework/network/server/NetworkManagerServer.h>
 
 NGRTTI_IMPL_NOPARENT(Entity);
 
-Entity::Entity(EntityDef inEntityDef, int x, int y, bool isServer) :
+Entity::Entity(EntityDef inEntityDef) :
 _entityDef(inEntityDef),
 _controller(EntityMapper::getInstance()->createEntityController(inEntityDef.controller, this)),
-_isServer(isServer),
+_isServer(inEntityDef.server),
 _body(NULL),
 _groundSensorFixture(NULL),
-_pose(x, y),
+_pose(inEntityDef.x, inEntityDef.y),
 _poseCache(_pose),
 _poseInterpolateCache(_pose),
 _readState(0),
-_ID(0),
+_ID(inEntityDef.ID),
 _deadZoneY(-_entityDef.height / 2.0f),
 _isRequestingDeletion(false),
 _isBodyFacingLeft(false)
@@ -124,7 +123,7 @@ void Entity::handleBeginContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixtu
     if (inFixtureA == _groundSensorFixture &&
         !inFixtureB->IsSensor())
     {
-        _pose.numGroundContacts = clamp(_pose.numGroundContacts + 1, 15, 0);
+        _pose.numGroundContacts = clamp(_pose.numGroundContacts + 1, 0, 15);
     }
     
     _controller->handleBeginContact(inEntity, inFixtureA, inFixtureB);
@@ -135,7 +134,7 @@ void Entity::handleEndContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture
     if (inFixtureA == _groundSensorFixture &&
         !inFixtureB->IsSensor())
     {
-        _pose.numGroundContacts = clamp(_pose.numGroundContacts - 1, 15, 0);
+        _pose.numGroundContacts = clamp(_pose.numGroundContacts - 1, 0, 15);
     }
     
     _controller->handleEndContact(inEntity, inFixtureA, inFixtureB);
@@ -383,12 +382,7 @@ float Entity::getAngle()
     return _pose.angle;
 }
 
-void Entity::setID(uint32_t inID)
-{
-    _ID = inID;
-}
-
-uint32_t Entity::getID()
+const uint32_t Entity::getID()
 {
     return _ID;
 }

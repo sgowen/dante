@@ -22,7 +22,7 @@
 
 #include <assert.h>
 
-NGSteamPacketHandler::NGSteamPacketHandler(bool isServer, ProcessPacketFunc processPacketFunc, HandleNoResponseFunc handleNoResponseFunc, HandleConnectionResetFunc handleConnectionResetFunc) : PacketHandler(isServer, processPacketFunc, handleNoResponseFunc, handleConnectionResetFunc)
+NGSteamPacketHandler::NGSteamPacketHandler(Timing* timing, bool isServer, ProcessPacketFunc processPacketFunc, HandleNoResponseFunc handleNoResponseFunc, HandleConnectionResetFunc handleConnectionResetFunc) : PacketHandler(timing, isServer, processPacketFunc, handleNoResponseFunc, handleConnectionResetFunc)
 {
     // Empty
 }
@@ -91,7 +91,7 @@ void NGSteamPacketHandler::readIncomingPacketsIntoQueue()
                     //shove the packet into the queue and we'll handle it as soon as we should...
                     //we'll pretend it wasn't received until simulated latency from now
                     //this doesn't sim jitter, for that we would need to.....
-                    float simulatedReceivedTime = NG_TIME->getTime();
+                    float simulatedReceivedTime = _timing->getTime();
                     
                     _packetQueue.push(ReceivedPacket(simulatedReceivedTime, inputStream, fromId));
                 }
@@ -122,7 +122,7 @@ void NGSteamPacketHandler::processQueuedPackets()
     while (!_packetQueue.empty())
     {
         ReceivedPacket& nextPacket = _packetQueue.front();
-        if (NG_TIME->getTime() > nextPacket.getReceivedTime())
+        if (_timing->getTime() > nextPacket.getReceivedTime())
         {
             _processPacketFunc(nextPacket.getPacketBuffer(), &nextPacket.getFromAddress());
             _packetQueue.pop();

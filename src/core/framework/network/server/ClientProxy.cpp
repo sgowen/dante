@@ -13,12 +13,14 @@
 #include <framework/entity/EntityManager.h>
 #include <framework/network/server/ReplicationManagerServer.h>
 #include <framework/network/portable/MachineAddress.h>
-
 #include <framework/util/Timing.h>
+
 #include <framework/util/Constants.h>
+#include <framework/util/InstanceManager.h>
 
 ClientProxy::ClientProxy(EntityManager* entityManager, MachineAddress* inMachineAddress, const std::string& inName, uint8_t inPlayerId) :
-_deliveryNotificationManager(DeliveryNotificationManager(false, true)),
+_timing(static_cast<Timing*>(INSTANCE_MANAGER->getInstance(INSTANCE_TIME_SERVER))),
+_deliveryNotificationManager(DeliveryNotificationManager(_timing, false, true)),
 _replicationManagerServer(new ReplicationManagerServer(entityManager)),
 _machineAddress(inMachineAddress->createNewCopy()),
 _name(inName),
@@ -52,7 +54,7 @@ const std::string& ClientProxy::getName() const
 
 void ClientProxy::updateLastPacketTime()
 {
-    _lastPacketFromClientTime = NG_TIME->getTime();
+    _lastPacketFromClientTime = _timing->getTime();
 }
 
 float ClientProxy::getLastPacketFromClientTime() const

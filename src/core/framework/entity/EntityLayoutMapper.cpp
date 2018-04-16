@@ -142,14 +142,14 @@ void EntityLayoutMapper::loadEntityLayout(const char* data)
             (uint32_t)chars[2] << 8  |
             (uint32_t)chars[3];
             
-            EntityPosDef epd;
-            epd.type = key;
-            epd.x = iv["x"].GetInt();
-            epd.y = iv["y"].GetInt();
-            epd.w = iv.HasMember("w") ? iv["w"].GetInt() : 0;
-            epd.h = iv.HasMember("h") ? iv["h"].GetInt() : 0;
+            uint32_t ID = iv.HasMember("ID") ? iv["ID"].GetUint() : 0;
+            uint32_t type = key;
+            uint32_t x = iv["x"].GetUint();
+            uint32_t y = iv["y"].GetUint();
+            uint32_t w = iv.HasMember("w") ? iv["w"].GetUint() : 0;
+            uint32_t h = iv.HasMember("h") ? iv["h"].GetUint() : 0;
             
-            _entityLayoutDef.entities.push_back(epd);
+            _entityLayoutDef.entities.push_back(EntityInstanceDef(ID, type, x, y, w, h));
         }
     }
 }
@@ -171,9 +171,13 @@ const char* EntityLayoutMapper::save()
     {
         w.String("entities");
         w.StartArray();
-        for (EntityPosDef epd : _layoutToSave->entities)
+        for (EntityInstanceDef epd : _layoutToSave->entities)
         {
             w.StartObject();
+            {
+                w.String("ID");
+                w.Uint(epd.ID);
+            }
             {
                 w.String("type");
                 char chars[5];
@@ -187,21 +191,21 @@ const char* EntityLayoutMapper::save()
             }
             {
                 w.String("x");
-                w.Int(epd.x);
+                w.Uint(epd.x);
             }
             {
                 w.String("y");
-                w.Int(epd.y);
+                w.Uint(epd.y);
             }
             if (epd.w > 0)
             {
                 w.String("w");
-                w.Int(epd.w);
+                w.Uint(epd.w);
             }
             if (epd.h > 0)
             {
                 w.String("h");
-                w.Int(epd.h);
+                w.Uint(epd.h);
             }
             w.EndObject();
         }

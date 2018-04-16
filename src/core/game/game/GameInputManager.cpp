@@ -38,11 +38,11 @@
 
 GameInputManager* GameInputManager::s_instance = NULL;
 
-void GameInputManager::create()
+void GameInputManager::create(GameEngine* engine)
 {
     assert(!s_instance);
     
-    s_instance = new GameInputManager();
+    s_instance = new GameInputManager(engine);
 }
 
 GameInputManager * GameInputManager::getInstance()
@@ -77,11 +77,6 @@ void GameInputManager::sHandleInputStateRelease(InputState* inputState)
 {
     GameInputState* mainInputState = static_cast<GameInputState*>(inputState);
     getInstance()->_inputStates.free(mainInputState);
-}
-
-void GameInputManager::setEngine(GameEngine* inValue)
-{
-    _engine = inValue;
 }
 
 void GameInputManager::update()
@@ -306,7 +301,7 @@ void GameInputManager::update()
         NG_CLIENT->requestToAddLocalPlayer();
     }
     
-    GM_CFG->_playerLightZ = clamp(GM_CFG->_playerLightZ + _playerLightZDelta, 0.3f, -0.1f);
+    GM_CFG->_playerLightZ = clamp(GM_CFG->_playerLightZ + _playerLightZDelta, -0.1f, 0.3f);
     _pendingMove = &sampleInputAsMove();
 }
 
@@ -340,7 +335,7 @@ const Move& GameInputManager::sampleInputAsMove()
     GameInputState* inputState = _inputStates.obtain();
     _currentState->copyTo(inputState);
     
-    return _moveList.addMove(inputState, NG_TIME->getTime());
+    return _moveList.addMove(inputState, _engine->_timing->getTime());
 }
 
 void GameInputManager::dropPlayer(int index)
@@ -357,12 +352,12 @@ void GameInputManager::dropPlayer(int index)
     }
 }
 
-GameInputManager::GameInputManager() :
+GameInputManager::GameInputManager(GameEngine* engine) :
 _currentState(_inputStates.obtain()),
 _pendingMove(NULL),
+_engine(engine),
 _inputState(GIMS_NONE),
 _isTimeToProcessInput(false),
-_engine(NULL),
 _playerLightZDelta(0)
 {
     // Empty

@@ -19,20 +19,14 @@ class DeliveryNotificationManager;
 class InFlightPacket
 {
 public:
-    InFlightPacket(uint16_t inSequenceNumber);
-    
+    InFlightPacket(uint16_t sequenceNumber, float timeDispatched);
     ~InFlightPacket();
     
     void setTransmissionData(int inKey, TransmissionData* inTransmissionData);
-    
     TransmissionData* getTransmissionData(int inKey) const;
-    
     uint16_t getSequenceNumber() const;
-    
     float getTimeDispatched() const;
-    
     void handleDeliveryFailure(DeliveryNotificationManager* inDeliveryNotificationManager) const;
-    
     void handleDeliverySuccess(DeliveryNotificationManager* inDeliveryNotificationManager) const;
     
 private:

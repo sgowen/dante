@@ -10,10 +10,14 @@
 
 #include <framework/util/Timing.h>
 
-Timing* Timing::getInstance()
+Timing::Timing() : _frameStartTime(0)
 {
-    static Timing instance = Timing();
-    return &instance;
+    // Empty
+}
+
+Timing::~Timing()
+{
+    // Empty
 }
 
 void Timing::setTime(float stateTime)
@@ -24,14 +28,4 @@ void Timing::setTime(float stateTime)
 float Timing::getTime() const
 {
     return _frameStartTime;
-}
-
-Timing::Timing() : _frameStartTime(0)
-{
-    // Empty
-}
-
-Timing::~Timing()
-{
-    // Empty
 }

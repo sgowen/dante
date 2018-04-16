@@ -16,7 +16,7 @@
 #include <framework/graphics/portable/Color.h>
 
 #include <framework/util/Constants.h>
-#include <framework/util/macros.h>
+#include <framework/util/MathUtil.h>
 
 #include <math.h>
 #include <assert.h>

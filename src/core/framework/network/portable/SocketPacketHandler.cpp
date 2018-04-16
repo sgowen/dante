@@ -10,6 +10,7 @@
 
 #include <framework/network/portable/SocketPacketHandler.h>
 
+#include <framework/util/Timing.h>
 #include <framework/network/portable/OutputMemoryBitStream.h>
 #include <framework/network/portable/UDPSocket.h>
 #include <framework/network/portable/MachineAddress.h>
@@ -18,16 +19,16 @@
 #include <framework/network/portable/InputMemoryBitStream.h>
 #include <framework/network/portable/SocketUtil.h>
 #include <framework/util/StringUtil.h>
-#include <framework/util/Timing.h>
 #include <framework/network/portable/SocketAddressFamily.h>
 #include <framework/util/macros.h>
 #include <framework/util/Constants.h>
 #include <framework/network/portable/Network.h>
+#include <framework/util/InstanceManager.h>
 
 #include <string.h>
 #include <assert.h>
 
-SocketPacketHandler::SocketPacketHandler(bool isServer, uint16_t inPort, ProcessPacketFunc processPacketFunc, HandleNoResponseFunc handleNoResponseFunc, HandleConnectionResetFunc handleConnectionResetFunc) : PacketHandler(isServer, processPacketFunc, handleNoResponseFunc, handleConnectionResetFunc), _socketAddress(new SocketAddress(INADDR_ANY, inPort)), _socket(NULL), _isInitialized(false)
+SocketPacketHandler::SocketPacketHandler(Timing* timing, bool isServer, uint16_t inPort, ProcessPacketFunc processPacketFunc, HandleNoResponseFunc handleNoResponseFunc, HandleConnectionResetFunc handleConnectionResetFunc) : PacketHandler(timing, isServer, processPacketFunc, handleNoResponseFunc, handleConnectionResetFunc), _socketAddress(new SocketAddress(INADDR_ANY, inPort)), _socket(NULL), _isInitialized(false)
 {
     if (!SOCKET_UTIL->init())
     {
@@ -142,7 +143,7 @@ void SocketPacketHandler::readIncomingPacketsIntoQueue()
             //we'll pretend it wasn't received until simulated latency from now
             //this doesn't sim jitter, for that we would need to.....
 
-            float simulatedReceivedTime = NG_TIME->getTime();
+            float simulatedReceivedTime = _timing->getTime();
             _packetQueue.push(ReceivedPacket(simulatedReceivedTime, inputStream, fromAddress));
         }
         else
@@ -163,7 +164,7 @@ void SocketPacketHandler::processQueuedPackets()
     while (!_packetQueue.empty())
     {
         ReceivedPacket& nextPacket = _packetQueue.front();
-        if (NG_TIME->getTime() > nextPacket.getReceivedTime())
+        if (_timing->getTime() > nextPacket.getReceivedTime())
         {
             _processPacketFunc(nextPacket.getPacketBuffer(), &nextPacket.getFromAddress());
             _packetQueue.pop();

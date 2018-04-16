@@ -12,12 +12,12 @@
 
 #include <framework/util/Timing.h>
 
-InFlightPacket::InFlightPacket(uint16_t inSequenceNumber) :
-_sequenceNumber(inSequenceNumber),
-_timeDispatched(NG_TIME->getTime()),
+InFlightPacket::InFlightPacket(uint16_t sequenceNumber, float timeDispatched) :
+_sequenceNumber(sequenceNumber),
+_timeDispatched(timeDispatched),
 _inKey(0)
 {
-    //null out other transmision data params...
+    // Empty
 }
 
 InFlightPacket::~InFlightPacket()

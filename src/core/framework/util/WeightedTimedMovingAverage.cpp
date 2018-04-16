@@ -11,11 +11,14 @@
 #include <framework/util/WeightedTimedMovingAverage.h>
 
 #include <framework/util/Timing.h>
+
 #include <framework/util/MathUtil.h>
 
-WeightedTimedMovingAverage::WeightedTimedMovingAverage(float inDuration) : _duration(inDuration), _value(0.f)
+WeightedTimedMovingAverage::WeightedTimedMovingAverage(Timing* timing, float inDuration) : _timing(timing), _duration(inDuration), _value(0.f)
 {
-    _timeLastEntryMade = NG_TIME->getTime();
+    assert(_timing);
+    
+    _timeLastEntryMade = _timing->getTime();
 }
 
 void WeightedTimedMovingAverage::updatePerSecond(float inValue)
@@ -25,8 +28,8 @@ void WeightedTimedMovingAverage::updatePerSecond(float inValue)
         return;
     }
     
-    float time = NG_TIME->getTime();
-    float timeSinceLastEntry = clamp(time - _timeLastEntryMade, 10, 0);
+    float time = _timing->getTime();
+    float timeSinceLastEntry = clamp(time - _timeLastEntryMade, 0, 10);
     
     float valueOverTime = inValue / timeSinceLastEntry;
     
@@ -49,8 +52,8 @@ void WeightedTimedMovingAverage::update(float inValue)
         return;
     }
     
-    float time = NG_TIME->getTime();
-    float timeSinceLastEntry = clamp(time - _timeLastEntryMade, 10, 0);
+    float time = _timing->getTime();
+    float timeSinceLastEntry = clamp(time - _timeLastEntryMade, 0, 10);
     
     // now update our value by whatever amount of the duration that was..
     float fractionOfDuration  = (timeSinceLastEntry / _duration);

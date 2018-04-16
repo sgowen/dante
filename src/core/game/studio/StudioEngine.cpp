@@ -36,7 +36,6 @@
 #include <framework/file/portable/Assets.h>
 #include <framework/util/Constants.h>
 #include <framework/audio/portable/NGAudioEngine.h>
-#include <framework/util/Timing.h>
 #include <framework/util/FPSUtil.h>
 #include <framework/input/CursorConverter.h>
 #include <framework/entity/EntityMapper.h>

@@ -13,10 +13,11 @@
 #include <framework/network/portable/InputMemoryBitStream.h>
 #include <framework/network/portable/NetworkHelper.h>
 #include <framework/network/steam/NGSteamAddress.h>
-
 #include <framework/util/Timing.h>
+
 #include <framework/util/StringUtil.h>
 #include <framework/network/portable/OutputMemoryBitStream.h>
+#include <framework/util/InstanceManager.h>
 
 NGSteamP2PAuth::NGSteamP2PAuth(NetworkHelper* networkHelper) :
 _networkTransport(new NGSteamP2PNetworkTransport(networkHelper))
@@ -161,14 +162,15 @@ bool NGSteamP2PAuth::handleMessage(uint8 packetType, InputMemoryBitStream& inInp
 	return false;
 }
 
-NGSteamP2PAuthPlayer::NGSteamP2PAuthPlayer(NGSteamP2PNetworkTransport *pNetworkTransport)
-: _CallbackBeginAuthResponse(this, &NGSteamP2PAuthPlayer::OnBeginAuthResponse)
+NGSteamP2PAuthPlayer::NGSteamP2PAuthPlayer(NGSteamP2PNetworkTransport *pNetworkTransport) :
+_callbackBeginAuthResponse(this, &NGSteamP2PAuthPlayer::OnBeginAuthResponse),
+_timing(static_cast<Timing*>(INSTANCE_MANAGER->getInstance(INSTANCE_TIME_CLIENT)))
 {
     _networkTransport = pNetworkTransport;
     _bSentTicket = false;
     _bSubmittedHisTicket = false;
     _bHaveAnswer = false;
-    _connectTime = NG_TIME->getTime();
+    _connectTime = _timing->getTime();
     _cubTicketIGaveThisUser = 0;
     _cubTicketHeGaveMe = 0;
 }
@@ -188,7 +190,7 @@ void NGSteamP2PAuthPlayer::OnBeginAuthResponse(ValidateAuthTicketResponse_t *pCa
         char rgch[128];
         sprintf(rgch, "P2P:: Received steam response for account=%d\n", _steamID.GetAccountID());
         LOG(rgch);
-        _answerTime = NG_TIME->getTime();
+        _answerTime = _timing->getTime();
         _bHaveAnswer = true;
         _eAuthSessionResponse = pCallback->m_eAuthSessionResponse;
     }
@@ -200,7 +202,7 @@ void NGSteamP2PAuthPlayer::initPlayer(CSteamID steamID)
     _bSentTicket = false;
     _bSubmittedHisTicket = false;
     _bHaveAnswer = false;
-    _connectTime = NG_TIME->getTime();
+    _connectTime = _timing->getTime();
     _cubTicketIGaveThisUser = 0;
     _cubTicketHeGaveMe = 0;
 }
@@ -219,7 +221,7 @@ void NGSteamP2PAuthPlayer::startAuthPlayer()
     _bSentTicket = true;
 
     // start a timer on this, if we dont get a ticket back within reasonable time, mark him timed out
-    _ticketTime = NG_TIME->getTime();
+    _ticketTime = _timing->getTime();
 }
 
 bool NGSteamP2PAuthPlayer::isAuthOk()
@@ -229,7 +231,7 @@ bool NGSteamP2PAuthPlayer::isAuthOk()
         // Timeout if we fail to establish communication with this player
         if (!_bSentTicket && !_bSubmittedHisTicket)
         {
-            if (NG_TIME->getTime() - _connectTime > 30)
+            if (_timing->getTime() - _connectTime > 30)
             {
                 char rgch[128];
                 sprintf(rgch, "P2P:: Nothing received for account=%d\n", _steamID.GetAccountID());
@@ -259,7 +261,7 @@ bool NGSteamP2PAuthPlayer::isAuthOk()
         // last: if i sent him a ticket and he has not reciprocated, time out after 30 sec
         if (_bSentTicket && !_bSubmittedHisTicket)
         {
-            if (NG_TIME->getTime() - _ticketTime > 30)
+            if (_timing->getTime() - _ticketTime > 30)
             {
                 char rgch[128];
                 sprintf(rgch, "P2P:: No ticket received for account=%d\n", _steamID.GetAccountID());

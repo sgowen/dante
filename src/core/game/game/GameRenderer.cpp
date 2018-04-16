@@ -254,8 +254,8 @@ void GameRenderer::updateCamera()
             x -= GM_CFG->_camWidth * 0.5f;
             y -= GM_CFG->_camHeight * 0.5f;
             
-            x = clamp(x, FLT_MAX, 0);
-            y = clamp(y, FLT_MAX, 0);
+            x = clamp(x, 0, FLT_MAX);
+            y = clamp(y, 0, FLT_MAX);
             
             isCamInitialized = true;
         }
@@ -448,7 +448,7 @@ void GameRenderer::endBatchWithTexture(SpriteBatcher* sb, NGTexture* tex, int la
 {
     if (tex)
     {
-        int c = clamp(layer, 3, 0);
+        int c = clamp(layer, 0, 3);
         _rendererHelper->updateMatrix(_camBounds[c]->getLeft(), _camBounds[c]->getRight(), _camBounds[c]->getBottom(), _camBounds[c]->getTop());
         
         if (layer == 0 ||
@@ -475,55 +475,62 @@ void GameRenderer::renderUI()
 {
     _rendererHelper->updateMatrix(0, GM_CFG->_camWidth, 0, GM_CFG->_camHeight);
     
-    if (_staticFontSpriteBatcher->isDynamic())
+    int jl = FONT_ALIGN_LEFT;
+    int jr = FONT_ALIGN_RIGHT;
+    float fontX = GM_CFG->_camWidth - 0.5f;
+    float camHeight = GM_CFG->_camHeight;
+    SpriteBatcher* dSb = _dynamicFontSpriteBatcher;
+    SpriteBatcher* sSb = _staticFontSpriteBatcher;
+    
+    if (sSb->isDynamic())
     {
-        _staticFontSpriteBatcher->beginBatch(10);
+        sSb->beginBatch(INDEX_LAST_TEXTURE_VERTEX_BUFFER);
     }
     
     if (NG_CLIENT->getState() == NCS_Welcomed)
     {
-        _dynamicFontSpriteBatcher->beginBatch(10);
+        dSb->beginBatch(INDEX_LAST_TEXTURE_VERTEX_BUFFER);
         
         int row = 1;
         static float padding = 1;
         
         int fps = FPSUtil::getInstance()->getFPS();
-        renderText(_dynamicFontSpriteBatcher, StringUtil::format("FPS %d", fps).c_str(), GM_CFG->_camWidth - 0.5f, GM_CFG->_camHeight - (row++ * padding), FONT_ALIGN_RIGHT);
+        renderText(dSb, StringUtil::format("FPS %d", fps).c_str(), fontX, camHeight - (row++ * padding), jr);
         
         float rttMS = NG_CLIENT->getAvgRoundTripTime().getValue() * 1000.f;
-        renderText(_dynamicFontSpriteBatcher, StringUtil::format("RTT %d ms", static_cast<int>(rttMS)).c_str(), GM_CFG->_camWidth - 0.5f, GM_CFG->_camHeight - (row++ * padding), FONT_ALIGN_RIGHT);
+        renderText(dSb, StringUtil::format("RTT %d ms", static_cast<int>(rttMS)).c_str(), fontX, camHeight - (row++ * padding), jr);
         
         const WeightedTimedMovingAverage& bpsIn = NG_CLIENT->getBytesReceivedPerSecond();
         int bpsInInt = static_cast<int>(bpsIn.getValue());
-        renderText(_dynamicFontSpriteBatcher, StringUtil::format(" In %d Bps", bpsInInt).c_str(), GM_CFG->_camWidth - 0.5f, GM_CFG->_camHeight - (row++ * padding), FONT_ALIGN_RIGHT);
+        renderText(dSb, StringUtil::format(" In %d Bps", bpsInInt).c_str(), fontX, camHeight - (row++ * padding), jr);
         
         const WeightedTimedMovingAverage& bpsOut = NG_CLIENT->getBytesSentPerSecond();
         int bpsOutInt = static_cast<int>(bpsOut.getValue());
-        renderText(_dynamicFontSpriteBatcher, StringUtil::format("Out %d Bps", bpsOutInt).c_str(), GM_CFG->_camWidth - 0.5f, GM_CFG->_camHeight - (row++ * padding), FONT_ALIGN_RIGHT);
+        renderText(dSb, StringUtil::format("Out %d Bps", bpsOutInt).c_str(), fontX, camHeight - (row++ * padding), jr);
         
-        _dynamicFontSpriteBatcher->endBatch(_textureShader, _fontTexture);
+        dSb->endBatch(_textureShader, _fontTexture);
         
-        if (!_staticFontSpriteBatcher->isStaticBatchRendered())
+        if (!sSb->isStaticBatchRendered())
         {
             // Controls
             ++row;
             
-            renderText(_staticFontSpriteBatcher, StringUtil::format("[N]         Sound %s", NG_AUDIO_ENGINE->areSoundsDisabled() ? " OFF" : "  ON").c_str(), GM_CFG->_camWidth - 0.5f, GM_CFG->_camHeight - (row++ * padding), FONT_ALIGN_RIGHT);
-            renderText(_staticFontSpriteBatcher, StringUtil::format("[M]         Music %s", NG_AUDIO_ENGINE->isMusicDisabled() ? " OFF" : "  ON").c_str(), GM_CFG->_camWidth - 0.5f, GM_CFG->_camHeight - (row++ * padding), FONT_ALIGN_RIGHT);
-            renderText(_staticFontSpriteBatcher, StringUtil::format("[B]   Box2D Debug %s", _engineState & GameEngineState_DisplayBox2D ? "  ON" : " OFF").c_str(), GM_CFG->_camWidth - 0.5f, GM_CFG->_camHeight - (row++ * padding), FONT_ALIGN_RIGHT);
-            renderText(_staticFontSpriteBatcher, StringUtil::format("[I] Interpolation %s", _engineState & GameEngineState_Interpolation ? "  ON" : " OFF").c_str(), GM_CFG->_camWidth - 0.5f, GM_CFG->_camHeight - (row++ * padding), FONT_ALIGN_RIGHT);
+            renderText(sSb, StringUtil::format("[N]         Sound %s", NG_AUDIO_ENGINE->areSoundsDisabled() ? " OFF" : "  ON").c_str(), fontX, camHeight - (row++ * padding), jr);
+            renderText(sSb, StringUtil::format("[M]         Music %s", NG_AUDIO_ENGINE->isMusicDisabled() ? " OFF" : "  ON").c_str(), fontX, camHeight - (row++ * padding), jr);
+            renderText(sSb, StringUtil::format("[B]   Box2D Debug %s", _engineState & GameEngineState_DisplayBox2D ? "  ON" : " OFF").c_str(), fontX, camHeight - (row++ * padding), jr);
+            renderText(sSb, StringUtil::format("[I] Interpolation %s", _engineState & GameEngineState_Interpolation ? "  ON" : " OFF").c_str(), fontX, camHeight - (row++ * padding), jr);
             std::string lightZ = StringUtil::format("%f", GM_CFG->_playerLightZ);
-            renderText(_staticFontSpriteBatcher, StringUtil::format("[L]  Lighting %s", _engineState & GameEngineState_Lighting ? lightZ.c_str() : "     OFF").c_str(), GM_CFG->_camWidth - 0.5f, GM_CFG->_camHeight - (row++ * padding), FONT_ALIGN_RIGHT);
-            renderText(_staticFontSpriteBatcher, StringUtil::format("[U]    Display UI %s", _engineState & GameEngineState_DisplayUI ? "  ON" : " OFF").c_str(), GM_CFG->_camWidth - 0.5f, GM_CFG->_camHeight - (row++ * padding), FONT_ALIGN_RIGHT);
+            renderText(sSb, StringUtil::format("[L]  Lighting %s", _engineState & GameEngineState_Lighting ? lightZ.c_str() : "     OFF").c_str(), fontX, camHeight - (row++ * padding), jr);
+            renderText(sSb, StringUtil::format("[U]    Display UI %s", _engineState & GameEngineState_DisplayUI ? "  ON" : " OFF").c_str(), fontX, camHeight - (row++ * padding), jr);
             
             Server* server = Server::getInstance();
             if (server && !(server->getFlags() & ServerFlag_TestSession))
             {
-                renderText(_staticFontSpriteBatcher, StringUtil::format("[T]    Toggle Map %s", _engine->_world->getMapName().c_str()).c_str(), GM_CFG->_camWidth - 0.5f, GM_CFG->_camHeight - (row++ * padding), FONT_ALIGN_RIGHT);
+                renderText(sSb, StringUtil::format("[T]    Toggle Map %s", _engine->_world->getMapName().c_str()).c_str(), fontX, camHeight - (row++ * padding), jr);
             }
             else
             {
-                renderText(_staticFontSpriteBatcher, StringUtil::format("              Map %s", _engine->_world->getMapName().c_str()).c_str(), GM_CFG->_camWidth - 0.5f, GM_CFG->_camHeight - (row++ * padding), FONT_ALIGN_RIGHT);
+                renderText(sSb, StringUtil::format("              Map %s", _engine->_world->getMapName().c_str()).c_str(), fontX, camHeight - (row++ * padding), jr);
             }
             
             bool activePlayerIds[4] = {false};
@@ -536,7 +543,7 @@ void GameRenderer::renderUI()
                 int playerId = robot->getPlayerId();
                 if (playerId >= 1 && playerId <= 4)
                 {
-                    renderText(_staticFontSpriteBatcher, StringUtil::format("%i|%s", playerId, robot->getPlayerName().c_str()).c_str(), 0.5f, GM_CFG->_camHeight - (playerId * 1.0f), FONT_ALIGN_LEFT);
+                    renderText(sSb, StringUtil::format("%i|%s", playerId, robot->getPlayerName().c_str()).c_str(), 0.5f, camHeight - (playerId * 1.0f), jl);
                     activePlayerIds[playerId - 1] = true;
                 }
             }
@@ -545,18 +552,18 @@ void GameRenderer::renderUI()
             {
                 if (!activePlayerIds[i])
                 {
-                    renderText(_staticFontSpriteBatcher, StringUtil::format("%i|%s", (i + 1), "Connect a controller to join...").c_str(), 0.5f, GM_CFG->_camHeight - ((i + 1) * 1.0f), FONT_ALIGN_LEFT);
+                    renderText(sSb, StringUtil::format("%i|%s", (i + 1), "Connect a controller to join...").c_str(), 0.5f, camHeight - ((i + 1) * 1.0f), jl);
                 }
             }
         }
     }
     else
     {
-        renderText(_staticFontSpriteBatcher, StringUtil::format("%s, [ESC] to exit", "Joining Server...").c_str(), 0.5f, GM_CFG->_camHeight - 4, FONT_ALIGN_LEFT);
+        renderText(sSb, StringUtil::format("%s, [ESC] to exit", "Joining Server...").c_str(), 0.5f, camHeight - 4, jl);
     }
     
-    _staticFontSpriteBatcher->useStaticConfig();
-    _staticFontSpriteBatcher->endBatch(_textureShader, _fontTexture);
+    sSb->useStaticConfig();
+    sSb->endBatch(_textureShader, _fontTexture);
 }
 
 void GameRenderer::renderText(SpriteBatcher* sb, const char* inStr, float x, float y, int justification)

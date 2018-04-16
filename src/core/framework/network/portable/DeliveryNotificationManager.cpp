@@ -10,16 +10,19 @@
 
 #include <framework/network/portable/DeliveryNotificationManager.h>
 
+#include <framework/util/Timing.h>
 #include <framework/network/portable/OutputMemoryBitStream.h>
 #include <framework/network/portable/InputMemoryBitStream.h>
+
 #include <framework/util/StringUtil.h>
 #include <framework/util/Constants.h>
 
-DeliveryNotificationManager::DeliveryNotificationManager(bool inShouldSendAcks, bool inShouldprocessAcks) :
-_nextOutgoingSequenceNumber(0),
-_nextExpectedSequenceNumber(0),
+DeliveryNotificationManager::DeliveryNotificationManager(Timing* timing, bool inShouldSendAcks, bool inShouldprocessAcks) :
+_timing(timing),
 _shouldSendAcks(inShouldSendAcks),
 _shouldProcessAcks(inShouldprocessAcks),
+_nextOutgoingSequenceNumber(0),
+_nextExpectedSequenceNumber(0),
 _deliveredPacketCount(0),
 _droppedPacketCount(0),
 _dispatchedPacketCount(0)
@@ -115,7 +118,7 @@ InFlightPacket* DeliveryNotificationManager::writeSequenceNumber(OutputMemoryBit
     
     if (_shouldProcessAcks)
     {
-        _inFlightPackets.push_back(InFlightPacket(sequenceNumber));
+        _inFlightPackets.push_back(InFlightPacket(sequenceNumber, _timing->getTime()));
         
         return &_inFlightPackets.back();
     }

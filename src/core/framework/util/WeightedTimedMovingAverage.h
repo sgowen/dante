@@ -9,18 +9,19 @@
 #ifndef __noctisgames__WeightedTimedMovingAverage__
 #define __noctisgames__WeightedTimedMovingAverage__
 
+class Timing;
+
 class WeightedTimedMovingAverage
 {
 public:
-    WeightedTimedMovingAverage(float inDuration = 5.f);
+    WeightedTimedMovingAverage(Timing* timing, float inDuration = 5.f);
     
     void updatePerSecond(float inValue);
-    
     void update(float inValue);
-    
     float getValue() const;
     
 private:
+    Timing* _timing;
     float _timeLastEntryMade;
     float _value;
     float _duration;

@@ -23,6 +23,7 @@ class MachineAddress;
 class ClientProxy;
 class InputState;
 class Entity;
+class Timing;
 
 #define NG_SERVER (NetworkManagerServer::getInstance())
 
@@ -72,11 +73,11 @@ private:
     InputStateCreationFunc _inputStateCreationFunc;
     InputStateReleaseFunc _inputStateReleaseFunc;
     EntityManager* _entityManager;
+    Timing* _timing;
     NoctisGames::NGPool<ReplicationManagerTransmissionData> _replicationManagerTransmissionDatas;
     std::map<size_t, ClientProxy*> _addressHashToClientMap;
     std::map<int, ClientProxy*> _playerIDToClientMap;
     uint8_t _nextPlayerId;
-    uint32_t _entityID;
     uint32_t _map;
     
     void processPacket(InputMemoryBitStream& inInputStream, MachineAddress* inFromAddress);

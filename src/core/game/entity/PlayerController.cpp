@@ -108,7 +108,7 @@ void PlayerController::receiveMessage(uint16_t message, bool isLive, void* data)
             
             uint32_t* damageP = static_cast<uint32_t*>(data);
             uint32_t& damage = *damageP;
-            damage = clamp(damage, health, 0);
+            damage = clamp(damage, 0, health);
             health -= damage;
             if (health == 0)
             {
@@ -552,7 +552,7 @@ void PlayerController::handleJumpInput(uint8_t inputState)
         if (state == State_Jumping)
         {
             vertForce = _entity->getBody()->GetMass() * (GM_CFG->_maxRobotVelocityY - stateTime * 0.5f);
-            vertForce = clamp(vertForce, _entity->getBody()->GetMass() * GM_CFG->_maxRobotVelocityY, 0);
+            vertForce = clamp(vertForce, 0, _entity->getBody()->GetMass() * GM_CFG->_maxRobotVelocityY);
             _entity->getBody()->ApplyLinearImpulse(b2Vec2(0, vertForce), _entity->getBody()->GetWorldCenter(), true);
         }
         

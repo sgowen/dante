@@ -29,7 +29,7 @@ enum GameInputManagerState
 class GameInputManager
 {
 public:
-    static void create();
+    static void create(GameEngine* engine);
     static GameInputManager* getInstance();
     static void destroy();
     
@@ -38,7 +38,6 @@ public:
     static void sOnPlayerWelcomed(uint8_t playerId);
     static void sHandleInputStateRelease(InputState* inputState);
     
-    void setEngine(GameEngine* inValue);
     void update();
     const Move* getPendingMove();
     void clearPendingMove();
@@ -63,7 +62,7 @@ private:
     void dropPlayer(int index);
     
     // ctor, copy ctor, and assignment should be private in a Singleton
-    GameInputManager();
+    GameInputManager(GameEngine* engine);
     ~GameInputManager();
     GameInputManager(const GameInputManager&);
     GameInputManager& operator=(const GameInputManager&);

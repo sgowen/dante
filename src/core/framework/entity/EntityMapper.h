@@ -15,7 +15,7 @@
 
 class Entity;
 struct EntityDef;
-struct EntityPosDef;
+struct EntityInstanceDef;
 class EntityController;
 
 typedef EntityController* (*EntityControllerCreationFunc)(Entity* inEntity);
@@ -29,8 +29,8 @@ public:
     
     void initWithJsonFile(const char* fileName, bool isBundled = true, bool useEncryption = false);
     void initWithJson(const char* json);
-    Entity* createEntity(EntityPosDef* inEntityPosDef, bool isServer);
-    Entity* createEntityFromDef(EntityDef* inEntityDef, EntityPosDef* inEntityPosDef, bool isServer);
+    Entity* createEntity(EntityInstanceDef* inEntityInstanceDef, bool isServer);
+    Entity* createEntityFromDef(EntityDef* inEntityDef, EntityInstanceDef* inEntityInstanceDef, bool isServer);
     EntityDef* getEntityDef(uint32_t inFourCCName);
     void registerFunction(std::string name, EntityControllerCreationFunc inCreationFunction);
     EntityController* createEntityController(std::string name, Entity* inEntity);

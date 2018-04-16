@@ -64,9 +64,8 @@ void ReplicationManagerClient::readAndDoCreateAction(InputMemoryBitStream& inInp
     if (!entity)
     {
         //create the object and map it...
-        EntityPosDef epd(fourCCName);
-        entity = EntityMapper::getInstance()->createEntity(&epd, false);
-        entity->setID(inNetworkId);
+        EntityInstanceDef eid(inNetworkId, fourCCName);
+        entity = EntityMapper::getInstance()->createEntity(&eid, false);
         
         _entityManager->registerEntity(entity);
         

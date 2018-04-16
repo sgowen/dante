@@ -10,14 +10,19 @@
 
 #include <framework/network/portable/PacketHandler.h>
 
+#include <framework/util/Timing.h>
 #include <framework/util/WeightedTimedMovingAverage.h>
+#include <framework/network/portable/InputMemoryBitStream.h>
+#include <framework/network/portable/OutputMemoryBitStream.h>
+#include <framework/network/portable/MachineAddress.h>
 
-PacketHandler::PacketHandler(bool isServer, ProcessPacketFunc processPacketFunc, HandleNoResponseFunc handleNoResponseFunc, HandleConnectionResetFunc handleConnectionResetFunc) :
+PacketHandler::PacketHandler(Timing* timing, bool isServer, ProcessPacketFunc processPacketFunc, HandleNoResponseFunc handleNoResponseFunc, HandleConnectionResetFunc handleConnectionResetFunc) :
+_timing(timing),
 _processPacketFunc(processPacketFunc),
 _handleNoResponseFunc(handleNoResponseFunc),
 _handleConnectionResetFunc(handleConnectionResetFunc),
-_bytesReceivedPerSecond(new WeightedTimedMovingAverage(1.f)),
-_bytesSentPerSecond(new WeightedTimedMovingAverage(1.f)),
+_bytesReceivedPerSecond(new WeightedTimedMovingAverage(timing, 1.f)),
+_bytesSentPerSecond(new WeightedTimedMovingAverage(timing, 1.f)),
 _bytesSentThisFrame(0),
 _isServer(isServer)
 {

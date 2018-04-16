@@ -102,7 +102,7 @@ void OpenSLESManager::playSound(OpenSLESSound* sound)
         
         // Sets Volume
         float x = sound->_volume;
-        x = clamp(x, 1.0f, 0.0f);
+        x = clamp(x, 0.0f, 1.0f);
         
         int dBVolume = (int) (20 * log2(x) / log2(10));
         SLmillibel volume = (SLmillibel) (dBVolume * 100); //1dB = 100mB
@@ -166,7 +166,7 @@ void OpenSLESManager::setVolume(OpenSLESSound* sound)
     {
         // Sets Volume
         float x = sound->_volume;
-        x = clamp(x, 1.0f, 0.0f);
+        x = clamp(x, 0.0f, 1.0f);
         
         int dBVolume = (int) (20 * log2(x) / log2(10));
         SLmillibel volume = (SLmillibel) (dBVolume * 100); //1dB = 100mB

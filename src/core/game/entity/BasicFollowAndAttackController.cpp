@@ -111,7 +111,7 @@ void BasicFollowAndAttackController::receiveMessage(uint16_t message, bool isLiv
             
             uint32_t* damageP = static_cast<uint32_t*>(data);
             uint32_t& damage = *damageP;
-            damage = clamp(damage, health, 0);
+            damage = clamp(damage, 0, health);
             health -= damage;
             if (health == 0 && state != State_Dying)
             {

@@ -18,9 +18,10 @@
 #include <framework/network/portable/OutputMemoryBitStream.h>
 #include <framework/util/Constants.h>
 #include <framework/util/StringUtil.h>
+#include <framework/util/InstanceManager.h>
 
 SocketClientHelper::SocketClientHelper(std::string inServerIPAddress, std::string inName, uint16_t inPort, ProcessPacketFunc processPacketFunc, HandleNoResponseFunc handleNoResponseFunc, HandleConnectionResetFunc handleConnectionResetFunc) :
-ClientHelper(new SocketPacketHandler(false, inPort, processPacketFunc, handleNoResponseFunc, handleConnectionResetFunc)),
+ClientHelper(new SocketPacketHandler(static_cast<Timing*>(INSTANCE_MANAGER->getInstance(INSTANCE_TIME_CLIENT)), false, inPort, processPacketFunc, handleNoResponseFunc, handleConnectionResetFunc)),
 _serverAddress(SocketAddressFactory::createIPv4FromString(inServerIPAddress)),
 _name(inName)
 {

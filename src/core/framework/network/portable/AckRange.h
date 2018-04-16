@@ -18,18 +18,12 @@ class AckRange
 {
 public:
     AckRange();
-    
     AckRange(uint16_t inStart);
     
     void write(OutputMemoryBitStream& inOutputStream) const;
-    
     void read(InputMemoryBitStream& inInputStream);
-    
-    //if this is the next in sequence, just extend the range
     bool extendIfShould(uint16_t inSequenceNumber);
-    
     uint16_t getStart() const;
-    
     uint32_t getCount() const;
     
 private:

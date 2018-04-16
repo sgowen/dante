@@ -16,7 +16,7 @@
 #include <framework/graphics/portable/NGShaderVarInput.h>
 #include <framework/graphics/portable/ShaderProgramWrapper.h>
 #include <framework/graphics/portable/Color.h>
-#include <framework/util/macros.h>
+#include <framework/util/MathUtil.h>
 
 #include <assert.h>
 

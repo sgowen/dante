@@ -146,8 +146,8 @@ void EntityMapper::initWithJson(const char* json)
             }
         }
         entry->bodyFlags = iv.HasMember("bodyFlags") ? iv["bodyFlags"].GetInt() : 0;
-        entry->width = static_cast<float>(iv["width"].GetInt());
-        entry->height = static_cast<float>(iv["height"].GetInt());
+        entry->width = iv["width"].GetInt();
+        entry->height = iv["height"].GetInt();
         entry->stateSensitive = iv.HasMember("stateSensitive") ? iv["stateSensitive"].GetBool() : false;
         
         _entityDescriptorsMap[key] = entry;
@@ -155,20 +155,23 @@ void EntityMapper::initWithJson(const char* json)
     }
 }
 
-Entity* EntityMapper::createEntity(EntityPosDef* inEntityPosDef, bool isServer)
+Entity* EntityMapper::createEntity(EntityInstanceDef* eid, bool isServer)
 {
-    return createEntityFromDef(getEntityDef(inEntityPosDef->type), inEntityPosDef, isServer);
+    return createEntityFromDef(getEntityDef(eid->type), eid, isServer);
 }
 
-Entity* EntityMapper::createEntityFromDef(EntityDef* inEntityDef, EntityPosDef* inEntityPosDef, bool isServer)
+Entity* EntityMapper::createEntityFromDef(EntityDef* inEntityDef, EntityInstanceDef* eid, bool isServer)
 {
-    EntityDef entityDef = *inEntityDef;
-    EntityPosDef& epd = *inEntityPosDef;
+    EntityDef ed = *inEntityDef;
     
-    entityDef.width = epd.w > 0 ? epd.w : inEntityDef->width;
-    entityDef.height = epd.h > 0 ? epd.h : inEntityDef->height;
+    ed.ID = eid->ID;
+    ed.x = eid->x;
+    ed.y = eid->y;
+    ed.width = eid->w > 0 ? eid->w : inEntityDef->width;
+    ed.height = eid->h > 0 ? eid->h : inEntityDef->height;
+    ed.server = isServer;
     
-    return new Entity(entityDef, epd.x, epd.y, isServer);
+    return new Entity(ed);
 }
 
 EntityDef* EntityMapper::getEntityDef(uint32_t inFourCCName)

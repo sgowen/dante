@@ -43,6 +43,7 @@
 #include <game/logic/GameConfig.h>
 #include <game/logic/Util.h>
 #include <game/entity/PlayerController.h>
+#include <framework/util/InstanceManager.h>
 
 #ifdef NG_STEAM
 #include <framework/network/steam/NGSteamClientHelper.h>
@@ -141,18 +142,17 @@ void GameEngine::enter(Engine* engine)
     
     _map = 0;
     _stateTime = 0;
-    
-    GameInputManager::create();
-    GameInputManager::getInstance()->setEngine(this);
-    
     _world = new World();
+    _timing = static_cast<Timing*>(INSTANCE_MANAGER->getInstance(INSTANCE_TIME_CLIENT));
+    
+    GameInputManager::create(this);
 }
 
 void GameEngine::update(Engine* engine)
 {
     _stateTime += FRAME_RATE;
     
-    NG_TIME->setTime(_stateTime);
+    _timing->setTime(_stateTime);
     
     NG_CLIENT->processIncomingPackets();
     if (NG_CLIENT->getState() == NCS_Disconnected)
@@ -215,7 +215,7 @@ void GameEngine::exit(Engine* engine)
         Server::destroy();
     }
     
-    NG_TIME->setTime(0);
+    _timing->setTime(0);
 }
 
 void GameEngine::createDeviceDependentResources()

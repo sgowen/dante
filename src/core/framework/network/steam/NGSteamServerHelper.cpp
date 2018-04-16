@@ -19,6 +19,7 @@
 #include <framework/util/Constants.h>
 #include <framework/network/portable/OutputMemoryBitStream.h>
 #include <framework/util/Timing.h>
+#include <framework/util/InstanceManager.h>
 
 #include <assert.h>
 
@@ -28,7 +29,7 @@
 // UDP port for the master server updater to listen on
 #define STEAM_MASTER_SERVER_UPDATER_PORT 27016
 
-NGSteamServerHelper::NGSteamServerHelper(std::string inGameDir, std::string inVersionString, std::string inProductName, std::string inGameDescription, uint16 inPort, ProcessPacketFunc inProcessPacketFunc, HandleNoResponseFunc inHandleNoResponseFunc, HandleConnectionResetFunc inHandleConnectionResetFunc, GetClientProxyFunc inGetClientProxyFunc, HandleClientDisconnectedFunc inHandleClientDisconnectedFunc) : ServerHelper(new NGSteamPacketHandler(true, inProcessPacketFunc, inHandleNoResponseFunc, inHandleConnectionResetFunc), inGetClientProxyFunc, inHandleClientDisconnectedFunc),
+NGSteamServerHelper::NGSteamServerHelper(std::string inGameDir, std::string inVersionString, std::string inProductName, std::string inGameDescription, uint16 inPort, ProcessPacketFunc inProcessPacketFunc, HandleNoResponseFunc inHandleNoResponseFunc, HandleConnectionResetFunc inHandleConnectionResetFunc, GetClientProxyFunc inGetClientProxyFunc, HandleClientDisconnectedFunc inHandleClientDisconnectedFunc) : ServerHelper(new NGSteamPacketHandler(static_cast<Timing*>(INSTANCE_MANAGER->getInstance(INSTANCE_TIME_SERVER)), true, inProcessPacketFunc, inHandleNoResponseFunc, inHandleConnectionResetFunc), inGetClientProxyFunc, inHandleClientDisconnectedFunc),
 _gameDir(inGameDir),
 _serverSteamAddress(new NGSteamAddress()),
 _isConnectedToSteam(false),

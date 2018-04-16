@@ -21,8 +21,9 @@
 #include <framework/network/steam/NGSteamGameServices.h>
 #include <framework/network/server/NetworkManagerServer.h>
 #include <framework/network/steam/NGSteamServerHelper.h>
+#include <framework/util/InstanceManager.h>
 
-NGSteamClientHelper::NGSteamClientHelper(CSteamID inServerSteamID, GetPlayerAddressHashFunc inGetPlayerAddressHashFunc, ProcessPacketFunc inProcessPacketFunc, HandleNoResponseFunc inHandleNoResponseFunc, HandleConnectionResetFunc inHandleConnectionResetFunc) : ClientHelper(new NGSteamPacketHandler(false, inProcessPacketFunc, inHandleNoResponseFunc, inHandleConnectionResetFunc)),
+NGSteamClientHelper::NGSteamClientHelper(CSteamID inServerSteamID, GetPlayerAddressHashFunc inGetPlayerAddressHashFunc, ProcessPacketFunc inProcessPacketFunc, HandleNoResponseFunc inHandleNoResponseFunc, HandleConnectionResetFunc inHandleConnectionResetFunc) : ClientHelper(new NGSteamPacketHandler(static_cast<Timing*>(INSTANCE_MANAGER->getInstance(INSTANCE_TIME_CLIENT)), false, inProcessPacketFunc, inHandleNoResponseFunc, inHandleConnectionResetFunc)),
 _steamP2PAuth(new NGSteamP2PAuth(this)),
 _getPlayerAddressHashFunc(inGetPlayerAddressHashFunc),
 _eConnectedStatus(k_EClientNotConnected),
@@ -220,7 +221,8 @@ void NGSteamClientHelper::handleUninitialized()
             break;
         case k_EClientConnectedPendingAuthentication:
         {
-            float time = NG_TIME->getTime();
+            Timing* timing = static_cast<Timing*>(INSTANCE_MANAGER->getInstance(INSTANCE_TIME_CLIENT));
+            float time = timing->getTime();
 
             if (time > _timeOfLastMsgClientBeginAuthentication + 7.0f)
             {

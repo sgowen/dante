@@ -24,19 +24,16 @@ class MachineAddress;
 class SocketPacketHandler : public PacketHandler
 {
 public:
-    SocketPacketHandler(bool isServer, uint16_t inPort, ProcessPacketFunc processPacketFunc, HandleNoResponseFunc handleNoResponseFunc, HandleConnectionResetFunc handleConnectionResetFunc);
-    
+    SocketPacketHandler(Timing* timing, bool isServer, uint16_t inPort, ProcessPacketFunc processPacketFunc, HandleNoResponseFunc handleNoResponseFunc, HandleConnectionResetFunc handleConnectionResetFunc);
     virtual ~SocketPacketHandler();
     
     virtual void sendPacket(const OutputMemoryBitStream& inOutputStream, MachineAddress* inFromAddress);
     
     SocketAddress* getSocketAddress();
-    
     bool isInitialized();
     
 protected:
     virtual void readIncomingPacketsIntoQueue();
-    
     virtual void processQueuedPackets();
     
 private:

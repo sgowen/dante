@@ -192,7 +192,7 @@ void NGAudioEngine::playSound(int soundId, float inVolume, bool isLooping)
     
     SoundWrapper* soundWrapper = findSound(soundId);
     Sound* sound = soundWrapper->getSoundInstance();
-    float volume = clamp(inVolume, 1, 0);
+    float volume = clamp(inVolume, 0, 1);
     
     _soundsToPlay.push_back(sound);
     _soundsVolumes.push_back(volume);
@@ -338,7 +338,7 @@ void NGAudioEngine::playMusic(bool isLooping, float inVolume)
     
     if (_music)
     {
-        _musicVolume = clamp(inVolume, 1, 0);
+        _musicVolume = clamp(inVolume, 0, 1);
         _isMusicLooping = isLooping;
         _musicStates.push_back(MusicState_Play);
     }
@@ -353,7 +353,7 @@ void NGAudioEngine::setMusicVolume(float inVolume)
     
     if (_music)
     {
-        _musicVolume = clamp(inVolume, 1, 0);
+        _musicVolume = clamp(inVolume, 0, 1);
         _musicStates.push_back(MusicState_SetVolume);
     }
 }

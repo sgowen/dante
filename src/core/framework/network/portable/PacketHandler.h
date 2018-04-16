@@ -9,13 +9,13 @@
 #ifndef __noctisgames__PacketHandler__
 #define __noctisgames__PacketHandler__
 
-#include <framework/network/portable/InputMemoryBitStream.h>
-
 #include <queue>
 #include <list>
 
-class OutputMemoryBitStream;
+class Timing;
 class WeightedTimedMovingAverage;
+class InputMemoryBitStream;
+class OutputMemoryBitStream;
 class MachineAddress;
 
 typedef void (*ProcessPacketFunc)(InputMemoryBitStream& inInputStream, MachineAddress* inFromAddress);
@@ -25,19 +25,17 @@ typedef void (*HandleConnectionResetFunc)(MachineAddress* inFromAddress);
 class PacketHandler
 {
 public:
-    PacketHandler(bool isServer, ProcessPacketFunc processPacketFunc, HandleNoResponseFunc handleNoResponseFunc, HandleConnectionResetFunc handleConnectionResetFunc);
-    
+    PacketHandler(Timing* timing, bool isServer, ProcessPacketFunc processPacketFunc, HandleNoResponseFunc handleNoResponseFunc, HandleConnectionResetFunc handleConnectionResetFunc);
     virtual ~PacketHandler();
     
     virtual void sendPacket(const OutputMemoryBitStream& inOutputStream, MachineAddress* inFromAddress) = 0;
     
     void processIncomingPackets();
-    
     const WeightedTimedMovingAverage& getBytesReceivedPerSecond() const;
-    
     const WeightedTimedMovingAverage& getBytesSentPerSecond() const;
     
 protected:
+    Timing* _timing;
     ProcessPacketFunc _processPacketFunc;
     HandleNoResponseFunc _handleNoResponseFunc;
     HandleConnectionResetFunc _handleConnectionResetFunc;
@@ -45,11 +43,9 @@ protected:
     bool _isServer;
     
     virtual void readIncomingPacketsIntoQueue() = 0;
-    
     virtual void processQueuedPackets() = 0;
     
     void updateBytesSentLastFrame();
-    
     void updateBytesReceivedLastFrame(int totalReadByteCount);
     
 private:

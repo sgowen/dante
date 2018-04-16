@@ -14,6 +14,7 @@
 #include <string>
 #include <vector>
 
+class EntityIDManager;
 class StudioEngine;
 class Entity;
 struct EntityDef;
@@ -42,6 +43,7 @@ private:
     static StudioInputManager* s_instance;
     static uint32_t s_testMap;
     
+    EntityIDManager* _entityIDManager;
     Vector2 _downCursor;
     Vector2 _dragCursor;
     Vector2 _deltaCursor;

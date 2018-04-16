@@ -41,7 +41,6 @@
 #include <framework/util/macros.h>
 #include <framework/network/client/NetworkManagerClient.h>
 #include <framework/util/StringUtil.h>
-#include <framework/util/WeightedTimedMovingAverage.h>
 #include <framework/util/NGSTDUtil.h>
 #include <game/title/TitleInputManager.h>
 #include <framework/network/server/NetworkManagerServer.h>
@@ -209,7 +208,7 @@ void StudioRenderer::render()
         {
             _rendererHelper->updateMatrix(_camBounds[3]->getLeft(), _camBounds[3]->getRight(), _camBounds[3]->getBottom(), _camBounds[3]->getTop());
             _rendererHelper->useNormalBlending();
-            _activeEntitySpriteBatcher->beginBatch(10);
+            _activeEntitySpriteBatcher->beginBatch(INDEX_LAST_TEXTURE_VERTEX_BUFFER);
             TextureRegion& tr = ASSETS->findTextureRegion(e->getTextureMapping(), e->getStateTime());
             _activeEntitySpriteBatcher->renderSprite(e->getPosition().x, e->getPosition().y, e->getWidth(), e->getHeight(), e->getAngle(), tr, e->isFacingLeft());
             _activeEntitySpriteBatcher->endBatch(_textureShader, _textureManager->getTextureWithName(tr.getTextureName()), NULL, Color::DOUBLE);
@@ -494,7 +493,7 @@ void StudioRenderer::renderWater(std::vector<Entity*>& entities)
         NGTexture* tex2 = _textureManager->getTextureWithName("texture_010.ngt");
         if (tex && _engineState & (1 << (layer + StudioEngineState_LayerBitBegin)))
         {
-            int c = clamp(layer, 3, 0);
+            int c = clamp(layer, 0, 3);
             if (!(_engineState & StudioEngineState_DisplayParallax))
             {
                 c = 3;
@@ -512,7 +511,7 @@ void StudioRenderer::endBatchWithTexture(SpriteBatcher* sb, NGTexture* tex, int 
 {
     if (tex && _engineState & (1 << (layer + StudioEngineState_LayerBitBegin)))
     {
-        int c = clamp(layer, 3, 0);
+        int c = clamp(layer, 0, 3);
         if (!(_engineState & StudioEngineState_DisplayParallax))
         {
             c = 3;
@@ -533,8 +532,8 @@ void StudioRenderer::renderBox2D()
 
 void StudioRenderer::renderGrid()
 {
-    float x = clamp(_camBounds[3]->getLeft(), FLT_MAX, 0);
-    float y = clamp(_camBounds[3]->getBottom(), FLT_MAX, 0);
+    float x = clamp(_camBounds[3]->getLeft(), 0, FLT_MAX);
+    float y = clamp(_camBounds[3]->getBottom(), 0, FLT_MAX);
     float px = fmodf(x, GM_CFG->_camWidth);
     float py = fmodf(y, GM_CFG->_camHeight);
     float bx = x - px;
@@ -680,7 +679,7 @@ void StudioRenderer::renderUI()
         
         std::fill(_textures, _textures + NUM_SPRITE_BATCHERS, "");
         
-        for (int i = clamp(selectionIndex - 2, numEntities - 1, 0); i < numEntities; ++i)
+        for (int i = clamp(selectionIndex - 2, 0, numEntities - 1); i < numEntities; ++i)
         {
             EntityDef* ed = entityDescriptors[i];
             
@@ -756,7 +755,7 @@ void StudioRenderer::renderUI()
         
         for (int i = 0; i < StudioEngineState_NumLayers; ++i)
         {
-            _fontSpriteBatcher->beginBatch(10);
+            _fontSpriteBatcher->beginBatch(INDEX_LAST_TEXTURE_VERTEX_BUFFER);
             renderText(StringUtil::format("%d", i).c_str(), 1 + (column++ * padding), textY, FONT_ALIGN_RIGHT);
             _fontSpriteBatcher->endBatch(_textureShader, _fontTexture, NULL, _engineState & (1 << (i + StudioEngineState_LayerBitBegin)) ? Color::WHITE : Color::BLACK);
         }

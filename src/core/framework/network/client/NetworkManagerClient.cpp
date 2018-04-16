@@ -20,11 +20,12 @@
 #include <framework/network/client/ReplicationManagerClient.h>
 #include <framework/util/WeightedTimedMovingAverage.h>
 #include <framework/network/portable/SocketAddress.h>
+#include <framework/util/Timing.h>
 
 #include <framework/util/StringUtil.h>
-#include <framework/util/Timing.h>
 #include <framework/network/portable/SocketAddressFactory.h>
 #include <framework/util/macros.h>
+#include <framework/util/InstanceManager.h>
 
 #include <assert.h>
 
@@ -194,7 +195,7 @@ EntityManager* NetworkManagerClient::getEntityManager()
 
 void NetworkManagerClient::processPacket(InputMemoryBitStream& inInputStream, MachineAddress* inFromAddress)
 {
-    _lastServerCommunicationTimestamp = NG_TIME->getTime();
+    _lastServerCommunicationTimestamp = _timing->getTime();
     
     uint8_t packetType;
     inInputStream.read(packetType);
@@ -224,7 +225,7 @@ void NetworkManagerClient::processPacket(InputMemoryBitStream& inInputStream, Ma
 
 void NetworkManagerClient::handleNoResponse()
 {
-    float time = NG_TIME->getTime();
+    float time = _timing->getTime();
     
     float timeout = _state == NCS_Uninitialized ? NW_CONNECT_TO_SERVER_TIMEOUT : NW_SERVER_TIMEOUT;
     if (time > _lastServerCommunicationTimestamp + timeout)
@@ -245,7 +246,7 @@ void NetworkManagerClient::sendPacket(const OutputMemoryBitStream& inOutputStrea
 
 void NetworkManagerClient::updateSayingHello()
 {
-    float time = NG_TIME->getTime();
+    float time = _timing->getTime();
     
     if (time > _timeOfLastHello + NW_CLIENT_TIME_BETWEEN_HELLOS)
     {
@@ -330,7 +331,7 @@ void NetworkManagerClient::readLastMoveProcessedOnServerTimestamp(InputMemoryBit
     {
         inInputStream.read(_lastMoveProcessedByServerTimestamp);
         
-        float rtt = NG_TIME->getTime() - _lastMoveProcessedByServerTimestamp;
+        float rtt = _timing->getTime() - _lastMoveProcessedByServerTimestamp;
         _avgRoundTripTime->update(rtt);
         
         inInputStream.read(_map);
@@ -407,7 +408,7 @@ void NetworkManagerClient::updateAddLocalPlayerRequest()
     {
         _isRequestingToDropLocalPlayer = 0;
         
-        float time = NG_TIME->getTime();
+        float time = _timing->getTime();
         
         if (time > _timeOfLastHello + NW_CLIENT_TIME_BETWEEN_HELLOS)
         {
@@ -454,18 +455,19 @@ void NetworkManagerClient::updateNextIndex()
 }
 
 NetworkManagerClient::NetworkManagerClient(ClientHelper* inClientHelper, HandleEntityCreatedFunc handleEntityCreatedFunc, HandleEntityDeletionFunc handleEntityDeletionFunc, RemoveProcessedMovesFunc inRemoveProcessedMovesFunc, GetMoveListFunc inGetMoveListFunc, OnPlayerWelcomedFunc inOnPlayerWelcomedFunc) :
+_timing(static_cast<Timing*>(INSTANCE_MANAGER->getInstance(INSTANCE_TIME_CLIENT))),
 _clientHelper(inClientHelper),
 _removeProcessedMovesFunc(inRemoveProcessedMovesFunc),
 _getMoveListFunc(inGetMoveListFunc),
 _onPlayerWelcomedFunc(inOnPlayerWelcomedFunc),
 _entityManager(new EntityManager(handleEntityCreatedFunc, handleEntityDeletionFunc)),
 _replicationManagerClient(new ReplicationManagerClient(_entityManager)),
-_avgRoundTripTime(new WeightedTimedMovingAverage(1.f)),
+_avgRoundTripTime(new WeightedTimedMovingAverage(_timing, 1.f)),
 _state(NCS_Uninitialized),
-_deliveryNotificationManager(new DeliveryNotificationManager(true, false)),
+_deliveryNotificationManager(new DeliveryNotificationManager(_timing, true, false)),
 _timeOfLastHello(0.0f),
 _lastMoveProcessedByServerTimestamp(0.0f),
-_lastServerCommunicationTimestamp(NG_TIME->getTime()),
+_lastServerCommunicationTimestamp(0),
 _isRequestingToAddLocalPlayer(false),
 _isRequestingToDropLocalPlayer(0),
 _nextIndex(0),

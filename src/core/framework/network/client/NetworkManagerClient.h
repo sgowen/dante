@@ -25,6 +25,7 @@ class MoveList;
 class ReplicationManagerClient;
 class WeightedTimedMovingAverage;
 class SocketAddress;
+class Timing;
 
 #define NG_CLIENT (NetworkManagerClient::getInstance())
 
@@ -72,6 +73,7 @@ public:
 private:
     static NetworkManagerClient* s_instance;
     
+    Timing* _timing;
     ClientHelper* _clientHelper;
     RemoveProcessedMovesFunc _removeProcessedMovesFunc;
     GetMoveListFunc _getMoveListFunc;

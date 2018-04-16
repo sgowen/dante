@@ -23,15 +23,13 @@ class MachineAddress;
 class NGSteamPacketHandler : public PacketHandler
 {
 public:
-    NGSteamPacketHandler(bool isServer, ProcessPacketFunc processPacketFunc, HandleNoResponseFunc handleNoResponseFunc, HandleConnectionResetFunc handleConnectionResetFunc);
-    
+    NGSteamPacketHandler(Timing* timing, bool isServer, ProcessPacketFunc processPacketFunc, HandleNoResponseFunc handleNoResponseFunc, HandleConnectionResetFunc handleConnectionResetFunc);
     virtual ~NGSteamPacketHandler();
     
     virtual void sendPacket(const OutputMemoryBitStream& inOutputStream, MachineAddress* inFromAddress);
 
 protected:
     virtual void readIncomingPacketsIntoQueue();
-    
     virtual void processQueuedPackets();
     
 private:

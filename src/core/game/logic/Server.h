@@ -24,6 +24,8 @@ enum ServerFlags
 class World;
 class ClientProxy;
 class Entity;
+class Timing;
+class EntityIDManager;
 
 class Server
 {
@@ -50,6 +52,8 @@ private:
     
     uint32_t _flags;
     void* _data;
+    Timing* _timing;
+    EntityIDManager* _entityIDManager;
     World* _world;
     NoctisGames::NGPool<GameInputState> _inputStates;
     std::vector<uint8_t> _playerIds;

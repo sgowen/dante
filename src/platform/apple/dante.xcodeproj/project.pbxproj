@@ -271,6 +271,10 @@
 		BB5AFE771FB35AB6005FBD52 /* JsonFile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF0D91EA94ED900F0866E /* JsonFile.cpp */; };
 		BB5AFE7B1FB35ACA005FBD52 /* Entity.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF0BF1EA94ED900F0866E /* Entity.cpp */; };
 		BB5AFE7C1FB35ACA005FBD52 /* EntityManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBAEF0C11EA94ED900F0866E /* EntityManager.cpp */; };
+		BB5D5A3B206C4C5A00FB53FD /* EntityIDManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB5D5A39206C4C5A00FB53FD /* EntityIDManager.cpp */; };
+		BB5D5A3C206C4C5A00FB53FD /* EntityIDManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB5D5A39206C4C5A00FB53FD /* EntityIDManager.cpp */; };
+		BB5D5A3F206C4E5800FB53FD /* InstanceManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB5D5A3D206C4E5800FB53FD /* InstanceManager.cpp */; };
+		BB5D5A40206C4E5800FB53FD /* InstanceManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB5D5A3D206C4E5800FB53FD /* InstanceManager.cpp */; };
 		BB640BE4202A328700629758 /* FileUtil.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB640BE3202A328600629758 /* FileUtil.cpp */; };
 		BB640BE5202A328700629758 /* FileUtil.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB640BE3202A328600629758 /* FileUtil.cpp */; };
 		BB651AEE20630EE000F9B27B /* shader_005_frag.ngs in Resources */ = {isa = PBXBuildFile; fileRef = BB651AED20630EDF00F9B27B /* shader_005_frag.ngs */; };
@@ -953,6 +957,10 @@
 		BB5A0A931FB36309005FBD52 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS11.1.sdk/System/Library/Frameworks/MediaPlayer.framework; sourceTree = DEVELOPER_DIR; };
 		BB5A0AA71FB36DD1005FBD52 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = ../../../../../../../../../../../System/Library/Frameworks/GLKit.framework; sourceTree = "<group>"; };
 		BB5B332F1FDDBDE700B2D145 /* PlatformHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PlatformHelper.h; sourceTree = "<group>"; };
+		BB5D5A39206C4C5A00FB53FD /* EntityIDManager.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = EntityIDManager.cpp; sourceTree = "<group>"; };
+		BB5D5A3A206C4C5A00FB53FD /* EntityIDManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EntityIDManager.h; sourceTree = "<group>"; };
+		BB5D5A3D206C4E5800FB53FD /* InstanceManager.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = InstanceManager.cpp; sourceTree = "<group>"; };
+		BB5D5A3E206C4E5800FB53FD /* InstanceManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InstanceManager.h; sourceTree = "<group>"; };
 		BB5F46FA1ED38D61005FEC0C /* SocketAddressFamily.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SocketAddressFamily.h; sourceTree = "<group>"; };
 		BB61CB581EC9FA1B000E0291 /* Constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		BB640BE2202A328600629758 /* FileUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileUtil.h; sourceTree = "<group>"; };
@@ -2509,6 +2517,8 @@
 				BBCDF24D1F3796C3006E94B0 /* FPSUtil.cpp */,
 				BBCDF24E1F3796C3006E94B0 /* FPSUtil.h */,
 				BBB1D3AB1FC8CA4D00B74BAC /* HashMap.h */,
+				BB5D5A3D206C4E5800FB53FD /* InstanceManager.cpp */,
+				BB5D5A3E206C4E5800FB53FD /* InstanceManager.h */,
 				BB74283A1EB2AF4200B7628D /* macros.h */,
 				BBE916BC2028E48C009DF8DA /* MathUtil.h */,
 				BBB1D3AD1FC8CB9700B74BAC /* NGExtension.cpp */,
@@ -2652,6 +2662,8 @@
 				BBAEF0C01EA94ED900F0866E /* Entity.h */,
 				BBEF6FFD200028220030076A /* EntityController.cpp */,
 				BBEF6FFE200028220030076A /* EntityController.h */,
+				BB5D5A39206C4C5A00FB53FD /* EntityIDManager.cpp */,
+				BB5D5A3A206C4C5A00FB53FD /* EntityIDManager.h */,
 				BB16190F20096FD200AF0117 /* EntityLayoutMapper.cpp */,
 				BB16191020096FD300AF0117 /* EntityLayoutMapper.h */,
 				BBAEF0C11EA94ED900F0866E /* EntityManager.cpp */,
@@ -4108,6 +4120,7 @@
 				BB31B5B11FC205D5005F1C0A /* KeyboardInputManager.cpp in Sources */,
 				BBB1D3AE1FC8CB9800B74BAC /* NGExtension.cpp in Sources */,
 				BB6531641FED56CA00963997 /* Server.cpp in Sources */,
+				BB5D5A3F206C4E5800FB53FD /* InstanceManager.cpp in Sources */,
 				BB31B5AD1FC205D5005F1C0A /* CursorConverter.cpp in Sources */,
 				BB8308801EC2AD1F00435E7E /* UDPSocket.cpp in Sources */,
 				BBD554641FDB2EA800E00AD6 /* b2CollideEdge.cpp in Sources */,
@@ -4153,6 +4166,7 @@
 				BB31E572202E7B8400A3AD1C /* TitleEngine.cpp in Sources */,
 				BB1C3C101FE77301002E4AA6 /* NGGeometryShader.cpp in Sources */,
 				BB44CB851DB053C0003E633F /* pngpread.c in Sources */,
+				BB5D5A3B206C4C5A00FB53FD /* EntityIDManager.cpp in Sources */,
 				BBCDF24F1F3796C3006E94B0 /* FPSUtil.cpp in Sources */,
 				BBD554581FDB2EA800E00AD6 /* b2ChainShape.cpp in Sources */,
 				BB44CB861DB053C0003E633F /* pngread.c in Sources */,
@@ -4254,6 +4268,7 @@
 				BB27D2521FC6567F00ED42FD /* ALSoundSourcePool.m in Sources */,
 				BB27D2531FC6567F00ED42FD /* OALSimpleAudio.m in Sources */,
 				BB31E57B202E7B8400A3AD1C /* GameRenderer.cpp in Sources */,
+				BB5D5A40206C4E5800FB53FD /* InstanceManager.cpp in Sources */,
 				BB27D2541FC6567F00ED42FD /* OALAudioFile.m in Sources */,
 				BBD554151FDB2EA800E00AD6 /* b2EdgeAndPolygonContact.cpp in Sources */,
 				BB27D2551FC6567F00ED42FD /* NSMutableDictionary+WeakReferences.m in Sources */,
@@ -4399,6 +4414,7 @@
 				BB16191220096FD300AF0117 /* EntityLayoutMapper.cpp in Sources */,
 				BB8091FE1FF4131600F84D1D /* TextureManager.cpp in Sources */,
 				BBFE83091FFEBFF900E5F650 /* MainEngineController.cpp in Sources */,
+				BB5D5A3C206C4C5A00FB53FD /* EntityIDManager.cpp in Sources */,
 				BB5AFE111FB359DE005FBD52 /* Util.cpp in Sources */,
 				BB31E56B202E7B8400A3AD1C /* StudioRenderer.cpp in Sources */,
 				BBD5543D1FDB2EA800E00AD6 /* b2RopeJoint.cpp in Sources */,

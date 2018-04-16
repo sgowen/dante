@@ -13,20 +13,21 @@
 #include <vector>
 #include <string>
 
-struct EntityPosDef
+struct EntityInstanceDef
 {
+    uint32_t ID;
     uint32_t type;
-    int x;
-    int y;
-    int w;
-    int h;
+    uint32_t x;
+    uint32_t y;
+    uint32_t w;
+    uint32_t h;
     
-    EntityPosDef(uint32_t inType = 0, int inX = 0, int inY = 0, int inW = 0, int inH = 0) : type(inType), x(inX), y(inY), w(inW), h(inH) {}
+    EntityInstanceDef(uint32_t inID, uint32_t inType, uint32_t inX = 0, uint32_t inY = 0, uint32_t inW = 0, uint32_t inH = 0) : ID(inID), type(inType), x(inX), y(inY), w(inW), h(inH) {}
 };
 
 struct EntityLayoutDef
 {
-    std::vector<EntityPosDef> entities;
+    std::vector<EntityInstanceDef> entities;
 };
 
 struct MapDef
