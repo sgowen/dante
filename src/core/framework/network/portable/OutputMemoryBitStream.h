@@ -1,13 +1,13 @@
 //
 //  OutputMemoryBitStream.h
-//  noctisgames-framework
+//  noctisgames
 //
 //  Created by Stephen Gowen on 5/15/17.
 //  Copyright (c) 2017 Noctis Games. All rights reserved.
 //
 
-#ifndef __noctisgames__OutputMemoryBitStrea__
-#define __noctisgames__OutputMemoryBitStrea__
+#ifndef __noctisgames__OutputMemoryBitStream__
+#define __noctisgames__OutputMemoryBitStream__
 
 #include <framework/network/portable/Network.h>
 
@@ -15,24 +15,20 @@
 #include <cstdlib>
 #include <string>
 
-struct b2Vec2;
-
 class OutputMemoryBitStream
 {
 public:
     OutputMemoryBitStream();
     ~OutputMemoryBitStream();
     
-    void writeBits(uint8_t inData, uint32_t inBitCount);
-    void writeBits(const void* inData, uint32_t inBitCount);
-    
-    const char*	getBufferPtr() const;
+    const char* getBufferPtr() const;
     uint32_t getBitLength() const;
     uint32_t getByteLength() const;
     
+    void writeBits(uint8_t inData, uint32_t inBitCount);
+    void writeBits(const void* inData, uint32_t inBitCount);
     void writeBytes(const void* inData, uint32_t inByteCount);
     void write(bool inData);
-    void write(const b2Vec2& inVector);
     void writeLarge(const std::string& inString);
     void writeSmall(const std::string& inString);
     void writeSignedBinaryValue(float inValue);
@@ -77,4 +73,4 @@ private:
     uint32_t _bitCapacity;
 };
 
-#endif /* defined(__noctisgames__OutputMemoryBitStrea__) */
+#endif /* defined(__noctisgames__OutputMemoryBitStream__) */
