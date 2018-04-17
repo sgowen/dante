@@ -33,6 +33,7 @@
 #include <game/logic/Server.h>
 #include <framework/network/client/NetworkManagerClient.h>
 #include <framework/util/macros.h>
+#include <framework/util/Config.h>
 
 #include <sstream>
 
@@ -269,8 +270,7 @@ void GameInputManager::update()
         }
     }
     
-    if (PlatformHelper::getPlatform() == NG_PLATFORM_ANDROID
-        || PlatformHelper::getPlatform() == NG_PLATFORM_IOS)
+    if (PlatformHelper::isMobile())
     {
         for (std::vector<CursorEvent *>::iterator i = CURSOR_INPUT_MANAGER->getEvents().begin(); i != CURSOR_INPUT_MANAGER->getEvents().end(); ++i)
         {
@@ -279,8 +279,8 @@ void GameInputManager::update()
                 || e.getType() == CursorEventType_DRAGGED)
             {
                 Vector2& vec = CURSOR_CONVERTER->convert(*(*i));
-                SET_BIT(_currentState->getPlayerInputState(0)._inputState, GameInputStateFlag_MovingLeft, vec.getX() < (GM_CFG->_camWidth / 2));
-                SET_BIT(_currentState->getPlayerInputState(0)._inputState, GameInputStateFlag_MovingRight, vec.getX() > (GM_CFG->_camWidth / 2));
+                SET_BIT(_currentState->getPlayerInputState(0)._inputState, GameInputStateFlag_MovingLeft, vec.getX() < (FW_CFG->_camWidth / 2));
+                SET_BIT(_currentState->getPlayerInputState(0)._inputState, GameInputStateFlag_MovingRight, vec.getX() > (FW_CFG->_camWidth / 2));
                 
                 if (e.getType() == CursorEventType_DOWN)
                 {

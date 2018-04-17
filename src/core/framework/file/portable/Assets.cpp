@@ -97,9 +97,9 @@ void Assets::initWithJson(const char* json)
             bool repeatS = iv.HasMember("repeatS") ? iv["repeatS"].GetBool() : false;
             bool isEncrypted = iv.HasMember("isEncrypted") ? iv["isEncrypted"].GetBool() : true;
             bool hasNormal = iv.HasMember("hasNormal") ? iv["hasNormal"].GetBool() : true;
-            std::string textureFilterMin = iv.HasMember("textureFilterMin") ? iv["textureFilterMin"].GetString() : FW_CFG->getString("DefaultTextureFilterMin");
-            std::string textureFilterMag = iv.HasMember("textureFilterMag") ? iv["textureFilterMag"].GetString() : FW_CFG->getString("DefaultTextureFilterMag");
-            bool textureFilterMipMap = iv.HasMember("textureFilterMipMap") ? iv["textureFilterMipMap"].GetBool() : FW_CFG->getBool("DefaultTextureFilterMipMap");
+            std::string textureFilterMin = iv.HasMember("textureFilterMin") ? iv["textureFilterMin"].GetString() : FW_CFG->_defaultTextureFilterMin;
+            std::string textureFilterMag = iv.HasMember("textureFilterMag") ? iv["textureFilterMag"].GetString() : FW_CFG->_defaultTextureFilterMag;
+            bool textureFilterMipMap = iv.HasMember("textureFilterMipMap") ? iv["textureFilterMipMap"].GetBool() : FW_CFG->_defaultTextureFilterMipMap;
             
             _textures.push_back(new NGTextureDesc(textureName, layer, repeatS, isEncrypted, hasNormal, textureFilterMin, textureFilterMag, textureFilterMipMap));
             

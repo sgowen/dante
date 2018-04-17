@@ -22,32 +22,6 @@ void GameConfig::initWithJsonFile(const char* fileName, bool isBundled, bool use
 {
     FW_CFG->initWithJsonFile(fileName, isBundled, useEncryption);
     
-    _versionMajor = FW_CFG->getInt("VersionMajor");
-    _versionMinor = FW_CFG->getInt("VersionMinor");
-    _versionBuild = FW_CFG->getInt("VersionBuild");
-    _versionRevision = FW_CFG->getInt("VersionRevision");
-    _versionName = FW_CFG->getString("VersionName");
-    _serverPort = FW_CFG->getInt("ServerPort");
-    _clientPort = FW_CFG->getInt("ClientPort");
-    _steamGameDir = FW_CFG->getString("SteamGameDir");
-    _steamProductName = FW_CFG->getString("SteamProductName");
-    _steamProductDescription = FW_CFG->getString("SteamProductDescription");
-    _framebufferWidth = FW_CFG->getInt("FramebufferWidth");
-    _framebufferHeight = FW_CFG->getInt("FramebufferHeight");
-    _camWidth = FW_CFG->getInt("CamWidth");
-    _camHeight = FW_CFG->getInt("CamHeight");
-    _framebufferFilterMin = FW_CFG->getString("FramebufferFilterMin");
-    _framebufferFilterMag = FW_CFG->getString("FramebufferFilterMag");
-    _defaultTextureFilterMin = FW_CFG->getString("DefaultTextureFilterMin");
-    _defaultTextureFilterMag = FW_CFG->getString("DefaultTextureFilterMag");
-    _defaultTextureFilterMipMap = FW_CFG->getBool("DefaultTextureFilterMipMap");
-    _parallaxLayer0FactorX = FW_CFG->getDouble("ParallaxLayer0FactorX");
-    _parallaxLayer0FactorY = FW_CFG->getDouble("ParallaxLayer0FactorY");
-    _parallaxLayer1FactorX = FW_CFG->getDouble("ParallaxLayer1FactorX");
-    _parallaxLayer1FactorY = FW_CFG->getDouble("ParallaxLayer1FactorY");
-    _parallaxLayer2FactorX = FW_CFG->getDouble("ParallaxLayer2FactorX");
-    _parallaxLayer2FactorY = FW_CFG->getDouble("ParallaxLayer2FactorY");
-    _gravity = FW_CFG->getFloat("Gravity");
     _maxCrawlerVelocityX = FW_CFG->getFloat("MaxCrawlerVelocityX");
     _robotLightPositionFactorY = FW_CFG->getFloat("RobotLightPositionFactorY");
     _maxRobotVelocityX = FW_CFG->getFloat("MaxRobotVelocityX");

@@ -115,7 +115,7 @@ _textDisplayState(0)
     
     for (int i = 0; i < NUM_CAMERAS; ++i)
     {
-        _camBounds[i] = new NGRect(0, 0, GM_CFG->_camWidth, GM_CFG->_camHeight);
+        _camBounds[i] = new NGRect(0, 0, FW_CFG->_camWidth, FW_CFG->_camHeight);
     }
 }
 
@@ -155,8 +155,8 @@ void GameRenderer::createDeviceDependentResources()
     
     for (int i = 0; i < NUM_CAMERAS; ++i)
     {
-        _camBounds[i]->setWidth(GM_CFG->_camWidth);
-        _camBounds[i]->setHeight(GM_CFG->_camHeight);
+        _camBounds[i]->setWidth(FW_CFG->_camWidth);
+        _camBounds[i]->setHeight(FW_CFG->_camHeight);
     }
     
     _textureShader->load(*_shaderProgramLoader);
@@ -251,8 +251,8 @@ void GameRenderer::updateCamera()
             x = pX;
             y = pY;
             
-            x -= GM_CFG->_camWidth * 0.5f;
-            y -= GM_CFG->_camHeight * 0.5f;
+            x -= FW_CFG->_camWidth * 0.5f;
+            y -= FW_CFG->_camHeight * 0.5f;
             
             x = clamp(x, 0, FLT_MAX);
             y = clamp(y, 0, FLT_MAX);
@@ -266,9 +266,9 @@ void GameRenderer::updateCamera()
     _lights.push_back(LightDef(GM_CFG->_tempStaticLight2[0], GM_CFG->_tempStaticLight2[1], GM_CFG->_tempStaticLight2[2], GM_CFG->_tempStaticLight2[3], GM_CFG->_tempStaticLight2[4], GM_CFG->_tempStaticLight2[5]));
     
     _camBounds[3]->getLowerLeft().set(x, y);
-    _camBounds[2]->getLowerLeft().set(x * GM_CFG->_parallaxLayer2FactorX, y * GM_CFG->_parallaxLayer2FactorY);
-    _camBounds[1]->getLowerLeft().set(x * GM_CFG->_parallaxLayer1FactorX, y * GM_CFG->_parallaxLayer1FactorY);
-    _camBounds[0]->getLowerLeft().set(x * GM_CFG->_parallaxLayer0FactorX, y * GM_CFG->_parallaxLayer0FactorY);
+    _camBounds[2]->getLowerLeft().set(x * FW_CFG->_parallaxLayer2FactorX, y * FW_CFG->_parallaxLayer2FactorY);
+    _camBounds[1]->getLowerLeft().set(x * FW_CFG->_parallaxLayer1FactorX, y * FW_CFG->_parallaxLayer1FactorY);
+    _camBounds[0]->getLowerLeft().set(x * FW_CFG->_parallaxLayer0FactorX, y * FW_CFG->_parallaxLayer0FactorY);
 }
 
 void GameRenderer::bindOffscreenFramebuffer(int fbIndex, float r, float g, float b, float a)
@@ -308,7 +308,7 @@ void GameRenderer::renderWorld()
         endBatchWithTexture(_spriteBatchers[i], _textureManager->getTextureWithName(_textures[i]), i);
     }
     
-    _rendererHelper->useScreenBlending();
+    _rendererHelper->useNormalBlending();
     bindOffscreenFramebuffer(1);
     endBatchWithTexture(_spriteBatchers[5], _textureManager->getTextureWithName(_textures[5]), 5);
     
@@ -369,7 +369,7 @@ void GameRenderer::renderLighting()
         endBatchWithTexture(_spriteBatchers[i], _textureManager->getTextureWithName(_normals[i]), i);
     }
     
-    _rendererHelper->useScreenBlending();
+    _rendererHelper->useNormalBlending();
     bindOffscreenFramebuffer(4);
     endBatchWithTexture(_spriteBatchers[5], _textureManager->getTextureWithName(_normals[5]), 5);
     
@@ -473,12 +473,12 @@ void GameRenderer::renderBox2D()
 
 void GameRenderer::renderUI()
 {
-    _rendererHelper->updateMatrix(0, GM_CFG->_camWidth, 0, GM_CFG->_camHeight);
+    _rendererHelper->updateMatrix(0, FW_CFG->_camWidth, 0, FW_CFG->_camHeight);
     
     int jl = FONT_ALIGN_LEFT;
     int jr = FONT_ALIGN_RIGHT;
-    float fontX = GM_CFG->_camWidth - 0.5f;
-    float camHeight = GM_CFG->_camHeight;
+    float fontX = FW_CFG->_camWidth - 0.5f;
+    float camHeight = FW_CFG->_camHeight;
     SpriteBatcher* dSb = _dynamicFontSpriteBatcher;
     SpriteBatcher* sSb = _staticFontSpriteBatcher;
     
@@ -568,7 +568,7 @@ void GameRenderer::renderUI()
 
 void GameRenderer::renderText(SpriteBatcher* sb, const char* inStr, float x, float y, int justification)
 {
-    float fgWidth = GM_CFG->_camWidth / 64;
+    float fgWidth = FW_CFG->_camWidth / 64;
     float fgHeight = fgWidth * 1.171875f;
     
     std::string text(inStr);

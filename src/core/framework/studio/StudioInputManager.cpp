@@ -1,6 +1,6 @@
 //
 //  StudioInputManager.cpp
-//  dante
+//  noctisgames
 //
 //  Created by Stephen Gowen on 1/4/18.
 //  Copyright (c) 2017 Noctis Games. All rights reserved.
@@ -8,10 +8,10 @@
 
 #include "pch.h"
 
-#include <game/studio/StudioInputManager.h>
+#include <framework/studio/StudioInputManager.h>
 
 #include <framework/entity/EntityIDManager.h>
-#include <game/studio/StudioEngine.h>
+#include <framework/studio/StudioEngine.h>
 #include <framework/entity/Entity.h>
 
 #include <framework/input/CursorInputManager.h>
@@ -26,13 +26,12 @@
 #include <framework/util/StringUtil.h>
 #include <framework/util/MathUtil.h>
 #include <framework/util/Constants.h>
-#include <game/studio/StudioRenderer.h>
+#include <framework/studio/StudioRenderer.h>
 #include <game/logic/World.h>
 #include <framework/entity/EntityLayoutMapper.h>
 #include <framework/entity/EntityMapper.h>
 #include <framework/math/OverlapTester.h>
 #include <framework/math/NGRect.h>
-#include <game/logic/GameConfig.h>
 #include <framework/network/client/NetworkManagerClient.h>
 #include <framework/network/server/NetworkManagerServer.h>
 #include <game/logic/Server.h>
@@ -40,6 +39,7 @@
 #include <framework/file/portable/Assets.h>
 #include <framework/util/macros.h>
 #include <framework/util/InstanceManager.h>
+#include <framework/util/Config.h>
 
 #include <sstream>
 
@@ -103,8 +103,8 @@ void StudioInputManager::update()
         updateCamera();
     }
     
-    int w = GM_CFG->_camWidth * _scrollValue;
-    int h = GM_CFG->_camHeight * _scrollValue;
+    int w = FW_CFG->_camWidth * _scrollValue;
+    int h = FW_CFG->_camHeight * _scrollValue;
     _engine->_renderer->update(_cursor.getX(), _cursor.getY(), w, h, _scrollValue);
 }
 
@@ -118,7 +118,7 @@ void StudioInputManager::handleDefaultInput()
     _rawScrollValue = clamp(_rawScrollValue + CURSOR_INPUT_MANAGER->getScrollWheelValue(), 1, 16);
     CURSOR_INPUT_MANAGER->resetScrollValue();
     _scrollValue = clamp(_rawScrollValue, 1, 16);
-    CURSOR_CONVERTER->setCamSize(GM_CFG->_camWidth * _scrollValue, GM_CFG->_camHeight * _scrollValue);
+    CURSOR_CONVERTER->setCamSize(FW_CFG->_camWidth * _scrollValue, FW_CFG->_camHeight * _scrollValue);
     
     for (std::vector<CursorEvent *>::iterator i = CURSOR_INPUT_MANAGER->getEvents().begin(); i != CURSOR_INPUT_MANAGER->getEvents().end(); ++i)
     {
@@ -667,8 +667,8 @@ bool StudioInputManager::entityExistsAtPosition(Entity* e, float x, float y)
 
 Entity* StudioInputManager::mapAddEntity(EntityDef* entityDef, int width, int height)
 {
-    float spawnX = clamp(GM_CFG->_camWidth * _scrollValue / 2 + _cursor.getX(), entityDef->width / 2.0f, FLT_MAX);
-    float spawnY = clamp(GM_CFG->_camHeight * _scrollValue / 2 + _cursor.getY(), entityDef->height / 2.0f, FLT_MAX);
+    float spawnX = clamp(FW_CFG->_camWidth * _scrollValue / 2 + _cursor.getX(), entityDef->width / 2.0f, FLT_MAX);
+    float spawnY = clamp(FW_CFG->_camHeight * _scrollValue / 2 + _cursor.getY(), entityDef->height / 2.0f, FLT_MAX);
     EntityInstanceDef eid(_entityIDManager->getNextStaticEntityID(), entityDef->type, floor(spawnX), floor(spawnY), width, height);
     Entity* e = EntityMapper::getInstance()->createEntityFromDef(entityDef, &eid, false);
     _engine->_world->mapAddEntity(e);
@@ -729,8 +729,8 @@ void StudioInputManager::processInput()
 
 void StudioInputManager::updateCamera()
 {
-    int w = GM_CFG->_camWidth * _scrollValue;
-    int h = GM_CFG->_camHeight * _scrollValue;
+    int w = FW_CFG->_camWidth * _scrollValue;
+    int h = FW_CFG->_camHeight * _scrollValue;
     float topPan = h * 0.95f;
     float bottomPan = h * 0.05f;
     float rightPan = w * 0.95f;
@@ -738,12 +738,12 @@ void StudioInputManager::updateCamera()
     
     if (_lastScrollValue != _scrollValue)
     {
-        CURSOR_CONVERTER->setCamSize(GM_CFG->_camWidth * _lastScrollValue, GM_CFG->_camHeight * _lastScrollValue);
+        CURSOR_CONVERTER->setCamSize(FW_CFG->_camWidth * _lastScrollValue, FW_CFG->_camHeight * _lastScrollValue);
         Vector2& rc = CURSOR_INPUT_MANAGER->getCursorPosition();
         Vector2 c = CURSOR_CONVERTER->convert(rc);
         
-        int dw = GM_CFG->_camWidth * _lastScrollValue;
-        int dh = GM_CFG->_camHeight * _lastScrollValue;
+        int dw = FW_CFG->_camWidth * _lastScrollValue;
+        int dh = FW_CFG->_camHeight * _lastScrollValue;
         
         float xFactor = c.getX() / dw;
         float yFactor = c.getY() / dh;
@@ -756,7 +756,7 @@ void StudioInputManager::updateCamera()
         
         _rawScrollValue = _scrollValue;
         _lastScrollValue = _scrollValue;
-        CURSOR_CONVERTER->setCamSize(GM_CFG->_camWidth * _scrollValue, GM_CFG->_camHeight * _scrollValue);
+        CURSOR_CONVERTER->setCamSize(FW_CFG->_camWidth * _scrollValue, FW_CFG->_camHeight * _scrollValue);
     }
     
     {
@@ -765,31 +765,31 @@ void StudioInputManager::updateCamera()
         Vector2 c = CURSOR_CONVERTER->convert(rc);
         if ((_hasTouchedScreen && c.getY() > topPan) || _isPanningUp)
         {
-            _cursor.add(0, h / GM_CFG->_camHeight / 2.0f);
-            _activeEntityCursor.add(0, h / GM_CFG->_camHeight / 2.0f);
+            _cursor.add(0, h / FW_CFG->_camHeight / 2.0f);
+            _activeEntityCursor.add(0, h / FW_CFG->_camHeight / 2.0f);
         }
         if ((_hasTouchedScreen && c.getY() < bottomPan) || _isPanningDown)
         {
-            _cursor.sub(0, h / GM_CFG->_camHeight / 2.0f);
-            _activeEntityCursor.sub(0, h / GM_CFG->_camHeight / 2.0f);
+            _cursor.sub(0, h / FW_CFG->_camHeight / 2.0f);
+            _activeEntityCursor.sub(0, h / FW_CFG->_camHeight / 2.0f);
         }
         if ((_hasTouchedScreen && c.getX() > rightPan) || _isPanningRight)
         {
-            _cursor.add(w / GM_CFG->_camWidth / 2.0f, 0);
-            _activeEntityCursor.add(w / GM_CFG->_camWidth / 2.0f, 0);
+            _cursor.add(w / FW_CFG->_camWidth / 2.0f, 0);
+            _activeEntityCursor.add(w / FW_CFG->_camWidth / 2.0f, 0);
         }
         if ((_hasTouchedScreen && c.getX() < leftPan) || _isPanningLeft)
         {
-            _cursor.sub(w / GM_CFG->_camWidth / 2.0f, 0);
-            _activeEntityCursor.sub(w / GM_CFG->_camWidth / 2.0f, 0);
+            _cursor.sub(w / FW_CFG->_camWidth / 2.0f, 0);
+            _activeEntityCursor.sub(w / FW_CFG->_camWidth / 2.0f, 0);
         }
     }
 }
 
 void StudioInputManager::resetCamera()
 {
-    int w = GM_CFG->_camWidth * _scrollValue;
-    int h = GM_CFG->_camHeight * _scrollValue;
+    int w = FW_CFG->_camWidth * _scrollValue;
+    int h = FW_CFG->_camHeight * _scrollValue;
     CURSOR_INPUT_MANAGER->resetScrollValue();
     CURSOR_CONVERTER->setCamSize(w, h);
     _cursor.set(0, 0);

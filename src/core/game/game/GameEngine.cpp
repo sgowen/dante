@@ -44,6 +44,7 @@
 #include <game/logic/Util.h>
 #include <game/entity/PlayerController.h>
 #include <framework/util/InstanceManager.h>
+#include <framework/util/Config.h>
 
 #ifdef NG_STEAM
 #include <framework/network/steam/NGSteamClientHelper.h>
@@ -225,7 +226,7 @@ void GameEngine::createDeviceDependentResources()
     EntityLayoutMapper::getInstance()->initWithJsonFile("maps.cfg");
     ASSETS->initWithJsonFile("game_assets.cfg");
     
-    CURSOR_CONVERTER->setCamSize(GM_CFG->_camWidth, GM_CFG->_camHeight);
+    CURSOR_CONVERTER->setCamSize(FW_CFG->_camWidth, FW_CFG->_camHeight);
     
     _renderer->createDeviceDependentResources();
     

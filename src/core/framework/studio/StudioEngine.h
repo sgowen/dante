@@ -1,6 +1,6 @@
 //
 //  StudioEngine.h
-//  dante
+//  noctisgames
 //
 //  Created by Stephen Gowen on 1/4/18.
 //  Copyright (c) 2017 Noctis Games. All rights reserved.

@@ -13,7 +13,7 @@
 #include <framework/util/NGExtension.h>
 #include <game/title/TitleEngine.h>
 #include <game/game/GameEngine.h>
-#include <game/studio/StudioEngine.h>
+#include <framework/studio/StudioEngine.h>
 #include <framework/entity/EntityMapper.h>
 #include <framework/entity/DefaultController.h>
 #include <game/entity/BasicFollowAndAttackController.h>

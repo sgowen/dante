@@ -1,6 +1,6 @@
 //
 //  StudioEngine.cpp
-//  dante
+//  noctisgames
 //
 //  Created by Stephen Gowen on 1/4/18.
 //  Copyright (c) 2017 Noctis Games. All rights reserved.
@@ -8,10 +8,10 @@
 
 #include "pch.h"
 
-#include <game/studio/StudioEngine.h>
+#include <framework/studio/StudioEngine.h>
 
 #include <framework/file/portable/JsonFile.h>
-#include <game/studio/StudioRenderer.h>
+#include <framework/studio/StudioRenderer.h>
 
 #include <game/logic/Server.h>
 #include <framework/util/Constants.h>
@@ -24,9 +24,8 @@
 #include <framework/network/server/NetworkManagerServer.h>
 #include <framework/network/portable/SocketAddressFactory.h>
 #include <framework/network/portable/SocketUtil.h>
-#include <game/studio/StudioInputManager.h>
+#include <framework/studio/StudioInputManager.h>
 #include <game/logic/World.h>
-#include <game/game/GameInputState.h>
 #include <framework/entity/EntityManager.h>
 #include <framework/network/client/SocketClientHelper.h>
 #include <framework/network/portable/MachineAddress.h>
@@ -40,12 +39,11 @@
 #include <framework/input/CursorConverter.h>
 #include <framework/entity/EntityMapper.h>
 #include <framework/entity/EntityLayoutMapper.h>
-#include <game/logic/GameConfig.h>
 #include <framework/util/macros.h>
 #include <framework/network/client/SocketClientHelper.h>
 #include <game/game/GameEngine.h>
+#include <framework/util/Config.h>
 #include <game/game/GameInputManager.h>
-#include <game/title/TitleEngine.h>
 
 #ifdef NG_STEAM
 #include <framework/network/steam/NGSteamClientHelper.h>
@@ -103,8 +101,6 @@ void StudioEngine::enter(Engine* engine)
     createWindowSizeDependentResources(engine->getScreenWidth(), engine->getScreenHeight(), engine->getCursorWidth(), engine->getCursorHeight());
     
     SET_BIT(_state, StudioEngineState_TestSession, false);
-    
-    engine->getStateMachine().setPreviousState(TitleEngine::getInstance());
 }
 
 void StudioEngine::update(Engine* engine)
@@ -113,7 +109,7 @@ void StudioEngine::update(Engine* engine)
     {
         if (NG_SERVER && NG_SERVER->isConnected())
         {
-            NetworkManagerClient::create(new SocketClientHelper(std::string("localhost:9999"), std::string("TEST"), GM_CFG->_clientPort, NG_CLIENT_CALLBACKS), GAME_ENGINE_CALLBACKS, INPUT_MANAGER_CALLBACKS);
+            NetworkManagerClient::create(new SocketClientHelper(std::string("localhost:9999"), std::string("TEST"), FW_CFG->_clientPort, NG_CLIENT_CALLBACKS), GAME_ENGINE_CALLBACKS, INPUT_MANAGER_CALLBACKS);
             
             assert(NG_CLIENT);
             
@@ -138,12 +134,12 @@ void StudioEngine::exit(Engine* engine)
 
 void StudioEngine::createDeviceDependentResources()
 {
-    GM_CFG->initWithJsonFile("global.cfg");
+    FW_CFG->initWithJsonFile("global.cfg");
     EntityMapper::getInstance()->initWithJsonFile("entities.cfg");
     EntityLayoutMapper::getInstance()->initWithJsonFile("maps.cfg");
     ASSETS->initWithJsonFile("game_assets.cfg");
     
-    CURSOR_CONVERTER->setCamSize(GM_CFG->_camWidth, GM_CFG->_camHeight);
+    CURSOR_CONVERTER->setCamSize(FW_CFG->_camWidth, FW_CFG->_camHeight);
     
     _renderer->createDeviceDependentResources();
 }

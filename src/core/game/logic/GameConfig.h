@@ -20,32 +20,6 @@ class GameConfig
 public:
     static GameConfig* getInstance();
     
-    int _versionMajor;
-    int _versionMinor;
-    int _versionBuild;
-    int _versionRevision;
-    std::string _versionName;
-    int _serverPort;
-    int _clientPort;
-    std::string _steamGameDir;
-    std::string _steamProductName;
-    std::string _steamProductDescription;
-    int _framebufferWidth;
-    int _framebufferHeight;
-    int _camWidth;
-    int _camHeight;
-    std::string _framebufferFilterMin;
-    std::string _framebufferFilterMag;
-    std::string _defaultTextureFilterMin;
-    std::string _defaultTextureFilterMag;
-    bool _defaultTextureFilterMipMap;
-    double _parallaxLayer0FactorX;
-    double _parallaxLayer0FactorY;
-    double _parallaxLayer1FactorX;
-    double _parallaxLayer1FactorY;
-    double _parallaxLayer2FactorX;
-    double _parallaxLayer2FactorY;
-    float _gravity;
     float _maxCrawlerVelocityX;
     float _robotLightPositionFactorY;
     float _maxRobotVelocityX;

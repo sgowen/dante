@@ -37,6 +37,11 @@ public:
     {
         return NG_PLATFORM;
     }
+    
+    static bool isMobile()
+    {
+        return NG_PLATFORM == NG_PLATFORM_ANDROID || NG_PLATFORM == NG_PLATFORM_IOS;
+    }
 };
 
 #endif /* defined(__noctisgames__PlatformHelper__) */

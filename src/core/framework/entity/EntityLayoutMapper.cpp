@@ -11,6 +11,7 @@
 #include <framework/entity/EntityLayoutMapper.h>
 
 #include <framework/entity/Entity.h>
+#include <framework/entity/EntityIDManager.h>
 
 #include <framework/util/NGSTDUtil.h>
 #include <framework/util/StringUtil.h>
@@ -88,16 +89,19 @@ void EntityLayoutMapper::initWithJson(const char* data)
     }
 }
 
-void EntityLayoutMapper::loadEntityLayout(uint32_t name)
+void EntityLayoutMapper::loadEntityLayout(uint32_t name, EntityIDManager* entityIDManager)
 {
     std::string path = getJsonConfigFilePath(name);
     std::string filePath = FileUtil::filePathForConfig(path.c_str());
     
-    loadEntityLayout(filePath);
+    loadEntityLayout(filePath, entityIDManager);
 }
 
-void EntityLayoutMapper::loadEntityLayout(std::string filePath)
+void EntityLayoutMapper::loadEntityLayout(std::string filePath, EntityIDManager* entityIDManager)
 {
+    assert(entityIDManager);
+    
+    _entityIDManager = entityIDManager;
     _entityLayoutDef.entities.clear();
     
     JsonFile jsonFile(filePath.c_str());
@@ -142,7 +146,7 @@ void EntityLayoutMapper::loadEntityLayout(const char* data)
             (uint32_t)chars[2] << 8  |
             (uint32_t)chars[3];
             
-            uint32_t ID = iv.HasMember("ID") ? iv["ID"].GetUint() : 0;
+            uint32_t ID = _entityIDManager->getNextStaticEntityID();
             uint32_t type = key;
             uint32_t x = iv["x"].GetUint();
             uint32_t y = iv["y"].GetUint();
@@ -174,10 +178,6 @@ const char* EntityLayoutMapper::save()
         for (EntityInstanceDef epd : _layoutToSave->entities)
         {
             w.StartObject();
-            {
-                w.String("ID");
-                w.Uint(epd.ID);
-            }
             {
                 w.String("type");
                 char chars[5];

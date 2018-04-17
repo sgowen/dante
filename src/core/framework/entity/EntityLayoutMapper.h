@@ -39,6 +39,8 @@ struct MapDef
     MapDef(uint32_t inKey, std::string inName, std::string inValue) : key(inKey), name(inName), value(inValue) {}
 };
 
+class EntityIDManager;
+
 class EntityLayoutMapper
 {
 public:
@@ -50,8 +52,8 @@ public:
     
     void initWithJsonFile(const char* fileName, bool isBundled = true, bool useEncryption = false);
     void initWithJson(const char* data);
-    void loadEntityLayout(uint32_t name);
-    void loadEntityLayout(std::string filePath);
+    void loadEntityLayout(uint32_t name, EntityIDManager* entityIDManager);
+    void loadEntityLayout(std::string filePath, EntityIDManager* entityIDManager);
     const char* save();
     void saveEntityLayout(uint32_t name, EntityLayoutDef* layout);
     void saveEntityLayout(std::string filePath, EntityLayoutDef* layout);
@@ -64,6 +66,7 @@ private:
     std::map<uint32_t, std::string> _layouts;
     EntityLayoutDef _entityLayoutDef;
     EntityLayoutDef* _layoutToSave;
+    EntityIDManager* _entityIDManager;
     
     void loadEntityLayout(const char* data);
     

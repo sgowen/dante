@@ -53,8 +53,7 @@ void JsonFile::save()
 {
     assert(_filePath);
     assert(!(_isBundled
-             && (PlatformHelper::getPlatform() == NG_PLATFORM_ANDROID
-                 || PlatformHelper::getPlatform() == NG_PLATFORM_IOS))); // Can't overwrite bundled files on Android or iOS
+             && PlatformHelper::isMobile())); // Can't overwrite bundled files on Android or iOS
 
     const char* finalPath = platformSpecificFilePath();
     FILE *file = openFile(finalPath, "w+");

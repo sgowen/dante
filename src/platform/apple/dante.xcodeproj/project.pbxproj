@@ -115,12 +115,6 @@
 		BB31B5B01FC205D5005F1C0A /* GamePadEvent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB31B59F1FC205D0005F1C0A /* GamePadEvent.cpp */; };
 		BB31B5B11FC205D5005F1C0A /* KeyboardInputManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB31B5A31FC205D4005F1C0A /* KeyboardInputManager.cpp */; };
 		BB31B5B21FC205D5005F1C0A /* KeyboardInputManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB31B5A31FC205D4005F1C0A /* KeyboardInputManager.cpp */; };
-		BB31E568202E7B8400A3AD1C /* StudioInputManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB31E54D202E7B8300A3AD1C /* StudioInputManager.cpp */; };
-		BB31E569202E7B8400A3AD1C /* StudioInputManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB31E54D202E7B8300A3AD1C /* StudioInputManager.cpp */; };
-		BB31E56A202E7B8400A3AD1C /* StudioRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB31E54E202E7B8300A3AD1C /* StudioRenderer.cpp */; };
-		BB31E56B202E7B8400A3AD1C /* StudioRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB31E54E202E7B8300A3AD1C /* StudioRenderer.cpp */; };
-		BB31E56C202E7B8400A3AD1C /* StudioEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB31E551202E7B8300A3AD1C /* StudioEngine.cpp */; };
-		BB31E56D202E7B8400A3AD1C /* StudioEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB31E551202E7B8300A3AD1C /* StudioEngine.cpp */; };
 		BB31E56E202E7B8400A3AD1C /* TitleInputManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB31E557202E7B8300A3AD1C /* TitleInputManager.cpp */; };
 		BB31E56F202E7B8400A3AD1C /* TitleInputManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB31E557202E7B8300A3AD1C /* TitleInputManager.cpp */; };
 		BB31E570202E7B8400A3AD1C /* TitleRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB31E558202E7B8300A3AD1C /* TitleRenderer.cpp */; };
@@ -313,6 +307,12 @@
 		BB7268001EEC704E004F33F9 /* ReplicationManagerTransmissionData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8307F51EC2AC0900435E7E /* ReplicationManagerTransmissionData.cpp */; };
 		BB728F6C208646A0006C7B4D /* MemoryBitStreamUtil.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB728F6B208646A0006C7B4D /* MemoryBitStreamUtil.cpp */; };
 		BB728F6D208646A0006C7B4D /* MemoryBitStreamUtil.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB728F6B208646A0006C7B4D /* MemoryBitStreamUtil.cpp */; };
+		BB728F752086701D006C7B4D /* StudioInputManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB728F6F2086701D006C7B4D /* StudioInputManager.cpp */; };
+		BB728F762086701D006C7B4D /* StudioInputManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB728F6F2086701D006C7B4D /* StudioInputManager.cpp */; };
+		BB728F772086701D006C7B4D /* StudioRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB728F702086701D006C7B4D /* StudioRenderer.cpp */; };
+		BB728F782086701D006C7B4D /* StudioRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB728F702086701D006C7B4D /* StudioRenderer.cpp */; };
+		BB728F792086701D006C7B4D /* StudioEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB728F732086701D006C7B4D /* StudioEngine.cpp */; };
+		BB728F7A2086701D006C7B4D /* StudioEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB728F732086701D006C7B4D /* StudioEngine.cpp */; };
 		BB7428411EB2AF4200B7628D /* NGRTTI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB74283D1EB2AF4200B7628D /* NGRTTI.cpp */; };
 		BB8091FD1FF4131600F84D1D /* TextureManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8091FB1FF4131500F84D1D /* TextureManager.cpp */; };
 		BB8091FE1FF4131600F84D1D /* TextureManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8091FB1FF4131500F84D1D /* TextureManager.cpp */; };
@@ -814,12 +814,6 @@
 		BB31B5A21FC205D4005F1C0A /* CursorConverter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CursorConverter.h; sourceTree = "<group>"; };
 		BB31B5A31FC205D4005F1C0A /* KeyboardInputManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KeyboardInputManager.cpp; sourceTree = "<group>"; };
 		BB31B5A41FC205D5005F1C0A /* KeyboardInputManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeyboardInputManager.h; sourceTree = "<group>"; };
-		BB31E54D202E7B8300A3AD1C /* StudioInputManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StudioInputManager.cpp; sourceTree = "<group>"; };
-		BB31E54E202E7B8300A3AD1C /* StudioRenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StudioRenderer.cpp; sourceTree = "<group>"; };
-		BB31E54F202E7B8300A3AD1C /* StudioRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StudioRenderer.h; sourceTree = "<group>"; };
-		BB31E550202E7B8300A3AD1C /* StudioInputManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StudioInputManager.h; sourceTree = "<group>"; };
-		BB31E551202E7B8300A3AD1C /* StudioEngine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StudioEngine.cpp; sourceTree = "<group>"; };
-		BB31E552202E7B8300A3AD1C /* StudioEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StudioEngine.h; sourceTree = "<group>"; };
 		BB31E554202E7B8300A3AD1C /* TitleRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TitleRenderer.h; sourceTree = "<group>"; };
 		BB31E555202E7B8300A3AD1C /* TitleInputManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TitleInputManager.h; sourceTree = "<group>"; };
 		BB31E556202E7B8300A3AD1C /* TitleEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TitleEngine.h; sourceTree = "<group>"; };
@@ -1021,6 +1015,12 @@
 		BB7251A71EE105780024C71C /* InputState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InputState.h; sourceTree = "<group>"; };
 		BB728F6A208646A0006C7B4D /* MemoryBitStreamUtil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MemoryBitStreamUtil.h; sourceTree = "<group>"; };
 		BB728F6B208646A0006C7B4D /* MemoryBitStreamUtil.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = MemoryBitStreamUtil.cpp; sourceTree = "<group>"; };
+		BB728F6F2086701D006C7B4D /* StudioInputManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StudioInputManager.cpp; sourceTree = "<group>"; };
+		BB728F702086701D006C7B4D /* StudioRenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StudioRenderer.cpp; sourceTree = "<group>"; };
+		BB728F712086701D006C7B4D /* StudioRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StudioRenderer.h; sourceTree = "<group>"; };
+		BB728F722086701D006C7B4D /* StudioInputManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StudioInputManager.h; sourceTree = "<group>"; };
+		BB728F732086701D006C7B4D /* StudioEngine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StudioEngine.cpp; sourceTree = "<group>"; };
+		BB728F742086701D006C7B4D /* StudioEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StudioEngine.h; sourceTree = "<group>"; };
 		BB7428361EB2A98500B7628D /* pch.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = pch.h; sourceTree = "<group>"; };
 		BB74283A1EB2AF4200B7628D /* macros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = macros.h; sourceTree = "<group>"; };
 		BB74283B1EB2AF4200B7628D /* NGRollingPool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NGRollingPool.h; sourceTree = "<group>"; };
@@ -2170,19 +2170,6 @@
 			path = android;
 			sourceTree = "<group>";
 		};
-		BB31E54C202E7B8300A3AD1C /* studio */ = {
-			isa = PBXGroup;
-			children = (
-				BB31E551202E7B8300A3AD1C /* StudioEngine.cpp */,
-				BB31E552202E7B8300A3AD1C /* StudioEngine.h */,
-				BB31E54D202E7B8300A3AD1C /* StudioInputManager.cpp */,
-				BB31E550202E7B8300A3AD1C /* StudioInputManager.h */,
-				BB31E54E202E7B8300A3AD1C /* StudioRenderer.cpp */,
-				BB31E54F202E7B8300A3AD1C /* StudioRenderer.h */,
-			);
-			path = studio;
-			sourceTree = "<group>";
-		};
 		BB31E553202E7B8300A3AD1C /* title */ = {
 			isa = PBXGroup;
 			children = (
@@ -2432,7 +2419,6 @@
 				BB31E55A202E7B8400A3AD1C /* entity */,
 				BB31E561202E7B8400A3AD1C /* game */,
 				BB6E7AFC1F940F13006C0024 /* logic */,
-				BB31E54C202E7B8300A3AD1C /* studio */,
 				BB31E553202E7B8300A3AD1C /* title */,
 			);
 			path = game;
@@ -2509,6 +2495,19 @@
 				BB6F59871FBDEA0D00BD7697 /* window.c */,
 			);
 			path = src;
+			sourceTree = "<group>";
+		};
+		BB728F6E2086701D006C7B4D /* studio */ = {
+			isa = PBXGroup;
+			children = (
+				BB728F732086701D006C7B4D /* StudioEngine.cpp */,
+				BB728F742086701D006C7B4D /* StudioEngine.h */,
+				BB728F6F2086701D006C7B4D /* StudioInputManager.cpp */,
+				BB728F722086701D006C7B4D /* StudioInputManager.h */,
+				BB728F702086701D006C7B4D /* StudioRenderer.cpp */,
+				BB728F712086701D006C7B4D /* StudioRenderer.h */,
+			);
+			path = studio;
 			sourceTree = "<group>";
 		};
 		BB7428381EB2AF4100B7628D /* util */ = {
@@ -2654,6 +2653,7 @@
 				BBFA49D91FC367AF00233514 /* main */,
 				BBAEF1771EA94ED900F0866E /* math */,
 				BBF2251E1EC120AD00573356 /* network */,
+				BB728F6E2086701D006C7B4D /* studio */,
 				BB7428381EB2AF4100B7628D /* util */,
 			);
 			path = framework;
@@ -4086,7 +4086,6 @@
 				BB7267FE1EEC704B004F33F9 /* NetworkManagerServer.cpp in Sources */,
 				BBEF6FFF200028220030076A /* EntityController.cpp in Sources */,
 				BBFA49E51FC3702D00233514 /* Engine.cpp in Sources */,
-				BB31E56A202E7B8400A3AD1C /* StudioRenderer.cpp in Sources */,
 				BB8308501EC2AD1F00435E7E /* InFlightPacket.cpp in Sources */,
 				BB7268001EEC704E004F33F9 /* ReplicationManagerTransmissionData.cpp in Sources */,
 				BB7267FF1EEC704C004F33F9 /* ReplicationManagerServer.cpp in Sources */,
@@ -4182,7 +4181,6 @@
 				BBCB93211FC252790020703A /* FileData.cpp in Sources */,
 				BB9EE5161FC092C5000F5389 /* AppleAssetDataHandler.cpp in Sources */,
 				BBAEF1F01EA94EDA00F0866E /* Entity.cpp in Sources */,
-				BB31E56C202E7B8400A3AD1C /* StudioEngine.cpp in Sources */,
 				BBD5543C1FDB2EA800E00AD6 /* b2RopeJoint.cpp in Sources */,
 				BBBCB2EB1EF090E900B77938 /* NGSteam.cpp in Sources */,
 				BB44CB881DB053C0003E633F /* pngrtran.c in Sources */,
@@ -4213,13 +4211,13 @@
 				BB31E56E202E7B8400A3AD1C /* TitleInputManager.cpp in Sources */,
 				BBE4E40B1FEDD03F004193F1 /* Box2DDebugRenderer.cpp in Sources */,
 				BBD554561FDB2EA800E00AD6 /* b2DynamicTree.cpp in Sources */,
+				BB728F792086701D006C7B4D /* StudioEngine.cpp in Sources */,
 				BBD43A0E1ED0BD00001D5EB4 /* ReplicationCommand.cpp in Sources */,
 				BBBCB2EE1EF0993000B77938 /* NGSteamGameServer.cpp in Sources */,
 				BBAEF2641EA94EDA00F0866E /* RendererHelper.cpp in Sources */,
 				BB2022F31FE8281D00BBB053 /* NGShaderUniformInput.cpp in Sources */,
 				BB44CB8E1DB053C0003E633F /* pngwtran.c in Sources */,
 				BBD5545C1FDB2EA800E00AD6 /* b2CircleShape.cpp in Sources */,
-				BB31E568202E7B8400A3AD1C /* StudioInputManager.cpp in Sources */,
 				BB07A78D1FC60FD900AE5051 /* vulkan.c in Sources */,
 				BB8308711EC2AD1F00435E7E /* SocketAddressFactory.cpp in Sources */,
 				BBD554401FDB2EA800E00AD6 /* b2ContactManager.cpp in Sources */,
@@ -4231,6 +4229,8 @@
 				BB4253DA1EF59793003F6D2A /* NGSteamClientHelper.cpp in Sources */,
 				BB7251A11EE105490024C71C /* Move.cpp in Sources */,
 				BBD554361FDB2EA800E00AD6 /* b2Joint.cpp in Sources */,
+				BB728F772086701D006C7B4D /* StudioRenderer.cpp in Sources */,
+				BB728F752086701D006C7B4D /* StudioInputManager.cpp in Sources */,
 				BBD5542E1FDB2EA800E00AD6 /* b2WheelJoint.cpp in Sources */,
 				BBD554221FDB2EA800E00AD6 /* b2Contact.cpp in Sources */,
 				BB6F598F1FBDEA0D00BD7697 /* monitor.c in Sources */,
@@ -4254,7 +4254,6 @@
 				BB5AFE771FB35AB6005FBD52 /* JsonFile.cpp in Sources */,
 				BB1C3BFA1FE75FD3002E4AA6 /* Color.cpp in Sources */,
 				BB27D2461FC6567F00ED42FD /* OALAudioTracks.m in Sources */,
-				BB31E569202E7B8400A3AD1C /* StudioInputManager.cpp in Sources */,
 				BB27D2471FC6567F00ED42FD /* OALAudioTrack.m in Sources */,
 				BB27D2811FC6596D00ED42FD /* OALAudioSession.m in Sources */,
 				BB27D2481FC6567F00ED42FD /* OALAudioTrackNotifications.m in Sources */,
@@ -4339,6 +4338,7 @@
 				BB1C3C071FE76C65002E4AA6 /* OpenGLProgramLoader.cpp in Sources */,
 				BBD5543F1FDB2EA800E00AD6 /* b2Island.cpp in Sources */,
 				BB5AFE171FB359EA005FBD52 /* FPSUtil.cpp in Sources */,
+				BB728F782086701D006C7B4D /* StudioRenderer.cpp in Sources */,
 				BB5AFE191FB359EA005FBD52 /* NGRTTI.cpp in Sources */,
 				BB5AFE1A1FB359EA005FBD52 /* StringUtil.cpp in Sources */,
 				BB5AFE1B1FB359EA005FBD52 /* Timing.cpp in Sources */,
@@ -4354,6 +4354,7 @@
 				BB31E575202E7B8400A3AD1C /* PlayerController.cpp in Sources */,
 				BB5AFE371FB35A77005FBD52 /* ReplicationManagerClient.cpp in Sources */,
 				BB5AFE381FB35A77005FBD52 /* SocketClientHelper.cpp in Sources */,
+				BB728F7A2086701D006C7B4D /* StudioEngine.cpp in Sources */,
 				BB5AFE391FB35A77005FBD52 /* AckRange.cpp in Sources */,
 				BB5AFE3A1FB35A77005FBD52 /* DeliveryNotificationManager.cpp in Sources */,
 				BBE4E40C1FEDD03F004193F1 /* Box2DDebugRenderer.cpp in Sources */,
@@ -4370,6 +4371,7 @@
 				BB5AFE411FB35A77005FBD52 /* PacketHandler.cpp in Sources */,
 				BBD5542F1FDB2EA800E00AD6 /* b2WheelJoint.cpp in Sources */,
 				BB31E56F202E7B8400A3AD1C /* TitleInputManager.cpp in Sources */,
+				BB728F762086701D006C7B4D /* StudioInputManager.cpp in Sources */,
 				BBD554191FDB2EA800E00AD6 /* b2PolygonAndCircleContact.cpp in Sources */,
 				BB5AFE421FB35A77005FBD52 /* TransmissionData.cpp in Sources */,
 				BB31E571202E7B8400A3AD1C /* TitleRenderer.cpp in Sources */,
@@ -4423,13 +4425,11 @@
 				BBFE83091FFEBFF900E5F650 /* MainEngineController.cpp in Sources */,
 				BB5D5A3C206C4C5A00FB53FD /* EntityIDManager.cpp in Sources */,
 				BB5AFE111FB359DE005FBD52 /* Util.cpp in Sources */,
-				BB31E56B202E7B8400A3AD1C /* StudioRenderer.cpp in Sources */,
 				BBD5543D1FDB2EA800E00AD6 /* b2RopeJoint.cpp in Sources */,
 				BBCB93221FC252790020703A /* FileData.cpp in Sources */,
 				BBD554251FDB2EA800E00AD6 /* b2WorldCallbacks.cpp in Sources */,
 				BBD5544D1FDB2EA800E00AD6 /* b2StackAllocator.cpp in Sources */,
 				BBD5541D1FDB2EA800E00AD6 /* b2ContactSolver.cpp in Sources */,
-				BB31E56D202E7B8400A3AD1C /* StudioEngine.cpp in Sources */,
 				BB728F6D208646A0006C7B4D /* MemoryBitStreamUtil.cpp in Sources */,
 				BB9EE5151FC092C5000F5389 /* apple_asset_data_handler.mm in Sources */,
 				BBD554471FDB2EA800E00AD6 /* b2BlockAllocator.cpp in Sources */,

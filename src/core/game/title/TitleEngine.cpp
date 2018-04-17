@@ -42,10 +42,11 @@
 #include <framework/input/CursorConverter.h>
 #include <game/game/GameEngine.h>
 #include <game/game/GameInputManager.h>
-#include <game/studio/StudioEngine.h>
+#include <framework/studio/StudioEngine.h>
 #include <game/logic/GameConfig.h>
 #include <framework/entity/EntityMapper.h>
 #include <framework/entity/EntityLayoutMapper.h>
+#include <framework/util/Config.h>
 
 #ifdef NG_STEAM
 #include <framework/network/steam/NGSteamClientHelper.h>
@@ -142,7 +143,7 @@ void TitleEngine::createDeviceDependentResources()
     EntityLayoutMapper::getInstance()->initWithJsonFile("maps.cfg");
     ASSETS->initWithJsonFile("title_assets.cfg");
     
-    CURSOR_CONVERTER->setCamSize(GM_CFG->_camWidth, GM_CFG->_camHeight);
+    CURSOR_CONVERTER->setCamSize(FW_CFG->_camWidth, FW_CFG->_camHeight);
     
     _renderer->createDeviceDependentResources();
 }
@@ -190,7 +191,7 @@ bool TitleEngine::handleInput(Engine* engine)
         {
             if (_state == TitleEngineState_InputIp)
             {
-                _serverIPAddress = StringUtil::format("%s:%d", TitleInputManager::getInstance()->getLiveInput().c_str(), GM_CFG->_serverPort);
+                _serverIPAddress = StringUtil::format("%s:%d", TitleInputManager::getInstance()->getLiveInput().c_str(), FW_CFG->_serverPort);
                 _name.clear();
                 _state = TitleEngineState_InputName;
             }
@@ -227,12 +228,8 @@ bool TitleEngine::handleInput(Engine* engine)
     {
         if (menuState == TIMS_ENTER_STUDIO)
         {
-            if (PlatformHelper::getPlatform() != NG_PLATFORM_ANDROID
-                && PlatformHelper::getPlatform() != NG_PLATFORM_IOS)
-            {
-                engine->getStateMachine().changeState(StudioEngine::getInstance());
-                return true;
-            }
+            engine->getStateMachine().changeState(StudioEngine::getInstance());
+            return true;
         }
         else if (menuState == TIMS_ACTIVATE_STEAM)
         {
@@ -318,7 +315,7 @@ void TitleEngine::activateSteam()
 #ifdef NG_STEAM
     if (!NGSteamGameServices::getInstance())
     {
-        NGSteamGameServices::create(GM_CFG->_steamGameDir.c_str());
+        NGSteamGameServices::create(FW_CFG->_steamGameDir.c_str());
     }
     
     _isSteam = NG_STEAM_GAME_SERVICES->getStatus() == STEAM_INIT_SUCCESS;
@@ -386,7 +383,7 @@ void TitleEngine::joinServer(Engine* engine)
     }
     else
     {
-        NetworkManagerClient::create(new SocketClientHelper(_serverIPAddress, _name, GM_CFG->_clientPort, NG_CLIENT_CALLBACKS), GAME_ENGINE_CALLBACKS, INPUT_MANAGER_CALLBACKS);
+        NetworkManagerClient::create(new SocketClientHelper(_serverIPAddress, _name, FW_CFG->_clientPort, NG_CLIENT_CALLBACKS), GAME_ENGINE_CALLBACKS, INPUT_MANAGER_CALLBACKS);
     }
     
     assert(NG_CLIENT);

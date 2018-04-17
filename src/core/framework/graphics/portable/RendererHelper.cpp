@@ -47,10 +47,10 @@ void RendererHelper::createDeviceDependentResources()
     
     createScreenFramebufferWrapper(_screenFramebufferWrapper);
     
-    int fbWidth = FW_CFG->getInt("FramebufferWidth");
-    int fbHeight = FW_CFG->getInt("FramebufferHeight");
-    std::string cfgFilterMin = FW_CFG->getString("FramebufferFilterMin");
-    std::string cfgFilterMag = FW_CFG->getString("FramebufferFilterMag");
+    int fbWidth = FW_CFG->_framebufferWidth;
+    int fbHeight = FW_CFG->_framebufferHeight;
+    std::string cfgFilterMin = FW_CFG->_framebufferFilterMin;
+    std::string cfgFilterMag = FW_CFG->_framebufferFilterMag;
     for (int i = 0; i < NUM_OFFSCREEN_FRAMEBUFFERS; ++i)
     {
         FramebufferWrapper* fbw = new FramebufferWrapper(fbWidth, fbHeight);

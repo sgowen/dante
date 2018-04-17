@@ -32,6 +32,7 @@
 #include <game/logic/Server.h>
 #include <game/logic/GameConfig.h>
 #include <game/entity/PlayerController.h>
+#include <framework/util/Config.h>
 
 NGRTTI_IMPL(BasicFollowAndAttackController, EntityController);
 
@@ -210,7 +211,7 @@ void BasicFollowAndAttackController::handleIdleState(bool isLive)
     
     std::vector<Entity*>& players = world->getPlayers();
     
-    float shortestDistance = GM_CFG->_camWidth / 3;
+    float shortestDistance = FW_CFG->_camWidth / 3;
     
     for (Entity* e : players)
     {
@@ -248,7 +249,7 @@ void BasicFollowAndAttackController::handleMovingState(bool isLive)
     if (target)
     {
         float distance = b2Distance(target->getPosition(), target->getPosition());
-        if (distance > GM_CFG->_camWidth / 3)
+        if (distance > FW_CFG->_camWidth / 3)
         {
             _target = 0;
             state = State_Idle;

@@ -11,6 +11,7 @@
 #include <game/logic/World.h>
 
 #include <framework/entity/Entity.h>
+#include <framework/entity/EntityIDManager.h>
 #include <Box2D/Box2D.h>
 
 #include <framework/network/server/NetworkManagerServer.h>
@@ -26,16 +27,26 @@
 #include <framework/entity/EntityMapper.h>
 #include <framework/entity/EntityLayoutMapper.h>
 #include <game/logic/GameConfig.h>
+#include <framework/util/InstanceManager.h>
+#include <framework/util/Config.h>
 
 World::World(uint32_t flags) :
-_world(new b2World(b2Vec2(0.0f, GM_CFG->_gravity))),
+_world(new b2World(b2Vec2(0.0f, FW_CFG->_gravity))),
 _entityContactListener(new EntityContactListener()),
 _entityContactFilter(new EntityContactFilter()),
 _map(0),
 _mapFileName(),
 _mapName(),
-_flags(flags)
+_flags(flags),
+_entityIDManager(NULL)
 {
+    uint32_t entityIDManagerKey = INSTANCE_ENTITY_ID_MANAGER_CLIENT;
+    if (_flags & WorldFlag_MapLoadAll)
+    {
+        entityIDManagerKey = _flags & WorldFlag_Server ? INSTANCE_ENTITY_ID_MANAGER_SERVER : INSTANCE_ENTITY_ID_MANAGER_STUDIO;
+    }
+    _entityIDManager = static_cast<EntityIDManager*>(INSTANCE_MANAGER->getInstance(entityIDManagerKey));
+    
     _world->SetContactListener(_entityContactListener);
     _world->SetContactFilter(_entityContactFilter);
 }
@@ -303,12 +314,12 @@ void World::loadMap(uint32_t map)
     if (map == 'TEST')
     {
         _mapFileName = std::string("test.cfg");
-        EntityLayoutMapper::getInstance()->loadEntityLayout(_mapFileName);
+        EntityLayoutMapper::getInstance()->loadEntityLayout(_mapFileName, _entityIDManager);
     }
     else
     {
         _mapFileName = EntityLayoutMapper::getInstance()->getJsonConfigFilePath(_map);
-        EntityLayoutMapper::getInstance()->loadEntityLayout(_map);
+        EntityLayoutMapper::getInstance()->loadEntityLayout(_map, _entityIDManager);
     }
     
     EntityLayoutDef& entityLayoutDef = EntityLayoutMapper::getInstance()->getEntityLayoutDef();

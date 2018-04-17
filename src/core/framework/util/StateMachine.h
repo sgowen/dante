@@ -9,15 +9,16 @@
 #ifndef __noctisgames__StateMachine__
 #define __noctisgames__StateMachine__
 
-#include <cassert>
-
 #include <framework/util/State.h>
 
-template <class entity_type, class state_type>
+#include <stack>
+#include <assert.h>
+
+template <class object_type, class state_type>
 class StateMachine
 {
 public:
-    StateMachine(entity_type* owner) : _owner(owner), _currentState(NULL), _previousState(NULL), _globalState(NULL)
+    StateMachine(object_type* owner) : _owner(owner), _globalState(NULL)
     {
         // Empty
     }
@@ -27,21 +28,6 @@ public:
         // Empty
     }
     
-    void setCurrentState(state_type* state)
-    {
-        _currentState = state;
-    }
-    
-    void setGlobalState(state_type* state)
-    {
-        _globalState = state;
-    }
-    
-    void setPreviousState(state_type* state)
-    {
-        _previousState = state;
-    }
-    
     void update() const
     {
         if (_globalState)
@@ -49,38 +35,58 @@ public:
             _globalState->update(_owner);
         }
         
-        if (_currentState)
+        if (_states.size() > 0)
         {
-            _currentState->update(_owner);
+            _states.top()->update(_owner);
         }
     }
     
     void changeState(state_type* newState)
     {
-        assert(newState && "StateMachine::changeState trying to assign null state to current");
+        assert(newState);
         
-        _previousState = _currentState;
+        if (getCurrentState())
+        {
+            getCurrentState()->exit(_owner);
+        }
         
-        _currentState->exit(_owner);
+        _states.push(newState);
         
-        _currentState = newState;
-        
-        _currentState->enter(_owner);
+        assert(getCurrentState());
+        getCurrentState()->enter(_owner);
     }
     
     void revertToPreviousState()
     {
-        changeState(_previousState);
+        if (getCurrentState())
+        {
+            getCurrentState()->exit(_owner);
+        }
+        
+        _states.pop();
+        
+        assert(getCurrentState());
+        getCurrentState()->enter(_owner);
     }
     
-    bool isInState(const state_type* st)const
+    void setCurrentState(state_type* state)
     {
-        return _currentState == st;
+        while (!_states.empty())
+        {
+            _states.pop();
+        }
+        
+        _states.push(state);
     }
     
     state_type* getCurrentState() const
     {
-        return _currentState;
+        return _states.size() > 0 ? _states.top() : NULL;
+    }
+    
+    void setGlobalState(state_type* state)
+    {
+        _globalState = state;
     }
     
     state_type* getGlobalState() const
@@ -88,17 +94,11 @@ public:
         return _globalState;
     }
     
-    state_type* getPreviousState() const
-    {
-        return _previousState;
-    }
-    
 private:
-    entity_type* _owner;
+    object_type* _owner;
     
-    state_type* _currentState;
-    state_type* _previousState;
     state_type* _globalState;
+    std::stack<state_type*> _states;
 };
 
 #endif /* defined(__noctisgames__StateMachine__) */

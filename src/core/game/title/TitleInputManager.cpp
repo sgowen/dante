@@ -97,8 +97,7 @@ void TitleInputManager::update()
             }
         }
         
-        if (PlatformHelper::getPlatform() == NG_PLATFORM_ANDROID
-            || PlatformHelper::getPlatform() == NG_PLATFORM_IOS)
+        if (PlatformHelper::isMobile())
         {
             for (std::vector<CursorEvent *>::iterator i = CURSOR_INPUT_MANAGER->getEvents().begin(); i != CURSOR_INPUT_MANAGER->getEvents().end(); ++i)
             {
@@ -137,7 +136,10 @@ void TitleInputManager::update()
             switch (e.getKey())
             {
                 case NG_KEY_E:
-                    _inputState = e.isDown() ? TIMS_ENTER_STUDIO : TIMS_NONE;
+                    if (!PlatformHelper::isMobile())
+                    {
+                        _inputState = e.isDown() ? TIMS_ENTER_STUDIO : TIMS_NONE;
+                    }
                     continue;
                 case NG_KEY_A:
                     _inputState = e.isDown() ? TIMS_ACTIVATE_STEAM : TIMS_NONE;
@@ -197,8 +199,7 @@ void TitleInputManager::update()
             }
         }
         
-        if (PlatformHelper::getPlatform() == NG_PLATFORM_ANDROID
-            || PlatformHelper::getPlatform() == NG_PLATFORM_IOS)
+        if (PlatformHelper::isMobile())
         {
             for (std::vector<CursorEvent *>::iterator i = CURSOR_INPUT_MANAGER->getEvents().begin(); i != CURSOR_INPUT_MANAGER->getEvents().end(); ++i)
             {

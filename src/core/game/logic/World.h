@@ -22,7 +22,9 @@ enum WorldFlags
 };
 
 class Entity;
+class EntityIDManager;
 class b2World;
+
 class EntityContactListener;
 class EntityContactFilter;
 
@@ -69,6 +71,7 @@ private:
     std::string _mapFileName;
     std::string _mapName;
     uint32_t _flags;
+    EntityIDManager* _entityIDManager;
     
     void stepPhysics();
     void clearDynamicEntities(std::vector<Entity*>& entities);

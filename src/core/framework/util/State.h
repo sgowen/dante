@@ -9,20 +9,23 @@
 #ifndef __noctisgames__State__
 #define __noctisgames__State__
 
-template <class entity_type>
+template <class object_type>
 class State
 {
 public:
+    State()
+    {
+        // Empty
+    }
+    
     virtual ~State()
     {
         // Empty
     }
     
-    virtual void enter(entity_type*) = 0;
-    
-    virtual void update(entity_type*) = 0;
-    
-    virtual void exit(entity_type*) = 0;
+    virtual void enter(object_type*) = 0;
+    virtual void update(object_type*) = 0;
+    virtual void exit(object_type*) = 0;
 };
 
 #endif /* defined(__noctisgames__State__) */

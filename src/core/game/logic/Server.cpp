@@ -28,6 +28,7 @@
 #include <framework/entity/EntityLayoutMapper.h>
 #include <game/logic/GameConfig.h>
 #include <framework/util/InstanceManager.h>
+#include <framework/util/Config.h>
 
 #ifdef NG_STEAM
 #include <framework/network/steam/NGSteamServerHelper.h>
@@ -319,12 +320,12 @@ _isLoadingMap(false)
     if (_flags & ServerFlag_Steam)
     {
 #ifdef NG_STEAM
-        NetworkManagerServer::create(new NGSteamServerHelper(GM_CFG->_steamGameDir, GM_CFG->_versionName, GM_CFG->_steamProductName, GM_CFG->_steamProductDescription, GM_CFG->_serverPort, NG_SERVER_CALLBACKS), SERVER_CALLBACKS);
+        NetworkManagerServer::create(new NGSteamServerHelper(FW_CFG->_steamGameDir, FW_CFG->_versionName, FW_CFG->_steamProductName, FW_CFG->_steamProductDescription, FW_CFG->_serverPort, NG_SERVER_CALLBACKS), SERVER_CALLBACKS);
 #endif
     }
     else
     {
-        NetworkManagerServer::create(new SocketServerHelper(GM_CFG->_serverPort, NG_SERVER_CALLBACKS), SERVER_CALLBACKS);
+        NetworkManagerServer::create(new SocketServerHelper(FW_CFG->_serverPort, NG_SERVER_CALLBACKS), SERVER_CALLBACKS);
     }
     
     assert(NG_SERVER);
