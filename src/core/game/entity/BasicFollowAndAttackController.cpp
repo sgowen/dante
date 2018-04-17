@@ -34,14 +34,11 @@
 #include <game/entity/PlayerController.h>
 #include <framework/util/Config.h>
 
-NGRTTI_IMPL(BasicFollowAndAttackController, EntityController);
+IMPL_RTTI(BasicFollowAndAttackController, EntityController);
 
-EntityController* BasicFollowAndAttackController::create(Entity* inEntity)
-{
-    return new BasicFollowAndAttackController(inEntity);
-}
+IMPL_EntityController_create(BasicFollowAndAttackController);
 
-BasicFollowAndAttackController::BasicFollowAndAttackController(Entity* inEntity) : EntityController(inEntity),
+BasicFollowAndAttackController::BasicFollowAndAttackController(Entity* e) : EntityController(e),
 _stats(),
 _statsCache(_stats),
 _attackSensorFixture(NULL),
@@ -56,7 +53,7 @@ BasicFollowAndAttackController::~BasicFollowAndAttackController()
     // Empty
 }
 
-void BasicFollowAndAttackController::update(bool isLive)
+void BasicFollowAndAttackController::update()
 {
     if (_entity->isServer())
     {
@@ -64,16 +61,16 @@ void BasicFollowAndAttackController::update(bool isLive)
         switch (state)
         {
             case State_Idle:
-                handleIdleState(isLive);
+                handleIdleState();
                 break;
             case State_Moving:
-                handleMovingState(isLive);
+                handleMovingState();
                 break;
             case State_Attacking:
-                handleAttackingState(isLive);
+                handleAttackingState();
                 break;
             case State_Dying:
-                handleDyingState(isLive);
+                handleDyingState();
                 break;
             default:
                 break;
@@ -98,7 +95,7 @@ void BasicFollowAndAttackController::postUpdate()
     }
 }
 
-void BasicFollowAndAttackController::receiveMessage(uint16_t message, bool isLive, void* data)
+void BasicFollowAndAttackController::receiveMessage(uint16_t message, void* data)
 {
     uint8_t fromState = _entity->getState().state;
     uint8_t& state = _entity->getState().state;
@@ -125,7 +122,7 @@ void BasicFollowAndAttackController::receiveMessage(uint16_t message, bool isLiv
             break;
     }
     
-    if (isLive)
+    if ()
     {
         Util::handleSound(_entity, fromState, state);
     }
@@ -180,10 +177,10 @@ void BasicFollowAndAttackController::read(InputMemoryBitStream& inInputStream, u
         _statsCache = _stats;
     }
     
-    Util::handleSound(_entity, _entity->getStateCache().state, _entity->getState().state);
+    Util::handleSound(_entity, _entity->getStateNetworkCache().state, _entity->getState().state);
 }
 
-void BasicFollowAndAttackController::recallCache(uint16_t& inReadState)
+void BasicFollowAndAttackController::recallCache()
 {
     _stats = _statsCache;
 }
@@ -204,9 +201,9 @@ uint16_t BasicFollowAndAttackController::write(OutputMemoryBitStream& inOutputSt
     return writtenState;
 }
 
-void BasicFollowAndAttackController::handleIdleState(bool isLive)
+void BasicFollowAndAttackController::handleIdleState()
 {
-    World* world = GM_CFG->getWorld();
+    World* world = Server::getInstance()->getWorld();
     assert(world);
     
     std::vector<Entity*>& players = world->getPlayers();
@@ -233,7 +230,7 @@ void BasicFollowAndAttackController::handleIdleState(bool isLive)
     }
 }
 
-void BasicFollowAndAttackController::handleMovingState(bool isLive)
+void BasicFollowAndAttackController::handleMovingState()
 {
     uint8_t& state = _entity->getState().state;
     uint16_t& stateTime = _entity->getState().stateTime;
@@ -311,7 +308,7 @@ void BasicFollowAndAttackController::handleMovingState(bool isLive)
     }
 }
 
-void BasicFollowAndAttackController::handleAttackingState(bool isLive)
+void BasicFollowAndAttackController::handleAttackingState()
 {
     uint8_t& state = _entity->getState().state;
     uint16_t& stateTime = _entity->getState().stateTime;
@@ -323,7 +320,7 @@ void BasicFollowAndAttackController::handleAttackingState(bool isLive)
         if (animTime == 24)
         {
             uint32_t damage = 1;
-            targetTouching->getController()->receiveMessage(ENTITY_MESSAGE_DAMAGE, isLive, &damage);
+            targetTouching->getController()->receiveMessage(ENTITY_MESSAGE_DAMAGE, &damage);
         }
     }
     else
@@ -333,7 +330,7 @@ void BasicFollowAndAttackController::handleAttackingState(bool isLive)
     }
 }
 
-void BasicFollowAndAttackController::handleDyingState(bool isLive)
+void BasicFollowAndAttackController::handleDyingState()
 {
     // Empty
 }

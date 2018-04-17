@@ -52,7 +52,7 @@
 #include <framework/network/steam/NGSteamGameServices.h>
 #endif
 
-NGRTTI_IMPL(GameEngine, EngineState);
+IMPL_RTTI(GameEngine, EngineState);
 
 GameEngine* GameEngine::s_instance = NULL;
 
@@ -122,7 +122,7 @@ void GameEngine::sHandleDynamicEntityDeletedOnClient(Entity* inEntity)
 GameEngine::GameEngine() : EngineState(),
 _renderer(new GameRenderer()),
 _world(NULL),
-_stateTime(0),
+_timing(static_cast<Timing*>(INSTANCE_MANAGER->getInstance(INSTANCE_TIME_CLIENT))),
 _state(GameEngineState_Default),
 _map(0)
 {
@@ -142,18 +142,15 @@ void GameEngine::enter(Engine* engine)
     createWindowSizeDependentResources(engine->getScreenWidth(), engine->getScreenHeight(), engine->getCursorWidth(), engine->getCursorHeight());
     
     _map = 0;
-    _stateTime = 0;
     _world = new World();
-    _timing = static_cast<Timing*>(INSTANCE_MANAGER->getInstance(INSTANCE_TIME_CLIENT));
+    _timing->reset();
     
     GameInputManager::create(this);
 }
 
 void GameEngine::update(Engine* engine)
 {
-    _stateTime += FRAME_RATE;
-    
-    _timing->setTime(_stateTime);
+    _timing->onFrame();
     
     NG_CLIENT->processIncomingPackets();
     if (NG_CLIENT->getState() == NCS_Disconnected)
@@ -216,7 +213,7 @@ void GameEngine::exit(Engine* engine)
         Server::destroy();
     }
     
-    _timing->setTime(0);
+    _timing->reset();
 }
 
 void GameEngine::createDeviceDependentResources()
@@ -275,4 +272,9 @@ void GameEngine::render(double alpha)
     }
     
     NG_AUDIO_ENGINE->render();
+}
+
+World* GameEngine::getWorld()
+{
+    return _world;
 }

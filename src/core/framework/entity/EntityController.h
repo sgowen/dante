@@ -9,34 +9,40 @@
 #ifndef __noctisgames__EntityController__
 #define __noctisgames__EntityController__
 
-#include <framework/util/NGRTTI.h>
+#define DECL_EntityController_create \
+public: \
+    static EntityController* create(Entity* e)
+
+#define IMPL_EntityController_create(name) \
+EntityController* name::create(Entity* e)  \
+{                                          \
+    return new name(e);                    \
+}                                          \
+
+#include <framework/util/RTTI.h>
 
 #include <vector>
 #include <string>
 
 class Entity;
-class InputMemoryBitStream;
-class OutputMemoryBitStream;
 class b2Fixture;
 
 class EntityController
 {
-    NGRTTI_DECL;
+    DECL_RTTI;
+    DECL_EntityController_create;
     
 public:
     EntityController(Entity* inEntity);
     virtual ~EntityController();
     
-    virtual void update(bool isLive = false) = 0;
-    virtual void postUpdate() = 0;
-    virtual void receiveMessage(uint16_t message, bool isLive, void* data = NULL) = 0;
-    virtual void onFixturesCreated(std::vector<b2Fixture*>& fixtures) = 0;
-    virtual bool shouldCollide(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB) = 0;
-    virtual void handleBeginContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB) = 0;
-    virtual void handleEndContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB) = 0;
-    virtual void read(InputMemoryBitStream& inInputStream, uint16_t& inReadState) = 0;
-    virtual void recallCache(uint16_t& inReadState) = 0;
-    virtual uint16_t write(OutputMemoryBitStream& inOutputStream, uint16_t inWrittenState, uint16_t inDirtyState) = 0;
+    virtual void update();
+    virtual void postUpdate();
+    virtual void receiveMessage(uint16_t message, void* data = NULL);
+    virtual void onFixturesCreated(std::vector<b2Fixture*>& fixtures);
+    virtual bool shouldCollide(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB);
+    virtual void handleBeginContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB);
+    virtual void handleEndContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB);
     
 protected:
     Entity* _entity;

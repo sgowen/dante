@@ -9,13 +9,13 @@
 #ifndef __noctisgames__EngineState__
 #define __noctisgames__EngineState__
 
-#include <framework/util/NGRTTI.h>
+#include <framework/util/RTTI.h>
 #include <framework/util/State.h>
 #include <framework/main/portable/Engine.h>
 
 class EngineState : public State<Engine>
 {
-    NGRTTI_DECL;
+    DECL_RTTI;
     
 public:
     virtual void enter(Engine* engine) = 0;

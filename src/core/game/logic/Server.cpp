@@ -119,9 +119,7 @@ void Server::sHandleInputStateRelease(InputState* inputState)
 
 void Server::update()
 {
-    _stateTime += FRAME_RATE;
-    
-    _timing->setTime(_stateTime);
+    _timing->onFrame();
     
     NG_SERVER->processIncomingPackets();
     
@@ -156,6 +154,11 @@ void Server::toggleMap()
 uint32_t Server::getFlags()
 {
     return _flags;
+}
+
+World* Server::getWorld()
+{
+    return _world;
 }
 
 void Server::handleNewClient(uint8_t playerId, std::string playerName)
@@ -313,10 +316,11 @@ _data(data),
 _timing(static_cast<Timing*>(INSTANCE_MANAGER->getInstance(INSTANCE_TIME_SERVER))),
 _entityIDManager(static_cast<EntityIDManager*>(INSTANCE_MANAGER->getInstance(INSTANCE_ENTITY_ID_MANAGER_SERVER))),
 _world(new World(WorldFlag_Server | WorldFlag_MapLoadAll)),
-_stateTime(0),
 _map(0),
 _isLoadingMap(false)
 {
+    _timing->reset();
+    
     if (_flags & ServerFlag_Steam)
     {
 #ifdef NG_STEAM

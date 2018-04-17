@@ -18,26 +18,22 @@ class Move;
 
 class PlayerController : public EntityController
 {
-    NGRTTI_DECL;
+    DECL_RTTI;
+    DECL_EntityController_create;
     
 public:
-    static EntityController* create(Entity* inEntity);
-    
     PlayerController(Entity* inEntity);
     virtual ~PlayerController();
     
-    virtual void update(bool isLive = false);
+    virtual void update();
     virtual void postUpdate();
-    virtual void receiveMessage(uint16_t message, bool isLive, void* data = NULL);
+    virtual void receiveMessage(uint16_t message, void* data = NULL);
     virtual void onFixturesCreated(std::vector<b2Fixture*>& fixtures);
     virtual bool shouldCollide(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB);
     virtual void handleBeginContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB);
     virtual void handleEndContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB);
-    virtual void read(InputMemoryBitStream& inInputStream, uint16_t& inReadState);
-    virtual void recallCache(uint16_t& inReadState);
-    virtual uint16_t write(OutputMemoryBitStream& inOutputStream, uint16_t inWrittenState, uint16_t inDirtyState);
     
-    void processInput(InputState* inInputState, bool isLive = false);
+    void processInput(InputState* inInputState);
     
     /// Helpers
     void setAddressHash(uint64_t inValue);

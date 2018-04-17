@@ -36,7 +36,7 @@ class GameEngine : public EngineState
     friend class GameInputManager;
     friend class GameRenderer;
     
-    NGRTTI_DECL;
+    DECL_RTTI;
     
 public:
     static void create();
@@ -57,13 +57,14 @@ public:
     virtual void onPause();
     virtual void render(double alpha);
     
+    World* getWorld();
+    
 private:
     static GameEngine* s_instance;
     
     GameRenderer* _renderer;
     World* _world;
     Timing* _timing;
-    double _stateTime;
     uint32_t _state;
     uint32_t _map;
     

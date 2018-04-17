@@ -32,14 +32,11 @@
 #include <game/logic/Server.h>
 #include <framework/util/Config.h>
 
-NGRTTI_IMPL(DestructibleController, EntityController);
+IMPL_RTTI(DestructibleController, EntityController);
 
-EntityController* DestructibleController::create(Entity* inEntity)
-{
-    return new DestructibleController(inEntity);
-}
+IMPL_EntityController_create(DestructibleController);
 
-DestructibleController::DestructibleController(Entity* inEntity) : EntityController(inEntity),
+DestructibleController::DestructibleController(Entity* e) : EntityController(e),
 _stats(),
 _statsCache(_stats)
 {
@@ -51,7 +48,7 @@ DestructibleController::~DestructibleController()
     // Empty
 }
 
-void DestructibleController::update(bool isLive)
+void DestructibleController::update()
 {
     /// TODO
 }
@@ -73,7 +70,7 @@ void DestructibleController::postUpdate()
     }
 }
 
-void DestructibleController::receiveMessage(uint16_t message, bool isLive, void* data)
+void DestructibleController::receiveMessage(uint16_t message, void* data)
 {
     uint8_t fromState = _entity->getState().state;
     uint8_t& state = _entity->getState().state;
@@ -110,7 +107,7 @@ void DestructibleController::receiveMessage(uint16_t message, bool isLive, void*
             break;
     }
     
-    if (isLive)
+    if ()
     {
         Util::handleSound(_entity, fromState, state);
     }
@@ -150,7 +147,7 @@ void DestructibleController::read(InputMemoryBitStream& inInputStream, uint16_t&
     }
 }
 
-void DestructibleController::recallCache(uint16_t& inReadState)
+void DestructibleController::recallCache()
 {
     _stats = _statsCache;
 }

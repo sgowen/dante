@@ -13,7 +13,7 @@
 
 class MainEngineController : public EngineController
 {
-    NGRTTI_DECL;
+    DECL_RTTI;
     
 public:
     MainEngineController();

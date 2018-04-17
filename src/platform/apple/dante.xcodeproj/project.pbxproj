@@ -204,7 +204,7 @@
 		BB5AFDBB1FB3595F005FBD52 /* pngwutil.c in Sources */ = {isa = PBXBuildFile; fileRef = BB44C59A1DB03A7C003E633F /* pngwutil.c */; };
 		BB5AFE111FB359DE005FBD52 /* Util.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB6E7B0F1F940F13006C0024 /* Util.cpp */; };
 		BB5AFE171FB359EA005FBD52 /* FPSUtil.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBCDF24D1F3796C3006E94B0 /* FPSUtil.cpp */; };
-		BB5AFE191FB359EA005FBD52 /* NGRTTI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB74283D1EB2AF4200B7628D /* NGRTTI.cpp */; };
+		BB5AFE191FB359EA005FBD52 /* RTTI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB74283D1EB2AF4200B7628D /* RTTI.cpp */; };
 		BB5AFE1A1FB359EA005FBD52 /* StringUtil.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBBD148E1EE06858003F9307 /* StringUtil.cpp */; };
 		BB5AFE1B1FB359EA005FBD52 /* Timing.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBBD14921EE06BB3003F9307 /* Timing.cpp */; };
 		BB5AFE1C1FB359EA005FBD52 /* WeightedTimedMovingAverage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBBD14941EE06BB3003F9307 /* WeightedTimedMovingAverage.cpp */; };
@@ -313,7 +313,9 @@
 		BB728F782086701D006C7B4D /* StudioRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB728F702086701D006C7B4D /* StudioRenderer.cpp */; };
 		BB728F792086701D006C7B4D /* StudioEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB728F732086701D006C7B4D /* StudioEngine.cpp */; };
 		BB728F7A2086701D006C7B4D /* StudioEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB728F732086701D006C7B4D /* StudioEngine.cpp */; };
-		BB7428411EB2AF4200B7628D /* NGRTTI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB74283D1EB2AF4200B7628D /* NGRTTI.cpp */; };
+		BB728F7D20869F5B006C7B4D /* EntityNetworkController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB728F7B20869F5A006C7B4D /* EntityNetworkController.cpp */; };
+		BB728F7E20869F5B006C7B4D /* EntityNetworkController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB728F7B20869F5A006C7B4D /* EntityNetworkController.cpp */; };
+		BB7428411EB2AF4200B7628D /* RTTI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB74283D1EB2AF4200B7628D /* RTTI.cpp */; };
 		BB8091FD1FF4131600F84D1D /* TextureManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8091FB1FF4131500F84D1D /* TextureManager.cpp */; };
 		BB8091FE1FF4131600F84D1D /* TextureManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8091FB1FF4131500F84D1D /* TextureManager.cpp */; };
 		BB80D2021EF97F89002B9448 /* NGSteamP2PAuth.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB80D2001EF97F89002B9448 /* NGSteamP2PAuth.cpp */; };
@@ -500,8 +502,6 @@
 		BBEF7000200028220030076A /* EntityController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBEF6FFD200028220030076A /* EntityController.cpp */; };
 		BBEF7022200062C40030076A /* EntityMapper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBEF7020200062C40030076A /* EntityMapper.cpp */; };
 		BBEF7023200062C40030076A /* EntityMapper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBEF7020200062C40030076A /* EntityMapper.cpp */; };
-		BBEF7026200078320030076A /* DefaultController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBEF7024200078320030076A /* DefaultController.cpp */; };
-		BBEF7027200078320030076A /* DefaultController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBEF7024200078320030076A /* DefaultController.cpp */; };
 		BBF10DBB203100990032F29A /* sound_004.wav in Resources */ = {isa = PBXBuildFile; fileRef = BBF10DB8203100980032F29A /* sound_004.wav */; };
 		BBF10DBC203100990032F29A /* sound_004.wav in Resources */ = {isa = PBXBuildFile; fileRef = BBF10DB8203100980032F29A /* sound_004.wav */; };
 		BBF10DBD203100990032F29A /* sound_002.wav in Resources */ = {isa = PBXBuildFile; fileRef = BBF10DB9203100990032F29A /* sound_002.wav */; };
@@ -1021,12 +1021,14 @@
 		BB728F722086701D006C7B4D /* StudioInputManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StudioInputManager.h; sourceTree = "<group>"; };
 		BB728F732086701D006C7B4D /* StudioEngine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StudioEngine.cpp; sourceTree = "<group>"; };
 		BB728F742086701D006C7B4D /* StudioEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StudioEngine.h; sourceTree = "<group>"; };
+		BB728F7B20869F5A006C7B4D /* EntityNetworkController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EntityNetworkController.cpp; sourceTree = "<group>"; };
+		BB728F7C20869F5B006C7B4D /* EntityNetworkController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EntityNetworkController.h; sourceTree = "<group>"; };
 		BB7428361EB2A98500B7628D /* pch.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = pch.h; sourceTree = "<group>"; };
 		BB74283A1EB2AF4200B7628D /* macros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = macros.h; sourceTree = "<group>"; };
 		BB74283B1EB2AF4200B7628D /* NGRollingPool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NGRollingPool.h; sourceTree = "<group>"; };
 		BB74283C1EB2AF4200B7628D /* NGSTDUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NGSTDUtil.h; sourceTree = "<group>"; };
-		BB74283D1EB2AF4200B7628D /* NGRTTI.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NGRTTI.cpp; sourceTree = "<group>"; };
-		BB74283E1EB2AF4200B7628D /* NGRTTI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NGRTTI.h; sourceTree = "<group>"; };
+		BB74283D1EB2AF4200B7628D /* RTTI.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RTTI.cpp; sourceTree = "<group>"; };
+		BB74283E1EB2AF4200B7628D /* RTTI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTTI.h; sourceTree = "<group>"; };
 		BB74283F1EB2AF4200B7628D /* StringUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StringUtil.h; sourceTree = "<group>"; };
 		BB8091FB1FF4131500F84D1D /* TextureManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TextureManager.cpp; sourceTree = "<group>"; };
 		BB8091FC1FF4131500F84D1D /* TextureManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextureManager.h; sourceTree = "<group>"; };
@@ -1703,8 +1705,6 @@
 		BBEF6FFE200028220030076A /* EntityController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EntityController.h; sourceTree = "<group>"; };
 		BBEF7020200062C40030076A /* EntityMapper.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = EntityMapper.cpp; sourceTree = "<group>"; };
 		BBEF7021200062C40030076A /* EntityMapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EntityMapper.h; sourceTree = "<group>"; };
-		BBEF7024200078320030076A /* DefaultController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DefaultController.cpp; sourceTree = "<group>"; };
-		BBEF7025200078320030076A /* DefaultController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DefaultController.h; sourceTree = "<group>"; };
 		BBF10DB8203100980032F29A /* sound_004.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = sound_004.wav; sourceTree = "<group>"; };
 		BBF10DB9203100990032F29A /* sound_002.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = sound_002.wav; sourceTree = "<group>"; };
 		BBF10DBA203100990032F29A /* sound_003.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = sound_003.wav; sourceTree = "<group>"; };
@@ -2528,10 +2528,10 @@
 				BBB1D3AC1FC8CB9700B74BAC /* NGExtension.h */,
 				BBB1D3A81FC8C65F00B74BAC /* NGPool.h */,
 				BB74283B1EB2AF4200B7628D /* NGRollingPool.h */,
-				BB74283D1EB2AF4200B7628D /* NGRTTI.cpp */,
-				BB74283E1EB2AF4200B7628D /* NGRTTI.h */,
 				BB74283C1EB2AF4200B7628D /* NGSTDUtil.h */,
 				BB5B332F1FDDBDE700B2D145 /* PlatformHelper.h */,
+				BB74283D1EB2AF4200B7628D /* RTTI.cpp */,
+				BB74283E1EB2AF4200B7628D /* RTTI.h */,
 				BBCB93171FC2295B0020703A /* State.h */,
 				BBCB93181FC2295C0020703A /* StateMachine.h */,
 				BBBD148E1EE06858003F9307 /* StringUtil.cpp */,
@@ -2662,8 +2662,6 @@
 		BBAEF0BE1EA94ED900F0866E /* entity */ = {
 			isa = PBXGroup;
 			children = (
-				BBEF7024200078320030076A /* DefaultController.cpp */,
-				BBEF7025200078320030076A /* DefaultController.h */,
 				BBAEF0BF1EA94ED900F0866E /* Entity.cpp */,
 				BBAEF0C01EA94ED900F0866E /* Entity.h */,
 				BBEF6FFD200028220030076A /* EntityController.cpp */,
@@ -2676,6 +2674,8 @@
 				BBAEF0C21EA94ED900F0866E /* EntityManager.h */,
 				BBEF7020200062C40030076A /* EntityMapper.cpp */,
 				BBEF7021200062C40030076A /* EntityMapper.h */,
+				BB728F7B20869F5A006C7B4D /* EntityNetworkController.cpp */,
+				BB728F7C20869F5B006C7B4D /* EntityNetworkController.h */,
 			);
 			path = entity;
 			sourceTree = "<group>";
@@ -4033,7 +4033,6 @@
 				BB27D23F1FC6567A00ED42FD /* OALTools.m in Sources */,
 				BB27D2401FC6567A00ED42FD /* mach_timing.c in Sources */,
 				BB27D2411FC6567A00ED42FD /* OALActionManager.m in Sources */,
-				BBEF7026200078320030076A /* DefaultController.cpp in Sources */,
 				BB27D2421FC6567A00ED42FD /* OALAction.m in Sources */,
 				BB27D2431FC6567A00ED42FD /* OALUtilityActions.m in Sources */,
 				BB27D2441FC6567A00ED42FD /* OALAudioActions.m in Sources */,
@@ -4158,7 +4157,7 @@
 				BBD554421FDB2EA800E00AD6 /* b2Rope.cpp in Sources */,
 				BB81BAA3201F806F00F5B088 /* Assets.cpp in Sources */,
 				BBD5542A1FDB2EA800E00AD6 /* b2FrictionJoint.cpp in Sources */,
-				BB7428411EB2AF4200B7628D /* NGRTTI.cpp in Sources */,
+				BB7428411EB2AF4200B7628D /* RTTI.cpp in Sources */,
 				BBAEF2401EA94EDA00F0866E /* OpenGLRendererHelper.cpp in Sources */,
 				BBAEF25E1EA94EDA00F0866E /* Font.cpp in Sources */,
 				BBBD14971EE06BB3003F9307 /* Timing.cpp in Sources */,
@@ -4175,6 +4174,7 @@
 				BB5D5A3B206C4C5A00FB53FD /* EntityIDManager.cpp in Sources */,
 				BBCDF24F1F3796C3006E94B0 /* FPSUtil.cpp in Sources */,
 				BBD554581FDB2EA800E00AD6 /* b2ChainShape.cpp in Sources */,
+				BB728F7D20869F5B006C7B4D /* EntityNetworkController.cpp in Sources */,
 				BB44CB861DB053C0003E633F /* pngread.c in Sources */,
 				BB44CB871DB053C0003E633F /* pngrio.c in Sources */,
 				BBD5544E1FDB2EA800E00AD6 /* b2Math.cpp in Sources */,
@@ -4339,7 +4339,7 @@
 				BBD5543F1FDB2EA800E00AD6 /* b2Island.cpp in Sources */,
 				BB5AFE171FB359EA005FBD52 /* FPSUtil.cpp in Sources */,
 				BB728F782086701D006C7B4D /* StudioRenderer.cpp in Sources */,
-				BB5AFE191FB359EA005FBD52 /* NGRTTI.cpp in Sources */,
+				BB5AFE191FB359EA005FBD52 /* RTTI.cpp in Sources */,
 				BB5AFE1A1FB359EA005FBD52 /* StringUtil.cpp in Sources */,
 				BB5AFE1B1FB359EA005FBD52 /* Timing.cpp in Sources */,
 				BBD5541B1FDB2EA800E00AD6 /* b2PolygonContact.cpp in Sources */,
@@ -4395,6 +4395,7 @@
 				BB8CAB91202DF54D001BEB37 /* GameConfig.cpp in Sources */,
 				BB9EE50E1FC092BA000F5389 /* AssetDataHandler.cpp in Sources */,
 				BB5AFE4E1FB35A77005FBD52 /* NetworkManagerServer.cpp in Sources */,
+				BB728F7E20869F5B006C7B4D /* EntityNetworkController.cpp in Sources */,
 				BB5AFE4F1FB35A77005FBD52 /* ReplicationManagerServer.cpp in Sources */,
 				BB1C3C131FE77301002E4AA6 /* NGTextureShader.cpp in Sources */,
 				BB5AFE501FB35A77005FBD52 /* ReplicationManagerTransmissionData.cpp in Sources */,
@@ -4402,7 +4403,6 @@
 				BB5AFE271FB35A19005FBD52 /* Circle.cpp in Sources */,
 				BB5AFE291FB35A19005FBD52 /* Line.cpp in Sources */,
 				BB04A6C11FC383A800E0EB89 /* IOSMain.mm in Sources */,
-				BBEF7027200078320030076A /* DefaultController.cpp in Sources */,
 				BB5AFE2A1FB35A19005FBD52 /* NGRect.cpp in Sources */,
 				BBD554271FDB2EA800E00AD6 /* b2WeldJoint.cpp in Sources */,
 				BB5AFE2B1FB35A19005FBD52 /* OverlapTester.cpp in Sources */,

@@ -54,7 +54,7 @@
 #include <framework/network/steam/NGSteamGameServices.h>
 #endif
 
-NGRTTI_IMPL(TitleEngine, EngineState);
+IMPL_RTTI(TitleEngine, EngineState);
 
 TitleEngine* TitleEngine::s_instance = NULL;
 

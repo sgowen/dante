@@ -14,7 +14,7 @@
 
 #include <cstring>	// memcpy()
 
-NGRTTI_IMPL(SocketAddress, MachineAddress);
+IMPL_RTTI(SocketAddress, MachineAddress);
 
 SocketAddress::SocketAddress(uint32_t inAddress, uint16_t inPort) : MachineAddress()
 {

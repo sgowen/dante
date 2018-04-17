@@ -16,7 +16,7 @@
 
 #include <framework/audio/portable/NGAudioEngine.h>
 #include <game/entity/PlayerController.h>
-#include <game/logic/GameConfig.h>
+#include <game/game/GameEngine.h>
 
 void Util::handleSound(Entity* e, uint8_t fromState, uint8_t toState)
 {
@@ -34,7 +34,7 @@ void Util::handleSound(Entity* e, uint8_t fromState, uint8_t toState)
 
 void Util::playSound(int soundId, const b2Vec2& position)
 {
-    World* world = GM_CFG->getWorld();
+    World* world = GameEngine::getInstance()->getWorld();
     assert(world);
     
     float volume = 1;

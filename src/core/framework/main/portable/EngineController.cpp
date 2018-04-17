@@ -10,7 +10,7 @@
 
 #include <framework/main/portable/EngineController.h>
 
-NGRTTI_IMPL_NOPARENT(EngineController);
+IMPL_RTTI_NOPARENT(EngineController);
 
 EngineController::EngineController()
 {

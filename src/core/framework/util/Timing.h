@@ -15,11 +15,12 @@ public:
     Timing();
     ~Timing();
     
-    void setTime(float stateTime);
+    void onFrame();
+    void reset();
     float getTime() const;
     
 private:
-    float _frameStartTime;
+    double _time;
 };
 
 #endif /* defined(__noctisgames__Timing__) */

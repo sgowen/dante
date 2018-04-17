@@ -30,7 +30,7 @@ class TitleEngine : public EngineState
 {
     friend class TitleRenderer;
     
-    NGRTTI_DECL;
+    DECL_RTTI;
     
 public:
     static void create();

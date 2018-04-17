@@ -17,7 +17,7 @@
 
 #include <assert.h>
 
-NGRTTI_IMPL(GameInputState, InputState);
+IMPL_RTTI(GameInputState, InputState);
 
 GameInputState::GameInputState() : InputState()
 {

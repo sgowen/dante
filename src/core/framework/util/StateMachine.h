@@ -41,32 +41,30 @@ public:
         }
     }
     
-    void changeState(state_type* newState)
+    // Set overwrite to true when transition away from a Loading Screen
+    void changeState(state_type* newState, bool overwrite = false)
     {
         assert(newState);
         
-        if (getCurrentState())
+        exit();
+        
+        if (overwrite)
         {
-            getCurrentState()->exit(_owner);
+            _states.pop();
         }
         
         _states.push(newState);
         
-        assert(getCurrentState());
-        getCurrentState()->enter(_owner);
+        enter();
     }
     
     void revertToPreviousState()
     {
-        if (getCurrentState())
-        {
-            getCurrentState()->exit(_owner);
-        }
+        exit();
         
         _states.pop();
         
-        assert(getCurrentState());
-        getCurrentState()->enter(_owner);
+        enter();
     }
     
     void setCurrentState(state_type* state)
@@ -99,6 +97,20 @@ private:
     
     state_type* _globalState;
     std::stack<state_type*> _states;
+    
+    void exit()
+    {
+        assert(getCurrentState());
+        
+        getCurrentState()->exit(_owner);
+    }
+    
+    void enter()
+    {
+        assert(getCurrentState());
+        
+        getCurrentState()->enter(_owner);
+    }
 };
 
 #endif /* defined(__noctisgames__StateMachine__) */

@@ -13,18 +13,18 @@
 #include <framework/util/MathUtil.h>
 #include <Box2D/Common/b2Math.h>
 
-#include <framework/util/NGRTTI.h>
+#include <framework/util/RTTI.h>
 
 #include <stdint.h>
 #include <map>
 #include <vector>
 
+class EntityController;
+class EntityNetworkController;
 class b2World;
 class b2Body;
 class b2Fixture;
 class b2Contact;
-class Move;
-class EntityController;
 
 enum FixtureFlags
 {
@@ -59,6 +59,7 @@ struct EntityDef
     uint32_t ID;
     uint32_t type;
     std::string controller;
+    std::string networkController;
     std::map<int, std::string> textureMappings;
     std::map<int, int> soundMappings;
     std::vector<FixtureDef> fixtures;
@@ -73,9 +74,10 @@ struct EntityDef
 
 class Entity
 {
-    friend class MemoryBitStreamUtil;
+    friend class EntityController;
+    friend class EntityNetworkController;
     
-    NGRTTI_DECL;
+    DECL_RTTI;
     
 public:
     enum ReadStateFlag
@@ -87,7 +89,7 @@ public:
     Entity(EntityDef inEntityDef);
     ~Entity();
     
-    void update(bool isLive = false);
+    void update();
     /// Handle Server State Changes
     void postUpdate();
     void interpolate(double alpha);
@@ -165,6 +167,7 @@ public:
     };
     Pose& getPose();
     Pose& getPoseCache();
+    Pose& getPoseNetworkCache();
     
     struct State
     {
@@ -194,10 +197,12 @@ public:
     };
     State& getState();
     State& getStateCache();
+    State& getStateNetworkCache();
     
 private:
     EntityDef _entityDef;
     EntityController* _controller;
+    EntityNetworkController* _networkController;
     bool _isServer;
     
     /// Physics
@@ -208,8 +213,10 @@ private:
     /// Network
     Pose _pose;
     Pose _poseCache;
+    Pose _poseNetworkCache;
     State _state;
     State _stateCache;
+    State _stateNetworkCache;
     
     Pose _poseInterpolateCache;
     

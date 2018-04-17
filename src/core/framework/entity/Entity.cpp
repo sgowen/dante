@@ -10,19 +10,13 @@
 
 #include <framework/entity/Entity.h>
 
-#include <Box2D/Box2D.h>
-#include <framework/network/portable/Move.h>
 #include <framework/entity/EntityController.h>
+#include <framework/entity/EntityNetworkController.h>
+#include <Box2D/Box2D.h>
 
-#include <framework/util/NGSTDUtil.h>
-#include <framework/util/Timing.h>
-#include <framework/util/macros.h>
-#include <framework/network/client/NetworkManagerClient.h>
-#include <framework/util/StringUtil.h>
 #include <framework/entity/EntityMapper.h>
-#include <framework/network/server/NetworkManagerServer.h>
 
-NGRTTI_IMPL_NOPARENT(Entity);
+IMPL_RTTI_NOPARENT(Entity);
 
 Entity::Entity(EntityDef inEntityDef) :
 _entityDef(inEntityDef),
@@ -32,6 +26,7 @@ _body(NULL),
 _groundSensorFixture(NULL),
 _pose(inEntityDef.x, inEntityDef.y),
 _poseCache(_pose),
+_poseNetworkCache(_pose),
 _poseInterpolateCache(_pose),
 _readState(0),
 _ID(inEntityDef.ID),
@@ -47,8 +42,11 @@ Entity::~Entity()
     delete _controller;
 }
 
-void Entity::update(bool isLive)
+void Entity::update()
 {
+    _poseCache = _pose;
+    _stateCache = _state;
+    
     updatePoseFromBody();
     
     if (_entityDef.stateSensitive)
@@ -56,7 +54,7 @@ void Entity::update(bool isLive)
         ++_state.stateTime;
     }
     
-    _controller->update(isLive);
+    _controller->update();
 }
 
 void Entity::postUpdate()
@@ -66,15 +64,15 @@ void Entity::postUpdate()
         requestDeletion();
     }
     
-    if (_poseCache != _pose)
+    if (_poseNetworkCache != _pose)
     {
-        _poseCache = _pose;
+        _poseNetworkCache = _pose;
         NG_SERVER->setStateDirty(getID(), ReadStateFlag_Pose);
     }
     
-    if (_stateCache != _state)
+    if (_stateNetworkCache != _state)
     {
-        _stateCache = _state;
+        _stateNetworkCache = _state;
         NG_SERVER->setStateDirty(getID(), ReadStateFlag_State);
     }
     
@@ -140,12 +138,12 @@ void Entity::handleEndContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture
 
 void Entity::recallCache()
 {
-    _pose = _poseCache;
-    _state = _stateCache;
+    _pose = _poseNetworkCache;
+    _state = _stateNetworkCache;
     
     updateBodyFromPose();
     
-    _controller->recallCache(_readState);
+    _controller->recallCache();
 }
 
 void Entity::initPhysics(b2World& world)
@@ -348,6 +346,11 @@ Entity::Pose& Entity::getPoseCache()
     return _poseCache;
 }
 
+Entity::Pose& Entity::getPoseNetworkCache()
+{
+    return _poseNetworkCache;
+}
+
 Entity::State& Entity::getState()
 {
     return _state;
@@ -356,6 +359,11 @@ Entity::State& Entity::getState()
 Entity::State& Entity::getStateCache()
 {
     return _stateCache;
+}
+
+Entity::State& Entity::getStateNetworkCache()
+{
+    return _stateNetworkCache;
 }
 
 void Entity::createFixtures()

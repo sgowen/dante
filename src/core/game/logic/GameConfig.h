@@ -1,6 +1,6 @@
 //
 //  GameConfig.h
-//  noctisgames
+//  dante
 //
 //  Created by Stephen Gowen on 1/5/18.
 //  Copyright © 2018 Noctis Games. All rights reserved.
@@ -10,10 +10,6 @@
 #define __noctisgames__GameConfig__
 
 #define GM_CFG (GameConfig::getInstance())
-
-#include <string>
-
-class World;
 
 class GameConfig
 {
@@ -34,12 +30,8 @@ public:
     float _tempStaticLight2[6];
     
     void initWithJsonFile(const char* fileName, bool isBundled = true, bool useEncryption = false);
-    void setWorld(World* world);
-    World* getWorld();
     
 private:
-    World* _world;
-    
     // ctor, copy ctor, and assignment should be private in a Singleton
     GameConfig();
     ~GameConfig();

@@ -10,7 +10,9 @@
 
 #include <framework/util/Timing.h>
 
-Timing::Timing() : _frameStartTime(0)
+#include <framework/util/Constants.h>
+
+Timing::Timing() : _time(0)
 {
     // Empty
 }
@@ -20,12 +22,17 @@ Timing::~Timing()
     // Empty
 }
 
-void Timing::setTime(float stateTime)
+void Timing::onFrame()
 {
-    _frameStartTime = stateTime;
+    _time += FRAME_RATE;
+}
+
+void Timing::reset()
+{
+    _time = 0;
 }
 
 float Timing::getTime() const
 {
-    return _frameStartTime;
+    return _time;
 }

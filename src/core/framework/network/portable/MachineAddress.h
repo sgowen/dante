@@ -9,13 +9,13 @@
 #ifndef __noctisgames__MachineAddress__
 #define __noctisgames__MachineAddress__
 
-#include <framework/util/NGRTTI.h>
+#include <framework/util/RTTI.h>
 
 #include <string>
 
 class MachineAddress
 {
-    NGRTTI_DECL;
+    DECL_RTTI;
     
 public:
     MachineAddress();

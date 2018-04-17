@@ -14,6 +14,7 @@
 #include <framework/entity/EntityLayoutMapper.h>
 #include <framework/entity/EntityController.h>
 
+#include <framework/entity/EntityController.h>
 #include <framework/util/NGSTDUtil.h>
 #include <framework/util/StringUtil.h>
 #include <framework/file/portable/JsonFile.h>
@@ -77,7 +78,8 @@ void EntityMapper::initWithJson(const char* json)
         entry->type = key;
         entry->name = iv["name"].GetString();
         entry->typeName = keyStr;
-        entry->controller = iv.HasMember("controller") ? iv["controller"].GetString() : "DefaultController";
+        entry->controller = iv.HasMember("controller") ? iv["controller"].GetString() : "EntityController";
+        entry->networkController = iv.HasMember("networkController") ? iv["networkController"].GetString() : "EntityNetworkController";
         
         {
             const Value& v = iv["textureMappings"];
@@ -213,7 +215,8 @@ const std::map<std::string, EntityControllerCreationFunc>& EntityMapper::getEnti
 
 EntityMapper::EntityMapper()
 {
-    // Empty
+    registerFunction("EntityController", EntityController::create);
+    registerFunction("EntityNetworkController", EntityNetworkController::create);
 }
 
 EntityMapper::~EntityMapper()

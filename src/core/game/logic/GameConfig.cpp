@@ -1,6 +1,6 @@
 //
 //  GameConfig.cpp
-//  noctisgames
+//  dante
 //
 //  Created by Stephen Gowen on 1/5/18.
 //  Copyright © 2018 Noctis Games. All rights reserved.
@@ -54,17 +54,7 @@ void GameConfig::initWithJsonFile(const char* fileName, bool isBundled, bool use
     _tempStaticLight2[5] = FW_CFG->getFloat("TempStaticLight2A");
 }
 
-void GameConfig::setWorld(World* world)
-{
-    _world = world;
-}
-
-World* GameConfig::getWorld()
-{
-    return _world;
-}
-
-GameConfig::GameConfig() : _world(NULL)
+GameConfig::GameConfig()
 {
     // Empty
 }

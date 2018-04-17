@@ -154,8 +154,6 @@ void World::removeDynamicEntity(Entity* inEntity)
 
 void World::updateServer()
 {
-    GM_CFG->setWorld(this);
-    
     int moveCount = NG_SERVER->getMoveCount();
     if (moveCount > 0)
     {
@@ -204,8 +202,6 @@ void World::updateServer()
 
 void World::postRead()
 {
-    GM_CFG->setWorld(this);
-    
     for (Entity* e : _players)
     {
         e->recallCache();
@@ -246,8 +242,6 @@ void World::postRead()
 
 void World::updateClient()
 {
-    GM_CFG->setWorld(this);
-    
     const Move* pendingMove = GameInputManager::getInstance()->getPendingMove();
     if (pendingMove)
     {

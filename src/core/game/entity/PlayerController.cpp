@@ -33,14 +33,11 @@
 #include <framework/util/Config.h>
 #include <game/logic/GameConfig.h>
 
-NGRTTI_IMPL(PlayerController, EntityController);
+IMPL_RTTI(PlayerController, EntityController);
 
-EntityController* PlayerController::create(Entity* inEntity)
-{
-    return new PlayerController(inEntity);
-}
+IMPL_EntityController_create(PlayerController);
 
-PlayerController::PlayerController(Entity* inEntity) : EntityController(inEntity),
+PlayerController::PlayerController(Entity* e) : EntityController(e),
 _playerInfo(),
 _playerInfoCache(_playerInfo),
 _stats(),
@@ -56,7 +53,7 @@ PlayerController::~PlayerController()
     // Empty
 }
 
-void PlayerController::update(bool isLive)
+void PlayerController::update()
 {
     uint8_t& state = _entity->getState().state;
     uint16_t& stateTime = _entity->getState().stateTime;
@@ -72,7 +69,7 @@ void PlayerController::update(bool isLive)
             if (e)
             {
                 uint32_t damage = state == State_ThirdPunch ? 2 : 1;
-                e->getController()->receiveMessage(ENTITY_MESSAGE_DAMAGE, isLive, &damage);
+                e->getController()->receiveMessage(ENTITY_MESSAGE_DAMAGE, &damage);
             }
         }
     }
@@ -98,7 +95,7 @@ void PlayerController::postUpdate()
     }
 }
 
-void PlayerController::receiveMessage(uint16_t message, bool isLive, void* data)
+void PlayerController::receiveMessage(uint16_t message, void* data)
 {
     switch (message)
     {
@@ -181,11 +178,11 @@ void PlayerController::read(InputMemoryBitStream& inInputStream, uint16_t& inRea
     
     if (!isLocalPlayer())
     {
-        Util::handleSound(_entity, _entity->getStateCache().state, _entity->getState().state);
+        Util::handleSound(_entity, _entity->getStateNetworkCache().state, _entity->getState().state);
     }
 }
 
-void PlayerController::recallCache(uint16_t& inReadState)
+void PlayerController::recallCache()
 {
     _playerInfo = _playerInfoCache;
     _stats = _statsCache;
@@ -219,7 +216,7 @@ uint16_t PlayerController::write(OutputMemoryBitStream& inOutputStream, uint16_t
     return writtenState;
 }
 
-void PlayerController::processInput(InputState* inInputState, bool isLive)
+void PlayerController::processInput(InputState* inInputState)
 {
     GameInputState* is = static_cast<GameInputState*>(inInputState);
     uint8_t playerId = getPlayerId();
@@ -229,7 +226,8 @@ void PlayerController::processInput(InputState* inInputState, bool isLive)
         return;
     }
     
-    uint8_t state = _entity->getState().state;
+    uint8_t fromState = _entity->getState().state;
+    uint8_t& state = _entity->getState().state;
     uint8_t inputState = playerInputState->getInputState();
     switch (state)
     {
@@ -258,9 +256,9 @@ void PlayerController::processInput(InputState* inInputState, bool isLive)
             break;
     }
     
-    if (isLive)
+    if ()
     {
-        Util::handleSound(_entity, state, _entity->getState().state);
+        Util::handleSound(_entity, fromState, state);
     }
 }
 

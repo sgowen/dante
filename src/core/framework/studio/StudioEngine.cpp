@@ -51,7 +51,7 @@
 #include <framework/network/steam/NGSteamGameServices.h>
 #endif
 
-NGRTTI_IMPL(StudioEngine, EngineState);
+IMPL_RTTI(StudioEngine, EngineState);
 
 StudioEngine* StudioEngine::s_instance = NULL;
 

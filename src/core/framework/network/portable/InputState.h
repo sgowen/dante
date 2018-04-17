@@ -9,14 +9,14 @@
 #ifndef __noctisgames__InputState__
 #define __noctisgames__InputState__
 
-#include <framework/util/NGRTTI.h>
+#include <framework/util/RTTI.h>
 
 class OutputMemoryBitStream;
 class InputMemoryBitStream;
 
 class InputState
 {
-    NGRTTI_DECL;
+    DECL_RTTI;
     
 public:
     InputState();

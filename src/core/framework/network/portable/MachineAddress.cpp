@@ -10,7 +10,7 @@
 
 #include <framework/network/portable/MachineAddress.h>
 
-NGRTTI_IMPL_NOPARENT(MachineAddress);
+IMPL_RTTI_NOPARENT(MachineAddress);
 
 MachineAddress::MachineAddress()
 {

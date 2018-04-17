@@ -10,7 +10,7 @@
 
 #include <framework/main/portable/EngineState.h>
 
-NGRTTI_IMPL_NOPARENT(EngineState);
+IMPL_RTTI_NOPARENT(EngineState);
 
 EngineState::EngineState()
 {

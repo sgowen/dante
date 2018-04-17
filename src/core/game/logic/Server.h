@@ -46,6 +46,7 @@ public:
     uint8_t getPlayerIdForRobotBeingCreated();
     void toggleMap();
     uint32_t getFlags();
+    World* getWorld();
 
 private:
     static Server* s_instance;
@@ -58,7 +59,6 @@ private:
     NoctisGames::NGPool<GameInputState> _inputStates;
     std::vector<uint8_t> _playerIds;
     std::vector<std::string> _playerNames;
-    double _stateTime;
     uint32_t _map;
     bool _isLoadingMap;
     

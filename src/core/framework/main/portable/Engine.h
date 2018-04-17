@@ -9,7 +9,7 @@
 #ifndef __noctisgames__Engine__
 #define __noctisgames__Engine__
 
-#include <framework/util/NGRTTI.h>
+#include <framework/util/RTTI.h>
 #include <framework/util/StateMachine.h>
 
 class EngineController;
@@ -17,7 +17,7 @@ class EngineState;
 
 class Engine
 {
-    NGRTTI_DECL;
+    DECL_RTTI;
     
 public:
     Engine(EngineController* engineController);

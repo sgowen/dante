@@ -13,15 +13,11 @@
 
 class InputMemoryBitStream;
 class OutputMemoryBitStream;
-class Entity;
 struct b2Vec2;
 
 class MemoryBitStreamUtil
 {
 public:
-    static void read(InputMemoryBitStream& ip, Entity& e);
-    static uint16_t write(OutputMemoryBitStream& op, Entity& e, uint16_t dirtyState);
-    
     static void read(InputMemoryBitStream& ip, b2Vec2& v);
     static void write(OutputMemoryBitStream& op, b2Vec2& v);
     

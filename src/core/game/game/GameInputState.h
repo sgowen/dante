@@ -11,7 +11,7 @@
 
 #include <framework/network/portable/InputState.h>
 
-#include <framework/util/NGRTTI.h>
+#include <framework/util/RTTI.h>
 
 enum GameInputStateFlags
 {
@@ -26,7 +26,7 @@ class InputMemoryBitStream;
 
 class GameInputState : public InputState
 {
-    NGRTTI_DECL;
+    DECL_RTTI;
     
     friend class GameInputManager;
     

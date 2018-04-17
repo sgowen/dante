@@ -16,7 +16,7 @@
 #include <framework/util/Constants.h>
 #include <framework/util/FPSUtil.h>
 
-NGRTTI_IMPL_NOPARENT(Engine);
+IMPL_RTTI_NOPARENT(Engine);
 
 Engine::Engine(EngineController* engineController) :
 _engineController(engineController),

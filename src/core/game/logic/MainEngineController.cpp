@@ -15,7 +15,6 @@
 #include <game/game/GameEngine.h>
 #include <framework/studio/StudioEngine.h>
 #include <framework/entity/EntityMapper.h>
-#include <framework/entity/DefaultController.h>
 #include <game/entity/BasicFollowAndAttackController.h>
 #include <game/entity/DestructibleController.h>
 #include <game/entity/PlayerController.h>
@@ -23,7 +22,7 @@
 #include <framework/util/Timing.h>
 #include <framework/entity/EntityIDManager.h>
 
-NGRTTI_IMPL(MainEngineController, EngineController);
+IMPL_RTTI(MainEngineController, EngineController);
 
 MainEngineController::MainEngineController()
 {
@@ -42,7 +41,6 @@ MainEngineController::MainEngineController()
     INSTANCE_MANAGER->registerInstance(INSTANCE_ENTITY_ID_MANAGER_STUDIO, &entityIDManagerStudio);
     
     EntityMapper::getInstance()->registerFunction("BasicFollowAndAttackController", BasicFollowAndAttackController::create);
-    EntityMapper::getInstance()->registerFunction("DefaultController", DefaultController::create);
     EntityMapper::getInstance()->registerFunction("DestructibleController", DestructibleController::create);
     EntityMapper::getInstance()->registerFunction("PlayerController", PlayerController::create);
     

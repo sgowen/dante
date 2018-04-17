@@ -68,7 +68,7 @@ class StudioEngine : public EngineState
     friend class StudioInputManager;
     friend class StudioRenderer;
     
-    NGRTTI_DECL;
+    DECL_RTTI;
     
 public:
     static void create();
