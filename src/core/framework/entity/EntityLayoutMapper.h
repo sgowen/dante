@@ -1,6 +1,6 @@
 //
 //  EntityLayoutMapper.h
-//  noctisgames-framework
+//  noctisgames
 //
 //  Created by Stephen Gowen on 1/10/18.
 //  Copyright © 2018 Noctis Games. All rights reserved.

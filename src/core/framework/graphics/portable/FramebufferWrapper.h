@@ -1,6 +1,6 @@
 //
 //  FramebufferWrapper.h
-//  noctisgames-framework
+//  noctisgames
 //
 //  Created by Stephen Gowen on 3/19/18.
 //  Copyright (c) 2018 Noctis Games. All rights reserved.

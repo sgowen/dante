@@ -182,7 +182,7 @@ void BasicFollowAndAttackController::read(InputMemoryBitStream& inInputStream, u
     Util::handleSound(_entity, _entity->getStateCache().state, _entity->getState().state);
 }
 
-void BasicFollowAndAttackController::recallLastReadState(uint16_t& inReadState)
+void BasicFollowAndAttackController::recallCache(uint16_t& inReadState)
 {
     _stats = _statsCache;
 }

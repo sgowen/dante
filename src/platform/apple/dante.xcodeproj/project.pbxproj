@@ -311,6 +311,8 @@
 		BB7267FE1EEC704B004F33F9 /* NetworkManagerServer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB7251981EE1053F0024C71C /* NetworkManagerServer.cpp */; };
 		BB7267FF1EEC704C004F33F9 /* ReplicationManagerServer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8307F31EC2AC0900435E7E /* ReplicationManagerServer.cpp */; };
 		BB7268001EEC704E004F33F9 /* ReplicationManagerTransmissionData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8307F51EC2AC0900435E7E /* ReplicationManagerTransmissionData.cpp */; };
+		BB728F6C208646A0006C7B4D /* MemoryBitStreamUtil.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB728F6B208646A0006C7B4D /* MemoryBitStreamUtil.cpp */; };
+		BB728F6D208646A0006C7B4D /* MemoryBitStreamUtil.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB728F6B208646A0006C7B4D /* MemoryBitStreamUtil.cpp */; };
 		BB7428411EB2AF4200B7628D /* NGRTTI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB74283D1EB2AF4200B7628D /* NGRTTI.cpp */; };
 		BB8091FD1FF4131600F84D1D /* TextureManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8091FB1FF4131500F84D1D /* TextureManager.cpp */; };
 		BB8091FE1FF4131600F84D1D /* TextureManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB8091FB1FF4131500F84D1D /* TextureManager.cpp */; };
@@ -1017,6 +1019,8 @@
 		BB72519F1EE105490024C71C /* MoveList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoveList.h; sourceTree = "<group>"; };
 		BB7251A61EE105780024C71C /* InputState.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = InputState.cpp; sourceTree = "<group>"; };
 		BB7251A71EE105780024C71C /* InputState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InputState.h; sourceTree = "<group>"; };
+		BB728F6A208646A0006C7B4D /* MemoryBitStreamUtil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MemoryBitStreamUtil.h; sourceTree = "<group>"; };
+		BB728F6B208646A0006C7B4D /* MemoryBitStreamUtil.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = MemoryBitStreamUtil.cpp; sourceTree = "<group>"; };
 		BB7428361EB2A98500B7628D /* pch.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = pch.h; sourceTree = "<group>"; };
 		BB74283A1EB2AF4200B7628D /* macros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = macros.h; sourceTree = "<group>"; };
 		BB74283B1EB2AF4200B7628D /* NGRollingPool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NGRollingPool.h; sourceTree = "<group>"; };
@@ -2576,6 +2580,8 @@
 				BB7251A71EE105780024C71C /* InputState.h */,
 				BBAFD32B1EF44813004F2742 /* MachineAddress.cpp */,
 				BBAFD32C1EF44813004F2742 /* MachineAddress.h */,
+				BB728F6B208646A0006C7B4D /* MemoryBitStreamUtil.cpp */,
+				BB728F6A208646A0006C7B4D /* MemoryBitStreamUtil.h */,
 				BB72519C1EE105490024C71C /* Move.cpp */,
 				BB72519D1EE105490024C71C /* Move.h */,
 				BB72519E1EE105490024C71C /* MoveList.cpp */,
@@ -4055,6 +4061,7 @@
 				BB6F598C1FBDEA0D00BD7697 /* init.c in Sources */,
 				BB1C3BF91FE75FD3002E4AA6 /* Color.cpp in Sources */,
 				BB6F59751FBDE97D00BD7697 /* cocoa_joystick.m in Sources */,
+				BB728F6C208646A0006C7B4D /* MemoryBitStreamUtil.cpp in Sources */,
 				BBD554181FDB2EA800E00AD6 /* b2PolygonAndCircleContact.cpp in Sources */,
 				BBD554121FDB2EA800E00AD6 /* b2ChainAndPolygonContact.cpp in Sources */,
 				BB36A270200C415600953CDC /* NGLightingShader.cpp in Sources */,
@@ -4423,6 +4430,7 @@
 				BBD5544D1FDB2EA800E00AD6 /* b2StackAllocator.cpp in Sources */,
 				BBD5541D1FDB2EA800E00AD6 /* b2ContactSolver.cpp in Sources */,
 				BB31E56D202E7B8400A3AD1C /* StudioEngine.cpp in Sources */,
+				BB728F6D208646A0006C7B4D /* MemoryBitStreamUtil.cpp in Sources */,
 				BB9EE5151FC092C5000F5389 /* apple_asset_data_handler.mm in Sources */,
 				BBD554471FDB2EA800E00AD6 /* b2BlockAllocator.cpp in Sources */,
 				BB31B5AA1FC205D5005F1C0A /* KeyboardEvent.cpp in Sources */,

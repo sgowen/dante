@@ -1,6 +1,6 @@
 //
 //  NGWaterShader.cpp
-//  noctisgames-framework
+//  noctisgames
 //
 //  Created by Stephen Gowen on 3/21/18.
 //  Copyright (c) 2018 Noctis Games. All rights reserved.

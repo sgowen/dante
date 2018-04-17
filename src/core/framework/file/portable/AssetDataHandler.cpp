@@ -1,6 +1,6 @@
 //
 //  AssetDataHandler.cpp
-//  noctisgames-framework
+//  noctisgames
 //
 //  Created by Stephen Gowen on 3/2/17.
 //  Copyright © 2017 Noctis Games. All rights reserved.

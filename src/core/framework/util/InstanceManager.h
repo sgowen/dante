@@ -1,6 +1,6 @@
 //
 //  InstanceManager.h
-//  dante
+//  noctisgames
 //
 //  Created by Stephen Gowen on 3/28/18.
 //  Copyright © 2018 Noctis Games. All rights reserved.

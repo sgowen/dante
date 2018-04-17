@@ -1,6 +1,6 @@
 //
 //  DefaultController.cpp
-//  noctisgames-framework
+//  noctisgames
 //
 //  Created by Stephen Gowen on 1/5/18.
 //  Copyright © 2018 Noctis Games. All rights reserved.
@@ -67,7 +67,7 @@ void DefaultController::read(InputMemoryBitStream& inInputStream, uint16_t& inRe
     // Empty
 }
 
-void DefaultController::recallLastReadState(uint16_t& inReadState)
+void DefaultController::recallCache(uint16_t& inReadState)
 {
     // Empty
 }

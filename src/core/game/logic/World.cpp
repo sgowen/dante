@@ -197,12 +197,12 @@ void World::postRead()
     
     for (Entity* e : _players)
     {
-        e->recallLastReadState();
+        e->recallCache();
     }
     
     for (Entity* e : _dynamicEntities)
     {
-        e->recallLastReadState();
+        e->recallCache();
     }
     
     // all processed moves have been removed, so all that are left are unprocessed moves so we must apply them...

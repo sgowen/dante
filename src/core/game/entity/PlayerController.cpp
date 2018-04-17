@@ -185,7 +185,7 @@ void PlayerController::read(InputMemoryBitStream& inInputStream, uint16_t& inRea
     }
 }
 
-void PlayerController::recallLastReadState(uint16_t& inReadState)
+void PlayerController::recallCache(uint16_t& inReadState)
 {
     _playerInfo = _playerInfoCache;
     _stats = _statsCache;

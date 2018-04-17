@@ -1,6 +1,6 @@
 //
 //  Box2DDebugRenderer.cpp
-//  noctisgames-framework
+//  noctisgames
 //
 //  Created by Stephen Gowen on 12/22/17.
 //  Copyright © 2017 Noctis Games. All rights reserved.

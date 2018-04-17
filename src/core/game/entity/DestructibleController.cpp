@@ -150,7 +150,7 @@ void DestructibleController::read(InputMemoryBitStream& inInputStream, uint16_t&
     }
 }
 
-void DestructibleController::recallLastReadState(uint16_t& inReadState)
+void DestructibleController::recallCache(uint16_t& inReadState)
 {
     _stats = _statsCache;
 }

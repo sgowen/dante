@@ -1,6 +1,6 @@
 //
 //  SoundDesc.h
-//  noctisgames-framework
+//  noctisgames
 //
 //  Created by Stephen Gowen on 1/29/18.
 //  Copyright (c) 2018 Noctis Games. All rights reserved.

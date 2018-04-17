@@ -1,6 +1,6 @@
 //
 //  MathUtil.h
-//  noctisgames-framework
+//  noctisgames
 //
 //  Created by Stephen Gowen on 7/28/16.
 //  Copyright © 2017 Noctis Games. All rights reserved.

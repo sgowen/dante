@@ -1,6 +1,6 @@
 //
 //  NGAnimation.cpp
-//  noctisgames-framework
+//  noctisgames
 //
 //  Created by Stephen Gowen on 9/3/15.
 //  Copyright (c) 2017 Noctis Games. All rights reserved.

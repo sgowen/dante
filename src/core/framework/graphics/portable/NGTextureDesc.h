@@ -1,6 +1,6 @@
 //
 //  NGTextureDesc.h
-//  noctisgames-framework
+//  noctisgames
 //
 //  Created by Stephen Gowen on 12/21/17.
 //  Copyright (c) 2017 Noctis Games. All rights reserved.

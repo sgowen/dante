@@ -1,6 +1,6 @@
 //
 //  FileData.h
-//  noctisgames-framework
+//  noctisgames
 //
 //  Created by Stephen Gowen on 3/2/17.
 //  Copyright (c) 2017 Noctis Games. All rights reserved.
