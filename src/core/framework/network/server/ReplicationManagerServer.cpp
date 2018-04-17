@@ -1,6 +1,6 @@
 //
 //  ReplicationManagerServer.cpp
-//  noctisgames-framework
+//  noctisgames
 //
 //  Created by Stephen Gowen on 5/15/17.
 //  Copyright (c) 2017 Noctis Games. All rights reserved.
@@ -18,6 +18,7 @@
 #include <framework/network/portable/ReplicationAction.h>
 #include <framework/util/macros.h>
 #include <framework/entity/Entity.h>
+#include <framework/network/portable/MemoryBitStreamUtil.h>
 
 ReplicationManagerServer::ReplicationManagerServer(EntityManager* entityManager) : _entityManager(entityManager)
 {
@@ -100,7 +101,7 @@ uint16_t ReplicationManagerServer::writeCreateAction(OutputMemoryBitStream& inOu
     //need 4 cc
     inOutputStream.write(entity->getEntityDef().type);
     
-    return entity->write(inOutputStream, inDirtyState);
+    return MemoryBitStreamUtil::write(inOutputStream, *entity, inDirtyState);
 }
 
 uint16_t ReplicationManagerServer::writeUpdateAction(OutputMemoryBitStream& inOutputStream, uint32_t inNetworkId, uint16_t inDirtyState)
@@ -113,7 +114,7 @@ uint16_t ReplicationManagerServer::writeUpdateAction(OutputMemoryBitStream& inOu
     
     //this means we need byte sand each new object needs to be byte aligned
     
-    uint16_t writtenState = entity->write(inOutputStream, inDirtyState);
+    uint16_t writtenState = MemoryBitStreamUtil::write(inOutputStream, *entity, inDirtyState);
     
     return writtenState;
 }

@@ -1,6 +1,6 @@
 //
 //  ReplicationManagerClient.cpp
-//  noctisgames-framework
+//  noctisgames
 //
 //  Created by Stephen Gowen on 5/15/17.
 //  Copyright (c) 2017 Noctis Games. All rights reserved.
@@ -17,6 +17,7 @@
 #include <framework/entity/Entity.h>
 #include <framework/entity/EntityLayoutMapper.h>
 #include <framework/network/portable/ReplicationAction.h>
+#include <framework/network/portable/MemoryBitStreamUtil.h>
 
 #include <cassert>
 
@@ -54,7 +55,6 @@ void ReplicationManagerClient::read(InputMemoryBitStream& inInputStream)
 
 void ReplicationManagerClient::readAndDoCreateAction(InputMemoryBitStream& inInputStream, uint32_t inNetworkId)
 {
-    //need 4 cc
     uint32_t fourCCName;
     inInputStream.read(fourCCName);
     
@@ -73,8 +73,7 @@ void ReplicationManagerClient::readAndDoCreateAction(InputMemoryBitStream& inInp
         assert(entity->getEntityDef().type == fourCCName);
     }
     
-    //and read state
-    entity->read(inInputStream);
+    MemoryBitStreamUtil::read(inInputStream, *entity);
 }
 
 void ReplicationManagerClient::readAndDoUpdateAction(InputMemoryBitStream& inInputStream, uint32_t inNetworkId)
@@ -87,7 +86,7 @@ void ReplicationManagerClient::readAndDoUpdateAction(InputMemoryBitStream& inInp
     
     if (entity)
     {
-        entity->read(inInputStream);
+        MemoryBitStreamUtil::read(inInputStream, *entity);
     }
 }
 

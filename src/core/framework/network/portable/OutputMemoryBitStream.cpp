@@ -1,6 +1,6 @@
 //
 //  OutputMemoryBitStream.cpp
-//  noctisgames-framework
+//  noctisgames
 //
 //  Created by Stephen Gowen on 5/15/17.
 //  Copyright (c) 2017 Noctis Games. All rights reserved.
@@ -25,6 +25,21 @@ OutputMemoryBitStream::OutputMemoryBitStream() : _bitHead(0), _buffer(NULL)
 OutputMemoryBitStream::~OutputMemoryBitStream()
 {
     std::free(_buffer);
+}
+
+const char* OutputMemoryBitStream::getBufferPtr() const
+{
+    return _buffer;
+}
+
+uint32_t OutputMemoryBitStream::getBitLength() const
+{
+    return _bitHead;
+}
+
+uint32_t OutputMemoryBitStream::getByteLength() const
+{
+    return (_bitHead + 7) >> 3;
 }
 
 void OutputMemoryBitStream::writeBits(uint8_t inData, uint32_t inBitCount)
@@ -76,21 +91,6 @@ void OutputMemoryBitStream::writeBits(const void* inData, uint32_t inBitCount)
     }
 }
 
-const char*	OutputMemoryBitStream::getBufferPtr() const
-{
-    return _buffer;
-}
-
-uint32_t OutputMemoryBitStream::getBitLength() const
-{
-    return _bitHead;
-}
-
-uint32_t OutputMemoryBitStream::getByteLength() const
-{
-    return (_bitHead + 7) >> 3;
-}
-
 void OutputMemoryBitStream::writeBytes(const void* inData, uint32_t inByteCount)
 {
     writeBits(inData, inByteCount << 3);
@@ -99,31 +99,6 @@ void OutputMemoryBitStream::writeBytes(const void* inData, uint32_t inByteCount)
 void OutputMemoryBitStream::write(bool inData)
 {
     writeBits(&inData, 1);
-}
-
-void OutputMemoryBitStream::write(const b2Vec2& inVector)
-{
-#ifdef NG_LOG
-    // Disable optimizations
-    write(false);
-    write(inVector.x);
-    write(false);
-    write(inVector.y);
-#else
-    bool isZero = inVector.x == 0;
-    write(isZero);
-    if (!isZero)
-    {
-        write(inVector.x);
-    }
-    
-    isZero = inVector.y == 0;
-    write(isZero);
-    if (!isZero)
-    {
-        write(inVector.y);
-    }
-#endif
 }
 
 void OutputMemoryBitStream::writeLarge(const std::string& inString)

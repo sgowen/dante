@@ -1,21 +1,19 @@
 //
 //  InputMemoryBitStream.h
-//  noctisgames-framework
+//  noctisgames
 //
 //  Created by Stephen Gowen on 5/15/17.
 //  Copyright (c) 2017 Noctis Games. All rights reserved.
 //
 
-#ifndef __noctisgames__InputMemoryBitStrea__
-#define __noctisgames__InputMemoryBitStrea__
+#ifndef __noctisgames__InputMemoryBitStream__
+#define __noctisgames__InputMemoryBitStream__
 
 #include <framework/network/portable/Network.h>
 
 #include <cstdint>
 #include <cstdlib>
 #include <string>
-
-struct b2Vec2;
 
 class InputMemoryBitStream
 {
@@ -35,7 +33,6 @@ public:
     void resetToCapacity(uint32_t inByteCapacity);
     void readLarge(std::string& inString);
     void readSmall(std::string& inString);
-    void read(b2Vec2& outVector);
     
     template <typename T, uint32_t BIT_COUNT = sizeof(T) * 8>
     void read(T& outData)
@@ -74,4 +71,4 @@ private:
     bool _isBufferOwner;
 };
 
-#endif /* defined(__noctisgames__InputMemoryBitStrea__) */
+#endif /* defined(__noctisgames__InputMemoryBitStream__) */

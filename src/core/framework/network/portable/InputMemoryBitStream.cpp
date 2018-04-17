@@ -1,6 +1,6 @@
 //
 //  InputMemoryBitStream.cpp
-//  noctisgames-framework
+//  noctisgames
 //
 //  Created by Stephen Gowen on 5/15/17.
 //  Copyright (c) 2017 Noctis Games. All rights reserved.
@@ -9,8 +9,6 @@
 #include "pch.h"
 
 #include <framework/network/portable/InputMemoryBitStream.h>
-
-#include <Box2D/Box2D.h>
 
 #include <cstring>	// memcpy()
 
@@ -28,10 +26,8 @@ _bitCapacity(inOther._bitCapacity),
 _bitHead(inOther._bitHead),
 _isBufferOwner(true)
 {
-    //allocate buffer of right size
     int byteCount = (_bitCapacity + 7) / 8;
     _buffer = static_cast<char*>(malloc(byteCount));
-    //copy
     memcpy(_buffer, inOther._buffer, byteCount);
 }
 
@@ -144,37 +140,4 @@ void InputMemoryBitStream::readSmall(std::string& inString)
     {
         read(element);
     }
-}
-
-void InputMemoryBitStream::read(b2Vec2& outVector)
-{
-#ifdef NG_LOG
-    // Disable optimizations
-    bool isZero;
-    read(isZero);
-    read(outVector.x);
-    read(isZero);
-    read(outVector.y);
-#else
-    bool isZero;
-    read(isZero);
-    if (isZero)
-    {
-        outVector.x = 0;
-    }
-    else
-    {
-        read(outVector.x);
-    }
-    
-    read(isZero);
-    if (isZero)
-    {
-        outVector.y = 0;
-    }
-    else
-    {
-        read(outVector.y);
-    }
-#endif
 }

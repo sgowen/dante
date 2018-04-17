@@ -1,6 +1,6 @@
 //
 //  Entity.cpp
-//  noctisgames-framework
+//  noctisgames
 //
 //  Created by Stephen Gowen on 8/3/15.
 //  Copyright (c) 2017 Noctis Games. All rights reserved.
@@ -11,8 +11,6 @@
 #include <framework/entity/Entity.h>
 
 #include <Box2D/Box2D.h>
-#include <framework/network/portable/OutputMemoryBitStream.h>
-#include <framework/network/portable/InputMemoryBitStream.h>
 #include <framework/network/portable/Move.h>
 #include <framework/entity/EntityController.h>
 
@@ -140,115 +138,14 @@ void Entity::handleEndContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture
     _controller->handleEndContact(inEntity, inFixtureA, inFixtureB);
 }
 
-void Entity::read(InputMemoryBitStream& inInputStream)
-{
-    _readState = 0;
-    
-    bool stateBit;
-    
-    inInputStream.read(stateBit);
-    if (stateBit)
-    {
-        inInputStream.read(_pose.velocity);
-        inInputStream.read(_pose.position);
-        
-        if (!isFixedRotation())
-        {
-            inInputStream.read(_pose.angle);
-        }
-        
-        _poseInterpolateCache.position = _pose.position;
-        _poseInterpolateCache.angle = _pose.angle;
-        
-        if (_groundSensorFixture)
-        {
-            inInputStream.read<uint8_t, 4>(_pose.numGroundContacts);
-        }
-        
-        inInputStream.read(_pose.isFacingLeft);
-        
-        updateBodyFromPose();
-        
-        _readState |= ReadStateFlag_Pose;
-    }
-    
-    if (_entityDef.stateSensitive)
-    {
-        inInputStream.read(stateBit);
-        if (stateBit)
-        {
-            inInputStream.read(_state.stateTime);
-            inInputStream.read(_state.state);
-            inInputStream.read(_state.stateFlags);
-            
-            _readState |= ReadStateFlag_State;
-        }
-    }
-    
-    _controller->read(inInputStream, _readState);
-    
-    if (_readState & ReadStateFlag_Pose)
-    {
-        _poseCache = _pose;
-    }
-    
-    if (_readState & ReadStateFlag_State)
-    {
-        _stateCache = _state;
-    }
-}
-
-void Entity::recallLastReadState()
+void Entity::recallCache()
 {
     _pose = _poseCache;
     _state = _stateCache;
     
     updateBodyFromPose();
     
-    _controller->recallLastReadState(_readState);
-}
-
-uint16_t Entity::write(OutputMemoryBitStream& inOutputStream, uint16_t inDirtyState)
-{
-    uint16_t writtenState = 0;
-    
-    bool pose = inDirtyState & ReadStateFlag_Pose;
-    inOutputStream.write(pose);
-    if (pose)
-    {
-        inOutputStream.write(_pose.velocity);
-        inOutputStream.write(_pose.position);
-        
-        if (!isFixedRotation())
-        {
-            inOutputStream.write(_pose.angle);
-        }
-        
-        if (_groundSensorFixture)
-        {
-            inOutputStream.write<uint8_t, 4>(_pose.numGroundContacts);
-        }
-        
-        inOutputStream.write(_pose.isFacingLeft);
-        
-        writtenState |= ReadStateFlag_Pose;
-    }
-    
-    if (_entityDef.stateSensitive)
-    {
-        bool state = inDirtyState & ReadStateFlag_State;
-        inOutputStream.write(state);
-        if (state)
-        {
-            inOutputStream.write(_state.stateTime);
-            inOutputStream.write(_state.state);
-            inOutputStream.write(_state.stateFlags);
-            
-            writtenState |= ReadStateFlag_State;
-        }
-    }
-    
-    return _controller->write(inOutputStream, writtenState, inDirtyState);
+    _controller->recallCache(_readState);
 }
 
 void Entity::initPhysics(b2World& world)
@@ -287,9 +184,6 @@ void Entity::updatePoseFromBody()
     _pose.velocity = _body->GetLinearVelocity();
     _pose.position = _body->GetPosition();
     _pose.angle = _body->GetAngle();
-    
-    _poseInterpolateCache.position = _pose.position;
-    _poseInterpolateCache.angle = _pose.angle;
 }
 
 void Entity::updateBodyFromPose()
@@ -439,7 +333,7 @@ int Entity::getSoundMapping(int state)
     return 0;
 }
 
-bool Entity::isFixedRotation()
+bool Entity::isFixedRotation() const
 {
     return _entityDef.bodyFlags & BodyFlag_FixedRotation;
 }

@@ -1,6 +1,6 @@
 //
 //  Entity.h
-//  noctisgames-framework
+//  noctisgames
 //
 //  Created by Stephen Gowen on 8/3/15.
 //  Copyright (c) 2017 Noctis Games. All rights reserved.
@@ -23,8 +23,6 @@ class b2World;
 class b2Body;
 class b2Fixture;
 class b2Contact;
-class OutputMemoryBitStream;
-class InputMemoryBitStream;
 class Move;
 class EntityController;
 
@@ -75,6 +73,8 @@ struct EntityDef
 
 class Entity
 {
+    friend class MemoryBitStreamUtil;
+    
     NGRTTI_DECL;
     
 public:
@@ -95,9 +95,7 @@ public:
     bool shouldCollide(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB);
     void handleBeginContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB);
     void handleEndContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB);
-    void read(InputMemoryBitStream& inInputStream);
-    void recallLastReadState();
-    uint16_t write(OutputMemoryBitStream& inOutputStream, uint16_t inDirtyState);
+    void recallCache();
     void initPhysics(b2World& world);
     void deinitPhysics();
     void updatePoseFromBody();
@@ -123,7 +121,7 @@ public:
     std::string& getTextureMapping();
     std::string& getTextureMapping(uint8_t state);
     int getSoundMapping(int state);
-    bool isFixedRotation();
+    bool isFixedRotation() const;
     
     struct Pose
     {
@@ -180,8 +178,6 @@ public:
             state = 0;
             stateFlags = 0;
         }
-        
-#define NG_CLOSE_ENOUGH_IS_FINE
         
         friend bool operator==(State& lhs, State& rhs)
         {
