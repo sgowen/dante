@@ -83,12 +83,14 @@ public:
     }
 
     static std::string encryptDecrypt(std::string input);
-
     static void encryptDecrypt(unsigned char* input, unsigned char* output, const long dataLength);
-
+    
     static std::string format(const char* inFormat, ...);
-
+    
     static void log(const char* inFormat, ...);
+    
+    static std::string stringFromFourChar(uint32_t fourCC);
+    static uint32_t fourCharFromString(std::string& fourCC);
 
 private:
     // ctor, copy ctor, and assignment should be private in a Static Utility Class

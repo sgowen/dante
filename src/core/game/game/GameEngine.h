@@ -21,6 +21,7 @@ class Entity;
 class GameRenderer;
 class World;
 class Timing;
+class GameInputManager;
 
 enum GameEngineState
 {
@@ -44,8 +45,8 @@ public:
     static void destroy();
     
     static uint64_t sGetPlayerAddressHash(uint8_t inPlayerIndex);
-    static void sHandleDynamicEntityCreatedOnClient(Entity* inEntity);
-    static void sHandleDynamicEntityDeletedOnClient(Entity* inEntity);
+    static void sHandleDynamicEntityCreatedOnClient(Entity* entity);
+    static void sHandleDynamicEntityDeletedOnClient(Entity* entity);
     
     virtual void enter(Engine* engine);
     virtual void update(Engine* engine);
@@ -65,6 +66,7 @@ private:
     GameRenderer* _renderer;
     World* _world;
     Timing* _timing;
+    GameInputManager* _input;
     uint32_t _state;
     uint32_t _map;
     

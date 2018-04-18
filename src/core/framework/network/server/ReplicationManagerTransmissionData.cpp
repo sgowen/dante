@@ -83,13 +83,6 @@ void ReplicationManagerTransmissionData::reset(ReplicationManagerServer* inRepli
 
 void ReplicationManagerTransmissionData::addTransmission(uint32_t inNetworkId, ReplicationAction inAction, uint32_t inState)
 {
-    /*
-     //it would be silly if we already had a transmission for this network id in here...
-     for (const auto& transmission: _transmissions)
-     {
-     assert(inNetworkId != transmission.getID());
-     }
-     */
     _transmissions.push_back(ReplicationTransmission(inNetworkId, inAction, inState));
 }
 

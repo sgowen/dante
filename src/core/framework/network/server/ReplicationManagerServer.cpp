@@ -18,7 +18,7 @@
 #include <framework/network/portable/ReplicationAction.h>
 #include <framework/util/macros.h>
 #include <framework/entity/Entity.h>
-#include <framework/network/portable/MemoryBitStreamUtil.h>
+#include <framework/entity/EntityNetworkController.h>
 
 ReplicationManagerServer::ReplicationManagerServer(EntityManager* entityManager) : _entityManager(entityManager)
 {
@@ -94,38 +94,36 @@ void ReplicationManagerServer::write(OutputMemoryBitStream& inOutputStream, Repl
     }
 }
 
-uint16_t ReplicationManagerServer::writeCreateAction(OutputMemoryBitStream& inOutputStream, uint32_t inNetworkId, uint16_t inDirtyState)
+uint16_t ReplicationManagerServer::writeCreateAction(OutputMemoryBitStream& op, uint32_t networkID, uint16_t dirtyState)
 {
     //need object
-    Entity* entity = _entityManager->getEntityByID(inNetworkId);
+    Entity* e = _entityManager->getEntityByID(networkID);
     //need 4 cc
-    inOutputStream.write(entity->getEntityDef().type);
+    op.write(e->getEntityDef().type);
     
-    return MemoryBitStreamUtil::write(inOutputStream, *entity, inDirtyState);
+    return e->getNetworkController()->write(op, dirtyState);
 }
 
-uint16_t ReplicationManagerServer::writeUpdateAction(OutputMemoryBitStream& inOutputStream, uint32_t inNetworkId, uint16_t inDirtyState)
+uint16_t ReplicationManagerServer::writeUpdateAction(OutputMemoryBitStream& op, uint32_t networkID, uint16_t dirtyState)
 {
     //need object
-    Entity* entity = _entityManager->getEntityByID(inNetworkId);
+    Entity* e = _entityManager->getEntityByID(networkID);
     
     //if we can't find the entity on the other side, we won't be able to read the written data (since we won't know which class wrote it)
     //so we need to know how many bytes to skip.
     
     //this means we need byte sand each new object needs to be byte aligned
     
-    uint16_t writtenState = MemoryBitStreamUtil::write(inOutputStream, *entity, inDirtyState);
-    
-    return writtenState;
+    return e->getNetworkController()->write(op, dirtyState);
 }
 
-uint16_t ReplicationManagerServer::writeDestroyAction(OutputMemoryBitStream& inOutputStream, uint32_t inNetworkId, uint16_t inDirtyState)
+uint16_t ReplicationManagerServer::writeDestroyAction(OutputMemoryBitStream& op, uint32_t networkID, uint16_t dirtyState)
 {
-    UNUSED(inOutputStream);
-    UNUSED(inNetworkId);
-    UNUSED(inDirtyState);
+    UNUSED(op);
+    UNUSED(networkID);
+    UNUSED(dirtyState);
     
     //don't have to do anything- action already written
     
-    return inDirtyState;
+    return dirtyState;
 }

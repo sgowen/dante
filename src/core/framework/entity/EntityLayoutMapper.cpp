@@ -71,14 +71,7 @@ void EntityLayoutMapper::initWithJson(const char* data)
         assert(iv.IsString());
         
         std::string keyStr = i->name.GetString();
-        assert(keyStr.length() == 4);
-        
-        const char* chars = keyStr.c_str();
-        
-        uint32_t key = (uint32_t)chars[0] << 24 |
-        (uint32_t)chars[1] << 16 |
-        (uint32_t)chars[2] << 8  |
-        (uint32_t)chars[3];
+        uint32_t key = StringUtil::fourCharFromString(keyStr);
         
         assert(_layouts.find(key) == _layouts.end());
         
@@ -137,14 +130,7 @@ void EntityLayoutMapper::loadEntityLayout(const char* data)
             assert(iv.IsObject());
             
             std::string keyStr = iv["type"].GetString();
-            assert(keyStr.length() == 4);
-            
-            const char* chars = keyStr.c_str();
-            
-            uint32_t key = (uint32_t)chars[0] << 24 |
-            (uint32_t)chars[1] << 16 |
-            (uint32_t)chars[2] << 8  |
-            (uint32_t)chars[3];
+            uint32_t key = StringUtil::fourCharFromString(keyStr);
             
             uint32_t ID = _entityIDManager->getNextStaticEntityID();
             uint32_t type = key;
@@ -175,37 +161,31 @@ const char* EntityLayoutMapper::save()
     {
         w.String("entities");
         w.StartArray();
-        for (EntityInstanceDef epd : _layoutToSave->entities)
+        for (EntityInstanceDef eid : _layoutToSave->entities)
         {
             w.StartObject();
             {
                 w.String("type");
-                char chars[5];
-                chars[4] = '\0';
-                chars[3] = (char)(epd.type & 0xFF);
-                chars[2] = (char)(epd.type >> 8 & 0xFF);
-                chars[1] = (char)(epd.type >> 16 & 0xFF);
-                chars[0] = (char)(epd.type >> 24 & 0xFF);
-                std::string type = std::string(chars);
+                std::string type = StringUtil::stringFromFourChar(eid.type);
                 w.String(type.c_str());
             }
             {
                 w.String("x");
-                w.Uint(epd.x);
+                w.Uint(eid.x);
             }
             {
                 w.String("y");
-                w.Uint(epd.y);
+                w.Uint(eid.y);
             }
-            if (epd.w > 0)
+            if (eid.w > 0)
             {
                 w.String("w");
-                w.Uint(epd.w);
+                w.Uint(eid.w);
             }
-            if (epd.h > 0)
+            if (eid.h > 0)
             {
                 w.String("h");
-                w.Uint(epd.h);
+                w.Uint(eid.h);
             }
             w.EndObject();
         }
@@ -238,6 +218,11 @@ void EntityLayoutMapper::saveEntityLayout(std::string filePath, EntityLayoutDef*
 
 std::string EntityLayoutMapper::getJsonConfigFilePath(uint32_t inFourCCName)
 {
+    if (inFourCCName == 'TEST')
+    {
+        return std::string("test.cfg");
+    }
+    
     auto q = _layouts.find(inFourCCName);
     
     assert(q != _layouts.end());

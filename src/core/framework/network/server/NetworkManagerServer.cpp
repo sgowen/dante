@@ -117,23 +117,23 @@ void NetworkManagerServer::sendOutgoingPackets()
     }
 }
 
-void NetworkManagerServer::registerEntity(Entity* inEntity)
+void NetworkManagerServer::registerEntity(Entity* e)
 {
     //add mapping from network id to game object
-    _entityManager->registerEntity(inEntity);
+    _entityManager->registerEntity(e);
     
     //tell all client proxies this is new...
     for (const auto& pair: _addressHashToClientMap)
     {
-        pair.second->getReplicationManagerServer()->replicateCreate(inEntity->getID(), NG_ALL_STATE);
+        pair.second->getReplicationManagerServer()->replicateCreate(e->getID(), NG_ALL_STATE);
     }
 }
 
-void NetworkManagerServer::deregisterEntity(Entity* inEntity)
+void NetworkManagerServer::deregisterEntity(Entity* e)
 {
-    uint32_t networkId = inEntity->getID();
+    uint32_t networkId = e->getID();
     
-    _entityManager->deregisterEntity(inEntity);
+    _entityManager->deregisterEntity(e);
     
     //tell all client proxies to STOP replicating!
     //tell all client proxies this is new...
@@ -143,12 +143,14 @@ void NetworkManagerServer::deregisterEntity(Entity* inEntity)
     }
 }
 
-void NetworkManagerServer::setStateDirty(uint32_t inNetworkId, uint16_t inDirtyState)
+void NetworkManagerServer::setStateDirty(uint32_t networkID, uint16_t dirtyState)
 {
+    assert(dirtyState > 0);
+    
     //tell everybody this is dirty
     for (const auto& pair: _addressHashToClientMap)
     {
-        pair.second->getReplicationManagerServer()->setStateDirty(inNetworkId, inDirtyState);
+        pair.second->getReplicationManagerServer()->setStateDirty(networkID, dirtyState);
     }
 }
 

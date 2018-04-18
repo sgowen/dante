@@ -40,9 +40,14 @@ MainEngineController::MainEngineController()
     INSTANCE_MANAGER->registerInstance(INSTANCE_ENTITY_ID_MANAGER_CLIENT, &entityIDManagerClient);
     INSTANCE_MANAGER->registerInstance(INSTANCE_ENTITY_ID_MANAGER_STUDIO, &entityIDManagerStudio);
     
-    EntityMapper::getInstance()->registerFunction("BasicFollowAndAttackController", BasicFollowAndAttackController::create);
-    EntityMapper::getInstance()->registerFunction("DestructibleController", DestructibleController::create);
-    EntityMapper::getInstance()->registerFunction("PlayerController", PlayerController::create);
+    EntityMapper::getInstance()->registerFunction("BasicFollowAndAttack", BasicFollowAndAttackController::create);
+    EntityMapper::getInstance()->registerFunction("BasicFollowAndAttack", BasicFollowAndAttackNetworkController::create);
+    
+    EntityMapper::getInstance()->registerFunction("Destructible", DestructibleController::create);
+    EntityMapper::getInstance()->registerFunction("Destructible", DestructibleNetworkController::create);
+    
+    EntityMapper::getInstance()->registerFunction("Player", PlayerController::create);
+    EntityMapper::getInstance()->registerFunction("Player", PlayerNetworkController::create);
     
     TitleEngine::create();
     GameEngine::create();

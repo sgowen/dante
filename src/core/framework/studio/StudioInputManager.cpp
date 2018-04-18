@@ -143,7 +143,7 @@ void StudioInputManager::handleDefaultInput()
                     if (_lastActiveEntity)
                     {
                         onEntityRemoved(_lastActiveEntity);
-                        _engine->_world->mapRemoveEntity(_lastActiveEntity);
+                        _engine->_world->removeEntity(_lastActiveEntity);
                         
                         _activeEntity = NULL;
                         _lastActiveEntity = NULL;
@@ -338,6 +338,12 @@ void StudioInputManager::handleDefaultInput()
             case NG_KEY_S:
                 if (e.isDown())
                 {
+                    if (!_engine->_world->isMapLoaded())
+                    {
+                        _engine->_renderer->displayToast("Load a Map first!");
+                        return;
+                    }
+                    
                     if (_engine->_world->getDynamicEntities().size() > MAX_NUM_DYNAMIC_ENTITIES)
                     {
                         _engine->_renderer->displayToast(StringUtil::format("Cannot have more than %d dynamic entities!", MAX_NUM_DYNAMIC_ENTITIES));
@@ -501,7 +507,7 @@ void StudioInputManager::handleEntitiesInput()
                         return;
                     }
                     
-                    mapAddEntity(entityDef);
+                    addEntity(entityDef);
                 }
             }
                 continue;
@@ -665,13 +671,13 @@ bool StudioInputManager::entityExistsAtPosition(Entity* e, float x, float y)
     return false;
 }
 
-Entity* StudioInputManager::mapAddEntity(EntityDef* entityDef, int width, int height)
+Entity* StudioInputManager::addEntity(EntityDef* entityDef, int width, int height)
 {
     float spawnX = clamp(FW_CFG->_camWidth * _scrollValue / 2 + _cursor.getX(), entityDef->width / 2.0f, FLT_MAX);
     float spawnY = clamp(FW_CFG->_camHeight * _scrollValue / 2 + _cursor.getY(), entityDef->height / 2.0f, FLT_MAX);
     EntityInstanceDef eid(_entityIDManager->getNextStaticEntityID(), entityDef->type, floor(spawnX), floor(spawnY), width, height);
     Entity* e = EntityMapper::getInstance()->createEntityFromDef(entityDef, &eid, false);
-    _engine->_world->mapAddEntity(e);
+    _engine->_world->addEntity(e);
     _lastActiveEntity = e;
     onEntityAdded(e);
     _engine->_state &= ~StudioEngineState_DisplayEntities;
@@ -701,7 +707,7 @@ void StudioInputManager::processInput()
         _waterWidth = StringUtil::stringToNumber<int>(_liveInput);
         if (_waterWidth > 0 && _waterWidth % 2 == 0)
         {
-            Entity* e = mapAddEntity(EntityMapper::getInstance()->getEntityDef('WATR'), _waterWidth, _waterDepth);
+            Entity* e = addEntity(EntityMapper::getInstance()->getEntityDef('WATR'), _waterWidth, _waterDepth);
             _engine->_renderer->onWaterAdded(e);
             _waterWidth = 0;
             _waterDepth = 0;

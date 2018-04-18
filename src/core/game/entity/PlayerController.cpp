@@ -11,9 +11,8 @@
 #include <game/entity/PlayerController.h>
 
 #include <framework/entity/Entity.h>
-#include <framework/network/portable/InputMemoryBitStream.h>
-#include <framework/network/portable/OutputMemoryBitStream.h>
 #include <Box2D/Box2D.h>
+
 #include <game/game/GameInputState.h>
 #include <framework/network/portable/Move.h>
 
@@ -24,7 +23,6 @@
 #include <framework/util/StringUtil.h>
 #include <framework/util/MathUtil.h>
 #include <framework/network/server/NetworkManagerServer.h>
-#include <framework/network/server/ClientProxy.h>
 #include <framework/network/client/NetworkManagerClient.h>
 #include <game/game/GameInputManager.h>
 #include <framework/audio/portable/NGAudioEngine.h>
@@ -39,11 +37,10 @@ IMPL_EntityController_create(PlayerController);
 
 PlayerController::PlayerController(Entity* e) : EntityController(e),
 _playerInfo(),
-_playerInfoCache(_playerInfo),
+_playerInfoNetworkCache(_playerInfo),
 _stats(),
-_statsCache(_stats),
-_attackSensorFixture(NULL),
-_isLocalPlayer(false)
+_statsNetworkCache(_stats),
+_attackSensorFixture(NULL)
 {
     // Empty
 }
@@ -64,7 +61,7 @@ void PlayerController::update()
     {
         if (_stats.target > 0)
         {
-            EntityManager* entityManager = _entity->isServer() ? NG_SERVER->getEntityManager() : NG_CLIENT->getEntityManager();
+            EntityManager* entityManager = _entity->getNetworkController()->isServer() ? NG_SERVER->getEntityManager() : NG_CLIENT->getEntityManager();
             Entity* e = entityManager->getEntityByID(_stats.target);
             if (e)
             {
@@ -73,25 +70,13 @@ void PlayerController::update()
             }
         }
     }
-}
-
-void PlayerController::postUpdate()
-{
-    if (_stats.health == 0)
-    {
-        _entity->requestDeletion();
-    }
     
-    if (_playerInfoCache != _playerInfo)
+    if (_entity->getNetworkController()->isServer())
     {
-        _playerInfoCache = _playerInfo;
-        NG_SERVER->setStateDirty(_entity->getID(), ReadStateFlag_PlayerInfo);
-    }
-    
-    if (_statsCache != _stats)
-    {
-        _statsCache = _stats;
-        NG_SERVER->setStateDirty(_entity->getID(), ReadStateFlag_Stats);
+        if (_stats.health == 0)
+        {
+            _entity->requestDeletion();
+        }
     }
 }
 
@@ -120,9 +105,8 @@ void PlayerController::receiveMessage(uint16_t message, void* data)
 
 void PlayerController::onFixturesCreated(std::vector<b2Fixture*>& fixtures)
 {
-    assert(fixtures.size() == 4);
+    assert(fixtures.size() >= 4);
     _attackSensorFixture = fixtures[3];
-    assert(_attackSensorFixture);
 }
 
 bool PlayerController::shouldCollide(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB)
@@ -147,73 +131,6 @@ void PlayerController::handleEndContact(Entity* inEntity, b2Fixture* inFixtureA,
     {
         _stats.target = 0;
     }
-}
-
-void PlayerController::read(InputMemoryBitStream& inInputStream, uint16_t& inReadState)
-{
-    bool stateBit;
-    
-    inInputStream.read(stateBit);
-    if (stateBit)
-    {
-        inInputStream.read(_playerInfo.addressHash);
-        inInputStream.read<uint8_t, 3>(_playerInfo.playerId);
-        inInputStream.readSmall(_playerInfo.playerName);
-        
-        _isLocalPlayer = NG_CLIENT->isPlayerIdLocal(_playerInfo.playerId);
-        
-        inReadState |= ReadStateFlag_PlayerInfo;
-        _playerInfoCache = _playerInfo;
-    }
-    
-    inInputStream.read(stateBit);
-    if (stateBit)
-    {
-        inInputStream.read(_stats.health);
-        inInputStream.read(_stats.target);
-        
-        inReadState |= ReadStateFlag_Stats;
-        _statsCache = _stats;
-    }
-    
-    if (!isLocalPlayer())
-    {
-        Util::handleSound(_entity, _entity->getStateNetworkCache().state, _entity->getState().state);
-    }
-}
-
-void PlayerController::recallCache()
-{
-    _playerInfo = _playerInfoCache;
-    _stats = _statsCache;
-}
-
-uint16_t PlayerController::write(OutputMemoryBitStream& inOutputStream, uint16_t inWrittenState, uint16_t inDirtyState)
-{
-    uint16_t writtenState = inWrittenState;
-    
-    bool playerInfo = inDirtyState & ReadStateFlag_PlayerInfo;
-    inOutputStream.write(playerInfo);
-    if (playerInfo)
-    {
-        inOutputStream.write(_playerInfo.addressHash);
-        inOutputStream.write<uint8_t, 3>(_playerInfo.playerId);
-        inOutputStream.writeSmall(_playerInfo.playerName);
-        
-        writtenState |= ReadStateFlag_PlayerInfo;
-    }
-    
-    bool stats = inDirtyState & ReadStateFlag_Stats;
-    inOutputStream.write(stats);
-    if (stats)
-    {
-        inOutputStream.write(_stats.health);
-        inOutputStream.write(_stats.target);
-        
-        writtenState |= ReadStateFlag_Stats;
-    }
-    
-    return writtenState;
 }
 
 void PlayerController::processInput(InputState* inInputState)
@@ -256,7 +173,7 @@ void PlayerController::processInput(InputState* inInputState)
             break;
     }
     
-    if ()
+    if (true)
     {
         Util::handleSound(_entity, fromState, state);
     }
@@ -290,11 +207,6 @@ void PlayerController::setPlayerName(std::string inValue)
 std::string& PlayerController::getPlayerName()
 {
     return _playerInfo.playerName;
-}
-
-bool PlayerController::isLocalPlayer()
-{
-    return _isLocalPlayer;
 }
 
 void PlayerController::processInputForIdleState(uint8_t inputState)
@@ -574,4 +486,124 @@ void PlayerController::handleJumpCompletedInput(uint8_t inputState)
     {
         state = State_Idle;
     }
+}
+
+#include <framework/network/portable/InputMemoryBitStream.h>
+#include <framework/network/portable/OutputMemoryBitStream.h>
+
+IMPL_RTTI(PlayerNetworkController, EntityNetworkController);
+
+IMPL_EntityNetworkController_create(PlayerNetworkController);
+
+PlayerNetworkController::PlayerNetworkController(Entity* e, bool isServer) : EntityNetworkController(e, isServer), _controller(static_cast<PlayerController*>(e->getController())), _isLocalPlayer(false)
+{
+    // Empty
+}
+
+PlayerNetworkController::~PlayerNetworkController()
+{
+    // Empty
+}
+
+void PlayerNetworkController::read(InputMemoryBitStream& ip)
+{
+    uint8_t fromState = _entity->getStateNetworkCache().state;
+    
+    EntityNetworkController::read(ip);
+    
+    PlayerController& c = *_controller;
+    
+    bool stateBit;
+    
+    ip.read(stateBit);
+    if (stateBit)
+    {
+        ip.read(c._playerInfo.addressHash);
+        ip.read<uint8_t, 3>(c._playerInfo.playerId);
+        ip.readSmall(c._playerInfo.playerName);
+        
+        _isLocalPlayer = NG_CLIENT->isPlayerIdLocal(c._playerInfo.playerId);
+        
+        c._playerInfoNetworkCache = c._playerInfo;
+    }
+    
+    ip.read(stateBit);
+    if (stateBit)
+    {
+        ip.read(c._stats.health);
+        ip.read(c._stats.target);
+        
+        c._statsNetworkCache = c._stats;
+    }
+    
+    if (!_isLocalPlayer)
+    {
+        Util::handleSound(_entity, fromState, _entity->getState().state);
+    }
+}
+
+uint16_t PlayerNetworkController::write(OutputMemoryBitStream& op, uint16_t dirtyState)
+{
+    uint16_t writtenState = EntityNetworkController::write(op, dirtyState);
+    
+    PlayerController& c = *_controller;
+    
+    bool playerInfo = dirtyState & PlayerController::ReadStateFlag_PlayerInfo;
+    op.write(playerInfo);
+    if (playerInfo)
+    {
+        op.write(c._playerInfo.addressHash);
+        op.write<uint8_t, 3>(c._playerInfo.playerId);
+        op.writeSmall(c._playerInfo.playerName);
+        
+        writtenState |= PlayerController::ReadStateFlag_PlayerInfo;
+    }
+    
+    bool stats = dirtyState & PlayerController::ReadStateFlag_Stats;
+    op.write(stats);
+    if (stats)
+    {
+        op.write(c._stats.health);
+        op.write(c._stats.target);
+        
+        writtenState |= PlayerController::ReadStateFlag_Stats;
+    }
+    
+    return writtenState;
+}
+
+void PlayerNetworkController::recallNetworkCache()
+{
+    EntityNetworkController::recallNetworkCache();
+    
+    PlayerController& c = *_controller;
+    
+    c._playerInfo = c._playerInfoNetworkCache;
+    c._stats = c._statsNetworkCache;
+}
+
+uint16_t PlayerNetworkController::getDirtyState()
+{
+    uint16_t ret = EntityNetworkController::getDirtyState();
+    
+    PlayerController& c = *_controller;
+    
+    if (c._playerInfoNetworkCache != c._playerInfo)
+    {
+        c._playerInfoNetworkCache = c._playerInfo;
+        ret |= PlayerController::ReadStateFlag_PlayerInfo;
+    }
+    
+    if (c._statsNetworkCache != c._stats)
+    {
+        c._statsNetworkCache = c._stats;
+        ret |= PlayerController::ReadStateFlag_Stats;
+    }
+    
+    return ret;
+}
+
+bool PlayerNetworkController::isLocalPlayer()
+{
+    return _isLocalPlayer;
 }

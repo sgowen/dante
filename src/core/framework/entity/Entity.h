@@ -59,7 +59,6 @@ struct EntityDef
     uint32_t ID;
     uint32_t type;
     std::string controller;
-    std::string networkController;
     std::map<int, std::string> textureMappings;
     std::map<int, int> soundMappings;
     std::vector<FixtureDef> fixtures;
@@ -90,20 +89,19 @@ public:
     ~Entity();
     
     void update();
-    /// Handle Server State Changes
-    void postUpdate();
     void interpolate(double alpha);
-    void postRender();
+    void endInterpolation();
     bool shouldCollide(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB);
     void handleBeginContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB);
     void handleEndContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB);
-    void recallCache();
     void initPhysics(b2World& world);
     void deinitPhysics();
     void updatePoseFromBody();
     void updateBodyFromPose();
+    
     EntityDef& getEntityDef();
     EntityController* getController();
+    EntityNetworkController* getNetworkController();
     uint16_t getStateTime();
     b2Body* getBody();
     void setPosition(b2Vec2 position);
@@ -166,7 +164,6 @@ public:
         }
     };
     Pose& getPose();
-    Pose& getPoseCache();
     Pose& getPoseNetworkCache();
     
     struct State
@@ -196,31 +193,24 @@ public:
         }
     };
     State& getState();
-    State& getStateCache();
     State& getStateNetworkCache();
     
 private:
     EntityDef _entityDef;
     EntityController* _controller;
     EntityNetworkController* _networkController;
-    bool _isServer;
     
-    /// Physics
     b2Body* _body;
     std::vector<b2Fixture*> _fixtures;
     b2Fixture* _groundSensorFixture;
     
-    /// Network
     Pose _pose;
-    Pose _poseCache;
     Pose _poseNetworkCache;
-    State _state;
-    State _stateCache;
-    State _stateNetworkCache;
-    
     Pose _poseInterpolateCache;
     
-    uint16_t _readState;
+    State _state;
+    State _stateNetworkCache;
+    
     const uint32_t _ID;
     float _deadZoneY;
     bool _isRequestingDeletion;

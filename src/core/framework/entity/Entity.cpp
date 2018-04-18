@@ -20,15 +20,13 @@ IMPL_RTTI_NOPARENT(Entity);
 
 Entity::Entity(EntityDef inEntityDef) :
 _entityDef(inEntityDef),
-_controller(EntityMapper::getInstance()->createEntityController(inEntityDef.controller, this)),
-_isServer(inEntityDef.server),
+_controller(EntityMapper::getInstance()->createEntityController(inEntityDef, this)),
+_networkController(EntityMapper::getInstance()->createEntityNetworkController(inEntityDef, this)),
 _body(NULL),
 _groundSensorFixture(NULL),
 _pose(inEntityDef.x, inEntityDef.y),
-_poseCache(_pose),
 _poseNetworkCache(_pose),
 _poseInterpolateCache(_pose),
-_readState(0),
 _ID(inEntityDef.ID),
 _deadZoneY(-_entityDef.height / 2.0f),
 _isRequestingDeletion(false),
@@ -40,14 +38,17 @@ _isBodyFacingLeft(false)
 Entity::~Entity()
 {
     delete _controller;
+    delete _networkController;
 }
 
 void Entity::update()
 {
-    _poseCache = _pose;
-    _stateCache = _state;
-    
     updatePoseFromBody();
+    
+    if (getPosition().y < _deadZoneY)
+    {
+        requestDeletion();
+    }
     
     if (_entityDef.stateSensitive)
     {
@@ -55,28 +56,6 @@ void Entity::update()
     }
     
     _controller->update();
-}
-
-void Entity::postUpdate()
-{
-    if (getPosition().y < _deadZoneY)
-    {
-        requestDeletion();
-    }
-    
-    if (_poseNetworkCache != _pose)
-    {
-        _poseNetworkCache = _pose;
-        NG_SERVER->setStateDirty(getID(), ReadStateFlag_Pose);
-    }
-    
-    if (_stateNetworkCache != _state)
-    {
-        _stateNetworkCache = _state;
-        NG_SERVER->setStateDirty(getID(), ReadStateFlag_State);
-    }
-    
-    _controller->postUpdate();
 }
 
 void Entity::interpolate(double alpha)
@@ -95,7 +74,7 @@ void Entity::interpolate(double alpha)
     }
 }
 
-void Entity::postRender()
+void Entity::endInterpolation()
 {
     if (_body->GetType() == b2_dynamicBody && _body->IsActive())
     {
@@ -134,16 +113,6 @@ void Entity::handleEndContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture
     }
     
     _controller->handleEndContact(inEntity, inFixtureA, inFixtureB);
-}
-
-void Entity::recallCache()
-{
-    _pose = _poseNetworkCache;
-    _state = _stateNetworkCache;
-    
-    updateBodyFromPose();
-    
-    _controller->recallCache();
 }
 
 void Entity::initPhysics(b2World& world)
@@ -220,6 +189,11 @@ EntityController* Entity::getController()
     return _controller;
 }
 
+EntityNetworkController* Entity::getNetworkController()
+{
+    return _networkController;
+}
+
 uint16_t Entity::getStateTime()
 {
     return _state.stateTime;
@@ -294,11 +268,6 @@ bool Entity::isRequestingDeletion()
     return _isRequestingDeletion;
 }
 
-bool Entity::isServer()
-{
-    return _isServer;
-}
-
 bool Entity::isFacingLeft()
 {
     return _pose.isFacingLeft;
@@ -341,11 +310,6 @@ Entity::Pose& Entity::getPose()
     return _pose;
 }
 
-Entity::Pose& Entity::getPoseCache()
-{
-    return _poseCache;
-}
-
 Entity::Pose& Entity::getPoseNetworkCache()
 {
     return _poseNetworkCache;
@@ -354,11 +318,6 @@ Entity::Pose& Entity::getPoseNetworkCache()
 Entity::State& Entity::getState()
 {
     return _state;
-}
-
-Entity::State& Entity::getStateCache()
-{
-    return _stateCache;
 }
 
 Entity::State& Entity::getStateNetworkCache()

@@ -17,7 +17,7 @@ IMPL_RTTI_NOPARENT(EntityController);
 
 IMPL_EntityController_create(EntityController);
 
-EntityController::EntityController(Entity* inEntity) : _entity(inEntity)
+EntityController::EntityController(Entity* e) : _entity(e)
 {
     // Empty
 }
@@ -28,11 +28,6 @@ EntityController::~EntityController()
 }
 
 void EntityController::update()
-{
-    // Empty
-}
-
-void EntityController::postUpdate()
 {
     // Empty
 }

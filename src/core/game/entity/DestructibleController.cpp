@@ -11,11 +11,7 @@
 #include <game/entity/DestructibleController.h>
 
 #include <framework/entity/Entity.h>
-#include <framework/network/portable/InputMemoryBitStream.h>
-#include <framework/network/portable/OutputMemoryBitStream.h>
 #include <Box2D/Box2D.h>
-#include <game/game/GameInputState.h>
-#include <framework/network/portable/Move.h>
 
 #include <game/logic/World.h>
 #include <framework/util/macros.h>
@@ -38,7 +34,7 @@ IMPL_EntityController_create(DestructibleController);
 
 DestructibleController::DestructibleController(Entity* e) : EntityController(e),
 _stats(),
-_statsCache(_stats)
+_statsNetworkCache(_stats)
 {
     // Empty
 }
@@ -50,23 +46,29 @@ DestructibleController::~DestructibleController()
 
 void DestructibleController::update()
 {
-    /// TODO
-}
-
-void DestructibleController::postUpdate()
-{
-    uint8_t state = _entity->getState().state;
-    uint8_t stateTime = _entity->getState().stateTime;
-    
-    if (state == State_Destructing && stateTime >= 120)
+    if (_entity->getNetworkController()->isServer())
     {
-        _entity->requestDeletion();
-    }
-    
-    if (_statsCache != _stats)
-    {
-        _statsCache = _stats;
-        NG_SERVER->setStateDirty(_entity->getID(), ReadStateFlag_Stats);
+        uint8_t state = _entity->getState().state;
+        switch (state)
+        {
+            case State_Undamaged:
+                // Empty
+                break;
+            case State_OneThirdDamaged:
+                // Empty
+                break;
+            case State_TwoThirdsDamaged:
+                // Empty
+                break;
+            case State_Destructing:
+                if (_entity->getState().stateTime >= 180)
+                {
+                    _entity->requestDeletion();
+                }
+                break;
+            default:
+                break;
+        }
     }
 }
 
@@ -107,7 +109,7 @@ void DestructibleController::receiveMessage(uint16_t message, void* data)
             break;
     }
     
-    if ()
+    if (true)
     {
         Util::handleSound(_entity, fromState, state);
     }
@@ -133,37 +135,78 @@ void DestructibleController::handleEndContact(Entity* inEntity, b2Fixture* inFix
     // Empty
 }
 
-void DestructibleController::read(InputMemoryBitStream& inInputStream, uint16_t& inReadState)
+#include <framework/network/portable/InputMemoryBitStream.h>
+#include <framework/network/portable/OutputMemoryBitStream.h>
+
+IMPL_RTTI(DestructibleNetworkController, EntityNetworkController);
+
+IMPL_EntityNetworkController_create(DestructibleNetworkController);
+
+DestructibleNetworkController::DestructibleNetworkController(Entity* e, bool isServer) : EntityNetworkController(e, isServer), _controller(static_cast<DestructibleController*>(e->getController()))
 {
+    // Empty
+}
+
+DestructibleNetworkController::~DestructibleNetworkController()
+{
+    // Empty
+}
+
+void DestructibleNetworkController::read(InputMemoryBitStream& ip)
+{
+    EntityNetworkController::read(ip);
+    
+    DestructibleController& c = *_controller;
+    
     bool stateBit;
     
-    inInputStream.read(stateBit);
+    ip.read(stateBit);
     if (stateBit)
     {
-        inInputStream.read(_stats.health);
+        ip.read(c._stats.health);
         
-        inReadState |= ReadStateFlag_Stats;
-        _statsCache = _stats;
+        c._statsNetworkCache = c._stats;
     }
 }
 
-void DestructibleController::recallCache()
+uint16_t DestructibleNetworkController::write(OutputMemoryBitStream& op, uint16_t dirtyState)
 {
-    _stats = _statsCache;
-}
-
-uint16_t DestructibleController::write(OutputMemoryBitStream& inOutputStream, uint16_t inWrittenState, uint16_t inDirtyState)
-{
-    uint16_t writtenState = inWrittenState;
+    uint16_t writtenState = EntityNetworkController::write(op, dirtyState);
     
-    bool stats = inDirtyState & ReadStateFlag_Stats;
-    inOutputStream.write(stats);
+    DestructibleController& c = *_controller;
+    
+    bool stats = dirtyState & DestructibleController::ReadStateFlag_Stats;
+    op.write(stats);
     if (stats)
     {
-        inOutputStream.write(_stats.health);
+        op.write(c._stats.health);
         
-        writtenState |= ReadStateFlag_Stats;
+        writtenState |= DestructibleController::ReadStateFlag_Stats;
     }
     
     return writtenState;
+}
+
+void DestructibleNetworkController::recallNetworkCache()
+{
+    EntityNetworkController::recallNetworkCache();
+    
+    DestructibleController& c = *_controller;
+    
+    c._stats = c._statsNetworkCache;
+}
+
+uint16_t DestructibleNetworkController::getDirtyState()
+{
+    uint16_t ret = EntityNetworkController::getDirtyState();
+    
+    DestructibleController& c = *_controller;
+    
+    if (c._statsNetworkCache != c._stats)
+    {
+        c._statsNetworkCache = c._stats;
+        ret |= DestructibleController::ReadStateFlag_Stats;
+    }
+    
+    return ret;
 }

@@ -13,6 +13,7 @@
 #include <framework/entity/Entity.h>
 #include <framework/entity/EntityLayoutMapper.h>
 #include <framework/entity/EntityController.h>
+#include <framework/entity/EntityNetworkController.h>
 
 #include <framework/entity/EntityController.h>
 #include <framework/util/NGSTDUtil.h>
@@ -62,14 +63,7 @@ void EntityMapper::initWithJson(const char* json)
         assert(iv.IsObject());
         
         std::string keyStr = i->name.GetString();
-        assert(keyStr.length() == 4);
-        
-        const char* chars = keyStr.c_str();
-        
-        uint32_t key = (uint32_t)chars[0] << 24 |
-        (uint32_t)chars[1] << 16 |
-        (uint32_t)chars[2] << 8  |
-        (uint32_t)chars[3];
+        uint32_t key = StringUtil::fourCharFromString(keyStr);
         
         assert(_entityDescriptorsMap.find(key) == _entityDescriptorsMap.end());
         
@@ -78,8 +72,7 @@ void EntityMapper::initWithJson(const char* json)
         entry->type = key;
         entry->name = iv["name"].GetString();
         entry->typeName = keyStr;
-        entry->controller = iv.HasMember("controller") ? iv["controller"].GetString() : "EntityController";
-        entry->networkController = iv.HasMember("networkController") ? iv["networkController"].GetString() : "EntityNetworkController";
+        entry->controller = iv.HasMember("controller") ? iv["controller"].GetString() : "Entity";
         
         {
             const Value& v = iv["textureMappings"];
@@ -187,20 +180,36 @@ EntityDef* EntityMapper::getEntityDef(uint32_t inFourCCName)
     return ret;
 }
 
-void EntityMapper::registerFunction(std::string name, EntityControllerCreationFunc inCreationFunction)
+void EntityMapper::registerFunction(std::string name, EntityControllerCreationFunc func)
 {
-    assert(inCreationFunction);
+    assert(func);
     
-    _nameToEntityControllerCreationFunctionMap[name] = inCreationFunction;
+    _entityControllerCreationFunctionMap[name] = func;
 }
 
-EntityController* EntityMapper::createEntityController(std::string name, Entity* inEntity)
+void EntityMapper::registerFunction(std::string name, EntityNetworkControllerCreationFunc func)
 {
-    EntityControllerCreationFunc creationFunc = _nameToEntityControllerCreationFunctionMap[name];
+    assert(func);
     
-    assert(creationFunc);
+    _entityNetworkControllerCreationFunctionMap[name] = func;
+}
+
+EntityController* EntityMapper::createEntityController(EntityDef& ed, Entity* e)
+{
+    EntityControllerCreationFunc func = _entityControllerCreationFunctionMap[ed.controller];
     
-    return creationFunc(inEntity);
+    assert(func);
+    
+    return func(e);
+}
+
+EntityNetworkController* EntityMapper::createEntityNetworkController(EntityDef& ed, Entity* e)
+{
+    EntityNetworkControllerCreationFunc func = _entityNetworkControllerCreationFunctionMap[ed.controller];
+    
+    assert(func);
+    
+    return func(e, ed.server);
 }
 
 const std::vector<EntityDef*>& EntityMapper::getEntityDescriptors()
@@ -210,13 +219,18 @@ const std::vector<EntityDef*>& EntityMapper::getEntityDescriptors()
 
 const std::map<std::string, EntityControllerCreationFunc>& EntityMapper::getEntityControllerMap()
 {
-    return _nameToEntityControllerCreationFunctionMap;
+    return _entityControllerCreationFunctionMap;
+}
+
+const std::map<std::string, EntityNetworkControllerCreationFunc>& EntityMapper::getEntityNetworkControllerMap()
+{
+    return _entityNetworkControllerCreationFunctionMap;
 }
 
 EntityMapper::EntityMapper()
 {
-    registerFunction("EntityController", EntityController::create);
-    registerFunction("EntityNetworkController", EntityNetworkController::create);
+    registerFunction("Entity", EntityController::create);
+    registerFunction("Entity", EntityNetworkController::create);
 }
 
 EntityMapper::~EntityMapper()

@@ -13,15 +13,16 @@
 
 class DestructibleController : public EntityController
 {
+    friend class DestructibleNetworkController;
+    
     DECL_RTTI;
     DECL_EntityController_create;
     
 public:
-    DestructibleController(Entity* inEntity);
+    DestructibleController(Entity* entity);
     virtual ~DestructibleController();
     
     virtual void update();
-    virtual void postUpdate();
     virtual void receiveMessage(uint16_t message, void* data = NULL);
     virtual void onFixturesCreated(std::vector<b2Fixture*>& fixtures);
     virtual bool shouldCollide(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB);
@@ -63,7 +64,28 @@ private:
         }
     };
     Stats _stats;
-    Stats _statsCache;
+    Stats _statsNetworkCache;
+};
+
+#include <framework/entity/EntityNetworkController.h>
+
+class DestructibleNetworkController : public EntityNetworkController
+{
+    DECL_RTTI;
+    DECL_EntityNetworkController_create;
+    
+public:
+    DestructibleNetworkController(Entity* e, bool isServer);
+    virtual ~DestructibleNetworkController();
+    
+    virtual void read(InputMemoryBitStream& ip);
+    virtual uint16_t write(OutputMemoryBitStream& op, uint16_t dirtyState);
+    
+    virtual void recallNetworkCache();
+    virtual uint16_t getDirtyState();
+    
+private:
+    DestructibleController* _controller;
 };
 
 #endif /* defined(__noctisgames__DestructibleController__) */

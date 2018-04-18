@@ -34,8 +34,8 @@ public:
     static Server* getInstance();
     static void destroy();
     
-    static void sHandleDynamicEntityCreatedOnServer(Entity* inEntity);
-    static void sHandleDynamicEntityDeletedOnServer(Entity* inEntity);
+    static void sHandleDynamicEntityCreatedOnServer(Entity* entity);
+    static void sHandleDynamicEntityDeletedOnServer(Entity* entity);
     
     static void sHandleNewClient(uint8_t playerId, std::string playerName);
     static void sHandleLostClient(ClientProxy* inClientProxy, uint8_t index);
@@ -60,7 +60,6 @@ private:
     std::vector<uint8_t> _playerIds;
     std::vector<std::string> _playerNames;
     uint32_t _map;
-    bool _isLoadingMap;
     
     void handleNewClient(uint8_t playerId, std::string playerName);
     void handleLostClient(ClientProxy* inClientProxy, uint8_t index);

@@ -49,8 +49,8 @@ public:
     
     void processIncomingPackets();
     void sendOutgoingPackets();
-    void registerEntity(Entity* inEntity);
-    void deregisterEntity(Entity* inEntity);
+    void registerEntity(Entity* e);
+    void deregisterEntity(Entity* e);
     void setStateDirty(uint32_t inNetworkId, uint16_t inDirtyState);
     ClientProxy* getClientProxy(uint8_t inPlayerId) const;
     int getMoveCount();

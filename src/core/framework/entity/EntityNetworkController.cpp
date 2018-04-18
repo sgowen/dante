@@ -20,7 +20,7 @@ IMPL_RTTI_NOPARENT(EntityNetworkController);
 
 IMPL_EntityNetworkController_create(EntityNetworkController);
 
-EntityNetworkController::EntityNetworkController(Entity* inEntity) : _entity(inEntity)
+EntityNetworkController::EntityNetworkController(Entity* e, bool isServer) : _entity(e), _isServer(isServer)
 {
     // Empty
 }
@@ -32,96 +32,124 @@ EntityNetworkController::~EntityNetworkController()
 
 void EntityNetworkController::read(InputMemoryBitStream& ip)
 {
-    _entity->_readState = 0;
+    Entity& e = *_entity;
     
     bool stateBit;
     
     ip.read(stateBit);
     if (stateBit)
     {
-        MemoryBitStreamUtil::read(ip, _entity->_pose.velocity);
-        MemoryBitStreamUtil::read(ip, _entity->_pose.position);
+        MemoryBitStreamUtil::read(ip, e._pose.velocity);
+        MemoryBitStreamUtil::read(ip, e._pose.position);
         
-        if (!_entity->isFixedRotation())
+        if (!e.isFixedRotation())
         {
-            ip.read(_entity->_pose.angle);
+            ip.read(e._pose.angle);
         }
         
-        if (_entity->_groundSensorFixture)
+        if (e._groundSensorFixture)
         {
-            ip.read<uint8_t, 4>(_entity->_pose.numGroundContacts);
+            ip.read<uint8_t, 4>(e._pose.numGroundContacts);
         }
         
-        ip.read(_entity->_pose.isFacingLeft);
+        ip.read(e._pose.isFacingLeft);
         
-        _entity->updateBodyFromPose();
+        e.updateBodyFromPose();
         
-        _entity->_readState |= Entity::ReadStateFlag_Pose;
-        _entity->_poseNetworkCache = _entity->_pose;
+        e._poseNetworkCache = e._pose;
     }
     
-    if (_entity->_entityDef.stateSensitive)
+    if (e._entityDef.stateSensitive)
     {
         ip.read(stateBit);
         if (stateBit)
         {
-            ip.read(_entity->_state.stateTime);
-            ip.read(_entity->_state.state);
-            ip.read(_entity->_state.stateFlags);
+            ip.read(e._state.stateTime);
+            ip.read(e._state.state);
+            ip.read(e._state.stateFlags);
             
-            _entity->_readState |= Entity::ReadStateFlag_State;
-            _entity->_stateNetworkCache = _entity->_state;
+            e._stateNetworkCache = e._state;
         }
     }
 }
 
-void EntityNetworkController::recallCache()
-{
-    _entity->_pose = _entity->_poseNetworkCache;
-    _entity->_state = _entity->_stateNetworkCache;
-    
-    _entity->updateBodyFromPose();
-}
-
 uint16_t EntityNetworkController::write(OutputMemoryBitStream& op, uint16_t dirtyState)
 {
+    Entity& e = *_entity;
+    
     uint16_t writtenState = 0;
     
     bool pose = dirtyState & Entity::ReadStateFlag_Pose;
     op.write(pose);
     if (pose)
     {
-        MemoryBitStreamUtil::write(op, _entity->_pose.velocity);
-        MemoryBitStreamUtil::write(op, _entity->_pose.position);
+        MemoryBitStreamUtil::write(op, e._pose.velocity);
+        MemoryBitStreamUtil::write(op, e._pose.position);
         
-        if (!_entity->isFixedRotation())
+        if (!e.isFixedRotation())
         {
-            op.write(_entity->_pose.angle);
+            op.write(e._pose.angle);
         }
         
-        if (_entity->_groundSensorFixture)
+        if (e._groundSensorFixture)
         {
-            op.write<uint8_t, 4>(_entity->_pose.numGroundContacts);
+            op.write<uint8_t, 4>(e._pose.numGroundContacts);
         }
         
-        op.write(_entity->_pose.isFacingLeft);
+        op.write(e._pose.isFacingLeft);
         
         writtenState |= Entity::ReadStateFlag_Pose;
     }
     
-    if (_entity->_entityDef.stateSensitive)
+    if (e._entityDef.stateSensitive)
     {
         bool state = dirtyState & Entity::ReadStateFlag_State;
         op.write(state);
         if (state)
         {
-            op.write(_entity->_state.stateTime);
-            op.write(_entity->_state.state);
-            op.write(_entity->_state.stateFlags);
+            op.write(e._state.stateTime);
+            op.write(e._state.state);
+            op.write(e._state.stateFlags);
             
             writtenState |= Entity::ReadStateFlag_State;
         }
     }
     
     return writtenState;
+}
+
+void EntityNetworkController::recallNetworkCache()
+{
+    Entity& e = *_entity;
+    
+    e._pose = e._poseNetworkCache;
+    e._state = e._stateNetworkCache;
+    
+    e.updateBodyFromPose();
+}
+
+uint16_t EntityNetworkController::getDirtyState()
+{
+    uint16_t ret = 0;
+    
+    Entity& e = *_entity;
+    
+    if (e._poseNetworkCache != e._pose)
+    {
+        e._poseNetworkCache = e._pose;
+        ret |= Entity::ReadStateFlag_Pose;
+    }
+    
+    if (e._stateNetworkCache != e._state)
+    {
+        e._stateNetworkCache = e._state;
+        ret |= Entity::ReadStateFlag_State;
+    }
+    
+    return ret;
+}
+
+bool EntityNetworkController::isServer()
+{
+    return _isServer;
 }

@@ -85,7 +85,7 @@ private:
     void onEntityRemoved(Entity* e);
     Entity* getEntityAtPosition(float x, float y);
     bool entityExistsAtPosition(Entity* e, float x, float y);
-    Entity* mapAddEntity(EntityDef* entityDef, int width = 0, int height = 0);
+    Entity* addEntity(EntityDef* entityDef, int width = 0, int height = 0);
     void processInput();
     
     // ctor, copy ctor, and assignment should be private in a Singleton

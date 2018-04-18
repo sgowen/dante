@@ -17,8 +17,10 @@ class Entity;
 struct EntityDef;
 struct EntityInstanceDef;
 class EntityController;
+class EntityNetworkController;
 
-typedef EntityController* (*EntityControllerCreationFunc)(Entity* inEntity);
+typedef EntityController* (*EntityControllerCreationFunc)(Entity* e);
+typedef EntityNetworkController* (*EntityNetworkControllerCreationFunc)(Entity* e, bool isServer);
 
 class EntityMapper
 {
@@ -32,15 +34,19 @@ public:
     Entity* createEntity(EntityInstanceDef* inEntityInstanceDef, bool isServer);
     Entity* createEntityFromDef(EntityDef* inEntityDef, EntityInstanceDef* inEntityInstanceDef, bool isServer);
     EntityDef* getEntityDef(uint32_t inFourCCName);
-    void registerFunction(std::string name, EntityControllerCreationFunc inCreationFunction);
-    EntityController* createEntityController(std::string name, Entity* inEntity);
+    void registerFunction(std::string name, EntityControllerCreationFunc func);
+    void registerFunction(std::string name, EntityNetworkControllerCreationFunc func);
+    EntityController* createEntityController(EntityDef& ed, Entity* e);
+    EntityNetworkController* createEntityNetworkController(EntityDef& ed, Entity* e);
     const std::vector<EntityDef*>& getEntityDescriptors();
     const std::map<std::string, EntityControllerCreationFunc>& getEntityControllerMap();
+    const std::map<std::string, EntityNetworkControllerCreationFunc>& getEntityNetworkControllerMap();
     
 private:
     std::map<uint32_t, EntityDef*> _entityDescriptorsMap;
     std::vector<EntityDef*> _entityDescriptors;
-    std::map<std::string, EntityControllerCreationFunc> _nameToEntityControllerCreationFunctionMap;
+    std::map<std::string, EntityControllerCreationFunc> _entityControllerCreationFunctionMap;
+    std::map<std::string, EntityNetworkControllerCreationFunc> _entityNetworkControllerCreationFunctionMap;
     
     // ctor, copy ctor, and assignment should be private in a Singleton
     EntityMapper();

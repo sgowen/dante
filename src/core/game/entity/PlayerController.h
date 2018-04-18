@@ -18,15 +18,16 @@ class Move;
 
 class PlayerController : public EntityController
 {
+    friend class PlayerNetworkController;
+    
     DECL_RTTI;
     DECL_EntityController_create;
     
 public:
-    PlayerController(Entity* inEntity);
+    PlayerController(Entity* entity);
     virtual ~PlayerController();
     
     virtual void update();
-    virtual void postUpdate();
     virtual void receiveMessage(uint16_t message, void* data = NULL);
     virtual void onFixturesCreated(std::vector<b2Fixture*>& fixtures);
     virtual bool shouldCollide(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB);
@@ -44,7 +45,6 @@ public:
     uint32_t getMap() const;
     void setPlayerName(std::string inValue);
     std::string& getPlayerName();
-    bool isLocalPlayer();
     
 private:
     enum State
@@ -99,7 +99,7 @@ private:
         }
     };
     PlayerInfo _playerInfo;
-    PlayerInfo _playerInfoCache;
+    PlayerInfo _playerInfoNetworkCache;
     
     struct Stats
     {
@@ -125,13 +125,10 @@ private:
         }
     };
     Stats _stats;
-    Stats _statsCache;
+    Stats _statsNetworkCache;
     
     /// Non-Networked
     b2Fixture* _attackSensorFixture;
-    
-    /// Client Only
-    bool _isLocalPlayer;
     
     void processInputForIdleState(uint8_t inputState);
     void processInputForFirstPunchState(uint8_t inputState);
@@ -145,8 +142,30 @@ private:
     void handleMainActionInput(uint8_t inputState);
     void handleJumpInput(uint8_t inputState);
     void handleJumpCompletedInput(uint8_t inputState);
+};
+
+#include <framework/entity/EntityNetworkController.h>
+
+class PlayerNetworkController : public EntityNetworkController
+{
+    DECL_RTTI;
+    DECL_EntityNetworkController_create;
     
-    void handleSound(uint8_t fromState, uint8_t toState);
+public:
+    PlayerNetworkController(Entity* e, bool isServer);
+    virtual ~PlayerNetworkController();
+    
+    virtual void read(InputMemoryBitStream& ip);
+    virtual uint16_t write(OutputMemoryBitStream& op, uint16_t dirtyState);
+    
+    virtual void recallNetworkCache();
+    virtual uint16_t getDirtyState();
+    
+    bool isLocalPlayer();
+    
+private:
+    PlayerController* _controller;
+    bool _isLocalPlayer;
 };
 
 #endif /* defined(__noctisgames__PlayerController__) */

@@ -13,10 +13,10 @@
 #include <framework/entity/Entity.h>
 #include <game/game/GameRenderer.h>
 #include <game/logic/World.h>
-#include <game/game/GameInputManager.h>
 #include <framework/util/Timing.h>
-#include <game/logic/Server.h>
+#include <game/game/GameInputManager.h>
 
+#include <game/logic/Server.h>
 #include <framework/util/Constants.h>
 #include <framework/input/CursorInputManager.h>
 #include <framework/input/CursorEvent.h>
@@ -78,17 +78,30 @@ void GameEngine::destroy()
 
 uint64_t GameEngine::sGetPlayerAddressHash(uint8_t inPlayerIndex)
 {
+    uint64_t ret = 0;
+    
     GameEngine* engine = GameEngine::getInstance();
     assert(engine);
     
     World* world = engine->_world;
     assert(world);
     
-    uint64_t ret = 0;
-    Entity* entity = world->getPlayerWithId(inPlayerIndex + 1);
-    if (entity)
+    uint8_t playerID = inPlayerIndex + 1;
+    
+    Entity* player = NULL;
+    for (Entity* e : world->getPlayers())
     {
-        PlayerController* robot = static_cast<PlayerController*>(entity->getController());
+        PlayerController* robot = static_cast<PlayerController*>(e->getController());
+        if (robot->getPlayerId() == playerID)
+        {
+            player = e;
+            break;
+        }
+    }
+    
+    if (player)
+    {
+        PlayerController* robot = static_cast<PlayerController*>(player->getController());
         assert(robot);
         
         ret = robot->getAddressHash();
@@ -97,7 +110,7 @@ uint64_t GameEngine::sGetPlayerAddressHash(uint8_t inPlayerIndex)
     return ret;
 }
 
-void GameEngine::sHandleDynamicEntityCreatedOnClient(Entity* inEntity)
+void GameEngine::sHandleDynamicEntityCreatedOnClient(Entity* entity)
 {
     GameEngine* engine = GameEngine::getInstance();
     assert(engine);
@@ -105,10 +118,10 @@ void GameEngine::sHandleDynamicEntityCreatedOnClient(Entity* inEntity)
     World* world = engine->_world;
     assert(world);
     
-    world->addDynamicEntity(inEntity);
+    world->addEntity(entity);
 }
 
-void GameEngine::sHandleDynamicEntityDeletedOnClient(Entity* inEntity)
+void GameEngine::sHandleDynamicEntityDeletedOnClient(Entity* entity)
 {
     GameEngine* engine = GameEngine::getInstance();
     assert(engine);
@@ -116,13 +129,14 @@ void GameEngine::sHandleDynamicEntityDeletedOnClient(Entity* inEntity)
     World* world = engine->_world;
     assert(world);
     
-    world->removeDynamicEntity(inEntity);
+    world->removeEntity(entity);
 }
 
 GameEngine::GameEngine() : EngineState(),
 _renderer(new GameRenderer()),
 _world(NULL),
 _timing(static_cast<Timing*>(INSTANCE_MANAGER->getInstance(INSTANCE_TIME_CLIENT))),
+_input(NULL),
 _state(GameEngineState_Default),
 _map(0)
 {
@@ -146,6 +160,7 @@ void GameEngine::enter(Engine* engine)
     _timing->reset();
     
     GameInputManager::create(this);
+    _input = GameInputManager::getInstance();
 }
 
 void GameEngine::update(Engine* engine)
@@ -168,20 +183,20 @@ void GameEngine::update(Engine* engine)
             _renderer->onNewMapLoaded();
         }
         
-        _world->postRead();
+        _world->postRead(_input->getMoveList());
     }
     
     NG_AUDIO_ENGINE->update();
     
-    GameInputManager::getInstance()->update();
-    if (GameInputManager::getInstance()->getMenuState() == GIMS_ESCAPE)
+    _input->update();
+    if (_input->getMenuState() == GIMS_ESCAPE)
     {
         engine->getStateMachine().revertToPreviousState();
         return;
     }
     
-    _world->updateClient();
-    GameInputManager::getInstance()->clearPendingMove();
+    _world->updateClient(_input->getPendingMove());
+    _input->clearPendingMove();
     NG_CLIENT->sendOutgoingPackets();
     
 #ifdef NG_STEAM
@@ -200,6 +215,7 @@ void GameEngine::exit(Engine* engine)
     releaseDeviceDependentResources();
     
     GameInputManager::destroy();
+    _input = NULL;
     
     delete _world;
     
@@ -268,7 +284,7 @@ void GameEngine::render(double alpha)
     
     if (_state & GameEngineState_Interpolation)
     {
-        _world->postRender();
+        _world->endInterpolation();
     }
     
     NG_AUDIO_ENGINE->render();

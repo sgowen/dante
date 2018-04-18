@@ -405,7 +405,6 @@ void StudioRenderer::renderWorld()
     
     renderEntities(world->getLayers());
     renderEntities(world->getStaticEntities());
-    renderEntities(world->getPlayers());
     renderEntities(world->getDynamicEntities());
     
     _rendererHelper->useNormalBlending();

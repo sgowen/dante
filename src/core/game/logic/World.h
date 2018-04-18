@@ -17,12 +17,15 @@
 
 enum WorldFlags
 {
-    WorldFlag_Server = 1 << 0,
-    WorldFlag_MapLoadAll = 1 << 1
+    WorldFlag_Server =     1 << 0,
+    WorldFlag_Studio = 1 << 1
 };
 
 class Entity;
 class EntityIDManager;
+struct EntityDef;
+class MoveList;
+class Move;
 class b2World;
 
 class EntityContactListener;
@@ -34,23 +37,20 @@ public:
     World(uint32_t flags = 0);
     ~World();
     
-    void addDynamicEntity(Entity* inEntity);
-    void removeDynamicEntity(Entity* inEntity);
-    void updateServer();
-    void postRead();
-    void updateClient();
-    void interpolate(double alpha);
-    void postRender();
     void loadMap(uint32_t map);
-    bool isMapLoaded();
-    void mapAddEntity(Entity* e);
-    void mapRemoveEntity(Entity* e);
     void saveMap();
     void saveMapAs(uint32_t map);
+    void addEntity(Entity* e);
+    void removeEntity(Entity* e);
+    void updateServer();
+    void postRead(MoveList& moveList);
+    void updateClient(const Move* pendingMove);
+    void interpolate(double alpha);
+    void endInterpolation();
     void clear();
+    bool isMapLoaded();
     std::string& getMapName();
     std::string& getMapFileName();
-    Entity* getPlayerWithId(uint8_t inPlayerID);
     std::vector<Entity*>& getPlayers();
     std::vector<Entity*>& getDynamicEntities();
     std::vector<Entity*>& getWaterBodies();
@@ -59,29 +59,34 @@ public:
     b2World& getWorld();
     
 private:
+    uint32_t _flags;
+    b2World* _world;
+    EntityContactListener* _entityContactListener;
+    EntityContactFilter* _entityContactFilter;
+    EntityIDManager* _entityIDManager;
     std::vector<Entity*> _players;
     std::vector<Entity*> _dynamicEntities;
     std::vector<Entity*> _waterBodies;
     std::vector<Entity*> _staticEntities;
     std::vector<Entity*> _layers;
-    b2World* _world;
-    EntityContactListener* _entityContactListener;
-    EntityContactFilter* _entityContactFilter;
     uint32_t _map;
     std::string _mapFileName;
     std::string _mapName;
-    uint32_t _flags;
-    EntityIDManager* _entityIDManager;
     
     void stepPhysics();
     void clearDynamicEntities(std::vector<Entity*>& entities);
     void updateAndRemoveEntitiesAsNeeded(std::vector<Entity*>& entities);
-    void postUpdateAndRemoveEntitiesAsNeeded(std::vector<Entity*>& entities);
+    void handleDirtyStates(std::vector<Entity*>& entities);
     
     bool isLayer(Entity* e);
     bool isWater(Entity* e);
     bool isStatic(Entity* e);
     bool isDynamic(Entity* e);
+    bool isDynamic(EntityDef& ed);
+    
+    void refreshPlayers();
+    void removeEntity(Entity* e, std::vector<Entity*>& entities);
+    void deinitPhysics(std::vector<Entity*>& entities);
 };
 
 #include <Box2D/Dynamics/b2WorldCallbacks.h>

@@ -12,143 +12,184 @@
 
 #include <framework/entity/Entity.h>
 #include <framework/entity/EntityIDManager.h>
+#include <framework/network/portable/MoveList.h>
 #include <Box2D/Box2D.h>
 
 #include <framework/network/server/NetworkManagerServer.h>
 #include <framework/util/Timing.h>
-#include <game/logic/Server.h>
 #include <framework/network/server/ClientProxy.h>
-#include <framework/network/portable/MoveList.h>
-#include <game/game/GameInputManager.h>
 #include <framework/network/client/NetworkManagerClient.h>
-#include <game/entity/PlayerController.h>
 #include <framework/util/StringUtil.h>
 #include <framework/util/NGSTDUtil.h>
 #include <framework/entity/EntityMapper.h>
 #include <framework/entity/EntityLayoutMapper.h>
-#include <game/logic/GameConfig.h>
 #include <framework/util/InstanceManager.h>
 #include <framework/util/Config.h>
+#include <game/logic/Server.h>
+#include <game/entity/PlayerController.h>
 
 World::World(uint32_t flags) :
+_flags(flags),
 _world(new b2World(b2Vec2(0.0f, FW_CFG->_gravity))),
 _entityContactListener(new EntityContactListener()),
 _entityContactFilter(new EntityContactFilter()),
+_entityIDManager(static_cast<EntityIDManager*>(INSTANCE_MANAGER->getInstance(_flags & WorldFlag_Studio ? INSTANCE_ENTITY_ID_MANAGER_STUDIO : _flags & WorldFlag_Server ? INSTANCE_ENTITY_ID_MANAGER_SERVER : INSTANCE_ENTITY_ID_MANAGER_CLIENT))),
 _map(0),
 _mapFileName(),
-_mapName(),
-_flags(flags),
-_entityIDManager(NULL)
+_mapName()
 {
-    uint32_t entityIDManagerKey = INSTANCE_ENTITY_ID_MANAGER_CLIENT;
-    if (_flags & WorldFlag_MapLoadAll)
-    {
-        entityIDManagerKey = _flags & WorldFlag_Server ? INSTANCE_ENTITY_ID_MANAGER_SERVER : INSTANCE_ENTITY_ID_MANAGER_STUDIO;
-    }
-    _entityIDManager = static_cast<EntityIDManager*>(INSTANCE_MANAGER->getInstance(entityIDManagerKey));
-    
     _world->SetContactListener(_entityContactListener);
     _world->SetContactFilter(_entityContactFilter);
 }
 
 World::~World()
 {
-    clearDynamicEntities(_players);
-    clearDynamicEntities(_dynamicEntities);
+    clear();
     
-    for (Entity* entity : _waterBodies)
-    {
-        entity->deinitPhysics();
-    }
-    NGSTDUtil::cleanUpVectorOfPointers(_waterBodies);
-    
-    for (Entity* entity : _staticEntities)
-    {
-        entity->deinitPhysics();
-    }
-    NGSTDUtil::cleanUpVectorOfPointers(_staticEntities);
-    
-    NGSTDUtil::cleanUpVectorOfPointers(_layers);
+    deinitPhysics(_dynamicEntities);
+    NGSTDUtil::cleanUpVectorOfPointers(_dynamicEntities);
     
     delete _entityContactListener;
     delete _entityContactFilter;
     delete _world;
 }
 
-void World::addDynamicEntity(Entity* inEntity)
+void World::loadMap(uint32_t map)
 {
-    inEntity->initPhysics(getWorld());
+    assert(map);
     
-    if (inEntity->getEntityDef().type == 'ROBT')
+    clear();
+    
+    EntityLayoutMapper* elm = EntityLayoutMapper::getInstance();
+    
+    _map = map;
+    _mapName = StringUtil::stringFromFourChar(_map);
+    _mapFileName = elm->getJsonConfigFilePath(_map);
+    
+    elm->loadEntityLayout(_map, _entityIDManager);
+    
+    EntityLayoutDef& eld = elm->getEntityLayoutDef();
+    for (EntityInstanceDef eid : eld.entities)
     {
-        _players.push_back(inEntity);
-    }
-    else
-    {
-        _dynamicEntities.push_back(inEntity);
+        EntityDef* ed = EntityMapper::getInstance()->getEntityDef(eid.type);
+        if (_flags == 0 && isDynamic(*ed))
+        {
+            // On the client, Dynamic Entities must arrive via network
+            continue;
+        }
+        
+        Entity* e = EntityMapper::getInstance()->createEntity(&eid, _flags & WorldFlag_Server);
+        addEntity(e);
     }
 }
 
-void World::removeDynamicEntity(Entity* inEntity)
+void World::saveMap()
 {
-    std::vector<Entity*>* pEntities = NULL;
-    if (inEntity->getEntityDef().type == 'ROBT')
-    {
-        pEntities = &_players;
-    }
-    else
-    {
-        pEntities = &_dynamicEntities;
-    }
+    saveMapAs(_map);
+}
+
+void World::saveMapAs(uint32_t map)
+{
+    EntityLayoutDef layout;
     
-    std::vector<Entity*>& entities = *pEntities;
-    
-    int len = static_cast<int>(entities.size());
-    int indexToRemove = -1;
-    for (int i = 0; i < len; ++i)
+    for (Entity* e : _layers)
     {
-        if (_flags & WorldFlag_MapLoadAll)
-        {
-            if (entities[i] == inEntity)
-            {
-                indexToRemove = i;
-                break;
-            }
-        }
-        else
-        {
-            if (entities[i]->getID() == inEntity->getID())
-            {
-                indexToRemove = i;
-                break;
-            }
-        }
+        layout.entities.push_back(EntityInstanceDef(e->getID(), e->getEntityDef().type, e->getPosition().x, e->getPosition().y));
     }
     
-    if (indexToRemove > -1)
+    for (Entity* e : _waterBodies)
     {
-        int lastIndex = len - 1;
-        
-        if (indexToRemove != lastIndex)
+        layout.entities.push_back(EntityInstanceDef(e->getID(), e->getEntityDef().type, e->getPosition().x, e->getPosition().y, e->getWidth(), e->getHeight()));
+    }
+    
+    for (Entity* e : _staticEntities)
+    {
+        layout.entities.push_back(EntityInstanceDef(e->getID(), e->getEntityDef().type, e->getPosition().x, e->getPosition().y));
+    }
+    
+    for (Entity* e : _dynamicEntities)
+    {
+        if (e->getController()->getRTTI().derivesFrom(PlayerController::rtti))
         {
-            entities[indexToRemove] = entities[lastIndex];
+            continue;
         }
         
-        entities.pop_back();
+        layout.entities.push_back(EntityInstanceDef(e->getID(), e->getEntityDef().type, e->getPosition().x, e->getPosition().y));
+    }
+    
+    EntityLayoutMapper* elm = EntityLayoutMapper::getInstance();
+    elm->saveEntityLayout(map, &layout);
+    
+    if (map != 'TEST')
+    {
+        // If the save was successful, update current map
+        _map = map;
+    }
+}
+
+void World::addEntity(Entity *e)
+{
+    if (isLayer(e))
+    {
+        _layers.push_back(e);
+    }
+    else if (isWater(e))
+    {
+        e->initPhysics(getWorld());
         
-        inEntity->deinitPhysics();
+        _waterBodies.push_back(e);
+    }
+    else if (isStatic(e))
+    {
+        e->initPhysics(getWorld());
         
-        if (_flags & WorldFlag_MapLoadAll)
+        _staticEntities.push_back(e);
+    }
+    else if (isDynamic(e))
+    {
+        if (_flags & WorldFlag_Server)
         {
-            if (_flags & WorldFlag_Server)
-            {
-                NG_SERVER->deregisterEntity(inEntity);
-            }
-            else
-            {
-                delete inEntity;
-            }
+            NG_SERVER->registerEntity(e);
         }
+        
+        e->initPhysics(getWorld());
+        
+        _dynamicEntities.push_back(e);
+        
+        refreshPlayers();
+    }
+}
+
+void World::removeEntity(Entity* e)
+{
+    if (isLayer(e))
+    {
+        removeEntity(e, _layers);
+    }
+    else if (isWater(e))
+    {
+        e->deinitPhysics();
+        
+        removeEntity(e, _waterBodies);
+    }
+    else if (isStatic(e))
+    {
+        e->deinitPhysics();
+        
+        removeEntity(e, _staticEntities);
+    }
+    else if (isDynamic(e))
+    {
+        if (_flags & WorldFlag_Server)
+        {
+            NG_SERVER->deregisterEntity(e);
+        }
+        
+        e->deinitPhysics();
+        
+        removeEntity(e, _dynamicEntities);
+        
+        refreshPlayers();
     }
 }
 
@@ -181,16 +222,15 @@ void World::updateServer()
             
             stepPhysics();
             
-            updateAndRemoveEntitiesAsNeeded(_players);
             updateAndRemoveEntitiesAsNeeded(_dynamicEntities);
             
-            postUpdateAndRemoveEntitiesAsNeeded(_players);
-            postUpdateAndRemoveEntitiesAsNeeded(_dynamicEntities);
+            handleDirtyStates(_dynamicEntities);
         }
         
         for (uint8_t i = 0; i < MAX_NUM_PLAYERS_PER_SERVER; ++i)
         {
-            ClientProxy* client = NG_SERVER->getClientProxy(i + 1);
+            uint8_t playerId = i + 1;
+            ClientProxy* client = NG_SERVER->getClientProxy(playerId);
             if (client)
             {
                 MoveList& moveList = client->getUnprocessedMoveList();
@@ -200,72 +240,38 @@ void World::updateServer()
     }
 }
 
-void World::postRead()
+void World::postRead(MoveList& moveList)
 {
-    for (Entity* e : _players)
-    {
-        e->recallCache();
-    }
-    
     for (Entity* e : _dynamicEntities)
     {
-        e->recallCache();
+        e->getNetworkController()->recallNetworkCache();
     }
     
     // all processed moves have been removed, so all that are left are unprocessed moves so we must apply them...
-    MoveList& moveList = GameInputManager::getInstance()->getMoveList();
-    
     for (const Move& move : moveList)
     {
-        for (Entity* e : _players)
-        {
-            PlayerController* robot = static_cast<PlayerController*>(e->getController());
-            if (robot->isLocalPlayer())
-            {
-                robot->processInput(move.getInputState());
-            }
-        }
-        
-        stepPhysics();
-        
-        for (Entity* e : _players)
-        {
-            e->update();
-        }
-        
-        for (Entity* e : _dynamicEntities)
-        {
-            e->update();
-        }
+        updateClient(&move);
     }
 }
 
-void World::updateClient()
+void World::updateClient(const Move* move)
 {
-    const Move* pendingMove = GameInputManager::getInstance()->getPendingMove();
-    if (pendingMove)
+    assert(move);
+    
+    for (Entity* e : _players)
     {
-        for (Entity* entity : _players)
-        {
-            PlayerController* robot = static_cast<PlayerController*>(entity->getController());
-            if (robot->isLocalPlayer())
-            {
-                robot->processInput(pendingMove->getInputState(), true);
-            }
-        }
-        
-        stepPhysics();
-        
-        for (Entity* e : _players)
-        {
-            e->update(true);
-        }
-        
-        for (Entity* e : _dynamicEntities)
-        {
-            e->update(true);
-        }
+        PlayerController* robot = static_cast<PlayerController*>(e->getController());
+        robot->processInput(move->getInputState());
     }
+    
+    stepPhysics();
+    
+    for (Entity* e : _dynamicEntities)
+    {
+        e->update();
+    }
+    
+    /// TODO sound effects
 }
 
 void World::interpolate(double alpha)
@@ -276,220 +282,34 @@ void World::interpolate(double alpha)
     }
 }
 
-void World::postRender()
+void World::endInterpolation()
 {
     for (Entity* entity : _players)
     {
-        entity->postRender();
-    }
-}
-
-void World::loadMap(uint32_t map)
-{
-    _map = map;
-    
-    char chars[5];
-    
-    chars[4] = '\0';
-    chars[3] = (char)(map & 0xFF);
-    chars[2] = (char)(map >> 8 & 0xFF);
-    chars[1] = (char)(map >> 16 & 0xFF);
-    chars[0] = (char)(map >> 24 & 0xFF);
-    
-    _mapName = "";
-    _mapFileName = "";
-    
-    clear();
-    
-    assert(_map != 0);
-    
-    _mapName = std::string(chars);
-    
-    if (map == 'TEST')
-    {
-        _mapFileName = std::string("test.cfg");
-        EntityLayoutMapper::getInstance()->loadEntityLayout(_mapFileName, _entityIDManager);
-    }
-    else
-    {
-        _mapFileName = EntityLayoutMapper::getInstance()->getJsonConfigFilePath(_map);
-        EntityLayoutMapper::getInstance()->loadEntityLayout(_map, _entityIDManager);
-    }
-    
-    EntityLayoutDef& entityLayoutDef = EntityLayoutMapper::getInstance()->getEntityLayoutDef();
-    for (EntityInstanceDef epd : entityLayoutDef.entities)
-    {
-        Entity* e = EntityMapper::getInstance()->createEntity(&epd, _flags & WorldFlag_Server);
-        mapAddEntity(e);
-    }
-}
-
-bool World::isMapLoaded()
-{
-    return _map != 0;
-}
-
-void World::mapAddEntity(Entity *e)
-{
-    if (isLayer(e))
-    {
-        _layers.push_back(e);
-    }
-    else if (isWater(e))
-    {
-        e->initPhysics(getWorld());
-        _waterBodies.push_back(e);
-    }
-    else if (isStatic(e))
-    {
-        e->initPhysics(getWorld());
-        _staticEntities.push_back(e);
-    }
-    else if (isDynamic(e))
-    {
-        if (_flags & WorldFlag_MapLoadAll)
-        {
-            if (_flags & WorldFlag_Server)
-            {
-                NG_SERVER->registerEntity(e);
-            }
-            else
-            {
-                addDynamicEntity(e);
-            }
-        }
-    }
-}
-
-void World::mapRemoveEntity(Entity* e)
-{
-    if (isLayer(e))
-    {
-        for (std::vector<Entity*>::iterator i = _layers.begin(); i != _layers.end(); )
-        {
-            if (e == (*i))
-            {
-                delete *i;
-                
-                i = _layers.erase(i);
-                return;
-            }
-            else
-            {
-                ++i;
-            }
-        }
-    }
-    else if (isWater(e))
-    {
-        e->deinitPhysics();
-        
-        for (std::vector<Entity*>::iterator i = _waterBodies.begin(); i != _waterBodies.end(); )
-        {
-            if (e == (*i))
-            {
-                delete *i;
-                
-                i = _waterBodies.erase(i);
-                return;
-            }
-            else
-            {
-                ++i;
-            }
-        }
-    }
-    else if (isStatic(e))
-    {
-        e->deinitPhysics();
-        
-        for (std::vector<Entity*>::iterator i = _staticEntities.begin(); i != _staticEntities.end(); )
-        {
-            if (e == (*i))
-            {
-                delete *i;
-                
-                i = _staticEntities.erase(i);
-                return;
-            }
-            else
-            {
-                ++i;
-            }
-        }
-    }
-    else if (isDynamic(e))
-    {
-        if (_flags & WorldFlag_MapLoadAll)
-        {
-            removeDynamicEntity(e);
-        }
-    }
-}
-
-void World::saveMap()
-{
-    saveMapAs(_map);
-}
-
-void World::saveMapAs(uint32_t map)
-{
-    EntityLayoutDef layout;
-    
-    for (Entity* e : _layers)
-    {
-        layout.entities.push_back(EntityInstanceDef(e->getID(), e->getEntityDef().type, e->getPosition().x, e->getPosition().y));
-    }
-    
-    for (Entity* e : _waterBodies)
-    {
-        layout.entities.push_back(EntityInstanceDef(e->getID(), e->getEntityDef().type, e->getPosition().x, e->getPosition().y, e->getWidth(), e->getHeight()));
-    }
-    
-    for (Entity* e : _staticEntities)
-    {
-        layout.entities.push_back(EntityInstanceDef(e->getID(), e->getEntityDef().type, e->getPosition().x, e->getPosition().y));
-    }
-    
-    for (Entity* e : _dynamicEntities)
-    {
-        layout.entities.push_back(EntityInstanceDef(e->getID(), e->getEntityDef().type, e->getPosition().x, e->getPosition().y));
-    }
-    
-    if (map == 'TEST')
-    {
-        EntityLayoutMapper::getInstance()->saveEntityLayout(std::string("test.cfg"), &layout);
-    }
-    else
-    {
-        EntityLayoutMapper::getInstance()->saveEntityLayout(map, &layout);
-        
-        // If the save was successful, update current map
-        _map = map;
+        entity->endInterpolation();
     }
 }
 
 void World::clear()
 {
-    for (Entity* e : _waterBodies)
-    {
-        e->deinitPhysics();
-    }
-    NGSTDUtil::cleanUpVectorOfPointers(_waterBodies);
-    
-    for (Entity* e : _staticEntities)
-    {
-        e->deinitPhysics();
-    }
-    NGSTDUtil::cleanUpVectorOfPointers(_staticEntities);
+    deinitPhysics(_waterBodies);
+    deinitPhysics(_staticEntities);
     
     NGSTDUtil::cleanUpVectorOfPointers(_layers);
+    NGSTDUtil::cleanUpVectorOfPointers(_waterBodies);
+    NGSTDUtil::cleanUpVectorOfPointers(_staticEntities);
     
-    if (_flags & WorldFlag_MapLoadAll)
+    if (_flags > 0)
     {
-        clearDynamicEntities(_players);
-        clearDynamicEntities(_dynamicEntities);
+        deinitPhysics(_dynamicEntities);
+        NGSTDUtil::cleanUpVectorOfPointers(_dynamicEntities);
+        refreshPlayers();
     }
+}
+
+bool World::isMapLoaded()
+{
+    return _map > 0;
 }
 
 std::string& World::getMapName()
@@ -500,20 +320,6 @@ std::string& World::getMapName()
 std::string& World::getMapFileName()
 {
     return _mapFileName;
-}
-
-Entity* World::getPlayerWithId(uint8_t inPlayerID)
-{
-    for (Entity* entity : _players)
-    {
-        PlayerController* robot = static_cast<PlayerController*>(entity->getController());
-        if (robot->getPlayerId() == inPlayerID)
-        {
-            return entity;
-        }
-    }
-    
-    return NULL;
 }
 
 std::vector<Entity*>& World::getPlayers()
@@ -556,57 +362,37 @@ void World::stepPhysics()
     _world->Step(FRAME_RATE, velocityIterations, positionIterations);
 }
 
-void World::clearDynamicEntities(std::vector<Entity*>& entities)
-{
-    int len = static_cast<int>(entities.size());
-    for (int i = 0, c = len; i < c; ++i)
-    {
-        Entity* entity = entities[i];
-        
-        removeDynamicEntity(entity);
-        --i;
-        --c;
-    }
-}
-
 void World::updateAndRemoveEntitiesAsNeeded(std::vector<Entity*>& entities)
 {
-    int len = static_cast<int>(entities.size());
-    for (int i = 0, c = len; i < c; ++i)
+    std::vector<Entity*> toDelete;
+    
+    for (Entity* e : entities)
     {
-        Entity* entity = entities[i];
-        
-        if (!entity->isRequestingDeletion())
+        if (!e->isRequestingDeletion())
         {
-            entity->update();
+            e->update();
         }
         
-        if (entity->isRequestingDeletion())
+        if (e->isRequestingDeletion())
         {
-            removeDynamicEntity(entity);
-            --i;
-            --c;
+            toDelete.push_back(e);
         }
+    }
+    
+    for (Entity* e : toDelete)
+    {
+        removeEntity(e);
     }
 }
 
-void World::postUpdateAndRemoveEntitiesAsNeeded(std::vector<Entity*>& entities)
+void World::handleDirtyStates(std::vector<Entity*>& entities)
 {
-    int len = static_cast<int>(entities.size());
-    for (int i = 0, c = len; i < c; ++i)
+    for (Entity* e : entities)
     {
-        Entity* entity = entities[i];
-        
-        if (!entity->isRequestingDeletion())
+        uint16_t dirtyState = e->getNetworkController()->getDirtyState();
+        if (dirtyState > 0)
         {
-            entity->postUpdate();
-        }
-        
-        if (entity->isRequestingDeletion())
-        {
-            removeDynamicEntity(entity);
-            --i;
-            --c;
+            NG_SERVER->setStateDirty(e->getID(), dirtyState);
         }
     }
 }
@@ -631,8 +417,53 @@ bool World::isStatic(Entity* e)
 
 bool World::isDynamic(Entity* e)
 {
-    return e->getEntityDef().fixtures.size() > 0 &&
-    (!(e->getEntityDef().bodyFlags & BodyFlag_Static) || e->getEntityDef().stateSensitive);
+    return isDynamic(e->getEntityDef());
+}
+
+bool World::isDynamic(EntityDef& ed)
+{
+    return ed.fixtures.size() > 0 && (!(ed.bodyFlags & BodyFlag_Static) || ed.stateSensitive);
+}
+
+void World::refreshPlayers()
+{
+    _players.clear();
+    
+    for (Entity* e : _dynamicEntities)
+    {
+        if (e->getController()->getRTTI().derivesFrom(PlayerController::rtti))
+        {
+            _players.push_back(e);
+        }
+    }
+}
+
+void World::removeEntity(Entity* e, std::vector<Entity*>& entities)
+{
+    assert(e);
+    
+    for (std::vector<Entity*>::iterator i = entities.begin(); i != entities.end(); )
+    {
+        if (e->getID() == (*i)->getID())
+        {
+            delete *i;
+            
+            i = entities.erase(i);
+            return;
+        }
+        else
+        {
+            ++i;
+        }
+    }
+}
+
+void World::deinitPhysics(std::vector<Entity*>& entities)
+{
+    for (Entity* e : entities)
+    {
+        e->deinitPhysics();
+    }
 }
 
 void EntityContactListener::BeginContact(b2Contact* contact)

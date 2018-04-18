@@ -11,11 +11,7 @@
 #include <game/entity/BasicFollowAndAttackController.h>
 
 #include <framework/entity/Entity.h>
-#include <framework/network/portable/InputMemoryBitStream.h>
-#include <framework/network/portable/OutputMemoryBitStream.h>
 #include <Box2D/Box2D.h>
-#include <game/game/GameInputState.h>
-#include <framework/network/portable/Move.h>
 
 #include <game/logic/World.h>
 #include <framework/util/macros.h>
@@ -40,7 +36,7 @@ IMPL_EntityController_create(BasicFollowAndAttackController);
 
 BasicFollowAndAttackController::BasicFollowAndAttackController(Entity* e) : EntityController(e),
 _stats(),
-_statsCache(_stats),
+_statsNetworkCache(_stats),
 _attackSensorFixture(NULL),
 _target(0),
 _targetTouching(0)
@@ -55,7 +51,7 @@ BasicFollowAndAttackController::~BasicFollowAndAttackController()
 
 void BasicFollowAndAttackController::update()
 {
-    if (_entity->isServer())
+    if (_entity->getNetworkController()->isServer())
     {
         uint8_t state = _entity->getState().state;
         switch (state)
@@ -75,23 +71,6 @@ void BasicFollowAndAttackController::update()
             default:
                 break;
         }
-    }
-}
-
-void BasicFollowAndAttackController::postUpdate()
-{
-    uint8_t state = _entity->getState().state;
-    uint8_t stateTime = _entity->getState().stateTime;
-    
-    if (state == State_Dying && stateTime >= 120)
-    {
-        _entity->requestDeletion();
-    }
-    
-    if (_statsCache != _stats)
-    {
-        _statsCache = _stats;
-        NG_SERVER->setStateDirty(_entity->getID(), ReadStateFlag_Stats);
     }
 }
 
@@ -122,7 +101,7 @@ void BasicFollowAndAttackController::receiveMessage(uint16_t message, void* data
             break;
     }
     
-    if ()
+    if (true)
     {
         Util::handleSound(_entity, fromState, state);
     }
@@ -130,9 +109,8 @@ void BasicFollowAndAttackController::receiveMessage(uint16_t message, void* data
 
 void BasicFollowAndAttackController::onFixturesCreated(std::vector<b2Fixture*>& fixtures)
 {
-    assert(fixtures.size() == 2);
+    assert(fixtures.size() >= 2);
     _attackSensorFixture = fixtures[1];
-    assert(_attackSensorFixture);
 }
 
 bool BasicFollowAndAttackController::shouldCollide(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB)
@@ -144,7 +122,7 @@ bool BasicFollowAndAttackController::shouldCollide(Entity* inEntity, b2Fixture* 
 
 void BasicFollowAndAttackController::handleBeginContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB)
 {
-    if (_entity->isServer() &&
+    if (_entity->getNetworkController()->isServer() &&
         inFixtureA == _attackSensorFixture &&
         !inFixtureB->IsSensor() &&
         inEntity->getController()->getRTTI().derivesFrom(PlayerController::rtti))
@@ -155,50 +133,13 @@ void BasicFollowAndAttackController::handleBeginContact(Entity* inEntity, b2Fixt
 
 void BasicFollowAndAttackController::handleEndContact(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB)
 {
-    if (_entity->isServer() &&
+    if (_entity->getNetworkController()->isServer() &&
         inFixtureA == _attackSensorFixture &&
         !inFixtureB->IsSensor() &&
         inEntity->getController()->getRTTI().derivesFrom(PlayerController::rtti))
     {
         _targetTouching = 0;
     }
-}
-
-void BasicFollowAndAttackController::read(InputMemoryBitStream& inInputStream, uint16_t& inReadState)
-{
-    bool stateBit;
-    
-    inInputStream.read(stateBit);
-    if (stateBit)
-    {
-        inInputStream.read(_stats.health);
-        
-        inReadState |= ReadStateFlag_Stats;
-        _statsCache = _stats;
-    }
-    
-    Util::handleSound(_entity, _entity->getStateNetworkCache().state, _entity->getState().state);
-}
-
-void BasicFollowAndAttackController::recallCache()
-{
-    _stats = _statsCache;
-}
-
-uint16_t BasicFollowAndAttackController::write(OutputMemoryBitStream& inOutputStream, uint16_t inWrittenState, uint16_t inDirtyState)
-{
-    uint16_t writtenState = inWrittenState;
-    
-    bool stats = inDirtyState & ReadStateFlag_Stats;
-    inOutputStream.write(stats);
-    if (stats)
-    {
-        inOutputStream.write(_stats.health);
-        
-        writtenState |= ReadStateFlag_Stats;
-    }
-    
-    return writtenState;
 }
 
 void BasicFollowAndAttackController::handleIdleState()
@@ -232,17 +173,18 @@ void BasicFollowAndAttackController::handleIdleState()
 
 void BasicFollowAndAttackController::handleMovingState()
 {
+    EntityManager* em = NG_SERVER->getEntityManager();
     uint8_t& state = _entity->getState().state;
     uint16_t& stateTime = _entity->getState().stateTime;
     if (_targetTouching &&
-        NG_SERVER->getEntityManager()->getEntityByID(_targetTouching))
+        em->getEntityByID(_targetTouching))
     {
         state = State_Attacking;
         stateTime = 0;
         return;
     }
     
-    Entity* target = NG_SERVER->getEntityManager()->getEntityByID(_target);
+    Entity* target = em->getEntityByID(_target);
     if (target)
     {
         float distance = b2Distance(target->getPosition(), target->getPosition());
@@ -332,5 +274,88 @@ void BasicFollowAndAttackController::handleAttackingState()
 
 void BasicFollowAndAttackController::handleDyingState()
 {
+    if (_entity->getState().stateTime >= 180)
+    {
+        _entity->requestDeletion();
+    }
+}
+
+#include <framework/network/portable/InputMemoryBitStream.h>
+#include <framework/network/portable/OutputMemoryBitStream.h>
+
+IMPL_RTTI(BasicFollowAndAttackNetworkController, EntityNetworkController);
+
+IMPL_EntityNetworkController_create(BasicFollowAndAttackNetworkController);
+
+BasicFollowAndAttackNetworkController::BasicFollowAndAttackNetworkController(Entity* e, bool isServer) : EntityNetworkController(e, isServer), _controller(static_cast<BasicFollowAndAttackController*>(e->getController()))
+{
     // Empty
+}
+
+BasicFollowAndAttackNetworkController::~BasicFollowAndAttackNetworkController()
+{
+    // Empty
+}
+
+void BasicFollowAndAttackNetworkController::read(InputMemoryBitStream& ip)
+{
+    uint8_t fromState = _entity->getStateNetworkCache().state;
+    
+    EntityNetworkController::read(ip);
+    
+    BasicFollowAndAttackController& c = *_controller;
+    
+    bool stateBit;
+    
+    ip.read(stateBit);
+    if (stateBit)
+    {
+        ip.read(c._stats.health);
+        
+        c._statsNetworkCache = c._stats;
+    }
+    
+    Util::handleSound(_entity, fromState, _entity->getState().state);
+}
+
+uint16_t BasicFollowAndAttackNetworkController::write(OutputMemoryBitStream& op, uint16_t dirtyState)
+{
+    uint16_t writtenState = EntityNetworkController::write(op, dirtyState);
+    
+    BasicFollowAndAttackController& c = *_controller;
+    
+    bool stats = dirtyState & BasicFollowAndAttackController::ReadStateFlag_Stats;
+    op.write(stats);
+    if (stats)
+    {
+        op.write(c._stats.health);
+        
+        writtenState |= BasicFollowAndAttackController::ReadStateFlag_Stats;
+    }
+    
+    return writtenState;
+}
+
+void BasicFollowAndAttackNetworkController::recallNetworkCache()
+{
+    EntityNetworkController::recallNetworkCache();
+    
+    BasicFollowAndAttackController& c = *_controller;
+    
+    c._stats = c._statsNetworkCache;
+}
+
+uint16_t BasicFollowAndAttackNetworkController::getDirtyState()
+{
+    uint16_t ret = EntityNetworkController::getDirtyState();
+    
+    BasicFollowAndAttackController& c = *_controller;
+    
+    if (c._statsNetworkCache != c._stats)
+    {
+        c._statsNetworkCache = c._stats;
+        ret |= BasicFollowAndAttackController::ReadStateFlag_Stats;
+    }
+    
+    return ret;
 }

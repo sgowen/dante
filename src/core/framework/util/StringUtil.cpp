@@ -11,6 +11,7 @@
 #include <framework/util/StringUtil.h>
 
 #include <stdarg.h>
+#include <assert.h>
 
 #if defined __ANDROID__
 #include <android/log.h>
@@ -83,4 +84,30 @@ void StringUtil::log(const char* inFormat, ...)
     
     OutputDebugStringA(temp);
     OutputDebugStringA("\n");
+}
+
+std::string StringUtil::stringFromFourChar(uint32_t fourCC)
+{
+    char chars[5];
+    
+    chars[4] = '\0';
+    chars[3] = (char)(fourCC & 0xFF);
+    chars[2] = (char)(fourCC >> 8 & 0xFF);
+    chars[1] = (char)(fourCC >> 16 & 0xFF);
+    chars[0] = (char)(fourCC >> 24 & 0xFF);
+    
+    return std::string(chars);
+}
+
+uint32_t StringUtil::fourCharFromString(std::string& fourCC)
+{
+    assert(fourCC.length() == 4);
+    
+    const char* chars = fourCC.c_str();
+    
+    return
+    (uint32_t)chars[0] << 24 |
+    (uint32_t)chars[1] << 16 |
+    (uint32_t)chars[2] << 8  |
+    (uint32_t)chars[3];
 }

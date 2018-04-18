@@ -17,7 +17,7 @@
 #include <framework/entity/Entity.h>
 #include <framework/entity/EntityLayoutMapper.h>
 #include <framework/network/portable/ReplicationAction.h>
-#include <framework/network/portable/MemoryBitStreamUtil.h>
+#include <framework/entity/EntityNetworkController.h>
 
 #include <cassert>
 
@@ -53,50 +53,49 @@ void ReplicationManagerClient::read(InputMemoryBitStream& inInputStream)
     }
 }
 
-void ReplicationManagerClient::readAndDoCreateAction(InputMemoryBitStream& inInputStream, uint32_t inNetworkId)
+void ReplicationManagerClient::readAndDoCreateAction(InputMemoryBitStream& ip, uint32_t networkID)
 {
     uint32_t fourCCName;
-    inInputStream.read(fourCCName);
+    ip.read(fourCCName);
     
     //we might already have this object- could happen if our ack of the create got dropped so server resends create request
     //(even though we might have created)
-    Entity* entity = _entityManager->getEntityByID(inNetworkId);
-    if (!entity)
+    Entity* e = _entityManager->getEntityByID(networkID);
+    if (!e)
     {
         //create the object and map it...
-        EntityInstanceDef eid(inNetworkId, fourCCName);
-        entity = EntityMapper::getInstance()->createEntity(&eid, false);
+        EntityInstanceDef eid(networkID, fourCCName);
+        e = EntityMapper::getInstance()->createEntity(&eid, false);
         
-        _entityManager->registerEntity(entity);
+        _entityManager->registerEntity(e);
         
-        //it had really be the rigth type...
-        assert(entity->getEntityDef().type == fourCCName);
+        assert(e->getEntityDef().type == fourCCName);
     }
     
-    MemoryBitStreamUtil::read(inInputStream, *entity);
+    e->getNetworkController()->read(ip);
 }
 
-void ReplicationManagerClient::readAndDoUpdateAction(InputMemoryBitStream& inInputStream, uint32_t inNetworkId)
+void ReplicationManagerClient::readAndDoUpdateAction(InputMemoryBitStream& ip, uint32_t networkID)
 {
     //need object
-    Entity* entity = _entityManager->getEntityByID(inNetworkId);
+    Entity* e = _entityManager->getEntityByID(networkID);
     
     //entity MUST be found, because create was ack'd if we're getting an update...
     //and read state
     
-    if (entity)
+    if (e)
     {
-        MemoryBitStreamUtil::read(inInputStream, *entity);
+        e->getNetworkController()->read(ip);
     }
 }
 
-void ReplicationManagerClient::readAndDoDestroyAction(InputMemoryBitStream& inInputStream, uint32_t inNetworkId)
+void ReplicationManagerClient::readAndDoDestroyAction(InputMemoryBitStream& ip, uint32_t networkID)
 {
     //if something was destroyed before the create went through, we'll never get it
     //but we might get the destroy request, so be tolerant of being asked to destroy something that wasn't created
-    Entity* entity = _entityManager->getEntityByID(inNetworkId);
-    if (entity)
+    Entity* e = _entityManager->getEntityByID(networkID);
+    if (e)
     {
-        _entityManager->deregisterEntity(entity);
+        _entityManager->deregisterEntity(e);
     }
 }

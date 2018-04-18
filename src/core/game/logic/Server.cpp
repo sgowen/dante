@@ -26,7 +26,6 @@
 #include <game/entity/PlayerController.h>
 #include <framework/entity/EntityMapper.h>
 #include <framework/entity/EntityLayoutMapper.h>
-#include <game/logic/GameConfig.h>
 #include <framework/util/InstanceManager.h>
 #include <framework/util/Config.h>
 
@@ -64,36 +63,21 @@ void Server::destroy()
     s_instance = NULL;
 }
 
-void Server::sHandleDynamicEntityCreatedOnServer(Entity* inEntity)
+void Server::sHandleDynamicEntityCreatedOnServer(Entity* entity)
 {
-    Server* server = Server::getInstance();
-    assert(server);
-    World* world = server->_world;
-    assert(world);
-    
-    world->addDynamicEntity(inEntity);
+    // Empty
 }
 
-void Server::sHandleDynamicEntityDeletedOnServer(Entity* inEntity)
+void Server::sHandleDynamicEntityDeletedOnServer(Entity* entity)
 {
-    Server* server = Server::getInstance();
-    assert(server);
-    World* world = server->_world;
-    assert(world);
-    
-    world->removeDynamicEntity(inEntity);
-    
-    if (!server->_isLoadingMap)
+    EntityController* controller = entity->getController();
+    if (controller->getRTTI().derivesFrom(PlayerController::rtti))
     {
-        EntityController* controller = inEntity->getController();
-        if (controller->getRTTI().derivesFrom(PlayerController::rtti))
-        {
-            PlayerController* robot = static_cast<PlayerController*>(controller);
-            assert(robot);
-            
-            // Respawn
-            getInstance()->spawnRobotForPlayer(robot->getPlayerId(), robot->getPlayerName());
-        }
+        PlayerController* robot = static_cast<PlayerController*>(controller);
+        assert(robot);
+        
+        // This is my shoddy respawn implementation
+        getInstance()->spawnRobotForPlayer(robot->getPlayerId(), robot->getPlayerName());
     }
 }
 
@@ -225,8 +209,18 @@ void Server::handleInputStateRelease(InputState* inputState)
 
 void Server::deleteRobotWithPlayerId(uint8_t playerId)
 {
-    Entity* e = _world->getPlayerWithId(playerId);
-    if (e)
+    Entity* player = NULL;
+    for (Entity* e : _world->getPlayers())
+    {
+        PlayerController* robot = static_cast<PlayerController*>(e->getController());
+        if (robot->getPlayerId() == playerId)
+        {
+            player = e;
+            break;
+        }
+    }
+    
+    if (player)
     {
         for (std::vector<uint8_t>::iterator i = _playerIds.begin(); i != _playerIds.end(); )
         {
@@ -240,7 +234,7 @@ void Server::deleteRobotWithPlayerId(uint8_t playerId)
             }
         }
         
-        PlayerController* robot = static_cast<PlayerController*>(e->getController());
+        PlayerController* robot = static_cast<PlayerController*>(player->getController());
         std::string& playerName = robot->getPlayerName();
         for (std::vector<std::string>::iterator i = _playerNames.begin(); i != _playerNames.end(); )
         {
@@ -254,7 +248,7 @@ void Server::deleteRobotWithPlayerId(uint8_t playerId)
             }
         }
         
-        e->requestDeletion();
+        player->requestDeletion();
     }
 }
 
@@ -285,13 +279,11 @@ void Server::spawnRobotForPlayer(uint8_t inPlayerId, std::string inPlayerName)
     robot->setPlayerName(inPlayerName);
     robot->setPlayerId(inPlayerId);
     
-    NG_SERVER->registerEntity(e);
+    _world->addEntity(e);
 }
 
 void Server::loadMap()
 {
-    _isLoadingMap = true;
-    
     std::vector<uint8_t> playerIds = _playerIds;
     std::vector<std::string> playerNames = _playerNames;
     
@@ -306,8 +298,6 @@ void Server::loadMap()
     {
         handleNewClient(playerIds[i], playerNames[i]);
     }
-    
-    _isLoadingMap = false;
 }
 
 Server::Server(uint32_t flags, void* data) :
@@ -315,9 +305,8 @@ _flags(flags),
 _data(data),
 _timing(static_cast<Timing*>(INSTANCE_MANAGER->getInstance(INSTANCE_TIME_SERVER))),
 _entityIDManager(static_cast<EntityIDManager*>(INSTANCE_MANAGER->getInstance(INSTANCE_ENTITY_ID_MANAGER_SERVER))),
-_world(new World(WorldFlag_Server | WorldFlag_MapLoadAll)),
-_map(0),
-_isLoadingMap(false)
+_world(new World(WorldFlag_Server)),
+_map(0)
 {
     _timing->reset();
     

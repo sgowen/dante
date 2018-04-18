@@ -237,16 +237,16 @@ void GameRenderer::updateCamera()
     
     bool isCamInitialized = false;
     
-    for (Entity* entity : _engine->_world->getPlayers())
+    for (Entity* e : _engine->_world->getPlayers())
     {
-        float pX = entity->getPosition().x;
-        float pY = entity->getPosition().y;
-        float lightPosY = pY - entity->getHeight() / 2 + entity->getHeight() * GM_CFG->_robotLightPositionFactorY;
+        float pX = e->getPosition().x;
+        float pY = e->getPosition().y;
+        float lightPosY = pY - e->getHeight() / 2 + e->getHeight() * GM_CFG->_robotLightPositionFactorY;
         
         _playerLights.push_back(LightDef(pX, lightPosY, GM_CFG->_playerLightColor[0], GM_CFG->_playerLightColor[1], GM_CFG->_playerLightColor[2], GM_CFG->_playerLightColor[3]));
         
-        PlayerController* robot = static_cast<PlayerController*>(entity->getController());
-        if (!isCamInitialized && robot->isLocalPlayer())
+        PlayerNetworkController* p = static_cast<PlayerNetworkController*>(e->getNetworkController());
+        if (!isCamInitialized && p->isLocalPlayer())
         {
             x = pX;
             y = pY;
@@ -298,7 +298,6 @@ void GameRenderer::renderWorld()
     
     renderEntities(world->getLayers());
     renderEntities(world->getStaticEntities());
-    renderEntities(world->getPlayers());
     renderEntities(world->getDynamicEntities());
     
     _rendererHelper->useNormalBlending();

@@ -13,15 +13,16 @@
 
 class BasicFollowAndAttackController : public EntityController
 {
+    friend class BasicFollowAndAttackNetworkController;
+    
     DECL_RTTI;
     DECL_EntityController_create;
     
 public:
-    BasicFollowAndAttackController(Entity* inEntity);
+    BasicFollowAndAttackController(Entity* entity);
     virtual ~BasicFollowAndAttackController();
     
     virtual void update();
-    virtual void postUpdate();
     virtual void receiveMessage(uint16_t message, void* data = NULL);
     virtual void onFixturesCreated(std::vector<b2Fixture*>& fixtures);
     virtual bool shouldCollide(Entity* inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB);
@@ -63,7 +64,7 @@ private:
         }
     };
     Stats _stats;
-    Stats _statsCache;
+    Stats _statsNetworkCache;
     
     /// Non-Networked
     b2Fixture* _attackSensorFixture;
@@ -76,6 +77,27 @@ private:
     void handleMovingState();
     void handleAttackingState();
     void handleDyingState();
+};
+
+#include <framework/entity/EntityNetworkController.h>
+
+class BasicFollowAndAttackNetworkController : public EntityNetworkController
+{
+    DECL_RTTI;
+    DECL_EntityNetworkController_create;
+    
+public:
+    BasicFollowAndAttackNetworkController(Entity* e, bool isServer);
+    virtual ~BasicFollowAndAttackNetworkController();
+    
+    virtual void read(InputMemoryBitStream& ip);
+    virtual uint16_t write(OutputMemoryBitStream& op, uint16_t dirtyState);
+    
+    virtual void recallNetworkCache();
+    virtual uint16_t getDirtyState();
+    
+private:
+    BasicFollowAndAttackController* _controller;
 };
 
 #endif /* defined(__noctisgames__BasicFollowAndAttackController__) */

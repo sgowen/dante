@@ -25,29 +25,28 @@ void Util::handleSound(Entity* e, uint8_t fromState, uint8_t toState)
         return;
     }
     
-    int soundMapping = e->getSoundMapping(toState);
-    if (soundMapping > 0)
-    {
-        playSound(soundMapping, e->getPosition());
-    }
+    playSound(e->getSoundMapping(toState), e->getPosition());
 }
 
 void Util::playSound(int soundId, const b2Vec2& position)
 {
-    World* world = GameEngine::getInstance()->getWorld();
-    assert(world);
+    if (soundId <= 0)
+    {
+        return;
+    }
+    
+    World* w = GameEngine::getInstance()->getWorld();
+    assert(w);
+    std::vector<Entity*>& players = w->getPlayers();
     
     float volume = 1;
     float robotVolume = 1;
     
-    std::vector<Entity*>& players = world->getPlayers();
-    
     for (Entity* e : players)
     {
-        PlayerController* robot = static_cast<PlayerController*>(e->getController());
-        assert(robot);
-        
-        if (!robot->isLocalPlayer())
+        PlayerNetworkController* p = static_cast<PlayerNetworkController*>(e->getNetworkController());
+        assert(p);
+        if (!p->isLocalPlayer())
         {
             continue;
         }

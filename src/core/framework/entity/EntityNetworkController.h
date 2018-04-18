@@ -11,18 +11,15 @@
 
 #define DECL_EntityNetworkController_create \
 public: \
-    static EntityNetworkController* create(Entity* e)
+    static EntityNetworkController* create(Entity* e, bool isServer)
 
-#define IMPL_EntityNetworkController_create(name) \
-EntityNetworkController* name::create(Entity* e)  \
-{                                                 \
-    return new name(e);                           \
-}                                                 \
+#define IMPL_EntityNetworkController_create(name)                \
+EntityNetworkController* name::create(Entity* e, bool isServer)  \
+{                                                                \
+    return new name(e, isServer);                                \
+}                                                                \
 
 #include <framework/util/RTTI.h>
-
-#include <vector>
-#include <string>
 
 class Entity;
 class InputMemoryBitStream;
@@ -34,15 +31,20 @@ class EntityNetworkController
     DECL_EntityNetworkController_create;
     
 public:
-    EntityNetworkController(Entity* inEntity);
+    EntityNetworkController(Entity* e, bool isServer);
     virtual ~EntityNetworkController();
     
     virtual void read(InputMemoryBitStream& ip);
-    virtual void recallCache();
     virtual uint16_t write(OutputMemoryBitStream& op, uint16_t dirtyState);
+    
+    virtual void recallNetworkCache();
+    virtual uint16_t getDirtyState();
+    
+    bool isServer();
     
 protected:
     Entity* _entity;
+    bool _isServer;
 };
 
 #endif /* defined(__noctisgames__EntityNetworkController__) */
