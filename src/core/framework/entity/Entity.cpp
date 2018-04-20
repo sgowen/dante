@@ -60,27 +60,21 @@ void Entity::update()
 
 void Entity::interpolate(double alpha)
 {
-    if (_body->GetType() == b2_dynamicBody && _body->IsActive())
-    {
-        float x = _pose.position.x * alpha + _poseInterpolateCache.position.x * (1.0f - alpha);
-        float y = _pose.position.y * alpha + _poseInterpolateCache.position.y * (1.0f - alpha);
-        float a = _pose.angle * alpha + _poseInterpolateCache.angle * (1.0f - alpha);
-        
-        _poseInterpolateCache.position = _pose.position;
-        _poseInterpolateCache.angle = _pose.angle;
-        
-        _pose.position.Set(x, y);
-        _pose.angle = a;
-    }
+    float x = _pose.position.x * alpha + _poseInterpolateCache.position.x * (1.0f - alpha);
+    float y = _pose.position.y * alpha + _poseInterpolateCache.position.y * (1.0f - alpha);
+    float a = _pose.angle * alpha + _poseInterpolateCache.angle * (1.0f - alpha);
+    
+    _poseInterpolateCache.position = _pose.position;
+    _poseInterpolateCache.angle = _pose.angle;
+    
+    _pose.position.Set(x, y);
+    _pose.angle = a;
 }
 
 void Entity::endInterpolation()
 {
-    if (_body->GetType() == b2_dynamicBody && _body->IsActive())
-    {
-        _pose.position = _poseInterpolateCache.position;
-        _pose.angle = _poseInterpolateCache.angle;
-    }
+    _pose.position = _poseInterpolateCache.position;
+    _pose.angle = _poseInterpolateCache.angle;
 }
 
 bool Entity::shouldCollide(Entity *inEntity, b2Fixture* inFixtureA, b2Fixture* inFixtureB)
