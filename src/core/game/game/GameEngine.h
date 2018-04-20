@@ -22,6 +22,7 @@ class GameRenderer;
 class World;
 class Timing;
 class GameInputManager;
+class Move;
 
 enum GameEngineState
 {
@@ -59,6 +60,7 @@ public:
     virtual void render(double alpha);
     
     World* getWorld();
+    bool isLive();
     
 private:
     static GameEngine* s_instance;
@@ -69,6 +71,9 @@ private:
     GameInputManager* _input;
     uint32_t _state;
     uint32_t _map;
+    bool _isLive;
+    
+    void updateWorld(const Move* move);
     
     GameEngine();
     virtual ~GameEngine();

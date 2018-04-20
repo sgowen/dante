@@ -29,6 +29,7 @@
 #include <game/logic/GameConfig.h>
 #include <game/entity/PlayerController.h>
 #include <framework/util/Config.h>
+#include <game/game/GameEngine.h>
 
 IMPL_RTTI(BasicFollowAndAttackController, EntityController);
 
@@ -101,7 +102,7 @@ void BasicFollowAndAttackController::receiveMessage(uint16_t message, void* data
             break;
     }
     
-    if (true)
+    if (GameEngine::getInstance()->isLive())
     {
         Util::handleSound(_entity, fromState, state);
     }

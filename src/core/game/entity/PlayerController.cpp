@@ -14,7 +14,6 @@
 #include <Box2D/Box2D.h>
 
 #include <game/game/GameInputState.h>
-#include <framework/network/portable/Move.h>
 
 #include <game/logic/World.h>
 #include <framework/util/macros.h>
@@ -30,6 +29,7 @@
 #include <game/logic/Server.h>
 #include <framework/util/Config.h>
 #include <game/logic/GameConfig.h>
+#include <game/game/GameEngine.h>
 
 IMPL_RTTI(PlayerController, EntityController);
 
@@ -92,10 +92,6 @@ void PlayerController::receiveMessage(uint16_t message, void* data)
             uint32_t& damage = *damageP;
             damage = clamp(damage, 0, health);
             health -= damage;
-            if (health == 0)
-            {
-                /// TODO
-            }
         }
             break;
         default:
@@ -173,7 +169,7 @@ void PlayerController::processInput(InputState* inInputState)
             break;
     }
     
-    if (true)
+    if (GameEngine::getInstance()->isLive())
     {
         Util::handleSound(_entity, fromState, state);
     }

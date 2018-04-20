@@ -107,7 +107,47 @@ void Server::update()
     
     NG_SERVER->processIncomingPackets();
     
-    _world->updateServer();
+    int moveCount = NG_SERVER->getMoveCount();
+    if (moveCount > 0)
+    {
+        for (int i = 0; i < moveCount; ++i)
+        {
+            for (Entity* entity : _world->getPlayers())
+            {
+                PlayerController* robot = static_cast<PlayerController*>(entity->getController());
+                
+                ClientProxy* client = NG_SERVER->getClientProxy(robot->getPlayerId());
+                if (client)
+                {
+                    MoveList& moveList = client->getUnprocessedMoveList();
+                    Move* move = moveList.getMoveAtIndex(i);
+                    if (move)
+                    {
+                        robot->processInput(move->getInputState());
+                        
+                        moveList.markMoveAsProcessed(move);
+                        
+                        client->setLastMoveTimestampDirty(true);
+                    }
+                }
+            }
+            
+            _world->stepPhysics();
+            _world->updateAndRemoveEntitiesAsNeeded(_world->getDynamicEntities());
+            _world->handleDirtyStates(_world->getDynamicEntities());
+        }
+        
+        for (uint8_t i = 0; i < MAX_NUM_PLAYERS_PER_SERVER; ++i)
+        {
+            uint8_t playerId = i + 1;
+            ClientProxy* client = NG_SERVER->getClientProxy(playerId);
+            if (client)
+            {
+                MoveList& moveList = client->getUnprocessedMoveList();
+                moveList.removeProcessedMoves(client->getUnprocessedMoveList().getLastProcessedMoveTimestamp(), Server::sHandleInputStateRelease);
+            }
+        }
+    }
     
     NG_SERVER->sendOutgoingPackets();
     

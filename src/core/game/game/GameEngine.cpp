@@ -132,24 +132,6 @@ void GameEngine::sHandleDynamicEntityDeletedOnClient(Entity* entity)
     world->removeEntity(entity);
 }
 
-GameEngine::GameEngine() : EngineState(),
-_renderer(new GameRenderer()),
-_world(NULL),
-_timing(static_cast<Timing*>(INSTANCE_MANAGER->getInstance(INSTANCE_TIME_CLIENT))),
-_input(NULL),
-_state(GameEngineState_Default),
-_map(0)
-{
-    _state |= GameEngineState_Interpolation | GameEngineState_Lighting | GameEngineState_DisplayUI;
-    
-    _renderer->setEngine(this);
-}
-
-GameEngine::~GameEngine()
-{
-    delete _renderer;
-}
-
 void GameEngine::enter(Engine* engine)
 {
     createDeviceDependentResources();
@@ -183,7 +165,16 @@ void GameEngine::update(Engine* engine)
             _renderer->onNewMapLoaded();
         }
         
-        _world->postRead(_input->getMoveList());
+        for (Entity* e : _world->getDynamicEntities())
+        {
+            e->getNetworkController()->recallNetworkCache();
+        }
+        
+        // all processed moves have been removed, so all that are left are unprocessed moves so we must apply them...
+        for (const Move& move : _input->getMoveList())
+        {
+            updateWorld(&move);
+        }
     }
     
     NG_AUDIO_ENGINE->update();
@@ -195,7 +186,10 @@ void GameEngine::update(Engine* engine)
         return;
     }
     
-    _world->updateClient(_input->getPendingMove());
+    _isLive = true;
+    updateWorld(_input->getPendingMove());
+    _isLive = false;
+    
     _input->clearPendingMove();
     NG_CLIENT->sendOutgoingPackets();
     
@@ -293,4 +287,46 @@ void GameEngine::render(double alpha)
 World* GameEngine::getWorld()
 {
     return _world;
+}
+
+bool GameEngine::isLive()
+{
+    return _isLive;
+}
+
+void GameEngine::updateWorld(const Move* move)
+{
+    assert(move);
+    
+    for (Entity* e : _world->getPlayers())
+    {
+        PlayerController* robot = static_cast<PlayerController*>(e->getController());
+        robot->processInput(move->getInputState());
+    }
+    
+    _world->stepPhysics();
+    
+    for (Entity* e : _world->getDynamicEntities())
+    {
+        e->update();
+    }
+}
+
+GameEngine::GameEngine() : EngineState(),
+_renderer(new GameRenderer()),
+_world(NULL),
+_timing(static_cast<Timing*>(INSTANCE_MANAGER->getInstance(INSTANCE_TIME_CLIENT))),
+_input(NULL),
+_state(GameEngineState_Default),
+_map(0),
+_isLive(false)
+{
+    _state |= GameEngineState_Interpolation | GameEngineState_Lighting | GameEngineState_DisplayUI;
+    
+    _renderer->setEngine(this);
+}
+
+GameEngine::~GameEngine()
+{
+    delete _renderer;
 }

@@ -27,6 +27,7 @@
 #include <game/logic/Util.h>
 #include <game/logic/Server.h>
 #include <framework/util/Config.h>
+#include <game/game/GameEngine.h>
 
 IMPL_RTTI(DestructibleController, EntityController);
 
@@ -109,7 +110,7 @@ void DestructibleController::receiveMessage(uint16_t message, void* data)
             break;
     }
     
-    if (true)
+    if (GameEngine::getInstance()->isLive())
     {
         Util::handleSound(_entity, fromState, state);
     }

@@ -17,15 +17,27 @@
 
 enum WorldFlags
 {
-    WorldFlag_Server =     1 << 0,
+    WorldFlag_Server = 1 << 0,
     WorldFlag_Studio = 1 << 1
+};
+
+struct Map
+{
+    uint32_t key;
+    std::string fileName;
+    std::string name;
+    
+    Map()
+    {
+        key = 0;
+        fileName = "";
+        name = "";
+    }
 };
 
 class Entity;
 class EntityIDManager;
 struct EntityDef;
-class MoveList;
-class Move;
 class b2World;
 
 class EntityContactListener;
@@ -42,12 +54,13 @@ public:
     void saveMapAs(uint32_t map);
     void addEntity(Entity* e);
     void removeEntity(Entity* e);
-    void updateServer();
-    void postRead(MoveList& moveList);
-    void updateClient(const Move* pendingMove);
+    void stepPhysics();
+    void updateAndRemoveEntitiesAsNeeded(std::vector<Entity*>& entities);
+    void handleDirtyStates(std::vector<Entity*>& entities);
     void interpolate(double alpha);
     void endInterpolation();
     void clear();
+    
     bool isMapLoaded();
     std::string& getMapName();
     std::string& getMapFileName();
@@ -64,19 +77,15 @@ private:
     EntityContactListener* _entityContactListener;
     EntityContactFilter* _entityContactFilter;
     EntityIDManager* _entityIDManager;
-    std::vector<Entity*> _players;
-    std::vector<Entity*> _dynamicEntities;
+    Map _map;
+    
+    std::vector<Entity*> _layers;
     std::vector<Entity*> _waterBodies;
     std::vector<Entity*> _staticEntities;
-    std::vector<Entity*> _layers;
-    uint32_t _map;
-    std::string _mapFileName;
-    std::string _mapName;
     
-    void stepPhysics();
-    void clearDynamicEntities(std::vector<Entity*>& entities);
-    void updateAndRemoveEntitiesAsNeeded(std::vector<Entity*>& entities);
-    void handleDirtyStates(std::vector<Entity*>& entities);
+    std::vector<Entity*> _dynamicEntities;
+    
+    std::vector<Entity*> _players;
     
     bool isLayer(Entity* e);
     bool isWater(Entity* e);

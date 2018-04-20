@@ -14,7 +14,6 @@
 #include <string>
 
 class InputState;
-class Move;
 
 class PlayerController : public EntityController
 {

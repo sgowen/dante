@@ -12,7 +12,6 @@
 
 #include <framework/entity/Entity.h>
 #include <framework/entity/EntityIDManager.h>
-#include <framework/network/portable/MoveList.h>
 #include <Box2D/Box2D.h>
 
 #include <framework/network/server/NetworkManagerServer.h>
@@ -23,10 +22,9 @@
 #include <framework/util/NGSTDUtil.h>
 #include <framework/entity/EntityMapper.h>
 #include <framework/entity/EntityLayoutMapper.h>
+#include <framework/entity/EntityNetworkController.h>
 #include <framework/util/InstanceManager.h>
 #include <framework/util/Config.h>
-#include <game/logic/Server.h>
-#include <game/entity/PlayerController.h>
 
 World::World(uint32_t flags) :
 _flags(flags),
@@ -34,9 +32,7 @@ _world(new b2World(b2Vec2(0.0f, FW_CFG->_gravity))),
 _entityContactListener(new EntityContactListener()),
 _entityContactFilter(new EntityContactFilter()),
 _entityIDManager(static_cast<EntityIDManager*>(INSTANCE_MANAGER->getInstance(_flags & WorldFlag_Studio ? INSTANCE_ENTITY_ID_MANAGER_STUDIO : _flags & WorldFlag_Server ? INSTANCE_ENTITY_ID_MANAGER_SERVER : INSTANCE_ENTITY_ID_MANAGER_CLIENT))),
-_map(0),
-_mapFileName(),
-_mapName()
+_map()
 {
     _world->SetContactListener(_entityContactListener);
     _world->SetContactFilter(_entityContactFilter);
@@ -62,11 +58,11 @@ void World::loadMap(uint32_t map)
     
     EntityLayoutMapper* elm = EntityLayoutMapper::getInstance();
     
-    _map = map;
-    _mapName = StringUtil::stringFromFourChar(_map);
-    _mapFileName = elm->getJsonConfigFilePath(_map);
+    _map.key = map;
+    _map.name = StringUtil::stringFromFourChar(map);
+    _map.fileName = elm->getJsonConfigFilePath(map);
     
-    elm->loadEntityLayout(_map, _entityIDManager);
+    elm->loadEntityLayout(_map.key, _entityIDManager);
     
     EntityLayoutDef& eld = elm->getEntityLayoutDef();
     for (EntityInstanceDef eid : eld.entities)
@@ -85,7 +81,7 @@ void World::loadMap(uint32_t map)
 
 void World::saveMap()
 {
-    saveMapAs(_map);
+    saveMapAs(_map.key);
 }
 
 void World::saveMapAs(uint32_t map)
@@ -109,7 +105,7 @@ void World::saveMapAs(uint32_t map)
     
     for (Entity* e : _dynamicEntities)
     {
-        if (e->getController()->getRTTI().derivesFrom(PlayerController::rtti))
+        if (e->getEntityDef().bodyFlags & BodyFlag_Player)
         {
             continue;
         }
@@ -123,7 +119,7 @@ void World::saveMapAs(uint32_t map)
     if (map != 'TEST')
     {
         // If the save was successful, update current map
-        _map = map;
+        _map.key = map;
     }
 }
 
@@ -193,165 +189,6 @@ void World::removeEntity(Entity* e)
     }
 }
 
-void World::updateServer()
-{
-    int moveCount = NG_SERVER->getMoveCount();
-    if (moveCount > 0)
-    {
-        for (int i = 0; i < moveCount; ++i)
-        {
-            for (Entity* entity : _players)
-            {
-                PlayerController* robot = static_cast<PlayerController*>(entity->getController());
-                
-                ClientProxy* client = NG_SERVER->getClientProxy(robot->getPlayerId());
-                if (client)
-                {
-                    MoveList& moveList = client->getUnprocessedMoveList();
-                    Move* move = moveList.getMoveAtIndex(i);
-                    if (move)
-                    {
-                        robot->processInput(move->getInputState());
-                        
-                        moveList.markMoveAsProcessed(move);
-                        
-                        client->setLastMoveTimestampDirty(true);
-                    }
-                }
-            }
-            
-            stepPhysics();
-            
-            updateAndRemoveEntitiesAsNeeded(_dynamicEntities);
-            
-            handleDirtyStates(_dynamicEntities);
-        }
-        
-        for (uint8_t i = 0; i < MAX_NUM_PLAYERS_PER_SERVER; ++i)
-        {
-            uint8_t playerId = i + 1;
-            ClientProxy* client = NG_SERVER->getClientProxy(playerId);
-            if (client)
-            {
-                MoveList& moveList = client->getUnprocessedMoveList();
-                moveList.removeProcessedMoves(client->getUnprocessedMoveList().getLastProcessedMoveTimestamp(), Server::sHandleInputStateRelease);
-            }
-        }
-    }
-}
-
-void World::postRead(MoveList& moveList)
-{
-    for (Entity* e : _dynamicEntities)
-    {
-        e->getNetworkController()->recallNetworkCache();
-    }
-    
-    // all processed moves have been removed, so all that are left are unprocessed moves so we must apply them...
-    for (const Move& move : moveList)
-    {
-        updateClient(&move);
-    }
-}
-
-void World::updateClient(const Move* move)
-{
-    assert(move);
-    
-    for (Entity* e : _players)
-    {
-        PlayerController* robot = static_cast<PlayerController*>(e->getController());
-        robot->processInput(move->getInputState());
-    }
-    
-    stepPhysics();
-    
-    for (Entity* e : _dynamicEntities)
-    {
-        e->update();
-    }
-    
-    /// TODO sound effects
-}
-
-void World::interpolate(double alpha)
-{
-    for (Entity* entity : _players)
-    {
-        entity->interpolate(alpha);
-    }
-}
-
-void World::endInterpolation()
-{
-    for (Entity* entity : _players)
-    {
-        entity->endInterpolation();
-    }
-}
-
-void World::clear()
-{
-    deinitPhysics(_waterBodies);
-    deinitPhysics(_staticEntities);
-    
-    NGSTDUtil::cleanUpVectorOfPointers(_layers);
-    NGSTDUtil::cleanUpVectorOfPointers(_waterBodies);
-    NGSTDUtil::cleanUpVectorOfPointers(_staticEntities);
-    
-    if (_flags > 0)
-    {
-        deinitPhysics(_dynamicEntities);
-        NGSTDUtil::cleanUpVectorOfPointers(_dynamicEntities);
-        refreshPlayers();
-    }
-}
-
-bool World::isMapLoaded()
-{
-    return _map > 0;
-}
-
-std::string& World::getMapName()
-{
-    return _mapName;
-}
-
-std::string& World::getMapFileName()
-{
-    return _mapFileName;
-}
-
-std::vector<Entity*>& World::getPlayers()
-{
-    return _players;
-}
-
-std::vector<Entity*>& World::getDynamicEntities()
-{
-    return _dynamicEntities;
-}
-
-std::vector<Entity*>& World::getWaterBodies()
-{
-    return _waterBodies;
-}
-
-std::vector<Entity*>& World::getStaticEntities()
-{
-    return _staticEntities;
-}
-
-std::vector<Entity*>& World::getLayers()
-{
-    return _layers;
-}
-
-b2World& World::getWorld()
-{
-    return *_world;
-}
-
 void World::stepPhysics()
 {
     static int32 velocityIterations = 6;
@@ -397,6 +234,84 @@ void World::handleDirtyStates(std::vector<Entity*>& entities)
     }
 }
 
+void World::interpolate(double alpha)
+{
+    for (Entity* entity : _players)
+    {
+        entity->interpolate(alpha);
+    }
+}
+
+void World::endInterpolation()
+{
+    for (Entity* entity : _players)
+    {
+        entity->endInterpolation();
+    }
+}
+
+void World::clear()
+{
+    deinitPhysics(_waterBodies);
+    deinitPhysics(_staticEntities);
+    
+    NGSTDUtil::cleanUpVectorOfPointers(_layers);
+    NGSTDUtil::cleanUpVectorOfPointers(_waterBodies);
+    NGSTDUtil::cleanUpVectorOfPointers(_staticEntities);
+    
+    if (_flags > 0)
+    {
+        deinitPhysics(_dynamicEntities);
+        NGSTDUtil::cleanUpVectorOfPointers(_dynamicEntities);
+        refreshPlayers();
+    }
+}
+
+bool World::isMapLoaded()
+{
+    return _map.key > 0;
+}
+
+std::string& World::getMapName()
+{
+    return _map.name;
+}
+
+std::string& World::getMapFileName()
+{
+    return _map.fileName;
+}
+
+std::vector<Entity*>& World::getPlayers()
+{
+    return _players;
+}
+
+std::vector<Entity*>& World::getDynamicEntities()
+{
+    return _dynamicEntities;
+}
+
+std::vector<Entity*>& World::getWaterBodies()
+{
+    return _waterBodies;
+}
+
+std::vector<Entity*>& World::getStaticEntities()
+{
+    return _staticEntities;
+}
+
+std::vector<Entity*>& World::getLayers()
+{
+    return _layers;
+}
+
+b2World& World::getWorld()
+{
+    return *_world;
+}
+
 bool World::isLayer(Entity* e)
 {
     return e->getEntityDef().fixtures.size() == 0 &&
@@ -431,7 +346,7 @@ void World::refreshPlayers()
     
     for (Entity* e : _dynamicEntities)
     {
-        if (e->getController()->getRTTI().derivesFrom(PlayerController::rtti))
+        if (e->getEntityDef().bodyFlags & BodyFlag_Player)
         {
             _players.push_back(e);
         }

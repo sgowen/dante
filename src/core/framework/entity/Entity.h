@@ -46,10 +46,11 @@ struct FixtureDef
 
 enum BodyFlags
 {
-    BodyFlag_Static = 1 << 0,
+    BodyFlag_Static =        1 << 0,
     BodyFlag_FixedRotation = 1 << 1,
-    BodyFlag_Bullet = 1 << 2,
-    BodyFlag_Water = 1 << 3
+    BodyFlag_Bullet =        1 << 2,
+    BodyFlag_Water =         1 << 3,
+    BodyFlag_Player =        1 << 4
 };
 
 struct EntityDef
