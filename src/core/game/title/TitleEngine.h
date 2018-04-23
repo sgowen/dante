@@ -11,19 +11,14 @@
 
 #include <framework/main/portable/EngineState.h>
 
-#ifdef NG_STEAM
-#include <framework/network/steam/NGSteam.h>
-#endif
-
 class TitleRenderer;
 
 enum TitleEngineState
 {
-    TitleEngineState_SteamOff = 1 << 0,
-    TitleEngineState_SteamOn = 1 << 1,
-    TitleEngineState_ServerStarting = 1 << 2,
-    TitleEngineState_InputName = 1 << 3,
-    TitleEngineState_InputIp = 1 << 4
+    TitleEngineState_SteamOff =  1 << 0,
+    TitleEngineState_SteamOn =   1 << 1,
+    TitleEngineState_InputName = 1 << 2,
+    TitleEngineState_InputIp =   1 << 3
 };
 
 class TitleEngine : public EngineState
@@ -53,22 +48,19 @@ private:
     TitleRenderer* _renderer;
     std::string _serverIPAddress;
     std::string _name;
-#ifdef NG_STEAM
-    CSteamID _serverSteamID;
-#endif
     bool _isSteam;
     uint32_t _state;
     
-    bool handleInput(Engine* engine);
+    void handleInput(Engine* engine);
     void activateSteam();
     void handleSteamGameServices(Engine* engine);
     void deactivateSteam();
-    void startServer();
-    void joinServer(Engine* engine);
-    void disconnect();
     
+    // ctor, copy ctor, and assignment should be private in a Singleton
     TitleEngine();
-    virtual ~TitleEngine();
+    ~TitleEngine();
+    TitleEngine(const TitleEngine&);
+    TitleEngine& operator=(const TitleEngine&);
 };
 
 #endif /* defined(__noctisgames__TitleEngine__) */

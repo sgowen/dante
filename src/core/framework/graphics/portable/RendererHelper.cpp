@@ -45,8 +45,6 @@ void RendererHelper::createDeviceDependentResources()
     assert(_dynamicVertexBuffers.size() == 0);
     assert(_staticVertexBuffers.size() == 0);
     
-    createScreenFramebufferWrapper(_screenFramebufferWrapper);
-    
     int fbWidth = FW_CFG->_framebufferWidth;
     int fbHeight = FW_CFG->_framebufferHeight;
     std::string cfgFilterMin = FW_CFG->_framebufferFilterMin;
@@ -105,6 +103,8 @@ void RendererHelper::createWindowSizeDependentResources(int screenWidth, int scr
 {
     _screenFramebufferWrapper->renderWidth = screenWidth;
     _screenFramebufferWrapper->renderHeight = screenHeight;
+    
+    createScreenFramebufferWrapper(_screenFramebufferWrapper);
 }
 
 void RendererHelper::bindMatrix(NGShaderUniformInput* uniform)

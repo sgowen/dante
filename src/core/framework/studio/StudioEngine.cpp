@@ -13,22 +13,15 @@
 #include <framework/file/portable/JsonFile.h>
 #include <framework/studio/StudioRenderer.h>
 
-#include <game/logic/Server.h>
 #include <framework/util/Constants.h>
 #include <framework/input/CursorInputManager.h>
 #include <framework/input/CursorEvent.h>
 #include <framework/input/CursorConverter.h>
 #include <framework/util/StringUtil.h>
 #include <framework/util/MathUtil.h>
-#include <framework/network/client/NetworkManagerClient.h>
-#include <framework/network/server/NetworkManagerServer.h>
-#include <framework/network/portable/SocketAddressFactory.h>
-#include <framework/network/portable/SocketUtil.h>
 #include <framework/studio/StudioInputManager.h>
-#include <game/logic/World.h>
+#include <framework/studio/World.h>
 #include <framework/entity/EntityManager.h>
-#include <framework/network/client/SocketClientHelper.h>
-#include <framework/network/portable/MachineAddress.h>
 #include <framework/audio/portable/NGAudioEngine.h>
 #include <framework/util/NGExtension.h>
 #include <framework/util/PlatformHelper.h>
@@ -40,26 +33,17 @@
 #include <framework/entity/EntityMapper.h>
 #include <framework/entity/EntityLayoutMapper.h>
 #include <framework/util/macros.h>
-#include <framework/network/client/SocketClientHelper.h>
-#include <game/game/GameEngine.h>
 #include <framework/util/Config.h>
-#include <game/game/GameInputManager.h>
-
-#ifdef NG_STEAM
-#include <framework/network/steam/NGSteamClientHelper.h>
-#include <framework/network/steam/NGSteamAddress.h>
-#include <framework/network/steam/NGSteamGameServices.h>
-#endif
 
 IMPL_RTTI(StudioEngine, EngineState);
 
 StudioEngine* StudioEngine::s_instance = NULL;
 
-void StudioEngine::create()
+void StudioEngine::create(TestFunc testFunc)
 {
     assert(!s_instance);
     
-    s_instance = new StudioEngine();
+    s_instance = new StudioEngine(testFunc);
 }
 
 StudioEngine * StudioEngine::getInstance()
@@ -75,55 +59,21 @@ void StudioEngine::destroy()
     s_instance = NULL;
 }
 
-StudioEngine::StudioEngine() : EngineState(),
-_renderer(new StudioRenderer()),
-_world(new World(WorldFlag_Studio)),
-_state(StudioEngineState_DisplayGrid | StudioEngineState_DisplayControls | StudioEngineState_LayerAll),
-_textInputField(0),
-_textInputType(0)
-{
-    StudioInputManager::create();
-    StudioInputManager::getInstance()->setEngine(this);
-    
-    _renderer->setEngine(this);
-    _renderer->setInputManager(StudioInputManager::getInstance());
-}
-
-StudioEngine::~StudioEngine()
-{
-    delete _renderer;
-    delete _world;
-}
-
 void StudioEngine::enter(Engine* engine)
 {
+    _engine = engine;
+    
     createDeviceDependentResources();
     createWindowSizeDependentResources(engine->getScreenWidth(), engine->getScreenHeight(), engine->getCursorWidth(), engine->getCursorHeight());
-    
-    SET_BIT(_state, StudioEngineState_TestSession, false);
 }
 
 void StudioEngine::update(Engine* engine)
 {
-    if (_state & StudioEngineState_TestSession)
+    StudioInputManager::getInstance()->update();
+    
+    if (StudioInputManager::getInstance()->getMenuState() == SIMS_ESCAPE)
     {
-        if (NG_SERVER && NG_SERVER->isConnected())
-        {
-            NetworkManagerClient::create(new SocketClientHelper(std::string("localhost:9999"), std::string("TEST"), FW_CFG->_clientPort, NG_CLIENT_CALLBACKS), GAME_ENGINE_CALLBACKS, INPUT_MANAGER_CALLBACKS);
-            
-            assert(NG_CLIENT);
-            
-            engine->getStateMachine().changeState(GameEngine::getInstance());
-        }
-    }
-    else
-    {
-        StudioInputManager::getInstance()->update();
-        
-        if (StudioInputManager::getInstance()->getMenuState() == SIMS_ESCAPE)
-        {
-            engine->getStateMachine().revertToPreviousState();
-        }
+        engine->getStateMachine().revertToPreviousState();
     }
 }
 
@@ -169,4 +119,26 @@ void StudioEngine::onPause()
 void StudioEngine::render(double alpha)
 {
     _renderer->render();
+}
+
+StudioEngine::StudioEngine(TestFunc testFunc) : EngineState(),
+_renderer(new StudioRenderer()),
+_world(new World(WorldFlag_Studio)),
+_engine(NULL),
+_testFunc(testFunc),
+_state(StudioEngineState_DisplayGrid | StudioEngineState_DisplayControls | StudioEngineState_LayerAll),
+_textInputField(0),
+_textInputType(0)
+{
+    StudioInputManager::create();
+    StudioInputManager::getInstance()->setEngine(this);
+    
+    _renderer->setEngine(this);
+    _renderer->setInputManager(StudioInputManager::getInstance());
+}
+
+StudioEngine::~StudioEngine()
+{
+    delete _renderer;
+    delete _world;
 }

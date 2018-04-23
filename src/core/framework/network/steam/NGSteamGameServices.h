@@ -31,31 +31,19 @@ class NGSteamGameServices : public ISteamMatchmakingServerListResponse
 {
 public:
     static void create(const char* inGameDir);
-    
     static void destroy();
-    
     static NGSteamGameServices* getInstance();
     
-    void update(bool isServer);
-    
+    void update();
     void refreshInternetServers();
-    
     void refreshLANServers();
-    
     void parseCommandLine(const char *pchCmdLine, const char **ppchServerAddress);
-    
     void connectToServerWithAddress(const char *pchServerAddress);
-    
     void initiateServerConnection(uint32 unServerAddress, const int32 nPort);
-    
     void initiateServerConnection(CSteamID steamIDGameServer);
-    
     CSteamID getServerToJoinSteamID();
-    
     int getStatus();
-    
     bool isRequestingToJoinServer();
-    
     void onServerJoined();
     
 #pragma mark ISteamMatchmakingServerListResponse
@@ -64,7 +52,6 @@ public:
     virtual void RefreshComplete(HServerListRequest hReq, EMatchMakingServerResponse response);
     
     std::vector<NGSteamGameServer>& getGameServers();
-    
     bool isRequestingServers();
     
 #pragma mark Steam Cloud

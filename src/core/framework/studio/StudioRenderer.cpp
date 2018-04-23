@@ -12,7 +12,7 @@
 
 #include <framework/graphics/portable/TextureManager.h>
 #include <framework/graphics/portable/Font.h>
-#include <game/logic/World.h>
+#include <framework/studio/World.h>
 #include <framework/graphics/portable/SpriteBatcher.h>
 #include <framework/graphics/portable/PolygonBatcher.h>
 #include <framework/graphics/portable/LineBatcher.h>
@@ -39,10 +39,8 @@
 #include <framework/graphics/portable/SpriteBatcher.h>
 #include <framework/graphics/portable/TextureRegion.h>
 #include <framework/util/macros.h>
-#include <framework/network/client/NetworkManagerClient.h>
 #include <framework/util/StringUtil.h>
 #include <framework/util/NGSTDUtil.h>
-#include <framework/network/portable/MachineAddress.h>
 #include <framework/util/MathUtil.h>
 #include <framework/audio/portable/NGAudioEngine.h>
 #include <framework/util/FPSUtil.h>

@@ -8,11 +8,11 @@
 
 #include "pch.h"
 
-#include <game/logic/Util.h>
+#include <game/game/Util.h>
 
 #include <framework/entity/Entity.h>
 #include <Box2D/Box2D.h>
-#include <game/logic/World.h>
+#include <framework/studio/World.h>
 
 #include <framework/audio/portable/NGAudioEngine.h>
 #include <game/entity/PlayerController.h>

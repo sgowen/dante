@@ -28,7 +28,6 @@ EntityIDManager::~EntityIDManager()
 void EntityIDManager::reset()
 {
     _staticEntityID = STATIC_ENTITY_ID_BEGIN;
-    _dynamicEntityID = DYNAMIC_ENTITY_ID_BEGIN;
 }
 
 uint32_t EntityIDManager::getNextStaticEntityID()

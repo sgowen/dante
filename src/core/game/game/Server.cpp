@@ -8,9 +8,9 @@
 
 #include "pch.h"
 
-#include <game/logic/Server.h>
+#include <game/game/Server.h>
 
-#include <game/logic/World.h>
+#include <framework/studio/World.h>
 #include <framework/network/server/ClientProxy.h>
 #include <framework/entity/Entity.h>
 #include <framework/util/Timing.h>
@@ -39,7 +39,7 @@
 #include <ctime> // rand
 #include <assert.h>
 
-#define SERVER_CALLBACKS Server::sHandleDynamicEntityCreatedOnServer, Server::sHandleDynamicEntityDeletedOnServer, Server::sHandleNewClient, Server::sHandleLostClient, Server::sHandleInputStateCreation, Server::sHandleInputStateRelease
+#define SERVER_CALLBACKS Server::sHandleNewClient, Server::sHandleLostClient, Server::sHandleInputStateCreation, Server::sHandleInputStateRelease
 
 Server* Server::s_instance = NULL;
 
@@ -61,24 +61,6 @@ void Server::destroy()
     
     delete s_instance;
     s_instance = NULL;
-}
-
-void Server::sHandleDynamicEntityCreatedOnServer(Entity* entity)
-{
-    // Empty
-}
-
-void Server::sHandleDynamicEntityDeletedOnServer(Entity* entity)
-{
-    EntityController* controller = entity->getController();
-    if (controller->getRTTI().derivesFrom(PlayerController::rtti))
-    {
-        PlayerController* robot = static_cast<PlayerController*>(controller);
-        assert(robot);
-        
-        // This is my shoddy respawn implementation
-        getInstance()->spawnRobotForPlayer(robot->getPlayerId(), robot->getPlayerName());
-    }
 }
 
 void Server::sHandleNewClient(uint8_t playerId, std::string playerName)
@@ -133,8 +115,40 @@ void Server::update()
             }
             
             _world->stepPhysics();
-            _world->updateAndRemoveEntitiesAsNeeded(_world->getDynamicEntities());
-            _world->handleDirtyStates(_world->getDynamicEntities());
+            
+            std::vector<Entity*> toDelete;
+            
+            for (Entity* e : _world->getDynamicEntities())
+            {
+                if (!e->isRequestingDeletion())
+                {
+                    e->update();
+                }
+                
+                if (e->isRequestingDeletion())
+                {
+                    toDelete.push_back(e);
+                }
+            }
+            
+            for (Entity* e : toDelete)
+            {
+                NG_SERVER->deregisterEntity(e);
+                
+                EntityController* c = e->getController();
+                if (c->getRTTI().derivesFrom(PlayerController::rtti))
+                {
+                    PlayerController* robot = static_cast<PlayerController*>(c);
+                    assert(robot);
+                    
+                    // This is my shoddy respawn implementation
+                    getInstance()->spawnRobotForPlayer(robot->getPlayerId(), robot->getPlayerName());
+                }
+                
+                _world->removeEntity(e);
+            }
+            
+            handleDirtyStates(_world->getDynamicEntities());
         }
         
         for (uint8_t i = 0; i < MAX_NUM_PLAYERS_PER_SERVER; ++i)
@@ -150,10 +164,6 @@ void Server::update()
     }
     
     NG_SERVER->sendOutgoingPackets();
-    
-#ifdef NG_STEAM
-    NG_STEAM_GAME_SERVICES->update(true);
-#endif
 }
 
 void Server::toggleMap()
@@ -163,14 +173,7 @@ void Server::toggleMap()
         return;
     }
     
-    if (_map == 'Z001')
-    {
-        _map = 'Z002';
-    }
-    else
-    {
-        _map = 'Z001';
-    }
+    _map = _map == 'Z001' ? 'Z002' : 'Z001';
     
     loadMap();
 }
@@ -320,6 +323,8 @@ void Server::spawnRobotForPlayer(uint8_t inPlayerId, std::string inPlayerName)
     robot->setPlayerId(inPlayerId);
     
     _world->addEntity(e);
+    
+    NG_SERVER->registerEntity(e);
 }
 
 void Server::loadMap()
@@ -327,7 +332,17 @@ void Server::loadMap()
     std::vector<uint8_t> playerIds = _playerIds;
     std::vector<std::string> playerNames = _playerNames;
     
+    for (Entity* e : _world->getDynamicEntities())
+    {
+        NG_SERVER->deregisterEntity(e);
+    }
+    
     _world->loadMap(_map);
+    
+    for (Entity* e : _world->getDynamicEntities())
+    {
+        NG_SERVER->registerEntity(e);
+    }
     
     NG_SERVER->setMap(_map);
     
@@ -337,6 +352,18 @@ void Server::loadMap()
     for (int i = 0; i < playerIds.size(); ++i)
     {
         handleNewClient(playerIds[i], playerNames[i]);
+    }
+}
+
+void Server::handleDirtyStates(std::vector<Entity*>& entities)
+{
+    for (Entity* e : entities)
+    {
+        uint16_t dirtyState = e->getNetworkController()->getDirtyState();
+        if (dirtyState > 0)
+        {
+            NG_SERVER->setStateDirty(e->getID(), dirtyState);
+        }
     }
 }
 

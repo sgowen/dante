@@ -12,7 +12,7 @@
 
 #include <framework/graphics/portable/TextureManager.h>
 #include <framework/graphics/portable/Font.h>
-#include <game/logic/World.h>
+#include <framework/studio/World.h>
 #include <framework/graphics/portable/Box2DDebugRenderer.h>
 #include <framework/graphics/portable/SpriteBatcher.h>
 #include <framework/graphics/portable/PolygonBatcher.h>
@@ -46,8 +46,7 @@
 #include <framework/network/portable/MachineAddress.h>
 #include <framework/util/MathUtil.h>
 #include <framework/audio/portable/NGAudioEngine.h>
-#include <game/logic/Server.h>
-#include <game/title/TitleEngine.h>
+#include <game/game/Server.h>
 #include <framework/util/FPSUtil.h>
 #include <framework/math/Circle.h>
 #include <framework/graphics/portable/CircleBatcher.h>
@@ -69,7 +68,7 @@
 #include <framework/file/portable/Assets.h>
 #include <game/game/GameEngine.h>
 #include <game/entity/PlayerController.h>
-#include <game/logic/GameConfig.h>
+#include <game/config/GameConfig.h>
 #include <framework/graphics/portable/VertexProgramInput.h>
 #include <framework/util/Config.h>
 #include <framework/graphics/portable/FramebufferWrapper.h>
@@ -486,7 +485,7 @@ void GameRenderer::renderUI()
         sSb->beginBatch(INDEX_LAST_TEXTURE_VERTEX_BUFFER);
     }
     
-    if (NG_CLIENT->getState() == NCS_Welcomed)
+    if (NG_CLIENT && NG_CLIENT->getState() == NCS_Welcomed)
     {
         dSb->beginBatch(INDEX_LAST_TEXTURE_VERTEX_BUFFER);
         

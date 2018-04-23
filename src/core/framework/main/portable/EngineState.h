@@ -21,6 +21,7 @@ public:
     virtual void enter(Engine* engine) = 0;
     virtual void update(Engine* engine) = 0;
     virtual void exit(Engine* engine) = 0;
+    
     virtual void createDeviceDependentResources() = 0;
     virtual void createWindowSizeDependentResources(int screenWidth, int screenHeight, int cursorWidth, int cursorHeight) = 0;
     virtual void releaseDeviceDependentResources() = 0;

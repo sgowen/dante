@@ -68,6 +68,7 @@ private:
     void deleteRobotWithPlayerId(uint8_t playerId);
     void spawnRobotForPlayer(uint8_t inPlayerId, std::string inPlayerName);
     void loadMap();
+    void handleDirtyStates(std::vector<Entity*>& entities);
     
     // ctor, copy ctor, and assignment should be private in a Singleton
     Server(uint32_t flags, void* data = NULL);

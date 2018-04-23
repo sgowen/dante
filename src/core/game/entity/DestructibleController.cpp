@@ -13,7 +13,7 @@
 #include <framework/entity/Entity.h>
 #include <Box2D/Box2D.h>
 
-#include <game/logic/World.h>
+#include <framework/studio/World.h>
 #include <framework/util/macros.h>
 #include <framework/util/Constants.h>
 #include <framework/util/Timing.h>
@@ -24,8 +24,8 @@
 #include <framework/network/client/NetworkManagerClient.h>
 #include <game/game/GameInputManager.h>
 #include <framework/audio/portable/NGAudioEngine.h>
-#include <game/logic/Util.h>
-#include <game/logic/Server.h>
+#include <game/game/Util.h>
+#include <game/game/Server.h>
 #include <framework/util/Config.h>
 #include <game/game/GameEngine.h>
 

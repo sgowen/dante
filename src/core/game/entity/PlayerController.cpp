@@ -15,7 +15,7 @@
 
 #include <game/game/GameInputState.h>
 
-#include <game/logic/World.h>
+#include <framework/studio/World.h>
 #include <framework/util/macros.h>
 #include <framework/util/Constants.h>
 #include <framework/util/Timing.h>
@@ -25,10 +25,10 @@
 #include <framework/network/client/NetworkManagerClient.h>
 #include <game/game/GameInputManager.h>
 #include <framework/audio/portable/NGAudioEngine.h>
-#include <game/logic/Util.h>
-#include <game/logic/Server.h>
+#include <game/game/Util.h>
+#include <game/game/Server.h>
 #include <framework/util/Config.h>
-#include <game/logic/GameConfig.h>
+#include <game/config/GameConfig.h>
 #include <game/game/GameEngine.h>
 
 IMPL_RTTI(PlayerController, EntityController);

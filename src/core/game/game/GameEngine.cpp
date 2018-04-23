@@ -12,11 +12,11 @@
 
 #include <framework/entity/Entity.h>
 #include <game/game/GameRenderer.h>
-#include <game/logic/World.h>
+#include <framework/studio/World.h>
 #include <framework/util/Timing.h>
 #include <game/game/GameInputManager.h>
 
-#include <game/logic/Server.h>
+#include <game/game/Server.h>
 #include <framework/util/Constants.h>
 #include <framework/input/CursorInputManager.h>
 #include <framework/input/CursorEvent.h>
@@ -40,11 +40,12 @@
 #include <framework/input/CursorConverter.h>
 #include <framework/entity/EntityMapper.h>
 #include <framework/entity/EntityLayoutMapper.h>
-#include <game/logic/GameConfig.h>
-#include <game/logic/Util.h>
+#include <game/config/GameConfig.h>
+#include <game/game/Util.h>
 #include <game/entity/PlayerController.h>
 #include <framework/util/InstanceManager.h>
 #include <framework/util/Config.h>
+#include <framework/util/macros.h>
 
 #ifdef NG_STEAM
 #include <framework/network/steam/NGSteamClientHelper.h>
@@ -132,6 +133,70 @@ void GameEngine::sHandleDynamicEntityDeletedOnClient(Entity* entity)
     world->removeEntity(entity);
 }
 
+void GameEngine::sHandleTest(Engine* engine, uint32_t& testMap)
+{
+    Server::create(ServerFlag_TestSession, &testMap);
+    assert(NG_SERVER);
+    
+    GameEngine* ge = GameEngine::getInstance();
+    ge->_serverIPAddress = std::string("localhost:9999");
+    ge->_name = std::string("TESTER");
+    SET_BIT(ge->_state, GameEngineState_Host, true);
+    SET_BIT(ge->_state, GameEngineState_Connected, false);
+    
+    engine->getStateMachine().changeState(ge);
+}
+
+void GameEngine::sHandleHostServer(Engine* engine, std::string inName)
+{
+    Server::create(0);
+    assert(NG_SERVER);
+    
+    GameEngine* ge = GameEngine::getInstance();
+    ge->_name = inName;
+    ge->_isSteam = false;
+    SET_BIT(ge->_state, GameEngineState_Host, true);
+    SET_BIT(ge->_state, GameEngineState_Connected, false);
+    
+    engine->getStateMachine().changeState(ge);
+}
+
+void GameEngine::sHandleJoinServer(Engine* engine, std::string inServerIPAddress, std::string inName)
+{
+    GameEngine* ge = GameEngine::getInstance();
+    ge->_serverIPAddress = inServerIPAddress;
+    ge->_name = inName;
+    ge->_isSteam = false;
+    ge->joinServer();
+    
+    engine->getStateMachine().changeState(ge);
+}
+
+#ifdef NG_STEAM
+void GameEngine::sHandleHostSteamServer(Engine* engine)
+{
+    Server::create(ServerFlag_Steam);
+    assert(NG_SERVER);
+    
+    GameEngine* ge = GameEngine::getInstance();
+    ge->_isSteam = true;
+    SET_BIT(ge->_state, GameEngineState_Host, true);
+    SET_BIT(ge->_state, GameEngineState_Connected, false);
+    
+    engine->getStateMachine().changeState(ge);
+}
+
+void GameEngine::sHandleJoinSteamServer(Engine* engine, CSteamID serverSteamID)
+{
+    GameEngine* ge = GameEngine::getInstance();
+    ge->_serverSteamID = serverSteamID;
+    ge->_isSteam = true;
+    ge->joinServer();
+    
+    engine->getStateMachine().changeState(ge);
+}
+#endif
+
 void GameEngine::enter(Engine* engine)
 {
     createDeviceDependentResources();
@@ -147,6 +212,35 @@ void GameEngine::enter(Engine* engine)
 
 void GameEngine::update(Engine* engine)
 {
+#ifdef NG_STEAM
+    if (NG_STEAM_GAME_SERVICES)
+    {
+        NG_STEAM_GAME_SERVICES->update();
+    }
+#endif
+    
+    if (_state & GameEngineState_Host &&
+        !(_state & GameEngineState_Connected))
+    {
+        if (NG_SERVER && NG_SERVER->isConnected())
+        {
+            if (_isSteam)
+            {
+#ifdef NG_STEAM
+                _serverSteamID = static_cast<NGSteamAddress*>(NG_SERVER->getServerAddress())->getSteamID();
+#endif
+            }
+            else
+            {
+                _serverIPAddress = std::string("localhost:9999");
+            }
+            
+            joinServer();
+        }
+        
+        return;
+    }
+    
     _timing->onFrame();
     
     NG_CLIENT->processIncomingPackets();
@@ -193,10 +287,6 @@ void GameEngine::update(Engine* engine)
     _input->clearPendingMove();
     NG_CLIENT->sendOutgoingPackets();
     
-#ifdef NG_STEAM
-    NG_STEAM_GAME_SERVICES->update(false);
-#endif
-    
     if (Server::getInstance())
     {
         /// Only for host
@@ -224,6 +314,9 @@ void GameEngine::exit(Engine* engine)
     }
     
     _timing->reset();
+    
+    SET_BIT(_state, GameEngineState_Host, false);
+    SET_BIT(_state, GameEngineState_Connected, false);
 }
 
 void GameEngine::createDeviceDependentResources()
@@ -271,14 +364,20 @@ void GameEngine::render(double alpha)
 {
     if (_state & GameEngineState_Interpolation)
     {
-        _world->interpolate(alpha);
+        for (Entity* entity : _world->getPlayers())
+        {
+            entity->interpolate(alpha);
+        }
     }
     
     _renderer->render();
     
     if (_state & GameEngineState_Interpolation)
     {
-        _world->endInterpolation();
+        for (Entity* entity : _world->getPlayers())
+        {
+            entity->endInterpolation();
+        }
     }
     
     NG_AUDIO_ENGINE->render();
@@ -292,6 +391,24 @@ World* GameEngine::getWorld()
 bool GameEngine::isLive()
 {
     return _isLive;
+}
+
+void GameEngine::joinServer()
+{
+    if (_isSteam)
+    {
+#ifdef NG_STEAM
+        NetworkManagerClient::create(new NGSteamClientHelper(_serverSteamID, GameEngine::sGetPlayerAddressHash, NG_CLIENT_CALLBACKS), GAME_ENGINE_CALLBACKS, INPUT_MANAGER_CALLBACKS);
+#endif
+    }
+    else
+    {
+        NetworkManagerClient::create(new SocketClientHelper(_serverIPAddress, _name, FW_CFG->_clientPort, NG_CLIENT_CALLBACKS), GAME_ENGINE_CALLBACKS, INPUT_MANAGER_CALLBACKS);
+    }
+    
+    assert(NG_CLIENT);
+    
+    SET_BIT(_state, GameEngineState_Connected, true);
 }
 
 void GameEngine::updateWorld(const Move* move)

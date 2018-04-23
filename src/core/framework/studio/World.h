@@ -1,6 +1,6 @@
 //
 //  World.h
-//  dante
+//  noctisgames
 //
 //  Created by Stephen Gowen on 5/15/17.
 //  Copyright (c) 2017 Noctis Games. All rights reserved.
@@ -55,10 +55,6 @@ public:
     void addEntity(Entity* e);
     void removeEntity(Entity* e);
     void stepPhysics();
-    void updateAndRemoveEntitiesAsNeeded(std::vector<Entity*>& entities);
-    void handleDirtyStates(std::vector<Entity*>& entities);
-    void interpolate(double alpha);
-    void endInterpolation();
     void clear();
     
     bool isMapLoaded();

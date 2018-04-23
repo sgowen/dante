@@ -11,9 +11,7 @@
 
 #include <framework/main/portable/EngineState.h>
 
-#ifdef NG_STEAM
-#include <framework/network/steam/NGSteam.h>
-#endif
+typedef void (*TestFunc)(Engine* engine, uint32_t& testMap);
 
 class StudioRenderer;
 class World;
@@ -29,7 +27,6 @@ enum StudioEngineState
     StudioEngineState_DisplayEntities =        1 <<  6,
     StudioEngineState_DisplayNewMapDialog =    1 <<  7,
     StudioEngineState_TextInput =              1 <<  8,
-    StudioEngineState_TestSession =            1 <<  9,
     StudioEngineState_DisplayLoadMapDialog =   1 << 10,
     StudioEngineState_DisplaySaveMapDialog =   1 << 11,
     StudioEngineState_DisplaySaveMapAsDialog = 1 << 12,
@@ -71,13 +68,14 @@ class StudioEngine : public EngineState
     DECL_RTTI;
     
 public:
-    static void create();
+    static void create(TestFunc testFunc);
     static StudioEngine* getInstance();
     static void destroy();
     
     virtual void enter(Engine* engine);
     virtual void update(Engine* engine);
     virtual void exit(Engine* engine);
+    
     virtual void createDeviceDependentResources();
     virtual void createWindowSizeDependentResources(int screenWidth, int screenHeight, int cursorWidth, int cursorHeight);
     virtual void releaseDeviceDependentResources();
@@ -90,12 +88,17 @@ private:
     
     StudioRenderer* _renderer;
     World* _world;
+    Engine* _engine;
+    TestFunc _testFunc;
     uint32_t _state;
     uint32_t _textInputField;
     uint32_t _textInputType;
     
-    StudioEngine();
-    virtual ~StudioEngine();
+    // ctor, copy ctor, and assignment should be private in a Singleton
+    StudioEngine(TestFunc testFunc);
+    ~StudioEngine();
+    StudioEngine(const StudioEngine&);
+    StudioEngine& operator=(const StudioEngine&);
 };
 
 #endif /* defined(__noctisgames__StudioEngine__) */

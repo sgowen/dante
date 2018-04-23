@@ -12,7 +12,7 @@
 
 #include <framework/graphics/portable/TextureManager.h>
 #include <framework/graphics/portable/Font.h>
-#include <game/logic/World.h>
+#include <framework/studio/World.h>
 #include <framework/graphics/portable/Box2DDebugRenderer.h>
 #include <framework/graphics/portable/SpriteBatcher.h>
 #include <framework/graphics/portable/PolygonBatcher.h>
@@ -45,7 +45,7 @@
 #include <framework/network/portable/MachineAddress.h>
 #include <framework/util/MathUtil.h>
 #include <framework/audio/portable/NGAudioEngine.h>
-#include <game/logic/Server.h>
+#include <game/game/Server.h>
 #include <game/title/TitleEngine.h>
 #include <framework/util/FPSUtil.h>
 #include <framework/math/Circle.h>
@@ -67,7 +67,7 @@
 #include <framework/graphics/portable/NGTextureDesc.h>
 #include <framework/file/portable/Assets.h>
 #include <framework/util/PlatformHelper.h>
-#include <game/logic/GameConfig.h>
+#include <game/config/GameConfig.h>
 #include <framework/util/Config.h>
 #include <framework/graphics/portable/FramebufferWrapper.h>
 
@@ -163,9 +163,6 @@ void TitleRenderer::render()
             case TitleEngineState_SteamOn:
                 renderMainMenuSteamOnText();
                 break;
-            case TitleEngineState_ServerStarting:
-                renderStartingServerText();
-                break;
             case TitleEngineState_InputName:
                 renderEnterUsernameText();
                 break;
@@ -178,8 +175,6 @@ void TitleRenderer::render()
 
         _spriteBatcher->endBatch(_textureShader, _textureManager->getTextureWithName("texture_000.ngt"));
     }
-    
-    //testRenderingSuite();
 
     endFrame();
 }
@@ -237,11 +232,6 @@ void TitleRenderer::renderMainMenuSteamOnText()
     renderText("[ESC] to exit game", FW_CFG->_camWidth / 2, 4, FONT_ALIGN_CENTER);
 }
 
-void TitleRenderer::renderStartingServerText()
-{
-    renderText("Server starting, [ESC] to exit", FW_CFG->_camWidth / 2, FW_CFG->_camHeight - 4, FONT_ALIGN_CENTER);
-}
-
 void TitleRenderer::renderEnterUsernameText()
 {
     renderText("Enter Username to join, [ESC] to exit", FW_CFG->_camWidth / 2, FW_CFG->_camHeight - 4, FONT_ALIGN_CENTER);
@@ -264,33 +254,6 @@ void TitleRenderer::renderText(const char* inStr, float x, float y, int justific
     std::string text(inStr);
 
     _font->renderText(*_spriteBatcher, text, x, y, fgWidth, fgHeight, justification);
-}
-
-void TitleRenderer::testRenderingSuite()
-{
-    _rendererHelper->updateMatrix(0, 16, 0, 9);
-    
-    _circleBatcher->beginBatch();
-    static Circle c1(10, 4, 2);
-    _circleBatcher->renderCircle(c1);
-    static Circle c2(7, 7, 2);
-    _circleBatcher->renderPartialCircle(c2, 135);
-    _circleBatcher->endBatch(_colorShader, Color::RED);
-    
-    static NGRect r1(1, 1, 2, 1);
-    _boundsPolygonBatcher->beginBatch();
-    _boundsPolygonBatcher->renderRect(r1);
-    _boundsPolygonBatcher->endBatch(_colorShader, Color::RED);
-    
-    static NGRect r2(4, 1, 2, 1);
-    _fillPolygonBatcher->beginBatch();
-    _fillPolygonBatcher->renderRect(r2);
-    _fillPolygonBatcher->endBatch(_colorShader, Color::RED);
-    
-    static Line line(3, 3, 5, 5);
-    _lineBatcher->beginBatch();
-    _lineBatcher->renderLine(line);
-    _lineBatcher->endBatch(_colorShader, Color::RED);
 }
 
 void TitleRenderer::endFrame()

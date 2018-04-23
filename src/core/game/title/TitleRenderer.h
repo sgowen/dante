@@ -61,11 +61,9 @@ private:
     void bindFramebuffer(int framebufferIndex, float r = 0, float g = 0, float b = 0, float a = 0);
     void renderMainMenuSteamOffText();
     void renderMainMenuSteamOnText();
-    void renderStartingServerText();
     void renderEnterUsernameText();
     void renderJoiningLocalServerByIPText();
     void renderText(const char* inStr, float x, float y, int justification);
-    void testRenderingSuite();
     void endFrame();
 };
 

@@ -40,14 +40,20 @@ void EntityManager::registerEntity(Entity* e)
 {
     _entityMap.insert(std::make_pair(e->getID(), e));
     
-    _handleEntityCreatedFunc(e);
+    if (_handleEntityCreatedFunc)
+    {
+        _handleEntityCreatedFunc(e);
+    }
 }
 
 void EntityManager::deregisterEntity(Entity* e)
 {
     _entityMap.erase(e->getID());
     
-    _handleEntityDeletionFunc(e);
+    if (_handleEntityDeletionFunc)
+    {
+        _handleEntityDeletionFunc(e);
+    }
 }
 
 std::map<uint32_t, Entity*>& EntityManager::getMap()

@@ -37,7 +37,7 @@ typedef void (*InputStateReleaseFunc)(InputState* inputState);
 class NetworkManagerServer
 {
 public:
-    static void create(ServerHelper* inServerHelper, HandleEntityCreatedFunc handleEntityCreatedFunc, HandleEntityDeletionFunc handleEntityDeletionFunc, HandleNewClientFunc inHandleNewClientFunc, HandleLostClientFunc inHandleLostClientFunc, InputStateCreationFunc inInputStateCreationFunc, InputStateReleaseFunc inputStateReleaseFunc);
+    static void create(ServerHelper* inServerHelper, HandleNewClientFunc inHandleNewClientFunc, HandleLostClientFunc inHandleLostClientFunc, InputStateCreationFunc inInputStateCreationFunc, InputStateReleaseFunc inputStateReleaseFunc);
     static NetworkManagerServer* getInstance();
     static void destroy();
     
@@ -97,7 +97,7 @@ private:
     void updateNextPlayerId();
     
     // ctor, copy ctor, and assignment should be private in a Singleton
-    NetworkManagerServer(ServerHelper* inServerHelper, HandleEntityCreatedFunc handleEntityCreatedFunc, HandleEntityDeletionFunc handleEntityDeletionFunc, HandleNewClientFunc inHandleNewClientFunc, HandleLostClientFunc inHandleLostClientFunc, InputStateCreationFunc inInputStateCreationFunc, InputStateReleaseFunc inputStateReleaseFunc);
+    NetworkManagerServer(ServerHelper* inServerHelper, HandleNewClientFunc inHandleNewClientFunc, HandleLostClientFunc inHandleLostClientFunc, InputStateCreationFunc inInputStateCreationFunc, InputStateReleaseFunc inputStateReleaseFunc);
     ~NetworkManagerServer();
     NetworkManagerServer(const NetworkManagerServer&);
     NetworkManagerServer& operator=(const NetworkManagerServer&);

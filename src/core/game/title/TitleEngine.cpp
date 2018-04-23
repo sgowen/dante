@@ -13,25 +13,19 @@
 #include <framework/file/portable/JsonFile.h>
 #include <game/title/TitleRenderer.h>
 
-#include <game/logic/Server.h>
+#include <game/game/Server.h>
 #include <framework/util/Constants.h>
 #include <framework/input/CursorInputManager.h>
 #include <framework/input/CursorEvent.h>
 #include <framework/input/CursorConverter.h>
 #include <framework/util/StringUtil.h>
 #include <framework/util/MathUtil.h>
-#include <framework/network/client/NetworkManagerClient.h>
-#include <framework/network/server/NetworkManagerServer.h>
-#include <framework/network/portable/SocketAddressFactory.h>
-#include <framework/network/portable/SocketUtil.h>
 #include <game/title/TitleInputManager.h>
-#include <game/logic/World.h>
+#include <framework/studio/World.h>
 #include <game/game/GameInputState.h>
 #include <framework/entity/EntityManager.h>
 #include <framework/entity/EntityMapper.h>
 #include <framework/entity/EntityLayoutMapper.h>
-#include <framework/network/client/SocketClientHelper.h>
-#include <framework/network/portable/MachineAddress.h>
 #include <framework/audio/portable/NGAudioEngine.h>
 #include <framework/util/PlatformHelper.h>
 #include <framework/file/portable/Assets.h>
@@ -43,7 +37,7 @@
 #include <game/game/GameEngine.h>
 #include <game/game/GameInputManager.h>
 #include <framework/studio/StudioEngine.h>
-#include <game/logic/GameConfig.h>
+#include <game/config/GameConfig.h>
 #include <framework/entity/EntityMapper.h>
 #include <framework/entity/EntityLayoutMapper.h>
 #include <framework/util/Config.h>
@@ -78,21 +72,6 @@ void TitleEngine::destroy()
     s_instance = NULL;
 }
 
-TitleEngine::TitleEngine() : EngineState(),
-_renderer(new TitleRenderer()),
-_isSteam(false),
-_state(TitleEngineState_SteamOff)
-{
-    _renderer->setEngine(this);
-    
-    activateSteam();
-}
-
-TitleEngine::~TitleEngine()
-{
-    delete _renderer;
-}
-
 void TitleEngine::enter(Engine* engine)
 {
     createDeviceDependentResources();
@@ -109,26 +88,7 @@ void TitleEngine::update(Engine* engine)
     
     TitleInputManager::getInstance()->update();
     
-    if (handleInput(engine))
-    {
-        return;
-    }
-    
-    if (NG_SERVER && NG_SERVER->isConnected())
-    {
-        if (_isSteam)
-        {
-#ifdef NG_STEAM
-            _serverSteamID = static_cast<NGSteamAddress*>(NG_SERVER->getServerAddress())->getSteamID();
-#endif
-        }
-        else
-        {
-            _serverIPAddress = std::string("localhost:9999");
-        }
-        
-        joinServer(engine);
-    }
+    handleInput(engine);
 }
 
 void TitleEngine::exit(Engine* engine)
@@ -175,7 +135,7 @@ void TitleEngine::render(double alpha)
     _renderer->render();
 }
 
-bool TitleEngine::handleInput(Engine* engine)
+void TitleEngine::handleInput(Engine* engine)
 {
     int menuState = TitleInputManager::getInstance()->getMenuState();
     
@@ -204,11 +164,11 @@ bool TitleEngine::handleInput(Engine* engine)
                     
                     if (_serverIPAddress.length() == 0)
                     {
-                        startServer();
+                        GameEngine::sHandleHostServer(engine, _name);
                     }
                     else
                     {
-                        joinServer(engine);
+                        GameEngine::sHandleJoinServer(engine, _serverIPAddress, _name);
                     }
                 }
             }
@@ -216,20 +176,11 @@ bool TitleEngine::handleInput(Engine* engine)
             TitleInputManager::getInstance()->onInputProcessed();
         }
     }
-    else if (NG_SERVER)
-    {
-        if (menuState == TIMS_ESCAPE)
-        {
-            disconnect();
-            return true;
-        }
-    }
     else
     {
         if (menuState == TIMS_ENTER_STUDIO)
         {
             engine->getStateMachine().changeState(StudioEngine::getInstance());
-            return true;
         }
         else if (menuState == TIMS_ACTIVATE_STEAM)
         {
@@ -243,7 +194,9 @@ bool TitleEngine::handleInput(Engine* engine)
         {
             if (_isSteam)
             {
-                startServer();
+#ifdef NG_STEAM
+                GameEngine::sHandleHostSteamServer(engine);
+#endif
             }
             else
             {
@@ -301,11 +254,8 @@ bool TitleEngine::handleInput(Engine* engine)
         {
             deactivateSteam();
             engine->setRequestedAction(REQUESTED_ACTION_EXIT);
-            return true;
         }
     }
-    
-    return false;
 }
 
 void TitleEngine::activateSteam()
@@ -328,21 +278,17 @@ void TitleEngine::handleSteamGameServices(Engine* engine)
 #ifdef NG_STEAM
     if (NG_STEAM_GAME_SERVICES)
     {
-        NG_STEAM_GAME_SERVICES->update(false);
-        NG_STEAM_GAME_SERVICES->update(true);
+        NG_STEAM_GAME_SERVICES->update();
         
         if (NG_STEAM_GAME_SERVICES->getStatus() == STEAM_INIT_SUCCESS)
         {
             if (NG_STEAM_GAME_SERVICES->isRequestingToJoinServer())
             {
-                disconnect();
-                _serverSteamID = NG_STEAM_GAME_SERVICES->getServerToJoinSteamID();
-                joinServer(engine);
+                GameEngine::sHandleJoinSteamServer(engine, NG_STEAM_GAME_SERVICES->getServerToJoinSteamID());
             }
         }
         else
         {
-            disconnect();
             deactivateSteam();
         }
     }
@@ -362,46 +308,17 @@ void TitleEngine::deactivateSteam()
 #endif
 }
 
-void TitleEngine::startServer()
+TitleEngine::TitleEngine() : EngineState(),
+_renderer(new TitleRenderer()),
+_isSteam(false),
+_state(TitleEngineState_SteamOff)
 {
-    disconnect();
+    _renderer->setEngine(this);
     
-    _state = TitleEngineState_ServerStarting;
-    
-    Server::create(_isSteam ? ServerFlag_Steam : 0);
-    
-    assert(NG_SERVER);
+    activateSteam();
 }
 
-void TitleEngine::joinServer(Engine* engine)
+TitleEngine::~TitleEngine()
 {
-    if (_isSteam)
-    {
-#ifdef NG_STEAM
-        NetworkManagerClient::create(new NGSteamClientHelper(_serverSteamID, GameEngine::sGetPlayerAddressHash, NG_CLIENT_CALLBACKS), GAME_ENGINE_CALLBACKS, INPUT_MANAGER_CALLBACKS);
-#endif
-    }
-    else
-    {
-        NetworkManagerClient::create(new SocketClientHelper(_serverIPAddress, _name, FW_CFG->_clientPort, NG_CLIENT_CALLBACKS), GAME_ENGINE_CALLBACKS, INPUT_MANAGER_CALLBACKS);
-    }
-    
-    assert(NG_CLIENT);
-    
-    engine->getStateMachine().changeState(GameEngine::getInstance());
-}
-
-void TitleEngine::disconnect()
-{
-    if (NG_CLIENT)
-    {
-        NetworkManagerClient::destroy();
-    }
-    
-    if (Server::getInstance())
-    {
-        Server::destroy();
-    }
-    
-    _state = _isSteam ? TitleEngineState_SteamOn : TitleEngineState_SteamOff;
+    delete _renderer;
 }

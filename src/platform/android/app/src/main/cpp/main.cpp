@@ -8,7 +8,7 @@
 
 #include <framework/main/android/AndroidMain.h>
 
-#include <game/logic/MainEngineController.h>
+#include <game/config/MainEngineController.h>
 
 /**
  * This is the main entry point of a native application that is using

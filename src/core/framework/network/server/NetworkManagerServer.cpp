@@ -33,11 +33,11 @@
 
 NetworkManagerServer* NetworkManagerServer::s_instance = NULL;
 
-void NetworkManagerServer::create(ServerHelper* inServerHelper, HandleEntityCreatedFunc handleEntityCreatedFunc, HandleEntityDeletionFunc handleEntityDeletionFunc, HandleNewClientFunc handleNewClientFunc, HandleLostClientFunc handleLostClientFunc, InputStateCreationFunc inputStateCreationFunc, InputStateReleaseFunc inputStateReleaseFunc)
+void NetworkManagerServer::create(ServerHelper* inServerHelper, HandleNewClientFunc handleNewClientFunc, HandleLostClientFunc handleLostClientFunc, InputStateCreationFunc inputStateCreationFunc, InputStateReleaseFunc inputStateReleaseFunc)
 {
     assert(!s_instance);
     
-    s_instance = new NetworkManagerServer(inServerHelper, handleEntityCreatedFunc, handleEntityDeletionFunc, handleNewClientFunc, handleLostClientFunc, inputStateCreationFunc, inputStateReleaseFunc);
+    s_instance = new NetworkManagerServer(inServerHelper, handleNewClientFunc, handleLostClientFunc, inputStateCreationFunc, inputStateReleaseFunc);
 }
 
 NetworkManagerServer * NetworkManagerServer::getInstance()
@@ -643,13 +643,13 @@ void NetworkManagerServer::updateNextPlayerId()
     LOG("_nextPlayerId: %d", _nextPlayerId);
 }
 
-NetworkManagerServer::NetworkManagerServer(ServerHelper* inServerHelper, HandleEntityCreatedFunc handleEntityCreatedFunc, HandleEntityDeletionFunc handleEntityDeletionFunc, HandleNewClientFunc handleNewClientFunc, HandleLostClientFunc handleLostClientFunc, InputStateCreationFunc inputStateCreationFunc, InputStateReleaseFunc inputStateReleaseFunc) :
+NetworkManagerServer::NetworkManagerServer(ServerHelper* inServerHelper, HandleNewClientFunc handleNewClientFunc, HandleLostClientFunc handleLostClientFunc, InputStateCreationFunc inputStateCreationFunc, InputStateReleaseFunc inputStateReleaseFunc) :
 _serverHelper(inServerHelper),
 _handleNewClientFunc(handleNewClientFunc),
 _handleLostClientFunc(handleLostClientFunc),
 _inputStateCreationFunc(inputStateCreationFunc),
 _inputStateReleaseFunc(inputStateReleaseFunc),
-_entityManager(new EntityManager(handleEntityCreatedFunc, handleEntityDeletionFunc)),
+_entityManager(new EntityManager(NULL, NULL)),
 _timing(static_cast<Timing*>(INSTANCE_MANAGER->getInstance(INSTANCE_TIME_SERVER))),
 _nextPlayerId(1),
 _map(0)

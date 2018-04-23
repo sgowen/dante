@@ -1,6 +1,6 @@
 //
 //  World.cpp
-//  dante
+//  noctisgames
 //
 //  Created by Stephen Gowen on 5/15/17.
 //  Copyright (c) 2017 Noctis Games. All rights reserved.
@@ -8,23 +8,20 @@
 
 #include "pch.h"
 
-#include <game/logic/World.h>
+#include <framework/studio/World.h>
 
 #include <framework/entity/Entity.h>
 #include <framework/entity/EntityIDManager.h>
 #include <Box2D/Box2D.h>
 
-#include <framework/network/server/NetworkManagerServer.h>
-#include <framework/util/Timing.h>
-#include <framework/network/server/ClientProxy.h>
-#include <framework/network/client/NetworkManagerClient.h>
-#include <framework/util/StringUtil.h>
-#include <framework/util/NGSTDUtil.h>
 #include <framework/entity/EntityMapper.h>
 #include <framework/entity/EntityLayoutMapper.h>
 #include <framework/entity/EntityNetworkController.h>
 #include <framework/util/InstanceManager.h>
 #include <framework/util/Config.h>
+#include <framework/util/Timing.h>
+#include <framework/util/StringUtil.h>
+#include <framework/util/NGSTDUtil.h>
 
 World::World(uint32_t flags) :
 _flags(flags),
@@ -143,11 +140,6 @@ void World::addEntity(Entity *e)
     }
     else if (isDynamic(e))
     {
-        if (_flags & WorldFlag_Server)
-        {
-            NG_SERVER->registerEntity(e);
-        }
-        
         e->initPhysics(getWorld());
         
         _dynamicEntities.push_back(e);
@@ -176,11 +168,6 @@ void World::removeEntity(Entity* e)
     }
     else if (isDynamic(e))
     {
-        if (_flags & WorldFlag_Server)
-        {
-            NG_SERVER->deregisterEntity(e);
-        }
-        
         e->deinitPhysics();
         
         removeEntity(e, _dynamicEntities);
@@ -199,57 +186,6 @@ void World::stepPhysics()
     _world->Step(FRAME_RATE, velocityIterations, positionIterations);
 }
 
-void World::updateAndRemoveEntitiesAsNeeded(std::vector<Entity*>& entities)
-{
-    std::vector<Entity*> toDelete;
-    
-    for (Entity* e : entities)
-    {
-        if (!e->isRequestingDeletion())
-        {
-            e->update();
-        }
-        
-        if (e->isRequestingDeletion())
-        {
-            toDelete.push_back(e);
-        }
-    }
-    
-    for (Entity* e : toDelete)
-    {
-        removeEntity(e);
-    }
-}
-
-void World::handleDirtyStates(std::vector<Entity*>& entities)
-{
-    for (Entity* e : entities)
-    {
-        uint16_t dirtyState = e->getNetworkController()->getDirtyState();
-        if (dirtyState > 0)
-        {
-            NG_SERVER->setStateDirty(e->getID(), dirtyState);
-        }
-    }
-}
-
-void World::interpolate(double alpha)
-{
-    for (Entity* entity : _players)
-    {
-        entity->interpolate(alpha);
-    }
-}
-
-void World::endInterpolation()
-{
-    for (Entity* entity : _players)
-    {
-        entity->endInterpolation();
-    }
-}
-
 void World::clear()
 {
     deinitPhysics(_waterBodies);
@@ -259,7 +195,7 @@ void World::clear()
     NGSTDUtil::cleanUpVectorOfPointers(_waterBodies);
     NGSTDUtil::cleanUpVectorOfPointers(_staticEntities);
     
-    if (_flags > 0)
+    if (_flags & WorldFlag_Server || _flags & WorldFlag_Studio)
     {
         deinitPhysics(_dynamicEntities);
         NGSTDUtil::cleanUpVectorOfPointers(_dynamicEntities);

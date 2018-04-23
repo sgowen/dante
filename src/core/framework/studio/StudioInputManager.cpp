@@ -27,14 +27,11 @@
 #include <framework/util/MathUtil.h>
 #include <framework/util/Constants.h>
 #include <framework/studio/StudioRenderer.h>
-#include <game/logic/World.h>
+#include <framework/studio/World.h>
 #include <framework/entity/EntityLayoutMapper.h>
 #include <framework/entity/EntityMapper.h>
 #include <framework/math/OverlapTester.h>
 #include <framework/math/NGRect.h>
-#include <framework/network/client/NetworkManagerClient.h>
-#include <framework/network/server/NetworkManagerServer.h>
-#include <game/logic/Server.h>
 #include <framework/graphics/portable/TextureRegion.h>
 #include <framework/file/portable/Assets.h>
 #include <framework/util/macros.h>
@@ -315,21 +312,8 @@ void StudioInputManager::handleDefaultInput()
                     }
                     else
                     {
-                        if (NG_CLIENT)
-                        {
-                            NetworkManagerClient::destroy();
-                        }
-                        
-                        if (Server::getInstance())
-                        {
-                            Server::destroy();
-                        }
-                        
-                        Server::create(ServerFlag_TestSession, &s_testMap);
-                        assert(NG_SERVER);
-                        
                         _engine->_world->saveMapAs(s_testMap);
-                        _engine->_state |= StudioEngineState_TestSession;
+                        _engine->_testFunc(_engine->_engine, s_testMap);
                         return;
                     }
                 }

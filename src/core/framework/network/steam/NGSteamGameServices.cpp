@@ -60,16 +60,10 @@ NGSteamGameServices * NGSteamGameServices::getInstance()
     return s_instance;
 }
 
-void NGSteamGameServices::update(bool isServer)
+void NGSteamGameServices::update()
 {
-    if (isServer)
-    {
-        SteamGameServer_RunCallbacks();
-    }
-    else
-    {
-        SteamAPI_RunCallbacks();
-    }
+    SteamGameServer_RunCallbacks();
+    SteamAPI_RunCallbacks();
 }
 
 void NGSteamGameServices::parseCommandLine(const char *pchCmdLine, const char **ppchServerAddress)

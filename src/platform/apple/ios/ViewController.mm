@@ -8,7 +8,7 @@
 
 #import "ViewController.h"
 
-#include <game/logic/MainEngineController.h>
+#include <game/config/MainEngineController.h>
 
 @implementation ViewController
 

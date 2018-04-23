@@ -114,6 +114,8 @@ std::vector<MapDef>& EntityLayoutMapper::getMaps()
 
 void EntityLayoutMapper::loadEntityLayout(const char* data)
 {
+    _entityIDManager->reset();
+    
     using namespace rapidjson;
     
     Document d;

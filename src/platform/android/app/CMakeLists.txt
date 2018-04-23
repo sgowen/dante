@@ -30,15 +30,15 @@ file(GLOB_RECURSE CPP_FRAMEWORK_FILES_10 "${source_dir}/core/framework/network/p
 file(GLOB_RECURSE CPP_FRAMEWORK_FILES_11 "${source_dir}/core/framework/network/server/*cpp")
 file(GLOB_RECURSE CPP_FRAMEWORK_FILES_12 "${source_dir}/core/framework/audio/portable/*cpp")
 file(GLOB_RECURSE CPP_FRAMEWORK_FILES_13 "${source_dir}/core/framework/audio/android/*cpp")
-file(GLOB_RECURSE CPP_FRAMEWORK_FILES_14 "${source_dir}/core/framework/util/*cpp")
-file(GLOB_RECURSE CPP_FRAMEWORK_FILES_15 "${source_dir}/core/framework/main/android/*cpp")
-file(GLOB_RECURSE CPP_FRAMEWORK_FILES_16 "${source_dir}/core/framework/main/portable/*cpp")
+file(GLOB_RECURSE CPP_FRAMEWORK_FILES_14 "${source_dir}/core/framework/studio/*cpp")
+file(GLOB_RECURSE CPP_FRAMEWORK_FILES_15 "${source_dir}/core/framework/util/*cpp")
+file(GLOB_RECURSE CPP_FRAMEWORK_FILES_16 "${source_dir}/core/framework/main/android/*cpp")
+file(GLOB_RECURSE CPP_FRAMEWORK_FILES_17 "${source_dir}/core/framework/main/portable/*cpp")
 
-file(GLOB_RECURSE CPP_GAME_FILES_1 "${source_dir}/core/game/entity/*cpp")
-file(GLOB_RECURSE CPP_GAME_FILES_2 "${source_dir}/core/game/game/*cpp")
-file(GLOB_RECURSE CPP_GAME_FILES_3 "${source_dir}/core/game/logic/*cpp")
-file(GLOB_RECURSE CPP_GAME_FILES_4 "${source_dir}/core/game/studio/*cpp")
-file(GLOB_RECURSE CPP_GAME_FILES_5 "${source_dir}/core/game/title/*cpp")
+file(GLOB_RECURSE CPP_GAME_FILES_1 "${source_dir}/core/game/config/*cpp")
+file(GLOB_RECURSE CPP_GAME_FILES_2 "${source_dir}/core/game/entity/*cpp")
+file(GLOB_RECURSE CPP_GAME_FILES_3 "${source_dir}/core/game/game/*cpp")
+file(GLOB_RECURSE CPP_GAME_FILES_4 "${source_dir}/core/game/title/*cpp")
 
 file(GLOB CPP_ANDROID_FILES "src/main/cpp/*.cpp")
 
@@ -107,12 +107,12 @@ add_library( # Sets the name of the library.
              ${CPP_FRAMEWORK_FILES_14}
              ${CPP_FRAMEWORK_FILES_15}
              ${CPP_FRAMEWORK_FILES_16}
+             ${CPP_FRAMEWORK_FILES_17}
 
              ${CPP_GAME_FILES_1}
              ${CPP_GAME_FILES_2}
              ${CPP_GAME_FILES_3}
              ${CPP_GAME_FILES_4}
-             ${CPP_GAME_FILES_5}
 
              ${CPP_ANDROID_FILES}
 )

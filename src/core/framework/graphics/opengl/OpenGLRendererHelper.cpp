@@ -176,6 +176,9 @@ void OpenGLRendererHelper::createScreenFramebufferWrapper(FramebufferWrapper* fb
 
 TextureWrapper* OpenGLRendererHelper::createFramebufferImpl(FramebufferWrapper* fbw)
 {
+    GLint screenFBO;
+    glGetIntegerv(GL_FRAMEBUFFER_BINDING, &screenFBO);
+    
     GLuint& fbo_texture = fbw->fboTexture;
     GLuint& fbo = fbw->fbo;
     
@@ -204,6 +207,8 @@ TextureWrapper* OpenGLRendererHelper::createFramebufferImpl(FramebufferWrapper* 
     GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
     
     assert(status == GL_FRAMEBUFFER_COMPLETE);
+    
+    glBindFramebuffer(GL_FRAMEBUFFER, screenFBO);
     
     return new TextureWrapper(fbo_texture);
 }

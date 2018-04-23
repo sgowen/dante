@@ -28,9 +28,9 @@
 #include <framework/util/MathUtil.h>
 #include <framework/util/Constants.h>
 #include <framework/util/PlatformHelper.h>
-#include <game/logic/GameConfig.h>
+#include <game/config/GameConfig.h>
 #include <framework/audio/portable/NGAudioEngine.h>
-#include <game/logic/Server.h>
+#include <game/game/Server.h>
 #include <framework/network/client/NetworkManagerClient.h>
 #include <framework/util/macros.h>
 #include <framework/util/Config.h>

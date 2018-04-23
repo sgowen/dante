@@ -6,6 +6,8 @@
 //  Copyright © 2018 Noctis Games. All rights reserved.
 //
 
+#include "pch.h"
+
 #include <framework/network/portable/MemoryBitStreamUtil.h>
 
 #include <framework/network/portable/InputMemoryBitStream.h>

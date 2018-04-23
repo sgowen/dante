@@ -232,13 +232,13 @@
     <ClInclude Include="..\..\core\framework\network\steam\*.h" />
     <ClInclude Include="..\..\core\framework\audio\portable\*.h" />
     <ClInclude Include="..\..\core\framework\audio\directx\*.h" />
+    <ClInclude Include="..\..\core\framework\studio\*.h" />
     <ClInclude Include="..\..\core\framework\util\*.h" />
     <ClInclude Include="..\..\core\framework\main\portable\*.h" />
     <ClInclude Include="..\..\core\framework\main\directx\*.h" />
+    <ClInclude Include="..\..\core\game\config\*.h" />
     <ClInclude Include="..\..\core\game\entity\*.h" />
     <ClInclude Include="..\..\core\game\game\*.h" />
-    <ClInclude Include="..\..\core\game\logic\*.h" />
-    <ClInclude Include="..\..\core\game\studio\*.h" />
     <ClInclude Include="..\..\core\game\title\*.h" />
     <ClInclude Include="*.h" />
   </ItemGroup>
@@ -295,13 +295,13 @@
     <ClCompile Include="..\..\core\framework\network\steam\*.cpp" />
     <ClCompile Include="..\..\core\framework\audio\portable\*.cpp" />
     <ClCompile Include="..\..\core\framework\audio\directx\*.cpp" />
+    <ClCompile Include="..\..\core\framework\studio\*.cpp" />
     <ClCompile Include="..\..\core\framework\util\*.cpp" />
     <ClCompile Include="..\..\core\framework\main\portable\*.cpp" />
     <ClCompile Include="..\..\core\framework\main\directx\*.cpp" />
+    <ClCompile Include="..\..\core\game\config\*.cpp" />
     <ClCompile Include="..\..\core\game\entity\*.cpp" />
     <ClCompile Include="..\..\core\game\game\*.cpp" />
-    <ClCompile Include="..\..\core\game\logic\*.cpp" />
-    <ClCompile Include="..\..\core\game\studio\*.cpp" />
     <ClCompile Include="..\..\core\game\title\*.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="pch.cpp">

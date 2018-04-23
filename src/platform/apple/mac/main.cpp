@@ -8,7 +8,7 @@
 
 #include <framework/main/glfw/GlfwMain.h>
 
-#include <game/logic/MainEngineController.h>
+#include <game/config/MainEngineController.h>
 
 int main(void)
 {

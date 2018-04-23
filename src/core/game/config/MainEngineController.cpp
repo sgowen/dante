@@ -8,19 +8,20 @@
 
 #include "pch.h"
 
-#include <game/logic/MainEngineController.h>
+#include <game/config/MainEngineController.h>
 
 #include <framework/util/NGExtension.h>
-#include <game/title/TitleEngine.h>
-#include <game/game/GameEngine.h>
 #include <framework/studio/StudioEngine.h>
 #include <framework/entity/EntityMapper.h>
-#include <game/entity/BasicFollowAndAttackController.h>
-#include <game/entity/DestructibleController.h>
-#include <game/entity/PlayerController.h>
 #include <framework/util/InstanceManager.h>
 #include <framework/util/Timing.h>
 #include <framework/entity/EntityIDManager.h>
+#include <framework/util/Constants.h>
+#include <game/title/TitleEngine.h>
+#include <game/game/GameEngine.h>
+#include <game/entity/BasicFollowAndAttackController.h>
+#include <game/entity/DestructibleController.h>
+#include <game/entity/PlayerController.h>
 
 IMPL_RTTI(MainEngineController, EngineController);
 
@@ -51,7 +52,7 @@ MainEngineController::MainEngineController()
     
     TitleEngine::create();
     GameEngine::create();
-    StudioEngine::create();
+    StudioEngine::create(GameEngine::sHandleTest);
 }
 
 MainEngineController::~MainEngineController()
