@@ -39,8 +39,6 @@ public:
     virtual void releaseDeviceDependentResources();
     virtual void render();
     
-    void setEngine(TitleEngine* inValue);
-    
 private:
     TextureManager* _textureManager;
     RendererHelper* _rendererHelper;

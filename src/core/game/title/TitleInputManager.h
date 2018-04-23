@@ -33,9 +33,10 @@ class TitleEngine;
 class TitleInputManager
 {
 public:
+    static void create();
     static TitleInputManager* getInstance();
+    static void destroy();
     
-    void setEngine(TitleEngine* inValue);
     void update();
     void setLiveInputMode(bool isLiveMode);
     bool isLiveMode();
@@ -46,6 +47,8 @@ public:
     std::string getLiveInput();
     
 private:
+    static TitleInputManager* s_instance;
+    
     std::string _liveInput;
     int _inputState;
     bool _isLiveMode;

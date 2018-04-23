@@ -31,7 +31,6 @@ class NGRect;
 class NGTexture;
 class Font;
 class World;
-class StudioEngine;
 class Box2DDebugRenderer;
 class StudioEngine;
 class StudioInputManager;
@@ -51,8 +50,6 @@ public:
     virtual void releaseDeviceDependentResources();
     virtual void render();
     
-    void setEngine(StudioEngine* inValue);
-    void setInputManager(StudioInputManager* inValue);
     void onMapLoaded();
     void onWaterAdded(Entity* e);
     void onWaterRemoved(Entity* e);

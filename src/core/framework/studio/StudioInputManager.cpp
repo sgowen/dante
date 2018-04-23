@@ -63,11 +63,6 @@ void StudioInputManager::destroy()
     s_instance = NULL;
 }
 
-void StudioInputManager::setEngine(StudioEngine* inValue)
-{
-    _engine = inValue;
-}
-
 int StudioInputManager::getMenuState()
 {
     return _inputState;
@@ -808,7 +803,7 @@ _selectionIndexDir(0),
 _activeEntity(NULL),
 _lastActiveEntity(NULL),
 _activeEntityCursor(),
-_engine(NULL),
+_engine(StudioEngine::getInstance()),
 _hasTouchedScreen(false),
 _waterWidth(0),
 _waterDepth(0)

@@ -119,6 +119,8 @@ TitleRenderer::~TitleRenderer()
 
 void TitleRenderer::createDeviceDependentResources()
 {
+    _engine = TitleEngine::getInstance();
+    
     _rendererHelper->createDeviceDependentResources();
     _textureManager->createDeviceDependentResources();
 
@@ -177,11 +179,6 @@ void TitleRenderer::render()
     }
 
     endFrame();
-}
-
-void TitleRenderer::setEngine(TitleEngine* inValue)
-{
-    _engine = inValue;
 }
 
 void TitleRenderer::bindFramebuffer(int fbIndex, float r, float g, float b, float a)

@@ -77,8 +77,6 @@ void TitleEngine::enter(Engine* engine)
     createDeviceDependentResources();
     createWindowSizeDependentResources(engine->getScreenWidth(), engine->getScreenHeight(), engine->getCursorWidth(), engine->getCursorHeight());
     
-    TitleInputManager::getInstance()->setEngine(this);
-    
     _state = _isSteam ? TitleEngineState_SteamOn : TitleEngineState_SteamOff;
 }
 
@@ -94,10 +92,14 @@ void TitleEngine::update(Engine* engine)
 void TitleEngine::exit(Engine* engine)
 {
     releaseDeviceDependentResources();
+    
+    TitleInputManager::destroy();
 }
 
 void TitleEngine::createDeviceDependentResources()
 {
+    TitleInputManager::create();
+    
     GM_CFG->initWithJsonFile("global.cfg");
     EntityMapper::getInstance()->initWithJsonFile("entities.cfg");
     EntityLayoutMapper::getInstance()->initWithJsonFile("maps.cfg");
@@ -313,8 +315,6 @@ _renderer(new TitleRenderer()),
 _isSteam(false),
 _state(TitleEngineState_SteamOff)
 {
-    _renderer->setEngine(this);
-    
     activateSteam();
 }
 

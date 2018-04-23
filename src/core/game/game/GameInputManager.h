@@ -29,7 +29,7 @@ enum GameInputManagerState
 class GameInputManager
 {
 public:
-    static void create(GameEngine* engine);
+    static void create();
     static GameInputManager* getInstance();
     static void destroy();
     
@@ -62,7 +62,7 @@ private:
     void dropPlayer(int index);
     
     // ctor, copy ctor, and assignment should be private in a Singleton
-    GameInputManager(GameEngine* engine);
+    GameInputManager();
     ~GameInputManager();
     GameInputManager(const GameInputManager&);
     GameInputManager& operator=(const GameInputManager&);

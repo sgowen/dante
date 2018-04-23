@@ -29,15 +29,26 @@
 
 #include <sstream>
 
-TitleInputManager* TitleInputManager::getInstance()
+TitleInputManager* TitleInputManager::s_instance = NULL;
+
+void TitleInputManager::create()
 {
-    static TitleInputManager instance = TitleInputManager();
-    return &instance;
+    assert(!s_instance);
+    
+    s_instance = new TitleInputManager();
 }
 
-void TitleInputManager::setEngine(TitleEngine* inValue)
+TitleInputManager * TitleInputManager::getInstance()
 {
-    _engine = inValue;
+    return s_instance;
+}
+
+void TitleInputManager::destroy()
+{
+    assert(s_instance);
+    
+    delete s_instance;
+    s_instance = NULL;
 }
 
 void TitleInputManager::update()
@@ -261,7 +272,7 @@ TitleInputManager::TitleInputManager() :
 _inputState(TIMS_NONE),
 _isLiveMode(false),
 _isTimeToProcessInput(false),
-_engine(NULL)
+_engine(TitleEngine::getInstance())
 {
     // Empty
 }

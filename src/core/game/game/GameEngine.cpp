@@ -205,8 +205,6 @@ void GameEngine::enter(Engine* engine)
     _map = 0;
     _world = new World();
     _timing->reset();
-    
-    GameInputManager::create(this);
     _input = GameInputManager::getInstance();
 }
 
@@ -321,6 +319,8 @@ void GameEngine::exit(Engine* engine)
 
 void GameEngine::createDeviceDependentResources()
 {
+    GameInputManager::create();
+    
     GM_CFG->initWithJsonFile("global.cfg");
     EntityMapper::getInstance()->initWithJsonFile("entities.cfg");
     EntityLayoutMapper::getInstance()->initWithJsonFile("maps.cfg");
@@ -439,8 +439,6 @@ _map(0),
 _isLive(false)
 {
     _state |= GameEngineState_Interpolation | GameEngineState_Lighting | GameEngineState_DisplayUI;
-    
-    _renderer->setEngine(this);
 }
 
 GameEngine::~GameEngine()

@@ -140,6 +140,9 @@ StudioRenderer::~StudioRenderer()
 
 void StudioRenderer::createDeviceDependentResources()
 {
+    _engine = StudioEngine::getInstance();
+    _input = StudioInputManager::getInstance();
+    
     _rendererHelper->createDeviceDependentResources();
     _textureManager->createDeviceDependentResources();
     
@@ -216,16 +219,6 @@ void StudioRenderer::render()
     }
 
     endFrame();
-}
-
-void StudioRenderer::setEngine(StudioEngine* inValue)
-{
-    _engine = inValue;
-}
-
-void StudioRenderer::setInputManager(StudioInputManager* inValue)
-{
-    _input = inValue;
 }
 
 void StudioRenderer::onMapLoaded()

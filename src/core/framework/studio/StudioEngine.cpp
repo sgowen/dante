@@ -84,6 +84,11 @@ void StudioEngine::exit(Engine* engine)
 
 void StudioEngine::createDeviceDependentResources()
 {
+    if (!StudioInputManager::getInstance())
+    {
+        StudioInputManager::create();
+    }
+    
     FW_CFG->initWithJsonFile("global.cfg");
     EntityMapper::getInstance()->initWithJsonFile("entities.cfg");
     EntityLayoutMapper::getInstance()->initWithJsonFile("maps.cfg");
@@ -130,11 +135,7 @@ _state(StudioEngineState_DisplayGrid | StudioEngineState_DisplayControls | Studi
 _textInputField(0),
 _textInputType(0)
 {
-    StudioInputManager::create();
-    StudioInputManager::getInstance()->setEngine(this);
-    
-    _renderer->setEngine(this);
-    _renderer->setInputManager(StudioInputManager::getInstance());
+    // Empty
 }
 
 StudioEngine::~StudioEngine()

@@ -147,6 +147,8 @@ GameRenderer::~GameRenderer()
 
 void GameRenderer::createDeviceDependentResources()
 {
+    _engine = GameEngine::getInstance();
+    
     _rendererHelper->createDeviceDependentResources();
     _textureManager->createDeviceDependentResources();
     
@@ -218,11 +220,6 @@ void GameRenderer::onNewMapLoaded()
     {
         _spriteBatchers[i]->useDynamicConfig();
     }
-}
-
-void GameRenderer::setEngine(GameEngine* inValue)
-{
-    _engine = inValue;
 }
 
 void GameRenderer::updateCamera()

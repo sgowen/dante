@@ -71,7 +71,6 @@ public:
     virtual void render();
     
     void onNewMapLoaded();
-    void setEngine(GameEngine* inValue);
     
 private:
     TextureManager* _textureManager;

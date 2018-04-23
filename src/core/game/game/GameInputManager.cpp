@@ -39,11 +39,11 @@
 
 GameInputManager* GameInputManager::s_instance = NULL;
 
-void GameInputManager::create(GameEngine* engine)
+void GameInputManager::create()
 {
     assert(!s_instance);
     
-    s_instance = new GameInputManager(engine);
+    s_instance = new GameInputManager();
 }
 
 GameInputManager * GameInputManager::getInstance()
@@ -352,10 +352,10 @@ void GameInputManager::dropPlayer(int index)
     }
 }
 
-GameInputManager::GameInputManager(GameEngine* engine) :
+GameInputManager::GameInputManager() :
 _currentState(_inputStates.obtain()),
 _pendingMove(NULL),
-_engine(engine),
+_engine(GameEngine::getInstance()),
 _inputState(GIMS_NONE),
 _isTimeToProcessInput(false),
 _playerLightZDelta(0)

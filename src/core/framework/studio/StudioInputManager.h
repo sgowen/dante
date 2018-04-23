@@ -34,7 +34,6 @@ public:
     static StudioInputManager* getInstance();
     static void destroy();
     
-    void setEngine(StudioEngine* inValue);
     int getMenuState();
     void update();
     std::string& getLiveInput();
