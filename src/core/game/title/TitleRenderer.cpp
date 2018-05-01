@@ -36,13 +36,10 @@
 #include <framework/graphics/portable/SpriteBatcher.h>
 #include <framework/graphics/portable/TextureRegion.h>
 #include <framework/util/macros.h>
-#include <framework/network/client/NetworkManagerClient.h>
 #include <framework/util/StringUtil.h>
 #include <framework/util/WeightedTimedMovingAverage.h>
 #include <framework/util/NGSTDUtil.h>
 #include <game/title/TitleInputManager.h>
-#include <framework/network/server/NetworkManagerServer.h>
-#include <framework/network/portable/MachineAddress.h>
 #include <framework/util/MathUtil.h>
 #include <framework/audio/portable/NGAudioEngine.h>
 #include <game/game/Server.h>
@@ -84,12 +81,12 @@
 TitleRenderer::TitleRenderer() : Renderer(),
 _textureManager(new TextureManager()),
 _rendererHelper(RENDERER_HELPER_FACTORY->createRendererHelper()),
+_shaderProgramLoader(SHADER_PROGRAM_LOADER_FACTORY->createShaderLoader()),
 _spriteBatcher(new SpriteBatcher(_rendererHelper)),
 _fillPolygonBatcher(new PolygonBatcher(_rendererHelper, true)),
 _boundsPolygonBatcher(new PolygonBatcher(_rendererHelper, false)),
 _lineBatcher(new LineBatcher(_rendererHelper)),
 _circleBatcher(new CircleBatcher(_rendererHelper)),
-_shaderProgramLoader(SHADER_PROGRAM_LOADER_FACTORY->createShaderLoader()),
 _textureShader(new NGTextureShader(*_rendererHelper)),
 _colorShader(new NGGeometryShader(*_rendererHelper)),
 _framebufferToScreenShader(new NGFramebufferToScreenShader(*_rendererHelper)),
@@ -105,12 +102,12 @@ TitleRenderer::~TitleRenderer()
 {
     delete _textureManager;
     delete _rendererHelper;
+    delete _shaderProgramLoader;
     delete _spriteBatcher;
     delete _fillPolygonBatcher;
     delete _boundsPolygonBatcher;
     delete _lineBatcher;
     delete _circleBatcher;
-    delete _shaderProgramLoader;
     delete _font;
     delete _textureShader;
     delete _colorShader;

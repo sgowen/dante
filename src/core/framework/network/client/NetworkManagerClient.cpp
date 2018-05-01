@@ -455,7 +455,7 @@ void NetworkManagerClient::updateNextIndex()
 }
 
 NetworkManagerClient::NetworkManagerClient(ClientHelper* inClientHelper, HandleEntityCreatedFunc handleEntityCreatedFunc, HandleEntityDeletionFunc handleEntityDeletionFunc, RemoveProcessedMovesFunc inRemoveProcessedMovesFunc, GetMoveListFunc inGetMoveListFunc, OnPlayerWelcomedFunc inOnPlayerWelcomedFunc) :
-_timing(static_cast<Timing*>(INSTANCE_MANAGER->getInstance(INSTANCE_TIME_CLIENT))),
+_timing(static_cast<Timing*>(INSTANCE_MANAGER->get(INSTANCE_TIME_CLIENT))),
 _clientHelper(inClientHelper),
 _removeProcessedMovesFunc(inRemoveProcessedMovesFunc),
 _getMoveListFunc(inGetMoveListFunc),

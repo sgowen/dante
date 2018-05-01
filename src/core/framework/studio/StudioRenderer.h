@@ -11,6 +11,8 @@
 
 #include <framework/graphics/portable/Renderer.h>
 
+#include <framework/util/Constants.h>
+
 #include <string>
 #include <deque>
 #include <vector>
@@ -35,9 +37,7 @@ class Box2DDebugRenderer;
 class StudioEngine;
 class StudioInputManager;
 struct FramebufferWrapper;
-
-#define NUM_SPRITE_BATCHERS 10
-#define NUM_CAMERAS 4
+class WorldRenderer;
 
 class StudioRenderer : public Renderer
 {
@@ -60,6 +60,8 @@ public:
 private:
     TextureManager* _textureManager;
     RendererHelper* _rendererHelper;
+    ShaderProgramLoader* _shaderProgramLoader;
+    WorldRenderer* _worldRenderer;
     SpriteBatcher* _fontSpriteBatcher;
     SpriteBatcher* _fbSpriteBatcher;
     SpriteBatcher* _activeEntitySpriteBatcher;
@@ -70,7 +72,6 @@ private:
     LineBatcher* _lineBatcher;
     CircleBatcher* _circleBatcher;
     Box2DDebugRenderer* _box2DDebugRenderer;
-    ShaderProgramLoader* _shaderProgramLoader;
     Font* _font;
     NGShader* _textureShader;
     NGWaterShader* _waterShader;

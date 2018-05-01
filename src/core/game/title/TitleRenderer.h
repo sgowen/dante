@@ -42,12 +42,12 @@ public:
 private:
     TextureManager* _textureManager;
     RendererHelper* _rendererHelper;
+    ShaderProgramLoader* _shaderProgramLoader;
     SpriteBatcher* _spriteBatcher;
     PolygonBatcher* _fillPolygonBatcher;
     PolygonBatcher* _boundsPolygonBatcher;
     LineBatcher* _lineBatcher;
     CircleBatcher* _circleBatcher;
-    ShaderProgramLoader* _shaderProgramLoader;
     Font* _font;
     NGShader* _textureShader;
     NGShader* _colorShader;

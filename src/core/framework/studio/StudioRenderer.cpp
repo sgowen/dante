@@ -29,6 +29,7 @@
 #include <framework/studio/StudioEngine.h>
 #include <framework/studio/StudioInputManager.h>
 #include <framework/graphics/portable/FramebufferWrapper.h>
+#include <framework/studio/WorldRenderer.h>
 
 #include <framework/graphics/portable/Color.h>
 #include <framework/file/portable/Assets.h>
@@ -78,6 +79,8 @@
 StudioRenderer::StudioRenderer() : Renderer(),
 _textureManager(new TextureManager()),
 _rendererHelper(RENDERER_HELPER_FACTORY->createRendererHelper()),
+_shaderProgramLoader(SHADER_PROGRAM_LOADER_FACTORY->createShaderLoader()),
+_worldRenderer(new WorldRenderer(_rendererHelper)),
 _fontSpriteBatcher(new SpriteBatcher(_rendererHelper)),
 _fbSpriteBatcher(new SpriteBatcher(_rendererHelper)),
 _activeEntitySpriteBatcher(new SpriteBatcher(_rendererHelper)),
@@ -86,12 +89,11 @@ _boundsPolygonBatcher(new PolygonBatcher(_rendererHelper, false)),
 _lineBatcher(new LineBatcher(_rendererHelper)),
 _circleBatcher(new CircleBatcher(_rendererHelper)),
 _box2DDebugRenderer(new Box2DDebugRenderer(*_fillPolygonBatcher, *_boundsPolygonBatcher, *_lineBatcher, *_circleBatcher)),
-_shaderProgramLoader(SHADER_PROGRAM_LOADER_FACTORY->createShaderLoader()),
+_font(new Font(0, 0, 16, 64, 75, 1024, 1024)),
 _textureShader(new NGTextureShader(*_rendererHelper)),
 _waterShader(new NGWaterShader(*_rendererHelper)),
 _colorShader(new NGGeometryShader(*_rendererHelper)),
 _framebufferToScreenShader(new NGFramebufferToScreenShader(*_rendererHelper)),
-_font(new Font(0, 0, 16, 64, 75, 1024, 1024)),
 _toastStateTime(0),
 _fbIndex(0),
 _scrollValue(1),
@@ -115,23 +117,28 @@ StudioRenderer::~StudioRenderer()
 {
 	delete _textureManager;
     delete _rendererHelper;
+    delete _shaderProgramLoader;
+    delete _worldRenderer;
     delete _fontSpriteBatcher;
     delete _fbSpriteBatcher;
     delete _activeEntitySpriteBatcher;
-    for (int i = 0; i < NUM_SPRITE_BATCHERS; ++i)
-    {
-        delete _spriteBatchers[i];
-    }
     delete _fillPolygonBatcher;
     delete _boundsPolygonBatcher;
     delete _lineBatcher;
     delete _circleBatcher;
-    delete _shaderProgramLoader;
+    delete _box2DDebugRenderer;
     delete _font;
+    
     delete _textureShader;
     delete _waterShader;
     delete _colorShader;
     delete _framebufferToScreenShader;
+    
+    for (int i = 0; i < NUM_SPRITE_BATCHERS; ++i)
+    {
+        delete _spriteBatchers[i];
+    }
+    
     for (int i = 0; i < NUM_CAMERAS; ++i)
     {
         delete _camBounds[i];

@@ -87,6 +87,7 @@
 GameRenderer::GameRenderer() : Renderer(),
 _textureManager(new TextureManager()),
 _rendererHelper(RENDERER_HELPER_FACTORY->createRendererHelper()),
+_shaderProgramLoader(SHADER_PROGRAM_LOADER_FACTORY->createShaderLoader()),
 _staticFontSpriteBatcher(new SpriteBatcher(_rendererHelper)),
 _dynamicFontSpriteBatcher(new SpriteBatcher(_rendererHelper)),
 _fillPolygonBatcher(new PolygonBatcher(_rendererHelper, true)),
@@ -94,7 +95,6 @@ _boundsPolygonBatcher(new PolygonBatcher(_rendererHelper, false)),
 _lineBatcher(new LineBatcher(_rendererHelper)),
 _circleBatcher(new CircleBatcher(_rendererHelper)),
 _box2DDebugRenderer(new Box2DDebugRenderer(*_fillPolygonBatcher, *_boundsPolygonBatcher, *_lineBatcher, *_circleBatcher)),
-_shaderProgramLoader(SHADER_PROGRAM_LOADER_FACTORY->createShaderLoader()),
 _textureShader(new NGTextureShader(*_rendererHelper)),
 _colorShader(new NGGeometryShader(*_rendererHelper)),
 _lightingNGShader(new NGLightingShader(*_rendererHelper)),
@@ -122,27 +122,29 @@ GameRenderer::~GameRenderer()
 {
     delete _textureManager;
     delete _rendererHelper;
+    delete _shaderProgramLoader;
     delete _staticFontSpriteBatcher;
     delete _dynamicFontSpriteBatcher;
-    for (int i = 0; i < NUM_SPRITE_BATCHERS; ++i)
-    {
-        delete _spriteBatchers[i];
-    }
     delete _fillPolygonBatcher;
     delete _boundsPolygonBatcher;
     delete _lineBatcher;
     delete _circleBatcher;
     delete _box2DDebugRenderer;
-    delete _shaderProgramLoader;
     delete _font;
-    for (int i = 0; i < NUM_CAMERAS; ++i)
-    {
-        delete _camBounds[i];
-    }
+    
     delete _textureShader;
     delete _colorShader;
     delete _lightingNGShader;
     delete _framebufferToScreenShader;
+    
+    for (int i = 0; i < NUM_SPRITE_BATCHERS; ++i)
+    {
+        delete _spriteBatchers[i];
+    }
+    for (int i = 0; i < NUM_CAMERAS; ++i)
+    {
+        delete _camBounds[i];
+    }
 }
 
 void GameRenderer::createDeviceDependentResources()

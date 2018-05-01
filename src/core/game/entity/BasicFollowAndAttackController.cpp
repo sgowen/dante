@@ -20,8 +20,6 @@
 #include <framework/util/StringUtil.h>
 #include <framework/util/MathUtil.h>
 #include <framework/network/server/NetworkManagerServer.h>
-#include <framework/network/server/ClientProxy.h>
-#include <framework/network/client/NetworkManagerClient.h>
 #include <game/game/GameInputManager.h>
 #include <framework/audio/portable/NGAudioEngine.h>
 #include <game/game/Util.h>

@@ -151,6 +151,7 @@ void TitleEngine::handleInput(Engine* engine)
         }
         else if (TitleInputManager::getInstance()->isTimeToProcessInput())
         {
+            bool needsToProcessInput = true;
             if (_state == TitleEngineState_InputIp)
             {
                 _serverIPAddress = StringUtil::format("%s:%d", TitleInputManager::getInstance()->getLiveInput().c_str(), FW_CFG->_serverPort);
@@ -172,10 +173,15 @@ void TitleEngine::handleInput(Engine* engine)
                     {
                         GameEngine::sHandleJoinServer(engine, _serverIPAddress, _name);
                     }
+                    
+                    needsToProcessInput = false;
                 }
             }
             
-            TitleInputManager::getInstance()->onInputProcessed();
+            if (needsToProcessInput)
+            {
+                TitleInputManager::getInstance()->onInputProcessed();
+            }
         }
     }
     else

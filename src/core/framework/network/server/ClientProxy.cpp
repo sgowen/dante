@@ -19,7 +19,7 @@
 #include <framework/util/InstanceManager.h>
 
 ClientProxy::ClientProxy(EntityManager* entityManager, MachineAddress* inMachineAddress, const std::string& inName, uint8_t inPlayerId) :
-_timing(static_cast<Timing*>(INSTANCE_MANAGER->getInstance(INSTANCE_TIME_SERVER))),
+_timing(static_cast<Timing*>(INSTANCE_MANAGER->get(INSTANCE_TIME_SERVER))),
 _deliveryNotificationManager(DeliveryNotificationManager(_timing, false, true)),
 _replicationManagerServer(new ReplicationManagerServer(entityManager)),
 _machineAddress(inMachineAddress->createNewCopy()),

@@ -28,7 +28,7 @@ _flags(flags),
 _world(new b2World(b2Vec2(0.0f, FW_CFG->_gravity))),
 _entityContactListener(new EntityContactListener()),
 _entityContactFilter(new EntityContactFilter()),
-_entityIDManager(static_cast<EntityIDManager*>(INSTANCE_MANAGER->getInstance(_flags & WorldFlag_Studio ? INSTANCE_ENTITY_ID_MANAGER_STUDIO : _flags & WorldFlag_Server ? INSTANCE_ENTITY_ID_MANAGER_SERVER : INSTANCE_ENTITY_ID_MANAGER_CLIENT))),
+_entityIDManager(static_cast<EntityIDManager*>(INSTANCE_MANAGER->get(_flags & WorldFlag_Studio ? INSTANCE_ENTITY_ID_MANAGER_STUDIO : _flags & WorldFlag_Server ? INSTANCE_ENTITY_ID_MANAGER_SERVER : INSTANCE_ENTITY_ID_MANAGER_CLIENT))),
 _map()
 {
     _world->SetContactListener(_entityContactListener);
@@ -41,6 +41,7 @@ World::~World()
     
     deinitPhysics(_dynamicEntities);
     NGSTDUtil::cleanUpVectorOfPointers(_dynamicEntities);
+    refreshPlayers();
     
     delete _entityContactListener;
     delete _entityContactFilter;
@@ -65,7 +66,7 @@ void World::loadMap(uint32_t map)
     for (EntityInstanceDef eid : eld.entities)
     {
         EntityDef* ed = EntityMapper::getInstance()->getEntityDef(eid.type);
-        if (_flags == 0 && isDynamic(*ed))
+        if (_flags & WorldFlag_Client && isDynamic(*ed))
         {
             // On the client, Dynamic Entities must arrive via network
             continue;
@@ -104,6 +105,7 @@ void World::saveMapAs(uint32_t map)
     {
         if (e->getEntityDef().bodyFlags & BodyFlag_Player)
         {
+            // Don't save players into the map, since they are spawned dynamically by the server
             continue;
         }
         

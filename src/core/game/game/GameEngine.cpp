@@ -25,12 +25,9 @@
 #include <framework/util/MathUtil.h>
 #include <framework/network/client/NetworkManagerClient.h>
 #include <framework/network/server/NetworkManagerServer.h>
-#include <framework/network/portable/SocketAddressFactory.h>
-#include <framework/network/portable/SocketUtil.h>
 #include <game/game/GameInputState.h>
 #include <framework/entity/EntityManager.h>
 #include <framework/network/client/SocketClientHelper.h>
-#include <framework/network/portable/MachineAddress.h>
 #include <framework/audio/portable/NGAudioEngine.h>
 #include <framework/util/NGExtension.h>
 #include <framework/util/PlatformHelper.h>
@@ -203,7 +200,7 @@ void GameEngine::enter(Engine* engine)
     createWindowSizeDependentResources(engine->getScreenWidth(), engine->getScreenHeight(), engine->getCursorWidth(), engine->getCursorHeight());
     
     _map = 0;
-    _world = new World();
+    _world = new World(WorldFlag_Client);
     _timing->reset();
     _input = GameInputManager::getInstance();
 }
@@ -432,7 +429,7 @@ void GameEngine::updateWorld(const Move* move)
 GameEngine::GameEngine() : EngineState(),
 _renderer(new GameRenderer()),
 _world(NULL),
-_timing(static_cast<Timing*>(INSTANCE_MANAGER->getInstance(INSTANCE_TIME_CLIENT))),
+_timing(static_cast<Timing*>(INSTANCE_MANAGER->get(INSTANCE_TIME_CLIENT))),
 _input(NULL),
 _state(GameEngineState_Default),
 _map(0),

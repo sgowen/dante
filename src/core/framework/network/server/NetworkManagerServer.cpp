@@ -650,7 +650,7 @@ _handleLostClientFunc(handleLostClientFunc),
 _inputStateCreationFunc(inputStateCreationFunc),
 _inputStateReleaseFunc(inputStateReleaseFunc),
 _entityManager(new EntityManager(NULL, NULL)),
-_timing(static_cast<Timing*>(INSTANCE_MANAGER->getInstance(INSTANCE_TIME_SERVER))),
+_timing(static_cast<Timing*>(INSTANCE_MANAGER->get(INSTANCE_TIME_SERVER))),
 _nextPlayerId(1),
 _map(0)
 {

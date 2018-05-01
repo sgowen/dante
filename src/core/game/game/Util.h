@@ -9,7 +9,7 @@
 #ifndef __noctisgames__Util__
 #define __noctisgames__Util__
 
-#include <framework/network/portable/Network.h>
+#include <stdint.h>
 
 class Entity;
 struct b2Vec2;

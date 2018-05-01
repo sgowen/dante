@@ -162,6 +162,8 @@
 		BB44CB8D1DB053C0003E633F /* pngwrite.c in Sources */ = {isa = PBXBuildFile; fileRef = BB44C5981DB03A7C003E633F /* pngwrite.c */; };
 		BB44CB8E1DB053C0003E633F /* pngwtran.c in Sources */ = {isa = PBXBuildFile; fileRef = BB44C5991DB03A7C003E633F /* pngwtran.c */; };
 		BB44CB8F1DB053C0003E633F /* pngwutil.c in Sources */ = {isa = PBXBuildFile; fileRef = BB44C59A1DB03A7C003E633F /* pngwutil.c */; };
+		BB46E35E2098FA4500D57B96 /* WorldRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB46E35D2098FA4500D57B96 /* WorldRenderer.cpp */; };
+		BB46E35F2098FA4500D57B96 /* WorldRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB46E35D2098FA4500D57B96 /* WorldRenderer.cpp */; };
 		BB5067201FB370A300CADEEA /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB50671E1FB3709200CADEEA /* Cocoa.framework */; };
 		BB5067211FB370A300CADEEA /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB50671D1FB3708E00CADEEA /* OpenGL.framework */; };
 		BB5067221FB370A300CADEEA /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB50671C1FB3708700CADEEA /* CoreGraphics.framework */; };
@@ -912,6 +914,8 @@
 		BB44C5981DB03A7C003E633F /* pngwrite.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = pngwrite.c; sourceTree = "<group>"; };
 		BB44C5991DB03A7C003E633F /* pngwtran.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = pngwtran.c; sourceTree = "<group>"; };
 		BB44C59A1DB03A7C003E633F /* pngwutil.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = pngwutil.c; sourceTree = "<group>"; };
+		BB46E35C2098FA4500D57B96 /* WorldRenderer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WorldRenderer.h; sourceTree = "<group>"; };
+		BB46E35D2098FA4500D57B96 /* WorldRenderer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = WorldRenderer.cpp; sourceTree = "<group>"; };
 		BB5067101FB3703C00CADEEA /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
 		BB5067111FB3704700CADEEA /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		BB5067121FB3704C00CADEEA /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
@@ -2495,6 +2499,8 @@
 				BB728F712086701D006C7B4D /* StudioRenderer.h */,
 				BB728F8B208D2211006C7B4D /* World.cpp */,
 				BB728F8C208D2213006C7B4D /* World.h */,
+				BB46E35D2098FA4500D57B96 /* WorldRenderer.cpp */,
+				BB46E35C2098FA4500D57B96 /* WorldRenderer.h */,
 			);
 			path = studio;
 			sourceTree = "<group>";
@@ -4109,6 +4115,7 @@
 				BBD554601FDB2EA800E00AD6 /* b2TimeOfImpact.cpp in Sources */,
 				BBD554321FDB2EA800E00AD6 /* b2RevoluteJoint.cpp in Sources */,
 				BB31E57C202E7B8400A3AD1C /* GameInputManager.cpp in Sources */,
+				BB46E35E2098FA4500D57B96 /* WorldRenderer.cpp in Sources */,
 				BB31B5AB1FC205D5005F1C0A /* CursorInputManager.cpp in Sources */,
 				BBD554381FDB2EA800E00AD6 /* b2PrismaticJoint.cpp in Sources */,
 				BB6F598E1FBDEA0D00BD7697 /* input.c in Sources */,
@@ -4268,6 +4275,7 @@
 				BB27D24D1FC6567F00ED42FD /* ALSource.m in Sources */,
 				BB27D24E1FC6567F00ED42FD /* ALWrapper.m in Sources */,
 				BB27D26A1FC6572600ED42FD /* ObjectALWrapper.mm in Sources */,
+				BB46E35F2098FA4500D57B96 /* WorldRenderer.cpp in Sources */,
 				BB31E57F202E7B8400A3AD1C /* GameEngine.cpp in Sources */,
 				BB27D24F1FC6567F00ED42FD /* ALBuffer.m in Sources */,
 				BB27D2501FC6567F00ED42FD /* ALCaptureDevice.m in Sources */,

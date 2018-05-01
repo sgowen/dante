@@ -781,7 +781,7 @@ void StudioInputManager::resetCamera()
 }
 
 StudioInputManager::StudioInputManager() :
-_entityIDManager(static_cast<EntityIDManager*>(INSTANCE_MANAGER->getInstance(INSTANCE_ENTITY_ID_MANAGER_STUDIO))),
+_entityIDManager(static_cast<EntityIDManager*>(INSTANCE_MANAGER->get(INSTANCE_ENTITY_ID_MANAGER_STUDIO))),
 _downCursor(),
 _dragCursor(),
 _deltaCursor(),

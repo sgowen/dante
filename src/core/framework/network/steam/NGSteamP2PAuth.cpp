@@ -164,7 +164,7 @@ bool NGSteamP2PAuth::handleMessage(uint8 packetType, InputMemoryBitStream& inInp
 
 NGSteamP2PAuthPlayer::NGSteamP2PAuthPlayer(NGSteamP2PNetworkTransport *pNetworkTransport) :
 _callbackBeginAuthResponse(this, &NGSteamP2PAuthPlayer::OnBeginAuthResponse),
-_timing(static_cast<Timing*>(INSTANCE_MANAGER->getInstance(INSTANCE_TIME_CLIENT)))
+_timing(static_cast<Timing*>(INSTANCE_MANAGER->get(INSTANCE_TIME_CLIENT)))
 {
     _networkTransport = pNetworkTransport;
     _bSentTicket = false;

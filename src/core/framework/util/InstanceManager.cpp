@@ -20,7 +20,7 @@ InstanceManager* InstanceManager::getInstance()
     return &ret;
 }
 
-void* InstanceManager::getInstance(uint32_t key)
+void* InstanceManager::get(uint32_t key)
 {
     auto q = _instanceMap.find(key);
     

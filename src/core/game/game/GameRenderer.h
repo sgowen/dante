@@ -11,6 +11,8 @@
 
 #include <framework/graphics/portable/Renderer.h>
 
+#include <framework/util/Constants.h>
+
 #include <string>
 #include <vector>
 
@@ -31,9 +33,6 @@ class Font;
 class World;
 class NGLightingShader;
 class GameEngine;
-
-#define NUM_SPRITE_BATCHERS 10
-#define NUM_CAMERAS 4
 
 struct LightDef
 {
@@ -75,6 +74,7 @@ public:
 private:
     TextureManager* _textureManager;
     RendererHelper* _rendererHelper;
+    ShaderProgramLoader* _shaderProgramLoader;
     SpriteBatcher* _spriteBatchers[NUM_SPRITE_BATCHERS];
     std::string _textures[NUM_SPRITE_BATCHERS];
     std::string _normals[NUM_SPRITE_BATCHERS];
@@ -85,7 +85,6 @@ private:
     LineBatcher* _lineBatcher;
     CircleBatcher* _circleBatcher;
     Box2DDebugRenderer* _box2DDebugRenderer;
-    ShaderProgramLoader* _shaderProgramLoader;
     Font* _font;
     NGRect* _camBounds[NUM_CAMERAS];
     NGShader* _textureShader;

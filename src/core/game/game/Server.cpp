@@ -18,7 +18,6 @@
 
 #include <framework/network/server/NetworkManagerServer.h>
 #include <framework/util/Constants.h>
-#include <framework/network/portable/SocketUtil.h>
 #include <framework/entity/EntityManager.h>
 #include <framework/network/server/SocketServerHelper.h>
 #include <framework/network/portable/MachineAddress.h>
@@ -370,8 +369,8 @@ void Server::handleDirtyStates(std::vector<Entity*>& entities)
 Server::Server(uint32_t flags, void* data) :
 _flags(flags),
 _data(data),
-_timing(static_cast<Timing*>(INSTANCE_MANAGER->getInstance(INSTANCE_TIME_SERVER))),
-_entityIDManager(static_cast<EntityIDManager*>(INSTANCE_MANAGER->getInstance(INSTANCE_ENTITY_ID_MANAGER_SERVER))),
+_timing(static_cast<Timing*>(INSTANCE_MANAGER->get(INSTANCE_TIME_SERVER))),
+_entityIDManager(static_cast<EntityIDManager*>(INSTANCE_MANAGER->get(INSTANCE_ENTITY_ID_MANAGER_SERVER))),
 _world(new World(WorldFlag_Server)),
 _map(0)
 {

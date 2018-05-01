@@ -18,7 +18,7 @@ class InstanceManager
 public:
     static InstanceManager* getInstance();
     
-    void* getInstance(uint32_t key);
+    void* get(uint32_t key);
     void registerInstance(uint32_t key, void* instance);
     
 private:

@@ -18,7 +18,8 @@
 enum WorldFlags
 {
     WorldFlag_Server = 1 << 0,
-    WorldFlag_Studio = 1 << 1
+    WorldFlag_Client = 1 << 1,
+    WorldFlag_Studio = 1 << 2
 };
 
 struct Map
