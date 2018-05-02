@@ -202,12 +202,12 @@ void GameRenderer::render()
         
         renderWorld();
         
-        if (_engineState & GameEngineState_DisplayBox2D)
+        if (_engineState & GES_DisplayBox2D)
         {
             renderBox2D();
         }
         
-        if (_engineState & GameEngineState_DisplayUI)
+        if (_engineState & GES_DisplayUI)
         {
             renderUI();
         }
@@ -319,7 +319,7 @@ void GameRenderer::renderWorld()
     int fbBegin = 0;
     int fbEnd = 3;
     
-    if (_engineState & GameEngineState_Lighting)
+    if (_engineState & GES_Lighting)
     {
         fbBegin = 6;
         fbEnd = 9;
@@ -514,11 +514,11 @@ void GameRenderer::renderUI()
             
             renderText(sSb, StringUtil::format("[N]         Sound %s", NG_AUDIO_ENGINE->areSoundsDisabled() ? " OFF" : "  ON").c_str(), fontX, camHeight - (row++ * padding), jr);
             renderText(sSb, StringUtil::format("[M]         Music %s", NG_AUDIO_ENGINE->isMusicDisabled() ? " OFF" : "  ON").c_str(), fontX, camHeight - (row++ * padding), jr);
-            renderText(sSb, StringUtil::format("[B]   Box2D Debug %s", _engineState & GameEngineState_DisplayBox2D ? "  ON" : " OFF").c_str(), fontX, camHeight - (row++ * padding), jr);
-            renderText(sSb, StringUtil::format("[I] Interpolation %s", _engineState & GameEngineState_Interpolation ? "  ON" : " OFF").c_str(), fontX, camHeight - (row++ * padding), jr);
+            renderText(sSb, StringUtil::format("[B]   Box2D Debug %s", _engineState & GES_DisplayBox2D ? "  ON" : " OFF").c_str(), fontX, camHeight - (row++ * padding), jr);
+            renderText(sSb, StringUtil::format("[I] Interpolation %s", _engineState & GES_Interpolation ? "  ON" : " OFF").c_str(), fontX, camHeight - (row++ * padding), jr);
             std::string lightZ = StringUtil::format("%f", GM_CFG->_playerLightZ);
-            renderText(sSb, StringUtil::format("[L]  Lighting %s", _engineState & GameEngineState_Lighting ? lightZ.c_str() : "     OFF").c_str(), fontX, camHeight - (row++ * padding), jr);
-            renderText(sSb, StringUtil::format("[U]    Display UI %s", _engineState & GameEngineState_DisplayUI ? "  ON" : " OFF").c_str(), fontX, camHeight - (row++ * padding), jr);
+            renderText(sSb, StringUtil::format("[L]  Lighting %s", _engineState & GES_Lighting ? lightZ.c_str() : "     OFF").c_str(), fontX, camHeight - (row++ * padding), jr);
+            renderText(sSb, StringUtil::format("[U]    Display UI %s", _engineState & GES_DisplayUI ? "  ON" : " OFF").c_str(), fontX, camHeight - (row++ * padding), jr);
             
             Server* server = Server::getInstance();
             if (server && !(server->getFlags() & ServerFlag_TestSession))

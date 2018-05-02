@@ -75,7 +75,7 @@ void TitleEngine::enter(Engine* engine)
     createDeviceDependentResources();
     createWindowSizeDependentResources(engine->getScreenWidth(), engine->getScreenHeight(), engine->getCursorWidth(), engine->getCursorHeight());
     
-    _state = _isSteam ? TitleEngineState_SteamOn : TitleEngineState_SteamOff;
+    _state = _isSteam ? TES_SteamOn : TES_SteamOff;
 }
 
 void TitleEngine::update(Engine* engine)
@@ -145,18 +145,18 @@ void TitleEngine::handleInput(Engine* engine)
         {
             TitleInputManager::getInstance()->setLiveInputMode(false);
             
-            _state = _isSteam ? TitleEngineState_SteamOn : TitleEngineState_SteamOff;
+            _state = _isSteam ? TES_SteamOn : TES_SteamOff;
         }
         else if (TitleInputManager::getInstance()->isTimeToProcessInput())
         {
             bool needsToProcessInput = true;
-            if (_state == TitleEngineState_InputIp)
+            if (_state == TES_InputIp)
             {
                 _serverIPAddress = StringUtil::format("%s:%d", TitleInputManager::getInstance()->getLiveInput().c_str(), FW_CFG->_serverPort);
                 _name.clear();
-                _state = TitleEngineState_InputName;
+                _state = TES_InputName;
             }
-            else if (_state == TitleEngineState_InputName)
+            else if (_state == TES_InputName)
             {
                 _name = TitleInputManager::getInstance()->getLiveInput();
                 if (_name.length() > 0)
@@ -208,7 +208,7 @@ void TitleEngine::handleInput(Engine* engine)
             {
                 _serverIPAddress.clear();
                 _name.clear();
-                _state = TitleEngineState_InputName;
+                _state = TES_InputName;
                 TitleInputManager::getInstance()->setLiveInputMode(true);
             }
         }
@@ -217,7 +217,7 @@ void TitleEngine::handleInput(Engine* engine)
             if (!_isSteam)
             {
                 _serverIPAddress.clear();
-                _state = TitleEngineState_InputIp;
+                _state = TES_InputIp;
                 TitleInputManager::getInstance()->setLiveInputMode(true);
             }
         }
@@ -266,7 +266,7 @@ void TitleEngine::handleInput(Engine* engine)
 
 void TitleEngine::activateSteam()
 {
-    _state = TitleEngineState_SteamOff;
+    _state = TES_SteamOff;
     
 #ifdef NG_STEAM
     if (!NG_STEAM_GAME_SERVICES)
@@ -275,7 +275,7 @@ void TitleEngine::activateSteam()
     }
     
     _isSteam = NG_STEAM_GAME_SERVICES->getStatus() == STEAM_INIT_SUCCESS;
-    _state = _isSteam ? TitleEngineState_SteamOn : TitleEngineState_SteamOff;
+    _state = _isSteam ? TES_SteamOn : TES_SteamOff;
 #endif
 }
 
@@ -288,7 +288,7 @@ void TitleEngine::deactivateSteam()
     }
     
     _isSteam = false;
-    _state = TitleEngineState_SteamOff;
+    _state = TES_SteamOff;
 #endif
 }
 
@@ -317,7 +317,7 @@ void TitleEngine::handleSteamGameServices(Engine* engine)
 TitleEngine::TitleEngine() : EngineState(),
 _renderer(new TitleRenderer()),
 _isSteam(false),
-_state(TitleEngineState_SteamOff)
+_state(TES_SteamOff)
 {
     activateSteam();
 }

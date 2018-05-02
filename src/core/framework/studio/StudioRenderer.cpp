@@ -212,12 +212,12 @@ void StudioRenderer::render()
             _activeEntitySpriteBatcher->endBatch(_textureShader, _textureManager->getTextureWithName(tr.getTextureName()), NULL, Color::DOUBLE);
         }
         
-        if (_engineState & StudioEngineState_DisplayBox2D)
+        if (_engineState & SES_DisplayBox2D)
         {
             renderBox2D();
         }
         
-        if (_engineState & StudioEngineState_DisplayGrid)
+        if (_engineState & SES_DisplayGrid)
         {
             renderGrid();
         }
@@ -375,8 +375,7 @@ void StudioRenderer::bindOffscreenFramebuffer(int fbIndex, float r, float g, flo
     _fbIndex = fbIndex;
     
     FramebufferWrapper* fb = _rendererHelper->getOffscreenFramebuffer(_fbIndex);
-    _rendererHelper->bindFramebuffer(fb);
-    _rendererHelper->clearFramebufferWithColor(r, g, b, a);
+    bindFramebuffer(fb, r, g, b, a);
 }
 
 void StudioRenderer::bindFramebuffer(FramebufferWrapper* fb, float r, float g, float b, float a)
@@ -394,7 +393,7 @@ void StudioRenderer::renderWorld()
         _spriteBatchers[i]->beginBatch(i);
     }
     
-    if (_engineState & StudioEngineState_DisplayTypes)
+    if (_engineState & SES_DisplayTypes)
     {
         _fontSpriteBatcher->beginBatch(INDEX_LAST_TEXTURE_VERTEX_BUFFER);
     }
@@ -442,7 +441,7 @@ void StudioRenderer::renderWorld()
         _framebufferToScreenShader->unbind();
     }
     
-    if (_engineState & StudioEngineState_DisplayTypes)
+    if (_engineState & SES_DisplayTypes)
     {
         _fontSpriteBatcher->endBatch(_textureShader, _fontTexture);
     }
@@ -457,8 +456,8 @@ void StudioRenderer::renderEntities(std::vector<Entity*>& entities)
         _spriteBatchers[tr._layer]->renderSprite(e->getPosition().x, e->getPosition().y, e->getWidth(), e->getHeight(), e->getAngle(), tr, e->isFacingLeft());
         _textures[tr._layer] = tr.getTextureName();
         
-        if ((_engineState & StudioEngineState_DisplayTypes) &&
-            _engineState & (1 << (tr._layer + StudioEngineState_LayerBitBegin)))
+        if ((_engineState & SES_DisplayTypes) &&
+            _engineState & (1 << (tr._layer + SES_LayerBitBegin)))
         {
             renderText(e->getEntityDef().typeName.c_str(), e->getPosition().x, e->getPosition().y, FONT_ALIGN_CENTER);
         }
@@ -478,10 +477,10 @@ void StudioRenderer::renderWater(std::vector<Entity*>& entities)
         SpriteBatcher* sb = _spriteBatchers[layer];
         NGTexture* tex = _textureManager->getTextureWithName(tr.getTextureName());
         NGTexture* tex2 = _textureManager->getTextureWithName("texture_010.ngt");
-        if (tex && _engineState & (1 << (layer + StudioEngineState_LayerBitBegin)))
+        if (tex && _engineState & (1 << (layer + SES_LayerBitBegin)))
         {
             int c = clamp(layer, 0, 3);
-            if (!(_engineState & StudioEngineState_DisplayParallax))
+            if (!(_engineState & SES_DisplayParallax))
             {
                 c = 3;
             }
@@ -496,10 +495,10 @@ void StudioRenderer::renderWater(std::vector<Entity*>& entities)
 
 void StudioRenderer::endBatchWithTexture(SpriteBatcher* sb, NGTexture* tex, int layer)
 {
-    if (tex && _engineState & (1 << (layer + StudioEngineState_LayerBitBegin)))
+    if (tex && _engineState & (1 << (layer + SES_LayerBitBegin)))
     {
         int c = clamp(layer, 0, 3);
-        if (!(_engineState & StudioEngineState_DisplayParallax))
+        if (!(_engineState & SES_DisplayParallax))
         {
             c = 3;
         }
@@ -571,7 +570,7 @@ void StudioRenderer::renderUI()
     _rendererHelper->useScreenBlending();
     _rendererHelper->updateMatrix(0, FW_CFG->_camWidth, 0, FW_CFG->_camHeight);
     
-    if (_engineState & StudioEngineState_TextInput)
+    if (_engineState & SES_TextInput)
     {
         _fillPolygonBatcher->beginBatch();
         int width = FW_CFG->_camWidth / 3;
@@ -587,18 +586,18 @@ void StudioRenderer::renderUI()
         
         _fontSpriteBatcher->beginBatch(INDEX_LAST_TEXTURE_VERTEX_BUFFER);
         
-        if (_textInputField == StudioEngineTextInputField_WaterDepth)
+        if (_textInputField == SETIF_WaterDepth)
         {
             renderText("Enter Water Depth", FW_CFG->_camWidth / 2, FW_CFG->_camHeight - 4 - (row++ * padding), FONT_ALIGN_CENTER);
         }
-        else if (_textInputField == StudioEngineTextInputField_WaterWidth)
+        else if (_textInputField == SETIF_WaterWidth)
         {
             renderText("Enter Water Width", FW_CFG->_camWidth / 2, FW_CFG->_camHeight - 4 - (row++ * padding), FONT_ALIGN_CENTER);
         }
         renderText(_input->getLiveInput().c_str(), FW_CFG->_camWidth / 2, FW_CFG->_camHeight - 4 - (row++ * padding), FONT_ALIGN_CENTER);
         _fontSpriteBatcher->endBatch(_textureShader, _fontTexture);
     }
-    else if (_engineState & StudioEngineState_DisplayLoadMapDialog)
+    else if (_engineState & SES_DisplayLoadMapDialog)
     {
         /// Maps
         std::vector<MapDef>& maps = EntityLayoutMapper::getInstance()->getMaps();
@@ -631,7 +630,7 @@ void StudioRenderer::renderUI()
             _fontSpriteBatcher->endBatch(_textureShader, _fontTexture, NULL, i == _input->_selectionIndex ? Color::WHITE : Color::BLACK);
         }
     }
-    else if (_engineState & StudioEngineState_DisplayEntities)
+    else if (_engineState & SES_DisplayEntities)
     {
         const std::vector<EntityDef*>& entityDescriptors = EntityMapper::getInstance()->getEntityDescriptors();
         int numEntities = static_cast<int>(entityDescriptors.size());
@@ -689,7 +688,7 @@ void StudioRenderer::renderUI()
             }
         }
     }
-    else if (_engineState & StudioEngineState_DisplayControls)
+    else if (_engineState & SES_DisplayControls)
     {
         /// Controls
         _fillPolygonBatcher->beginBatch();
@@ -706,10 +705,10 @@ void StudioRenderer::renderUI()
         int row = 4;
         static float padding = 1;
         
-        renderText(StringUtil::format("[B]   Box2D Debug %s", _engineState & StudioEngineState_DisplayBox2D ? " ON" : "OFF").c_str(), FW_CFG->_camWidth - 2, FW_CFG->_camHeight - (row++ * padding), FONT_ALIGN_RIGHT);
-        renderText(StringUtil::format("[G]          Grid %s", _engineState & StudioEngineState_DisplayGrid ? " ON" : "OFF").c_str(), FW_CFG->_camWidth - 2, FW_CFG->_camHeight - (row++ * padding), FONT_ALIGN_RIGHT);
-        renderText(StringUtil::format("[D]   Debug Types %s", _engineState & StudioEngineState_DisplayTypes ? " ON" : "OFF").c_str(), FW_CFG->_camWidth - 2, FW_CFG->_camHeight - (row++ * padding), FONT_ALIGN_RIGHT);
-        renderText(StringUtil::format("[P]      Parallax %s", _engineState & StudioEngineState_DisplayParallax ? " ON" : "OFF").c_str(), FW_CFG->_camWidth - 2, FW_CFG->_camHeight - (row++ * padding), FONT_ALIGN_RIGHT);
+        renderText(StringUtil::format("[B]   Box2D Debug %s", _engineState & SES_DisplayBox2D ? " ON" : "OFF").c_str(), FW_CFG->_camWidth - 2, FW_CFG->_camHeight - (row++ * padding), FONT_ALIGN_RIGHT);
+        renderText(StringUtil::format("[G]          Grid %s", _engineState & SES_DisplayGrid ? " ON" : "OFF").c_str(), FW_CFG->_camWidth - 2, FW_CFG->_camHeight - (row++ * padding), FONT_ALIGN_RIGHT);
+        renderText(StringUtil::format("[D]   Debug Types %s", _engineState & SES_DisplayTypes ? " ON" : "OFF").c_str(), FW_CFG->_camWidth - 2, FW_CFG->_camHeight - (row++ * padding), FONT_ALIGN_RIGHT);
+        renderText(StringUtil::format("[P]      Parallax %s", _engineState & SES_DisplayParallax ? " ON" : "OFF").c_str(), FW_CFG->_camWidth - 2, FW_CFG->_camHeight - (row++ * padding), FONT_ALIGN_RIGHT);
         ++row;
         renderText(StringUtil::format("[R]      Reset Camera").c_str(), FW_CFG->_camWidth - 2, FW_CFG->_camHeight - (row++ * padding), FONT_ALIGN_RIGHT);
         renderText(StringUtil::format("[X]       Reset World").c_str(), FW_CFG->_camWidth - 2, FW_CFG->_camHeight - (row++ * padding), FONT_ALIGN_RIGHT);
@@ -720,9 +719,9 @@ void StudioRenderer::renderUI()
         renderText(StringUtil::format("[S]              Save").c_str(), FW_CFG->_camWidth - 2, FW_CFG->_camHeight - (row++ * padding), FONT_ALIGN_RIGHT);
         renderText(StringUtil::format("[CTRL+S]      Save As").c_str(), FW_CFG->_camWidth - 2, FW_CFG->_camHeight - (row++ * padding), FONT_ALIGN_RIGHT);
         ++row;
-        renderText(StringUtil::format("[C]  %s Controls", _engineState & StudioEngineState_DisplayControls ? "Hide   " : "Display").c_str(), FW_CFG->_camWidth - 2, FW_CFG->_camHeight - (row++ * padding), FONT_ALIGN_RIGHT);
-        renderText(StringUtil::format("[A]  %s   Assets", _engineState & StudioEngineState_DisplayAssets ? "Hide   " : "Display").c_str(), FW_CFG->_camWidth - 2, FW_CFG->_camHeight - (row++ * padding), FONT_ALIGN_RIGHT);
-        renderText(StringUtil::format("[E]  %s Entities", _engineState & StudioEngineState_DisplayEntities ? "Hide   " : "Display").c_str(), FW_CFG->_camWidth - 2, FW_CFG->_camHeight - (row++ * padding), FONT_ALIGN_RIGHT);
+        renderText(StringUtil::format("[C]  %s Controls", _engineState & SES_DisplayControls ? "Hide   " : "Display").c_str(), FW_CFG->_camWidth - 2, FW_CFG->_camHeight - (row++ * padding), FONT_ALIGN_RIGHT);
+        renderText(StringUtil::format("[A]  %s   Assets", _engineState & SES_DisplayAssets ? "Hide   " : "Display").c_str(), FW_CFG->_camWidth - 2, FW_CFG->_camHeight - (row++ * padding), FONT_ALIGN_RIGHT);
+        renderText(StringUtil::format("[E]  %s Entities", _engineState & SES_DisplayEntities ? "Hide   " : "Display").c_str(), FW_CFG->_camWidth - 2, FW_CFG->_camHeight - (row++ * padding), FONT_ALIGN_RIGHT);
         
         _fontSpriteBatcher->endBatch(_textureShader, _fontTexture);
     }
@@ -740,11 +739,11 @@ void StudioRenderer::renderUI()
         static float textY = FW_CFG->_camHeight - 2 + 1.5f;
         static float textY2 = FW_CFG->_camHeight - 2 + 0.5f;
         
-        for (int i = 0; i < StudioEngineState_NumLayers; ++i)
+        for (int i = 0; i < SES_NumLayers; ++i)
         {
             _fontSpriteBatcher->beginBatch(INDEX_LAST_TEXTURE_VERTEX_BUFFER);
             renderText(StringUtil::format("%d", i).c_str(), 1 + (column++ * padding), textY, FONT_ALIGN_RIGHT);
-            _fontSpriteBatcher->endBatch(_textureShader, _fontTexture, NULL, _engineState & (1 << (i + StudioEngineState_LayerBitBegin)) ? Color::WHITE : Color::BLACK);
+            _fontSpriteBatcher->endBatch(_textureShader, _fontTexture, NULL, _engineState & (1 << (i + SES_LayerBitBegin)) ? Color::WHITE : Color::BLACK);
         }
         
         _fontSpriteBatcher->beginBatch(INDEX_LAST_TEXTURE_VERTEX_BUFFER);
@@ -766,15 +765,15 @@ void StudioRenderer::renderUI()
         {
             _fontSpriteBatcher->beginBatch(INDEX_LAST_TEXTURE_VERTEX_BUFFER);
             renderText("C", 1 + (column++ * padding), textY, FONT_ALIGN_LEFT);
-            _fontSpriteBatcher->endBatch(_textureShader, _fontTexture, NULL, _engineState & StudioEngineState_DisplayControls ? Color::WHITE : Color::BLACK);
+            _fontSpriteBatcher->endBatch(_textureShader, _fontTexture, NULL, _engineState & SES_DisplayControls ? Color::WHITE : Color::BLACK);
             
             _fontSpriteBatcher->beginBatch(INDEX_LAST_TEXTURE_VERTEX_BUFFER);
             renderText("A", 1 + (column++ * padding), textY, FONT_ALIGN_LEFT);
-            _fontSpriteBatcher->endBatch(_textureShader, _fontTexture, NULL, _engineState & StudioEngineState_DisplayAssets ? Color::WHITE : Color::BLACK);
+            _fontSpriteBatcher->endBatch(_textureShader, _fontTexture, NULL, _engineState & SES_DisplayAssets ? Color::WHITE : Color::BLACK);
             
             _fontSpriteBatcher->beginBatch(INDEX_LAST_TEXTURE_VERTEX_BUFFER);
             renderText("E", 1 + (column++ * padding), textY, FONT_ALIGN_LEFT);
-            _fontSpriteBatcher->endBatch(_textureShader, _fontTexture, NULL, _engineState & StudioEngineState_DisplayEntities ? Color::WHITE : Color::BLACK);
+            _fontSpriteBatcher->endBatch(_textureShader, _fontTexture, NULL, _engineState & SES_DisplayEntities ? Color::WHITE : Color::BLACK);
             
             _fontSpriteBatcher->beginBatch(INDEX_LAST_TEXTURE_VERTEX_BUFFER);
             renderText("Windows", 58, textY2, FONT_ALIGN_CENTER);
@@ -803,7 +802,7 @@ void StudioRenderer::renderUI()
 
 void StudioRenderer::renderText(const char* inStr, float x, float y, int justification)
 {
-    float fgWidth = FW_CFG->_camWidth / 64;
+    float fgWidth = FW_CFG->_camWidth / 64.0f;
     float fgHeight = fgWidth * (75.0f / 64.0f);
 
     std::string text(inStr);

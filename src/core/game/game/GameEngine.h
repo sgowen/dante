@@ -27,13 +27,13 @@ class Server;
 
 enum GameEngineState
 {
-    GameEngineState_Default =       1 << 0,
-    GameEngineState_Host =          1 << 1,
-    GameEngineState_Connected =     1 << 2,
-    GameEngineState_DisplayBox2D =  1 << 3,
-    GameEngineState_Interpolation = 1 << 4,
-    GameEngineState_Lighting =      1 << 5,
-    GameEngineState_DisplayUI =     1 << 6
+    GES_Default =       1 << 0,
+    GES_Host =          1 << 1,
+    GES_Connected =     1 << 2,
+    GES_DisplayBox2D =  1 << 3,
+    GES_Interpolation = 1 << 4,
+    GES_Lighting =      1 << 5,
+    GES_DisplayUI =     1 << 6
 };
 
 class GameEngine : public EngineState

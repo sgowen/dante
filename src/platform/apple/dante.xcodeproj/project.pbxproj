@@ -2260,12 +2260,12 @@
 		BB44C31E1DB030B3003E633F /* mac */ = {
 			isa = PBXGroup;
 			children = (
-				BB44C3211DB030B3003E633F /* Assets.xcassets */,
-				BB5A0AA91FB36DE5005FBD52 /* Frameworks */,
-				BB44C3241DB030B3003E633F /* Info.plist */,
 				BB5833CC1EEDDA330084DA20 /* main.cpp */,
 				BB7428361EB2A98500B7628D /* pch.h */,
+				BB44C3241DB030B3003E633F /* Info.plist */,
 				BB5833731EEDBBC50084DA20 /* steam_appid.txt */,
+				BB44C3211DB030B3003E633F /* Assets.xcassets */,
+				BB5A0AA91FB36DE5005FBD52 /* Frameworks */,
 			);
 			path = mac;
 			sourceTree = "<group>";
@@ -2909,16 +2909,16 @@
 			isa = PBXGroup;
 			children = (
 				BBD3E8601FB2872A00328E35 /* AppDelegate.h */,
-				BBD3E8611FB2872A00328E35 /* AppDelegate.m */,
-				BBD3E8691FB2872A00328E35 /* Assets.xcassets */,
-				BB5A0A8A1FB36264005FBD52 /* Frameworks */,
-				BBD3E86E1FB2872A00328E35 /* Info.plist */,
-				BBD3E86B1FB2872A00328E35 /* LaunchScreen.storyboard */,
-				BBD3E86F1FB2872A00328E35 /* main.m */,
-				BBD3E8661FB2872A00328E35 /* Main.storyboard */,
 				BB5A0A801FB35FD1005FBD52 /* pch.h */,
 				BBD3E8631FB2872A00328E35 /* ViewController.h */,
+				BBD3E8611FB2872A00328E35 /* AppDelegate.m */,
+				BBD3E86F1FB2872A00328E35 /* main.m */,
 				BBD3E8641FB2872A00328E35 /* ViewController.mm */,
+				BBD3E86E1FB2872A00328E35 /* Info.plist */,
+				BBD3E8691FB2872A00328E35 /* Assets.xcassets */,
+				BB5A0A8A1FB36264005FBD52 /* Frameworks */,
+				BBD3E86B1FB2872A00328E35 /* LaunchScreen.storyboard */,
+				BBD3E8661FB2872A00328E35 /* Main.storyboard */,
 			);
 			path = ios;
 			sourceTree = "<group>";

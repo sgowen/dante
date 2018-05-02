@@ -77,15 +77,15 @@ void StudioInputManager::update()
     _inputState = SIMS_NONE;
     
     uint32_t state = _engine->_state;
-    if (state & StudioEngineState_TextInput)
+    if (state & SES_TextInput)
     {
         handleTextInput();
     }
-    else if (state & StudioEngineState_DisplayLoadMapDialog)
+    else if (state & SES_DisplayLoadMapDialog)
     {
         handleLoadMapDialogInput();
     }
-    else if (state & StudioEngineState_DisplayEntities)
+    else if (state & SES_DisplayEntities)
     {
         handleEntitiesInput();
     }
@@ -207,37 +207,37 @@ void StudioInputManager::handleDefaultInput()
                 _isControl = e.isPressed();
                 continue;
             case NG_KEY_ZERO:
-                _engine->_state ^= e.isDown() ? StudioEngineState_Layer0 : 0;
+                _engine->_state ^= e.isDown() ? SES_Layer0 : 0;
                 continue;
             case NG_KEY_ONE:
-                _engine->_state ^= e.isDown() ? StudioEngineState_Layer1 : 0;
+                _engine->_state ^= e.isDown() ? SES_Layer1 : 0;
                 continue;
             case NG_KEY_TWO:
-                _engine->_state ^= e.isDown() ? StudioEngineState_Layer2 : 0;
+                _engine->_state ^= e.isDown() ? SES_Layer2 : 0;
                 continue;
             case NG_KEY_THREE:
-                _engine->_state ^= e.isDown() ? StudioEngineState_Layer3 : 0;
+                _engine->_state ^= e.isDown() ? SES_Layer3 : 0;
                 continue;
             case NG_KEY_FOUR:
-                _engine->_state ^= e.isDown() ? StudioEngineState_Layer4 : 0;
+                _engine->_state ^= e.isDown() ? SES_Layer4 : 0;
                 continue;
             case NG_KEY_FIVE:
-                _engine->_state ^= e.isDown() ? StudioEngineState_Layer5 : 0;
+                _engine->_state ^= e.isDown() ? SES_Layer5 : 0;
                 continue;
             case NG_KEY_SIX:
-                _engine->_state ^= e.isDown() ? StudioEngineState_Layer6 : 0;
+                _engine->_state ^= e.isDown() ? SES_Layer6 : 0;
                 continue;
             case NG_KEY_SEVEN:
-                _engine->_state ^= e.isDown() ? StudioEngineState_Layer7 : 0;
+                _engine->_state ^= e.isDown() ? SES_Layer7 : 0;
                 continue;
             case NG_KEY_EIGHT:
-                _engine->_state ^= e.isDown() ? StudioEngineState_Layer8 : 0;
+                _engine->_state ^= e.isDown() ? SES_Layer8 : 0;
                 continue;
             case NG_KEY_NINE:
-                _engine->_state ^= e.isDown() ? StudioEngineState_Layer9 : 0;
+                _engine->_state ^= e.isDown() ? SES_Layer9 : 0;
                 continue;
             case NG_KEY_D:
-                _engine->_state ^= e.isDown() ? StudioEngineState_DisplayTypes : 0;
+                _engine->_state ^= e.isDown() ? SES_DisplayTypes : 0;
                 continue;
             case NG_KEY_ARROW_LEFT:
                 _isPanningLeft = e.isPressed();
@@ -252,10 +252,10 @@ void StudioInputManager::handleDefaultInput()
                 _isPanningUp = e.isPressed();
                 continue;
             case NG_KEY_C:
-                _engine->_state ^= e.isDown() ? StudioEngineState_DisplayControls : 0;
+                _engine->_state ^= e.isDown() ? SES_DisplayControls : 0;
                 continue;
             case NG_KEY_A:
-                _engine->_state ^= e.isDown() ? StudioEngineState_DisplayAssets : 0;
+                _engine->_state ^= e.isDown() ? SES_DisplayAssets : 0;
                 if (e.isDown())
                 {
                     _engine->_renderer->displayToast("Assets Management not yet implemented...");
@@ -266,7 +266,7 @@ void StudioInputManager::handleDefaultInput()
                 {
                     if (_engine->_world->isMapLoaded())
                     {
-                        _engine->_state |= StudioEngineState_DisplayEntities;
+                        _engine->_state |= SES_DisplayEntities;
                     }
                     else
                     {
@@ -281,14 +281,14 @@ void StudioInputManager::handleDefaultInput()
                 }
                 continue;
             case NG_KEY_N:
-                _engine->_state |= e.isDown() ? StudioEngineState_DisplayNewMapDialog : 0;
+                _engine->_state |= e.isDown() ? SES_DisplayNewMapDialog : 0;
                 if (e.isDown())
                 {
                     _engine->_renderer->displayToast("New Map not yet implemented...");
                 }
                 continue;
             case NG_KEY_L:
-                _engine->_state |= e.isDown() ? StudioEngineState_DisplayLoadMapDialog : 0;
+                _engine->_state |= e.isDown() ? SES_DisplayLoadMapDialog : 0;
                 continue;
             case NG_KEY_X:
                 if (e.isDown())
@@ -331,7 +331,7 @@ void StudioInputManager::handleDefaultInput()
                     {
                         if (_isControl)
                         {
-                            _engine->_state |= e.isDown() ? StudioEngineState_DisplaySaveMapAsDialog : 0;
+                            _engine->_state |= e.isDown() ? SES_DisplaySaveMapAsDialog : 0;
                             _engine->_renderer->displayToast("Save As not yet implemented...");
                         }
                         else
@@ -343,13 +343,13 @@ void StudioInputManager::handleDefaultInput()
                 }
                 continue;
             case NG_KEY_P:
-                _engine->_state ^= e.isDown() ? StudioEngineState_DisplayParallax : 0;
+                _engine->_state ^= e.isDown() ? SES_DisplayParallax : 0;
                 continue;
             case NG_KEY_B:
-                _engine->_state ^= e.isDown() ? StudioEngineState_DisplayBox2D : 0;
+                _engine->_state ^= e.isDown() ? SES_DisplayBox2D : 0;
                 continue;
             case NG_KEY_G:
-                _engine->_state ^= e.isDown() ? StudioEngineState_DisplayGrid : 0;
+                _engine->_state ^= e.isDown() ? SES_DisplayGrid : 0;
                 continue;
             case NG_KEY_ESCAPE:
                 _inputState = e.isDown() ? SIMS_ESCAPE : SIMS_NONE;
@@ -368,7 +368,7 @@ void StudioInputManager::handleTextInput()
     {
         KeyboardEvent* e = (*i);
         bool isSupported = true;
-        if (_engine->_textInputType == StudioEngineTextInputType_Integer)
+        if (_engine->_textInputType == SETIT_Integer)
         {
             isSupported = isKeyInteger(e->getKey());
         }
@@ -432,34 +432,34 @@ void StudioInputManager::handleEntitiesInput()
         switch (e.getKey())
         {
             case NG_KEY_ZERO:
-                _engine->_state ^= e.isDown() ? StudioEngineState_Layer0 : 0;
+                _engine->_state ^= e.isDown() ? SES_Layer0 : 0;
                 continue;
             case NG_KEY_ONE:
-                _engine->_state ^= e.isDown() ? StudioEngineState_Layer1 : 0;
+                _engine->_state ^= e.isDown() ? SES_Layer1 : 0;
                 continue;
             case NG_KEY_TWO:
-                _engine->_state ^= e.isDown() ? StudioEngineState_Layer2 : 0;
+                _engine->_state ^= e.isDown() ? SES_Layer2 : 0;
                 continue;
             case NG_KEY_THREE:
-                _engine->_state ^= e.isDown() ? StudioEngineState_Layer3 : 0;
+                _engine->_state ^= e.isDown() ? SES_Layer3 : 0;
                 continue;
             case NG_KEY_FOUR:
-                _engine->_state ^= e.isDown() ? StudioEngineState_Layer4 : 0;
+                _engine->_state ^= e.isDown() ? SES_Layer4 : 0;
                 continue;
             case NG_KEY_FIVE:
-                _engine->_state ^= e.isDown() ? StudioEngineState_Layer5 : 0;
+                _engine->_state ^= e.isDown() ? SES_Layer5 : 0;
                 continue;
             case NG_KEY_SIX:
-                _engine->_state ^= e.isDown() ? StudioEngineState_Layer6 : 0;
+                _engine->_state ^= e.isDown() ? SES_Layer6 : 0;
                 continue;
             case NG_KEY_SEVEN:
-                _engine->_state ^= e.isDown() ? StudioEngineState_Layer7 : 0;
+                _engine->_state ^= e.isDown() ? SES_Layer7 : 0;
                 continue;
             case NG_KEY_EIGHT:
-                _engine->_state ^= e.isDown() ? StudioEngineState_Layer8 : 0;
+                _engine->_state ^= e.isDown() ? SES_Layer8 : 0;
                 continue;
             case NG_KEY_NINE:
-                _engine->_state ^= e.isDown() ? StudioEngineState_Layer9 : 0;
+                _engine->_state ^= e.isDown() ? SES_Layer9 : 0;
                 continue;
             case NG_KEY_ARROW_DOWN:
                 _selectionIndexDir = e.isPressed() ? 0.25f : 0;
@@ -480,9 +480,9 @@ void StudioInputManager::handleEntitiesInput()
                     }
                     else if (entityDef->type == 'WATR')
                     {
-                        _engine->_state |= StudioEngineState_TextInput;
-                        _engine->_textInputField = StudioEngineTextInputField_WaterDepth;
-                        _engine->_textInputType = StudioEngineTextInputType_Integer;
+                        _engine->_state |= SES_TextInput;
+                        _engine->_textInputField = SETIF_WaterDepth;
+                        _engine->_textInputType = SETIT_Integer;
                         return;
                     }
                     
@@ -495,7 +495,7 @@ void StudioInputManager::handleEntitiesInput()
             case NG_KEY_BACK_SPACE:
                 if (e.isDown())
                 {
-                    SET_BIT(_engine->_state, StudioEngineState_DisplayEntities, false);
+                    SET_BIT(_engine->_state, SES_DisplayEntities, false);
                 }
                 continue;
             default:
@@ -530,13 +530,13 @@ void StudioInputManager::handleLoadMapDialogInput()
                     uint32_t map = maps[_selectionIndex].key;
                     _engine->_world->loadMap(map);
                     onMapLoaded();
-                    _engine->_state &= ~StudioEngineState_DisplayLoadMapDialog;
+                    _engine->_state &= ~SES_DisplayLoadMapDialog;
                 }
             }
                 continue;
             case NG_KEY_ESCAPE:
             case NG_KEY_BACK_SPACE:
-                _engine->_state &= e.isDown() ? ~StudioEngineState_DisplayLoadMapDialog : 0;
+                _engine->_state &= e.isDown() ? ~SES_DisplayLoadMapDialog : 0;
                 continue;
             default:
                 continue;
@@ -623,7 +623,7 @@ Entity* StudioInputManager::getEntityAtPosition(float x, float y)
         Entity* e = (*i);
         TextureRegion tr = ASSETS->findTextureRegion(e->getTextureMapping(), e->getStateTime());
         int layer = tr._layer;
-        if (_engine->_state & (1 << (layer + StudioEngineState_LayerBitBegin)))
+        if (_engine->_state & (1 << (layer + SES_LayerBitBegin)))
         {
             if (entityExistsAtPosition(e, x, y))
             {
@@ -659,7 +659,7 @@ Entity* StudioInputManager::addEntity(EntityDef* entityDef, int width, int heigh
     _engine->_world->addEntity(e);
     _lastActiveEntity = e;
     onEntityAdded(e);
-    _engine->_state &= ~StudioEngineState_DisplayEntities;
+    _engine->_state &= ~SES_DisplayEntities;
     
     return e;
 }
@@ -668,12 +668,12 @@ void StudioInputManager::processInput()
 {
     bool clearInput = false;
     bool exitTextInputState = false;
-    if (_engine->_textInputField == StudioEngineTextInputField_WaterDepth)
+    if (_engine->_textInputField == SETIF_WaterDepth)
     {
         _waterDepth = StringUtil::stringToNumber<int>(_liveInput);
         if (_waterDepth > 0 && _waterDepth % 2 == 0)
         {
-            _engine->_textInputField = StudioEngineTextInputField_WaterWidth;
+            _engine->_textInputField = SETIF_WaterWidth;
             clearInput = true;
         }
         else
@@ -681,7 +681,7 @@ void StudioInputManager::processInput()
             _engine->_renderer->displayToast("Water Depth must be at least 2 tiles (2x16=32pix)");
         }
     }
-    else if (_engine->_textInputField == StudioEngineTextInputField_WaterWidth)
+    else if (_engine->_textInputField == SETIF_WaterWidth)
     {
         _waterWidth = StringUtil::stringToNumber<int>(_liveInput);
         if (_waterWidth > 0 && _waterWidth % 2 == 0)
@@ -706,7 +706,7 @@ void StudioInputManager::processInput()
     
     if (exitTextInputState)
     {
-        SET_BIT(_engine->_state, StudioEngineState_TextInput, false);
+        SET_BIT(_engine->_state, SES_TextInput, false);
         _engine->_textInputField = 0;
         _engine->_textInputType = 0;
     }

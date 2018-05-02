@@ -18,46 +18,46 @@ class World;
 
 enum StudioEngineState
 {
-    StudioEngineState_DisplayBox2D =           1 <<  0,
-    StudioEngineState_DisplayGrid =            1 <<  1,
-    StudioEngineState_DisplayTypes =           1 <<  2,
-    StudioEngineState_DisplayParallax =        1 <<  3,
-    StudioEngineState_DisplayControls =        1 <<  4,
-    StudioEngineState_DisplayAssets =          1 <<  5,
-    StudioEngineState_DisplayEntities =        1 <<  6,
-    StudioEngineState_DisplayNewMapDialog =    1 <<  7,
-    StudioEngineState_TextInput =              1 <<  8,
-    StudioEngineState_DisplayLoadMapDialog =   1 << 10,
-    StudioEngineState_DisplaySaveMapDialog =   1 << 11,
-    StudioEngineState_DisplaySaveMapAsDialog = 1 << 12,
-    StudioEngineState_Interpolation =          1 << 13,
+    SES_DisplayBox2D =           1 <<  0,
+    SES_DisplayGrid =            1 <<  1,
+    SES_DisplayTypes =           1 <<  2,
+    SES_DisplayParallax =        1 <<  3,
+    SES_DisplayControls =        1 <<  4,
+    SES_DisplayAssets =          1 <<  5,
+    SES_DisplayEntities =        1 <<  6,
+    SES_DisplayNewMapDialog =    1 <<  7,
+    SES_TextInput =              1 <<  8,
+    SES_DisplayLoadMapDialog =   1 << 10,
+    SES_DisplaySaveMapDialog =   1 << 11,
+    SES_DisplaySaveMapAsDialog = 1 << 12,
+    SES_Interpolation =          1 << 13,
     
-    StudioEngineState_LayerBitBegin =               14,
-    StudioEngineState_Layer0 =                 1 << 14,
-    StudioEngineState_Layer1 =                 1 << 15,
-    StudioEngineState_Layer2 =                 1 << 16,
-    StudioEngineState_Layer3 =                 1 << 17,
-    StudioEngineState_Layer4 =                 1 << 18,
-    StudioEngineState_Layer5 =                 1 << 19,
-    StudioEngineState_Layer6 =                 1 << 20,
-    StudioEngineState_Layer7 =                 1 << 21,
-    StudioEngineState_Layer8 =                 1 << 22,
-    StudioEngineState_Layer9 =                 1 << 23,
-    StudioEngineState_NumLayers =                   10,
+    SES_LayerBitBegin =               14,
+    SES_Layer0 =                 1 << 14,
+    SES_Layer1 =                 1 << 15,
+    SES_Layer2 =                 1 << 16,
+    SES_Layer3 =                 1 << 17,
+    SES_Layer4 =                 1 << 18,
+    SES_Layer5 =                 1 << 19,
+    SES_Layer6 =                 1 << 20,
+    SES_Layer7 =                 1 << 21,
+    SES_Layer8 =                 1 << 22,
+    SES_Layer9 =                 1 << 23,
+    SES_NumLayers =                   10,
     
-    StudioEngineState_LayerAll = StudioEngineState_Layer0 | StudioEngineState_Layer1 | StudioEngineState_Layer2 | StudioEngineState_Layer3 | StudioEngineState_Layer4 | StudioEngineState_Layer5 | StudioEngineState_Layer6 | StudioEngineState_Layer7 | StudioEngineState_Layer8 | StudioEngineState_Layer9
+    SES_LayerAll = SES_Layer0 | SES_Layer1 | SES_Layer2 | SES_Layer3 | SES_Layer4 | SES_Layer5 | SES_Layer6 | SES_Layer7 | SES_Layer8 | SES_Layer9
 };
 
 enum StudioEngineTextInputField
 {
-    StudioEngineTextInputField_WaterDepth = 1,
-    StudioEngineTextInputField_WaterWidth = 2
+    SETIF_WaterDepth = 1,
+    SETIF_WaterWidth = 2
 };
 
 enum StudioEngineTextInputType
 {
-    StudioEngineTextInputType_Text =    1,
-    StudioEngineTextInputType_Integer = 2,
+    SETIT_Text =    1,
+    SETIT_Integer = 2,
 };
 
 class StudioEngine : public EngineState

@@ -15,10 +15,10 @@ class TitleRenderer;
 
 enum TitleEngineState
 {
-    TitleEngineState_SteamOff =  1 << 0,
-    TitleEngineState_SteamOn =   1 << 1,
-    TitleEngineState_InputName = 1 << 2,
-    TitleEngineState_InputIp =   1 << 3
+    TES_SteamOff =  1 << 0,
+    TES_SteamOn =   1 << 1,
+    TES_InputName = 1 << 2,
+    TES_InputIp =   1 << 3
 };
 
 class TitleEngine : public EngineState

@@ -156,16 +156,16 @@ void TitleRenderer::render()
 
         switch (_engineState)
         {
-            case TitleEngineState_SteamOff:
+            case TES_SteamOff:
                 renderMainMenuSteamOffText();
                 break;
-            case TitleEngineState_SteamOn:
+            case TES_SteamOn:
                 renderMainMenuSteamOnText();
                 break;
-            case TitleEngineState_InputName:
+            case TES_InputName:
                 renderEnterUsernameText();
                 break;
-            case TitleEngineState_InputIp:
+            case TES_InputIp:
                 renderJoiningLocalServerByIPText();
                 break;
             default:

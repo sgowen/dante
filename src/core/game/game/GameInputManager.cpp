@@ -106,13 +106,13 @@ void GameInputManager::update()
                 }
                 continue;
             case NG_KEY_B:
-                _engine->_state ^= e.isDown() ? GameEngineState_DisplayBox2D : 0;
+                _engine->_state ^= e.isDown() ? GES_DisplayBox2D : 0;
                 continue;
             case NG_KEY_I:
-                _engine->_state ^= e.isDown() ? GameEngineState_Interpolation : 0;
+                _engine->_state ^= e.isDown() ? GES_Interpolation : 0;
                 continue;
             case NG_KEY_L:
-                _engine->_state ^= e.isDown() ? GameEngineState_Lighting : 0;
+                _engine->_state ^= e.isDown() ? GES_Lighting : 0;
                 continue;
             case NG_KEY_T:
                 if (e.isDown() && Server::getInstance())
@@ -121,7 +121,7 @@ void GameInputManager::update()
                 }
                 continue;
             case NG_KEY_U:
-                _engine->_state ^= e.isDown() ? GameEngineState_DisplayUI : 0;
+                _engine->_state ^= e.isDown() ? GES_DisplayUI : 0;
                 continue;
             case NG_KEY_ARROW_UP:
                 _playerLightZDelta = e.isPressed() ? 0.001f : 0;

@@ -131,7 +131,7 @@ _renderer(new StudioRenderer()),
 _world(new World(WorldFlag_Studio)),
 _engine(NULL),
 _testFunc(testFunc),
-_state(StudioEngineState_DisplayGrid | StudioEngineState_DisplayControls | StudioEngineState_LayerAll),
+_state(SES_DisplayGrid | SES_DisplayControls | SES_LayerAll),
 _textInputField(0),
 _textInputType(0)
 {

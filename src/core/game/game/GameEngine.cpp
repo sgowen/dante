@@ -139,8 +139,8 @@ void GameEngine::sHandleTest(Engine* engine, uint32_t& testMap)
     ge->_serverIPAddress = std::string("localhost:9999");
     ge->_name = std::string("TESTER");
     ge->_isHost = true;
-    SET_BIT(ge->_state, GameEngineState_Host, true);
-    SET_BIT(ge->_state, GameEngineState_Connected, false);
+    SET_BIT(ge->_state, GES_Host, true);
+    SET_BIT(ge->_state, GES_Connected, false);
     
     engine->getStateMachine().changeState(ge);
 }
@@ -154,8 +154,8 @@ void GameEngine::sHandleHostServer(Engine* engine, std::string inName)
     ge->_name = inName;
     ge->_isSteam = false;
     ge->_isHost = true;
-    SET_BIT(ge->_state, GameEngineState_Host, true);
-    SET_BIT(ge->_state, GameEngineState_Connected, false);
+    SET_BIT(ge->_state, GES_Host, true);
+    SET_BIT(ge->_state, GES_Connected, false);
     
     engine->getStateMachine().changeState(ge);
 }
@@ -181,8 +181,8 @@ void GameEngine::sHandleHostSteamServer(Engine* engine)
     GameEngine* ge = GameEngine::getInstance();
     ge->_isSteam = true;
     ge->_isHost = true;
-    SET_BIT(ge->_state, GameEngineState_Host, true);
-    SET_BIT(ge->_state, GameEngineState_Connected, false);
+    SET_BIT(ge->_state, GES_Host, true);
+    SET_BIT(ge->_state, GES_Connected, false);
     
     engine->getStateMachine().changeState(ge);
 }
@@ -220,8 +220,8 @@ void GameEngine::update(Engine* engine)
     }
 #endif
     
-    if (_state & GameEngineState_Host &&
-        !(_state & GameEngineState_Connected))
+    if (_state & GES_Host &&
+        !(_state & GES_Connected))
     {
         if (NG_SERVER && NG_SERVER->isConnected())
         {
@@ -315,8 +315,8 @@ void GameEngine::exit(Engine* engine)
     
     _timing->reset();
     
-    SET_BIT(_state, GameEngineState_Host, false);
-    SET_BIT(_state, GameEngineState_Connected, false);
+    SET_BIT(_state, GES_Host, false);
+    SET_BIT(_state, GES_Connected, false);
 }
 
 void GameEngine::createDeviceDependentResources()
@@ -364,7 +364,7 @@ void GameEngine::onPause()
 
 void GameEngine::render(double alpha)
 {
-    if (_state & GameEngineState_Interpolation)
+    if (_state & GES_Interpolation)
     {
         for (Entity* entity : _world->getPlayers())
         {
@@ -374,7 +374,7 @@ void GameEngine::render(double alpha)
     
     _renderer->render();
     
-    if (_state & GameEngineState_Interpolation)
+    if (_state & GES_Interpolation)
     {
         for (Entity* entity : _world->getPlayers())
         {
@@ -410,7 +410,7 @@ void GameEngine::joinServer()
     
     assert(NG_CLIENT);
     
-    SET_BIT(_state, GameEngineState_Connected, true);
+    SET_BIT(_state, GES_Connected, true);
 }
 
 void GameEngine::updateWorld(const Move* move)
@@ -436,13 +436,13 @@ _renderer(new GameRenderer()),
 _world(NULL),
 _timing(static_cast<Timing*>(INSTANCE_MANAGER->get(INSTANCE_TIME_CLIENT))),
 _input(NULL),
-_state(GameEngineState_Default),
+_state(GES_Default),
 _map(0),
 _isSteam(false),
 _isHost(false),
 _isLive(false)
 {
-    _state |= GameEngineState_Interpolation | GameEngineState_Lighting | GameEngineState_DisplayUI;
+    _state |= GES_Interpolation | GES_Lighting | GES_DisplayUI;
 }
 
 GameEngine::~GameEngine()
