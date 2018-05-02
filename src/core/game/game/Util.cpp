@@ -37,7 +37,7 @@ void Util::playSound(int soundId, const b2Vec2& position)
     }
     
     float volume = 1;
-    float robotVolume = 1;
+    float playerVolume = 1;
     
     World* w = GameEngine::getInstance()->getWorld();
     assert(w);
@@ -56,15 +56,15 @@ void Util::playSound(int soundId, const b2Vec2& position)
         if (distance > 0)
         {
             float factor = distance / (FW_CFG->_camWidth / 8);
-            float newRobotVolume = 1.0f / (factor * factor);
-            if (newRobotVolume < robotVolume)
+            float newPlayerVolume = 1.0f / (factor * factor);
+            if (newPlayerVolume < playerVolume)
             {
-                robotVolume = newRobotVolume;
+                playerVolume = newPlayerVolume;
             }
         }
     }
     
-    volume = robotVolume;
+    volume = playerVolume;
     
     NG_AUDIO_ENGINE->playSound(soundId, volume);
 }
