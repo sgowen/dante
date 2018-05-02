@@ -101,10 +101,11 @@
       <AdditionalDependencies>steam_api.lib;d3d11.lib;dxgi.lib;dxguid.lib;uuid.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /y "$(TargetPath)" $(SolutionDir)</Command>
+      <Command>xcopy /y "$(TargetPath)" $(SolutionDir) &amp; cd $(SolutionDir)..\..\..\assets\windows\ &amp; refresh_assets.bat</Command>
     </PostBuildEvent>
     <PreBuildEvent>
-      <Command>cd $(SolutionDir)..\..\..\assets\windows\ &amp; refresh_assets.bat</Command>
+      <Command>
+      </Command>
     </PreBuildEvent>
     <PreLinkEvent>
       <Command>xcopy /y "$(SolutionDir)..\..\3rdparty\steamworks_sdk\redistributable_bin\steam_api.dll" $(SolutionDir)</Command>
@@ -127,10 +128,11 @@
       <AdditionalDependencies>steam_api64.lib;d3d11.lib;dxgi.lib;dxguid.lib;uuid.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /y "$(TargetPath)" $(SolutionDir)</Command>
+      <Command>xcopy /y "$(TargetPath)" $(SolutionDir) &amp; cd $(SolutionDir)..\..\..\assets\windows\ &amp; refresh_assets.bat</Command>
     </PostBuildEvent>
     <PreBuildEvent>
-      <Command>cd $(SolutionDir)..\..\..\assets\windows\ &amp; refresh_assets.bat</Command>
+      <Command>
+      </Command>
     </PreBuildEvent>
     <PreLinkEvent>
       <Command>xcopy /y "$(SolutionDir)..\..\3rdparty\steamworks_sdk\redistributable_bin\win64\steam_api64.dll" $(SolutionDir)</Command>
@@ -158,10 +160,11 @@
       <AdditionalDependencies>steam_api.lib;d3d11.lib;dxgi.lib;dxguid.lib;uuid.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /y "$(TargetPath)" $(SolutionDir)</Command>
+      <Command>xcopy /y "$(TargetPath)" $(SolutionDir) &amp; cd $(SolutionDir)..\..\..\assets\windows\ &amp; refresh_assets.bat</Command>
     </PostBuildEvent>
     <PreBuildEvent>
-      <Command>cd $(SolutionDir)..\..\..\assets\windows\ &amp; refresh_assets.bat</Command>
+      <Command>
+      </Command>
     </PreBuildEvent>
     <PreLinkEvent>
       <Command>xcopy /y "$(SolutionDir)..\..\3rdparty\steamworks_sdk\redistributable_bin\steam_api.dll" $(SolutionDir)</Command>
@@ -188,10 +191,11 @@
       <AdditionalDependencies>steam_api64.lib;d3d11.lib;dxgi.lib;dxguid.lib;uuid.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /y "$(TargetPath)" $(SolutionDir)</Command>
+      <Command>xcopy /y "$(TargetPath)" $(SolutionDir) &amp; cd $(SolutionDir)..\..\..\assets\windows\ &amp; refresh_assets.bat</Command>
     </PostBuildEvent>
     <PreBuildEvent>
-      <Command>cd $(SolutionDir)..\..\..\assets\windows\ &amp; refresh_assets.bat</Command>
+      <Command>
+      </Command>
     </PreBuildEvent>
     <PreLinkEvent>
       <Command>xcopy /y "$(SolutionDir)..\..\3rdparty\steamworks_sdk\redistributable_bin\win64\steam_api64.dll" $(SolutionDir)</Command>

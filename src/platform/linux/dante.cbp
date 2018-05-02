@@ -602,6 +602,8 @@
 		<Unit filename="../../core/framework/studio/StudioRenderer.h" />
 		<Unit filename="../../core/framework/studio/World.cpp" />
 		<Unit filename="../../core/framework/studio/World.h" />
+		<Unit filename="../../core/framework/studio/WorldRenderer.cpp" />
+		<Unit filename="../../core/framework/studio/WorldRenderer.h" />
 		<Unit filename="../../core/framework/util/Config.cpp" />
 		<Unit filename="../../core/framework/util/Config.h" />
 		<Unit filename="../../core/framework/util/Constants.h" />
