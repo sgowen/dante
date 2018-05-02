@@ -15,8 +15,8 @@
 #include <framework/studio/World.h>
 #include <framework/util/Timing.h>
 #include <game/game/GameInputManager.h>
-
 #include <game/game/Server.h>
+
 #include <framework/util/Constants.h>
 #include <framework/input/CursorInputManager.h>
 #include <framework/input/CursorEvent.h>
@@ -138,6 +138,7 @@ void GameEngine::sHandleTest(Engine* engine, uint32_t& testMap)
     GameEngine* ge = GameEngine::getInstance();
     ge->_serverIPAddress = std::string("localhost:9999");
     ge->_name = std::string("TESTER");
+    ge->_isHost = true;
     SET_BIT(ge->_state, GameEngineState_Host, true);
     SET_BIT(ge->_state, GameEngineState_Connected, false);
     
@@ -152,6 +153,7 @@ void GameEngine::sHandleHostServer(Engine* engine, std::string inName)
     GameEngine* ge = GameEngine::getInstance();
     ge->_name = inName;
     ge->_isSteam = false;
+    ge->_isHost = true;
     SET_BIT(ge->_state, GameEngineState_Host, true);
     SET_BIT(ge->_state, GameEngineState_Connected, false);
     
@@ -164,6 +166,7 @@ void GameEngine::sHandleJoinServer(Engine* engine, std::string inServerIPAddress
     ge->_serverIPAddress = inServerIPAddress;
     ge->_name = inName;
     ge->_isSteam = false;
+    ge->_isHost = false;
     ge->joinServer();
     
     engine->getStateMachine().changeState(ge);
@@ -177,6 +180,7 @@ void GameEngine::sHandleHostSteamServer(Engine* engine)
     
     GameEngine* ge = GameEngine::getInstance();
     ge->_isSteam = true;
+    ge->_isHost = true;
     SET_BIT(ge->_state, GameEngineState_Host, true);
     SET_BIT(ge->_state, GameEngineState_Connected, false);
     
@@ -188,6 +192,7 @@ void GameEngine::sHandleJoinSteamServer(Engine* engine, CSteamID serverSteamID)
     GameEngine* ge = GameEngine::getInstance();
     ge->_serverSteamID = serverSteamID;
     ge->_isSteam = true;
+    ge->_isHost = false;
     ge->joinServer();
     
     engine->getStateMachine().changeState(ge);
@@ -203,6 +208,7 @@ void GameEngine::enter(Engine* engine)
     _world = new World(WorldFlag_Client);
     _timing->reset();
     _input = GameInputManager::getInstance();
+    _server = Server::getInstance();
 }
 
 void GameEngine::update(Engine* engine)
@@ -282,10 +288,9 @@ void GameEngine::update(Engine* engine)
     _input->clearPendingMove();
     NG_CLIENT->sendOutgoingPackets();
     
-    if (Server::getInstance())
+    if (_isHost)
     {
-        /// Only for host
-        Server::getInstance()->update();
+        _server->update();
     }
 }
 
@@ -303,7 +308,7 @@ void GameEngine::exit(Engine* engine)
         NetworkManagerClient::destroy();
     }
     
-    if (Server::getInstance())
+    if (_server)
     {
         Server::destroy();
     }
@@ -433,6 +438,8 @@ _timing(static_cast<Timing*>(INSTANCE_MANAGER->get(INSTANCE_TIME_CLIENT))),
 _input(NULL),
 _state(GameEngineState_Default),
 _map(0),
+_isSteam(false),
+_isHost(false),
 _isLive(false)
 {
     _state |= GameEngineState_Interpolation | GameEngineState_Lighting | GameEngineState_DisplayUI;

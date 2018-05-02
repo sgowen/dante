@@ -12,11 +12,12 @@
 
 #include <framework/entity/Entity.h>
 #include <Box2D/Box2D.h>
-#include <framework/studio/World.h>
 
+#include <framework/studio/World.h>
 #include <framework/audio/portable/NGAudioEngine.h>
 #include <game/entity/PlayerController.h>
 #include <game/game/GameEngine.h>
+#include <framework/util/Config.h>
 
 void Util::handleSound(Entity* e, uint8_t fromState, uint8_t toState)
 {
@@ -35,13 +36,13 @@ void Util::playSound(int soundId, const b2Vec2& position)
         return;
     }
     
-    World* w = GameEngine::getInstance()->getWorld();
-    assert(w);
-    std::vector<Entity*>& players = w->getPlayers();
-    
     float volume = 1;
     float robotVolume = 1;
     
+    World* w = GameEngine::getInstance()->getWorld();
+    assert(w);
+    
+    std::vector<Entity*>& players = w->getPlayers();
     for (Entity* e : players)
     {
         PlayerNetworkController* p = static_cast<PlayerNetworkController*>(e->getNetworkController());
@@ -52,10 +53,9 @@ void Util::playSound(int soundId, const b2Vec2& position)
         }
         
         float distance = b2Distance(e->getPosition(), position);
-        float factor = distance / 5.0f;
-        
-        if (distance > 0 && factor > 0)
+        if (distance > 0)
         {
+            float factor = distance / (FW_CFG->_camWidth / 8);
             float newRobotVolume = 1.0f / (factor * factor);
             if (newRobotVolume < robotVolume)
             {

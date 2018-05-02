@@ -211,9 +211,6 @@ void Server::handleNewClient(uint8_t playerId, std::string playerName)
     }
     
     spawnRobotForPlayer(playerId, playerName);
-    
-    _playerIds.push_back(playerId);
-    _playerNames.push_back(playerName);
 }
 
 void Server::handleLostClient(ClientProxy* inClientProxy, uint8_t index)
@@ -251,46 +248,14 @@ void Server::handleInputStateRelease(InputState* inputState)
 
 void Server::deleteRobotWithPlayerId(uint8_t playerId)
 {
-    Entity* player = NULL;
     for (Entity* e : _world->getPlayers())
     {
         PlayerController* robot = static_cast<PlayerController*>(e->getController());
         if (robot->getPlayerId() == playerId)
         {
-            player = e;
+            e->requestDeletion();
             break;
         }
-    }
-    
-    if (player)
-    {
-        for (std::vector<uint8_t>::iterator i = _playerIds.begin(); i != _playerIds.end(); )
-        {
-            if (playerId == (*i))
-            {
-                i = _playerIds.erase(i);
-            }
-            else
-            {
-                ++i;
-            }
-        }
-        
-        PlayerController* robot = static_cast<PlayerController*>(player->getController());
-        std::string& playerName = robot->getPlayerName();
-        for (std::vector<std::string>::iterator i = _playerNames.begin(); i != _playerNames.end(); )
-        {
-            if (playerName == (*i))
-            {
-                i = _playerNames.erase(i);
-            }
-            else
-            {
-                ++i;
-            }
-        }
-        
-        player->requestDeletion();
     }
 }
 
@@ -328,8 +293,14 @@ void Server::spawnRobotForPlayer(uint8_t inPlayerId, std::string inPlayerName)
 
 void Server::loadMap()
 {
-    std::vector<uint8_t> playerIds = _playerIds;
-    std::vector<std::string> playerNames = _playerNames;
+    std::vector<uint8_t> playerIds;
+    std::vector<std::string> playerNames;
+    for (Entity* e : _world->getPlayers())
+    {
+        PlayerController* robot = static_cast<PlayerController*>(e->getController());
+        playerIds.push_back(robot->getPlayerId());
+        playerNames.push_back(robot->getPlayerName());
+    }
     
     for (Entity* e : _world->getDynamicEntities())
     {
@@ -345,10 +316,7 @@ void Server::loadMap()
     
     NG_SERVER->setMap(_map);
     
-    _playerIds.clear();
-    _playerNames.clear();
-    
-    for (int i = 0; i < playerIds.size(); ++i)
+    for (int i = 0; i < playerIds.size() && i < playerNames.size(); ++i)
     {
         handleNewClient(playerIds[i], playerNames[i]);
     }

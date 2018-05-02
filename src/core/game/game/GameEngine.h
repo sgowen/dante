@@ -23,6 +23,7 @@ class World;
 class Timing;
 class GameInputManager;
 class Move;
+class Server;
 
 enum GameEngineState
 {
@@ -80,6 +81,7 @@ private:
     GameRenderer* _renderer;
     World* _world;
     Timing* _timing;
+    Server* _server;
     GameInputManager* _input;
     uint32_t _state;
     std::string _serverIPAddress;
@@ -89,6 +91,7 @@ private:
 #endif
     uint32_t _map;
     bool _isSteam;
+    bool _isHost;
     bool _isLive;
     
     void joinServer();

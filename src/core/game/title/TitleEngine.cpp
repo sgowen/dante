@@ -43,8 +43,6 @@
 #include <framework/util/Config.h>
 
 #ifdef NG_STEAM
-#include <framework/network/steam/NGSteamClientHelper.h>
-#include <framework/network/steam/NGSteamAddress.h>
 #include <framework/network/steam/NGSteamGameServices.h>
 #endif
 
@@ -271,13 +269,26 @@ void TitleEngine::activateSteam()
     _state = TitleEngineState_SteamOff;
     
 #ifdef NG_STEAM
-    if (!NGSteamGameServices::getInstance())
+    if (!NG_STEAM_GAME_SERVICES)
     {
         NGSteamGameServices::create(FW_CFG->_steamGameDir.c_str());
     }
     
     _isSteam = NG_STEAM_GAME_SERVICES->getStatus() == STEAM_INIT_SUCCESS;
     _state = _isSteam ? TitleEngineState_SteamOn : TitleEngineState_SteamOff;
+#endif
+}
+
+void TitleEngine::deactivateSteam()
+{
+#ifdef NG_STEAM
+    if (NG_STEAM_GAME_SERVICES)
+    {
+        NGSteamGameServices::destroy();
+    }
+    
+    _isSteam = false;
+    _state = TitleEngineState_SteamOff;
 #endif
 }
 
@@ -300,19 +311,6 @@ void TitleEngine::handleSteamGameServices(Engine* engine)
             deactivateSteam();
         }
     }
-#endif
-}
-
-void TitleEngine::deactivateSteam()
-{
-#ifdef NG_STEAM
-    if (NGSteamGameServices::getInstance())
-    {
-        NGSteamGameServices::destroy();
-    }
-    
-    _isSteam = false;
-    _state = TitleEngineState_SteamOff;
 #endif
 }
 

@@ -57,8 +57,6 @@ private:
     EntityIDManager* _entityIDManager;
     World* _world;
     NoctisGames::NGPool<GameInputState> _inputStates;
-    std::vector<uint8_t> _playerIds;
-    std::vector<std::string> _playerNames;
     uint32_t _map;
     
     void handleNewClient(uint8_t playerId, std::string playerName);

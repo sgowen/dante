@@ -53,8 +53,8 @@ private:
     
     void handleInput(Engine* engine);
     void activateSteam();
-    void handleSteamGameServices(Engine* engine);
     void deactivateSteam();
+    void handleSteamGameServices(Engine* engine);
     
     // ctor, copy ctor, and assignment should be private in a Singleton
     TitleEngine();
