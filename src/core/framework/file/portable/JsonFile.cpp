@@ -224,11 +224,10 @@ FILE* JsonFile::openFile(const char* path, const char* mode)
 #ifdef _WIN32
     errno_t err;
     if ((err = fopen_s(&file, path, mode)) != 0)
-    {
 #else
     if ((file = fopen(path, mode)) == NULL)
-    {
 #endif
+    {
         return NULL;
     }
 
