@@ -72,7 +72,7 @@ int DirectXMain::exec(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmd
 		return 1;
 	}
 
-	HRESULT hr = CoInitializeEx(nullptr, COINITBASE_MULTITHREADED);
+	HRESULT hr = CoInitializeEx(NULL, COINITBASE_MULTITHREADED);
 	if (FAILED(hr))
 	{
 		return 1;
@@ -94,9 +94,9 @@ int DirectXMain::exec(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmd
 		wcex.cbWndExtra = 0;
 		wcex.hInstance = hInstance;
 		wcex.hIcon = LoadIcon(hInstance, L"IDI_ICON");
-		wcex.hCursor = LoadCursor(nullptr, IDC_ARROW);
+		wcex.hCursor = LoadCursor(NULL, IDC_ARROW);
 		wcex.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
-		wcex.lpszMenuName = nullptr;
+		wcex.lpszMenuName = NULL;
 		wcex.lpszClassName = L"NGWindowClass";
 		wcex.hIconSm = LoadIcon(wcex.hInstance, L"IDI_ICON");
 		if (!RegisterClassEx(&wcex))
@@ -125,12 +125,12 @@ int DirectXMain::exec(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmd
 #ifdef LAUNCH_FULL_SCREEN
 		/// Launch directly into full screen
 		HWND hwnd = CreateWindowEx(WS_EX_TOPMOST, L"NGWindowClass", L"Project Dante", WS_POPUP,
-			CW_USEDEFAULT, CW_USEDEFAULT, rc.right - rc.left, rc.bottom - rc.top, nullptr, nullptr, hInstance,
-			nullptr);
+			CW_USEDEFAULT, CW_USEDEFAULT, rc.right - rc.left, rc.bottom - rc.top, NULL, NULL, hInstance,
+			NULL);
 #else
 		HWND hwnd = CreateWindowEx(0, L"NGWindowClass", L"Project Dante", WS_OVERLAPPEDWINDOW,
-			CW_USEDEFAULT, CW_USEDEFAULT, rc.right - rc.left, rc.bottom - rc.top, nullptr, nullptr, hInstance,
-			nullptr);
+			CW_USEDEFAULT, CW_USEDEFAULT, rc.right - rc.left, rc.bottom - rc.top, NULL, NULL, hInstance,
+			NULL);
 #endif
 
 		if (!hwnd)
@@ -151,7 +151,7 @@ int DirectXMain::exec(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmd
 
 		DX_MAIN->Initialize(engineController, hwnd, rc.right - rc.left, rc.bottom - rc.top);
 
-		HDEVNOTIFY hNewAudio = nullptr;
+		HDEVNOTIFY hNewAudio = NULL;
 
 		// Listen for new audio devices
 		DEV_BROADCAST_DEVICEINTERFACE filter = { 0 };
@@ -172,7 +172,7 @@ int DirectXMain::exec(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmd
 	MSG msg = { 0 };
 	while (WM_QUIT != msg.message)
 	{
-		if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
+		if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
 		{
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);

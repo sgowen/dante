@@ -348,8 +348,8 @@ void AndroidMain::pause()
 
 AndroidMain::AndroidMain() :
 _glContext(ndk_helper::GLContext::GetInstance()),
-_app(nullptr),
-_engine(nullptr),
+_app(NULL),
+_engine(NULL),
 _lastTime(timeNow()),
 _deltaTime(FRAME_RATE),
 _hasInitializedResources(false),

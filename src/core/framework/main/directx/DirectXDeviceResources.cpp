@@ -19,16 +19,16 @@ namespace
     inline bool SdkLayersAvailable()
     {
         HRESULT hr = D3D11CreateDevice(
-            nullptr,
+            NULL,
             D3D_DRIVER_TYPE_NULL,       // There is no need to create a real hardware device.
             0,
             D3D11_CREATE_DEVICE_DEBUG,  // Check for the SDK layers.
-            nullptr,                    // Any feature level will do.
+            NULL,                    // Any feature level will do.
             0,
             D3D11_SDK_VERSION,
-            nullptr,                    // No need to keep the D3D device reference.
-            nullptr,                    // No need to know the feature level.
-            nullptr                     // No need to keep the D3D device context reference.
+            NULL,                    // No need to keep the D3D device reference.
+            NULL,                    // No need to know the feature level.
+            NULL                     // No need to keep the D3D device context reference.
             );
 
         return SUCCEEDED(hr);
@@ -54,12 +54,12 @@ DirectXDeviceResources::DirectXDeviceResources(DXGI_FORMAT backBufferFormat, DXG
     m_depthBufferFormat(depthBufferFormat),
     m_backBufferCount(backBufferCount),
     m_d3dMinFeatureLevel(minFeatureLevel),
-    m_window(nullptr),
+    m_window(NULL),
     m_d3dFeatureLevel(D3D_FEATURE_LEVEL_9_1),
     m_outputSize{0, 0, 1, 1},
 	m_colorSpace(DXGI_COLOR_SPACE_RGB_FULL_G22_NONE_P709),
 	m_options(flags | c_FlipPresent),
-    m_deviceNotify(nullptr)
+    m_deviceNotify(NULL)
 {
 }
 
@@ -188,7 +188,7 @@ void DirectXDeviceResources::CreateDeviceResources()
 		// For more information on WARP, see: 
 		// http://go.microsoft.com/fwlink/?LinkId=286690
 		hr = D3D11CreateDevice(
-			nullptr,
+			NULL,
 			D3D_DRIVER_TYPE_WARP, // Create a WARP device instead of a hardware device.
 			0,
 			creationFlags,
@@ -246,8 +246,8 @@ void DirectXDeviceResources::CreateWindowSizeDependentResources()
 	}
 
 	// Clear the previous window size specific context.
-	ID3D11RenderTargetView* nullViews[] = { nullptr };
-	m_d3dContext->OMSetRenderTargets(_countof(nullViews), nullViews, nullptr);
+	ID3D11RenderTargetView* nullViews[] = { NULL };
+	m_d3dContext->OMSetRenderTargets(_countof(nullViews), nullViews, NULL);
 	m_d3dRenderTargetView.Reset();
 	m_d3dDepthStencilView.Reset();
 	m_renderTarget.Reset();
@@ -314,7 +314,7 @@ void DirectXDeviceResources::CreateWindowSizeDependentResources()
 			m_window,
 			&swapChainDesc,
 			&fsSwapChainDesc,
-			nullptr, m_swapChain.ReleaseAndGetAddressOf()
+			NULL, m_swapChain.ReleaseAndGetAddressOf()
 		));
 
 		// This class does not support exclusive full-screen mode and prevents DXGI from responding to the ALT+ENTER shortcut
@@ -349,7 +349,7 @@ void DirectXDeviceResources::CreateWindowSizeDependentResources()
 
 		ThrowIfFailed(m_d3dDevice->CreateTexture2D(
 			&depthStencilDesc,
-			nullptr,
+			NULL,
 			m_depthStencil.ReleaseAndGetAddressOf()
 		));
 
@@ -508,10 +508,10 @@ void DirectXDeviceResources::CreateFactory()
 }
 
 // This method acquires the first available hardware adapter.
-// If no such adapter can be found, *ppAdapter will be set to nullptr.
+// If no such adapter can be found, *ppAdapter will be set to NULL.
 void DirectXDeviceResources::GetHardwareAdapter(IDXGIAdapter1** ppAdapter)
 {
-    *ppAdapter = nullptr;
+    *ppAdapter = NULL;
 
     ComPtr<IDXGIAdapter1> adapter;
     for (UINT adapterIndex = 0; DXGI_ERROR_NOT_FOUND != m_dxgiFactory->EnumAdapters1(adapterIndex, adapter.ReleaseAndGetAddressOf()); adapterIndex++)
