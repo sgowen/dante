@@ -395,6 +395,7 @@
 		BBBD14971EE06BB3003F9307 /* Timing.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBBD14921EE06BB3003F9307 /* Timing.cpp */; };
 		BBBD149A1EE06BB3003F9307 /* WeightedTimedMovingAverage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBBD14941EE06BB3003F9307 /* WeightedTimedMovingAverage.cpp */; };
 		BBBD14C41EE0C9B4003F9307 /* InputMemoryBitStream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBBD14C11EE0C9B4003F9307 /* InputMemoryBitStream.cpp */; };
+		BBC98EB0215FE9540009C3F4 /* steam_appid.txt in Resources */ = {isa = PBXBuildFile; fileRef = BB5833731EEDBBC50084DA20 /* steam_appid.txt */; };
 		BBCB93211FC252790020703A /* FileData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBCB93201FC252790020703A /* FileData.cpp */; };
 		BBCB93221FC252790020703A /* FileData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBCB93201FC252790020703A /* FileData.cpp */; };
 		BBCDF24F1F3796C3006E94B0 /* FPSUtil.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBCDF24D1F3796C3006E94B0 /* FPSUtil.cpp */; };
@@ -518,7 +519,6 @@
 		BBF10DC820312E750032F29A /* sound_007.wav in Resources */ = {isa = PBXBuildFile; fileRef = BBF10DC520312E750032F29A /* sound_007.wav */; };
 		BBF10DC920312E750032F29A /* sound_007.wav in Resources */ = {isa = PBXBuildFile; fileRef = BBF10DC520312E750032F29A /* sound_007.wav */; };
 		BBF226CF1EC12CDE00573356 /* ReplicationManagerClient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBF226B01EC12CDE00573356 /* ReplicationManagerClient.cpp */; };
-		BBF3BD68215AF7C3009F3873 /* steam_appid.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = BB5833731EEDBBC50084DA20 /* steam_appid.txt */; };
 		BBF3CC4C200D712400CFF412 /* shader_001_frag.ngs in Resources */ = {isa = PBXBuildFile; fileRef = BBF3CC44200D712300CFF412 /* shader_001_frag.ngs */; };
 		BBF3CC4D200D712400CFF412 /* shader_001_frag.ngs in Resources */ = {isa = PBXBuildFile; fileRef = BBF3CC44200D712300CFF412 /* shader_001_frag.ngs */; };
 		BBF3CC4E200D712400CFF412 /* shader_004_vert.ngs in Resources */ = {isa = PBXBuildFile; fileRef = BBF3CC45200D712300CFF412 /* shader_004_vert.ngs */; };
@@ -581,22 +581,12 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		BB13BD511E58E72C0073C08F /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		BB5833671EEDB2DB0084DA20 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 6;
 			files = (
-				BBF3BD68215AF7C3009F3873 /* steam_appid.txt in CopyFiles */,
 				BB19148E1FABBD1300BDC6D0 /* libsteam_api.dylib in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2895,7 +2885,6 @@
 				BB44C3061DB0303F003E633F /* Sources */,
 				BB44C3071DB0303F003E633F /* Frameworks */,
 				BB44C3081DB0303F003E633F /* Resources */,
-				BB13BD511E58E72C0073C08F /* CopyFiles */,
 				BB5833671EEDB2DB0084DA20 /* CopyFiles */,
 			);
 			buildRules = (
@@ -2976,6 +2965,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BBC98EB0215FE9540009C3F4 /* steam_appid.txt in Resources */,
 				BBF10DC820312E750032F29A /* sound_007.wav in Resources */,
 				BB44C3291DB030B3003E633F /* Assets.xcassets in Resources */,
 				BBF10DC620312E750032F29A /* sound_006.wav in Resources */,
