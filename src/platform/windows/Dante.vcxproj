@@ -22,7 +22,7 @@
     <RootNamespace>Dante</RootNamespace>
     <ProjectGuid>{fa65a632-8e02-4696-a1cd-9d48b4d1ac94}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -92,7 +92,7 @@
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <FloatingPointModel>Fast</FloatingPointModel>
       <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
-      <AdditionalIncludeDirectories>../../3rdparty/DirectXTK/Inc;../../3rdparty/DirectXTK/Src;../../3rdparty/Box2D/Box2D;../../3rdparty/rapidjson/include;../../3rdparty/steamworks_sdk/public;../../3rdparty/TinyThread/source;../../core;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;$(ProjectDir);</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../3rdparty/DirectXTK/Inc;../../3rdparty/DirectXTK/Src;../../3rdparty/Box2D;../../3rdparty/rapidjson/include;../../3rdparty/steamworks_sdk/public;../../3rdparty/TinyThread/source;../../core;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;$(ProjectDir);</AdditionalIncludeDirectories>
       <PrecompiledHeaderOutputFile>$(IntDir)$(TargetName).pch</PrecompiledHeaderOutputFile>
     </ClCompile>
     <Link>
@@ -119,7 +119,7 @@
       <PreprocessorDefinitions>NG_TEST_RENDERING_SUITE;NG_STEAM;WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <FloatingPointModel>Fast</FloatingPointModel>
-      <AdditionalIncludeDirectories>../../3rdparty/DirectXTK/Inc;../../3rdparty/DirectXTK/Src;../../3rdparty/Box2D/Box2D;../../3rdparty/rapidjson/include;../../3rdparty/steamworks_sdk/public;../../3rdparty/TinyThread/source;../../core;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;$(ProjectDir);</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../3rdparty/DirectXTK/Inc;../../3rdparty/DirectXTK/Src;../../3rdparty/Box2D;../../3rdparty/rapidjson/include;../../3rdparty/steamworks_sdk/public;../../3rdparty/TinyThread/source;../../core;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;$(ProjectDir);</AdditionalIncludeDirectories>
       <PrecompiledHeaderOutputFile>$(IntDir)$(TargetName).pch</PrecompiledHeaderOutputFile>
     </ClCompile>
     <Link>
@@ -149,7 +149,7 @@
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <FloatingPointModel>Fast</FloatingPointModel>
       <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
-      <AdditionalIncludeDirectories>../../3rdparty/DirectXTK/Inc;../../3rdparty/DirectXTK/Src;../../3rdparty/Box2D/Box2D;../../3rdparty/rapidjson/include;../../3rdparty/steamworks_sdk/public;../../3rdparty/TinyThread/source;../../core;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;$(ProjectDir);</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../3rdparty/DirectXTK/Inc;../../3rdparty/DirectXTK/Src;../../3rdparty/Box2D;../../3rdparty/rapidjson/include;../../3rdparty/steamworks_sdk/public;../../3rdparty/TinyThread/source;../../core;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;$(ProjectDir);</AdditionalIncludeDirectories>
       <PrecompiledHeaderOutputFile>$(IntDir)$(TargetName).pch</PrecompiledHeaderOutputFile>
     </ClCompile>
     <Link>
@@ -180,7 +180,7 @@
       <PreprocessorDefinitions>NG_STEAM;WIN32;NG_LAUNCH_AS_FULL_SCREEN;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <FloatingPointModel>Fast</FloatingPointModel>
-      <AdditionalIncludeDirectories>../../3rdparty/DirectXTK/Inc;../../3rdparty/DirectXTK/Src;../../3rdparty/Box2D/Box2D;../../3rdparty/rapidjson/include;../../3rdparty/steamworks_sdk/public;../../3rdparty/TinyThread/source;../../core;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;$(ProjectDir);</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../3rdparty/DirectXTK/Inc;../../3rdparty/DirectXTK/Src;../../3rdparty/Box2D;../../3rdparty/rapidjson/include;../../3rdparty/steamworks_sdk/public;../../3rdparty/TinyThread/source;../../core;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;$(ProjectDir);</AdditionalIncludeDirectories>
       <PrecompiledHeaderOutputFile>$(IntDir)$(TargetName).pch</PrecompiledHeaderOutputFile>
     </ClCompile>
     <Link>
@@ -202,14 +202,14 @@
     </PreLinkEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\3rdparty\Box2D\Box2D\Box2D\*.h" />
-    <ClInclude Include="..\..\3rdparty\Box2D\Box2D\Box2D\Collision\*.h" />
-    <ClInclude Include="..\..\3rdparty\Box2D\Box2D\Box2D\Collision\Shapes\*.h" />
-    <ClInclude Include="..\..\3rdparty\Box2D\Box2D\Box2D\Common\*.h" />
-    <ClInclude Include="..\..\3rdparty\Box2D\Box2D\Box2D\Dynamics\*.h" />
-    <ClInclude Include="..\..\3rdparty\Box2D\Box2D\Box2D\Dynamics\Contacts\*.h" />
-    <ClInclude Include="..\..\3rdparty\Box2D\Box2D\Box2D\Dynamics\Joints\*.h" />
-    <ClInclude Include="..\..\3rdparty\Box2D\Box2D\Box2D\Rope\*.h" />
+    <ClInclude Include="..\..\3rdparty\Box2D\Box2D\*.h" />
+    <ClInclude Include="..\..\3rdparty\Box2D\Box2D\Collision\*.h" />
+    <ClInclude Include="..\..\3rdparty\Box2D\Box2D\Collision\Shapes\*.h" />
+    <ClInclude Include="..\..\3rdparty\Box2D\Box2D\Common\*.h" />
+    <ClInclude Include="..\..\3rdparty\Box2D\Box2D\Dynamics\*.h" />
+    <ClInclude Include="..\..\3rdparty\Box2D\Box2D\Dynamics\Contacts\*.h" />
+    <ClInclude Include="..\..\3rdparty\Box2D\Box2D\Dynamics\Joints\*.h" />
+    <ClInclude Include="..\..\3rdparty\Box2D\Box2D\Rope\*.h" />
     <ClInclude Include="..\..\3rdparty\DirectXTK\Audio\SoundCommon.h" />
     <ClInclude Include="..\..\3rdparty\DirectXTK\Audio\WaveBankReader.h" />
     <ClInclude Include="..\..\3rdparty\DirectXTK\Audio\WAVFileReader.h" />
@@ -247,28 +247,28 @@
     <ClInclude Include="*.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\3rdparty\Box2D\Box2D\Box2D\*.cpp">
+    <ClCompile Include="..\..\3rdparty\Box2D\Box2D\*.cpp">
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="..\..\3rdparty\Box2D\Box2D\Box2D\Collision\*.cpp">
+    <ClCompile Include="..\..\3rdparty\Box2D\Box2D\Collision\*.cpp">
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="..\..\3rdparty\Box2D\Box2D\Box2D\Collision\Shapes\*.cpp">
+    <ClCompile Include="..\..\3rdparty\Box2D\Box2D\Collision\Shapes\*.cpp">
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="..\..\3rdparty\Box2D\Box2D\Box2D\Common\*.cpp">
+    <ClCompile Include="..\..\3rdparty\Box2D\Box2D\Common\*.cpp">
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="..\..\3rdparty\Box2D\Box2D\Box2D\Dynamics\*.cpp">
+    <ClCompile Include="..\..\3rdparty\Box2D\Box2D\Dynamics\*.cpp">
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="..\..\3rdparty\Box2D\Box2D\Box2D\Dynamics\Contacts\*.cpp">
+    <ClCompile Include="..\..\3rdparty\Box2D\Box2D\Dynamics\Contacts\*.cpp">
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="..\..\3rdparty\Box2D\Box2D\Box2D\Dynamics\Joints\*.cpp">
+    <ClCompile Include="..\..\3rdparty\Box2D\Box2D\Dynamics\Joints\*.cpp">
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="..\..\3rdparty\Box2D\Box2D\Box2D\Rope\*.cpp">
+    <ClCompile Include="..\..\3rdparty\Box2D\Box2D\Rope\*.cpp">
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="..\..\3rdparty\DirectXTK\Audio\AudioEngine.cpp" />
