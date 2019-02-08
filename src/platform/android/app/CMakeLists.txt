@@ -15,7 +15,7 @@ message(${ANDROID_ABI})
 # Provides a relative path to your source file(s).
 set( source_dir ${CMAKE_CURRENT_SOURCE_DIR}/../../../../src )
 
-file(GLOB_RECURSE CPP_3RD_PARTY_FILES_1 "${source_dir}/3rdparty/Box2D/Box2D/Box2D/*.cpp")
+file(GLOB_RECURSE CPP_3RD_PARTY_FILES_1 "${source_dir}/3rdparty/Box2D/Box2D/*.cpp")
 file(GLOB_RECURSE CPP_3RD_PARTY_FILES_2 "${source_dir}/3rdparty/TinyThread/source/*.cpp")
 
 file(GLOB_RECURSE CPP_FRAMEWORK_FILES_1 "${source_dir}/core/framework/entity/*cpp")
@@ -70,7 +70,7 @@ set( libpng_sources
     ${source_dir}/3rdparty/libpng/pngwutil.c
 )
 
-include_directories(${source_dir}/3rdparty/Box2D/Box2D)
+include_directories(${source_dir}/3rdparty/Box2D)
 include_directories(${source_dir}/3rdparty/libpng)
 include_directories(${source_dir}/3rdparty/rapidjson/include)
 include_directories(${source_dir}/3rdparty/TinyThread/source)

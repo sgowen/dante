@@ -6,8 +6,8 @@
 //  Copyright (c) 2017 Noctis Games. All rights reserved.
 //
 
-#include "android_native_app_glue.h>
-#include "GLContext.h>
+#include "android_native_app_glue.h"
+#include "GLContext.h"
 
 class EngineController;
 class Engine;
