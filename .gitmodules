@@ -1,33 +1,33 @@
 [submodule "src/3rdparty/libpng"]
 	path = src/3rdparty/libpng
-	url = https://github.com/NoctisGames/libpng.git
+	url = https://github.com/sgowen/libpng.git
 [submodule "src/3rdparty/TinyThread"]
 	path = src/3rdparty/TinyThread
-	url = https://github.com/NoctisGames/TinyThread.git
+	url = https://github.com/sgowen/TinyThread.git
 [submodule "src/3rdparty/Box2D"]
 	path = src/3rdparty/Box2D
-	url = https://github.com/NoctisGames/Box2D.git
+	url = https://github.com/sgowen/Box2D.git
 [submodule "src/3rdparty/glfw"]
 	path = src/3rdparty/glfw
-	url = https://github.com/NoctisGames/glfw.git
+	url = https://github.com/sgowen/glfw.git
 [submodule "src/3rdparty/DirectXTK"]
 	path = src/3rdparty/DirectXTK
-	url = https://github.com/NoctisGames/DirectXTK.git
+	url = https://github.com/sgowen/DirectXTK.git
 [submodule "src/3rdparty/DirectXTex"]
 	path = src/3rdparty/DirectXTex
-	url = https://github.com/NoctisGames/DirectXTex.git
+	url = https://github.com/sgowen/DirectXTex.git
 [submodule "src/3rdparty/ObjectAL-for-iPhone"]
 	path = src/3rdparty/ObjectAL-for-iPhone
-	url = https://github.com/NoctisGames/ObjectAL-for-iPhone.git
+	url = https://github.com/sgowen/ObjectAL-for-iPhone.git
 [submodule "src/3rdparty/steamworks_sdk"]
 	path = src/3rdparty/steamworks_sdk
-	url = https://github.com/NoctisGames/steamworks_sdk.git
+	url = https://github.com/sgowen/steamworks_sdk.git
 [submodule "src/3rdparty/rapidjson"]
 	path = src/3rdparty/rapidjson
-	url = https://github.com/NoctisGames/rapidjson.git
+	url = https://github.com/sgowen/rapidjson.git
 [submodule "assets"]
 	path = assets
-	url = https://github.com/NoctisGames/dante-assets.git
+	url = https://github.com/sgowen/dante-assets.git
 [submodule "src/3rdparty/imgui"]
 	path = src/3rdparty/imgui
 	url = https://github.com/ocornut/imgui.git
