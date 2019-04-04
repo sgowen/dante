@@ -264,11 +264,12 @@ FFLAGS=
 ASFLAGS=
 
 # Link Libraries and Options
-LDLIBSOPTIONS=-lGLEW -lGL -lGLU -lX11 -lpthread -lm -ldl -lopenal -lalut -lz -lm ../../../3rdparty/steamworks_sdk/redistributable_bin/linux64/libsteam_api.so
+LDLIBSOPTIONS=-L../../../3rdparty/steamworks_sdk/redistributable_bin/linux64 -lGLEW -lGL -lGLU -lX11 -lpthread -lm -ldl -lopenal -lalut -lz -lm ../../../3rdparty/steamworks_sdk/redistributable_bin/linux64/libsteam_api.so
 
 # Build Targets
 .build-conf: ${BUILD_SUBPROJECTS}
 	"${MAKE}"  -f nbproject/Makefile-${CND_CONF}.mk ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/dante
+	${CP} ../../../3rdparty/steamworks_sdk/redistributable_bin/linux64/libsteam_api.so ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
 
 ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/dante: ../../../3rdparty/steamworks_sdk/redistributable_bin/linux64/libsteam_api.so
 
