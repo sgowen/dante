@@ -2910,8 +2910,7 @@
 				TargetAttributes = {
 					BB44C3091DB0303F003E633F = {
 						CreatedOnToolsVersion = 8.0;
-						DevelopmentTeam = 73DSXQLA96;
-						ProvisioningStyle = Automatic;
+						DevelopmentTeam = 83V22B9TY9;
 						SystemCapabilities = {
 							com.apple.Sandbox = {
 								enabled = 0;
@@ -3067,7 +3066,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cd $SRCROOT/../../../assets/posix\n./refresh_assets.sh $SRCROOT/../../.. XOREncryptDecrypt";
+			shellScript = "cd $SRCROOT/../../../assets/posix\n./refresh_assets.sh $SRCROOT/../../.. XOREncryptDecrypt\n";
 		};
 		BB5065681FB36E7A00CADEEA /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -3692,7 +3691,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = 73DSXQLA96;
+				DEVELOPMENT_TEAM = 83V22B9TY9;
 				FRAMEWORK_SEARCH_PATHS = (
 					"\"$(SRCROOT)/../../3rdparty/steamworks_sdk/redistributable_bin/osx32\"",
 					"$(PROJECT_DIR)",
@@ -3758,12 +3757,13 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
 				CODE_SIGN_ENTITLEMENTS = "";
-				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = 73DSXQLA96;
+				DEVELOPMENT_TEAM = 83V22B9TY9;
 				ENABLE_NS_ASSERTIONS = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"\"$(SRCROOT)/../../3rdparty/steamworks_sdk/redistributable_bin/osx32\"",
