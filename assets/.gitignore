@@ -1,0 +1,14 @@
+# Mac
+.DS_Store
+
+# Windows
+Thumbs.db
+
+# Generated Files
+*.ngt
+*.ngs
+*.dds
+*.cso
+
+# Test Map
+test.cfg
