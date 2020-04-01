@@ -1,9 +1,6 @@
 [submodule "src/3rdparty/libpng"]
 	path = src/3rdparty/libpng
 	url = https://github.com/sgowen/libpng.git
-[submodule "src/3rdparty/TinyThread"]
-	path = src/3rdparty/TinyThread
-	url = https://github.com/sgowen/TinyThread.git
 [submodule "src/3rdparty/Box2D"]
 	path = src/3rdparty/Box2D
 	url = https://github.com/sgowen/Box2D.git
@@ -31,3 +28,6 @@
 [submodule "src/3rdparty/imgui"]
 	path = src/3rdparty/imgui
 	url = https://github.com/ocornut/imgui.git
+[submodule "src/3rdparty/TinyThread"]
+	path = src/3rdparty/TinyThread
+	url = https://github.com/sgowen/TinyThread.git
